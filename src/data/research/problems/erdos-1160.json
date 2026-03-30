@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 unused axioms (13→11). Converted pantelidakis_odd and numGroups_two_power_growth from axiom to def Prop (known results not used by any theorem).",
+    "progressSummary": "PROGRESS: Reduced axioms 11→10. Merged numGroups_pq_dvd + numGroups_pq_ndvd into single numGroups_pq axiom. Added numGroups_prime_cube (g(p³)=5 for all primes), derived numGroups_eight as theorem.",
     "builtItems": [
       "Created Erdos1160Problem.lean with numGroups axiomatization",
       "Proved erdos_1160_equiv (two formulations equivalent)",
@@ -58,7 +58,12 @@
       "numGroups_fifteen: theorem g(15)=1 from numGroups_pq_ndvd",
       "numGroups_twelve: axiom g(12)=5",
       "numGroups_sixteen: axiom g(16)=14",
-      "erdos_1160_m_eq_four: proved conjecture for all n ≤ 16"
+      "erdos_1160_m_eq_four: proved conjecture for all n ≤ 16",
+      "numGroups_pq axiom: combined pq classification (was 2 separate axioms)",
+      "numGroups_prime_cube axiom: g(p³)=5 for all primes",
+      "numGroups_eight: converted from axiom to theorem (derived from numGroups_prime_cube)",
+      "numGroups_pq_dvd: converted from axiom to theorem (derived from numGroups_pq)",
+      "numGroups_pq_ndvd: converted from axiom to theorem (derived from numGroups_pq)"
     ],
     "insights": [
       "g(2^m) grows as 2^{(2/27)m³} due to nilpotent Lie algebra correspondence",
@@ -79,7 +84,10 @@
       "numGroups_pq_dvd/ndvd: g(pq)=2 if q|(p-1), g(pq)=1 if q∤(p-1) — Sylow-based classification covers all pq orders",
       "erdos_1160_m_eq_four: conjecture verified for all n ≤ 16 via interval_cases + structural axioms",
       "g(9)=2, g(10)=2, g(14)=2, g(15)=1 all derived as theorems from structural axioms (not new axioms)",
-      "Only g(12)=5 and g(16)=14 required new specific value axioms for m=4 case"
+      "Only g(12)=5 and g(16)=14 required new specific value axioms for m=4 case",
+      "numGroups_pq: combined pq classification into single axiom (if q|(p-1) then 2 else 1), derived pq_dvd and pq_ndvd as theorems",
+      "numGroups_prime_cube: g(p³)=5 for all primes p (well-known classification) — subsumes numGroups_eight",
+      "Remaining 10 axioms are all deep (group theory classification) or structural (function definition) — none are Mathlib-routine"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
