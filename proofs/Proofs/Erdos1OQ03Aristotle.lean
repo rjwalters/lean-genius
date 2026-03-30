@@ -9,6 +9,8 @@
   - Clean theorem statement with no definition sorries
   - No axioms
 -/
+import Proofs.Erdos1Problem
+import Proofs.Erdos1OQ01
 import Mathlib
 
 open Finset
@@ -17,11 +19,11 @@ namespace ConwayGuy
 
 /-- ∑_{i=0}^{n-1} 2^i + 1 = 2^n -/
 theorem geom_sum_two' (n : ℕ) :
-    ∑ i ∈ Finset.range n, 2 ^ i + 1 = 2 ^ n := by
+    ∑ i in Finset.range n, 2 ^ i + 1 = 2 ^ n := by
   induction n with
   | zero => simp
   | succ n ih =>
-    simp only [Finset.sum_range_succ]
+    rw [Finset.sum_range_succ, pow_succ, two_mul]
     omega
 
 /-- Any subset of {0,...,n-1} has power-of-2 sum ≤ 2^n - 1. -/
@@ -33,36 +35,67 @@ theorem subset_pow_two_sum_le' {S : Finset ℕ} {n : ℕ}
   have h2 := geom_sum_two' n
   omega
 
-/-
-PROBLEM
-Binary representation uniqueness: distinct subsets of {0,...,n-1}
-    have distinct power-of-2 sums. By induction on n.
-
-PROVIDED SOLUTION
-Induction on n. Base case n=0: both S and T are subsets of range 0 = ∅, so S = T = ∅. Inductive step: assume the result for n, prove for n+1. For S ⊆ range (n+1), consider whether n ∈ S and n ∈ T. Case 1: n ∈ S and n ∈ T. Then S.sum (2^·) = (S.erase n).sum (2^·) + 2^n and similarly for T. From the sum equality, (S.erase n).sum (2^·) = (T.erase n).sum (2^·). Both S.erase n and T.erase n are subsets of range n (since they don't contain n and are subsets of range (n+1)). By IH, S.erase n = T.erase n, so S = T. Case 2: n ∉ S and n ∉ T. Then S, T ⊆ range n (since they're subsets of range (n+1) not containing n). Apply IH directly. Case 3: n ∈ S but n ∉ T (or vice versa). Then S.sum (2^·) ≥ 2^n but T.sum (2^·) ≤ 2^n - 1 by subset_pow_two_sum_le', contradiction. Use Finset.subset_range_succ_iff or the fact that if S ⊆ range (n+1) and n ∉ S then S ⊆ range n.
--/
+/-- Binary representation uniqueness: distinct subsets of {0,...,n-1}
+    have distinct power-of-2 sums. By induction on n. -/
 theorem pow_two_sum_injective (n : ℕ) :
     ∀ S T : Finset ℕ, S ⊆ Finset.range n → T ⊆ Finset.range n →
     S.sum (2 ^ ·) = T.sum (2 ^ ·) → S = T := by
-  intro S T hS hT h_eq; induction' n with n ih generalizing S T; simp_all +decide [ Finset.subset_iff, Finset.sum_range_succ ] ;
-  · rw [ Finset.eq_empty_of_forall_notMem hS, Finset.eq_empty_of_forall_notMem hT ];
-  · by_cases hnS : n ∈ S <;> by_cases hnT : n ∈ T;
-    · -- If both $n \in S$ and $n \in T$, then we can remove $n$ from both sets and apply the induction hypothesis.
-      have h_ind : ∑ x ∈ S.erase n, 2 ^ x = ∑ x ∈ T.erase n, 2 ^ x := by
-        simp_all +decide [ ← Finset.sum_erase_add _ _ hnS, ← Finset.sum_erase_add _ _ hnT ];
-      specialize ih ( S.erase n ) ( T.erase n ) ; simp_all +decide [ Finset.subset_iff ] ;
-      simp_all +decide [ Finset.ext_iff ];
-      grind +ring;
-    · -- Since $n \notin T$, we have $\sum_{x \in T} 2^x \leq \sum_{x \in \{0, 1, ..., n-1\}} 2^x = 2^n - 1$.
-      have hT_le : ∑ x ∈ T, 2 ^ x ≤ ∑ x ∈ Finset.range n, 2 ^ x := by
-        exact Finset.sum_le_sum_of_subset ( fun x hx => Finset.mem_range.mpr ( Nat.lt_of_le_of_ne ( Finset.mem_range_succ_iff.mp ( hT hx ) ) fun h => hnT <| h ▸ hx ) );
-      exact absurd hT_le ( by linarith [ Nat.sub_add_cancel ( Nat.one_le_pow n 2 zero_lt_two ), geom_sum_two' n, Finset.single_le_sum ( fun x _ => Nat.zero_le ( 2 ^ x ) ) hnS ] );
-    · -- Since $n \in T$ and $n \notin S$, we have $\sum_{x \in S} 2^x \leq 2^n - 1$ and $\sum_{x \in T} 2^x \geq 2^n$.
-      have h_sum_S : ∑ x ∈ S, 2 ^ x ≤ 2 ^ n - 1 := by
-        exact subset_pow_two_sum_le' <| Finset.subset_iff.mpr fun x hx => Finset.mem_range.mpr <| Nat.lt_of_le_of_ne ( Finset.mem_range_succ_iff.mp <| hS hx ) fun con => hnS <| con ▸ hx;
-      have h_sum_T : ∑ x ∈ T, 2 ^ x ≥ 2 ^ n := by
-        exact Finset.single_le_sum ( fun x _ => Nat.zero_le ( 2 ^ x ) ) hnT;
-      exact absurd h_sum_T ( by linarith [ Nat.sub_add_cancel ( Nat.one_le_pow n 2 zero_lt_two ) ] );
-    · exact ih S T ( fun x hx => Finset.mem_range.mpr ( Nat.lt_of_le_of_ne ( Finset.mem_range_succ_iff.mp ( hS hx ) ) ( by aesop ) ) ) ( fun x hx => Finset.mem_range.mpr ( Nat.lt_of_le_of_ne ( Finset.mem_range_succ_iff.mp ( hT hx ) ) ( by aesop ) ) ) h_eq
+  induction n with
+  | zero =>
+    intro S T hS hT _
+    rw [Finset.range_zero] at hS hT
+    rw [Finset.subset_empty.mp hS, Finset.subset_empty.mp hT]
+  | succ n ih =>
+    intro S T hS hT heq
+    -- Helper: if n ∉ X and X ⊆ range (n+1), then X ⊆ range n
+    have restrict : ∀ X : Finset ℕ, X ⊆ Finset.range (n + 1) → n ∉ X →
+        X ⊆ Finset.range n := by
+      intro X hX hn x hx
+      have := hX hx
+      have : x ≠ n := fun h => hn (h ▸ hx)
+      simp [Finset.mem_range] at *; omega
+    by_cases hnS : n ∈ S <;> by_cases hnT : n ∈ T
+    · -- Both contain n: erase n from both, apply IH
+      have hS' : S.erase n ⊆ Finset.range n := by
+        intro x hx
+        have hxne := (Finset.mem_erase.mp hx).1
+        have := hS (Finset.mem_of_mem_erase hx)
+        simp [Finset.mem_range] at this ⊢; omega
+      have hT' : T.erase n ⊆ Finset.range n := by
+        intro x hx
+        have hxne := (Finset.mem_erase.mp hx).1
+        have := hT (Finset.mem_of_mem_erase hx)
+        simp [Finset.mem_range] at this ⊢; omega
+      have hSeq : S.sum (2 ^ ·) = 2 ^ n + (S.erase n).sum (2 ^ ·) := by
+        rw [← Finset.add_sum_erase _ _ hnS]
+      have hTeq : T.sum (2 ^ ·) = 2 ^ n + (T.erase n).sum (2 ^ ·) := by
+        rw [← Finset.add_sum_erase _ _ hnT]
+      have heq' : (S.erase n).sum (2 ^ ·) = (T.erase n).sum (2 ^ ·) := by omega
+      have := ih _ _ hS' hT' heq'
+      rw [← Finset.insert_erase hnS, ← Finset.insert_erase hnT, this]
+    · -- n ∈ S, n ∉ T: sum(S) ≥ 2^n but sum(T) ≤ 2^n - 1, contradiction
+      exfalso
+      have hT' := restrict T hT hnT
+      have hSge : S.sum (2 ^ ·) ≥ 2 ^ n := by
+        calc S.sum (2 ^ ·)
+            ≥ ({n} : Finset ℕ).sum (2 ^ ·) :=
+              Finset.sum_le_sum_of_subset_of_nonneg
+                (Finset.singleton_subset_iff.mpr hnS) (fun _ _ _ => Nat.zero_le _)
+          _ = 2 ^ n := Finset.sum_singleton
+      have hTle := subset_pow_two_sum_le' hT'
+      omega
+    · -- n ∉ S, n ∈ T: symmetric case
+      exfalso
+      have hS' := restrict S hS hnS
+      have hTge : T.sum (2 ^ ·) ≥ 2 ^ n := by
+        calc T.sum (2 ^ ·)
+            ≥ ({n} : Finset ℕ).sum (2 ^ ·) :=
+              Finset.sum_le_sum_of_subset_of_nonneg
+                (Finset.singleton_subset_iff.mpr hnT) (fun _ _ _ => Nat.zero_le _)
+          _ = 2 ^ n := Finset.sum_singleton
+      have hSle := subset_pow_two_sum_le' hS'
+      omega
+    · -- Neither contains n: both ⊆ range n, apply IH directly
+      exact ih _ _ (restrict S hS hnS) (restrict T hT hnT) heq
 
 end ConwayGuy

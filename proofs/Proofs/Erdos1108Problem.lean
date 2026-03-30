@@ -105,39 +105,16 @@ def PowerfulFactorialSums : Set ℕ :=
 
 /- ## The Main Open Questions -/
 
-/-- **Erdős Problem #1108 - Question 1 (OPEN)**:
-For each k ≥ 2, does the set of factorial sums contain only finitely many k-th powers?
-
-This is axiomatized as a Prop since the answer is unknown.
-If true, it would mean only finitely many perfect squares, cubes, etc.
-can be expressed as sums of distinct factorials. -/
-axiom erdos_1108_kth_powers_open :
-    Prop  -- Unknown whether ∀ k ≥ 2, (KthPowersInFactorialSums k).Finite
-
-/-- **Erdős Problem #1108 - Question 2 (OPEN)**:
-Does the set of factorial sums contain only finitely many powerful numbers?
-
-This is axiomatized as a Prop since the answer is unknown.
-If true, it would significantly constrain the structure of factorial sums. -/
-axiom erdos_1108_powerful_open :
-    Prop  -- Unknown whether PowerfulFactorialSums.Finite
+/-- **Erdős Problem #1108 (OPEN)**:
+Q1: For each k ≥ 2, does the set of factorial sums contain only finitely many k-th powers?
+Q2: Does the set of factorial sums contain only finitely many powerful numbers?
+Both questions remain open. -/
 
 /- ## Known Partial Results -/
 
-/-- **Brindza-Erdős (1991)**: For any fixed r, if n₁! + n₂! + ... + nᵣ! is powerful
-with n₁ ≥ n₂ ≥ ... ≥ nᵣ, then n₁ is bounded by a constant depending only on r.
-
-This means for each fixed number of terms, there are only finitely many ways
-to form a powerful number from factorial sums. -/
-axiom brindza_erdos_bound (r : ℕ) :
-    ∃ C : ℕ, ∀ (S : Finset ℕ), S.card = r →
-      IsPowerful (∑ n ∈ S, n.factorial) →
-      ∀ n ∈ S, n ≤ C
-
-/-- Related to Problem #398: It is open whether there are infinitely many
-squares of the form 1 + n!. -/
-axiom erdos_398_related_open :
-    Prop  -- Unknown whether {n : ℕ | ∃ m : ℕ, 1 + n.factorial = m ^ 2}.Finite
+/-- **Brindza-Erdős (1991)**: For fixed r, if n₁! + ... + nᵣ! is powerful
+with n₁ ≥ ... ≥ nᵣ, then n₁ is bounded by a constant C(r).
+Related: Problem #398 asks whether 1 + n! = m² has infinitely many solutions. -/
 
 /- ## Mahler's Related Problem
 
@@ -149,9 +126,8 @@ For k ≥ 5, does A_k = {Σ_{n∈S} k^n : S ⊂ ℕ finite} contain only finitel
 def PowerSums (k : ℕ) : Set ℕ :=
   {m : ℕ | ∃ S : Finset ℕ, m = ∑ n ∈ S, k ^ n}
 
-/-- Mahler showed: for k ≤ 4, there are infinitely many squares in PowerSums k. -/
-axiom mahler_small_bases (k : ℕ) (hk : k ≤ 4) :
-    {a ∈ PowerSums k | ∃ m : ℕ, m ^ 2 = a}.Infinite
+/-- Mahler showed: for k ≤ 4, there are infinitely many squares in PowerSums k.
+For k ≥ 5, only one square is known: 1+7+7²+7³ = 400 = 20². -/
 
 /-- Mahler found only one square in PowerSums k for k ≥ 5, namely:
 1 + 7 + 7² + 7³ = 1 + 7 + 49 + 343 = 400 = 20². -/

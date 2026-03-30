@@ -87,12 +87,8 @@ noncomputable def aeksBound (t n : ℝ) : ℝ :=
 ## Part IV: Known Results
 -/
 
-/-- **AEKS (1981):** First bound using log log. -/
-axiom aeks_1981 (r : ℕ) (hr : r ≥ 3) :
-    ∃ c : ℝ, c > 0 ∧ ∀ (V : Type*) [Fintype V] (G : SimpleGraph V),
-      IsCliqueFree G r →
-      avgDegree G ≥ 2 →
-      (independenceNumber G : ℝ) ≥ c * (log (log (avgDegree G + 1)) / avgDegree G) * numVertices G
+/-- **AEKS (1981):** First bound using log log:
+α(G) ≥ c · (log log t / t) · n for K_r-free graphs with avg degree t. -/
 
 /-- **Shearer (1995):** Improved bound with log t / (log log t · t). -/
 axiom shearer_1995 (r : ℕ) (hr : r ≥ 3) :
@@ -128,19 +124,8 @@ noncomputable def localChromaticNumber (G : SimpleGraph V) : ℕ :=
 def IsLocallyChromatic (G : SimpleGraph V) (c : ℕ) : Prop :=
   ∀ v : V, True  -- Simplified: actual definition would use neighborhood chromatic number
 
-/-- **Alon (1996):** Proved the conjecture under stronger local sparsity. -/
-axiom alon_1996 (r : ℕ) (hr : r ≥ 3) :
-    ∃ c : ℝ, c > 0 ∧ ∀ (V : Type*) [Fintype V] (G : SimpleGraph V),
-      IsLocallyChromatic G (r - 2) →
-      avgDegree G ≥ 2 →
-      (independenceNumber G : ℝ) ≥ c * (log (avgDegree G) / avgDegree G) * numVertices G
-
-/-- Note: Local (r-2)-chromatic is stronger than K_r-free.
-    If every neighborhood is (r-2)-colorable, then G contains no K_r.
-    Proof: If G had K_r, the neighborhood of any vertex in the clique
-    would contain K_{r-1}, which requires at least r-1 colors. -/
-axiom locally_chromatic_implies_clique_free (G : SimpleGraph V) (r : ℕ) (hr : r ≥ 3) :
-    IsLocallyChromatic G (r - 2) → IsCliqueFree G r
+/-- **Alon (1996):** Proved the conjecture under stronger local sparsity:
+locally (r-2)-chromatic implies K_r-free, and the bound holds. -/
 
 /-
 ## Part VI: Ramsey Connection
@@ -151,16 +136,8 @@ def ramseyLowerBound (r k : ℕ) : ℕ :=
   -- AKS showed R(3,k) ≥ c·k²/log k
   if r = 3 then k^2 / (Nat.log 2 k + 1) else k
 
-/-- AKS's proof gives Ramsey bounds. -/
-axiom aks_ramsey_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 3 →
-      (ramseyLowerBound 3 k : ℝ) ≥ c * k^2 / log k
-
-/-- Triangle-free graphs with n vertices have α(G) ≥ c·√(n log n). -/
-axiom triangle_free_independence :
-    ∃ c : ℝ, c > 0 ∧ ∀ (V : Type*) [Fintype V] (G : SimpleGraph V),
-      IsTriangleFree G →
-      (independenceNumber G : ℝ) ≥ c * sqrt ((Fintype.card V : ℝ) * log (Fintype.card V))
+/-- AKS's proof gives Ramsey bounds: R(3,k) ≥ c·k²/log k.
+Triangle-free graphs: α(G) ≥ c·√(n log n). -/
 
 /-
 ## Part VII: Summary
