@@ -333,11 +333,34 @@ theorem mu_mono (F G : Set ℂ) (h : F ⊆ G) :
   exact ⟨⟨pF.degree, pF.roots, fun i => h (pF.roots_in_F i)⟩, le_refl _⟩
 
 /-- For infinite F, corrected μ(F) is achieved or approached.
-    Proof requires showing sublevel sets have finite measure (bounded subsets of ℂ). -/
+    Proof: construct degree-1 polynomial to show muPosDeg F < ⊤, then
+    use le_iInf₂ contrapositive to extract a witness. -/
 theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
     ∀ ε : ℝ≥0∞, ε > 0 → ∃ (p : PolynomialInF F), p.degree ≥ 1 ∧
       sublevelMeasure p < muPosDeg F + ε := by
-  sorry
+  intro ε hε
+  -- Proof by contradiction: if all degree ≥ 1 polynomials have sublevelMeasure ≥ muPosDeg F + ε,
+  -- then muPosDeg F + ε ≤ muPosDeg F, contradicting ε > 0 and muPosDeg F < ⊤.
+  by_contra hall
+  push_neg at hall
+  -- hall : ∀ p, p.degree ≥ 1 → muPosDeg F + ε ≤ sublevelMeasure p
+  have hle : muPosDeg F + ε ≤ muPosDeg F := by
+    unfold muPosDeg; exact le_iInf₂ hall
+  -- Show muPosDeg F ≠ ⊤ using a degree-1 polynomial
+  obtain ⟨x, hx⟩ := hF.nonempty
+  let p₁ : PolynomialInF F := ⟨1, fun _ => x, fun _ => hx⟩
+  have hmu_le_p₁ : muPosDeg F ≤ sublevelMeasure p₁ := iInf₂_le p₁ (le_refl 1)
+  -- sublevelSet p₁ ⊆ closedBall x 1 (bounded), so sublevelMeasure p₁ < ⊤
+  have hss : sublevelSet p₁ ⊆ Metric.closedBall x 1 := by
+    intro z hz
+    simp only [sublevelSet, Set.mem_setOf_eq, PolynomialInF.eval, Fin.prod_univ_one] at hz
+    rw [Metric.mem_closedBall, Complex.dist_eq]
+    exact le_of_lt hz
+  have hp₁_lt_top : sublevelMeasure p₁ < ⊤ :=
+    lt_of_le_of_lt (MeasureTheory.measure_mono hss) (isCompact_closedBall x 1).measure_lt_top
+  have hmu_ne_top : muPosDeg F ≠ ⊤ := ne_top_of_le_ne_top hp₁_lt_top.ne hmu_le_p₁
+  -- Contradiction: muPosDeg F < muPosDeg F + ε ≤ muPosDeg F
+  exact absurd hle (not_le.mpr (ENNReal.lt_add_right hmu_ne_top hε.ne'))
 
 /-
 ## The Open Question
