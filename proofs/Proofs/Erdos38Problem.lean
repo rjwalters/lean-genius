@@ -51,9 +51,6 @@ noncomputable def schnirelmannDensity (A : Set ℕ) : ℝ :=
   ⨅ N : { n : ℕ // n ≥ 1 }, (countingFunction A N : ℝ) / N
 
 /-- Basic property: Schnirelmann density is in [0, 1] -/
-axiom schnirelmann_density_bounds (A : Set ℕ) :
-  0 ≤ schnirelmannDensity A ∧ schnirelmannDensity A ≤ 1
-
 /- ## Additive Bases
 
 A set B is an additive basis of order k if every natural number can be
@@ -104,23 +101,11 @@ def Erdos38Problem : Prop :=
 
 /-- **Erdős [1936]**: Additive bases of order k satisfy the property with
     f(α) = α(1-α)/(2k). This shows bases DO have the density-boost property. -/
-axiom erdos_1936_bases (B : Set ℕ) (k : ℕ) (hB : IsAdditiveBasisOfOrder B k) :
-  HasDensityBoostProperty B (fun α => α * (1 - α) / (2 * k))
-
 /-- **Linnik [1942]**: There exists an essential component that is not
     an additive basis. However, "essential component" is a weaker notion
     than the density-boost property asked here. -/
-axiom linnik_essential_component :
-  ∃ B : Set ℕ, ¬IsAdditiveBasis B ∧
-    ∀ A : Set ℕ, schnirelmannDensity A > 0 →
-      schnirelmannDensity (A + B) > schnirelmannDensity A
-
 /-- The random set result: For B = ℕ, the factor α(1-α) in Erdős's bound
     cannot be improved. -/
-axiom random_set_optimality :
-  ∀ f : ℝ → ℝ, (∀ α, 0 < α → α < 1 → f α > α * (1 - α)) →
-    ¬HasDensityBoostProperty (univ : Set ℕ) f
-
 /- ## Problem Status
 
 This problem remains OPEN. The gap is:

@@ -141,22 +141,10 @@ Even ∑_{n≤N} r(n) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible.
 
 The error term must eventually exceed N^{1/4}/(log N)^{1/2} infinitely often.
 -/
-axiom erdos_fuchs_strong :
-  ∀ (A : Set ℕ), A.Infinite →
-  ∀ (c : ℝ), c > 0 →
-  ¬∀ᶠ N in atTop,
-    |errorTerm (truncate A) c N| < (N : ℝ)^(1/4 : ℝ) / (Real.log N)^(1/2 : ℝ)
-
 /--
 **Montgomery-Vaughan Improvement (1990):**
 The error must exceed N^{1/4} infinitely often.
 -/
-axiom montgomery_vaughan :
-  ∀ (A : Set ℕ), A.Infinite →
-  ∀ (c : ℝ), c > 0 →
-  ∀ (ε : ℝ), ε > 0 →
-  ∃ᶠ N in atTop, |errorTerm (truncate A) c N| > (1 - ε) * (N : ℝ)^(1/4 : ℝ)
-
 /-
 ## Part V: Why Linear Growth Fails
 

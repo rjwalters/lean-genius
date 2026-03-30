@@ -45,13 +45,6 @@ noncomputable def grahamPollakSeq : ℕ → ℤ
 
 /-- First few terms of the sequence.
 Axiomatized because computing floor(√2 · x) requires real arithmetic. -/
-axiom seq_values :
-  grahamPollakSeq 0 = 1 ∧
-  grahamPollakSeq 1 = 2 ∧
-  grahamPollakSeq 2 = 3 ∧
-  grahamPollakSeq 3 = 4 ∧
-  grahamPollakSeq 4 = 7
-
 /- ## Part 2: The Main Theorem
 -/
 
@@ -68,15 +61,8 @@ axiom graham_pollak_theorem :
 
 /-- √2 ≈ 1.41421356...
 Axiomatized because Mathlib's norm_num cannot evaluate sqrt 2 directly. -/
-axiom sqrt2_approx :
-  1.414 < Real.sqrt 2 ∧ Real.sqrt 2 < 1.415
-
 /-- The recurrence grows approximately by factor √2.
 Axiomatized because the convergence rate proof requires real analysis. -/
-axiom growth_rate :
-  ∀ n : ℕ, n ≥ 1 →
-    |((grahamPollakSeq (n + 1) : ℝ) / grahamPollakSeq n) - Real.sqrt 2| < 1 / n
-
 /- ## Part 4: Generalization to √m
 -/
 
@@ -88,11 +74,6 @@ noncomputable def sqrtSeq (m : ℕ) : ℕ → ℤ
 /-- Stoll's generalization (2005): the digit-extraction method extends to
 quadratic irrationals √m for square-free m.
 Axiomatized because the proof requires algebraic number theory. -/
-axiom stoll_generalization_sqrt :
-  ∀ m : ℕ, ¬∃ k : ℕ, k > 1 ∧ k^2 ∣ m →
-    ∃ (extractDigit : ℕ → ℕ → ℤ),
-      ∀ n : ℕ, extractDigit m n ∈ ({0, 1} : Set ℤ)
-
 /-- Stoll (2005-2006): the method extends to all quadratic irrationals
 and certain higher-degree algebraic numbers.
 Axiomatized because the proof uses the theory of Pisot numbers. -/
@@ -108,12 +89,6 @@ axiom stoll_general :
 Since √2 is irrational, its binary expansion cannot be eventually periodic.
 Axiomatized because the proof requires irrationality of √2 combined with
 the characterization of eventually periodic binary expansions. -/
-axiom sqrt2_nonperiodic :
-  ∀ f : ℕ → ℤ,
-    (∀ n : ℕ, n ≥ 1 →
-      f n = grahamPollakSeq (2 * n + 1) - 2 * grahamPollakSeq (2 * n - 1)) →
-    ¬∃ (p : ℕ) (start : ℕ), p > 0 ∧ ∀ n ≥ start, f (n + p) = f n
-
 /- ## Part 6: Summary
 -/
 

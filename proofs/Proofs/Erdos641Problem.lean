@@ -125,8 +125,6 @@ def Case_k_2 : Prop :=
       ∃ S : Finset V, HasRegularSubgraph G 4 S
 
 /-- The k = 2 case is FALSE. -/
-axiom case_k_2_false : ¬Case_k_2
-
 /-
 ## Part VI: The Janzer-Steiner-Sudakov Counterexample
 
@@ -147,11 +145,6 @@ def jss_chromatic_bound (n : ℕ) : ℕ :=
   Nat.floor (Real.log (Real.log n) / Real.log (Real.log (Real.log n)))
 
 /-- The JSS graphs have no 4-regular subgraph. -/
-axiom jss_no_4_regular (n : ℕ) (hn : n ≥ 10) :
-    ∃ (G : SimpleGraph (Fin n)),
-      chromaticNumber G ≥ jss_chromatic_bound n ∧
-      ∀ S : Finset (Fin n), ¬HasRegularSubgraph G 4 S
-
 /-
 ## Part VII: The Main Disproof
 
@@ -178,25 +171,8 @@ What IS true about chromatic number and substructures.
 -/
 
 /-- High χ implies long odd cycles (Erdős). -/
-axiom high_chi_long_odd_cycle (k : ℕ) :
-    ∃ f : ℕ → ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V]
-      (G : SimpleGraph V) [DecidableRel G.Adj],
-        chromaticNumber G ≥ f k →
-        ∃ vs : List V, IsCycle G vs ∧ vs.length ≥ k ∧ Odd vs.length
-
 /-- High χ implies high clique number or high odd girth (Gyárfás). -/
-axiom gyarfas_theorem (k : ℕ) :
-    ∃ f : ℕ → ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V]
-      (G : SimpleGraph V) [DecidableRel G.Adj],
-        chromaticNumber G ≥ f k →
-        (G.cliqueNum ≥ k ∨ ∃ vs : List V, IsCycle G vs ∧ Odd vs.length ∧ vs.length ≥ k)
-
 /-- Triangle-free graphs have χ = O(√(n / log n)) (Kim). -/
-axiom kim_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ (n : ℕ) (G : SimpleGraph (Fin n)),
-      G.CliqueFree 3 →
-      chromaticNumber G ≤ Nat.ceil (c * Real.sqrt (n / Real.log n))
-
 /-
 ## Part IX: Related Conjectures
 
@@ -225,20 +201,7 @@ How JSS built their counterexample.
 -/
 
 /-- The JSS construction uses random graphs with constraints. -/
-axiom jss_construction_technique :
-    ∀ n : ℕ, n ≥ 10 →
-      -- Start with random graph G(n, p) for suitable p
-      -- Remove edges to eliminate 4-regular subgraphs
-      -- Show chromatic number remains high
-      True
-
 /-- Key lemma: Removing few edges preserves high χ. -/
-axiom chromatic_robust_to_edge_removal :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      ∀ ε : ℝ, ε > 0 →
-        -- Removing ε fraction of edges decreases χ by at most O(ε · χ)
-        True
-
 /-
 ## Part XI: Main Result
 

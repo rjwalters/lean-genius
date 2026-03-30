@@ -112,17 +112,6 @@ axiom erdos_808_false : ¬ErdosConjecture808
 For arbitrarily large n, there exists A with |A| = n and G with
 ≫ n^{5/3-o(1)} edges such that max(|A +_G A|, |A ·_G A|) ≪ n^{4/3+o(1)}.
 -/
-axiom ars_counterexample :
-    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧
-    ∃ A : Finset ℕ, A.card = n ∧
-    ∃ G : Finset (ℕ × ℕ), isGraphOn G A ∧
-      -- G has ≫ n^{5/3} edges (for any δ > 0)
-      (∀ δ : ℝ, δ > 0 →
-        (G.card : ℝ) ≥ (n : ℝ)^(5/3 - δ)) ∧
-      -- But sumset and productset are only ≪ n^{4/3}
-      (∃ C : ℝ, C > 0 ∧
-        max (graphSumset A G).card (graphProductset A G).card ≤ C * (n : ℝ)^(4/3 + 1/100))
-
 /--
 **Gap in the counterexample:**
 With n^{5/3} edges, the conjecture predicts n^{5/3-ε} outputs.
@@ -184,10 +173,6 @@ def SumProductConjecture : Prop :=
 Problem 808 with G = complete graph should give the sum-product conjecture.
 The failure of 808 shows the graph structure matters crucially.
 -/
-axiom complete_graph_case :
-    -- For complete graph, the sum-product behavior is different
-    True
-
 /-
 ## Part VI: The Construction Idea
 -/
@@ -199,19 +184,11 @@ while keeping sums/products small. Specifically:
 - A is chosen with special arithmetic properties
 - G is bipartite, connecting structured subsets
 -/
-axiom construction_idea :
-    -- Additive structure allows many edges without many new sums
-    True
-
 /--
 **Why arithmetic structure helps:**
 If A has additive structure (like an arithmetic progression),
 then A + A can be small even with many pairs contributing.
 -/
-axiom arithmetic_structure :
-    -- APs have |A + A| ≤ 2|A| - 1, very small
-    True
-
 /-
 ## Part VII: Summary
 -/

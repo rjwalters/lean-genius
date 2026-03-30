@@ -125,9 +125,6 @@ theorem F_monotonic : ∀ N M : ℕ, N ≤ M → F N ≤ F M := by
 /- ## Upper Bounds -/
 
 /-- ELRSS (1999): F(N) < 3√N + 1 -/
-axiom elrss_upper_bound (N : ℕ) (hN : N ≥ 1) :
-    (F N : ℝ) < 3 * Real.sqrt N + 1
-
 /-- Pham-Zakharov (2024): F(N) ≤ N^{1/4 + o(1)}
     This resolves the original question negatively. -/
 axiom pham_zakharov_upper_bound :
@@ -174,12 +171,6 @@ axiom csaba_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 1 → (F N : ℝ) ≥ c * (N : ℝ)^((1 : ℝ)/5)
 
 /-- Straus's lower bound: F(N) > exp((√(2/log 2) + o(1))√(log N)) -/
-axiom straus_lower_bound :
-    ∃ (ε : ℕ → ℝ), (∀ δ > 0, ∃ N₀, ∀ N ≥ N₀, |ε N| < δ) ∧
-    ∀ N : ℕ, N ≥ 2 →
-      (F N : ℝ) > Real.exp ((Real.sqrt (2 / Real.log 2) + ε N) *
-                            Real.sqrt (Real.log N))
-
 /-- exp(3/4) > 2, via Taylor sum of order 3:
     1 + 3/4 + 9/32 = 65/32 > 2 -/
 private theorem exp_three_fourths_gt_two : (2 : ℝ) < Real.exp (3/4) := by

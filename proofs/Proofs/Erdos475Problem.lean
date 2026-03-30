@@ -94,10 +94,6 @@ axiom hicks_ollis_schmitt_2019 (p : ℕ) [Fact (Nat.Prime p)] :
 The case t = p - 1 (the full non-zero set) was solved constructively
 by Graham, providing an explicit ordering.
 -/
-axiom graham_full_set (p : ℕ) [Fact (Nat.Prime p)] :
-    let A := (Finset.univ : Finset (ZMod p)).filter (· ≠ 0)
-    ∃ ordering : List (ZMod p), IsValidOrdering A ordering
-
 /- ## Part IV: Logarithmic Range (Kravitz 2024) -/
 
 /--
@@ -106,12 +102,6 @@ For t ≤ log p / log log p, the conjecture holds.
 Will Sawin independently observed this bound on MathOverflow.
 This significantly extends beyond the constant bound of 12.
 -/
-axiom kravitz_2024 (p : ℕ) [Fact (Nat.Prime p)] (hp : p > 2) :
-    ∀ A : Finset (ZMod p),
-      (A.card : ℝ) ≤ Real.log p / Real.log (Real.log p) →
-      (∀ a ∈ A, a ≠ 0) →
-      ∃ ordering : List (ZMod p), IsValidOrdering A ordering
-
 /- ## Part V: Beyond the Rectification Barrier (Bedert-Kravitz 2024)
 
 Previous methods hit a "rectification barrier" at log p / log log p.
@@ -165,10 +155,6 @@ def HasExplicitValidOrdering {p : ℕ} [Fact (Nat.Prime p)]
 Graham's proof for the full non-zero set t = p - 1 was constructive,
 giving an explicit algorithm to produce a valid ordering.
 -/
-axiom graham_constructive (p : ℕ) [Fact (Nat.Prime p)] :
-    let A := (Finset.univ : Finset (ZMod p)).filter (· ≠ 0)
-    HasExplicitValidOrdering A
-
 /- ## Part VIII: Summary
 
 Graham's conjecture (Erdős Problem #475) has been proven for:

@@ -66,32 +66,14 @@ def IsRepresentableFromLevel (r : ℕ) (d : Fin r → ℕ) (k n : ℕ) : Prop :=
 
 /-- Pomerance's result: the condition Σ 1/(dᵢ-1) ≥ 1 is necessary
     for all sufficiently large integers to be representable -/
-axiom pomerance_necessity (r : ℕ) (d : Fin r → ℕ)
-    (hv : validBases r d)
-    (h : ∀ᶠ n in Filter.atTop, IsRepresentable r d n) :
-  reciprocalCondition r d
-
 /- ## First Question (PROVED) -/
 
 /-- Erdős Problem 124, Question 1 (PROVED): if Σ 1/(dᵢ-1) ≥ 1,
     then all sufficiently large integers are representable.
     Proved by Aristotle via Alexeev's method. -/
-axiom ErdosProblem124_Q1 (r : ℕ) (hr : 0 < r) (d : Fin r → ℕ)
-    (hv : validBases r d) (hrc : reciprocalCondition r d) :
-  ∀ᶠ n in Filter.atTop, IsRepresentable r d n
-
 /- ## Second Question (Open in General) -/
 
 /-- Erdős Problem 124, Question 2 (Open): with the additional condition
     gcd(d₁,...,dᵣ) = 1, for any k ≥ 1, all sufficiently large integers
     can be represented using P(dᵢ, k). Proved for {3,4,7}. -/
-axiom ErdosProblem124_Q2 (r : ℕ) (hr : 0 < r) (d : Fin r → ℕ)
-    (hv : validBases r d) (hrc : reciprocalCondition r d)
-    (hgcd : Finset.univ.gcd d = 1) :
-  ∀ k : ℕ, 1 ≤ k → ∀ᶠ n in Filter.atTop, IsRepresentableFromLevel r d k n
-
 /-- The case {3, 4, 7} is verified for Question 2 -/
-axiom erdos124_case_3_4_7 :
-  ∀ k : ℕ, 1 ≤ k →
-    ∀ᶠ n in Filter.atTop,
-      IsRepresentableFromLevel 3 ![3, 4, 7] k n

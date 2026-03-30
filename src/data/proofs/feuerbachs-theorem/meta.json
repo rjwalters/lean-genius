@@ -104,7 +104,7 @@
     "implications": "**Theoretical Significance**: Feuerbach's theorem inspired the systematic study of triangle centers, leading to Clark Kimberling's Encyclopedia of Triangle Centers (now containing over 60,000 entries). The Feuerbach point X(11) is one of the most important triangle centers.\n\nThe theorem connects to inversive geometry (inversion centered at the Feuerbach point maps the nine-point circle to the incircle) and to the theory of pencils of circles. Modern generalizations extend to tetrahedra and non-Euclidean geometries.",
     "openQuestions": [
       "RESOLVED: All distance relations proved by coordinate computation in FeuerbachsTheoremOQ01.lean",
-      "What is the 3D analogue of Feuerbach's theorem for tetrahedra?",
+      "RESOLVED: 3D analogue formalized in FeuerbachsTheoremOQ02.lean — for orthocentric tetrahedra, the twenty-four-point sphere is tangent to insphere and all four exspheres",
       "Can the theorem be proved synthetically (without coordinates) using Mathlib's Euclidean geometry?",
       "How does Feuerbach's theorem generalize to hyperbolic and spherical geometry?",
       "Can the proof via inversion centered at the Feuerbach point be formalized?"

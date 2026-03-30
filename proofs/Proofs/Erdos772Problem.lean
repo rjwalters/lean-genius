@@ -66,9 +66,6 @@ def HasNoAdditiveQuadruple (A : Finset ℕ) : Prop :=
 **Sidon sets have no non-trivial additive quadruples:**
 This equivalence is straightforward but requires case analysis on set equality.
 -/
-axiom sidon_iff_no_quadruple (A : Finset ℕ) :
-    IsSidon A ↔ HasNoAdditiveQuadruple A
-
 /-
 ## Part II: Convolution and Representation Function
 -/
@@ -103,9 +100,6 @@ def HasBoundedConvolution (A : Finset ℕ) (k : ℕ) : Prop :=
 Each sum appears at most once (unordered), so at most twice (ordered).
 This follows from the definition of Sidon sets.
 -/
-axiom sidon_has_bounded_conv (A : Finset ℕ) (h : IsSidon A) :
-    HasBoundedConvolution A 2
-
 /-
 ## Part III: The Function H_k(n)
 -/
@@ -142,21 +136,10 @@ axiom erdos_1984_upper_bound :
 **Every set contains a Sidon subset of size ≫ √n:**
 This is a classical result (see Problem #530).
 -/
-axiom sidon_subset_sqrt :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ A : Finset ℕ, A.card ≥ 1 →
-      ∃ B : Finset ℕ, B ⊆ A ∧ IsSidon B ∧
-        (B.card : ℝ) ≥ c * Real.sqrt (A.card)
-
 /--
 **Basic lower bound: H_k(n) ≫ √n**
 Follows from the fact that any set contains a Sidon subset of size ≫ √n.
 -/
-axiom basic_lower_bound :
-    ∃ c : ℝ, c > 0 ∧
-      ∀ k n : ℕ, k ≥ 1 → n ≥ 1 →
-        (H_k k n : ℝ) ≥ c * Real.sqrt n
-
 /-
 ## Part VI: Alon-Erdős Optimal Lower Bound
 -/
@@ -186,11 +169,6 @@ axiom ratio_tends_to_infinity :
 **Corollary: H_k(n) > n^{1/2 + c} for c = 1/6**
 Since H_k(n) ≥ c_k * n^{2/3} and 2/3 = 1/2 + 1/6, this holds for large n.
 -/
-axiom stronger_lower_bound :
-    ∀ k : ℕ, k ≥ 1 →
-      ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-        (H_k k n : ℝ) > (n : ℝ)^(1/2 + 1/6 : ℝ)
-
 /-
 ## Part VII: Proof Sketch (Probabilistic Method)
 -/
@@ -208,11 +186,6 @@ def additiveQuadrupleCount (A : Finset ℕ) : ℕ :=
 **Quadruple bound:**
 In a set with bounded convolution, additive quadruples are ≤ k · n².
 -/
-axiom quadruple_bound :
-  ∀ A : Finset ℕ, ∀ k : ℕ,
-    HasBoundedConvolution A k →
-      additiveQuadrupleCount A ≤ k * A.card ^ 2
-
 /--
 **Probabilistic construction:**
 Sample each element with probability p ∼ n^{-1/3}.
@@ -220,12 +193,6 @@ Sample each element with probability p ∼ n^{-1/3}.
 - Expected remaining quadruples: ≈ k · n² · p⁴ = k · n^{2/3}
 - After removing one element per quadruple: still ≫ n^{2/3} elements
 -/
-axiom probabilistic_construction :
-  ∀ k : ℕ, k ≥ 1 →
-    ∀ A : Finset ℕ, HasBoundedConvolution A k →
-      ∃ B : Finset ℕ, B ⊆ A ∧ IsSidon B ∧
-        ∃ c_k : ℝ, c_k > 0 ∧ (B.card : ℝ) ≥ c_k * (A.card : ℝ)^(2/3 : ℝ)
-
 /-
 ## Part VIII: Optimal Result
 -/

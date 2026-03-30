@@ -63,12 +63,6 @@ where I₁ i and I₂ i are the start and end of the i-th interval.
 Conditions:
 1. Each interval has positive start and length at least k: 0 < I₁ i and I₁ i + k ≤ I₂ i + 1
 2. Intervals are disjoint and ordered: for i < j, I₂ i < I₁ j -/
-axiom erdos_930_conjecture :
-    ∀ r > 0, ∃ k, ∀ I₁ I₂ : Fin r → ℕ,
-      (∀ i : Fin r, 0 < I₁ i ∧ I₁ i + k ≤ I₂ i + 1) →
-        (∀ i j : Fin r, i < j → I₂ i < I₁ j) →
-          ¬ IsPower (∏ i : Fin r, ∏ m ∈ Icc (I₁ i) (I₂ i), m)
-
 /-
 ## Solved Case: r = 1 (Erdős-Selfridge 1975)
 
@@ -84,10 +78,6 @@ In other words, for any n ≥ 0 and k ≥ 2:
 
 This is the r = 1 case of Problem #930, and it was proved using sophisticated
 arguments about prime factorizations and the distribution of primes. -/
-axiom erdos_selfridge_consecutive_integers :
-    ∀ n k, 0 ≤ n → 2 ≤ k →
-      ¬ IsPower (∏ m ∈ Icc (n + 1) (n + k), m)
-
 /-
 ## Technical Variant: Prime Multiplicity Bound
 
@@ -106,11 +96,6 @@ in the factorization of (n+1)(n+2)...(n+k).
 
 This is the heart of the Erdős-Selfridge proof - it prevents the product
 from being a perfect l-th power by finding a "problematic" prime. -/
-axiom erdos_selfridge_prime_multiplicity :
-    ∀ k l n, 3 ≤ k → 2 ≤ l → nextPrime k ≤ n + k →
-      ∃ p, k ≤ p ∧ p.Prime ∧
-        ¬ (l ∣ Nat.factorization (∏ m ∈ Icc (n + 1) (n + k), m) p)
-
 /-
 ## Basic Properties of Perfect Powers
 -/
@@ -146,8 +131,6 @@ Proof: If 2 = m^l with l > 1, then:
 - m = 0: 0^l = 0 ≠ 2
 - m = 1: 1^l = 1 ≠ 2
 - m ≥ 2: m^l ≥ 2^2 = 4 > 2 -/
-axiom two_not_isPower : ¬ IsPower 2
-
 /-- 6 is NOT a perfect power (6 = 2·3 has distinct prime factors with exponent 1).
 
 Proof: If 6 = m^l with l > 1, then:

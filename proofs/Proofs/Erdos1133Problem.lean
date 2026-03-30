@@ -126,16 +126,6 @@ For any x₁,...,xₘ ∈ [-1,1], there EXISTS a polynomial P of degree n with
 
 This is weaker: it asks for existence of P, not choice of yᵢ values.
 -/
-axiom erdos_related_result (C : ℝ) (hC : C > 0) :
-    ∃ ε : ℝ, ε > 0 ∧
-    ∃ N : ℕ, ∀ n ≥ N,
-    let m := Nat.floor ((1 + ε) * n)
-    ∀ x : Fin m → ℝ, (∀ i, -1 ≤ x i ∧ x i ≤ 1) →
-    ∃ P : Polynomial ℝ,
-      P.natDegree ≤ n ∧
-      (∀ i, |P.eval (x i)| ≤ 1) ∧
-      maxNormOnInterval P > C
-
 /-
 ## Part V: Connection to Lagrange Interpolation
 -/
@@ -154,13 +144,6 @@ axiom lagrange_interpolation (n : ℕ) (x y : Fin n → ℝ)
 There exist continuous functions for which Lagrange interpolation
 on uniformly spaced nodes diverges.
 -/
-axiom lagrange_divergence :
-    ∃ f : ℝ → ℝ, Continuous f ∧
-    ∀ M : ℝ, ∃ n : ℕ, ∀ P : Polynomial ℝ,
-      P.natDegree < n →
-      (∀ i : Fin n, P.eval (-1 + 2 * i / (n - 1)) = f (-1 + 2 * i / (n - 1))) →
-      maxNormOnInterval P > M
-
 /-
 ## Part VI: The Chebyshev Connection
 -/
@@ -176,12 +159,6 @@ def chebyshevNodes (n : ℕ) (k : Fin n) : ℝ :=
 **Optimal Node Distribution:**
 Chebyshev nodes give the best possible bound for polynomial interpolation.
 -/
-axiom chebyshev_optimal :
-    ∀ n : ℕ, ∀ P : Polynomial ℝ,
-    P.natDegree = n →
-    (∀ k : Fin (n+1), |P.eval (chebyshevNodes (n+1) k)| ≤ 1) →
-    maxNormOnInterval P ≤ 1
-
 /-
 ## Part VII: Summary
 -/

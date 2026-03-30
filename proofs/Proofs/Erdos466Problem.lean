@@ -56,28 +56,16 @@ noncomputable def maxSeparatedPoints (X δ : ℝ) : ℕ :=
 
 /-- **Erdős Problem #466 (Proved).**
 There exists δ > 0 such that N(X, δ) → ∞ as X → ∞. -/
-axiom erdos_466 :
-  ∃ δ : ℝ, 0 < δ ∧ Filter.Tendsto (fun X => maxSeparatedPoints X δ) Filter.atTop Filter.atTop
-
 /- ## Graham's Bound -/
 
 /-- **Graham.** N(X, 1/10) ≥ (log X)/10 for sufficiently large X.
 This answers Erdős's question in the affirmative. -/
-axiom graham_logarithmic_bound :
-  ∀ᶠ (X : ℝ) in Filter.atTop,
-    (maxSeparatedPoints X (1/10) : ℝ) ≥ Real.log X / 10
-
 /- ## Sárközy's Improvement -/
 
 /-- **Sárközy (1976).** For all sufficiently small δ > 0,
 N(X, δ) > X^{1/2 − δ^{1/7}} for all large X.
 This is a polynomial (almost √X) lower bound, far stronger than
 Graham's logarithmic bound. -/
-axiom sarkozy_polynomial_bound :
-  ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 < δ → δ < δ₀ →
-    ∀ᶠ (X : ℝ) in Filter.atTop,
-      (maxSeparatedPoints X δ : ℝ) > X ^ (1/2 - δ ^ (1/7 : ℝ))
-
 /- ## Structural Observations -/
 
 /-- For any δ > 1/2, we have N(X, δ) = 0 for all X, since the
@@ -87,10 +75,5 @@ theorem fracDist_bound : ∀ x : ℝ, fracDist x ≤ 1/2 := by
 
 /-- N(X, δ) is monotone non-decreasing in X: a larger disk can
 accommodate at least as many separated points. -/
-axiom maxSeparatedPoints_mono (δ : ℝ) (X₁ X₂ : ℝ) (h : X₁ ≤ X₂) :
-  maxSeparatedPoints X₁ δ ≤ maxSeparatedPoints X₂ δ
-
 /-- N(X, δ) is monotone non-increasing in δ: a stricter separation
 requirement can only reduce the maximum count. -/
-axiom maxSeparatedPoints_anti (X : ℝ) (δ₁ δ₂ : ℝ) (h : δ₁ ≤ δ₂) :
-  maxSeparatedPoints X δ₂ ≤ maxSeparatedPoints X δ₁

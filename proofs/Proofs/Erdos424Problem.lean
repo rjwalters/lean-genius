@@ -44,10 +44,6 @@ noncomputable def generatedCount (N : ℕ) : ℕ :=
 
 /-- **Erdős Problem #424**: does generatedSet have positive (lower) density?
     That is, lim inf |generatedSet ∩ [1,N]| / N > 0. -/
-axiom erdos_424_conjecture :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ N : ℕ, N > 0 → (generatedCount N : ℝ) ≥ c * N
-
 /- ## Known Results -/
 
 /-- Helper: all elements of sequenceSet n satisfy n % 3 ≠ 1 -/
@@ -88,11 +84,6 @@ theorem mod_3_obstruction :
     of generatedSet is at most 2/3 + ε for any ε > 0.
     Follows from mod_3_obstruction via Finset counting: generatedCount N ≤ 2N/3 + 1.
     (Kept as axiom due to the Finset counting complexity.) -/
-axiom density_upper_bound :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (generatedCount N : ℝ) ≤ (2/3 + ε) * N
-
 /-- Helper: membership in generatedSet via membership in some sequenceSet n -/
 private lemma mem_generated (n : ℕ) (a : ℕ) (h : a ∈ sequenceSet n) : a ∈ generatedSet :=
   Set.mem_iUnion.mpr ⟨n, h⟩

@@ -57,8 +57,6 @@ axiom realRootCount (n : ℕ) (ε : ℕ → Int) : ℕ
 **Real Roots in Interval [-1, 1]:**
 Rₙ[-1,1] counts roots in the interval [-1, 1].
 -/
-axiom realRootCountInUnit (n : ℕ) (ε : ℕ → Int) : ℕ
-
 /-
 ## Part II: The Kac-Erdős-Offord Constant
 -/
@@ -91,16 +89,10 @@ E[Rₙ] = (2/π + o(1)) log n
 
 The expected real root count over all 2^(n+1) coefficient sequences.
 -/
-axiom expectedRealRoots (n : ℕ) : ℝ
-
 /--
 **Erdős-Offord (1956):**
 The expected number of real roots satisfies E[Rₙ] = (2/π + o(1)) log n.
 -/
-axiom erdos_offord_expectation :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop,
-      |expectedRealRoots n - kacConstant * Real.log n| < ε * Real.log n
-
 /--
 **Variance of Rₙ:**
 The variance of the real root count over all coefficient sequences.
@@ -128,8 +120,6 @@ the ratio realRootCount n ε / log n converges to 2/π as n → ∞.
 The formal measure-theoretic statement requires probability spaces
 over infinite binary sequences.
 -/
-axiom erdosConjecture_open : Prop
-
 /-
 ## Part V: Do's Theorem (2024)
 -/
@@ -143,11 +133,6 @@ This is a partial result toward the full conjecture. It handles
 roots in the interval [-1, 1], which account for asymptotically
 half of all real roots.
 -/
-axiom do_theorem_2024 :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop,
-      ∀ coeff, IsValidCoeffSeq coeff →
-        |(realRootCountInUnit n coeff : ℝ) / Real.log n - halfKacConstant| < ε
-
 /-
 ## Part VI: Kac's Integral Formula
 -/
@@ -160,10 +145,6 @@ where ρ_n(x) is the root density function. Near x = ±1,
 ρ_n(x) ≈ 1/(π|1-x²|^{1/2}), and integrating this gives the
 log n growth with constant 2/π.
 -/
-axiom kac_integral_formula :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop,
-      |expectedRealRoots n - kacConstant * Real.log n| < ε
-
 /--
 **Root bound:**
 A degree n polynomial has at most n+1 real roots.

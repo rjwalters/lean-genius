@@ -71,13 +71,6 @@ neither containing an infinite arithmetic progression.
 -/
 
 /-- Baumgartner's partition: ℝ = A ∪ B where neither has an infinite AP -/
-axiom baumgartner_partition :
-    ∃ A B : Set ℝ,
-      A ∪ B = univ ∧
-      A ∩ B = ∅ ∧
-      ¬containsInfiniteAP A ∧
-      ¬containsInfiniteAP B
-
 /-- From the partition, we can derive that A is 3-AP-free (vacuously for the right construction) -/
 axiom baumgartner_3AP_free :
     ∃ A : Set ℝ, is3APFree A ∧ ¬containsInfiniteAP Aᶜ
@@ -113,10 +106,6 @@ In ZF without AC, the problem may have a different answer.
 
 /-- Van der Waerden's theorem: for any finite coloring of ℕ, some color
     class contains arbitrarily long arithmetic progressions -/
-axiom van_der_waerden :
-    ∀ (k : ℕ) (c : ℕ → Fin k),
-      ∀ n : ℕ, ∃ a d : ℕ, d > 0 ∧ ∀ i < n, c (a + i * d) = c a
-
 /-
 ## Part VI: Examples and Intuition
 

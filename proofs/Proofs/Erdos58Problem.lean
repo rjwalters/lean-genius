@@ -51,10 +51,6 @@ def IsColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
 axiom chromaticNumber (G : SimpleGraph V) : ℕ
 
 /-- The chromatic number is the minimum k for which G is k-colorable. -/
-axiom chromaticNumber_spec (G : SimpleGraph V) :
-    IsColorable G (chromaticNumber G) ∧
-    ∀ k < chromaticNumber G, ¬IsColorable G k
-
 /- ## Complete Graph -/
 
 /-- G contains K_n as a subgraph (has a clique of size n). -/
@@ -84,11 +80,6 @@ If G is 2-connected with at most k odd cycle lengths, then either:
 1. G contains K_{2k+2}, or
 2. G has a vertex of degree ≤ 2k
 -/
-axiom gyarfas_structural (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] (k : ℕ)
-    (h2conn : G.Connected)
-    (hk : numOddCycleLengths G ≤ k) :
-    ContainsClique G (2 * k + 2) ∨ (∃ v : V, G.degree v ≤ 2 * k)
-
 /- ## Special Cases -/
 
 /--
@@ -124,10 +115,6 @@ If χ(G) ≥ 2k + 3, then G contains cycles of k+1 consecutive odd lengths.
 This strengthens Gyárfás by showing high chromatic number forces
 consecutive odd cycle lengths, not just many distinct ones.
 -/
-axiom gao_huo_ma (G : SimpleGraph V) (k : ℕ) :
-    chromaticNumber G ≥ 2 * k + 3 →
-    ∃ start : ℕ, consecutiveOddLengths start (k + 1) ⊆ oddCycleLengths G
-
 /- ## Corollaries -/
 
 /-- If χ(G) ≥ 5, then G has at least 2 distinct odd cycle lengths. -/

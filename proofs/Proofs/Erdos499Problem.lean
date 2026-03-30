@@ -71,9 +71,6 @@ noncomputable def uniformMatrix (n : ℕ) (hn : n ≠ 0) : Matrix (Fin n) (Fin n
   fun _ _ => (1 : ℝ) / n
 
 /-- The uniform matrix is doubly stochastic. -/
-axiom uniformMatrix_doublyStochastic (n : ℕ) (hn : n ≠ 0) :
-    IsDoublyStochastic (uniformMatrix n hn)
-
 /--
 Example: The 2×2 uniform matrix [[1/2, 1/2], [1/2, 1/2]].
 -/
@@ -103,9 +100,6 @@ def mainDiagonalProduct {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) : ℝ :=
 /--
 For the uniform matrix, every diagonal product equals n^{-n}.
 -/
-axiom uniformMatrix_diagonalProduct (n : ℕ) (hn : n ≠ 0) (σ : Equiv.Perm (Fin n)) :
-    diagonalProduct (uniformMatrix n hn) σ = (n : ℝ)⁻¹ ^ n
-
 /-
 ## Part III: The Permanent
 
@@ -130,9 +124,6 @@ theorem perm_eq_sum_diagonalProducts {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) 
 For the uniform matrix, the permanent equals n^{-n} · n!.
 This is the minimum among all doubly stochastic matrices.
 -/
-axiom uniformMatrix_permanent (n : ℕ) (hn : n ≠ 0) :
-    perm' (uniformMatrix n hn) = (n : ℝ)⁻¹ ^ n * n !
-
 /-
 ## Part IV: Marcus-Ree Theorem (1959)
 
@@ -241,9 +232,6 @@ theorem two_by_two_diagonals (a : ℝ) (ha : 0 ≤ a) (ha' : a ≤ 1) :
 For a 2×2 doubly stochastic matrix, max(a², (1-a)²) ≥ 1/4.
 This verifies Erdős #499 for n = 2.
 -/
-axiom two_by_two_erdos499 (a : ℝ) (ha : 0 ≤ a) (ha' : a ≤ 1) :
-    a * a ≥ 1/4 ∨ (1 - a) * (1 - a) ≥ 1/4
-
 /-
 ## Part VIII: The Birkhoff-von Neumann Theorem
 

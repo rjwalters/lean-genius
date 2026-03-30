@@ -71,9 +71,6 @@ axiom extremalNumber (n : ℕ) (G : SimpleGraph (Fin n)) : ℕ
 /--
 **Basic bound:** ex(n; G) ≤ n(n-1)/2.
 -/
-axiom extremalNumber_bound (n : ℕ) (G : SimpleGraph (Fin n)) :
-  extremalNumber n G ≤ n * (n - 1) / 2
-
 /- ## Asymptotic Growth -/
 
 /--
@@ -128,18 +125,10 @@ def erdos713RationalQuestion : Prop :=
 ex(n; K_{s,t}) = O(n^{2-1/s}) for s ≤ t.
 Axiomatized because the proof requires constructing the K_{s,t} graph.
 -/
-axiom kovari_sos_turan (s t : ℕ) (hs : s ≥ 2) (hst : s ≤ t) :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ s + t →
-    ∃ (G : SimpleGraph (Fin n)), (extremalNumber n G : ℝ) ≤ C * n^(2 - 1/s : ℝ)
-
 /--
 **Lower Bound for Complete Bipartite Graphs:**
 ex(n; K_{s,t}) = Ω(n^{2-1/s}) for s ≤ t.
 -/
-axiom complete_bipartite_lower (s t : ℕ) (hs : s ≥ 2) (hst : s ≤ t) :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ s + t →
-    ∃ (G : SimpleGraph (Fin n)), (extremalNumber n G : ℝ) ≥ c * n^(2 - 1/s : ℝ)
-
 /--
 **Complete Bipartite Exponent:**
 For K_{s,t} with s ≤ t, the exponent is 2 - 1/s (rational!).
@@ -180,11 +169,6 @@ Cases k = 3 and k = 4 remain open.
 For k-uniform hypergraphs with k ≥ 5, there exist hypergraphs H such that
 ex(n; H) has no power-law growth (no α with ex(n; H) ≍ n^α).
 -/
-axiom frankl_furedi_hypergraph (k : ℕ) (hk : k ≥ 5) :
-  ∃ (f : ℕ → ℕ), ¬∃ α : ℝ, α ≥ 1 ∧ α < ↑k ∧
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-      ∃ N : ℕ, ∀ n ≥ N, c₁ * (n : ℝ)^α ≤ f n ∧ (f n : ℝ) ≤ c₂ * (n : ℝ)^α
-
 /- ## Summary
 
 **Erdős Problem #713 - OPEN ($500 prize)**

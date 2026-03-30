@@ -197,10 +197,6 @@ theorem girth_3_iff_pasch_free {V : Type*} [Fintype V] [DecidableEq V]
 Steiner triple systems avoiding the Pasch configuration have been studied
 extensively. The KSSS result generalizes this to arbitrary girth.
 -/
-axiom anti_pasch_sts_exist (n : ℕ) (hn : IsAdmissible n) (hn' : n ≥ 7) :
-    ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
-      Fintype.card V = n ∧ IsSteinerTripleSystem H ∧ IsPaschFree H
-
 /-
 ## Part VII: Proof Techniques
 -/
@@ -243,8 +239,6 @@ without any pair walking together twice?
 def kirkmanSchoolgirlProblem : Prop :=
   ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
     Fintype.card V = 15 ∧ IsSteinerTripleSystem H ∧ IsResolvable H
-
-axiom kirkman_schoolgirl_solution : kirkmanSchoolgirlProblem
 
 /-
 ## Part IX: Main Results Summary

@@ -132,18 +132,12 @@ There are ≫ log log N elements of A in {1, ..., N}.
 
 More precisely: ∃ c > 0, ∀ large N, countA(N) ≥ c · log log N.
 -/
-axiom crocker_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) ≥ c * Real.log (Real.log N)
-
 /--
 **Pan's Theorem** (2011):
 For any ε > 0, there are ≫ N^(1-ε) elements of A in {1, ..., N}.
 
 This is a significant improvement over Crocker.
 -/
-axiom pan_bound (ε : ℝ) (hε : ε > 0) :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) ≥ c * (N : ℝ)^(1 - ε)
-
 /--
 **Pan's Bound Reformulated:**
 Pan's bound countA(N) ≫ N^{1-ε} implies countA(N)/N ≫ N^{-ε}.
@@ -151,9 +145,6 @@ Pan's bound countA(N) ≫ N^{1-ε} implies countA(N)/N ≫ N^{-ε}.
 This shows the density goes to 0 more slowly than any polynomial rate,
 but still doesn't prove it stays bounded away from 0.
 -/
-axiom pan_implies_lower_bound (ε : ℝ) (hε : ε > 0) :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) / N ≥ c * (N : ℝ)^(-ε)
-
 /- ## Why Covering Systems Don't Work -/
 
 /--
@@ -232,10 +223,6 @@ this would immediately imply positive upper density.
 This is axiomatized because the proof requires measure-theoretic
 arguments about limsup that are technical in Lean.
 -/
-axiom improvement_would_solve :
-    (∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) ≥ c * N) →
-    erdos_9_question
-
 /- ## Summary
 
 **Problem Status: OPEN**

@@ -103,9 +103,6 @@ noncomputable def g (n : ℕ) : ℕ :=
 **Erdős-Fishburn Lower Bound:**
 g(n) > (3/8)n for all sufficiently large n.
 -/
-axiom erdos_fishburn_bound :
-  ∀ n : ℕ, n ≥ 8 → g n > 3 * n / 8
-
 /--
 **Csizmadia Lower Bound:**
 g(n) > (7/10)n for all sufficiently large n.
@@ -143,8 +140,6 @@ def erdos653Conjecture : Prop :=
 
 /-- **Trivial Lower Bound:**
 g(n) ≥ 1 for n ≥ 2 (at least one R-value exists). -/
-axiom g_pos (n : ℕ) (hn : n ≥ 2) : g n ≥ 1
-
 /--
 **Trivial Upper Bound:**
 g(n) ≤ n (can't have more distinct values than points).
@@ -155,8 +150,6 @@ axiom g_le_n : ∀ n : ℕ, g n ≤ n
 **Monotonicity:**
 g is non-decreasing in n.
 -/
-axiom g_mono : ∀ m n : ℕ, m ≤ n → g m ≤ g n
-
 /-
 ## Part VII: Special Configurations
 -/
@@ -182,10 +175,6 @@ def IsRegularPolygon (S : Finset (Fin 2 → ℝ)) : Prop :=
 **Regular Polygon R-Values:**
 In a regular n-gon, all points have the same R-value (for n ≥ 3).
 -/
-axiom regular_polygon_r_value (n : ℕ) (hn : n ≥ 3) (S : Finset (Fin 2 → ℝ))
-    (hcard : S.card = n) (hreg : IsRegularPolygon S) :
-    ∀ p q ∈ S, distinctDistCount S p = distinctDistCount S q
-
 /-
 ## Part VIII: Extremal Configurations
 -/
@@ -201,9 +190,6 @@ def IsOptimalConfig (S : Finset (Fin 2 → ℝ)) : Prop :=
 **Existence of Optimal Configurations:**
 For each n, there exists a configuration achieving g(n).
 -/
-axiom optimal_exists (n : ℕ) (hn : n ≥ 1) :
-    ∃ S : Finset (Fin 2 → ℝ), S.card = n ∧ IsOptimalConfig S
-
 /-
 ## Part IX: Asymptotic Analysis
 -/
@@ -212,17 +198,8 @@ axiom optimal_exists (n : ℕ) (hn : n ≥ 1) :
 **Asymptotic Gap:**
 The gap n - g(n) grows as Ω(n^(2/3)).
 -/
-axiom gap_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-    (n : ℝ) - g n ≥ c * (n : ℝ)^(2/3 : ℝ)
-
 /-- **Combined Bound:**
 cn^(2/3) ≤ n - g(n) ≤ (3/10)n for large n. -/
-axiom gap_bounds (n : ℕ) (hn : n ≥ 10) :
-    ∃ c : ℝ, c > 0 ∧
-    c * (n : ℝ)^(2/3 : ℝ) ≤ (n : ℝ) - g n ∧
-    (n : ℝ) - g n ≤ (3/10 : ℝ) * n
-
 /-
 ## Part X: Connection to Unit Distance Problem
 -/

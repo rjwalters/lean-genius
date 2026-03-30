@@ -109,23 +109,11 @@ def TriangularLattice : Set Plane :=
 Adjacent points in the triangular lattice have distance 1. This captures
 the three lattice directions: horizontal, 60°, and 120°.
 -/
-axiom triangular_lattice_unit_distance :
-  ∀ i j : ℤ,
-    dist (triangularLatticePoint i j) (triangularLatticePoint (i+1) j) = 1 ∧
-    dist (triangularLatticePoint i j) (triangularLatticePoint i (j+1)) = 1 ∧
-    dist (triangularLatticePoint i j) (triangularLatticePoint (i+1) (j-1)) = 1
-
 /--
 Any three adjacent lattice points form a unit equilateral triangle.
 This is why the conjecture seems plausible: if optimal configurations
 resemble the lattice, they should contain such triangles.
 -/
-axiom triangular_lattice_has_equilateral :
-  ∀ i j : ℤ, IsUnitEquilateralTriangle
-    (triangularLatticePoint i j)
-    (triangularLatticePoint (i+1) j)
-    (triangularLatticePoint i (j+1))
-
 /- ## Part V: Thue's Theorem and Lattice Structure -/
 
 /--
@@ -134,18 +122,9 @@ asymptotically resemble regions of the triangular lattice. For any ε > 0,
 in a large enough optimal configuration, at least (1 - ε)n points lie
 within distance ε of some triangular lattice point.
 -/
-axiom thue_diameter_consequence :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ A : Finset Plane,
-    A.card = n → IsOptimalConfiguration A →
-    (A.filter (fun p => ∃ q ∈ TriangularLattice, dist p q < ε)).card ≥ n - n / 10
-
 /- ## Part VI: Small Cases -/
 
 /-- n = 3: An optimal 3-point set must be an equilateral triangle -/
-axiom case_n3 :
-  ∀ A : Finset Plane, A.card = 3 → IsOptimalConfiguration A →
-    ContainsUnitEquilateralTriangle A
-
 /--
 n = 4: The square with unit side length is an optimal 4-point configuration
 that does NOT contain a unit equilateral triangle. This shows the conjecture

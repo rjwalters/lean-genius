@@ -125,11 +125,6 @@ For any fixed ε > 0: rt(n; 4, εn) < (1/8 + o(1))n²
 
 This shows the threshold 1/8 is correct for linear independence number.
 -/
-axiom ehss_upper_bound :
-    ∀ ε : ℝ, ε > 0 →
-    ∀ᶠ n : ℕ in Filter.atTop,
-    (rt n 4 (Nat.floor (ε * n)) : ℝ) < (threshold_one_eighth + ε) * n^2
-
 /--
 **Sudakov (2003):**
 rt(n; 4, ne^(-f(n))) = o(n²) whenever f(n)/√log n → ∞
@@ -137,12 +132,6 @@ rt(n; 4, ne^(-f(n))) = o(n²) whenever f(n)/√log n → ∞
 This shows that for "very slow" growth of the independence number bound,
 the Ramsey-Turán number becomes subquadratic.
 -/
-axiom sudakov_upper_bound :
-    ∀ f : ℕ → ℝ, (∀ᶠ n : ℕ in Filter.atTop, f n / Real.sqrt (Real.log n) > n) →
-    ∀ ε : ℝ, ε > 0 →
-    ∀ᶠ n : ℕ in Filter.atTop,
-    (rt n 4 (Nat.floor (n * Real.exp (-(f n)))) : ℝ) < ε * n^2
-
 /-
 ## Part IV: Fox-Loh-Zhao Resolution
 
@@ -156,13 +145,6 @@ rt(n; 4, ne^(-f(n))) >= (1/8 - o(1))n² whenever f(n) = o(√(log n / log log n)
 This is the "critical window" result - it identifies exactly when the
 threshold 1/8 can be achieved.
 -/
-axiom fox_loh_zhao_lower_bound :
-    ∀ f : ℕ → ℝ,
-    (∀ᶠ n : ℕ in Filter.atTop, f n / Real.sqrt (Real.log n / Real.log (Real.log n)) < 1) →
-    ∀ ε : ℝ, ε > 0 →
-    ∀ᶠ n : ℕ in Filter.atTop,
-    (rt n 4 (Nat.floor (n * Real.exp (-(f n)))) : ℝ) > (threshold_one_eighth - ε) * n^2
-
 /--
 **Corollary: The Conjecture is FALSE**
 There is no c > 0 such that rt(n; 4, n/log n) < (1/8 - c)n²
@@ -217,9 +199,6 @@ ex(n, K₄) = (1 - 1/3)(n choose 2) = (1/3)n(n-1)/2 ≈ (1/6)n²
 
 Without any independence number constraint, this is the extremal number.
 -/
-axiom turan_k4 : ∀ n : ℕ, n ≥ 4 →
-  (rt n 4 n : ℝ) = (1 - 1/3) * (n * (n - 1) / 2 : ℝ)
-
 /--
 **Linear Independence Number:**
 rt(n; 4, εn) = (1/8 + o(1))n² for any fixed ε > 0
@@ -260,8 +239,6 @@ ex(n, H) = max edges in n-vertex H-free graph.
 
 rt(n; k, ℓ) ≤ ex(n, Kₖ) since RT graphs are Kₖ-free.
 -/
-axiom rt_turan_bound (n k ℓ : ℕ) : rt n k ℓ ≤ (n * (n - 1) / 2 * (1 - 1 / (k - 1)) : ℕ)
-
 /-
 ## Part VIII: The Construction
 
@@ -275,13 +252,6 @@ The balanced complete 3-partite graph with parts of size n/3 minus a random grap
 Key insight: K₄-freeness comes from 3-partite structure, small independence
 comes from random subgraph removal.
 -/
-axiom simonovits_sos_construction :
-    ∀ᶠ n : ℕ in Filter.atTop,
-    ∃ G : SimpleGraph (Fin n),
-      G.CliqueFree 4 ∧
-      ¬(hasIndependentSet G (n / Nat.log n)) ∧
-      G.edgeFinset.card ≥ (threshold_one_eighth - 1/n) * n^2
-
 /-
 ## Part IX: Main Results Summary
 -/

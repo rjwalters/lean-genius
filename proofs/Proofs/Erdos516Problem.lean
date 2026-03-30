@@ -128,24 +128,11 @@ Earlier results under stronger gap conditions.
 Under the stronger condition (nₖ₊₁ - nₖ)² > nₖ,
 we get lim sup m(r)/M(r) = 1 (without logarithms!).
 -/
-axiom wiman_theorem {f : ℂ → ℂ} {n : ℕ → ℕ}
-    (hn : ∀ k, (n (k + 1) - n k) ^ 2 > n k) {a : ℕ → ℂ}
-    (hf_sum : ∀ z, HasSum (fun k => a k * z ^ n k) (f z))
-    (hf_order : OfFiniteOrder f) :
-    limsup (fun r => minModulus f r / maxModulus f r) atTop = 1
-
 /--
 **Erdős-Macintyre Theorem (1954)**
 
 Under Σ 1/(nₖ₊₁ - nₖ) < ∞, the result holds.
 -/
-axiom erdos_macintyre_theorem {f : ℂ → ℂ} {n : ℕ → ℕ}
-    (hn : Summable (fun k => (1 : ℝ) / (n (k + 1) - n k)))
-    {a : ℕ → ℂ}
-    (hf_sum : ∀ z, HasSum (fun k => a k * z ^ n k) (f z))
-    (hf_order : OfFiniteOrder f) :
-    limsup (fun r => modulusRatio f r) atTop = 1
-
 /-
 ## Extensions Beyond Finite Order
 
@@ -159,13 +146,6 @@ under a stronger gap condition.
 For any entire function (not necessarily of finite order) with gaps
 nₖ > k(log k)^{2+c} for some c > 0, the lim sup is still 1.
 -/
-axiom kovari_theorem {f : ℂ → ℂ} {n : ℕ → ℕ}
-    (hn : ∃ c > (0 : ℝ), ∀ k : ℕ, k ≥ 2 → (n k : ℝ) > k * (log k) ^ (2 + c))
-    {a : ℕ → ℂ}
-    (hf_sum : ∀ z, HasSum (fun k => a k * z ^ n k) (f z))
-    (hf_entire : Differentiable ℂ f) :
-    limsup (fun r => modulusRatio f r) atTop = 1
-
 /-
 ## The Remaining Open Question
 
@@ -197,13 +177,6 @@ f(z) = Σ aₖzⁿᵏ that tends to 0 along the positive real axis.
 
 This shows Fejér gaps would be the optimal condition if the conjecture holds.
 -/
-axiom macintyre_counterexample (n : ℕ → ℕ)
-    (hn : ¬Summable (fun k => (1 : ℝ) / n k)) :
-    ∃ (f : ℂ → ℂ) (a : ℕ → ℂ),
-      (∀ z, HasSum (fun k => a k * z ^ n k) (f z)) ∧
-      Differentiable ℂ f ∧
-      Tendsto (fun x : ℝ => f x) atTop (𝓝 0)
-
 /-
 ## The Answer to Erdős Problem #516
 

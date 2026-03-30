@@ -196,31 +196,13 @@ theorem fiber_24_nonempty : 14 ∈ sigmaFiber 24 ∧ 15 ∈ sigmaFiber 24 :=
   ⟨sigma_14_value, sigma_15_value⟩
 
 /-- Fibers can be arbitrarily large (infinitely many n with same σ value) -/
-axiom fibers_can_be_large :
-    ∀ K : ℕ, ∃ m : ℕ, (sigmaFiber m).ncard ≥ K
-
 /-- Every sufficiently large even number is a σ-value -/
-axiom even_sigma_values :
-    ∃ N : ℕ, ∀ m : ℕ, m ≥ N → Even m → (sigmaFiber m).Nonempty
-
 /-
 ## Part VII: Density Results
 -/
 
 /-- The set of σ-values has positive density -/
-axiom sigma_values_positive_density :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ N : ℕ, N ≥ 1 →
-      ((Finset.filter (fun m => (sigmaFiber m).Nonempty) (Finset.range N)).card : ℝ)
-      ≥ c * N
-
 /-- Many σ-values have multiple preimages -/
-axiom many_multiple_preimages :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ N : ℕ, N ≥ 1 →
-      ((Finset.filter (fun m => (sigmaFiber m).ncard ≥ 2) (Finset.range N)).card : ℝ)
-      ≥ c * N
-
 /-
 ## Part VIII: Computational Examples
 -/
@@ -249,14 +231,6 @@ to construct pairs with equal σ values at any prescribed ratio.
 -/
 
 /-- The abundance of σ-pairs enables Pollack's construction -/
-axiom key_insight_sigma_pairs :
-    -- There are infinitely many σ-pairs (n, m) with n ≠ m
-    ∃ pairs : ℕ → ℕ × ℕ, ∀ k,
-      (pairs k).1 ≠ (pairs k).2 ∧
-      sigma (pairs k).1 = sigma (pairs k).2
-
--- Pollack's method uses careful construction with prime factorizations.
-
 /-
 ## Part X: Summary
 -/

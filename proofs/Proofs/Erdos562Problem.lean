@@ -67,24 +67,12 @@ theorem graph_ramsey_exponential (n : ℕ) (hn : 2 ≤ n) :
 
 /-- Erdős–Rado stepping-up lemma (1952): bounds R_r in terms of R_{r-1}.
     This gives R_r(n) ≤ twr_{r-1}(c_r · n²). -/
-axiom erdos_rado_stepping_up (r : ℕ) (hr : 3 ≤ r) :
-    ∃ c : ℕ, 0 < c ∧ ∀ n : ℕ, 2 ≤ n →
-      hypergraphRamsey r n ≤ twr (r - 1) (c * n ^ 2)
-
 /- ## Lower Bounds -/
 
 /-- Erdős–Hajnal lower bound for r = 3:
     R_3(n) ≥ twr_2(c · n²) = 2^{2^{cn²}}. -/
-axiom erdos_hajnal_r3_lower :
-    ∃ c : ℕ, 0 < c ∧ ∀ n : ℕ, 2 ≤ n →
-      twr 2 (c * n ^ 2) ≤ hypergraphRamsey 3 n
-
 /-- General lower bound for r ≥ 3: R_r(n) ≥ twr_{r-1}(c · n).
     This is known for all r but the constant is not optimal. -/
-axiom general_lower_bound (r : ℕ) (hr : 3 ≤ r) :
-    ∃ c : ℕ, 0 < c ∧ ∀ n : ℕ, 2 ≤ n →
-      twr (r - 1) (c * n) ≤ hypergraphRamsey r n
-
 /- ## The Main Conjecture -/
 
 /-- **Erdős Problem #562**: log_{r-1} R_r(n) ≍ n for r ≥ 3.
@@ -92,12 +80,6 @@ axiom general_lower_bound (r : ℕ) (hr : 3 ≤ r) :
     The upper bound gives twr_{r-1}(O(n²)) and the lower bound
     gives twr_{r-1}(Ω(n)). The conjecture is that both can be
     tightened to twr_{r-1}(Θ(n)). -/
-axiom erdos_562_conjecture (r : ℕ) (hr : 3 ≤ r) :
-    ∃ c₁ c₂ : ℕ, 0 < c₁ ∧ 0 < c₂ ∧ ∀ n : ℕ, 2 ≤ n →
-      twr (r - 1) (c₁ * n) ≤ hypergraphRamsey r n ∧
-      hypergraphRamsey r n ≤ twr (r - 1) (c₂ * n)
-
 /- ## Small Cases -/
 
 /-- R_3(4) is known: R_3(4) = 13. -/
-axiom r3_4 : hypergraphRamsey 3 4 = 13

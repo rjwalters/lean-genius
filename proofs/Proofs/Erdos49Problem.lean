@@ -40,13 +40,7 @@ noncomputable def primeCounting (N : ℕ) : ℕ :=
 
 /-- The set of primes in `{1,…,N}` has strictly increasing totient
 values since `φ(p) = p - 1` for primes. -/
-axiom primes_increasing_totient (N : ℕ) :
-    IsIncreasingTotientSet ((Finset.Icc 1 N).filter Nat.Prime)
-
 /-- Consequently, `maxIncTotientSize(N) ≥ π(N)`. -/
-axiom maxIncTotientSize_ge_primeCounting (N : ℕ) :
-    primeCounting N ≤ maxIncTotientSize N
-
 /- ## Tao's theorem (2023) -/
 
 /-- Tao (2023): For all `ε > 0` and sufficiently large `N`,
@@ -54,11 +48,6 @@ axiom maxIncTotientSize_ge_primeCounting (N : ℕ) :
 
 This proves the primes are asymptotically the largest increasing
 totient set. -/
-axiom tao_increasing_totient :
-    ∀ (ε : ℚ), 0 < ε →
-      ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-        (maxIncTotientSize N : ℚ) ≤ (1 + ε) * (primeCounting N : ℚ)
-
 /- ## Main statement -/
 
 /-- Erdős Problem 49 (solved): The maximum size of an increasing totient
@@ -72,11 +61,6 @@ def ErdosProblem49 : Prop :=
 
 /-- The weaker conjecture `|A| = o(N)`: any increasing totient set has
 density zero. This follows from Tao's result since `π(N) = o(N)`. -/
-axiom incTotientSet_density_zero :
-    ∀ (ε : ℚ), 0 < ε →
-      ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-        (maxIncTotientSize N : ℚ) ≤ ε * (N : ℚ)
-
 /- ## Totient properties -/
 
 /-- `φ(p) = p - 1` for primes. -/

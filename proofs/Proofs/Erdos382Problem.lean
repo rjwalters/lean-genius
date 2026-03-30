@@ -273,8 +273,6 @@ def question1 : Prop :=
       (v - u : ℝ) < (v : ℝ) ^ ε
 
 /-- The conjecture that Question 1 has answer YES. -/
-axiom erdos_382_q1 : question1
-
 /--
 **Question 2 (OPEN)**: Can v - u be arbitrarily large?
 
@@ -285,8 +283,6 @@ def question2 : Prop :=
   ∀ L : ℕ, ∃ u v : ℕ, satisfiesCondition u v ∧ v - u > L
 
 /-- Cambie's heuristic suggests YES for Question 2. -/
-axiom erdos_382_q2_heuristic : question2
-
 /- ## Part VI: Known Upper Bound -/
 
 /--

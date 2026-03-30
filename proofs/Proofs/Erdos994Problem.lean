@@ -129,8 +129,6 @@ def KhintchineOrder : Prop :=
   ∀ᵐ α ∂volume, ∀ E : Set ℝ, MeasurableSet E → IsEquidistributed α E (volume E).toReal
 
 /-- The quantifier exchange is NOT valid! -/
-axiom quantifier_exchange_fails : WeylOrder → ¬KhintchineOrder
-
 /-
 ## Part VI: Marstrand's Disproof
 -/
@@ -142,15 +140,7 @@ axiom marstrand_disproof : ¬KhintchineConjecture
 
 /-- Equivalently: there exists α in every full-measure set
     such that some E fails equidistribution for α. -/
-axiom marstrand_construction :
-  ∃ α : ℝ, ∃ E : Set ℝ, MeasurableSet E ∧ E ⊆ Set.Ioo 0 1 ∧
-    ¬IsEquidistributed α E (volume E).toReal
-
 /-- The bad E can be constructed for any given α (outside a measure zero set). -/
-axiom bad_set_exists (α : ℝ) (hα : Irrational α) :
-  ∃ E : Set ℝ, MeasurableSet E ∧ E ⊆ Set.Ioo 0 1 ∧
-    ¬IsEquidistributed α E (volume E).toReal
-
 /-
 ## Part VII: What Goes Wrong
 -/
@@ -173,10 +163,6 @@ def avoidanceConstruction : Prop :=
 -/
 
 /-- For irrational α, {kα} is equidistributed mod 1 (Weyl's original). -/
-axiom weyl_equidistribution (α : ℝ) (hα : Irrational α) :
-  ∀ a b : ℝ, 0 ≤ a → a < b → b ≤ 1 →
-    Tendsto (fun n => empiricalFrequency α (Set.Ioo a b) n) atTop (nhds (b - a))
-
 /-- Equidistribution for intervals is much easier than for general sets. -/
 def intervalVsGeneral : Prop :=
   -- Intervals: always works for irrational α

@@ -224,9 +224,6 @@ theorem maximal_packing_nonempty (S : Set UnitSegment) (hmax : IsMaximalPacking 
 
 /-- Erdős Problem 1071(a) — SOLVED by Danzer:
     There exists a finite maximal packing of unit segments in [0,1]² -/
-axiom danzer_finite_maximal :
-  ∃ S : Set UnitSegment, IsFinitePacking S ∧ IsMaximalPacking S
-
 /-
 # Part 6: The Open Problem
 -/
@@ -247,21 +244,10 @@ def IsMaximalRegionPacking (R : Region) (S : Set UnitSegment) : Prop :=
 
 /-- Erdős Problem 1071(b) — OPEN:
     Is there a region R with a countably infinite maximal packing? -/
-axiom ErdosProblem1071b :
-  ∃ R : Region, ∃ S : Set UnitSegment,
-    IsMaximalRegionPacking R S ∧ S.Countable ∧ Set.Infinite S
-
 /-
 # Part 7: Endpoint-Intersection Variant
 -/
 
 /-- The endpoint-intersection variant: can a finite set of unit segments
     in [0,1]², allowed to touch only at endpoints, be maximal? -/
-axiom ErdosProblem1071_endpoint_variant :
-  ∃ S : Set UnitSegment, S.Finite ∧
-    (∀ s ∈ S, SegmentInSquare s) ∧
-    (∀ s ∈ S, ∀ t ∈ S, s ≠ t → EndpointDisjoint s t) ∧
-    (∀ s : UnitSegment, SegmentInSquare s → s ∉ S →
-      ∃ t ∈ S, ¬EndpointDisjoint s t)
-
 end Erdos1071

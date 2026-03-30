@@ -114,9 +114,6 @@ If m ≥ n and there are at most n-1 possible block sizes (2 to n),
 then some size t must have ≥ n/(n-1) > 1 blocks, and by pigeonhole
 with more blocks, some size must have ≫ √n blocks.
 -/
-axiom some_size_frequent (n : ℕ) (hn : n ≥ 4) (D : PBD n) (hnt : isNontrivial D) :
-  ∃ t : ℕ, 2 ≤ t ∧ t ≤ n ∧ blocksOfSize D t ≥ 1
-
 /-
 ## Part IV: The Erdős Question
 -/
@@ -159,10 +156,6 @@ axiom projective_plane_exists (q : ℕ) (hq : Nat.Prime q) :
 Derived from projective planes by removing one line and its points.
 Also don't satisfy Erdős's condition for the same reason.
 -/
-axiom affine_plane_exists (q : ℕ) (hq : Nat.Prime q) :
-  ∃ D : PBD (q^2), isNontrivial D ∧
-    D.blocks.card = q^2 + q
-
 /-
 ## Part VI: Pair Counting
 -/
@@ -172,9 +165,6 @@ axiom affine_plane_exists (q : ℕ) (hq : Nat.Prime q) :
 A PBD on n points must cover C(n,2) = n(n-1)/2 pairs.
 Each block of size k covers C(k,2) = k(k-1)/2 pairs.
 -/
-axiom pair_count {n : ℕ} (hn : n ≥ 2) (D : PBD n) :
-    ∑ B ∈ D.blocks, B.card * (B.card - 1) / 2 = n * (n - 1) / 2
-
 /-
 ## Part VII: Partial Results
 -/
@@ -184,10 +174,6 @@ axiom pair_count {n : ℕ} (hn : n ≥ 2) (D : PBD n) :
 For some n, there exist PBDs with blocks of only 2 or 3 different sizes.
 These still don't satisfy Erdős's condition if one size dominates.
 -/
-axiom near_uniform_designs_exist :
-  ∃ n : ℕ, n ≥ 10 ∧ ∃ D : PBD n, isNontrivial D ∧
-    (blockSizesPresent D).card ≤ 3
-
 /-
 ## Part VIII: Summary
 

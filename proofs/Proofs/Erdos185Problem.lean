@@ -253,8 +253,6 @@ f₃(n) ≥ R₃(3^n).
 The embedding is: {1,...,3^n} ↪ {0,1,2}^n via ternary representation.
 AP-free sets embed to cap sets (lines generalize APs).
 -/
-axiom f3_geq_R3 (n : ℕ) : f3 n ≥ R3 (3^n)
-
 /-
 ## Part V: Known Bounds
 -/
@@ -265,9 +263,6 @@ f₃(n) ≫ 3^n/√n.
 
 More precisely, f₃(n) ≥ c · 3^n/√n for some constant c > 0.
 -/
-axiom moser_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 → (f3 n : ℝ) ≥ c * 3^n / Real.sqrt n
-
 /--
 **Moser's construction:**
 Taking points with coordinates summing to 0 or 1 (mod 3) gives a large cap set.
@@ -441,9 +436,6 @@ f₃(n) ≤ c^n for c < 3.
 
 Specifically, c ≈ 2.756.
 -/
-axiom ellenberg_gijswijt_2016 :
-    ∃ c : ℝ, c < 3 ∧ c > 2.7 ∧ ∀ n : ℕ, (f3 n : ℝ) ≤ c^n
-
 /--
 **The Ellenberg-Gijswijt constant:**
 The best known upper bound has base ≈ 2.756.

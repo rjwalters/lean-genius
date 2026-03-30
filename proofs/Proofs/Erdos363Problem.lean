@@ -147,13 +147,6 @@ axiom ulas_theorem :
 For n = 3 or n = 5, there are infinitely many collections of n disjoint
 intervals, each of size exactly 4, whose product is a perfect square.
 -/
-axiom bauer_bennett_theorem :
-    ∀ n : ℕ, (n = 3 ∨ n = 5) →
-      Set.Infinite { C : DisjointIntervalCollection |
-        C.intervals.length = n ∧
-        (∀ I ∈ C.intervals, I.size = 4) ∧
-        isPerfectSquare C.totalProduct }
-
 /-
 ## Part VII: Bennett-Van Luijk Theorem (2012)
 -/
@@ -163,13 +156,6 @@ axiom bauer_bennett_theorem :
 For n ≥ 5, there are infinitely many collections of n disjoint
 intervals, each of size exactly 5, whose product is a perfect square.
 -/
-axiom bennett_van_luijk_theorem :
-    ∀ n : ℕ, n ≥ 5 →
-      Set.Infinite { C : DisjointIntervalCollection |
-        C.intervals.length = n ∧
-        (∀ I ∈ C.intervals, I.size = 5) ∧
-        isPerfectSquare C.totalProduct }
-
 /-
 ## Part VIII: The Conjecture is FALSE
 -/

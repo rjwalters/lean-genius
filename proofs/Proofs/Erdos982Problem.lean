@@ -142,20 +142,10 @@ axiom moser_bound :
 **Erdős-Fishburn Bound (1994):**
 f(n) ≥ ⌊n/3 + 1⌋ = ⌊(n+3)/3⌋
 -/
-axiom erdos_fishburn_bound :
-  ∀ n : ℕ, n ≥ 3 →
-    ∀ (S : Finset Plane), S.card = n → InConvexPosition S →
-      maxDistinctDistances S ≥ n / 3 + 1
-
 /--
 **Dumitrescu's Bound (2006):**
 f(n) ≥ ⌈(13n-6)/36⌉
 -/
-axiom dumitrescu_bound :
-  ∀ n : ℕ, n ≥ 3 →
-    ∀ (S : Finset Plane), S.card = n → InConvexPosition S →
-      maxDistinctDistances S ≥ (13 * n - 6 + 35) / 36
-
 /--
 **Nivasch-Pach-Pinchasi-Zerbib Bound (2013):**
 f(n) ≥ (13/36 + 1/22701)n - O(1)
@@ -187,9 +177,6 @@ axiom regular_polygon_distances :
 **Upper Bound on f(n):**
 The conjecture, if true, would be tight: f(n) ≤ ⌊n/2⌋ + 1 in general.
 -/
-axiom upper_bound_on_f :
-  ∀ n : ℕ, n ≥ 3 → guaranteedDistinctDistances n ≤ (n + 1) / 2
-
 /-
 ## Part VI: Small Cases
 
@@ -273,11 +260,6 @@ intersects the curve in at most 2 points.
 Bárány and Roldán-Pensado (2013) showed the boundary of any acute
 triangle is a counterexample.
 -/
-axiom acute_triangle_counterexample :
-  ∃ (curve : Set Plane), Convex ℝ curve ∧
-    ∀ p ∈ curve, ∃ r : ℝ, r > 0 ∧
-      (curve ∩ Metric.sphere p r).ncard > 2
-
 /--
 **Weakened Curve Conjecture:**
 Bárány and Roldán-Pensado proved that for any planar convex body,
@@ -286,11 +268,6 @@ intersects the boundary in at most O(1) points (constant depending on the body).
 
 They conjecture this can be bounded by an absolute constant.
 -/
-axiom barany_roldan_pensado :
-  ∀ (K : Set Plane), Convex ℝ K → K.Nonempty → IsClosed K →
-    ∃ C : ℕ, ∃ p ∈ frontier K, ∀ r : ℝ, r > 0 →
-      (frontier K ∩ Metric.sphere p r).ncard ≤ C
-
 /-
 ## Part IX: Gap Analysis
 

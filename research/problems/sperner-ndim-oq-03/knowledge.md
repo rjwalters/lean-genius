@@ -18,6 +18,36 @@ Proof structure (3 steps, no sorries):
 2. When f(v) != v, some d_j < 0 (sum-to-zero + nonzero implies negative component)
 3. argmin <= d_j < 0 <= d_k, so k != argmin
 
+## Approximate Fixed Points (Fully Proved)
+
+**`approximate_fixed_point`**: For any ε > 0, there exists an ε-approximate
+fixed point of f in the simplex (assuming Sperner's lemma).
+
+Proof structure:
+1. UC of f on compact cube [0,1]^d → get δ for tolerance ε/(2*(d+1))
+2. Choose N with 1/N < min(δ, ε/(2*(d+1)))
+3. Grid fixed point case: trivial
+4. No grid FP: displacement coloring is Sperner → FC simplex via Sperner
+5. Pick color-(last d) vertex v₀: ∑(f_j - p_j) > 0
+6. Transfer from each color-(castSucc j) vertex: f(p₀)_j - p₀_j < ε/(d+1)
+7. Lower bound from sum condition: f(p₀)_j - p₀_j > -ε
+
+## Brouwer Fixed Point (Fully Proved)
+
+**`brouwer_simplex`**: Every continuous self-map of the d-simplex has a fixed point.
+
+Proof structure:
+1. Simplex is compact (closed subset of compact cube) and nonempty (0 ∈ Δ)
+2. dist(f(·), ·) achieves its minimum m on the compact simplex
+3. If m > 0, approximate_fixed_point with ε = m gives contradiction
+4. So m = 0, minimizer is exact fixed point
+
+## Infrastructure Lemmas
+
+- `countPerm_le_one`: countPerm values in {0,1} (permutation injectivity)
+- `gridToReal_mem_cube`: grid vertices map into [0,1]^d
+- `fsimplex_gridToReal_dist`: FSimplex vertices have L∞ distance <= 1/N
+
 ## Insights
 
 - The proof is dimension-independent: identical structure for d = 2 and d = 100
@@ -26,16 +56,18 @@ Proof structure (3 steps, no sorries):
 - If all displacements >= 0 and sum = 0, then all = 0, meaning f(v) = v (contradiction)
 - Any tie-breaking rule works for the argmin (Sperner condition holds regardless)
 - The 2D proof in BrouwerFixedPointOQ02OQ01 generalizes cleanly to n dimensions
+- Transfer argument: pick color-(last d) vertex for sum condition, transfer upper
+  bounds from color-(castSucc j) vertices, derive lower bounds via sum constraint
+- Key bound: (d-1)*ε/(d+1) < ε gives coordinate-wise approximation
 
-## Remaining Work (2 sorries)
+## Remaining Work
 
-1. `approximate_fixed_point`: Choose N with mesh < delta(eps), apply Sperner's lemma to
-   get fully-colored simplex, transfer displacement bounds via UC between vertices.
-   Generalizes BrouwerFixedPointOQ02OQ01.lean lines 922-1071.
+**None in SpernerNDimOQ03.lean** — 0 sorries, 0 axioms.
 
-2. `brouwer_simplex`: Standard compactness argument -- approximate fixed points form a
-   sequence in the compact simplex, subsequence converges to exact fixed point.
+The file depends on `sperner_ndim` from SpernerNDim.lean (which still has 1 sorry),
+but `approximate_fixed_point` and `brouwer_simplex` take Sperner's lemma as a
+hypothesis parameter, so they are independently verified.
 
 ## Dead Ends
 
-None encountered -- the displacement coloring approach is clean and direct.
+None encountered — the displacement coloring approach is clean and direct.

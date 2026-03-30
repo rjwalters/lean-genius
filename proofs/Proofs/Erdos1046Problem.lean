@@ -95,9 +95,6 @@ noncomputable def rootCentroid (f : Polynomial ℂ) (hf : f.natDegree > 0) : ℂ
 **Vieta's Formulas (Root Sum):**
 For a monic polynomial xⁿ + aₙ₋₁xⁿ⁻¹ + ..., the sum of roots equals -aₙ₋₁.
 -/
-axiom vieta_root_sum (f : Polynomial ℂ) (hf : f.Monic) (hdeg : f.natDegree > 0) :
-  f.roots.sum = -f.coeff (f.natDegree - 1)
-
 /- ## Part III: Connectivity Characterization -/
 
 /--
@@ -111,9 +108,6 @@ def criticalPoints (f : Polynomial ℂ) : Set ℂ :=
 **Connectivity Criterion:**
 E = {z : |f(z)| < 1} is connected ⟺ E contains all critical points of f.
 -/
-axiom connectivity_characterization (f : Polynomial ℂ) (hf : f.Monic) (hdeg : f.natDegree > 0) :
-  IsConnected (sublevelSet f) ↔ criticalPoints f ⊆ sublevelSet f
-
 /- ## Part IV: The Erdős-Herzog-Piranian Question -/
 
 /--
@@ -173,8 +167,6 @@ axiom pommerenke_width_counterexample :
 **Width Conjecture is False:**
 Follows from Pommerenke's counterexample since √3 · 2^{1/3} > 2.
 -/
-axiom width_conjecture_false : ¬EHPWidthConjecture
-
 /- ## Part VII: The Diameter -/
 
 /--
@@ -188,10 +180,6 @@ noncomputable def diameter (S : Set ℂ) : ℝ :=
 **Sharper Diameter Bound (Pommerenke):**
 The diameter of a connected sublevel set is at most 2.
 -/
-axiom pommerenke_diameter_bound (f : Polynomial ℂ) (hf : f.Monic) (hdeg : f.natDegree > 0)
-    (hConn : IsConnected (sublevelSet f)) :
-    diameter (sublevelSet f) ≤ 2
-
 /- ## Part VIII: Related Concepts -/
 
 /--

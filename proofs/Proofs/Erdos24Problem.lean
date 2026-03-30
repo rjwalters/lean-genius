@@ -161,15 +161,6 @@ axiom grzesik_hatami_theorem (n : ℕ) (hn : 0 < n) :
 When |V| = 5n, the only triangle-free graph with exactly n⁵ copies of C₅
 is the balanced blow-up of C₅.
 -/
-axiom uniqueness_of_extremal (n : ℕ) (hn : 0 < n) :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    Fintype.card V = 5 * n →
-    IsTriangleFree G →
-    countC5 G = n^5 →
-    -- G is isomorphic to balancedBlowupC5 n
-    ∃ (φ : V → Fin 5 × Fin n), Function.Bijective φ ∧
-      ∀ v w : V, G.Adj v w ↔ (balancedBlowupC5 n).Adj (φ v) (φ w)
-
 /-
 ## Historical Progress
 
@@ -181,13 +172,6 @@ The problem had several partial results before the complete solution.
 Before flag algebras, Győri proved that triangle-free graphs on 5n vertices
 have at most about 1.03n⁵ copies of C₅. This was later improved by Füredi.
 -/
-axiom gyori_bound (n : ℕ) (hn : 0 < n) :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    Fintype.card V = 5 * n →
-    IsTriangleFree G →
-    -- 100 * countC5 G ≤ 103 * n^5 (integer form of 1.03)
-    100 * countC5 G ≤ 103 * n^5
-
 /-
 ## Erdős's Generalization
 

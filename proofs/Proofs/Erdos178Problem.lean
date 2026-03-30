@@ -96,10 +96,6 @@ axiom beck_1981 :
     ∀ family : SeqFamily, ExistsBoundedSigning family
 
 /-- The key insight: the bound C can be chosen to depend only on d, not on the specific family -/
-axiom beck_uniform_bound :
-    ∃ C_func : ℕ → ℕ, ∀ family : SeqFamily, ∀ d : ℕ,
-      ∃ f : SigningFunction, IsValidSigning f ∧ HasBoundedDiscrepancy f family d (C_func d)
-
 /-
 ## Part 5: Beck's Improvement (2017)
 
@@ -119,18 +115,10 @@ axiom beck_2017 :
     For finite set systems with n sets over n elements, the discrepancy is O(√n).
     Problem #178 extends these ideas to infinite collections of infinite sequences.
     The infinite case requires new methods beyond Spencer's approach. -/
-axiom spencer_finite_discrepancy :
-    ∀ n : ℕ, n ≥ 1 →
-      ∃ C : ℝ, C > 0 ∧ C ≤ 6 * Real.sqrt n
-
 /-- **Erdős-Ginzburg-Ziv Connection:**
     Among 2n-1 integers, some n have sum divisible by n.
     Problem #178 asks about balanced colorings rather than zero-sum subsequences,
     but both concern controlling sums in combinatorial structures. -/
-axiom egz_theorem :
-    ∀ (n : ℕ) (hn : n ≥ 1) (a : Fin (2 * n - 1) → ℤ),
-      ∃ S : Finset (Fin (2 * n - 1)), S.card = n ∧ (S.sum a) % n = 0
-
 /- ## Part 7: Why the Problem is Hard -/
 
 /-- **Non-Uniform Case:**
@@ -145,10 +133,6 @@ theorem non_uniform_trivial (family : SeqFamily) (d : ℕ) :
 /-- **Probabilistic Method Limitation:**
     Random signings give expected discrepancy O(√m) by the central limit theorem.
     But we need O_d(1) independent of m, showing random methods are insufficient. -/
-axiom random_signing_lower_bound :
-    ∀ m : ℕ, m ≥ 1 →
-      ∃ c : ℝ, c > 0 ∧ c ≤ Real.sqrt m
-
 /- ## Part 8: Connections and Open Questions -/
 
 /-- The exponent 4 in Beck's bound d^(4+ε) may not be optimal.

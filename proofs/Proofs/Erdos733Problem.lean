@@ -117,20 +117,10 @@ For n points and m lines in the plane, the number of incidences
 
 This is a fundamental result in combinatorial geometry.
 -/
-axiom szemeredi_trotter (P : PointSet) (L : Finset (Set (ℝ × ℝ))) :
-  ∃ C : ℝ, C > 0 ∧
-    (Finset.sum P fun p => (L.filter (fun ℓ => p ∈ ℓ)).card : ℝ) ≤
-    C * ((P.card : ℝ)^(2/3 : ℝ) * (L.card : ℝ)^(2/3 : ℝ) + P.card + L.card)
-
 /--
 **Consequence for Rich Lines:**
 The number of k-rich lines (lines with ≥ k points) is O(n²/k³ + n/k).
 -/
-axiom rich_lines_bound (P : PointSet) (k : ℕ) (hk : k ≥ 2) :
-  ∃ C : ℝ, C > 0 ∧
-    ((richLines P).filter (fun L => pointsOnLine P L ≥ k)).card ≤
-    C * ((P.card : ℝ)^2 / (k : ℝ)^3 + (P.card : ℝ) / k)
-
 /-
 ## Part IV: Lower Bound
 
@@ -182,13 +172,6 @@ axiom upper_bound :
 The total incidences from lines with exactly k points is bounded.
 Summing over k gives control on the sequence count.
 -/
-axiom incidence_control (n : ℕ) :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ P : PointSet, P.card = n →
-      Finset.sum (Finset.range (n + 1)) (fun k =>
-        if k ≥ 2 then k * ((richLines P).filter (fun L => pointsOnLine P L = k)).card
-        else 0) ≤ C * n^(3/2 : ℝ)
-
 /-
 ## Part VI: The Main Result
 

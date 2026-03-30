@@ -141,21 +141,12 @@ Known cases where the conjecture is verified.
 -/
 
 /-- Kleitman's result: conjecture holds when n = rk -/
-axiom kleitman_exact :
-  ∀ r k : ℕ, r ≥ 2 → k ≥ 1 →
-    f (r * k) r k = construction1 r k
-
 /-- Huang-Loh-Sudakov: conjecture holds for n ≥ 3kr² -/
 axiom huang_loh_sudakov :
   ∀ r k : ℕ, r ≥ 3 → k ≥ 1 →
     ∀ n ≥ 3 * k * r^2, f n r k = conjecturedValue n r k
 
 /-- Frankl's small n result -/
-axiom frankl_small_n :
-  ∀ r k : ℕ, r ≥ 3 → k ≥ 1 →
-    ∀ n : ℕ, r * k ≤ n → n ≤ r * k + k / (2 * r^(2*r + 1)) →
-    f n r k = construction1 r k
-
 /-
 ## Upper Bounds
 
@@ -249,13 +240,7 @@ theorem combined_lower_bound (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n
 -/
 
 /-- f is increasing in n -/
-axiom f_mono_n :
-  ∀ n₁ n₂ r k : ℕ, n₁ ≤ n₂ → f n₁ r k ≤ f n₂ r k
-
 /-- f is increasing in k -/
-axiom f_mono_k :
-  ∀ n r k₁ k₂ : ℕ, k₁ ≤ k₂ → f n r k₁ ≤ f n r k₂
-
 /-
 ## Asymptotic Behavior
 
@@ -319,11 +304,6 @@ theorem large_n_construction2_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1
       _ > c1 := by omega
 
 /-- Asymptotic: f(n; r, k) ~ (k-1)·n^{r-1}/(r-1)! as n → ∞ -/
-axiom f_asymptotic :
-  ∀ r k : ℕ, r ≥ 2 → k ≥ 1 →
-    Filter.Tendsto (fun n => (f n r k : ℝ) / ((k - 1 : ℝ) * n^(r - 1) / (r - 1).factorial))
-      Filter.atTop (nhds 1)
-
 /-
 ## The Open Problem
 

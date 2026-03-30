@@ -109,8 +109,6 @@ noncomputable def f_example : Polynomial ℤ := X^4 + 2
 **n⁴ + 2 is irreducible:**
 This follows from Eisenstein's criterion with p = 2.
 -/
-axiom f_example_irreducible : IsIrreducible f_example
-
 /-
 ## Part III: Density of Power-Free Values
 -/
@@ -133,13 +131,6 @@ noncomputable def powerFreeDensity (f : Polynomial ℤ) (k : ℕ) (x : ℕ) : �
 If f is an irreducible polynomial of degree d > 2 with d ≠ 2^l, then
 there are infinitely many n such that f(n) is (d-1)-power-free.
 -/
-axiom erdos_1953_infinitely_many :
-  ∀ f : Polynomial ℤ, IsIrreducible f →
-    f.natDegree > 2 →
-    (∀ l : ℕ, f.natDegree ≠ 2^l) →
-      ∀ N : ℕ, ∃ n : ℕ, n > N ∧
-        IsPowerFree (f.natDegree - 1) (f.eval n).natAbs
-
 /-
 ## Part V: Hooley's Positive Density (1967)
 -/
@@ -178,12 +169,6 @@ theorem first_question_yes :
 **Heath-Brown 2006:**
 For k ≥ 10, there are infinitely many n with f(n) being (k-2)-power-free.
 -/
-axiom heath_brown_2006 :
-  ∀ f : Polynomial ℤ, IsIrreducible f →
-    f.natDegree ≥ 10 →
-      ∀ N : ℕ, ∃ n : ℕ, n > N ∧
-        IsPowerFree (f.natDegree - 2) (f.eval n).natAbs
-
 /--
 **Browning 2011:**
 Extended to k ≥ 9 with an asymptotic formula.

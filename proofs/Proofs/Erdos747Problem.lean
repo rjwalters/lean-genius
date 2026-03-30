@@ -182,12 +182,6 @@ axiom kahn_precise_threshold :
 **General r-uniform Case:**
 For r-uniform hypergraphs on rn vertices, the threshold is also ~ n log n.
 -/
-axiom kahn_general_r (r : ℕ) (hr : r ≥ 2) :
-  ∃ ℓ : ℕ → ℕ, Filter.Tendsto
-    (fun n : ℕ => (ℓ n : ℝ) / (n * Real.log n))
-    Filter.atTop
-    (nhds 1)
-
 /-
 ## Part VI: Below the Threshold
 -/
@@ -205,11 +199,6 @@ axiom below_threshold_fails :
 **Isolated Vertices Obstruction:**
 The main obstruction below the threshold is the existence of isolated vertices.
 -/
-axiom isolated_vertices_obstruction :
-  ∀ ε > 0, AlmostSurely (fun n =>
-    ∃ v : Fin (3 * n), ∀ (e : Finset (Fin (3 * n))), e.card = 3 → v ∉ e)
-  -- Below threshold, isolated vertices (in no hyperedge) exist w.h.p.
-
 /-
 ## Part VII: Above the Threshold
 -/
@@ -239,12 +228,6 @@ The proof uses sophisticated probabilistic techniques including:
 For ordinary graphs on 2n vertices, the perfect matching threshold
 is also ≍ n log n (well-known classical result).
 -/
-axiom graph_matching_threshold :
-  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      c * n * Real.log n ≤ shamirThreshold n ∧
-      shamirThreshold n ≤ C * n * Real.log n
-
 /-
 **The Surprise:**
 The same threshold n log n works for ALL uniformities r ≥ 2.

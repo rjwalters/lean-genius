@@ -66,9 +66,6 @@ That is, ω² → (ω², 3)².
 Specker showed that any 2-coloring of pairs from ω² must contain either
 a red copy of ω² or a blue triangle.
 -/
-axiom specker_omega_squared :
-    OrdinalRamseyProperty (ω ^ 2) 3
-
 /--
 Specker also showed the property FAILS for α = ω^n when 3 ≤ n < ω.
 There exist colorings of K_{ω^n} with no red K_{ω^n} and no blue K_3.
@@ -76,18 +73,12 @@ There exist colorings of K_{ω^n} with no red K_{ω^n} and no blue K_3.
 This is surprising: larger ordinals can actually have WORSE Ramsey properties!
 The gap between ω² (works) and ω³ (fails) is remarkable.
 -/
-axiom specker_omega_power_n_fails (n : ℕ) (hn : 3 ≤ n) :
-    ¬ OrdinalRamseyProperty (ω ^ n) 3
-
 /--
 Chang's theorem: The property holds for α = ω^ω.
 This is Erdős Problem 590.
 
 Despite ω³, ω⁴, ... all failing, the limit ordinal ω^ω works again!
 -/
-axiom chang_omega_omega :
-    OrdinalRamseyProperty (ω ^ ω) 3
-
 /-
 ## The Solved Problem
 

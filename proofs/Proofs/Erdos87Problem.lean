@@ -27,26 +27,17 @@ open SimpleGraph Finset
 axiom diagonalRamsey : ℕ → ℕ
 
 /-- `diagonalRamsey k` is always positive for `k ≥ 1`. -/
-axiom diagonalRamsey_pos (k : ℕ) (hk : 1 ≤ k) : 0 < diagonalRamsey k
-
 /-- The graph Ramsey number: smallest `N` such that every 2-colouring of
 `K_N` contains a monochromatic copy of `G`. -/
 axiom graphRamsey (n : ℕ) : SimpleGraph (Fin n) → ℕ
 
 /-- Graph Ramsey number is positive. -/
-axiom graphRamsey_pos (n : ℕ) (G : SimpleGraph (Fin n)) : 0 < graphRamsey n G
-
 /-- The chromatic number of a finite simple graph: the minimum number of
 colours needed to properly colour its vertices. -/
 axiom chromaticNumber {n : ℕ} : SimpleGraph (Fin n) → ℕ
 
 /-- The chromatic number is at most the number of vertices. -/
-axiom chromaticNumber_le (n : ℕ) (G : SimpleGraph (Fin n)) : chromaticNumber G ≤ n
-
 /-- The chromatic number is at least 1 for non-empty vertex sets. -/
-axiom chromaticNumber_pos (n : ℕ) (hn : 0 < n) (G : SimpleGraph (Fin n)) :
-    0 < chromaticNumber G
-
 /- ## Main conjecture -/
 
 /-- Erdős Problem 87 (weak form): For every `ε > 0`, if `k` is large enough,
@@ -70,20 +61,8 @@ def ErdosProblem87_strong : Prop :=
 /- ## Known bounds -/
 
 /-- Random colouring bound: `R(G) ≫ 2^{k/2}` for `χ(G) = k`. -/
-axiom graphRamsey_exponential_lower :
-    ∃ C : ℝ, 0 < C ∧ ∀ k : ℕ, 2 ≤ k →
-      ∀ (G : SimpleGraph (Fin k)),
-        chromaticNumber G = k →
-          C * 2 ^ (k / 2 : ℝ) ≤ (graphRamsey k G : ℝ)
-
 /-- Upper bound: `R(k) ≤ 4^k`. -/
-axiom diagonalRamsey_upper (k : ℕ) :
-    (diagonalRamsey k : ℝ) ≤ 4 ^ (k : ℝ)
-
 /- ## Counterexample to original conjecture -/
 
 /-- Faudree–McKay: `R(W) = 17` for the pentagonal wheel `W` with `χ(W) = 4`,
 while `R(4) = 18`, disproving `R(G) ≥ R(k)`. -/
-axiom faudree_mckay_counterexample :
-    ∃ (W : SimpleGraph (Fin 6)),
-      chromaticNumber W = 4 ∧ graphRamsey 6 W = 17 ∧ diagonalRamsey 4 = 18

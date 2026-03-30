@@ -84,8 +84,6 @@ noncomputable def g (k n : ℕ) : ℕ :=
 **g is well-defined:**
 The maximum exists since we're optimizing over a finite set.
 -/
-axiom g_well_defined (k n : ℕ) (hk : k ≥ 2) : g k n ≤ n
-
 /-
 ## Part III: Erdős's First-Order Asymptotics
 -/
@@ -101,11 +99,6 @@ noncomputable def omega_count (n r : ℕ) : ℕ :=
 **Asymptotic Formula for omega_count:**
 |{m ≤ n : ω(m) = r}| ~ ((log log n)^{r-1} / (r-1)!) · n/log n
 -/
-axiom omega_count_asymptotic (r : ℕ) (hr : r ≥ 1) :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop,
-      |((omega_count n r : ℝ) - (Real.log (Real.log n))^(r-1) / (r-1).factorial *
-        n / Real.log n)| < ε * n / Real.log n
-
 /--
 **Erdős (1964) Main Theorem:**
 For 2^{r-1} < k ≤ 2^r, we have g_k(n) ~ ω-count with r factors.
@@ -178,10 +171,6 @@ def erdosConjecture796 : Prop :=
 For k = 2, we need A with no m having ≥2 representations.
 This is closely related to the prime counting function.
 -/
-axiom g2_asymptotic :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop,
-      |((g 2 n : ℝ) - n / Real.log n)| < ε * n / Real.log n
-
 /-
 ## Part VII: Optimal Sets
 -/
@@ -198,11 +187,6 @@ def IsNearOptimal3 (A : Finset ℕ) (n : ℕ) : Prop :=
 **Optimal sets resemble Ω=2 integers:**
 Integers with exactly 2 prime factors (with multiplicity).
 -/
-axiom optimal_sets_structure :
-    ∀ᶠ n in Filter.atTop, ∃ A : Finset ℕ,
-      IsNearOptimal3 A n ∧
-      (A.filter (fun m => m.factors.length = 2)).card ≥ A.card / 2
-
 /-
 ## Part VIII: Multiplicative Structure
 -/
@@ -212,10 +196,6 @@ axiom optimal_sets_structure :
 If τ(m) = d (divisor count), then m has ≤ d/2 representations.
 Numbers with τ(m) ≤ 2k-1 are "safe" for g_k.
 -/
-axiom divisor_connection (m k : ℕ) (hk : k ≥ 2) :
-    Nat.divisors m |>.card ≤ 2 * k - 1 →
-      ∀ A : Finset ℕ, repCount A m < k
-
 /-
 ## Part IX: Summary
 

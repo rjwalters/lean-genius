@@ -83,9 +83,6 @@ theorem sublevelSet_nonempty (f : Polynomial ℂ) (hf : f.natDegree > 0) :
   exact ⟨z, roots_in_sublevel f z hz⟩
 
 /-- The sublevel set is compact. -/
-axiom sublevelSet_compact (f : Polynomial ℂ) (hf : f.Monic) (hd : f.natDegree > 0) :
-    IsCompact (sublevelSet f)
-
 /- ## Part III: The Main Conjecture -/
 
 /--
@@ -97,8 +94,6 @@ For every monic non-constant polynomial f ∈ ℂ[z], the sublevel set
 def erdos509Conjecture : Prop :=
   ∀ f : Polynomial ℂ, f.Monic → f.natDegree > 0 →
     canBeCovered (sublevelSet f) 2
-
-axiom erdos_509 : erdos509Conjecture
 
 /- ## Part IV: Known Results -/
 
@@ -123,10 +118,6 @@ axiom pommerenke_bound : ∀ f : Polynomial ℂ, f.Monic → f.natDegree > 0 →
 
 When the sublevel set is connected, total radius 2 suffices.
 -/
-axiom pommerenke_connected : ∀ f : Polynomial ℂ, f.Monic → f.natDegree > 0 →
-    IsConnected (sublevelSet f) →
-    canBeCovered (sublevelSet f) 2
-
 /- ## Part V: Structure of Sublevel Sets -/
 
 /--
@@ -136,9 +127,6 @@ For a degree-n polynomial, the sublevel set has at most n connected
 components, each containing at least one root.
 -/
 /-- The sublevel set is bounded: contained in a closed ball of radius R. -/
-axiom sublevelSet_bounded (f : Polynomial ℂ) (hf : f.Monic) (hd : f.natDegree > 0) :
-    ∃ R : ℝ, R > 0 ∧ sublevelSet f ⊆ closedBall (0 : ℂ) R
-
 /--
 **Simple Case: Linear Polynomial**
 

@@ -142,8 +142,6 @@ This requires the fundamental theorem of algebra and is complex to formalize.
 
 /-- The number of roots of p (with multiplicity) in the unit disk.
 This is axiomatized as it requires splitting fields and careful counting. -/
-axiom rootsInUnitDisk : ℂ[X] → ℕ
-
 /-
 ## The Main Results
 -/
@@ -212,9 +210,6 @@ noncomputable def geometricPoly (n : ℕ) : ℂ[X] :=
   ∑ i : Fin (n + 1), X ^ (i : ℕ)
 
 /-- All roots of the geometric polynomial lie on the unit circle (n-th roots of unity). -/
-axiom geometric_roots_on_circle (n : ℕ) (hn : 0 < n) (z : ℂ) :
-  (geometricPoly n).eval z = 0 → z ∈ unitCircle
-
 /-
 ## Connection to Other Areas
 -/

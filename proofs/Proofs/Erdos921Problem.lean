@@ -49,14 +49,10 @@ structure Graph (V : Type*) where
 A proper k-coloring assigns colors 1,...,k to vertices such that
 adjacent vertices get different colors.
 -/
-axiom chromaticNumber {V : Type*} (G : Graph V) : ℕ
-
 /--
 **Odd girth:**
 The length of the shortest odd cycle in G, or 0 if G is bipartite.
 -/
-axiom oddGirth {V : Type*} (G : Graph V) : ℕ
-
 /--
 **The function f_k(n):**
 f_k(n) = largest m such that there exists a graph G on n vertices
@@ -71,9 +67,6 @@ axiom f (k n : ℕ) : ℕ
 **Basic property: f_k(n) is well-defined for k ≥ 4:**
 Graphs with high chromatic number but large odd girth exist.
 -/
-axiom f_well_defined (k n : ℕ) :
-    k ≥ 4 → n ≥ k → f k n ≥ 1
-
 /-
 ## Part II: The Main Conjecture
 -/
@@ -139,18 +132,10 @@ theorem k4_case :
 **Lower bound for general k:**
 f_k(n) ≫ n^{1/(k-2)} for all k ≥ 4.
 -/
-axiom general_lower_bound (k : ℕ) :
-    k ≥ 4 →
-    ∃ c : ℝ, c > 0 ∧ ∀ n ≥ k, (f k n : ℝ) ≥ c * (n : ℝ) ^ (1 / (k - 2 : ℝ))
-
 /--
 **Upper bound for general k:**
 f_k(n) ≪ n^{1/(k-2)} for all k ≥ 4.
 -/
-axiom general_upper_bound (k : ℕ) :
-    k ≥ 4 →
-    ∃ C : ℝ, C > 0 ∧ ∀ n ≥ k, (f k n : ℝ) ≤ C * (n : ℝ) ^ (1 / (k - 2 : ℝ))
-
 /-
 ## Part V: Summary
 -/

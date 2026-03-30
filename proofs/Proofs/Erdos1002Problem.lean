@@ -122,9 +122,6 @@ noncomputable def cauchyDistribution (ρ : ℝ) (c : ℝ) : ℝ :=
   1 / π * Real.arctan (ρ * c) + 1 / 2
 
 /-- The Cauchy distribution function is a valid distribution function. -/
-axiom cauchy_is_distribution (ρ : ℝ) (hρ : ρ > 0) :
-    IsDistributionFunction (cauchyDistribution ρ)
-
 /-- Two-parameter level set. -/
 def twoParamLevelSet (n : ℕ) (c : ℝ) : Set (ℝ × ℝ) :=
   { p : ℝ × ℝ | p.1 ∈ Ioo 0 1 ∧ p.2 ∈ Ioo 0 1 ∧ twoParamF p.1 p.2 n ≤ c }
@@ -132,13 +129,6 @@ def twoParamLevelSet (n : ℕ) (c : ℝ) : Set (ℝ × ℝ) :=
 /-- Kesten (1960): The two-parameter variant has Cauchy limit distribution.
     There exists ρ > 0 such that the level set measure converges to
     g(c) = (1/π) arctan(ρc) + 1/2. -/
-axiom kesten_theorem :
-    ∃ ρ : ℝ, ρ > 0 ∧
-      ∀ c : ℝ, Tendsto
-        (fun n => (volume (twoParamLevelSet n c)).toReal)
-        atTop
-        (nhds (cauchyDistribution ρ c))
-
 /-
 ## Relationship Between Problems
 
@@ -158,14 +148,8 @@ Fixing β = 0 destroys the ergodic independence Kesten used.
 -/
 
 /-- For fixed irrational α, f(α, n) is bounded (does not diverge). -/
-axiom f_bounded_for_irrational (α : ℝ) (hα : Irrational α) (hα01 : α ∈ Ioo 0 1) :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → |f α n| ≤ C
-
 /-- The inner sum |S(α, n)| ≤ C · log n for irrational α,
     where C depends on α's continued fraction expansion. -/
-axiom innerSum_log_bound (α : ℝ) (hα : Irrational α) (hα01 : α ∈ Ioo 0 1) :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → |innerSum α n| ≤ C * Real.log n
-
 /-
 ## Partial Results
 
@@ -175,13 +159,7 @@ justifying the log n normalization.
 
 /-- Weyl equidistribution: The average deviation tends to zero.
     This means (1/n) Σ (1/2 - {αk}) → 0 for irrational α. -/
-axiom weyl_equidistribution (α : ℝ) (hα : Irrational α) :
-    Tendsto (fun n => innerSum α n / n) atTop (nhds 0)
-
 /-- For rational α = p/q, the sum S(α, n) is periodic with period q. -/
-axiom innerSum_periodic_rational (p : ℤ) (q : ℕ) (hq : q ≥ 1) (hcop : Int.gcd p q = 1) :
-    ∀ n : ℕ, innerSum (p / q) (n + q) = innerSum (p / q) n + innerSum (p / q) q
-
 /-
 ## Summary
 

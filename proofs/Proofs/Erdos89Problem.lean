@@ -98,20 +98,12 @@ distinct distances.
 
 This is weaker than Erdős's conjecture by a factor of √(log n).
 -/
-axiom guthKatz :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
-    c * n / Real.log n ≤ minDistinctDistances n
-
 /--
 **Upper Bound Construction**
 
 The √n × √n integer grid achieves only O(n/√(log n)) distinct distances.
 This shows Erdős's conjecture would be tight if true.
 -/
-axiom gridUpperBound :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
-    minDistinctDistances n ≤ c * n / Real.sqrt (Real.log n)
-
 /-
 ## Consistency Check
 
@@ -210,19 +202,11 @@ The gap between Ω(n/log n) and O(n/√(log n)) remains open.
 
 The first significant progress: Ω(n^(4/5)) distinct distances.
 -/
-axiom chung1992 :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
-    c * (n : ℝ)^(4/5 : ℝ) ≤ minDistinctDistances n
-
 /--
 **Tardos Bound (2004)**
 
 An exponent improvement: Ω(n^0.8641...).
 -/
-axiom tardos2004 :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
-    c * (n : ℝ)^((4 * Real.exp 1)/(5 * Real.exp 1 - 1) : ℝ) ≤ minDistinctDistances n
-
 /-
 ## Related Problems
 

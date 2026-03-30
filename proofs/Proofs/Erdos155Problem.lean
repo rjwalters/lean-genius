@@ -119,10 +119,6 @@ axiom erdos_turan_upper (N : ℕ) (hN : N ≥ 1) :
 
 /-- Lower bound: F(N) ≥ (1 - o(1))·√N.
     Singer's construction and refinements give Sidon sets of size ~√N. -/
-axiom sidon_lower_asymptotic :
-    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-      (maxSidonSize N : ℝ) ≥ (1 - ε) * Real.sqrt (N : ℝ)
-
 /- ## The Main Conjecture -/
 
 /-- Erdős Problem #155: For every k ≥ 1, F(N+k) ≤ F(N) + 1
@@ -130,18 +126,11 @@ axiom sidon_lower_asymptotic :
 
     This says F(N) can increase by at most 1 over any fixed-length
     interval [N, N+k], once N is large enough (depending on k). -/
-axiom erdos_155_conjecture (k : ℕ) (hk : k ≥ 1) :
-    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → maxSidonSize (N + k) ≤ maxSidonSize N + 1
-
 /- ## Stronger Form -/
 
 /-- The stronger conjecture: F(N+k) ≤ F(N) + 1 holds even for
     k ≈ ε·√N, i.e., F increases by at most 1 over intervals
     of length proportional to √N. -/
-axiom erdos_155_strong (ε : ℝ) (hε : ε > 0) :
-    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-      maxSidonSize (N + Nat.floor (ε * Real.sqrt (N : ℝ))) ≤ maxSidonSize N + 1
-
 /- ## Consequences -/
 
 /-- The number of increase points N < M where F(N+1) > F(N) is at most F(M).
@@ -171,12 +160,6 @@ theorem increase_count_le (M : ℕ) :
     below M is at most (1+ε)√M. Follows from increase_count_le (count ≤ F(M))
     and erdos_turan_upper (F(M) ≤ √M + M^{1/4} + 1). The remaining gap is
     the elementary inequality M^{1/4} + 1 ≤ ε√M for large M. -/
-axiom increase_points_sparse :
-    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ M : ℕ, M ≥ N₀ →
-      (Finset.card (Finset.filter
-        (fun N => maxSidonSize (N + 1) > maxSidonSize N)
-        (Finset.range M)) : ℝ) ≤ (1 + ε) * Real.sqrt (M : ℝ)
-
 /- ## Small Values (OEIS A003022) -/
 
 /-- F(1) = 1: {1} is the largest Sidon subset of {1}. -/
@@ -214,5 +197,3 @@ theorem maxSidonSize_3 : maxSidonSize 3 = 3 := by
 
 /-- Known small values for larger N (OEIS A003022).
     F(6)=4, F(11)=5, F(18)=6. -/
-axiom small_values_large :
-    maxSidonSize 6 = 4 ∧ maxSidonSize 11 = 5 ∧ maxSidonSize 18 = 6

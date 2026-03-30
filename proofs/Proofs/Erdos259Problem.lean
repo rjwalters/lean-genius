@@ -206,9 +206,6 @@ def IsInfiniteSquarefreeSubset (S : Set ℕ) : Prop :=
     numbers is irrational.
 
     This generalizes erdos_259 (which is the case S = all squarefree numbers). -/
-axiom chen_ruzsa_strong (S : Set ℕ) [DecidablePred (· ∈ S)] (hS : IsInfiniteSquarefreeSubset S) :
-  ∀ x : ℝ, HasSum (fun n : ℕ => if n ∈ S then (n : ℝ) / (2 : ℝ) ^ n else 0) x → Irrational x
-
 /-
 ## Density of Squarefree Numbers
 
@@ -225,12 +222,6 @@ independent for different primes.
 
 Note: Squarefree n ↔ n.minSqFac = none for n > 0, so we use this
 computable characterization for the filter. -/
-axiom squarefree_density :
-  Filter.Tendsto
-    (fun N : ℕ => ((Finset.range N).filter (fun n => n.minSqFac = none)).card / (N : ℝ))
-    Filter.atTop
-    (nhds (6 / Real.pi ^ 2))
-
 /-
 ## Related Problems
 

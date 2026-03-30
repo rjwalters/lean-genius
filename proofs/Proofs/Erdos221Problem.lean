@@ -95,9 +95,6 @@ def Erdos221Conjecture : Prop :=
 -/
 
 /-- Lorentz (1954): There exists a complement with (log log N / log N) · N density -/
-axiom lorentz_1954 :
-  ∃ A : Set ℕ, IsComplementToPowersOfTwo A ∧ HasLorentzDensity A
-
 /-
 ## Part V: Ruzsa's Construction (1972)
 -/
@@ -114,10 +111,6 @@ def RuzsaSet : Set ℕ :=
   { x | x ∈ RuzsaCoreSet ∨ x + 1 ∈ RuzsaCoreSet }
 
 /-- 2 is a primitive root modulo 5^n for all n ≥ 1 -/
-axiom two_primitive_root_mod_five_power :
-  ∀ n : ℕ, n ≥ 1 → ∃ k : ℕ, k < 4 * 5^(n-1) ∧
-    ∀ j < k, (2^j : ZMod (5^n)) ≠ 1 ∧ (2^k : ZMod (5^n)) = 1
-
 /-- Ruzsa (1972): RuzsaSet is a complement to powers of 2 -/
 axiom ruzsa_is_complement : IsComplementToPowersOfTwo RuzsaSet
 
@@ -174,19 +167,7 @@ theorem optimal_density :
 /-- Why 5 is special: 2 is a primitive root mod 5^n.
     The multiplicative order of 2 mod 5^n is φ(5^n) = 4 · 5^(n-1).
     This means powers of 2 cycle through all residues coprime to 5^n. -/
-axiom primitive_root_order :
-  ∀ n : ℕ, n ≥ 1 →
-    -- The multiplicative order of 2 mod 5^n equals φ(5^n)
-    ∃ ord : ℕ, ord = 4 * 5^(n-1) ∧
-      (2^ord : ZMod (5^n)) = 1 ∧
-      ∀ j : ℕ, 0 < j → j < ord → (2^j : ZMod (5^n)) ≠ 1
-
 /-- The powers of 2 mod 5^n cover all residues coprime to 5 -/
-axiom powers_cover_residues :
-  ∀ n : ℕ, n ≥ 1 →
-    ∀ r : ℕ, Nat.Coprime r (5^n) →
-      ∃ k : ℕ, (2^k : ZMod (5^n)) = r
-
 /-
 ## Part X: Generalizations
 -/
@@ -197,12 +178,6 @@ def GeneralizedComplement (g : ℕ) (A : Set ℕ) : Prop :=
 
 /-- For any base g ≥ 2, sparse complements to powers of g exist.
     The density depends on the multiplicative structure of g modulo primes. -/
-axiom generalization_to_any_base :
-  ∀ g : ℕ, g ≥ 2 →
-    ∃ A : Set ℕ, GeneralizedComplement g A ∧
-      ∃ C > 0, ∀ N : ℕ, N ≥ 2 →
-        (countingFunction A N : ℝ) ≤ C * N / Real.log N
-
 /-
 ## Part XI: Related Problems
 -/
@@ -210,20 +185,10 @@ axiom generalization_to_any_base :
 /-- Connection to sumset problems:
     A + {2^k : k ≥ 0} covers all large integers.
     This is a "structured sumset" problem where one summand is fixed. -/
-axiom sumset_covering :
-  ∀ A : Set ℕ, IsComplementToPowersOfTwo A →
-    ∀ N₀ : ℕ, ∃ N₁ : ℕ, ∀ n ≥ N₁,
-      n ∈ { x | ∃ a ∈ A, ∃ k : ℕ, x = a + 2^k }
-
 /-- Additive bases connection:
     A set B is an additive basis of order h if hB covers all large integers.
     Problem #221 asks: can {2^k} + A = ℕ eventually, with A having density N/log N?
     This is an "order 2" basis question with one summand being powers of 2. -/
-axiom additive_basis_order_two :
-  ∀ A : Set ℕ, IsComplementToPowersOfTwo A ∧ HasDensityNOverLogN A →
-    -- A ∪ PowersOfTwo forms a thin additive basis of order 2
-    ∃ N₀ : ℕ, ∀ n ≥ N₀, ∃ a ∈ A, ∃ b ∈ PowersOfTwo, n = a + b
-
 /-
 ## Part XII: Summary
 -/

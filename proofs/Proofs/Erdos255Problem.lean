@@ -112,9 +112,6 @@ def hasLogarithmicDiscrepancy (z : ℕ → ℝ) (x : ℝ) : Prop :=
 /-- **Tijdeman-Wagner Theorem (1980):**
     For almost all x ∈ [0,1], limsup |D_N([0,x))| / log N ≫ 1.
     This is the best possible growth rate. -/
-axiom tijdeman_wagner_theorem (z : ℕ → ℝ) (hz : IsSequenceInUnitInterval z) :
-    ∀ᵐ x ∂MeasureTheory.volume, x ∈ Set.Icc (0:ℝ) 1 → hasLogarithmicDiscrepancy z x
-
 /- ## Part VI: Optimality -/
 
 /-- **Van der Corput Sequence:**
@@ -134,9 +131,6 @@ def isUniformlyDistributed (z : ℕ → ℝ) : Prop :=
     Filter.Tendsto (fun N => discrepancy z 0 x N / N) Filter.atTop (nhds 0)
 
 /-- **Weyl's Theorem:** (nα) mod 1 is uniformly distributed iff α is irrational. -/
-axiom weyl_theorem (α : ℝ) :
-    isUniformlyDistributed (fun n => (n : ℝ) * α - ⌊(n : ℝ) * α⌋) ↔ Irrational α
-
 /- ## Part VIII: Star Discrepancy -/
 
 /-- **Star Discrepancy D*_N:** The supremum of |D_N([0,x))| over all x ∈ [0,1]. -/
@@ -144,9 +138,6 @@ noncomputable def starDiscrepancy (z : ℕ → ℝ) (N : ℕ) : ℝ :=
   ⨆ x ∈ Set.Icc (0:ℝ) 1, absDiscrepancy z 0 x N
 
 /-- **Star discrepancy is unbounded** for any sequence, following from Schmidt's theorem. -/
-axiom star_discrepancy_unbounded (z : ℕ → ℝ) (hz : IsSequenceInUnitInterval z) :
-    ∀ M : ℝ, ∃ N : ℕ, starDiscrepancy z N > M
-
 /- ## Part IX: Summary -/
 
 /-- **Summary of Erdős Problem #255:**

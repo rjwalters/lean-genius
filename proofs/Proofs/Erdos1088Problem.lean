@@ -52,18 +52,8 @@ axiom f (d n : ℕ) : ℕ
 -/
 
 /-- f₁(n) ≍ n²: in one dimension, Θ(n²) points suffice and are necessary. -/
-axiom one_dim_bound :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-      c₁ * (n : ℝ)^2 ≤ (f 1 n : ℝ) ∧ (f 1 n : ℝ) ≤ c₂ * (n : ℝ)^2
-
 /-- f₂(3) = 7: exactly 7 points in the plane guarantee a triangle with distinct side lengths. -/
-axiom two_dim_three_points : f 2 3 = 7
-
 /-- f_d(3) = d²/2 + O(d) for the three-point case. -/
-axiom three_point_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ d : ℕ, d ≥ 1 →
-      |(f d 3 : ℝ) - (d : ℝ)^2 / 2| ≤ c * d
-
 /-- Erdős-Straus upper bound: f_d(n) ≤ c_n^d for some constant c_n. -/
 axiom erdos_straus_upper_bound (n : ℕ) (hn : n ≥ 3) :
     ∃ c : ℝ, c > 1 ∧ ∀ d : ℕ, d ≥ 1 → (f d n : ℝ) ≤ c ^ d
@@ -79,10 +69,6 @@ Equivalently: does log₂(f_d(n)) / d → 0 as d → ∞?
 The Erdős-Straus bound gives log₂(f_d(n)) ≤ C_n · d,
 so the question asks whether this can be improved to sublinear growth.
 -/
-axiom subexponential_conjecture :
-    ∀ n : ℕ, n ≥ 3 → ∀ ε : ℝ, ε > 0 →
-      ∃ D : ℕ, ∀ d : ℕ, d ≥ D → (f d n : ℝ) ≤ (2 : ℝ) ^ (ε * d)
-
 /-
 ## Part IV: Main Theorem
 -/

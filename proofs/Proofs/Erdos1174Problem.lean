@@ -150,12 +150,6 @@ For any 2-coloring of edges of K_ω, there exists a monochromatic K_ω.
 This uses the COMPLETE graph. Problem 1174 asks if the same holds
 with restricted host graphs.
 -/
-axiom infinite_ramsey_2color :
-  ∀ (f : ℕ → ℕ → Bool), (∀ i j, f i j = f j i) →
-    ∃ (S : Set ℕ) (c : Bool),
-      #S = Cardinal.aleph 0 ∧
-      ∀ i j, i ∈ S → j ∈ S → i ≠ j → f i j = c
-
 /--
 **Complete graph has the property trivially:**
 K_ω (the complete graph on ℕ) satisfies the coloring property
@@ -192,10 +186,6 @@ For each fixed k, there exists a K₄-free graph G with G → (3)²_k.
 This shows the finite-color version is achievable. The challenge
 in Problem 1174 is extending to countably many colors.
 -/
-axiom nesetril_rodl_context :
-  ∀ k : ℕ, ∃ (V : Type*) (G : SimpleGraph V),
-    IsK4Free G ∧ partitionProperty G 3 (k + 1)
-
 /-
 ## Part VI: Shelah's Consistency Results
 -/

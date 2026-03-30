@@ -146,14 +146,6 @@ axiom laczkovich_theorem :
       TranslationEquidecomposable (disk r) (square s)
 
 /-- The number of pieces in Laczkovich's proof is approximately 10^50. -/
-axiom laczkovich_piece_count :
-    ∃ N : ℕ, N < 10^51 ∧
-    ∀ r s : ℝ, r > 0 → s > 0 → SameArea r s →
-      ∃ (piecesA piecesB : Fin N → Set Point),
-        IsDecomposition (disk r) (Finset.univ.image piecesA) ∧
-        IsDecomposition (square s) (Finset.univ.image piecesB) ∧
-        ∀ i, TranslationCongruent (piecesA i) (piecesB i)
-
 /-- Translation equidecomposable implies isometry equidecomposable.
     Translations are isometries, so this follows immediately. -/
 axiom translation_implies_isometry (A B : Set Point) :
@@ -169,20 +161,7 @@ theorem tarski_solved : TarskiProblem := by
 -/
 
 /-- The pieces are not Lebesgue measurable. -/
-axiom pieces_not_measurable :
-    ∃ r s : ℝ, r > 0 ∧ s > 0 ∧ SameArea r s ∧
-    ∀ pieces : Finset (Set Point),
-      (IsDecomposition (disk r) pieces →
-       ∃ p ∈ pieces, ¬MeasurableSet p)
-
 /-- Dubins-Hirsch-Karush: Can't do it with measurable pieces. -/
-axiom dubins_hirsch_karush :
-    ¬∃ (n : ℕ) (piecesA piecesB : Fin n → Set Point),
-      IsDecomposition unitDisk (Finset.univ.image piecesA) ∧
-      IsDecomposition unitSquare (Finset.univ.image piecesB) ∧
-      (∀ i, MeasurableSet (piecesA i)) ∧
-      (∀ i, TranslationCongruent (piecesA i) (piecesB i))
-
 /-
 ## Part VII: Summary
 -/

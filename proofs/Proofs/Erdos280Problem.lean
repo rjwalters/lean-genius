@@ -76,21 +76,11 @@ theorem cambie_increasing : ∀ i j : ℕ, i < j → cambie_n i < cambie_n j := 
   exact Nat.pow_lt_pow_right (by norm_num : 1 < 2) hij
 
 /-- Cambie's sequence satisfies the growth bound (2^k ≫ k log k) -/
-axiom cambie_satisfies_growth :
-    ∃ ε : ℝ, SatisfiesGrowthBound cambie_n ε
-
 /-- Key insight: every m with 1 < m < 2^k is covered by some congruence class.
 Only m = 1 avoids all classes. The proof uses binary representation:
 for m > 1, the highest power of 2 dividing m identifies a covering class. -/
-axiom cambie_only_one_avoider :
-    ∀ k : ℕ, k ≥ 1 → ∀ m : ℕ, 1 < m → m < 2^k →
-      ∃ i : ℕ, i < k ∧ m % cambie_n (i+1) = cambie_a (i+1)
-
 /-- For Cambie's construction, the count of avoiders is exactly 1 (just m = 1).
 This directly contradicts the conjecture requiring count ≥ c·k. -/
-axiom cambie_count_is_one (k : ℕ) (hk : k ≥ 1) :
-    CountAvoiders (2^k) cambie_n cambie_a k = 1
-
 /- ## Part IV: Refutation of the Conjecture -/
 
 /-- The original conjecture is FALSE: Cambie's counterexample
@@ -105,11 +95,6 @@ theorem erdos_280_disproved : ¬OriginalConjecture := original_conjecture_false
 /-- The k-th prime pₖ ~ k log k (Prime Number Theorem).
 If nₖ < k log k were allowed, we could use primes as moduli,
 creating a much more constrained covering problem. -/
-axiom prime_number_theorem_approx :
-    ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 2 →
-      c * k * log k ≤ (Nat.nth Nat.Prime k : ℝ) ∧
-      (Nat.nth Nat.Prime k : ℝ) ≤ 2 * k * log k
-
 /- ## Part VI: Summary -/
 
 /--

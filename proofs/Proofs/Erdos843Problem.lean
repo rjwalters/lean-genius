@@ -131,9 +131,6 @@ def GeneralizedQuestion : Prop :=
 Burr proved that k-th powers are Ramsey r-complete for all r, k ≥ 2.
 This result was never published.
 -/
-axiom burr_unpublished :
-  ∀ k r : ℕ, k ≥ 2 → r ≥ 2 → IsRamseyComplete (KthPowers k) r
-
 /--
 **Conlon-Fox-Pham (2021) - Main Result:**
 For every r, k ≥ 2, the set of k-th powers contains a SPARSE Ramsey r-complete
@@ -197,26 +194,10 @@ Conlon-Fox-Pham proved:
 
 So (log N)² is the threshold for Ramsey completeness.
 -/
-axiom cfp_density_bounds :
-  ∀ r : ℕ, r ≥ 2 →
-    -- Existence of sparse complete sequence
-    (∃ A : Set ℕ, IsRamseyComplete A r ∧
-      ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-        (Finset.filter (· ∈ A) (Finset.range N)).card ≤ C * r * (Real.log N)^2) ∧
-    -- Lower bound for any complete sequence
-    (∀ A : Set ℕ, IsRamseyComplete A r →
-      ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in Filter.atTop,
-        (Finset.filter (· ∈ A) (Finset.range N)).card ≥ c * (Real.log N)^2)
-
 /--
 **Burr-Erdős upper bound (1985):**
 There exists a Ramsey 2-complete sequence A with |A ∩ [1,N]| ≪ (log N)³.
 -/
-axiom burr_erdos_upper_bound :
-  ∃ A : Set ℕ, IsRamseyComplete A 2 ∧
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-      (Finset.filter (· ∈ A) (Finset.range N)).card ≤ C * (Real.log N)^3
-
 /-
 ## Part VII: Related Results and Context
 

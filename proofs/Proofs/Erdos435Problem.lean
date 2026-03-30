@@ -108,9 +108,6 @@ axiom hwang_song_theorem (n : ℕ) (hn : n ≥ 2) (hNotPP : NotPrimePower n) :
 **Existence of Non-Representable Numbers:**
 For n not a prime power, there exist numbers that cannot be represented.
 -/
-axiom non_representable_exist (n : ℕ) (hn : n ≥ 2) (hNotPP : NotPrimePower n) :
-    ∃ m : ℕ, ¬IsRepresentable n m
-
 /--
 **All Large Numbers Representable:**
 For n not a prime power, all sufficiently large numbers are representable.
@@ -135,8 +132,6 @@ example : ¬IsPrimePower 6 := by
 6 = 2¹ · 3¹, so the formula gives:
   [C(6,2)]·(2-1) + [C(6,3)]·(3-1) - 6 = 15·1 + 20·2 - 6 = 49
 -/
-axiom frobenius_6 : frobeniusBinomial 6 = 49
-
 /-
 **n = 10 Example:**
 10 = 2 · 5, so contributions from p=2 and p=5.
@@ -169,20 +164,11 @@ is key to understanding which numbers are representable.
 The representable set forms a numerical semigroup (closed under addition,
 contains 0, has finite complement in ℕ).
 -/
-axiom representable_semigroup (n : ℕ) (hn : n ≥ 2) :
-    -- 0 is representable
-    IsRepresentable n 0 ∧
-    -- Closure under addition
-    ∀ a b, IsRepresentable n a → IsRepresentable n b → IsRepresentable n (a + b)
-
 /--
 **GCD of Generators:**
 For n not a prime power, gcd{C(n,1), C(n,2), ..., C(n,n-1)} = 1
 (otherwise no Frobenius number would exist).
 -/
-axiom gcd_binomials_one (n : ℕ) (hn : n ≥ 2) (hNotPP : NotPrimePower n) :
-    Nat.gcd (n.choose 1) (n.choose 2) = 1  -- Simplified statement
-
 /-
 ## Part VII: Related Results
 -/

@@ -39,13 +39,6 @@ def HasEulerTour {V : Type*} (H : RUniformHypergraph V 2) : Prop :=
 
 /-- For r ≥ 3, the existence of Euler tours in r-uniform hypergraphs
     is NP-complete (Lonc-Naroski 2010). No simple degree condition suffices. -/
-axiom euler_tour_hypergraph_np_complete :
-    ∀ r ≥ 3, True  -- deciding Euler tour existence is NP-complete
-
--- ============================================================
--- PART II: Infinite Graphs
--- ============================================================
-
 /-- An infinite graph with countably many vertices and edges -/
 structure InfiniteGraph (V : Type*) where
   adj : V → V → Prop
@@ -66,14 +59,6 @@ def HasInfiniteEulerPath {V : Type*} (G : InfiniteGraph V) : Prop :=
     A connected countable graph has an Euler path iff:
     1. It has at most 2 vertices of odd degree
     2. Every finite subgraph has an even number of edges -/
-axiom erdos_grunwald_weiszfeld {V : Type*} [Countable V]
-    (G : InfiniteGraph V) :
-    True  -- characterization of Euler paths in infinite graphs
-
--- ============================================================
--- PART III: One-Way Infinite Euler Paths
--- ============================================================
-
 /-- A one-way infinite Euler path starts at a vertex and extends
     infinitely, covering every edge exactly once -/
 def HasOneWayEulerPath {V : Type*} (G : InfiniteGraph V) : Prop :=
@@ -82,20 +67,8 @@ def HasOneWayEulerPath {V : Type*} (G : InfiniteGraph V) : Prop :=
 /-- For locally finite infinite graphs (every vertex has finite degree),
     the Euler path criterion is: at most one vertex has odd degree,
     and the graph is connected -/
-axiom locally_finite_euler_criterion {V : Type*} [Countable V]
-    (G : InfiniteGraph V)
-    (hlocal : ∀ v, ∃ n : ℕ, ∀ w, G.adj v w → True) :
-    True
-
--- ============================================================
--- PART IV: Chinese Postman Problem for Infinite Graphs
--- ============================================================
-
 /-- The Chinese Postman Problem: find the shortest closed walk
     that traverses every edge at least once. For finite graphs,
     this is solvable in polynomial time. For infinite graphs,
     the optimal solution may not exist. -/
-axiom chinese_postman_finite_poly :
-    True  -- polynomial time for finite graphs
-
 end KonigsbergOQ03

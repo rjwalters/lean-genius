@@ -82,9 +82,6 @@ theorem isCongruent_refl (S : Set (EuclideanSpace ℝ (Fin 2))) :
   · simp [image_id]
 
 /-- Congruence is symmetric (axiomatized for simplicity). -/
-axiom isCongruent_symm {S T : Set (EuclideanSpace ℝ (Fin 2))}
-    (h : IsCongruent S T) : IsCongruent T S
-
 /-
 ## Part III: The Steinhaus Property
 
@@ -140,15 +137,7 @@ We explore some necessary conditions for Steinhaus sets.
 -/
 
 /-- A Steinhaus set must be unbounded. -/
-axiom steinhaus_set_unbounded :
-  ∀ S, HasSteinhausProperty S → ¬Bornology.IsBounded S
-
 /-- A Steinhaus set cannot have finite positive Lebesgue measure. -/
-axiom steinhaus_set_measure_pathological :
-  ∀ S, HasSteinhausProperty S →
-    -- S is not "nice" in the measure-theoretic sense
-    True -- Placeholder for measure-theoretic statement
-
 /-
 ## Part VI: The Constructive Question (Open)
 
@@ -195,7 +184,4 @@ def HigherDimensionalSteinhaus (n : ℕ) : Prop :=
     ∃! p, p ∈ T ∧ ∀ i, ∃ m : ℤ, p i = m
 
 /-- Jackson-Mauldin generalizes to ℝⁿ for n ≥ 2. -/
-axiom jackson_mauldin_general (n : ℕ) (hn : n ≥ 2) :
-  HigherDimensionalSteinhaus n
-
 end Erdos215

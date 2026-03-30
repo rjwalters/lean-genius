@@ -84,31 +84,19 @@ This was the first non-trivial upper bound, showing 3-AP-free sets have density 
 -/
 def RothBound : Prop := ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, (r3 N : ℝ) < ε * N
 
-axiom roth_theorem : RothBound
-
 /-- Roth's explicit bound: r₃(N) ≤ N / log log N. -/
-axiom roth_explicit_bound : ∃ C > 0, ∀ N ≥ 3, (r3 N : ℝ) ≤ C * N / Real.log (Real.log N)
-
 /--
 **Bourgain's Theorem (2008)**: r₃(N) = O(N / (log log N)^{1/2}).
 Improved Roth's bound using Fourier-analytic methods.
 -/
-axiom bourgain_bound : ∃ C > 0, ∀ N ≥ 3, (r3 N : ℝ) ≤ C * N / Real.sqrt (Real.log (Real.log N))
-
 /--
 **Sanders' Theorem (2011)**: r₃(N) = O(N (log log N)^5 / log N).
 First bound with log N in the denominator.
 -/
-axiom sanders_bound : ∃ C > 0, ∀ N ≥ 3,
-    (r3 N : ℝ) ≤ C * N * (Real.log (Real.log N))^5 / Real.log N
-
 /--
 **Bloom-Sisask (2020)**: r₃(N) = O(N / (log N)^{1+c}) for some c > 0.
 Breakthrough showing power greater than 1 in the log N exponent.
 -/
-axiom bloom_sisask_bound : ∃ c > 0, ∃ C > 0, ∀ N ≥ 3,
-    (r3 N : ℝ) ≤ C * N / (Real.log N)^(1 + c)
-
 /- ## The Kelley-Meka Theorem -/
 
 /--
@@ -189,9 +177,6 @@ theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto
 
 /-- The Behrend construction gives the best known lower bound:
     r₃(N) ≥ N · exp(-c · √(log N)) for some c > 0. -/
-axiom behrend_lower_bound : ∃ c > 0, ∀ N ≥ 3,
-    (r3 N : ℝ) ≥ N * Real.exp (-c * Real.sqrt (Real.log N))
-
 /- Note: The gap between upper and lower bounds is significant.
    Upper: O(N / (log N)^C) for all C
    Lower: Ω(N / exp(c √log N))
@@ -236,9 +221,6 @@ private def toBase3Binary : ℕ → ℕ
 def greedyAP3Free (n : ℕ) : ℕ := toBase3Binary n + 1
 
 /-- The greedy sequence is indeed 3-AP-free. -/
-axiom greedy_is_3APFree : ∀ n : ℕ,
-    Finset3APFree (Finset.image greedyAP3Free (Finset.range n))
-
 /- ## k-term AP Generalization -/
 
 /-- A k-term arithmetic progression: k values a, a+d, a+2d, ..., a+(k-1)d with d ≠ 0. -/

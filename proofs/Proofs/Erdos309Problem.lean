@@ -193,9 +193,6 @@ theorem max_representable_le_harmonic (N k : ℕ) (hk : IsRepresentable N k) :
 **Harmonic-Logarithm Relation:**
 H_N = log N + γ + O(1/N), where γ ≈ 0.5772 is Euler-Mascheroni.
 -/
-axiom harmonic_log_asymptotic (N : ℕ) (hN : N ≥ 2) :
-    ∃ C : ℝ, |harmonicNumber N - (log N + 0.5772)| ≤ C / N
-
 /--
 **Trivial Upper Bound on F(N):**
 F(N) ≤ ⌊log N⌋ + 2 for all N ≥ 1.
@@ -203,9 +200,6 @@ F(N) ≤ ⌊log N⌋ + 2 for all N ≥ 1.
 Any representable integer k satisfies k ≤ H_N < log N + 1, so there are
 at most log N + O(1) representable integers.
 -/
-axiom countRepresentable_upper_bound (N : ℕ) (hN : N ≥ 1) :
-    countRepresentable N ≤ Nat.floor (log N) + 2
-
 /-
 ## Part VII: Yokota's Lower Bound (1997)
 -/
@@ -229,10 +223,6 @@ Every integer k ≤ H_N - (9/2 + o(1))(log log N)²/log N is representable.
 
 This gives a precise characterization of which integers are representable.
 -/
-axiom croot_threshold_1999 (N : ℕ) (hN : N ≥ 100) :
-    ∀ k : ℕ, (k : ℚ) ≤ harmonicNumber N - 5 * (log (log N + 1))^2 / log N →
-    IsRepresentable N k
-
 /-
 ## Part IX: Yokota's Refined Bound (2002)
 -/
@@ -243,9 +233,6 @@ F(N) ≥ log N + γ - (π²/3 + o(1))(log log N)² / log N.
 
 This is the best known lower bound.
 -/
-axiom yokota_refined_2002 (N : ℕ) (hN : N ≥ 100) :
-    countRepresentable N ≥ Nat.floor (log N + 0.5772 - 4 * (log (log N + 1))^2 / log N)
-
 /-
 ## Part X: Main Result - Answer to Erdős's Question
 -/
@@ -275,10 +262,6 @@ theorem erdos_309_answer :
 **Asymptotic Characterization:**
 F(N) ~ log N + γ as N → ∞.
 -/
-axiom count_asymptotic :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    |((countRepresentable N : ℝ) - (log N + 0.5772))| < ε * log N
-
 /-
 ## Part XI: Examples
 -/
@@ -308,9 +291,6 @@ def egyptianFractionProperty : Prop :=
 The harmonic series ∑_{n=1}^{∞} 1/n diverges, which implies H_N → ∞.
 This means more integers become representable as N grows.
 -/
-axiom harmonic_divergence :
-    ∀ M : ℝ, ∃ N : ℕ, harmonicNumber N > M
-
 /--
 **Density Result:**
 The set of representable integers has density 0 among all integers,

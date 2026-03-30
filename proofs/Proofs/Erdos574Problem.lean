@@ -55,34 +55,17 @@ noncomputable def exConsecutiveCycles (n k : ℕ) : ℕ :=
 
 /-- **Erdős–Simonovits Conjecture**: For k ≥ 2,
     ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1)) · (n/2)^{1+1/k}. -/
-axiom erdos_574_conjecture (k : ℕ) (hk : k ≥ 2) :
-  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    (1 - ε) * ((n : ℝ) / 2) ^ (1 + 1 / (k : ℝ)) ≤ (exConsecutiveCycles n k : ℝ) ∧
-    (exConsecutiveCycles n k : ℝ) ≤ (1 + ε) * ((n : ℝ) / 2) ^ (1 + 1 / (k : ℝ))
-
 /- ## Known Results -/
 
 /-- **Even cycle Turán number**: ex(n; C_{2k}) = Θ(n^{1+1/k}).
     The Bondy–Simonovits theorem gives the upper bound.
     Algebraic constructions give matching lower bounds for
     k = 2, 3, 5 and some other values. -/
-axiom even_cycle_turan (k : ℕ) (hk : k ≥ 2) :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    c₁ * (n : ℝ) ^ (1 + 1 / (k : ℝ)) ≤ (exConsecutiveCycles n k : ℝ)
-
 /-- **Bondy–Simonovits upper bound**: ex(n; C_{2k}) ≤ c · n^{1+1/k}
     for some constant c depending on k. -/
-axiom bondy_simonovits (k : ℕ) (hk : k ≥ 2) :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    (exConsecutiveCycles n k : ℝ) ≤ c * (n : ℝ) ^ (1 + 1 / (k : ℝ))
-
 /-- **Case k = 2 (Problem #573)**: ex(n; {C₃, C₄}) is studied
     separately. The extremal graphs are related to incidence
     geometries and polarity graphs. -/
-axiom case_k_2 :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    (exConsecutiveCycles n 2 : ℝ) ≤ c * (n : ℝ) ^ ((3 : ℝ) / 2)
-
 /- ## Observations -/
 
 /- **The conjecture says forbidding C_{2k−1} is "free"**: since

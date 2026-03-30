@@ -69,8 +69,6 @@ def Erdos198_Question : Prop :=
   ∀ A : Set ℕ, IsSidonSet A → ∃ Y : Set ℕ, IsInfiniteAP Y ∧ Y ⊆ Aᶜ
 
 /-- The answer to Erdős Problem #198 is FALSE. -/
-axiom erdos_198_answer : ¬Erdos198_Question
-
 /- ## The Constructions -/
 
 /-- The factorial construction: A = {n! + n : n ≥ 0}. -/
@@ -114,8 +112,6 @@ Proof: If a + b = c + d with a < b and c < d from a lacunary sequence,
 then b > 2a and d > 2c. WLOG b ≥ d. If b > d, then b > a + d > a + c,
 so b > a + c + d - b, giving 2b > a + c + d = a + b, so b > a.
 This leads to a contradiction. Hence b = d and a = c. -/
-axiom lacunary_is_sidon {A : Set ℕ} (hA : IsLacunary A) : IsSidonSet A
-
 /--
 **Baumgartner's Construction**: There exists a lacunary Sidon set that
 intersects every infinite AP.
@@ -125,9 +121,6 @@ Choose a₁ = min(P₁ ∩ ℕ).
 Choose aₙ = some element of Pₙ ∩ ℕ with aₙ > 2aₙ₋₁.
 (This is always possible since Pₙ is infinite.)
 -/
-axiom baumgartner_construction :
-    ∃ A : Set ℕ, IsLacunary A ∧ IntersectsAllAPs A
-
 /- ## First Few Elements -/
 
 /-- The first elements of the factorial Sidon set: {1, 2, 4, 9, 28, 125, 726, ...}

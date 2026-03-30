@@ -133,9 +133,6 @@ Let A ⊆ 𝔽ₚ with |A| = n ≥ 2. Then:
 The proof introduces the k-th Grassmann derivative of a polynomial
 and shows it has degree at least 2n - 3 on the restricted sumset.
 -/
-axiom da_silva_hamidoune (A : Finset (ZMod p)) (h : A.card ≥ 2) :
-    (restrictedSumset p A).card ≥ min (2 * A.card - 3) p
-
 /-
 ## Part V: Tightness - Arithmetic Progressions
 
@@ -186,9 +183,6 @@ because excluding diagonal sums removes potential elements.
 For nonempty A, B ⊆ 𝔽ₚ:
   |A + B| ≥ min(|A| + |B| - 1, p)
 -/
-axiom cauchy_davenport (A B : Finset (ZMod p)) (hA : A.Nonempty) (hB : B.Nonempty) :
-    (sumset p A).card ≥ min (A.card + B.card - 1) p
-
 /--
 The restricted sumset bound is weaker than Cauchy-Davenport by 2.
 This reflects the exclusion of diagonal elements.
@@ -219,9 +213,6 @@ Consider f(x, y) = (x + y) - c for c ∈ A +̂ A.
 The polynomial method shows this has enough zeros to force
 the size of A +̂ A.
 -/
-axiom ANR_proof (A : Finset (ZMod p)) (h : 2 ≤ A.card) :
-    (restrictedSumset p A).card ≥ min (2 * A.card - 3) p
-
 /-
 ## Part VIII: Generalization to r-Sums
 
@@ -241,10 +232,6 @@ def restrictedSumsetR (A : Finset (ZMod p)) (r : ℕ) : Finset (ZMod p) :=
 
 This was also proved using the polynomial method.
 -/
-axiom erdos_generalized (A : Finset (ZMod p)) (r : ℕ) (hr : r ≥ 2)
-    (hA : A.card ≥ r) :
-    (restrictedSumsetR p A r).card ≥ min (r * A.card - r^2 + 1) p
-
 /-
 ## Part IX: Small Examples
 -/

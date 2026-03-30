@@ -81,10 +81,6 @@ def IsEpsilonRamsey [Fintype V] (G : SimpleGraph V) (ε : ℝ) : Prop :=
   cliqueNumber G < ε * Real.log n ∧ independenceNumber G < ε * Real.log n
 
 /-- Ramsey's theorem implies ε-Ramsey graphs have bounded size. -/
-axiom ramsey_size_bound (ε : ℝ) (hε : ε > 0) :
-    ∃ N : ℕ, ∀ (V : Type*) [Fintype V] (G : SimpleGraph V),
-      IsEpsilonRamsey G ε → Fintype.card V ≤ N
-
 /-
 ## Part IV: Induced Subgraphs
 
@@ -150,8 +146,6 @@ def ErdosMcKayWeakBound : Prop :=
       AchievesAllEdgeCounts G (Nat.floor (δ * (Real.log n)^2))
 
 /-- Erdős and McKay proved the weak version. -/
-axiom erdos_mckay_weak : ErdosMcKayWeakBound
-
 /-
 ## Part VII: The Erdős-Szemerédi Density Result
 
@@ -162,14 +156,6 @@ Ramsey graphs have many edges.
 
     If G is ε-Ramsey, then |E(G)| = Θ(n²).
     This makes the δn² bound natural. -/
-axiom erdos_szemeredi_density (ε : ℝ) (hε : ε > 0) :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-      ∀ (V : Type*) [Fintype V] [DecidableEq V]
-        (G : SimpleGraph V) [DecidableRel G.Adj],
-        IsEpsilonRamsey G ε →
-          let n := Fintype.card V
-          c₁ * n^2 ≤ edgeCount G ∧ (edgeCount G : ℝ) ≤ c₂ * n^2
-
 /-
 ## Part VIII: Anticoncentration
 
@@ -184,15 +170,6 @@ def IsAnticoncentrated (X : ℕ → ℝ) (bound : ℝ) : Prop :=
 
     If we sample vertices independently with probability p, the number
     of edges in the induced subgraph is well-spread across values. -/
-axiom random_induced_anticoncentration (ε : ℝ) (hε : ε > 0) :
-    ∃ C : ℝ, C > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V]
-      (G : SimpleGraph V) [DecidableRel G.Adj],
-      IsEpsilonRamsey G ε →
-        let n := Fintype.card V
-        ∀ (p : ℝ) (hp : 0 < p) (hp' : p < 1),
-          -- The probability that the random subgraph has exactly m edges is ≤ C/n
-          True  -- Placeholder for the precise probabilistic statement
-
 /-
 ## Part IX: The KSSS Theorem (2022)
 
@@ -232,12 +209,6 @@ theorem delta_pos (ε : ℝ) (hε : ε > 0) : delta ε > 0 := by
   exact (Classical.choose_spec (ksss_theorem ε hε)).1
 
 /-- The KSSS bound is optimal up to constants. -/
-axiom ksss_optimality :
-    ∀ ε > 0, ∃ δ₀ > 0, ∀ δ > δ₀,
-      ∃ (V : Type*) [Fintype V] [DecidableEq V]
-        (G : SimpleGraph V) [DecidableRel G.Adj],
-        IsEpsilonRamsey G ε ∧ ¬EdgeCountRangeProperty G δ
-
 /-
 ## Part XI: Connection to Ramsey Theory
 
@@ -250,19 +221,7 @@ How this relates to Ramsey numbers.
 axiom R (k ℓ : ℕ) : ℕ
 
 /-- ε-Ramsey graphs exist for n < R(⌈ε log n⌉, ⌈ε log n⌉). -/
-axiom ramsey_graph_existence (ε : ℝ) (hε : ε > 0) :
-    ∀ n : ℕ, n ≥ 2 →
-      let k := Nat.ceil (ε * Real.log n)
-      n < R k k →
-      ∃ (G : SimpleGraph (Fin n)), IsEpsilonRamsey G ε
-
 /-- The probabilistic method gives ε-Ramsey graphs of exponential size. -/
-axiom probabilistic_ramsey (ε : ℝ) (hε : 0 < ε) (hε' : ε < 1) :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      ∃ (G : SimpleGraph (Fin n)),
-        cliqueNumber G < c * Real.log n ∧
-        independenceNumber G < c * Real.log n
-
 /-
 ## Part XII: Main Result
 

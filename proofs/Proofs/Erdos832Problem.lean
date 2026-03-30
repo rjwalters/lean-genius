@@ -57,10 +57,6 @@ def hasChromaticNumberAtLeast (H : Hypergraph V) (k : ℕ) : Prop :=
 /-- **Classical result for graphs (r = 2):**
 A graph with chromatic number k has at least C(k, 2) = k(k-1)/2 edges.
 The complete graph K_k is the extremal example. -/
-axiom classical_graph_bound (G : SimpleGraph V) [Fintype V] [DecidableEq V] (k : ℕ)
-    (hχ : G.chromaticNumber = k) :
-    G.edgeFinset.card ≥ k * (k - 1) / 2
-
 /- ## Part III: Erdős's Conjecture -/
 
 /-- **Erdős's conjecture (disproved for r ≥ 4):**
@@ -76,11 +72,6 @@ def erdosConjecture (r k : ℕ) : Prop :=
 /-- **Steiner triple system counterexample (r = 3, k = 3):**
 The Fano plane is a 3-uniform hypergraph on 7 vertices with 7 edges
 that requires 3 colours. Erdős's conjecture predicts ≥ C(5,3) = 10 edges. -/
-axiom steiner_counterexample :
-    ∃ H : Hypergraph (Fin 7),
-      IsUniform H 3 ∧
-      hasChromaticNumberAtLeast H 3
-
 /-- **Alon's theorem (1985):**
 For r ≥ C (some absolute constant) and k ≥ C·r, there exists an
 r-uniform hypergraph with chromatic number ≥ k having at most
@@ -102,12 +93,6 @@ axiom m (r k : ℕ) : ℕ
 
 /-- **Akolzin-Shabanov bounds (2016):**
 (r / log r) · k^r ≪ m(r, k) ≪ (r³ log r) · k^r -/
-axiom akolzin_shabanov_bounds :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-      ∀ r k : ℕ, r ≥ 3 → k ≥ 2 →
-        c₁ * (r / Real.log r) * (k : ℝ)^r ≤ m r k ∧
-        (m r k : ℝ) ≤ c₂ * (r^3 * Real.log r) * k^r
-
 /-- **Cherkashin-Petrov theorem (2020):**
 For fixed r, the ratio m(r, k) / k^r converges to some limit c_r. -/
 axiom cherkashin_petrov_limit :

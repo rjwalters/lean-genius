@@ -232,12 +232,6 @@ structure RepeatedDistance where
 Degenerate quadruples relate to repeated distances:
 If distance d appears m times, it contributes Θ(m²) to degenerate quadruples.
 -/
-axiom degenerate_from_repeated :
-    ∀ S : Finset Point, ∀ d : ℝ, d > 0 →
-    let m := ((S ×ˢ S).filter (fun p => dist' p.1 p.2 = d)).card / 2
-    ∃ contribution : ℕ, contribution ≤ m * m ∧
-      contribution ≤ countDegenerateQuadruples S
-
 /-
 ## Part VII: Trivial Bounds
 -/
@@ -270,11 +264,6 @@ theorem trivial_upper_bound (n : ℕ) (hn : n ≥ 4) :
 There exist configurations with many degenerate quadruples.
 The integer lattice grid gives Ω(n² log n) unit distances.
 -/
-axiom lattice_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 4 →
-      ∃ S : Finset Point, S.card = n ∧
-        (countDegenerateQuadruples S : ℝ) ≥ c * (n : ℝ)^3 * Real.log n
-
 /-
 ## Part VIII: Connection to Distinct Distances
 -/
@@ -291,20 +280,11 @@ noncomputable def distinctDistances (S : Finset Point) : ℕ :=
 **Guth-Katz Theorem (2015):**
 Any n-point set has Ω(n/log n) distinct distances.
 -/
-axiom guth_katz :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      ∀ S : Finset Point, S.card = n →
-        (distinctDistances S : ℝ) ≥ c * n / Real.log n
-
 /--
 **Relation to Problem 1087:**
 Few distinct distances means many repeated distances,
 which leads to more degenerate quadruples.
 -/
-axiom few_distinct_many_degenerate :
-    ∀ S : Finset Point, distinctDistances S ≤ S.card / 2 →
-      countDegenerateQuadruples S ≥ S.card^3 / 100
-
 /-
 ## Part IX: Main Problem Statement
 -/

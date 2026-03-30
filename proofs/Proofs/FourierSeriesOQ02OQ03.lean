@@ -106,12 +106,6 @@ theorem decayBound_tendsto_zero (C : ℝ≥0) (α : ℝ≥0) (hα : 0 < (α : �
     The extremal family uses "concentrated bump" functions that saturate
     the Hölder bound |f(x) - f(x+h)| = C|h|^α for all x simultaneously
     in the support of e_{-N}(x). -/
-axiom sharp_constant_is_half (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) :
-  ∀ ε > 0, ∃ (C : ℝ≥0) (hC : 0 < C) (f : AddCircle T → ℂ),
-    IsHolderOnCircle C α.toNNReal f ∧
-    ∃ n : ℤ, n ≠ 0 ∧
-      ‖fourierCoeff f n‖ ≥ (1/2 - ε) * ↑C * (T / (2 * |↑n|)) ^ α
-
 /-- **Lipschitz sharp constant**: For α = 1, the sawtooth function achieves
     equality (up to normalization).
 
@@ -122,15 +116,6 @@ axiom sharp_constant_is_half (α : ℝ) (hα : 0 < α) (hα1 : α ≤ 1) :
     With C = 1 and the half-period bound T/(2|n|), the ratio is
     |ĉ_n| / ((1/2) · T/(2|n|)) = 1/π, which approaches the extremal
     behavior for appropriately scaled functions. -/
-axiom lipschitz_sawtooth_extremal :
-  ∃ (f : AddCircle T → ℂ), LipschitzWith 1 f ∧
-    ∀ n : ℤ, n ≠ 0 →
-      ‖fourierCoeff f n‖ = T / (2 * Real.pi * |↑n|)
-
--- ============================================================
--- Section 4: The Constant for Different α Values
--- ============================================================
-
 /-- For α very close to 0, the bound becomes vacuous (O(1) decay).
     The constant 1/2 is still sharp but the bound is weak. -/
 theorem small_alpha_bound (C : ℝ≥0) (n : ℤ) (hn : n ≠ 0) :

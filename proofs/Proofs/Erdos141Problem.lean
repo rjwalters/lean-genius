@@ -130,9 +130,6 @@ theorem erdos_141_open : Erdos141Conjecture ∨ ¬Erdos141Conjecture := by
     - k=4: (251, 257, 263, 269)
     - k=5: Exists (verified computationally)
     - k=6 through 10: Exist (verified computationally) -/
-axiom small_cases_verified :
-    ∀ k, 3 ≤ k → k ≤ 10 → ExistsConsecutivePrimesInAP k
-
 /- ## Related Questions -/
 
 /-- Are there infinitely many AP's of k consecutive primes?
@@ -161,10 +158,6 @@ the primes are consecutive.
 
 For example, (7, 13, 19) are in AP with d=6, but they're not consecutive primes
 (11 is between 7 and 13). -/
-axiom green_tao : ∀ k, ∃ (S : Finset ℕ), S.card = k ∧
-    (∀ p ∈ S, p.Prime) ∧
-    (∃ a d, d > 0 ∧ S = Finset.image (fun i => a + i * d) (Finset.range k))
-
 /-- Green-Tao gives primes in AP, but not necessarily consecutive primes.
     Example: (7, 13, 19) are primes in AP, but 11 lies between 7 and 13. -/
 theorem green_tao_example_not_consecutive :

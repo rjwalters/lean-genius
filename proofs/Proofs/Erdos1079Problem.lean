@@ -76,16 +76,6 @@ exceeds ex(d, K_{r−1}).
 
     Axiomatized because the proof uses supersaturation and
     Zykov symmetrization, which are beyond Mathlib. -/
-axiom bollobas_thomason :
-  ∀ r : ℕ, r ≥ 4 →
-    ∃ c : ℝ, c > 0 ∧
-      ∀ n : ℕ, ∀ V : Finset ℕ, V.card = n →
-        ∀ G : SimpleGraph ℕ, ∀ [DecidableRel G.Adj],
-          (∀ e : ℕ × ℕ, G.Adj e.1 e.2 → e.1 ∈ V ∧ e.2 ∈ V) →
-          numEdges G ≥ turanNumber n r →
-          ∃ v ∈ V, (G.degree v : ℝ) ≥ c * n ∧
-            neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)
-
 /-
 ## Part 3: Bondy's Strengthening (1983)
 
@@ -99,16 +89,6 @@ the max-degree vertex always satisfies the conclusion.
 
     This strengthens Bollobás–Thomason by identifying a specific
     vertex (the one with maximum degree) that works. -/
-axiom bondy_strengthening :
-  ∀ r : ℕ, r ≥ 4 →
-    ∀ n : ℕ, ∀ V : Finset ℕ, V.card = n →
-      ∀ G : SimpleGraph ℕ, ∀ [DecidableRel G.Adj],
-        (∀ e : ℕ × ℕ, G.Adj e.1 e.2 → e.1 ∈ V ∧ e.2 ∈ V) →
-        numEdges G > turanNumber n r →
-        ∃ v ∈ V,
-          (∀ u ∈ V, G.degree u ≤ G.degree v) ∧
-          neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)
-
 /-
 ## Part 4: Turán's Theorem (Context)
 
@@ -120,12 +100,6 @@ examining local structure at individual vertices.
 /-- Turán's theorem: any K_r-free graph on n vertices has at most
     ex(n, K_r) = turanNumber(n, r) edges. The Turán graph T(n, r−1)
     achieves this bound and is the unique extremal graph. -/
-axiom turan_theorem :
-  ∀ n r : ℕ, r ≥ 2 → n ≥ r →
-    ∀ G : SimpleGraph (Fin n), ∀ [DecidableRel G.Adj],
-      G.CliqueFree r →
-      numEdges G ≤ turanNumber n r
-
 /-
 ## Part 5: Summary
 

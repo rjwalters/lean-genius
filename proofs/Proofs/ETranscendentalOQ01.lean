@@ -258,8 +258,6 @@ theorem prod_transcendental_if_sum_algebraic
     Numerical value: e + π ≈ 5.8598744820488...
 
     OPEN PROBLEM — stated as axiom since no proof exists. -/
-axiom e_plus_pi_transcendental : Transcendental ℚ (Real.exp 1 + Real.pi)
-
 /-- **Open Conjecture**: e · π is transcendental.
 
     Also believed true; unknown as of 2026.
@@ -269,8 +267,6 @@ axiom e_plus_pi_transcendental : Transcendental ℚ (Real.exp 1 + Real.pi)
     Numerical value: e · π ≈ 8.5397342226735...
 
     OPEN PROBLEM — stated as axiom since no proof exists. -/
-axiom e_times_pi_transcendental : Transcendental ℚ (Real.exp 1 * Real.pi)
-
 /-- **Open Question**: Is e + π irrational?
 
     Surprisingly, even irrationality is open! If e + π = q ∈ ℚ, then π = q - e.
@@ -280,12 +276,6 @@ axiom e_times_pi_transcendental : Transcendental ℚ (Real.exp 1 * Real.pi)
     Note: Irrationality ← transcendence, so proving transcendence is the stronger result.
 
     OPEN PROBLEM — stated as axiom since no proof exists. -/
-axiom e_plus_pi_irrational : Irrational (Real.exp 1 + Real.pi)
-
--- ============================================================
--- PART 7: Schanuel's Conjecture and Nesterenko's Theorem
--- ============================================================
-
 /-
   **Schanuel's Conjecture** (unproven):
   If z₁, ..., zₙ ∈ ℂ are ℚ-linearly independent, then the transcendence degree

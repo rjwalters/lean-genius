@@ -135,12 +135,6 @@ The bound (2-ε)·2^{n/2} is essentially tight.
 When n is even, taking F = {all subsets of {1,...,n/2}} ∪ {{1,...,n/2} ∪ S : S ⊆ {n/2+1,...,n}}
 gives |F| = 2^{n/2+1} and exactly 2^n edges.
 -/
-axiom extremal_construction (n : ℕ) (hn : Even n) :
-    ∃ F : Finset (Finset ℕ),
-    (∀ S ∈ F, S ⊆ baseSet n) ∧
-    F.card = 2^(n/2 + 1) ∧
-    edgeCount F = 2^n
-
 /-
 ## Part IV: Question 2 - Quadratic Edge Density
 -/
@@ -198,15 +192,6 @@ axiom question3_affirmative :
 For integer k ≥ 1 and δ > 0, if m = 2^{(1/(k+1) + δ)n}, then
 edges < (1 - 1/k)·C(m,2) + O(m^{2 - Ω_k(δ^{k+1})}).
 -/
-axiom alonFrankl_quantitative (k : ℕ) (hk : k ≥ 1) :
-    ∃ (c : ℝ), c > 0 ∧
-    ∀ δ : ℝ, δ > 0 →
-    ∀ n : ℕ, ∀ F : Finset (Finset ℕ),
-    (∀ S ∈ F, S ⊆ baseSet n) →
-    (F.card : ℝ) = (2 : ℝ)^(((1 : ℝ) / (k + 1) + δ) * n) →
-    (edgeCount F : ℝ) < (1 - 1 / k) * ((F.card : ℝ) * (F.card - 1)) / 2 +
-                        c * (F.card : ℝ)^(2 - c * δ^(k + 1))
-
 /-
 ## Part VI: Daykin-Frankl Result
 -/
@@ -218,19 +203,6 @@ then m^{1/n} → 1 as n → ∞.
 
 This means F must be "close to" a chain (totally ordered family).
 -/
-axiom daykinFrankl :
-    ∀ (F_seq : ℕ → Finset (Finset ℕ)) (n_seq : ℕ → ℕ),
-    (∀ i, ∀ S ∈ F_seq i, S ⊆ baseSet (n_seq i)) →
-    (∀ i, n_seq i > 0) →
-    (∀ i, (F_seq i).card > 0) →
-    -- If edge ratio approaches 1
-    (∀ ε > 0, ∃ N, ∀ i ≥ N,
-      let m := (F_seq i).card
-      (edgeCount (F_seq i) : ℝ) ≥ (1 - ε) * (m * (m - 1)) / 2) →
-    -- Then m^{1/n} → 1
-    ∀ ε > 0, ∃ N, ∀ i ≥ N,
-      ((F_seq i).card : ℝ)^(1 / (n_seq i : ℝ)) < 1 + ε
-
 /-
 ## Part VII: Chains and Antichains
 -/
@@ -252,23 +224,11 @@ def IsAntichain (F : Finset (Finset α)) : Prop :=
 /--
 In a chain, every pair of distinct sets forms an edge.
 -/
-axiom chain_all_edges {F : Finset (Finset α)} (hchain : IsChain F) :
-    edgeCount F = F.card * (F.card - 1) / 2
-
 /-- In an antichain, there are no edges. -/
-axiom antichain_no_edges {F : Finset (Finset α)} (hanti : IsAntichain F) :
-    edgeCount F = 0
-
 /--
 **Dilworth's Theorem Connection:**
 The maximum antichain in the power set of {1,...,n} has size C(n, ⌊n/2⌋).
 -/
-axiom sperner_bound (n : ℕ) :
-    ∀ F : Finset (Finset ℕ),
-    (∀ S ∈ F, S ⊆ baseSet n) →
-    IsAntichain F →
-    F.card ≤ Nat.choose n (n / 2)
-
 /-
 ## Part VIII: Examples
 -/
@@ -312,14 +272,6 @@ Answered Question 1 affirmatively using their Theorem 1.4 and Corollary 1.5.
 For ε > 0 and n sufficiently large, if |F| ≤ (2-ε)·2^{n/2}, then
 the number of comparable pairs is < 2^n.
 -/
-axiom ADGS_theorem :
-    ∀ ε : ℝ, ε > 0 →
-    ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-    ∀ F : Finset (Finset ℕ),
-    (∀ S ∈ F, S ⊆ baseSet n) →
-    (F.card : ℝ) ≤ (2 - ε) * (2 : ℝ)^(n / 2) →
-    edgeCount F < 2^n
-
 /-
 ## Part X: Main Results Summary
 -/

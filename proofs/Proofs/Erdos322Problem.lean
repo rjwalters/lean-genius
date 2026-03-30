@@ -89,10 +89,6 @@ Hypothesis K is FALSE for k = 3 (cubes).
 There exist infinitely many n such that r_3(n) ≫ n^{1/12}.
 This disproves the Hardy-Littlewood conjecture for cubes.
 -/
-axiom mahler_theorem :
-    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, ∃ n ≥ N,
-      (representationCount 3 n : ℝ) ≥ c * (n : ℝ)^(1/12 : ℝ)
-
 /--
 **Corollary: Hypothesis K fails for k = 3.**
 Mahler's result implies polynomial growth for infinitely many n.
@@ -151,11 +147,6 @@ If B is the set of k-th powers of any set of positive density, then
 limsup r_B^{(k)}(n) = ∞. Axiomatized as: sets of k-th powers from
 positive-density subsets always produce unbounded representations.
 -/
-axiom erdos_positive_density_claim (k : ℕ) (hk : k ≥ 3) (S : Set ℕ)
-    (hdens : ∃ δ : ℝ, δ > 0 ∧ ∀ N : ℕ, N ≥ 1 →
-      ((Finset.range N).filter (fun n => n ∈ S)).card ≥ δ * N) :
-    ∀ M : ℕ, ∃ n : ℕ, representationCount k n ≥ M
-
 /-
 ## Part VIII: Summary
 -/

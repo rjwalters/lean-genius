@@ -44,25 +44,12 @@ noncomputable def maxDistinctDistances (P : PointConfig n) [NeZero n] : ℕ :=
 
 /-- Every point has at least (n-1)/3 distinct distances when
     no four are concyclic. -/
-axiom known_lower_bound (n : ℕ) (hn : 4 ≤ n) (P : PointConfig n)
-    (hP : NoFourConcyclic P) (i : Fin n) :
-    (n - 1) / 3 ≤ distinctDistances P i
--- Note: This follows from circle_distance_bound via a counting argument:
--- each distinct distance from i is shared by ≤ 3 other points,
--- so distinctDistances P i ≥ (n-1)/3. A full proof requires formalizing
--- the pigeonhole-style counting bound on Finset.image cardinality.
-
 /- ## The Main Conjecture -/
 
 /-- **Erdős Problem #654**: Under the no-four-concyclic condition,
     some point must determine (1 - o(1))n distinct distances.
     Formally: for every ε > 0, for large enough n, some xᵢ has
     ≥ (1 - ε)n distinct distances. -/
-axiom erdos_654_conjecture :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      ∀ P : PointConfig n, NoFourConcyclic P →
-        ∃ i : Fin n, (1 - ε) * (n : ℝ) ≤ (distinctDistances P i : ℝ)
-
 /- ## Erdős–Pach Weaker Variant -/
 
 /-- General position: no three points are collinear. -/
@@ -76,22 +63,12 @@ def NoThreeCollinear (P : PointConfig n) : Prop :=
 /-- Erdős–Pach weaker conjecture: under general position,
     does some point have ≥ (1/3 + c)n distinct distances for
     some absolute constant c > 0? -/
-axiom erdos_pach_weaker :
-    ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N,
-      ∀ P : PointConfig n, NoThreeCollinear P →
-        ∃ i : Fin n, ((1 : ℝ)/3 + c) * n ≤ (distinctDistances P i : ℝ)
-
 /- ## Context: Erdős Distinct Distances Problem -/
 
 /-- Without any restriction, the Guth–Katz theorem (2015) gives
     Ω(n/log n) distinct distances in total. Problem #654 asks for
     near-n distinct distances from a SINGLE point, under geometric
     restrictions on the configuration. -/
-axiom guth_katz_context (n : ℕ) (hn : 2 ≤ n) (P : PointConfig n) :
-    ∃ c > 0, c * (n : ℝ) / Real.log n ≤
-      ((Finset.univ.product Finset.univ).filter (fun (i, j) => i < j)
-        |>.image (fun (i, j) => dist (P i) (P j))).card
-
 /-- On a circle, at most 2 points determine each distance from
     the center. So the no-four-concyclic condition prevents
     many repeated distances from a single point. -/

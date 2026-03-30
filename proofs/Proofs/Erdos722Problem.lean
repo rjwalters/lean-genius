@@ -135,10 +135,6 @@ S(2,3,n) exists iff n ≡ 1 or 3 (mod 6) and n ≥ 7.
 
 This was the first Steiner triple system problem, solved by Kirkman (1847).
 -/
-axiom kirkman_triple_systems (n : ℕ) (hn : n ≥ 7) :
-    (n % 6 = 1 ∨ n % 6 = 3) ↔
-    ∃ S : SteinerSystem 2 3 n, True
-
 /--
 **Fano Plane:**
 S(2,3,7) - the smallest Steiner triple system.
@@ -150,17 +146,6 @@ axiom fano_plane_exists : ∃ S : SteinerSystem 2 3 7, True
 **Hanani's Results (1961):**
 Characterized when S(3,4,n), S(2,4,n), and S(2,5,n) exist.
 -/
-axiom hanani_1961 :
-    -- S(3,4,n) exists for n ≡ 2 or 4 (mod 6), n ≥ 4
-    (∀ n : ℕ, n ≥ 4 → (n % 6 = 2 ∨ n % 6 = 4) →
-      DivisibilityConditions 3 4 n → ∃ S : SteinerSystem 3 4 n, True) ∧
-    -- S(2,4,n) exists for n ≡ 1 or 4 (mod 12), n ≥ 4
-    (∀ n : ℕ, n ≥ 4 → DivisibilityConditions 2 4 n →
-      ∃ S : SteinerSystem 2 4 n, True) ∧
-    -- S(2,5,n) exists under appropriate conditions
-    (∀ n : ℕ, n ≥ 5 → DivisibilityConditions 2 5 n →
-      ∃ S : SteinerSystem 2 5 n, True)
-
 /-
 ## Part IV: Wilson's Theorem (1972)
 -/
@@ -180,10 +165,6 @@ axiom wilson_theorem_r2 (k : ℕ) (hk : k ≥ 2) :
 **Wilson's quantitative bound:**
 The N₀ depends polynomially on k.
 -/
-axiom wilson_quantitative (k : ℕ) (hk : k ≥ 2) :
-    ∃ C : ℕ, ∀ n ≥ C * k^2, DivisibilityConditions 2 k n →
-      ∃ S : SteinerSystem 2 k n, True
-
 /-
 ## Part V: Keevash's Theorem (2014) - General Solution
 -/

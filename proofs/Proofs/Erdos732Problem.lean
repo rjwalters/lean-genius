@@ -148,10 +148,6 @@ def CharacterizationQuestion : Prop :=
 No simple characterization is known.
 The pair-counting condition is NOT sufficient.
 -/
-axiom characterization_hard :
-  -- There exist sequences satisfying pair-counting that are not block-compatible
-  ∃ Xs n, PairCountCondition Xs n ∧ IsWellFormed Xs n ∧ ¬IsBlockCompatible Xs n
-
 /-
 ## Part V: Question 2 - Counting
 -/
@@ -168,11 +164,6 @@ noncomputable def B (n : ℕ) : ℕ :=
 **Erdős's upper bound:**
 B(n) ≤ exp(O(√n · log n))
 -/
-axiom erdos_upper_bound :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 →
-      (B n : ℝ) ≤ Real.exp (C * Real.sqrt n * Real.log n)
-
 /--
 **Alon's lower bound:**
 B(n) ≥ 2^((1/2 + o(1))√n · log n)
@@ -235,8 +226,6 @@ The only PBD on {1, 2, 3} is the single block {1, 2, 3}.
 So the only block-compatible sequence is [3].
 The proof follows because the single block covers all C(3,2) = 3 pairs.
 -/
-axiom example_n3 : IsBlockCompatible [3] 3
-
 /--
 **Example: n = 4**
 Possible PBDs:

@@ -75,8 +75,6 @@ For complete graphs K_n with n ≥ 3, this is approximately n²/4.
 
 We axiomatize this as it requires decidability instances that complicate the formalization.
 -/
-axiom edgesToRemoveForBipartite {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ
-
 /--
 **Edge Deletion Function h_G:**
 For a graph G and natural number n, h_G(n) is the maximum number of edges
@@ -116,12 +114,7 @@ The minimum number of colors needed for a proper coloring.
 
 Axiomatized to avoid decidability issues with IsKColorable.
 -/
-axiom chromaticNumber {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ
-
 /-- Every finite graph is k-colorable for some k. -/
-axiom chromaticNumber_exists {V : Type*} [Fintype V] (G : SimpleGraph V) :
-    IsKColorable G (chromaticNumber G)
-
 /-
 ## Part IV: Infinite Chromatic Number
 
@@ -163,9 +156,6 @@ def hasOddCycle {V : Type*} (G : SimpleGraph V) : Prop :=
 A graph is bipartite if and only if it contains no odd cycle.
 This is a classical theorem in graph theory.
 -/
-axiom bipartite_iff_no_odd_cycle {V : Type*} (G : SimpleGraph V) :
-    IsBipartite G ↔ ¬hasOddCycle G
-
 /-
 ## Part VI: Vertex-Disjoint Odd Cycles
 
@@ -192,10 +182,6 @@ of some fixed odd length 2r+1. This implies h_G(n) ≫ n.
 Proof sketch: If χ(G) = ℵ₁, then G is not countably colorable.
 By a compactness argument, G must contain uncountably many vertex-disjoint odd cycles.
 -/
-axiom ehs_lower_bound {V : Type*} (G : SimpleGraph V)
-    (hχ : hasAleph1ChromaticNumber G) :
-    ∃ r : ℕ, hasVertexDisjointOddCycles G (Cardinal.aleph 1)
-
 /--
 **h_G(n) ≫ n for χ(G) = ℵ₁:**
 If G has chromatic number ℵ₁, then h_G(n)/n → ∞ at least linearly.
@@ -296,9 +282,6 @@ For finite graphs, the situation is well-understood:
 
 The interesting behavior emerges for infinite graphs with uncountable chromatic number.
 -/
-axiom finite_bipartite_zero {V : Type*} [Fintype V] (G : SimpleGraph V)
-    (hb : IsBipartite G) : edgesToRemoveForBipartite G = 0
-
 /-
 ## Part XI: Summary
 

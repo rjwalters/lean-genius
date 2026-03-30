@@ -50,17 +50,7 @@ def IsUnavoidable (S : Finset Configuration) : Prop :=
 -- ============================================================
 
 /-- The Robertson-Sanders-Seymour-Thomas unavoidable set has 633 configurations. -/
-axiom rsst_unavoidable_set : ∃ S : Finset Configuration,
-    S.card = 633 ∧ IsUnavoidable S ∧ ∀ C ∈ S, IsReducible C
-
 /-- Appel-Haken's original set had 1936 (later 1476) configurations. -/
-axiom appel_haken_set : ∃ S : Finset Configuration,
-    S.card = 1476 ∧ IsUnavoidable S ∧ ∀ C ∈ S, IsReducible C
-
--- ============================================================
--- PART III: Lower Bounds on Minimal Sets
--- ============================================================
-
 /-- No configuration of ring size ≤ 3 is needed.
     The Birkhoff diamond (ring size 6) was the first reducible
     configuration found (1913). -/
@@ -77,13 +67,6 @@ def birkhoffDiamond : Configuration where
 /-- Lower bound: any unavoidable reducible set needs ≥ 10 configurations.
     This follows from the existence of planar graphs where each
     configuration can appear in at most 1/10 of the faces. -/
-axiom lower_bound_unavoidable_set : ∀ S : Finset Configuration,
-    IsUnavoidable S → (∀ C ∈ S, IsReducible C) → S.card ≥ 10
-
--- ============================================================
--- PART IV: Why Reduction is Hard
--- ============================================================
-
 /-
 ## Key Question: Can 633 be Reduced Further?
 

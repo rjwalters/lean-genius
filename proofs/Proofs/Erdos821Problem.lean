@@ -53,14 +53,10 @@ noncomputable def preimageCount (n : ℕ) : ℕ :=
   Nat.card { m : ℕ // phi m = n }
 
 /-- The preimage count is finite for each n. -/
-axiom preimageCount_finite (n : ℕ) : preimageCount n < n^2
-
 /- ## Known Results -/
 
 /-- **Pillai's Theorem:**
     lim sup g(n) = ∞, i.e., g(n) is unbounded. -/
-axiom pillai_theorem : ∀ M : ℕ, ∃ n : ℕ, preimageCount n > M
-
 /-- **Erdős's Theorem (1935):**
     There exists c > 0 such that g(n) > n^c for infinitely many n. -/
 axiom erdos_1935 :
@@ -70,9 +66,6 @@ axiom erdos_1935 :
 noncomputable def erdosConstant1935 : ℝ := 0.1 -- placeholder
 
 /-- Erdős's lower bound with the constant. -/
-axiom erdos_explicit_bound :
-  ∀ N : ℕ, ∃ n ≥ N, (preimageCount n : ℝ) > n^erdosConstant1935
-
 /- ## Lichtman's Result (2022) -/
 
 /-- The Lichtman exponent: 0.71568... -/
@@ -84,12 +77,6 @@ axiom lichtman_theorem :
   ∀ N : ℕ, ∃ n ≥ N, (preimageCount n : ℝ) > n^lichtmanExponent
 
 /-- Lichtman's result on primes with smooth p-1. -/
-axiom lichtman_primes :
-  ∃ c : ℝ, c > 0 ∧ ∀ x : ℝ, x ≥ 2 →
-    (Finset.filter (fun p => Nat.Prime p ∧ p ≤ ⌊x⌋₊ ∧
-      ∀ q : ℕ, Nat.Prime q → q ∣ p - 1 → q ≤ ⌊x^(0.2843 : ℝ)⌋₊)
-      (Finset.range (⌊x⌋₊ + 1))).card ≥ c * x / (Real.log x)^2
-
 /- ## The Conjecture -/
 
 /-- **Erdős Conjecture (Problem #821):**
@@ -120,14 +107,7 @@ axiom smooth_implies_conjecture :
 /- ## Upper Bounds -/
 
 /-- Upper bound: g(n) ≤ n^(1+o(1)) trivially. -/
-axiom preimageCount_upper_bound :
-  ∃ C : ℝ, ∀ n : ℕ, n ≥ 2 → (preimageCount n : ℝ) ≤ C * n^1.01
-
 /-- For most n, g(n) is relatively small. -/
-axiom average_preimageCount :
-  ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-    (∑ n in Finset.Icc 1 N, preimageCount n : ℝ) / N ≤ C * Real.log N
-
 /- ## Examples -/
 
 /-- g(1) = 2 (since φ(1) = φ(2) = 1). -/

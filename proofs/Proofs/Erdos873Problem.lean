@@ -108,17 +108,10 @@ F(A,X,3) ≪ X^(1/3) log X.
 
 This means the exponent 1/3 is achievable for k = 3. We state this as an axiom
 since the proof requires careful number-theoretic analysis. -/
-axiom erdos_szemeredi_upper_bound (a : ℕ → ℕ) (ha0 : 0 < a 0) (ha : StrictMono a) :
-    ∃ C > 0, ∀ X ≥ 2, ∃ n : ℕ, F a X 3 = n ∧ (n : ℝ) ≤ C * X^(1/3 : ℝ) * Real.log X
-
 /-- **Erdős-Szemerédi Lower Bound**: There exists a sequence A such that
 F(A,X,3) ≫ X^(1/3) log X for infinitely many X.
 
 This shows the upper bound is essentially tight for k = 3. -/
-axiom erdos_szemeredi_lower_bound :
-    ∃ (a : ℕ → ℕ), 0 < a 0 ∧ StrictMono a ∧
-    ∃ C > 0, ∀ N, ∃ X ≥ N, ∃ n : ℕ, F a X 3 = n ∧ C * X^(1/3 : ℝ) * Real.log X ≤ n
-
 /-
 ## Examples and Special Cases
 -/

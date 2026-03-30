@@ -94,9 +94,6 @@ axiom green_tao_theorem : Erdos219Question
 
 /-- Equivalent formulation: for all k, there exist a, d with d > 0 such that
     a, a+d, a+2d, ..., a+(k-1)d are all prime. -/
-axiom green_tao_explicit :
-    ∀ k : ℕ, k ≥ 1 → ∃ a d : ℕ, d > 0 ∧ ∀ i < k, (a + i * d).Prime
-
 /-- The answer to Erdős Problem #219 is YES. -/
 theorem erdos_219_answer : Erdos219Question := green_tao_theorem
 
@@ -110,8 +107,6 @@ theorem erdos_219_answer : Erdos219Question := green_tao_theorem
 
     Found by: Pritchard, Moran, and others.
 -/
-axiom record_23_primes : ∃ a d : ℕ, d > 0 ∧ ∀ i < 23, (a + i * d).Prime
-
 /- ## Related Open Problem -/
 
 /--

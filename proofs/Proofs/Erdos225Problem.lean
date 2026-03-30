@@ -287,9 +287,6 @@ A non-negative trigonometric polynomial (one with f(θ) ≥ 0 for all θ)
 can be written as |g(θ)|² for some trigonometric polynomial g.
 This is the Fejér-Riesz theorem.
 -/
-axiom fejer_riesz (p : TrigPoly n) (hpos : ∀ θ : ℝ, 0 ≤ (p.eval θ).re) :
-    ∃ m : ℕ, ∃ g : TrigPoly m, ∀ θ : ℝ, p.eval θ = (‖g.eval θ‖) ^ 2
-
 /- ## Relationship to Littlewood's Conjecture -/
 
 /--
@@ -299,13 +296,6 @@ Littlewood's conjecture (now theorem) states that for unimodular polynomials
 This is related but distinct from Erdős #225: Littlewood concerns lower bounds
 while Erdős #225 gives an upper bound under the unit-circle-roots condition.
 -/
-axiom littlewood_lower_bound :
-    ∃ C > 0, ∀ n ≥ 1, ∀ coeffs : Fin n → ℂ,
-    (∀ k, ‖coeffs k‖ = 1) →
-    ∫ θ in Set.Icc 0 (2 * Real.pi),
-      ‖∑ k : Fin n, coeffs k * Complex.exp (Complex.I * k * θ)‖ ≥
-    C * Real.log n
-
 /- ## Summary
 
 **Problem Status: SOLVED**

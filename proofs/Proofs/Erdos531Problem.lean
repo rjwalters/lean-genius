@@ -88,9 +88,6 @@ Improved to F(k) ≥ 2^{2^{k-1}/k}.
 -/
 
 /-- Erdős-Spencer lower bound: F(k) ≥ 2^{ck²/log k}. -/
-axiom erdos_spencer_1989 :
-  ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 2 → F k ≥ 2^(c * k^2 / Real.log k)
-
 /-- Balogh et al. (2017): F(k) ≥ 2^{2^{k-1}/k}. -/
 axiom balogh_2017 :
   ∀ k : ℕ, k ≥ 1 → F k ≥ 2^(2^(k-1) / k)
@@ -110,8 +107,6 @@ theorem F_2 : F 2 = 3 := by
   sorry -- Color analysis: 1,2,3 forces some pair with monochromatic sums
 
 /-- F(3) ≥ 11: Lower bound for 3-element sets. -/
-axiom F_3_lower : F 3 ≥ 11
-
 /-
 ## Upper Bounds
 
@@ -120,10 +115,6 @@ Improvements have been made using probabilistic methods.
 -/
 
 /-- Folkman's original upper bound is at least tower-type. -/
-axiom folkman_upper_bound :
-  ∃ f : ℕ → ℕ, (∀ k, ExistsMonochromaticSet (f k) k) ∧
-    (∀ k, f k ≤ (fun n => Nat.iterate (2^·) n 2) k)
-
 /-
 ## Connection to Rado's Theorem
 
@@ -138,13 +129,6 @@ Rado's theorem guarantees this for any k.
 -/
 
 /-- Folkman follows from Rado's theorem. -/
-axiom folkman_from_rado :
-  ∀ k : ℕ, k ≥ 1 →
-    ∃ N : ℕ, ∀ c : Coloring,
-      ∃ A : Finset ℕ, A.card = k ∧
-        (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧
-        MonochromaticSubsetSums c A
-
 /-
 ## The Main Question
 

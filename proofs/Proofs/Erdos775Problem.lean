@@ -130,11 +130,6 @@ Every graph on n vertices has at most n - log₂n + O(1) different clique sizes.
 
 This proves Spencer's construction is optimal for graphs.
 -/
-axiom moon_moser_upper_bound :
-    ∀ n : ℕ, ∀ G : SimpleGraph (Fin n),
-      ∃ numSizes : ℕ, numSizes ≤ n - Nat.log 2 n + 10 ∧
-        numSizes ≥ G.cliqueFinset.card
-
 /-
 ## Part V: Erdős's Construction
 -/
@@ -147,10 +142,6 @@ at least n - log*n different clique sizes.
 Here log* is the iterated logarithm (number of times you can take log₂ before
 reaching ≤ 1).
 -/
-axiom erdos_hypergraph_construction :
-    ∀ n : ℕ, n ≥ 3 → ∃ (H : Hypergraph3 (Fin n)),
-      ∃ numSizes : ℕ, numSizes ≥ n - Nat.log 2 (Nat.log 2 n + 1) - 10
-
 /-
 ## Part VI: The Question
 

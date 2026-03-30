@@ -100,12 +100,6 @@ ex(n; C_{2k}) ≤ c·k·n^{1+1/k} for some constant c.
 More precisely, for n sufficiently large:
   ex(n; C_{2k}) ≤ (1/2)·k^{1/k}·n^{1+1/k} + O(n)
 -/
-axiom bondy_simonovits_upper :
-  ∀ k : ℕ, k ≥ 2 →
-  ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 1 →
-      (exCycle n k : ℝ) ≤ c * k * (n : ℝ)^(1 + 1/(k : ℝ))
-
 /--
 **Benson's Theorem (1966):**
 For k = 3: ex(n; C_6) ≥ c·n^{4/3} for some c > 0.
@@ -260,12 +254,6 @@ ex(n; C_4) ~ (1/2)·n^{3/2}
 
 The extremal graphs are related to finite projective planes.
 -/
-axiom erdos_klein_c4 :
-  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧
-    ∀ n : ℕ, n ≥ 1 →
-      c₁ * (n : ℝ)^(3/2 : ℝ) ≤ (exCycle n 2 : ℝ) ∧
-      (exCycle n 2 : ℝ) ≤ c₂ * (n : ℝ)^(3/2 : ℝ)
-
 /--
 C_4-free graphs and the Kővári-Sós-Turán theorem.
 For bipartite graphs, ex(n; C_4) is related to the Zarankiewicz problem.
@@ -284,10 +272,6 @@ ex(n; C_{2k+1}) = ⌊n²/4⌋ for k ≥ 1 and n > 2k+1.
 The extremal graphs are complete bipartite graphs K_{⌊n/2⌋, ⌈n/2⌉}.
 This is because bipartite graphs contain no odd cycles.
 -/
-axiom odd_cycle_extremal :
-  ∀ k n : ℕ, k ≥ 1 → n > 2 * k + 1 →
-    exCycle n (2 * k + 1) = n^2 / 4
-
 /-
 ## Part VIII: Main Results Summary
 -/

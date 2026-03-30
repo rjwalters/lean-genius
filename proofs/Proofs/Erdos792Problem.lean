@@ -56,15 +56,7 @@ noncomputable def maxSumFreeSize (A : Finset ℤ) : ℕ :=
 axiom f : ℕ → ℕ
 
 /-- f satisfies its defining property: every n-element set has a sum-free subset of size ≥ f(n) -/
-axiom f_spec : ∀ n : ℕ, ∀ A : Finset ℤ, A.card = n →
-  ∃ B : Finset ℤ, IsSumFreeSubset B A ∧ B.card ≥ f n
-
 /-- f is tight: for each n ≥ 1, some n-element set achieves exactly f(n) -/
-axiom f_tight : ∀ n : ℕ, n ≥ 1 →
-  ∃ A : Finset ℤ, A.card = n ∧ ∀ B : Finset ℤ, IsSumFreeSubset B A → B.card ≤ f n
-
--- Lower Bounds
-
 /-- Bourgain (1997): f(n) ≥ (n+2)/3 — the strongest unconditional lower bound -/
 axiom bourgain_bound : ∀ n : ℕ, n ≥ 1 → f n ≥ (n + 2) / 3
 
@@ -99,10 +91,6 @@ axiom egm_upper_bound : ∀ ε : ℝ, ε > 0 →
   ∀ᶠ n in atTop, (f n : ℝ) ≤ n / 3 + ε * n
 
 /-- Corollary: f(n)/n → 1/3 as n → ∞ -/
-axiom f_asymptotic : Tendsto (fun n => (f n : ℝ) / n) atTop (nhds (1 / 3))
-
--- Examples and Constructions
-
 /-- The interval [n, 2n-1] is sum-free since a + b ≥ 2n > 2n - 1 for a, b in the interval.
     Proof: if a, b ∈ [n, 2n-1], then a+b ≥ 2n > 2n-1 ≥ c for any c ∈ [n, 2n-1]. -/
 theorem interval_sum_free : ∀ n : ℕ, n ≥ 1 →
@@ -112,11 +100,6 @@ theorem interval_sum_free : ∀ n : ℕ, n ≥ 1 →
   omega
 
 /-- Middle-third construction: every finite set A has a sum-free subset of size ≥ |A|/3 -/
-axiom middle_third_construction : ∀ A : Finset ℤ,
-  ∃ B : Finset ℤ, IsSumFreeSubset B A ∧ B.card ≥ A.card / 3
-
--- Summary: combining the known bounds
-
 /-- The known bounds bracket f(n) between n/3 + c·log log n and n/3 + o(n) -/
 theorem erdos_792_bounds :
     (∃ c : ℝ, c > 0 ∧ ∀ᶠ n in atTop, (f n : ℝ) ≥ n / 3 + c * Real.log (Real.log n)) ∧

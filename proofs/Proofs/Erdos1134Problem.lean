@@ -93,17 +93,7 @@ For sets closed under x ↦ mᵢx + bᵢ with Σ 1/mᵢ^σ = 1.
 -/
 
 /-- The exponent σ for general affine maps: Σ 1/mᵢ^σ = 1 -/
-axiom klarner_rado_exponent_exists (ms : List ℕ) (hms : ∀ m ∈ ms, m ≥ 1) :
-    ∃! σ : ℝ, σ > 0 ∧ (ms.map (fun m => (m : ℝ) ^ (-σ))).sum = 1
-
 /-- Klarner-Rado (1974): General upper bound -/
-axiom klarner_rado_1974 (S : Set ℕ) (ms bs : List ℕ)
-    (hms : ∀ m ∈ ms, m ≥ 1) (hbs : ∀ b ∈ bs, b ≥ 0)
-    (σ : ℝ) (hσ : σ > 0)
-    (hsum : (ms.map (fun m => (m : ℝ) ^ (-σ))).sum = 1) :
-    ∀ ε > 0, ∃ C : ℝ, C > 0 ∧ ∀ X : ℕ, X ≥ 2 →
-      (countingFunction S X : ℝ) ≤ C * (X : ℝ) ^ (σ + ε)
-
 /-- For our problem, 1/2 + 1/3 + 1/6 = 1, so σ = 1 -/
 theorem sum_reciprocals_eq_one : (1/2 : ℝ) + 1/3 + 1/6 = 1 := by norm_num
 
@@ -148,9 +138,6 @@ theorem not_positive_lower_density : ¬HasPositiveLowerDensity A := by
   norm_num
 
 /-- Equivalently: |A ∩ [1,X]|/X → 0 as X → ∞ -/
-axiom density_tends_to_zero :
-    ∀ ε > 0, ∃ N : ℕ, ∀ X ≥ N, (countingFunction A X : ℝ) / X < ε
-
 /-
 ## Part 6: Structure of A
 
@@ -216,8 +203,6 @@ def characteristic_equation (s : ℝ) : ℝ :=
   (6 : ℝ) ^ (-s) + (1 - (1/2 : ℝ) ^ s)⁻¹ * (3 : ℝ) ^ (-s) - 1
 
 /-- τ is the unique positive root -/
-axiom tau_is_root : characteristic_equation τ = 0
-
 /-
 ## Part 9: Open Variants
 

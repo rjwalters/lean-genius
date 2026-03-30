@@ -27,8 +27,6 @@ open Cardinal
 noncomputable def kappa : Cardinal := Order.succ (2 ^ ℵ₀)
 
 /-- κ is uncountable: κ > ℵ₀. -/
-axiom kappa_gt_aleph0 : kappa > ℵ₀
-
 /-
 ## Section II: Countable Subsets
 -/
@@ -78,18 +76,9 @@ def ErdosProblem598Minimal : Prop :=
 /-- Under CH (continuum hypothesis), κ = ℵ₂. The problem becomes
 whether ℵ₂-many colors suffice for countable subsets with the
 completeness property. -/
-axiom under_CH_kappa_eq_aleph2 :
-  Cardinal.continuum = ℵ₁ → kappa = aleph 2
-
 /-
 ## Section VI: Monotonicity
 -/
 
 /-- If the coloring exists for m, it exists for any m' ≥ m.
 Larger ground sets only provide more room. -/
-axiom coloring_monotone (α β : Type*) [Infinite α] [Infinite β]
-    (h : Cardinal.mk α ≤ Cardinal.mk β)
-    (c : CountableSubset β → Set.Iio kappa)
-    (hc : ChromaticCompleteness β c) :
-  ∃ c' : CountableSubset α → Set.Iio kappa,
-    ChromaticCompleteness α c'

@@ -129,10 +129,6 @@ theorem isBipartiteIffDistZero_finite (V : Type*) [Fintype V] (G : SimpleGraph V
 
 This shows the naive equivalence "bipartite ⟺ edgeDistToBipartite = 0" fails
 for infinite graphs. -/
-axiom completeGraph_nat_counterexample :
-    ¬(SimpleGraph.completeGraph ℕ).IsBipartite ∧
-    edgeDistToBipartite ℕ (SimpleGraph.completeGraph ℕ) = 0
-
 /--
 For a graph G and size n, the **maximum edge distance to bipartite** over
 all n-vertex induced subgraphs. This is the worst-case number of edges needed
@@ -195,12 +191,6 @@ where every n-vertex subgraph can be made bipartite by deleting at most εn edge
 
 This shows the conjecture is true for linear functions f(n) = εn.
 -/
-axiom rodlLinear :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ (V : Type) (G : SimpleGraph V),
-      hasInfiniteChromaticNumber V G ∧
-      hasAlmostBipartiteSubgraphs V G (fun n => ⌈ε * n⌉₊)
-
 /--
 **The √n Question (OPEN)**
 
@@ -221,14 +211,6 @@ If we require the chromatic number to be uncountable (≥ ℵ₁), then the
 conjecture is FALSE. There is no such graph with uncountable chromatic
 number satisfying the almost-bipartite condition for any unbounded f.
 -/
-axiom uncountableFails :
-  ¬∃ (V : Type) (G : SimpleGraph V),
-    -- G has uncountable chromatic number
-    (∀ κ : ℕ, G.chromaticNumber > κ) ∧
-    -- And satisfies the almost-bipartite condition for some unbounded f
-    (∃ f : ℕ → ℕ, Tendsto (fun n => (f n : ℝ)) atTop atTop ∧
-      hasAlmostBipartiteSubgraphs V G f)
-
 /-
 ## Connections and Implications
 

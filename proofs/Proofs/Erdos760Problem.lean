@@ -112,30 +112,15 @@ Relationships between chromatic and cochromatic numbers.
 **Cochromatic ≤ Chromatic:**
 Every proper coloring is a cochromatic coloring (independent sets are homogeneous).
 -/
-axiom cochromatic_le_chromatic (G : SimpleGraph V) :
-    cochromaticNumber G ≤ chromaticNumber G
-
 /--
 **Complete Graph Cochromatic Number:**
 ζ(Kₙ) = ⌈log₂(n+1)⌉ using recursive halving into cliques.
 -/
-axiom complete_graph_cochromatic (n : ℕ) (hn : n ≥ 1) :
-    ∃ G : SimpleGraph (Fin n),
-    chromaticNumber G = n ∧
-    cochromaticNumber G ≤ Nat.log 2 n + 1
-
 /--
 **Upper Bound for Complete Graphs:**
 For Kₘ, ζ(H) ~ m / log m for some subgraph H.
 This shows the bound in Problem 760 is best possible.
 -/
-axiom complete_graph_tight_bound :
-    ∀ m : ℕ, m ≥ 2 →
-    ∃ H : SimpleGraph (Fin m),
-    -- H is a subgraph of Kₘ
-    chromaticNumber H = m →
-    cochromaticNumber H ≤ m / Nat.log 2 m + 1
-
 /-
 ## Part III: The Erdős-Gimbel Partial Result
 
@@ -147,21 +132,10 @@ The weaker bound proved before AKS.
 If χ(G) = m, then G contains a subgraph H with
 ζ(H) ≥ c · √(m / log m) for some constant c > 0.
 -/
-axiom erdos_gimbel_theorem :
-    ∃ c : ℚ, c > 0 ∧
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    ∀ m : ℕ, chromaticNumber G = m → m ≥ 2 →
-    ∃ (W : Type*) [Fintype W] [DecidableEq W] (H : SimpleGraph W),
-    -- H is (isomorphic to) a subgraph of G
-    (cochromaticNumber H : ℚ) ≥ c * Real.sqrt (m / Real.log m)
-
 /--
 **Erdős-Gimbel Numerical Bound:**
 The bound √(m / log m) is weaker than m / log m.
 -/
-axiom erdos_gimbel_weaker (m : ℕ) (hm : m ≥ 16) :
-    Real.sqrt (m / Real.log m) < m / Real.log m
-
 /-
 ## Part IV: The Alon-Krivelevich-Sudakov Theorem
 
@@ -208,12 +182,6 @@ The proof uses Ramsey theory for finding large homogeneous sets.
 Key idea: In any 2-coloring of edges, there's a monochromatic clique
 or independent set of size ~ log n. Iterate this to build the subgraph H.
 -/
-axiom ramsey_for_cochromatic :
-    ∀ n : ℕ, n ≥ 2 →
-    ∃ k : ℕ, k ≥ Nat.log 2 n ∧
-    ∀ (G : SimpleGraph (Fin n)),
-    ∃ S : Finset (Fin n), S.card ≥ k ∧ IsHomogeneous G S
-
 /-
 ## Part VI: Related Results
 -/
@@ -223,12 +191,6 @@ axiom ramsey_for_cochromatic :
 R(k,k) = smallest n such that any 2-coloring of Kₙ has monochromatic Kₖ.
 R(k,k) grows exponentially in k, giving logarithmic homogeneous sets.
 -/
-axiom ramsey_number_bound :
-    ∀ k : ℕ, k ≥ 2 →
-    ∃ n : ℕ, n ≤ 4^k ∧
-    ∀ (G : SimpleGraph (Fin n)),
-    ∃ S : Finset (Fin n), S.card ≥ k ∧ IsHomogeneous G S
-
 /-
 ## Part VII: Main Results Summary
 

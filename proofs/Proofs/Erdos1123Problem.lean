@@ -83,31 +83,15 @@ def erdos_ulam_question : Prop := ∃ f : B1 → B2, Function.Bijective f
     B₁ and B₂ ARE isomorphic. Both algebras have cardinality ℵ₁
     under CH with similar saturation properties, yielding an isomorphism
     by back-and-forth. -/
-axiom just_krawczyk_theorem_CH (CH : Prop) (hCH : CH) :
-    ∃ f : B1 → B2, Function.Bijective f
-
 /-- The isomorphism question is independent of ZFC:
     - Under CH: B₁ ≅ B₂ (Just-Krawczyk 1984)
     - Without CH: the question may have a different answer -/
-axiom independence_from_ZFC :
-    ∃ (axiom_system : Prop),
-      (axiom_system → ∃ f : B1 → B2, Function.Bijective f) ∧
-      ∃ (other_system : Prop),
-        (other_system → ¬ ∃ f : B1 → B2, Function.Bijective f)
-
 /- ## Part IV: Ideal Properties -/
 
 /-- Both I₁ and I₂ are σ-ideals (closed under countable unions),
     contain all finite sets, and are closed under subsets. -/
-axiom density_ideals_are_sigma_ideals :
-    (∀ A B : Set ℕ, hasDensityZero A → B ⊆ A → hasDensityZero B) ∧
-    (∀ A B : Set ℕ, hasLogDensityZero A → B ⊆ A → hasLogDensityZero B)
-
 /-- The quotient P(ℕ)/Fin (mod finite sets) is NOT isomorphic to B₁ or B₂.
     Fin has no upper bound in ℕ, unlike the density-zero ideals. -/
-axiom finite_quotient_different :
-    ∀ A : Set ℕ, Set.Finite A → hasDensityZero A
-
 /- ## Part V: Summary -/
 
 /-- Erdős Problem #1123: SET-THEORETICALLY DEPENDENT.

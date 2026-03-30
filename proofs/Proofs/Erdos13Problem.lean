@@ -86,8 +86,6 @@ def upperThird (N : ℕ) : Finset ℕ :=
     - But b,c > 2N/3 and a < min(b,c) implies a > 2N/3 too
     - Then b + c > 4N/3 and 2a > 4N/3, but we also need b + c = 2a
     - With b,c > a > 2N/3, we get b + c > 2a, contradiction. -/
-axiom upperThird_divisibilityFree (N : ℕ) : DivisibilityFree (upperThird N)
-
 /-- The size of the upper third is approximately N/3.
 
     Proof: The upper third contains k with 2N/3 < k ≤ N.
@@ -126,12 +124,6 @@ axiom bedert_theorem :
 
     Proof: By Bedert's theorem, |A| ≤ N/3 + C. Since |upperThird N| ≥ N/3 - 1,
     we have |A| ≤ |upperThird N| + C + 1. -/
-axiom upperThird_optimal :
-    ∃ C : ℕ, ∀ N : ℕ, ∀ A : Finset ℕ,
-      (∀ a ∈ A, a ≤ N ∧ a ≥ 1) →
-      DivisibilityFree A →
-      A.card ≤ (upperThird N).card + C
-
 /-
 ## The Generalized Problem (r-sums)
 
@@ -230,8 +222,6 @@ def SumFree (A : Finset ℕ) : Prop :=
 
     Proof: For a,b,c in (2N/3, N], we have a + b > 4N/3 > N ≥ c,
     so a + b > c, hence a + b ≠ c. -/
-axiom upperThird_sumFree (N : ℕ) (hN : N ≥ 1) : SumFree (upperThird N)
-
 /-
 ## Summary
 

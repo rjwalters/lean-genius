@@ -215,20 +215,8 @@ theorem valid_increasing_lower_bound {moduli : ℕ → ℕ}
 /- ## Divergence and coprime results (axiomatized) -/
 
 /-- The hypothesis implies Σ 1/nᵢ = ∞. -/
-axiom full_covering_implies_divergent (moduli : ℕ → ℕ)
-    (hm : ModuliValid moduli) (hs : IsStrictlyIncreasing moduli)
-    (hf : HasFullCovering moduli) :
-    ∀ M : ℚ, 0 < M →
-      ∃ k : ℕ, M ≤ (Finset.range k).sum (fun i => (1 : ℚ) / (moduli i : ℚ))
-
 /-- When moduli are pairwise coprime, divergence of reciprocals suffices
     for full covering. -/
-axiom coprime_divergent_suffices (moduli : ℕ → ℕ)
-    (hm : ModuliValid moduli) (hc : PairwiseCoprime moduli)
-    (hd : ∀ M : ℚ, 0 < M → ∃ k : ℕ, M ≤ (Finset.range k).sum
-      (fun i => (1 : ℚ) / (moduli i : ℚ))) :
-    HasFullCovering moduli
-
 /- ## Main Theorem (Erdős Problem 281) -/
 
 /-- Erdős Problem 281 (Proved): if the sequence has full covering, then
