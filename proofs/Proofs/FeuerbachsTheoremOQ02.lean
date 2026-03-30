@@ -91,6 +91,14 @@ def cross3 (u v : ℝ × ℝ × ℝ) : ℝ × ℝ × ℝ :=
    u.2.2 * v.1 - u.1 * v.2.2,
    u.1 * v.2.1 - u.2.1 * v.1)
 
+/-- Scalar triple product with repeated first and third argument is zero -/
+private lemma dot3_cross3_self_left (u v : ℝ × ℝ × ℝ) : dot3 u (cross3 u v) = 0 := by
+  unfold dot3 cross3; ring
+
+/-- Scalar triple product with repeated first and second argument is zero -/
+private lemma dot3_cross3_self_right (u v : ℝ × ℝ × ℝ) : dot3 u (cross3 v u) = 0 := by
+  unfold dot3 cross3; ring
+
 -- ============================================================
 -- PART 2: Tetrahedron Structure
 -- ============================================================
@@ -234,16 +242,87 @@ def Tetrahedron.faceCentroid_D (T : Tetrahedron) : Point3 :=
 -- PART 6: Circumsphere and Monge Point
 -- ============================================================
 
-/-- The circumcenter of a tetrahedron is equidistant from all four vertices.
-    We define it as the solution to the linear system arising from
-    |O - A|² = |O - B|² = |O - C|² = |O - D|². -/
-axiom Tetrahedron.circumcenter (T : Tetrahedron) : Point3
+/-- The circumcenter of a tetrahedron, defined via Cramer's rule.
+    Given edge vectors u = B-A, v = C-A, w = D-A, the circumcenter O = A + P where
+    P = (1/(2·det)) · ((u·u)(v×w) + (v·v)(w×u) + (w·w)(u×v))
+    and det = u·(v×w) is the scalar triple product (nonzero by nondegeneracy). -/
+noncomputable def Tetrahedron.circumcenter (T : Tetrahedron) : Point3 :=
+  let u := vec3 T.A T.B
+  let v := vec3 T.A T.C
+  let w := vec3 T.A T.D
+  let det := dot3 u (cross3 v w)
+  let vw := cross3 v w
+  let wu := cross3 w u
+  let uv := cross3 u v
+  let uu := dot3 u u
+  let vv := dot3 v v
+  let ww := dot3 w w
+  let s := 1 / (2 * det)
+  ( T.A.1 + s * (uu * vw.1 + vv * wu.1 + ww * uv.1),
+    T.A.2.1 + s * (uu * vw.2.1 + vv * wu.2.1 + ww * uv.2.1),
+    T.A.2.2 + s * (uu * vw.2.2 + vv * wu.2.2 + ww * uv.2.2) )
 
-/-- The circumcenter is equidistant from all four vertices -/
-axiom Tetrahedron.circumcenter_equidist (T : Tetrahedron) :
+/-- Helper: the circumcenter displacement P = O - A satisfies 2·dot3(u, P) = dot3(u, u),
+    i.e., P solves the circumcenter system for the u = B-A equation.
+    Proof: by Cramer's rule, dot3(u, P) uses dot3(u, v×w) = det and
+    dot3(u, w×u) = dot3(u, u×v) = 0 (scalar triple product with repeated vector). -/
+private lemma circumcenter_dot_eq (T : Tetrahedron) :
+    let u := vec3 T.A T.B
+    let v := vec3 T.A T.C
+    let w := vec3 T.A T.D
+    let det := dot3 u (cross3 v w)
+    let P := vec3 T.A T.circumcenter
+    2 * dot3 u P = dot3 u u := by
+  simp only [Tetrahedron.circumcenter, vec3, dot3, cross3]
+  have hdet : dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) ≠ 0 :=
+    T.nondegenerate
+  field_simp [vec3, dot3, cross3] at hdet ⊢
+  ring
+
+/-- Helper: similar for v = C-A -/
+private lemma circumcenter_dot_eq_v (T : Tetrahedron) :
+    let u := vec3 T.A T.B
+    let v := vec3 T.A T.C
+    let w := vec3 T.A T.D
+    let P := vec3 T.A T.circumcenter
+    2 * dot3 v P = dot3 v v := by
+  simp only [Tetrahedron.circumcenter, vec3, dot3, cross3]
+  have hdet : dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) ≠ 0 :=
+    T.nondegenerate
+  field_simp [vec3, dot3, cross3] at hdet ⊢
+  ring
+
+/-- Helper: similar for w = D-A -/
+private lemma circumcenter_dot_eq_w (T : Tetrahedron) :
+    let u := vec3 T.A T.B
+    let v := vec3 T.A T.C
+    let w := vec3 T.A T.D
+    let P := vec3 T.A T.circumcenter
+    2 * dot3 w P = dot3 w w := by
+  simp only [Tetrahedron.circumcenter, vec3, dot3, cross3]
+  have hdet : dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) ≠ 0 :=
+    T.nondegenerate
+  field_simp [vec3, dot3, cross3] at hdet ⊢
+  ring
+
+/-- The circumcenter is equidistant from all four vertices.
+    Proof: |OB|² - |OA|² = |u|² - 2(u·P) = |u|² - |u|² = 0, where P = O - A
+    and the system equation 2(u·P) = |u|² holds by Cramer's rule. -/
+theorem Tetrahedron.circumcenter_equidist (T : Tetrahedron) :
   dist3_sq T.circumcenter T.A = dist3_sq T.circumcenter T.B ∧
   dist3_sq T.circumcenter T.A = dist3_sq T.circumcenter T.C ∧
-  dist3_sq T.circumcenter T.A = dist3_sq T.circumcenter T.D
+  dist3_sq T.circumcenter T.A = dist3_sq T.circumcenter T.D := by
+  -- Strategy: dist3_sq O X = ∑(Xi - Oi)². For X ∈ {B,C,D}, express Xi - Oi = (Xi - Ai) - Pi
+  -- Then dist3_sq O X - dist3_sq O A = |u|² - 2(u·P) where u = X - A, P = O - A
+  -- By the circumcenter_dot_eq lemmas, 2(u·P) = |u|², so the difference is 0.
+  refine ⟨?_, ?_, ?_⟩ <;> {
+    simp only [dist3_sq, Tetrahedron.circumcenter, vec3, dot3, cross3]
+    have hdet : dot3 (vec3 T.A T.B) (cross3 (vec3 T.A T.C) (vec3 T.A T.D)) ≠ 0 :=
+      T.nondegenerate
+    simp only [vec3, dot3, cross3] at hdet
+    field_simp
+    ring
+  }
 
 /-- Circumradius: distance from circumcenter to any vertex -/
 def Tetrahedron.circumradius (T : Tetrahedron) : ℝ :=
