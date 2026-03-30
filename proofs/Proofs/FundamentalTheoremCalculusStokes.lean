@@ -203,12 +203,24 @@ noncomputable def extDeriv1_2D (ω : OneForm2D) : ℝ × ℝ → ℝ :=
     well-defined. -/
 theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ × ℝ) :
     extDeriv1_2D (extDeriv0_2D f) p = 0 := by
-  -- d₁(d₀(f)) at p = ∂/∂x(∂f/∂y) - ∂/∂y(∂f/∂x)
-  -- = ∂²f/∂x∂y - ∂²f/∂y∂x = 0 by Clairaut
-  -- This follows from ContDiff.isSymmetric_iteratedFDeriv applied to the
-  -- second Fréchet derivative, evaluating the symmetric bilinear form at
-  -- (e₁, e₂) vs (e₂, e₁). The bridge from iteratedFDeriv to concrete
-  -- partial deriv expressions requires unfolding the Mathlib API.
+  -- Goal: ∂²f/∂x∂y - ∂²f/∂y∂x = 0 (Clairaut/Schwarz)
+  -- Proof strategy (3 steps):
+  --
+  -- Step 1: Bridge from deriv to fderiv (chain rule for partial application)
+  --   deriv (fun y => f (a, y)) b = fderiv ℝ f (a, b) (0, 1)
+  --   deriv (fun x => f (x, b)) a = fderiv ℝ f (a, b) (1, 0)
+  --   [Use: HasFDerivAt.comp with Prod.mk embedding + HasFDerivAt.deriv]
+  --
+  -- Step 2: Bridge from second deriv to second fderiv
+  --   deriv (fun x => deriv (fun y => f (x, y)) p.2) p.1
+  --     = fderiv ℝ (fun q => fderiv ℝ f q) p (1, 0) (0, 1)
+  --   deriv (fun y => deriv (fun x => f (x, y)) p.1) p.2
+  --     = fderiv ℝ (fun q => fderiv ℝ f q) p (0, 1) (1, 0)
+  --   [Use: chain rule for CLM-valued functions composed with evaluation]
+  --
+  -- Step 3: Symmetry of second Fréchet derivative (Clairaut)
+  --   fderiv ℝ (fderiv ℝ f) p (1,0) (0,1) = fderiv ℝ (fderiv ℝ f) p (0,1) (1,0)
+  --   [Use: ContDiff.isSymmetric_iteratedFDeriv or iteratedFDeriv 2 symmetry]
   sorry
 
 -- ═══════════════════════════════════════════════════════════════
@@ -246,14 +258,48 @@ theorem stokes_2d_rectangle (ω : OneForm2D) (a b c d : ℝ)
       HasDerivAt (fun y => ω.P (x, y)) (deriv (fun y => ω.P (x, y)) y) y)
     (hP_int : ∀ x ∈ uIcc a b,
       IntervalIntegrable (fun y => deriv (fun y => ω.P (x, y)) y) volume c d)
+    -- Boundary integrability (needed for splitting boundary integrals)
+    (hQb : IntervalIntegrable (fun y => ω.Q (b, y)) volume c d)
+    (hQa : IntervalIntegrable (fun y => ω.Q (a, y)) volume c d)
+    (hPc : IntervalIntegrable (fun x => ω.P (x, c)) volume a b)
+    (hPd : IntervalIntegrable (fun x => ω.P (x, d)) volume a b)
+    -- Inner x-integrability of ∂P/∂y (for splitting the inner integral)
     (hPdy_x_int : ∀ y ∈ uIcc c d,
       IntervalIntegrable (fun x => deriv (fun y' => ω.P (x, y')) y) volume a b)
+    -- Outer integrability of inner integrals (for splitting the outer integral)
+    (hQ_outer : IntervalIntegrable
+      (fun y => ∫ x in a..b, deriv (fun x => ω.Q (x, y)) x) volume c d)
+    (hPdy_outer : IntervalIntegrable
+      (fun y => ∫ x in a..b, deriv (fun y' => ω.P (x, y')) y) volume c d)
+    -- Fubini: swap integration order for ∂P/∂y
     (hFubini : ∫ y in c..d, ∫ x in a..b, deriv (fun y' => ω.P (x, y')) y =
                ∫ x in a..b, ∫ y in c..d, deriv (fun y' => ω.P (x, y')) y) :
     lineIntegralRect ω a b c d =
     areaIntegralRect (extDeriv1_2D ω) a b c d := by
-  -- Full proof via FTC + Fubini is in GreensTheoremOQ01.greens_theorem_concrete
-  sorry
+  simp only [lineIntegralRect, areaIntegralRect, extDeriv1_2D]
+  -- Step 1: Split inner integral: ∫_x (∂Q/∂x - ∂P/∂y) = ∫_x ∂Q/∂x - ∫_x ∂P/∂y
+  have hinner : ∀ y ∈ uIcc c d,
+      ∫ x in a..b, (deriv (fun x => ω.Q (x, y)) x - deriv (fun y' => ω.P (x, y')) y) =
+      (∫ x in a..b, deriv (fun x => ω.Q (x, y)) x) -
+       ∫ x in a..b, deriv (fun y' => ω.P (x, y')) y := fun y hy =>
+    integral_sub (hQ_int y hy) (hPdy_x_int y hy)
+  rw [integral_congr hinner]
+  -- Step 2: Split outer integral: ∫_y (A - B) = ∫_y A - ∫_y B
+  rw [integral_sub hQ_outer hPdy_outer]
+  -- Step 3: FTC for ∂Q/∂x: ∫_a^b ∂Q/∂x dx = Q(b,y) - Q(a,y)
+  have hQ_ftc : ∫ y in c..d, ∫ x in a..b, deriv (fun x => ω.Q (x, y)) x =
+      ∫ y in c..d, (ω.Q (b, y) - ω.Q (a, y)) :=
+    integral_congr (fun y hy => integral_eq_sub_of_hasDerivAt (hQ_deriv y) (hQ_int y hy))
+  rw [hQ_ftc, integral_sub hQb hQa]
+  -- Step 4: Fubini to swap ∂P/∂y integration order
+  rw [hFubini]
+  -- Step 5: FTC for ∂P/∂y: ∫_c^d ∂P/∂y dy = P(x,d) - P(x,c)
+  have hP_ftc : ∫ x in a..b, ∫ y in c..d, deriv (fun y' => ω.P (x, y')) y =
+      ∫ x in a..b, (ω.P (x, d) - ω.P (x, c)) :=
+    integral_congr (fun x hx => integral_eq_sub_of_hasDerivAt (hP_deriv x) (hP_int x hx))
+  rw [hP_ftc, integral_sub hPd hPc]
+  -- Step 6: Arithmetic — the four terms assemble into the line integral form
+  ring
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART VII: The Abstract Generalized Stokes Theorem
