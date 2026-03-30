@@ -1,0 +1,80 @@
+{
+  "id": "erdos-100-oq-02",
+  "title": "Erdős #100 OQ: Distance Set Diameter Growth Rate",
+  "slug": "erdos-100-oq-02",
+  "description": "Is the minimum diameter of n-point integer distance sets Θ(n) (linear) or Θ(n/log n)?",
+  "meta": {
+    "author": "Open problem",
+    "date": "2026",
+    "status": "axiomatized",
+    "tags": [
+      "erdos-problems",
+      "combinatorial-geometry",
+      "extremal-combinatorics",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.eventually_ge_atTop",
+        "description": "Eventually n ≥ N for the asymptotic statements",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "Proved strong conjecture implies linear lower bound with c = 1/2",
+      "Proved Guth-Katz bound cn/log n is strictly sublinear (the gap is exactly log n)"
+    ],
+    "dateAdded": "2026-03-30",
+    "erdosNumber": 100,
+    "proofRepoPath": "Proofs/Erdos100OQ02.lean",
+    "axiomCount": 0,
+    "lineCount": 54,
+    "assumptions": "Inherits axioms from Erdos100Problem.lean (guthKatz_distinct_distances, piepmeyer_construction, kanold_bound, erdos_anning_theorem) via import."
+  },
+  "overview": {
+    "problemStatement": "Is the minimum diameter of n-point integer distance sets Θ(n) (linear growth) or Θ(n/log n) (matching the current best bound from Guth-Katz)?",
+    "text": "The gap between the conjectured linear bound and the proven n/log n bound is exactly a factor of log n.",
+    "proofStrategy": "Two results are formalized: (1) the strong conjecture (diam ≥ n-1) implies a linear lower bound with c = 1/2, via simple arithmetic; (2) the Guth-Katz bound cn/log n is eventually strictly less than cn, quantifying the gap.",
+    "keyInsights": [
+      "The strong conjecture (diam ≥ n-1) immediately implies a linear bound via n-1 ≥ n/2",
+      "The current best bound cn/log n differs from the conjectured cn by exactly one log factor",
+      "The kanold_bound axiom in the parent file is logically redundant — it follows from the proved diam_ge_n_over_log_n"
+    ]
+  },
+  "conclusion": {
+    "summary": "Formalizes two results about the gap between known (n/log n) and conjectured (n) diameter bounds for integer distance sets.",
+    "openQuestions": [
+      "Can the log n factor be removed from the Guth-Katz bound to achieve linear growth?",
+      "Is kanold_bound provable from the existing theorems (eliminating a redundant axiom)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Open question derived from parent problem",
+      "targetId": "erdos-100"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Proofs.Erdos100Problem"],
+    "opens": ["Erdos100", "Filter", "Set"],
+    "namespace": "Erdos100OQ02",
+    "lineCount": 54,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "strong_implies_half_linear",
+      "type": "theorem",
+      "description": "Strong conjecture implies diam ≥ n/2 for every n-point integer distance set"
+    },
+    {
+      "name": "gk_bound_strictly_sublinear",
+      "type": "theorem",
+      "description": "For any c > 0, cn/log n < cn eventually (the gap is exactly log n)"
+    }
+  ]
+}
