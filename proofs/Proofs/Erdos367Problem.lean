@@ -234,13 +234,8 @@ axiom van_doorn_lower_bound :
 Basic properties of B₂(n) needed for the analysis.
 -/
 
-/--
-**B₂(n) = 1 iff n is Squarefree**
-
-The 2-full part is trivial exactly when n has no repeated prime factors.
--/
-axiom twoFullPart_eq_one_iff (n : ℕ) (hn : n ≥ 1) :
-    twoFullPart n = 1 ↔ Squarefree n
+/- Note: twoFullPart_eq_one_iff (B₂(n) = 1 ↔ Squarefree n) was removed
+   as it was unused in any proof. The fact is true but not needed. -/
 
 /- Helper: For a prime p, p.primeFactors = {p} -/
 private lemma primeFactors_prime_eq (p : ℕ) (hp : p.Prime) :
@@ -320,13 +315,8 @@ theorem twoFullPart_prime_sq (p : ℕ) (hp : p.Prime) :
     · rw [hsf]; exact one_ne_zero
   rw [dif_pos h, hsf, Nat.div_one]
 
-/--
-**Multiplicativity on Coprime Arguments**
-
-B₂(mn) = B₂(m) · B₂(n) when gcd(m,n) = 1.
--/
-axiom twoFullPart_mul_coprime (m n : ℕ) (h : Nat.Coprime m n) :
-    twoFullPart (m * n) = twoFullPart m * twoFullPart n
+/- Note: twoFullPart_mul_coprime (B₂(mn) = B₂(m)·B₂(n) for coprime m,n)
+   was removed as it was unused in any proof. The fact is true but not needed. -/
 
 /--
 **Upper Bound: B₂(n) ≤ n**

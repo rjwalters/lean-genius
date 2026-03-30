@@ -8,7 +8,7 @@
     "author": "Hermann Minkowski (1896)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minkowski%27s_theorem",
     "date": "1896",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/MinkowskiFundamentalTheorem.lean",
     "tags": [
       "number-theory",
@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -40,6 +40,16 @@
         "theorem": "Nat.Prime.sq_add_sq",
         "description": "Fermat's two-squares theorem: primes p with p % 4 != 3 are sums of two squares",
         "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure",
+        "description": "Minkowski's convex body theorem via measure-theoretic pigeonhole",
+        "module": "Mathlib.MeasureTheory.Group.GeometryOfNumbers"
+      },
+      {
+        "theorem": "ZSpan.isAddFundamentalDomain",
+        "description": "Fundamental domain for ℤ-span of a basis",
+        "module": "Mathlib.Algebra.Module.ZLattice.Basic"
       }
     ],
     "originalContributions": [
@@ -47,14 +57,16 @@
       "CentrallySymmetric predicate and origin membership proof",
       "ConvexBody bundling convexity, symmetry, and nonemptiness",
       "Critical volume threshold definition and positivity",
+      "Bridge from custom Lattice to Mathlib Module.Basis via LinearEquiv.ofBijective",
+      "HasVolume typeclass connecting abstract volume to Lebesgue measure",
+      "Full proof of minkowski_fundamental from Mathlib's GeometryOfNumbers (0 axioms)",
       "Integer lattice specialization reducing threshold to 2^n",
-      "Fermat two-squares theorem as a Minkowski application",
-      "Proved Minkowski for ℤⁿ from Mathlib's GeometryOfNumbers (axiom-free integer lattice case)"
+      "Fermat two-squares theorem as a Minkowski application"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 1,
-    "lineCount": 544,
-    "assumptions": "1 axiom: minkowski_fundamental (the main convex body theorem for general lattices using custom HasVolume typeclass). The integer lattice case (ℤⁿ) is now PROVED from Mathlib's GeometryOfNumbers module (MinkowskiProved.minkowski_integer_lattice_proved). The general lattice axiom remains because the custom Lattice/HasVolume types need refactoring to use actual Lebesgue measure.",
+    "axiomCount": 0,
+    "lineCount": 662,
+    "assumptions": "None. The main theorem minkowski_fundamental is fully proved from Mathlib's GeometryOfNumbers via bridge lemmas connecting custom Lattice/ConvexBody/HasVolume types to Mathlib's Module.Basis, ZSpan, and Lebesgue measure.",
     "mathlib_version": "4.26.0",
     "prerequisites": [
       "Convex sets and convexity in real vector spaces",
@@ -67,7 +79,7 @@
   "overview": {
     "historicalContext": "Hermann Minkowski (1864--1909), a Lithuanian-German mathematician and one of Einstein's teachers at ETH Zurich, presented his convex body theorem in 'Geometrie der Zahlen' (1896), founding the field now called the geometry of numbers. The central idea was revolutionary: purely geometric reasoning about volumes and convex sets could yield arithmetic conclusions about the existence of integer points. Minkowski had first announced the result in 1889 and developed it over several years.\n\nThe theorem emerged from Minkowski's study of quadratic forms and their arithmetic properties. He realized that asking whether a quadratic form represents small values is equivalent to asking whether a certain ellipsoid contains lattice points -- transforming an algebraic question into a geometric one. This insight connected two previously separate mathematical traditions: the algebraic theory of quadratic forms (Gauss, Hermite) and the geometry of convex bodies.\n\nMinkowski's theorem was immediately recognized as fundamental. Hilbert used Minkowski's bound to prove the finiteness of the ideal class group of algebraic number fields, one of the cornerstones of algebraic number theory. The classical proof via the pigeonhole principle applied to lattice translates of the scaled set $S/2$ is a model of mathematical elegance: a deep arithmetic conclusion follows from a simple volume comparison.\n\nBlichfeldt (1914) refined the result into a counting generalization. Siegel later extended the geometry of numbers to adelic settings, connecting it to the theory of automorphic forms. Today the theorem underpins lattice-based cryptography (LWE, NTRU, FHE), where the guaranteed existence of short lattice vectors is central to both security proofs and cryptanalytic attacks. The shortest vector problem (SVP) and closest vector problem (CVP), both related to Minkowski's bounds, are believed to be hard even for quantum computers, making lattice cryptography a leading candidate for post-quantum security.",
     "problemStatement": "**Minkowski's Fundamental Theorem (Wiedijk #40)**: Let $L$ be a lattice in $\\mathbb{R}^n$ with covolume $V = |\\det(B)|$, where $B$ is a basis matrix. If $S \\subseteq \\mathbb{R}^n$ is:\n\n1. **Convex**: for all $x, y \\in S$ and $0 \\leq t \\leq 1$, the point $tx + (1-t)y \\in S$\n2. **Centrally symmetric**: $x \\in S \\Rightarrow -x \\in S$\n3. **Sufficiently large**: $\\text{vol}(S) > 2^n \\cdot V$\n\nThen $S$ contains a non-zero lattice point: $\\exists\\, p \\in S \\cap L,\\; p \\neq 0$.\n\nFor the standard lattice $\\mathbb{Z}^n$ (covolume 1), the threshold simplifies to $\\text{vol}(S) > 2^n$.",
-    "text": "A 453-line formalization of Minkowski's Fundamental Theorem (Wiedijk #40) with 9 theorems, 7 definitions, and 1 axiom. Defines custom `Lattice` and `ConvexBody` structures, proves the origin membership lemma for symmetric convex sets, establishes the critical volume threshold $2^n \\cdot \\text{covol}(L)$, and specializes to the integer lattice $\\mathbb{Z}^n$. The main theorem is axiomatized (measure-theoretic pigeonhole argument). Includes Fermat's two-squares theorem as an application via Mathlib's `Nat.Prime.sq_add_sq`.",
+    "text": "A 662-line formalization of Minkowski's Fundamental Theorem (Wiedijk #40) with 19 theorems, 14 definitions, and 0 axioms. Defines custom `Lattice` and `ConvexBody` structures, bridges them to Mathlib's `Module.Basis` and `ZSpan` infrastructure, and proves the main theorem from Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`. Includes Fermat's two-squares theorem as an application via Mathlib's `Nat.Prime.sq_add_sq`.",
     "proofStrategy": "**The Classical Pigeonhole Proof:**\n\n1. **Scale**: Consider $T = S/2 = \\{x/2 : x \\in S\\}$. Since $S$ is convex and symmetric, $T$ is also convex and symmetric, with $\\text{vol}(T) = \\text{vol}(S)/2^n > V$.\n\n2. **Translate**: For each lattice point $p \\in L$, consider the translate $T + p$. All translates have the same volume $\\text{vol}(T) > V$.\n\n3. **Pigeonhole**: The translates $\\{T + p : p \\in L\\}$ partition the same space as the fundamental domains. Since each has volume exceeding the fundamental domain volume $V$, two translates must overlap: $\\exists\\, p_1 \\neq p_2$ such that $(T + p_1) \\cap (T + p_2) \\neq \\emptyset$.\n\n4. **Extract the lattice point**: If $x \\in (T + p_1) \\cap (T + p_2)$, then $x = s_1/2 + p_1 = s_2/2 + p_2$ for $s_1, s_2 \\in S$. The difference $p_2 - p_1 = (s_1 - s_2)/2 \\in L$ is nonzero. By central symmetry $-s_2 \\in S$, and by convexity $(s_1 + (-s_2))/2 = p_2 - p_1 \\in S$. This is a nonzero lattice point in $S$.",
     "keyInsights": [
       "The volume bound $2^n$ is sharp: the open cube $(-1,1)^n$ has volume exactly $2^n$ and contains no nonzero integer points. For the closed cube $[-1,1]^n$, the boundary equality case still guarantees a lattice point (Minkowski's refinement)",
@@ -132,8 +144,8 @@
       "title": "Minkowski's Fundamental Theorem",
       "startLine": 240,
       "endLine": 307,
-      "summary": "States the main theorem as `axiom minkowski_fundamental`: given $\\text{vol}(S) > \\text{critVol}(L)$, there exists $x \\in S \\cap L$ with $x \\neq 0$. Derives `minkowski_fundamental'` (unfolding `criticalVolume`) and `minkowski_integer_lattice` (specializing to $\\mathbb{Z}^n$ where the threshold is simply $2^n$).",
-      "mathContext": "The main theorem is axiomatized because the full proof requires: (1) constructing Lebesgue measure on $\\mathbb{R}^n$, (2) applying Fubini's theorem to count lattice translate overlaps, (3) the measure-theoretic pigeonhole principle for infinite families of translates. The integer lattice specialization uses `standardLattice_covolume` to simplify $2^n \\cdot 1 = 2^n$."
+      "summary": "Proves `minkowski_fundamental` from Mathlib: given $\\text{vol}(S) > \\text{critVol}(L)$, there exists $x \\in S \\cap L$ with $x \\neq 0$. The proof bridges custom types to Mathlib via `Lattice.toModuleBasis` and `HasVolume.volume_eq`, then applies `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`. Derives `minkowski_fundamental'` and `minkowski_integer_lattice` as corollaries.",
+      "mathContext": "The proof connects custom types to Mathlib in three steps: (1) `Lattice.toModuleBasis` constructs a `Module.Basis` from the matrix via `LinearEquiv.ofBijective` on the transpose, (2) `HasVolume.volume_eq` bridges abstract volume to Lebesgue measure, (3) `latticePoints_eq_span` identifies custom lattice points with the ℤ-span. The integer lattice specialization uses `standardLattice_covolume` to simplify $2^n \\cdot 1 = 2^n$."
     },
     {
       "id": "applications",
@@ -161,13 +173,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Minkowski's Fundamental Theorem is the cornerstone of the geometry of numbers, elegantly connecting the volume of convex symmetric bodies to the existence of non-trivial lattice points. The formalization defines lattices via basis matrices with nonzero determinant, introduces convex bodies bundling symmetry and convexity, establishes the critical volume threshold $2^n \\cdot \\text{covol}(L)$, and proves the origin membership lemma for symmetric convex sets. The main theorem is axiomatized due to the measure-theoretic demands of the infinite pigeonhole argument. The file demonstrates the theorem's power through Fermat's two-squares theorem (via Mathlib) and describes Dirichlet approximation and Lagrange's four-squares as further applications.",
+    "summary": "Minkowski's Fundamental Theorem is the cornerstone of the geometry of numbers, elegantly connecting the volume of convex symmetric bodies to the existence of non-trivial lattice points. The formalization defines lattices via basis matrices with nonzero determinant, introduces convex bodies bundling symmetry and convexity, establishes the critical volume threshold $2^n \\cdot \\text{covol}(L)$, and fully proves the main theorem from Mathlib's geometry of numbers module. Bridge lemmas connect the custom Lattice/ConvexBody/HasVolume API to Mathlib's Module.Basis, ZSpan, and Lebesgue measure infrastructure. The file demonstrates the theorem's power through Fermat's two-squares theorem (via Mathlib) and describes Dirichlet approximation and Lagrange's four-squares as further applications.",
     "implications": "**Algebraic Number Theory**: Minkowski's bound on ideal norms proves finiteness of class groups, one of the deepest results in algebraic number theory. **Diophantine Equations**: The theorem provides non-constructive existence proofs for integer solutions to equations (sums of squares, Pell equations, norm equations in number fields). **Cryptography**: Lattice-based schemes (LWE, Ring-LWE, NTRU, fully homomorphic encryption) derive security from the computational hardness of lattice problems, while Minkowski's theorem guarantees the existence of short vectors that attacks attempt to find. **Coding Theory**: Sphere packing bounds in R^n use Minkowski-type volume arguments to limit code density.",
     "openQuestions": [
-      "Can the main axiom be replaced by a full proof using Mathlib's measure theory (MeasureTheory.Measure.Lebesgue, Fubini's theorem, change of variables for lattice translates)?",
       "Can Minkowski's successive minima and the second fundamental theorem be formalized in Lean?",
       "Can Dirichlet's approximation theorem be stated and proved as a direct corollary of the integer lattice specialization?",
-      "Can the Minkowski bound on ideal norms be formalized, connecting the convex body theorem to finiteness of class groups in algebraic number fields?"
+      "Can the Minkowski bound on ideal norms be formalized, connecting the convex body theorem to finiteness of class groups in algebraic number fields?",
+      "Can Blichfeldt's generalization (k+1 lattice points when vol > k det) be proved from Mathlib?"
     ]
   },
   "crossReferences": [
@@ -229,6 +241,8 @@
       "Mathlib.Analysis.Convex.Basic",
       "Mathlib.Analysis.Normed.Field.Basic",
       "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Group.GeometryOfNumbers",
+      "Mathlib.Algebra.Module.ZLattice.Basic",
       "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
       "Mathlib.NumberTheory.SumTwoSquares",
       "Mathlib.Data.Real.Basic",
@@ -240,15 +254,15 @@
       "Metric"
     ],
     "namespace": "MinkowskiFundamentalTheorem",
-    "lineCount": 453,
-    "axiomCount": 1,
-    "theoremCount": 9,
-    "definitionCount": 7,
+    "lineCount": 662,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 14,
     "mainTheorems": [
       {
         "name": "minkowski_fundamental",
-        "type": "axiom",
-        "description": "The main convex body theorem: vol(S) > 2^n covol(L) implies S contains a nonzero lattice point",
+        "type": "proved",
+        "description": "The main convex body theorem: vol(S) > 2^n covol(L) implies S contains a nonzero lattice point. Proved from Mathlib's geometry of numbers.",
         "leanType": "(L : Lattice n) -> (S : ConvexBody n) -> [hv : HasVolume n S] -> hv.volume > criticalVolume n L -> exists x in S.carrier, x in latticePoints n L and x != 0"
       },
       {
@@ -320,7 +334,7 @@
     {
       "name": "minkowski_fundamental",
       "type": "core",
-      "description": "A convex symmetric body of volume > 2^n covol(L) contains a nonzero lattice point",
+      "description": "A convex symmetric body of volume > 2^n covol(L) contains a nonzero lattice point. Fully proved from Mathlib.",
       "leanType": "(L : Lattice n) -> (S : ConvexBody n) -> [hv : HasVolume n S] -> hv.volume > criticalVolume n L -> exists x in S.carrier, x in latticePoints n L and x != 0"
     },
     {

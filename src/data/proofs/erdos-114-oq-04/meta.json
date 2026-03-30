@@ -1,0 +1,54 @@
+{
+  "id": "erdos-114-oq-04",
+  "title": "Verifying Lemniscate Axioms via Mathlib Complex Analysis",
+  "slug": "erdos-114-oq-04",
+  "description": "Assesses which axioms from Erdős #114 can be eliminated using Mathlib. Defines lemniscate sets properly using Polynomial.eval and complex norm (‖·‖), proves basic set-theoretic properties, and classifies axiom eliminability.",
+  "meta": {
+    "author": "Lean Genius Research Agent",
+    "sourceUrl": "https://erdosproblems.com/114",
+    "date": "1958 (Erdős; formalized 2026)",
+    "status": "axiomatized",
+    "tags": ["complex-analysis", "polynomials", "lemniscates", "erdos"],
+    "proofRepoPath": "Proofs/Erdos114OQ04Problem.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Polynomial.eval", "description": "Polynomial evaluation", "module": "Mathlib.Algebra.Polynomial.Eval.Defs"},
+      {"theorem": "norm_eq_zero / norm_nonneg", "description": "Norm properties on ℂ", "module": "Mathlib.Analysis.Complex.Basic"}
+    ],
+    "originalContributions": [
+      "lemniscateSet: proper definition using Polynomial.eval and ‖·‖",
+      "Basic properties: empty for r<0, zero-set at r=0, preimage characterization",
+      "z^n-1 polynomial with eval theorem and lemniscate characterization",
+      "Membership results: roots of unity off lemniscate, zero on lemniscate",
+      "Concrete examples: n=0 (empty), n=1 (circle), n=2 (Bernoulli lemniscate)",
+      "Axiom eliminability assessment"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 1,
+    "lineCount": 177,
+    "assumptions": "1 axiom: danchenko_bound (placeholder for Cauchy integral estimate). Core lemniscate set theory is axiom-free.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős #114 asks whether the arc length of {|p(z)|=1} is maximized by z^n-1. The parent file axiomatizes key concepts. This file assesses Mathlib readiness.",
+    "problemStatement": "Can the axiomatized lemniscate results be verified using Mathlib's complex analysis?",
+    "text": "Defines lemniscate sets properly, proves basic properties, assesses axiom eliminability.",
+    "proofStrategy": "Replace axioms with definitions where possible; assess remaining gaps.",
+    "keyInsights": [
+      "Lemniscate sets are definable without axioms using Polynomial.eval + ‖·‖",
+      "Arc length requires curve integration not in Mathlib",
+      "Danchenko bound is potentially provable via Cauchy integral formula"
+    ],
+    "prerequisites": ["Complex polynomial evaluation", "Norm on ℂ"]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "Partial success: lemniscate sets defined axiom-free, but arc length and supremum require curve integration infrastructure not in Mathlib.",
+    "implications": "Future Mathlib additions (complex curve integration) would enable full elimination.",
+    "openQuestions": []
+  },
+  "crossReferences": [{"targetId": "erdos-114", "relationship": "extends", "description": "Parent proof with axiomatized lemniscate definitions"}],
+  "leanFile": {"imports": ["Mathlib.Analysis.Complex.Basic", "Mathlib.Algebra.Polynomial.Basic", "Mathlib.Algebra.Polynomial.Eval.Defs", "Mathlib.Tactic"], "namespace": "Erdos114OQ04", "lineCount": 177, "axiomCount": 1, "theoremCount": 10, "definitionCount": 5},
+  "references": [{"authors": "Erdős, Herzog, Piranian", "title": "Metric properties of polynomials", "year": "1958", "venue": "Journal d'Analyse Mathématique 6, pp. 125-148"}]
+}

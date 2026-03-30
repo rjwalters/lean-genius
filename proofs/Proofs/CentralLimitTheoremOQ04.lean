@@ -379,8 +379,11 @@ The normalized n-fold free convolution is:
 -/
 
 /-- Dilation of a distribution by a scalar c.
-    D_c(μ) is the distribution of c·a where a ~ μ. -/
-axiom dilate : ℝ → NCDistribution → NCDistribution
+    D_c(μ) is the distribution of c·a where a ~ μ.
+    The k-th moment of D_c(μ) is cᵏ · mₖ(μ), since τ((ca)ᵏ) = cᵏ τ(aᵏ). -/
+noncomputable def dilate (c : ℝ) (μ : NCDistribution) : NCDistribution where
+  moment := fun k => c ^ k * μ.moment k
+  moment_zero := by simp [μ.moment_zero]
 
 /-- The normalized free convolution power:
     μ^{⊞n} / √n = D_{1/√n}(μ^{⊞n})
@@ -587,8 +590,11 @@ def bernoulliNC : NCDistribution where
 
 /-- Boolean cumulants: the simplest cumulant family.
     For the Boolean CLT, the Boolean cumulants satisfy:
-    βₙ(μ ⊎ ν) = βₙ(μ) + βₙ(ν) using interval partitions. -/
-axiom booleanCumulant : NCDistribution → ℕ → ℝ
+    βₙ(μ ⊎ ν) = βₙ(μ) + βₙ(ν) using interval partitions.
+
+    Note: Boolean cumulants are not developed further in this file.
+    The CLTStructure framework above would accommodate a Boolean
+    CLT instance with bernoulliNC as the limit law. -/
 
 /-- Summary: The answer to "How does the topological perspective extend?"
 

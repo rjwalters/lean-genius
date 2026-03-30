@@ -158,10 +158,37 @@ Understanding what elements look like.
 -/
 
 /-- Every element of A has a representation as compositions of f₁, f₂, f₃ applied to 1.
-    This follows directly from the inductive definition of InA. -/
-axiom elements_have_representation {n : ℕ} (hn : n ∈ A) :
+    Proved by induction on InA: base gives [], each step appends the used operation. -/
+theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
     ∃ ops : List (ℕ → ℕ), (∀ f ∈ ops, f = f₁ ∨ f = f₂ ∨ f = f₃) ∧
-      n = ops.foldl (fun x f => f x) 1
+      n = ops.foldl (fun x f => f x) 1 := by
+  change InA n at hn
+  induction hn with
+  | base => exact ⟨[], fun _ h => absurd h (List.not_mem_nil _), rfl⟩
+  | step1 _ ih =>
+    obtain ⟨ops, hops, heq⟩ := ih
+    refine ⟨ops ++ [f₁], fun f hf => ?_, ?_⟩
+    · rcases List.mem_append.mp hf with h | h
+      · exact hops f h
+      · rw [List.mem_singleton] at h; exact Or.inl h
+    · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
+      dsimp only; rw [heq]
+  | step2 _ ih =>
+    obtain ⟨ops, hops, heq⟩ := ih
+    refine ⟨ops ++ [f₂], fun f hf => ?_, ?_⟩
+    · rcases List.mem_append.mp hf with h | h
+      · exact hops f h
+      · rw [List.mem_singleton] at h; exact Or.inr (Or.inl h)
+    · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
+      dsimp only; rw [heq]
+  | step3 _ ih =>
+    obtain ⟨ops, hops, heq⟩ := ih
+    refine ⟨ops ++ [f₃], fun f hf => ?_, ?_⟩
+    · rcases List.mem_append.mp hf with h | h
+      · exact hops f h
+      · rw [List.mem_singleton] at h; exact Or.inr (Or.inr h)
+    · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
+      dsimp only; rw [heq]
 
 /-- First few elements of A: 1, 3, 4, 7, 9, 10, 13, 15, ... -/
 example : 1 ∈ A := one_in_A

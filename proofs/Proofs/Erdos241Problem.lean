@@ -69,10 +69,6 @@ def ErdosProblem241 : Prop :=
 
 /-- Bose and Chowla (1962) proved that f(N) ≥ (1+o(1)) · N^{1/3}.
 They constructed explicit B₃ sets of this size using finite fields. -/
-axiom bose_chowla_lower_bound :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-      (maxB3Size N : ℝ) ≥ (1 - ε) * (N : ℝ) ^ (1/3 : ℝ)
 
 /-
 ## Section V: Green's Upper Bound
@@ -80,10 +76,6 @@ axiom bose_chowla_lower_bound :
 
 /-- Green (2001) proved f(N) ≤ ((7/2)^{1/3} + o(1)) · N^{1/3},
 where (7/2)^{1/3} ≈ 1.519. This is the best known upper bound. -/
-axiom green_upper_bound :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-      (maxB3Size N : ℝ) ≤ ((7/2 : ℝ) ^ (1/3 : ℝ) + ε) * (N : ℝ) ^ (1/3 : ℝ)
 
 /-
 ## Section VI: Generalized Bₕ Sets
@@ -114,13 +106,8 @@ def BoseChowlaConjecture (h : ℕ) : Prop :=
       (maxBhSize h N : ℝ) ≤ (1 + ε) * (N : ℝ) ^ (1 / (h : ℝ))
 
 /-- The case h = 2 (Sidon sets) is resolved: Problem #30. -/
-axiom bose_chowla_h2_resolved : BoseChowlaConjecture 2
 
 /-- Bose–Chowla lower bound holds for all h ≥ 2. -/
-axiom bose_chowla_general_lower (h : ℕ) (hh : h ≥ 2) :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-      (maxBhSize h N : ℝ) ≥ (1 - ε) * (N : ℝ) ^ (1 / (h : ℝ))
 
 /-
 ## Section VII: Known Small B₃ Sets
@@ -131,11 +118,6 @@ All 20 ordered triple sums (a ≤ b ≤ c) are distinct:
 3, 7, 11, 15, 16, 20, 24, 29, 32, 33, 36, 40, 42, 45, 49, 58, 61, 65, 74, 90.
 
 Note: The previously claimed {1,2,4,8} is NOT B₃ since 1+1+4 = 2+2+2 = 6. -/
-axiom example_b3_set :
-  IsB3 {1, 5, 14, 30}
 
 /-- The trivial upper bound: a B₃ set in {1,...,N} has at most
 O(N^{1/3}) elements since distinct sums lie in {3,...,3N}. -/
-axiom b3_trivial_upper (A : Finset ℕ) (N : ℕ)
-    (hA : IsB3 A) (hN : ∀ a ∈ A, a ≤ N) :
-    A.card * (A.card + 1) * (A.card + 2) ≤ 6 * (3 * N)

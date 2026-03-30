@@ -30,16 +30,11 @@
         "theorem": "Set.ncard",
         "description": "Cardinality of sets, used for transversal_count",
         "module": "Mathlib.Data.Set.Card"
-      },
-      {
-        "theorem": "finrank_sup_add_finrank_inf_eq",
-        "description": "Grassmann dimension formula: dim(V+W) + dim(V∩W) = dim(V) + dim(W)",
-        "module": "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas"
       }
     ],
     "originalContributions": [
       "Grassmannian Gr(k,n) defined via finrank of Submodule subtypes",
-      "Lines in P³ formalized as Gr(2,4) with equivalence of intersection predicates proved via Grassmann dimension formula",
+      "Lines in P³ formalized as Gr(2,4) with two equivalent intersection predicates",
       "Four Lines Theorem stated with explicit general position conditions",
       "Partition and SchubertClass structures for abstract Schubert calculus",
       "Schubert basis theorem and Littlewood-Richardson rule axiomatized",
@@ -48,9 +43,9 @@
     "dateAdded": "2025-12-29",
     "hilbertNumber": 15,
     "proofRepoPath": "Proofs/Hilbert15SchubertCalculus.lean",
-    "axiomCount": 6,
-    "lineCount": 470,
-    "assumptions": "6 axioms: four_lines_theorem, schubert_basis_theorem, littlewoodRichardsonCoeff, littlewood_richardson_rule, pieris_rule, sigma1_fourth_power. Previously axiomatized linesMeet_iff_linesMeet' and transversal_count are now proved.",
+    "axiomCount": 7,
+    "lineCount": 472,
+    "assumptions": "7 axioms: four_lines_theorem, transversal_count, schubert_basis_theorem, littlewoodRichardsonCoeff, littlewood_richardson_rule, pieris_rule, sigma1_fourth_power. linesMeet_iff_linesMeet' was proved from Mathlib's Grassmann dimension formula.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -94,7 +89,7 @@
       "title": "Part II: Lines in P³",
       "startLine": 106,
       "endLine": 142,
-      "summary": "Defines LineInP3 as Gr(2,4), SubspacesMeet (V ⊓ W ≠ ⊥), LinesMeet, LinesMeet' (finrank of span < 4), and axiomatizes their equivalence."
+      "summary": "Defines LineInP3 as Gr(2,4), SubspacesMeet (V ⊓ W ≠ ⊥), LinesMeet, LinesMeet' (finrank of span < 4), and proves their equivalence via the Grassmann dimension formula."
     },
     {
       "id": "four-lines",
@@ -170,6 +165,7 @@
       "Mathlib.LinearAlgebra.Dimension.Finrank",
       "Mathlib.LinearAlgebra.Dimension.DivisionRing",
       "Mathlib.LinearAlgebra.FreeModule.Finite.Basic",
+      "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas",
       "Mathlib.Data.Fin.VecNotation",
       "Mathlib.Data.Set.Card",
       "Mathlib.Algebra.Field.Basic",
@@ -183,9 +179,9 @@
       "FiniteDimensional"
     ],
     "namespace": "Hilbert15",
-    "lineCount": 452,
-    "axiomCount": 8,
-    "theoremCount": 3,
+    "lineCount": 472,
+    "axiomCount": 7,
+    "theoremCount": 4,
     "definitionCount": 14
   },
   "references": [

@@ -1,42 +1,33 @@
 {
   "slug": "morleys-theorem-oq-01",
-  "title": "morleys-theorem-oq-01",
-  "phase": "OBSERVE",
+  "title": "Conway's Backward Construction for Morley's Theorem",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
     "formal": "",
-    "plain": "",
-    "whyMatters": []
-  },
-  "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "plain": "Can morleys_theorem_axiom be proved by formalizing the full Conway backward construction verification?",
+    "whyMatters": ["Would eliminate the axiom in the Morley formalization"]
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-29T19:03:48-07:00",
+    "phase": "ACT",
+    "since": "2026-03-30T06:00:00Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
+    "focus": "Supporting lemmas complete, coordinate verification remains",
+    "blockers": ["Coordinate computation for ear vertices in complex plane"],
+    "nextAction": "Place equilateral triangle in complex plane, compute ear vertex positions, verify side lengths",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
   },
   "knowledge": {
     "progressSummary": "COMPLETE: Fixed 3 incorrect theorem statements (conway_angle_identity/B/C). RHS was t.α₃ but should be π/3 + t.α₃. Build now clean on Lean 4.26.0. 0 sorries, 0 axioms.",
     "builtItems": [
-      "Proved sin_triple_product (line 203)",
-      "Proved cosine_rule_identity (line 260)",
-      "Proved morley_arm_cosine_rule (line 319)",
-      "Proved morleys_theorem_side_formula (line 381)",
-      "Proved morleys_theorem_equilateral (line 416)",
-      "Eliminated 1 axiom: morleys_theorem_axiom → fully proved"
+      "Trisected angle sum, positivity, bounds",
+      "Conway ear construction with apex/base angles",
+      "Conway angle identities at each vertex",
+      "Morley side formula symmetry and positivity",
+      "Reduction: equilateral from symmetric formula",
+      "Product-to-sum trig identities"
     ],
     "insights": [
       "The morleys_theorem_axiom was mathematically incorrect as stated: MorleyTriangle was an unconstrained structure (arbitrary 3 points)",
@@ -48,43 +39,12 @@
       "conway_angle_identity theorems had incorrect RHS: π - earApex_B - earApex_C + π/3 = 2π/3 - β₃ - γ₃ = π/3 + α₃ (not α₃). Fixed all three variants."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: morleys-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": ["Complete coordinate verification placing equilateral in complex plane"],
+    "markdown": ""
   },
-  "tags": [],
-  "relatedProofs": [
-    "morleys-theorem",
-    "morleys-theorem-oq-01"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-03-30T02:13:21.170Z",
-  "lastUpdate": "2026-03-30T02:13:21.223Z",
-  "leanFiles": [
-    {
-      "path": "Proofs/MorleysTheorem.lean",
-      "filename": "MorleysTheorem.lean",
-      "lineCount": 533,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 11,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MorleysTheorem.lean"
-    },
-    {
-      "path": "Proofs/MorleysTheoremOQ01.lean",
-      "filename": "MorleysTheoremOQ01.lean",
-      "lineCount": 293,
-      "theoremCount": 15,
-      "axiomCount": 0,
-      "defCount": 8,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MorleysTheoremOQ01.lean"
-    }
-  ]
+  "tags": ["geometry", "morley", "trisectors"],
+  "relatedProofs": ["morleys-theorem"],
+  "references": { "papers": [], "urls": [], "mathlib": [] },
+  "started": "2026-03-30T05:55:00Z",
+  "lastUpdate": "2026-03-30T06:05:00Z"
 }

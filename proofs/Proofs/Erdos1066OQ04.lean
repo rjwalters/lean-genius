@@ -70,12 +70,14 @@ axiom degree_le_kissing (d n : ℕ) (C : SepConfig d n) (i : Fin n) :
 -- Part III: Greedy Independent Set Bound
 -- ============================================================
 
-/-- By greedy coloring, any graph with max degree Δ has an
-    independent set of size ≥ n/(Δ+1). -/
-axiom greedy_independence (n Δ : ℕ) (hΔ : Δ > 0) :
-    -- In any graph on n vertices with max degree ≤ Δ,
-    -- there exists an independent set of size ≥ n/(Δ+1)
-    True
+/-- An independent set in the unit distance graph: no pair shares a unit edge. -/
+def IsIndepSet {d n : ℕ} (C : SepConfig d n) (S : Finset (Fin n)) : Prop :=
+  ∀ i ∈ S, ∀ j ∈ S, ¬unitEdge C i j
+
+/-- By greedy coloring on a graph with max degree ≤ τ(d) (see degree_le_kissing),
+    any separated configuration has an independent set of size ≥ n/(τ(d)+1). -/
+axiom greedy_independence (d n : ℕ) (C : SepConfig d n) :
+    ∃ S : Finset (Fin n), IsIndepSet C S ∧ S.card ≥ n / (kissingNumber d + 1)
 
 /-- The greedy bound for g_d(n):
     g_d(n) ≥ n/(τ(d)+1).
@@ -83,10 +85,9 @@ axiom greedy_independence (n Δ : ℕ) (hΔ : Δ > 0) :
     For d=1: g₁(n) ≥ n/3 (τ(1)=2)
     For d=2: g₂(n) ≥ n/7 (τ(2)=6)
     For d=3: g₃(n) ≥ n/13 (τ(3)=12) -/
-theorem greedy_lower_bound (d n : ℕ) :
-    -- g_d(n) ≥ n / (kissingNumber d + 1)
-    -- This is a consequence of degree_le_kissing and greedy coloring
-    True := trivial
+theorem greedy_lower_bound (d n : ℕ) (C : SepConfig d n) :
+    ∃ S : Finset (Fin n), IsIndepSet C S ∧ S.card ≥ n / (kissingNumber d + 1) :=
+  greedy_independence d n C
 
 -- ============================================================
 -- Part IV: Specific Dimensions
@@ -131,8 +132,7 @@ noncomputable def independenceRatio (d : ℕ) : ℝ :=
 
 /-- The greedy lower bound on the independence ratio. -/
 theorem ratio_greedy_bound (d : ℕ) (hd : d ≥ 1) :
-    -- independenceRatio d ≥ 1 / (kissingNumber d + 1)
-    True := trivial
+    independenceRatio d ≥ 1 / ((kissingNumber d : ℝ) + 1) := by sorry
 
 /-
   Summary
@@ -149,7 +149,8 @@ theorem ratio_greedy_bound (d : ℕ) (hd : d ≥ 1) :
   Improving beyond greedy requires structural arguments about
   d-dimensional packings.
 
-  1 axiom (degree_le_kissing), 1 sorry (ratio def), 5 theorems.
+  2 axioms (degree_le_kissing, greedy_independence),
+  2 sorries (independenceRatio def, ratio_greedy_bound), 6 theorems.
 -/
 
 end Erdos1066OQ04

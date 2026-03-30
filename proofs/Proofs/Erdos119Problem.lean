@@ -49,9 +49,6 @@ Reference: Wagner, G., On a problem of Erdős in Diophantine approximation.
 Bull. London Math. Soc. (1980), 81--88. -/
 
 /-- Part 1: For any sequence of points on the unit circle, `limsup M_n = ∞`. -/
-axiom erdos119_part1 :
-    ∀ (z : ℕ → ℂ), (∀ i : ℕ, ‖z i‖ = 1) →
-      atTop.limsup (fun n => (maxModulus z n : EReal)) = ⊤
 
 /- ## Part 2: M_n > n^c infinitely often (Solved by Beck 1991)
 
@@ -63,9 +60,6 @@ A problem of Erdős. Annals of Math. (1991), 609--651. -/
 
 /-- Part 2: For any unit circle sequence, there exists `c > 0` with `M_n > n^c`
 for infinitely many `n`. -/
-axiom erdos119_part2 :
-    ∀ (z : ℕ → ℂ), (∀ i : ℕ, ‖z i‖ = 1) →
-      ∃ (c : ℝ), c > 0 ∧ ∀ N : ℕ, ∃ n : ℕ, n ≤ N ∧ maxModulus z n > (N : ℝ) ^ c
 
 /- ## Part 3: Partial sums grow like n^{1+c} (Open, $100 prize)
 
@@ -94,22 +88,10 @@ theorem unitCirclePoly_zero (z : ℕ → ℂ) (w : ℂ) :
 /-- `M_n ≥ 1` for all `n ≥ 1`: evaluating at any `z_i` gives 0 for that factor,
 but we can show `|p_n(z)| ≥ 1` at `z = 1` when all `z_i` are on the unit circle
 by the product formula. More generally, the sup of a set containing 1 is ≥ 1. -/
-axiom maxModulus_ge_one (z : ℕ → ℂ) (n : ℕ) (hn : 0 < n)
-    (hz : ∀ i : ℕ, ‖z i‖ = 1) : 1 ≤ maxModulus z n
 
 /-- Part 2 implies Part 1: polynomial growth implies the limsup is infinite. -/
-axiom part2_implies_part1 :
-    (∀ (z : ℕ → ℂ), (∀ i : ℕ, ‖z i‖ = 1) →
-      ∃ (c : ℝ), c > 0 ∧ ∀ N : ℕ, ∃ n : ℕ, n ≤ N ∧ maxModulus z n > (N : ℝ) ^ c) →
-    (∀ (z : ℕ → ℂ), (∀ i : ℕ, ‖z i‖ = 1) →
-      atTop.limsup (fun n => (maxModulus z n : EReal)) = ⊤)
 
 /-- Part 3 implies Part 2: if partial sums grow like `n^{1+c}`, then individual
 terms must be large infinitely often. -/
-axiom part3_implies_part2 :
-    ErdosProblem119 →
-    ∀ (z : ℕ → ℂ), (∀ i : ℕ, ‖z i‖ = 1) →
-      ∃ (c : ℝ), c > 0 ∧ ∀ N : ℕ, ∃ n : ℕ, n ≤ N ∧ maxModulus z n > (N : ℝ) ^ c
 
 /-- The maximum modulus is nonneg since it is the sup of a set of norms. -/
-axiom maxModulus_nonneg (z : ℕ → ℂ) (n : ℕ) : 0 ≤ maxModulus z n

@@ -1,0 +1,97 @@
+{
+  "id": "cantor-diagonalization-oq-03-oq-01",
+  "title": "Lawvere Fixed-Point Theorem: Categorical Generalization",
+  "slug": "cantor-diagonalization-oq-03-oq-01",
+  "description": "Generalizes the Lawvere fixed-point theorem from type theory to an abstract evaluation structure, recovering the original categorical generality. Proves the abstract fixed-point theorem, diagonal lemma, type-theoretic recovery, and three concrete instances (Cantor/Prop, Bool, Nat). Includes a categorical framework sketch for the topos-theoretic setting.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
+    "date": "1969 (Lawvere; formalized 2026)",
+    "status": "formalized",
+    "tags": [
+      "set-theory",
+      "category-theory",
+      "fixed-point-theorems",
+      "diagonal-argument",
+      "cantor",
+      "lawvere"
+    ],
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ01.lean",
+    "badge": "original",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.Surjective",
+        "description": "Surjectivity predicate for functions",
+        "module": "Mathlib.Logic.Function.Basic"
+      }
+    ],
+    "originalContributions": [
+      "EvalStructure: abstract evaluation structure modeling CCC global elements",
+      "lawvere_abstract: abstract Lawvere FPT for any evaluation structure",
+      "diagonal_not_representable: the diagonal function is never representable",
+      "typeEval_surjective_iff: equivalence between point-surjectivity and Function.Surjective",
+      "lawvere_type_recovery: abstract theorem specializes to type-theoretic version",
+      "cantor_recovery: Cantor's theorem from abstract Lawvere",
+      "Three instances: Prop (Cantor), Bool, ℕ (successor)",
+      "CategoricalEval: categorical framework for CCC with global elements",
+      "topos_proxy_cantor: Cantor in topos-like setting using Prop as Ω"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 294,
+    "assumptions": "0 axioms. 2 sorries in the categorical framework (connecting CategoricalEval to the computational proof). Core theorems fully proved.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "F. William Lawvere (1969) showed that Cantor's diagonal argument is an instance of a general fixed-point theorem in cartesian closed categories. This unifies Cantor's theorem, Russell's paradox, the halting problem, and Gödel's incompleteness theorem.",
+    "problemStatement": "Can the Lawvere fixed-point theorem be formalized in a topos-theoretic setting in Lean, recovering the original categorical generality beyond type theory?",
+    "text": "Generalizes Lawvere FPT to an abstract evaluation structure, proves type-theoretic recovery, and sketches the categorical framework.",
+    "proofStrategy": "Define an abstract EvalStructure with objects, values, and evaluation. Prove the fixed-point theorem via diagonal construction. Show it recovers the type-theoretic version. Define a categorical framework for CCC with global elements.",
+    "keyInsights": [
+      "The minimal structure for Lawvere is evaluation + point-surjectivity — no full CCC needed",
+      "Type-theoretic and categorical versions are connected via typeEvalStructure",
+      "Three concrete instances show the power: Prop (Cantor), Bool, ℕ (successor)",
+      "In a topos, Prop acts as a proxy for the subobject classifier Ω"
+    ],
+    "prerequisites": [
+      "Lawvere fixed-point theorem from CantorDiagonalizationOQ03",
+      "Diagonal argument and Cantor's theorem",
+      "Basic category theory: cartesian closed categories, exponentials"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "The abstract evaluation structure captures the essential content of Lawvere's theorem without requiring full CCC machinery. The type-theoretic version is recovered as a special case. The full topos-theoretic formalization awaits Mathlib's topos infrastructure.",
+    "implications": "Demonstrates that diagonal arguments across mathematics (Cantor, Russell, halting, Gödel) share a common abstract structure.",
+    "openQuestions": [
+      "Can Rice's theorem be derived as a Lawvere instance?",
+      "Is there a constructive analogue without propositional extensionality?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-03",
+      "relationship": "extends",
+      "description": "Parent: type-theoretic Lawvere FPT. This file generalizes to abstract evaluation structures."
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib.Logic.Function.Basic", "Mathlib.Tactic"],
+    "opens": [],
+    "namespace": "CantorDiagonalizationOQ03OQ01",
+    "lineCount": 294,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 6
+  },
+  "references": [
+    {
+      "authors": "Lawvere, F. William",
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Category Theory, Homology Theory and their Applications II, Springer LNM 92, pp. 134-145",
+      "note": "The original paper establishing the categorical fixed-point theorem"
+    }
+  ]
+}

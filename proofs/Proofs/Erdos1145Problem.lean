@@ -441,9 +441,69 @@ theorem ruzsa_is_basis : IsTwoSetBasis ruzsaA ruzsaB := by
   obtain ⟨p, hp, _⟩ := ruzsa_unique_rep n hn
   exact ⟨p.1, p.2, hp.1, hp.2.1, hp.2.2.symm⟩
 
-/-- But the enumerations do NOT have ratio → 1.
-    For Ruzsa's sets, aₙ/bₙ → 1/2 (since B = 2A). -/
-axiom ruzsa_ratio_not_one : ¬HasAsymptoticRatio ruzsaA ruzsaB
+/-- ruzsaB = {2a : a ∈ ruzsaA}: even-position-bit numbers are exactly
+    double the odd-position-bit numbers. -/
+theorem ruzsaB_eq_double_ruzsaA (n : ℕ) : n ∈ ruzsaB ↔ n % 2 = 0 ∧ n / 2 ∈ ruzsaA := by
+  constructor
+  · -- (→) If n ∈ ruzsaB, then n is even (bit 0 = 0) and n/2 ∈ ruzsaA
+    intro hn
+    constructor
+    · -- n is even: bit 0 of n is 0 (k=0 in ruzsaB condition)
+      exact hn 0
+    · -- n/2 ∈ ruzsaA: bit 2k+1 of n/2 = bit 2(k+1) of n = 0 (by ruzsaB)
+      intro k
+      -- Need: (n / 2 / 2^(2*k+1)) % 2 = 0
+      -- This equals (n / 2^(2*k+2)) % 2 = (n / 2^(2*(k+1))) % 2
+      -- which is 0 by hn applied to k+1
+      have h : n / 2 / 2 ^ (2 * k + 1) = n / 2 ^ (2 * (k + 1)) := by
+        rw [Nat.div_div_eq_div_mul]
+        congr 1; ring
+      rw [h]
+      exact hn (k + 1)
+  · -- (←) If n = 2a with a ∈ ruzsaA, then n ∈ ruzsaB
+    intro ⟨heven, ha⟩
+    intro k
+    rcases k with _ | k
+    · -- k = 0: (n / 2^0) % 2 = n % 2 = 0
+      simpa using heven
+    · -- k ≥ 1: (n / 2^(2(k+1))) % 2 = (n/2 / 2^(2k+1)) % 2
+      --         = (a / 2^(2k+1)) % 2 = 0 by a ∈ ruzsaA
+      have h : n / 2 ^ (2 * (k + 1)) = n / 2 / 2 ^ (2 * k + 1) := by
+        rw [Nat.div_div_eq_div_mul]
+        congr 1; ring
+      rw [h]
+      -- n / 2 = a since n is even
+      have hdiv : n / 2 = n / 2 := rfl
+      exact ha k
+
+/-- Counting function identity: countingFn ruzsaB N = countingFn ruzsaA (N / 2).
+    Since ruzsaB = 2·ruzsaA, the elements of B up to N biject with elements
+    of A up to N/2. -/
+theorem countingFn_ruzsaB (N : ℕ) :
+    countingFn ruzsaB N = countingFn ruzsaA (N / 2) := by
+  unfold countingFn
+  -- Bijection: b ∈ ruzsaB ∩ [0,N] ↔ b/2 ∈ ruzsaA ∩ [0, N/2]
+  apply Set.ncard_image_of_injective _ (fun a b hab => by omega) |>.symm ▸ _
+  sorry -- The bijection between the two finite sets (routine but requires careful Set API)
+
+/-- The ratio countingFn ruzsaA N / countingFn ruzsaB N does NOT converge to 1.
+    Proof: ruzsaB = 2·ruzsaA, so the ratio equals
+    countingFn ruzsaA N / countingFn ruzsaA (N/2), which oscillates
+    between values near 1 (at N = 4^k) and 2 (at N = 2·4^k).
+    At N = 1: ratio = 2/1 = 2, contradicting convergence to 1. -/
+theorem ruzsa_ratio_not_one : ¬HasAsymptoticRatio ruzsaA ruzsaB := by
+  unfold HasAsymptoticRatio
+  intro hconv
+  -- If ratio → 1, then eventually ratio < 3/2
+  rw [Metric.tendsto_atTop] at hconv
+  obtain ⟨N₀, hN₀⟩ := hconv (1/2) (by norm_num)
+  -- At N = max N₀ 1, show ratio ≥ something > 3/2 (via the doubling structure)
+  -- Actually, we need to show ratio = 2 at specific large N values.
+  -- For any M, we can find N ≥ M with countingFn ruzsaA N = 2 * countingFn ruzsaB N.
+  -- The simplest witness: 1 ∈ ruzsaA \ ruzsaB, so countingFn at small N gives ratio > 1.
+  -- For the full proof: at N = 2^(2k+1)-1, ratio is exactly 2 for all k.
+  -- Use N₀ to find k with 2^(2k+1)-1 ≥ N₀, then get contradiction.
+  sorry
 
 /-- **Necessity theorem**: The condition aₙ/bₙ → 1 is necessary.
     Without it, one can have A + B = ℕ with bounded representations. -/

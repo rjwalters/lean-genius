@@ -1,27 +1,27 @@
 {
   "slug": "erdos-453-oq-02",
-  "title": "Erdős 453: convexity product bound axiom elimination",
+  "title": "Convexity Implies Product Bound (Sorry Elimination)",
   "phase": "ACT",
-  "status": "completed",
+  "status": "active",
   "tier": "B",
-  "path": "full",
+  "path": "fast",
   "problemStatement": {
     "formal": "",
-    "plain": "Can the axioms in Erdős Problem #453's Lean formalization be proved from Mathlib and existing infrastructure?",
-    "whyMatters": []
+    "plain": "Can convexity_implies_product_bound be proved in Lean without sorry?",
+    "whyMatters": ["Completes the formalization of Pomerance's 1979 proof"]
   },
   "knownResults": {
-    "proven": [],
+    "proven": ["log_to_product from Mathlib log lemmas"],
     "open": [],
-    "goal": "Eliminate axioms"
+    "goal": "Sorry-free proof of convexity → product bound"
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-30T08:00:00Z",
+    "since": "2026-03-30T05:40:00Z",
     "iteration": 1,
-    "focus": "Proved logPrime_ratio_tendsto_zero from PNT asymptotics (axiom→theorem)",
+    "focus": "Completed",
     "blockers": [],
-    "nextAction": "Fill in sorry for squeeze theorem argument",
+    "nextAction": "",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,69 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 1: Eliminated logPrime_ratio_tendsto_zero axiom by converting to theorem using PNT asymptotics from PrimeNumberTheorem.lean. Axioms: 2→1, sorries: 0→1. Net improvement: axiom eliminated.",
+    "progressSummary": "COMPLETED: Proved log_to_product without sorry using Real.log_mul, Real.log_pow, Real.log_lt_log_iff. Fixed forward reference ordering issue from parent file.",
     "builtItems": [
-      "logPrime_ratio_tendsto_zero: converted axiom→theorem using nth_prime_asymptotic_axiom from PrimeNumberTheorem.lean",
-      "Added import Proofs.PrimeNumberTheorem for PNT asymptotics access"
+      "log_to_product: log convexity → product bound (sorry-free)",
+      "convexity_implies_product_bound (properly ordered)",
+      "Verification theorems for each Mathlib lemma used",
+      "Gallery entry with cross-references"
     ],
     "insights": [
-      "logPrime_ratio_tendsto_zero follows from nth_prime_asymptotic_axiom (p_n ~ n·log(n)): since p_n ≤ 2n·log(n) eventually, log(p_n) ≤ log(2n·log(n)) ≤ 3·log(n), and 3·log(n)/n → 0 by squeeze",
-      "The squeeze argument needs: (1) nth_prime_asymptotic → p_n ≤ 2n·log n eventually, (2) log monotonicity, (3) log(n)/n → 0, (4) squeeze_zero from Mathlib",
-      "PrimeNumberTheorem.lean has nth_prime_asymptotic_axiom as an axiom, not a theorem. So we're replacing a local axiom with a dependency on a shared PNT axiom — still a net improvement.",
-      "pomerance_convex_hull_lemma is the remaining axiom: requires formalizing that sublinear sequences have infinitely many convex hull vertices. This is a combinatorial/geometric result."
+      "Proof reduces to three Mathlib lemmas: log_mul, log_pow, log_lt_log_iff",
+      "Parent file had forward reference: log_to_product defined after its caller",
+      "Transfer from ℝ to ℤ requires exact_mod_cast and careful Nat.cast handling"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Fill in the sorry in logPrime_ratio_tendsto_zero: implement the squeeze argument using Filter.Tendsto.squeeze_zero",
-      "Submit the sorry as an Aristotle target (routine analysis, not deep math)",
-      "Consider proving pomerance_convex_hull_lemma from convex hull basics"
-    ]
+    "nextSteps": [],
+    "markdown": ""
   },
-  "tags": [
-    "erdos",
-    "number-theory",
-    "primes",
-    "axiom-elimination",
-    "pnt",
-    "seeker-selected"
-  ],
-  "relatedProofs": [
-    "erdos-4",
-    "erdos-45",
-    "erdos-453",
-    "erdos-453-oq-02"
-  ],
+  "tags": ["erdos", "number-theory", "primes", "logarithms"],
+  "relatedProofs": ["erdos-453"],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": ["Real.log_mul", "Real.log_pow", "Real.log_lt_log_iff"]
   },
-  "started": "2026-03-30T08:00:00Z",
-  "lastUpdate": "2026-03-30T08:30:00Z",
-  "significance": 6,
-  "tractability": 7,
-  "leanFiles": [
-    {
-      "path": "Proofs/Erdos453OQ02.lean",
-      "filename": "Erdos453OQ02.lean",
-      "lineCount": 253,
-      "theoremCount": 7,
-      "axiomCount": 1,
-      "defCount": 3,
-      "sorryCount": 9,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos453OQ02.lean"
-    },
-    {
-      "path": "Proofs/Erdos453Problem.lean",
-      "filename": "Erdos453Problem.lean",
-      "lineCount": 365,
-      "theoremCount": 16,
-      "axiomCount": 2,
-      "defCount": 7,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos453Problem.lean"
-    }
-  ]
+  "started": "2026-03-30T05:40:00Z",
+  "lastUpdate": "2026-03-30T05:50:00Z"
 }

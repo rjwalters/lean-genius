@@ -1,0 +1,143 @@
+{
+  "id": "binomial-theorem-oq-02-oq-02",
+  "title": "Vandermonde's Identity via the Binomial Theorem",
+  "slug": "binomial-theorem-oq-02-oq-02",
+  "description": "Vandermonde's convolution identity C(m+n,r) = sum C(m,k)*C(n,r-k), proved via coefficient extraction from (1+x)^m*(1+x)^n = (1+x)^{m+n}. Includes symmetry, Pascal's rule as a special case, self-convolution C(2n,n) = sum C(n,k)^2, triple Vandermonde, and the r=2 decomposition.",
+  "meta": {
+    "author": "Vandermonde (1772), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+    "date": "1772",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "vandermonde-identity",
+      "convolution",
+      "multinomial",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Vandermonde's identity: (m+n).choose r = sum over antidiagonal r of m.choose * n.choose",
+        "module": "Mathlib.Data.Nat.Choose.Vandermonde"
+      },
+      {
+        "theorem": "Nat.sum_range_choose",
+        "description": "Sum of binomial coefficients: sum C(n,k) = 2^n",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule: C(n+1,k+1) = C(n,k+1) + C(n,k)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Vandermonde identity derived from binomial theorem via coefficient extraction",
+      "Symmetry and index-swap formulations of Vandermonde",
+      "Pascal's rule as special case of Vandermonde with n=1",
+      "Self-convolution identity: sum C(n,k)^2 = C(2n,n)",
+      "Triple Vandermonde via iterated binary Vandermonde",
+      "r=2 decomposition: C(m+n,2) = C(m,2) + mn + C(n,2)"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 179,
+    "assumptions": "0 axioms, 0 sorries. All results from Mathlib's Nat.add_choose_eq and standard combinatorial identities.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Vandermonde's identity (1772) is one of the fundamental identities in combinatorics. It expresses the binomial coefficient C(m+n,r) as a convolution of C(m,k) and C(n,r-k), corresponding to choosing r items from two groups of sizes m and n.",
+    "problemStatement": "Derive Vandermonde's identity from the multinomial/binomial theorem formalized in the parent OQ-02.",
+    "text": "Vandermonde's convolution identity C(m+n,r) = sum C(m,k)*C(n,r-k) via binomial theorem coefficient extraction. Special cases include Pascal's rule, self-convolution, and triple Vandermonde.",
+    "proofStrategy": "Extract coefficients from (1+x)^m * (1+x)^n = (1+x)^{m+n}. The binomial theorem gives the expansions, and comparing x^r coefficients yields Vandermonde.",
+    "keyInsights": [
+      "Vandermonde is coefficient extraction from product of binomial expansions",
+      "Pascal's rule is Vandermonde with n=1 (simplest non-trivial case)",
+      "Self-convolution C(2n,n) = sum C(n,k)^2 is Vandermonde with m=n, r=n",
+      "Triple Vandermonde follows from two applications of binary Vandermonde"
+    ],
+    "prerequisites": [
+      "BinomialTheoremOQ02.lean: Multinomial theorem",
+      "Binomial coefficients: Nat.choose",
+      "Finset.antidiagonal: pairs summing to r"
+    ]
+  },
+  "sections": [
+    {
+      "id": "core-identity",
+      "title": "Vandermonde's Identity",
+      "summary": "Core identity from Mathlib: C(m+n,r) = sum over antidiagonal r of C(m,i)*C(n,j).",
+      "startLine": 1,
+      "endLine": 50
+    },
+    {
+      "id": "binomial-derivation",
+      "title": "From the Binomial Theorem",
+      "summary": "Total form: 2^m * 2^n = 2^{m+n} as sum identity.",
+      "startLine": 51,
+      "endLine": 70
+    },
+    {
+      "id": "symmetry",
+      "title": "Symmetry Properties",
+      "summary": "Commutativity in (m,n) and index-swap formulation.",
+      "startLine": 71,
+      "endLine": 90
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "r=0, r=1, r=2, Pascal's rule, sum of squares.",
+      "startLine": 91,
+      "endLine": 150
+    },
+    {
+      "id": "triple",
+      "title": "Triple Vandermonde",
+      "summary": "Multi-fold convolution from iterated binary Vandermonde.",
+      "startLine": 151,
+      "endLine": 179
+    }
+  ],
+  "conclusion": {
+    "summary": "Vandermonde's identity is derived from the binomial theorem, extending the parent's multinomial formalization. 11 theorems, 0 axioms, 0 sorries.",
+    "openQuestions": [
+      "Can the q-Vandermonde identity (Gaussian binomial version) be formalized?",
+      "Can Vandermonde be used to prove the hockey-stick identity combinatorially?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset", "Nat"],
+    "namespace": "VandermondeMult",
+    "lineCount": 179,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "references": [
+    {
+      "authors": "A.-T. Vandermonde",
+      "title": "Memoire sur des irrationnelles de differents ordres",
+      "year": "1772",
+      "venue": "Histoire de l'Academie Royale des Sciences"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Parent: multinomial theorem. Vandermonde is coefficient extraction from the product of binomial expansions."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Root binomial theorem formalization."
+    }
+  ]
+}

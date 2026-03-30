@@ -11,59 +11,7 @@
       "Locally finite infinite graphs: at most one odd-degree vertex for one-way Euler path",
       "Chinese Postman Problem: poly for finite, may not have optimal for infinite"
     ],
-    "builtItems": [
-      "KonigsbergOQ03.lean: 110 lines, 4 axioms"
-    ],
+    "builtItems": ["KonigsbergOQ03.lean: 110 lines, 4 axioms"],
     "progressSummary": "COMPLETED: Survey of hypergraph + infinite graph Euler path generalizations."
-  },
-  "leanFiles": [
-    {
-      "path": "Proofs/Konigsberg.lean",
-      "filename": "Konigsberg.lean",
-      "lineCount": 221,
-      "theoremCount": 4,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Konigsberg.lean"
-    },
-    {
-      "path": "Proofs/KonigsbergOQ01.lean",
-      "filename": "KonigsbergOQ01.lean",
-      "lineCount": 405,
-      "theoremCount": 24,
-      "axiomCount": 0,
-      "defCount": 8,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01.lean"
-    },
-    {
-      "path": "Proofs/KonigsbergOQ02.lean",
-      "filename": "KonigsbergOQ02.lean",
-      "lineCount": 814,
-      "theoremCount": 30,
-      "axiomCount": 2,
-      "defCount": 11,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02.lean"
-    },
-    {
-      "path": "Proofs/KonigsbergOQ03.lean",
-      "filename": "KonigsbergOQ03.lean",
-      "lineCount": 102,
-      "theoremCount": 0,
-      "axiomCount": 4,
-      "defCount": 5,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03.lean"
-    }
-  ],
-  "relatedProofs": [
-    "konigsberg",
-    "konigsberg-oq-03"
-  ]
+  }
 }

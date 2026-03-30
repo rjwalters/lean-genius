@@ -2945,18 +2945,20 @@
       "file": "proofs/Proofs/Erdos1Problem.lean",
       "problem_id": "erdos-1",
       "submitted": "unknown",
-      "status": "completed",
-      "outcome": "No improvement (recovered from server)",
-      "notes": "Recovered from server at 2026-03-30T08:25:50Z. No sorry reduction."
+      "status": "integrated",
+      "outcome": "Already had 0 sorries",
+      "notes": "Recovered from server at 2026-03-30T08:25:50Z. No sorry reduction.",
+      "theorems_proved": 0
     },
     {
       "project_id": "20e6c1d0-305b-4912-9882-7fd743825a8b",
       "file": "proofs/Proofs/Erdos1Problem.lean",
       "problem_id": "erdos-1",
       "submitted": "unknown",
-      "status": "completed",
-      "outcome": "No improvement (recovered from server)",
-      "notes": "Recovered from server at 2026-03-30T08:25:50Z. No sorry reduction."
+      "status": "integrated",
+      "outcome": "Already had 0 sorries",
+      "notes": "Recovered from server at 2026-03-30T08:25:50Z. No sorry reduction.",
+      "theorems_proved": 0
     },
     {
       "project_id": "a786f580-581b-47a8-b2db-e0e5974496c9",
@@ -2964,7 +2966,7 @@
       "problem_id": "erdos-780",
       "submitted": "unknown",
       "status": "completed",
-      "outcome": "No improvement (recovered from server)",
+      "outcome": "1 sorries remaining",
       "notes": "Recovered from server at 2026-03-30T08:25:51Z. No sorry reduction."
     },
     {
@@ -2972,31 +2974,54 @@
       "file": "proofs/Proofs/Erdos1Problem.lean",
       "problem_id": "erdos-1",
       "submitted": "unknown",
-      "status": "completed",
-      "outcome": "No improvement (recovered from server)",
-      "notes": "Recovered from server at 2026-03-30T08:25:52Z. No sorry reduction."
+      "status": "integrated",
+      "outcome": "Already had 0 sorries",
+      "notes": "Recovered from server at 2026-03-30T08:25:52Z. No sorry reduction.",
+      "theorems_proved": 0
     },
     {
       "project_id": "0ae26505-6aaf-4345-87b0-3e1da7532ef5",
       "file": "proofs/Proofs/Erdos1040Aristotle.lean",
       "problem_id": "erdos-1040",
       "submitted": "2026-03-30T08:26:15Z",
-      "status": "submitted",
+      "status": "integrated",
       "preprocessed": false,
       "preprocessing_log": null,
       "companion_file": true,
-      "notes": "Companion file submission (T1)"
+      "notes": "Companion file submission (T1)",
+      "outcome": "1 sorries remaining (companion file — merge into Erdos1040Problem.lean)",
+      "theorems_proved": 3
     },
     {
       "project_id": "35df903a-dd4d-44ff-8eca-f0a8b0fa4c84",
       "file": "proofs/Proofs/Erdos1OQ03Aristotle.lean",
       "problem_id": "erdos-1oq03",
       "submitted": "2026-03-30T08:26:39Z",
-      "status": "submitted",
+      "status": "integrated",
       "preprocessed": false,
       "preprocessing_log": null,
       "companion_file": true,
-      "notes": "Companion file submission (T1)"
+      "notes": "Companion file submission (T1)",
+      "outcome": "0 sorries remaining (companion file — merge into Erdos1OQ03Problem.lean)",
+      "theorems_proved": 1
+    },
+    {
+      "project_id": "c3d73ca5-5b5a-4f31-813e-3ef8a72cce69",
+      "file": "proofs/Proofs/Erdos1040Problem.lean",
+      "problem_id": "erdos-1040",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "3 sorries remaining",
+      "notes": "Recovered from server at 2026-03-30T08:57:35Z. No sorry reduction."
+    },
+    {
+      "project_id": "d09f867a-556c-4729-9c72-a35cd7c27cc3",
+      "file": "proofs/Proofs/SkolemNoetherMatrixAutAristotle.lean",
+      "problem_id": "skolemnoethermatrixaut",
+      "submitted": "unknown",
+      "status": "completed",
+      "outcome": "No improvement (recovered from server)",
+      "notes": "Recovered from server at 2026-03-30T10:32:32Z. No sorry reduction."
     }
   ]
 }

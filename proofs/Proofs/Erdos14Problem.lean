@@ -53,39 +53,20 @@ noncomputable def nonUniqueSumCountInf (A : Set ℕ) (N : ℕ) : ℕ :=
 
 /-- **Erdős Problem #14a** (OPEN): For every A ⊆ ℕ and every ε > 0,
     the non-unique count satisfies |{1,...,N}\B| ≫_ε N^{1/2−ε}. -/
-axiom erdos_14a_conjecture :
-  ∀ (A : Set ℕ) (ε : ℝ), ε > 0 →
-    ∃ C : ℝ, C > 0 ∧
-      ∀ᶠ N in atTop, (nonUniqueSumCountInf A N : ℝ) ≥ C * (N : ℝ) ^ (1/2 - ε)
 
 /-- **Erdős Problem #14b** (OPEN): There exists A ⊆ ℕ such that
     |{1,...,N}\B| = o(N^{1/2}), i.e., non-unique sums grow slower than √N. -/
-axiom erdos_14b_conjecture :
-  ∃ A : Set ℕ, ∀ ε : ℝ, ε > 0 →
-    ∀ᶠ N in atTop, (nonUniqueSumCountInf A N : ℝ) ≤ ε * (N : ℝ) ^ (1/2 : ℝ)
 
 /- ## Known Results -/
 
 /-- **Erdős–Sárközy–Szemerédi**: There exists A ⊆ ℕ such that
     |{1,...,N}\B| ≪_ε N^{1/2+ε} for all ε > 0. -/
-axiom ess_upper_bound :
-  ∃ A : Set ℕ, ∀ ε : ℝ, ε > 0 →
-    ∃ C : ℝ, C > 0 ∧
-      ∀ᶠ N in atTop, (nonUniqueSumCountInf A N : ℝ) ≤ C * (N : ℝ) ^ (1/2 + ε)
 
 /-- **Erdős–Sárközy–Szemerédi**: The same A from above satisfies
     |{1,...,N}\B| ≫_ε N^{1/3−ε} for infinitely many N. -/
-axiom ess_lower_bound :
-  ∃ A : Set ℕ, ∀ ε : ℝ, ε > 0 →
-    ∃ C : ℝ, C > 0 ∧
-      ∃ᶠ N in atTop, (nonUniqueSumCountInf A N : ℝ) ≥ C * (N : ℝ) ^ (1/3 - ε)
 
 /-- **Erdős–Freud**: For A ⊆ {1,...,N} (finite), the number of non-unique
     sums is < 2^{3/2} · N^{1/2}. The constant 2^{3/2} may be optimal. -/
-axiom erdos_freud_finite :
-  ∀ N : ℕ, N > 0 →
-    ∃ A : Finset ℕ, (∀ a ∈ A, a ∈ Icc 1 N) ∧
-      (nonUniqueSumCount A N : ℝ) < 2 ^ (3/2 : ℝ) * (N : ℝ) ^ (1/2 : ℝ)
 
 /- ## Structural Observations -/
 
@@ -93,10 +74,6 @@ axiom erdos_freud_finite :
     at most one representation: uniqueSums covers all sums of A.
     But Sidon sets have |A ∩ {1,...,N}| ≤ N^{1/2} + O(N^{1/4}), so
     the sumset has ≤ N + O(N^{3/4}) elements, missing ~N integers. -/
-axiom sidon_set_non_unique (A : Set ℕ) :
-  (∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
-    a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)) →
-  ∀ᶠ N in atTop, (nonUniqueSumCountInf A N : ℝ) ≥ (N : ℝ) / 2
 
 /-- The non-unique count is monotonically non-decreasing in N. -/
 theorem non_unique_monotone (A : Set ℕ) :

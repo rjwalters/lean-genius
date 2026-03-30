@@ -476,8 +476,68 @@ theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.
       (projTransform M D) (projTransform M E) (projTransform M F)
     ↔ pascalConstraint A B C D E F := by
   unfold pascalConstraint lineIntersection lineThrough
-  simp only [← crossProduct_projTransform]
-  sorry -- Needs: adjugate composition identity, to be proved in next session
+  -- Apply cross product transformation law: cross(M·u, M·v) = adj(M)ᵀ · cross(u,v)
+  -- Simp applies bottom-up: first inner cross products (using M), then outer (using adj(M)ᵀ)
+  simp only [crossProduct_projTransform]
+  -- Now all three vectors are projTransform (adj(adj(M)ᵀ)ᵀ) applied to original intersections
+  rw [threeVectorMatrix_projTransform]
+  -- Goal: det(adj(adj(M)ᵀ)ᵀ) * det(P,Q,R) = 0 ↔ det(P,Q,R) = 0
+  constructor
+  · intro h
+    have hdet : (M.adjugate.transpose).adjugate.transpose.det ≠ 0 := by
+      simp only [Matrix.det_transpose, Matrix.det_adjugate, Fintype.card_fin]
+      -- det(M)^2^2 ≠ 0
+      exact pow_ne_zero _ (pow_ne_zero _ hM)
+    exact (mul_eq_zero.mp h).resolve_left hdet
+  · intro h; rw [h, mul_zero]
+
+-- ============================================================
+-- PART 13: Parametric Coverage of Standard Conic
+-- ============================================================
+
+/-! Every point on the standard conic x₀²+x₁²=x₂² is either:
+    (a) A scalar multiple of stdConicPoint(t) for some t (when p₀+p₂ ≠ 0), or
+    (b) A scalar multiple of (1, 0, -1) (the "point at infinity", when p₀+p₂ = 0).
+
+    This establishes that the rational parametrization t ↦ (1-t², 2t, 1+t²) covers
+    all finite points on the conic, which is needed for the full axiom elimination. -/
+
+/-- The unique point on the standard conic not covered by stdConicPoint:
+    (1, 0, -1) satisfies x₀² + x₁² = x₂² (trivially: 1 + 0 = 1). -/
+def stdConicInfinity : ProjPoint :=
+  fun i => match i with
+  | 0 => 1
+  | 1 => 0
+  | 2 => -1
+
+/-- The point at infinity lies on the standard conic. -/
+theorem stdConicInfinity_on_conic : pointOnConic stdConicInfinity stdConic := by
+  unfold pointOnConic conicQuadraticForm stdConicInfinity stdConic
+  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply]
+  ring
+
+/-- On the standard conic, p₀ + p₂ = 0 characterizes the point at infinity.
+    If p is on the conic and p₀ + p₂ = 0, then p₁ = 0 (so p is (α, 0, -α)). -/
+theorem stdConic_infinity_char (p : ProjPoint) (hp : pointOnConic p stdConic)
+    (h02 : p 0 + p 2 = 0) : p 1 = 0 := by
+  unfold pointOnConic conicQuadraticForm stdConic at hp
+  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply] at hp
+  have h : p 2 = -(p 0) := by linarith
+  nlinarith [sq_nonneg (p 1)]
+
+/-- **Parametric coverage**: Every point on stdConic with p₀+p₂ ≠ 0 is a scalar
+    multiple of stdConicPoint(p₁/(p₀+p₂)).
+    Uses the half-angle substitution t = sin θ / (1 + cos θ) from trigonometry. -/
+theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
+    (h02 : p 0 + p 2 ≠ 0) :
+    ∃ (t λ : ℝ), λ ≠ 0 ∧ ∀ i, p i = λ * stdConicPoint t i := by
+  use p 1 / (p 0 + p 2), (p 0 + p 2) / 2
+  refine ⟨div_ne_zero h02 two_ne_zero, ?_⟩
+  have hconic : p 0 ^ 2 + p 1 ^ 2 = p 2 ^ 2 := by
+    unfold pointOnConic conicQuadraticForm stdConic at hp
+    simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply] at hp
+    nlinarith
+  intro i; fin_cases i <;> simp only [stdConicPoint] <;> field_simp <;> nlinarith [hconic]
 
 /-
 ### Roadmap for Full Axiom Elimination
@@ -487,16 +547,18 @@ theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.
 2. `stdConic_det_factored`: Scalar triple product formula det(P(a),P(b),P(c)) = 4(a-b)(b-c)(c-a)
 3. `collinear_projTransform`: Collinearity is projectively invariant
 4. `threeVectorMatrix_projTransform`: Determinant of transformed vectors = det(M) · original
+5. `pascalConstraint_projTransform`: Pascal constraint is projectively invariant
+6. `stdConicPoint_covers`: Every finite point on stdConic is stdConicPoint(t)
+7. `stdConic_infinity_char`: The point at infinity (1,0,-1) is the only uncovered point
 
 **Remaining for full proof:**
-1. `pascalConstraint_projTransform` (above): needs adjugate composition identity
-2. **Sylvester's law**: Any non-degenerate symmetric conic matrix can be diagonalized by
-   congruence to ±diag(1,1,-1). For real projective conics, the signature determines the
-   conic type. Non-empty non-degenerate conics have signature (2,1), equivalent to stdConic.
-3. **stdConic parametric coverage**: Show every point on stdConic (with x₂ ≠ 0) is of the
-   form stdConicPoint(t) for some t. (The point at infinity (1,0,-1) is the limit t→∞.)
-4. **Assembly**: Combine Sylvester's law + parametric coverage + projective invariance +
-   `pascal_std_conic_parametrized` to prove `conic_implies_pascal_constraint`.
+1. **Sylvester's law**: Any non-degenerate symmetric conic with real points is congruent to
+   diag(1,1,-1). For signature (2,1), there exists invertible M with MᵀCM = stdConic.
+2. **Point at infinity case**: Handle 6 points where one is (1,0,-1) — either by:
+   (a) A limit argument: as t→∞, stdConicPoint(t)/t² → (-1,0,1) ∼ (1,0,-1), or
+   (b) A rotation: apply a projective transformation mapping (1,0,-1) to a finite point
+3. **Assembly**: Combine Sylvester + coverage + projective invariance + parametric proof
+   to eliminate `conic_implies_pascal_constraint`.
 -/
 -- ============================================================
 -- Export main results
@@ -515,3 +577,5 @@ theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.
 #check @crossProduct_projTransform
 #check @stdConic_det_factored
 #check @pascalConstraint_projTransform
+#check @stdConicPoint_covers
+#check @stdConic_infinity_char

@@ -55,8 +55,8 @@
       "log_convexity_iff_vertex identity (proved by rfl)"
     ],
     "axiomCount": 2,
-    "lineCount": 339,
-    "assumptions": "2 axioms: logPrime_ratio_tendsto_zero, pomerance_convex_hull_lemma. 0 sorries. nthPrime_is_prime and nthPrime_strictMono are now proved theorems."
+    "lineCount": 364,
+    "assumptions": "2 axioms: logPrime_ratio_tendsto_zero (from PNT), pomerance_convex_hull_lemma. 0 sorries — nthPrime_is_prime/strictMono now proved via Mathlib, log_to_product fully proved."
   },
   "leanFile": {
     "imports": [
@@ -70,7 +70,7 @@
       "Real"
     ],
     "namespace": "Erdos453",
-    "lineCount": 339,
+    "lineCount": 364,
     "axiomCount": 2,
     "theoremCount": 14,
     "definitionCount": 7

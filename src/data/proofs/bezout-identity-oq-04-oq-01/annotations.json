@@ -1,0 +1,34 @@
+{
+  "annotations": [
+    {
+      "line": 52,
+      "type": "definition",
+      "content": "**Unimodular matrix**: det(M) = ±1, the precise condition for M to be invertible over ℤ. By Cramer's rule, M⁻¹ = adj(M)/det(M), which has integer entries iff |det(M)| = 1."
+    },
+    {
+      "line": 80,
+      "type": "definition",
+      "content": "**Smith Normal Form structure**: the triple (U, D, V) where A = UDV, with U, V unimodular and D diagonal with the invariant factor divisibility chain d₁|d₂|...|dₖ."
+    },
+    {
+      "line": 130,
+      "type": "axiom",
+      "content": "**SNF existence** (axiomatized): every integer matrix has a Smith Normal Form. The constructive proof uses iterated Euclidean reduction on matrix entries — find smallest |entry|, clear row/column, recurse."
+    },
+    {
+      "line": 160,
+      "type": "axiom",
+      "content": "**SNF solvability** (axiomatized): Ax = b over ℤ has solutions iff each invariant factor dᵢ divides the corresponding entry (Ub)ᵢ. This reduces the matrix system to a diagonal system Dy = Ub."
+    },
+    {
+      "line": 183,
+      "type": "theorem",
+      "content": "**Classical Bézout recovery**: ∃x y, ax+by=c ↔ gcd(a,b)|c. Proved directly from Int.gcd properties without using SNF — this IS the 1×2 special case."
+    },
+    {
+      "line": 248,
+      "type": "theorem",
+      "content": "**Affine lattice structure**: Ax = b ↔ (x-x₀) ∈ ker(A). Solutions form a coset x₀ + ker(A), generalizing the 1D parameterization from BezoutIdentityOQ04."
+    }
+  ]
+}

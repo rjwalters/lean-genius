@@ -29,19 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 2: Proved tao_equal_size_bound assuming disjoint_diff_combined_bound. Found bug in sidon_diff_count (false for empty A). 5 counting sorries remain.",
+    "progressSummary": "PROGRESS: Resolved 3 of 5 sorries. Proved example_2_3 (strong induction), example_3_5_frobenius (from Sylvester axiom), and fixed+proved larger_numbers_fewer_reps (bug: hypothesis was n≥2, should be n≥3). Remaining 2 sorries (nonrep_finite, topK_finite) require the Chicken McNugget theorem.",
     "builtItems": [
       "Proved sidon_diff_injective for Finset ℤ — if a₁-b₁=a₂-b₂ with a₁≠b₁, then a₁=a₂ and b₁=b₂",
       "Prior: sidon_diff_injective also proved in Erdos152 (for Finset ℕ) and Erdos14 (for Set ℕ)",
-      "Proved tao_equal_size_bound from disjoint_diff_combined_bound: m²≤2N+1 via even-ness of m*(m-1)",
-      "Identified bug: sidon_diff_count is false for empty A (claims card=1 but diffSet(∅)=∅ has card 0)"
+      "Proved example_2_3 via strong induction + multiset sum bounds",
+      "Proved example_3_5_frobenius from sylvester_frobenius axiom",
+      "Fixed and proved larger_numbers_fewer_reps (hypothesis n≥2→n≥3)"
     ],
     "insights": [
       "Sidon diff injectivity: a₁-b₁=a₂-b₂ → a₁+b₂=a₂+b₁ → by Sidon {a₁,b₂}={a₂,b₁} → a₁=a₂ (since a₁≠b₁)",
       "sidon_diff_count needs A.Nonempty — formula fails for empty set (0 ≠ 1)",
       "For sidon_pair_bound: need |A|*(|A|-1) ≤ 2*(N-1) from injection into {-(N-1),...,N-1}\\{0}",
       "Dependency chain: sidon_diff_injective → sidon_diff_count → disjoint_diff_total → bounds",
-      "Nat.choose 2 manipulation needed: 2*C(n,2) = n*(n-1)"
+      "Nat.choose 2 manipulation needed: 2*C(n,2) = n*(n-1)",
+      "example_2_3 proved by strong induction: n≥4 decomposes as 2+(n-2), base cases 2 and 3 are elements",
+      "example_3_5_frobenius proved directly from sylvester_frobenius axiom: 3*5-3-5=7",
+      "larger_numbers_fewer_reps bug fixed (n≥2→n≥3) and proved from sylvester_count + consecutive_count",
+      "Remaining sorries (nonrep_finite, topK_finite) need Chicken McNugget theorem — non-trivial formalization"
     ],
     "mathlibGaps": [],
     "nextSteps": [

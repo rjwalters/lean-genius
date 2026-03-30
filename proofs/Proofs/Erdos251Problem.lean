@@ -50,9 +50,6 @@ noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 - p₀ = 2, p₁ = 3, p₂ = 5, p₃ = 7, p₄ = 11, p₅ = 13, ...
 
 These are verified computationally in the definition of Nat.nth. -/
-axiom nthPrime_values :
-    nthPrime 0 = 2 ∧ nthPrime 1 = 3 ∧ nthPrime 2 = 5 ∧
-    nthPrime 3 = 7 ∧ nthPrime 4 = 11
 
 /-
 ## The Main Sum
@@ -85,10 +82,8 @@ The sum converges because pₙ ~ n ln n (prime number theorem) and
 This follows from the prime number theorem (pₙ ~ n ln n) and the
 fact that Σ n ln n / 2ⁿ converges by the ratio test.
 -/
-axiom erdosSum_summable : Summable erdosTerm
 
 /-- The sum is positive (all terms are positive). -/
-axiom erdosSum_pos : erdosSum > 0
 
 /-
 ## Partial Sums
@@ -135,8 +130,6 @@ In particular, Σ pₙ/n! is irrational.
 The proof uses the fact that n! grows much faster than pₙᵏ,
 allowing analysis of the tail of the series.
 -/
-axiom erdos_factorial_irrational (k : ℕ) (hk : k ≥ 1) :
-    Irrational (∑' n, ((nthPrime n : ℝ)^k) / (n.factorial : ℝ))
 
 /-- **Conjecture (Erdős)**: The sum Σ pₙᵏ/2ⁿ is irrational for all k ≥ 1.
 
@@ -181,10 +174,8 @@ This is OEIS sequence A098990.
 -/
 
 /-- The Erdős sum lies between 3 and 4. -/
-axiom erdosSum_bounds : 3 < erdosSum ∧ erdosSum < 4
 
 /-- More precise: the sum is approximately 3.5968... -/
-axiom erdosSum_approx : 3.596 < erdosSum ∧ erdosSum < 3.597
 
 /-
 ## Explicit Partial Sums

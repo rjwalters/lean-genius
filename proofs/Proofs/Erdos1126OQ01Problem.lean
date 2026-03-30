@@ -29,6 +29,8 @@ References:
 
 import Mathlib.Data.Real.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Measure.Prod
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.Basic
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -176,6 +178,67 @@ theorem jensen_iff_additive_shifted (f : ℝ → ℝ) :
 
 /- ## Part II: Almost Jensen → Almost Additive Reduction -/
 
+/- Helper lemmas for the almost Jensen → almost additive proof.
+These decompose the measure-theoretic components into clean, targeted statements. -/
+
+/-- Preimage of a null set under (x,y) ↦ (2x,2y) is null.
+Lebesgue measure scales as |det|⁻¹ under invertible linear maps; here det = 4. -/
+private lemma volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
+    volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0 := by
+  -- The map (x,y) ↦ (2x,2y) = (2 : ℝ) • (x,y) is scalar multiplication.
+  -- Preimage under (2 • ·) = (2⁻¹) • N. By addHaar scaling, volume((2⁻¹) • N) ∝ volume(N) = 0.
+  obtain ⟨B, hNB, hBm, hB0⟩ := exists_measurable_superset_of_null hN
+  apply measure_mono_null (Set.preimage_mono hNB)
+  -- Show the map is (2 : ℝ) • · and use addHaar scaling
+  have heq : (fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' B =
+      ((2 : ℝ) • ·) ⁻¹' B := by
+    ext ⟨x, y⟩; simp [Prod.smul_mk, smul_eq_mul]
+  rw [heq, Set.preimage_smul₀ (two_ne_zero : (2 : ℝ) ≠ 0) B]
+  -- volume((2⁻¹) • B) = |2⁻¹|^dim * volume(B) = C * 0 = 0
+  rw [Measure.addHaar_smul volume (2⁻¹ : ℝ) B, hB0, mul_zero]
+
+/-- Preimage of a 1D null set under first projection is null in ℝ².
+S × ℝ has volume volume(S) · volume(ℝ) = 0 · ∞ = 0. -/
+private lemma volume_preimage_fst_null {S : Set ℝ} (hS : volume S = 0) :
+    volume (Prod.fst ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
+  -- fst⁻¹'(S) = S ×ˢ univ. Find measurable B ⊇ S with volume(B) = 0.
+  obtain ⟨B, hSB, hBm, hB0⟩ := exists_measurable_superset_of_null hS
+  apply measure_mono_null (Set.preimage_mono hSB)
+  -- volume(fst⁻¹'(B)) = volume(B ×ˢ univ) = volume(B) · volume(univ) = 0 · ⊤ = 0
+  have : (Prod.fst ⁻¹' B : Set (ℝ × ℝ)) = B ×ˢ Set.univ := by
+    ext ⟨x, y⟩; simp [Set.mem_prod, Set.mem_preimage]
+  rw [this, Measure.prod_prod hBm MeasurableSet.univ, hB0, zero_mul]
+
+/-- Preimage of a 1D null set under second projection is null in ℝ². -/
+private lemma volume_preimage_snd_null {S : Set ℝ} (hS : volume S = 0) :
+    volume (Prod.snd ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
+  -- snd⁻¹'(S) = univ ×ˢ S. Same approach as fst via measurable superset.
+  obtain ⟨B, hSB, hBm, hB0⟩ := exists_measurable_superset_of_null hS
+  apply measure_mono_null (Set.preimage_mono hSB)
+  have : (Prod.snd ⁻¹' B : Set (ℝ × ℝ)) = Set.univ ×ˢ B := by
+    ext ⟨x, y⟩; simp [Set.mem_prod, Set.mem_preimage]
+  rw [this, Measure.prod_prod MeasurableSet.univ hBm, hB0, mul_zero]
+
+/-- From almost Jensen, f(2z) = 2f(z) - f(0) for a.e. z.
+
+This is the key measure-theoretic step requiring Fubini section extraction.
+In the exact case, setting y=0 in Jensen gives f(x) = (f(2x)+f(0))/2 directly.
+In the a.e. case, y=0 cannot be chosen from a 2D a.e. condition, so we need:
+
+1. By Fubini (measure_ae_null_of_prod_null), since the null set N ⊂ ℝ²
+   has volume 0, for a.e. y₀, the section {x : (x,y₀) ∈ N} has measure 0.
+2. For such y₀: f((x+y₀)/2) = (f(x)+f(y₀))/2 for a.e. x.
+   Setting x = 2z: f(2z) = 2f(z+y₀/2) - f(y₀) for a.e. z.
+3. From the scaling substitution f(x+y) = (f(2x)+f(2y))/2 and step 2,
+   the translation z ↦ f(z+y₀/2)-f(z) is shown constant a.e. via a
+   second Fubini application, yielding f(2z) = 2f(z)-f(0) for a.e. z.
+
+Required Mathlib: MeasureTheory.Measure.Prod (measure_ae_null_of_prod_null,
+ae_ae_of_ae_prod, volume_eq_prod), null set preservation under affine maps. -/
+private lemma ae_double_of_almost_jensen (f : ℝ → ℝ) (hf : IsAlmostJensen f) :
+    ae_holds (fun z => f (2 * z) = 2 * f z - f 0) := by
+  sorry
+
 /-- **Almost Jensen reduces to almost additive (for shifted function).**
 If f is almost Jensen, then the shifted function g(x) = f(x) - f(0) satisfies
 the additive equation for a.e. (x,y) where Jensen also holds at (2x, 0) and (2y, 0).
@@ -191,74 +254,34 @@ Mathematical argument:
 2. Setting a = 2x - b₀: f(x) = (f(2x - b₀) + f(b₀))/2 for a.e. x
 3. From a.e. Jensen at (2x, 2y): f(x+y) = (f(2x)+f(2y))/2 for a.e. (x,y)
 4. Combining with step 2 yields additivity of f - f(b₀) modulo null sets -/
-/-- **Scaled Jensen lemma:** From ae Jensen at (2x,2y), derive
-    f(x+y) = (f(2x)+f(2y))/2 for a.e. (x,y).
-    Proof: preimage of null set N under (x,y)↦(2x,2y) is null
-    (linear map with |det| = 4 preserves null sets). -/
-private lemma ae_scaled_jensen (f : ℝ → ℝ) (hf : IsAlmostJensen f) :
-    ae_pairs (fun x y => f (x + y) = (f (2 * x) + f (2 * y)) / 2) := by
-  obtain ⟨N, hN_null, hN_good⟩ := hf
-  -- N₁ = preimage of N under (x,y)↦(2x,2y): null by linear scaling
-  refine ⟨(fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N, ?_, ?_⟩
-  · -- vol(preimage) = 0: null set preserved under linear bijection
-    sorry -- Needs MeasureTheory.Measure.map_linearEquiv or addHaar_smul
-  · intro x y hxy
-    have h := hN_good (2 * x) (2 * y) (by simpa using hxy)
-    convert h using 1
-    ring
-
-/-- **Double lemma (BLOCKING):** From ae Jensen, g(2z) = 2g(z) ae where g = f - f(0).
-    This is the key measure-theoretic step requiring Fubini section extraction.
-
-    Proof sketch (requires ~30-50 lines of measure theory):
-    1. Fubini on the ae Jensen null set: for ae y₀, Jensen holds for ae x with y = y₀
-    2. Pick good y₀. For ae x: f((x+y₀)/2) = (f(x)+f(y₀))/2
-    3. From the scaled null set (also Fubini): for ae y₁, f(x+y₁)=(f(2x)+f(2y₁))/2 ae in x
-    4. Pick good y₁. Combining with step 2 for a second good section eliminates constants
-    5. Algebraic manipulation yields f(2z) = 2f(z) - f(0) ae, i.e., g(2z) = 2g(z) ae
-
-    Required Mathlib: MeasureTheory.ae_ae_of_ae_prod (Fubini sections),
-    null set preservation under affine maps, filter_upwards -/
-private lemma ae_double_lemma (f : ℝ → ℝ) (hf : IsAlmostJensen f) :
-    ae_holds (fun z => f (2 * z) = 2 * f z - f 0) := by
-  sorry -- BLOCKING: requires Fubini section extraction
-
-/-- **Almost Jensen → Almost Additive (shifted).**
-    Combines the scaled Jensen equation with the double lemma.
-    Given ae f(x+y) = (f(2x)+f(2y))/2 and ae f(2z) = 2f(z) - f(0):
-    f(x+y) = (2f(x)-f(0) + 2f(y)-f(0))/2 = f(x)+f(y)-f(0) ae,
-    hence g(x+y) = g(x)+g(y) ae where g = f - f(0). -/
 theorem almost_jensen_implies_almost_additive_shifted (f : ℝ → ℝ)
     (hf : IsAlmostJensen f) :
     IsAlmostAdditive (fun x => f x - f 0) := by
-  -- Get the two key ingredients
-  obtain ⟨N₁, hN₁, hscale⟩ := ae_scaled_jensen f hf
-  obtain ⟨N₂, hN₂, hdouble⟩ := ae_double_lemma f hf
-  -- Construct combined null set: N₁ ∪ (N₂ × ℝ) ∪ (ℝ × N₂)
-  -- For (x,y) outside this: scaled Jensen + double at x + double at y all hold
-  refine ⟨N₁ ∪ (Set.prod N₂ Set.univ) ∪ (Set.prod Set.univ N₂), ?_, ?_⟩
-  · -- Union of null sets is null
-    apply measure_union_null
-    apply measure_union_null
-    · exact hN₁
-    · -- vol(N₂ × ℝ) = vol(N₂) × vol(ℝ) = 0 × ∞ = 0 (when N₂ is null)
-      sorry -- Needs MeasureTheory.Measure.prod_of_left_null or similar
-    · sorry -- Symmetric: vol(ℝ × N₂) = 0
-  · intro x y hxy
-    -- (x,y) ∉ N₁ ∪ (N₂ × ℝ) ∪ (ℝ × N₂)
-    push_neg at hxy
-    simp only [Set.mem_union, Set.mem_prod, Set.mem_univ, and_true, true_and,
-               not_or] at hxy
-    obtain ⟨⟨hxy₁, hx₂⟩, hy₂⟩ := hxy
-    -- From scaled Jensen: f(x+y) = (f(2x)+f(2y))/2
-    have h1 := hscale x y hxy₁
-    -- From double at x: f(2x) = 2f(x) - f(0)
-    have h2 := hdouble x hx₂
-    -- From double at y: f(2y) = 2f(y) - f(0)
-    have h3 := hdouble y hy₂
-    -- Algebra: f(x+y) - f(0) = (f(x) - f(0)) + (f(y) - f(0))
-    simp only
-    linarith
+  -- Strategy: scaling substitution + ae double lemma (Fubini).
+  -- 1. From Jensen at (2x,2y): f(x+y) = (f(2x)+f(2y))/2 for a.e. (x,y)
+  -- 2. From ae_double: f(2z) = 2f(z)-f(0) for a.e. z
+  -- 3. Algebraic combination: f(x+y) = f(x)+f(y)-f(0) for a.e. (x,y)
+  obtain ⟨N_d, hN_d_null, hN_d⟩ := ae_double_of_almost_jensen f hf
+  obtain ⟨N, hN_null, hN⟩ := hf
+  -- Null set M = {(x,y) : (2x,2y) ∈ N} ∪ {(x,y) : x ∈ N_d} ∪ {(x,y) : y ∈ N_d}
+  refine ⟨(fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N ∪
+    Prod.fst ⁻¹' N_d ∪ Prod.snd ⁻¹' N_d, ?_, ?_⟩
+  · -- M is null: union of three null sets
+    exact measure_union_null
+      (measure_union_null (volume_preimage_double_null hN_null)
+        (volume_preimage_fst_null hN_d_null))
+      (volume_preimage_snd_null hN_d_null)
+  · -- For (x,y) ∉ M: (f(x+y)-f(0)) = (f(x)-f(0)) + (f(y)-f(0))
+    intro x y hxy
+    -- Scaling: Jensen at (2x,2y) gives f(x+y) = (f(2x)+f(2y))/2
+    have h_scale := hN (2 * x) (2 * y) (fun h => hxy (Or.inl (Or.inl h)))
+    have h_eq : (2 * x + 2 * y) / 2 = x + y := by ring
+    rw [h_eq] at h_scale
+    -- Double lemma: f(2x) = 2f(x)-f(0) and f(2y) = 2f(y)-f(0)
+    have h_dx := hN_d x (fun h => hxy (Or.inl (Or.inr h)))
+    have h_dy := hN_d y (fun h => hxy (Or.inr h))
+    -- Algebraic: f(x+y) = (2f(x)-f(0)+2f(y)-f(0))/2 = f(x)+f(y)-f(0)
+    simp only; linarith
 
 /- ## Part III: Multiplicative Functional Equation -/
 
@@ -410,12 +433,6 @@ theorem derivation_pow (d : ℝ → ℝ) (hd : IsDerivation d) (x : ℝ) :
       push_cast
       ring
 
-/-- A continuous derivation on ℝ must be zero.
-This is because the only continuous derivation of a complete valued
-field is the zero derivation. -/
-axiom continuous_derivation_is_zero :
-    ∀ d : ℝ → ℝ, IsDerivation d → Continuous d → d = 0
-
 /-- **Almost Derivation Stability:**
 If d satisfies Leibniz rule for a.e. pairs, then there exists
 a true derivation δ with d = δ a.e.
@@ -467,5 +484,12 @@ Combined with derivation stability: an almost-derivation that
 is measurable must be zero a.e. -/
 axiom measurable_derivation_is_zero :
     ∀ d : ℝ → ℝ, IsDerivation d → Measurable d → d = 0
+
+/-- A continuous derivation on ℝ must be zero.
+Proved from the stronger measurable_derivation_is_zero, since
+continuous functions are measurable (Continuous.measurable). -/
+theorem continuous_derivation_is_zero :
+    ∀ d : ℝ → ℝ, IsDerivation d → Continuous d → d = 0 :=
+  fun d hd hcont => measurable_derivation_is_zero d hd hcont.measurable
 
 end Erdos1126OQ01

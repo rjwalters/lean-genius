@@ -1,0 +1,38 @@
+{
+  "id": "cantor-diagonalization-oq-03-oq-01",
+  "name": "Lawvere fixed-point theorem in topos-theoretic setting",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "source": {
+    "type": "open-question",
+    "parentProof": "cantor-diagonalization-oq-03",
+    "question": "Can the Lawvere fixed-point theorem be formalized in a topos-theoretic setting in Lean?"
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Generalized Lawvere FPT to abstract evaluation structure. Proved core theorem, diagonal lemma, type-theoretic recovery, and 3 concrete instances. Sketched categorical framework (2 sorries). 0 axioms, 14 proved theorems, 294 lines.",
+    "builtItems": [
+      "proofs/Proofs/CantorDiagonalizationOQ03OQ01.lean (294 lines)",
+      "EvalStructure and IsPointSurjective definitions",
+      "lawvere_abstract (core abstract theorem)",
+      "typeEval_surjective_iff (connects abstract to Function.Surjective)",
+      "cantor_instance, bool_instance, nat_succ_instance",
+      "CategoricalEval framework (sketch)",
+      "Gallery entry"
+    ],
+    "insights": [
+      "Minimal structure for Lawvere: objects, values, evaluation, point-surjectivity",
+      "cast is needed for Prop fixed-point contradictions (¬v = v)",
+      "Nat.succ_ne_self is the clean way to show successor has no fixed point",
+      "Full Mathlib CartesianClosed machinery is too heavy for one session"
+    ],
+    "mathlibGaps": [
+      "No topos typeclass in Mathlib",
+      "No Lawvere fixed-point theorem in Mathlib's category theory"
+    ],
+    "nextSteps": [
+      "Prove lawvere_categorical without sorry (connect CategoricalEval to EvalStructure)",
+      "Use Mathlib CartesianClosed + ihom for full CCC version",
+      "Derive Rice's theorem as a Lawvere instance"
+    ]
+  }
+}

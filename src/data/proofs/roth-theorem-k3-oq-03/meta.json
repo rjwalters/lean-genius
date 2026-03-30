@@ -2,7 +2,7 @@
   "id": "roth-theorem-k3-oq-03",
   "title": "Density Increment Generalization to k-APs via Gowers Norms",
   "slug": "roth-theorem-k3-oq-03",
-  "description": "Formalizes the generalization of Roth's density increment to k-term arithmetic progressions using Gowers uniformity norms. For k=3, Fourier analysis suffices (U\u00b2 norm). For k\u22654, the U^{k-1} norm controls k-AP counts via the generalized von Neumann theorem.",
+  "description": "Formalizes the generalization of Roth's density increment to k-term arithmetic progressions using Gowers uniformity norms. Gowers norms and k-AP counting operator defined constructively. For k=3, explicit density increment proved from RothTheorem infrastructure.",
   "meta": {
     "author": "Gowers (2001), Green-Tao-Ziegler (2012)",
     "date": "2001",
@@ -15,11 +15,11 @@
       "density-increment"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-03-30",
-    "axiomCount": 4,
-    "assumptions": "4 axioms: gowersNorm (U^s norm function), kAPCount (k-AP counting operator), generalized_von_neumann (k-AP count controlled by U^{k-1} norm), density_increment_kAP (density increases on subprogression for k-AP-free sets). Removed: gowersNorm_nonneg, gowersNorm_mono (unused), inverse_theorem (had placeholder True conclusion).",
-    "lineCount": 197
+    "axiomCount": 2,
+    "assumptions": "2 axioms: generalized_von_neumann (k-AP count controlled by U^{k-1} norm via Gowers-Cauchy-Schwarz), density_increment_kAP (density increases on subprogression for k-AP-free sets). gowersNorm and kAPCount are now constructive definitions.",
+    "lineCount": 259
   },
   "sections": []
 }

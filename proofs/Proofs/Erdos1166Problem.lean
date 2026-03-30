@@ -15,7 +15,8 @@
 -- (2) Erdős–Taylor: max visit count T_n satisfies T_n ≪ (log n)² a.s.
 --
 -- Status: PROVED
--- Axioms: 5 declarations + 1 structure field = 6 (down from 12)
+-- Axioms: 3 declarations + 1 structure field = 4 (down from 12)
+-- (AlmostSurely is now a def via Filter; mono/conjunction are Mathlib theorems)
 -- Sorries: 0 (cumulative_card_bound proved via induction on interval length)
 -- Eliminated: RandomWalk/trajectory/walk_starts_at_origin → structure,
 --   erdosTaylor_upper_bound (implied by erdosTaylor_constant),
@@ -29,7 +30,7 @@
 
 import Mathlib
 
-open Real
+open Real Filter
 
 namespace Erdos1166
 
@@ -313,19 +314,30 @@ theorem cumulative_card_bound (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
           _ ≤ 3 * (maxVisitCount ω b - maxVisitCount ω a + 1) := by omega
 
 -- ## Almost Sure Events
+-- Modeled via Mathlib's Filter theory: a.s. events are those that hold
+-- "eventually" in a filter on the space of random walks. The filter
+-- captures the measure-zero complement structure of probability theory.
+-- Monotonicity and conjunction are derived from Filter axioms (Mathlib).
 
-/-- Probability space for random walks.
-    We axiomatize "almost surely" as a predicate on properties of walks. -/
-axiom AlmostSurely : (RandomWalk → Prop) → Prop
+/-- The probability filter on random walks: axiomatizes the notion of
+    "measure-one" sets without specifying the full measure space.
+    Almost-sure events are exactly those in this filter. -/
+axiom asProbFilter : Filter RandomWalk
 
-/-- Almost sure monotonicity: if P implies Q, then a.s. P implies a.s. Q. -/
-axiom almostSurely_mono {P Q : RandomWalk → Prop}
-    (h : ∀ ω, P ω → Q ω) (hP : AlmostSurely P) : AlmostSurely Q
+/-- P holds almost surely: P is true for "almost all" random walks.
+    Defined as Filter.Eventually, giving us mono/conjunction for free. -/
+def AlmostSurely (P : RandomWalk → Prop) : Prop := ∀ᶠ ω in asProbFilter, P ω
 
-/-- Almost sure conjunction. -/
-axiom almostSurely_and {P Q : RandomWalk → Prop}
+/-- Almost sure monotonicity: derived from Filter.Eventually.mono. -/
+theorem almostSurely_mono {P Q : RandomWalk → Prop}
+    (h : ∀ ω, P ω → Q ω) (hP : AlmostSurely P) : AlmostSurely Q :=
+  hP.mono h
+
+/-- Almost sure conjunction: derived from Filter.inter_mem. -/
+theorem almostSurely_and {P Q : RandomWalk → Prop}
     (hP : AlmostSurely P) (hQ : AlmostSurely Q) :
-    AlmostSurely (fun ω => P ω ∧ Q ω)
+    AlmostSurely (fun ω => P ω ∧ Q ω) :=
+  Filter.inter_mem hP hQ
 
 -- ## Key Result 1: |F(n)| ≤ 3 Eventually a.s.
 -- Related to Erdős problem #1165

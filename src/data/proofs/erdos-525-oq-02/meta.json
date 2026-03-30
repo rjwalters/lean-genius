@@ -2,7 +2,7 @@
   "id": "erdos-525-oq-02",
   "title": "Multivariate Littlewood Polynomials",
   "slug": "erdos-525-oq-02",
-  "description": "Explores higher-dimensional Littlewood polynomials on the d-torus T^d. The square-root cancellation heuristic predicts m(f) \u2248 n^(-d/2). Open for d \u2265 2.",
+  "description": "Explores higher-dimensional Littlewood polynomials on the d-torus T^d. The square-root cancellation heuristic predicts m(f) ≈ n^(-d/2). Open for d ≥ 2.",
   "meta": {
     "author": "Konyagin (1994), Cook-Nguyen (2021)",
     "sourceUrl": "https://erdosproblems.com/525",
@@ -20,19 +20,19 @@
     "badge": "axiom",
     "sorries": 1,
     "axiomCount": 1,
-    "lineCount": 140,
-    "assumptions": "1 axiom (1D bound), 1 sorry.",
+    "lineCount": 143,
+    "assumptions": "1 axiom (min_modulus_1d_bound), 1 sorry (min_modulus definition).",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Multivariate Littlewood polynomial framework",
       "d-torus definition and minimum modulus",
-      "Dimension effect: n^d\u2081 < n^d\u2082 for d\u2081 < d\u2082",
+      "Dimension effect: n^d₁ < n^d₂ for d₁ < d₂",
       "Square-root cancellation analysis"
     ]
   },
   "conclusion": {
-    "summary": "Multivariate Littlewood polynomials formalized. 1D solved; d\u22652 open.",
+    "summary": "Multivariate Littlewood polynomials formalized. 1D solved; d≥2 open.",
     "openQuestions": [],
     "implications": ""
   },
@@ -47,7 +47,7 @@
       "Mathlib"
     ],
     "namespace": "Erdos525OQ02",
-    "lineCount": 140,
+    "lineCount": 143,
     "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 4

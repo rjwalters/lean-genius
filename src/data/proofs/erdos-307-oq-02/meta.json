@@ -7,7 +7,7 @@
     "author": "Research (sorry elimination for Erd\u0151s 307)",
     "sourceUrl": "https://erdosproblems.com/307",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos307OQ02.lean",
     "tags": [
       "number-theory",
@@ -16,11 +16,11 @@
       "erdos",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
     "lineCount": 261,
-    "assumptions": "0 axioms, 1 sorry (tight bound for 3 primes reciprocal sum).",
+    "assumptions": "0 axioms. 1 sorry remaining (reciprocal_sum_three_primes_le: tight bound for 3 distinct primes).",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [

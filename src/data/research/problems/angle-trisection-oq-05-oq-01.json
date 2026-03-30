@@ -1,0 +1,37 @@
+{
+  "id": "angle-trisection-oq-05-oq-01",
+  "name": "Algebraic characterization of k-fold origami constructibility",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "source": {
+    "type": "open-question",
+    "parentProof": "angle-trisection-oq-05",
+    "question": "What is the precise algebraic characterization of k-fold origami constructibility for k >= 3?"
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized k-fold origami constructibility via p-smooth numbers. Defined IsSmooth and IsKFoldConstructible, proved strict hierarchy (each fold level adds one prime), monotonicity, and algebraic completeness. 0 axioms, 0 sorries, 24 proved theorems, 294 lines.",
+    "builtItems": [
+      "Created proofs/Proofs/AngleTrisectionOQ05OQ01.lean (294 lines)",
+      "IsSmooth predicate with closure properties (one_smooth, prime_smooth, smooth_mul)",
+      "IsKFoldConstructible via foldPrimeBound = Nat.nth Prime",
+      "Strict hierarchy witnesses at k=1→2, 2→3, 3→4",
+      "constructible_mono: k-fold ⊆ (k+1)-fold",
+      "eventually_constructible: algebraic completeness",
+      "Composite degree classification: 6, 9, 10, 30, 42",
+      "Gallery entry with meta.json, annotations.json, index.ts"
+    ],
+    "insights": [
+      "Nat.nth Prime from Mathlib provides clean prime enumeration with nth_prime_one_eq_three etc.",
+      "nth_strictMono Nat.infinite_setOf_prime gives monotonicity of prime bounds",
+      "add_two_le_nth_prime is the key lemma for algebraic completeness: p_n ≥ n+2",
+      "interval_cases + decide is effective for small prime divisor checking",
+      "The conjecture for k ≥ 3 is genuinely open in mathematical literature"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Connect IsKFoldConstructible to the parent file's IsOrigamiConstructible/IsMultiFoldConstructible",
+      "Prove that for k=1, IsKFoldConstructible recovers IsOrigamiConstructible exactly",
+      "Investigate if the conjecture can be made rigorous (what does 'k simultaneous folds' mean algebraically?)"
+    ]
+  }
+}

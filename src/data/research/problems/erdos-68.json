@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved exceptional_density_zero sorry (1→0 sorries in Erdos682Problem). Used Filter.Tendsto for log→∞ and nlinarith for quadratic bounds.",
+    "progressSummary": "PROGRESS: Eliminated 3 axioms across Erdos682/688. nthPrime axiom→def via Nat.nth (682), primorial axiom removed as unused (682), single_class_coverage proved via injection argument (688). Total: 27→24 axioms.",
     "builtItems": [
       "factorialSum_lower_bound: proved > 1253/1000 via 5-term partial sum",
       "factorialSum_lt: proved < 1254/1000 via tail estimation with (n+7)! ≥ 5040·8^n",
@@ -47,7 +47,10 @@
       "P_is_prime: PROVED (was axiom) — from Nat.find_spec in Erdos683",
       "P_divides: PROVED (was axiom) — from Nat.find_spec in Erdos683",
       "Proved most_gaps_have_rough via Finset.filter_card_add_filter_neg_card_eq_card + omega",
-      "Proved exceptional_density_zero in Erdos682Problem.lean (1→0 sorries)"
+      "Proved exceptional_density_zero in Erdos682Problem.lean (1→0 sorries)",
+      "nthPrime: converted axiom→def using Nat.nth Nat.Prime in Erdos682Problem.lean (-1 axiom)",
+      "primorial: removed unused axiom from Erdos682Problem.lean (-1 axiom)",
+      "single_class_coverage: PROVED in Erdos688Problem.lean via injection m↦(m+1)/p into range(n/p+1) (-1 axiom)"
     ],
     "insights": [
       "eRelatedSum_value provable: Σ_{n≥2} 1/n! = e - 2 via tsum_eq_zero_add (peel off n=0,1 terms)",
@@ -62,14 +65,19 @@
       "Summable.tsum_le_tsum is the current Mathlib name (not tsum_le_tsum)",
       "div_le_div_iff₀ is the current name (not div_le_div_iff)",
       "Session (researcher-6): Fixed most_gaps_have_rough (was unprovable with >, corrected to >= and proved). Eliminated 1 sorry in Erdos682Problem.lean (2→1).",
-      "exceptional_density_zero proved via: log→∞ ⟹ eventually C/(logX)²<ε, using Filter.Tendsto + nlinarith for squaring bounds"
+      "exceptional_density_zero proved via: log→∞ ⟹ eventually C/(logX)²<ε, using Filter.Tendsto + nlinarith for squaring bounds",
+      "Nat.nth Nat.Prime gives 0-indexed prime enumeration from Mathlib.Order.OrderIsoNat",
+      "Erdos682 needed noncomputable section after converting axiom nthPrime to def (axioms bypass noncomp checking)",
+      "largestPrimeDivisor in Erdos683 uses Nat.find which gives SMALLEST prime factor, not largest — sylvester_schur axiom compensates for this definitional bug",
+      "covering_exponent_lt_one (Erdos688) is NOT trivially provable from sSup definition — requires showing coverage fails for ε near 1"
     ],
     "mathlibGaps": [
       "tsum manipulation for index shifting requires careful summability arguments"
     ],
     "nextSteps": [
-      "Prove perturbation_difference using factorialSum bounds + Mathlib exp bounds",
-      "This would reduce to 1 axiom (the OPEN conjecture only)"
+      "Fix largestPrimeDivisor in Erdos683 to use actual largest prime factor (would make sylvester_schur provable)",
+      "Prove omega_choose_lower in Erdos685 via p^{v_p(C(n,k))} ≤ n + product bound",
+      "Verify nthPrime def builds correctly (needs Nat.nth from Mathlib.Order.OrderIsoNat)"
     ],
     "markdown": "# Erdős #68 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_{n\\geq 2}\\frac{1}{n!-1}\\]irrational?\n\n\n\nThe decimal expansion is A331373 in the OEIS. Weisenberg has observed that this sum can also be written as\\[\\sum_{k\\geq 1}\\sum_{n\\geq 2}\\frac{1}{(n!)^k}.\\]Erd\\H{o}s \\cite{Er88c} notes that $\\sum \\frac{1}{n!+t}$ should be transcendental for every integer $t$.\n\n\n\n\nReferences\n\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #67\n- Problem #69\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er68d\n- Er90\n- Er97e\n- Er97f\n- Er88c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
@@ -125,10 +133,10 @@
     {
       "path": "Proofs/Erdos682Problem.lean",
       "filename": "Erdos682Problem.lean",
-      "lineCount": 358,
+      "lineCount": 351,
       "theoremCount": 8,
-      "axiomCount": 2,
-      "defCount": 10,
+      "axiomCount": 4,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos682Problem.lean"

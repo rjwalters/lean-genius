@@ -1,0 +1,160 @@
+{
+  "id": "erdos-100-oq-01",
+  "title": "Distance Set Diameter: Linear vs Logarithmic Growth",
+  "slug": "erdos-100-oq-01",
+  "description": "Formalizes the gap between the Guth-Katz bound (diam ≥ cn/log n) and Erdős's conjecture (diam ≥ cn) for integer distance sets. Proves the two scenarios are exclusive and that Kanold's bound is redundant.",
+  "meta": {
+    "author": "Erdős, Guth-Katz (2015), formalized in Lean 4",
+    "sourceUrl": "https://erdosproblems.com/100",
+    "date": "2015",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos100OQ01.lean",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "distance-sets",
+      "combinatorial-geometry",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for asymptotic analysis",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits at infinity for gap analysis",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real powers for Kanold's n^(3/4) bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Proved kanold_bound is redundant (follows from Guth-Katz via distinctDistances_le_diam)",
+      "Proved linear growth and logarithmic barrier are mutually exclusive (scenarios_exclusive)",
+      "Formalized the gap ratio 1/log n → 0 (gap_ratio_vanishes)",
+      "Structural consequence: linear growth implies log n improvement factor",
+      "Constructed collinear integer distance sets for all n (integer_distance_sets_exist)",
+      "Proved log n ≤ n^(1/4) from Mathlib's isLittleO_log_rpow_atTop (log_le_rpow_quarter_eventually)"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 2,
+    "lineCount": 175,
+    "prerequisites": [
+      "Erdős Problem #100 (Erdos100Problem.lean)",
+      "Real analysis (logarithms, limits, rpow)",
+      "Filter theory (eventually, atTop, Tendsto)",
+      "Combinatorial geometry (point sets, distances, diameter)"
+    ],
+    "assumptions": "Inherits 2 axioms from Erdos100Problem.lean: guthKatz_distinct_distances (Guth-Katz 2015) and piepmeyer_construction. The kanold_bound axiom is shown to be redundant. All sorries eliminated.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #100 asks whether n points in the plane with all pairwise distances being positive integers must have diameter ≫ n. The best known lower bound is diam ≥ cn/log n, obtained by combining the Guth-Katz distinct distances theorem (2015) with the observation that integer distance sets have at most diam(S) distinct distances. Erdős conjectured diam ≥ cn (linear growth), but the logarithmic factor has resisted removal since 2015.\n\nThis file formalizes the gap question: is the log factor genuine? The two scenarios (linear growth vs logarithmic barrier) are proved mutually exclusive, and Kanold's earlier bound diam ≥ cn^(3/4) is shown to follow from Guth-Katz, making it a redundant axiom.",
+    "problemStatement": "Is the diameter of n-point integer distance sets in ℝ² linear in n, or is the Guth-Katz bound diam ≥ cn/log n essentially tight?\n\n- **Linear growth (Scenario A)**: diam ≥ cn for some c > 0\n- **Logarithmic barrier (Scenario B)**: diam ≤ Cn/log n for infinitely many n\n\nProve these are exclusive and formalize the gap analysis.",
+    "text": "Formalizes the gap between known bounds and conjectured bounds for integer distance set diameters.",
+    "proofStrategy": "1. **Kanold redundancy**: The Guth-Katz based bound cn/log n ≥ cn^(3/4) for large n, so Kanold's axiom follows.\n2. **Exclusivity**: If cn ≤ minDiam(n) ≤ Cn/log n, then c ≤ C/log n → 0, contradicting c > 0.\n3. **Gap analysis**: The ratio (n/log n)/n = 1/log n → 0, quantifying how much room remains.",
+    "keyInsights": [
+      "Kanold's bound n^(3/4) is completely subsumed by the Guth-Katz bound n/log n — the axiom is redundant",
+      "The two scenarios (linear vs logarithmic) are exclusive because c > 0 contradicts C/log n → 0",
+      "The gap is logarithmic: closing the factor of log n in Guth-Katz would resolve the conjecture",
+      "The existence of integer distance sets for all n (via collinear constructions) is needed for the extremal function to be well-defined"
+    ],
+    "prerequisites": [
+      "Erdős Problem #100 (Erdos100Problem.lean)",
+      "Real analysis (logarithms, limits)",
+      "Filter theory (eventually, Tendsto)",
+      "Combinatorial geometry"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kanold-redundancy",
+      "title": "Kanold's Bound Is Redundant",
+      "startLine": 23,
+      "endLine": 72,
+      "summary": "Shows that Kanold's bound (diam ≥ cn^(3/4)) follows from the Guth-Katz based bound (diam ≥ cn/log n), since cn/log n ≥ cn^(3/4) for large n.",
+      "mathContext": "$cn/\\log n \\geq cn^{3/4}$ for large $n$ since $\\log n \\leq n^{1/4}$ eventually."
+    },
+    {
+      "id": "scenarios",
+      "title": "Two Exclusive Scenarios",
+      "startLine": 74,
+      "endLine": 128,
+      "summary": "Defines LinearGrowth (diam ≥ cn) and LogarithmicBarrier (diam ≤ Cn/log n for infinitely many n), and proves they are mutually exclusive.",
+      "mathContext": "If $cn \\leq \\text{minDiam}(n) \\leq Cn/\\log n$, then $c \\leq C/\\log n \\to 0$, contradiction."
+    },
+    {
+      "id": "gap-analysis",
+      "title": "The Gap Is Logarithmic",
+      "startLine": 130,
+      "endLine": 175,
+      "summary": "Proves the gap ratio 1/log n → 0 and shows that linear growth would imply a log n improvement over the current Guth-Katz bound.",
+      "mathContext": "$(n/\\log n) / n = 1/\\log n \\to 0$: the multiplicative gap between known and conjectured bounds is exactly the logarithmic factor."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-100",
+      "relationship": "extends",
+      "description": "Extends Erdős #100 by analyzing the gap between the Guth-Katz bound (cn/log n) and the conjectured linear bound (cn)"
+    }
+  ],
+  "conclusion": {
+    "summary": "This module formalizes the open question of whether the Guth-Katz log factor is genuine, in 251 lines with 9 theorems and 0 sorries. Key results: Kanold's bound is redundant (follows from Guth-Katz), the two scenarios (linear vs logarithmic) are proved exclusive, and integer distance sets exist for all n ≥ 2 (collinear construction).",
+    "implications": "The gap between n/log n (known) and n (conjectured) is precisely logarithmic. Closing this gap would resolve Erdős's conjecture. All analysis lemmas proved from Mathlib: isLittleO_log_rpow_atTop for the Kanold redundancy, Tendsto.div_atTop for the exclusivity proof.",
+    "openQuestions": [
+      "Formalize Piepmeyer's 9-point construction explicitly to eliminate the piepmeyer_construction axiom",
+      "Explore whether polynomial method techniques (Guth-Katz style) can remove the log factor"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos100Problem"
+    ],
+    "opens": [
+      "Filter",
+      "Set",
+      "Finset",
+      "Erdos100"
+    ],
+    "namespace": "Erdos100.OQ01",
+    "lineCount": 251,
+    "axiomCount": 2,
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "references": [
+    {
+      "key": "GK15",
+      "citation": "Guth, L. and Katz, N.H., On the Erdős distinct distances problem in the plane, Annals of Mathematics 181(1) (2015), 155–190.",
+      "type": "paper"
+    },
+    {
+      "key": "Er100",
+      "citation": "Erdős, P., Problem #100 from erdosproblems.com — Point sets with restricted distances.",
+      "type": "website"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "scenarios_exclusive",
+      "type": "theorem",
+      "description": "Linear growth and logarithmic barrier are mutually exclusive",
+      "leanType": "LinearGrowth → LogarithmicBarrier → False"
+    },
+    {
+      "name": "kanold_from_guthkatz",
+      "type": "theorem",
+      "description": "Kanold's bound follows from Guth-Katz (axiom redundancy)",
+      "leanType": "∃ c > 0, ∀ᶠ n, c * n^(3/4) ≤ minDiameterRestrictedSets n"
+    }
+  ]
+}

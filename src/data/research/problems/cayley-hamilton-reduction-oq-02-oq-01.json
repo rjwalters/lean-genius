@@ -1,0 +1,106 @@
+{
+  "slug": "cayley-hamilton-reduction-oq-02-oq-01",
+  "title": "Rational canonical form (Frobenius normal form) formalization",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Rational canonical form (Frobenius normal form) formalization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T08:49:59.592Z",
+    "iteration": 2,
+    "focus": "Proved orbit infrastructure: column action, last column, power orbit. Restructured proof plan to eliminate circular dependency.",
+    "blockers": [],
+    "nextAction": "Prove aeval_companionMatrix via orbit cancellation, then derive minpoly and charpoly.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ACT: Proved 5 orbit infrastructure lemmas. Restructured proof plan: aeval→minpoly→charpoly (no circular dependency). 3 sorries remain (aeval, minpoly, charpoly).",
+    "builtItems": [
+      "companionMatrix: def for d×d companion from monic polynomial",
+      "companionMatrix_subdiag, _last_col, _zero: entry lemmas",
+      "aeval_companionMatrix: p(C(p))=0 from Cayley-Hamilton",
+      "companionMatrix_linear: C(x-c) = [c]",
+      "companionMatrix_col: column structure for non-last columns (proved)",
+      "companionMatrix_last_col: last column has -coeff (proved)",
+      "companionMatrix_mulVec_basis: C(p)·eⱼ = eⱼ₊₁ for j<d-1 (proved)",
+      "companionMatrix_mulVec_last: C(p)·e_{d-1} = -∑aᵢeᵢ (proved)",
+      "companionMatrix_pow_basis: C(p)^k·e₀ = eₖ for k<d (proved)"
+    ],
+    "insights": [
+      "Mathlib has Matrix.Companion but limited — needs charpoly/minpoly theorems",
+      "Companion matrix C(p) has 1s on subdiagonal, negated coefficients in last column",
+      "charpoly(C(p))=p requires cofactor expansion along last column + induction",
+      "minpoly(C(p))=p: companion is non-derogatory, follows from module dimension argument",
+      "Full RCF needs Smith Normal Form for F[X]-matrices (~800 lines main blocker)",
+      "Total RCF estimate: ~1800 lines across 4 components",
+      "Circular dependency in original proof: aeval used charpoly (sorry). Fixed by proving aeval directly via orbit.",
+      "Orbit argument: C(p)^k·e₀ = eₖ gives standard basis from cyclic action, then p(C(p))·e₀ = 0 by cancellation",
+      "Module-theoretic approach avoids determinant computation entirely: orbit independence → deg(minpoly) ≥ d → minpoly = p → charpoly = p"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove aeval: expand p(C(p))·e₀ using orbit + last column cancellation",
+      "Prove minpoly = p: aeval gives minpoly|p, orbit independence gives deg≥d",
+      "Prove charpoly = p: follows from minpoly|charpoly with same degree"
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-reduction-oq-01",
+    "cayley-hamilton-reduction-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.592Z",
+  "lastUpdate": "2026-03-30T08:49:59.592Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ01.lean",
+      "filename": "CayleyHamiltonReductionOQ01.lean",
+      "lineCount": 305,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ02.lean",
+      "filename": "CayleyHamiltonReductionOQ02.lean",
+      "lineCount": 161,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ02.lean"
+    }
+  ]
+}

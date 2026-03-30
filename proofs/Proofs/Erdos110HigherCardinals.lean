@@ -87,27 +87,7 @@ def GeneralizedEHSConjecture (κ : Cardinal) : Prop :=
 /-- The original EHS conjecture is the generalized version at ℵ₁. -/
 def OriginalEHSConjecture : Prop := GeneralizedEHSConjecture (Cardinal.aleph 1)
 
-/-! ## Part III: The ℵ₁ Case — Known Disproof
-
-Lambie-Hanson (2020) showed the conjecture fails for ℵ₁.
--/
-
-/-- **Lambie-Hanson Counterexample** (2020): An ℵ₁-chromatic graph that
-    defeats all proposed bounding functions F. -/
-axiom lambie_hanson_counterexample :
-    ∃ (V : Type*) (G : SimpleGraph V),
-      HasChromaticNumber G (Cardinal.aleph 1) ∧
-      ∀ F : ℕ → ℕ, ∀ N₀ : ℕ, ∃ n ≥ N₀, ¬HasFiniteNChromaticSubgraph G n (F n)
-
-/-- The generalized EHS conjecture fails for ℵ₁ (Lambie-Hanson 2020). -/
-theorem generalized_ehs_fails_aleph1 : ¬GeneralizedEHSConjecture (Cardinal.aleph 1) := by
-  intro hConj
-  obtain ⟨V, G, hχ, hBad⟩ := lambie_hanson_counterexample
-  obtain ⟨F, N₀, hF⟩ := hConj V G hχ
-  obtain ⟨n, hn, hNotBound⟩ := hBad F N₀
-  exact hNotBound (hF n hn)
-
-/-! ## Part IV: Higher Successor Cardinals
+/-! ## Part III: Successor Cardinal Counterexamples
 
 Lambie-Hanson's technique of incompatible walks on ordinals generalizes from
 ω₁ to any successor ordinal ω_{α+1}. For each successor cardinal ℵ_{α+1},
@@ -134,6 +114,32 @@ theorem generalized_ehs_fails_all_successor_alephs (α : Ordinal) :
     ¬GeneralizedEHSConjecture (Cardinal.aleph (α + 1)) := by
   intro hConj
   obtain ⟨V, G, hχ, hBad⟩ := successor_cardinal_counterexample α
+  obtain ⟨F, N₀, hF⟩ := hConj V G hχ
+  obtain ⟨n, hn, hNotBound⟩ := hBad F N₀
+  exact hNotBound (hF n hn)
+
+/-! ## Part IV: The ℵ₁ Case — Derived from General Result
+
+The ℵ₁ case (Lambie-Hanson 2020) is a special case of the successor cardinal
+result at α = 0, since ℵ₁ = ℵ_{0+1}.
+-/
+
+/-- **Lambie-Hanson Counterexample** (2020): An ℵ₁-chromatic graph that
+    defeats all proposed bounding functions F.
+
+    Proved as a special case of the successor cardinal result at α = 0,
+    since ℵ₁ = ℵ_{0+1}. -/
+theorem lambie_hanson_counterexample :
+    ∃ (V : Type*) (G : SimpleGraph V),
+      HasChromaticNumber G (Cardinal.aleph 1) ∧
+      ∀ F : ℕ → ℕ, ∀ N₀ : ℕ, ∃ n ≥ N₀, ¬HasFiniteNChromaticSubgraph G n (F n) := by
+  have h := successor_cardinal_counterexample 0
+  rwa [Ordinal.zero_add] at h
+
+/-- The generalized EHS conjecture fails for ℵ₁ (Lambie-Hanson 2020). -/
+theorem generalized_ehs_fails_aleph1 : ¬GeneralizedEHSConjecture (Cardinal.aleph 1) := by
+  intro hConj
+  obtain ⟨V, G, hχ, hBad⟩ := lambie_hanson_counterexample
   obtain ⟨F, N₀, hF⟩ := hConj V G hχ
   obtain ⟨n, hn, hNotBound⟩ := hBad F N₀
   exact hNotBound (hF n hn)

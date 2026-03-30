@@ -12,7 +12,7 @@ Main Results:
 - Coprime characterization of unitary divisors (proved)
 - Multiplicativity of unitary divisor sum (proved)
 - Prime power formula: σ*(p^k) = 1 + p^k (proved)
-- All unitary perfect numbers are even (axiom with proof sketch)
+- All unitary perfect numbers are even (proved)
 
 Known unitary perfect numbers: 6, 60, 90, 87360, 146361946186458562560000
 It is conjectured there are only finitely many.
@@ -207,16 +207,7 @@ private lemma div_gcd_coprime_div_of_unitary {m n d : ℕ} (hm : 0 < m) (hn : 0 
     exact dvd_mul_left _ _
   exact h1.coprime_dvd_right h2
 
-/-
-## Main Theorem: All Unitary Perfect Numbers are Even
-
-**Proof sketch** (requires multiplicativity, proved below):
-For n = p₁^a₁ · ... · pₖ^aₖ with pᵢ distinct primes, σ*(n) = ∏ᵢ(1 + pᵢ^aᵢ).
-For unitary perfect n: σ*(n) = 2n.
-If n were odd: Case k=0: impossible. Case k=1: 1+p^a=2p^a gives 1=p^a.
-Case k≥2: 4|σ*(n)=2n, so 2|n, contradiction.
--/
-axiom even_of_isUnitaryPerfect (n : ℕ) (hn : IsUnitaryPerfect n) : Even n
+-- Theorem even_of_isUnitaryPerfect is proved below (after multiplicativity infrastructure).
 
 /-
 ## Verified Examples
@@ -363,6 +354,158 @@ theorem properUnitaryDivisors_pairing {n : ℕ} (hn : 1 < n) :
       (∀ s ∈ singleton, s * s = n ∧ s ∈ properUnitaryDivisors n) :=
   ⟨∅, none, fun _ h => absurd h (Finset.not_mem_empty _),
     fun _ h => absurd h (by simp)⟩
+
+/-
+## Proof: All Unitary Perfect Numbers are Even
+
+Strategy: For unitary perfect n, σ*(n) = 2n. Decompose n = p^a · m (p smallest
+prime factor, coprime). By multiplicativity, σ*(n) = (1+p^a) · σ*(m).
+If n is odd: Case m=1: 1+p^a=2p^a gives p^a=1, contradiction.
+Case m>1: both (1+p^a) and σ*(m) are even, so 4|2n, hence 2|n, contradiction.
+-/
+
+/-- p^(n.factorization p) divides n for any prime p and n ≠ 0. -/
+private lemma pow_factorization_dvd {p n : ℕ} (hp : p.Prime) (hn : n ≠ 0) :
+    p ^ (n.factorization p) ∣ n :=
+  (Nat.Prime.pow_dvd_iff_le_factorization hp hn).mpr le_rfl
+
+/-- p^(n.factorization p) and n / p^(n.factorization p) are coprime. -/
+private lemma coprime_pow_factorization_div {p n : ℕ} (hp : p.Prime) (hn : n ≠ 0) :
+    (p ^ (n.factorization p)).Coprime (n / p ^ (n.factorization p)) := by
+  have hbase : p.Coprime (n / p ^ (n.factorization p)) := by
+    rw [Nat.Prime.coprime_iff_not_dvd hp]
+    intro hp_dvd
+    have hpow := pow_factorization_dvd hp hn
+    have hdecomp : n = p ^ (n.factorization p) * (n / p ^ (n.factorization p)) :=
+      (Nat.mul_div_cancel' hpow).symm
+    have h_dvd : p ^ (n.factorization p + 1) ∣ n := by
+      obtain ⟨k, hk⟩ := hp_dvd
+      exact ⟨k, by conv_lhs => rw [hdecomp, hk]; rw [pow_succ]; ring⟩
+    exact absurd ((Nat.Prime.pow_dvd_iff_le_factorization hp hn).mp h_dvd) (by omega)
+  exact hbase.pow_left _
+
+/-- σ*(1) = 1: the only unitary divisor of 1 is 1 itself. -/
+private lemma unitaryDivisorSum_one : unitaryDivisorSum 1 = 1 := by native_decide
+
+/-- σ*(n) = (proper unitary divisors sum) + n for n > 0. -/
+private lemma unitaryDivisorSum_eq_proper_add (n : ℕ) (hn : 0 < n) :
+    unitaryDivisorSum n = (properUnitaryDivisors n).sum id + n := by
+  unfold unitaryDivisorSum properUnitaryDivisors
+  have h_eq : Finset.Ico 1 (n + 1) = insert n (Finset.Ico 1 n) := by
+    ext x; simp only [Finset.mem_Ico, Finset.mem_insert]; omega
+  have h_sat : n ∣ n ∧ n.Coprime (n / n) :=
+    ⟨dvd_refl n, by rw [Nat.div_self hn]; exact Nat.coprime_one_right n⟩
+  have h_not_mem : n ∉ (Finset.Ico 1 n).filter (fun d => d ∣ n ∧ d.Coprime (n / d)) := by
+    intro h; have := (Finset.mem_filter.mp h).1; rw [Finset.mem_Ico] at this; omega
+  rw [h_eq, Finset.filter_insert, if_pos h_sat, Finset.sum_insert h_not_mem]
+  omega
+
+/-- σ*(m) is even for any odd m > 1: m has an odd prime factor p,
+    and σ*(p^a) = 1 + p^a is even, making the product even via multiplicativity. -/
+private lemma even_unitaryDivisorSum_of_odd {m : ℕ} (hm : 1 < m) (hodd : Odd m) :
+    Even (unitaryDivisorSum m) := by
+  have hm_ne : m ≠ 0 := by omega
+  set p := m.minFac with hp_def
+  have hp_prime : p.Prime := Nat.minFac_prime (by omega)
+  have hp_dvd : p ∣ m := Nat.minFac_dvd m
+  -- p is odd since m is odd and p | m
+  have hp_odd : Odd p := by
+    by_contra h
+    have hp_even : Even p := (Nat.even_or_odd p).resolve_right h
+    have h2m : 2 ∣ m := dvd_trans (Even.two_dvd hp_even) hp_dvd
+    obtain ⟨r, hr⟩ := hodd; obtain ⟨s, hs⟩ := h2m; omega
+  have ha_pos : 0 < m.factorization p := by
+    rw [Nat.pos_iff_ne_zero, ← Finsupp.mem_support_iff, Nat.support_factorization]
+    exact Nat.mem_primeFactors.mpr ⟨hp_prime, hp_dvd, hm_ne⟩
+  have hpa_dvd : p ^ (m.factorization p) ∣ m := pow_factorization_dvd hp_prime hm_ne
+  have hcop := coprime_pow_factorization_div hp_prime hm_ne
+  have hpa_pos : 0 < p ^ (m.factorization p) :=
+    Nat.pos_of_ne_zero (pow_ne_zero _ hp_prime.ne_zero)
+  have hq_pos : 0 < m / p ^ (m.factorization p) :=
+    Nat.div_pos (Nat.le_of_dvd (by omega) hpa_dvd) hpa_pos
+  -- σ*(m) = (1 + p^a) * σ*(m/p^a), and (1 + p^a) is even
+  rw [show m = p ^ (m.factorization p) * (m / p ^ (m.factorization p)) from
+      (Nat.mul_div_cancel' hpa_dvd).symm,
+    unitaryDivisorSum_mul_coprime hpa_pos hq_pos hcop,
+    unitaryDivisorSum_prime_pow hp_prime ha_pos]
+  have hpe_odd : Odd (p ^ (m.factorization p)) := hp_odd.pow
+  obtain ⟨r, hr⟩ := hpe_odd
+  exact ⟨(r + 1) * unitaryDivisorSum (m / p ^ (m.factorization p)), by rw [hr]; ring⟩
+
+/-- All unitary perfect numbers are even.
+
+Proof: For unitary perfect n, σ*(n) = 2n. Decompose n = p^a · m via the smallest
+prime factor p. By multiplicativity, σ*(n) = (1+p^a) · σ*(m). If n is odd:
+- Case m = 1 (n = p^a): 1 + p^a = 2·p^a gives p^a = 1, impossible since p ≥ 2.
+- Case m > 1: m is odd, so σ*(m) is even (by the same decomposition argument).
+  Then both (1+p^a) and σ*(m) are even, so 4 | (1+p^a)·σ*(m) = 2n, hence 2 | n,
+  contradicting n odd. -/
+theorem even_of_isUnitaryPerfect (n : ℕ) (hn : IsUnitaryPerfect n) : Even n := by
+  by_contra h_not_even
+  have h_odd : Odd n := (Nat.even_or_odd n).resolve_left h_not_even
+  have hpos : 0 < n := hn.2
+  have hne : n ≠ 0 := by omega
+  have hgt1 : 1 < n := by
+    by_contra h; push_neg at h
+    have : n = 1 := by omega
+    subst this; exact absurd hn (by native_decide)
+  -- σ*(n) = 2n
+  have h_sigma : unitaryDivisorSum n = 2 * n := by
+    have := unitaryDivisorSum_eq_proper_add n hpos; have := hn.1; omega
+  -- Decompose n = p^a * m via smallest prime factor
+  set p := n.minFac with hp_def
+  have hp_prime : p.Prime := Nat.minFac_prime (by omega)
+  have hp_dvd : p ∣ n := Nat.minFac_dvd n
+  have ha_pos : 0 < n.factorization p := by
+    rw [Nat.pos_iff_ne_zero, ← Finsupp.mem_support_iff, Nat.support_factorization]
+    exact Nat.mem_primeFactors.mpr ⟨hp_prime, hp_dvd, hne⟩
+  have hpa_dvd : p ^ (n.factorization p) ∣ n := pow_factorization_dvd hp_prime hne
+  have hcop := coprime_pow_factorization_div hp_prime hne
+  set m := n / p ^ (n.factorization p) with hm_def
+  have hpa_pos : 0 < p ^ (n.factorization p) :=
+    Nat.pos_of_ne_zero (pow_ne_zero _ hp_prime.ne_zero)
+  have hm_pos : 0 < m := Nat.div_pos (Nat.le_of_dvd hpos hpa_dvd) hpa_pos
+  have hn_eq : n = p ^ (n.factorization p) * m := (Nat.mul_div_cancel' hpa_dvd).symm
+  -- σ*(n) = (1 + p^a) * σ*(m) = 2n
+  have h_mult : unitaryDivisorSum n =
+      (1 + p ^ (n.factorization p)) * unitaryDivisorSum m := by
+    conv_lhs => rw [hn_eq]
+    rw [unitaryDivisorSum_mul_coprime hpa_pos hm_pos hcop,
+        unitaryDivisorSum_prime_pow hp_prime ha_pos]
+  have h_eq : (1 + p ^ (n.factorization p)) * unitaryDivisorSum m = 2 * n := by linarith
+  -- p is odd (n is odd and p | n)
+  have hp_odd : Odd p := by
+    by_contra h
+    have hp_even : Even p := (Nat.even_or_odd p).resolve_right h
+    have h2n : 2 ∣ n := dvd_trans (Even.two_dvd hp_even) hp_dvd
+    obtain ⟨r, hr⟩ := h_odd; obtain ⟨s, hs⟩ := h2n; omega
+  -- (1 + p^a) is even
+  have hpa_odd : Odd (p ^ (n.factorization p)) := hp_odd.pow
+  have h_even_1pa : Even (1 + p ^ (n.factorization p)) := by
+    obtain ⟨r, hr⟩ := hpa_odd; exact ⟨r + 1, by omega⟩
+  by_cases hm1 : m = 1
+  · -- n = p^a: (1 + p^a) * 1 = 2 * p^a, so p^a = 1, impossible
+    rw [hm1, unitaryDivisorSum_one, mul_one, hn_eq, hm1, mul_one] at h_eq
+    have : 2 ≤ p ^ (n.factorization p) :=
+      le_trans hp_prime.two_le (le_self_pow ha_pos.ne' p)
+    omega
+  · -- m > 1 and odd: both factors even, so 4 | 2n, hence 2 | n
+    have hm_gt1 : 1 < m := by omega
+    have hm_odd : Odd m := by
+      by_contra h
+      have hm_even : Even m := (Nat.even_or_odd m).resolve_right h
+      have h2n : 2 ∣ n := by rw [hn_eq]; exact dvd_mul_of_dvd_right (Even.two_dvd hm_even) _
+      obtain ⟨r, hr⟩ := h_odd; obtain ⟨s, hs⟩ := h2n; omega
+    have h_even_sigma_m : Even (unitaryDivisorSum m) :=
+      even_unitaryDivisorSum_of_odd hm_gt1 hm_odd
+    -- 4 | (1+p^a)*σ*(m) = 2n, so 2 | n
+    obtain ⟨j, hj⟩ := h_even_1pa
+    obtain ⟨k, hk⟩ := h_even_sigma_m
+    have h_four : 4 ∣ 2 * n := by
+      rw [← h_eq]; exact ⟨j * k, by rw [hj, hk]; ring⟩
+    obtain ⟨t, ht⟩ := h_four
+    obtain ⟨r, hr⟩ := h_odd
+    omega
 
 /-
 ## The Main Conjecture (OPEN)

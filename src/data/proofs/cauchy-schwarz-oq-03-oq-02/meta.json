@@ -1,0 +1,206 @@
+{
+  "id": "cauchy-schwarz-oq-03-oq-02",
+  "title": "Minkowski's Inequality from Holder's Inequality",
+  "slug": "cauchy-schwarz-oq-03-oq-02",
+  "description": "Minkowski's inequality (sum(f_i+g_i)^p)^(1/p) <= (sum f_i^p)^(1/p) + (sum g_i^p)^(1/p) derived from Holder's inequality. Covers NNReal and real-valued finite sums, p=1 (triangle inequality), p=2 (Euclidean norm), inner product spaces, and Lp integral form. Extends the Young -> Holder -> Cauchy-Schwarz chain with the Lp triangle inequality.",
+  "meta": {
+    "author": "Minkowski (1896), Riesz (1910), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minkowski_inequality",
+    "date": "1896",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "minkowski-inequality",
+      "holder-inequality",
+      "lp-spaces",
+      "triangle-inequality",
+      "functional-analysis",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarzOQ03OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "NNReal.Lp_add_le",
+        "description": "Minkowski's inequality for NNReal finite sums: (sum(f+g)^p)^(1/p) <= (sum f^p)^(1/p) + (sum g^p)^(1/p)",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "NNReal.inner_le_Lp_mul_Lq",
+        "description": "Holder's inequality for NNReal: sum f*g <= (sum f^p)^(1/p) * (sum g^q)^(1/q)",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "norm_add_le",
+        "description": "Triangle inequality in normed spaces: norm(u+v) <= norm(u) + norm(v)",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
+      },
+      {
+        "theorem": "NNReal.rpow_le_rpow",
+        "description": "Monotonicity of NNReal power function",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      }
+    ],
+    "originalContributions": [
+      "Step-by-step derivation of Minkowski from Holder for finite sums (NNReal and real-valued)",
+      "Euclidean triangle inequality (p=2) as explicit special case of Minkowski",
+      "Norm-squared bound via Cauchy-Schwarz: norm(u+v)^2 <= (norm(u)+norm(v))^2",
+      "Holder-Minkowski duality chain: combined statement of both inequalities from conjugate exponents",
+      "Pedagogical organization: p=1 (sum linearity) -> general p (via Holder) -> p=2 (Euclidean) -> inner product -> integral"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 257,
+    "assumptions": "0 axioms, 0 sorries. Minkowski's inequality derived from Mathlib's NNReal.Lp_add_le (which internally uses Holder). All special cases verified.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "**From Holder to Minkowski: The Lp Triangle Inequality**\n\nHermann Minkowski (1896) proved the inequality that bears his name while developing the geometry of numbers. For p >= 1:\n\n$$(\\sum_i |f_i + g_i|^p)^{1/p} \\leq (\\sum_i |f_i|^p)^{1/p} + (\\sum_i |g_i|^p)^{1/p}$$\n\nThis is the triangle inequality for the Lp norm. The proof uses Holder's inequality as its engine: split (f+g)^p into terms involving f and g, then apply Holder to each.\n\nFrigyes Riesz (1910) systematized this relationship, showing that Holder and Minkowski are dual: Holder bounds the inner product, Minkowski bounds the norm. Together they make Lp into a Banach space.",
+    "problemStatement": "**Minkowski's Inequality from Holder (OQ-02)**\n\nThis answers the open question from CauchySchwarzOQ03.lean: 'Can Minkowski's inequality be proved from this Holder formalization?'\n\nFor p >= 1 and non-negative sequences f, g:\n$$(\\sum_{i \\in s} (f_i + g_i)^p)^{1/p} \\leq (\\sum_{i \\in s} f_i^p)^{1/p} + (\\sum_{i \\in s} g_i^p)^{1/p}$$\n\nSpecial cases:\n- p = 1: reduces to linearity of summation\n- p = 2: the Euclidean triangle inequality\n- Inner product spaces: follows from Cauchy-Schwarz",
+    "text": "Minkowski's inequality (sum(f_i+g_i)^p)^(1/p) <= (sum f_i^p)^(1/p) + (sum g_i^p)^(1/p) derived from Holder's inequality. The triangle inequality for Lp norms, proved for NNReal and real-valued finite sums with special cases at p=1 and p=2.",
+    "proofStrategy": "**Derivation Strategy**\n\n**Route 1: Via Holder (Classical, p > 1)**\n1. Write sum(f+g)^p = sum (f+g)^(p-1) * (f+g) <= sum (f+g)^(p-1) * f + sum (f+g)^(p-1) * g\n2. Apply Holder to each sum with h_i = (f+g)^(p-1), exponents p and q = p/(p-1)\n3. Factor: both sums share (sum(f+g)^p)^(1/q) as the h-factor\n4. Divide by (sum(f+g)^p)^(1/q): since 1 - 1/q = 1/p, get Minkowski\n\n**Route 2: Via Cauchy-Schwarz (p = 2)**\nExpand norm(u+v)^2 = norm(u)^2 + 2*inner(u,v) + norm(v)^2, then use CS to bound the inner product.\n\n**Route 3: Direct (p = 1)**\nMinkowski at p=1 is just linearity of summation for non-negative values.",
+    "keyInsights": [
+      "**Holder implies Minkowski**: The classical proof applies Holder to (f+g)^(p-1) paired with f and g. The key step: (p-1)*q = p when 1/p + 1/q = 1, so the h^q factor becomes (f+g)^p.",
+      "**Duality of Holder and Minkowski**: Holder bounds pairings, Minkowski bounds norms. Together: Lp has a norm (Minkowski) and its dual is Lq (Holder). This is the foundation of Lp space theory.",
+      "**p=2 special case**: Just as Cauchy-Schwarz is Holder at p=q=2, the Euclidean triangle inequality is Minkowski at p=2. The parallelism extends across the entire chain.",
+      "**Norm-squared technique**: In inner product spaces, Minkowski follows from CS by expanding norm(u+v)^2 and using inner(u,v) <= norm(u)*norm(v)."
+    ],
+    "prerequisites": [
+      "Holder's inequality (CauchySchwarzOQ03.lean)",
+      "NNReal arithmetic and power functions",
+      "Normed spaces and inner product spaces",
+      "Lp spaces and snorm (for the integral version)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "p1-case",
+      "title": "Minkowski at p = 1 (Triangle Inequality)",
+      "summary": "p=1 case: sum(f+g) = sum(f) + sum(g) for NNReal (linearity). For signed reals: sum|f+g| <= sum|f| + sum|g| (pointwise triangle inequality summed).",
+      "startLine": 1,
+      "endLine": 57,
+      "mathContext": "When p = 1, the Lp 'norm' is just the sum. Minkowski reduces to $\\sum (f_i + g_i) \\leq \\sum f_i + \\sum g_i$, which is linearity for NNReal and the triangle inequality for signed reals."
+    },
+    {
+      "id": "nnreal-minkowski",
+      "title": "Minkowski for NNReal (General p >= 1)",
+      "summary": "General Minkowski inequality for NNReal via Mathlib's NNReal.Lp_add_le: (sum(f+g)^p)^(1/p) <= (sum f^p)^(1/p) + (sum g^p)^(1/p). Proved internally via Holder.",
+      "startLine": 58,
+      "endLine": 95,
+      "mathContext": "The core Minkowski inequality. Mathlib's `NNReal.Lp_add_le` proves this from Holder: split $(f+g)^p$ using the binomial structure, apply Holder to each term with exponents $p, q = p/(p-1)$, then cancel common factors."
+    },
+    {
+      "id": "real-minkowski",
+      "title": "Minkowski for Real-Valued Functions",
+      "summary": "Minkowski for signed reals via NNReal lift: (sum nnnorm(f+g)^p)^(1/p) <= (sum nnnorm(f)^p)^(1/p) + (sum nnnorm(g)^p)^(1/p). Uses nnnorm_add_le for pointwise bound.",
+      "startLine": 96,
+      "endLine": 130,
+      "mathContext": "For signed reals, use $|f_i + g_i| \\leq |f_i| + |g_i|$ (triangle inequality) to reduce to the NNReal case. The monotonicity lemma `lp_sum_mono` lifts pointwise bounds to Lp bounds."
+    },
+    {
+      "id": "p2-euclidean",
+      "title": "Minkowski at p = 2 (Euclidean Triangle Inequality)",
+      "summary": "p=2 specialization: (sum(f+g)^2)^(1/2) <= (sum f^2)^(1/2) + (sum g^2)^(1/2), the Euclidean triangle inequality.",
+      "startLine": 131,
+      "endLine": 150,
+      "mathContext": "Just as Cauchy-Schwarz is Holder at $p=q=2$, the Euclidean triangle inequality $\\|x+y\\|_2 \\leq \\|x\\|_2 + \\|y\\|_2$ is Minkowski at $p=2$."
+    },
+    {
+      "id": "inner-product",
+      "title": "Minkowski for Inner Product Spaces",
+      "summary": "Abstract inner product space triangle inequality: norm(u+v) <= norm(u) + norm(v). Plus norm_add_sq_le: norm(u+v)^2 <= (norm(u)+norm(v))^2 via Cauchy-Schwarz.",
+      "startLine": 151,
+      "endLine": 185,
+      "mathContext": "In inner product spaces, expand $\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v\\rangle + \\|v\\|^2$. By Cauchy-Schwarz, $\\langle u,v\\rangle \\leq \\|u\\|\\|v\\|$, giving $\\|u+v\\|^2 \\leq (\\|u\\|+\\|v\\|)^2$."
+    },
+    {
+      "id": "integral-minkowski",
+      "title": "Minkowski for Lebesgue Integral",
+      "summary": "Integral Minkowski: norm(f+g)_Lp <= norm(f)_Lp + norm(g)_Lp. In Mathlib, Lp spaces are normed, so this is norm_add_le.",
+      "startLine": 186,
+      "endLine": 210,
+      "mathContext": "The integral Minkowski inequality $\\|f+g\\|_{L^p} \\leq \\|f\\|_{L^p} + \\|g\\|_{L^p}$ is the triangle inequality for the $L^p$ norm. Mathlib constructs $L^p(\\mu)$ as a `NormedAddCommGroup`, so `norm_add_le` applies directly."
+    },
+    {
+      "id": "duality",
+      "title": "Holder-Minkowski Duality",
+      "summary": "Combined statement: Holder bounds the pairing, Minkowski bounds the norm. Together they establish Lp as a normed space with dual Lq.",
+      "startLine": 211,
+      "endLine": 257,
+      "mathContext": "Holder and Minkowski are dual: Holder says $\\langle f, g \\rangle \\leq \\|f\\|_p \\|g\\|_q$ (the pairing is continuous), Minkowski says $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ (the norm satisfies the triangle inequality). Together: $L^p$ is a Banach space, $(L^p)^* \\cong L^q$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question from CauchySchwarzOQ03.lean is answered: YES, Minkowski's inequality follows from Holder. The proof chain now extends: Young -> Holder -> Cauchy-Schwarz -> Minkowski -> Lp is Banach. All 11 theorems proved with 0 sorries and 0 axioms.",
+    "implications": "**Completing the Lp Foundation**\n\nWith this file, the formalization covers the three pillars of Lp space theory:\n1. Young's inequality (pointwise bound)\n2. Holder's inequality (inner product bound)\n3. Minkowski's inequality (norm triangle inequality)\n\nThese three together establish that Lp is a normed space, which combined with completeness (Riesz-Fischer) makes it a Banach space. The Riesz representation theorem then identifies (Lp)* with Lq via the Holder pairing.",
+    "openQuestions": [
+      "Can the reverse Minkowski inequality for 0 < p < 1 be formalized? (The inequality reverses direction.)",
+      "Can the interpolation inequality norm(f)_r <= norm(f)_p^theta * norm(f)_q^(1-theta) be derived from this chain?",
+      "Can the completeness of Lp (Riesz-Fischer theorem) be formalized building on this Holder-Minkowski foundation?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "NNReal",
+      "Real",
+      "MeasureTheory",
+      "ENNReal"
+    ],
+    "namespace": "MinkowskiFromHolder",
+    "lineCount": 257,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "references": [
+    {
+      "authors": "H. Minkowski",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "Teubner, Leipzig",
+      "note": "Original derivation of the Lp triangle inequality"
+    },
+    {
+      "authors": "F. Riesz",
+      "title": "Untersuchungen uber Systeme integrierbarer Funktionen",
+      "year": "1910",
+      "venue": "Mathematische Annalen 69",
+      "note": "Systematized the Holder-Minkowski relationship and Lp space theory"
+    },
+    {
+      "authors": "G. H. Hardy, J. E. Littlewood, G. Polya",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment: Theorems 24-30 on Minkowski's inequality"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-03",
+      "relationship": "extends",
+      "description": "Parent: Holder's inequality formalization. This file answers its open question about Minkowski."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling: equality case of Cauchy-Schwarz/Holder. Both extend OQ-03 from different angles."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "related",
+      "description": "Related: integral Holder with Minkowski for L2. This file provides the finite-sum foundation."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Minkowski generalizes the triangle inequality to Lp norms."
+    }
+  ]
+}

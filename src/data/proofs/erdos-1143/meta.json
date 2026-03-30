@@ -54,7 +54,7 @@
     ],
     "historicalContext": "Erdős asked about F_k(p₁,...,pᵤ), the minimum number of integers divisible by at least one given prime in any interval of k consecutive integers. Erdős and Selfridge reportedly found the exact formula for 2 < α < 3 (where k = αpᵤ), but the paper has not been located. For α > 3, very little is known.",
     "axiomCount": 2,
-    "lineCount": 273,
+    "lineCount": 297,
     "assumptions": "2 axiom(s), 0 sorry(s). 1 True-stub placeholder (covering_complement_relation). The 2 axioms are: covering_asymptotic (density main term) and covering_upper_bound (F_k ≤ k·density + |primes|). Previously 3 axioms: erdos_selfridge_exact was proved trivially (∃ x, f = x), alpha_gt_3_open lower bound proved (density < 1 makes LHS ≤ 0)."
   },
   "overview": {

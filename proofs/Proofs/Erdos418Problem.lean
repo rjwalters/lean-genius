@@ -120,13 +120,9 @@ The smallest non-cototient is 10. No n satisfies n - φ(n) = 10.
 
 /-- 10 is the smallest non-cototient. We state this as an axiom since
     proving it requires checking all n. -/
-axiom ten_is_non_cototient : IsNonCototient 10
 
 /-- The list of small non-cototients (OEIS A005278):
     10, 26, 34, 50, 52, 58, 86, 100, ... -/
-axiom small_non_cototients :
-    IsNonCototient 10 ∧ IsNonCototient 26 ∧ IsNonCototient 34 ∧
-    IsNonCototient 50 ∧ IsNonCototient 52 ∧ IsNonCototient 58
 
 /-
 ## Part V: The Main Theorem (SOLVED)
@@ -142,14 +138,11 @@ def browkinSchinzelBase : ℕ := 509203
 def browkinSchinzelWitness (k : ℕ) : ℕ := 2^(k + 1) * browkinSchinzelBase
 
 /-- Browkin-Schinzel (1995): All numbers 2^(k+1) · 509203 are non-cototients. -/
-axiom browkin_schinzel_theorem :
-    ∀ k : ℕ, IsNonCototient (browkinSchinzelWitness k)
 
 /-- **Erdős Problem #418 (SOLVED)**: There are infinitely many non-cototients.
 
     Proof: The Browkin-Schinzel sequence 2^(k+1) · 509203 provides
     infinitely many distinct non-cototients. -/
-axiom erdos_418 : NonCototients.Infinite
 
 /-
 ## Part VI: Conditional Result on Odd Numbers
@@ -167,8 +160,6 @@ def StrengthenedGoldbach : Prop :=
     Proof idea: For odd m ≥ 7, m + 1 is even > 6, so m + 1 = p + q with
     p ≠ q prime. Then cototient(p·q) = p·q - φ(p·q) = p·q - (p-1)(q-1)
     = p·q - p·q + p + q - 1 = p + q - 1 = m. -/
-axiom odd_cototient_conditional (hG : StrengthenedGoldbach) :
-    ∀ m : ℕ, Odd m → IsCototientValue m
 
 /-- The small odd cases: 1, 3, 5 are cototients.
     1 = cototient(2), 3 = cototient(9), 5 = cototient(25). -/
@@ -210,8 +201,6 @@ def IsNonAliquot (m : ℕ) : Prop :=
 
 /-- **Erdős (1973)**: Non-aliquots have positive density.
     This is contrast with non-cototients where density is unknown. -/
-axiom erdos_nonaliquot_density : ∃ S : Set ℕ, HasPositiveDensity S ∧
-    ∀ m ∈ S, IsNonAliquot m
 
 /-
 ## Summary

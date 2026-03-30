@@ -1,7 +1,7 @@
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.LinearAlgebra.Dimension.DivisionRing
-import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.LinearAlgebra.FreeModule.Finite.Basic
+import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Data.Set.Card
 import Mathlib.Algebra.Field.Basic
@@ -38,11 +38,10 @@ The problem was resolved through:
 - Grassmannian Gr(k,n) defined as k-dimensional subspaces
 - Lines in projective 3-space as Gr(2,4)
 - Incidence conditions for lines meeting
-- Equivalence of two line intersection definitions (Grassmann dimension formula)
-- Transversal count = 2 (derived from Four Lines Theorem)
+- Equivalence of two definitions of lines meeting (dimension formula)
 
 ### Axiomatized (Requires Algebraic Geometry)
-- The Four Lines Theorem (exactly 2 transversals exist)
+- The Four Lines Theorem (exactly 2 transversals)
 - Schubert varieties as subvarieties of Grassmannians
 - Schubert classes form a basis for cohomology
 - Littlewood-Richardson rule for multiplication
@@ -141,18 +140,25 @@ def LinesMeet' {K : Type*} [DivisionRing K] (L₁ L₂ : LineInP3 K) : Prop :=
 
 /-- The two definitions of lines meeting are equivalent.
 
-Proof uses the Grassmann dimension formula:
-  finrank(V ⊔ W) + finrank(V ⊓ W) = finrank(V) + finrank(W) = 2 + 2 = 4
-so V ⊓ W ≠ ⊥ ↔ finrank(V ⊓ W) ≥ 1 ↔ finrank(V ⊔ W) ≤ 3 ↔ finrank(V ⊔ W) < 4. -/
+Proof: By the Grassmann dimension formula for subspaces,
+  dim(V + W) + dim(V ∩ W) = dim(V) + dim(W) = 2 + 2 = 4.
+So dim(V + W) < 4 iff dim(V ∩ W) > 0 iff V ∩ W ≠ {0}. -/
 theorem linesMeet_iff_linesMeet' {K : Type*} [Field K] (L₁ L₂ : LineInP3 K) :
     LinesMeet L₁ L₂ ↔ LinesMeet' L₁ L₂ := by
   simp only [LinesMeet, LinesMeet', SubspacesMeet]
-  have h1 : finrank K ↥L₁.val = 2 := grassmannian_rank L₁
-  have h2 : finrank K ↥L₂.val = 2 := grassmannian_rank L₂
-  have hg := finrank_sup_add_finrank_inf_eq L₁.val L₂.val
-  rw [h1, h2] at hg
-  rw [ne_eq, ← Submodule.finrank_eq_zero (R := K)]
-  constructor <;> omega
+  have hdim := Submodule.finrank_sup_add_finrank_inf_eq L₁.val L₂.val
+  rw [L₁.property, L₂.property] at hdim
+  -- hdim : finrank K ↥(L₁.val ⊔ L₂.val) + finrank K ↥(L₁.val ⊓ L₂.val) = 2 + 2
+  constructor
+  · -- (V ∩ W ≠ ⊥) → (dim(V + W) < 4)
+    intro hne
+    suffices h : 0 < finrank K ↥(L₁.val ⊓ L₂.val) by omega
+    rw [Nat.pos_iff_ne_zero, ne_eq, Submodule.finrank_eq_zero]
+    exact hne
+  · -- (dim(V + W) < 4) → (V ∩ W ≠ ⊥)
+    intro hlt hbot
+    have : finrank K ↥(L₁.val ⊓ L₂.val) = 0 := Submodule.finrank_eq_zero.mpr hbot
+    omega
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: THE FOUR LINES THEOREM
@@ -225,19 +231,10 @@ axiom four_lines_theorem {K : Type*} [Field K] (L₁ L₂ L₃ L₄ : LineInP3 K
       IsTransversal M₂ L₁ L₂ L₃ L₄ ∧
       ∀ M, IsTransversal M L₁ L₂ L₃ L₄ → M = M₁ ∨ M = M₂
 
-/-- The transversal set has exactly 2 elements.
-
-Derived from four_lines_theorem: the existential witness gives us the exact pair,
-and the uniqueness clause shows the set equals {M₁, M₂}. -/
-theorem transversal_count {K : Type*} [Field K] (L₁ L₂ L₃ L₄ : LineInP3 K)
+/-- The transversal set has exactly 2 elements (axiomatized) -/
+axiom transversal_count {K : Type*} [Field K] (L₁ L₂ L₃ L₄ : LineInP3 K)
     (hgen : FourLinesGeneralPosition L₁ L₂ L₃ L₄) :
-    Set.ncard (Transversals L₁ L₂ L₃ L₄) = 2 := by
-  obtain ⟨M₁, M₂, hne, h1, h2, huniq⟩ := four_lines_theorem L₁ L₂ L₃ L₄ hgen
-  have heq : Transversals L₁ L₂ L₃ L₄ = {M₁, M₂} := by
-    ext M
-    simp only [Transversals, Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
-    exact ⟨huniq M, fun h => h.elim (fun heq => heq ▸ h1) (fun heq => heq ▸ h2)⟩
-  rw [heq, Set.ncard_pair hne]
+    Set.ncard (Transversals L₁ L₂ L₃ L₄) = 2
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IV: CLASSICAL SCHUBERT NUMBERS

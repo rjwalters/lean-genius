@@ -22,15 +22,17 @@ open Complex Real
 -- PART I: De Moivre for Real Exponents via cpow
 -- ============================================================
 
-/-- For z = exp(iθ) on the unit circle, z^α = exp(iαθ) for real α.
-    This is the principal branch of the complex power. -/
-theorem de_moivre_real_exponent (θ α : ℝ) :
+/-- For z = exp(iθ) on the unit circle with θ in the principal branch,
+    z^α = exp(iαθ) for real α. The branch restriction θ ∈ (-π, π] is
+    necessary: for θ = 2π, exp(2πi) = 1 so LHS = 1 but RHS = exp(2παi) ≠ 1. -/
+theorem de_moivre_real_exponent (θ α : ℝ)
+    (hθ_lo : -Real.pi < θ) (hθ_hi : θ ≤ Real.pi) :
     (Complex.exp (↑θ * Complex.I)) ^ (α : ℂ) =
     Complex.exp (↑(α * θ) * Complex.I) := by
   rw [cpow_def_of_ne_zero (exp_ne_zero _)]
-  simp [Complex.log_exp]
-  ring_nf
-  sorry  -- needs log of exp on principal branch
+  have him : (↑θ * Complex.I).im = θ := by simp
+  rw [Complex.log_exp (him ▸ hθ_lo) (him ▸ hθ_hi)]
+  congr 1; push_cast; ring
 
 -- ============================================================
 -- PART II: Multi-Valuedness for Rational Exponents

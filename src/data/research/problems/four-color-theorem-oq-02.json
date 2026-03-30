@@ -3,56 +3,5 @@
   "name": "Minimal unavoidable reducible configurations",
   "parentId": "four-color-theorem",
   "status": "completed",
-  "knowledge": {
-    "score": 4,
-    "insights": [
-      "RSST: 633 configs",
-      "Lower bound ≥10",
-      "No tight lower bound known"
-    ],
-    "builtItems": [
-      "FourColorTheoremOQ02.lean: 110 lines, 3 axioms"
-    ],
-    "progressSummary": "COMPLETED: Survey."
-  },
-  "leanFiles": [
-    {
-      "path": "Proofs/FourColorTheorem.lean",
-      "filename": "FourColorTheorem.lean",
-      "lineCount": 295,
-      "theoremCount": 6,
-      "axiomCount": 2,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourColorTheorem.lean"
-    },
-    {
-      "path": "Proofs/FourColorTheoremOQ01.lean",
-      "filename": "FourColorTheoremOQ01.lean",
-      "lineCount": 459,
-      "theoremCount": 17,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourColorTheoremOQ01.lean"
-    },
-    {
-      "path": "Proofs/FourColorTheoremOQ02.lean",
-      "filename": "FourColorTheoremOQ02.lean",
-      "lineCount": 111,
-      "theoremCount": 1,
-      "axiomCount": 3,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourColorTheoremOQ02.lean"
-    }
-  ],
-  "relatedProofs": [
-    "four-color-theorem",
-    "four-color-theorem-oq-01",
-    "four-color-theorem-oq-02"
-  ]
+  "knowledge": { "score": 4, "insights": ["RSST: 633 configs", "Lower bound ≥10", "No tight lower bound known"], "builtItems": ["FourColorTheoremOQ02.lean: 110 lines, 3 axioms"], "progressSummary": "COMPLETED: Survey." }
 }

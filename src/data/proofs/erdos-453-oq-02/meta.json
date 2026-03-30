@@ -2,7 +2,7 @@
   "id": "erdos-453-oq-02",
   "title": "Erdős 453: Axiom Elimination for Prime Product Bound",
   "slug": "erdos-453-oq-02",
-  "description": "Eliminates 3 of 4 axioms from Erdős Problem #453: nthPrime_is_prime and nthPrime_strictMono from Mathlib's Nat.nth API, nthPrime_values via Nat.nth_count + decide, and logPrime_ratio_tendsto_zero from PNT asymptotics. 1 axiom remains (pomerance_convex_hull_lemma).",
+  "description": "Eliminates 2 of 4 axioms and the sorry from Erdős Problem #453 by proving nthPrime_is_prime and nthPrime_strictMono from Mathlib's Nat.nth API, and nthPrime_values via Nat.nth_count + decide.",
   "meta": {
     "author": "Paul Erdős, Ernst Straus, Carl Pomerance",
     "sourceUrl": "https://erdosproblems.com/453",
@@ -62,10 +62,9 @@
       "nth_prime_three_eq_seven: auxiliary lemma via Nat.count + decide",
       "convexity_implies_product_bound: re-derived using proved (not axiomatized) prime facts"
     ],
-    "axiomCount": 1,
-    "sorries": 1,
-    "lineCount": 248,
-    "assumptions": "1 axiom remains: pomerance_convex_hull_lemma (convex hull theory). logPrime_ratio_tendsto_zero now a theorem (1 sorry: squeeze argument from PNT). Reduced from 4 axioms + 1 sorry in parent."
+    "axiomCount": 2,
+    "lineCount": 226,
+    "assumptions": "2 axioms remain: logPrime_ratio_tendsto_zero (PNT consequence), pomerance_convex_hull_lemma (convex hull theory). Reduced from 4 axioms + 1 sorry in parent."
   },
   "leanFile": {
     "imports": [
@@ -73,17 +72,15 @@
       "Mathlib.Data.Nat.Prime.Nth",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Data.Real.Basic",
-      "Mathlib.Analysis.Convex.Basic",
-      "Proofs.PrimeNumberTheorem"
+      "Mathlib.Analysis.Convex.Basic"
     ],
     "opens": [
       "Nat",
-      "Real",
-      "Filter"
+      "Real"
     ],
     "namespace": "Erdos453OQ02",
-    "lineCount": 248,
-    "axiomCount": 1,
+    "lineCount": 195,
+    "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 4
   },

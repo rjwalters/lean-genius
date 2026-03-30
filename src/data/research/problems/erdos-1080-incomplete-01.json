@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1080-incomplete-01",
-  "title": "Complete proof of Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs",
+  "title": "Complete proof of Erd\u0151s Problem #1080: Six-Cycles in Sparse Bipartite Graphs",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
@@ -17,15 +17,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-28T19:26:08.357Z",
+    "since": "2026-03-30T09:20:00Z",
     "iteration": 2,
-    "focus": "Two sorries remain: erdos_conjecture_false and c4_free_iff_no_K22",
+    "focus": "Identified parameterization gap in erdos_conjecture_false proof",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Add maxC4C6FreeEdges_mono_right axiom, then prove erdos_conjecture_false",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -42,13 +42,20 @@
       "erdos_1080 theorem was ill-typed (used undefined answer(false)), fixed to use erdos_conjecture_false directly",
       "Lazebnik-Ustimenko-Woldar axiom strengthened to uniform constant (matching published result)",
       "Bipartition structural lemmas added: no edges within X, no edges within Y",
-      "Two remaining sorries: erdos_conjecture_false needs Archimedean argument with real exponents, c4_free_iff_no_K22 needs Walk construction"
+      "Two remaining sorries: erdos_conjecture_false needs Archimedean argument with real exponents, c4_free_iff_no_K22 needs Walk construction",
+      "erdos_conjecture_false has a PARAMETERIZATION GAP: LUW gives f(n, floor(n^{2/3})) >= c*n^{16/15}, but conjecture uses f(N-floor(N^{2/3}), floor(N^{2/3})) where N is total vertices. These differ because floor(n^{2/3}) != floor(N^{2/3}) where N = n + floor(n^{2/3}).",
+      "Fix: need monotonicity of maxC4C6FreeEdges in second argument. Then f(n, floor(N^{2/3})) >= f(n, floor(n^{2/3})) >= c*n^{16/15} since floor(N^{2/3}) >= floor(n^{2/3}).",
+      "With monotonicity, proof strategy: set N = total vertices, n = N - floor(N^{2/3}) >= N/2 for large N. Then edges >= c*(N/2)^{16/15} > c*N for large N (since 16/15 > 1).",
+      "c4_free_iff_no_K22 forward direction: construct Walk.cons chain for 4-cycle a1->b1->a2->b2->a1, verify IsCycle (IsTrail + support.tail.Nodup). Bipartiteness gives all distinctness conditions."
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "maxC4C6FreeEdges_mono_right: monotonicity of extremal edge count in second part size (add isolated vertices to smaller part)"
+    ],
     "nextSteps": [
-      "Prove erdos_conjecture_false using Archimedean property and strengthened lower bound",
-      "Prove c4_free_iff_no_K22 by constructing Walk for C4 from K22",
-      "Create Aristotle companion file for the two remaining sorries"
+      "Add maxC4C6FreeEdges_mono_right : maxC4C6FreeEdges n m <= maxC4C6FreeEdges n (m+1) as lemma or axiom",
+      "Prove erdos_conjecture_false using mono + LUW + achieved + Archimedean",
+      "Prove c4_free_iff_no_K22 via Walk.cons construction + IsCycle verification",
+      "Key Lean APIs needed: Walk.cons, Walk.IsCycle, Walk.IsTrail, List.Nodup, SimpleGraph.Adj.symm"
     ]
   },
   "tags": [
@@ -74,7 +81,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T19:26:08.357Z",
-  "lastUpdate": "2026-03-28T20:25:00Z",
+  "lastUpdate": "2026-03-30T09:20:00Z",
   "significance": 5,
   "tractability": 6
 }

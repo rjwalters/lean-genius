@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-28T20:57:10.258Z",
-    "iteration": 3,
-    "focus": "Proved structural theorem, fixed bug. Remaining sorries need deep math.",
+    "iteration": 4,
+    "focus": "Proved gladysz_pairs from NPS theorem. Remaining 3 sorries all need deep math.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved max_size_infinite (sorry→proof) in both files. Fixed CH bug in Provable (theorem→def). Main file: 4 sorries, 1 axiom. Provable: 4 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: Eliminated gladysz_pairs sorry by proving it from nps_closed_infinite. 0 axioms, 3 sorries remain (erdos_hajnal_finite, hechler_under_CH, nps_closed_infinite). Created Aristotle companion file.",
     "builtItems": [
       "Proved max_size_infinite in Erdos501Problem.lean (by_contra + le_iSup₂ + omega)",
       "Proved max_size_infinite in Erdos501ProblemProvable.lean (same proof)",
-      "Fixed continuum_hypothesis: def (not theorem/sorry) with set-theoretic formulation"
+      "Fixed continuum_hypothesis: def (not theorem/sorry) with set-theoretic formulation",
+      "Fixed CH: axiom → def using Cardinal.aleph 1 = Cardinal.continuum (0 axioms)",
+      "Proved gladysz_pairs in Erdos501Problem.lean from nps_closed_infinite (hereditary + Finset extraction)",
+      "Proved gladysz_pairs in Erdos501ProblemProvable.lean (same proof)",
+      "Created Erdos501Aristotle.lean with bounded_empty, bounded_subset, bounded_inter_Icc, bounded_union, outerMeasure_mono, outerMeasure_inter_le, outerMeasure_union_le, exists_not_mem_of_outerMeasure_lt_Icc (sorry), isClosed_measurableSet, closed_outerMeasure_eq_measure, measure_compl_Icc_pos (sorry), independent_size_zero, independent_size_one"
     ],
     "insights": [
       "Answer depends on set-theoretic axioms (CH): NO under CH (Hechler 1972), YES for closed sets (NPS 1987)",
@@ -45,13 +49,19 @@
       "Provable file has 6 sorries: erdos_hajnal_finite, hechler_under_CH, gladysz_pairs, nps_closed_infinite, continuum_hypothesis (buggy), max_size_infinite",
       "All proofs need deep math: probabilistic (EH), model theory (Hechler), descriptive set theory (NPS)",
       "Proved max_size_infinite: erdos_hajnal_finite (arb large finite sets) implies iSup of independent set sizes = ⊤ in ℕ∞",
-      "Fixed CH bug in Provable file: theorem → def with proper formulation as ∀ uncountable S ⊆ ℝ, ∃ surjection ℝ → S"
+      "Fixed CH bug in Provable file: theorem → def with proper formulation as ∀ uncountable S ⊆ ℝ, ∃ surjection ℝ → S",
+      "CH axiom fixed: axiom continuum_hypothesis : Prop → def continuum_hypothesis : Prop := Cardinal.aleph 1 = Cardinal.continuum",
+      "All 4 sorries require deep math: erdos_hajnal_finite (measure/probability), hechler_under_CH (model theory/CH diagonalization), gladysz_pairs (measure theory + Fubini on non-measurable graphs), nps_closed_infinite (descriptive set theory)",
+      "Fubini approach for gladysz_pairs: graph G={(x,y):x∈A_y} on [0,L]² has thin sections (<1 in each column). If measurable, μ(G)<L and μ(G^T)<L, so G∪G^T cannot cover L²>2L for L>2. But joint measurability is not guaranteed for arbitrary closed families.",
+      "Proved gladysz_pairs as corollary of nps_closed_infinite: infinite independent set → extract 2-element subset → hereditary independence. Reduces main file from 4 to 3 sorries.",
+      "Created Erdos501Aristotle.lean companion file with supporting lemmas: bounded set properties, outer measure monotonicity/subadditivity, interval complement positivity",
+      "Key proof analysis: gladysz_pairs and erdos_hajnal_finite both require Fubini-type arguments with measurability of the product graph {(x,y) : x ∈ A_y}. For general families, this graph may be non-measurable. For closed families, measurability of multifunction y ↦ A_y is not automatic."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove Erdos-Hajnal: arbitrarily large finite independent sets exist (probabilistic/greedy argument)",
-      "Consider proving the closed-set case (NPS 1987) separately",
-      "Assess whether CH axiom can be made into a hypothesis instead of global axiom"
+      "Prove erdos_hajnal_finite: needs Fubini-type argument or probabilistic method for jointly non-measurable families",
+      "For gladysz_pairs: closed families give measurable sections but graph measurability unclear; may need analytic set theory",
+      "Consider companion file for Aristotle with supporting lemmas (e.g., outer measure subadditivity for finite unions)"
     ]
   },
   "tags": [

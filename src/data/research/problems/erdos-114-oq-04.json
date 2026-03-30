@@ -1,0 +1,39 @@
+{
+  "id": "erdos-114-oq-04",
+  "name": "Verify lemniscate axioms using Mathlib complex analysis",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "source": {
+    "type": "open-question",
+    "parentProof": "erdos-114",
+    "question": "Can any of the axiomatized results be verified using Mathlib's complex analysis?"
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Defined lemniscate sets properly using Polynomial.eval + ‖·‖ (no axioms needed for set definitions). Proved basic properties. Assessed axiom eliminability: arc length requires curve integration not in Mathlib. 1 axiom (Danchenko placeholder), 0 sorries, 10 theorems, 177 lines.",
+    "builtItems": [
+      "proofs/Proofs/Erdos114OQ04Problem.lean (177 lines)",
+      "lemniscateSet and unitLemniscate definitions (axiom-free)",
+      "Basic properties: lemniscate_zero_eq_roots, lemniscate_neg_empty, lemniscate_is_preimage",
+      "z^n - 1 definitions: znMinus1, eval_znMinus1, znMinus1_lemniscate",
+      "Membership: root_of_unity_not_on_lemniscate, zero_on_lemniscate",
+      "Examples: lemniscate_degree_zero, lemniscate_n1, lemniscate_n2",
+      "Gallery entry"
+    ],
+    "insights": [
+      "Polynomial module moved from Data.Polynomial to Algebra.Polynomial in newer Mathlib",
+      "Complex.abs is accessed via ‖·‖ (norm) in current Mathlib API",
+      "norm_eq_zero and norm_nonneg are key lemmas for lemniscate proofs",
+      "Arc length of ℂ curves is the main Mathlib gap blocking axiom elimination",
+      "Danchenko bound potentially provable via Cauchy integral (~500 lines)"
+    ],
+    "mathlibGaps": [
+      "No arc length for curves in ℂ",
+      "No complex curve integration (line integrals over parametric curves)"
+    ],
+    "nextSteps": [
+      "Define arc length for parametric curves in ℂ (custom infrastructure)",
+      "Attempt Danchenko bound via Cauchy integral formula",
+      "Connect to Gamma function formula for z^n-1 lemniscate length"
+    ]
+  }
+}

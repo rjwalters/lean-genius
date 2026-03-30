@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 3,
     "erdosNumber": 1040,
     "erdosUrl": "https://erdosproblems.com/1040",
     "erdosProblemStatus": "open",
@@ -25,16 +25,15 @@
       1039
     ],
     "axiomCount": 7,
-    "assumptions": "7 axiom declarations: transfiniteDiameter_eq (Fekete's limit theorem), lineSegment_determined (line segment mu determined by diameter), disc_determined (disc mu determined by radius), lineSegment_diameter (line segment capacity = length/4), disc_diameter (disc capacity = radius), small_diameter_disc (qualitative disc containment for ρ < 1), erdos_netanyahu (quantitative disc bounds, 1973). 3 sorries in Problem file, 1 in Aristotle companion.",
+    "assumptions": "7 axiom declarations: transfiniteDiameter_eq (Fekete's limit theorem), lineSegment_diameter (line segment capacity = length/4), disc_diameter (disc capacity = radius), small_diameter_disc (qualitative disc containment for ρ < 1), erdos_netanyahu (quantitative disc bounds, 1973), lineSegment_muPosDeg_zero (EHP 1958 line segment case), disc_muPosDeg_zero (EHP 1958 disc case). 3 sorries in theorems. Previously axiomatized lineSegment_determined and disc_determined proved trivially (statements are vacuous for fixed F).",
     "prerequisites": [
       "Complex analysis: polynomial lemniscates and sublevel sets",
       "Potential theory: transfinite diameter and logarithmic capacity",
       "Measure theory: Lebesgue measure in the complex plane",
       "Approximation theory: Chebyshev polynomials and extremal polynomials"
     ],
-    "lineCount": 461,
-    "mathlib_version": "4.26.0",
-    "lineCount_updated": "550 (Problem) + 112 (Aristotle)"
+    "lineCount": 558,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős-Herzog-Piranian Problem (1958)**\n\nThis problem originates from the 1958 paper \"Metric properties of polynomials\" by Paul Erdős, Fritz Herzog, and George Piranian, published in the Journal d'Analyse Mathématique. The paper studied the geometry of polynomial sublevel sets $\\{z : |f(z)| < 1\\}$ — also known as **polynomial lemniscates** — and their relationship to the distribution of roots.\n\nThe central quantity $\\mu(F)$ measures the smallest possible area of a lemniscate whose roots are constrained to lie in $F$. The **transfinite diameter** (or logarithmic capacity) $\\rho(F)$, introduced by Fekete in 1923 and developed by Szegő, Pólya, and others, measures the 'size' of $F$ from the perspective of potential theory. Fekete proved that $\\rho(F) = \\lim_{n \\to \\infty} d_n(F)$ where $d_n(F)$ is the geometric mean of pairwise distances among optimal $n$-point configurations (Fekete points).\n\n**Key historical milestones**:\n- **1923**: Michael Fekete introduced the transfinite diameter and proved the fundamental limit theorem, establishing the triple equivalence $\\rho(F) = \\text{cap}(F) = \\tau(F)$ (Chebyshev constant)\n- **1924**: Gábor Szegő connected transfinite diameter to conformal mapping radius, showing $\\rho(F) = \\text{cap}(F)$ equals the conformal radius of $\\mathbb{C} \\setminus F$ at infinity\n- **1958**: Erdős, Herzog, and Piranian proved the conjecture for **line segments** (using Chebyshev polynomials $T_n$) and **closed discs** (using roots of unity), and posed the general question\n- **1973**: Erdős and Elisha Netanyahu strengthened the small-diameter result, proving explicit quantitative disc bounds for bounded connected sets with $0 < \\rho(F) < 1$\n\nThe problem connects potential theory to the geometry of polynomial level curves, a topic with roots in the work of Chebyshev (1850s), Bernstein, Walsh, and the classical approximation theory school.",
@@ -123,7 +122,7 @@
     {
       "id": "diameter-properties",
       "title": "Properties of Transfinite Diameter",
-      "summary": "Structural theorems for $\\rho$: monotonicity (sorry — potentially false for unbounded sets due to sSup convention), non-negativity (PROVED), finite sets $\\rho = 0$ (PROVED via pigeonhole), and scaling (sorry). Non-negativity proved via nthDiameter_nonneg and le_csInf. Finite degeneracy proved by showing every n-tuple from a finite set repeats a value (pigeonhole), making the product zero.",
+      "summary": "Structural theorems for $\\rho$: monotonicity (sorry), non-negativity (PROVED), finite sets $\\rho = 0$ (sorry), and scaling (sorry). Non-negativity proved via nthDiameter_nonneg and le_csInf.",
       "startLine": 179,
       "endLine": 203,
       "mathContext": "$F \\subseteq G \\implies \\rho(F) \\leq \\rho(G)$; $\\rho(F) \\geq 0$; $|F| < \\infty \\implies \\rho(F) = 0$; $\\rho(cF) = |c|\\rho(F)$."
@@ -131,7 +130,7 @@
     {
       "id": "mu-properties",
       "title": "Properties of μ",
-      "summary": "Structural theorems: anti-monotonicity ($F \\subseteq G \\implies \\mu(G) \\leq \\mu(F)$, note reversal, PROVED) and infimum approximation ($\\mu(F)$ can be approached within $\\varepsilon$ by some polynomial, PROVED). New: muPosDeg_pos_of_small_diameter (PROVED) showing $\\mu(F) > 0$ when $\\rho(F) < 1$ via Haar measure positivity.",
+      "summary": "Structural theorems: anti-monotonicity ($F \\subseteq G \\implies \\mu(G) \\leq \\mu(F)$, note reversal, PROVED) and infimum approximation ($\\mu(F)$ can be approached within $\\varepsilon$ by some polynomial, PROVED). muPosDeg_pos_of_small_diameter (PROVED) establishes $\\mu(F) > 0$ when $\\rho(F) < 1$ via disc containment and Complex.volume_ball.",
       "startLine": 204,
       "endLine": 217,
       "mathContext": "$F \\subseteq G \\implies \\mu(G) \\leq \\mu(F)$ (anti-monotone). $\\forall \\varepsilon > 0, \\exists f: |S(f)| < \\mu(F) + \\varepsilon$."
@@ -139,14 +138,14 @@
     {
       "id": "open-question",
       "title": "The Open Question and Current State",
-      "summary": "Names the main open question `erdos_1040_question` and states the current knowledge. Split into two parts: Part 1 ($\\mu = 0$ for segments/discs with $\\rho \\geq 1$, sorry — needs EHP formula) and Part 2 ($\\mu > 0$ when $\\rho < 1$, PROVED via muPosDeg_pos_of_small_diameter + Haar measure). Also includes OQ-05 extensions of Erdős-Netanyahu bounds.",
+      "summary": "Names the main open question `erdos_1040_question` and states the current knowledge. Split into two parts: Part 1 ($\\mu = 0$ for segments/discs with $\\rho \\geq 1$, axiomatized via EHP 1958) and Part 2 ($\\mu > 0$ when $\\rho < 1$, PROVED via muPosDeg_pos_of_small_diameter). Also includes OQ-05 extensions of Erdős-Netanyahu bounds.",
       "startLine": 218,
       "endLine": 249,
       "mathContext": "Known: $\\rho(F) \\geq 1 \\implies \\mu(F) = 0$ for segments and discs; $\\rho(F) < 1 \\implies \\mu(F) > 0$ for all $F$. General case open since 1958."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1040 formalizes one of the fundamental open questions in the geometry of polynomial lemniscates: whether the infimum $\\mu(F)$ of sublevel set measures is determined by the transfinite diameter $\\rho(F)$. The Lean formalization builds a complete framework from the $n$-th diameter and Fekete point theory through to the two forms of the conjecture, axiomatizing the known results of EHP (1958) and the Erdős-Netanyahu (1973) quantitative bounds. 7 axioms remain (deep published results). 4 sorries remain. Key proved results: nthDiameter pigeonhole degeneracy, muPosDeg positivity via Haar measure, erdos_1040_current_state Part 2.",
+    "summary": "Erdős Problem #1040 formalizes one of the fundamental open questions in the geometry of polynomial lemniscates: whether the infimum $\\mu(F)$ of sublevel set measures is determined by the transfinite diameter $\\rho(F)$. The Lean formalization builds a complete framework from the $n$-th diameter and Fekete point theory through to the two forms of the conjecture, axiomatizing the known results of EHP (1958) and the Erdős-Netanyahu (1973) quantitative bounds. 7 axiom declarations (capacity formulas, disc containment, EN bounds, EHP known cases). 3 sorries remain for structural properties of $\\rho$.",
     "implications": "1. **Potential Theory and Polynomial Geometry**: A positive resolution would establish that logarithmic capacity completely controls the measure-theoretic behavior of polynomial lemniscates, unifying capacity theory with the geometry of sublevel sets\n\n2. **Extremal Polynomial Theory**: Understanding $\\mu(F)$ requires identifying near-optimal polynomials for general sets, extending the role of Chebyshev polynomials (for intervals) and power functions (for discs) to arbitrary compact sets\n\n**3. Conformal Invariance**: Since $\\rho(F)$ is related to the conformal mapping radius of $\\mathbb{C} \\setminus F$, a positive answer would connect sublevel set area to conformal geometry\n\n4. **Connection to Problem #1039**: Problems 1039 and 1040 together ask about the inner structure (inscribed disc) and total size (area) of lemniscates — two complementary aspects of the same geometric question\n\n5. **Approximation Theory**: The problem has implications for polynomial approximation on compact sets, as sublevel set size controls the rate of polynomial convergence.",
     "openQuestions": [
       "Is $\\mu(F) = 0$ when $\\rho(F) \\geq 1$ for general closed infinite sets? (The main conjecture, open since 1958)",
@@ -231,10 +230,10 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 461,
+    "lineCount": 558,
     "axiomCount": 7,
-    "theoremCount": 23,
-    "substantiveTheoremCount": 23,
+    "theoremCount": 24,
+    "substantiveTheoremCount": 19,
     "trivialSpecializations": 0,
     "definitionCount": 19
   }

@@ -365,4 +365,89 @@ theorem two_mem_factors (n k : ℕ) (hk : 2 ≤ k) :
     2 ∈ consecutivePrimeFactors n k :=
   prime_le_k_mem_factors n k 2 Nat.prime_two hk
 
+/-
+## Hard Case Structure: Both Blocks Are Entirely Composite
+
+In the hard case (k₁ < n₁, n₂+k₂ < 2n₁, all prime factors ≤ n₁), both blocks
+must consist entirely of composite numbers. The proof: if n₁+i were prime, it
+would be a prime factor of the first product exceeding n₁ (since i ≥ 1),
+contradicting hypothesis h₇. Similarly for the second block via SamePrimeFactors.
+-/
+
+/-- In the hard case, every element of the first block is composite.
+    Proof: if n₁+i is prime and i ≥ 1, then n₁+i > n₁ is a prime factor
+    of the first product, contradicting the hypothesis that all prime factors ≤ n₁. -/
+theorem hard_case_first_block_composite (n₁ k₁ : ℕ)
+    (h₅ : k₁ < n₁)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁)
+    (i : ℕ) (hi : i ∈ Finset.Icc 1 k₁) :
+    ¬ (n₁ + i).Prime := by
+  intro hp
+  -- n₁ + i is a prime factor of the product
+  have hmem : (n₁ + i) ∈ consecutivePrimeFactors n₁ k₁ :=
+    factor_prime_mem n₁ k₁ i hi (n₁ + i) hp (dvd_refl _)
+  -- By h₇, n₁ + i ≤ n₁
+  have := h₇ _ hmem
+  -- But i ≥ 1, so n₁ + i > n₁
+  simp only [Finset.mem_Icc] at hi
+  omega
+
+/-- In the hard case, every element of the second block is composite.
+    Proof: if n₂+j is prime and j ≥ 1, then n₂+j > n₁ (since n₂ ≥ n₁+k₁) is a
+    prime factor of the second product. By SamePrimeFactors, it's also a prime factor
+    of the first product, and by h₇ it must be ≤ n₁ — contradiction. -/
+theorem hard_case_second_block_composite (n₁ k₁ k₂ n₂ : ℕ)
+    (h₃ : n₁ + k₁ ≤ n₂)
+    (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁)
+    (j : ℕ) (hj : j ∈ Finset.Icc 1 k₂) :
+    ¬ (n₂ + j).Prime := by
+  intro hp
+  -- n₂ + j is a prime factor of the second product
+  have hmem₂ : (n₂ + j) ∈ consecutivePrimeFactors n₂ k₂ :=
+    factor_prime_mem n₂ k₂ j hj (n₂ + j) hp (dvd_refl _)
+  -- By SamePrimeFactors, it's also a prime factor of the first product
+  have hmem₁ : (n₂ + j) ∈ consecutivePrimeFactors n₁ k₁ := h₄ ▸ hmem₂
+  -- By h₇, n₂ + j ≤ n₁
+  have hle := h₇ _ hmem₁
+  -- But n₂ + j > n₁
+  simp only [Finset.mem_Icc] at hj
+  omega
+
+/-- In the hard case, every prime factor of the second product is ≤ n₁.
+    Follows directly from SamePrimeFactors and the first-product bound. -/
+theorem hard_case_second_block_smooth (n₁ k₁ k₂ n₂ : ℕ)
+    (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁) :
+    ∀ p ∈ consecutivePrimeFactors n₂ k₂, p ≤ n₁ := by
+  intro p hp
+  exact h₇ p (h₄ ▸ hp)
+
+/-- In the hard case, every element of the second block is n₁-smooth AND greater than n₁.
+    This is the core structural constraint: k₂ ≥ 3 consecutive integers, all composite,
+    all greater than n₁, all with prime factors ≤ n₁. By results on consecutive smooth
+    numbers (Størmer's theorem), this is extremely restrictive and likely impossible
+    for all but finitely many n₁. -/
+theorem hard_case_summary (k₁ k₂ n₁ n₂ : ℕ)
+    (h₁ : 3 ≤ k₂) (h₂ : k₂ ≤ k₁)
+    (h₃ : n₁ + k₁ ≤ n₂)
+    (h₄ : SamePrimeFactors n₁ k₁ n₂ k₂)
+    (h₅ : k₁ < n₁)
+    (h₆ : n₂ + k₂ < 2 * n₁)
+    (h₇ : ∀ p ∈ consecutivePrimeFactors n₁ k₁, p ≤ n₁) :
+    -- All elements of both blocks are composite
+    (∀ i ∈ Finset.Icc 1 k₁, ¬ (n₁ + i).Prime) ∧
+    (∀ j ∈ Finset.Icc 1 k₂, ¬ (n₂ + j).Prime) ∧
+    -- All prime factors of the second product are ≤ n₁
+    (∀ p ∈ consecutivePrimeFactors n₂ k₂, p ≤ n₁) ∧
+    -- All elements of the second block exceed n₁
+    (∀ j ∈ Finset.Icc 1 k₂, n₁ < n₂ + j) := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact hard_case_first_block_composite n₁ k₁ h₅ h₇
+  · exact hard_case_second_block_composite n₁ k₁ k₂ n₂ h₃ h₄ h₇
+  · exact hard_case_second_block_smooth n₁ k₁ k₂ n₂ h₄ h₇
+  · intro j hj
+    simp only [Finset.mem_Icc] at hj
+    omega
+
 end Erdos931

@@ -168,15 +168,57 @@ axiom frankl_upper_bound :
     f n r k ≤ (k - 1) * Nat.choose (n - 1) (r - 1)
 
 /-- The upper bound is sometimes tight.
-    Proof sketch: By telescoping, C(n,r) - C(n-k+1,r) = Σ_{i=1}^{k-1} C(n-i,r-1)
-    via Pascal's rule. Each term ≤ C(n-1,r-1) by monotonicity, giving ≤ (k-1)·C(n-1,r-1). -/
+    Proof: By induction on k. Base k=1: both sides are 0.
+    Step k→k+1: decompose C(n,r)-C(n-k,r) = [C(n,r)-C(n-k+1,r)] + [C(n-k+1,r)-C(n-k,r)].
+    First part ≤ (k-1)·C(n-1,r-1) by IH. Second part = C(n-k,r-1) by Pascal ≤ C(n-1,r-1). -/
 theorem upper_bound_tight_construction2 (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n ≥ r * k) :
     construction2 n r k ≤ (k - 1) * Nat.choose (n - 1) (r - 1) := by
-  -- Telescoping sum + monotonicity of binomial coefficients
-  -- C(n,r) - C(n-k+1,r) = Σ_{i=1}^{k-1} [C(n-i+1,r) - C(n-i,r)]
-  --                      = Σ_{i=1}^{k-1} C(n-i,r-1)  [Pascal's rule]
-  --                      ≤ (k-1) · C(n-1,r-1)         [each term ≤ C(n-1,r-1)]
-  sorry
+  unfold construction2
+  revert hk hn
+  induction k with
+  | zero => intro hk; omega
+  | succ k ih =>
+    intro _ hn
+    cases k with
+    | zero =>
+      -- k+1 = 1: C(n,r) - C(n,r) = 0 ≤ 0
+      have h : n - (0 + 1) + 1 = n := by omega
+      rw [h]; simp
+    | succ k' =>
+      -- k+1 = k'+2; IH for k'+1
+      have hk'1 : k' + 1 ≥ 1 := by omega
+      have hn' : n ≥ r * (k' + 1) := by nlinarith
+      specialize ih hk'1 hn'
+      -- Simplify index expressions
+      have h1 : n - (k' + 1) + 1 = n - k' := by omega
+      have h2 : n - (k' + 1 + 1) + 1 = n - k' - 1 := by omega
+      rw [h1] at ih; rw [h2]
+      -- ih: C(n,r) - C(n-k',r) ≤ k' * C(n-1,r-1)
+      -- Goal: C(n,r) - C(n-k'-1,r) ≤ (k'+1) * C(n-1,r-1)
+      -- Decompose: a - c = (a - b) + (b - c) for c ≤ b ≤ a
+      have hle1 : Nat.choose (n - k' - 1) r ≤ Nat.choose (n - k') r :=
+        Nat.choose_le_choose r (by omega)
+      have hle2 : Nat.choose (n - k') r ≤ Nat.choose n r :=
+        Nat.choose_le_choose r (by omega)
+      have h_split : Nat.choose n r - Nat.choose (n - k' - 1) r =
+          (Nat.choose n r - Nat.choose (n - k') r) +
+          (Nat.choose (n - k') r - Nat.choose (n - k' - 1) r) := by omega
+      rw [h_split]
+      -- Pascal: C(m+1,r) - C(m,r) = C(m,r-1)  where m = n-k'-1
+      have h_pascal : Nat.choose (n - k') r - Nat.choose (n - k' - 1) r =
+          Nat.choose (n - k' - 1) (r - 1) := by
+        have hCSS := Nat.choose_succ_succ (n - k' - 1) (r - 1)
+        rw [show (n - k' - 1) + 1 = n - k' from by omega,
+            show (r - 1) + 1 = r from by omega] at hCSS
+        omega
+      rw [h_pascal]
+      -- Monotonicity: C(n-k'-1, r-1) ≤ C(n-1, r-1)
+      have h_mono : Nat.choose (n - k' - 1) (r - 1) ≤ Nat.choose (n - 1) (r - 1) :=
+        Nat.choose_le_choose (r - 1) (by omega)
+      -- Combine: IH + monotonicity
+      calc (Nat.choose n r - Nat.choose (n - k') r) + Nat.choose (n - k' - 1) (r - 1)
+          ≤ k' * Nat.choose (n - 1) (r - 1) + Nat.choose (n - 1) (r - 1) := by linarith
+        _ = (k' + 1) * Nat.choose (n - 1) (r - 1) := by ring
 
 /-
 ## Lower Bounds

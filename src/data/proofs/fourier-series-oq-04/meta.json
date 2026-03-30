@@ -2,11 +2,11 @@
   "id": "fourier-series-oq-04",
   "title": "Higher-Dimensional Fourier Series Convergence on Tori",
   "slug": "fourier-series-oq-04",
-  "description": "Formalizes n-dimensional Fourier analysis infrastructure on tori T^n. Proves dot product linearity (6 theorems), defines Fourier coefficients via integration, and proves linearity. Convergence results documented: L^2 convergence holds in all dimensions, Fefferman divergence for rectangular sums in n >= 2, Carleson conjecture open for n >= 2.",
+  "description": "Extends Fourier series convergence to n-dimensional tori T^n. Key differences: multiple summation methods (rectangular, spherical, Bochner-Riesz), Fefferman's divergence for rectangular sums in n≥2, and the open Carleson conjecture for n=2.",
   "meta": {
     "author": "Fefferman (1971), Stein & Weiss (1971)",
     "date": "1971",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/FourierSeriesOQ04.lean",
     "tags": [
       "harmonic-analysis",
@@ -14,11 +14,11 @@
       "convergence",
       "multi-dimensional"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-03-30",
-    "axiomCount": 0,
-    "lineCount": 176
+    "axiomCount": 5,
+    "lineCount": 133
   },
   "sections": []
 }

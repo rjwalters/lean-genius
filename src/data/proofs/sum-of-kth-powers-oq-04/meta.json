@@ -18,8 +18,8 @@
     ],
     "badge": "formalized",
     "sorries": 1,
-    "axiomCount": 1,
-    "assumptions": "1 axiom: monic polynomial ratio limit (p(n)/n^d -> 1 as n -> inf). Bernoulli polynomial leading coefficient now PROVED from Mathlib coeff_bernoulli. 1 sorry: main asymptotic theorem powerSumRatio_tendsto (requires filter limit composition with Faulhaber).",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: Bernoulli polynomial leading coefficient (monic of degree k+1), monic polynomial ratio limit (p(n)/n^d -> 1). 1 sorry: main asymptotic theorem powerSumRatio_tendsto (requires combining Faulhaber with filter limits).",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.bernoulli",
@@ -34,15 +34,14 @@
     ],
     "originalContributions": [
       "powerSumRatio definition: normalized ratio for asymptotic analysis",
-      "bernoulli_poly_leading: PROVED from coeff_bernoulli that B_{k+1} is monic of degree k+1",
       "Gauss sum over Q (proved by induction)",
       "powerSumRatio_k0: exact formula for k=0 case",
       "powerSumRatio_k1: exact formula for k=1 using Gauss sum",
       "powerSumRatio_tendsto statement: general asymptotic 1/(k+1)"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 123,
-    "theoremCount": 5,
+    "lineCount": 126,
+    "theoremCount": 4,
     "definitionCount": 1,
     "prerequisites": [
       "Power sums and Faulhaber's formula",
@@ -73,11 +72,11 @@
     },
     {
       "id": "axioms",
-      "title": "Bernoulli Polynomial Properties",
-      "startLine": 33,
-      "endLine": 62,
-      "summary": "PROVED: B_{k+1} is monic of degree k+1 (from coeff_bernoulli). 1 remaining axiom: monic polynomial ratios tend to 1.",
-      "mathContext": "$B_{k+1}$ monic of degree $k+1$ (proved); $p(n)/n^d \\to 1$ for monic $p$ of degree $d$ (axiom)"
+      "title": "Bernoulli Polynomial Axioms",
+      "startLine": 41,
+      "endLine": 50,
+      "summary": "Axiomatizes: B_{k+1} is monic of degree k+1, and monic polynomial ratios tend to 1.",
+      "mathContext": "$B_{k+1}$ monic of degree $k+1$; $p(n)/n^d \\to 1$ for monic $p$ of degree $d$"
     },
     {
       "id": "main-theorem",
@@ -129,7 +128,10 @@
       "Mathlib.Order.Filter.AtTopBot",
       "Mathlib.Tactic"
     ],
-    "opens": ["Finset", "Filter"],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
     "namespace": "SumOfKthPowersAsymptotic",
     "lineCount": 101,
     "axiomCount": 2,

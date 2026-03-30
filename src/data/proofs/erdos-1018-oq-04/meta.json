@@ -20,8 +20,8 @@
     "badge": "axiom",
     "sorries": 3,
     "axiomCount": 4,
-    "lineCount": 305,
-    "assumptions": "4 axioms: van Kampen-Flores theorem, embeddability of K₃ and K₄ in R², density-exceeds-Turán threshold. 3 sorries including topological embeddability definition.",
+    "lineCount": 301,
+    "assumptions": "4 axioms: van Kampen-Flores theorem, embeddability of K₃ and K₄ in R², density-exceeds-Turán threshold. 3 sorries: isEmbeddable definition, completeHypergraph_edgeCount, turanNumber definition.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -137,37 +137,28 @@
   ],
   "references": [
     {
-      "authors": [
-        "A. V. Kostochka",
-        "L. Pyber"
-      ],
+      "authors": ["A. V. Kostochka", "L. Pyber"],
       "title": "Small topological complete subgraphs of 'dense' graphs",
       "year": "1988",
       "venue": "Combinatorica",
       "note": "Proves the graph case (r=2): n^(1+ε) edges → K₅ subdivision on O_ε(1) vertices"
     },
     {
-      "authors": [
-        "E. R. van Kampen"
-      ],
+      "authors": ["E. R. van Kampen"],
       "title": "Komplexe in euklidischen Räumen",
       "year": "1933",
       "venue": "Abh. Math. Sem. Univ. Hamburg",
       "note": "Proved non-embeddability of certain simplicial complexes, precursor to the van Kampen-Flores theorem"
     },
     {
-      "authors": [
-        "A. Flores"
-      ],
+      "authors": ["A. Flores"],
       "title": "Über n-dimensionale Komplexe die im R_{2n+1} absolut selbstverschlungen sind",
       "year": "1933",
       "venue": "Ergeb. Math. Kolloq.",
       "note": "Proved that the (r-1)-skeleton of the (2r)-simplex is not embeddable in R^(2(r-1))"
     },
     {
-      "authors": [
-        "J. Matoušek"
-      ],
+      "authors": ["J. Matoušek"],
       "title": "Using the Borsuk-Ulam Theorem",
       "year": "2003",
       "venue": "Springer Universitext",
@@ -175,14 +166,10 @@
     }
   ],
   "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Finset"
-    ],
+    "imports": ["Mathlib"],
+    "opens": ["Finset"],
     "namespace": "Erdos1018OQ04",
-    "lineCount": 305,
+    "lineCount": 301,
     "axiomCount": 4,
     "theoremCount": 11,
     "definitionCount": 12

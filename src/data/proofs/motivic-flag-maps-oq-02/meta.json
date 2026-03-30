@@ -21,16 +21,16 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "mul_geom_sum",
-        "description": "Geometric series formula: (x-1) * \u2211 x^i = x^n - 1",
+        "description": "Geometric series formula: (x-1) * ∑ x^i = x^n - 1",
         "module": "Mathlib.Algebra.Ring.GeomSum"
       },
       {
         "theorem": "Finset.sum_range_id",
-        "description": "Gauss sum formula: \u2211_{i<n} i = n(n-1)/2",
+        "description": "Gauss sum formula: ∑_{i<n} i = n(n-1)/2",
         "module": "Mathlib.Algebra.BigOperators.Ring"
       },
       {
@@ -44,24 +44,25 @@
       "Recursive Grassmannian motivic class via q-Pascal identity",
       "Explicit Grassmannian computations: Gr(1,2), Gr(1,3), Gr(2,3), Gr(2,4)",
       "q-factorial = complete flag class identity (proved)",
-      "Geometric series factorization: L^n - 1 = (L-1)\u00b7[n]_L (proved via mul_geom_sum)",
-      "GL_n decomposition: [GL_n] = (L-1)^n \u00b7 [n]_L! \u00b7 L^{T(n)} (proved)",
+      "Geometric series factorization: L^n - 1 = (L-1)·[n]_L (proved via mul_geom_sum)",
+      "GL_n decomposition: [GL_n] = (L-1)^n · [n]_L! · L^{T(n)} (proved)",
       "GL_n-flag variety structural relation (proved)",
       "Partial flag variety definition and motivic class factorization",
-      "Extension conjecture: maps to partial flags give parabolic \u00d7 affine classes",
-      "Gaussian binomial identity statement: [Gr(d,n)] \u00b7 [d]! \u00b7 [n-d]! = [n]!"
+      "Extension conjecture: maps to partial flags give parabolic × affine classes",
+      "Gaussian binomial identity proved: [Gr(d,n)] · [d]! · [n-d]! = [n]!",
+      "Grassmannian duality proved: [Gr(d,n)] = [Gr(n-d,n)]"
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 2,
-    "lineCount": 465,
-    "assumptions": "2 axiom(s): motivicClassPartialFlagMaps, partial_flag_extension (conjectured). 2 sorry(s): grassmannianClass_duality, gaussian_binomial_identity (algebraic identities needing induction).",
+    "lineCount": 635,
+    "assumptions": "2 axiom(s): motivicClassPartialFlagMaps (motivic class of maps to partial flags), partial_flag_extension (conjectured extension to parabolic subgroups). 0 sorries — all algebraic identities (duality, lines, Gaussian binomial) are proved.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "q-analogs",
       "title": "q-Analog Infrastructure",
-      "description": "q-numbers [n]_L = 1 + L + ... + L^{n-1} and q-factorials [n]_L! = \u220f [i]_L, connecting motivic algebra to combinatorics. Key result: [n]_L! = [Fl_n].",
+      "description": "q-numbers [n]_L = 1 + L + ... + L^{n-1} and q-factorials [n]_L! = ∏ [i]_L, connecting motivic algebra to combinatorics. Key result: [n]_L! = [Fl_n].",
       "startLine": 63,
       "endLine": 140,
       "summary": "q-Analog Infrastructure"
@@ -69,7 +70,7 @@
     {
       "id": "grassmannians",
       "title": "Grassmannian Motivic Classes",
-      "description": "Recursive definition of [Gr(d,n)] via the q-Pascal identity. Verified for Gr(1,2), Gr(1,3), Gr(2,3), Gr(2,4). The coefficient 2 on L\u00b2 in [Gr(2,4)] reflects two Schubert cells.",
+      "description": "Recursive definition of [Gr(d,n)] via the q-Pascal identity. Verified for Gr(1,2), Gr(1,3), Gr(2,3), Gr(2,4). The coefficient 2 on L² in [Gr(2,4)] reflects two Schubert cells.",
       "startLine": 142,
       "endLine": 231,
       "summary": "Grassmannian Motivic Classes"
@@ -77,7 +78,7 @@
     {
       "id": "partial-flags",
       "title": "Partial Flag Varieties",
-      "description": "Definition of partial flags Fl(d\u2081,...,d\u2096; n) as nested subspaces. Motivic class factorization via iterated Grassmannian fibrations.",
+      "description": "Definition of partial flags Fl(d₁,...,dₖ; n) as nested subspaces. Motivic class factorization via iterated Grassmannian fibrations.",
       "startLine": 233,
       "endLine": 274,
       "summary": "Partial Flag Varieties"
@@ -85,7 +86,7 @@
     {
       "id": "extension-conjecture",
       "title": "Extension Conjecture",
-      "description": "States the conjectured extension of Bryan et al. to partial flags: [\u03a9\u00b2_\u03b2(Fl(d\u2081,...,d\u2096; n+1))] = [Levi \u00d7 U \u00d7 A^{a'}]. The complete flag case recovers the original theorem.",
+      "description": "States the conjectured extension of Bryan et al. to partial flags: [Ω²_β(Fl(d₁,...,dₖ; n+1))] = [Levi × U × A^{a'}]. The complete flag case recovers the original theorem.",
       "startLine": 276,
       "endLine": 310,
       "summary": "Extension Conjecture"
@@ -93,31 +94,31 @@
     {
       "id": "gln-structure",
       "title": "GL_n Structure via q-Analogs",
-      "description": "Proved: [GL_n] = (L-1)^n \u00b7 [n]_L! \u00b7 L^{T(n)}, explaining why flag varieties appear in the GL_n formula. Uses mul_geom_sum from Mathlib.",
+      "description": "Proved: [GL_n] = (L-1)^n · [n]_L! · L^{T(n)}, explaining why flag varieties appear in the GL_n formula. Uses mul_geom_sum from Mathlib.",
       "startLine": 312,
       "endLine": 345,
       "summary": "GL_n Structure via q-Analogs"
     }
   ],
   "overview": {
-    "historicalContext": "Bryan et al. (arXiv:2601.07222) proved that motivic classes of based maps to complete flag varieties have a remarkably simple form: [GL_n \u00d7 A^a]. A natural question is whether this extends to partial flag varieties \u2014 varieties parameterizing incomplete chains of subspaces. Partial flags include Grassmannians (single subspace) and other important moduli spaces in algebraic geometry.",
-    "problemStatement": "**Open Question**: Does the motivic class formula [\u03a9\u00b2_\u03b2(Fl_{n+1})] = [GL_n \u00d7 A^a] extend to partial flag varieties?\n\nFor a partial flag Fl(d\u2081,...,d\u2096; n+1), the conjectured extension involves the parabolic subgroup P = Levi \u22ca U corresponding to the flag type:\n$$[\\Omega^2_\\beta(\\text{Fl}(d_1,\\ldots,d_k; n+1))] = [\\text{Levi} \\times U \\times \\mathbb{A}^{a'}]$$\n\nwhere Levi = GL_{n\u2081} \u00d7 ... \u00d7 GL_{n_{k+1}} for block sizes n\u1d62.",
+    "historicalContext": "Bryan et al. (arXiv:2601.07222) proved that motivic classes of based maps to complete flag varieties have a remarkably simple form: [GL_n × A^a]. A natural question is whether this extends to partial flag varieties — varieties parameterizing incomplete chains of subspaces. Partial flags include Grassmannians (single subspace) and other important moduli spaces in algebraic geometry.",
+    "problemStatement": "**Open Question**: Does the motivic class formula [Ω²_β(Fl_{n+1})] = [GL_n × A^a] extend to partial flag varieties?\n\nFor a partial flag Fl(d₁,...,dₖ; n+1), the conjectured extension involves the parabolic subgroup P = Levi ⋊ U corresponding to the flag type:\n$$[\\Omega^2_\\beta(\\text{Fl}(d_1,\\ldots,d_k; n+1))] = [\\text{Levi} \\times U \\times \\mathbb{A}^{a'}]$$\n\nwhere Levi = GL_{n₁} × ... × GL_{n_{k+1}} for block sizes nᵢ.",
     "text": "Extension of the Bryan et al. motivic class theorem from complete to partial flag varieties, with q-analog infrastructure and Grassmannian motivic classes.",
-    "proofStrategy": "We formalize the necessary infrastructure:\n1. **q-Analogs**: q-numbers [n]_L and q-factorials [n]_L! are defined and proved equal to flag variety classes\n2. **Grassmannians**: Motivic classes via recursive q-Pascal identity, with explicit small cases verified\n3. **Partial Flags**: Defined with motivic class factorization through Grassmannian fibers\n4. **Extension**: The conjecture is stated formally with parabolic subgroup structure\n5. **Structural Identity**: We prove [GL_n] = (L-1)^n \u00b7 [Fl_n] \u00b7 L^{T(n)}, revealing why flag varieties appear in GL_n",
+    "proofStrategy": "We formalize the necessary infrastructure:\n1. **q-Analogs**: q-numbers [n]_L and q-factorials [n]_L! are defined and proved equal to flag variety classes\n2. **Grassmannians**: Motivic classes via recursive q-Pascal identity, with explicit small cases verified\n3. **Partial Flags**: Defined with motivic class factorization through Grassmannian fibers\n4. **Extension**: The conjecture is stated formally with parabolic subgroup structure\n5. **Structural Identity**: We prove [GL_n] = (L-1)^n · [Fl_n] · L^{T(n)}, revealing why flag varieties appear in GL_n",
     "keyInsights": [
-      "The q-factorial [n]_L! equals the complete flag class [Fl_n] \u2014 this is the bridge between q-combinatorics and algebraic geometry",
+      "The q-factorial [n]_L! equals the complete flag class [Fl_n] — this is the bridge between q-combinatorics and algebraic geometry",
       "Grassmannian classes follow a recursive q-Pascal identity, paralleling classical binomial coefficients",
-      "The GL_n class decomposes as (L-1)^n times the flag class times a power of L \u2014 this explains the structural connection",
-      "For partial flags, the parabolic subgroup (Levi \u00d7 unipotent radical) replaces GL_n in the extension conjecture",
-      "The first non-trivial Grassmannian [Gr(2,4)] = 1+L+2L\u00b2+L\u00b3+L\u2074 shows Schubert cell multiplicity"
+      "The GL_n class decomposes as (L-1)^n times the flag class times a power of L — this explains the structural connection",
+      "For partial flags, the parabolic subgroup (Levi × unipotent radical) replaces GL_n in the extension conjecture",
+      "The first non-trivial Grassmannian [Gr(2,4)] = 1+L+2L²+L³+L⁴ shows Schubert cell multiplicity"
     ]
   },
   "conclusion": {
     "summary": "We formalize the extension question for Bryan et al.'s motivic class theorem to partial flag varieties. The key proved results are: q-factorials equal flag variety classes, GL_n decomposes via q-factorials, and Grassmannian classes satisfy the q-Pascal identity.",
-    "implications": "The extension conjecture for partial flags with parabolic subgroups is stated formally. Three sorries remain for algebraic identities that require careful induction.",
+    "implications": "The extension conjecture for partial flags with parabolic subgroups is stated formally. All algebraic identities (Grassmannian duality, lines, Gaussian binomial) are proved. Two axioms remain for the conjectured motivic class formulas.",
     "openQuestions": [
       "Prove Grassmannian duality [Gr(d,n)] = [Gr(n-d,n)] by induction on the q-Pascal identity",
-      "Prove the Gaussian binomial identity [Gr(d,n)] \u00b7 [d]! \u00b7 [n-d]! = [n]!",
+      "Prove the Gaussian binomial identity [Gr(d,n)] · [d]! · [n-d]! = [n]!",
       "Verify the extension conjecture for Grassmannians (d=1 case: maps to projective space)",
       "Connect to positroid varieties and the work of Galashin-Karp-Lam on amplituhedra"
     ]

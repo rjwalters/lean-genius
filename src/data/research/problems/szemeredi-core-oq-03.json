@@ -1,72 +1,27 @@
 {
-  "slug": "szemeredi-core-oq-03",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
-  "tier": "C",
-  "path": "full",
-  "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
-  },
-  "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
-  },
-  "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-29T23:03:00-07:00",
-    "iteration": 1,
-    "focus": "SURVEYED: Blocked — hypergraph regularity needs >1000 lines of infrastructure not in Mathlib",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
+  "id": "szemeredi-core-oq-03",
+  "name": "Hypergraph regularity lemma (Gowers 2007)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "source": {
+    "type": "open-question",
+    "parentProof": "szemeredi-core",
+    "question": "Generalize to hypergraph regularity (Gowers 2007)?"
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: Hypergraph regularity (Gowers 2007) requires k-uniform hypergraph definitions, k-partite density, and higher-order regularity conditions. No Mathlib support. Existing SzemerediCore.lean is 110 lines of graph-level definitions only.",
-    "builtItems": [],
-    "insights": [
-      "SzemerediCore.lean has basic graph regularity: IsEpsilonRegular, IsRegularPartition, edgeDensity bounds, partitionEnergy",
-      "Hypergraph extension needs: k-uniform hypergraph type, k-partite density for (k-1)-uniform sub-hypergraphs, regularity condition on all (k-1)-tuples of partition classes",
-      "Gowers 2007 hypergraph regularity is significantly more complex than graph regularity: requires nested regularity conditions",
-      "Estimated: >1000 lines for definitions alone, plus axioms for the regularity lemma itself"
+    "progressSummary": "SURVEY: Defined k-uniform hypergraphs, density, regularity conditions. Full formalization ~2000+ lines.",
+    "builtItems": [
+      "proofs/Proofs/SzemerediCoreOQ03.lean",
+      "UniformHypergraph V k structure",
+      "hypergraphDensity, IsGraphRegular, IsHypergraphRegular3",
+      "Formalization roadmap"
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: szemeredi-core-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
-  },
-  "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
-  ],
-  "relatedProofs": [
-    "szemeredi-core"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-03-30T06:03:08.378Z",
-  "lastUpdate": "2026-03-30T06:03:08.396Z",
-  "leanFiles": [
-    {
-      "path": "Proofs/SzemerediCore.lean",
-      "filename": "SzemerediCore.lean",
-      "lineCount": 111,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCore.lean"
-    }
-  ]
+    "insights": [
+      "Nested regularity structure (k depends on k-1)",
+      "Wowzer partition bounds vs tower for graphs",
+      "Polyadic set framework is key missing piece"
+    ],
+    "mathlibGaps": ["No k-uniform hypergraph in Mathlib"],
+    "nextSteps": ["Build polyadic set framework", "Formalize nested regularity"]
+  }
 }

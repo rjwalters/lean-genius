@@ -189,14 +189,8 @@ The greedy algorithm achieves close to this bound.
 -/
 
 /-- Upper bound: any Sidon set in {1,...,N} has size at most √N + O(1) -/
-axiom sidon_upper_bound :
-  ∃ C : ℝ, ∀ N : ℕ, ∀ A : Set ℕ, A ⊆ Interval N → IsSidonSet A →
-    (size A : ℝ) ≤ Real.sqrt N + C
 
 /-- The greedy construction achieves size Ω(√N) -/
-axiom greedy_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 1 →
-    (size (greedySidon N) : ℝ) ≥ c * Real.sqrt N
 
 /-
 ## Ruzsa's Construction
@@ -206,10 +200,6 @@ the greedy algorithm achieves. Specifically, size o((N log N)^{1/3}) is possible
 -/
 
 /-- Ruzsa's result: maximal Sidon sets of size close to N^{1/3} exist -/
-axiom ruzsa_small_maximal :
-  ∀ ε > 0, ∃ f : ℕ → Set ℕ, 
-    (∀ N, IsMaximalSidonSet (f N) N) ∧
-    (∀ N ≥ 1, (size (f N) : ℝ) ≤ (N : ℝ)^((1/3 : ℝ) + ε))
 
 /-
 ## The Main Conjecture
@@ -227,11 +217,6 @@ Does there exist a maximal Sidon set A ⊂ {1,...,N} of size O(N^{1/3})?
 More precisely: does there exist a constant C and a family of maximal
 Sidon sets {A_N}_{N≥1} with |A_N| ≤ C · N^{1/3} for all N?
 -/
-axiom erdos_156_conjecture :
-  (∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
-    ∃ A : Set ℕ, IsMaximalSidonSet A N ∧ (size A : ℝ) ≤ C * (N : ℝ)^(1/3 : ℝ)) ∨
-  (∀ C : ℝ, C > 0 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    ∀ A : Set ℕ, IsMaximalSidonSet A N → (size A : ℝ) > C * (N : ℝ)^(1/3 : ℝ))
 
 /-
 ## The Gap Between Bounds
@@ -248,10 +233,6 @@ noncomputable def minMaximalSidonSize (N : ℕ) : ℕ :=
     greedySidon_subset_interval N⟩ : ∃ A, IsSidonSet A ∧ A ⊆ Interval N)
 
 /-- The exponent of the minimum size growth -/
-axiom minMaximalSidon_exponent :
-  ∃ α : ℝ, 1/3 ≤ α ∧ α ≤ 1/2 ∧
-    Filter.Tendsto (fun N => Real.log (minMaximalSidonSize N) / Real.log N)
-      Filter.atTop (nhds α)
 
 /-
 ## Connection to Additive Combinatorics
@@ -309,10 +290,5 @@ noncomputable def infMaximalSidonSize (N : ℕ) : ℝ :=
   ⨅ (A : Set ℕ) (_ : IsMaximalSidonSet A N), (size A : ℝ)
 
 /-- The main open question in precise form -/
-axiom erdos_156_precise :
-  -- Is inf_N (infMaximalSidonSize N / N^{1/3}) bounded?
-  (∃ C : ℝ, ∀ N ≥ 1, infMaximalSidonSize N ≤ C * (N : ℝ)^(1/3 : ℝ)) ∨
-  (Filter.Tendsto (fun N => infMaximalSidonSize N / (N : ℝ)^(1/3 : ℝ))
-    Filter.atTop Filter.atTop)
 
 end Erdos156

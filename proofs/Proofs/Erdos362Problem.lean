@@ -21,6 +21,7 @@ Tags: additive-combinatorics, subset-sum, concentration, counting
 -/
 
 import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
@@ -193,6 +194,57 @@ the concentration bound follows from saddle point analysis.
     Uses zpow (integer exponentiation) since elements of A may be negative. -/
 noncomputable def subsetSumGF (A : Finset ℤ) (z : ℂ) : ℂ :=
   ∏ a ∈ A, (1 + z ^ a)
+
+/-- zpow distributes over finset sum (for nonzero base).
+    Proved via induction on the finset using zpow_add₀. -/
+theorem zpow_finset_sum (S : Finset ℤ) (z : ℂ) (hz : z ≠ 0) :
+    ∏ a ∈ S, z ^ a = z ^ (∑ a ∈ S, a) := by
+  induction S using Finset.cons_induction with
+  | empty => simp
+  | cons a S ha ih => rw [prod_cons, sum_cons, zpow_add₀ hz, ih]
+
+/-- GF at z=1 equals 2^|A| (counts all subsets). -/
+theorem gf_at_one (A : Finset ℤ) :
+    subsetSumGF A 1 = (2 : ℂ) ^ A.card := by
+  unfold subsetSumGF
+  have h : ∀ a ∈ A, (1 : ℂ) + (1 : ℂ) ^ a = 2 := by
+    intros a _; simp [one_zpow]; norm_num
+  rw [prod_congr rfl h, prod_const]
+
+/-- Product expansion of GF as sum over powerset.
+    Key identity: ∏ (1 + z^a) = ∑_{S ⊆ A} z^{setSum S}.
+    Uses Finset.prod_one_add to expand the product, then zpow_finset_sum
+    to convert ∏ z^a to z^(∑ a). -/
+theorem gf_expansion (A : Finset ℤ) (z : ℂ) (hz : z ≠ 0) :
+    subsetSumGF A z = ∑ S ∈ A.powerset, z ^ (setSum S) := by
+  simp only [subsetSumGF, setSum]
+  rw [Finset.prod_one_add]
+  exact Finset.sum_congr rfl fun S _ => zpow_finset_sum S z hz
+
+/-- GF factors over disjoint union. -/
+theorem gf_disjoint_union (B C : Finset ℤ) (z : ℂ) (h : Disjoint B C) :
+    subsetSumGF (B ∪ C) z = subsetSumGF B z * subsetSumGF C z := by
+  unfold subsetSumGF
+  exact prod_union h
+
+/-
+## Proof roadmap for fourier_extraction (below)
+
+Using gf_expansion (proved above), the proof reduces to:
+1. subsetSumGF A (e^{iθ}) = ∑ S ∈ A.powerset, e^{i·setSum(S)·θ} (by gf_expansion, since e^{iθ} ≠ 0)
+2. Multiply by e^{-itθ} and integrate: each term gives (1/2π)∫₀²π e^{i(setSum S-t)θ} dθ
+3. Orthogonality: this integral equals 1 if setSum S = t, 0 otherwise
+4. Sum collapses to #{S ⊆ A : setSum S = t} = countSubsetsWithSum A t
+
+Step 3 needs: for n : ℤ, (1/2π)∫₀²π e^{inθ} dθ = if n = 0 then 1 else 0
+- n = 0: ∫₀²π 1 dθ = 2π, so (1/2π)·2π = 1
+- n ≠ 0: FTC with antiderivative e^{inθ}/(in), giving (e^{2πin}-1)/(in) = 0
+
+Alternatively, use Mathlib's AddCircle/fourierCoeff infrastructure:
+- Express f(θ) = subsetSumGF A (e^{iθ}) as ∑_{S} fourier(setSum S)(θ) on AddCircle(2π)
+- Apply fourierCoeff linearity + orthonormal_fourier
+- Bridge set_integral on Icc to intervalIntegral / Haar measure
+-/
 
 /-- Fourier coefficient extraction: countSubsetsWithSum equals
     the integral of the generating function against an exponential. -/

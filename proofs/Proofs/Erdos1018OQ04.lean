@@ -298,8 +298,8 @@ axiom density_exceeds_turan (t r : ℕ) (hr : r ≥ 2) (ht : t > r) :
 
   Axiom count: 4 (vanKampen_Flores, triangle_planar, K4_planar,
   density_exceeds_turan).
-  Sorry count: 4 (isEmbeddable def, completeHypergraph_edgeCount,
-  max_edges, turanNumber def).
+  Sorry count: 3 (isEmbeddable def, completeHypergraph_edgeCount,
+  turanNumber def).
 -/
 
 end Erdos1018OQ04

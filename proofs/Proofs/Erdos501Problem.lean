@@ -27,6 +27,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Measure.OuterMeasure.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Set.Finite
+import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Tactic
 
 namespace Erdos501
@@ -89,7 +90,11 @@ theorem independent_pair_exists (A : SetFamily) (hA : BoundedOuterMeasureFamily 
     This is stated as a conditional: CH implies the negation of the
     infinite independence property for some family.
 -/
-axiom continuum_hypothesis : Prop  -- CH as an axiom
+
+/-- The Continuum Hypothesis: ℵ₁ = 𝔠 (the first uncountable cardinal
+    equals the cardinality of the continuum). This is independent of ZFC. -/
+def continuum_hypothesis : Prop :=
+  Cardinal.aleph 1 = Cardinal.continuum
 
 theorem hechler_under_CH (hCH : continuum_hypothesis) :
     ∃ A : SetFamily, BoundedOuterMeasureFamily A ∧ ¬HasInfiniteIndependent A := by
@@ -97,16 +102,31 @@ theorem hechler_under_CH (hCH : continuum_hypothesis) :
 
 /- ## Part V: The Closed Set Result -/
 
-/-- Gladysz (1962): For closed measure families, size-2 independent sets exist. -/
-theorem gladysz_pairs (A : SetFamily) (hA : ClosedMeasureFamily A) :
-    IsIndependentOfSize A 2 := by
-  sorry
-
 /-- Newelski-Pawlikowski-Seredyński (1987): For closed sets,
     infinite independent sets DO exist (no extra axioms needed). -/
 theorem nps_closed_infinite (A : SetFamily) (hA : ClosedMeasureFamily A) :
     HasInfiniteIndependent A := by
   sorry
+
+/-- Gladysz (1962): For closed measure families, size-2 independent sets exist.
+
+    This follows from the stronger NPS result: an infinite independent set
+    contains a size-2 subset. -/
+theorem gladysz_pairs (A : SetFamily) (hA : ClosedMeasureFamily A) :
+    IsIndependentOfSize A 2 := by
+  -- Apply NPS (1987) to get an infinite independent set
+  obtain ⟨X, hXinf, hXind⟩ := nps_closed_infinite A hA
+  -- Extract two distinct elements from the infinite set
+  obtain ⟨x, hx⟩ := hXinf.nonempty
+  obtain ⟨y, hy⟩ := (hXinf.diff (Set.finite_singleton x)).nonempty
+  have hyX : y ∈ X := Set.diff_subset hy
+  have hxy : x ≠ y := by rintro rfl; simp [Set.mem_diff] at hy
+  -- The pair {x, y} ⊆ X is independent by heredity
+  refine ⟨{x, y}, Finset.card_pair hxy, independent_subset ?_ hXind⟩
+  intro z hz
+  simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+    Set.mem_singleton_iff] at hz
+  rcases hz with rfl | rfl <;> assumption
 
 /- ## Part VI: The Main Open Question -/
 

@@ -185,18 +185,15 @@ theorem disc_determined_trivial (F : Set ℂ) (hF : isClosedDisc F) :
   ⟨fun _ => 0, mu_eq_zero F⟩
 
 /-- For line segments, corrected μ is determined by transfinite diameter.
-    NOTE: As stated, this is vacuously true — f can depend on F.
-    The intended statement (same f for all line segments) would be
-    `∃ f, ∀ F, isLineSegment F → muPosDeg F = f (transfiniteDiameter F)`. -/
-theorem lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
+    Proof: vacuously true — for any fixed F, take f = const (muPosDeg F).
+    (The statement says ∃ f, not ∀ F with same ρ.) -/
+theorem lineSegment_determined (F : Set ℂ) (_hF : isLineSegment F) :
   ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F) :=
   ⟨fun _ => muPosDeg F, rfl⟩
 
 /-- For discs, corrected μ is determined by transfinite diameter.
-    NOTE: As stated, this is vacuously true — f can depend on F.
-    The intended statement (same f for all discs) would be
-    `∃ f, ∀ F, isClosedDisc F → muPosDeg F = f (transfiniteDiameter F)`. -/
-theorem disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
+    Proof: vacuously true — same argument as lineSegment_determined. -/
+theorem disc_determined (F : Set ℂ) (_hF : isClosedDisc F) :
   ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F) :=
   ⟨fun _ => muPosDeg F, rfl⟩
 
@@ -273,75 +270,6 @@ private lemma nthDiameter_mono_of_bddAbove (F G : Set ℂ) (h : F ⊆ G) (n : �
   rintro _ ⟨⟨pts, hpts⟩, rfl⟩
   exact ⟨⟨pts, fun i => h (hpts i)⟩, rfl⟩
 
-/-- When G is bounded, the nthDiameter value set is BddAbove.
-    Each factor |pts i - pts j| ≤ D (diameter bound), the product ≤ D^(n²),
-    and rpow with exponent 2/(n*(n-1)) ∈ [0,1] gives a value ≤ max(1, D^(n²)). -/
-private lemma bddAbove_nthDiam_of_bounded (G : Set ℂ) (hG : Bornology.IsBounded G) (n : ℕ) :
-    BddAbove {(∏ i : Fin n, ∏ j in Finset.Iio i,
-      Complex.abs (pts i - pts j)) ^ (2 / (n * (n - 1) : ℝ)) |
-      pts : Fin n → ℂ // ∀ i, pts i ∈ G} := by
-  -- G bounded → pairwise distances ≤ D
-  obtain ⟨D, hD⟩ := Metric.isBounded_iff.mp hG
-  set M := max 1 D with hM_def
-  have hM_ge : (1 : ℝ) ≤ M := le_max_left 1 D
-  -- Bound: every rpow value ≤ M ^ (n * n)
-  refine ⟨M ^ (n * n), ?_⟩
-  rintro _ ⟨⟨pts, hpts⟩, rfl⟩
-  set P := ∏ i : Fin n, ∏ j in Finset.Iio i, Complex.abs (pts i - pts j) with hP_def
-  set α := (2 : ℝ) / (↑n * (↑n - 1)) with hα_def
-  have hP_nn : 0 ≤ P :=
-    Finset.prod_nonneg fun i _ => Finset.prod_nonneg fun j _ => Complex.abs.nonneg _
-  -- Step 1: Product P ≤ M ^ (n * n) (each of ≤ n² factors is ≤ M)
-  have hP_bound : P ≤ M ^ (n * n) := by
-    calc P ≤ ∏ i : Fin n, ∏ j in Finset.Iio i, M := by
-            apply Finset.prod_le_prod
-              (fun i _ => Finset.prod_nonneg fun j _ => Complex.abs.nonneg _)
-              (fun i _ => Finset.prod_le_prod (fun j _ => Complex.abs.nonneg _)
-                fun j _ => by
-                  calc Complex.abs (pts i - pts j)
-                      = dist (pts i) (pts j) := (Complex.dist_eq _ _).symm
-                    _ ≤ D := hD (hpts i) (hpts j)
-                    _ ≤ M := le_max_right 1 D)
-      _ ≤ ∏ _i : Fin n, M ^ n := by
-            apply Finset.prod_le_prod
-              (fun i _ => Finset.prod_nonneg fun _ _ => le_trans zero_le_one hM_ge)
-              (fun i _ => by
-                calc ∏ _j in Finset.Iio i, M
-                    = M ^ (Finset.Iio i).card := Finset.prod_const M
-                  _ ≤ M ^ n := pow_le_pow_right hM_ge (by
-                      calc (Finset.Iio i).card
-                          ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
-                        _ = n := Finset.card_fin n)))
-      _ = M ^ (n * n) := by
-            rw [Finset.prod_const, Finset.card_fin, ← pow_mul]
-  -- Step 2: P^α ≤ P + 1 ≤ M^(n*n) + 1 ≤ M^(n*n) (since M^(n*n) ≥ 1)
-  -- More directly: P^α ≤ max(1, P) ≤ M^(n*n) (since M^(n*n) ≥ 1)
-  by_cases hP1 : P ≤ 1
-  · -- P ≤ 1 → P^α ≤ 1 ≤ M^(n*n)
-    calc P ^ α ≤ 1 := by
-            apply Real.rpow_le_one hP_nn hP1
-            exact div_nonneg (by norm_num : (0:ℝ) ≤ 2)
-              (by rcases n with _ | m
-                  · simp
-                  · exact mul_nonneg (Nat.cast_nonneg _)
-                      (by push_cast; linarith [Nat.cast_nonneg m]))
-      _ ≤ M ^ (n * n) := one_le_pow_of_one_le' hM_ge (n * n)
-  · -- P > 1 → P^α ≤ P ≤ M^(n*n) (since α ≤ 1)
-    push_neg at hP1
-    have hα_le_one : α ≤ 1 := by
-      simp only [hα_def]
-      rcases n with _ | _ | k
-      · simp  -- n=0: 2/(0*(0-1)) = 0 ≤ 1
-      · simp  -- n=1: 2/(1*(1-1)) = 0 ≤ 1
-      · -- n = k+2 ≥ 2: 2/(n*(n-1)) ≤ 1 ⟺ 2 ≤ n*(n-1)
-        rw [div_le_one (by positivity : (0:ℝ) < ↑(k+2) * (↑(k+2) - 1))]
-        push_cast
-        nlinarith
-    calc P ^ α ≤ P ^ (1 : ℝ) := by
-            exact Real.rpow_le_rpow_of_exponent_le hP1.le hα_le_one
-      _ = P := Real.rpow_one P
-      _ ≤ M ^ (n * n) := hP_bound
-
 /-- Transfinite diameter is monotone for bounded supersets.
     For bounded G, every value set is BddAbove, so monotonicity holds. -/
 theorem transfiniteDiameter_mono_of_bounded (F G : Set ℂ) (h : F ⊆ G)
@@ -352,8 +280,95 @@ theorem transfiniteDiameter_mono_of_bounded (F G : Set ℂ) (h : F ⊆ G)
     ⟨0, by rintro _ ⟨n, rfl⟩; exact nthDiameter_nonneg F n⟩
     (Set.range_nonempty _)
   rintro _ ⟨n, rfl⟩
-  exact ⟨nthDiameter F n, Set.mem_range.mpr ⟨n, rfl⟩,
-    nthDiameter_mono_of_bddAbove F G h n (bddAbove_nthDiam_of_bounded G hG n)⟩
+  refine ⟨nthDiameter F n, Set.mem_range.mpr ⟨n, rfl⟩, ?_⟩
+  -- nthDiameter F n ≤ nthDiameter G n: F-candidates ⊆ G-candidates, G BddAbove.
+  unfold nthDiameter
+  -- Handle empty F-values case
+  by_cases hneF : Set.Nonempty
+    {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
+      (∏ i : Fin n, ∏ j in Finset.Iio i,
+        Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
+  · -- F-values nonempty: use csSup_le_csSup
+    apply csSup_le_csSup
+    · -- G-values BddAbove: bound by D^(n*n) where D = max 1 (Metric.diam G)
+      set D := max 1 (Metric.diam G) with hD_def
+      have hD1 : (1 : ℝ) ≤ D := le_max_left 1 _
+      refine ⟨D ^ (n * n), fun x ⟨⟨pts, hpts⟩, rfl⟩ => ?_⟩
+      -- Each factor ≤ D
+      have hfac : ∀ (i j : Fin n), Complex.abs (pts i - pts j) ≤ D := by
+        intro i j
+        calc Complex.abs (pts i - pts j)
+            = ‖pts i - pts j‖ := (Complex.norm_eq_abs _).symm
+          _ = dist (pts i) (pts j) := (dist_eq_norm _ _).symm
+          _ ≤ Metric.diam G := Metric.dist_le_diam_of_mem hG (hpts i) (hpts j)
+          _ ≤ D := le_max_right 1 _
+      -- Product ≤ D^(n*n)
+      have hP_nn : 0 ≤ ∏ i : Fin n, ∏ j in Finset.Iio i,
+          Complex.abs (pts i - pts j) :=
+        Finset.prod_nonneg fun i _ =>
+          Finset.prod_nonneg fun j _ => Complex.abs.nonneg _
+      have hP_le : ∏ i : Fin n, ∏ j in Finset.Iio i,
+          Complex.abs (pts i - pts j) ≤ D ^ (n * n) :=
+        calc ∏ i : Fin n, ∏ j in Finset.Iio i, Complex.abs (pts i - pts j)
+            ≤ ∏ _i : Fin n, D ^ n := Finset.prod_le_prod
+                (fun i _ => Finset.prod_nonneg fun j _ => Complex.abs.nonneg _)
+                (fun i _ =>
+                  calc ∏ j in Finset.Iio i, Complex.abs (pts i - pts j)
+                      ≤ ∏ _j in Finset.Iio i, D := Finset.prod_le_prod
+                          (fun j _ => Complex.abs.nonneg _) (fun j _ => hfac i j)
+                    _ = D ^ (Finset.Iio i).card := Finset.prod_const D
+                    _ ≤ D ^ n := pow_le_pow_right hD1
+                        (le_trans (Finset.card_le_card (Finset.subset_univ _))
+                          (by simp)))
+          _ = D ^ (n * n) := by
+              rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]
+      -- Exponent is non-negative
+      set e := (2 : ℝ) / (↑n * (↑n - 1)) with he_def
+      have he_nn : 0 ≤ e := div_nonneg (by norm_num) (by
+        rcases Nat.eq_zero_or_pos n with rfl | hn
+        · simp
+        · exact mul_nonneg (Nat.cast_nonneg _)
+            (sub_nonneg.mpr (Nat.one_le_cast.mpr hn)))
+      -- rpow ≤ D^(n*n): split on whether product ≤ 1
+      by_cases hP1 : ∏ i : Fin n, ∏ j in Finset.Iio i,
+          Complex.abs (pts i - pts j) ≤ 1
+      · -- P ≤ 1: rpow ≤ 1 ≤ D^(n*n)
+        calc (∏ i : Fin n, ∏ j in Finset.Iio i,
+              Complex.abs (pts i - pts j)) ^ e
+            ≤ 1 := Real.rpow_le_one hP_nn hP1 he_nn
+          _ ≤ D ^ (n * n) := le_trans (le_of_eq (one_pow (n * n)).symm)
+              (pow_le_pow_left zero_le_one hD1 _)
+      · -- P > 1: rpow ≤ P ≤ D^(n*n) (since e ≤ 1)
+        push_neg at hP1
+        have he_le1 : e ≤ 1 := by
+          simp only [he_def]
+          rcases le_or_lt n 1 with hn | hn
+          · -- n ≤ 1: e = 0
+            rcases Nat.eq_zero_or_pos n with rfl | hn'
+            · simp
+            · have : n = 1 := Nat.le_antisymm hn hn'; subst this; simp
+          · -- n ≥ 2: 2/(n*(n-1)) ≤ 1
+            have hd_pos : (0 : ℝ) < ↑n * (↑n - 1) := by
+              have : (n : ℝ) ≥ 2 := by exact_mod_cast hn; nlinarith
+            rw [div_le_one hd_pos]
+            nlinarith [show (n : ℝ) ≥ 2 from by exact_mod_cast hn]
+        calc (∏ i : Fin n, ∏ j in Finset.Iio i,
+              Complex.abs (pts i - pts j)) ^ e
+            ≤ (∏ i : Fin n, ∏ j in Finset.Iio i,
+              Complex.abs (pts i - pts j)) ^ (1 : ℝ) :=
+              Real.rpow_le_rpow_of_exponent_le hP1.le he_le1
+          _ = ∏ i : Fin n, ∏ j in Finset.Iio i,
+              Complex.abs (pts i - pts j) := Real.rpow_one _
+          _ ≤ D ^ (n * n) := hP_le
+    · -- F-values nonempty
+      exact hneF
+    · -- F-values ⊆ G-values: F ⊆ G so every F-candidate is a G-candidate
+      rintro x ⟨pts, rfl⟩
+      exact ⟨⟨pts.1, fun i => h (pts.2 i)⟩, rfl⟩
+  · -- F-values empty: sSup ∅ = 0 ≤ nthDiameter G n
+    rw [Set.not_nonempty_iff_eq_empty] at hneF
+    simp [hneF, csSup_empty]
+    exact nthDiameter_nonneg G n
 
 /-- Each nthDiameter value is non-negative (sSup of non-negative reals). -/
 private theorem nthDiameter_nonneg (F : Set ℂ) (n : ℕ) : 0 ≤ nthDiameter F n := by
@@ -388,45 +403,56 @@ theorem transfiniteDiameter_nonneg (F : Set ℂ) :
 private lemma nthDiameter_eq_zero_of_finite (F : Set ℂ) (hF : F.Finite) (n : ℕ)
     (hn : n ≥ 2) (hn_gt : hF.toFinset.card < n) :
     nthDiameter F n = 0 := by
-  apply le_antisymm
-  · -- nthDiameter F n ≤ 0
-    unfold nthDiameter
-    -- Case split: is the value set nonempty?
-    by_cases hne : Set.Nonempty
-      {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
-        (∏ i : Fin n, ∏ j in Finset.Iio i,
-          Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
-    · -- Nonempty: show every element is ≤ 0 (and hence = 0 since ≥ 0)
-      apply csSup_le hne
-      rintro _ ⟨⟨pts, hpts⟩, rfl⟩
-      -- By pigeonhole: n > |F|, so pts has a collision
-      have hcard : Fintype.card ↥hF.toFinset < Fintype.card (Fin n) := by
-        rw [Fintype.card_fin]
-        rwa [Fintype.card_coe]
-      let g : Fin n → ↥hF.toFinset := fun i =>
-        ⟨pts i, hF.mem_toFinset.mpr (hpts i)⟩
-      obtain ⟨a, b, hab, hgab⟩ := Fintype.exists_ne_map_eq_of_card_lt g hcard
-      have hptseq : pts a = pts b := congr_arg Subtype.val hgab
-      -- Get a < b or b < a
-      rcases lt_or_gt_of_ne (Fin.ne_iff_vne.mp hab) with h_lt | h_lt
-      · -- Case a < b: factor |pts b - pts a| = 0 in the product
-        have hprod_zero : (∏ i : Fin n, ∏ j in Finset.Iio i,
-            Complex.abs (pts i - pts j)) = 0 := by
-          apply Finset.prod_eq_zero (Finset.mem_univ b)
-          apply Finset.prod_eq_zero (Finset.mem_Iio.mpr h_lt)
-          simp [hptseq.symm, sub_self, map_zero]
-        simp [hprod_zero, Real.zero_rpow (by positivity : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0)]
-      · -- Case b < a: factor |pts a - pts b| = 0 in the product
-        have hprod_zero : (∏ i : Fin n, ∏ j in Finset.Iio i,
-            Complex.abs (pts i - pts j)) = 0 := by
-          apply Finset.prod_eq_zero (Finset.mem_univ a)
-          apply Finset.prod_eq_zero (Finset.mem_Iio.mpr h_lt)
-          simp [hptseq, sub_self, map_zero]
-        simp [hprod_zero, Real.zero_rpow (by positivity : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0)]
-    · -- Empty value set: sSup ∅ = 0
-      rw [Set.not_nonempty_iff_eq_empty] at hne
-      simp [hne, csSup_empty]
-  · exact nthDiameter_nonneg F n
+  apply le_antisymm _ (nthDiameter_nonneg F n)
+  unfold nthDiameter
+  by_cases hne : Set.Nonempty
+    {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
+      (∏ i : Fin n, ∏ j in Finset.Iio i,
+        Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
+  · -- Nonempty: every candidate value equals 0
+    apply csSup_le hne
+    rintro _ ⟨⟨pts, hpts⟩, rfl⟩
+    -- Pigeonhole: pts is not injective (n > |F|)
+    have h_not_inj : ¬Function.Injective pts := by
+      intro hinj
+      have h1 : (Finset.univ.image pts).card = n := by
+        rw [Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]
+      have h2 : (Finset.univ.image pts).card ≤ hF.toFinset.card :=
+        Finset.card_le_card fun x hx => by
+          obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+          exact hF.mem_toFinset.mpr (hpts i)
+      omega
+    -- Extract distinct indices with same value
+    obtain ⟨i₁, i₂, heq, hne_idx⟩ : ∃ a b, pts a = pts b ∧ a ≠ b := by
+      by_contra hall
+      exact h_not_inj (by
+        intro a b hab
+        by_contra hne'
+        exact hall ⟨a, b, hab, hne'⟩)
+    -- Arrange a < b
+    obtain ⟨a, b, hlt, hab_eq⟩ : ∃ a b : Fin n, a < b ∧ pts a = pts b := by
+      rcases lt_or_gt_of_ne hne_idx with h | h
+      · exact ⟨i₁, i₂, h, heq⟩
+      · exact ⟨i₂, i₁, h, heq.symm⟩
+    -- Factor |pts b - pts a| = 0 (since pts a = pts b)
+    have hfactor : Complex.abs (pts b - pts a) = 0 := by
+      rw [hab_eq, sub_self, map_zero]
+    -- Inner product for i = b is 0 (contains zero factor at j = a)
+    have hinner : ∏ j in Finset.Iio b, Complex.abs (pts b - pts j) = 0 :=
+      Finset.prod_eq_zero (Finset.mem_Iio.mpr hlt) hfactor
+    -- Outer product is 0 (factor at i = b is 0)
+    have hprod : ∏ i : Fin n, ∏ j in Finset.Iio i, Complex.abs (pts i - pts j) = 0 :=
+      Finset.prod_eq_zero (Finset.mem_univ b) hinner
+    -- 0^(positive exponent) = 0 ≤ 0
+    rw [hprod]
+    have h_exp_ne : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0 := by
+      apply div_ne_zero (by norm_num : (2 : ℝ) ≠ 0)
+      exact mul_ne_zero (Nat.cast_ne_zero.mpr (by omega))
+        (ne_of_gt (by linarith [show (n : ℝ) ≥ 2 from by exact_mod_cast hn]))
+    rw [Real.zero_rpow h_exp_ne]
+  · -- Empty: sSup ∅ = 0
+    rw [Set.not_nonempty_iff_eq_empty] at hne
+    simp [hne, csSup_empty]
 
 /-- Finite sets have transfinite diameter 0.
     Proof: for large n, nthDiameter = 0 (pigeonhole), so iInf ≤ 0.
@@ -492,34 +518,33 @@ theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
   -- Contradiction: muPosDeg F < muPosDeg F + ε ≤ muPosDeg F
   exact absurd hle (not_le.mpr (ENNReal.lt_add_right hmu_ne_top hε.ne'))
 
-/-
-## Positive μ When Transfinite Diameter < 1
--/
-
-/-- When transfinite diameter < 1, corrected μ is positive.
-    Every sublevel set contains a ball of radius ≥ c (from small_diameter_disc),
-    so sublevelMeasure ≥ volume(ball 0 c) > 0 uniformly across all degree ≥ 1 polynomials. -/
+/-- When transfinite diameter < 1, corrected μ(F) > 0.
+    Proof sketch: by `small_diameter_disc`, every sublevel set of a degree ≥ 1
+    polynomial contains a ball of radius ≥ c > 0, so sublevelMeasure p ≥
+    volume(ball z₀ c) > 0 uniformly. Hence the infimum muPosDeg F ≥
+    volume(ball 0 c) > 0. -/
 theorem muPosDeg_pos_of_small_diameter (F : Set ℂ) (hF : IsClosed F) (hFi : F.Infinite)
     (hρ : transfiniteDiameter F < 1) : muPosDeg F > 0 := by
-  -- Get uniform constant c > 0 from small_diameter_disc axiom
-  obtain ⟨c, hc_pos, hdisc⟩ := small_diameter_disc F hF hFi hρ
-  -- volume(ball 0 c) > 0 in ℂ (Haar measure on finite-dimensional space)
-  have hball_pos : (0 : ℝ≥0∞) < MeasureTheory.volume (Metric.ball (0 : ℂ) c) :=
-    MeasureTheory.measure_ball_pos _ _ hc_pos
-  -- Suffices to show volume(ball 0 c) ≤ muPosDeg F
+  -- From small_diameter_disc: ∃ c > 0 s.t. every degree > 0 poly's sublevel set
+  -- contains a ball of radius ≥ c > 0. Use volume(ball _ c) as uniform lower bound.
+  obtain ⟨c, hc_pos, hball⟩ := small_diameter_disc F hF hFi hρ
+  -- Step 1: volume(ball 0 c) > 0
+  have hK_pos : (0 : ℝ≥0∞) < MeasureTheory.volume (Metric.ball (0 : ℂ) c) :=
+    Metric.measure_ball_pos _ _ hc_pos
+  -- Step 2: muPosDeg F ≥ volume(ball 0 c)
+  -- Every degree ≥ 1 poly's sublevel set contains ball z₀ c for some z₀.
+  -- By Complex.volume_ball, volume(ball z₀ c) = volume(ball 0 c) (center-independent).
   suffices h : MeasureTheory.volume (Metric.ball (0 : ℂ) c) ≤ muPosDeg F from
-    lt_of_lt_of_le hball_pos h
-  -- Bound each sublevel measure from below uniformly
+    lt_of_lt_of_le hK_pos h
   unfold muPosDeg
-  exact le_iInf₂ fun p hp => by
-    obtain ⟨z₀, r, hr_pos, hr_ge_c, hball_sub⟩ := hdisc p (by omega : p.degree > 0)
-    calc MeasureTheory.volume (Metric.ball (0 : ℂ) c)
-        = MeasureTheory.volume (Metric.ball z₀ c) :=
-          (MeasureTheory.Measure.addHaar_ball_center z₀ c).symm
-      _ ≤ MeasureTheory.volume (Metric.ball z₀ r) :=
-          MeasureTheory.measure_mono (Metric.ball_subset_ball hr_ge_c)
-      _ ≤ sublevelMeasure p :=
-          MeasureTheory.measure_mono hball_sub
+  apply le_iInf₂
+  intro p hp
+  obtain ⟨z₀, r, _, hr_ge, hball_sub⟩ := hball p (show p.degree > 0 by omega)
+  calc MeasureTheory.volume (Metric.ball (0 : ℂ) c)
+      = MeasureTheory.volume (Metric.ball z₀ c) := by
+        simp only [Complex.volume_ball]
+    _ ≤ sublevelMeasure p :=
+        MeasureTheory.measure_mono ((Metric.ball_subset_ball hr_ge).trans hball_sub)
 
 /-
 ## The Open Question
