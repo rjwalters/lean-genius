@@ -1,0 +1,95 @@
+{
+  "id": "divisibility-truncation-general-oq-02",
+  "title": "Divisibility Tests for Divisors Sharing Factors with 10",
+  "slug": "divisibility-truncation-general-oq-02",
+  "description": "Extends the osculator divisibility test to divisors that share factors with 10 (d = 2, 4, 5, 8, 25, etc.). If d | 10^k, then d | n iff d | (n mod 10^k) — check the last k digits. For composite divisors like 6, 12, 15: factor into coprime parts, test the power-of-2/5 part by last digits, and the coprime part by osculator.",
+  "meta": {
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityTruncationGeneralOQ02.lean",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "digit-tests"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All theorems fully proved using Mathlib's GCD and divisibility API.",
+    "dateAdded": "2026-03-30",
+    "lineCount": 110,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+        "description": "Coprime divisibility factoring",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The parent proof handles divisors coprime to 10 via the osculator method (multiplying by a 'magic constant' and truncating). OQ-02 asks: what about divisors like 2, 4, 5, 8, 25 that share factors with 10? The answer combines two tests: last-k-digits for the power-of-10 factor, osculator for the coprime factor.",
+    "problemStatement": "Can the divisibility truncation method be extended to divisors sharing factors with 10?",
+    "text": "Yes. Any divisor d can be written as d = a·b where a | 10^k and gcd(b, 10) = 1. Then d | n iff a | (last k digits of n) AND b | n (using osculator). This combines the last-k-digits test with the osculator method.",
+    "proofStrategy": "1. Prove last_k_digits_test: d | 10^k implies d | n ↔ d | (n mod 10^k).\n2. Prove coprime factoring: gcd(a,b) = 1 implies ab | n ↔ a | n ∧ b | n.\n3. Combine: test power-of-10 factor by last digits, coprime factor by osculator.\n4. Demonstrate with concrete examples (div by 2, 4, 5, 6, 8, 12, 15, 25, 125).",
+    "keyInsights": [
+      "If d | 10^k, then d | n iff d divides the last k digits of n",
+      "Coprime factoring: ab | n iff a | n ∧ b | n (when gcd(a,b) = 1)",
+      "Combined test splits any divisor into a power-of-10 part (last digits) and coprime part (osculator)",
+      "Examples: div by 4 checks last 2 digits; div by 12 = 4·3 checks last 2 digits AND digit sum"
+    ],
+    "prerequisites": [
+      "Elementary number theory (divisibility, modular arithmetic)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "last-k-digits",
+      "title": "Last-k-Digits Test",
+      "startLine": 25,
+      "endLine": 40,
+      "summary": "If d | 10^k, then d | n ↔ d | (n mod 10^k)."
+    },
+    {
+      "id": "concrete-tests",
+      "title": "Concrete Divisibility Tests",
+      "startLine": 42,
+      "endLine": 72,
+      "summary": "Divisibility by 2, 4, 5, 8, 25, 125 via last digits."
+    },
+    {
+      "id": "combined-test",
+      "title": "Combined Test for Composite Divisors",
+      "startLine": 74,
+      "endLine": 110,
+      "summary": "Factor d = a·b (coprime), test each part separately."
+    }
+  ],
+  "conclusion": {
+    "text": "The divisibility truncation method extends to all divisors by combining last-k-digits testing with the osculator method. This fully answers OQ-02.",
+    "opens": [],
+    "implications": "Any divisibility test can now be decomposed into a digit-check and an osculator step."
+  },
+  "crossReferences": [
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "extends",
+      "description": "Extends the osculator method to divisors sharing factors with 10"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "last_k_digits_test",
+      "type": "core",
+      "statement": "d | 10^k → (d | n ↔ d | n % 10^k)",
+      "description": "The last-k-digits divisibility test.",
+      "significance": "Foundation for testing divisors that share factors with 10"
+    },
+    {
+      "name": "combined_test",
+      "type": "core",
+      "statement": "gcd(a,b) = 1 ∧ a | 10^k → (a·b | n ↔ a | n%10^k ∧ b | n)",
+      "description": "Combined last-digits + osculator test.",
+      "significance": "Handles all divisors, not just those coprime to 10"
+    }
+  ]
+}
