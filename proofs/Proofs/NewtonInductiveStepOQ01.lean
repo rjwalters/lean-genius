@@ -236,8 +236,16 @@ noncomputable def esymmMean (xs : List ℝ) (k : ℕ) : ℝ :=
 theorem newton_inequality_means (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
     (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ xs.length) :
     esymmMean xs k ^ 2 ≥ esymmMean xs (k - 1) * esymmMean xs (k + 1) := by
-  -- This follows from newton_inequality_binomial by dividing both sides
-  -- by C(n,k)² (which is positive for valid k).
+  -- NOTE: This does NOT follow from newton_inequality_binomial.
+  -- The binomial form (C(n,k)²·e_k² ≥ C(n,k-1)·C(n,k+1)·e_{k-1}·e_{k+1})
+  -- is WEAKER than the means form (ē_k² ≥ ē_{k-1}·ē_{k+1}), because
+  -- C(n,k)² ≥ C(n,k-1)·C(n,k+1) (log-concavity) puts the larger factor on
+  -- the wrong side. Both require independent proofs by induction on list length.
+  --
+  -- Proof sketch (not yet formalized):
+  -- Induction on n = xs.length.  Base: n=2 is (x-y)²≥0.
+  -- Step: use recurrence e_k(x::xs) = e_k(xs) + x·e_{k-1}(xs),
+  -- expand and apply Cauchy-Schwarz + IH to bound cross terms.
   sorry
 
 /-! ## Consequences of Newton's inequality -/

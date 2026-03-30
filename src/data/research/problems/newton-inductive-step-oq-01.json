@@ -29,13 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 2 sorries, 0 axioms. newton_inequality_binomial is weaker form, newton_inequality_means is the true Newton inequality. Binomial form CANNOT imply means form. Both need Cauchy-Schwarz inductive proofs.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Fixed misleading comment in newton_inequality_means (binomial form does NOT imply means form). Meta.json lineCount corrected (253→344). Still 2 sorries: newton_inequality_binomial (dead code) and newton_inequality_means (the real target). Both need induction with Cauchy-Schwarz.",
+    "builtItems": [
+      "Fixed misleading comment at line 241 about derivation of means from binomial form",
+      "Updated meta.json lineCount 253→344"
+    ],
     "insights": [
       "newton_inequality_binomial (C(n,k)²·e_k²≥C(k-1)C(k+1)·e_{k-1}e_{k+1}) is WEAKER than newton_inequality_means (ē_k²≥ē_{k-1}ē_{k+1}) — cannot derive one from the other",
       "The means form is the true Newton inequality. The binomial form is not used anywhere in the file.",
       "Both proofs require induction on list length with Cauchy-Schwarz on the recurrence esymm(x::xs) k = esymm xs k + x·esymm xs (k-1)",
-      "maclaurin_first_step and amgm_from_newton both depend on newton_inequality_means (not binomial form)"
+      "maclaurin_first_step and amgm_from_newton both depend on newton_inequality_means (not binomial form)",
+      "Confirmed: newton_inequality_binomial is dead code — nothing depends on it",
+      "The real target is newton_inequality_means which requires C(n,k-1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k-1}·e_{k+1}",
+      "Proof needs induction on list length with Cauchy-Schwarz on the two-term recurrence — approximately 50-100 lines of Lean"
     ],
     "mathlibGaps": [],
     "nextSteps": [
