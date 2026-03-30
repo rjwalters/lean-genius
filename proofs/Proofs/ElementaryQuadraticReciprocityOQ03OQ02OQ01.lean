@@ -151,4 +151,117 @@ theorem kronecker_mul_left_proved (a b n : ℤ) (hab : a * b ≠ 0) :
 -- Verify the type matches the axiom
 #check @kronecker_mul_left_proved
 
+/-
+## Part 4: Multiplicativity in the Second Argument
+
+kronecker a (m * n) = kronecker a m * kronecker a n
+
+This is the second multiplicativity axiom from OQ03OQ02.
+The proof is more involved than the first argument because the
+sign factor (kroneckerNeg1) depends on the sign of the modulus.
+-/
+
+/-- kroneckerNeg1 is an involution: kroneckerNeg1(a)² = 1. -/
+private lemma kroneckerNeg1_sq (a : ℤ) : kroneckerNeg1 a * kroneckerNeg1 a = 1 := by
+  simp only [kroneckerNeg1]; split_ifs <;> ring
+
+/-- For n ≠ 0 and n ≠ ±1, kronecker a (-n) = kroneckerNeg1 a * kronecker a n.
+    Negating the modulus introduces (or removes) the sign character. -/
+private lemma kronecker_neg_modulus (a n : ℤ) (hn : n ≠ 0) (hn1 : n ≠ 1) (hn_neg1 : n ≠ -1) :
+    kronecker a (-n) = kroneckerNeg1 a * kronecker a n := by
+  have h_neg_ne : -n ≠ 0 := by omega
+  have h_neg_ne1 : -n ≠ 1 := by omega
+  have h_neg_ne_neg1 : -n ≠ -1 := by omega
+  simp only [kronecker, h_neg_ne, hn, hn1, hn_neg1, h_neg_ne1, h_neg_ne_neg1,
+    ite_false, Int.natAbs_neg]
+  by_cases h : n < 0
+  · -- n < 0: -n > 0, so sign(-n) = 1, sign(n) = kroneckerNeg1 a
+    have : ¬(-n < 0) := by omega
+    simp [h, this, kroneckerNeg1_sq]
+  · -- n ≥ 0: n > 0 (since n ≠ 0), -n < 0, sign(-n) = kroneckerNeg1 a, sign(n) = 1
+    push_neg at h
+    have hpos : 0 < n := lt_of_le_of_ne h (Ne.symm hn)
+    have : -n < 0 := by omega
+    simp [this, hpos, show ¬(n < 0) from by omega]; ring
+
+/-- **Multiplicativity of the Kronecker symbol in the second argument.**
+
+    This proves the axiom `kronecker_mul_right` from OQ03OQ02.
+    kronecker a (m * n) = kronecker a m * kronecker a n for m * n ≠ 0.
+
+    Proof: case analysis on m,n being ±1 or general, then
+    sign factor multiplicativity + jacobiSym.mul_right. -/
+theorem kronecker_mul_right_proved (a m n : ℤ) (hmn : m * n ≠ 0) :
+    kronecker a (m * n) = kronecker a m * kronecker a n := by
+  have hm : m ≠ 0 := left_ne_zero_of_mul hmn
+  have hn : n ≠ 0 := right_ne_zero_of_mul hmn
+  -- Case: m = 1
+  by_cases hm1 : m = 1
+  · subst hm1; simp only [one_mul, kronecker, show (1 : ℤ) ≠ 0 by omega,
+      show (1 : ℤ) ≠ -1 by omega, ite_true, ite_false]; ring
+  -- Case: n = 1
+  by_cases hn1 : n = 1
+  · subst hn1; simp only [mul_one, kronecker, show (1 : ℤ) ≠ 0 by omega,
+      show (1 : ℤ) ≠ -1 by omega, ite_true, ite_false]; ring
+  -- Case: m = -1
+  by_cases hm_neg1 : m = -1
+  · subst hm_neg1
+    simp only [neg_one_mul, kronecker, show (-1 : ℤ) ≠ 0 by omega,
+      show (-1 : ℤ) = -1 from rfl, ite_true, ite_false]
+    -- RHS: kroneckerNeg1 a * kronecker a n
+    -- LHS: kronecker a (-n)
+    by_cases hn_neg1 : n = -1
+    · subst hn_neg1; simp [kroneckerNeg1_sq]
+    · rw [show kronecker a (-n) = kroneckerNeg1 a * kronecker a n from
+        kronecker_neg_modulus a n hn hn1 hn_neg1]
+  -- Case: n = -1
+  by_cases hn_neg1 : n = -1
+  · subst hn_neg1
+    simp only [mul_neg_one, kronecker, show (-1 : ℤ) ≠ 0 by omega,
+      show (-1 : ℤ) = -1 from rfl, ite_true, ite_false]
+    rw [show kronecker a (-m) = kroneckerNeg1 a * kronecker a m from
+      kronecker_neg_modulus a m hm hm1 hm_neg1]
+    ring
+  -- General case: m, n ≠ 0, ±1
+  -- kronecker a (m*n) = sign(m*n) * jacobiSym a |m*n|
+  -- = sign(m) * sign(n) * jacobiSym a |m| * jacobiSym a |n|   (sign mult + Jacobi mult)
+  -- = kronecker a m * kronecker a n
+  have hmn0 : m * n ≠ 0 := hmn
+  have hmn1 : m * n ≠ 1 := by
+    intro h; rcases Int.eq_one_or_neg_one_of_mul_eq_one' h with ⟨rfl, _⟩ | ⟨rfl, rfl⟩
+    · exact hm1 rfl
+    · exact hm_neg1 rfl
+  have hmn_neg1 : m * n ≠ -1 := by
+    intro h; rcases Int.eq_one_or_neg_one_of_mul_eq_neg_one' h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · exact hm1 rfl
+    · exact hm_neg1 rfl
+  simp only [kronecker, hmn0, hmn1, hmn_neg1, hm, hn, hm1, hm_neg1, hn1, hn_neg1,
+    ite_false, Int.natAbs_mul]
+  -- Now: sign(m*n) * jacobiSym a (|m|*|n|) = (sign(m) * jacobiSym a |m|) * (sign(n) * jacobiSym a |n|)
+  rw [jacobiSym.mul_right]
+  -- Handle sign factors
+  by_cases hm_neg : m < 0 <;> by_cases hn_neg : n < 0
+  · -- m < 0, n < 0: m*n > 0, sign = 1, product of signs = kroneckerNeg1² = 1
+    have : ¬(m * n < 0) := by nlinarith [Int.mul_pos_of_neg_of_neg hm_neg hn_neg]
+    simp [hm_neg, hn_neg, this, kroneckerNeg1_sq]
+  · -- m < 0, n > 0: m*n < 0
+    push_neg at hn_neg
+    have hn_pos : 0 < n := lt_of_le_of_ne hn_neg (Ne.symm hn)
+    have : m * n < 0 := Int.mul_neg_of_neg_of_pos hm_neg hn_pos
+    simp [hm_neg, hn_neg, this, show ¬(n < 0) from not_lt.mpr hn_neg.le]; ring
+  · -- m > 0, n < 0: m*n < 0
+    push_neg at hm_neg
+    have hm_pos : 0 < m := lt_of_le_of_ne hm_neg (Ne.symm hm)
+    have : m * n < 0 := Int.mul_neg_of_pos_of_neg hm_pos hn_neg
+    simp [hm_neg, hn_neg, this, show ¬(m < 0) from not_lt.mpr hm_neg.le]; ring
+  · -- m > 0, n > 0: m*n > 0
+    push_neg at hm_neg hn_neg
+    have hm_pos : 0 < m := lt_of_le_of_ne hm_neg (Ne.symm hm)
+    have hn_pos : 0 < n := lt_of_le_of_ne hn_neg (Ne.symm hn)
+    have : ¬(m * n < 0) := not_lt.mpr (le_of_lt (Int.mul_pos hm_pos hn_pos))
+    simp [hm_neg, hn_neg, this, show ¬(m < 0) from not_lt.mpr hm_neg.le,
+      show ¬(n < 0) from not_lt.mpr hn_neg.le]; ring
+
+#check @kronecker_mul_right_proved
+
 end KroneckerSymbol
