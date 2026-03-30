@@ -97,9 +97,25 @@ noncomputable def f (N : ℕ) : ℕ :=
   Nat.find (existence_proof N)
 where
   existence_proof (N : ℕ) : ∃ k, ¬Representable N k := by
-    -- The sum of all unit fractions 1/1 + ... + 1/N is finite
-    -- so there must be integers beyond it
-    sorry
+    -- Any unit fraction sum from {1,...,N} is ≤ N, so N+1 is not representable
+    use N + 1
+    intro ⟨S, hS_sub, _, hS_sum⟩
+    -- Each term 1/d ≤ 1 (d ≥ 1), so sum ≤ |S| ≤ N
+    have h1 : sumUnitFracs (S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩) ≤ ↑S.card := by
+      unfold sumUnitFracs
+      calc ∑ n ∈ S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩, (1 : ℚ) / n
+          ≤ ∑ _n ∈ S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩, (1 : ℚ) := by
+            apply Finset.sum_le_sum; intro n hn
+            obtain ⟨a, _, rfl⟩ := Finset.mem_map.mp hn
+            exact div_le_one_of_le (by push_cast; omega) (by positivity)
+        _ = ↑(S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩).card := by
+            simp [Finset.sum_const, smul_eq_mul, mul_one]
+        _ = ↑S.card := by rw [Finset.card_map]
+    have h2 : (S.card : ℚ) ≤ ↑N := by
+      exact_mod_cast (Finset.card_le_card hS_sub).trans (Finset.card_range N).le
+    -- Sum = N+1 but sum ≤ S.card ≤ N, contradiction
+    have : (↑(N + 1) : ℚ) ≤ ↑N := hS_sum ▸ h1 |>.trans h2
+    exact absurd this (by push_cast; omega)
 
 /-
 ## Part III: Basic Properties
