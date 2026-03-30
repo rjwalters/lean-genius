@@ -46,8 +46,8 @@ Survey + proof infrastructure. Rédei proved modulo 2 infrastructure lemmas.
 - [x] List-based directed path definition
 - [x] Tournament insertion lemma (key step for Rédei)
 - [x] Rédei's theorem (proved modulo 2 infrastructure lemmas)
-- [ ] tournament_full_path_list (sorry — iterated insertion)
-- [ ] list_path_to_hamiltonian (sorry — list-to-equiv conversion)
+- [x] tournament_full_path_list (proved — iterated insertion)
+- [x] list_path_to_hamiltonian (proved — list-to-equiv via Equiv.ofBijective)
 - [ ] Ghouila-Houri proof
 - [ ] Moon-Moser proof
 - [ ] Directed threshold proof
@@ -247,9 +247,31 @@ lemma tournament_full_path_list (D : Digraph V) (hT : D.IsTournament)
 lemma list_path_to_hamiltonian (D : Digraph V) (l : List V)
     (hlen : l.length = Fintype.card V) (hp : IsDirectedPathList D l) :
     D.HasHamiltonianPath := by
-  -- A nodup list of length (Fintype.card V) bijects with Fin (card V),
-  -- giving the required equivalence. The arc condition transfers directly.
-  sorry
+  obtain ⟨hnd, harcs⟩ := hp
+  set n := Fintype.card V with hn_def
+  -- l.get reindexed to Fin n gives a function g : Fin n → V
+  let g : Fin n → V := fun i => l.get ⟨i.val, hlen ▸ i.isLt⟩
+  -- g is injective (l is nodup)
+  have hg_inj : Function.Injective g := by
+    intro ⟨i, hi⟩ ⟨j, hj⟩ heq
+    simp only [g, Fin.mk.injEq] at heq ⊢
+    exact hnd.getElem_inj (hlen ▸ hi) (hlen ▸ hj) heq
+  -- g is surjective (nodup list of length card V covers all vertices)
+  have hg_surj : Function.Surjective g := by
+    intro v
+    have hv_mem : v ∈ l := by
+      have : l.toFinset = Finset.univ := by
+        apply Finset.eq_univ_of_card
+        rw [l.toFinset_card_of_nodup hnd, hlen, Finset.card_univ]
+      rw [← List.mem_toFinset]; rw [this]; exact Finset.mem_univ v
+    obtain ⟨i, hi, rfl⟩ := List.getElem_of_mem hv_mem
+    exact ⟨⟨i, hlen ▸ hi⟩, rfl⟩
+  -- Build equivalence, transfer arc condition
+  let e : Fin n ≃ V := Equiv.ofBijective g ⟨hg_inj, hg_surj⟩
+  refine ⟨e.symm, fun i hi => ?_⟩
+  show D.arc (e.symm.symm i) (e.symm.symm ⟨i.val + 1, hi⟩)
+  simp only [Equiv.symm_symm, Equiv.ofBijective_apply, e, g]
+  exact harcs i.val (hlen ▸ hi)
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: GHOUILA-HOURI'S THEOREM
