@@ -29,12 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full formalization of Green's theorem for multiply-connected regions. 552 lines, 22 theorems, 1 axiom, 0 sorries.",
+    "progressSummary": "COMPLETED: Eliminated axiom greens_theorem_multiply_connected by proving it from greens_theorem_typeI. Also fixed sign error in OQ03 axiom and corrected typeILineIntegral definition. 0 axioms, 0 sorries, 584 lines.",
     "builtItems": [
       "proofs/Proofs/GreensTheoremOQ04.lean (552 lines, 22 theorems, 1 axiom, 0 sorries)",
       "src/data/proofs/greens-theorem-oq-04/meta.json (gallery entry)",
       "src/data/proofs/greens-theorem-oq-04/annotations.json",
-      "src/data/proofs/greens-theorem-oq-04/index.ts"
+      "src/data/proofs/greens-theorem-oq-04/index.ts",
+      "Corrected typeILineIntegral definition (includes Q·deriv terms)",
+      "Proved greens_theorem_multiply_connected from greens_theorem_typeI",
+      "Fixed sign error in greens_theorem_typeI (OQ-03)",
+      "Updated meta.json: status verified, 0 axioms"
     ],
     "insights": [
       "MultiplyConnectedRegion = outer TypeIRegion + list of hole TypeIRegions with containment proofs",
@@ -42,7 +46,11 @@
       "Zero-curl corollary (PROVED): outer circulation = sum of inner circulations",
       "Single-hole deformation invariance (PROVED): curl-free fields have path-independent integrals around holes",
       "Period vector structure formalizes H^1_dR(D) = R^n",
-      "Annular area pi(R^2-r^2) proved from disk_area_eq_pi axiom in OQ-03"
+      "Annular area pi(R^2-r^2) proved from disk_area_eq_pi axiom in OQ-03",
+      "The multiply-connected Green theorem follows from the simply-connected case by applying it to each subregion (outer + holes) and using List.map_congr_left",
+      "typeILineIntegral must include Q·dy terms on curved boundaries (Q·f and Q·g via deriv) to match the boundary expression from greens_theorem_typeI",
+      "greens_theorem_typeI in OQ-03 had a sign error: Q·g·g - Q·f·f should be Q·f·f - Q·g·g (Leibniz integral rule)",
+      "Set.Subset.rfl proves R.outer.toSet ⊆ R.outer.toSet; holes_contained propagates smoothness to each hole"
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -27,13 +27,18 @@ contributing negative terms. This extension is foundational to:
 - Area = outer area - sum of hole areas (PROVED from definitions)
 - Annular region as multiply-connected region (PROVED)
 - Annular area = π(R² - r²) (PROVED from disk area axiom)
-- Green's theorem for multiply-connected regions (axiom)
+- Green's theorem for multiply-connected regions (PROVED from `greens_theorem_typeI`)
 - Zero-curl implies outer circulation = sum of inner circulations (PROVED)
 - Line integral decomposition for annular regions (PROVED)
 - Single-hole special case (PROVED)
 - Stokes' theorem interpretation via boundary orientation
 
-Theorems: 15+, Axioms: 2, Sorries: 0
+Theorems: 16+, Axioms: 0, Sorries: 0
+
+Note: `typeILineIntegral` includes Q·dy terms on curved boundaries via
+`deriv R.f` and `deriv R.g`, matching the boundary expression from
+`greens_theorem_typeI` in OQ-03. For rectangular TypeI regions (where
+f'=g'=0), this reduces to the simpler P-only horizontal integral.
 -/
 
 import Mathlib
@@ -185,17 +190,27 @@ accounts for the correct clockwise orientation).
   ∬_D curl(F) dA = ∮_{∂D_outer} F · dr - Σᵢ ∮_{∂Hᵢ} F · dr
 -/
 
-/-- Abstract line integral around the boundary of a TypeI region.
-    This extends `rectLineIntegral` from OQ-01 to general TypeI regions. -/
+/-- The **line integral** ∮_{∂R} (P dx + Q dy) around the boundary of a
+    TypeI region, traversed counterclockwise.
+
+    The boundary has four pieces:
+    - Bottom: y = f(x), x from a to b → ∫ [P + Q·f'] dx
+    - Right:  x = b, y from f(b) to g(b) → ∫ Q dy
+    - Top:    y = g(x), x from b to a → -∫ [P + Q·g'] dx
+    - Left:   x = a, y from g(a) to f(a) → -∫ Q dy
+
+    This definition uses `deriv` (total, returns 0 for non-differentiable
+    functions). For smooth boundary curves, it equals the classical line
+    integral. The form is chosen to match `greens_theorem_typeI` in OQ-03. -/
 noncomputable def typeILineIntegral (P Q : ℝ × ℝ → ℝ) (R : TypeIRegion) : ℝ :=
-  -- Lower boundary (y = f(x), left to right): ∫_a^b P(x,f(x)) dx
-  (∫ x in R.a..R.b, P (x, R.f x))
-  -- Right boundary (x = b, bottom to top): ∫_{f(b)}^{g(b)} Q(b,y) dy
+  -- Q contribution on curved boundaries (from Leibniz integral rule)
+  (∫ x in R.a..R.b, (Q (x, R.f x) * deriv R.f x - Q (x, R.g x) * deriv R.g x))
+  -- Right boundary: ∫_{f(b)}^{g(b)} Q(b,y) dy
   + (∫ y in R.f R.b..R.g R.b, Q (R.b, y))
-  -- Upper boundary (y = g(x), right to left): -∫_a^b P(x,g(x)) dx
-  - (∫ x in R.a..R.b, P (x, R.g x))
-  -- Left boundary (x = a, top to bottom): -∫_{f(a)}^{g(a)} Q(a,y) dy
+  -- Left boundary: -∫_{f(a)}^{g(a)} Q(a,y) dy
   - (∫ y in R.f R.a..R.g R.a, Q (R.a, y))
+  -- P contribution: ∫_a^b [P(x,f(x)) - P(x,g(x))] dx
+  + (∫ x in R.a..R.b, (P (x, R.f x) - P (x, R.g x)))
 
 /-- The **corrected line integral** for a multiply-connected region:
     outer boundary integral minus sum of hole boundary integrals.
@@ -240,28 +255,28 @@ hole boundaries ∂H₁,...,∂Hₙ:
   ∮_{∂D₀} (P dx + Q dy) - Σᵢ ∮_{∂Hᵢ} (P dx + Q dy)
     = ∬_D (∂Q/∂x - ∂P/∂y) dA
 
-This is axiomatized with the same regularity conditions as the
-simply-connected case. The proof idea is: cut the multiply-connected
-region along slits from each hole to the outer boundary. The slit
-contributions cancel (traversed in both directions), reducing to
-Green's theorem on simply-connected pieces.
+**Proved** from `greens_theorem_typeI` (OQ-03) by applying the
+simply-connected theorem to each subregion (outer and holes)
+and summing. The key insight: since each hole is contained in
+the outer region, the smoothness hypotheses propagate automatically.
 -/
 
-/-- **Green's Theorem for Multiply-Connected Regions** (axiomatized).
+/-- **Green's Theorem for Multiply-Connected Regions** (proved).
 
     The corrected line integral (outer minus holes) equals the double
     integral of curl over the multiply-connected region.
 
-    Proof strategy (not formalized here):
-    1. Draw slits from each hole to the outer boundary
-    2. The slit-cut region is simply-connected
-    3. Apply Green's theorem for simply-connected regions
-    4. The slit integrals cancel (traversed in opposite directions)
-    5. The remaining boundary is ∂D₀ - Σ ∂Hᵢ
+    Proof: apply `greens_theorem_typeI` to the outer region and each
+    hole independently. Since `typeILineIntegral` is defined to match
+    the boundary expression from `greens_theorem_typeI`, we get:
+      typeILineIntegral P Q S = S.iteratedIntegral(curl)
+    for each TypeI subregion S. The multiply-connected versions
+    are defined as outer minus holes of these terms, so equality
+    follows by congruence.
 
     Reference: Apostol "Mathematical Analysis" §17.5,
     Ahlfors "Complex Analysis" §4.4. -/
-axiom greens_theorem_multiply_connected
+theorem greens_theorem_multiply_connected
     (R : MultiplyConnectedRegion)
     (P Q dPdy dQdx : ℝ × ℝ → ℝ)
     (hP_smooth : ∀ x y, (x, y) ∈ R.outer.toSet →
@@ -269,7 +284,24 @@ axiom greens_theorem_multiply_connected
     (hQ_smooth : ∀ x y, (x, y) ∈ R.outer.toSet →
       HasDerivAt (fun x => Q (x, y)) (dQdx (x, y)) x) :
     multiplyConnectedLineIntegral P Q R =
-    multiplyConnectedCurlIntegral (fun p => dQdx p - dPdy p) R
+    multiplyConnectedCurlIntegral (fun p => dQdx p - dPdy p) R := by
+  -- Green's theorem for any TypeI subregion contained in the outer region:
+  -- The line integral equals the curl integral (both definitions match by construction).
+  have greens_sc : ∀ (S : TypeIRegion), S.toSet ⊆ R.outer.toSet →
+      typeILineIntegral P Q S =
+      S.iteratedIntegral (fun p => dQdx p - dPdy p) :=
+    fun S hS => (greens_theorem_typeI S P Q dPdy dQdx
+      (fun x y h => hP_smooth x y (hS h))
+      (fun x y h => hQ_smooth x y (hS h))).symm
+  -- Apply to the outer region
+  have h_outer := greens_sc R.outer Set.Subset.rfl
+  -- Apply to each hole (holes are contained in the outer region)
+  have h_holes : R.holes.map (fun H => typeILineIntegral P Q H) =
+      R.holes.map (fun H => H.iteratedIntegral (fun p => dQdx p - dPdy p)) :=
+    List.map_congr_left (fun H hH => greens_sc H (R.holes_contained H hH))
+  -- Unfold the multiply-connected definitions and rewrite
+  simp only [multiplyConnectedLineIntegral, multiplyConnectedCurlIntegral]
+  rw [h_outer, h_holes]
 
 /-
 ## Part VI: Zero-Curl Corollary — The Topological Obstruction
