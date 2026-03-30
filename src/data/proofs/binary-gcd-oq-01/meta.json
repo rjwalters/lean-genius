@@ -2,12 +2,12 @@
   "id": "binary-gcd-oq-01",
   "title": "Step Count: Binary GCD vs Euclidean Algorithm",
   "slug": "binary-gcd-oq-01",
-  "description": "Formal step count comparison between Binary GCD (Stein's algorithm) and the Euclidean algorithm. Defines step counting functions, proves symmetry, and computes concrete examples via native_decide. States Lamé's theorem and Binary GCD logarithmic bounds.",
+  "description": "Formal step count comparison between Binary GCD (Stein's algorithm) and the Euclidean algorithm. Proves Lamé's theorem (Euclidean steps ≤ O(log min(a,b))) and Binary GCD logarithmic bound (steps ≤ O(log a + log b)). All results fully verified, 0 sorries.",
   "meta": {
     "author": "Formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BinaryGcdOQ01.lean",
     "tags": [
       "algorithms",
@@ -17,7 +17,7 @@
       "research"
     ],
     "badge": "original",
-    "sorries": 2,
+    "sorries": 0,
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -35,14 +35,14 @@
     "originalContributions": [
       "euclidSteps: step counting function for the Euclidean algorithm",
       "binaryGcdSteps: step counting function for Binary GCD",
-      "Symmetry proofs for both step counts",
-      "Concrete step counts via native_decide: gcd(12,8), gcd(21,15), gcd(100,37), gcd(89,55)",
-      "Statement of Lamé's theorem (Euclidean steps ≤ O(log min(a,b)))",
-      "Statement of Binary GCD bound (steps ≤ O(log a + log b))"
+      "Bridge lemma: euclidSteps(a,b) = euclideanSteps(max a b, min a b)",
+      "Proof of Lamé's theorem: Euclidean steps ≤ 2·log₂(min(a,b)) + 2",
+      "Proof of Binary GCD bound: steps ≤ 2·(log₂(a) + log₂(b)) + 2",
+      "Concrete step counts via native_decide"
     ],
     "axiomCount": 0,
-    "lineCount": 198,
-    "assumptions": "None. 0 axiom declarations. 2 sorries in logarithmic bound proofs.",
+    "lineCount": 215,
+    "assumptions": "None. 0 axiom declarations, 0 sorries.",
     "prerequisites": [
       "Natural number GCD and divisibility",
       "Logarithmic functions on naturals",
@@ -104,18 +104,17 @@
       "title": "Logarithmic Bounds",
       "startLine": 157,
       "endLine": 185,
-      "summary": "States Lamé's theorem and the Binary GCD logarithmic bound (2 sorries).",
+      "summary": "Proves Lamé's theorem and the Binary GCD logarithmic bound (0 sorries).",
       "mathContext": "Lamé (1844): Euclidean steps ≤ O(log min(a,b)). Binary GCD: steps ≤ O(log a + log b)."
     }
   ],
   "conclusion": {
-    "summary": "Formal step count analysis for Binary GCD vs Euclidean algorithm. Concrete examples computed via native_decide show Binary GCD uses more steps but each is cheaper. 0 axioms, 2 sorries (logarithmic bound proofs).",
+    "summary": "Fully verified step count analysis for Binary GCD vs Euclidean algorithm. Both logarithmic bounds proved: Lamé's theorem via bridge to GCDAlgorithmOQ01, Binary GCD bound via strong induction with log-decrease potential. 0 axioms, 0 sorries.",
     "implications": "The step counting infrastructure enables formal comparison of GCD algorithm variants. The concrete examples verify the expected behavior: Fibonacci inputs maximize Euclidean steps, while Binary GCD has more uniform behavior across input types.",
     "openQuestions": [
-      "Prove Lamé's theorem via Fibonacci number lower bounds",
-      "Prove the Binary GCD logarithmic bound via bit-length analysis",
       "Formalize the total cost model (steps × bit-operation cost)",
-      "Compare with Lehmer's GCD algorithm"
+      "Compare with Lehmer's GCD algorithm",
+      "Prove tight bounds: Euclidean ≤ 5·digits(min(a,b)) via Fibonacci"
     ]
   },
   "crossReferences": [
@@ -145,15 +144,16 @@
     "imports": [
       "Mathlib.Data.Nat.GCD.Basic",
       "Mathlib.Data.Nat.Log",
-      "Mathlib.Tactic"
+      "Mathlib.Tactic",
+      "Proofs.GCDAlgorithmOQ01"
     ],
     "opens": [
       "Nat"
     ],
     "namespace": "BinaryGcdOQ01",
-    "lineCount": 198,
+    "lineCount": 215,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 6,
     "definitionCount": 2
   }
 }
