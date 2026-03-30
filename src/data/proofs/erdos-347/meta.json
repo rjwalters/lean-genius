@@ -42,7 +42,7 @@
     "originalContributions": [
       "Complete formal framework for subset sum density problems: subsetSums, HasDensity, HasRatioLimit, IsCofiniteSubseq",
       "Corrected subsetSums_insert with fresh-witness requirement (original subsetSums_add was incorrect for multiset-like reasoning)",
-      "Three proved structural properties: zero_mem_subsetSums, subsetSums_insert, subsetSums_mono"
+      "Seven proved structural properties: zero_mem_subsetSums, subsetSums_insert, subsetSums_mono, mem_subsetSums_of_mem, subsetSums_add_of_disjoint, cofiniteImage_subset, isCofiniteSubseq_id"
     ],
     "prerequisites": [
       "Subset sum theory: completeness ($P(A) \\supseteq \\{N_0, N_0+1,\\ldots\\}$), density of sumsets, and additive representations",
@@ -51,7 +51,7 @@
       "Cofinite sets and subsequences: strictly monotone reindexing with cofinite range, robustness under finite deletions",
       "Lean 4 and Mathlib: Finset.sum, StrictMono, Set.Finite, and noncomputable definitions"
     ],
-    "lineCount": 102,
+    "lineCount": 126,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -156,9 +156,9 @@
       "Set"
     ],
     "namespace": null,
-    "lineCount": 102,
+    "lineCount": 126,
     "axiomCount": 1,
-    "theoremCount": 3,
+    "theoremCount": 7,
     "definitionCount": 8
   },
   "mainTheorems": [
@@ -185,6 +185,30 @@
       "type": "supporting",
       "description": "Subset sums are monotone: A ⊆ B implies P(A) ⊆ P(B)",
       "leanType": "(A B : Set ℕ) → A ⊆ B → subsetSums A ⊆ subsetSums B"
+    },
+    {
+      "name": "mem_subsetSums_of_mem",
+      "type": "supporting",
+      "description": "Any element of A is in P(A) via the singleton subset sum",
+      "leanType": "(A : Set ℕ) → (a : ℕ) → a ∈ A → a ∈ subsetSums A"
+    },
+    {
+      "name": "subsetSums_add_of_disjoint",
+      "type": "core",
+      "description": "Disjoint witnesses combine: if S, T ⊆ A are disjoint finsets, then ∑S + ∑T ∈ P(A)",
+      "leanType": "(A : Set ℕ) → (S T : Finset ℕ) → ↑S ⊆ A → ↑T ⊆ A → Disjoint S T → S.sum id + T.sum id ∈ subsetSums A"
+    },
+    {
+      "name": "cofiniteImage_subset",
+      "type": "supporting",
+      "description": "The image of a cofinite subsequence is contained in the range of the original sequence",
+      "leanType": "(a ι : ℕ → ℕ) → cofiniteImage a ι ⊆ Set.range a"
+    },
+    {
+      "name": "isCofiniteSubseq_id",
+      "type": "supporting",
+      "description": "The identity reindexing is a cofinite subsequence (keeps all indices)",
+      "leanType": "(a : ℕ → ℕ) → IsCofiniteSubseq a id"
     }
   ],
   "crossReferences": [
