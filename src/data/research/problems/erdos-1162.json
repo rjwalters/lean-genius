@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM HUNT: Eliminated 4 unused axioms (10→6). Documented path to 2 axioms via concrete numSubgroups def.",
+    "progressSummary": "PROGRESS: Concretized numSubgroups as Nat.card definition (was axiom). Proved f1 via Unique. 6→4 axioms.",
     "builtItems": [
       "Erdos1162Problem.lean: 185-line formalization (5 axioms, 5 sorries)",
       "numSubgroups axiom for f(n)",
@@ -48,7 +48,9 @@
       "trivial_upper theorem: proved via injection into Finset, card_finset, card_perm",
       "Eliminated 4 unused axioms (numSubgroups_pos, trivial_upper, numSubgroupsElem2, elem2_subgroup_count_asymptotic)",
       "Added Part IX: Axiom Elimination Path documenting route to 2 axioms",
-      "Updated meta.json axiomCount 10→6"
+      "Updated meta.json axiomCount 10→6",
+      "Replaced axiom numSubgroups with noncomputable def using Nat.card (Subgroup (Equiv.Perm (Fin n)))",
+      "Proved f1 : numSubgroups 1 = 1 via Unique (Subgroup G) for Subsingleton G"
     ],
     "insights": [
       "Problem statement retrieved from erdosproblems.com",
@@ -69,7 +71,10 @@
       "numSubgroups_pos, trivial_upper, numSubgroupsElem2, elem2_subgroup_count_asymptotic were all UNUSED by any theorem",
       "Only axioms actually used: numSubgroups (in types) and roney_dougal_tracey (by pyber_theorem/erdos_1162)",
       "Eliminated 4 axioms: 10→6 by removing unused declarations",
-      "Path to 2 axioms: replace axiom numSubgroups with Nat.card (Subgroup (Equiv.Perm (Fin n)))"
+      "Path to 2 axioms: replace axiom numSubgroups with Nat.card (Subgroup (Equiv.Perm (Fin n)))",
+      "numSubgroups concretized: Nat.card (Subgroup (Equiv.Perm (Fin n))) — eliminates the root cause axiom",
+      "f1 provable because Equiv.Perm (Fin 1) is Subsingleton, making Subgroup unique",
+      "f2-f4 still axioms: proving f2 needs Lagrange theorem for |S_2|=2 prime; f3/f4 need enumeration"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -94,7 +99,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.157Z",
-  "lastUpdate": "2026-03-28T09:35:00.000Z",
+  "lastUpdate": "2026-03-30T10:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

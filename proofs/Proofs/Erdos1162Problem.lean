@@ -44,9 +44,9 @@ namespace Erdos1162
 def Sn (n : ℕ) := Equiv.Perm (Fin n)
 
 /-- f(n) = the number of subgroups of S_n.
-    Axiomatized since Lean's Subgroup type is not Fintype for Equiv.Perm (Fin n)
-    in general, and the enumeration is computationally intractable. -/
-axiom numSubgroups (n : ℕ) : ℕ
+    Defined as Nat.card (Subgroup (Equiv.Perm (Fin n))). -/
+noncomputable def numSubgroups (n : ℕ) : ℕ :=
+  Nat.card (Subgroup (Equiv.Perm (Fin n)))
 
 /-- f(n) ≥ 1 since the trivial subgroup always exists.
     Provable once numSubgroups is made concrete (see Part IX). -/
@@ -152,8 +152,17 @@ theorem constant_explanation :
 
 /- ## Part VII: Small Cases -/
 
-/-- f(1) = 1: S_1 has only the trivial subgroup. -/
-axiom f1 : numSubgroups 1 = 1
+/-- f(1) = 1: S_1 has only the trivial subgroup.
+    Proved: Equiv.Perm (Fin 1) is Subsingleton, so its unique subgroup is ⊤. -/
+theorem f1 : numSubgroups 1 = 1 := by
+  unfold numSubgroups
+  haveI : Unique (Subgroup (Equiv.Perm (Fin 1))) := {
+    default := ⊤
+    uniq := fun H => by
+      ext x; simp only [Subgroup.mem_top, iff_true]
+      have := Subsingleton.elim x 1; rw [this]; exact H.one_mem
+  }
+  exact Nat.card_unique
 
 /-- f(2) = 2: S_2 has {e} and S_2 itself. -/
 axiom f2 : numSubgroups 2 = 2
