@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-03-28T06:54:32-07:00",
     "iteration": 4,
-    "focus": "Integrated Aristotle results; fourier_extraction is next tractable axiom to prove",
+    "focus": "Proved fourier_extraction via Fourier orthogonality. 2 axioms remain (S-S 1965, Halász 1977) — both deep.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Integrated 4 proved Aristotle theorems (gf_expansion, gf_at_one, zpow_finset_sum, gf_disjoint_union) into main file. Added import for BigOperators.Ring.Finset. Documented fourier_extraction proof roadmap. Verified symmetric_max_at_zero for even N.",
+    "progressSummary": "PROGRESS: Eliminated fourier_extraction axiom. Axiom count 3→2. Added 3 helper lemmas (cexp_pow_eq, cexp_zpow, exp_orthogonality) and converted axiom to theorem using Fourier orthogonality + GF expansion.",
     "builtItems": [
       "Converted erdos_moser_1965_bound from axiom to theorem in Proofs/Erdos362Problem.lean",
       "Added log_ge_one_of_ge_three lemma (line 73)",
@@ -41,7 +41,11 @@
       "gf_at_one theorem in Erdos362Problem.lean (GF(1) = 2^|A|)",
       "gf_expansion theorem in Erdos362Problem.lean (product-to-sum identity via prod_one_add)",
       "gf_disjoint_union theorem in Erdos362Problem.lean (GF factors over disjoint union)",
-      "Proof roadmap comment for fourier_extraction in Erdos362Problem.lean"
+      "Proof roadmap comment for fourier_extraction in Erdos362Problem.lean",
+      "Proved cexp_pow_eq: exp(z)^n = exp(n*z) for ℕ",
+      "Proved cexp_zpow: exp(z)^n = exp(n*z) for ℤ",
+      "Proved exp_orthogonality: Fourier orthogonality on [0,2π]",
+      "Proved fourier_extraction: Fourier coefficient extraction (was axiom, now theorem)"
     ],
     "insights": [
       "erdos_moser_1965_bound was incorrectly stated as axiom: bound becomes 0 at N=1 (log(1)=0) making it false",
@@ -57,7 +61,9 @@
       "gf_expansion (∏(1+z^a) = ∑_S z^{setSum S}) is the key stepping stone for proving fourier_extraction",
       "fourier_extraction proof roadmap: expand GF via gf_expansion, swap sum/integral, use orthogonality ∫₀²π e^{inθ}dθ = 2πδ_{n,0}",
       "symmetric_max_at_zero verified correct for N=2,4,6 (even cases): the count at t=0 ties for max on a plateau",
-      "Two approaches for fourier_extraction: (1) direct FTC+orthogonality on [0,2π], (2) rewrite via Mathlib AddCircle/fourierCoeff"
+      "Two approaches for fourier_extraction: (1) direct FTC+orthogonality on [0,2π], (2) rewrite via Mathlib AddCircle/fourierCoeff",
+      "Proved fourier_extraction: converted axiom to theorem using Fourier orthogonality (∫₀²π exp(inθ)dθ = 2πδ_{n,0}), GF expansion, and integral_exp_mul_complex from Mathlib",
+      "Axiom count reduced 3→2. Remaining axioms (sarkozy_szemeredi_1965, halasz_1977) are deep analytic results."
     ],
     "mathlibGaps": [],
     "nextSteps": [
