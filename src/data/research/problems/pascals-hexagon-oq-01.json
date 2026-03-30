@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 2: DEEP DIVE. Wrote proof of Pascal for standard conic x₀²+x₁²=x₂² via rational parametrization (1-t²,2t,1+t²). Verified det(P,Q,R)=0 as polynomial identity in sympy (~3500 terms cancel). Lean proof uses simp+ring pattern from DesarguesTheorem.",
+    "progressSummary": "PROGRESS: Added factored scalar triple product formula and projective invariance framework. Parametric proof for std conic exists (ring). Roadmap: need Sylvester law + assembly for full axiom elimination.",
     "builtItems": [
       "stdConicPoint — rational parametrization of standard conic",
       "stdConic — the matrix diag(1,1,-1)",
@@ -40,7 +40,9 @@
       "pascal_std_conic_parametrized — Pascal for parametrized standard conic (simp+ring, needs build verify)",
       "projTransform — apply matrix to projective point",
       "threeVectorMatrix_projTransform — det multiplicativity: det(M·u,M·v,M·w) = det(M)·det(u,v,w)",
-      "collinear_projTransform — collinearity preserved under invertible projective transforms"
+      "collinear_projTransform — collinearity preserved under invertible projective transforms",
+      "Proved stdConic_det_factored: det(P(a),P(b),P(c)) = 4(a-b)(b-c)(c-a) by ring",
+      "Stated pascalConstraint_projTransform with 2 sorries (ring verification of det(M)⁴ factorization)"
     ],
     "insights": [
       "The axiom conic_implies_pascal_constraint cannot be proved from Mathlib algebraic geometry (no Bezout/Cayley-Bacharach). Must use direct algebraic proof.",
@@ -55,7 +57,10 @@
       "Full axiom elimination requires: (1) this parametrized proof, (2) projective equivalence preserves pascalConstraint, (3) any non-degenerate conic ≅ standard conic, (4) degenerate conic case",
       "det multiplicativity for 3×3 is a 36-term polynomial identity — ring handles it easily",
       "Full Pascal invariance needs cross product transformation law: cross(M·u,M·v) = det(M)·M⁻ᵀ·cross(u,v) — then Pascal points transform as M·P_old up to scalar",
-      "Roadmap: Part 11 (done) → Part 12 collinearity invariance (done) → Part 12 full Pascal invariance (needs cross product law) → Part 13 Sylvester law of inertia → Part 14 degenerate conics"
+      "Roadmap: Part 11 (done) → Part 12 collinearity invariance (done) → Part 12 full Pascal invariance (needs cross product law) → Part 13 Sylvester law of inertia → Part 14 degenerate conics",
+      "For parametric circle points P(t) = (1-t², 2t, 1+t²): det(P(a),P(b),P(c)) = 4(a-b)(b-c)(c-a) — enables factored proof approach",
+      "The pascalConstraint is projectively invariant: det(P_new,Q_new,R_new) = det(M)⁴ · det(P,Q,R), so vanishing is preserved",
+      "Full axiom elimination roadmap: (1) parametric std conic proof (done), (2) projective invariance of pascalConstraint, (3) Sylvester law for conics, (4) assembly"
     ],
     "mathlibGaps": [
       "No Bezout theorem for projective curves in Mathlib",

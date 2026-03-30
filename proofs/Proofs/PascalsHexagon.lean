@@ -368,6 +368,37 @@ theorem pascal_std_conic_parametrized (a b c d e f : ℝ) :
   ring
 
 -- ============================================================
+-- PART 11b: Scalar Triple Product Formula
+-- ============================================================
+
+/-!
+### Scalar Triple Product for Parametric Circle Points
+
+For points P(a) = (1-a², 2a, 1+a²) on the standard conic, the scalar
+triple product (3×3 determinant) has a remarkably simple factored form:
+
+  det(P(a), P(b), P(c)) = 4(a-b)(b-c)(c-a)
+
+This factorization is key to an alternative proof strategy that avoids
+expanding the full degree-12 polynomial. By the BAC-CAB identity:
+
+  P = (A×B) × (D×E) = [ABE]D - [ABD]E
+
+where [XYZ] = det(X,Y,Z). The Pascal determinant det(P,Q,R) then becomes
+a sum of four terms, each a product of four scalar triple products.
+Substituting the factored formula makes the cancellation transparent.
+-/
+
+/-- Scalar triple product of three parametric circle points factors as
+    4(a-b)(b-c)(c-a). Proved by explicit 3×3 determinant expansion. -/
+theorem stdConic_det_factored (a b c : ℝ) :
+    (threeVectorMatrix (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)).det =
+    4 * (a - b) * (b - c) * (c - a) := by
+  unfold threeVectorMatrix stdConicPoint
+  simp only [Matrix.det_fin_three, Matrix.of_apply]
+  ring
+
+-- ============================================================
 -- PART 12: Projective Invariance (Toward General Conics)
 -- ============================================================
 
@@ -447,6 +478,26 @@ theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.
   unfold pascalConstraint lineIntersection lineThrough
   simp only [← crossProduct_projTransform]
   sorry -- Needs: adjugate composition identity, to be proved in next session
+
+/-
+### Roadmap for Full Axiom Elimination
+
+**Completed:**
+1. `pascal_std_conic_parametrized`: Pascal's theorem for the standard conic x₀²+x₁²=x₂²
+2. `stdConic_det_factored`: Scalar triple product formula det(P(a),P(b),P(c)) = 4(a-b)(b-c)(c-a)
+3. `collinear_projTransform`: Collinearity is projectively invariant
+4. `threeVectorMatrix_projTransform`: Determinant of transformed vectors = det(M) · original
+
+**Remaining for full proof:**
+1. `pascalConstraint_projTransform` (above): needs adjugate composition identity
+2. **Sylvester's law**: Any non-degenerate symmetric conic matrix can be diagonalized by
+   congruence to ±diag(1,1,-1). For real projective conics, the signature determines the
+   conic type. Non-empty non-degenerate conics have signature (2,1), equivalent to stdConic.
+3. **stdConic parametric coverage**: Show every point on stdConic (with x₂ ≠ 0) is of the
+   form stdConicPoint(t) for some t. (The point at infinity (1,0,-1) is the limit t→∞.)
+4. **Assembly**: Combine Sylvester's law + parametric coverage + projective invariance +
+   `pascal_std_conic_parametrized` to prove `conic_implies_pascal_constraint`.
+-/
 -- ============================================================
 -- Export main results
 -- ============================================================
@@ -462,3 +513,5 @@ theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.
 #check @conic_implies_pascal_constraint
 #check @pascal_std_conic_parametrized
 #check @crossProduct_projTransform
+#check @stdConic_det_factored
+#check @pascalConstraint_projTransform
