@@ -130,11 +130,11 @@
     {
       "path": "Proofs/ShannonEntropy.lean",
       "filename": "ShannonEntropy.lean",
-      "lineCount": 643,
-      "theoremCount": 17,
+      "lineCount": 567,
+      "theoremCount": 14,
       "axiomCount": 0,
-      "defCount": 8,
-      "sorryCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropy.lean"
     },
@@ -148,17 +148,6 @@
       "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyAristotle.lean"
-    },
-    {
-      "path": "Proofs/ShannonEntropyOQ02.lean",
-      "filename": "ShannonEntropyOQ02.lean",
-      "lineCount": 384,
-      "theoremCount": 9,
-      "axiomCount": 3,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ02.lean"
     },
     {
       "path": "Proofs/ShannonEntropySSA.lean",
@@ -185,7 +174,6 @@
   ],
   "relatedProofs": [
     "shannon-entropy",
-    "shannon-entropy-oq-02",
     "shannon-entropy-oq-03"
   ]
 }
