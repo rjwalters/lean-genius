@@ -30,11 +30,16 @@
         "theorem": "Set.ncard",
         "description": "Cardinality of sets, used for transversal_count",
         "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "finrank_sup_add_finrank_inf_eq",
+        "description": "Grassmann dimension formula: dim(V+W) + dim(V∩W) = dim(V) + dim(W)",
+        "module": "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas"
       }
     ],
     "originalContributions": [
       "Grassmannian Gr(k,n) defined via finrank of Submodule subtypes",
-      "Lines in P³ formalized as Gr(2,4) with two equivalent intersection predicates",
+      "Lines in P³ formalized as Gr(2,4) with equivalence of intersection predicates proved via Grassmann dimension formula",
       "Four Lines Theorem stated with explicit general position conditions",
       "Partition and SchubertClass structures for abstract Schubert calculus",
       "Schubert basis theorem and Littlewood-Richardson rule axiomatized",
@@ -43,9 +48,9 @@
     "dateAdded": "2025-12-29",
     "hilbertNumber": 15,
     "proofRepoPath": "Proofs/Hilbert15SchubertCalculus.lean",
-    "axiomCount": 8,
-    "lineCount": 452,
-    "assumptions": "8 axioms: linesMeet_iff_linesMeet', four_lines_theorem, transversal_count, schubert_basis_theorem, littlewoodRichardsonCoeff, littlewood_richardson_rule, pieris_rule, sigma1_fourth_power.",
+    "axiomCount": 6,
+    "lineCount": 470,
+    "assumptions": "6 axioms: four_lines_theorem, schubert_basis_theorem, littlewoodRichardsonCoeff, littlewood_richardson_rule, pieris_rule, sigma1_fourth_power. Previously axiomatized linesMeet_iff_linesMeet' and transversal_count are now proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
