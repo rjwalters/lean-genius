@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: Reduced from 6 axioms to 1 (Kim-Shearer lower bound). Defined ramseyNumber from RamseysTheorem.lean and proved all basic properties.",
+    "progressSummary": "COMPLETE: OQ01 file has 0 sorries and 1 axiom (R3_lower_bound, deep Kim-Shearer result). Parent file has 11 axioms (12→11 after removing unused erdos_1014_conjecture).",
     "builtItems": [
       "increment_bound in Erdos1014OQ01.lean: R(3,l+1) ≤ R(3,l) + (l+1)",
       "ratio_abs_eq in Erdos1014OQ01.lean: absolute value identity",
@@ -47,7 +47,8 @@
       "ramsey_pos proved (Fin 0 has no cliques)",
       "ramsey_monotone_right proved (blue clique subset)",
       "ramsey_k2 proved (ramsey_two_s + all-blue counterexample)",
-      "ramsey_recurrence proved (pigeonhole + clique extension from RamseysTheorem)"
+      "ramsey_recurrence proved (pigeonhole + clique extension from RamseysTheorem)",
+      "Removed unused erdos_1014_conjecture axiom from parent Erdos1014Problem.lean (12→11)"
     ],
     "insights": [
       "The Ramsey recurrence provides a tight O(l) bound on the increment R(3,l+1) - R(3,l)",
@@ -58,7 +59,8 @@
       "Nat.le_ceil transfers ℝ thresholds to ℕ; div_le_iff₀ converts division to multiplication",
       "Replaced 5 axioms with proved theorems by defining ramseyNumber via Nat.find from RamseysTheorem.lean",
       "The transfer_red_clique/transfer_blue_clique helpers factor out the repeated clique-embedding pattern",
-      "R(2,l)=l proved via ramsey_two_s (upper) + all-blue coloring (lower)"
+      "R(2,l)=l proved via ramsey_two_s (upper) + all-blue coloring (lower)",
+      "erdos_1014_conjecture was unused — the conjecture is stated and proved for k=3 in OQ01 (erdos_1014_k3_ratio_convergence), not via the general axiom"
     ],
     "mathlibGaps": [],
     "nextSteps": []

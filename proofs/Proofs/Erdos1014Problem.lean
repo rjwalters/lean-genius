@@ -87,14 +87,6 @@ axiom R3_upper :
   ∃ C : ℝ, C > 0 ∧ ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
     (ramseyNumber 3 l : ℝ) ≤ C * (l : ℝ) ^ 2 / Real.log l
 
-/- ## Main Conjecture -/
-
-/-- **Erdős Problem #1014** (OPEN): For fixed k ≥ 3,
-    R(k, l+1) / R(k, l) → 1 as l → ∞. -/
-axiom erdos_1014_conjecture (k : ℕ) (hk : k ≥ 3) :
-  ∀ ε : ℝ, ε > 0 → ∃ L₀ : ℕ, ∀ l : ℕ, l > L₀ →
-    |(ramseyNumber k (l + 1) : ℝ) / (ramseyNumber k l : ℝ) - 1| < ε
-
 /- ## Growth Ratio Convergence Helpers -/
 
 section GrowthRatioHelpers
