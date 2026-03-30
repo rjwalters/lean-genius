@@ -64,14 +64,18 @@
       "FIX: mu_pos_degree restricts infimum to degree >= 1, matching standard mathematical definition (EHP 1958)",
       "Updated axioms (lineSegment_determined, disc_determined) and conjectures (diameterOneConjecture) to use corrected mu_pos_degree",
       "Session 4: Fixed degree-0 bug in mu: added mu_eq_zero proof showing original mu is always 0, added muPosDeg restricting to degree >= 1",
-      "lineSegment_determined and disc_determined used uncorrected mu which is always 0 — they are trivially true and should be restated using muPosDeg for mathematical content"
+      "lineSegment_determined and disc_determined used uncorrected mu which is always 0 — they are trivially true and should be restated using muPosDeg for mathematical content",
+      "Aristotle file actually has 0 sorries (stale count in problem JSON)",
+      "BddAbove sorry (line 281): provable via Metric.diam bound — each |pts_i-pts_j| ≤ diam(G), product ≤ diam^(n(n-1)/2), rpow ≤ diam. Bound: max(1, Metric.diam G)",
+      "transfiniteDiameter_scale sorry (line 376): standard scaling, needs product_rpow + abs_mul arithmetic",
+      "erdos_1040_current_state Part 1 sorry (line 468): requires EHP 1958 explicit μ formulas for line segments/discs, deep result",
+      "All 7 axioms are deep potential theory (Fekete, EHP, Erdős-Netanyahu) — none eliminable from Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove mu_infimum (requires showing sublevel sets have finite Lebesgue measure — bounded subset of ℂ)",
-      "Prove transfiniteDiameter_mono (monotonicity of ρ via sSup/iInf manipulation)",
-      "Submit remaining 6 sorries (basic properties) to Aristotle companion file",
-      "Investigate whether the EN 1973 proof technique extends to disconnected sets (literature search needed)"
+      "Prove BddAbove sorry (line 281): use IsBounded.subset_ball → bound pairwise distances → bound product → bound rpow",
+      "Prove transfiniteDiameter_scale (line 376): distribute scaling through product and rpow",
+      "Part 1 sorry needs EHP 1958 formulas — likely stays as sorry or becomes new axiom"
     ]
   },
   "tags": [
@@ -104,7 +108,7 @@
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Aristotle.lean"
     },
