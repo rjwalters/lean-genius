@@ -379,17 +379,6 @@ def generalizedConjecture (r k : ℕ) : Prop :=
 The average behavior of B₂(n) and why the problem is subtle.
 -/
 
-/--
-**Average Behavior**
-
-On average, B₂(n) is bounded (most numbers are nearly squarefree).
-But the product over consecutive integers can be large because
-nearby integers can share high prime powers.
--/
-axiom average_twoFullPart_bounded :
-    ∃ C : ℝ, C > 0 ∧ ∀ N ≥ 1,
-      (∑ n ∈ Finset.Icc 1 N, (twoFullPart n : ℝ)) / N ≤ C
-
 /-
 # Part 10: Summary
 -/

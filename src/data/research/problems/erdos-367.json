@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Verified 2 provable axioms (twoFullPart_eq_one_iff, twoFullPart_mul_coprime) are unused — proof tree unaffected. 3 deep axioms remain (strong_bound_fails_k3, van_doorn_lower_bound, average_twoFullPart_bounded).",
+    "progressSummary": "PROGRESS: 1 axiom remains (van_doorn_lower_bound, deep result). Removed unused average_twoFullPart_bounded axiom. strong_bound_fails_k3 is already proved.",
     "builtItems": [
       "Proved twoFullPart_le, twoFullPart_dvd, twoFullPart_prime, twoFullPart_prime_sq in Erdos367Problem.lean",
       "Proved strong_bound_k1 in Erdos367Problem.lean:140",
@@ -77,9 +77,9 @@
     {
       "path": "Proofs/Erdos367Problem.lean",
       "filename": "Erdos367Problem.lean",
-      "lineCount": 426,
+      "lineCount": 404,
       "theoremCount": 9,
-      "axiomCount": 4,
+      "axiomCount": 1,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,

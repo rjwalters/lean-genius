@@ -62,7 +62,7 @@
       "strong_bound_k1: proved strongBound(1) via twoFullPart_le and Finset.prod_singleton",
       "strong_bound_k2: proved strongBound(2) via twoFullPart_le, mul_le_mul, and nlinarith"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "prerequisites": [
       "Prime factorization and p-adic valuations",
       "Squarefree numbers and powerful (k-full) numbers",
@@ -235,7 +235,7 @@
     ],
     "namespace": "Erdos367",
     "lineCount": 425,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 10
   }
