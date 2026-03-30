@@ -231,8 +231,9 @@ axiom thomassen_induction :
     1994: Thomassen proved 5-choosability
     1996: Gutner simplified Voigt's construction
     2000s: Continued search for smaller examples -/
-axiom historical_timeline :
+theorem historical_timeline :
   True -- Documented above
+  := trivial
 
 /- ## Main Problem Status -/
 
