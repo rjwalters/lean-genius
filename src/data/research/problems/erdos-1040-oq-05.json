@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 5: Eliminated 2 axioms (lineSegment_determined, disc_determined) — trivially true because uncorrected mu is always 0. 5 axioms, 6 sorries remain.",
+    "progressSummary": "Session 6: Eliminated 2 axioms (lineSegment_determined, disc_determined — vacuously true). Proved BddAbove sorry in monotonicity theorem. 7 axioms, 1 sorry remain.",
     "builtItems": [
       "Proved mu_mono: anti-monotonicity of μ (F ⊆ G → mu G ≤ mu F) via iInf_mono in Erdos1040Problem.lean:209-215",
       "Removed problem_open axiom (8→7 axioms): was ¬(P ∨ ¬P), inconsistent with classical logic",
@@ -51,7 +51,9 @@
       "muPosDeg_mono: anti-monotonicity for corrected mu (PROVED)",
       "Updated diameterOneConjecture, muDeterminedByDiameter, erdos_1040_current_state to use muPosDeg",
       "Proved lineSegment_determined from mu_eq_zero (axiom→theorem)",
-      "Proved disc_determined from mu_eq_zero (axiom→theorem)"
+      "Proved disc_determined from mu_eq_zero (axiom→theorem)",
+      "Proved bddAbove_nthDiam_of_bounded: extracted and proved BddAbove lemma (sorry→theorem)",
+      "Refactored transfiniteDiameter_mono_of_bounded: simplified from 20-line proof with sorry to 3-line delegation"
     ],
     "insights": [
       "The problem_open axiom (¬(P ∨ ¬P)) was inconsistent — it negates classical excluded middle. Removed to fix axiom system.",

@@ -273,6 +273,75 @@ private lemma nthDiameter_mono_of_bddAbove (F G : Set ℂ) (h : F ⊆ G) (n : �
   rintro _ ⟨⟨pts, hpts⟩, rfl⟩
   exact ⟨⟨pts, fun i => h (hpts i)⟩, rfl⟩
 
+/-- When G is bounded, the nthDiameter value set is BddAbove.
+    Each factor |pts i - pts j| ≤ D (diameter bound), the product ≤ D^(n²),
+    and rpow with exponent 2/(n*(n-1)) ∈ [0,1] gives a value ≤ max(1, D^(n²)). -/
+private lemma bddAbove_nthDiam_of_bounded (G : Set ℂ) (hG : Bornology.IsBounded G) (n : ℕ) :
+    BddAbove {(∏ i : Fin n, ∏ j in Finset.Iio i,
+      Complex.abs (pts i - pts j)) ^ (2 / (n * (n - 1) : ℝ)) |
+      pts : Fin n → ℂ // ∀ i, pts i ∈ G} := by
+  -- G bounded → pairwise distances ≤ D
+  obtain ⟨D, hD⟩ := Metric.isBounded_iff.mp hG
+  set M := max 1 D with hM_def
+  have hM_ge : (1 : ℝ) ≤ M := le_max_left 1 D
+  -- Bound: every rpow value ≤ M ^ (n * n)
+  refine ⟨M ^ (n * n), ?_⟩
+  rintro _ ⟨⟨pts, hpts⟩, rfl⟩
+  set P := ∏ i : Fin n, ∏ j in Finset.Iio i, Complex.abs (pts i - pts j) with hP_def
+  set α := (2 : ℝ) / (↑n * (↑n - 1)) with hα_def
+  have hP_nn : 0 ≤ P :=
+    Finset.prod_nonneg fun i _ => Finset.prod_nonneg fun j _ => Complex.abs.nonneg _
+  -- Step 1: Product P ≤ M ^ (n * n) (each of ≤ n² factors is ≤ M)
+  have hP_bound : P ≤ M ^ (n * n) := by
+    calc P ≤ ∏ i : Fin n, ∏ j in Finset.Iio i, M := by
+            apply Finset.prod_le_prod
+              (fun i _ => Finset.prod_nonneg fun j _ => Complex.abs.nonneg _)
+              (fun i _ => Finset.prod_le_prod (fun j _ => Complex.abs.nonneg _)
+                fun j _ => by
+                  calc Complex.abs (pts i - pts j)
+                      = dist (pts i) (pts j) := (Complex.dist_eq _ _).symm
+                    _ ≤ D := hD (hpts i) (hpts j)
+                    _ ≤ M := le_max_right 1 D)
+      _ ≤ ∏ _i : Fin n, M ^ n := by
+            apply Finset.prod_le_prod
+              (fun i _ => Finset.prod_nonneg fun _ _ => le_trans zero_le_one hM_ge)
+              (fun i _ => by
+                calc ∏ _j in Finset.Iio i, M
+                    = M ^ (Finset.Iio i).card := Finset.prod_const M
+                  _ ≤ M ^ n := pow_le_pow_right hM_ge (by
+                      calc (Finset.Iio i).card
+                          ≤ Finset.univ.card := Finset.card_le_card (Finset.subset_univ _)
+                        _ = n := Finset.card_fin n)))
+      _ = M ^ (n * n) := by
+            rw [Finset.prod_const, Finset.card_fin, ← pow_mul]
+  -- Step 2: P^α ≤ P + 1 ≤ M^(n*n) + 1 ≤ M^(n*n) (since M^(n*n) ≥ 1)
+  -- More directly: P^α ≤ max(1, P) ≤ M^(n*n) (since M^(n*n) ≥ 1)
+  by_cases hP1 : P ≤ 1
+  · -- P ≤ 1 → P^α ≤ 1 ≤ M^(n*n)
+    calc P ^ α ≤ 1 := by
+            apply Real.rpow_le_one hP_nn hP1
+            exact div_nonneg (by norm_num : (0:ℝ) ≤ 2)
+              (by rcases n with _ | m
+                  · simp
+                  · exact mul_nonneg (Nat.cast_nonneg _)
+                      (by push_cast; linarith [Nat.cast_nonneg m]))
+      _ ≤ M ^ (n * n) := one_le_pow_of_one_le' hM_ge (n * n)
+  · -- P > 1 → P^α ≤ P ≤ M^(n*n) (since α ≤ 1)
+    push_neg at hP1
+    have hα_le_one : α ≤ 1 := by
+      simp only [hα_def]
+      rcases n with _ | _ | k
+      · simp  -- n=0: 2/(0*(0-1)) = 0 ≤ 1
+      · simp  -- n=1: 2/(1*(1-1)) = 0 ≤ 1
+      · -- n = k+2 ≥ 2: 2/(n*(n-1)) ≤ 1 ⟺ 2 ≤ n*(n-1)
+        rw [div_le_one (by positivity : (0:ℝ) < ↑(k+2) * (↑(k+2) - 1))]
+        push_cast
+        nlinarith
+    calc P ^ α ≤ P ^ (1 : ℝ) := by
+            exact Real.rpow_le_rpow_of_exponent_le hP1.le hα_le_one
+      _ = P := Real.rpow_one P
+      _ ≤ M ^ (n * n) := hP_bound
+
 /-- Transfinite diameter is monotone for bounded supersets.
     For bounded G, every value set is BddAbove, so monotonicity holds. -/
 theorem transfiniteDiameter_mono_of_bounded (F G : Set ℂ) (h : F ⊆ G)
@@ -283,30 +352,8 @@ theorem transfiniteDiameter_mono_of_bounded (F G : Set ℂ) (h : F ⊆ G)
     ⟨0, by rintro _ ⟨n, rfl⟩; exact nthDiameter_nonneg F n⟩
     (Set.range_nonempty _)
   rintro _ ⟨n, rfl⟩
-  refine ⟨nthDiameter F n, Set.mem_range.mpr ⟨n, rfl⟩, ?_⟩
-  -- nthDiameter F n ≤ nthDiameter G n: F-candidates ⊆ G-candidates, G BddAbove.
-  unfold nthDiameter
-  -- Handle empty F-values case
-  by_cases hneF : Set.Nonempty
-    {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
-      (∏ i : Fin n, ∏ j in Finset.Iio i,
-        Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
-  · -- F-values nonempty: use csSup_le_csSup
-    apply csSup_le_csSup
-    · -- G-values BddAbove: G is bounded, so all distances ≤ diam(G),
-      -- hence all products are bounded, hence all rpow values are bounded.
-      -- Bound: each factor ≤ diam(G), product ≤ diam(G)^(n²),
-      -- rpow(product, 2/(n*(n-1))) ≤ rpow(diam(G)^(n²), 1) = diam(G)^(n²).
-      sorry
-    · -- F-values nonempty
-      exact hneF
-    · -- F-values ⊆ G-values: F ⊆ G so every F-candidate is a G-candidate
-      rintro x ⟨pts, rfl⟩
-      exact ⟨⟨pts.1, fun i => h (pts.2 i)⟩, rfl⟩
-  · -- F-values empty: sSup ∅ = 0 ≤ nthDiameter G n
-    rw [Set.not_nonempty_iff_eq_empty] at hneF
-    simp [hneF, csSup_empty]
-    exact nthDiameter_nonneg G n
+  exact ⟨nthDiameter F n, Set.mem_range.mpr ⟨n, rfl⟩,
+    nthDiameter_mono_of_bddAbove F G h n (bddAbove_nthDiam_of_bounded G hG n)⟩
 
 /-- Each nthDiameter value is non-negative (sSup of non-negative reals). -/
 private theorem nthDiameter_nonneg (F : Set ℂ) (n : ℕ) : 0 ≤ nthDiameter F n := by
