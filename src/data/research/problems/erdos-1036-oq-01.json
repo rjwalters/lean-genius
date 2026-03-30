@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1036-oq-01",
   "title": "Optimal constant in Shelah's coloring theorem",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T16:34:54.972Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Fresh formalization of Shelah theorem and optimal constant question",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "BUILD: Created fresh formalization (141 lines). Defined cliqueNumber, independenceNumber, IsNonRamsey, optimalConstant. Stated Shelah, Alon-Hajnal, Ramsey lower bound. Proved complement symmetry. 2 sorries remain.",
+    "builtItems": [
+      "Created Erdos1036Problem.lean from scratch (was corrupted/empty)",
+      "Defined cliqueNumber, independenceNumber, IsNonRamsey, numInducedSubgraphClasses",
+      "Defined optimalConstant function for oq-01",
+      "Stated Shelah 1998 (main result), Alon-Hajnal 1991, Ramsey lower bound as axioms",
+      "Proved cliqueNumber_compl, independenceNumber_compl, complement_nonramsey",
+      "Proved erdos_1036 summary theorem from Shelah axiom"
+    ],
+    "insights": [
+      "independenceNumber G = cliqueNumber G\u1d9c by definition (rfl)",
+      "independenceNumber G\u1d9c = cliqueNumber G needs compl_compl rewrite",
+      "optimalConstant is defined via sSup of valid exponent constants",
+      "Random graphs G(n,1/2) achieve optimal constant 1"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove optimalConstant_pos (needs nonempty + bounded sSup argument)",
+      "Prove optimalConstant_le_one (needs numInducedSubgraphClasses \u2264 2^n bound)",
+      "Define proper isomorphism-class counting for numInducedSubgraphClasses"
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -58,11 +74,11 @@
     {
       "path": "Proofs/Erdos1036Problem.lean",
       "filename": "Erdos1036Problem.lean",
-      "lineCount": 1,
-      "theoremCount": 0,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
+      "lineCount": 141,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1036Problem.lean"
     }
