@@ -49,7 +49,9 @@
   },
   "tags": [],
   "relatedProofs": [
-    "fundamental-arithmetic"
+    "fundamental-arithmetic",
+    "fundamental-arithmetic-oq-01",
+    "fundamental-arithmetic-oq-02"
   ],
   "references": {
     "papers": [],
@@ -69,6 +71,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmetic.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ01.lean",
+      "filename": "FundamentalArithmeticOQ01.lean",
+      "lineCount": 114,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ02.lean",
+      "filename": "FundamentalArithmeticOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ02.lean"
     }
   ]
 }
