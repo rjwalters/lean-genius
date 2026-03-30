@@ -47,7 +47,8 @@
   "relatedProofs": [
     "chinese-remainder-constructive",
     "chinese-remainder-constructive-oq-03",
-    "chinese-remainder-constructive-oq-04"
+    "chinese-remainder-constructive-oq-04",
+    "chinese-remainder-constructive-oq-04-oq-03"
   ],
   "references": {
     "papers": [],
@@ -73,11 +74,11 @@
     {
       "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
       "filename": "ChineseRemainderConstructiveOQ03.lean",
-      "lineCount": 217,
-      "theoremCount": 23,
-      "axiomCount": 1,
+      "lineCount": 319,
+      "theoremCount": 24,
+      "axiomCount": 0,
       "defCount": 9,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03.lean"
     },
