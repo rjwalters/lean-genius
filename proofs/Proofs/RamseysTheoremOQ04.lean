@@ -2,7 +2,7 @@
 Ramsey Theory for Hypergraphs and Higher Dimensions
 
 Source: Open question from ramseys-theorem gallery proof
-Status: AXIOMATIZED (1 axiom for the deep Ramsey-type result, 0 sorries)
+Status: AXIOMATIZED (1 axiom for k≥2 stepping-up, k=1 proved via pigeonhole, 0 sorries)
 
 Extends Ramsey's theorem from 2-uniform (edges/graphs) to k-uniform hypergraphs.
 The classical Ramsey theorem colors edges (2-element subsets); the hypergraph
@@ -74,12 +74,77 @@ theorem classical_ramsey_is_k2 (n₁ n₂ N : ℕ)
 
 /-! ## Part III: The Hypergraph Ramsey Theorem -/
 
-/-- The Hypergraph Ramsey Theorem (Ramsey 1930, full generality):
-    For any k, r, n, there exists N large enough that any r-coloring of k-subsets
-    of an N-element set contains a monochromatic n-element subset.
-    This is axiomatized as the existence proof requires iterated stepping-up. -/
-axiom hypergraph_ramsey_exists (k r n : ℕ) (hk : k ≥ 1) (hr : r ≥ 1) (hn : n ≥ k) :
+/-- Helper: {x} is a 1-subset of S when x ∈ S. -/
+theorem singleton_mem_kSubsets {S : Finset ℕ} {x : ℕ} (hx : x ∈ S) :
+    ({x} : Finset ℕ) ∈ kSubsets S 1 := by
+  simp [kSubsets, Finset.mem_powersetCard, Finset.singleton_subset_iff, hx]
+
+/-- The k=1 case of the hypergraph Ramsey theorem is the pigeonhole principle:
+    any r-coloring of singletons from an (r·(n-1)+1)-element set has a
+    monochromatic subset of size n. -/
+theorem pigeonhole_ramsey (r n : ℕ) (hr : r ≥ 1) (hn : n ≥ 1) :
+    HypergraphRamseyProperty 1 r n (r * (n - 1) + 1) := by
+  intro S hS c
+  -- Convert singleton coloring to element coloring
+  let color : ℕ → Fin r := fun x =>
+    if h : x ∈ S then c ⟨{x}, singleton_mem_kSubsets h⟩ else ⟨0, by omega⟩
+  -- Define fibers (color classes)
+  let fiber := fun (i : Fin r) => S.filter (fun x => color x = i)
+  -- Pigeonhole: some fiber has ≥ n elements
+  suffices hpig : ∃ i : Fin r, n ≤ (fiber i).card by
+    obtain ⟨i, hi⟩ := hpig
+    refine ⟨fiber i, i, Finset.filter_subset _ _, hi, ?_⟩
+    -- Monochromatic: all 1-subsets of the fiber have color i
+    intro e he_T he_S
+    -- e is a singleton {x} with x in the fiber
+    have he_sub := (Finset.mem_powersetCard.mp he_T).1
+    obtain ⟨x, rfl⟩ := Finset.card_eq_one.mp (Finset.mem_powersetCard.mp he_T).2
+    have hxT := he_sub (Finset.mem_singleton_self x)
+    rw [Finset.mem_filter] at hxT
+    -- c({x}) = color(x) = i
+    show c ⟨{x}, he_S⟩ = i
+    have : c ⟨{x}, he_S⟩ = color x := by
+      show c ⟨{x}, he_S⟩ = dite (x ∈ S) (fun h => c ⟨{x}, singleton_mem_kSubsets h⟩) _
+      rw [dif_pos hxT.1]
+    rw [this, hxT.2]
+  -- Prove pigeonhole claim by contradiction
+  by_contra hall
+  push_neg at hall
+  -- Sum of fiber sizes = |S|
+  have hpart : S = Finset.univ.biUnion fiber := by
+    ext x; simp only [Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_filter, fiber]
+    exact ⟨fun h => ⟨color x, h, rfl⟩, fun ⟨_, h, _⟩ => h⟩
+  have hdisj : Set.PairwiseDisjoint (↑(Finset.univ : Finset (Fin r))) fiber := by
+    intro i _ j _ hij
+    simp only [Function.onFun, Finset.disjoint_left, Finset.mem_filter, fiber]
+    intro x ⟨_, hci⟩ ⟨_, hcj⟩
+    exact hij (hci.symm.trans hcj)
+  have hsum : S.card = ∑ i : Fin r, (fiber i).card := by
+    rw [hpart, Finset.card_biUnion hdisj]
+  have hle : ∑ i : Fin r, (fiber i).card ≤ r * (n - 1) := by
+    calc ∑ i : Fin r, (fiber i).card
+        ≤ ∑ _ : Fin r, (n - 1) :=
+          Finset.sum_le_sum (fun i _ => by have := hall i; omega)
+      _ = r * (n - 1) := by
+          rw [Finset.sum_const, smul_eq_mul, Finset.card_univ, Fintype.card_fin]
+  omega
+
+/-- For k ≥ 2, the Ramsey property follows from iterated stepping-up (Erdős–Rado).
+    The full inductive proof requires the asymmetric multi-parameter recursion:
+    R_k(s₁,...,sᵣ) ≤ R_{k-1}(R_k(s₁-1,...), ..., R_k(...,sᵣ-1)) + 1.
+    This is left as an axiom pending the stepping-up formalization. -/
+axiom hypergraph_ramsey_k2 (k r n : ℕ) (hk : k ≥ 2) (hr : r ≥ 1) (hn : n ≥ k) :
     ∃ N, HypergraphRamseyProperty k r n N
+
+/-- The Hypergraph Ramsey Theorem (Ramsey 1930, full generality):
+    For any k ≥ 1, r ≥ 1, n ≥ k, there exists N such that any r-coloring
+    of k-subsets of an N-element set contains a monochromatic n-element subset.
+    The k=1 case is proved (pigeonhole); k ≥ 2 uses the stepping-up axiom. -/
+theorem hypergraph_ramsey_exists (k r n : ℕ) (hk : k ≥ 1) (hr : r ≥ 1) (hn : n ≥ k) :
+    ∃ N, HypergraphRamseyProperty k r n N := by
+  rcases eq_or_lt_of_le hk with rfl | hk2
+  · exact ⟨r * (n - 1) + 1, pigeonhole_ramsey r n hr (by omega)⟩
+  · exact hypergraph_ramsey_k2 k r n (by omega) hr hn
 
 /-! ## Part IV: Growth Rate -/
 
