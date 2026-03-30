@@ -1,122 +1,122 @@
 {
-    "id": "binomial-theorem-oq-02-oq-01",
-    "title": "Multinomial Distribution and Moment-Generating Function",
-    "slug": "binomial-theorem-oq-02-oq-01",
-    "description": "Formalizes the multinomial distribution PMF and shows its moment-generating function follows directly from the multinomial theorem. Proves normalization, MGF formula, and connection to binomial distribution.",
-    "meta": {
-        "author": "Lean Genius",
-        "status": "verified",
-        "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01.lean",
-        "tags": [
-            "probability",
-            "multinomial distribution",
-            "moment-generating function",
-            "binomial theorem",
-            "combinatorics"
-        ],
-        "badge": "verified",
-        "sorries": 0,
-        "axiomCount": 0,
-        "lineCount": 222,
-        "assumptions": "None. All results proved from Mathlib's multinomial theorem.",
-        "theoremCount": 12,
-        "mathlib_version": "4.26.0"
-    },
-    "overview": {
-        "historicalContext": "The multinomial distribution is a fundamental probability distribution that models the outcome of n independent trials where each trial can result in one of k categories. It generalizes the binomial distribution (k=2). The moment-generating function (MGF) provides a compact encoding of all moments of a distribution. For the multinomial, the MGF has the elegant closed form (sum of p_i * exp(t_i))^n, which follows directly from the multinomial theorem.",
-        "problemStatement": "Can the multinomial distribution and its moment-generating function be formalized in Lean 4 using the multinomial theorem?",
-        "text": "Formalizes the multinomial distribution PMF, proves normalization from the multinomial theorem, derives the MGF formula, and shows the binomial distribution is the 2-outcome special case.",
-        "proofStrategy": "The key insight is that the multinomial theorem directly provides both the normalization proof and the MGF formula. Setting sum p(i) = 1 in the multinomial theorem gives normalization. Applying the theorem with f(i) = p(i)*g(i) gives the general weighted expectation formula, which specializes to the MGF when g(i) = exp(t(i)).",
-        "keyInsights": [
-            "The multinomial theorem IS the normalization proof for the multinomial distribution",
-            "The MGF formula is just the multinomial theorem applied to f(i) = p(i)*exp(t(i))",
-            "The algebraic factorization (p*g)^k = p^k * g^k separates probability weights from expectation terms",
-            "The binomial distribution is the 2-outcome (Bool-indexed) special case"
-        ],
-        "prerequisites": [
-            "Multinomial theorem (Mathlib)",
-            "Multinomial coefficients (Mathlib)",
-            "Basic probability concepts"
-        ]
-    },
-    "sections": [
-        {
-            "id": "definition",
-            "title": "Multinomial Distribution Definition",
-            "startLine": 1,
-            "endLine": 65,
-            "summary": "Defines the multinomial probability mass function and proves nonnegativity."
-        },
-        {
-            "id": "normalization",
-            "title": "Normalization via Multinomial Theorem",
-            "startLine": 67,
-            "endLine": 83,
-            "summary": "Proves sum of probabilities equals 1 using the multinomial theorem with sum p(i) = 1."
-        },
-        {
-            "id": "mgf",
-            "title": "Moment-Generating Function",
-            "startLine": 85,
-            "endLine": 130,
-            "summary": "Derives the MGF formula by applying the multinomial theorem with f(i) = p(i)*g(i). Shows factorization of probability and weight terms."
-        },
-        {
-            "id": "binomial-connection",
-            "title": "Connection to Binomial Distribution",
-            "startLine": 140,
-            "endLine": 170,
-            "summary": "Shows the binomial distribution is the 2-outcome (Bool-indexed) special case of the multinomial distribution."
-        },
-        {
-            "id": "examples",
-            "title": "Concrete Calculations",
-            "startLine": 172,
-            "endLine": 204,
-            "summary": "Concrete examples including fair coin flips and counting identities."
-        }
+  "id": "binomial-theorem-oq-02-oq-01",
+  "title": "Multinomial Distribution and Moment-Generating Function",
+  "slug": "binomial-theorem-oq-02-oq-01",
+  "description": "Formalizes the multinomial distribution PMF and shows its moment-generating function follows directly from the multinomial theorem. Proves normalization, MGF formula, and connection to binomial distribution.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01.lean",
+    "tags": [
+      "probability",
+      "multinomial distribution",
+      "moment-generating function",
+      "binomial theorem",
+      "combinatorics"
     ],
-    "conclusion": {
-        "summary": "The answer to the open question is YES: the multinomial distribution and its MGF are naturally formalized via the multinomial theorem. The normalization proof is just the multinomial theorem evaluated at sum p(i) = 1, and the MGF is the theorem applied to weighted variables.",
-        "implications": "This formalization reveals the deep structural connection between combinatorial algebra and probability theory: the multinomial theorem simultaneously serves as the algebraic expansion formula, the normalization proof, and the MGF derivation.",
-        "openQuestions": [
-            "Can the full PMF.multinomial be integrated into Mathlib's PMF framework?",
-            "Can marginal distributions be formally derived as binomials?",
-            "Can the variance-covariance matrix Cov(Xi, Xj) = -n*pi*pj be proved?"
-        ]
-    },
-    "leanFile": {
-        "imports": [
-            "Mathlib.Data.Nat.Choose.Multinomial",
-            "Mathlib.Data.Nat.Choose.Sum",
-            "Mathlib.Algebra.BigOperators.Ring.Finset",
-            "Mathlib.Tactic"
-        ],
-        "opens": [
-            "Finset",
-            "BigOperators"
-        ],
-        "namespace": "BinomialTheoremOQ02OQ01",
-        "lineCount": 222,
-        "axiomCount": 0,
-        "theoremCount": 12,
-        "definitionCount": 1
-    },
-    "crossReferences": [
-        {
-            "targetId": "binomial-theorem-oq-02",
-            "relationship": "extends",
-            "description": "Answers open question from the multinomial theorem generalization proof"
-        },
-        {
-            "targetId": "binomial-theorem-oq-03",
-            "relationship": "related",
-            "description": "BinomialTheoremOQ03 formalizes binomial PMF properties; this extends to multinomial"
-        },
-        {
-            "targetId": "binomial-theorem",
-            "relationship": "related",
-            "description": "The binomial theorem is the 2-variable special case"
-        }
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 222,
+    "assumptions": "None. All results proved from Mathlib's multinomial theorem.",
+    "theoremCount": 12,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The multinomial distribution is a fundamental probability distribution that models the outcome of n independent trials where each trial can result in one of k categories. It generalizes the binomial distribution (k=2). The moment-generating function (MGF) provides a compact encoding of all moments of a distribution. For the multinomial, the MGF has the elegant closed form (sum of p_i * exp(t_i))^n, which follows directly from the multinomial theorem.",
+    "problemStatement": "Can the multinomial distribution and its moment-generating function be formalized in Lean 4 using the multinomial theorem?",
+    "text": "Formalizes the multinomial distribution PMF, proves normalization from the multinomial theorem, derives the MGF formula, and shows the binomial distribution is the 2-outcome special case.",
+    "proofStrategy": "The key insight is that the multinomial theorem directly provides both the normalization proof and the MGF formula. Setting sum p(i) = 1 in the multinomial theorem gives normalization. Applying the theorem with f(i) = p(i)*g(i) gives the general weighted expectation formula, which specializes to the MGF when g(i) = exp(t(i)).",
+    "keyInsights": [
+      "The multinomial theorem IS the normalization proof for the multinomial distribution",
+      "The MGF formula is just the multinomial theorem applied to f(i) = p(i)*exp(t(i))",
+      "The algebraic factorization (p*g)^k = p^k * g^k separates probability weights from expectation terms",
+      "The binomial distribution is the 2-outcome (Bool-indexed) special case"
+    ],
+    "prerequisites": [
+      "Multinomial theorem (Mathlib)",
+      "Multinomial coefficients (Mathlib)",
+      "Basic probability concepts"
     ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Multinomial Distribution Definition",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Defines the multinomial probability mass function and proves nonnegativity."
+    },
+    {
+      "id": "normalization",
+      "title": "Normalization via Multinomial Theorem",
+      "startLine": 67,
+      "endLine": 83,
+      "summary": "Proves sum of probabilities equals 1 using the multinomial theorem with sum p(i) = 1."
+    },
+    {
+      "id": "mgf",
+      "title": "Moment-Generating Function",
+      "startLine": 85,
+      "endLine": 130,
+      "summary": "Derives the MGF formula by applying the multinomial theorem with f(i) = p(i)*g(i). Shows factorization of probability and weight terms."
+    },
+    {
+      "id": "binomial-connection",
+      "title": "Connection to Binomial Distribution",
+      "startLine": 140,
+      "endLine": 170,
+      "summary": "Shows the binomial distribution is the 2-outcome (Bool-indexed) special case of the multinomial distribution."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Calculations",
+      "startLine": 172,
+      "endLine": 204,
+      "summary": "Concrete examples including fair coin flips and counting identities."
+    }
+  ],
+  "conclusion": {
+    "summary": "The answer to the open question is YES: the multinomial distribution and its MGF are naturally formalized via the multinomial theorem. The normalization proof is just the multinomial theorem evaluated at sum p(i) = 1, and the MGF is the theorem applied to weighted variables.",
+    "implications": "This formalization reveals the deep structural connection between combinatorial algebra and probability theory: the multinomial theorem simultaneously serves as the algebraic expansion formula, the normalization proof, and the MGF derivation.",
+    "openQuestions": [
+      "RESOLVED: Multinomial PMF integrated with Mathlib PMF framework in BinomialTheoremOQ02OQ01OQ01.lean \u2014 construction via Composition type + ENNReal normalization",
+      "Can marginal distributions be formally derived as binomials?",
+      "Can the variance-covariance matrix Cov(Xi, Xj) = -n*pi*pj be proved?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Multinomial",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "BinomialTheoremOQ02OQ01",
+    "lineCount": 222,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Answers open question from the multinomial theorem generalization proof"
+    },
+    {
+      "targetId": "binomial-theorem-oq-03",
+      "relationship": "related",
+      "description": "BinomialTheoremOQ03 formalizes binomial PMF properties; this extends to multinomial"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem is the 2-variable special case"
+    }
+  ]
 }

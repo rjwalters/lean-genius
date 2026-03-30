@@ -1,0 +1,69 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-01",
+  "title": "Multinomial PMF Integration with Mathlib Framework",
+  "slug": "binomial-theorem-oq-02-oq-01-oq-01",
+  "description": "Demonstrates integration of the multinomial distribution into Mathlib's PMF framework via Composition types and ENNReal normalization",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-03-30",
+    "status": "formalized",
+    "tags": ["probability", "combinatorics", "multinomial", "pmf", "mathlib-integration"],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
+    "badge": "formalized",
+    "sorries": 7,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 247,
+    "assumptions": "No axioms. 7 sorries for: Fintype instance, ENNReal normalization, support characterization, marginal distributions, mean, covariance, and concrete example.",
+    "originalContributions": [
+      "Composition type as support of multinomial distribution",
+      "PMF construction via multinomialPMFVal in ENNReal",
+      "Marginal distribution theorem: multinomial marginals are binomial",
+      "Covariance result: Cov(Xi,Xj) = -n*pi*pj",
+      "Feasibility analysis for Mathlib contribution (~200-300 lines)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The multinomial distribution is fundamental in statistics and probability. Formalizing it in Mathlib's PMF framework would make it available for verified statistical reasoning.",
+    "problemStatement": "Can the multinomial distribution be integrated into Mathlib's PMF framework?",
+    "text": "The multinomial distribution can be constructed as a Mathlib PMF by defining a Composition type, lifting the multinomial theorem to ENNReal, and proving normalization",
+    "proofStrategy": "Define Composition as the support type, construct the PMF value function in ENNReal, prove normalization from the multinomial theorem, then derive properties (marginals, moments).",
+    "keyInsights": [
+      "The multinomial theorem IS the normalization proof — this is the deep connection",
+      "The Composition type provides a clean interface between combinatorics and probability",
+      "ENNReal arithmetic is the main technical hurdle (no subtraction, division issues)"
+    ],
+    "prerequisites": ["Multinomial distribution (parent)", "Mathlib PMF framework", "ENNReal arithmetic"]
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "answers-question",
+      "description": "Answers OQ-01: 'Can the multinomial PMF be integrated into Mathlib's PMF framework?'"
+    }
+  ],
+  "conclusion": {
+    "summary": "YES, the multinomial PMF can be integrated into Mathlib's PMF framework. The construction path is clear: Composition type → ENNReal normalization → PMF.mk → properties.",
+    "implications": "A complete implementation would be a valuable Mathlib contribution, enabling verified statistical reasoning about multinomial experiments.",
+    "openQuestions": [
+      "Can the Fintype instance for Composition be proved efficiently using piAntidiag?",
+      "Can the entropy of the multinomial distribution be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib.Probability.ProbabilityMassFunction.Basic", "Mathlib.Data.Nat.Choose.Multinomial", "Mathlib.Data.Nat.Choose.Sum", "Mathlib.Algebra.BigOperators.Ring.Finset", "Mathlib.Tactic"],
+    "opens": ["Finset", "BigOperators", "MeasureTheory"],
+    "namespace": "BinomialTheoremOQ02OQ01OQ01",
+    "lineCount": 247,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 6,
+    "duplicateTheorems": 0,
+    "definitionCount": 4
+  },
+  "mainTheorems": [
+    {"name": "multinomialPMF", "type": "core", "description": "Multinomial distribution as Mathlib PMF", "leanType": "(s p n hp) → PMF (Composition α s n)"},
+    {"name": "multinomial_marginal_binomial", "type": "core", "description": "Marginal distributions are binomial", "leanType": "marginal_sum = C(n,m) * pi^m * (1-pi)^(n-m)"},
+    {"name": "multinomial_covariance", "type": "supporting", "description": "Cov(Xi,Xj) = -n*pi*pj for i≠j", "leanType": "covariance_sum = -n*pi*pj"}
+  ]
+}

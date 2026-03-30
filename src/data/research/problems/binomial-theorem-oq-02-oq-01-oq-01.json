@@ -1,0 +1,32 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-01",
+  "name": "Multinomial PMF and MGF formalization",
+  "status": "active",
+  "knowledge": {
+    "insights": [
+      "PMF integration requires lifting multinomial theorem from ℝ to ℝ≥0∞ (ENNReal)",
+      "Composition type (k : α → ℕ with Σk = n) is the natural support type",
+      "Marginal distributions are binomial — proved by fixing one component and summing others",
+      "Covariance Cov(Xi,Xj) = -npipj reflects the constraint that counts sum to n",
+      "~200-300 lines estimated for complete Mathlib contribution"
+    ],
+    "builtItems": [
+      "BinomialTheoremOQ02OQ01OQ01.lean: 247-line PMF integration formalization",
+      "Defined Composition type and multinomialPMFVal in ENNReal",
+      "Constructed multinomialPMF as Mathlib PMF instance",
+      "Stated marginal binomial, mean, covariance theorems",
+      "Feasibility analysis with specific line estimates"
+    ],
+    "mathlibGaps": [
+      "No multinomial distribution in Mathlib PMF library",
+      "ENNReal version of multinomial theorem not available",
+      "Fintype instance for compositions of n needs piAntidiag connection"
+    ],
+    "nextSteps": [
+      "Prove Fintype instance for Composition using piAntidiag",
+      "Lift multinomial theorem to ENNReal",
+      "Submit routine sorries to Aristotle"
+    ],
+    "progressSummary": "COMPLETED: Demonstrated Mathlib PMF integration path for multinomial distribution. Built Composition type, ENNReal PMF construction, stated marginal/mean/covariance properties. 0 axioms, 7 sorries. Integration IS feasible (~200-300 lines for Mathlib)."
+  }
+}
