@@ -158,4 +158,29 @@ theorem second_moment_existence {α : Type*} [DecidableEq α] {s : Finset α}
     linarith [mul_lt_mul_of_pos_left h_neg hf2_pos]
   exact_mod_cast h_rat
 
+-- ═══════════════════════════════════════════════════════════════════
+-- QUANTITATIVE PALEY-ZYGMUND INEQUALITY
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Quantitative Paley-Zygmund inequality**: for non-negative f and 0 ≤ θ < 1,
+    the number of elements where f exceeds θ times the mean is at least
+    (1-θ)² · (∑f)² / ∑f².
+
+    This generalizes the basic Paley-Zygmund (θ = 0) and gives tight control
+    over how concentrated f can be above a fraction of its average.
+
+    Proof outline:
+    1. Decompose ∑f = ∑_{f<θμ} f + ∑_{f≥θμ} f
+    2. Bound ∑_{f<θμ} f ≤ θμ·|s|, so ∑_{f≥θμ} f ≥ (1-θ)·∑f
+    3. By Cauchy-Schwarz: (∑_{big} f)² ≤ |big|·∑_{big} f²
+    4. Since ∑_{big} f² ≤ ∑f²: |big| ≥ (1-θ)²·(∑f)��/∑f² -/
+theorem paley_zygmund_quantitative {α : Type*} [DecidableEq α] {s : Finset α}
+    {f : α → ℚ} {θ : ℚ} (hs : s.Nonempty) (hnn : ∀ a ∈ s, 0 ≤ f a)
+    (hpos : 0 < s.sum f) (hθ0 : 0 ≤ θ) (hθ1 : θ < 1)
+    (hf2_pos : 0 < s.sum (fun a => f a ^ 2)) :
+    let μ := s.sum f / s.card
+    (1 - θ) ^ 2 * (s.sum f) ^ 2 / s.sum (fun a => f a ^ 2) ≤
+      ↑(s.filter (fun a => f a ≥ θ * μ)).card := by
+  sorry
+
 end ProbMethod.SecondMoment

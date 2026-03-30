@@ -47,6 +47,10 @@ noncomputable def sublevelMeasure (p : PolynomialInF F) : ℝ≥0∞ :=
 noncomputable def mu (F : Set ℂ) : ℝ≥0∞ :=
   ⨅ (p : PolynomialInF F), sublevelMeasure p
 
+/-- Corrected μ(F): infimum over polynomials of degree ≥ 1. -/
+noncomputable def muPosDeg (F : Set ℂ) : ℝ≥0∞ :=
+  ⨅ (p : PolynomialInF F) (_ : p.degree ≥ 1), sublevelMeasure p
+
 /-
 ## Aristotle targets: basic properties of transfinite diameter
 
