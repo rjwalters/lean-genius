@@ -1,0 +1,45 @@
+[
+  {
+    "id": "ann-maclaurin-power-ineq",
+    "proofId": "amgm-inequality-oq-02-oq-03",
+    "range": {
+      "startLine": 60,
+      "endLine": 120
+    },
+    "type": "technique",
+    "title": "Power Inequality by Induction",
+    "content": "The key lemma $a_k^{k+1} \\geq a_{k+1}^k$ is proved by induction on $k$. The inductive step raises Newton's log-concavity $a_k^2 \\geq a_{k-1} a_{k+1}$ to the $k$-th power, combines with the inductive hypothesis, and cancels common factors. The zero case requires separate treatment via elementary symmetric polynomial properties.",
+    "mathContext": "$a_k^{k+1} \\geq a_{k+1}^k$ where $a_k = e_k / \\binom{n}{k}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "log-concavity",
+      "elementary symmetric polynomial",
+      "power inequality"
+    ],
+    "prerequisites": [
+      "Newton's log-concavity"
+    ]
+  },
+  {
+    "id": "ann-maclaurin-rpow-step",
+    "proofId": "amgm-inequality-oq-02-oq-03",
+    "range": {
+      "startLine": 122,
+      "endLine": 160
+    },
+    "type": "technique",
+    "title": "Maclaurin Step via Root Extraction",
+    "content": "From $a_k^{k+1} \\geq a_{k+1}^k$, taking the $1/(k(k+1))$-th power gives $a_k^{1/k} \\geq a_{k+1}^{1/(k+1)}$, i.e., $M_k \\geq M_{k+1}$. The proof uses `rpow_le_rpow` for monotonicity of the real power function on non-negative reals.",
+    "mathContext": "$a_k^{1/k} = (a_k^{k+1})^{1/(k(k+1))} \\geq (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{1/(k+1)}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Maclaurin mean",
+      "rpow monotonicity",
+      "AM-GM generalization"
+    ],
+    "prerequisites": [
+      "power inequality",
+      "real power functions"
+    ]
+  }
+]
