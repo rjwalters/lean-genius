@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0S, 3A. Proved cramer_implies_q1 (Cramér → Q1 via Bertrand + consecutive primes + gap bound).",
+    "progressSummary": "COMPLETE: 0S, 3A (2 open conjectures + 1 deep result). Proved cramer_implies_q1, no_prime_in_upper_half, exponentInProduct_sum, and all helper lemmas. All remaining axioms are genuinely unprovable from Mathlib.",
     "builtItems": [
       "Proved prodInterval_factorial by induction with Finset.prod_insert",
       "Fixed largestPrimeDivisor: List.foldl max 0 replaces removed List.maximum?",
@@ -63,7 +63,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Remaining 4 axioms: 2 OPEN conjectures (erdos_382_q1, erdos_382_q2_heuristic) + 2 deep results (ramachandra_bound, cramer_implies_q1) — none are provable from Mathlib"
+      "Remaining 3 axioms: 2 OPEN conjectures (erdos_382_q1, erdos_382_q2_heuristic) + 1 deep analytic result (ramachandra_bound). cramer_implies_q1 is now PROVED. No further axiom elimination possible from Mathlib."
     ],
     "markdown": "# Erdős #382 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $u\\leq v$ be such that the largest prime dividing $\\prod_{u\\leq m\\leq v}m$ appears with exponent at least $2$. Is it true that $v-u=v^{o(1)}$? Can $v-u$ be arbitrarily large?\n\n\n\nErd\\H{o}s and Graham report it follows from results of Ramachandra that $v-u\\leq v^{1/2+o(1)}$.\n\nCambie has observed that the first question boils down to some old conjectures on prime gaps.\nBy Cram\\'{er's conjecture}, for every $\\epsilon>0,$ for every $u$ sufficiently large there is a prime between $u$ and $u+u^\\epsilon$.\nThus for $u+u^\\epsilon<v$, the largest prime divisor of \\( \\prod_{u \\leq m \\leq v} m \\) appears with exponent $1$.\nSince this is not the case in the question, \\( v - u = v^{o(1)} \\).\n\nCambie also gives the following heuristic for the second question. The 'probability' that the largest prime divisor of $n$ is $<n^{1/2}$ is $1-\\log 2>0$. For any fixed $k$, there is therefore a positive 'probability' that there are $k$ consecutive integers around $q^2$ (for a prime $q$) all of whose prime divisors are bounded above by $q$, when $v-u\\geq k$. See [383] for a conjecture along these lines. A similar argument applies if we replace multiplicity $2$ with multiplicity $r$, for any fixed $r\\geq 2$.\n\nSee also [380].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #383\n- Problem #380\n- Problem #381\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
@@ -88,7 +88,7 @@
     {
       "path": "Proofs/Erdos382Problem.lean",
       "filename": "Erdos382Problem.lean",
-      "lineCount": 666,
+      "lineCount": 665,
       "theoremCount": 11,
       "axiomCount": 3,
       "defCount": 9,
