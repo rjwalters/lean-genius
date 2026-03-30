@@ -49,34 +49,19 @@ noncomputable def sublevelMeasure (P : UnitDiskPoly n) : ℝ :=
 /- ## Pommerenke's Bound -/
 
 /-- Pommerenke's bound: the sublevel measure is at least c/n⁴ -/
-axiom pommerenke_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ (n : ℕ) (hn : 1 ≤ n) (P : UnitDiskPoly n),
-      c / (n : ℝ) ^ 4 ≤ sublevelMeasure P
 
 /- ## Krishnapur–Lundberg–Ramachandran Bounds -/
 
 /-- KLR lower bound: the sublevel measure is at least c/log n.
     This proves the Erdős–Herzog–Piranian conjecture. -/
-axiom klr_lower_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ (n : ℕ) (hn : 2 ≤ n) (P : UnitDiskPoly n),
-      c / Real.log (n : ℝ) ≤ sublevelMeasure P
 
 /-- KLR upper bound: there exist polynomials with sublevel measure
     at most C/log log n, showing the lower bound is nearly tight -/
-axiom klr_upper_bound :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ (n : ℕ) (hn : 3 ≤ n),
-      ∃ P : UnitDiskPoly n,
-        sublevelMeasure P ≤ C / Real.log (Real.log (n : ℝ))
 
 /- ## Pólya's Upper Bound -/
 
 /-- Pólya's bound: the sublevel measure is at most π, and equality holds
     only when all roots coincide (p(z) = (z - z₀)ⁿ for some |z₀| ≤ 1) -/
-axiom polya_upper_bound (n : ℕ) (hn : 1 ≤ n) (P : UnitDiskPoly n) :
-  sublevelMeasure P ≤ Real.pi
 
 /- ## The Erdős–Herzog–Piranian Conjecture (PROVED) -/
 
@@ -84,15 +69,6 @@ axiom polya_upper_bound (n : ℕ) (hn : 1 ≤ n) (P : UnitDiskPoly n) :
     The sublevel measure |{|p(z)| < 1}| is at least (log n)^{-O(1)}.
     Proved by Krishnapur, Lundberg, and Ramachandran with
     the optimal bound c/log n. -/
-axiom ErdosProblem116 :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ (n : ℕ) (hn : 2 ≤ n) (P : UnitDiskPoly n),
-      c / Real.log (n : ℝ) ≤ sublevelMeasure P
 
 /-- The remaining open question: determine which polynomials
     minimize the sublevel measure -/
-axiom minimizer_characterization :
-  ∀ (n : ℕ) (hn : 3 ≤ n),
-    ∃ P₀ : UnitDiskPoly n,
-      ∀ P : UnitDiskPoly n,
-        sublevelMeasure P₀ ≤ sublevelMeasure P

@@ -109,10 +109,10 @@ Foundation: infinite chromatic number implies finite n-chromatic subgraphs exist
 axiom de_bruijn_erdos (G : SimpleGraph V) (hχ : HasChromaticNumberAtLeast G aleph0) :
     ∀ n : ℕ, ∃ S : Finset V, subgraphChromaticNumber G S ≥ n
 
-/-- de Bruijn-Erdős is a compactness result for colorings. -/
-axiom de_bruijn_erdos_compactness (G : SimpleGraph V)
-    (h : ∀ S : Finset V, ∃ k : ℕ, k > 0 ∧ IsKColorable (inducedSubgraph G S) k) :
-    ∃ k : ℕ, k > 0 ∧ IsKColorable G k
+/- Note: A prior version of this file included a `de_bruijn_erdos_compactness` axiom
+   whose hypothesis was trivially true for all graphs (every finite graph is finitely
+   colorable), making the axiom unsound. The correct fixed-k compactness statement
+   is given by `graph_compactness` below. -/
 
 /- ## Part V: The Erdős-Hajnal-Szemerédi Conjecture
 
@@ -132,11 +132,18 @@ def ErdosHajnalSzemerediConjecture : Prop :=
     ∃ (F : ℕ → ℕ) (N₀ : ℕ), ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n)
 
 /-- The conjecture fails for ℵ₀-chromatic graphs.
-    This was known before the main conjecture was stated. -/
-axiom conjecture_fails_aleph0 :
+    Proved from the stronger Lambie-Hanson result: an ℵ₁-chromatic
+    graph is certainly ℵ₀-chromatic, so the ℵ₁ counterexample works. -/
+theorem conjecture_fails_aleph0 :
     ∃ (V : Type*) (G : SimpleGraph V),
       HasChromaticNumberAtLeast G aleph0 ∧
-      ¬∃ (F : ℕ → ℕ) (N₀ : ℕ), ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n)
+      ¬∃ (F : ℕ → ℕ) (N₀ : ℕ), ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n) := by
+  obtain ⟨V, G, hχ, hBad⟩ := lambie_hanson_counterexample
+  refine ⟨V, G, fun k hk => hχ.1 k (hk.trans_le ?_), fun ⟨F, N₀, hF⟩ => ?_⟩
+  · -- aleph0 ≤ aleph1 since ℵ₀ = ℵ_0 ≤ ℵ_1
+    simp only [aleph0, aleph1, ← Cardinal.aleph_zero]
+    exact Cardinal.aleph_le_aleph.mpr (Ordinal.zero_le _)
+  · obtain ⟨n, hn, h⟩ := hBad F N₀; exact h (hF n hn)
 
 /- ## Part VI: Shelah's Consistency Result (2005)
 
@@ -146,11 +153,16 @@ Shelah showed the negative answer is consistent with ZFC.
 /-- **Shelah's Theorem** (2005):
     It is consistent with ZFC that the Erdős-Hajnal-Szemerédi conjecture fails.
 
-    This means: there exists a model of ZFC where no such F exists. -/
-axiom shelah_consistency :
+    Proved as a corollary of Lambie-Hanson's stronger ZFC result:
+    if the conjecture is provably false in ZFC, it is certainly consistent
+    with ZFC that it fails. -/
+theorem shelah_consistency :
     ∃ (V : Type*) (G : SimpleGraph V),
       HasChromaticNumber G aleph1 ∧
-      ¬∃ (F : ℕ → ℕ) (N₀ : ℕ), ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n)
+      ¬∃ (F : ℕ → ℕ) (N₀ : ℕ), ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n) := by
+  obtain ⟨V, G, hχ, hBad⟩ := lambie_hanson_counterexample
+  exact ⟨V, G, hχ, fun ⟨F, N₀, hF⟩ => by
+    obtain ⟨n, hn, h⟩ := hBad F N₀; exact h (hF n hn)⟩
 
 /- ## Part VII: Lambie-Hanson's ZFC Disproof (2020)
 

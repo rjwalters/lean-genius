@@ -2,11 +2,11 @@
     "id": "erdos-1014-oq-02",
     "title": "Erdős #1014 OQ-02: Rate of Convergence is O(log l / l)",
     "slug": "erdos-1014-oq-02",
-    "description": "Answers the open question: what is the rate of convergence of R(k,l+1)/R(k,l) to 1? For k=3, the rate is O(log l / l), which is strictly faster than O(1/log l). The proof combines the Ramsey recurrence bound R(3,l+1) - R(3,l) ≤ l+1 with the Kim lower bound R(3,l) ≥ c·l²/log l. Also proves that log l/l < 1/log l for large l, confirming the rate is faster than the conjectured O(1/log l). For general k with conjectured asymptotics, the rate would be O(1/l).",
+    "description": "Answers the open question: what is the rate of convergence of R(k,l+1)/R(k,l) to 1? For k=3, the rate is O(log l / l), which is strictly faster than O(1/log l). The proof combines the Ramsey recurrence bound R(3,l+1) - R(3,l) ≤ l+1 with the Kim lower bound R(3,l) ≥ c·l²/log l. Also proves that log l/l < 1/log l for large l. For general k, the ratio converges to 1 under conjectured asymptotics (proved via ratio_from_asymptotics).",
     "meta": {
         "author": "Erdős",
         "erdosNumber": 1014,
-        "status": "formalized",
+        "status": "axiomatized",
         "proofRepoPath": "Proofs/Erdos1014OQ02.lean",
         "tags": [
             "erdos",
@@ -17,22 +17,25 @@
             "research"
         ],
         "badge": "axiom",
-        "sorries": 2,
+        "sorries": 0,
         "sourceUrl": "https://erdosproblems.com/1014",
         "erdosUrl": "https://erdosproblems.com/1014",
         "erdosProblemStatus": "open",
         "dateAdded": "2026-03-28",
         "axiomCount": 0,
-        "lineCount": 233,
-        "assumptions": "6 axioms: ramseyNumber (definition), ramsey_monotone_right, ramsey_recurrence, ramsey_k2, ramsey_symm, R3_lower_bound. 2 sorries in conditional general-k rate theorem (growth ratio bound and 3-factor combination).",
+        "lineCount": 186,
+        "assumptions": "Inherits axioms from Erdos1014Problem.lean: ramseyNumber (definition), ramsey_monotone_right, ramsey_recurrence, ramsey_k2, ramsey_symm, R3_lower. All theorems fully proved (0 sorries).",
         "mathlib_version": "4.26.0",
         "leanFiles": [
             {
-                "sorryCount": 2
+                "sorryCount": 0
             }
         ],
         "originalContributions": [
-            "Audit: 2 actual sorries in conditional_rate_general_k (Bernoulli bound + ratio decomposition). Main results sorry-free."
+            "Proved rate_of_convergence_k3: |R(3,l+1)/R(3,l) - 1| ≤ C·log l/l from recurrence + Kim lower bound",
+            "Proved log_over_l_faster_than_inv_log: (log l)² < l from Mathlib's little-o",
+            "Fixed conditional_rate_general_k: removed incorrect O(1/l) claim (only o(1) follows from the hypothesis), delegated to ratio_from_asymptotics",
+            "Eliminated 2 sorries: file now fully proved (0 sorries)"
         ]
     },
     "crossReferences": [
@@ -82,17 +85,17 @@
         },
         {
             "id": "general-k",
-            "title": "Conditional Rate for General k",
-            "startLine": 205,
-            "endLine": 285,
-            "summary": "Under the conjectured asymptotics $R(k,l) \\sim c \\cdot l^{k-1}/(\\log l)^{k-2}$, the rate is $O(1/l)$, even faster. Contains 2 sorries for technical Bernoulli-type bounds.",
-            "mathContext": "The growth ratio $((l+1)/l)^{k-1} \\cdot (\\log l/\\log(l+1))^{k-2}$ differs from 1 by $O(1/l)$, combined with the 3-factor sandwich decomposition."
+            "title": "Conditional Convergence for General k",
+            "startLine": 143,
+            "endLine": 162,
+            "summary": "Under the conjectured asymptotics $R(k,l) \\sim c \\cdot l^{k-1}/(\\log l)^{k-2}$, the ratio $R(k,l+1)/R(k,l) \\to 1$, proved by delegating to `ratio_from_asymptotics` from the main file. Note: the O(1/l) rate does not follow from the given hypothesis — the overall rate depends on how fast $R(k,l)/g(l) \\to 1$, which is unspecified.",
+            "mathContext": "The growth ratio $((l+1)/l)^{k-1} \\cdot (\\log l/\\log(l+1))^{k-2}$ converges to 1 at rate $O(k/l)$, but the asymptotic error contributes an unquantified $o(1)$ term."
         },
         {
             "id": "answer",
             "title": "Summary Corollary",
-            "startLine": 290,
-            "endLine": 320,
+            "startLine": 164,
+            "endLine": 186,
             "summary": "Combines rate_of_convergence_k3 and log_over_l_faster_than_inv_log into a single statement answering OQ-02.",
             "mathContext": "The rate is $O(\\log l / l)$ for $k=3$, strictly faster than $O(1/\\log l)$."
         }
@@ -100,13 +103,13 @@
     "overview": {
         "historicalContext": "Erdős Problem #1014 asks whether R(k,l+1)/R(k,l) → 1 as l → ∞. OQ-01 proved this for k=3. This follow-up quantifies the convergence rate, answering: how fast does the ratio approach 1?",
         "problemStatement": "What is the rate of convergence of R(k,l+1)/R(k,l) to 1? Is it O(1/log l)?",
-        "text": "For k=3, the rate of convergence is O(log l / l), which is strictly faster than O(1/log l). Under conjectured asymptotics for general k, the rate would be O(1/l).",
+        "text": "For k=3, the rate of convergence is O(log l / l), which is strictly faster than O(1/log l). Under conjectured asymptotics for general k, the ratio converges to 1 (the rate depends on the speed of asymptotic convergence).",
         "proofStrategy": "Combine the Ramsey recurrence (giving linear increment bounds) with the Kim lower bound (giving quadratic-over-log growth) to obtain explicit rate bounds. Then prove log l / l < 1/log l for large l using Mathlib's little-o results.",
         "keyInsights": [
             "The rate O(log l / l) for k=3 is FASTER than the conjectured O(1/log l), answering the open question in the affirmative direction",
             "The Ramsey recurrence is the key: it constrains increments to be linear while values grow super-linearly",
             "The constant C = 2/c in the rate bound is explicit, where c is from Kim's R(3,l) ≥ c·l²/log l",
-            "For general k with power-law asymptotics, the rate would be O(1/l), coming from ((l+1)/l)^(k-1) = 1 + O(1/l)"
+            "For general k with power-law asymptotics, the ratio R(k,l+1)/R(k,l) → 1 (the growth ratio contributes O(k/l), but the overall rate depends on the speed of asymptotic convergence)"
         ],
         "prerequisites": [
             "Ramsey theory",
@@ -115,7 +118,7 @@
         ]
     },
     "conclusion": {
-        "summary": "The rate of convergence of R(3,l+1)/R(3,l) to 1 is O(log l / l), strictly faster than O(1/log l). This is proved from the Ramsey recurrence and Kim lower bound. For general k with conjectured asymptotics, the rate would be O(1/l).",
+        "summary": "The rate of convergence of R(3,l+1)/R(3,l) to 1 is O(log l / l), strictly faster than O(1/log l). This is proved from the Ramsey recurrence and Kim lower bound. For general k, the ratio converges to 1 under conjectured asymptotics.",
         "implications": "The fast convergence rate suggests that Ramsey numbers grow very smoothly for k=3, with consecutive values differing by a negligible fraction of their magnitude.",
         "openQuestions": [
             "Can the constant C = 2/c be improved, perhaps to 1/c?",
@@ -133,7 +136,7 @@
             "Topology"
         ],
         "namespace": "Erdos1014OQ02",
-        "lineCount": 233,
+        "lineCount": 186,
         "axiomCount": 6,
         "theoremCount": 4,
         "definitionCount": 0,
@@ -152,10 +155,10 @@
                 "leanType": "∃ L₀, ∀ l > L₀, log l / l < 1 / log l"
             },
             {
-                "name": "conditional_rate_general_k",
+                "name": "conditional_convergence_general_k",
                 "type": "key",
-                "description": "Under power-law asymptotics, the rate for general k is O(1/l) [2 sorries]",
-                "leanType": "(asymptotic hyp) → ∃ C > 0, ∃ L₀, ∀ l > L₀, |R(k,l+1)/R(k,l) - 1| ≤ C/l"
+                "description": "Under power-law asymptotics, R(k,l+1)/R(k,l) → 1 (proved via ratio_from_asymptotics)",
+                "leanType": "(asymptotic hyp) → ∀ ε > 0, ∃ L₀, ∀ l > L₀, |R(k,l+1)/R(k,l) - 1| < ε"
             },
             {
                 "name": "rate_is_O_log_over_l_not_inv_log",

@@ -109,9 +109,6 @@ def macmahonValues : Fin 8 → ℕ
   | 7 => 15
 
 /-- The known values match the sequence definition (axiom pending full proof). -/
-axiom macmahon_initial_values :
-  ∀ A : ℕ → ℕ, IsMacMahonSeq A →
-    ∀ i : Fin 8, A i.val = macmahonValues i
 
 /-- Why 3 is skipped: 3 = 1 + 2 = A(0) + A(1) is achievable. -/
 theorem three_is_achievable (A : ℕ → ℕ)
@@ -141,23 +138,12 @@ The main questions about growth rate remain open.
 
 /-- **Open Conjecture I**: a_k / k → ∞ as k → ∞.
     This means the sequence grows faster than linear. -/
-axiom growth_faster_than_linear :
-  ∀ A : ℕ → ℕ, IsMacMahonSeq A →
-    Tendsto (fun k => (A k : ℝ) / k) atTop atTop
 
 /-- **Open Conjecture II**: a_k / k^{1+c} → 0 for any c > 0.
     This means the sequence grows slower than any polynomial > 1. -/
-axiom growth_slower_than_polynomial :
-  ∀ A : ℕ → ℕ, IsMacMahonSeq A →
-    ∀ c : ℝ, c > 0 →
-      Tendsto (fun k => (A k : ℝ) / (k : ℝ) ^ (1 + c)) atTop (nhds 0)
 
 /-- **Andrews' Conjecture**: a_k ~ (k log k) / (log log k).
     The asymptotic growth rate is superlinear but subpolynomial. -/
-axiom andrews_conjecture :
-  ∀ A : ℕ → ℕ, IsMacMahonSeq A →
-    ∃ f : ℕ → ℝ, (∀ k, k > 1 → f k = (k : ℝ) * Real.log k / Real.log (Real.log k)) ∧
-      Tendsto (fun k => (A k : ℝ) / f k) atTop (nhds 1)
 
 /-
 ## Part V: Porubský's Partial Results
@@ -167,11 +153,6 @@ Porubský proved some bounds on the growth rate.
 
 /-- **Porubský's Upper Bound** (1977): For any ε > 0, infinitely many k satisfy
     a_k < (log k)^ε · (k log k) / (log log k). -/
-axiom porubsky_upper :
-  ∀ A : ℕ → ℕ, IsMacMahonSeq A →
-    ∀ ε : ℝ, ε > 0 →
-      ∀ N : ℕ, ∃ k > N,
-        (A k : ℝ) < Real.log k ^ ε * (k * Real.log k / Real.log (Real.log k))
 
 /-- Counting function: A(x) = number of terms ≤ x. -/
 noncomputable def countingFunction (A : ℕ → ℕ) (x : ℕ) : ℕ :=
@@ -183,11 +164,6 @@ noncomputable def primeCounting (x : ℕ) : ℕ :=
 
 /-- **Porubský's Density Bound**: limsup A(x)/π(x) ≥ 1/log(2).
     The MacMahon sequence is denser than primes by a factor of at least 1/log(2). -/
-axiom porubsky_density_bound :
-  ∀ A : ℕ → ℕ, IsMacMahonSeq A →
-    ∀ c : ℝ, c < 1 / Real.log 2 →
-      ∀ N : ℕ, ∃ x > N,
-        c < (countingFunction A x : ℝ) / primeCounting x
 
 /-
 ## Part VI: General Starting Value n
@@ -196,10 +172,6 @@ The problem also considers sequences starting with n ≠ 1.
 -/
 
 /-- For general n, the sequence still grows superlinearly (conjectured). -/
-axiom general_n_superlinear :
-  ∀ n : ℕ, n > 0 →
-    ∀ A : ℕ → ℕ, IsGoodFor A n →
-      Tendsto (fun k => (A k : ℝ) / k) atTop atTop
 
 /-
 ## Summary

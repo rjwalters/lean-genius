@@ -17,7 +17,7 @@
       "bipartite-graphs"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "erdosNumber": 1021,
     "erdosUrl": "https://erdosproblems.com/1021",
     "erdosProblemStatus": "open",
@@ -27,7 +27,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 260,
-    "assumptions": "4 axioms: G3_is_C6, erdos_simonovits_limit, C6_extremal_bound, kovari_sos_turan. 3 sorries remain.",
+    "assumptions": "4 axioms: G3_is_C6, erdos_simonovits_limit, C6_extremal_bound, kovari_sos_turan. 2 sorries remain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -252,7 +252,7 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1021",
-    "lineCount": 260,
+    "lineCount": 262,
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 17

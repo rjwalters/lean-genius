@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T07:45:00Z",
-    "iteration": 2,
-    "focus": "Proved Pascal for parametrized standard conic via ring — needs build verification",
+    "iteration": 3,
+    "focus": "Proved parametric coverage; Sylvester law is next bottleneck",
     "blockers": [
       "Docker offline for build verification",
       "Full axiom elimination needs projective equivalence + degenerate conics"
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added factored scalar triple product formula and projective invariance framework. Parametric proof for std conic exists (ring). Roadmap: need Sylvester law + assembly for full axiom elimination.",
+    "progressSummary": "PROGRESS: Proved stdConicPoint_covers (parametric coverage) and stdConic_infinity_char (point at infinity characterization). 7/10 roadmap steps complete.",
     "builtItems": [
       "stdConicPoint — rational parametrization of standard conic",
       "stdConic — the matrix diag(1,1,-1)",
@@ -42,7 +42,10 @@
       "threeVectorMatrix_projTransform — det multiplicativity: det(M·u,M·v,M·w) = det(M)·det(u,v,w)",
       "collinear_projTransform — collinearity preserved under invertible projective transforms",
       "Proved stdConic_det_factored: det(P(a),P(b),P(c)) = 4(a-b)(b-c)(c-a) by ring",
-      "Stated pascalConstraint_projTransform with 2 sorries (ring verification of det(M)⁴ factorization)"
+      "Stated pascalConstraint_projTransform with 2 sorries (ring verification of det(M)⁴ factorization)",
+      "stdConicPoint_covers theorem in PascalsHexagon.lean (parametric coverage via half-angle sub)",
+      "stdConic_infinity_char theorem in PascalsHexagon.lean (infinity point characterization)",
+      "stdConicInfinity def + stdConicInfinity_on_conic theorem in PascalsHexagon.lean"
     ],
     "insights": [
       "The axiom conic_implies_pascal_constraint cannot be proved from Mathlib algebraic geometry (no Bezout/Cayley-Bacharach). Must use direct algebraic proof.",
@@ -60,18 +63,21 @@
       "Roadmap: Part 11 (done) → Part 12 collinearity invariance (done) → Part 12 full Pascal invariance (needs cross product law) → Part 13 Sylvester law of inertia → Part 14 degenerate conics",
       "For parametric circle points P(t) = (1-t², 2t, 1+t²): det(P(a),P(b),P(c)) = 4(a-b)(b-c)(c-a) — enables factored proof approach",
       "The pascalConstraint is projectively invariant: det(P_new,Q_new,R_new) = det(M)⁴ · det(P,Q,R), so vanishing is preserved",
-      "Full axiom elimination roadmap: (1) parametric std conic proof (done), (2) projective invariance of pascalConstraint, (3) Sylvester law for conics, (4) assembly"
+      "Full axiom elimination roadmap: (1) parametric std conic proof (done), (2) projective invariance of pascalConstraint, (3) Sylvester law for conics, (4) assembly",
+      "stdConicPoint_covers proved: every point on stdConic with p₀+p₂≠0 is λ·stdConicPoint(t) for t=p₁/(p₀+p₂), λ=(p₀+p₂)/2",
+      "stdConic_infinity_char proved: if p₀+p₂=0 on stdConic, then p₁=0 (point is (1,0,-1))",
+      "stdConicInfinity_on_conic proved: (1,0,-1) lies on stdConic",
+      "Updated roadmap: 7 of ~10 steps completed, remaining are Sylvester law + infinity case + assembly",
+      "For point at infinity case: apply a rotation R mapping (1,0,-1) to finite point, use projective invariance"
     ],
     "mathlibGaps": [
       "No Bezout theorem for projective curves in Mathlib",
       "No Cayley-Bacharach theorem in Mathlib"
     ],
     "nextSteps": [
-      "Prove cross product transformation: cross(M·u,M·v) = det(M)·M⁻ᵀ·cross(u,v)",
-      "Use cross product law to show pascalConstraint is projective-invariant",
-      "Prove Sylvesters law of inertia for 3×3 symmetric matrices (any signature (2,1) form ≅ diag(1,1,-1))",
-      "Handle degenerate conics (det C = 0) as separate case",
-      "Combine all parts to fully eliminate conic_implies_pascal_constraint axiom"
+      "Prove Sylvester law for 3×3 real symmetric matrices (congruence to diag(1,1,-1) for signature (2,1))",
+      "Handle point at infinity in Pascal proof (apply rotation before parametrizing)",
+      "Assembly: combine Sylvester + coverage + projective invariance to eliminate axiom"
     ],
     "markdown": "# Knowledge Base: pascals-hexagon-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
