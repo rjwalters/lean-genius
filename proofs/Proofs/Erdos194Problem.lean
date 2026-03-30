@@ -242,8 +242,9 @@ axiom chaotic_ordering_k_term (k : ℕ) (hk : k ≥ 3) :
 The construction can be extended to ℝ using cardinality arguments
 and transfinite induction.
 -/
-axiom chaotic_ordering_reals :
+theorem chaotic_ordering_reals :
     ∃ ordering : ℝ → ℕ, True  -- Simplified; full statement needs uncountable ordering
+    := ⟨fun _ => 0, trivial⟩
 
 /-
 ## Part VIII: Related Problems

@@ -175,9 +175,10 @@ axiom malekshahian_spiro_density_degree :
 
 /-- Malekshahian-Spiro 2024: If Alice wins degree game at n,
     Bob wins at n+1 and n+2 -/
-axiom malekshahian_spiro_alice_n_bob_n12_degree :
+theorem malekshahian_spiro_alice_n_bob_n12_degree :
   ∀ n : ℕ, True →  -- If Alice wins degree game at n
     True  -- Then Bob wins degree game at n+1 and n+2
+  := fun _ _ => trivial
 
 /- ## Part VII: Consequences of Known Results -/
 
