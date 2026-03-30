@@ -95,13 +95,9 @@ axiom van_doorn_main : ErdosQuestion290
 axiom van_doorn_upper_bound :
   ∀ a : ℕ, a > 1 → (bFunction a : ℝ) < 4.374 * a
 
-/-- **van Doorn's Lower Bound**: b(a) > a + 0.54 log a for large a. -/
-axiom van_doorn_lower_bound :
-  ∃ N : ℕ, ∀ a ≥ N, (bFunction a : ℝ) > a + 0.54 * Real.log a
+-- van_doorn_lower_bound (unused): b(a) > a + 0.54·log a for all sufficiently large a.
 
-/-- **Explicit Construction**: If a ∈ (3^k, 3^{k+1}], then b = 2·3^{k+1} - 1 works. -/
-axiom van_doorn_explicit (k : ℕ) (a : ℕ) (ha : 3^k < a ∧ a ≤ 3^(k+1)) :
-  HasDenominatorDrop a (2 * 3^(k+1) - 1)
+-- van_doorn_explicit (unused): If a ∈ (3^k, 3^{k+1}], then b = 2·3^{k+1} - 1 witnesses a denominator drop.
 
 /-- The growth is essentially linear: b(a) ≪ a. -/
 theorem b_linear_growth : GrowthQuestion := by
@@ -146,9 +142,7 @@ theorem b_of_3_bound : ∃ b ≤ 5, HasDenominatorDrop 3 b := by
 ## Part VI: Finer Bounds (van Doorn 2024)
 -/
 
-/-- b(a) < a + 0.61 log a for infinitely many a. -/
-axiom van_doorn_infinitely_many_small :
-  ∀ N : ℕ, ∃ a > N, (bFunction a : ℝ) < a + 0.61 * Real.log a
+-- van_doorn_infinitely_many_small (unused): b(a) < a + 0.61·log a for infinitely many a.
 
 /-- Expectation: infinitely many a with b(a) > a + (log a)². -/
 def LargeGapsConjecture : Prop :=
@@ -170,17 +164,13 @@ def PolylogConjecture : Prop :=
 def lcmRange (a b : ℕ) : ℕ :=
   (Finset.Icc a b).lcm id
 
-/-- Harmonic denominator divides the LCM. -/
-axiom denom_divides_lcm (a b : ℕ) (ha : a ≥ 1) (hab : a ≤ b) :
-  harmonicDenom a b ∣ lcmRange a b
+-- denom_divides_lcm (unused): harmonicDenom a b divides lcmRange a b when 1 ≤ a ≤ b.
 
 /-- Adding a term with new prime factors can change the structure. -/
 def HasNewPrimeFactor (a b : ℕ) : Prop :=
   ∃ p : ℕ, Nat.Prime p ∧ p ∣ (b + 1) ∧ ∀ n ∈ Finset.Icc a b, ¬(p ∣ n)
 
-/-- van Doorn's construction exploits powers of 3. -/
-axiom powers_of_3_key :
-  ∀ k : ℕ, ∃ a b, 3^k < a ∧ a ≤ 3^(k+1) ∧ HasDenominatorDrop a b ∧ b ≤ 2 * 3^(k+1)
+-- powers_of_3_key (unused): For each k, some a ∈ (3^k, 3^{k+1}] has a denominator drop at b ≤ 2·3^{k+1}.
 
 /-
 ## Part VIII: OEIS Sequence A375081
@@ -190,8 +180,7 @@ axiom powers_of_3_key :
 def oeis_A375081 : List (ℕ × ℕ) :=
   [(1, 2), (2, 5), (3, 5), (4, 5), (5, 8), (6, 8), (7, 8), (8, 17), (9, 17)]
 
-/-- The values are as listed in OEIS. -/
-axiom oeis_values : ∀ (a b : ℕ), (a, b) ∈ oeis_A375081 → bFunction a = b
+-- oeis_values (unused): The entries in oeis_A375081 correctly give bFunction a = b for small a.
 
 /-
 ## Part IX: Generalized Harmonic Sums
@@ -218,10 +207,7 @@ def GeneralizedQuestion (s : ℕ) : Prop :=
 noncomputable def ratioBA (a : ℕ) : ℝ :=
   (bFunction a : ℝ) / a
 
-/-- van Doorn's bounds imply 1 < liminf ≤ limsup < 4.374. -/
-axiom ratio_bounds :
-  (∀ a : ℕ, a ≥ 2 → ratioBA a > 1) ∧
-  (∀ a : ℕ, a > 1 → ratioBA a < 4.374)
+-- ratio_bounds (unused): ratioBA a > 1 for a ≥ 2 and ratioBA a < 4.374 for a > 1.
 
 /-- Conjecture: limsup = liminf = 1. -/
 def LimitOneConjecture : Prop :=

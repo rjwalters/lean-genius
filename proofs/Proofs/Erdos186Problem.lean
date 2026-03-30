@@ -102,17 +102,8 @@ theorem pair_is_nonAveraging (a b : ℕ) (hab : a ≠ b) : IsNonAveraging {a, b}
 ## Part III: The Lower Bound (Bosznay 1989)
 -/
 
-/--
-**Bosznay's Construction (1989):**
-There exist non-averaging sets of size ≥ N^(1/4).
-
-The construction uses a clever selection based on sums of two squares
-or similar number-theoretic techniques.
--/
-axiom bosznay_lower_bound :
-    ∀ N : ℕ, N ≥ 1 →
-    ∃ A : Finset ℕ, IsNonAveraging A ∧ A ⊆ Finset.range (N + 1) ∧
-      (A.card : ℝ) ≥ (N : ℝ) ^ (1/4 : ℝ) / 2
+-- bosznay_lower_bound (Bosznay 1989): there exist non-averaging subsets of {1,...,N}
+-- of size ≥ N^(1/4)/2, constructed via number-theoretic techniques.
 
 /--
 **Corollary:** F(N) ≥ c · N^(1/4) for some constant c > 0.
@@ -129,23 +120,11 @@ axiom lower_bound_quarter :
 ## Part IV: The Upper Bound
 -/
 
-/--
-**Erdős-Sárközy (1990):**
-Original upper bound: F(N) ≪ (N log N)^(1/2).
--/
-axiom erdos_sarkozy_upper_bound_1990 :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ N : ℕ, N ≥ 2 →
-      (F N : ℝ) ≤ C * ((N : ℝ) * Real.log N) ^ (1/2 : ℝ)
+-- erdos_sarkozy_upper_bound_1990: F(N) ≤ C·(N log N)^(1/2) for some C > 0
+-- (Erdős-Sárközy 1990, original upper bound; superseded by later results).
 
-/--
-**Conlon-Fox-Pham (2023):**
-Improved upper bound: F(N) ≪ N^(1/4) · (log N)^c for some c.
--/
-axiom conlon_fox_pham_upper_bound_2023 :
-    ∃ C c : ℝ, C > 0 ∧ c > 0 ∧
-    ∀ N : ℕ, N ≥ 2 →
-      (F N : ℝ) ≤ C * (N : ℝ) ^ (1/4 : ℝ) * (Real.log N) ^ c
+-- conlon_fox_pham_upper_bound_2023: F(N) ≤ C·N^(1/4)·(log N)^c for some C,c > 0
+-- (Conlon-Fox-Pham 2023; superseded by Pham-Zakharov 2024).
 
 /--
 **Pham-Zakharov (2024):**
@@ -187,21 +166,8 @@ theorem erdos_186_bounds :
   · -- Upper bound from Pham-Zakharov
     exact hUpper N hN
 
-/--
-**The o(1) exponent form:** F(N) = N^(1/4+o(1)).
-
-For any ε > 0, eventually N^(1/4 - ε) ≤ F(N) ≤ N^(1/4 + ε).
-This is the standard way to express the asymptotic — the exponent
-converges to 1/4.
-
-Axiomatized because deriving the N^(1/4-ε) lower bound from the
-Bosznay construction requires careful asymptotic analysis.
--/
-axiom erdos_186 :
-    ∀ ε : ℝ, ε > 0 →
-    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
-      (N : ℝ) ^ (1/4 - ε) ≤ (F N : ℝ) ∧
-      (F N : ℝ) ≤ (N : ℝ) ^ (1/4 + ε)
+-- erdos_186: for every ε > 0 and all large N, N^(1/4-ε) ≤ F(N) ≤ N^(1/4+ε)
+-- (the o(1)-exponent form; requires careful asymptotic analysis of the Bosznay construction).
 
 /-
 ## Part VI: Properties of Non-Averaging Sets
@@ -228,34 +194,18 @@ theorem nonAveraging_no_centered_AP {A : Finset ℕ} (hA : IsNonAveraging A)
 ## Part VII: Connection to Arithmetic Progressions
 -/
 
-/--
-**Roth's Theorem Connection:**
-Roth's theorem says any subset of {1,...,N} of size ≫ N/log N contains
-a 3-term AP. Non-averaging is a weaker condition (only avoids centered APs),
-which is why non-averaging sets can be much larger (N^(1/4) vs N/log N).
--/
-axiom roth_bound_comparison :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ N : ℕ, N ≥ 2 →
-      (F N : ℝ) ≥ C * (N : ℝ) / Real.log N
+-- roth_bound_comparison: F(N) ≥ C·N/log N, noting non-averaging is weaker than
+-- AP-free (Roth's theorem), so F(N) grows faster than AP-free sets (N^(1/4) vs N/log N).
 
 /-
 ## Part VIII: The Growth Rate
 -/
 
-/--
-The exponent 1/4 is the correct order: F(N) cannot grow slower than N^(1/4-ε)
-for any ε > 0, since Bosznay's construction achieves N^(1/4).
--/
-axiom exponent_is_quarter :
-    ∀ ε : ℝ, ε > 0 →
-    (∀ N : ℕ, N ≥ 2 → (F N : ℝ) ≤ (N : ℝ) ^ (1/4 - ε)) → False
+-- exponent_is_quarter: F(N) cannot grow as slowly as N^(1/4-ε) for any ε > 0,
+-- since Bosznay's construction witnesses growth at rate N^(1/4).
 
-/--
-The o(1) term in the exponent is necessary (upper bound not exactly N^(1/4)).
--/
-axiom upper_exponent_not_exact :
-    ¬∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 → (F N : ℝ) ≤ C * (N : ℝ) ^ (1/4 : ℝ)
+-- upper_exponent_not_exact: there is no C > 0 with F(N) ≤ C·N^(1/4) for all large N;
+-- the o(1) term in the exponent is necessary.
 
 /-
 ## Part IX: Open Questions

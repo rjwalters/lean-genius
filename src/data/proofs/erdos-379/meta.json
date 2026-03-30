@@ -52,9 +52,9 @@
       "Connection to Lucas' theorem and base-3 representations",
       "Comparison with easier s(n) (existential vs universal over k)"
     ],
-    "axiomCount": 10,
-    "lineCount": 198,
-    "assumptions": "10 axioms: S_ge_one, S_is_max, witness_divisibility, and 7 more. See Lean source for complete statements."
+    "axiomCount": 3,
+    "lineCount": 176,
+    "assumptions": "3 axioms: witness_divisibility, S_witness_bound, erdos_379. 7 unused axioms removed."
   },
   "overview": {
     "historicalContext": "Erdos Problem #379 concerns a subtle question about prime power divisibility of binomial coefficients. The function S(n) measures a 'uniform' divisibility property: the largest power s such that EVERY binomial coefficient C(n,k) for 1 <= k < n is divisible by some prime power p^s (where the prime p can depend on k).\n\nThe problem appeared in Erdos and Graham's 1980 collection [ErGr80, p.72]. An easier related function s(n) - where we only require ONE k to have high prime power divisibility - was known to satisfy s(n) ~ log(n).\n\nThe problem was solved affirmatively by Cambie, Kovac, and Tao, who showed that the key is to consider n = 3^{2^m}. For such n, Lucas' theorem on binomial coefficients modulo primes reveals that every C(n,k) is divisible by 3^m, giving S(n) >= m. Since m can be arbitrarily large, we get limsup S(n) = infinity.\n\nThe solution was formally verified in Lean, making this one of the Erdos problems with computer-verified proofs.",
@@ -155,8 +155,8 @@
       "Filter"
     ],
     "namespace": "Erdos379",
-    "lineCount": 198,
-    "axiomCount": 10,
+    "lineCount": 176,
+    "axiomCount": 3,
     "theoremCount": 7,
     "definitionCount": 5
   },
@@ -164,17 +164,17 @@
     {
       "targetId": "erdos-175",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, prime-powers"
+      "description": "Related Erd\u0151s problem sharing themes: binomial-coefficients, number-theory, prime-powers"
     },
     {
       "targetId": "erdos-1063",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+      "description": "Related Erd\u0151s problem sharing themes: binomial-coefficients, number-theory"
     },
     {
       "targetId": "erdos-1093",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+      "description": "Related Erd\u0151s problem sharing themes: binomial-coefficients, number-theory"
     }
   ]
 }
