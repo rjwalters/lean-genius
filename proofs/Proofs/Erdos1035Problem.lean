@@ -109,3 +109,82 @@ theorem hypercube_one_is_edge :
     refine ⟨hne, ⟨0, by omega⟩, ?_⟩
     simp [Pow.pow]
     fin_cases u <;> fin_cases v <;> simp_all
+
+/- ## Decidability -/
+
+/-- Decidability of `hypercubeAdj`: enables `decide` and `native_decide` for
+    computational verification of Q_n properties. -/
+instance hypercubeAdjDecidable (n : ℕ) (u v : Fin (2 ^ n)) :
+    Decidable (hypercubeAdj n u v) :=
+  inferInstance
+
+instance hypercubeGraphDecidableAdj (n : ℕ) : DecidableRel (hypercubeGraph n).Adj :=
+  fun u v => hypercubeAdjDecidable n u v
+
+/- ## Q_n structural properties -/
+
+/-- Q_2 is the 4-cycle: edges are 0-1, 0-2, 1-3, 2-3. Verified computationally.
+    The vertices {00, 01, 10, 11} are adjacent when they differ in exactly one bit. -/
+theorem hypercube_two_edges :
+    (hypercubeGraph 2).Adj (0 : Fin 4) (1 : Fin 4) ∧
+    (hypercubeGraph 2).Adj (0 : Fin 4) (2 : Fin 4) ∧
+    ¬(hypercubeGraph 2).Adj (0 : Fin 4) (3 : Fin 4) ∧
+    (hypercubeGraph 2).Adj (1 : Fin 4) (3 : Fin 4) ∧
+    (hypercubeGraph 2).Adj (2 : Fin 4) (3 : Fin 4) ∧
+    ¬(hypercubeGraph 2).Adj (1 : Fin 4) (2 : Fin 4) := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> {
+    simp only [hypercubeGraph, hypercubeAdj]
+    decide
+  }
+
+/-- Each vertex of Q_1 has exactly 1 neighbor (Q_1 is 1-regular). -/
+theorem hypercube_one_regular :
+    ∀ v : Fin (2 ^ 1),
+      (Finset.univ.filter (fun w => (hypercubeGraph 1).Adj v w)).card = 1 := by
+  intro v; fin_cases v <;> native_decide
+
+/-- Each vertex of Q_2 has exactly 2 neighbors (Q_2 is 2-regular). -/
+theorem hypercube_two_regular :
+    ∀ v : Fin (2 ^ 2),
+      (Finset.univ.filter (fun w => (hypercubeGraph 2).Adj v w)).card = 2 := by
+  intro v; fin_cases v <;> native_decide
+
+/-- Q_2 has exactly 4 edges (each of the 4 vertices has degree 2, and 4·2/2 = 4). -/
+theorem hypercube_two_edge_count :
+    (Finset.univ.filter (fun p : Fin 4 × Fin 4 =>
+      (hypercubeGraph 2).Adj p.1 p.2)).card = 8 := by
+  native_decide
+
+/-- Each vertex of Q_3 has exactly 3 neighbors (Q_3 is 3-regular). -/
+theorem hypercube_three_regular :
+    ∀ v : Fin (2 ^ 3),
+      (Finset.univ.filter (fun w => (hypercubeGraph 3).Adj v w)).card = 3 := by
+  intro v; fin_cases v <;> native_decide
+
+/-- The total number of directed edges in Q_3 is 24 (= 8 vertices × 3 neighbors).
+    So Q_3 has 12 undirected edges. -/
+theorem hypercube_three_edge_count :
+    (Finset.univ.filter (fun p : Fin 8 × Fin 8 =>
+      (hypercubeGraph 3).Adj p.1 p.2)).card = 24 := by
+  native_decide
+
+/- ## Adjacency characterization -/
+
+/-- Adjacent vertices in Q_n differ in exactly one bit position. Restates
+    the definition in terms of explicit bit positions. -/
+theorem hypercube_adj_iff (n : ℕ) (u v : Fin (2 ^ n)) :
+    (hypercubeGraph n).Adj u v ↔ u ≠ v ∧ ∃ k : Fin n, u.val ^^^ v.val = 2 ^ k.val :=
+  Iff.rfl
+
+/-- XOR with a power of 2 gives a distinct value (flipping a nonzero bit).
+    For any v and k, v XOR 2^k ≠ v since 2^k > 0. -/
+theorem xor_pow2_ne_self (v k : ℕ) : v ^^^ 2 ^ k ≠ v := by
+  intro h
+  have : v ^^^ v ^^^ 2 ^ k = v ^^^ v := by rw [h]
+  simp [Nat.xor_self, Nat.zero_xor] at this
+
+/- Q_n is n-regular: every vertex has exactly n neighbors.
+   This follows from the fact that flipping any one of the n bit positions
+   gives a distinct neighbor, and these are exactly all neighbors.
+   Verified computationally for n ≤ 3 (see hypercube_one_regular,
+   hypercube_two_regular, hypercube_three_regular above). -/

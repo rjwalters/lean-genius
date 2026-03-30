@@ -2,9 +2,9 @@
   "id": "erdos-1035",
   "title": "Hypercube Subgraphs in Dense Graphs",
   "slug": "erdos-1035",
-  "description": "Is there c > 0 such that every graph on 2^n vertices with min degree > (1-c)·2^n contains the hypercube Q_n? Related to extremal graph theory for hypercube embeddings.",
+  "description": "Is there c > 0 such that every graph on 2^n vertices with min degree > (1-c)\u00b72^n contains the hypercube Q_n? Related to extremal graph theory for hypercube embeddings.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1035",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos1035Problem.lean",
@@ -25,30 +25,30 @@
       "SimpleGraph and graph homomorphisms from Mathlib",
       "Hypercube graphs and their properties",
       "Graph density and extremal graph theory",
-      "Turán-type bounds"
+      "Tur\u00e1n-type bounds"
     ],
     "axiomCount": 0,
-    "lineCount": 111,
+    "lineCount": 190,
     "assumptions": "None. All auxiliary theorems proved: hypercube_self_subgraph (identity embedding), complete_contains_hypercube (identity on complete graph), hypercube_one_is_edge (case analysis on Fin 2). Main conjecture stated as Prop definition (open problem).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in his collection on extremal graph theory: given a graph $G$ on $2^n$ vertices with minimum degree $\\delta(G) > (1-c) \\cdot 2^n$, must $G$ contain the $n$-dimensional hypercube $Q_n$? The question sits at the intersection of **Turán-type** extremal theory and **hypercube combinatorics**. Classical results like **Dirac's theorem** (1952) show $\\delta \\geq n/2$ forces a Hamiltonian cycle; the **Komlós–Sárközy–Szemerédi theorem** (1995) extends this to bounded-degree spanning subgraphs. Since $Q_n$ is $n$-regular with $2^n$ vertices, a positive answer would place it in the KSS family. Conlon (2009) proved partial embedding results for hypergraphs, and the edge-extremal variant — determining $\\mathrm{ex}(N, Q_n)$ — is Erdős Problem #576.",
+    "historicalContext": "Erd\u0151s posed this problem in his collection on extremal graph theory: given a graph $G$ on $2^n$ vertices with minimum degree $\\delta(G) > (1-c) \\cdot 2^n$, must $G$ contain the $n$-dimensional hypercube $Q_n$? The question sits at the intersection of **Tur\u00e1n-type** extremal theory and **hypercube combinatorics**. Classical results like **Dirac's theorem** (1952) show $\\delta \\geq n/2$ forces a Hamiltonian cycle; the **Koml\u00f3s\u2013S\u00e1rk\u00f6zy\u2013Szemer\u00e9di theorem** (1995) extends this to bounded-degree spanning subgraphs. Since $Q_n$ is $n$-regular with $2^n$ vertices, a positive answer would place it in the KSS family. Conlon (2009) proved partial embedding results for hypergraphs, and the edge-extremal variant \u2014 determining $\\mathrm{ex}(N, Q_n)$ \u2014 is Erd\u0151s Problem #576.",
     "problemStatement": "Is there $c > 0$ such that every graph on $2^n$ vertices with minimum degree $> (1-c) \\cdot 2^n$ contains $Q_n$ as a subgraph?",
-    "text": "Is there c > 0 such that every graph on 2^n vertices with min degree > (1-c)·2^n contains the hypercube Q_n? Related to extremal graph theory for hypercube embeddings.",
-    "proofStrategy": "We define **hypercubeGraph** via XOR adjacency on `Fin(2^n)`, **HasMinDegree** for degree conditions, and **ContainsAsSubgraph** for injective homomorphisms. The main conjecture `ErdosProblem1035` and two alternative formulations are stated as `Prop`. Basic sanity checks — $Q_n \\subseteq Q_n$ via identity and $K_{2^n} \\supseteq Q_n$ — are proved as theorems.",
+    "text": "Is there c > 0 such that every graph on 2^n vertices with min degree > (1-c)\u00b72^n contains the hypercube Q_n? Related to extremal graph theory for hypercube embeddings.",
+    "proofStrategy": "We define **hypercubeGraph** via XOR adjacency on `Fin(2^n)`, **HasMinDegree** for degree conditions, and **ContainsAsSubgraph** for injective homomorphisms. The main conjecture `ErdosProblem1035` and two alternative formulations are stated as `Prop`. Basic sanity checks \u2014 $Q_n \\subseteq Q_n$ via identity and $K_{2^n} \\supseteq Q_n$ \u2014 are proved as theorems.",
     "keyInsights": [
       "**Hypercube $Q_n$** has $2^n$ vertices and $n \\cdot 2^{n-1}$ edges, with every vertex having degree exactly $n$",
-      "**XOR adjacency**: $u \\sim v$ iff $u \\oplus v = 2^k$ for some $k < n$ — captures single-bit difference elegantly",
+      "**XOR adjacency**: $u \\sim v$ iff $u \\oplus v = 2^k$ for some $k < n$ \u2014 captures single-bit difference elegantly",
       "The conjecture asks for a **universal constant** $c$ independent of $n$, which is surprisingly strong given $Q_n$'s exponential growth",
-      "**Relation to KSS**: a positive answer would extend the Komlós–Sárközy–Szemerédi framework to hypercubes as spanning subgraphs",
+      "**Relation to KSS**: a positive answer would extend the Koml\u00f3s\u2013S\u00e1rk\u00f6zy\u2013Szemer\u00e9di framework to hypercubes as spanning subgraphs",
       "**Two fallback formulations**: (1) relax to $m > 2^n$ vertices (non-spanning), (2) find exact threshold sequence $u_n$"
     ],
     "prerequisites": [
       "SimpleGraph and graph homomorphisms from Mathlib",
       "Hypercube graphs and their properties",
       "Graph density and extremal graph theory",
-      "Turán-type bounds"
+      "Tur\u00e1n-type bounds"
     ]
   },
   "sections": [
@@ -82,14 +82,14 @@
       "startLine": 55,
       "endLine": 64,
       "summary": "States $\\exists\\, c > 0$ such that $\\forall\\, n \\geq 1$, any graph on $2^n$ vertices with $\\delta \\geq \\lceil (1-c) \\cdot 2^n \\rceil$ contains $Q_n$.",
-      "mathContext": "The `Nat.ceil` handles rounding of the real-valued threshold $(1-c) \\cdot 2^n$ to a natural number. The universal quantifier over $n$ makes this a uniform statement — a single constant $c$ must work for all dimensions simultaneously."
+      "mathContext": "The `Nat.ceil` handles rounding of the real-valued threshold $(1-c) \\cdot 2^n$ to a natural number. The universal quantifier over $n$ makes this a uniform statement \u2014 a single constant $c$ must work for all dimensions simultaneously."
     },
     {
       "id": "alternatives",
       "title": "Alternative Formulations",
       "startLine": 65,
       "endLine": 84,
-      "summary": "Two fallback questions: (1) `ErdosProblem1035Alt1` — find smallest $m > 2^n$ for non-spanning containment; (2) `ErdosProblem1035Alt2` — find exact threshold sequence $u_n > 0$.",
+      "summary": "Two fallback questions: (1) `ErdosProblem1035Alt1` \u2014 find smallest $m > 2^n$ for non-spanning containment; (2) `ErdosProblem1035Alt2` \u2014 find exact threshold sequence $u_n > 0$.",
       "mathContext": "Alternative 1 relaxes spanning to non-spanning containment (typically easier). Alternative 2 seeks the precise extremal function $u_n$; if $u_n = c \\cdot 2^n$ for constant $c$, this recovers the main conjecture."
     },
     {
@@ -102,84 +102,84 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem #1035 on hypercube embedding in dense graphs: XOR-based $Q_n$ construction, the main conjecture with universal constant $c$, two alternative formulations, and three basic properties. 0 sorries (axiom-based).",
-    "implications": "**Embedding Sparse Structures**: The problem asks what edge density or minimum degree guarantees a copy of the $d$-dimensional hypercube $Q_d$ (a bipartite graph on $2^d$ vertices with $d \\cdot 2^{d-1}$ edges). This extends the Komlós-Sárközy-Szemerédi framework, which handles general bounded-degree spanning subgraphs, to the specific structure of hypercubes where the maximum degree $d$ grows with the graph.\n\n**Regularity Method Approach**: Szemerédi's regularity lemma combined with the blow-up lemma provides a general approach, but the growing degree $d$ in $Q_d$ pushes beyond the fixed-degree regime where these tools work optimally. The problem tests the limits of the regularity method and may require new embedding techniques.\n\n**Applications**: Hypercube embeddings arise in parallel computing (processor interconnection networks), coding theory (error-correcting codes as hypercube substructures), and Boolean function analysis (the hypercube is the natural domain for Boolean functions, and embeddings reflect structural properties of Boolean complexity classes).",
+    "summary": "The formalization captures Erd\u0151s Problem #1035 on hypercube embedding in dense graphs: XOR-based $Q_n$ construction, the main conjecture with universal constant $c$, two alternative formulations, and three basic properties. 0 sorries (axiom-based).",
+    "implications": "**Embedding Sparse Structures**: The problem asks what edge density or minimum degree guarantees a copy of the $d$-dimensional hypercube $Q_d$ (a bipartite graph on $2^d$ vertices with $d \\cdot 2^{d-1}$ edges). This extends the Koml\u00f3s-S\u00e1rk\u00f6zy-Szemer\u00e9di framework, which handles general bounded-degree spanning subgraphs, to the specific structure of hypercubes where the maximum degree $d$ grows with the graph.\n\n**Regularity Method Approach**: Szemer\u00e9di's regularity lemma combined with the blow-up lemma provides a general approach, but the growing degree $d$ in $Q_d$ pushes beyond the fixed-degree regime where these tools work optimally. The problem tests the limits of the regularity method and may require new embedding techniques.\n\n**Applications**: Hypercube embeddings arise in parallel computing (processor interconnection networks), coding theory (error-correcting codes as hypercube substructures), and Boolean function analysis (the hypercube is the natural domain for Boolean functions, and embeddings reflect structural properties of Boolean complexity classes).",
     "openQuestions": [
       "Does a universal constant $c > 0$ exist, or does the required minimum degree fraction tend to 1 as $n \\to \\infty$?",
       "What is the growth rate of the exact threshold sequence $u_n$ in the Alternative 2 formulation?",
-      "How does the minimum-degree threshold compare to the edge-extremal number $\\mathrm{ex}(2^n, Q_n)$ from Erdős Problem #576?"
+      "How does the minimum-degree threshold compare to the edge-extremal number $\\mathrm{ex}(2^n, Q_n)$ from Erd\u0151s Problem #576?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-576",
       "relationship": "related",
-      "description": "Erdős #576 asks for the extremal number ex(N, Q_n) — the edge-density analogue of #1035's minimum-degree formulation. Both problems concern when dense graphs must contain Q_n, with #576 measuring density by edge count and #1035 by minimum degree."
+      "description": "Erd\u0151s #576 asks for the extremal number ex(N, Q_n) \u2014 the edge-density analogue of #1035's minimum-degree formulation. Both problems concern when dense graphs must contain Q_n, with #576 measuring density by edge count and #1035 by minimum degree."
     },
     {
       "targetId": "erdos-578",
       "relationship": "related",
-      "description": "Erdős #578 asks whether a random graph on 2^d vertices with edge probability 1/2 almost surely contains Q_d. Riordan (2000) answered YES. The probabilistic regime of #578 complements the deterministic minimum-degree regime of #1035."
+      "description": "Erd\u0151s #578 asks whether a random graph on 2^d vertices with edge probability 1/2 almost surely contains Q_d. Riordan (2000) answered YES. The probabilistic regime of #578 complements the deterministic minimum-degree regime of #1035."
     },
     {
       "targetId": "erdos-577",
       "relationship": "related",
-      "description": "Erdős #577 forces vertex-disjoint 4-cycles via a minimum-degree condition (δ ≥ n/2 on 4k vertices). Both #577 and #1035 use minimum-degree thresholds to force structured subgraphs, illustrating the general programme of degree-forcing spanning or near-spanning configurations."
+      "description": "Erd\u0151s #577 forces vertex-disjoint 4-cycles via a minimum-degree condition (\u03b4 \u2265 n/2 on 4k vertices). Both #577 and #1035 use minimum-degree thresholds to force structured subgraphs, illustrating the general programme of degree-forcing spanning or near-spanning configurations."
     },
     {
       "targetId": "erdos-580",
       "relationship": "related",
-      "description": "The Loebl-Komlós-Sós conjecture (#580) forces every tree on ≤ n/2 vertices as a subgraph when at least n/2 vertices have degree ≥ n/2. Like #1035, it asks whether a global degree condition forces a specific sparse spanning subgraph, directly extending the Komlós-Sárközy-Szemerédi framework."
+      "description": "The Loebl-Koml\u00f3s-S\u00f3s conjecture (#580) forces every tree on \u2264 n/2 vertices as a subgraph when at least n/2 vertices have degree \u2265 n/2. Like #1035, it asks whether a global degree condition forces a specific sparse spanning subgraph, directly extending the Koml\u00f3s-S\u00e1rk\u00f6zy-Szemer\u00e9di framework."
     },
     {
       "targetId": "erdos-1078",
       "relationship": "related",
-      "description": "Erdős #1078 determines the minimum-degree threshold that forces K_r in r-partite graphs (solved by Haxell 2001). Both #1078 and #1035 study minimum-degree conditions that force structured subgraphs, but #1078 targets cliques while #1035 targets hypercubes."
+      "description": "Erd\u0151s #1078 determines the minimum-degree threshold that forces K_r in r-partite graphs (solved by Haxell 2001). Both #1078 and #1035 study minimum-degree conditions that force structured subgraphs, but #1078 targets cliques while #1035 targets hypercubes."
     },
     {
       "targetId": "erdos-1077",
       "relationship": "related",
-      "description": "Erdős #1077 (Balanced Subgraphs in Dense Graphs, Jiang-Longbrake 2025) asks for large balanced subgraphs in dense graphs. Together with #1035, it illustrates the broader theme of what structured subgraphs can be forced by density conditions in graphs with 2^n or near-2^n vertices."
+      "description": "Erd\u0151s #1077 (Balanced Subgraphs in Dense Graphs, Jiang-Longbrake 2025) asks for large balanced subgraphs in dense graphs. Together with #1035, it illustrates the broader theme of what structured subgraphs can be forced by density conditions in graphs with 2^n or near-2^n vertices."
     }
   ],
   "references": [
     {
-      "authors": "Komlós, János; Sárközy, Gábor N.; Szemerédi, Endre",
-      "title": "Proof of a packing conjecture of Bollobás",
+      "authors": "Koml\u00f3s, J\u00e1nos; S\u00e1rk\u00f6zy, G\u00e1bor N.; Szemer\u00e9di, Endre",
+      "title": "Proof of a packing conjecture of Bollob\u00e1s",
       "year": "1995",
-      "venue": "Combinatorics, Probability and Computing, vol. 4, no. 3, pp. 241–252",
-      "note": "Proves that every graph on n vertices with minimum degree ≥ (1 − 1/Δ)n contains every graph H with n vertices, bounded maximum degree Δ, and o(n) bandwidth as a spanning subgraph. The KSS theorem is the principal motivation for Erdős Problem #1035: the hypercube Q_n is Δ-regular and has superlogarithmic bandwidth, so it falls just outside the KSS regime, making #1035 a natural boundary question."
+      "venue": "Combinatorics, Probability and Computing, vol. 4, no. 3, pp. 241\u2013252",
+      "note": "Proves that every graph on n vertices with minimum degree \u2265 (1 \u2212 1/\u0394)n contains every graph H with n vertices, bounded maximum degree \u0394, and o(n) bandwidth as a spanning subgraph. The KSS theorem is the principal motivation for Erd\u0151s Problem #1035: the hypercube Q_n is \u0394-regular and has superlogarithmic bandwidth, so it falls just outside the KSS regime, making #1035 a natural boundary question."
     },
     {
       "authors": "Riordan, Oliver",
       "title": "Spanning subgraphs of random graphs",
       "year": "2000",
-      "venue": "Combinatorics, Probability and Computing, vol. 9, no. 2, pp. 125–148",
+      "venue": "Combinatorics, Probability and Computing, vol. 9, no. 2, pp. 125\u2013148",
       "note": "Proves that the random graph G(2^n, 1/2) almost surely contains Q_n as a spanning subgraph, resolving the random-graph variant of the hypercube embedding question. Provides context for Problem #1035 by showing the probabilistic regime (roughly half the edges) already forces Q_n."
     },
     {
       "authors": "Conlon, David",
       "title": "A new upper bound for diagonal Ramsey numbers",
       "year": "2009",
-      "venue": "Annals of Mathematics, vol. 170, no. 2, pp. 941–960",
+      "venue": "Annals of Mathematics, vol. 170, no. 2, pp. 941\u2013960",
       "note": "Although primarily a Ramsey paper, Conlon's probabilistic embedding techniques for sparse structured subgraphs in dense host graphs are directly relevant to Problem #1035's approach to embedding Q_n in minimum-degree-dense graphs."
     },
     {
       "authors": "Faudree, Ralph J.; Schelp, Richard H.",
       "title": "Path-path Ramsey-type numbers for the complete bipartite graph",
       "year": "1975",
-      "venue": "Journal of Combinatorial Theory, Series B, vol. 19, no. 2, pp. 161–173",
+      "venue": "Journal of Combinatorial Theory, Series B, vol. 19, no. 2, pp. 161\u2013173",
       "note": "Early work on subgraph containment via density conditions, part of the extremal graph theory tradition that frames Problem #1035's minimum-degree threshold approach to spanning subgraph embedding."
     },
     {
-      "authors": "Bollobás, Béla",
+      "authors": "Bollob\u00e1s, B\u00e9la",
       "title": "Extremal Graph Theory",
       "year": "1978",
       "venue": "Academic Press, London Mathematical Society Monographs, vol. 11",
-      "note": "Standard reference for extremal graph theory. Chapter 6 covers the Turán-type and minimum-degree results that frame #1035, including Dirac's theorem (δ ≥ n/2 forces a Hamiltonian cycle) as the prototype for minimum-degree spanning subgraph results."
+      "note": "Standard reference for extremal graph theory. Chapter 6 covers the Tur\u00e1n-type and minimum-degree results that frame #1035, including Dirac's theorem (\u03b4 \u2265 n/2 forces a Hamiltonian cycle) as the prototype for minimum-degree spanning subgraph results."
     },
     {
-      "title": "Erdős Problem 1035",
+      "title": "Erd\u0151s Problem 1035",
       "url": "https://erdosproblems.com/1035",
       "type": "source"
     },
@@ -189,7 +189,7 @@
       "type": "related"
     },
     {
-      "title": "Komlós, Sárközy, Szemerédi (1995): Proof of a packing conjecture of Bollobás",
+      "title": "Koml\u00f3s, S\u00e1rk\u00f6zy, Szemer\u00e9di (1995): Proof of a packing conjecture of Bollob\u00e1s",
       "url": "https://doi.org/10.1017/S0963548300001705",
       "type": "related"
     },
