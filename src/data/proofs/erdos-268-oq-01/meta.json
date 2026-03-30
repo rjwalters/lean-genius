@@ -1,0 +1,124 @@
+{
+  "id": "erdos-268-oq-01",
+  "title": "Erdős #268 OQ1: Optimal Ball Radius in X_d",
+  "slug": "erdos-268-oq-01",
+  "description": "What is the largest open ball contained in X_d for each dimension d? How does the optimal radius R(d) = sup{r : exists c, B(c,r) subset X_d} decay with d?",
+  "meta": {
+    "author": "Paul Erdős, Vjekoslav Kovač, Terence Tao",
+    "sourceUrl": "https://erdosproblems.com/268",
+    "date": "2024-2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos268OQ01.lean",
+    "tags": [
+      "erdos",
+      "analysis",
+      "harmonic-series",
+      "topology",
+      "number-theory",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 4,
+    "erdosNumber": 268,
+    "erdosUrl": "https://erdosproblems.com/268",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-03-30",
+    "axiomCount": 1,
+    "lineCount": 191,
+    "assumptions": "1 axiom (Kovac-Tao main theorem) and 4 sorries. Formalizes the optimal radius question with proved geometric constraints."
+  },
+  "overview": {
+    "historicalContext": "Following the resolution of Erdos Problem #268 by Kovac-Tao (2024), which proved X_d has nonempty interior for all d >= 1, this open question investigates the quantitative aspects: how large is the largest inscribed ball? Kovac's 2024 proof for d=3 was constructive, giving explicit ball parameters, but the general Kovac-Tao proof is existential. The decay rate of the optimal radius R(d) with dimension d remains unknown.",
+    "problemStatement": "Define the **optimal radius** $R(d) = \\sup\\{r > 0 : \\exists c \\in \\mathbb{R}^d,\\, B(c,r) \\subseteq X_d\\}$. By the Kovac-Tao theorem, $R(d) > 0$ for all $d \\ge 1$.\n\n**Questions**:\n1. What is $R(d)$ for small $d$ (especially $d = 1, 2, 3$)?\n2. How does $R(d)$ decay as $d \\to \\infty$?\n3. Is $R(d)$ monotone non-increasing in $d$?",
+    "text": "What is the largest open ball contained in X_d for each dimension d? How does the optimal radius decay with d?",
+    "proofStrategy": "We formalize the optimal radius R(d) as the supremum of admissible radii and prove: (1) R(d) > 0 from the main theorem, (2) geometric constraints showing X_d lies in a positive-coordinate cone with strictly decreasing entries, (3) projection-based dimension monotonicity. The 4 remaining sorries involve sup/inf arguments for boundedness and monotonicity of R(d).",
+    "keyInsights": [
+      "X_d lies in the cone {x : x_0 > x_1 > ... > x_{d-1} > 0}, which constrains the size of inscribed balls",
+      "Projection from R^{d_2} to R^{d_1} preserves X, suggesting R(d_1) >= R(d_2) for d_1 <= d_2",
+      "The optimal radius captures the quantitative gap between the existential Kovac-Tao proof and constructive bounds"
+    ],
+    "prerequisites": [
+      "Kovac-Tao theorem: X_d has nonempty interior for all d >= 1",
+      "Metric space theory: open balls, supremum of radii",
+      "Real analysis: tsum positivity, comparison tests"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions and Setup",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Mirrors core definitions from Erdos268Problem.lean and imports the Kovac-Tao axiom.",
+      "mathContext": "Defines HasConvergentHarmonicSubseries, shiftedHarmonicSum, harmonicPoint, harmonicPointSet, and the main axiom."
+    },
+    {
+      "id": "optimal-radius",
+      "title": "The Optimal Radius",
+      "startLine": 60,
+      "endLine": 82,
+      "summary": "Defines admissibleRadii(d) and optimalRadius(d) = sSup of admissible radii. Also defines inscribedRadius for a specific center point.",
+      "mathContext": "R(d) = sup{r > 0 : exists c, B(c,r) subset X_d}"
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 84,
+      "endLine": 113,
+      "summary": "Proves exists_inscribed_ball from the main axiom, shows admissibleRadii is nonempty. States boundedness (sorry) and positivity of R(d) (sorry).",
+      "mathContext": "R(d) > 0 and the set of admissible radii is nonempty and bounded above."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Dimension Monotonicity",
+      "startLine": 115,
+      "endLine": 138,
+      "summary": "Defines projection maps and proves they preserve harmonicPointSet membership. States R(d_1) >= R(d_2) for d_1 <= d_2 (sorry).",
+      "mathContext": "R is non-increasing: more dimensions means tighter constraints."
+    },
+    {
+      "id": "geometric-constraints",
+      "title": "Geometric Constraints",
+      "startLine": 140,
+      "endLine": 191,
+      "summary": "Proves X_d lies in the positive orthant and in a cone (strictly decreasing coordinates). States an upper bound on R(d) (sorry).",
+      "mathContext": "X_d subset {x : x_0 > x_1 > ... > x_{d-1} > 0}"
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the open question about the optimal inscribed ball radius in X_d. Defines R(d) and proves geometric constraints. 4 sorries remain for sup/inf arguments.",
+    "implications": "Understanding R(d) would bridge the gap between existential and constructive proofs of the Kovac-Tao theorem.",
+    "openQuestions": [
+      "What is R(1)? For d=1, X_1 is related to achievable sums of Egyptian fractions.",
+      "Does R(d) decay exponentially, polynomially, or something else as d grows?",
+      "Can R(3) be computed from Kovac's explicit ball construction?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-268",
+      "relationship": "extends",
+      "description": "This is a quantitative refinement of the main Erdos #268 result"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.Normed.Group.InfiniteSum",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos268OQ01",
+    "lineCount": 191,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 9
+  }
+}
