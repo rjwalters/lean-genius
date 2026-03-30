@@ -1,0 +1,124 @@
+{
+  "id": "erdos-453-oq-02",
+  "title": "Convexity Implies Product Bound (Sorry Elimination)",
+  "slug": "erdos-453-oq-02",
+  "description": "Proves that log-convexity at prime graph vertices implies the product bound pₙ² > pₙ₋ᵢ·pₙ₊ᵢ, completing the formalization of Pomerance's 1979 proof of Erdős 453. Uses Real.log_mul, Real.log_pow, and Real.log_lt_log_iff from Mathlib.",
+  "meta": {
+    "author": "Pomerance (1979) formalization",
+    "sourceUrl": "https://erdosproblems.com/453",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos453OQ02.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "logarithms",
+      "convexity",
+      "erdos",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 141,
+    "assumptions": "1 axiom: nthPrime_is_prime (primes are prime). 0 sorries.",
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log_mul",
+        "description": "log(ab) = log(a) + log(b) for positive reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_pow",
+        "description": "log(xⁿ) = n·log(x)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_lt_log_iff",
+        "description": "log(a) < log(b) ↔ a < b for positive reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Sorry-free proof of log_to_product: log convexity → product bound",
+      "Properly ordered convexity_implies_product_bound (fixes forward reference)",
+      "Explicit verification of each Mathlib lemma used"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Pomerance (1979) proved Erdős Problem #453 by showing that at convex hull vertices of the prime number graph (n, log pₙ), the inequality pₙ² > pₙ₋ᵢ·pₙ₊ᵢ holds for all i. The key step converts a log inequality into a product inequality. This was previously left as a sorry in the parent formalization.",
+    "problemStatement": "Prove without sorry: if 2·log(pₙ) > log(pₙ₋ᵢ) + log(pₙ₊ᵢ) then pₙ² > pₙ₋ᵢ·pₙ₊ᵢ.",
+    "text": "Provides a clean, properly ordered proof that log-convexity at prime graph vertices implies the product bound, using Mathlib's logarithm lemmas.",
+    "proofStrategy": "Step 1: log(pₙ₋ᵢ · pₙ₊ᵢ) = log(pₙ₋ᵢ) + log(pₙ₊ᵢ) < 2·log(pₙ) = log(pₙ²) by hypothesis. Step 2: Since log is strictly monotone on (0,∞), pₙ₋ᵢ · pₙ₊ᵢ < pₙ². Step 3: Transfer from ℝ to ℤ.",
+    "keyInsights": [
+      "The proof reduces to three Mathlib lemmas: log_mul, log_pow, log_lt_log_iff",
+      "The parent file had a forward reference issue (log_to_product defined after its caller)",
+      "Transferring from ℝ to ℤ requires careful cast handling"
+    ],
+    "prerequisites": [
+      "Real analysis (logarithm properties)",
+      "Number theory (prime number basics)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup",
+      "summary": "nthPrime, logPrime, convex hull vertex definitions",
+      "startLine": 23,
+      "endLine": 42
+    },
+    {
+      "id": "core-lemma",
+      "title": "The Core Lemma",
+      "summary": "log_to_product: log inequality → product inequality (sorry-free)",
+      "startLine": 44,
+      "endLine": 96
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "summary": "convexity_implies_product_bound (properly ordered, no forward reference)",
+      "startLine": 98,
+      "endLine": 111
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "summary": "Explicit checks of the three Mathlib lemmas used",
+      "startLine": 113,
+      "endLine": 141
+    }
+  ],
+  "conclusion": {
+    "summary": "OQ-02 answered: YES, convexity_implies_product_bound can be proved without sorry using Real.log_mul, Real.log_pow, and Real.log_lt_log_iff from Mathlib.",
+    "openQuestions": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-453",
+      "relationship": "parent-problem",
+      "description": "Parent: Erdős 453 formalization (Pomerance 1979)"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["C. Pomerance"],
+      "title": "The prime number graph",
+      "year": "1979",
+      "venue": "Mathematics of Computation",
+      "note": "Original proof using convex hull geometry"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Nat", "Real"],
+    "namespace": "Erdos453OQ02",
+    "lineCount": 141,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 4
+  }
+}
