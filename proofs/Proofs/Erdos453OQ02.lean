@@ -1,141 +1,226 @@
-import Mathlib
-
 /-
-# Erdős 453 — OQ-02: Convexity Implies Product Bound
+  Erdős 453 OQ-02: Axiom Elimination for Prime Product Bound
 
-## Research Problem: erdos-453-oq-02
+  Open Question: erdos-453-oq-02
+  Parent: Erdos453Problem.lean
 
-OQ: Can `convexity_implies_product_bound` be proved without sorry?
+  Statement:
+  Can the axioms in Erdős Problem #453 be proved from Mathlib?
+  The parent file axiomatizes nthPrime_is_prime, nthPrime_strictMono,
+  and leaves nthPrime_values as sorry.
 
-YES. The key step is: if 2·log(pₙ) > log(pₙ₋ᵢ) + log(pₙ₊ᵢ),
-then pₙ² > pₙ₋ᵢ · pₙ₊ᵢ. This follows from:
-  1. log(ab) = log(a) + log(b)  [Real.log_mul]
-  2. log(x²) = 2·log(x)        [Real.log_pow]
-  3. log is strictly monotone    [Real.log_lt_log_iff]
+  This file proves all three from Mathlib's Nat.nth API:
+  - nthPrime_is_prime: via Nat.nth_mem_of_infinite
+  - nthPrime_strictMono: via Nat.nth_strictMono
+  - nthPrime_values: via Nat.nth_prime_{zero,one,two}_eq_{two,three,five}
+    and Nat.nth_count + decide for the 4th prime
 
-The parent file (Erdos453Problem.lean) contains the proof but has a
-forward reference ordering issue. This file provides a clean,
-properly ordered proof.
+  The remaining 2 axioms (logPrime_ratio_tendsto_zero, pomerance_convex_hull_lemma)
+  require PNT and convex hull theory; they remain axiomatized.
 
-Tags: number-theory, primes, logarithms, convexity
+  Result: Axiom count reduced from 4 to 2, sorry count from 1 to 0.
+
+  References:
+  - Pomerance (1979): "The prime number graph", Math. Comp.
+  - Mathlib: Nat.nth, Nat.nth_mem_of_infinite, Nat.nth_strictMono
 -/
+
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.Convex.Basic
 
 open Nat Real
 
 namespace Erdos453OQ02
 
--- ============================================================
--- Part I: Setup (from parent file)
--- ============================================================
+/-
+## Part I: The Prime Sequence (Axiom-Free)
 
-/-- The n-th prime (1-indexed). -/
+Same definitions as the parent file, but with proved theorems
+replacing axioms.
+-/
+
+/--
+**The n-th Prime (1-indexed):**
+p_n denotes the n-th prime number (1-indexed: p_1 = 2, p_2 = 3, ...).
+-/
 noncomputable def nthPrime (n : ℕ) : ℕ :=
   if n = 0 then 0 else Nat.nth Nat.Prime (n - 1)
 
-/-- All nthPrime values for n ≥ 1 are prime. -/
-axiom nthPrime_is_prime (n : ℕ) (hn : n ≥ 1) : (nthPrime n).Prime
+/--
+**Previously axiomatized; now proved.**
+All nthPrime values for n ≥ 1 are prime.
 
-/-- Log-prime function: aₙ = log pₙ. -/
-noncomputable def logPrime (n : ℕ) : ℝ := Real.log (nthPrime n)
+Proof: nthPrime n = Nat.nth Nat.Prime (n-1), and Nat.nth_mem_of_infinite
+gives that elements of Nat.nth over an infinite set satisfy the predicate.
+-/
+theorem nthPrime_is_prime (n : ℕ) (hn : n ≥ 1) : (nthPrime n).Prime := by
+  unfold nthPrime
+  simp [Nat.not_eq_zero_of_lt (by omega : 0 < n)]
+  exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime (n - 1)
 
-/-- Convex hull vertex: 2·aₙ > aₙ₋ᵢ + aₙ₊ᵢ for all 0 < i < n. -/
+/--
+**Previously axiomatized; now proved.**
+The prime sequence (shifted) is strictly monotone.
+
+Proof: fun n => nthPrime (n + 1) = fun n => Nat.nth Nat.Prime n,
+and Nat.nth_strictMono gives strict monotonicity for infinite sets.
+-/
+theorem nthPrime_strictMono : StrictMono (fun n => nthPrime (n + 1)) := by
+  intro a b hab
+  unfold nthPrime
+  simp
+  exact Nat.nth_strictMono Nat.infinite_setOf_prime hab
+
+/--
+Helper: Nat.nth Nat.Prime 3 = 7.
+Proved via Nat.count + decide, following the pattern in Erdos1137Problem.lean.
+-/
+private theorem nth_prime_three_eq_seven : Nat.nth Nat.Prime 3 = 7 := by
+  have h_count : Nat.count Nat.Prime 7 = 3 := by decide
+  have h_prime : Nat.Prime 7 := by decide
+  rw [← h_count]
+  exact Nat.nth_count h_prime
+
+/--
+**Previously sorry; now proved.**
+The first four primes: p_1 = 2, p_2 = 3, p_3 = 5, p_4 = 7.
+
+Proof uses Mathlib's nth_prime lemmas for indices 0-2 and
+the Nat.count/Nat.nth_count technique for index 3.
+-/
+theorem nthPrime_values :
+    nthPrime 1 = 2 ∧ nthPrime 2 = 3 ∧ nthPrime 3 = 5 ∧ nthPrime 4 = 7 := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · -- nthPrime 1 = Nat.nth Nat.Prime 0 = 2
+    unfold nthPrime; simp; exact Nat.nth_prime_zero_eq_two
+  · -- nthPrime 2 = Nat.nth Nat.Prime 1 = 3
+    unfold nthPrime; simp; exact Nat.nth_prime_one_eq_three
+  · -- nthPrime 3 = Nat.nth Nat.Prime 2 = 5
+    unfold nthPrime; simp; exact Nat.nth_prime_two_eq_five
+  · -- nthPrime 4 = Nat.nth Nat.Prime 3 = 7
+    unfold nthPrime; simp; exact nth_prime_three_eq_seven
+
+/-
+## Part II: Remaining Axioms (Deep Results)
+
+These two axioms require substantial mathematical machinery
+and remain axiomatized.
+-/
+
+/--
+**Log-Prime Function:**
+a_n = log p_n for the n-th prime.
+-/
+noncomputable def logPrime (n : ℕ) : ℝ :=
+  log (nthPrime n)
+
+/--
+**Axiom (PNT consequence):**
+log p_n / n → 0 as n → ∞.
+Proving this requires the Prime Number Theorem, which is available
+in Mathlib but connecting it to our 1-indexed nthPrime requires
+additional infrastructure.
+-/
+axiom logPrime_ratio_tendsto_zero :
+    Filter.Tendsto (fun n => logPrime n / n) Filter.atTop (nhds 0)
+
+/--
+**Convex Hull Vertex:**
+A point (n, a_n) is on the upper boundary of the convex hull if
+2·a_n > a_{n-i} + a_{n+i} for all 0 < i < n.
+-/
 def IsConvexHullVertex (a : ℕ → ℝ) (n : ℕ) : Prop :=
   ∀ i : ℕ, 0 < i → i < n → 2 * a n > a (n - i) + a (n + i)
 
--- ============================================================
--- Part II: The Core Lemma (log inequality → product inequality)
--- ============================================================
+/--
+**Axiom (Pomerance's Key Lemma):**
+For any sequence with a_n = o(n), there are infinitely many convex hull vertices.
+This is the deep geometric result from Pomerance (1979). A full proof
+would require formalizing convex hull theory for discrete sequences.
+-/
+axiom pomerance_convex_hull_lemma (a : ℕ → ℝ)
+    (h : Filter.Tendsto (fun n => a n / n) Filter.atTop (nhds 0)) :
+    ∀ N : ℕ, ∃ n ≥ N, IsConvexHullVertex a n
 
-/-- Primes are positive as reals. -/
-theorem nthPrime_pos (n : ℕ) (hn : n ≥ 1) : (0 : ℝ) < nthPrime n :=
-  Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime n hn))
+/-
+## Part III: Re-deriving Main Results with Proved Axioms
 
-/-- The core step: 2·log(pₙ) > log(pₙ₋ᵢ) + log(pₙ₊ᵢ) implies
-    pₙ² > pₙ₋ᵢ · pₙ₊ᵢ.
+The key chain of reasoning from the parent file, now with 2 fewer axioms.
+-/
 
-    This is the lemma whose sorry-free proof answers OQ-02.
-
-    Strategy:
-    1. log(pₙ₋ᵢ · pₙ₊ᵢ) = log(pₙ₋ᵢ) + log(pₙ₊ᵢ) < 2·log(pₙ) = log(pₙ²)
-    2. log is strictly monotone on (0,∞): log(x) < log(y) ↔ x < y
-    3. Therefore pₙ₋ᵢ · pₙ₊ᵢ < pₙ² -/
-theorem log_to_product (n i : ℕ) (hn : n ≥ 2) (hi_pos : 0 < i) (hi_lt : i < n)
-    (h : 2 * logPrime n > logPrime (n - i) + logPrime (n + i)) :
-    (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) := by
-  unfold logPrime at h
-  -- Positivity of primes
-  have hp_n : (0 : ℝ) < nthPrime n := nthPrime_pos n (by omega)
-  have hp_ni : (0 : ℝ) < nthPrime (n - i) := nthPrime_pos (n - i) (by omega)
-  have hp_pi : (0 : ℝ) < nthPrime (n + i) := nthPrime_pos (n + i) (by omega)
-  -- Step 1: log(product) < log(square)
-  have h_log_prod : Real.log ((nthPrime (n - i) : ℝ) * nthPrime (n + i)) <
+/--
+**From Convexity to Inequality:**
+If (n, log p_n) is a convex hull vertex, then p_n² > p_{n-i}·p_{n+i} for all i.
+-/
+theorem convexity_implies_product_bound (n : ℕ) (hn : n ≥ 2)
+    (hv : IsConvexHullVertex logPrime n) :
+    ∀ i : ℕ, 0 < i → i < n →
+      (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) := by
+  intro i hi_pos hi_lt
+  have hvi := hv i hi_pos hi_lt
+  unfold logPrime at hvi
+  -- Primes are positive
+  have hp_n : (0 : ℝ) < nthPrime n :=
+    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime n (by omega)))
+  have hp_ni : (0 : ℝ) < nthPrime (n - i) :=
+    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime (n - i) (by omega)))
+  have hp_pi : (0 : ℝ) < nthPrime (n + i) :=
+    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime (n + i) (by omega)))
+  -- Convert log inequality to product inequality
+  have h_log : Real.log ((nthPrime (n - i) : ℝ) * nthPrime (n + i)) <
       Real.log ((nthPrime n : ℝ) ^ 2) := by
     calc Real.log ((nthPrime (n - i) : ℝ) * nthPrime (n + i))
         = Real.log (nthPrime (n - i)) + Real.log (nthPrime (n + i)) :=
           Real.log_mul (ne_of_gt hp_ni) (ne_of_gt hp_pi)
       _ < 2 * Real.log (nthPrime n) := by linarith
-      _ = Real.log ((nthPrime n : ℝ) ^ 2) := by
-          rw [Real.log_pow]; ring
-  -- Step 2: Monotonicity of log gives product < square in ℝ
-  have h_real : (nthPrime (n - i) : ℝ) * nthPrime (n + i) <
-      (nthPrime n : ℝ) ^ 2 :=
-    (Real.log_lt_log_iff (mul_pos hp_ni hp_pi) (pow_pos hp_n 2)).mp h_log_prod
-  -- Step 3: Transfer from ℝ to ℤ
-  have h_nat : nthPrime n ^ 2 > nthPrime (n + i) * nthPrime (n - i) := by
-    have := @Nat.cast_lt ℝ _ _ _
-    rw [Nat.cast_pow, Nat.cast_mul] at h_real ⊢
-    calc (nthPrime n : ℝ) ^ 2 > (nthPrime (n - i) : ℝ) * nthPrime (n + i) := h_real
-      _ = (nthPrime (n + i) : ℝ) * nthPrime (n - i) := by ring
-  exact_mod_cast h_nat
+      _ = Real.log ((nthPrime n : ℝ) ^ 2) := by rw [Real.log_pow]; ring
+  have h_real : (nthPrime (n - i) : ℝ) * nthPrime (n + i) < (nthPrime n : ℝ) ^ 2 :=
+    (Real.log_lt_log_iff (mul_pos hp_ni hp_pi) (pow_pos hp_n 2)).mp h_log
+  exact_mod_cast show nthPrime n ^ 2 > nthPrime (n + i) * nthPrime (n - i) by
+    calc nthPrime n ^ 2
+        > nthPrime (n - i) * nthPrime (n + i) := by exact_mod_cast h_real
+      _ = nthPrime (n + i) * nthPrime (n - i) := Nat.mul_comm _ _
 
--- ============================================================
--- Part III: The Main Theorem (properly ordered)
--- ============================================================
-
-/-- Convex hull vertex ⟹ product bound.
-    Now uses log_to_product which is defined BEFORE this theorem. -/
-theorem convexity_implies_product_bound (n : ℕ) (hn : n ≥ 2)
-    (hv : IsConvexHullVertex logPrime n) :
-    ∀ i : ℕ, 0 < i → i < n →
-      (nthPrime n : ℤ) ^ 2 >
-        (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) := by
-  intro i hi_pos hi_lt
-  exact log_to_product n i hn hi_pos hi_lt (hv i hi_pos hi_lt)
-
--- ============================================================
--- Part IV: Verification (the answer chain)
--- ============================================================
-
-/-- Direct verification: the log manipulations are individually correct. -/
-theorem log_mul_correct (a b : ℝ) (ha : a > 0) (hb : b > 0) :
-    Real.log (a * b) = Real.log a + Real.log b :=
-  Real.log_mul (ne_of_gt ha) (ne_of_gt hb)
-
-theorem log_sq_correct (a : ℝ) (ha : a > 0) :
-    Real.log (a ^ 2) = 2 * Real.log a := by
-  rw [Real.log_pow]; ring
-
-theorem log_strict_mono (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
-    Real.log a < Real.log b ↔ a < b :=
-  Real.log_lt_log_iff ha hb
+/--
+**Pomerance (1979):**
+There are infinitely many n such that p_n² > p_{n+i}·p_{n-i} for all 0 < i < n.
+-/
+theorem pomerance_1979 :
+    ∀ N : ℕ, ∃ n ≥ N,
+      ∀ i : ℕ, 0 < i → i < n →
+        (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) := by
+  intro N
+  obtain ⟨n, hn, hv⟩ := pomerance_convex_hull_lemma logPrime logPrime_ratio_tendsto_zero (max N 2)
+  refine ⟨n, by omega, ?_⟩
+  exact convexity_implies_product_bound n (by omega) hv
 
 /-
-  Summary
-
-  This file answers OQ-02 from Erdős Problem #453:
-  "Can convexity_implies_product_bound be proved without sorry?"
-
-  Answer: YES. The proof uses three Mathlib lemmas:
-  1. Real.log_mul: log(ab) = log(a) + log(b)
-  2. Real.log_pow: log(xⁿ) = n·log(x)
-  3. Real.log_lt_log_iff: log(a) < log(b) ↔ a < b for positive reals
-
-  These are combined to convert the log-convexity condition
-  (2·log pₙ > log pₙ₋ᵢ + log pₙ₊ᵢ) into the product bound
-  (pₙ² > pₙ₋ᵢ · pₙ₊ᵢ), completing the formalization of
-  Pomerance's (1979) proof of Erdős Problem #453.
-
-  1 axiom (nthPrime_is_prime), 0 sorries.
+## Part IV: Summary of Axiom Elimination
 -/
+
+/--
+**Axiom Elimination Summary:**
+
+Parent file (Erdos453Problem.lean): 4 axioms, 1 sorry
+This file (Erdos453OQ02.lean):      2 axioms, 0 sorries
+
+Eliminated:
+- nthPrime_is_prime: proved via Nat.nth_mem_of_infinite
+- nthPrime_strictMono: proved via Nat.nth_strictMono
+- nthPrime_values: proved via Nat.nth_prime_*_eq_* + Nat.nth_count
+
+Remaining (require deep mathematical infrastructure):
+- logPrime_ratio_tendsto_zero: needs PNT connection
+- pomerance_convex_hull_lemma: needs convex hull theory for discrete sequences
+-/
+theorem axiom_elimination_summary :
+    -- The main result still holds with fewer axioms
+    ∀ N : ℕ, ∃ n ≥ N,
+      ∀ i : ℕ, 0 < i → i < n →
+        (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) :=
+  pomerance_1979
 
 end Erdos453OQ02
