@@ -16,33 +16,41 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-28T20:58:08-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "ACT",
+    "since": "2026-03-30T09:04:00-07:00",
+    "iteration": 2,
+    "focus": "Inductive step of budan_upper_bound: sign-change accounting between V_p and V_{p'}",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "Prove V_p(x) = V_{p'}(x) + epsilon(x) lemma, then root decomposition via Rolle",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2 of 3 building blocks proved (rolle_polynomial, root_of_sign_change). 1 sorry remains (linear_at_most_one_root). Full Budan proof still needs sign-change accounting (~200+ lines).",
+    "progressSummary": "PROGRESS: Added sign-change infrastructure (budanCount, rootsInInterval, signChangesInList). Proved degree-0 base case. Stated full budan_upper_bound theorem with induction framework — 1 sorry remains (inductive step). All building blocks proved. Estimated 150-250 lines to complete.",
     "builtItems": [
       "Created DescartesRuleOfSignsOQ02OQ01.lean: proof scaffold with 5 theorems, 3 sorries",
       "Proved constant_no_roots base case",
       "Documented proof completion roadmap with line estimates",
       "Proved rolle_polynomial from Mathlib exists_deriv_eq_zero",
-      "Proved root_of_sign_change from IVT (intermediate_value_Icc)"
+      "Proved root_of_sign_change from IVT (intermediate_value_Icc)",
+      "Added countAdjacentDiffs, signChangesInList, budanSequence, budanCount, rootsInInterval definitions",
+      "Proved signChangesInList_singleton, rootsInInterval_deg_zero, budanCount_deg_zero",
+      "Proved budan_upper_bound_deg0 (base case: constant polynomials)",
+      "Stated budan_upper_bound with induction framework (base + sorry for step)"
     ],
     "insights": [
       "Proof by strong induction on deg(p): base deg≤1 trivial, inductive step uses Rolle",
       "Rolle theorem (Mathlib: exists_deriv_eq_zero) gives derivative roots between consecutive polynomial roots",
       "Sign-change accounting across derivative levels is the hardest part (~100-200 lines)",
       "Building blocks needed: constant_no_roots, rolle_polynomial, root_of_sign_change (IVT)",
-      "Full proof estimated at 240-410 lines using existing OQ-02 infrastructure"
+      "Full proof estimated at 240-410 lines using existing OQ-02 infrastructure",
+      "All 4 original building blocks (constant_no_roots, linear_at_most_one_root, rolle_polynomial, root_of_sign_change) were already proved — stale knowledge claimed 1 sorry",
+      "The two placeholder theorems proving True (sign_changes_factor, inductive_step_derivative) have been replaced with actual theorem statements",
+      "Weak induction on degree suffices: derivative has degree <= n, so IH at degree n covers it",
+      "The inductive step decomposes into: (1) V_p vs V_{p'} relationship, (2) root count via Rolle, (3) endpoint sign-change bookkeeping"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

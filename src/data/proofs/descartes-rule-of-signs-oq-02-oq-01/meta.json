@@ -6,7 +6,7 @@
   "meta": {
     "author": "Budan de Boislaurent (1807), proof scaffold",
     "date": "1807",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
     "tags": [
       "algebra",
@@ -15,11 +15,11 @@
       "root-isolation"
     ],
     "badge": "original",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 206,
+    "lineCount": 279,
     "dateAdded": "2026-03-28",
-    "assumptions": "0 axioms, 0 sorries. All theorems fully proved including linear_at_most_one_root, rolle_polynomial, and root_of_sign_change.",
+    "assumptions": "0 axioms, 1 sorry (inductive step of budan_upper_bound). Base case (degree 0) fully proved. Building blocks proved: constant_no_roots, linear_at_most_one_root, rolle_polynomial, root_of_sign_change.",
     "relatedProblems": [
       {
         "id": "descartes-rule-of-signs-oq-02",
@@ -29,17 +29,17 @@
   },
   "overview": {
     "problemStatement": "Prove the Budan upper bound: #roots(p, (a,b]) <= V_p(a) - V_p(b).",
-    "text": "Proof scaffold for Budan's upper bound via strong induction on polynomial degree. Building blocks: constant_no_roots, linear bound, Rolle for polynomials, IVT sign change. The full proof requires sign-change accounting across derivative levels.",
+    "text": "Partial proof of Budan's upper bound via induction on polynomial degree. Infrastructure includes sign-change counting (budanCount, rootsInInterval), building blocks (Rolle, IVT, linear root bound), and degree-0 base case. The inductive step requires sign-change accounting relating V_p(x) to V_{p'}(x).",
     "proofStrategy": "Strong induction on deg(p). Base: deg 0/1 trivial. Step: Rolle gives derivative roots between polynomial roots, IH on p' for sub-intervals.",
     "keyInsights": []
   },
   "leanFile": {
     "namespace": "BudanUpperBound",
-    "lineCount": 206,
+    "lineCount": 279,
     "axiomCount": 0,
-    "theoremCount": 5,
-    "defCount": 1,
-    "sorries": 0,
+    "theoremCount": 9,
+    "defCount": 6,
+    "sorries": 1,
     "mainTheorems": [
       {
         "name": "constant_no_roots",
@@ -47,9 +47,14 @@
         "description": "Constant nonzero polynomials have no roots"
       },
       {
+        "name": "linear_at_most_one_root",
+        "type": "proved",
+        "description": "Linear polynomial has at most one root in interval"
+      },
+      {
         "name": "rolle_polynomial",
         "type": "proved",
-        "description": "Rolle's theorem for polynomials"
+        "description": "Rolle's theorem for polynomials via Mathlib"
       },
       {
         "name": "root_of_sign_change",
@@ -57,9 +62,14 @@
         "description": "IVT: sign change implies root"
       },
       {
-        "name": "linear_at_most_one_root",
+        "name": "budan_upper_bound_deg0",
+        "type": "proved",
+        "description": "Base case: constant polynomials satisfy Budan bound"
+      },
+      {
+        "name": "budan_upper_bound",
         "type": "sorry",
-        "description": "Linear polynomial has at most one root in interval"
+        "description": "Budan's upper bound: #roots(a,b] <= V_p(a) - V_p(b)"
       }
     ]
   },
