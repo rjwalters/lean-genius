@@ -456,3 +456,57 @@ theorem cramer_monotone (c₁ c₂ : ℝ) (h1 : c₁ ≥ 0) (h2 : c₂ ≥ 0) (h
     apply exp_le_exp.mpr
     linarith
   linarith
+
+/-
+## Section IX: Properties of the Density Function
+
+If the density f(c) = lim_{N→∞} gapProportion(N, c) exists, these theorems
+show it necessarily satisfies the properties of a cumulative distribution
+function on [0, ∞): valued in [0, 1], monotone non-decreasing, and
+approaching 1 as c → ∞. The limit behavior uses density_at_infinity
+(proved from average_normalized_gap via Markov's inequality).
+-/
+
+/-- If the density exists at c, it is non-negative. -/
+theorem density_function_nonneg (c : ℝ) (f : ℝ)
+    (hf : Tendsto (fun N => gapProportion N c) atTop (nhds f)) : f ≥ 0 :=
+  ge_of_tendsto hf (Eventually.of_forall fun N => gapProportion_nonneg N c)
+
+/-- If the density exists at c, it is at most 1. -/
+theorem density_function_le_one (c : ℝ) (f : ℝ)
+    (hf : Tendsto (fun N => gapProportion N c) atTop (nhds f)) : f ≤ 1 :=
+  le_of_tendsto hf (eventually_atTop.mpr ⟨1, fun N hN =>
+    gapProportion_le_one N c (by omega)⟩)
+
+/-- The density is monotone: if c₁ ≤ c₂ and both densities exist, f(c₁) ≤ f(c₂).
+    Limit-level analogue of density_monotone. -/
+theorem density_function_monotone (c₁ c₂ : ℝ) (hc : c₁ ≤ c₂) (f₁ f₂ : ℝ)
+    (hf1 : Tendsto (fun N => gapProportion N c₁) atTop (nhds f₁))
+    (hf2 : Tendsto (fun N => gapProportion N c₂) atTop (nhds f₂)) : f₁ ≤ f₂ := by
+  have h_diff : Tendsto (fun N => gapProportion N c₂ - gapProportion N c₁)
+      atTop (nhds (f₂ - f₁)) := hf2.sub hf1
+  have h_nn : ∀ N, gapProportion N c₂ - gapProportion N c₁ ≥ 0 := fun N =>
+    sub_nonneg.mpr (density_monotone c₁ c₂ hc N)
+  linarith [ge_of_tendsto h_diff (Eventually.of_forall h_nn)]
+
+/-- If the density exists for all c ≥ 0, then f(c) → 1 as c → ∞.
+    Derived from density_at_infinity (which itself follows from
+    average_normalized_gap via Markov's inequality). -/
+theorem density_function_tendsto_one
+    (f : ℝ → ℝ)
+    (hf : ∀ c : ℝ, c ≥ 0 → Tendsto (fun N => gapProportion N c) atTop (nhds (f c))) :
+    Tendsto f atTop (nhds 1) := by
+  rw [tendsto_order]
+  constructor
+  · -- For b < 1: eventually f(c) > b
+    intro b hb
+    obtain ⟨c₀, hc₀⟩ := density_at_infinity ((1 - b) / 2) (by linarith)
+    exact eventually_atTop.mpr ⟨max c₀ 0, fun c hc => by
+      have h_ge : f c ≥ 1 - (1 - b) / 2 :=
+        ge_of_tendsto (hf c (le_trans (le_max_right _ _) hc))
+          ((hc₀ c (le_trans (le_max_left _ _) hc)).mono fun N hN => le_of_lt hN)
+      linarith⟩
+  · -- For b > 1: f(c) ≤ 1 < b always
+    intro b hb
+    exact eventually_atTop.mpr ⟨0, fun c hc =>
+      lt_of_le_of_lt (density_function_le_one c (f c) (hf c hc)) hb⟩
