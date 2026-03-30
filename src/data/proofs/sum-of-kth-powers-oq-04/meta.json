@@ -104,6 +104,7 @@
   ],
   "conclusion": {
     "summary": "The asymptotic formula sum i^k / n^{k+1} -> 1/(k+1) is stated and the k=0 and k=1 cases are proved. The general case remains as a sorry requiring filter limit manipulation with Faulhaber's formula.",
+    "implications": "Connects discrete power sums to continuous integration via the Riemann sum interpretation, laying groundwork for a full Euler-Maclaurin formalization in Lean 4.",
     "openQuestions": [
       "Can the full Euler-Maclaurin formula with Bernoulli correction terms be formalized?",
       "Can the error term in the Euler-Maclaurin approximation be bounded?"
