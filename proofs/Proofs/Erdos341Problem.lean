@@ -156,3 +156,97 @@ theorem dickson_linear_growth :
   | succ n ih =>
     have := dickson_strictly_increasing A₀ n hne
     omega
+
+/- ## Singleton Instance: A₀ = {1} Produces Odd Numbers -/
+
+/-- An odd number cannot be a pairwise sum of odd numbers (odd + odd = even). -/
+private lemma odd_not_in_pairwiseSums_odd {S : Finset ℕ}
+    (hS : ∀ x ∈ S, ∃ k, x = 2 * k + 1) {m : ℕ} (hm : ∃ k, m = 2 * k + 1) :
+    m ∉ pairwiseSums S := by
+  intro hmem
+  unfold pairwiseSums at hmem
+  rw [Finset.mem_image] at hmem
+  obtain ⟨⟨a, b⟩, hp, hf⟩ := hmem
+  rw [Finset.mem_product] at hp
+  obtain ⟨ka, rfl⟩ := hS a hp.1
+  obtain ⟨kb, rfl⟩ := hS b hp.2
+  obtain ⟨km, hkm⟩ := hm
+  simp at hf
+  omega
+
+/-- Key inductive properties of dicksonStep for A₀ = {1}: the value at step n is
+    2n+1, all accumulated elements are odd, 1 is always present, and the current
+    value is in the accumulated set. -/
+private lemma dicksonStep_singleton_props (n : ℕ) :
+    (dicksonStep ({1} : Finset ℕ) n).1 = 2 * n + 1 ∧
+    (∀ x ∈ (dicksonStep ({1} : Finset ℕ) n).2, ∃ k, x = 2 * k + 1) ∧
+    1 ∈ (dicksonStep ({1} : Finset ℕ) n).2 ∧
+    (dicksonStep ({1} : Finset ℕ) n).1 ∈ (dicksonStep ({1} : Finset ℕ) n).2 := by
+  induction n with
+  | zero =>
+    have h0 : dicksonStep ({1} : Finset ℕ) 0 = (1, ({1} : Finset ℕ)) := by
+      simp [dicksonStep, dif_pos (Finset.singleton_nonempty 1), Finset.max'_singleton]
+    simp only [h0, Prod.fst, Prod.snd]
+    exact ⟨by omega,
+           fun x hx => ⟨0, by rwa [Finset.mem_singleton] at hx⟩,
+           Finset.mem_singleton.mpr rfl,
+           Finset.mem_singleton.mpr rfl⟩
+  | succ n ih =>
+    obtain ⟨ih_val, ih_odd, ih_one, ih_cur⟩ := ih
+    have h2n1_mem : 2 * n + 1 ∈ (dicksonStep ({1} : Finset ℕ) n).2 := ih_val ▸ ih_cur
+    -- The key step: Nat.find returns 2n+3
+    have hfind : Nat.find (dickson_next_exists (dicksonStep ({1} : Finset ℕ) n).2
+        (dicksonStep ({1} : Finset ℕ) n).1) = 2 * n + 3 := by
+      apply le_antisymm
+      · -- Upper bound: predicate holds at 2n+3
+        apply Nat.find_min'
+        exact ⟨by rw [ih_val]; omega,
+               odd_not_in_pairwiseSums_odd ih_odd ⟨n + 1, by ring⟩⟩
+      · -- Lower bound: 2n+2 is the only candidate below, and it's a pairwise sum
+        by_contra hlt
+        push_neg at hlt
+        have hspec := Nat.find_spec (dickson_next_exists
+          (dicksonStep ({1} : Finset ℕ) n).2 (dicksonStep ({1} : Finset ℕ) n).1)
+        have hgt := hspec.1
+        have heq : Nat.find (dickson_next_exists (dicksonStep ({1} : Finset ℕ) n).2
+            (dicksonStep ({1} : Finset ℕ) n).1) = 2 * n + 2 := by omega
+        rw [heq] at hspec
+        apply hspec.2
+        unfold pairwiseSums
+        rw [Finset.mem_image]
+        exact ⟨(1, 2 * n + 1), Finset.mem_product.mpr ⟨ih_one, h2n1_mem⟩, by simp; omega⟩
+    -- Establish the four properties for n+1
+    have val_eq : (dicksonStep ({1} : Finset ℕ) (n + 1)).1 =
+        Nat.find (dickson_next_exists (dicksonStep ({1} : Finset ℕ) n).2
+          (dicksonStep ({1} : Finset ℕ) n).1) := rfl
+    have set_eq : (dicksonStep ({1} : Finset ℕ) (n + 1)).2 =
+        (dicksonStep ({1} : Finset ℕ) n).2 ∪
+          {Nat.find (dickson_next_exists (dicksonStep ({1} : Finset ℕ) n).2
+            (dicksonStep ({1} : Finset ℕ) n).1)} := rfl
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · rw [val_eq, hfind]; ring
+    · intro x hx
+      rw [set_eq, Finset.mem_union, Finset.mem_singleton] at hx
+      rcases hx with hx | rfl
+      · exact ih_odd x hx
+      · exact ⟨n + 1, by rw [hfind]; ring⟩
+    · rw [set_eq]; exact Finset.mem_union_left _ ih_one
+    · rw [val_eq, set_eq]; exact Finset.mem_union_right _ (Finset.mem_singleton.mpr rfl)
+
+/-- For A₀ = {1}, the Dickson sequence produces odd numbers: a(n) = 2n+1. -/
+theorem dicksonSeq_singleton (n : ℕ) :
+    dicksonSeq ({1} : Finset ℕ) n = 2 * n + 1 :=
+  (dicksonStep_singleton_props n).1
+
+/-- For A₀ = {1}, all consecutive differences equal 2. -/
+theorem dicksonDiff_singleton (n : ℕ) :
+    dicksonDiff ({1} : Finset ℕ) n = 2 := by
+  unfold dicksonDiff
+  rw [dicksonSeq_singleton, dicksonSeq_singleton]
+  omega
+
+/-- The Erdős–Dickson conjecture holds for A₀ = {1}: constant difference 2, period 1.
+    The sequence 1, 3, 5, 7, … consists of all odd positive integers. -/
+theorem erdos_341_singleton :
+    IsEventuallyPeriodic (dicksonDiff ({1} : Finset ℕ)) 1 0 :=
+  ⟨le_refl _, fun n _ => by simp [dicksonDiff_singleton]⟩
