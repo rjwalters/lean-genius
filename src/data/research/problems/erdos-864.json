@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 824L 18T 1A 0S. Reflected construction bridge complete. Axiom erdos_freud_lower_bound is DEEP: requires asymptotically optimal Sidon sets (~√N not √N/2). Cannot eliminate with current Lean gallery infrastructure.",
+    "progressSummary": "PROGRESS: Proved reflected_construction_bound (maxAlmostSidon(N) ≥ 2|B|). Axiom reduction: erdos_freud_lower_bound → sidon_exists_asymptotic via reflected construction. File: ~22T 1A 0S.",
     "builtItems": [
       "sumRepCount_le_of_subset: monotonicity of representation count (key helper)",
       "isSidon_subset: SORRY FILLED — Sidon is monotone under subsets",
@@ -55,25 +55,15 @@
       "Difference counting gives k(k-1)/2 distinct differences in {1,...,N-1}, yielding k² ≤ 2N+k",
       "The Lindström bound √N + O(N^{1/4}) requires Fourier analysis over cyclic groups (not in Mathlib v4.26.0)",
       "erdos_freud_lower_bound needs large Sidon sets in {1,...,M} of size ~√M; Erdős-Turán construction gives size p in range 2p² (sufficient for √(M/2) but not √M)",
-      "erdos_freud_lower_bound now reduces to: ∃ Sidon B ⊆ {1,...,M} with |B| ~ √M (Singer/Bose-Chowla construction needed)",
-      "Erdős-Turán construction {2pk + k² mod p} gives Sidon set of size p in {0,...,2p²-1}, i.e. √(M/2) not √M — insufficient for (2/√3) constant",
-      "Singer construction from finite projective planes gives p+1 in {0,...,p²+p} — gives √M but requires finite field geometry",
-      "Carry analysis: {pk + k² mod p} (without factor 2) MIGHT be Sidon but carry case (sum overflow by p) is non-trivial to rule out",
-      "To eliminate axiom erdos_freud_lower_bound: need either (a) Singer construction in Lean (~500 lines) or (b) PNT-level prime density results",
-      "Bertrands postulate gives Sidon size √(M/2) at best, yielding maxAlmostSidon ≥ √(N/3) which is half the needed bound",
-      "erdos_freud_lower_bound cannot be eliminated with existing Sidon bounds: sidon_set_lower_bound_exists gives |B|≥√N/2 but reflected construction needs |B|~√N for (2/√3)·√N coefficient",
-      "With √N/2 Sidon sets: maxAlmostSidon(N)≥√(N/3)≈0.577·√N — too weak to beat √N+1 for almost_sidon_exceeds_sidon",
-      "Full elimination requires: (1) Singer difference sets from projective planes (|B|=p+1 for prime p), or (2) probabilistic Sidon construction. Both need ~500+ lines infrastructure not in Mathlib",
-      "IsSidon definitions incompatible: Erdos864 uses multiRepSet-based, Erdos340GreedySidon uses pair-uniqueness. Equivalence proof needed before importing cross-file results"
+      "erdos_freud_lower_bound now reduces to: ∃ Sidon B ⊆ {1,...,M} with |B| ~ √M (Singer/Bose-Chowla construction needed)"
     ],
     "mathlibGaps": [
       "Fourier analysis over finite cyclic groups (needed for Lindström bound)",
       "Singer/Bose-Chowla construction for optimal-size Sidon sets in {1,...,M}"
     ],
     "nextSteps": [
-      "Prove Singer construction: for prime p, modular parabola gives Sidon set of size p in {0,...,2p²}. This gives |B|~√N in {1,...,N}, sufficient to eliminate the axiom",
-      "Bridge IsSidon definitions (Erdos864 multiRepSet vs Erdos340 pair-uniqueness) to enable cross-file theorem reuse",
-      "Alternative: prove Erdős-Turán probabilistic Sidon existence (|B|~√N with positive probability)"
+      "To prove erdos_freud_lower_bound: implement Erdős-Turán Sidon construction (gives weaker constant) or Singer construction (gives optimal constant)",
+      "erdos_freud_lower_bound needs: (1) large Sidon set existence, (2) reflected_construction_card: |B ∪ {N-b}| = 2|B|, (3) link to maxAlmostSidon"
     ],
     "markdown": "# Erdős #864 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\{1,\\ldots N\\}$ be a set such that there exists at most one $n$ with more than one solution to $n=a+b$ (with $a\\leq b\\in A$). Estimate the maximal possible size of $\\lvert A\\rvert$ - in particular, is it true that\\[\\lvert A\\rvert \\leq (1+o(1))\\frac{2}{\\sqrt{3}}N^{1/2}?\\]\n\n\n\nA problem of Erd\\H{o}s and Freud, who prove that\\[\\lvert A\\rvert \\geq (1+o(1))\\frac{2}{\\sqrt{3}}N^{1/2}.\\]This is shown by taking a genuine Sidon set $B\\subset [1,N/3]$ of size $\\sim N^{1/2}/\\sqrt{3}$ and taking the union with $\\{N-b : b\\in B\\}$.\n\nFor the analogous question with $n=a-b$ they prove that $\\lvert A\\rvert\\sim N^{1/2}$.\n\nThis is a weaker form of [840].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #3\n- Problem #840\n- Problem #863\n- Problem #865\n- Problem #39\n- Problem #1\n\n## References\n\n- ErFr91\n- Er92c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
