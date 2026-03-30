@@ -252,13 +252,12 @@ def erdos190Conjecture : Prop :=
 
 axiom erdos_190 : erdos190Conjecture
 
-/- ## Part VII: Small Cases -/
+/- ## Part VII: Small Cases
 
-/-- H(3) is small (exact value depends on careful analysis). -/
-axiom H_3_bound : H 3 ≤ 10
-
-/-- H(4) is larger. -/
-axiom H_4_bound : H 4 ≤ 100
+H(3) ≤ 10 and H(4) ≤ 100 are expected bounds but are not
+axiomatized as they are not used by any theorem. Proving them
+would require computational case analysis.
+-/
 
 /- ## Part VIII: Connections -/
 

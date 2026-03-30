@@ -24,12 +24,13 @@
     "nextAction": "Prove H_spec (needs monotonicity argument), fix H_pos condition"
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "COMPLETE: 4A (all deep: Szemerédi, van der Waerden, asymptotics, OPEN conjecture), 0S. Removed 2 unused axioms (H_3_bound, H_4_bound).",
     "builtItems": [
       "H_minimal: proved from Nat.find_min (prior session)",
       "H_pos: proved for k>=1 (prior session)",
       "H_spec: proved via Fin.castLE restriction from Nat.find_spec",
-      "H_lower_bound: proved — k-term AP needs N>=k (strengthened to k>=1 from k>=3)"
+      "H_lower_bound: proved — k-term AP needs N>=k (strengthened to k>=1 from k>=3)",
+      "Removed H_3_bound, H_4_bound axioms (unused, 6A→4A)"
     ],
     "insights": [
       "H_pos is FALSE for k=0: H(0)=0 because empty AP (Fin 0) trivially satisfies hasCanonicalAP",
@@ -59,16 +60,16 @@
     "mathlib": []
   },
   "started": "2026-01-12T16:01:50.836Z",
-  "lastUpdate": "2026-03-26T23:30:00Z",
+  "lastUpdate": "2026-03-29T22:30:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos190Problem.lean",
       "filename": "Erdos190Problem.lean",
-      "lineCount": 316,
+      "lineCount": 351,
       "theoremCount": 6,
-      "axiomCount": 7,
+      "axiomCount": 4,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
