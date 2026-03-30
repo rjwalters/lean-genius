@@ -7,7 +7,7 @@
     "author": "Sylvester, Green-Tao, Motzkin",
     "sourceUrl": "https://erdosproblems.com/606",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos606OQ03.lean",
     "tags": [
       "combinatorial-geometry",
@@ -16,11 +16,11 @@
       "erdos",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
-    "axiomCount": 3,
-    "lineCount": 122,
-    "assumptions": "3 axioms. 0 sorries.",
+    "axiomCount": 0,
+    "lineCount": 98,
+    "assumptions": "0 axioms, 0 sorries. WARNING: general_position_count proves True (placeholder). Sylvester-Gallai, Green-Tao, and Motzkin are mentioned in comments but not axiomatized.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -45,8 +45,8 @@
       "Mathlib"
     ],
     "namespace": "Erdos606OQ03",
-    "lineCount": 122,
-    "axiomCount": 3,
+    "lineCount": 98,
+    "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0
   },
