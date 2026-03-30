@@ -8,13 +8,7 @@
     "date": "1801",
     "status": "verified",
     "proofRepoPath": "Proofs/PythagoreanTriplesOQ02.lean",
-    "tags": [
-      "number-theory",
-      "gaussian-integers",
-      "pythagorean-triples",
-      "algebraic",
-      "research"
-    ],
+    "tags": ["number-theory", "gaussian-integers", "pythagorean-triples", "algebraic", "research"],
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
@@ -23,11 +17,7 @@
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
-      {
-        "theorem": "PythagoreanTriple",
-        "description": "Predicate a² + b² = c²",
-        "module": "Mathlib.NumberTheory.PythagoreanTriples"
-      }
+      {"theorem": "PythagoreanTriple", "description": "Predicate a² + b² = c²", "module": "Mathlib.NumberTheory.PythagoreanTriples"}
     ],
     "originalContributions": [
       "Gaussian integer arithmetic framework (gaussMul, gaussNorm, gaussConj, gaussSq)",
@@ -46,69 +36,19 @@
     ]
   },
   "sections": [
-    {
-      "id": "gaussian-arithmetic",
-      "title": "Gaussian Integer Arithmetic",
-      "startLine": 24,
-      "endLine": 46,
-      "summary": "Defines Gaussian integers and their operations: multiplication, conjugation, norm, and squaring."
-    },
-    {
-      "id": "core-properties",
-      "title": "Core Properties",
-      "startLine": 51,
-      "endLine": 68,
-      "summary": "Proves norm multiplicativity and conjugation properties of Gaussian integers."
-    },
-    {
-      "id": "pythagorean-triples",
-      "title": "Pythagorean Triples from Squaring",
-      "startLine": 73,
-      "endLine": 95,
-      "summary": "Shows the parametric formula (m²-n², 2mn, m²+n²) is squaring z = m + ni in ℤ[i]."
-    },
-    {
-      "id": "brahmagupta-fibonacci",
-      "title": "Brahmagupta-Fibonacci Identity",
-      "startLine": 100,
-      "endLine": 120,
-      "summary": "Derives the Brahmagupta-Fibonacci identity from Gaussian norm multiplicativity."
-    },
-    {
-      "id": "factoring",
-      "title": "The Factoring Perspective",
-      "startLine": 125,
-      "endLine": 140,
-      "summary": "Establishes the product rule for Pythagorean triples via Gaussian multiplication."
-    },
-    {
-      "id": "examples",
-      "title": "Concrete Examples",
-      "startLine": 145,
-      "endLine": 170,
-      "summary": "Verifies concrete Pythagorean triples (3,4,5), (5,12,13) using the Gaussian framework."
-    }
+    {"id": "gaussian-arithmetic", "title": "Gaussian Integer Arithmetic", "startLine": 24, "endLine": 46},
+    {"id": "core-properties", "title": "Core Properties", "startLine": 51, "endLine": 68},
+    {"id": "pythagorean-triples", "title": "Pythagorean Triples from Squaring", "startLine": 73, "endLine": 95},
+    {"id": "brahmagupta-fibonacci", "title": "Brahmagupta-Fibonacci Identity", "startLine": 100, "endLine": 120},
+    {"id": "factoring", "title": "The Factoring Perspective", "startLine": 125, "endLine": 140},
+    {"id": "examples", "title": "Concrete Examples", "startLine": 145, "endLine": 170}
   ],
   "conclusion": {
     "summary": "The Gaussian integer connection reveals the algebraic structure behind Pythagorean triples: the parametric formula is squaring, and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
-    "openQuestions": [],
-    "implications": "The Gaussian integer connection reveals the algebraic structure behind Pythagorean triples: the parametric formula is squaring, and norm multiplicativity gives the Brahmagupta-Fibonacci identity."
+    "openQuestions": []
   },
   "crossReferences": [
-    {
-      "slug": "pythagorean-triples",
-      "title": "Formula for Pythagorean Triples",
-      "relation": "parent-problem",
-      "relationship": "extends"
-    }
+    {"slug": "pythagorean-triples", "title": "Formula for Pythagorean Triples", "relation": "parent-problem", "relationship": "extends"}
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "namespace": "PythagoreanTriplesOQ02",
-    "lineCount": 173,
-    "axiomCount": 0,
-    "theoremCount": 14
-  }
+  "leanFile": {"imports": ["Mathlib"], "namespace": "PythagoreanTriplesOQ02", "lineCount": 173, "axiomCount": 0, "theoremCount": 14}
 }
