@@ -98,8 +98,9 @@ noncomputable def excessEdges (G : SimpleGraph V) [DecidableRel G.Adj] : ℤ :=
 axiom boundFunction (c : ℝ) : ℕ
 
 /-- Györi's main theorem: graphs with n²/4 + k edges contain ≥ k - f(c)
-    edge-disjoint triangles when k < cn -/
-axiom gyori_theorem :
+    edge-disjoint triangles when k < cn.
+    Stated as Prop (not axiom) — published result not used by any theorem here. -/
+def gyori_theorem_statement : Prop :=
   ∀ c : ℝ, c > 0 → ∃ f : ℕ, ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
     ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
       let n := numVertices G
@@ -117,8 +118,9 @@ axiom gyori_bound :
 For small c, we can take f(c) = 0.
 -/
 
-/-- Erdős's theorem: f(c) = 0 for c < 1/2 -/
-axiom erdos_small_c :
+/-- Erdős's theorem: f(c) = 0 for c < 1/2.
+    Stated as Prop (not axiom) — published result not used by any theorem here. -/
+def erdos_small_c_theorem : Prop :=
   ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
     ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
       let n := numVertices G
@@ -126,8 +128,9 @@ axiom erdos_small_c :
       (k ≥ 0) → (2 * k < n) →
         (maxEdgeDisjointTriangles G : ℤ) ≥ k
 
-/-- Refined bound for odd n: f(c) = 0 for c < 2 -/
-axiom gyori_odd_n :
+/-- Refined bound for odd n: f(c) = 0 for c < 2.
+    Stated as Prop (not axiom) — published result not used by any theorem here. -/
+def gyori_odd_n_theorem : Prop :=
   ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
     ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
       let n := numVertices G
@@ -135,8 +138,9 @@ axiom gyori_odd_n :
       Odd n → (k ≥ 0) → (k < 2 * n) →
         (maxEdgeDisjointTriangles G : ℤ) ≥ k
 
-/-- Refined bound for even n: f(c) = 0 for c < 3/2 -/
-axiom gyori_even_n :
+/-- Refined bound for even n: f(c) = 0 for c < 3/2.
+    Stated as Prop (not axiom) — published result not used by any theorem here. -/
+def gyori_even_n_theorem : Prop :=
   ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
     ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj,
       let n := numVertices G
@@ -163,8 +167,9 @@ def completeTripartite (a b c : ℕ) : SimpleGraph (Fin a ⊕ Fin b ⊕ Fin c) w
   symm := by intro x y; simp only; cases x <;> cases y <;> simp
   loopless := by intro x; simp only; cases x <;> simp
 
-/-- Sauer's counterexample: K_{1,m,m} shows f(2) ≥ 1 -/
-axiom sauer_counterexample :
+/-- Sauer's counterexample: K_{1,m,m} shows f(2) ≥ 1.
+    Stated as Prop (not axiom) — published result not used by any theorem here. -/
+def sauer_counterexample_theorem : Prop :=
   ∃ m : ℕ, m > 0 ∧
     let G := completeTripartite 1 m m
     let n := 1 + 2 * m
