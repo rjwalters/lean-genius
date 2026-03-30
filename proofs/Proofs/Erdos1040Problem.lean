@@ -181,7 +181,9 @@ theorem unitDisc_diameter : transfiniteDiameter (Metric.closedBall (0 : ℂ) 1) 
 ## Properties of Transfinite Diameter
 -/
 
-/-- Transfinite diameter is monotone. -/
+/-- Transfinite diameter is monotone.
+    Proof sketch: nthDiameter F n ≤ nthDiameter G n (sSup over subset of values),
+    then iInf_le_iInf. BddAbove for the value set requires F (or G) to be bounded. -/
 theorem transfiniteDiameter_mono (F G : Set ℂ) (h : F ⊆ G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
   sorry
