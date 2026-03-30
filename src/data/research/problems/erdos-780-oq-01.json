@@ -20,7 +20,7 @@
       "erdos_ko_rado theorem proved from ErdosKoRado.Star in Erdos780Problem.lean:178",
       "Erdos780Aristotle.lean companion file with 10 routine lemmas"
     ],
-    "progressSummary": "COMPLETED: 4A, 0S. All 4 sorry'd small cases proved directly from kneser_conjecture axiom (rw+omega). Petersen \u03c7=3, KG(7,3) \u03c7=3, KG(2r,r) \u03c7=2, KG(2r+1,r) \u03c7=3.",
+    "progressSummary": "COMPLETED: 4A, 0S. All 4 sorry'd small cases proved directly from kneser_conjecture axiom (rw+omega). Petersen χ=3, KG(7,3) χ=3, KG(2r,r) χ=2, KG(2r+1,r) χ=3.",
     "nextSteps": [
       "Explore proving kneser_conjecture from Tucker's lemma (BorsukUlamOQ01.lean)",
       "Prove tightness_construction by explicitly building the partition coloring",
@@ -43,7 +43,7 @@
     {
       "path": "Proofs/Erdos780Problem.lean",
       "filename": "Erdos780Problem.lean",
-      "lineCount": 230,
+      "lineCount": 234,
       "theoremCount": 7,
       "axiomCount": 4,
       "defCount": 11,
