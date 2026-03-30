@@ -1,0 +1,96 @@
+{
+  "id": "ptolemys-complex-proof",
+  "title": "Ptolemy's Inequality via Complex Numbers",
+  "slug": "ptolemys-complex-proof",
+  "description": "Ptolemy's inequality proved using a simple algebraic identity over the complex numbers and the triangle inequality. For any four points in the plane: |z₁-z₃|·|z₂-z₄| ≤ |z₁-z₂|·|z₃-z₄| + |z₂-z₃|·|z₁-z₄|.",
+  "meta": {
+    "author": "Ptolemy of Alexandria",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PtolemysComplexProof.lean",
+    "tags": [
+      "geometry",
+      "complex-analysis",
+      "inequalities",
+      "circle",
+      "classic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 98,
+    "theoremCount": 5
+  },
+  "overview": {
+    "historicalContext": "Ptolemy's theorem, proved in the Almagest (c. 150 AD), states that for a cyclic quadrilateral, the product of the diagonals equals the sum of the products of opposite sides. The complex-number proof, popularized in Needham's Visual Complex Analysis and Aigner & Ziegler's Proofs from THE BOOK, reveals the theorem as a consequence of a simple ring identity.",
+    "problemStatement": "Prove Ptolemy's inequality for four points in the plane: $|z_1 - z_3| \\cdot |z_2 - z_4| \\leq |z_1 - z_2| \\cdot |z_3 - z_4| + |z_2 - z_3| \\cdot |z_1 - z_4|$.",
+    "text": "Ptolemy's inequality proved using complex numbers: the product of diagonals is at most the sum of products of opposite sides.",
+    "proofStrategy": "The proof has two steps: (1) establish the algebraic identity $(z_1-z_3)(z_2-z_4) = (z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4)$ by ring expansion, then (2) take absolute values using the triangle inequality $|a+b| \\leq |a|+|b|$ and multiplicativity $|ab|=|a||b|$.",
+    "keyInsights": [
+      "Ptolemy's theorem is a consequence of a pure ring identity that holds in any commutative ring",
+      "The complex triangle inequality $|a+b| \\leq |a|+|b|$ applied to the identity gives Ptolemy's inequality",
+      "Equality in Ptolemy's inequality characterizes concyclic points (points on a common circle)",
+      "This proof generalizes: the algebraic identity works over any commutative ring, and the inequality over any normed algebra"
+    ],
+    "prerequisites": [
+      "Complex numbers",
+      "Absolute value and triangle inequality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "algebraic-identity",
+      "title": "The Algebraic Identity",
+      "startLine": 33,
+      "endLine": 49,
+      "summary": "Proves the fundamental ring identity $(z_1-z_3)(z_2-z_4) = (z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4)$ using the `ring` tactic.",
+      "mathContext": "A pure algebraic identity over any commutative ring."
+    },
+    {
+      "id": "ptolemy-inequality",
+      "title": "Ptolemy's Inequality",
+      "startLine": 51,
+      "endLine": 82,
+      "summary": "Derives Ptolemy's inequality by taking absolute values of the algebraic identity and applying the complex triangle inequality $|a+b| \\leq |a| + |b|$.",
+      "mathContext": "The triangle inequality transforms the algebraic identity into Ptolemy's metric inequality."
+    },
+    {
+      "id": "distance-form",
+      "title": "Distance Formulation",
+      "startLine": 84,
+      "endLine": 98,
+      "summary": "Restates Ptolemy's inequality using the metric space distance function, connecting the complex-number proof to the standard geometric formulation.",
+      "mathContext": "Bridges between $|z_i - z_j|$ and $\\mathrm{dist}(z_i, z_j)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates that Ptolemy's inequality is a natural consequence of complex number algebra. The proof is remarkably short: a one-line ring identity plus the triangle inequality.",
+    "implications": "The approach generalizes to normed algebras and reveals Ptolemy's theorem as fundamentally algebraic rather than geometric.",
+    "openQuestions": [
+      "Can the equality case (concyclic points) be characterized purely algebraically?",
+      "Does the ring identity have analogues in higher-dimensional Clifford algebras?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Complex.Module"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": null,
+    "lineCount": 98,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "alternative-proof",
+      "description": "Alternative proof of Ptolemy's theorem using complex numbers instead of Euclidean geometry"
+    }
+  ]
+}
