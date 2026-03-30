@@ -197,50 +197,66 @@ PART IV: FUNDAMENTAL COROLLARIES
 
 section Corollaries
 
-/-- **Axiom: e is transcendental (Wiedijk #67)**
+/-- **Corollary 1: e is transcendental over ℚ (Hermite, 1873; Wiedijk #67)**
 
-Taking α = 1 in Hermite-Lindemann: since 1 is algebraic and non-zero,
-e = e^1 is transcendental.
+PROVED from hermite_lindemann: take α = 1 (algebraic, non-zero),
+get exp(1) transcendental in ℂ, transfer to ℝ via injective embedding. -/
+theorem e_transcendental_rationals :
+    Transcendental ℚ (Real.exp 1) := by
+  -- Step 1: exp(1) is transcendental over ℤ in ℂ
+  have h_complex : Transcendental ℤ (Complex.exp (1 : ℂ)) :=
+    hermite_lindemann 1 one_ne_zero (isAlgebraic_int 1)
+  -- Step 2: Complex.exp 1 = ↑(Real.exp 1) (coercion from ℝ to ℂ)
+  rw [show (1 : ℂ) = ↑(1 : ℝ) from by simp, Complex.ofReal_exp] at h_complex
+  -- Step 3: Transfer transcendence from ℂ to ℝ (injective ℝ → ℂ map)
+  have h_real : Transcendental ℤ (Real.exp 1) := by
+    intro ⟨p, hp_ne, hp_eval⟩
+    exact h_complex ⟨p, hp_ne, by
+      have : Polynomial.aeval (↑(Real.exp 1) : ℂ) p = ↑(Polynomial.aeval (Real.exp 1) p) :=
+        Polynomial.aeval_algHom_apply (Complex.ofRealHom.toAlgHom) (Real.exp 1) p
+      rw [this, hp_eval, map_zero]⟩
+  -- Step 4: ℤ-transcendental → ℚ-transcendental via IsFractionRing
+  exact fun halg => h_real ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg)
 
-This was first proved by Hermite in 1873.
+/-- **Corollary 2: π is transcendental in ℂ (Lindemann, 1882; Wiedijk #53)**
 
-**Why axiomatized**: Applying hermite_lindemann to α = 1 requires
-showing that 1 : ℂ is algebraic over ℚ. While this is trivially true
-(1 is a root of X - 1), the type inference is complex. -/
+PROVED from hermite_lindemann via contradiction and Euler's identity:
+If π algebraic → iπ algebraic (product) → exp(iπ) transcendental.
+But exp(iπ) = -1 is algebraic. Contradiction! -/
+theorem pi_transcendental :
+    Transcendental ℤ (Real.pi : ℂ) := by
+  intro halg
+  -- i is algebraic over ℚ (root of X² + 1)
+  have hi : IsAlgebraic ℚ (Complex.I : ℂ) :=
+    (IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ).mpr
+      ⟨X ^ 2 + 1, by decide, by simp [Polynomial.aeval_def, Complex.I_sq]; ring⟩
+  -- π is algebraic over ℚ (from our assumption via ℤ↔ℚ)
+  have hpi_q : IsAlgebraic ℚ (↑Real.pi : ℂ) :=
+    (IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ).mpr halg
+  -- Product iπ is algebraic over ℚ
+  have hipi_q : IsAlgebraic ℚ (↑Real.pi * Complex.I : ℂ) := hpi_q.mul hi
+  -- πi ≠ 0
+  have hipi_ne : ↑Real.pi * Complex.I ≠ 0 :=
+    mul_ne_zero (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero) Complex.I_ne_zero
+  -- By Hermite-Lindemann: exp(πi) is transcendental over ℤ
+  have hexp := hermite_lindemann (↑Real.pi * Complex.I) hipi_ne hipi_q
+  -- But exp(πi) = -1 by Euler's identity
+  rw [show ↑Real.pi * Complex.I = ↑Real.pi * Complex.I from rfl,
+      Complex.exp_mul_I, Complex.ofReal_cos_ofReal_re,
+      Complex.ofReal_sin_ofReal_re, Real.cos_pi, Real.sin_pi] at hexp
+  simp at hexp
 
-/-- **Axiom: e is transcendental over ℚ (Real version)**
+/-- **Corollary 2b: π is transcendental in ℝ**
 
-This follows from transcendence over ℤ via the embedding ℤ → ℚ.
-Any polynomial over ℤ can be viewed as a polynomial over ℚ, so
-transcendence over ℤ implies transcendence over ℚ. -/
-axiom e_transcendental_rationals :
-    Transcendental ℚ (Real.exp 1)
-
-/-- **Axiom: π is transcendental (Wiedijk #53)**
-
-Proof outline by contradiction using Hermite-Lindemann:
-1. Assume π is algebraic over ℚ
-2. Then iπ is algebraic (since i is algebraic and product of algebraics is algebraic)
-3. By Hermite-Lindemann, e^(iπ) is transcendental
-4. But e^(iπ) = -1 by Euler's identity, which is algebraic
-5. Contradiction!
-
-This settles the ancient problem of "squaring the circle".
-
-**Why axiomatized**: The full proof requires:
-- Algebraic closure properties (product of algebraics)
-- Careful type conversions between ℤ-algebraic and ℚ-algebraic
-- These are available in Mathlib but the proof structure is complex -/
-axiom pi_transcendental :
-    Transcendental ℤ (Real.pi : ℂ)
-
-/-- **Axiom: π transcendence (Real version)**
-
-If π were algebraic as a real number, the embedding ℝ → ℂ would make it
-algebraic as a complex number, contradicting pi_transcendental.
-The proof requires the fact that the embedding preserves algebraicity. -/
-axiom pi_transcendental_real :
-    Transcendental ℤ Real.pi
+PROVED from pi_transcendental: if π were algebraic in ℝ,
+the injective embedding ℝ → ℂ would make it algebraic in ℂ. -/
+theorem pi_transcendental_real :
+    Transcendental ℤ Real.pi := by
+  intro ⟨p, hp_ne, hp_eval⟩
+  exact pi_transcendental ⟨p, hp_ne, by
+    have : Polynomial.aeval (↑Real.pi : ℂ) p = ↑(Polynomial.aeval Real.pi p) :=
+      Polynomial.aeval_algHom_apply (Complex.ofRealHom.toAlgHom) Real.pi p
+    rw [this, hp_eval, map_zero]⟩
 
 /-- **Corollary 3: e^n is transcendental for any non-zero integer n** -/
 theorem exp_int_transcendental (n : ℤ) (hn : n ≠ 0) :

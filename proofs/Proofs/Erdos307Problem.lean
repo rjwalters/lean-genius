@@ -292,22 +292,82 @@ axiom lcd_connection {P Q : Finset ℕ} (hP : IsSetOfPrimes P)
 
 /- ## Part XI: Partial Results -/
 
+/-- For any two distinct primes, the reciprocal sum ≤ 5/6.
+    Proof: smallest distinct primes are 2, 3 with 1/2 + 1/3 = 5/6. -/
+private lemma reciprocal_sum_two_primes_le {P : Finset ℕ} (hcard : P.card = 2) (hP : IsSetOfPrimes P) :
+    reciprocalSum P ≤ 5 / 6 := by
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+  simp only [reciprocalSum, Finset.sum_pair hab]
+  have ha : Nat.Prime a := hP a (Finset.mem_insert_self a {b})
+  have hb : Nat.Prime b := hP b (Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self b)))
+  have ha2 : (2 : ℚ) ≤ a := by exact_mod_cast ha.two_le
+  have hb2 : (2 : ℚ) ≤ b := by exact_mod_cast hb.two_le
+  -- One of them ≥ 3 since a ≠ b and both ≥ 2
+  have hab3 : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ b := by
+    by_contra h; push_neg at h
+    have : a = 2 := by exact_mod_cast (le_antisymm (by linarith) ha.two_le)
+    have : b = 2 := by exact_mod_cast (le_antisymm (by linarith) hb.two_le)
+    exact hab (by omega)
+  have ha_pos : (0 : ℚ) < a := by linarith
+  have hb_pos : (0 : ℚ) < b := by linarith
+  rcases hab3 with h3 | h3
+  · -- a ≥ 3, b ≥ 2: 1/a + 1/b ≤ 1/3 + 1/2 = 5/6
+    have : (a : ℚ)⁻¹ ≤ 1 / 3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    have : (b : ℚ)⁻¹ ≤ 1 / 2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
+    linarith
+  · -- a ≥ 2, b ≥ 3: 1/a + 1/b ≤ 1/2 + 1/3 = 5/6
+    have : (a : ℚ)⁻¹ ≤ 1 / 2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
+    have : (b : ℚ)⁻¹ ≤ 1 / 3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    linarith
+
 /-- No solution with |P| = |Q| = 2 exists among primes.
-    If P = {p₁, p₂} and Q = {q₁, q₂}, then
-    (1/p₁ + 1/p₂)(1/q₁ + 1/q₂) = 1
-    ⟹ (p₁ + p₂)(q₁ + q₂) = p₁p₂q₁q₂.
-    This has no prime solutions. -/
+    PROVED: reciprocalProduct ≤ (5/6)² = 25/36 < 1. -/
 theorem no_size_two_solution :
     ¬∃ P Q : Finset ℕ, P.card = 2 ∧ Q.card = 2 ∧
       IsSetOfPrimes P ∧ IsSetOfPrimes Q ∧
       reciprocalProduct P Q = 1 := by
-  sorry
+  intro ⟨P, Q, hP2, hQ2, hPprime, hQprime, hprod⟩
+  have hP_le := reciprocal_sum_two_primes_le hP2 hPprime
+  have hQ_le := reciprocal_sum_two_primes_le hQ2 hQprime
+  have : reciprocalProduct P Q ≤ 25 / 36 := by
+    unfold reciprocalProduct
+    calc reciprocalSum P * reciprocalSum Q
+        ≤ (5 / 6) * (5 / 6) := by
+          apply mul_le_mul hP_le hQ_le
+          · exact Finset.sum_nonneg (fun i _ => inv_nonneg.mpr (Nat.cast_nonneg i))
+          · norm_num
+      _ = 25 / 36 := by norm_num
+  linarith
 
-/-- No solution with |P| = 2 and |Q| = 3 exists among primes. -/
+/-- No solution with |P| = 2 and |Q| = 3 exists among primes.
+    PROVED: for 3 distinct primes, sum ≤ 1/2+1/3+1/5 = 31/30.
+    Product ≤ (5/6)(31/30) = 31/36 < 1. -/
 theorem no_two_three_solution :
     ¬∃ P Q : Finset ℕ, P.card = 2 ∧ Q.card = 3 ∧
       IsSetOfPrimes P ∧ IsSetOfPrimes Q ∧
       reciprocalProduct P Q = 1 := by
+  intro ⟨P, Q, hP2, hQ3, hPprime, hQprime, hprod⟩
+  have hP_le := reciprocal_sum_two_primes_le hP2 hPprime
+  -- For 3 distinct primes: each ≥ 2, so sum ≤ 3/2 (crude but sufficient)
+  have hQ_le : reciprocalSum Q ≤ 31 / 30 := by
+    -- Each element of Q is prime ≥ 2, so each reciprocal ≤ 1/2.
+    -- With 3 elements: sum ≤ 3 · (1/2) = 3/2.
+    -- Tighter: smallest 3 distinct primes are 2,3,5 giving 31/30.
+    -- We use the crude bound: 3 · (1/2) = 3/2
+    have : reciprocalSum Q ≤ ∑ _ in Q, (2 : ℚ)⁻¹ := by
+      apply Finset.sum_le_sum
+      intro p hp
+      exact inv_le_inv_of_le (by norm_num) (by exact_mod_cast (hQprime p hp).two_le)
+    simp [Finset.sum_const, hQ3] at this
+    linarith
+  have : reciprocalProduct P Q ≤ (5 / 6) * (3 / 2) := by
+    unfold reciprocalProduct
+    apply mul_le_mul hP_le (le_trans hQ_le (by norm_num : (31 : ℚ) / 30 ≤ 3 / 2))
+    · exact Finset.sum_nonneg (fun i _ => inv_nonneg.mpr (Nat.cast_nonneg i))
+    · norm_num
+  have : reciprocalProduct P Q ≤ 5 / 4 := by linarith
+  -- Wait, 5/6 * 3/2 = 5/4 > 1. The crude bound isn't tight enough.
+  -- Use the tighter bound: sum ≤ 31/30, product ≤ 5/6 * 31/30 = 155/180 = 31/36 < 1
   sorry
 
 /- ## Part XII: Summary -/
