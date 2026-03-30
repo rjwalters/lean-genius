@@ -309,11 +309,70 @@ private lemma f_rot_set_bddAbove (n : ℕ) :
         exact side_le_sqrt_two (P.squares i) (P.contained i)
     _ = n * Real.sqrt 2 := by simp [Finset.sum_const, Finset.card_fin]
 
-/-- The achievable AP sum set is nonempty (requires constructing one packing).
-    TODO: prove by constructing n tiny axis-parallel squares in a row. -/
+/-- The achievable AP sum set is nonempty.
+    Proof: construct n axis-parallel squares of side 1/(n+1), angle 0,
+    centered at ((2i+1)/(2(n+1)), 1/(2(n+1))) for i = 0..n-1. -/
 private lemma g_ap_set_nonempty (n : ℕ) :
     {s : ℝ | ∃ P : AxisParallelPacking n, P.sumSides = s}.Nonempty := by
-  sorry -- Needs explicit construction of n tiny disjoint squares in [0,1]²
+  -- Place n tiny squares in a row along the bottom of [0,1]²
+  set m : ℝ := ↑n + 1 with hm_def
+  have hm : 0 < m := by positivity
+  have h2m : 0 < 2 * m := by positivity
+  refine ⟨_, ⟨{
+    squares := fun i =>
+      ⟨((2 * (↑(i : ℕ) : ℝ) + 1) / (2 * m), 1 / (2 * m)), 1 / m, 0, by positivity⟩
+    contained := fun i p hp => by
+      simp only [RotatedSquare.ContainedInUnit, RotatedSquare.closure', unitSquare',
+        Real.cos_zero, Real.sin_zero, mul_one, mul_zero, add_zero, zero_add,
+        neg_zero, Set.mem_setOf_eq] at hp ⊢
+      obtain ⟨hpx, hpy⟩ := hp
+      have half_eq : (1 : ℝ) / m / 2 = 1 / (2 * m) := div_div 1 m 2
+      rw [half_eq] at hpx hpy
+      rw [abs_le] at hpx hpy
+      have hi_nn : (0 : ℝ) ≤ ↑(i : ℕ) := Nat.cast_nonneg _
+      have hi_lt : (↑(i : ℕ) : ℝ) + 1 ≤ m := by exact_mod_cast i.isLt
+      refine ⟨?_, ?_, ?_, ?_⟩
+      · -- 0 ≤ p.1: From hpx.1, p.1 ≥ (2i+1)/(2m) - 1/(2m) = i/m ≥ 0
+        have h1 : (2 * (↑(i : ℕ) : ℝ) + 1 - 1) / (2 * m) ≤ p.1 := by
+          rw [sub_div]; linarith
+        have h2 : (2 * (↑(i : ℕ) : ℝ)) / (2 * m) ≥ 0 := div_nonneg (by nlinarith) (le_of_lt h2m)
+        linarith [show 2 * (↑(i : ℕ) : ℝ) + 1 - 1 = 2 * ↑(i : ℕ) from by ring]
+      · -- p.1 ≤ 1: From hpx.2, p.1 ≤ (2i+2)/(2m) = (i+1)/m ≤ 1
+        have h1 : p.1 ≤ (2 * (↑(i : ℕ) : ℝ) + 1 + 1) / (2 * m) := by
+          rw [add_div]; linarith
+        have h2 : (2 * (↑(i : ℕ) : ℝ) + 2) / (2 * m) ≤ 1 := by
+          rw [div_le_one h2m]; nlinarith
+        linarith [show 2 * (↑(i : ℕ) : ℝ) + 1 + 1 = 2 * ↑(i : ℕ) + 2 from by ring]
+      · -- 0 ≤ p.2: From hpy.1, p.2 ≥ 1/(2m) - 1/(2m) = 0
+        linarith
+      · -- p.2 ≤ 1: From hpy.2, p.2 ≤ 1/(2m) + 1/(2m) = 1/m ≤ 1
+        have h1 : 1 / (2 * m) + 1 / (2 * m) = 1 / m := by ring
+        have h2 : 1 / m ≤ 1 := div_le_one_of_le (by linarith) (le_of_lt hm)
+        linarith
+    disjoint := fun i j hij => by
+      simp only [RotatedSquare.DisjointInteriors, RotatedSquare.interior,
+        Real.cos_zero, Real.sin_zero, mul_one, mul_zero, add_zero, zero_add,
+        neg_zero, Set.disjoint_left, Set.mem_setOf_eq]
+      intro p ⟨hxi, _⟩ ⟨hxj, _⟩
+      have half_eq : (1 : ℝ) / m / 2 = 1 / (2 * m) := div_div 1 m 2
+      rw [half_eq] at hxi hxj
+      rw [abs_lt] at hxi hxj
+      -- i ≠ j as ℕ implies |i - j| ≥ 1, so x-ranges don't overlap
+      have hij_val : (i : ℕ) ≠ (j : ℕ) := Fin.val_ne_of_ne hij
+      rcases Nat.lt_or_gt_of_ne hij_val with h | h
+      · -- i < j: p.1 < (2i+2)/(2m) and (2j)/(2m) < p.1, but 2j ≥ 2i+2
+        have : (↑(j : ℕ) : ℝ) ≥ (↑(i : ℕ) : ℝ) + 1 := by exact_mod_cast h
+        have hxu : p.1 < (2 * (↑(i : ℕ) : ℝ) + 1 + 1) / (2 * m) := by rw [add_div]; linarith
+        have hxl : (2 * (↑(j : ℕ) : ℝ) + 1 - 1) / (2 * m) < p.1 := by rw [sub_div]; linarith
+        nlinarith [show 2 * (↑(i : ℕ) : ℝ) + 1 + 1 = 2 * (↑(i : ℕ) : ℝ) + 2 from by ring,
+                   show 2 * (↑(j : ℕ) : ℝ) + 1 - 1 = 2 * (↑(j : ℕ) : ℝ) from by ring]
+      · -- j < i: symmetric
+        have : (↑(i : ℕ) : ℝ) ≥ (↑(j : ℕ) : ℝ) + 1 := by exact_mod_cast h
+        have hxu : p.1 < (2 * (↑(j : ℕ) : ℝ) + 1 + 1) / (2 * m) := by rw [add_div]; linarith
+        have hxl : (2 * (↑(i : ℕ) : ℝ) + 1 - 1) / (2 * m) < p.1 := by rw [sub_div]; linarith
+        nlinarith [show 2 * (↑(j : ℕ) : ℝ) + 1 + 1 = 2 * (↑(j : ℕ) : ℝ) + 2 from by ring,
+                   show 2 * (↑(i : ℕ) : ℝ) + 1 - 1 = 2 * (↑(i : ℕ) : ℝ) from by ring]
+    axisParallel := fun _ => rfl }, rfl⟩⟩
 
 /-- g_ap(n) ≤ f_rot(n): every axis-parallel packing is a general packing -/
 theorem g_ap_le_f_rot (n : ℕ) : g_ap n ≤ f_rot n := by
