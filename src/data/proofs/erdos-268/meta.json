@@ -18,7 +18,7 @@
       "Egyptian-fractions"
     ],
     "badge": "axiom",
-    "sorries": 12,
+    "sorries": 8,
     "erdosNumber": 268,
     "erdosUrl": "https://erdosproblems.com/268",
     "erdosProblemStatus": "solved",
@@ -56,9 +56,9 @@
       "Dimension monotonicity via projection maps",
       "Concrete examples: squares (Basel problem) and powers of 2 (geometric series)"
     ],
-    "axiomCount": 4,
-    "lineCount": 271,
-    "assumptions": "4 axiom(s) and 12 sorry(s). See the Lean source for details."
+    "axiomCount": 1,
+    "lineCount": 287,
+    "assumptions": "1 axiom: erdos_268_solved (main interior result for all dimensions). 8 sorries (shifted summability, nonemptiness, path-connectedness, density, coordinate properties, example convergence)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #268: Interior of Harmonic Subseries Points**\n\nThis problem lies at the intersection of harmonic analysis, number theory, and point-set topology. It originates from a classical question about which real numbers can be represented as sums of distinct unit fractions — a topic with roots in ancient Egyptian mathematics (the Rhind Papyrus, c. 1650 BCE, contains tables of such decompositions, now called Ahmes series or Egyptian fractions).\n\nThe modern formulation involves the set of all infinite subsets A ⊆ ℕ with convergent harmonic subseries Σ_{n∈A} 1/n < ∞. Such sets must be very 'thin' — the harmonic series diverges (proved by Nicole Oresme c. 1350), so A cannot contain too many elements. Examples include {n²} (with sum π²/6, the Basel problem solved by Euler in 1734) and {2ᵏ} (with sum 2, a geometric series).\n\nThe twist in Problem #268 is the passage to higher dimensions: for each qualifying set A, form the d-dimensional point (Σ 1/n, Σ 1/(n+1), ..., Σ 1/(n+d-1)). The set X of all such points is the object of study. Erdős asked: does X have nonempty interior?\n\n**Timeline:**\n- 1950s–60s: Erdős poses the problem, motivated by his work on thin sets and additive number theory\n- Erdős-Straus: Prove the d=2 case using properties of the digamma function ψ(x) and telescoping sum representations\n- Decades of partial results on the 1-dimensional structure of achievable harmonic subseries sums\n- 2024: Kovač proves d=3 with an explicit construction of an open ball inside X₃, giving quantitative geometric information\n- 2024: Kovač and Tao prove the full result for all d ≥ 1, connecting the problem to the theory of Ahmes series and showing that the richness of Egyptian fraction representations guarantees interior in every dimension\n\nThe result is surprising: despite the severe sparsity constraint on A, the resulting points fill out an open region in ℝᵈ. This reflects a deep phenomenon — the space of 'thin' infinite subsets of ℕ is itself rich enough to parameterize open sets in arbitrary dimension.",
@@ -170,7 +170,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #268 asks whether the set of harmonic subseries points X_d ⊆ ℝᵈ has nonempty interior. The answer is YES for all d ≥ 1, proved in stages: Erdős-Straus for d=2, Kovač (2024) for d=3 with an explicit ball, and Kovač-Tao (2024) for all d using Ahmes series techniques. The formalization captures this in 242 lines of Lean 4 with 4 axioms (the deep analytical results) and 12 sorries (Mathlib-level technical lemmas). The key genuine proof is contains_open_ball, which derives the metric-ball formulation from the interior axiom. The sorry lemmas are good candidates for Aristotle proof search, as most involve standard Mathlib reasoning about summability and comparison.",
+    "summary": "Erdős Problem #268 asks whether the set of harmonic subseries points X_d ⊆ ℝᵈ has nonempty interior. The answer is YES for all d ≥ 1, proved in stages: Erdős-Straus for d=2, Kovač (2024) for d=3 with an explicit ball, and Kovač-Tao (2024) for all d using Ahmes series techniques. The formalization captures this in Lean 4 with 1 axiom (the main interior result) and 8 sorries (Mathlib-level technical lemmas). The key genuine proof is contains_open_ball, which derives the metric-ball formulation from the interior axiom. The sorry lemmas are good candidates for Aristotle proof search, as most involve standard Mathlib reasoning about summability and comparison.",
     "implications": "**Theoretical Significance**: **Connections Across Mathematics**\n\n1. **Ahmes Series and Egyptian Fractions:** The Kovač-Tao proof bridges ancient number theory (Egyptian fraction decompositions from the Rhind Papyrus) with modern topology. The set of numbers representable as Ahmes series has surprising density properties that directly imply the nonempty interior result\n\n2. **Thin Sets in Additive Combinatorics:** Problem #268 is a topological counterpart to questions about sumsets of thin sets. In additive combinatorics, Freiman-Ruzsa theory studies when thin sets have large sumsets; here, the 'sumset' is the image of the harmonic point map, and 'large' means having interior\n\n**3. Harmonic Analysis on ℕ:** The shifted sums Σ 1/(n+k) are related to the digamma function ψ(x) and its derivatives (polygamma functions). The coordinate coupling in X_d reflects analytic properties of these special functions\n\n4. **Measure-Theoretic Questions:** Beyond interior, one can ask about the Lebesgue measure, Hausdorff dimension, and boundary regularity of X_d. The nonempty interior result implies positive Lebesgue measure, but sharp bounds on measure as a function of d remain open\n\n5. **Infinite-Dimensional Limit:** As d → ∞, the constraints become more restrictive (more coordinates must be simultaneously realized). Whether X_∞ = lim X_d retains any interior in the infinite-dimensional limit is a natural extension that connects to functional analysis.",
     "openQuestions": [
       "What is the largest open ball contained in X_d for each dimension d? How does the optimal radius decay with d?",
@@ -211,8 +211,8 @@
       "Topology"
     ],
     "namespace": "Erdos268",
-    "lineCount": 271,
-    "axiomCount": 4,
+    "lineCount": 287,
+    "axiomCount": 1,
     "theoremCount": 15,
     "definitionCount": 14
   }
