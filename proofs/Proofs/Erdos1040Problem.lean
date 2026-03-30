@@ -37,14 +37,6 @@ noncomputable def nthDiameter (F : Set ℂ) (n : ℕ) : ℝ :=
 noncomputable def transfiniteDiameter (F : Set ℂ) : ℝ :=
   ⨅ n : ℕ, nthDiameter F n
 
-/-- Alternative definition using limit. -/
-noncomputable def transfiniteDiameter' (F : Set ℂ) : ℝ :=
-  Filter.liminf (fun n => nthDiameter F n) Filter.atTop
-
-/-- The two definitions agree. -/
-axiom transfiniteDiameter_eq (F : Set ℂ) :
-  transfiniteDiameter F = transfiniteDiameter' F
-
 /-
 ## Polynomials with Roots in F
 -/
@@ -173,13 +165,15 @@ def isLineSegment (F : Set ℂ) : Prop :=
 def isClosedDisc (F : Set ℂ) : Prop :=
   ∃ c : ℂ, ∃ r > 0, F = Metric.closedBall c r
 
-/-- For line segments, μ is determined by transfinite diameter. -/
+/-- For line segments, μ is determined by transfinite diameter (EHP 1958).
+    Uses corrected muPosDeg (degree ≥ 1 restriction). -/
 axiom lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
-  ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F)
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
-/-- For discs, μ is determined by transfinite diameter. -/
+/-- For discs, μ is determined by transfinite diameter (EHP 1958).
+    Uses corrected muPosDeg (degree ≥ 1 restriction). -/
 axiom disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
-  ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F)
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
 /-- Line segment of length L has transfinite diameter L/4. -/
 axiom lineSegment_diameter (a b : ℂ) :
@@ -244,7 +238,11 @@ theorem transfiniteDiameter_mono (F G : Set ℂ) (h : F ⊆ G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
   sorry
 
-/-- Transfinite diameter is non-negative. -/
+/-- Transfinite diameter is non-negative.
+    Proof sketch: each nthDiameter F n = sSup of {rpow(...) | pts ∈ F^n},
+    all elements are ≥ 0 (rpow of non-negative base), and for ℝ, sSup of
+    non-negative values ≥ 0 in all cases (empty, BddAbove, or not).
+    Then le_ciInf gives ⨅ n, nthDiameter F n ≥ 0. -/
 theorem transfiniteDiameter_nonneg (F : Set ℂ) :
     transfiniteDiameter F ≥ 0 := by
   sorry
