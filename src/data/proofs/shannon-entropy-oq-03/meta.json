@@ -1,0 +1,46 @@
+{
+  "id": "shannon-entropy-oq-03",
+  "title": "Strong Subadditivity of Shannon Entropy",
+  "slug": "shannon-entropy-oq-03",
+  "description": "H(X,Y,Z) + H(Y) \u2264 H(X,Y) + H(Y,Z): strong subadditivity via conditional mutual information non-negativity",
+  "meta": {
+    "author": "Lieb-Ruskai (1973) for quantum, classical follows from KL divergence",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Strong_subadditivity_of_quantum_entropy",
+    "date": "1973",
+    "status": "axiomatized",
+    "tags": ["information-theory", "analysis", "probability", "entropy", "advanced"],
+    "proofRepoPath": "Proofs/ShannonEntropyStrongSub.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Three-variable marginal distributions (marginal12, marginal23, marginalY)",
+      "Conditional entropy H(X|Y,Z) and conditional mutual information I(X;Z|Y)",
+      "Equivalence of strong subadditivity forms (form 1 \u2194 form 3, verified)",
+      "Framework for proving from KL divergence non-negativity"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 2,
+    "lineCount": 119,
+    "assumptions": "2 axioms: strong_subadditivity (form 1) and condMutualInfo_nonneg (form 3). Both provable from KL divergence non-negativity (already in ShannonEntropy.lean).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Strong subadditivity was proved by Lieb and Ruskai (1973) for von Neumann (quantum) entropy. The classical case follows more simply from the non-negativity of KL divergence.",
+    "problemStatement": "Prove H(X,Y,Z) + H(Y) \u2264 H(X,Y) + H(Y,Z) from the log-sum inequality.",
+    "text": "Strong subadditivity of Shannon entropy via conditional mutual information",
+    "proofStrategy": "I(X;Z|Y) = \u03a3_y p(y) D_KL(p(x,z|y) || p(x|y)p(z|y)) \u2265 0 since each term is a non-negative KL divergence.",
+    "keyInsights": ["Strong subadditivity = conditioning reduces entropy = conditional MI \u2265 0. Three equivalent forms, all following from KL \u2265 0."],
+    "prerequisites": ["Shannon entropy", "KL divergence", "Conditional distributions"]
+  },
+  "sections": [
+    {"id": "marginals", "title": "Marginal Distributions", "startLine": 1, "endLine": 60, "summary": "Three-variable marginal distributions.", "mathContext": "Summing out variables to get marginal distributions."},
+    {"id": "definitions", "title": "Conditional Entropy and MI", "startLine": 61, "endLine": 90, "summary": "H(X|Y,Z) and I(X;Z|Y) definitions.", "mathContext": "Standard information-theoretic quantities."},
+    {"id": "strong-sub", "title": "Strong Subadditivity", "startLine": 91, "endLine": 119, "summary": "Two axiomatized forms plus verified equivalence.", "mathContext": "H(X,Y,Z)+H(Y) \u2264 H(X,Y)+H(Y,Z) \u2194 I(X;Z|Y) \u2265 0."}
+  ],
+  "crossReferences": [{"targetId": "shannon-entropy", "relationship": "extension", "description": "Extends ShannonEntropy.lean to three-variable distributions and strong subadditivity."}],
+  "conclusion": {"summary": "Definitions and framework for strong subadditivity. Equivalence of the three standard forms is verified. The main inequalities are axiomatized, provable from existing KL \u2265 0 infrastructure.", "implications": "Strong subadditivity is the foundation of quantum information theory and data processing inequalities.", "openQuestions": ["Can the axioms be eliminated by applying kl_divergence_nonneg to the conditional distribution?"]},
+  "leanFile": {"imports": ["Mathlib"], "opens": [], "namespace": "InformationTheory.StrongSub", "lineCount": 119, "axiomCount": 2, "theoremCount": 1, "substantiveTheoremCount": 1, "duplicateTheorems": 0, "definitionCount": 8},
+  "references": [{"authors": "E. Lieb, M. Ruskai", "title": "Proof of the strong subadditivity of quantum-mechanical entropy", "year": "1973", "venue": "J. Math. Phys."}],
+  "mainTheorems": [{"name": "strong_sub_equiv_cmi", "type": "core", "description": "Equivalence of forms 1 and 3 of strong subadditivity"}]
+}
