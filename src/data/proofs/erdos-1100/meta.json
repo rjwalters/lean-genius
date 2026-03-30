@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/1100",
     "date": "1978",
     "status": "axiomatized",
-    "proofRepoPath": "Proofs/Stubs/Erdos1100Problem.lean",
+    "proofRepoPath": "Proofs/Erdos1100ProblemProvable.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -16,13 +16,13 @@
       "coprimality"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 3,
     "erdosNumber": 1100,
     "erdosUrl": "https://erdosproblems.com/1100",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 255,
-    "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "axiomCount": 0,
+    "lineCount": 335,
+    "assumptions": "0 axiom(s) and 3 sorry(s). Deep results (tau_perp_lower_bound, erdos_hall_max_lower_bound, erdos_simonovits_bounds) remain as sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -66,8 +66,8 @@
       "title": "Coprime Consecutive Divisors",
       "startLine": 59,
       "endLine": 85,
-      "summary": "Defines tauPerp (count of coprime consecutive divisor pairs τ⊥(n)), axiomatizes the lower bound τ⊥(n) ≥ ω(n), and states that equality is achieved infinitely often.",
-      "mathContext": "Defines tauPerp (count of coprime consecutive divisor pairs τ⊥(n)), axiomatizes the lower bound τ⊥(n) $\\geq$ ω(n), and states that equality is achieved infinitely often."
+      "summary": "Defines tauPerp (τ⊥(n)), proves divisors_of_prime and divisorList_prime, then proves tau_perp_equality_infinitely_often via prime witnesses (τ⊥(p) = 1 = ω(p)).",
+      "mathContext": "Defines tauPerp (τ⊥(n)), proves divisors_of_prime and divisorList_prime, then proves tau_perp_equality_infinitely_often via prime witnesses (τ⊥(p) = 1 = ω(p))."
     },
     {
       "id": "question-1-almost-all-growth",
@@ -239,29 +239,39 @@
       "Finset"
     ],
     "namespace": "Erdos1100",
-    "lineCount": 255,
-    "axiomCount": 4,
-    "theoremCount": 2,
+    "lineCount": 335,
+    "axiomCount": 0,
+    "theoremCount": 13,
     "definitionCount": 7,
     "mainTheorems": [
       {
+        "name": "tau_perp_equality_infinitely_often",
+        "type": "proved",
+        "description": "τ⊥(n) = ω(n) for infinitely many n (via prime witnesses)"
+      },
+      {
         "name": "g_exponential_growth",
         "type": "proved",
-        "description": "g(k) grows exponentially: g(k) ≥ 2^k"
+        "description": "g(k) grows exponentially with base in (√2, 2)"
       },
       {
         "name": "erdos_1100_summary",
         "type": "proved",
-        "description": "Summary: τ⊥(n) ≥ ω(n) and g(k) ≥ 2^k"
+        "description": "Summary combining lower bound, equality, and Erdős-Hall bound"
       },
       {
         "name": "tau_perp_lower_bound",
-        "type": "axiom",
+        "type": "sorry",
         "description": "τ⊥(n) ≥ ω(n) for n > 0"
       },
       {
+        "name": "erdos_hall_max_lower_bound",
+        "type": "sorry",
+        "description": "Erdős-Hall: max τ⊥(n) > exp((log log x)^(2-ε))"
+      },
+      {
         "name": "erdos_simonovits_bounds",
-        "type": "axiom",
+        "type": "sorry",
         "description": "Erdős-Simonovits bounds on g(k)"
       }
     ]
