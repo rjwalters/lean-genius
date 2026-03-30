@@ -250,7 +250,8 @@ Equivalently, H(k) > k^k eventually.
 def erdos190Conjecture : Prop :=
     ∀ M : ℕ, ∃ K : ℕ, ∀ k ≥ K, (H k : ℝ) ^ (1 / k : ℝ) / k > M
 
-axiom erdos_190 : erdos190Conjecture
+-- Note: erdos190Conjecture is OPEN — not asserted as an axiom.
+-- Previous unsound `axiom erdos_190` removed.
 
 /- ## Part VII: Small Cases -/
 
@@ -345,8 +346,7 @@ theorem erdos_190_summary :
     (∀ k, k ≥ 3 → W k ≤ H k) :=
   ⟨H_pos, H_root_to_infinity, W_le_H⟩
 
-/-- The main conjecture (OPEN): H(k)^{1/k}/k → ∞, i.e., H(k) grows
-    faster than k^k. This follows from erdos_190 axiom. -/
-theorem erdos_190_open_conjecture : erdos190Conjecture := erdos_190
+-- The main conjecture (OPEN): H(k)^{1/k}/k → ∞, i.e., H(k) grows
+-- faster than k^k. This remains unresolved.
 
 end Erdos190
