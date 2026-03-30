@@ -8,7 +8,9 @@
   "problemStatement": {
     "formal": "For any k ≥ 1, r ≥ 1, n ≥ k, there exists N such that any r-coloring of k-element subsets of an N-element set contains a monochromatic n-element subset.",
     "plain": "The hypergraph Ramsey theorem: k-uniform Ramsey numbers exist for all parameters.",
-    "whyMatters": ["Generalizes classical graph Ramsey to arbitrary uniformity"]
+    "whyMatters": [
+      "Generalizes classical graph Ramsey to arbitrary uniformity"
+    ]
   },
   "knownResults": {
     "proven": [
@@ -17,7 +19,9 @@
       "k1_is_pigeonhole, classical_ramsey_is_k2",
       "ramsey_property_mono, ramsey_base"
     ],
-    "open": ["Eliminate hypergraph_ramsey_exists axiom via stepping-up lemma"],
+    "open": [
+      "Eliminate hypergraph_ramsey_exists axiom via stepping-up lemma"
+    ],
     "goal": "Prove hypergraph_ramsey_exists by well-founded induction on (k,n)"
   },
   "currentState": {
@@ -64,23 +68,46 @@
     ],
     "markdown": ""
   },
-  "tags": ["combinatorics", "ramsey-theory", "hypergraphs"],
-  "relatedProofs": ["ramseys-theorem"],
-  "references": {"papers": [], "urls": [], "mathlib": []},
+  "tags": [
+    "combinatorics",
+    "ramsey-theory",
+    "hypergraphs"
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "ramseys-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
   "started": "2026-03-29T21:30:00Z",
   "lastUpdate": "2026-03-29T21:30:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
+      "path": "Proofs/RamseysTheorem.lean",
+      "filename": "RamseysTheorem.lean",
+      "lineCount": 628,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseysTheorem.lean"
+    },
+    {
       "path": "Proofs/RamseysTheoremOQ04.lean",
       "filename": "RamseysTheoremOQ04.lean",
-      "lineCount": 194,
-      "theoremCount": 12,
+      "lineCount": 302,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
-      "isAristotle": false
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseysTheoremOQ04.lean"
     }
   ]
 }
