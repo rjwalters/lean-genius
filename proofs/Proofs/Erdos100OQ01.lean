@@ -118,9 +118,12 @@ For small n, exact values are known (OEIS A186704 for minimum diameter):
 - n = 7: minimum diameter = 6 (Harborth's configuration)
 -/
 
-/-- For n ≤ 9, Piepmeyer showed a configuration with diameter < 5.
-    This gives the upper bound f(9) ≤ 4 (i.e., 9 points fit in diameter 4). -/
-theorem piepmeyer_upper : ∃ n : ℕ, n = 9 ∧ (∃ d : ℕ, d ≤ 4 ∧ True) := ⟨9, rfl, 4, le_refl _, trivial⟩
+/-- For n ≤ 9, Piepmeyer showed a configuration of 9 non-collinear points
+    with all pairwise integer distances and diameter ≤ 4. -/
+theorem piepmeyer_upper : ∃ (S : Finset (ℝ × ℝ)), S.card = 9 ∧
+    (∀ p ∈ S, ∀ q ∈ S, p ≠ q → ∃ k : ℕ, 0 < k ∧ k ≤ 4 ∧
+      (p.1 - q.1)^2 + (p.2 - q.2)^2 = ↑(k^2)) := by
+  sorry -- Requires explicit witness: Piepmeyer's 9-point integer-distance configuration
 
 /-! ## Part IV: The Anning–Erdős Theorem
 
