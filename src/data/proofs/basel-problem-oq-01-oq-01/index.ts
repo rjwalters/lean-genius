@@ -1,4 +1,4 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
+import type { Proof, Annotation, ProofData } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 const meta = metaJson as any
