@@ -18,18 +18,22 @@
       "fixed-point-theory",
       "advanced"
     ],
-    "badge": "wip",
-    "sorries": 2,
+    "badge": "verified",
+    "sorries": 0,
     "originalContributions": [
       "n-dimensional displacement coloring definition via barycentric coordinates",
       "Proof that displacement coloring satisfies Sperner boundary condition for arbitrary d",
       "Barycentric displacement sum-to-zero identity",
-      "Existence of negative displacement when f(v) != v via nonneg-sum-zero argument"
+      "Existence of negative displacement when f(v) != v via nonneg-sum-zero argument",
+      "Full proof of approximate_fixed_point: ε-approximate FPs via Sperner + displacement coloring transfer in arbitrary dimension",
+      "Full proof of brouwer_simplex: Brouwer FPT via compact simplex minimization of dist(f·,·)",
+      "FSimplex mesh bound via countPerm injectivity",
+      "Grid-to-cube membership for uniform continuity application"
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 230,
-    "assumptions": "0 axioms. 2 sorries on the analysis theorems (approximate_fixed_point, brouwer_simplex). The core combinatorial result (displacementColoring_isSperner) and all supporting lemmas are fully verified. Takes Sperner's lemma (sperner_ndim) as a hypothesis rather than an axiom.",
+    "lineCount": 452,
+    "assumptions": "0 axioms, 0 sorries. All theorems fully verified. Takes Sperner lemma (sperner_ndim) as a hypothesis parameter, cleanly separating combinatorial and analytical arguments.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -101,11 +105,10 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides the complete combinatorial bridge from n-dimensional Sperner's lemma to Brouwer's fixed point theorem via the displacement coloring construction. The core result -- that the displacement coloring satisfies the Sperner boundary condition -- is fully verified with 0 axioms and 0 sorries. The analytical steps (approximate FPT via uniform continuity, exact FPT via compactness) are clearly stated with documented proof strategies.",
+    "summary": "This formalization provides the complete bridge from n-dimensional Sperner lemma to Brouwer fixed point theorem via displacement coloring. All results are fully verified with 0 axioms and 0 sorries. The approximate fixed point theorem uses UC + Sperner + displacement transfer, and Brouwer follows by compact minimization.",
     "implications": "Combined with the completion of sperner_ndim (1 sorry remaining), this gives an entirely combinatorial path to Brouwer's FPT that avoids the 2 axioms in BrouwerFixedPoint.lean (no-retraction and retraction-construction). The displacement coloring approach is more elementary and computational than the algebraic topology route.",
     "openQuestions": [
-      "Complete the approximate_fixed_point proof (uniform continuity + mesh bounds)",
-      "Complete the brouwer_simplex proof (compactness argument)"
+      "Prove sperner_ndim in SpernerNDim.lean (1 sorry) to complete the full Sperner-to-Brouwer pipeline"
     ]
   },
   "crossReferences": [
@@ -159,9 +162,9 @@
       "SpernerNDim"
     ],
     "namespace": "DisplacementBrouwer",
-    "lineCount": 230,
+    "lineCount": 452,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 11,
     "definitionCount": 6
   }
 }
