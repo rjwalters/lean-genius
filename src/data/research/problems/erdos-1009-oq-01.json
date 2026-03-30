@@ -29,21 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated turan_extremal axiom (3\u21922 axioms). Proved from Mathlib CliqueFree.card_edgeFinset_le.",
+    "progressSummary": "PROGRESS: Eliminated turan_extremal axiom (3→2 axioms). Proved from Mathlib CliqueFree.card_edgeFinset_le.",
     "builtItems": [
       "Assessment: 8A all appropriate (opaque function + deep results)",
       "edgeDisjoint_comm: symmetry of edge-disjointness",
       "turanThreshold_zero, turanThreshold_one: small value computations",
-      "turanThreshold_pos: positivity for n\u22652",
-      "turanThreshold_mono: monotonicity of Tur\u00e1n threshold",
-      "PROVED turan_extremal from Mathlib (axiom count 3\u21922)"
+      "turanThreshold_pos: positivity for n≥2",
+      "turanThreshold_mono: monotonicity of Turán threshold",
+      "PROVED turan_extremal from Mathlib (axiom count 3→2)"
     ],
     "insights": [
-      "8 axioms: boundFunction (opaque) + deep graph theory (Gy\u00f6ri, Tur\u00e1n, Sauer). All appropriate.",
-      "turanThreshold is n\u00b2/4 rounded down \u2014 monotone, positive for n\u22652, zero for n\u22641",
-      "8 axioms encode Gy\u00f6ri 1988 (solved), Erd\u0151s partial, Sauer counterexample, Tur\u00e1n \u2014 all deep, no elimination possible",
+      "8 axioms: boundFunction (opaque) + deep graph theory (Györi, Turán, Sauer). All appropriate.",
+      "turanThreshold is n²/4 rounded down — monotone, positive for n≥2, zero for n≤1",
+      "8 axioms encode Györi 1988 (solved), Erdős partial, Sauer counterexample, Turán — all deep, no elimination possible",
       "turan_extremal axiom eliminated by proving from Mathlib CliqueFree.card_edgeFinset_le",
-      "Bridge: custom Triangle \u2192 CliqueFree 3 via Finset.card_eq_three + Set.Pairwise application"
+      "Bridge: custom Triangle → CliqueFree 3 via Finset.card_eq_three + Set.Pairwise application"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -75,9 +75,9 @@
     {
       "path": "Proofs/Erdos1009Problem.lean",
       "filename": "Erdos1009Problem.lean",
-      "lineCount": 222,
-      "theoremCount": 4,
-      "axiomCount": 3,
+      "lineCount": 240,
+      "theoremCount": 5,
+      "axiomCount": 2,
       "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,

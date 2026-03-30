@@ -1,0 +1,80 @@
+{
+  "slug": "birch-swinnerton-dyer-oq-01",
+  "title": "Finiteness of Sha(E/Q): formalize Kolyvagin rank-1 result",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Finiteness of Sha(E/Q): formalize Kolyvagin rank-1 result.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T19:39:40.877Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "elliptic-curves",
+    "millennium-prize",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "birch-swinnerton-dyer"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T19:39:40.877Z",
+  "lastUpdate": "2026-03-30T19:39:40.877Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/BirchSwinnertonDyer.lean",
+      "filename": "BirchSwinnertonDyer.lean",
+      "lineCount": 7438,
+      "theoremCount": 254,
+      "axiomCount": 21,
+      "defCount": 143,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyer.lean"
+    },
+    {
+      "path": "Proofs/BirchSwinnertonDyerAristotle.lean",
+      "filename": "BirchSwinnertonDyerAristotle.lean",
+      "lineCount": 391,
+      "theoremCount": 66,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerAristotle.lean"
+    }
+  ]
+}

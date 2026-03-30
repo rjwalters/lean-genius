@@ -1,0 +1,92 @@
+{
+  "slug": "hilbert-15-oq-02",
+  "title": "Complexity of computing Littlewood-Richardson coefficients",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Complexity of computing Littlewood-Richardson coefficients.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T21:46:38.107Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "algebraic-geometry",
+    "combinatorics",
+    "hilbert"
+  ],
+  "relatedProofs": [
+    "hilbert-15",
+    "hilbert-15-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T21:46:38.107Z",
+  "lastUpdate": "2026-03-30T21:46:38.107Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert15OQ01.lean",
+      "filename": "Hilbert15OQ01.lean",
+      "lineCount": 352,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15SchubertCalculus.lean",
+      "filename": "Hilbert15SchubertCalculus.lean",
+      "lineCount": 473,
+      "theoremCount": 4,
+      "axiomCount": 7,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculus.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15SchubertCalculusOQ01.lean",
+      "filename": "Hilbert15SchubertCalculusOQ01.lean",
+      "lineCount": 311,
+      "theoremCount": 5,
+      "axiomCount": 6,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculusOQ01.lean"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "slug": "binary-gcd-oq-01-oq-01",
+  "title": "Binary GCD Total Cost Model Formalization",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Binary GCD Total Cost Model Formalization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T21:13:16.757Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "algorithms",
+    "complexity",
+    "gcd",
+    "cost-model"
+  ],
+  "relatedProofs": [
+    "binary-gcd",
+    "binary-gcd-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T21:13:16.757Z",
+  "lastUpdate": "2026-03-30T21:13:16.757Z",
+  "significance": 5,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinaryGcdOQ01.lean",
+      "filename": "BinaryGcdOQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01.lean"
+    }
+  ]
+}

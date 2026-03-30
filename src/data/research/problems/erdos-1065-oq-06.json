@@ -1,0 +1,85 @@
+{
+  "slug": "erdos-1065-oq-06",
+  "title": "Cunningham chains and Form A primes: long chain existence",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Cunningham chains and Form A primes: long chain existence.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T19:39:40.879Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-numbers",
+    "cunningham-chains",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-106",
+    "erdos-1065",
+    "erdos-1065-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T19:39:40.879Z",
+  "lastUpdate": "2026-03-30T19:39:40.879Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1065BatemanHorn.lean",
+      "filename": "Erdos1065BatemanHorn.lean",
+      "lineCount": 272,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065BatemanHorn.lean"
+    },
+    {
+      "path": "Proofs/Erdos1065Problem.lean",
+      "filename": "Erdos1065Problem.lean",
+      "lineCount": 564,
+      "theoremCount": 54,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065Problem.lean"
+    }
+  ]
+}

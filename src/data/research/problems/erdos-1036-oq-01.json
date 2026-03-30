@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom count 3\u21921. Proved alon_hajnal_1991 from shelah_1998 (exponential dominates linear via exp(t)\u2265t). Removed unused ramsey_lower_bound axiom. 2 sorries remain (optimalConstant bounds).",
+    "progressSummary": "PROGRESS: Axiom count 3→1. Proved alon_hajnal_1991 from shelah_1998 (exponential dominates linear via exp(t)≥t). Removed unused ramsey_lower_bound axiom. 2 sorries remain (optimalConstant bounds).",
     "builtItems": [
       "Created Erdos1036Problem.lean from scratch (was corrupted/empty)",
       "Defined cliqueNumber, independenceNumber, IsNonRamsey, numInducedSubgraphClasses",
@@ -37,22 +37,22 @@
       "Stated Shelah 1998 (main result), Alon-Hajnal 1991, Ramsey lower bound as axioms",
       "Proved cliqueNumber_compl, independenceNumber_compl, complement_nonramsey",
       "Proved erdos_1036 summary theorem from Shelah axiom",
-      "Proved alon_hajnal_1991 from shelah_1998: 2^{c'n} \u2265 (c'\u00b7ln2)\u00b7n via exp(t)\u2265t",
+      "Proved alon_hajnal_1991 from shelah_1998: 2^{c'n} ≥ (c'·ln2)·n via exp(t)≥t",
       "Removed unused ramsey_lower_bound axiom"
     ],
     "insights": [
-      "independenceNumber G = cliqueNumber G\u1d9c by definition (rfl)",
-      "independenceNumber G\u1d9c = cliqueNumber G needs compl_compl rewrite",
+      "independenceNumber G = cliqueNumber Gᶜ by definition (rfl)",
+      "independenceNumber Gᶜ = cliqueNumber G needs compl_compl rewrite",
       "optimalConstant is defined via sSup of valid exponent constants",
       "Random graphs G(n,1/2) achieve optimal constant 1",
-      "alon_hajnal derived from shelah: use c'\u00b7log2 as linear constant, chain 2^{c'n}=exp(c'n\u00b7log2)\u2265c'n\u00b7log2",
-      "exp(t)\u2265t follows from add_one_le_exp: t \u2264 t+1 \u2264 exp(t)",
-      "ramsey_lower_bound was unused in all proofs \u2014 safely removed"
+      "alon_hajnal derived from shelah: use c'·log2 as linear constant, chain 2^{c'n}=exp(c'n·log2)≥c'n·log2",
+      "exp(t)≥t follows from add_one_le_exp: t ≤ t+1 ≤ exp(t)",
+      "ramsey_lower_bound was unused in all proofs — safely removed"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "optimalConstant_pos: needs explicit non-Ramsey graph construction (BddAbove + nonempty sSup)",
-      "optimalConstant_le_one: needs numInducedSubgraphClasses \u2264 2^n + existence of non-Ramsey graph for large n",
+      "optimalConstant_le_one: needs numInducedSubgraphClasses ≤ 2^n + existence of non-Ramsey graph for large n",
       "Fix numInducedSubgraphClasses placeholder (currently counts subsets not isomorphism classes)"
     ]
   },
@@ -79,8 +79,8 @@
     {
       "path": "Proofs/Erdos1036Problem.lean",
       "filename": "Erdos1036Problem.lean",
-      "lineCount": 148,
-      "theoremCount": 8,
+      "lineCount": 160,
+      "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 2,

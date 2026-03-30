@@ -1,0 +1,116 @@
+{
+  "slug": "feuerbachs-theorem-oq-05",
+  "title": "Feuerbach theorem proof via inversion centered at Feuerbach point",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Feuerbach theorem proof via inversion centered at Feuerbach point.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T21:46:38.106Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "triangle",
+    "inversion"
+  ],
+  "relatedProofs": [
+    "feuerbachs-theorem",
+    "feuerbachs-theorem-defs",
+    "feuerbachs-theorem-oq-01",
+    "feuerbachs-theorem-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T21:46:38.106Z",
+  "lastUpdate": "2026-03-30T21:46:38.106Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FeuerbachsTheorem.lean",
+      "filename": "FeuerbachsTheorem.lean",
+      "lineCount": 165,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheorem.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremDefs.lean",
+      "filename": "FeuerbachsTheoremDefs.lean",
+      "lineCount": 688,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 34,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefs.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ01.lean",
+      "filename": "FeuerbachsTheoremOQ01.lean",
+      "lineCount": 1554,
+      "theoremCount": 71,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ01Aristotle.lean",
+      "filename": "FeuerbachsTheoremOQ01Aristotle.lean",
+      "lineCount": 188,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ02.lean",
+      "filename": "FeuerbachsTheoremOQ02.lean",
+      "lineCount": 587,
+      "theoremCount": 14,
+      "axiomCount": 5,
+      "defCount": 46,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ02.lean"
+    }
+  ]
+}

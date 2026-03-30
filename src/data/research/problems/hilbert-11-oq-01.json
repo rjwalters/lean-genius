@@ -1,0 +1,69 @@
+{
+  "slug": "hilbert-11-oq-01",
+  "title": "Formalize Hasse-Minkowski theorem including p-adic tensor product",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Formalize Hasse-Minkowski theorem including p-adic tensor product.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T21:46:38.107Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "quadratic-forms",
+    "hilbert"
+  ],
+  "relatedProofs": [
+    "hilbert-11"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T21:46:38.107Z",
+  "lastUpdate": "2026-03-30T21:46:38.107Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert11_QuadraticForms.lean",
+      "filename": "Hilbert11_QuadraticForms.lean",
+      "lineCount": 498,
+      "theoremCount": 7,
+      "axiomCount": 6,
+      "defCount": 17,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11_QuadraticForms.lean"
+    }
+  ]
+}

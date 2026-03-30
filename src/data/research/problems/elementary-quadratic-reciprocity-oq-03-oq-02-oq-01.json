@@ -31,8 +31,8 @@
   "knowledge": {
     "progressSummary": "COMPLETED: Both kronecker_mul_left and kronecker_mul_right fully proved. 0 sorries, 0 axioms. Updated meta.json to reflect both directions of multiplicativity.",
     "builtItems": [
-      "FIXED: kronecker_mul_left \u2014 added (ha : a \u2260 0) (hb : b \u2260 0)",
-      "FIXED: kronecker_mul_right \u2014 added (hm : m \u2260 0) (hn : n \u2260 0)",
+      "FIXED: kronecker_mul_left — added (ha : a ≠ 0) (hb : b ≠ 0)",
+      "FIXED: kronecker_mul_right — added (hm : m ≠ 0) (hn : n ≠ 0)",
       "theorem kroneckerNeg1_mul: sign character multiplicative for nonzero args",
       "theorem kronecker0_mul: unit character multiplicative for nonzero args",
       "theorem kronecker_mul_left: Kronecker symbol multiplicative in first arg (proved from jacobiSym.mul_left)",
@@ -41,16 +41,16 @@
       "kroneckerNeg1_sq: sign character involution"
     ],
     "insights": [
-      "kronecker defined via cases: n=0\u2192kronecker0, n=-1\u2192kroneckerNeg1, n=1\u21921, else\u2192sign*jacobiSym",
-      "jacobiSym from Mathlib is multiplicative in both arguments \u2014 base case for proof",
+      "kronecker defined via cases: n=0→kronecker0, n=-1→kroneckerNeg1, n=1→1, else→sign*jacobiSym",
+      "jacobiSym from Mathlib is multiplicative in both arguments — base case for proof",
       "kroneckerNeg1(0)=1 (positive convention) may cause mul_left failure: kronecker(-3*0)(-1)=1 but kronecker(-3)(-1)*kronecker(0)(-1)=(-1)*1=-1",
-      "Fix: either change kroneckerNeg1(0)=0 or add a\u22600 hypothesis to mul_left",
+      "Fix: either change kroneckerNeg1(0)=0 or add a≠0 hypothesis to mul_left",
       "mul_right is more straightforward: products of moduli reduce to product of Jacobi symbols",
       "COUNTEREXAMPLE: kronecker_mul_left fails at a=-3, b=0, n=-1: LHS=1, RHS=-1",
       "COUNTEREXAMPLE: kronecker_mul_right fails at a=-1, m=0, n=-1: LHS=1, RHS=-1",
       "Root cause: kroneckerNeg1(0)=1 but zero-arg product maps through kronecker0 instead of kroneckerNeg1",
       "kronecker_mul_left proof: case split on n, use jacobiSym.mul_left for general case + kroneckerNeg1_mul for sign",
-      "kronecker_mul_right proof strategy: eliminate \u00b11 cases first, then use kronecker_neg_modulus + jacobiSym.mul_right for general case with 4-quadrant sign analysis"
+      "kronecker_mul_right proof strategy: eliminate ±1 cases first, then use kronecker_neg_modulus + jacobiSym.mul_right for general case with 4-quadrant sign analysis"
     ],
     "mathlibGaps": [],
     "nextSteps": [

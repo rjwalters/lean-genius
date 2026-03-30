@@ -1,0 +1,85 @@
+{
+  "slug": "erdos-1002-oq-02",
+  "title": "Distribution of Fractional Parts: Cauchy Distribution Connection",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Distribution of Fractional Parts: Cauchy Distribution Connection.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T21:13:16.757Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "number-theory",
+    "diophantine-approximation",
+    "distribution"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1002",
+    "erdos-1002-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T21:13:16.757Z",
+  "lastUpdate": "2026-03-30T21:13:16.757Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1002OQ01.lean",
+      "filename": "Erdos1002OQ01.lean",
+      "lineCount": 141,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1002Problem.lean",
+      "filename": "Erdos1002Problem.lean",
+      "lineCount": 190,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002Problem.lean"
+    }
+  ]
+}

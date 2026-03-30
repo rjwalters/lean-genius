@@ -1,0 +1,158 @@
+{
+  "slug": "descartes-rule-of-signs-oq-01-oq-02",
+  "title": "Minimal Infrastructure for Descartes Parity",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T11:35:19-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formal infrastructure analysis. Both conjugate pairing and sign variation analysis needed.",
+    "builtItems": [
+      "proofs/Proofs/DescartesRuleOfSignsOQ01OQ02.lean (271 lines, 1 axiom, 0 sorries, 10 theorems)",
+      "src/data/proofs/descartes-rule-of-signs-oq-01-oq-02/ (gallery entry)"
+    ],
+    "insights": [
+      "Conjugate pairing alone is NOT sufficient for Descartes parity",
+      "Minimal infrastructure: conjugate pairs + sign variation parity under root extraction",
+      "The gap: conjugate pairing gives degree=real_roots (mod 2), but parity needs sv=pos_roots (mod 2)",
+      "The irreducible hard part: how multiplication by (X - C r) transforms coefficient sign sequences",
+      "Parity chain theorem composes all three ingredients"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove sign_variation_parity_under_positive_root via coefficient analysis",
+      "Explore Sturm chain approach as alternative"
+    ],
+    "markdown": "# Knowledge Base: descartes-rule-of-signs-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "descartes-rule-of-signs",
+    "descartes-rule-of-signs-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-02",
+    "descartes-rule-of-signs-oq-02-oq-01",
+    "descartes-rule-of-signs-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T18:39:05.245Z",
+  "lastUpdate": "2026-03-30T19:45:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DescartesRuleOfSigns.lean",
+      "filename": "DescartesRuleOfSigns.lean",
+      "lineCount": 577,
+      "theoremCount": 35,
+      "axiomCount": 8,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSigns.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01.lean",
+      "lineCount": 1075,
+      "theoremCount": 30,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ02.lean",
+      "lineCount": 272,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02.lean",
+      "lineCount": 699,
+      "theoremCount": 30,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ03.lean",
+      "filename": "DescartesRuleOfSignsOQ03.lean",
+      "lineCount": 441,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ04.lean",
+      "filename": "DescartesRuleOfSignsOQ04.lean",
+      "lineCount": 496,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ04.lean"
+    }
+  ]
+}

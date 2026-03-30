@@ -1,0 +1,82 @@
+{
+  "slug": "erdos-1005-oq-02",
+  "title": "Improve lower bound 1/12 for Farey fraction gap using mediant insertion",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Improve lower bound 1/12 for Farey fraction gap using mediant insertion.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T21:46:38.105Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "farey-fractions"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1005"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T21:46:38.105Z",
+  "lastUpdate": "2026-03-30T21:46:38.105Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1005Problem.lean",
+      "filename": "Erdos1005Problem.lean",
+      "lineCount": 141,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1005Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1005ProblemProvable.lean",
+      "filename": "Erdos1005ProblemProvable.lean",
+      "lineCount": 276,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1005ProblemProvable.lean"
+    }
+  ]
+}

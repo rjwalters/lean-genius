@@ -55,6 +55,8 @@
     "converse"
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-15",
     "erdos-156"
   ],
   "references": {
@@ -69,5 +71,17 @@
   "lastUpdate": "2026-03-30T19:00:00Z",
   "significance": 5,
   "tractability": 7,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos156Problem.lean",
+      "filename": "Erdos156Problem.lean",
+      "lineCount": 493,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos156Problem.lean"
+    }
+  ]
 }
