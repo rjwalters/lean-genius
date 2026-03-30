@@ -1,0 +1,145 @@
+{
+  "id": "cantor-diagonalization-oq-04-oq-03",
+  "title": "Lawvere FPT Connection to Domain-Theoretic Fixed Points",
+  "slug": "cantor-diagonalization-oq-04-oq-03",
+  "description": "Connects Lawvere's fixed-point theorem to domain-theoretic fixed-point semantics. Shows the Y combinator as a fixed-point operator, proves Knaster-Tarski from Mathlib, and demonstrates the structural parallel between categorical and order-theoretic fixed-point theorems.",
+  "leanFile": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
+  "meta": {
+    "author": "Lawvere (1969), Tarski (1955), Scott (1972)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
+    "date": "1969",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
+    "tags": [
+      "logic",
+      "category-theory",
+      "fixed-point",
+      "domain-theory",
+      "y-combinator",
+      "lattice-theory"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "OrderHom.lfp",
+        "description": "Least fixed point of a monotone function on a complete lattice",
+        "module": "Mathlib.Order.FixedPoints"
+      },
+      {
+        "theorem": "OrderHom.lfp_eq",
+        "description": "The least fixed point is a fixed point",
+        "module": "Mathlib.Order.FixedPoints"
+      }
+    ],
+    "originalContributions": [
+      "yCombinator: explicit Y combinator from CodesEndomorphisms structure",
+      "yCombinator_is_fixed: Y combinator produces fixed points (proved)",
+      "knaster_tarski: Knaster-Tarski FPT from Mathlib's OrderHom.lfp",
+      "lfp_le_fixed: least property of the fixed point",
+      "structural_parallel: unified theorem showing both FPTs",
+      "Documented parallel between categorical and order-theoretic approaches"
+    ],
+    "axiomCount": 0,
+    "lineCount": 150,
+    "assumptions": "None. All results proved from Mathlib's complete lattice fixed-point API and the parent's CodesEndomorphisms structure."
+  },
+  "overview": {
+    "historicalContext": "Lawvere (1969) generalized Cantor's diagonal argument to cartesian closed categories. Tarski (1955) proved that monotone functions on complete lattices have fixed points. Scott (1972) developed domain theory, connecting these ideas to denotational semantics of programming languages. The Y combinator (Church, 1932) is the term-level manifestation of these fixed-point constructions.",
+    "problemStatement": "**Question**: Can the Y combinator from Lawvere's FPT be connected to domain-theoretic fixed points?\n\n**Answer**: Yes. Both share the same mechanism: self-reference under sufficient structure (coding for Lawvere, ordering for Tarski). The Y combinator is the computational realization of the domain-theoretic least fixed point.",
+    "text": "Connects Lawvere's categorical fixed-point theorem to domain-theoretic fixed-point semantics via the Y combinator and Knaster-Tarski.",
+    "proofStrategy": "1. Restate Lawvere's FPT from parent\n2. Prove Knaster-Tarski from Mathlib's OrderHom.lfp\n3. Extract Y combinator as explicit fixed-point operator\n4. Demonstrate structural parallel in unified theorem",
+    "keyInsights": [
+      "**Y combinator = Lawvere's construction**: Y(f) = g(encode(g)) where g(y) = f(decode(y)(y)) is exactly (λx.f(xx))(λx.f(xx)).",
+      "**Lawvere needs coding, Tarski needs order**: The two approaches are dual — Lawvere uses retraction (coding), Tarski uses lattice structure (ordering).",
+      "**Domain theory bridges both**: Domains provide ordered types with enough structure for self-reference, unifying the categorical and order-theoretic views.",
+      "**Recursive definitions as fixed points**: In denotational semantics, f = ...f... is solved by lfp, which is the Y combinator at the term level."
+    ],
+    "prerequisites": [
+      "Lawvere's fixed-point theorem (parent proof)",
+      "Complete lattices and Knaster-Tarski",
+      "Lambda calculus (Y combinator)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lawvere",
+      "title": "Lawvere's Fixed Point",
+      "startLine": 42,
+      "endLine": 59,
+      "summary": "Restates Lawvere's FPT: if Y codes its endomorphisms, every f:Y→Y has a fixed point.",
+      "mathContext": "The diagonal construction g(y) = f(decode(y)(y)) combined with self-application g(encode(g)) produces f's fixed point."
+    },
+    {
+      "id": "knaster-tarski",
+      "title": "Knaster-Tarski Fixed Point",
+      "startLine": 65,
+      "endLine": 92,
+      "summary": "Proves Knaster-Tarski from Mathlib: every monotone function on a complete lattice has a least fixed point.",
+      "mathContext": "$\\text{lfp}(f) = \\bigsqcap\\{x \\mid f(x) \\leq x\\}$ is the least pre-fixed point, which equals the least fixed point by Knaster-Tarski."
+    },
+    {
+      "id": "y-combinator",
+      "title": "The Y Combinator",
+      "startLine": 98,
+      "endLine": 118,
+      "summary": "Extracts the Y combinator as an explicit fixed-point operator from Lawvere's construction and proves it produces fixed points.",
+      "mathContext": "$Y(f) = g(\\text{encode}(g))$ where $g(y) = f(\\text{decode}(y)(y))$. In $\\lambda$-calculus: $Y = \\lambda f.(\\lambda x.f(xx))(\\lambda x.f(xx))$."
+    },
+    {
+      "id": "parallel",
+      "title": "The Structural Parallel",
+      "startLine": 124,
+      "endLine": 150,
+      "summary": "Unified theorem: both Lawvere and Knaster-Tarski provide fixed-point operators, connected by domain theory.",
+      "mathContext": "Lawvere needs coding (retraction), Tarski needs ordering (lattice). Domain theory unifies both: domains are ordered types with enough structure for self-referential definitions."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-04",
+      "relationship": "extends",
+      "description": "Connects the Y combinator from the parent's Lawvere FPT to domain-theoretic fixed-point semantics."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument is the prototype: Lawvere generalizes it, domain theory provides the constructive fixed-point semantics."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Y combinator from Lawvere's FPT and the least fixed point from Knaster-Tarski are two manifestations of the same phenomenon: self-reference under sufficient structure produces fixed points. Domain theory bridges the categorical (Lawvere) and order-theoretic (Tarski) approaches.",
+    "implications": "This connection is foundational for denotational semantics: recursive function definitions are solved by applying the Y combinator / lfp operator, which is guaranteed to exist by the domain's fixed-point property.",
+    "openQuestions": []
+  },
+  "references": [
+    {
+      "authors": "Lawvere, F. William",
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Lecture Notes in Mathematics 92, 134-145"
+    },
+    {
+      "authors": "Tarski, Alfred",
+      "title": "A lattice-theoretical fixpoint theorem and its applications",
+      "year": "1955",
+      "venue": "Pacific Journal of Mathematics 5, 285-309"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "yCombinator_is_fixed",
+      "type": "core",
+      "description": "The Y combinator produces a fixed point",
+      "leanType": "f (yCombinator c f) = yCombinator c f"
+    },
+    {
+      "name": "structural_parallel",
+      "type": "key",
+      "description": "Both Lawvere and Knaster-Tarski give fixed-point operators",
+      "leanType": "(∀ f, f (Y c f) = Y c f) ∧ (∀ f hf, f (lfp f hf) = lfp f hf)"
+    }
+  ]
+}
