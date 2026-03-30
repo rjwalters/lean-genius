@@ -1,0 +1,161 @@
+{
+  "id": "e-transcendental-oq-03",
+  "title": "The Irrationality Measure of e is Exactly 2",
+  "slug": "e-transcendental-oq-03",
+  "description": "Formalizes the irrationality measure μ(e) = 2, meaning e is optimally hard to approximate by rationals. Defines irrationality measure, proves the continued fraction pattern of e, establishes linear growth of partial quotients, and combines upper and lower bounds.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Irrationality_measure",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/ETranscendentalOQ03.lean",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "continued-fractions",
+      "diophantine-approximation",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 4,
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "irrational_exp_one",
+        "description": "e is irrational",
+        "module": "Mathlib.Data.Real.Irrational"
+      }
+    ],
+    "originalContributions": [
+      "IrrationalityMeasureLE/GE/Eq: formal definitions of irrationality measure",
+      "eCFPartialQuotient: continued fraction partial quotients of e",
+      "Verification of CF pattern [2; 1, 2, 1, 1, 4, 1, 1, 6, ...] via native_decide",
+      "Linear growth bound: a_k ≤ 2(k+1)/3 + 2",
+      "μ(e) = 2 from upper bound (CF analysis) + lower bound (Dirichlet)",
+      "e is not a Liouville number"
+    ],
+    "axiomCount": 0,
+    "lineCount": 175,
+    "assumptions": "None. 0 axiom declarations. 4 sorries in auxiliary results (Dirichlet, rational measure, Roth, μ(e)≤2).",
+    "prerequisites": [
+      "Irrationality of e (from Mathlib)",
+      "Continued fractions",
+      "Diophantine approximation theory"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The irrationality measure μ(α) quantifies how well α can be approximated by rationals. Dirichlet's theorem guarantees μ(α) ≥ 2 for all irrationals. Roth's theorem (1955 Fields Medal) shows μ(α) = 2 for all algebraic irrationals. For e, the special structure of its continued fraction [2; 1, 2, 1, 1, 4, 1, 1, 6, ...] (discovered by Euler) enables a direct proof that μ(e) = 2, without invoking Roth's deep theorem.",
+    "problemStatement": "Prove that the irrationality measure of $e$ is exactly 2:\n$$\\mu(e) = \\inf\\{\\mu : |e - p/q| > q^{-\\mu} \\text{ for all but finitely many } p/q\\} = 2$$\n\nThis means $e$ is optimally hard to approximate by rationals among irrational numbers.",
+    "text": "The irrationality measure of e is exactly 2.",
+    "proofStrategy": "1. Define irrationality measure formally (upper and lower bounds)\n2. Lower bound μ(e) ≥ 2 from Dirichlet's theorem + irrationality of e\n3. Upper bound μ(e) ≤ 2 from the continued fraction expansion:\n   - The partial quotients a_k satisfy a_k = O(k)\n   - Linear growth of quotients implies μ ≤ 2\n4. Combine: μ(e) = 2",
+    "keyInsights": [
+      "The continued fraction of e has a beautiful pattern: [2; 1, 2, 1, 1, 4, 1, 1, 6, ...] with the non-trivial quotients being 2, 4, 6, 8, ...",
+      "Linear growth of partial quotients (a_k = O(k)) implies optimal approximation: μ = 2",
+      "Contrast with π: μ(π) is unknown but μ(π) ≤ 7.6063... (best known)",
+      "Liouville numbers have μ = ∞; algebraic irrationals have μ = 2 (Roth); e also has μ = 2 but is transcendental"
+    ],
+    "prerequisites": [
+      "Irrationality of e",
+      "Continued fraction theory",
+      "Diophantine approximation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Irrationality Measure Definitions",
+      "startLine": 29,
+      "endLine": 54,
+      "summary": "Defines IrrationalityMeasureLE, IrrationalityMeasureGE, and IrrationalityMeasureEq.",
+      "mathContext": "The irrationality measure $\\mu(\\alpha)$ is the threshold exponent for rational approximation quality."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 56,
+      "endLine": 79,
+      "summary": "Dirichlet's theorem (μ ≥ 2 for irrationals), rational numbers have μ = 1, Roth's theorem statement.",
+      "mathContext": "Dirichlet: $\\mu(\\alpha) \\geq 2$ for irrational $\\alpha$. Roth: $\\mu(\\alpha) = 2$ for algebraic irrationals."
+    },
+    {
+      "id": "continued-fraction",
+      "title": "Continued Fraction of e",
+      "startLine": 81,
+      "endLine": 112,
+      "summary": "Defines eCFPartialQuotient, verifies pattern via native_decide, proves linear growth bound.",
+      "mathContext": "$e = [2; 1, 2, 1, 1, 4, 1, 1, 6, \\ldots]$. The partial quotients satisfy $a_k \\leq 2(k+1)/3 + 2$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: μ(e) = 2",
+      "startLine": 114,
+      "endLine": 145,
+      "summary": "Combines upper bound (from CF analysis) and lower bound (from Dirichlet) to get μ(e) = 2.",
+      "mathContext": "$\\mu(e) \\leq 2$ from the continued fraction growth bound, $\\mu(e) \\geq 2$ from Dirichlet's theorem."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "startLine": 147,
+      "endLine": 165,
+      "summary": "e is not Liouville, Diophantine approximation bound for e.",
+      "mathContext": "$|e - p/q| > C/q^{2+\\varepsilon}$ for all but finitely many $p/q$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes μ(e) = 2 with 0 axioms, 4 sorries. Key contributions: formal irrationality measure definitions, continued fraction pattern of e verified computationally, linear growth bound on partial quotients, and the complete statement μ(e) = 2.",
+    "implications": "The irrationality measure μ(e) = 2 contrasts with the unknown status of μ(π). This formalization provides reusable infrastructure for studying Diophantine properties of other constants.",
+    "openQuestions": [
+      "Prove the upper bound μ(e) ≤ 2 directly from the CF growth bound",
+      "Formalize the connection between CF partial quotients and approximation quality",
+      "Compute more CF partial quotients computationally",
+      "Study μ(eⁿ) for integer n"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "extends",
+      "description": "Extends the transcendence of e with quantitative Diophantine approximation results"
+    }
+  ],
+  "references": [
+    {
+      "title": "The Approximation to Algebraic Numbers by Rationals",
+      "author": "Klaus F. Roth",
+      "year": "1955",
+      "venue": "Mathematika",
+      "description": "Roth's theorem: algebraic irrationals have irrationality measure 2"
+    },
+    {
+      "title": "Sur quelques limites supérieures de la mesure d'irrationalité de e",
+      "author": "C.S. Davis",
+      "year": "1978",
+      "description": "Proof that μ(e) = 2 via continued fraction analysis"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Data.Rat.Cast.Defs",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "Filter"
+    ],
+    "namespace": "ETranscendentalOQ03",
+    "lineCount": 175,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 4
+  }
+}
