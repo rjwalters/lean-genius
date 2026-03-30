@@ -118,10 +118,45 @@ theorem gcd_odd_sub_half_right {a b : ℕ} (ha : a % 2 = 1) (hb : b % 2 = 1) (hg
     Each recursive case preserves the GCD invariant. -/
 theorem binaryGcd_eq_gcd : ∀ a b : ℕ, binaryGcd a b = Nat.gcd a b := by
   intro a b
-  -- The full induction proof requires matching binaryGcd's recursion structure.
-  -- Each case follows from the lemmas above, but Lean's equation compiler
-  -- generates complex case names that are fragile without interactive testing.
-  sorry
+  -- Strong induction on a + b, matching the termination measure
+  induction a, b using binaryGcd.induct with
+  | case1 b =>
+    -- binaryGcd 0 b = b = Nat.gcd 0 b
+    simp [binaryGcd, Nat.gcd_zero_left]
+  | case2 a =>
+    -- binaryGcd (a+1) 0 = a+1 = Nat.gcd (a+1) 0
+    simp [binaryGcd, Nat.gcd_zero_right]
+  | case3 a b ha hb ih =>
+    -- Both even: binaryGcd (a+1) (b+1) = 2 * binaryGcd ((a+1)/2) ((b+1)/2)
+    simp only [binaryGcd, ha, hb, ↓reduceDIte]
+    rw [ih]
+    have ha2 : a + 1 = 2 * ((a + 1) / 2) := by omega
+    have hb2 : b + 1 = 2 * ((b + 1) / 2) := by omega
+    rw [ha2, hb2]; exact (gcd_two_mul).symm
+  | case4 a b ha hb ih =>
+    -- a+1 even, b+1 odd
+    simp only [binaryGcd, ha, hb, ↓reduceDIte]
+    rw [ih]
+    have ha2 : a + 1 = 2 * ((a + 1) / 2) := by omega
+    rw [ha2]; exact (gcd_mul_two_left hb).symm
+  | case5 a b ha hb ih =>
+    -- a+1 odd, b+1 even
+    simp only [binaryGcd, ha, hb, ↓reduceDIte]
+    rw [ih]
+    have hb2 : b + 1 = 2 * ((b + 1) / 2) := by omega
+    rw [hb2]; exact (gcd_mul_two_right ha).symm
+  | case6 a b ha hb hgt ih =>
+    -- Both odd, a+1 > b+1
+    simp only [binaryGcd, ha, hb, hgt, ↓reduceDIte]
+    rw [ih]
+    exact gcd_odd_sub_half (by omega : (a + 1) % 2 = 1)
+      (by omega : (b + 1) % 2 = 1) hgt
+  | case7 a b ha hb hle ih =>
+    -- Both odd, a+1 ≤ b+1
+    simp only [binaryGcd, ha, hb, hle, ↓reduceDIte, show ¬(a + 1 > b + 1) from by omega]
+    rw [ih]
+    exact gcd_odd_sub_half_right (by omega : (a + 1) % 2 = 1)
+      (by omega : (b + 1) % 2 = 1) (by omega : b + 1 ≥ a + 1)
 
 /-! ## Part III: Basic Properties -/
 
