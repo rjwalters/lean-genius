@@ -29,7 +29,7 @@ export const motivicFlagMapsOq02Proof: Proof = {
 }
 
 export const motivicFlagMapsOq02Annotations: Annotation[] =
-  (annotationsJson as { annotations: Annotation[] }).annotations
+  (annotationsJson as unknown as { annotations: Annotation[] }).annotations
 
 const proofData: ProofData = {
   proof: motivicFlagMapsOq02Proof,
