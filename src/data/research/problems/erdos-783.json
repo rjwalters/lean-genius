@@ -1,7 +1,7 @@
 {
   "slug": "erdos-783",
-  "title": "Erd\u0151s #783",
-  "phase": "OBSERVE",
+  "title": "Erdős #783",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -18,38 +18,47 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T08:39:26.859Z",
-    "iteration": 2,
-    "focus": "Axiom elimination via prime reciprocal divergence",
+    "iteration": 3,
+    "focus": "Axiom elimination: infrastructure for primes_minimize_product",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove primes_minimize_product from infrastructure lemmas",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM HUNT: Eliminated 2 axioms (maxPrimeCount, maxPrimeCount_spec) by constructing from Mathlib prime reciprocal divergence. 4\u21922 axioms.",
+    "progressSummary": "PROGRESS: Added 7 infrastructure lemmas for primes_minimize_product axiom proof. Key results: sieve_factor_mono, prime_factor_better_sieve, smaller_prime_better, erase_increases_product. These establish that (1) primes sieve better than composites per element, (2) smaller primes sieve better than larger primes, (3) removing elements increases the product. 322→402 lines.",
     "builtItems": [
       "primeReciprocalSumDiverges: prime reciprocal sums exceed any bound",
-      "count_primes_lt: \u03c0(p) < p for prime p (0 is not prime)",
-      "primesBelow_subset_primeSievingSet: primes \u2264 N \u2286 first N nthPrimes",
+      "count_primes_lt: π(p) < p for prime p (0 is not prime)",
+      "primesBelow_subset_primeSievingSet: primes ≤ N ⊆ first N nthPrimes",
       "primeSumUnbounded: indexed partial sums unbounded",
       "maxPrimeCount: noncomputable def via Nat.find (was axiom)",
-      "maxPrimeCount_spec: proved theorem (was axiom)"
+      "maxPrimeCount_spec: proved theorem (was axiom)",
+      "Proved sieve_factor_bounds: 0 < 1-1/a < 1 for a≥2",
+      "Proved sieve_factor_mono: 1-1/a monotone increasing in a",
+      "Proved prime_factor_better_sieve: composites have worse sieve factors",
+      "Proved sieve_product_pos: product of sieve factors is positive",
+      "Proved erase_increases_product: removing element increases product",
+      "Proved smaller_prime_better: swapping q→p (p<q) strictly improves product"
     ],
     "insights": [
       "maxPrimeCount and maxPrimeCount_spec can be proved from Mathlib prime reciprocal divergence",
-      "Key bridge: primesBelow N \u2286 primeSievingSet N via Nat.nth_count and count_primes_lt",
+      "Key bridge: primesBelow N ⊆ primeSievingSet N via Nat.nth_count and count_primes_lt",
       "not_summable_one_div_on_primes + tendsto_atTop gives unbounded partial sums",
-      "Nat.find constructs maxPrimeCount; find_spec and find_min prove the spec"
+      "Nat.find constructs maxPrimeCount; find_spec and find_min prove the spec",
+      "primes_minimize_product proof strategy: (1) replace composites with prime factors, (2) greedily pick smallest primes",
+      "smaller_prime_better is the key exchange lemma: can swap any prime for a smaller unused prime to improve the product"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Attempt to prove primes_minimize_product (deep sieve-theoretic inequality)",
-      "Docker build verification needed (Docker was not running during session)"
+      "Prove composite→prime replacement preserves coprimality",
+      "Chain replacement lemmas to prove primes_minimize_product",
+      "Docker build verification needed"
     ],
-    "markdown": "# Erd\u0151s #783 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFix some constant $C>0$ and let $n$ be large. Let $A\\subseteq \\{2,\\ldots,n\\}$ be such that $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}\\leq C$.\n\nWhat choice of such an $A$ minimises the number of integers $m\\leq n$ not divisible by any $a\\in A$? Is this minimised by letting $n\\geq q_1>q_2>\\cdots$ be the consecutive primes in decreasing order and choosing $A=\\{q_1,\\ldots,q_k\\}$ where $k$ is maximal such that\\[\\sum_{i=1}^k\\frac{1}{q_i}\\leq C?\\]\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #782\n- Problem #784\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er73\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #783 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFix some constant $C>0$ and let $n$ be large. Let $A\\subseteq \\{2,\\ldots,n\\}$ be such that $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}\\leq C$.\n\nWhat choice of such an $A$ minimises the number of integers $m\\leq n$ not divisible by any $a\\in A$? Is this minimised by letting $n\\geq q_1>q_2>\\cdots$ be the consecutive primes in decreasing order and choosing $A=\\{q_1,\\ldots,q_k\\}$ where $k$ is maximal such that\\[\\sum_{i=1}^k\\frac{1}{q_i}\\leq C?\\]\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #782\n- Problem #784\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er73\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -72,10 +81,10 @@
     {
       "path": "Proofs/Erdos783Problem.lean",
       "filename": "Erdos783Problem.lean",
-      "lineCount": 287,
-      "theoremCount": 18,
-      "axiomCount": 2,
-      "defCount": 4,
+      "lineCount": 322,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos783Problem.lean"
