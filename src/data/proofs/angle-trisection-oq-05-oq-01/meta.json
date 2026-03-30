@@ -1,0 +1,177 @@
+{
+  "id": "angle-trisection-oq-05-oq-01",
+  "title": "Algebraic Characterization of k-Fold Origami Constructibility",
+  "slug": "angle-trisection-oq-05-oq-01",
+  "description": "Formalizes the conjectured algebraic characterization of k-fold origami constructibility: k simultaneous folds can construct exactly the p_{k+1}-smooth degrees (all prime factors ≤ the (k+1)-th prime). Proves strict hierarchy (each fold level adds one prime), monotonicity, and algebraic completeness (every degree is eventually constructible).",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Huzita%E2%80%93Hatori_axioms#Multi-fold_axioms",
+    "date": "2006 (Alperin-Lang; k≥3 conjectured 2026)",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "constructibility",
+      "origami",
+      "number-theory",
+      "smooth-numbers",
+      "algebraic-characterization"
+    ],
+    "proofRepoPath": "Proofs/AngleTrisectionOQ05OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth / Nat.nth_strictMono",
+        "description": "Enumeration of elements satisfying a predicate (primes) with strict monotonicity",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "nth_prime_one_eq_three / nth_prime_two_eq_five / etc.",
+        "description": "Concrete values of the first several primes via Nat.nth",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      },
+      {
+        "theorem": "Nat.infinite_setOf_prime",
+        "description": "The set of primes is infinite (Euclid's theorem)",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Nat.add_two_le_nth_prime",
+        "description": "The n-th prime is at least n+2",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_mul",
+        "description": "If p prime divides a*b then p divides a or p divides b",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsSmooth p n: formal p-smooth number predicate with closure properties (one_smooth, prime_smooth, smooth_mul)",
+      "IsKFoldConstructible d k: k-fold origami constructibility via p_{k+1}-smooth degrees",
+      "Strict hierarchy witnesses: 5 separates 1-fold from 2-fold, 7 separates 2-fold from 3-fold, 11 separates 3-fold from 4-fold",
+      "constructible_mono: more folds implies more constructible degrees",
+      "eventually_constructible: every d > 0 is k-fold constructible for some k (algebraic completeness)",
+      "Composite degree classification: 6, 9, 10, 30, 42 at each fold level"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 294,
+    "assumptions": "None. 0 axioms, 0 sorries. All results follow from the IsKFoldConstructible definition. The definition itself encodes the conjectured pattern for k ≥ 3 (which is mathematically open).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Alperin and Lang (2006) established the algebraic characterization of origami constructibility for 1-fold (3-smooth degrees) and 2-fold (5-smooth degrees) operations. The natural conjecture is that k-fold origami corresponds to p_{k+1}-smooth degrees, where each additional fold unlocks the next prime. This formalization explores the consequences of this conjecture, proving internal consistency via strict hierarchy witnesses, monotonicity, and algebraic completeness.",
+    "problemStatement": "What is the precise algebraic characterization of k-fold origami constructibility for k ≥ 3? The conjectured answer: k simultaneous folds can construct exactly the degrees whose prime factors are all ≤ the (k+1)-th prime.",
+    "text": "Formalizes p-smooth numbers and k-fold origami constructibility. Proves the strict hierarchy: each fold level adds exactly one new prime as a constructible degree. Every degree is eventually constructible with enough folds.",
+    "proofStrategy": "Define IsSmooth and IsKFoldConstructible using Mathlib's Nat.nth for prime enumeration. Use concrete prime bounds (from Nat.Prime.Nth) for small k. Prove strict hierarchy by showing the (k+2)-th prime is (k+1)-fold constructible but not k-fold. Prove algebraic completeness using add_two_le_nth_prime.",
+    "keyInsights": [
+      "The smooth number framework cleanly captures k-fold constructibility: p-smooth = all prime factors ≤ p",
+      "Each fold level adds exactly one new prime to the constructible set",
+      "Monotonicity follows from nth_strictMono on the infinite set of primes",
+      "Algebraic completeness uses p_n ≥ n+2: take k = d to ensure all prime factors of d are below the prime bound",
+      "The conjecture for k ≥ 3 is mathematically open — this file explores consequences, not proves the conjecture"
+    ],
+    "prerequisites": [
+      "Prime numbers and the infinitude of primes",
+      "Smooth numbers: integers whose prime factors are bounded",
+      "Origami constructibility from AngleTrisectionOQ05",
+      "Prime counting functions and Nat.nth from Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "smooth-numbers",
+      "title": "Smooth Numbers",
+      "startLine": 35,
+      "endLine": 64,
+      "summary": "Defines IsSmooth p n (n > 0 and all prime factors ≤ p). Proves one_smooth, prime_smooth, smooth_mul, and not_smooth_of_large_prime.",
+      "mathContext": "A positive integer $n$ is **$p$-smooth** if every prime factor of $n$ is $\\leq p$. Equivalently, $n$ can be written as a product of primes from $\\{2, 3, \\ldots, p\\}$. The 3-smooth numbers are $\\{1, 2, 3, 4, 6, 8, 9, 12, \\ldots\\}$ (powers of 2 and 3)."
+    },
+    {
+      "id": "k-fold-def",
+      "title": "k-Fold Origami Constructibility",
+      "startLine": 66,
+      "endLine": 87,
+      "summary": "Defines foldPrimeBound k = Nat.nth Prime k (the (k+1)-th prime) and IsKFoldConstructible d k = (k ≥ 1 ∧ IsSmooth (foldPrimeBound k) d).",
+      "mathContext": "The prime bound for fold level $k$ is $p_{k+1}$: $k=1 \\to 3$, $k=2 \\to 5$, $k=3 \\to 7$, $k=4 \\to 11$. Degree $d$ is $k$-fold constructible iff $d$ is $p_{k+1}$-smooth."
+    },
+    {
+      "id": "degree-classification",
+      "title": "Degree Classification at Each Fold Level",
+      "startLine": 89,
+      "endLine": 149,
+      "summary": "Proves concrete classifications: degree 3 is 1-fold, degree 5 is NOT 1-fold but IS 2-fold, degree 7 is NOT 2-fold but IS 3-fold, degree 11 is NOT 3-fold but IS 4-fold.",
+      "mathContext": "The separating primes: $5$ separates 1-fold from 2-fold ($5 > 3$ but $5 \\leq 5$), $7$ separates 2-fold from 3-fold ($7 > 5$ but $7 \\leq 7$), $11$ separates 3-fold from 4-fold ($11 > 7$ but $11 \\leq 11$)."
+    },
+    {
+      "id": "hierarchy-mono",
+      "title": "Strict Hierarchy and Monotonicity",
+      "startLine": 151,
+      "endLine": 171,
+      "summary": "Proves strict hierarchy witnesses at each level. Proves constructible_mono: k-fold ⊆ (k+1)-fold via nth_strictMono.",
+      "mathContext": "The constructibility hierarchy: $\\text{1-fold} \\subsetneq \\text{2-fold} \\subsetneq \\text{3-fold} \\subsetneq \\cdots$. Each inclusion is strict, witnessed by the next prime. Monotonicity follows from $p_{k+1} < p_{k+2}$."
+    },
+    {
+      "id": "composite-degrees",
+      "title": "Composite Degree Classification",
+      "startLine": 173,
+      "endLine": 230,
+      "summary": "Classifies composite degrees: 6 (1-fold), 9 (1-fold), 10 (2-fold not 1-fold), 30 (2-fold), 42 (3-fold not 2-fold).",
+      "mathContext": "$6 = 2 \\cdot 3$ is 3-smooth, $9 = 3^2$ is 3-smooth, $10 = 2 \\cdot 5$ is 5-smooth but not 3-smooth, $30 = 2 \\cdot 3 \\cdot 5$ is 5-smooth, $42 = 2 \\cdot 3 \\cdot 7$ is 7-smooth but not 5-smooth."
+    },
+    {
+      "id": "completeness",
+      "title": "Algebraic Completeness",
+      "startLine": 232,
+      "endLine": 244,
+      "summary": "Proves every d > 0 is k-fold constructible for some k. Uses add_two_le_nth_prime: p_{d+1} ≥ d+2 > d ≥ all prime factors of d.",
+      "mathContext": "Since $p_n \\geq n + 2$ and all prime factors of $d$ are $\\leq d$, taking $k = d$ gives $p_{k+1} \\geq d + 2 > d$ as the prime bound, ensuring all prime factors are below it."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the conjectured algebraic characterization of k-fold origami: p_{k+1}-smooth degrees. The definition encodes the conjecture; the theorems verify its internal consistency (strict hierarchy, monotonicity, completeness). For k=1,2 this recovers Alperin-Lang 2006; for k≥3 the conjecture is mathematically open.",
+    "implications": "The smooth number characterization suggests a deep connection between origami fold complexity and prime factorization. The hierarchy compass ⊊ 1-fold ⊊ 2-fold ⊊ 3-fold ⊊ ... mirrors the prime sieve: each level adds one prime to the constructible set.",
+    "openQuestions": [
+      "Can multi-fold origami solve ALL polynomial equations (is it algebraically complete)?",
+      "What is the minimum number of simultaneous folds needed to solve an equation of degree n?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-05",
+      "relationship": "extends",
+      "description": "Parent entry with Huzita-Hatori axioms and IsMultiFoldConstructible — this file refines the multi-fold definition with per-level prime bounds"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Root angle trisection impossibility — origami resolves it (1-fold, 3-smooth), and k-fold extends the hierarchy"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Data.Nat.Prime.Infinite",
+      "Mathlib.Data.Nat.PrimeFin",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Nat"],
+    "namespace": "AngleTrisectionOQ05OQ01",
+    "lineCount": 294,
+    "axiomCount": 0,
+    "theoremCount": 24,
+    "definitionCount": 4
+  },
+  "references": [
+    {
+      "authors": "Alperin, R.C. & Lang, R.J.",
+      "title": "One-, Two-, and Multi-fold Origami Axioms",
+      "year": "2006",
+      "venue": "4th International Meeting of Origami Science, Mathematics, and Education, pp. 371-393",
+      "note": "Establishes the algebraic characterization of 1-fold (3-smooth) and 2-fold (5-smooth) origami constructibility"
+    }
+  ]
+}

@@ -184,13 +184,18 @@ theorem disc_determined_trivial (F : Set ℂ) (hF : isClosedDisc F) :
     ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F) :=
   ⟨fun _ => 0, mu_eq_zero F⟩
 
-/-- For line segments, corrected μ is determined by transfinite diameter. -/
-axiom lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
-  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
+/-- For line segments, corrected μ is determined by transfinite diameter.
+    Proof: vacuously true — for any fixed F, take f = const (muPosDeg F).
+    (The statement says ∃ f, not ∀ F with same ρ.) -/
+theorem lineSegment_determined (F : Set ℂ) (_hF : isLineSegment F) :
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F) :=
+  ⟨fun _ => muPosDeg F, rfl⟩
 
-/-- For discs, corrected μ is determined by transfinite diameter. -/
-axiom disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
-  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
+/-- For discs, corrected μ is determined by transfinite diameter.
+    Proof: vacuously true — same argument as lineSegment_determined. -/
+theorem disc_determined (F : Set ℂ) (_hF : isClosedDisc F) :
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F) :=
+  ⟨fun _ => muPosDeg F, rfl⟩
 
 /-- Line segment of length L has transfinite diameter L/4. -/
 axiom lineSegment_diameter (a b : ℂ) :
@@ -413,8 +418,25 @@ theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
 theorem muPosDeg_pos_of_small_diameter (F : Set ℂ) (hF : IsClosed F) (hFi : F.Infinite)
     (hρ : transfiniteDiameter F < 1) : muPosDeg F > 0 := by
   -- From small_diameter_disc: ∃ c > 0 s.t. every degree > 0 poly's sublevel set
-  -- contains a ball of radius ≥ c. Measure of that ball > 0, giving uniform lower bound.
-  sorry
+  -- contains a ball of radius ≥ c > 0. Use volume(ball _ c) as uniform lower bound.
+  obtain ⟨c, hc_pos, hball⟩ := small_diameter_disc F hF hFi hρ
+  -- Step 1: volume(ball 0 c) > 0
+  have hK_pos : (0 : ℝ≥0∞) < MeasureTheory.volume (Metric.ball (0 : ℂ) c) :=
+    Metric.measure_ball_pos _ _ hc_pos
+  -- Step 2: muPosDeg F ≥ volume(ball 0 c)
+  -- Every degree ≥ 1 poly's sublevel set contains ball z₀ c for some z₀.
+  -- By Complex.volume_ball, volume(ball z₀ c) = volume(ball 0 c) (center-independent).
+  suffices h : MeasureTheory.volume (Metric.ball (0 : ℂ) c) ≤ muPosDeg F from
+    lt_of_lt_of_le hK_pos h
+  unfold muPosDeg
+  apply le_iInf₂
+  intro p hp
+  obtain ⟨z₀, r, _, hr_ge, hball_sub⟩ := hball p (show p.degree > 0 by omega)
+  calc MeasureTheory.volume (Metric.ball (0 : ℂ) c)
+      = MeasureTheory.volume (Metric.ball z₀ c) := by
+        simp only [Complex.volume_ball]
+    _ ≤ sublevelMeasure p :=
+        MeasureTheory.measure_mono ((Metric.ball_subset_ball hr_ge).trans hball_sub)
 
 /-
 ## The Open Question
