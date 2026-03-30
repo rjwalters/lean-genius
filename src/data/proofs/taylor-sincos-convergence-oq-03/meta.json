@@ -1,0 +1,48 @@
+{
+  "id": "taylor-sincos-convergence-oq-03",
+  "title": "Alternating Series Bounds for Sin/Cos Taylor Series",
+  "slug": "taylor-sincos-convergence-oq-03",
+  "description": "Tighter remainder bounds for sin/cos Taylor series via the alternating series estimation theorem, improving on Lagrange bounds by factor (2N+1)",
+  "meta": {
+    "author": "Leibniz criterion (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Alternating_series#Estimation",
+    "date": "2026",
+    "status": "axiomatized",
+    "tags": ["analysis", "calculus", "series", "convergence", "alternating-series"],
+    "proofRepoPath": "Proofs/TaylorSinCosAlternating.lean",
+    "badge": "axiom",
+    "sorries": 3,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "sinTermAbs and cosTermAbs definitions for alternating series terms",
+      "Ratio formula for consecutive terms (outlined)",
+      "Comparison theorem: alternating bound improves Lagrange by factor (2N+1)",
+      "Framework for applying alternating series estimation to Taylor series"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 2,
+    "lineCount": 142,
+    "assumptions": "2 axioms: sin/cos alternating remainder bounds. 3 sorries: term ratio formula, eventually decreasing, tendsto zero (all standard analysis, provable from Mathlib).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The alternating series estimation theorem (Leibniz, 1682) gives tight error bounds for alternating series. Applied to sin/cos Taylor series, it improves the Lagrange remainder by exploiting the alternating sign structure.",
+    "problemStatement": "Show |sin(x) - S_N(x)| \u2264 |x|^{2N+1}/(2N+1)! where S_N is the N-term partial sum of the sin Taylor series.",
+    "text": "Alternating series estimation gives tighter Taylor remainder bounds than Lagrange for sin/cos",
+    "proofStrategy": "Define term absolute values, verify they are eventually decreasing and tend to 0, apply the alternating series estimation theorem.",
+    "keyInsights": [
+      "The alternating bound |x|^{2N+1}/(2N+1)! improves on Lagrange |x|^{2N+1}/(2N)! by a factor of (2N+1)."
+    ],
+    "prerequisites": ["Taylor series", "Alternating series", "Factorials"]
+  },
+  "sections": [
+    {"id": "terms", "title": "Term Properties", "startLine": 1, "endLine": 80, "summary": "Definitions and properties of sin/cos term absolute values.", "mathContext": "Term ratio a_{k+1}/a_k = |x|^2/((2k+2)(2k+3))"},
+    {"id": "estimation", "title": "Alternating Estimation", "startLine": 81, "endLine": 120, "summary": "Statement of the alternating series remainder bounds for sin and cos.", "mathContext": "Leibniz criterion: error \u2264 next term for alternating decreasing series."},
+    {"id": "comparison", "title": "Comparison with Lagrange", "startLine": 121, "endLine": 142, "summary": "Quantitative comparison showing (2N+1)\u00d7 improvement over Lagrange.", "mathContext": "|x|^{2N+1}/(2N+1)! = |x|^{2N+1}/(2N)! \u00b7 1/(2N+1)"}
+  ],
+  "crossReferences": [{"targetId": "taylor-sincos-convergence", "relationship": "enhancement", "description": "Sharpens the Lagrange-style bounds from the parent gallery entry."}],
+  "conclusion": {"summary": "Framework for alternating series estimation applied to sin/cos Taylor series. Shows (2N+1)\u00d7 improvement over Lagrange bounds.", "implications": "Practical for numerical computation: tighter error bounds mean fewer terms needed for a given precision.", "openQuestions": ["Can the 3 sorries be eliminated using Mathlib's factorial/power lemmas?"]},
+  "leanFile": {"imports": ["Mathlib.Analysis.SpecificLimits.Basic", "Mathlib.Analysis.SumIntegralComparisons", "Mathlib.Data.Real.Basic", "Mathlib.Order.Filter.Basic", "Mathlib.Tactic"], "opens": ["Finset"], "namespace": null, "lineCount": 142, "axiomCount": 2, "theoremCount": 1, "substantiveTheoremCount": 1, "duplicateTheorems": 0, "definitionCount": 2},
+  "references": [{"authors": "G. W. Leibniz", "title": "Alternating series estimation theorem", "year": "1682"}],
+  "mainTheorems": [{"name": "alternating_tighter_than_lagrange", "type": "core", "description": "Alternating bound improves Lagrange by factor (2N+1)"}]
+}
