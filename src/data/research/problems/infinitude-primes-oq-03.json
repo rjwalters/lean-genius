@@ -1,0 +1,111 @@
+{
+  "slug": "infinitude-primes-oq-03",
+  "title": "Dirichlet's theorem generalizes to arithmetic progressions: if $\\gcd(a,d) = 1...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Dirichlet's theorem generalizes to arithmetic progressions: if $\\gcd(a,d) = 1....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T01:04:30.789Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full proof of infinitely many primes \u2261 2 (mod 3). 0 sorries, 0 axioms.",
+    "builtItems": [
+      "Created proofs/Proofs/InfinitudePrimes3k2.lean \u2014 complete proof (196 lines)",
+      "theorem infinitely_many_primes_2_mod_3: \u2200 n, \u2203 p prime, p > n \u2227 p % 3 = 2",
+      "theorem primes_2_mod_3_infinite: Set.Infinite {p | Prime p \u2227 p % 3 = 2}",
+      "theorem no_largest_prime_2_mod_3",
+      "lemma mul_mod_three_one: product of 1-mod-3 integers stays 1-mod-3",
+      "lemma prime_mod_three: primes \u2260 3 are 1 or 2 mod 3",
+      "lemma factors_determine_mod_three: n with all prime factors = 3 or \u2261 1 mod 3 cannot be \u2261 2 mod 3",
+      "lemma has_prime_factor_2_mod_3: n \u2261 2 mod 3 implies prime factor \u2261 2 mod 3"
+    ],
+    "insights": [
+      "Proof mirrors 4k+3 argument exactly: use N = 3\u00b7(n+1)!-1 \u2261 2 (mod 3)",
+      "Key: product of 1-mod-3 factors gives 1-mod-3, so N must have a 2-mod-3 factor",
+      "Strong induction on n used in factors_determine_mod_three (same as 4k+3 version)",
+      "The general Dirichlet theorem requires L-functions, but residue -1 mod d always has elementary proof",
+      "Pattern generalizes: infinitely many primes \u2261 d-1 (mod d) for any d \u2265 2"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Gallery entry creation (meta.json, annotations)",
+      "Potential: prove primes \u2261 1 (mod 3) requires quadratic reciprocity (harder case)",
+      "Potential: unify all -1-mod-d proofs into a single parametric theorem"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "classic",
+    "euclid",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "infinitude-primes"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.789Z",
+  "lastUpdate": "2026-03-30T01:04:30.789Z",
+  "significance": 8,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes.lean",
+      "filename": "InfinitudePrimes.lean",
+      "lineCount": 128,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k1.lean",
+      "filename": "InfinitudePrimes4k1.lean",
+      "lineCount": 178,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3.lean",
+      "filename": "InfinitudePrimes4k3.lean",
+      "lineCount": 231,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3.lean"
+    }
+  ]
+}
