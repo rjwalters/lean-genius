@@ -140,11 +140,18 @@ For any C, eventually h(x) > C·x.
 theorem h_superlinear :
   ∀ C : ℕ, ∃ X : ℕ, ∀ x : ℕ, x > X → h x > C * x := by
   intro C
-  obtain ⟨x, hx_pos, hx⟩ := erdos_1974_limsup C
-  use x
-  intro y hy
-  -- This follows from the Pollack-Pomerance result
-  sorry
+  -- Pollack-Pomerance: h(x)/x → ∞, so eventually h(x)/x ≥ C+1
+  have hPP := pollack_pomerance_2016
+  rw [Filter.tendsto_atTop_atTop] at hPP
+  obtain ⟨X, hX⟩ := hPP ((C : ℚ) + 1)
+  use X
+  intro x hx
+  have hle := hX x (by omega)
+  -- hle : (C : ℚ) + 1 ≤ (h x : ℚ) / (x : ℚ)
+  have hx_pos : (0 : ℚ) < (x : ℚ) := by exact_mod_cast show 0 < x by omega
+  rw [le_div_iff hx_pos] at hle
+  -- hle : ((C : ℚ) + 1) * x ≤ h x
+  exact_mod_cast show C * (x : ℚ) < ↑(h x) by push_cast; nlinarith
 
 /-
 ## Part IV: The Main Conjecture
