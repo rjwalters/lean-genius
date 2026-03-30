@@ -1,0 +1,20 @@
+{
+  "id": "kummer-theorem-oq-01",
+  "title": "Multinomial Analogs of Kummer's Theorem",
+  "slug": "kummer-theorem-oq-01",
+  "description": "Extends Kummer's theorem from binomial to multinomial coefficients via iterated binomial decomposition. The p-adic valuation of a multinomial coefficient equals the total carries when adding the parts in base p.",
+  "meta": {
+    "status": "formalized",
+    "tags": ["combinatorics", "number-theory", "p-adic", "multinomial"],
+    "proofRepoPath": "Proofs/KummerTheoremOQ01.lean",
+    "badge": "formalized",
+    "sorries": 2,
+    "axiomCount": 0,
+    "assumptions": "0 axioms. 2 sorries: multinomial_eq_prod_choose (general decomposition), multinomial_triple (a+b+c case). Proved: multinomial_pair (reduces to choose).",
+    "lineCount": 72,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-03-30"
+  }
+}

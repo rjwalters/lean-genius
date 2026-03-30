@@ -1,7 +1,7 @@
 {
   "slug": "erdos-321",
   "title": "Erdős #321",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,12 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: R1 tautological axiom proved. Main file 3 axioms (2 deep published results + 1 derivable). Note: main_term_n_over_log_n derivable from other 2 with finite-range argument.",
+    "progressSummary": "PROGRESS: Axiom eliminated. 3 to 2 axioms. main_term_n_over_log_n derived from bleicher_erdos_lower + bleicher_erdos_upper.",
     "builtItems": [
       "erdos_321_asymptotics: proved by taking f = maxDistinctReciprocal",
       "subset_pair_cases: helper classifying S ⊆ {a,b} into 4 cases",
       "pair_hasDistinctReciprocalSums: proved (4 subset sums are strictly ordered: 0 < 1/n < 1/m < 1/m+1/n)",
-      "erdos_321_asymptotics in R1: PROVED (was axiom) — tautological ⟨maxDistinctReciprocal, rfl⟩"
+      "erdos_321_asymptotics in R1: PROVED (was axiom) — tautological ⟨maxDistinctReciprocal, rfl⟩",
+      "PROVED main_term_n_over_log_n (was axiom, now theorem)",
+      "Added maxDistinctReciprocal_ge_one helper"
     ],
     "insights": [
       "erdos_321_asymptotics was tautological — take f = the function itself",
@@ -45,7 +47,9 @@
       "div_lt_div_of_pos_left is the correct Mathlib v4.26.0 name for reciprocal ordering",
       "Erdos321ProblemR1.lean: erdos_321_asymptotics converted axiom→theorem (tautological: ∃ f, R(N)=f(N) by f=R)",
       "main_term_n_over_log_n is derivable from bleicher_erdos_lower + bleicher_erdos_upper with c₁=log(2)/(N₀+1), requires R(N)≥1 helper and finite-range real analysis",
-      "pair_hasDistinctReciprocalSums is already fully proved (no sorry) — stale knowledge claim"
+      "pair_hasDistinctReciprocalSums is already fully proved (no sorry) — stale knowledge claim",
+      "main_term_n_over_log_n PROVED: derived from 2 remaining axioms via finite-range argument",
+      "maxDistinctReciprocal_ge_one proved: singleton {1} witnesses R(N)>=1 for N>=1"
     ],
     "mathlibGaps": [],
     "nextSteps": [

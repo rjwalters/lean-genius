@@ -1,6 +1,6 @@
 {
   "slug": "erdos-312",
-  "title": "Erdős #312",
+  "title": "Erd\u0151s #312",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
@@ -29,27 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: 1 deep axiom (erdos_graham_polynomial), 0 sorries. File well-developed with 49 proved theorems.",
+    "progressSummary": "PROGRESS: Built restricted greedy + sieve infrastructure (9 new theorems). Core sieve-and-greedy theorem proved. 1 deep axiom (erdos_graham_polynomial) remains \u2014 next step is proving the sum-preservation lemma for the sieving step.",
     "builtItems": [
-      "isFeasible def: subset with reciprocal sum ≤ 1",
+      "isFeasible def: subset with reciprocal sum \u2264 1",
       "maximal_feasible_exists theorem: proved via max-cardinality argument",
       "maximalFeasible_gap_bound theorem: sum(S) > 1 - 1/a(j)",
-      "subset_near_one theorem: constructive gap bound for Erdős-Graham",
-      "Fixed all pre-existing compilation errors (9 broken proofs)"
+      "subset_near_one theorem: constructive gap bound for Erd\u0151s-Graham",
+      "Fixed all pre-existing compilation errors (9 broken proofs)",
+      "largeElements def: sieve to indices with a(i) >= m",
+      "reciprocalSum_split: totalSum = largeSum + smallSum",
+      "restricted_maximal_feasible_exists: greedy within restricted index set T",
+      "restricted_gap_bound: gap bound for restricted maximal feasible subsets",
+      "restricted_subset_near_one: finds S \u2286 T with sum in (1-1/m, 1]",
+      "sieve_and_greedy: composition of sieve + restricted greedy"
     ],
     "insights": [
-      "Maximal feasible subset technique: among subsets with sum ≤ 1, choose max cardinality. Adding any element exceeds 1.",
-      "Gap bound: for maximal feasible S and j ∉ S, sum(S) > 1 - 1/a(j). Follows from sum(S) + 1/a(j) > 1.",
-      "subset_near_one: if total sum > 1 and all a(i) ≥ m, then ∃ S with sum ∈ (1-1/m, 1].",
+      "Maximal feasible subset technique: among subsets with sum \u2264 1, choose max cardinality. Adding any element exceeds 1.",
+      "Gap bound: for maximal feasible S and j \u2209 S, sum(S) > 1 - 1/a(j). Follows from sum(S) + 1/a(j) > 1.",
+      "subset_near_one: if total sum > 1 and all a(i) \u2265 m, then \u2203 S with sum \u2208 (1-1/m, 1].",
       "Fixed 9 pre-existing Mathlib API breakages (pow_le_pow_left, Tendsto, div_le_div_iff, etc.)",
-      "erdos_graham_polynomial is the Erdős-Graham theorem (1980): polynomial precision c/K² for subset sums — deep published result",
-      "49 theorems already proved, 0 sorries. No actionable axiom elimination this session."
+      "erdos_graham_polynomial is the Erd\u0151s-Graham theorem (1980): polynomial precision c/K\u00b2 for subset sums \u2014 deep published result",
+      "49 theorems already proved, 0 sorries. No actionable axiom elimination this session.",
+      "Restricted greedy: maximal feasible subsets within a restricted index set T give gap bound 1/a(j) for any j in T \\ S",
+      "Sieve-and-greedy: filter to elements >= m, apply restricted greedy => gap < 1/m. This is the core Erd\u0151s-Graham step.",
+      "To prove erdos_graham_polynomial: need to show that for large enough n, sieving to elements >= m still leaves sum > 1, then choose m = O(K\u00b2)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Proving erdos_graham_polynomial requires formalizing the Erdős-Graham greedy argument (~200+ lines)"
+      "Prove sum-preservation: for large enough n with \u03a31/a > K, sieving to elements >= m preserves \u03a3 > 1 (key quantitative step)",
+      "Formalize the choice m = ceil(K\u00b2) to achieve c/K\u00b2 gap from sieve_and_greedy",
+      "Full proof of erdos_graham_polynomial combining sieve + sum-preservation + gap bound"
     ],
-    "markdown": "# Erdős #312 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that\\[1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1?\\]\n\n\n\nErd\\H{o}s and Graham knew this with $e^{-cK}$ replaced by $c/K^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #311\n- Problem #313\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erd\u0151s #312 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that\\[1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1?\\]\n\n\n\nErd\\H{o}s and Graham knew this with $e^{-cK}$ replaced by $c/K^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #311\n- Problem #313\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -65,15 +76,15 @@
     "mathlib": []
   },
   "started": "2026-01-12T23:55:09.603Z",
-  "lastUpdate": "2026-03-23T22:31:40.287738Z",
+  "lastUpdate": "2026-03-30T16:20:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos312Problem.lean",
       "filename": "Erdos312Problem.lean",
-      "lineCount": 590,
-      "theoremCount": 49,
+      "lineCount": 718,
+      "theoremCount": 58,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
