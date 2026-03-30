@@ -144,10 +144,41 @@ theorem isoperimetric_quadrilateral {a b c d : ℝ}
     (h2 : b + c + d > a) (h3 : a + c + d > b)
     (h4 : a + b + d > c) (h5 : a + b + c > d) :
     brahmaguptaProduct a b c d ≤ ((a + b + c + d) / 4) ^ 4 := by
-  -- By AM-GM⁴: (s-a)(s-b)(s-c)(s-d) ≤ ((s-a+s-b+s-c+s-d)/4)⁴ = (s/2)⁴
-  -- since (s-a)+(s-b)+(s-c)+(s-d) = 2s. And (s/2)⁴ = ((a+b+c+d)/4)⁴.
-  -- Proof requires three applications of AM-GM for 2 variables.
-  sorry
+  -- By repeated 2-variable AM-GM: xy ≤ ((x+y)/2)² from (x-y)² ≥ 0.
+  -- Applied three times to get the 4-variable version.
+  unfold brahmaguptaProduct semiperimeter
+  set sa := (a + b + c + d) / 2 - a with hsa_def
+  set sb := (a + b + c + d) / 2 - b with hsb_def
+  set sc := (a + b + c + d) / 2 - c with hsc_def
+  set sd := (a + b + c + d) / 2 - d with hsd_def
+  have hsa : 0 < sa := by rw [hsa_def]; linarith
+  have hsb : 0 < sb := by rw [hsb_def]; linarith
+  have hsc : 0 < sc := by rw [hsc_def]; linarith
+  have hsd : 0 < sd := by rw [hsd_def]; linarith
+  -- Sum identities
+  have hab_sum : sa + sb = c + d := by rw [hsa_def, hsb_def]; ring
+  have hcd_sum : sc + sd = a + b := by rw [hsc_def, hsd_def]; ring
+  have hfinal : sa + sb + sc + sd = a + b + c + d := by
+    rw [hsa_def, hsb_def, hsc_def, hsd_def]; ring
+  -- AM-GM step 1: sa·sb ≤ ((sa+sb)/2)²
+  have hab : sa * sb ≤ ((sa + sb) / 2) ^ 2 := by nlinarith [sq_nonneg (sa - sb)]
+  -- AM-GM step 2: sc·sd ≤ ((sc+sd)/2)²
+  have hcd : sc * sd ≤ ((sc + sd) / 2) ^ 2 := by nlinarith [sq_nonneg (sc - sd)]
+  -- Combine pairs
+  have hprod : sa * sb * (sc * sd) ≤ ((sa + sb) / 2) ^ 2 * ((sc + sd) / 2) ^ 2 :=
+    mul_le_mul hab hcd (mul_nonneg hsc.le hsd.le) (by positivity)
+  -- AM-GM step 3: ((sa+sb)/2)·((sc+sd)/2) ≤ ((sa+sb+sc+sd)/4)²
+  have hpair : ((sa + sb) / 2) * ((sc + sd) / 2) ≤ ((sa + sb + sc + sd) / 4) ^ 2 := by
+    nlinarith [sq_nonneg ((sa + sb) / 2 - (sc + sd) / 2)]
+  -- Chain: sa·sb·sc·sd ≤ ((sa+sb)/2)²·((sc+sd)/2)² = (product)² ≤ ((sum/4)²)² = (sum/4)⁴
+  calc sa * sb * sc * sd
+      = sa * sb * (sc * sd) := by ring
+    _ ≤ ((sa + sb) / 2) ^ 2 * ((sc + sd) / 2) ^ 2 := hprod
+    _ = (((sa + sb) / 2) * ((sc + sd) / 2)) ^ 2 := by ring
+    _ ≤ (((sa + sb + sc + sd) / 4) ^ 2) ^ 2 :=
+        pow_le_pow_left (by positivity) hpair 2
+    _ = ((sa + sb + sc + sd) / 4) ^ 4 := by ring
+    _ = ((a + b + c + d) / 4) ^ 4 := by rw [hfinal]
 
 -- ════════════════════════════════════════════════════════════════
 -- PART VII: The Brahmagupta Formula (Axiomatized)
