@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved f_two_eq sorry (2→1 sorries). Remaining sorry: lacunary_positive_lower_bound (needs sumset bound).",
+    "progressSummary": "COMPLETED: All sorries eliminated. Proved lacunary_positive_lower_bound via sumset bound: two disjoint subsets of support(p^2) with combined cardinality 2k-1.",
     "builtItems": [
       "proofs/Proofs/Erdos485OQ01.lean (233 lines, 7 theorems, 4 axioms)",
       "src/data/proofs/erdos-485-oq-01/ (gallery entry)",
@@ -40,26 +40,29 @@
       "lacunary_positive_lower_bound: corrected version with positive-coefficient hypothesis",
       "binomial_square_three_terms: proved (1+X^d)^2 has 3 terms for d>=1",
       "Proved f_two_eq (f(2)=3): 120-line proof via antidiagonal coefficient computation",
-      "Proved two_term_sq_ge_three helper lemma"
+      "Proved two_term_sq_ge_three helper lemma",
+      "Proved lacunary_positive_lower_bound: 45-line proof using sumset lower bound with disjoint translated copies of support"
     ],
     "insights": [
       "Exact growth rate of f(k) is wide open: gap between log k and k^(1-c)",
-      "Positive coefficients prevent all cancellation — interesting behavior requires mixed signs",
+      "Positive coefficients prevent all cancellation \u2014 interesting behavior requires mixed signs",
       "Deep bounds (Schinzel-Zannier, Erdos) use height theory and algebraic geometry",
       "Connection to additive combinatorics: sumset theory with coefficient cancellation",
       "No explicit extremal constructions known for large k",
       "lacunary_lower_bound is FALSE: coefficient cancellation (b^2+2ac=0) can kill terms even with gap>=2",
       "The sumset |A+A|>=2|A|-1 holds, but coefficient cancellation reduces termCount below this",
       "Positive coefficients prevent cancellation, so the corrected bound holds for positive polys",
-      "lacunary_positive_lower_bound sorry: provable via sumset bound |A+A| ≥ 2|A|-1 with positive coefficients preventing cancellation",
-      "f_two_eq sorry: provable by showing all 2-term polynomials square to exactly 3 terms (distinct exponents 2i, i+j, 2j when i ≠ j, nonzero coefficients over char 0)",
-      "f_two_eq proved: decompose p into support {i,j}, show coefficients at 2i, i+j, 2j are nonzero via antidiagonal sum analysis"
+      "lacunary_positive_lower_bound sorry: provable via sumset bound |A+A| \u2265 2|A|-1 with positive coefficients preventing cancellation",
+      "f_two_eq sorry: provable by showing all 2-term polynomials square to exactly 3 terms (distinct exponents 2i, i+j, 2j when i \u2260 j, nonzero coefficients over char 0)",
+      "f_two_eq proved: decompose p into support {i,j}, show coefficients at 2i, i+j, 2j are nonzero via antidiagonal sum analysis",
+      "Sumset proof strategy: T1={a+min|a in supp} and T2={max+a|a in supp\\{min}} are disjoint subsets of supp(p^2) with |T1|+|T2|=2k-1",
+      "Finset.single_le_sum is the key Mathlib lemma for extracting a positive term from a non-negative sum"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove f_two_eq (f(2)=3): need upper bound (witnessed by 1+X) and lower bound (binomials always square to 3 terms)",
       "Prove lacunary_positive_lower_bound: positive coefficients + sumset bound",
-      "The 3 remaining axioms are deep analytic results — genuinely unprovable in Lean"
+      "The 3 remaining axioms are deep analytic results \u2014 genuinely unprovable in Lean"
     ]
   },
   "tags": [

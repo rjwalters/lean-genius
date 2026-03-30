@@ -1,0 +1,40 @@
+{
+  "slug": "cauchy-schwarz-oq-03-oq-02",
+  "title": "Minkowski inequality from Hölder formalization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {"formal": "", "plain": "", "whyMatters": []},
+  "knownResults": {"proven": [], "open": [], "goal": ""},
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T10:39:00Z",
+    "iteration": 1,
+    "focus": "Survey: Minkowski already in Mathlib",
+    "blockers": [],
+    "nextAction": "Assess if gallery formalization adds value beyond Mathlib",
+    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Minkowski inequality already in Mathlib (Analysis.MeanInequalities, lines 611-807). Multiple variants for NNReal and ENNReal. Low value for gallery formalization.",
+    "builtItems": [],
+    "insights": [
+      "Minkowski inequality is in Mathlib.Analysis.MeanInequalities — multiple variants (lines 611-807)",
+      "Mathlib has NNReal.Lp_add_le (finite sums) and NNReal.inner_le_Lp_mul_Lq (Hölder) in the same file",
+      "Gallery OQ-03 already formalizes Hölder. Minkowski would be connecting Hölder → triangle inequality",
+      "Since Mathlib already has this, gallery value is pedagogical only — consider deprioritizing"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Decide whether to formalize: Minkowski is in Mathlib, so gallery version adds limited value",
+      "If proceeding: import Mathlib.Analysis.MeanInequalities and show the derivation chain",
+      "Alternative: mark as graduated (already covered by Mathlib)"
+    ]
+  },
+  "tags": ["analysis", "inequalities", "minkowski"],
+  "relatedProofs": ["cauchy-schwarz", "cauchy-schwarz-oq-03"],
+  "references": {"papers": [], "urls": [], "mathlib": ["Mathlib.Analysis.MeanInequalities"]},
+  "started": "2026-03-30T10:39:00Z",
+  "lastUpdate": "2026-03-30T10:39:00Z"
+}
