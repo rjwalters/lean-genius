@@ -107,4 +107,33 @@ theorem mu_infimum (F : Set ℂ) (hF : F.Infinite) :
     convert MeasureTheory.measure_empty
     ext z; simp [Finset.prod_empty, map_one, not_lt.mpr (le_refl _)]⟩
 
+/-
+## Aristotle targets: boundedness and scaling
+
+These are needed to fill sorries in Erdos1040Problem.lean.
+-/
+
+/-- When G is bounded, the nthDiameter value set is BddAbove.
+    Key: each |pts i - pts j| ≤ diam(G), so the product is bounded,
+    and rpow with exponent 2/(n*(n-1)) gives ≤ diam(G).
+    Uses: Metric.isBounded_iff, Finset.prod_le_prod, Real.rpow_le_rpow -/
+theorem nthDiameter_bddAbove_of_bounded (G : Set ℂ) (hG : Bornology.IsBounded G) (n : ℕ) :
+    BddAbove {(∏ i : Fin n, ∏ j in Finset.Iio i,
+      Complex.abs (pts i - pts j)) ^ (2 / (n * (n - 1) : ℝ)) |
+      pts : Fin n → ℂ // ∀ i, pts i ∈ G} := by sorry
+
+/-- Scaling: nthDiameter(c·F, n) = |c| · nthDiameter(F, n).
+    Proof: |c·x - c·y| = |c|·|x-y|, factor |c|^(n*(n-1)/2) out of product,
+    rpow simplifies exponent to give |c|^1 = |c|. Then factor |c| out of sSup.
+    Uses: Complex.abs.map_mul, Finset.prod_mul_distrib, Real.mul_rpow -/
+theorem nthDiameter_scale (F : Set ℂ) (c : ℂ) (n : ℕ) :
+    nthDiameter ((fun z => c * z) '' F) n = Complex.abs c * nthDiameter F n := by sorry
+
+/-- Scaling property of transfinite diameter: ρ(cF) = |c|·ρ(F).
+    Follows from nthDiameter_scale and pulling constant out of iInf.
+    Uses: nthDiameter_scale, Real.iInf_mul_of_nonneg (or similar) -/
+theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
+    transfiniteDiameter ((fun z => c * z) '' F) =
+    Complex.abs c * transfiniteDiameter F := by sorry
+
 end Erdos1040
