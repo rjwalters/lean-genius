@@ -228,10 +228,32 @@ lemma cardSet_three_lower_bound : ∀ m ∈ CardSet 3, 3 ≤ m := by
     The upper bound requires: p ∉ convexHull ℝ {q,r} when {p,q,r} are non-collinear.
     This follows from convexHull {q,r} ⊆ affineSpan ℝ {q,r} and non-collinearity. -/
 theorem f_3_value : f 3 = 3 := by
-  sorry -- Lower bound is proved (cardSet_three_lower_bound).
-        -- Upper bound needs: any 3 non-collinear points form a convex 3-gon.
-        -- Key fact: convexHull ℝ {q,r} ⊆ affineSpan ℝ {q,r},
-        -- and ¬Collinear ℝ {p,q,r} → p ∉ affineSpan ℝ {q,r}.
+  unfold f
+  suffices h3 : (3 : ℕ) ∈ CardSet 3 by
+    exact le_antisymm (csInf_le (OrderBot.bddBelow _) h3)
+      (le_csInf ⟨3, h3⟩ cardSet_three_lower_bound)
+  -- Any 3 points in general position form a convex triangle
+  intro pts hcard hgp
+  refine ⟨pts, Finset.Subset.refl _, hcard, fun p hp habs => ?_⟩
+  -- If p ∈ convexHull of the other two points, derive contradiction
+  have h_aff := convexHull_subset_affineSpan ℝ (↑(pts.erase p) : Set _) habs
+  have hcard2 : (pts.erase p).card = 2 := by
+    rw [Finset.card_erase_of_mem hp, hcard]
+  obtain ⟨q, r, hqr, heq⟩ := Finset.card_eq_two.mp hcard2
+  have hq_er : q ∈ pts.erase p := by rw [heq]; exact Finset.mem_insert_self q {r}
+  have hr_er : r ∈ pts.erase p := by
+    rw [heq]; exact Finset.mem_insert_of_mem (Finset.mem_singleton_self r)
+  rw [heq] at h_aff
+  simp only [Finset.coe_insert, Finset.coe_singleton, SetLike.mem_coe] at h_aff
+  -- h_aff : p ∈ affineSpan ℝ {q, r}, so p, q, r are collinear
+  exact hgp p q r
+    (Finset.mem_coe.mpr hp)
+    (Finset.mem_coe.mpr (Finset.mem_erase.mp hq_er).2)
+    (Finset.mem_coe.mpr (Finset.mem_erase.mp hr_er).2)
+    (Finset.mem_erase.mp hq_er).1.symm
+    hqr
+    (Finset.mem_erase.mp hr_er).1.symm
+    (collinear_insert_of_mem_affineSpan_pair h_aff)
 
 /-- Lower bound for f(4): f(4) > 4.
     Proof: Immediate from Klein's theorem f(4) = 5. -/
