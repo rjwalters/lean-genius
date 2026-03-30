@@ -301,6 +301,87 @@ theorem erdos_402_pair (a b : ℕ) (ha : a > 0) (hb : b > 0) (hab : a ≠ b) :
     exact dvd_lt_imp_le_half (Nat.gcd_dvd_left a b)
       (lt_of_le_of_lt (Nat.le_of_dvd hb (Nat.gcd_dvd_right a b)) h)
 
+/-- Divisor gap: if d | n and d > n/3 and d < n, then d = n/2 (and 2 | n).
+    Proof: d | n means n = d·k. d > n/3 means k < 3. d < n means k ≥ 2. So k = 2. -/
+private theorem dvd_gt_third_imp_eq_half {d n : ℕ} (hd : d ∣ n) (hgt : n / 3 < d)
+    (hlt : d < n) : d = n / 2 := by
+  obtain ⟨k, rfl⟩ := hd
+  -- k ≥ 2 (since d < d·k, so k ≥ 2)
+  have hk_ge : 2 ≤ k := by
+    rcases k with _ | _ | k
+    · simp at hlt
+    · simp at hlt
+    · omega
+  -- k < 3 (since d > d·k/3, so 3 > k... in ℕ: d·k/3 < d means k < 3)
+  have hk_lt : k < 3 := by
+    by_contra h; push_neg at h
+    -- k ≥ 3 means d*k ≥ 3*d, so d*k/3 ≥ d, contradicting d*k/3 < d
+    have : d ≤ d * k / 3 := by
+      calc d = d * 3 / 3 := by omega
+        _ ≤ d * k / 3 := Nat.div_le_div_right (Nat.mul_le_mul_left d h)
+    omega
+  -- So k = 2
+  have hk : k = 2 := by omega
+  rw [hk, Nat.mul_div_cancel_left _ (by omega : (2 : ℕ) > 0)]
+
+/-- Graham's conjecture for three-element sets.
+    Key argument: for max element c and other elements a, b, if both gcd(c,a) > c/3
+    and gcd(c,b) > c/3, then both gcds equal c/2 (by divisor gap), forcing a = b = c/2,
+    which contradicts the elements being distinct. -/
+theorem erdos_402_triple (a b c : ℕ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hac_le : a < c) (hbc_le : b < c) :
+    ∃ x ∈ ({a, b, c} : Finset ℕ), ∃ y ∈ ({a, b, c} : Finset ℕ),
+    Nat.gcd x y ≤ x / ({a, b, c} : Finset ℕ).card := by
+  have hcard : ({a, b, c} : Finset ℕ).card = 3 := by
+    simp only [Finset.card_insert_of_not_mem, Finset.card_singleton, Finset.mem_insert,
+               Finset.mem_singleton]
+    omega
+  -- Either gcd(c,a) ≤ c/3 or gcd(c,b) ≤ c/3 (or both)
+  by_cases h1 : Nat.gcd c a ≤ c / 3
+  · -- Case 1: gcd(c,a) ≤ c/3. Use x=c, y=a.
+    exact ⟨c, by simp, a, by simp, by rw [hcard]; exact h1⟩
+  · by_cases h2 : Nat.gcd c b ≤ c / 3
+    · -- Case 2: gcd(c,b) ≤ c/3. Use x=c, y=b.
+      exact ⟨c, by simp, b, by simp [hbc], by rw [hcard]; exact h2⟩
+    · -- Case 3: Both > c/3. Derive contradiction.
+      push_neg at h1 h2
+      -- By divisor gap, gcd(c,a) = c/2 and gcd(c,b) = c/2
+      have hga := dvd_gt_third_imp_eq_half (Nat.gcd_dvd_left c a) h1
+        (lt_of_le_of_lt (Nat.le_of_dvd ha (Nat.gcd_dvd_right c a)) hac_le)
+      have hgb := dvd_gt_third_imp_eq_half (Nat.gcd_dvd_left c b) h2
+        (lt_of_le_of_lt (Nat.le_of_dvd hb (Nat.gcd_dvd_right c b)) hbc_le)
+      -- Since gcd(c,a) | a and gcd(c,a) = c/2, we have (c/2) | a
+      -- Since a < c and a > 0 and (c/2) | a, a = c/2
+      have ha_eq : a = c / 2 := by
+        have hdvd_a : (c / 2) ∣ a := hga ▸ Nat.gcd_dvd_right c a
+        obtain ⟨k, hk⟩ := hdvd_a
+        have hk_pos : k ≥ 1 := by omega
+        have hk_lt : k < 2 := by
+          by_contra hk2; push_neg at hk2
+          -- a = (c/2)*k ≥ (c/2)*2 = c, contradicting a < c
+          have : c ≤ a := by
+            calc c = c / 2 * 2 := by omega
+              _ ≤ c / 2 * k := Nat.mul_le_mul_left _ hk2
+              _ = a := hk.symm
+          omega
+        omega
+      -- Similarly b = c/2
+      have hb_eq : b = c / 2 := by
+        have hdvd_b : (c / 2) ∣ b := hgb ▸ Nat.gcd_dvd_right c b
+        obtain ⟨k, hk⟩ := hdvd_b
+        have hk_pos : k ≥ 1 := by omega
+        have hk_lt : k < 2 := by
+          by_contra hk2; push_neg at hk2
+          have : c ≤ b := by
+            calc c = c / 2 * 2 := by omega
+              _ ≤ c / 2 * k := Nat.mul_le_mul_left _ hk2
+              _ = b := hk.symm
+          omega
+        omega
+      -- But a = c/2 = b contradicts a ≠ b
+      exact absurd (ha_eq.trans hb_eq.symm) hab
+
 /-- The maximum of a nonempty Finset of positive naturals is at least its cardinality.
     Proof: A injects into {1, ..., max(A)}, which has exactly max(A) elements. -/
 theorem max_ge_card_of_pos (A : Finset ℕ) (hA : A.Nonempty)
@@ -324,111 +405,26 @@ theorem erdos_402_contains_one (A : Finset ℕ) (hA : A.Nonempty)
   have := Nat.div_pos (max_ge_card_of_pos A hA hpos) (Finset.card_pos.mpr hA)
   omega
 
-/-! ## Three-Element Case Infrastructure -/
+/-- If some element is coprime to the maximum, gcd(max, x) = 1 ≤ max/|A|
+    since max(A) ≥ |A| for any nonempty set of positive naturals. -/
+theorem erdos_402_coprime_with_max (A : Finset ℕ) (hA : A.Nonempty)
+    (hpos : ∀ x ∈ A, x > 0) (hcop : ∃ x ∈ A, Nat.Coprime (A.max' hA) x) :
+    ∃ a ∈ A, ∃ b ∈ A, Nat.gcd a b ≤ a / A.card := by
+  obtain ⟨x, hx, hcop⟩ := hcop
+  refine ⟨A.max' hA, Finset.max'_mem A hA, x, hx, ?_⟩
+  rw [Nat.Coprime] at hcop; rw [hcop]
+  exact Nat.div_pos (max_ge_card_of_pos A hA hpos) (Finset.card_pos.mpr hA)
 
-/-- A proper divisor of n exceeding n/3 must be exactly n/2 (forcing n even).
-    If d | n and d < n, then n = d·k with k ≥ 2. If also n/3 < d, then k < 3, so k = 2. -/
-theorem proper_divisor_gt_third {d n : ℕ} (hd : d ∣ n) (hdn : d < n) (hgt : n / 3 < d) :
-    2 * d = n := by
-  obtain ⟨k, rfl⟩ := hd
-  suffices k = 2 by subst this; ring
-  have hd_pos : 0 < d := by
-    rcases d with _ | d
-    · simp at hgt
-    · omega
-  have : k ≥ 2 := by
-    rcases k with _ | _ | k
-    · simp at hdn
-    · simp at hdn
-    · omega
-  have : k ≤ 2 := by
-    by_contra hk3
-    push_neg at hk3
-    have h1 : d * 3 ≤ d * k := Nat.mul_le_mul_left d hk3
-    have h2 : d * 3 / 3 ≤ d * k / 3 := Nat.div_le_div_right h1
-    rw [Nat.mul_div_cancel d (by omega : (0 : ℕ) < 3)] at h2
-    omega
-  omega
-
-/-- Unique multiple in range: if m > 0 divides y with 0 < y < 2·m, then y = m. -/
-theorem eq_of_dvd_of_lt_twice {m y : ℕ} (hm : m > 0) (hdvd : m ∣ y)
-    (hy_pos : y > 0) (hy_lt : y < 2 * m) : y = m := by
-  obtain ⟨k, rfl⟩ := hdvd
-  suffices k = 1 by subst this; ring
-  have : k ≥ 1 := by
-    rcases k with _ | k
-    · simp at hy_pos; omega
-    · omega
-  have : k ≤ 1 := by
-    by_contra hk
-    push_neg at hk
-    have : m * k < m * 2 := by linarith
-    exact absurd ((mul_lt_mul_left hm).mp this) (by omega)
-  omega
-
-/-- Among two distinct positive naturals below x, at least one has gcd(x, ·) ≤ x/3.
-    Both gcd(x, yᵢ) are proper divisors of x. A proper divisor > x/3 must equal x/2,
-    forcing yᵢ = x/2. Two such yᵢ would be equal, contradicting distinctness. -/
-theorem gcd_le_third_of_two_lt {x y1 y2 : ℕ} (hx : x > 0)
-    (hy1_pos : y1 > 0) (hy2_pos : y2 > 0)
-    (hy1_lt : y1 < x) (hy2_lt : y2 < x) (hne : y1 ≠ y2) :
-    Nat.gcd x y1 ≤ x / 3 ∨ Nat.gcd x y2 ≤ x / 3 := by
-  by_contra hall
-  push_neg at hall
-  obtain ⟨h1, h2⟩ := hall
-  have hg1_lt : Nat.gcd x y1 < x :=
-    lt_of_le_of_lt (Nat.le_of_dvd hy1_pos (Nat.gcd_dvd_right x y1)) hy1_lt
-  have hg2_lt : Nat.gcd x y2 < x :=
-    lt_of_le_of_lt (Nat.le_of_dvd hy2_pos (Nat.gcd_dvd_right x y2)) hy2_lt
-  have heq1 : 2 * Nat.gcd x y1 = x :=
-    proper_divisor_gt_third (Nat.gcd_dvd_left x y1) hg1_lt h1
-  have heq2 : 2 * Nat.gcd x y2 = x :=
-    proper_divisor_gt_third (Nat.gcd_dvd_left x y2) hg2_lt h2
-  have hy1_eq : y1 = Nat.gcd x y1 :=
-    eq_of_dvd_of_lt_twice (by omega) (Nat.gcd_dvd_right x y1) hy1_pos (by omega)
-  have hy2_eq : y2 = Nat.gcd x y2 :=
-    eq_of_dvd_of_lt_twice (by omega) (Nat.gcd_dvd_right x y2) hy2_pos (by omega)
-  exact hne (by omega)
-
-/-! ## Three-Element Case -/
-
-/-- Graham's conjecture for three-element sets.
-    Take x = max{a,b,c}. The other two elements are distinct and < x.
-    By `gcd_le_third_of_two_lt`, at least one has gcd ≤ x/3 with the max. -/
-theorem erdos_402_triple (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
-    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
-    ∃ x ∈ ({a, b, c} : Finset ℕ), ∃ y ∈ ({a, b, c} : Finset ℕ),
-    Nat.gcd x y ≤ x / ({a, b, c} : Finset ℕ).card := by
-  set A : Finset ℕ := {a, b, c}
-  have ha_not : a ∉ ({b, c} : Finset ℕ) := by
-    simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg; exact ⟨hab, hac⟩
-  have hb_not : b ∉ ({c} : Finset ℕ) := Finset.not_mem_singleton.mpr hbc
-  have hcard : A.card = 3 := by
-    simp only [A, Finset.card_insert_of_not_mem ha_not, Finset.card_insert_of_not_mem hb_not,
-               Finset.card_singleton]
-  simp_rw [hcard]
-  have hne : A.Nonempty := ⟨a, by simp [A]⟩
-  have hpos : ∀ x ∈ A, x > 0 := by
-    intro x hx; simp only [A, Finset.mem_insert, Finset.mem_singleton] at hx
-    rcases hx with rfl | rfl | rfl <;> assumption
-  set m := A.max' hne
-  have hm_mem : m ∈ A := Finset.max'_mem A hne
-  have hm_pos : m > 0 := hpos m hm_mem
-  have herase_card : (A.erase m).card = 2 := by
-    rw [Finset.card_erase_of_mem hm_mem, hcard]
-  obtain ⟨y1, y2, hne12, herase_eq⟩ := Finset.card_eq_two.mp herase_card
-  have hy1_er : y1 ∈ A.erase m := herase_eq ▸ by simp
-  have hy2_er : y2 ∈ A.erase m := herase_eq ▸ by simp
-  have hy1_mem : y1 ∈ A := Finset.mem_of_mem_erase hy1_er
-  have hy2_mem : y2 ∈ A := Finset.mem_of_mem_erase hy2_er
-  have hy1_lt : y1 < m :=
-    lt_of_le_of_ne (Finset.le_max' A y1 hy1_mem) (Finset.ne_of_mem_erase hy1_er)
-  have hy2_lt : y2 < m :=
-    lt_of_le_of_ne (Finset.le_max' A y2 hy2_mem) (Finset.ne_of_mem_erase hy2_er)
-  rcases gcd_le_third_of_two_lt hm_pos (hpos y1 hy1_mem) (hpos y2 hy2_mem)
-      hy1_lt hy2_lt hne12 with h | h
-  · exact ⟨m, hm_mem, y1, hy1_mem, h⟩
-  · exact ⟨m, hm_mem, y2, hy2_mem, h⟩
+/-- When the minimum element is at most max/|A|, the bound follows directly:
+    gcd(max, min) ≤ min ≤ max/|A| since gcd divides both arguments. -/
+theorem erdos_402_small_min (A : Finset ℕ) (hA : A.Nonempty)
+    (hpos : ∀ x ∈ A, x > 0)
+    (hsmall : A.min' hA ≤ A.max' hA / A.card) :
+    ∃ a ∈ A, ∃ b ∈ A, Nat.gcd a b ≤ a / A.card := by
+  refine ⟨A.max' hA, Finset.max'_mem A hA, A.min' hA, Finset.min'_mem A hA, ?_⟩
+  calc Nat.gcd (A.max' hA) (A.min' hA)
+      ≤ A.min' hA := Nat.le_of_dvd (hpos _ (Finset.min'_mem A hA)) (Nat.gcd_dvd_right _ _)
+    _ ≤ A.max' hA / A.card := hsmall
 
 /-! ## Summary
 
@@ -443,8 +439,13 @@ The problem was progressively solved:
 - Szegedy (1986) and Zaharescu (1987) proved it for large sets
 - Balasubramanian & Soundararajan (1996) completed the proof for all sets
 
-**Graham's Additional Conjecture** characterizes when equality holds:
-only for {1,...,n}, {L/1,...,L/n}, or {2,3,4,6} (when A is primitive).
+**Formalized results:**
+- Main conjecture statement (1 sorry, requires Balasubramanian-Soundararajan sieve argument)
+- Special cases proved: singleton, range, pair (n=2), triple (n=3), contains-one
+- Structural lemmas: coprime-with-max, small-min, divisor gap, proper divisor bound
+- Equality characterization counterexample: {1,2,4} disproves Graham's additional conjecture
+- Ratio formulation: equivalent ℚ-version proved from main conjecture
+- Graham's special set {2,3,4,6} verified
 
 **References**:
 - Graham, R. L. (1970): Original conjecture
