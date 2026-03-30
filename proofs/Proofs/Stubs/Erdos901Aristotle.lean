@@ -78,7 +78,9 @@ noncomputable def m (n : ℕ) : ℕ :=
 theorem propertyB_dichotomy {V : Type*} [Fintype V] [DecidableEq V] {n : ℕ}
     (H : UniformHypergraph V n) :
     HasPropertyB H ↔ ¬LacksPropertyB H := by
-  sorry
+  unfold HasPropertyB LacksPropertyB
+  push_neg
+  rfl
 
 -- ============================================================
 -- TARGET 2: Monochromatic probability (TRIVIAL — algebra)
@@ -87,7 +89,8 @@ theorem propertyB_dichotomy {V : Type*} [Fintype V] [DecidableEq V] {n : ℕ}
 /-- Probability an edge is monochromatic: 2^{1-n} = 2 / 2^n. -/
 theorem monochromatic_probability (n : ℕ) (hn : n ≥ 1) :
     (2 : ℝ) ^ (1 - (n : ℤ)) = 2 / 2 ^ n := by
-  sorry
+  rw [zpow_sub₀ (by norm_num : (2 : ℝ) ≠ 0)]
+  simp [zpow_natCast]
 
 -- ============================================================
 -- TARGET 3: Explicit construction for m(2) (TRIVIAL — finite)
@@ -125,7 +128,8 @@ theorem m_mono {n₁ n₂ : ℕ} (h : n₁ ≤ n₂) (hn₁ : n₁ ≥ 2) : m n�
 /-- Connection to list chromatic number: m(k) ≤ m(k+1). -/
 theorem connection_list_chromatic :
     ∀ k : ℕ, k ≥ 2 → m k ≤ m (k + 1) := by
-  sorry
+  intro k hk
+  exact m_mono (Nat.le_succ k) hk
 
 -- ============================================================
 -- TARGET 7: Erdős lower bound (HARD — probabilistic method)
