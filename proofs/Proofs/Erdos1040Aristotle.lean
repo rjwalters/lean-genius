@@ -57,6 +57,16 @@ noncomputable def muPosDeg (F : Set ℂ) : ℝ≥0∞ :=
 These are standard results in potential theory (Fekete 1923, Ransford 1995).
 -/
 
+/-- Each nthDiameter is non-negative.
+    Proof idea: Elements are rpow of products of abs values (≥ 0).
+    sSup of non-negative reals ≥ 0 in all cases:
+    - empty: sSup ∅ = 0 (Real.sSup_empty or csSup_empty)
+    - nonempty bdd-above: sSup ≥ element ≥ 0 (le_csSup)
+    - nonempty not-bdd-above: sSup = sSup ∅ = 0 (csSup_of_not_bddAbove)
+    Key lemmas: Real.rpow_nonneg, Finset.prod_nonneg, Complex.abs.nonneg -/
+theorem nthDiameter_nonneg (F : Set ℂ) (n : ℕ) : 0 ≤ nthDiameter F n := by
+  sorry
+
 /-- Transfinite diameter is monotone: F ⊆ G → ρ(F) ≤ ρ(G).
     Proof idea: nthDiameter F n ≤ nthDiameter G n (sSup over subset),
     then iInf preserves ≤. -/
@@ -65,8 +75,8 @@ theorem transfiniteDiameter_mono (F G : Set ℂ) (h : F ⊆ G) :
   sorry
 
 /-- Transfinite diameter is non-negative.
-    Proof idea: nthDiameter is sSup of non-negative reals (x^(2/k) ≥ 0),
-    so sSup ≥ 0, and iInf over [0,∞) is ≥ 0. -/
+    Proof idea: each nthDiameter ≥ 0 (nthDiameter_nonneg), then iInf ≥ 0.
+    Key lemma: le_csInf (Set.range_nonempty _) (fun _ ⟨n, rfl⟩ => nthDiameter_nonneg F n) -/
 theorem transfiniteDiameter_nonneg (F : Set ℂ) :
     transfiniteDiameter F ≥ 0 := by
   sorry
