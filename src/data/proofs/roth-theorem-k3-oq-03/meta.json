@@ -12,8 +12,8 @@
     "badge": "axiom",
     "sorries": 2,
     "dateAdded": "2026-03-30",
-    "axiomCount": 7,
-    "assumptions": "7 axioms: gowersNorm (U^s norm), gowersNorm_nonneg, gowersNorm_mono, kAPCount (k-AP counting operator), generalized_von_neumann (k-AP count controlled by U^{k-1}), inverse_theorem (large U^s implies structured correlation), density_increment_kAP (density increases on subprogression for k-AP-free sets)",
-    "lineCount": 195
+    "axiomCount": 4,
+    "assumptions": "4 axioms: gowersNorm (U^s norm function), kAPCount (k-AP counting operator), generalized_von_neumann (k-AP count controlled by U^{k-1} norm), density_increment_kAP (density increases on subprogression for k-AP-free sets). Removed: gowersNorm_nonneg, gowersNorm_mono (unused), inverse_theorem (had placeholder True conclusion).",
+    "lineCount": 197
   }
 }

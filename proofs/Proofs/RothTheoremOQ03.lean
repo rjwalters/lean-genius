@@ -49,12 +49,9 @@ where C is complex conjugation, |ω| = Σ ωᵢ, and ω·h = Σ ωᵢhᵢ.
     2^s-point correlations. -/
 axiom gowersNorm (N s : ℕ) (f : ZMod N → ℂ) : ℝ
 
-/-- The Gowers norm is non-negative -/
-axiom gowersNorm_nonneg (N s : ℕ) (f : ZMod N → ℂ) : 0 ≤ gowersNorm N s f
-
-/-- Monotonicity: ||f||_{U^s} ≤ ||f||_{U^{s+1}} (Gowers-Cauchy-Schwarz) -/
-axiom gowersNorm_mono (N s : ℕ) (f : ZMod N → ℂ) :
-    gowersNorm N s f ≤ gowersNorm N (s + 1) f
+-- Properties of Gowers norms (non-negativity, monotonicity via
+-- Gowers-Cauchy-Schwarz) would follow from a constructive definition.
+-- Not axiomatized here since they're not used by current theorems.
 
 -- ============================================================
 -- PART II: Generalized von Neumann Theorem
@@ -105,15 +102,15 @@ For general s:
   (Green-Tao-Ziegler 2012)
 -/
 
-/-- The inverse theorem: large U^s norm implies correlation with
-    a structured object. Axiomatized since the full proof requires
-    ergodic theory and nilmanifold theory. -/
-axiom inverse_theorem (N s : ℕ) (hs : s ≥ 2) (δ : ℝ) (hδ : 0 < δ)
-    (f : ZMod N → ℂ) (hf : ∀ x, Complex.abs (f x) ≤ 1)
-    (hlarge : gowersNorm N s f ≥ δ) :
-    -- f correlates with a structured function on a subprogression
-    ∃ (M : ℕ) (hM : 0 < M) (hMN : M < N),
-      True  -- placeholder for the structured correlation
+/-
+The inverse theorem for Gowers norms: large U^s norm implies correlation
+with a structured object (nilsequence). Not axiomatized here because
+a meaningful statement requires nilmanifold infrastructure beyond Mathlib.
+The key results:
+  s=2: correlates with linear phase e(αx) (Parseval)
+  s=3: correlates with quadratic phase e(αx²+βx) (Gowers 1998)
+  general s: correlates with degree-(s-1) nilsequence (Green-Tao-Ziegler 2012)
+-/
 
 -- ============================================================
 -- PART IV: Density Increment for k-APs
