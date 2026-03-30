@@ -156,13 +156,14 @@ We define [Gr(d, n)] for the cases we can compute directly:
   - [Gr(d, n)] = [Gr(n-d, n)] (duality)
   - [Gr(2, 4)] = (1+L)(1+L+L²+L³)/(1) = 1+L+2L²+L³+L⁴ -/
 noncomputable def grassmannianClass : ℕ → ℕ → K.carrier
-  | 0, _ => 1         -- [Gr(0, n)] = 1 (single point: the trivial subspace)
-  | _, 0 => 0         -- [Gr(d+1, 0)] = 0 (no subspaces of zero space)
+  | 0, _ => 1       -- [Gr(0, n)] = 1 (the trivial subspace, including Gr(0,0) = 1)
+  | _, 0 => 0       -- [Gr(d+1, 0)] = 0 (no subspaces of the zero space)
   | d + 1, n + 1 =>
     if d + 1 > n + 1 then 0
     else if d + 1 = n + 1 then 1
     else
-      -- q-Pascal identity: [Gr(d+1, n+1)] = L^{d+1} · [Gr(d+1, n)] + [Gr(d, n)]
+      -- [Gr(d+1, n+1)] = L^{d+1} · [Gr(d+1, n)] + [Gr(d, n)]
+      -- This is the q-Pascal identity for Gaussian binomial coefficients
       K.L ^ (d + 1) * grassmannianClass (d + 1) n + grassmannianClass d n
 
 /-- [Gr(0, n)] = 1 -/
@@ -215,7 +216,14 @@ orthogonal complement (or equivalently, from symmetry of
 Gaussian binomial coefficients). -/
 theorem grassmannianClass_duality (d n : ℕ) (hd : d ≤ n) :
     grassmannianClass K d n = grassmannianClass K (n - d) n := by
-  sorry  -- Requires induction on both d and n with q-Pascal identity
+  -- Follows from gaussian_binomial_identity: both sides give
+  -- qFactorial n / (qFactorial d * qFactorial (n-d)), which is symmetric.
+  -- Specifically, from the identity applied to both d and (n-d):
+  --   gr(d,n) * qF(d) * qF(n-d) = qF(n) = gr(n-d,n) * qF(n-d) * qF(d)
+  -- Cancellation in a commutative ring gives gr(d,n) = gr(n-d,n),
+  -- provided qF(d) * qF(n-d) is not a zero divisor (which holds
+  -- since they are products of (1 + L + ... + L^k) terms).
+  sorry
 
 /-- [Gr(1, n+1)] = [P^n] = projectiveClass K n
 
@@ -224,17 +232,39 @@ Proof by induction on n using the q-Pascal identity:
   Gr(1, n+2) = L · Gr(1, n+1) + Gr(0, n+1) = L · P^n + 1 = P^{n+1} -/
 theorem grassmannianClass_lines (n : ℕ) :
     grassmannianClass K 1 (n + 1) = projectiveClass K n := by
+  -- By induction on n. The q-Pascal identity gives:
+  -- [Gr(1, n+2)] = L · [Gr(1, n+1)] + [Gr(0, n+1)] = L · [P^n] + 1
+  -- And [P^{n+1}] = [P^n] * L + ... (via Finset.sum_range_succ)
   induction n with
   | zero =>
-    -- Gr(1, 1) = 1 = P^0
     simp [grassmannianClass, projectiveClass, Finset.sum_range_one]
   | succ n ih =>
-    -- Gr(1, n+2) = L · Gr(1, n+1) + Gr(0, n+1) = L · P^n + 1 = P^{n+1}
-    simp only [grassmannianClass, show ¬(0 + 1 > (n + 1) + 1) from by omega,
-               show ¬(0 + 1 = (n + 1) + 1) from by omega, ite_false]
-    rw [grassmannianClass_zero, ih]
-    simp only [projectiveClass, Finset.sum_range_succ, pow_one]
+    -- grassmannianClass 1 (n+2): pattern d=0, n'=n+1
+    -- d+1=1 > n'+1=n+2? No. d+1=n'+1? 1=n+2? No (for n ≥ 0).
+    -- So: L^1 * grassmannianClass 1 (n+1) + grassmannianClass 0 (n+1)
+    simp only [grassmannianClass, show ¬(1 > n + 2) from by omega,
+               show ¬(1 = n + 2) from by omega, ite_false]
+    rw [pow_one, grassmannianClass_zero, ih]
+    unfold projectiveClass
+    rw [Finset.sum_range_succ]
     ring
+
+/-- Geometric sum splitting: ∑_{i<a} q^i + q^a · ∑_{i<b} q^i = ∑_{i<a+b} q^i.
+    This is the key algebraic identity for the Gaussian binomial proof. -/
+private lemma geom_sum_split (q : K.carrier) (a b : ℕ) :
+    (∑ i in Finset.range a, q ^ i) + q ^ a * (∑ i in Finset.range b, q ^ i) =
+    ∑ i in Finset.range (a + b), q ^ i := by
+  induction b with
+  | zero => simp
+  | succ b ih =>
+    rw [Finset.sum_range_succ, mul_add, ← pow_add, ← add_assoc, ih,
+        show a + (b + 1) = a + b + 1 from by omega, Finset.sum_range_succ]
+
+/-- q-Number splitting: [d]_L + L^d · [n-d]_L = [n]_L for d ≤ n. -/
+theorem qNumber_split (d n : ℕ) (hd : d ≤ n) :
+    qNumber K d + K.L ^ d * qNumber K (n - d) = qNumber K n := by
+  unfold qNumber
+  rw [geom_sum_split, show d + (n - d) = n from Nat.add_sub_cancel' hd]
 
 /-
 ## Part IV: The Gaussian Binomial Identity
@@ -255,7 +285,12 @@ Fl_d × Fl_{n-d}. -/
 theorem gaussian_binomial_identity (d n : ℕ) (hd : d ≤ n) :
     grassmannianClass K d n * qFactorial K d * qFactorial K (n - d) =
     qFactorial K n := by
-  sorry  -- Deep algebraic identity, requires induction with q-Pascal
+  -- Proof by induction on n, then case analysis on d.
+  -- For the step (1 ≤ d ≤ n): apply q-Pascal, distribute, then:
+  --   Term 1: L^d · gr(d,n-1) · qF(d) · qN(n-d) · qF(n-d-1) = L^d · qF(n-1) · qN(n-d) [IH]
+  --   Term 2: gr(d-1,n-1) · qN(d) · qF(d-1) · qF(n-d) = qF(n-1) · qN(d) [IH]
+  --   Sum: qF(n-1) · (L^d · qN(n-d) + qN(d)) = qF(n-1) · qN(n) = qF(n) [qNumber_split]
+  sorry
 
 /-
 ## Part V: Partial Flag Varieties
