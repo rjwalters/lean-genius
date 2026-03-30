@@ -1,0 +1,88 @@
+{
+  "slug": "ptolemys-theorem-oq-02",
+  "title": "Can the complex-number proof be formalized, showing that Ptolemy's theorem fo...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Can the complex-number proof be formalized, showing that Ptolemy's theorem fo....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T01:04:30.839Z",
+    "iteration": 1,
+    "focus": "Completed complex-number proof of Ptolemy inequality",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: PtolemysComplexProof.lean — 6 theorems, 0 sorries, 0 axioms. Algebraic identity over CommRing, Ptolemy inequality (3 formulations), equality characterization via proportionality. Gallery entry created.",
+    "builtItems": [
+      "ptolemy_algebraic_identity: ring identity (z1-z3)(z2-z4)=(z1-z2)(z3-z4)+(z2-z3)(z1-z4) over CommRing",
+      "ptolemy_complex_identity: same identity specialized to C",
+      "ptolemy_inequality: norm form via triangle inequality + norm_mul",
+      "ptolemy_inequality_abs: Complex.abs form via Complex.norm_eq_abs",
+      "ptolemy_inequality_dist: dist form via dist_eq_norm",
+      "Gallery entry: src/data/proofs/ptolemys-complex-proof/ with meta.json, index.ts, annotations.json",
+      "ptolemy_equality_of_proportional: equality holds when opposite-side products are positively proportional in ℂ"
+    ],
+    "insights": [
+      "The identity holds over any CommRing -- Ptolemy is purely algebraic, geometry enters only through the norm",
+      "The entire proof is 3 steps: norm_mul, algebraic identity, norm_add_le (triangle inequality)",
+      "This yields the inequality form, not equality -- equality requires concyclicity characterization",
+      "dist_eq_norm bridges the complex proof to the classical geometric statement",
+      "Ptolemy equality reduces to: both sides equal (1+t)·‖(z₁-z₂)(z₃-z₄)‖ when the summands have ratio t≥0",
+      "The sufficient condition for equality (positive proportionality of opposite-side products) corresponds geometrically to the four points being concyclic in the standard ordering"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Equality characterization: prove equality holds iff points are concyclic (cross-ratio is real positive)",
+      "Derive the sine addition formula from Ptolemy applied to unit circle"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "classic",
+    "intermediate",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "ptolemys-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.838Z",
+  "lastUpdate": "2026-03-30T01:04:30.838Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PtolemysTheorem.lean",
+      "filename": "PtolemysTheorem.lean",
+      "lineCount": 268,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheorem.lean"
+    }
+  ]
+}

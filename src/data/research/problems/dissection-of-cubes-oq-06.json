@@ -1,0 +1,114 @@
+{
+  "slug": "dissection-of-cubes-oq-06",
+  "title": "What is the computational complexity of determining whether a given collection of cube sizes can tile a larger cube (allowing repeated sizes)? This bin-packing variant is likely NP-hard but the exact",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: What is the computational complexity of determining whether a given collection of cube sizes can tile a larger cube (allowing repeated sizes)? This bin-packing variant is likely NP-hard but the exact .",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.304Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-01",
+    "dissection-of-cubes-oq-02",
+    "dissection-of-cubes-oq-02-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.304Z",
+  "lastUpdate": "2026-03-29T18:32:39.304Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DissectionOfCubes.lean",
+      "filename": "DissectionOfCubes.lean",
+      "lineCount": 367,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubes.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01.lean",
+      "filename": "DissectionOfCubesOQ01.lean",
+      "lineCount": 275,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02.lean",
+      "filename": "DissectionOfCubesOQ02.lean",
+      "lineCount": 384,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02OQ02.lean",
+      "filename": "DissectionOfCubesOQ02OQ02.lean",
+      "lineCount": 411,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ03.lean",
+      "filename": "DissectionOfCubesOQ03.lean",
+      "lineCount": 502,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03.lean"
+    }
+  ]
+}
