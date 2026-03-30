@@ -43,9 +43,9 @@
     "dateAdded": "2025-12-29",
     "hilbertNumber": 15,
     "proofRepoPath": "Proofs/Hilbert15SchubertCalculus.lean",
-    "axiomCount": 8,
-    "lineCount": 452,
-    "assumptions": "8 axioms: linesMeet_iff_linesMeet', four_lines_theorem, transversal_count, schubert_basis_theorem, littlewoodRichardsonCoeff, littlewood_richardson_rule, pieris_rule, sigma1_fourth_power.",
+    "axiomCount": 7,
+    "lineCount": 472,
+    "assumptions": "7 axioms: four_lines_theorem, transversal_count, schubert_basis_theorem, littlewoodRichardsonCoeff, littlewood_richardson_rule, pieris_rule, sigma1_fourth_power. linesMeet_iff_linesMeet' was proved from Mathlib's Grassmann dimension formula.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -89,7 +89,7 @@
       "title": "Part II: Lines in P³",
       "startLine": 106,
       "endLine": 142,
-      "summary": "Defines LineInP3 as Gr(2,4), SubspacesMeet (V ⊓ W ≠ ⊥), LinesMeet, LinesMeet' (finrank of span < 4), and axiomatizes their equivalence."
+      "summary": "Defines LineInP3 as Gr(2,4), SubspacesMeet (V ⊓ W ≠ ⊥), LinesMeet, LinesMeet' (finrank of span < 4), and proves their equivalence via the Grassmann dimension formula."
     },
     {
       "id": "four-lines",
@@ -165,6 +165,7 @@
       "Mathlib.LinearAlgebra.Dimension.Finrank",
       "Mathlib.LinearAlgebra.Dimension.DivisionRing",
       "Mathlib.LinearAlgebra.FreeModule.Finite.Basic",
+      "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas",
       "Mathlib.Data.Fin.VecNotation",
       "Mathlib.Data.Set.Card",
       "Mathlib.Algebra.Field.Basic",
@@ -178,9 +179,9 @@
       "FiniteDimensional"
     ],
     "namespace": "Hilbert15",
-    "lineCount": 452,
-    "axiomCount": 8,
-    "theoremCount": 3,
+    "lineCount": 472,
+    "axiomCount": 7,
+    "theoremCount": 4,
     "definitionCount": 14
   },
   "references": [
