@@ -40,7 +40,7 @@
       "powerSumRatio_tendsto statement: general asymptotic 1/(k+1)"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 101,
+    "lineCount": 126,
     "theoremCount": 4,
     "definitionCount": 1,
     "prerequisites": [
@@ -128,7 +128,10 @@
       "Mathlib.Order.Filter.AtTopBot",
       "Mathlib.Tactic"
     ],
-    "opens": ["Finset", "Filter"],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
     "namespace": "SumOfKthPowersAsymptotic",
     "lineCount": 101,
     "axiomCount": 2,
