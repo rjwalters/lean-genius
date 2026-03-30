@@ -324,6 +324,112 @@ theorem erdos_402_contains_one (A : Finset ℕ) (hA : A.Nonempty)
   have := Nat.div_pos (max_ge_card_of_pos A hA hpos) (Finset.card_pos.mpr hA)
   omega
 
+/-! ## Three-Element Case Infrastructure -/
+
+/-- A proper divisor of n exceeding n/3 must be exactly n/2 (forcing n even).
+    If d | n and d < n, then n = d·k with k ≥ 2. If also n/3 < d, then k < 3, so k = 2. -/
+theorem proper_divisor_gt_third {d n : ℕ} (hd : d ∣ n) (hdn : d < n) (hgt : n / 3 < d) :
+    2 * d = n := by
+  obtain ⟨k, rfl⟩ := hd
+  suffices k = 2 by subst this; ring
+  have hd_pos : 0 < d := by
+    rcases d with _ | d
+    · simp at hgt
+    · omega
+  have : k ≥ 2 := by
+    rcases k with _ | _ | k
+    · simp at hdn
+    · simp at hdn
+    · omega
+  have : k ≤ 2 := by
+    by_contra hk3
+    push_neg at hk3
+    have h1 : d * 3 ≤ d * k := Nat.mul_le_mul_left d hk3
+    have h2 : d * 3 / 3 ≤ d * k / 3 := Nat.div_le_div_right h1
+    rw [Nat.mul_div_cancel d (by omega : (0 : ℕ) < 3)] at h2
+    omega
+  omega
+
+/-- Unique multiple in range: if m > 0 divides y with 0 < y < 2·m, then y = m. -/
+theorem eq_of_dvd_of_lt_twice {m y : ℕ} (hm : m > 0) (hdvd : m ∣ y)
+    (hy_pos : y > 0) (hy_lt : y < 2 * m) : y = m := by
+  obtain ⟨k, rfl⟩ := hdvd
+  suffices k = 1 by subst this; ring
+  have : k ≥ 1 := by
+    rcases k with _ | k
+    · simp at hy_pos; omega
+    · omega
+  have : k ≤ 1 := by
+    by_contra hk
+    push_neg at hk
+    have : m * k < m * 2 := by linarith
+    exact absurd ((mul_lt_mul_left hm).mp this) (by omega)
+  omega
+
+/-- Among two distinct positive naturals below x, at least one has gcd(x, ·) ≤ x/3.
+    Both gcd(x, yᵢ) are proper divisors of x. A proper divisor > x/3 must equal x/2,
+    forcing yᵢ = x/2. Two such yᵢ would be equal, contradicting distinctness. -/
+theorem gcd_le_third_of_two_lt {x y1 y2 : ℕ} (hx : x > 0)
+    (hy1_pos : y1 > 0) (hy2_pos : y2 > 0)
+    (hy1_lt : y1 < x) (hy2_lt : y2 < x) (hne : y1 ≠ y2) :
+    Nat.gcd x y1 ≤ x / 3 ∨ Nat.gcd x y2 ≤ x / 3 := by
+  by_contra hall
+  push_neg at hall
+  obtain ⟨h1, h2⟩ := hall
+  have hg1_lt : Nat.gcd x y1 < x :=
+    lt_of_le_of_lt (Nat.le_of_dvd hy1_pos (Nat.gcd_dvd_right x y1)) hy1_lt
+  have hg2_lt : Nat.gcd x y2 < x :=
+    lt_of_le_of_lt (Nat.le_of_dvd hy2_pos (Nat.gcd_dvd_right x y2)) hy2_lt
+  have heq1 : 2 * Nat.gcd x y1 = x :=
+    proper_divisor_gt_third (Nat.gcd_dvd_left x y1) hg1_lt h1
+  have heq2 : 2 * Nat.gcd x y2 = x :=
+    proper_divisor_gt_third (Nat.gcd_dvd_left x y2) hg2_lt h2
+  have hy1_eq : y1 = Nat.gcd x y1 :=
+    eq_of_dvd_of_lt_twice (by omega) (Nat.gcd_dvd_right x y1) hy1_pos (by omega)
+  have hy2_eq : y2 = Nat.gcd x y2 :=
+    eq_of_dvd_of_lt_twice (by omega) (Nat.gcd_dvd_right x y2) hy2_pos (by omega)
+  exact hne (by omega)
+
+/-! ## Three-Element Case -/
+
+/-- Graham's conjecture for three-element sets.
+    Take x = max{a,b,c}. The other two elements are distinct and < x.
+    By `gcd_le_third_of_two_lt`, at least one has gcd ≤ x/3 with the max. -/
+theorem erdos_402_triple (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ∃ x ∈ ({a, b, c} : Finset ℕ), ∃ y ∈ ({a, b, c} : Finset ℕ),
+    Nat.gcd x y ≤ x / ({a, b, c} : Finset ℕ).card := by
+  set A : Finset ℕ := {a, b, c}
+  have ha_not : a ∉ ({b, c} : Finset ℕ) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg; exact ⟨hab, hac⟩
+  have hb_not : b ∉ ({c} : Finset ℕ) := Finset.not_mem_singleton.mpr hbc
+  have hcard : A.card = 3 := by
+    simp only [A, Finset.card_insert_of_not_mem ha_not, Finset.card_insert_of_not_mem hb_not,
+               Finset.card_singleton]
+  simp_rw [hcard]
+  have hne : A.Nonempty := ⟨a, by simp [A]⟩
+  have hpos : ∀ x ∈ A, x > 0 := by
+    intro x hx; simp only [A, Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl <;> assumption
+  set m := A.max' hne
+  have hm_mem : m ∈ A := Finset.max'_mem A hne
+  have hm_pos : m > 0 := hpos m hm_mem
+  have herase_card : (A.erase m).card = 2 := by
+    rw [Finset.card_erase_of_mem hm_mem, hcard]
+  obtain ⟨y1, y2, hne12, herase_eq⟩ := Finset.card_eq_two.mp herase_card
+  have hy1_er : y1 ∈ A.erase m := herase_eq ▸ by simp
+  have hy2_er : y2 ∈ A.erase m := herase_eq ▸ by simp
+  have hy1_mem : y1 ∈ A := Finset.mem_of_mem_erase hy1_er
+  have hy2_mem : y2 ∈ A := Finset.mem_of_mem_erase hy2_er
+  have hy1_lt : y1 < m :=
+    lt_of_le_of_ne (Finset.le_max' A y1 hy1_mem) (Finset.ne_of_mem_erase hy1_er)
+  have hy2_lt : y2 < m :=
+    lt_of_le_of_ne (Finset.le_max' A y2 hy2_mem) (Finset.ne_of_mem_erase hy2_er)
+  rcases gcd_le_third_of_two_lt hm_pos (hpos y1 hy1_mem) (hpos y2 hy2_mem)
+      hy1_lt hy2_lt hne12 with h | h
+  · exact ⟨m, hm_mem, y1, hy1_mem, h⟩
+  · exact ⟨m, hm_mem, y2, hy2_mem, h⟩
+
 /-! ## Summary
 
 **Problem Status: SOLVED**
