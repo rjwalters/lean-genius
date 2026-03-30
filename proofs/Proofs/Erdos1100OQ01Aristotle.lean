@@ -28,24 +28,37 @@ namespace Erdos1100OQ01
 ω(p) = 1 for any prime p: a prime has exactly one distinct prime factor.
 -/
 theorem omega_prime (p : ℕ) (hp : Nat.Prime p) :
-    p.primeFactors.card = 1 := by sorry
+    p.primeFactors.card = 1 := by
+  rw [hp.primeFactors_eq]
+  simp
 
 /--
 The divisor count of a prime is 2: divisors of p are {1, p}.
 -/
 theorem tau_prime (p : ℕ) (hp : Nat.Prime p) :
-    (Finset.filter (· ∣ p) (Finset.range (p + 1))).card = 2 := by sorry
+    (Finset.filter (· ∣ p) (Finset.range (p + 1))).card = 2 := by
+  rw [divisors_of_prime p hp]
+  rw [Finset.card_insert_of_not_mem (by simp [hp.one_lt.ne'])]
+  simp
 
 /--
 The set of divisors of a prime p in {0, ..., p} is exactly {1, p}.
 -/
 theorem divisors_of_prime (p : ℕ) (hp : Nat.Prime p) :
-    Finset.filter (· ∣ p) (Finset.range (p + 1)) = {1, p} := by sorry
+    Finset.filter (· ∣ p) (Finset.range (p + 1)) = {1, p} := by
+  ext d
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨_, hd_dvd⟩
+    exact hp.eq_one_or_self_of_dvd d hd_dvd
+  · rintro (rfl | rfl)
+    · exact ⟨by omega, one_dvd p⟩
+    · exact ⟨by omega, dvd_refl p⟩
 
 /--
 gcd(1, n) = 1 for any n: 1 is coprime to everything.
 -/
-theorem gcd_one_left_eq (n : ℕ) : Nat.gcd 1 n = 1 := by sorry
+theorem gcd_one_left_eq (n : ℕ) : Nat.gcd 1 n = 1 := Nat.gcd_one_left n
 
 /--
 For a squarefree number n with ω(n) = 1, n is prime.
@@ -58,6 +71,8 @@ theorem squarefree_omega_one_is_prime (n : ℕ) (hn : n > 1)
 Infinitude of primes: for any N, there exists a prime p > N.
 (Standard result, should be in Mathlib.)
 -/
-theorem exists_prime_gt (N : ℕ) : ∃ p : ℕ, p > N ∧ Nat.Prime p := by sorry
+theorem exists_prime_gt (N : ℕ) : ∃ p : ℕ, p > N ∧ Nat.Prime p := by
+  obtain ⟨p, hp_gt, hp_prime⟩ := Nat.exists_infinite_primes (N + 1)
+  exact ⟨p, by omega, hp_prime⟩
 
 end Erdos1100OQ01
