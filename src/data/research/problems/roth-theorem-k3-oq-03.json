@@ -2,9 +2,9 @@
   "id": "roth-theorem-k3-oq-03",
   "name": "Density increment generalization to k-APs for k > 3",
   "parentId": "roth-theorem-k3",
-  "status": "completed",
+  "status": "in-progress",
   "knowledge": {
-    "score": 7,
+    "score": 18,
     "insights": [
       "k=3 uses U² = Fourier L⁴, k≥4 needs U^{k-1} Gowers norms",
       "Generalized von Neumann: k-AP count controlled by min_i ||f_i||_{U^{k-1}}",
@@ -14,16 +14,26 @@
       "Roth density increment (k=3) is 1401 lines, fully proved — very mature infrastructure",
       "gowersNorm_nonneg and gowersNorm_mono were unused by any theorem — removed",
       "inverse_theorem had placeholder True conclusion, added no mathematical content — removed",
-      "density_increment_kAP is missing AP-free condition in conclusion — cant iterate for Szemeredi proof"
+      "density_increment_kAP is missing AP-free condition in conclusion — cant iterate for Szemeredi proof",
+      "gowersNorm converted from axiom to constructive def via finite sum over hypercube vertices",
+      "kAPCount converted from axiom to constructive def: E_{x,d} prod_i f_i(x + i*d)",
+      "IsKAPFreeZMod: properly typed k-AP-free predicate for Finset (ZMod N), bridges to Szemeredi.Roth.APFree for k=3",
+      "density_increment_k3_explicit proved from Szemeredi.Roth.density_increment_lemma via type bridge",
+      "szemeredi_from_density_increment needs quantitative density increment bound (not just delta_prime > delta) and AP-free conclusion for iteration"
     ],
     "builtItems": [
       "RothTheoremOQ03.lean: 195 lines, 7 axioms, 2 sorries",
       "Gowers norm axiomatization with non-negativity and monotonicity",
       "Generalized von Neumann theorem and inverse theorem",
       "Density increment for k-APs connecting to Szemerédi's theorem",
-      "Gallery entry with meta.json"
+      "Gallery entry with meta.json",
+      "gowersNorm: constructive Gowers U^s norm via hypercubeShift and conjugateByWeight helpers",
+      "kAPCount: constructive k-AP counting operator as finite sum over ZMod N",
+      "IsKAPFreeZMod: local k-AP-free predicate for ZMod N with Fin k AP structure",
+      "apFree_of_isKAPFreeZMod_three: bridge lemma to Szemeredi.Roth.APFree",
+      "density_increment_k3_explicit: proved (was sorry) using RothTheorem infrastructure"
     ],
-    "progressSummary": "COMPLETED: Axioms 7→4 (removed 3 unused: nonneg, mono, placeholder inverse theorem). 2 sorries remain. Core framework: gowersNorm, kAPCount, gen. von Neumann, density increment.",
+    "progressSummary": "PROGRESS: Axioms 4→2 (gowersNorm, kAPCount now constructive defs). Sorries 2→1 (density_increment_k3_explicit proved). Fixed type issue: SzemerediTheorem.IsAPFree replaced with properly-typed IsKAPFreeZMod.",
     "nextSteps": [
       "Define Gowers norms constructively using iterated expectations",
       "Prove Gowers-Cauchy-Schwarz inequality (monotonicity)",
