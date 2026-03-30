@@ -1,0 +1,69 @@
+{
+  "slug": "erdos-1100-oq-01",
+  "title": "Does $\\tau^{\\perp}(n)/\\omega(n) \\to \\infty$ for almost all $n$",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Does $\\tau^{\\perp}(n)/\\omega(n) \\to \\infty$ for almost all $n$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T17:32:58.850Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-110",
+    "erdos-1100"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.850Z",
+  "lastUpdate": "2026-03-30T17:32:58.850Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1100ProblemProvable.lean",
+      "filename": "Erdos1100ProblemProvable.lean",
+      "lineCount": 259,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1100ProblemProvable.lean"
+    }
+  ]
+}
