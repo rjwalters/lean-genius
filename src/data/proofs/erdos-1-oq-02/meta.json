@@ -1,173 +1,57 @@
 {
   "id": "erdos-1-oq-02",
-  "title": "Improved Lower Bounds for Distinct Subset Sums",
+  "title": "Dubroff\u2013Fox\u2013Xu Subset Sum Lower Bound Framework",
   "slug": "erdos-1-oq-02",
-  "description": "Improves the basic counting bound N ≥ (2^n-1)/n for Erdős Problem #1 by exploiting the distinctness of elements. Proves that n distinct naturals ≤ N have sum ≤ nN - n(n-1)/2, yielding the tighter bound N ≥ (2^n-1)/n + (n-1)/2. States the Dubroff-Fox-Xu bound.",
+  "description": "Formalizes the algebraic framework for the Dubroff\u2013Fox\u2013Xu (2021) lower bound N \u2265 \u221a(2/\u03c0) \u00b7 2\u207f/\u221an for the distinct subset sums problem (Erd\u0151s #1). Proves variance bounds (sum of squares \u2264 n\u00b7N\u00b2, sum \u2264 n\u00b7N) and axiomatizes the anticoncentration step from Berry\u2013Esseen.",
   "meta": {
-    "author": "Original analysis, formalized in Lean 4",
+    "author": "Dubroff, Fox, Xu (2021); framework formalized 2026",
     "sourceUrl": "https://erdosproblems.com/1",
-    "date": "2026",
-    "status": "verified",
+    "date": "2021",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1OQ02.lean",
     "tags": [
-      "erdos",
       "additive-combinatorics",
+      "erdos",
       "distinct-subset-sums",
-      "lower-bound",
-      "open-question"
+      "variance",
+      "anticoncentration",
+      "berry-esseen"
     ],
-    "badge": "verified",
-    "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "None. All results fully proved from Mathlib.",
-    "mathlibDependencies": [
-      {
-        "theorem": "hasDistinctSubsetSums",
-        "description": "Distinct subset sums predicate",
-        "module": "Proofs.Erdos1Problem"
-      },
-      {
-        "theorem": "distinct_subset_sums_sum_bound",
-        "description": "2^n ≤ sum(A) + 1 for DSS sets",
-        "module": "Proofs.Erdos1OQ01"
-      }
-    ],
-    "originalContributions": [
-      "Generalized sum lower bound for distinct naturals ≥ c",
-      "Complement sum identity for bounded Finsets",
-      "Tight sum upper bound using distinctness: sum ≤ nN - n(n-1)/2",
-      "Improved DSS lower bound: 2nN + 2 ≥ 2^(n+1) + n(n-1)",
-      "DSS implies positive elements (no-zero lemma)",
-      "Formal statement of Dubroff-Fox-Xu bound"
-    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "axiomCount": 1,
+    "lineCount": 180,
+    "assumptions": "One axiom: anticoncentration_bound (Berry\u2013Esseen theorem for random subset sums). Three sorries: Cauchy\u2013Schwarz for sums, DFX bound assembly, f(1) DSS verification.",
     "dateAdded": "2026-03-30",
-    "lineCount": 200,
-    "theoremCount": 6,
-    "definitionCount": 1,
-    "prerequisites": [
-      "Erdős Problem #1 (distinct subset sums)",
-      "The sum bound: 2^n ≤ sum(A) + 1",
-      "The counting bound: 2^n ≤ n·N + 1"
-    ],
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1 asks whether a set of n positive integers with all 2^n subset sums distinct must have maximum element ≥ c·2^n. The basic counting bound gives N ≥ (2^n-1)/n. Dubroff, Fox, and Xu (2021) proved the best known lower bound N ≥ Ω(2^n/√n). This formalization provides an intermediate improvement using the elementary observation that distinct integers bounded by N have constrained sums.",
-    "problemStatement": "Improve the lower bound on $N$ for sets $A \\subseteq \\{1, \\ldots, N\\}$ with $|A| = n$ and distinct subset sums. The basic counting bound gives $N \\geq (2^n - 1)/n$. We prove $N \\geq (2^n - 1)/n + (n-1)/2$.",
-    "text": "A formalization proving an improved lower bound for Erdős Problem #1 (distinct subset sums). The key insight is that n distinct elements bounded by N have sum at most nN - n(n-1)/2 (the complement argument), which combined with the DSS sum bound sum(A) ≥ 2^n - 1 yields a strictly better lower bound than counting alone.",
-    "proofStrategy": "Three-step proof: (1) Prove that n distinct naturals ≥ c have sum ≥ cn + n(n-1)/2, by induction extracting the minimum. (2) Apply the complement map a ↦ N-a to derive sum(A) ≤ nN - n(n-1)/2. (3) Combine with the DSS sum bound.",
-    "keyInsights": [
-      "The complement map a ↦ N-a transforms the upper bound problem into a lower bound problem for distinct naturals",
-      "n distinct naturals have minimum sum n(n-1)/2 (the triangular number), proved by min-extraction induction",
-      "The improvement (n-1)/2 is small compared to 2^n/n but demonstrates the power of the distinctness constraint",
-      "The gap to the DFX bound (Ω(2^n/√n)) is a factor of √n in the leading term"
-    ]
+    "historicalContext": "Erd\u0151s Problem #1 ($500 prize) asks: if A \u2286 {1,...,N} has n elements with all 2\u207f subset sums distinct, must N \u2265 c\u00b72\u207f? The basic counting bound gives N \u2265 (2\u207f-1)/n. Dubroff, Fox, and Xu (2021) improved this to N \u2265 \u221a(2/\u03c0)\u00b72\u207f/\u221an using a variance-based anticoncentration argument.",
+    "problemStatement": "**Theorem (DFX 2021)**: If A \u2286 {1,...,N} has n elements with all 2\u207f subset sums distinct, then N \u2265 \u221a(2/\u03c0) \u00b7 2\u207f/\u221an.",
+    "text": "Formalizes the framework for the DFX lower bound, including variance bounds and the anticoncentration axiom."
   },
-  "sections": [
-    {
-      "id": "sum-lower-bound",
-      "title": "Sum Lower Bound for Distinct Naturals",
-      "startLine": 37,
-      "endLine": 78,
-      "summary": "Proves that n distinct naturals ≥ c have 2·sum ≥ n·(2c+n-1). Corollary: 2·sum ≥ n·(n-1) for c=0.",
-      "mathContext": "$\\sum_{i} b_i \\geq cn + \\binom{n}{2}$ for $n$ distinct naturals $b_i \\geq c$"
-    },
-    {
-      "id": "complement-bound",
-      "title": "Sum Upper Bound via Complement",
-      "startLine": 80,
-      "endLine": 120,
-      "summary": "Proves the complement sum identity and derives 2·sum(A) + n(n-1) ≤ 2nN for distinct elements ≤ N.",
-      "mathContext": "$2 \\sum a_i + n(n-1) \\leq 2nN$ for $n$ distinct naturals $a_i \\leq N$"
-    },
-    {
-      "id": "improved-bound",
-      "title": "Improved DSS Lower Bound",
-      "startLine": 122,
-      "endLine": 156,
-      "summary": "Combines DSS sum bound with distinctness upper bound to prove 2nN + 2 ≥ 2^(n+1) + n(n-1).",
-      "mathContext": "$2nN + 2 \\geq 2^{n+1} + n(n-1)$ for DSS sets in $\\{0, \\ldots, N\\}$"
-    },
-    {
-      "id": "small-cases",
-      "title": "Small Case Verification",
-      "startLine": 158,
-      "endLine": 170,
-      "summary": "Verifies the improved bound for n = 4, 5, 8.",
-      "mathContext": "Numerical verification of $(2^n-1)/n + (n-1)/2$ for small $n$"
-    },
-    {
-      "id": "dfx-statement",
-      "title": "Dubroff-Fox-Xu Bound",
-      "startLine": 172,
-      "endLine": 190,
-      "summary": "States the DFX bound: N ≥ C · 2^n / √n for some C > 0.",
-      "mathContext": "Best known: $N \\geq \\sqrt{2/\\pi} \\cdot 2^n / \\sqrt{n}$"
-    }
-  ],
   "crossReferences": [
     {
       "targetId": "erdos-1",
       "relationship": "extends",
-      "description": "Extends the Erdős #1 counting bound with a strictly stronger lower bound"
-    },
-    {
-      "targetId": "erdos-1-oq-03",
-      "relationship": "complement",
-      "description": "OQ-03 studies the Conway-Guy upper bound; this studies improved lower bounds"
+      "description": "Parent: Erd\u0151s Problem #1, distinct subset sums"
     }
   ],
-  "conclusion": {
-    "summary": "An improved lower bound for Erdős Problem #1 is proved by combining the DSS sum bound with a tight upper bound on the sum of distinct bounded integers. The improvement is (n-1)/2 over the basic counting bound.",
-    "implications": "Demonstrates that elementary distinctness arguments can improve on the naive counting bound. The complement map technique may be useful for other extremal combinatorics formalizations.",
-    "openQuestions": [
-      "Can the complement technique be refined further (e.g., using positivity to get sum ≤ nN - n²/2)?",
-      "Can the Dubroff-Fox-Xu probabilistic argument be formalized in Lean 4?"
-    ]
-  },
   "references": [
     {
-      "authors": "Erdős, P.",
-      "title": "Problems and results in additive number theory",
-      "year": "1955"
-    },
-    {
-      "authors": "Dubroff, Q., Fox, J., and Xu, M. Z.",
-      "title": "A note on the Erdős distinct subset sums problem",
+      "authors": "Dubroff, Q., Fox, J., Xu, M. Z.",
+      "title": "A note on the Erd\u0151s distinct subset sums problem",
       "year": "2021",
-      "venue": "SIAM Journal on Discrete Mathematics",
-      "note": "Best known lower bound: N ≥ √(2/π) · 2^n / √n"
+      "venue": "SIAM J. Discrete Math. 35(1):322\u2013324",
+      "note": "The \u221a(2/\u03c0)\u00b72\u207f/\u221an lower bound via Berry\u2013Esseen"
     }
   ],
   "leanFile": {
-    "imports": [
-      "Proofs.Erdos1OQ01",
-      "Mathlib"
-    ],
-    "opens": ["Finset"],
-    "lineCount": 200,
-    "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 1
-  },
-  "mainTheorems": [
-    {
-      "name": "improved_dss_bound",
-      "type": "core",
-      "description": "2nN + 2 ≥ 2^(n+1) + n(n-1) — the improved DSS lower bound",
-      "leanType": "2 ^ (A.card + 1) + A.card * (A.card - 1) ≤ 2 * A.card * N + 2"
-    },
-    {
-      "name": "sum_lower_bound_gen",
-      "type": "supporting",
-      "description": "n distinct naturals ≥ c have sum ≥ cn + n(n-1)/2",
-      "leanType": "n * (2 * c + n - 1) ≤ 2 * B.sum id"
-    },
-    {
-      "name": "sum_upper_bound_distinct",
-      "type": "supporting",
-      "description": "n distinct elements ≤ N have 2·sum + n(n-1) ≤ 2nN",
-      "leanType": "2 * A.sum id + A.card * (A.card - 1) ≤ 2 * A.card * N"
-    }
-  ]
+    "imports": ["Proofs.Erdos1Problem", "Mathlib"],
+    "namespace": "Erdos1OQ02",
+    "lineCount": 180,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
 }

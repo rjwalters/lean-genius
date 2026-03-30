@@ -1,7 +1,8 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/Hilbert15SchubertCalculusOQ01.lean?raw'
+import tacticStatesJson from './tacticStates.json'
+import sourceRaw from '../../../../proofs/Proofs/Hilbert15OQ01.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string
@@ -29,7 +30,7 @@ export const hilbert15OQ01Proof: Proof = {
 }
 
 export const hilbert15OQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
-export const hilbert15OQ01TacticStates: TacticState[] = [] as TacticState[]
+export const hilbert15OQ01TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const hilbert15OQ01Data: ProofData = {
   proof: hilbert15OQ01Proof,
