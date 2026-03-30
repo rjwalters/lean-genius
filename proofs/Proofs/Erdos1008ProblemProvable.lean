@@ -75,9 +75,35 @@ Erdős noted that finding a C₄-free subgraph with Ω(m^{1/2}) edges is trivial
 This follows from the Kővári–Sós–Turán theorem.
 -/
 
-/-- Kővári–Sós–Turán: C₄-free graphs on n vertices have O(n^{3/2}) edges -/
-axiom kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj] :
-  isC4Free G → edgeCount G ≤ (Fintype.card V)^2 / 2
+/-- Kővári–Sós–Turán: C₄-free graphs on n vertices have O(n^{3/2}) edges.
+    Proved via degree sum: 2m = ∑ deg(v) ≤ n(n-1) ≤ n², so m ≤ n²/2.
+    (This weak bound holds for ALL simple graphs, not just C₄-free ones.) -/
+theorem kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj] :
+    isC4Free G → edgeCount G ≤ (Fintype.card V) ^ 2 / 2 := by
+  intro _
+  unfold edgeCount
+  -- Suffices: 2 * |E| ≤ n²
+  suffices h : 2 * G.edgeFinset.card ≤ (Fintype.card V) ^ 2 by omega
+  -- Handshaking: ∑ deg(v) = 2|E|
+  have hhand : ∑ v : V, G.degree v = 2 * G.edgeFinset.card :=
+    G.sum_degrees_eq_twice_card_edges
+  -- Each degree < n, so degree ≤ n - 1
+  have hdeg : ∀ v : V, G.degree v ≤ Fintype.card V - 1 := fun v => by
+    have := G.degree_lt_card_verts v; omega
+  -- Sum of degrees ≤ n * (n - 1)
+  have hsum : ∑ v : V, G.degree v ≤ Fintype.card V * (Fintype.card V - 1) := by
+    calc ∑ v : V, G.degree v
+        ≤ ∑ _v : V, (Fintype.card V - 1) :=
+          Finset.sum_le_sum (fun v _ => hdeg v)
+      _ = Fintype.card V * (Fintype.card V - 1) := by
+          simp [Finset.sum_const, Finset.card_univ, smul_eq_mul]
+  -- Chain: 2|E| = ∑ deg ≤ n(n-1) ≤ n²
+  calc 2 * G.edgeFinset.card
+      = ∑ v : V, G.degree v := hhand.symm
+    _ ≤ Fintype.card V * (Fintype.card V - 1) := hsum
+    _ ≤ (Fintype.card V) ^ 2 := by
+        have := Nat.sub_le (Fintype.card V) 1
+        nlinarith
 
 /-- Trivial bound: every graph has a C₄-free subgraph with Ω(√m) edges -/
 axiom c4free_subgraph_sqrt (G : SimpleGraph V) [DecidableRel G.Adj] :
