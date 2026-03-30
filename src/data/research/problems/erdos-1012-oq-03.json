@@ -1,0 +1,40 @@
+{
+  "slug": "erdos-1012-oq-03",
+  "title": "Directed graph Hamiltonian cycle thresholds",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {"formal": "", "plain": "", "whyMatters": []},
+  "knownResults": {"proven": [], "open": [], "goal": ""},
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T10:49:00Z",
+    "iteration": 1,
+    "focus": "Survey: parent file has 4 axioms, directed case needs separate formalization",
+    "blockers": [],
+    "nextAction": "Create Lean file for directed graph version of Erdos 1012",
+    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Parent Erdos1012Problem.lean has 4 axioms (Ore, Bondy, pancyclicity, tightness). Directed case would need SimpleGraph.Directed or Quiver infrastructure from Mathlib.",
+    "builtItems": [],
+    "insights": [
+      "Parent file Erdos1012Problem.lean has 4 axioms, focuses on undirected graphs",
+      "Directed case needs different infrastructure: tournaments, directed Hamiltonian paths",
+      "Mathlib has Quiver and Digraph infrastructure that could be used",
+      "The directed threshold problem (Ghouila-Houri theorem) states: semi-degree >= n/2 implies Hamiltonian"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Create Erdos1012OQ03.lean using Mathlib's Quiver or custom directed graph definitions",
+      "Formalize Ghouila-Houri theorem as the directed analog",
+      "Consider whether this is tractable given Mathlib's directed graph support"
+    ]
+  },
+  "tags": ["graph-theory", "extremal-combinatorics", "directed-graphs"],
+  "relatedProofs": ["erdos-1012"],
+  "references": {"papers": [], "urls": [], "mathlib": []},
+  "started": "2026-03-30T10:49:00Z",
+  "lastUpdate": "2026-03-30T10:49:00Z"
+}
