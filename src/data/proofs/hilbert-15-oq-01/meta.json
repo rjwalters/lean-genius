@@ -1,0 +1,149 @@
+{
+  "id": "hilbert-15-oq-01",
+  "title": "Schubert Calculus Formalizability: Axiom Elimination and Assessment",
+  "slug": "hilbert-15-oq-01",
+  "description": "Addresses whether full Schubert calculus can be formalized in Lean/Mathlib. Eliminates 2 of 8 axioms from the parent Hilbert-15 formalization: (1) linesMeet_iff_linesMeet' is proved via the submodule dimension formula (Grassmann's formula), and (2) transversal_count is derived from the Four Lines Theorem using set cardinality. Provides a detailed formalizability assessment categorizing remaining axioms by difficulty.",
+  "meta": {
+    "author": "Various (20th century); formalizability assessment 2026",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_fifteenth_problem",
+    "date": "1900",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Hilbert15SchubertCalculusOQ01.lean",
+    "tags": [
+      "algebraic-geometry",
+      "intersection-theory",
+      "hilbert-problems",
+      "formalizability",
+      "axiom-elimination",
+      "grassmannian",
+      "schubert-calculus",
+      "linear-algebra"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Submodule.finrank_sup_add_finrank_inf_eq",
+        "description": "Dimension formula: finrank(V ⊔ W) + finrank(V ⊓ W) = finrank(V) + finrank(W)",
+        "module": "Mathlib.LinearAlgebra.Dimension.Finrank"
+      },
+      {
+        "theorem": "Set.ncard_pair",
+        "description": "ncard {a, b} = 2 when a ≠ b",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "finrank_pos_iff",
+        "description": "0 < finrank K M ↔ Nontrivial M",
+        "module": "Mathlib.LinearAlgebra.Dimension.Finrank"
+      }
+    ],
+    "originalContributions": [
+      "linesMeet_iff_linesMeet' PROVED (was axiom): lines meet ↔ span dim < 4, via Grassmann dimension formula",
+      "transversal_count PROVED (was axiom): derived from four_lines_theorem via set extensionality and ncard_pair",
+      "Formalizability assessment: categorized 8 axioms by eliminability (2 proved, 3 medium-term, 3 long-term)",
+      "Identified path to eliminate 3 more axioms via computational LR coefficient definition (~500-1000 lines)",
+      "Documented Mathlib gaps: Chow rings, algebraic cycles, intersection theory, CW structure on Grassmannians"
+    ],
+    "dateAdded": "2026-03-30",
+    "hilbertNumber": 15,
+    "axiomCount": 6,
+    "lineCount": 240,
+    "assumptions": "6 axioms (reduced from 8): four_lines_theorem, schubert_basis_theorem, littlewoodRichardsonCoeff, littlewood_richardson_rule, pieris_rule, sigma1_fourth_power.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 15th Problem asked for rigorous foundations of Schubert's enumerative calculus. This was resolved through intersection theory on Grassmannians (Van der Waerden, Weil, 1930s), Schubert classes as cohomology basis (Ehresmann, Chevalley, BGG), and the Littlewood-Richardson rule (Schützenberger, 1977). This OQ-01 investigates whether these results can be fully formalized in Lean 4 with Mathlib.",
+    "problemStatement": "**Question**: Can the full Schubert calculus be formalized in Lean/Mathlib, including Chow rings and intersection theory on smooth varieties?\n\n**Approach**: Systematically assess each axiom in the parent Hilbert-15 formalization. Prove those that are within reach of current Mathlib. Document infrastructure gaps for the rest.",
+    "text": "Addresses whether full Schubert calculus can be formalized in Lean/Mathlib. Eliminates 2 of 8 axioms from the parent Hilbert-15 formalization via the submodule dimension formula and set cardinality arguments.",
+    "proofStrategy": "**Axiom Elimination 1 (linesMeet_iff_linesMeet')**: Two 2-dimensional subspaces V, W of K⁴ meet nontrivially iff dim(V+W) < 4. By Grassmann's formula: dim(V+W) + dim(V∩W) = dim(V) + dim(W) = 4. So V∩W ≠ {0} ↔ dim(V∩W) ≥ 1 ↔ dim(V+W) ≤ 3 < 4. Uses Submodule.finrank_sup_add_finrank_inf_eq.\n\n**Axiom Elimination 2 (transversal_count)**: The Four Lines Theorem gives exactly M₁ ≠ M₂ such that every transversal equals M₁ or M₂. By set extensionality, Transversals = {M₁, M₂}. Then ncard_pair gives ncard {M₁, M₂} = 2.",
+    "keyInsights": [
+      "The submodule dimension formula (Grassmann's formula) is pure linear algebra — already in Mathlib",
+      "transversal_count is a logical consequence of four_lines_theorem, not an independent axiom",
+      "The combinatorial part of Schubert calculus (LR coefficients, Pieri) is formalizable with ~1000 lines",
+      "The geometric part (Chow rings, intersection theory) needs foundational infrastructure not in Mathlib",
+      "The even/odd split: 2 axioms are linear algebra, 3 are combinatorics, 3 are deep geometry"
+    ],
+    "prerequisites": [
+      "Linear algebra (submodules, dimension, lattice operations)",
+      "Algebraic geometry (Grassmannians, Schubert calculus)",
+      "Combinatorics (Young tableaux, Littlewood-Richardson coefficients)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part-ii-meet",
+      "title": "Part II: Axiom Elimination — linesMeet_iff_linesMeet'",
+      "startLine": 75,
+      "endLine": 114,
+      "summary": "Proves linesMeet_iff_linesMeet' (was axiom) via Grassmann's dimension formula. finrank(V⊔W) + finrank(V⊓W) = 4 for 2-dimensional V, W in K⁴.",
+      "mathContext": "$\\dim(V+W) + \\dim(V \\cap W) = \\dim V + \\dim W = 4$. So $V \\cap W \\neq 0 \\iff \\dim(V+W) < 4$."
+    },
+    {
+      "id": "part-iv-count",
+      "title": "Part IV: Axiom Elimination — transversal_count",
+      "startLine": 134,
+      "endLine": 153,
+      "summary": "Proves transversal_count (was axiom) from four_lines_theorem. Shows Transversals = {M₁, M₂} by extensionality, then applies ncard_pair.",
+      "mathContext": "From $\\exists M_1 \\neq M_2$ with $\\forall M$ transversal $\\implies M = M_1 \\lor M = M_2$: the transversal set $= \\{M_1, M_2\\}$, so $|\\text{Transversals}| = 2$."
+    },
+    {
+      "id": "part-vii-assessment",
+      "title": "Part VII: Formalizability Assessment",
+      "startLine": 206,
+      "endLine": 238,
+      "summary": "Detailed assessment: 2 axioms proved (linear algebra), 3 eliminable with moderate effort (combinatorics/Young tableaux), 3 require new Mathlib infrastructure (algebraic geometry). Full Chow ring formalization needs algebraic cycles, rational equivalence, and intersection product.",
+      "mathContext": "Assessment of 8 axioms: 2 proved, 3 need Young tableaux (~500-1000 lines), 3 need algebraic geometry infrastructure not in Mathlib."
+    }
+  ],
+  "conclusion": {
+    "summary": "Eliminated 2 of 8 axioms in the Hilbert-15 formalization. The submodule dimension formula proves linesMeet_iff_linesMeet' (pure linear algebra), and set cardinality derives transversal_count from the Four Lines Theorem. Full Schubert calculus formalization is partially achievable: the combinatorial core (LR coefficients) needs ~1000 lines of Young tableaux theory, while the geometric foundation (Chow rings) awaits algebraic geometry infrastructure in Mathlib.",
+    "implications": "The axiom reduction from 8 to 6 demonstrates that systematic axiom elimination is productive for heavily axiomatized formalizations. The identified path (Young tableaux → LR coefficients → eliminate 3 more axioms) provides a concrete roadmap.",
+    "openQuestions": [
+      "Implement LR coefficients as a computable definition via Young tableaux",
+      "Prove Pieri's rule from the LR coefficient definition",
+      "Formalize the Plücker embedding Gr(2,4) → P⁵ via exterior algebra",
+      "What minimal algebraic geometry infrastructure suffices for the Four Lines Theorem?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "hilbert-15",
+      "relationship": "extends",
+      "description": "Parent: Hilbert-15 Schubert calculus with 8 axioms — this entry eliminates 2"
+    }
+  ],
+  "references": [
+    {
+      "key": "Hi00",
+      "citation": "Hilbert, D., Mathematische Probleme, Nachrichten GWG (1900). Problem 15: rigorous foundation of Schubert's enumerative calculus.",
+      "type": "paper"
+    },
+    {
+      "key": "Fu97",
+      "citation": "Fulton, W., Young Tableaux, Cambridge University Press (1997). Comprehensive reference for Schubert calculus and Littlewood-Richardson rule.",
+      "type": "book"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Dimension.Finrank",
+      "Mathlib.LinearAlgebra.Dimension.DivisionRing",
+      "Mathlib.LinearAlgebra.FreeModule.Finite.Basic",
+      "Mathlib.Data.Fin.VecNotation",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Algebra.Field.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Submodule",
+      "FiniteDimensional"
+    ],
+    "namespace": "Hilbert15OQ01",
+    "lineCount": 240,
+    "axiomCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 14
+  }
+}

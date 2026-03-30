@@ -1,7 +1,7 @@
 {
   "slug": "cayley-hamilton-reduction-oq-02-oq-01",
   "title": "Rational canonical form (Frobenius normal form) formalization",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,39 +16,47 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-03-30T08:49:59.592Z",
-    "iteration": 1,
-    "focus": "Surveyed + partial build. Companion matrix defined, key properties stated.",
+    "iteration": 2,
+    "focus": "Proved orbit infrastructure: column action, last column, power orbit. Restructured proof plan to eliminate circular dependency.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove aeval_companionMatrix via orbit cancellation, then derive minpoly and charpoly.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Defined companion matrix, proved entry lemmas and linear case. 2 key sorries: charpoly=p (det computation) and minpoly=p (minimality). RCF roadmap documented.",
+    "progressSummary": "ACT: Proved 5 orbit infrastructure lemmas. Restructured proof plan: aeval→minpoly→charpoly (no circular dependency). 3 sorries remain (aeval, minpoly, charpoly).",
     "builtItems": [
-      "companionMatrix: def for d\u00d7d companion from monic polynomial",
+      "companionMatrix: def for d×d companion from monic polynomial",
       "companionMatrix_subdiag, _last_col, _zero: entry lemmas",
       "aeval_companionMatrix: p(C(p))=0 from Cayley-Hamilton",
-      "companionMatrix_linear: C(x-c) = [c]"
+      "companionMatrix_linear: C(x-c) = [c]",
+      "companionMatrix_col: column structure for non-last columns (proved)",
+      "companionMatrix_last_col: last column has -coeff (proved)",
+      "companionMatrix_mulVec_basis: C(p)·eⱼ = eⱼ₊₁ for j<d-1 (proved)",
+      "companionMatrix_mulVec_last: C(p)·e_{d-1} = -∑aᵢeᵢ (proved)",
+      "companionMatrix_pow_basis: C(p)^k·e₀ = eₖ for k<d (proved)"
     ],
     "insights": [
-      "Mathlib has Matrix.Companion but limited \u2014 needs charpoly/minpoly theorems",
+      "Mathlib has Matrix.Companion but limited — needs charpoly/minpoly theorems",
       "Companion matrix C(p) has 1s on subdiagonal, negated coefficients in last column",
       "charpoly(C(p))=p requires cofactor expansion along last column + induction",
       "minpoly(C(p))=p: companion is non-derogatory, follows from module dimension argument",
       "Full RCF needs Smith Normal Form for F[X]-matrices (~800 lines main blocker)",
-      "Total RCF estimate: ~1800 lines across 4 components"
+      "Total RCF estimate: ~1800 lines across 4 components",
+      "Circular dependency in original proof: aeval used charpoly (sorry). Fixed by proving aeval directly via orbit.",
+      "Orbit argument: C(p)^k·e₀ = eₖ gives standard basis from cyclic action, then p(C(p))·e₀ = 0 by cancellation",
+      "Module-theoretic approach avoids determinant computation entirely: orbit independence → deg(minpoly) ≥ d → minpoly = p → charpoly = p"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove charpoly_companionMatrix via cofactor expansion (hard, ~100 lines)",
-      "Prove minpoly_companionMatrix via module dimension argument",
-      "Investigate if Mathlib already has companion matrix constructions to leverage"
+      "Prove aeval: expand p(C(p))·e₀ using orbit + last column cancellation",
+      "Prove minpoly = p: aeval gives minpoly|p, orbit independence gives deg≥d",
+      "Prove charpoly = p: follows from minpoly|charpoly with same degree"
     ]
   },
   "tags": [
