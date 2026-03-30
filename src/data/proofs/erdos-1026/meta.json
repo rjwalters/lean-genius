@@ -59,9 +59,9 @@
       "LIS/LDS bounds as corollaries"
     ],
     "dateAdded": "2025-12-28",
-    "axiomCount": 10,
-    "lineCount": 254,
-    "assumptions": "10 axioms: erdos_szekeres, hanani_decomposition, dilworth_bound, hanani_lower_bound, cambie_upper_bound, weighted_erdos_szekeres, optimal_constant_is_one, lis_lds_bound, longest_monotonic_bound, erdos_1026_tight. Three proved: erdos_szekeres_square (from erdos_szekeres), tidor_wang_yang (= weighted_erdos_szekeres), tournament_connection (trivial).",
+    "axiomCount": 2,
+    "lineCount": 279,
+    "assumptions": "2 axioms: weighted_erdos_szekeres (Tidor-Wang-Yang 2016, a deep result), lis_lds_bound (LIS·LDS ≥ n, consequence of Erdős-Szekeres). The Erdős-Szekeres theorem itself is now proved from Mathlib (Theorems100.erdos_szekeres). Proved theorems: erdos_szekeres (from Mathlib), erdos_szekeres_square, tidor_wang_yang (= weighted_erdos_szekeres), tournament_connection.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -108,7 +108,7 @@
       "summary": "Classical (r-1)(s-1)+1 bound and n²+1 corollary",
       "startLine": 83,
       "endLine": 107,
-      "mathContext": "Axiomatized: any injective $x: \\text{Fin}((r-1)(s-1)+1) \\to \\mathbb{R}$ has an increasing subsequence of length $r$ or decreasing of length $s$. Corollary: $k^2+1$ elements yield monotonic length $\\geq k+1$."
+      "mathContext": "Proved from Mathlib (Theorems100.erdos_szekeres): any injective $x: \\text{Fin}((r-1)(s-1)+1) \\to \\mathbb{R}$ has an increasing subsequence of length $r$ or decreasing of length $s$. Corollary: $k^2+1$ elements yield monotonic length $\\geq k+1$."
     },
     {
       "id": "hanani",
@@ -250,12 +250,8 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Real.Sqrt",
-      "Mathlib.Data.List.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Algebra.BigOperators.Finprod"
+      "Mathlib",
+      "Archive.Wiedijk100Theorems.AscendingDescendingSequences"
     ],
     "opens": [
       "Finset",
@@ -263,8 +259,8 @@
     ],
     "namespace": "Erdos1026",
     "lineCount": 254,
-    "axiomCount": 10,
-    "theoremCount": 1,
+    "axiomCount": 2,
+    "theoremCount": 4,
     "definitionCount": 11
   }
 }

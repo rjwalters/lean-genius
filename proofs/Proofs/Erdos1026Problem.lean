@@ -35,12 +35,8 @@ References:
 - Tidor, Wang, Yang: "1-color avoiding paths" (2016)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Data.List.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Finprod
+import Mathlib
+import Archive.Wiedijk100Theorems.AscendingDescendingSequences
 
 open Finset BigOperators
 
@@ -94,10 +90,39 @@ an increasing subsequence of length r or a decreasing subsequence of length s.
 Taking r = s = n+1 gives: every sequence of n² + 1 elements contains
 a monotonic subsequence of length n + 1.
 -/
-axiom erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
+theorem erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
     (seq : RealSeq n) (hDistinct : Function.Injective seq) :
     (∃ (sub : Subsequence n r), IsIncreasing seq sub) ∨
-    (∃ (sub : Subsequence n s), IsDecreasing seq sub)
+    (∃ (sub : Subsequence n s), IsDecreasing seq sub) := by
+  -- Apply Mathlib's Erdős-Szekeres (Theorems100.erdos_szekeres)
+  -- Mathlib uses r * s < n, giving subsequences of length > r or > s
+  -- We use (r-1)*(s-1) < n, getting subsequences of length ≥ r or ≥ s
+  have hcard : (r - 1) * (s - 1) < Fintype.card (Fin n) := by simp; omega
+  rcases Theorems100.erdos_szekeres hcard hDistinct with ⟨t, htc, htm⟩ | ⟨t, htc, hta⟩
+  · -- Increasing: t.card > r-1, so t.card ≥ r
+    left
+    have hle : r ≤ t.card := by omega
+    -- Use orderEmbOfFin to get sorted embedding Fin t.card ↪o Fin n
+    let emb := t.orderEmbOfFin rfl
+    -- Compose with castLE to restrict to first r elements
+    let idx : Fin r → Fin n := fun i => emb (Fin.castLE hle i)
+    have hMono : StrictMono idx :=
+      emb.strictMono.comp (Fin.strictMono_castLE hle)
+    exact ⟨⟨idx, hMono⟩, fun {a} {b} hab =>
+      htm (Finset.mem_coe.mpr (t.orderEmbOfFin_mem rfl (Fin.castLE hle a)))
+          (Finset.mem_coe.mpr (t.orderEmbOfFin_mem rfl (Fin.castLE hle b)))
+          (hMono hab)⟩
+  · -- Decreasing: t.card > s-1, so t.card ≥ s
+    right
+    have hle : s ≤ t.card := by omega
+    let emb := t.orderEmbOfFin rfl
+    let idx : Fin s → Fin n := fun i => emb (Fin.castLE hle i)
+    have hMono : StrictMono idx :=
+      emb.strictMono.comp (Fin.strictMono_castLE hle)
+    exact ⟨⟨idx, hMono⟩, fun i j hij =>
+      hta (Finset.mem_coe.mpr (t.orderEmbOfFin_mem rfl (Fin.castLE hle i)))
+          (Finset.mem_coe.mpr (t.orderEmbOfFin_mem rfl (Fin.castLE hle j)))
+          (hMono hij)⟩
 
 /-- Corollary: Every sequence of k²+1 elements has a monotonic
     subsequence of length ≥ k+1.
