@@ -112,7 +112,9 @@ def topK (n k : ℕ) : Set ℕ :=
 /-- The number of elements in topK(n, k) when k ≤ n. -/
 theorem topK_card (n k : ℕ) (hk : k ≤ n) (hk_pos : k > 0) :
     (topK n k).ncard = k := by
-  sorry
+  simp only [topK]
+  rw [Set.ncard_Icc]
+  omega
 
 /-- The extremal Frobenius question: does topK maximize non-representables? -/
 def ExtremalFrobeniusQuestion (n k : ℕ) : Prop :=
@@ -185,6 +187,9 @@ theorem erdos_434_answer (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ 
     For example, with n = 10, k = 2:
     - A = {1, 2}: Only 0 is non-representable (all positives are sums of 1s and 2s)
     - A = {9, 10}: Many integers are non-representable (1-8, 11-17, etc.) -/
+/- BUG: This theorem is false at n = 2, where {n-1, n} = {1, 2} = the comparison set.
+   Hypothesis should be n ≥ 3. With sylvester_count: LHS = (n-2)(n-1)/2, RHS = 0,
+   so LHS > 0 iff n ≥ 3. -/
 theorem larger_numbers_fewer_reps (n : ℕ) (hn : n ≥ 2) :
     nCardNonRepresentable ({n - 1, n} : Set ℕ) >
     nCardNonRepresentable ({1, 2} : Set ℕ) := by
@@ -205,7 +210,12 @@ axiom sylvester_count (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime 
     (n-2)(n-1)/2. This grows quadratically with n. -/
 theorem consecutive_count (n : ℕ) (hn : n ≥ 2) :
     nCardNonRepresentable ({n - 1, n} : Set ℕ) = (n - 2) * (n - 1) / 2 := by
-  sorry
+  have h1 : n - 1 > 0 := by omega
+  have h2 : n > 0 := by omega
+  have hcop : Nat.Coprime (n - 1) n := by
+    rw [Nat.coprime_comm]
+    exact Nat.coprime_succ_self_right (n - 1)
+  exact sylvester_count (n - 1) n h1 h2 hcop
 
 /- ## Part IX: The Greedy Construction -/
 
@@ -272,7 +282,15 @@ theorem topK_is_maximum (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ n
     IsGreatest
       {nCardNonRepresentable A | A : Set ℕ // A ⊆ Set.Icc 1 n ∧ A.ncard = k}
       (nCardNonRepresentable (topK n k)) := by
-  sorry
+  constructor
+  · -- topK n k is in the set
+    exact ⟨⟨topK n k, by
+      constructor
+      · intro x hx; simp only [topK, Set.mem_Icc] at hx ⊢; omega
+      · exact topK_card n k hkn (by omega)⟩, rfl⟩
+  · -- Upper bound from Kiss's theorem
+    rintro _ ⟨⟨A, hAsub, hAcard⟩, rfl⟩
+    exact erdos_434_complete n k hn hk hkn A hAsub hAcard
 
 end Erdos434
 

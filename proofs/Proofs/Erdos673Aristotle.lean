@@ -47,7 +47,7 @@ theorem last_divisor_eq_n (n : ℕ) (hn : n ≥ 1) :
 
 -- Routine lemma: G(1) = 0 (sum over empty range since tau(1)=1)
 theorem G_one : G 1 = 0 := by
-  simp [G, tau_one]
+  simp [G, tau, Nat.divisors_one]
 
 -- Routine lemma: G(p) = 1/p for prime p
 theorem G_prime (p : ℕ) (hp : p.Prime) : G p = 1 / p := by

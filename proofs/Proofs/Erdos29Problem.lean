@@ -148,15 +148,6 @@ theorem economical_equiv (A : Set ℕ) : IsEconomical A ↔ IsEconomical' A := b
 def Erdos29Statement : Prop :=
   ∃ A : Set ℕ, IsAdditiveBasis A ∧ IsEconomical A
 
-/- ## The Probabilistic Existence (Erdős) -/
-
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Unexpected axioms were added during verification: ['harmonicSorry429466', 'Erdos29.erdos_probabilistic_existence']-/
-/-- Erdős proved existence using probabilistic method (non-constructive). -/
-axiom erdos_probabilistic_existence :
-  ∃ A : Set ℕ, IsAdditiveBasis A ∧ IsEconomical A
-
 /- ## The Explicit Construction (JPSZ 2024) -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
@@ -357,60 +348,20 @@ Why explicit matters:
 
 /- ## Lower Bounds -/
 
-/- Aristotle found this block to be false. Here is a proof of the negation:
+/- **Important correction**: The uniform lower bound |A ∩ [1,N]| ≥ √N for ALL N ≥ 1
+   was previously stated here with a sorry. Aristotle found a **counterexample**:
 
-noncomputable section AristotleLemmas
+   A = {0,1} ∪ {n | 3 ≤ n} is a basis with |A ∩ [1,2]| = 1 < √2.
 
-/-
-There exists a set A that is an additive basis but violates the square root lower bound for N=2.
--/
-def CounterexampleA : Set ℕ := {0, 1} ∪ {n | 3 ≤ n}
+   The correct statement is: for any basis A, the counting bound
+   |A ∩ [0,N]|² ≥ N + 1 holds for all N (since every n ≤ N has a representation
+   a+b=n with a,b ≤ N, so the sumset of A ∩ [0,N] covers [0,N]). -/
 
-theorem counterexample_to_lower_bound :
-    ∃ A, IsAdditiveBasis A ∧ ∃ N ≥ 1, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) < Real.sqrt N := by
-  use CounterexampleA
-  constructor
-  · -- A is an additive basis
-    rw [IsAdditiveBasis, Doubling, Sumset]
-    ext n
-    simp only [Set.mem_univ, iff_true, Set.mem_setOf_eq]
-    -- Show n = a + b
-    -- Consider two cases: $n \leq 1$ or $n \geq 2$.
-    by_cases hn : n ≤ 1;
-    · interval_cases n <;> [ exact ⟨ 0, by norm_num [ Erdos29.CounterexampleA ], 0, by norm_num [ Erdos29.CounterexampleA ], rfl ⟩ ; exact ⟨ 1, by norm_num [ Erdos29.CounterexampleA ], 0, by norm_num [ Erdos29.CounterexampleA ], rfl ⟩ ];
-    · -- Since $n > 1$, we have $n \geq 3$ or $n = 2$.
-      by_cases hn3 : n ≥ 3;
-      · use n, by
-          exact Or.inr hn3, 0, by
-          exact Or.inl <| by norm_num;
-        norm_num;
-      · interval_cases n ; exists 1, by simp +decide [ Erdos29.CounterexampleA ], 1, by simp +decide [ Erdos29.CounterexampleA ] ;
-  · -- Inequality fails for N=2
-    use 2
-    constructor
-    · norm_num
-    · -- |A ∩ [1, 2]| < √2
-      rw [CounterexampleA]
-      rw [ show ( { 0, 1 } ∪ { n | 3 ≤ n } : Set ℕ ) ∩ Set.Icc 1 2 = { 1 } by ext ( _ | _ | _ | k ) <;> simp +arith +decide ] ; norm_num [ Real.lt_sqrt ]
-
-end AristotleLemmas
-
-/-
-Any additive basis A must have |A ∩ [1,N]| ≥ √N.
--/
-theorem basis_size_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) :
-    ∀ N ≥ 1, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) ≥ Real.sqrt N := by
-  -- Wait, there's a mistake. We can actually prove the opposite.
-  negate_state;
-  -- Proof starts here:
-  -- Apply the theorem counterexample_to_lower_bound to obtain the existence of A and N.
-  apply counterexample_to_lower_bound
-
--/
-/-- Any additive basis A must have |A ∩ [1,N]| ≥ √N. -/
-theorem basis_size_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) :
-    ∀ N ≥ 1, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) ≥ Real.sqrt N := by
-  sorry
+/-- The Erdős probabilistic existence follows from the JPSZ construction.
+    This was previously a separate axiom (erdos_probabilistic_existence)
+    but is redundant — it's exactly erdos_29_solved. -/
+theorem erdos_probabilistic_from_jpsz : ∃ A : Set ℕ, IsAdditiveBasis A ∧ IsEconomical A :=
+  ⟨JPSZ_set, JPSZ_is_basis, JPSZ_is_economical⟩
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
