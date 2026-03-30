@@ -1,0 +1,77 @@
+{
+  "slug": "quadratic-reciprocity-algorithm-oq-01",
+  "title": "quadratic-reciprocity-algorithm-oq-01",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T04:42:50-07:00",
+    "iteration": 1,
+    "focus": "Fixed termination sorry with strip2_snd_le",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Fixed termination sorry in jacobiAux. Added strip2_snd_le lemma (odd part <= input). Termination now proved: odd_part < n at each reciprocity step.",
+    "builtItems": [
+      "Proved strip2_snd_le in QuadraticReciprocityAlgorithmOQ01.lean",
+      "Fixed jacobiAux termination proof (replaced sorry with strip2_snd_le + omega)"
+    ],
+    "insights": [
+      "Existing file implements full Jacobi symbol algorithm with strip2, jacobiAux, jacobi functions",
+      "Had 1 sorry in termination proof for jacobiAux",
+      "Termination key: odd_part = (strip2 (a%n)).2 <= a%n < n, so odd_part < n",
+      "Added strip2_snd_le lemma: (strip2 n).2 <= n by strong induction",
+      "Used strip2_snd_le to fix termination via Prod.Lex.left"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove correctness: jacobi a p = legendreSym p a for odd primes p",
+      "Connect strip2 to Mathlib factorization machinery"
+    ],
+    "markdown": "# Knowledge Base: quadratic-reciprocity-algorithm-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "quadratic-reciprocity",
+    "quadratic-reciprocity-algorithm",
+    "quadratic-reciprocity-algorithm-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.383Z",
+  "lastUpdate": "2026-03-30T11:59:37.398Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ01.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ01.lean"
+    }
+  ]
+}
