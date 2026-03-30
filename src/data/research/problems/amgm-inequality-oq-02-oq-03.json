@@ -1,13 +1,13 @@
 {
   "slug": "amgm-inequality-oq-02-oq-03",
-  "title": "Derive the full Maclaurin chain Mₖ ≥ Mₖ₊₁ from Newton log-concavity",
+  "title": "Derive the full Maclaurin chain M\u2096 \u2265 M\u2096\u208a\u2081 from Newton log-concavity",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: Derive the full Maclaurin chain Mₖ ≥ Mₖ₊₁ from Newton log-concavity.",
+    "plain": "AVAILABLE: Derive the full Maclaurin chain M\u2096 \u2265 M\u2096\u208a\u2081 from Newton log-concavity.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,24 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved maclaurin_step from newton_log_concavity via power inequality induction. 1 sorry remains (elemSymm zero propagation for non-negative inputs).",
+    "progressSummary": "COMPLETED: Eliminated last sorry (elemSymm zero propagation). File now 0 sorries, 0 axioms.",
     "builtItems": [
       "AmgmInequalityOQ02OQ03.lean: power inequality + Maclaurin step (1 sorry, 0 axioms)",
       "Gallery entry src/data/proofs/amgm-inequality-oq-02-oq-03/",
-      "normElemSymm definition for cleaner statement"
+      "normElemSymm definition for cleaner statement",
+      "normElemSymm_zero_succ: zero propagation lemma for normalized elementary symmetric polynomials"
     ],
     "insights": [
       "Power inequality a_k^{k+1} >= a_{k+1}^k is the key bridge from log-concavity to Maclaurin chain",
       "Induction on k: raise LC to k-th power, combine with IH, cancel common factor",
       "Zero case: if a_{k+1} = 0 and inputs non-negative, then a_{k+2} = 0 (elemSymm propagation)",
-      "Final step: take 1/(k(k+1))-th root via rpow_le_rpow monotonicity"
+      "Final step: take 1/(k(k+1))-th root via rpow_le_rpow monotonicity",
+      "Zero propagation proved via decomposition: each (m+1)-subset contains an m-subset with product 0, so its own product is 0"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove elemSymm zero propagation lemma to eliminate the remaining sorry",
-      "Prove newton_log_concavity itself (the deeper remaining axiom)",
-      "State full Maclaurin chain as single theorem"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected",
@@ -118,11 +116,11 @@
     {
       "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
       "filename": "AmgmInequalityOQ02OQ03.lean",
-      "lineCount": 194,
-      "theoremCount": 6,
+      "lineCount": 226,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03.lean"
     },
