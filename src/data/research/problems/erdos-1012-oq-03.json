@@ -1,0 +1,105 @@
+{
+  "slug": "erdos-1012-oq-03",
+  "title": "Directed graph Hamiltonian cycle thresholds",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Directed graph Hamiltonian cycle thresholds.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T08:49:59.593Z",
+    "iteration": 1,
+    "focus": "Survey complete. Infrastructure and statements formalized.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Defined digraph infrastructure + stated 4 key directed Hamiltonian theorems. All proofs sorry.",
+    "builtItems": [
+      "Digraph structure with loopless axiom",
+      "In-degree, out-degree, tournament, strong connectivity definitions",
+      "Hamiltonian cycle and path predicates using equivalences",
+      "Arc count definition",
+      "Statements of Ghouila-Houri, Moon-Moser, Redei, directed threshold (all sorry)"
+    ],
+    "insights": [
+      "Ghouila-Houri (1960) is the directed Dirac theorem: min in/out-degree \u2265 n/2 + strong connectivity \u2192 HC",
+      "Moon-Moser (1963): strongly connected tournaments have Hamiltonian cycles",
+      "Redei (1934): every tournament has Hamiltonian path (no connectivity needed)",
+      "Mathlib lacks directed graph infrastructure \u2014 defined custom Digraph type",
+      "Proof roadmap: Ghouila-Houri ~200 lines, Moon-Moser ~150, Redei ~100"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "graph-theory",
+    "extremal-combinatorics",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-101",
+    "erdos-1012"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.593Z",
+  "lastUpdate": "2026-03-30T08:49:59.593Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1012OQ01.lean",
+      "filename": "Erdos1012OQ01.lean",
+      "lineCount": 313,
+      "theoremCount": 37,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1012OQ02.lean",
+      "filename": "Erdos1012OQ02.lean",
+      "lineCount": 390,
+      "theoremCount": 12,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1012Problem.lean",
+      "filename": "Erdos1012Problem.lean",
+      "lineCount": 354,
+      "theoremCount": 35,
+      "axiomCount": 4,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012Problem.lean"
+    }
+  ]
+}
