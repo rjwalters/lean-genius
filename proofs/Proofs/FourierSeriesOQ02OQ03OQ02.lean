@@ -258,7 +258,29 @@ theorem sharpConstant_optimal (δ : ℝ) (hδ : 0 < δ) (f : AddCircle T → ℂ
     (hbound : ∀ n : ℤ, n ≠ 0 →
       ‖fourierCoeff f n‖ ≤ K * Real.exp (-(2 * Real.pi * δ * |↑n|) / T)) :
     sharpConstant δ f ≤ K := by
-  sorry -- Each term in the sup is ≤ K by the bound
+  unfold sharpConstant
+  -- The iSup over n : ℤ of (iSup over hn : n ≠ 0 of g(n)) ≤ K
+  -- For each n: if n ≠ 0, g(n) = ‖ĉ_n‖ * exp(2πδ|n|/T) ≤ K (by hbound)
+  -- if n = 0, the inner iSup is 0 ≤ K (empty supremum = 0)
+  apply ciSup_le fun n => ?_
+  by_cases hn : n = 0
+  · -- n = 0: inner sup over empty type is 0 ≤ K
+    subst hn; simp [ciSup_empty]; exact hK.le
+  · -- n ≠ 0: inner sup is g(n) ≤ K
+    apply ciSup_le fun _ => ?_
+    -- Goal: ‖ĉ_n‖ * exp(2πδ|n|/T) ≤ K
+    have hbn := hbound n hn
+    have hexp_pos := Real.exp_pos (2 * Real.pi * δ * |↑n| / T)
+    calc ‖fourierCoeff f n‖ * Real.exp (2 * Real.pi * δ * |↑n| / T)
+        ≤ K * Real.exp (-(2 * Real.pi * δ * |↑n|) / T) *
+          Real.exp (2 * Real.pi * δ * |↑n| / T) :=
+          mul_le_mul_of_nonneg_right hbn hexp_pos.le
+      _ = K * (Real.exp (-(2 * Real.pi * δ * |↑n|) / T) *
+          Real.exp (2 * Real.pi * δ * |↑n| / T)) := by ring
+      _ = K * Real.exp (-(2 * Real.pi * δ * |↑n|) / T +
+          2 * Real.pi * δ * |↑n| / T) := by rw [← Real.exp_add]
+      _ = K * Real.exp 0 := by congr 1; ring
+      _ = K := by simp [Real.exp_zero]
 
 -- ============================================================================
 -- § 7. COMPARISON WITH POLYNOMIAL (HÖLDER) DECAY

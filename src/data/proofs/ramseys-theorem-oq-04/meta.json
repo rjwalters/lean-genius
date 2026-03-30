@@ -24,11 +24,15 @@
       "k1_is_pigeonhole: k=1 case is the pigeonhole principle",
       "classical_ramsey_is_k2: k=2 case recovers classical 2-color Ramsey",
       "tower: iterated exponentiation for Ramsey number growth rates",
-      "tower_strictMono: tower function grows strictly"
+      "tower_strictMono: tower function grows strictly",
+      "kSubsets_card: |kSubsets s k| = C(|s|, k)",
+      "kSubsets_subset: k-subsets monotone under set inclusion",
+      "ramsey_property_mono: Ramsey property monotone in N",
+      "ramsey_base: base case n ≤ k (vacuously/trivially monochromatic)"
     ],
     "axiomCount": 1,
-    "assumptions": "1 axiom: hypergraph_ramsey_exists (the deep existence result requiring iterated stepping-up lemma). All infrastructure and special case connections are proved.",
-    "lineCount": 115
+    "assumptions": "1 axiom: hypergraph_ramsey_exists (the deep existence result requiring iterated stepping-up lemma). All infrastructure, special cases, base case, and monotonicity are proved.",
+    "lineCount": 194
   },
   "overview": {
     "historicalContext": "Ramsey (1930) proved the theorem in full generality for k-element subsets, not just edges. The k=2 (graph) case became most famous. Erdős and Rado (1952) showed hypergraph Ramsey numbers grow as towers of exponentials with height proportional to k.",
@@ -79,9 +83,9 @@
     "imports": ["Mathlib"],
     "opens": ["Finset"],
     "namespace": "HypergraphRamsey",
-    "lineCount": 115,
+    "lineCount": 194,
     "axiomCount": 1,
-    "theoremCount": 7,
+    "theoremCount": 12,
     "definitionCount": 5
   }
 }
