@@ -1,4 +1,5 @@
 import Mathlib
+import Proofs.ShannonEntropy
 
 /-
 # Strong Subadditivity of Shannon Entropy
@@ -174,14 +175,71 @@ theorem entropy_chain_rule {α β : Type*} [Fintype α] [Fintype β]
     (hsum : ∑ xy : α × β, pXY xy = 1) :
     shannonEntropy' pXY =
     shannonEntropy' (marginalSnd pXY) + condEntropy pXY := by
-  -- H(X,Y) = H(Y) + H(X|Y) follows from splitting log p(x,y) = log p(y) + log(p(x,y)/p(y))
+  -- H(X,Y) = H(Y) + H(X|Y) by splitting log p(x,y) = log(p(x,y)/p_Y(y)) + log p_Y(y)
+  -- Step 1: Term-by-term identity
+  have hterm : ∀ x y,
+      (if pXY (x, y) = 0 then (0 : ℝ) else pXY (x, y) * Real.log (pXY (x, y))) =
+      (if pXY (x, y) = 0 then 0
+       else pXY (x, y) * Real.log (pXY (x, y) / (∑ x' : α, pXY (x', y)))) +
+      (if pXY (x, y) = 0 then 0
+       else pXY (x, y) * Real.log (∑ x' : α, pXY (x', y))) := by
+    intro x y
+    by_cases hpxy : pXY (x, y) = 0
+    · simp [hpxy]
+    · simp only [hpxy, ↓reduceIte]
+      have hpxy_pos : 0 < pXY (x, y) := lt_of_le_of_ne (hp (x, y)) (Ne.symm hpxy)
+      have hpy_pos : 0 < ∑ x' : α, pXY (x', y) :=
+        lt_of_lt_of_le hpxy_pos
+          (Finset.single_le_sum (fun x' _ => hp (x', y)) (Finset.mem_univ x))
+      rw [show pXY (x, y) * Real.log (pXY (x, y) / (∑ x', pXY (x', y))) +
+          pXY (x, y) * Real.log (∑ x', pXY (x', y)) =
+          pXY (x, y) * (Real.log (pXY (x, y) / (∑ x', pXY (x', y))) +
+          Real.log (∑ x', pXY (x', y))) from by ring]
+      congr 1
+      rw [Real.log_div (ne_of_gt hpxy_pos) (ne_of_gt hpy_pos)]
+      ring
+  -- Step 2: Marginal telescoping
+  have hmarg : ∀ y,
+      ∑ x : α, (if pXY (x, y) = 0 then (0 : ℝ)
+        else pXY (x, y) * Real.log (∑ x' : α, pXY (x', y))) =
+      (if (∑ x : α, pXY (x, y)) = 0 then 0
+       else (∑ x : α, pXY (x, y)) * Real.log (∑ x : α, pXY (x, y))) := by
+    intro y
+    by_cases hpy : (∑ x : α, pXY (x, y)) = 0
+    · have hall : ∀ x, pXY (x, y) = 0 := by
+        intro x; have h1 := hp (x, y)
+        have h2 : pXY (x, y) ≤ ∑ x', pXY (x', y) :=
+          Finset.single_le_sum (fun x' _ => hp (x', y)) (Finset.mem_univ x)
+        linarith
+      simp [hpy, hall]
+    · simp only [hpy, ↓reduceIte]
+      have : ∑ x : α, (if pXY (x, y) = 0 then (0 : ℝ)
+          else pXY (x, y) * Real.log (∑ x' : α, pXY (x', y))) =
+          ∑ x : α, pXY (x, y) * Real.log (∑ x' : α, pXY (x', y)) := by
+        apply Finset.sum_congr rfl; intro x _
+        by_cases hpxy : pXY (x, y) = 0
+        · simp [hpxy]
+        · simp [hpxy]
+      rw [this, ← Finset.sum_mul]
+  -- Step 3: Assembly
   unfold shannonEntropy' condEntropy marginalSnd
-  simp only [neg_add_rev, neg_neg]
-  -- After unfolding, both sides are sums over x,y involving p(x,y) and log terms.
-  -- The algebra: -Σ [p=0?0:p*log p] = -Σ [p_y=0?0:p_y*log p_y] + Σ [p=0?0:p*log(p/p_y)]
-  -- When p(x,y)>0, p(y)>0 and: p*log p = p*log p_y + p*log(p/p_y)
-  -- The p_y terms sum over x to give p_y*log p_y
-  sorry
+  dsimp only
+  -- Convert product-type sum to nested sum
+  conv_lhs =>
+    rw [show ∑ xy : α × β, (if pXY xy = 0 then (0 : ℝ)
+        else pXY xy * Real.log (pXY xy)) =
+        ∑ x : α, ∑ y : β, (if pXY (x, y) = 0 then 0
+        else pXY (x, y) * Real.log (pXY (x, y))) from Fintype.sum_prod_type _]
+  -- Apply the term splitting and distribute sums
+  simp_rw [hterm]
+  simp only [Finset.sum_add_distrib]
+  -- Swap sum order and apply marginal telescoping
+  rw [show ∑ x : α, ∑ y : β, (if pXY (x, y) = 0 then (0 : ℝ) else
+      pXY (x, y) * Real.log (∑ x', pXY (x', y))) =
+      ∑ y : β, (if (∑ x, pXY (x, y)) = 0 then 0 else
+      (∑ x, pXY (x, y)) * Real.log (∑ x, pXY (x, y))) from by
+    rw [Finset.sum_comm]; congr 1; ext y; exact hmarg y]
+  ring
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART IV: Subadditivity from Chain Rule
@@ -201,7 +259,14 @@ theorem subadditivity {α β : Type*} [Fintype α] [Fintype β]
   -- From chain rule: H(X,Y) = H(Y) + H(X|Y)
   -- From conditioning reduces entropy: H(X|Y) ≤ H(X)
   -- Combined: H(X,Y) ≤ H(Y) + H(X) = H(X) + H(Y)
-  sorry
+  rw [entropy_chain_rule hp hsum]
+  -- Goal: H(Y) + H(X|Y) ≤ H(X) + H(Y)
+  -- shannonEntropy' = shannonEntropy and condEntropy = conditionalEntropy by def
+  -- Use conditioning_reduces_entropy from ShannonEntropy.lean
+  have hcond : condEntropy pXY ≤ shannonEntropy' (fun x => ∑ y : β, pXY (x, y)) := by
+    -- condEntropy and conditionalEntropy are definitionally equal, as are shannonEntropy' and shannonEntropy
+    exact conditioning_reduces_entropy hp hsum
+  linarith
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART V: Strong Subadditivity
