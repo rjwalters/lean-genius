@@ -3,7 +3,11 @@ import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/PythagoreanTriplesOQ02.lean?raw'
 
+<<<<<<< HEAD
 const meta = metaJson as unknown as {
+=======
+const meta = metaJson as {
+>>>>>>> bd7bc4fac8 (Research: pythagorean-triples-oq-02 - Gaussian integer connection)
   id: string
   title: string
   slug: string
