@@ -48,7 +48,7 @@ namespace Erdos453
 p_n denotes the n-th prime number (1-indexed: p_1 = 2, p_2 = 3, ...).
 -/
 noncomputable def nthPrime (n : ℕ) : ℕ :=
-  if n = 0 then 0 else Nat.Prime.nthPrime (n - 1)
+  if n = 0 then 0 else Nat.nth Nat.Prime (n - 1)
 
 /--
 The first few primes.
@@ -147,16 +147,24 @@ theorem convexity_implies_product_bound (n : ℕ) (hn : n ≥ 2)
     (hv : IsConvexHullVertex logPrime n) :
     ∀ i : ℕ, 0 < i → i < n →
       (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) := by
-  sorry
+  intro i hi_pos hi_lt
+  exact log_to_product n i hn ⟨hi_pos, hi_lt⟩ (hv i hi_pos hi_lt)
 
 /--
 **Pomerance (1979):**
 There are infinitely many n such that p_n² > p_{n+i}·p_{n-i} for all 0 < i < n.
 -/
-axiom pomerance_1979 :
+/-- **Pomerance (1979):**
+    Derived from the convex hull lemma applied to log-prime sequence. -/
+theorem pomerance_1979 :
     ∀ N : ℕ, ∃ n ≥ N,
       ∀ i : ℕ, 0 < i → i < n →
-        (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)
+        (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) := by
+  intro N
+  -- Get a convex hull vertex n ≥ max N 2
+  obtain ⟨n, hn, hv⟩ := pomerance_convex_hull_lemma logPrime logPrime_ratio_tendsto_zero (max N 2)
+  refine ⟨n, by omega, ?_⟩
+  exact convexity_implies_product_bound n (by omega) hv
 
 /--
 Selfridge was correct.
@@ -240,9 +248,36 @@ theorem log_convexity_iff_vertex (n : ℕ) :
 **From Log to Product:**
 2·log p_n > log p_{n-i} + log p_{n+i} implies p_n² > p_{n-i}·p_{n+i}.
 -/
-axiom log_to_product (n i : ℕ) (hn : n ≥ 2) (hi : 0 < i ∧ i < n)
+/-- **From Log to Product:**
+    2·log p_n > log p_{n-i} + log p_{n+i} implies p_n² > p_{n-i}·p_{n+i}.
+    Proof: log(ab) = log a + log b, log(x²) = 2 log x, and log is strictly monotone. -/
+theorem log_to_product (n i : ℕ) (hn : n ≥ 2) (hi : 0 < i ∧ i < n)
     (h : 2 * logPrime n > logPrime (n - i) + logPrime (n + i)) :
-    (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)
+    (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) := by
+  unfold logPrime at h
+  -- Primes are positive
+  have hp_n : (0 : ℝ) < nthPrime n :=
+    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime n (by omega)))
+  have hp_ni : (0 : ℝ) < nthPrime (n - i) :=
+    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime (n - i) (by omega)))
+  have hp_pi : (0 : ℝ) < nthPrime (n + i) :=
+    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime (n + i) (by omega)))
+  -- Convert log inequality: log(product) < log(square)
+  have h_log : Real.log ((nthPrime (n - i) : ℝ) * nthPrime (n + i)) <
+      Real.log ((nthPrime n : ℝ) ^ 2) := by
+    calc Real.log ((nthPrime (n - i) : ℝ) * nthPrime (n + i))
+        = Real.log (nthPrime (n - i)) + Real.log (nthPrime (n + i)) :=
+          Real.log_mul (ne_of_gt hp_ni) (ne_of_gt hp_pi)
+      _ < 2 * Real.log (nthPrime n) := by linarith
+      _ = Real.log ((nthPrime n : ℝ) ^ 2) := by rw [Real.log_pow]; ring
+  -- By strict monotonicity of log: product < square in ℝ
+  have h_real : (nthPrime (n - i) : ℝ) * nthPrime (n + i) < (nthPrime n : ℝ) ^ 2 :=
+    (Real.log_lt_log_iff (mul_pos hp_ni hp_pi) (pow_pos hp_n 2)).mp h_log
+  -- Transfer to ℤ
+  exact_mod_cast show nthPrime n ^ 2 > nthPrime (n + i) * nthPrime (n - i) by
+    calc nthPrime n ^ 2
+        > nthPrime (n - i) * nthPrime (n + i) := by exact_mod_cast h_real
+      _ = nthPrime (n + i) * nthPrime (n - i) := Nat.mul_comm _ _
 
 /-
 ## Part VIII: Density of Counterexamples
