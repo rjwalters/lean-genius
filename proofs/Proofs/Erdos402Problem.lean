@@ -426,6 +426,36 @@ theorem erdos_402_small_min (A : Finset ℕ) (hA : A.Nonempty)
       ≤ A.min' hA := Nat.le_of_dvd (hpos _ (Finset.min'_mem A hA)) (Nat.gcd_dvd_right _ _)
     _ ≤ A.max' hA / A.card := hsmall
 
+/-! ## Four-Element Case -/
+
+/-- Graham's conjecture for four-element sets.
+
+**Proof sketch**: Given 4 distinct positive naturals with max = d:
+1. If any gcd(d, x) ≤ d/4, use the pair (d, x).
+2. Otherwise, all gcds > d/4. Since gcd(d,x) | d and d/4 < gcd(d,x) < d,
+   the quotient d/gcd(d,x) ∈ {2, 3}. This gives:
+   - At most 1 element with gcd = d/2 (namely d/2, unique)
+   - At most 2 elements with gcd = d/3 (namely d/3 and 2d/3)
+   Since we need 3 elements, 6 | d and {a,b,c} = {d/3, d/2, 2d/3}.
+   Then gcd(2d/3, d/2) = gcd(4k, 3k) = k = 4k/4 = (2d/3)/4. -/
+theorem erdos_402_quadruple (a b c d : ℕ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) (hd : 0 < d)
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hbc : b ≠ c) (hbd : b ≠ d) (hcd : c ≠ d)
+    (had_lt : a < d) (hbd_lt : b < d) (hcd_lt : c < d) :
+    ∃ x ∈ ({a, b, c, d} : Finset ℕ), ∃ y ∈ ({a, b, c, d} : Finset ℕ),
+    Nat.gcd x y ≤ x / ({a, b, c, d} : Finset ℕ).card := by
+  have hcard : ({a, b, c, d} : Finset ℕ).card = 4 := by
+    simp only [Finset.card_insert_of_not_mem, Finset.card_singleton, Finset.mem_insert,
+               Finset.mem_singleton]; omega
+  by_cases h1 : Nat.gcd d a ≤ d / 4
+  · exact ⟨d, by simp, a, by simp, by rw [hcard]; exact h1⟩
+  · by_cases h2 : Nat.gcd d b ≤ d / 4
+    · exact ⟨d, by simp, b, by simp [hbd], by rw [hcard]; exact h2⟩
+    · by_cases h3 : Nat.gcd d c ≤ d / 4
+      · exact ⟨d, by simp, c, by simp [hcd], by rw [hcard]; exact h3⟩
+      · -- All gcds > d/4. By divisor structure, 6|d and {a,b,c}={d/3,d/2,2d/3}.
+        -- Then gcd(2d/3, d/2) = d/6 = (2d/3)/4.
+        sorry
+
 /-! ## Summary
 
 **Problem Status: SOLVED**
@@ -442,6 +472,7 @@ The problem was progressively solved:
 **Formalized results:**
 - Main conjecture statement (1 sorry, requires Balasubramanian-Soundararajan sieve argument)
 - Special cases proved: singleton, range, pair (n=2), triple (n=3), contains-one
+- Quadruple (n=4): easy cases proved, hard case (all gcds > d/4) has sorry
 - Structural lemmas: coprime-with-max, small-min, divisor gap, proper divisor bound
 - Equality characterization counterexample: {1,2,4} disproves Graham's additional conjecture
 - Ratio formulation: equivalent ℚ-version proved from main conjecture
