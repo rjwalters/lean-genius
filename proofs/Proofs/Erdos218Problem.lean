@@ -309,13 +309,28 @@ private theorem infinite_of_hasDensity_pos {S : Set ℕ} {d : ℝ} (hd : 0 < d)
     (hdens : HasDensity S d) : S.Infinite := by
   by_contra hfin
   push_neg at hfin
-  -- S is finite. For large N, |S ∩ [0,N)| is bounded by |S.toFinset|
-  have hfin' := Set.Finite.ofFinset hfin.toFinset (fun x => by simp [Set.Finite.mem_toFinset])
-  -- The counting function is eventually constant, hence → 0
-  -- This contradicts Tendsto to nhds d with d > 0
-  -- The formal proof requires showing finite-set counting function → 0
-  -- then using tendsto_nhds_unique
-  sorry
+  -- S is finite, so the counting function is bounded
+  set C := hfin.toFinset.card with hC_def
+  -- For all N, |S ∩ [0,N)| ≤ C
+  have hbound : ∀ N, (Finset.filter (· ∈ S) (Finset.range N)).card ≤ C := by
+    intro N
+    apply Finset.card_le_card
+    intro x hx
+    rw [Finset.mem_filter] at hx
+    exact hfin.mem_toFinset.mpr hx.2
+  -- The counting function / N → 0 (bounded numerator, growing denominator)
+  have h_zero : Tendsto (fun N : ℕ =>
+      ((Finset.filter (· ∈ S) (Finset.range N)).card : ℝ) / N) atTop (nhds 0) := by
+    rw [show (0 : ℝ) = 0 / 1 from by norm_num]
+    apply Filter.Tendsto.div
+    · apply tendsto_of_tendsto_of_tendsto_of_le_of_le
+        tendsto_const_nhds (tendsto_const_nhds (x := (C : ℝ)))
+      · intro N; exact Nat.cast_nonneg _
+      · intro N; exact Nat.cast_le.mpr (hbound N)
+    · exact tendsto_natCast_atTop_atTop.mono_right atTop_le_nhds |>.congr (fun _ => rfl)
+    · exact eventually_atTop.mpr ⟨1, fun N hN => by positivity⟩
+  -- But HasDensity says the limit is d > 0, contradiction
+  linarith [tendsto_nhds_unique h_zero hdens]
 
 /-- The set of gap-increasing indices is infinite.
     Follows from Erdős's conjecture that this set has density 1/2. -/
