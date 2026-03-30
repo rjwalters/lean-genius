@@ -1,6 +1,7 @@
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.LinearAlgebra.Dimension.DivisionRing
 import Mathlib.LinearAlgebra.FreeModule.Finite.Basic
+import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Data.Set.Card
 import Mathlib.Algebra.Field.Basic
@@ -37,6 +38,7 @@ The problem was resolved through:
 - Grassmannian Gr(k,n) defined as k-dimensional subspaces
 - Lines in projective 3-space as Gr(2,4)
 - Incidence conditions for lines meeting
+- Equivalence of two definitions of lines meeting (dimension formula)
 
 ### Axiomatized (Requires Algebraic Geometry)
 - The Four Lines Theorem (exactly 2 transversals)
@@ -136,9 +138,27 @@ def LinesMeet {K : Type*} [DivisionRing K] (L₁ L₂ : LineInP3 K) : Prop :=
 def LinesMeet' {K : Type*} [DivisionRing K] (L₁ L₂ : LineInP3 K) : Prop :=
   finrank K (L₁.val ⊔ L₂.val : Submodule K (Fin 4 → K)) < 4
 
-/-- The two definitions of lines meeting are equivalent (axiomatized) -/
-axiom linesMeet_iff_linesMeet' {K : Type*} [Field K] (L₁ L₂ : LineInP3 K) :
-    LinesMeet L₁ L₂ ↔ LinesMeet' L₁ L₂
+/-- The two definitions of lines meeting are equivalent.
+
+Proof: By the Grassmann dimension formula for subspaces,
+  dim(V + W) + dim(V ∩ W) = dim(V) + dim(W) = 2 + 2 = 4.
+So dim(V + W) < 4 iff dim(V ∩ W) > 0 iff V ∩ W ≠ {0}. -/
+theorem linesMeet_iff_linesMeet' {K : Type*} [Field K] (L₁ L₂ : LineInP3 K) :
+    LinesMeet L₁ L₂ ↔ LinesMeet' L₁ L₂ := by
+  simp only [LinesMeet, LinesMeet', SubspacesMeet]
+  have hdim := Submodule.finrank_sup_add_finrank_inf_eq L₁.val L₂.val
+  rw [L₁.property, L₂.property] at hdim
+  -- hdim : finrank K ↥(L₁.val ⊔ L₂.val) + finrank K ↥(L₁.val ⊓ L₂.val) = 2 + 2
+  constructor
+  · -- (V ∩ W ≠ ⊥) → (dim(V + W) < 4)
+    intro hne
+    suffices h : 0 < finrank K ↥(L₁.val ⊓ L₂.val) by omega
+    rw [Nat.pos_iff_ne_zero, ne_eq, Submodule.finrank_eq_zero]
+    exact hne
+  · -- (dim(V + W) < 4) → (V ∩ W ≠ ⊥)
+    intro hlt hbot
+    have : finrank K ↥(L₁.val ⊓ L₂.val) = 0 := Submodule.finrank_eq_zero.mpr hbot
+    omega
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: THE FOUR LINES THEOREM
