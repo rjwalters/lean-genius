@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: 3 deep axioms (all appropriate), 2 sorries (both provable with Polynomial API work). Remaining sorries are lacunary_positive_lower_bound and f_two_eq.",
+    "progressSummary": "PROGRESS: Proved f_two_eq sorry (2→1 sorries). Remaining sorry: lacunary_positive_lower_bound (needs sumset bound).",
     "builtItems": [
       "proofs/Proofs/Erdos485OQ01.lean (233 lines, 7 theorems, 4 axioms)",
       "src/data/proofs/erdos-485-oq-01/ (gallery entry)",
@@ -38,7 +38,9 @@
       "growth_at_least_log, growth_at_most_sublinear: wrapper theorems for axioms",
       "DISPROOF of lacunary_lower_bound: p=1-x^2-(1/2)x^4 has 4 terms in p^2 < 5=2*3-1",
       "lacunary_positive_lower_bound: corrected version with positive-coefficient hypothesis",
-      "binomial_square_three_terms: proved (1+X^d)^2 has 3 terms for d>=1"
+      "binomial_square_three_terms: proved (1+X^d)^2 has 3 terms for d>=1",
+      "Proved f_two_eq (f(2)=3): 120-line proof via antidiagonal coefficient computation",
+      "Proved two_term_sq_ge_three helper lemma"
     ],
     "insights": [
       "Exact growth rate of f(k) is wide open: gap between log k and k^(1-c)",
@@ -50,7 +52,8 @@
       "The sumset |A+A|>=2|A|-1 holds, but coefficient cancellation reduces termCount below this",
       "Positive coefficients prevent cancellation, so the corrected bound holds for positive polys",
       "lacunary_positive_lower_bound sorry: provable via sumset bound |A+A| ≥ 2|A|-1 with positive coefficients preventing cancellation",
-      "f_two_eq sorry: provable by showing all 2-term polynomials square to exactly 3 terms (distinct exponents 2i, i+j, 2j when i ≠ j, nonzero coefficients over char 0)"
+      "f_two_eq sorry: provable by showing all 2-term polynomials square to exactly 3 terms (distinct exponents 2i, i+j, 2j when i ≠ j, nonzero coefficients over char 0)",
+      "f_two_eq proved: decompose p into support {i,j}, show coefficients at 2i, i+j, 2j are nonzero via antidiagonal sum analysis"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -87,11 +90,11 @@
     {
       "path": "Proofs/Erdos485OQ01.lean",
       "filename": "Erdos485OQ01.lean",
-      "lineCount": 278,
+      "lineCount": 401,
       "theoremCount": 8,
       "axiomCount": 3,
       "defCount": 2,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ01.lean"
     },

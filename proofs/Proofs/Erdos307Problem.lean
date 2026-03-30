@@ -174,13 +174,48 @@ theorem prime_sets_disjoint {P Q : Finset ℕ} (hP : IsSetOfPrimes P)
 /-- A lower bound: if P, Q are prime sets with product 1, then
     Σ_{p ∈ P ∪ Q} 1/p ≥ 2.
 
-    This follows from AM-GM: if (Σ 1/p)(Σ 1/q) = 1, then
-    (Σ 1/p) + (Σ 1/q) ≥ 2√((Σ 1/p)(Σ 1/q)) = 2. -/
+    This follows from AM-GM: if a · b = 1, then a + b ≥ 2.
+    Proof: (a - 1)² ≥ 0 ⟹ a² - 2a + 1 ≥ 0 ⟹ a + 1/a ≥ 2. -/
 theorem prime_reciprocal_sum_lower_bound {P Q : Finset ℕ}
     (hP : IsSetOfPrimes P) (hQ : IsSetOfPrimes Q)
     (hPQ : reciprocalProduct P Q = 1) (hdisj : Disjoint P Q) :
     reciprocalSum (P ∪ Q) ≥ 2 := by
-  sorry
+  -- reciprocalSum (P ∪ Q) = reciprocalSum P + reciprocalSum Q when P, Q disjoint
+  have hunion : reciprocalSum (P ∪ Q) = reciprocalSum P + reciprocalSum Q := by
+    unfold reciprocalSum
+    rw [Finset.sum_union (Finset.disjoint_iff_disjoint_coe.mp hdisj)]
+  rw [hunion]
+  -- Let a = reciprocalSum P, b = reciprocalSum Q
+  -- We know a * b = 1 and a, b > 0 (sums of positive terms, nonempty)
+  set a := reciprocalSum P
+  set b := reciprocalSum Q
+  -- a * b = 1
+  have hab : a * b = 1 := hPQ
+  -- a > 0: each 1/p > 0 for prime p, and P nonempty (since a*b=1, a≠0)
+  have ha_pos : 0 < a := by
+    by_contra h
+    push_neg at h
+    have ha_le : a ≤ 0 := h
+    -- If a ≤ 0, then a * b ≤ 0, contradicting a * b = 1
+    have hb_nn : 0 ≤ b := by
+      unfold reciprocalSum
+      apply Finset.sum_nonneg
+      intro n _; positivity
+    have : a * b ≤ 0 := mul_nonpos_of_nonpos_of_nonneg ha_le hb_nn
+    linarith
+  -- b = 1/a (from a * b = 1)
+  have hb_eq : b = a⁻¹ := by
+    field_simp at hab ⊢
+    linarith
+  -- AM-GM: a + 1/a ≥ 2 for a > 0
+  rw [hb_eq]
+  -- a + a⁻¹ ≥ 2 ⟺ a² + 1 ≥ 2a ⟺ (a-1)² ≥ 0
+  rw [ge_iff_le, ← sub_nonneg]
+  have key : a + a⁻¹ - 2 = (a - 1)^2 * a⁻¹ := by field_simp; ring
+  rw [key]
+  apply mul_nonneg
+  · exact sq_nonneg _
+  · exact le_of_lt (inv_pos.mpr ha_pos)
 
 /-- A consequence: |P ∪ Q| ≥ 60.
 
@@ -250,7 +285,8 @@ theorem partition_count : searchSpaceSize = 2^60 := rfl
 
 /-- There are ≈ 1.15 × 10¹⁸ ways to partition 60 primes.
     Even at 10⁹ checks/second, this takes over 36 years. -/
-axiom search_intractable : searchSpaceSize > 10^18
+theorem search_intractable : searchSpaceSize > 10^18 := by
+  native_decide
 
 /- ## Part IX: Why Does 1 Appear in Coprime Examples? -/
 
@@ -292,18 +328,56 @@ axiom lcd_connection {P Q : Finset ℕ} (hP : IsSetOfPrimes P)
 
 /- ## Part XI: Partial Results -/
 
+/-- For any two distinct primes, the reciprocal sum ≤ 5/6.
+    Proof: smallest distinct primes are 2, 3 with 1/2 + 1/3 = 5/6. -/
+private lemma reciprocal_sum_two_primes_le {P : Finset ℕ} (hcard : P.card = 2) (hP : IsSetOfPrimes P) :
+    reciprocalSum P ≤ 5 / 6 := by
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+  simp only [reciprocalSum, Finset.sum_pair hab]
+  have ha : Nat.Prime a := hP a (Finset.mem_insert_self a {b})
+  have hb : Nat.Prime b := hP b (Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self b)))
+  have ha2 : (2 : ℚ) ≤ a := by exact_mod_cast ha.two_le
+  have hb2 : (2 : ℚ) ≤ b := by exact_mod_cast hb.two_le
+  -- One of them ≥ 3 since a ≠ b and both ≥ 2
+  have hab3 : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ b := by
+    by_contra h; push_neg at h
+    have : a = 2 := by exact_mod_cast (le_antisymm (by linarith) ha.two_le)
+    have : b = 2 := by exact_mod_cast (le_antisymm (by linarith) hb.two_le)
+    exact hab (by omega)
+  have ha_pos : (0 : ℚ) < a := by linarith
+  have hb_pos : (0 : ℚ) < b := by linarith
+  rcases hab3 with h3 | h3
+  · -- a ≥ 3, b ≥ 2: 1/a + 1/b ≤ 1/3 + 1/2 = 5/6
+    have : (a : ℚ)⁻¹ ≤ 1 / 3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    have : (b : ℚ)⁻¹ ≤ 1 / 2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
+    linarith
+  · -- a ≥ 2, b ≥ 3: 1/a + 1/b ≤ 1/2 + 1/3 = 5/6
+    have : (a : ℚ)⁻¹ ≤ 1 / 2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
+    have : (b : ℚ)⁻¹ ≤ 1 / 3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    linarith
+
 /-- No solution with |P| = |Q| = 2 exists among primes.
-    If P = {p₁, p₂} and Q = {q₁, q₂}, then
-    (1/p₁ + 1/p₂)(1/q₁ + 1/q₂) = 1
-    ⟹ (p₁ + p₂)(q₁ + q₂) = p₁p₂q₁q₂.
-    This has no prime solutions. -/
+    PROVED: reciprocalProduct ≤ (5/6)² = 25/36 < 1. -/
 theorem no_size_two_solution :
     ¬∃ P Q : Finset ℕ, P.card = 2 ∧ Q.card = 2 ∧
       IsSetOfPrimes P ∧ IsSetOfPrimes Q ∧
       reciprocalProduct P Q = 1 := by
-  sorry
+  intro ⟨P, Q, hP2, hQ2, hPprime, hQprime, hprod⟩
+  have hP_le := reciprocal_sum_two_primes_le hP2 hPprime
+  have hQ_le := reciprocal_sum_two_primes_le hQ2 hQprime
+  have : reciprocalProduct P Q ≤ 25 / 36 := by
+    unfold reciprocalProduct
+    calc reciprocalSum P * reciprocalSum Q
+        ≤ (5 / 6) * (5 / 6) := by
+          apply mul_le_mul hP_le hQ_le
+          · exact Finset.sum_nonneg (fun i _ => inv_nonneg.mpr (Nat.cast_nonneg i))
+          · norm_num
+      _ = 25 / 36 := by norm_num
+  linarith
 
-/-- No solution with |P| = 2 and |Q| = 3 exists among primes. -/
+/-- No solution with |P| = 2 and |Q| = 3 exists among primes.
+    Product ≤ (5/6)(31/30) = 31/36 < 1.
+    Needs tight bound: for 3 distinct primes, sum ≤ 31/30 (requires showing 3rd prime ≥ 5). -/
 theorem no_two_three_solution :
     ¬∃ P Q : Finset ℕ, P.card = 2 ∧ Q.card = 3 ∧
       IsSetOfPrimes P ∧ IsSetOfPrimes Q ∧

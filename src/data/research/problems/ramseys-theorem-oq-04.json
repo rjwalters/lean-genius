@@ -1,86 +1,75 @@
 {
   "slug": "ramseys-theorem-oq-04",
-  "title": "Ramsey Theory for Hypergraphs",
-  "phase": "ORIENT",
+  "title": "ramseys-theorem-oq-04",
+  "phase": "OBSERVE",
   "status": "active",
-  "tier": "A",
+  "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "For any k ≥ 1, r ≥ 1, n ≥ k, there exists N such that any r-coloring of k-element subsets of an N-element set contains a monochromatic n-element subset.",
-    "plain": "The hypergraph Ramsey theorem: k-uniform Ramsey numbers exist for all parameters.",
-    "whyMatters": ["Generalizes classical graph Ramsey to arbitrary uniformity"]
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "kSubsets_card, kSubsets_subset, kSubsets_mem_of_subset, kSubsets_eq_empty_of_lt",
-      "tower_pos, tower_strictMono, tower_2_1, tower_2_2",
-      "k1_is_pigeonhole, classical_ramsey_is_k2",
-      "ramsey_property_mono, ramsey_base"
-    ],
-    "open": ["Eliminate hypergraph_ramsey_exists axiom via stepping-up lemma"],
-    "goal": "Prove hypergraph_ramsey_exists by well-founded induction on (k,n)"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-29T21:30:00Z",
+    "phase": "OBSERVE",
+    "since": "2026-03-29T19:03:48-07:00",
     "iteration": 1,
-    "focus": "Infrastructure built; stepping-up lemma approach documented",
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Implement stepping-up lemma and pigeonhole base case to eliminate axiom",
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "INFRASTRUCTURE: Added 7 new proved theorems (kSubsets properties, tower_pos, ramsey_property_mono, ramsey_base). Documented stepping-up proof strategy. File: 194 lines, 1 axiom, 0 sorries.",
-    "builtItems": [
-      "kSubsets_card: |kSubsets s k| = C(|s|, k) via Finset.card_powersetCard",
-      "kSubsets_subset: monotonicity of k-subsets under set inclusion",
-      "kSubsets_mem_of_subset: membership transfer for k-subsets",
-      "kSubsets_eq_empty_of_lt: no k-subsets when |s| < k",
-      "tower_pos: tower b n ≥ 1 when b ≥ 1",
-      "ramsey_property_mono: HypergraphRamseyProperty monotone in N",
-      "ramsey_base: base case n ≤ k (0 sorries, handles both n<k and n=k)"
-    ],
-    "insights": [
-      "Stepping-up lemma: R(k+1, r, n) ≤ R(k, r, R(k+1, r, n-1)) + 1",
-      "Proof uses well-founded induction on (k, n) with lexicographic order",
-      "Base cases: k=1 is pigeonhole (N = r*(n-1)+1), n≤k is trivial (N = n)",
-      "Fix vertex v → induced k-coloring on S\\{v} → k-Ramsey gives big monochromatic set M → restrict and recurse",
-      "If inner recursion matches color of v, union gives target set; otherwise size n-1 suffices for inner step",
-      "The factorial gap construction does NOT prove large normalized prime gaps (gap/log(index) → 0)",
-      "Finset.exists_subset_card_le needed for ramsey_property_mono"
-    ],
-    "mathlibGaps": [
-      "May need Finset.exists_subset_card_le (subset of given cardinality)"
-    ],
-    "nextSteps": [
-      "Prove pigeonhole_ramsey_property for k=1 to eliminate that case from the axiom",
-      "Implement the stepping-up lemma with the vertex-fixing construction",
-      "Combine base cases + stepping-up to prove hypergraph_ramsey_exists",
-      "Docker build verification when available"
-    ],
-    "markdown": ""
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: ramseys-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": ["combinatorics", "ramsey-theory", "hypergraphs"],
-  "relatedProofs": ["ramseys-theorem"],
-  "references": {"papers": [], "urls": [], "mathlib": []},
-  "started": "2026-03-29T21:30:00Z",
-  "lastUpdate": "2026-03-29T21:30:00Z",
-  "significance": 7,
-  "tractability": 4,
+  "tags": [],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "ramseys-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T02:13:21.170Z",
+  "lastUpdate": "2026-03-30T02:13:21.223Z",
   "leanFiles": [
+    {
+      "path": "Proofs/RamseysTheorem.lean",
+      "filename": "RamseysTheorem.lean",
+      "lineCount": 628,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseysTheorem.lean"
+    },
     {
       "path": "Proofs/RamseysTheoremOQ04.lean",
       "filename": "RamseysTheoremOQ04.lean",
-      "lineCount": 194,
-      "theoremCount": 12,
+      "lineCount": 302,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
-      "isAristotle": false
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseysTheoremOQ04.lean"
     }
   ]
 }

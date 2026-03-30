@@ -16,7 +16,7 @@
       "computational"
     ],
     "proofRepoPath": "Proofs/QuadraticReciprocityOQ03.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -31,9 +31,9 @@
       }
     ],
     "originalContributions": [
-      "Algorithmic framework: QR + multiplicativity as a Euclidean-like algorithm",
-      "Verified computations of Legendre symbols for small primes via decide",
-      "Descent property: reciprocity always reduces the modulus"
+      "Pedagogical wrappers exposing Mathlib's legendreSym API as an algorithmic framework",
+      "Verified example computations of Legendre symbols for small primes via decide",
+      "Core theorems (multiplicativity, supplementary law, reciprocity swap) are one-liner Mathlib delegations"
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,

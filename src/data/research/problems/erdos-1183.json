@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed mathematically incorrect definitions (sInf→sSup), proved f(n)≥⌈(n+1)/2⌉ formally connecting chain bound to abstract definition, proved F(n)≥f(n). 2 axioms (open conjectures), 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (2→0). Open conjectures converted from axiom to def Prop (not assumed true). 15 theorems, 0 sorries, 0 axioms.",
     "builtItems": [
       "Erdos1183Problem.lean: full formalization (223 lines)",
       "Definitions: SubsetColoring, IsUnionClosed, IsInterClosed, IsSublattice, IsMonochromatic, IsChain",
@@ -42,7 +42,9 @@
       "Proved achievableSublattice_subset_unionClosed",
       "Proved erdos1183_F_ge_f: F(n) ≥ f(n)",
       "Added import Mathlib.Order.ConditionallyCompleteLattice.Basic",
-      "File grew from 223 → 277 lines; 10 → 15 theorems; 10 → 12 definitions"
+      "File grew from 223 → 277 lines; 10 → 15 theorems; 10 → 12 definitions",
+      "Converted erdos1183_f_growth: axiom → def Prop",
+      "Converted erdos1183_F_superpolynomial: axiom → def Prop"
     ],
     "insights": [
       "Problem is about monochromatic sublattice families in 2-colorings of the powerset",
@@ -54,7 +56,8 @@
       "Definitions of erdos1183_f and erdos1183_F used sInf which gives 0 for downward-closed sets — must use sSup",
       "The achievable set {k | every coloring has mono sublattice of size ≥ k} is bounded above by 2^n",
       "le_csSup connects the chain bound to the abstract sSup definition",
-      "F(n) ≥ f(n) follows from csSup_le_csSup and the fact that sublattices are union-closed"
+      "F(n) ≥ f(n) follows from csSup_le_csSup and the fact that sublattices are union-closed",
+      "Both axioms (erdos1183_f_growth, erdos1183_F_superpolynomial) are OPEN CONJECTURES not used by any theorem. Converted from axiom to def Prop: more honest (no assumption of truth) and eliminates 2 axioms."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -86,10 +89,10 @@
     {
       "path": "Proofs/Erdos1183Problem.lean",
       "filename": "Erdos1183Problem.lean",
-      "lineCount": 278,
+      "lineCount": 281,
       "theoremCount": 15,
-      "axiomCount": 2,
-      "defCount": 12,
+      "axiomCount": 0,
+      "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1183Problem.lean"

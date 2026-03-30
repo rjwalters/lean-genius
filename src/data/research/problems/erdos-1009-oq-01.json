@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 5 structural theorems (1T→6T). Turán threshold properties + edge-disjoint symmetry. 8A unchanged.",
+    "progressSummary": "PROGRESS: Eliminated 5 unused axioms (8→3). Converted gyori_theorem, erdos_small_c, gyori_odd_n, gyori_even_n, sauer_counterexample to def Prop.",
     "builtItems": [
       "Assessment: 8A all appropriate (opaque function + deep results)",
       "edgeDisjoint_comm: symmetry of edge-disjointness",
@@ -72,10 +72,10 @@
     {
       "path": "Proofs/Erdos1009Problem.lean",
       "filename": "Erdos1009Problem.lean",
-      "lineCount": 217,
+      "lineCount": 222,
       "theoremCount": 4,
-      "axiomCount": 8,
-      "defCount": 9,
+      "axiomCount": 3,
+      "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1009Problem.lean"

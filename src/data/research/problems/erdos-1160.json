@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Generalized numGroups_four→numGroups_prime_sq, numGroups_six→numGroups_pq structural axioms. Proved erdos_1160_m_eq_four (conjecture for all n≤16). Net +3 axioms (10→13) but structural axioms cover infinite cases.",
+    "progressSummary": "PROGRESS: Eliminated 2 unused axioms (13→11). Converted pantelidakis_odd and numGroups_two_power_growth from axiom to def Prop (known results not used by any theorem).",
     "builtItems": [
       "Created Erdos1160Problem.lean with numGroups axiomatization",
       "Proved erdos_1160_equiv (two formulations equivalent)",
@@ -107,10 +107,10 @@
     {
       "path": "Proofs/Erdos1160Problem.lean",
       "filename": "Erdos1160Problem.lean",
-      "lineCount": 313,
+      "lineCount": 317,
       "theoremCount": 21,
-      "axiomCount": 13,
-      "defCount": 3,
+      "axiomCount": 11,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1160Problem.lean"

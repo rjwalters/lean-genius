@@ -1,61 +1,33 @@
 {
-  "slug": "borsuk-ulam-oq-02-oq-01-oq-04",
-  "title": "borsuk-ulam-oq-02-oq-01-oq-04",
-  "phase": "OBSERVE",
-  "status": "active",
-  "tier": "C",
-  "path": "full",
-  "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
-  },
-  "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
-  },
-  "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-29T21:03:28-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
+  "id": "borsuk-ulam-oq-02-oq-01-oq-04",
+  "name": "Fadell-Husseini index formalization in Lean",
+  "parentId": "borsuk-ulam-oq-02-oq-01",
+  "status": "completed",
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: borsuk-ulam-oq-02-oq-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "score": 6,
+    "insights": [
+      "FH index for cyclic groups reduces to single natural number (min power of generator u)",
+      "Mathlib has group cohomology, GradedAlgebra, HomogeneousIdeal — algebraic infrastructure exists",
+      "Only topological layer needs axiomatization (classifying spaces, equivariant cohomology)",
+      "FH index subsumes monotonicity: restriction maps encode buDim_mono algebraically",
+      "For Z/p: Index(S^{2n-1}) = (u^n) determines buDim(p,2n) = 2n-1",
+      "Key open question: does FH for Z/p^2 equal the Z/p bound?"
+    ],
+    "builtItems": [
+      "BorsukUlamOQ02OQ01OQ04.lean: 230 lines, 5 axioms, 4 proved theorems",
+      "CohRing and FHIndex structures",
+      "fh_implies_buDim_lower_bound theorem",
+      "fh_z4_bound and fh_z6_bound theorems",
+      "Gallery entry with meta.json, index.ts, annotations.json"
+    ],
+    "progressSummary": "COMPLETED: Initial Fadell-Husseini index formalization. Axiomatized FH index as principal ideal, proved consistency with parent buDim framework (4 theorems). Created gallery entry.",
+    "nextSteps": [
+      "Connect CohRing to Mathlib's GroupCohomology for Z/p",
+      "Formalize H*(BZ/p; F_p) = F_p[u] using GradedAlgebra",
+      "Prove product formula from monotonicity axiom",
+      "Compute FH index for Z/p^2 to test composite conjecture"
+    ]
   },
-  "tags": [],
-  "relatedProofs": [
-    "borsuk-ulam",
-    "borsuk-ulam-oq-02",
-    "borsuk-ulam-oq-02-oq-01",
-    "borsuk-ulam-oq-02-oq-02",
-    "borsuk-ulam-oq-02-oq-03",
-    "borsuk-ulam-oq-03",
-    "borsuk-ulam-oq-03-oq-01",
-    "borsuk-ulam-oq-03-oq-01-oq-01",
-    "borsuk-ulam-oq-03-oq-03",
-    "borsuk-ulam-oq-04"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-03-30T04:12:19.656Z",
-  "lastUpdate": "2026-03-30T04:12:19.668Z",
   "leanFiles": [
     {
       "path": "Proofs/BorsukUlam.lean",
@@ -100,6 +72,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ04.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ04.lean",
+      "lineCount": 268,
+      "theoremCount": 6,
+      "axiomCount": 5,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ04.lean"
     },
     {
       "path": "Proofs/BorsukUlamOQ02OQ02.lean",
@@ -178,5 +161,18 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"
     }
+  ],
+  "relatedProofs": [
+    "borsuk-ulam",
+    "borsuk-ulam-oq-02",
+    "borsuk-ulam-oq-02-oq-01",
+    "borsuk-ulam-oq-02-oq-01-oq-04",
+    "borsuk-ulam-oq-02-oq-02",
+    "borsuk-ulam-oq-02-oq-03",
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-01",
+    "borsuk-ulam-oq-03-oq-01-oq-01",
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam-oq-04"
   ]
 }

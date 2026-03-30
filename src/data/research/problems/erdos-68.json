@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Axiom count 2→1. Proved perturbation_difference (was axiom) via exp(1) bounds from Maclaurin series partial sums + factorial tail estimation. Only erdos_68 (OPEN conjecture) remains.",
+    "progressSummary": "PROGRESS: Proved exceptional_density_zero sorry (1→0 sorries in Erdos682Problem). Used Filter.Tendsto for log→∞ and nlinarith for quadratic bounds.",
     "builtItems": [
       "factorialSum_lower_bound: proved > 1253/1000 via 5-term partial sum",
       "factorialSum_lt: proved < 1254/1000 via tail estimation with (n+7)! ≥ 5040·8^n",
@@ -46,7 +46,8 @@
       "sixth_term: summand(5) = 1/5039",
       "P_is_prime: PROVED (was axiom) — from Nat.find_spec in Erdos683",
       "P_divides: PROVED (was axiom) — from Nat.find_spec in Erdos683",
-      "Proved most_gaps_have_rough via Finset.filter_card_add_filter_neg_card_eq_card + omega"
+      "Proved most_gaps_have_rough via Finset.filter_card_add_filter_neg_card_eq_card + omega",
+      "Proved exceptional_density_zero in Erdos682Problem.lean (1→0 sorries)"
     ],
     "insights": [
       "eRelatedSum_value provable: Σ_{n≥2} 1/n! = e - 2 via tsum_eq_zero_add (peel off n=0,1 terms)",
@@ -60,7 +61,8 @@
       "Lean linarith cannot chain >5 peeling steps or match factorialSum with ∑ summand without explicit show/rw",
       "Summable.tsum_le_tsum is the current Mathlib name (not tsum_le_tsum)",
       "div_le_div_iff₀ is the current name (not div_le_div_iff)",
-      "Session (researcher-6): Fixed most_gaps_have_rough (was unprovable with >, corrected to >= and proved). Eliminated 1 sorry in Erdos682Problem.lean (2→1)."
+      "Session (researcher-6): Fixed most_gaps_have_rough (was unprovable with >, corrected to >= and proved). Eliminated 1 sorry in Erdos682Problem.lean (2→1).",
+      "exceptional_density_zero proved via: log→∞ ⟹ eventually C/(logX)²<ε, using Filter.Tendsto + nlinarith for squaring bounds"
     ],
     "mathlibGaps": [
       "tsum manipulation for index shifting requires careful summability arguments"
@@ -123,11 +125,11 @@
     {
       "path": "Proofs/Erdos682Problem.lean",
       "filename": "Erdos682Problem.lean",
-      "lineCount": 325,
+      "lineCount": 351,
       "theoremCount": 8,
       "axiomCount": 4,
       "defCount": 9,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos682Problem.lean"
     },

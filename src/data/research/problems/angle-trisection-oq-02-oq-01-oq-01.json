@@ -1,59 +1,30 @@
 {
-  "slug": "angle-trisection-oq-02-oq-01-oq-01",
-  "title": "angle-trisection-oq-02-oq-01-oq-01",
-  "phase": "OBSERVE",
-  "status": "active",
-  "tier": "C",
-  "path": "fast",
-  "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
-  },
-  "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
-  },
-  "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-29T21:03:28-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
+  "id": "angle-trisection-oq-02-oq-01-oq-01",
+  "name": "Contribute natDegree_dvd_card_gal to Mathlib",
+  "parentId": "angle-trisection-oq-02-oq-01",
+  "status": "completed",
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: angle-trisection-oq-02-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "score": 8,
+    "insights": [
+      "Mathlib's prime_degree_dvd_card uses Prime(natDegree) only to get degree ≠ 0, which follows from Irreducible.natDegree_pos",
+      "The generalization natDegree_dvd_card is essentially a one-line change to the existing Mathlib proof",
+      "API differences: gallery uses Nat.card vs Mathlib's Fintype.card, Module.finrank vs FiniteDimensional.finrank",
+      "The tower law F ⊂ F⟮α⟯ ⊂ SplittingField gives natDegree | |Gal| directly",
+      "Existing prime_degree_dvd_card becomes a trivial corollary by ignoring the unused hypothesis"
+    ],
+    "builtItems": [
+      "AngleTrisectionOQ02OQ01OQ01.lean: demonstrates corollary + contribution plan",
+      "prime_degree_dvd_card_from_general: proved as corollary",
+      "Detailed Mathlib PR template with exact code changes",
+      "Gallery entry with full documentation"
+    ],
+    "progressSummary": "COMPLETED: Mathlib contribution prepared. Theorem proved (0 axioms), corollary shown, contribution plan written with exact code changes for Mathlib/FieldTheory/PolynomialGaloisGroup.lean.",
+    "nextSteps": [
+      "Create actual Mathlib4 PR on github.com/leanprover-community/mathlib4",
+      "Verify proof compiles against latest Mathlib master",
+      "Check for downstream uses of prime_degree_dvd_card that might break"
+    ]
   },
-  "tags": [],
-  "relatedProofs": [
-    "angle-trisection",
-    "angle-trisection-oq-02",
-    "angle-trisection-oq-02-oq-01",
-    "angle-trisection-oq-02-oq-03",
-    "angle-trisection-oq-02-oq-03-oq-01",
-    "angle-trisection-oq-02-oq-04",
-    "angle-trisection-oq-03",
-    "angle-trisection-oq-05"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-03-30T04:12:19.656Z",
-  "lastUpdate": "2026-03-30T04:12:19.668Z",
   "leanFiles": [
     {
       "path": "Proofs/AngleTrisection.lean",
@@ -120,6 +91,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ01OQ01.lean",
+      "filename": "AngleTrisectionOQ02OQ01OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ01.lean"
     },
     {
       "path": "Proofs/AngleTrisectionOQ02OQ03.lean",
@@ -198,5 +180,16 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ05.lean"
     }
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-oq-02",
+    "angle-trisection-oq-02-oq-01",
+    "angle-trisection-oq-02-oq-01-oq-01",
+    "angle-trisection-oq-02-oq-03",
+    "angle-trisection-oq-02-oq-03-oq-01",
+    "angle-trisection-oq-02-oq-04",
+    "angle-trisection-oq-03",
+    "angle-trisection-oq-05"
   ]
 }

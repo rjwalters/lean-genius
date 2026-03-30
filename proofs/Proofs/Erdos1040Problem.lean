@@ -173,11 +173,21 @@ def isLineSegment (F : Set ℂ) : Prop :=
 def isClosedDisc (F : Set ℂ) : Prop :=
   ∃ c : ℂ, ∃ r > 0, F = Metric.closedBall c r
 
-/-- For line segments, μ is determined by transfinite diameter (using corrected μ). -/
+/-- For line segments, μ (uncorrected) is trivially determined (mu F = 0 for all F). -/
+theorem lineSegment_determined_trivial (F : Set ℂ) (hF : isLineSegment F) :
+    ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F) :=
+  ⟨fun _ => 0, mu_eq_zero F⟩
+
+/-- For discs, μ (uncorrected) is trivially determined (mu F = 0 for all F). -/
+theorem disc_determined_trivial (F : Set ℂ) (hF : isClosedDisc F) :
+    ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F) :=
+  ⟨fun _ => 0, mu_eq_zero F⟩
+
+/-- For line segments, corrected μ is determined by transfinite diameter. -/
 axiom lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
   ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
-/-- For discs, μ is determined by transfinite diameter (using corrected μ). -/
+/-- For discs, corrected μ is determined by transfinite diameter. -/
 axiom disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
   ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
@@ -244,28 +254,62 @@ theorem transfiniteDiameter_mono (F G : Set ℂ) (h : F ⊆ G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
   sorry
 
-/-- Each element in the nthDiameter supremum set is non-negative. -/
-private theorem nthDiameter_val_nonneg (n : ℕ) (pts : Fin n → ℂ) :
-    (∏ i in Finset.range n, ∏ j in Finset.range i,
-      Complex.abs (pts i - pts j)) ^ (2 / (n * (n - 1) : ℝ)) ≥ 0 := by
-  apply Real.rpow_nonneg
-  apply Finset.prod_nonneg
-  intro i _
-  apply Finset.prod_nonneg
-  intro j _
-  exact Complex.abs.nonneg _
+/-- Each nthDiameter value is non-negative (sSup of non-negative reals). -/
+private theorem nthDiameter_nonneg (F : Set ℂ) (n : ℕ) : 0 ≤ nthDiameter F n := by
+  unfold nthDiameter
+  by_cases hne : Set.Nonempty
+    {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
+      (∏ i in Finset.range n, ∏ j in Finset.range i,
+        Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
+  · by_cases hbdd : BddAbove
+      {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
+        (∏ i in Finset.range n, ∏ j in Finset.range i,
+          Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
+    · obtain ⟨x, ⟨pts, rfl⟩⟩ := hne
+      exact le_trans
+        (rpow_nonneg (Finset.prod_nonneg fun i _ =>
+          Finset.prod_nonneg fun j _ => Complex.abs.nonneg _) _)
+        (le_csSup hbdd ⟨pts, rfl⟩)
+    · exact le_of_eq (csSup_of_not_bddAbove hbdd).symm
+  · rw [Set.not_nonempty_iff_eq_empty] at hne
+    simp [hne, csSup_empty]
 
-/-- Transfinite diameter is non-negative.
-    Proof: each nthDiameter is sSup of non-negative values, and the
-    infimum of non-negative values is non-negative. -/
+/-- Transfinite diameter is non-negative. -/
 theorem transfiniteDiameter_nonneg (F : Set ℂ) :
     transfiniteDiameter F ≥ 0 := by
+  simp only [transfiniteDiameter, ge_iff_le]
+  apply le_csInf (Set.range_nonempty _)
+  rintro _ ⟨n, rfl⟩
+  exact nthDiameter_nonneg F n
+
+/-- For large enough n, nthDiameter of a finite set is 0 (pigeonhole).
+    Every n-tuple from F repeats a value, making the product 0. -/
+private lemma nthDiameter_eq_zero_of_finite (F : Set ℂ) (hF : F.Finite) (n : ℕ)
+    (hn : n ≥ 2) (hn_gt : hF.toFinset.card < n) :
+    nthDiameter F n = 0 := by
+  -- By pigeonhole (n > |F|), every n-tuple from F repeats a value.
+  -- Repeated points give |pts i - pts j| = 0, making the product 0.
+  -- Then 0^(2/(n*(n-1))) = 0 (exponent > 0 since n ≥ 2).
+  -- So all elements of the sSup set are 0, and sSup {0} = sSup ∅ = 0.
+  -- Key lemmas: Fintype.card_le_of_injective (pigeonhole),
+  --   Finset.prod_eq_zero, Real.zero_rpow, Real.sSup_empty
   sorry
 
-/-- Finite sets have transfinite diameter 0. -/
+/-- Finite sets have transfinite diameter 0.
+    Proof: for large n, nthDiameter = 0 (pigeonhole), so iInf ≤ 0.
+    Combined with nonneg gives = 0. -/
 theorem finite_diameter_zero (F : Set ℂ) (hF : F.Finite) :
     transfiniteDiameter F = 0 := by
-  sorry
+  apply le_antisymm
+  · -- transfiniteDiameter F ≤ 0: find n₀ with nthDiameter = 0
+    let n₀ := hF.toFinset.card + 2
+    simp only [transfiniteDiameter]
+    calc sInf (Set.range (nthDiameter F))
+        ≤ nthDiameter F n₀ :=
+          csInf_le ⟨0, by rintro _ ⟨n, rfl⟩; exact nthDiameter_nonneg F n⟩
+            (Set.mem_range.mpr ⟨n₀, rfl⟩)
+      _ = 0 := nthDiameter_eq_zero_of_finite F hF n₀ (by omega) (by omega)
+  · exact (transfiniteDiameter_nonneg F).le
 
 /-- Scaling property. -/
 theorem transfiniteDiameter_scale (F : Set ℂ) (c : ℂ) (hc : c ≠ 0) :
@@ -286,11 +330,34 @@ theorem mu_mono (F G : Set ℂ) (h : F ⊆ G) :
   exact ⟨⟨pF.degree, pF.roots, fun i => h (pF.roots_in_F i)⟩, le_refl _⟩
 
 /-- For infinite F, corrected μ(F) is achieved or approached.
-    Proof requires showing sublevel sets have finite measure (bounded subsets of ℂ). -/
+    Proof: construct degree-1 polynomial to show muPosDeg F < ⊤, then
+    use le_iInf₂ contrapositive to extract a witness. -/
 theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
     ∀ ε : ℝ≥0∞, ε > 0 → ∃ (p : PolynomialInF F), p.degree ≥ 1 ∧
       sublevelMeasure p < muPosDeg F + ε := by
-  sorry
+  intro ε hε
+  -- Proof by contradiction: if all degree ≥ 1 polynomials have sublevelMeasure ≥ muPosDeg F + ε,
+  -- then muPosDeg F + ε ≤ muPosDeg F, contradicting ε > 0 and muPosDeg F < ⊤.
+  by_contra hall
+  push_neg at hall
+  -- hall : ∀ p, p.degree ≥ 1 → muPosDeg F + ε ≤ sublevelMeasure p
+  have hle : muPosDeg F + ε ≤ muPosDeg F := by
+    unfold muPosDeg; exact le_iInf₂ hall
+  -- Show muPosDeg F ≠ ⊤ using a degree-1 polynomial
+  obtain ⟨x, hx⟩ := hF.nonempty
+  let p₁ : PolynomialInF F := ⟨1, fun _ => x, fun _ => hx⟩
+  have hmu_le_p₁ : muPosDeg F ≤ sublevelMeasure p₁ := iInf₂_le p₁ (le_refl 1)
+  -- sublevelSet p₁ ⊆ closedBall x 1 (bounded), so sublevelMeasure p₁ < ⊤
+  have hss : sublevelSet p₁ ⊆ Metric.closedBall x 1 := by
+    intro z hz
+    simp only [sublevelSet, Set.mem_setOf_eq, PolynomialInF.eval, Fin.prod_univ_one] at hz
+    rw [Metric.mem_closedBall, Complex.dist_eq]
+    exact le_of_lt hz
+  have hp₁_lt_top : sublevelMeasure p₁ < ⊤ :=
+    lt_of_le_of_lt (MeasureTheory.measure_mono hss) (isCompact_closedBall x 1).measure_lt_top
+  have hmu_ne_top : muPosDeg F ≠ ⊤ := ne_top_of_le_ne_top hp₁_lt_top.ne hmu_le_p₁
+  -- Contradiction: muPosDeg F < muPosDeg F + ε ≤ muPosDeg F
+  exact absurd hle (not_le.mpr (ENNReal.lt_add_right hmu_ne_top hε.ne'))
 
 /-
 ## The Open Question

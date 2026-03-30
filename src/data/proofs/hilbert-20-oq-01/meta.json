@@ -72,21 +72,24 @@
       "content": "Define multi-indices, linear PDOs with polynomial coefficients, and the principal symbol.",
       "lineStart": 46,
       "lineEnd": 76,
-      "theorems": []
+      "theorems": [],
+      "summary": "Linear Differential Operators"
     },
     {
       "title": "Local Solvability",
       "content": "Define local solvability (axiomatically, since distributions are not in Mathlib) and the principal type condition.",
       "lineStart": 78,
       "lineEnd": 98,
-      "theorems": []
+      "theorems": [],
+      "summary": "Local Solvability"
     },
     {
       "title": "Condition (Ψ)",
       "content": "Define bicharacteristic curves, the imaginary part of the symbol along them, and condition (Ψ).",
       "lineStart": 100,
       "lineEnd": 122,
-      "theorems": []
+      "theorems": [],
+      "summary": "Condition (Ψ)"
     },
     {
       "title": "The Nirenberg-Treves Theorem",
@@ -95,7 +98,8 @@
       "lineEnd": 152,
       "theorems": [
         "nirenberg_treves_characterization"
-      ]
+      ],
+      "summary": "The Nirenberg-Treves Theorem"
     },
     {
       "title": "Special Cases",
@@ -104,7 +108,8 @@
       "lineEnd": 181,
       "theorems": [
         "elliptic_locally_solvable"
-      ]
+      ],
+      "summary": "Special Cases"
     }
   ],
   "conclusion": {
