@@ -208,15 +208,15 @@ private lemma div_gcd_coprime_div_of_unitary {m n d : ℕ} (hm : 0 < m) (hn : 0 
   exact h1.coprime_dvd_right h2
 
 /-
-## Main Theorem: All Unitary Perfect Numbers are Even
+## All Unitary Perfect Numbers are Even (not formalized — requires factorization bridge)
 
-**Proof sketch** (requires multiplicativity, proved below):
-For n = p₁^a₁ · ... · pₖ^aₖ with pᵢ distinct primes, σ*(n) = ∏ᵢ(1 + pᵢ^aᵢ).
+**Known result** (Wall 1972): All unitary perfect numbers are even.
+**Proof sketch**: For n = p₁^a₁ · ... · pₖ^aₖ, σ*(n) = ∏(1 + pᵢ^aᵢ).
 For unitary perfect n: σ*(n) = 2n.
-If n were odd: Case k=0: impossible. Case k=1: 1+p^a=2p^a gives 1=p^a.
-Case k≥2: 4|σ*(n)=2n, so 2|n, contradiction.
+If n were odd: each 1+pᵢ^aᵢ is even, so 2^k | σ*(n) = 2n. k≥2 gives 4|2n, so 2|n ⊥.
+k=1: 1+p^a=2p^a gives 1=p^a ⊥. k=0: n=1, sum of proper divisors = 0 ≠ 1 ⊥.
+Not axiomatized (connecting factorization API to multiplicativity would be ~50+ lines).
 -/
-axiom even_of_isUnitaryPerfect (n : ℕ) (hn : IsUnitaryPerfect n) : Even n
 
 /-
 ## Verified Examples
@@ -368,9 +368,9 @@ theorem properUnitaryDivisors_pairing {n : ℕ} (hn : 1 < n) :
 ## The Main Conjecture (OPEN)
 -/
 
-/-- **Erdős Problem #1052 (OPEN)**
-Are there only finitely many unitary perfect numbers?
-Known: 6, 60, 90, 87360, 146361946186458562560000 (only 5 known). -/
-axiom erdos_1052_conjecture : { n : ℕ | IsUnitaryPerfect n }.Finite
+/- **Erdős Problem #1052 (OPEN)**
+   Are there only finitely many unitary perfect numbers?
+   Known: 6, 60, 90, 87360, 146361946186458562560000 (only 5 known).
+   Not axiomatized (open conjecture, unused by any theorem). -/
 
 end Erdos1052
