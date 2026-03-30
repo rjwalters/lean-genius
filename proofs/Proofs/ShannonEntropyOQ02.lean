@@ -19,7 +19,7 @@
 
   Shannon (1948), Kolmogorov (1965), Chaitin (1966)
 
-  Axioms: 6 (Kolmogorov complexity properties — requires computability theory)
+  Axioms: 3 (Kolmogorov complexity properties — requires computability theory)
   Sorries: 0
 -/
 import Mathlib
@@ -40,31 +40,23 @@ open Finset BigOperators Real
   machines and universality would require thousands of lines of
   computability infrastructure beyond our scope.
 
-  The axioms capture the essential properties needed for the
-  entropy connection theorem.
+  Three axioms suffice for the entropy-complexity equivalence:
+  1. The function K itself
+  2. Kraft's inequality for K (from prefix-freeness)
+  3. The coding theorem: K(x) ≤ ⌈-log₂ p(x)⌉ + c for computable p
 -/
 
 -- The Kolmogorov complexity function for a finite type
 -- K(x) = length of shortest prefix-free description of x
 axiom kolmogorovComplexity (α : Type*) [Fintype α] [DecidableEq α] : α → ℕ
 
--- Axiom 1: K(x) ≥ 1 for all x (every description has positive length)
-axiom kolmogorov_pos (α : Type*) [Fintype α] [DecidableEq α] :
-    ∀ x : α, 1 ≤ kolmogorovComplexity α x
-
--- Axiom 2: Kraft's inequality holds for Kolmogorov complexity values
+-- Axiom: Kraft's inequality holds for Kolmogorov complexity values
 -- This follows from prefix-freeness: the set of valid programs forms
 -- a prefix-free code, so ∑ 2^(-|p|) ≤ 1 over all halting programs.
 -- In particular, ∑_x 2^(-K(x)) ≤ 1 since each x has at most one
 -- shortest program contributing to the sum.
 axiom kolmogorov_kraft (α : Type*) [Fintype α] [DecidableEq α] :
     ∑ x : α, ((2 : ℝ)⁻¹) ^ (kolmogorovComplexity α x) ≤ 1
-
--- Axiom 3: Invariance up to a constant
--- For any computable encoding f : α → β, K_β(f(x)) ≤ K_α(x) + c_f
--- We state a weaker form: K(x) ≤ log₂|α| + c for some universal constant
-axiom kolmogorov_upper_bound (α : Type*) [Fintype α] [DecidableEq α] :
-    ∃ c : ℕ, ∀ x : α, kolmogorovComplexity α x ≤ Nat.log 2 (Fintype.card α) + c
 
 -- ════════════════════════════════════════════════════════════════
 -- PART II: Entropy and Code Length Infrastructure
@@ -188,19 +180,13 @@ theorem entropy_le_expected_K_times_ln2 {n : ℕ} {p : Fin n → ℝ}
   We axiomatize the per-element bound since it requires computability.
 -/
 
--- Axiom 4: For any computable distribution, K(x) ≤ ⌈-log₂ p(x)⌉ + c
+-- Axiom: For any computable distribution, K(x) ≤ ⌈-log₂ p(x)⌉ + c
 -- This is the "coding theorem" of algorithmic information theory:
 -- a computable distribution can be used as a code, and the universal
 -- machine adds only a constant overhead.
 axiom computable_distribution_bound {n : ℕ} (p : Fin n → ℝ)
     (hp : ∀ i, 0 < p i) (hp1 : ∀ i, p i ≤ 1) (hpsum : ∑ i, p i = 1) :
     ∃ c : ℕ, ∀ i, kolmogorovComplexity (Fin n) i ≤ ⌈-log (p i) / log 2⌉₊ + c
-
--- Axiom 5: K(x) ≥ -log₂ p(x) - c for any computable distribution
--- (The incompressibility direction: random strings have high K)
-axiom complexity_lower_bound {n : ℕ} (p : Fin n → ℝ)
-    (hp : ∀ i, 0 < p i) (hpsum : ∑ i, p i = 1) :
-    ∃ c : ℕ, ∀ i, (⌈-log (p i) / log 2⌉₊ : ℝ) ≤ kolmogorovComplexity (Fin n) i + c
 
 -- ════════════════════════════════════════════════════════════════
 -- PART VI: The Main Theorem — Entropy-Complexity Equivalence
