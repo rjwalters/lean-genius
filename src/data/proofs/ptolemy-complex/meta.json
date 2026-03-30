@@ -1,0 +1,200 @@
+{
+  "id": "ptolemy-complex",
+  "title": "Ptolemy's Theorem (Complex Number Proof)",
+  "slug": "ptolemy-complex",
+  "description": "Algebraic proof of Ptolemy's theorem via the ring identity (z\u2081-z\u2083)(z\u2082-z\u2084) = (z\u2081-z\u2082)(z\u2083-z\u2084) + (z\u2081-z\u2084)(z\u2082-z\u2083) and the cross-ratio reduction for concyclic points",
+  "meta": {
+    "author": "Ptolemy of Alexandria (complex-number formalization in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem",
+    "date": "c. 150 AD",
+    "status": "axiomatized",
+    "tags": [
+      "geometry",
+      "algebra",
+      "complex-numbers",
+      "circle",
+      "classic",
+      "intermediate",
+      "cross-ratio"
+    ],
+    "proofRepoPath": "Proofs/PtolemyComplex.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "map_mul (Complex.abs)",
+        "description": "Absolute value distributes over multiplication",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.abs_ofReal",
+        "description": "Absolute value of real-to-complex coercion",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Universal ring identity (z\u2081-z\u2083)(z\u2082-z\u2084) = (z\u2081-z\u2082)(z\u2083-z\u2084) + (z\u2081-z\u2084)(z\u2082-z\u2083) proved for any CommRing",
+      "Cross-ratio reduction: positive real cross-ratio in (0,1) implies Ptolemy's equality of absolute values",
+      "Conjugation argument: star(z-w)\u00b7z\u00b7w = -(z-w) for unit-norm complex numbers, proving the cross-ratio is self-conjugate",
+      "star_product_cancel and cross_ratio_conj_eq: full proof that unit-circle cross-ratio is real"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 1,
+    "lineCount": 280,
+    "assumptions": "1 axiom: ptolemy_unit_circle_ordering -- for four unit-circle points in cyclic order (\u03b8\u2081 < \u03b8\u2082 < \u03b8\u2083 < \u03b8\u2084 < \u03b8\u2081 + 2\u03c0), the cross-ratio is a positive real in (0,1). This encodes the geometric fact that cyclic ordering makes the sine-ratio formula positive.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The complex-number proof of Ptolemy's theorem is a modern algebraic approach, in contrast to Ptolemy's original geometric proof from the Almagest (c. 150 AD). The key insight, attributed to various authors including Gamelin and Needham, is that Ptolemy's theorem is a consequence of the algebraic identity (z\u2081-z\u2083)(z\u2082-z\u2084) = (z\u2081-z\u2082)(z\u2083-z\u2084) + (z\u2081-z\u2084)(z\u2082-z\u2083) in any commutative ring, combined with the geometric fact that the cross-ratio of concyclic points is real.",
+    "problemStatement": "**Ptolemy's Theorem (Complex Form)**:\n\nFor four points $z_1, z_2, z_3, z_4$ on a circle in cyclic order:\n\n$$|z_1 - z_2| \\cdot |z_3 - z_4| + |z_1 - z_4| \\cdot |z_2 - z_3| = |z_1 - z_3| \\cdot |z_2 - z_4|$$",
+    "text": "Algebraic proof of Ptolemy via the four-point ring identity and the cross-ratio reduction for concyclic points in the complex plane",
+    "proofStrategy": "The proof decomposes into two independent components: (1) A universal ring identity showing that (z\u2081-z\u2083)(z\u2082-z\u2084) = (z\u2081-z\u2082)(z\u2083-z\u2084) + (z\u2081-z\u2084)(z\u2082-z\u2083), proved by `ring`. (2) A cross-ratio reduction showing that if (z\u2081-z\u2082)(z\u2083-z\u2084) = r\u00b7(z\u2081-z\u2083)(z\u2082-z\u2084) for real r \u2208 (0,1), then taking absolute values gives Ptolemy. The conjugation argument (star(z-w)\u00b7z\u00b7w = -(z-w) for |z|=|w|=1) proves the cross-ratio is real for concyclic points.",
+    "keyInsights": [
+      "Ptolemy's theorem is fundamentally a ring identity: (z\u2081-z\u2083)(z\u2082-z\u2084) = (z\u2081-z\u2082)(z\u2083-z\u2084) + (z\u2081-z\u2084)(z\u2082-z\u2083) holds in ANY commutative ring, not just \u2102.",
+      "The cross-ratio reduction is the key bridge: if the cross-ratio is a positive real r < 1, then |sum| = |term\u2081| + |term\u2082| because both terms point in the same complex direction. This gives r\u00b7D + (1-r)\u00b7D = D.",
+      "The conjugation argument star(z-w)\u00b7z\u00b7w = -(z-w) for unit-norm z,w reveals why concyclicity matters: the z\u2081z\u2082z\u2083z\u2084 factor cancels identically in the cross-ratio, making it real.",
+      "This proof works only in the complex plane (\u2102 \u2245 \u211d\u00b2), unlike the geometric proof which works in arbitrary Euclidean spaces. The price of algebraic elegance is dimensional specificity."
+    ],
+    "prerequisites": [
+      "Complex numbers (absolute value, conjugation)",
+      "Ring theory (commutative rings)",
+      "Star algebras (star operation as conjugation)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Documentation of the complex-number proof approach, status checklist, and Mathlib imports for complex analysis.",
+      "mathContext": "Imports complex analysis, exponentials, and circle theory from Mathlib."
+    },
+    {
+      "id": "ring-identity",
+      "title": "The Fundamental Algebraic Identity",
+      "startLine": 42,
+      "endLine": 63,
+      "summary": "The four-point ring identity (z\u2081-z\u2083)(z\u2082-z\u2084) = (z\u2081-z\u2082)(z\u2083-z\u2084) + (z\u2081-z\u2084)(z\u2082-z\u2083), proved for any CommRing by `ring`.",
+      "mathContext": "Universal algebraic identity that forms the core of the complex-number proof. The same identity holds in \u2124, \u211a, \u211d, \u2102, or any commutative ring."
+    },
+    {
+      "id": "cross-ratio-reduction",
+      "title": "Cross-Ratio Reduction to Ptolemy",
+      "startLine": 64,
+      "endLine": 102,
+      "summary": "If (z\u2081-z\u2082)(z\u2083-z\u2084) = r\u00b7(z\u2081-z\u2083)(z\u2082-z\u2084) for real r \u2208 (0,1), then |z\u2081-z\u2082|\u00b7|z\u2083-z\u2084| + |z\u2081-z\u2084|\u00b7|z\u2082-z\u2083| = |z\u2081-z\u2083|\u00b7|z\u2082-z\u2084|.",
+      "mathContext": "The reduction from cross-ratio to Ptolemy: r\u00b7D + (1-r)\u00b7D = D where D = |z\u2081-z\u2083|\u00b7|z\u2082-z\u2084|. Uses Complex.abs_ofReal and map_mul."
+    },
+    {
+      "id": "conjugation",
+      "title": "Unit Circle Conjugation Argument",
+      "startLine": 103,
+      "endLine": 200,
+      "summary": "For |z_k| = 1: star(z-w)\u00b7z\u00b7w = -(z-w), which implies star(num)\u00b7P = num for P = z\u2081z\u2082z\u2083z\u2084. Since the same P appears in both numerator and denominator, the cross-ratio is self-conjugate.",
+      "mathContext": "The geometric content of the proof: concyclicity implies real cross-ratio. The conjugation argument avoids trigonometric computations entirely, using only the star algebra structure of \u2102."
+    },
+    {
+      "id": "unit-circle-ptolemy",
+      "title": "Unit Circle Ptolemy with Ordering",
+      "startLine": 201,
+      "endLine": 255,
+      "summary": "Combines the ring identity, cross-ratio reduction, and conjugation argument. The ordering axiom (positivity of cross-ratio from cyclic order) completes the proof.",
+      "mathContext": "The positivity of the cross-ratio from cyclic ordering is axiomatized. For \u03b8\u2081 < \u03b8\u2082 < \u03b8\u2083 < \u03b8\u2084 < \u03b8\u2081 + 2\u03c0, the sine-ratio formula gives a positive cross-ratio."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Connections",
+      "startLine": 256,
+      "endLine": 280,
+      "summary": "Comparison with the geometric proof (PtolemysTheorem.lean): geometric uses Cospherical in any dimension, complex uses ring structure of \u2102 in the plane.",
+      "mathContext": "The complex proof reveals Ptolemy as a consequence of commutativity of multiplication in \u2102 plus the special geometry of circles."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "alternative-proof",
+      "description": "The original gallery entry uses Mathlib's geometric proof via Cospherical. This entry provides the algebraic complex-number proof, revealing different mathematical structure."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Ptolemy's theorem generalizes the Pythagorean theorem: when the cyclic quadrilateral is a rectangle, the identity reduces to a\u00b2 + b\u00b2 = c\u00b2."
+    }
+  ],
+  "conclusion": {
+    "summary": "A self-contained complex-number proof of Ptolemy's theorem decomposed into: (1) a universal ring identity, (2) a cross-ratio reduction, and (3) a conjugation argument proving the cross-ratio is real for concyclic points. Seven theorems are fully verified with 0 sorries. One axiom encodes the positivity of the cross-ratio from cyclic ordering.",
+    "implications": "The complex-number approach reveals that Ptolemy's theorem is fundamentally about the ring structure of \u2102: the identity holds in any commutative ring, and the geometry of circles enters only through the cross-ratio condition. This perspective connects Ptolemy to Mobius geometry, inversive geometry, and the theory of cross-ratios.",
+    "openQuestions": [
+      "Can the ordering axiom be eliminated by formalizing the sine-ratio formula for unit-circle points?",
+      "Can the conjugation argument be extended to prove Ptolemy's inequality |AC\u00b7BD| \u2264 |AB\u00b7CD| + |AD\u00b7BC| for non-concyclic points?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": null,
+    "lineCount": 280,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 8,
+    "duplicateTheorems": 0,
+    "definitionCount": 0
+  },
+  "references": [
+    {
+      "authors": "T. Gamelin",
+      "title": "Complex Analysis",
+      "year": "2001",
+      "venue": "Springer",
+      "note": "Complex-number proof of Ptolemy's theorem via the four-point identity"
+    },
+    {
+      "authors": "T. Needham",
+      "title": "Visual Complex Analysis",
+      "year": "1997",
+      "venue": "Oxford University Press",
+      "note": "Geometric interpretation of cross-ratios and concyclicity in the complex plane"
+    },
+    {
+      "authors": "Claudius Ptolemy",
+      "title": "Almagest",
+      "year": "c. 150 AD",
+      "note": "Original statement and geometric proof"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ptolemy_ring_identity",
+      "type": "core",
+      "description": "The four-point identity in any commutative ring",
+      "leanType": "{R : Type*} [CommRing R] (z₁ z₂ z₃ z₄ : R) : (z₁ - z₃) * (z₂ - z₄) = (z₁ - z₂) * (z₃ - z₄) + (z₁ - z₄) * (z₂ - z₃)"
+    },
+    {
+      "name": "ptolemy_from_cross_ratio",
+      "type": "core",
+      "description": "Cross-ratio in (0,1) implies Ptolemy's absolute-value equality",
+      "leanType": "(z₁ z₂ z₃ z₄ : ℂ) (r : ℝ) (hr : 0 < r) (hr1 : r < 1) (hcr : ...) : abs(z₁-z₂)*abs(z₃-z₄) + abs(z₁-z₄)*abs(z₂-z₃) = abs(z₁-z₃)*abs(z₂-z₄)"
+    },
+    {
+      "name": "cross_ratio_conj_eq",
+      "type": "core",
+      "description": "Cross-ratio is self-conjugate for unit-circle points",
+      "leanType": "(z₁ z₂ z₃ z₄ : ℂ) (h₁ ... h₄ : z_k * star z_k = 1) : star(num) * den = num * star(den)"
+    },
+    {
+      "name": "ptolemy_unit_circle",
+      "type": "application",
+      "description": "Ptolemy's theorem for cyclically-ordered unit circle points",
+      "leanType": "(θ₁ θ�� θ₃ θ₄ : ℝ) (hord : ...) : abs(z₁-z₂)*abs(z₃-z₄) + abs(z₁-z₄)*abs(z₂-z₃) = abs(z₁-z₃)*abs(z₂-z₄)"
+    }
+  ]
+}

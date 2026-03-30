@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "ptolemy-complex",
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
+    "title": "Library Imports",
+    "type": "concept",
+    "content": "Imports complex circle theory, basic complex number operations, exponentials, and Mathlib tactics.",
+    "mathContext": "Uses only basic Mathlib operations: `map_mul` for |z*w| = |z|*|w|, `Complex.abs_ofReal` for |r| when r is real, and `star_mul`/`map_sub` for conjugation distributing over ring operations.",
+    "significance": "supporting",
+    "relatedConcepts": ["Complex.abs", "star operation", "CommRing"],
+    "prerequisites": ["Lean 4 import system"]
+  },
+  {
+    "id": "ann-ring-identity",
+    "proofId": "ptolemy-complex",
+    "range": {
+      "startLine": 50,
+      "endLine": 63
+    },
+    "title": "Four-Point Ring Identity",
+    "type": "theorem",
+    "content": "The identity (z1-z3)(z2-z4) = (z1-z2)(z3-z4) + (z1-z4)(z2-z3) holds in any commutative ring. The proof is a single call to `ring`.",
+    "mathContext": "This is the algebraic core of the complex-number proof. The identity is purely algebraic -- it holds in Z, Q, R, C, or any commutative ring. No geometry is needed. Expanding both sides and collecting terms gives the same polynomial. The specialization to C is immediate.",
+    "significance": "core",
+    "relatedConcepts": ["CommRing", "ring tactic", "algebraic identity"],
+    "prerequisites": ["Ring theory"]
+  },
+  {
+    "id": "ann-complement",
+    "proofId": "ptolemy-complex",
+    "range": {
+      "startLine": 78,
+      "endLine": 86
+    },
+    "title": "Cross-Ratio Complement",
+    "type": "theorem",
+    "content": "If (z1-z2)(z3-z4) = r*(z1-z3)(z2-z4), then (z1-z4)(z2-z3) = (1-r)*(z1-z3)(z2-z4). This follows from the ring identity by subtraction.",
+    "mathContext": "The ring identity decomposes the 'diagonal' product into two 'side' products. If one is r times the diagonal, the other must be (1-r) times. This algebraic fact is the key to the absolute-value argument.",
+    "significance": "core",
+    "relatedConcepts": ["cross-ratio", "ring identity"],
+    "prerequisites": ["Ring identity (Part I)"]
+  },
+  {
+    "id": "ann-ptolemy-cross-ratio",
+    "proofId": "ptolemy-complex",
+    "range": {
+      "startLine": 88,
+      "endLine": 102
+    },
+    "title": "Ptolemy from Cross-Ratio",
+    "type": "theorem",
+    "content": "The central reduction: if the cross-ratio is a positive real r in (0,1), then |z1-z2|*|z3-z4| + |z1-z4|*|z2-z3| = |z1-z3|*|z2-z4|. Proved by: |term1| = r*D, |term2| = (1-r)*D, sum = D.",
+    "mathContext": "This is the bridge between algebra and geometry. The cross-ratio being a positive real in (0,1) means both summands are positive-real multiples of the same complex number, so |a+b| = |a|+|b|. Uses `map_mul` (|zw| = |z||w|) and `Complex.abs_ofReal` (|r| = r for r > 0).",
+    "significance": "core",
+    "relatedConcepts": ["Complex.abs", "triangle inequality equality", "cross-ratio"],
+    "prerequisites": ["Complex absolute value", "Cross-ratio complement"]
+  },
+  {
+    "id": "ann-star-diff",
+    "proofId": "ptolemy-complex",
+    "range": {
+      "startLine": 127,
+      "endLine": 138
+    },
+    "title": "Conjugation of Unit-Circle Differences",
+    "type": "theorem",
+    "content": "For |z| = |w| = 1 (unit norm): star(z-w) * (z*w) = -(z-w). The proof uses star(z)*z = 1 and star(w)*w = 1 to simplify the expansion step by step.",
+    "mathContext": "Since star(z) = z^(-1) for unit-norm z, we have star(z-w) = z^(-1) - w^(-1). Multiplying by z*w: (z^(-1) - w^(-1)) * z * w = w - z = -(z-w). This is the key unit-circle identity that makes the cross-ratio real.",
+    "significance": "core",
+    "relatedConcepts": ["star algebra", "unit norm", "complex conjugation"],
+    "prerequisites": ["Star operation on C", "Unit norm condition"]
+  },
+  {
+    "id": "ann-product-cancel",
+    "proofId": "ptolemy-complex",
+    "range": {
+      "startLine": 140,
+      "endLine": 152
+    },
+    "title": "Conjugation Cancellation for Products",
+    "type": "theorem",
+    "content": "For unit-norm z1,...,z4: star((z1-z2)(z3-z4)) * z1*z2*z3*z4 = (z1-z2)(z3-z4). The z1*z2*z3*z4 factor 'absorbs' the conjugation.",
+    "mathContext": "Using star_diff_mul_unit twice: star(z1-z2)*(z1*z2) = -(z1-z2) and star(z3-z4)*(z3*z4) = -(z3-z4). The two minus signs cancel: (-1)*(-1) = 1. This means conjugation of any product (z_a-z_b)(z_c-z_d) is 'undone' by multiplying by the product of all four points.",
+    "significance": "core",
+    "relatedConcepts": ["star_mul", "involution", "unit circle"],
+    "prerequisites": ["star_diff_mul_unit"]
+  },
+  {
+    "id": "ann-conj-eq",
+    "proofId": "ptolemy-complex",
+    "range": {
+      "startLine": 159,
+      "endLine": 200
+    },
+    "title": "Cross-Ratio Self-Conjugacy",
+    "type": "theorem",
+    "content": "star(num)*den = num*star(den) where num = (z1-z2)(z3-z4) and den = (z1-z3)(z2-z4). This means the cross-ratio num/den is real.",
+    "mathContext": "The proof strategy: since star(num)*P = num and star(den)*P = den (where P = z1*z2*z3*z4), both sides of star(num)*den*P and num*star(den)*P equal num*den. Cancelling P (which is nonzero since each z_k has unit norm) gives the result. This is the geometric content of the proof: concyclicity implies real cross-ratio.",
+    "significance": "core",
+    "relatedConcepts": ["cross-ratio", "self-conjugate", "concyclicity"],
+    "prerequisites": ["star_product_cancel", "mul_right_cancel"]
+  },
+  {
+    "id": "ann-ordering-axiom",
+    "proofId": "ptolemy-complex",
+    "range": {
+      "startLine": 227,
+      "endLine": 234
+    },
+    "title": "Ordering Axiom",
+    "type": "concept",
+    "content": "Axiom: for unit circle points in cyclic order, the cross-ratio is a positive real in (0,1). This is the only unproved assumption.",
+    "mathContext": "The cross-ratio equals sin((t1-t2)/2)*sin((t3-t4)/2) / (sin((t1-t3)/2)*sin((t2-t4)/2)). For t1 < t2 < t3 < t4 < t1+2pi, all sine arguments are in (-pi,0), making all sines negative. The ratio of products-of-negatives is positive. The identity c + (1-c) = 1 forces 0 < c < 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["cyclic ordering", "sine", "cross-ratio positivity"],
+    "prerequisites": ["Trigonometry", "Unit circle parametrization"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "ptolemy-complex",
+    "range": {
+      "startLine": 236,
+      "endLine": 250
+    },
+    "title": "Ptolemy on the Unit Circle",
+    "type": "theorem",
+    "content": "The main theorem: for exp(i*theta_k) in cyclic order, |z1-z2|*|z3-z4| + |z1-z4|*|z2-z3| = |z1-z3|*|z2-z4|. Combines the ordering axiom with ptolemy_from_cross_ratio.",
+    "mathContext": "The final assembly: the ordering axiom provides a real r in (0,1), and ptolemy_from_cross_ratio converts this into the distance equality. The entire proof chain: ring identity -> cross-ratio reduction -> conjugation argument -> ordering -> Ptolemy.",
+    "significance": "core",
+    "relatedConcepts": ["Ptolemy's theorem", "unit circle", "complex absolute value"],
+    "prerequisites": ["All previous parts"]
+  }
+]
