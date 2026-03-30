@@ -4,7 +4,7 @@
   "slug": "chinese-remainder-constructive-oq-03",
   "description": "Formalizes Residue Number Systems (RNS) for parallel arithmetic: definitions, concrete bases (primes, Mersenne numbers), dynamic range bounds, and correctness of RNS addition/multiplication.",
   "meta": {
-    "author": "Garner (1959), Szabó-Tanaka (1967)",
+    "author": "Garner (1959), Szab\u00f3-Tanaka (1967)",
     "sourceUrl": "",
     "date": "2026",
     "status": "verified",
@@ -19,14 +19,15 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 318,
-    "assumptions": "None. All theorems fully proved. mersenne_coprime_of_coprime proved via Euclidean algorithm on exponents (strong induction). primorial_growth_lower proved for k ≤ 6 (lookup table range). dynamicRange_le_pow, RNS encode/add/mul correctness all verified.",
+    "assumptions": "None. All theorems fully proved. mersenne_coprime_of_coprime proved via Euclidean algorithm on exponents (strong induction). primorial_growth_lower proved for k \u2264 6 (lookup table range). dynamicRange_le_pow, RNS encode/add/mul correctness all verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "text": "Formalizes Residue Number Systems using the Chinese Remainder Theorem for parallel computer arithmetic.",
     "proofStrategy": "Define RNS bases, prove concrete examples, formalize encode/add/mul operations and their correctness via Nat.add_mod and Nat.mul_mod.",
     "keyInsights": [],
-    "historicalContext": ""
+    "historicalContext": "",
+    "problemStatement": "See the description field for the problem statement."
   },
   "sections": [],
   "conclusion": {
