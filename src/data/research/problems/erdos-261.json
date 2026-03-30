@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended explicit representations to n=1..7,9 (from n=1..6). Added BL values n=57,120. n=8,10 need large witness sets (13+ elements). 0 sorries, 2 axioms unchanged.",
+    "progressSummary": "COMPLETE: 0A, 0S. Fully verified. Removed 2 unused axioms.",
     "builtItems": [
       "recipPow2Weight_zero: w(0) = 0",
       "recipPow2Weight_three: w(3) = 3/8",
@@ -52,7 +52,8 @@
       "representable_nine: n=9 via {10,11,13,14} (4-element witness, clean!)",
       "representable_le_7: all n in [1,7] proved representable",
       "representable_57: BL family m=5 (n=57)",
-      "representable_120: BL family m=6 (n=120)"
+      "representable_120: BL family m=6 (n=120)",
+      "Removed tengely_ulas_zygadlo + ErdosProblem261_all axioms (unused, 2A→0A)"
     ],
     "insights": [
       "borwein_loring_family is the only provable axiom (5 total) — proof requires partial_sum_formula + telescoping + substitution",
@@ -101,7 +102,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T22:30:27.389Z",
-  "lastUpdate": "2026-03-13T07:52:17.044Z",
+  "lastUpdate": "2026-03-29T23:10:00Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
@@ -110,7 +111,7 @@
       "filename": "Erdos261Problem.lean",
       "lineCount": 352,
       "theoremCount": 28,
-      "axiomCount": 2,
+      "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

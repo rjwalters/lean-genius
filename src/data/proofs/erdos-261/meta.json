@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/261",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos261Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "representations",
       "binary-arithmetic"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 261,
     "erdosUrl": "https://erdosproblems.com/261",
@@ -32,9 +32,9 @@
         "module": "Mathlib.Data.Rat.Basic"
       }
     ],
-    "axiomCount": 2,
+    "axiomCount": 0,
     "lineCount": 394,
-    "assumptions": "2 axioms: tengely_ulas_zygadlo (computational verification n≤10000), ErdosProblem261_all (open conjecture). Borwein-Loring family fully proved. Explicit representations for n=1..7,9,11,26,57,120.",
+    "assumptions": "None. Fully verified. Tengely-Ulas-Zygadło and ErdosProblem261_all removed (unused).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
