@@ -80,6 +80,8 @@
     "quantitative-improvement"
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-15",
     "erdos-152"
   ],
   "references": {
@@ -95,13 +97,24 @@
     {
       "path": "Proofs/Erdos152OQ01.lean",
       "filename": "Erdos152OQ01.lean",
-      "lineCount": 369,
-      "theoremCount": 5,
+      "lineCount": 320,
+      "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos152OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos152Problem.lean",
+      "filename": "Erdos152Problem.lean",
+      "lineCount": 471,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos152Problem.lean"
     }
   ]
 }
