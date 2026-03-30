@@ -255,6 +255,7 @@ import Proofs.Erdos1019Problem
 import Proofs.Erdos101Problem
 import Proofs.Erdos1020Problem
 import Proofs.Erdos1021Problem
+import Proofs.Erdos1022OQ03
 import Proofs.Erdos1022Problem
 import Proofs.Erdos1023OQ01
 import Proofs.Erdos1023OQ01Problem
