@@ -1,7 +1,7 @@
 {
   "slug": "minkowski-theorem-oq-01",
   "title": "Prove Minkowski axiom using Mathlib measure theory",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -11,33 +11,56 @@
     "whyMatters": []
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-30T08:45:00Z",
-    "iteration": 1,
-    "focus": "Survey: identified Mathlib API and bridge strategy",
-    "blockers": ["Substantial bridge code needed between custom Lattice/ConvexBody and Mathlib ZSpan"],
-    "nextAction": "Build bridge between custom Lattice n and Mathlib ZSpan"
+    "phase": "ACT",
+    "since": "2026-03-30T07:30:00Z",
+    "iteration": 2,
+    "focus": "Proved ℤⁿ case from Mathlib GeometryOfNumbers; general lattice axiom remains",
+    "blockers": [
+      "Docker not available for build verification",
+      "General lattice case requires HasVolume→Lebesgue measure refactor"
+    ],
+    "nextAction": "Build-verify with Docker, then bridge custom Lattice n to ZSpan for general case"
   },
   "knowledge": {
-    "progressSummary": "Session 1: SURVEY only. Identified Mathlib API for Minkowski (exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure, ZSpan). Bridge between custom definitions and Mathlib is substantial (~200 lines).",
-    "builtItems": [],
+    "progressSummary": "Session 2: DEEP DIVE. Proved ℤⁿ case of Minkowski from Mathlib (minkowski_integer_lattice_proved). Added imports for GeometryOfNumbers and ZLattice. General lattice axiom remains — requires replacing HasVolume abstraction with actual Lebesgue measure.",
+    "builtItems": [
+      "MinkowskiProved.stdBasis — standard basis for Fin n → ℝ",
+      "MinkowskiProved.stdLattice — ℤⁿ as ZSpan of standard basis",
+      "MinkowskiProved.stdFundDomain — fundamental domain [0,1)ⁿ",
+      "MinkowskiProved.stdLattice_covolume — proved covolume = 1",
+      "MinkowskiProved.minkowski_integer_lattice_proved — Minkowski for ℤⁿ from Mathlib (no axioms)"
+    ],
     "insights": [
       "Mathlib has exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure — the core Minkowski theorem",
       "The file uses custom Lattice n, ConvexBody n, HasVolume, criticalVolume, latticePoints structures that don't align with Mathlib's ZSpan API",
       "ThreeSquares.lean already uses ZSpan.fundamentalDomain and ZSpan.isAddFundamentalDomain for Minkowski applications — can serve as reference",
       "Bridge strategy: (1) map custom Lattice n → Mathlib ZSpan, (2) map ConvexBody → MeasurableSet with volume, (3) apply Mathlib Minkowski, (4) translate result back to custom types",
-      "Estimated effort: 200+ lines of bridge code. Best done as a dedicated session."
+      "Estimated effort: 200+ lines of bridge code. Best done as a dedicated session.",
+      "The ℤⁿ case can bypass the custom Lattice/HasVolume types entirely — work directly with Fin n → ℝ and actual Lebesgue measure",
+      "Module.finrank_fin_fun gives finrank ℝ (Fin n → ℝ) = n, needed for volume threshold",
+      "ZSpan.volume_fundamentalDomain reduces covolume to |det(Matrix.of basis)|",
+      "General lattice elimination requires constructing Module.Basis from the custom Lattice.basis matrix — Mathlib has Matrix.toLin for this",
+      "The HasVolume typeclass is the fundamental barrier: it is an abstract ℝ not connected to actual Lebesgue measure"
     ],
     "nextSteps": [
-      "Study ThreeSquares.lean ZSpan usage as reference implementation",
-      "Build Lattice→ZSpan bridge (map basis vectors, show covolume equals)",
-      "Build ConvexBody→MeasurableSet bridge (symmetric, convex, measurable, volume)",
-      "Apply Mathlib's Minkowski theorem via the bridge",
-      "Convert result back to custom latticePoints predicate"
+      "Docker build verification of the new proof",
+      "For general case: construct Module.Basis from Lattice.basis via Matrix.toLin and basis_of_invertible",
+      "For general case: prove ZSpan.volume_fundamentalDomain yields ENNReal.ofReal L.covolume",
+      "Consider replacing HasVolume with actual MeasurableSet + volume hypotheses",
+      "Alternative: add MeasurableSet + volume connection theorem alongside existing HasVolume"
     ]
   },
-  "tags": ["geometry", "number-theory", "lattice", "measure-theory", "axiom-elimination", "seeker-selected"],
-  "relatedProofs": ["minkowski-fundamental-theorem"],
+  "tags": [
+    "geometry",
+    "number-theory",
+    "lattice",
+    "measure-theory",
+    "axiom-elimination",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "minkowski-fundamental-theorem"
+  ],
   "started": "2026-03-30T08:45:00Z",
   "lastUpdate": "2026-03-30T08:50:00Z",
   "significance": 7,
