@@ -166,8 +166,10 @@ theorem density_insufficient_for_quarter : m1 < 1 / 4 := by
   calc m1 ≤ 0.247 := acmvz_upper_bound
     _ < 1 / 4 := quarter_threshold
 
-/-- The n/4 question remains open -/
-axiom quarter_conjecture_open : ∀ n : ℕ, (f n : ℝ) ≥ n / 4 ↔ sorry
+/-- The n/4 question remains open: is f(n) ≥ n/4 for all n?
+    This cannot be stated as a clean axiom since it is an open yes/no question.
+    The density result m₁ < 1/4 (density_insufficient_for_quarter) suggests
+    the answer may be no, but this is not a proof. -/
 
 /- ## Connection to Hadwiger-Nelson Problem
 

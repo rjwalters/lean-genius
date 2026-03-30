@@ -17,22 +17,22 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 7,
+    "sorries": 6,
     "erdosNumber": 1040,
     "erdosUrl": "https://erdosproblems.com/1040",
     "erdosProblemStatus": "open",
     "relatedProblems": [
       1039
     ],
-    "axiomCount": 8,
-    "assumptions": "8 axiom declarations: transfiniteDiameter_eq (definition of transfinite diameter as limit of nth root of max product), problem_open (open status marker), lineSegment_determined and disc_determined (transfinite diameters for specific sets), lineSegment_diameter and disc_diameter (known diameter values for segments and discs), small_diameter_disc (disc containment for small transfinite diameter), erdos_netanyahu (Erdős-Netanyahu quantitative measure bound for sublevel sets). These encode established results from potential theory (Fekete 1923, Erdős-Herzog-Piranian 1958, Erdős-Netanyahu 1960) and the open status of the conjecture.",
+    "axiomCount": 7,
+    "assumptions": "7 axiom declarations: transfiniteDiameter_eq (Fekete's limit theorem for nth diameters), lineSegment_determined and disc_determined (EHP 1958: μ depends only on ρ for these sets), lineSegment_diameter and disc_diameter (classical capacity formulas), small_diameter_disc (qualitative disc containment for ρ < 1), erdos_netanyahu (quantitative disc bounds for bounded connected sets, 1973). The former problem_open axiom was removed as it negated classical excluded middle.",
     "prerequisites": [
       "Complex analysis: polynomial lemniscates and sublevel sets",
       "Potential theory: transfinite diameter and logarithmic capacity",
       "Measure theory: Lebesgue measure in the complex plane",
       "Approximation theory: Chebyshev polynomials and extremal polynomials"
     ],
-    "lineCount": 249,
+    "lineCount": 321,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -230,11 +230,11 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 249,
+    "lineCount": 321,
     "axiomCount": 8,
-    "theoremCount": 8,
-    "substantiveTheoremCount": 8,
+    "theoremCount": 11,
+    "substantiveTheoremCount": 11,
     "trivialSpecializations": 0,
-    "definitionCount": 15
+    "definitionCount": 18
   }
 }

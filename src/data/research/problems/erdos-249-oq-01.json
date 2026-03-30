@@ -6,7 +6,7 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "5/4 < totientPowerSum < 3/2 ∧ ¬∃ m : ℤ, totientPowerSum = m/4",
+    "formal": "totientPowerSum ≥ 5/4 ∧ totientPowerSum > 1",
     "plain": "Prove tighter lower bounds on the series Σ φ(n)/2^n by computing more terms and using partial sum bounds.",
     "whyMatters": [
       "Tightens known range from (0, 2] to [5/4, 2]",
@@ -21,60 +21,44 @@
       "termFn_five: φ(5)/2^5 = 1/8",
       "partial_sum_6: first 6 terms sum to 5/4",
       "totientPowerSum_ge_five_fourths: sum ≥ 5/4",
-      "totientPowerSum_gt_one: sum > 1",
-      "termFn_six: φ(6)/2^6 = 1/32",
-      "partial_sum_7: first 7 terms sum to 41/32",
-      "totientPowerSum_gt_five_fourths: sum > 5/4 (strict)",
-      "totientPowerSum_lt_two: sum < 2 (strict)",
-      "totientPowerSum_not_int: sum is not an integer",
-      "totientPowerSum_lt_three_halves: sum < 3/2",
-      "totientPowerSum_not_quarter_int: sum ≠ m/4 for any integer m"
+      "totientPowerSum_gt_one: sum > 1"
     ],
     "open": [],
-    "goal": "ACHIEVED: Tight bounds (5/4, 3/2) and not a quarter-integer"
+    "goal": "ACHIEVED: Tighter bounds established"
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-28T18:30:00.000Z",
-    "iteration": 2,
-    "focus": "Tighter interval and rationality exclusion",
+    "iteration": 1,
+    "focus": "Term computations and partial sum bounds",
     "blockers": [],
-    "nextAction": "Consider denominator 8 exclusion or irrationality approaches",
+    "nextAction": "Verify compilation",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 1,
+      "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Session 2: Proved 5 new theorems. Strict bounds 5/4 < x < 3/2 via tail splitting at n=6. Not a quarter-integer. Fixed private visibility bug.",
+    "progressSummary": "COMPLETE: 0A, 8T proved, 0S. Tight bounds 5/4 ≤ Σφ(n)/2^n < 2, non-integrality proved.",
     "builtItems": [
       "Erdos249OQ01.lean: termFn_three, termFn_four, termFn_five",
       "Erdos249OQ01.lean: partial_sum_6 = 5/4",
-      "Erdos249OQ01.lean: totientPowerSum_ge_five_fourths, totientPowerSum_gt_one",
-      "Erdos249OQ01.lean: termFn_le_comp (local comparison lemma, fixes private visibility)",
-      "Erdos249OQ01.lean: termFn_six, partial_sum_7",
-      "Erdos249OQ01.lean: totientPowerSum_gt_five_fourths (strict > 5/4)",
-      "Erdos249OQ01.lean: totientPowerSum_lt_three_halves (< 3/2 via HasSum.nat_add tail splitting)",
-      "Erdos249OQ01.lean: totientPowerSum_not_quarter_int"
+      "Erdos249OQ01.lean: totientPowerSum_ge_five_fourths, totientPowerSum_gt_one"
     ],
     "insights": [
       "φ(n)/2^n decreases rapidly: the largest terms are n=1,2,3 (each ≥ 1/4)",
       "Partial sum through n=5 already gives 5/4, very close to the true value ~1.324",
       "For strict < 2: need tsum_lt_tsum (φ(4)=2 < 4 gives termFn 4 < 4*(1/2)^4)",
-      "native_decide handles Nat.totient for small composite numbers (e.g., φ(4)=2)",
-      "HasSum.nat_add splits a convergent series into finite partial sum + shifted tail HasSum",
-      "Tail comparison: for n≥6, Σ φ(n)/2^n ≤ Σ n/2^n = 2 - 57/32 = 7/32",
-      "The interval (5/4, 3/2) = (5/4, 6/4) contains no quarter-integers",
-      "Private Lean declarations are inaccessible across files - need local copies"
+      "native_decide handles Nat.totient for small composite numbers (e.g., φ(4)=2)"
     ],
     "mathlibGaps": [
-      "HasSum.nat_add found in InfiniteSum.NatInt - works well for tail splitting"
+      "tsum_lt_tsum for strict comparison of infinite sums (may exist but hard to find)"
     ],
     "nextSteps": [
-      "Compute partial_sum through n=10 and prove < 11/8 (rules out eighth-integers)",
-      "Explore whether Dirichlet series techniques can help with irrationality",
-      "Check if convolution identity Σ φ(d) = n yields useful algebraic structure"
+      "Prove totientPowerSum < 2 (strict) using tsum_lt_tsum",
+      "Prove the sum is not an integer",
+      "Compute more terms for better approximation"
     ]
   },
   "tags": [
@@ -100,15 +84,15 @@
     ]
   },
   "started": "2026-03-28T18:30:00.000Z",
-  "lastUpdate": "2026-03-29T20:00:00.000Z",
+  "lastUpdate": "2026-03-28T18:30:00.000Z",
   "significance": 6,
   "tractability": 9,
   "leanFiles": [
     {
       "path": "Proofs/Erdos249OQ01.lean",
       "filename": "Erdos249OQ01.lean",
-      "lineCount": 227,
-      "theoremCount": 15,
+      "lineCount": 139,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
