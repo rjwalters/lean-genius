@@ -31,6 +31,7 @@ References:
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Convex.Basic
@@ -51,21 +52,45 @@ noncomputable def nthPrime (n : ℕ) : ℕ :=
   if n = 0 then 0 else Nat.nth Nat.Prime (n - 1)
 
 /--
-The first few primes.
+Helper: Nat.nth Nat.Prime 3 = 7.
+Proved via Nat.count + decide.
+-/
+private theorem nth_prime_three_eq_seven : Nat.nth Nat.Prime 3 = 7 := by
+  have h_count : Nat.count Nat.Prime 7 = 3 := by decide
+  have h_prime : Nat.Prime 7 := by decide
+  rw [← h_count]
+  exact Nat.nth_count h_prime
+
+/--
+The first few primes. Proved via Mathlib's Nat.nth_prime lemmas.
+(Previously sorry; resolved using Nat.nth_prime_{zero,one,two} and Nat.nth_count.)
 -/
 theorem nthPrime_values :
     nthPrime 1 = 2 ∧ nthPrime 2 = 3 ∧ nthPrime 3 = 5 ∧ nthPrime 4 = 7 := by
-  sorry
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · unfold nthPrime; simp; exact Nat.nth_prime_zero_eq_two
+  · unfold nthPrime; simp; exact Nat.nth_prime_one_eq_three
+  · unfold nthPrime; simp; exact Nat.nth_prime_two_eq_five
+  · unfold nthPrime; simp; exact nth_prime_three_eq_seven
 
 /--
 All nthPrime values for n ≥ 1 are prime.
+Proved via Nat.nth_mem_of_infinite. (Previously axiom.)
 -/
-axiom nthPrime_is_prime (n : ℕ) (hn : n ≥ 1) : (nthPrime n).Prime
+theorem nthPrime_is_prime (n : ℕ) (hn : n ≥ 1) : (nthPrime n).Prime := by
+  unfold nthPrime
+  simp [Nat.not_eq_zero_of_lt (by omega : 0 < n)]
+  exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime (n - 1)
 
 /--
 The prime sequence is strictly increasing.
+Proved via Nat.nth_strictMono. (Previously axiom.)
 -/
-axiom nthPrime_strictMono : StrictMono (fun n => nthPrime (n + 1))
+theorem nthPrime_strictMono : StrictMono (fun n => nthPrime (n + 1)) := by
+  intro a b hab
+  unfold nthPrime
+  simp
+  exact Nat.nth_strictMono Nat.infinite_setOf_prime hab
 
 /-
 ## Part II: The Erdős-Straus Conjecture
