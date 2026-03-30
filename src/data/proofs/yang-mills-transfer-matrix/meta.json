@@ -17,7 +17,7 @@
       "millennium-prize"
     ],
     "badge": "axiom",
-    "sorries": 15,
+    "sorries": 4,
     "axiomCount": 1,
     "assumptions": "1 explicit axiom (gaugeTransform from YangMills/Classical.lean) plus structure-encoded assumptions: TransferMatrix requires lambda_0 > lambda_1 > 0 (Perron-Frobenius eigenvalue ordering), and LatticeTransferMatrix requires positivity and strict gap. These encode the physical assumption that the transfer matrix has a spectral gap, which is proven for finite-volume lattice gauge theory.",
     "lineCount": 28043,

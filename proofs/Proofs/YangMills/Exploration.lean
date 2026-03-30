@@ -17424,7 +17424,7 @@ theorem dim4_decreases (C₄ G2 Q₁ Q₂ : ℝ) (hC : C₄ > 0) (hG : G2 > 0)
   unfold dim4Contribution
   apply div_lt_div_of_pos_left (mul_pos hC hG)
   · positivity
-  · sorry
+  · exact pow_lt_pow_left (by linarith) (le_of_lt hQ1) (by omega)
 
 /-- The dimension-6 operator: ⟨g f_{abc} G³⟩.
     Its contribution is ~ Λ⁶/Q⁶, much smaller than dimension 4 at high Q. -/
@@ -21972,8 +21972,8 @@ theorem wv_mass_sq_pos (Nf chi_t f_pi : ℝ)
   · apply mul_pos
     · apply mul_pos
       · linarith
-      · sorry
-    · sorry
+      · linarith
+    · linarith
   · exact sq_pos_of_pos hf
 
 /-- The η' mass is much larger than the pion mass:
@@ -22500,7 +22500,7 @@ theorem hook_length_positive (eps1 eps2 : ℝ) (a_arm l_leg : ℕ)
     eps1 * (a_arm : ℝ) + eps2 * ((l_leg : ℝ) + 1) > 0 := by
   apply add_pos_of_nonneg_of_pos
   · exact mul_nonneg (le_of_lt h1) (Nat.cast_nonneg a_arm)
-  · sorry
+  · exact mul_pos h2 (by linarith [Nat.cast_nonneg l_leg])
 
 /-- The gauge coupling runs logarithmically: τ = (θ/2π) + i(4π/g²).
     The instanton parameter q = exp(2πiτ) = exp(-8π²/g²) for θ=0.
@@ -22557,7 +22557,7 @@ theorem semiclassical_pos (p : DeformedYMParams) :
   unfold semiclassicalParam
   apply mul_pos
   apply mul_pos
-  · sorry
+  · exact Nat.cast_pos.mpr (by omega : p.N > 0)
   · exact p.h_L
   · exact p.h_Lambda
 
@@ -24125,7 +24125,7 @@ noncomputable def csTopologicalMass (p : CSParams) : ℝ :=
 theorem csTopologicalMass_pos (p : CSParams) : csTopologicalMass p > 0 := by
   unfold csTopologicalMass
   apply div_pos
-  · sorry
+  · exact mul_pos (Nat.cast_pos.mpr (by omega : p.k > 0)) p.hg
   · positivity
 
 /-- The CS mass is proportional to the level k. Higher k → heavier gauge boson. -/
@@ -24185,7 +24185,7 @@ theorem csRenorm_gt_bare (p : CSParams) :
   apply div_lt_div_of_pos_right _ (by positivity)
   apply mul_lt_mul_of_pos_right _ p.hg
   push_cast
-  sorry
+  linarith [Nat.cast_pos.mpr (show p.N > 0 by omega)]
 
 /-- Level-rank duality: SU(N)_k ↔ SU(k)_N.
     Under this duality, the Hilbert spaces are isomorphic and the
@@ -25305,8 +25305,8 @@ def QSimParams.numLinks (p : QSimParams) : ℕ :=
 theorem num_links_pos (p : QSimParams) : 0 < p.numLinks := by
   unfold QSimParams.numLinks
   apply Nat.mul_pos
-  · sorry
-  · sorry
+  · omega
+  · exact Nat.pos_pow_of_pos p.spatialDim (by omega)
 
 /-- Number of generators of SU(N): N² - 1. -/
 def suGenerators (N : ℕ) : ℕ := N ^ 2 - 1
@@ -25832,7 +25832,9 @@ theorem tc_decreases_with_mu (Tc0 : ℝ) (mu1 mu2 : ℝ)
     -- At higher μ, T_c is lower (the ratio inside sqrt decreases)
     (mu1 / (3 * Tc0)) ^ 2 < (mu2 / (3 * Tc0)) ^ 2 := by
   apply sq_lt_sq'
-  · sorry
+  · have h1 : mu1 / (3 * Tc0) ≥ 0 := div_nonneg hmu1 (by linarith)
+    have h2 : mu2 / (3 * Tc0) > 0 := div_pos (by linarith) (by linarith)
+    linarith
   · exact div_lt_div_of_pos_right h12 (by linarith)
 
 /-- Baryon number density in the CFL phase:
@@ -27489,9 +27491,8 @@ theorem sc_tension_monotone_in_N (beta : ℝ) (hbeta : beta > 0)
     beta / (2 * (N2 : ℝ) ^ 2) < beta / (2 * (N1 : ℝ) ^ 2) := by
   apply div_lt_div_of_pos_left hbeta
   · positivity
-  · sorry
-  -- [MATHLIB-DRIFT] · have hN1_cast : (N1 : ℝ) < (N2 : ℝ) := Nat.cast_lt.mpr hlt
-    -- [MATHLIB-DRIFT] nlinarith [sq_nonneg ((N2 : ℝ) - (N1 : ℝ)), sq_nonneg (N1 : ℝ)]
+  · have hN1_cast : (N1 : ℝ) < (N2 : ℝ) := Nat.cast_lt.mpr hlt
+    nlinarith [sq_nonneg ((N2 : ℝ) - (N1 : ℝ)), sq_nonneg (N1 : ℝ)]
 
 /-- The number of minimum-area surfaces (tiling paths) for an R × T Wilson loop.
     At leading order this is 1 (the unique planar tiling).
