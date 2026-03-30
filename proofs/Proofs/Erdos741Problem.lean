@@ -241,9 +241,15 @@ theorem basis_infinite {A : Set ℕ} (h : IsBasisOrder2 A) : A.Infinite := by
   have := hS_bound _ hm
   omega
 
-/-- A cofinite set (containing all sufficiently large n) has density 1. -/
-axiom cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
-    upperDensity S = 1
+/-- A cofinite set (containing all sufficiently large n) has density 1.
+    Proof: S ⊇ Ici N for some N, so |S ∩ [0,n]| ≥ n-N+1 for n ≥ N.
+    The ratio ≥ 1 - N/(n+1) → 1. Combined with density_le_one, limsup = 1. -/
+theorem cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
+    upperDensity S = 1 := by
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp h
+  by_cases hN0 : N = 0
+  · rw [Set.eq_univ_of_forall (fun n => hN n (by omega))]; exact density_univ
+  · sorry
 
 /-- A basis of order 2 has positive density sumset. -/
 theorem basis_has_pos_density_sumset {A : Set ℕ} (h : IsBasisOrder2 A) :

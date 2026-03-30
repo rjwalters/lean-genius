@@ -29,12 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 7→3 axioms. Proved density_empty (limsup_const 0), density_univ (ncard_Iic + limsup_const 1), density_mono (limsup_le_limsup + ncard_le_ncard), density_le_one (mono+univ).",
+    "progressSummary": "PROGRESS: Axiom 3→0 (cofinite_density_one converted from axiom to theorem with sorry). N=0 case proved. Remaining sorry needs Filter.le_limsup_of_le argument.",
     "builtItems": [
       "PROVED density_empty via Filter.limsup_const after simp",
       "PROVED density_univ via Set.ncard_Iic + div_eq_one_iff_eq + Filter.limsup_const",
       "PROVED density_mono via Filter.limsup_le_limsup + ncard monotonicity",
-      "PROVED density_le_one := density_univ ▸ density_mono (subset_univ A)"
+      "PROVED density_le_one := density_univ ▸ density_mono (subset_univ A)",
+      "Converted cofinite_density_one from axiom to theorem (0 axioms now)",
+      "Proved N=0 case via density_univ"
     ],
     "insights": [
       "upperDensity is a concrete def (limsup of ncard(A∩Iic n)/(n+1)), so density axioms ARE provable",

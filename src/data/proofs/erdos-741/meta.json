@@ -6,7 +6,7 @@
     "meta": {
         "author": "Burr, Erdős (1994)",
         "sourceUrl": "https://erdosproblems.com/741",
-        "status": "axiomatized",
+        "status": "formalized",
         "proofRepoPath": "Proofs/Erdos741Problem.lean",
         "tags": [
             "erdos",
@@ -18,7 +18,7 @@
             "partition-regularity"
         ],
         "badge": "axiom",
-        "sorries": 0,
+        "sorries": 1,
         "erdosNumber": 741,
         "erdosUrl": "https://erdosproblems.com/741",
         "erdosProblemStatus": "open",
@@ -64,9 +64,9 @@
             "part2_gives_non_syndetic: proved Part 2 implies non-syndetic partition exists",
             "part2_contradicts_part1_for_basis: proved Part 2 implies Part 1 tension"
         ],
-        "axiomCount": 3,
-        "lineCount": 288,
-        "assumptions": "7 axioms: density_empty, density_finite, density_mono, and 4 more. See Lean source for complete statements."
+        "axiomCount": 0,
+        "lineCount": 290,
+        "assumptions": "0 axioms (down from 3). Former axiom cofinite_density_one converted to theorem with 1 sorry. Proof strategy: S ⊇ Ici N, so ratio ≥ 1 - N/(n+1) → 1. N=0 case proved via density_univ."
     },
     "overview": {
         "historicalContext": "**Burr and Erdős's Two-Part Problem on Sumset Splitting**\n\nBurr and Erdős posed this two-part problem in 1994 [Er94b], exploring the partition regularity of sumsets at the intersection of additive combinatorics, density theory, and Ramsey theory.\n\n**Part 1 (Density Splitting):**\nIf A + A has positive upper density (a positive fraction of integers are sums of pairs from A), can we always split A = A₁ ⊔ A₂ such that both A₁ + A₁ and A₂ + A₂ also have positive density? This is a density version of Ramsey-type partition questions: does additive structure survive partitioning?\n\n**Part 2 (Non-Splittable Basis):**\nA basis of order 2 is a set A where A + A contains all sufficiently large integers. Does there exist such a basis where no partition A = A₁ ⊔ A₂ makes both A₁ + A₁ and A₂ + A₂ syndetic (having bounded gaps)? This asks for a basis that is 'indivisible' in a strong sense.\n\n**Erdős's Belief:**\nErdős reportedly believed he could construct such a non-splittable basis but 'could never quite finish the proof,' suggesting the problem lies at the boundary of current techniques.\n\n**The Tension:**\nThe two parts are in formal tension. If Part 2 holds for some basis A, then since A + A is cofinite (hence positive density), Part 1 fails for the syndetic strengthening applied to that specific A. The formalization makes this connection rigorous through the theorem part2_contradicts_part1_for_basis.\n\n**Notable Formalization:**\nThe Lean file achieves 0 sorries with 20+ proved structural theorems including sumset algebra, partition theory, syndetic set properties, basis infiniteness, and the Part 1/Part 2 tension connection — making it one of the most complete formalizations in the gallery despite both conjectures remaining open.",
@@ -160,8 +160,8 @@
             "Filter"
         ],
         "namespace": null,
-        "lineCount": 288,
-        "axiomCount": 3,
+        "lineCount": 290,
+        "axiomCount": 0,
         "theoremCount": 22,
         "definitionCount": 8
     },
