@@ -1,0 +1,46 @@
+[
+  {
+    "id": "furst-oq01-shift",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": { "startLine": 43, "endLine": 70 },
+    "type": "definition",
+    "title": "Shift Map on Cantor Space",
+    "content": "Defines the shift T(x)(n) = x(n+1) on Cantor space ℕ → Bool, proves it continuous (via continuous_pi/continuous_apply) and measurable, and derives the iteration formula shift^[n](x)(k) = x(k+n).",
+    "significance": "essential",
+    "relatedConcepts": ["symbolic dynamics", "product topology", "continuous maps"],
+    "mathContext": "The shift on the full shift space Ω = A^ℕ (here A = Bool) is the fundamental dynamical system in symbolic dynamics. Continuity follows from the product topology universality."
+  },
+  {
+    "id": "furst-oq01-cylinder",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": { "startLine": 72, "endLine": 112 },
+    "type": "theorem",
+    "title": "Cylinder Sets: Clopen and Measurable",
+    "content": "Proves cylinder sets {x : x(i) = b} are clopen (both open and closed) in the product topology, hence measurable in the Borel σ-algebra. Computes preimages: T⁻¹(cylinder i b) = cylinder (i+1) b and T^{-n}(B₀) = cylinder n true.",
+    "significance": "essential",
+    "relatedConcepts": ["cylinder sets", "Borel σ-algebra", "product topology generators"],
+    "mathContext": "Cylinder sets generate the product σ-algebra. Their preimage formula under the shift is the key computational tool for relating dynamics to measure."
+  },
+  {
+    "id": "furst-oq01-return",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": { "startLine": 150, "endLine": 176 },
+    "type": "theorem",
+    "title": "k-fold Return Property",
+    "content": "The fundamental bridge: 1_A ∈ ⋂_{i<k} T^{-id}(B₀) iff every id (for i < k) belongs to A. This connects dynamical intersections to arithmetic progression membership, making the Furstenberg correspondence work.",
+    "significance": "essential",
+    "relatedConcepts": ["arithmetic progressions", "dynamical correspondence", "return times"],
+    "mathContext": "If a measure μ assigns positive mass to ⋂_{i<k} T^{-id}(B₀), then by the return property there exists a ∈ ℕ with a+id ∈ A for all i < k — a k-term AP in A with common difference d."
+  },
+  {
+    "id": "furst-oq01-compact",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": { "startLine": 208, "endLine": 224 },
+    "type": "theorem",
+    "title": "Compactness and Metrizability of Cantor Space",
+    "content": "Cantor space ℕ → Bool is compact (Tychonoff, since Bool is finite) and metrizable (countable product of discrete spaces). These are prerequisites for weak-* sequential compactness of probability measures.",
+    "significance": "important",
+    "relatedConcepts": ["Tychonoff theorem", "compact metrizable spaces", "Prokhorov theorem"],
+    "mathContext": "Compactness + metrizability implies the space of probability measures on Ω is compact metrizable in the weak-* topology (Prokhorov). This guarantees Cesàro subsequential limits exist."
+  }
+]
