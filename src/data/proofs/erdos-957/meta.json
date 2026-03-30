@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 2,
     "erdosNumber": 957,
     "erdosUrl": "https://erdosproblems.com/957",
     "erdosProblemStatus": "solved",
@@ -59,8 +59,8 @@
       "regular_polygon_all_frequent axiom: odd polygons have all distances frequent"
     ],
     "axiomCount": 6,
-    "lineCount": 320,
-    "assumptions": "6 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "lineCount": 326,
+    "assumptions": "6 axioms (dumitrescu_theorem, makai_tight_construction, sum_inequality, convexHullVertices, regularPolygon, regular_polygon_all_frequent) and 2 sorries (stronger_implies_original, erdos_957_summary partial). The key results are axiomatized from the literature."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #957: Product of Extreme Distance Frequencies**\n\nThis problem was posed by Erdos and Pach in 1990 in their paper 'Variations on the theme of repeated distances'. They asked whether the product of minimum and maximum distance frequencies in a planar point set is bounded.\n\n**Key History:**\n- **Erdos-Pach (1990):** Posed the problem; noted Makai's 'easy' construction showing 9/8 is tight\n- **Dumitrescu (2019):** Proved f(d_1)f(d_k) <= (9/8)n^2 + O(n)\n\n**Context:**\nThe problem sits at the intersection of discrete geometry and combinatorics. Understanding how distance frequencies interact constrains the structure of point configurations.",
@@ -177,7 +177,7 @@
       "Real"
     ],
     "namespace": "Erdos957",
-    "lineCount": 320,
+    "lineCount": 326,
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 9
