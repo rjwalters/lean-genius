@@ -92,13 +92,11 @@ axiom westzynthius_large_gaps : InfinityIsLimitPoint
    Full measure-theoretic formalization requires MeasureTheory imports.
    Subsumed by Merikoski's stronger density result below. -/
 
-/-- **Merikoski (2020s)**: At least 1/3 of [0, ∞) belongs to S.
-    Also: S has bounded gaps (no "large holes").
-    The formal measure-theoretic statement requires measure theory imports;
-    the existential structure is trivially satisfiable as a placeholder. -/
-theorem merikoski_density : ∃ density : ℝ, density ≥ 1/3 ∧
-  -- Informal: μ(S ∩ [0, M]) / M ≥ density as M → ∞
-  True := ⟨1/3, by norm_num, trivial⟩
+/- **Merikoski (2020s)**: At least 1/3 of [0, ∞) belongs to S.
+   Also: S has bounded gaps (no "large holes").
+   The formal statement (∀ᶠ M in atTop, μ(S ∩ [0, M]) / M ≥ 1/3)
+   requires MeasureTheory imports and is not formalized here.
+   Combined with Erdős-Ricci, this implies S is "large" — but not yet dense. -/
 
 /- ## Part V: Basic Properties -/
 
@@ -518,5 +516,57 @@ theorem known_properties_of_S :
     limitPointSet ⊆ Set.Ici 0 ∧ (∀ M : ℝ, M > 0 → ∃ C ∈ limitPointSet, C > M) :=
   ⟨limitPointSet_nonempty, limitPointSet_isClosed,
    limitPointSet_subset_nonneg, limitPointSet_unbounded_above⟩
+
+/- ## Part XII: Reduction to Dense Values -/
+
+/-- If normalizedGap values cluster near C (infinitely many within any ε),
+    then C is a limit point. This is the constructive content of sequential
+    compactness: cluster point → subsequential limit via diagonal extraction. -/
+lemma isLimitPoint_of_frequently_near (C : ℝ)
+    (h : ∀ ε : ℝ, 0 < ε → {n : ℕ | dist (normalizedGap n) C < ε}.Infinite) :
+    IsLimitPoint C := by
+  have hS : ∀ k : ℕ, ({n : ℕ | dist (normalizedGap n) C < 1 / (↑k + 1)}).Infinite :=
+    fun k => h _ (by positivity)
+  have inf_gt : ∀ (s : Set ℕ), s.Infinite → ∀ N : ℕ, ∃ n ∈ s, N < n := by
+    intro s hs N
+    by_contra hc; push_neg at hc
+    exact hs ((Set.finite_Iic N).subset fun n hn => hc n hn)
+  have step : ∀ k N : ℕ, ∃ n, N < n ∧ dist (normalizedGap n) C < 1 / (↑k + 1) := by
+    intro k N; obtain ⟨n, hm, hg⟩ := inf_gt _ (hS k) N; exact ⟨n, hg, hm⟩
+  choose g hg_gt hg_dist using step
+  let f : ℕ → ℕ := fun n => Nat.rec (g 0 0) (fun k fk => g (k + 1) fk) n
+  have hf_step : ∀ n, f n < f (n + 1) := fun n => hg_gt (n + 1) (f n)
+  have hf_dist : ∀ k, dist (normalizedGap (f k)) C < 1 / (↑k + 1) := by
+    intro k; cases k with
+    | zero => exact hg_dist 0 0
+    | succ n => exact hg_dist (n + 1) (f n)
+  refine ⟨f, strictMono_nat_of_lt_succ hf_step, ?_⟩
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  obtain ⟨K, hK⟩ := exists_nat_gt (1 / ε)
+  use K
+  intro k hk
+  simp only [Function.comp_apply]
+  calc dist (normalizedGap (f k)) C
+      < 1 / (↑k + 1) := hf_dist k
+    _ < ε := by
+        have hk_pos : (0 : ℝ) < ↑k + 1 := by positivity
+        rw [div_lt_iff₀ hk_pos]
+        have h1 : 1 < (↑K : ℝ) * ε := (div_lt_iff₀ hε).mp hK
+        have h2 : (↑K : ℝ) ≤ ↑k := by exact_mod_cast hk
+        nlinarith
+
+/-- **Reduction Theorem**: Erdős #5 follows from normalizedGap values being
+    dense in [0, ∞). If for every C ≥ 0 and ε > 0, there are infinitely many
+    n with |normalizedGap(n) - C| < ε, then the conjecture holds.
+
+    This reduces the open problem to a distributional density statement about
+    prime gap ratios: one need not construct specific convergent subsequences,
+    only show that normalizedGap values are "everywhere abundant" on [0, ∞). -/
+theorem erdos_5_from_dense_values
+    (h : ∀ C : ℝ, 0 ≤ C → ∀ ε : ℝ, 0 < ε →
+      {n : ℕ | dist (normalizedGap n) C < ε}.Infinite) :
+    erdos_5 :=
+  ⟨fun C hC => isLimitPoint_of_frequently_near C (h C hC), westzynthius_large_gaps⟩
 
 end Erdos5

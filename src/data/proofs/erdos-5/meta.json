@@ -21,8 +21,8 @@
         "erdosUrl": "https://erdosproblems.com/5",
         "erdosProblemStatus": "open",
         "axiomCount": 3,
-        "lineCount": 522,
-        "assumptions": "3 axioms: westzynthius_large_gaps (∞ ∈ S, 1931), zhang_bounded_gaps (bounded prime gaps, 2013), hildebrand_maier_large_limit_points (arbitrarily large finite limit points, 1988). 0 sorries. Proves 20 theorems including: zhang_implies_zero_limit, twin_prime_implies_zero_limit, limitPointSet_isClosed, limitPointSet_unbounded, westzynthius_implies_frequently_large.",
+        "lineCount": 572,
+        "assumptions": "3 axioms: westzynthius_large_gaps (∞ ∈ S, 1931), zhang_bounded_gaps (bounded prime gaps, 2013), hildebrand_maier_large_limit_points (arbitrarily large finite limit points, 1988). 0 sorries. Proves 22 theorems including: zhang_implies_zero_limit, twin_prime_implies_zero_limit, limitPointSet_isClosed, limitPointSet_unbounded, erdos_5_from_dense_values (reduction to distributional density).",
         "mathlib_version": "4.26.0"
     },
     "overview": {
@@ -109,7 +109,7 @@
         }
     ],
     "conclusion": {
-        "summary": "Erdős Problem #5 asks whether every non-negative real number is a limit point of normalized prime gaps. This formalization proves 20 theorems from 3 axioms with 0 sorries. The extremes are settled: 0 ∈ S (derived from Zhang's bounded gaps) and ∞ ∈ S (Westzynthius). Key structural results: S is nonempty, S is closed (proved via diagonal extraction + triangle inequality), S is unbounded, and normalized gaps exceed any bound infinitely often. The conjecture reduces to showing all C ≥ 0 are limit points.",
+        "summary": "Erdős Problem #5 asks whether every non-negative real number is a limit point of normalized prime gaps. This formalization proves 22 theorems from 3 axioms with 0 sorries. The extremes are settled: 0 ∈ S (derived from Zhang's bounded gaps) and ∞ ∈ S (Westzynthius). Key structural results: S is nonempty, closed, unbounded, and contained in [0, ∞). The reduction theorem erdos_5_from_dense_values shows the conjecture follows from normalizedGap values being distributionally dense on [0, ∞).",
         "implications": "Resolution would provide a complete understanding of prime gap fluctuations at the logarithmic scale, confirming the prediction of Cramér's probabilistic model. It connects to the Hardy-Littlewood prime k-tuples conjecture (which would imply S = [0, ∞)), sieve methods (the GPY-Maynard-Tao framework), and the distribution of primes in short intervals.",
         "openQuestions": [
             "Is every C ≥ 0 a limit point of (p_{n+1} - p_n)/log(p_n)?",
@@ -162,9 +162,9 @@
             "Topology"
         ],
         "namespace": "Erdos5",
-        "lineCount": 522,
+        "lineCount": 572,
         "axiomCount": 3,
-        "theoremCount": 20,
+        "theoremCount": 22,
         "definitionCount": 9
     },
     "references": [
