@@ -160,6 +160,21 @@ theorem bertrand_central (n : ℕ) (hn : n ≥ 1) :
   rw [h2n]
   exact hp.dvd_choose_add hnp hnp (by omega)
 
+/-- A prime larger than 2n does not divide C(2n, n).
+    Proof: C(2n,n) · n! · n! = (2n)!, so C(2n,n) | (2n)!.
+    But primes > 2n do not divide (2n)! (Legendre). -/
+theorem prime_gt_not_dvd_central {p n : ℕ} (hp : Nat.Prime p) (hpn : 2 * n < p) :
+    ¬(p ∣ centralBinom n) := by
+  unfold centralBinom
+  intro hd
+  have hfact := Nat.choose_mul_factorial_mul_factorial (show n ≤ 2 * n by omega)
+  rw [show 2 * n - n = n from by omega] at hfact
+  have hdvd_fact : p ∣ (2 * n).factorial := by
+    have h1 : p ∣ Nat.choose (2 * n) n * n.factorial * n.factorial :=
+      dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hd _) _
+    rwa [hfact] at h1
+  exact absurd (hp.dvd_factorial.mp hdvd_fact) (by omega)
+
 /-- The central binomial satisfies C(2n, n) ≥ 4^n / (2n+1) for n ≥ 0.
     Proof: Σ_{k=0}^{2n} C(2n,k) = 4^n (binomial theorem). This sum has 2n+1
     terms, each ≤ C(2n,n). So (2n+1)·C(2n,n) ≥ 4^n. -/
