@@ -18,13 +18,13 @@
       "zarankiewicz"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1008,
     "erdosUrl": "https://erdosproblems.com/1008",
     "erdosProblemStatus": "solved",
-    "axiomCount": 2,
-    "lineCount": 334,
-    "assumptions": "2 axioms: (1) Conlon-Fox-Sudakov main theorem (Ω(m^{2/3}) C₄-free subgraph), (2) optimality of 2/3 exponent. Proved: Kővári-Sós-Turán C₄-case (4m²≤n²(n-1)+2mn, via cherry counting+Cauchy-Schwarz), K₂₂↔C₄ equivalence, C₄-freeness hereditary/monotone, common neighbor uniqueness, few-edges C₄-free, Folkman ratio.",
+    "axiomCount": 1,
+    "lineCount": 607,
+    "assumptions": "1 axiom: Conlon-Fox-Sudakov main theorem (Ω(m^{2/3}) C₄-free subgraph). Proved: Kővári-Sós-Turán C₄-case (cherry counting+CS), K₂₂↔C₄ equivalence, C₄-freeness hereditary/monotone, common neighbor uniqueness, few-edges C₄-free, Folkman ratio, bipartite KST (cherry counting on K_{n,n²}), exponent 2/3 optimality (1 sorry: rpow arithmetic).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -127,9 +127,9 @@
     "opens": ["SimpleGraph", "Finset"],
     "namespace": "Erdos1008",
     "lineCount": 334,
-    "axiomCount": 2,
-    "theoremCount": 19,
-    "definitionCount": 4
+    "axiomCount": 1,
+    "theoremCount": 27,
+    "definitionCount": 8
   },
   "references": [
     {
