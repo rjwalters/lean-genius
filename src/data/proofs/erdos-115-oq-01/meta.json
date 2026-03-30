@@ -2,7 +2,7 @@
   "id": "erdos-115-oq-01",
   "title": "Rate of o(1) Correction in Lemniscate Derivatives",
   "slug": "erdos-115-oq-01",
-  "description": "What is the exact rate of the o(1) correction in max|p'| \u2264 (1/2 + o(1))n\u00b2 on connected lemniscates? Formalizes the correction term, defines possible rates (O(1/n), O(1/log n), O(1/\u221an), O(n^{-\u03b1})), and states the open question about which rate is correct.",
+  "description": "What is the exact rate of the o(1) correction in max|p'| ≤ (1/2 + o(1))n² on connected lemniscates? Formalizes the correction term, defines possible rates (O(1/n), O(1/log n), O(1/√n), O(n^{-α})), and states the open question about which rate is correct.",
   "meta": {
     "author": "Eremenko, Lempert; Pommerenke",
     "sourceUrl": "https://erdosproblems.com/115",
@@ -24,7 +24,7 @@
     "assumptions": [
       "ComplexPoly, IsLemniscateConnected, maxDerivOnLemniscate: definitional",
       "maxDeriv_nonneg: non-negativity",
-      "eremenko_lempert: main (1/2+o(1))n\u00b2 bound",
+      "eremenko_lempert: main (1/2+o(1))n² bound",
       "chebyshev_poly, chebyshev_connected, chebyshev_asymptotic: Chebyshev extremals",
       "supCorrection, supCorrection_upper, correction_tends_to_zero: correction framework"
     ],
@@ -39,5 +39,8 @@
     "openQuestionOf": "erdos-115",
     "lineCount": 176
   },
-  "sections": []
+  "sections": [],
+  "leanFile": {
+    "axiomCount": 11
+  }
 }

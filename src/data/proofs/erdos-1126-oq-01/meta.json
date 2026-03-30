@@ -2,9 +2,9 @@
   "id": "erdos-1126-oq-01",
   "title": "Extending de Bruijn-Jurkat to Other Functional Equations",
   "slug": "erdos-1126-oq-01",
-  "description": "Can the de Bruijn-Jurkat theorem (almost additive \u2192 additive a.e.) be extended to multiplicative, Jensen, and derivation functional equations? We formalize the extensions and prove key structural connections.",
+  "description": "Can the de Bruijn-Jurkat theorem (almost additive → additive a.e.) be extended to multiplicative, Jensen, and derivation functional equations? We formalize the extensions and prove key structural connections.",
   "meta": {
-    "author": "Ger (1979), J\u00e1rai (2005)",
+    "author": "Ger (1979), Járai (2005)",
     "sourceUrl": "https://erdosproblems.com/1126",
     "date": "2026",
     "status": "axiomatized",
@@ -51,15 +51,15 @@
     "originalContributions": [
       "IsJensen: Jensen's functional equation f((x+y)/2) = (f(x)+f(y))/2",
       "IsMultiplicative: Multiplicative equation f(xy) = f(x)f(y)",
-      "IsDerivation: Leibniz rule d(xy) = x\u00b7d(y) + y\u00b7d(x)",
-      "jensen_implies_shifted_additive: Jensen \u2192 shifted function is additive (PROVED)",
+      "IsDerivation: Leibniz rule d(xy) = x·d(y) + y·d(x)",
+      "jensen_implies_shifted_additive: Jensen → shifted function is additive (PROVED)",
       "additive_plus_const_is_jensen: Additive + constant satisfies Jensen (PROVED)",
-      "jensen_iff_additive_shifted: Jensen \u2194 additive modulo constants (PROVED)",
+      "jensen_iff_additive_shifted: Jensen ↔ additive modulo constants (PROVED)",
       "mul_func_one: f(1) = 1 for multiplicative functions (PROVED)",
-      "mul_func_sq: f(x\u00b2) = f(x)\u00b2 (PROVED)",
+      "mul_func_sq: f(x²) = f(x)² (PROVED)",
       "derivation_at_one: d(1) = 0 (PROVED)",
-      "derivation_sq: d(x\u00b2) = 2x\u00b7d(x) (PROVED)",
-      "derivation_pow: Power rule d(x\u207f) = n\u00b7x\u207f\u207b\u00b9\u00b7d(x) (PROVED)",
+      "derivation_sq: d(x²) = 2x·d(x) (PROVED)",
+      "derivation_pow: Power rule d(xⁿ) = n·xⁿ⁻¹·d(x) (PROVED)",
       "stability_paradigm_summary: Unified stability for Jensen and derivation equations",
       "log_of_mul_is_additive: Logarithmic reduction of multiplicative to additive equation (PROVED)"
     ],
@@ -69,16 +69,16 @@
     "assumptions": "5 axioms: almost_multiplicative_stability, almost_jensen_stability, almost_derivation_stability, measurable_multiplicative_is_power, measurable_derivation_is_zero. 1 sorry remains (ae_double_of_almost_jensen, Fubini section extraction)."
   },
   "overview": {
-    "historicalContext": "**Extending the de Bruijn-Jurkat Paradigm**\n\nThe de Bruijn-Jurkat theorem (1965-66) showed that almost additive functions can be corrected to truly additive functions a.e. This naturally raises the question: does the same stability hold for other fundamental functional equations?\n\n**The Key Equations:**\n1. **Multiplicative** (Cauchy exponential): $f(xy) = f(x)f(y)$ \u2014 characterizes exponentials and power functions\n2. **Jensen** (midpoint affinity): $f((x+y)/2) = (f(x)+f(y))/2$ \u2014 characterizes affine functions\n3. **Derivation** (Leibniz rule): $d(xy) = x \\cdot d(y) + y \\cdot d(x)$ \u2014 characterizes differentiation\n\n**Known Results:**\n- **Ger (1979)** showed stability holds for polynomial functional equations, which includes the derivation case\n- **J\u00e1rai (2005)** gave a comprehensive treatment of regularity for functional equations in several variables\n- The multiplicative case reduces to the additive case via logarithms (for positive solutions)\n- The Jensen case is algebraically equivalent to the additive case modulo a constant",
-    "problemStatement": "**Open Question (from Erd\u0151s Problem #1126)**\n\nCan the de Bruijn-Jurkat theorem be extended to other functional equations, such as:\n- $f(xy) = f(x)f(y)$ (multiplicative/Cauchy exponential)\n- $f((x+y)/2) = (f(x)+f(y))/2$ (Jensen's equation)\n- $d(xy) = x \\cdot d(y) + y \\cdot d(x)$ (Leibniz/derivation rule)\n\nThe answer is **YES** for all three, making a.e. stability a universal phenomenon for algebraic functional equations.",
+    "historicalContext": "**Extending the de Bruijn-Jurkat Paradigm**\n\nThe de Bruijn-Jurkat theorem (1965-66) showed that almost additive functions can be corrected to truly additive functions a.e. This naturally raises the question: does the same stability hold for other fundamental functional equations?\n\n**The Key Equations:**\n1. **Multiplicative** (Cauchy exponential): $f(xy) = f(x)f(y)$ — characterizes exponentials and power functions\n2. **Jensen** (midpoint affinity): $f((x+y)/2) = (f(x)+f(y))/2$ — characterizes affine functions\n3. **Derivation** (Leibniz rule): $d(xy) = x \\cdot d(y) + y \\cdot d(x)$ — characterizes differentiation\n\n**Known Results:**\n- **Ger (1979)** showed stability holds for polynomial functional equations, which includes the derivation case\n- **Járai (2005)** gave a comprehensive treatment of regularity for functional equations in several variables\n- The multiplicative case reduces to the additive case via logarithms (for positive solutions)\n- The Jensen case is algebraically equivalent to the additive case modulo a constant",
+    "problemStatement": "**Open Question (from Erdős Problem #1126)**\n\nCan the de Bruijn-Jurkat theorem be extended to other functional equations, such as:\n- $f(xy) = f(x)f(y)$ (multiplicative/Cauchy exponential)\n- $f((x+y)/2) = (f(x)+f(y))/2$ (Jensen's equation)\n- $d(xy) = x \\cdot d(y) + y \\cdot d(x)$ (Leibniz/derivation rule)\n\nThe answer is **YES** for all three, making a.e. stability a universal phenomenon for algebraic functional equations.",
     "text": "Extends the de Bruijn-Jurkat stability theorem to multiplicative, Jensen, and derivation functional equations. Jensen's equation is proved equivalent to additivity modulo constants. The multiplicative case reduces via logarithms. Derivation stability follows from Ger's 1979 work.",
-    "proofStrategy": "**Formalization Strategy**\n\nThe 388-line Lean file covers three extensions:\n\n1. **Jensen \u2194 Additive** (Parts I-II): The central proved result. `jensen_implies_shifted_additive` shows that if $f$ satisfies Jensen's equation, then $g(x) = f(x) - f(0)$ is additive. The converse `additive_plus_const_is_jensen` shows additive + constant satisfies Jensen. Combined in `jensen_iff_additive_shifted`.\n\n2. **Multiplicative Functions** (Part III): Defines `IsMultiplicative` and proves basic properties: $f(1) = 1$ (when $f$ is nonzero), $f(x^2) = f(x)^2$, and the logarithmic reduction to additivity.\n\n3. **Derivation Equation** (Part V): Defines `IsDerivation` and proves the key structural theorems: $d(1) = 0$, $d(x^2) = 2x \\cdot d(x)$, and the power rule $d(x^n) = n x^{n-1} d(x)$ by induction \u2014 showing derivations generalize differentiation.\n\n4. **Stability Axioms** (Part IV): The deep extension theorems are axiomatized: almost multiplicative \u2192 multiplicative, almost Jensen \u2192 Jensen, almost derivation \u2192 derivation.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe 388-line Lean file covers three extensions:\n\n1. **Jensen ↔ Additive** (Parts I-II): The central proved result. `jensen_implies_shifted_additive` shows that if $f$ satisfies Jensen's equation, then $g(x) = f(x) - f(0)$ is additive. The converse `additive_plus_const_is_jensen` shows additive + constant satisfies Jensen. Combined in `jensen_iff_additive_shifted`.\n\n2. **Multiplicative Functions** (Part III): Defines `IsMultiplicative` and proves basic properties: $f(1) = 1$ (when $f$ is nonzero), $f(x^2) = f(x)^2$, and the logarithmic reduction to additivity.\n\n3. **Derivation Equation** (Part V): Defines `IsDerivation` and proves the key structural theorems: $d(1) = 0$, $d(x^2) = 2x \\cdot d(x)$, and the power rule $d(x^n) = n x^{n-1} d(x)$ by induction — showing derivations generalize differentiation.\n\n4. **Stability Axioms** (Part IV): The deep extension theorems are axiomatized: almost multiplicative → multiplicative, almost Jensen → Jensen, almost derivation → derivation.",
     "keyInsights": [
       "**Jensen = Additive + Constant:** Jensen's equation $f((x+y)/2) = (f(x)+f(y))/2$ is exactly equivalent to saying $f(x) - f(0)$ is additive. This is proved constructively in Lean.",
       "**Logarithmic Reduction:** For positive multiplicative functions, $\\log \\circ f \\circ \\exp$ is additive. This reduces multiplicative stability to additive stability (de Bruijn-Jurkat).",
       "**Derivations Generalize Differentiation:** The power rule $d(x^n) = n x^{n-1} d(x)$ is proved by induction for abstract derivations, showing they satisfy the same formal rules as the derivative operator.",
       "**Continuous Derivations Vanish:** On $\\mathbb{R}$, the only continuous derivation is the zero function. This contrasts with additive functions where continuous ones form a 1-parameter family $f(x) = cx$.",
-      "**Universal Stability Paradigm:** All algebraic functional equations (additive, multiplicative, Jensen, Leibniz) exhibit a.e. stability: approximate solutions can be repaired to exact solutions. This is Ger's 1979 insight generalized by J\u00e1rai (2005)."
+      "**Universal Stability Paradigm:** All algebraic functional equations (additive, multiplicative, Jensen, Leibniz) exhibit a.e. stability: approximate solutions can be repaired to exact solutions. This is Ger's 1979 insight generalized by Járai (2005)."
     ],
     "prerequisites": [
       "Mathematical analysis",
@@ -92,7 +92,7 @@
       "title": "Definitions from Parent Problem",
       "startLine": 31,
       "endLine": 58,
-      "summary": "Redefines `IsAdditive`, `ae_holds`, `ae_pairs`, `ae_eq`, and `IsAlmostAdditive` from the parent Erd\u0151s #1126 formalization for self-containment.",
+      "summary": "Redefines `IsAdditive`, `ae_holds`, `ae_pairs`, `ae_eq`, and `IsAlmostAdditive` from the parent Erdős #1126 formalization for self-containment.",
       "mathContext": "$f(x+y) = f(x) + f(y)$ (Cauchy); $P$ holds a.e. means $P$ fails only on a Lebesgue null set."
     },
     {
@@ -100,12 +100,12 @@
       "title": "Jensen's Functional Equation",
       "startLine": 60,
       "endLine": 130,
-      "summary": "Defines `IsJensen` and proves the key equivalence: Jensen \u2194 additive modulo constant. Three theorems: `jensen_implies_shifted_additive` (forward), `additive_plus_const_is_jensen` (backward), `jensen_iff_additive_shifted` (iff).",
+      "summary": "Defines `IsJensen` and proves the key equivalence: Jensen ↔ additive modulo constant. Three theorems: `jensen_implies_shifted_additive` (forward), `additive_plus_const_is_jensen` (backward), `jensen_iff_additive_shifted` (iff).",
       "mathContext": "$f\\bigl(\\tfrac{x+y}{2}\\bigr) = \\tfrac{f(x)+f(y)}{2} \\iff f - f(0)$ is additive. Proved via the doubling formula $f(2z) = 2f(z) - f(0)$."
     },
     {
       "id": "almost-jensen",
-      "title": "Almost Jensen \u2192 Almost Additive",
+      "title": "Almost Jensen → Almost Additive",
       "startLine": 170,
       "endLine": 190,
       "summary": "States that almost Jensen reduces to almost additive for the shifted function. This reduces Jensen stability to de Bruijn-Jurkat.",
@@ -124,7 +124,7 @@
       "title": "Extension Theorems (Axiomatized)",
       "startLine": 252,
       "endLine": 280,
-      "summary": "Three stability axioms: `almost_multiplicative_stability`, `almost_jensen_stability`, `almost_derivation_stability` \u2014 the deep extension theorems.",
+      "summary": "Three stability axioms: `almost_multiplicative_stability`, `almost_jensen_stability`, `almost_derivation_stability` — the deep extension theorems.",
       "mathContext": "Almost $E$ $\\Rightarrow$ $\\exists$ exact $E$-solution agreeing a.e., for $E \\in \\{$multiplicative, Jensen, derivation$\\}$."
     },
     {
@@ -140,7 +140,7 @@
       "title": "Regularity Theorems",
       "startLine": 360,
       "endLine": 388,
-      "summary": "Axiomatizes regularity results: `measurable_multiplicative_is_power` (measurable multiplicative \u2192 power function) and `measurable_derivation_is_zero` (measurable derivation \u2192 zero).",
+      "summary": "Axiomatizes regularity results: `measurable_multiplicative_is_power` (measurable multiplicative → power function) and `measurable_derivation_is_zero` (measurable derivation → zero).",
       "mathContext": "Measurable $f(xy) = f(x)f(y)$ with $f > 0$: $f(x) = x^c$. Measurable derivation: $d = 0$. Tame vs. wild dichotomy."
     }
   ],
@@ -153,17 +153,17 @@
     {
       "targetId": "erdos-907",
       "relationship": "related",
-      "description": "Decomposition of functions with continuous differences \u2014 studies additive function structure, the same Cauchy equation whose stability is extended here to Jensen, multiplicative, and derivation equations"
+      "description": "Decomposition of functions with continuous differences — studies additive function structure, the same Cauchy equation whose stability is extended here to Jensen, multiplicative, and derivation equations"
     },
     {
       "targetId": "erdos-908",
       "relationship": "related",
-      "description": "Functions with measurable differences \u2014 measure-theoretic conditions on additive functions closely parallel the a.e. stability framework generalized in this entry"
+      "description": "Functions with measurable differences — measure-theoretic conditions on additive functions closely parallel the a.e. stability framework generalized in this entry"
     },
     {
       "targetId": "erdos-1125",
       "relationship": "related",
-      "description": "Kemperman's inequality and monotonicity for functional equations \u2014 another branch of the functional equations tradition, studying convexity constraints related to the Jensen equation formalized here"
+      "description": "Kemperman's inequality and monotonicity for functional equations — another branch of the functional equations tradition, studying convexity constraints related to the Jensen equation formalized here"
     },
     {
       "targetId": "lebesgue-measure",
@@ -184,6 +184,7 @@
   "leanFile": {
     "path": "proofs/Proofs/Erdos1126OQ01Problem.lean",
     "filename": "Erdos1126OQ01Problem.lean",
-    "lineCount": 495
+    "lineCount": 495,
+    "axiomCount": 5
   }
 }
