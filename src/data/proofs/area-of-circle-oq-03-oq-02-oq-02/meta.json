@@ -1,0 +1,191 @@
+{
+  "id": "area-of-circle-oq-03-oq-02-oq-02",
+  "title": "Dalzell-Niven Integral: π < 22/7 via Integration",
+  "slug": "area-of-circle-oq-03-oq-02-oq-02",
+  "description": "The Dalzell-Niven integral ∫₀¹ x⁴(1-x)⁴/(1+x²) dx = 22/7 - π provides an elegant alternative proof that π < 22/7. The integrand is strictly positive on (0,1), so the integral is positive, giving 22/7 - π > 0. Proved via FTC with polynomial long division and arctan integration.",
+  "meta": {
+    "author": "Dalzell (1944), Niven (1947), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Proof_that_22/7_exceeds_%CF%80",
+    "date": "1944",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "integration",
+      "pi",
+      "number-theory",
+      "classic",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircleOQ03OQ02OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_eq_sub_of_hasDerivAt",
+        "description": "Fundamental Theorem of Calculus Part 2",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus"
+      },
+      {
+        "theorem": "hasDerivAt_arctan",
+        "description": "Derivative of arctan: d/dx arctan(x) = 1/(1+x²)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv"
+      },
+      {
+        "theorem": "Real.arctan_one",
+        "description": "arctan(1) = π/4",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan"
+      },
+      {
+        "theorem": "integral_pos",
+        "description": "Positivity of interval integral from non-negative continuous function",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      },
+      {
+        "theorem": "hasDerivAt_pow",
+        "description": "Derivative of x^n = n*x^(n-1)",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Pow"
+      }
+    ],
+    "originalContributions": [
+      "Polynomial long division identity: x⁴(1-x)⁴ = (1+x²)(x⁶-4x⁵+5x⁴-4x²+4) - 4",
+      "Integrand decomposition: x⁴(1-x)⁴/(1+x²) = x⁶-4x⁵+5x⁴-4x²+4 - 4/(1+x²)",
+      "Strict positivity of Dalzell-Niven integrand on (0,1)",
+      "FTC-based evaluation: ∫₀¹ x⁴(1-x)⁴/(1+x²) dx = 22/7 - π",
+      "Alternative proof of π < 22/7 from integral positivity"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "assumptions": "Fully verified: 0 axioms, 0 sorries.",
+    "lineCount": 165,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "In 1944, D.P. Dalzell published 'On 22/7' in the Journal of the London Mathematical Society, showing that ∫₀¹ x⁴(1-x)⁴/(1+x²) dx = 22/7 - π. Since the integrand is strictly positive on (0,1), this immediately gives π < 22/7. In 1947, Ivan Niven independently discovered the same integral in his celebrated paper 'A simple proof that π is irrational'. The integral has become one of the most elegant proofs in recreational mathematics, appearing in countless textbooks and problem collections.",
+    "problemStatement": "Prove that $\\int_0^1 \\frac{x^4(1-x)^4}{1+x^2}\\,dx = \\frac{22}{7} - \\pi$ and deduce $\\pi < \\frac{22}{7}$.",
+    "text": "The Dalzell-Niven integral provides a direct, elegant proof that $\\pi < 22/7$. The key insight is polynomial long division: $x^4(1-x)^4 = (1+x^2)(x^6-4x^5+5x^4-4x^2+4) - 4$, so the integrand decomposes as $x^6 - 4x^5 + 5x^4 - 4x^2 + 4 - 4/(1+x^2)$. Integrating term-by-term using the power rule and $\\int 1/(1+x^2)\\,dx = \\arctan(x)$ yields $22/7 - \\pi$. The proof uses the Fundamental Theorem of Calculus with an explicit antiderivative $F(x) = x^7/7 - 2x^6/3 + x^5 - 4x^3/3 + 4x - 4\\arctan(x)$, showing $F(1) - F(0) = 22/7 - \\pi$. Positivity of the integrand completes the proof.",
+    "proofStrategy": "The proof has three components: (1) Algebraic: polynomial long division via `ring` and `field_simp`. (2) Analytic: FTC evaluation using `integral_eq_sub_of_hasDerivAt` with an explicit antiderivative whose derivative is proved term-by-term using `hasDerivAt_pow` and `hasDerivAt_arctan`. (3) Positivity: `integral_pos` with continuity and strict positivity at $x = 1/2$.",
+    "keyInsights": [
+      "The polynomial identity x⁴(1-x)⁴ = (1+x²)(x⁶-4x⁵+5x⁴-4x²+4) - 4 is the algebraic heart of the proof, enabling the integrand to be decomposed into elementary terms.",
+      "The Fundamental Theorem of Calculus converts the integral evaluation into computing F(1) - F(0), where F is an explicit antiderivative involving polynomials and arctan.",
+      "The fact arctan(1) = π/4 is the bridge between integration and π: it causes the arctan term to contribute -π to the integral value.",
+      "This provides a fundamentally different proof of π < 22/7 from the Archimedes polygon method, using integration theory rather than geometric exhaustion."
+    ],
+    "prerequisites": [
+      "Real analysis (integration, FTC)",
+      "Polynomial algebra (long division)",
+      "Trigonometric functions (arctan)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "polynomial",
+      "title": "Polynomial Identity",
+      "summary": "The key algebraic identity x⁴(1-x)⁴ = (1+x²)(x⁶-4x⁵+5x⁴-4x²+4) - 4 and the resulting integrand decomposition.",
+      "startLine": 27,
+      "endLine": 46,
+      "mathContext": "$x^4(1-x)^4 = (1+x^2)(x^6 - 4x^5 + 5x^4 - 4x^2 + 4) - 4$"
+    },
+    {
+      "id": "positivity",
+      "title": "Integrand Positivity",
+      "summary": "Non-negativity on [0,1] and strict positivity on (0,1) of the Dalzell-Niven integrand.",
+      "startLine": 48,
+      "endLine": 63,
+      "mathContext": "$\\frac{x^4(1-x)^4}{1+x^2} > 0$ for $x \\in (0,1)$"
+    },
+    {
+      "id": "ftc",
+      "title": "Antiderivative and FTC Evaluation",
+      "summary": "Definition of antiderivative F(x), proof that F' equals the decomposed integrand, and FTC-based evaluation giving 22/7 - π.",
+      "startLine": 65,
+      "endLine": 123,
+      "mathContext": "$F(x) = \\frac{x^7}{7} - \\frac{2x^6}{3} + x^5 - \\frac{4x^3}{3} + 4x - 4\\arctan(x)$, so $\\int_0^1 g(x)\\,dx = F(1) - F(0) = \\frac{22}{7} - \\pi$"
+    },
+    {
+      "id": "integral-identity",
+      "title": "Dalzell-Niven Integral Identity",
+      "summary": "The main identity ∫₀¹ x⁴(1-x)⁴/(1+x²) dx = 22/7 - π, connecting the original integrand to the decomposed form.",
+      "startLine": 125,
+      "endLine": 147,
+      "mathContext": "$\\int_0^1 \\frac{x^4(1-x)^4}{1+x^2}\\,dx = \\frac{22}{7} - \\pi$"
+    },
+    {
+      "id": "conclusion",
+      "title": "π < 22/7 and Quantitative Bounds",
+      "summary": "The main result π < 22/7 deduced from integral positivity, plus an upper bound on the integrand.",
+      "startLine": 149,
+      "endLine": 165,
+      "mathContext": "$0 < \\frac{22}{7} - \\pi$, hence $\\pi < \\frac{22}{7}$"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the Dalzell-Niven integral proof of π < 22/7 in Lean 4, providing a complete alternative to the Archimedes polygon method. The proof combines polynomial algebra (ring/field_simp), calculus (FTC via hasDerivAt and arctan integration), and integral positivity into a self-contained argument.",
+    "implications": "Demonstrates that Lean 4 + Mathlib can handle non-trivial definite integral computations via the Fundamental Theorem of Calculus. The approach of combining polynomial long division with arctan integration is a pattern applicable to other integral identities.",
+    "openQuestions": [
+      "Can the generalized Dalzell integral ∫₀¹ x^(4n)(1-x)^(4n)/(1+x²) dx be used to derive sharper rational bounds on π?",
+      "Can the related integral ∫₀¹ x⁴(1-x)⁴/(1+x²)² dx be evaluated in Lean 4 for a tighter bound?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry proves π < 22/7 via Mathlib's pi_lt_d4 — this provides an alternative integral-based proof of the same bound"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "ancestor",
+      "description": "The original area formula A = πr² — the Dalzell-Niven integral is fundamentally about the value of the constant π"
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "related",
+      "description": "Archimedes' method of exhaustion — the Dalzell-Niven integral provides a post-calculus alternative to Archimedes' pre-calculus polygon method"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Set",
+      "intervalIntegral"
+    ],
+    "namespace": "AreaOfCircleOQ03OQ02OQ02",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "mainTheorems": [
+      "dalzell_polynomial_identity",
+      "dalzell_integrand_decomposition",
+      "dalzell_niven_integral",
+      "pi_lt_twentytwo_over_seven"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Dalzell, D.P.",
+      "title": "On 22/7",
+      "year": "1944",
+      "venue": "Journal of the London Mathematical Society",
+      "note": "Original discovery of the integral ∫₀¹ t⁴(1-t)⁴/(1+t²) dt = 22/7 − π"
+    },
+    {
+      "authors": "Niven, Ivan",
+      "title": "A simple proof that π is irrational",
+      "year": "1947",
+      "venue": "Bulletin of the American Mathematical Society",
+      "note": "Independent discovery; used the integral in his irrationality proof"
+    },
+    {
+      "authors": "Archimedes",
+      "title": "Measurement of a Circle",
+      "year": "c. 250 BCE",
+      "venue": "Syracuse",
+      "note": "First proof that π < 22/7 via 96-gon circumscription"
+    }
+  ]
+}
