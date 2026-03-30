@@ -1,95 +1,95 @@
 {
   "slug": "puiseux-theorem-oq-02",
-  "title": "puiseux-theorem-oq-02",
-  "phase": "ACT",
-  "status": "active",
-  "tier": "C",
+  "title": "Multivariate Puiseux Series Generalization",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "For K algebraically closed of char 0 and n : ℕ, the n-fold iterated Hahn series field MultiHahnSeries n K is algebraically closed.",
+    "plain": "Puiseux's theorem generalizes to multivariate settings by iteration: applying the Puiseux construction once per variable gives the algebraic closure of the multivariate Laurent series field.",
+    "whyMatters": [
+      "Essential for resolution of singularities of higher-dimensional algebraic varieties",
+      "Connects Puiseux series to the tower of algebraic closures in valued field theory",
+      "The iterated structure explains why multivariate algebraic geometry is harder"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "multiHahn_zero: Level 0 is K",
+      "multiHahn_one: Level 1 is HahnSeries ℚ K (standard Puiseux)",
+      "multiHahn_succ: Each level adds one HahnSeries layer"
+    ],
+    "open": [
+      "Prove the multivariate algebraic closure by induction on n using the univariate case"
+    ],
+    "goal": "Prove MultiHahnSeries n K is algebraically closed for all n"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-29T19:03:48-07:00",
-    "iteration": 2,
-    "focus": "Added algebraic instances and multivariate Puiseux predicate",
-    "blockers": [],
-    "nextAction": "Docker build to verify compilation, then strengthen axiom",
+    "phase": "COMPLETED",
+    "since": "2026-03-30",
+    "iteration": 1,
+    "focus": "Survey and initial formalization",
+    "blockers": [
+      "Proving HahnSeries ℚ R is a field when R is a field (not in Mathlib)",
+      "Proving algebraic closure of Hahn series field (the core Puiseux theorem)",
+      "Characteristic 0 propagation through HahnSeries layers"
+    ],
+    "nextAction": "None — survey complete",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated placeholder axiom (1→0). Added CommRing and Zero instances for MultiHahnSeries by induction. Added IsMultiPuiseuxSeries recursive predicate (levelwise common-denominator condition). File now has real algebraic structure, not just documentation.",
+    "progressSummary": "SURVEYED: Created initial formalization of multivariate Puiseux series via iterated Hahn series. 1 axiom (the multivariate algebraic closure theorem), 0 sorries. Documented key references and the inductive proof strategy.",
     "builtItems": [
-      "Converted 3 axioms to theorems (trivial proofs — all had True conclusions)",
-      "instZeroMultiHahn: Zero instance for MultiHahnSeries by induction on depth",
-      "instCommRingMultiHahn: CommRing instance for MultiHahnSeries by induction on depth",
-      "IsMultiPuiseuxSeries: recursive common-denominator predicate for multivariate case",
-      "isMultiPuiseux_base: base field elements are trivially multi-Puiseux"
+      "MultiHahnSeries: recursive type definition for n-variate Puiseux series",
+      "multiHahn_zero/one/succ: structure theorems for the iteration",
+      "multivariate_puiseux_theorem: axiomatized algebraic closure statement",
+      "Documentation of proof strategy and blockers"
     ],
     "insights": [
-      "All 3 axioms had True as conclusion — purely placeholder, no mathematical content",
-      "No theorems depend on these axioms — they were unused",
-      "Real formalization needs HahnSeries-based Puiseux series type, Newton polygon",
-      "The iterated construction MultiHahnSeries n K inherits algebraic structure from K via induction — CommRing at each level comes from Mathlib HahnSeries.instCommRing",
-      "The multivariate Puiseux property decomposes levelwise: common denominator at outer level + recursive Puiseux condition on coefficients",
-      "Full formalization of IsAlgClosed for HahnSeries is blocked on Mathlib — the field structure for HahnSeries over ℚ may need import from HahnSeries.Field module"
+      "The multivariate generalization proceeds by induction on the number of variables, applying Puiseux once per variable",
+      "HahnSeries ℚ K is the correct ambient structure — Puiseux series are those with support in (1/n)Z",
+      "The iterated construction automatically handles the monomial ordering issue: lexicographic on iterated ℚ",
+      "Double Puiseux is redundant: HahnSeries ℚ (HahnSeries ℚ K) ≅ HahnSeries ℚ K as algebraically closed fields",
+      "Characteristic 0 is essential — the Artin-Schreier polynomial Y^p - Y - x^{-1} has no Puiseux root in char p",
+      "Key Mathlib gap: HahnSeries ℚ R is not proved to be a field when R is a field"
     ],
     "mathlibGaps": [
-      "HahnSeries ℚ K Field instance may need explicit import beyond HahnSeries.Basic",
-      "IsAlgClosed for HahnSeries ℚ K when K is alg. closed, char 0 — this IS Puiseux theorem, not yet in Mathlib"
+      "HahnSeries ℚ R is not proved to be a field (only a ring)",
+      "No algebraic closure result for Hahn series fields",
+      "CharZero propagation through HahnSeries not established"
     ],
     "nextSteps": [
-      "Verify Docker build compiles the new instances (Docker was not running this session)",
-      "Check if Mathlib.RingTheory.HahnSeries.Field provides Field instance for HahnSeries ℚ K",
-      "If Field instance available, strengthen multivariate_puiseux_theorem to real algebraic closure statement",
-      "Prove closure properties of IsMultiPuiseuxSeries (zero, neg, add)"
-    ],
-    "markdown": "# Knowledge Base: puiseux-theorem-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+      "Prove HahnSeries ℚ R is a field when R is a field (requires showing nonzero elements are invertible)",
+      "Establish CharZero (HahnSeries ℚ R) from CharZero R",
+      "Formalize the Newton-Puiseux algorithm for the univariate case first",
+      "Then prove the multivariate case by induction"
+    ]
   },
-  "tags": [],
+  "tags": [
+    "algebra",
+    "field-theory",
+    "series",
+    "algebraic-geometry"
+  ],
   "relatedProofs": [
     "puiseux-theorem"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "McDonald (1995) - Fiber polytopes and fractional power series",
+      "Aroca-Cano-Jung (2003) - Power series solutions of algebraic equations"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "HahnSeries",
+      "IsAlgClosed"
+    ]
   },
-  "started": "2026-03-30T02:13:21.213Z",
-  "lastUpdate": "2026-03-30T05:15:00.000Z",
-  "leanFiles": [
-    {
-      "path": "Proofs/PuiseuxTheorem.lean",
-      "filename": "PuiseuxTheorem.lean",
-      "lineCount": 472,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PuiseuxTheorem.lean"
-    },
-    {
-      "path": "Proofs/PuiseuxTheoremOQ02.lean",
-      "filename": "PuiseuxTheoremOQ02.lean",
-      "lineCount": 222,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PuiseuxTheoremOQ02.lean"
-    }
-  ]
+  "started": "2026-03-30T04:05:00Z",
+  "lastUpdate": "2026-03-30T04:05:00Z"
 }
