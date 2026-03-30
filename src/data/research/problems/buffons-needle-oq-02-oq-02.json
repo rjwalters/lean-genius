@@ -1,0 +1,66 @@
+{
+  "slug": "buffons-needle-oq-02-oq-02",
+  "title": "Buffon noodle extension to smooth 3D curves",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T10:41:00Z",
+    "iteration": 1,
+    "focus": "Survey: scaffolding from existing OQ-01 (smooth 2D) and OQ-02 (3D polygonal)",
+    "blockers": [],
+    "nextAction": "Create Lean file adapting BuffonsNeedleOQ01 pattern to 3D",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created Lean file with smooth 3D curve infrastructure. 1 sorry: polyLength_tendsto (Riemann sum convergence). Arc length nonneg proved.",
+    "builtItems": [
+      "Created BuffonsNeedleOQ02OQ02.lean with SmoothCurve3D structure, arc length def, polygonal approximation"
+    ],
+    "insights": [
+      "BuffonsNeedleOQ02.lean (parent): 3D polygonal noodle, E=L/(2d), sorry-free",
+      "BuffonsNeedleOQ01.lean: smooth C¹ curves in 2D, E=2L/(πd), sorry-free — template for 3D smooth extension",
+      "Key technique: approximate smooth curves by polygonal paths, show crossing count converges",
+      "3D crossing factor α₃=1/2 already proved in parent — just need smooth approximation argument"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Create LHopitalOQ02OQ02.lean adapting the smooth-curve approximation from OQ-01 to 3D",
+      "Main work: define C¹ curve in 3D, arc length parametrization, polygonal approximation",
+      "The mathematical argument is standard: smooth curves are limits of polygonal paths"
+    ]
+  },
+  "tags": [
+    "probability",
+    "geometric-probability",
+    "buffon"
+  ],
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-02",
+    "buffons-needle-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T10:41:00Z",
+  "lastUpdate": "2026-03-30T10:41:00Z"
+}
