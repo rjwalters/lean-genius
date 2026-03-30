@@ -176,43 +176,70 @@ theorem jensen_iff_additive_shifted (f : ℝ → ℝ) :
 
 /- ## Part II: Almost Jensen → Almost Additive Reduction -/
 
-/-- **Almost Jensen reduces to almost additive (for shifted function).**
-If f is almost Jensen, then the shifted function g(x) = f(x) - f(0) satisfies
-the additive equation for a.e. (x,y) where Jensen also holds at (2x, 0) and (2y, 0).
-This reduces the Jensen stability problem to the de Bruijn-Jurkat theorem.
+/-- **Algebraic core: Three Jensen equations imply the shift identity.**
+If Jensen holds at three specific pairs (s, 2x-s), (s, 2y-s), and (2x-s, 2y-s),
+then f(x+y-s) + f(s) = f(x) + f(y). This is the pointwise algebraic identity
+underlying the a.e. reduction from Jensen to additivity. -/
+theorem jensen_triple_shift (f : ℝ → ℝ) (s x y : ℝ)
+    (h1 : f ((s + (2 * x - s)) / 2) = (f s + f (2 * x - s)) / 2)
+    (h2 : f ((s + (2 * y - s)) / 2) = (f s + f (2 * y - s)) / 2)
+    (h3 : f (((2 * x - s) + (2 * y - s)) / 2) = (f (2 * x - s) + f (2 * y - s)) / 2) :
+    f (x + y - s) + f s = f x + f y := by
+  -- h1 simplifies to: f(x) = (f(s) + f(2x-s))/2
+  have hs1 : (s + (2 * x - s)) / 2 = x := by ring
+  have hs2 : (s + (2 * y - s)) / 2 = y := by ring
+  have hs3 : ((2 * x - s) + (2 * y - s)) / 2 = x + y - s := by ring
+  rw [hs1] at h1; rw [hs2] at h2; rw [hs3] at h3
+  -- Now: f(x) = (f(s) + f(2x-s))/2, so f(2x-s) = 2*f(x) - f(s)
+  -- Similarly: f(2y-s) = 2*f(y) - f(s)
+  -- And: f(x+y-s) = (f(2x-s) + f(2y-s))/2 = f(x) + f(y) - f(s)
+  linarith
 
-Note: The full proof requires Fubini's theorem to extract a "good" b₀ such that
-f((a + b₀)/2) = (f(a) + f(b₀))/2 for a.e. a, then uses the substitution
-(x,y) ↦ (2x, 2y) in the Jensen equation. The resulting null set is a union
-of three null sets: from Jensen at (x,y), at (2x, 2y), and the Fubini section.
+/-- **[CORRECTED] Almost Jensen implies existence of almost-additive shift.**
 
-Mathematical argument:
-1. From a.e. Jensen + Fubini, pick b₀ such that f((a+b₀)/2) = (f(a)+f(b₀))/2 for a.e. a
-2. Setting a = 2x - b₀: f(x) = (f(2x - b₀) + f(b₀))/2 for a.e. x
-3. From a.e. Jensen at (2x, 2y): f(x+y) = (f(2x)+f(2y))/2 for a.e. (x,y)
-4. Combining with step 2 yields additivity of f - f(b₀) modulo null sets -/
-theorem almost_jensen_implies_almost_additive_shifted (f : ℝ → ℝ)
+**Original claim (INCORRECT):** `IsAlmostAdditive (fun x => f x - f 0)`.
+This is false because `f(0)` is the value of `f` at a specific point, while
+the a.e. Jensen condition only constrains `f` outside null sets. The value
+`f(0)` can be arbitrary relative to the a.e. behavior.
+
+**Counterexample:** Let `A` be additive. Define `f(x) = A(x) + c₁` for `x ≠ 0`
+and `f(0) = c₂` with `c₁ ≠ c₂`. Then `f` is a.e. Jensen (agrees with the Jensen
+function `A + c₁` outside null sets involving `x = 0`), but for `g = f - f(0)`:
+`g(x+y) - g(x) - g(y) = c₂ - c₁ ≠ 0` for a.e. pairs.
+
+**Correct statement:** There exists `c : ℝ` such that `fun x => f x - c` is
+almost additive. The constant `c` equals the a.e. limit of `f` near `0`, which
+may differ from `f(0)`.
+
+**Proof sketch (Fubini + substitution):**
+1. From a.e. Jensen, apply Jensen at three pairs (s, 2x-s), (s, 2y-s), (2x-s, 2y-s)
+   to get: f(x+y-s) + f(s) = f(x) + f(y) for a.e. (x,y,s) ∈ ℝ³.
+   Each pair uses a rank-2 substitution, so preimage of null set is null in ℝ³.
+2. By Fubini on ℝ³, extract a good section s₀ so the equation holds for a.e. (x,y).
+3. Substituting x ↦ x+s₀, y ↦ y+s₀: f(x+y+s₀) + f(s₀) = f(x+s₀) + f(y+s₀) a.e.
+4. Define ψ(x) = f(x+s₀) - f(s₀). Then ψ(x+y) = ψ(x) + ψ(y) a.e. (almost additive).
+5. From step 1, f(x+h) = f(x) + ψ(h) for a.e. (x,h), so f = ψ + β a.e. for constant β.
+6. Conclude: `fun x => f x - β` is almost additive, with c = β.
+
+**Implication for Jensen stability:** The corrected theorem still suffices to derive
+`almost_jensen_stability` from de Bruijn-Jurkat. If (fun x => f x - c) is almost
+additive, then by de Bruijn-Jurkat there exists additive A with f = A + c a.e.,
+and A + c is Jensen. -/
+theorem almost_jensen_implies_exists_almost_additive_shift (f : ℝ → ℝ)
     (hf : IsAlmostJensen f) :
-    IsAlmostAdditive (fun x => f x - f 0) := by
-  -- The proof mirrors jensen_implies_shifted_additive but with measure theory.
-  -- Key steps (see detailed analysis below):
+    ∃ c : ℝ, IsAlmostAdditive (fun x => f x - c) := by
+  -- Step 1: Extract the null set from a.e. Jensen
+  obtain ⟨N, hN_null, hN_jensen⟩ := hf
+  -- Step 2: The three substitution maps (x,y,s) ↦ (s, 2x-s), (s, 2y-s), (2x-s, 2y-s)
+  -- each have rank 2 as maps ℝ³ → ℝ², so preimages of N are null in ℝ³.
+  -- Their union is null, and by Fubini we extract a good s₀.
+  -- Step 3-6: Algebraic reduction using jensen_triple_shift
   --
-  -- 1. From hf, get null set N ⊂ ℝ² where Jensen holds outside N
-  -- 2. Define N₁ = preimage of N under (a,b) ↦ (2a,2b): measure 0 by det(J) = 4 ≠ 0
-  -- 3. Outside N₁: Jensen at (2x,2y) gives f(x+y) = (f(2x)+f(2y))/2
-  -- 4. BLOCKING STEP: "Double lemma" f(2z) = 2f(z) - f(0) for a.e. z
-  --    This needs Fubini (MeasureTheory.ae_prod_iff) to extract a "good" b₀ such that
-  --    the y-section {x : (x, b₀) ∈ N} has measure 0. Then Jensen at (x, b₀) gives
-  --    f((x+b₀)/2) = (f(x)+f(b₀))/2 for a.e. x. Setting x = 2z - b₀ yields
-  --    f(z) in terms of f(2z-b₀) and f(b₀). A second application with a different
-  --    good section eliminates b₀, giving f(2z) = 2f(z) - f(0) for a.e. z.
-  -- 5. Combine steps 3-4: f(x+y) = f(x) + f(y) - f(0) for a.e. (x,y)
-  --    The combined null set is N ∪ N₁ ∪ (Fubini sections × ℝ) ∪ (ℝ × Fubini sections)
-  --
-  -- Required Mathlib lemmas:
-  --   MeasureTheory.ae_prod_iff (Fubini section extraction)
-  --   MeasureTheory.Measure.map_linear_eq (null set under linear maps)
-  --   measure_union_null (union of null sets)
+  -- The measure-theoretic steps require:
+  --   * Null set preservation under rank-2 linear maps ℝ³ → ℝ²
+  --     (Fubini decomposition: ∫ vol₂(section) dℝ = 0)
+  --   * Fubini section extraction on ℝ³ = ℝ² × ℝ
+  --   * Null set arithmetic: {(a,b) : a+b ∈ S} is null when vol₁(S) = 0
   sorry
 
 /- ## Part III: Multiplicative Functional Equation -/
@@ -303,8 +330,9 @@ axiom almost_multiplicative_stability :
 If f is almost Jensen, then there exists a Jensen function g
 with f = g a.e.
 
-This reduces to de Bruijn-Jurkat: almost Jensen → shifted function
-is almost additive → apply de Bruijn-Jurkat → shift back. -/
+This reduces to de Bruijn-Jurkat: almost Jensen → ∃ c, f - c is almost additive
+(see `almost_jensen_implies_exists_almost_additive_shift`) → apply de Bruijn-Jurkat
+to get additive A with f - c = A a.e. → so f = A + c a.e. and A + c is Jensen. -/
 axiom almost_jensen_stability :
     ∀ f : ℝ → ℝ, IsAlmostJensen f →
       ∃ g : ℝ → ℝ, IsJensen g ∧ ae_eq f g
