@@ -17,12 +17,12 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/321",
     "erdosUrl": "https://erdosproblems.com/321",
-    "axiomCount": 3,
-    "assumptions": "3 axiom(s): bleicher_erdos_lower (R(N) >= N/log N), bleicher_erdos_upper (R(N) <= C*(N/log N)*log log N), main_term_n_over_log_n (R(N) = Theta(N/log N)). erdos_321_asymptotics proved (tautology).",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: bleicher_erdos_lower (R(N) >= N/log N for large N), bleicher_erdos_upper (R(N) <= C*(N/log N)*log log N). main_term_n_over_log_n DERIVED from both via finite-range analysis + R(N)>=1.",
     "badge": "axiom",
     "proofRepoPath": "Proofs/Erdos321Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 170,
+    "lineCount": 226,
     "mathlibDependencies": [
       {
         "theorem": "Finset.sup",
@@ -160,7 +160,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 170,
+    "lineCount": 226,
     "axiomCount": 3,
     "theoremCount": 6,
     "definitionCount": 3,

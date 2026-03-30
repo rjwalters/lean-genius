@@ -27,6 +27,7 @@ import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Analysis.SpecialFunctions.Integrals
 
 namespace Erdos362
 
@@ -226,12 +227,84 @@ Alternatively, use Mathlib's AddCircle/fourierCoeff infrastructure:
 - Bridge set_integral on Icc to intervalIntegral / Haar measure
 -/
 
+/-- Complex exponential to natural power: exp(z)^n = exp(n*z). -/
+private lemma cexp_pow_eq (z : ℂ) (n : ℕ) :
+    Complex.exp z ^ n = Complex.exp (↑n * z) := by
+  induction n with
+  | zero => simp
+  | succ m ih =>
+    rw [pow_succ, ih, ← Complex.exp_add]; congr 1; push_cast; ring
+
+/-- Complex exponential to integer power: exp(z)^n = exp(n*z). -/
+private lemma cexp_zpow (z : ℂ) (n : ℤ) :
+    Complex.exp z ^ n = Complex.exp (↑n * z) := by
+  rcases n with (k | k)
+  · simp only [zpow_natCast, Int.cast_natCast]; exact cexp_pow_eq z k
+  · rw [zpow_negSucc, cexp_pow_eq z (k + 1), ← Complex.exp_neg]
+    congr 1; push_cast; ring
+
+/-- Orthogonality of complex exponentials on [0, 2π]:
+    ∫₀²π exp(inθ) dθ = 2π if n = 0, and 0 if n ≠ 0. -/
+private lemma exp_orthogonality (n : ℤ) :
+    ∫ θ in (0 : ℝ)..(2 * Real.pi),
+      Complex.exp (↑n * Complex.I * ↑θ) =
+    if n = 0 then ↑(2 * Real.pi) else 0 := by
+  split
+  · next h =>
+    subst h
+    simp only [Int.cast_zero, zero_mul, Complex.exp_zero]
+    rw [intervalIntegral.integral_const, sub_zero, Algebra.smul_def, mul_one]
+  · next hn =>
+    have hc : (↑n * Complex.I : ℂ) ≠ 0 :=
+      mul_ne_zero (Int.cast_ne_zero.mpr hn) Complex.I_ne_zero
+    simp_rw [show ∀ θ : ℝ, (↑n * Complex.I * (↑θ : ℂ) : ℂ) = (↑n * Complex.I) * ↑θ from
+      fun _ => mul_assoc _ _ _]
+    rw [integral_exp_mul_complex hc]
+    have h1 : Complex.exp ((↑n * Complex.I) * ↑(2 * Real.pi)) = 1 := by
+      have heq : (↑n * Complex.I) * (↑(2 * Real.pi) : ℂ) =
+          ↑n * (2 * ↑Real.pi * Complex.I) := by push_cast; ring
+      rw [heq]; exact Complex.exp_int_mul_two_pi_mul_I n
+    simp [h1]
+
 /-- Fourier coefficient extraction: countSubsetsWithSum equals
-    the integral of the generating function against an exponential. -/
-axiom fourier_extraction (A : Finset ℤ) (t : ℤ) :
+    the integral of the generating function against an exponential.
+    Proof: expand GF via product-to-sum, apply Fourier orthogonality. -/
+theorem fourier_extraction (A : Finset ℤ) (t : ℤ) :
     (countSubsetsWithSum A t : ℂ) =
       (1 : ℂ) / (2 * Real.pi) * ∫ θ in Set.Icc 0 (2 * Real.pi),
-        subsetSumGF A (Complex.exp (Complex.I * θ)) * Complex.exp (-Complex.I * t * θ)
+        subsetSumGF A (Complex.exp (Complex.I * θ)) * Complex.exp (-Complex.I * t * θ) := by
+  -- Convert Icc set integral to interval integral (Icc =ᵐ Ioc for Lebesgue measure)
+  have h_conv : ∫ θ in Set.Icc (0 : ℝ) (2 * Real.pi),
+      subsetSumGF A (Complex.exp (Complex.I * ↑θ)) * Complex.exp (-Complex.I * ↑t * ↑θ) =
+    ∫ θ in (0 : ℝ)..(2 * Real.pi),
+      subsetSumGF A (Complex.exp (Complex.I * ↑θ)) * Complex.exp (-Complex.I * ↑t * ↑θ) := by
+    rw [MeasureTheory.integral_Icc_eq_integral_Ioc,
+        ← intervalIntegral.integral_of_le (by positivity : (0 : ℝ) ≤ 2 * Real.pi)]
+  rw [h_conv]
+  -- Expand GF and simplify integrand using Fourier characters
+  have h_expand : ∀ θ : ℝ,
+      subsetSumGF A (Complex.exp (Complex.I * ↑θ)) * Complex.exp (-Complex.I * ↑t * ↑θ) =
+      ∑ S ∈ A.powerset, Complex.exp (↑(setSum S - t) * Complex.I * ↑θ) := by
+    intro θ
+    rw [gf_expansion A _ (Complex.exp_ne_zero _), Finset.sum_mul]
+    congr 1; ext S
+    rw [cexp_zpow, ← Complex.exp_add]
+    congr 1; push_cast; ring
+  simp_rw [h_expand]
+  -- Exchange finite sum and integral (each term is continuous hence integrable)
+  rw [intervalIntegral.integral_finset_sum _ fun S _ =>
+    (Complex.continuous_exp.comp
+      (continuous_const.mul Complex.continuous_ofReal)).intervalIntegrable _ _]
+  -- Apply orthogonality to each integral: ∫ exp(inθ) = 2πδ_{n,0}
+  simp_rw [exp_orthogonality]
+  -- Collapse conditional sum to count
+  simp_rw [sub_eq_zero]
+  rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]
+  -- Cancel (1/2π) · (count · 2π) = count
+  unfold countSubsetsWithSum subsetsWithSum
+  have hpi : (↑(2 * Real.pi) : ℂ) ≠ 0 :=
+    Complex.ofReal_ne_zero.mpr (by positivity)
+  field_simp
 
 /-
 ## Part 7: Summary

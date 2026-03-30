@@ -43,9 +43,6 @@ noncomputable def transfiniteDiameter' (F : Set ℂ) : ℝ :=
   Filter.liminf (fun n => nthDiameter F n) Filter.atTop
 
 /-- The two definitions agree. -/
-axiom transfiniteDiameter_eq (F : Set ℂ) :
-  transfiniteDiameter F = transfiniteDiameter' F
-
 /-
 ## Polynomials with Roots in F
 -/
@@ -198,9 +195,6 @@ theorem disc_determined (F : Set ℂ) (_hF : isClosedDisc F) :
   ⟨fun _ => muPosDeg F, rfl⟩
 
 /-- Line segment of length L has transfinite diameter L/4. -/
-axiom lineSegment_diameter (a b : ℂ) :
-  transfiniteDiameter (Set.Icc a b) = Complex.abs (b - a) / 4
-
 /-- Disc of radius r has transfinite diameter r. -/
 axiom disc_diameter (c : ℂ) (r : ℝ) (hr : r > 0) :
   transfiniteDiameter (Metric.closedBall c r) = r
@@ -226,13 +220,6 @@ noncomputable def discConstant (F : Set ℂ) : ℝ :=
 -/
 
 /-- For bounded connected F with 0 < ρ(F) < 1, get explicit disc bound. -/
-axiom erdos_netanyahu (F : Set ℂ) (hF : IsClosed F) (hFi : F.Infinite)
-    (hFb : Bornology.IsBounded F) (hFc : IsConnected F) :
-  0 < transfiniteDiameter F → transfiniteDiameter F < 1 →
-  ∃ r : ℝ → ℝ, (∀ c ∈ Set.Ioo 0 1, r c > 0) ∧
-    ∀ (p : PolynomialInF F), p.degree > 0 →
-      ∃ z₀ : ℂ, Metric.ball z₀ (r (transfiniteDiameter F)) ⊆ sublevelSet p
-
 /-
 ## Relationship to Problem 1039
 -/

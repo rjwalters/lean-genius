@@ -16,7 +16,7 @@
       "convex-geometry"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 107,
     "erdosUrl": "https://erdosproblems.com/107",
     "erdosProblemStatus": "open",
@@ -74,7 +74,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
     "lineCount": 285,
-    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "assumptions": "6 axioms (deep combinatorial bounds: f(4)=5, f(5)=9, Erdos-Szekeres bounds, Suk/HMPT bounds). 0 sorries. f_finite proved from ersz_lower_bound by contradiction.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
