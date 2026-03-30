@@ -17,7 +17,7 @@
       "prime-number-graph"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 453,
     "erdosUrl": "https://erdosproblems.com/453",
     "erdosProblemStatus": "solved",
@@ -54,9 +54,9 @@
       "counterexample_set_infinite theorem (fully proved from axioms)",
       "log_convexity_iff_vertex identity (proved by rfl)"
     ],
-    "axiomCount": 6,
-    "lineCount": 304,
-    "assumptions": "6 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "axiomCount": 4,
+    "lineCount": 339,
+    "assumptions": "4 axioms: nthPrime_is_prime, nthPrime_strictMono, logPrime_ratio_tendsto_zero, pomerance_convex_hull_lemma. 1 sorry remaining."
   },
   "leanFile": {
     "imports": [
@@ -70,9 +70,9 @@
       "Real"
     ],
     "namespace": "Erdos453",
-    "lineCount": 304,
-    "axiomCount": 6,
-    "theoremCount": 12,
+    "lineCount": 339,
+    "axiomCount": 4,
+    "theoremCount": 14,
     "definitionCount": 7
   },
   "crossReferences": [
