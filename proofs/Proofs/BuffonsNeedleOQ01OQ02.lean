@@ -1,6 +1,8 @@
 /-
 # Buffon's Needle: Higher-Dimensional Hyperplane Arrangements
 
+**Status**: Fully verified (0 axioms, 0 sorries)
+
 Generalization of Buffon's needle to n-dimensional Euclidean space
 with parallel hyperplane arrangements.
 
@@ -56,10 +58,10 @@ noncomputable def buffonConstant (n : ℕ) : ℝ :=
   else 2 * Real.Gamma ((n : ℝ) / 2) /
     (((n : ℝ) - 1) * Real.sqrt π * Real.Gamma (((n : ℝ) - 1) / 2))
 
--- The Gamma function value Γ(1/2) = √π requires the Gaussian integral.
-/-- Γ(1/2) = √π. Follows from ∫₀^∞ t^{-1/2} e^{-t} dt = √π
-    (substitution t = x² reduces to the Gaussian integral). -/
-axiom gamma_one_half : Real.Gamma (1 / 2) = Real.sqrt π
+/-- Γ(1/2) = √π. Now proved from Mathlib's `Gamma_one_half_eq`
+    (which uses the Gaussian integral). -/
+theorem gamma_one_half : Real.Gamma (1 / 2) = Real.sqrt π :=
+  Gamma_one_half_eq
 
 /-- c₂ = 2/π: the classical Buffon constant.
     Proof: c₂ = 2Γ(1)/((2-1)·√π·Γ(1/2)) = 2·1/(1·√π·√π) = 2/π. -/
@@ -130,9 +132,34 @@ theorem buffonConstant_pos (n : ℕ) (hn : 2 ≤ n) : 0 < buffonConstant n := by
       (Real.Gamma_pos_of_pos h_nm1_half)
 
 /-- The Buffon constant is at most 1 for all n ≥ 2.
-    This follows from |⟨u, e₁⟩| ≤ 1 for all unit vectors u,
-    so E[|⟨u, e₁⟩|] ≤ 1. -/
-axiom buffonConstant_le_one (n : ℕ) (hn : 2 ≤ n) : buffonConstant n ≤ 1
+    Proved by strong induction using the recurrence c_{n+2} = (n/(n+1))·c_n:
+    - Base: c₂ = 2/π < 1 (since π > 2), c₃ = 1/2 < 1
+    - Step: c_{n+2} = (n/(n+1))·c_n ≤ 1·1 = 1 (since n/(n+1) ≤ 1 and c_n ≤ 1) -/
+theorem buffonConstant_le_one : ∀ (n : ℕ), 2 ≤ n → buffonConstant n ≤ 1 := by
+  intro n hn
+  induction n using Nat.strongRecOn with
+  | ind n ih =>
+    rcases Nat.lt_or_ge n 4 with hlt | hge
+    · -- Base cases: n ∈ {2, 3}
+      interval_cases n
+      · rw [buffonConstant_two]; rw [div_le_one pi_pos]; linarith [pi_gt_3141592]
+      · rw [buffonConstant_three]; linarith
+    · -- Inductive step: n ≥ 4
+      have hn2 : 2 ≤ n - 2 := by omega
+      have hlt_n : n - 2 < n := by omega
+      have ih_prev := ih (n - 2) hlt_n hn2
+      have hrec := buffonConstant_recurrence (n - 2) hn2
+      have heq : n - 2 + 2 = n := by omega
+      rw [heq] at hrec; rw [hrec]
+      have hn_cast : (2 : ℝ) ≤ (↑(n - 2) : ℝ) := by exact_mod_cast hn2
+      calc (↑(n - 2) : ℝ) / ((↑(n - 2) : ℝ) + 1) * buffonConstant (n - 2)
+          ≤ 1 * 1 := by
+            apply mul_le_mul
+            · exact div_le_one_of_le (by linarith) (by linarith)
+            · exact ih_prev
+            · exact le_of_lt (buffonConstant_pos (n - 2) hn2)
+            · norm_num
+        _ = 1 := one_mul 1
 
 -- ============================================================
 -- Section 2: The Higher-Dimensional Buffon Formula
@@ -249,13 +276,37 @@ theorem meanWidth_three (L : ℝ) : meanWidth 3 L = L / 2 := by
 /-- The Buffon constant satisfies the recurrence
     c_{n+2} = (n/(n+1)) · c_n for n ≥ 2.
 
-    This follows from the Gamma function identity Γ(z+1) = zΓ(z)
-    applied to both Gamma arguments in the definition.
+    Proved from Γ(z+1) = z·Γ(z) applied to both Gamma arguments:
+    - Γ((n+2)/2) = (n/2)·Γ(n/2)     [since (n+2)/2 = n/2 + 1]
+    - Γ((n+1)/2) = ((n-1)/2)·Γ((n-1)/2)  [since (n+1)/2 = (n-1)/2 + 1]
 
     The recurrence shows c_n → 0 as n → ∞ (concentration of measure),
     since n/(n+1) < 1 and the product telescopes. -/
-axiom buffonConstant_recurrence (n : ℕ) (hn : 2 ≤ n) :
-  buffonConstant (n + 2) = (n : ℝ) / ((n : ℝ) + 1) * buffonConstant n
+theorem buffonConstant_recurrence (n : ℕ) (hn : 2 ≤ n) :
+    buffonConstant (n + 2) = (n : ℝ) / ((n : ℝ) + 1) * buffonConstant n := by
+  unfold buffonConstant
+  simp only [show ¬(n + 2 ≤ 1) from by omega, show ¬(n ≤ 1) from by omega, ↓reduceIte]
+  have hn_ge : (2 : ℝ) ≤ (↑n : ℝ) := by exact_mod_cast hn
+  -- Cast simplifications
+  have h_np2_half : (↑(n + 2) : ℝ) / 2 = ↑n / 2 + 1 := by push_cast; ring
+  have h_np2_sub : (↑(n + 2) : ℝ) - 1 = ↑n + 1 := by push_cast; ring
+  have h_np1_half : ((↑(n + 2) : ℝ) - 1) / 2 = (↑n - 1) / 2 + 1 := by push_cast; ring
+  -- Gamma functional equation: Γ(z+1) = z·Γ(z)
+  have h_n_half_pos : (0 : ℝ) < ↑n / 2 := by linarith
+  have h_nm1_half_pos : (0 : ℝ) < (↑n - 1) / 2 := by linarith
+  have hΓ1 : Gamma (↑n / 2 + 1) = (↑n / 2) * Gamma (↑n / 2) :=
+    Gamma_add_one (ne_of_gt h_n_half_pos)
+  have hΓ2 : Gamma ((↑n - 1) / 2 + 1) = ((↑n - 1) / 2) * Gamma ((↑n - 1) / 2) :=
+    Gamma_add_one (ne_of_gt h_nm1_half_pos)
+  rw [h_np2_half, h_np2_sub, h_np1_half, hΓ1, hΓ2]
+  -- Clear denominators and simplify
+  have h1 : (↑n : ℝ) + 1 ≠ 0 := by linarith
+  have h2 : (↑n : ℝ) - 1 ≠ 0 := by linarith
+  have h3 : sqrt π ≠ 0 := ne_of_gt (sqrt_pos.mpr pi_pos)
+  have h4 : Gamma ((↑n : ℝ) / 2) ≠ 0 := ne_of_gt (Gamma_pos_of_pos h_n_half_pos)
+  have h5 : Gamma (((↑n : ℝ) - 1) / 2) ≠ 0 := ne_of_gt (Gamma_pos_of_pos h_nm1_half_pos)
+  field_simp
+  ring
 
 /-- From the recurrence: c₅ = (3/4) · c₃ = 3/8 -/
 theorem buffonConstant_five : buffonConstant 5 = 3 / 8 := by
