@@ -1,13 +1,13 @@
 {
   "slug": "erdos-825-oq-03",
-  "title": "Do odd weird numbers exist (Erd\u0151s Problem #470)",
+  "title": "Do odd weird numbers exist (Erdős Problem #470)",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Do odd weird numbers exist (Erd\u0151s Problem #470).",
+    "plain": "Formal mathematical investigation: Do odd weird numbers exist (Erdős Problem #470).",
     "whyMatters": []
   },
   "knownResults": {
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-03-30T17:32:58.851Z",
     "iteration": 4,
-    "focus": "Extended odd weird bound to >1575, proved weird_836",
+    "focus": "Extended odd weird bound to >3465 (5 odd abundant numbers checked, all semiperfect)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended odd weird bound to >1575 (was >945). Proved 836 weird, 1575 semiperfect, no odd abundant in (945,1575). 7 new theorems added. 3 deep axioms remain.",
+    "progressSummary": "PROGRESS: Extended odd weird bound to >3465 (was >1575). Proved 2205, 2835, 3465 are odd abundant and semiperfect. No odd abundant in each gap verified by native_decide. 3 deep axioms remain (Liddy-Riedl, Melfi, Benkoski-Erdős). Fixed axiomCount from 4→3 in meta.json. 35 theorems, 566 lines total.",
     "builtItems": [
       "Decidable instances for IsPseudoperfect and IsWeird in Erdos470Problem.lean:70-78",
       "Proved no_weird_below_70 (was axiom) via native_decide in Erdos470Problem.lean:108-110",
@@ -42,8 +42,15 @@
       "Added liddy_riedl_6_primes axiom in Erdos470Problem.lean:213-214",
       "Proved weird_836: 836 is the second weird number (native_decide)",
       "Proved fifteen75_odd_abundant + fifteen75_semiperfect: 1575 is odd abundant but semiperfect",
-      "Proved no_odd_abundant_945_to_1575: no odd abundant in (945,1575) via native_decide on Finset.Ico",
-      "Proved no_odd_weird_to_1575 + odd_weird_gt_1575: extended odd weird lower bound from 945 to 1575"
+      "Proved no_odd_abundant_945_to_1575 + no_odd_weird_to_1575 + odd_weird_gt_1575: extended bound from >945 to >1575",
+      "Proved twentytwo05_odd_abundant + twentytwo05_semiperfect: 2205 is odd abundant but semiperfect",
+      "Proved no_odd_abundant_1575_to_2205 + no_odd_weird_to_2205 + odd_weird_gt_2205",
+      "Proved twentyeight35_odd_abundant + twentyeight35_semiperfect: 2835 is odd abundant but semiperfect",
+      "Proved no_odd_abundant_2205_to_2835 + no_odd_weird_to_2835 + odd_weird_gt_2835",
+      "Proved thirtyfour65_odd_abundant + thirtyfour65_semiperfect: 3465 is odd abundant but semiperfect",
+      "Proved no_odd_abundant_2835_to_3465 + no_odd_weird_to_3465 + odd_weird_gt_3465",
+      "Updated erdos_470 summary theorem to use odd_weird_gt_3465 bound",
+      "Fixed meta.json axiomCount 4→3 (nthPrime is a def, not axiom)"
     ],
     "insights": [
       "IsPseudoperfect is decidable by enumerating subsets of properDivisors.powerset",
@@ -53,14 +60,20 @@
       "properDivisors_lt follows immediately from Nat.mem_properDivisors",
       "no_weird_below_70 provable by native_decide with Decidable IsWeird instance",
       "Reduced axiom count from 5 to 4 in Erdos470Problem.lean",
-      "The only odd abundant numbers \u2264 1575 are 945 and 1575; both are semiperfect, so neither is weird",
-      "native_decide on Finset.Ico for range abundance checking; Finset.mem_Ico for membership proof"
+      "The only odd abundant numbers <= 1575 are 945 and 1575; both are semiperfect, so neither is weird",
+      "native_decide on Finset.Ico for range abundance checking; Finset.mem_Ico for membership proof",
+      "2205 = 3² × 5 × 7² is the third odd abundant; semiperfect via powerset native_decide",
+      "2835 = 3⁴ × 5 × 7 is the fourth odd abundant; semiperfect via powerset native_decide",
+      "3465 = 3² × 5 × 7 × 11 is the fifth odd abundant; semiperfect via powerset native_decide",
+      "Pattern: all small odd abundant numbers are semiperfect because they have many divisors with flexible subset sums",
+      "meta.json axiomCount was 4 but nthPrime is a noncomputable def not an axiom; corrected to 3"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Check next odd abundant numbers (e.g., 2205 = 3^2 * 5 * 7^2) for semiperfectness to extend bound further",
-      "Fang bound (10^21) is far beyond computational reach in Lean",
-      "3 remaining axioms (Liddy-Riedl, Melfi, Benkoski-Erd\u0151s) are all deep results, not provable from Mathlib"
+      "Further extension beyond 3465 is diminishing returns (enumeration theater); Fang bound 10^21 is unreachable computationally",
+      "3 remaining axioms (Liddy-Riedl, Melfi, Benkoski-Erdős) are deep results requiring real analysis/sieve theory",
+      "Structural approach: prove general results about when odd abundant numbers must be semiperfect",
+      "Consider companion file for Aristotle targeting routine number theory lemmas"
     ]
   },
   "tags": [
@@ -84,10 +97,10 @@
     {
       "path": "Proofs/Erdos470Problem.lean",
       "filename": "Erdos470Problem.lean",
-      "lineCount": 419,
-      "theoremCount": 19,
+      "lineCount": 568,
+      "theoremCount": 35,
       "axiomCount": 3,
-      "defCount": 13,
+      "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos470Problem.lean"
