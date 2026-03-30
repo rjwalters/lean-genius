@@ -1,0 +1,183 @@
+{
+  "id": "pac-learning-bounds-oq-01",
+  "title": "VC Dimension of Specific Hypothesis Classes",
+  "slug": "pac-learning-bounds-oq-01",
+  "description": "Computes VC dimension for concrete hypothesis classes in Lean 4: powerset (VCDim = |Ω|), threshold classifiers (VCDim = 1), and interval classifiers (VCDim = 2).",
+  "meta": {
+    "author": "Vapnik-Chervonenkis (1971), Sauer (1972), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension",
+    "date": "1971",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/PACLearningVCExamples.lean",
+    "tags": [
+      "learning-theory",
+      "combinatorics",
+      "cs-math-bridge",
+      "vc-dimension",
+      "advanced"
+    ],
+    "badge": "formalized",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.image",
+        "description": "Image of finsets for trace set construction",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset of finite sets for shattering definition",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.card_eq_two",
+        "description": "Characterization of 2-element finsets for pair arguments",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "traceOn: formal trace/restriction of hypothesis class on a sample",
+      "Shatters: proper shattering definition via powerset inclusion",
+      "VCDimLE/VCDimGE/VCDimEq: complete VC dimension API",
+      "powerset_vcDimEq: VCDim(𝒫(Ω)) = |Ω| (fully proved)",
+      "threshold_vcDimEq: VCDim(threshold classifiers on Fin n) = 1 (fully proved)",
+      "interval_vcDimEq: VCDim(interval classifiers on Fin n) = 2 (2 sorries in base cases)"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 0,
+    "sorryCount": 2,
+    "lineCount": 332,
+    "prerequisites": [
+      "VC dimension and shattering",
+      "Finite set operations (Finset)",
+      "Threshold and interval classifiers"
+    ],
+    "assumptions": "2 sorries remain: interval_shatters_pair (routine case split showing 4 traces) and interval_not_shatters_triple (convexity argument for 3 sorted elements). Both are routine and suitable for Aristotle. All threshold and powerset results are fully proved.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The VC (Vapnik-Chervonenkis) dimension is the central combinatorial invariant in statistical learning theory. While the general theory (Sauer-Shelah lemma, PAC bounds) is well-studied, computing VC dimension for specific hypothesis classes is a fundamental exercise that bridges abstract theory with concrete applications. This formalization computes VCDim for three canonical classes: the powerset family (trivial but foundational), threshold classifiers (the simplest non-trivial class), and interval classifiers (the first example with VCDim > 1).",
+    "problemStatement": "Define proper VC dimension infrastructure (shattering, trace sets) in Lean 4 and compute VCDim for concrete hypothesis classes:\n\n1. Powerset family $\\mathcal{P}(\\Omega)$: VCDim = $|\\Omega|$\n2. Threshold classifiers $\\{\\{i \\in [n] : i < k\\} : k = 0, \\ldots, n\\}$: VCDim = 1\n3. Interval classifiers $\\{\\{i \\in [n] : a \\leq i < b\\}\\}$: VCDim = 2",
+    "text": "Computes VC dimension for concrete hypothesis classes: powerset (VCDim = |Ω|), thresholds (VCDim = 1), intervals (VCDim = 2).",
+    "proofStrategy": "Each VCDim computation follows a two-sided bound:\n\n**Lower bound (VCDimGE):** Exhibit a set of the right size that is shattered, by constructing explicit hypotheses for each required trace.\n\n**Upper bound (VCDimLE):** Show no set of size d+1 is shattered, typically by identifying a structural obstruction:\n- Thresholds: downward-closed, so for a < b, trace {b} without {a} is impossible\n- Intervals: convex, so for a < b < c, trace {a,c} without {b} is impossible\n\nThe key technical ingredient is shatters_subset (anti-monotonicity): to show VCDim ≤ d, it suffices to show no (d+1)-element set is shattered.",
+    "keyInsights": [
+      "Threshold classifiers are the simplest non-trivial hypothesis class: exactly n+1 hypotheses on n points, but VCDim is only 1 due to the downward-closure constraint",
+      "Interval classifiers have VCDim = 2 because convexity prevents shattering 3 points: the 'endpoints without middle' trace is always blocked",
+      "The trace set construction (H.image (· ∩ S)) is the correct formalization of restriction that makes shattering decidable on finite types",
+      "Anti-monotonicity of shattering (shatters_subset) reduces VCDim upper bounds to checking a single forbidden cardinality"
+    ],
+    "prerequisites": [
+      "VC dimension and shattering of hypothesis classes",
+      "Finite set operations (Finset.powerset, Finset.image)",
+      "Basic properties of Fin n",
+      "Threshold and interval classifiers on totally ordered sets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "VC Dimension Definitions",
+      "startLine": 27,
+      "endLine": 51,
+      "summary": "Core definitions: traceOn (H restricted to S), Shatters (every subset of S appears as a trace), VCDimLE/GE/Eq.",
+      "mathContext": "$H$ shatters $S$ if $\\{h \\cap S : h \\in H\\} \\supseteq \\mathcal{P}(S)$"
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 53,
+      "endLine": 100,
+      "summary": "Trace set bounds, anti-monotonicity of shattering, monotonicity of VCDimLE.",
+      "mathContext": "If $H$ shatters $S$ and $T \\subseteq S$, then $H$ shatters $T$"
+    },
+    {
+      "id": "powerset",
+      "title": "Powerset VCDim = |Ω|",
+      "startLine": 102,
+      "endLine": 129,
+      "summary": "VCDim of the powerset family equals the cardinality of the universe. Fully proved.",
+      "mathContext": "$\\operatorname{VCDim}(\\mathcal{P}(\\Omega)) = |\\Omega|$"
+    },
+    {
+      "id": "threshold",
+      "title": "Threshold Classifiers: VCDim = 1",
+      "startLine": 131,
+      "endLine": 269,
+      "summary": "Threshold classifiers {i < k} on Fin n have VCDim = 1. Key: downward-closure blocks trace {b} for a < b. Fully proved.",
+      "mathContext": "$\\operatorname{VCDim}(\\{\\{i : i < k\\} : 0 \\leq k \\leq n\\}) = 1$"
+    },
+    {
+      "id": "interval",
+      "title": "Interval Classifiers: VCDim = 2",
+      "startLine": 271,
+      "endLine": 331,
+      "summary": "Interval classifiers [a,b) on Fin n have VCDim = 2. Key: convexity blocks 3-element shattering. 2 sorries remain.",
+      "mathContext": "$\\operatorname{VCDim}(\\{[a, b) : 0 \\leq a, b \\leq n\\}) = 2$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pac-learning-bounds",
+      "relationship": "extends",
+      "description": "Answers the open question: computes VC dimension for specific hypothesis classes using the same definitions"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers the open question from the PAC Learning proof by computing VC dimension for three concrete hypothesis classes. The definitions (traceOn, Shatters, VCDimLE/GE/Eq) provide a reusable API. The powerset and threshold results are fully proved; the interval result has 2 routine sorries.",
+    "implications": "1. Establishes a formal VC dimension API for Lean 4\n2. Demonstrates that VCDim computations for concrete classes are feasible in Lean\n3. The downward-closure (thresholds) and convexity (intervals) arguments serve as templates for other hypothesis classes\n4. Potential for extension to linear classifiers, rectangles, and neural network classes",
+    "openQuestions": [
+      "Can VCDim be computed for axis-aligned rectangles in R^d (expected: 2d)?",
+      "Formalize the connection between VCDim and Rademacher complexity bounds"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "VCDimension",
+    "lineCount": 332,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 9
+  },
+  "references": [
+    {
+      "authors": "Vapnik, V. N.; Chervonenkis, A. Ya.",
+      "title": "On the Uniform Convergence of Relative Frequencies of Events to Their Probabilities",
+      "year": "1971",
+      "venue": "Theory of Probability and its Applications 16(2), 264-280",
+      "note": "Introduced VC dimension"
+    },
+    {
+      "authors": "Shalev-Shwartz, Shai; Ben-David, Shai",
+      "title": "Understanding Machine Learning: From Theory to Algorithms",
+      "year": "2014",
+      "venue": "Cambridge University Press",
+      "note": "Chapter 6: VC dimension examples"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "powerset_vcDimEq",
+      "type": "core",
+      "description": "VCDim of powerset family equals universe cardinality",
+      "leanType": "VCDimEq (Finset.univ.powerset) (Fintype.card α)"
+    },
+    {
+      "name": "threshold_vcDimEq",
+      "type": "core",
+      "description": "VCDim of threshold classifiers on Fin n equals 1",
+      "leanType": "VCDimEq (thresholdClass n) 1"
+    },
+    {
+      "name": "interval_vcDimEq",
+      "type": "core",
+      "description": "VCDim of interval classifiers on Fin n equals 2",
+      "leanType": "VCDimEq (intervalClass n) 2"
+    }
+  ]
+}

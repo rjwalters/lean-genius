@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ann-vc-definitions",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 27,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "VC Dimension API",
+    "content": "The core definitions formalize VC dimension via the trace set construction. traceOn H S = H.image (· ∩ S) computes the distinct intersection patterns. Shatters H S requires every subset of S to appear as a trace (S.powerset ⊆ traceOn H S). VCDimLE, VCDimGE, VCDimEq provide a clean API for upper bounds, lower bounds, and exact computation.",
+    "mathContext": "$\\operatorname{trace}_H(S) = \\{h \\cap S : h \\in H\\}$; $H$ shatters $S$ iff $\\mathcal{P}(S) \\subseteq \\operatorname{trace}_H(S)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "shattering",
+      "trace set",
+      "VC dimension",
+      "growth function"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "Finset.powerset"
+    ]
+  },
+  {
+    "id": "ann-shatters-subset",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 95
+    },
+    "type": "technique",
+    "title": "Anti-Monotonicity of Shattering",
+    "content": "If H shatters S and T ⊆ S, then H shatters T. The key step: for U ⊆ T ⊆ S, get h ∈ H with h ∩ S = U, then h ∩ T = U since U ⊆ T. This is the workhorse lemma for VCDim upper bounds: to show VCDim ≤ d, it suffices to show no (d+1)-element set is shattered.",
+    "mathContext": "$T \\subseteq S$ and $H$ shatters $S$ implies $H$ shatters $T$",
+    "significance": "key",
+    "relatedConcepts": [
+      "shattering monotonicity",
+      "VC dimension upper bounds"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-threshold-downward",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 147,
+      "endLine": 173
+    },
+    "type": "technique",
+    "title": "Threshold Downward-Closure Obstruction",
+    "content": "Threshold classifiers {i : i.val < k} are downward-closed: if j is in the threshold, so is every i < j. This means for any pair a < b, the trace {b} (containing b but not a) is impossible. This is what limits VCDim to 1: any 2-element set fails to be shattered because one of the four required traces is blocked.",
+    "mathContext": "For $a < b$, $\\{b\\} \\notin \\operatorname{trace}_{H_{\\text{thresh}}}(\\{a, b\\})$ because thresholds are downward-closed",
+    "significance": "key",
+    "relatedConcepts": [
+      "downward-closed families",
+      "threshold functions",
+      "shattering obstructions"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-interval-convexity",
+    "proofId": "pac-learning-bounds-oq-01",
+    "range": {
+      "startLine": 287,
+      "endLine": 325
+    },
+    "type": "technique",
+    "title": "Interval Convexity Obstruction",
+    "content": "Intervals [a, b) are convex: if the endpoints of a triple p < q < r are in an interval, the middle point q must also be in it. This means the trace {p, r} (endpoints without middle) is impossible, limiting VCDim to 2. This convexity argument generalizes: any hypothesis class defined by a bounded number of 'boundary crossings' has bounded VC dimension.",
+    "mathContext": "For $p < q < r$, $\\{p, r\\} \\notin \\operatorname{trace}_{H_{\\text{int}}}(\\{p, q, r\\})$ because intervals are convex",
+    "significance": "key",
+    "relatedConcepts": [
+      "convexity",
+      "interval classifiers",
+      "boundary crossings",
+      "sign changes"
+    ],
+    "prerequisites": []
+  }
+]

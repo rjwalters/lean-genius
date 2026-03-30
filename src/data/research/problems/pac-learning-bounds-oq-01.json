@@ -1,0 +1,76 @@
+{
+  "slug": "pac-learning-bounds-oq-01",
+  "title": "Can the VC dimension of specific hypothesis classes (linear classifiers, neur...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Can the VC dimension of specific hypothesis classes (linear classifiers, neur....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T01:04:30.789Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Built full VC dimension API and computed VCDim for powerset (|Ω|), threshold classifiers (1), and interval classifiers (2). Powerset and threshold results fully proved. Interval result has 2 routine sorries submitted to Aristotle.",
+    "builtItems": [
+      "Created proofs/Proofs/PACLearningVCExamples.lean (332 lines, 19 theorems, 9 definitions, 2 sorries)",
+      "Definitions: traceOn, Shatters, VCDimLE, VCDimGE, VCDimEq",
+      "Proved: powerset_vcDimEq (VCDim = |Ω|), threshold_vcDimEq (VCDim = 1)",
+      "Proved: shatters_subset, traceOn_subset_powerset, threshold_downward_closed, interval_convex",
+      "Stated: interval_vcDimEq (VCDim = 2) — 2 sorries in base cases",
+      "Created Aristotle companion: PACLearningVCExamplesAristotle.lean",
+      "Created gallery: src/data/proofs/pac-learning-bounds-oq-01/"
+    ],
+    "insights": [
+      "VC dimension can be computed for finite hypothesis classes using Finset-based trace sets",
+      "Threshold classifiers have VCDim=1 due to downward-closure: trace {b} is blocked when a<b",
+      "Interval classifiers have VCDim=2 due to convexity: trace {p,r} blocked when p<q<r",
+      "Anti-monotonicity of shattering (shatters_subset) is the key lemma for VCDim upper bounds",
+      "Powerset family VCDim = |Ω| is the trivial but foundational base case"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Aristotle: prove interval_shatters_pair (4-way case split)",
+      "Aristotle: prove interval_not_shatters_triple (sort + convexity)",
+      "Extension: VCDim for axis-aligned rectangles (expected: 2d)",
+      "Extension: connect to Rademacher complexity"
+    ]
+  },
+  "tags": [
+    "learning-theory",
+    "combinatorics",
+    "probability",
+    "cs-math-bridge",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "pac-learning-bounds"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.789Z",
+  "lastUpdate": "2026-03-29T20:30:00Z",
+  "significance": 8,
+  "tractability": 5
+}
