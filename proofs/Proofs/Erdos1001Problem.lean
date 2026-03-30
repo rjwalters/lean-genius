@@ -54,17 +54,9 @@ noncomputable def S (N : ℕ) (A c : ℝ) : ℝ :=
 The measure S(N, A, c) satisfies natural bounds and monotonicity.
 -/
 
-/-- S(N, A, c) is always between 0 and 1. -/
-axiom S_bounds (N : ℕ) (A c : ℝ) (hA : A > 0) (hc : c > 1) :
-    0 ≤ S N A c ∧ S N A c ≤ 1
-
-/-- S is monotone increasing in A. -/
-axiom S_mono_A (N : ℕ) (A₁ A₂ c : ℝ) (h : A₁ ≤ A₂) :
-    S N A₁ c ≤ S N A₂ c
-
-/-- S is monotone increasing in c. -/
-axiom S_mono_c (N : ℕ) (A c₁ c₂ : ℝ) (h : c₁ ≤ c₂) :
-    S N A c₁ ≤ S N A c₂
+-- S_bounds: S(N, A, c) is always between 0 and 1 (unused).
+-- S_mono_A: S is monotone increasing in A (unused).
+-- S_mono_c: S is monotone increasing in c (unused).
 
 /-
 ## The Limit Function
@@ -108,9 +100,7 @@ theorem est_explicit_formula (A c : ℝ) (hA : 0 < A) (hc : c > 1)
 EST also proved that when min(A,c) > 10, S stays bounded away from extremes.
 -/
 
-/-- EST boundedness: If min(A,c) > 10, then S(N,A,c) stays bounded away from 0 and 1. -/
-axiom est_boundedness (A c : ℝ) (hA : A > 10) (hc : c > 10) :
-    ∃ ε : ℝ, ε > 0 ∧ ∀ N : ℕ, N ≥ 1 → ε < S N A c ∧ S N A c < 1 - ε
+-- est_boundedness: If min(A,c) > 10, then S(N,A,c) stays bounded away from 0 and 1 (unused).
 
 /-
 ## Kesten-Sós Result (1966)
@@ -150,8 +140,8 @@ def boca_method : Prop :=
 def xiong_zaharescu_method : Prop :=
   ∀ A c : ℝ, A > 0 → c > 1 → limitExists A c
 
-axiom boca_theorem : boca_method
-axiom xiong_zaharescu_theorem : xiong_zaharescu_method
+-- boca_theorem: Boca's method proves limit existence (unused).
+-- xiong_zaharescu_theorem: Xiong-Zaharescu method proves limit existence (unused).
 
 /-
 ## Connection to Farey Fractions
@@ -163,9 +153,7 @@ The problem relates to the distribution of Farey fractions.
 def FareyFraction (n : ℕ) : Set ℚ :=
   { r : ℚ | 0 ≤ r ∧ r ≤ 1 ∧ r.den ≤ n ∧ r.den.Coprime r.num.natAbs }
 
-/-- The number of Farey fractions of order n is asymptotically 3n²/π². -/
-axiom farey_count_asymptotic :
-    Tendsto (fun n => (FareyFraction n).ncard / (n : ℝ)^2) atTop (nhds (3 / π^2))
+-- farey_count_asymptotic: |F_n| ~ 3n²/π² asymptotically (unused).
 
 /-- The EST formula involves 1/π² due to this Farey connection. -/
 theorem est_pi_squared_explanation :

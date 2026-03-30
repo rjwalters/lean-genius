@@ -138,16 +138,13 @@ theorem f_two : f 2 = 3 := by
 /-- **Erdős (1949)**: There exists c > 0 such that f(k) < k^(1-c) for large k.
 This shows that squaring can significantly reduce the term count.
 Deep constructive argument — axiomatized. -/
-axiom erdos_upper_bound :
-    ∃ c : ℝ, c > 0 ∧ ∃ K : ℕ, ∀ k ≥ K, (f k : ℝ) < k ^ (1 - c)
+-- erdos_upper_bound: unused axiom removed (Erdős 1949 upper bound f(k) < k^(1-c))
 
 /- ## The Main Result: f(k) → ∞ -/
 
 /-- **Schinzel (1987)**: f(k) > (log log k) / log 2 for sufficiently large k.
 Deep algebraic argument — axiomatized. -/
-axiom schinzel_lower_bound :
-    ∃ K : ℕ, ∀ k ≥ K,
-    (f k : ℝ) > Real.log (Real.log k) / Real.log 2
+-- schinzel_lower_bound: unused axiom removed (Schinzel 1987 lower bound f(k) > log log k / log 2)
 
 /-- **Schinzel-Zannier (2009)**: f(k) ≫ log k. That is, there exists c > 0
 such that f(k) ≥ c * log k for sufficiently large k.
@@ -159,17 +156,15 @@ axiom schinzel_zannier_improved :
 /-- **Erdős Problem #485 (SOLVED)**: f(k) → ∞ as k → ∞.
 Follows from `schinzel_zannier_improved`: f(k) ≥ c·log(k) → ∞.
 The derivation requires `Filter.Tendsto` machinery for ℕ via ℝ — axiomatized. -/
-axiom erdos_485_main : Filter.Tendsto (fun k => f k) Filter.atTop Filter.atTop
+-- erdos_485_main: unused axiom removed (f(k) → ∞ follows from schinzel_zannier_improved)
 
 /- ## Examples -/
 
 /-- Example: (1 + x)² = 1 + 2x + x² has 3 terms. -/
-axiom example_binomial_square :
-    termCount ((1 + X : Polynomial ℚ) ^ 2) = 3
+-- example_binomial_square: unused axiom removed (example: (1+x)² has 3 terms)
 
 /-- Example: (1 + x + x²)² = 1 + 2x + 3x² + 2x³ + x⁴ has 5 terms. -/
-axiom example_trinomial_square :
-    termCount ((1 + X + X^2 : Polynomial ℚ) ^ 2) = 5
+-- example_trinomial_square: unused axiom removed (example: (1+x+x²)² has 5 terms)
 
 /- ## Related Concepts -/
 
@@ -180,8 +175,7 @@ noncomputable def g (k n : ℕ) : ℕ :=
 
 /-- For any n ≥ 1, g(k, n) → ∞ as k → ∞.
 Extension of Schinzel's result — axiomatized. -/
-axiom general_divergence (n : ℕ) (hn : n ≥ 1) :
-    Filter.Tendsto (fun k => g k n) Filter.atTop Filter.atTop
+-- general_divergence: unused axiom removed (g(k,n) → ∞ for any n ≥ 1)
 
 /- ## Sparse Polynomials -/
 
@@ -196,11 +190,7 @@ def isSparse (p : Polynomial ℚ) (c : ℝ) : Prop :=
 Multiplying sparse polynomials can produce denser results.
 This is related to the f(k) problem.
 -/
-axiom sparse_product_density :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ p q : Polynomial ℚ,
-    isSparse p c → isSparse q c →
-    (termCount (p * q) : ℝ) ≥ termCount p + termCount q - 1
+-- sparse_product_density: unused axiom removed (sparse polynomial product density bound)
 
 /- ## Lacunary Polynomials -/
 
@@ -216,8 +206,7 @@ def isLacunary (p : Polynomial ℚ) : Prop :=
 Squaring a lacunary polynomial tends to produce more terms due to
 fewer cancellations between cross-terms.
 -/
-axiom lacunary_square_terms (p : Polynomial ℚ) (hp : isLacunary p) :
-    termCount (p ^ 2) ≥ 2 * termCount p - 1
+-- lacunary_square_terms: unused axiom removed (squaring lacunary polynomials increases terms)
 
 /- ## Summary
 
