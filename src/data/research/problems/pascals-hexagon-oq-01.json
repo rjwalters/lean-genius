@@ -1,7 +1,7 @@
 {
   "slug": "pascals-hexagon-oq-01",
   "title": "Can the Cayley-Bacharach axiom be proved from Mathlib's algebraic geometry, e...",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,12 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-29T23:39:50-07:00",
-    "iteration": 1,
-    "focus": "Algebraic proof strategy established. Need CAS computation for ideal membership.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "ACT",
+    "since": "2026-03-30T07:45:00Z",
+    "iteration": 2,
+    "focus": "Proved Pascal for parametrized standard conic via ring — needs build verification",
+    "blockers": [
+      "Docker offline for build verification",
+      "Full axiom elimination needs projective equivalence + degenerate conics"
+    ],
+    "nextAction": "Docker build verify; then prove projective equivalence preserves pascalConstraint",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,24 +32,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 1 axiom (conic_implies_pascal_constraint). Direct algebraic proof feasible using ring tactic, but requires CAS-computed ideal membership certificate. Multi-session project.",
-    "builtItems": [],
+    "progressSummary": "Session 2: DEEP DIVE. Wrote proof of Pascal for standard conic x₀²+x₁²=x₂² via rational parametrization (1-t²,2t,1+t²). Verified det(P,Q,R)=0 as polynomial identity in sympy (~3500 terms cancel). Lean proof uses simp+ring pattern from DesarguesTheorem.",
+    "builtItems": [
+      "stdConicPoint — rational parametrization of standard conic",
+      "stdConic — the matrix diag(1,1,-1)",
+      "stdConicPoint_on_conic — points lie on conic (ring)",
+      "pascal_std_conic_parametrized — Pascal for parametrized standard conic (simp+ring, needs build verify)"
+    ],
     "insights": [
       "The axiom conic_implies_pascal_constraint cannot be proved from Mathlib algebraic geometry (no Bezout/Cayley-Bacharach). Must use direct algebraic proof.",
       "DesarguesTheorem.lean has all needed infrastructure: cross_triple_product (BAC-CAB), scalar_triple_product_eq_det, threeVectorMatrix_det_explicit, scalar_triple_of_cross_products — all verified by ring",
       "Desargues identity proved by expanding cross products into coordinates and using ring on 18 variables. Pascal needs same approach but with conic constraint Q(X) = ∑ C_ij X_i X_j",
       "det(P,Q,R) does NOT vanish universally — only when 6 points on a conic. Need ideal membership: det(P,Q,R) = Σ p_X · Q(X). Coefficients p_X are degree-10 polynomials in 24 variables",
       "A computer algebra system (Sage/Macaulay2) needed to compute the ideal membership certificate, then transcribe to Lean for ring verification",
-      "P = [ABE]D - [ABD]E, Q = [BCF]E - [BCE]F, R = [CDA]F - [CDF]A (via BAC-CAB on cross products of cross products)"
+      "P = [ABE]D - [ABD]E, Q = [BCF]E - [BCE]F, R = [CDA]F - [CDF]A (via BAC-CAB on cross products of cross products)",
+      "Rational parametrization P(t)=(1-t²,2t,1+t²) covers ALL real points on x₀²+x₁²=x₂² (no real points at infinity)",
+      "det(P,Q,R) for parametrized points is identically 0 as polynomial — verified in sympy",
+      "simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct] + ring is the Desargues pattern for cross product determinant proofs",
+      "Full axiom elimination requires: (1) this parametrized proof, (2) projective equivalence preserves pascalConstraint, (3) any non-degenerate conic ≅ standard conic, (4) degenerate conic case"
     ],
     "mathlibGaps": [
       "No Bezout theorem for projective curves in Mathlib",
       "No Cayley-Bacharach theorem in Mathlib"
     ],
     "nextSteps": [
-      "Use Sage/Macaulay2 to compute ideal membership certificate for det(P,Q,R) mod (Q(A),...,Q(F))",
-      "Transcribe certificate to Lean and verify with ring tactic",
-      "Alternatively: prove for specific conic C = diag(1,1,-1) first, then prove projective equivalence"
+      "Docker build verify the parametrized proof",
+      "If simp+ring fails: adjust simp lemma set (may need Fin.isValue, Matrix.cons_val_zero/one, Matrix.head_cons)",
+      "Prove projective equivalence preserves pascalConstraint",
+      "Prove any non-degenerate conic is projectively equivalent to standard one",
+      "Handle degenerate conics (pair of lines) as separate case"
     ],
     "markdown": "# Knowledge Base: pascals-hexagon-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
