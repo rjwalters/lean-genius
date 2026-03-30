@@ -182,6 +182,22 @@ theorem reynoldsSum_on_invariant (r : R) (hr : r ∈ InvariantSubset G R) :
   simp_rw [hr']
   rw [Finset.sum_const, Finset.card_univ]
 
+/-- The Reynolds sum of zero is zero. -/
+theorem reynoldsSum_zero : reynoldsSum (0 : R) = 0 := by
+  simp [reynoldsSum, smul_zero]
+
+/-- The Reynolds sum respects negation. -/
+theorem reynoldsSum_neg (r : R) : reynoldsSum (-r) = -reynoldsSum r := by
+  simp only [reynoldsSum, smul_neg, Finset.sum_neg_distrib]
+
+/-- The Reynolds sum commutes with multiplication by invariant elements.
+    If s ∈ R^G, then Σ_g g•(s·r) = Σ_g (g•s)·(g•r) = Σ_g s·(g•r) = s · Σ_g g•r. -/
+theorem reynoldsSum_mul_invariant (s r : R) (hs : s ∈ InvariantSubset G R) :
+    reynoldsSum (s * r) = s * reynoldsSum r := by
+  simp only [reynoldsSum]
+  simp_rw [smul_mul', hs _]
+  exact (Finset.mul_sum Finset.univ (fun g => g • r) s).symm
+
 end FiniteGroupReynolds
 
 -- ═══════════════════════════════════════════════════════════════════
