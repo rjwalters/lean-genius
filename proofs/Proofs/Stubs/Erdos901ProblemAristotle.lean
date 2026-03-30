@@ -78,7 +78,23 @@ theorem n_sq_times_two_pow_gt (n : ℕ) (hn : n ≥ 2) :
 
 /-- √(n/log n) < n for n ≥ 3. -/
 theorem sqrt_n_log_lt_n (n : ℕ) (hn : n ≥ 3) :
-    Real.sqrt ((n : ℝ) / Real.log n) < n := by sorry
+    Real.sqrt ((n : ℝ) / Real.log n) < n := by
+  have hn_pos : (0 : ℝ) < n := by positivity
+  have hlog_pos : 0 < Real.log (n : ℝ) :=
+    Real.log_pos (by exact_mod_cast show 1 < n by omega)
+  -- sqrt(x) < y ⟺ x < y² (for y > 0, x ≥ 0)
+  rw [← Real.sqrt_sq hn_pos.le]
+  exact Real.sqrt_lt_sqrt (div_nonneg hn_pos.le hlog_pos.le) <| by
+    -- Need: n / log n < n²
+    rw [div_lt_iff hlog_pos]
+    -- Need: n < n² * log n
+    have hlog_ge_1 : 1 ≤ Real.log (n : ℝ) := by
+      have : Real.exp 1 ≤ (n : ℝ) := by
+        calc Real.exp 1 < 3 := by linarith [Real.exp_one_lt_d9]
+          _ ≤ n := by exact_mod_cast hn
+      rwa [Real.exp_le_iff_le_log hn_pos] at this
+    have hn3 : (3 : ℝ) ≤ n := by exact_mod_cast hn
+    nlinarith
 
 /-- For a Fin 2 value, it is either 0 or 1. -/
 theorem fin2_cases (x : Fin 2) : x = 0 ∨ x = 1 := by

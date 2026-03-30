@@ -78,7 +78,24 @@ theorem linearIndependent_of_intertwine
 theorem isUnit_of_linearIndependent_cols
     (P : Matrix n n K)
     (hli : LinearIndependent K (fun j : n => fun i : n => P i j)) :
-    IsUnit P := by sorry
+    IsUnit P := by
+  -- mulVec w = ∑ j, w j • (column j), so injectivity follows from lin. independence
+  have hinj : Function.Injective (Matrix.mulVecLin P) := by
+    intro u v huv
+    have h0 : P.mulVec (u - v) = 0 := by
+      show (Matrix.mulVecLin P) (u - v) = 0
+      rw [map_sub, sub_eq_zero]; exact huv
+    -- P.mulVec (u - v) = ∑ j, (u - v) j • (column j of P)
+    have hmulvec : P.mulVec (u - v) = ∑ j : n, (u - v) j • (fun i => P i j) := by
+      ext i; simp [Matrix.mulVec, Matrix.dotProduct, Finset.sum_apply, smul_eq_mul]
+    rw [hmulvec] at h0
+    have hcoeff := (Fintype.linearIndependent_iff.mp hli) (u - v) h0
+    ext j; exact sub_eq_zero.mpr (by simpa using (hcoeff j).symm)
+  -- Injective endomorphism of finite-dim space → bijective → IsUnit
+  have hbij : Function.Bijective (Matrix.mulVecLin P) :=
+    ⟨hinj, LinearMap.injective_iff_surjective.mp hinj⟩
+  rw [Matrix.isUnit_iff_isUnit_det]
+  rwa [Matrix.isUnit_det_iff_isUnit_mulVecLin, LinearMap.isUnit_iff_bijective]
 
 /-
   Lemma 3: Matrix decomposition into standard basis
