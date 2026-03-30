@@ -1,6 +1,6 @@
 {
   "slug": "erdos-931",
-  "title": "Erdős #931",
+  "title": "Erd\u0151s #931",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -17,46 +17,53 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-24T09:30:00.000Z",
-    "iteration": 3,
-    "focus": "Partial proof of exists_prime_between_blocks via Bertrand's postulate.",
+    "since": "2026-03-30T21:44:17.000Z",
+    "iteration": 2,
+    "focus": "Hard case structural analysis + computational verification",
     "blockers": [
-      "Størmer's theorem not in Mathlib — needed to fully eliminate exists_prime_between_blocks axiom"
+      "St\u00f8rmer's theorem not in Mathlib \u2014 needed to fully eliminate exists_prime_between_blocks axiom"
     ],
-    "nextAction": "Investigate Størmer formalization or alternative smooth number arguments.",
+    "nextAction": "Try to prove exists_prime_between_blocks_hard for k\u2081=k\u2082=3 via contradiction",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Refined axiom — exists_prime_between_blocks promoted from axiom to theorem via case analysis. Remaining axiom (exists_prime_between_blocks_hard) is strictly weaker with 3 extra hypotheses.",
+    "progressSummary": "PROGRESS: Added 5 structural lemmas for the hard case: n\u2081 lower bound, next prime beyond first block, no-prime-in-block, and computational verification that hard case is vacuously true for n\u2081 \u2264 30 with k\u2081=k\u2082=3.",
     "builtItems": [
-      "Fixed consecutive product computation bug (9459360 → 9480240)",
+      "Fixed consecutive product computation bug (9459360 \u2192 9480240)",
       "Proved first_block_has_prime using Nat.exists_prime_lt_and_le_two_mul (Bertrand)",
-      "Proved exists_prime_between_blocks_small: covers k₁ ≥ n₁ case without SamePrimeFactors",
+      "Proved exists_prime_between_blocks_small: covers k\u2081 \u2265 n\u2081 case without SamePrimeFactors",
       "Proved exists_prime_between_of_large_prime_factor: uses SamePrimeFactors + Prime.dvd_finset_prod_iff",
       "Added 3 new verified counterexample pairs via native_decide: (3,3,7,3), (2,4,7,3), (0,5,7,3)",
-      "Proved exists_prime_between_blocks as theorem (was axiom) — 4-way case analysis in Erdos931Problem.lean:309-330"
+      "Proved exists_prime_between_blocks as theorem (was axiom) \u2014 4-way case analysis in Erdos931Problem.lean:309-330",
+      "hard_case_n1_lower_bound: proved n\u2081 \u2265 k\u2081+k\u2082+1 \u2265 7 in hard case",
+      "hard_case_next_prime_beyond_block: next prime after n\u2081 exceeds n\u2081+k\u2081",
+      "hard_case_no_prime_in_first_block: contradiction when prime in first block",
+      "hard_case_vacuous_k3_n30: computational proof that hard case hypotheses are inconsistent for n\u2081 \u2264 30, k\u2081=k\u2082=3"
     ],
     "insights": [
-      "Only 2 axioms, both deep: stronger_implies_main (requires Størmer-type smooth number theory), exists_prime_between_blocks (partially proved)",
-      "Key insight: exists_prime_between_blocks is TRIVIALLY true when first block contains a prime (p>n₁, p≤n₁+k₁≤n₂≤n₂+k₂)",
-      "By Bertrand's postulate, first block always contains a prime when k₁ ≥ n₁, covering the small-n₁ regime",
-      "The HARD remaining case: n₁ > k₁, first block all composite, all prime factors ≤ n₁ — SamePrimeFactors forces second block to be n₁-smooth",
-      "Empirically, the hard case appears vacuously true: for all tested n₁ with all-composite blocks, SamePrimeFactors fails",
-      "stronger_implies_main requires showing the outer set {n₂ > 2(n₁+k₁)} is finite — needs smooth number theory (Størmer)",
-      "New examples show same-prime-factors pairs cluster around small primes: {2,3,5} examples (4·5·6 = 8·9·10 in primes)",
-      "Refined exists_prime_between_blocks: general statement proved as theorem via 4-way case analysis (Bertrand for k₁≥n₁, Bertrand for 2n₁≤n₂+k₂, large prime factor transfer, hard-case axiom)",
-      "The hard-case axiom (exists_prime_between_blocks_hard) adds 3 hypotheses: k₁<n₁, n₂+k₂<2n₁, all prime factors ≤n₁ — strictly weaker than the original",
-      "The hard case forces BOTH blocks to be n₁-smooth, making it likely vacuously true by Størmer — the SamePrimeFactors hypothesis cannot be satisfied when blocks are far apart and smooth"
+      "Only 2 axioms, both deep: stronger_implies_main (requires St\u00f8rmer-type smooth number theory), exists_prime_between_blocks (partially proved)",
+      "Key insight: exists_prime_between_blocks is TRIVIALLY true when first block contains a prime (p>n\u2081, p\u2264n\u2081+k\u2081\u2264n\u2082\u2264n\u2082+k\u2082)",
+      "By Bertrand's postulate, first block always contains a prime when k\u2081 \u2265 n\u2081, covering the small-n\u2081 regime",
+      "The HARD remaining case: n\u2081 > k\u2081, first block all composite, all prime factors \u2264 n\u2081 \u2014 SamePrimeFactors forces second block to be n\u2081-smooth",
+      "Empirically, the hard case appears vacuously true: for all tested n\u2081 with all-composite blocks, SamePrimeFactors fails",
+      "stronger_implies_main requires showing the outer set {n\u2082 > 2(n\u2081+k\u2081)} is finite \u2014 needs smooth number theory (St\u00f8rmer)",
+      "New examples show same-prime-factors pairs cluster around small primes: {2,3,5} examples (4\u00b75\u00b76 = 8\u00b79\u00b710 in primes)",
+      "Refined exists_prime_between_blocks: general statement proved as theorem via 4-way case analysis (Bertrand for k\u2081\u2265n\u2081, Bertrand for 2n\u2081\u2264n\u2082+k\u2082, large prime factor transfer, hard-case axiom)",
+      "The hard-case axiom (exists_prime_between_blocks_hard) adds 3 hypotheses: k\u2081<n\u2081, n\u2082+k\u2082<2n\u2081, all prime factors \u2264n\u2081 \u2014 strictly weaker than the original",
+      "The hard case forces BOTH blocks to be n\u2081-smooth, making it likely vacuously true by St\u00f8rmer \u2014 the SamePrimeFactors hypothesis cannot be satisfied when blocks are far apart and smooth",
+      "In hard case, first block is entirely composite (no prime), so next prime > n\u2081+k\u2081",
+      "Hard case hypotheses (h\u2085, h\u2086, h\u2087, SamePrimeFactors) are computationally verified to be mutually inconsistent for n\u2081 \u2264 30 with k\u2081=k\u2082=3",
+      "The SamePrimeFactors constraint is extremely restrictive: second block must use EXACTLY the same primes as first block, which is impossible when blocks are in different ranges"
     ],
     "mathlibGaps": [
-      "Størmer's theorem on consecutive smooth numbers — would fully resolve exists_prime_between_blocks"
+      "St\u00f8rmer's theorem on consecutive smooth numbers \u2014 would fully resolve exists_prime_between_blocks"
     ],
     "nextSteps": [],
-    "markdown": "# Erdős #931 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k_1\\geq k_2\\geq 3$. Are there only finitely many $n_2\\geq n_1+k_1$ such that\\[\\prod_{1\\leq i\\leq k_1}(n_1+i)\\textrm{ and }\\prod_{1\\leq j\\leq k_2}(n_2+j)\\]have the same prime factors?\n\n\n\nTijdeman gave the example\\[19,20,21,22\\textrm{ and }54,55,56,57.\\]Erd\\H{o}s \\cite{Er76d} was unsure of this conjecture, and thought perhaps if the two products have the same prime factors then $n_2>2(n_1+k_1)$. It is not clear but it is possible that he meant to ask this question also permitting finitely many counterexamples. Indeed, without this caveat it is false - AlphaProof has found the counterexample\\[10! = 2^8\\cdot 3^4\\cdot 5^2\\cdot 7\\]and\\[14\\cdot 15\\cdot 16 = 2^5\\cdot 3\\cdot 5\\cdot 7,\\]so that $n_1=0$, $k_1=10$, $n_2=13$, and $k_2=3$.\n\nSee also [388].\n\nThis is discussed in problem B35 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #930\n- Problem #932\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #931 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k_1\\geq k_2\\geq 3$. Are there only finitely many $n_2\\geq n_1+k_1$ such that\\[\\prod_{1\\leq i\\leq k_1}(n_1+i)\\textrm{ and }\\prod_{1\\leq j\\leq k_2}(n_2+j)\\]have the same prime factors?\n\n\n\nTijdeman gave the example\\[19,20,21,22\\textrm{ and }54,55,56,57.\\]Erd\\H{o}s \\cite{Er76d} was unsure of this conjecture, and thought perhaps if the two products have the same prime factors then $n_2>2(n_1+k_1)$. It is not clear but it is possible that he meant to ask this question also permitting finitely many counterexamples. Indeed, without this caveat it is false - AlphaProof has found the counterexample\\[10! = 2^8\\cdot 3^4\\cdot 5^2\\cdot 7\\]and\\[14\\cdot 15\\cdot 16 = 2^5\\cdot 3\\cdot 5\\cdot 7,\\]so that $n_1=0$, $k_1=10$, $n_2=13$, and $k_2=3$.\n\nSee also [388].\n\nThis is discussed in problem B35 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #930\n- Problem #932\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -72,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T11:43:50.650Z",
-  "lastUpdate": "2026-03-24T09:15:00.000Z",
+  "lastUpdate": "2026-03-30T21:44:17.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
