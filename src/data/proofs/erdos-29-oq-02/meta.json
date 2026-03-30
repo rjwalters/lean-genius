@@ -1,0 +1,71 @@
+{
+  "id": "erdos-29-oq-02",
+  "title": "Corrected Basis Size Lower Bound",
+  "slug": "erdos-29-oq-02",
+  "description": "Corrects the false basis_size_lower_bound by using [0,N] instead of [1,N]. Proves |A ∩ [0,N]|² ≥ N+1 for any additive basis A, via a counting argument: every n ∈ {0,...,N} is a+b with a,b ∈ A ∩ [0,N], so N+1 elements in the sumset implies |A ∩ [0,N]|² ≥ N+1.",
+  "meta": {
+    "author": "formalized in Lean 4",
+    "sourceUrl": "https://erdosproblems.com/29",
+    "date": "2026-03-30",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos29OQ02.lean",
+    "tags": ["number-theory", "combinatorics", "additive-combinatorics"],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Finset.card_image_le", "description": "Image of a Finset has at most as many elements", "module": "Mathlib.Data.Finset.Image"},
+      {"theorem": "Real.sqrt_le_left", "description": "Square root comparison", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"}
+    ],
+    "originalContributions": [
+      "Corrected lower bound: |A ∩ [0,N]|² ≥ N+1 for any additive basis A",
+      "Counting argument: {0,...,N} ⊆ pairwise sums of A ∩ [0,N]",
+      "Explanation of why [1,N] was wrong (excludes 0 as a basis element)",
+      "Real-valued form: |A ∩ [0,N]| ≥ √(N+1)"
+    ],
+    "assumptions": [],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 156,
+    "prerequisites": ["Additive bases", "Sumsets", "Finset cardinality"],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Aristotle proof search found a counterexample to the original basis_size_lower_bound theorem: A = {0,1} ∪ {n ≥ 3} is a basis with |A ∩ [1,2]| = 1 < √2. The error was using the interval [1,N] which excludes 0. The correct bound uses [0,N].",
+    "problemStatement": "The original statement '∀ A basis, ∀ N ≥ 1, |A ∩ [1,N]| ≥ √N' is FALSE.\nThe correct statement: '∀ A basis, ∀ N, |A ∩ [0,N]|² ≥ N+1'.\nEquivalently: |A ∩ [0,N]| ≥ √(N+1).",
+    "text": "A 156-line formalization correcting the false basis_size_lower_bound from Erdős #29. The counting argument: if A+A = ℕ, every n ∈ {0,...,N} has a representation a+b with a,b ∈ A ∩ [0,N]. The sumset of A ∩ [0,N] has at most |A ∩ [0,N]|² elements, so N+1 ≤ |A ∩ [0,N]|².",
+    "proofStrategy": "1. For each n ≤ N, find a,b ∈ A with a+b = n and a,b ≤ N\n2. Map pairs from (A ∩ [0,N])² to their sums\n3. Show {0,...,N} ⊆ image of this map\n4. Use card_image_le to get N+1 ≤ |A ∩ [0,N]|²",
+    "keyInsights": [
+      "The original bound failed because [1,N] excludes 0, which can be a critical basis element",
+      "The counting argument is elementary: N+1 distinct sums from a set of size s means s² ≥ N+1",
+      "The corrected bound √(N+1) is tight up to constants"
+    ],
+    "prerequisites": ["Additive bases", "Sumsets", "Finset cardinality"]
+  },
+  "sections": [
+    {"id": "defs", "title": "Definitions", "startLine": 24, "endLine": 36, "summary": "Sumset and additive basis definitions.", "mathContext": "$A + A = \\mathbb{N}$"},
+    {"id": "counting", "title": "Counting Argument", "startLine": 68, "endLine": 110, "summary": "Core proof: {0,...,N} ⊆ pairwise sums of A ∩ [0,N], hence N+1 ≤ |A ∩ [0,N]|².", "mathContext": "$N+1 \\le |A \\cap [0,N]|^2$"},
+    {"id": "real-form", "title": "Real-Valued Form", "startLine": 112, "endLine": 122, "summary": "Converts to √(N+1) ≤ |A ∩ [0,N]|.", "mathContext": "$\\sqrt{N+1} \\le |A \\cap [0,N]|$"}
+  ],
+  "crossReferences": [
+    {"targetId": "erdos-29", "relationship": "extends", "description": "Corrects the false basis_size_lower_bound and provides the correct statement with proof."}
+  ],
+  "conclusion": {
+    "summary": "The corrected basis size lower bound |A ∩ [0,N]| ≥ √(N+1) is proved for all additive bases A and all N, with 0 axioms and 0 sorries. The fix was including 0 in the counting interval.",
+    "implications": "The √N growth rate is the correct scaling for additive bases of order 2. This is tight: the Sidon set construction gives |A ∩ [0,N]| = O(√N).",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "namespace": "Erdos29OQ02",
+    "lineCount": 156,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 4,
+    "mainTheorems": [
+      {"name": "basis_size_squared_lower_bound", "type": "proved", "description": "N+1 ≤ |A ∩ [0,N]|²"},
+      {"name": "basis_size_lower_bound_correct", "type": "proved", "description": "√(N+1) ≤ |A ∩ [0,N]|"}
+    ]
+  },
+  "references": [],
+  "mainTheorems": [{"name": "basis_size_lower_bound_correct", "type": "core", "description": "Corrected basis lower bound: √(N+1) ≤ |A ∩ [0,N]|"}]
+}

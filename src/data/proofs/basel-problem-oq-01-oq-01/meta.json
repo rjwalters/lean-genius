@@ -1,0 +1,28 @@
+{
+  "id": "basel-problem-oq-01-oq-01",
+  "title": "Is ζ(5) Irrational? — Computational Bounds",
+  "slug": "basel-problem-oq-01-oq-01",
+  "description": "Computational bounds and framework for the open question of ζ(5) irrationality. Proves partial sum lower bounds, tail estimates, defines irrationality measure, and documents the difficulty gap between known results and what's needed.",
+  "meta": {
+    "author": "formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Particular_values_of_the_Riemann_zeta_function",
+    "date": "2026-03-30",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaselProblemOQ01OQ01.lean",
+    "tags": ["number-theory", "analysis", "open-problem"],
+    "badge": "verified",
+    "sorries": 0,
+    "assumptions": [],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 154,
+    "mathlib_version": "4.26.0"
+  },
+  "sections": [],
+  "crossReferences": [
+    {"targetId": "basel-problem-oq-01", "relationship": "extends", "description": "Adds computational bounds and the irrationality measure framework to the ζ(5) investigation."}
+  ],
+  "conclusion": {"summary": "ζ(5) irrationality remains open. This file provides partial sum bounds, tail estimates, and documents the difficulty gap.", "openQuestions": []},
+  "leanFile": {"imports": ["Mathlib"], "namespace": "BaselProblemOQ01OQ01", "lineCount": 154, "axiomCount": 0, "theoremCount": 10, "definitionCount": 2},
+  "references": []
+}
