@@ -177,7 +177,68 @@ theorem snf_1x2_invariant_factor (a b : ℤ) (snf : SmithNormalForm 1 2)
     (hsnf : snf.isDecompOf (Matrix.of ![![a, b]])) :
     snf.invariantFactor 0 ∣ (Int.gcd a b : ℤ) ∧
     (Int.gcd a b : ℤ) ∣ snf.invariantFactor 0 := by
-  sorry
+  -- Unfold invariantFactor 0 = D 0 0
+  simp only [SmithNormalForm.invariantFactor, show (0 : ℕ) < 1 from by omega,
+             show (0 : ℕ) < 2 from by omega, dite_true]
+  set d := snf.D ⟨0, by omega⟩ ⟨0, by omega⟩ with hd_def
+  set u := snf.U ⟨0, by omega⟩ ⟨0, by omega⟩ with hu_def
+  -- U is 1×1 unimodular, so u = ±1
+  have hu : u = 1 ∨ u = -1 := by
+    have h := snf.hU; rw [det_fin_one] at h; exact h
+  -- D 0 1 = 0 (off-diagonal)
+  have hD01 : snf.D ⟨0, by omega⟩ ⟨1, by omega⟩ = 0 :=
+    snf.hD_diag ⟨0, by omega⟩ ⟨1, by omega⟩ (by omega)
+  -- Extract hsnf : A = U * D * V
+  unfold SmithNormalForm.isDecompOf at hsnf
+  -- Extract entry (0, j) from A = U * D * V
+  -- For Fin 1 × Fin 2 matrices: (U*D*V) 0 j = u * d * V 0 j + u * D01 * V 1 j = u * d * V 0 j
+  have entry_eq : ∀ j : Fin 2,
+      (of ![![a, b]]) ⟨0, by omega⟩ j = u * d * snf.V ⟨0, by omega⟩ j := by
+    intro j
+    have h := congr_fun (congr_fun hsnf ⟨0, by omega⟩) j
+    simp only [mul_apply, Fin.sum_univ_one, Fin.sum_univ_two] at h
+    rw [hD01] at h
+    simp only [hu_def] at h
+    linarith
+  -- Extract: a = u * d * V 0 0 and b = u * d * V 0 1
+  have ha : a = u * d * snf.V ⟨0, by omega⟩ ⟨0, by omega⟩ := by
+    have := entry_eq ⟨0, by omega⟩
+    simp only [of_apply, cons_val_zero, head_cons] at this
+    exact this
+  have hb : b = u * d * snf.V ⟨0, by omega⟩ ⟨1, by omega⟩ := by
+    have := entry_eq ⟨1, by omega⟩
+    simp only [of_apply, cons_val_zero, cons_val_one, head_cons, head_fin_const] at this
+    exact this
+  -- Part 1: d | gcd(a, b)
+  -- d | a because a = d * (u * V 0 0), and d | b similarly
+  have hda : d ∣ a := ⟨u * snf.V ⟨0, by omega⟩ ⟨0, by omega⟩, by rw [ha]; ring⟩
+  have hdb : d ∣ b := ⟨u * snf.V ⟨0, by omega⟩ ⟨1, by omega⟩, by rw [hb]; ring⟩
+  refine ⟨Int.dvd_gcd hda hdb, ?_⟩
+  -- Part 2: gcd(a, b) | d
+  -- det(V) = V 0 0 * V 1 1 - V 0 1 * V 1 0 = ±1
+  have hdetV : snf.V.det = 1 ∨ snf.V.det = -1 := snf.hV
+  rw [det_fin_two] at hdetV
+  -- Linear combination: a * V 1 1 - b * V 1 0 = u * d * det(V) = ±d
+  set V00 := snf.V ⟨0, by omega⟩ ⟨0, by omega⟩
+  set V01 := snf.V ⟨0, by omega⟩ ⟨1, by omega⟩
+  set V10 := snf.V ⟨1, by omega⟩ ⟨0, by omega⟩
+  set V11 := snf.V ⟨1, by omega⟩ ⟨1, by omega⟩
+  have hlin : a * V11 - b * V10 = u * d * (V00 * V11 - V01 * V10) := by
+    rw [ha, hb]; ring
+  -- gcd(a,b) | (a * V11 - b * V10)
+  have hga : (Int.gcd a b : ℤ) ∣ a := Int.gcd_dvd_left
+  have hgb : (Int.gcd a b : ℤ) ∣ b := Int.gcd_dvd_right
+  have hglin : (Int.gcd a b : ℤ) ∣ (a * V11 - b * V10) :=
+    dvd_sub (dvd_mul_of_dvd_left hga _) (dvd_mul_of_dvd_left hgb _)
+  -- a * V11 - b * V10 = u * d * det(V) where u = ±1 and det(V) = ±1
+  rw [hlin] at hglin
+  -- u * det(V) ∈ {1, -1}, so u * d * det(V) = ±d
+  have hunit : u * (V00 * V11 - V01 * V10) = 1 ∨
+               u * (V00 * V11 - V01 * V10) = -1 := by
+    rcases hu with rfl | rfl <;> rcases hdetV with h | h <;> simp [h]
+  rcases hunit with h1 | hm1
+  · rwa [h1, one_mul] at hglin
+  · rw [hm1, neg_one_mul] at hglin; exact dvd_neg.mp hglin
 
 /-- **Classical Bezout from SNF**: The 1×2 system [a, b] * [x, y]ᵀ = c has solutions
     iff gcd(a, b) | c. This recovers diophantine_solvable from BezoutIdentity.lean. -/
