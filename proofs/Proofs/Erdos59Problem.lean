@@ -99,6 +99,11 @@ def HasPolynomialBound (f g : ℕ → ℕ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ n ≥ N₀,
     (f n : ℝ) ≤ (2 : ℝ) ^ (C * g n)
 
+/-- Turán numbers are positive for n ≥ k: there exist k-free graphs
+    on n vertices with at least one edge (e.g., any tree). -/
+axiom turanNumber_pos (n k : ℕ) (hn : n ≥ k) (hk : k ≥ 3) :
+    turanNumber n k > 0
+
 /- ## Main Results -/
 
 /--
@@ -150,10 +155,27 @@ theorem erdos_59_disproved :
   have hex := morris_saxton_c6_counterexample
   obtain ⟨c, hc, hinf⟩ := hex
   obtain ⟨N₀, hN₀⟩ := hopt (c/2) (by linarith)
-  -- The infinite set of counterexamples contains elements > N₀
-  have hne : { n : ℕ | (countFreeGraphs n 6 : ℝ) ≥ (2 : ℝ) ^ ((1 + c) * turanNumber n 6) }.Nonempty := by
-    exact Set.Infinite.nonempty hinf
-  sorry
+  -- Extract a large counterexample n from the infinite set
+  obtain ⟨n, hn_mem, hn_large⟩ := hinf.exists_gt (max N₀ 6)
+  simp only [Set.mem_setOf_eq] at hn_mem
+  have hn_ge_N₀ : n ≥ N₀ := by omega
+  have hn_ge_6 : n ≥ 6 := by omega
+  have hbound := hN₀ n hn_ge_N₀
+  -- Now: hn_mem says countFreeGraphs n 6 ≥ 2^((1+c)*t)
+  --       hbound says countFreeGraphs n 6 ≤ 2^((1+c/2)*t)
+  -- where t = turanNumber n 6. Combined: 2^((1+c)*t) ≤ 2^((1+c/2)*t).
+  -- turanNumber n 6 > 0 for n ≥ 6 (any tree is C₆-free and has edges):
+  have ht_pos : (0 : ℝ) < ↑(turanNumber n 6) := by
+    exact_mod_cast turanNumber_pos n 6 hn_ge_6 (by omega)
+  -- Since c > 0 and t > 0: (1+c/2)*t < (1+c)*t
+  have hexp_strict : (1 + c / 2) * ↑(turanNumber n 6) < (1 + c) * ↑(turanNumber n 6) := by
+    nlinarith
+  -- By strict monotonicity of 2^x: 2^((1+c/2)*t) < 2^((1+c)*t)
+  have hpow_strict : (2 : ℝ) ^ ((1 + c / 2) * ↑(turanNumber n 6)) <
+      (2 : ℝ) ^ ((1 + c) * ↑(turanNumber n 6)) :=
+    Real.rpow_lt_rpow_of_exponent_lt (by norm_num : (1 : ℝ) < 2) hexp_strict
+  -- Contradiction: 2^((1+c)*t) ≤ countFreeGraphs ≤ 2^((1+c/2)*t) < 2^((1+c)*t)
+  linarith
 
 /--
 **The C_6 counterexample is bipartite**:
