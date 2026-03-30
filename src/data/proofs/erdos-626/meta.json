@@ -53,7 +53,7 @@
     ],
     "axiomCount": 7,
     "assumptions": "7 axiom declarations: g_well_defined (g_k(n) well-defined for k >= 4), erdos_high_girth_high_chromatic (high-chi high-girth graphs exist), erdos_upper_bound (g_k(n) <= (2/log(k-2))*log n + 1), kostochka_lower_bound (g_k(n) >= (1/(4 log k))*log n), limit_question_open (limit existence is open), h_bounds (dual problem polynomial bounds), erdos_1959_probabilistic_method (Erdos 1959 probabilistic existence)",
-    "lineCount": 245
+    "lineCount": 244
   },
   "overview": {
     "historicalContext": "This problem explores one of the most beautiful tensions in graph theory: between chromatic number and girth. Before Erdős's seminal 1959 paper, it was widely believed that graphs with high chromatic number must contain short cycles (since cliques have girth 3). Erdős shattered this intuition by proving, via the probabilistic method, that graphs with arbitrarily high chromatic number and arbitrarily large girth exist.\n\nThe probabilistic method proof was revolutionary: Erdős showed that random graphs $G(n, p)$ with appropriate edge probability $p = n^{\\alpha - 1}$ ($\\alpha < 1/(g-1)$) have, with high probability, both high chromatic number and few short cycles. Deleting one vertex from each short cycle gives the desired graph. This was one of the earliest and most influential applications of probabilistic combinatorics.\n\nProblem #626 asks for the precise quantitative trade-off: how large can the girth be in an $n$-vertex $k$-chromatic graph? Kostochka established the lower bound $g_k(n) \\ge \\frac{1}{4\\log k} \\log n$ using refined probabilistic constructions, while Erdős proved the upper bound $g_k(n) \\le \\frac{2}{\\log(k-2)} \\log n + 1$ via counting arguments (the Moore bound). The gap between these bounds is a factor of approximately 8 for large $k$.\n\nThe limit question — whether $g_k(n)/\\log n$ converges — remains open because we lack sufficient understanding of the structure of extremal graphs achieving the maximum girth for given chromatic number and vertex count.",
@@ -209,7 +209,7 @@
       "Nat"
     ],
     "namespace": "Erdos626",
-    "lineCount": 245,
+    "lineCount": 244,
     "axiomCount": 7,
     "theoremCount": 13,
     "definitionCount": 12

@@ -2,9 +2,9 @@
   "id": "erdos-307-oq-02",
   "title": "Prime Reciprocal Products: Sorry Elimination",
   "slug": "erdos-307-oq-02",
-  "description": "Eliminates sorries and axioms from Erd\u0151s 307 formalization: proves product_rigidity (was axiom), one_helps_balance, and no_two_three_solution. Documents remaining work: p-adic disjointness and computational size bound.",
+  "description": "Eliminates sorries and axioms from Erdős 307 formalization: proves product_rigidity (was axiom), one_helps_balance, and no_two_three_solution. Documents remaining work: p-adic disjointness and computational size bound.",
   "meta": {
-    "author": "Research (sorry elimination for Erd\u0151s 307)",
+    "author": "Research (sorry elimination for Erdős 307)",
     "sourceUrl": "https://erdosproblems.com/307",
     "date": "2026",
     "status": "verified",
@@ -25,20 +25,20 @@
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "product_rigidity proved (was axiom in parent)",
-      "one_helps_balance: reciprocalSum P > 1 when 1 \u2208 P",
+      "one_helps_balance: reciprocalSum P > 1 when 1 ∈ P",
       "no_two_three_solution: no |P|=2, |Q|=3 prime solution",
       "Documentation of remaining work (p-adic, computational)"
     ]
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #307 asks whether two finite sets of primes P, Q can satisfy (\u03a3 1/p)(\u03a3 1/q) = 1. The parent formalization has several sorry theorems and axioms. This file eliminates three of them.",
-    "problemStatement": "Can the sorry theorems in the Erd\u0151s 307 formalization be proved from Mathlib?",
+    "historicalContext": "Erdős Problem #307 asks whether two finite sets of primes P, Q can satisfy (Σ 1/p)(Σ 1/q) = 1. The parent formalization has several sorry theorems and axioms. This file eliminates three of them.",
+    "problemStatement": "Can the sorry theorems in the Erdős 307 formalization be proved from Mathlib?",
     "text": "Proves 3 of 5 sorry/axiom targets. The remaining two (p-adic disjointness, computational size bound) require infrastructure not yet available.",
     "proofStrategy": "product_rigidity is a trivial iff. one_helps_balance splits the sum at 1. no_two_three_solution uses the tight bound on 3 primes.",
     "keyInsights": [
       "product_rigidity was a trivial iff, not a deep result",
-      "3 distinct primes have reciprocal sum \u2264 31/30 (= 1/2 + 1/3 + 1/5)",
-      "Product of (\u2264 5/6)(\u2264 31/30) = 31/36 < 1 rules out small cases"
+      "3 distinct primes have reciprocal sum ≤ 31/30 (= 1/2 + 1/3 + 1/5)",
+      "Product of (≤ 5/6)(≤ 31/30) = 31/36 < 1 rules out small cases"
     ]
   },
   "sections": [
@@ -52,21 +52,21 @@
     {
       "id": "three-primes",
       "title": "Bound for 3 Primes",
-      "summary": "reciprocal sum \u2264 31/30 (1 sorry)",
+      "summary": "reciprocal sum ≤ 31/30 (1 sorry)",
       "startLine": 42,
       "endLine": 113
     },
     {
       "id": "no-2-3",
       "title": "No |P|=2, |Q|=3 Solution",
-      "summary": "Product \u2264 31/36 < 1",
+      "summary": "Product ≤ 31/36 < 1",
       "startLine": 115,
       "endLine": 138
     },
     {
       "id": "one-helps",
       "title": "1 Helps Balance",
-      "summary": "\u03a3 1/p > 1 when 1 \u2208 P",
+      "summary": "Σ 1/p > 1 when 1 ∈ P",
       "startLine": 140,
       "endLine": 185
     },
@@ -82,7 +82,7 @@
     "summary": "3 of 5 sorry/axiom targets eliminated. Remaining: prime_sets_disjoint (p-adic theory) and prime_set_size_lower_bound (computation).",
     "openQuestions": [
       "Prove prime_sets_disjoint via Mathlib's p-adic valuation",
-      "Compute \u03a3_{p\u2264281} 1/p \u2265 2 for the size bound"
+      "Compute Σ_{p≤281} 1/p ≥ 2 for the size bound"
     ],
     "implications": ""
   },
@@ -90,7 +90,7 @@
     {
       "targetId": "erdos-307",
       "relationship": "parent-problem",
-      "description": "Parent: Erd\u0151s 307 formalization"
+      "description": "Parent: Erdős 307 formalization"
     }
   ],
   "leanFile": {
@@ -98,7 +98,7 @@
       "Mathlib"
     ],
     "namespace": "Erdos307OQ02",
-    "lineCount": 261,
+    "lineCount": 298,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 3

@@ -47,13 +47,13 @@
       "Verified computational examples for small cases"
     ],
     "axiomCount": 5,
-    "lineCount": 229,
+    "lineCount": 220,
     "assumptions": "5 axioms: erdos_252_k0 through erdos_252_k4 (irrationality of divisorPowerSum for k=0..4).",
     "theoremCount": 6
   },
   "leanFile": {
     "path": "Proofs/Erdos252Problem.lean",
-    "lineCount": 229,
+    "lineCount": 220,
     "namespace": "Erdos252",
     "imports": [
       "Mathlib.NumberTheory.ArithmeticFunction.Defs",

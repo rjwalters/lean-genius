@@ -2,9 +2,9 @@
   "id": "erdos-1066-oq-04",
   "title": "Higher-Dimensional Unit Distance Independence",
   "slug": "erdos-1066-oq-04",
-  "description": "Explores g_d(n) \u2014 the independence number of unit distance graphs in \u211d^d. Kissing number \u03c4(d) bounds degrees, giving g_d(n) \u2265 n/(\u03c4(d)+1) by greedy coloring.",
+  "description": "Explores g_d(n) — the independence number of unit distance graphs in ℝ^d. Kissing number τ(d) bounds degrees, giving g_d(n) ≥ n/(τ(d)+1) by greedy coloring.",
   "meta": {
-    "author": "Erd\u0151s, Swanepoel, et al.",
+    "author": "Erdős, Swanepoel, et al.",
     "sourceUrl": "https://erdosproblems.com/1066",
     "date": "2026",
     "status": "axiomatized",
@@ -19,14 +19,14 @@
     "badge": "axiom",
     "sorries": 2,
     "axiomCount": 2,
-    "lineCount": 155,
+    "lineCount": 156,
     "assumptions": "2 axioms (degree_le_kissing, greedy_independence). 2 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "SepConfig structure for d-dimensional separated points",
       "Kissing number lookup with known values",
-      "Greedy bound g_d(n) \u2265 n/(\u03c4(d)+1) for specific dimensions",
+      "Greedy bound g_d(n) ≥ n/(τ(d)+1) for specific dimensions",
       "Scaling analysis: greedy weakens as d grows"
     ]
   },
@@ -61,7 +61,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Higher-dimensional g_d(n) bounded below by n/(\u03c4(d)+1) via greedy coloring. Structural improvements needed for tighter bounds.",
+    "summary": "Higher-dimensional g_d(n) bounded below by n/(τ(d)+1) via greedy coloring. Structural improvements needed for tighter bounds.",
     "openQuestions": [],
     "implications": ""
   },
@@ -81,7 +81,7 @@
       "Mathlib"
     ],
     "namespace": "Erdos1066OQ04",
-    "lineCount": 155,
+    "lineCount": 156,
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 6

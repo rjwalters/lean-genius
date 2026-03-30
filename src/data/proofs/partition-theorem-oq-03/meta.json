@@ -26,7 +26,7 @@
     ],
     "axiomCount": 4,
     "assumptions": "4 axioms: numOverpartitions (function), numOverpartitions_zero/one/two (small values). The function requires enumerating partitions which needs Mathlib Fintype infrastructure.",
-    "lineCount": 68
+    "lineCount": 62
   },
   "overview": {
     "historicalContext": "Overpartitions were systematically studied by Corteel and Lovejoy (2004), building on Euler's 1748 partition identity. An overpartition allows the first occurrence of each part size to be optionally marked, doubling the combinatorial choices.",
@@ -60,7 +60,7 @@
       "Mathlib"
     ],
     "namespace": "OverpartitionTheory",
-    "lineCount": 68,
+    "lineCount": 62,
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 2
