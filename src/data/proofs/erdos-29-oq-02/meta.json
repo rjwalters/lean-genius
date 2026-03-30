@@ -7,10 +7,10 @@
     "author": "formalized in Lean 4",
     "sourceUrl": "https://erdosproblems.com/29",
     "date": "2026-03-30",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos29OQ02.lean",
     "tags": ["number-theory", "combinatorics", "additive-combinatorics"],
-    "badge": "verified",
+    "badge": "formalized",
     "sorries": 0,
     "mathlibDependencies": [
       {"theorem": "Finset.card_image_le", "description": "Image of a Finset has at most as many elements", "module": "Mathlib.Data.Finset.Image"},
@@ -22,7 +22,7 @@
       "Explanation of why [1,N] was wrong (excludes 0 as a basis element)",
       "Real-valued form: |A ∩ [0,N]| ≥ √(N+1)"
     ],
-    "assumptions": [],
+    "assumptions": "0 sorries, 0 axioms. 2 True-stub theorems (counterexample_satisfies_correct_bound, why_original_was_wrong) prove True instead of their stated claims. Core counting argument and sqrt bound are fully verified.",
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 156,
