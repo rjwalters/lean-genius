@@ -46,13 +46,12 @@ def ErdosProblem327 : Prop :=
     ∀ ε : ℝ, 0 < ε → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
       (maxAvoidSize N : ℝ) ≤ (1 / 2 + ε) * N
 
-/- ## Van Doorn's bound -/
+/- ## Van Doorn's bound (documented, not axiomatized — unused by any theorem)
 
-/-- Van Doorn's result: if `|A| ≥ (25/28) * N`, then `A` contains `a ≠ b`
-with `a + b ∣ a * b`. -/
-axiom vanDoorn_bound (N : ℕ) (A : Finset ℕ) :
-    A ⊆ Finset.Icc 1 N → (25 * N ≤ 28 * A.card) →
-      ∃ a ∈ A, ∃ b ∈ A, a ≠ b ∧ a + b ∣ a * b
+Van Doorn showed: if |A| ≥ (25/28) N, then A must contain a ≠ b with a+b | ab.
+This is a known result but formalizing it requires substantial case analysis.
+See the discussion in erdosproblems.com/301.
+-/
 
 /- ## Variant: factor-of-2 condition -/
 
