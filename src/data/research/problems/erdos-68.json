@@ -45,7 +45,8 @@
       "eRelatedSum_lower: proved eRelatedSum > 718/1000 from 6-term partial sum",
       "sixth_term: summand(5) = 1/5039",
       "P_is_prime: PROVED (was axiom) — from Nat.find_spec in Erdos683",
-      "P_divides: PROVED (was axiom) — from Nat.find_spec in Erdos683"
+      "P_divides: PROVED (was axiom) — from Nat.find_spec in Erdos683",
+      "Proved most_gaps_have_rough via Finset.filter_card_add_filter_neg_card_eq_card + omega"
     ],
     "insights": [
       "eRelatedSum_value provable: Σ_{n≥2} 1/n! = e - 2 via tsum_eq_zero_add (peel off n=0,1 terms)",
@@ -58,7 +59,8 @@
       "perturbation_difference provable from exp(1) and factorialSum bounds without direct difference series computation",
       "Lean linarith cannot chain >5 peeling steps or match factorialSum with ∑ summand without explicit show/rw",
       "Summable.tsum_le_tsum is the current Mathlib name (not tsum_le_tsum)",
-      "div_le_div_iff₀ is the current name (not div_le_div_iff)"
+      "div_le_div_iff₀ is the current name (not div_le_div_iff)",
+      "Session (researcher-6): Fixed most_gaps_have_rough (was unprovable with >, corrected to >= and proved). Eliminated 1 sorry in Erdos682Problem.lean (2→1)."
     ],
     "mathlibGaps": [
       "tsum manipulation for index shifting requires careful summability arguments"
@@ -92,7 +94,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T07:49:42.862Z",
-  "lastUpdate": "2026-03-13T07:52:17.043Z",
+  "lastUpdate": "2026-03-30T03:50:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
