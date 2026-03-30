@@ -1,0 +1,69 @@
+{
+  "slug": "feuerbachs-theorem-defs-oq-03",
+  "title": "Feuerbach Point as Nine-Point Circle Tangency",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Feuerbach Point as Nine-Point Circle Tangency.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T22:19:31.122Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "nine-point-circle"
+  ],
+  "relatedProofs": [
+    "feuerbachs-theorem",
+    "feuerbachs-theorem-defs"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T22:19:31.121Z",
+  "lastUpdate": "2026-03-30T22:19:31.121Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FeuerbachsTheoremDefs.lean",
+      "filename": "FeuerbachsTheoremDefs.lean",
+      "lineCount": 688,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 34,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefs.lean"
+    }
+  ]
+}

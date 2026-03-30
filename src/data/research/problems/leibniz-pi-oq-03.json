@@ -1,0 +1,81 @@
+{
+  "slug": "leibniz-pi-oq-03",
+  "title": "Leibniz Series Acceleration via Euler/Richardson Transforms",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Leibniz Series Acceleration via Euler/Richardson Transforms.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T22:19:31.123Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "series",
+    "pi"
+  ],
+  "relatedProofs": [
+    "leibniz-pi",
+    "leibniz-pi-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T22:19:31.122Z",
+  "lastUpdate": "2026-03-30T22:19:31.122Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/LeibnizPi.lean",
+      "filename": "LeibnizPi.lean",
+      "lineCount": 179,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LeibnizPi.lean"
+    },
+    {
+      "path": "Proofs/LeibnizPiOQ01OQ01.lean",
+      "filename": "LeibnizPiOQ01OQ01.lean",
+      "lineCount": 135,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LeibnizPiOQ01OQ01.lean"
+    }
+  ]
+}

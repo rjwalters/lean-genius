@@ -1,0 +1,95 @@
+{
+  "slug": "erdos-1008-oq-04",
+  "title": "K_{s,t} Generalization of C4-Free Subgraphs",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: K_{s,t} Generalization of C4-Free Subgraphs.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T22:19:31.121Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "extremal",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1008",
+    "erdos-1008-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T22:19:31.120Z",
+  "lastUpdate": "2026-03-30T22:19:31.120Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1008OQ01.lean",
+      "filename": "Erdos1008OQ01.lean",
+      "lineCount": 375,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1008Problem.lean",
+      "filename": "Erdos1008Problem.lean",
+      "lineCount": 608,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1008ProblemProvable.lean",
+      "filename": "Erdos1008ProblemProvable.lean",
+      "lineCount": 199,
+      "theoremCount": 3,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008ProblemProvable.lean"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "slug": "isosceles-triangle-oq-01",
+  "title": "Euclid I.5 Original Proof Formalization",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Euclid I.5 Original Proof Formalization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T22:19:31.126Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "euclidean",
+    "classic"
+  ],
+  "relatedProofs": [
+    "isosceles-triangle"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T22:19:31.126Z",
+  "lastUpdate": "2026-03-30T22:19:31.126Z",
+  "significance": 5,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/IsoscelesTriangle.lean",
+      "filename": "IsoscelesTriangle.lean",
+      "lineCount": 130,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoscelesTriangle.lean"
+    }
+  ]
+}

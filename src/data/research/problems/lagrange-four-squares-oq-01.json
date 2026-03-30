@@ -1,0 +1,96 @@
+{
+  "slug": "lagrange-four-squares-oq-01",
+  "title": "Rabin-Shallit Algorithm for Four-Square Representations",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Lagrange's theorem guarantees every natural number is a sum of four squares, but doesn't say how to find them. The Rabin-Shallit algorithm does this efficiently. Formalize the algorithm and its correctness proof.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T15:14:16-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: lagrange-four-squares-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "lagrange-four-squares"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T22:16:40.756Z",
+  "lastUpdate": "2026-03-30T22:16:40.769Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeFourSquares.lean",
+      "filename": "LagrangeFourSquares.lean",
+      "lineCount": 423,
+      "theoremCount": 16,
+      "axiomCount": 8,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquares.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ01.lean",
+      "filename": "LagrangeFourSquaresOQ01.lean",
+      "lineCount": 396,
+      "theoremCount": 71,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ02.lean",
+      "filename": "LagrangeFourSquaresOQ02.lean",
+      "lineCount": 652,
+      "theoremCount": 105,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2.lean",
+      "filename": "LagrangeFourSquaresWaringG2.lean",
+      "lineCount": 443,
+      "theoremCount": 68,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2.lean"
+    }
+  ]
+}
