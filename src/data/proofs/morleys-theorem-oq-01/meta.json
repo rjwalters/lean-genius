@@ -19,14 +19,14 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 297,
+    "lineCount": 292,
     "assumptions": "No axioms or sorries. All lemmas fully proved.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.sin_pos_of_pos_of_lt_pi",
-        "description": "sin is positive on (0, \u03c0)",
+        "description": "sin is positive on (0, π)",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
@@ -47,11 +47,11 @@
     "historicalContext": "John Conway devised an elegant 'backward' proof of Morley's theorem: instead of starting with a triangle and finding the equilateral Morley triangle (hard), start with an equilateral triangle and reconstruct the original around it (easier). This file formalizes the construction and supporting angle computations.",
     "problemStatement": "Can morleys_theorem_axiom be proved via Conway's backward construction?",
     "text": "Formalizes the ear construction, proves all angle identities and the Morley side length formula, and reduces the full theorem to a coordinate verification.",
-    "proofStrategy": "Build three isoceles 'ear' triangles on the equilateral Morley triangle, one per side, with apex angles \u03c0/3 + \u03b1\u2083, \u03c0/3 + \u03b2\u2083, \u03c0/3 + \u03b3\u2083. The Conway angle identities show the correct angles at each vertex. The symmetric side length formula 8R\u00b7sin(\u03b1/3)\u00b7sin(\u03b2/3)\u00b7sin(\u03b3/3) gives the equilateral property.",
+    "proofStrategy": "Build three isoceles 'ear' triangles on the equilateral Morley triangle, one per side, with apex angles π/3 + α₃, π/3 + β₃, π/3 + γ₃. The Conway angle identities show the correct angles at each vertex. The symmetric side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) gives the equilateral property.",
     "keyInsights": [
       "Conway's backward construction avoids the hard direction of the proof",
-      "The key identity \u03b1\u2083 + \u03b2\u2083 + \u03b3\u2083 = \u03c0/3 drives all angle computations",
-      "The Morley side formula 8R\u00b7sin(\u03b1/3)\u00b7sin(\u03b2/3)\u00b7sin(\u03b3/3) is symmetric, immediately giving the equilateral property",
+      "The key identity α₃ + β₃ + γ₃ = π/3 drives all angle computations",
+      "The Morley side formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) is symmetric, immediately giving the equilateral property",
       "The remaining coordinate verification is finite and mechanical"
     ]
   },
@@ -66,14 +66,14 @@
     {
       "id": "angle-identities",
       "title": "Key Angle Identities",
-      "summary": "Trisected sum = \u03c0/3, positivity, bound < \u03c0/3",
+      "summary": "Trisected sum = π/3, positivity, bound < π/3",
       "startLine": 56,
       "endLine": 79
     },
     {
       "id": "ear-construction",
       "title": "Conway's Ear Construction",
-      "summary": "Ear apex angles, their sum (4\u03c0/3), base angles",
+      "summary": "Ear apex angles, their sum (4π/3), base angles",
       "startLine": 81,
       "endLine": 133
     },
@@ -87,7 +87,7 @@
     {
       "id": "side-formula",
       "title": "The Side Length Formula",
-      "summary": "Morley side length = 8R\u00b7sin(\u03b1/3)\u00b7sin(\u03b2/3)\u00b7sin(\u03b3/3), symmetry, positivity",
+      "summary": "Morley side length = 8R·sin(α/3)·sin(β/3)·sin(γ/3), symmetry, positivity",
       "startLine": 177,
       "endLine": 210
     },
@@ -101,7 +101,7 @@
     {
       "id": "trig-identities",
       "title": "Trig Identities for Computation",
-      "summary": "Product-to-sum, cos(\u03b1\u2083+\u03b2\u2083) = cos(\u03c0/3-\u03b3\u2083)",
+      "summary": "Product-to-sum, cos(α₃+β₃) = cos(π/3-γ₃)",
       "startLine": 232,
       "endLine": 260
     }
@@ -109,7 +109,7 @@
   "conclusion": {
     "summary": "All supporting lemmas for Conway's backward proof are verified (0 axioms, 0 sorries). The remaining step is the coordinate computation showing each Morley side equals the symmetric formula.",
     "openQuestions": [
-      "Complete the coordinate verification: place equilateral triangle in complex plane, compute ear vertices, verify side lengths match 8R\u00b7sin(\u03b1/3)\u00b7sin(\u03b2/3)\u00b7sin(\u03b3/3)"
+      "Complete the coordinate verification: place equilateral triangle in complex plane, compute ear vertices, verify side lengths match 8R·sin(α/3)·sin(β/3)·sin(γ/3)"
     ],
     "implications": ""
   },
@@ -139,7 +139,7 @@
       "Real"
     ],
     "namespace": "MorleysTheoremOQ01",
-    "lineCount": 297,
+    "lineCount": 292,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 8

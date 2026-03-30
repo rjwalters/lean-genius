@@ -1,10 +1,10 @@
 {
   "id": "erdos-729",
-  "title": "Erd\u0151s Problem #729: Factorial Divisibility Modulo Small Primes",
+  "title": "Erdős Problem #729: Factorial Divisibility Modulo Small Primes",
   "slug": "erdos-729",
-  "description": "Let C > 0. Are there infinitely many (a, b, n) with a + b > n + C\u00b7log n such that n!/(a!b!) has denominator with only small primes? Barreto-Leeham proved NO: the bound a + b \u2264 n + O(log n) persists even ignoring small primes.",
+  "description": "Let C > 0. Are there infinitely many (a, b, n) with a + b > n + C·log n such that n!/(a!b!) has denominator with only small primes? Barreto-Leeham proved NO: the bound a + b ≤ n + O(log n) persists even ignoring small primes.",
   "meta": {
-    "author": "Barreto-Leeham (solution), Erd\u0151s (1968)",
+    "author": "Barreto-Leeham (solution), Erdős (1968)",
     "sourceUrl": "https://erdosproblems.com/729",
     "date": "2020s",
     "status": "axiomatized",
@@ -40,20 +40,20 @@
     ],
     "originalContributions": [
       "Formalized factorial divisibility modulo small primes",
-      "Axiomatized Barreto-Leeham's extension of Erd\u0151s's bound",
+      "Axiomatized Barreto-Leeham's extension of Erdős's bound",
       "Connected Legendre's formula to the divisibility constraint",
       "Defined relaxed divisibility allowing small prime factors"
     ],
     "axiomCount": 6,
-    "lineCount": 225,
+    "lineCount": 217,
     "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erd\u0151s proved in 1968 that if $a!b! \\mid n!$ then $a + b \\leq n + O(\\log n)$, using an elegant argument based on Legendre's formula for $v_2(n!) = n - s_2(n)$, where $s_2(n)$ is the binary digit sum. Problem 729, posed later, asks whether this logarithmic bound can be defeated by \"ignoring\" small primes: specifically, whether there are infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ such that $n!/(a!b!)$ has denominator divisible only by primes $\\leq C$. Barreto and Leeham resolved the problem negatively, showing that large primes alone carry sufficient information to enforce the bound. Their proof adapts the technique from Problem #728, extending it to show that for any prime $p > C$, the constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ already implies $a + b \\leq n + O(\\log n)$. This reveals a fundamental rigidity in factorial arithmetic: the divisibility structure is controlled by all primes collectively, and no finite set of exceptions can weaken it.",
+    "historicalContext": "Erdős proved in 1968 that if $a!b! \\mid n!$ then $a + b \\leq n + O(\\log n)$, using an elegant argument based on Legendre's formula for $v_2(n!) = n - s_2(n)$, where $s_2(n)$ is the binary digit sum. Problem 729, posed later, asks whether this logarithmic bound can be defeated by \"ignoring\" small primes: specifically, whether there are infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ such that $n!/(a!b!)$ has denominator divisible only by primes $\\leq C$. Barreto and Leeham resolved the problem negatively, showing that large primes alone carry sufficient information to enforce the bound. Their proof adapts the technique from Problem #728, extending it to show that for any prime $p > C$, the constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ already implies $a + b \\leq n + O(\\log n)$. This reveals a fundamental rigidity in factorial arithmetic: the divisibility structure is controlled by all primes collectively, and no finite set of exceptions can weaken it.",
     "problemStatement": "Let $C > 0$ be a constant. Are there infinitely many integers $a, b, n$ with $a + b > n + C\\log n$ such that the denominator of $n!/(a!b!)$ contains only primes $\\leq C$?",
-    "text": "Let C > 0. Are there infinitely many (a, b, n) with a + b > n + C\u00b7log n such that n!/(a!b!) has denominator with only small primes? Barreto-Leeham proved NO: the bound a + b \u2264 n + O(log n) persists even ignoring small primes.",
-    "proofStrategy": "The formalization defines `DividesFactorial` and `DividesFactorialModSmall` (allowing small prime factors in the denominator), states `InfinitelyManyExceptions` as the open question, and axiomatizes both Erd\u0151s's 1968 result and the Barreto-Leeham resolution. Legendre's formula is stated via `factorialPadicVal` and the digit sum identity. The main theorem `erdos_729_statement` combines both results, and `erdos_729_summary` provides the complete answer. Two `sorry`s remain: `legendre_for_two` and `binomial_rigidity`.",
+    "text": "Let C > 0. Are there infinitely many (a, b, n) with a + b > n + C·log n such that n!/(a!b!) has denominator with only small primes? Barreto-Leeham proved NO: the bound a + b ≤ n + O(log n) persists even ignoring small primes.",
+    "proofStrategy": "The formalization defines `DividesFactorial` and `DividesFactorialModSmall` (allowing small prime factors in the denominator), states `InfinitelyManyExceptions` as the open question, and axiomatizes both Erdős's 1968 result and the Barreto-Leeham resolution. Legendre's formula is stated via `factorialPadicVal` and the digit sum identity. The main theorem `erdos_729_statement` combines both results, and `erdos_729_summary` provides the complete answer. Two `sorry`s remain: `legendre_for_two` and `binomial_rigidity`.",
     "keyInsights": [
       "Legendre's formula $v_p(n!) = (n - s_p(n))/(p-1)$ connects factorial divisibility to base-$p$ digit sums, with the special case $v_2(n!) = n - s_2(n)$ being particularly clean",
       "If $a!b! \\mid n!$, then $v_p(a!) + v_p(b!) \\leq v_p(n!)$ for all primes $p$. Using just $p = 2$ and the digit sum identity gives $a + b \\leq n + s_2(a) + s_2(b) - s_2(n) \\leq n + O(\\log n)$",
@@ -77,7 +77,7 @@
     },
     {
       "id": "erdos-classical",
-      "title": "Erd\u0151s's Classical Result (1968)",
+      "title": "Erdős's Classical Result (1968)",
       "startLine": 57,
       "endLine": 74,
       "summary": "Axiomatizes `erdos_1968_classical`: $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only the $p = 2$ constraint.",
@@ -96,8 +96,8 @@
       "title": "The Question",
       "startLine": 95,
       "endLine": 107,
-      "summary": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erd\u0151s Problem 729.",
-      "mathContext": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\$\\log n$$ and `DividesFactorialModSmall`? This is the formal statement of Erd\u0151s Problem 729."
+      "summary": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729.",
+      "mathContext": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\$\\log n$$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729."
     },
     {
       "id": "barreto-leeham",
@@ -149,7 +149,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem 729 is solved negatively: there are NOT infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ where the denominator of $n!/(a!b!)$ has only small prime factors. The formalization captures the classical Erd\u0151s bound, the relaxed condition, the Barreto-Leeham resolution, and the proof strategy via large primes, with two remaining `sorry`s on supporting lemmas.",
+    "summary": "Erdős Problem 729 is solved negatively: there are NOT infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ where the denominator of $n!/(a!b!)$ has only small prime factors. The formalization captures the classical Erdős bound, the relaxed condition, the Barreto-Leeham resolution, and the proof strategy via large primes, with two remaining `sorry`s on supporting lemmas.",
     "implications": "The result demonstrates a fundamental rigidity in factorial arithmetic: the constraint $a + b \\leq n + O(\\log n)$ arises from all primes collectively and cannot be circumvented by ignoring finitely many. This connects to the robustness of Legendre's formula under prime localization and suggests that factorial divisibility is determined by the global prime structure, not any local subset.",
     "openQuestions": [
       "What is the optimal constant in the $O(\\log n)$ bound? Can it be made explicit as a function of $C$?",
@@ -188,7 +188,7 @@
       "Real"
     ],
     "namespace": "Erdos729",
-    "lineCount": 225,
+    "lineCount": 217,
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 8

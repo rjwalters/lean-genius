@@ -123,10 +123,15 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["SimpleGraph", "Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
     "namespace": "Erdos1008",
-    "lineCount": 334,
+    "lineCount": 607,
     "axiomCount": 1,
     "theoremCount": 27,
     "definitionCount": 8

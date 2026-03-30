@@ -1,8 +1,8 @@
 {
   "id": "erdos-1081",
-  "title": "Erd\u0151s Problem #1081: Sums of Two Squarefull Numbers",
+  "title": "Erdős Problem #1081: Sums of Two Squarefull Numbers",
   "slug": "erdos-1081",
-  "description": "Let A(x) count integers n \u2264 x that are sums of two squarefull numbers. Is A(x) ~ c\u00b7x/\u221a(log x)? NO, disproved by Odoni (1981). Correct asymptotic: A(x) ~ x/(log x)^\u03b1 where \u03b1 = 1-2^(-1/3) \u2248 0.206.",
+  "description": "Let A(x) count integers n ≤ x that are sums of two squarefull numbers. Is A(x) ~ c·x/√(log x)? NO, disproved by Odoni (1981). Correct asymptotic: A(x) ~ x/(log x)^α where α = 1-2^(-1/3) ≈ 0.206.",
   "meta": {
     "author": "Odoni (1981 disproof), Blomer-Granville (2006 refinement)",
     "sourceUrl": "https://erdosproblems.com/1081",
@@ -47,34 +47,34 @@
       }
     ],
     "originalContributions": [
-      "IsSquarefull definition: m > 0 and p|m implies p\u00b2|m",
-      "IsSquarefullAlt: Alternative characterization as a\u00b2b\u00b3",
+      "IsSquarefull definition: m > 0 and p|m implies p²|m",
+      "IsSquarefullAlt: Alternative characterization as a²b³",
       "IsSumOfTwoSquarefull: n = a + b for squarefull a, b",
       "Counting function A(x): Number of sums up to x",
-      "erdos_conjecture: The false claim A(x) ~ cx/\u221a(log x)",
+      "erdos_conjecture: The false claim A(x) ~ cx/√(log x)",
       "odoni_disproof axiom: The conjecture is false",
       "odoni_lower_bound axiom: A(x) grows faster than conjectured",
-      "alpha constant: 1 - 2^(-1/3) \u2248 0.206299",
+      "alpha constant: 1 - 2^(-1/3) ≈ 0.206299",
       "blomer_granville_2006 axiom: Tight bounds for A(x)",
       "Examples: 1, 4, 8, 9 are squarefull; 5, 13 are sums",
       "erdos_1081_summary: Combined main results"
     ],
     "axiomCount": 5,
-    "lineCount": 356,
+    "lineCount": 333,
     "assumptions": "7 axioms: squarefull_equiv, squarefull_count_asymptotic, odoni_disproof, and 4 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #1081: Sums of Two Squarefull Numbers**\n\nThis problem concerns the asymptotic behavior of integers expressible as sums of two squarefull (powerful) numbers.\n\n**Key History:**\n- Erd\u0151s (1976): Conjectured A(x) ~ c\u00b7x/\u221a(log x) for some constant c > 0\n- Odoni (1981): Disproved the conjecture, showing A(x) grows faster\n- Baker-Br\u00fcdern (1994): Improved bounds\n- Blomer (2004): Further refinements using quadratic forms\n- Blomer-Granville (2006): Determined the correct exponent \u03b1 = 1 - 2^(-1/3) \u2248 0.206\n\n**Mathematical Setting:**\nA squarefull number m is one where every prime divisor p satisfies p\u00b2 | m. Equivalently, m can be written as a\u00b2b\u00b3 for positive integers a, b. The sequence begins: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ...",
+    "historicalContext": "**Erdős Problem #1081: Sums of Two Squarefull Numbers**\n\nThis problem concerns the asymptotic behavior of integers expressible as sums of two squarefull (powerful) numbers.\n\n**Key History:**\n- Erdős (1976): Conjectured A(x) ~ c·x/√(log x) for some constant c > 0\n- Odoni (1981): Disproved the conjecture, showing A(x) grows faster\n- Baker-Brüdern (1994): Improved bounds\n- Blomer (2004): Further refinements using quadratic forms\n- Blomer-Granville (2006): Determined the correct exponent α = 1 - 2^(-1/3) ≈ 0.206\n\n**Mathematical Setting:**\nA squarefull number m is one where every prime divisor p satisfies p² | m. Equivalently, m can be written as a²b³ for positive integers a, b. The sequence begins: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ...",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $A(x)$ count the number of $n \\leq x$ which are the sum of two squarefull numbers (a number $m$ is squarefull if $p \\mid m$ implies $p^2 \\mid m$).\n\nIs it true that $A(x) \\sim c \\cdot \\frac{x}{\\sqrt{\\log x}}$ for some $c > 0$?\n\n**Answer: NO**\n\nOdoni (1981) disproved this, showing:\n$$A(x) \\gg \\exp\\left(c \\frac{\\log\\log\\log x}{\\log\\log x}\\right) \\frac{x}{\\sqrt{\\log x}}$$\n\nBlomer-Granville (2006) proved the correct asymptotic:\n$$A(x) = (\\log\\log x)^{O(1)} \\frac{x}{(\\log x)^{\\alpha}}$$\nwhere $\\alpha = 1 - 2^{-1/3} \\approx 0.206299$.",
-    "text": "Let A(x) count integers n \u2264 x that are sums of two squarefull numbers. Is A(x) ~ c\u00b7x/\u221a(log x)? NO, disproved by Odoni (1981). Correct asymptotic: A(x) ~ x/(log x)^\u03b1 where \u03b1 = 1-2^(-1/3) \u2248 0.206.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Squarefull Numbers:** Define IsSquarefull requiring p | m \u2192 p\u00b2 | m for all primes p.\n\n2. **Alternative Form:** Define IsSquarefullAlt as existence of a, b with m = a\u00b2b\u00b3.\n\n3. **Sums:** Define IsSumOfTwoSquarefull as n = a + b for squarefull a, b.\n\n4. **Counting Function:** A(x) counts sums up to x.\n\n5. **Erd\u0151s's Conjecture:** Formalize as asymptotic A(x) ~ cx/\u221a(log x).\n\n6. **Odoni's Disproof:** Axiomatize that the conjecture is false.\n\n7. **Blomer-Granville:** Axiomatize the correct exponent \u03b1 = 1 - 2^(-1/3).\n\n8. **Examples:** Verify small squarefull numbers and their sums.",
+    "text": "Let A(x) count integers n ≤ x that are sums of two squarefull numbers. Is A(x) ~ c·x/√(log x)? NO, disproved by Odoni (1981). Correct asymptotic: A(x) ~ x/(log x)^α where α = 1-2^(-1/3) ≈ 0.206.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Squarefull Numbers:** Define IsSquarefull requiring p | m → p² | m for all primes p.\n\n2. **Alternative Form:** Define IsSquarefullAlt as existence of a, b with m = a²b³.\n\n3. **Sums:** Define IsSumOfTwoSquarefull as n = a + b for squarefull a, b.\n\n4. **Counting Function:** A(x) counts sums up to x.\n\n5. **Erdős's Conjecture:** Formalize as asymptotic A(x) ~ cx/√(log x).\n\n6. **Odoni's Disproof:** Axiomatize that the conjecture is false.\n\n7. **Blomer-Granville:** Axiomatize the correct exponent α = 1 - 2^(-1/3).\n\n8. **Examples:** Verify small squarefull numbers and their sums.",
     "keyInsights": [
-      "**Squarefull Numbers:** Also called powerful numbers; m is squarefull iff m = a\u00b2b\u00b3 for some a, b \u2265 1",
-      "**Density:** Squarefull numbers up to x number approximately \u03b6(3/2)/\u03b6(3) \u00b7 \u221ax \u2248 2.173\u221ax",
-      "**Wrong Exponent:** Erd\u0151s conjectured exponent 1/2 in (log x); true exponent is \u03b1 \u2248 0.206",
+      "**Squarefull Numbers:** Also called powerful numbers; m is squarefull iff m = a²b³ for some a, b ≥ 1",
+      "**Density:** Squarefull numbers up to x number approximately ζ(3/2)/ζ(3) · √x ≈ 2.173√x",
+      "**Wrong Exponent:** Erdős conjectured exponent 1/2 in (log x); true exponent is α ≈ 0.206",
       "**Faster Growth:** A(x) grows faster than expected because squarefull numbers cluster",
       "**Quadratic Forms:** Blomer-Granville used binary quadratic form theory for tight bounds",
-      "**Historical Note:** This is one of several Erd\u0151s conjectures that were disproved"
+      "**Historical Note:** This is one of several Erdős conjectures that were disproved"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -109,18 +109,18 @@
     {
       "id": "counting",
       "title": "The Counting Function A(x)",
-      "summary": "A(x) definition and squarefull count asymptotic S(x) ~ c\u221ax",
+      "summary": "A(x) definition and squarefull count asymptotic S(x) ~ c√x",
       "startLine": 133,
       "endLine": 159,
       "mathContext": "A(x) definition and squarefull count asymptotic S(x) ~ c$\\sqrt{x}$"
     },
     {
       "id": "conjecture",
-      "title": "Erd\u0151s's Conjecture (Disproved)",
-      "summary": "The false conjecture A(x) ~ cx/\u221a(log x) and Odoni's disproof",
+      "title": "Erdős's Conjecture (Disproved)",
+      "summary": "The false conjecture A(x) ~ cx/√(log x) and Odoni's disproof",
       "startLine": 160,
       "endLine": 180,
-      "mathContext": "Verified: The false conjecture A(x) ~ cx/\u221a(log x) and Odoni's disproof"
+      "mathContext": "Verified: The false conjecture A(x) ~ cx/√(log x) and Odoni's disproof"
     },
     {
       "id": "odoni",
@@ -133,10 +133,10 @@
     {
       "id": "blomer-granville",
       "title": "Blomer-Granville Refinement",
-      "summary": "The correct exponent \u03b1 = 1 - 2^(-1/3) \u2248 0.206",
+      "summary": "The correct exponent α = 1 - 2^(-1/3) ≈ 0.206",
       "startLine": 199,
       "endLine": 236,
-      "mathContext": "Mathematical content: The correct exponent \u03b1 = 1 - 2^(-1/3) \u2248 0.206"
+      "mathContext": "Mathematical content: The correct exponent α = 1 - 2^(-1/3) ≈ 0.206"
     },
     {
       "id": "explanation",
@@ -149,15 +149,15 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Complete answer: NO, with correct exponent \u03b1 \u2248 0.206",
+      "summary": "Complete answer: NO, with correct exponent α ≈ 0.206",
       "startLine": 276,
       "endLine": 356,
-      "mathContext": "Mathematical content: Complete answer: NO, with correct exponent \u03b1 \u2248 0.206"
+      "mathContext": "Mathematical content: Complete answer: NO, with correct exponent α ≈ 0.206"
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1081 asked whether A(x), the count of integers up to x expressible as sums of two squarefull numbers, satisfies A(x) ~ c\u00b7x/\u221a(log x). The answer is NO, disproved by Odoni in 1981. The correct asymptotic is A(x) ~ x/(log x)^\u03b1 where \u03b1 = 1 - 2^(-1/3) \u2248 0.206, meaning A(x) grows significantly faster than Erd\u0151s expected.",
-    "implications": "**Theoretical Significance**: **Implications in Analytic Number Theory**\n\n1. **Probabilistic Heuristics:** Naive models can fail when underlying sets have structure\n\n2. **Quadratic Forms:** Deep connection to representation theory of binary forms\n\n**3. Exponent Discovery:** The unexpected exponent \u03b1 = 1 - 2^(-1/3) has number-theoretic significance\n\n4. **Related Problems:** Connected to Problem #940 about similar counting questions\n\n5. **Methodological:** Blomer-Granville's approach exemplifies modern analytic techniques.",
+    "summary": "Erdős Problem #1081 asked whether A(x), the count of integers up to x expressible as sums of two squarefull numbers, satisfies A(x) ~ c·x/√(log x). The answer is NO, disproved by Odoni in 1981. The correct asymptotic is A(x) ~ x/(log x)^α where α = 1 - 2^(-1/3) ≈ 0.206, meaning A(x) grows significantly faster than Erdős expected.",
+    "implications": "**Theoretical Significance**: **Implications in Analytic Number Theory**\n\n1. **Probabilistic Heuristics:** Naive models can fail when underlying sets have structure\n\n2. **Quadratic Forms:** Deep connection to representation theory of binary forms\n\n**3. Exponent Discovery:** The unexpected exponent α = 1 - 2^(-1/3) has number-theoretic significance\n\n4. **Related Problems:** Connected to Problem #940 about similar counting questions\n\n5. **Methodological:** Blomer-Granville's approach exemplifies modern analytic techniques.",
     "openQuestions": [
       "Exact leading constant in A(x) asymptotic",
       "Higher order terms in the expansion of A(x)",
@@ -168,13 +168,13 @@
   },
   "crossReferences": [
     {
-      "title": "Erd\u0151s #940: Sums of r-Powerful Numbers",
-      "relationship": "Direct generalization: Problem #940 asks whether sums of r r-powerful numbers have density 0 for r \u2265 3, directly extending the squarefull (r=2) setting of Problem #1081. Baker-Br\u00fcdern (1994) contributed to both problems.",
+      "title": "Erdős #940: Sums of r-Powerful Numbers",
+      "relationship": "Direct generalization: Problem #940 asks whether sums of r r-powerful numbers have density 0 for r ≥ 3, directly extending the squarefull (r=2) setting of Problem #1081. Baker-Brüdern (1994) contributed to both problems.",
       "targetId": "erdos-940"
     },
     {
       "title": "The Prime Number Theorem",
-      "relationship": "The asymptotic \u03c0(x) ~ x/ln(x) is a prototype for counting-function asymptotics in analytic number theory; the methods of Dirichlet series, complex analysis, and log-power exponents used to prove PNT are the same toolkit Blomer-Granville deploy to obtain the exponent \u03b1 for A(x).",
+      "relationship": "The asymptotic π(x) ~ x/ln(x) is a prototype for counting-function asymptotics in analytic number theory; the methods of Dirichlet series, complex analysis, and log-power exponents used to prove PNT are the same toolkit Blomer-Granville deploy to obtain the exponent α for A(x).",
       "targetId": "prime-number-theorem"
     },
     {
@@ -189,12 +189,12 @@
     },
     {
       "title": "Fundamental Theorem of Arithmetic",
-      "relationship": "The definition of squarefull (every prime factor p satisfies p\u00b2 | m) depends critically on unique prime factorization. The Fundamental Theorem of Arithmetic underpins all structural properties of squarefull numbers used in this formalization.",
+      "relationship": "The definition of squarefull (every prime factor p satisfies p² | m) depends critically on unique prime factorization. The Fundamental Theorem of Arithmetic underpins all structural properties of squarefull numbers used in this formalization.",
       "targetId": "fundamental-arithmetic"
     },
     {
       "title": "The Riemann Hypothesis",
-      "relationship": "The density of squarefull numbers S(x) ~ c\u221ax and the exact leading constant in A(x) both involve the Riemann zeta function \u03b6(3/2)/\u03b6(3). Conditional results on A(x) error terms connect to the zero-free region of \u03b6(s), making RH relevant to the open questions in this problem.",
+      "relationship": "The density of squarefull numbers S(x) ~ c√x and the exact leading constant in A(x) both involve the Riemann zeta function ζ(3/2)/ζ(3). Conditional results on A(x) error terms connect to the zero-free region of ζ(s), making RH relevant to the open questions in this problem.",
       "targetId": "riemann-hypothesis"
     }
   ],
@@ -206,19 +206,19 @@
       "title": "On the norms of algebraic integers",
       "volume": "22",
       "year": "1975",
-      "pages": "71\u201380",
-      "note": "Contains Odoni's foundational work leading to the 1981 disproof; provides the lower bound showing A(x) grows faster than c\u00b7x/\u221a(log x).",
+      "pages": "71–80",
+      "note": "Contains Odoni's foundational work leading to the 1981 disproof; provides the lower bound showing A(x) grows faster than c·x/√(log x).",
       "venue": "Mathematika"
     },
     {
       "authors": [
         "R. C. Baker",
-        "J. Br\u00fcdern"
+        "J. Brüdern"
       ],
       "title": "Sums of two squareful numbers",
       "volume": "69",
       "year": "1995",
-      "pages": "369\u2013374",
+      "pages": "369–374",
       "note": "Establishes intermediate bounds for A(x) improving on Odoni; a key step between the original disproof and the Blomer-Granville refinement.",
       "venue": "Acta Arithmetica"
     },
@@ -229,9 +229,9 @@
       "title": "Ternary quadratic forms with rational zeros",
       "volume": "16",
       "year": "2004",
-      "pages": "293\u2013313",
+      "pages": "293–313",
       "note": "Blomer's solo work using quadratic forms to tighten bounds on A(x); directly precedes the 2006 joint paper with Granville.",
-      "venue": "Journal de Th\u00e9orie des Nombres de Bordeaux"
+      "venue": "Journal de Théorie des Nombres de Bordeaux"
     },
     {
       "authors": [
@@ -241,9 +241,9 @@
       "title": "Estimates for representation numbers of quadratic forms",
       "volume": "135",
       "year": "2006",
-      "pages": "261\u2013302",
+      "pages": "261–302",
       "doi": "10.1215/S0012-7094-06-13522-6",
-      "note": "Definitive paper proving the correct exponent \u03b1 = 1 \u2212 2^(\u22121/3) for A(x) ~ x/(log x)^\u03b1 via representation theory of binary quadratic forms.",
+      "note": "Definitive paper proving the correct exponent α = 1 − 2^(−1/3) for A(x) ~ x/(log x)^α via representation theory of binary quadratic forms.",
       "venue": "Duke Mathematical Journal"
     },
     {
@@ -272,7 +272,7 @@
       "Finset"
     ],
     "namespace": "Erdos1081",
-    "lineCount": 356,
+    "lineCount": 333,
     "axiomCount": 7,
     "theoremCount": 9,
     "definitionCount": 7

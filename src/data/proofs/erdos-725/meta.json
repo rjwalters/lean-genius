@@ -58,12 +58,12 @@
       "Formalized GeneralAsymptotic and ExtendedConjecture (OPEN)"
     ],
     "axiomCount": 3,
-    "lineCount": 169,
+    "lineCount": 150,
     "assumptions": "3 axioms: godsil_mckay_bounds (permanent-based bounds on L(k,n)), L_1_n (L(1,n) = n!), derangements (subfactorial D(n) for L(2,n) formula)."
   },
   "leanFile": {
     "path": "Proofs/Erdos725Problem.lean",
-    "lineCount": 169,
+    "lineCount": 150,
     "imports": [
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Real.Basic",

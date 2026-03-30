@@ -8,13 +8,19 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Unique_factorization_domain#Non-examples",
     "date": "2026",
     "status": "verified",
-    "tags": ["number-theory", "ring-theory", "unique-factorization", "algebraic-integers", "research"],
+    "tags": [
+      "number-theory",
+      "ring-theory",
+      "unique-factorization",
+      "algebraic-integers",
+      "research"
+    ],
     "proofRepoPath": "Proofs/FundamentalArithmeticOQ02.lean",
     "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 193,
+    "lineCount": 192,
     "assumptions": "",
     "mathlib_version": "4.26.0"
   },
@@ -30,7 +36,11 @@
   },
   "sections": [],
   "crossReferences": [
-    {"targetId": "fundamental-arithmetic", "relationship": "extends", "description": "Parent entry proving FTA. This entry shows FTA FAILS in ℤ[√(-5)]."}
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "extends",
+      "description": "Parent entry proving FTA. This entry shows FTA FAILS in ℤ[√(-5)]."
+    }
   ],
   "conclusion": {
     "summary": "172 lines, 19 declarations, 0 axioms, 1 sorry. Proves two distinct factorizations of 6, non-unit status of all factors, and essential difference of the factorizations.",

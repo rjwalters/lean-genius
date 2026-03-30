@@ -6,11 +6,16 @@
   "meta": {
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1012OQ03.lean",
-    "tags": ["graph-theory", "directed-graphs", "hamiltonian-cycles", "tournaments"],
+    "tags": [
+      "graph-theory",
+      "directed-graphs",
+      "hamiltonian-cycles",
+      "tournaments"
+    ],
     "badge": "formalized",
     "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 340,
+    "lineCount": 339,
     "assumptions": "0 axioms. 4 sorries (list-to-equiv conversion, Ghouila-Houri, Moon-Moser, directed threshold). Rédei proved via list-based insertion. Tournament insertion lemma fully proved.",
     "dateAdded": "2026-03-30"
   },
@@ -23,6 +28,9 @@
     ]
   },
   "crossReferences": [
-    {"targetId": "erdos-1012", "relationship": "Directed analogue of undirected long cycle thresholds"}
+    {
+      "targetId": "erdos-1012",
+      "relationship": "Directed analogue of undirected long cycle thresholds"
+    }
   ]
 }

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/482",
     "erdosProblemStatus": "solved",
     "axiomCount": 7,
-    "lineCount": 153,
+    "lineCount": 128,
     "assumptions": "7 axioms: (1) seq_values — first 5 terms of the Graham-Pollak sequence; (2) graham_pollak_theorem — $a_{2n+1} - 2a_{2n-1} \\in \\{0,1\\}$ for $n \\geq 1$; (3) sqrt2_approx — $1.414 < \\sqrt{2} < 1.415$; (4) growth_rate — ratio $a_{n+1}/a_n \\to \\sqrt{2}$ with error $O(1/n)$; (5) stoll_generalization_sqrt — digit extraction for square-free $m$; (6) stoll_general — digit extraction for all quadratic irrationals; (7) sqrt2_nonperiodic — the extracted digit sequence is not eventually periodic.",
     "originalContributions": [
       "Lean 4 definition of the Graham-Pollak recurrence via structural recursion",
@@ -130,7 +130,7 @@
       "Int"
     ],
     "namespace": "Erdos482",
-    "lineCount": 153,
+    "lineCount": 128,
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 2
@@ -165,7 +165,10 @@
   "references": [
     {
       "key": "GrPo70",
-      "authors": ["R. L. Graham", "H. O. Pollak"],
+      "authors": [
+        "R. L. Graham",
+        "H. O. Pollak"
+      ],
       "title": "Note on a nonlinear recurrence related to √2",
       "venue": "Mathematics Magazine",
       "year": "1970",
@@ -175,7 +178,9 @@
     },
     {
       "key": "St05",
-      "authors": ["T. Stoll"],
+      "authors": [
+        "T. Stoll"
+      ],
       "title": "On families of nonlinear recurrences related to digits",
       "venue": "Journal of Integer Sequences",
       "year": "2005",
@@ -184,7 +189,9 @@
     },
     {
       "key": "St06",
-      "authors": ["T. Stoll"],
+      "authors": [
+        "T. Stoll"
+      ],
       "title": "On a problem of Erdős and Graham concerning digits",
       "venue": "Acta Arithmetica",
       "year": "2006",
@@ -194,7 +201,10 @@
     },
     {
       "key": "ErGr80",
-      "authors": ["P. Erdős", "R. L. Graham"],
+      "authors": [
+        "P. Erdős",
+        "R. L. Graham"
+      ],
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "venue": "Monographies de L'Enseignement Mathématique",
       "year": "1980",

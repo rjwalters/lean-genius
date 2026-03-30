@@ -28,7 +28,7 @@
     "erdosUrl": "https://erdosproblems.com/94",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$44",
-    "lineCount": 222
+    "lineCount": 212
   },
   "overview": {
     "historicalContext": "**From Fishburn's Bound to the Exact Constant**\n\nErdős Problem #94 asks about the growth rate of ∑f(u)² for convex polygons. Fishburn proved this sum is O(n³), and the regular n-gon achieves Θ(n³). The natural follow-up: what is the exact asymptotic constant?\n\nFor the regular n-gon with n vertices, there are ⌊n/2⌋ distinct distances, most with multiplicity n. This gives ∑f(u)² ≈ (n/2)·n² = n³/2, suggesting the constant is 1/2.",
@@ -134,23 +134,33 @@
   ],
   "references": [
     {
-      "authors": ["P. Fishburn"],
+      "authors": [
+        "P. Fishburn"
+      ],
       "title": "Convex polygons and distance multiplicities",
       "year": "1995",
       "note": "Proved ∑f(u)² = O(n³) for convex n-gons"
     },
     {
-      "authors": ["H. Lefmann", "T. Theile"],
+      "authors": [
+        "H. Lefmann",
+        "T. Theile"
+      ],
       "title": "Distance multiplicities under no-three-collinear",
       "year": "1995",
       "note": "Extended Fishburn's result to no-three-collinear condition"
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset", "Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Real"
+    ],
     "namespace": "Erdos94OQ02",
-    "lineCount": 222,
+    "lineCount": 212,
     "axiomCount": 6,
     "theoremCount": 10,
     "substantiveTheoremCount": 7,

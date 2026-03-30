@@ -60,7 +60,7 @@
     ],
     "dateAdded": "2025-12-28",
     "axiomCount": 10,
-    "lineCount": 288,
+    "lineCount": 254,
     "assumptions": "10 axioms: erdos_szekeres, hanani_decomposition, dilworth_bound, hanani_lower_bound, cambie_upper_bound, weighted_erdos_szekeres, optimal_constant_is_one, lis_lds_bound, longest_monotonic_bound, erdos_1026_tight. Three proved: erdos_szekeres_square (from erdos_szekeres), tidor_wang_yang (= weighted_erdos_szekeres), tournament_connection (trivial).",
     "mathlib_version": "4.26.0"
   },
@@ -262,7 +262,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos1026",
-    "lineCount": 288,
+    "lineCount": 254,
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 11
