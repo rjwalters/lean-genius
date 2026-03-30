@@ -6,7 +6,7 @@
   "meta": {
     "author": "Gauss (algorithm, 1801)",
     "date": "1801",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/QuadraticReciprocityAlgorithmOQ01.lean",
     "tags": [
       "number-theory",
@@ -16,11 +16,11 @@
       "jacobi-symbol",
       "verified-computation"
     ],
-    "badge": "axiom",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-03-30",
-    "lineCount": 193,
+    "lineCount": 194,
     "originalContributions": [
       "signFirst, signSecond, signRecip: supplementary law sign factor functions",
       "strip2: factor out powers of 2 with termination proof",
@@ -30,7 +30,7 @@
       "Properties: all sign factors square to 1, signRecip symmetric",
       "JacobiCorrectness: formal statement linking to Mathlib legendreSym"
     ],
-    "assumptions": "1 sorry in jacobiAux termination proof (needs strip2_le: odd part of a%n is < n). No axioms."
+    "assumptions": "No axioms, no sorries. Jacobi symbol algorithm fully verified including termination proof via strip2_snd_le lemma."
   },
   "leanFile": {
     "lineCount": 193,

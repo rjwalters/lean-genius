@@ -69,6 +69,19 @@ def strip2 : ℕ → ℕ × ℕ
       (0, n + 1)
   termination_by n => n
 
+/-- The odd part returned by strip2 is at most the input. -/
+private lemma strip2_snd_le : ∀ n : ℕ, (strip2 n).2 ≤ n
+  | 0 => by simp [strip2]
+  | n + 1 => by
+    unfold strip2
+    split
+    · -- even: odd part of (n+1)/2 ≤ (n+1)/2 ≤ n+1
+      exact le_trans (strip2_snd_le ((n + 1) / 2)) (Nat.div_le_self _ _)
+    · -- odd: (0, n+1).2 = n+1
+      exact le_refl _
+  termination_by n => n
+  decreasing_by simp_wf; exact Nat.div_lt_self (Nat.succ_pos n) (by omega)
+
 /-- The Jacobi symbol J(a, n) for odd positive n.
     Computes via quadratic reciprocity reduction.
 
@@ -100,11 +113,9 @@ def jacobiAux : ℕ → ℕ → ℤ
   termination_by (n, a)
   decreasing_by
     all_goals simp_wf
-    · -- Need: (odd_part, n % odd_part) < (n, a) in lex order
-      -- odd_part < a' < n, so odd_part < n
-      -- Need: odd_part < n (then Prod.Lex.left gives the result)
-      -- Proof sketch: odd_part ≤ a' (strip2 output ≤ input) and a' = a%n < n
-      sorry
+    · -- odd_part = (strip2 (a%n)).2 ≤ a%n < n, so odd_part < n
+      apply Prod.Lex.left
+      exact lt_of_le_of_lt (strip2_snd_le _) (Nat.mod_lt _ (by omega))
 
 /-- The Jacobi symbol for integer a and odd positive n. -/
 def jacobi (a : ℤ) (n : ℕ) : ℤ :=
