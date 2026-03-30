@@ -283,3 +283,17 @@ theorem not_dvd_central_prime_alt (n : ℕ) (hn : n ≥ 1) (hp : Nat.Prime (2 * 
   intro hdvd
   exact absurd (dvd_central_implies_sq_dvd n hdvd)
     (prime_sq_not_dvd_choose hp (by omega) (by omega))
+
+/-- C(2n+1, n) > C(2n, n) for n ≥ 1.
+    By Pascal: C(2n+1, n) = C(2n, n-1) + C(2n, n), and C(2n, n-1) ≥ 1.
+    This is step 2 of the lcm strategy for upper_bound_trivial. -/
+theorem choose_succ_gt_central (n : ℕ) (hn : n ≥ 1) :
+    Nat.choose (2 * n + 1) n > centralBinom n := by
+  unfold centralBinom
+  have hpascal : Nat.choose (2 * n + 1) n =
+      Nat.choose (2 * n) (n - 1) + Nat.choose (2 * n) n := by
+    obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+    simp only [show m + 1 - 1 = m from by omega]
+    exact Nat.choose_succ_succ (2 * (m + 1)) m
+  have hpos : Nat.choose (2 * n) (n - 1) ≥ 1 := Nat.choose_pos (by omega)
+  omega
