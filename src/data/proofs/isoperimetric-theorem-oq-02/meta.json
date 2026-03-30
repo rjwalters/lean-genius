@@ -1,0 +1,110 @@
+{
+  "id": "isoperimetric-theorem-oq-02",
+  "title": "Discrete Isoperimetric Inequality (1D)",
+  "slug": "isoperimetric-theorem-oq-02",
+  "description": "Formalization of the discrete isoperimetric inequality for finite subsets of Z. Proves that the edge boundary of any finite subset with at least 2 elements has size at least 2, with equality precisely for integer intervals.",
+  "meta": {
+    "author": "Classical",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality#Discrete_version",
+    "date": "1966",
+    "status": "verified",
+    "proofRepoPath": "Proofs/IsoperimetricTheoremOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "discrete-geometry",
+      "isoperimetric-inequality",
+      "graph-theory",
+      "boundary"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 221,
+    "assumptions": "0 axioms, 0 sorries. All results fully verified.",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Edge boundary definition for finite subsets of Z",
+      "Lower bound: |dS| >= 2 for |S| >= 2 via min/max argument",
+      "Interval boundary: dS([a,b]) = {a-1, b+1} with |dS| = 2",
+      "Discrete isoperimetric theorem: intervals minimize boundary"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The discrete isoperimetric inequality is the combinatorial analogue of the classical isoperimetric theorem. In one dimension, the question is trivial: among all n-element subsets of Z, intervals have the smallest edge boundary (size 2). In higher dimensions, the problem becomes deep: Harper's theorem (1966) characterizes optimal sets in the hypercube, and the Loomis-Whitney inequality gives general bounds in Z^d.",
+    "problemStatement": "For a finite non-empty subset S of Z, prove that the edge boundary (adjacent integers not in S) has size at least 2. Prove that integer intervals achieve this bound exactly.",
+    "text": "The discrete isoperimetric inequality for Z: intervals minimize the edge boundary among all subsets of a given size.",
+    "proofStrategy": "The lower bound uses a simple min/max argument: the predecessor of min(S) and successor of max(S) are two distinct boundary points. For the equality case, we explicitly compute the boundary of [a,b] as {a-1, b+1}.",
+    "keyInsights": [
+      "The min/max argument gives a clean, constructive proof of the lower bound",
+      "For intervals, the boundary consists of exactly two points at the endpoints",
+      "The 1D case is the foundation for higher-dimensional discrete isoperimetric inequalities"
+    ],
+    "prerequisites": [
+      "Finite sets (Finset operations)",
+      "Integer arithmetic",
+      "Finset.Icc for integer intervals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "edge-boundary",
+      "title": "Edge Boundary Definition",
+      "startLine": 28,
+      "endLine": 42,
+      "summary": "Defines the edge boundary of a finite subset S of Z and the IsInterval predicate."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Boundary Lower Bound",
+      "startLine": 44,
+      "endLine": 103,
+      "summary": "Proves |dS| >= 2 for |S| >= 2 by showing the predecessor of min(S) and successor of max(S) are distinct boundary points."
+    },
+    {
+      "id": "interval-boundary",
+      "title": "Interval Boundary",
+      "startLine": 105,
+      "endLine": 190,
+      "summary": "Proves that the edge boundary of [a,b] is exactly {a-1, b+1} with size 2."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Discrete Isoperimetric Inequality",
+      "startLine": 192,
+      "endLine": 210,
+      "summary": "Combines the lower bound and interval equality into the discrete isoperimetric theorem for Z."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 axioms, 0 sorries) formalization of the discrete isoperimetric inequality in one dimension. All results are constructive and do not depend on any axioms.",
+    "implications": "The 1D discrete isoperimetric inequality is the foundation for higher-dimensional results (Harper's theorem, compression arguments). The formalization demonstrates that the discrete analogue of the classical isoperimetric theorem has a clean, elementary proof.",
+    "openQuestions": [
+      "Extend to Z^d using the Loomis-Whitney inequality or compression technique",
+      "Formalize Harper's theorem for the hypercube {0,1}^n"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "extends",
+      "description": "Discrete analogue of the continuous isoperimetric inequality formalized in IsoperimetricTheorem.lean"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "DiscreteIsoperimetric",
+    "lineCount": 221,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 3
+  }
+}
