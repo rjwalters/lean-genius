@@ -532,6 +532,27 @@ theorem minkowski_integer_lattice_proved
   rw [stdLattice_covolume, one_mul, Module.finrank_fin_fun]
   exact h_vol
 
+/-- **Minkowski's Theorem for arbitrary lattice — Proved from Mathlib**.
+
+Given any basis `b` for ℝⁿ, the lattice `ℤ-span(b)` satisfies Minkowski's theorem:
+if a centrally symmetric convex set has Lebesgue measure > 2ⁿ · |det(b)|,
+it contains a nonzero lattice point.
+
+This fully proves the general Minkowski theorem using Mathlib, but states it
+in terms of Mathlib types (Module.Basis, Submodule, volume) rather than
+the custom Lattice/HasVolume types from Part 1-8. -/
+theorem minkowski_general_lattice_proved
+    (b : Module.Basis (Fin n) ℝ (Fin n → ℝ))
+    (s : Set (Fin n → ℝ))
+    (h_symm : ∀ x ∈ s, -x ∈ s)
+    (h_conv : Convex ℝ s)
+    (h_vol : ENNReal.ofReal |(Matrix.of b).det| * 2 ^ n < volume s) :
+    ∃ x : Submodule.span ℤ (Set.range b), x ≠ 0 ∧ (x : Fin n → ℝ) ∈ s := by
+  apply exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
+    (ZSpan.isAddFundamentalDomain b volume) h_symm h_conv
+  rw [ZSpan.volume_fundamentalDomain, Module.finrank_fin_fun]
+  exact h_vol
+
 end MinkowskiProved
 
 -- Export main results
@@ -542,3 +563,4 @@ end MinkowskiProved
 #check MinkowskiFundamentalTheorem.ConvexBody
 #check MinkowskiFundamentalTheorem.fermat_from_minkowski
 #check MinkowskiProved.minkowski_integer_lattice_proved
+#check MinkowskiProved.minkowski_general_lattice_proved
