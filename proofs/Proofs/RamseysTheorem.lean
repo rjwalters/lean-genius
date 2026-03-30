@@ -624,4 +624,40 @@ axiom multicolor_ramsey_exists (c k : ℕ) (hc : c ≥ 1) (hk : k ≥ 1) :
       ∃ (clique : Finset (Fin n)) (col : Fin c),
         clique.card ≥ k ∧ ∀ x y, x ∈ clique → y ∈ clique → x ≠ y → color x y = col
 
+/-
+## OQ-04: Hypergraph Ramsey Theory
+
+The Ramsey theorem generalizes from graphs (2-uniform hypergraphs) to
+k-uniform hypergraphs. For k-subsets colored with c colors, there exists
+N such that any coloring of k-subsets of [N] contains a monochromatic
+complete k-uniform hypergraph on m vertices.
+-/
+
+/-- A k-uniform hypergraph coloring: assigns a color to each k-element subset. -/
+def HypergraphColoring (n k c : ℕ) :=
+  (Finset.powersetCard k (Finset.univ : Finset (Fin n))) → Fin c
+
+/-- A set is monochromatic under a hypergraph coloring if all k-subsets
+    drawn from it receive the same color. -/
+def IsMonochromaticHypergraph {n k c : ℕ} (color : HypergraphColoring n k c)
+    (S : Finset (Fin n)) (col : Fin c) : Prop :=
+  ∀ T ∈ Finset.powersetCard k S, color ⟨T, Finset.mem_powersetCard.mpr
+    ⟨Finset.Subset.trans (Finset.mem_powersetCard.mp T.2).1 (Finset.subset_univ _),
+     (Finset.mem_powersetCard.mp T.2).2⟩⟩ = col
+
+/-- **OQ-04: Hypergraph Ramsey theorem**
+    For any k (uniformity), c (colors), m (clique size), there exists N
+    such that any c-coloring of k-subsets of [N] contains a monochromatic
+    m-clique (all k-subsets monochromatic). -/
+def hypergraph_ramsey_conjecture : Prop :=
+  ∀ (k c m : ℕ), k ≥ 1 → c ≥ 1 → m ≥ k →
+    ∃ N : ℕ, N ≥ m ∧ ∀ (color : HypergraphColoring N k c),
+      ∃ (S : Finset (Fin N)) (col : Fin c),
+        S.card ≥ m ∧ IsMonochromaticHypergraph color S col
+
+/-- The k=2 case recovers the graph Ramsey theorem. -/
+-- The connection between hypergraph_ramsey_conjecture at k=2
+-- and ramsey_theorem/multicolor_ramsey_exists is a non-trivial
+-- translation between the edge-coloring and subset-coloring formulations.
+
 end RamseysTheorem
