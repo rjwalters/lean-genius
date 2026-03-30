@@ -21,7 +21,7 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "mul_geom_sum",
@@ -49,12 +49,14 @@
       "GL_n-flag variety structural relation (proved)",
       "Partial flag variety definition and motivic class factorization",
       "Extension conjecture: maps to partial flags give parabolic \u00d7 affine classes",
-      "Gaussian binomial identity statement: [Gr(d,n)] \u00b7 [d]! \u00b7 [n-d]! = [n]!"
+      "Gaussian binomial identity (proved): [Gr(d,n)] \u00b7 [d]! \u00b7 [n-d]! = [n]!",
+      "Grassmannian duality (proved): [Gr(d,n)] = [Gr(n-d,n)]",
+      "Grassmannian class for lines (proved): [Gr(1,n)] = [n]_L"
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 3,
-    "lineCount": 340,
-    "assumptions": "3 axiom(s): motivicClassPartialFlagMaps, partial_flag_extension (conjectured), grassmannian_maps_degree_1 (known but deep). 3 sorry(s): grassmannianClass_duality, grassmannianClass_lines, gaussian_binomial_identity (algebraic identities needing induction).",
+    "axiomCount": 2,
+    "lineCount": 635,
+    "assumptions": "2 axioms (motivicClassPartialFlagMaps, partial_flag_extension). 0 sorries. Previously 3 sorry identities now fully proved.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -114,10 +116,8 @@
   },
   "conclusion": {
     "summary": "We formalize the extension question for Bryan et al.'s motivic class theorem to partial flag varieties. The key proved results are: q-factorials equal flag variety classes, GL_n decomposes via q-factorials, and Grassmannian classes satisfy the q-Pascal identity.",
-    "implications": "The extension conjecture for partial flags with parabolic subgroups is stated formally. Three sorries remain for algebraic identities that require careful induction.",
+    "implications": "The extension conjecture for partial flags with parabolic subgroups is stated formally. All algebraic identity sorries have been proved, including Grassmannian duality, Grassmannian class for lines, and the Gaussian binomial identity.",
     "openQuestions": [
-      "Prove Grassmannian duality [Gr(d,n)] = [Gr(n-d,n)] by induction on the q-Pascal identity",
-      "Prove the Gaussian binomial identity [Gr(d,n)] \u00b7 [d]! \u00b7 [n-d]! = [n]!",
       "Verify the extension conjecture for Grassmannians (d=1 case: maps to projective space)",
       "Connect to positroid varieties and the work of Galashin-Karp-Lam on amplituhedra"
     ]
