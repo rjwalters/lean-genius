@@ -1,0 +1,73 @@
+{
+  "id": "erdos-65-oq-03",
+  "title": "Erdős #65 OQ3: Liu-Montgomery Sharp Cycle Length Constant",
+  "slug": "erdos-65-oq-03",
+  "description": "The sharp constant in the GKS theorem is 1/2: for graphs with n vertices and kn edges, sum of reciprocals of cycle lengths >= (1/2 - o(1)) log k. Optimal, achieved by K_{n,n}.",
+  "meta": {
+    "author": "Hong Liu, Richard Montgomery, Gyárfás, Komlós, Szemerédi",
+    "sourceUrl": "https://erdosproblems.com/65",
+    "date": "1984-2023",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos65OQ03.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "cycle-lengths",
+      "sharp-constants"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 65,
+    "erdosUrl": "https://erdosproblems.com/65",
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-03-30",
+    "axiomCount": 1,
+    "lineCount": 195,
+    "assumptions": "1 axiom (Liu-Montgomery sharp bound) and 3 sorries (harmonic sum bounds, optimality)."
+  },
+  "overview": {
+    "historicalContext": "The Gyarfas-Komlos-Szemeredi theorem (1984) proved that Sigma 1/a_i >= c log k for dense graphs. Liu and Montgomery (2023) determined the sharp constant c = 1/2, matching the bound achieved by complete bipartite graphs.",
+    "problemStatement": "Formalize the Liu-Montgomery sharp constant 1/2 in the GKS cycle length theorem.",
+    "text": "Sharp constant for cycle length reciprocal sums in dense graphs.",
+    "proofStrategy": "Axiomatize the Liu-Montgomery bound. Express bipartite cycle structure via harmonic numbers. Show K_{n,n} achieves the asymptotic constant 1/2.",
+    "keyInsights": [
+      "Complete bipartite K_{r,s} has cycle lengths {4,6,...,2 min(r,s)} - all even",
+      "The bipartite reciprocal sum is (1/2)(H_{min(r,s)} - 1) via harmonic numbers",
+      "The constant 1/2 cannot be improved because K_{n,n} achieves it"
+    ],
+    "prerequisites": [
+      "Simple graph theory (Mathlib SimpleGraph)",
+      "Harmonic numbers and their logarithmic bounds"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "Formalizes the Liu-Montgomery sharp GKS constant. 1 axiom, 3 sorries (routine analysis).",
+    "openQuestions": [
+      "Prove the harmonic sum bounds from Mathlib",
+      "Construct K_{n,n} explicitly to show optimality"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-65",
+      "relationship": "extends",
+      "description": "Sharp constant for the main GKS theorem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "Erdos65OQ03",
+    "lineCount": 195,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 9
+  }
+}
