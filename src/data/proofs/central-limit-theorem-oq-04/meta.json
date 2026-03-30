@@ -47,9 +47,9 @@
       "Structural comparison theorems for classical vs free vs boolean CLT"
     ],
     "historicalContext": "Voiculescu introduced free probability in 1985 to study von Neumann algebras of free groups. The Free CLT \u2014 that the semicircle distribution is the universal limit under free convolution \u2014 was the founding result. Speicher (1990) developed the combinatorial theory via non-crossing partitions, and Muraki (2003) classified all five universal independences, each with its own CLT and limit law.",
-    "axiomCount": 12,
-    "lineCount": 629,
-    "assumptions": "12 axioms (free probability not in Mathlib). Key axioms: freeCumulant, freeConv (monoid structure), Rtransform, semicircle properties, free_clt. dilate now defined concretely via moment scaling. booleanCumulant removed (unused).",
+    "axiomCount": 9,
+    "lineCount": 649,
+    "assumptions": "9 axioms (free probability not in Mathlib). Core axioms: freeCumulant (3), freeConv + linearization + identity (3), cumulant_determines_distribution, semicircle_cumulant_higher, free_clt. PROVED: freeConv_comm, freeConv_assoc (from cumulant determinism), Rtransform_additive (from cumulant linearity). Rtransform defined as coefficient sequence.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -83,15 +83,15 @@
       "summary": "Axiomatizes free convolution $\\boxplus$ as a commutative monoid with $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$. Proves `freeConvPow_add` ($\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$) and `freeConvPow_cumulant` ($\\kappa_k(\\mu^{\\boxplus n}) = n \\kappa_k(\\mu)$) by induction.",
       "startLine": 171,
       "endLine": 259,
-      "mathContext": "Axiomatizes free convolution $\\boxplus$ as a commutative monoid with $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$. Proves `freeConvPow_add` ($\\mu^{\\boxplus(m+n)} = \\mu^{\\boxplus m} \\boxplus \\mu^{\\boxplus n}$) and `freeConvPow_cumulant` ($\\kappa_k(\\mu^{\\boxplus n}) = n \\kappa_k(\\mu)$) by induction."
+      "mathContext": "Axiomatizes free convolution $\\boxplus$ with cumulant linearity $\\kappa_n(\\mu \\boxplus \\nu) = \\kappa_n(\\mu) + \\kappa_n(\\nu)$ and cumulant determinism. PROVES commutativity and associativity from these axioms. Proves `freeConvPow_add` and `freeConvPow_cumulant` ($\\kappa_k(\\mu^{\\boxplus n}) = n \\kappa_k(\\mu)$) by induction."
     },
     {
       "id": "r-transform",
       "title": "The R-Transform",
-      "summary": "Axiomatizes the R-transform as the generating function of free cumulants: $R_\\mu(z) = \\sum \\kappa_n z^{n-1}$. Proves `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus n}} = n \\cdot R_\\mu$) by induction, paralleling the `freeConvPow_cumulant` proof.",
-      "startLine": 260,
-      "endLine": 305,
-      "mathContext": "Axiomatizes the R-transform as the generating function of free cumulants: $R_\\mu(z) = \\sum \\kappa_n z^{n-1}$. Proves `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus n}} = n \\cdot R_\\mu$) by induction, paralleling the `freeConvPow_cumulant` proof."
+      "summary": "DEFINES the R-transform as the free cumulant coefficient sequence: $(R_\\mu)_n = \\kappa_{n+1}(\\mu)$. PROVES additivity $R_{\\mu \\boxplus \\nu} = R_\\mu + R_\\nu$ from cumulant linearity, and `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus m}} = m \\cdot R_\\mu$) from `freeConvPow_cumulant`. No axioms in this section.",
+      "startLine": 273,
+      "endLine": 314,
+      "mathContext": "DEFINES the R-transform as the free cumulant coefficient sequence: $(R_\\mu)_n = \\kappa_{n+1}(\\mu)$. PROVES additivity $R_{\\mu \\boxplus \\nu} = R_\\mu + R_\\nu$ from cumulant linearity, and `Rtransform_freeConvPow` ($R_{\\mu^{\\boxplus m}} = m \\cdot R_\\mu$) from `freeConvPow_cumulant`. No axioms in this section."
     },
     {
       "id": "semicircle",
@@ -177,9 +177,9 @@
       "Filter"
     ],
     "namespace": "FreeCLT",
-    "lineCount": 629,
-    "axiomCount": 12,
-    "theoremCount": 18,
+    "lineCount": 649,
+    "axiomCount": 9,
+    "theoremCount": 22,
     "definitionCount": 9
   },
   "references": [

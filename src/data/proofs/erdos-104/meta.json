@@ -7,7 +7,7 @@
     "author": "Erdős (1975)",
     "sourceUrl": "https://erdosproblems.com/104",
     "date": "1975",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos104Problem.lean",
     "tags": [
       "erdos",
@@ -16,15 +16,15 @@
       "unit-circles",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 104,
     "erdosUrl": "https://erdosproblems.com/104",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100",
-    "axiomCount": 10,
+    "axiomCount": 0,
     "lineCount": 330,
-    "assumptions": "10 axiom(s) and 0 sorries remain.(s). two_points_no_circle proved from triangle inequality (was axiom). two_points_one_circle proved via parallelogram law (was axiom). strong_implies_weak proved (was sorry). erdos104WeakConjecture definition corrected to properly formalize o(n²). See the Lean source for details.",
+    "assumptions": "0 axioms, 0 sorries. All geometric lemmas fully proved: two_points_no_circle (triangle inequality), two_points_one_circle (parallelogram law uniqueness), strong_implies_weak, quadratic_at_most_two_roots. The main conjecture O(n^{3/2}) remains open.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -144,8 +144,8 @@
     ],
     "namespace": null,
     "lineCount": 355,
-    "axiomCount": 10,
-    "theoremCount": 3,
+    "axiomCount": 0,
+    "theoremCount": 4,
     "definitionCount": 12
   },
   "references": [
