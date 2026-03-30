@@ -29,6 +29,8 @@ References:
 
 import Mathlib.Data.Real.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Measure.Prod
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.Basic
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -183,21 +185,39 @@ These decompose the measure-theoretic components into clean, targeted statements
 Lebesgue measure scales as |det|⁻¹ under invertible linear maps; here det = 4. -/
 private lemma volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
     volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0 := by
-  -- volume(T⁻¹(N)) = |det T|⁻¹ · volume(N) = (1/4) · 0 = 0
-  -- Needs: MeasureTheory.addHaar_preimage_smul or Measure.map_linearEquiv
-  sorry
+  -- The map (x,y) ↦ (2x,2y) = (2 : ℝ) • (x,y) is scalar multiplication.
+  -- Preimage under (2 • ·) = (2⁻¹) • N. By addHaar scaling, volume((2⁻¹) • N) ∝ volume(N) = 0.
+  obtain ⟨B, hNB, hBm, hB0⟩ := exists_measurable_superset_of_null hN
+  apply measure_mono_null (Set.preimage_mono hNB)
+  -- Show the map is (2 : ℝ) • · and use addHaar scaling
+  have heq : (fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' B =
+      ((2 : ℝ) • ·) ⁻¹' B := by
+    ext ⟨x, y⟩; simp [Prod.smul_mk, smul_eq_mul]
+  rw [heq, Set.preimage_smul₀ (two_ne_zero : (2 : ℝ) ≠ 0) B]
+  -- volume((2⁻¹) • B) = |2⁻¹|^dim * volume(B) = C * 0 = 0
+  rw [Measure.addHaar_smul volume (2⁻¹ : ℝ) B, hB0, mul_zero]
 
 /-- Preimage of a 1D null set under first projection is null in ℝ².
 S × ℝ has volume volume(S) · volume(ℝ) = 0 · ∞ = 0. -/
 private lemma volume_preimage_fst_null {S : Set ℝ} (hS : volume S = 0) :
     volume (Prod.fst ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
-  -- Needs: Measure.prod_prod, volume_eq_prod, and zero_mul in ENNReal
-  sorry
+  -- fst⁻¹'(S) = S ×ˢ univ. Find measurable B ⊇ S with volume(B) = 0.
+  obtain ⟨B, hSB, hBm, hB0⟩ := exists_measurable_superset_of_null hS
+  apply measure_mono_null (Set.preimage_mono hSB)
+  -- volume(fst⁻¹'(B)) = volume(B ×ˢ univ) = volume(B) · volume(univ) = 0 · ⊤ = 0
+  have : (Prod.fst ⁻¹' B : Set (ℝ × ℝ)) = B ×ˢ Set.univ := by
+    ext ⟨x, y⟩; simp [Set.mem_prod, Set.mem_preimage]
+  rw [this, Measure.prod_prod hBm MeasurableSet.univ, hB0, zero_mul]
 
 /-- Preimage of a 1D null set under second projection is null in ℝ². -/
 private lemma volume_preimage_snd_null {S : Set ℝ} (hS : volume S = 0) :
     volume (Prod.snd ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
-  sorry
+  -- snd⁻¹'(S) = univ ×ˢ S. Same approach as fst via measurable superset.
+  obtain ⟨B, hSB, hBm, hB0⟩ := exists_measurable_superset_of_null hS
+  apply measure_mono_null (Set.preimage_mono hSB)
+  have : (Prod.snd ⁻¹' B : Set (ℝ × ℝ)) = Set.univ ×ˢ B := by
+    ext ⟨x, y⟩; simp [Set.mem_prod, Set.mem_preimage]
+  rw [this, Measure.prod_prod MeasurableSet.univ hBm, hB0, mul_zero]
 
 /-- From almost Jensen, f(2z) = 2f(z) - f(0) for a.e. z.
 
