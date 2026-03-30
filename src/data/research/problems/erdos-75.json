@@ -1,6 +1,6 @@
 {
   "slug": "erdos-75",
-  "title": "Erdős #75",
+  "title": "Erd\u0151s #75",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
@@ -33,7 +33,7 @@
     "builtItems": [
       "Proved high_girth_cochromatic (trivially True)",
       "Converted 10 unused axiom propositions to def Prop in Erdos759Problem.lean",
-      "min_degree_le_avg: PROVED (was axiom) — Finset.sum_le_sum + Nat.cast_le",
+      "min_degree_le_avg: PROVED (was axiom) \u2014 Finset.sum_le_sum + Nat.cast_le",
       "sudakov_verstrate_constant: DEFINED as 1/500 (was axiom)",
       "sudakov_verstrate_constant_pos: PROVED by norm_num",
       "sudakov_verstrate_constant_is: PROVED by norm_num",
@@ -42,26 +42,26 @@
       "Graph.Colorable definition replaces implicit coloring notion",
       "chromaticNum definition (forall k < n, not Colorable k) replaces axiom chromaticNum",
       "chromaticNum_mono theorem PROVED (was axiom)",
-      "FiniteSubgraph structure (injective Fin n → V) replaces axiom FiniteSubgraph",
-      "IsIndepSet definition (pairwise non-adjacency) — new infrastructure",
+      "FiniteSubgraph structure (injective Fin n \u2192 V) replaces axiom FiniteSubgraph",
+      "IsIndepSet definition (pairwise non-adjacency) \u2014 new infrastructure",
       "indepNumber noncomputable def via Finset.sup replaces axiom indepNumber",
-      "indepNumber_le theorem PROVED (was axiom) — via Finset.card_le_card + Finset.subset_univ",
+      "indepNumber_le theorem PROVED (was axiom) \u2014 via Finset.card_le_card + Finset.subset_univ",
       "finite_chromatic_independence axiom corrected to use Colorable hypothesis (was chromaticNum)"
     ],
     "insights": [
-      "Erdos759Problem.lean: 11 axioms eliminated (17→6). 10 unused props→def Prop, high_girth_cochromatic proved (was trivially True)",
+      "Erdos759Problem.lean: 11 axioms eliminated (17\u21926). 10 unused props\u2192def Prop, high_girth_cochromatic proved (was trivially True)",
       "Remaining 6 axioms: cochromaticNumber (function), chromaticNumber (function), maxCochromaticNumber (function), heawood_number (function), gimbel_lower_bound (deep result), gimbel_thomassen_theorem (deep result)",
-      "min_degree_le_avg: provable from definitions — inf of degrees ≤ average via Finset.sum_le_sum pointwise",
+      "min_degree_le_avg: provable from definitions \u2014 inf of degrees \u2264 average via Finset.sum_le_sum pointwise",
       "sudakov_verstrate_constant: was 3 axioms (existence + positivity + bound), replaced with explicit def 1/500 + norm_num proofs",
-      "Erdos75Problem.lean: 7 axioms eliminated (9→3). Replaced abstract Graph/chromaticNum/FiniteSubgraph/indepNumber axioms with concrete Lean 4 structures and proved theorems",
+      "Erdos75Problem.lean: 7 axioms eliminated (9\u21923). Replaced abstract Graph/chromaticNum/FiniteSubgraph/indepNumber axioms with concrete Lean 4 structures and proved theorems",
       "Remaining 3 axioms: finite_chromatic_independence (pigeonhole, provable but non-trivial), ErdosProblem75 (open conjecture), ErdosProblem75_strong (open conjecture)",
       "chromaticNum_mono proved: monotonicity follows from definition via lt_of_lt_of_le",
-      "indepNumber_le proved: independence number ≤ n via Finset.card_le_card and Finset.subset_univ",
-      "indepNumber defined via Finset.sup over range(n+1) with Classical decidability — avoids sSup/ConditionallyCompleteLattice dependency"
+      "indepNumber_le proved: independence number \u2264 n via Finset.card_le_card and Finset.subset_univ",
+      "indepNumber defined via Finset.sup over range(n+1) with Classical decidability \u2014 avoids sSup/ConditionallyCompleteLattice dependency"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #75 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a graph of chromatic number $\\aleph_1$ such that for all $\\epsilon>0$ if $n$ is sufficiently large and $H$ is a subgraph on $n$ vertices then $H$ contains an independent set of size $>n^{1-\\epsilon}$?\n\n\n\nConjectured by Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}. In \\cite{Er95d} Erd\\H{o}s suggests this may even be true with an independent set of size $\\gg n$.\n\nSee also [750].\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Er95d] Erd\\H{o}s, Paul, On some problems in combinatorial set theory. Publ. Inst. Math. (Beograd) (N.S.) (1995), 61-65.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #750\n- Problem #74\n- Problem #76\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- EHS82\n- Er95\n- Er95d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erd\u0151s #75 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a graph of chromatic number $\\aleph_1$ such that for all $\\epsilon>0$ if $n$ is sufficiently large and $H$ is a subgraph on $n$ vertices then $H$ contains an independent set of size $>n^{1-\\epsilon}$?\n\n\n\nConjectured by Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}. In \\cite{Er95d} Erd\\H{o}s suggests this may even be true with an independent set of size $\\gg n$.\n\nSee also [750].\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Er95d] Erd\\H{o}s, Paul, On some problems in combinatorial set theory. Publ. Inst. Math. (Beograd) (N.S.) (1995), 61-65.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #750\n- Problem #74\n- Problem #76\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- EHS82\n- Er95\n- Er95d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -126,11 +126,11 @@
     {
       "path": "Proofs/Erdos753Problem.lean",
       "filename": "Erdos753Problem.lean",
-      "lineCount": 311,
+      "lineCount": 262,
       "theoremCount": 3,
       "axiomCount": 2,
       "defCount": 6,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos753Problem.lean"
     },
@@ -148,11 +148,11 @@
     {
       "path": "Proofs/Erdos755Problem.lean",
       "filename": "Erdos755Problem.lean",
-      "lineCount": 282,
-      "theoremCount": 5,
-      "axiomCount": 5,
+      "lineCount": 281,
+      "theoremCount": 3,
+      "axiomCount": 7,
       "defCount": 7,
-      "sorryCount": 1,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos755Problem.lean"
     },
@@ -163,18 +163,18 @@
       "theoremCount": 8,
       "axiomCount": 7,
       "defCount": 15,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos756Problem.lean"
     },
     {
       "path": "Proofs/Erdos757Problem.lean",
       "filename": "Erdos757Problem.lean",
-      "lineCount": 244,
+      "lineCount": 192,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos757Problem.lean"
     },
@@ -203,10 +203,10 @@
     {
       "path": "Proofs/Erdos75Problem.lean",
       "filename": "Erdos75Problem.lean",
-      "lineCount": 161,
-      "theoremCount": 6,
-      "axiomCount": 3,
-      "defCount": 7,
+      "lineCount": 109,
+      "theoremCount": 3,
+      "axiomCount": 9,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos75Problem.lean"

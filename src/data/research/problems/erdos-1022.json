@@ -34,13 +34,13 @@
       "Erdos1022Problem.lean: HasPropertyB def, AllSizeAtLeast def, IsSparse def",
       "erdos_1022_conjecture axiom",
       "hasPropertyB_empty, hasPropertyB_subset, sparse_zero_forces_empty",
-      "Created Proofs/Erdos1022OQ01.lean: k-colorability with monotonicity and B↔B_2"
+      "Created Proofs/Erdos1022OQ01.lean: k-colorability with monotonicity and B\u2194B_2"
     ],
     "insights": [
-      "Property B = 2-colorability of hypergraphs: ∃ S such that every edge meets both S and S^c",
-      "Sparsity condition: for every X, at most c·|X| edges are subsets of X",
-      "Conjecture: c(t) → ∞ exists such that c(t)-sparse families of sets of size ≥ t have Property B",
-      "Known: Lovász (1968) proved c(2) = 1 works",
+      "Property B = 2-colorability of hypergraphs: \u2203 S such that every edge meets both S and S^c",
+      "Sparsity condition: for every X, at most c\u00b7|X| edges are subsets of X",
+      "Conjecture: c(t) \u2192 \u221e exists such that c(t)-sparse families of sets of size \u2265 t have Property B",
+      "Known: Lov\u00e1sz (1968) proved c(2) = 1 works",
       "Follow-up OQ-01: Property B_k (k-colorability) generalization (10 theorems, 0 axioms)"
     ],
     "mathlibGaps": [],
@@ -56,8 +56,7 @@
     "erdos-1",
     "erdos-10",
     "erdos-102",
-    "erdos-1022",
-    "erdos-1022-oq-01"
+    "erdos-1022"
   ],
   "references": {
     "papers": [],
@@ -67,23 +66,12 @@
   "started": "2026-03-28T10:58:21-07:00",
   "leanFiles": [
     {
-      "path": "Proofs/Erdos1022OQ01.lean",
-      "filename": "Erdos1022OQ01.lean",
-      "lineCount": 165,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022OQ01.lean"
-    },
-    {
       "path": "Proofs/Erdos1022Problem.lean",
       "filename": "Erdos1022Problem.lean",
-      "lineCount": 419,
+      "lineCount": 322,
       "theoremCount": 22,
-      "axiomCount": 2,
-      "defCount": 6,
+      "axiomCount": 3,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"

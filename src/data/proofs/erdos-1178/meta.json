@@ -52,9 +52,9 @@
       "conjecture_implies_dense_free, conjecture_implies_subquadratic: implications",
       "Connection theorems linking to Problems #716 and #1076"
     ],
-    "axiomCount": 5,
-    "lineCount": 261,
-    "assumptions": "5 axioms (down from 7): sarkozy_selkow_result (SS 2005), bes_lower_bound (BES 1973), cgls_upper_r3 (CGLS 2023), solymosi_d3_10, erdos_1178 (main conjecture). dr_spec and dr_minimal proved from sInf properties + sarkozy_selkow_result. sarkozy_selkow_upper proved from sarkozy_selkow_result. 0 sorries."
+    "axiomCount": 7,
+    "lineCount": 243,
+    "assumptions": "7 axioms: dr_spec, dr_minimal, bes_lower_bound (BES 1973), sarkozy_selkow_upper (SS 2005), cgls_upper_r3 (CGLS 2023), solymosi_d3_10, erdos_1178 (main conjecture). exr and dr are noncomputable defs, not axioms. 0 sorries. ruzsa_szemeredi_d3_3 and efr_e3 proved from axioms."
   },
   "overview": {
     "historicalContext": "Brown, Erdős, and Sós (1973) initiated the study of extremal numbers for r-uniform hypergraphs avoiding configurations with few vertices relative to edges. They introduced the function d_r(e) — the threshold number of vertices above which the extremal number becomes subquadratic — and conjectured d_r(e) = (r-2)e + 3. They proved the lower bound. Ruzsa and Szemerédi (1978) resolved the case r=3, e=3 (the famous (6,3)-problem), connecting it to the Triangle Removal Lemma and Szemerédi's regularity lemma. Erdős-Frankl-Rödl (1986) proved the full e=3 case. Recent work by Conlon, Gishboliner, Levanzov, and Shapira (2023) brought the r=3 upper bound close to the conjectured value.",
@@ -258,8 +258,8 @@
       "Filter"
     ],
     "namespace": "Erdos1178",
-    "lineCount": 261,
-    "axiomCount": 5,
+    "lineCount": 243,
+    "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 10
   }

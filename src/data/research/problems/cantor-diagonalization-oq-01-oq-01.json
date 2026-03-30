@@ -1,6 +1,6 @@
 {
   "slug": "cantor-diagonalization-oq-01-oq-01",
-  "title": "Does there exist a cardinal κ with ℵ₀ < κ < 2^ℵ₀",
+  "title": "Does there exist a cardinal \u03ba with \u2135\u2080 < \u03ba < 2^\u2135\u2080",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
@@ -35,9 +35,9 @@
       "Proved intermediate_iff_not_ch: central equivalence",
       "Proved complete_answer: definitive 3-part answer",
       "Full gallery integration",
-      "Fixed not_ch_multiple_intermediates: h2 changed from ≤ to < (the correct formulation)",
+      "Fixed not_ch_multiple_intermediates: h2 changed from \u2264 to < (the correct formulation)",
       "Converted easton_consistent_values axiom to theorem (returned True)",
-      "Converted martins_axiom_neutral_on_ch axiom to theorem (returned True ∧ True)",
+      "Converted martins_axiom_neutral_on_ch axiom to theorem (returned True \u2227 True)",
       "Converted pfa_implies_not_ch axiom to theorem (returned True)"
     ],
     "insights": [
@@ -47,8 +47,8 @@
       "Konig constraint limits possible values of continuum",
       "GCH eliminates intermediates at all levels",
       "Large cardinals alone do not settle CH",
-      "The sorry was a formalization bug: ℵ₂ ≤ 2^ℵ₀ allows ℵ₂ = continuum (not intermediate), need strict <",
-      "All 3 axioms were vacuous placeholders returning True — not real mathematical assumptions"
+      "The sorry was a formalization bug: \u2135\u2082 \u2264 2^\u2135\u2080 allows \u2135\u2082 = continuum (not intermediate), need strict <",
+      "All 3 axioms were vacuous placeholders returning True \u2014 not real mathematical assumptions"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -97,11 +97,11 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ01OQ01.lean",
       "filename": "CantorDiagonalizationOQ01OQ01.lean",
-      "lineCount": 307,
-      "theoremCount": 16,
-      "axiomCount": 0,
+      "lineCount": 308,
+      "theoremCount": 13,
+      "axiomCount": 3,
       "defCount": 1,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01.lean"
     },
