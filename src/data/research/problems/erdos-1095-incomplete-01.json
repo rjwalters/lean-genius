@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed soundness bug (inconsistent axioms), eliminated all 3 sorries, proved g(2)=6, g(3)=7, g(4)=7, g(5)=23. Now: 0 sorries, 9 axioms (was 3 sorries, 10 axioms).",
+    "progressSummary": "COMPLETED: Proved gFunc_exists theorem, eliminating the sole axiom. File now has 0 axioms, 0 sorries. Used Kummer theorem (carry-free base-p arithmetic) with explicit witness n=2P-1 where P is primorial product. Status upgraded from axiomatized to verified.",
     "builtItems": [
       "Proved g_two : g 2 = 6",
       "Proved g_three : g 3 = 7",
       "Proved g_four : g 4 = 7",
       "Proved g_five : g 5 = 23",
       "Proved g_ge_k_plus_two",
-      "Proved binomIsKRough_23_5 (helper)"
+      "Proved binomIsKRough_23_5 (helper)",
+      "Proved gFunc_exists theorem (was axiom) — 0 axioms now",
+      "Defined smoothProd, mod_pred_of_dvd_succ, mod_ge_of_dvd_succ_pow, carry_free_of_mod_ge helper lemmas"
     ],
     "insights": [
       "Core issue: g(k) definition uses sorry in Nat.find existence proof",
@@ -51,7 +53,10 @@
       "Correct values: g(2)=6, g(3)=7, g(4)=7, g(5)=23 — old axioms g(2)=3, g(4)=23 etc. were wrong",
       "Witness k!+k+1 was wrong: C(29,4) has factor 3<=4",
       "Refactored to axiomatized g: 4 specification axioms replace buggy Nat.find definition",
-      "g(5)=23 proved by ruling out n=7..22 via interval_cases + prime factor checks"
+      "g(5)=23 proved by ruling out n=7..22 via interval_cases + prime factor checks",
+      "Existence of g(k) proved via carry-free base-p construction: for each prime p<=k, the witness n=2P-1 has all base-p digits dominating those of k",
+      "Key lemma: if p^a|(n+1) with p^a>k, then n%p^i >= k%p^i for all i, giving zero carries by Kummer",
+      "Imported KummerTheoremOQ03 for choose_coprime_of_no_carries; no new axioms needed"
     ],
     "mathlibGaps": [],
     "nextSteps": [
