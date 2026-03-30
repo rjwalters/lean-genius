@@ -1,0 +1,147 @@
+{
+  "id": "lagrange-theorem-oq-05",
+  "title": "Burnside Counting Lemma from Orbit-Stabilizer",
+  "slug": "lagrange-theorem-oq-05",
+  "description": "The Burnside counting lemma (Cauchy-Frobenius) follows from the orbit-stabilizer theorem, which generalizes Lagrange's theorem. The chain: Lagrange -> Orbit-Stabilizer -> Burnside.",
+  "meta": {
+    "author": "Burnside, Cauchy, Frobenius; Lagrange",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ05.lean",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "combinatorics",
+      "burnside-lemma",
+      "orbit-stabilizer",
+      "classic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Subgroup.card_subgroup_dvd_card",
+        "description": "Lagrange's theorem",
+        "module": "Mathlib.GroupTheory.Lagrange"
+      },
+      {
+        "theorem": "MulAction.card_orbit_mul_card_stabilizer_eq_card_group",
+        "description": "Orbit-stabilizer theorem",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+        "description": "Burnside counting lemma",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      }
+    ],
+    "originalContributions": [
+      "lagrange_divides: Lagrange's theorem (subgroup order divides group order)",
+      "lagrange_index: Lagrange in index form |G| = [G:H] * |H|",
+      "orbit_stabilizer: orbit-stabilizer theorem |Orb(x)| * |Stab(x)| = |G|",
+      "orbit_equiv_cosets: structural bijection Orb(x) ~ G/Stab(x)",
+      "burnside_lemma: Cauchy-Frobenius counting formula",
+      "burnside_divides: |G| divides Sum |Fix(g)|",
+      "chain_lagrange_to_burnside: explicit chain connecting all three results"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries.",
+    "lineCount": 113
+  },
+  "overview": {
+    "historicalContext": "Lagrange's theorem (1771) that subgroup orders divide group orders is foundational. The orbit-stabilizer theorem generalizes it to group actions. Burnside's lemma (actually due to Cauchy and Frobenius) uses orbit-stabilizer to count orbits via fixed points.",
+    "problemStatement": "Can the Burnside counting lemma be formalized as a consequence of the orbit-stabilizer theorem, which itself generalizes Lagrange?\n\n**Answer: Yes.** All three results are in Mathlib and the chain is formalized explicitly.",
+    "text": "Burnside's counting lemma follows from orbit-stabilizer, which generalizes Lagrange's theorem.",
+    "proofStrategy": "Wrap Mathlib's group action machinery to show the explicit chain: Lagrange -> Orbit-Stabilizer -> Burnside Counting Lemma.",
+    "keyInsights": [
+      "**The Chain**: Lagrange (subgroup divisibility) -> Orbit-Stabilizer (|Orb|*|Stab|=|G|) -> Burnside (|orbits| = avg |Fix|)",
+      "**Structural Core**: The bijection Sigma_{g} Fix(g) ~ orbits x G underlies Burnside's lemma",
+      "**Orbit-Stabilizer as Lagrange**: orbit-stabilizer IS Lagrange applied to the stabilizer subgroup",
+      "**Integer Form**: Burnside says Sum |Fix(g)| = |orbits| * |G|, avoiding division entirely"
+    ],
+    "prerequisites": [
+      "Group theory (subgroups, cosets)",
+      "Group actions (orbits, stabilizers, fixed points)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lagrange",
+      "title": "Lagrange's Theorem",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Lagrange's theorem in two forms: divisibility and index.",
+      "mathContext": "$|H| \\mid |G|$ for $H \\leq G$, and $|G| = [G:H] \\cdot |H|$."
+    },
+    {
+      "id": "orbit-stabilizer",
+      "title": "Orbit-Stabilizer Theorem",
+      "startLine": 40,
+      "endLine": 74,
+      "summary": "Orbit-stabilizer theorem and the bijection Orb(x) ~ G/Stab(x).",
+      "mathContext": "$|\\text{Orb}(x)| \\cdot |\\text{Stab}(x)| = |G|$ via the bijection $\\text{Orb}(x) \\simeq G / \\text{Stab}(x)$."
+    },
+    {
+      "id": "burnside",
+      "title": "Burnside's Counting Lemma",
+      "startLine": 76,
+      "endLine": 102,
+      "summary": "Burnside's lemma in integer and divisibility forms.",
+      "mathContext": "$\\sum_{g \\in G} |\\text{Fix}(g)| = |X/G| \\cdot |G|$, hence $|G| \\mid \\sum |\\text{Fix}(g)|$."
+    },
+    {
+      "id": "chain",
+      "title": "Chain of Generalizations",
+      "startLine": 104,
+      "endLine": 118,
+      "summary": "Explicit chain connecting Lagrange -> Orbit-Stabilizer -> Burnside.",
+      "mathContext": "The complete chain of generalizations is formalized as a single progression."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Reflexions sur la resolution algebrique des equations",
+      "year": "1771",
+      "note": "Origin of Lagrange's theorem on subgroup orders"
+    },
+    {
+      "authors": "Burnside, William",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "note": "Contains the counting lemma (attributed to Cauchy and Frobenius)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Extends Lagrange's theorem through orbit-stabilizer to Burnside's counting lemma"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Burnside counting lemma is formalized as a direct consequence of the orbit-stabilizer theorem, which itself generalizes Lagrange's theorem. The chain Lagrange -> Orbit-Stabilizer -> Burnside is made explicit.",
+    "implications": "Shows how a basic divisibility result (Lagrange) underpins powerful combinatorial counting tools (Burnside) through the intermediate structural result (orbit-stabilizer).",
+    "openQuestions": [
+      "Can Polya enumeration theorem be formalized as a further generalization of Burnside's lemma?",
+      "How does the weight version of Burnside's lemma connect to representation theory?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.GroupAction.Quotient",
+      "Mathlib.GroupTheory.Lagrange"
+    ],
+    "opens": [
+      "MulAction",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "BurnsideLemma",
+    "lineCount": 113,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1
+  }
+}

@@ -396,4 +396,87 @@ theorem erdos_884_statement : ErdosConjecture884 ↔
     ∃ C : ℝ, C > 0 ∧ ∀ n > 1, allPairsSum n ≤ C * (1 + consecutivePairsSum n) := by
   rfl
 
+/- ## Sum-Level Bound -/
+
+/-- For n > 1, n has at least 2 divisors (1 and n). -/
+private theorem numDivisors_ge_two (n : ℕ) (hn : n > 1) : numDivisors n ≥ 2 := by
+  unfold numDivisors
+  have h1 : (1 : ℕ) ∈ n.divisors := Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
+  have hn' : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  exact Finset.one_lt_card.mpr ⟨1, h1, n, hn', by omega⟩
+
+/-- getD past the end of a ℕ list returns 0 (the default). -/
+private theorem list_getD_zero_of_ge (l : List ℕ) (k : ℕ) (h : l.length ≤ k) :
+    l.getD k 0 = 0 := by
+  induction l generalizing k with
+  | nil => simp [List.getD]
+  | cons a t ih =>
+    cases k with
+    | zero => simp at h
+    | succ k' =>
+      simp only [List.getD, List.get?]
+      exact ih (by simpa using h)
+
+/-- Out-of-bounds divisor access returns 0. -/
+private theorem divisor_eq_zero_of_ge (n k : ℕ) (hk : numDivisors n ≤ k) :
+    divisor n k = 0 := by
+  unfold divisor
+  exact list_getD_zero_of_ge _ _ (by rw [divisorList_length]; exact hk)
+
+/-- Consecutive gap at position τ(n)−1 is 0 (next divisor is out of bounds). -/
+private theorem consecutiveGap_last_eq_zero (n : ℕ) (hn : n > 1) :
+    consecutiveGap n (numDivisors n - 1) = 0 := by
+  have hτ := numDivisors_ge_two n hn
+  unfold consecutiveGap
+  rw [show numDivisors n - 1 + 1 = numDivisors n by omega]
+  rw [divisor_eq_zero_of_ge n (numDivisors n) le_rfl]
+  exact Nat.zero_sub _
+
+/-- Sum-level bound: the all-pairs sum is at most (τ(n)−1) times the consecutive-pairs sum.
+    Each 1/(dⱼ−dᵢ) ≤ 1/(d_{i+1}−dᵢ), and for each i there are at most τ−1 values of j > i.
+    This is a partial result toward Erdős 884 (which asks for an absolute constant). -/
+theorem allPairsSum_le_tau_mul_consecutive (n : ℕ) (hn : n > 1) :
+    allPairsSum n ≤ ((numDivisors n - 1 : ℕ) : ℝ) * consecutivePairsSum n := by
+  have hτ := numDivisors_ge_two n hn
+  set τ := numDivisors n with hτ_def
+  -- Step 1: Bound each pair term and convert inner sum to nsmul
+  have bound_step : allPairsSum n ≤
+      ∑ i ∈ Finset.range τ,
+        (Finset.Ioo i τ).card • ((1 : ℝ) / ↑(consecutiveGap n i)) := by
+    unfold allPairsSum
+    apply Finset.sum_le_sum; intro i _
+    rw [← Finset.sum_const]
+    apply Finset.sum_le_sum; intro j hj
+    have ⟨hij, hjτ⟩ := Finset.mem_Ioo.mp hj
+    exact reciprocal_gap_consecutive_bound n hn hij hjτ
+  -- Step 2: card(Ioo i τ) ≤ τ - 1
+  have card_bound : ∀ i, (Finset.Ioo i τ).card ≤ τ - 1 := by
+    intro i
+    have hsub : Finset.Ioo i τ ⊆ Finset.Ico 1 τ := by
+      intro j; simp only [Finset.mem_Ioo, Finset.mem_Ico]; omega
+    have hcard : (Finset.Ico 1 τ).card = τ - 1 := by
+      have := Finset.card_Ico (α := ℕ) 1 τ; omega
+    exact (Finset.card_le_card hsub).trans (le_of_eq hcard)
+  -- Step 3: Last term vanishes
+  have last_zero : (1 : ℝ) / ↑(consecutiveGap n (τ - 1)) = 0 := by
+    rw [consecutiveGap_last_eq_zero n hn, Nat.cast_zero, div_zero]
+  -- Combine via calc
+  calc allPairsSum n
+      ≤ ∑ i ∈ Finset.range τ,
+          (Finset.Ioo i τ).card • ((1 : ℝ) / ↑(consecutiveGap n i)) := bound_step
+    _ ≤ ∑ i ∈ Finset.range τ,
+          (τ - 1) • ((1 : ℝ) / ↑(consecutiveGap n i)) := by
+        apply Finset.sum_le_sum; intro i _
+        exact nsmul_le_nsmul_left (div_nonneg one_pos.le (Nat.cast_nonneg _)) (card_bound i)
+    _ = (τ - 1) • ∑ i ∈ Finset.range τ, (1 : ℝ) / ↑(consecutiveGap n i) := by
+        rw [Finset.smul_sum]
+    _ = (τ - 1) • (∑ i ∈ Finset.range (τ - 1), (1 : ℝ) / ↑(consecutiveGap n i) +
+          (1 : ℝ) / ↑(consecutiveGap n (τ - 1))) := by
+        congr 1; conv_lhs => rw [show τ = (τ - 1) + 1 by omega]
+        exact Finset.sum_range_succ _ _
+    _ = (τ - 1) • (consecutivePairsSum n + 0) := by
+        unfold consecutivePairsSum; rw [last_zero]
+    _ = (τ - 1) • consecutivePairsSum n := by rw [add_zero]
+    _ = ↑(τ - 1 : ℕ) * consecutivePairsSum n := nsmul_eq_mul _ _
+
 end Erdos884

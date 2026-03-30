@@ -85,21 +85,77 @@ noncomputable def muReal (F : Set ℂ) : ℝ :=
   (mu F).toReal
 
 /-
-## The Main Conjecture
+## The Degree-0 Bug and Corrected Definition
+
+**BUG**: The original `mu` includes degree-0 polynomials. The constant
+polynomial 1 (with degree 0, no roots) evaluates to `∏ i : Fin 0, ... = 1`,
+giving sublevel set `{z : |1| < 1} = ∅` with measure 0.
+Therefore `mu F = 0` for ALL F, making the conjecture trivially true.
+
+**FIX**: `muPosDeg` restricts the infimum to polynomials of degree ≥ 1,
+matching the standard mathematical definition (EHP 1958).
 -/
 
-/-- Is μ(F) determined by the transfinite diameter? -/
+/-- The degree-0 polynomial evaluates to 1 at every point. -/
+theorem degree_zero_eval_eq_one (p : PolynomialInF F) (hp : p.degree = 0) (z : ℂ) :
+    p.eval z = 1 := by
+  simp only [PolynomialInF.eval]
+  rw [hp]
+  simp
+
+/-- The sublevel set of a degree-0 polynomial is empty (since |1| = 1 ≥ 1). -/
+theorem degree_zero_sublevel_empty (p : PolynomialInF F) (hp : p.degree = 0) :
+    sublevelSet p = ∅ := by
+  ext z
+  simp only [sublevelSet, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  rw [degree_zero_eval_eq_one p hp z]
+  simp [map_one, not_lt.mpr (le_refl _)]
+
+/-- The sublevel measure of a degree-0 polynomial is 0. -/
+theorem degree_zero_sublevel_measure (p : PolynomialInF F) (hp : p.degree = 0) :
+    sublevelMeasure p = 0 := by
+  simp only [sublevelMeasure, degree_zero_sublevel_empty p hp, MeasureTheory.measure_empty]
+
+/-- Due to the degree-0 bug, the uncorrected `mu` is always 0.
+    This documents why `muPosDeg` is the correct definition. -/
+theorem mu_eq_zero (F : Set ℂ) : mu F = 0 := by
+  apply le_antisymm
+  · -- mu F ≤ sublevelMeasure (degree-0 poly) = 0
+    have p0 : PolynomialInF F := ⟨0, Fin.elim0, fun i => i.elim0⟩
+    calc mu F ≤ sublevelMeasure p0 := iInf_le _ p0
+      _ = 0 := degree_zero_sublevel_measure p0 rfl
+  · exact zero_le _
+
+/-- **Corrected μ(F)**: infimum over polynomials of degree ≥ 1.
+    This matches the standard mathematical definition (EHP 1958). -/
+noncomputable def muPosDeg (F : Set ℂ) : ℝ≥0∞ :=
+  ⨅ (p : PolynomialInF F) (_ : p.degree ≥ 1), sublevelMeasure p
+
+/-- muPosDeg is anti-monotone: larger root sets yield smaller measures. -/
+theorem muPosDeg_mono (F G : Set ℂ) (h : F ⊆ G) :
+    muPosDeg G ≤ muPosDeg F := by
+  unfold muPosDeg
+  apply iInf_mono'
+  intro pF
+  exact ⟨⟨pF.degree, pF.roots, fun i => h (pF.roots_in_F i)⟩, iInf_mono' fun hd => ⟨hd, le_refl _⟩⟩
+
+/-
+## The Main Conjecture (using corrected μ)
+-/
+
+/-- Is μ(F) determined by the transfinite diameter? (Using corrected μ.) -/
 def muDeterminedByDiameter : Prop :=
   ∀ F G : Set ℂ, IsClosed F → F.Infinite →
     IsClosed G → G.Infinite →
     transfiniteDiameter F = transfiniteDiameter G →
-    mu F = mu G
+    muPosDeg F = muPosDeg G
 
-/-- The specific conjecture: μ(F) = 0 when transfinite diameter ≥ 1. -/
+/-- The specific conjecture: μ(F) = 0 when transfinite diameter ≥ 1.
+    (Using corrected μ.) -/
 def diameterOneConjecture : Prop :=
   ∀ F : Set ℂ, IsClosed F → F.Infinite →
     transfiniteDiameter F ≥ 1 →
-    mu F = 0
+    muPosDeg F = 0
 
 /-- The problem is open: we neither assert nor deny the conjecture.
     (The former `axiom problem_open : ¬(P ∨ ¬P)` was removed because
@@ -216,25 +272,27 @@ theorem mu_mono (F G : Set ℂ) (h : F ⊆ G) :
   intro pF
   exact ⟨⟨pF.degree, pF.roots, fun i => h (pF.roots_in_F i)⟩, le_refl _⟩
 
-/-- For infinite F, μ(F) is achieved or approached.
+/-- For infinite F, corrected μ(F) is achieved or approached.
     Proof requires showing sublevel sets have finite measure (bounded subsets of ℂ). -/
-theorem mu_infimum (F : Set ℂ) (hF : F.Infinite) :
-    ∀ ε > 0, ∃ (p : PolynomialInF F), sublevelMeasure p < mu F + ε := by
+theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
+    ∀ ε : ℝ≥0∞, ε > 0 → ∃ (p : PolynomialInF F), p.degree ≥ 1 ∧
+      sublevelMeasure p < muPosDeg F + ε := by
   sorry
 
 /-
 ## The Open Question
 -/
 
-/-- The main question: is μ(F) = 0 when ρ(F) ≥ 1? -/
+/-- The main question: is μ(F) = 0 when ρ(F) ≥ 1? (Using corrected μ.) -/
 def erdos_1040_question : Prop := diameterOneConjecture
 
-/-- Current state: known for special cases, open in general. -/
+/-- Current state: known for special cases, open in general.
+    Uses corrected muPosDeg (degree ≥ 1 restriction). -/
 theorem erdos_1040_current_state :
     (∀ F : Set ℂ, isLineSegment F ∨ isClosedDisc F →
-      transfiniteDiameter F ≥ 1 → mu F = 0) ∧
+      transfiniteDiameter F ≥ 1 → muPosDeg F = 0) ∧
     (∀ F : Set ℂ, IsClosed F → F.Infinite →
-      transfiniteDiameter F < 1 → mu F > 0) := by
+      transfiniteDiameter F < 1 → muPosDeg F > 0) := by
   sorry
 
 /-
