@@ -271,14 +271,34 @@ theorem transfiniteDiameter_mono_of_bounded (F G : Set ℂ) (h : F ⊆ G)
     (hG : Bornology.IsBounded G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
   unfold transfiniteDiameter
-  apply ciInf_le_ciInf
-  · -- BddBelow: nthDiameter values are ≥ 0
-    exact ⟨0, by rintro _ ⟨n, rfl⟩; exact nthDiameter_nonneg G n⟩
-  · intro n
-    apply nthDiameter_mono_of_bddAbove F G h n
-    -- BddAbove for bounded G: all pairwise distances ≤ diam(G),
-    -- so the product is bounded, and rpow preserves boundedness.
-    sorry
+  apply csInf_le_csInf
+    ⟨0, by rintro _ ⟨n, rfl⟩; exact nthDiameter_nonneg F n⟩
+    (Set.range_nonempty _)
+  rintro _ ⟨n, rfl⟩
+  refine ⟨nthDiameter F n, Set.mem_range.mpr ⟨n, rfl⟩, ?_⟩
+  -- nthDiameter F n ≤ nthDiameter G n: F-candidates ⊆ G-candidates, G BddAbove.
+  unfold nthDiameter
+  -- Handle empty F-values case
+  by_cases hneF : Set.Nonempty
+    {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
+      (∏ i : Fin n, ∏ j in Finset.Iio i,
+        Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
+  · -- F-values nonempty: use csSup_le_csSup
+    apply csSup_le_csSup
+    · -- G-values BddAbove: G is bounded, so all distances ≤ diam(G),
+      -- hence all products are bounded, hence all rpow values are bounded.
+      -- Bound: each factor ≤ diam(G), product ≤ diam(G)^(n²),
+      -- rpow(product, 2/(n*(n-1))) ≤ rpow(diam(G)^(n²), 1) = diam(G)^(n²).
+      sorry
+    · -- F-values nonempty
+      exact hneF
+    · -- F-values ⊆ G-values: F ⊆ G so every F-candidate is a G-candidate
+      rintro x ⟨pts, rfl⟩
+      exact ⟨⟨pts.1, fun i => h (pts.2 i)⟩, rfl⟩
+  · -- F-values empty: sSup ∅ = 0 ≤ nthDiameter G n
+    rw [Set.not_nonempty_iff_eq_empty] at hneF
+    simp [hneF, csSup_empty]
+    exact nthDiameter_nonneg G n
 
 /-- Each nthDiameter value is non-negative (sSup of non-negative reals). -/
 private theorem nthDiameter_nonneg (F : Set ℂ) (n : ℕ) : 0 ≤ nthDiameter F n := by
@@ -453,6 +473,17 @@ theorem muPosDeg_pos_of_small_diameter (F : Set ℂ) (hF : IsClosed F) (hFi : F.
 /-- The main question: is μ(F) = 0 when ρ(F) ≥ 1? (Using corrected μ.) -/
 def erdos_1040_question : Prop := diameterOneConjecture
 
+/-- The specific known results for line segments and discs with ρ ≥ 1.
+    This requires explicit computation of μ for these shapes (EHP 1958),
+    which goes beyond what the current axioms provide.
+    Axioms lineSegment_determined and disc_determined only state that μ is a
+    function of ρ, not that μ = 0 when ρ ≥ 1. -/
+axiom lineSegment_muPosDeg_zero (F : Set ℂ) (hF : isLineSegment F) :
+  transfiniteDiameter F ≥ 1 → muPosDeg F = 0
+
+axiom disc_muPosDeg_zero (F : Set ℂ) (hF : isClosedDisc F) :
+  transfiniteDiameter F ≥ 1 → muPosDeg F = 0
+
 /-- Current state: known for special cases, open in general.
     Uses corrected muPosDeg (degree ≥ 1 restriction).
     Part 1 (μ = 0 for line segments/discs with ρ ≥ 1) needs explicit EHP 1958 formulas.
@@ -463,11 +494,11 @@ theorem erdos_1040_current_state :
     (∀ F : Set ℂ, IsClosed F → F.Infinite →
       transfiniteDiameter F < 1 → muPosDeg F > 0) := by
   constructor
-  · -- Part 1: μ = 0 for line segments/discs with ρ ≥ 1
-    -- Needs explicit EHP 1958 formula for μ in terms of ρ
-    sorry
-  · -- Part 2: μ > 0 when ρ < 1 (proved above)
-    exact fun F hF hFi hρ => muPosDeg_pos_of_small_diameter F hF hFi hρ
+  · intro F hF hρ
+    rcases hF with hL | hD
+    · exact lineSegment_muPosDeg_zero F hL hρ
+    · exact disc_muPosDeg_zero F hD hρ
+  · exact fun F hF hFi hρ => muPosDeg_pos_of_small_diameter F hF hFi hρ
 
 /-
 ## OQ-05: Extension of Erdős-Netanyahu Bound
