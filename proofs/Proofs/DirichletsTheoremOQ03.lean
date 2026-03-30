@@ -107,12 +107,15 @@ def optimalLinnikConjecture : Prop :=
 /-- The optimal conjecture implies linnikConstant ≤ 1 -/
 theorem optimal_implies_le_one (h : optimalLinnikConjecture) :
     linnikConstant ≤ 1 := by
-  apply csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩
-  have := h (1/2) (by norm_num : (1:ℝ)/2 > 0)
-  -- 1 + 1/2 = 3/2 ∈ admissibleExponents, and 3/2 > 1
-  -- But we need something ≤ 1... The conjecture says ∀ ε > 0, 1+ε admissible
-  -- Taking limit: linnikConstant ≤ 1 + ε for all ε > 0
-  sorry
+  by_contra hlt
+  push_neg at hlt
+  -- linnikConstant > 1, so pick ε = (linnikConstant - 1) / 2 > 0
+  set δ := (linnikConstant - 1) / 2
+  have hδ_pos : δ > 0 := by linarith
+  have h1 := h δ hδ_pos  -- (1 + δ) ∈ admissibleExponents
+  have h2 := csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩ h1  -- linnikConstant ≤ 1 + δ
+  -- But 1 + δ = 1 + (linnikConstant - 1)/2 = (linnikConstant + 1)/2 < linnikConstant
+  linarith
 
 /-- Known range: 1 ≤ linnikConstant ≤ 5 -/
 theorem linnikConstant_range :
