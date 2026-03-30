@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1019",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
-    "axiomCount": 8,
-    "lineCount": 349,
-    "assumptions": "8 axiom(s) and 2 sorry(s). Remaining sorries: isPlanar definition (needs topological planarity theory) and bipartite_not_saturated. See the Lean source for details.",
+    "axiomCount": 7,
+    "lineCount": 368,
+    "assumptions": "7 axiom(s) and 2 sorry(s). turan_triangle proved from Mathlib (CliqueFree.card_edgeFinset_le). Remaining sorries: isPlanar definition (needs topological planarity theory) and bipartite_not_saturated. See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -265,24 +265,30 @@
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan",
       "Mathlib.Combinatorics.SimpleGraph.Subgraph",
       "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Fintype.Basic"
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
     ],
     "opens": [
       "SimpleGraph"
     ],
     "namespace": "Erdos1019",
-    "lineCount": 349,
-    "axiomCount": 8,
-    "theoremCount": 8,
+    "lineCount": 368,
+    "axiomCount": 7,
+    "theoremCount": 9,
     "definitionCount": 19
   },
   "mathlibDependencies": [
     "Mathlib.Combinatorics.SimpleGraph.Basic",
+    "Mathlib.Combinatorics.SimpleGraph.Clique",
+    "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan",
     "Mathlib.Combinatorics.SimpleGraph.Subgraph",
     "Mathlib.Data.Real.Basic",
-    "Mathlib.Data.Fintype.Basic"
+    "Mathlib.Data.Fintype.Basic",
+    "Mathlib.Tactic"
   ],
   "originalContributions": [
     "Framework for saturated planarity: defines `isSaturatedPlanar` and derives basic properties",
