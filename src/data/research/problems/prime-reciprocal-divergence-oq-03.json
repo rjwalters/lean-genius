@@ -29,13 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved infinitely many primes via Erdos smooth number counting (modulo 2 sorry lemmas). Framework for purely elementary proof without analysis.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Proved multiples_count (1 sorry eliminated). 1 sorry remains: smooth_count_bound (injection argument for k = m²·s decomposition).",
+    "builtItems": [
+      "Proved multiples_count using Mathlib Nat.Ioc_filter_dvd_card_eq_div"
+    ],
     "insights": [
       "Erdos proof uses smooth number counting: k = m^2*s with m<=sqrt(n), s squarefree",
       "At most sqrt(n)*2^pi(N) smooth numbers up to n",
       "For n > (2^(pi(N)+1))^2, contradiction if all primes <= N",
-      "2 sorries remain: smooth_count_bound (injection argument), multiples_count (standard)"
+      "2 sorries remain: smooth_count_bound (injection argument), multiples_count (standard)",
+      "Mathlib has Nat.Ioc_filter_dvd_card_eq_div and Nat.card_multiples for counting multiples — just need Icc/Ioc conversion"
     ],
     "mathlibGaps": [],
     "nextSteps": [],

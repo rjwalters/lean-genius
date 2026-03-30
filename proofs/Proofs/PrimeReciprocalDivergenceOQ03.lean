@@ -1,4 +1,5 @@
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
@@ -94,11 +95,12 @@ theorem smooth_count_bound (N n : ℕ) :
 PART III: COUNTING ROUGH NUMBERS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- The number of multiples of p in {1, ..., n} is ⌊n/p⌋. -/
+/-- The number of multiples of p in {1, ..., n} is ⌊n/p⌋.
+Uses Mathlib's `Nat.Ioc_filter_dvd_card_eq_div` after converting Icc 1 n = Ioc 0 n. -/
 theorem multiples_count (p n : ℕ) (hp : 0 < p) :
     ((Finset.Icc 1 n).filter (fun k => p ∣ k)).card = n / p := by
-  -- Standard counting argument
-  sorry
+  convert Nat.Ioc_filter_dvd_card_eq_div n p using 2
+  ext k; simp [Nat.lt_iff_add_one_le]
 
 /-- If Σ_{p > N, prime} 1/p < 1/2 (in some rational sense), then the number of
     integers in [1, n] with a prime factor > N is less than n/2.
