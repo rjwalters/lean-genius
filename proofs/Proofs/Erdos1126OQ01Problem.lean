@@ -194,12 +194,25 @@ Mathematical argument:
 theorem almost_jensen_implies_almost_additive_shifted (f : ℝ → ℝ)
     (hf : IsAlmostJensen f) :
     IsAlmostAdditive (fun x => f x - f 0) := by
-  -- Full proof requires Fubini's theorem (MeasureTheory.ae_prod_iff)
-  -- to extract a.e. sections from the 2D null set in IsAlmostJensen.
-  -- The key steps are: (1) Fubini to get a "good" point b₀,
-  -- (2) linear substitution (2x, 2y) preserving null sets,
-  -- (3) combining three a.e. conditions.
-  -- This is a non-trivial measure-theory exercise in Lean.
+  -- The proof mirrors jensen_implies_shifted_additive but with measure theory.
+  -- Key steps (see detailed analysis below):
+  --
+  -- 1. From hf, get null set N ⊂ ℝ² where Jensen holds outside N
+  -- 2. Define N₁ = preimage of N under (a,b) ↦ (2a,2b): measure 0 by det(J) = 4 ≠ 0
+  -- 3. Outside N₁: Jensen at (2x,2y) gives f(x+y) = (f(2x)+f(2y))/2
+  -- 4. BLOCKING STEP: "Double lemma" f(2z) = 2f(z) - f(0) for a.e. z
+  --    This needs Fubini (MeasureTheory.ae_prod_iff) to extract a "good" b₀ such that
+  --    the y-section {x : (x, b₀) ∈ N} has measure 0. Then Jensen at (x, b₀) gives
+  --    f((x+b₀)/2) = (f(x)+f(b₀))/2 for a.e. x. Setting x = 2z - b₀ yields
+  --    f(z) in terms of f(2z-b₀) and f(b₀). A second application with a different
+  --    good section eliminates b₀, giving f(2z) = 2f(z) - f(0) for a.e. z.
+  -- 5. Combine steps 3-4: f(x+y) = f(x) + f(y) - f(0) for a.e. (x,y)
+  --    The combined null set is N ∪ N₁ ∪ (Fubini sections × ℝ) ∪ (ℝ × Fubini sections)
+  --
+  -- Required Mathlib lemmas:
+  --   MeasureTheory.ae_prod_iff (Fubini section extraction)
+  --   MeasureTheory.Measure.map_linear_eq (null set under linear maps)
+  --   measure_union_null (union of null sets)
   sorry
 
 /- ## Part III: Multiplicative Functional Equation -/

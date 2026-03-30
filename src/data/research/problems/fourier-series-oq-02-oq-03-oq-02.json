@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created Aristotle companion file for 6 theorem sorries. 3 axioms are deep (contour shift, rate sharpness, Paley-Wiener). Main file has 10 proved theorems.",
+    "progressSummary": "SORRY ELIMINATED: Proved sharpConstant_optimal via ciSup_le + exp cancellation. Fixed stale metadata. 3 axioms, 3 sorries remain.",
     "builtItems": [
       "Created FourierSeriesOQ02OQ03OQ02.lean: 3 axioms, 10 theorems, 4 definitions, 5 sorries",
       "Defined IsStripAnalytic, stripNorm, sharpConstant, poissonKernelStripWidth",
@@ -46,10 +46,16 @@
       "The Poisson kernel P_r(x) with r in (0,1) has exact exponential decay with strip width -T*ln(r)/(2*pi)",
       "exp_decay_summable: needs ℤ-indexed geometric series decomposition (split into n≥0 and n<0)",
       "sharpConstant proofs: require ciSup_le / le_ciSup from ConditionallyCompleteLattice API",
-      "exp_dominates_polynomial: Real.tendsto_pow_mul_exp_neg_atTop_nhds in Mathlib may help"
+      "exp_dominates_polynomial: Real.tendsto_pow_mul_exp_neg_atTop_nhds in Mathlib may help",
+      "sharpConstant_optimal proved: ciSup_le reduces to showing each term ≤ K, then exp(-a)*exp(a)=1 gives the bound",
+      "Data fix: leanFiles was pointing to FourierSeries.lean (parent) not FourierSeriesOQ02OQ03OQ02.lean"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove sharpConstant_is_bound (le_ciSup with BddAbove from IsStripAnalytic)",
+      "Prove exp_dominates_polynomial (exponential beats polynomial decay)",
+      "Prove analytic_hierarchy (summability from exponential decay)"
+    ],
     "markdown": "# Knowledge Base: fourier-series-oq-02-oq-03-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -70,50 +76,6 @@
   "started": "2026-03-29T04:28:18.977Z",
   "lastUpdate": "2026-03-29T07:20:00Z",
   "leanFiles": [
-    {
-      "path": "Proofs/FourierSeries.lean",
-      "filename": "FourierSeries.lean",
-      "lineCount": 452,
-      "theoremCount": 15,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
-    },
-    {
-      "path": "Proofs/FourierSeriesOQ01.lean",
-      "filename": "FourierSeriesOQ01.lean",
-      "lineCount": 441,
-      "theoremCount": 13,
-      "axiomCount": 5,
-      "defCount": 5,
-      "sorryCount": 5,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ01.lean"
-    },
-    {
-      "path": "Proofs/FourierSeriesOQ02.lean",
-      "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 467,
-      "theoremCount": 17,
-      "axiomCount": 2,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
-    },
-    {
-      "path": "Proofs/FourierSeriesOQ02OQ03.lean",
-      "filename": "FourierSeriesOQ02OQ03.lean",
-      "lineCount": 148,
-      "theoremCount": 6,
-      "axiomCount": 2,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03.lean"
-    },
     {
       "path": "Proofs/FourierSeriesOQ02OQ03OQ02.lean",
       "filename": "FourierSeriesOQ02OQ03OQ02.lean",

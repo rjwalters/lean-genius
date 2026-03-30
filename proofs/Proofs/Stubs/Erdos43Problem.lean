@@ -83,7 +83,12 @@ axiom barreto_counterexample : ¬EqualSizeVariant
     lie in {-(N-1),...,-1,1,...,N-1}, giving |A|²-|A| ≤ 2(N-1). -/
 theorem sidon_pair_bound (A : Finset ℤ) (N : ℕ)
     (hS : IsSidonSet A) (hR : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) :
-  A.card.choose 2 ≤ N := by sorry
+  A.card.choose 2 ≤ N := by
+  -- Proof: The nonzero differences of a Sidon set A ⊆ {1,...,N} all lie in
+  -- {-(N-1),...,-1,1,...,N-1}. There are |A|(|A|-1) distinct nonzero differences
+  -- (by the Sidon property), so |A|(|A|-1) ≤ 2(N-1) ≤ 2N. Hence C(|A|,2) ≤ N.
+  -- Key subgoal: the difference map (a,b) ↦ a-b is injective on off-diagonal pairs.
+  sorry
 
 /-- Disjoint differences force the nonzero differences of A and B
     to be completely disjoint, so the total number of distinct nonzero
@@ -93,7 +98,11 @@ theorem disjoint_diff_combined_bound (A B : Finset ℤ) (N : ℕ)
     (hA : IsSidonSet A) (hB : IsSidonSet B)
     (hRA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) (hRB : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N)
     (hD : DisjointDifferences A B) :
-  A.card.choose 2 + B.card.choose 2 ≤ N := by sorry
+  A.card.choose 2 + B.card.choose 2 ≤ N := by
+  -- Proof: Disjoint nonzero differences of A and B together give
+  -- |A|(|A|-1) + |B|(|B|-1) distinct nonzero integers in {-(N-1),...,N-1}.
+  -- So |A|(|A|-1) + |B|(|B|-1) ≤ 2(N-1), giving C(|A|,2) + C(|B|,2) ≤ N-1 ≤ N.
+  sorry
 
 /- ## Tao's Partial Result
 
@@ -112,7 +121,12 @@ theorem tao_equal_size_bound (A B : Finset ℤ) (N : ℕ)
     (hA : IsSidonSet A) (hB : IsSidonSet B)
     (hRA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) (hRB : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N)
     (hD : DisjointDifferences A B) (hEq : A.card = B.card) :
-  (A.card : ℝ) ^ 2 ≤ 2 * N + 1 := by sorry
+  (A.card : ℝ) ^ 2 ≤ 2 * N + 1 := by
+  -- Proof from disjoint_diff_combined_bound: 2·C(m,2) ≤ N where m = A.card
+  -- → m*(m-1) ≤ N (via Nat.choose_two_right)
+  -- → m ≤ N+1 (case split: m ≥ 2 gives m ≤ m*(m-1) ≤ N)
+  -- → m² = m*(m-1)+m ≤ N+(N+1) = 2N+1 (in ℝ via nlinarith)
+  sorry
 
 /- ## Counting Arguments -/
 
@@ -142,7 +156,12 @@ theorem sidon_diff_injective (A : Finset ℤ) (hS : IsSidonSet A)
 /-- The number of nonzero differences of a Sidon set A is |A|²-|A|,
     since all pairwise differences are distinct. -/
 theorem sidon_diff_count (A : Finset ℤ) (hS : IsSidonSet A) :
-  (diffSet A).card = A.card * A.card - A.card + 1 := by sorry
+  (diffSet A).card = A.card * A.card - A.card + 1 := by
+  -- diffSet A = image of A ×ˢ A under subtraction
+  -- The off-diagonal pairs map injectively (by sidon_diff_injective)
+  -- |A ×ˢ A| = |A|², diagonal has |A| elements, image of diagonal = {0}
+  -- So |diffSet A| = |off-diagonal image| + |{0}| = (|A|²-|A|) + 1
+  sorry
 
 /-- When differences are disjoint, the combined nonzero differences
     from A and B have cardinality |A|²-|A| + |B|²-|B|. -/
