@@ -1,0 +1,147 @@
+{
+  "id": "leibniz-pi-oq-02",
+  "title": "Generalized Leibniz-Type Formulas for Mathematical Constants",
+  "slug": "leibniz-pi-oq-02",
+  "description": "Formalizes the family of Leibniz-type alternating series that converge to mathematical constants, unified through the Dirichlet beta and eta functions",
+  "meta": {
+    "author": "Leibniz (1676), Catalan (1865), Dirichlet",
+    "date": "2026-03-30",
+    "status": "axiomatized",
+    "tags": [
+      "analysis",
+      "series",
+      "number-theory",
+      "dirichlet-functions",
+      "catalan-constant",
+      "pi",
+      "logarithm"
+    ],
+    "proofRepoPath": "Proofs/LeibnizPiOQ02.lean",
+    "badge": "axiom",
+    "sorries": 9,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.tendsto_sum_pi_div_four",
+        "description": "Leibniz series converges to π/4",
+        "module": "Mathlib.Data.Real.Pi.Leibniz"
+      },
+      {
+        "theorem": "Real.arctan_one",
+        "description": "arctan(1) = π/4",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan"
+      }
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 1,
+    "lineCount": 318,
+    "assumptions": "1 axiom: eta-zeta relation η(s) = (1-2^{1-s})ζ(s). 9 sorries for series convergence results requiring analytic tools (alternating series test, Fourier analysis, Abel summation).",
+    "originalContributions": [
+      "Unified framework: Dirichlet beta (β) and eta (η) functions as Leibniz-type series",
+      "Definitions of Catalan's constant G = β(2) and Dirichlet character mod 4",
+      "Proved algebraic properties: partial sum recurrences, χ₄ periodicity",
+      "Complete table of Leibniz-type formulas: β(1)=π/4, β(2)=G, β(3)=π³/32, η(1)=ln2, η(2)=π²/12",
+      "Documented irrationality status of each constant"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Leibniz's formula π/4 = 1 - 1/3 + 1/5 - ... (1676) is the prototype for a family of alternating series that converge to important mathematical constants. Dirichlet systematized these as L-functions, and Catalan's constant G = β(2) remains one of the most tantalizing open problems in transcendental number theory.",
+    "problemStatement": "How do generalized Leibniz-type formulas extend to other constants?",
+    "text": "The Dirichlet beta and eta functions unify all Leibniz-type alternating series: β(s) = Σ(-1)^n/(2n+1)^s captures π-related constants, while η(s) = Σ(-1)^{n-1}/n^s captures ζ-related constants",
+    "proofStrategy": "Define the Dirichlet beta and eta functions via partial sums, state convergence results for specific values (s=1,2,3), prove algebraic properties of partial sums, and connect to the underlying L-function structure via the character χ₄.",
+    "keyInsights": [
+      "β(s) captures odd-denominator series (π-related), η(s) captures all-denominator series (ζ-related)",
+      "The eta-zeta relation η(s) = (1-2^{1-s})ζ(s) converts between alternating and non-alternating sums",
+      "Catalan's constant G = β(2) is perhaps the most important constant whose irrationality is unknown",
+      "All these series arise from Dirichlet L-functions: β(s) = L(s,χ₄) for the non-principal character mod 4"
+    ],
+    "prerequisites": [
+      "Leibniz series for π (parent proof)",
+      "Infinite series and convergence",
+      "Dirichlet characters and L-functions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "alternating-harmonic",
+      "title": "The Alternating Harmonic Series (ln 2)",
+      "startLine": 44,
+      "endLine": 65,
+      "summary": "Definition and statement that the alternating harmonic series converges to ln(2).",
+      "mathContext": "η(1) = ln(2) is the Taylor series of ln(1+x) at x=1. This is the simplest Leibniz-type formula after π/4."
+    },
+    {
+      "id": "catalan",
+      "title": "Catalan's Constant",
+      "startLine": 95,
+      "endLine": 125,
+      "summary": "Definition of Catalan's constant G = β(2) with convergence and positivity statements.",
+      "mathContext": "G ≈ 0.9159... is defined as Σ(-1)^n/(2n+1)². Its irrationality remains one of the major open problems in number theory."
+    },
+    {
+      "id": "general-pattern",
+      "title": "The General Leibniz-Type Pattern",
+      "startLine": 155,
+      "endLine": 195,
+      "summary": "Complete table of Leibniz-type formulas organized by the beta and eta functions.",
+      "mathContext": "The Dirichlet beta function β(s) = Σ(-1)^n/(2n+1)^s and eta function η(s) = Σ(-1)^{n-1}/n^s unify all known Leibniz-type series."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "answers-question",
+      "description": "Answers OQ-02: 'How do generalized Leibniz-type formulas extend to other constants?'"
+    }
+  ],
+  "conclusion": {
+    "summary": "Leibniz-type alternating series form a unified family through the Dirichlet beta and eta functions. The beta function captures odd-denominator series (yielding π, Catalan's G, π³/32) while the eta function captures all-denominator series (yielding ln 2, π²/12). The underlying structure is L-functions for Dirichlet characters.",
+    "implications": "The framework reveals that Leibniz's π/4 formula is not isolated but is the first member of an infinite family of series converging to important constants. The irrationality of Catalan's constant G = β(2) remains a major open problem.",
+    "openQuestions": [
+      "Can the irrationality of Catalan's constant be proved or disproved?",
+      "Can these series convergence results be proved in Lean using Mathlib's analysis infrastructure?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
+      "Mathlib.Analysis.SpecialFunctions.Log.Deriv",
+      "Mathlib.Data.Real.Pi.Leibniz",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Finset", "BigOperators", "Filter", "Real", "Topology"],
+    "namespace": "LeibnizPiOQ02",
+    "lineCount": 318,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "substantiveTheoremCount": 7,
+    "duplicateTheorems": 0,
+    "definitionCount": 7
+  },
+  "mainTheorems": [
+    {
+      "name": "alternating_harmonic_series",
+      "type": "core",
+      "description": "The alternating harmonic series converges to ln(2)",
+      "leanType": "Tendsto altHarmonicPartialSum atTop (nhds (Real.log 2))"
+    },
+    {
+      "name": "catalan_series_convergent",
+      "type": "core",
+      "description": "The Catalan series converges to Catalan's constant",
+      "leanType": "Tendsto (dirichletBetaPartialSum 2) atTop (nhds catalansConstant)"
+    },
+    {
+      "name": "dirichlet_eta_two",
+      "type": "core",
+      "description": "The alternating Basel series equals π²/12",
+      "leanType": "Tendsto (dirichletEtaPartialSum 2) atTop (nhds (π²/12))"
+    },
+    {
+      "name": "eta_zeta_relation",
+      "type": "supporting",
+      "description": "η(s) = (1-2^{1-s})ζ(s) for s > 1",
+      "leanType": "(s : ℝ) → s > 1 → tsum η = (1-2^{1-s}) * tsum ζ"
+    }
+  ]
+}

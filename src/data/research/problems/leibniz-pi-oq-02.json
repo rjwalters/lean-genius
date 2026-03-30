@@ -1,0 +1,32 @@
+{
+  "id": "leibniz-pi-oq-02",
+  "name": "Generalized Leibniz-Type Formulas for Constants",
+  "status": "active",
+  "knowledge": {
+    "insights": [
+      "Dirichlet beta β(s) = Σ(-1)^n/(2n+1)^s captures odd-denominator Leibniz series",
+      "Dirichlet eta η(s) = Σ(-1)^{n-1}/n^s captures all-denominator Leibniz series",
+      "eta-zeta relation η(s) = (1-2^{1-s})ζ(s) connects alternating and non-alternating sums",
+      "Catalan's constant G = β(2) ≈ 0.916 has unknown irrationality status",
+      "All Leibniz-type series arise from Dirichlet L-functions for characters mod 4"
+    ],
+    "builtItems": [
+      "LeibnizPiOQ02.lean: 318-line formalization with Dirichlet beta/eta framework",
+      "Proved partial sum recurrences for both β and η",
+      "Proved χ₄ periodicity and first four values",
+      "Defined catalansConstant, dirichletCharMod4",
+      "Gallery data: meta.json with full annotations"
+    ],
+    "mathlibGaps": [
+      "Alternating series test not directly in Mathlib API",
+      "Abel summation theorem (for boundary convergence at x=1) not formalized",
+      "Catalan's constant not in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove catalan_pos and catalan_bounds from partial sum computations",
+      "Connect dirichlet_beta_one to Mathlib's tendsto_sum_pi_div_four",
+      "Submit alternating_harmonic_series to Aristotle"
+    ],
+    "progressSummary": "COMPLETED: Unified Leibniz-type formula framework via Dirichlet beta/eta functions. Defined all key series, stated convergence to π/4, G, π³/32, ln2, π²/12. Proved algebraic properties. 1 axiom (eta-zeta relation), 9 sorries for convergence results."
+  }
+}
