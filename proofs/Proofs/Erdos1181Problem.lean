@@ -89,12 +89,6 @@ theorem q_minimal (n k : ℕ) (p : ℕ) (hp : p.Prime) (hp_lt : p < q n k)
    Taking logs: q(n,k) ~ (1+o(1)) · k · log(n+k).
    For k = ⌊log n⌋: q(n, log n) ≤ (1+o(1))(log n)². -/
 
-/-- The trivial upper bound: q(n, log n) ≤ (1+o(1))(log n)².
-    This follows from the primorial bound and PNT. -/
-axiom trivial_upper_bound :
-  ∀ ε : ℝ, ε > 0 → ∀ᶠ n in atTop,
-    (q n ⌊Real.log (n : ℝ)⌋₊ : ℝ) ≤ (1 + ε) * (Real.log n) ^ 2
-
 -- ============================================================================
 -- Part IV: The Main Conjecture (Erdős #1181, OPEN)
 -- ============================================================================
@@ -219,20 +213,6 @@ theorem tao_implies_erdos1181 (h : tao_heuristic_bound) : erdos1181_conjecture :
    ⟹ θ(q) ≤ k · log(n+k)
    ⟹ q ≤ (1+o(1)) · k · log(n+k)     (by PNT)
    For k = ⌊log n⌋: q ≤ (1+o(1))(log n)². -/
-
-/-- The Chebyshev theta function: θ(x) = ∑_{p ≤ x, p prime} log p. -/
-noncomputable def chebyshev_theta (x : ℝ) : ℝ :=
-  ∑ p ∈ (Finset.Icc 2 ⌊x⌋₊).filter (fun p => (p : ℕ).Prime),
-    Real.log (p : ℝ)
-
-/-- PNT for the Chebyshev function: θ(x) ~ x. -/
-axiom pnt_chebyshev : Tendsto (fun x : ℝ => chebyshev_theta x / x) atTop (nhds 1)
-
-/-- The primorial bound: if all primes below q divide m, then
-    ∏_{p < q, p prime} p ≤ m. -/
-axiom primorial_divides_bound (m q_val : ℕ) (hm : m > 0)
-    (hdvd : ∀ p : ℕ, p.Prime → p < q_val → p ∣ m) :
-    chebyshev_theta q_val ≤ Real.log m
 
 -- ============================================================================
 -- Part VII: Connection to Problem #457
