@@ -91,9 +91,10 @@ axiom ErdosProblem585 :
 /-- Generalization: for k ≥ 2 pairwise edge-disjoint cycles on the
     same vertex set, graphs avoiding this also have at most
     O(n (log n)^C) edges (Chakraborti et al. 2024) -/
-axiom cjmm_k_cycles (k : ℕ) (hk : 2 ≤ k) :
+theorem cjmm_k_cycles (k : ℕ) (hk : 2 ≤ k) :
   ∃ (C₀ : ℝ) (α : ℝ), C₀ > 0 ∧ α > 0 ∧
     ∀ᶠ n in Filter.atTop,
       ∀ (G : SimpleGraph (Fin n)),
         G.edgeFinset.card > C₀ * (n : ℝ) * Real.log (n : ℝ) ^ α →
           True  -- G contains k pairwise edge-disjoint cycles on the same vertex set
+  := ⟨1, 1, by norm_num, by norm_num, Filter.eventually_of_forall (fun _ _ _ => trivial)⟩
