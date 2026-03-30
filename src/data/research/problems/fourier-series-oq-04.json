@@ -10,16 +10,14 @@
       "Carleson's theorem (n=1 only): L² pointwise a.e. convergence is open for n≥2",
       "Multiple summation methods: rectangular, spherical, Bochner-Riesz",
       "L² convergence holds in all dimensions via Parseval (robust result)",
-      "Bochner-Riesz conjecture: spherical means converge for δ > (n-1)/2",
-      "All 5 axioms were True placeholders — eliminated by replacing with proven content",
-      "dotProduct linearity properties all provable by sum_add_distrib and simp",
-      "Fourier coefficient defined via set integral over unit cube with complex exponential",
-      "Convergence results documented in comments — need harmonic analysis infrastructure"
+      "Bochner-Riesz conjecture: spherical means converge for δ > (n-1)/2"
     ],
     "builtItems": [
-      "FourierSeriesOQ04.lean: 176 lines, 0 axioms, 0 sorries, 8 theorems, 4 defs"
+      "FourierSeriesOQ04.lean: 140 lines, 5 axioms, survey",
+      "Torus, MultiIndex, fourierCoeff definitions",
+      "Gallery entry"
     ],
-    "progressSummary": "COMPLETED: Full axiom elimination (5→0). Replaced vacuous True axioms with real definitions and proven theorems."
+    "progressSummary": "COMPLETED: Survey of n-dimensional Fourier convergence."
   },
   "leanFiles": [
     {
@@ -102,10 +100,10 @@
     {
       "path": "Proofs/FourierSeriesOQ04.lean",
       "filename": "FourierSeriesOQ04.lean",
-      "lineCount": 177,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 4,
+      "lineCount": 134,
+      "theoremCount": 2,
+      "axiomCount": 5,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04.lean"

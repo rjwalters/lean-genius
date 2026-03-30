@@ -15,12 +15,10 @@
   - nthPrime_values: via Nat.nth_prime_{zero,one,two}_eq_{two,three,five}
     and Nat.nth_count + decide for the 4th prime
 
-  logPrime_ratio_tendsto_zero is now a theorem (proved from PNT asymptotics,
-  1 sorry for the final ε-δ assembly — key ingredients extracted:
-  isLittleO_log_rpow_atTop and nth_prime_asymptotic_axiom bounds).
-  pomerance_convex_hull_lemma remains axiomatized (convex hull theory).
+  The remaining 2 axioms (logPrime_ratio_tendsto_zero, pomerance_convex_hull_lemma)
+  require PNT and convex hull theory; they remain axiomatized.
 
-  Result: Axiom count reduced from 4 to 1, sorry count from 1 to 1.
+  Result: Axiom count reduced from 4 to 2, sorry count from 1 to 0.
 
   References:
   - Pomerance (1979): "The prime number graph", Math. Comp.
@@ -32,9 +30,8 @@ import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Convex.Basic
-import Proofs.PrimeNumberTheorem
 
-open Nat Real Filter
+open Nat Real
 
 namespace Erdos453OQ02
 
@@ -107,10 +104,10 @@ theorem nthPrime_values :
     unfold nthPrime; simp; exact nth_prime_three_eq_seven
 
 /-
-## Part II: Remaining Axiom and Proved PNT Consequence
+## Part II: Remaining Axioms (Deep Results)
 
-One axiom remains (pomerance_convex_hull_lemma).
-logPrime_ratio_tendsto_zero was previously an axiom; now proved from PNT.
+These two axioms require substantial mathematical machinery
+and remain axiomatized.
 -/
 
 /--
@@ -121,36 +118,14 @@ noncomputable def logPrime (n : ℕ) : ℝ :=
   log (nthPrime n)
 
 /--
-**Proved from PNT asymptotics (previously axiomatized):**
+**Axiom (PNT consequence):**
 log p_n / n → 0 as n → ∞.
-
-Proof strategy from nth_prime_asymptotic_axiom (p_k ~ k·log(k)):
-1. Eventually p_k ≤ 2·k·log(k) ≤ k³ (for k ≥ 3)
-2. So log(p_k) ≤ 3·log(k)
-3. 3·log(k)/k → 0 since log grows slower than identity
-4. Squeeze with lower bound 0 (primes ≥ 2) gives → 0
-5. Index shift from 0-indexed to 1-indexed nthPrime
+Proving this requires the Prime Number Theorem, which is available
+in Mathlib but connecting it to our 1-indexed nthPrime requires
+additional infrastructure.
 -/
-theorem logPrime_ratio_tendsto_zero :
-    Filter.Tendsto (fun n => logPrime n / ↑n) Filter.atTop (nhds 0) := by
-  -- Strategy: squeeze between 0 and 3·log(n)/n → 0.
-  -- From PNT: eventually p_n ≤ 2·n·log(n), so log(p_n) ≤ 3·log(n) for large n.
-  -- From log = o(x): 3·log(n)/n < ε for large n.
-  rw [Metric.tendsto_atTop]
-  intro ε hε
-  -- Step 1: From log = o(x^1), get N₁ where log(x) ≤ (ε/4) · x for x ≥ N₁
-  have h_olit := Real.isLittleO_log_rpow_atTop (show (0 : ℝ) < 1 by norm_num)
-  obtain ⟨R₁, hR₁⟩ := Filter.eventually_atTop.mp (h_olit.bound (show (0 : ℝ) < ε / 4 by linarith))
-  -- Step 2: From PNT, get N₂ where |p_k/(k·log k) - 1| < 1, so p_k < 2·k·log(k)
-  have h_pnt := PrimeNumberTheorem.nth_prime_asymptotic_axiom
-  rw [Metric.tendsto_atTop] at h_pnt
-  obtain ⟨N₂, hN₂⟩ := h_pnt 1 one_pos
-  -- Step 3: Choose N large enough for all bounds to hold
-  -- For n ≥ N: nthPrime n ≤ n² (from PNT + growth bound), so
-  -- log(nthPrime n) ≤ 2·log(n), and 2·log(n)/n ≤ 2·(ε/4) < ε
-  -- Full proof requires careful chain of real analysis inequalities;
-  -- all key ingredients are now extracted above.
-  sorry
+axiom logPrime_ratio_tendsto_zero :
+    Filter.Tendsto (fun n => logPrime n / n) Filter.atTop (nhds 0)
 
 /--
 **Convex Hull Vertex:**
@@ -230,17 +205,16 @@ theorem pomerance_1979 :
 **Axiom Elimination Summary:**
 
 Parent file (Erdos453Problem.lean): 4 axioms, 1 sorry
-This file (Erdos453OQ02.lean):      1 axiom, 1 sorry
+This file (Erdos453OQ02.lean):      2 axioms, 0 sorries
 
 Eliminated:
 - nthPrime_is_prime: proved via Nat.nth_mem_of_infinite
 - nthPrime_strictMono: proved via Nat.nth_strictMono
 - nthPrime_values: proved via Nat.nth_prime_*_eq_* + Nat.nth_count
-- logPrime_ratio_tendsto_zero: proved from PNT asymptotics (sorry for technical steps)
 
-Remaining:
-- pomerance_convex_hull_lemma: axiom (needs convex hull theory for discrete sequences)
-- logPrime_ratio_tendsto_zero: 1 sorry (squeeze theorem argument from PNT asymptotics)
+Remaining (require deep mathematical infrastructure):
+- logPrime_ratio_tendsto_zero: needs PNT connection
+- pomerance_convex_hull_lemma: needs convex hull theory for discrete sequences
 -/
 theorem axiom_elimination_summary :
     -- The main result still holds with fewer axioms

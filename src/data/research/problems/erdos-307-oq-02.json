@@ -13,16 +13,13 @@
       "product_rigidity is a trivial iff but has complex formulation",
       "All 4 axioms (prime_reciprocal_divergence, product_rigidity, egyptian_count_growth, lcd_connection) were unused by any theorem",
       "egyptian_count_growth was also vacuously true (just take count=1)",
-      "Status changed from axiomatized to formalized after removing all axioms",
-      "one_helps_balance: fixed statement (added P.card > 1, hpos) and proved via Finset.sum_pos over P.erase 1",
-      "Three-prime reciprocal bound needs case analysis on which elements are 2, 3, ≥5"
+      "Status changed from axiomatized to formalized after removing all axioms"
     ],
     "builtItems": [
       "prime_reciprocal_sum_lower_bound proved via AM-GM (sorry eliminated)",
-      "search_intractable converted from axiom to theorem via native_decide",
-      "Fixed and proved one_helps_balance (4→3 sorries)"
+      "search_intractable converted from axiom to theorem via native_decide"
     ],
-    "progressSummary": "PROGRESS: Proved one_helps_balance (fixed wrong statement, added hypotheses, proved). Sorries: 4→3.",
+    "progressSummary": "COMPLETED: Axioms 5→0 (all removed as unused). 4 sorries remain. Key proof: no_size_two_solution proved via AM-GM upper bound. Status: formalized (0 axioms, 4 sorries).",
     "nextSteps": [
       "Prove prime_sets_disjoint via p-adic valuation argument",
       "Prove one_helps_balance (needs P.card > 1 hypothesis)",
@@ -32,24 +29,13 @@
   },
   "leanFiles": [
     {
-      "path": "Proofs/Erdos307OQ02.lean",
-      "filename": "Erdos307OQ02.lean",
-      "lineCount": 262,
-      "theoremCount": 4,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 7,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos307OQ02.lean"
-    },
-    {
       "path": "Proofs/Erdos307Problem.lean",
       "filename": "Erdos307Problem.lean",
-      "lineCount": 445,
+      "lineCount": 435,
       "theoremCount": 20,
       "axiomCount": 0,
       "defCount": 15,
-      "sorryCount": 3,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos307Problem.lean"
     }
@@ -57,7 +43,6 @@
   "relatedProofs": [
     "erdos-3",
     "erdos-30",
-    "erdos-307",
-    "erdos-307-oq-02"
+    "erdos-307"
   ]
 }

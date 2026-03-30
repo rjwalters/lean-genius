@@ -1,6 +1,6 @@
 {
   "slug": "erdos-689",
-  "title": "Erd\u0151s #689",
+  "title": "Erdős #689",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -39,15 +39,14 @@
     ],
     "insights": [
       "5 axioms: erdos_689_double_cover (OPEN), erdos_689_r_fold (OPEN generalization), mertens_sum_divergence (KNOWN but not in Mathlib), jacobsthal_connection (KNOWN), green_variant_r10 (OPEN variant)",
-      "mertens_sum_divergence is most promising for elimination: \u03a3_{p\u2264n} 1/p \u2192 \u221e is Mertens' second theorem",
-      "9 proved theorems: covering monotonicity, bounds, small cases \u2014 all clean",
+      "mertens_sum_divergence is most promising for elimination: Σ_{p≤n} 1/p → ∞ is Mertens' second theorem",
+      "9 proved theorems: covering monotonicity, bounds, small cases — all clean",
       "Problem relates to #687 (Jacobsthal), #688 (covering), Ben Green problem 45",
-      "Proved mertens_sum_divergence from Mathlib: not_summable_one_div_on_primes \u2192 partial sums \u2192 \u221e \u2192 exceeds any bound C over primesUpTo n",
-      "Both the main r=2 conjecture and Greens r=10 variant are special cases of the r-fold axiom",
-      "jacobsthal_connection is the r=1 case of erdos_689_r_fold with different syntax (\u2200\u1da0 vs \u2203 N\u2080 \u2200 n \u2265 N\u2080). Filter.eventually_atTop converts between them."
+      "Proved mertens_sum_divergence from Mathlib: not_summable_one_div_on_primes → partial sums → ∞ → exceeds any bound C over primesUpTo n",
+      "Both the main r=2 conjecture and Greens r=10 variant are special cases of the r-fold axiom"
     ],
     "mathlibGaps": [
-      "No Mertens' second theorem (\u03a3 1/p ~ log log n) in Mathlib",
+      "No Mertens' second theorem (Σ 1/p ~ log log n) in Mathlib",
       "No Jacobsthal function bounds in Mathlib"
     ],
     "nextSteps": [
@@ -55,7 +54,7 @@
       "File is at minimal axiom count \u2014 formalization is complete modulo the open conjecture",
       "Could add more structural lemmas but axiom reduction is done"
     ],
-    "markdown": "# Erd\u0151s #689 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n$ be sufficiently large. Is there some choice of congruence class $a_p$ for all primes $2\\leq p\\leq n$ such that every integer in $[1,n]$ satisfies at least two of the congruences $\\equiv a_p\\pmod{p}$?\n\n\n\nOne can ask a similar question replacing $2$ by any fixed integer $r$ (provided $n$ is sufficiently large depending on $r$).\n\nSee also [687] and [688].\n\nThis problem (with $2$ replaced by $10$) is Problem 45 on Green's open problems list.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #687\n- Problem #688\n- Problem #690\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+    "markdown": "# Erdős #689 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n$ be sufficiently large. Is there some choice of congruence class $a_p$ for all primes $2\\leq p\\leq n$ such that every integer in $[1,n]$ satisfies at least two of the congruences $\\equiv a_p\\pmod{p}$?\n\n\n\nOne can ask a similar question replacing $2$ by any fixed integer $r$ (provided $n$ is sufficiently large depending on $r$).\n\nSee also [687] and [688].\n\nThis problem (with $2$ replaced by $10$) is Problem 45 on Green's open problems list.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #687\n- Problem #688\n- Problem #690\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
     "erdos"
@@ -78,9 +77,9 @@
     {
       "path": "Proofs/Erdos689Problem.lean",
       "filename": "Erdos689Problem.lean",
-      "lineCount": 179,
-      "theoremCount": 13,
-      "axiomCount": 1,
+      "lineCount": 178,
+      "theoremCount": 12,
+      "axiomCount": 2,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
