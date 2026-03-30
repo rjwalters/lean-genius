@@ -369,11 +369,6 @@ Multiplying by a single-row Schubert class σ_(p) gives:
 
 where the sum is over ρ obtained from μ by adding p boxes, no two in the same column.
 -/
-axiom pieris_rule (k n : ℕ) (mu : Partition) (p : ℕ)
-    (hmu : mu.fitsIn k n) (hp : p ≤ n - k) :
-    ∃ (summands : Finset Partition),
-      ∀ rho ∈ summands, rho.size = mu.size + p ∧ rho.fitsIn k n
-
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VII: VERIFICATION OF FOUR LINES VIA SCHUBERT CALCULUS
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -404,14 +399,6 @@ def partition_1 : Partition where
 def partition_22 : Partition where
   parts := [2, 2]
   decreasing := by simp [List.Chain', List.chain'_cons']
-
-/-- σ₁⁴ = 2 · σ₂₂ in Gr(2,4) (the four lines formula)
-
-This is the Schubert calculus verification that 4 general lines have exactly
-2 common transversals.
--/
-axiom sigma1_fourth_power :
-    littlewoodRichardsonCoeff partition_1 partition_1 partition_22 = 2
 
 /-- The four lines number computed via Schubert calculus equals 2 -/
 theorem four_lines_via_schubert : schubertNumber_FourLines = 2 := rfl
