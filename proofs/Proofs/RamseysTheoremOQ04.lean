@@ -112,4 +112,83 @@ theorem tower_strictMono (b : ℕ) (hb : b ≥ 2) : StrictMono (tower b) := by
         calc tower b n < 2 ^ tower b n := Nat.lt_two_pow _
           _ ≤ b ^ tower b n := Nat.pow_le_pow_left (by omega) _)
 
+/-! ## Part V: Infrastructure for Proving the Hypergraph Ramsey Theorem
+
+The axiom `hypergraph_ramsey_exists` can be proved by well-founded induction
+on (k, n) using the **stepping-up lemma**:
+
+  R(k+1, r, n) ≤ R(k, r, R(k+1, r, n-1)) + 1
+
+Base cases:
+  1. n ≤ k: vacuously true (N = n, no k-subsets or only one)
+  2. k = 1: pigeonhole principle (N = r*(n-1) + 1)
+
+The stepping-up argument: Fix vertex v in [N]. The original (k+1)-coloring
+induces a k-coloring on [N]\{v} via c'(T) = c(T ∪ {v}). By k-Ramsey, get
+monochromatic M-set S. Restrict to S and apply (k+1, n-1)-Ramsey. If the
+colors match, S ∪ {v} is the desired n-set.
+-/
+
+/-- kSubsets of S has cardinality Nat.choose |S| k. -/
+theorem kSubsets_card [DecidableEq α] (s : Finset α) (k : ℕ) :
+    (kSubsets s k).card = s.card.choose k := by
+  simp [kSubsets, Finset.card_powersetCard]
+
+/-- k-subsets are monotone: if T ⊆ S then kSubsets T k ⊆ kSubsets S k. -/
+theorem kSubsets_subset [DecidableEq α] {s t : Finset α} (h : t ⊆ s) (k : ℕ) :
+    kSubsets t k ⊆ kSubsets s k := by
+  simp only [kSubsets]
+  exact Finset.powersetCard_mono h
+
+/-- A k-subset of T is a k-subset of S when T ⊆ S. -/
+theorem kSubsets_mem_of_subset [DecidableEq α] {s t : Finset α} {e : Finset α}
+    (h : t ⊆ s) (he : e ∈ kSubsets t k) : e ∈ kSubsets s k :=
+  kSubsets_subset h k he
+
+/-- When s.card < k, there are no k-subsets of s. -/
+theorem kSubsets_eq_empty_of_lt [DecidableEq α] {s : Finset α} {k : ℕ}
+    (h : s.card < k) : kSubsets s k = ∅ := by
+  ext e; simp only [kSubsets, Finset.mem_powersetCard, Finset.not_mem_empty, iff_false]
+  intro ⟨he_sub, he_card⟩
+  exact absurd (le_trans (Finset.card_le_card he_sub) h.le) (by omega)
+
+/-- Tower(b, n) is positive when b ≥ 1. -/
+theorem tower_pos (b : ℕ) (hb : b ≥ 1) (n : ℕ) : tower b n ≥ 1 := by
+  induction n with
+  | zero => simp [tower]
+  | succ k _ => simp [tower]; exact Nat.one_le_pow _ b hb
+
+/-- The Ramsey property is monotone in N: larger N also works. -/
+theorem ramsey_property_mono {k r n N : ℕ} (N' : ℕ) (hNN : N ≤ N')
+    (h : HypergraphRamseyProperty k r n N) :
+    HypergraphRamseyProperty k r n N' := by
+  intro S hS c
+  have hNS : N ≤ S.card := hS ▸ hNN
+  obtain ⟨S', hS'sub, hS'card⟩ := Finset.exists_subset_card_le hNS
+  obtain ⟨T, i, hTS', hTn, hmono⟩ := h S' hS'card (fun ⟨e, he⟩ =>
+    c ⟨e, kSubsets_mem_of_subset hS'sub he⟩)
+  exact ⟨T, Finset.Subset.trans hTS' hS'sub, hTn, fun e he_T _ =>
+    hmono e he_T (kSubsets_mem_of_subset hS'sub he_T)⟩
+
+/-- Base case: when n ≤ k, N = n works.
+    When n < k: no k-subsets exist, so monochromaticity holds vacuously.
+    When n = k: exactly one k-subset (S itself), trivially monochromatic. -/
+theorem ramsey_base (k r n : ℕ) (hr : r ≥ 1) (hn : n ≤ k) :
+    HypergraphRamseyProperty k r n n := by
+  intro S hS c
+  by_cases h_nonempty : (kSubsets S k).Nonempty
+  · -- n = k case: pick the color of any k-subset (they're all equal to S)
+    obtain ⟨e₀, he₀⟩ := h_nonempty
+    refine ⟨S, c ⟨e₀, he₀⟩, Subset.rfl, hS.symm.le, fun e _ he_S => ?_⟩
+    -- e and e₀ are both k-subsets of S with |S| = n ≤ k, so e = S = e₀
+    have h1 := (Finset.mem_powersetCard.mp he_S)
+    have h2 := (Finset.mem_powersetCard.mp he₀)
+    have : e = S := Finset.eq_of_subset_of_card_le h1.1 (by omega)
+    have : e₀ = S := Finset.eq_of_subset_of_card_le h2.1 (by omega)
+    simp_all
+  · -- n < k case: no k-subsets, vacuously monochromatic
+    rw [Finset.not_nonempty_iff_eq_empty] at h_nonempty
+    exact ⟨S, ⟨0, hr⟩, Subset.rfl, hS.symm.le, fun e _ he_S =>
+      absurd he_S (h_nonempty ▸ Finset.not_mem_empty e)⟩
+
 end HypergraphRamsey
