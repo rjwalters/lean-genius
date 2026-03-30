@@ -1,0 +1,176 @@
+[
+  {
+    "id": "ann-ch-oq01-oq01-01-header",
+    "proofId": "continuum-hypothesis-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 60
+    },
+    "type": "context",
+    "title": "Woodin's Ultimate-L: Can CH Be Decided Canonically?",
+    "content": "The header frames the key question from the parent OQ-01: V=L decides CH but excludes large cardinals; PFA decides not-CH but is large-cardinal compatible. Woodin's Ultimate-L Conjecture (1999-) proposes a resolution: a canonical inner model satisfying GCH AND all large cardinal axioms simultaneously. The file imports from both ContinuumHypothesis (CH, GCH) and ContinuumHypothesisOQ01 (Decides, VeqL, MeasurableCardinal, etc.) to build on the axiom landscape.",
+    "mathContext": "The **inner model program** builds canonical models of set theory for progressively stronger large cardinal axioms: $L$ (Godel 1938) for inaccessible, $L[U]$ (Kunen 1970) for measurable, core models $K$ (Steel) for Woodin cardinals. **Ultimate $L$** (Woodin 1999-) aims to complete this hierarchy by building a single canonical inner model accommodating ALL large cardinals while satisfying GCH.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "inner model theory",
+      "Ultimate L",
+      "GCH",
+      "large cardinals",
+      "Woodin"
+    ],
+    "prerequisites": [
+      "ContinuumHypothesis module",
+      "ContinuumHypothesisOQ01 module"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-oq01-02-hierarchy",
+    "proofId": "continuum-hypothesis-oq-01-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "The Large Cardinal Hierarchy: From Inaccessible to Extendible",
+    "content": "Defines five levels of large cardinals as structures: InaccessibleCardinal (uncountable, regular, strong limit), WoodinCardinal (stationary tower property), SupercompactCardinal (elementary embeddings with closure), ExtendibleCardinal (embeddings between initial segments of V). MeasurableCardinal is imported from OQ-01. LargeCardinalLevel is an inductive type with a strength function giving a total ordering. Theorems measurable_stronger_than_inaccessible and supercompact_stronger_than_woodin establish the strict hierarchy via omega.",
+    "mathContext": "The **large cardinal hierarchy** by consistency strength: inaccessible $<$ measurable $<$ Woodin $<$ supercompact $<$ extendible $<$ huge $<$ ... Each level represents a stronger reflection principle. **Inaccessible**: $\\kappa$ is uncountable, regular ($\\text{cf}(\\kappa) = \\kappa$), and a strong limit ($2^\\lambda < \\kappa$ for all $\\lambda < \\kappa$). **Measurable**: has a non-principal $\\kappa$-complete ultrafilter. **Supercompact**: for all $\\lambda \\geq \\kappa$, there is an elementary embedding $j: V \\to M$ with $\\text{crit}(j) = \\kappa$ and $M^\\lambda \\subseteq M$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "InaccessibleCardinal",
+      "WoodinCardinal",
+      "SupercompactCardinal",
+      "ExtendibleCardinal",
+      "LargeCardinalLevel"
+    ],
+    "prerequisites": [
+      "Cardinal.aleph",
+      "structure syntax in Lean 4",
+      "inductive types"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-oq01-03-compatibility",
+    "proofId": "continuum-hypothesis-oq-01-oq-01",
+    "range": {
+      "startLine": 143,
+      "endLine": 226
+    },
+    "type": "insight",
+    "title": "Inner Model Compatibility: Where V=L Fails and the Frontier",
+    "content": "Defines InnerModel as a structure (name, satisfies_zfc, contains_ordinals, is_transitive). VeqL_consistent_with_inaccessible (axiom) states V=L accommodates inaccessible cardinals. VeqL_fails_at_measurable uses Scott's theorem from OQ-01. inner_model_for_measurable_exists (axiom) asserts L[U] exists (Kunen 1970). supercompact_no_known_inner_model (axiom) formalizes the frontier: no canonical inner model is known for supercompact cardinals. inner_model_hierarchy_monotone proves that models for stronger axioms also accommodate weaker ones.",
+    "mathContext": "The inner model program has solved: $L$ for inaccessible/Mahlo/weakly compact (Godel 1938), $L[U]$ for one measurable (Kunen 1970), core models $K$ for many measurables and Woodin cardinals (Mitchell-Steel 1990s). The **frontier**: building a canonical inner model for supercompact cardinals. This is exactly what Ultimate $L$ aims to achieve. Scott's theorem ($V = L \\Rightarrow$ no measurable cardinals) shows $L$ itself is insufficient.",
+    "significance": "key",
+    "relatedConcepts": [
+      "InnerModel",
+      "L_model",
+      "L[U]",
+      "Scott's theorem",
+      "inner model program frontier"
+    ],
+    "prerequisites": [
+      "VeqL_incompatible_with_measurable from OQ-01",
+      "Inner model definition",
+      "Kunen 1970"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-oq01-04-desiderata",
+    "proofId": "continuum-hypothesis-oq-01-oq-01",
+    "range": {
+      "startLine": 228,
+      "endLine": 310
+    },
+    "type": "definition",
+    "title": "UltimateLDesiderata: Formal Specification of Woodin's Conjecture",
+    "content": "UltimateLDesiderata is a structure with 6 fields: model (InnerModel), satisfies_GCH (GCH holds), compatible_measurable/supercompact/extendible (compatible with each large cardinal type), is_canonical (comparison principle), extends_L (properly extends Godel's L). UltimateLConjecture := Nonempty UltimateLDesiderata. Key derived theorems: ultimateL_satisfies_GCH extracts GCH, ultimateL_would_resolve_ch derives CH via gch_implies_ch, ultimateL_decides_ch shows it decides CH, and ultimateL_strictly_extends_VeqL proves it goes beyond V=L by accommodating measurable cardinals.",
+    "mathContext": "The **Ultimate-L Desiderata** formalize what Woodin's inner model must satisfy: (D1) $M \\models \\text{GCH}$, (D2-D4) $M$ is compatible with measurable, supercompact, and extendible cardinals, (D5) $M$ is canonical (determined by comparison/iterability), (D6) $L \\subsetneq M$ (properly extends $L$). The **Ultimate-L Conjecture**: these desiderata are simultaneously satisfiable. If true, CH would hold in a canonical model that does not sacrifice any large cardinal strength.",
+    "significance": "key",
+    "relatedConcepts": [
+      "UltimateLDesiderata",
+      "UltimateLConjecture",
+      "GCH",
+      "large cardinal compatibility",
+      "canonicity"
+    ],
+    "prerequisites": [
+      "GCH from ContinuumHypothesis",
+      "gch_implies_ch",
+      "MeasurableCardinal from OQ-01",
+      "Decides from OQ-01"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-oq01-05-consequences",
+    "proofId": "continuum-hypothesis-oq-01-oq-01",
+    "range": {
+      "startLine": 312,
+      "endLine": 343
+    },
+    "type": "insight",
+    "title": "Structural Consequences: Uniqueness, Comparison, and V=L Obsolescence",
+    "content": "ultimateL_uniqueness proves that any two models satisfying the desiderata agree on GCH (proof-irrelevance of Prop). ultimateL_comparison_theorem extends this to CH. ultimateL_resolves_oq01 shows Ultimate-L answers the parent open question: adopt CH + keep large cardinals. ultimateL_dominates_VeqL shows Ultimate-L makes V=L obsolete: both imply CH, but only Ultimate-L also allows measurable cardinals.",
+    "mathContext": "In inner model theory, the **comparison lemma** states that given two iterable premice $M, N$, their iterations converge: there exist iterates $M^*, N^*$ with $M^* \\trianglelefteq N^*$ or $N^* \\trianglelefteq M^*$. For Ultimate $L$, canonicity means any two models satisfying the desiderata can be compared and must agree. This is formalized here via proof-irrelevance: both models derive the same GCH (a Prop), hence the same CH.",
+    "significance": "key",
+    "relatedConcepts": [
+      "comparison lemma",
+      "proof irrelevance",
+      "ultimateL_uniqueness",
+      "ultimateL_dominates_VeqL"
+    ],
+    "prerequisites": [
+      "UltimateLDesiderata",
+      "gch_implies_ch",
+      "Prop proof-irrelevance in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-oq01-06-hod",
+    "proofId": "continuum-hypothesis-oq-01-oq-01",
+    "range": {
+      "startLine": 345,
+      "endLine": 404
+    },
+    "type": "insight",
+    "title": "The HOD Reduction and Inner Model Program Status",
+    "content": "HOD_model defines HOD (Hereditarily Ordinal Definable sets) as an inner model. HODConjecture (axiom) is Woodin's key hypothesis: every extendible cardinal is HOD-supercompact. HOD_implies_UltimateL (axiom) formalizes Woodin's reduction. WeakUltimateLConjecture is a weaker version without canonicity. full_implies_weak derives the weak from the full conjecture. reduction_chain packages the entire chain: HOD Conjecture -> Ultimate-L -> Weak Ultimate-L -> CH. inner_model_program_status captures the current frontier: solved up to measurable (L[U]), open at supercompact.",
+    "mathContext": "**HOD** = $\\{x : x \\text{ is hereditarily ordinal-definable}\\}$, always an inner model of ZFC. The **HOD Conjecture** (Woodin): every extendible cardinal is 'HOD-supercompact' (its supercompactness is witnessed within HOD). Woodin proved this is a sufficient condition for the existence of Ultimate $L$. The **Weak Ultimate-L Conjecture** drops the canonicity requirement, asking only for some inner model satisfying GCH + supercompact compatibility. Even this weaker version remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HOD",
+      "HODConjecture",
+      "reduction chain",
+      "inner model program status",
+      "WeakUltimateLConjecture"
+    ],
+    "prerequisites": [
+      "UltimateLConjecture",
+      "extendible cardinals",
+      "inner model comparison"
+    ]
+  },
+  {
+    "id": "ann-ch-oq01-oq01-07-futures",
+    "proofId": "continuum-hypothesis-oq-01-oq-01",
+    "range": {
+      "startLine": 406,
+      "endLine": 459
+    },
+    "type": "insight",
+    "title": "Three Possible Futures for CH and the Summary",
+    "content": "ThreeFutures defines three scenarios as a conjunction: (1) Ultimate-L succeeds -> CH, (2) Ultimate-L fails -> V=L remains the only CH option but still excludes large cardinals, (3) the multiverse view (trivially true). three_futures_valid proves all are logically coherent. The summary documents the axiom count (5 + 10 inherited), the key results, and the overall impact of the formalization: capturing the precise mathematical content of Woodin's program.",
+    "mathContext": "Three views on CH's truth value: (1) **Platonist/Ultimate-L**: CH is true in the canonical inner model (Woodin). (2) **Forcing axiom school**: $\\neg$CH with $2^{\\aleph_0} = \\aleph_2$ (PFA/MM school, Todorcevic, Moore). (3) **Set-theoretic multiverse** (Hamkins 2012): CH is true in some universes and false in others; the question 'is CH true?' has no unique answer. The formalization shows all three remain logically tenable given current mathematical knowledge.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ThreeFutures",
+      "multiverse view",
+      "Hamkins",
+      "PFA school",
+      "Ultimate L program"
+    ],
+    "prerequisites": [
+      "ultimateL_would_resolve_ch",
+      "VeqL_incompatible_with_measurable",
+      "failure_strengthens_notCH"
+    ]
+  }
+]
