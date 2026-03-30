@@ -171,19 +171,25 @@ theorem f1 : numSubgroups 1 = 1 := by
   exact Nat.card_unique
 
 /-- f(2) = 2: S_2 has {e} and S_2 itself.
-    Decidable in principle (S_2 has order 2, prime → only ⊥ and ⊤). -/
+    S_2 has prime order 2, so by Lagrange every subgroup is ⊥ or ⊤. -/
 theorem f2 : numSubgroups 2 = 2 := by
-  sorry -- Decidable: group of prime order has exactly 2 subgroups
+  unfold numSubgroups
+  simp only [Nat.card_eq_fintype_card]
+  native_decide
 
 /-- f(3) = 6: S_3 has {e}, three copies of Z/2Z, one Z/3Z, and S_3 itself.
-    Decidable in principle but computationally expensive. -/
+    Computed by native_decide over the finite lattice of subgroups. -/
 theorem f3 : numSubgroups 3 = 6 := by
-  sorry -- Decidable: enumerate subgroups of S_3
+  unfold numSubgroups
+  simp only [Nat.card_eq_fintype_card]
+  native_decide
 
 /-- f(4) = 30: S_4 has 30 subgroups.
-    Decidable in principle but very computationally expensive (|S_4| = 24). -/
+    Computed by native_decide (|S_4| = 24, lattice enumeration feasible). -/
 theorem f4 : numSubgroups 4 = 30 := by
-  sorry -- Decidable: enumerate subgroups of S_4
+  unfold numSubgroups
+  simp only [Nat.card_eq_fintype_card]
+  native_decide
 
 /- ## Part VIII: Growth Rate Summary -/
 
