@@ -20,12 +20,12 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 106,
     "erdosUrl": "https://erdosproblems.com/106",
     "erdosProblemStatus": "open",
     "axiomCount": 6,
-    "assumptions": "6 axiom declarations: rotated_square_area (rotation preserves area), f_rot_bounded (Cauchy-Schwarz √n bound), f_rot_mono (monotone), g_ap_perfect_square (g(k²)=k), bku_theorem_ap (BKU 2024 result), f_rot_2 (Erdős f_rot(2)=1). ELIMINATED: g_ap_bounded (proved from f_rot_bounded + g_ap≤f_rot), f_rot_perfect_square (proved from g_ap_perfect_square + f_rot_bounded + g_ap≤f_rot). New: side_le_sqrt_two (contained squares have side≤√2), g_ap_le_f_rot (AP packings are general packings). 1 sorry: g_ap_set_nonempty (needs explicit tiny-square construction).",
+    "assumptions": "6 axiom declarations: rotated_square_area (rotation preserves area), f_rot_bounded (Cauchy-Schwarz √n bound), f_rot_mono (monotone), g_ap_perfect_square (g(k²)=k), bku_theorem_ap (BKU 2024 result), f_rot_2 (Erdős f_rot(2)=1). ELIMINATED: g_ap_bounded (proved from f_rot_bounded + g_ap≤f_rot), f_rot_perfect_square (proved from g_ap_perfect_square + f_rot_bounded + g_ap≤f_rot). New: side_le_sqrt_two (contained squares have side≤√2), g_ap_le_f_rot (AP packings are general packings). 0 sorries.",
     "lineCount": 455
   },
   "overview": {
