@@ -1,0 +1,124 @@
+{
+  "id": "erdos-1-oq-04",
+  "title": "Erdős #1 OQ4: Extremal Sets for Distinct Subset Sums",
+  "slug": "erdos-1-oq-04",
+  "description": "Characterize the structure of extremal sets achieving the minimum N for n-element sets with distinct subset sums. Verifies Conway-Guy sequence values f(1)-f(6) and proves optimality of f(3)=4 and f(4)=7.",
+  "meta": {
+    "author": "Paul Erdős, John Conway, Richard Guy",
+    "sourceUrl": "https://erdosproblems.com/1",
+    "date": "1968-2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1OQ04.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "subset-sums",
+      "extremal-combinatorics",
+      "conway-guy"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "erdosNumber": 1,
+    "erdosUrl": "https://erdosproblems.com/1",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 186,
+    "assumptions": "0 axioms, 0 sorries. All results verified computationally via native_decide."
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1 asks whether n-element sets with distinct subset sums must have max element at least c*2^n. The extremal sets — those achieving the minimum max element f(n) — form the Conway-Guy sequence (OEIS A005318). Conway and Guy (1968) conjectured specific extremal sets based on a recursive construction. The sequence begins 0, 1, 2, 4, 7, 13, 24, 44, 84, ...",
+    "problemStatement": "Characterize the structure of extremal sets achieving the minimum N = f(n) such that there exists an n-element subset of {1,...,N} with all 2^n subset sums distinct.",
+    "text": "Extremal sets for distinct subset sums: Conway-Guy sequence verification and optimality proofs.",
+    "proofStrategy": "Computationally verify Conway-Guy set values for n ≤ 6 using native_decide for the distinct subset sums property. Prove optimality (f(n) is exact minimum) for n = 3, 4 via exhaustive search over all subsets of {1,...,f(n)-1}.",
+    "keyInsights": [
+      "hasDistinctSubsetSums is decidable (check all pairs of subsets), enabling native_decide verification",
+      "Conway-Guy sets beat powers of 2: f(4)=7 vs 2^3=8, f(5)=13 vs 2^4=16",
+      "Optimality proofs via native_decide exhaustive search work for small n but become infeasible for n ≥ 5"
+    ],
+    "prerequisites": [
+      "Finite set theory: Finset, powerset, sum",
+      "Decidability and native_decide in Lean 4",
+      "Distinct subset sums property"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Defines hasDistinctSubsetSums, decidability instance, and achievesDistinctSums.",
+      "mathContext": "A set has distinct subset sums iff all 2^n subset sums are different."
+    },
+    {
+      "id": "small-cases",
+      "title": "Verified Small Cases",
+      "startLine": 39,
+      "endLine": 76,
+      "summary": "Verifies Conway-Guy sets for n=1 through n=5 via native_decide. Proves f(1)=1, f(2)=2, f(3)≤4, f(4)≤7, f(5)≤13.",
+      "mathContext": "Upper bounds on f(n) from OEIS A005318."
+    },
+    {
+      "id": "conway-guy",
+      "title": "Conway-Guy Sequence",
+      "startLine": 78,
+      "endLine": 100,
+      "summary": "Defines conwayGuySeq with explicit values for n≤8. States the Conway-Guy conjecture.",
+      "mathContext": "OEIS A005318: 0, 1, 2, 4, 7, 13, 24, 44, 84."
+    },
+    {
+      "id": "f6",
+      "title": "f(6) via Conway-Guy Set",
+      "startLine": 102,
+      "endLine": 110,
+      "summary": "Verifies {11,17,20,22,23,24} has distinct subset sums, giving f(6)≤24.",
+      "mathContext": "The 6-element Conway-Guy set achieves max 24."
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality (Lower Bounds)",
+      "startLine": 112,
+      "endLine": 146,
+      "summary": "Proves f(3)=4 exactly and f(4)=7 exactly via exhaustive search showing no smaller sets work.",
+      "mathContext": "¬achievesDistinctSums 3 3 and ¬achievesDistinctSums 4 6."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 148,
+      "endLine": 186,
+      "summary": "Proves Conway-Guy values match definitions, Conway-Guy achieves DSS for n=1-6, and optimality for n=3,4.",
+      "mathContext": "Summary theorems connecting all verified results."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified formalization of Conway-Guy extremal sets for distinct subset sums. 0 sorries, 0 axioms. Proves f(3)=4 and f(4)=7 are exact via exhaustive search. Verifies f(5)≤13 and f(6)≤24.",
+    "implications": "Computational verification of the Conway-Guy conjecture for small n. The approach scales to larger n with more compute resources.",
+    "openQuestions": [
+      "Prove optimality of f(5)=13 (requires native_decide over 5-element subsets of {1,...,12})",
+      "Define the Conway-Guy recurrence precisely and prove it generates A005318",
+      "Prove the asymptotic bound f(n) ~ 2^n/n from the Conway-Guy conjecture"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "extends",
+      "description": "Investigates the specific extremal sets for the parent distinct subset sums problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 5
+  }
+}
