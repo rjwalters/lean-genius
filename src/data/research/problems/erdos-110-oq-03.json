@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Created full formalization of generalized EHS conjecture for arbitrary cardinals. 8 theorems proved from 2 axioms. Identified limit cardinals as open frontier.",
+    "progressSummary": "FIX: Corrected 3 syntax errors in Erdos1100ProblemProvable.lean (:= by sorry before type → after type)",
     "builtItems": [
       "Erdos110HigherCardinals.lean: GeneralizedEHSConjecture parametric definition",
       "generalized_ehs_fails_aleph1: ℵ₁ case from Lambie-Hanson",
@@ -50,14 +50,16 @@
       "no_universal_bound theorem",
       "LimitCardinalEHSOpen definition marking open question",
       "erdos_110_oq_03_summary combining all results",
-      "Gallery data: src/data/proofs/erdos-110-oq-03/"
+      "Gallery data: src/data/proofs/erdos-110-oq-03/",
+      "Fixed syntax: tau_perp_equality_infinitely_often, erdos_hall_max_lower_bound, erdos_simonovits_bounds"
     ],
     "insights": [
       "Todorcevic walks on ordinals generalize Lambie-Hanson from ω₁ to any successor ordinal",
       "C-sequences on limit ordinals have fundamentally different properties - no incompatibility",
       "Each successor cardinal has its own independent counterexample - failures dont propagate",
       "No single F works across all uncountable graphs (stronger than per-cardinal failure)",
-      "The disjoint union trick fails because EHS is an existence statement not universal"
+      "The disjoint union trick fails because EHS is an existence statement not universal",
+      "6 sorries remain: 3 deep published results (Erdős-Hall, Erdős-Simonovits), 1 trivial bound (tau_perp_lower_bound), 2 dependent (g_exponential_growth)"
     ],
     "mathlibGaps": [
       "Cardinal.aleph ordinal arithmetic is well-supported in Mathlib",
