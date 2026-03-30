@@ -4,11 +4,18 @@
   "slug": "fair-games-theorem-oq-02",
   "description": "Concrete applications of the Optional Stopping Theorem: Gambler's Ruin with specific parameters and the doubling (martingale betting) strategy showing E[gain] = 0.",
   "meta": {
-    "author": "Paul Erdős et al.",
+    "author": "Paul Erd\u0151s et al.",
     "date": "1947",
     "status": "verified",
     "proofRepoPath": "Proofs/FairGamesTheoremOQ02.lean",
-    "tags": ["probability", "random-walk", "martingale", "gambling", "wiedijk-100", "classic"],
+    "tags": [
+      "probability",
+      "random-walk",
+      "martingale",
+      "gambling",
+      "wiedijk-100",
+      "classic"
+    ],
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
@@ -17,12 +24,17 @@
     "mathlib_version": "4.26.0"
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["FairGamesOQ01"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "FairGamesOQ01"
+    ],
     "namespace": "FairGamesOQ02",
     "lineCount": 159,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 5
-  }
+  },
+  "sections": []
 }
