@@ -75,12 +75,11 @@
       "erdos_1171_implies_k1",
       "erdos_1171_implies_k2",
       "ch_implies_multicolor",
-      "erdos_1171_under_ch",
-      "erdos_rado_partition"
+      "erdos_1171_under_ch"
     ],
-    "axiomCount": 4,
-    "lineCount": 417,
-    "assumptions": "4 axioms: hajnal_ch (Hajnal under CH), MartinsAxiom (concept), baumgartner_ma (Baumgartner under MA), erdos_rado_partition (Erdős-Rado). ch_implies_multicolor now proved by induction on k via color-merging."
+    "axiomCount": 2,
+    "lineCount": 433,
+    "assumptions": "2 axioms: hajnal_ch (Hajnal's theorem under CH), baumgartner_ma (Baumgartner's theorem under MA). MartinsAxiom now a concrete def (CCC/dense sets/generic filters). erdos_rado_partition removed (was unused)."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1171 belongs to the rich tradition of ordinal partition calculus, initiated by Erdős and Rado in the 1950s. The classical Ramsey theorem handles finite colorings of finite sets; its infinite generalization — the partition calculus — asks which ordinals α satisfy α → (β₀, β₁, …)²_r for given targets. The foundational Erdős-Rado theorem (1956) established (2^κ)⁺ → (κ⁺ + 1)²_κ, but partition relations for specific ordinals like ω₁² proved far more delicate.\n\nProblem #1171 generalizes Problem #1169 (ω₁² → (ω₁², 3)²) by allowing multiple colors. The tradeoff is that the primary color's target weakens from ω₁² to ω₁·ω, while non-primary colors need only produce a triangle (clique of size 3). This formulation was motivated by the observation that under CH, Hajnal's theorem trivially resolves the problem via a color-merging argument, but the ZFC status for all finite k remains unknown. Baumgartner [Ba89b] proved the k=1 case under Martin's Axiom (MA), which is strictly weaker than CH, using techniques specific to ω₁·ω that do not obviously extend to higher k.\n\nThe problem sits at the intersection of set-theoretic independence and combinatorics: the partition relation ω₁² → (ω₁², 3)² is known to be independent of ZFC (Todorčević showed it can fail under certain set-theoretic assumptions), but Problem #1171's weaker target ω₁·ω might allow a ZFC proof. The gap between what CH gives and what ZFC can prove remains one of the central open questions in infinite Ramsey theory, catalogued as [Va99, 7.84] in Vaughan's survey.",
@@ -163,8 +162,8 @@
       "title": "Baumgartner's Result Under MA",
       "startLine": 166,
       "endLine": 186,
-      "summary": "Axiomatizes Martin's Axiom, Baumgartner's theorem ω₁·ω → (ω₁·ω, 3)² under MA, and proves the k=1 case of #1171 under MA by source monotonicity.",
-      "mathContext": "Axiomatizes Martin's Axiom, Baumgartner's theorem ω₁·ω $\\to$ (ω₁·ω, 3)² under MA, and proves the k=1 case of #1171 under MA by source monotonicity."
+      "summary": "Defines Martin's Axiom concretely (CCC/dense sets/generic filters), axiomatizes Baumgartner's theorem ω₁·ω → (ω₁·ω, 3)² under MA, and proves the k=1 case of #1171 under MA by source monotonicity.",
+      "mathContext": "Defines Martin's Axiom concretely (CCC partial orders, dense subsets, generic filters), axiomatizes Baumgartner's theorem ω₁·ω $\\to$ (ω₁·ω, 3)² under MA, and proves the k=1 case of #1171 under MA by source monotonicity."
     },
     {
       "id": "ordinal-arithmetic",
@@ -183,31 +182,23 @@
       "mathContext": "Verified: Axiomatizes the trivial 1-color case, proves the conjecture implies the k=1 and k=2 special cases, axiomatizes the CH color-merging argument for all k, and proves erdos_1171_under_ch."
     },
     {
-      "id": "erdos-rado",
-      "title": "Erdős-Rado Partition Theorem",
-      "startLine": 243,
-      "endLine": 252,
-      "summary": "Axiomatizes the Erdős-Rado theorem (2^κ)⁺ → (κ⁺ + 1)²_κ as a contextual reference point from infinite Ramsey theory.",
-      "mathContext": "Axiomatizes the Erdős-Rado theorem ($2^{κ}$)⁺ $\\to$ (κ⁺ + 1)²_κ as a contextual reference point from infinite Ramsey theory."
-    },
-    {
       "id": "summary",
       "title": "Summary of Formalization",
       "startLine": 253,
       "endLine": 288,
-      "summary": "Comment block summarizing: the problem, what is formalized (partition relations, ordinals, monotonicity, CH/MA results, Erdős-Rado), the status (open in ZFC, solved under CH, k=1 under MA), key insights, and axiom/theorem count (14 axioms, 10 theorems).",
-      "mathContext": "Comment block summarizing: the problem, what is formalized (partition relations, ordinals, monotonicity, CH/MA results, Erdős-Rado), the status (open in ZFC, solved under CH, k=1 under MA), key insights, and axiom/theorem count (14 axioms, 10 theorems)."
+      "summary": "Comment block summarizing: the problem, what is formalized (partition relations, ordinals, MA definition, monotonicity, CH/MA results), the status (open in ZFC, solved under CH, k=1 under MA), key insights, and axiom/theorem count (2 axioms, 21 theorems).",
+      "mathContext": "Comment block summarizing: the problem, what is formalized (partition relations, ordinals, Martin's Axiom definition, monotonicity, CH/MA results), the status (open in ZFC, solved under CH, k=1 under MA), key insights, and axiom/theorem count (2 axioms, 21 theorems)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1171 — the multicolor partition relation ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} — in 289 lines of Lean 4 code with 14 axioms and 10 theorems. The key mathematical content includes the ordinal hierarchy ω₁ < ω₁·ω < ω₁², the full CH resolution via Hajnal's theorem and color merging, and Baumgartner's MA-conditional proof of the k=1 case. Seven theorems have non-trivial proofs using Mathlib's ordinal and cardinal API.",
+    "summary": "This formalization captures Erdős Problem #1171 — the multicolor partition relation ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} — in 433 lines of Lean 4 code with 2 axioms and 21 theorems. Martin's Axiom is concretely defined via CCC partial orders and generic filters. The key mathematical content includes the ordinal hierarchy ω₁ < ω₁·ω < ω₁², the full CH resolution via Hajnal's theorem and inductive color merging, and Baumgartner's MA-conditional proof of the k=1 case.",
     "implications": "**Theoretical Significance**: The formalization demonstrates how set-theoretic independence manifests in combinatorics: the same problem is trivially resolved under CH but remains open in ZFC.\n\nThe target-color tradeoff (weaker target ω₁·ω in exchange for more colors) represents a precise mathematical question about whether the weaker homogeneity requirement suffices to escape independence. Resolving #1171 in ZFC would advance our understanding of partition relations at ω₁² and potentially separate CH-dependent from ZFC-provable partition calculus.",
     "openQuestions": [
       "Does ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} hold in ZFC for all finite k, or is it independent?",
       "Can Baumgartner's MA technique for k=1 be extended to k ≥ 2 under MA?",
       "Is there a model of ZFC + ¬CH where the k=2 case fails?",
       "What is the precise relationship between the cofinality of the source ordinal and the provability of multicolor partition relations?",
-      "Can the axiomatized limit ordinal properties (omega1_isLimit, omega1TimesOmega_isLimit) be proved using Mathlib's current ordinal API?"
+      "Can Martin's Axiom be shown to imply the k ≥ 2 cases of Problem #1171, extending Baumgartner's k=1 result?"
     ]
   },
   "leanFile": {
@@ -222,10 +213,10 @@
       "Ordinal"
     ],
     "namespace": "Erdos1171",
-    "lineCount": 417,
-    "axiomCount": 4,
+    "lineCount": 433,
+    "axiomCount": 2,
     "theoremCount": 21,
-    "definitionCount": 5
+    "definitionCount": 8
   },
   "references": [
     "Erdős: original problem formulation",
