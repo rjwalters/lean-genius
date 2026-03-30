@@ -1,89 +1,17 @@
 {
-  "slug": "konigsberg-oq-03",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
-  "tier": "C",
-  "path": "fast",
-  "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
-  },
-  "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
-  },
-  "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-29T23:03:00-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
+  "id": "konigsberg-oq-03",
+  "name": "Eulerian paths in hypergraphs and infinite graphs",
+  "parentId": "konigsberg",
+  "status": "completed",
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: konigsberg-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
-  },
-  "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
-  ],
-  "relatedProofs": [
-    "konigsberg"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-03-30T06:03:08.389Z",
-  "lastUpdate": "2026-03-30T06:03:08.397Z",
-  "leanFiles": [
-    {
-      "path": "Proofs/Konigsberg.lean",
-      "filename": "Konigsberg.lean",
-      "lineCount": 221,
-      "theoremCount": 4,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Konigsberg.lean"
-    },
-    {
-      "path": "Proofs/KonigsbergOQ01.lean",
-      "filename": "KonigsbergOQ01.lean",
-      "lineCount": 405,
-      "theoremCount": 24,
-      "axiomCount": 0,
-      "defCount": 8,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01.lean"
-    },
-    {
-      "path": "Proofs/KonigsbergOQ02.lean",
-      "filename": "KonigsbergOQ02.lean",
-      "lineCount": 814,
-      "theoremCount": 30,
-      "axiomCount": 2,
-      "defCount": 11,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02.lean"
-    }
-  ]
+    "score": 4,
+    "insights": [
+      "Euler tours in r-uniform hypergraphs are NP-complete for r≥3 (Lonc-Naroski 2010)",
+      "Erdős-Grünwald-Weiszfeld (1936): characterization for countable graphs",
+      "Locally finite infinite graphs: at most one odd-degree vertex for one-way Euler path",
+      "Chinese Postman Problem: poly for finite, may not have optimal for infinite"
+    ],
+    "builtItems": ["KonigsbergOQ03.lean: 110 lines, 4 axioms"],
+    "progressSummary": "COMPLETED: Survey of hypergraph + infinite graph Euler path generalizations."
+  }
 }
