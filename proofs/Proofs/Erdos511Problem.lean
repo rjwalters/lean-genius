@@ -95,20 +95,7 @@ axiom polya_diameter_bound :
     ∀ (C : Set ℂ), C ⊆ closedSublevelSet (fun z => f.eval z) 1 →
       IsConnected C → Metric.diam C ≤ 4
 
-/--
-**Diameter is Bounded Below 4:**
-For any d < 4 and k ≥ 1, there exist monic polynomials with k components
-of diameter at least d.
--/
-axiom components_below_4 :
-  ∀ (d : ℝ), 0 < d → d < 4 →
-    ∀ (k : ℕ), k ≥ 1 →
-      ∃ (f : Polynomial ℂ), f.Monic ∧
-        ∃ (components : Finset (Set ℂ)),
-          components.card ≥ k ∧
-          (∀ C ∈ components, C ⊆ closedSublevelSet (fun z => f.eval z) 1 ∧
-                             IsConnected C ∧
-                             Metric.diam C ≥ d)
+-- components_below_4: unused axiom removed (superseded by pommerenke_theorem)
 
 /-
 ## Part III: Pommerenke's Counterexample
@@ -173,26 +160,9 @@ The polynomial z^n - 1 has exactly n roots, the n-th roots of unity.
 def rootsOfUnityPoly (n : ℕ) : Polynomial ℂ :=
   Polynomial.X ^ n - 1
 
-/--
-**z^n - 1 is Monic:**
-The polynomial z^n - 1 has leading coefficient 1.
--/
-axiom rootsOfUnityPoly_monic (n : ℕ) (hn : n ≥ 1) :
-  (rootsOfUnityPoly n).Monic
+-- rootsOfUnityPoly_monic: unused axiom removed
 
-/--
-**Sum of Diameters for z^n - 1:**
-For f(z) = z^n - 1, the sum of diameters of connected components
-satisfies Σ_C diam(C) = (1 + o(1)) · n · 2^(1/n).
-
-This shows the Erdős-Herzog-Piranian bound n·2^(1/n) is essentially tight.
--/
-axiom sum_diameters_rootsOfUnity (n : ℕ) (hn : n ≥ 1) :
-  ∃ (components : Finset (Set ℂ)) (sum_diam : ℝ),
-    (∀ C ∈ components, C ⊆ closedSublevelSet (fun z => (rootsOfUnityPoly n).eval z) 1 ∧
-                       IsConnected C) ∧
-    sum_diam = (components.toList.map (fun C => Metric.diam C)).sum ∧
-    sum_diam ≤ 2 * n * Real.rpow 2 (1 / n)
+-- sum_diameters_rootsOfUnity: unused axiom removed
 
 /-
 ## Part V: The Petal Structure
@@ -200,31 +170,9 @@ axiom sum_diameters_rootsOfUnity (n : ℕ) (hn : n ≥ 1) :
 The set {z : |z^n - 1| ≤ 1} has n "petals" meeting at the origin.
 -/
 
-/--
-**Petal Description:**
-For z^n - 1, the sublevel set consists of n petal-shaped regions,
-one centered at each n-th root of unity, all meeting at z = 0.
--/
-axiom petal_structure (n : ℕ) (hn : n ≥ 2) :
-  ∃ (components : Finset (Set ℂ)),
-    components.card = 1 ∧  -- They all connect at 0, so it's one component
-    ∀ C ∈ components,
-      (0 : ℂ) ∈ C ∧
-      C ⊆ closedSublevelSet (fun z => (rootsOfUnityPoly n).eval z) 1 ∧
-      IsConnected C
+-- petal_structure: unused axiom removed
 
-/--
-**Perturbing Creates Disconnections:**
-By moving roots slightly, we can disconnect petals at the origin,
-creating arbitrarily many separate components.
--/
-axiom perturbation_creates_components (n : ℕ) (hn : n ≥ 3) (k : ℕ) (hk : k ≤ n / 2) :
-  ∃ (f : Polynomial ℂ), f.Monic ∧ f.degree = n ∧
-    ∃ (components : Finset (Set ℂ)),
-      components.card ≥ k ∧
-      (∀ C ∈ components, C ⊆ closedSublevelSet (fun z => f.eval z) 1 ∧
-                         IsConnected C ∧
-                         Metric.diam C > Real.rpow 2 (1 / n) - 1)
+-- perturbation_creates_components: unused axiom removed
 
 /-
 ## Part VI: Huang's Independent Discovery
@@ -232,22 +180,7 @@ axiom perturbation_creates_components (n : ℕ) (hn : n ≥ 3) (k : ℕ) (hk : k
 In 2025, Huang independently proved Pommerenke's result.
 -/
 
-/--
-**Huang's Theorem (2025):**
-For any 0 < d < 4 and k ≥ 1, there exist monic polynomials
-with at least k components of diameter ≥ d.
-
-This was discovered independently of Pommerenke's 1961 work.
--/
-axiom huang_theorem :
-  ∀ (d : ℝ), 0 < d → d < 4 →
-    ∀ (k : ℕ), k ≥ 1 →
-      ∃ (f : Polynomial ℂ), f.Monic ∧
-        ∃ (components : Finset (Set ℂ)),
-          components.card ≥ k ∧
-          (∀ C ∈ components, C ⊆ closedSublevelSet (fun z => f.eval z) 1 ∧
-                             IsConnected C ∧
-                             Metric.diam C ≥ d)
+-- huang_theorem: unused axiom removed (duplicate of pommerenke_theorem)
 
 /-
 ## Part VII: The Critical Threshold at 4
@@ -255,17 +188,7 @@ axiom huang_theorem :
 Pólya's bound of 4 is optimal.
 -/
 
-/--
-**Optimality of 4:**
-The bound 4 in Pólya's theorem is sharp: there exist polynomials with
-components approaching diameter 4.
--/
-axiom diameter_4_is_sharp :
-  ∀ (ε : ℝ), ε > 0 →
-    ∃ (f : Polynomial ℂ), f.Monic ∧
-      ∃ (C : Set ℂ), C ⊆ closedSublevelSet (fun z => f.eval z) 1 ∧
-                     IsConnected C ∧
-                     Metric.diam C > 4 - ε
+-- diameter_4_is_sharp: unused axiom removed
 
 /--
 **But Not 4 Itself:**

@@ -90,9 +90,7 @@ def linearHypergraphs3 (n : ℕ) : Set (Hypergraph (Fin n)) :=
 noncomputable def f (n : ℕ) : ℕ :=
   sInf { independenceNumber H | H ∈ linearHypergraphs3 n }
 
-/-- f(n) is the guaranteed independent set size. -/
-axiom f_spec (n : ℕ) (H : Hypergraph (Fin n)) (hH : is3UniformLinear H) :
-    independenceNumber H ≥ f n
+-- f_spec: unused axiom removed (f(n) is the minimum by definition of sInf)
 
 /-
 ## Erdős's Bounds
@@ -176,14 +174,9 @@ def isSteinerTripleSystem (H : Hypergraph V) : Prop :=
   is3UniformLinear H ∧
   ∀ u v : V, u ≠ v → ∃! e ∈ H, u ∈ e ∧ v ∈ e
 
-/-- Steiner triple systems exist for n ≡ 1, 3 (mod 6). -/
-axiom steiner_existence (n : ℕ) :
-  (n % 6 = 1 ∨ n % 6 = 3) →
-  ∃ H : Hypergraph (Fin n), isSteinerTripleSystem H
+-- steiner_existence: unused axiom removed (existence result not referenced in main theorems)
 
-/-- STS are the densest 3-uniform linear hypergraphs: they have n(n-1)/6 edges. -/
-axiom sts_densest (n : ℕ) (H : Hypergraph (Fin n)) (hH : isSteinerTripleSystem H) :
-    H.card = n * (n - 1) / 6
+-- sts_densest: unused axiom removed (edge count formula not referenced in main theorems)
 
 /-
 ## Probabilistic Lower Bound
@@ -195,10 +188,7 @@ Random independent sets give the lower bound.
 noncomputable def expectedIndependent (H : Hypergraph V) (p : ℝ) : ℝ :=
   p * Fintype.card V - (H.card : ℝ) * p^3
 
-/-- Optimizing p gives the lower bound. -/
-axiom probabilistic_lower (H : Hypergraph V) (hH : is3UniformLinear H)
-    (hn : Fintype.card V = n) (hm : H.card = m) :
-    independenceNumber H ≥ Nat.floor ((n : ℝ)^(2/3) / (3 * m^(1/3) + 1))
+-- probabilistic_lower: unused axiom removed (probabilistic bound not referenced in main theorems)
 
 /-
 ## Upper Bound Construction
@@ -206,10 +196,7 @@ axiom probabilistic_lower (H : Hypergraph V) (hH : is3UniformLinear H)
 Constructions matching the lower bound.
 -/
 
-/-- There exist 3-uniform linear hypergraphs with small independence number. -/
-axiom construction_upper (n : ℕ) (hn : n ≥ 10) :
-  ∃ H : Hypergraph (Fin n), is3UniformLinear H ∧
-    independenceNumber H ≤ 2 * Nat.ceil (asymptoticBound n)
+-- construction_upper: unused axiom removed (construction result not referenced in main theorems)
 
 /-
 ## Comparison of Bounds
@@ -217,16 +204,9 @@ axiom construction_upper (n : ℕ) (hn : n ≥ 10) :
 The Phelps-Rödl bound is between Erdős's bounds.
 -/
 
-/-- (n log n)^(1/2) is between n^(1/2) and n^(2/3) for n ≥ 3. -/
-axiom bound_comparison (n : ℕ) (hn : n ≥ 3) :
-    (n : ℝ)^(1/2 : ℝ) ≤ asymptoticBound n ∧
-    asymptoticBound n ≤ (n : ℝ)^(2/3 : ℝ)
+-- bound_comparison: unused axiom removed (comparison between bounds not referenced in main theorems)
 
-/-- The log factor refines Erdős's gap: (n log n)^{1/2} = n^{1/2+o(1)}. -/
-axiom log_factor_refinement :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      asymptoticBound n ≤ (n : ℝ)^(1/2 + ε) ∧
-      (n : ℝ)^(1/2 : ℝ) ≤ asymptoticBound n
+-- log_factor_refinement: unused axiom removed (o(1) refinement not referenced in main theorems)
 
 /-
 ## Summary

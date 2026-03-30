@@ -133,16 +133,10 @@ Every sequence of n elements can be decomposed into at most
 
 More precisely: at most ⌈√(2n)⌉ monotonic subsequences suffice.
 -/
-axiom hanani_decomposition (n : ℕ) (seq : RealSeq n)
-    (hDistinct : Function.Injective seq) :
-    ∃ (decomp : MonotonicDecomposition n seq),
-      (decomp.numParts : ℝ) ≤ Real.sqrt (2 * n) + 1
+-- hanani_decomposition: unused axiom (Hanani 1957: decomposition into ≤ √(2n)+1 monotonic subsequences)
 
 /-- The Dilworth-style bound: at most √n increasing + √n decreasing. -/
-axiom dilworth_bound (n : ℕ) (seq : RealSeq n)
-    (hDistinct : Function.Injective seq) :
-    ∃ (decomp : MonotonicDecomposition n seq),
-      decomp.numParts ≤ 2 * Nat.sqrt n
+-- dilworth_bound: unused axiom (Dilworth-style: at most √n increasing + √n decreasing subsequences)
 
 /-
 ## Part IV: The Maximum Monotonic Sum Problem
@@ -179,16 +173,10 @@ Upper bound (from Cambie): c ≤ 1
 -/
 
 /-- Hanani's lower bound: c ≥ 1/√2 ≈ 0.707. -/
-axiom hanani_lower_bound (n : ℕ) (seq : RealSeq n)
-    (hDistinct : Function.Injective seq)
-    (hPos : ∀ i, seq i > 0) :
-    maxMonotonicSum seq ≥ totalSum seq / (Real.sqrt 2 * Real.sqrt n + 1)
+-- hanani_lower_bound: unused axiom (Hanani lower bound: maxMonotonicSum ≥ totalSum / (√2·√n + 1))
 
 /-- Cambie's upper bound: c ≤ 1 (by explicit construction). -/
-axiom cambie_upper_bound :
-    ∀ ε > 0, ∃ (n : ℕ) (seq : RealSeq n),
-      Function.Injective seq ∧ (∀ i, seq i > 0) ∧
-      maxMonotonicSum seq ≤ (1 + ε) * totalSum seq / Real.sqrt n
+-- cambie_upper_bound: unused axiom (Cambie construction showing c ≤ 1)
 
 /-
 ## Part VI: The Weighted Erdős-Szekeres Theorem
@@ -221,10 +209,7 @@ theorem tidor_wang_yang : ∀ (k : ℕ) (hk : k ≥ 1)
   weighted_erdos_szekeres
 
 /-- The optimal constant is exactly 1. -/
-axiom optimal_constant_is_one :
-    ∀ ε > 0, ∀ (n : ℕ) (seq : RealSeq n),
-      Function.Injective seq → (∀ i, seq i > 0) → totalSum seq > 0 →
-      maxMonotonicSum seq ≥ (1 - ε) * totalSum seq / Real.sqrt n
+-- optimal_constant_is_one: unused axiom (optimal constant c = 1; follows from weighted_erdos_szekeres)
 
 /-
 ## Part VII: Related Results
@@ -247,9 +232,7 @@ axiom lis_lds_bound (n : ℕ) (seq : RealSeq n)
 
 /-- The longest monotonic subsequence has length ≥ √n.
     Follows from lis_lds_bound: if max(LIS,LDS) < √n, then LIS·LDS < n. -/
-axiom longest_monotonic_bound (n : ℕ) (seq : RealSeq n)
-    (hDistinct : Function.Injective seq) :
-    max (LIS seq) (LDS seq) ≥ Nat.sqrt n
+-- longest_monotonic_bound: unused axiom (max(LIS,LDS) ≥ √n; derivable from lis_lds_bound)
 
 /-
 ## Part VIII: Main Results Summary
@@ -272,10 +255,7 @@ theorem erdos_1026 : ∀ (k : ℕ) (hk : k ≥ 1)
 
 /-- The result is tight: Cambie's construction achieves equality asymptotically.
     For any ε > 0 and large enough k, there exists a sequence achieving sum ≤ 1/k + ε. -/
-axiom erdos_1026_tight :
-    ∀ ε > 0, ∃ k₀, ∀ k ≥ k₀, ∃ (seq : RealSeq (k^2)),
-      Function.Injective seq ∧ (∀ i, seq i > 0) ∧
-      totalSum seq = 1 ∧ maxMonotonicSum seq ≤ 1 / k + ε
+-- erdos_1026_tight: unused axiom (tightness: Cambie construction achieves sum ≤ 1/k + ε asymptotically)
 
 /-- Connection to tournament theory: there exists a path of length m
     with m² ≥ n. Trivially provable: take m = n, then n² ≥ n for n ≥ 1. -/
