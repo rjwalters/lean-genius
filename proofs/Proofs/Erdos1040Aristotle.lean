@@ -64,8 +64,12 @@ theorem nthDiameter_nonneg (F : Set ℂ) (n : ℕ) : 0 ≤ nthDiameter F n := by
   unfold nthDiameter
   apply Real.sSup_nonneg
   rintro _ ⟨⟨pts, _⟩, rfl⟩
-  exact Real.rpow_nonneg (Finset.prod_nonneg fun i _ =>
-    Finset.prod_nonneg fun j _ => Complex.abs.nonneg _) _
+  apply Real.rpow_nonneg
+  apply Finset.prod_nonneg
+  intro i _
+  apply Finset.prod_nonneg
+  intro j _
+  exact Complex.abs.nonneg _
 
 /-- **NOTE**: `transfiniteDiameter_mono` was removed from Aristotle targets.
     It is unprovable with the current `ℝ`-valued `nthDiameter` definition because
