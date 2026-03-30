@@ -101,7 +101,11 @@ structure DescendingWaveIn (S : Finset ℕ) (k : ℕ) where
     such a wave where all terms have the same color. -/
 def HasMonochromaticWave (n k : ℕ) (c : TwoColoring n) : Prop :=
   ∃ (w : DescendingWaveIn (Finset.univ.image (fun i : Fin n => i.val + 1)) k),
-    ∃ color : Bool, ∀ i : Fin k, c ⟨w.seq i - 1, by sorry⟩ = color
+    ∃ color : Bool, ∀ i : Fin k, c ⟨w.seq i - 1, by
+      have := w.in_S i
+      simp [Finset.mem_image] at this
+      obtain ⟨j, _, hj⟩ := this
+      omega⟩ = color
 
 /- ## The Function f(k) -/
 
