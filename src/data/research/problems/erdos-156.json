@@ -1,6 +1,6 @@
 {
   "slug": "erdos-156",
-  "title": "Erd\u0151s #156",
+  "title": "Erdős #156",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -19,7 +19,7 @@
     "phase": "NEW",
     "since": "2026-03-29T12:20:00Z",
     "iteration": 3,
-    "focus": "Session 3: Proved greedySidon_maximal (2S \u2192 1S)",
+    "focus": "Session 3: Proved greedySidon_maximal (2S → 1S)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,24 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved greedySidon_maximal (2S \u2192 1S). 1 sorry remains (sidon_sumset_size counting argument). 6 axioms remain (all deep or open).",
+    "progressSummary": "PROGRESS: Proved greedySidon_maximal (2S → 1S). 1 sorry remains (sidon_sumset_size counting argument). 6 axioms remain (all deep or open).",
     "builtItems": [
       "Proved: random_sidon_barrier (was axiom, conclusion was True)",
-      "Proved: greedySidon_subset_interval \u2014 greedy set \u2286 Interval N",
-      "Fixed: minMaximalSidonSize definition sorry \u2192 uses greedySidon_subset_interval",
+      "Proved: greedySidon_subset_interval — greedy set ⊆ Interval N",
+      "Fixed: minMaximalSidonSize definition sorry → uses greedySidon_subset_interval",
       "greedySidon_maximal PROVED: greedy construction is maximal via monotonicity + upward-closed non-Sidon",
       "greedySidon_mono: monotonicity of greedy construction",
       "greedySidon_rejected: element not added implies Sidon check failed"
     ],
     "insights": [
-      "random_sidon_barrier axiom had conclusion True \u2014 trivially provable, eliminated",
+      "random_sidon_barrier axiom had conclusion True — trivially provable, eliminated",
       "greedySidon construction elements are always in {1,...,N} by induction on N",
-      "Remaining 6 axioms: deep results (Erd\u0151s-Tur\u00e1n, Ruzsa, growth exponent) + open conjectures",
+      "Remaining 6 axioms: deep results (Erdős-Turán, Ruzsa, growth exponent) + open conjectures",
       "Remaining 2 sorries: greedySidon_maximal (greedy is maximal), sidon_sumset_size (counting)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #156 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a maximal Sidon set $A\\subset \\{1,\\ldots,N\\}$ of size $O(N^{1/3})$?\n\n\n\nA question of Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and S\\'{o}s \\cite{ESS94}. It is easy to prove that the greedy construction of a maximal Sidon set in $\\{1,\\ldots,N\\}$ has size $\\gg N^{1/3}$. Ruzsa \\cite{Ru98b} constructed a maximal Sidon set of size $\\ll (N\\log N)^{1/3}$.\n\nSee also [340].\n\n\n\n\nReferences\n\n\n[ESS94] Erd\\H{o}s, P. and S\\'{a}rk\\\"{o}zy, A. and S\\'{o}s, T., On Sum Sets of Sidon Sets, I. Journal of Number Theory (1994), 329-347.\n\n[Ru98b] Ruzsa, Imre Z., A small maximal Sidon set. Ramanujan J. (1998), 55-58.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #3\n- Problem #340\n- Problem #155\n- Problem #157\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ESS94\n- Ru98b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #156 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a maximal Sidon set $A\\subset \\{1,\\ldots,N\\}$ of size $O(N^{1/3})$?\n\n\n\nA question of Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and S\\'{o}s \\cite{ESS94}. It is easy to prove that the greedy construction of a maximal Sidon set in $\\{1,\\ldots,N\\}$ has size $\\gg N^{1/3}$. Ruzsa \\cite{Ru98b} constructed a maximal Sidon set of size $\\ll (N\\log N)^{1/3}$.\n\nSee also [340].\n\n\n\n\nReferences\n\n\n[ESS94] Erd\\H{o}s, P. and S\\'{a}rk\\\"{o}zy, A. and S\\'{o}s, T., On Sum Sets of Sidon Sets, I. Journal of Number Theory (1994), 329-347.\n\n[Ru98b] Ruzsa, Imre Z., A small maximal Sidon set. Ramanujan J. (1998), 55-58.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #3\n- Problem #340\n- Problem #155\n- Problem #157\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ESS94\n- Ru98b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -69,12 +69,13 @@
     {
       "path": "Proofs/Erdos156Problem.lean",
       "filename": "Erdos156Problem.lean",
-      "lineCount": 310,
-      "theoremCount": 9,
+      "lineCount": 311,
+      "theoremCount": 6,
       "axiomCount": 6,
-      "defCount": 8,
+      "defCount": 10,
       "sorryCount": 1,
-      "isAristotle": false
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos156Problem.lean"
     }
   ]
 }

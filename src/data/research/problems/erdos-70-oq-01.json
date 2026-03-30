@@ -1,6 +1,6 @@
 {
   "slug": "erdos-70-oq-01",
-  "title": "Does \ud835\udd20 \u2192 (\u03c9\u00b2, n)\u2082\u00b3 hold",
+  "title": "Does 𝔠 → (ω², n)₂³ hold",
   "phase": "ACT",
   "status": "active",
   "tier": "C",
@@ -53,6 +53,7 @@
   "relatedProofs": [
     "erdos-7",
     "erdos-70",
+    "erdos-70-oq-01",
     "erdos-700",
     "erdos-701",
     "erdos-702",
@@ -183,11 +184,22 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos709Problem.lean"
     },
     {
+      "path": "Proofs/Erdos70OQ01Problem.lean",
+      "filename": "Erdos70OQ01Problem.lean",
+      "lineCount": 241,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos70OQ01Problem.lean"
+    },
+    {
       "path": "Proofs/Erdos70Problem.lean",
       "filename": "Erdos70Problem.lean",
-      "lineCount": 226,
-      "theoremCount": 6,
-      "axiomCount": 5,
+      "lineCount": 246,
+      "theoremCount": 9,
+      "axiomCount": 2,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,

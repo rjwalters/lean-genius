@@ -8,7 +8,10 @@
   "problemStatement": {
     "formal": "Parametrize all pairs (a,b) with (a+b)|ab using coprime factorizations and determine the asymptotic count in {1,...,N}.",
     "plain": "Explicitly describe all pairs of positive integers whose sum divides their product, and count how many such pairs exist up to N.",
-    "whyMatters": ["Structural foundation for Erdős #327 avoidance problem", "Connects unit fractions to coprime factorization theory"]
+    "whyMatters": [
+      "Structural foundation for Erdős #327 avoidance problem",
+      "Connects unit fractions to coprime factorization theory"
+    ]
   },
   "knownResults": {
     "proven": [
@@ -50,11 +53,23 @@
     "nextSteps": [],
     "markdown": ""
   },
-  "tags": ["erdos", "number theory", "unit fractions", "divisibility"],
-  "relatedProofs": ["erdos-327"],
+  "tags": [
+    "erdos",
+    "number theory",
+    "unit fractions",
+    "divisibility"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-32",
+    "erdos-327",
+    "erdos-327-oq-01"
+  ],
   "references": {
     "papers": [],
-    "urls": ["https://erdosproblems.com/327"],
+    "urls": [
+      "https://erdosproblems.com/327"
+    ],
     "mathlib": []
   },
   "started": "2026-03-29T18:40:00Z",
@@ -65,13 +80,24 @@
     {
       "path": "Proofs/Erdos327OQ01.lean",
       "filename": "Erdos327OQ01.lean",
-      "lineCount": 150,
-      "theoremCount": 10,
+      "lineCount": 166,
+      "theoremCount": 6,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos327OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos327Problem.lean",
+      "filename": "Erdos327Problem.lean",
+      "lineCount": 199,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos327Problem.lean"
     }
   ]
 }
