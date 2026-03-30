@@ -1,0 +1,199 @@
+{
+  "slug": "erdos-52-oq-02",
+  "title": "Does a polynomial sum-product bound hold in all commutative rings, or is it s...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Does a polynomial sum-product bound hold in all commutative rings, or is it s....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T17:32:58.850Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-5",
+    "erdos-52",
+    "erdos-520",
+    "erdos-521",
+    "erdos-522",
+    "erdos-523",
+    "erdos-524",
+    "erdos-525",
+    "erdos-525-oq-02",
+    "erdos-526",
+    "erdos-527",
+    "erdos-528",
+    "erdos-529"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.850Z",
+  "lastUpdate": "2026-03-30T17:32:58.850Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos520Problem.lean",
+      "filename": "Erdos520Problem.lean",
+      "lineCount": 138,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos520Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos521Problem.lean",
+      "filename": "Erdos521Problem.lean",
+      "lineCount": 175,
+      "theoremCount": 1,
+      "axiomCount": 5,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos521Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos522Problem.lean",
+      "filename": "Erdos522Problem.lean",
+      "lineCount": 277,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos522Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos523Problem.lean",
+      "filename": "Erdos523Problem.lean",
+      "lineCount": 248,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos523Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos524Problem.lean",
+      "filename": "Erdos524Problem.lean",
+      "lineCount": 318,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos524Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos525OQ02.lean",
+      "filename": "Erdos525OQ02.lean",
+      "lineCount": 144,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos525OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos525Problem.lean",
+      "filename": "Erdos525Problem.lean",
+      "lineCount": 203,
+      "theoremCount": 3,
+      "axiomCount": 5,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos525Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos526Problem.lean",
+      "filename": "Erdos526Problem.lean",
+      "lineCount": 243,
+      "theoremCount": 2,
+      "axiomCount": 4,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos526Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos527Problem.lean",
+      "filename": "Erdos527Problem.lean",
+      "lineCount": 137,
+      "theoremCount": 3,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos527Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos528Problem.lean",
+      "filename": "Erdos528Problem.lean",
+      "lineCount": 201,
+      "theoremCount": 3,
+      "axiomCount": 7,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos528Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos529Problem.lean",
+      "filename": "Erdos529Problem.lean",
+      "lineCount": 307,
+      "theoremCount": 6,
+      "axiomCount": 5,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos529Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos52Problem.lean",
+      "filename": "Erdos52Problem.lean",
+      "lineCount": 158,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos52Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "slug": "sum-of-kth-powers-oq-01",
+  "title": "Can the general Faulhaber formula $\\sum_{i=0}^n i^k = \\frac{1}{k+1} \\sum_{j=0...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can the general Faulhaber formula $\\sum_{i=0}^n i^k = \\frac{1}{k+1} \\sum_{j=0....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T17:32:58.852Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "sum-of-kth-powers",
+    "sum-of-kth-powers-oq-02",
+    "sum-of-kth-powers-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T17:32:58.852Z",
+  "lastUpdate": "2026-03-30T17:32:58.852Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/SumOfKthPowers.lean",
+      "filename": "SumOfKthPowers.lean",
+      "lineCount": 601,
+      "theoremCount": 49,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowers.lean"
+    },
+    {
+      "path": "Proofs/SumOfKthPowersOQ02.lean",
+      "filename": "SumOfKthPowersOQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ02.lean"
+    },
+    {
+      "path": "Proofs/SumOfKthPowersOQ04.lean",
+      "filename": "SumOfKthPowersOQ04.lean",
+      "lineCount": 127,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ04.lean"
+    }
+  ]
+}
