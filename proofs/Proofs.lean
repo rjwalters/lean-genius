@@ -1574,6 +1574,7 @@ import Proofs.SearchMathlib
 import Proofs.ShannonChannelCoding
 import Proofs.ShannonEntropy
 import Proofs.ShannonEntropyAristotle
+import Proofs.ShannonEntropyOQ02
 import Proofs.ShannonSourceCoding
 import Proofs.SkolemNoetherMatrixAut
 import Proofs.SkolemNoetherMatrixAutAristotle
