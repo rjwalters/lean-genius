@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős–Hajnal",
     "sourceUrl": "https://erdosproblems.com/1068",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1068Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "chromatic-number",
       "infinite-connectivity"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 1068,
     "erdosUrl": "https://erdosproblems.com/1068",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
+    "axiomCount": 0,
     "lineCount": 281,
-    "assumptions": "3 axioms: erdos_1068 (OPEN conjecture), soukup_uncountable_not_inf_connected (research result), problem_1067_disproved (research result). 0 sorries remain. 0 sorries remain.(s) remain.",
+    "assumptions": "None. Fully verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
