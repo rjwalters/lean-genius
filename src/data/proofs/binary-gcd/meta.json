@@ -7,15 +7,20 @@
     "author": "Josef Stein (1967), formalized in Lean 4",
     "date": "1967",
     "status": "verified",
-    "tags": ["algorithms", "number-theory", "gcd", "bit-manipulation"],
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "bit-manipulation"
+    ],
     "proofRepoPath": "Proofs/GcdAlgorithmOQ02.lean",
     "badge": "original",
     "sorries": 0,
     "originalContributions": [
       "binaryGcd: recursive implementation of Stein's algorithm in Lean 4",
-      "gcd_sub_right: gcd(a-b, b) = gcd(a, b) for b ≤ a",
+      "gcd_sub_right: gcd(a-b, b) = gcd(a, b) for b \u2264 a",
       "gcd_mul_two_left: gcd(2a, b) = gcd(a, b) when b is odd",
-      "gcd_two_mul: gcd(2a, 2b) = 2·gcd(a, b)",
+      "gcd_two_mul: gcd(2a, 2b) = 2\u00b7gcd(a, b)",
       "gcd_odd_sub_half: gcd((a-b)/2, b) = gcd(a, b) for both odd, a > b"
     ],
     "dateAdded": "2026-03-30",
@@ -29,11 +34,14 @@
     "text": "Binary GCD (Stein's algorithm) uses subtraction and division by 2 instead of Euclidean division.",
     "proofStrategy": "Define the algorithm by well-founded recursion on a+b. Prove three key lemmas (even factor extraction, coprime reduction, odd subtraction) and combine for correctness.",
     "keyInsights": [
-      "Three key lemmas: gcd(2a,2b)=2·gcd(a,b), gcd(2a,b)=gcd(a,b) for odd b, gcd(a-b,b)=gcd(a,b)",
+      "Three key lemmas: gcd(2a,2b)=2\u00b7gcd(a,b), gcd(2a,b)=gcd(a,b) for odd b, gcd(a-b,b)=gcd(a,b)",
       "When both arguments are odd, their difference is even, enabling the halving step",
       "Termination: a+b strictly decreases in every recursive call"
     ],
-    "prerequisites": ["GCD properties", "Basic number theory"]
+    "prerequisites": [
+      "GCD properties",
+      "Basic number theory"
+    ]
   },
   "crossReferences": [
     {
@@ -50,7 +58,10 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib.Data.Nat.GCD.Basic", "Mathlib.Tactic"],
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic"
+    ],
     "namespace": "BinaryGcd",
     "lineCount": 177,
     "axiomCount": 0,
@@ -68,5 +79,6 @@
       "type": "core",
       "description": "Correctness: binaryGcd a b = Nat.gcd a b"
     }
-  ]
+  ],
+  "sections": []
 }
