@@ -315,6 +315,27 @@ theorem reprCount_pos_of_mem {A B : Finset ℕ} {a b : ℕ}
   rw [Finset.card_pos]
   exact ⟨⟨a, b⟩, Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, hb⟩, rfl⟩⟩
 
+/-- reprCount A B m ≤ |A| for m > 0: each representation (a,b) with a·b = m
+    is determined by a (since b = m/a), giving at most |A| representations. -/
+theorem reprCount_le_card_left (A B : Finset ℕ) (m : ℕ) (hm : 0 < m) :
+    reprCount A B m ≤ A.card := by
+  unfold reprCount
+  apply Finset.card_le_card_of_injOn Prod.fst
+  · intro ⟨a, b⟩ hp
+    exact (Finset.mem_product.mp (Finset.mem_filter.mp hp).1).1
+  · intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    have hm₁ : a₁ * b₁ = m := (Finset.mem_filter.mp h₁).2
+    have hm₂ : a₂ * b₂ = m := (Finset.mem_filter.mp h₂).2
+    have ha : a₁ ≠ 0 := by rintro rfl; simp at hm₁; omega
+    have hb : b₁ = b₂ :=
+      mul_left_cancel₀ ha (hm₁.trans (by rw [← heq]; exact hm₂.symm))
+    exact Prod.ext heq hb
+
+/-- reprCount A B m ≤ |B| for m > 0, by commutativity. -/
+theorem reprCount_le_card_right (A B : Finset ℕ) (m : ℕ) (hm : 0 < m) :
+    reprCount A B m ≤ B.card := by
+  rw [reprCount_comm]; exact reprCount_le_card_left B A m hm
+
 /-- maxUniqueProducts N ≤ N²: trivial quadratic upper bound.
     Each A, B ⊆ {1,...,N} has at most N elements, so F(A,B) ≤ N·N = N². -/
 theorem maxUniqueProducts_le_sq (N : ℕ) :
