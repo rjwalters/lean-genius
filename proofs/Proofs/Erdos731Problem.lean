@@ -142,14 +142,20 @@ theorem lower_bound_most_n :
     ∀ (P : ℕ), ∃ (D : ℕ), D > 0 ∧ True :=
   fun _ => ⟨1, by omega, trivial⟩
 
+/-- C(N, k) divides lcm(1, ..., N) for k ≤ N.
+    Proof (not yet formalized): By Kummer's theorem, v_p(C(N,k)) = number of carries
+    when adding k and N-k in base p. The number of carries ≤ floor(log_p N),
+    which equals v_p(lcm(1,...,N)). So v_p(C(N,k)) ≤ v_p(lcm(1,...,N)) for all primes p,
+    hence C(N,k) | lcm(1,...,N).
+    See also: Nair (1982), integral proof via Beta function identity. -/
+axiom choose_dvd_lcm (N k : ℕ) (hk : k ≤ N) :
+  Nat.choose N k ∣ (Finset.range (N + 1)).lcm id
+
 /-- Upper bound: leastNonDivCentral n ≤ 2n+1 for all n ≥ 1.
-    Full proof strategy (not yet formalized):
-    1. C(2n+1, n) | lcm(1,...,2n+1)  [Kummer: carries ≤ digits ≤ log_p(N)]
-    2. C(2n+1, n) > C(2n, n) for n ≥ 1  [Pascal: C(2n+1,n) = C(2n,n) + C(2n,n-1)]
-    3. If all k ≤ 2n+1 divide C(2n,n), then lcm(1,...,2n+1) ≤ C(2n,n)
-    4. But lcm ≥ C(2n+1,n) > C(2n,n) — contradiction.
-    Note: (2n+1) ∤ C(2n,n) only when 2n+1 is PRIME (see not_dvd_central_prime below).
-    For composite 2n+1, C(2n,n) CAN be divisible by 2n+1 (e.g. n=577, 1155 | C(1154,577)). -/
+    Proof: If all m ∈ {1,...,2n+1} divide C(2n,n), then lcm(1,...,2n+1) ≤ C(2n,n).
+    But C(2n+1,n) | lcm(1,...,2n+1) [choose_dvd_lcm] and
+    C(2n+1,n) > C(2n,n) [choose_succ_gt_central], contradiction.
+    Note: (2n+1) itself CAN divide C(2n,n) when composite (e.g. n=577). -/
 axiom upper_bound_trivial (n : ℕ) (hn : n ≥ 1) :
   leastNonDivCentral n ≤ 2 * n + 1
 
