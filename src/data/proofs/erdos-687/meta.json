@@ -21,9 +21,9 @@
     "erdosNumber": 687,
     "erdosUrl": "https://erdosproblems.com/687",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 456,
-    "assumptions": "4 axioms: jacobsthalY_eq_jacobsthal, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture. jacobsthalSet_bddAbove proved via CRT induction. erdos_687_conjecture proved from maier_pomerance_conjecture. 0 sorries.",
+    "axiomCount": 1,
+    "lineCount": 433,
+    "assumptions": "1 axiom: maier_pomerance_conjecture. Previously had 4 axioms; jacobsthalY_eq_jacobsthal, iwaniec_upper, and fgkmt_lower removed. jacobsthalSet_bddAbove proved via CRT induction. erdos_687_conjecture proved from maier_pomerance_conjecture. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -138,8 +138,8 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 456,
-    "axiomCount": 4,
+    "lineCount": 433,
+    "axiomCount": 1,
     "theoremCount": 22,
     "definitionCount": 5
   },

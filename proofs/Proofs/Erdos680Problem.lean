@@ -53,22 +53,6 @@ def ErdosProblem680Variant : Prop :=
 def ErdosProblem680Combined : Prop :=
   ErdosProblem680 ∧ ErdosProblem680Variant
 
-/- ## Connections to Prime Gap Conjectures -/
-
-/-- Cramér's conjecture on prime gaps: the gap after prime p is O((log p)²). -/
-def CramerConjecture : Prop :=
-  ∃ C : ℝ, 0 < C ∧ ∀ p : ℕ, p.Prime → 2 < p →
-    (Nat.find (Nat.exists_infinite_primes (p + 1)) - p : ℝ) ≤ C * (Real.log p) ^ 2
-
-/-- If Cramér's conjecture holds, then for sufficiently large n there exists
-    k with p(n+k) > e^{(1-ε)√k} for any ε > 0. -/
-axiom cramer_implies_large_lpf :
-    CramerConjecture →
-    ∀ ε : ℝ, 0 < ε →
-      ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
-        ∃ k : ℕ, 0 < k ∧
-          (n + k).minFac > ⌊Real.exp ((1 - ε) * Real.sqrt k)⌋₊
-
 /- ## Basic Properties -/
 
 /-- The quadratic bound k² + 1 grows slower than the exponential e^{(1+ε)√k}

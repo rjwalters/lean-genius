@@ -56,9 +56,9 @@
       "omega_pos_of_one_lt: ω(n) > 0 for n ≥ 2 (PROVED)",
       "omega_prime: ω(p) = 1 for prime p (PROVED)"
     ],
-    "axiomCount": 2,
-    "lineCount": 106,
-    "assumptions": "3 axiom(s): omega_choose_lower, omega_choose_tight_near_n, omega_eq_zero_iff. See Lean source for complete statements."
+    "axiomCount": 0,
+    "lineCount": 92,
+    "assumptions": "0 axioms. All results proved directly. Previously had 2 axioms (omega_choose_lower, omega_choose_tight_near_n) which have been removed."
   },
   "overview": {
     "historicalContext": "Erdős studied the prime factorization structure of binomial coefficients throughout his career. The function ω(n), counting distinct prime divisors, is a fundamental quantity in analytic number theory. For binomial coefficients C(n,k), Kummer's theorem relates the p-adic valuation to carries in base-p addition, but counting the number of distinct primes dividing C(n,k) is a subtler question.\n\nThe conjecture gives a precise asymptotic formula: ω(C(n,k)) ~ k · Σ_{k<p<n} 1/p, where the sum runs over primes in the interval (k,n). By Mertens' theorem, this prime reciprocal sum is approximately log(log n/log k), so the formula predicts ω(C(n,k)) ~ k · log(log n/log k). The result should hold in the 'middle range' n^ε < k ≤ n^{1-ε}, where both k and n/k grow polynomially.\n\nThe trivial lower bound ω(C(n,k)) ≥ log C(n,k)/log n comes from the fact that each prime factor of C(n,k) is at most n. This bound is tight when k is near n (specifically for k > n^{1-o(1)}), since then C(n,k) is small and its prime factors are constrained. Erdős speculated that the conjecture might extend to k as small as (log n)^c.",
@@ -138,8 +138,8 @@
       "Nat"
     ],
     "namespace": null,
-    "lineCount": 106,
-    "axiomCount": 2,
+    "lineCount": 92,
+    "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 3
   },

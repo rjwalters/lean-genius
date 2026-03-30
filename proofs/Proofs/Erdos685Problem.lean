@@ -40,20 +40,6 @@ def ErdosProblem685 : Prop :=
             (1 - δ) * k * primeSumInRange k n ≤ (omega (n.choose k) : ℝ) ∧
             (omega (n.choose k) : ℝ) ≤ (1 + δ) * k * primeSumInRange k n
 
-/- ## Trivial lower bound -/
-
-/-- Trivial lower bound: `ω(C(n,k)) > log C(n,k) / log n`. -/
-axiom omega_choose_lower (n k : ℕ) (hn : 2 ≤ n) (hk : 0 < k) (hkn : k ≤ n) :
-    Real.log (n.choose k : ℝ) / Real.log n ≤ (omega (n.choose k) : ℝ)
-
-/-- The lower bound is asymptotically tight for `k > n^{1-o(1)}`. -/
-axiom omega_choose_tight_near_n :
-    ∀ ε : ℝ, 0 < ε →
-      ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
-        ∀ k : ℕ, (n : ℝ) ^ (1 - ε) < k → k ≤ n →
-          (omega (n.choose k) : ℝ) ≤
-            (1 + ε) * Real.log (n.choose k : ℝ) / Real.log n
-
 /- ## Basic properties -/
 
 /-- `ω(1) = 0`: 1 has no prime divisors. -/

@@ -57,9 +57,9 @@
       "prime_binomial_structure theorem: p divides C(p,k)",
       "fGeneral definition: generalized problem"
     ],
-    "axiomCount": 6,
-    "lineCount": 412,
-    "assumptions": "6 axioms (soundness fix: was 5 but f_property was false for small n). Added f_domain_large and restricted f_property/erdos_684_statement to require f_domain. Remaining axioms: f_property, f_domain_large, mahler_ineffective, tang_bound, rh_conditional_bound, heuristic_conjecture."
+    "axiomCount": 3,
+    "lineCount": 380,
+    "assumptions": "3 axioms: tang_bound, rh_conditional_bound, heuristic_conjecture. Previously had 6 axioms; f_property, f_domain_large, and mahler_ineffective removed."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in [Er79d]. For binomial coefficient C(n,k), we decompose it as u·v where u is the k-smooth part (primes ≤ k) and v is the k-rough part (primes > k).\n\nThe function f(n) asks: how small can k be while still having the smooth part exceed n²?\n\nMahler's classical theorem gives an ineffective bound. Recent work by Tang & ChatGPT (2026) proved f(n) ≤ n^{30/43+o(1)}, with n^{2/3+o(1)} conditional on the Riemann Hypothesis.\n\nRemarkably, heuristic arguments by Sothanaphan & ChatGPT suggest f(n) ~ 2 log n for most n - vastly smaller than proven bounds!\n\nThe sequence f(n) is recorded in OEIS A392019.",
@@ -173,8 +173,8 @@
       "Finset"
     ],
     "namespace": "Erdos684",
-    "lineCount": 395,
-    "axiomCount": 6,
+    "lineCount": 380,
+    "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 10
   },

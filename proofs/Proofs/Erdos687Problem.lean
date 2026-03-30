@@ -286,29 +286,6 @@ theorem jacobsthalY_mono (x₁ x₂ : ℕ) (h : x₁ ≤ x₂) :
   exact csSup_le_csSup (jacobsthalSet_bddAbove x₂)
     (jacobsthalSet_nonempty x₁) (jacobsthalSet_mono h)
 
-/- ## Connection to Jacobsthal Function -/
-
-/-- Y(x) equals the Jacobsthal function of the primorial. -/
-axiom jacobsthalY_eq_jacobsthal (x : ℕ) :
-  jacobsthalY x = jacobsthal (primorial x)
-
-/- ## Known Bounds -/
-
-/-- **Iwaniec (1978).** Y(x) ≪ x².
-This is the best known upper bound. -/
-axiom iwaniec_upper :
-  ∃ C : ℝ, 0 < C ∧ ∀ (x : ℕ), 2 ≤ x →
-    (jacobsthalY x : ℝ) ≤ C * (x : ℝ) ^ 2
-
-/-- **Ford–Green–Konyagin–Maynard–Tao (2018).**
-Y(x) ≫ x · (log x)(log log log x) / (log log x).
-This improved Rankin's classical lower bound. -/
-axiom fgkmt_lower :
-  ∃ c : ℝ, 0 < c ∧ ∀ᶠ (x : ℕ) in atTop,
-    (jacobsthalY x : ℝ) ≥ c * (x : ℝ) *
-      Real.log (x : ℝ) * Real.log (Real.log (Real.log (x : ℝ))) /
-      Real.log (Real.log (x : ℝ))
-
 /-- **Maier–Pomerance Conjecture.** Y(x) ≪ x · (log x)^{2+o(1)}.
 If true, this would nearly close the gap with the FGKMT lower bound. -/
 axiom maier_pomerance_conjecture :
