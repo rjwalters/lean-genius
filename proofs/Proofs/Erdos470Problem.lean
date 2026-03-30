@@ -493,6 +493,52 @@ theorem odd_weird_gt_2205 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 2205 < n :
   · exact absurd (heq ▸ twenty205_semiperfect) hw.2
 
 /-
+## Further extending the odd weird bound: >2835
+
+2835 = 3⁴ × 5 × 7 is the fourth smallest odd abundant number.
+It is semiperfect. No odd number in (2205, 2835) is abundant.
+-/
+
+/--
+2835 = 3⁴ × 5 × 7 is odd and abundant.
+-/
+theorem twenty835_odd_abundant : Odd 2835 ∧ IsAbundant 2835 := by
+  constructor
+  · exact ⟨1417, by omega⟩
+  · unfold IsAbundant sigma; native_decide
+
+/--
+2835 is semiperfect: some subset of its proper divisors sums to 2835.
+-/
+theorem twenty835_semiperfect : IsPseudoperfect 2835 := by
+  have : ∃ S ∈ (2835 : ℕ).properDivisors.powerset, S.sum id = 2835 := by native_decide
+  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
+
+/--
+2835 is not weird (it is semiperfect).
+-/
+theorem twenty835_not_weird : ¬IsWeird 2835 := fun ⟨_, hnp⟩ => hnp twenty835_semiperfect
+
+/--
+No odd number in the range (2205, 2835) is abundant.
+-/
+theorem no_odd_abundant_2206_to_2835 (n : ℕ) (hn1 : 2205 < n) (hn2 : n < 2835)
+    (hodd : Odd n) : ¬IsAbundant n := by
+  have h : ∀ m ∈ Finset.Icc 2206 2834, Odd m → ¬IsAbundant m := by native_decide
+  exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
+
+/--
+Any odd weird number must exceed 2835.
+-/
+theorem odd_weird_gt_2835 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 2835 < n := by
+  have h2205 := odd_weird_gt_2205 n hw hodd
+  by_contra hle
+  push_neg at hle
+  rcases Nat.lt_or_eq_of_le hle with hlt | heq
+  · exact absurd hw.1 (no_odd_abundant_2206_to_2835 n h2205 hlt hodd)
+  · exact absurd (heq ▸ twenty835_semiperfect) hw.2
+
+/-
 ## Computational Bounds on Odd Weird Numbers
 
 Fang (2022) showed there are no odd weird numbers below 10^21.
@@ -711,11 +757,11 @@ theorem erdos_470 :
     (IsWeird 70 ∧ ∀ n < 70, ¬IsWeird n) ∧
     IsWeird 836 ∧
     IsPrimitiveWeird 70 ∧
-    (∀ n, IsWeird n → Odd n → 2205 < n) ∧
+    (∀ n, IsWeird n → Odd n → 2835 < n) ∧
     (∃ c > 0, ∀ᶠ N in Filter.atTop, (↑((WeirdSet ∩ {n | n ≤ N}).ncard) : ℝ) / N ≥ c) ∧
     ((∀ᶠ n in Filter.atTop, (primeGap n : ℝ) < Real.sqrt (nthPrime n) / 10) →
       PrimitiveWeirdSet.Infinite) :=
   ⟨smallest_weird_is_70, weird_836, seventy_is_primitive_weird,
-   odd_weird_gt_2205, benkoski_erdos_density, melfi_conditional⟩
+   odd_weird_gt_2835, benkoski_erdos_density, melfi_conditional⟩
 
 end Erdos470
