@@ -10,42 +10,18 @@
       "search_intractable (2^60 > 10^18) provable by native_decide",
       "prime_sets_disjoint needs p-adic valuation argument (left as sorry)",
       "one_helps_balance needs extra hypothesis that P has >1 element",
-      "product_rigidity is a trivial iff but has complex formulation",
-      "product_rigidity was trivially provable",
-      "3 primes bound 31/30 eliminates small cases"
+      "product_rigidity is a trivial iff but has complex formulation"
     ],
     "builtItems": [
       "prime_reciprocal_sum_lower_bound proved via AM-GM (sorry eliminated)",
-      "search_intractable converted from axiom to theorem via native_decide",
-      "Erdos307OQ02.lean: product_rigidity theorem (was axiom)",
-      "one_helps_balance proved",
-      "no_two_three_solution proved via 31/30 bound",
-      "Gallery entry"
+      "search_intractable converted from axiom to theorem via native_decide"
     ],
-    "progressSummary": "PROGRESS: 3/5 sorry/axiom targets eliminated. product_rigidity, one_helps_balance, no_two_three_solution proved. Remaining: p-adic disjointness, computational size bound.",
+    "progressSummary": "COMPLETED: Axioms 5→4 (search_intractable proved), sorries 6→4 (AM-GM lower bound proved). Key proof: reciprocalSum(P∪Q) ≥ 2 via (a-1)²/a ≥ 0.",
     "nextSteps": [
       "Prove prime_sets_disjoint via p-adic valuation argument",
       "Prove one_helps_balance (needs P.card > 1 hypothesis)",
       "Convert product_rigidity axiom to theorem (trivial iff)",
       "Prove no_size_two_solution by prime case analysis"
     ]
-  },
-  "leanFiles": [
-    {
-      "path": "Proofs/Erdos307Problem.lean",
-      "filename": "Erdos307Problem.lean",
-      "lineCount": 450,
-      "theoremCount": 20,
-      "axiomCount": 4,
-      "defCount": 15,
-      "sorryCount": 4,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos307Problem.lean"
-    }
-  ],
-  "relatedProofs": [
-    "erdos-3",
-    "erdos-30",
-    "erdos-307"
-  ]
+  }
 }

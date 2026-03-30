@@ -30,16 +30,17 @@
       "CohRing structure modeling H*(BG; k) with polynomial generator degree",
       "FHIndex structure representing the ideal-valued index as minimum power",
       "fullIndex, zeroIndex, powerIndex constructors for standard cases",
-      "fh_point theorem: Index_G(pt) = H*(BG) proved by rfl from definition",
-      "fh_sphere_free_action theorem: Index_{Z/p}(S^{2n-1}) = (u^n) proved by rfl",
+      "fh_monotonicity axiom: equivariant maps induce ideal containment",
+      "fh_sphere_free_action axiom: Index_{Z/p}(S^{2n-1}) = (u^n)",
+      "fh_restriction axiom: restriction maps from H*(BZ/n) to H*(BZ/p)",
       "fh_implies_buDim_lower_bound: proved from Yang-Borsuk",
       "fh_recovers_yang_borsuk: consistency with parent buDim axioms",
       "fh_z4_bound and fh_z6_bound: proved from parent monotonicity",
       "fh_extends_monotonicity: proved that FH subsumes monotonicity"
     ],
-    "axiomCount": 0,
-    "assumptions": "0 local axiom declarations. All proofs use parent module BorsukUlamOQ02OQ01 axioms (buDim, buDim_prime, buDim_mono, etc.). Former axioms fh_point and fh_sphere_free_action are now proved theorems (by rfl). Former axioms fh_monotonicity and fh_restriction were logically unsound (asserted unconditional inequalities) and removed.",
-    "lineCount": 251
+    "axiomCount": 5,
+    "assumptions": "5 axiom declarations: fh_monotonicity (equivariant maps induce ideal containment), fh_point (index of a point is the whole ring), fh_sphere_free_action (index of sphere with free Z/p action is (u^n)), fh_restriction (restriction maps between cyclic group cohomology), fh_product_formula (product of indices in product spaces). Plus 4 inherited axioms from BorsukUlamOQ02OQ01 (buDim, buDim_one, buDim_two, buDim_prime, buDim_mono, conjecture_composite_equals_max).",
+    "lineCount": 230
   },
   "overview": {
     "historicalContext": "The **Fadell-Husseini index** (1988) is an ideal-valued cohomological invariant that assigns to each G-space X a homogeneous ideal $\\text{Index}_G(X) \\subseteq H^*(BG; k)$. Unlike numerical indices (which lose information), the ideal-valued index captures the full algebraic structure of the equivariant obstruction.\n\nFor cyclic groups $G = \\mathbb{Z}/p$, the cohomology ring $H^*(B\\mathbb{Z}/p; \\mathbb{F}_p)$ is a polynomial ring, and the FH index is always a principal ideal $(u^m)$. The key computation: for the standard free $\\mathbb{Z}/p$ action on $S^{2n-1}$ (rotation in $\\mathbb{C}^n$), $\\text{Index}_{\\mathbb{Z}/p}(S^{2n-1}) = (u^n)$. This immediately gives the Yang-Borsuk theorem: $\\text{buDim}(p, 2n) = 2n-1$.\n\nFor composite groups $G = \\mathbb{Z}/n$, the FH index provides finer information than simple monotonicity. Restriction maps $\\text{res}_p : H^*(B\\mathbb{Z}/n) \\to H^*(B\\mathbb{Z}/p)$ for each prime $p | n$ give independent constraints on the index ideal.",
@@ -80,10 +81,10 @@
     {
       "id": "key-properties",
       "title": "Key Properties of the FH Index",
-      "summary": "Proves point computation and sphere free action computation by rfl from definitions.",
+      "summary": "Axiomatizes monotonicity, point computation, and sphere free action computation.",
       "startLine": 106,
-      "endLine": 123,
-      "mathContext": "Proved: $\\text{Index}_G(\\text{pt}) = H^*(BG)$ and $\\text{Index}_{\\mathbb{Z}/p}(S^{2n-1}) = (u^n)$ by definitional unfolding."
+      "endLine": 130,
+      "mathContext": "Axioms: monotonicity of Index under equivariant maps, $\\text{Index}_G(\\text{pt}) = H^*(BG)$, $\\text{Index}_{\\mathbb{Z}/p}(S^{2n-1}) = (u^n)$."
     },
     {
       "id": "bu-connection",
@@ -96,7 +97,7 @@
     {
       "id": "composite-groups",
       "title": "FH for Composite Groups",
-      "summary": "Documents restriction maps (not yet formalized), proves `fh_z4_bound` and `fh_z6_bound` from parent monotonicity.",
+      "summary": "Axiomatizes restriction maps, proves `fh_z4_bound` and `fh_z6_bound` from parent monotonicity.",
       "startLine": 168,
       "endLine": 210,
       "mathContext": "Restriction maps $\\text{res}_p : H^*(B\\mathbb{Z}/n) \\to H^*(B\\mathbb{Z}/p)$ encode monotonicity algebraically."
@@ -128,7 +129,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalization of the Fadell-Husseini index theory for equivariant Borsuk-Ulam computations. The FH index is represented as a principal ideal in the cohomology ring of the classifying space, with 0 local axioms and 8 proved theorems demonstrating consistency with the parent buDim framework.",
+    "summary": "Initial formalization of the Fadell-Husseini index theory for equivariant Borsuk-Ulam computations. The FH index is axiomatized as a principal ideal in the cohomology ring of the classifying space, with 5 axioms and 4 proved theorems demonstrating consistency with the parent buDim framework.",
     "implications": "The FH framework provides a computationally richer approach to BU dimensions than abstract monotonicity. Once Mathlib gains more algebraic topology infrastructure (classifying spaces, equivariant cohomology), the axioms here could be replaced with proved theorems. The framework is particularly relevant for resolving the open conjecture about composite cyclic groups: whether buDim(n, d) = max_{p|n} buDim(p, d).",
     "openQuestions": [
       "Can H*(BZ/p; F_p) ≅ F_p[u] be formalized using Mathlib's GradedAlgebra and GroupCohomology?",

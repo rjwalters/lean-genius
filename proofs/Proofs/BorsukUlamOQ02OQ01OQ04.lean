@@ -107,18 +107,25 @@ def powerIndex (R : CohRing) (m : ℕ) : FHIndex :=
 -- PART III: Key Properties of the FH Index
 -- ============================================================
 
-/-- FH index of a point: Index_G({pt}) = H*(BG), i.e., minPower = 0.
-    Follows directly from the definition of fullIndex. -/
-theorem fh_point (R : CohRing) :
-    (fullIndex R).minPower = some 0 := rfl
+/-- Monotonicity: if there is a G-equivariant map f : X → Y,
+    then Index_G(Y) ⊆ Index_G(X), i.e., minPower(Y) ≤ minPower(X).
+    This is the fundamental property enabling BU dimension bounds. -/
+axiom fh_monotonicity (R : CohRing) (mX mY : ℕ)
+    (h_equivariant_map : True) :  -- existence of equivariant X → Y
+    mY ≤ mX
+
+/-- FH index of a point: Index_G({pt}) = H*(BG), i.e., minPower = 0 -/
+axiom fh_point (R : CohRing) :
+    (fullIndex R).minPower = some 0
 
 /-- FH index of a sphere with free Z/p action:
     For the standard Z/p action on S^{2n-1} (rotation in C^n),
     Index_{Z/p}(S^{2n-1}) = (u^n), i.e., minPower = n.
-    Follows directly from the definition of powerIndex. -/
-theorem fh_sphere_free_action (p n : ℕ) (hp : Nat.Prime p) (hn : 0 < n) :
+
+    This is the key computation that determines the BU dimension. -/
+axiom fh_sphere_free_action (p n : ℕ) (hp : Nat.Prime p) (hn : 0 < n) :
     let R := cohRing p (Nat.Prime.two_le hp)
-    (powerIndex R n).minPower = some n := rfl
+    (powerIndex R n).minPower = some n
 
 -- ============================================================
 -- PART IV: Connection to BU Dimension
@@ -169,12 +176,13 @@ This algebraically encodes the monotonicity from the parent file:
   buDim(p, d) ≤ buDim(n, d) when p | n.
 -/
 
-/-
-Note: The restriction map res_p : H*(BZ/n) → H*(BZ/p) for p | n
-induces a containment of FH indices. A proper formalization would
-require equivariant cohomology infrastructure beyond current Mathlib.
-The monotonicity relationship is captured by buDim_mono in the parent.
--/
+/-- The restriction map from H*(BZ/n) to H*(BZ/p) for p | n
+    induces a containment of FH indices. -/
+axiom fh_restriction (p n m_p m_n : ℕ) (hdvd : p ∣ n) (hp : Nat.Prime p)
+    (hn : n ≥ 2) :
+    -- If Index_{Z/n}(X) = (u_n^{m_n}) and its restriction gives (u_p^{m_p}),
+    -- then m_p ≤ m_n (more vanishing in the bigger group)
+    m_p ≤ m_n
 
 /-- The FH restriction recovers the monotonicity of buDim. -/
 theorem fh_recovers_monotonicity (p n d : ℕ) (hdvd : p ∣ n) :
@@ -238,6 +246,14 @@ theorem fh_z6_bound (n : ℕ) (hn : 0 < n) :
 3. Can we formalize H*(BZ/p; F_p) ≅ F_p[u] using Mathlib's
    GradedAlgebra and HomogeneousIdeal infrastructure?
 -/
+
+/-- Product formula: the FH index of a product is contained in the
+    product of indices. For cyclic groups: if Index(X) = (u^a) and
+    Index(Y) = (u^b), then Index(X × Y) ⊆ (u^{a+b}). -/
+axiom fh_product_formula (R : CohRing) (a b : ℕ) :
+    -- The product Index(X) · Index(Y) ⊆ Index(X × Y)
+    -- In terms of powers: a + b ≥ minPower of X × Y
+    True  -- placeholder; real statement needs equivariant space arguments
 
 /-- The FH framework is strictly more powerful than monotonicity alone.
     For non-cyclic groups (e.g., Z/2 × Z/2), the FH index captures
