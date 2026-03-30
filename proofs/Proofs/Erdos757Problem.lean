@@ -139,9 +139,61 @@ among any 4 elements, we can have at most one "collision" of differences.
 "too far" from being Sidon. -/
 theorem almostSidon_of_sidon (A : Set ℝ) (hA : IsSidon A) : AlmostSidon A := by
   intro B hB hcard
-  -- If A is Sidon, so is B
-  -- A Sidon set of size 4 has |B - B| = 13 ≥ 11
-  sorry
+  -- B is Sidon (subset of Sidon is Sidon)
+  have hBSidon : IsSidon B := by
+    intro a b c d ha hb hc hd hab
+    exact hA a b c d (hB ha) (hB hb) (hB hc) (hB hd) hab
+  -- B is finite (ncard = 4 implies finite)
+  have hBfin : B.Finite := Set.finite_of_ncard_ne_zero (by omega)
+  have hBBfin : (B - B).Finite := Set.Finite.sub hBfin hBfin
+  -- Convert B to Finset F
+  set F := hBfin.toFinset with hF_def
+  have hF_card : F.card = 4 := by rw [Set.Finite.toFinset_card]; exact hcard
+  have hF_mem : ∀ x, x ∈ F ↔ x ∈ B := fun x => Set.Finite.mem_toFinset hBfin
+  -- The difference map on off-diagonal pairs is injective (Sidon property)
+  have hDiffInj : Set.InjOn (fun p : ℝ × ℝ => p.1 - p.2) ↑F.offDiag := by
+    intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    simp only [Finset.mem_coe, Finset.mem_offDiag] at h₁ h₂
+    -- a₁ - b₁ = a₂ - b₂ implies a₁ + b₂ = a₂ + b₁
+    have hab : a₁ + b₂ = a₂ + b₁ := by linarith
+    -- By Sidon: {a₁, b₂} = {a₂, b₁}
+    have hpair := hBSidon a₁ b₂ a₂ b₁
+      ((hF_mem a₁).mp h₁.1) ((hF_mem b₂).mp h₂.2.1) ((hF_mem a₂).mp h₂.1)
+      ((hF_mem b₁).mp h₁.2.1) hab
+    rw [Set.pair_eq_pair_iff] at hpair
+    rcases hpair with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · rfl
+    · exact absurd rfl h₁.2.2
+  -- The off-diagonal has 12 pairs, so its image has 12 elements
+  have hOD_card : F.offDiag.card = 12 := by
+    rw [Finset.card_offDiag, hF_card]; norm_num
+  have hImg_card : (F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)).card = 12 := by
+    rw [Finset.card_image_of_injOn hDiffInj, hOD_card]
+  -- The image consists of nonzero elements in B - B
+  have hImg_sub : ↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)) ⊆ (B - B) := by
+    intro x hx
+    simp only [Finset.mem_coe, Finset.mem_image, Finset.mem_offDiag] at hx
+    obtain ⟨⟨a, b⟩, ⟨ha, hb, _⟩, rfl⟩ := hx
+    exact ⟨a, (hF_mem a).mp ha, b, (hF_mem b).mp hb, rfl⟩
+  have h0_notin_img : (0 : ℝ) ∉ (F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2) : Set ℝ) := by
+    simp only [Finset.mem_coe, Finset.mem_image, Finset.mem_offDiag]
+    rintro ⟨⟨a, b⟩, ⟨_, _, hab⟩, h⟩
+    exact hab (sub_eq_zero.mp h)
+  -- Also 0 ∈ B - B
+  have h0_mem : (0 : ℝ) ∈ B - B := by
+    obtain ⟨x, hx⟩ := Set.nonempty_of_ncard_ne_zero (by omega : B.ncard ≠ 0)
+    exact ⟨x, hx, x, hx, sub_self x⟩
+  -- So B-B ⊇ {0} ∪ image, which has size 1 + 12 = 13 ≥ 11
+  have hImgFin : (↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)) : Set ℝ).Finite :=
+    Finset.finite_toSet _
+  calc (B - B).ncard
+      ≥ (insert (0 : ℝ) ↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2))).ncard :=
+        Set.ncard_le_ncard (Set.insert_subset h0_mem hImg_sub) hBBfin
+    _ = (↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)) : Set ℝ).ncard + 1 :=
+        Set.ncard_insert_of_not_mem h0_notin_img hImgFin
+    _ = 12 + 1 := by rw [Set.ncard_coe_Finset, hImg_card]
+    _ = 13 := by norm_num
+    _ ≥ 11 := by norm_num
 
 /-
 ## The Set of Admissible Constants

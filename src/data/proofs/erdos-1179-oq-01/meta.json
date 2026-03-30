@@ -7,7 +7,7 @@
         "author": "Open Question (Erdős #1179)",
         "sourceUrl": "https://erdosproblems.com/1179",
         "date": "2026",
-        "status": "formalized",
+        "status": "verified",
         "proofRepoPath": "Proofs/Erdos1179OQ01.lean",
         "tags": [
             "erdos",
@@ -18,16 +18,16 @@
             "open-question",
             "fourier-analysis"
         ],
-        "badge": "formalized",
-        "sorries": 2,
+        "badge": "verified",
+        "sorries": 0,
         "axiomCount": 0,
         "theoremCount": 23,
         "definitionCount": 7,
-        "lineCount": 615,
+        "lineCount": 709,
         "erdosNumber": 1179,
         "erdosUrl": "https://erdosproblems.com/1179",
         "erdosProblemStatus": "open-question",
-        "assumptions": "Zero axioms. Two sorries remain: character_orthogonality (geometric sum ∑_j ψ(j·c) = p·[c=0] for c≠0) and reprCount_fourier_expansion (Fourier inversion identity on Z/pZ). Previously sorry'd lemmas (norm_one_add_omegap_pow, abs_cos_mul_pi_div_le, fourier_product_bound, fourier_error_bound) are now fully proved. All foundational lemmas and erdos_renyi_decay fully proved.",
+        "assumptions": "Zero axioms, zero sorries. Fully verified: character_orthogonality (shift argument), reprCount_fourier_expansion (product expansion + character orthogonality), norm_one_add_omegap_pow, abs_cos_mul_pi_div_le, fourier_product_bound, fourier_error_bound, and erdos_renyi_decay all proved from Mathlib.",
         "mathlib_version": "4.26.0",
         "mathlibDependencies": [
             {
@@ -87,9 +87,9 @@
                 "Real"
             ],
             "namespace": "Erdos1179OQ01",
-            "lineCount": 615,
+            "lineCount": 709,
             "axiomCount": 0,
-            "sorryCount": 2,
+            "sorryCount": 0,
             "theoremCount": 23,
             "definitionCount": 7,
             "mainTheorems": [
