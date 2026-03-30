@@ -268,9 +268,11 @@ for all large n. This would follow from conjectures like Cramér's.
 -/
 
 /--
-The n-th prime (axiomatized; p_1 = 2, p_2 = 3, etc.)
+The n-th prime (0-indexed): nthPrime 0 = 2, nthPrime 1 = 3, etc.
+Uses Mathlib's `Nat.nth` which returns the n-th natural number satisfying a predicate.
+Previously axiomatized; now a concrete definition.
 -/
-axiom nthPrime : ℕ → ℕ
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
 /--
 The prime gap after the n-th prime.

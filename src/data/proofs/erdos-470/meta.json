@@ -59,9 +59,9 @@
       "Axiomatization of Liddy-Riedl, Melfi, Benkoski-Erdős deep results",
       "erdos_470 summary theorem combining key results"
     ],
-    "axiomCount": 4,
-    "lineCount": 344,
-    "assumptions": "4 axioms: nthPrime (n-th prime function), liddy_riedl_6_primes (odd weird has ≥6 prime divisors), melfi_conditional (prime gap hypothesis implies infinitely many primitive weirds), benkoski_erdos_density (weird numbers have positive density). All deep results; no routine axioms remain."
+    "axiomCount": 3,
+    "lineCount": 346,
+    "assumptions": "3 axioms: liddy_riedl_6_primes (odd weird has ≥6 prime divisors, Liddy-Riedl 2018), melfi_conditional (prime gap hypothesis implies infinitely many primitive weirds, Melfi 2015), benkoski_erdos_density (weird numbers have positive density, Benkoski-Erdős). nthPrime eliminated: now defined as Nat.nth Nat.Prime from Mathlib."
   },
   "overview": {
     "historicalContext": "A number n is called **weird** if it is abundant (σ(n) > 2n, or equivalently the sum of proper divisors exceeds n) but not pseudoperfect (n cannot be written as the sum of any subset of its proper divisors). Weird numbers are the 'leftover' abundant numbers that can't achieve self-representation.\n\nWeird numbers were introduced and studied by Benkoski and Erdős [BeEr74], who proved that weird numbers have **positive asymptotic density**—a surprising result meaning a positive fraction of all integers are weird.\n\nThe smallest weird number is **70**:\n- Divisors of 70: 1, 2, 5, 7, 10, 14, 35, 70\n- σ(70) = 144 > 140 = 2×70 ✓ (abundant)\n- No subset of {1, 2, 5, 7, 10, 14, 35} sums to exactly 70 ✓ (not pseudoperfect)\n\nThe sequence of weird numbers (OEIS A006037) begins: 70, 836, 4030, 5830, 7192, 7912, 9272, ...\n\n**Remarkably, all known weird numbers are even!** This leads to Erdős's first question.",
@@ -157,10 +157,10 @@
       "Set"
     ],
     "namespace": "Erdos470",
-    "lineCount": 344,
-    "axiomCount": 4,
+    "lineCount": 346,
+    "axiomCount": 3,
     "theoremCount": 12,
-    "definitionCount": 13
+    "definitionCount": 14
   },
   "crossReferences": [
     {
