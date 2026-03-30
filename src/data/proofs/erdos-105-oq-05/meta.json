@@ -1,0 +1,131 @@
+{
+  "id": "erdos-105-oq-05",
+  "title": "Erd\u0151s 105 in Higher Dimensions",
+  "slug": "erdos-105-oq-05",
+  "description": "Higher-dimensional analogue of Erd\u0151s Problem #105: does the threshold phenomenon for rich 2-flats avoiding obstacles persist in R^d for d \u2265 3?",
+  "meta": {
+    "author": "Open problem (formalized in Lean 4)",
+    "sourceUrl": "https://erdosproblems.com/105",
+    "date": "2026",
+    "status": "formalized",
+    "tags": [
+      "discrete-geometry",
+      "incidence-geometry",
+      "erdos",
+      "open-problem",
+      "higher-dimensional"
+    ],
+    "proofRepoPath": "Proofs/Erdos105HigherDim.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "R^d as a Euclidean space",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "AffineSubspace",
+        "description": "Affine subspaces for 2-flat definition",
+        "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of higher-dimensional Erd\u0151s-Purdy problem statement in Lean 4",
+      "Definition of 2-flats, rich 2-flats, and unblocked 2-flats in R^d",
+      "Survey of known results and infrastructure requirements"
+    ],
+    "dateAdded": "2026-03-29",
+    "axiomCount": 0,
+    "lineCount": 108,
+    "assumptions": "No axioms. Problem statement only (the answer is unknown).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erd\u0151s Problem #105 asks about lines in R\u00b2. The d=2 case has a known threshold \u0398(n) for obstacles (Beck-Szemer\u00e9di-Trotter). The higher-dimensional generalization to 2-flats in R^d is open.",
+    "problemStatement": "For d \u2265 3: given n points A in R^d (not all in one 2-flat) and cn obstacle points B, must there exist a 2-flat containing \u22652 points of A and avoiding all of B?",
+    "text": "Higher-dimensional analogue of Erd\u0151s 105: rich 2-flats avoiding obstacles in R^d",
+    "proofStrategy": "Problem statement only. Three possible approaches identified: direct generalization via incidence bounds, counterexample hunting in R^3, or reduction to d=2 via projection.",
+    "keyInsights": [
+      "Szemer\u00e9di-Trotter is specific to d=2 (points and lines). For d\u22653, polynomial partitioning (Guth-Katz) is the relevant tool.",
+      "The answer may differ from d=2: higher dimensions have more 2-flats per point, which could make blocking harder or easier depending on the geometry."
+    ],
+    "prerequisites": [
+      "Incidence geometry",
+      "Affine subspaces",
+      "Szemer\u00e9di-Trotter theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Definitions of PointD, TwoFlat, rich, unblocked, and not-coplanar conditions in R^d.",
+      "mathContext": "Generalizes the d=2 definitions (Point, Line) from Erdos105Problem.lean to arbitrary dimension."
+    },
+    {
+      "id": "problem",
+      "title": "Open Problem Statement",
+      "startLine": 55,
+      "endLine": 108,
+      "summary": "The conjecture: \u2203 c > 0 such that cn obstacles cannot block all rich 2-flats. Survey of known results and infrastructure needs.",
+      "mathContext": "Connects to Beck-Szemer\u00e9di-Trotter (d=2) and Guth-Katz (polynomial partitioning for d\u22653)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-105",
+      "relationship": "generalization",
+      "description": "Generalizes the d=2 Erd\u0151s-Purdy problem (lines in R\u00b2) to d\u22653 (2-flats in R^d)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalization of the open problem statement for Erd\u0151s 105 in R^d. No theorems proved (the answer is unknown). Defines 2-flats, rich/unblocked conditions, and the conjecture in Lean 4.",
+    "implications": "Progress would require incidence bounds for 2-flats in R^d, which are not yet in Mathlib. The Guth-Katz polynomial partitioning framework is the most promising approach.",
+    "openQuestions": [
+      "Does the threshold exist for d=3?",
+      "Can counterexamples be found computationally for small n in R^3?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "EuclideanGeometry"
+    ],
+    "namespace": null,
+    "lineCount": 108,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "substantiveTheoremCount": 0,
+    "duplicateTheorems": 0,
+    "definitionCount": 6
+  },
+  "references": [
+    {
+      "authors": "J. Beck",
+      "title": "On the lattice property of the plane and some problems of Dirac, Motzkin and Erd\u0151s in combinatorial geometry",
+      "year": "1983",
+      "venue": "Combinatorica"
+    },
+    {
+      "authors": "E. Szemer\u00e9di, W. T. Trotter",
+      "title": "Extremal problems in discrete geometry",
+      "year": "1983",
+      "venue": "Combinatorica"
+    },
+    {
+      "authors": "L. Guth, N. Katz",
+      "title": "On the Erd\u0151s distinct distances problem in the plane",
+      "year": "2015",
+      "venue": "Annals of Mathematics"
+    }
+  ],
+  "mainTheorems": []
+}
