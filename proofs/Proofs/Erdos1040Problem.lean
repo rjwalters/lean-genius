@@ -465,35 +465,6 @@ theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
   exact absurd hle (not_le.mpr (ENNReal.lt_add_right hmu_ne_top hε.ne'))
 
 /-
-## Positive μ When Transfinite Diameter < 1
--/
-
-/-- When transfinite diameter < 1, corrected μ is positive.
-    Every sublevel set contains a ball of radius ≥ c (from small_diameter_disc),
-    so sublevelMeasure ≥ volume(ball 0 c) > 0 uniformly across all degree ≥ 1 polynomials. -/
-theorem muPosDeg_pos_of_small_diameter (F : Set ℂ) (hF : IsClosed F) (hFi : F.Infinite)
-    (hρ : transfiniteDiameter F < 1) : muPosDeg F > 0 := by
-  -- Get uniform constant c > 0 from small_diameter_disc axiom
-  obtain ⟨c, hc_pos, hdisc⟩ := small_diameter_disc F hF hFi hρ
-  -- volume(ball 0 c) > 0 in ℂ (Haar measure on finite-dimensional space)
-  have hball_pos : (0 : ℝ≥0∞) < MeasureTheory.volume (Metric.ball (0 : ℂ) c) :=
-    MeasureTheory.measure_ball_pos _ _ hc_pos
-  -- Suffices to show volume(ball 0 c) ≤ muPosDeg F
-  suffices h : MeasureTheory.volume (Metric.ball (0 : ℂ) c) ≤ muPosDeg F from
-    lt_of_lt_of_le hball_pos h
-  -- Bound each sublevel measure from below uniformly
-  unfold muPosDeg
-  exact le_iInf₂ fun p hp => by
-    obtain ⟨z₀, r, hr_pos, hr_ge_c, hball_sub⟩ := hdisc p (by omega : p.degree > 0)
-    calc MeasureTheory.volume (Metric.ball (0 : ℂ) c)
-        = MeasureTheory.volume (Metric.ball z₀ c) :=
-          (MeasureTheory.Measure.addHaar_ball_center z₀ c).symm
-      _ ≤ MeasureTheory.volume (Metric.ball z₀ r) :=
-          MeasureTheory.measure_mono (Metric.ball_subset_ball hr_ge_c)
-      _ ≤ sublevelMeasure p :=
-          MeasureTheory.measure_mono hball_sub
-
-/-
 ## The Open Question
 -/
 
