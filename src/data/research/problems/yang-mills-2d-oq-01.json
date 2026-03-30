@@ -1,29 +1,55 @@
 {
-  "id": "yang-mills-2d-oq-01",
-  "name": "2D Yang-Mills heat kernel techniques in 3D/4D",
-  "parentId": "yang-mills-2d",
-  "status": "completed",
-  "knowledge": {
-    "score": 10,
-    "insights": [
-      "2D Yang-Mills is exactly solvable via heat kernel representation decomposition",
-      "3D: Wilson loops depend on knot type not area (Chern-Simons = topological)",
-      "4D: theory has physical degrees of freedom, no exact solution possible",
-      "Dimensional reduction S¹×Σ → Σ connects 3D to 2D at high temperature",
-      "Gross-Taylor expansion connects 2D large-N to string theory",
-      "Replaced 10 vacuous axioms (3 definition-as-axiom, 7 stating True) with 8 concrete definitions and 16 proven theorems",
-      "Heat kernel terms provably decay exponentially with area — this is the 2D mass gap mechanism",
-      "Casimir scaling ratio sigma_adj/sigma_fund = 16/9 proved exactly for SU(2)",
-      "Partition function provably decays from Z(0)=14 to trivial rep dominance at large area"
-    ],
-    "builtItems": [
-      "YangMills2DOQ01.lean: 308 lines, 0 axioms, 0 sorries, 16 theorems, 8 definitions"
-    ],
-    "progressSummary": "COMPLETED: Survey of 2D→3D/4D extension obstacles."
+  "slug": "yang-mills-2d-oq-01",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
   },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T23:03:00-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: yang-mills-2d-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
   "relatedProofs": [
     "yang-mills",
-    "yang-mills-2d",
-    "yang-mills-2d-oq-01"
-  ]
+    "yang-mills-2d"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T06:03:08.378Z",
+  "lastUpdate": "2026-03-30T06:03:08.396Z"
 }
