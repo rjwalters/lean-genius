@@ -151,18 +151,11 @@
     }
   ],
   "conclusion": {
-    "text": "This formalization establishes covering dimension as the governing invariant for superposition representations of continuous functions. The Sternfeld characterization gives a complete answer to 'which spaces admit KA-type representations?' and shows the 2n+1 bound is sharp. The classical KA theorem for [0,1]^n is recovered as a special case.",
+    "summary": "This formalization establishes covering dimension as the governing invariant for superposition representations of continuous functions. The Sternfeld characterization gives a complete answer to 'which spaces admit KA-type representations?' and shows the 2n+1 bound is sharp.",
+    "implications": "The classical KA theorem for [0,1]^n is recovered as a special case. The covering dimension framework unifies results across different compact metric spaces.",
     "openQuestions": [
-      {
-        "question": "Can the smooth obstruction (Vitushkin's theorem) be extended to compact Riemannian manifolds with non-trivial topology?",
-        "formalizable": true,
-        "difficulty": "hard"
-      },
-      {
-        "question": "What is the computational complexity of finding KA representations given a finite approximation of the space and function?",
-        "formalizable": true,
-        "difficulty": "hard"
-      }
+      "Can the smooth obstruction (Vitushkin's theorem) be extended to compact Riemannian manifolds with non-trivial topology?",
+      "What is the computational complexity of finding KA representations given a finite approximation of the space and function?"
     ]
   },
   "leanFile": {
