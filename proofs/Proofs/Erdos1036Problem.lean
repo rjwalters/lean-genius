@@ -47,7 +47,11 @@ noncomputable def IsNonRamsey (G : SimpleGraph V) (c : ℝ) : Prop :=
   (independenceNumber G : ℝ) ≤ c * log (Fintype.card V)
 
 /-- The number of non-isomorphic induced subgraphs of G.
-    For finite graphs, this is a natural number. -/
+    For finite graphs, this is a natural number.
+    PLACEHOLDER: Currently counts ALL subsets (= 2^n), not isomorphism classes.
+    Correct definition would quotient by graph isomorphism. The placeholder
+    makes numInducedSubgraphClasses G = 2^|V| exactly, which is the trivial
+    upper bound. -/
 noncomputable def numInducedSubgraphClasses (G : SimpleGraph V) : ℕ :=
   Fintype.card (Finset V) -- placeholder: counts subsets, not isomorphism classes
 
@@ -94,14 +98,21 @@ noncomputable def optimalConstant (c : ℝ) : ℝ :=
     IsNonRamsey G c →
     (numInducedSubgraphClasses G : ℝ) ≥ 2 ^ (c' * Fintype.card V) }
 
-/-- The optimal constant is positive for c > 0 (follows from Shelah). -/
+/-- The optimal constant is positive for c > 0 (follows from Shelah).
+    NOTE: Proof requires BddAbove for the sSup, which in turn needs a
+    formalized non-Ramsey graph on some Fin n with n ≥ 1, constraining
+    the set to (-∞, 1]. Without this, the set of valid c' is all of ℝ
+    (vacuously, via V = Fin 0), making sSup undefined. -/
 theorem optimalConstant_pos (c : ℝ) (hc : c > 0) : optimalConstant c > 0 := by
-  sorry -- Requires showing sSup of a nonempty bounded-above set is positive
+  sorry -- Blocked: needs BddAbove (requires formalized non-Ramsey graph existence)
 
 /-- The optimal constant is at most 1: a graph on n vertices has at most
-    2^n induced subgraphs (one per subset of vertices). -/
+    2^n induced subgraphs (one per subset of vertices).
+    NOTE: As stated for all c (including c ≤ 0), this may be FALSE: when
+    no non-Ramsey graphs exist (e.g., c ≤ 0), the set in the sSup is all
+    of ℝ, and sSup ℝ is not ≤ 1. Should have hypothesis c > 0. -/
 theorem optimalConstant_le_one (c : ℝ) : optimalConstant c ≤ 1 := by
-  sorry -- Requires showing numInducedSubgraphClasses G ≤ 2^n
+  sorry -- Blocked: needs hypothesis c > 0 + formalized non-Ramsey graph existence
 
 /- ## Random Graph Comparison -/
 

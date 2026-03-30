@@ -1,0 +1,62 @@
+{
+    "id": "erdos-1059-oq-03",
+    "title": "Smallest Prime > 211 Failing Erdős 1059",
+    "slug": "erdos-1059-oq-03",
+    "description": "The smallest prime p > 211 failing the Erdős 1059 property (all p - k! composite) is p = 223. Since 223 - 4! = 199 is prime, 223 does not satisfy the property.",
+    "meta": {
+        "author": "Erdős",
+        "sourceUrl": "https://erdosproblems.com/1059",
+        "status": "verified",
+        "proofRepoPath": "Proofs/Erdos1059OQ03.lean",
+        "tags": [
+            "erdos",
+            "number theory",
+            "primes",
+            "factorials",
+            "computational"
+        ],
+        "badge": "verified",
+        "sorries": 0,
+        "erdosNumber": 1059,
+        "erdosUrl": "https://erdosproblems.com/1059",
+        "erdosProblemStatus": "open",
+        "axiomCount": 0,
+        "lineCount": 47,
+        "assumptions": "None. All results proved by computation (decide/native_decide).",
+        "mathlib_version": "4.26.0"
+    },
+    "overview": {
+        "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes p satisfy the property that p - k! is composite for every k with k! < p. Known examples include 101 and 211. This open question investigates computational aspects: finding the next prime after 211 that fails the property.",
+        "problemStatement": "Find the smallest prime $p > 211$ such that some $p - k!$ is prime (i.e., $p$ fails the Erdős 1059 property).",
+        "text": "The answer is p = 223. Since 223 - 4! = 223 - 24 = 199 is prime, 223 does not satisfy AllFactorialSubtractionsComposite. Moreover, 223 is the very next prime after 211 (there are no primes between 212 and 222).",
+        "proofStrategy": "Direct computation: verify 223 is prime, verify 199 = 223 - 24 is prime, and verify no prime exists in (211, 223).",
+        "keyInsights": [
+            "The smallest prime after 211 is 223, and it immediately fails the property via 223 - 24 = 199 (prime)",
+            "The check uses only k = 4 (4! = 24); larger factorials (5! = 120) would give 223 - 120 = 103 which is also prime",
+            "This shows the Erdős 1059 property is rare among primes — the very next prime after a witness fails"
+        ],
+        "prerequisites": [
+            "Elementary number theory (primality testing, factorials)"
+        ]
+    },
+    "leanFile": {
+        "imports": [
+            "Mathlib.Data.Nat.Prime.Basic",
+            "Mathlib.Data.Nat.Factorial.Basic",
+            "Mathlib.Tactic"
+        ],
+        "opens": [],
+        "namespace": null,
+        "lineCount": 47,
+        "axiomCount": 0,
+        "theoremCount": 5,
+        "definitionCount": 1
+    },
+    "crossReferences": [
+        {
+            "targetId": "erdos-1059",
+            "relationship": "extends",
+            "description": "Computational extension of the main Erdős 1059 formalization"
+        }
+    ]
+}
