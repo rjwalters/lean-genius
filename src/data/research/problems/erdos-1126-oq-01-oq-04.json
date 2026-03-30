@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1126-oq-01-oq-04",
   "title": "Can the remaining sorry (almost Jensen → almost additive) be resolved using M...",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-03-30T06:45:00Z",
     "iteration": 1,
-    "focus": "Surveyed: the sorry requires Fubini section extraction + affine null set preservation. Mathlib has the tools but proof is ~50-100 lines.",
+    "focus": "Proved algebraic conclusion. 4 focused sorries: 3 routine (null set scaling, product measure), 1 blocking (Fubini double lemma)",
     "blockers": [],
     "nextAction": "Implement the Fubini-based proof. Key: extract ae section, prove g(2z)=2g(z) ae, combine with scaling substitution.",
     "attemptCounts": {
@@ -29,12 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: The sorry (almost Jensen → almost additive) CAN be resolved using Mathlib. Requires: (1) Fubini section extraction (prod_right_ae), (2) null set preservation under affine maps, (3) ~50-100 lines of measure theory. The algebraic structure follows the exact proof but every \"set y=0\" step needs Fubini to extract ae sections instead.",
+    "progressSummary": "Session 2: Decomposed monolithic sorry into 4 focused targets. Proved algebraic conclusion (scaled Jensen + double lemma ⟹ ae additivity). 3 routine Mathlib sorries + 1 blocking Fubini sorry remain.",
     "builtItems": [
       "Surveyed proof requirements: identified 5-step proof strategy via Fubini sections",
       "Identified Mathlib infrastructure: integral_prod, prod_right_ae, Measure.prod",
       "Classified all 6 axioms as deep results (not easily eliminable)",
-      "Identified that almost_jensen_stability would become provable after sorry resolution"
+      "Identified that almost_jensen_stability would become provable after sorry resolution",
+      "Decomposed almost_jensen_implies_almost_additive_shifted into 3 lemmas: ae_scaled_jensen (scaling), ae_double_lemma (Fubini), main theorem (algebra)",
+      "Proved algebraic conclusion: linarith combining scaled Jensen + double lemma gives ae additivity",
+      "Identified 3 routine Mathlib sorries: null set under linear map, null×ℝ product, ℝ×null product"
     ],
     "insights": [
       "The sorry requires proving g(x+y) = g(x)+g(y) a.e. where g(x)=f(x)-f(0) satisfies almost Jensen.",

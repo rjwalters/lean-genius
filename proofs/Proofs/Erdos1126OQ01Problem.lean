@@ -191,29 +191,74 @@ Mathematical argument:
 2. Setting a = 2x - b₀: f(x) = (f(2x - b₀) + f(b₀))/2 for a.e. x
 3. From a.e. Jensen at (2x, 2y): f(x+y) = (f(2x)+f(2y))/2 for a.e. (x,y)
 4. Combining with step 2 yields additivity of f - f(b₀) modulo null sets -/
+/-- **Scaled Jensen lemma:** From ae Jensen at (2x,2y), derive
+    f(x+y) = (f(2x)+f(2y))/2 for a.e. (x,y).
+    Proof: preimage of null set N under (x,y)↦(2x,2y) is null
+    (linear map with |det| = 4 preserves null sets). -/
+private lemma ae_scaled_jensen (f : ℝ → ℝ) (hf : IsAlmostJensen f) :
+    ae_pairs (fun x y => f (x + y) = (f (2 * x) + f (2 * y)) / 2) := by
+  obtain ⟨N, hN_null, hN_good⟩ := hf
+  -- N₁ = preimage of N under (x,y)↦(2x,2y): null by linear scaling
+  refine ⟨(fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N, ?_, ?_⟩
+  · -- vol(preimage) = 0: null set preserved under linear bijection
+    sorry -- Needs MeasureTheory.Measure.map_linearEquiv or addHaar_smul
+  · intro x y hxy
+    have h := hN_good (2 * x) (2 * y) (by simpa using hxy)
+    convert h using 1
+    ring
+
+/-- **Double lemma (BLOCKING):** From ae Jensen, g(2z) = 2g(z) ae where g = f - f(0).
+    This is the key measure-theoretic step requiring Fubini section extraction.
+
+    Proof sketch (requires ~30-50 lines of measure theory):
+    1. Fubini on the ae Jensen null set: for ae y₀, Jensen holds for ae x with y = y₀
+    2. Pick good y₀. For ae x: f((x+y₀)/2) = (f(x)+f(y₀))/2
+    3. From the scaled null set (also Fubini): for ae y₁, f(x+y₁)=(f(2x)+f(2y₁))/2 ae in x
+    4. Pick good y₁. Combining with step 2 for a second good section eliminates constants
+    5. Algebraic manipulation yields f(2z) = 2f(z) - f(0) ae, i.e., g(2z) = 2g(z) ae
+
+    Required Mathlib: MeasureTheory.ae_ae_of_ae_prod (Fubini sections),
+    null set preservation under affine maps, filter_upwards -/
+private lemma ae_double_lemma (f : ℝ → ℝ) (hf : IsAlmostJensen f) :
+    ae_holds (fun z => f (2 * z) = 2 * f z - f 0) := by
+  sorry -- BLOCKING: requires Fubini section extraction
+
+/-- **Almost Jensen → Almost Additive (shifted).**
+    Combines the scaled Jensen equation with the double lemma.
+    Given ae f(x+y) = (f(2x)+f(2y))/2 and ae f(2z) = 2f(z) - f(0):
+    f(x+y) = (2f(x)-f(0) + 2f(y)-f(0))/2 = f(x)+f(y)-f(0) ae,
+    hence g(x+y) = g(x)+g(y) ae where g = f - f(0). -/
 theorem almost_jensen_implies_almost_additive_shifted (f : ℝ → ℝ)
     (hf : IsAlmostJensen f) :
     IsAlmostAdditive (fun x => f x - f 0) := by
-  -- The proof mirrors jensen_implies_shifted_additive but with measure theory.
-  -- Key steps (see detailed analysis below):
-  --
-  -- 1. From hf, get null set N ⊂ ℝ² where Jensen holds outside N
-  -- 2. Define N₁ = preimage of N under (a,b) ↦ (2a,2b): measure 0 by det(J) = 4 ≠ 0
-  -- 3. Outside N₁: Jensen at (2x,2y) gives f(x+y) = (f(2x)+f(2y))/2
-  -- 4. BLOCKING STEP: "Double lemma" f(2z) = 2f(z) - f(0) for a.e. z
-  --    This needs Fubini (MeasureTheory.ae_prod_iff) to extract a "good" b₀ such that
-  --    the y-section {x : (x, b₀) ∈ N} has measure 0. Then Jensen at (x, b₀) gives
-  --    f((x+b₀)/2) = (f(x)+f(b₀))/2 for a.e. x. Setting x = 2z - b₀ yields
-  --    f(z) in terms of f(2z-b₀) and f(b₀). A second application with a different
-  --    good section eliminates b₀, giving f(2z) = 2f(z) - f(0) for a.e. z.
-  -- 5. Combine steps 3-4: f(x+y) = f(x) + f(y) - f(0) for a.e. (x,y)
-  --    The combined null set is N ∪ N₁ ∪ (Fubini sections × ℝ) ∪ (ℝ × Fubini sections)
-  --
-  -- Required Mathlib lemmas:
-  --   MeasureTheory.ae_prod_iff (Fubini section extraction)
-  --   MeasureTheory.Measure.map_linear_eq (null set under linear maps)
-  --   measure_union_null (union of null sets)
-  sorry
+  -- Get the two key ingredients
+  obtain ⟨N₁, hN₁, hscale⟩ := ae_scaled_jensen f hf
+  obtain ⟨N₂, hN₂, hdouble⟩ := ae_double_lemma f hf
+  -- Construct combined null set: N₁ ∪ (N₂ × ℝ) ∪ (ℝ × N₂)
+  -- For (x,y) outside this: scaled Jensen + double at x + double at y all hold
+  refine ⟨N₁ ∪ (Set.prod N₂ Set.univ) ∪ (Set.prod Set.univ N₂), ?_, ?_⟩
+  · -- Union of null sets is null
+    apply measure_union_null
+    apply measure_union_null
+    · exact hN₁
+    · -- vol(N₂ × ℝ) = vol(N₂) × vol(ℝ) = 0 × ∞ = 0 (when N₂ is null)
+      sorry -- Needs MeasureTheory.Measure.prod_of_left_null or similar
+    · sorry -- Symmetric: vol(ℝ × N₂) = 0
+  · intro x y hxy
+    -- (x,y) ∉ N₁ ∪ (N₂ × ℝ) ∪ (ℝ × N₂)
+    push_neg at hxy
+    simp only [Set.mem_union, Set.mem_prod, Set.mem_univ, and_true, true_and,
+               not_or] at hxy
+    obtain ⟨⟨hxy₁, hx₂⟩, hy₂⟩ := hxy
+    -- From scaled Jensen: f(x+y) = (f(2x)+f(2y))/2
+    have h1 := hscale x y hxy₁
+    -- From double at x: f(2x) = 2f(x) - f(0)
+    have h2 := hdouble x hx₂
+    -- From double at y: f(2y) = 2f(y) - f(0)
+    have h3 := hdouble y hy₂
+    -- Algebra: f(x+y) - f(0) = (f(x) - f(0)) + (f(y) - f(0))
+    simp only
+    linarith
 
 /- ## Part III: Multiplicative Functional Equation -/
 
