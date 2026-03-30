@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed critical Gk definition bug (was K_{k,C(k,2)}, now correct pair graph). Removed 3 unused axioms (7→4) and 1 vacuous sorry (4→3) from Erdos1021. Proved 5 of 7 companion lemmas. 2 rpow Aristotle targets remain.",
+    "progressSummary": "PROGRESS: Proved card_constOn_le in Erdos1027Problem.lean (1 sorry eliminated). The constrained-function counting lemma uses restriction injection into complement functions. 1A+0S in Erdos1027 now.",
     "builtItems": [
       "Assessment: 11A all appropriate, f is opaque",
       "collinear₃_comm: symmetry in last two args",
@@ -46,7 +46,8 @@
       "choose_le_choose_of_le: proved via Nat.choose_le_choose (Erdos1021Aristotle.lean)",
       "nat_sub_split: proved via omega (Erdos1021Aristotle.lean)",
       "sum_inl_injective: proved via Sum.inl_injective (Erdos1021Aristotle.lean)",
-      "sum_inr_injective: proved via Sum.inr_injective (Erdos1021Aristotle.lean)"
+      "sum_inr_injective: proved via Sum.inr_injective (Erdos1021Aristotle.lean)",
+      "Proved card_constOn_le: constrained Boolean functions ≤ 2^(|α|-|A|) via restriction injection (Erdos1027Problem.lean)"
     ],
     "insights": [
       "11 axioms: f function properties + known results. f is axiomatized; all properties appropriate.",
@@ -61,7 +62,9 @@
       "gap_positive_conjecture unprovable: conjecturedGap is opaque axiom, no definitional content to work with",
       "CRITICAL BUG FIXED: Gk was defined as K_{k,C(k,2)} (all cross-edges) instead of the pair graph. Corrected to use subtype {(a,b) : a<b} vertex type with proper adjacency.",
       "With corrected Gk, G3_is_C6 axiom is now actually TRUE (pair graph G_3 = C_6 via mapping: 0→(0,1)→1→(1,2)→2→(0,2)→0)",
-      "Removed weak_conjecture_open (meta-mathematical, not useful), conjecturedGap+gap_positive_conjecture (opaque axiom, vacuous), Gk_from_Hk (unused embedding)"
+      "Removed weak_conjecture_open (meta-mathematical, not useful), conjecturedGap+gap_positive_conjecture (opaque axiom, vacuous), Gk_from_Hk (unused embedding)",
+      "strong_implies_weak sorry: needs C*n^{3/2-c} ≤ ε*n^{3/2} for large n, i.e., n^c ≥ C/ε. Provable via Real.rpow_natCast + tendsto_rpow_atTop for c > 0.",
+      "card_constOn_le proof: inject constrained functions into (Aᶜ → Bool) via restriction; injectivity from constraint + complement values determining the full function"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -87,6 +90,7 @@
     "erdos-1020",
     "erdos-1021",
     "erdos-1022",
+    "erdos-1022-oq-01",
     "erdos-1023",
     "erdos-1024",
     "erdos-1025",
@@ -108,43 +112,54 @@
     {
       "path": "Proofs/Erdos1020Problem.lean",
       "filename": "Erdos1020Problem.lean",
-      "lineCount": 254,
+      "lineCount": 327,
       "theoremCount": 4,
-      "axiomCount": 11,
+      "axiomCount": 6,
       "defCount": 11,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1020Problem.lean"
     },
     {
       "path": "Proofs/Erdos1021Aristotle.lean",
       "filename": "Erdos1021Aristotle.lean",
-      "lineCount": 67,
+      "lineCount": 83,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 3,
+      "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos1021Problem.lean",
       "filename": "Erdos1021Problem.lean",
-      "lineCount": 261,
+      "lineCount": 242,
       "theoremCount": 5,
-      "axiomCount": 4,
+      "axiomCount": 0,
       "defCount": 16,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021Problem.lean"
     },
     {
+      "path": "Proofs/Erdos1022OQ01.lean",
+      "filename": "Erdos1022OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022OQ01.lean"
+    },
+    {
       "path": "Proofs/Erdos1022Problem.lean",
       "filename": "Erdos1022Problem.lean",
-      "lineCount": 322,
-      "theoremCount": 22,
-      "axiomCount": 3,
-      "defCount": 5,
+      "lineCount": 523,
+      "theoremCount": 23,
+      "axiomCount": 1,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"
@@ -185,9 +200,9 @@
     {
       "path": "Proofs/Erdos1024Problem.lean",
       "filename": "Erdos1024Problem.lean",
-      "lineCount": 255,
+      "lineCount": 228,
       "theoremCount": 4,
-      "axiomCount": 11,
+      "axiomCount": 4,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
@@ -196,9 +211,9 @@
     {
       "path": "Proofs/Erdos1025Problem.lean",
       "filename": "Erdos1025Problem.lean",
-      "lineCount": 264,
+      "lineCount": 247,
       "theoremCount": 6,
-      "axiomCount": 9,
+      "axiomCount": 4,
       "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
@@ -207,21 +222,32 @@
     {
       "path": "Proofs/Erdos1026Problem.lean",
       "filename": "Erdos1026Problem.lean",
-      "lineCount": 289,
+      "lineCount": 255,
       "theoremCount": 4,
-      "axiomCount": 10,
+      "axiomCount": 3,
       "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1026Problem.lean"
     },
     {
+      "path": "Proofs/Erdos1027Aristotle.lean",
+      "filename": "Erdos1027Aristotle.lean",
+      "lineCount": 50,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos1027Problem.lean",
       "filename": "Erdos1027Problem.lean",
-      "lineCount": 234,
-      "theoremCount": 7,
+      "lineCount": 356,
+      "theoremCount": 10,
       "axiomCount": 1,
-      "defCount": 12,
+      "defCount": 13,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027Problem.lean"
@@ -229,9 +255,9 @@
     {
       "path": "Proofs/Erdos1028Problem.lean",
       "filename": "Erdos1028Problem.lean",
-      "lineCount": 322,
+      "lineCount": 311,
       "theoremCount": 8,
-      "axiomCount": 6,
+      "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
@@ -240,9 +266,9 @@
     {
       "path": "Proofs/Erdos1029Problem.lean",
       "filename": "Erdos1029Problem.lean",
-      "lineCount": 191,
+      "lineCount": 174,
       "theoremCount": 4,
-      "axiomCount": 12,
+      "axiomCount": 5,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
@@ -251,9 +277,9 @@
     {
       "path": "Proofs/Erdos102Problem.lean",
       "filename": "Erdos102Problem.lean",
-      "lineCount": 197,
+      "lineCount": 174,
       "theoremCount": 10,
-      "axiomCount": 5,
+      "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

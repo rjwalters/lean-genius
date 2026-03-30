@@ -225,7 +225,29 @@ instance (f : α → Bool) (A : Finset α) :
 lemma card_constOn_le (A : Finset α) (b : Bool) :
     (Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = b)).card
     ≤ 2 ^ (Fintype.card α - A.card) := by
-  sorry
+  -- Inject constrained functions into (↑(univ \ A) → Bool) via restriction.
+  -- A function satisfying ∀ x ∈ A, f x = b is determined by its values on Aᶜ.
+  set S := Finset.univ.filter (fun f : α → Bool => ∀ x ∈ A, f x = b)
+  set Ac := Finset.univ \ A
+  -- The restriction map f ↦ (f ∘ Subtype.val : Ac → Bool) is injective on S
+  have hinj : Set.InjOn (fun f : α → Bool => fun (x : Ac) => f x.1) ↑S := by
+    intro f₁ hf₁ f₂ hf₂ heq
+    simp only [S, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and] at hf₁ hf₂
+    ext x
+    by_cases hx : x ∈ A
+    · rw [hf₁ x hx, hf₂ x hx]
+    · have hxAc : x ∈ Ac := Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hx⟩
+      exact congr_fun heq ⟨x, hxAc⟩
+  -- |S| ≤ |Ac → Bool| = 2^|Ac| = 2^(|α| - |A|)
+  calc S.card
+      ≤ (Finset.univ : Finset (Ac → Bool)).card :=
+        Finset.card_le_card_of_injOn (fun f (x : Ac) => f x.1)
+          (fun _ _ => Finset.mem_univ _) hinj
+    _ = Fintype.card (Ac → Bool) := Finset.card_univ
+    _ = 2 ^ Fintype.card Ac := by rw [Fintype.card_fun, Fintype.card_bool]
+    _ = 2 ^ Ac.card := by rw [Fintype.card_coe]
+    _ = 2 ^ (Fintype.card α - A.card) := by
+        congr 1; rw [Ac, Finset.card_sdiff (Finset.subset_univ _), Finset.card_univ]
 
 /-- Monochromatic colorings on A number at most 2 · 2^(|α| - |A|):
     at most 2^(|α| - |A|) for all-true plus 2^(|α| - |A|) for all-false. -/
@@ -335,7 +357,7 @@ theorem erdos_classical_bound (F : SetFamily α) (t : ℕ)
 **Open sorries (1)**:
 - `card_constOn_le`: counting functions constant on a subset (routine combinatorics)
 
-**Status**: axiomatized (1 axiom encoding the solved conjecture, 1 routine sorry)
+**Status**: axiomatized (1 axiom encoding the solved conjecture, 0 sorries)
 -/
 
 end Erdos1027
