@@ -14,12 +14,12 @@
       "representation-functions",
       "open"
     ],
-    "sorries": 2,
+    "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1145",
     "erdosUrl": "https://erdosproblems.com/1145",
     "proofRepoPath": "Proofs/Erdos1145Problem.lean",
-    "axiomCount": 3,
-    "assumptions": "3 axioms: erdos_sarkozy_conjecture (main open conjecture), average_rep_grows, grekos_two_set. 2 sorries: countingFn_ruzsaB (Set API bijection), ruzsa_ratio_not_one (needs witness at specific N). Eliminated 4 axioms: ruzsaA_infinite, ruzsaB_infinite, sum_of_reps_bound, ruzsa_unique_rep.",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: erdos_sarkozy_conjecture (main open conjecture, status OPEN). 0 sorries. Eliminated 6 axioms total: average_rep_grows, grekos_two_set, ruzsaA_infinite, ruzsaB_infinite, sum_of_reps_bound, ruzsa_unique_rep. Eliminated 2 sorries: countingFn_ruzsaB, ruzsa_ratio_not_one.",
     "badge": "axiom",
     "prerequisites": [
       "Additive number theory (sumsets, representation functions)",
@@ -28,8 +28,8 @@
       "Asymptotic density of integer sets"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 598,
-    "dateUpdated": "2026-03-27"
+    "lineCount": 682,
+    "dateUpdated": "2026-03-30"
   },
   "sections": [
     {
@@ -133,7 +133,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization establishes the Erdős–Sárközy conjecture in Lean 4, connecting it to both the Erdős–Turán conjecture (Problem #28) as a special case and to Ruzsa's counterexample (Problem #331) showing the ratio condition is necessary. 8 of 10 theorems are proved; 2 sorries remain in the Ruzsa counting function section. The open conjecture and known results are axiomatized.",
+    "summary": "This formalization establishes the Erdős–Sárközy conjecture in Lean 4, connecting it to both the Erdős–Turán conjecture (Problem #28) as a special case and to Ruzsa's counterexample (Problem #331) showing the ratio condition is necessary. All 21 theorems are proved with 0 sorries. Only the main open conjecture is axiomatized.",
     "implications": "A proof of this conjecture would simultaneously resolve the Erdős–Turán conjecture ($500 bounty), since it is strictly stronger. The formalization makes precise exactly what condition distinguishes the true conjecture from its false generalization.",
     "openQuestions": [
       "Can the asymptotic ratio condition aₙ/bₙ → 1 be weakened while preserving the conjecture?",
@@ -187,9 +187,9 @@
       "Pointwise"
     ],
     "namespace": "Erdos1145",
-    "lineCount": 598,
-    "axiomCount": 3,
-    "theoremCount": 10,
-    "definitionCount": 10
+    "lineCount": 682,
+    "axiomCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 9
   }
 }
