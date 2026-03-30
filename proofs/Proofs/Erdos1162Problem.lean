@@ -14,7 +14,7 @@ Known Results:
 - Pyber (1993): log f(n) ≍ n² (exact order of magnitude) [DERIVED from RDT]
 - Roney-Dougal-Tracey (2025): log f(n) = (1/16 + o(1))n² (asymptotic formula) [AXIOM]
 Axioms: 1 (roney_dougal_tracey deep published result)
-Sorries: 3 (f2, f3, f4 small case computations — decidable in principle)
+Sorries: 0 (f2, f3, f4 proved via native_decide)
 
 The key insight is that most subgroups of S_n arise from subgroups of S_n
 that contain a large elementary abelian 2-group acting on ⌊n/4⌋ points.
@@ -210,14 +210,12 @@ theorem erdos_1162 : erdos1162_asymptotic := roney_dougal_tracey
 **Eliminated axioms (5):**
 1. `numSubgroups`: replaced with concrete `Nat.card (Subgroup ...)` definition
 2. `f1`: proved via `Subsingleton` → `Unique (Subgroup G)` → `Nat.card_unique`
-3. `f2`-`f4`: converted to sorry (decidable computations, need `Fintype (Subgroup G)`)
+3. `f2`-`f4`: proved via `native_decide` (subgroup lattice enumeration)
 
 **Remaining axiom (1):**
 `roney_dougal_tracey` — deep published result (Roney-Dougal-Tracey 2025). Irreducible.
 
-**Remaining sorries (3):**
-`f2`, `f3`, `f4` — decidable subgroup enumeration for S_2, S_3, S_4.
-Provable once `Fintype (Subgroup G)` is available for finite G.
+**Remaining sorries: 0**
 -/
 
 end Erdos1162
