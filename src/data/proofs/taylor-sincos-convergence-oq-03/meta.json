@@ -14,9 +14,9 @@
     ],
     "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ03.lean",
     "badge": "formalized",
-    "sorries": 4,
+    "sorries": 3,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 4 sorries: alternating series estimation (2: partial sum bounds, tail bound), alternating remainder for sin/cos (2). Sin/cos term monotonicity and limit-to-zero are fully proved.",
+    "assumptions": "0 axioms. 3 sorries: alternating tail bound, alternating remainder for sin, alternating remainder for cos. Partial sum bounds fully proved by induction on paired terms.",
     "originalContributions": [
       "Alternating series estimation theorem (abstract, with proof strategy)",
       "Tighter sin/cos remainder bounds: |x|^{2n+1}/(2n+1)! instead of |x|^{2n+1}/(2n)!",

@@ -10,14 +10,20 @@
       "Located at Mathlib.Analysis.SpecificLimits.Normed, line ~653",
       "Also: Monotone.tendsto_alternating_series_of_tendsto_zero",
       "4 sorries remaining: alternating_partial_sum_even_bounds, alternating_tail_bound, and 2 more",
-      "Connection to Mathlib needs: reformulate hypotheses to match Monotone + Antitone API"
+      "Connection to Mathlib needs: reformulate hypotheses to match Monotone + Antitone API",
+      "alternating_partial_sum_even_bounds proved by induction with strengthened IH: a(2m) ≤ S_m ≤ a(0). Upper bound: S_new = S - a(2n+1) + a(2n+2) ≤ S ≤ a(0). Lower bound: S ≥ a(2n) ≥ a(2n+1), so S - a(2n+1) ≥ 0.",
+      "Odd.neg_one_pow and pow_succ handle (-1)^(2n+1) = -1 and (-1)^(2n+2) = 1 cleanly"
     ],
-    "builtItems": [],
-    "progressSummary": "SURVEYED: Identified Mathlib results that could prove the sorries. No code changes.",
+    "builtItems": [
+      "PROVED alternating_partial_sum_even_bounds (TaylorSinCosConvergenceOQ03.lean:53, ~20 lines)",
+      "Same proof applied to Aristotle companion file"
+    ],
+    "progressSummary": "PROGRESS: 4→3 sorries. Proved alternating_partial_sum_even_bounds by induction with strengthened invariant. Remaining: alternating_tail_bound, sin_alternating_remainder, cos_alternating_remainder.",
     "nextSteps": [
       "Prove alternating_partial_sum_even_bounds from Mathlib's alternating series infrastructure",
       "Prove alternating_tail_bound from cauchySeq_alternating_series",
       "Submit companion file lemmas to Aristotle"
     ]
-  }
+  },
+  "phase": "ACT"
 }
