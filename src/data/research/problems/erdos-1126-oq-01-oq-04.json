@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Main theorem algebraic structure proved. 1 opaque sorry \u2192 4 clean helper sorries (3 null-set + 1 Fubini). Aristotle companion file created.",
+    "progressSummary": "Session 7: Proved 3 null-set preservation lemmas (fst, snd, double). 1 sorry remains: ae_double_of_almost_jensen (Fubini section extraction). 5 axioms unchanged.",
     "builtItems": [
       "Surveyed proof requirements: identified 5-step proof strategy via Fubini sections",
       "Identified Mathlib infrastructure: integral_prod, prod_right_ae, Measure.prod",
@@ -40,7 +40,10 @@
       "Added volume_preimage_fst_null helper lemma (sorry)",
       "Added volume_preimage_snd_null helper lemma (sorry)",
       "Added ae_double_of_almost_jensen helper lemma (sorry, key Fubini step)",
-      "Created Erdos1126OQ01Aristotle.lean companion file"
+      "Created Erdos1126OQ01Aristotle.lean companion file",
+      "Proved volume_preimage_fst_null: measurable superset B \u2287 S, monotonicity, Measure.prod_prod",
+      "Proved volume_preimage_snd_null: symmetric to fst",
+      "Proved volume_preimage_double_null: scalar multiplication (2\u2022\u00b7), Set.preimage_smul\u2080, addHaar_smul"
     ],
     "insights": [
       "The sorry requires proving g(x+y) = g(x)+g(y) a.e. where g(x)=f(x)-f(0) satisfies almost Jensen.",
@@ -56,7 +59,11 @@
       "Key algebraic identity: if g satisfies a.e. Jensen with g(0)=0, and we know g(2z)=2g(z) a.e., then g(x+y)=(g(2x)+g(2y))/2=g(x)+g(y) a.e.",
       "The proof decomposes into: (1) scaling substitution f(x+y)=(f(2x)+f(2y))/2, (2) ae double lemma f(2z)=2f(z)-f(0), (3) linarith combination.",
       "The ae double lemma is the ONLY step requiring Fubini. Everything else is algebraic with null-set unions.",
-      "Null set for the combined proof: M = T\u207b\u00b9(N) \u222a (N_d \u00d7 \u211d) \u222a (\u211d \u00d7 N_d) where T(x,y)=(2x,2y)."
+      "Null set for the combined proof: M = T\u207b\u00b9(N) \u222a (N_d \u00d7 \u211d) \u222a (\u211d \u00d7 N_d) where T(x,y)=(2x,2y).",
+      "Proved volume_preimage_fst_null: Prod.fst\u207b\u00b9(S) = S \u00d7\u02e2 univ, use measurable superset + Measure.prod_prod + zero_mul",
+      "Proved volume_preimage_snd_null: symmetric via Prod.snd\u207b\u00b9(S) = univ \u00d7\u02e2 S + mul_zero",
+      "Proved volume_preimage_double_null: map is (2:\u211d)\u2022\u00b7, use Set.preimage_smul\u2080 + Measure.addHaar_smul + mul_zero",
+      "Session 7: Proved 3 null-set lemmas. Only ae_double_of_almost_jensen sorry remains (Fubini section extraction)."
     ],
     "mathlibGaps": [
       "Need ae_ae_of_ae_prod or prod_right_ae for \u211d\u00b2 Lebesgue measure \u2192 ae sections",
@@ -64,10 +71,8 @@
       "May need filter_upwards for combining multiple ae conditions"
     ],
     "nextSteps": [
-      "Prove ae_double_of_almost_jensen: need Fubini section + shift elimination",
-      "Prove 3 null-set helpers: addHaar_preimage_smul, Measure.prod_prod, volume_eq_prod",
-      "Add import Mathlib.MeasureTheory.Measure.Prod when proving helpers",
-      "Check if Aristotle can auto-prove the 3 null-set lemmas"
+      "Prove ae_double_of_almost_jensen: use Fubini section extraction (ae_ae_of_ae_prod) to get good y\u2080, then algebraic manipulation",
+      "Alternatively, submit ae_double_of_almost_jensen to Aristotle if the Fubini argument is too complex"
     ],
     "markdown": "# Knowledge Base: erdos-1126-oq-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
