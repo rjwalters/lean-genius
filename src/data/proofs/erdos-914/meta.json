@@ -55,28 +55,13 @@
       "Kierstead-Kostochka proof approach",
       "Alon-Yuster and KSS generalizations"
     ],
-    "axiomCount": 5,
+    "axiomCount": 2,
     "lineCount": 210,
     "assumptions": [
-      {
-        "name": "case_r_equals_2",
-        "type": "axiom",
-        "description": "Dirac matching case: a graph on 2m vertices with minimum degree at least m contains m vertex-disjoint edges (K_2's). This is a consequence of Dirac's theorem on Hamiltonian cycles, since a Hamiltonian cycle on 2m vertices decomposes into m disjoint edges."
-      },
-      {
-        "name": "corradi_hajnal",
-        "type": "axiom",
-        "description": "Corradi-Hajnal theorem (1963): a graph on 3m vertices with minimum degree at least 2m contains m vertex-disjoint triangles. Proved via case analysis on a maximal collection of disjoint triangles."
-      },
       {
         "name": "hajnal_szemeredi",
         "type": "axiom",
         "description": "Hajnal-Szemeredi theorem (1970): for r >= 2 and m >= 1, a graph on rm vertices with minimum degree at least m(r-1) contains m vertex-disjoint copies of K_r. The core result solving Erdos Problem #914."
-      },
-      {
-        "name": "hajnal_szemeredi_factor",
-        "type": "axiom",
-        "description": "Perfect K_r-factor form: under the same hypotheses as hajnal_szemeredi, the m vertex-disjoint K_r's additionally cover all vertices (biUnion = univ). This is strictly stronger than mere existence of m disjoint cliques, requiring a covering argument."
       },
       {
         "name": "degree_condition_tight",
