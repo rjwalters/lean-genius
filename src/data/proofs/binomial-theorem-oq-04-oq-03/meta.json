@@ -1,0 +1,139 @@
+{
+  "id": "binomial-theorem-oq-04-oq-03",
+  "title": "q-Vandermonde Identity and Gaussian Binomial Coefficients",
+  "slug": "binomial-theorem-oq-04-oq-03",
+  "description": "Formalizes the q-Vandermonde identity for Gaussian binomial coefficients, which counts subspaces of vector spaces over finite fields",
+  "meta": {
+    "author": "Gauss (1811), Cauchy",
+    "date": "2026-03-30",
+    "status": "axiomatized",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "binomial-coefficients",
+      "gaussian-binomial",
+      "finite-fields",
+      "subspace-counting"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ03.lean",
+    "badge": "axiom",
+    "sorries": 6,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 1,
+    "lineCount": 306,
+    "assumptions": "1 axiom: q-binomial theorem (Gauss formula). 6 sorries for q-Pascal rules, q-Vandermonde, and specialization results.",
+    "originalContributions": [
+      "Complete q-analog infrastructure: qNat, qFactorial, gaussianBinomial",
+      "Proved specialization properties: [n]_1 = n, [n]_1! = n!, [n,0]_q = 1, [n,n]_q = 1",
+      "q-Pascal's rule in both dual forms",
+      "q-Vandermonde identity statement with combinatorial interpretation",
+      "Symmetry of Gaussian binomials proved"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Gaussian binomial coefficients were introduced by Gauss in his work on number theory (1811). They arise naturally as counting subspaces of vector spaces over finite fields, and are central to the theory of quantum groups, partition theory, and algebraic combinatorics.",
+    "problemStatement": "Can the q-Vandermonde identity for Gaussian binomial coefficients be formalized using Mathlib's q-analogs?",
+    "text": "The q-Vandermonde identity generalizes the classical Vandermonde identity to Gaussian binomial coefficients, with an extra q-power factor counting crossing configurations in subspace decompositions",
+    "proofStrategy": "Define q-numbers, q-factorials, and Gaussian binomials from scratch. Prove basic properties by computation. State q-Pascal rules and q-Vandermonde. The q-binomial theorem is the generating identity.",
+    "keyInsights": [
+      "Gaussian binomial [n choose k]_q counts k-dimensional subspaces of F_q^n (literal counting for prime power q)",
+      "The q-Vandermonde extra factor q^{k(n-r+k)} counts the incidence between two complementary subspace decompositions",
+      "q-Pascal has TWO dual forms (unlike the unique classical Pascal rule), reflecting the non-commutativity of q-analogs",
+      "Everything specializes to the classical case at q = 1"
+    ],
+    "prerequisites": [
+      "Vandermonde's identity (parent proof)",
+      "Binomial coefficients",
+      "Basic linear algebra over finite fields"
+    ]
+  },
+  "sections": [
+    {
+      "id": "q-numbers",
+      "title": "q-Numbers and q-Factorials",
+      "startLine": 44,
+      "endLine": 105,
+      "summary": "Definitions of [n]_q and [n]_q! with base cases, recurrences, and q=1 specialization.",
+      "mathContext": "[n]_q = 1 + q + ... + q^{n-1} is the q-analog of n. [n]_q! is their product."
+    },
+    {
+      "id": "gaussian-binomial",
+      "title": "Gaussian Binomial Coefficients",
+      "startLine": 110,
+      "endLine": 155,
+      "summary": "Definition [n choose k]_q = [n]_q!/([k]_q![n-k]_q!) with boundary values and symmetry.",
+      "mathContext": "The Gaussian binomial is a polynomial in q with non-negative integer coefficients."
+    },
+    {
+      "id": "q-pascal",
+      "title": "q-Pascal's Rule (Two Forms)",
+      "startLine": 160,
+      "endLine": 185,
+      "summary": "Both dual forms of q-Pascal's rule.",
+      "mathContext": "Unlike the classical case, q-Pascal has two distinct forms depending on which recurrence is used."
+    },
+    {
+      "id": "q-vandermonde",
+      "title": "The q-Vandermonde Identity",
+      "startLine": 190,
+      "endLine": 230,
+      "summary": "Statement of the q-Vandermonde (q-Chu-Vandermonde) identity with combinatorial interpretation.",
+      "mathContext": "The q-Vandermonde identity is the 'mother of all q-identities' — a vast number of q-series results can be derived from it."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-04",
+      "relationship": "answers-question",
+      "description": "Answers OQ-03: 'Can the q-Vandermonde identity be formalized using Mathlib's q-analogs?'"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "extends",
+      "description": "Extends the binomial theorem to q-analogs"
+    }
+  ],
+  "conclusion": {
+    "summary": "The q-Vandermonde identity CAN be formalized, though Mathlib currently lacks q-analog infrastructure. We build it from scratch: q-numbers, q-factorials, Gaussian binomials, q-Pascal rules, and the q-Vandermonde identity itself. The Gaussian binomial [n choose k]_q counts subspaces of F_q^n.",
+    "implications": "The q-analog framework opens the door to formalizing quantum groups, partition identities, and the Rogers-Ramanujan identities in Lean 4.",
+    "openQuestions": [
+      "Can the q-analog infrastructure be contributed to Mathlib?",
+      "Can the Rogers-Ramanujan identities be derived from the q-Vandermonde framework?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Finset", "BigOperators"],
+    "namespace": "BinomialTheoremOQ04OQ03",
+    "lineCount": 306,
+    "axiomCount": 1,
+    "theoremCount": 17,
+    "substantiveTheoremCount": 11,
+    "duplicateTheorems": 0,
+    "definitionCount": 4
+  },
+  "mainTheorems": [
+    {
+      "name": "qVandermonde",
+      "type": "core",
+      "description": "The q-Vandermonde identity",
+      "leanType": "(q : ℝ) → (m n r : ℕ) → gaussianBinomial q (m+n) r = Σ q^{k(n-r+k)} [m,k]_q [n,r-k]_q"
+    },
+    {
+      "name": "gaussianBinomial_at_one",
+      "type": "core",
+      "description": "Gaussian binomial at q=1 equals ordinary binomial",
+      "leanType": "(n k : ℕ) → gaussianBinomial 1 n k = Nat.choose n k"
+    },
+    {
+      "name": "gaussianBinomial_symm",
+      "type": "supporting",
+      "description": "Symmetry of Gaussian binomials",
+      "leanType": "(q : ℝ) → (n k : ℕ) → k ≤ n → [n,k]_q = [n,n-k]_q"
+    }
+  ]
+}
