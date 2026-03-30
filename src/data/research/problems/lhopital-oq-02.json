@@ -1,0 +1,55 @@
+{
+  "slug": "lhopital-oq-02",
+  "title": "Formalize the $\\infty/\\infty$ form of L'Hopital's rule in Lean — Mathlib curr...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T00:13:03-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Stated 4 variants of infinity/infinity L Hopital rule (right, left, at +inf, at -inf). Proof bodies have 4 sorries — needs Cauchy MVT epsilon management. Documented proof strategy and why separate from 0/0.",
+    "builtItems": [],
+    "insights": [
+      "Mathlib has 26 L Hopital variants but ALL are 0/0 form — genuine gap for infinity/infinity",
+      "Only g → ∞ needed (not both f and g), making this more general than naive 1/f 1/g reduction",
+      "Proof requires two-variable Cauchy MVT: fix x0, let x → a, then optimize x0",
+      "Four sorries: main proof + 3 reductions (left via negation, atTop via 1/x, atBot via -x)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: lhopital-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "lhopital"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T07:24:09.593Z",
+  "lastUpdate": "2026-03-30T07:24:09.604Z"
+}

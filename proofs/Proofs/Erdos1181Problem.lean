@@ -138,7 +138,42 @@ theorem iterated_log_sublinear (C : ℝ) (hC : C > 0) :
     ∀ᶠ (n : ℕ) in atTop,
       C * (Real.log (Real.log (n : ℝ)) / Real.log (Real.log (Real.log (n : ℝ)))) <
         (1 : ℝ) / 2 * Real.log (n : ℝ) := by
-  sorry
+  -- Strategy: for large n, log(log(log n)) ≥ 1 so the division makes things smaller.
+  -- Then C * log(log n) < (1/2) * log n since log(log n)/log n → 0.
+  -- (a) Eventually log(log n) < (1/(2C)) * log n
+  have ha : ∀ᶠ n in (atTop : Filter ℕ),
+      Real.log (Real.log (n : ℝ)) < (1 / (2 * C)) * Real.log (n : ℝ) := by
+    -- log(log n) / log n → 0, so eventually < 1/(2C)
+    -- This is: log x / x → 0 (Mathlib) composed with log n → ∞
+    sorry
+  -- (b) Eventually log(log(log n)) ≥ 1 (iterated log → ∞)
+  have hb : ∀ᶠ n in (atTop : Filter ℕ),
+      1 ≤ Real.log (Real.log (Real.log (n : ℝ))) := by
+    have : Tendsto (Real.log ∘ Real.log ∘ Real.log ∘ (Nat.cast : ℕ → ℝ)) atTop atTop :=
+      Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp
+        (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop))
+    exact this (Filter.mem_atTop 1)
+  -- (c) Eventually log(log n) > 0
+  have hc : ∀ᶠ n in (atTop : Filter ℕ),
+      0 < Real.log (Real.log (n : ℝ)) := by
+    filter_upwards [Filter.eventually_ge_atTop 16] with n hn
+    apply Real.log_pos
+    calc Real.log (n : ℝ) ≥ Real.log 16 := by
+          apply Real.log_le_log (by norm_num) (by exact_mod_cast hn)
+      _ > 1 := by
+          rw [show (16 : ℝ) = 2 ^ (4 : ℝ) from by norm_num]
+          rw [Real.log_rpow (by norm_num : (0:ℝ) < 2)]
+          nlinarith [Real.log_pos (by norm_num : (1:ℝ) < 2)]
+  -- Combine: C * (ll/lll) ≤ C * ll < (1/2) * l
+  filter_upwards [ha, hb, hc] with n ha hb hc
+  have hlll_pos : 0 < Real.log (Real.log (Real.log (n : ℝ))) := by linarith
+  calc C * (Real.log (Real.log ↑n) / Real.log (Real.log (Real.log ↑n)))
+      ≤ C * Real.log (Real.log ↑n) := by
+        apply mul_le_mul_of_nonneg_left _ (le_of_lt hC)
+        exact div_le_self (le_of_lt hc) hb
+    _ < C * ((1 / (2 * C)) * Real.log ↑n) := by
+        exact mul_lt_mul_of_pos_left ha hC
+    _ = 1 / 2 * Real.log ↑n := by field_simp
 
 /-- If Tao's heuristic holds, then Erdős #1181 follows.
     Proof sketch: C · (log log n / log log log n) · log n ≪ (log n)²
