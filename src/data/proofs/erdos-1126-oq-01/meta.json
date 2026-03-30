@@ -61,11 +61,15 @@
       "derivation_sq: d(x²) = 2x·d(x) (PROVED)",
       "derivation_pow: Power rule d(xⁿ) = n·xⁿ⁻¹·d(x) (PROVED)",
       "stability_paradigm_summary: Unified stability for Jensen and derivation equations",
-      "log_of_mul_is_additive: Logarithmic reduction of multiplicative to additive equation (PROVED)"
+      "log_of_mul_is_additive: Logarithmic reduction of multiplicative to additive equation (PROVED)",
+      "volume_preimage_double_null: Null set preserved under (x,y)↦(2x,2y) via Haar QMP (PROVED)",
+      "volume_preimage_fst_null: Null set in ℝ lifts to null set in ℝ² under fst projection (PROVED)",
+      "volume_preimage_snd_null: Null set in ℝ lifts to null set in ℝ² under snd projection (PROVED)",
+      "almost_jensen_implies_almost_additive: Almost Jensen → ∃c, f-c almost additive (PROVED modulo ae_double sorry; corrected mathematical bug: f(0) → ∃c)"
     ],
     "dateAdded": "2026-03-24",
     "axiomCount": 6,
-    "lineCount": 413,
+    "lineCount": 474,
     "assumptions": "6 axioms: almost_multiplicative_stability, almost_jensen_stability, almost_derivation_stability, continuous_derivation_is_zero, measurable_multiplicative_is_power, measurable_derivation_is_zero. These are known results from Ger (1979) and Járai (2005)."
   },
   "overview": {
@@ -178,12 +182,12 @@
       "Can the stability paradigm be extended to functional equations on locally compact groups beyond ℝ?",
       "What is the optimal null-set estimate: given an ε-null exceptional set, how small can the correction set be?",
       "Does stability hold for functional inequalities (e.g., almost sub-additive → sub-additive a.e.)?",
-      "Can the remaining sorry (almost Jensen → almost additive) be resolved using Mathlib's Fubini theorem? (log_of_mul_is_additive has been proved)"
+      "Can the remaining sorry (ae_double_of_almost_jensen: Fubini section extraction) be resolved using Mathlib's measure_prod_null? Note: the theorem was corrected from using f(0) to an existential constant c, since f(0) can differ from the a.e. value (counterexample: indicator of irrationals)."
     ]
   },
   "leanFile": {
     "path": "proofs/Proofs/Erdos1126OQ01Problem.lean",
     "filename": "Erdos1126OQ01Problem.lean",
-    "lineCount": 413
+    "lineCount": 474
   }
 }
