@@ -105,12 +105,6 @@ theorem erdos_moser_1965_bound :
   · -- (log N)^(3/2) ≥ 1 for N ≥ 3
     exact rpow_ge_one_of_ge_one (log_ge_one_of_ge_three hA) (by norm_num)
 
-/-- The bound 2^N / N^(3/2) is tight up to constants. -/
-axiom bound_tight_order :
-    ∀ ε > 0, ∀ᶠ N : ℕ in atTop,
-      ∃ (A : Finset ℤ), A.card = N ∧
-        ∃ t : ℤ, (countSubsetsWithSum A t : ℝ) ≥ (1 - ε) * 2^N / (N : ℝ)^(3/2 : ℝ)
-
 /-
 ## Part 3: Question 2 - Fixed Cardinality Bound
 
@@ -145,18 +139,6 @@ to establish the Sperner property for certain posets.
 def symmetricSet (N : ℕ) : Finset ℤ :=
   Finset.Icc (-(N - 1 : ℕ) / 2 : ℤ) ((N : ℕ) / 2 : ℤ)
 
-/-- Stanley (1980): Symmetric set maximizes concentration.
-    Uses the hard Lefschetz theorem from algebraic geometry. -/
-axiom stanley_1980_extremal :
-    ∀ (A : Finset ℤ), ∀ t : ℤ,
-      countSubsetsWithSum A t ≤
-        countSubsetsWithSum (symmetricSet A.card) 0
-
-/-- For the symmetric set, t = 0 achieves maximum concentration. -/
-axiom symmetric_max_at_zero (N : ℕ) :
-    ∀ t : ℤ, countSubsetsWithSum (symmetricSet N) t ≤
-      countSubsetsWithSum (symmetricSet N) 0
-
 /-
 ## Part 5: Multi-dimensional Generalization
 
@@ -172,14 +154,6 @@ def vectorSetSum {d : ℕ} (A : Finset (Fin d → ℤ)) : Fin d → ℤ :=
 def countVectorSubsetsWithSum {d : ℕ} (A : Finset (Fin d → ℤ))
     (t : Fin d → ℤ) : ℕ :=
   (A.powerset.filter (fun S => vectorSetSum S = t)).card
-
-/-- Halász multi-dimensional bound: generalizes to d dimensions.
-    The exponent (d+1)/2 specializes to 3/2 for d=2 and 2 for d=3. -/
-axiom halasz_multi_dim (d : ℕ) :
-    ∃ C > 0, ∀ (A : Finset (Fin d → ℤ)), A.card > 0 →
-      ∀ t : Fin d → ℤ,
-        (countVectorSubsetsWithSum A t : ℝ) ≤
-          C * 2^(A.card) / (A.card : ℝ)^((d + 1 : ℕ) / 2 : ℝ)
 
 /-
 ## Part 6: Generating Function Approach
