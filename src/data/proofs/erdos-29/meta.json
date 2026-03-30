@@ -16,13 +16,14 @@
       "explicit-construction"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 29,
     "erdosUrl": "https://erdosproblems.com/29",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$100",
-    "axiomCount": 8,
-    "lineCount": 454,
+    "axiomCount": 7,
+    "lineCount": 404,
+    "assumptions": "7 axioms: JPSZ_set (explicit construction), JPSZ_is_basis, JPSZ_is_economical, JPSZ_density_zero, JPSZ_representation_bound, JPSZ_explicit, JPSZ_size_optimal. All from JPSZ 2024 paper. Removed redundant erdos_probabilistic_existence (follows from JPSZ axioms). Removed false basis_size_lower_bound (Aristotle found counterexample).",
     "prerequisites": [
       "Additive bases and Waring's problem",
       "Explicit vs. probabilistic constructions",
