@@ -378,8 +378,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-01-01T21:55:27.887Z",
-      "status": "blocked",
-      "lastUpdate": "2026-03-22T07:19:45.044Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-30T17:47:49.955Z",
       "completed": "2026-03-15T22:28:57.349Z"
     },
     {
@@ -9436,11 +9436,12 @@
     },
     {
       "slug": "amgm-inequality-oq-04",
-      "phase": "NEW",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-30T16:34:54.910Z",
-      "status": "active",
-      "lastUpdate": "2026-03-30T16:34:54.911Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-30T17:47:49.973Z",
+      "completed": "2026-03-30T17:47:49.973Z"
     },
     {
       "slug": "basel-problem-oq-01-incomplete-01",
@@ -9460,11 +9461,12 @@
     },
     {
       "slug": "area-of-circle-oq-05",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-30T16:34:54.970Z",
-      "status": "active",
-      "lastUpdate": "2026-03-30T16:34:54.994Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-30T17:47:50.007Z",
+      "completed": "2026-03-30T17:47:50.007Z"
     },
     {
       "slug": "dissection-of-cubes-oq-05",
@@ -9500,11 +9502,12 @@
     },
     {
       "slug": "erdos-1008-incomplete-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-30T16:34:54.971Z",
-      "status": "active",
-      "lastUpdate": "2026-03-30T16:34:54.994Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-30T17:47:50.010Z",
+      "completed": "2026-03-30T17:47:50.010Z"
     },
     {
       "slug": "erdos-101-oq-04",
@@ -9540,11 +9543,12 @@
     },
     {
       "slug": "erdos-1034-incomplete-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-30T16:34:54.972Z",
-      "status": "active",
-      "lastUpdate": "2026-03-30T16:34:54.994Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-30T17:47:50.010Z",
+      "completed": "2026-03-30T17:47:50.010Z"
     },
     {
       "slug": "erdos-1036-oq-01",
@@ -9564,19 +9568,21 @@
     },
     {
       "slug": "quadratic-reciprocity-oq-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-03-30T16:34:54.972Z",
-      "status": "active",
-      "lastUpdate": "2026-03-30T16:34:54.995Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-30T17:47:50.013Z",
+      "completed": "2026-03-30T17:47:50.013Z"
     },
     {
       "slug": "wilsons-theorem-oq-04",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-03-30T16:34:54.972Z",
-      "status": "active",
-      "lastUpdate": "2026-03-30T16:34:54.995Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-30T17:47:49.996Z",
+      "completed": "2026-03-30T17:47:49.996Z"
     },
     {
       "slug": "divisibility-truncation-general-oq-02",
@@ -9593,6 +9599,166 @@
       "started": "2026-03-30T16:34:54.975Z",
       "status": "active",
       "lastUpdate": "2026-03-30T16:34:54.975Z"
+    },
+    {
+      "slug": "erdos-1022-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "erdos-1059-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "erdos-1100-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "erdos-29-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "erdos-445-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "erdos-52-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "erdos-659-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "erdos-69-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "erdos-825-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "hilbert-21-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "infinitude-primes-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "mathematical-induction-oq-05",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "prob-method-alteration-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "product-of-segments-of-chords-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "pythagorean-theorem-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "shannon-entropy-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "shannon-source-coding-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "sum-of-kth-powers-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "sylow-theorems-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
+    },
+    {
+      "slug": "triangle-inequality-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-30T17:47:50.026Z",
+      "status": "active",
+      "lastUpdate": "2026-03-30T17:47:50.026Z"
     }
   ],
   "config": {
