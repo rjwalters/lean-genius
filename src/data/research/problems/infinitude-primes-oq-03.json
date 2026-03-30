@@ -1,8 +1,8 @@
 {
   "slug": "infinitude-primes-oq-03",
   "title": "Dirichlet's theorem generalizes to arithmetic progressions: if $\\gcd(a,d) = 1...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -29,13 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created InfinitudePrimes3k2.lean with infrastructure for proving infinitely many primes ≡ 2 (mod 3). 3 sorries remain. Key lemmas proved: mul_mod_three_one, prime_mod_three, candidate_mod_three, candidate_ge_two.",
+    "progressSummary": "COMPLETED: Proof already complete (0 sorries, 0 axioms). Created gallery entry with meta.json, annotations.json, index.ts, and listings entry.",
     "builtItems": [
       "Created proofs/Proofs/InfinitudePrimes3k2.lean — elementary proof of primes ≡ 2 (mod 3)",
       "lemma mul_mod_three_one: product of 1 (mod 3) stays 1 (mod 3)",
       "lemma prime_mod_three: primes ≠ 3 are 1 or 2 (mod 3)",
       "lemma candidate_mod_three: 3·(n+1)!-1 ≡ 2 (mod 3)",
-      "lemma candidate_ge_two: candidate ≥ 2"
+      "lemma candidate_ge_two: candidate ≥ 2",
+      "Created src/data/proofs/infinitude-primes-oq-03/meta.json",
+      "Created src/data/proofs/infinitude-primes-oq-03/annotations.json",
+      "Created src/data/proofs/infinitude-primes-oq-03/index.ts",
+      "Added listing to src/data/proofs/listings.json"
     ],
     "insights": [
       "Proof mirrors 4k+3 argument: use N = 3·(n+1)!-1, show product of all-1-mod-3 factors would give N ≡ 1 (mod 3), contradiction",
