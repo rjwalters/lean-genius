@@ -1,0 +1,181 @@
+{
+  "id": "fundamental-theorem-algebra-oq-04-oq-01",
+  "title": "The Artin-Schreier Theorem: Real-Closed Fields and the FTA",
+  "slug": "fundamental-theorem-algebra-oq-04-oq-01",
+  "description": "The Artin-Schreier theorem (1927) states that F is real-closed if and only if F(sqrt(-1)) is algebraically closed. The Fundamental Theorem of Algebra (C is algebraically closed) is the special case F = R. This formalization defines real-closed field axioms, verifies R satisfies them, and derives the FTA as a corollary of Artin-Schreier.",
+  "meta": {
+    "author": "Artin and Schreier (1927), Gauss (1799)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Artin%E2%80%93Schreier_theorem",
+    "date": "1927",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FundamentalTheoremAlgebraOQ04OQ01.lean",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "real-closed-fields",
+      "algebraic-closure",
+      "complex-numbers",
+      "artin-schreier",
+      "extension"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.isAlgClosed",
+        "description": "C is algebraically closed (the FTA in Mathlib)",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function on R",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "Complex.finrank_real_complex",
+        "description": "[C:R] = 2",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.I_mul_I",
+        "description": "i * i = -1 in C",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "RealClosedAxioms structure: pos_sqrt + odd_degree_root + neg_one_not_square",
+      "Proof that real-closed fields are not algebraically closed (X^2+1 has no root)",
+      "Proof that R satisfies real-closed axioms (using Real.sqrt and sq_nonneg)",
+      "QuadraticExtension structure for F(sqrt(-1))",
+      "FTA derivation chain: R real-closed -> C = R(i) -> Artin-Schreier -> C alg. closed",
+      "Universality theorem: FTA is about real-closed fields, not R specifically"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 3,
+    "lineCount": 349,
+    "assumptions": "3 axioms: artin_schreier_forward, artin_schreier_backward, reals_odd_degree_root.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Emil Artin and Otto Schreier (1927) introduced the notion of formally real fields and proved that a field is real-closed iff its extension by sqrt(-1) is algebraically closed. This gave a purely algebraic characterization of the property underlying the Fundamental Theorem of Algebra, showing that the FTA is not really about R and C specifically, but about the abstract algebraic notion of real-closedness.",
+    "problemStatement": "**Open Question**: Formalize the Artin-Schreier theorem (F real-closed iff F(sqrt(-1)) alg. closed) and show FTA is the special case F = R.\n\n**Result**: We define RealClosedAxioms (pos_sqrt, odd_degree_root, neg_one_not_square), verify R satisfies them, and show the FTA derivation: R real-closed + C = R(i) + Artin-Schreier = C algebraically closed.",
+    "text": "The Artin-Schreier theorem reveals the FTA as a special case of a general algebraic principle: any real-closed field becomes algebraically closed after a single quadratic extension. R is the standard real-closed field, and C = R(i) is its algebraic closure.",
+    "proofStrategy": "Define RealClosedAxioms as a structure. Verify R satisfies the axioms using Mathlib (Real.sqrt, sq_nonneg). Define QuadraticExtension for F(sqrt(-1)). Axiomatize Artin-Schreier (both directions). Show C = R(i) is the QuadraticExtension of R. Derive the FTA as a chain: R real-closed -> Artin-Schreier -> C alg. closed.",
+    "keyInsights": [
+      "The FTA is NOT a theorem about R specifically - it's a theorem about real-closed fields",
+      "R's only special role is being the 'standard' real-closed field (completion of Q)",
+      "Any real-closed field needs exactly one quadratic extension to become algebraically closed",
+      "Real-closed = ordered field + IVP for polynomials (odd-degree have roots, positive elements have sqrt)",
+      "Contrast with Q: its algebraic closure requires infinitely many extension steps"
+    ],
+    "prerequisites": [
+      "Field extensions and algebraic closure",
+      "The Fundamental Theorem of Algebra (C is algebraically closed)",
+      "Ordered fields and the real number system",
+      "Square roots and the intermediate value theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "real-closed-axioms",
+      "title": "Real-Closed Fields: The Axioms",
+      "startLine": 54,
+      "endLine": 100,
+      "summary": "Defines RealClosedAxioms structure. Proves real-closed fields are not algebraically closed (X^2+1 has no root).",
+      "mathContext": "A field $F$ is **real-closed** if: (RC1) every positive element has a square root, (RC2) every odd-degree polynomial has a root, (RC3) $-1$ is not a square. Equivalently: $F$ is an ordered field satisfying the intermediate value property for polynomials."
+    },
+    {
+      "id": "quadratic-extension",
+      "title": "The Quadratic Extension F(sqrt(-1))",
+      "startLine": 102,
+      "endLine": 132,
+      "summary": "Defines QuadraticExtension structure. Proves X^2+1 is irreducible over real-closed fields.",
+      "mathContext": "Given real-closed $F$, form $F(\\sqrt{-1}) = F[X]/(X^2+1)$. Since $-1$ is not a square in $F$, $X^2+1$ is irreducible, so $[F(\\sqrt{-1}):F] = 2$."
+    },
+    {
+      "id": "artin-schreier",
+      "title": "The Artin-Schreier Theorem",
+      "startLine": 134,
+      "endLine": 192,
+      "summary": "Axiomatizes both directions of Artin-Schreier. States the equivalence: F real-closed iff F(sqrt(-1)) algebraically closed.",
+      "mathContext": "**Artin-Schreier (1927)**: $F$ is real-closed $\\iff$ $F(\\sqrt{-1})$ is algebraically closed. Forward: every polynomial over $F$ factors into linears and quadratics; adjoining $\\sqrt{-1}$ splits the quadratics. Backward: algebraic closure of $F(\\sqrt{-1})$ provides square roots and odd-degree roots in $F$."
+    },
+    {
+      "id": "reals-real-closed",
+      "title": "R is Real-Closed",
+      "startLine": 194,
+      "endLine": 231,
+      "summary": "Proves R satisfies RC axioms: pos_sqrt via Real.sqrt, neg_one_not_square via sq_nonneg, odd_degree_root axiomated (needs IVT).",
+      "mathContext": "$\\mathbb{R}$ is real-closed: $\\sqrt{a}$ exists for $a > 0$ (completeness), odd-degree polynomials have roots (IVT), and $-1 \\notin (\\mathbb{R})^2$ (since $x^2 \\geq 0$). The only axiom needed is the IVT for polynomials."
+    },
+    {
+      "id": "fta-special-case",
+      "title": "The FTA as a Special Case of Artin-Schreier",
+      "startLine": 233,
+      "endLine": 290,
+      "summary": "Shows C = R(sqrt(-1)) via QuadraticExtension. Derives FTA chain: R real-closed + Artin-Schreier = C alg. closed.",
+      "mathContext": "The **FTA derivation**: $\\mathbb{R}$ is real-closed $\\xrightarrow{\\text{Artin-Schreier}}$ $\\mathbb{R}(\\sqrt{-1}) = \\mathbb{C}$ is algebraically closed. The FTA is not about $\\mathbb{R}$ specifically - it holds for any real-closed field."
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations: Other Real-Closed Fields",
+      "startLine": 292,
+      "endLine": 339,
+      "summary": "Discusses other real-closed fields: real algebraic numbers, Puiseux series, surreal numbers. States universality: FTA is about real-closed fields in general.",
+      "mathContext": "Other real-closed fields: $\\mathbb{R}_{\\text{alg}}$ (real algebraic numbers), $\\mathbb{R}((t^{1/\\infty}))$ (real Puiseux series), $\\textbf{No}$ (Conway's surreal numbers). Each has a corresponding FTA: its quadratic extension is algebraically closed."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Artin-Schreier theorem reveals the FTA as a special case of a general algebraic principle: real-closed fields become algebraically closed after a single quadratic extension by sqrt(-1). R is real-closed (positive sqrt + IVT + -1 not a square), C = R(i) is the quadratic extension, and Artin-Schreier gives algebraic closure.",
+    "implications": "This shifts perspective: the FTA is not a theorem of analysis (despite most proofs using topology or complex analysis). It is fundamentally an algebraic theorem about real-closed fields, with the analytic content isolated in the single fact that R is real-closed.",
+    "openQuestions": [
+      "Can the Artin-Schreier proof (forward direction) be fully formalized in Lean using Galois theory?",
+      "What is the constructive content of the Artin-Schreier theorem?",
+      "Can real-closed fields be characterized categorically (e.g., as certain model-theoretic structures)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.Algebra.Order.Field.Basic",
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Proofs.FundamentalTheoremAlgebraOQ04"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "FundamentalTheoremAlgebraOQ04OQ01",
+    "lineCount": 349,
+    "axiomCount": 3,
+    "theoremCount": 10,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-algebra-oq-04",
+      "relationship": "extends",
+      "description": "Parent: C is the unique algebraic closure of R. This entry shows the algebraic explanation: Artin-Schreier for real-closed R."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "extends",
+      "description": "Grandparent: the Fundamental Theorem of Algebra. This entry reveals FTA as a special case of the Artin-Schreier theorem."
+    }
+  ],
+  "references": [
+    {
+      "key": "AS27",
+      "citation": "Artin, E. and Schreier, O., Algebraische Konstruktion reeller Korper, Abhandlungen aus dem Mathematischen Seminar der Universitat Hamburg 5 (1927), 85-99.",
+      "type": "paper"
+    },
+    {
+      "key": "La02",
+      "citation": "Lang, S., Algebra (Revised 3rd ed.), Springer (2002). Chapter XI: Real Fields. Contains modern treatment of real-closed fields and Artin-Schreier.",
+      "type": "book"
+    }
+  ]
+}
