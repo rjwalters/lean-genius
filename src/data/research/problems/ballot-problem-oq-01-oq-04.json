@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-03-26T20:00:24.431Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Added structural infrastructure for cycle-lemma-based Chung-Feller proof",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove that rotation orbit cut at 1-positions gives n+1 balanced paths with distinct types",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,24 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Rich infrastructure exists. Cycle lemma proved in OQ01. Catalan numbers (Cn) defined and proved in OQ03. Chung-Feller theorem is a direct application of the cycle lemma.",
+    "progressSummary": "PROGRESS: Added structural infrastructure for Chung-Feller proof. Proved cyclicRotation_isBalancedPath, upsteps_above_below_disjoint. 1 axiom remains (chung_feller_uniform). Detailed 6-step proof strategy documented.",
     "builtItems": [
-      "Survey: identified existing infrastructure in BallotProblemOQ01.lean and BallotProblemOQ03.lean"
+      "Survey: identified existing infrastructure in BallotProblemOQ01.lean and BallotProblemOQ03.lean",
+      "cyclicRotation_isBalancedPath: cyclic rotations preserve IsBalancedPath (PROVED)",
+      "cutAtOnePosition: definition for extracting balanced paths from rotation orbits",
+      "upstepsBelowAxis: definition complementary to upstepsAboveAxis",
+      "upsteps_above_below_disjoint: above/below axis filters are disjoint (PROVED)",
+      "pathHeight_zero: height at position 0 is 0 (PROVED)",
+      "Computational verification: upstep partition for n=2 paths (native_decide)"
     ],
     "insights": [
       "cycle_lemma proved in BallotProblemOQ01.lean:764 (Dvoretzky-Motzkin)",
       "Cn (Catalan number) defined in BallotProblemOQ03.lean:508",
       "catalan_formula (Cn n * (n+1) = C(2n,n)) proved in BallotProblemOQ03.lean:523",
-      "catalan_eq_ballot proved in BallotProblemOQ03.lean:1097",
       "Chung-Feller theorem: paths from (0,0) to (2n,0) with k upsteps above x-axis = C_n, independent of k",
-      "Proof strategy: cycle lemma gives uniform distribution of good rotations, yielding Chung-Feller"
+      "Proof via cycle lemma: (1::l) has exactly 1 good rotation. Each rotation orbit at 1-positions gives n+1 balanced paths.",
+      "Key remaining challenge: proving different cut positions in rotation orbit yield different upstep-above-axis counts",
+      "Cyclic rotation does NOT simply shift type by ±1 — the change depends on the full prefix sum structure",
+      "The bijection between rotation index and type requires careful tracking of how heights shift"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Create BallotProblemOQ01OQ04.lean with Chung-Feller theorem formalization",
-      "Import cycle_lemma from OQ01 and Cn from OQ03",
-      "Define upsteps_above_axis count for lattice paths",
-      "Prove Chung-Feller: #{paths with k upsteps above axis} = C_n using cycle lemma"
+      "Prove rotation orbit has exactly n+1 balanced paths (from n+1 positions with value 1 in the augmented sequence)",
+      "Prove types are all distinct within each orbit (the hard step — requires prefix sum tracking)",
+      "Alternative: construct explicit bijection between adjacent types via tunnel/arch decomposition",
+      "Consider Aristotle companion file for routine supporting lemmas"
     ]
   },
   "tags": [

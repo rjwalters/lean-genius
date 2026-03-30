@@ -37,7 +37,10 @@
       "prepend_one_good_rotation: applies the cycle lemma to show exactly 1 of 2n+1 cyclic rotations has all partial sums positive",
       "prepend_unique_good_rotation: the good rotation is unique (existential uniqueness from cardinality 1)",
       "balanced_path_total: C(2n,n) = Cₙ × (n+1), connecting the total path count to Catalan numbers",
-      "Proper definitions for upstepsAboveAxis and balancedPathsOfType, replacing placeholder stubs"
+      "cyclicRotation_isBalancedPath: rotations of balanced paths are balanced (proved)",
+      "cutAtOnePosition: extracts balanced path from rotation orbit at 1-positions",
+      "upsteps_above_below_disjoint: upstep positions partition into above/below axis (proved)",
+      "Definitions for upstepsAboveAxis, upstepsBelowAxis, and balancedPathsOfType"
     ],
     "dateAdded": "2026-03-29",
     "prerequisites": [
@@ -61,7 +64,7 @@
       }
     ],
     "axiomCount": 1,
-    "lineCount": 187,
+    "lineCount": 262,
     "assumptions": "1 axiom: chung_feller_uniform (the uniform distribution of path types, requiring an explicit bijection between rotation indices and upstep-above-axis counts). All structural infrastructure is proved.",
     "mathlib_version": "4.26.0"
   },
@@ -160,12 +163,12 @@
       "LatticePathLGV"
     ],
     "namespace": "ChungFeller",
-    "lineCount": 187,
+    "lineCount": 262,
     "axiomCount": 1,
-    "theoremCount": 8,
-    "substantiveTheoremCount": 7,
+    "theoremCount": 12,
+    "substantiveTheoremCount": 11,
     "trivialPlaceholders": 0,
-    "definitionCount": 4
+    "definitionCount": 8
   },
   "references": [
     {

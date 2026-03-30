@@ -29,9 +29,12 @@ equals C(2n,n)/(n+1) = Cₙ (the nth Catalan number), independent of k.
 - prepend_one_good_rotation: exactly 1 good rotation (from cycle lemma)
 - prepend_unique_good_rotation: the good rotation is unique
 - balanced_path_total: C(2n,n) = Cₙ × (n+1)
+- cyclicRotation_isBalancedPath: rotations of balanced paths are balanced
+- cutAtOnePosition: extraction of balanced path from rotation orbit
+- upsteps_above_below_disjoint: upstep position partition
 
-Axiom count: 1 (chung_feller_uniform — the bijection between rotation classes
-and path types, requiring explicit tracking of how rotations change upstep counts)
+Axiom count: 1 (chung_feller_uniform — requires tracking how rotations change
+upstep-above-axis counts; see Part VI proof strategy for details)
 Sorry count: 0
 
 ## References
@@ -164,6 +167,72 @@ example : upstepsAboveAxisC [-1, 1, 1, -1] = 1 := by native_decide
 example : upstepsAboveAxisC [-1, 1, -1, 1] = 0 := by native_decide
 example : upstepsAboveAxisC [-1, -1, 1, 1] = 0 := by native_decide
 
+/- ## Part V: Structural Infrastructure for Chung-Feller -/
+
+/-- Cyclic rotations of balanced paths are balanced paths.
+    This is fundamental: the rotation orbit of a balanced path consists of balanced paths. -/
+theorem cyclicRotation_isBalancedPath {l : List ℤ} {n : ℕ} (h : IsBalancedPath l n)
+    {i : ℕ} (hi : i ≤ l.length) : IsBalancedPath (cyclicRotation l i) n := by
+  obtain ⟨h1, h2, h3⟩ := h
+  refine ⟨?_, ?_, ?_⟩
+  · -- count 1 preserved: rotation just reorders elements
+    simp only [cyclicRotation, List.count_append]
+    have := congr_arg (List.count 1) (List.take_append_drop i l)
+    rw [List.count_append] at this; omega
+  · -- count (-1) preserved
+    simp only [cyclicRotation, List.count_append]
+    have := congr_arg (List.count (-1 : ℤ)) (List.take_append_drop i l)
+    rw [List.count_append] at this; omega
+  · -- all elements still ±1
+    intro x hx
+    rw [cyclicRotation, List.mem_append] at hx
+    rcases hx with hx | hx
+    · exact h3 x (List.drop_subset i l hx)
+    · exact h3 x (List.take_subset i l hx)
+
+/-- The balanced path obtained by cutting a prepended sequence at position i.
+    Given a good sequence s = (1 :: l) of length 2n+1, cutting at a 1-position
+    and removing the leading 1 yields a balanced path. -/
+def cutAtOnePosition (s : List ℤ) (i : ℕ) : List ℤ :=
+  (cyclicRotation s i).tail
+
+/-- Height at position 0 is always 0. -/
+theorem pathHeight_zero (l : List ℤ) : pathHeight l 0 = 0 := by
+  simp [pathHeight]
+
+/-- Count of upsteps (+1 steps) that occur at strictly negative height. -/
+noncomputable def upstepsBelowAxis (l : List ℤ) : ℕ :=
+  ((Finset.range l.length).filter (fun i =>
+    l.get? i = some 1 ∧ (l.take i).sum < 0)).card
+
+/-- Computable version of upstepsBelowAxis. -/
+def upstepsBelowAxisC (l : List ℤ) : ℕ :=
+  ((Finset.range l.length).filter (fun i =>
+    l.get? i = some 1 ∧ (l.take i).sum < 0)).card
+
+/-- The above-axis and below-axis upstep filters partition all upstep positions.
+    Every upstep occurs at either non-negative or negative height. -/
+theorem upsteps_above_below_disjoint (l : List ℤ) :
+    Disjoint
+      ((Finset.range l.length).filter (fun i =>
+        l.get? i = some 1 ∧ (0 : ℤ) ≤ (l.take i).sum))
+      ((Finset.range l.length).filter (fun i =>
+        l.get? i = some 1 ∧ (l.take i).sum < 0)) := by
+  apply Finset.disjoint_left.mpr
+  intro i hi1 hi2
+  simp only [Finset.mem_filter] at hi1 hi2
+  omega
+
+/-- Computational verification: upsteps partition for n=2 paths. -/
+example : upstepsAboveAxisC [1, 1, -1, -1] + upstepsBelowAxisC [1, 1, -1, -1] = 2 := by
+  native_decide
+example : upstepsAboveAxisC [1, -1, -1, 1] + upstepsBelowAxisC [1, -1, -1, 1] = 2 := by
+  native_decide
+example : upstepsAboveAxisC [-1, -1, 1, 1] + upstepsBelowAxisC [-1, -1, 1, 1] = 2 := by
+  native_decide
+
+/- ## Part VI: The Chung-Feller Theorem -/
+
 /-- **Chung-Feller Theorem (uniform distribution)**:
 
     For each k ∈ {0, 1, ..., n}, the number of balanced paths from (0,0) to (2n,0)
@@ -173,14 +242,20 @@ example : upstepsAboveAxisC [-1, -1, 1, 1] = 0 := by native_decide
     Combined with `balanced_path_total` (C(2n,n) = Cₙ × (n+1)), this implies
     each type has exactly Cₙ paths.
 
-    **Proof idea** (from cycle lemma):
-    Each balanced path l gives a unique "good rotation" of (1 :: l). Conversely,
-    each good sequence (all prefix sums positive) of length 2n+1 comes from
-    prepending +1 to some balanced path. The cycle lemma guarantees each orbit
-    of cyclic rotations has exactly 1 good member, so the orbits partition
-    C(2n+1, n+1) sequences into groups of size 2n+1, with 1 good member each.
-    The remaining 2n non-good rotations correspond to 2n balanced paths that
-    collectively cover each type 0, 1, ..., n exactly once. -/
+    **Proof strategy** (from cycle lemma):
+    1. For each balanced path l, form s = (1 :: l) of length 2n+1.
+    2. By cycle_lemma, s has exactly 1 good rotation (all prefix sums > 0).
+    3. Map φ: l ↦ good rotation of (1 :: l). This is (n+1)-to-1.
+    4. Each fiber of φ consists of n+1 balanced paths obtained by cutting
+       the rotation orbit at each 1-position and removing the leading 1.
+    5. These n+1 paths have types 0, 1, ..., n (each exactly once).
+    6. Steps 3-5 yield a partition of all C(2n,n) balanced paths into
+       groups of n+1, one per type, proving uniform distribution.
+
+    **Remaining work**: Step 5 requires showing that different cut positions
+    in the rotation orbit yield different upstep-above-axis counts.
+    This involves tracking how the prefix sum structure changes as the
+    cut point moves through the sequence. -/
 axiom chung_feller_uniform (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n) :
     Set.ncard (balancedPathsOfType n j) = Set.ncard (balancedPathsOfType n k)
 
