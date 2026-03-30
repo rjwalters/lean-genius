@@ -1,4 +1,5 @@
 import Mathlib
+import Proofs.GreensTheoremOQ01
 
 /-
 # Generalized Stokes Theorem: ∫_M dω = ∫_{∂M} ω
@@ -246,14 +247,33 @@ theorem stokes_2d_rectangle (ω : OneForm2D) (a b c d : ℝ)
       HasDerivAt (fun y => ω.P (x, y)) (deriv (fun y => ω.P (x, y)) y) y)
     (hP_int : ∀ x ∈ uIcc a b,
       IntervalIntegrable (fun y => deriv (fun y => ω.P (x, y)) y) volume c d)
+    -- Boundary integrability
+    (hQb : IntervalIntegrable (fun y => ω.Q (b, y)) volume c d)
+    (hQa : IntervalIntegrable (fun y => ω.Q (a, y)) volume c d)
+    (hPc : IntervalIntegrable (fun x => ω.P (x, c)) volume a b)
+    (hPd : IntervalIntegrable (fun x => ω.P (x, d)) volume a b)
+    -- Inner integrability of ∂P/∂y in x
     (hPdy_x_int : ∀ y ∈ uIcc c d,
       IntervalIntegrable (fun x => deriv (fun y' => ω.P (x, y')) y) volume a b)
+    -- Outer integrability of inner integrals
+    (hQ_outer_int : IntervalIntegrable
+      (fun y => ∫ x in a..b, deriv (fun x => ω.Q (x, y)) x) volume c d)
+    (hPdy_outer_int : IntervalIntegrable
+      (fun y => ∫ x in a..b, deriv (fun y' => ω.P (x, y')) y) volume c d)
+    -- Fubini: swap integration order for ∂P/∂y
     (hFubini : ∫ y in c..d, ∫ x in a..b, deriv (fun y' => ω.P (x, y')) y =
                ∫ x in a..b, ∫ y in c..d, deriv (fun y' => ω.P (x, y')) y) :
     lineIntegralRect ω a b c d =
     areaIntegralRect (extDeriv1_2D ω) a b c d := by
-  -- Full proof via FTC + Fubini is in GreensTheoremOQ01.greens_theorem_concrete
-  sorry
+  -- Proved via GreensTheoremOQ01.greens_theorem_concrete
+  simp only [lineIntegralRect, areaIntegralRect, extDeriv1_2D]
+  have h := GreensTheoremOQ01.greens_theorem_concrete ω.P ω.Q a b c d
+    (fun p => deriv (fun x => ω.Q (x, p.2)) p.1)
+    (fun p => deriv (fun y => ω.P (p.1, y)) p.2)
+    hQ_deriv hQ_int hP_deriv hP_int
+    hQb hQa hPc hPd hPdy_x_int hQ_outer_int hPdy_outer_int hFubini
+  simp only [GreensTheoremOQ01.rectLineIntegral, GreensTheoremOQ01.rectDoubleIntegral] at h
+  exact h
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART VII: The Abstract Generalized Stokes Theorem
