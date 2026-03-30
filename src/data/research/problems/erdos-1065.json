@@ -73,7 +73,8 @@
     "erdos-1",
     "erdos-10",
     "erdos-106",
-    "erdos-1065"
+    "erdos-1065",
+    "erdos-1065-oq-05"
   ],
   "references": {
     "papers": [],
@@ -85,6 +86,17 @@
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos1065BatemanHorn.lean",
+      "filename": "Erdos1065BatemanHorn.lean",
+      "lineCount": 272,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065BatemanHorn.lean"
+    },
     {
       "path": "Proofs/Erdos1065Problem.lean",
       "filename": "Erdos1065Problem.lean",

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 4 theorems in parent file (12\u21928 sorries). finite_has_convergent, dim2_point_form, all_coordinates_positive, projection_preserves.",
+    "progressSummary": "PROGRESS: Proved 4 theorems in parent file (12→8 sorries). finite_has_convergent, dim2_point_form, all_coordinates_positive, projection_preserves.",
     "builtItems": [
       "Created Erdos268OQ01.lean: 191 lines, 12 theorems, 1 axiom, 4 sorries",
       "Proved exists_inscribed_ball from Kovac-Tao axiom",
@@ -90,11 +90,11 @@
     {
       "path": "Proofs/Erdos268Problem.lean",
       "filename": "Erdos268Problem.lean",
-      "lineCount": 272,
+      "lineCount": 287,
       "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 14,
-      "sorryCount": 12,
+      "sorryCount": 8,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos268Problem.lean"
     },

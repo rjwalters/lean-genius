@@ -1,0 +1,93 @@
+{
+  "slug": "erdos-1023-oq-02",
+  "title": "Sunflower-type problems for intersection and difference operations",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Sunflower-type problems for intersection and difference operations.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T21:46:38.106Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "set-families"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
+    "erdos-1023"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T21:46:38.106Z",
+  "lastUpdate": "2026-03-30T21:46:38.106Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1023OQ01.lean",
+      "filename": "Erdos1023OQ01.lean",
+      "lineCount": 459,
+      "theoremCount": 36,
+      "axiomCount": 2,
+      "defCount": 19,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1023OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1023OQ01Problem.lean",
+      "filename": "Erdos1023OQ01Problem.lean",
+      "lineCount": 245,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1023OQ01Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1023Problem.lean",
+      "filename": "Erdos1023Problem.lean",
+      "lineCount": 367,
+      "theoremCount": 17,
+      "axiomCount": 5,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1023Problem.lean"
+    }
+  ]
+}

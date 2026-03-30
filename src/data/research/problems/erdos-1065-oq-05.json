@@ -1,0 +1,101 @@
+{
+  "slug": "erdos-1065-oq-05",
+  "title": "Bateman-Horn density predictions for primes of form 2^k*q+1",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Bateman-Horn density predictions for primes of form 2^k*q+1.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T19:39:40.878Z",
+    "iteration": 2,
+    "focus": "Bateman-Horn density prediction formalization",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized BH density prediction for Erdos 1065 Form A primes. Proved safe prime equivalence, k-value census, BH implications. 1 sorry (uniqueness via 2-adic valuation) and 1 axiom (BH prediction itself).",
+    "builtItems": [
+      "Created Proofs/Erdos1065BatemanHorn.lean (271 lines, 24 theorems, 1 axiom, 1 sorry)",
+      "Created src/data/proofs/erdos-1065-oq-05/meta.json gallery entry",
+      "Proved safePrime_iff_formAK1, batemanHorn_k1_iff_safePrimes, batemanHorn_implies_formA_infinite",
+      "Verified all 15 Form A primes <= 100 with their specific k values"
+    ],
+    "insights": [
+      "BH constant 2C2 is independent of k because 2^k is a unit mod every odd prime, so local root count is always 2",
+      "Safe primes are exactly the k=1 layer of Form A primes (proved as IsFormAWithK 1 p iff IsSafePrime p)",
+      "k-value distribution <= 100: k=0:1, k=1:7(safe primes), k=2:3, k=3:3, k=5:1. k=1 dominates at 47%",
+      "Decomposition uniqueness: (k,q) is unique for each Form A prime when q is odd, via 2-adic valuation"
+    ],
+    "mathlibGaps": [
+      "No direct 2-adic valuation of 2^k*q for odd q in Mathlib - need Nat.multiplicity"
+    ],
+    "nextSteps": [
+      "Prove formA_decomposition_unique: needs Nat.multiplicity or 2-adic valuation from Mathlib",
+      "Submit formA_decomposition_unique to Aristotle via companion file",
+      "Formalize the BH constant computation (infinite product) if Mathlib analysis improves"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-numbers",
+    "analytic-number-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-106",
+    "erdos-1065",
+    "erdos-1065-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T19:39:40.878Z",
+  "lastUpdate": "2026-03-30T20:25:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1065BatemanHorn.lean",
+      "filename": "Erdos1065BatemanHorn.lean",
+      "lineCount": 272,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065BatemanHorn.lean"
+    },
+    {
+      "path": "Proofs/Erdos1065Problem.lean",
+      "filename": "Erdos1065Problem.lean",
+      "lineCount": 564,
+      "theoremCount": 54,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065Problem.lean"
+    }
+  ]
+}

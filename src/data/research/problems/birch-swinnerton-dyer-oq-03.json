@@ -1,0 +1,101 @@
+{
+  "slug": "birch-swinnerton-dyer-oq-03",
+  "title": "Reduce BSD axiom count: which axioms can Mathlib eliminate?",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Reduce BSD axiom count: which axioms can Mathlib eliminate?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T19:20:00Z",
+    "iteration": 2,
+    "focus": "Eliminated 2 redundant/dead axioms",
+    "blockers": [],
+    "nextAction": "hasse_bound elimination via Mathlib bridge is the main tractable target",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (21->19). BSD_CM_rank_zero_axiom proved from general Kolyvagin result. gross_zagier_formula_detail removed as dead code.",
+    "builtItems": [
+      "Axiom classification: 12 deep + 7 computational + 2 structural",
+      "Converted BSD_CM_rank_zero_axiom to theorem using (BSD_rank_zero_axiom E hL).1",
+      "Removed dead axiom gross_zagier_formula_detail",
+      "Removed duplicate theorem parity_conjecture (identical to parity_conjecture_proved)",
+      "Updated meta.json: axiomCount 21->19, lineCount 7437->7422"
+    ],
+    "insights": [
+      "21 axioms classified into 3 categories: (A) deep conjectures/theorems (12), (B) computational curve facts (7), (C) structural results (2)",
+      "Category A (12 axioms, unprovable from Mathlib): BSD_rank_zero/one_axiom, BSD_CM_rank_zero, parity_conjecture, sha_order_is_square, gross_zagier_formula_detail, greenberg_stevens, elkies_rank_record, positive_proportion_rank_one_bsd, analytic_rank_parity, rank3_hadamard_bound, regulator_pos",
+      "Category B (7 axioms, require numerical computation): curveMinusX/JZero/cremona11a1_L_nonzero, one/two_not_congruent, curve37a_rank/rootNumber, curve389a_rank",
+      "Category C (2 axioms, theoretically provable): hasse_bound (Weil theorem, deep but proven), parity_conjecture_proved_axiom",
+      "hasse_bound uses custom EllipticCurveQ/traceOfFrobenius types, not Mathlib. Elimination requires bridging custom types to Mathlib API.",
+      "0 actual sorries in file (metadata was stale: sorry count referred to a comment, not code)",
+      "BSD_CM_rank_zero_axiom is redundant: Kolyvagin general BSD_rank_zero_axiom (L(E,1)!=0 -> rank=0) subsumes the CM special case. Eliminated by proving it as a theorem.",
+      "gross_zagier_formula_detail was dead code (0 uses). The same content is captured by GrossZagierData.gross_zagier structure field. Removed.",
+      "Axiom count reduced: 21 -> 19. Remaining 19 axioms are genuine: 10 deep theorems, 7 computational facts, 2 structural results."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "hasse_bound remains the most tractable axiom to eliminate IF traceOfFrobenius opaque can be connected to Mathlib",
+      "Computational axioms (7 remaining) require replacing opaque functions with computable ones",
+      "The remaining 10 deep theorem axioms are not eliminable from current Mathlib"
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "elliptic-curves",
+    "millennium-prize",
+    "mathlib",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "birch-swinnerton-dyer"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T19:39:40.878Z",
+  "lastUpdate": "2026-03-30T19:39:40.878Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BirchSwinnertonDyer.lean",
+      "filename": "BirchSwinnertonDyer.lean",
+      "lineCount": 7438,
+      "theoremCount": 254,
+      "axiomCount": 21,
+      "defCount": 143,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyer.lean"
+    },
+    {
+      "path": "Proofs/BirchSwinnertonDyerAristotle.lean",
+      "filename": "BirchSwinnertonDyerAristotle.lean",
+      "lineCount": 391,
+      "theoremCount": 66,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerAristotle.lean"
+    }
+  ]
+}

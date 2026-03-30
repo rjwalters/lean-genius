@@ -1,13 +1,13 @@
 {
   "slug": "erdos-825-oq-03",
-  "title": "Do odd weird numbers exist (Erd\u0151s Problem #470)",
+  "title": "Do odd weird numbers exist (Erdős Problem #470)",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Do odd weird numbers exist (Erd\u0151s Problem #470).",
+    "plain": "Formal mathematical investigation: Do odd weird numbers exist (Erdős Problem #470).",
     "whyMatters": []
   },
   "knownResults": {
@@ -57,7 +57,7 @@
       "properDivisors_lt follows immediately from Nat.mem_properDivisors",
       "no_weird_below_70 provable by native_decide with Decidable IsWeird instance",
       "Reduced axiom count from 5 to 4 in Erdos470Problem.lean",
-      "The only odd abundant numbers \u2264 1575 are 945 and 1575; both are semiperfect, so neither is weird",
+      "The only odd abundant numbers ≤ 1575 are 945 and 1575; both are semiperfect, so neither is weird",
       "native_decide on Finset.Ico for range abundance checking; Finset.mem_Ico for membership proof",
       "3465 = 3^2 * 5 * 7 * 11 is the fifth smallest odd abundant; semiperfect (native_decide)",
       "4095 = 3^2 * 5 * 7 * 13 is the sixth smallest odd abundant; semiperfect (native_decide)",
@@ -90,15 +90,15 @@
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos470Problem.lean",
-      "filename": "Erdos470Problem.lean",
-      "lineCount": 419,
-      "theoremCount": 19,
-      "axiomCount": 3,
-      "defCount": 13,
+      "path": "Proofs/Erdos825Problem.lean",
+      "filename": "Erdos825Problem.lean",
+      "lineCount": 106,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos470Problem.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos825Problem.lean"
     }
   ]
 }

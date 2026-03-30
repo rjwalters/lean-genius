@@ -1,0 +1,115 @@
+{
+  "slug": "erdos-1155-oq-01-oq-07",
+  "title": "Generalize triangle removal to K_r-removal process",
+  "phase": "NEW",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Generalize triangle removal to K_r-removal process.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T19:39:40.879Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created full K_r-removal generalization with 3 axioms, 0 sorries. Defines the generalized process, proves exponent properties (monotonicity, bounds, computed values), states conjecture and BFL-type bound, proves equivalence characterizations.",
+    "builtItems": [
+      "Erdos1155OQ01OQ07.lean: K_r-removal generalization (3 axioms, 0 sorries, ~240 lines)",
+      "kCliqueRemovalEdges: axiomatized K_r-removal function",
+      "kRemovalExponent: computable exponent function with verified values for r=3,4,5",
+      "kRemoval_conjecture: generalized conjecture statement",
+      "kRemoval_bfl_type: generalized BFL-type statement",
+      "conjecture_iff_both_bounds_r: decomposition theorem",
+      "limit_implies_conjecture_r: ratio convergence sufficiency",
+      "Gallery data: meta.json, annotations.json, index.ts"
+    ],
+    "insights": [
+      "Generalized triangle removal to K_r-removal for arbitrary r >= 3",
+      "Conjectured exponent is 2-2/(r+1): yields 3/2 for r=3 (BFL), 8/5 for r=4, 5/3 for r=5",
+      "Exponent is strictly monotone in r and approaches 2 as r -> infinity",
+      "The conjecture decomposes into independent upper and lower Theta-bounds (same as r=3 case)",
+      "Ratio convergence f_r(n)/n^alpha -> L > 0 is a sufficient condition for the conjecture"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove tight exponent for r=4 (K_4-removal) analogous to BFL for r=3",
+      "Connect K_r-removal rates to Ramsey multiplicity"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "random-graphs",
+    "generalization",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-115",
+    "erdos-1155",
+    "erdos-1155-oq-01",
+    "erdos-1155-oq-01-oq-07"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T19:39:40.879Z",
+  "lastUpdate": "2026-03-30T19:39:40.879Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1155OQ01.lean",
+      "filename": "Erdos1155OQ01.lean",
+      "lineCount": 412,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ07.lean",
+      "filename": "Erdos1155OQ01OQ07.lean",
+      "lineCount": 356,
+      "theoremCount": 21,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ07.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155Problem.lean",
+      "filename": "Erdos1155Problem.lean",
+      "lineCount": 220,
+      "theoremCount": 7,
+      "axiomCount": 4,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155Problem.lean"
+    }
+  ]
+}

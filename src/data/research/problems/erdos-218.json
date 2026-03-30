@@ -1,6 +1,6 @@
 {
   "slug": "erdos-218",
-  "title": "Erd\u0151s #218",
+  "title": "Erdős #218",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -44,18 +44,18 @@
       "PROVED infinite_of_hasDensity_pos via finite counting bound + squeeze + tendsto_nhds_unique"
     ],
     "insights": [
-      "nthPrime defined via Nat.nth \u2014 5 axioms proved from Mathlib (prime, strictMono, zero, one, two)",
+      "nthPrime defined via Nat.nth — 5 axioms proved from Mathlib (prime, strictMono, zero, one, two)",
       "primeGap values proved from nthPrime values via unfold+rw",
-      "gapEqual_iff_ap proved by omega on \u2115 subtraction with strictMono hypotheses",
+      "gapEqual_iff_ap proved by omega on ℕ subtraction with strictMono hypotheses",
       "nthPrime 3=7 and nthPrime 4=11 proved via Nat.nth_count + decide",
       "example_ap_1 and ap_357 follow from one_mem_gapEqualSet + gapEqual_iff_ap",
-      "hasDensity_iff_upper_lower proved: Tendsto \u2194 limsup=d \u2227 liminf=d",
+      "hasDensity_iff_upper_lower proved: Tendsto ↔ limsup=d ∧ liminf=d",
       "Remaining 7 axioms: 3 open conjectures, Green-Tao, 2 PNT-dependent, 1 PNT-dependent",
       "Finite set counting function bounded by |S.toFinset|, divided by N tends to 0, contradicting positive density"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erd\u0151s #218 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d_n=p_{n+1}-p_n$. The set of $n$ such that $d_{n+1}\\geq d_n$ has density $1/2$, and similarly for $d_{n+1}\\leq d_n$. Furthermore, there are infinitely many $n$ such that $d_{n+1}=d_n$.\n\n\n\nIn \\cite{Er85c} Erd\\H{o}s also conjectures that $d_n=d_{n+1}=\\cdots=d_{n+k}$ is solvable for every $k$ (which is equivalent to $k$ consecutive primes in arithmetic progression, see [141]).\n\n\n\n\nReferences\n\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #141\n- Problem #217\n- Problem #219\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n- Er57\n- Er61\n- Er65b\n- Er85c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #218 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d_n=p_{n+1}-p_n$. The set of $n$ such that $d_{n+1}\\geq d_n$ has density $1/2$, and similarly for $d_{n+1}\\leq d_n$. Furthermore, there are infinitely many $n$ such that $d_{n+1}=d_n$.\n\n\n\nIn \\cite{Er85c} Erd\\H{o}s also conjectures that $d_n=d_{n+1}=\\cdots=d_{n+k}$ is solvable for every $k$ (which is equivalent to $k$ consecutive primes in arithmetic progression, see [141]).\n\n\n\n\nReferences\n\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #141\n- Problem #217\n- Problem #219\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n- Er57\n- Er61\n- Er65b\n- Er85c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -78,11 +78,11 @@
     {
       "path": "Proofs/Erdos218Problem.lean",
       "filename": "Erdos218Problem.lean",
-      "lineCount": 404,
+      "lineCount": 419,
       "theoremCount": 22,
       "axiomCount": 2,
       "defCount": 12,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos218Problem.lean"
     }

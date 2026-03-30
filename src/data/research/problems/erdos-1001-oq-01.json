@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Added f_pos, f_linear_A, f_zero_A, f_one_c, estBoundary_pos, limit_in_est_regime. Documented outside-EST regime. Fixed meta.json axiomCount 9\u21922.",
+    "progressSummary": "SURVEY: Added f_pos, f_linear_A, f_zero_A, f_one_c, estBoundary_pos, limit_in_est_regime. Documented outside-EST regime. Fixed meta.json axiomCount 9→2.",
     "builtItems": [
       "Proved f_pos (f(A,c) > 0 for valid params) in Erdos1001Problem.lean",
       "Proved f_linear_A, f_zero_A, f_one_c (algebraic properties) in Erdos1001Problem.lean",
@@ -41,7 +41,7 @@
     "insights": [
       "Outside EST regime, Farey approximation intervals overlap causing inclusion-exclusion corrections",
       "General formula involves pair-correlation statistics of Farey fractions (Boca-Cobeli-Zaharescu 2001)",
-      "As A \u2192 \u221e, limitValue(A,c) \u2192 1 (full measure)",
+      "As A → ∞, limitValue(A,c) → 1 (full measure)",
       "The meta.json previously claimed 9 axioms but only 2 exist in the file",
       "limit_in_est_regime provable via tendsto_nhds_unique (limits are unique in T2 spaces)"
     ],
@@ -74,10 +74,10 @@
     {
       "path": "Proofs/Erdos1001Problem.lean",
       "filename": "Erdos1001Problem.lean",
-      "lineCount": 188,
-      "theoremCount": 4,
+      "lineCount": 250,
+      "theoremCount": 10,
       "axiomCount": 2,
-      "defCount": 10,
+      "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1001Problem.lean"

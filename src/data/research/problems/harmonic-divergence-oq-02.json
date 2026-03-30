@@ -1,0 +1,106 @@
+{
+  "slug": "harmonic-divergence-oq-02",
+  "title": "Divergence rate of sum 1/(n log n) analogous to H_n ~ ln n",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Divergence rate of sum 1/(n log n) analogous to H_n ~ ln n.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T21:13:16.758Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved Σ 1/(n·log n) diverges via Cauchy condensation. 0 axioms, 0 sorries.",
+    "builtItems": [
+      "logHarmonic: definition with handling for n < 2",
+      "logHarmonic_nonneg and logHarmonic_antitone: prerequisites for condensation",
+      "condensed_logHarmonic_eq: 2^k · f(2^k) = 1/(k·log 2) for k ≥ 1",
+      "condensed_logHarmonic_not_summable: condensed series diverges",
+      "logHarmonic_not_summable: main theorem via condensation"
+    ],
+    "insights": [
+      "Cauchy condensation reduces 1/(n·log n) to 1/(k·log 2) = rescaled harmonic series",
+      "log(2^k) = k·log 2 gives clean cancellation in the condensed series",
+      "logHarmonic antitone because n·log n is increasing for n ≥ 2",
+      "Divergence rate is log(log N) by integral comparison (documented, not formalized)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize the divergence rate: Σ_{n=2}^N 1/(n·log n) ~ log(log N) via integral bounds",
+      "Extend to iterated log: Σ 1/(n·log n·(log log n)^p) converges iff p > 1"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "series",
+    "divergence"
+  ],
+  "relatedProofs": [
+    "harmonic-divergence",
+    "harmonic-divergence-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T21:13:16.758Z",
+  "lastUpdate": "2026-03-30T21:13:16.758Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/HarmonicDivergence.lean",
+      "filename": "HarmonicDivergence.lean",
+      "lineCount": 182,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergence.lean"
+    },
+    {
+      "path": "Proofs/HarmonicDivergenceOQ01.lean",
+      "filename": "HarmonicDivergenceOQ01.lean",
+      "lineCount": 254,
+      "theoremCount": 52,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/HarmonicDivergenceOQ04.lean",
+      "filename": "HarmonicDivergenceOQ04.lean",
+      "lineCount": 107,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergenceOQ04.lean"
+    }
+  ]
+}

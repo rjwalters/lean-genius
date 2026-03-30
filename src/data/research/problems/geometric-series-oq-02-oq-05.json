@@ -1,0 +1,135 @@
+{
+  "slug": "geometric-series-oq-02-oq-05",
+  "title": "geometric-series-oq-02-oq-05",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T11:35:14-07:00",
+    "iteration": 1,
+    "focus": "Resolvent Neumann series representation and first resolvent identity",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created resolvent formalization connecting Neumann series to spectral theory. 4 main theorems (resolvent existence, Neumann series expansion, norm bound, first resolvent identity) plus 1 sorry. Docker build verification pending.",
+    "builtItems": [
+      "proofs/Proofs/GeometricSeriesOQ02OQ05.lean: resolvent_isUnit, resolvent_eq_neumann_series, resolvent_norm_bound, first_resolvent_identity (1 sorry: resolvent_tendsto_zero)",
+      "src/data/proofs/geometric-series-oq-02-oq-05/meta.json: gallery entry with cross-references"
+    ],
+    "insights": [
+      "Resolvent R(λ,a) = (λ·1 - a)⁻¹ factors as λ⁻¹·(1 - λ⁻¹a)⁻¹, reducing to Neumann series",
+      "First resolvent identity R(λ)-R(μ) = (μ-λ)R(λ)R(μ) is purely algebraic, needs only unit manipulation",
+      "Norm bound ‖R(λ,a)‖ ≤ 1/(‖λ‖-‖a‖) follows from Neumann norm bound composed with factorization",
+      "Full HFC f(a) = (2πi)⁻¹∮f(λ)R(λ,a)dλ needs Banach-space-valued contour integration not yet in Mathlib"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Verify build with Docker (Docker was not running during this session)",
+      "Prove resolvent_tendsto_zero (resolvent vanishes at infinity) - likely needs Filter.Tendsto API",
+      "Formalize Gelfand spectral radius formula ρ(a) = lim ‖aⁿ‖^{1/n} (OQ-01 overlap)",
+      "Extend to Banach-space-valued contour integration for full Dunford-Taylor integral"
+    ],
+    "markdown": "# Knowledge Base: geometric-series-oq-02-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "geometric-series",
+    "geometric-series-oq-01",
+    "geometric-series-oq-02",
+    "geometric-series-oq-02-oq-03",
+    "geometric-series-oq-02-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T18:39:05.245Z",
+  "lastUpdate": "2026-03-30T18:39:05.262Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/GeometricSeries.lean",
+      "filename": "GeometricSeries.lean",
+      "lineCount": 172,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeries.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ01.lean",
+      "filename": "GeometricSeriesOQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ01Neumann.lean",
+      "filename": "GeometricSeriesOQ01Neumann.lean",
+      "lineCount": 92,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01Neumann.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ02.lean",
+      "filename": "GeometricSeriesOQ02.lean",
+      "lineCount": 238,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ02OQ03.lean",
+      "filename": "GeometricSeriesOQ02OQ03.lean",
+      "lineCount": 165,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ02OQ05.lean",
+      "filename": "GeometricSeriesOQ02OQ05.lean",
+      "lineCount": 238,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ02OQ05.lean"
+    }
+  ]
+}
