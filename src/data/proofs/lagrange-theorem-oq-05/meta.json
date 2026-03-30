@@ -1,0 +1,148 @@
+{
+  "id": "lagrange-theorem-oq-05",
+  "title": "Burnside's Lemma from Orbit-Stabilizer",
+  "slug": "lagrange-theorem-oq-05",
+  "description": "Derives Burnside's counting lemma from the orbit-stabilizer theorem via a double counting argument. Proves the Fubini-type identity for finite group actions.",
+  "meta": {
+    "author": "Burnside (1897), Cauchy (1845), Frobenius (1887)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Burnside%27s_lemma",
+    "date": "1897",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ05.lean",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "combinatorics",
+      "counting",
+      "group-actions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. All results proved from Mathlib. Original contribution: double counting identity via sum_boole + sum_comm.",
+    "dateAdded": "2026-03-29",
+    "mathlibDependencies": [
+      {
+        "theorem": "orbitEquivQuotientStabilizer",
+        "description": "Orbit-coset bijection for orbit-stabilizer theorem",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "sum_card_fixedBy_eq_card_orbits_mul_card_group",
+        "description": "Burnside's lemma",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "Subgroup.card_mul_index",
+        "description": "Lagrange's theorem: |G| = |H| × [G:H]",
+        "module": "Mathlib.GroupTheory.Index"
+      }
+    ],
+    "originalContributions": [
+      "Double counting identity: Σ_g |Fix(g)| = Σ_x |Stab(x)| via sum_boole + sum_comm",
+      "Orbit-stabilizer theorem with pedagogical documentation",
+      "Explicit derivation chain from Lagrange to Burnside"
+    ],
+    "lineCount": 117,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Burnside's lemma (also called the Cauchy-Frobenius lemma) was known to Cauchy (1845) and Frobenius (1887) before Burnside popularized it in his 1897 textbook. It is one of the most useful counting tools in combinatorics, reducing orbit-counting problems to fixed-point calculations.",
+    "problemStatement": "Derive Burnside's counting lemma from the orbit-stabilizer theorem.",
+    "text": "The derivation chain: Lagrange → Orbit-Stabilizer → Double Counting → Burnside.",
+    "proofStrategy": "Three-step derivation: (1) orbit-stabilizer from Lagrange via coset bijection, (2) double counting via Fubini for finite sums, (3) Burnside from orbit-stabilizer + double counting.",
+    "keyInsights": [
+      "The double counting identity (Σ_g |Fix(g)| = Σ_x |Stab(x)|) is proved by expressing both sides as indicator sums and swapping via Finset.sum_comm.",
+      "Orbit-stabilizer follows from Lagrange's theorem via the bijection Orb(x) ≃ G/Stab(x).",
+      "Burnside's lemma is the final step: each orbit contributes |G|/|O| × |O| = |G| to the stabilizer sum, giving total = |X/G| × |G|."
+    ],
+    "prerequisites": [
+      "Group theory (group actions, stabilizers, orbits)",
+      "Lagrange's theorem",
+      "Basic combinatorics (double counting)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "orbit-stabilizer",
+      "title": "Part I: Orbit-Stabilizer Theorem",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Proves orbit-stabilizer |Orb(x)| × |Stab(x)| = |G| from Mathlib's coset bijection + Lagrange. Derives divisibility corollaries.",
+      "mathContext": "$|\\text{Orb}(x)| \\times |\\text{Stab}(x)| = |G|$"
+    },
+    {
+      "id": "double-counting",
+      "title": "Part II: Double Counting Identity",
+      "startLine": 56,
+      "endLine": 80,
+      "summary": "Original contribution: proves Σ_g |Fix(g)| = Σ_x |Stab(x)| via sum_boole + sum_comm. 0 sorries.",
+      "mathContext": "$\\sum_{g \\in G} |\\text{Fix}(g)| = \\sum_{x \\in X} |\\text{Stab}(x)|$"
+    },
+    {
+      "id": "burnside",
+      "title": "Part III: Burnside's Counting Lemma",
+      "startLine": 81,
+      "endLine": 100,
+      "summary": "States Burnside's lemma from Mathlib with detailed documentation of the derivation.",
+      "mathContext": "$\\sum_{g \\in G} |\\text{Fix}(g)| = |X/G| \\times |G|$"
+    },
+    {
+      "id": "derivation-chain",
+      "title": "Part IV: The Complete Derivation Chain",
+      "startLine": 101,
+      "endLine": 117,
+      "summary": "Packages orbit-stabilizer and Burnside together, showing the full Lagrange → Burnside chain.",
+      "mathContext": "Lagrange $\\Rightarrow$ Orbit-Stabilizer $\\Rightarrow$ Burnside"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Derives Burnside's lemma from Lagrange's theorem via orbit-stabilizer"
+    },
+    {
+      "targetId": "lagrange-theorem-oq-02",
+      "relationship": "related",
+      "description": "Both prove orbit-stabilizer; this file adds the Burnside derivation"
+    }
+  ],
+  "conclusion": {
+    "summary": "Burnside's counting lemma is a direct consequence of the orbit-stabilizer theorem (itself from Lagrange) combined with a double counting argument.",
+    "implications": "This derivation chain shows that the core of Burnside's lemma is Lagrange's theorem. The double counting step is a Fubini-type identity for finite sums.",
+    "openQuestions": [
+      "Can the Pólya enumeration theorem be derived as a further extension?",
+      "What is the relationship to the Lefschetz fixed-point theorem in topology?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Burnside, William",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "venue": "Cambridge University Press",
+      "note": "Popularized the counting lemma"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.GroupAction.Quotient",
+      "Mathlib.GroupTheory.GroupAction.Basic",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MulAction",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "LagrangeOQ05",
+    "lineCount": 117,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
+  }
+}

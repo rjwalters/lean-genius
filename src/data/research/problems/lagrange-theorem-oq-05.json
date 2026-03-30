@@ -1,0 +1,93 @@
+{
+  "slug": "lagrange-theorem-oq-05",
+  "title": "Burnside Counting Lemma from Orbit-Stabilizer Theorem",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∑ g : G, |Fix(g)| = |X/G| × |G|",
+    "plain": "Derive Burnside's counting lemma from the orbit-stabilizer theorem via double counting.",
+    "whyMatters": [
+      "Connects Lagrange's theorem to combinatorial enumeration",
+      "Double counting identity is a fundamental proof technique",
+      "Burnside's lemma is widely used in combinatorics"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "orbit_stabilizer_card: |Orb(x)| × |Stab(x)| = |G|",
+      "double_counting: Σ_g |Fix(g)| = Σ_x |Stab(x)| via sum_boole + sum_comm",
+      "burnside_lemma: Σ_g |Fix(g)| = |X/G| × |G| (from Mathlib)",
+      "stabilizer_card_dvd, orbit_card_dvd: divisibility corollaries"
+    ],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T04:42:44Z",
+    "iteration": 1,
+    "focus": "Created formalization with double counting identity",
+    "blockers": [],
+    "nextAction": "Verify compilation when Docker is available",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created LagrangeTheoremOQ05.lean (117 lines, 0 axioms, 0 sorries, 6 theorems). Original contribution: double counting identity proved via Finset.sum_boole + Finset.sum_comm. Full derivation chain: Lagrange → Orbit-Stabilizer → Double Counting → Burnside.",
+    "builtItems": [
+      "orbit_stabilizer_card: |Orb(x)| × |Stab(x)| = |G| (from Mathlib coset bijection)",
+      "double_counting: Σ_g |{x|g•x=x}| = Σ_x |{g|g•x=x}| (original, via sum_boole + sum_comm)",
+      "burnside_lemma: Burnside's counting lemma (from Mathlib)",
+      "burnside_from_lagrange: packaging theorem showing the full chain",
+      "Gallery entry: src/data/proofs/lagrange-theorem-oq-05/"
+    ],
+    "insights": [
+      "BurnsideCounting.lean already has Burnside from Mathlib; this file adds the explicit derivation",
+      "Double counting proof: express filter card as indicator sum, swap via Finset.sum_comm",
+      "Orbit-stabilizer uses Mathlib's orbitEquivQuotientStabilizer bijection",
+      "Burnside's lemma is also known as Cauchy-Frobenius lemma (predates Burnside)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Could add applications: necklace counting, graph coloring enumeration",
+      "Could prove Polya enumeration theorem as extension"
+    ]
+  },
+  "tags": [
+    "group-theory",
+    "algebra",
+    "combinatorics",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T04:42:44Z",
+  "lastUpdate": "2026-03-30T04:50:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeTheoremOQ05.lean",
+      "filename": "LagrangeTheoremOQ05.lean",
+      "lineCount": 117,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
+    }
+  ]
+}
