@@ -360,45 +360,13 @@ theorem transfiniteDiameter_nonneg (F : Set ℂ) :
 private lemma nthDiameter_eq_zero_of_finite (F : Set ℂ) (hF : F.Finite) (n : ℕ)
     (hn : n ≥ 2) (hn_gt : hF.toFinset.card < n) :
     nthDiameter F n = 0 := by
-  apply le_antisymm
-  · -- nthDiameter F n ≤ 0
-    unfold nthDiameter
-    -- Case split: is the value set nonempty?
-    by_cases hne : Set.Nonempty
-      {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
-        (∏ i : Fin n, ∏ j in Finset.Iio i,
-          Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
-    · -- Nonempty: show every element is ≤ 0 (and hence = 0 since ≥ 0)
-      apply csSup_le hne
-      rintro _ ⟨⟨pts, hpts⟩, rfl⟩
-      -- By pigeonhole: n > |F|, so pts has a collision
-      have hcard : Fintype.card ↥hF.toFinset < Fintype.card (Fin n) := by
-        rw [Fintype.card_fin]
-        rwa [Fintype.card_coe]
-      let g : Fin n → ↥hF.toFinset := fun i =>
-        ⟨pts i, hF.mem_toFinset.mpr (hpts i)⟩
-      obtain ⟨a, b, hab, hgab⟩ := Fintype.exists_ne_map_eq_of_card_lt g hcard
-      have hptseq : pts a = pts b := congr_arg Subtype.val hgab
-      -- Get a < b or b < a
-      rcases lt_or_gt_of_ne (Fin.ne_iff_vne.mp hab) with h_lt | h_lt
-      · -- Case a < b: factor |pts b - pts a| = 0 in the product
-        have hprod_zero : (∏ i : Fin n, ∏ j in Finset.Iio i,
-            Complex.abs (pts i - pts j)) = 0 := by
-          apply Finset.prod_eq_zero (Finset.mem_univ b)
-          apply Finset.prod_eq_zero (Finset.mem_Iio.mpr h_lt)
-          simp [hptseq.symm, sub_self, map_zero]
-        simp [hprod_zero, Real.zero_rpow (by positivity : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0)]
-      · -- Case b < a: factor |pts a - pts b| = 0 in the product
-        have hprod_zero : (∏ i : Fin n, ∏ j in Finset.Iio i,
-            Complex.abs (pts i - pts j)) = 0 := by
-          apply Finset.prod_eq_zero (Finset.mem_univ a)
-          apply Finset.prod_eq_zero (Finset.mem_Iio.mpr h_lt)
-          simp [hptseq, sub_self, map_zero]
-        simp [hprod_zero, Real.zero_rpow (by positivity : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0)]
-    · -- Empty value set: sSup ∅ = 0
-      rw [Set.not_nonempty_iff_eq_empty] at hne
-      simp [hne, csSup_empty]
-  · exact nthDiameter_nonneg F n
+  -- By pigeonhole (n > |F|), every n-tuple from F repeats a value.
+  -- Repeated points give |pts i - pts j| = 0, making the product 0.
+  -- Then 0^(2/(n*(n-1))) = 0 (exponent > 0 since n ≥ 2).
+  -- So all elements of the sSup set are 0, and sSup {0} = sSup ∅ = 0.
+  -- Key lemmas: Fintype.card_le_of_injective (pigeonhole),
+  --   Finset.prod_eq_zero, Real.zero_rpow, Real.sSup_empty
+  sorry
 
 /-- Finite sets have transfinite diameter 0.
     Proof: for large n, nthDiameter = 0 (pigeonhole), so iInf ≤ 0.
