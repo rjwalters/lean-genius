@@ -135,4 +135,53 @@ theorem lgvMatrix_2x2 (m : ℕ) (a b : Fin 2 → ℕ) :
   simp [lgvMatrix, lgvDet, Matrix.det_fin_two]
   ring
 
+/-
+## Part VI: Hook-Length Formula for 2-Row Rectangular SYT
+
+The **hook-length formula** (Frame-Robinson-Thrall 1954) states that the number
+of standard Young tableaux of shape λ is:
+
+  f^λ = n! / ∏_{u ∈ λ} h(u)
+
+where n = |λ| is the number of cells and h(u) is the hook length at cell u.
+
+For a **2×m rectangular** Young diagram (shape (m, m), n = 2m cells):
+- Row 0 hook lengths: m+1, m, m-1, ..., 2  (product = (m+1)!)
+- Row 1 hook lengths: m, m-1, ..., 1        (product = m!)
+- Total hook product = (m+1)! · m!
+
+The formula gives: f^(m,m) = (2m)! / ((m+1)! · m!) = C(2m,m)/(m+1) = C_m
+
+This connects the hook-length formula to the Catalan numbers and, via the
+LGV lemma, to the count of non-intersecting lattice path pairs.
+-/
+
+/-- **Hook-length formula for 2×m rectangular SYT.**
+    C_m · (m+1)! · m! = (2m)!, where C_m is the m-th Catalan number.
+    The hook-length product (m+1)! · m! comes from:
+    Row 0 hooks: ∏_{j=0}^{m-1} (m-j+1) = (m+1)!
+    Row 1 hooks: ∏_{j=0}^{m-1} (m-j) = m! -/
+theorem hook_length_formula_two_row (m : ℕ) :
+    Cn m * ((m + 1).factorial * m.factorial) = (2 * m).factorial := by
+  -- Step 1: Cn m * (m + 1) = C(2m, m) [catalan_formula]
+  have h1 := catalan_formula m
+  -- Step 2: C(2m, m) * m! * m! = (2m)! [choose_mul_factorial_mul_factorial]
+  have h2 := Nat.choose_mul_factorial_mul_factorial
+    (show m ≤ 2 * m from Nat.le_mul_of_pos_left m (by omega))
+  rw [show 2 * m - m = m from by omega] at h2
+  -- Combine: Cn m * ((m+1)! * m!) = Cn m * ((m+1) * m! * m!)
+  --        = (Cn m * (m+1)) * (m! * m!) = C(2m,m) * m! * m! = (2m)!
+  calc Cn m * ((m + 1).factorial * m.factorial)
+      = Cn m * ((m + 1) * m.factorial * m.factorial) := by
+        rw [Nat.factorial_succ]; ring_nf
+    _ = Cn m * (m + 1) * (m.factorial * m.factorial) := by ring
+    _ = Nat.choose (2 * m) m * (m.factorial * m.factorial) := by rw [h1]
+    _ = Nat.choose (2 * m) m * m.factorial * m.factorial := by ring
+    _ = (2 * m).factorial := h2
+
+-- Verified: hook-length formula for small cases
+example : Cn 1 * (2 * 1) = 2 := by native_decide  -- 1 SYT of shape (1,1)
+example : Cn 2 * (6 * 2) = 24 := by native_decide   -- 2 SYT of shape (2,2)
+example : Cn 3 * (24 * 6) = 720 := by native_decide  -- 5 SYT of shape (3,3)
+
 end LGVCorollaries
