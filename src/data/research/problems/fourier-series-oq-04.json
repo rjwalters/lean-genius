@@ -1,0 +1,138 @@
+{
+  "slug": "fourier-series-oq-04",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-29T23:03:01-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: fourier-series-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "fourier-series",
+    "fourier-series-oq-01",
+    "fourier-series-oq-02",
+    "fourier-series-oq-02-oq-03",
+    "fourier-series-oq-02-oq-03-oq-02",
+    "fourier-series-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T06:03:08.389Z",
+  "lastUpdate": "2026-03-30T06:03:08.397Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/FourierSeries.lean",
+      "filename": "FourierSeries.lean",
+      "lineCount": 452,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ01.lean",
+      "filename": "FourierSeriesOQ01.lean",
+      "lineCount": 441,
+      "theoremCount": 13,
+      "axiomCount": 5,
+      "defCount": 5,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ01.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02.lean",
+      "filename": "FourierSeriesOQ02.lean",
+      "lineCount": 467,
+      "theoremCount": 17,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03.lean",
+      "filename": "FourierSeriesOQ02OQ03.lean",
+      "lineCount": 148,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03OQ02.lean",
+      "filename": "FourierSeriesOQ02OQ03OQ02.lean",
+      "lineCount": 388,
+      "theoremCount": 11,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean",
+      "filename": "FourierSeriesOQ02OQ03OQ02Aristotle.lean",
+      "lineCount": 115,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 6,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ03.lean",
+      "filename": "FourierSeriesOQ03.lean",
+      "lineCount": 809,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ03.lean"
+    }
+  ]
+}
