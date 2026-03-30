@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed critical primorial bug (was broken for k >= 6). Now uses Nat.nth Nat.Prime for general definition. 32 theorems, 2 axioms, 0 sorries, 409 lines.",
+    "progressSummary": "COMPLETED: Fixed meta.json axiomCount (2→0, axioms were already removed). Proved linking lemma (primorial = primorialComp for k ≤ 5). Added concrete nthPrime values. 33 theorems, 0 axioms, 0 sorries, 442 lines.",
     "builtItems": [
       "DicksonsConjecture definition: proper formalization as universal statement about linear forms (was bare Prop placeholder)",
       "Fixed schinzel_theorem_statement: replaced incorrect primorialComp k * (primorialComp k + 1) with existential over Q > 0",
@@ -40,7 +40,10 @@
       "primorial_pos: proved primorial is always positive",
       "nthPrime_prime/nthPrime_strictMono: basic properties proved from Mathlib",
       "HasManyFactors: general predicate using proper primorial",
-      "ErdosProblem891: restated using general primorial (no longer vacuously false for k >= 6)"
+      "ErdosProblem891: restated using general primorial (no longer vacuously false for k >= 6)",
+      "nthPrime_zero through nthPrime_four: concrete prime values (2,3,5,7,11)",
+      "primorial_eq_primorialComp: linking theorem for k ≤ 5",
+      "hasManyFactors_iff_comp: equivalence of general and computable predicates for k ≤ 5"
     ],
     "insights": [
       "primorialComp returns 0 for k >= 6, making the main axiom erdos_891 literally False for those cases",
@@ -49,7 +52,10 @@
       "All 4 axioms are either open conjectures (erdos_891, Dickson) or deep results (Schinzel, Weisenberg) - none reducible from Mathlib",
       "k=2 case computational verification covers n in [3, 1002] with native_decide",
       "erdos_891 axiom was the open conjecture itself — converted to ErdosProblem891 def",
-      "primorial now uses Nat.nth Nat.Prime via Finset.prod, valid for all k (was broken for k >= 6 with primorialComp)"
+      "primorial now uses Nat.nth Nat.Prime via Finset.prod, valid for all k (was broken for k >= 6 with primorialComp)",
+      "nthPrime definition changed from Nat.nth Nat.Prime to Nat.nth Prime to access Mathlib API (nth_prime_zero etc.)",
+      "Proved linking theorem: primorial k = primorialComp k for k ≤ 5, validating computable verification",
+      "File now has 0 axioms (previous 2 axioms for Schinzel/Weisenberg were already removed; meta.json was stale)"
     ],
     "mathlibGaps": [
       "Linking lemma between Nat.nth values and concrete primes requires proving Nat.nth Nat.Prime 0 = 2, etc."

@@ -33,6 +33,7 @@ import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Tactic
 
 open Nat BigOperators Finset
@@ -121,15 +122,38 @@ enumeration. This is noncomputable but mathematically general.
 -/
 
 /-- The n-th prime (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...). -/
-noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Prime n
 
 /-- Each nthPrime is indeed prime. -/
 lemma nthPrime_prime (n : ℕ) : (nthPrime n).Prime :=
-  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
+  Nat.prime_nth_prime n
 
 /-- The nthPrime sequence is strictly increasing. -/
 lemma nthPrime_strictMono : StrictMono nthPrime :=
-  Nat.nth_strictMono Nat.infinite_setOf_prime
+  Nat.nth_prime_strictMono
+
+/-- The first prime is 2. -/
+lemma nthPrime_zero : nthPrime 0 = 2 := by
+  simp [nthPrime, Nat.nth_prime_zero]
+
+/-- The second prime is 3. -/
+lemma nthPrime_one : nthPrime 1 = 3 := by
+  simp [nthPrime, Nat.nth_prime_one]
+
+/-- The third prime is 5. -/
+lemma nthPrime_two : nthPrime 2 = 5 := by
+  simp [nthPrime]
+  native_decide
+
+/-- The fourth prime is 7. -/
+lemma nthPrime_three : nthPrime 3 = 7 := by
+  simp [nthPrime]
+  native_decide
+
+/-- The fifth prime is 11. -/
+lemma nthPrime_four : nthPrime 4 = 11 := by
+  simp [nthPrime]
+  native_decide
 
 /--
 **Primorial function (general):**
@@ -203,6 +227,24 @@ Uses the computable primorial for decidable verification.
 -/
 def HasManyFactorsComp (n k : ℕ) : Prop :=
   ∃ m : ℕ, n ≤ m ∧ m < n + primorialComp k ∧ bigOmega m > k
+
+/--
+**Linking theorem:** The general `primorial` agrees with the computable
+`primorialComp` for k ≤ 5. This validates that `native_decide` verification
+using `primorialComp` correctly reflects the mathematical definition.
+
+For k ≥ 6, `primorialComp` returns 0 (undefined), so the link cannot extend further. -/
+theorem primorial_eq_primorialComp (k : ℕ) (hk : k ≤ 5) :
+    primorial k = primorialComp k := by
+  interval_cases k <;>
+    simp [primorial, primorialComp, Finset.prod_range_succ,
+      nthPrime_zero, nthPrime_one, nthPrime_two, nthPrime_three, nthPrime_four]
+
+/-- HasManyFactors and HasManyFactorsComp agree for k ≤ 5. -/
+theorem hasManyFactors_iff_comp (n k : ℕ) (hk : k ≤ 5) :
+    HasManyFactors n k ↔ HasManyFactorsComp n k := by
+  unfold HasManyFactors HasManyFactorsComp
+  rw [primorial_eq_primorialComp k hk]
 
 /-
 ## Part V: Computational Verification of k = 2 Case
@@ -388,7 +430,7 @@ Key insight: The primorial p₁···pₖ appears to be the exact threshold.
 Below it (p₁···pₖ - 1), the statement fails conditionally.
 Above it (p₁···pₖ₋₁·pₖ₊₁), the statement holds unconditionally.
 
-Uses `primorial` (via Nat.nth Nat.Prime), which is valid for all k.
+Uses `primorial` (via Nat.nth Prime), which is valid for all k.
 The computable `HasManyFactorsComp` is used only for decidable k=2 verification.
 -/
 /-- **Erdős Problem #891 (OPEN):**
