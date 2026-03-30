@@ -44,25 +44,7 @@
       "venue": "Trans. Amer. Math. Soc."
     }
   ],
-  "crossReferences": [
-    {
-      "targetId": "partition-theorem",
-      "relationship": "extends",
-      "description": "Extends Euler's partition identity to overpartitions"
-    }
-  ],
-  "conclusion": {
-    "summary": "Overpartition structure defined with connection to Euler's identity. Small values axiomatized.",
-    "implications": "Overpartition structure defined with connection to Euler's identity. Small values axiomatized."
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "namespace": "OverpartitionTheory",
-    "lineCount": 68,
-    "axiomCount": 4,
-    "theoremCount": 2,
-    "definitionCount": 2
-  }
+  "crossReferences": [{"targetId": "partition-theorem", "relationship": "extends", "description": "Extends Euler's partition identity to overpartitions"}],
+  "conclusion": {"summary": "Overpartition structure defined with connection to Euler's identity. Small values axiomatized."},
+  "leanFile": {"imports": ["Mathlib"], "namespace": "OverpartitionTheory", "lineCount": 68, "axiomCount": 4, "theoremCount": 2, "definitionCount": 2}
 }
