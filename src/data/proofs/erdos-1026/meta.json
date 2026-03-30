@@ -69,9 +69,9 @@
       "LIS/LDS bounds as corollaries"
     ],
     "dateAdded": "2025-12-28",
-    "axiomCount": 2,
-    "lineCount": 290,
-    "assumptions": "2 axioms: weighted_erdos_szekeres (Tidor-Wang-Yang weighted bound), lis_lds_bound (LIS*LDS >= n). erdos_szekeres proved from Mathlib Archive formalization. 5 theorems proved: erdos_szekeres (from Mathlib), erdos_szekeres_square, tidor_wang_yang (= weighted_erdos_szekeres), erdos_1026, tournament_connection.",
+    "axiomCount": 1,
+    "lineCount": 342,
+    "assumptions": "1 axiom: weighted_erdos_szekeres (Tidor-Wang-Yang weighted bound - deep result, not in Mathlib). erdos_szekeres proved from Mathlib Archive, lis_lds_bound proved via Erdős-Szekeres + sSup contradiction.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -274,9 +274,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos1026",
-    "lineCount": 290,
-    "axiomCount": 2,
-    "theoremCount": 5,
+    "lineCount": 342,
+    "axiomCount": 1,
+    "theoremCount": 6,
     "definitionCount": 11
   }
 }

@@ -251,10 +251,62 @@ noncomputable def LIS {n : ℕ} (seq : RealSeq n) : ℕ :=
 noncomputable def LDS {n : ℕ} (seq : RealSeq n) : ℕ :=
   sSup {m | ∃ (sub : Subsequence n m), IsDecreasing seq sub}
 
-/-- LIS · LDS ≥ n (a consequence of Erdős-Szekeres). -/
-axiom lis_lds_bound (n : ℕ) (seq : RealSeq n)
+/-- Any Subsequence has length ≤ the sequence length (StrictMono implies injective). -/
+private lemma subsequence_length_le {n m : ℕ} (sub : Subsequence n m) : m ≤ n := by
+  have h := Fintype.card_le_of_injective sub.indices sub.strictMono.injective
+  simpa [Fintype.card_fin] using h
+
+/-- The set of achievable increasing subsequence lengths is bounded above. -/
+private lemma lis_bddAbove {n : ℕ} (seq : RealSeq n) :
+    BddAbove {m | ∃ (sub : Subsequence n m), IsIncreasing seq sub} :=
+  ⟨n, fun _ hm => by obtain ⟨sub, _⟩ := hm; exact subsequence_length_le sub⟩
+
+/-- The set of achievable decreasing subsequence lengths is bounded above. -/
+private lemma lds_bddAbove {n : ℕ} (seq : RealSeq n) :
+    BddAbove {m | ∃ (sub : Subsequence n m), IsDecreasing seq sub} :=
+  ⟨n, fun _ hm => by obtain ⟨sub, _⟩ := hm; exact subsequence_length_le sub⟩
+
+/-- Convert a Finset with StrictMonoOn to a Subsequence with IsIncreasing. -/
+private lemma finset_mono_to_subsequence {n : ℕ} (seq : RealSeq n)
+    (t : Finset (Fin n)) (hmono : StrictMonoOn seq ↑t) :
+    ∃ (sub : Subsequence n t.card), IsIncreasing seq sub := by
+  let φ := t.orderIsoOfFin rfl
+  exact ⟨⟨fun i => (φ i).val, fun a b hab => φ.strictMono hab⟩,
+    fun a b hab => hmono (Finset.mem_coe.mpr (φ a).prop) (Finset.mem_coe.mpr (φ b).prop)
+      (φ.strictMono hab)⟩
+
+/-- Convert a Finset with StrictAntiOn to a Subsequence with IsDecreasing. -/
+private lemma finset_anti_to_subsequence {n : ℕ} (seq : RealSeq n)
+    (t : Finset (Fin n)) (hanti : StrictAntiOn seq ↑t) :
+    ∃ (sub : Subsequence n t.card), IsDecreasing seq sub := by
+  let φ := t.orderIsoOfFin rfl
+  exact ⟨⟨fun i => (φ i).val, fun a b hab => φ.strictMono hab⟩,
+    fun i j hij => hanti (Finset.mem_coe.mpr (φ i).prop) (Finset.mem_coe.mpr (φ j).prop)
+      (φ.strictMono hij)⟩
+
+/-- **LIS · LDS ≥ n** (a consequence of Erdős-Szekeres).
+    If LIS * LDS < n, Erdős-Szekeres gives an increasing subsequence longer than LIS
+    or a decreasing subsequence longer than LDS, contradicting their definitions as suprema. -/
+theorem lis_lds_bound (n : ℕ) (seq : RealSeq n)
     (hDistinct : Function.Injective seq) :
-    LIS seq * LDS seq ≥ n
+    LIS seq * LDS seq ≥ n := by
+  by_contra h
+  push_neg at h
+  -- Apply Mathlib's Erdős-Szekeres directly: LIS * LDS < card(Fin n) = n
+  have hcard : LIS seq * LDS seq < Fintype.card (Fin n) := by
+    simp [Fintype.card_fin]; exact h
+  rcases Theorems100.erdos_szekeres hcard hDistinct with ⟨t, ht, hmono⟩ | ⟨t, ht, hanti⟩
+  · -- Increasing Finset of size > LIS: contradicts sSup definition
+    obtain ⟨sub, hInc⟩ := finset_mono_to_subsequence seq t hmono
+    have h_mem : t.card ∈ {m | ∃ (sub : Subsequence n m), IsIncreasing seq sub} := ⟨sub, hInc⟩
+    have h_le := le_csSup (lis_bddAbove seq) h_mem
+    -- h_le : t.card ≤ LIS seq, but ht : LIS seq < t.card
+    linarith
+  · -- Decreasing Finset of size > LDS: contradicts sSup definition
+    obtain ⟨sub, hDec⟩ := finset_anti_to_subsequence seq t hanti
+    have h_mem : t.card ∈ {m | ∃ (sub : Subsequence n m), IsDecreasing seq sub} := ⟨sub, hDec⟩
+    have h_le := le_csSup (lds_bddAbove seq) h_mem
+    linarith
 
 /-- The longest monotonic subsequence has length ≥ √n.
     Follows from lis_lds_bound: if max(LIS,LDS) < √n, then LIS·LDS < n. -/
