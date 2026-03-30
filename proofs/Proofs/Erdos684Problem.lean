@@ -183,45 +183,19 @@ theorem f_tendsto_infty_weak : ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, f n > C :=
   omega
 
 /-
-# Part 4: Modern Bounds
+# Part 4: Known Bounds (documentary, not formalized as axioms)
 
-Recent results by Tang & ChatGPT on explicit bounds for f(n).
+- Tang-ChatGPT bound: f(n) ≤ n^{30/43 + o(1)} (exponent ≈ 0.698)
+- Under RH: f(n) ≤ n^{2/3 + o(1)} (conjectured)
+- Heuristic (Sothanaphan-ChatGPT): f(n) ~ 2 log n for "most" n
+- Huge gap between proven bounds and heuristic!
+
+These are documented here but not axiomatized since they are not used by any theorem.
+See erdosproblems.com/684 for full references.
 -/
 
--- Tang-ChatGPT bound: f(n) ≤ n^{30/43 + o(1)}
--- The exponent 30/43 ≈ 0.698
-noncomputable def tang_exponent : ℝ := 30 / 43
-
-axiom tang_bound : ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
-    (f n : ℝ) ≤ n^(tang_exponent + ε)
-
--- Under Riemann Hypothesis: f(n) ≤ n^{2/3 + o(1)}
-noncomputable def rh_exponent : ℝ := 2 / 3
-
-axiom rh_conditional_bound : ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
-    -- Assuming RH
-    (f n : ℝ) ≤ n^(rh_exponent + ε)
-
 /-
-# Part 5: Heuristic Conjectures
-
-The heuristic suggests f(n) ~ 2 log n for most n.
--/
-
--- Sothanaphan-ChatGPT heuristic: f(n) ~ 2 log n for "most" n
--- This is much smaller than the proven bounds!
-noncomputable def heuristic_bound (n : ℕ) : ℝ := 2 * Real.log n
-
--- The heuristic (not proven)
--- Informal: for "most" n, f(n) ≈ 2 log n
--- Formal statement uses natural density of a decidable subset
-axiom heuristic_conjecture : ∀ ε : ℝ, ε > 0 →
-    ∃ S : ℕ → Prop, ∃ _ : DecidablePred S,
-    (∀ N : ℕ, (↑(Finset.filter S (Finset.range N)).card / (N : ℝ)) > 1 - ε) ∧
-    (∀ n, S n → |((f n : ℝ) - heuristic_bound n) / heuristic_bound n| < ε)
-
-/-
-# Part 6: Structure of Smooth Part
+# Part 5: Structure of Smooth Part
 
 The smooth part is determined by primes in [2, k] dividing C(n,k).
 -/
