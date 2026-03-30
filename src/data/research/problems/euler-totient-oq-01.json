@@ -1,13 +1,13 @@
 {
   "slug": "euler-totient-oq-01",
-  "title": "Carmichael's Function: a^\u03bb(n) \u2261 1 (mod n)",
+  "title": "Carmichael's Function: a^λ(n) ≡ 1 (mod n)",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Carmichael's Function: a^\u03bb(n) \u2261 1 (mod n).",
+    "plain": "Formal investigation in number theory: Carmichael's Function: a^λ(n) ≡ 1 (mod n).",
     "whyMatters": []
   },
   "knownResults": {
@@ -32,12 +32,12 @@
     "progressSummary": "COMPLETED: Proved carmichael_prime via IsCyclic.exponent_eq_card. 0 sorries, 0 axioms.",
     "builtItems": [
       "carmichael_prime: proved using IsCyclic.exponent_eq_card + ZMod.card_units_eq_totient + Nat.totient_prime",
-      "carmichael (definition): Monoid.exponent (ZMod n)\u02e3",
+      "carmichael (definition): Monoid.exponent (ZMod n)ˣ",
       "carmichael_pow_eq_one, carmichael_dvd_totient, carmichael_minimal: all proved from Monoid.exponent API"
     ],
     "insights": [
-      "Carmichael function = group exponent of (ZMod n)\u02e3, directly from Mathlib",
-      "For prime p: (ZMod p)\u02e3 is cyclic (Mathlib instance), so exponent = card",
+      "Carmichael function = group exponent of (ZMod n)ˣ, directly from Mathlib",
+      "For prime p: (ZMod p)ˣ is cyclic (Mathlib instance), so exponent = card",
       "Prior proof attempt used iSup_orderOf which got stuck; direct IsCyclic.exponent_eq_card is cleaner"
     ],
     "mathlibGaps": [],
@@ -76,11 +76,11 @@
     {
       "path": "Proofs/EulerTotientOQ01.lean",
       "filename": "EulerTotientOQ01.lean",
-      "lineCount": 89,
+      "lineCount": 84,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01.lean"
     },

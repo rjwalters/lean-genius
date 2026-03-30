@@ -1,13 +1,13 @@
 {
   "slug": "amgm-inequality-oq-02-oq-03",
-  "title": "Derive the full Maclaurin chain M\u2096 \u2265 M\u2096\u208a\u2081 from Newton log-concavity",
+  "title": "Derive the full Maclaurin chain Mₖ ≥ Mₖ₊₁ from Newton log-concavity",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: Derive the full Maclaurin chain M\u2096 \u2265 M\u2096\u208a\u2081 from Newton log-concavity.",
+    "plain": "AVAILABLE: Derive the full Maclaurin chain Mₖ ≥ Mₖ₊₁ from Newton log-concavity.",
     "whyMatters": []
   },
   "knownResults": {
@@ -116,8 +116,8 @@
     {
       "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
       "filename": "AmgmInequalityOQ02OQ03.lean",
-      "lineCount": 226,
-      "theoremCount": 7,
+      "lineCount": 227,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
