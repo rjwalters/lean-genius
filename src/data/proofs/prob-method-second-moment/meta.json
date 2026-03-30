@@ -7,7 +7,7 @@
     "author": "Chebyshev, Paley-Zygmund, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Second_moment_method",
     "date": "1867",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ProbMethodSecondMoment.lean",
     "tags": [
       "probabilistic-method",
@@ -16,8 +16,8 @@
       "probability",
       "intermediate"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.Integral.Lebesgue",
@@ -43,7 +43,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 161,
+    "lineCount": 186,
     "prerequisites": [
       "Variance and second moments of random variables",
       "Chebyshev's inequality and concentration",
@@ -51,7 +51,7 @@
       "Random graphs G(n,p) and threshold functions",
       "Indicator random variables and covariance"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "1 sorry: paley_zygmund_quantitative. 0 axioms.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -163,7 +163,7 @@
     ],
     "opens": [],
     "namespace": "ProbMethod.SecondMoment",
-    "lineCount": 161,
+    "lineCount": 186,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 0

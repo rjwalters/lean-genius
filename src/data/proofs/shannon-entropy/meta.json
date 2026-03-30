@@ -7,7 +7,7 @@
     "author": "Claude Shannon (1948), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Entropy_(information_theory)",
     "date": "1948",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ShannonEntropy.lean",
     "tags": [
       "information-theory",
@@ -15,8 +15,8 @@
       "probability",
       "advanced"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "Analysis.SpecialFunctions.Log.Basic",
@@ -44,7 +44,7 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 566,
+    "lineCount": 643,
     "prerequisites": [
       "Probability distributions and discrete random variables",
       "Logarithm and convexity (Jensen's inequality)",
@@ -52,7 +52,7 @@
       "Conditional entropy and mutual information",
       "Data processing inequality and sufficient statistics"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "2 sorries: strong_subadditivity and entropy_chain_rule. 0 axioms.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -174,7 +174,7 @@
     ],
     "opens": [],
     "namespace": "InformationTheory",
-    "lineCount": 566,
+    "lineCount": 643,
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 4
