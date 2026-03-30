@@ -1,8 +1,8 @@
 {
   "id": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
-  "title": "Multiplicativity of the Kronecker Symbol (First Argument)",
+  "title": "Multiplicativity of the Kronecker Symbol (Both Arguments)",
   "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
-  "description": "Proves that the Kronecker symbol is completely multiplicative in the first argument: (ab/n) = (a/n)(b/n) for all integers with ab != 0. Uses case analysis on n with kronecker0 and kroneckerNeg1 multiplicativity for special cases, and Jacobi symbol multiplicativity for the general case.",
+  "description": "Proves that the Kronecker symbol is completely multiplicative in both arguments: (ab/n) = (a/n)(b/n) and (a/mn) = (a/m)(a/n) for all integers with appropriate nonzero conditions. Uses case analysis with kronecker0 and kroneckerNeg1 multiplicativity for special cases, and Jacobi symbol multiplicativity for the general case.",
   "leanFile": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
   "mainTheorems": [
     {
@@ -19,6 +19,11 @@
       "name": "kroneckerNeg1_mul_of_ne_zero",
       "statement": "kroneckerNeg1 (a * b) = kroneckerNeg1 a * kroneckerNeg1 b",
       "description": "Multiplicativity of kroneckerNeg1 (the sign character at modulus -1)."
+    },
+    {
+      "name": "kronecker_mul_right_proved",
+      "statement": "kronecker a (m * n) = kronecker a m * kronecker a n",
+      "description": "Complete multiplicativity of the Kronecker symbol in the second argument, for nonzero m*n."
     }
   ],
   "meta": {
@@ -48,9 +53,12 @@
     "originalContributions": [
       "kronecker0_mul_of_ne_zero: multiplicativity of the unit character at modulus 0",
       "kroneckerNeg1_mul_of_ne_zero: multiplicativity of the sign character at modulus -1",
-      "kronecker_mul_left_proved: full Kronecker symbol multiplicativity via case analysis + Jacobi"
+      "kronecker_mul_left_proved: full Kronecker symbol multiplicativity (first argument) via case analysis + Jacobi",
+      "kronecker_mul_right_proved: full Kronecker symbol multiplicativity (second argument) via case analysis + Jacobi",
+      "kronecker_neg_modulus: negating the modulus introduces sign character",
+      "kroneckerNeg1_sq: sign character is an involution"
     ],
-    "lineCount": 154
+    "lineCount": 267
   },
   "sections": [
     {
@@ -66,15 +74,21 @@
       "summary": "Multiplicativity of kroneckerNeg1"
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem",
-      "description": "Complete multiplicativity by case analysis on n",
-      "summary": "Main Theorem"
+      "id": "mul-left",
+      "title": "Multiplicativity in First Argument",
+      "description": "kronecker_mul_left_proved: (ab/n) = (a/n)(b/n) by case analysis on n",
+      "summary": "Multiplicativity in first argument"
+    },
+    {
+      "id": "mul-right",
+      "title": "Multiplicativity in Second Argument",
+      "description": "kronecker_mul_right_proved: (a/mn) = (a/m)(a/n) by case analysis on signs + Jacobi",
+      "summary": "Multiplicativity in second argument"
     }
   ],
   "overview": {
-    "text": "Proves the Kronecker symbol is completely multiplicative in the first argument, handling the Kronecker extension to moduli 0, -1, 1, and general n separately.",
-    "proofStrategy": "Case analysis on n. For n=0: unit character multiplicativity. For n=-1: sign character multiplicativity (sgn(ab) = sgn(a)sgn(b)). For n=1: trivial. For general n: combine sign character multiplicativity with Jacobi symbol mul_left from Mathlib.",
+    "text": "Proves the Kronecker symbol is completely multiplicative in both arguments, handling the Kronecker extension to moduli 0, -1, 1, and general n separately.",
+    "proofStrategy": "First argument: case analysis on n (0, -1, 1, general) using Jacobi mul_left. Second argument: case analysis on m, n being ±1 or general, using sign factor decomposition and Jacobi mul_right.",
     "keyInsights": [],
     "historicalContext": "",
     "problemStatement": "See the description field for the problem statement."

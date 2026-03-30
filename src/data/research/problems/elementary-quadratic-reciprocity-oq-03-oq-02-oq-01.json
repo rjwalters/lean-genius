@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved kronecker_mul_left (3→2 axioms). kroneckerNeg1_mul + kronecker0_mul as helper lemmas. Remaining: kronecker_mul_right + kronecker_reciprocity.",
+    "progressSummary": "COMPLETED: Both mul_left and mul_right fully proved with 0 axioms, 0 sorries. Meta.json updated (lineCount 154→267, added mul_right theorem). Only remaining work in parent tree: kronecker_reciprocity.",
     "builtItems": [
       "FIXED: kronecker_mul_left — added (ha : a ≠ 0) (hb : b ≠ 0)",
       "FIXED: kronecker_mul_right — added (hm : m ≠ 0) (hn : n ≠ 0)",
       "theorem kroneckerNeg1_mul: sign character multiplicative for nonzero args",
       "theorem kronecker0_mul: unit character multiplicative for nonzero args",
-      "theorem kronecker_mul_left: Kronecker symbol multiplicative in first arg (proved from jacobiSym.mul_left)"
+      "theorem kronecker_mul_left: Kronecker symbol multiplicative in first arg (proved from jacobiSym.mul_left)",
+      "Updated meta.json: title, description, lineCount (154→267), added mul_right theorem to mainTheorems/originalContributions"
     ],
     "insights": [
       "kronecker defined via cases: n=0→kronecker0, n=-1→kroneckerNeg1, n=1→1, else→sign*jacobiSym",
@@ -46,7 +47,9 @@
       "COUNTEREXAMPLE: kronecker_mul_left fails at a=-3, b=0, n=-1: LHS=1, RHS=-1",
       "COUNTEREXAMPLE: kronecker_mul_right fails at a=-1, m=0, n=-1: LHS=1, RHS=-1",
       "Root cause: kroneckerNeg1(0)=1 but zero-arg product maps through kronecker0 instead of kroneckerNeg1",
-      "kronecker_mul_left proof: case split on n, use jacobiSym.mul_left for general case + kroneckerNeg1_mul for sign"
+      "kronecker_mul_left proof: case split on n, use jacobiSym.mul_left for general case + kroneckerNeg1_mul for sign",
+      "Both mul_left and mul_right were already proved in prior session but meta.json was stale (154 lines, missing mul_right)",
+      "File grew from 154 to 267 lines with the mul_right proof addition"
     ],
     "mathlibGaps": [],
     "nextSteps": [
