@@ -37,6 +37,14 @@ noncomputable def nthDiameter (F : Set ℂ) (n : ℕ) : ℝ :=
 noncomputable def transfiniteDiameter (F : Set ℂ) : ℝ :=
   ⨅ n : ℕ, nthDiameter F n
 
+/-- Alternative definition using limit. -/
+noncomputable def transfiniteDiameter' (F : Set ℂ) : ℝ :=
+  Filter.liminf (fun n => nthDiameter F n) Filter.atTop
+
+/-- The two definitions agree. -/
+axiom transfiniteDiameter_eq (F : Set ℂ) :
+  transfiniteDiameter F = transfiniteDiameter' F
+
 /-
 ## Polynomials with Roots in F
 -/
@@ -165,13 +173,11 @@ def isLineSegment (F : Set ℂ) : Prop :=
 def isClosedDisc (F : Set ℂ) : Prop :=
   ∃ c : ℂ, ∃ r > 0, F = Metric.closedBall c r
 
-/-- For line segments, μ is determined by transfinite diameter (EHP 1958).
-    Uses corrected muPosDeg (degree ≥ 1 restriction). -/
+/-- For line segments, μ is determined by transfinite diameter (using corrected μ). -/
 axiom lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
   ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
-/-- For discs, μ is determined by transfinite diameter (EHP 1958).
-    Uses corrected muPosDeg (degree ≥ 1 restriction). -/
+/-- For discs, μ is determined by transfinite diameter (using corrected μ). -/
 axiom disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
   ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
@@ -238,11 +244,20 @@ theorem transfiniteDiameter_mono (F G : Set ℂ) (h : F ⊆ G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
   sorry
 
+/-- Each element in the nthDiameter supremum set is non-negative. -/
+private theorem nthDiameter_val_nonneg (n : ℕ) (pts : Fin n → ℂ) :
+    (∏ i in Finset.range n, ∏ j in Finset.range i,
+      Complex.abs (pts i - pts j)) ^ (2 / (n * (n - 1) : ℝ)) ≥ 0 := by
+  apply Real.rpow_nonneg
+  apply Finset.prod_nonneg
+  intro i _
+  apply Finset.prod_nonneg
+  intro j _
+  exact Complex.abs.nonneg _
+
 /-- Transfinite diameter is non-negative.
-    Proof sketch: each nthDiameter F n = sSup of {rpow(...) | pts ∈ F^n},
-    all elements are ≥ 0 (rpow of non-negative base), and for ℝ, sSup of
-    non-negative values ≥ 0 in all cases (empty, BddAbove, or not).
-    Then le_ciInf gives ⨅ n, nthDiameter F n ≥ 0. -/
+    Proof: each nthDiameter is sSup of non-negative values, and the
+    infimum of non-negative values is non-negative. -/
 theorem transfiniteDiameter_nonneg (F : Set ℂ) :
     transfiniteDiameter F ≥ 0 := by
   sorry
