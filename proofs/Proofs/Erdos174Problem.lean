@@ -155,8 +155,6 @@ def IsRegularPolygon {n : ℕ} (A : FiniteConfig n) (m : ℕ) : Prop :=
 
 /-- **Kříž (1991):** All regular polygons and polyhedra are Ramsey.
 Uses permutation group methods and symmetry arguments. -/
-axiom regular_polygon_is_ramsey {n : ℕ} (A : FiniteConfig n) (m : ℕ) :
-    IsRegularPolygon A m → IsRamsey A
 
 /- ## Part VI: Examples -/
 
@@ -164,26 +162,19 @@ axiom regular_polygon_is_ramsey {n : ℕ} (A : FiniteConfig n) (m : ℕ) :
 def twoPoints : FiniteConfig 1 :=
   {![0], ![1]}
 
-/-- Two points always lie on a sphere (centered at their midpoint). -/
-axiom two_points_spherical : IsSpherical twoPoints
-
-/-- Any two-point configuration is Ramsey.
-By pigeonhole, in high enough dimension we find a monochromatic pair. -/
-axiom two_points_ramsey : IsRamsey twoPoints
+/-- Two points always lie on a sphere and are trivially Ramsey (pigeonhole). -/
 
 /-- An equilateral triangle in ℝ². -/
 def equilateralTriangle : FiniteConfig 2 :=
   {![0, 0], ![1, 0], ![0.5, Real.sqrt 3 / 2]}
 
 /-- Equilateral triangles are Ramsey (special case of simplex). -/
-axiom equilateral_triangle_ramsey : IsRamsey equilateralTriangle
 
 /-- A unit square in ℝ². -/
 def square : FiniteConfig 2 :=
   {![0, 0], ![1, 0], ![1, 1], ![0, 1]}
 
 /-- Squares are Ramsey (special case of rectangle). -/
-axiom square_ramsey : IsRamsey square
 
 /- ## Part VII: Non-Ramsey Sets -/
 

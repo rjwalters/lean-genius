@@ -2,7 +2,7 @@
   "id": "lebesgue-measure-oq-03",
   "title": "Infinite-Dimensional Measure Theory",
   "slug": "lebesgue-measure-oq-03",
-  "description": "Explores why Lebesgue measure fails in infinite dimensions (no translation-invariant \u03c3-finite measure) and what replaces it (Gaussian/Wiener measures). Proves the orthonormal separation argument.",
+  "description": "Explores why Lebesgue measure fails in infinite dimensions (no translation-invariant σ-finite measure) and what replaces it (Gaussian/Wiener measures). Proves the orthonormal separation argument.",
   "meta": {
     "author": "Gross (1967), Wiener",
     "date": "2026",
@@ -17,14 +17,14 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
-    "lineCount": 170,
+    "lineCount": 161,
     "assumptions": "3 axioms. 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
-      "Orthonormal vectors have distance \u221a2 (proved)",
-      "\u221a2 > 2/3 separation for disjoint balls (proved)",
-      "Framework: impossibility \u2192 Gaussian \u2192 Wiener"
+      "Orthonormal vectors have distance √2 (proved)",
+      "√2 > 2/3 separation for disjoint balls (proved)",
+      "Framework: impossibility → Gaussian → Wiener"
     ]
   },
   "sections": [
@@ -58,7 +58,7 @@
     }
   ],
   "conclusion": {
-    "summary": "No Lebesgue measure in \u221e-dim. Gaussian and Wiener measures are the replacements.",
+    "summary": "No Lebesgue measure in ∞-dim. Gaussian and Wiener measures are the replacements.",
     "openQuestions": [],
     "implications": ""
   },
