@@ -519,4 +519,115 @@ theorem first_moment_at_2 [Fintype α] (F : Finset (Finset α))
     (hsize : AllSizeAtLeast F 2) (hF : F.card < 2) : HasPropertyB F :=
   hasPropertyB_card_le_one F hsize (by omega)
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 13: Complete Uniform Families and the Pigeonhole Lower Bound
+-- ══════════════════════════════════════════════════════════════════
+
+/-- The complete t-uniform family on Fin n: all t-element subsets of {0, ..., n-1}. -/
+def completeUniform (n t : ℕ) : Finset (Finset (Fin n)) :=
+  Finset.univ.powersetCard t
+
+/-- Every member of the complete t-uniform family has exactly t elements. -/
+theorem completeUniform_card_eq {n t : ℕ} {f : Finset (Fin n)}
+    (hf : f ∈ completeUniform n t) : f.card = t := by
+  rw [completeUniform, Finset.mem_powersetCard] at hf
+  exact hf.2
+
+/-- Every member of the complete t-uniform family has size ≥ t. -/
+theorem completeUniform_allSizeAtLeast {n t : ℕ} :
+    AllSizeAtLeast (completeUniform n t) t :=
+  fun f hf => le_of_eq (completeUniform_card_eq hf)
+
+/-- **Pigeonhole lower bound**: If n ≥ 2t - 1 (with t ≥ 1), the complete t-uniform
+    family on Fin n does not have Property B. Any 2-coloring gives a color class
+    of size ≥ t, which contains a monochromatic t-element subset.
+
+    This complements the Erdős first-moment upper bound: the complete uniform
+    family has (n choose t) ≥ 2^{t-1} members, so the Erdős bound does not apply,
+    and indeed Property B fails. -/
+theorem not_hasPropertyB_completeUniform {n t : ℕ} (ht : 1 ≤ t)
+    (hn : 2 * t ≤ n + 1) :
+    ¬HasPropertyB (completeUniform n t) := by
+  intro ⟨S, hS⟩
+  -- |Sᶜ| = n - |S|, so |S| + |Sᶜ| = n. Hence max(|S|, |Sᶜ|) ≥ t.
+  have hSc : Sᶜ.card = n - S.card := by
+    rw [Finset.card_compl, Finset.card_univ, Fintype.card_fin]
+  have hS_le : S.card ≤ n := by
+    have := Finset.card_le_univ S; rwa [Finset.card_univ, Fintype.card_fin] at this
+  have ht_bound : t ≤ S.card ∨ t ≤ Sᶜ.card := by
+    by_contra h; push_neg at h; omega
+  rcases ht_bound with hs | hsc
+  · -- |S| ≥ t: find a t-element subset f ⊆ S
+    obtain ⟨f, hfS, hfcard⟩ := Finset.exists_smaller_set S t hs
+    have hf_mem : f ∈ completeUniform n t := by
+      rw [completeUniform, Finset.mem_powersetCard]
+      exact ⟨Finset.subset_univ f, hfcard⟩
+    -- f ⊆ S, so f \ S = ∅, contradicting (f \ S).Nonempty
+    have habs : ¬(f \ S).Nonempty := by
+      rw [Finset.not_nonempty_iff_eq_empty, Finset.sdiff_eq_empty_iff_subset]
+      exact hfS
+    exact habs (hS f hf_mem).2
+  · -- |Sᶜ| ≥ t: find a t-element subset f ⊆ Sᶜ
+    obtain ⟨f, hfSc, hfcard⟩ := Finset.exists_smaller_set Sᶜ t hsc
+    have hf_mem : f ∈ completeUniform n t := by
+      rw [completeUniform, Finset.mem_powersetCard]
+      exact ⟨Finset.subset_univ f, hfcard⟩
+    -- f ⊆ Sᶜ, so f ∩ S = ∅, contradicting (f ∩ S).Nonempty
+    have habs : ¬(f ∩ S).Nonempty := by
+      rw [Finset.not_nonempty_iff_eq_empty]
+      ext x; simp only [Finset.mem_inter, Finset.not_mem_empty, iff_false, not_and]
+      intro hxf; exact Finset.mem_compl.mp (hfSc hxf)
+    exact habs (hS f hf_mem).1
+
+/-- For n ≤ 2(t-1), the complete t-uniform family has Property B.
+    Any split with |S| = t - 1 works: both S and Sᶜ have < t elements,
+    so no t-element subset is monochromatic. -/
+theorem hasPropertyB_completeUniform {n t : ℕ} (ht : 2 ≤ t)
+    (hn : n + 2 ≤ 2 * t) :
+    HasPropertyB (completeUniform n t) := by
+  by_cases hnt : n < t
+  · -- n < t: no t-element subsets of Fin n exist, so the family is empty
+    have hempty : completeUniform n t = ∅ := by
+      ext f; rw [completeUniform, Finset.mem_powersetCard]
+      simp only [Finset.not_mem_empty, iff_false, not_and]
+      intro _; intro hfc
+      have : f.card ≤ Fintype.card (Fin n) := Finset.card_le_univ f
+      rw [Fintype.card_fin] at this; omega
+    rw [hempty]; exact hasPropertyB_empty
+  · -- t ≤ n ≤ 2t - 2: pick S ⊂ Fin n with |S| = t - 1
+    push_neg at hnt
+    obtain ⟨S, _, hScard⟩ := Finset.exists_smaller_set
+      (Finset.univ : Finset (Fin n)) (t - 1)
+      (by rw [Finset.card_univ, Fintype.card_fin]; omega)
+    refine ⟨S, fun f hf => ?_⟩
+    have hfcard : f.card = t := completeUniform_card_eq hf
+    -- |S| = t - 1 < t and |Sᶜ| = n - (t-1) ≤ t - 1 < t
+    have hS_lt : S.card < t := by omega
+    have hSc_lt : Sᶜ.card < t := by
+      rw [Finset.card_compl, Finset.card_univ, Fintype.card_fin, hScard]; omega
+    constructor
+    · -- (f ∩ S).Nonempty: f ⊄ Sᶜ since |Sᶜ| < t = |f|
+      by_contra h
+      rw [Finset.not_nonempty_iff_eq_empty] at h
+      have hfSc : f ⊆ Sᶜ := by
+        intro x hxf; rw [Finset.mem_compl]
+        intro hxS; exact Finset.not_mem_empty x (h ▸ Finset.mem_inter.mpr ⟨hxf, hxS⟩)
+      linarith [Finset.card_le_card hfSc]
+    · -- (f \ S).Nonempty: f ⊄ S since |S| < t = |f|
+      by_contra h
+      rw [Finset.not_nonempty_iff_eq_empty, Finset.sdiff_eq_empty_iff_subset] at h
+      linarith [Finset.card_le_card h]
+
+/-- The threshold n = 2t - 1 is exact: the complete t-uniform family
+    has Property B iff n ≤ 2t - 2 (equivalently, fails iff n ≥ 2t - 1). -/
+theorem completeUniform_propertyB_iff {n t : ℕ} (ht : 2 ≤ t) (hn : t ≤ n) :
+    HasPropertyB (completeUniform n t) ↔ n + 2 ≤ 2 * t := by
+  constructor
+  · -- If Property B holds, then n ≤ 2t - 2
+    intro hpb
+    by_contra h; push_neg at h
+    exact not_hasPropertyB_completeUniform (by omega) (by omega) hpb
+  · -- If n ≤ 2t - 2, Property B holds
+    exact hasPropertyB_completeUniform ht
+
 end Erdos1022
