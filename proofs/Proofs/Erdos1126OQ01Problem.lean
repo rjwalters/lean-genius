@@ -183,21 +183,26 @@ These decompose the measure-theoretic components into clean, targeted statements
 Lebesgue measure scales as |det|⁻¹ under invertible linear maps; here det = 4. -/
 private lemma volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
     volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0 := by
-  -- volume(T⁻¹(N)) = |det T|⁻¹ · volume(N) = (1/4) · 0 = 0
-  -- Needs: MeasureTheory.addHaar_preimage_smul or Measure.map_linearEquiv
+  -- T(x,y) = (2x,2y) is a linear isomorphism with |det| = 4.
+  -- volume(T⁻¹(N)) = |det T|⁻¹ · volume(N) = (1/4) · 0 = 0.
+  -- Needs: MeasureTheory.addHaar_preimage_linearEquiv or Measure.map_linearMap_eq_smul
   sorry
 
 /-- Preimage of a 1D null set under first projection is null in ℝ².
 S × ℝ has volume volume(S) · volume(ℝ) = 0 · ∞ = 0. -/
 private lemma volume_preimage_fst_null {S : Set ℝ} (hS : volume S = 0) :
     volume (Prod.fst ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
-  -- Needs: Measure.prod_prod, volume_eq_prod, and zero_mul in ENNReal
-  sorry
+  -- Prod.fst ⁻¹' S = S ×ˢ Set.univ, which has volume 0 × ∞ = 0
+  rw [show (Prod.fst ⁻¹' S : Set (ℝ × ℝ)) = S ×ˢ Set.univ from by ext ⟨x, y⟩; simp]
+  rw [show (volume : Measure (ℝ × ℝ)) = volume.prod volume from volume_eq_prod]
+  simp [Measure.prod_prod, hS]
 
 /-- Preimage of a 1D null set under second projection is null in ℝ². -/
 private lemma volume_preimage_snd_null {S : Set ℝ} (hS : volume S = 0) :
     volume (Prod.snd ⁻¹' S : Set (ℝ × ℝ)) = 0 := by
-  sorry
+  rw [show (Prod.snd ⁻¹' S : Set (ℝ × ℝ)) = Set.univ ×ˢ S from by ext ⟨x, y⟩; simp]
+  rw [show (volume : Measure (ℝ × ℝ)) = volume.prod volume from volume_eq_prod]
+  simp [Measure.prod_prod, hS]
 
 /-- From almost Jensen, f(2z) = 2f(z) - f(0) for a.e. z.
 
