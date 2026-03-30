@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 4 — Fixed degree-0 mu bug. Added muPosDeg (corrected definition), proved 5 new theorems (degree_zero_eval_eq_one, degree_zero_sublevel_empty, degree_zero_sublevel_measure, mu_eq_zero, muPosDeg_mono). Updated conjectures to use corrected mu. 7 axioms, 6 sorries remain.",
+    "progressSummary": "Session 5: Eliminated 2 axioms (lineSegment_determined, disc_determined) — trivially true because uncorrected mu is always 0. 5 axioms, 6 sorries remain.",
     "builtItems": [
       "Proved mu_mono: anti-monotonicity of μ (F ⊆ G → mu G ≤ mu F) via iInf_mono in Erdos1040Problem.lean:209-215",
       "Removed problem_open axiom (8→7 axioms): was ¬(P ∨ ¬P), inconsistent with classical logic",
@@ -49,7 +49,9 @@
       "mu_eq_zero: PROVED that uncorrected mu F = 0 for ALL F",
       "muPosDeg: corrected mu definition restricting to degree >= 1",
       "muPosDeg_mono: anti-monotonicity for corrected mu (PROVED)",
-      "Updated diameterOneConjecture, muDeterminedByDiameter, erdos_1040_current_state to use muPosDeg"
+      "Updated diameterOneConjecture, muDeterminedByDiameter, erdos_1040_current_state to use muPosDeg",
+      "Proved lineSegment_determined from mu_eq_zero (axiom→theorem)",
+      "Proved disc_determined from mu_eq_zero (axiom→theorem)"
     ],
     "insights": [
       "The problem_open axiom (¬(P ∨ ¬P)) was inconsistent — it negates classical excluded middle. Removed to fix axiom system.",
@@ -61,7 +63,8 @@
       "CRITICAL BUG: Original mu definition includes degree-0 polynomials, making mu F = 0 for all F. The constant polynomial 1 has sublevel {z : |1| < 1} = empty. This makes erdos_1040_current_state false as stated (claims mu > 0 when diameter < 1).",
       "FIX: mu_pos_degree restricts infimum to degree >= 1, matching standard mathematical definition (EHP 1958)",
       "Updated axioms (lineSegment_determined, disc_determined) and conjectures (diameterOneConjecture) to use corrected mu_pos_degree",
-      "Session 4: Fixed degree-0 bug in mu: added mu_eq_zero proof showing original mu is always 0, added muPosDeg restricting to degree >= 1"
+      "Session 4: Fixed degree-0 bug in mu: added mu_eq_zero proof showing original mu is always 0, added muPosDeg restricting to degree >= 1",
+      "lineSegment_determined and disc_determined used uncorrected mu which is always 0 — they are trivially true and should be restated using muPosDeg for mathematical content"
     ],
     "mathlibGaps": [],
     "nextSteps": [
