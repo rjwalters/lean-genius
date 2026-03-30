@@ -151,6 +151,13 @@ theorem almostPrimes_contain_primes (N : ℕ) :
 /-- Erdős Problem #1139 (OPEN): The gaps in the almost-prime sequence
     grow faster than any multiple of log k.
     lim sup (u_{k+1} - u_k) / log k = ∞ -/
+axiom erdos_1139 :
+  ∀ C : ℝ, 0 < C →
+    ∀ K : ℕ, ∃ k : ℕ, K ≤ k ∧
+      C * Real.log (k : ℝ) < (almostPrimeGap k : ℝ)
+
+-- ## Part 7: Gap Lower Bound from Consecutive Cubes
+
 /-- Between consecutive cubes n³ and (n+1)³, there are no integers with
     Ω(m) ≤ 2 if 8 | m (since Ω(8k) ≥ 3). This gives a structural source
     of gaps. -/
@@ -175,4 +182,11 @@ theorem cube_gap_obstruction (n : ℕ) (hn : 2 ≤ n)
     (N / log N) · (log log N)^{k-1} / (k-1)!  (Landau-Ramanujan).
     For k ≤ 2, the almost-prime counting function π₂(N) satisfies
     π₂(N) ~ cN · log log N / log N for some constant c > 0. -/
+axiom hardy_ramanujan_asymptotic :
+  ∃ c : ℝ, 0 < c ∧
+    ∀ ε : ℝ, 0 < ε →
+      ∃ X₀ : ℕ, ∀ X : ℕ, X₀ ≤ X →
+        ((almostPrimesUpTo X).card : ℝ) ≥
+          c * (1 - ε) * (X : ℝ) * Real.log (Real.log X) / Real.log X
+
 end Erdos1139
