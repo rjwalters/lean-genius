@@ -70,11 +70,42 @@ axiom covering_exponent_lt_one :
 
 /- ## Structural Properties -/
 
-/-- Each prime p covers exactly ⌊n/p⌋ or ⌈n/p⌉ integers in [1,n]
-    with a single residue class. -/
-axiom single_class_coverage :
+/-- Each prime p covers at most ⌊n/p⌋ + 1 integers in [1,n]
+    with a single residue class.
+    Proved via injection m ↦ (m+1)/p into range(n/p + 1). -/
+theorem single_class_coverage :
   ∀ (n p : ℕ) (a : ℕ), Nat.Prime p → p ≤ n → a < p →
-    ({m ∈ Finset.range n | (m + 1) % p = a}.card : ℝ) ≤ (n : ℝ) / p + 1
+    ({m ∈ Finset.range n | (m + 1) % p = a}.card : ℝ) ≤ (n : ℝ) / p + 1 := by
+  intro n p a hp _hpn hap
+  set S := Finset.filter (fun m => (m + 1) % p = a) (Finset.range n) with hS_def
+  -- Step 1: S embeds into range(n/p + 1) via m ↦ (m+1)/p
+  have h_maps : ∀ m ∈ S, (m + 1) / p ∈ Finset.range (n / p + 1) := by
+    intro m hm
+    simp only [hS_def, Finset.mem_filter, Finset.mem_range] at hm ⊢
+    exact Nat.lt_succ_of_le (Nat.div_le_div_right (by omega))
+  -- Step 2: The map is injective on S (same remainder + same quotient → same value)
+  have h_inj : Set.InjOn (fun m => (m + 1) / p) (↑S) := by
+    intro m₁ hm₁ m₂ hm₂ heq
+    simp only [hS_def, Finset.coe_filter, Finset.mem_coe,
+               Finset.mem_filter, Finset.mem_range, Set.mem_setOf_eq] at hm₁ hm₂
+    have r1 := Nat.div_add_mod (m₁ + 1) p
+    have r2 := Nat.div_add_mod (m₂ + 1) p
+    rw [hm₁.2, hm₂.2] at r1 r2
+    omega
+  -- Step 3: card S ≤ n/p + 1 via injection
+  have h_card : S.card ≤ n / p + 1 := by
+    calc S.card
+        ≤ (Finset.range (n / p + 1)).card :=
+          Finset.card_le_card_of_injOn (fun m => (m + 1) / p) h_maps h_inj
+      _ = n / p + 1 := Finset.card_range _
+  -- Step 4: Cast to ℝ — ↑(n/p) ≤ (n:ℝ)/p follows from Nat.cast_div_le
+  calc (S.card : ℝ)
+      ≤ ↑(n / p + 1) := Nat.cast_le.mpr h_card
+    _ = ↑(n / p) + 1 := by push_cast; ring
+    _ ≤ (n : ℝ) / p + 1 := by
+        gcongr
+        rw [le_div_iff₀ (Nat.cast_pos.mpr hp.pos)]
+        exact_mod_cast Nat.div_mul_le_self n p
 
 /-- The total coverage capacity of primes in (n^ε, n] is
     ∑_{n^ε < p ≤ n} ⌊n/p⌋ ~ n · (log(1/ε) + O(1)) by Mertens' theorem. -/
