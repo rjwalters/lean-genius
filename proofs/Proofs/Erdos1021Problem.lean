@@ -18,6 +18,7 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Nat.Choose.Basic
+import Proofs.Erdos1021Aristotle
 
 open SimpleGraph
 
@@ -186,7 +187,8 @@ theorem strong_implies_weak : erdos_1021_conjecture → weak_conjecture := by
   -- when n^c ≥ C/ε, which holds for all sufficiently large n
   obtain ⟨N₁, hN₁⟩ : ∃ N₁ : ℕ, ∀ n : ℕ, n ≥ N₁ →
       C * powerBound c n ≤ ε * (n : ℝ) ^ (3/2 : ℝ) := by
-    sorry  -- Real analysis: rpow decay C·n^{-c} → 0; routine Aristotle target
+    -- powerBound c n = (n : ℝ) ^ (3/2 - c), which matches rpow_decay_bound
+    exact Erdos1021Aristotle.rpow_decay_bound C hC_pos c hc_pos ε hε
   refine ⟨max N₀ N₁, fun n hn => ?_⟩
   have ⟨hn₀, hn₁⟩ := max_le_iff.mp hn
   exact le_trans (hN₀ n hn₀) (hN₁ n hn₁)
