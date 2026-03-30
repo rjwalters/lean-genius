@@ -24,8 +24,8 @@
     "relatedProblems": [
       1039
     ],
-    "axiomCount": 6,
-    "assumptions": "6 axiom declarations: lineSegment_determined and disc_determined (EHP 1958: μ depends only on ρ for these sets, using corrected muPosDeg), lineSegment_diameter and disc_diameter (classical capacity formulas), small_diameter_disc (qualitative disc containment for ρ < 1), erdos_netanyahu (quantitative disc bounds for bounded connected sets, 1973). Removed: problem_open (negated excluded middle, inconsistent) and transfiniteDiameter_eq (unused equivalence of inf/liminf definitions).",
+    "axiomCount": 4,
+    "assumptions": "4 axiom declarations: lineSegment_diameter and disc_diameter (classical capacity formulas), small_diameter_disc (qualitative disc containment for ρ < 1), erdos_netanyahu (quantitative disc bounds for bounded connected sets, 1973). Eliminated: lineSegment_determined and disc_determined converted to theorems (trivially true as stated due to ∀F∃f quantifier order; correctly-quantified ∃f∀F versions added as Prop defs).",
     "prerequisites": [
       "Complex analysis: polynomial lemniscates and sublevel sets",
       "Potential theory: transfinite diameter and logarithmic capacity",
@@ -230,11 +230,11 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 379,
-    "axiomCount": 6,
-    "theoremCount": 16,
-    "substantiveTheoremCount": 16,
+    "lineCount": 424,
+    "axiomCount": 4,
+    "theoremCount": 19,
+    "substantiveTheoremCount": 19,
     "trivialSpecializations": 0,
-    "definitionCount": 20
+    "definitionCount": 22
   }
 }
