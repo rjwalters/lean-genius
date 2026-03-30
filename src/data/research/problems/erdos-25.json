@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated logDensity_avoid_one_residue axiom (4→3 axioms). Proved via generalized weighted count for multiples + complement splitting.",
+    "progressSummary": "PROGRESS: Proved naturalDensity_implies_logDensity axiom (3→2 axioms). Full proof via Abel summation identity + weighted Cesàro mean. ~250 lines added to Erdos25LogDensity.lean.",
     "builtItems": [
       "Proved logWeightedCount_nonneg in Erdos25LogDensity.lean",
       "Proved logWeightedCount_mono in Erdos25LogDensity.lean",
@@ -59,7 +59,11 @@
       "Proved logDensity_avoid_one_residue: numbers not divisible by m have log density (m-1)/m",
       "logWeightedCount_multiples: weighted count of multiples of m = (1/m) · H_{⌊N/m⌋}",
       "tendsto_log_div_m_div_log: log(⌊N/m⌋)/log(N) → 1 (squeeze argument)",
-      "tendsto_harmonicSum_div_m_div_log: H_{⌊N/m⌋}/log(N) → 1"
+      "tendsto_harmonicSum_div_m_div_log: H_{⌊N/m⌋}/log(N) → 1",
+      "cntA: counting function for A∩{1,...,N} with cntA_succ stepping lemma",
+      "cntA_tendsto: proved counting ratio → d from HasNaturalDensity (handles 0-element correction)",
+      "abel_error: Abel summation identity decomposing error into ε(N) + Σε(k)/(k+1), proved by induction",
+      "naturalDensity_implies_logDensity: full theorem via Abel + weighted Cesàro ε-δ argument"
     ],
     "insights": [
       "The axiom logDensityRatio_bounded claiming ratio <= 1 for N >= 2 is mathematically incorrect since H_N/log N > 1 for all finite N",
@@ -72,7 +76,11 @@
       "finite_sieve_density_exists hypothesis (∀ i≥N, seq_n i = seq_n N) contradicts StrictMono seq_n — axiom proved vacuously via exfalso+omega",
       "sieve_density_positive is mathematically false: prime sieve (seq_n=primes, seq_a=0) yields sieved set {1} with log density 0, not >0",
       "logDensity_avoid_one_residue follows from complement splitting: full set (density 1) minus multiples (density 1/m) = non-multiples (density (m-1)/m)",
-      "logWeightedCount_multiples generalizes logWeightedCount_evens via Nat.succ_div for divisibility case splits"
+      "logWeightedCount_multiples generalizes logWeightedCount_evens via Nat.succ_div for divisibility case splits",
+      "Abel identity: logWeightedCount - d*H_N = ε(N) + Σε(k)/(k+1) where ε(k) = cntA(k)/k - d. Proved by showing both sides satisfy the same recurrence.",
+      "Weighted Cesàro bound: split Finset.Icc at M₁ threshold, head bounded by constant, tail bounded by (ε₀/4)*H_N using Finset.sum_filter_add_sum_filter_not",
+      "cntA vs HasNaturalDensity counting: differ by at most δ ∈ {0,1} for element 0, so cntA/N → d follows from δ/N → 0",
+      "Harmonic sum identity ∑ k ∈ Icc 1 M, 1/k = harmonicSum M proved by induction using harmonicSum_succ and Finset.sum_insert"
     ],
     "mathlibGaps": [],
     "nextSteps": [

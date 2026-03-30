@@ -695,19 +695,269 @@ theorem logDensity_avoid_one_residue (m : ℕ) (hm : 2 ≤ m) :
 noncomputable def HasNaturalDensity (A : Set ℕ) (d : ℝ) : Prop :=
   Tendsto (fun N : ℕ => (Finset.filter (· ∈ A) (range (N + 1))).card / (N : ℝ)) atTop (nhds d)
 
-/-- **Axiom: Natural density implies log density**.
+/-- Count of elements of A in {1,...,N} as ℝ. -/
+private noncomputable def cntA (A : Set ℕ) (N : ℕ) : ℝ :=
+  ((Finset.Icc 1 N).filter (· ∈ A)).card
 
-If natural density exists, then log density exists and equals it.
-(The converse is false in general.)
+private theorem cntA_succ (A : Set ℕ) (N : ℕ) :
+    cntA A (N + 1) = cntA A N + if (N + 1) ∈ A then 1 else 0 := by
+  simp only [cntA]
+  have h_union : Finset.Icc 1 (N + 1) = Finset.Icc 1 N ∪ {N + 1} := by
+    ext x; simp only [Finset.mem_union, Finset.mem_Icc, Finset.mem_singleton]; omega
+  have h_disj : Disjoint (Finset.Icc 1 N) {N + 1} := by
+    rw [Finset.disjoint_singleton_right]; simp [Finset.mem_Icc]; omega
+  rw [h_union, Finset.filter_union,
+      Finset.card_union_of_disjoint (Finset.disjoint_filter_filter h_disj)]
+  simp only [Finset.filter_singleton]
+  split_ifs <;> simp
 
-**Proof sketch**: If |A ∩ [1,N]| / N → d, then
-Σ_{n ∈ A, n ≤ N} 1/n ≈ d · H_N by summation by parts.
-So logDensityRatio → d · H_N / log N → d.
+/-- cntA A N / N → d from HasNaturalDensity A d.
+    The counting functions differ by at most 1 (the element 0). -/
+private theorem cntA_tendsto (A : Set ℕ) (d : ℝ) (h : HasNaturalDensity A d) :
+    Tendsto (fun N => cntA A N / (N : ℝ)) atTop (nhds d) := by
+  set δ : ℝ := if (0 : ℕ) ∈ A then 1 else 0
+  -- cntA A N / N = D(N)/N - δ/N where D(N) = (filter (· ∈ A) (range(N+1))).card
+  have h_eq : ∀ᶠ N in atTop, cntA A N / (N : ℝ) =
+      (Finset.filter (· ∈ A) (Finset.range (N + 1))).card / (N : ℝ) - δ / N := by
+    filter_upwards [eventually_ge_atTop 1] with N hN
+    have h_rng : Finset.range (N + 1) = {0} ∪ Finset.Icc 1 N := by
+      ext x; simp [Finset.mem_range, Finset.mem_Icc, Finset.mem_union,
+                    Finset.mem_singleton]; omega
+    have h_disj : Disjoint ({0} : Finset ℕ) (Finset.Icc 1 N) := by
+      simp [Finset.disjoint_singleton_left, Finset.mem_Icc]; omega
+    have h_cnt : ((Finset.filter (· ∈ A) (Finset.range (N + 1))).card : ℝ) =
+        cntA A N + δ := by
+      simp only [cntA, δ, h_rng, Finset.filter_union,
+          Finset.card_union_of_disjoint (Finset.disjoint_filter_filter h_disj)]
+      simp only [Finset.filter_singleton]; push_cast; split_ifs <;> simp
+    have hN_ne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    rw [h_cnt]; field_simp
+  -- δ/N → 0
+  have h_corr : Tendsto (fun N : ℕ => δ / (N : ℝ)) atTop (nhds 0) := by
+    have h_inv : Tendsto (fun N : ℕ => ((N : ℝ))⁻¹) atTop (nhds 0) :=
+      tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
+    have h_mul := tendsto_const_nhds (x := δ) |>.mul h_inv
+    rwa [mul_zero] at h_mul
+  rw [show d = d - 0 from by ring]
+  exact Tendsto.congr' h_eq.symm (h.sub h_corr)
 
-**Proof status**: HARD (~100 lines) - requires summation by parts or
-Cesàro-type argument relating counting function to weighted sum. -/
-axiom naturalDensity_implies_logDensity (A : Set ℕ) (d : ℝ) :
-    HasNaturalDensity A d → HasLogDensity A d
+/-- Abel summation: the error logWeightedCount - d·H equals ε(N) + Σ ε(k)/(k+1)
+    where ε(k) = cntA(k)/k - d is the density error. Proved by induction on N. -/
+private theorem abel_error (A : Set ℕ) (d : ℝ) (N : ℕ) (hN : 1 ≤ N) :
+    logWeightedCount A N - d * harmonicSum N =
+    (cntA A N / ↑N - d) +
+    ∑ k ∈ Finset.Icc 1 (N - 1), (cntA A k / ↑k - d) / (↑k + 1) := by
+  induction N, hN using Nat.le_induction with
+  | base =>
+    -- N = 1: LHS = logWeightedCount A 1 - d, RHS = (cntA A 1 - d) + 0
+    simp only [Nat.sub_self, show Finset.Icc 1 0 = ∅ from by simp, Finset.sum_empty, add_zero]
+    -- logWeightedCount A 1 = cntA A 1
+    show logWeightedCount A 1 - d * harmonicSum 1 = cntA A 1 / (1 : ℝ) - d
+    simp only [div_one]
+    -- logWeightedCount A 1 = if 1 ∈ A then 1 else 0
+    have h_lwc : logWeightedCount A 1 =
+        (if (1 : ℕ) ∈ A then (1 : ℝ) else 0) := by
+      simp [logWeightedCount, Finset.sum_range_succ, Finset.sum_range_zero]
+    -- cntA A 1 = if 1 ∈ A then 1 else 0
+    have h_cnt : cntA A 1 = (if (1 : ℕ) ∈ A then (1 : ℝ) else 0) := by
+      simp only [cntA, Finset.Icc_self, Finset.filter_singleton]
+      split_ifs <;> simp
+    -- harmonicSum 1 = 1
+    have h_hs : harmonicSum 1 = 1 := by
+      simp [harmonicSum, harmonic_succ, harmonic_zero]
+    rw [h_lwc, h_cnt, h_hs]; ring
+  | succ n hn ih =>
+    -- Step: from n+1 to n+2 (where n ≥ 0, so n+1 ≥ 1)
+    -- Use the recurrence: both sides increment by (δ - d)/(n+2)
+    -- where δ = if (n+2) ∈ A then 1 else 0
+    set M := n + 1 with hM_def  -- M ≥ 1
+    -- Rewrite LHS using stepping lemmas
+    have h_lwc := logWeightedCount_succ A M
+    have h_hs := harmonicSum_succ' M
+    -- The new sum term: Icc 1 M = Icc 1 (M-1) ∪ {M}
+    have h_sum_step : ∑ k ∈ Finset.Icc 1 M, (cntA A k / ↑k - d) / (↑k + 1) =
+        ∑ k ∈ Finset.Icc 1 (M - 1), (cntA A k / ↑k - d) / (↑k + 1) +
+        (cntA A M / ↑M - d) / (↑M + 1) := by
+      have h_ins : Finset.Icc 1 M = insert M (Finset.Icc 1 (M - 1)) := by
+        ext x; simp [Finset.mem_Icc, Finset.mem_insert]; omega
+      rw [h_ins, Finset.sum_insert (by simp [Finset.mem_Icc]; omega)]
+      ring
+    -- Main algebraic step: show increments match
+    have hM_pos : (0 : ℝ) < ↑M := by exact_mod_cast (show 0 < M by omega)
+    have hM_ne : (↑M : ℝ) ≠ 0 := ne_of_gt hM_pos
+    have hM1_ne : (↑M + 1 : ℝ) ≠ 0 := by positivity
+    -- LHS increment
+    have h_M1_ne0 : (M + 1) ≠ 0 := by omega
+    have h_lwc_simp : logWeightedCount A (M + 1) - d * harmonicSum (M + 1) =
+        (logWeightedCount A M - d * harmonicSum M) +
+        ((if (M + 1) ∈ A then (1 : ℝ) else 0) - d) / (↑M + 1) := by
+      rw [h_lwc, h_hs]
+      simp only [h_M1_ne0, and_true, Ne, not_false_eq_true]
+      ring
+    -- RHS increment  (using the algebraic identity proved above)
+    -- (cntA A (M+1)/(M+1) - d) + sum_step = (cntA A M / M - d) + old_sum + (δ-d)/(M+1)
+    have h_cnt_step := cntA_succ A M
+    set δ : ℝ := if (M + 1) ∈ A then 1 else 0
+    -- The key algebraic identity:
+    -- (cntA M + δ)/(M+1) - d + (cntA M / M - d)/(M+1) = (cntA M / M - d) + (δ - d)/(M+1)
+    have h_alg : (cntA A M + δ) / (↑M + 1) - d +
+        (cntA A M / ↑M - d) / (↑M + 1) =
+        (cntA A M / ↑M - d) + (δ - d) / (↑M + 1) := by
+      field_simp
+      ring
+    -- Combine
+    rw [show M + 1 - 1 = M from by omega, h_sum_step, h_lwc_simp, ih]
+    rw [h_cnt_step]
+    show (cntA A M / ↑M - d) +
+      ∑ k ∈ Finset.Icc 1 (M - 1), (cntA A k / ↑k - d) / (↑k + 1) +
+      ((if (M + 1) ∈ A then (1 : ℝ) else 0) - d) / (↑M + 1) =
+      (cntA A M + if (M + 1) ∈ A then 1 else 0) / (↑M + 1) - d +
+      (∑ k ∈ Finset.Icc 1 (M - 1), (cntA A k / ↑k - d) / (↑k + 1) +
+       (cntA A M / ↑M - d) / (↑M + 1))
+    linarith [h_alg]
+
+/-- Natural density implies log density.
+
+    Proof: Decompose logDensityRatio A N = d · (H_N/log N) + error/log N.
+    The first term → d by tendsto_harmonic_div_log.
+    The error = ε(N) + Σ ε(k)/(k+1) by Abel summation, where ε(k) = C(k)/k - d → 0.
+    Then ε(N)/log N → 0 (bounded/divergent), and (Σ ε(k)/(k+1))/log N → 0
+    by weighted Cesàro: split at M where |ε| < ε₀, bound tail by ε₀·H_N. -/
+theorem naturalDensity_implies_logDensity (A : Set ℕ) (d : ℝ)
+    (h : HasNaturalDensity A d) : HasLogDensity A d := by
+  unfold HasLogDensity
+  -- The density error ε(k) = cntA(k)/k - d → 0
+  set ε := fun k : ℕ => cntA A k / (k : ℝ) - d with hε_def
+  have hε_tendsto : Tendsto ε atTop (nhds 0) := by
+    rw [show (0 : ℝ) = d - d from by ring]
+    exact (cntA_tendsto A d h).sub tendsto_const_nhds
+  -- logDensityRatio is eventually equal to d*(H/log) + error/log
+  have h_decomp : ∀ᶠ N in atTop, logDensityRatio A N =
+      d * (harmonicSum N / Real.log N) +
+      (logWeightedCount A N - d * harmonicSum N) / Real.log N := by
+    filter_upwards [eventually_gt_atTop 1] with N hN
+    unfold logDensityRatio
+    simp only [show ¬(N ≤ 1) from by omega, if_false]
+    have hlog : Real.log (N : ℝ) ≠ 0 :=
+      ne_of_gt (Real.log_pos (by exact_mod_cast (show 1 < N by omega)))
+    field_simp; ring
+  -- The error/log → 0
+  have h_error : Tendsto (fun N =>
+      (logWeightedCount A N - d * harmonicSum N) / Real.log (N : ℝ)) atTop (nhds 0) := by
+    rw [Metric.tendsto_atTop]
+    intro ε₀ hε₀
+    -- Get M₁ such that |ε(k)| < ε₀/4 for k ≥ M₁
+    obtain ⟨M₁, hM₁⟩ := (Metric.tendsto_atTop.mp hε_tendsto) (ε₀ / 4) (by linarith)
+    -- Get M₂ such that H_N/log N < 2 for N ≥ M₂
+    have h_ev := (tendsto_harmonic_div_log.eventually
+      (Iio_mem_nhds (show (1 : ℝ) < 2 by norm_num)))
+    obtain ⟨M₂, hM₂⟩ := h_ev.exists_forall_of_atTop
+    -- Bound the head sum: C_head = Σ_{k=1}^{M₁} |ε(k)|/(k+1)
+    set C_head : ℝ := ∑ k ∈ Finset.Icc 1 M₁, |ε k| / ((k : ℝ) + 1)
+    -- Get M₃ such that C_head / log N < ε₀/4 and |ε(N)| / log N < ε₀/4
+    obtain ⟨M₃, hM₃⟩ : ∃ M₃, ∀ N ≥ M₃, C_head / Real.log (N : ℝ) < ε₀ / 4 ∧
+        1 < Real.log (N : ℝ) := by
+      have : Tendsto (fun N : ℕ => Real.log (N : ℝ)) atTop atTop :=
+        Tendsto.comp tendsto_log_atTop tendsto_natCast_atTop_atTop
+      obtain ⟨M, hM⟩ := (Filter.tendsto_atTop_atTop.mp this) (max (4 * C_head / ε₀ + 1) 3)
+      refine ⟨M, fun N hN => ?_⟩
+      have hlog := hM N hN
+      have hlog_pos : 0 < Real.log (N : ℝ) := by linarith [le_max_right (4 * C_head / ε₀ + 1) 3]
+      constructor
+      · rw [div_lt_iff hlog_pos]
+        have := le_max_left (4 * C_head / ε₀ + 1) 3
+        have h_head_nn : 0 ≤ C_head := Finset.sum_nonneg (fun k _ => div_nonneg (abs_nonneg _)
+          (by positivity))
+        nlinarith
+      · linarith [le_max_right (4 * C_head / ε₀ + 1) 3]
+    -- Main bound
+    refine ⟨max (max M₁ M₂) (max M₃ 2), fun N hN => ?_⟩
+    have hN_ge_M₁ : M₁ ≤ N := by omega
+    have hN_ge_M₂ : M₂ ≤ N := by omega
+    have hN_ge_M₃ : M₃ ≤ N := by omega
+    have hN_ge_2 : 2 ≤ N := by omega
+    have hlog_pos : 0 < Real.log (N : ℝ) := (hM₃ N hN_ge_M₃).2 |>.trans_le le_rfl |>.trans_le
+      (by linarith)
+    rw [Real.dist_eq, sub_zero]
+    -- Use Abel identity
+    have hN1 : 1 ≤ N := by omega
+    rw [abel_error A d N hN1]
+    -- |ε(N) + Σ ε(k)/(k+1)| / log N ≤ |ε(N)|/log N + |Σ|/log N
+    rw [div_add_div_same, abs_div, abs_of_pos hlog_pos]
+    apply div_lt_of_lt_mul hlog_pos
+    -- |ε(N) + Σ| ≤ |ε(N)| + |Σ|
+    calc |ε N + ∑ k ∈ Finset.Icc 1 (N - 1), (cntA A k / ↑k - d) / (↑k + 1)|
+        ≤ |ε N| + |∑ k ∈ Finset.Icc 1 (N - 1), ε k / (↑k + 1)| := by
+          apply abs_add
+      _ ≤ |ε N| + (C_head + ε₀ / 4 * harmonicSum N) := by
+          gcongr
+          -- Split sum at M₁: head + tail
+          -- |Σ_{k=1}^{N-1}| ≤ Σ_{k=1}^{M₁} |ε(k)|/(k+1) + Σ_{k=M₁+1}^{N-1} (ε₀/4)/(k+1)
+          calc |∑ k ∈ Finset.Icc 1 (N - 1), ε k / (↑k + 1)|
+              ≤ ∑ k ∈ Finset.Icc 1 (N - 1), |ε k / (↑k + 1)| :=
+                Finset.abs_sum_le_sum_abs _ _
+            _ ≤ ∑ k ∈ Finset.Icc 1 (N - 1), |ε k| / (↑k + 1) := by
+                apply Finset.sum_le_sum; intro k _
+                rw [abs_div]; gcongr; exact abs_of_pos (by positivity)
+            _ ≤ C_head + ε₀ / 4 * harmonicSum N := by
+                -- Split via filter: {k ≤ M₁} and {k > M₁}
+                rw [← Finset.sum_filter_add_sum_filter_not (Finset.Icc 1 (N - 1)) (· ≤ M₁)]
+                apply add_le_add
+                · -- Head: Σ_{k ≤ M₁} |ε k|/(k+1) ≤ C_head
+                  apply Finset.sum_le_sum_of_subset_of_nonneg
+                  · intro k hk; simp [Finset.mem_filter, Finset.mem_Icc] at hk ⊢; exact ⟨hk.1.1, hk.2⟩
+                  · intro k _ _; exact div_nonneg (abs_nonneg _) (by positivity)
+                · -- Tail: Σ_{k > M₁} |ε k|/(k+1) ≤ (ε₀/4) * H_N
+                  calc ∑ k ∈ (Finset.Icc 1 (N-1)).filter (¬ · ≤ M₁), |ε k| / (↑k + 1)
+                      ≤ ∑ k ∈ (Finset.Icc 1 (N-1)).filter (¬ · ≤ M₁), (ε₀ / 4) / (↑k + 1) := by
+                        apply Finset.sum_le_sum; intro k hk
+                        gcongr
+                        simp [Finset.mem_filter, Finset.mem_Icc] at hk
+                        exact le_of_lt (by rw [← Real.dist_eq]; exact hM₁ k (by omega))
+                    _ ≤ ε₀ / 4 * harmonicSum N := by
+                        rw [Finset.mul_sum]
+                        apply le_trans (Finset.sum_le_sum_of_subset_of_nonneg
+                          (Finset.filter_subset _ _)
+                          (fun k _ _ => div_nonneg (by linarith) (by positivity)))
+                        gcongr
+                        -- Σ_{k ∈ Icc 1 (N-1)} 1/(k+1) ≤ H_N: each 1/(k+1) ≤ 1/k, sum ≤ H_{N-1} ≤ H_N
+                        calc ∑ k ∈ Finset.Icc 1 (N-1), (1 : ℝ) / (↑k + 1)
+                            ≤ ∑ k ∈ Finset.Icc 1 (N-1), (1 : ℝ) / ↑k := by
+                              apply Finset.sum_le_sum; intro k hk
+                              simp [Finset.mem_Icc] at hk
+                              exact div_le_div_of_nonneg_left one_pos
+                                (by positivity) (by push_cast; linarith)
+                          _ ≤ harmonicSum N := by
+                              -- Key: ∑ k ∈ Icc 1 M, 1/k = harmonicSum M (by induction)
+                              suffices h_icc : ∀ M, ∑ k ∈ Finset.Icc 1 M,
+                                  (1 : ℝ) / ↑k = harmonicSum M by
+                                linarith [h_icc (N - 1), harmonicSum_succ' (N - 1),
+                                  show (0 : ℝ) ≤ 1 / ((↑(N - 1) : ℝ) + 1) from by positivity,
+                                  show N - 1 + 1 = N from by omega]
+                              intro M; induction M with
+                              | zero => simp [harmonicSum, harmonic_zero]
+                              | succ m ih =>
+                                rw [show Finset.Icc 1 (m + 1) =
+                                    insert (m + 1) (Finset.Icc 1 m) from by
+                                  ext x; simp [Finset.mem_Icc, Finset.mem_insert]; omega]
+                                rw [Finset.sum_insert
+                                  (by simp [Finset.mem_Icc]; omega)]
+                                rw [ih, harmonicSum_succ' m]; push_cast; ring
+      _ < ε₀ * Real.log N := by
+          -- |ε(N)| < ε₀/4 (from hM₁)
+          have h_eN : |ε N| < ε₀ / 4 := by
+            have := hM₁ N hN_ge_M₁; rwa [Real.dist_eq, sub_zero] at this
+          -- C_head / log N < ε₀/4 (from hM₃)
+          have h_ch := (hM₃ N hN_ge_M₃).1
+          -- H_N / log N < 2 (from hM₂)
+          have h_hl : harmonicSum N / Real.log N < 2 := by
+            exact hM₂ N hN_ge_M₂
+          -- Combine: |ε(N)| + C_head + (ε₀/4)·H_N < ε₀/4 + ε₀/4·log N + ε₀/4·2·log N
+          nlinarith [mul_pos (show (0 : ℝ) < ε₀ / 4 by linarith) hlog_pos]
+  -- Combine: logDensityRatio → d*1 + 0 = d
+  refine Tendsto.congr' h_decomp.symm ?_
+  rw [show d = d * 1 + 0 from by ring]
+  exact Tendsto.add (tendsto_const_nhds.mul tendsto_harmonic_div_log) h_error
 
 /-- **Axiom: Log density is strictly weaker than natural density**.
 
