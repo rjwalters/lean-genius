@@ -57,13 +57,13 @@
       "alon_frankl_lovasz_1986 main theorem (axiom) with kneser_hypergraph_chromatic_number equivalent",
       "tightness_construction showing the bound is optimal",
       "kneser_conjecture axiom (k=2 special case, Lovász 1978)",
-      "Four small cases proved: Petersen graph KG(5,2), KG(7,3), KG(2r,r), KG(2r+1,r)",
+      "Four small cases proved from kneser_conjecture axiom: Petersen graph KG(5,2)=3, KG(7,3)=3, KG(2r,r)=2, KG(2r+1,r)=3",
       "erdos_ko_rado proved from ErdosKoRado.Star construction (was axiom)",
       "Two proved theorems (erdos_780_main, erdos_780_summary) wrapping axioms",
       "Companion file Erdos780Aristotle.lean with 10 routine lemmas for automated proof"
     ],
     "axiomCount": 4,
-    "assumptions": "4 axiom declarations: alon_frankl_lovasz_1986 (n >= threshold implies monochromatic k-matching, deep topological proof), kneser_hypergraph_chromatic_number (chromatic number formula for Kneser hypergraph), tightness_construction (partition coloring avoids k disjoint monochromatic edges), kneser_conjecture (chi(KG(n,r)) = n-2r+2, Lovász 1978). 0 sorries remaining.",
+    "assumptions": "4 axiom declarations: alon_frankl_lovasz_1986 (n >= threshold implies monochromatic k-matching, deep topological proof), kneser_hypergraph_chromatic_number (chromatic number formula for Kneser hypergraph), tightness_construction (partition coloring avoids k disjoint monochromatic edges), kneser_conjecture (chi(KG(n,r)) = n-2r+2, Lovász 1978). 0 sorries: all 4 small cases proved from kneser_conjecture, erdos_ko_rado proved from EKR Star construction.",
     "lineCount": 233
   },
   "overview": {
@@ -138,18 +138,18 @@
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "summary": "Four axiomatized instances: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 2$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph).",
+      "summary": "Four instances proved from kneser_conjecture axiom: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 3$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph).",
       "startLine": 133,
       "endLine": 150,
-      "mathContext": "Axiomatized: Four axiomatized instances: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 2$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph)."
+      "mathContext": "Four instances proved from kneser_conjecture axiom: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 3$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph)."
     },
     {
       "id": "connections",
       "title": "Erdős-Ko-Rado Connection",
-      "summary": "Axiomatizes `erdos_ko_rado`: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$.",
+      "summary": "Proves `erdos_ko_rado` from ErdosKoRado.Star construction: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$.",
       "startLine": 151,
       "endLine": 165,
-      "mathContext": "Axiomatizes `erdos_ko_rado`: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\$\\alpha$(KG(n,r)) = \\binom{n-1}{r-1}$."
+      "mathContext": "Proves `erdos_ko_rado` from ErdosKoRado.Star construction: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$."
     },
     {
       "id": "summary",
@@ -202,7 +202,8 @@
       "Mathlib.Combinatorics.SetFamily.Intersecting",
       "Mathlib.Combinatorics.SimpleGraph.Basic",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Nat.Choose.Basic"
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Proofs.ErdosKoRado"
     ],
     "opens": [
       "Finset"
