@@ -242,5 +242,24 @@ theorem no_prime_in_Dk (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : 2 ≤ k) :
   rw [bigF_prime_zero p hp]
   omega
 
+/- ## Edge Cases -/
+
+/-- HasSquareFactorialProduct 1 2 via the sequence [0, 1]: 0! · 1! = 1 = 1².
+    This shows 1 ∈ D₂, the smallest element. -/
+theorem one_has_square_factorial_product : HasSquareFactorialProduct 1 2 :=
+  ⟨[0, 1], rfl, by decide, by decide, ⟨1, by simp [factorialProduct, List.foldl]⟩⟩
+
+/-- bigF(1) = 2: the sequence [0, 1] witnesses 0! · 1! = 1 = 1². -/
+theorem bigF_one_eq_two : bigF 1 = 2 := by
+  unfold bigF
+  have h : ∃ k, 2 ≤ k ∧ HasSquareFactorialProduct 1 k :=
+    ⟨2, le_refl 2, one_has_square_factorial_product⟩
+  rw [dif_pos h]
+  exact Nat.find_eq_iff.mpr ⟨⟨le_refl 2, one_has_square_factorial_product⟩,
+    fun k hk ⟨h1, _⟩ => by omega⟩
+
+/-- 1 ∈ D₂ (the smallest element of D₂). -/
+theorem one_in_D2 : inDk 2 1 := bigF_one_eq_two
+
 /- ## The Open Question -/
 
