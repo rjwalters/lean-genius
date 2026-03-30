@@ -1,0 +1,78 @@
+{
+  "slug": "erdos-1026-oq-03",
+  "title": "Algorithmic approaches for max-sum monotonic subsequences",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Algorithmic approaches for max-sum monotonic subsequences.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T16:34:54.975Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Parent has 3 axioms (erdos_szekeres, weighted_erdos_szekeres, lis_lds_bound). OQ03 (algorithmic approaches) needs algorithm formalization infrastructure not currently in gallery.",
+    "builtItems": [],
+    "insights": [
+      "Parent Erdos1026Problem.lean has 3 axioms, 0 sorries",
+      "OQ03 asks about algorithmic approaches — would need dynamic programming formalization",
+      "erdos_szekeres might be provable from Mathlib (check for Erdos-Szekeres)",
+      "The LIS/LDS bound axiom lis_lds_bound might follow from Dilworth theorem"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Check Mathlib for Erdos-Szekeres or Dilworth theorem",
+      "If available, prove erdos_szekeres axiom from Mathlib (eliminates 1 axiom)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "technique"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
+    "erdos-1026"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.975Z",
+  "lastUpdate": "2026-03-30T16:34:54.975Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1026Problem.lean",
+      "filename": "Erdos1026Problem.lean",
+      "lineCount": 255,
+      "theoremCount": 4,
+      "axiomCount": 3,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1026Problem.lean"
+    }
+  ]
+}

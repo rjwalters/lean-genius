@@ -1,0 +1,169 @@
+{
+  "slug": "amgm-inequality-oq-04",
+  "title": "Gauss AGM iteration connection to elliptic integrals",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Gauss AGM iteration connection to elliptic integrals.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T16:34:54.911Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Recreated AmgmInequalityOQ04.lean (307 lines, 22 theorems, 3 axioms, 0 sorries). Full AGM convergence proved from Mathlib monotone convergence. Prior version was lost.",
+    "builtItems": [
+      "proofs/Proofs/AmgmInequalityOQ04.lean (307 lines, 22T, 3A, 0S)",
+      "src/data/proofs/amgm-inequality-oq-04/ (gallery entry)",
+      "am_ge_gm: proved from (a-b)^2 >= 0",
+      "agmA_antitone + agmB_monotone: sandwich property",
+      "gap_contracts + gap_bound: exponential gap decay",
+      "agmA_tendsto + agmB_tendsto: convergence via tendsto_atTop_ciInf/ciSup",
+      "agm_common_limit: both limits equal",
+      "agm_bounds: b <= M(a,b) <= a"
+    ],
+    "insights": [
+      "AM >= GM for two reals proved via (x-y)^2 >= 0 and sqrt monotonicity",
+      "Sandwich bₙ ≤ bₙ₊₁ ≤ aₙ₊₁ ≤ aₙ follows from AM >= GM at each step",
+      "Gap contracts: aₙ₊₁ - bₙ₊₁ ≤ (aₙ - bₙ)/2 because bₙ₊₁ >= bₙ",
+      "Convergence needs Mathlib monotone_tendsto_of_tendsto_of_antitone or similar",
+      "Elliptic integral K(k) not in Mathlib — must axiomatize the AGM connection"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove agmA_tendsto using Mathlib tendsto_of_antitone with bounded below",
+      "Prove agm_converges by combining a-limit, b-limit, and gap -> 0",
+      "Submit sandwich/gap lemmas to Aristotle companion file"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "connection"
+  ],
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-03",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-03",
+    "amgm-inequality-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T16:34:54.910Z",
+  "lastUpdate": "2026-03-30T16:34:54.911Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityOQ02.lean",
+      "filename": "AmgmInequalityOQ02.lean",
+      "lineCount": 544,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Aristotle.lean",
+      "filename": "AmgmInequalityOQ02Aristotle.lean",
+      "lineCount": 353,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Defs.lean",
+      "filename": "AmgmInequalityOQ02Defs.lean",
+      "lineCount": 394,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Defs.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ02.lean",
+      "lineCount": 960,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03.lean",
+      "lineCount": 194,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03.lean",
+      "filename": "AmgmInequalityOQ03.lean",
+      "lineCount": 373,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ03OQ03.lean",
+      "lineCount": 58,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04.lean",
+      "filename": "AmgmInequalityOQ04.lean",
+      "lineCount": 308,
+      "theoremCount": 21,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04.lean"
+    }
+  ]
+}
