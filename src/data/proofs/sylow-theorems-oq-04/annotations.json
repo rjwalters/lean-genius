@@ -1,0 +1,51 @@
+[
+  {
+    "id": "ann-a5-order",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {"startLine": 40, "endLine": 43},
+    "type": "keyStep",
+    "content": "The alternating group A₅ = ker(sign : S₅ → ℤ/2) has |A₅| = 5!/2 = 60. This is verified by native_decide, which exhaustively enumerates the even permutations of Fin 5."
+  },
+  {
+    "id": "ann-sylow-constraints",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {"startLine": 81, "endLine": 108},
+    "type": "keyStep",
+    "content": "Sylow III gives two constraints for each prime p dividing 60: n_p ≡ 1 (mod p) and n_p divides the index [A₅ : P_p]. These are Mathlib's card_sylow_modEq_one and card_sylow_dvd_index applied to A₅."
+  },
+  {
+    "id": "ann-exact-sylow-numbers",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {"startLine": 122, "endLine": 128},
+    "type": "highlight",
+    "content": "The exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6 are computed by native_decide, which exhaustively enumerates all Sylow p-subgroups of A₅. The 5 Sylow 2-subgroups are Klein 4-groups V₄ ≅ ℤ/2 × ℤ/2; the 10 Sylow 3-subgroups are cyclic ⟨(ijk)⟩; the 6 Sylow 5-subgroups are cyclic ⟨(ijklm)⟩."
+  },
+  {
+    "id": "ann-non-normality",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {"startLine": 151, "endLine": 170},
+    "type": "insight",
+    "content": "The proof of non-normality uses a clean contradiction: if a Sylow p-subgroup P were normal, Sylow.unique_of_normal would give Unique (Sylow p A5), forcing Fintype.card = 1. But we computed n₂ = 5, n₃ = 10, n₅ = 6 — contradiction."
+  },
+  {
+    "id": "ann-conjugacy-arithmetic",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {"startLine": 198, "endLine": 205},
+    "type": "keyStep",
+    "content": "The conjugacy class size theorem is proved by decide (kernel computation over Bool⁴): for each subset selection (a,b,c,d) ∈ Bool⁴ choosing from {12, 12, 15, 20}, the sum 1 + selected either equals 1, 60, or doesn't divide 60."
+  },
+  {
+    "id": "ann-simplicity",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {"startLine": 218, "endLine": 219},
+    "type": "highlight",
+    "content": "Mathlib's alternatingGroup.isSimpleGroup_five provides the definitive simplicity result. The Sylow counting and conjugacy class analysis above give the concrete arithmetic reason why A₅ is simple."
+  },
+  {
+    "id": "ann-not-solvable",
+    "proofId": "sylow-theorems-oq-04",
+    "range": {"startLine": 225, "endLine": 237},
+    "type": "insight",
+    "content": "Non-solvability transfers from A₅ to S₅: if A₅ were solvable, then S₅ ≅ A₅ ⋊ ℤ/2 would be solvable (as an extension of solvable groups). This contradicts Mathlib's Equiv.Perm.not_solvable for n ≥ 5. This is the key ingredient for Abel-Ruffini."
+  }
+]
