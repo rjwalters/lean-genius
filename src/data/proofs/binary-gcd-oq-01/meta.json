@@ -1,0 +1,159 @@
+{
+  "id": "binary-gcd-oq-01",
+  "title": "Step Count: Binary GCD vs Euclidean Algorithm",
+  "slug": "binary-gcd-oq-01",
+  "description": "Formal step count comparison between Binary GCD (Stein's algorithm) and the Euclidean algorithm. Defines step counting functions, proves symmetry, and computes concrete examples via native_decide. States Lamé's theorem and Binary GCD logarithmic bounds.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BinaryGcdOQ01.lean",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "complexity",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 2,
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd",
+        "description": "GCD function",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.log",
+        "description": "Natural number logarithm",
+        "module": "Mathlib.Data.Nat.Log"
+      }
+    ],
+    "originalContributions": [
+      "euclidSteps: step counting function for the Euclidean algorithm",
+      "binaryGcdSteps: step counting function for Binary GCD",
+      "Symmetry proofs for both step counts",
+      "Concrete step counts via native_decide: gcd(12,8), gcd(21,15), gcd(100,37), gcd(89,55)",
+      "Statement of Lamé's theorem (Euclidean steps ≤ O(log min(a,b)))",
+      "Statement of Binary GCD bound (steps ≤ O(log a + log b))"
+    ],
+    "axiomCount": 0,
+    "lineCount": 198,
+    "assumptions": "None. 0 axiom declarations. 2 sorries in logarithmic bound proofs.",
+    "prerequisites": [
+      "Natural number GCD and divisibility",
+      "Logarithmic functions on naturals",
+      "Well-founded recursion and termination proofs"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Binary GCD algorithm was published by Josef Stein in 1967, though it was known earlier. On binary computers, it replaces the expensive division operations of the Euclidean algorithm with bit shifts and subtraction. Lamé proved in 1844 that the Euclidean algorithm takes at most 5d steps where d is the number of decimal digits of the smaller input — this was one of the first complexity analyses in computer science.",
+    "problemStatement": "Compare the formal step counts of the Binary GCD algorithm and the Euclidean algorithm:\n1. Define step counting functions for both algorithms\n2. Compute concrete step counts for specific inputs\n3. Prove logarithmic upper bounds on both step counts\n4. Characterize the worst-case inputs (Fibonacci numbers for Euclidean)",
+    "text": "Formal step count comparison between Binary GCD and the Euclidean algorithm.",
+    "proofStrategy": "1. Define recursive step counters matching the algorithm structure\n2. Prove basic properties (symmetry, zero cases)\n3. Use native_decide for concrete examples\n4. State logarithmic bounds (Lamé for Euclidean, bit-length for Binary GCD)",
+    "keyInsights": [
+      "Binary GCD uses more steps than Euclidean (roughly 2x) but each step is cheaper on binary hardware (bit shifts vs division)",
+      "Fibonacci consecutive pairs are worst-case for Euclidean: gcd(F_{n+1}, F_n) takes n steps",
+      "Binary GCD worst case is when both inputs are odd primes of similar size",
+      "The total cost model (steps × cost per step) favors Binary GCD for large multi-precision integers"
+    ],
+    "prerequisites": [
+      "GCD algorithms and their correctness",
+      "Natural number logarithms",
+      "Well-founded recursion in Lean 4"
+    ]
+  },
+  "sections": [
+    {
+      "id": "euclidean-steps",
+      "title": "Euclidean Algorithm Step Count",
+      "startLine": 28,
+      "endLine": 55,
+      "summary": "Defines euclidSteps and proves base cases (zero inputs, divisibility).",
+      "mathContext": "The Euclidean algorithm: gcd(a,b) = gcd(b, a mod b). Each mod operation counts as one step."
+    },
+    {
+      "id": "binary-gcd-steps",
+      "title": "Binary GCD Step Count",
+      "startLine": 57,
+      "endLine": 90,
+      "summary": "Defines binaryGcdSteps matching the four cases of Stein's algorithm.",
+      "mathContext": "Binary GCD cases: both even (extract 2), one even (drop 2), both odd (subtract and halve). Each case counts as one step."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete Step Counts",
+      "startLine": 92,
+      "endLine": 115,
+      "summary": "Computes step counts for gcd(12,8), gcd(21,15), gcd(100,37), gcd(89,55) via native_decide.",
+      "mathContext": "Fibonacci inputs (89,55) are worst-case for Euclidean (9 steps). Binary GCD uses 11 steps on the same input."
+    },
+    {
+      "id": "symmetry",
+      "title": "Symmetry Proofs",
+      "startLine": 117,
+      "endLine": 155,
+      "summary": "Both step counts are symmetric: steps(a,b) = steps(b,a).",
+      "mathContext": "Symmetry follows from the symmetry of gcd: gcd(a,b) = gcd(b,a)."
+    },
+    {
+      "id": "bounds",
+      "title": "Logarithmic Bounds",
+      "startLine": 157,
+      "endLine": 185,
+      "summary": "States Lamé's theorem and the Binary GCD logarithmic bound (2 sorries).",
+      "mathContext": "Lamé (1844): Euclidean steps ≤ O(log min(a,b)). Binary GCD: steps ≤ O(log a + log b)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formal step count analysis for Binary GCD vs Euclidean algorithm. Concrete examples computed via native_decide show Binary GCD uses more steps but each is cheaper. 0 axioms, 2 sorries (logarithmic bound proofs).",
+    "implications": "The step counting infrastructure enables formal comparison of GCD algorithm variants. The concrete examples verify the expected behavior: Fibonacci inputs maximize Euclidean steps, while Binary GCD has more uniform behavior across input types.",
+    "openQuestions": [
+      "Prove Lamé's theorem via Fibonacci number lower bounds",
+      "Prove the Binary GCD logarithmic bound via bit-length analysis",
+      "Formalize the total cost model (steps × bit-operation cost)",
+      "Compare with Lehmer's GCD algorithm"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "binary-gcd",
+      "relationship": "extends",
+      "description": "Extends the parent Binary GCD correctness proof with step count analysis"
+    }
+  ],
+  "references": [
+    {
+      "title": "Computational problems associated with Racah algebra",
+      "author": "Josef Stein",
+      "year": "1967",
+      "venue": "Journal of Computational Physics",
+      "description": "Original publication of the Binary GCD algorithm"
+    },
+    {
+      "title": "Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur",
+      "author": "Gabriel Lamé",
+      "year": "1844",
+      "venue": "Comptes Rendus",
+      "description": "First complexity analysis: Euclidean algorithm steps bounded by Fibonacci index"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "BinaryGcdOQ01",
+    "lineCount": 198,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2
+  }
+}
