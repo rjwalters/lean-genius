@@ -166,20 +166,14 @@ theorem iterations_before_contradiction (delta : ℝ) (hdelta : 0 < delta) (k : 
   rw [div_le_iff (by norm_num : (100 : ℝ) > 0)] at hk
   linarith [mul_comm (k : ℝ) (delta ^ 2)]
 
-/-- The number of density increments is bounded by N (since each step
-    strictly decreases the modulus). Combined with the density bound,
-    this gives: if A ⊆ Z/NZ is AP-free with density δ, then
-    min(N, ⌊100/δ²⌋) ≥ 1, which for fixed N forces δ → 0.
-
-    The exact rate of δ → 0 depends on the modulus decay rate.
-    With M ≥ √N at each step (Roth's analysis): δ ≤ C/√(log log N).
-    With careful analysis: δ ≤ C/log(log N) (Roth's original bound). -/
-theorem density_upper_bound_from_iteration {N : ℕ} (hN : 1 < N) (delta : ℝ)
-    (hdelta : 0 < delta) (hdelta1 : delta ≤ 1)
-    (h_exists : ∃ (A : Finset (ZMod N)), APFree A ∧ (A.card : ℝ) ≥ delta * N) :
-    delta ^ 2 ≤ 100 / N := by
-  sorry -- BLOCKED: density_increment_lemma gives M < N with no lower bound on M.
-        -- Need M ≥ √N (or M ≥ N^c) at each step for quantitative iteration.
+-- NOTE: density_upper_bound_from_iteration (which stated δ² ≤ 100/N,
+-- i.e., r₃(N) ≤ 10√N) was removed as FALSE. Behrend's construction
+-- gives r₃(N) ≥ N·exp(-c√(log N)) ≫ √N for large N.
+-- The naive iteration argument (apply density_increment_lemma N times)
+-- fails because M < N gives no useful lower bound on M; with M = 1
+-- the iteration terminates trivially. The correct quantitative bounds
+-- (Roth, Bloom-Sisask, Kelley-Meka) require tracking the modulus decay
+-- rate through the density increment, which is not in scope here.
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: QUANTITATIVE BOUNDS (STATEMENTS)
@@ -232,11 +226,5 @@ theorem kelley_meka_upper_bound :
     ∃ (c : ℝ), c > 0 ∧ ∀ N : ℕ, 3 ≤ N →
       (rothNumber N : ℝ) ≤ N * Real.exp (-c * (Real.log N) ^ (1/12 : ℝ)) := by
   sorry
-
--- NOTE: The previously stated crude_sqrt_bound (r₃(N) ≤ 10√N) was FALSE.
--- Behrend's lower bound gives r₃(N) ≥ N·exp(-c√(log N)) >> √N for large N.
--- The proof sketch (iterate density_increment N times) does not work because
--- density_increment_lemma gives M < N with no lower bound on M.
--- For quantitative bounds, need M ≥ N^c (e.g., M ≥ N^{2/3} in Roth's analysis).
 
 end Szemeredi.Roth.Quantitative

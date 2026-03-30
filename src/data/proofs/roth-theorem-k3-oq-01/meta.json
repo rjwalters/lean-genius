@@ -17,9 +17,9 @@
       "roth-number"
     ],
     "badge": "formalized",
-    "sorries": 5,
+    "sorries": 4,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 5 sorries: density_upper_bound_from_iteration (density iteration needs M ≥ N^c), roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound.",
+    "assumptions": "0 axioms. 4 sorries: roth_quantitative_upper_bound, behrend_lower_bound, bloom_sisask_bound, kelley_meka_upper_bound (all deep published results requiring substantial proof infrastructure beyond current scope).",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -50,8 +50,8 @@
       "Proof of max_iterations_bound: density increment iteration count ≤ ⌊100/δ²⌋",
       "Formal statements of 4 quantitative bounds: Roth, Behrend, Bloom-Sisask, Kelley-Meka"
     ],
-    "lineCount": 242,
-    "theoremCount": 19,
+    "lineCount": 230,
+    "theoremCount": 18,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
   },
@@ -81,7 +81,7 @@
       "title": "Part II: Iteration Bound from Density Increment",
       "startLine": 135,
       "endLine": 183,
-      "summary": "Proves max_iterations_bound and iterations_before_contradiction (0 sorries). States density_upper_bound_from_iteration (1 sorry — needs M ≥ N^c bound).",
+      "summary": "Proves max_iterations_bound and iterations_before_contradiction (0 sorries). density_upper_bound_from_iteration was removed (stated δ² ≤ 100/N, equivalent to r₃(N) ≤ 10√N, which is false by Behrend's construction).",
       "mathContext": "Density increment $\\delta \\to \\delta + \\delta^2/100$ allows $\\leq \\lfloor 100/\\delta^2 \\rfloor$ iterations."
     },
     {
@@ -89,7 +89,7 @@
       "title": "Part III: Quantitative Bounds",
       "startLine": 184,
       "endLine": 242,
-      "summary": "States four quantitative bounds: Roth O(N/log log N), Behrend Ω(N·exp(-c√log N)), Bloom-Sisask O(N/(log N)^{1+c}), Kelley-Meka O(N·exp(-c(log N)^{1/12})). All 4 sorry — these require substantial proof effort. Note: crude √N bound was removed as FALSE.",
+      "summary": "States four quantitative bounds: Roth O(N/log log N), Behrend Ω(N·exp(-c√log N)), Bloom-Sisask O(N/(log N)^{1+c}), Kelley-Meka O(N·exp(-c(log N)^{1/12})). All 4 sorry — deep published results requiring substantial proof infrastructure.",
       "mathContext": "History of bounds: Roth (1953) → Bourgain (1999) → Sanders (2011) → Bloom-Sisask (2020) → Kelley-Meka (2023)."
     }
   ],
@@ -139,9 +139,9 @@
     "imports": ["Mathlib"],
     "opens": ["Finset"],
     "namespace": "Szemeredi.Roth.Quantitative",
-    "lineCount": 242,
+    "lineCount": 230,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 18,
     "definitionCount": 2
   }
 }
