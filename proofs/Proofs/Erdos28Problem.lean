@@ -161,6 +161,24 @@ theorem erdos_40_from_28 (g : ℕ) (A : Set ℕ) :
   have := hbound n
   omega
 
+/- ## Representation Positivity -/
+
+/-- If n ∈ A + A, then the representation function r(n) ≥ 1.
+    From n = x + y with x, y ∈ A, the pair (min x y, max x y) is
+    counted by repFunction (which requires a ≤ n - a). -/
+theorem repFunction_pos_of_mem (A : Set ℕ) (n : ℕ) (hn : n ∈ A + A) :
+    1 ≤ repFunction A n := by
+  obtain ⟨x, hxA, y, hyA, hxy⟩ := Set.mem_image2.mp hn
+  unfold repFunction
+  apply Finset.card_pos.mpr
+  rcases le_or_lt x y with hle | hlt
+  · refine ⟨x, Finset.mem_filter.mpr
+      ⟨Finset.mem_Icc.mpr ⟨Nat.zero_le _, by omega⟩, hxA, ?_, by omega⟩⟩
+    rwa [show n - x = y from by omega]
+  · refine ⟨y, Finset.mem_filter.mpr
+      ⟨Finset.mem_Icc.mpr ⟨Nat.zero_le _, by omega⟩, hyA, ?_, by omega⟩⟩
+    rwa [show n - y = x from by omega]
+
 /- ## Partial Results -/
 
 /-- Erdős and Fuchs (1956): If A is any set, then
@@ -171,10 +189,39 @@ axiom erdos_fuchs_theorem (A : Set ℕ) (h : IsAsymptoticBasis2 A) :
       |(Finset.range (N + 1)).sum (fun n => (repFunction A n : ℤ)) - (c * N : ℤ)| ≤
         ε * (N : ℝ) ^ (1/4 : ℝ)
 
-/-- Halberstam and Roth: basic counting shows that for a basis of order 2,
-    the average representation is Σ r(n≤N) / N → ∞ as N → ∞.
-    But this does NOT prove lim sup r(n) = ∞ (the average could be
-    dominated by rare large values). -/
-axiom average_rep_unbounded (A : Set ℕ) (h : IsAsymptoticBasis2 A) :
-    Tendsto (fun N => (Finset.range (N + 1)).sum (fun n => repFunction A n) / (N + 1))
-      atTop atTop
+/-- The total representation sum Σ_{n≤N} r(n) grows without bound for any basis.
+    Every n beyond the threshold contributes r(n) ≥ 1, so the sum ≥ N − M.
+
+    Note: A previous axiom `average_rep_unbounded` incorrectly claimed that the
+    AVERAGE (Σ r(n) / N) tends to ∞. For thin bases with |A ∩ [0,N]| ~ c√N,
+    the sum grows linearly (~cN) so the average approaches a constant c, not ∞.
+    The Halberstam–Roth counting argument establishes the linear growth of the
+    total, not divergence of the average. -/
+theorem total_rep_unbounded (A : Set ℕ) (h : IsAsymptoticBasis2 A) :
+    Tendsto (fun N => (Finset.range (N + 1)).sum (fun n => repFunction A n))
+      atTop atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  -- Extract threshold M from the basis property
+  have hfin : (A + A)ᶜ.Finite := h
+  set M := hfin.toFinset.sup id
+  have hM : ∀ n, M < n → n ∈ A + A := by
+    intro n hn; by_contra h_not
+    exact absurd (Finset.le_sup (f := id) (hfin.mem_toFinset.mpr h_not)) (by omega)
+  intro b
+  use M + b + 1
+  intro N hN
+  -- The sum includes terms for n ∈ [M+1, N], each ≥ 1
+  suffices h_suff : N - M ≤ (Finset.range (N + 1)).sum (fun n => repFunction A n) by omega
+  calc N - M
+      = (Finset.Ico (M + 1) (N + 1)).card := by rw [Nat.card_Ico]; omega
+    _ = ∑ _ ∈ Finset.Ico (M + 1) (N + 1), 1 := by
+        rw [Finset.sum_const, smul_eq_mul, mul_one]
+    _ ≤ ∑ n ∈ Finset.Ico (M + 1) (N + 1), repFunction A n := by
+        apply Finset.sum_le_sum
+        intro n hn
+        exact repFunction_pos_of_mem A n (hM n (by
+          exact (Finset.mem_Ico.mp hn).1))
+    _ ≤ ∑ n ∈ Finset.range (N + 1), repFunction A n := by
+        apply Finset.sum_le_sum_of_subset_of_nonneg
+        · intro x hx; exact Finset.mem_range.mpr (Finset.mem_Ico.mp hx).2
+        · intro _ _ _; exact Nat.zero_le _
