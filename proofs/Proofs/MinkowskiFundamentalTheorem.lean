@@ -3,6 +3,8 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Group.GeometryOfNumbers
+import Mathlib.Algebra.Module.ZLattice.Basic
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.NumberTheory.SumTwoSquares
 import Mathlib.Data.Real.Basic
@@ -444,6 +446,94 @@ Lattices are central to:
 
 end MinkowskiFundamentalTheorem
 
+-- ============================================================
+-- PART 10: Proof from Mathlib (Eliminating the Axiom for ℤⁿ)
+-- ============================================================
+
+/-!
+## Minkowski's Theorem — Proved from Mathlib
+
+The axiom `minkowski_fundamental` above axiomatizes the main theorem because the proof
+requires measure-theoretic pigeonhole. Mathlib now provides exactly this:
+`MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
+in `Mathlib.MeasureTheory.Group.GeometryOfNumbers`.
+
+Below we prove the integer lattice case (ℤⁿ) from Mathlib, using actual Lebesgue measure
+instead of the abstract `HasVolume` typeclass.
+-/
+
+namespace MinkowskiProved
+
+open MeasureTheory ZSpan Set
+
+variable (n : ℕ) [NeZero n]
+
+/-- The standard basis for ℝⁿ as `Fin n → ℝ`. -/
+noncomputable abbrev stdBasis : Module.Basis (Fin n) ℝ (Fin n → ℝ) :=
+  Pi.basisFun ℝ (Fin n)
+
+/-- The standard integer lattice ℤⁿ as a ℤ-submodule of ℝⁿ. -/
+def stdLattice : Submodule ℤ (Fin n → ℝ) :=
+  Submodule.span ℤ (Set.range (stdBasis n))
+
+/-- The fundamental domain [0,1)ⁿ for ℤⁿ. -/
+def stdFundDomain : Set (Fin n → ℝ) :=
+  ZSpan.fundamentalDomain (stdBasis n)
+
+/-- The fundamental domain is measurable. -/
+theorem stdFundDomain_measurableSet :
+    MeasurableSet (stdFundDomain n) :=
+  ZSpan.fundamentalDomain_measurableSet (stdBasis n)
+
+/-- The unit cube is a fundamental domain for the ℤⁿ lattice. -/
+theorem stdLattice_isAddFundamentalDomain :
+    IsAddFundamentalDomain (stdLattice n) (stdFundDomain n) volume :=
+  ZSpan.isAddFundamentalDomain (stdBasis n) volume
+
+/-- The matrix of the standard basis is the identity matrix. -/
+theorem stdBasis_matrix_eq_one :
+    Matrix.of (stdBasis n) = (1 : Matrix (Fin n) (Fin n) ℝ) := by
+  ext i j
+  simp only [Matrix.of_apply, Matrix.one_apply, Pi.basisFun_apply, Pi.single_apply]
+  by_cases hij : i = j
+  · simp [hij]
+  · simp [hij, Ne.symm hij]
+
+/-- The covolume of ℤⁿ is 1 (the fundamental domain has unit volume). -/
+theorem stdLattice_covolume :
+    volume (stdFundDomain n) = 1 := by
+  unfold stdFundDomain stdBasis
+  rw [ZSpan.volume_fundamentalDomain]
+  have h : (Matrix.of (Pi.basisFun ℝ (Fin n))).det = 1 := by
+    have : Matrix.of (Pi.basisFun ℝ (Fin n)) = 1 := by
+      ext i j
+      simp only [Matrix.of_apply, Matrix.one_apply, Pi.basisFun_apply, Pi.single_apply]
+      by_cases hij : i = j
+      · simp [hij]
+      · simp [hij, Ne.symm hij]
+    simp [this]
+  simp [h]
+
+/-- **Minkowski's Theorem for ℤⁿ — Proved from Mathlib**.
+
+If a centrally symmetric convex set `s ⊆ ℝⁿ` has Lebesgue measure
+strictly greater than `2ⁿ`, then `s` contains a nonzero integer point.
+
+This eliminates the axiom for the integer lattice case by applying
+`MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`. -/
+theorem minkowski_integer_lattice_proved
+    (s : Set (Fin n → ℝ))
+    (h_symm : ∀ x ∈ s, -x ∈ s)
+    (h_conv : Convex ℝ s)
+    (h_vol : (2 : ENNReal) ^ n < volume s) :
+    ∃ x : (stdLattice n), x ≠ 0 ∧ (x : Fin n → ℝ) ∈ s := by
+  apply exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
+    (stdLattice_isAddFundamentalDomain n) h_symm h_conv
+  rw [stdLattice_covolume, one_mul, Module.finrank_fin_fun]
+  exact h_vol
+
+end MinkowskiProved
+
 -- Export main results
 #check MinkowskiFundamentalTheorem.minkowski_fundamental
 #check MinkowskiFundamentalTheorem.minkowski_integer_lattice
@@ -451,3 +541,4 @@ end MinkowskiFundamentalTheorem
 #check MinkowskiFundamentalTheorem.Lattice
 #check MinkowskiFundamentalTheorem.ConvexBody
 #check MinkowskiFundamentalTheorem.fermat_from_minkowski
+#check MinkowskiProved.minkowski_integer_lattice_proved
