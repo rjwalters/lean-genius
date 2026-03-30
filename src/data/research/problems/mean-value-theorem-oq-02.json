@@ -34,22 +34,55 @@
       "Show taylorWithinEval = taylorPolynomial for globally ContDiff functions"
     ]
   },
-  "tags": ["analysis", "calculus", "taylor", "axiom-elimination", "seeker-selected"],
-  "relatedProofs": ["mean-value-theorem", "mean-value-theorem-oq-03"],
+  "tags": [
+    "analysis",
+    "calculus",
+    "taylor",
+    "axiom-elimination",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "mean-value-theorem",
+    "mean-value-theorem-oq-02",
+    "mean-value-theorem-oq-03"
+  ],
   "started": "2026-03-30T08:30:00Z",
   "lastUpdate": "2026-03-30T08:45:00Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [
     {
+      "path": "Proofs/MeanValueTheorem.lean",
+      "filename": "MeanValueTheorem.lean",
+      "lineCount": 164,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheorem.lean"
+    },
+    {
       "path": "Proofs/MeanValueTheoremOQ02.lean",
       "filename": "MeanValueTheoremOQ02.lean",
-      "lineCount": 166,
+      "lineCount": 167,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 1,
-      "isAristotle": false
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ03.lean",
+      "filename": "MeanValueTheoremOQ03.lean",
+      "lineCount": 462,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ03.lean"
     }
   ]
 }
