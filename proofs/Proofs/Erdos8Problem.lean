@@ -87,12 +87,12 @@ This was conjectured to be TRUE, but Hough (2015) showed it is FALSE.
 -/
 def erdos_graham_conjecture : Prop :=
   ∀ k : ℕ, k ≥ 2 → ∀ c : Coloring k,
-    ∃ cs : CoveringSystem, cs.hasMonochromaticModuli c
+    ∃ cs : CoveringSystem, cs.hasDistinctModuli ∧ cs.hasMonochromaticModuli c
 
 /-- The negation: there exists a coloring with no monochromatic covering moduli. -/
 def erdos_8_disproved : Prop :=
   ∃ k : ℕ, k ≥ 2 ∧ ∃ c : Coloring k,
-    ∀ cs : CoveringSystem, ¬cs.hasMonochromaticModuli c
+    ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c
 
 /- ## Hough's Minimum Modulus Theorem -/
 
@@ -152,8 +152,8 @@ axiom erdos_8_resolution : erdos_8_disproved
 theorem erdos_8_false : ¬erdos_graham_conjecture := by
   intro h
   obtain ⟨k, hk, c, hc⟩ := erdos_8_resolution
-  obtain ⟨cs, hcs⟩ := h k hk c
-  exact hc cs hcs
+  obtain ⟨cs, hd, hm⟩ := h k hk c
+  exact hc cs hd hm
 
 /- ## Density Version -/
 

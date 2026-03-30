@@ -29,15 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axioms from 5 to 4 by proving balister_improved_bound (identical to hough_minimum_modulus)",
+    "progressSummary": "BUG FIX: Fixed inconsistent axiom \u2014 added hasDistinctModuli to erdos_graham_conjecture and erdos_8_disproved. Without this, the axiom erdos_8_resolution was trivially false (any covering system with repeated modulus has monochromatic moduli set).",
     "builtItems": [
-      "Proved balister_improved_bound from hough_minimum_modulus (Erdos8Problem.lean:121)"
+      "Proved balister_improved_bound from hough_minimum_modulus (Erdos8Problem.lean:121)",
+      "Fixed erdos_graham_conjecture: added cs.hasDistinctModuli to conjecture and disproved definitions",
+      "Fixed erdos_8_false proof to match updated types"
     ],
     "insights": [
-      "balister_improved_bound is identical to hough_minimum_modulus (same bound 616000) — trivially derivable",
+      "balister_improved_bound is identical to hough_minimum_modulus (same bound 616000) \u2014 trivially derivable",
       "bottleneck_counterexample is provable via pigeonhole: color each n <= 616000 uniquely, show covering system moduli cannot be monochromatic",
       "The pigeonhole proof requires showing single congruence class does not cover Z (modulus >= 2 implies uncovered integers)",
-      "Remaining 4 axioms are deep theorems: Hough min modulus, resolution, density version, bottleneck"
+      "Remaining 4 axioms are deep theorems: Hough min modulus, resolution, density version, bottleneck",
+      "BUG FOUND: erdos_graham_conjecture and erdos_8_disproved were missing hasDistinctModuli \u2014 made erdos_8_resolution axiom INCONSISTENT (covering system {0 mod 2, 1 mod 2} has trivially monochromatic moduli {2})"
     ],
     "mathlibGaps": [],
     "nextSteps": [
