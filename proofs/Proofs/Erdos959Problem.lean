@@ -118,13 +118,6 @@ noncomputable def frequencyGapR (A : Finset (EuclideanSpace ℝ (Fin 2)))
     freqs.get ⟨r, hr.1⟩ - freqs.get ⟨r + 1, hr.2⟩
   else 0
 
-/-- CDL generalized: there exists a universal constant C > 0 such that for
-    1 ≤ r ≤ log n, some n-point set achieves f(dᵣ) - f(dᵣ₊₁) ≥ C·n·log(n)/r. -/
-axiom clemen_dumitrescu_liu_general :
-    ∃ C : ℝ, 0 < C ∧ ∀ n r : ℕ, 2 ≤ n → 1 ≤ r → r ≤ Nat.log 2 n →
-      ∃ (A : Finset (EuclideanSpace ℝ (Fin 2))),
-        A.card = n ∧ C * n * Real.log n / r ≤ (frequencyGapR A r : ℝ)
-
 -- ## Total pair count
 
 /-- The sum of all distance frequencies is at most n choose 2. -/
