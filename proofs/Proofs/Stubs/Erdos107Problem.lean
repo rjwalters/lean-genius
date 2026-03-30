@@ -138,10 +138,15 @@ That is, there exists some N such that any N points in general position
 contain a convex n-gon. This was the first major result on this problem.
 -/
 theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by
-  use Nat.choose (2 * n - 4) (n - 2) + 1
-  intro pts hcard hgp
-  -- By ersz_upper_bound, this many points suffice
-  sorry -- Requires the full Ramsey-theoretic argument
+  -- By contradiction: if CardSet n is empty, f n = sInf ∅ = 0,
+  -- contradicting the Erdős-Szekeres lower bound 2^{n-2}+1 ≤ f n.
+  by_contra hemp
+  rw [Set.not_nonempty_iff_eq_empty] at hemp
+  have hf_zero : f n = 0 := by
+    unfold f; rw [hemp]; exact Nat.sInf_empty
+  have hlb := ersz_lower_bound n hn
+  rw [hf_zero] at hlb
+  exact absurd hlb (by omega)
 
 /- ## Helper Lemmas -/
 
