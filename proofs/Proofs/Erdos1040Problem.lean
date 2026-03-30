@@ -263,7 +263,35 @@ theorem unitDisc_diameter : transfiniteDiameter (Metric.closedBall (0 : ℂ) 1) 
     For now, this sorry documents a DEFINITION BUG, not a proof gap. -/
 theorem transfiniteDiameter_mono (F G : Set ℂ) (h : F ⊆ G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
-  sorry
+  unfold transfiniteDiameter
+  apply csInf_le_csInf
+    ⟨0, by rintro _ ⟨n, rfl⟩; exact nthDiameter_nonneg F n⟩
+    (Set.range_nonempty _)
+  rintro _ ⟨n, rfl⟩
+  refine ⟨nthDiameter F n, Set.mem_range.mpr ⟨n, rfl⟩, ?_⟩
+  -- nthDiameter F n ≤ nthDiameter G n: F-candidates ⊆ G-candidates, G BddAbove.
+  unfold nthDiameter
+  -- Handle empty F-values case
+  by_cases hneF : Set.Nonempty
+    {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
+      (∏ i : Fin n, ∏ j in Finset.Iio i,
+        Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
+  · -- F-values nonempty: use csSup_le_csSup
+    apply csSup_le_csSup
+    · -- G-values BddAbove: G is bounded, so all distances ≤ diam(G),
+      -- hence all products are bounded, hence all rpow values are bounded.
+      -- Bound: each factor ≤ diam(G), product ≤ diam(G)^(n²),
+      -- rpow(product, 2/(n*(n-1))) ≤ rpow(diam(G)^(n²), 1) = diam(G)^(n²).
+      sorry
+    · -- F-values nonempty
+      exact hneF
+    · -- F-values ⊆ G-values: F ⊆ G so every F-candidate is a G-candidate
+      rintro x ⟨pts, rfl⟩
+      exact ⟨⟨pts.1, fun i => h (pts.2 i)⟩, rfl⟩
+  · -- F-values empty: sSup ∅ = 0 ≤ nthDiameter G n
+    rw [Set.not_nonempty_iff_eq_empty] at hneF
+    simp [hneF, csSup_empty]
+    exact nthDiameter_nonneg G n
 
 /-- Each nthDiameter value is non-negative (sSup of non-negative reals). -/
 private theorem nthDiameter_nonneg (F : Set ℂ) (n : ℕ) : 0 ≤ nthDiameter F n := by
