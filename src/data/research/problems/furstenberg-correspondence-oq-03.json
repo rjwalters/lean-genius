@@ -1,0 +1,92 @@
+{
+  "slug": "furstenberg-correspondence-oq-03",
+  "title": "Polynomial Szemeredi Extension via Bergelson-Leibman",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Polynomial Szemeredi Extension via Bergelson-Leibman.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T22:19:31.122Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "ergodic-theory",
+    "additive-combinatorics"
+  ],
+  "relatedProofs": [
+    "furstenberg-correspondence",
+    "furstenberg-correspondence-oq-01",
+    "furstenberg-correspondence-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T22:19:31.122Z",
+  "lastUpdate": "2026-03-30T22:19:31.122Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FurstenbergCorrespondence.lean",
+      "filename": "FurstenbergCorrespondence.lean",
+      "lineCount": 253,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondence.lean"
+    },
+    {
+      "path": "Proofs/FurstenbergCorrespondenceOQ01.lean",
+      "filename": "FurstenbergCorrespondenceOQ01.lean",
+      "lineCount": 286,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/FurstenbergCorrespondenceOQ02.lean",
+      "filename": "FurstenbergCorrespondenceOQ02.lean",
+      "lineCount": 414,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondenceOQ02.lean"
+    }
+  ]
+}
