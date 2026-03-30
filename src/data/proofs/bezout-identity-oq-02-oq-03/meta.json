@@ -1,0 +1,146 @@
+{
+  "id": "bezout-identity-oq-02-oq-03",
+  "title": "Computable Euclid's Lemma and Linear Diophantine Equations via extGcd",
+  "slug": "bezout-identity-oq-02-oq-03",
+  "description": "Connects the computable extGcd function (from OQ01) with Euclid's lemma (from OQ02) to give a fully computable proof. Also proves a complete characterization of solvability for linear Diophantine equations ax + by = c via extGcd: solutions exist iff gcd(a,b) | c, with concrete witnesses computed from the extended Euclidean algorithm.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Linear_Diophantine_equation",
+    "date": "Classical (formalized 2026)",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "bezout",
+      "euclid",
+      "diophantine",
+      "constructive",
+      "computability"
+    ],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ03.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 205,
+    "assumptions": "None. All proofs are complete with 0 axioms and 0 sorries. Uses self-contained extGcd definition (not imported from OQ01 to avoid cross-file dependencies).",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-03-30",
+    "originalContributions": [
+      "extGcd_coprime_bezout: When gcd(a,b)=1, extGcd gives concrete x,y with a*x + b*y = 1",
+      "euclids_lemma_computable: Euclid's lemma with witness constructed from extGcd coefficients",
+      "euclids_lemma_prime_computable: Prime Euclid's lemma via computable Bézout coefficients",
+      "linear_diophantine_solvable: ax + by = c solvable when gcd(a,b) | c, with extGcd witness",
+      "linear_diophantine_necessary: Converse — solutions imply gcd divisibility",
+      "linear_diophantine_iff: Complete characterization of linear Diophantine solvability"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd_dvd_left / Nat.gcd_dvd_right",
+        "description": "GCD divides both arguments",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.coprime_iff_not_dvd",
+        "description": "Prime p is coprime to n iff p does not divide n",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The extended Euclidean algorithm dates to at least the 6th century (Aryabhata's kuttaka method). It computes gcd(a,b) together with Bézout coefficients x, y satisfying ax + by = gcd(a,b). Beyond computing GCDs, these coefficients solve linear Diophantine equations and provide constructive proofs in number theory.\n\nThe connection between computability and proof is foundational: an existential statement ∃x, P(x) is most useful when we can compute the witness x. This formalization makes that connection explicit for Euclid's lemma.",
+    "problemStatement": "**Open Question (bezout-identity-oq-02-oq-03)**: Can the Bézout coefficients from BezoutIdentityOQ01's extGcd be used to give a fully computable version of Euclid's lemma?\n\n**Answer: YES.**\n\nWe prove Euclid's lemma where the divisibility witness is constructed directly from extGcd coefficients, and extend this to a complete characterization of linear Diophantine equations.",
+    "text": "A formalization connecting the computable extended Euclidean algorithm with Euclid's lemma and linear Diophantine equations. Given coprime $a, b$ with $a \\mid bc$, the divisibility witness $c/a$ is computed as $xc + yk$ where $(x, y) = \\text{extGcd}(a,b)$ and $bc = ak$. This extends to a complete characterization: $ax + by = c$ has integer solutions if and only if $\\gcd(a,b) \\mid c$, with witnesses computed from extGcd. All proofs are complete: 0 sorries, 0 axioms.",
+    "proofStrategy": "**Part I**: Self-contained definition of extGcd with correctness proofs (Bézout identity and GCD correctness) by well-founded induction.\n\n**Part II**: When a,b are coprime, extGcd gives concrete x,y with a*x + b*y = 1.\n\n**Part III**: Computable Euclid's lemma — the witness x*c + y*k is constructed from extGcd output, verified by linear_combination.\n\n**Part IV-V**: Prime version and computational verification via native_decide.\n\n**Part VI**: Linear Diophantine equations — solvability by scaling extGcd coefficients, necessity by GCD divisibility, complete iff characterization.",
+    "keyInsights": [
+      "The witness for a|c is x*c + y*k where a*x + b*y = 1 (from extGcd) and b*c = a*k — a direct algebraic construction",
+      "linear_combination tactic verifies the algebraic identity automatically",
+      "For ax + by = c with gcd(a,b) | c: scale the extGcd coefficients by c/gcd(a,b)",
+      "The converse (solutions imply gcd | c) follows from gcd dividing both a and b"
+    ],
+    "prerequisites": [
+      "Extended Euclidean algorithm and Bézout's identity",
+      "Coprimality and GCD properties",
+      "Linear Diophantine equations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "extgcd",
+      "title": "Extended Euclidean Algorithm",
+      "startLine": 33,
+      "endLine": 82,
+      "summary": "Self-contained extGcd definition with GCD correctness and Bézout identity proofs by well-founded induction.",
+      "mathContext": "The extended Euclidean algorithm computes $\\gcd(a,b)$ and coefficients $x,y$ with $ax + by = \\gcd(a,b)$ in $O(\\log(\\min(a,b)))$ steps."
+    },
+    {
+      "id": "coprime-bezout",
+      "title": "Coprimality via extGcd",
+      "startLine": 87,
+      "endLine": 94,
+      "summary": "When gcd(a,b) = 1, extGcd gives concrete x,y with a*x + b*y = 1.",
+      "mathContext": "Specialization of Bézout's identity to coprime pairs: $\\gcd(a,b) = 1 \\Rightarrow \\exists x,y: ax + by = 1$, with $x,y$ computed by extGcd."
+    },
+    {
+      "id": "computable-euclid",
+      "title": "Computable Euclid's Lemma",
+      "startLine": 99,
+      "endLine": 126,
+      "summary": "Euclid's lemma with concrete witness from extGcd coefficients. Given coprime(a,b) and a|bc, the quotient is x*c + y*k.",
+      "mathContext": "If $\\gcd(a,b) = 1$ and $a \\mid bc$, then $a \\mid c$. The witness: $c = a(xc + yk)$ where $ax + by = 1$ and $bc = ak$."
+    },
+    {
+      "id": "diophantine",
+      "title": "Linear Diophantine Equations",
+      "startLine": 150,
+      "endLine": 205,
+      "summary": "Complete characterization: ax + by = c has integer solutions iff gcd(a,b) | c. Solvability by scaling extGcd, necessity by GCD divisibility.",
+      "mathContext": "The linear Diophantine equation $ax + by = c$ ($a,b,c \\in \\mathbb{N}$, $x,y \\in \\mathbb{Z}$) is solvable iff $\\gcd(a,b) \\mid c$. When solvable, a particular solution is $x = x_0 \\cdot c/g$, $y = y_0 \\cdot c/g$ where $ax_0 + by_0 = g = \\gcd(a,b)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Answers the open question affirmatively: extGcd coefficients provide a fully computable version of Euclid's lemma with explicit witnesses. Extends to a complete characterization of linear Diophantine equations.",
+    "implications": "Completes the constructive chain: extGcd (computable) → Bézout coefficients (concrete) → Euclid's lemma (constructive witness) → linear Diophantine solver (complete characterization).",
+    "openQuestions": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry proving Euclid's lemma existentially — this file makes the proof constructive using extGcd"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling entry deriving FTA from Euclid's lemma — both build on OQ02's Euclid's lemma"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "ancestor",
+      "description": "Original Bézout identity formalization"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition, §4.5.2",
+      "note": "Comprehensive treatment of the extended Euclidean algorithm and its applications to solving linear Diophantine equations"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "BezoutIdentityOQ02OQ03",
+    "lineCount": 205,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2
+  }
+}

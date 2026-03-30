@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Created BezoutIdentityOQ02OQ03.lean — computable Euclids lemma via extGcd + linear Diophantine iff characterization. 12 theorems, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "BezoutIdentityOQ02OQ03.lean: computable Euclid lemma + linear Diophantine solver",
+      "Gallery entry: bezout-identity-oq-02-oq-03/ with meta.json, annotations, index.ts"
+    ],
+    "insights": [
+      "extGcd coprime Bezout: when gcd(a,b)=1, extGcd gives concrete x,y with a*x+b*y=1",
+      "Euclid witness is x*c+y*k where a*x+b*y=1 and b*c=a*k — direct algebraic construction",
+      "Linear Diophantine iff: ax+by=c solvable iff gcd(a,b)|c, with constructive extGcd witness",
+      "negative example (6x+10y=7) proved by 2|LHS but 2 does not divide 7"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
