@@ -21,7 +21,7 @@
     "iteration": 2,
     "focus": "All sorries eliminated. Only Lin 1976 axioms remain.",
     "blockers": [],
-    "nextAction": "Problem complete. No further work needed.",
+    "nextAction": "Problem complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved padic_val_factorial_asymp sorry (Nat.log/n→0). File now 2A/0S — only Lin 1976 bounds remain as axioms.",
+    "progressSummary": "COMPLETE: Proved padic_val_factorial_asymp sorry (Nat.log/n→0 via isLittleO + squeeze). File now 2A/0S — only Lin 1976 bounds remain as axioms.",
     "builtItems": [
       "Assessment: 4A all appropriate",
       "PROVED legendre_formula: padicValNat p n! = legendreSum n p (was axiom, now theorem)",
@@ -54,7 +54,7 @@
       "Key insight: digit-sum identity legendreSum*(p-1)+baseDigitSum=n is exact Nat equality, both bounds follow by omega",
       "Telescoping via division algorithm: (a/p)*(p-1) + a%p = a - a/p, summed over k=0..L",
       "Remaining sorry (Nat.log p n / n -> 0) needs sublinear bound on Nat.log",
-      "isLittleO_log_rpow_atTop with r=1 gives log(x)=o(x), composed with Nat.pow_log_le_self gives Nat.log p n ≤ Real.log n / Real.log p, yielding the sublinear bound"
+      "isLittleO_log_rpow_atTop with r=1 gives log(x)=o(x); composed with Nat.pow_log_le_self gives Nat.log p n ≤ Real.log n / Real.log p, yielding the sublinear bound for squeeze"
     ],
     "mathlibGaps": [],
     "nextSteps": [
