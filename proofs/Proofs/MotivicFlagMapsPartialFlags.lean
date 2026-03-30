@@ -156,15 +156,14 @@ We define [Gr(d, n)] for the cases we can compute directly:
   - [Gr(d, n)] = [Gr(n-d, n)] (duality)
   - [Gr(2, 4)] = (1+L)(1+L+L²+L³)/(1) = 1+L+2L²+L³+L⁴ -/
 noncomputable def grassmannianClass : ℕ → ℕ → K.carrier
-  | _, 0 => 0
-  | 0, _ => 1
+  | 0, _ => 1         -- [Gr(0, n)] = 1 (single point: the trivial subspace)
+  | _, 0 => 0         -- [Gr(d+1, 0)] = 0 (no subspaces of zero space)
   | d + 1, n + 1 =>
     if d + 1 > n + 1 then 0
     else if d + 1 = n + 1 then 1
     else
-      -- [Gr(d+1, n+1)] = L^{d+1} · [Gr(d+1, n)] + [Gr(d, n)]
-      -- This is the q-Pascal identity
-      K.L ^ (d + 1) * grassmannianClass d (n) + grassmannianClass (d) n
+      -- q-Pascal identity: [Gr(d+1, n+1)] = L^{d+1} · [Gr(d+1, n)] + [Gr(d, n)]
+      K.L ^ (d + 1) * grassmannianClass (d + 1) n + grassmannianClass d n
 
 /-- [Gr(0, n)] = 1 -/
 theorem grassmannianClass_zero (n : ℕ) :
@@ -220,10 +219,22 @@ theorem grassmannianClass_duality (d n : ℕ) (hd : d ≤ n) :
 
 /-- [Gr(1, n+1)] = [P^n] = projectiveClass K n
 
-The Grassmannian of lines is projective space. -/
+The Grassmannian of lines is projective space.
+Proof by induction on n using the q-Pascal identity:
+  Gr(1, n+2) = L · Gr(1, n+1) + Gr(0, n+1) = L · P^n + 1 = P^{n+1} -/
 theorem grassmannianClass_lines (n : ℕ) :
     grassmannianClass K 1 (n + 1) = projectiveClass K n := by
-  sorry  -- Induction using q-Pascal identity and projectiveClass recurrence
+  induction n with
+  | zero =>
+    -- Gr(1, 1) = 1 = P^0
+    simp [grassmannianClass, projectiveClass, Finset.sum_range_one]
+  | succ n ih =>
+    -- Gr(1, n+2) = L · Gr(1, n+1) + Gr(0, n+1) = L · P^n + 1 = P^{n+1}
+    simp only [grassmannianClass, show ¬(0 + 1 > (n + 1) + 1) from by omega,
+               show ¬(0 + 1 = (n + 1) + 1) from by omega, ite_false]
+    rw [grassmannianClass_zero, ih]
+    simp only [projectiveClass, Finset.sum_range_succ, pow_one]
+    ring
 
 /-
 ## Part IV: The Gaussian Binomial Identity
@@ -372,11 +383,11 @@ This is the q-analog of Pascal's triangle. -/
 theorem qPascal (d n : ℕ) (h : d + 1 < n + 2) :
     grassmannianClass K (d + 1) (n + 2) =
     K.L ^ (d + 1) * grassmannianClass K (d + 1) (n + 1) + grassmannianClass K d (n + 1) := by
+  -- Unfold the recursive definition: pattern (d+1, (n+1)+1) with d'=d, m=n+1
+  -- gives if d+1 > n+2 ... else if d+1 = n+2 ... else q-Pascal
   unfold grassmannianClass
-  simp [show ¬(d + 1 > n + 1) from by omega, show d + 1 ≠ n + 1 ↔ d ≠ n from by omega]
-  split
-  · omega
-  · rfl
+  simp only [show ¬(d + 1 > n + 2) from by omega,
+             show ¬(d + 1 = n + 2) from by omega, ite_false]
 
 /-
 ## Part VIII: Relating GL_n to q-Numbers

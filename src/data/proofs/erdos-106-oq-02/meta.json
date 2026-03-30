@@ -20,13 +20,13 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 106,
     "erdosUrl": "https://erdosproblems.com/106",
     "erdosProblemStatus": "open",
-    "axiomCount": 8,
-    "assumptions": "8 axiom declarations: rotated_square_area (rotation preserves area), f_rot_bounded (Cauchy-Schwarz √n bound), f_rot_mono (monotone), g_ap_bounded (√n bound for axis-parallel), f_rot_perfect_square (f_rot(k²)=k), g_ap_perfect_square (g(k²)=k), bku_theorem_ap (BKU 2024 result), f_rot_2 (Erdős f_rot(2)=1). Proved: agree_at_perfect_squares, no_rotation_help_at_2, rotation_cant_help_at_perfect_square, f_rot_lower_k2_plus_1, bku_and_no_rotation_implies_general",
-    "lineCount": 277
+    "axiomCount": 6,
+    "assumptions": "6 axiom declarations: rotated_square_area (rotation preserves area), f_rot_bounded (Cauchy-Schwarz √n bound), f_rot_mono (monotone), g_ap_perfect_square (g(k²)=k), bku_theorem_ap (BKU 2024 result), f_rot_2 (Erdős f_rot(2)=1). ELIMINATED: g_ap_bounded (proved from f_rot_bounded + g_ap≤f_rot), f_rot_perfect_square (proved from g_ap_perfect_square + f_rot_bounded + g_ap≤f_rot). New: side_le_sqrt_two (contained squares have side≤√2), g_ap_le_f_rot (AP packings are general packings). 1 sorry: g_ap_set_nonempty (needs explicit tiny-square construction).",
+    "lineCount": 455
   },
   "overview": {
     "historicalContext": "**From Axis-Parallel to Rotated: The Last Barrier in Square Packing**\n\nThe 2024 breakthrough by Baek, Koizumi, and Ueoro completely resolved the axis-parallel case of Erdős's square packing conjecture, proving g(k²+1) = k. This leaves one fundamental question: can rotated squares do better?\n\nIn the axis-parallel formulation, all packed squares have sides parallel to the unit square. When rotation is allowed, the packing space is richer — a rotated square occupies a diamond-shaped region that could potentially fill space more efficiently.\n\nNo example is known where rotation helps. At perfect squares n = k², both f_rot(k²) = g(k²) = k, since the k×k grid (which is axis-parallel) is already optimal by Cauchy-Schwarz. The question is whether rotation helps at non-perfect-square values of n.",

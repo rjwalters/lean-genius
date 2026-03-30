@@ -155,13 +155,191 @@ axiom f_rot_bounded : ∀ n : ℕ, f_rot n ≤ Real.sqrt n
 /-- f_rot is monotone increasing -/
 axiom f_rot_mono : ∀ n m : ℕ, n ≤ m → f_rot n ≤ f_rot m
 
-/-- g is bounded above by √n -/
-axiom g_ap_bounded : ∀ n : ℕ, g_ap n ≤ Real.sqrt n
-
-/-- At perfect squares, both functions achieve k -/
-axiom f_rot_perfect_square : ∀ k : ℕ, k ≥ 1 → f_rot (k ^ 2) = k
-
+/-- At perfect squares, g achieves k (axiom: requires k×k grid construction) -/
 axiom g_ap_perfect_square : ∀ k : ℕ, k ≥ 1 → g_ap (k ^ 2) = k
+
+/- ## Axiom Elimination: g_ap_bounded and f_rot_perfect_square
+
+We derive these from f_rot_bounded + g_ap_perfect_square + the structural
+relationship g_ap ≤ f_rot (every axis-parallel packing is a general packing).
+-/
+
+section AxiomElimination
+
+/-- The center of a rotated square is in its closure -/
+private lemma center_in_closure (sq : RotatedSquare) :
+    sq.center ∈ sq.closure' := by
+  simp only [RotatedSquare.closure', Set.mem_setOf_eq]
+  simp [abs_of_nonneg, le_div_iff₀]
+  constructor <;> positivity
+
+/-- Edge midpoint at rotated coords (s/2, 0) is in the closure.
+    World coords: (c₁ + s/2·cos θ, c₂ + s/2·sin θ). -/
+private lemma midpoint_pos_cos_mem_closure (sq : RotatedSquare) :
+    (sq.center.1 + sq.side / 2 * Real.cos sq.angle,
+     sq.center.2 + sq.side / 2 * Real.sin sq.angle) ∈ sq.closure' := by
+  simp only [RotatedSquare.closure', Set.mem_setOf_eq]
+  set h := sq.side / 2
+  set θ := sq.angle
+  -- rx = (h cos θ) cos θ + (h sin θ) sin θ = h(cos²θ + sin²θ) = h
+  -- ry = -(h cos θ) sin θ + (h sin θ) cos θ = 0
+  have hrx : h * Real.cos θ * Real.cos θ + h * Real.sin θ * Real.sin θ = h := by
+    have := Real.sin_sq_add_cos_sq θ; nlinarith [sq_abs (Real.cos θ), sq_abs (Real.sin θ)]
+  have hry : -(h * Real.cos θ) * Real.sin θ + h * Real.sin θ * Real.cos θ = 0 := by ring
+  rw [hrx, hry]
+  exact ⟨le_abs_self h, by rw [abs_zero]; positivity⟩
+
+/-- Opposite edge midpoint at rotated coords (-s/2, 0) is in the closure. -/
+private lemma midpoint_neg_cos_mem_closure (sq : RotatedSquare) :
+    (sq.center.1 - sq.side / 2 * Real.cos sq.angle,
+     sq.center.2 - sq.side / 2 * Real.sin sq.angle) ∈ sq.closure' := by
+  simp only [RotatedSquare.closure', Set.mem_setOf_eq]
+  set h := sq.side / 2
+  set θ := sq.angle
+  have hrx : (-h * Real.cos θ) * Real.cos θ + (-h * Real.sin θ) * Real.sin θ = -h := by
+    have := Real.sin_sq_add_cos_sq θ; nlinarith [sq_abs (Real.cos θ), sq_abs (Real.sin θ)]
+  have hry : -(-h * Real.cos θ) * Real.sin θ + (-h * Real.sin θ) * Real.cos θ = 0 := by ring
+  rw [show sq.center.1 - h * Real.cos θ - sq.center.1 = -h * Real.cos θ from by ring,
+      show sq.center.2 - h * Real.sin θ - sq.center.2 = -h * Real.sin θ from by ring,
+      hrx, hry]
+  constructor
+  · rw [abs_neg]; exact le_abs_self h
+  · rw [abs_zero]; positivity
+
+/-- Edge midpoint at rotated coords (0, s/2) is in the closure. -/
+private lemma midpoint_pos_sin_mem_closure (sq : RotatedSquare) :
+    (sq.center.1 - sq.side / 2 * Real.sin sq.angle,
+     sq.center.2 + sq.side / 2 * Real.cos sq.angle) ∈ sq.closure' := by
+  simp only [RotatedSquare.closure', Set.mem_setOf_eq]
+  set h := sq.side / 2
+  set θ := sq.angle
+  have hrx : (-h * Real.sin θ) * Real.cos θ + (h * Real.cos θ) * Real.sin θ = 0 := by ring
+  have hry : -(-h * Real.sin θ) * Real.sin θ + (h * Real.cos θ) * Real.cos θ = h := by
+    have := Real.sin_sq_add_cos_sq θ; nlinarith [sq_abs (Real.cos θ), sq_abs (Real.sin θ)]
+  rw [show sq.center.1 - h * Real.sin θ - sq.center.1 = -h * Real.sin θ from by ring,
+      show sq.center.2 + h * Real.cos θ - sq.center.2 = h * Real.cos θ from by ring,
+      hrx, hry]
+  exact ⟨by rw [abs_zero]; positivity, le_abs_self h⟩
+
+/-- Opposite edge midpoint at rotated coords (0, -s/2). -/
+private lemma midpoint_neg_sin_mem_closure (sq : RotatedSquare) :
+    (sq.center.1 + sq.side / 2 * Real.sin sq.angle,
+     sq.center.2 - sq.side / 2 * Real.cos sq.angle) ∈ sq.closure' := by
+  simp only [RotatedSquare.closure', Set.mem_setOf_eq]
+  set h := sq.side / 2
+  set θ := sq.angle
+  have hrx : (h * Real.sin θ) * Real.cos θ + (-h * Real.cos θ) * Real.sin θ = 0 := by ring
+  have hry : -(h * Real.sin θ) * Real.sin θ + (-h * Real.cos θ) * Real.cos θ = -h := by
+    have := Real.sin_sq_add_cos_sq θ; nlinarith [sq_abs (Real.cos θ), sq_abs (Real.sin θ)]
+  rw [show sq.center.1 + h * Real.sin θ - sq.center.1 = h * Real.sin θ from by ring,
+      show sq.center.2 - h * Real.cos θ - sq.center.2 = -h * Real.cos θ from by ring,
+      hrx, hry]
+  constructor
+  · rw [abs_zero]; positivity
+  · rw [abs_neg]; exact le_abs_self h
+
+/-- s · |cos θ| ≤ 1 for a rotated square contained in [0,1]².
+    Proof: opposite edge midpoints are in [0,1]², their x-coord difference = s cos θ. -/
+private lemma side_mul_abs_cos_le_one (sq : RotatedSquare) (h : sq.ContainedInUnit) :
+    sq.side * |Real.cos sq.angle| ≤ 1 := by
+  have h1 := h (midpoint_pos_cos_mem_closure sq)
+  have h2 := h (midpoint_neg_cos_mem_closure sq)
+  simp only [unitSquare', Set.mem_setOf_eq] at h1 h2
+  -- h1.1: 0 ≤ c₁ + s/2 cos θ, h1.2.1: c₁ + s/2 cos θ ≤ 1
+  -- h2.1: 0 ≤ c₁ - s/2 cos θ, h2.2.1: c₁ - s/2 cos θ ≤ 1
+  -- So: s cos θ = (c₁ + s/2 cos θ) - (c₁ - s/2 cos θ) and both are in [0,1]
+  have hcos := sq.side / 2 * Real.cos sq.angle
+  rw [show sq.side * |Real.cos sq.angle| = |sq.side * Real.cos sq.angle| from by
+    rw [abs_mul, abs_of_pos sq.side_pos]]
+  rw [show sq.side * Real.cos sq.angle =
+    (sq.center.1 + sq.side / 2 * Real.cos sq.angle) -
+    (sq.center.1 - sq.side / 2 * Real.cos sq.angle) from by ring]
+  rw [abs_le]
+  constructor <;> linarith [h1.1, h1.2.1, h2.1, h2.2.1]
+
+/-- s · |sin θ| ≤ 1 for a rotated square contained in [0,1]².
+    Same argument using the other pair of edge midpoints. -/
+private lemma side_mul_abs_sin_le_one (sq : RotatedSquare) (h : sq.ContainedInUnit) :
+    sq.side * |Real.sin sq.angle| ≤ 1 := by
+  have h1 := h (midpoint_pos_sin_mem_closure sq)
+  have h2 := h (midpoint_neg_sin_mem_closure sq)
+  simp only [unitSquare', Set.mem_setOf_eq] at h1 h2
+  rw [show sq.side * |Real.sin sq.angle| = |sq.side * Real.sin sq.angle| from by
+    rw [abs_mul, abs_of_pos sq.side_pos]]
+  rw [show sq.side * Real.sin sq.angle =
+    (sq.center.1 + sq.side / 2 * Real.sin sq.angle) -
+    (sq.center.1 - sq.side / 2 * Real.sin sq.angle) from by ring]
+  -- Wait: the sin midpoints differ in x-coord by -s sin θ
+  -- midpoint_pos_sin: x = c₁ - s/2 sin θ
+  -- midpoint_neg_sin: x = c₁ + s/2 sin θ
+  -- Difference (neg - pos) = s sin θ
+  rw [show (sq.center.1 + sq.side / 2 * Real.sin sq.angle) -
+    (sq.center.1 - sq.side / 2 * Real.sin sq.angle) =
+    sq.side * Real.sin sq.angle from by ring]
+  rw [abs_le]
+  constructor <;> linarith [h1.1, h1.2.1, h2.1, h2.2.1]
+
+/-- A rotated square contained in [0,1]² has side ≤ √2.
+    Proof: s²cos²θ ≤ 1 and s²sin²θ ≤ 1, so s² = s²(cos²θ+sin²θ) ≤ 2. -/
+theorem side_le_sqrt_two (sq : RotatedSquare) (h : sq.ContainedInUnit) :
+    sq.side ≤ Real.sqrt 2 := by
+  have hcos := side_mul_abs_cos_le_one sq h
+  have hsin := side_mul_abs_sin_le_one sq h
+  have h1 : (sq.side * |Real.cos sq.angle|) ^ 2 ≤ 1 := by nlinarith
+  have h2 : (sq.side * |Real.sin sq.angle|) ^ 2 ≤ 1 := by nlinarith
+  have hsq : sq.side ^ 2 ≤ 2 := by
+    have := Real.sin_sq_add_cos_sq sq.angle
+    nlinarith [sq_abs (sq.side * Real.cos sq.angle),
+               sq_abs (sq.side * Real.sin sq.angle),
+               sq_abs (Real.cos sq.angle), sq_abs (Real.sin sq.angle)]
+  rwa [← Real.sqrt_le_sqrt (by positivity : 0 ≤ sq.side ^ 2),
+       Real.sqrt_sq (le_of_lt sq.side_pos)]
+
+/-- The set of achievable sums for general packings is bounded above -/
+private lemma f_rot_set_bddAbove (n : ℕ) :
+    BddAbove {s : ℝ | ∃ P : GeneralPacking n, P.sumSides = s} := by
+  use n * Real.sqrt 2
+  intro s ⟨P, hP⟩
+  rw [← hP]
+  unfold GeneralPacking.sumSides
+  calc ∑ i : Fin n, (P.squares i).side
+      ≤ ∑ _i : Fin n, Real.sqrt 2 := by
+        apply Finset.sum_le_sum
+        intro i _
+        exact side_le_sqrt_two (P.squares i) (P.contained i)
+    _ = n * Real.sqrt 2 := by simp [Finset.sum_const, Finset.card_fin]
+
+/-- The achievable AP sum set is nonempty (requires constructing one packing).
+    TODO: prove by constructing n tiny axis-parallel squares in a row. -/
+private lemma g_ap_set_nonempty (n : ℕ) :
+    {s : ℝ | ∃ P : AxisParallelPacking n, P.sumSides = s}.Nonempty := by
+  sorry -- Needs explicit construction of n tiny disjoint squares in [0,1]²
+
+/-- g_ap(n) ≤ f_rot(n): every axis-parallel packing is a general packing -/
+theorem g_ap_le_f_rot (n : ℕ) : g_ap n ≤ f_rot n := by
+  unfold g_ap f_rot
+  exact csSup_le_csSup (f_rot_set_bddAbove n) (g_ap_set_nonempty n) (achievable_sums_subset n)
+
+/-- g is bounded above by √n (PROVED, was axiom).
+    Follows from g_ap ≤ f_rot ≤ √n. -/
+theorem g_ap_bounded (n : ℕ) : g_ap n ≤ Real.sqrt n :=
+  le_trans (g_ap_le_f_rot n) (f_rot_bounded n)
+
+/-- At perfect squares, f_rot achieves k (PROVED from g_ap_perfect_square + f_rot_bounded).
+    Upper bound: f_rot(k²) ≤ √(k²) = k.
+    Lower bound: g_ap(k²) = k and g_ap ≤ f_rot. -/
+theorem f_rot_perfect_square (k : ℕ) (hk : k ≥ 1) : f_rot (k ^ 2) = k := by
+  apply le_antisymm
+  · -- f_rot(k²) ≤ √(k²) = k
+    have h := f_rot_bounded (k ^ 2)
+    rwa [show (↑(k ^ 2) : ℝ) = (↑k : ℝ) ^ 2 from by push_cast; ring,
+         Real.sqrt_sq (by positivity : (↑k : ℝ) ≥ 0)] at h
+  · -- f_rot(k²) ≥ g_ap(k²) = k
+    have hg := g_ap_perfect_square k hk
+    have hle := g_ap_le_f_rot (k ^ 2)
+    linarith
+
+end AxiomElimination
 
 /-
 ## BKU Theorem (axis-parallel case)
