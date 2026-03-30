@@ -1,13 +1,13 @@
 {
   "slug": "bounded-prime-gaps-oq-04-oq-01",
-  "title": "P\u00f3lya-Vinogradov inequality formalization",
+  "title": "Pólya-Vinogradov inequality formalization",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: P\u00f3lya-Vinogradov inequality formalization.",
+    "plain": "Formal investigation in number theory: Pólya-Vinogradov inequality formalization.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,9 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Stated all 5 key theorems for P\u00f3lya-Vinogradov. Documented 4-phase proof roadmap (~700 lines total). All proofs are sorry \u2014 this is infrastructure laying.",
+    "progressSummary": "SURVEY: Stated all 5 key theorems for Pólya-Vinogradov. Documented 4-phase proof roadmap (~700 lines total). All proofs are sorry — this is infrastructure laying.",
     "builtItems": [
-      "gaussSumNorm: statement of |\u03c4(\u03c7)|=\u221aq (sorry)",
+      "gaussSumNorm: statement of |τ(χ)|=√q (sorry)",
       "geom_partial_sum_bound: geometric series bound (sorry)",
       "cotangent_sum_bound: cotangent sum estimate (sorry)",
       "polya_vinogradov: main inequality statement (sorry)",
@@ -39,16 +39,16 @@
     ],
     "insights": [
       "Mathlib has ZMod.gaussSum and DirichletCharacter infrastructure",
-      "Gauss sum bound |\u03c4(\u03c7)|=\u221aq is Phase 1 (~300 lines, HIGH tractability)",
+      "Gauss sum bound |τ(χ)|=√q is Phase 1 (~300 lines, HIGH tractability)",
       "PV proof decomposes into 4 phases: Gauss sum, geometric series, cotangent sum, assembly",
       "Total estimated ~700 lines (most tractable of 6 BV prerequisites)",
       "OQ04-OQ02 already axiomatizes gaussSumBound and polyaVinogradov"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove gaussSumNorm via double sum identity \u03c4(\u03c7)\u00b7\u03c4(\u03c7\u0304) = \u03c7(-1)\u00b7q",
+      "Prove gaussSumNorm via double sum identity τ(χ)·τ(χ̄) = χ(-1)·q",
       "Prove geom_partial_sum_bound via geometric series formula",
-      "Prove cotangent_sum_bound via |sin(\u03c0a/q)| \u2265 2a/q and harmonic sum",
+      "Prove cotangent_sum_bound via |sin(πa/q)| ≥ 2a/q and harmonic sum",
       "Assemble polya_vinogradov from the three bounds"
     ]
   },
@@ -61,7 +61,8 @@
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
-    "bounded-prime-gaps-oq-04"
+    "bounded-prime-gaps-oq-04",
+    "bounded-prime-gaps-oq-04-oq-01"
   ],
   "references": {
     "papers": [],
@@ -127,6 +128,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01.lean",
+      "lineCount": 204,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ04OQ02.lean",

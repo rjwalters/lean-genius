@@ -1,0 +1,103 @@
+{
+  "slug": "basel-problem-oq-05-oq-02",
+  "title": "Euler infinite product coefficient extraction from Mathlib",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Euler infinite product coefficient extraction from Mathlib.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T08:49:59.591Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analysis",
+    "number-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "basel-problem",
+    "basel-problem-oq-02",
+    "basel-problem-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.591Z",
+  "lastUpdate": "2026-03-30T08:49:59.591Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/BaselProblem.lean",
+      "filename": "BaselProblem.lean",
+      "lineCount": 165,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblem.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ02.lean",
+      "filename": "BaselProblemOQ02.lean",
+      "lineCount": 275,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ02Aristotle.lean",
+      "filename": "BaselProblemOQ02Aristotle.lean",
+      "lineCount": 98,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ05.lean",
+      "filename": "BaselProblemOQ05.lean",
+      "lineCount": 190,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ05.lean"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1035",
-  "title": "Erd\u0151s #1035",
+  "title": "Erdős #1035",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -63,7 +63,7 @@
       "Prove the conjecture for specific small n values",
       "Formalize known partial results (e.g., Sudakov-Tomon 2022)"
     ],
-    "markdown": "# Erd\u0151s #1035 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant $c>0$ such that every graph on $2^n$ vertices with minimum degree $>(1-c)2^n$ contains the $n$-dimensional hypercube $Q_n$?\n\n\n\nErd\\H{o}s \\cite{Er93} says 'if the conjecture is false, two related problems could be asked':\n{UL}\n{LI}Determine or estimate the smallest $m>2^n$ such that every graph on $m$ vertices with minimum degree $>(1-c)2^n$ contains a $Q_n$, and {/LI}\n{LI}For which $u_n$ is it true that every graph on $2^n$ vertices with minimum degree $>2^n-u_n$ contains a $Q_n$.{/LI}\n{/UL}\n\nSee also [576] for the extremal number of edges that guarantee a $Q_n$.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #576\n- Problem #1034\n- Problem #1036\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #6\n\n## References\n\n- Er93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1035 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant $c>0$ such that every graph on $2^n$ vertices with minimum degree $>(1-c)2^n$ contains the $n$-dimensional hypercube $Q_n$?\n\n\n\nErd\\H{o}s \\cite{Er93} says 'if the conjecture is false, two related problems could be asked':\n{UL}\n{LI}Determine or estimate the smallest $m>2^n$ such that every graph on $m$ vertices with minimum degree $>(1-c)2^n$ contains a $Q_n$, and {/LI}\n{LI}For which $u_n$ is it true that every graph on $2^n$ vertices with minimum degree $>2^n-u_n$ contains a $Q_n$.{/LI}\n{/UL}\n\nSee also [576] for the extremal number of edges that guarantee a $Q_n$.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #576\n- Problem #1034\n- Problem #1036\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #6\n\n## References\n\n- Er93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -87,8 +87,8 @@
     {
       "path": "Proofs/Erdos1035Problem.lean",
       "filename": "Erdos1035Problem.lean",
-      "lineCount": 112,
-      "theoremCount": 3,
+      "lineCount": 191,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 7,
       "sorryCount": 0,

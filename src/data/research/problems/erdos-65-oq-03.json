@@ -1,0 +1,200 @@
+{
+  "slug": "erdos-65-oq-03",
+  "title": "Liu-Montgomery sharp cycle length constant via Mathlib graphs",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Liu-Montgomery sharp cycle length constant via Mathlib graphs.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T13:07:48.619Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Reduced sorry scope from \"complete classification theorem\" to a single dimension argument (4 equidistant points impossible in ℝ²). Key insight: True configs in TwoDistanceConfig immediately rule out distinctDistances=2.",
+    "builtItems": [
+      "Simplified proof structure: h with .kite → distinctDistances≠2, omega → ≤1, need ≥2 contradiction"
+    ],
+    "insights": [
+      "The sorry at line 242 requires proving that any 4-point planar set with at most 2 distinct distances matches one of 6 TwoDistanceConfig patterns",
+      "This is a classification theorem in combinatorial geometry — the proof involves exhaustive case analysis on distance matrices",
+      "All 6 axioms are deep results: Moree-Osburn, lattice point properties, Landau theorem on x^2+2y^2",
+      "3 of 6 TwoDistanceConfig variants use True characterization, so hypothesis trivially eliminates distinctDistances=2",
+      "Remaining sorry reduced to: 4 distinct points in ℝ² → distinctDistances ≥ 2 (equidistant 4-point sets impossible in 2D)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove dimension lemma: 4 equidistant points impossible in ℝ² (circle intersection argument)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "extremal-combinatorics",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-65",
+    "erdos-650",
+    "erdos-651",
+    "erdos-652",
+    "erdos-653",
+    "erdos-654",
+    "erdos-655",
+    "erdos-656",
+    "erdos-657",
+    "erdos-658",
+    "erdos-659"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:07:48.619Z",
+  "lastUpdate": "2026-03-30T16:00:00.000Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos650Problem.lean",
+      "filename": "Erdos650Problem.lean",
+      "lineCount": 93,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos650Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos651Problem.lean",
+      "filename": "Erdos651Problem.lean",
+      "lineCount": 212,
+      "theoremCount": 4,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos651Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos652Problem.lean",
+      "filename": "Erdos652Problem.lean",
+      "lineCount": 178,
+      "theoremCount": 3,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos652Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos653Problem.lean",
+      "filename": "Erdos653Problem.lean",
+      "lineCount": 254,
+      "theoremCount": 2,
+      "axiomCount": 3,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos653Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos654Problem.lean",
+      "filename": "Erdos654Problem.lean",
+      "lineCount": 112,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos654Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos655Problem.lean",
+      "filename": "Erdos655Problem.lean",
+      "lineCount": 123,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos655Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos656Problem.lean",
+      "filename": "Erdos656Problem.lean",
+      "lineCount": 186,
+      "theoremCount": 1,
+      "axiomCount": 4,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos656Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos657Problem.lean",
+      "filename": "Erdos657Problem.lean",
+      "lineCount": 223,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos657Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos658Problem.lean",
+      "filename": "Erdos658Problem.lean",
+      "lineCount": 300,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos658Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos659Problem.lean",
+      "filename": "Erdos659Problem.lean",
+      "lineCount": 221,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos659Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos65Problem.lean",
+      "filename": "Erdos65Problem.lean",
+      "lineCount": 218,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos65Problem.lean"
+    }
+  ]
+}

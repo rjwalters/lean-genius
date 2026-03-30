@@ -1,0 +1,137 @@
+{
+  "slug": "greens-theorem-oq-01-oq-02",
+  "title": "Green's theorem for smooth curves via Mathlib",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Green's theorem for smooth curves via Mathlib.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T13:07:48.620Z",
+    "iteration": 1,
+    "focus": "BLOCKED: requires smooth path integral infrastructure not in Mathlib",
+    "blockers": [
+      "Mathlib has no line integral definition for general smooth paths in R^2",
+      "No domain integral over bounded regions with smooth boundary",
+      "Only circleIntegral exists (complex analysis, not general curves)",
+      "Requires 500+ lines: smooth path type, 1-form integration, Stokes machinery"
+    ],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "BLOCKED: Mathlib has Path x y (continuous) and circleIntegral (complex), but no general smooth path integral or domain integral infrastructure needed for Green on smooth curves.",
+    "builtItems": [],
+    "insights": [
+      "Mathlib Path type (Topology.Connected.PathConnected) is continuous only — no smoothness",
+      "circleIntegral (MeasureTheory.Integral.CircleIntegral) is complex analysis specific",
+      "No general line integral of vector fields along parametrized curves in R^2",
+      "Parent proof (OQ01) uses intervalIntegral on rectangle boundary — each side is a line segment",
+      "Extending to smooth curves needs: (1) smooth path type, (2) line integral def, (3) domain integral, (4) theorem"
+    ],
+    "mathlibGaps": [
+      "No LineIntegral for vector fields along parametrized smooth curves in R^n",
+      "No double integral over bounded domains with smooth boundary (only rectangles via iterated intervalIntegral)",
+      "No orientation/winding number machinery for planar curves"
+    ],
+    "nextSteps": [
+      "Define SmoothPath (Path with C^1 regularity) and LineIntegral for 1-forms",
+      "Could state Green for piecewise-smooth curves (sum of integrals over segments)",
+      "Intermediate: prove Green for triangular regions (3 segments instead of 4)",
+      "Most tractable: define line integral and prove it equals existing rectangular computation for axis-aligned rectangles"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "multivariable-calculus",
+    "integration"
+  ],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:07:48.620Z",
+  "lastUpdate": "2026-03-30T13:07:48.620Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 353,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ]
+}

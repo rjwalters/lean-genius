@@ -21,7 +21,39 @@
       "Wowzer partition bounds vs tower for graphs",
       "Polyadic set framework is key missing piece"
     ],
-    "mathlibGaps": ["No k-uniform hypergraph in Mathlib"],
-    "nextSteps": ["Build polyadic set framework", "Formalize nested regularity"]
-  }
+    "mathlibGaps": [
+      "No k-uniform hypergraph in Mathlib"
+    ],
+    "nextSteps": [
+      "Build polyadic set framework",
+      "Formalize nested regularity"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediCore.lean",
+      "filename": "SzemerediCore.lean",
+      "lineCount": 111,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCore.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ03.lean",
+      "filename": "SzemerediCoreOQ03.lean",
+      "lineCount": 186,
+      "theoremCount": 0,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "szemeredi-core"
+  ]
 }

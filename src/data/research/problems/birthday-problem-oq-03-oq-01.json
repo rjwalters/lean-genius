@@ -1,0 +1,147 @@
+{
+  "slug": "birthday-problem-oq-03-oq-01",
+  "title": "Exact k=3 birthday coincidence threshold",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in probability theory: Exact k=3 birthday coincidence threshold.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-30T08:49:59.592Z",
+    "iteration": 1,
+    "focus": "Surveyed: exact threshold requires computing P(no 3-way) as product over multinomial arrangements",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Assessed tractability. Parent BirthdayProblemOQ03.lean has k-way pigeonhole (fully proved, 0 axioms). Exact k=3 threshold n=88 requires computing probability that all days have ≤2 people — a counting/probability computation best handled via computable functions + native_decide.",
+    "builtItems": [],
+    "insights": [
+      "Parent has HasKWay, fiberAt, generalized pigeonhole — all fully proved (0 axioms, 0 sorries)",
+      "Exact k=3 threshold for d=365 is n=88 (first n where P(≥3-way) > 1/2)",
+      "P(no 3-way with n people, d days) = sum over valid assignments (each day ≤ 2 people) / d^n",
+      "Approach: define computable noKWayProb function, verify threshold via native_decide or norm_num",
+      "For small d (e.g., d=7), threshold can be computed directly; d=365 may require efficient algorithms"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Define computable function: noKWayCount n d k = number of f : Fin n → Fin d with all fibers < k",
+      "Prove noKWayCount relates to HasKWay probability",
+      "Compute noKWayCount 87 365 3 > 365^87 / 2 and noKWayCount 88 365 3 ≤ 365^88 / 2 (or similar threshold)"
+    ]
+  },
+  "tags": [
+    "probability",
+    "combinatorics",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "birthday-problem",
+    "birthday-problem-oq-02",
+    "birthday-problem-oq-03",
+    "birthday-problem-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.591Z",
+  "lastUpdate": "2026-03-30T08:49:59.591Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/BirthdayProblem.lean",
+      "filename": "BirthdayProblem.lean",
+      "lineCount": 403,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblem.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemAsymptotics.lean",
+      "filename": "BirthdayProblemAsymptotics.lean",
+      "lineCount": 85,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemAsymptotics.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01.lean",
+      "filename": "BirthdayProblemOQ01.lean",
+      "lineCount": 514,
+      "theoremCount": 53,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02.lean",
+      "filename": "BirthdayProblemOQ02.lean",
+      "lineCount": 301,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01.lean",
+      "filename": "BirthdayProblemOQ02OQ01.lean",
+      "lineCount": 230,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03.lean",
+      "filename": "BirthdayProblemOQ03.lean",
+      "lineCount": 369,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01.lean",
+      "lineCount": 246,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01.lean"
+    }
+  ]
+}

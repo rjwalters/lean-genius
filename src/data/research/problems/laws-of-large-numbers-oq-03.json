@@ -1,0 +1,103 @@
+{
+  "slug": "laws-of-large-numbers-oq-03",
+  "title": "Law of Large Numbers for Dependent Random Variables",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in probability theory: Law of Large Numbers for Dependent Random Variables.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T13:49:26.405Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "ergodic-theory",
+    "extension"
+  ],
+  "relatedProofs": [
+    "laws-of-large-numbers",
+    "laws-of-large-numbers-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:49:26.405Z",
+  "lastUpdate": "2026-03-30T13:49:26.405Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/LawsOfLargeNumbers.lean",
+      "filename": "LawsOfLargeNumbers.lean",
+      "lineCount": 397,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbers.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01.lean",
+      "filename": "LawsOfLargeNumbersOQ01.lean",
+      "lineCount": 404,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean",
+      "filename": "LawsOfLargeNumbersOQ01Aristotle.lean",
+      "lineCount": 724,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
+      "filename": "LawsOfLargeNumbersOQ02.lean",
+      "lineCount": 331,
+      "theoremCount": 7,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ02.lean"
+    }
+  ]
+}

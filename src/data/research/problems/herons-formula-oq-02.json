@@ -1,0 +1,79 @@
+{
+  "slug": "herons-formula-oq-02",
+  "title": "herons-formula-oq-02",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T04:42:50-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved isoperimetric_quadrilateral in HeronsFormulaOQ01.lean (1→0 sorries). Proof uses 3 applications of 2-var AM-GM.",
+    "builtItems": [
+      "Proved isoperimetric_quadrilateral: brahmaguptaProduct ≤ ((a+b+c+d)/4)^4 via 3x AM-GM"
+    ],
+    "insights": [
+      "4-var AM-GM: pair factors (sa*sb, sc*sd), apply 2-var AM-GM to each pair, then to the geometric means"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: herons-formula-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "herons-formula",
+    "herons-formula-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.383Z",
+  "lastUpdate": "2026-03-30T11:59:37.397Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/HeronsFormula.lean",
+      "filename": "HeronsFormula.lean",
+      "lineCount": 276,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormula.lean"
+    },
+    {
+      "path": "Proofs/HeronsFormulaOQ01.lean",
+      "filename": "HeronsFormulaOQ01.lean",
+      "lineCount": 225,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormulaOQ01.lean"
+    }
+  ]
+}

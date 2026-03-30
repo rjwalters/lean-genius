@@ -11,7 +11,37 @@
       "Indicator expectation = probability via integral_indicator",
       "First moment method needs Markov's inequality + integrability"
     ],
-    "builtItems": ["ProbMethodExpectationOQ01.lean: 100 lines, 0 axioms, 2 sorries, 2 proved"],
+    "builtItems": [
+      "ProbMethodExpectationOQ01.lean: 100 lines, 0 axioms, 2 sorries, 2 proved"
+    ],
     "progressSummary": "COMPLETED: Bridge from Finset to MeasureTheory. Proved linearity + indicator expectation."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/ProbMethodExpectation.lean",
+      "filename": "ProbMethodExpectation.lean",
+      "lineCount": 137,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodExpectation.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodExpectationOQ01.lean",
+      "filename": "ProbMethodExpectationOQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodExpectationOQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "prob-method-expectation",
+    "prob-method-expectation-oq-01"
+  ]
 }
