@@ -53,13 +53,7 @@ def MaxNonReprUnbounded : Prop :=
 /- ## Asymptotic questions (OPEN - kept as axioms) -/
 
 /-- Is there an asymptotic upper bound `maxNonReprSize c n = O(f(n))` for some `f`? -/
-axiom maxNonRepr_bigO_bound (c : ℝ) (hc : 0 < c) :
-    ∃ f : ℕ → ℝ, IsBigO atTop (fun n => (maxNonReprSize c n : ℝ)) f
-
 /-- The growth rate might be `Θ(√n)` — this is a plausible conjecture. -/
-axiom maxNonRepr_plausible_theta (c : ℝ) (hc : 0 < c) :
-    IsTheta atTop (fun n => (maxNonReprSize c n : ℝ)) (fun n => Real.sqrt n)
-
 /- ## Proved basic properties -/
 
 /-- The empty set is always non-representing (for `n > 0`).

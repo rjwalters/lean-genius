@@ -78,10 +78,6 @@ theorem isPowerful_mul {m n : ℕ} (hm : IsPowerful m) (hn : IsPowerful n) :
 
 /-- **Erdős Problem #943**: Is r(n) = n^{o(1)}? That is, for every
     ε > 0, is r(n) < n^ε for all sufficiently large n? -/
-axiom erdos_943_subpolynomial :
-  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    (powerfulSumRep n : ℝ) ≤ (n : ℝ) ^ ε
-
 /- ## Part III: Known Results -/
 
 /-- **Powerful number density**: The number of powerful numbers
@@ -119,10 +115,6 @@ theorem trivial_upper_bound :
 /-- **Powerful number structure**: Every powerful number can be
     written as a²b³ for some a, b ≥ 1. The special structure
     constrains which pairs can sum to n. -/
-axiom powerful_structure :
-  ∀ n : ℕ, IsPowerful n →
-    ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ n = a ^ 2 * b ^ 3
-
 /- ## Part IV: Observations -/
 
 /- **Average order**: On average over n ≤ x, the sum

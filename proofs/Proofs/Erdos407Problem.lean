@@ -160,14 +160,8 @@ axiom tijdeman_wang_1988 :
 - w(n) ≤ 9 for all n
 - The maximum w(n) = 9 occurs at n = 299
 -/
-axiom bajpai_bennett_2024_large :
-  ∀ n : ℕ, n ≥ 131082 → (DistinctReps n).ncard ≤ 4
-
 axiom bajpai_bennett_2024_all :
   ∀ n : ℕ, (DistinctReps n).ncard ≤ 9
-
-axiom bajpai_bennett_2024_max :
-  (DistinctReps 299).ncard = 9
 
 /-
 ## Part V: Infinitely Many n with w(n) = 4
@@ -190,19 +184,9 @@ def FourRepFamily (a b : ℕ) (ha : a ≥ 2) (hb : b ≥ 2) : ℕ :=
 **The four representations agree:**
 All four formulas give the same n.
 -/
-axiom four_reps_equal (a b : ℕ) (ha : a ≥ 2) (hb : b ≥ 2) :
-  let n := FourRepFamily a b ha hb
-  IsValidRep n (a - 1) b (a - 1) 0 ∧
-  IsValidRep n (a - 2) b (a - 2) 1 ∧
-  IsValidRep n a (b - 1) 1 (b - 1) ∧
-  IsValidRep n a (b - 2) 3 (b - 2)
-
 /--
 **Infinitely many with 4 reps:**
 -/
-axiom infinitely_many_with_4_reps :
-    Set.Infinite {n : ℕ | (DistinctReps n).ncard = 4}
-
 /-
 ## Part VI: Summary
 -/

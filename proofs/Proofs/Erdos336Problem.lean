@@ -67,13 +67,7 @@ noncomputable def limitValue : ℝ :=
 /- ## Part 3: Known Bounds -/
 
 /-- Erdős-Graham (1980) original lower bound: lim ≥ 1/4. -/
-axiom erdos_graham_lower_1980 :
-  ∀ ε > 0, ∃ R : ℕ, ∀ r ≥ R, ((h r : ℕ) : ℝ) / (r^2 : ℝ) ≥ 1/4 - ε
-
 /-- Erdős-Graham (1980) original upper bound: lim ≤ 5/4. -/
-axiom erdos_graham_upper_1980 :
-  ∀ ε > 0, ∃ R : ℕ, ∀ r ≥ R, ((h r : ℕ) : ℝ) / (r^2 : ℝ) ≤ 5/4 + ε
-
 /-- Grekos (1988) improved lower bound: lim ≥ 1/3. -/
 axiom grekos_lower_1988 :
   ∀ ε > 0, ∃ R : ℕ, ∀ r ≥ R, ((h r : ℕ) : ℝ) / (r^2 : ℝ) ≥ 1/3 - ε
@@ -97,9 +91,6 @@ axiom h_2 : h 2 = 4
 axiom h_3 : h 3 = 7
 
 /-- 10 ≤ h(4) ≤ 11 (Plagne 2004). -/
-axiom h_4_lower : h 4 ≥ 10
-axiom h_4_upper : h 4 ≤ 11
-
 /-- Check: h(2)/2² = 4/4 = 1. -/
 example : (h 2 : ℚ) / (2^2 : ℚ) = 1 := by
   simp [h_2]
@@ -139,12 +130,6 @@ def consecutiveDiffs (a : ℕ → ℕ) (k : ℕ) : ℕ := a (k + 1) - a k
 
 /-- A has exact order iff the gcd of all consecutive differences is 1.
     Erdős-Graham characterization theorem from [ErGr80]. -/
-axiom erdos_graham_characterization (A : Set ℕ) (a : ℕ → ℕ)
-    (ha : ∀ k, a k ∈ A) (hinj : Function.Injective a) (hsurj : ∀ x ∈ A, ∃ k, a k = x)
-    (hord : ∀ k, a k < a (k + 1)) :
-    (∃ k, HasExactOrder A k) ↔
-    ∀ d > 1, ∃ k, ¬(d ∣ consecutiveDiffs a k)
-
 /- ## Part 7: Plagne's Refinement
 
 Plagne (2004) improved bounds on lower-order terms of h(r),
@@ -153,10 +138,6 @@ giving tighter estimates for the growth of h(r) beyond the leading r² term.
 
 /-- Plagne's (2004) refined bounds on h(r): r²/3 + cr ≤ h(r) ≤ r²/2 + C
     for explicit constants c, C. This axiom captures the lower-order improvement. -/
-axiom plagne_lower_order_2004 :
-    ∃ c C : ℝ, c > 0 ∧ ∀ r : ℕ, r ≥ 4 →
-      ((h r : ℕ) : ℝ) ≥ (r^2 : ℝ) / 3 + c * r - C
-
 /- ## Part 8: Main Results -/
 
 /-- Erdős Problem #336: Main statement combining bounds and known values. -/

@@ -269,9 +269,6 @@ theorem practical_examples :
 
 /-- Practical numbers have positive density (Margenstern 1991).
     This relates to our problem since practical n contribute to many dₜ. -/
-axiom practical_density_positive :
-    HasPositiveDensity {n : ℕ | IsPractical n}
-
 /- ## Part X: Subset Sum Problem -/
 
 /-- The subset sum problem: given a set S and target t, does some
@@ -288,15 +285,8 @@ theorem divisorSumSet_subsetSum (n t : ℕ) (hn : n > 0) :
 /- ## Part XI: Growth of σ(n) -/
 
 /-- Average order of σ(n): Σ_{n≤N} σ(n) ~ (π²/12) N². -/
-axiom sigma_average_order :
-    Tendsto (fun N => (∑ n in Finset.range (N + 1), sigma n : ℝ) / N^2)
-      atTop (𝓝 (Real.pi^2 / 12))
-
 /-- For "most" n, σ(n) ≈ n · (some logarithmic factor).
     This bounds how many n can contribute to DivisorSumSet t for large t. -/
-axiom sigma_typical_size :
-    ∀ᶠ n : ℕ in atTop, sigma n < n * (log n)^2
-
 /- ## Part XII: Summary -/
 
 /-- Summary of Erdős Problem #859:

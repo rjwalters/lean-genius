@@ -88,14 +88,6 @@ def IsBipartite {V : Type*} (G : SimpleGraph' V) : Prop :=
 /-- For graphs, the answer is known: a graph appears in every graph
 of chromatic number ≥ ℵ₁ if and only if it is bipartite.
 Non-bipartite graphs (those containing odd cycles) need not appear. -/
-axiom graph_case_solved :
-  ∀ (n : ℕ) (G : SimpleGraph' (Fin n)),
-    (∀ (V : Type*) (H : SimpleGraph' V),
-      ¬ ∃ (f : V → ℕ), ∀ v w, H.adj v w → f v ≠ f w →
-      ∃ (φ : Fin n → V), Function.Injective φ ∧
-        ∀ i j, G.adj i j → H.adj (φ i) (φ j)) ↔
-    IsBipartite G
-
 /-
 ## Section V: Known Constraints for 3-Uniform Case
 -/
@@ -107,14 +99,8 @@ def Is2Colorable {V : Type*} (H : Hypergraph3 V) : Prop :=
 
 /-- Any 2-colorable finite 3-uniform hypergraph is unavoidable.
 This is the analog of the bipartite graph case. -/
-axiom two_colorable_is_unavoidable (n : ℕ) (F : Hypergraph3 (Fin n))
-    (h : Is2Colorable F) : IsUnavoidable F
-
 /-- The complete 3-uniform hypergraph on 4 vertices (K₄³) has
 chromatic number 3 and is conjectured to be unavoidable. -/
-axiom k4_3_chromatic_number :
-  ∃ (F : Hypergraph3 (Fin 4)), F.edges.Finite ∧ ¬ Is2Colorable F
-
 /-
 ## Section VI: Erdős–Galvin–Hajnal
 -/
@@ -122,6 +108,3 @@ axiom k4_3_chromatic_number :
 /-- Erdős, Galvin, and Hajnal investigated which structures must appear
 in hypergraphs of large chromatic number. Their work established the
 framework for Problem 593. -/
-axiom erdos_galvin_hajnal_framework :
-  ∀ (n : ℕ) (F : Hypergraph3 (Fin n)),
-    Is2Colorable F → IsUnavoidable F

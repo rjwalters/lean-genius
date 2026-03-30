@@ -205,17 +205,11 @@ For any c > 0, N(k, ck) > (1 + α_c)^k.
 
 This shows exponential growth is necessary.
 -/
-axiom erdos_1963_lower_bound (c : ℝ) (hc : c > 0) :
-    ∀ k : ℕ, k > 0 → (Nkl k ⌈c * k⌉.toNat : ℝ) > (1 + alpha_c c) ^ k
-
 /--
 **Behavior of α_c:**
 - α_c → 0 as c → 0 (small discrepancy is easy to avoid)
 - α_c → √2 - 1 as c → 1 (approaching van der Waerden)
 -/
-axiom alpha_c_limit_zero : Filter.Tendsto alpha_c (nhds 0) (nhds 0)
-axiom alpha_c_limit_one : Filter.Tendsto alpha_c (nhds 1) (nhds (Real.sqrt 2 - 1))
-
 /-
 ## Part VII: The Main Open Questions
 -/
@@ -248,9 +242,6 @@ def SqrtDiscrepancyConjecture : Prop :=
 Even N(k, 2) has "no decent bound" according to Erdős-Graham.
 The best known bounds are super-exponential.
 -/
-axiom Nk2_grows_superpolynomially :
-    ∀ d : ℕ, ∃ k₀ : ℕ, ∀ k ≥ k₀, Nkl k 2 > k ^ d
-
 /-
 ## Part VIII: Relationship to Other Problems
 -/
@@ -261,19 +252,11 @@ The Erdős Discrepancy Conjecture (proved by Tao, 2015) states that
 for any f : ℕ → {-1,1}, sup_d sup_N |Σ_{i≤N} f(id)| = ∞.
 Our problem concerns APs rather than homogeneous APs.
 -/
-axiom tao_erdos_discrepancy (f : ℕ → Int) (hf : ∀ n, f n = 1 ∨ f n = -1) :
-    ∀ C : ℕ, ∃ d N : ℕ, d > 0 ∧ N > 0 ∧
-    |((Finset.range N).sum (fun i => f ((i + 1) * d)))| > C
-
 /--
 **Szemerédi's Theorem:**
 Any subset of ℕ with positive upper density contains arbitrarily long APs.
 This is related but different: Erdős #176 asks about colorings, not subsets.
 -/
-axiom szemeredi_theorem (A : Set ℕ) (hdens : ∀ N : ℕ, N > 0 →
-    (Finset.filter (· ∈ A) (Finset.range N)).card * 2 ≥ N) :
-    ∀ k : ℕ, ∃ a d : ℕ, d > 0 ∧ ∀ i < k, a + i * d ∈ A
-
 /-
 ## Part IX: Summary
 -/

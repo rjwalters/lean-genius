@@ -92,21 +92,10 @@ def StrongerQuestion : Prop :=
 **Vinogradov's Three Primes Theorem (1937):**
 Every sufficiently large odd integer is the sum of three primes.
 -/
-axiom vinogradov_three_primes :
-  ∃ N : ℕ, ∀ n : ℕ, n > N → Odd n →
-    ∃ p q r : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ Nat.Prime r ∧
-      n = p + q + r
-
 /--
 **Vinogradov for distinct primes:**
 The three primes can be chosen to be pairwise distinct.
 -/
-axiom vinogradov_distinct :
-  ∃ N : ℕ, ∀ n : ℕ, n > N → Odd n →
-    ∃ p q r : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ Nat.Prime r ∧
-      p ≠ q ∧ q ≠ r ∧ p ≠ r ∧
-      n = p + q + r
-
 /--
 **Vinogradov for primes less than n:**
 For large primes, they are sums of three distinct strictly smaller primes.
@@ -157,8 +146,6 @@ Axiomatized because the proof requires showing infinitely many primes
 appear in Q∞ (which we know contains all primes), then extracting
 finite stages Qᵢ with increasing cardinality.
 -/
-axiom ulams_question_positive : UlamsQuestion
-
 /--
 **Stronger answer:**
 Q∞ contains ALL primes.
@@ -217,9 +204,6 @@ theorem Q1_contains_23 : 23 ∈ QSeq ulamQ₀ 1 := by
 **Does Q∞ contain all primes starting from {3,5,7,11}?**
 This is a computational question; conjectured to be true.
 -/
-axiom ulam_example_contains_all_primes :
-  ∀ p : ℕ, Nat.Prime p → p ≥ 3 → p ∈ QLim ulamQ₀
-
 /- ## Part VI: Properties of the Sequence -/
 
 /--
@@ -255,20 +239,10 @@ theorem QSeq_primes (Q₀ : Set ℕ) (hQ₀ : ∀ p ∈ Q₀, Nat.Prime p) (i : 
 If Q contains all primes ≤ n, and n ≥ N (Vinogradov's constant),
 then Q can be extended to contain all primes ≤ n + 1.
 -/
-axiom vinogradov_induction (Q : Set ℕ) (n : ℕ) :
-    (∀ p : ℕ, Nat.Prime p → p ≤ n → p ∈ Q) →
-    ∃ Q' : Set ℕ, Q ⊆ Q' ∧
-      (∀ p : ℕ, Nat.Prime p → p ≤ n + 1 → p ∈ Q')
-
 /--
 **Eventually all primes are included:**
 By strong induction, starting from large enough Q₀.
 -/
-axiom eventually_all_primes (Q₀ : Set ℕ) (N : ℕ) :
-    (∀ p : ℕ, Nat.Prime p → p ≤ N → p ∈ Q₀) →
-    N ≥ Classical.choose vinogradov_smaller_primes →
-    ∀ p : ℕ, Nat.Prime p → ∃ i : ℕ, p ∈ QSeq Q₀ i
-
 /- ## Part VIII: Summary -/
 
 /--

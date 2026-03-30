@@ -179,17 +179,7 @@ def optimalConstantQuestion : Prop :=
 -/
 
 /-- Bondy-Simonovits: High minimum degree implies cycles of consecutive even lengths. -/
-axiom bondy_simonovits (G : SimpleGraph V) [DecidableRel G.Adj]
-    [Nonempty V] (d : ℕ) (hd : d ≥ 2) :
-    (∀ v : V, d ≤ (G.neighborFinset v).card) →
-    ∀ k, Even k → 4 ≤ k → k ≤ 2 * d → ContainsCycleLength G k
-
 /-- High average degree implies high minimum degree in a subgraph. -/
-axiom avg_to_min_degree (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) :
-    (avgDegree G : ℚ) ≥ 2 * d →
-    ∃ (S : Finset V), S.Nonempty ∧
-      ∀ v ∈ S, d ≤ ((G.neighborFinset v).filter (· ∈ S)).card
-
 /-
 ## Why Even Numbers Matter
 
@@ -211,9 +201,6 @@ This is why Erdős-Burr specifically required P to contain even numbers.
     we need vₖ₋₁ ∈ B, i.e., k-1 is odd, i.e., k is even.
 
     This is a classical result; we state it as an axiom. -/
-axiom bipartite_no_odd_cycles (G : SimpleGraph V) (hG : G.IsBipartite) :
-    ∀ k, Odd k → ¬ContainsCycleLength G k
-
 /-- The even condition is necessary: no constant works for odd-only progressions.
 
     Proof: Consider P = {3, 7, 11, ...} = {3 + 4k : k ∈ ℕ}, which consists entirely
@@ -227,13 +214,6 @@ axiom bipartite_no_odd_cycles (G : SimpleGraph V) (hG : G.IsBipartite) :
 
     Thus for odd-only progressions, the Erdős-Burr conjecture fails.
     This is why the "contains even numbers" condition is essential. -/
-axiom even_condition_necessary :
-    ∃ (a d : ℕ), a ≥ 3 ∧ d > 0 ∧ ¬ArithProg.containsEven a d ∧
-      ¬∃ c : ℚ, ∀ (V : Type*) [Fintype V] [DecidableEq V]
-        (G : SimpleGraph V) [DecidableRel G.Adj],
-        avgDegree G ≥ c →
-        ∃ k ∈ ArithProg a d, ContainsCycleLength G k
-
 /-
 ## Special Cases
 -/

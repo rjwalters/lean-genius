@@ -171,9 +171,6 @@ noncomputable def minConsecKthResidues (k m p : ℕ) : ℕ :=
 **Existence for Large Primes:**
 For sufficiently large p, consecutive kth power residues always exist.
 -/
-axiom consecutive_residues_exist (k m p : ℕ) (hp : Nat.Prime p) (hp_large : p > m) :
-    ∃ r : ℕ, r ≥ 1 ∧ AreConsecutiveKthResidues r k m p
-
 /-
 ## Part III: The Λ(k,m) Function
 -/
@@ -265,8 +262,6 @@ theorem erdos_436_question1 : ∀ k : ℕ, k ≥ 2 → LambdaFinite k 2 :=
 Proved by Lehmer, Lehmer, Mills, and Selfridge (1962).
 This was one of the early machine-assisted proofs in number theory.
 -/
-axiom lambda_3_3 : Lambda 3 3 = 23532
-
 /--
 **Λ(k,3) = ∞ for Even k:**
 Proved by Lehmer and Lehmer (1962).
@@ -330,9 +325,6 @@ theorem lambda_2_2_bound : Lambda 2 2 ≤ 9 := by
 There exist infinitely many primes where {9,10} is the first
 consecutive pair of quadratic residues.
 -/
-axiom lambda_2_2_achieved :
-    ∀ N : ℕ, ∃ p : ℕ, Nat.Prime p ∧ p > N ∧ minConsecKthResidues 2 2 p = 9
-
 /-
 ## Part IX: Growth Rate Questions
 -/
@@ -353,8 +345,6 @@ The known values suggest rapid growth. The ratios
 77/9 ≈ 8.6, 1224/77 ≈ 15.9, 7888/1224 ≈ 6.4, 202124/7888 ≈ 25.6
 are irregular. The exact growth rate as a function of k remains open.
 -/
-axiom growth_appears_super_polynomial : ¬growthRatePolynomial
-
 /-
 ## Part X: Summary
 -/

@@ -72,8 +72,6 @@ def InverseGoldbachConjecture : Prop :=
   ¬∃ A B : Set ℕ, InverseGoldbachPair A B
 
 /-- The conjecture is widely believed to be true -/
-axiom inverse_goldbach_conjectured : InverseGoldbachConjecture
-
 /-
 ## Part 3: Counting Functions
 
@@ -100,10 +98,6 @@ axiom elsholtz_harper_2015 (A B : Set ℕ) (h : InverseGoldbachPair A B) :
 -/
 
 /-- The prime counting function π(x) ~ x/log(x) -/
-axiom prime_counting_asymptotic :
-  Filter.Tendsto (fun x => (Nat.primeCounting x : ℝ) / (x / Real.log x))
-    Filter.atTop (nhds 1)
-
 /-
 ## Part 5: Three Sets Ruled Out
 
@@ -165,9 +159,6 @@ theorem goldbach_implies_sumset (hGold : GoldbachConjecture) :
 /-- But Primes + Primes ≠ Primes (mod finite): the sumset contains
     all sufficiently large even numbers (assuming Goldbach), while
     primes are almost all odd. -/
-axiom primes_sumset_not_primes :
-    ¬AgreeFinitely (Sumset Primes Primes) Primes
-
 /-
 ## Part 8: Structural Constraints
 
@@ -175,9 +166,6 @@ What A and B would have to look like.
 -/
 
 /-- A must contain 2 or be very special -/
-axiom must_contain_small_elements (A B : Set ℕ) (h : InverseGoldbachPair A B) :
-  (2 ∈ A ∨ 2 ∈ B) ∧ (1 ∈ A ∨ 1 ∈ B ∨ 2 ∈ A ∧ 2 ∈ B)
-
 /-
 ## Part 9: Main Problem Statement
 -/

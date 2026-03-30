@@ -83,9 +83,6 @@ theorem hypercube_vertex_count (n : ℕ) :
   exact Fintype.card_fun
 
 /-- Number of edges in Qₙ is n·2^(n-1) -/
-axiom hypercube_edge_count (n : ℕ) (hn : n ≥ 1) :
-    (hypercubeGraph n).edgeFinset.card = n * 2^(n-1)
-
 /-
 ## 4-Cycles in Hypercubes
 
@@ -123,9 +120,6 @@ The best known bounds leave a gap between 1/2 and ~0.603.
 -/
 
 /-- Erdős's lower bound (1991): f(n) ≥ (1/2 + c/n)·n·2^(n-1) -/
-axiom erdos_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 2, (f n : ℝ) ≥ (1/2 + c/n) * n * 2^(n-1)
-
 /-- Brass-Harborth-Nienborg lower bound (1995): f(n) ≥ (1/2 + c/√n)·n·2^(n-1) -/
 axiom bhn_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 2, (f n : ℝ) ≥ (1/2 + c/Real.sqrt n) * n * 2^(n-1)

@@ -103,14 +103,6 @@ such that the growth ratio bₖ/k² has no limit?
 
 The answer is currently unknown.
 -/
-axiom erdos_326_statement :
-    (∀ (A : Set ℕ), IsAddBasisOfOrder A 2 →
-      ∃ (b : ℕ → ℕ), StrictMono b ∧ (∀ n, b n ∈ A) ∧
-        IsAddBasis (range b) ∧ HasNoGrowthLimit b) ∨
-    ¬(∀ (A : Set ℕ), IsAddBasisOfOrder A 2 →
-      ∃ (b : ℕ → ℕ), StrictMono b ∧ (∀ n, b n ∈ A) ∧
-        IsAddBasis (range b) ∧ HasNoGrowthLimit b)
-
 /-
 ## Cassels' Result (1957)
 
@@ -127,10 +119,6 @@ and a positive real x, such that lim(k→∞) aₖ/k² = x.
 
 This disproves Erdős's original formulation where A = B was required.
 -/
-axiom cassels_1957 :
-    ∃ (a : ℕ → ℕ) (_ : StrictMono a) (_ : IsAddBasisOfOrder (range a) 2)
-      (x : ℝ) (_ : 0 < x), HasGrowthLimit a x
-
 /-
 ## Key Observations
 
@@ -148,8 +136,4 @@ axiom cassels_1957 :
 For any order 2 basis, elements can't grow faster than k².
 This is a standard result from additive combinatorics.
 -/
-axiom basis_upper_bound :
-    ∀ (a : ℕ → ℕ), StrictMono a → IsAddBasisOfOrder (range a) 2 →
-      ∃ C : ℝ, 0 < C ∧ ∀ k : ℕ, (a k : ℝ) ≤ C * (k : ℝ) ^ 2
-
 end Erdos326

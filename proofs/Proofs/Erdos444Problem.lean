@@ -91,20 +91,9 @@ axiom erdos_graham_conjecture_true : erdos_graham_conjecture
 /-- When A = ℕ, d_A(n) = d(n), the standard divisor function.
     H_A(x) ≈ log x. The maximum max_{n<x} d(n) grows like
     exp(c log x / log log x), much faster than any (log x)^k. -/
-axiom case_all_naturals :
-    ∀ k : ℕ, k ≥ 1 →
-    ∀ C : ℝ, C > 0 →
-    ∃ᶠ x in Filter.atTop, (M_A Set.univ x : ℝ) > C * (H_A Set.univ x)^k
-
 /-- When A = primes, d_A(n) = ω(n), the number of distinct prime factors.
     H_A(x) ≈ log log x (Mertens). max_{n<x} ω(n) ~ log x / log log x. -/
 def IsPrime (n : ℕ) : Prop := Nat.Prime n
-
-axiom case_primes :
-    let primes := {n : ℕ | Nat.Prime n}
-    ∀ k : ℕ, k ≥ 1 →
-    ∀ C : ℝ, C > 0 →
-    ∃ᶠ x in Filter.atTop, (M_A primes x : ℝ) > C * (H_A primes x)^k
 
 /-
 ## Part IV: Structural Properties
@@ -113,22 +102,10 @@ axiom case_primes :
 /-- Highly composite numbers relative to A achieve large d_A values.
     For any A and any target, there exist n with d_A(n) exceeding
     any power of H_A. -/
-axiom highly_composite_relative (A : Set ℕ) (hA : InfiniteSubset A) (k : ℕ) (hk : k ≥ 1) :
-    ∀ C : ℝ, C > 0 →
-    ∃ x : ℕ, (M_A A x : ℝ) > C * (H_A A x)^k
-
 /-- The maximum M_A grows at least exponentially relative to H_A:
     M_A(x) ≥ exp(c · H_A(x)) for some c > 0 depending on A. -/
-axiom exponential_lower_bound (A : Set ℕ) (hA : InfiniteSubset A) :
-    ∃ c : ℝ, c > 0 ∧
-    ∃ᶠ x in Filter.atTop, (M_A A x : ℝ) ≥ Real.exp (c * H_A A x)
-
 /-- There is no universal function f bounding M_A(x) in terms of H_A(x)
     for all infinite A: for any f, some A violates M_A(x) ≤ f(H_A(x)). -/
-axiom no_uniform_bound (f : ℝ → ℝ) :
-    ∃ A : Set ℕ, InfiniteSubset A ∧
-    ∃ᶠ x in Filter.atTop, (M_A A x : ℝ) > f (H_A A x)
-
 /-
 ## Part V: Summary
 -/

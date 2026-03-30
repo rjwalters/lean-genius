@@ -86,9 +86,6 @@ Lower bound ≥ 6, upper bound ≤ 10,000,000.
 -/
 
 -- Lower bound: k ≥ 5 (EGMRSS)
-axiom lower_bound_5 : ∀ k ∈ achievableSet, k ≥ 5
-
--- Improved lower bound: k ≥ 6 (Tsaturian 2017)
 axiom lower_bound_6 : ∀ k ∈ achievableSet, k ≥ 6
 
 -- Upper bound: k ≤ 10,000,000 exists in s (Erdős-Graham)
@@ -135,16 +132,6 @@ Noga Alon's observation about the original problem formulation.
 
 -- van der Waerden's theorem: any finite coloring of ℤ has arbitrarily long monochromatic APs
 -- This is why the original problem (without unit distance restriction) has no solution
-axiom vanDerWaerden : ∀ r k : ℕ, r > 0 → ∃ N : ℕ,
-  ∀ c : Fin r → ℕ → Bool,
-    ∃ i : Fin r, ∃ a d : ℕ, d > 0 ∧ ∀ j < k, c i (a + j * d) = true
-
--- Alon's observation: without unit distance restriction, no k works
--- (not formalized in detail here)
-axiom alon_observation : ¬ ∃ k : ℕ, ∀ c : PlaneColoring,
-  RedUnitDistanceFree c →
-    ¬ ∃ a d : ℂ, d ≠ 0 ∧ ∀ i : ℕ, i < k → c (a + i • d) = true
-
 /-
 # Part 6: Specific Constructions
 

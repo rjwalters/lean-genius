@@ -61,8 +61,6 @@ def PowerfulAlt (m : ℕ) : Prop :=
   ∃ a b : ℕ, a > 0 ∧ b > 0 ∧ m = a^2 * b^3
 
 /-- The set of integers in [n², (n+1)²). -/
-axiom squareIntervalSet (n : ℕ) : Set ℕ
-
 /-- h(n) = count of powerful integers in [n², (n+1)²). -/
 axiom h : ℕ → ℕ
 
@@ -100,11 +98,7 @@ The density of integers n with h(n) = l exists for each l.
 -/
 
 /-- A set A of naturals has natural density d if lim_{N to infty} |A cap [1,N]|/N = d. -/
-axiom HasDensity (A : Set ℕ) (d : ℝ) : Prop
-
 /-- Define delta_l as the density of {n : h(n) = l}. -/
-axiom delta : ℕ → ℝ
-
 /-
 ## De Koninck-Luca Lower Bound (2004)
 

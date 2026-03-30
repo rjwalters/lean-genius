@@ -74,21 +74,12 @@ noncomputable def gamma0 : ℝ := ∑' (k : ℕ), (k + 2 : ℝ).log / 2 ^ (k + 2
 
 This shows f(n) is "typically" around γ₀.
 -/
-axiom egrs_first_moment :
-    Tendsto (fun (x : ℕ) => (1 : ℝ) / x * ∑ n ∈ Icc 1 x, sumInvPrimesNotDivCentralBinom n)
-      atTop (𝓝 gamma0)
-
 /--
 **EGRS 1975 - Second Moment**: The Cesàro mean of f(n)² converges to γ₀².
 (1/x) ∑_{n ≤ x} f(n)² → γ₀² as x → ∞
 
 Combined with the first moment, this implies f(n) concentrates around γ₀.
 -/
-axiom egrs_second_moment :
-    Tendsto (fun (x : ℕ) =>
-      (1 : ℝ) / x * ∑ n ∈ Icc 1 x, sumInvPrimesNotDivCentralBinom n ^ 2)
-      atTop (𝓝 (gamma0 ^ 2))
-
 /--
 **EGRS 1975 - Almost Everywhere Result**: For almost all integers n,
 f(n) = γ₀ + o(1).
@@ -96,19 +87,12 @@ f(n) = γ₀ + o(1).
 This follows from the first two moments by a variance argument:
 Var(f) = E[f²] - E[f]² → γ₀² - γ₀² = 0.
 -/
-axiom egrs_almost_everywhere :
-    ∃ (o : ℕ → ℝ) (_ : Tendsto o atTop (𝓝 0)),
-      ∀ᶠ n in cofinite, sumInvPrimesNotDivCentralBinom n = gamma0 + o n
-
 /--
 **EGRS 1975 - Upper Bound**: For some c < 1 and all large n,
 f(n) ≤ c · log(log(n)).
 
 This improves the trivial bound from Mertens' theorem which gives c = 1 + o(1).
 -/
-axiom egrs_upper_bound : ∃ c < (1 : ℝ),
-    ∀ᶠ n in atTop, sumInvPrimesNotDivCentralBinom n ≤ c * (n : ℝ).log.log
-
 /- ## Understanding the Problem -/
 
 /--

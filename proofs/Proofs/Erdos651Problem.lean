@@ -94,20 +94,10 @@ axiom f_k (k n : ℕ) : ℕ
 **f_k achieves its purpose:**
 Any f_k(n) points in general position contain an n-vertex polyhedron.
 -/
-axiom f_k_achieves (k n : ℕ) (S : Finset (Fin k → ℝ))
-    (hGen : InGeneralPosition S) (hCard : S.card ≥ f_k k n) :
-    ContainsConvexPolyhedron S n
-
 /--
 **f_k is minimal:**
 There exist f_k(n) - 1 points in general position with no n-vertex polyhedron.
 -/
-axiom f_k_minimal (k n : ℕ) (hn : n ≥ k + 1) :
-    ∃ S : Finset (Fin k → ℝ),
-      InGeneralPosition S ∧
-      S.card = f_k k n - 1 ∧
-      ¬ContainsConvexPolyhedron S n
-
 /- ## Part IV: The Erdős-Klein-Szekeres Case (k = 2)
 -/
 
@@ -117,9 +107,6 @@ In the plane (k = 2), f_2(n) is the "happy ending problem".
 Erdős-Szekeres (1935) proved: f_2(n) ≤ 2^{n-2} + 1.
 Suk (2017) proved: f_2(n) = 2^{n + o(n)}.
 -/
-axiom erdos_klein_szekeres (n : ℕ) (hn : n ≥ 3) :
-    f_k 2 n ≤ 2^(n - 2) + 1
-
 /--
 **The ES Conjecture (proved by Suk 2017):**
 f_2(n) = 2^{n-2} + 1 for all n ≥ 3.
@@ -137,9 +124,6 @@ f_2(n) > f_3(n) > f_4(n) > ...
 In higher dimensions, it's easier to find convex subsets because
 there's "more room" for points to be in convex position.
 -/
-axiom f_k_decreasing (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k + 1) :
-    f_k k n > f_k (k + 1) n
-
 /- ## Part VI: The Original Conjecture
 -/
 

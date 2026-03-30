@@ -61,20 +61,10 @@ def HasPolynomialGaps (a : ℕ → ℕ) (c : ℝ) : Prop :=
 /-- **Erdős Problem #875 — Gap Question (Open).**
     Determine the infimum of c such that no admissible sequence has
     a(n+1) − a(n) ≤ n^c for all large n. -/
-axiom erdos_875_gap_threshold :
-  ∃ c₀ : ℝ, 0 < c₀ ∧
-    (∀ c : ℝ, c < c₀ → ¬ ∃ a : ℕ → ℕ, IsAdmissible a ∧ HasPolynomialGaps a c) ∧
-    (∀ c : ℝ, c₀ < c → ∃ a : ℕ → ℕ, IsAdmissible a ∧ HasPolynomialGaps a c)
-
 /-- Can an admissible sequence satisfy a(n+1)/a(n) → 1?
     Erdős noted this is "not completely trivial." -/
 def HasRatioOne (a : ℕ → ℕ) : Prop :=
   Filter.Tendsto (fun n => (a (n + 1) : ℝ) / (a n : ℝ)) Filter.atTop (nhds 1)
-
-axiom erdos_875_ratio_one :
-  ∃ a : ℕ → ℕ, IsAdmissible a ∧ HasRatioOne a
-
--- ## Structural Results
 
 /-- Powers of 2 form a strictly increasing sequence. -/
 theorem pow2_strictly_increasing : StrictlyIncreasing (fun n => 2 ^ n) := by
@@ -87,9 +77,6 @@ theorem pow2_strictly_increasing : StrictlyIncreasing (fun n => 2 ^ n) := by
 
     We axiomatize this as the full formal proof requires detailed bit-level
     reasoning about Nat.popcount and Finset.sum over powers of 2. -/
-axiom popcount_sum_distinct_pow2 (S : Finset ℕ) (hS : ∀ i ∈ S, ∀ j ∈ S, i ≠ j → (2:ℕ)^i + 2^j ≠ 2^(i+1)) :
-  Nat.popcount (S.sum (fun i => 2 ^ i)) = S.card
-
 /-- Powers of 2 are admissible: the r-fold sumsets are disjoint because
     sums of r distinct powers of 2 have exactly r bits set in binary.
     Different r gives different popcount, so the sumsets are disjoint.

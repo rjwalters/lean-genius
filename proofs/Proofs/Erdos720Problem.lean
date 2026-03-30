@@ -66,12 +66,8 @@ def CycleGraph (n : ℕ) (hn : n ≥ 3) : GraphOnN n where
 
 /-- The number of edges in a path Pₙ.
     A path on n vertices has exactly n-1 edges: connecting consecutive vertices. -/
-axiom path_edges (n : ℕ) (hn : n ≥ 1) : numEdges (PathGraph n) = n - 1
-
 /-- The number of edges in a cycle Cₙ.
     A cycle on n vertices has exactly n edges: n-1 path edges plus the closing edge. -/
-axiom cycle_edges (n : ℕ) (hn : n ≥ 3) : numEdges (CycleGraph n hn) = n
-
 /-
 ## Part II: Size Ramsey Numbers
 -/
@@ -148,9 +144,6 @@ axiom beck_cycle_theorem :
 def beckPathConstant : ℝ := 900 -- Dudek-Prałat (2017) improved bound
 
 /-- The improved bound from Dudek-Prałat (2017). -/
-axiom dudek_pralat_bound :
-  ∀ n : ℕ, n ≥ 2 → (sizeRamseyPath n : ℝ) ≤ 900 * n
-
 /-
 ## Part V: Lower Bounds
 -/
@@ -215,11 +208,6 @@ def ramseyComparison : Prop :=
 -/
 
 /-- Generalization to trees: size Ramsey of bounded-degree trees is linear. -/
-axiom tree_size_ramsey (Δ : ℕ) :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, ∀ T : GraphOnN n,
-    -- If T is a tree with max degree at most Δ
-    True → (sizeRamseyNumber n T : ℝ) ≤ c * n
-
 /-- Connection to Problem #559: size Ramsey of bounded-degree graphs. -/
 def problemConnection559 : Prop :=
   -- Problem #559 asks about R̂(G) for graphs with max degree Δ

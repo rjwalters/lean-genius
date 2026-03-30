@@ -35,20 +35,10 @@ noncomputable def minCosineSum (A : Finset ℕ) : ℝ :=
 /-- **Chowla's Cosine Problem (Erdős Problem #510)**: There exists
     c > 0 such that for every finite A ⊂ ℕ⁺ of size N, there
     exists θ with ∑_{n ∈ A} cos(nθ) < −c√N. -/
-axiom erdos_510_chowla :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ (A : Finset ℕ), (∀ a ∈ A, a > 0) → A.card > 0 →
-      ∃ θ : ℝ, cosineSum A θ < -c * Real.sqrt A.card
-
 /- ## Known Bounds -/
 
 /-- **Bedert (2025)**: There exists c > 0 such that for all finite
     A ⊂ ℕ⁺ of size N, min_θ ∑ cos(nθ) < −cN^{1/7}. -/
-axiom bedert_bound :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ (A : Finset ℕ), (∀ a ∈ A, a > 0) → A.card > 0 →
-      ∃ θ : ℝ, cosineSum A θ < -c * (A.card : ℝ) ^ (1 / 7 : ℝ)
-
 /- **Ruzsa (2004)**: Improved Bourgain's (1986) bound. The minimum
     cosine sum is at most −exp(O(√(log N))). -/
 
@@ -60,11 +50,6 @@ axiom bedert_bound :
 /-- **Sidon Set Construction**: For A = B − B where B is a Sidon set
     of size ≈ √N, the set A has size N and the minimum cosine sum
     is ≈ −√N. This shows √N is the best possible exponent. -/
-axiom sidon_optimality :
-  ∀ ε > 0, ∃ (A : Finset ℕ),
-    (∀ a ∈ A, a > 0) ∧ A.card > 0 ∧
-    ∀ θ : ℝ, cosineSum A θ > -(1 + ε) * Real.sqrt A.card
-
 /- ## Observations -/
 
 /- **Connection to Additive Combinatorics**: The cosine problem is

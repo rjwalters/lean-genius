@@ -59,9 +59,6 @@ This is by inclusion-exclusion: |mult of 2| + |mult of 3| - |mult of 6|.
 The count of multiples of d in {0,...,n} is ⌊n/d⌋ + 1 (including 0).
 Subtracting 1 for excluding 0 gives the formula for {1,...,n}.
 -/
-axiom threshold_eq_divisible_2_or_3 (n : ℕ) :
-    threshold n = (Finset.range (n + 1)).filter (fun m => 2 ∣ m ∨ 3 ∣ m) |>.card - 1
-
 /- ## Part II: The Extremal Example -/
 
 /--
@@ -77,11 +74,6 @@ Proof: For any a, b in the extremal set, both are divisible by 2 or 3.
 By pigeonhole among {2,3}, at least two of three elements share a prime.
 So at least one pair is not coprime, preventing any triangle.
 -/
-axiom extremal_set_triangle_free (n : ℕ) :
-    ∀ a b c, a ∈ extremalSet n → b ∈ extremalSet n → c ∈ extremalSet n →
-    a ≠ b → b ≠ c → a ≠ c →
-    ¬(Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c)
-
 /--
 Odd cycles in coprime graphs correspond to coprime chains.
 A cycle a₁ - a₂ - ... - aₖ - a₁ means each consecutive pair is coprime.
@@ -125,10 +117,6 @@ Question 1 remains open: the specific constant 1/3 has not been proved.
 Erdős-Sárkőzy proved the weaker version with some constant c < 1/3.
 The conjecture is that the answer is YES.
 -/
-axiom question_1_conjecture :
-    ∀ n : ℕ, n ≥ 100 → ∀ A : Finset ℕ,
-    erdos_883_question_1 n A
-
 /- ## Part V: Sárkőzy's Theorem on Complete Tripartite Subgraphs -/
 
 /--
@@ -211,23 +199,9 @@ theorem erdos_883 :
 The coprime graph on sets above the threshold has chromatic number ≥ 3.
 This is because it contains odd cycles, and bipartite graphs have chromatic number ≤ 2.
 -/
-axiom coprime_graph_chromatic (n : ℕ) (A : Finset ℕ) (hn : n ≥ 10)
-    (hA : A ⊆ Finset.range (n + 1))
-    (hsize : A.card > threshold n) :
-    ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧
-      a ≠ b ∧ b ≠ c ∧ a ≠ c ∧
-      Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c
-
 /--
 Small odd cycles always exist above threshold.
 -/
-axiom triangles_above_threshold (n : ℕ) (A : Finset ℕ) (hn : n ≥ 10)
-    (hA : A ⊆ Finset.range (n + 1))
-    (hsize : A.card > threshold n) :
-    ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧
-      a ≠ b ∧ b ≠ c ∧ a ≠ c ∧
-      Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c
-
 /- ## Part VIII: Connection to Inclusion-Exclusion -/
 
 /--
@@ -239,7 +213,4 @@ theorem threshold_by_inclusion_exclusion (n : ℕ) :
 /--
 For large n, threshold(n) ≈ (2/3)n.
 -/
-axiom threshold_asymptotic (n : ℕ) (hn : n ≥ 6) :
-    threshold n ≤ 2 * n / 3 + 1
-
 end Erdos883

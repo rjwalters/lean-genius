@@ -143,13 +143,6 @@ def isCompleteBipartite (G : SimpleGraph V) (n : ℕ) : Prop :=
 The complete bipartite graph K_{n,n+1} has exactly n² + n edges,
 and does NOT contain an equal-degree pair connected by path of length 3.
 -/
-axiom K_counterexample (n : ℕ) :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      numVertices V = 2 * n + 1 ∧
-      numEdges G = n^2 + n ∧
-      isCompleteBipartite G n ∧
-      ¬hasEqualDegreePath3Pair G
-
 /-
 ## Part VI: The Main Theorem (Chen-Ma 2025)
 -/
@@ -160,23 +153,12 @@ For n ≥ 600, every graph on 2n+1 vertices with at least n² + n edges
 contains an equal-degree pair connected by a path of length 3,
 EXCEPT for K_{n,n+1}.
 -/
-axiom chen_ma_theorem (n : ℕ) (hn : n ≥ 600) :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      @satisfiesWeakerEH816 V _ _ G _ n →
-      ¬isCompleteBipartite G n →
-      hasEqualDegreePath3Pair G
-
 /--
 **Corollary: Original Problem for n ≥ 600**
 With n² + n + 1 edges (one more than K_{n,n+1}), we definitely get
 an equal-degree path-3 pair. K_{n,n+1} has exactly n² + n edges,
 so any graph with n² + n + 1 edges cannot be K_{n,n+1}.
 -/
-axiom erdos_816_for_large_n (n : ℕ) (hn : n ≥ 600) :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      @satisfiesEH816 V _ _ G _ n →
-      hasEqualDegreePath3Pair G
-
 /--
 **Full Erdős Problem #816:**
 The answer is YES. For all n, any graph with 2n+1 vertices
@@ -195,10 +177,6 @@ axiom erdos_816_full :
 **Pigeonhole Principle for Degrees:**
 In any graph with at least 2 vertices, some pair of vertices must share a degree.
 -/
-axiom pigeonhole_degrees (G : SimpleGraph V) :
-    numVertices V ≥ 2 →
-    ∃ u v : V, u ≠ v ∧ sameDegree G u v
-
 /-
 ## Part VIII: Summary
 -/

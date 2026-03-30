@@ -297,10 +297,6 @@ Examples: Q₂ = 2·5 = 10, Q₃ = 2·3·7 = 42, Q₄ = 2·3·5·11 = 330.
 
 This is the best known unconditional result toward Erdős #891.
 We state this existentially since the precise Q requires prime enumeration. -/
-axiom schinzel_theorem_statement : ∀ k ≥ 2,
-    ∃ Q : ℕ, Q > 0 ∧
-    ∃ N : ℕ, ∀ n ≥ N, ∃ m : ℕ, n ≤ m ∧ m < n + Q ∧ bigOmega m > k
-
 /-
 ## Part VIII: Weisenberg's Conditional Counterexample
 
@@ -337,11 +333,6 @@ Under Dickson's conjecture, the interval length p₁···pₖ is sharp.
 Reducing it by 1 gives infinitely many counterexamples.
 
 Uses the general `primorial` so the statement is correct for all k ≥ 2. -/
-axiom weisenberg_conditional (k : ℕ) (hk : k ≥ 2) :
-    DicksonsConjecture →
-    ∃ S : Set ℕ, S.Infinite ∧ ∀ n ∈ S, ∀ m : ℕ,
-      n ≤ m → m < n + primorial k - 1 → bigOmega m ≤ k
-
 /-
 ## Part IX: Smooth Numbers
 

@@ -112,12 +112,6 @@ axiom conlon_janzer_lee_exponents :
 **Jiang-Qiu (2020):** The rationals 4/3 - 1/(3s) for s ≥ 2 are
 Turán exponents. Also 5/4 - 1/(4s) for s ≥ 2.
 -/
-axiom jiang_qiu_exponents_4_3 :
-  ∀ s : ℕ, s ≥ 2 → IsTuranExponent (4/3 - 1/(3*s))
-
-axiom jiang_qiu_exponents_5_4 :
-  ∀ s : ℕ, s ≥ 2 → IsTuranExponent (5/4 - 1/(4*s))
-
 /--
 **Jiang-Qiu (2023):** The rationals 1 + a/b with b > a² are Turán
 exponents. This addresses the difficult regime near 1, covering
@@ -130,9 +124,6 @@ axiom jiang_qiu_low_exponents :
 **Jiang-Ma-Yepremyan (2022):** The rationals 2 - 2/(2b+1) for b ≥ 2
 are Turán exponents. Also 7/5 is specifically achievable.
 -/
-axiom jiang_ma_yepremyan_exponents :
-  ∀ b : ℕ, b ≥ 2 → IsTuranExponent (2 - 2/(2*b + 1))
-
 axiom exponent_7_5 : IsTuranExponent (7/5)
 
 /--
@@ -140,9 +131,6 @@ axiom exponent_7_5 : IsTuranExponent (7/5)
 Turán exponents. This covers a dense set near 2, showing exponents
 ≥ 7/4 are well-understood.
 -/
-axiom conlon_janzer_near_two :
-  ∀ a b : ℕ, a ≥ 2 → b ≥ (a-1)^2 → IsTuranExponent (2 - (a : ℚ)/(b : ℚ))
-
 /- ## Part VI: Bukh-Conlon Finite Family Result -/
 
 /--
@@ -152,11 +140,6 @@ graphs such that the family extremal number ex(n; F) ≍ n^α.
 
 This solves a weakened version: families instead of single graphs.
 -/
-axiom bukh_conlon_families :
-  ∀ α : ℚ, 1 ≤ α → α < 2 →
-    ∃ (k : ℕ) (exF : ℕ → ℝ),
-      AsymptoticEquiv exF (fun n => (n : ℝ) ^ (α : ℝ))
-
 /- ## Part VII: Classical Upper Bounds -/
 
 /--
@@ -164,23 +147,11 @@ axiom bukh_conlon_families :
 with s ≤ t, ex(n; K_{s,t}) = O(n^{2-1/s}). This classical result
 shows forbidden bipartite subgraphs yield subquadratic extremal numbers.
 -/
-axiom kovari_sos_turan :
-  ∀ s t : ℕ, s ≥ 1 → s ≤ t →
-    ∃ (ex : ℕ → ℝ),
-      IsBigO ex (fun n => (n : ℝ)^(2 - 1/(s : ℝ)))
-
 /--
 **Bondy-Simonovits:** For any bipartite G, ex(n;G) = O(n^{2-1/k})
 for some k depending on G. This guarantees all bipartite Turán
 exponents lie in [1, 2).
 -/
-axiom bondy_simonovits_upper :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
-    IsBipartite G →
-    ∃ k : ℕ, k ≥ 1 ∧
-      ∃ (ex : ℕ → ℝ),
-        IsBigO ex (fun n => (n : ℝ)^(2 - 1/(k : ℝ)))
-
 /- ## Part VIII: Summary -/
 
 /--

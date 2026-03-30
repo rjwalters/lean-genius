@@ -72,10 +72,6 @@ def ErdosQuestion933 : Prop :=
 
 /-- **Mahler's Theorem:**
     The {2,3}-smooth part of n(n+1) is at most n^{1+o(1)}. -/
-axiom mahler_upper_bound :
-  ∀ ε > 0, ∃ N : ℕ,
-    ∀ n ≥ N, (consecutiveSmoothPart n : ℝ) < (n : ℝ)^(1 + ε)
-
 /-- Mahler's result comes from the theory of S-unit equations. -/
 def mahlerSUnitConnection : Prop :=
   -- The equation x + 1 = y where x, y are {2,3}-smooth has finitely many solutions
@@ -87,9 +83,6 @@ def mahlerSUnitConnection : Prop :=
 
 /-- **Erdős's Claim:**
     For infinitely many n, 2^k · 3^l > n · log n. -/
-axiom erdos_lower_bound :
-  ∀ M : ℝ, ∃ n : ℕ, n ≥ 2 ∧ (consecutiveSmoothPart n : ℝ) > n * Real.log n
-
 /-
 ## Part V: Steinerberger's Construction
 -/
@@ -103,9 +96,6 @@ theorem steinerberger_n_plus_1 (r : ℕ) :
     steinerbergerN r + 1 = 2^(3^r) + 1 := rfl
 
 /-- Key fact: 2^{3^r} + 1 is divisible by 3^{r+1}. -/
-axiom steinerberger_divisibility (r : ℕ) (hr : r ≥ 1) :
-    (3^(r + 1) : ℕ) ∣ steinerbergerN r + 1
-
 /-- For Steinerberger's construction:
     - k = 3^r (since n = 2^{3^r} is a power of 2)
     - l = r + 1 (since 3^{r+1} | n+1)
@@ -127,14 +117,7 @@ theorem limsup_infinite : ErdosQuestion933 :=
 -/
 
 /-- Observation: 2^{3^r} ≡ -1 (mod 3). -/
-axiom power2_mod3 (r : ℕ) (hr : r ≥ 1) :
-    2^(3^r) % 3 = 2  -- Actually -1 ≡ 2 (mod 3)
-
 /-- More precisely: 2^{3^r} + 1 ≡ 0 (mod 3^{r+1}). -/
-axiom lifting_the_exponent (r : ℕ) (hr : r ≥ 1) :
-    -- By Lifting the Exponent Lemma
-    (3^(r + 1) : ℕ) ∣ 2^(3^r) + 1
-
 /-- The exponent r+1 comes from the Lifting the Exponent Lemma. -/
 def LTEConnection : Prop :=
   -- LTE: For odd prime p and p | a + b but p ∤ a, b:

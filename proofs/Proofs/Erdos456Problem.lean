@@ -76,23 +76,8 @@ theorem dirichlet_primes_mod1 (n : ℕ) (hn : 1 ≤ n) :
 
 /-- Linnik's theorem: pₙ = O(n^L) for some constant L.
     Best known: L ≤ 5.18 (Xylouris 2011). -/
-axiom linnik_bound :
-  ∃ L : ℕ, ∀ n : ℕ, 1 ≤ n → smallestPrimeMod1 n ≤ n ^ L
-
 /-- mₙ/n → ∞ for almost all n.
     Erdős (1979): for any constant C, the set {n : mₙ ≤ Cn} has density 0. -/
-axiom m_over_n_diverges :
-  ∀ C : ℕ, ∀ ε : ℚ, 0 < ε → ∃ N : ℕ, ∀ M ≥ N,
-    ((Finset.filter (fun n => smallestTotientDiv n ≤ C * n)
-      (Finset.range M)).card : ℚ) < ε * ↑M
-
--- ═══════════════════════════════════════════════════════════════════════
--- PROVED PROPERTIES (9 total — formerly axioms, now proved)
---
--- Key insight: sInf-based definitions + well-ordering of ℕ make the
--- former axiom properties provable from Dirichlet (now proved from Mathlib).
--- ═══════════════════════════════════════════════════════════════════════
-
 /-- Any Set ℕ is bounded below (by 0). -/
 private lemma nat_bddBelow (s : Set ℕ) : BddBelow s :=
   ⟨0, fun _ _ => Nat.zero_le _⟩

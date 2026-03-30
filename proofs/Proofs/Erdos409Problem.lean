@@ -132,17 +132,9 @@ theorem iteration_terminates :
 /-- **Part (i)**: Estimate F(n), the iteration count.
     Cambie notes F(n) = o(n) is trivial and F(n) = 1 infinitely often.
     The question asks for good upper bounds on F(n). -/
-axiom erdos_409_upper_bound :
-  ∃ (g : ℕ → ℝ), (∀ n : ℕ, n > 0 → (iterationsToFirst n : ℝ) ≤ g n) ∧
-    g =o[atTop] (fun n => (n : ℝ))
-
 /-- **Part (ii)**: Can infinitely many n reach the same prime?
     That is, for some prime p, the set {n : ∃ k, totientIterate n k = p}
     is infinite. -/
-axiom erdos_409_same_prime :
-  ∃ p : ℕ, p.Prime ∧
-    {n : ℕ | ∃ k : ℕ, totientIterate n k = p}.Infinite
-
 /-- **Part (iii)**: What is the density of n reaching a fixed prime p?
     Note: The formalization only states the trivial existence of a value in [0,1].
     The full question asks for the actual density value and whether it is positive. -/

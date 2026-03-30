@@ -153,9 +153,6 @@ theorem distinctGapCount_def (n : ℕ) :
 /- ## Known Bounds -/
 
 /-- Maximal gap for primorial(k) grows like 2pₖ₋₁ (the Jacobsthal function bound) -/
-axiom maxGap_bound (k : ℕ) (hk : 2 ≤ k) :
-  maxGap (primorial k) ≤ 2 * nthPrime (k - 1)
-
 /-- The first missing gap: smallest positive even integer not in gapSet(n). -/
 noncomputable def firstMissingGap (n : ℕ) : ℕ :=
   2 * Nat.find (⟨(gapSet n).sup id + 1, fun h => by
@@ -174,21 +171,10 @@ theorem firstMissingGap_missing (n : ℕ) :
 
 /-- Lacampagne–Selfridge computation: for nₖ = 30030 (k=6),
     not all even integers up to the maximal gap appear -/
-axiom lacampagne_selfridge_counterexample :
-  ∃ d : ℕ, 2 ∣ d ∧ d < maxGap (primorial 6) ∧ d ∉ gapSet (primorial 6)
-
 /- ## The Erdős Conjectures -/
 
 /-- Erdős Problem 854, Part 1: Estimate the smallest even integer
     not representable as a consecutive gap in coprime residues of primorials -/
-axiom ErdosProblem854_missing_gap_growth :
-  ∀ C : ℕ, ∃ k : ℕ, C ≤ firstMissingGap (primorial k)
-
 /-- Erdős Problem 854, Part 2: The number of distinct even gaps
     is proportional to the maximal gap -/
-axiom ErdosProblem854_many_gaps :
-  ∃ c : ℚ, 0 < c ∧
-    ∀ k : ℕ, 2 ≤ k →
-      c * (maxGap (primorial k) : ℚ) ≤ (distinctGapCount (primorial k) : ℚ)
-
 end Erdos854

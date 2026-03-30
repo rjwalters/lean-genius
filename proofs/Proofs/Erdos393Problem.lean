@@ -85,9 +85,6 @@ def IsProductOfConsecutive (n : ℕ) : Prop :=
   ∃ k : ℕ, k ≥ 1 ∧ n.factorial = k * (k + 1)
 
 /-- f(n) = 1 iff n! is a product of two consecutive integers -/
-axiom f_eq_one_iff_consecutive (n : ℕ) (hn : n ≥ 2) :
-    f n = 1 ↔ IsProductOfConsecutive n
-
 /-- Example: 3! = 6 = 2 · 3, so f(3) ≤ 1 -/
 theorem example_3_factorial : 3.factorial = 2 * 3 := by
   native_decide
@@ -138,16 +135,8 @@ def UnconditionalTendsto : Prop :=
 -/
 
 /-- If n! = a₁ · ... · aₜ with aₜ = a₁ + m, then each aᵢ ≤ n! -/
-axiom factors_bounded (n : ℕ) (factors : List ℕ) (m : ℕ)
-    (h : IsValidFactorization n m factors) :
-    ∀ a ∈ factors, a ≤ n.factorial
-
 /-- The trivial factorization 1 · 2 · ... · n has span n - 1 -/
-axiom trivial_span (n : ℕ) (hn : n ≥ 1) : f n ≤ n - 1
-
 /-- f(n) ≥ 1 for n ≥ 2 -/
-axiom f_ge_one (n : ℕ) (hn : n ≥ 2) : f n ≥ 1
-
 /-
 ## Part 7: Connection to Diophantine Equations
 -/
@@ -157,9 +146,6 @@ def PolynomialFactorialEquation (P : ℕ → ℕ) (n : ℕ) : Prop :=
   ∃ x : ℕ, P x = n.factorial
 
 /-- For f(n) = 1: x(x+1) = n! is a Pell-like equation -/
-axiom f_one_is_pell_like (n : ℕ) :
-    f n = 1 ↔ ∃ x : ℕ, x * (x + 1) = n.factorial
-
 /-- Brocard's problem: n! + 1 = m² has only known solutions n = 4, 5, 7 -/
 def BrocardProblem : Prop :=
   ∀ n m : ℕ, n.factorial + 1 = m^2 → n ∈ ({4, 5, 7} : Set ℕ)
@@ -174,9 +160,6 @@ theorem density_zero (m : ℕ) (hm : m ≥ 1) :
   berend_osgood_1992 m hm
 
 /-- Corollary: f(n) achieves each value only finitely often, in density sense -/
-axiom sparse_values (m : ℕ) (hm : m ≥ 1) :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, (F m N : ℝ) < ε * N
-
 /-
 ## Part 9: Summary
 -/

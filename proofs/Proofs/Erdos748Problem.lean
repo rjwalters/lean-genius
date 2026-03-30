@@ -142,9 +142,6 @@ axiom green_upper_bound :
 **Sapozhenko's Theorem (2003):**
 Same result, proved independently.
 -/
-axiom sapozhenko_upper_bound :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → (f n : ℝ) ≤ C * 2 ^ (n / 2)
-
 /--
 **The Precise Asymptotic:**
 f(n) ~ c_n · 2^{n/2} where c_n depends on the parity of n.
@@ -222,21 +219,11 @@ Most sum-free sets are "essentially" one of:
 
 Green's proof shows type 1 and 2 dominate the count.
 -/
-axiom structure_theorem :
-  ∀ n : ℕ, n ≥ 100 →
-    let type1_count := 2 ^ (n / 2)  -- Subsets of upper half
-    let type2_count := 2 ^ ((n + 1) / 2)  -- Subsets of odds
-    (f n : ℝ) ≤ 10 * (type1_count + type2_count)
-
 /--
 **Schur's Theorem Connection:**
 Sum-free sets are related to Schur numbers.
 The maximum size of a sum-free subset of [1,n] is ⌈n/2⌉.
 -/
-axiom schur_connection :
-  ∀ n : ℕ, ∀ A : Finset ℕ, A ⊆ Finset.range (n + 1) → IsSumFree A →
-    A.card ≤ (n + 2) / 2
-
 /-
 ## Part VIII: OEIS A007865
 -/

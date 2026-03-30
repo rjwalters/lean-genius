@@ -150,21 +150,12 @@ def AlonVertexCount (r : ℕ) : ℝ :=
 Axiomatized because verifying these properties requires detailed
 combinatorial analysis of the partition-based construction.
 -/
-axiom alon_construction (r : ℕ) (hr : r ≥ 2) :
-    ∃ V : Type*, ∃ H : Hypergraph V,
-      IsUniform H r ∧
-      IsIntersecting H ∧
-      ChromaticAtMostThree H ∧
-      ∃ (fin : Fintype V), (Fintype.card V : ℝ) ≥ AlonVertexCount r / 2
-
 /--
 **Exponential growth:**
 The counterexample shows vertices can grow as 4^r/√r, not O(r²).
 Axiomatized: the inequality 4^r/√r > r² for large r follows from
 exponential vs polynomial growth but requires careful real analysis.
 -/
-axiom exponential_growth : ∃ r₀ : ℕ, ∀ r ≥ r₀, AlonVertexCount r > r^2
-
 /-
 ## Part V: Edge Intersection Question
 -/

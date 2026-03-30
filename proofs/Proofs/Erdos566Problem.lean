@@ -55,46 +55,18 @@ noncomputable def sizeRamsey {p q : ℕ} (G : Graph p) (H : Graph q) : ℕ :=
 /-- **Erdős Problem #566**: If G is (2k−3)-sparse, is G Ramsey
     size linear? That is, ∃ c > 0 such that r̂(G, H) ≤ c · |E(H)|
     for every H with no isolated vertices. -/
-axiom erdos_566_ramsey_size_linear :
-  ∀ (p : ℕ) (G : Graph p), IsSparse G →
-    ∃ c : ℝ, c > 0 ∧
-      ∀ (q : ℕ) (H : Graph q), NoIsolated H →
-        (sizeRamsey G H : ℝ) ≤ c * (edgeCount H : ℝ)
-
 /- ## Known Results -/
 
 /-- **EFRS (1993)**: Any graph G with n vertices and at most n+1
     edges is Ramsey size linear. -/
-axiom efrs_n_plus_one (p : ℕ) (G : Graph p) :
-  edgeCount G ≤ p + 1 →
-    ∃ c : ℝ, c > 0 ∧
-      ∀ (q : ℕ) (H : Graph q), NoIsolated H →
-        (sizeRamsey G H : ℝ) ≤ c * (edgeCount H : ℝ)
-
 /-- **Counterexample at 2n−2**: The sparsity condition 2k−3 is
     tight — there exist graphs with 2n−2 edges that are NOT
     Ramsey size linear. -/
-axiom not_linear_2n_minus_2 :
-  ∃ (p : ℕ) (G : Graph p), edgeCount G = 2 * p - 2 ∧
-    ¬∃ c : ℝ, c > 0 ∧
-      ∀ (q : ℕ) (H : Graph q), NoIsolated H →
-        (sizeRamsey G H : ℝ) ≤ c * (edgeCount H : ℝ)
-
 /- ## Related Results -/
 
 /-- **Sparsity threshold**: The (2k−3) bound is the boundary
     between graphs that might be Ramsey size linear and those
     that provably are not. Trees (n−1 edges) are known to be
     Ramsey size linear. -/
-axiom trees_ramsey_size_linear :
-  ∀ (p : ℕ) (G : Graph p), edgeCount G = p - 1 →
-    (∀ S : Finset (Fin p), S.card ≥ 2 →
-      Finset.card (Finset.filter
-        (fun e : Fin p × Fin p => e.1 ∈ S ∧ e.2 ∈ S ∧ e.1 < e.2 ∧ G.adj e.1 e.2)
-        Finset.univ) ≤ S.card - 1) →
-    ∃ c : ℝ, c > 0 ∧
-      ∀ (q : ℕ) (H : Graph q), NoIsolated H →
-        (sizeRamsey G H : ℝ) ≤ c * (edgeCount H : ℝ)
-
 /- **Implies Problem #567**: A positive answer to #566 would
     resolve #567 as well. -/

@@ -114,10 +114,6 @@ theorem sylvester_identity (n : ℕ) :
   ring
 
 /-- The telescoping property that leads to Σ 1/u_k = 1. -/
-axiom egyptian_fraction_sum :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      |1 - (∑ k ∈ Finset.range n, (1 : ℝ) / sylvester k)| < ε
-
 /-- Sylvester's sequence sums to 1 (limit form). -/
 axiom sylvester_sum_equals_one :
     Tendsto (fun n => ∑ k ∈ Finset.range n, (1 : ℝ) / sylvester k)
@@ -204,10 +200,6 @@ theorem sylvester_double_exponential :
   exact h
 
 /-- The ratio u_{n+1}/u_n² approaches 1. -/
-axiom sylvester_ratio_limit :
-    Tendsto (fun n => (sylvester (n + 1) : ℝ) / (sylvester n : ℝ)^2)
-      atTop (nhds 1)
-
 /-
 ## Part VII: Connection to Other Problems
 -/

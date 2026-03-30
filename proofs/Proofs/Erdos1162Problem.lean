@@ -156,11 +156,7 @@ theorem constant_explanation :
 axiom f1 : numSubgroups 1 = 1
 
 /-- f(2) = 2: S_2 has {e} and S_2 itself. -/
-axiom f2 : numSubgroups 2 = 2
-
 /-- f(3) = 6: S_3 has {e}, three copies of Z/2Z, one Z/3Z, and S_3 itself. -/
-axiom f3 : numSubgroups 3 = 6
-
 /-- f(4) = 30: S_4 has 30 subgroups. -/
 axiom f4 : numSubgroups 4 = 30
 

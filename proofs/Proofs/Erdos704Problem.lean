@@ -80,9 +80,6 @@ Larman and Rogers conjecture: χ(Gₙ) ≤ (2^{3/2}+o(1))ⁿ ≈ 2.828ⁿ.
 -/
 
 /-- Trivial upper bound from cube tiling. -/
-axiom trivial_upper_bound :
-  ∀ n : ℕ, n ≥ 1 → chi n ≤ ((2 + Real.sqrt n : ℝ)^n).toNat + 1
-
 /-- Larman-Rogers upper bound (1972): χ(Gₙ) ≤ (3+o(1))ⁿ. -/
 axiom larman_rogers_1972 :
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, chi n ≤ (((3 + ε) : ℝ)^n).toNat + 1
@@ -129,14 +126,8 @@ noncomputable def chromaticLimit : ℝ := Filter.limsSup Filter.atTop (fun n => 
 
 /-- Exponential growth: χ(Gₙ) grows exponentially in n.
     Follows from frankl_wilson_1981 applied with any fixed ε < 0.2. -/
-axiom exponential_growth :
-    ∃ c > 1, ∀ n : ℕ, n ≥ 1 → chi n ≥ (c : ℝ)^n
-
 /-- The base is between 1.2 and 3.
     Follows from frankl_wilson_1981 and larman_rogers_1972. -/
-axiom base_bounds :
-    1.2 ≤ chromaticLimit ∧ chromaticLimit ≤ 3
-
 /-
 ## Proof Techniques
 

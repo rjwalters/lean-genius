@@ -178,10 +178,6 @@ theorem erdos_714_r3 : erdosConjectureLowerBound 3 := by
 No construction achieving ex(n; K_{r,r}) >> n^{2-1/r} is known for r ≥ 4.
 Best known lower bounds are strictly weaker than the conjectured n^{2-1/r}.
 -/
-axiom best_known_lower_bound_r4 :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    (exKrr n 4 : ℝ) ≥ c * (n : ℝ)^(3/2 : ℝ)
-
 /-
 ## Part VI: Construction Methods
 -/
@@ -192,31 +188,17 @@ For r = 2, extremal graphs come from incidence graphs of projective planes.
 If q is a prime power, the incidence graph of PG(2,q) gives a K_{2,2}-free
 graph with q^2 + q + 1 vertices and (q+1)(q^2+q+1) edges.
 -/
-axiom projective_plane_construction :
-  ∀ q : ℕ, Nat.Prime q →
-    ∃ (G : SimpleGraph (Fin (q^2 + q + 1))) [DecidableRel G.Adj],
-      isKrrFree G 2 ∧ edgeCount G = (q + 1) * (q^2 + q + 1)
-
 /--
 **Generalized Polygons:**
 For r = 3, constructions use generalized hexagons (girth 12 cages).
 When q is a prime power, these give K_{3,3}-free graphs on O(q^3) vertices
 with O(q^5) edges, matching the n^{5/3} bound.
 -/
-axiom generalized_hexagon_construction :
-    ∀ q : ℕ, Nat.Prime q →
-    ∃ (G : SimpleGraph (Fin (q^3 + q^2 + q + 1))) [DecidableRel G.Adj],
-      isKrrFree G 3
-
 /--
 **Norm Graphs (Kollár-Rónyai-Szabó 1996):**
 Algebraic constructions using norms over finite fields give K_{r,r}-free
 graphs with Ω(n^{2-2/(r+1)}) edges, which is weaker than n^{2-1/r} for r ≥ 4.
 -/
-axiom norm_graph_lower_bound (r : ℕ) (hr : r ≥ 4) :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    (exKrr n r : ℝ) ≥ c * (n : ℝ)^(2 - 2/((r : ℝ) + 1))
-
 /-
 ## Part VII: Connection to Other Problems
 -/
@@ -227,10 +209,6 @@ Since K_{2,2} = C_4, the r = 2 case is equivalent to Erdős Problem #768.
 The equivalence holds because a graph contains K_{2,2} iff it contains
 a 4-cycle as a subgraph.
 -/
-axiom k22_equals_c4 :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    isKrrFree G 2 ↔ ¬containsCompleteBipartite G 2 2
-
 /--
 **Zarankiewicz Problem z(m,n;r,s):**
 The full Zarankiewicz problem asks for the maximum number of 1s in an
@@ -238,10 +216,6 @@ m×n 0-1 matrix with no all-1s r×s submatrix. The graph-theoretic
 version is: ex(n; K_{r,s}) relates to z(n,n;r,s) via the bipartite
 double cover construction.
 -/
-axiom zarankiewicz_matrix_connection (r : ℕ) (hr : r ≥ 2) :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    (exKrr n r : ℝ) ≤ c * (n : ℝ)^(2 - 1/(r : ℝ)) + (r : ℝ) * n / 2
-
 /-
 ## Part VIII: Main Results Summary
 -/

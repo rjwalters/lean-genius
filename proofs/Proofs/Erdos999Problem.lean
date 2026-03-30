@@ -90,14 +90,8 @@ def DuffinSchaefferConjecture : Prop :=
   ∀ f : ℕ → ℕ, SeriesDiverges f ↔ AlmostAllApproximable f
 
 /-- The easy direction: Approximable ⟹ Divergence (via Borel-Cantelli) -/
-axiom easy_direction (f : ℕ → ℕ) :
-    AlmostAllApproximable f → SeriesDiverges f
-
 /-- The hard direction: Divergence ⟹ Approximable (the actual conjecture).
     This took 79 years to prove (1941-2020). -/
-axiom hard_direction (f : ℕ → ℕ) :
-    SeriesDiverges f → AlmostAllApproximable f
-
 /- ## Part V: Erdős's Partial Result -/
 
 /-- Erdős's condition: f(q) · q is bounded -/
@@ -105,9 +99,6 @@ def ErdosCondition (f : ℕ → ℕ) : Prop :=
   ∃ C : ℕ, ∀ q : ℕ, f q * q ≤ C
 
 /-- Erdős's theorem: The conjecture holds when f(q)·q is bounded -/
-axiom erdos_bounded_case (f : ℕ → ℕ) (hf : ErdosCondition f) :
-    SeriesDiverges f ↔ AlmostAllApproximable f
-
 /- ## Part VI: Koukoulopoulos-Maynard Theorem (2020) -/
 
 /-- Koukoulopoulos-Maynard (2020): The full Duffin-Schaeffer conjecture.
@@ -121,9 +112,6 @@ theorem duffin_schaeffer_theorem : DuffinSchaefferConjecture :=
 /- ## Part VII: Consequences -/
 
 /-- If the series converges, almost no α is infinitely approximable -/
-axiom convergence_case (f : ℕ → ℕ) :
-    SeriesConverges f → AlmostNoneApproximable f
-
 /-- Zero-One Law: either almost all or almost none are approximable.
     Follows from the Duffin-Schaeffer theorem: divergence gives 'all',
     convergence gives 'none'. -/
@@ -131,18 +119,11 @@ axiom zero_one_law (f : ℕ → ℕ) :
     AlmostAllApproximable f ∨ AlmostNoneApproximable f
 
 /-- Classical case: f(q) = 1 gives almost all approximable (continued fractions) -/
-axiom continued_fraction_case :
-    let f : ℕ → ℕ := fun q => 1
-    AlmostAllApproximable f
-
 /- ## Part VIII: Khintchine's Theorem (Related) -/
 
 /-- Khintchine's original theorem (1924): for monotone decreasing f,
     ∑ f(q)/q = ∞ ↔ almost all α are approximable.
     Duffin-Schaeffer generalizes this to non-monotone f with the φ(q) correction. -/
-axiom khintchine_theorem (f : ℕ → ℕ) (hf : ∀ q₁ q₂, q₁ ≤ q₂ → f q₂ ≤ f q₁) :
-    (∑' q, (f q : ℝ) / q = ⊤) ↔ AlmostAllApproximable f
-
 /-- The limsup set of infinitely approximable reals -/
 noncomputable def LimsupSet (f : ℕ → ℕ) : Set ℝ :=
   { α | IsInfinitelyApproximable α f }

@@ -64,25 +64,13 @@ def ErdosProblem125 : Prop :=
 -/
 
 /-- Melfi (2001): |C ∩ [1,x]| ≫ x^{0.965}. -/
-axiom melfi_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∃ N₀ : ℕ,
-    ∀ x : ℕ, x ≥ N₀ → (countingC x : ℝ) ≥ c * (x : ℝ) ^ (0.965 : ℝ)
-
 /-- Hasler–Melfi (2024): improved to |C ∩ [1,x]| ≫ x^{0.9777}. -/
-axiom hasler_melfi_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∃ N₀ : ℕ,
-    ∀ x : ℕ, x ≥ N₀ → (countingC x : ℝ) ≥ c * (x : ℝ) ^ (0.9777 : ℝ)
-
 /-
 ## Section V: Upper Density Bound
 -/
 
 /-- Hasler–Melfi (2024): the upper density of C is at most ≈ 0.696.
 So even if C has positive density, it cannot fill more than 70% of ℕ. -/
-axiom upper_density_bound :
-  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ x : ℕ, x ≥ N₀ →
-    (countingC x : ℝ) / x ≤ 0.696 + ε
-
 /-
 ## Section VI: Generalization to Other Bases
 -/
@@ -102,5 +90,3 @@ def GeneralizedDensityQuestion (bases : List ℕ) : Prop :=
 /-- For bases 3 and 4: log₄(2) + log₄(2)/log₄(3) =
 log(2)/log(3) + log(2)/log(4) ≈ 0.631 + 0.5 = 1.131 > 1,
 satisfying the condition. -/
-axiom base_3_4_satisfies_condition :
-  Real.log 2 / Real.log 3 + Real.log 2 / Real.log 4 > 1

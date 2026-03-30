@@ -140,12 +140,6 @@ For any sequence of integers r₁ < r₂ < ⋯, there exists a sequence B
 with b_{i+1} ≥ r_i · b_i such that (A + A + A) ∩ B ≠ ∅
 for any A with gaps in [2, 3].
 This shows r₃(2, 3) does NOT exist! -/
-axiom bollobas_hegevari_jin_1997 :
-    ∀ R : ℕ → ℕ, (∀ i : ℕ, R i < R (i + 1)) →
-      ∃ B : ℕ → ℕ, (∀ i : ℕ, B (i + 1) ≥ R i * B i) ∧
-        ∀ A : ℕ → ℕ, HasBoundedGaps 2 3 A →
-          (ThreeFoldSumset (SeqRange A)) ∩ (SeqRange B) ≠ ∅
-
 /-- ThreeFold equals KFoldSumset 3. -/
 axiom threefold_eq_kfold (A : Set ℕ) :
     ThreeFoldSumset A = KFoldSumset 3 A
@@ -182,10 +176,6 @@ Further non-existence results for k ≥ 3.
 
 /-- **Tang-Yang (2021):**
 Additional non-existence results for specific parameter combinations with k ≥ 3. -/
-axiom tang_yang_2021 :
-    ∃ params : List (ℕ × ℕ × ℕ), params.length > 0 ∧
-      ∀ p ∈ params, let (k, d₁, d₂) := p; k ≥ 3 → ¬RkExists k d₁ d₂
-
 /- ##Part VIII: Summary
 
 **Erdős Problem #1112: PARTIALLY RESOLVED**

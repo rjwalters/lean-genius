@@ -62,9 +62,6 @@ def IsSquarefullAlt (m : ℕ) : Prop :=
 /--
 **Equivalence of squarefull characterizations:**
 -/
-axiom squarefull_equiv (m : ℕ) :
-    IsSquarefull m ↔ IsSquarefullAlt m
-
 /--
 **1 is squarefull:**
 Vacuously, no primes divide 1.
@@ -186,11 +183,6 @@ noncomputable def S (x : ℕ) : ℕ :=
 **Asymptotic for squarefull count:**
 S(x) ~ c · √x where c = ζ(3/2)/ζ(3) ≈ 2.173
 -/
-axiom squarefull_count_asymptotic :
-  ∃ c : ℝ, c > 0 ∧ c < 3 ∧
-    ∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
-      |((S x : ℝ) - c * Real.sqrt x)| < ε * Real.sqrt x
-
 /-
 ## Part IV: Erdős's Conjecture (Disproved)
 -/
@@ -223,13 +215,6 @@ A(x) ≫ exp(c · log log log x / log log x) · x / √(log x)
 This shows A(x) is asymptotically larger than x/√(log x) by a
 slowly growing factor.
 -/
-axiom odoni_lower_bound :
-  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧
-    ∀ x : ℕ, x ≥ 16 →
-      (A x : ℝ) ≥ C * Real.exp (c * Real.log (Real.log (Real.log x)) /
-                                    Real.log (Real.log x)) *
-                    x / Real.sqrt (Real.log x)
-
 /-
 ## Part VI: Blomer-Granville Refinement
 -/
@@ -248,14 +233,6 @@ A(x) = (log log x)^O(1) · x / (log x)^α
 
 where α = 1 - 2^(-1/3) ≈ 0.206299.
 -/
-axiom blomer_granville_2006 :
-  ∃ C K : ℝ, C > 0 ∧ K > 0 ∧
-    ∀ x : ℕ, x ≥ 16 →
-      (A x : ℝ) ≤ C * (Real.log (Real.log x))^K *
-                    x / (Real.log x)^alpha ∧
-      (A x : ℝ) ≥ (1/C) * (Real.log (Real.log x))^(-K) *
-                    x / (Real.log x)^alpha
-
 /--
 **Comparison of exponents:**
 α ≈ 0.206 vs 1/2 = 0.5

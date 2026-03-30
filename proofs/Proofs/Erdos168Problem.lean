@@ -100,14 +100,8 @@ noncomputable def limitDensity : ℝ :=
   Classical.choose gsw_limit_exists
 
 /-- The limit is positive. -/
-axiom limit_positive : limitDensity > 0
-
 /-- The limit is less than 1. -/
-axiom limit_less_than_one : limitDensity < 1
-
 /-- Numerical approximation: the limit is approximately 0.5564... -/
-axiom limit_approximation : |limitDensity - 0.5564| < 0.001
-
 /- ## Lower Bound Construction -/
 
 /-- A simple lower bound: removing multiples of 3 works.

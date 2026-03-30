@@ -159,13 +159,6 @@ theorem erdos_658 : GrahamConjectureAxisAligned := graham_axis_aligned_true
 There exists a threshold function N₀(δ) such that for N ≥ N₀(δ),
 every δ-dense subset contains a square.
 -/
-axiom qualitative_threshold :
-    ∀ δ : ℚ, δ > 0 →
-      ∃ N₀ : ℕ, ∀ N ≥ N₀,
-        ∀ A : Finset (ℕ × ℕ), A ⊆ grid N →
-          (A.card : ℚ) ≥ δ * (N * N : ℚ) →
-          containsAxisAlignedSquare A
-
 /-
 ## Part IV: Connection to Density Hales-Jewett
 
@@ -196,9 +189,6 @@ axiom density_hales_jewett :
 Squares in the grid correspond to special combinatorial structures
 that are guaranteed by density Hales-Jewett.
 -/
-axiom reduction_to_hales_jewett :
-    density_hales_jewett → GrahamConjectureAxisAligned
-
 /-
 ## Part V: Solymosi's Quantitative Bounds
 
@@ -210,23 +200,12 @@ Explicit but weak bounds on N₀(δ).
 N₀(δ) can be taken as an explicit function of 1/δ.
 The bound is effective but very large (tower-type).
 -/
-axiom solymosi_bound :
-    ∀ δ : ℚ, δ > 0 →
-      ∃ N₀ : ℕ, ∀ N ≥ N₀,
-        ∀ A : Finset (ℕ × ℕ), A ⊆ grid N →
-          (A.card : ℚ) ≥ δ * (N * N : ℚ) →
-          containsAxisAlignedSquare A
-
 /--
 **Bound quality:**
 Solymosi's bounds are tower-type in 1/δ, meaning
 N₀(δ) ~ tower(c/δ) for some constant c.
 This is typical for Hales-Jewett-based proofs.
 -/
-axiom tower_type_bound :
-    -- N₀(δ) grows as a tower function of 1/δ
-    True
-
 /-
 ## Part VI: Small Cases and Examples
 
@@ -257,13 +236,6 @@ theorem density_threshold_3x3 :
 It's possible to have dense sets without squares for small N,
 showing the "sufficiently large" condition is necessary.
 -/
-axiom small_counterexamples :
-    -- For small N, there exist δ-dense sets without squares
-    ∃ N : ℕ, ∃ δ : ℚ, δ > 0 ∧
-      ∃ A : Finset (ℕ × ℕ), A ⊆ grid N ∧
-        (A.card : ℚ) ≥ δ * (N * N : ℚ) ∧
-        ¬containsAxisAlignedSquare A
-
 /-
 ## Part VII: Generalizations
 
@@ -285,10 +257,6 @@ theorem higher_dimensional_cubes (d : ℕ) (hd : d ≥ 2) :
 The problem can be asked for tilted (non-axis-aligned) squares.
 This is also true but follows from different methods.
 -/
-axiom tilted_squares_exist :
-    -- Dense sets also contain tilted squares
-    True
-
 /-
 ## Part VIII: Summary
 -/

@@ -134,16 +134,10 @@ f(N) ≫ log N
 
 Construction: A set of size log N can be found with squarefree sumset.
 -/
-axiom erdos_sarkozy_lower_1987 (N : ℕ) (hN : N ≥ 2) :
-    ∃ C : ℝ, C > 0 ∧ (f N : ℝ) ≥ C * Real.log N
-
 /--
 **Erdős-Sárközy Upper Bound (1987):**
 f(N) ≪ N^{3/4} log N
 -/
-axiom erdos_sarkozy_upper_1987 (N : ℕ) (hN : N ≥ 2) :
-    ∃ C : ℝ, C > 0 ∧ (f N : ℝ) ≤ C * (N : ℝ)^((3 : ℝ)/4) * Real.log N
-
 /-
 ## Part V: Konyagin's Improvements (2004)
 -/
@@ -210,8 +204,6 @@ def question2_polylogarithmic : Prop :=
 **Erdős-Sárközy Conjecture:**
 The lower bound is closer to the truth, i.e., f(N) is polylogarithmic.
 -/
-axiom erdos_sarkozy_conjecture : question2_polylogarithmic
-
 /-
 ## Part VIII: Related Problems
 -/
@@ -223,11 +215,6 @@ a₁ < a₂ < ⋯ such that all a_i + a_j are squarefree.
 
 Upper bounds for f(N) imply lower bounds for the a_i.
 -/
-axiom connection_to_1103 :
-    question2_polylogarithmic →
-      ∃ c : ℝ, c > 0 ∧ ∀ (a : ℕ → ℕ), (∀ i j : ℕ, isSquarefree (a i + a j)) →
-        ∀ n : ℕ, (a n : ℝ) ≥ (n : ℝ)^c
-
 /--
 **k-power-free Generalization (Sárközy 1992):**
 Let f_k(N) be the max size of A ⊆ {1,...,N} with A + A being k-power-free.
@@ -235,11 +222,6 @@ Then similar bounds hold.
 -/
 def isKPowerFree (k n : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → ¬(p^k ∣ n)
-
-axiom sarkozy_k_power_free (k : ℕ) (hk : k ≥ 2) :
-    ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧
-      ∀ N : ℕ, N ≥ 2 → C₁ * Real.log N ≤ (f N : ℝ) ∧
-        (f N : ℝ) ≤ C₂ * (N : ℝ)^(1 - 1/((2 : ℝ) * k))
 
 /-
 ## Part IX: Structural Constraints on Squarefree Sumsets

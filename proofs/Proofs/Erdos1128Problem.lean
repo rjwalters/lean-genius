@@ -51,10 +51,6 @@ We axiomatize types of the correct cardinality.
 axiom A : Type*
 axiom B : Type*
 axiom C : Type*
-axiom card_A : Cardinal.mk A = Cardinal.aleph 1
-axiom card_B : Cardinal.mk B = Cardinal.aleph 1
-axiom card_C : Cardinal.mk C = Cardinal.aleph 1
-
 /- ## Part II: Colorings and Monochromatic Cubes -/
 
 /--
@@ -130,13 +126,6 @@ There exists a 2-coloring of ℵ₁ × ℵ₁ with no countably infinite
 monochromatic rectangle. The proof method is different from the 3D case.
 Axiomatized as the construction uses ordinal stepping-up techniques.
 -/
-axiom two_dim_negative :
-    ∃ (χ : A × B → Bool),
-    ∀ (A₁ : Set A) (B₁ : Set B),
-      hasCardAleph0 A₁ → hasCardAleph0 B₁ →
-      ¬(∀ a₁ ∈ A₁, ∀ a₂ ∈ A₁, ∀ b₁ ∈ B₁, ∀ b₂ ∈ B₁,
-        χ (a₁, b₁) = χ (a₂, b₂))
-
 /- ## Part VI: Main Theorem -/
 
 /--

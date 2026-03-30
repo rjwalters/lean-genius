@@ -110,9 +110,6 @@ axiom ruzsaB_has_sqrt_density : HasSqrtDensity ruzsaB
 
 /-- Key property: every n ≥ 1 has a UNIQUE representation n = a + b
     with a ∈ ruzsaA and b ∈ ruzsaB. -/
-axiom ruzsa_unique_representation (n : ℕ) (hn : n ≥ 1) :
-  ∃! p : ℕ × ℕ, p.1 ∈ ruzsaA ∧ p.2 ∈ ruzsaB ∧ p.1 + p.2 = n
-
 /-
 ## Part V: The Disproof
 -/
@@ -151,15 +148,7 @@ def ruzsaA_characterization : Prop :=
 /-- The elements of ruzsaB are 2 times elements of ruzsaA.
     Axiomatized because the proof requires unfolding the digit
     representation construction in detail. -/
-axiom ruzsaB_eq_double_ruzsaA :
-    ruzsaB = { n | ∃ m ∈ ruzsaA, n = 2 * m }
-
 /-- The growth rate is exactly √N (up to constants). -/
-axiom ruzsa_exact_growth :
-  ∃ c : ℝ, c > 0 ∧
-    HasExactSqrtDensity ruzsaA c ∧
-    HasExactSqrtDensity ruzsaB c
-
 /-
 ## Part VII: Ruzsa's Stronger Variant
 -/
@@ -175,8 +164,6 @@ def RuzsaVariant : Prop :=
     Even with the stronger condition |A ∩ {1,...,N}| ~ c·N^{1/2},
     it is unknown whether the sets must share infinitely many common
     differences. Axiomatized as an open conjecture. -/
-axiom ruzsaVariantOpen : RuzsaVariant
-
 /-
 ## Part VIII: The Difference Set
 -/
@@ -186,11 +173,6 @@ def differenceSet (A : Set ℕ) : Set ℤ :=
   { d | ∃ a a' : ℕ, a ∈ A ∧ a' ∈ A ∧ d = (a : ℤ) - a' }
 
 /-- For Ruzsa's A, the difference set is sparse. -/
-axiom ruzsaA_sparse_differences :
-  ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 1 →
-    (Finset.filter (fun d : ℤ => d ∈ differenceSet ruzsaA ∧ d.natAbs ≤ N)
-      (Finset.Icc (-N : ℤ) N)).card ≤ c * N^(1/2 : ℝ)
-
 /-- This sparseness is why common differences can be avoided. -/
 def sparseness_explanation : Prop :=
   -- If A - A and B - B are both sparse (density N^{1/2}),
@@ -202,10 +184,6 @@ def sparseness_explanation : Prop :=
 -/
 
 /-- For density > N^{1/2}, common differences exist. -/
-axiom larger_density_common_differences (α : ℝ) (hα : α > 1/2) :
-  ∀ A B : Set ℕ, HasDensityAtLeast A α → HasDensityAtLeast B α →
-    HasInfinitelyManyCommonDifferences A B
-
 /-- The threshold N^{1/2} is critical. -/
 def threshold_critical : Prop :=
   -- At density > N^{1/2}: common differences guaranteed

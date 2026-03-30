@@ -165,31 +165,14 @@ theorem induced_ramsey_number_finite (n : ℕ) (G : Graph (Fin n)) :
 **Rödl's Bipartite Bound (1973):**
 For bipartite graphs G on n vertices, R*(G) ≤ 2^{O(n)}.
 -/
-axiom rodl_bipartite_bound :
-  ∀ n : ℕ, ∃ C : ℝ, C > 0 ∧
-    ∀ G : Graph (Fin n),
-      -- (G is bipartite) →
-      True →
-      (inducedRamseyNumber n G : ℝ) ≤ 2^(C * n)
-
 /--
 **Kohayakawa-Prömel-Rödl Bound (1998):**
 R*(G) < 2^{O(n(log n)²)} for all graphs G on n vertices.
 -/
-axiom kpr_bound :
-  ∀ n : ℕ, n ≥ 2 → ∃ C : ℝ, C > 0 ∧
-    ∀ G : Graph (Fin n),
-      (inducedRamseyNumber n G : ℝ) ≤ 2^(C * n * (log n)^2)
-
 /--
 **Conlon-Fox-Sudakov Bound (2012):**
 R*(G) < 2^{O(n log n)} for all graphs G on n vertices.
 -/
-axiom cfs_bound :
-  ∀ n : ℕ, n ≥ 2 → ∃ C : ℝ, C > 0 ∧
-    ∀ G : Graph (Fin n),
-      (inducedRamseyNumber n G : ℝ) ≤ 2^(C * n * log n)
-
 /- ## Part VII: The Solution - Aragão et al. (2025)
 -/
 
@@ -245,10 +228,6 @@ theorem induced_ramsey_ge_ordinary (n : ℕ) (G : Graph (Fin n)) :
 There exist graphs where R*(G) is much larger than R(G).
 For example, complete bipartite graphs can exhibit superpolynomial gaps.
 -/
-axiom gap_can_be_large :
-    ∀ k : ℕ, ∃ n : ℕ, ∃ G : Graph (Fin n),
-      (inducedRamseyNumber n G : ℝ) ≥ k * (ordinaryRamseyNumber n G : ℝ)
-
 /- ## Part IX: Lower Bounds
 -/
 

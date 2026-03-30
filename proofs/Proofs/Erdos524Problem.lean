@@ -40,22 +40,10 @@ noncomputable def polyMax (t : ℝ) (n : ℕ) : ℝ :=
 /-- Erdős (unpublished): For almost all t ∈ (0,1) and every ε > 0,
     M_n(t)/n^{1/2-ε} → ∞ as n → ∞. This means M_n(t) grows at least
     almost as fast as √n. -/
-axiom erdos_lower_bound :
-  ∀ ε : ℝ, 0 < ε → ε < (1 : ℝ) / 2 →
-    ∀ᵐ t ∂MeasureTheory.volume, t ∈ Set.Ioo (0 : ℝ) 1 →
-      Filter.Tendsto (fun n : ℕ => polyMax t n / (n : ℝ) ^ ((1 : ℝ) / 2 - ε))
-        Filter.atTop Filter.atTop
-
 /- ## Known Upper Bound (Chung) -/
 
 /-- Chung: For almost all t ∈ (0,1), there exist infinitely many n such that
     M_n(t) ≤ C · √(n / log log n) for some absolute constant C. -/
-axiom chung_upper_bound :
-  ∃ C : ℝ, 0 < C ∧
-    ∀ᵐ t ∂MeasureTheory.volume, t ∈ Set.Ioo (0 : ℝ) 1 →
-      ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧
-        polyMax t n ≤ C * Real.sqrt ((n : ℝ) / Real.log (Real.log n))
-
 /- ## Main Open Problem -/
 
 /-- Erdős Problem #524: Determine the correct order of magnitude of M_n(t)

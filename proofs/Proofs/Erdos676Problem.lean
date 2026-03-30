@@ -96,10 +96,6 @@ noncomputable def exceptionCount (x : ℕ) : ℕ :=
 
 -- Brun-Selberg bound: exceptions are sparse
 -- |ExceptionSet ∩ [1,x]| ≪ x/(log x)^c
-axiom brun_selberg_bound : ∃ c : ℝ, c > 0 ∧
-  ∀ x : ℕ, x > 1 → (exceptionCount x : ℝ) ≤ x / (Real.log x)^c
-
--- The density of representable numbers is 1
 axiom density_one : Filter.Tendsto
   (fun x => (x - exceptionCount x : ℝ) / x) atTop (nhds 1)
 
@@ -144,21 +140,12 @@ def IsRepresentableGeneral (n : ℕ) : Prop :=
   ∃ a m b, a ≥ 1 ∧ m ≥ 2 ∧ b < m ∧ n = a * m^2 + b
 
 -- Selfridge-Wagstaff suggest infinitely many general exceptions
-axiom selfridge_wagstaff_conjecture :
-  ¬ (∃ N : ℕ, ∀ n ≥ N, IsRepresentableGeneral n)
-
--- The minimal coefficient c_n: smallest a such that n = a*p² + b for some p, b
--- If no representation exists, c_n is undefined (we use 0 as placeholder)
 noncomputable def minimalCoefficient (n : ℕ) : ℕ :=
   if h : IsRepresentable n then
     Nat.find ⟨_, h⟩  -- This is a simplification
   else 0
 
 -- Erdős conjectured limsup c_n = ∞
-axiom erdos_minimal_conjecture : ∀ C : ℕ,
-  ∃ᶠ n in atTop, minimalCoefficient n > C
-
--- Related question: Is c_n < n^{o(1)}?
 def SubpolynomialGrowth : Prop :=
   ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
     IsRepresentable n → (minimalCoefficient n : ℝ) < n^ε

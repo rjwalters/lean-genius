@@ -96,28 +96,14 @@ noncomputable def squarefreeDensity : ℝ := 6 / Real.pi^2
     Any sequence with property P has density 0.
 
     If A = {a₁ < a₂ < ...} has property P, then aⱼ / j → ∞. -/
-axiom propertyP_density_zero (A : ℕ → ℕ) (h_inc : StrictMono A)
-    (hP : HasPropertyP (range A)) :
-    Tendsto (fun j => (A j / j : ℝ)) atTop atTop
-
 /-- **Axiom (van Doorn-Tao 2025):**
     Sequences with property P can have density going to 0 arbitrarily slowly.
 
     For any function f → ∞, there exists A with property P and aⱼ/j ≤ f(j). -/
-axiom propertyP_arbitrarily_slow (f : ℕ → ℕ) (h_inf : Tendsto f atTop atTop)
-    (h_pos : ∀ n, f n ≠ 0) :
-    ∃ A : ℕ → ℕ, StrictMono A ∧
-    HasPropertyP (range A) ∧
-    ∀ j : ℕ, (A j : ℝ) / j ≤ f j
-
 /-- **Axiom (van Doorn-Tao 2025):**
     Any sequence with property Q has upper density at most 6/π².
 
     If A = {a₁ < a₂ < ...} has property Q, then limsup (j/aⱼ) ≤ 6/π². -/
-axiom propertyQ_upper_density (A : ℕ → ℕ) (h_inc : StrictMono A)
-    (hQ : HasPropertyQ (range A)) :
-    limsup (fun j : ℕ ↦ j / A j) atTop ≤ squarefreeDensity
-
 /-- **Axiom (van Doorn-Tao 2025):**
     There exists a sequence with property Q achieving density 6/π².
 
@@ -165,8 +151,4 @@ def powersOfTwoPlus1 : ℕ → ℕ := fun n => 2^n + 1
     The sequences 2^n ± 1 and n! ± 1 have property Q.
 
     Whether they have property P remains open. -/
-axiom special_sequences_have_Q :
-    HasPropertyQ (range powersOfTwoMinus1) ∧
-    HasPropertyQ (range powersOfTwoPlus1)
-
 end Erdos1102

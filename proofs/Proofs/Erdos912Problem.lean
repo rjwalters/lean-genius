@@ -166,16 +166,10 @@ theorem exponent_monotone (p : ℕ) (hp : p.Prime) :
 **Maximum exponent:**
 The largest exponent in n! is the exponent of 2, which is ~n.
 -/
-axiom max_exponent_is_two (n : ℕ) (hn : n ≥ 2) :
-    ∀ p : ℕ, p.Prime → exponentInFactorial p n ≤ exponentInFactorial 2 n
-
 /--
 **Exponent of 2 in n!:**
 The exponent of 2 is n - (binary digit sum of n).
 -/
-axiom exponent_of_two (n : ℕ) :
-    exponentInFactorial 2 n = n - (Nat.popcount n)
-
 /-
 ## Part V: Small Values
 -/
@@ -187,16 +181,10 @@ axiom exponent_of_two (n : ℕ) :
 - h(3) = 1 (exponents are 1 for 2 and 3)
 - h(4) = 2 (exponents: 2^3 · 3^1, so {3,1})
 -/
-axiom h_small_values :
-    h 1 = 0 ∧ h 2 = 1 ∧ h 3 = 1 ∧ h 4 = 2
-
 /--
 **Sequence values (OEIS A071626):**
 h(n) for n = 1,2,3,...,20 is: 0,1,1,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,4,...
 -/
-axiom h_sequence_prefix :
-    h 10 = 3 ∧ h 20 = 4 ∧ h 100 ≥ 7
-
 /-
 ## Part VI: Why the Conjecture is Hard
 -/
@@ -206,19 +194,11 @@ axiom h_sequence_prefix :
 Proving the exact asymptotic requires understanding the fine distribution
 of exponents, which depends on prime gaps and the distribution of primes.
 -/
-axiom conjecture_difficulty :
-    -- The gap between known bounds (c₁, c₂) needs to be closed to a single c
-    True
-
 /--
 **Connection to prime distribution:**
 The behavior of h(n) is intimately related to how primes cluster and
 their multiplicative structure.
 -/
-axiom prime_distribution_connection :
-    -- Cramér's model gives heuristic but rigorous proof is hard
-    True
-
 /-
 ## Part VII: Summary
 -/
@@ -241,8 +221,4 @@ theorem erdos_912_summary :
 We know c₁ ≤ c ≤ c₂ but not the exact value of c.
 Tao conjectures c = √(2π).
 -/
-axiom constant_gap :
-    taoConstant = Real.sqrt (2 * Real.pi) ∧
-    taoConstant > 2.5 ∧ taoConstant < 2.51
-
 end Erdos912

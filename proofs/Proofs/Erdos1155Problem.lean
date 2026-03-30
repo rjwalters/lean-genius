@@ -53,15 +53,8 @@ This is the function f(n) from the problem statement. -/
 axiom triangleRemovalEdges : ℕ → ℝ
 
 /-- The triangle removal process leaves a non-negative number of edges. -/
-axiom triangleRemovalEdges_nonneg (n : ℕ) : 0 ≤ triangleRemovalEdges n
-
 /-- The triangle removal process on K_n starts with C(n,2) edges and can only
 remove edges, so f(n) ≤ n(n-1)/2. -/
-axiom triangleRemovalEdges_le_complete (n : ℕ) :
-    triangleRemovalEdges n ≤ (n * (n - 1) : ℝ) / 2
-
--- ## Known Results
-
 /-- **Bohman-Frieze-Lubetzky (2015)**: f(n) = n^{3/2 + o(1)} almost surely.
 Upper bound part: for every ε > 0, eventually f(n) < n^{3/2 + ε}. -/
 axiom bfl_upper_bound :

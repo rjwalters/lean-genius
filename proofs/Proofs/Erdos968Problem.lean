@@ -83,10 +83,6 @@ sequence satisfies Σ_{pₙ < x} |uₙ₊₁ - uₙ| ≍ (log x)².
 This means the sequence oscillates significantly - the cumulative change
 is proportional to (log x)².
 -/
-axiom erdos_prachar_total_variation :
-    (fun x : ℕ => ∑ n ∈ Finset.range (Nat.primeCounting' x),
-      |u (n + 1) - u n|) =Θ[atTop] fun x => Real.log x ^ 2
-
 /--
 **Erdős-Prachar Theorem 2**: The set of decreasing steps {n : uₙ > uₙ₊₁}
 has positive natural density.
@@ -113,8 +109,6 @@ Note: Since the set of "flat steps" (where uₙ = uₙ₊₁) is likely measure 
 increasing and decreasing sets to partition most of ℕ. But proving density
 for one doesn't immediately give it for the other.
 -/
-axiom erdos_968_open : Prop  -- unknown: Set.HasPosDensity increasingSteps
-
 /-
 ## Related Questions: Triples
 
@@ -131,14 +125,10 @@ def decreasingTriples : Set ℕ := {n | u n > u (n + 1) ∧ u (n + 1) > u (n + 2
 **Erdős Question (OPEN)**: Are there infinitely many increasing triples
 n with uₙ < uₙ₊₁ < uₙ₊₂?
 -/
-axiom increasing_triples_infinite_open : Prop  -- unknown: increasingTriples.Infinite
-
 /--
 **Erdős Question (OPEN)**: Are there infinitely many decreasing triples
 n with uₙ > uₙ₊₁ > uₙ₊₂?
 -/
-axiom decreasing_triples_infinite_open : Prop  -- unknown: decreasingTriples.Infinite
-
 /-
 ## Prime Number Theorem Connection
 
@@ -151,9 +141,6 @@ The sequence grows slowly (logarithmically) on average.
 
 This is axiomatized as the full proof requires PNT from Mathlib.
 -/
-axiom u_asymptotic_log : ∀ ε > 0, ∀ᶠ n in atTop,
-    |u n - Real.log n| < ε * Real.log n
-
 /-
 ## Verified Examples
 

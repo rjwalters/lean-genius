@@ -26,10 +26,6 @@ import Mathlib.Tactic
 /-- Abstract representation of a complex polynomial of degree n -/
 axiom ComplexPoly : ℕ → Type
 
-/-- The degree of a polynomial -/
-axiom polyDegree : {n : ℕ} → ComplexPoly n → ℕ
-axiom polyDegree_eq (n : ℕ) (p : ComplexPoly n) : polyDegree p = n
-
 /-- Whether the lemniscate {z : |p(z)| ≤ 1} is connected -/
 axiom IsLemniscateConnected : {n : ℕ} → ComplexPoly n → Prop
 
@@ -37,29 +33,11 @@ axiom IsLemniscateConnected : {n : ℕ} → ComplexPoly n → Prop
 axiom maxDerivOnLemniscate : {n : ℕ} → ComplexPoly n → ℝ
 
 /-- The maximum of |p'(z)| is always non-negative -/
-axiom maxDeriv_nonneg (n : ℕ) (p : ComplexPoly n) :
-  0 ≤ maxDerivOnLemniscate p
-
 /- ## Known Bounds -/
 
 /-- Lower bound: the maximum derivative on a connected lemniscate is at least n.
     Equality is achieved by p(z) = zⁿ. -/
-axiom lemniscate_deriv_lower (n : ℕ) (hn : 1 ≤ n) (p : ComplexPoly n)
-    (hc : IsLemniscateConnected p) :
-  (n : ℝ) ≤ maxDerivOnLemniscate p
-
-/-- The monomial p(z) = zⁿ achieves the lower bound -/
-axiom monomial_poly : (n : ℕ) → ComplexPoly n
-axiom monomial_connected (n : ℕ) (hn : 1 ≤ n) :
-  IsLemniscateConnected (monomial_poly n)
-axiom monomial_deriv_eq (n : ℕ) (hn : 1 ≤ n) :
-  maxDerivOnLemniscate (monomial_poly n) = (n : ℝ)
-
 /-- Pommerenke's bound: max |p'| ≤ (e/2) · n² on connected lemniscates -/
-axiom pommerenke_upper (n : ℕ) (hn : 1 ≤ n) (p : ComplexPoly n)
-    (hc : IsLemniscateConnected p) :
-  maxDerivOnLemniscate p ≤ (2718 : ℝ) / 1000 / 2 * ((n : ℝ) ^ 2)
-
 /-- Chebyshev polynomials of degree n -/
 axiom chebyshev_poly : (n : ℕ) → ComplexPoly n
 axiom chebyshev_connected (n : ℕ) (hn : 1 ≤ n) :
@@ -75,11 +53,6 @@ axiom chebyshev_deriv_asymptotic :
 
 /-- Erdős Problem 115 (PROVED by Eremenko–Lempert):
     For connected lemniscates, max |p'| ≤ (1/2 + o(1)) · n² -/
-axiom ErdosProblem115_proved :
-  ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
-    ∀ p : ComplexPoly n, IsLemniscateConnected p →
-      maxDerivOnLemniscate p ≤ (1 / 2 + ε) * ((n : ℝ) ^ 2)
-
 /-- The bound is sharp: Chebyshev polynomials show n²/2 is the correct constant -/
 theorem ErdosProblem115_sharp :
     ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, ∀ n : ℕ, N ≤ n →

@@ -107,9 +107,6 @@ noncomputable def minSmoothness (n : ℕ) : ℕ :=
 Every n can be written as a + b with a, b having only "small" prime factors.
 (The question is how small.)
 -/
-axiom minSmoothness_exists : ∀ n : ℕ, n ≥ 1 →
-    ∃ y : ℕ, hasSmootPairRepr n y ∧ y ≤ n
-
 /-
 ## Part IV: Known Bounds
 -/
@@ -238,10 +235,6 @@ noncomputable def smoothCount (x y : ℝ) : ℕ :=
 **de Bruijn's Asymptotic:**
 For u = log x / log y, ψ(x, y) ~ x · ρ(u) where ρ is the Dickman function.
 -/
-axiom de_bruijn_asymptotic :
-    ∀ x y : ℝ, x ≥ 2 → y ≥ 2 →
-      ∃ ρu : ℝ, ρu > 0 ∧ smoothCount x y ≤ x * ρu + x / 2
-
 /--
 **Goldbach-Type Connection:**
 This problem is related to Goldbach-type questions about

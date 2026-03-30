@@ -122,8 +122,6 @@ The arc lengths decrease like 1/n but slightly faster than the critical rate.
 Axiomatized as an ArcSequence since the proofs that (1+c)/n → 0 and
 Σ(1+c)/n diverges require analysis lemmas.
 -/
-axiom superCriticalSeq (c : ℝ) (hc : c > 0) : ArcSequence
-
 /--
 **Kahane (1959) + Erdős:**
 a_n = (1+c)/n covers the circle with probability 1 for any c > 0.
@@ -142,8 +140,6 @@ axiom erdos_critical : CoversWithProbOne criticalSeq
 **Subcritical sequence:** a_n = (1-c)/n for 0 < c < 1.
 Arc lengths decrease slightly slower than the critical rate.
 -/
-axiom subCriticalSeq (c : ℝ) (hc : c > 0) (hc1 : c < 1) : ArcSequence
-
 /-
 ## Part V: Verification of Shepp's Criterion for Special Cases
 -/

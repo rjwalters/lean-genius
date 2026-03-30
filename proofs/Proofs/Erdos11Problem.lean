@@ -104,24 +104,10 @@ def IsSquarefreePlusTwoPow2 (n : ℕ) : Prop :=
 /- ## Connection to Wieferich Primes (Granville-Soundararajan 1998) -/
 
 /-- Granville-Soundararajan: Erdős 11 implies infinitely many non-Wieferich primes -/
-axiom granville_soundararajan :
-  Erdos11Conjecture → InfinitelyManyNonWieferich
-
 /- ## Computational Verification -/
 
 /-- Hercher (2024): Verified for all odd n up to 2^50 -/
-axiom hercher_verification :
-  ∀ n : ℕ, Odd n → 1 < n → n < 2^50 → IsSquarefreePlusPow2 n
-
 /-- Odlyzko: Earlier verification up to 10^7 -/
-axiom odlyzko_verification :
-  ∀ n : ℕ, Odd n → 1 < n → n < 10^7 → IsSquarefreePlusPow2 n
-
 /- ## Density Result -/
 
 /-- Erdős proved the conjecture holds for almost all n -/
-axiom erdos_almost_all :
-  ∃ (S : Set ℕ), (∀ n ∈ S, Odd n → IsSquarefreePlusPow2 n) ∧
-    -- S has density 1 among odd numbers
-    Filter.Tendsto (fun N => (Finset.filter (· ∈ S) (Finset.range N)).card / N)
-      Filter.atTop (nhds 1)

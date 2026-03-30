@@ -120,16 +120,10 @@ def hCount (x : ℕ) : ℕ :=
 **Erdős 1974: h(x)/x → ∞ (limsup)**
 Erdős proved that the ratio h(x)/x is unbounded.
 -/
-axiom erdos_1974_limsup :
-  ∀ M : ℕ, ∃ x : ℕ, x > 0 ∧ h x > M * x
-
 /--
 **Pollack-Pomerance 2016: h(x)/x → ∞ (limit)**
 They strengthened Erdős's result to show h(x)/x → ∞.
 -/
-axiom pollack_pomerance_2016 :
-  Tendsto (fun x => (h x : ℚ) / x) atTop atTop
-
 /--
 **Implication: h grows faster than linear**
 For any C, eventually h(x) > C·x.

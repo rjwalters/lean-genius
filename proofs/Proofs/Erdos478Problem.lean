@@ -58,9 +58,6 @@ theorem factorial_residues_nonzero (p : ℕ) [hp : Fact (Nat.Prime p)] (hp2 : p 
   omega
 
 /-- Upper bound: |A_p| ≤ p - 2 for all primes p > 5. -/
-axiom factorial_residue_upper (p : ℕ) [Fact (Nat.Prime p)] (hp : p > 5) :
-  factorialResidueCount p ≤ p - 2
-
 /- ## Ratio Set Identity -/
 
 /-- The ratio set A_p / A_p covers all nonzero residues modulo p.
@@ -135,29 +132,16 @@ theorem factorial_residue_sqrt_lower (p : ℕ) [hp : Fact (Nat.Prime p)] :
 /- ## Improved Lower Bound (GSSV 2024) -/
 
 /-- The product set A_p · A_p has near-full size (2024 result). -/
-axiom product_set_near_full (p : ℕ) [Fact (Nat.Prime p)] :
-  ∀ ε : ℝ, ε > 0 → ∃ P₀ : ℕ, ∀ q : ℕ, [Fact (Nat.Prime q)] →
-    q > P₀ → (factorialResidueCount q : ℝ) ≥ (Real.sqrt 2 - ε) * Real.sqrt q
-
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #478** (OPEN): |A_p| ~ (1 - 1/e) · p.
     More precisely, |A_p| / p → (1 - 1/e) as p → ∞ through primes. -/
-axiom erdos_478_conjecture :
-  ∀ ε : ℝ, ε > 0 → ∃ P₀ : ℕ, ∀ p : ℕ, [Fact (Nat.Prime p)] →
-    p > P₀ →
-      |((factorialResidueCount p : ℝ) / (p : ℝ)) - conjecturedDensity| < ε
-
 /- ## Heuristic Motivation -/
 
 /-- The 1 - 1/e heuristic: if factorial residues behaved like random elements
     of Z/pZ, each new k! mod p independently hits a new residue with probability
     (p - |current set|)/p. After p-1 steps this gives expected coverage
     p · (1 - (1 - 1/p)^(p-1)) ≈ p · (1 - 1/e). -/
-axiom random_model_heuristic :
-  ∀ ε : ℝ, ε > 0 → ∃ P₀ : ℕ, ∀ p : ℕ,
-    p > P₀ → |(1 - (1 - 1 / (p : ℝ)) ^ (p - 1)) - (1 - Real.exp (-1))| < ε
-
 /-- Consecutive factorials: (k+1)! = (k+1) · k! in ZMod p.
     Proved from Mathlib's `Nat.factorial_succ`. -/
 theorem factorial_as_multiplicative_walk (p : ℕ) [Fact (Nat.Prime p)] :

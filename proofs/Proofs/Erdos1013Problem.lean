@@ -71,28 +71,15 @@ def Erdos1013RatioConvergence : Prop :=
 
 /-- **Lower bound**: h₃(k) ≥ (1/2 − o(1))·k²·log k.
     No triangle-free graph on fewer vertices can have chromatic number k. -/
-axiom lower_bound :
-  ∀ ε : ℝ, ε > 0 → ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
-    (triangleFreeChromThreshold k : ℝ) ≥ (1/2 - ε) * (k : ℝ) ^ 2 * Real.log k
-
 /-- **Upper bound**: h₃(k) ≤ (1 + o(1))·k²·log k.
     There exist triangle-free graphs achieving chromatic number k
     on this many vertices. -/
-axiom upper_bound :
-  ∀ ε : ℝ, ε > 0 → ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
-    (triangleFreeChromThreshold k : ℝ) ≤ (1 + ε) * (k : ℝ) ^ 2 * Real.log k
-
 /-- **Graver–Yackel** (1968): h₃(k) ≫ (log k / log log k)·k².
     Early lower bound using probabilistic deletion.
 
     Note: The previous statement used `c > 0 →` (implication) inside
     the existential, making it trivially true by picking c ≤ 0.
     Fixed to use `c > 0 ∧` (conjunction). -/
-axiom graver_yackel_bound :
-  ∃ c : ℝ, c > 0 ∧ ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
-    (triangleFreeChromThreshold k : ℝ) ≥
-      c * (k : ℝ) ^ 2 * Real.log k / Real.log (Real.log k)
-
 /- ## Helper Lemmas -/
 
 /-- Coloring monotonicity: k-colorable implies m-colorable for k ≤ m. -/
@@ -179,14 +166,8 @@ theorem threshold_two :
 
 /-- h₃(3) = 5: the Mycielski graph M₃ (cycle C₅) has 5 vertices, is triangle-free,
     and has chromatic number 3. -/
-axiom threshold_three :
-  triangleFreeChromThreshold 3 = 5
-
 /-- h₃(4) = 11: the Mycielski graph M₄ (Grötzsch graph) has 11 vertices,
     is triangle-free, with chromatic number 4. -/
-axiom threshold_four :
-  triangleFreeChromThreshold 4 = 11
-
 /- ## Proved Results -/
 
 /-- **Any graph can be n-colored using n colors** (one color per vertex). -/

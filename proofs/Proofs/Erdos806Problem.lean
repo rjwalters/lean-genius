@@ -124,11 +124,6 @@ For any A ⊆ {1, ..., n} with |A| ≤ √n, there exists B with
 A ⊆ B + B and |B| = o(√n). This follows from the Alon-Bukh-Sudakov
 upper bound since (log log n / log n) → 0.
 -/
-axiom erdos_806 :
-    ∀ n : ℕ, n ≥ 2 →
-      ∀ A : Finset ℤ, (∀ a ∈ A, 1 ≤ a ∧ a ≤ n) → A.card ≤ Nat.sqrt n →
-        ∃ B : Finset ℤ, IsBasisFor B A ∧ B.card < Nat.sqrt n
-
 /-
 ## Part V: The Tight Bound
 
@@ -204,10 +199,6 @@ theorem trivial_basis (A : Finset ℤ) :
 (log log n / log n) → 0 as n → ∞. This is a standard calculus result
 ensuring the Alon-Bukh-Sudakov bound gives |B| = o(√n).
 -/
-axiom log_factor_is_o_one :
-    Filter.Tendsto (fun n : ℕ => (Real.log (Real.log n) / Real.log n))
-      Filter.atTop (nhds 0)
-
 /-
 ## Part IX: Summary
 -/
@@ -225,10 +216,4 @@ Erdős-Newman lower bound from 1977.
 
 This resolves a 32-year-old problem in additive combinatorics.
 -/
-axiom erdos_806_summary :
-    ∀ n : ℕ, n ≥ 2 →
-      ∀ A : Finset ℤ, (∀ a ∈ A, 1 ≤ a ∧ a ≤ n) → A.card ≤ Nat.sqrt n →
-        ∃ B : Finset ℤ, IsBasisFor B A ∧
-          (B.card : ℝ) ≤ (Real.log (Real.log n) / Real.log n) * Real.sqrt n
-
 end Erdos806

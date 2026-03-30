@@ -83,11 +83,6 @@ def g_k_exists (k n : ℕ) : Prop :=
 
 /-- The function g_k(n) (axiomatized) -/
 axiom g_k (k n : ℕ) : ℕ
-axiom g_k_achievable (k n : ℕ) (hn : n ≥ k + 2) :
-    ∃ G : Graph n, AvoidsCycleWithKChords G k ∧ edgeCount G = g_k k n
-axiom g_k_maximal (k n : ℕ) (G : Graph n) :
-    AvoidsCycleWithKChords G k → edgeCount G ≤ g_k k n
-
 /-
 ## Part III: Known Bounds
 -/
@@ -105,17 +100,8 @@ axiom erdos_lower (k n : ℕ) (hn : n ≥ k + 1) :
 -/
 
 /-- Pósa: g_1(n) = 2n - 4 for n ≥ 4 -/
-axiom posa_k1 (n : ℕ) (hn : n ≥ 4) :
-    g_k 1 n = 2 * n - 4
-
 /-- Erdős: g_2(n) = 3n - 9 for n ≥ 6 -/
-axiom erdos_k2 (n : ℕ) (hn : n ≥ 6) :
-    g_k 2 n = 3 * n - 9
-
 /-- Erdős: g_3(n) = 4n - 16 for n ≥ 8 -/
-axiom erdos_k3 (n : ℕ) (hn : n ≥ 8) :
-    g_k 3 n = 4 * n - 16
-
 /-
 ## Part V: Jiang's Theorem (2004)
 -/

@@ -85,10 +85,6 @@ f_{k,3}(x) ≥ c · x^{3/k} for all sufficiently large x.
 In Mathlib's asymptotic notation, this asks whether x^{3/k} = O(f_{k,3}(x)).
 
 This remains OPEN. We state it as an axiom. -/
-axiom erdos_325_conjecture : ∀ k : ℕ, 3 ≤ k →
-    (fun x : ℕ => (x : ℝ) ^ (3 / k : ℝ)) =O[atTop]
-    (fun x : ℕ => (cardIsSumThreePowerBelow k x : ℝ))
-
 /-
 ## Variants and Partial Results
 
@@ -99,10 +95,6 @@ are known partial results for specific values of k.
 /-- A weaker variant: is f_{k,3}(x) ≫_ε x^{3/k - ε} for every ε > 0?
 
 This is also OPEN. -/
-axiom erdos_325_weaker : ∀ ε : ℝ, 0 < ε → ∀ k : ℕ, 3 ≤ k →
-    (fun x : ℕ => (x : ℝ) ^ ((3 / k : ℝ) - ε)) =O[atTop]
-    (fun x : ℕ => (cardIsSumThreePowerBelow k x : ℝ))
-
 /-- **Wooley's Theorem (2015)**: For sums of three cubes (k = 3),
 f_{3,3}(x) ≫ x^{0.917}.
 
@@ -110,10 +102,6 @@ This is the best known bound for k = 3, falling short of the
 conjectured x^1 = x^{3/3}.
 
 We state this as an axiom since the proof is beyond Mathlib. -/
-axiom wooley_three_cubes :
-    (fun x : ℕ => (x : ℝ) ^ (0.917 : ℝ)) =O[atTop]
-    (fun x : ℕ => (cardIsSumThreePowerBelow 3 x : ℝ))
-
 /-
 ## Context: The Two-Term Case
 
@@ -135,8 +123,4 @@ noncomputable def cardIsSumTwoPowerBelow (k x : ℕ) : ℕ :=
 
 This is the analogue of the conjecture for two terms, and it IS proved.
 We state it as an axiom since the proof requires analytic methods. -/
-axiom mahler_erdos_two_powers : ∀ k : ℕ, 2 ≤ k →
-    (fun x : ℕ => (x : ℝ) ^ (2 / k : ℝ)) =O[atTop]
-    (fun x : ℕ => (cardIsSumTwoPowerBelow k x : ℝ))
-
 end Erdos325

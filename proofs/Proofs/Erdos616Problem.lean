@@ -115,8 +115,6 @@ def ErdosProblem616 (r : ℕ) (t : ℕ) : Prop :=
 **The optimal constant t(r):**
 There exists an optimal t(r) that works for all such hypergraphs.
 -/
-axiom optimalCoveringBound (r : ℕ) : ℕ
-
 /- ## Part IV: Known Bounds (Erdős-Hajnal-Tuza 1991) -/
 
 /--
@@ -234,9 +232,6 @@ theorem tau_one_iff_kernel {V : Type*} [Fintype V] {r : ℕ}
 The LP relaxation of the covering number.
 Instead of picking vertices (0/1), allow fractional weights.
 -/
-axiom fractionalCoveringNumber : ∀ {V : Type*} [Fintype V] {r : ℕ},
-  UniformHypergraph V r → ℝ
-
 /--
 **Fractional vs Integer:**
 τ*(G) ≤ τ(G) always.

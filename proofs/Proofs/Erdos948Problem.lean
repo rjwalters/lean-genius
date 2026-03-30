@@ -138,9 +138,6 @@ def galvinColoring : Coloring 2 := fun n =>
   if n = 0 then 0 else ⟨(n / 2^(dyadicValuation n)) % 2, by omega⟩
 
 -- Galvin showed no infinite sequence has monochromatic subsums under this coloring
-axiom galvin_no_monochromatic :
-  ¬∃ a : ℕ → ℕ, StrictlyIncreasing a ∧ IsMonochromatic galvinColoring (FiniteSubsums a)
-
 /-
 # Part 6: Hindman's Theorem
 
@@ -149,14 +146,6 @@ have infinite sequences with monochromatic subsums.
 -/
 
 -- Hindman's theorem: for any finite coloring, some color class is an IP set
-axiom hindman_theorem : ∀ k : ℕ, k > 0 →
-  ∀ c : Coloring k, ∃ a : ℕ → ℕ,
-    StrictlyIncreasing a ∧
-    IsMonochromatic c (FiniteSubsums a)
-
--- But Hindman doesn't give growth bounds!
--- The question is whether we can find such a with a_n < f(n) often
-
 /-
 # Part 7: Related Concepts
 
@@ -176,9 +165,6 @@ def IsIPStar (S : Set ℕ) : Prop :=
   ∀ T : Set ℕ, IsIPSet T → (S ∩ T).Nonempty
 
 -- Hindman implies: for any finite coloring, some color class is IP*
-axiom hindman_ip_star : ∀ k : ℕ, k > 0 →
-  ∀ c : Coloring k, ∃ color : Fin k, IsIPStar {n | c n = color}
-
 /-
 # Part 8: Open Status
 

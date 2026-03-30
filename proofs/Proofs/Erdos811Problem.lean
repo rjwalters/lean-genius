@@ -59,9 +59,6 @@ def IsBalanced (χ : EdgeColoring n m) : Prop :=
   ∀ v : Fin n, ∀ c : Fin m, colorDegree χ v c = (n - 1) / m
 
 /-- Balanced colorings exist only when n ≡ 1 (mod m) -/
-axiom balanced_existence (m : ℕ) (hm : m ≥ 1) (n : ℕ) (hn : n ≡ 1 [MOD m]) (hn2 : n ≥ m + 1) :
-    ∃ χ : EdgeColoring n m, IsBalanced χ
-
 /-
 ## Part 3: Rainbow Subgraphs
 -/
@@ -124,14 +121,6 @@ axiom rainbowMinDegree (G : SimpleGraph (Fin k)) (n : ℕ) : ℕ
 
 /-- Erdős-Tuza bound for C_4:
     ⌊n/6⌋ ≤ d_{C_4}(n) ≤ (1/4 - c)n for some constant c > 0 -/
-axiom erdos_tuza_C4_lower (n : ℕ) (hn : n ≥ 6) :
-    n / 6 ≤ rainbowMinDegree (⊤ : SimpleGraph (Fin 4)) n
-
-axiom erdos_tuza_C4_upper :
-    ∃ c : ℝ, c > 0 ∧
-    ∀ n : ℕ, n ≥ 6 →
-    (rainbowMinDegree (⊤ : SimpleGraph (Fin 4)) n : ℝ) ≤ (1/4 - c) * n
-
 /-
 ## Part 7: Erdős's Specific Challenge
 -/
@@ -146,25 +135,12 @@ def ErdosChallenge : Prop :=
     ContainsRainbow (⊤ : SimpleGraph (Fin 4)) χ
 
 /-- The K_4 part is false (Clemen-Wagner), so the question reduces to C_6 -/
-axiom erdos_challenge_K4_false :
-    ¬(∃ N₀ : ℕ, ∀ n ≥ N₀,
-      ∀ χ : EdgeColoring (6 * n + 1) 6, IsBalanced χ →
-      ContainsRainbow (⊤ : SimpleGraph (Fin 4)) χ)
-
 /-
 ## Part 8: Small Cases
 -/
 
 /-- Trees have the rainbow property (folklore) -/
-axiom trees_have_rainbow_property (k : ℕ) (T : SimpleGraph (Fin k))
-    (hT : ∃ r : Fin k, ∀ v : Fin k, v ≠ r →
-      ∃ p : List (Fin k), p.head? = some r ∧ p.getLast? = some v) :
-    HasRainbowProperty T (k - 1)
-
 /-- Stars K_{1,m} have the rainbow property -/
-axiom stars_rainbow (m : ℕ) (hm : m ≥ 1) :
-    HasRainbowProperty (⊤ : SimpleGraph (Fin (m + 1))) m
-
 /-
 ## Part 9: Summary
 -/

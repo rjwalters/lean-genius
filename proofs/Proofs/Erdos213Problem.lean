@@ -72,9 +72,6 @@ no three collinear, with all pairwise distances being integers.
 
 Note: This doesn't even require the "no four concyclic" condition!
 -/
-axiom anning_erdos_finite :
-  ∀ S : Set Point, NoThreeCollinear S → AllDistancesInteger S → S.Finite
-
 /--
 **Erdős Problem #213 (OPEN)**: For all n ≥ 4, does there exist an integer
 distance set in general position of size n?
@@ -126,19 +123,10 @@ position contained in [-N, N]² has size at most O((log N)^C) for some constant 
 
 This shows such sets must be extremely sparse.
 -/
-axiom gip_sparsity_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-    ∀ S : Set Point, IsIntegerDistanceSetGP S →
-      (∀ p ∈ S, ‖p‖ ≤ N) → S.ncard ≤ (Real.log N) ^ C
-
 /--
 **Ascher-Braune-Turchet (2020)**: Conditional on the Bombieri-Lang conjecture,
 there is a uniform upper bound on the size of integer distance sets in general position.
 -/
-axiom abt_conditional_bound :
-  -- Bombieri-Lang conjecture implies a uniform bound
-  True -- Placeholder for the conditional statement
-
 /- ## Summary -/
 
 /-- Summary: Known sizes for integer distance sets in general position. -/

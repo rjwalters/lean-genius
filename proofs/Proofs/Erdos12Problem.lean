@@ -194,9 +194,6 @@ def HasDensityZero (A : Set ℕ) : Prop :=
   Tendsto (fun N => (countingFunction A N : ℝ) / N) atTop (nhds 0)
 
 /-- Erdős-Sárközy (1970): Divisibility-free sets have density 0 -/
-axiom erdos_sarkozy_density_zero :
-  ∀ A : Set ℕ, A.Infinite → IsDivisibilityFree A → HasDensityZero A
-
 /- ## Question 1: Can we achieve √N density? -/
 
 /-- The liminf of |A ∩ {1,...,N}| / √N -/
@@ -209,11 +206,6 @@ def Erdos12Question1 : Prop :=
   ∃ A : Set ℕ, A.Infinite ∧ IsDivisibilityFree A ∧ sqrtLiminfDensity A
 
 /-- Best known: Elsholtz-Planitzer (2017) construction -/
-axiom elsholtz_planitzer_construction :
-  ∃ A : Set ℕ, A.Infinite ∧ IsDivisibilityFree A ∧
-    ∀ᶠ N in atTop, (countingFunction A N : ℝ) ≥
-      Real.sqrt N / (Real.sqrt (Real.log N) * (Real.log (Real.log N))^2)
-
 /- ## Question 2: Sparse infinitely often? -/
 
 /-- Question 2: Is there c > 0 with |A| < N^(1-c) infinitely often? -/
@@ -240,11 +232,6 @@ def IsPairwiseCoprime (A : Set ℕ) : Prop :=
   ∀ a b : ℕ, a ∈ A → b ∈ A → a ≠ b → Nat.Coprime a b
 
 /-- Schoen (2001), Baier (2004): Coprime divisibility-free sets are O(N^(2/3)/log N) -/
-axiom coprime_upper_bound :
-  ∀ A : Set ℕ, A.Infinite → IsDivisibilityFree A → IsPairwiseCoprime A →
-    ∃ C : ℝ, C > 0 ∧ ∀ᶠ N in atTop,
-      (countingFunction A N : ℝ) ≤ C * N^(2/3 : ℝ) / Real.log N
-
 /- ## Properties of primeSquares3mod4 -/
 
 /-- There are infinitely many primes ≡ 3 (mod 4) (Dirichlet's theorem).
@@ -283,15 +270,7 @@ noncomputable def primeCount3mod4 (N : ℕ) : ℕ :=
   Set.ncard {p : ℕ | Nat.Prime p ∧ p % 4 = 3 ∧ p ≤ N}
 
 /-- The density bound: |primeSquares3mod4 ∩ [1,N]| ~ √N / (2 log √N) = √N / log N -/
-axiom primeSquares3mod4_density :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop,
-    (countingFunction primeSquares3mod4 N : ℝ) ≥ c * Real.sqrt N / Real.log N
-
 /-- The variant from formal-conjectures: liminf (count * log N / √N) > 0 -/
-axiom primeSquares3mod4_liminf_pos :
-  (0 : ℝ) < Filter.atTop.liminf
-    (fun N => (countingFunction primeSquares3mod4 N : ℝ) * Real.log N / Real.sqrt N)
-
 /- ## Main Problem Statement -/
 
 /-- Erdős Problem #12: All three questions (OPEN) -/

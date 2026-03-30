@@ -163,13 +163,6 @@ theorem kahane_disproves : ¬ErdosNewmanConjecture := by
 Körner constructed unimodular polynomials with |P(z)| bounded above and below
 by constant multiples of √n on the unit circle.
 -/
-axiom korner_bounded :
-  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ < c₂ ∧
-    ∃ N : ℕ, ∀ n ≥ N, ∃ P : UnimodularPolynomial n,
-      ∀ z : ℂ, Complex.abs z = 1 →
-        c₁ * Real.sqrt n ≤ Complex.abs (evaluate P z) ∧
-        Complex.abs (evaluate P z) ≤ c₂ * Real.sqrt n
-
 /-
 ## Part VI: Bombieri-Bourgain Improvement (2009)
 -/
@@ -179,13 +172,6 @@ axiom korner_bounded :
 Improved Kahane's construction to get better error terms:
 |P(z)| = √n + O(n^{7/18} (log n)^{O(1)})
 -/
-axiom bombieri_bourgain :
-  ∃ C : ℝ, C > 0 ∧
-    ∃ N : ℕ, ∀ n ≥ N, ∃ P : UnimodularPolynomial n,
-      ∀ z : ℂ, Complex.abs z = 1 →
-        |Complex.abs (evaluate P z) - Real.sqrt n| ≤
-          C * (n : ℝ) ^ (7/18 : ℝ) * (Real.log n) ^ 10
-
 /--
 **Error exponent 7/18:**
 The exponent 7/18 ≈ 0.389 is the current best known.
@@ -202,10 +188,6 @@ def bombieriBorgainExponent : ℚ := 7 / 18
 A deterministic family of unimodular polynomials with |P(z)| ≤ 2√n.
 Not ultraflat (lower bound can be small).
 -/
-axiom rudin_shapiro :
-  ∀ n : ℕ, n ≥ 1 → ∃ P : UnimodularPolynomial (2^n),
-    supNormOnCircle P ≤ 2 * Real.sqrt (2^n)
-
 /-
 ## Part VIII: Summary
 -/

@@ -412,15 +412,8 @@ theorem f_prime_square (p : ℕ) (hp : p.Prime) :
     Prime squares achieve f(p²) = p = √(p²), so they give ≥ but not >.
     Whether strict inequality f(n) > √n occurs for infinitely many
     composite n remains open. -/
-axiom erdos_700_question2 :
-  ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ ¬n.Prime ∧ 4 ≤ n ∧
-    (fBinom n : ℝ) > Real.sqrt n
-
 /- ## Question 3: Upper Bound Conjecture -/
 
 /-- Question 3: Is f(n) ≪_A n/(log n)^A for every A > 0?
     This would show f(n) is much smaller than n/P(n) for typical n,
     since P(n) ~ log n for most n by the Hardy-Ramanujan theorem. -/
-axiom erdos_700_question3 (A : ℝ) (hA : 0 < A) :
-  ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, ¬n.Prime → 4 ≤ n →
-    (fBinom n : ℝ) ≤ C * n / (Real.log n) ^ A

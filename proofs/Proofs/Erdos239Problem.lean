@@ -117,12 +117,6 @@ theorem completely_mult_is_mult {α : Type*} [Monoid α] (f : ℕ → α)
     Proof sketch: Every n ≥ 1 factors as n = p₁^{a₁} ... pₖ^{aₖ}.
     By complete multiplicativity, f(n) = f(p₁)^{a₁} ... f(pₖ)^{aₖ}.
     Since f agrees with g on primes, f(n) = g(n) by induction on Ω(n). -/
-axiom completely_mult_pm_determined (f : ℕ → ℤ)
-    (hcm : IsCompletelyMultiplicative f) (hpm : IsPlusMinusOne f)
-    (g : ℕ → ℤ) (hcm' : IsCompletelyMultiplicative g) (hpm' : IsPlusMinusOne g)
-    (heq : ∀ p : ℕ, p.Prime → f p = g p) :
-    ∀ n : ℕ, n ≥ 1 → f n = g n
-
 /-
 ## Part V: Wintner's Counterexample for Complex Values
 -/
@@ -132,12 +126,7 @@ noncomputable def powerI (n : ℕ) : ℂ :=
   if n = 0 then 0 else Complex.exp (Complex.I * Real.log n)
 
 /-- n^i is multiplicative (as a complex function). -/
-axiom powerI_multiplicative : ∀ m n : ℕ, m ≥ 1 → n ≥ 1 →
-    powerI (m * n) = powerI m * powerI n
-
 /-- |n^i| = 1 for all n ≥ 1 (values on unit circle). -/
-axiom powerI_unit_circle : ∀ n : ℕ, n ≥ 1 → Complex.abs (powerI n) = 1
-
 /-- **Wintner-Rényi Counterexample:**
     The function n^i does NOT have a convergent mean.
     This shows the restriction to {-1, 1} is essential. -/
@@ -247,16 +236,7 @@ theorem liouville_limit_zero :
     meanValue λ N → 0  is equivalent to the Prime Number Theorem.
 
     The rate of convergence determines the error term in PNT. -/
-axiom liouville_pnt_equivalence :
-    (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, |meanValue liouville N| < ε) ↔
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      |(Nat.primeCounting N : ℝ) - N / Real.log N| < ε * N / Real.log N
-
 /-- The Riemann Hypothesis is equivalent to a specific rate of convergence. -/
-axiom rh_equivalence :
-    -- RH ↔ meanValue λ N = O(N^{-1/2 + ε}) for all ε > 0
-    True  -- Statement simplified
-
 /-
 ## Part XI: Summary
 -/

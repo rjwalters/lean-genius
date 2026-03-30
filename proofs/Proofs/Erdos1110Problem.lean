@@ -103,11 +103,6 @@ theorem inductive_proof_idea (n : ℕ) (hn : n ≥ 1) : IsRepresentable 3 2 n :=
 **Key lemma: Representing even numbers with even summands:**
 If n is even and representable, it has a representation with all even summands.
 -/
-axiom even_representation :
-  ∀ n : ℕ, Even n → IsRepresentable 3 2 n →
-    ∃ S : Finset ℕ, (∀ s ∈ S, IsPowerForm 3 2 s ∧ Even s) ∧
-      NoOneDividesAnother S ∧ S.sum id = n
-
 /-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/
@@ -150,11 +145,6 @@ The non-representable numbers have density zero for many parameter choices:
 - q = 3 and p > 6, or
 - q = 2 and p > 10
 -/
-axiom yu_chen_density_zero (p q : ℕ) :
-    p > q → q ≥ 2 → Nat.Coprime p q →
-    (q > 3 ∨ (q = 3 ∧ p > 6) ∨ (q = 2 ∧ p > 10)) →
-    HasDensity (NonRepresentable p q) 0
-
 /--
 **Yu-Chen Coprime Non-Representables:**
 There are infinitely many coprime non-representable numbers for most (p,q):
@@ -164,11 +154,6 @@ There are infinitely many coprime non-representable numbers for most (p,q):
 -/
 def CoprimeNonRepresentable (p q : ℕ) : Set ℕ :=
   {n ∈ NonRepresentable p q | Nat.Coprime n (p * q)}
-
-axiom yu_chen_coprime_infinite (p q : ℕ) :
-    p > q → q ≥ 2 → Nat.Coprime p q →
-    (q > 3 ∨ (q = 3 ∧ p ≠ 5) ∨ (q = 2 ∧ p ∉ ({3, 5, 9} : Set ℕ))) →
-    Set.Infinite (CoprimeNonRepresentable p q)
 
 /-
 ## Part V: Minimum Summand Size
@@ -187,21 +172,10 @@ noncomputable def minSummandBound (n : ℕ) : ℝ :=
 **Yu-Chen bounds (2022):**
 n / (log n)^{log₂ 3} ≪ f(n) ≪ n / log n
 -/
-axiom yu_chen_f_bounds :
-  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    ∃ N₀ : ℕ, ∀ n ≥ N₀,
-      c₁ * n / (Real.log n) ^ (Real.log 3 / Real.log 2) ≤ minSummandBound n ∧
-      minSummandBound n ≤ c₂ * n / Real.log n
-
 /--
 **Yang-Zhao improvement (2025):**
 The lower bound improves to f(n) ≫ n / log n.
 -/
-axiom yang_zhao_improved_lower :
-  ∃ c : ℝ, c > 0 ∧
-    ∃ N₀ : ℕ, ∀ n ≥ N₀,
-      minSummandBound n ≥ c * n / Real.log n
-
 /-
 ## Part VI: Related Problems
 -/
@@ -241,9 +215,6 @@ theorem example_1_representable : IsRepresentable 3 2 1 := by
 **Example: Small cases for {3,2}:**
 All of 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 are representable.
 -/
-axiom small_cases_representable :
-  ∀ n ∈ ({1, 2, 3, 4, 5, 6, 7, 8, 9, 10} : Set ℕ), IsRepresentable 3 2 n
-
 /-
 ## Part VIII: Summary
 -/

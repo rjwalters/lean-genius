@@ -80,36 +80,18 @@ noncomputable def minCircles (n : ℕ) : ℕ :=
 
 /-- Elliott (1967): For n > 393 points in general position (not all
     concyclic, not all collinear), at least C(n-1,2) distinct circles. -/
-axiom elliott_theorem (n : ℕ) (hn : 393 < n) (config : PointConfig n)
-    (hconc : ¬AllConcyclic config) (hcol : ¬AllCollinear config) :
-  (n - 1) * (n - 2) / 2 ≤ numCircles config
-
 /- ## Segre's Counterexample -/
 
 /-- Segre showed that projecting the 8 vertices of a cube onto a plane
     gives 8 points determining fewer than C(7,2) = 21 circles,
     so Elliott's bound does not extend to all small n. -/
-axiom segre_cube_counterexample :
-  ∃ config : PointConfig 8,
-    ¬AllConcyclic config ∧ ¬AllCollinear config ∧
-    numCircles config < 7 * 6 / 2
-
 /- ## Main Open Question -/
 
 /-- Erdős Problem #506: Determine the minimum number of circles for
     small values of n where Elliott's theorem does not apply. -/
-axiom erdos_506_small_n :
-  ∀ n : ℕ, 4 ≤ n → n ≤ 393 →
-    ∃ f : ℕ → ℕ, ∀ config : PointConfig n,
-      ¬AllConcyclic config → ¬AllCollinear config →
-        f n ≤ numCircles config
-
 /- ## Connection to Sylvester–Gallai -/
 
 /-- The circle problem is analogous to the Sylvester–Gallai theorem
     for lines: n non-collinear points determine at least n lines.
     The circle analogue asks for the minimum number of circles from
     non-concyclic points. -/
-axiom circle_line_analogy (n : ℕ) (hn : 3 ≤ n)
-    (config : PointConfig n) (hcol : ¬AllCollinear config) :
-  n ≤ numCircles config

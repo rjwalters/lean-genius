@@ -58,37 +58,14 @@ noncomputable def ramseyEvenCycle (n k : ℕ) : ℕ :=
 /- ## Erdős Lower Bound -/
 
 /-- Erdős lower bound: R(C₂ₙ; k) ≫ k^{1+1/(2n)} -/
-axiom erdos_lower_bound (n : ℕ) (hn : 1 ≤ n) :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ k : ℕ, 2 ≤ k →
-      c * (k : ℝ) ^ (1 + 1 / (2 * (n : ℝ))) ≤ (ramseyEvenCycle n k : ℝ)
-
 /-- Erdős upper bound: R(C₂ₙ; k) ≪ k^{1+1/(n-1)} for n ≥ 2 -/
-axiom erdos_upper_bound (n : ℕ) (hn : 2 ≤ n) :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ k : ℕ, 2 ≤ k →
-      (ramseyEvenCycle n k : ℝ) ≤ C * (k : ℝ) ^ (1 + 1 / ((n : ℝ) - 1))
-
 /- ## C₄ Case: Chung–Graham Bounds -/
 
 /-- Chung–Graham lower bound for C₄: R(C₄; k) > k² - k + 1
     when k - 1 is a prime power -/
-axiom chung_graham_lower (k : ℕ) (hk : 2 ≤ k)
-    (hpp : Nat.Prime (k - 1) ∨ ∃ p e : ℕ, Nat.Prime p ∧ 2 ≤ e ∧ p ^ e = k - 1) :
-  k * k - k + 1 < ramseyEvenCycle 2 k
-
 /-- Chung–Graham upper bound for C₄: R(C₄; k) ≤ k² + k + 1 for all k -/
-axiom chung_graham_upper (k : ℕ) (hk : 2 ≤ k) :
-  ramseyEvenCycle 2 k ≤ k * k + k + 1
-
 /- ## The Erdős–Graham Problem -/
 
 /-- Erdős Problem 555 (Erdős–Graham): Determine the exact value of R(C₂ₙ; k).
     The lower and upper bounds have different exponents (1+1/(2n) vs 1+1/(n-1)),
     and closing this gap is open. -/
-axiom ErdosProblem555 (n : ℕ) (hn : 2 ≤ n) :
-  ∃ α : ℝ, 1 / (2 * (n : ℝ)) ≤ α ∧ α ≤ 1 / ((n : ℝ) - 1) ∧
-    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧
-      ∀ k : ℕ, 2 ≤ k →
-        c * (k : ℝ) ^ (1 + α) ≤ (ramseyEvenCycle n k : ℝ) ∧
-        (ramseyEvenCycle n k : ℝ) ≤ C * (k : ℝ) ^ (1 + α)

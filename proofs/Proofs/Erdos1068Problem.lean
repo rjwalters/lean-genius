@@ -99,34 +99,17 @@ def inducedSubgraph (G : SimpleGraph V) (S : Set V) :
 
     More precisely: is there a countable set S of vertices such that the
     induced subgraph G[S] is infinitely connected? -/
-axiom erdos_1068 :
-    ∀ (V : Type) (G : SimpleGraph V),
-      hasAleph1ChromaticNumber G →
-      ∃ S : Set V, S.Countable ∧ InfinitelyConnected (inducedSubgraph G S)
-
 /- ## Part V: Known Results -/
 
 /-- **Soukup (2015)**: There exists a graph with uncountable chromatic number
     where every UNCOUNTABLE vertex set induces a graph that is NOT infinitely
     connected. This shows that Problem #1068 specifically needs the subgraph
     to be countable — uncountable subgraphs don't work. -/
-axiom soukup_uncountable_not_inf_connected :
-    ∃ (V : Type) (G : SimpleGraph V),
-      hasAleph1ChromaticNumber G ∧
-      ∀ S : Set V, ¬S.Countable →
-        ¬InfinitelyConnected (inducedSubgraph G S)
-
 /-- **Connection to Problem #1067 (DISPROVED)**: Problem #1067 asked whether
     every graph with χ = ℵ₁ contains an infinitely connected subgraph
     with χ = ℵ₁. Soukup showed the answer is NO. Problem #1068 weakens
     this by only asking for a countable infinitely connected subgraph,
     dropping the high chromatic number requirement. -/
-axiom problem_1067_disproved :
-    ∃ (V : Type) (G : SimpleGraph V),
-      hasAleph1ChromaticNumber G ∧
-      ∀ (H : SimpleGraph V), (∀ u v, H.Adj u v → G.Adj u v) →
-        InfinitelyConnected H → ¬hasAleph1ChromaticNumber H
-
 /- ## Part VI: Structural Observations -/
 
 /-- **No finite vertex separator**: In an infinitely connected graph,

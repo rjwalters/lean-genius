@@ -89,18 +89,5 @@ axiom erdos_1010_supersaturation (G : SimpleGraph V) [DecidableRel G.Adj] (t : �
     This is the classical Turán theorem for K₃; the full proof from
     erdos_1010_supersaturation requires additional bookkeeping about
     the exact edge count and the constraint n ≥ 2. -/
-axiom turán_triangle_existence (G : SimpleGraph V) [DecidableRel G.Adj] :
-  G.edgeFinset.card > turanThreshold (Fintype.card V) →
-  triangleCount G ≥ 1
-
 /-- The bound t · ⌊n/2⌋ is tight: Turán graph with t additional edges
     achieves exactly this many triangles when edges added optimally -/
-axiom erdos_1010_tight (n t : ℕ) :
-  t < n / 2 →
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-    Fintype.card V = n ∧
-    G.edgeFinset.card = turanThreshold n + t ∧
-    triangleCount G = t * (n / 2)
-
-#check @erdos_1010_supersaturation
-#check @rademacher_triangle_count

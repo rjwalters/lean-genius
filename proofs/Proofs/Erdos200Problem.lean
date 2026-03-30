@@ -53,10 +53,6 @@ noncomputable def longestPrimeAP (N : ℕ) : ℕ :=
     by PNT, primes in {1,...,N} have density ~ 1/log N, and an AP
     of primes of length k with difference d must avoid all prime
     factors of d, giving the constraint k ≤ (1+o(1)) log N. -/
-axiom prime_ap_upper_pnt :
-  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ →
-    (longestPrimeAP N : ℝ) ≤ (1 + ε) * Real.log N
-
 /- ## Green–Tao Theorem -/
 
 /-- Green–Tao (2008): For every k, there exists a prime AP of length k.
@@ -83,10 +79,6 @@ theorem longest_prime_ap_unbounded :
 
     This asks whether the PNT upper bound of ~ log N is far from
     the truth. -/
-axiom erdos_200_conjecture :
-  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ →
-    (longestPrimeAP N : ℝ) < ε * Real.log N
-
 /- ## Known Bounds and Examples -/
 
 /-- The AP {3, 5, 7} has length 3 — proved by explicit construction. -/
@@ -108,11 +100,6 @@ theorem prime_ap_6 : IsPrimeAP 6 157 :=
 /-- Green–Tao–Maynard: quantitative bounds on the least N containing
     a prime AP of length k. The best bounds give
     N(k) ≤ exp(exp(exp(ck))). -/
-axiom green_tao_quantitative :
-  ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 3 →
-    ∃ N : ℕ, (N : ℝ) ≤ Real.exp (Real.exp (Real.exp (c * k))) ∧
-    IsPrimeAP k N
-
 /- ## Relationship to Other Conjectures
 
 The Hardy–Littlewood k-tuple conjecture predicts that for any k, the number

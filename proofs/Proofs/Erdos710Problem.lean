@@ -103,9 +103,6 @@ def multiplesInInterval (d a b : ℕ) : ℕ :=
 In interval (n, n + L), there are about L/k multiples of k.
 As k grows, this count shrinks.
 -/
-axiom multiples_sparse (n k L : ℕ) (hk : k > 0) :
-    multiplesInInterval k n (n + L) ≤ L / k + 1
-
 /-
 ## Part III: Known Bounds
 
@@ -138,10 +135,6 @@ axiom erdos_pomerance_upper_bound :
 The lower bound has √(log n / log log n), the upper has √(log n).
 These differ by a factor of √(log log n), which grows slowly.
 -/
-axiom bounds_gap :
-    ∀ n ≥ 3, Real.sqrt (Real.log n / Real.log (Real.log n)) <
-              Real.sqrt (Real.log n)
-
 /-
 ## Part IV: The Open Problem
 
@@ -158,13 +151,6 @@ Possibilities:
 **Erdős Problem #710: OPEN**
 Determine the asymptotic formula for f(n).
 -/
-axiom erdos_710_open :
-    ∃ (C : ℝ) (g : ℕ → ℝ),
-      C > 0 ∧
-      (∀ n ≥ 2, g n > 0) ∧
-      (∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-        |f(n) / (C * n * g n) - 1| < ε)
-
 /-
 ## Part V: Small Examples
 
@@ -246,9 +232,6 @@ def constraintDensity (n L k : ℕ) : ℚ :=
 The hardest constraint is for large k. We need at least 1 multiple of n
 in the interval (n, n+L), requiring L ≥ n approximately.
 -/
-axiom critical_constraint_heuristic :
-    ∀ n ≥ 1, ∀ L < n, multiplesInInterval n n (n + L) ≤ 1
-
 /-
 ## Part VII: Greedy Algorithm Insight
 

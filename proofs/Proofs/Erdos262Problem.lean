@@ -115,9 +115,6 @@ axiom factorial_not_irrationality :
 **Root Growth:**
 If a_n is an irrationality sequence, then a_n^{1/n} → ∞.
 -/
-axiom root_growth_necessary (a : ℕ → ℕ) (ha : IsIrrationalitySequence a) :
-    Filter.Tendsto (fun n => (a n : ℝ) ^ (1 / n : ℝ)) Filter.atTop Filter.atTop
-
 /--
 **Hančl's Theorem (1991):**
 Any irrationality sequence must satisfy:
@@ -127,16 +124,10 @@ def hančl_condition (a : ℕ → ℕ) : Prop :=
   ∀ ε > 0, ∀ᶠ n in Filter.atTop,
     Real.log (Real.log (a n)) / Real.log 2 / Real.log 2 / n ≥ 1 - ε
 
-axiom hančl_theorem (a : ℕ → ℕ) (ha : IsIrrationalitySequence a) :
-    hančl_condition a
-
 /--
 **The Double Exponential Bound:**
 For an irrationality sequence, we need roughly a_n ≥ 2^{2^{cn}} for some c > 0.
 -/
-axiom double_exponential_necessary (a : ℕ → ℕ) (ha : IsIrrationalitySequence a) :
-    ∃ c > 0, ∀ᶠ n in Filter.atTop, (a n : ℝ) ≥ Real.rpow 2 (Real.rpow 2 (c * n))
-
 /- ## Part V: Hančl's General Condition -/
 
 /--
@@ -144,20 +135,10 @@ axiom double_exponential_necessary (a : ℕ → ℕ) (ha : IsIrrationalitySequen
 If a_n ≪ 2^{2^{n-F(n)}} where F(n) < n and Σ 2^{-F(n)} < ∞,
 then a_n is NOT an irrationality sequence.
 -/
-axiom hančl_criterion (a : ℕ → ℕ) (F : ℕ → ℕ)
-    (hF_bound : ∀ n, F n < n)
-    (hF_sum : Summable (fun n => (2 : ℝ) ^ (-(F n : ℝ))))
-    (ha_bound : ∃ C : ℝ, ∀ n, (a n : ℝ) ≤ C * Real.rpow 2 (Real.rpow 2 (n - F n))) :
-    ¬IsIrrationalitySequence a
-
 /--
 **Corollary: Slower Growth Fails**
 If a_n grows slower than 2^{2^{n(1-ε)}} for some ε > 0, it's not an irrationality sequence.
 -/
-axiom slower_growth_fails (a : ℕ → ℕ) (ε : ℝ) (hε : ε > 0)
-    (ha : ∀ᶠ n in Filter.atTop, (a n : ℝ) ≤ Real.rpow 2 (Real.rpow 2 (n * (1 - ε)))) :
-    ¬IsIrrationalitySequence a
-
 /- ## Part VI: The Spacing Property -/
 
 /--
@@ -166,9 +147,6 @@ a_{n+1}/a_n = 2^{2^{n+1}}/2^{2^n} = 2^{2^n(2-1)} = 2^{2^n}
 grows super-exponentially. This huge gap between consecutive terms
 prevents any choice of t_n from making the sum rational.
 -/
-axiom double_exp_ratio (n : ℕ) :
-    doubleExp (n + 1) / doubleExp n = 2 ^ (2 ^ n)
-
 /- ## Part VII: Summary -/
 
 /--

@@ -80,8 +80,6 @@ noncomputable def g (n : ℕ) : ℕ :=
 g(n) ≤ n since clique sizes are in {1, 2, ..., n}.
 This follows because clique sizes range from 1 to n.
 -/
-axiom g_le_n (n : ℕ) : g n ≤ n
-
 /--
 **Every vertex is a clique of size 1:**
 -/
@@ -100,16 +98,10 @@ theorem singleton_is_clique {V : Type*} (G : SimpleGraph V) (v : V) :
 **Moon-Moser upper bound:**
 g(n) ≤ n - ⌊log₂ n⌋
 -/
-axiom moon_moser_upper (n : ℕ) (hn : n ≥ 2) :
-    (g n : ℝ) ≤ n - Nat.log 2 n
-
 /--
 **Moon-Moser lower bound:**
 g(n) > n - log₂ n - 2 log log n
 -/
-axiom moon_moser_lower (n : ℕ) (hn : n ≥ 4) :
-    (g n : ℝ) > n - Real.log n / Real.log 2 - 2 * Real.log (Real.log n) / Real.log 2
-
 /-
 ## Part IV: The Iterated Logarithm
 -/
@@ -135,8 +127,6 @@ noncomputable def logStar : ℕ → ℕ
 log*(n) ≤ 5 for all n ≤ 2^65536.
 Computing logStar(2^16) = logStar(65536) = 4 directly.
 -/
-axiom logStar_very_slow : logStar (2^16) ≤ 4
-
 /-
 ## Part V: Erdős's Conjecture
 -/
@@ -145,10 +135,6 @@ axiom logStar_very_slow : logStar (2^16) ≤ 4
 **Erdős's improved lower bound (1966):**
 g(n) > n - log₂ n - log*(n) - C for some constant C.
 -/
-axiom erdos_lower (n : ℕ) (hn : n ≥ 2) :
-    ∃ C : ℝ, C > 0 ∧
-      (g n : ℝ) > n - Real.log n / Real.log 2 - logStar n - C
-
 /--
 **Erdős's conjecture:**
 g(n) = n - log₂ n - log*(n) + O(1)
@@ -232,14 +218,6 @@ Has cliques of sizes 1, 2, 3, ..., n.
 So g(n) ≥ n for any n (from K_n alone... but we define g as max distinct sizes).
 Actually K_n has n distinct clique sizes: {1, 2, ..., n}.
 -/
-axiom complete_graph_cliques (n : ℕ) (hn : n ≥ 1) :
-    -- K_n has cliques of sizes 1, 2, ..., n
-    g n ≥ n
-
-axiom empty_graph_one_clique_size :
-    -- The empty graph has only cliques of size 1
-    g 1 ≥ 1
-
 /-
 ## Part X: Summary
 -/

@@ -35,11 +35,7 @@ structure MonicPoly (n : ℕ) where
 
 /-- The lemniscate of a monic degree-n polynomial:
     L(p) = {z ∈ ℂ : |p(z)| = 1}. This is a real algebraic curve. -/
-axiom lemniscateLength {n : ℕ} (p : MonicPoly n) : ℝ
-
 /-- f(n): maximum lemniscate length over all monic degree-n polynomials. -/
-axiom maxLemniscateLength (n : ℕ) : ℝ
-
 /-- The extremal polynomial z^n - 1 (coefficients: a_0 = -1, rest 0). -/
 def znMinus1 (n : ℕ) (hn : n ≥ 1) : MonicPoly n where
   coeffs := fun i => if i.val = 0 then -1 else 0

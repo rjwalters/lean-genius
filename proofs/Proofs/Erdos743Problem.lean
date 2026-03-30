@@ -111,11 +111,6 @@ def treePackingConjecture : Prop :=
 
 /-- **Stars case:** If all but at most 2 trees are stars,
 the conjecture holds. -/
-axiom gyarfasLehel_stars (n : ℕ) (hn : n ≥ 2) (tc : TreeCollection n) :
-    (∃ S : Finset ℕ, S.card ≤ 2 ∧
-      ∀ k : ℕ, ∀ h : 2 ≤ k ∧ k ≤ n, k ∉ S → isStar k (tc k h)) →
-    canPack n tc
-
 /-- **Stars and paths case:** If all trees are stars or paths,
 the conjecture holds. -/
 axiom gyarfasLehel_starsPaths (n : ℕ) (hn : n ≥ 2) (tc : TreeCollection n) :
@@ -133,11 +128,6 @@ axiom fishburn_small_n :
 /-- **Bollobás (1983):** The smallest ⌊n/√2⌋ trees can always
 be packed greedily into Kₙ. This means roughly 70% of the small
 trees can be handled by a simple greedy algorithm. -/
-axiom bollobas_greedy (n : ℕ) (hn : n ≥ 2) (tc : TreeCollection n) :
-    ∃ m : ℕ, 2 * m * m ≥ n * n ∧
-      ∀ k : ℕ, ∀ h : 2 ≤ k ∧ k ≤ n, k ≤ m + 1 →
-        ∃ packing : TreeCollection n, canPack n packing
-
 /- ## Bounded Degree Results -/
 
 /-- **JKKO Theorem (2019):** For any fixed Δ, the conjecture holds
@@ -149,26 +139,12 @@ axiom jkko_boundedDegree (Δ : ℕ) :
 
 /-- **Allen et al. (2021):** The conjecture holds when all trees
 have max degree ≤ cn/log n, a significant extension of JKKO. -/
-axiom allen_sublinearDegree :
-    ∃ c : ℝ, c > 0 ∧
-      ∀ n : ℕ, n ≥ 2 → ∀ tc : TreeCollection n,
-        (∀ k : ℕ, ∀ h : 2 ≤ k ∧ k ≤ n,
-          (maxDegree k (tc k h) : ℝ) ≤ c * n / Real.log n) →
-        canPack n tc
-
 /- ## Packing Large Trees (2024) -/
 
 /-- **Janzer-Montgomery (2024):** There exists c > 0 such that
 for any tree collection, the largest cn trees can always be packed.
 Combined with Bollobás's result for small trees, only trees of
 intermediate size (roughly 0.7n to (1-c)n vertices) remain unresolved. -/
-axiom janzerMontgomery_largeTrees :
-    ∃ c : ℝ, c > 0 ∧
-      ∀ n : ℕ, n ≥ 2 → ∀ tc : TreeCollection n,
-        ∃ m : ℕ, (m : ℝ) ≥ c * n ∧
-          ∀ k : ℕ, ∀ h : 2 ≤ k ∧ k ≤ n, k ≥ n - m →
-            ∃ packing : TreeCollection n, canPack n packing
-
 /- ## Summary -/
 
 /-- **Summary of Erdős Problem #743.**

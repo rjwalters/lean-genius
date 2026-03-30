@@ -70,13 +70,6 @@ the divisor function and careful analysis of the convergence of the series.
 We state this as an axiom since the proof requires deep number-theoretic
 techniques beyond current Mathlib formalization.
 -/
-axiom erdos_258_monotone :
-  ∀ (a : ℕ → ℕ),
-    (∀ n, 0 < a n) →
-    Monotone a →
-    Filter.Tendsto a Filter.atTop Filter.atTop →
-    Irrational (∑' n, generalTerm a n)
-
 /--
 **Erdős Problem #258 - Constant/Power Variant** (SOLVED):
 
@@ -87,10 +80,6 @@ because $a_1 \cdots a_n = t^n$, giving a series related to Lambert series.
 
 We state this as an axiom since the proof involves transcendence techniques.
 -/
-axiom erdos_258_power :
-  ∀ (t : ℕ), t ≥ 2 →
-    Irrational (∑' n, (tau (n + 1) : ℝ) / (t : ℝ)^(n + 1))
-
 /- ## The Open Problem -/
 
 /--

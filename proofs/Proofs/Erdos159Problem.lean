@@ -168,18 +168,8 @@ end RamseyC4Kn
 
 /-- Szemerédi's upper bound: `R(C₄, Kₙ) ≤ C · n² / (log n)²` for some
 constant `C > 0` and sufficiently large `n`. -/
-axiom szemeredi_upper :
-    ∃ C : ℝ, 0 < C ∧
-      ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n →
-        (ramseyC4Kn n : ℝ) ≤ C * (n : ℝ) ^ 2 / (Real.log n) ^ 2
-
 /-- Spencer's lower bound: `R(C₄, Kₙ) ≥ c · n^{3/2} / (log n)^{3/2}`
 for some constant `c > 0` and sufficiently large `n`. -/
-axiom spencer_lower :
-    ∃ c : ℝ, 0 < c ∧
-      ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n →
-        c * (n : ℝ) ^ (3/2 : ℝ) / (Real.log n) ^ (3/2 : ℝ) ≤ (ramseyC4Kn n : ℝ)
-
 /- ## Main conjecture -/
 
 /-- Erdős Problem 159: Does there exist `c > 0` such that

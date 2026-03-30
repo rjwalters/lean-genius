@@ -135,12 +135,7 @@ def HasDivergentReciprocalSum (A : Set ℕ) : Prop :=
 
 /-- For pairwise coprime A: Behrend iff Σ 1/a = ∞.
     This is a classical result in multiplicative number theory. -/
-axiom coprime_behrend_iff (A : Set ℕ) (hpc : IsPairwiseCoprime A) :
-  IsBehrend A ↔ HasDivergentReciprocalSum A
-
 /-- The set of all primes is Behrend (since Σ 1/p = ∞). -/
-axiom primes_behrend : IsBehrend {p : ℕ | Nat.Prime p}
-
 /- ## Part V: Block Sequences and Tenenbaum's Theorem -/
 
 /-- A lacunary sequence with bounded ratios:
@@ -157,11 +152,6 @@ def IsBlockSequence (A : Set ℕ) (n : ℕ → ℕ) (η : ℕ → ℝ) : Prop :=
     ∃ k : ℕ, (n k : ℝ) < (m : ℝ) ∧ (m : ℝ) ≤ (1 + η k) * (n k : ℝ)
 
 /-- If Σ ηₖ < ∞ (converges), the block sequence is NOT Behrend. -/
-axiom convergent_eta_not_behrend (A : Set ℕ) (n : ℕ → ℕ) (η : ℕ → ℝ)
-    (hbs : IsBlockSequence A n η)
-    (hconv : ∃ M : ℝ, ∀ (S : Finset ℕ), S.sum η ≤ M) :
-  ¬IsBehrend A
-
 /-- **Tenenbaum's Theorem (1996)**: For lacunary block sequences with bounded
     ratios and ηₖ = k^{−β}:
     - β < log 2 implies A is Behrend
@@ -170,13 +160,6 @@ axiom convergent_eta_not_behrend (A : Set ℕ) (n : ℕ → ℕ) (η : ℕ → �
     The threshold is β₀ = log 2.
     Reference: Tenenbaum, G., "On block Behrend sequences",
     Math. Proc. Cambridge Philos. Soc. (1996), 355-367. -/
-axiom tenenbaum_behrend_threshold (A : Set ℕ) (n : ℕ → ℕ) (β : ℝ)
-    (C₁ C₂ : ℝ) (hβ : 0 < β)
-    (hlac : IsLacunaryBounded n C₁ C₂)
-    (hbs : IsBlockSequence A n (fun k => ((k : ℝ) + 1)⁻¹ ^ β)) :
-  (β < Real.log 2 → IsBehrend A) ∧
-  (β > Real.log 2 → ¬IsBehrend A)
-
 /- ## Part VI: The Erdős Problem (Open) -/
 
 /-- Erdős Problem 691: Find a necessary and sufficient condition for
@@ -187,10 +170,4 @@ axiom tenenbaum_behrend_threshold (A : Set ℕ) (n : ℕ → ℕ) (β : ℝ)
     2. Lacunary block case: threshold at β = log 2 (Tenenbaum 1996)
 
     The problem asks for a unifying condition that subsumes both. -/
-axiom erdos_691_general_characterization :
-  ∃ P : Set ℕ → Prop,
-    (∀ A : Set ℕ, IsBehrend A ↔ P A) ∧
-    (∀ A : Set ℕ, IsPairwiseCoprime A →
-      (P A ↔ HasDivergentReciprocalSum A))
-
 end Erdos691

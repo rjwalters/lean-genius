@@ -69,11 +69,6 @@ requires dependent type manipulation beyond simple definitions.
 axiom f (k n : ℕ) : ℕ
 
 /-- f_k is defined for k ≥ 4 (the interesting range). -/
-axiom f_defined (k n : ℕ) (hk : k ≥ 4) (hn : n ≥ k) :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V),
-      Fintype.card V = n ∧
-      ∃ G : SimpleGraph V, IsKCritical G k ∧ edgeCount G = f k n
-
 /- ## Question 1: Quadratic Growth -/
 
 /--
@@ -111,10 +106,6 @@ def Question2 : Prop :=
 Take two disjoint odd cycles of length 2n+1 and add all cross edges.
 This gives a 6-critical graph with approximately n²/4 edges.
 -/
-axiom dirac_construction :
-    ∀ n : ℕ, n ≥ 1 →
-      f 6 (4*n + 2) ≥ 4*n^2 + 8*n + 3
-
 /- ## Question 3: The General Asymptotic -/
 
 /--
@@ -133,11 +124,6 @@ def Question3 (k : ℕ) : Prop :=
 For k ≡ 0 (mod 3), infinitely many n satisfy
 f_k(n) ≥ (1/2)(1 - 1/(k/3))n² + n
 -/
-axiom erdos_construction (k : ℕ) (hk : k ≥ 6) (hmod : k % 3 = 0) :
-    ∃ infinitely_many : Set ℕ, Set.Infinite infinitely_many ∧
-      ∀ n ∈ infinitely_many, n ≥ k ∧
-        (f k n : ℝ) ≥ (1/2) * (1 - 3/k) * n^2 + n
-
 /--
 **Stiebitz (1987):** Disproved the asymptotic conjecture for k ≢ 0 (mod 3).
 
@@ -153,27 +139,17 @@ axiom stiebitz_1987_disproof (k : ℕ) (hk : k ≥ 4) (hmod : k % 3 ≠ 0) :
 A k-critical graph has chromatic number k, so it doesn't contain K_k.
 By Turán's theorem, it has at most ex(n; K_k) edges.
 -/
-axiom turan_upper (k n : ℕ) (hk : k ≥ 4) (hn : n ≥ k) :
-    (f k n : ℝ) ≤ (1/2) * (1 - 1/(k-1)) * n^2
-
 /--
 **Stiebitz Upper Bound (1987):**
 f_k(n) < ex(n; K_{k-1}) ~ (1/2)(1 - 1/(k-2))n²
 
 Better than Turán by replacing k-1 with k-2.
 -/
-axiom stiebitz_upper (k n : ℕ) (hk : k ≥ 4) (hn : n ≥ k) :
-    (f k n : ℝ) < (1/2) * (1 - 1/(k-2)) * n^2
-
 /--
 **Luo-Ma-Yang (2023):** Improved the upper bound further.
 
 f_k(n) ≤ (1/2)(1 - 1/(k-2) - 1/(36(k-1)²) + o(1))n²
 -/
-axiom luo_ma_yang_2023 (k : ℕ) (hk : k ≥ 4) :
-    ∀ ε > 0, ∀ᶠ n in Filter.atTop,
-      (f k n : ℝ) ≤ (1/2) * (1 - 1/(k-2) - 1/(36*(k-1)^2) + ε) * n^2
-
 /- ## Summary
 
 **Erdős Problem #917 - PARTIALLY SOLVED**
