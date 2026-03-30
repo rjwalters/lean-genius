@@ -1,0 +1,152 @@
+{
+  "id": "leibniz-pi-oq-02",
+  "title": "Generalized Leibniz-Type Formulas for Constants",
+  "slug": "leibniz-pi-oq-02",
+  "description": "Generalizes the Leibniz series π/4 = Σ(-1)^n/(2n+1) to two families of alternating series: the Dirichlet eta function η(s) = Σ(-1)^{n-1}/n^s (giving ln(2) and π²/12) and the Dirichlet beta function β(s) = Σ(-1)^n/(2n+1)^s (giving π/4 and Catalan's constant G).",
+  "leanFile": "Proofs/LeibnizPiOQ02.lean",
+  "meta": {
+    "author": "Leibniz (1676), Dirichlet (1837), Catalan (1865)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet_beta_function",
+    "date": "1837",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/LeibnizPiOQ02.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "alternating-series",
+      "dirichlet-series",
+      "catalan-constant",
+      "zeta-function",
+      "generalization"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.tendsto_sum_pi_div_four",
+        "description": "Leibniz series convergence to π/4",
+        "module": "Mathlib.Data.Real.Pi.Leibniz"
+      },
+      {
+        "theorem": "hasSum_zeta_two",
+        "description": "Basel problem: ζ(2) = π²/6",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      }
+    ],
+    "originalContributions": [
+      "Unified framework: Dirichlet eta and beta as generalized Leibniz series",
+      "beta_one_eq_pi_div_four: β(1) = π/4 proved as Tendsto from Leibniz",
+      "eta_zeta_relationship_s2: η(2) = (1/2)·ζ(2) algebraic identity",
+      "CatalanConstant: formal definition via β(2) series",
+      "eta_one_eq_log_two: η(1) = ln(2) stated (axiom, needs Abel's theorem)",
+      "Partial sum calculations for η(2) and β(2)"
+    ],
+    "axiomCount": 2,
+    "lineCount": 189,
+    "assumptions": "2 axioms: eta_one_eq_log_two (alternating harmonic series = ln(2), requires Abel's theorem), catalan_hasSum (Catalan's constant convergence). 2 sorries: eta_two_eq (η(2) = π²/12 from even/odd subseries extraction), catalan_pos (positivity of Catalan's constant)."
+  },
+  "overview": {
+    "historicalContext": "**From Leibniz to Dirichlet: Alternating Series for Constants**\n\nLeibniz discovered π/4 = 1 - 1/3 + 1/5 - ... around 1676 (independently found by Madhava ~1400 and Gregory 1671). Euler (1734) proved ζ(2) = π²/6 (Basel problem). Dirichlet (1837) introduced L-functions that systematize alternating character sums. Catalan (1865) studied G = 1 - 1/9 + 1/25 - ..., now called Catalan's constant.\n\nThe Dirichlet eta function η(s) and beta function β(s) provide the natural framework: every alternating series over integers or odd integers evaluates to a fundamental constant.",
+    "problemStatement": "**Question**: How do generalized Leibniz-type formulas extend to other constants?\n\n**Answer**: Two families generalize the Leibniz series:\n- **Eta**: η(s) = Σ(-1)^{n-1}/n^s gives ln(2) (s=1) and π²/12 (s=2)\n- **Beta**: β(s) = Σ(-1)^n/(2n+1)^s gives π/4 (s=1) and Catalan's G (s=2)",
+    "text": "The Leibniz series is the first instance of two families of alternating series (Dirichlet eta and beta) that express fundamental constants of analysis.",
+    "proofStrategy": "1. Define eta and beta term functions\n2. Prove β(1) = π/4 from Mathlib's Leibniz series\n3. State η(1) = ln(2) (axiom, needs Abel's theorem)\n4. Prove the eta-zeta relationship η(2) = (1/2)ζ(2) algebraically\n5. Define Catalan's constant as β(2)\n6. Demonstrate the unified pattern",
+    "keyInsights": [
+      "**Two families**: Leibniz's π/4 is β(1); the alternating harmonic ln(2) is η(1). These are the s=1 cases of the beta and eta functions.",
+      "**Eta-zeta link**: η(s) = (1 - 2^{1-s})·ζ(s) reduces alternating sums to standard zeta values. At s=2: η(2) = π²/12.",
+      "**Catalan's mystery**: G = β(2) ≈ 0.9160 is not known to be irrational. It appears in combinatorics, hyperbolic geometry, and lattice computations.",
+      "**Abel's theorem barrier**: η(1) = ln(2) requires boundary convergence of power series (Abel's theorem), which is not yet in Mathlib."
+    ],
+    "prerequisites": [
+      "Leibniz series for π (parent proof)",
+      "Basel problem ζ(2) = π²/6",
+      "Series convergence (HasSum, Tendsto)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "eta-function",
+      "title": "The Dirichlet Eta Function",
+      "startLine": 48,
+      "endLine": 78,
+      "summary": "Defines $\\eta(s) = \\sum (-1)^{n-1}/n^s$ and states $\\eta(1) = \\ln 2$ (axiom) and $\\eta(2) = \\pi^2/12$ (sorry — from even/odd extraction).",
+      "mathContext": "$\\eta(1)$ is the alternating harmonic series, converging by Leibniz's test. $\\eta(2)$ relates to $\\zeta(2)$ via $\\eta(2) = (1 - 2^{-1})\\zeta(2) = \\pi^2/12$."
+    },
+    {
+      "id": "beta-function",
+      "title": "The Dirichlet Beta Function",
+      "startLine": 84,
+      "endLine": 125,
+      "summary": "Defines $\\beta(s) = \\sum (-1)^n/(2n+1)^s$. Proves $\\beta(1) = \\pi/4$ from the parent Leibniz result. Defines Catalan's constant $G = \\beta(2)$.",
+      "mathContext": "$\\beta(1) = \\pi/4$ is the Leibniz series. $\\beta(2) = G \\approx 0.9160$ is Catalan's constant, whose irrationality is open."
+    },
+    {
+      "id": "eta-zeta",
+      "title": "The Eta-Zeta Relationship",
+      "startLine": 131,
+      "endLine": 153,
+      "summary": "Proves the algebraic identity $\\pi^2/12 = (1 - 2^{-1}) \\cdot \\pi^2/6$, verifying that $\\eta(2) = \\frac{1}{2}\\zeta(2)$.",
+      "mathContext": "The general identity $\\eta(s) = (1 - 2^{1-s})\\zeta(s)$ follows from splitting the sum into even and odd terms. At $s=2$: $\\eta(2) = \\frac{1}{2}\\zeta(2) = \\pi^2/12$."
+    },
+    {
+      "id": "unified-picture",
+      "title": "The Unified Picture",
+      "startLine": 173,
+      "endLine": 189,
+      "summary": "Summary theorem: the Leibniz series is the $s=1$ case of the beta function, which together with the eta function provides alternating series for $\\pi/4$, $\\ln 2$, $\\pi^2/12$, and Catalan's $G$.",
+      "mathContext": "All four series share the form $\\sum (-1)^n f(n) = C$ where $f$ decreases monotonically. The eta series use $f(n) = 1/n^s$, the beta series use $f(n) = 1/(2n+1)^s$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "extends",
+      "description": "Generalizes the Leibniz series β(1) = π/4 to the full Dirichlet beta and eta families."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "uses",
+      "description": "Uses ζ(2) = π²/6 from the Basel problem to derive η(2) = π²/12 via the eta-zeta relationship."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Leibniz series π/4 = Σ(-1)^n/(2n+1) generalizes to two families: the Dirichlet eta function (alternating sums over all integers) and the Dirichlet beta function (alternating sums over odd integers). These express ln(2), π²/12, and Catalan's constant G as natural companions to π/4.",
+    "implications": "The eta-zeta relationship η(s) = (1-2^{1-s})·ζ(s) systematically reduces alternating zeta sums to standard zeta values. Catalan's constant G = β(2) remains one of the most mysterious constants in analysis — its irrationality is unproved.",
+    "openQuestions": []
+  },
+  "references": [
+    {
+      "authors": "Catalan, Eugène Charles",
+      "title": "Mémoire sur la transformation des séries",
+      "year": "1865",
+      "venue": "Mémoires de l'Académie Royale des Sciences de Belgique"
+    },
+    {
+      "authors": "Dirichlet, Peter Gustav Lejeune",
+      "title": "Beweis des Satzes, dass jede unbegrenzte arithmetische Progression...",
+      "year": "1837",
+      "venue": "Abhandlungen der Königlichen Preußischen Akademie der Wissenschaften"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "beta_one_eq_pi_div_four",
+      "type": "core",
+      "description": "β(1) = π/4 — the Leibniz series as a Dirichlet beta value",
+      "leanType": "Tendsto (partial sums of betaTerm 1) atTop (nhds (π/4))"
+    },
+    {
+      "name": "eta_zeta_relationship_s2",
+      "type": "key",
+      "description": "η(2) = (1/2)·ζ(2) algebraic identity",
+      "leanType": "π²/12 = (1 - 2⁻¹) * (π²/6)"
+    },
+    {
+      "name": "CatalanConstant",
+      "type": "key",
+      "description": "Catalan's constant G defined as β(2)",
+      "leanType": "CatalanConstant : ℝ"
+    }
+  ]
+}
