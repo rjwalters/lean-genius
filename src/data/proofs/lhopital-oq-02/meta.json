@@ -17,7 +17,7 @@
       "indeterminate-forms"
     ],
     "badge": "formalized",
-    "sorries": 4,
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "HasDerivAt.lhopital_zero_right_on_Ioo",
@@ -40,12 +40,12 @@
       "Statement of ∞/∞ L'Hôpital's rule for left approach (𝓝[<] b)",
       "Statement of ∞/∞ L'Hôpital's rule at +∞ (atTop)",
       "Statement of ∞/∞ L'Hôpital's rule at -∞ (atBot)",
-      "Proof sketch: two-variable Cauchy MVT argument with explicit epsilon management",
+      "Complete proof of right-approach ∞/∞ L'Hôpital via c=0 reduction and Cauchy MVT",
       "Documentation of why ∞/∞ needs a separate proof from 0/0"
     ],
     "dateAdded": "2026-03-30",
     "leanFile": {
-      "lineCount": 195,
+      "lineCount": 364,
       "structures": 0,
       "axioms": 0,
       "theorems": 4,
@@ -53,8 +53,8 @@
       "instances": 0
     },
     "axiomCount": 0,
-    "lineCount": 195,
-    "assumptions": "0 axioms. 4 sorries (proof bodies pending). Theorem statements are complete.",
+    "lineCount": 364,
+    "assumptions": "0 axioms. 3 sorries (left/atTop/atBot variant reductions). Main right-approach theorem fully proved.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -100,8 +100,8 @@
     ]
   },
   "conclusion": {
-    "summary": "Theorem statements for the ∞/∞ L'Hôpital's rule are formalized in four variants (right, left, at +∞, at -∞). Proof bodies are pending (4 sorries). The proof strategy via two-variable Cauchy MVT is documented.",
-    "implications": "Completing the proofs would fill a genuine gap in Mathlib's calculus library: 26 variants of the 0/0 form but zero variants of the ∞/∞ form.",
+    "summary": "The main ∞/∞ L'Hôpital theorem (right approach) is fully proved via reduction to c=0 and two-variable Cauchy MVT argument. Three variant reductions (left, at +∞, at -∞) remain as sorry.",
+    "implications": "The right-approach proof fills the most important gap. The three remaining variants are standard reductions (substitution u→-u or u→1/u) that could be done by Aristotle or a follow-up session.",
     "openQuestions": [
       "Can the proof be done by reducing to the 0/0 form via substitution u = 1/g(x)?"
     ]
