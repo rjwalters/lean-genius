@@ -99,11 +99,38 @@ theorem indepNumber_le (G : Graph) (n : ℕ) (H : FiniteSubgraph G n) :
 
 /- ## Known Context -/
 
+/-- If there exists an independent set of size m ≤ n, then indepNumber ≥ m -/
+theorem indepNumber_ge_of_exists {G : Graph} {n : ℕ} (H : FiniteSubgraph G n)
+    {m : ℕ} (hm : m ≤ n) (S : Finset (Fin n)) (hcard : S.card = m)
+    (hindep : H.IsIndepSet S) : m ≤ indepNumber H := by
+  unfold indepNumber
+  have hm_range : m ∈ Finset.range (n + 1) := Finset.mem_range.mpr (by omega)
+  have hif : (if ∃ S : Finset (Fin n), S.card = m ∧ H.IsIndepSet S then m else 0) = m := by
+    rw [if_pos ⟨S, hcard, hindep⟩]
+  calc m = (if ∃ S : Finset (Fin n), S.card = m ∧ H.IsIndepSet S then m else 0) :=
+        hif.symm
+    _ ≤ Finset.sup (Finset.range (n + 1))
+        (fun k => if ∃ S : Finset (Fin n), S.card = k ∧ H.IsIndepSet S then k else 0) :=
+        Finset.le_sup hm_range
+
 /-- If G is k-colorable (k > 0), every n-vertex subgraph has an independent set
-    of size ≥ n/k. (Pigeonhole principle on color classes.) -/
-axiom finite_chromatic_independence (n k : ℕ) (G : Graph) (hk : G.Colorable k)
+    of size ≥ n/k. (Pigeonhole principle on color classes.)
+
+    Proof: restrict the coloring to the subgraph. By pigeonhole, some color class
+    has ≥ ⌈n/k⌉ ≥ n/k vertices. This color class is independent (proper coloring).
+    So indepNumber ≥ n/k, hence indepNumber * k ≥ n. -/
+theorem finite_chromatic_independence (n k : ℕ) (G : Graph) (hk : G.Colorable k)
     (hkpos : 0 < k) :
-  ∀ H : FiniteSubgraph G n, indepNumber H * k ≥ n
+  ∀ H : FiniteSubgraph G n, indepNumber H * k ≥ n := by
+  intro H
+  obtain ⟨f, hf⟩ := hk
+  -- Restrict coloring to subgraph: g(i) = f(embed(i))
+  let g : Fin n → Fin k := fun i => f (H.embed i)
+  -- By pigeonhole: some color c has fiber ≥ ⌈n/k⌉
+  -- The fibers partition Fin n into k classes summing to n
+  -- Largest fiber has card ≥ n/k, so card * k ≥ n
+  -- That fiber is an independent set
+  sorry
 
 /-- The Erdős–Hajnal conjecture (related): for every H, graphs not containing
     H as induced subgraph have polynomially large cliques or independent sets -/
