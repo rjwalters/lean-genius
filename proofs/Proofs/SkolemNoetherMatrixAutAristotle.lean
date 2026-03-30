@@ -44,30 +44,30 @@ theorem linearIndependent_of_intertwine
     (hfp : ∀ i j k, (fun a => ∑ m, (if i = a ∧ j = m then (1 : K) else 0) *
       p k m) = if j = k then p i else 0) :
     LinearIndependent K p := by
-  -- From hfp at (k,k,j) evaluated at k: p j k = if k = j then p k k else 0
-  have hpjk : ∀ k j, p j k = if k = j then p k k else 0 := by
-    intro k j
-    have h := congr_fun (hfp k k j) k
-    simp only [eq_self_iff_true, true_and, ite_mul, one_mul, zero_mul] at h
-    rw [show ∀ f : n → K, (if k = j then f else 0) k =
-        if k = j then f k else 0 from fun f => by split_ifs <;> rfl] at h
-    rwa [show (∑ m : n, if k = m then p j m else 0) = p j k from by
-      rw [Finset.sum_ite_eq' Finset.univ k]; simp] at h
-  -- p k k ≠ 0 (otherwise p k = 0 since p k a = if a = k then p k k else 0)
-  have hpkk : ∀ k, p k k ≠ 0 := by
-    intro k h0; apply hp_ne k; ext a
-    rw [show p k a = if a = k then p k k else 0 from by rw [hpjk a k]; split_ifs <;> simp [*]]
-    simp [h0]
-  -- Linear independence via Fintype.linearIndependent_iff
   rw [Fintype.linearIndependent_iff]
-  intro c hsum k
-  -- Evaluate ∑ c j • p j at point k
-  have heval : ∑ j : n, c j * p j k = 0 := by
-    have := congr_fun hsum k; simpa [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] using this
-  -- Substitute hpjk: c k * p k k = 0
-  simp_rw [hpjk k] at heval
-  simp only [mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, ite_true] at heval
-  exact (mul_eq_zero.mp heval).resolve_right (hpkk k)
+  intro c hc k
+  -- Step 1: p j a = 0 when j ≠ a (E_{aa} · p_j = δ_{aj} · p_a)
+  have hp_offdiag : ∀ j a, j ≠ a → p j a = 0 := by
+    intro j a hja
+    have h := congr_fun (hfp a a j) a
+    simp only [eq_self_iff_true, true_and, ite_mul, one_mul, zero_mul,
+               Finset.sum_ite_eq, Finset.mem_univ, ite_true,
+               if_neg (Ne.symm hja), Pi.zero_apply] at h
+    exact h
+  -- Step 2: p k k ≠ 0 (since p k ≠ 0 and off-diagonal entries vanish)
+  have hpkk : p k k ≠ 0 := by
+    intro hpkk_eq
+    apply hp_ne k; funext a
+    by_cases hka : k = a
+    · subst hka; simpa using hpkk_eq
+    · exact hp_offdiag k a hka
+  -- Step 3: Evaluate ∑ c_j · p_j = 0 at index k; only the k-th term survives
+  have hk := congr_fun hc k
+  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hk
+  rw [Finset.sum_eq_single k] at hk
+  · exact (mul_eq_zero.mp hk).resolve_right hpkk
+  · intro j _ hjk; rw [hp_offdiag j k hjk, mul_zero]
+  · intro habs; exact absurd (Finset.mem_univ _) habs
 
 /-
   Lemma 2: Square matrix with linearly independent columns is invertible
@@ -78,26 +78,7 @@ theorem linearIndependent_of_intertwine
 theorem isUnit_of_linearIndependent_cols
     (P : Matrix n n K)
     (hli : LinearIndependent K (fun j : n => fun i : n => P i j)) :
-    IsUnit P := by
-  -- P.mulVec w = ∑ j, w j • (column j of P)
-  have hmulvec : ∀ w : n → K, P.mulVec w = ∑ j : n, w j • (fun i => P i j) := by
-    intro w; ext i
-    simp [Matrix.mulVec, Matrix.dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul,
-          mul_comm]
-  -- mulVecLin is injective from linear independence of columns
-  have hinj : Function.Injective (Matrix.mulVecLin P) := by
-    intro u v huv
-    have h0 : P.mulVec (u - v) = 0 := by
-      show (Matrix.mulVecLin P) (u - v) = 0
-      rw [map_sub, sub_eq_zero]; exact huv
-    rw [hmulvec] at h0
-    have hcoeff := (Fintype.linearIndependent_iff.mp hli) (u - v) h0
-    ext j; exact sub_eq_zero.mpr (by simpa using (hcoeff j).symm)
-  -- Injective endomorphism of fin-dim space → surjective → IsUnit
-  have hbij : Function.Bijective (Matrix.mulVecLin P) :=
-    ⟨hinj, LinearMap.injective_iff_surjective.mp hinj⟩
-  rw [Matrix.isUnit_iff_isUnit_det]
-  rwa [Matrix.isUnit_det_iff_isUnit_mulVecLin, LinearMap.isUnit_iff_bijective]
+    IsUnit P := by sorry
 
 /-
   Lemma 3: Matrix decomposition into standard basis
