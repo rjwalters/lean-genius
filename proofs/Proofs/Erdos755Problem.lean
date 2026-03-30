@@ -181,7 +181,8 @@ theorem erdos_conjecture_any_size_true : erdos_conjecture_any_size := by
   intro n hn
   have h := hN n hn
   -- |T6(n) - n³/27| ≤ ε·n³ implies T6(n) ≤ (1/27 + ε)n³
-  sorry
+  have h' := (abs_le.mp h).2
+  nlinarith
 
 /-
 ## Part VI: Exact Formula for Higher Dimensions

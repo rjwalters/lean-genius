@@ -94,7 +94,12 @@ axiom bleicher_erdos_lower_bound (N : ℕ) (k : ℕ) (hk : k ≥ 4)
 /-- The lower bound shows S(N) grows very fast. -/
 theorem lower_bound_growth (N : ℕ) (hN : N ≥ 16) :
     (S N : ℝ) ≥ Real.exp ((N : ℝ) / Real.log N) := by
-  sorry  -- Follows from bleicher_erdos_lower_bound
+  have ⟨hlb, _⟩ := erdos_320_open_bounds N hN
+  have hS : (0 : ℝ) < (S N : ℝ) := Nat.cast_pos.mpr (S_pos N)
+  rw [ge_iff_le]
+  calc Real.exp ((N : ℝ) / Real.log (N : ℝ))
+      ≤ Real.exp (Real.log (S N : ℝ)) := by exact Real.exp_le_exp.mpr hlb
+    _ = (S N : ℝ) := Real.exp_log hS
 
 /- ## Part IV: Bleicher-Erdős Upper Bound (1976)
 -/
@@ -212,7 +217,8 @@ theorem log_S_leading_term (N : ℕ) (hN : N ≥ 100) :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
       c₁ * (N : ℝ) / Real.log N ≤ Real.log (S N : ℝ) ∧
       Real.log (S N : ℝ) ≤ c₂ * (N : ℝ) / Real.log N * Real.log (Real.log N) := by
-  sorry  -- Follows from the bounds
+  have ⟨hlb, hub⟩ := erdos_320_open_bounds N (by omega)
+  exact ⟨1, 1, one_pos, one_pos, by linarith, by linarith⟩
 
 /- ## Part XI: Summary
 -/
