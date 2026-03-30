@@ -542,13 +542,152 @@ theorem logDensity_odds : HasLogDensity {n : ℕ | Odd n} (1/2) := by
   refine Filter.Tendsto.congr' ?_ (Tendsto.sub hfull hevens)
   exact hev_split.mono (fun N hN => hN.symm)
 
-/-- **Axiom: Numbers ≢ 0 (mod m) have log density (m-1)/m**.
+/-- ⌊N/m⌋ → ∞ as N → ∞ for any fixed m ≥ 1. -/
+private theorem tendsto_nat_div_m (m : ℕ) (hm : 1 ≤ m) :
+    Tendsto (fun n : ℕ => n / m) atTop atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro b; exact ⟨m * b, fun n hn => by omega⟩
 
-Generalizes: avoiding one residue class mod m removes 1/m of the density.
+/-- log(⌊N/m⌋) / log(N) → 1 as N → ∞ for any fixed m ≥ 2.
+    Proof: squeeze between 1 - log(2m)/log(N) and 1. -/
+private theorem tendsto_log_div_m_div_log (m : ℕ) (hm : 2 ≤ m) :
+    Tendsto (fun N : ℕ => Real.log (↑(N / m) : ℝ) / Real.log (↑N)) atTop (nhds 1) := by
+  have hlog_atTop : Tendsto (fun N : ℕ => Real.log (↑N : ℝ)) atTop atTop :=
+    Tendsto.comp tendsto_log_atTop tendsto_natCast_atTop_atTop
+  rw [show (1 : ℝ) = 1 - 0 from by ring]
+  have h_eq : (fun N : ℕ => 1 - (Real.log (↑N) - Real.log (↑(N / m) : ℝ)) / Real.log (↑N))
+      =ᶠ[atTop] (fun N : ℕ => Real.log (↑(N / m) : ℝ) / Real.log (↑N)) := by
+    filter_upwards [eventually_gt_atTop 1] with N hN
+    have hlog : Real.log (↑N : ℝ) ≠ 0 :=
+      Real.log_ne_zero_of_pos_of_ne_one (by positivity) (ne_of_gt (by exact_mod_cast hN))
+    field_simp; ring
+  apply Filter.Tendsto.congr' h_eq
+  apply Tendsto.sub tendsto_const_nhds
+  apply squeeze_zero_norm'
+  · filter_upwards [eventually_ge_atTop (2 * m)] with N (hN : 2 * m ≤ N)
+    have hNm_pos : (0 : ℝ) < ↑(N / m) := by exact_mod_cast (show 0 < N / m by omega)
+    have hNr_pos : (0 : ℝ) < ↑N := by exact_mod_cast (show 0 < N by omega)
+    have hlog_pos : 0 < Real.log (↑N : ℝ) :=
+      Real.log_pos (by exact_mod_cast (show 1 < N by omega))
+    have h_sub_nn : 0 ≤ Real.log (↑N : ℝ) - Real.log (↑(N / m) : ℝ) := by
+      apply sub_nonneg.mpr; apply Real.log_le_log hNm_pos
+      exact_mod_cast (Nat.div_le_self N m)
+    rw [Real.norm_eq_abs, abs_of_nonneg (div_nonneg h_sub_nn hlog_pos.le)]
+    simp only [div_eq_mul_inv]
+    apply mul_le_mul_of_nonneg_right _ (inv_nonneg.mpr hlog_pos.le)
+    calc Real.log (↑N : ℝ) - Real.log (↑(N / m) : ℝ)
+        = Real.log ((↑N : ℝ) / ↑(N / m)) :=
+          (Real.log_div (ne_of_gt hNr_pos) (ne_of_gt hNm_pos)).symm
+      _ ≤ Real.log (2 * m) := by
+          apply Real.log_le_log (div_pos hNr_pos hNm_pos)
+          -- N/(N/m) ≤ 2m: since N ≤ 2m * (N/m), dividing by N/m gives ≤ 2m
+          rw [div_le_iff hNm_pos]
+          push_cast [Nat.cast_le]
+          -- Need: ↑N ≤ 2 * ↑m * ↑(N / m) in ℝ, from ℕ inequality
+          have hnat : N ≤ 2 * m * (N / m) := by
+            have := Nat.div_add_mod N m
+            have := Nat.mod_lt N (show 0 < m by omega)
+            nlinarith [Nat.le_div_iff_mul_le (show 0 < m by omega) |>.mpr (by omega : 2 * m ≤ N)]
+          exact_mod_cast hnat
+  · exact Tendsto.div_atTop tendsto_const_nhds hlog_atTop
 
-**Proof status**: HARD (~80 lines) - requires summing over residue classes. -/
-axiom logDensity_avoid_one_residue (m : ℕ) (hm : 2 ≤ m) :
-    HasLogDensity {n : ℕ | n ≠ 0 ∧ ¬(m ∣ n)} ((m - 1 : ℝ) / m)
+/-- H_{⌊N/m⌋} / log(N) → 1 as N → ∞.
+    Factors as (H_{N/m} / log(N/m)) · (log(N/m) / log(N)), both → 1. -/
+private theorem tendsto_harmonicSum_div_m_div_log (m : ℕ) (hm : 2 ≤ m) :
+    Tendsto (fun N : ℕ => harmonicSum (N / m) / Real.log (↑N)) atTop (nhds 1) := by
+  have hfactor : (fun N : ℕ => harmonicSum (N / m) / Real.log (↑(N / m) : ℝ) *
+      (Real.log (↑(N / m) : ℝ) / Real.log (↑N))) =ᶠ[atTop]
+      (fun N : ℕ => harmonicSum (N / m) / Real.log (↑N)) := by
+    filter_upwards [eventually_ge_atTop (2 * m + 2)] with N hN
+    have hlog : Real.log (↑(N / m) : ℝ) ≠ 0 := by
+      have h2 : 1 < (↑(N / m) : ℝ) := by exact_mod_cast (show 1 < N / m by omega)
+      exact ne_of_gt (Real.log_pos h2)
+    field_simp
+  rw [show (1 : ℝ) = 1 * 1 from by ring]
+  exact Filter.Tendsto.congr' hfactor
+    (Tendsto.mul
+      (tendsto_harmonic_div_log.comp (tendsto_nat_div_m m (by omega)))
+      (tendsto_log_div_m_div_log m hm))
+
+/-- The weighted count of multiples of m equals (1/m) · H_{⌊N/m⌋}. -/
+theorem logWeightedCount_multiples (m : ℕ) (hm : 1 ≤ m) (N : ℕ) :
+    logWeightedCount {n : ℕ | m ∣ n ∧ n ≠ 0} N = (1 / (m : ℝ)) * harmonicSum (N / m) := by
+  induction N with
+  | zero => simp [logWeightedCount, harmonicSum, harmonic_zero]
+  | succ n ih =>
+    rw [logWeightedCount_succ]
+    by_cases hdvd : m ∣ (n + 1)
+    · have hmem : (n + 1) ∈ {k : ℕ | m ∣ k ∧ k ≠ 0} ∧ (n + 1) ≠ 0 :=
+        ⟨⟨hdvd, Nat.succ_ne_zero n⟩, Nat.succ_ne_zero n⟩
+      rw [if_pos hmem, ih]
+      have hdiv : (n + 1) / m = n / m + 1 := by
+        rw [Nat.succ_div n m, if_pos hdvd]
+      rw [hdiv, harmonicSum_succ', mul_add]
+      congr 1
+      obtain ⟨k, hk⟩ := hdvd
+      have hk_pos : 0 < k := by omega
+      have h_eq : (↑(n + 1) : ℝ) = (m : ℝ) * ((↑(n / m) : ℝ) + 1) := by
+        have : n / m + 1 = k := by rw [Nat.succ_div n m, if_pos hdvd]; ring
+        rw [this]; push_cast; linarith [hk]
+      rw [h_eq]; field_simp
+    · have hmem : ¬((n + 1) ∈ {k : ℕ | m ∣ k ∧ k ≠ 0} ∧ (n + 1) ≠ 0) := by
+        intro ⟨⟨hd, _⟩, _⟩; exact hdvd hd
+      rw [if_neg hmem, add_zero, ih]
+      have hdiv : (n + 1) / m = n / m := by
+        rw [Nat.succ_div n m, if_neg hdvd, add_zero]
+      rw [hdiv]
+
+/-- Multiples and non-multiples of m partition ℕ⁺. -/
+private theorem multiples_partition (m : ℕ) (hm : 1 ≤ m) :
+    (Set.univ : Set ℕ) \ {0} = {n : ℕ | n ≠ 0 ∧ m ∣ n} ∪ {n : ℕ | n ≠ 0 ∧ ¬(m ∣ n)} := by
+  ext n; simp only [Set.mem_diff, Set.mem_univ, Set.mem_singleton_iff, true_and,
+    Set.mem_union, Set.mem_setOf_eq]
+  tauto
+
+/-- Multiples and non-multiples of m are disjoint. -/
+private theorem multiples_disjoint (m : ℕ) :
+    Disjoint {n : ℕ | n ≠ 0 ∧ m ∣ n} {n : ℕ | n ≠ 0 ∧ ¬(m ∣ n)} := by
+  rw [Set.disjoint_left]; intro n ⟨_, hd⟩ ⟨_, hnd⟩; exact hnd hd
+
+/-- **Numbers ≢ 0 (mod m) have log density (m-1)/m**.
+    Proof: multiples of m have density 1/m (via weighted count = (1/m)·H_{⌊N/m⌋}),
+    so non-multiples have density 1 - 1/m = (m-1)/m by complementation. -/
+theorem logDensity_avoid_one_residue (m : ℕ) (hm : 2 ≤ m) :
+    HasLogDensity {n : ℕ | n ≠ 0 ∧ ¬(m ∣ n)} ((m - 1 : ℝ) / m) := by
+  -- First prove multiples of m have density 1/m
+  have h_mult : HasLogDensity {n : ℕ | n ≠ 0 ∧ m ∣ n} (1 / m) := by
+    unfold HasLogDensity logDensityRatio
+    have h_eq : (fun N : ℕ => (1 / (m : ℝ)) * (harmonicSum (N / m) / Real.log (↑N)))
+        =ᶠ[atTop] (fun N => if N ≤ 1 then (0 : ℝ)
+          else logWeightedCount {n : ℕ | n ≠ 0 ∧ m ∣ n} N / Real.log (↑N)) := by
+      filter_upwards [eventually_gt_atTop 1] with N hN
+      simp only [show ¬(N ≤ 1) by omega, ↓reduceIte]
+      -- Swap the set to match logWeightedCount_multiples
+      have hset : {n : ℕ | n ≠ 0 ∧ m ∣ n} = {n : ℕ | m ∣ n ∧ n ≠ 0} := by ext; tauto
+      rw [hset, logWeightedCount_multiples m (by omega) N]; ring
+    exact Filter.Tendsto.congr' h_eq
+      (show Tendsto (fun N => (1 / (m : ℝ)) * (harmonicSum (N / m) / Real.log (↑N)))
+          atTop (nhds (1 / m)) from by
+        have h := Tendsto.mul (tendsto_const_nhds (x := (1 / (m : ℝ))))
+          (tendsto_harmonicSum_div_m_div_log m hm)
+        simp only [mul_one] at h; exact h)
+  -- Then use complement splitting: density(non-mult) = 1 - 1/m = (m-1)/m
+  have hfull := logDensity_full
+  have hunion := multiples_partition m (by omega)
+  have hdisj := multiples_disjoint m
+  suffices h : HasLogDensity {n : ℕ | n ≠ 0 ∧ ¬(m ∣ n)} (1 - 1 / (m : ℝ)) by
+    convert h using 1; field_simp
+  unfold HasLogDensity at *
+  have hev_split : ∀ᶠ N in atTop,
+      logDensityRatio {n : ℕ | n ≠ 0 ∧ ¬(m ∣ n)} N =
+      logDensityRatio (Set.univ \ {0}) N - logDensityRatio {n | n ≠ 0 ∧ m ∣ n} N := by
+    filter_upwards [eventually_gt_atTop 1] with N hN
+    have h1 : ¬(N ≤ 1) := by omega
+    unfold logDensityRatio
+    simp only [h1, ↓reduceIte]
+    rw [hunion, logWeightedCount_union_disjoint hdisj N, add_div]; ring
+  exact Filter.Tendsto.congr' (hev_split.mono (fun N hN => hN.symm))
+    (Tendsto.sub hfull h_mult)
 
 /- ## Part VI: Connection to Natural Density -/
 
