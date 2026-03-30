@@ -121,7 +121,12 @@ theorem tao_equal_size_bound (A B : Finset ℤ) (N : ℕ)
     (hA : IsSidonSet A) (hB : IsSidonSet B)
     (hRA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) (hRB : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N)
     (hD : DisjointDifferences A B) (hEq : A.card = B.card) :
-  (A.card : ℝ) ^ 2 ≤ 2 * N + 1 := by sorry
+  (A.card : ℝ) ^ 2 ≤ 2 * N + 1 := by
+  -- Proof from disjoint_diff_combined_bound: 2·C(m,2) ≤ N where m = A.card
+  -- → m*(m-1) ≤ N (via Nat.choose_two_right)
+  -- → m ≤ N+1 (case split: m ≥ 2 gives m ≤ m*(m-1) ≤ N)
+  -- → m² = m*(m-1)+m ≤ N+(N+1) = 2N+1 (in ℝ via nlinarith)
+  sorry
 
 /- ## Counting Arguments -/
 
