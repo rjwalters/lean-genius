@@ -1,0 +1,53 @@
+{
+  "id": "hilbert-20-oq-01-oq-03",
+  "title": "Dencker's Energy Estimate Approach to Local Solvability",
+  "slug": "hilbert-20-oq-01-oq-03",
+  "description": "Formalizes the structural framework of Dencker's 2006 proof: condition (Psi) implies local solvability via the chain Dencker weight -> a priori estimates -> solvability through Hormander duality.",
+  "meta": {
+    "author": "Dencker (2006), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nirenberg%E2%80%93Treves_conjecture",
+    "date": "2006",
+    "status": "axiomatized",
+    "tags": [
+      "hilbert-problems",
+      "analysis",
+      "pde",
+      "functional-analysis",
+      "microlocal-analysis"
+    ],
+    "proofRepoPath": "Proofs/Hilbert20OQ01OQ03.lean",
+    "badge": "axiom",
+    "sorries": 3,
+    "axiomCount": 7,
+    "theoremCount": 8,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.ofReal",
+        "description": "Real-to-complex embedding",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "starRingEnd",
+        "description": "Complex conjugation as ring endomorphism",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal adjoint of PDOs with proved principal symbol relation",
+      "Involutivity of adjoint: (P*)* = P",
+      "Dencker sufficiency theorem assembled from weight->estimate->solvability chain",
+      "Adjoint preserves principal type property"
+    ],
+    "assumptions": [
+      "HasAPrioriEstimate: Sobolev a priori estimates (needs Sobolev spaces)",
+      "IsLocallySolvable: local solvability (needs distribution theory)",
+      "hormander_duality: solvability ↔ adjoint estimates",
+      "BicharacteristicCurve/imSymbolAlongCurve: Hamilton flow",
+      "dencker_weight_exists: Dencker's weight construction (2006)",
+      "weight_implies_estimate: weight → a priori estimates"
+    ]
+  },
+  "parent": "hilbert-20-oq-01",
+  "openQuestion": "How does Dencker's proof establish the sufficiency of condition (Psi) for local solvability of principal-type operators?",
+  "significance": "Dencker's 2006 proof resolved the 43-year-old Nirenberg-Treves conjecture. The key innovation was constructing weight functions adapted to sign changes of the imaginary part of the principal symbol. This formalization captures the proof's structural architecture: the chain from condition (Psi) through Dencker weights to a priori estimates to local solvability via Hormander duality."
+}
