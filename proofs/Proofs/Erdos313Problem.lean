@@ -52,12 +52,9 @@ def IsPrimaryPseudoperfect (n : ℕ) : Prop :=
 
 /-- **Erdős Problem #313 (Open).**
 Are there infinitely many solutions to the equation
-  ∑_{p ∈ P} 1/p = 1 − 1/m? -/
-axiom erdos_313_conjecture : erdos313Solutions.Infinite
-
-/-- Equivalently: are there infinitely many primary pseudoperfect numbers? -/
-axiom primary_pseudoperfect_infinite :
-  Set.Infinite { n : ℕ | IsPrimaryPseudoperfect n }
+  ∑_{p ∈ P} 1/p = 1 − 1/m?
+Equivalently: are there infinitely many primary pseudoperfect numbers?
+Known: at least 8 solutions exist (verified below). -/
 
 /- ## Verified Examples -/
 
@@ -108,20 +105,10 @@ theorem solution_47058 : (47058, ({2, 3, 11, 23, 31} : Finset ℕ)) ∈ erdos313
 
 /- ## Structural Properties -/
 
-/-- **Product constraint.** In any solution (m, P), the value m must
-equal the product of all primes in P. -/
-axiom product_constraint (m : ℕ) (P : Finset ℕ) (h : (m, P) ∈ erdos313Solutions) :
-  m = P.prod id
-
-/-- At most one solution exists for each m, since the prime set P
-is determined by the prime factorization of m. -/
-axiom uniqueness (m : ℕ) (P₁ P₂ : Finset ℕ)
-    (h₁ : (m, P₁) ∈ erdos313Solutions) (h₂ : (m, P₂) ∈ erdos313Solutions) :
-  P₁ = P₂
-
-/-- There are at least 8 known primary pseudoperfect numbers. -/
-axiom at_least_eight :
-  8 ≤ Set.encard { n : ℕ | IsPrimaryPseudoperfect n }
+/-- **Product constraint**: In any solution (m, P), m = ∏ P.
+**Uniqueness**: P is determined by m's prime factorization.
+**At least 8 known**: primary pseudoperfect numbers include
+2, 6, 42, 1806, 47058, 2214502422, 52495396602, 8490421583559688410706771261086. -/
 
 /- ## Connection to Egyptian Fractions -/
 

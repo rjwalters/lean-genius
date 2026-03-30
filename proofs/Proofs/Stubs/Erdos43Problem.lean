@@ -245,19 +245,68 @@ theorem sidon_diff_injective (A : Finset ℤ) (hS : IsSidonSet A)
   · -- Case a₁ = b₁: contradicts hne
     exact absurd rfl hne
 
-/-- The number of nonzero differences of a Sidon set A is |A|²-|A|,
-    since all pairwise differences are distinct. -/
-theorem sidon_diff_count (A : Finset ℤ) (hS : IsSidonSet A) :
+/-- The number of elements of the difference set of a Sidon set A is |A|²-|A|+1:
+    the |A|²-|A| off-diagonal pairs map injectively, plus 0 from the diagonal. -/
+theorem sidon_diff_count (A : Finset ℤ) (hS : IsSidonSet A) (hA : A.Nonempty) :
   (diffSet A).card = A.card * A.card - A.card + 1 := by
-  -- diffSet A = image of A ×ˢ A under subtraction
-  -- The off-diagonal pairs map injectively (by sidon_diff_injective)
-  -- |A ×ˢ A| = |A|², diagonal has |A| elements, image of diagonal = {0}
-  -- So |diffSet A| = |off-diagonal image| + |{0}| = (|A|²-|A|) + 1
-  sorry
+  set f : ℤ × ℤ → ℤ := fun p => p.1 - p.2
+  -- Injectivity on off-diagonal pairs
+  have hinj : Set.InjOn f ↑A.offDiag := by
+    intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    simp only [Finset.mem_coe, Finset.mem_offDiag] at h₁ h₂
+    exact Prod.ext (sidon_diff_injective A hS h₁.1 h₁.2.1 h₂.1 h₂.2.1 h₁.2.2 heq).1
+      (sidon_diff_injective A hS h₁.1 h₁.2.1 h₂.1 h₂.2.1 h₁.2.2 heq).2
+  -- Diagonal maps to {0}
+  have hdiag_image : A.diag.image f = {0} := by
+    ext x; simp only [Finset.mem_image, Finset.mem_diag, Finset.mem_singleton, f]
+    constructor
+    · rintro ⟨⟨a, b⟩, ⟨_, rfl⟩, rfl⟩; simp
+    · intro hx; rw [hx]; obtain ⟨a, ha⟩ := hA
+      exact ⟨(a, a), ⟨ha, rfl⟩, by simp⟩
+  -- 0 is not in the off-diagonal image
+  have hzero_not : (0 : ℤ) ∉ A.offDiag.image f := by
+    intro h0; obtain ⟨⟨a, b⟩, hp, heq⟩ := Finset.mem_image.mp h0
+    simp only [Finset.mem_offDiag] at hp; exact hp.2.2 (by omega)
+  -- Combine: |diffSet A| = 1 + |offDiag|
+  suffices h : (diffSet A).card + A.card = A.card * A.card + 1 by omega
+  calc (diffSet A).card + A.card
+      = ((A.diag ∪ A.offDiag).image f).card + A.card := by
+          rw [Finset.diag_union_offDiag]; rfl
+    _ = (A.diag.image f ∪ A.offDiag.image f).card + A.card := by
+          rw [Finset.image_union]
+    _ = ((A.diag.image f).card + (A.offDiag.image f).card) + A.card := by
+          rw [Finset.card_union_of_disjoint
+            (by rw [hdiag_image]; exact Finset.disjoint_singleton_left.mpr hzero_not)]
+    _ = 1 + A.offDiag.card + A.card := by
+          rw [hdiag_image, Finset.card_singleton, Finset.card_image_of_injOn hinj]
+    _ = A.card * A.card + 1 := by
+          rw [Finset.card_offDiag]
+          cases A.card with
+          | zero => simp at hA
+          | succ n => simp [Nat.succ_mul, Nat.mul_succ]; omega
 
-/-- When differences are disjoint, the combined nonzero differences
-    from A and B have cardinality |A|²-|A| + |B|²-|B|. -/
+/-- When differences are disjoint, the combined difference set has cardinality
+    |A|²-|A| + |B|²-|B| + 1 (the nonzero parts are disjoint, sharing only {0}). -/
 theorem disjoint_diff_total (A B : Finset ℤ)
-    (hA : IsSidonSet A) (hB : IsSidonSet B) (hD : DisjointDifferences A B) :
+    (hA : IsSidonSet A) (hB : IsSidonSet B) (hD : DisjointDifferences A B)
+    (hAne : A.Nonempty) (hBne : B.Nonempty) :
   (diffSet A ∪ diffSet B).card ≥
-    A.card * A.card - A.card + B.card * B.card - B.card + 1 := by sorry
+    A.card * A.card - A.card + B.card * B.card - B.card + 1 := by
+  -- The intersection is exactly {0}
+  have h_inter : diffSet A ∩ diffSet B = {0} := by
+    ext d; simp only [Finset.mem_inter, Finset.mem_singleton]
+    constructor
+    · exact fun ⟨hda, hdb⟩ => hD d hda hdb
+    · intro hd; rw [hd]; constructor
+      · simp only [diffSet, Finset.mem_image, Finset.mem_product]
+        obtain ⟨a, ha⟩ := hAne; exact ⟨(a, a), ⟨ha, ha⟩, by simp⟩
+      · simp only [diffSet, Finset.mem_image, Finset.mem_product]
+        obtain ⟨b, hb⟩ := hBne; exact ⟨(b, b), ⟨hb, hb⟩, by simp⟩
+  -- Use inclusion-exclusion
+  have h_ie := Finset.card_union_add_card_inter (diffSet A) (diffSet B)
+  rw [h_inter, Finset.card_singleton, sidon_diff_count A hA hAne,
+      sidon_diff_count B hB hBne] at h_ie
+  -- h_ie: card(A∪B) + 1 = (cA + 1) + (cB + 1)  where cA = A²-A, cB = B²-B
+  set cA := A.card * A.card - A.card
+  set cB := B.card * B.card - B.card
+  omega
