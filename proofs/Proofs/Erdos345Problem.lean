@@ -147,8 +147,9 @@ theorem threshold_powerSeq_1 : threshold (powerSeq 1) = 1 := by
 
 /- ## Known threshold values -/
 
-/-- `T(n²) = 128`. -/
-axiom threshold_squares : threshold (powerSeq 2) = 128
+/-- `T(n²) = 129`. Every integer ≥ 129 is a sum of distinct non-zero squares
+    (Sprague 1948). 128 is the largest non-representable integer. -/
+axiom threshold_squares : threshold (powerSeq 2) = 129
 
 /-- `T(n³) = 12758`. -/
 axiom threshold_cubes : threshold (powerSeq 3) = 12758
@@ -177,7 +178,7 @@ def ErdosProblem345 : Prop :=
 /- ## Monotonicity observations -/
 
 /-- The known values show `T(n^k)` is rapidly increasing for small k:
-    1 < 128 < 12758 < 5134240 < 67898771. -/
+    1 < 129 < 12758 < 5134240 < 67898771. -/
 theorem threshold_mono_small :
     threshold (powerSeq 1) < threshold (powerSeq 2) ∧
     threshold (powerSeq 2) < threshold (powerSeq 3) ∧
