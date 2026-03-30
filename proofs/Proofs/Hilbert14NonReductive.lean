@@ -113,6 +113,78 @@ theorem reynolds_idempotent {G : Type*} [Group G] {R : Type*} [CommRing R]
   ρ.proj_invariant _ (ρ.proj_mem r)
 
 -- ═══════════════════════════════════════════════════════════════════
+-- PART I-B: SUBRING STRUCTURE OF INVARIANTS
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **The invariant set R^G forms a subring of R.**
+
+    Given a group G acting on a commutative ring R by ring automorphisms
+    (distributing over both addition and multiplication), the set of
+    G-invariant elements is closed under all ring operations.
+
+    This is foundational: the ring structure of R^G is what makes
+    questions about finite generation meaningful. -/
+def invariantSubring (G : Type*) [Group G] (R : Type*) [CommRing R]
+    [DistribMulAction G R] [MulDistribMulAction G R] : Subring R where
+  carrier := InvariantSubset G R
+  zero_mem' := fun g => smul_zero g
+  one_mem' := fun g => smul_one g
+  add_mem' := fun {a b} ha hb g => by rw [smul_add, ha g, hb g]
+  mul_mem' := fun {a b} ha hb g => by rw [smul_mul', ha g, hb g]
+  neg_mem' := fun {a} ha g => by rw [smul_neg, ha g]
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART I-C: REYNOLDS OPERATOR FOR FINITE GROUPS
+-- ═══════════════════════════════════════════════════════════════════
+
+section FiniteGroupReynolds
+
+variable {G : Type*} [Group G] [Fintype G]
+variable {R : Type*} [CommRing R]
+variable [DistribMulAction G R] [MulDistribMulAction G R]
+
+open BigOperators
+
+/-- The sum of all group translates: Σ_{g ∈ G} g • r.
+    This is the unnormalized Reynolds operator. Dividing by |G| (when
+    invertible in R) gives the true Reynolds operator.
+
+    For finite groups, the Reynolds operator is the key tool for proving
+    finite generation: it provides a projection R ↠ R^G respecting the
+    algebra structure. -/
+noncomputable def reynoldsSum (r : R) : R :=
+  ∑ g : G, g • r
+
+/-- The Reynolds sum maps into the invariant set.
+    Left multiplication by any group element is a bijection on G,
+    so summing over G and over aG gives the same result. -/
+theorem reynoldsSum_mem_invariant (r : R) :
+    reynoldsSum r ∈ InvariantSubset G R := by
+  intro a
+  simp only [reynoldsSum]
+  rw [Finset.smul_sum]
+  simp_rw [← mul_smul]
+  exact Equiv.sum_comp (Equiv.mulLeft a) (· • r)
+
+/-- The Reynolds sum is additive. -/
+theorem reynoldsSum_add (r s : R) :
+    reynoldsSum (r + s) = reynoldsSum r + reynoldsSum s := by
+  simp only [reynoldsSum]
+  simp_rw [smul_add]
+  exact Finset.sum_add_distrib
+
+/-- On invariant elements, the Reynolds sum equals |G| · r.
+    Since g • r = r for all g, the sum Σ_g g • r = Σ_g r = |G| · r. -/
+theorem reynoldsSum_on_invariant (r : R) (hr : r ∈ InvariantSubset G R) :
+    reynoldsSum r = Fintype.card G • r := by
+  simp only [reynoldsSum]
+  have hr' : ∀ g : G, g • r = r := hr
+  simp_rw [hr']
+  rw [Finset.sum_const, Finset.card_univ]
+
+end FiniteGroupReynolds
+
+-- ═══════════════════════════════════════════════════════════════════
 -- PART II: GROSSHANS SUBGROUP CRITERION
 -- ═══════════════════════════════════════════════════════════════════
 
@@ -147,11 +219,11 @@ class GrosshansSubgroup (G : Type*) [Group G] (H : Subgroup G) : Prop where
     3. Apply Hilbert's theorem to the reductive quotient
 
     The converse "fg invariants ⟹ Grosshans" uses geometric invariant theory. -/
-axiom grosshans_characterization
+theorem grosshans_characterization
     (G : Type*) [Group G] (H : Subgroup G) :
     -- H is Grosshans ↔ invariants are fg for all representations
     -- (Stated as True → True since we lack AlgebraicGroup infrastructure)
-    GrosshansSubgroup G H → True
+    GrosshansSubgroup G H → True := fun _ => trivial
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: KNOWN CASES

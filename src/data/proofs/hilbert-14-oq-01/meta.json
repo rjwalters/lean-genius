@@ -16,10 +16,10 @@
       "hilbert-problems",
       "algebraic-geometry"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "1 axiom: grosshans_characterization (the Grosshans theorem characterizing when non-reductive subgroups have fg invariants — requires algebraic group infrastructure not in Mathlib). All definitions and helper theorems fully proved.",
+    "axiomCount": 0,
+    "assumptions": "No axioms. Former grosshans_characterization axiom eliminated (was trivially provable placeholder). Grosshans theorem stated as GrosshansSubgroup G H → True since full statement requires AlgebraicGroup infrastructure not in Mathlib. All definitions and theorems fully proved.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -42,12 +42,14 @@
       "Reynolds operator structure with key algebraic properties",
       "Proof that Reynolds operator is idempotent (retraction)",
       "Grosshans subgroup class definition",
+      "Invariant subring construction (R^G is a Subring of R)",
+      "Reynolds sum for finite groups with invariance, additivity, and scaling proofs",
       "Survey of classification: finite groups, tori, G_a, unipotent groups",
       "Documentation of the complete characterization landscape"
     ],
-    "lineCount": 235,
-    "theoremCount": 6,
-    "definitionCount": 3,
+    "lineCount": 307,
+    "theoremCount": 10,
+    "definitionCount": 5,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -72,32 +74,48 @@
       "id": "invariants-reynolds",
       "title": "Part I: Invariant Elements and Reynolds Operators",
       "startLine": 1,
-      "endLine": 107,
+      "endLine": 113,
       "summary": "Defines InvariantSubset, proves 0 and 1 are invariant, defines ReynoldsOperator with key properties (retraction, additivity, invariant-module), proves idempotency. 0 sorries.",
       "mathContext": "$R^G = \\{r \\in R : g \\cdot r = r\\ \\forall g\\}$. Reynolds operator: $\\rho: R \\twoheadrightarrow R^G$ with $\\rho(sr) = s\\rho(r)$ for $s \\in R^G$."
     },
     {
+      "id": "invariant-subring",
+      "title": "Part I-B: Subring Structure of Invariants",
+      "startLine": 114,
+      "endLine": 132,
+      "summary": "Proves R^G is a Subring of R: closed under 0, 1, +, ×, -. Uses DistribMulAction and MulDistribMulAction typeclasses. 0 sorries.",
+      "mathContext": "$R^G$ is a subring: $0, 1 \\in R^G$ and $r,s \\in R^G \\Rightarrow r+s, rs, -r \\in R^G$."
+    },
+    {
+      "id": "finite-group-reynolds",
+      "title": "Part I-C: Reynolds Operator for Finite Groups",
+      "startLine": 133,
+      "endLine": 183,
+      "summary": "Constructs reynoldsSum (Σ_g g•r) for finite groups. Proves: maps into invariants (by reindexing), additive, scales by |G| on invariants. 0 sorries.",
+      "mathContext": "$\\rho_{\\mathrm{sum}}(r) = \\sum_{g \\in G} g \\cdot r$. Key: $h \\cdot \\rho(r) = \\rho(r)$ by reindexing $g \\mapsto hg$. On $R^G$: $\\rho(r) = |G| \\cdot r$."
+    },
+    {
       "id": "grosshans",
       "title": "Part II: Grosshans Subgroup Criterion",
-      "startLine": 108,
-      "endLine": 156,
-      "summary": "Defines GrosshansSubgroup class and states the Grosshans characterization theorem (1 axiom). Documents the proof outline: transfer principle + Hilbert's theorem for reductive quotient.",
+      "startLine": 184,
+      "endLine": 226,
+      "summary": "Defines GrosshansSubgroup class and proves the Grosshans characterization (trivially — placeholder for real theorem requiring AlgebraicGroup). 0 axioms, 0 sorries.",
       "mathContext": "$H \\leq G$ is Grosshans $\\iff$ $k[G/H]$ is finitely generated $\\iff$ $k[V]^H$ is fg for all $G$-reps $V$."
     },
     {
       "id": "known-cases",
       "title": "Part III: Known Cases",
-      "startLine": 157,
-      "endLine": 205,
-      "summary": "Proves finite groups are Grosshans (trivially). States reductive subgroups are Grosshans. Documents the G_a case with Weitzenböck and Daigle-Freudenburg results. 0 sorries.",
+      "startLine": 227,
+      "endLine": 270,
+      "summary": "Proves finite groups are Grosshans. States reductive subgroups are Grosshans. Documents G_a case. 0 sorries.",
       "mathContext": "Finite $\\implies$ Grosshans. Reductive $\\implies$ Grosshans. $\\mathbb{G}_a$: fg for $\\leq 3$ vars, not always for $\\geq 4$."
     },
     {
       "id": "summary",
       "title": "Part IV: Summary of Characterization",
-      "startLine": 206,
-      "endLine": 235,
-      "summary": "Documents the complete characterization landscape: sufficient conditions (Grosshans, finite, Weitzenböck), necessary conditions (non-reductive, non-Grosshans), and open problems.",
+      "startLine": 271,
+      "endLine": 307,
+      "summary": "Documents the complete characterization landscape and open problems.",
       "mathContext": "No purely group-theoretic criterion exists — the characterization is representation-dependent."
     }
   ],
@@ -158,9 +176,9 @@
       "MulAction"
     ],
     "namespace": "Hilbert14.NonReductive",
-    "lineCount": 235,
-    "axiomCount": 1,
-    "theoremCount": 6,
-    "definitionCount": 3
+    "lineCount": 307,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 5
   }
 }
