@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-03-30T16:34:54.971Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Proved 3 lemmas, restructured proof architecture",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,10 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 2 actual sorries (not 8). smallest_above_is_smaller requires 3D geometric confinement argument. descent_chains_from_coverage follows by induction once the first is proved. BLOCKED on geometric reasoning infrastructure.",
+    "progressSummary": "PROGRESS: Proved 3 lemmas (exists_smaller_cube, descent_chains_from_coverage, dissection_of_cubes_from_coverage). Reduced sorry structure: old 2 sorries replaced by 2 cleaner sorries. New direct proof path avoids chain construction.",
     "builtItems": [
       "Assessment: 2 actual sorries at lines 390, 422 of DissectionOfCubesOQ03.lean",
-      "Architecture: proves all_different_implies_long_chains from coverage (replacing parent axiom)"
+      "Architecture: proves all_different_implies_long_chains from coverage (replacing parent axiom)",
+      "Proved exists_smaller_cube lemma (~line 398)",
+      "Proved descent_chains_from_coverage from exfalso + global_min contradiction (~line 478)",
+      "Proved dissection_of_cubes_from_coverage via direct proof (~line 525)",
+      "Added global_min_not_reaching_top sorry (~line 464)"
     ],
     "insights": [
       "Only 2 actual sorries (metadata claimed 8 — 6 are in comments)",
@@ -40,12 +44,17 @@
       "Key geometric argument: taller neighbors confine what can sit above the smallest cube",
       "descent_chains_from_coverage follows by induction once smallest_above_is_smaller is proved",
       "This eliminates the all_different_implies_long_chains_axiom from the parent file",
-      "The problem title (electrical network method) refers to OQ05 but sorries are in OQ03"
+      "The problem title (electrical network method) refers to OQ05 but sorries are in OQ03",
+      "exists_smaller_cube derives base axiom from smallest_above_is_smaller via floor minimum + midpoint witness",
+      "descent_chains_from_coverage proved by deriving contradiction from global min + exists_smaller_cube (exfalso)",
+      "dissection_of_cubes_from_coverage now has direct proof: global min + exists_smaller_cube, no chains needed",
+      "global_min_not_reaching_top is the new well-scoped sorry: global minimum cube has z + side < 1",
+      "1-cube dissection edge case: allDifferentSizes is vacuously true, theorem statement is technically false for card=1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove smallest_above_is_smaller: formalize the geometric confinement argument using Cube.interiorDisjoint",
-      "Once proved, descent_chains_from_coverage follows by nat induction + floor_coverage"
+      "Prove global_min_not_reaching_top: for bottom-floor mins, use filling argument (side=1 only cube). For non-bottom mins, use coverage + interior-disjointness below c_min",
+      "Prove smallest_above_is_smaller: formalize confinement using interiorDisjoint with floor neighbors"
     ]
   },
   "tags": [
