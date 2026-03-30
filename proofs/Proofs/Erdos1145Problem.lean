@@ -482,47 +482,112 @@ theorem ruzsaB_eq_double_ruzsaA (n : ℕ) : n ∈ ruzsaB ↔ n % 2 = 0 ∧ n / 2
 theorem countingFn_ruzsaB (N : ℕ) :
     countingFn ruzsaB N = countingFn ruzsaA (N / 2) := by
   unfold countingFn
-  -- Bijection b ↦ b/2 from {b ∈ [1,N] : b ∈ ruzsaB} to {a ∈ [1,N/2] : a ∈ ruzsaA}
-  apply Finset.card_bij (fun b _ => b / 2)
-  · -- Maps into target: b ∈ ruzsaB ∩ [1,N] ⟹ b/2 ∈ ruzsaA ∩ [1,N/2]
+  -- Bijection b ↦ b/2 between ruzsaB ∩ [1,N] and ruzsaA ∩ [1,N/2]
+  apply Finset.card_congr (fun b _ => b / 2)
+  · -- Maps correctly: b ∈ ruzsaB ∩ [1,N] → b/2 ∈ ruzsaA ∩ [1,N/2]
     intro b hb
     simp only [Finset.mem_filter, Finset.mem_Icc] at hb ⊢
     obtain ⟨⟨hb1, hbN⟩, hbB⟩ := hb
-    obtain ⟨heven, hA⟩ := (ruzsaB_eq_double_ruzsaA b).mp hbB
-    exact ⟨⟨by omega, by omega⟩, hA⟩
-  · -- Injective: b₁/2 = b₂/2 with both even ⟹ b₁ = b₂
+    obtain ⟨heven, haA⟩ := (ruzsaB_eq_double_ruzsaA b).mp hbB
+    exact ⟨⟨by omega, Nat.div_le_div_right hbN⟩, haA⟩
+  · -- Injective: b₁/2 = b₂/2 with b₁, b₂ even → b₁ = b₂
     intro b₁ hb₁ b₂ hb₂ heq
     simp only [Finset.mem_filter] at hb₁ hb₂
-    have h1 := ((ruzsaB_eq_double_ruzsaA b₁).mp hb₁.2).1
-    have h2 := ((ruzsaB_eq_double_ruzsaA b₂).mp hb₂.2).1
+    have h₁ := ((ruzsaB_eq_double_ruzsaA b₁).mp hb₁.2).1
+    have h₂ := ((ruzsaB_eq_double_ruzsaA b₂).mp hb₂.2).1
     omega
-  · -- Surjective: ∀ a ∈ ruzsaA ∩ [1,N/2], ∃ b ∈ ruzsaB ∩ [1,N], b/2 = a
+  · -- Surjective: for a ∈ ruzsaA ∩ [1,N/2], preimage is 2a ∈ ruzsaB ∩ [1,N]
     intro a ha
     simp only [Finset.mem_filter, Finset.mem_Icc] at ha ⊢
-    obtain ⟨⟨ha1, haN2⟩, haA⟩ := ha
-    refine ⟨2 * a, ?_, by omega⟩
-    refine ⟨⟨by omega, by omega⟩, ?_⟩
-    exact (ruzsaB_eq_double_ruzsaA (2 * a)).mpr
-      ⟨by omega, by rwa [Nat.mul_div_cancel_left a (by omega : 0 < 2)]⟩
+    obtain ⟨⟨ha1, haN⟩, haA⟩ := ha
+    exact ⟨2 * a, ⟨⟨by omega, by omega⟩,
+      (ruzsaB_eq_double_ruzsaA (2 * a)).mpr
+        ⟨by omega, by rwa [Nat.mul_div_cancel_left a (by omega : 0 < 2)]⟩⟩,
+      by omega⟩
+
+/-- The doubling property of countingFn ruzsaA:
+    the count at 4N+1 is at least twice the count at N.
+    Proof: the injections a ↦ 4a (≡ 0 mod 4) and a ↦ 4a+1 (≡ 1 mod 4) from
+    ruzsaA ∩ [1,N] into ruzsaA ∩ [1,4N+1] have disjoint images. -/
+lemma countingFn_ruzsaA_doubling (N : ℕ) :
+    2 * countingFn ruzsaA N ≤ countingFn ruzsaA (4 * N + 1) := by
+  unfold countingFn
+  set s := (Finset.Icc 1 N).filter (· ∈ ruzsaA)
+  set t := (Finset.Icc 1 (4 * N + 1)).filter (· ∈ ruzsaA)
+  -- Image cardinalities equal source
+  have hf_card : (s.image (4 * ·)).card = s.card :=
+    Finset.card_image_of_injective s (fun a b h => by omega)
+  have hg_card : (s.image (4 * · + 1)).card = s.card :=
+    Finset.card_image_of_injective s (fun a b h => by omega)
+  -- Images are disjoint: 4a ≡ 0 mod 4, 4a'+1 ≡ 1 mod 4
+  have hdisj : Disjoint (s.image (4 * ·)) (s.image (4 * · + 1)) := by
+    rw [Finset.disjoint_left]
+    intro n hn1 hn2
+    simp only [Finset.mem_image] at hn1 hn2
+    obtain ⟨a, _, rfl⟩ := hn1; obtain ⟨b, _, hb⟩ := hn2; omega
+  -- Both images land in t
+  have hf_sub : s.image (4 * ·) ⊆ t := by
+    intro n hn; simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_Icc] at hn ⊢
+    obtain ⟨a, ⟨⟨ha1, haN⟩, haA⟩, rfl⟩ := hn
+    exact ⟨⟨by omega, by omega⟩, ruzsaA_build a 0 haA (Or.inl rfl)⟩
+  have hg_sub : s.image (4 * · + 1) ⊆ t := by
+    intro n hn; simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_Icc] at hn ⊢
+    obtain ⟨a, ⟨⟨ha1, haN⟩, haA⟩, rfl⟩ := hn
+    exact ⟨⟨by omega, by omega⟩, ruzsaA_build a 1 haA (Or.inr rfl)⟩
+  -- Combine: 2 * s.card ≤ t.card
+  calc 2 * s.card
+      = (s.image (4 * ·)).card + (s.image (4 * · + 1)).card := by rw [hf_card, hg_card]; ring
+    _ = ((s.image (4 * ·)) ∪ (s.image (4 * · + 1))).card :=
+        (Finset.card_union_of_disjoint hdisj).symm
+    _ ≤ t.card := Finset.card_le_card (Finset.union_subset hf_sub hg_sub)
+
+/-- 1 ∈ ruzsaA ∩ [1,N] for N ≥ 1, so countingFn ruzsaA N ≥ 1. -/
+lemma countingFn_ruzsaA_pos (N : ℕ) (hN : N ≥ 1) : 0 < countingFn ruzsaA N := by
+  unfold countingFn; exact Finset.card_pos.mpr
+    ⟨1, Finset.mem_filter.mpr ⟨Finset.mem_Icc.mpr ⟨le_refl _, hN⟩, one_mem_ruzsaA⟩⟩
 
 /-- The ratio countingFn ruzsaA N / countingFn ruzsaB N does NOT converge to 1.
-    Proof sketch: By countingFn_ruzsaB, the ratio equals
-    countingFn ruzsaA N / countingFn ruzsaA (N/2).
-    At N = 2·4^k - 1, countingFn ruzsaA N = 2^{k+1} - 1 while
-    countingFn ruzsaA (N/2) = countingFn ruzsaA (4^k-1) = 2^k - 1,
-    giving ratio (2^{k+1}-1)/(2^k-1) → 2 as k → ∞.
-    This exceeds 3/2 for all k ≥ 1, contradicting |ratio - 1| < 1/2. -/
+    Proof: assume convergence to 1 with ε = 1/4. Then for large N:
+    (a) cA(2N)/cA(N) < 5/4 (from convergence at 2N, using countingFn_ruzsaB)
+    (b) cA(4N+1) ≥ 2 * cA(N) (doubling lemma)
+    (c) cA(4N+1)/cA(2N) < 5/4 (from convergence at 4N+1)
+    From (a): cA(4N+1) < 5/4 · cA(2N) < 5/4 · 5/4 · cA(N) = 25/16 · cA(N).
+    From (b): 2 · cA(N) ≤ cA(4N+1) < 25/16 · cA(N), so 2 < 25/16. Contradiction. -/
 theorem ruzsa_ratio_not_one : ¬HasAsymptoticRatio ruzsaA ruzsaB := by
   unfold HasAsymptoticRatio
   intro hconv
-  -- If ratio → 1, then eventually |ratio - 1| < 1/2
   rw [Metric.tendsto_atTop] at hconv
-  obtain ⟨N₀, hN₀⟩ := hconv (1/2) (by norm_num)
-  -- Proof requires: at N = 2·4^k - 1 for large k, the ratio exceeds 3/2.
-  -- This needs countingFn ruzsaA (2·4^k - 1) = 2^{k+1} - 1 (counting base-4
-  -- numbers with digits in {0,1}) and countingFn ruzsaA (4^k - 1) = 2^k - 1.
-  -- Then (2^{k+1}-1)/(2^k-1) > 3/2 for k ≥ 1, contradicting the bound.
-  sorry
+  obtain ⟨N₀, hN₀⟩ := hconv (1/4) (by norm_num)
+  set N := max N₀ 1
+  -- Counting functions are positive (1 ∈ ruzsaA)
+  have hcA : (0 : ℝ) < countingFn ruzsaA N :=
+    Nat.cast_pos.mpr (countingFn_ruzsaA_pos N (le_max_right _ _))
+  have hcA2 : (0 : ℝ) < countingFn ruzsaA (2 * N) :=
+    Nat.cast_pos.mpr (countingFn_ruzsaA_pos (2 * N) (by omega))
+  -- Apply convergence at 2N and 4N+1, then rewrite using countingFn_ruzsaB
+  have h2N := hN₀ (2 * N) (by omega : N₀ ≤ 2 * N)
+  have hM := hN₀ (4 * N + 1) (by omega : N₀ ≤ 4 * N + 1)
+  have hBN : countingFn ruzsaB (2 * N) = countingFn ruzsaA N := by
+    rw [countingFn_ruzsaB]; congr 1; omega
+  have hBM : countingFn ruzsaB (4 * N + 1) = countingFn ruzsaA (2 * N) := by
+    rw [countingFn_ruzsaB]; congr 1; omega
+  rw [hBN] at h2N; rw [hBM] at hM
+  rw [Real.dist_eq] at h2N hM
+  -- Extract upper bounds: cA(2N)/cA(N) < 5/4 and cA(4N+1)/cA(2N) < 5/4
+  have h_c2N : (countingFn ruzsaA (2 * N) : ℝ) < 5 / 4 * countingFn ruzsaA N := by
+    have h := (abs_lt.mp h2N).2 -- cA(2N)/cA(N) - 1 < 1/4
+    rw [div_sub_one (ne_of_gt hcA), div_lt_iff hcA] at h
+    linarith
+  have h_cM : (countingFn ruzsaA (4 * N + 1) : ℝ) < 5 / 4 * countingFn ruzsaA (2 * N) := by
+    have h := (abs_lt.mp hM).2 -- cA(4N+1)/cA(2N) - 1 < 1/4
+    rw [div_sub_one (ne_of_gt hcA2), div_lt_iff hcA2] at h
+    linarith
+  -- From doubling lemma: cA(4N+1) ≥ 2 * cA(N)
+  have h_double : 2 * (countingFn ruzsaA N : ℝ) ≤ countingFn ruzsaA (4 * N + 1) := by
+    exact_mod_cast countingFn_ruzsaA_doubling N
+  -- Contradiction: 2·cA(N) ≤ cA(4N+1) < 5/4·cA(2N) < 5/4·5/4·cA(N) = 25/16·cA(N)
+  -- So 2·cA(N) < 25/16·cA(N), but cA(N) > 0 gives 2 < 25/16 = 1.5625. False.
+  nlinarith
 
 /-- **Necessity theorem**: The condition aₙ/bₙ → 1 is necessary.
     Without it, one can have A + B = ℕ with bounded representations. -/
