@@ -1,0 +1,72 @@
+{
+  "id": "erdos-1155-oq-01-oq-07",
+  "title": "K_r-Clique Removal Process Generalization",
+  "slug": "erdos-1155-oq-01-oq-07",
+  "description": "Generalizes the triangle removal process (Erdős #1155) from K_3 to K_r for arbitrary r ≥ 3. The K_r-removal process starts with K_n, repeatedly removes all edges of a uniformly random r-clique, and terminates when the graph is K_r-free. This formalization defines the generalized process, proves structural properties (exponent monotonicity, Turán bound comparisons, convergence of exponents to 2 as r → ∞), and states the natural conjecture f_r(n) ≍ n^{2-2/(r+1)} with equivalence characterizations paralleling the triangle case.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/1155",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1155OQ01OQ07.lean",
+    "dateAdded": "2026-03-30",
+    "tags": [
+      "erdos",
+      "clique-removal",
+      "random-graphs",
+      "asymptotics",
+      "combinatorics",
+      "graph-theory",
+      "generalization",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "assumptions": [
+      "kCliqueRemovalEdges: axiomatized function representing expected remaining edges after K_r-removal process on K_n",
+      "kCliqueRemovalEdges_nonneg: remaining edge count is non-negative",
+      "kCliqueRemovalEdges_le_complete: remaining edges bounded by C(n,2)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter limit for showing exponent convergence to 2.",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.rpow_add",
+        "description": "Addition law for real-valued powers; key for exponent arithmetic.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.rpow_le_rpow",
+        "description": "Monotonicity of real powers; used in BFL-type bound proofs.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Icc_mem_nhds",
+        "description": "Closed interval neighborhood; used in limit characterization.",
+        "module": "Mathlib.Topology.Order.Basic"
+      }
+    ]
+  },
+  "theoremCount": 20,
+  "defCount": 6,
+  "axiomCount": 3,
+  "lineCount": 285,
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "question": "Can the K_r-removal exponent 2-2/(r+1) be proved to be tight (matching lower and upper bounds) for any r ≥ 4, analogous to BFL's result for r = 3?",
+      "category": "extension",
+      "tractability": "challenging"
+    },
+    {
+      "id": "oq-02",
+      "question": "What is the relationship between the K_r-removal process and Ramsey multiplicity? Does the random removal rate relate to the count of K_r copies in dense graphs?",
+      "category": "connection",
+      "tractability": "challenging"
+    }
+  ]
+}
