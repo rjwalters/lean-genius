@@ -5,8 +5,16 @@
   "status": "active",
   "tier": "C",
   "path": "fast",
-  "problemStatement": {"formal": "", "plain": "", "whyMatters": []},
-  "knownResults": {"proven": [], "open": [], "goal": ""},
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-03-30T10:41:00Z",
@@ -14,11 +22,17 @@
     "focus": "Survey: scaffolding from existing OQ-01 (smooth 2D) and OQ-02 (3D polygonal)",
     "blockers": [],
     "nextAction": "Create Lean file adapting BuffonsNeedleOQ01 pattern to 3D",
-    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Parent OQ-02 is sorry-free (3D polygonal E=L/2d). OQ-01 extends 2D to smooth curves (sorry-free). Task: combine both approaches for smooth 3D.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Created Lean file with smooth 3D curve infrastructure. 1 sorry: polyLength_tendsto (Riemann sum convergence). Arc length nonneg proved.",
+    "builtItems": [
+      "Created BuffonsNeedleOQ02OQ02.lean with SmoothCurve3D structure, arc length def, polygonal approximation"
+    ],
     "insights": [
       "BuffonsNeedleOQ02.lean (parent): 3D polygonal noodle, E=L/(2d), sorry-free",
       "BuffonsNeedleOQ01.lean: smooth C¹ curves in 2D, E=2L/(πd), sorry-free — template for 3D smooth extension",
@@ -32,9 +46,21 @@
       "The mathematical argument is standard: smooth curves are limits of polygonal paths"
     ]
   },
-  "tags": ["probability", "geometric-probability", "buffon"],
-  "relatedProofs": ["buffons-needle", "buffons-needle-oq-02", "buffons-needle-oq-01"],
-  "references": {"papers": [], "urls": [], "mathlib": []},
+  "tags": [
+    "probability",
+    "geometric-probability",
+    "buffon"
+  ],
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-02",
+    "buffons-needle-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
   "started": "2026-03-30T10:41:00Z",
   "lastUpdate": "2026-03-30T10:41:00Z"
 }
