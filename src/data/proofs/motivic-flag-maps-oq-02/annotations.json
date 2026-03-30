@@ -1,0 +1,46 @@
+{
+  "annotations": [
+    {
+      "lineStart": 66,
+      "lineEnd": 67,
+      "type": "definition",
+      "title": "q-Number [n]_L",
+      "content": "The q-analog of natural numbers: [n]_L = 1 + L + L² + ... + L^{n-1}. At L = 1, this recovers the integer n. In K₀(Var), [n]_L = [P^{n-1}] — the motivic class of projective (n-1)-space."
+    },
+    {
+      "lineStart": 86,
+      "lineEnd": 88,
+      "type": "definition",
+      "title": "q-Factorial [n]_L!",
+      "content": "The product [n]_L! = [1]_L · [2]_L · ... · [n]_L. This equals the motivic class of the complete flag variety Fl_n, connecting q-combinatorics to algebraic geometry."
+    },
+    {
+      "lineStart": 128,
+      "lineEnd": 130,
+      "type": "theorem",
+      "title": "q-Factorial = Flag Variety Class",
+      "content": "Proved: [n]_L! = [Fl_n]. This identity is the foundation for the Gaussian binomial theory of Grassmannians. Each factor [i]_L = [P^{i-1}] in the product corresponds to the i-th step in the flag variety fibration."
+    },
+    {
+      "lineStart": 152,
+      "lineEnd": 160,
+      "type": "definition",
+      "title": "Grassmannian Motivic Class (Recursive)",
+      "content": "Defined via the q-Pascal identity: [Gr(d+1, n+2)] = L^{d+1} · [Gr(d+1, n+1)] + [Gr(d, n+1)]. This mirrors Pascal's triangle for binomial coefficients, with L-weighted terms from the Schubert cell stratification."
+    },
+    {
+      "lineStart": 198,
+      "lineEnd": 203,
+      "type": "theorem",
+      "title": "[Gr(2,4)] = 1 + L + 2L² + L³ + L⁴",
+      "content": "The first non-projective Grassmannian. The coefficient 2 on L² reflects two Schubert cells of dimension 2: the Young diagrams (2,0) and (1,1) in a 2×2 box. This distinguishes Gr(2,4) from projective space."
+    },
+    {
+      "lineStart": 326,
+      "lineEnd": 332,
+      "type": "theorem",
+      "title": "GL_n = (L-1)^n · [Fl_n] · L^{T(n)}",
+      "content": "Proved: the GL_n class decomposes as (L-1)^n times the complete flag class times an affine factor. This structural identity explains why flag varieties appear naturally in the GL_n Bruhat decomposition. Each factor (L^i - 1) = (L-1)·[i]_L via the geometric series."
+    }
+  ]
+}
