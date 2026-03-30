@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 25T (was 15), 1A, 1S. Added 10 counting/structural theorems for distinct products.",
+    "progressSummary": "COMPLETE: 0S, 1A (Selfridge construction — appropriate). 25T proved. File is fully verified.",
     "builtItems": [
       "Assessment: 1A appropriate (Selfridge)",
       "intervalProduct_single: product over [u,u] = d(u) (simp lemma)",
@@ -71,11 +71,7 @@
       "total product >= n(n+1)/2 follows from (n+1)! >= n(n+1)/2"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove numValidPairs_eq (the 1 sorry - combinatorial counting)",
-      "Use counting constraint to derive explicit density upper bounds",
-      "Explore connection between product growth and achievable density"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #421 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a sequence $1\\leq d_1<d_2<\\cdots$ with density $1$ such that all products $\\prod_{u\\leq i\\leq v}d_i$ are distinct?\n\n\n\nA construction of Selfridge (see [786]) shows that there exists such a sequence of density $>1/e-\\epsilon$ for any $\\epsilon>0$.\n\nSee also [786].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #786\n- Problem #420\n- Problem #422\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
