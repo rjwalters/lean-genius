@@ -2,7 +2,7 @@
   "id": "hilbert-20-oq-01",
   "title": "Hilbert's 20th Problem OQ-01: Characterization of Locally Solvable Operators",
   "slug": "hilbert-20-oq-01",
-  "description": "What is the precise characterization of locally solvable operators? Answered by the Nirenberg-Treves conjecture, proved by Dencker (2006): condition (\u03a8) on the principal symbol is necessary and sufficient for local solvability of principal-type operators.",
+  "description": "What is the precise characterization of locally solvable operators? Answered by the Nirenberg-Treves conjecture, proved by Dencker (2006): condition (Ψ) on the principal symbol is necessary and sufficient for local solvability of principal-type operators.",
   "meta": {
     "author": "Nirenberg-Treves (1963), Dencker (2006)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Nirenberg%E2%80%93Treves_conjecture",
@@ -28,7 +28,7 @@
       },
       {
         "theorem": "fderiv",
-        "description": "Fr\u00e9chet derivatives",
+        "description": "Fréchet derivatives",
         "module": "Mathlib.Analysis.Calculus.FDeriv.Basic"
       }
     ],
@@ -36,15 +36,15 @@
       "Formalization of linear partial differential operators via multi-index coefficients",
       "Definition of principal symbol as a function on the cotangent bundle",
       "Concrete structure for bicharacteristic curves (symbol vanishing, nonzero cotangent vector)",
-      "Formalization of condition (\u03a8) on bicharacteristic curves",
+      "Formalization of condition (Ψ) on bicharacteristic curves",
       "Statement of the Nirenberg-Treves characterization theorem",
-      "Proved: elliptic operators satisfy condition (\u03a8) vacuously (no bicharacteristic curves exist)",
-      "Proved: operators with real principal symbol satisfy condition (\u03a8)",
+      "Proved: elliptic operators satisfy condition (Ψ) vacuously (no bicharacteristic curves exist)",
+      "Proved: operators with real principal symbol satisfy condition (Ψ)",
       "Proof that elliptic operators of principal type are locally solvable"
     ],
     "axiomCount": 3,
-    "assumptions": "3 axioms: IsLocallySolvable (requires distribution theory), hormander_necessity (H\u00f6rmander 1960, deep microlocal analysis), dencker_sufficiency (Dencker 2006, deep microlocal analysis). BicharacteristicCurve is now a concrete structure, enabling proved theorems for elliptic_satisfies_psi and imSymbolAlongCurve_eq.",
-    "lineCount": 189,
+    "assumptions": "3 axioms: IsLocallySolvable (requires distribution theory), hormander_necessity (Hörmander 1960, deep microlocal analysis), dencker_sufficiency (Dencker 2006, deep microlocal analysis). BicharacteristicCurve is now a concrete structure, enabling proved theorems for elliptic_satisfies_psi and imSymbolAlongCurve_eq.",
+    "lineCount": 209,
     "prerequisites": [
       "Partial differential equations",
       "Functional analysis and distributions",
@@ -53,14 +53,14 @@
     ]
   },
   "overview": {
-    "historicalContext": "The question of which PDEs have local solutions was dramatically transformed by Lewy's 1957 example of a smooth linear PDE with no local solutions. H\u00f6rmander (1960) found a necessary condition via the principal symbol. Nirenberg and Treves (1963) conjectured that condition (\u03a8) \u2014 a sign condition on the imaginary part of the principal symbol along bicharacteristic curves \u2014 gives the full characterization. This was proved by Dencker in 2006.",
-    "problemStatement": "What is the precise characterization of locally solvable operators? That is, given a linear partial differential operator P, when does the equation Pu = f have a distribution solution u near a point x\u2080 for every smooth f?",
-    "text": "We formalize the answer: for operators of principal type, local solvability is equivalent to condition (\u03a8) on the principal symbol.",
-    "proofStrategy": "Define linear PDOs, principal symbols, local solvability, principal type, and condition (\u03a8). State the H\u00f6rmander necessity and Dencker sufficiency as axioms, then derive the characterization. Show elliptic operators as a key special case.",
+    "historicalContext": "The question of which PDEs have local solutions was dramatically transformed by Lewy's 1957 example of a smooth linear PDE with no local solutions. Hörmander (1960) found a necessary condition via the principal symbol. Nirenberg and Treves (1963) conjectured that condition (Ψ) — a sign condition on the imaginary part of the principal symbol along bicharacteristic curves — gives the full characterization. This was proved by Dencker in 2006.",
+    "problemStatement": "What is the precise characterization of locally solvable operators? That is, given a linear partial differential operator P, when does the equation Pu = f have a distribution solution u near a point x₀ for every smooth f?",
+    "text": "We formalize the answer: for operators of principal type, local solvability is equivalent to condition (Ψ) on the principal symbol.",
+    "proofStrategy": "Define linear PDOs, principal symbols, local solvability, principal type, and condition (Ψ). State the Hörmander necessity and Dencker sufficiency as axioms, then derive the characterization. Show elliptic operators as a key special case.",
     "keyInsights": [
-      "The principal symbol p_m(x, \u03be) encodes the leading-order behavior of the operator",
-      "Condition (\u03a8): Im(p_m) cannot change sign from \u2212 to + along bicharacteristics of Re(p_m)",
-      "Elliptic operators satisfy (\u03a8) vacuously since p_m never vanishes for nonzero \u03be",
+      "The principal symbol p_m(x, ξ) encodes the leading-order behavior of the operator",
+      "Condition (Ψ): Im(p_m) cannot change sign from − to + along bicharacteristics of Re(p_m)",
+      "Elliptic operators satisfy (Ψ) vacuously since p_m never vanishes for nonzero ξ",
       "The Nirenberg-Treves conjecture took 43 years to prove (1963-2006)"
     ],
     "prerequisites": [
@@ -89,17 +89,17 @@
       "id": "local-solvability"
     },
     {
-      "title": "Condition (\u03a8)",
-      "content": "Concrete structure for bicharacteristic curves (x(t), \u03be(t) with symbol vanishing and \u03be \u2260 0), definition of Im(p_m) along curves, proved bridge theorem, and condition (\u03a8).",
+      "title": "Condition (Ψ)",
+      "content": "Concrete structure for bicharacteristic curves (x(t), ξ(t) with symbol vanishing and ξ ≠ 0), definition of Im(p_m) along curves, proved bridge theorem, and condition (Ψ).",
       "lineStart": 93,
       "lineEnd": 136,
       "theorems": [],
-      "summary": "Condition (\u03a8)",
-      "id": "condition-\u03c8"
+      "summary": "Condition (Ψ)",
+      "id": "condition-ψ"
     },
     {
       "title": "The Nirenberg-Treves Theorem",
-      "content": "State the H\u00f6rmander necessity and Dencker sufficiency, then derive the full characterization.",
+      "content": "State the Hörmander necessity and Dencker sufficiency, then derive the full characterization.",
       "lineStart": 124,
       "lineEnd": 152,
       "theorems": [
@@ -110,7 +110,7 @@
     },
     {
       "title": "Special Cases",
-      "content": "Proved: elliptic operators satisfy (\u03a8) vacuously (no bicharacteristic curves exist). Proved: real-symbol operators satisfy (\u03a8) (Im p_m = 0). Elliptic operators of principal type are locally solvable.",
+      "content": "Proved: elliptic operators satisfy (Ψ) vacuously (no bicharacteristic curves exist). Proved: real-symbol operators satisfy (Ψ) (Im p_m = 0). Elliptic operators of principal type are locally solvable.",
       "lineStart": 170,
       "lineEnd": 207,
       "theorems": [
@@ -123,7 +123,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize the answer to Hilbert's 20th problem OQ-01: the Nirenberg-Treves conjecture (proved by Dencker, 2006) gives the precise characterization of locally solvable operators. For principal-type operators, local solvability is equivalent to condition (\u03a8) on the principal symbol.",
+    "summary": "We formalize the answer to Hilbert's 20th problem OQ-01: the Nirenberg-Treves conjecture (proved by Dencker, 2006) gives the precise characterization of locally solvable operators. For principal-type operators, local solvability is equivalent to condition (Ψ) on the principal symbol.",
     "implications": [
       "Provides a formal framework for local solvability of PDEs in Lean 4",
       "Demonstrates the principal symbol as the key invariant for solvability",
@@ -131,25 +131,25 @@
     ],
     "openQuestions": [
       "Can IsLocallySolvable be defined concretely once Mathlib has distribution theory?",
-      "What is the analogue of condition (\u03a8) for systems of PDEs?",
+      "What is the analogue of condition (Ψ) for systems of PDEs?",
       "Can Dencker's proof be formalized using Lean 4 and Mathlib?"
     ]
   },
   "crossReferences": [
     {
       "id": "hilbert-20",
-      "relationship": "Parent problem \u2014 Hilbert's 20th problem on boundary value problems"
+      "relationship": "Parent problem — Hilbert's 20th problem on boundary value problems"
     }
   ],
   "references": [
     {
       "key": "Hormander1960",
-      "citation": "L. H\u00f6rmander, Differential operators of principal type, Math. Ann. 140 (1960), 124-146.",
+      "citation": "L. Hörmander, Differential operators of principal type, Math. Ann. 140 (1960), 124-146.",
       "url": ""
     },
     {
       "key": "NT1963",
-      "citation": "L. Nirenberg and F. Tr\u00e8ves, On local solvability of linear partial differential equations, Comm. Pure Appl. Math. 16 (1963), 331-351.",
+      "citation": "L. Nirenberg and F. Trèves, On local solvability of linear partial differential equations, Comm. Pure Appl. Math. 16 (1963), 331-351.",
       "url": ""
     },
     {

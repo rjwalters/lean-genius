@@ -1,8 +1,8 @@
 {
   "id": "erdos-697",
-  "title": "Erd\u0151s Problem #697: Density of Integers Divisible by d \u2261 1 (mod m)",
+  "title": "Erdős Problem #697: Density of Integers Divisible by d ≡ 1 (mod m)",
   "slug": "erdos-697",
-  "description": "Let \u03b4(m,\u03b1) be the density of integers divisible by some d \u2261 1 (mod m) with 1 < d < exp(m^\u03b1). Does a sharp threshold \u03b2 exist? SOLVED: YES, \u03b2 = 1/log 2 \u2248 1.443 (Hall 1992).",
+  "description": "Let δ(m,α) be the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α). Does a sharp threshold β exist? SOLVED: YES, β = 1/log 2 ≈ 1.443 (Hall 1992).",
   "meta": {
     "author": "Hall (1992)",
     "sourceUrl": "https://erdosproblems.com/697",
@@ -43,31 +43,31 @@
       }
     ],
     "originalContributions": [
-      "IsAdmissibleDivisor: d | n with d \u2261 1 (mod m), 1 < d < exp(m^\u03b1)",
+      "IsAdmissibleDivisor: d | n with d ≡ 1 (mod m), 1 < d < exp(m^α)",
       "IsCovered: n has an admissible divisor",
-      "delta(m, \u03b1): the density function",
+      "delta(m, α): the density function",
       "HasSharpThreshold: formal statement of threshold existence",
-      "hallThreshold: \u03b2 = 1/log 2 \u2248 1.443",
-      "trivial_upper_bound: \u03b4 \u2192 0 for \u03b1 < 1",
-      "erdos_alpha_one: \u03b4 \u2192 0 for \u03b1 = 1 (Erd\u0151s 1979)",
-      "hall_theorem: complete solution with \u03b2 = 1/log 2",
+      "hallThreshold: β = 1/log 2 ≈ 1.443",
+      "trivial_upper_bound: δ → 0 for α < 1",
+      "erdos_alpha_one: δ → 0 for α = 1 (Erdős 1979)",
+      "hall_theorem: complete solution with β = 1/log 2",
       "erdos_697_answer, erdos_697_threshold: main results"
     ],
     "axiomCount": 4,
-    "lineCount": 239,
+    "lineCount": 231,
     "assumptions": "7 axiom(s). No sorries."
   },
   "overview": {
-    "historicalContext": "**Origins and History**\n\nErd\u0151s posed this problem in his 1979 paper \"Some unconventional problems in number theory\" in Ast\u00e9risque. The question concerns divisibility by numbers d that are congruent to 1 modulo m, a fundamental topic in multiplicative number theory.\n\n**Trivial Bounds**\n\nFor \u03b1 < 1, a simple counting argument shows \u03b4(m, \u03b1) \u2192 0 as m \u2192 \u221e. Erd\u0151s claimed in 1979 that the same holds for \u03b1 = 1.\n\n**Hall's Resolution (1992)**\n\nR.R. Hall proved in \"On some conjectures of P. Erd\u0151s in Ast\u00e9risque I\" (J. Number Theory, 1992) that the sharp threshold exists at \u03b2 = 1/log 2 \u2248 1.443.\n\n**Connection to Problem #696**\n\nThis problem is closely related to Erd\u0151s Problem #696, which concerns similar questions about divisibility by d \u2261 1 (mod m).",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet \u03b4(m, \u03b1) denote the density of integers divisible by some d \u2261 1 (mod m) with 1 < d < exp(m^\u03b1).\n\nDoes there exist \u03b2 \u2208 (1, \u221e) such that:\n- lim_{m\u2192\u221e} \u03b4(m, \u03b1) = 0 if \u03b1 < \u03b2\n- lim_{m\u2192\u221e} \u03b4(m, \u03b1) = 1 if \u03b1 > \u03b2\n\n**Answer: YES**\n\nThe threshold is \u03b2 = 1/log 2 \u2248 1.443 (Hall 1992).",
-    "text": "Let \u03b4(m,\u03b1) be the density of integers divisible by some d \u2261 1 (mod m) with 1 < d < exp(m^\u03b1). Does a sharp threshold \u03b2 exist? SOLVED: YES, \u03b2 = 1/log 2 \u2248 1.443 (Hall 1992).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Admissible Divisors:** IsAdmissibleDivisor captures d | n, d \u2261 1 (mod m), 1 < d < exp(m^\u03b1)\n\n2. **Coverage:** IsCovered defines when n has an admissible divisor\n\n3. **Density:** delta(m, \u03b1) is the limiting density\n\n4. **Threshold:** HasSharpThreshold formalizes the existence question\n\n5. **Results:** hallThreshold = 1/log 2, hall_theorem gives the complete answer\n\n6. **Examples:** m = 2 case, large prime case",
+    "historicalContext": "**Origins and History**\n\nErdős posed this problem in his 1979 paper \"Some unconventional problems in number theory\" in Astérisque. The question concerns divisibility by numbers d that are congruent to 1 modulo m, a fundamental topic in multiplicative number theory.\n\n**Trivial Bounds**\n\nFor α < 1, a simple counting argument shows δ(m, α) → 0 as m → ∞. Erdős claimed in 1979 that the same holds for α = 1.\n\n**Hall's Resolution (1992)**\n\nR.R. Hall proved in \"On some conjectures of P. Erdős in Astérisque I\" (J. Number Theory, 1992) that the sharp threshold exists at β = 1/log 2 ≈ 1.443.\n\n**Connection to Problem #696**\n\nThis problem is closely related to Erdős Problem #696, which concerns similar questions about divisibility by d ≡ 1 (mod m).",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet δ(m, α) denote the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α).\n\nDoes there exist β ∈ (1, ∞) such that:\n- lim_{m→∞} δ(m, α) = 0 if α < β\n- lim_{m→∞} δ(m, α) = 1 if α > β\n\n**Answer: YES**\n\nThe threshold is β = 1/log 2 ≈ 1.443 (Hall 1992).",
+    "text": "Let δ(m,α) be the density of integers divisible by some d ≡ 1 (mod m) with 1 < d < exp(m^α). Does a sharp threshold β exist? SOLVED: YES, β = 1/log 2 ≈ 1.443 (Hall 1992).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Admissible Divisors:** IsAdmissibleDivisor captures d | n, d ≡ 1 (mod m), 1 < d < exp(m^α)\n\n2. **Coverage:** IsCovered defines when n has an admissible divisor\n\n3. **Density:** delta(m, α) is the limiting density\n\n4. **Threshold:** HasSharpThreshold formalizes the existence question\n\n5. **Results:** hallThreshold = 1/log 2, hall_theorem gives the complete answer\n\n6. **Examples:** m = 2 case, large prime case",
     "keyInsights": [
-      "**Sharp Threshold:** \u03b2 = 1/log 2 \u2248 1.443 separates density 0 from density 1",
-      "**Trivial Range:** For \u03b1 < 1, density \u2192 0 by simple counting",
-      "**Critical Exponent:** 1/log 2 arises from multiplicative structure of d \u2261 1 (mod m)",
+      "**Sharp Threshold:** β = 1/log 2 ≈ 1.443 separates density 0 from density 1",
+      "**Trivial Range:** For α < 1, density → 0 by simple counting",
+      "**Critical Exponent:** 1/log 2 arises from multiplicative structure of d ≡ 1 (mod m)",
       "**Phase Transition:** Sharp jump from 0 to 1 at the threshold",
-      "**Erd\u0151s 1979:** Claimed \u03b1 = 1 gives density 0, confirmed by Hall"
+      "**Erdős 1979:** Claimed α = 1 gives density 0, confirmed by Hall"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -79,12 +79,12 @@
     {
       "targetId": "erdos-696",
       "relationship": "related",
-      "description": "Problem #696 concerns chains of prime divisors with congruence conditions $d \\equiv 1 \\pmod{m}$. Both problems arise from Erd\u0151s's 1979 Ast\u00e9risque paper and share the theme of understanding when congruence-constrained divisors sufficiently cover integers."
+      "description": "Problem #696 concerns chains of prime divisors with congruence conditions $d \\equiv 1 \\pmod{m}$. Both problems arise from Erdős's 1979 Astérisque paper and share the theme of understanding when congruence-constrained divisors sufficiently cover integers."
     },
     {
       "targetId": "erdos-698",
       "relationship": "related",
-      "description": "Adjacent problem in Erd\u0151s's collection. While #697 concerns divisor density with modular constraints, #698 addresses GCDs of binomial coefficients\u2014both explore the fine structure of divisibility."
+      "description": "Adjacent problem in Erdős's collection. While #697 concerns divisor density with modular constraints, #698 addresses GCDs of binomial coefficients—both explore the fine structure of divisibility."
     }
   ],
   "sections": [
@@ -93,8 +93,8 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\alpha < 1$, Erd\u0151s's $\\alpha = 1$ claim), and references [Er79e], [Ha92]. Imports Mathlib's logarithm, exponential, and filter modules.",
-      "mathContext": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\alpha < 1$, Erd\u0151s's $\\alpha = 1$ claim), and references [Er79e], [Ha92]."
+      "summary": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\alpha < 1$, Erdős's $\\alpha = 1$ claim), and references [Er79e], [Ha92]. Imports Mathlib's logarithm, exponential, and filter modules.",
+      "mathContext": "Module docstring stating the problem: does $\\delta(m, \\alpha) \\to 0$ or $1$ exhibit a sharp threshold $\\beta$? Summarizes the answer ($\\beta = 1/\\ln 2$, Hall 1992), key results (trivial bound for $\\alpha < 1$, Erdős's $\\alpha = 1$ claim), and references [Er79e], [Ha92]."
     },
     {
       "id": "part-1-basic-definitions",
@@ -122,11 +122,11 @@
     },
     {
       "id": "part-4-erd-s-s-claim-for-1",
-      "title": "Part 4: Erd\u0151s's Claim for \u03b1 = 1",
+      "title": "Part 4: Erdős's Claim for α = 1",
       "startLine": 95,
       "endLine": 104,
-      "summary": "Axiomatizes Erd\u0151s's 1979 claim that $\\delta(m, 1) \\to 0$, extending the trivial range from $\\alpha < 1$ to $\\alpha \\le 1$.",
-      "mathContext": "Axiomatizes Erd\u0151s's 1979 claim that $\\$\\delta$(m, 1) \\to 0$, extending the trivial range from $\\$\\alpha$ < 1$ to $\\$\\alpha$ \\le 1$."
+      "summary": "Axiomatizes Erdős's 1979 claim that $\\delta(m, 1) \\to 0$, extending the trivial range from $\\alpha < 1$ to $\\alpha \\le 1$.",
+      "mathContext": "Axiomatizes Erdős's 1979 claim that $\\$\\delta$(m, 1) \\to 0$, extending the trivial range from $\\$\\alpha$ < 1$ to $\\$\\alpha$ \\le 1$."
     },
     {
       "id": "part-5-hall-s-theorem-1992",
@@ -149,16 +149,16 @@
       "title": "Part 7: Behavior at Threshold",
       "startLine": 149,
       "endLine": 163,
-      "summary": "Notes that Hall's theorem leaves the exact behavior at $\\alpha = \\beta = 1/\\ln 2$ as an open question\u2014the density may be 0, 1, or intermediate.",
-      "mathContext": "Notes that Hall's theorem leaves the exact behavior at $\\$\\alpha$ = \\$\\beta$ = 1/\\ln 2$ as an open question\u2014the density may be 0, 1, or intermediate."
+      "summary": "Notes that Hall's theorem leaves the exact behavior at $\\alpha = \\beta = 1/\\ln 2$ as an open question—the density may be 0, 1, or intermediate.",
+      "mathContext": "Notes that Hall's theorem leaves the exact behavior at $\\$\\alpha$ = \\$\\beta$ = 1/\\ln 2$ as an open question—the density may be 0, 1, or intermediate."
     },
     {
       "id": "part-8-connection-to-problem-6",
       "title": "Part 8: Connection to Problem #696",
       "startLine": 164,
       "endLine": 172,
-      "summary": "Commentary linking to Erd\u0151s Problem #696, which concerns chains of prime divisors under the same congruence condition $d \\equiv 1 \\pmod{m}$.",
-      "mathContext": "Mathematical content: Commentary linking to Erd\u0151s Problem #696, which concerns chains of prime divisors under the same congruence condition $d \\equiv 1 \\pmod{m}$."
+      "summary": "Commentary linking to Erdős Problem #696, which concerns chains of prime divisors under the same congruence condition $d \\equiv 1 \\pmod{m}$.",
+      "mathContext": "Mathematical content: Commentary linking to Erdős Problem #696, which concerns chains of prime divisors under the same congruence condition $d \\equiv 1 \\pmod{m}$."
     },
     {
       "id": "part-9-examples",
@@ -173,8 +173,8 @@
       "title": "Part 10: Historical Context",
       "startLine": 186,
       "endLine": 196,
-      "summary": "Notes on the problem's origins in Erd\u0151s's 1979 Ast\u00e9risque paper and Hall's 1992 resolution in J. Number Theory.",
-      "mathContext": "Mathematical content: Notes on the problem's origins in Erd\u0151s's 1979 Ast\u00e9risque paper and Hall's 1992 resolution in J. Number Theory."
+      "summary": "Notes on the problem's origins in Erdős's 1979 Astérisque paper and Hall's 1992 resolution in J. Number Theory.",
+      "mathContext": "Mathematical content: Notes on the problem's origins in Erdős's 1979 Astérisque paper and Hall's 1992 resolution in J. Number Theory."
     },
     {
       "id": "part-11-main-results",
@@ -186,10 +186,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #697 asks whether a sharp threshold \u03b2 exists for the density of integers divisible by d \u2261 1 (mod m) with 1 < d < exp(m^\u03b1). Hall (1992) proved YES, with \u03b2 = 1/log 2 \u2248 1.443. For \u03b1 below this threshold, the density \u2192 0; for \u03b1 above, the density \u2192 1.",
+    "summary": "Erdős Problem #697 asks whether a sharp threshold β exists for the density of integers divisible by d ≡ 1 (mod m) with 1 < d < exp(m^α). Hall (1992) proved YES, with β = 1/log 2 ≈ 1.443. For α below this threshold, the density → 0; for α above, the density → 1.",
     "implications": "**Theoretical Significance**: **Connections**\n\n1. **Multiplicative Number Theory:** Understanding divisibility by constrained divisors\n\n**2. Sieve Methods:** The threshold arises from sieve-theoretic considerations\n\n3. **Problem #696:** Related question about similar divisibility\n\n4. **Density Arguments:** Sharp phase transitions in number-theoretic densities.",
     "openQuestions": [
-      "Exact behavior at \u03b1 = 1/log 2?",
+      "Exact behavior at α = 1/log 2?",
       "Rate of convergence to 0 or 1?",
       "Generalizations to other congruence conditions?",
       "Higher-order asymptotics near the threshold?"
@@ -208,7 +208,7 @@
       "Nat"
     ],
     "namespace": "Erdos697",
-    "lineCount": 239,
+    "lineCount": 231,
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 8

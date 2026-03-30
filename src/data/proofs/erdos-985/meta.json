@@ -1,10 +1,10 @@
 {
   "id": "erdos-985",
-  "title": "Erd\u0151s Problem #985: Prime Primitive Roots",
+  "title": "Erdős Problem #985: Prime Primitive Roots",
   "slug": "erdos-985",
   "description": "Is it true that for every prime p, there is a prime q < p which is a primitive root modulo p?",
   "meta": {
-    "author": "Erd\u0151s (problem), Heath-Brown (1986, related result)",
+    "author": "Erdős (problem), Heath-Brown (1986, related result)",
     "sourceUrl": "https://erdosproblems.com/985",
     "date": "",
     "status": "axiomatized",
@@ -57,20 +57,20 @@
       "artin_implies_erdos_985 connection theorem"
     ],
     "axiomCount": 5,
-    "lineCount": 232,
+    "lineCount": 223,
     "assumptions": "6 axioms: exists_primitive_root, zmod_units_cyclic, artin_conjecture_for_2, and 3 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #985: Prime Primitive Roots**\n\nThis problem asks whether every odd prime p admits a prime primitive root less than itself.\n\n**Key History:**\n- Artin (1927): Conjectured that any non-square integer is a primitive root for infinitely many primes\n- Hooley (1967): Proved Artin's conjecture assuming the Generalized Riemann Hypothesis\n- Heath-Brown (1986): Proved unconditionally that at least one of 2, 3, or 5 is a primitive root for infinitely many primes\n\n**Mathematical Setting:**\nA primitive root modulo p is an integer g whose multiplicative order equals p - 1. This means g generates the entire multiplicative group (\u2124/p\u2124)\u00d7. Erd\u0151s's question asks specifically for PRIME primitive roots, a natural but difficult restriction.",
+    "historicalContext": "**Erdős Problem #985: Prime Primitive Roots**\n\nThis problem asks whether every odd prime p admits a prime primitive root less than itself.\n\n**Key History:**\n- Artin (1927): Conjectured that any non-square integer is a primitive root for infinitely many primes\n- Hooley (1967): Proved Artin's conjecture assuming the Generalized Riemann Hypothesis\n- Heath-Brown (1986): Proved unconditionally that at least one of 2, 3, or 5 is a primitive root for infinitely many primes\n\n**Mathematical Setting:**\nA primitive root modulo p is an integer g whose multiplicative order equals p - 1. This means g generates the entire multiplicative group (ℤ/pℤ)×. Erdős's question asks specifically for PRIME primitive roots, a natural but difficult restriction.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nIs it true that, for every prime p > 2, there is a prime q < p which is a primitive root modulo p?\n\n**Status: OPEN**\n\nThe conjecture has been verified computationally for many small primes, but no general proof or counterexample is known.\n\n**Related Result (Heath-Brown 1986):**\nAt least one of 2, 3, or 5 is a primitive root for infinitely many primes. This is the strongest unconditional result toward Artin's conjecture.",
     "text": "Is it true that for every prime p, there is a prime q < p which is a primitive root modulo p?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Primitive Root Definition:** Define ord_p(g) = p - 1 using Mathlib's orderOf\n\n2. **Prime Primitive Root:** q is prime and a primitive root modulo p\n\n3. **Verified Examples:** Computationally verify the conjecture for p = 3, 5, 7, 11, 13, 23 using native_decide\n\n4. **Related Results:** Axiomatize Heath-Brown's theorem and Artin's conjecture\n\n5. **Main Conjecture:** State Erd\u0151s 985 as an axiom (open problem)\n\n6. **Connections:** Show how Artin's conjecture would imply Erd\u0151s 985",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Primitive Root Definition:** Define ord_p(g) = p - 1 using Mathlib's orderOf\n\n2. **Prime Primitive Root:** q is prime and a primitive root modulo p\n\n3. **Verified Examples:** Computationally verify the conjecture for p = 3, 5, 7, 11, 13, 23 using native_decide\n\n4. **Related Results:** Axiomatize Heath-Brown's theorem and Artin's conjecture\n\n5. **Main Conjecture:** State Erdős 985 as an axiom (open problem)\n\n6. **Connections:** Show how Artin's conjecture would imply Erdős 985",
     "keyInsights": [
-      "**Primitive Root**: An element g with ord_p(g) = p - 1 generates (\u2124/p\u2124)\u00d7",
+      "**Primitive Root**: An element g with ord_p(g) = p - 1 generates (ℤ/pℤ)×",
       "**Existence Guaranteed**: Every odd prime has primitive roots, but finding PRIME ones is harder",
       "**Heath-Brown's Breakthrough**: At least one of {2, 3, 5} works for infinitely many primes",
-      "**Artin's Conjecture**: If true, would imply Erd\u0151s 985 via density arguments",
-      "**Heuristic Argument**: \u03c6(p-1)/log(p) prime primitive roots expected by PNT",
+      "**Artin's Conjecture**: If true, would imply Erdős 985 via density arguments",
+      "**Heuristic Argument**: φ(p-1)/log(p) prime primitive roots expected by PNT",
       "**Computational Evidence**: Verified for all small primes tested"
     ],
     "prerequisites": [
@@ -105,7 +105,7 @@
     },
     {
       "id": "erdos-verification",
-      "title": "Verified Cases of Erd\u0151s 985",
+      "title": "Verified Cases of Erdős 985",
       "summary": "erdos985_for_3, erdos985_for_5, erdos985_for_7, erdos985_for_11, erdos985_for_13, erdos985_for_23",
       "startLine": 87,
       "endLine": 112,
@@ -153,12 +153,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #985 asks whether every odd prime p has a prime primitive root q < p. This elegant question remains OPEN. We verify the conjecture computationally for p = 3, 5, 7, 11, 13, 23, and formalize Heath-Brown's theorem that at least one of {2, 3, 5} is a primitive root for infinitely many primes.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Artin's Conjecture:** If Artin's conjecture holds, Erd\u0151s 985 follows\n\n2. **Generalized Riemann Hypothesis:** Hooley's conditional result connects to GRH\n\n**3. Primitive Root Distribution:** Understanding which integers are primitive roots\n\n4. **Computational Number Theory:** Can test the conjecture for larger primes\n\n5. **Cyclic Group Structure:** Deep connection to (\u2124/p\u2124)\u00d7 being cyclic.",
+    "summary": "Erdős Problem #985 asks whether every odd prime p has a prime primitive root q < p. This elegant question remains OPEN. We verify the conjecture computationally for p = 3, 5, 7, 11, 13, 23, and formalize Heath-Brown's theorem that at least one of {2, 3, 5} is a primitive root for infinitely many primes.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Artin's Conjecture:** If Artin's conjecture holds, Erdős 985 follows\n\n2. **Generalized Riemann Hypothesis:** Hooley's conditional result connects to GRH\n\n**3. Primitive Root Distribution:** Understanding which integers are primitive roots\n\n4. **Computational Number Theory:** Can test the conjecture for larger primes\n\n5. **Cyclic Group Structure:** Deep connection to (ℤ/pℤ)× being cyclic.",
     "openQuestions": [
       "Is there a prime p with no prime primitive root < p?",
       "What is the density of primes for which 2 is a primitive root?",
-      "Can we prove Erd\u0151s 985 for primes of special form?",
+      "Can we prove Erdős 985 for primes of special form?",
       "Relationship to least prime primitive root modulo p",
       "Computational verification for larger primes"
     ]
@@ -173,7 +173,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 232,
+    "lineCount": 223,
     "axiomCount": 6,
     "theoremCount": 17,
     "definitionCount": 3
@@ -182,17 +182,17 @@
     {
       "targetId": "erdos-1056",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: modular-arithmetic, number-theory, open"
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory, open"
     },
     {
       "targetId": "erdos-1113",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, primes"
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
     },
     {
       "targetId": "erdos-1141",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, open, primes"
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
     }
   ]
 }

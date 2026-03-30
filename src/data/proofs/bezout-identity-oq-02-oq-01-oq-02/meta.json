@@ -5,13 +5,19 @@
   "description": "The Fundamental Theorem of Arithmetic generalizes to all Euclidean domains via Mathlib's UniqueFactorizationMonoid. Every Euclidean domain is a UFD, with irreducible ↔ prime and unique factorization automatic from instance resolution.",
   "meta": {
     "status": "verified",
-    "tags": ["algebra", "number-theory", "euclidean-domain", "ufd", "factorization"],
+    "tags": [
+      "algebra",
+      "number-theory",
+      "euclidean-domain",
+      "ufd",
+      "factorization"
+    ],
     "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ02.lean",
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. All results follow from Mathlib's instance chain: EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid.",
-    "lineCount": 68,
+    "lineCount": 67,
     "theoremCount": 3,
     "definitionCount": 0,
     "mathlib_version": "4.26.0",

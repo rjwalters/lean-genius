@@ -1,10 +1,10 @@
 {
   "id": "erdos-183",
-  "title": "Erd\u0151s Problem #183: Multicolor Triangle Ramsey Numbers",
+  "title": "Erdős Problem #183: Multicolor Triangle Ramsey Numbers",
   "slug": "erdos-183",
   "description": "Determine the limit of R(3;k)^{1/k} as k approaches infinity, where R(3;k) is the minimum n such that any k-coloring of the edges of K_n contains a monochromatic triangle.",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/183",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos183Problem.lean",
@@ -51,11 +51,11 @@
       "Growth rate bounds and limit formulations"
     ],
     "axiomCount": 6,
-    "lineCount": 574,
+    "lineCount": 565,
     "references": [
       {
         "title": "Some remarks on the theory of graphs",
-        "authors": "P. Erd\u0151s",
+        "authors": "P. Erdős",
         "year": 1947,
         "venue": "Bulletin of the American Mathematical Society",
         "url": "https://doi.org/10.1090/S0002-9904-1947-08785-1",
@@ -63,31 +63,31 @@
       },
       {
         "title": "Combinatorial problems and exercises",
-        "authors": "L. Lov\u00e1sz",
+        "authors": "L. Lovász",
         "year": 1993,
         "venue": "North-Holland (2nd edition)",
-        "description": "Contains the pigeonhole upper bound R(3;k) \u2264 \u2308e\u00b7k!\u2309 and connections to Schur numbers"
+        "description": "Contains the pigeonhole upper bound R(3;k) ≤ ⌈e·k!⌉ and connections to Schur numbers"
       },
       {
         "title": "An exponential lower bound for the multicolor Ramsey number of triangles",
         "authors": "J. Ageron, J.-F. Casteras, J. Pellerin, A. Portella, A. Rimmel, R. Tomasik",
         "year": 2021,
         "venue": "Preprint",
-        "description": "Establishes the lower bound R(3;k) \u2265 380^{k/5} \u2212 O(1), a major improvement over previous bounds"
+        "description": "Establishes the lower bound R(3;k) ≥ 380^{k/5} − O(1), a major improvement over previous bounds"
       }
     ],
-    "assumptions": "6 axioms: R3k_three (=17), R3k_factorial_upper, SchurNumber (definition), R3k_schur_lower, R3k_exponential_lower, R3k_precise_lower. R3k_inductive_upper PROVED from extracted pigeonhole step (forcing_step). forcing_set_nonempty PROVED via pigeonhole induction. R3k_two PROVED via pigeonhole + C\u2085 construction."
+    "assumptions": "6 axioms: R3k_three (=17), R3k_factorial_upper, SchurNumber (definition), R3k_schur_lower, R3k_exponential_lower, R3k_precise_lower. R3k_inductive_upper PROVED from extracted pigeonhole step (forcing_step). forcing_set_nonempty PROVED via pigeonhole induction. R3k_two PROVED via pigeonhole + C₅ construction."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Paul Erd\u0151s in 1961 [Er61] and remains one of the fundamental open questions in Ramsey theory. The multicolor Ramsey number R(3;k) generalizes the classical two-color Ramsey number R(3,3) = 6, which asks for the minimum n such that any 2-coloring of K_n's edges contains a monochromatic triangle.\n\nThe problem connects to several areas of combinatorics. The upper bound R(3;k) \u2264 \u2308e\u00b7k!\u2309 follows from a clever pigeonhole argument, while lower bounds come from connections to Schur numbers. A major breakthrough came in 2021 when Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik [ACPPRT21] improved the lower bound to R(3;k) \u2265 380^{k/5} - O(1).\n\nErd\u0151s offered $250 for solving this problem, with an additional $100 specifically for proving that the limit is finite. The gap between known bounds is enormous: R(3;k) lies between roughly 3.28^k and k!, making this one of the most intriguing open problems in Ramsey theory.",
+    "historicalContext": "This problem was posed by Paul Erdős in 1961 [Er61] and remains one of the fundamental open questions in Ramsey theory. The multicolor Ramsey number R(3;k) generalizes the classical two-color Ramsey number R(3,3) = 6, which asks for the minimum n such that any 2-coloring of K_n's edges contains a monochromatic triangle.\n\nThe problem connects to several areas of combinatorics. The upper bound R(3;k) ≤ ⌈e·k!⌉ follows from a clever pigeonhole argument, while lower bounds come from connections to Schur numbers. A major breakthrough came in 2021 when Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik [ACPPRT21] improved the lower bound to R(3;k) ≥ 380^{k/5} - O(1).\n\nErdős offered $250 for solving this problem, with an additional $100 specifically for proving that the limit is finite. The gap between known bounds is enormous: R(3;k) lies between roughly 3.28^k and k!, making this one of the most intriguing open problems in Ramsey theory.",
     "problemStatement": "Let $R(3;k)$ denote the minimum $n$ such that any $k$-coloring of the edges of the complete graph $K_n$ must contain a monochromatic triangle. Determine:\n\n$$\\lim_{k \\to \\infty} R(3;k)^{1/k}$$\n\n**Known bounds:**\n- Upper: $R(3;k) \\leq \\lceil e \\cdot k! \\rceil$\n- Lower: $R(3;k) \\geq 380^{k/5} - O(1)$\n\n**Reward:** $250 (plus $100 for proving the limit is finite)",
     "text": "Determine the limit of R(3;k)^{1/k} as k approaches infinity, where R(3;k) is the minimum n such that any k-coloring of the edges of K_n contains a monochromatic triangle.",
-    "proofStrategy": "The formalization defines R(3;k) as the minimum n forcing a monochromatic triangle in any k-coloring of K_n. We establish the existence of R(3;k) through an axiom (finiteness follows from the pigeonhole upper bound). The known small values R(3;1)=3, R(3;2)=6, R(3;3)=17 are axiomatized.\n\nThe upper bound uses the inductive relation R(3;k) \u2264 2 + k(R(3;k-1)-1), which unfolds to the factorial bound. The lower bound leverages connections to Schur numbers and the 2021 construction achieving 380^{k/5}.\n\nThe main question is formulated as Filter.Tendsto (fun k => R(3;k)^{1/k}) atTop (nhds L) for some limit L, or alternatively whether this tends to infinity.",
+    "proofStrategy": "The formalization defines R(3;k) as the minimum n forcing a monochromatic triangle in any k-coloring of K_n. We establish the existence of R(3;k) through an axiom (finiteness follows from the pigeonhole upper bound). The known small values R(3;1)=3, R(3;2)=6, R(3;3)=17 are axiomatized.\n\nThe upper bound uses the inductive relation R(3;k) ≤ 2 + k(R(3;k-1)-1), which unfolds to the factorial bound. The lower bound leverages connections to Schur numbers and the 2021 construction achieving 380^{k/5}.\n\nThe main question is formulated as Filter.Tendsto (fun k => R(3;k)^{1/k}) atTop (nhds L) for some limit L, or alternatively whether this tends to infinity.",
     "keyInsights": [
       "**Multicolor Generalization**: R(3;k) extends the classical R(3,3)=6 to k colors, asking when monochromatic triangles are unavoidable",
       "**Enormous Gap**: Known bounds span from exponential (3.28^k) to factorial (k!), leaving vast uncertainty about the true growth rate",
-      "**Schur Connection**: Lower bounds come from Schur numbers S(k), where R(3;k) \u2265 S(k) + 2, linking sum-free colorings to triangle-free colorings",
-      "**Pigeonhole Upper Bound**: The relation R(3;k) \u2264 2 + k(R(3;k-1)-1) follows from considering color classes at a vertex",
+      "**Schur Connection**: Lower bounds come from Schur numbers S(k), where R(3;k) ≥ S(k) + 2, linking sum-free colorings to triangle-free colorings",
+      "**Pigeonhole Upper Bound**: The relation R(3;k) ≤ 2 + k(R(3;k-1)-1) follows from considering color classes at a vertex",
       "**Open Questions**: Both whether the limit exists and whether it is finite remain unknown, each worth separate rewards"
     ],
     "prerequisites": [
@@ -126,8 +126,8 @@
       "title": "Upper Bound",
       "startLine": 91,
       "endLine": 112,
-      "summary": "The pigeonhole bound R(3;k) \u2264 \u2308e\u00b7k!\u2309",
-      "mathContext": "The pigeonhole bound R(3;k) $\\leq$ \u2308e\u00b7k!\u2309",
+      "summary": "The pigeonhole bound R(3;k) ≤ ⌈e·k!⌉",
+      "mathContext": "The pigeonhole bound R(3;k) $\\leq$ ⌈e·k!⌉",
       "id": "upper-bound"
     },
     {
@@ -164,10 +164,10 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #183 on multicolor triangle Ramsey numbers. We define R(3;k), establish its basic properties, and formalize the known upper and lower bounds. The main open question asks for the limit of R(3;k)^{1/k}.",
+    "summary": "This formalization captures Erdős Problem #183 on multicolor triangle Ramsey numbers. We define R(3;k), establish its basic properties, and formalize the known upper and lower bounds. The main open question asks for the limit of R(3;k)^{1/k}.",
     "implications": "**Theoretical Significance**: The growth rate of R(3;k) is fundamental to understanding how combinatorial structures resist partitioning.\n\nA resolution would illuminate deep connections between Ramsey theory, Schur numbers, and extremal combinatorics. The $350 reward reflects the problem's difficulty and importance.",
     "openQuestions": [
-      "Does lim_{k\u2192\u221e} R(3;k)^{1/k} exist?",
+      "Does lim_{k→∞} R(3;k)^{1/k} exist?",
       "If the limit exists, is it finite?",
       "What is the exact value of R(3;4)?",
       "Can the lower bound 380^{k/5} be improved?",
@@ -184,19 +184,19 @@
       "Classical"
     ],
     "namespace": "Erdos183",
-    "lineCount": 574,
+    "lineCount": 565,
     "axiomCount": 6,
     "theoremCount": 15,
     "definitionCount": 13
   },
   "crossReferences": [
     {
-      "title": "Erd\u0151s Problem #165: Asymptotic Formula for R(3,k)",
-      "relationship": "Both concern triangle Ramsey numbers \u2014 #165 studies the two-color R(3,k), while #183 generalizes to the k-color R(3;k)",
+      "title": "Erdős Problem #165: Asymptotic Formula for R(3,k)",
+      "relationship": "Both concern triangle Ramsey numbers — #165 studies the two-color R(3,k), while #183 generalizes to the k-color R(3;k)",
       "targetId": "erdos-165"
     },
     {
-      "title": "Erd\u0151s Problem #166: Ramsey Number R(4,k) Lower Bound",
+      "title": "Erdős Problem #166: Ramsey Number R(4,k) Lower Bound",
       "relationship": "Both study growth rates of Ramsey numbers; #166 concerns R(4,k) lower bounds while #183 concerns the multicolor triangle Ramsey number R(3;k)",
       "targetId": "erdos-166"
     },

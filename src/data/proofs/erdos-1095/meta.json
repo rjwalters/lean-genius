@@ -24,7 +24,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "assumptions": "1 axiom declaration: gFunc_exists (existence of g(k) satisfying all prime factors of C(g(k),k) > k). Previous 8 axioms eliminated: g/g_gt/g_spec/g_minimal folded into gFunc_exists, bounds proved/removed. 0 sorries. Concrete values g(2)=6, g(3)=7, g(4)=7, g(5)=23 PROVED.",
-    "lineCount": 332,
+    "lineCount": 475,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -178,7 +178,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos1095",
-    "lineCount": 256,
+    "lineCount": 475,
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 8

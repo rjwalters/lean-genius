@@ -55,7 +55,7 @@
     ],
     "axiomCount": 8,
     "assumptions": "8 axiom declarations: seven_not_dissectable (Beeson: 7 fails), eleven_not_dissectable (Beeson: 11 fails), soifer_theorem (similar dissection complete), two_not_similar_dissectable (2 not similar-dissectable), three_not_similar_dissectable (3 not similar-dissectable), five_not_similar_dissectable (5 not similar-dissectable), sww_theorem (self-similar characterization), zhang_2025 (sufficient condition for large n)",
-    "lineCount": 313
+    "lineCount": 298
   },
   "overview": {
     "historicalContext": "**Triangle Dissection Problem — A Bridge Between Geometry and Number Theory**\n\nPaul Erdős posed this problem with a $25 prize, asking for a complete characterization of which positive integers $n$ allow some triangle to be dissected into $n$ congruent triangles. The problem appears in Erdős and Graham's 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*.\n\n**Known Positive Results**: The most natural construction uses **grid subdivision**: dividing each side of a triangle into $k$ equal parts produces $k^2$ congruent triangles. More sophisticated constructions yield $2k^2$ (via right triangle reflections), $3k^2$ (via equilateral triangle trisections), $6k^2$ (combining both), and $k^2 + m^2$ (via a two-scale grid). The special case $n = 27$ also works via an equilateral triangle construction that does not fit any of these parametric families.\n\n**Known Negative Results**: Michael Beeson proved in 2012 that no triangle can be dissected into exactly 7 or 11 congruent triangles, using exhaustive geometric case analysis of the possible edge-matching patterns at vertices. Both 7 and 11 are primes of the form $4k + 3$, which led to the conjecture that all such primes (except 3, which is $3 \\cdot 1^2$) are non-dissectable.\n\n**The Similar Case**: Alexander Soifer completely solved the analogous problem for *similar* (rather than congruent) triangles in his 1990 book *How Does One Cut a Triangle?*: all $n \\geq 1$ except 2, 3, and 5 admit similar dissections. The stark contrast between the similar and congruent cases highlights how rigidity (disallowing scaling) fundamentally changes the combinatorics.\n\n**Open**: The case $n = 19$ (the next prime of form $4k + 3$) remains unknown, and the complete characterization is still open with the $25 prize unclaimed.",
@@ -193,7 +193,7 @@
       "Function"
     ],
     "namespace": "Erdos634",
-    "lineCount": 313,
+    "lineCount": 298,
     "axiomCount": 8,
     "theoremCount": 16,
     "definitionCount": 15

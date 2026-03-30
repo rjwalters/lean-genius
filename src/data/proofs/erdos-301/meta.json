@@ -2,9 +2,9 @@
   "id": "erdos-301",
   "title": "Egyptian Fraction Avoidance Sets",
   "slug": "erdos-301",
-  "description": "Maximum subset of {1,...,N} with no 1/a = 1/b\u2081+...+1/b\u2096 using distinct elements. Lower: N/2 (half-interval). Upper: (25/28)N (van Doorn). Conjecture: f(N) = (1/2+o(1))N.",
+  "description": "Maximum subset of {1,...,N} with no 1/a = 1/b₁+...+1/bₖ using distinct elements. Lower: N/2 (half-interval). Upper: (25/28)N (van Doorn). Conjecture: f(N) = (1/2+o(1))N.",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/301",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos301Problem.lean",
@@ -21,14 +21,14 @@
     "erdosUrl": "https://erdosproblems.com/301",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 142,
+    "lineCount": 158,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "**Egyptian Fractions and Avoidance**\n\nEgyptian fractions \u2014 representations of rationals as sums of distinct unit fractions \u2014 date to the Rhind Papyrus (c. 1650 BCE). Erd\u0151s posed Problem 301 as a natural extremal question: how large can a subset of {1,...,N} be while avoiding all Egyptian fraction decompositions among its elements?\n\nThe trivial lower bound f(N) >= N/2 comes from the interval (N/2, N], whose elements have reciprocals too small to decompose within the set. Van Doorn improved the upper bound to (25/28 + o(1))N using divisibility patterns: identities like 1/(2a) = 1/(3a) + 1/(6a) force elements in arithmetic progressions to participate in decompositions.\n\nThe problem connects to **Erd\u0151s Problem 302** (Egyptian fraction representations) and **Problem 327** (sum-divides-product), forming a cluster of questions about the additive structure of unit fractions. Graham (2013) surveyed Erd\u0151s's extensive work on Egyptian fractions at the Erd\u0151s Centennial conference. Croot (2003) studied related coloring problems for unit fractions, establishing connections to the Hales-Jewett theorem.",
-    "problemStatement": "Estimate f(N), the max |A| for A \u2286 {1,...,N} with no 1/a = \u03a3 1/b\u1d62 using distinct elements of A.",
-    "text": "Maximum subset of {1,...,N} with no 1/a = 1/b\u2081+...+1/b\u2096 using distinct elements. Lower: N/2 (half-interval). Upper: (25/28)N (van Doorn). Conjecture: f(N) = (1/2+o(1))N.",
+    "historicalContext": "**Egyptian Fractions and Avoidance**\n\nEgyptian fractions — representations of rationals as sums of distinct unit fractions — date to the Rhind Papyrus (c. 1650 BCE). Erdős posed Problem 301 as a natural extremal question: how large can a subset of {1,...,N} be while avoiding all Egyptian fraction decompositions among its elements?\n\nThe trivial lower bound f(N) >= N/2 comes from the interval (N/2, N], whose elements have reciprocals too small to decompose within the set. Van Doorn improved the upper bound to (25/28 + o(1))N using divisibility patterns: identities like 1/(2a) = 1/(3a) + 1/(6a) force elements in arithmetic progressions to participate in decompositions.\n\nThe problem connects to **Erdős Problem 302** (Egyptian fraction representations) and **Problem 327** (sum-divides-product), forming a cluster of questions about the additive structure of unit fractions. Graham (2013) surveyed Erdős's extensive work on Egyptian fractions at the Erdős Centennial conference. Croot (2003) studied related coloring problems for unit fractions, establishing connections to the Hales-Jewett theorem.",
+    "problemStatement": "Estimate f(N), the max |A| for A ⊆ {1,...,N} with no 1/a = Σ 1/bᵢ using distinct elements of A.",
+    "text": "Maximum subset of {1,...,N} with no 1/a = 1/b₁+...+1/bₖ using distinct elements. Lower: N/2 (half-interval). Upper: (25/28)N (van Doorn). Conjecture: f(N) = (1/2+o(1))N.",
     "proofStrategy": "We define HasEgyptianDecomp for unit fraction decomposition, EgyptFractionFree for avoidance, and maxEgyptFree as the extremal function. The main conjecture asserts f(N) ~ N/2. Lower and upper bounds are axiomatized. The hereditary property and base cases are proved directly in Lean.",
     "keyInsights": [
       "Elements in **(N/2, N]** cannot have Egyptian fraction decompositions from the same interval, giving f(N) >= N/2",
@@ -87,7 +87,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erd\u0151s Problem 301 on Egyptian fraction avoidance sets, with lower bound N/2, upper bound 25/28 * N, and the conjecture f(N) ~ N/2. Two theorems are fully proved (empty set and hereditary property), four results are axiomatized. Zero sorries.",
+    "summary": "The formalization captures Erdős Problem 301 on Egyptian fraction avoidance sets, with lower bound N/2, upper bound 25/28 * N, and the conjecture f(N) ~ N/2. Two theorems are fully proved (empty set and hereditary property), four results are axiomatized. Zero sorries.",
     "implications": "**Theoretical Significance**: Resolution would pin down the exact density of unit-fraction-free sets.\n\nThe hereditary structure suggests connections to Kruskal-Katona type bounds. Progress likely requires new tools for detecting forced Egyptian fraction patterns in dense sets, potentially drawing on techniques from additive combinatorics (sum-free sets, Schur numbers).",
     "openQuestions": [
       "Is f(N) = (1/2+o(1))N, or is the true density strictly greater than 1/2?",
@@ -107,16 +107,16 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 142,
+    "lineCount": 158,
     "axiomCount": 1,
     "theoremCount": 2,
     "definitionCount": 4
   },
   "references": [
-    "Erd\u0151s, P. (1950s): original problem on Egyptian fraction avoidance",
-    "Van Doorn, E.: f(N) \u2264 (25/28 + o(1))N upper bound via divisibility patterns",
-    "Guy, R.K. (2004): Unsolved Problems in Number Theory, \u00a7D11",
-    "Graham, R.L. (2013): Paul Erd\u0151s and Egyptian fractions, in Erd\u0151s Centennial",
+    "Erdős, P. (1950s): original problem on Egyptian fraction avoidance",
+    "Van Doorn, E.: f(N) ≤ (25/28 + o(1))N upper bound via divisibility patterns",
+    "Guy, R.K. (2004): Unsolved Problems in Number Theory, §D11",
+    "Graham, R.L. (2013): Paul Erdős and Egyptian fractions, in Erdős Centennial",
     "Croot, E. (2003): On a coloring conjecture about unit fractions",
     "https://erdosproblems.com/301"
   ],
@@ -124,17 +124,17 @@
     {
       "targetId": "erdos-148",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
     },
     {
       "targetId": "erdos-242",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
     },
     {
       "targetId": "erdos-284",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
     }
   ]
 }

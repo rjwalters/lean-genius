@@ -1,281 +1,281 @@
 {
-    "id": "erdos-1179-oq-01",
-    "title": "Second-Order Term in Uniform Subset Sum Representations",
-    "slug": "erdos-1179-oq-01",
-    "description": "What is the precise second-order term in g_ε(N)? Formalizes the correction term hierarchy (O(1) vs Θ(log log N) vs o(log N)) and proves foundational properties of representation counts in ℤ/Nℤ, including the partition identity ∑_g F_A(g) = 2^|A|, monotonicity under set growth, and coverage monotonicity. Proves erdos_renyi_decay (exponential decay of Fourier error) from the corrected fourier_error_bound axiom via geometric series arguments.",
-    "meta": {
-        "author": "Open Question (Erdős #1179)",
-        "sourceUrl": "https://erdosproblems.com/1179",
-        "date": "2026",
-        "status": "verified",
-        "proofRepoPath": "Proofs/Erdos1179OQ01.lean",
-        "tags": [
-            "erdos",
-            "combinatorics",
-            "additive-combinatorics",
-            "probability",
-            "analysis",
-            "open-question",
-            "fourier-analysis"
-        ],
-        "badge": "verified",
-        "sorries": 0,
-        "axiomCount": 0,
-        "theoremCount": 23,
-        "definitionCount": 7,
-        "lineCount": 709,
-        "erdosNumber": 1179,
-        "erdosUrl": "https://erdosproblems.com/1179",
-        "erdosProblemStatus": "open-question",
-        "assumptions": "Zero axioms, zero sorries. Fully verified: character_orthogonality (shift argument), reprCount_fourier_expansion (product expansion + character orthogonality), norm_one_add_omegap_pow, abs_cos_mul_pi_div_le, fourier_product_bound, fourier_error_bound, and erdos_renyi_decay all proved from Mathlib.",
-        "mathlib_version": "4.26.0",
-        "mathlibDependencies": [
-            {
-                "theorem": "Finset.card_eq_sum_card_fiberwise",
-                "description": "Partition a finite set into fibers over a map; used to prove the representation count partition identity",
-                "module": "Mathlib.Data.Finset.Basic"
-            },
-            {
-                "theorem": "Finset.powerset",
-                "description": "Powerset of a finite set; used to enumerate all subsets for reprCount definition",
-                "module": "Mathlib.Data.Finset.Powerset"
-            },
-            {
-                "theorem": "Real.logb_rpow",
-                "description": "logb b (b^x) = x for b > 0, b ≠ 1; used in the O(1) ⟹ o(log N) proof",
-                "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
-            },
-            {
-                "theorem": "Real.log_le_log",
-                "description": "Monotonicity of real logarithm; used to transfer N ≥ 2^m to log₂ N ≥ m",
-                "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
-            },
-            {
-                "theorem": "Nat.ceil",
-                "description": "Ceiling function ℝ → ℕ; used to convert C/δ bound to a natural number threshold",
-                "module": "Mathlib.Data.Real.Basic"
-            }
-        ],
-        "originalContributions": [
-            "Formalization of the correction term hierarchy: three candidate rates (O(1), Θ(log log N), o(log N)) as Lean propositions with proof that O(1) ⟹ o(log N)",
-            "Proof of the partition identity ∑_g F_A(g) = 2^|A| via fiber decomposition of the powerset",
-            "Proof of monotonicity: reprCount never decreases under set insertion",
-            "Proof of coverage monotonicity: the support of F_A grows with |A|",
-            "Axiomatization of the Fourier-analytic character sum bound for representation counts in ℤ/pℤ"
-        ],
-        "relatedProblems": [
-            {
-                "id": "erdos-1179",
-                "relationship": "Parent problem: the main Erdős #1179 formalization establishing g_ε(N) ~ log₂ N"
-            }
-        ],
-        "leanFile": {
-            "imports": [
-                "Mathlib.Data.Finset.Basic",
-                "Mathlib.Data.Finset.Powerset",
-                "Mathlib.Data.Finset.Card",
-                "Mathlib.Data.Fintype.Basic",
-                "Mathlib.Data.Real.Basic",
-                "Mathlib.Data.ZMod.Basic",
-                "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-                "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
-                "Mathlib.Analysis.SpecificLimits.Normed",
-                "Mathlib.Tactic"
-            ],
-            "opens": [
-                "Finset",
-                "Real"
-            ],
-            "namespace": "Erdos1179OQ01",
-            "lineCount": 709,
-            "axiomCount": 0,
-            "sorryCount": 0,
-            "theoremCount": 23,
-            "definitionCount": 7,
-            "mainTheorems": [
-                {
-                    "name": "total_reprCount",
-                    "type": "proved",
-                    "description": "Total representations partition: ∑_g F_A(g) = 2^|A|",
-                    "leanType": "(A : Finset (ZMod N)) → (∑ g : ZMod N, reprCount A g) = 2 ^ A.card"
-                },
-                {
-                    "name": "reprCount_insert_ge",
-                    "type": "proved",
-                    "description": "Monotonicity: adding an element never decreases reprCount",
-                    "leanType": "(A : Finset (ZMod N)) → (b : ZMod N) → (g : ZMod N) → b ∉ A → reprCount A g ≤ reprCount (insert b A) g"
-                },
-                {
-                    "name": "coverage_mono",
-                    "type": "proved",
-                    "description": "Coverage monotonicity: the number of represented elements grows with set size",
-                    "leanType": "(A : Finset (ZMod N)) → (b : ZMod N) → b ∉ A → |{g : F_A(g) > 0}| ≤ |{g : F_{A∪{b}}(g) > 0}|"
-                },
-                {
-                    "name": "bounded_implies_sublinear",
-                    "type": "proved",
-                    "description": "The correction hierarchy: O(1) implies o(log₂ N)",
-                    "leanType": "(gEps : ℝ → ℕ → ℕ) → (ε : ℝ) → CorrectionIsBounded gEps ε → CorrectionIsSublinearInLog gEps ε"
-                },
-                {
-                    "name": "abs_cos_pi_div_prime_lt_one",
-                    "type": "proved",
-                    "description": "|cos(π/p)| < 1 for any prime p — key lemma for geometric decay",
-                    "leanType": "(p : ℕ) → (hp : Nat.Prime p) → |cos(π/p)| < 1"
-                },
-                {
-                    "name": "erdos_renyi_decay",
-                    "type": "proved",
-                    "description": "Erdős-Rényi exponential decay: for k ≥ clog₂ p + C, Fourier error ≤ ε · 2^k/p. Proved from fourier_error_bound via geometric decay of |cos(π/p)|^(k-1)",
-                    "leanType": "(p : ℕ) → (hp : Nat.Prime p) → ∀ ε > 0, ∃ C, ∀ k ≥ clog 2 p + C, ∀ A, A.card = k → ∀ g, |F_A(g) - 2^k/p| ≤ ε · (2^k/p)"
-                }
-            ]
-        }
-    },
-    "sections": [
-        {
-            "id": "header-imports",
-            "title": "Problem Context and Imports",
-            "startLine": 1,
-            "endLine": 33,
-            "summary": "Module docstring describing Erdős #1179's open question on the second-order correction term in $g_\\varepsilon(N)$. Eight Mathlib imports (Finset, ZMod, Real, Log, Tactic). Namespace and `open` declarations.",
-            "mathContext": "The open question: what is the precise form of $g_\\varepsilon(N) - \\log_2 N$? Known bounds: $g_\\varepsilon(N) \\geq \\log_2 N$ (trivial) and $g_\\varepsilon(N) \\leq \\log_2 N \\cdot (1 + O_\\varepsilon(\\log\\log\\log N / \\log\\log N))$ (Erdős-Hall 1976)."
-        },
-        {
-            "id": "reprcount-foundations",
-            "title": "Part I: Representation Counts in ℤ/Nℤ",
-            "startLine": 35,
-            "endLine": 64,
-            "summary": "Defines `reprCount A g` as the number of subsets of $A$ summing to $g$ in $\\mathbb{Z}/N\\mathbb{Z}$. Proves the partition identity $\\sum_g F_A(g) = 2^{|A|}$ via `card_eq_sum_card_fiberwise`. Base cases: $F_\\emptyset(0) = 1$ and $F_\\emptyset(g) = 0$ for $g \\neq 0$.",
-            "mathContext": "$F_A(g) = |\\{S \\subseteq A : \\sum_{s \\in S} s = g\\}|$. The partition identity says the fibers $\\{S : \\sigma(S) = g\\}$ partition $\\mathcal{P}(A)$."
-        },
-        {
-            "id": "monotonicity",
-            "title": "Part II: Monotonicity Under Set Growth",
-            "startLine": 66,
-            "endLine": 83,
-            "summary": "Proves `reprCount_insert_ge`: $F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$ — adding an element to $A$ never decreases representation counts, because every subset of $A$ is also a subset of $A \\cup \\{b\\}$. Also proves `reprCount_nonneg` (trivially, since counts are natural numbers).",
-            "mathContext": "The monotonicity $F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$ follows from set inclusion: $\\{S \\subseteq A : \\sigma(S) = g\\} \\subseteq \\{S \\subseteq A \\cup \\{b\\} : \\sigma(S) = g\\}$."
-        },
-        {
-            "id": "singleton",
-            "title": "Part III: Singleton Analysis",
-            "startLine": 85,
-            "endLine": 99,
-            "summary": "Proves `reprCount_singleton_le_two`: $F_{\\{a\\}}(g) \\leq 2$ because $|\\mathcal{P}(\\{a\\})| = 2$. The bound is achieved when $a = 0$ and $g = 0$.",
-            "mathContext": "$F_{\\{a\\}}(g) \\leq |\\mathcal{P}(\\{a\\})| = 2^1 = 2$."
-        },
-        {
-            "id": "coverage",
-            "title": "Part IV: Coverage Monotonicity",
-            "startLine": 101,
-            "endLine": 113,
-            "summary": "Proves `coverage_mono`: $|\\text{supp}(F_A)| \\leq |\\text{supp}(F_{A \\cup \\{b\\}})|$ — the number of represented group elements grows monotonically with set size. Direct consequence of `reprCount_insert_ge`.",
-            "mathContext": "$|\\{g : F_A(g) > 0\\}| \\leq |\\{g : F_{A \\cup \\{b\\}}(g) > 0\\}|$. If $F_A(g) > 0$, then $F_{A \\cup \\{b\\}}(g) \\geq F_A(g) > 0$."
-        },
-        {
-            "id": "correction-hierarchy",
-            "title": "Part V: The Correction Term Hierarchy",
-            "startLine": 115,
-            "endLine": 174,
-            "summary": "Defines the correction term $\\delta_\\varepsilon(N) = g_\\varepsilon(N) - \\log_2 N$ and three candidate rates: `CorrectionIsBounded` ($O(1)$), `CorrectionIsLogLog` ($\\Theta(\\log\\log N)$), `CorrectionIsSublinearInLog` ($o(\\log_2 N)$). Proves `bounded_implies_sublinear`: $O(1) \\Rightarrow o(\\log_2 N)$ via a 30-line epsilon-delta argument choosing $N_0 = 2^{\\lceil C/\\delta \\rceil + 2}$.",
-            "mathContext": "If $|\\delta_\\varepsilon(N)| \\leq C$ for all $N \\geq 2$, then for any $\\eta > 0$, choosing $N \\geq 2^{\\lceil C/\\eta \\rceil + 2}$ gives $\\log_2 N > C/\\eta$, so $|\\delta_\\varepsilon(N)| \\leq C < \\eta \\cdot \\log_2 N$."
-        },
-        {
-            "id": "fourier",
-            "title": "Part VI: Fourier Analysis Connection",
-            "startLine": 178,
-            "endLine": 267,
-            "summary": "Proves `abs_cos_pi_div_prime_lt_one` ($|\\cos(\\pi/p)| < 1$ for primes) via strict monotonicity of cosine on $[0,\\pi]$. One corrected axiom `fourier_error_bound` (with proper $2^k/p$ scaling and $k-1$ exponent). Proves `erdos_renyi_decay` from the axiom: the relative error $(p-1)|\\cos(\\pi/p)|^{k-1}$ decays geometrically below any $\\varepsilon > 0$ for sufficiently large $k$. Original axiom was mathematically false (counterexample: $A=\\{1,2\\} \\subseteq \\mathbb{Z}/3\\mathbb{Z}$).",
-            "mathContext": "For $A \\subseteq \\mathbb{Z}/p\\mathbb{Z}$: $F_A(g) = \\frac{1}{p}\\sum_\\chi \\chi(-g)\\prod_{a \\in A}(1+\\chi(a))$. Non-trivial characters contribute $\\leq (p-1)|\\cos(\\pi/p)|^{k-1} \\cdot 2^k/p$. Since $|\\cos(\\pi/p)| < 1$, geometric decay gives relative error $\\to 0$."
-        },
-        {
-            "id": "summary",
-            "title": "Part VII: Summary and Open Question",
-            "startLine": 196,
-            "endLine": 213,
-            "summary": "`second_order_hierarchy` restates the hierarchy theorem. The open question remains: which candidate rate ($O(1)$, $\\Theta(\\log\\log N)$, or something else) is correct? Closes the namespace.",
-            "mathContext": "$\\text{CorrectionIsBounded} \\Rightarrow \\text{CorrectionIsSublinearInLog}$, i.e., $O(1) \\Rightarrow o(\\log N)$. The full hierarchy $O(1) \\Rightarrow \\Theta(\\log\\log N) \\Rightarrow o(\\log N)$ is partially proved."
-        }
+  "id": "erdos-1179-oq-01",
+  "title": "Second-Order Term in Uniform Subset Sum Representations",
+  "slug": "erdos-1179-oq-01",
+  "description": "What is the precise second-order term in g_ε(N)? Formalizes the correction term hierarchy (O(1) vs Θ(log log N) vs o(log N)) and proves foundational properties of representation counts in ℤ/Nℤ, including the partition identity ∑_g F_A(g) = 2^|A|, monotonicity under set growth, and coverage monotonicity. Proves erdos_renyi_decay (exponential decay of Fourier error) from the corrected fourier_error_bound axiom via geometric series arguments.",
+  "meta": {
+    "author": "Open Question (Erdős #1179)",
+    "sourceUrl": "https://erdosproblems.com/1179",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1179OQ01.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "probability",
+      "analysis",
+      "open-question",
+      "fourier-analysis"
     ],
-    "overview": {
-        "historicalContext": "Erdős Problem #1179 asks about uniform subset sum representations in finite abelian groups. Given a group $G$ of order $N$ and $\\varepsilon > 0$, define $g_\\varepsilon(N)$ as the smallest $k$ such that a random $k$-subset $A \\subseteq G$ makes all representation counts $F_A(g)$ approximately equal to $2^k/N$ with high probability.\n\nThe study of subset sum representations began with Erdős and Rényi's 1965 paper, which introduced the second-moment method to show that $k \\approx 2\\log_2 N$ suffices for coverage (all elements representable). Erdős and Hall (1976) sharpened this to $g_\\varepsilon(N) \\sim \\log_2 N$, establishing the leading term. Their upper bound $g_\\varepsilon(N) \\leq \\log_2 N \\cdot (1 + O_\\varepsilon(\\log\\log\\log N / \\log\\log N))$ leaves the second-order correction unknown.\n\nThe question of the precise second-order term connects to the broader theme of 'how random is random enough?' in additive combinatorics. The closely related Problem #543 (random subset sums spanning the group) was disproved: the $O(\\log\\log N)$ correction term is optimal, suggesting by analogy that $\\Theta(\\log\\log N)$ may be the correct rate here as well. However, the uniformity condition in Problem #1179 is strictly stronger than the coverage condition in #543, so the analogy is not conclusive.",
-        "problemStatement": "Determine the precise rate at which $g_\\varepsilon(N) - \\log_2 N$ grows. Three candidates are formalized:\n\n1. **$O(1)$** (strongest): $g_\\varepsilon(N) = \\log_2 N + O_\\varepsilon(1)$\n2. **$\\Theta(\\log\\log N)$** (conjectured): $g_\\varepsilon(N) = \\log_2 N + \\Theta_\\varepsilon(\\log\\log N)$\n3. **$o(\\log_2 N)$** (known): $g_\\varepsilon(N) = (1 + o_\\varepsilon(1))\\log_2 N$",
-        "text": "A seven-part formalization in 525 lines investigating the second-order term in $g_\\varepsilon(N)$. Parts I–IV prove foundational properties of representation counts in $\\mathbb{Z}/N\\mathbb{Z}$: the partition identity $\\sum_g F_A(g) = 2^{|A|}$ (via fiber decomposition of the powerset), monotonicity under set insertion ($F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$), singleton bounds, and coverage monotonicity. Part V defines the correction term hierarchy — three candidate rates formalized as Lean propositions — and proves $O(1) \\Rightarrow o(\\log_2 N)$ via a 30-line epsilon-delta argument using `Real.logb` monotonicity and the Archimedean property. Part VI axiomatizes the Fourier-analytic character sum bounds from the Erdős-Rényi method. Part VII summarizes the hierarchy as the clean theorem `second_order_hierarchy`. Zero axioms, two sorries, eleven theorems, seven definitions.",
-        "proofStrategy": "The formalization works concretely in $\\mathbb{Z}/N\\mathbb{Z}$ rather than abstract abelian groups, making the Finset/ZMod infrastructure directly available.\n\n**Parts I–IV (Proved):** Build the foundation of representation counts: the central definition `reprCount A g = |\\{S \\subseteq A : \\sigma(S) = g\\}|`, the partition identity (via `card_eq_sum_card_fiberwise`), base cases for the empty set, monotonicity under element insertion (via powerset inclusion), and coverage growth. These are proved from Mathlib primitives with no axioms.\n\n**Part V (Proved):** The hierarchy theorem. Define three correction term hypotheses as Lean `Prop`s. Prove $O(1) \\Rightarrow o(\\log_2 N)$ by choosing $N_0 = 2^{\\lceil C/\\delta \\rceil + 2}$: for $N \\geq N_0$, $\\log_2 N \\geq \\lceil C/\\delta \\rceil + 2 > C/\\delta$, so $C < \\delta \\cdot \\log_2 N$.\n\n**Part VI (Axiomatized):** The Fourier character sum bound $|F_A(g) - 2^k/p| \\leq (p-1)|\\cos(\\pi/p)|^k$ and its consequence that errors decay exponentially for $k \\approx 2\\log_2 p$. Axiomatized because discrete Fourier analysis on $\\mathbb{Z}/p\\mathbb{Z}$ requires character group infrastructure not yet in Mathlib.",
-        "keyInsights": [
-            "**Partition Identity (Proved):** $\\sum_g F_A(g) = 2^{|A|}$ — representation counts fiber the powerset. This is the zero-th order fact: the average representation count is $2^{|A|}/N$, and uniformity means all $F_A(g)$ are close to this average.",
-            "**Monotonicity (Proved):** $F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$ — adding elements never decreases representation counts. In fact, $F_{A \\cup \\{b\\}}(g) = F_A(g) + F_A(g - b)$ (convolution identity), so the increase is precisely the number of subsets of $A$ summing to $g - b$.",
-            "**Coverage Monotonicity (Proved):** $|\\text{supp}(F_A)| \\leq |\\text{supp}(F_{A \\cup \\{b\\}})|$ — larger sets represent more group elements. Full coverage ($|\\text{supp}| = N$) is a prerequisite for uniformity.",
-            "**Correction Hierarchy (Proved):** $O(1) \\Rightarrow o(\\log_2 N)$ — the three candidate rates form a strict hierarchy. The proof is an epsilon-delta argument using the Archimedean property of the reals to find $N_0$ such that $\\log_2 N_0 > C/\\delta$.",
-            "**Fourier Connection (Axiomatized):** In $\\mathbb{Z}/p\\mathbb{Z}$, character sums control representation count deviations: $|F_A(g) - 2^k/p| \\leq (p-1)|\\cos(\\pi/p)|^k$. The exponential decay $|\\cos(\\pi/p)|^k$ is the engine of the Erdős-Rényi method.",
-            "**Problem #543 Analogy:** The disproof of Erdős #543 showed the $\\Theta(\\log\\log N)$ correction is optimal for the coverage problem. This suggests by analogy that $\\Theta(\\log\\log N)$ may be the correct rate for the uniformity problem (#1179), but the uniformity condition is strictly stronger, so the analogy is heuristic."
-        ],
-        "prerequisites": [
-            "Additive combinatorics (subset sums, representation counts)",
-            "Analysis (logarithms, asymptotics, O/Θ/o notation)",
-            "Algebra (ℤ/Nℤ, abelian groups, ZMod)",
-            "Discrete Fourier analysis (character sums, for axiomatized results)"
-        ]
-    },
-    "conclusion": {
-        "summary": "This formalization builds the algebraic and analytic foundations for studying the second-order correction in $g_\\varepsilon(N)$. The proved results — partition identity, monotonicity, coverage growth, and the correction hierarchy — provide the combinatorial scaffolding. The axiomatized Fourier bounds capture the analytic engine. The main theorem `bounded_implies_sublinear` establishes that the three candidate rates form a strict hierarchy, narrowing the open question to: which rate actually holds?",
-        "implications": "**Connections to additive combinatorics:** The representation count machinery (partition identity, monotonicity, convolution structure) connects to fundamental tools in additive number theory — Freiman's theorem, the Erdős-Ginzburg-Ziv theorem, and sumset estimates. The Fourier method axiomatized here is a special case of the Hardy-Littlewood circle method applied to finite groups.\n\n**Problem #543 analogy:** The disproof of #543 showed $\\Theta(\\log\\log N)$ is the optimal correction for coverage. If the uniformity problem (#1179) has the same answer, it would reveal a deep structural connection between 'covering all elements' and 'covering them uniformly' — both governed by the same second-order logarithmic correction.\n\n**Computational verification:** The formalized definitions are in principle computable for small $N$ (modulo the `noncomputable` annotation on `reprCount`). A computational investigation of $g_\\varepsilon(N)$ for small $N$ and various $\\varepsilon$ could provide empirical evidence for the correct rate.",
-        "openQuestions": [
-            "Is the correction term $g_\\varepsilon(N) - \\log_2 N$ bounded ($O(1)$) or does it grow as $\\Theta(\\log\\log N)$? The disproof of Problem #543 suggests the latter, but the uniformity condition here is strictly stronger than coverage.",
-            "Can the remaining fourier_error_bound axiom be proved from Mathlib's character theory? This requires discrete Fourier analysis infrastructure: character groups of $\\mathbb{Z}/p\\mathbb{Z}$, orthogonality relations, and the identity $|1+\\chi(a)| = 2|\\cos(\\pi ja/p)|$.",
-            "Can the $\\Theta(\\log\\log N) \\Rightarrow o(\\log N)$ implication be formalized to complete the full hierarchy chain?",
-            "Does the second-order term depend on the group structure (cyclic vs general abelian) or only on the group order $N$?"
-        ]
-    },
-    "crossReferences": [
-        {
-            "targetId": "erdos-1179",
-            "relationship": "parent",
-            "description": "The parent Erdős #1179 formalization establishing the main asymptotic g_ε(N) ~ log₂ N. This open question investigates the second-order correction term"
-        },
-        {
-            "targetId": "erdos-543",
-            "relationship": "related",
-            "description": "Erdős #543 asks the analogous question for subset sum coverage (spanning the group) rather than uniformity. The disproof showed Θ(log log N) is the optimal coverage correction, suggesting by analogy that the uniformity correction in #1179 may also be Θ(log log N)"
-        },
-        {
-            "targetId": "fourier-series",
-            "relationship": "related",
-            "description": "Fourier analysis foundations. The axiomatized character sum bounds in this formalization are the finite-group analogue of Fourier series on the circle: characters of ℤ/pℤ play the role of exponential functions e^{inx}"
-        }
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 7,
+    "lineCount": 709,
+    "erdosNumber": 1179,
+    "erdosUrl": "https://erdosproblems.com/1179",
+    "erdosProblemStatus": "open-question",
+    "assumptions": "Zero axioms, zero sorries. Fully verified: character_orthogonality (shift argument), reprCount_fourier_expansion (product expansion + character orthogonality), norm_one_add_omegap_pow, abs_cos_mul_pi_div_le, fourier_product_bound, fourier_error_bound, and erdos_renyi_decay all proved from Mathlib.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_eq_sum_card_fiberwise",
+        "description": "Partition a finite set into fibers over a map; used to prove the representation count partition identity",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset of a finite set; used to enumerate all subsets for reprCount definition",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Real.logb_rpow",
+        "description": "logb b (b^x) = x for b > 0, b ≠ 1; used in the O(1) ⟹ o(log N) proof",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_le_log",
+        "description": "Monotonicity of real logarithm; used to transfer N ≥ 2^m to log₂ N ≥ m",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.ceil",
+        "description": "Ceiling function ℝ → ℕ; used to convert C/δ bound to a natural number threshold",
+        "module": "Mathlib.Data.Real.Basic"
+      }
     ],
-    "references": [
-        {
-            "authors": "Erdős, Paul; Rényi, Alfréd",
-            "title": "Additive properties of random sequences of positive integers",
-            "year": "1965",
-            "venue": "Acta Arithmetica, vol. 6, pp. 83–110",
-            "note": "Introduced the second-moment method for subset sum representations in finite groups, establishing the foundational approach axiomatized in Part VI"
-        },
-        {
-            "authors": "Erdős, Paul; Hall, Richard R.",
-            "title": "On representations of integers as sums of distinct summands taken from a sequence",
-            "year": "1976",
-            "venue": "Discrete Mathematics, vol. 16, pp. 321–328",
-            "note": "Sharpened the Erdős-Rényi bound to g_ε(N) ~ log₂ N and established the upper bound g_ε(N) ≤ log₂ N · (1 + O(log log log N / log log N))"
-        },
-        {
-            "authors": "Vu, Van H.",
-            "title": "On the concentration of random multilinear forms and the universality of random block matrices",
-            "year": "2006",
-            "venue": "Random Structures & Algorithms, vol. 29, no. 4, pp. 454–480",
-            "note": "Modern probabilistic methods for subset sum problems in groups, extending the Erdős-Rényi framework with concentration inequalities"
-        },
-        {
-            "authors": "Tao, Terence; Vu, Van H.",
-            "title": "Additive Combinatorics",
-            "year": "2006",
-            "venue": "Cambridge University Press",
-            "note": "Standard reference for additive combinatorics including Fourier analysis on finite groups, representation counts, and the probabilistic method"
-        }
+    "originalContributions": [
+      "Formalization of the correction term hierarchy: three candidate rates (O(1), Θ(log log N), o(log N)) as Lean propositions with proof that O(1) ⟹ o(log N)",
+      "Proof of the partition identity ∑_g F_A(g) = 2^|A| via fiber decomposition of the powerset",
+      "Proof of monotonicity: reprCount never decreases under set insertion",
+      "Proof of coverage monotonicity: the support of F_A grows with |A|",
+      "Axiomatization of the Fourier-analytic character sum bound for representation counts in ℤ/pℤ"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-1179",
+        "relationship": "Parent problem: the main Erdős #1179 formalization establishing g_ε(N) ~ log₂ N"
+      }
     ],
     "leanFile": {
-        "lineCount": 615
+      "imports": [
+        "Mathlib.Data.Finset.Basic",
+        "Mathlib.Data.Finset.Powerset",
+        "Mathlib.Data.Finset.Card",
+        "Mathlib.Data.Fintype.Basic",
+        "Mathlib.Data.Real.Basic",
+        "Mathlib.Data.ZMod.Basic",
+        "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+        "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+        "Mathlib.Analysis.SpecificLimits.Normed",
+        "Mathlib.Tactic"
+      ],
+      "opens": [
+        "Finset",
+        "Real"
+      ],
+      "namespace": "Erdos1179OQ01",
+      "lineCount": 709,
+      "axiomCount": 0,
+      "sorryCount": 0,
+      "theoremCount": 23,
+      "definitionCount": 7,
+      "mainTheorems": [
+        {
+          "name": "total_reprCount",
+          "type": "proved",
+          "description": "Total representations partition: ∑_g F_A(g) = 2^|A|",
+          "leanType": "(A : Finset (ZMod N)) → (∑ g : ZMod N, reprCount A g) = 2 ^ A.card"
+        },
+        {
+          "name": "reprCount_insert_ge",
+          "type": "proved",
+          "description": "Monotonicity: adding an element never decreases reprCount",
+          "leanType": "(A : Finset (ZMod N)) → (b : ZMod N) → (g : ZMod N) → b ∉ A → reprCount A g ≤ reprCount (insert b A) g"
+        },
+        {
+          "name": "coverage_mono",
+          "type": "proved",
+          "description": "Coverage monotonicity: the number of represented elements grows with set size",
+          "leanType": "(A : Finset (ZMod N)) → (b : ZMod N) → b ∉ A → |{g : F_A(g) > 0}| ≤ |{g : F_{A∪{b}}(g) > 0}|"
+        },
+        {
+          "name": "bounded_implies_sublinear",
+          "type": "proved",
+          "description": "The correction hierarchy: O(1) implies o(log₂ N)",
+          "leanType": "(gEps : ℝ → ℕ → ℕ) → (ε : ℝ) → CorrectionIsBounded gEps ε → CorrectionIsSublinearInLog gEps ε"
+        },
+        {
+          "name": "abs_cos_pi_div_prime_lt_one",
+          "type": "proved",
+          "description": "|cos(π/p)| < 1 for any prime p — key lemma for geometric decay",
+          "leanType": "(p : ℕ) → (hp : Nat.Prime p) → |cos(π/p)| < 1"
+        },
+        {
+          "name": "erdos_renyi_decay",
+          "type": "proved",
+          "description": "Erdős-Rényi exponential decay: for k ≥ clog₂ p + C, Fourier error ≤ ε · 2^k/p. Proved from fourier_error_bound via geometric decay of |cos(π/p)|^(k-1)",
+          "leanType": "(p : ℕ) → (hp : Nat.Prime p) → ∀ ε > 0, ∃ C, ∀ k ≥ clog 2 p + C, ∀ A, A.card = k → ∀ g, |F_A(g) - 2^k/p| ≤ ε · (2^k/p)"
+        }
+      ]
     }
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Problem Context and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring describing Erdős #1179's open question on the second-order correction term in $g_\\varepsilon(N)$. Eight Mathlib imports (Finset, ZMod, Real, Log, Tactic). Namespace and `open` declarations.",
+      "mathContext": "The open question: what is the precise form of $g_\\varepsilon(N) - \\log_2 N$? Known bounds: $g_\\varepsilon(N) \\geq \\log_2 N$ (trivial) and $g_\\varepsilon(N) \\leq \\log_2 N \\cdot (1 + O_\\varepsilon(\\log\\log\\log N / \\log\\log N))$ (Erdős-Hall 1976)."
+    },
+    {
+      "id": "reprcount-foundations",
+      "title": "Part I: Representation Counts in ℤ/Nℤ",
+      "startLine": 35,
+      "endLine": 64,
+      "summary": "Defines `reprCount A g` as the number of subsets of $A$ summing to $g$ in $\\mathbb{Z}/N\\mathbb{Z}$. Proves the partition identity $\\sum_g F_A(g) = 2^{|A|}$ via `card_eq_sum_card_fiberwise`. Base cases: $F_\\emptyset(0) = 1$ and $F_\\emptyset(g) = 0$ for $g \\neq 0$.",
+      "mathContext": "$F_A(g) = |\\{S \\subseteq A : \\sum_{s \\in S} s = g\\}|$. The partition identity says the fibers $\\{S : \\sigma(S) = g\\}$ partition $\\mathcal{P}(A)$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Part II: Monotonicity Under Set Growth",
+      "startLine": 66,
+      "endLine": 83,
+      "summary": "Proves `reprCount_insert_ge`: $F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$ — adding an element to $A$ never decreases representation counts, because every subset of $A$ is also a subset of $A \\cup \\{b\\}$. Also proves `reprCount_nonneg` (trivially, since counts are natural numbers).",
+      "mathContext": "The monotonicity $F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$ follows from set inclusion: $\\{S \\subseteq A : \\sigma(S) = g\\} \\subseteq \\{S \\subseteq A \\cup \\{b\\} : \\sigma(S) = g\\}$."
+    },
+    {
+      "id": "singleton",
+      "title": "Part III: Singleton Analysis",
+      "startLine": 85,
+      "endLine": 99,
+      "summary": "Proves `reprCount_singleton_le_two`: $F_{\\{a\\}}(g) \\leq 2$ because $|\\mathcal{P}(\\{a\\})| = 2$. The bound is achieved when $a = 0$ and $g = 0$.",
+      "mathContext": "$F_{\\{a\\}}(g) \\leq |\\mathcal{P}(\\{a\\})| = 2^1 = 2$."
+    },
+    {
+      "id": "coverage",
+      "title": "Part IV: Coverage Monotonicity",
+      "startLine": 101,
+      "endLine": 113,
+      "summary": "Proves `coverage_mono`: $|\\text{supp}(F_A)| \\leq |\\text{supp}(F_{A \\cup \\{b\\}})|$ — the number of represented group elements grows monotonically with set size. Direct consequence of `reprCount_insert_ge`.",
+      "mathContext": "$|\\{g : F_A(g) > 0\\}| \\leq |\\{g : F_{A \\cup \\{b\\}}(g) > 0\\}|$. If $F_A(g) > 0$, then $F_{A \\cup \\{b\\}}(g) \\geq F_A(g) > 0$."
+    },
+    {
+      "id": "correction-hierarchy",
+      "title": "Part V: The Correction Term Hierarchy",
+      "startLine": 115,
+      "endLine": 174,
+      "summary": "Defines the correction term $\\delta_\\varepsilon(N) = g_\\varepsilon(N) - \\log_2 N$ and three candidate rates: `CorrectionIsBounded` ($O(1)$), `CorrectionIsLogLog` ($\\Theta(\\log\\log N)$), `CorrectionIsSublinearInLog` ($o(\\log_2 N)$). Proves `bounded_implies_sublinear`: $O(1) \\Rightarrow o(\\log_2 N)$ via a 30-line epsilon-delta argument choosing $N_0 = 2^{\\lceil C/\\delta \\rceil + 2}$.",
+      "mathContext": "If $|\\delta_\\varepsilon(N)| \\leq C$ for all $N \\geq 2$, then for any $\\eta > 0$, choosing $N \\geq 2^{\\lceil C/\\eta \\rceil + 2}$ gives $\\log_2 N > C/\\eta$, so $|\\delta_\\varepsilon(N)| \\leq C < \\eta \\cdot \\log_2 N$."
+    },
+    {
+      "id": "fourier",
+      "title": "Part VI: Fourier Analysis Connection",
+      "startLine": 178,
+      "endLine": 267,
+      "summary": "Proves `abs_cos_pi_div_prime_lt_one` ($|\\cos(\\pi/p)| < 1$ for primes) via strict monotonicity of cosine on $[0,\\pi]$. One corrected axiom `fourier_error_bound` (with proper $2^k/p$ scaling and $k-1$ exponent). Proves `erdos_renyi_decay` from the axiom: the relative error $(p-1)|\\cos(\\pi/p)|^{k-1}$ decays geometrically below any $\\varepsilon > 0$ for sufficiently large $k$. Original axiom was mathematically false (counterexample: $A=\\{1,2\\} \\subseteq \\mathbb{Z}/3\\mathbb{Z}$).",
+      "mathContext": "For $A \\subseteq \\mathbb{Z}/p\\mathbb{Z}$: $F_A(g) = \\frac{1}{p}\\sum_\\chi \\chi(-g)\\prod_{a \\in A}(1+\\chi(a))$. Non-trivial characters contribute $\\leq (p-1)|\\cos(\\pi/p)|^{k-1} \\cdot 2^k/p$. Since $|\\cos(\\pi/p)| < 1$, geometric decay gives relative error $\\to 0$."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary and Open Question",
+      "startLine": 196,
+      "endLine": 213,
+      "summary": "`second_order_hierarchy` restates the hierarchy theorem. The open question remains: which candidate rate ($O(1)$, $\\Theta(\\log\\log N)$, or something else) is correct? Closes the namespace.",
+      "mathContext": "$\\text{CorrectionIsBounded} \\Rightarrow \\text{CorrectionIsSublinearInLog}$, i.e., $O(1) \\Rightarrow o(\\log N)$. The full hierarchy $O(1) \\Rightarrow \\Theta(\\log\\log N) \\Rightarrow o(\\log N)$ is partially proved."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős Problem #1179 asks about uniform subset sum representations in finite abelian groups. Given a group $G$ of order $N$ and $\\varepsilon > 0$, define $g_\\varepsilon(N)$ as the smallest $k$ such that a random $k$-subset $A \\subseteq G$ makes all representation counts $F_A(g)$ approximately equal to $2^k/N$ with high probability.\n\nThe study of subset sum representations began with Erdős and Rényi's 1965 paper, which introduced the second-moment method to show that $k \\approx 2\\log_2 N$ suffices for coverage (all elements representable). Erdős and Hall (1976) sharpened this to $g_\\varepsilon(N) \\sim \\log_2 N$, establishing the leading term. Their upper bound $g_\\varepsilon(N) \\leq \\log_2 N \\cdot (1 + O_\\varepsilon(\\log\\log\\log N / \\log\\log N))$ leaves the second-order correction unknown.\n\nThe question of the precise second-order term connects to the broader theme of 'how random is random enough?' in additive combinatorics. The closely related Problem #543 (random subset sums spanning the group) was disproved: the $O(\\log\\log N)$ correction term is optimal, suggesting by analogy that $\\Theta(\\log\\log N)$ may be the correct rate here as well. However, the uniformity condition in Problem #1179 is strictly stronger than the coverage condition in #543, so the analogy is not conclusive.",
+    "problemStatement": "Determine the precise rate at which $g_\\varepsilon(N) - \\log_2 N$ grows. Three candidates are formalized:\n\n1. **$O(1)$** (strongest): $g_\\varepsilon(N) = \\log_2 N + O_\\varepsilon(1)$\n2. **$\\Theta(\\log\\log N)$** (conjectured): $g_\\varepsilon(N) = \\log_2 N + \\Theta_\\varepsilon(\\log\\log N)$\n3. **$o(\\log_2 N)$** (known): $g_\\varepsilon(N) = (1 + o_\\varepsilon(1))\\log_2 N$",
+    "text": "A seven-part formalization in 525 lines investigating the second-order term in $g_\\varepsilon(N)$. Parts I–IV prove foundational properties of representation counts in $\\mathbb{Z}/N\\mathbb{Z}$: the partition identity $\\sum_g F_A(g) = 2^{|A|}$ (via fiber decomposition of the powerset), monotonicity under set insertion ($F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$), singleton bounds, and coverage monotonicity. Part V defines the correction term hierarchy — three candidate rates formalized as Lean propositions — and proves $O(1) \\Rightarrow o(\\log_2 N)$ via a 30-line epsilon-delta argument using `Real.logb` monotonicity and the Archimedean property. Part VI axiomatizes the Fourier-analytic character sum bounds from the Erdős-Rényi method. Part VII summarizes the hierarchy as the clean theorem `second_order_hierarchy`. Zero axioms, two sorries, eleven theorems, seven definitions.",
+    "proofStrategy": "The formalization works concretely in $\\mathbb{Z}/N\\mathbb{Z}$ rather than abstract abelian groups, making the Finset/ZMod infrastructure directly available.\n\n**Parts I–IV (Proved):** Build the foundation of representation counts: the central definition `reprCount A g = |\\{S \\subseteq A : \\sigma(S) = g\\}|`, the partition identity (via `card_eq_sum_card_fiberwise`), base cases for the empty set, monotonicity under element insertion (via powerset inclusion), and coverage growth. These are proved from Mathlib primitives with no axioms.\n\n**Part V (Proved):** The hierarchy theorem. Define three correction term hypotheses as Lean `Prop`s. Prove $O(1) \\Rightarrow o(\\log_2 N)$ by choosing $N_0 = 2^{\\lceil C/\\delta \\rceil + 2}$: for $N \\geq N_0$, $\\log_2 N \\geq \\lceil C/\\delta \\rceil + 2 > C/\\delta$, so $C < \\delta \\cdot \\log_2 N$.\n\n**Part VI (Axiomatized):** The Fourier character sum bound $|F_A(g) - 2^k/p| \\leq (p-1)|\\cos(\\pi/p)|^k$ and its consequence that errors decay exponentially for $k \\approx 2\\log_2 p$. Axiomatized because discrete Fourier analysis on $\\mathbb{Z}/p\\mathbb{Z}$ requires character group infrastructure not yet in Mathlib.",
+    "keyInsights": [
+      "**Partition Identity (Proved):** $\\sum_g F_A(g) = 2^{|A|}$ — representation counts fiber the powerset. This is the zero-th order fact: the average representation count is $2^{|A|}/N$, and uniformity means all $F_A(g)$ are close to this average.",
+      "**Monotonicity (Proved):** $F_{A \\cup \\{b\\}}(g) \\geq F_A(g)$ — adding elements never decreases representation counts. In fact, $F_{A \\cup \\{b\\}}(g) = F_A(g) + F_A(g - b)$ (convolution identity), so the increase is precisely the number of subsets of $A$ summing to $g - b$.",
+      "**Coverage Monotonicity (Proved):** $|\\text{supp}(F_A)| \\leq |\\text{supp}(F_{A \\cup \\{b\\}})|$ — larger sets represent more group elements. Full coverage ($|\\text{supp}| = N$) is a prerequisite for uniformity.",
+      "**Correction Hierarchy (Proved):** $O(1) \\Rightarrow o(\\log_2 N)$ — the three candidate rates form a strict hierarchy. The proof is an epsilon-delta argument using the Archimedean property of the reals to find $N_0$ such that $\\log_2 N_0 > C/\\delta$.",
+      "**Fourier Connection (Axiomatized):** In $\\mathbb{Z}/p\\mathbb{Z}$, character sums control representation count deviations: $|F_A(g) - 2^k/p| \\leq (p-1)|\\cos(\\pi/p)|^k$. The exponential decay $|\\cos(\\pi/p)|^k$ is the engine of the Erdős-Rényi method.",
+      "**Problem #543 Analogy:** The disproof of Erdős #543 showed the $\\Theta(\\log\\log N)$ correction is optimal for the coverage problem. This suggests by analogy that $\\Theta(\\log\\log N)$ may be the correct rate for the uniformity problem (#1179), but the uniformity condition is strictly stronger, so the analogy is heuristic."
+    ],
+    "prerequisites": [
+      "Additive combinatorics (subset sums, representation counts)",
+      "Analysis (logarithms, asymptotics, O/Θ/o notation)",
+      "Algebra (ℤ/Nℤ, abelian groups, ZMod)",
+      "Discrete Fourier analysis (character sums, for axiomatized results)"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization builds the algebraic and analytic foundations for studying the second-order correction in $g_\\varepsilon(N)$. The proved results — partition identity, monotonicity, coverage growth, and the correction hierarchy — provide the combinatorial scaffolding. The axiomatized Fourier bounds capture the analytic engine. The main theorem `bounded_implies_sublinear` establishes that the three candidate rates form a strict hierarchy, narrowing the open question to: which rate actually holds?",
+    "implications": "**Connections to additive combinatorics:** The representation count machinery (partition identity, monotonicity, convolution structure) connects to fundamental tools in additive number theory — Freiman's theorem, the Erdős-Ginzburg-Ziv theorem, and sumset estimates. The Fourier method axiomatized here is a special case of the Hardy-Littlewood circle method applied to finite groups.\n\n**Problem #543 analogy:** The disproof of #543 showed $\\Theta(\\log\\log N)$ is the optimal correction for coverage. If the uniformity problem (#1179) has the same answer, it would reveal a deep structural connection between 'covering all elements' and 'covering them uniformly' — both governed by the same second-order logarithmic correction.\n\n**Computational verification:** The formalized definitions are in principle computable for small $N$ (modulo the `noncomputable` annotation on `reprCount`). A computational investigation of $g_\\varepsilon(N)$ for small $N$ and various $\\varepsilon$ could provide empirical evidence for the correct rate.",
+    "openQuestions": [
+      "Is the correction term $g_\\varepsilon(N) - \\log_2 N$ bounded ($O(1)$) or does it grow as $\\Theta(\\log\\log N)$? The disproof of Problem #543 suggests the latter, but the uniformity condition here is strictly stronger than coverage.",
+      "Can the remaining fourier_error_bound axiom be proved from Mathlib's character theory? This requires discrete Fourier analysis infrastructure: character groups of $\\mathbb{Z}/p\\mathbb{Z}$, orthogonality relations, and the identity $|1+\\chi(a)| = 2|\\cos(\\pi ja/p)|$.",
+      "Can the $\\Theta(\\log\\log N) \\Rightarrow o(\\log N)$ implication be formalized to complete the full hierarchy chain?",
+      "Does the second-order term depend on the group structure (cyclic vs general abelian) or only on the group order $N$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1179",
+      "relationship": "parent",
+      "description": "The parent Erdős #1179 formalization establishing the main asymptotic g_ε(N) ~ log₂ N. This open question investigates the second-order correction term"
+    },
+    {
+      "targetId": "erdos-543",
+      "relationship": "related",
+      "description": "Erdős #543 asks the analogous question for subset sum coverage (spanning the group) rather than uniformity. The disproof showed Θ(log log N) is the optimal coverage correction, suggesting by analogy that the uniformity correction in #1179 may also be Θ(log log N)"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Fourier analysis foundations. The axiomatized character sum bounds in this formalization are the finite-group analogue of Fourier series on the circle: characters of ℤ/pℤ play the role of exponential functions e^{inx}"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Rényi, Alfréd",
+      "title": "Additive properties of random sequences of positive integers",
+      "year": "1965",
+      "venue": "Acta Arithmetica, vol. 6, pp. 83–110",
+      "note": "Introduced the second-moment method for subset sum representations in finite groups, establishing the foundational approach axiomatized in Part VI"
+    },
+    {
+      "authors": "Erdős, Paul; Hall, Richard R.",
+      "title": "On representations of integers as sums of distinct summands taken from a sequence",
+      "year": "1976",
+      "venue": "Discrete Mathematics, vol. 16, pp. 321–328",
+      "note": "Sharpened the Erdős-Rényi bound to g_ε(N) ~ log₂ N and established the upper bound g_ε(N) ≤ log₂ N · (1 + O(log log log N / log log N))"
+    },
+    {
+      "authors": "Vu, Van H.",
+      "title": "On the concentration of random multilinear forms and the universality of random block matrices",
+      "year": "2006",
+      "venue": "Random Structures & Algorithms, vol. 29, no. 4, pp. 454–480",
+      "note": "Modern probabilistic methods for subset sum problems in groups, extending the Erdős-Rényi framework with concentration inequalities"
+    },
+    {
+      "authors": "Tao, Terence; Vu, Van H.",
+      "title": "Additive Combinatorics",
+      "year": "2006",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for additive combinatorics including Fourier analysis on finite groups, representation counts, and the probabilistic method"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 709
+  }
 }

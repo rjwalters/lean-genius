@@ -1,204 +1,204 @@
 {
-    "id": "erdos-1103",
-    "title": "Squarefree Sumsets",
-    "slug": "erdos-1103",
-    "description": "For an infinite A ⊆ ℕ with every a+b squarefree, how fast must A grow? Erdős conjectured exponential growth is necessary. van Doorn–Tao (2025) proved bounds: a_j > 0.24·j^{4/3} and a_j < exp(5j/log j).",
-    "meta": {
-        "author": "Erdős",
-        "sourceUrl": "https://erdosproblems.com/1103",
-        "date": "c. 1970s",
-        "status": "axiomatized",
-        "proofRepoPath": "Proofs/Erdos1103Problem.lean",
-        "tags": [
-            "erdos",
-            "number-theory",
-            "squarefree",
-            "sumsets",
-            "growth-rates",
-            "additive-combinatorics"
-        ],
-        "badge": "axiom",
-        "sorries": 0,
-        "erdosNumber": 1103,
-        "erdosUrl": "https://erdosproblems.com/1103",
-        "erdosProblemStatus": "open",
-        "mathlibDependencies": [
-            {
-                "theorem": "Squarefree",
-                "description": "Predicate for squarefree natural numbers",
-                "module": "Mathlib.Data.Nat.Squarefree"
-            },
-            {
-                "theorem": "squarefree_one",
-                "description": "1 is squarefree",
-                "module": "Mathlib.Data.Nat.Squarefree"
-            },
-            {
-                "theorem": "StrictMono",
-                "description": "Strict monotonicity for set enumeration",
-                "module": "Mathlib.Order.Monotone.Basic"
-            }
-        ],
-        "axiomCount": 3,
-        "lineCount": 171,
-        "assumptions": "3 axioms: vanDoorn_tao_upper (subexponential upper construction), vanDoorn_tao_lower (polynomial lower bound), konyagin_finite_bound (finite-set density). All are deep published results.",
-        "mathlib_version": "4.26.0"
-    },
-    "overview": {
-        "historicalContext": "Erdős posed this problem around the 1970s as part of his program to understand how multiplicative constraints (squarefreeness) interact with additive structure (sumsets). A number $n$ is squarefree if no prime square $p^2$ divides it — the squarefree numbers have asymptotic density $6/\\pi^2 \\approx 0.608$ by Euler's product formula. Requiring ALL pairwise sums $a + b$ to be squarefree is vastly more restrictive: for each prime $p$, the elements of $A$ must avoid collisions modulo $p^2$, and these constraints interact across all primes simultaneously. The problem connects to the Erdős–Sárközy tradition of studying divisibility properties of sumsets. Van Doorn and Tao (2025) made the first significant quantitative progress, establishing both a polynomial lower bound $a_j > 0.24 \\cdot j^{4/3}$ (via sieve methods and the large sieve inequality) and an upper construction achieving $a_j < \\exp(5j/\\log j)$ (subexponential but superpolynomial). Konyagin complemented this with finite-set bounds: $|A \\cap [1,N]| \\le C \\cdot N^{11/15}$, where the exponent $11/15$ arises from large sieve estimates for squarefree residues. The central question — whether true exponential growth $C^j$ for some $C > 1$ is unavoidable — remains open, with a substantial gap between the known polynomial lower bound and subexponential upper bound.",
-        "problemStatement": "Let A be an infinite set of positive integers such that a + b is squarefree for all a, b ∈ A. Must A grow at least exponentially?",
-        "text": "For an infinite A ⊆ ℕ with every a+b squarefree, how fast must A grow? Erdős conjectured exponential growth is necessary. van Doorn–Tao (2025) proved bounds: a_j > 0.24·j^{4/3} and a_j < exp(5j/log j).",
-        "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, define the increasing enumeration enumSet via Mathlib's Nat.nth, and state the conjecture ErdosProblem1103. Known bounds by van Doorn–Tao and Konyagin are stated as axioms. We then prove erdos_1103_false: the van Doorn–Tao upper bound (subexponential growth exp(5j/log j)) directly refutes the exponential growth conjecture, since for any C > 1, C^j eventually exceeds exp(5j/log j).",
-        "keyInsights": [
-            "The **squarefree sumset condition** links additive combinatorics to multiplicative number theory: $a + b$ must avoid all $p^2$ for every pair, creating a global constraint from local divisibility conditions modulo $p^2$ for each prime $p$",
-            "**Van Doorn–Tao's polynomial lower bound** $a_j > 0.24 \\cdot j^{4/3}$ rules out slow polynomial growth but leaves a wide gap to the conjectured exponential growth — the proof uses sieve methods bounding how densely a squarefree-sumset can pack into intervals",
-            "The **subexponential upper construction** $a_j < \\exp(5j/\\log j)$ shows that exponential growth is not the only option — this is slower than any $C^j$ for $C > 1$, since $5j/\\log j = o(j)$",
-            "**Konyagin's finite-set bound** $|A| \\le C \\cdot N^{11/15}$ uses large sieve techniques for squarefree residues: the exponent $11/15 \\approx 0.733$ quantifies the sparsity forced by the squarefree-sumset constraint",
-            "The formalization axiomatizes **enumSet** as a strictly monotone surjection onto $A$, which is the standard Lean approach for discussing growth rates of infinite sets without constructive well-ordering machinery"
-        ],
-        "prerequisites": [
-            "Combinatorics and number theory",
-            "Number theory (primes, divisibility)",
-            "Additive combinatorics (sumsets, density)"
-        ]
-    },
-    "sections": [
-        {
-            "id": "header",
-            "title": "Module Documentation",
-            "startLine": 1,
-            "endLine": 20,
-            "summary": "States Erdős Problem 1103 on squarefree sumsets with known results by van Doorn–Tao ($a_j > 0.24 \\cdot j^{4/3}$, $a_j < \\exp(5j/\\log j)$) and Konyagin ($|A| \\le C \\cdot N^{11/15}$).",
-            "mathContext": "Mathematical content: States Erdős Problem 1103 on squarefree sumsets with known results by van Doorn–Tao ($a_j > 0.24 \\cdot j^{4/3}$, $a_j < \\exp(5j/\\log j)$) and Konyagin ($|A| \\le C \\cdot N^{11/15}$)."
-        },
-        {
-            "id": "imports",
-            "title": "Imports and Setup",
-            "startLine": 21,
-            "endLine": 27,
-            "summary": "Imports `Mathlib.Data.Nat.Squarefree` for the `Squarefree` predicate, `Finset.Basic` for finite-set operations in Konyagin's bound, and `Order.Filter.Basic` for the $\\forall^\\infty$ (eventually) quantifier.",
-            "mathContext": "Imports `Mathlib.Data.Nat.Squarefree` for the `Squarefree` predicate, `Finset.Basic` for finite-set operations in Konyagin's bound, and `Order.Filter.Basic` for the $\\forall^\\infty$ (eventually) quantifier."
-        },
-        {
-            "id": "definitions",
-            "title": "Core Definitions",
-            "startLine": 28,
-            "endLine": 42,
-            "summary": "Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity.",
-            "mathContext": "Formal definition: Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity."
-        },
-        {
-            "id": "conjecture",
-            "title": "Main Conjecture",
-            "startLine": 43,
-            "endLine": 52,
-            "summary": "States `ErdosProblem1103`: $\\exists C > 1$ such that $C^j \\le a_j$ eventually, for every infinite squarefree-sumset $A$. Uses `Filter.atTop` for the asymptotic quantifier.",
-            "mathContext": "Mathematical content: States `ErdosProblem1103`: $\\exists C > 1$ such that $C^j \\le a_j$ eventually, for every infinite squarefree-sumset $A$. Uses `Filter.atTop` for the asymptotic quantifier."
-        },
-        {
-            "id": "upper-bound",
-            "title": "Van Doorn–Tao Upper Bound",
-            "startLine": 53,
-            "endLine": 61,
-            "summary": "Axiomatizes existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction showing exponential growth is not the only possibility.",
-            "mathContext": "Axiomatized: Axiomatizes existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction showing exponential growth is not the only possibility."
-        },
-        {
-            "id": "lower-bound",
-            "title": "Van Doorn–Tao Lower Bound",
-            "startLine": 62,
-            "endLine": 66,
-            "summary": "Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$.",
-            "mathContext": "Axiomatized: Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$."
-        },
-        {
-            "id": "konyagin",
-            "title": "Konyagin Finite Bound",
-            "startLine": 67,
-            "endLine": 74,
-            "summary": "Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve.",
-            "mathContext": "Axiomatized: Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve."
-        },
-        {
-            "id": "basic-properties",
-            "title": "Basic Properties",
-            "startLine": 75,
-            "endLine": 92,
-            "summary": "Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$.",
-            "mathContext": "Verified: Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$."
-        }
+  "id": "erdos-1103",
+  "title": "Squarefree Sumsets",
+  "slug": "erdos-1103",
+  "description": "For an infinite A ⊆ ℕ with every a+b squarefree, how fast must A grow? Erdős conjectured exponential growth is necessary. van Doorn–Tao (2025) proved bounds: a_j > 0.24·j^{4/3} and a_j < exp(5j/log j).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1103",
+    "date": "c. 1970s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1103Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "sumsets",
+      "growth-rates",
+      "additive-combinatorics"
     ],
-    "crossReferences": [
-        {
-            "targetId": "infinitude-primes",
-            "relationship": "foundational",
-            "description": "Squarefreeness depends on the prime factorization structure. The infinitude of primes means the squarefree-sumset condition imposes constraints modulo p^2 for infinitely many primes simultaneously."
-        },
-        {
-            "targetId": "bertrands-postulate",
-            "relationship": "related",
-            "description": "Bertrand's postulate guarantees primes in [n, 2n], providing density information relevant to the sieve methods used in van Doorn-Tao's lower bound for squarefree sumset growth."
-        },
-        {
-            "targetId": "prime-number-theorem",
-            "relationship": "related",
-            "description": "The prime number theorem governs the density of primes, which determines the density of squarefree numbers (6/pi^2) via Euler's product formula and underpins the sieve estimates in the growth bounds."
-        }
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1103,
+    "erdosUrl": "https://erdosproblems.com/1103",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Squarefree",
+        "description": "Predicate for squarefree natural numbers",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "squarefree_one",
+        "description": "1 is squarefree",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strict monotonicity for set enumeration",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
     ],
-    "conclusion": {
-        "summary": "The formalization captures Erdős Problem 1103 on squarefree sumsets with the main conjecture and state-of-the-art bounds by van Doorn–Tao and Konyagin. The open conjecture is stated as a definition (Prop), and deep results are axiomatized.",
-        "implications": "Resolving whether exponential growth is necessary would illuminate the fundamental interaction between additive structure and multiplicative constraints in number theory, with connections to sieve methods, the distribution of squarefree numbers, and the geometry of numbers.",
-        "openQuestions": [
-            "Is exponential growth necessary for infinite squarefree-sumset sequences, or can subexponential constructions like exp(j/log j) be improved to polynomial?",
-            "Can the polynomial lower bound j^{4/3} be improved toward exponential via refined sieve estimates or density increment arguments?",
-            "What is the exact growth threshold — is there a sharp transition between possible and impossible growth rates?",
-            "Does the exponent 11/15 in Konyagin's finite bound have a natural interpretation in terms of the Chinese Remainder Theorem structure of squarefree residues?"
-        ]
-    },
-    "leanFile": {
-        "imports": [
-            "Mathlib.Data.Nat.Squarefree",
-            "Mathlib.Data.Finset.Basic",
-            "Mathlib.Order.Filter.Basic",
-            "Mathlib.Analysis.SpecialFunctions.Log.Deriv",
-            "Mathlib.Tactic"
-        ],
-        "opens": [
-            "Finset",
-            "Filter"
-        ],
-        "namespace": null,
-        "lineCount": 171,
-        "axiomCount": 3,
-        "theoremCount": 9,
-        "definitionCount": 3
-    },
-    "references": [
-        {
-            "authors": "P. Erdős",
-            "title": "Some problems on number theory",
-            "year": "1973",
-            "venue": "Proceedings of the Number Theory Conference, Boulder",
-            "note": "Original statement of the squarefree sumset growth problem"
-        },
-        {
-            "authors": "S. van Doorn, T. Tao",
-            "title": "Bounds on squarefree sumset sequences",
-            "year": "2025",
-            "note": "Proved polynomial lower bound a_j > 0.24·j^{4/3} and subexponential upper bound a_j < exp(5j/log j)"
-        },
-        {
-            "authors": "S. V. Konyagin",
-            "title": "On squarefree sumsets in finite intervals",
-            "year": "c. 2000s",
-            "note": "Finite-set bound |A ∩ [1,N]| ≤ C·N^{11/15}"
-        },
-        {
-            "authors": "P. Erdős, A. Sárközy",
-            "title": "On the divisibility properties of sequences of integers",
-            "year": "1970",
-            "venue": "Journal of the London Mathematical Society",
-            "note": "Early work connecting additive and multiplicative structure of integer sequences"
-        }
+    "axiomCount": 3,
+    "lineCount": 162,
+    "assumptions": "3 axioms: vanDoorn_tao_upper (subexponential upper construction), vanDoorn_tao_lower (polynomial lower bound), konyagin_finite_bound (finite-set density). All are deep published results.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem around the 1970s as part of his program to understand how multiplicative constraints (squarefreeness) interact with additive structure (sumsets). A number $n$ is squarefree if no prime square $p^2$ divides it — the squarefree numbers have asymptotic density $6/\\pi^2 \\approx 0.608$ by Euler's product formula. Requiring ALL pairwise sums $a + b$ to be squarefree is vastly more restrictive: for each prime $p$, the elements of $A$ must avoid collisions modulo $p^2$, and these constraints interact across all primes simultaneously. The problem connects to the Erdős–Sárközy tradition of studying divisibility properties of sumsets. Van Doorn and Tao (2025) made the first significant quantitative progress, establishing both a polynomial lower bound $a_j > 0.24 \\cdot j^{4/3}$ (via sieve methods and the large sieve inequality) and an upper construction achieving $a_j < \\exp(5j/\\log j)$ (subexponential but superpolynomial). Konyagin complemented this with finite-set bounds: $|A \\cap [1,N]| \\le C \\cdot N^{11/15}$, where the exponent $11/15$ arises from large sieve estimates for squarefree residues. The central question — whether true exponential growth $C^j$ for some $C > 1$ is unavoidable — remains open, with a substantial gap between the known polynomial lower bound and subexponential upper bound.",
+    "problemStatement": "Let A be an infinite set of positive integers such that a + b is squarefree for all a, b ∈ A. Must A grow at least exponentially?",
+    "text": "For an infinite A ⊆ ℕ with every a+b squarefree, how fast must A grow? Erdős conjectured exponential growth is necessary. van Doorn–Tao (2025) proved bounds: a_j > 0.24·j^{4/3} and a_j < exp(5j/log j).",
+    "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, define the increasing enumeration enumSet via Mathlib's Nat.nth, and state the conjecture ErdosProblem1103. Known bounds by van Doorn–Tao and Konyagin are stated as axioms. We then prove erdos_1103_false: the van Doorn–Tao upper bound (subexponential growth exp(5j/log j)) directly refutes the exponential growth conjecture, since for any C > 1, C^j eventually exceeds exp(5j/log j).",
+    "keyInsights": [
+      "The **squarefree sumset condition** links additive combinatorics to multiplicative number theory: $a + b$ must avoid all $p^2$ for every pair, creating a global constraint from local divisibility conditions modulo $p^2$ for each prime $p$",
+      "**Van Doorn–Tao's polynomial lower bound** $a_j > 0.24 \\cdot j^{4/3}$ rules out slow polynomial growth but leaves a wide gap to the conjectured exponential growth — the proof uses sieve methods bounding how densely a squarefree-sumset can pack into intervals",
+      "The **subexponential upper construction** $a_j < \\exp(5j/\\log j)$ shows that exponential growth is not the only option — this is slower than any $C^j$ for $C > 1$, since $5j/\\log j = o(j)$",
+      "**Konyagin's finite-set bound** $|A| \\le C \\cdot N^{11/15}$ uses large sieve techniques for squarefree residues: the exponent $11/15 \\approx 0.733$ quantifies the sparsity forced by the squarefree-sumset constraint",
+      "The formalization axiomatizes **enumSet** as a strictly monotone surjection onto $A$, which is the standard Lean approach for discussing growth rates of infinite sets without constructive well-ordering machinery"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
     ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "States Erdős Problem 1103 on squarefree sumsets with known results by van Doorn–Tao ($a_j > 0.24 \\cdot j^{4/3}$, $a_j < \\exp(5j/\\log j)$) and Konyagin ($|A| \\le C \\cdot N^{11/15}$).",
+      "mathContext": "Mathematical content: States Erdős Problem 1103 on squarefree sumsets with known results by van Doorn–Tao ($a_j > 0.24 \\cdot j^{4/3}$, $a_j < \\exp(5j/\\log j)$) and Konyagin ($|A| \\le C \\cdot N^{11/15}$)."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 21,
+      "endLine": 27,
+      "summary": "Imports `Mathlib.Data.Nat.Squarefree` for the `Squarefree` predicate, `Finset.Basic` for finite-set operations in Konyagin's bound, and `Order.Filter.Basic` for the $\\forall^\\infty$ (eventually) quantifier.",
+      "mathContext": "Imports `Mathlib.Data.Nat.Squarefree` for the `Squarefree` predicate, `Finset.Basic` for finite-set operations in Konyagin's bound, and `Order.Filter.Basic` for the $\\forall^\\infty$ (eventually) quantifier."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 42,
+      "summary": "Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity.",
+      "mathContext": "Formal definition: Defines `SquarefreeSumset A` requiring $\\forall a, b \\in A, \\text{Squarefree}(a+b)$. Axiomatizes `enumSet A j` as the $j$-th smallest element via `StrictMono` and range surjectivity."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 43,
+      "endLine": 52,
+      "summary": "States `ErdosProblem1103`: $\\exists C > 1$ such that $C^j \\le a_j$ eventually, for every infinite squarefree-sumset $A$. Uses `Filter.atTop` for the asymptotic quantifier.",
+      "mathContext": "Mathematical content: States `ErdosProblem1103`: $\\exists C > 1$ such that $C^j \\le a_j$ eventually, for every infinite squarefree-sumset $A$. Uses `Filter.atTop` for the asymptotic quantifier."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Van Doorn–Tao Upper Bound",
+      "startLine": 53,
+      "endLine": 61,
+      "summary": "Axiomatizes existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction showing exponential growth is not the only possibility.",
+      "mathContext": "Axiomatized: Axiomatizes existence of an infinite squarefree-sumset sequence with $a_j < \\exp(5j/\\log j)$ — a subexponential construction showing exponential growth is not the only possibility."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Van Doorn–Tao Lower Bound",
+      "startLine": 62,
+      "endLine": 66,
+      "summary": "Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$.",
+      "mathContext": "Axiomatized: Axiomatizes the universal lower bound $a_j > 0.24 \\cdot j^{4/3}$ for all infinite squarefree-sumset sequences, ruling out polynomial growth slower than $j^{4/3}$."
+    },
+    {
+      "id": "konyagin",
+      "title": "Konyagin Finite Bound",
+      "startLine": 67,
+      "endLine": 74,
+      "summary": "Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve.",
+      "mathContext": "Axiomatized: Axiomatizes $|A| \\le C \\cdot N^{11/15}$ for finite $A \\subseteq \\{1,\\ldots,N\\}$ with squarefree sumset, quantifying sparsity via the large sieve."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 75,
+      "endLine": 92,
+      "summary": "Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$.",
+      "mathContext": "Verified: Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Squarefreeness depends on the prime factorization structure. The infinitude of primes means the squarefree-sumset condition imposes constraints modulo p^2 for infinitely many primes simultaneously."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees primes in [n, 2n], providing density information relevant to the sieve methods used in van Doorn-Tao's lower bound for squarefree sumset growth."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem governs the density of primes, which determines the density of squarefree numbers (6/pi^2) via Euler's product formula and underpins the sieve estimates in the growth bounds."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 1103 on squarefree sumsets with the main conjecture and state-of-the-art bounds by van Doorn–Tao and Konyagin. The open conjecture is stated as a definition (Prop), and deep results are axiomatized.",
+    "implications": "Resolving whether exponential growth is necessary would illuminate the fundamental interaction between additive structure and multiplicative constraints in number theory, with connections to sieve methods, the distribution of squarefree numbers, and the geometry of numbers.",
+    "openQuestions": [
+      "Is exponential growth necessary for infinite squarefree-sumset sequences, or can subexponential constructions like exp(j/log j) be improved to polynomial?",
+      "Can the polynomial lower bound j^{4/3} be improved toward exponential via refined sieve estimates or density increment arguments?",
+      "What is the exact growth threshold — is there a sharp transition between possible and impossible growth rates?",
+      "Does the exponent 11/15 in Konyagin's finite bound have a natural interpretation in terms of the Chinese Remainder Theorem structure of squarefree residues?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Deriv",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 162,
+    "axiomCount": 3,
+    "theoremCount": 9,
+    "definitionCount": 3
+  },
+  "references": [
+    {
+      "authors": "P. Erdős",
+      "title": "Some problems on number theory",
+      "year": "1973",
+      "venue": "Proceedings of the Number Theory Conference, Boulder",
+      "note": "Original statement of the squarefree sumset growth problem"
+    },
+    {
+      "authors": "S. van Doorn, T. Tao",
+      "title": "Bounds on squarefree sumset sequences",
+      "year": "2025",
+      "note": "Proved polynomial lower bound a_j > 0.24·j^{4/3} and subexponential upper bound a_j < exp(5j/log j)"
+    },
+    {
+      "authors": "S. V. Konyagin",
+      "title": "On squarefree sumsets in finite intervals",
+      "year": "c. 2000s",
+      "note": "Finite-set bound |A ∩ [1,N]| ≤ C·N^{11/15}"
+    },
+    {
+      "authors": "P. Erdős, A. Sárközy",
+      "title": "On the divisibility properties of sequences of integers",
+      "year": "1970",
+      "venue": "Journal of the London Mathematical Society",
+      "note": "Early work connecting additive and multiplicative structure of integer sequences"
+    }
+  ]
 }

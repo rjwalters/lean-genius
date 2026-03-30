@@ -48,7 +48,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Brahmagupta, the great Indian mathematician-astronomer, discovered in 628 AD that Heron's formula for triangle area generalizes to cyclic quadrilaterals. For a quadrilateral inscribed in a circle with sides a, b, c, d and semi-perimeter s = (a+b+c+d)/2, the area is sqrt((s-a)(s-b)(s-c)(s-d)). Setting d = 0 recovers Heron's formula. The formula holds only for cyclic (inscribed) quadrilaterals \u2014 for general quadrilaterals, the area depends on the diagonal angles.",
+    "historicalContext": "Brahmagupta, the great Indian mathematician-astronomer, discovered in 628 AD that Heron's formula for triangle area generalizes to cyclic quadrilaterals. For a quadrilateral inscribed in a circle with sides a, b, c, d and semi-perimeter s = (a+b+c+d)/2, the area is sqrt((s-a)(s-b)(s-c)(s-d)). Setting d = 0 recovers Heron's formula. The formula holds only for cyclic (inscribed) quadrilaterals — for general quadrilaterals, the area depends on the diagonal angles.",
     "problemStatement": "For a cyclic quadrilateral with sides $a, b, c, d$ and semi-perimeter $s = (a+b+c+d)/2$:\n\n$$\\text{Area} = \\sqrt{(s-a)(s-b)(s-c)(s-d)}$$\n\nSpecial cases: setting $d = 0$ gives Heron's formula; equal sides gives the square area formula.",
     "text": "A 193-line formalization of Brahmagupta's formula for cyclic quadrilaterals. The Brahmagupta product (s-a)(s-b)(s-c)(s-d) is defined and its algebraic properties proved: expansion in terms of side lengths, cyclic and reversal symmetry, reduction to Heron's formula when d=0, non-negativity under quadrilateral inequalities, and exact formulas for rectangles (area = ab) and squares (area = a^2). Brahmagupta's formula itself is axiomatized (requires cyclic quadrilateral geometry). The isoperimetric inequality (square maximizes area for fixed perimeter) is stated with proof strategy via AM-GM.",
     "proofStrategy": "The algebraic properties are proved by ring arithmetic (unfold + ring). Non-negativity follows from the quadrilateral inequality constraints ensuring all four factors are non-negative. The reduction to Heron is a direct computation. Rectangle/square formulas follow by expanding and simplifying. The main formula is axiomatized because a full proof requires: (1) formalizing cyclic quadrilateral geometry, (2) applying the law of cosines to supplementary opposite angles, and (3) connecting to diagonal angles.",
@@ -162,7 +162,7 @@
       "Real"
     ],
     "namespace": "Brahmagupta",
-    "lineCount": 193,
+    "lineCount": 224,
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 3

@@ -1,10 +1,10 @@
 {
   "id": "erdos-978",
-  "title": "Erd\u0151s Problem #978: Power-Free Values of Polynomials",
+  "title": "Erdős Problem #978: Power-Free Values of Polynomials",
   "slug": "erdos-978",
-  "description": "For irreducible polynomial f of degree d: (1) (d-1)-power-free values have positive density - YES (Hooley 1967). (2) Infinitely many (d-2)-power-free - YES for d\u22659 (Browning 2011). (3) n\u2074+2 squarefree - OPEN.",
+  "description": "For irreducible polynomial f of degree d: (1) (d-1)-power-free values have positive density - YES (Hooley 1967). (2) Infinitely many (d-2)-power-free - YES for d≥9 (Browning 2011). (3) n⁴+2 squarefree - OPEN.",
   "meta": {
-    "author": "Hooley (1967), Heath-Brown (2006), Browning (2011), Erd\u0151s (1953)",
+    "author": "Hooley (1967), Heath-Brown (2006), Browning (2011), Erdős (1953)",
     "sourceUrl": "https://erdosproblems.com/978",
     "date": "1967-2011",
     "status": "axiomatized",
@@ -44,32 +44,32 @@
     "originalContributions": [
       "IsPowerFree definition: n is k-power-free if no p^k divides n",
       "IsSquarefree, IsCubefree: special cases for k=2,3",
-      "IsIrreducible for polynomials over \u2124",
+      "IsIrreducible for polynomials over ℤ",
       "powerFreeDensity: asymptotic density counting function",
-      "f_example: the polynomial n\u2074 + 2",
-      "erdos_1953_infinitely_many: original Erd\u0151s result",
+      "f_example: the polynomial n⁴ + 2",
+      "erdos_1953_infinitely_many: original Erdős result",
       "hooley_1967_positive_density: settled question 1",
       "heath_brown_2006, browning_2011: partial solution to question 2",
       "squarefree_conjecture_n4_plus_2: the open problem",
-      "n4_plus_2_cubefree: what IS known about n\u2074 + 2",
+      "n4_plus_2_cubefree: what IS known about n⁴ + 2",
       "erdos_978_summary: combined results"
     ],
     "axiomCount": 6,
-    "lineCount": 295,
+    "lineCount": 280,
     "assumptions": "8 axioms: f_example_irreducible, erdos_1953_infinitely_many, hooley_1967_positive_density, and 5 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "**Erd\u0151s Problem #978: Power-Free Values of Polynomials**\n\nThis problem concerns the density of integers n for which f(n) avoids having high prime powers as divisors.\n\n**Key History:**\n- Erd\u0151s (1953): Infinitely many (d-1)-power-free values exist\n- Hooley (1967): Proved positive density for (d-1)-power-free with asymptotics\n- Heath-Brown (2006): Proved (d-2)-power-free result for d \u2265 10\n- Browning (2011): Extended to d \u2265 9 with asymptotic formula\n\n**Mathematical Setting:**\nA number n is k-power-free if no prime p satisfies p^k | n. Squarefree = 2-power-free, cubefree = 3-power-free. The question asks how often polynomial values are power-free.",
+    "historicalContext": "**Erdős Problem #978: Power-Free Values of Polynomials**\n\nThis problem concerns the density of integers n for which f(n) avoids having high prime powers as divisors.\n\n**Key History:**\n- Erdős (1953): Infinitely many (d-1)-power-free values exist\n- Hooley (1967): Proved positive density for (d-1)-power-free with asymptotics\n- Heath-Brown (2006): Proved (d-2)-power-free result for d ≥ 10\n- Browning (2011): Extended to d ≥ 9 with asymptotic formula\n\n**Mathematical Setting:**\nA number n is k-power-free if no prime p satisfies p^k | n. Squarefree = 2-power-free, cubefree = 3-power-free. The question asks how often polynomial values are power-free.",
     "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet $f \\in \\mathbb{Z}[x]$ be an irreducible polynomial of degree $d > 2$ with $d \\neq 2^l$.\n\n**Question 1:** Does the set of $n$ with $f(n)$ being $(d-1)$-power-free have positive density?\n**Answer: YES** (Hooley, 1967)\n\n**Question 2:** Are there infinitely many $n$ with $f(n)$ being $(d-2)$-power-free?\n**Answer: YES** for $d \\geq 9$ (Heath-Brown 2006, Browning 2011)\n**Status: OPEN** for $d < 9$\n\n**Question 3:** Does $n^4 + 2$ represent infinitely many squarefree numbers?\n**Status: OPEN** (degree 4 < 9)",
-    "text": "For irreducible polynomial f of degree d: (1) (d-1)-power-free values have positive density - YES (Hooley 1967). (2) Infinitely many (d-2)-power-free - YES for d\u22659 (Browning 2011). (3) n\u2074+2 squarefree - OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Power-Free Numbers:** Define IsPowerFree(k, n) as no prime p having p^k | n.\n\n2. **Special Cases:** IsSquarefree = IsPowerFree(2), IsCubefree = IsPowerFree(3).\n\n3. **Irreducible Polynomials:** Define for \u2124[x] with degree condition.\n\n4. **Density Function:** Define asymptotic density of power-free values.\n\n5. **Erd\u0151s 1953:** Axiomatize infinitely many (d-1)-power-free values.\n\n6. **Hooley 1967:** Axiomatize positive density result.\n\n7. **Heath-Brown/Browning:** Axiomatize (d-2)-power-free for d \u2265 9.\n\n8. **Open Problem:** State the n\u2074 + 2 squarefree conjecture.",
+    "text": "For irreducible polynomial f of degree d: (1) (d-1)-power-free values have positive density - YES (Hooley 1967). (2) Infinitely many (d-2)-power-free - YES for d≥9 (Browning 2011). (3) n⁴+2 squarefree - OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Power-Free Numbers:** Define IsPowerFree(k, n) as no prime p having p^k | n.\n\n2. **Special Cases:** IsSquarefree = IsPowerFree(2), IsCubefree = IsPowerFree(3).\n\n3. **Irreducible Polynomials:** Define for ℤ[x] with degree condition.\n\n4. **Density Function:** Define asymptotic density of power-free values.\n\n5. **Erdős 1953:** Axiomatize infinitely many (d-1)-power-free values.\n\n6. **Hooley 1967:** Axiomatize positive density result.\n\n7. **Heath-Brown/Browning:** Axiomatize (d-2)-power-free for d ≥ 9.\n\n8. **Open Problem:** State the n⁴ + 2 squarefree conjecture.",
     "keyInsights": [
       "**Power-Free Levels:** (d-1)-power-free is easier than (d-2)-power-free",
-      "**Degree Threshold:** d \u2265 9 is the current boundary for (d-2)-power-free results",
-      "**n\u2074 + 2 Case:** Degree 4 falls below the threshold, leaving the squarefree question open",
-      "**What IS Known:** n\u2074 + 2 IS cubefree infinitely often (by Hooley)",
+      "**Degree Threshold:** d ≥ 9 is the current boundary for (d-2)-power-free results",
+      "**n⁴ + 2 Case:** Degree 4 falls below the threshold, leaving the squarefree question open",
+      "**What IS Known:** n⁴ + 2 IS cubefree infinitely often (by Hooley)",
       "**Gap in Knowledge:** d = 3,4,5,6,7,8 for (d-2)-power-free remain open",
-      "**Related Problems:** 2\u207f \u00b1 1 and n! \u00b1 1 power-free questions are 'intractable'"
+      "**Related Problems:** 2ⁿ ± 1 and n! ± 1 power-free questions are 'intractable'"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -88,10 +88,10 @@
     {
       "id": "irreducible",
       "title": "Irreducible Polynomials",
-      "summary": "Definition and the example n\u2074 + 2",
+      "summary": "Definition and the example n⁴ + 2",
       "startLine": 88,
       "endLine": 113,
-      "mathContext": "Formal definition: Definition and the example n\u2074 + 2"
+      "mathContext": "Formal definition: Definition and the example n⁴ + 2"
     },
     {
       "id": "density",
@@ -103,7 +103,7 @@
     },
     {
       "id": "erdos-1953",
-      "title": "Erd\u0151s's Result (1953)",
+      "title": "Erdős's Result (1953)",
       "summary": "Infinitely many (d-1)-power-free values",
       "startLine": 127,
       "endLine": 142,
@@ -120,18 +120,18 @@
     {
       "id": "heath-brown-browning",
       "title": "Heath-Brown and Browning",
-      "summary": "(d-2)-power-free for d \u2265 9",
+      "summary": "(d-2)-power-free for d ≥ 9",
       "startLine": 173,
       "endLine": 206,
       "mathContext": "(d-2)-power-free for d $\\geq$ 9"
     },
     {
       "id": "n4-plus-2",
-      "title": "The n\u2074 + 2 Case (OPEN)",
-      "summary": "Squarefree conjecture for n\u2074 + 2 is open",
+      "title": "The n⁴ + 2 Case (OPEN)",
+      "summary": "Squarefree conjecture for n⁴ + 2 is open",
       "startLine": 207,
       "endLine": 254,
-      "mathContext": "Mathematical content: Squarefree conjecture for n\u2074 + 2 is open"
+      "mathContext": "Mathematical content: Squarefree conjecture for n⁴ + 2 is open"
     },
     {
       "id": "summary",
@@ -143,13 +143,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #978 asked three questions about power-free values of irreducible polynomials. Question 1 (positive density of (d-1)-power-free values) was fully answered YES by Hooley (1967). Question 2 (infinitely many (d-2)-power-free values) was answered YES for d \u2265 9 by Heath-Brown (2006) and Browning (2011), but remains open for d < 9. Question 3 (n\u2074 + 2 squarefree infinitely often) remains OPEN since degree 4 < 9.",
-    "implications": "**Theoretical Significance**: **Implications in Number Theory**\n\n1. **Power-Free Hierarchy:** Easier to be (d-1)-power-free than (d-2)-power-free\n\n2. **Degree Threshold:** Current methods only work for d \u2265 9\n\n**3. Sieve Methods:** Hooley's and subsequent work use sophisticated sieve techniques\n\n4. **Partial Information:** n\u2074 + 2 IS cubefree infinitely often\n\n5. **Related Open Problems:** 2\u207f \u00b1 1 and n! \u00b1 1 power-free questions.",
+    "summary": "Erdős Problem #978 asked three questions about power-free values of irreducible polynomials. Question 1 (positive density of (d-1)-power-free values) was fully answered YES by Hooley (1967). Question 2 (infinitely many (d-2)-power-free values) was answered YES for d ≥ 9 by Heath-Brown (2006) and Browning (2011), but remains open for d < 9. Question 3 (n⁴ + 2 squarefree infinitely often) remains OPEN since degree 4 < 9.",
+    "implications": "**Theoretical Significance**: **Implications in Number Theory**\n\n1. **Power-Free Hierarchy:** Easier to be (d-1)-power-free than (d-2)-power-free\n\n2. **Degree Threshold:** Current methods only work for d ≥ 9\n\n**3. Sieve Methods:** Hooley's and subsequent work use sophisticated sieve techniques\n\n4. **Partial Information:** n⁴ + 2 IS cubefree infinitely often\n\n5. **Related Open Problems:** 2ⁿ ± 1 and n! ± 1 power-free questions.",
     "openQuestions": [
-      "Does n\u2074 + 2 represent infinitely many squarefree numbers?",
-      "(d-2)-power-free for polynomials of degree 3 \u2264 d \u2264 8",
+      "Does n⁴ + 2 represent infinitely many squarefree numbers?",
+      "(d-2)-power-free for polynomials of degree 3 ≤ d ≤ 8",
       "Optimal density bounds for power-free polynomial values",
-      "Power-free values of 2\u207f \u00b1 1 and n! \u00b1 1",
+      "Power-free values of 2ⁿ ± 1 and n! ± 1",
       "Extension of Browning's result to lower degrees"
     ]
   },
@@ -166,7 +166,7 @@
       "Polynomial"
     ],
     "namespace": "Erdos978",
-    "lineCount": 295,
+    "lineCount": 280,
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 7
@@ -175,17 +175,17 @@
     {
       "targetId": "erdos-11",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, squarefree"
+      "description": "Related Erdős problem sharing themes: number-theory, squarefree"
     },
     {
       "targetId": "erdos-1102",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, squarefree"
+      "description": "Related Erdős problem sharing themes: number-theory, squarefree"
     },
     {
       "targetId": "erdos-1103",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: number-theory, squarefree"
+      "description": "Related Erdős problem sharing themes: number-theory, squarefree"
     }
   ]
 }

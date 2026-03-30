@@ -52,7 +52,7 @@
       "Defined IsEgyptianFraction and proved equivalence with IsUnitFractionSum"
     ],
     "axiomCount": 5,
-    "lineCount": 245,
+    "lineCount": 236,
     "assumptions": "5 axioms: (1) no_k2_representation — k=2 impossibility; (2) croot_theorem — Croot's 2001 existence result for large k; (3) representation_monotone — k-term implies (k+1)-term via unit fraction splitting; (4) optimality — e−1 is a sharp lower bound; (5) greedy_algorithm_exists — Fibonacci–Sylvester algorithm produces Egyptian fraction representations."
   },
   "overview": {
@@ -162,7 +162,7 @@
       "BigOperators"
     ],
     "namespace": "Erdos286",
-    "lineCount": 245,
+    "lineCount": 236,
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 7

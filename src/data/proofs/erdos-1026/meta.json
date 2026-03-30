@@ -24,11 +24,6 @@
     "erdosProblemStatus": "solved",
     "mathlibDependencies": [
       {
-        "theorem": "Theorems100.erdos_szekeres",
-        "description": "Mathlib's formalization of the Erdős-Szekeres theorem (Theorem 73 from Wiedijk 100)",
-        "module": "Archive.Wiedijk100Theorems.AscendingDescendingSequences"
-      },
-      {
         "theorem": "StrictMono",
         "description": "Strictly monotonic functions",
         "module": "Mathlib.Order.Monotone.Basic"
@@ -49,11 +44,6 @@
         "module": "Mathlib.Algebra.BigOperators.Finprod"
       },
       {
-        "theorem": "Finset.orderIsoOfFin",
-        "description": "Order isomorphism between Fin k and a k-element Finset",
-        "module": "Mathlib.Data.Finset.Sort"
-      },
-      {
         "theorem": "Function.Injective",
         "description": "Injectivity of the sequence (distinct elements)",
         "module": "Mathlib.Logic.Function.Basic"
@@ -69,16 +59,16 @@
       "LIS/LDS bounds as corollaries"
     ],
     "dateAdded": "2025-12-28",
-    "axiomCount": 1,
-    "lineCount": 342,
-    "assumptions": "1 axiom: weighted_erdos_szekeres (Tidor-Wang-Yang weighted bound - deep result, not in Mathlib). erdos_szekeres proved from Mathlib Archive, lis_lds_bound proved via Erdős-Szekeres + sSup contradiction.",
+    "axiomCount": 10,
+    "lineCount": 254,
+    "assumptions": "10 axioms: erdos_szekeres, hanani_decomposition, dilworth_bound, hanani_lower_bound, cambie_upper_bound, weighted_erdos_szekeres, optimal_constant_is_one, lis_lds_bound, longest_monotonic_bound, erdos_1026_tight. Three proved: erdos_szekeres_square (from erdos_szekeres), tidor_wang_yang (= weighted_erdos_szekeres), tournament_connection (trivial).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The Monotonic Subsequence Sum Problem**\n\nErdős (1971) posed this optimization problem: given a sequence of distinct real numbers, what is the maximum sum achievable by a monotonic subsequence?\n\n**Timeline:**\n- **1935**: Erdős-Szekeres prove every sequence of n²+1 elements has a monotonic subsequence of length n+1\n- **1957**: Hanani shows every sequence decomposes into ≤ (√2+o(1))√n monotonic parts, giving c ≥ 1/√2\n- **1995**: Steele surveys variations on the Erdős-Szekeres theme, highlighting open weighted versions\n- **2016**: Tidor-Wang-Yang prove the weighted version, showing c = 1; Cambie independently conjectures and proves the upper bound c ≤ 1\n- **2017**: Wagner gives an independent proof via tournament theory\n\nThe problem sits at the intersection of extremal combinatorics and optimization. The classical Erdős-Szekeres theorem guarantees long monotonic subsequences; Erdős's question asks the deeper 'weighted' version: not just how many elements, but how much total value can a monotonic subsequence capture? The answer c = 1 is remarkably clean.",
     "problemStatement": "**Problem Statement**\n\nLet x₁, ..., xₙ be distinct real numbers. Determine:\n\nmax(Σ x_{i_r})\n\nwhere the maximum is over all monotonic (increasing or decreasing) subsequences.\n\n**Precise Formulation (van Doorn):**\nWhat is the largest c such that for all sequences,\n\nmax(Σ x_{i_r}) ≥ (c - o(1)) · (1/√n) · Σ xᵢ ?\n\n**Answer:** c = 1\n\n**Weighted Erdős-Szekeres:**\nIf x₁, ..., x_{k²} are distinct positive reals with Σxᵢ = 1, there exists a monotonic subsequence with sum ≥ 1/k.",
     "text": "For a sequence of distinct reals, determine max sum over monotonic subsequences. The optimal constant is c = 1: maxMonotonicSum ≥ (1-o(1)) · totalSum/√n. This is a weighted Erdős-Szekeres theorem.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Sequences:** Define RealSeq, Subsequence with StrictMono indices\n\n2. **Monotonicity:** IsIncreasing, IsDecreasing, IsMonotonic predicates\n\n3. **Sums:** subsequenceSum, totalSum, maxMonotonicSum via sSup\n\n4. **Erdős-Szekeres:** The classical (r-1)(s-1)+1 bound (proved from Mathlib Archive)\n\n5. **Hanani:** Decomposition into ≤ √(2n) monotonic parts (axiomatized)\n\n6. **Main Bounds:** Hanani gives c ≥ 1/√2, Cambie shows c ≤ 1\n\n7. **Tidor-Wang-Yang:** The weighted theorem proving c = 1 (axiomatized)\n\n8. **Main theorem:** erdos_1026 directly applies tidor_wang_yang\n\n9. **LIS/LDS:** Standard length bounds as corollaries",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sequences:** Define RealSeq, Subsequence with StrictMono indices\n\n2. **Monotonicity:** IsIncreasing, IsDecreasing, IsMonotonic predicates\n\n3. **Sums:** subsequenceSum, totalSum, maxMonotonicSum via sSup\n\n4. **Erdős-Szekeres:** The classical (r-1)(s-1)+1 bound (axiomatized)\n\n5. **Hanani:** Decomposition into ≤ √(2n) monotonic parts (axiomatized)\n\n6. **Main Bounds:** Hanani gives c ≥ 1/√2, Cambie shows c ≤ 1\n\n7. **Tidor-Wang-Yang:** The weighted theorem proving c = 1 (axiomatized)\n\n8. **Main theorem:** erdos_1026 directly applies tidor_wang_yang\n\n9. **LIS/LDS:** Standard length bounds as corollaries",
     "keyInsights": [
       "**Erdős-Szekeres Foundation:** Every sequence of (r-1)(s-1)+1 elements has an increasing subsequence of length r OR decreasing of length s",
       "**Hanani's Decomposition:** At most (√2 + o(1))√n monotonic subsequences cover any sequence",
@@ -118,7 +108,7 @@
       "summary": "Classical (r-1)(s-1)+1 bound and n²+1 corollary",
       "startLine": 83,
       "endLine": 107,
-      "mathContext": "Proved from Mathlib Archive (Theorems100.erdos_szekeres): any injective $x: \\text{Fin}((r-1)(s-1)+1) \\to \\mathbb{R}$ has an increasing subsequence of length $r$ or decreasing of length $s$. Converts Finset-based formulation to Subsequence-based via Finset.orderIsoOfFin. Corollary: $k^2+1$ elements yield monotonic length $\\geq k+1$."
+      "mathContext": "Axiomatized: any injective $x: \\text{Fin}((r-1)(s-1)+1) \\to \\mathbb{R}$ has an increasing subsequence of length $r$ or decreasing of length $s$. Corollary: $k^2+1$ elements yield monotonic length $\\geq k+1$."
     },
     {
       "id": "hanani",
@@ -265,18 +255,16 @@
       "Mathlib.Data.Real.Sqrt",
       "Mathlib.Data.List.Basic",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Algebra.BigOperators.Finprod",
-      "Mathlib.Data.Finset.Sort",
-      "Archive.Wiedijk100Theorems.AscendingDescendingSequences"
+      "Mathlib.Algebra.BigOperators.Finprod"
     ],
     "opens": [
       "Finset",
       "BigOperators"
     ],
     "namespace": "Erdos1026",
-    "lineCount": 342,
-    "axiomCount": 1,
-    "theoremCount": 6,
+    "lineCount": 254,
+    "axiomCount": 10,
+    "theoremCount": 1,
     "definitionCount": 11
   }
 }
