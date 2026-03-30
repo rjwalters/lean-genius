@@ -57,19 +57,14 @@ theorem carmichael_minimal (n : ℕ) [NeZero n] (e : ℕ)
   exact Monoid.exponent_dvd_of_forall_pow_eq_one _ e he
 
 /-- For prime p, λ(p) = p - 1 = φ(p).
-    The group (ℤ/pℤ)* is cyclic of order p-1. -/
+    The group (ℤ/pℤ)* is cyclic of order p-1, so its exponent is p-1. -/
 theorem carmichael_prime {p : ℕ} (hp : Nat.Prime p) :
     carmichael p = p - 1 := by
   unfold carmichael
   haveI : NeZero p := ⟨hp.ne_zero⟩
   haveI : Fact p.Prime := ⟨hp⟩
-  -- (ℤ/pℤ)* is cyclic of order p-1, so its exponent is p-1
-  rw [Monoid.exponent_eq_iSup_orderOf]
-  -- For cyclic groups, the exponent equals the order
-  rw [show Fintype.card (ZMod p)ˣ = p - 1 from by
-    rw [ZMod.card_units_eq_totient]; exact Nat.totient_prime hp]
-  -- In a cyclic group of order n, the exponent is n
-  sorry
+  -- (ℤ/pℤ)* is cyclic, so exponent = card = φ(p) = p - 1
+  rw [IsCyclic.exponent_eq_card, ZMod.card_units_eq_totient, Nat.totient_prime hp]
 
 /-- λ(1) = 1: the trivial group has exponent 1. -/
 theorem carmichael_one : carmichael 1 = 1 := by
