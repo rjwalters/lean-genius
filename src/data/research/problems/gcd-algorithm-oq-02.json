@@ -47,7 +47,9 @@
   },
   "tags": [],
   "relatedProofs": [
-    "gcd-algorithm"
+    "binary-gcd",
+    "gcd-algorithm",
+    "gcd-algorithm-oq-02"
   ],
   "references": {
     "papers": [],
@@ -55,5 +57,18 @@
     "mathlib": []
   },
   "started": "2026-03-30T02:13:21.213Z",
-  "lastUpdate": "2026-03-30T02:13:21.223Z"
+  "lastUpdate": "2026-03-30T02:13:21.223Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/GcdAlgorithmOQ02.lean",
+      "filename": "GcdAlgorithmOQ02.lean",
+      "lineCount": 178,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GcdAlgorithmOQ02.lean"
+    }
+  ]
 }
