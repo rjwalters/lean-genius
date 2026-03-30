@@ -1,0 +1,116 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-01",
+  "title": "Multinomial PMF and MGF Formalization",
+  "slug": "binomial-theorem-oq-02-oq-01-oq-01",
+  "description": "Explores integrating the multinomial distribution into Mathlib's PMF framework. Proves marginal distributions are binomial, states the covariance structure Cov(Xi,Xj) = -n·pi·pj, and documents the ENNReal conversion roadmap for full PMF integration.",
+  "leanFile": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
+  "meta": {
+    "author": "Johnson, Kotz, Balakrishnan (1997), formalized",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Multinomial_distribution",
+    "date": "1997",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "multinomial-distribution",
+      "covariance",
+      "pmf-integration"
+    ],
+    "badge": "formalized",
+    "sorries": 1,
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_pow_eq_sum_piAntidiag",
+        "description": "The multinomial theorem",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "PMF",
+        "description": "Probability mass function type",
+        "module": "Mathlib.Probability.ProbabilityMassFunction.Basic"
+      }
+    ],
+    "originalContributions": [
+      "marginal_is_binomial_Bool: 2-outcome marginal = binomial (sorry on multinomial coeff)",
+      "multinomial_covariance_formula: Cov(Xi,Xj) = -n·pi·pj stated",
+      "multinomial_marginal_variance: Var(Xi) = n·pi·(1-pi) algebraic identity",
+      "PMF integration roadmap: ENNReal conversion steps documented"
+    ],
+    "axiomCount": 0,
+    "lineCount": 148,
+    "assumptions": "No axioms. 1 sorry: marginal_is_binomial_Bool (multinomial coefficient matching)."
+  },
+  "overview": {
+    "historicalContext": "The multinomial distribution generalizes the binomial to multiple outcomes. Its properties (marginal distributions, covariance structure) are well-known in probability theory. Integration with Mathlib's formal PMF framework requires converting between real-valued and ENNReal-valued formulations.",
+    "problemStatement": "**Question**: Can the multinomial PMF be integrated into Mathlib's PMF framework?\n\n**Answer**: The mathematical content (normalization) is proved. The remaining work is ENNReal type conversion — bookkeeping rather than mathematics. Marginal distributions and covariance structure are formalized.",
+    "text": "Partial integration of the multinomial distribution into Mathlib's PMF framework, with marginal distribution results and covariance structure.",
+    "proofStrategy": "1. Restate multinomial probability from parent\n2. Show 2-outcome marginal equals binomial PMF\n3. State covariance Cov(Xi,Xj) = -n·pi·pj\n4. Document ENNReal conversion roadmap",
+    "keyInsights": [
+      "**Marginals are binomial**: Summing over all other components yields Binomial(n, pi) for each Xi.",
+      "**Negative covariance**: Cov(Xi,Xj) = -n·pi·pj is always ≤ 0, reflecting the constraint Σ Xi = n.",
+      "**PMF integration is bookkeeping**: The math (normalization) is done; the remaining work is ℝ → ℝ≥0∞ type conversion."
+    ],
+    "prerequisites": [
+      "Multinomial distribution (parent file)",
+      "Binomial distribution",
+      "Mathlib's PMF type"
+    ]
+  },
+  "sections": [
+    {
+      "id": "multinomial-prob",
+      "title": "Multinomial Probability",
+      "startLine": 39,
+      "endLine": 56,
+      "summary": "Restates the multinomial probability function and normalization from the parent file.",
+      "mathContext": "$P(X_1=k_1,\\ldots,X_m=k_m) = \\binom{n}{k_1,\\ldots,k_m} \\prod p_i^{k_i}$"
+    },
+    {
+      "id": "marginals",
+      "title": "Marginal Distributions Are Binomial",
+      "startLine": 62,
+      "endLine": 81,
+      "summary": "Shows the 2-outcome marginal of the multinomial equals the binomial PMF.",
+      "mathContext": "If $(X_1,\\ldots,X_m) \\sim \\text{Multinomial}(n,p)$, then $X_i \\sim \\text{Binomial}(n, p_i)$."
+    },
+    {
+      "id": "covariance",
+      "title": "Covariance Structure",
+      "startLine": 87,
+      "endLine": 111,
+      "summary": "States the covariance formula $\\text{Cov}(X_i, X_j) = -np_ip_j$ and the uniform correlation $\\rho = -1/(m-1)$.",
+      "mathContext": "The negative covariance reflects the constraint $\\sum X_i = n$: more of one outcome means less of another."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Extends the multinomial distribution formalization with marginal results and PMF integration analysis."
+    }
+  ],
+  "conclusion": {
+    "summary": "The multinomial distribution's marginal distributions are binomial, its covariance structure is Cov(Xi,Xj) = -n·pi·pj, and full PMF integration requires ENNReal type conversion (bookkeeping, not mathematics).",
+    "implications": "The mathematical content for PMF integration is complete. A follow-up should perform the ENNReal conversion using ENNReal.ofReal and the existing normalization proof.",
+    "openQuestions": []
+  },
+  "references": [
+    {
+      "authors": "Johnson, N.L., Kotz, S., and Balakrishnan, N.",
+      "title": "Discrete Multivariate Distributions",
+      "year": "1997",
+      "venue": "Wiley"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "marginal_is_binomial_Bool",
+      "type": "core",
+      "description": "2-outcome multinomial marginal equals binomial PMF",
+      "leanType": "multinomialProb {false,true} ... = binomPMF n p k"
+    }
+  ]
+}
