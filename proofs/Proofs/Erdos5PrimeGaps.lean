@@ -498,4 +498,25 @@ theorem erdos_5_implies_set_eq (h : erdos_5) : limitPointSet = Set.Ici 0 := by
   · exact fun hC => limitPoint_nonneg hC
   · exact fun hC => h.1 C hC
 
+/-- Reverse: if limitPointSet = [0, ∞) then erdos_5 holds (∞ from Westzynthius). -/
+theorem set_eq_implies_erdos_5 (h : limitPointSet = Set.Ici 0) : erdos_5 := by
+  refine ⟨fun C hC => ?_, westzynthius_large_gaps⟩
+  change C ∈ limitPointSet
+  rw [h]
+  exact hC
+
+/-- Erdős #5 is equivalent to S = [0, ∞) (the ∞ part is already known). -/
+theorem erdos_5_iff :
+    erdos_5 ↔ (limitPointSet = Set.Ici 0 ∧ InfinityIsLimitPoint) := by
+  constructor
+  · exact fun h => ⟨erdos_5_implies_set_eq h, h.2⟩
+  · exact fun ⟨hS, hInf⟩ => ⟨(set_eq_implies_erdos_5 hS).1, hInf⟩
+
+/-- Summary of unconditionally known properties of S (from axioms). -/
+theorem known_properties_of_S :
+    limitPointSet.Nonempty ∧ IsClosed limitPointSet ∧
+    limitPointSet ⊆ Set.Ici 0 ∧ (∀ M : ℝ, M > 0 → ∃ C ∈ limitPointSet, C > M) :=
+  ⟨limitPointSet_nonempty, limitPointSet_isClosed,
+   limitPointSet_subset_nonneg, limitPointSet_unbounded_above⟩
+
 end Erdos5
