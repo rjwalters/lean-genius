@@ -17,22 +17,22 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 4,
     "erdosNumber": 1040,
     "erdosUrl": "https://erdosproblems.com/1040",
     "erdosProblemStatus": "open",
     "relatedProblems": [
       1039
     ],
-    "axiomCount": 5,
-    "assumptions": "5 axiom declarations: transfiniteDiameter_eq (Fekete's limit theorem for nth diameters), lineSegment_diameter and disc_diameter (classical capacity formulas), small_diameter_disc (qualitative disc containment for ρ < 1), erdos_netanyahu (quantitative disc bounds for bounded connected sets, 1973). Former lineSegment_determined and disc_determined axioms proved trivially via mu_eq_zero (buggy mu always 0).",
+    "axiomCount": 7,
+    "assumptions": "7 axiom declarations: transfiniteDiameter_eq (Fekete's limit theorem), lineSegment_determined (line segment mu determined by diameter), disc_determined (disc mu determined by radius), lineSegment_diameter (line segment capacity = length/4), disc_diameter (disc capacity = radius), small_diameter_disc (qualitative disc containment for ρ < 1), erdos_netanyahu (quantitative disc bounds, 1973). 4 sorries in theorems.",
     "prerequisites": [
       "Complex analysis: polynomial lemniscates and sublevel sets",
       "Potential theory: transfinite diameter and logarithmic capacity",
       "Measure theory: Lebesgue measure in the complex plane",
       "Approximation theory: Chebyshev polynomials and extremal polynomials"
     ],
-    "lineCount": 414,
+    "lineCount": 461,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -230,9 +230,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 414,
-    "axiomCount": 5,
-    "theoremCount": 19,
+    "lineCount": 461,
+    "axiomCount": 7,
+    "theoremCount": 18,
     "substantiveTheoremCount": 19,
     "trivialSpecializations": 0,
     "definitionCount": 19
