@@ -142,7 +142,80 @@ theorem f_upper_bound (n : ℕ) : f n ≤ Real.sqrt n := f_bounded n
 /-- The k×k grid achieves f(k²) = k -/
 theorem perfect_square_achieved (k : ℕ) (hk : k ≥ 1) :
     ∃ P : Packing (k^2), P.sumSides = k := by
-  sorry
+  have hk0 : (0 : ℝ) < k := by exact_mod_cast (show 0 < k by omega)
+  -- Key arithmetic: center ± side/2 = n/k or (n+1)/k
+  have ctr_lo : ∀ n : ℕ, (2 * (n : ℝ) + 1) / (2 * ↑k) - 1 / ↑k / 2 = ↑n / ↑k := by
+    intro n; field_simp; ring
+  have ctr_hi : ∀ n : ℕ, (2 * (n : ℝ) + 1) / (2 * ↑k) + 1 / ↑k / 2 = (↑n + 1) / ↑k := by
+    intro n; field_simp; ring
+  -- Row/column bounds
+  have hrow : ∀ i : Fin (k ^ 2), i.val / k < k :=
+    fun i => Nat.div_lt_of_lt_mul (show i.val < k * k from (sq k).symm ▸ i.isLt)
+  have hcol : ∀ i : Fin (k ^ 2), i.val % k < k :=
+    fun i => Nat.mod_lt _ (by omega)
+  -- Construct the packing
+  refine ⟨{
+    squares := fun i => {
+      center := ((2 * (↑(i.val / k) : ℝ) + 1) / (2 * ↑k),
+                 (2 * (↑(i.val % k) : ℝ) + 1) / (2 * ↑k))
+      side := 1 / ↑k
+      side_pos := by positivity }
+    contained := ?contained
+    disjoint := ?disjoint
+  }, ?sum_eq⟩
+  case contained =>
+    intro i p hp
+    simp only [Square.closure, Set.mem_setOf_eq] at hp
+    simp only [unitSquare, Set.mem_setOf_eq]
+    obtain ⟨hpx, hpy⟩ := hp
+    rw [abs_le] at hpx hpy
+    set r := i.val / k; set c := i.val % k
+    -- p.1 ∈ [r/k, (r+1)/k] and p.2 ∈ [c/k, (c+1)/k]
+    have hx_lo : (↑r : ℝ) / ↑k ≤ p.1 := by linarith [ctr_lo r, hpx.1]
+    have hx_hi : p.1 ≤ (↑r + 1) / ↑k := by linarith [ctr_hi r, hpx.2]
+    have hy_lo : (↑c : ℝ) / ↑k ≤ p.2 := by linarith [ctr_lo c, hpy.1]
+    have hy_hi : p.2 ≤ (↑c + 1) / ↑k := by linarith [ctr_hi c, hpy.2]
+    have hr_ub : (↑r : ℝ) + 1 ≤ ↑k := by exact_mod_cast (hrow i)
+    have hc_ub : (↑c : ℝ) + 1 ≤ ↑k := by exact_mod_cast (hcol i)
+    exact ⟨le_trans (div_nonneg (Nat.cast_nonneg r) (le_of_lt hk0)) hx_lo,
+           le_trans hx_hi ((div_le_one hk0).mpr hr_ub),
+           le_trans (div_nonneg (Nat.cast_nonneg c) (le_of_lt hk0)) hy_lo,
+           le_trans hy_hi ((div_le_one hk0).mpr hc_ub)⟩
+  case disjoint =>
+    intro i j hij
+    rw [DisjointInteriors, Set.disjoint_left]
+    intro p hp1 hp2
+    simp only [Square.interior, Set.mem_setOf_eq] at hp1 hp2
+    obtain ⟨hpx1, hpy1⟩ := hp1; obtain ⟨hpx2, hpy2⟩ := hp2
+    rw [abs_lt] at hpx1 hpy1 hpx2 hpy2
+    set r₁ := i.val / k; set c₁ := i.val % k
+    set r₂ := j.val / k; set c₂ := j.val % k
+    -- p.1 in (r₁/k, (r₁+1)/k) ∩ (r₂/k, (r₂+1)/k) forces r₁ = r₂
+    have hr_eq : r₁ = r₂ := by
+      by_contra h
+      rcases lt_or_gt_of_ne h with hr | hr
+      · -- r₁ < r₂: (r₁+1)/k ≤ r₂/k contradicts p.1 < (r₁+1)/k and r₂/k < p.1
+        have : (↑r₁ + 1 : ℝ) ≤ ↑r₂ := by exact_mod_cast hr
+        linarith [ctr_hi r₁, hpx1.2, ctr_lo r₂, hpx2.1, div_le_div_right hk0 |>.mpr this]
+      · have : (↑r₂ + 1 : ℝ) ≤ ↑r₁ := by exact_mod_cast hr
+        linarith [ctr_hi r₂, hpx2.2, ctr_lo r₁, hpx1.1, div_le_div_right hk0 |>.mpr this]
+    -- Similarly c₁ = c₂
+    have hc_eq : c₁ = c₂ := by
+      by_contra h
+      rcases lt_or_gt_of_ne h with hc | hc
+      · have : (↑c₁ + 1 : ℝ) ≤ ↑c₂ := by exact_mod_cast hc
+        linarith [ctr_hi c₁, hpy1.2, ctr_lo c₂, hpy2.1, div_le_div_right hk0 |>.mpr this]
+      · have : (↑c₂ + 1 : ℝ) ≤ ↑c₁ := by exact_mod_cast hc
+        linarith [ctr_hi c₂, hpy2.2, ctr_lo c₁, hpy1.1, div_le_div_right hk0 |>.mpr this]
+    -- r₁ = r₂ ∧ c₁ = c₂ → i = j, contradicting hij
+    exact absurd (Fin.ext (show i.val = j.val by
+      calc i.val = k * r₁ + c₁ := (Nat.div_add_mod i.val k).symm
+        _ = k * r₂ + c₂ := by rw [hr_eq, hc_eq]
+        _ = j.val := Nat.div_add_mod j.val k)) hij
+  case sum_eq =>
+    simp only [Packing.sumSides, Finset.sum_const, Finset.card_fin, nsmul_eq_mul]
+    push_cast
+    field_simp
 
 /-
 ## The Main Conjecture: f(k²+1) = k
