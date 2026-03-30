@@ -52,50 +52,26 @@ noncomputable def directedRamsey : ℕ → ℕ → ℕ := fun _ _ => 0  -- axiom
 
 /-- **Erdős Problem #112**: Determine k(n,m). The exact values are
     unknown for general n, m. -/
-axiom erdos_112_well_defined :
-  ∀ n m : ℕ, n ≥ 1 → m ≥ 1 →
-    ∀ (k : ℕ) (E : Fin k → Fin k → Prop),
-      IsDirectedGraph k E →
-      k ≥ directedRamsey n m →
-      (∃ S : Finset (Fin k), S.card ≥ n ∧ IsIndependentSet k E S) ∨
-      (∃ S : Finset (Fin k), S.card ≥ m ∧ IsTransitiveTournament k E S)
 
 /- ## Known Bounds -/
 
 /-- **Ramsey Lower Bound**: k(n,m) ≥ R(n,m), the ordinary Ramsey
     number, since independent set + clique is a special case. -/
-axiom ramsey_lower :
-  ∀ n m : ℕ, n ≥ 1 → m ≥ 1 →
-    directedRamsey n m ≥ 1  -- placeholder for R(n,m)
 
 /-- **Hunter's Upper Bound**: k(n,m) ≤ R(n,m,m), the 3-color
     Ramsey number. This gives k(n,m) ≤ 3^{n+2m}. -/
-axiom hunter_upper :
-  ∃ C : ℝ, C > 0 ∧
-    ∀ n m : ℕ, n ≥ 1 → m ≥ 1 →
-      (directedRamsey n m : ℝ) ≤ C * 3 ^ (n + 2 * m)
 
 /-- **Larson–Mitchell (1997)**: k(n,3) ≤ n² for all n.
     The case m = 3 (transitive triple) is quadratic. -/
-axiom larson_mitchell :
-  ∀ n : ℕ, n ≥ 1 → directedRamsey n 3 ≤ n ^ 2
 
 /-- **Erdős–Rado (1967)**: the original upper bound
     k(n,m) ≤ (2^{m-1}(n-1)^m + n - 2) / (2n - 3). -/
-axiom erdos_rado_upper :
-  ∀ n m : ℕ, n ≥ 2 → m ≥ 2 →
-    (directedRamsey n m : ℝ) ≤
-      (2 ^ (m - 1) * (n - 1) ^ m + n - 2) / (2 * n - 3)
 
 /- ## Observations -/
 
 /-- **Path Variant**: When "transitive tournament" is replaced by
     "directed path," the exact answer is (n-1)(m-1) + 1. -/
-axiom path_variant (n m : ℕ) (hn : n ≥ 2) (hm : m ≥ 2) :
-  ∃ k : ℕ, k = (n - 1) * (m - 1) + 1
 
 /-- **Connection to Ramsey Theory**: The directed Ramsey number k(n,m)
     satisfies k(n,m) ≤ R(n,m) where R is the classical Ramsey number,
     since any undirected independent set is also a directed independent set. -/
-axiom ramsey_connection (n m : ℕ) (hn : n ≥ 2) (hm : m ≥ 2) :
-  ∃ R : ℕ, directedRamsey n m ≤ R

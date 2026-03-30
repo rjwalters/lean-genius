@@ -87,10 +87,6 @@ Each pair of points determines at most 2 unit circles.
 -/
 
 /-- Two points at distance d < 2 determine exactly 2 unit circles through both -/
-axiom two_points_two_circles :
-  ∀ p q : Point, p ≠ q → eucDist p q < 2 →
-    ∃! (S : Finset UnitCircle), S.card = 2 ∧
-      ∀ c ∈ S, OnCircle p c ∧ OnCircle q c
 
 /-- Two points at distance exactly 2 determine exactly 1 unit circle.
     PROVED: The unique center is the midpoint m = (p+q)/2.
@@ -173,13 +169,8 @@ theorem two_points_no_circle :
 -/
 
 /-- Trivial upper bound: at most n(n-1) unit circles with 3+ points -/
-axiom trivial_upper_bound :
-  ∀ P : PointSet, countUnitCircles3 P ≤ P.card * (P.card - 1)
 
 /-- Harborth-Mengersen refinement: at most n(n-1)/3 -/
-axiom harborth_mengersen_bound :
-  ∀ P : PointSet, P.card ≥ 3 →
-    countUnitCircles3 P ≤ P.card * (P.card - 1) / 3
 
 /-
 ## Lower Bound Constructions
@@ -188,16 +179,8 @@ Elekes showed Ω(n^{3/2}) is achievable.
 -/
 
 /-- There exist point sets achieving Ω(n^{3/2}) unit circles -/
-axiom elekes_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    ∃ P : PointSet, P.card = n ∧
-      (countUnitCircles3 P : ℝ) ≥ c * n^(3/2 : ℝ)
 
 /-- Simple lower bound: Ω(n) is easy -/
-axiom linear_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-    ∃ P : PointSet, P.card = n ∧
-      (countUnitCircles3 P : ℝ) ≥ c * n
 
 /-
 ## The Main Conjecture
@@ -318,10 +301,6 @@ noncomputable def incidenceCount (P : PointSet) (Circ : Finset UnitCircle) : ℕ
 
 /-- Szemerédi-Trotter type bound for point-circle incidences (Clarkson et al.)
     The number of incidences is O(n^{2/3}m^{2/3} + n + m). -/
-axiom circle_incidence_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ (P : PointSet) (Circ : Finset UnitCircle),
-    (incidenceCount P Circ : ℝ) ≤
-      C * ((P.card : ℝ)^(2/3 : ℝ) * (Circ.card : ℝ)^(2/3 : ℝ) + P.card + Circ.card)
 
 /-
 ## Known Values (OEIS A003829)
@@ -334,16 +313,12 @@ noncomputable def maxUnitCircles (n : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ P : PointSet, P.card = n ∧ countUnitCircles3 P = k}
 
 /-- Known values: f(3) = 1 (any 3 points give at most 1 unit circle through all 3) -/
-axiom max_3 : maxUnitCircles 3 = 1
 
 /-- f(4) = 4 -/
-axiom max_4 : maxUnitCircles 4 = 4
 
 /-- f(5) = 8 -/
-axiom max_5 : maxUnitCircles 5 = 8
 
 /-- f(6) = 13 -/
-axiom max_6 : maxUnitCircles 6 = 13
 
 /-
 ## The Open Problem
