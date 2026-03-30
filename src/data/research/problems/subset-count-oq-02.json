@@ -38,7 +38,8 @@
   },
   "tags": [],
   "relatedProofs": [
-    "subset-count"
+    "subset-count",
+    "subset-count-multiset"
   ],
   "references": {
     "papers": [],
@@ -58,6 +59,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCount.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountOQ02.lean",
+      "filename": "SubsetCountOQ02.lean",
+      "lineCount": 121,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountOQ02.lean"
     }
   ]
 }
