@@ -482,27 +482,46 @@ theorem ruzsaB_eq_double_ruzsaA (n : ℕ) : n ∈ ruzsaB ↔ n % 2 = 0 ∧ n / 2
 theorem countingFn_ruzsaB (N : ℕ) :
     countingFn ruzsaB N = countingFn ruzsaA (N / 2) := by
   unfold countingFn
-  -- Bijection: b ∈ ruzsaB ∩ [0,N] ↔ b/2 ∈ ruzsaA ∩ [0, N/2]
-  apply Set.ncard_image_of_injective _ (fun a b hab => by omega) |>.symm ▸ _
-  sorry -- The bijection between the two finite sets (routine but requires careful Set API)
+  -- Bijection b ↦ b/2 from {b ∈ [1,N] : b ∈ ruzsaB} to {a ∈ [1,N/2] : a ∈ ruzsaA}
+  apply Finset.card_bij (fun b _ => b / 2)
+  · -- Maps into target: b ∈ ruzsaB ∩ [1,N] ⟹ b/2 ∈ ruzsaA ∩ [1,N/2]
+    intro b hb
+    simp only [Finset.mem_filter, Finset.mem_Icc] at hb ⊢
+    obtain ⟨⟨hb1, hbN⟩, hbB⟩ := hb
+    obtain ⟨heven, hA⟩ := (ruzsaB_eq_double_ruzsaA b).mp hbB
+    exact ⟨⟨by omega, by omega⟩, hA⟩
+  · -- Injective: b₁/2 = b₂/2 with both even ⟹ b₁ = b₂
+    intro b₁ hb₁ b₂ hb₂ heq
+    simp only [Finset.mem_filter] at hb₁ hb₂
+    have h1 := ((ruzsaB_eq_double_ruzsaA b₁).mp hb₁.2).1
+    have h2 := ((ruzsaB_eq_double_ruzsaA b₂).mp hb₂.2).1
+    omega
+  · -- Surjective: ∀ a ∈ ruzsaA ∩ [1,N/2], ∃ b ∈ ruzsaB ∩ [1,N], b/2 = a
+    intro a ha
+    simp only [Finset.mem_filter, Finset.mem_Icc] at ha ⊢
+    obtain ⟨⟨ha1, haN2⟩, haA⟩ := ha
+    refine ⟨2 * a, ?_, by omega⟩
+    refine ⟨⟨by omega, by omega⟩, ?_⟩
+    exact (ruzsaB_eq_double_ruzsaA (2 * a)).mpr
+      ⟨by omega, by rwa [Nat.mul_div_cancel_left a (by omega : 0 < 2)]⟩
 
 /-- The ratio countingFn ruzsaA N / countingFn ruzsaB N does NOT converge to 1.
-    Proof: ruzsaB = 2·ruzsaA, so the ratio equals
-    countingFn ruzsaA N / countingFn ruzsaA (N/2), which oscillates
-    between values near 1 (at N = 4^k) and 2 (at N = 2·4^k).
-    At N = 1: ratio = 2/1 = 2, contradicting convergence to 1. -/
+    Proof sketch: By countingFn_ruzsaB, the ratio equals
+    countingFn ruzsaA N / countingFn ruzsaA (N/2).
+    At N = 2·4^k - 1, countingFn ruzsaA N = 2^{k+1} - 1 while
+    countingFn ruzsaA (N/2) = countingFn ruzsaA (4^k-1) = 2^k - 1,
+    giving ratio (2^{k+1}-1)/(2^k-1) → 2 as k → ∞.
+    This exceeds 3/2 for all k ≥ 1, contradicting |ratio - 1| < 1/2. -/
 theorem ruzsa_ratio_not_one : ¬HasAsymptoticRatio ruzsaA ruzsaB := by
   unfold HasAsymptoticRatio
   intro hconv
-  -- If ratio → 1, then eventually ratio < 3/2
+  -- If ratio → 1, then eventually |ratio - 1| < 1/2
   rw [Metric.tendsto_atTop] at hconv
   obtain ⟨N₀, hN₀⟩ := hconv (1/2) (by norm_num)
-  -- At N = max N₀ 1, show ratio ≥ something > 3/2 (via the doubling structure)
-  -- Actually, we need to show ratio = 2 at specific large N values.
-  -- For any M, we can find N ≥ M with countingFn ruzsaA N = 2 * countingFn ruzsaB N.
-  -- The simplest witness: 1 ∈ ruzsaA \ ruzsaB, so countingFn at small N gives ratio > 1.
-  -- For the full proof: at N = 2^(2k+1)-1, ratio is exactly 2 for all k.
-  -- Use N₀ to find k with 2^(2k+1)-1 ≥ N₀, then get contradiction.
+  -- Proof requires: at N = 2·4^k - 1 for large k, the ratio exceeds 3/2.
+  -- This needs countingFn ruzsaA (2·4^k - 1) = 2^{k+1} - 1 (counting base-4
+  -- numbers with digits in {0,1}) and countingFn ruzsaA (4^k - 1) = 2^k - 1.
+  -- Then (2^{k+1}-1)/(2^k-1) > 3/2 for k ≥ 1, contradicting the bound.
   sorry
 
 /-- **Necessity theorem**: The condition aₙ/bₙ → 1 is necessary.

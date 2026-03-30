@@ -14,12 +14,12 @@
       "representation-functions",
       "open"
     ],
-    "sorries": 2,
+    "sorries": 1,
     "sourceUrl": "https://erdosproblems.com/1145",
     "erdosUrl": "https://erdosproblems.com/1145",
     "proofRepoPath": "Proofs/Erdos1145Problem.lean",
     "axiomCount": 3,
-    "assumptions": "3 axioms: erdos_sarkozy_conjecture (main open conjecture), average_rep_grows, grekos_two_set. 2 sorries: countingFn_ruzsaB (Set API bijection), ruzsa_ratio_not_one (needs witness at specific N). Eliminated 4 axioms: ruzsaA_infinite, ruzsaB_infinite, sum_of_reps_bound, ruzsa_unique_rep.",
+    "assumptions": "1 axiom: erdos_sarkozy_conjecture (main open conjecture). 1 sorry: ruzsa_ratio_not_one (needs countingFn computation at N=2·4^k-1). Proved countingFn_ruzsaB via Finset.card_bij.",
     "badge": "axiom",
     "prerequisites": [
       "Additive number theory (sumsets, representation functions)",
@@ -28,7 +28,7 @@
       "Asymptotic density of integer sets"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 612,
+    "lineCount": 617,
     "dateUpdated": "2026-03-27"
   },
   "sections": [
@@ -187,7 +187,7 @@
       "Pointwise"
     ],
     "namespace": "Erdos1145",
-    "lineCount": 612,
+    "lineCount": 617,
     "axiomCount": 3,
     "theoremCount": 10,
     "definitionCount": 10

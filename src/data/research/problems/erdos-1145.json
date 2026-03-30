@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 of 8 axioms. Proved ruzsaA_infinite (4^m has only even-position bits), ruzsaB_infinite (2*4^m has only odd-position bits), sum_of_reps_bound (was vacuously true, RHS=0). 5 axioms remain.",
+    "progressSummary": "PROGRESS: Proved countingFn_ruzsaB (sorry eliminated): bijection b↦b/2 from ruzsaB∩[1,N] to ruzsaA∩[1,N/2] via Finset.card_bij. 2 sorries → 1. Improved ruzsa_ratio_not_one proof sketch with concrete N=2·4^k-1 witness strategy.",
     "builtItems": [
       "proofs/Proofs/Erdos1145Problem.lean - Full formalization (337 lines, 0 sorries)",
       "src/data/proofs/erdos-1145/ - Gallery entry (meta.json, index.ts, annotations.json)",
@@ -44,7 +44,8 @@
       "ruzsaA_infinite: proved via infinite range of 4^m injection",
       "mul2_pow4_mem_ruzsaB: 2*4^m in ruzsaB (binary digit argument)",
       "ruzsaB_infinite: proved via infinite range of 2*4^m injection",
-      "sum_of_reps_bound: converted from axiom to theorem (RHS = x-x = 0, trivially true)"
+      "sum_of_reps_bound: converted from axiom to theorem (RHS = x-x = 0, trivially true)",
+      "countingFn_ruzsaB: proved via Finset.card_bij using ruzsaB_eq_double_ruzsaA (Erdos1145Problem.lean:482-506)"
     ],
     "insights": [
       "Problem #1145 strictly generalizes Problem #28 (Erdős-Turán): setting A = B recovers it",
@@ -54,7 +55,9 @@
       "For Ruzsa sets aₙ/bₙ → 1/2 (since B = 2A), confirming ratio ≠ 1",
       "sum_of_reps_bound was vacuously true: RHS simplifies to a*b - a*b = 0 for naturals",
       "Ruzsa set membership proved via bit-position analysis: 4^m=2^{2m} has even bits only",
-      "3 axioms eliminated (8->5), remaining 5 are genuinely deep results or open conjectures"
+      "3 axioms eliminated (8->5), remaining 5 are genuinely deep results or open conjectures",
+      "countingFn_ruzsaB proof: key insight is ruzsaB = 2·ruzsaA, so b∈ruzsaB↔b even and b/2∈ruzsaA. Injectivity from evenness, surjectivity from 2a construction.",
+      "ruzsa_ratio_not_one: at N=2·4^k-1, countingFn ruzsaA N = 2^{k+1}-1 and countingFn ruzsaA (N/2) = 2^k-1, giving ratio→2 as k→∞"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
