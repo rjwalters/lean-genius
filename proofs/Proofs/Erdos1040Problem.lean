@@ -27,9 +27,10 @@ namespace Erdos1040
 ## Transfinite Diameter (Logarithmic Capacity)
 -/
 
-/-- The n-th diameter of a set F. -/
+/-- The n-th diameter of a set F.
+    The product is over all pairs (i, j) with j < i < n. -/
 noncomputable def nthDiameter (F : Set ℂ) (n : ℕ) : ℝ :=
-  sSup {(∏ i in Finset.range n, ∏ j in Finset.range i,
+  sSup {(∏ i : Fin n, ∏ j in Finset.Iio i,
     Complex.abs (pts i - pts j)) ^ (2 / (n * (n - 1) : ℝ)) |
     pts : Fin n → ℂ // ∀ i, pts i ∈ F}
 
@@ -183,13 +184,21 @@ theorem disc_determined_trivial (F : Set ℂ) (hF : isClosedDisc F) :
     ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F) :=
   ⟨fun _ => 0, mu_eq_zero F⟩
 
-/-- For line segments, corrected μ is determined by transfinite diameter. -/
-axiom lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
-  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
+/-- For line segments, corrected μ is determined by transfinite diameter.
+    NOTE: As stated, this is vacuously true — f can depend on F.
+    The intended statement (same f for all line segments) would be
+    `∃ f, ∀ F, isLineSegment F → muPosDeg F = f (transfiniteDiameter F)`. -/
+theorem lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F) :=
+  ⟨fun _ => muPosDeg F, rfl⟩
 
-/-- For discs, corrected μ is determined by transfinite diameter. -/
-axiom disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
-  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
+/-- For discs, corrected μ is determined by transfinite diameter.
+    NOTE: As stated, this is vacuously true — f can depend on F.
+    The intended statement (same f for all discs) would be
+    `∃ f, ∀ F, isClosedDisc F → muPosDeg F = f (transfiniteDiameter F)`. -/
+theorem disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F) :=
+  ⟨fun _ => muPosDeg F, rfl⟩
 
 /-- Line segment of length L has transfinite diameter L/4. -/
 axiom lineSegment_diameter (a b : ℂ) :
@@ -247,21 +256,27 @@ theorem unitDisc_diameter : transfiniteDiameter (Metric.closedBall (0 : ℂ) 1) 
 ## Properties of Transfinite Diameter
 -/
 
-/-- Transfinite diameter is monotone: F ⊆ G → ρ(F) ≤ ρ(G).
+/-- **NOTE**: General `transfiniteDiameter_mono` is unprovable with `ℝ`-valued `nthDiameter`.
+    The `sSup` convention (`sSup S = 0` when `¬BddAbove S`) breaks monotonicity:
+    for F = {0,1} ⊆ G = ℂ and n = 2, `nthDiameter F 2 > 0` but `nthDiameter G 2 = 0`
+    (since G's value set is unbounded). A correct general version requires `EReal` or `ℝ≥0∞`.
+    The bounded version below suffices for the Erdős-Netanyahu applications. -/
 
-    **CAVEAT**: This is POTENTIALLY FALSE with the current definition for unbounded G.
-    Lean's `sSup ∅ = 0` and `sSup (unbounded set) = 0` conventions mean that when G is
-    unbounded, `nthDiameter G n` may collapse to 0 (the value set is unbounded above,
-    so `csSup` returns 0). This could make `transfiniteDiameter G = 0 < transfiniteDiameter F`
-    even when `F ⊆ G`.
+/-- Helper: nthDiameter is monotone when the superset's value set is BddAbove. -/
+private lemma nthDiameter_mono_of_bddAbove (F G : Set ℂ) (h : F ⊆ G) (n : ℕ)
+    (hbdd : BddAbove {(∏ i : Fin n, ∏ j in Finset.Iio i,
+      Complex.abs (pts i - pts j)) ^ (2 / (n * (n - 1) : ℝ)) |
+      pts : Fin n → ℂ // ∀ i, pts i ∈ G}) :
+    nthDiameter F n ≤ nthDiameter G n := by
+  unfold nthDiameter
+  apply csSup_le_csSup hbdd
+  rintro _ ⟨⟨pts, hpts⟩, rfl⟩
+  exact ⟨⟨pts, fun i => h (hpts i)⟩, rfl⟩
 
-    The standard fix is either:
-    (a) Restrict to bounded sets: add `Bornology.IsBounded G` hypothesis
-    (b) Use `EReal`/`ENNReal` for nthDiameter (where sSup of unbounded sets = ⊤)
-    (c) Use the limit definition `transfiniteDiameter'` instead of iInf
-
-    For now, this sorry documents a DEFINITION BUG, not a proof gap. -/
-theorem transfiniteDiameter_mono (F G : Set ℂ) (h : F ⊆ G) :
+/-- Transfinite diameter is monotone for bounded supersets.
+    For bounded G, every value set is BddAbove, so monotonicity holds. -/
+theorem transfiniteDiameter_mono_of_bounded (F G : Set ℂ) (h : F ⊆ G)
+    (hG : Bornology.IsBounded G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
   unfold transfiniteDiameter
   apply csInf_le_csInf
@@ -298,11 +313,11 @@ private theorem nthDiameter_nonneg (F : Set ℂ) (n : ℕ) : 0 ≤ nthDiameter F
   unfold nthDiameter
   by_cases hne : Set.Nonempty
     {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
-      (∏ i in Finset.range n, ∏ j in Finset.range i,
+      (∏ i : Fin n, ∏ j in Finset.Iio i,
         Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
   · by_cases hbdd : BddAbove
       {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
-        (∏ i in Finset.range n, ∏ j in Finset.range i,
+        (∏ i : Fin n, ∏ j in Finset.Iio i,
           Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
     · obtain ⟨x, ⟨pts, rfl⟩⟩ := hne
       exact le_trans
@@ -326,48 +341,45 @@ theorem transfiniteDiameter_nonneg (F : Set ℂ) :
 private lemma nthDiameter_eq_zero_of_finite (F : Set ℂ) (hF : F.Finite) (n : ℕ)
     (hn : n ≥ 2) (hn_gt : hF.toFinset.card < n) :
     nthDiameter F n = 0 := by
-  apply le_antisymm _ (nthDiameter_nonneg F n)
-  unfold nthDiameter
-  -- The exponent 2/(n*(n-1)) is positive since n ≥ 2
-  have hexp_ne : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0 := by
-    apply div_ne_zero two_ne_zero (ne_of_gt _)
-    have : (2 : ℝ) ≤ n := by exact_mod_cast hn
-    nlinarith
-  -- Case split: nonempty vs empty sSup set
-  by_cases hne : Set.Nonempty
-    {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
-      (∏ i in Finset.range n, ∏ j in Finset.range i,
-        Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
-  · -- Nonempty: every element is 0 by pigeonhole, so sSup ≤ 0
-    apply csSup_le hne
-    rintro _ ⟨⟨pts, hpts⟩, rfl⟩
-    -- Pigeonhole: n > |F| → pts not injective → collision
-    let ptsR : Fin n → ↥hF.toFinset :=
-      fun i => ⟨pts i, hF.mem_toFinset.mpr (hpts i)⟩
-    have hcard : Fintype.card (Fin n) > Fintype.card ↥hF.toFinset := by
-      simp [Fintype.card_fin, Fintype.card_coe]; exact hn_gt
-    obtain ⟨a, b, hab, heq⟩ := Fintype.exists_ne_map_eq_of_card_lt ptsR hcard
-    have hpts_eq : pts a = pts b := congr_arg Subtype.val heq
-    -- Cast lemma: coercing Fin.val back to Fin n is identity
-    have cast_eq : ∀ (x : Fin n), (Nat.cast x.val : Fin n) = x :=
-      fun x => Fin.ext (by simp [Fin.val_natCast, Nat.mod_eq_of_lt x.isLt])
-    -- The double product is 0 (collision creates a zero factor)
-    suffices hprod : (∏ i in Finset.range n, ∏ j in Finset.range i,
-        Complex.abs (pts i - pts j)) = 0 by
-      rw [hprod]; exact le_of_eq (Real.zero_rpow hexp_ne)
-    -- WLOG a < b (as Fin n, hence a.val < b.val)
-    rcases lt_or_gt_of_ne (show a ≠ b from hab) with h_lt | h_lt
-    · -- a < b: outer product zero at b.val, inner product zero at a.val
-      exact Finset.prod_eq_zero (Finset.mem_range.mpr b.isLt)
-        (Finset.prod_eq_zero (Finset.mem_range.mpr h_lt)
-          (by simp [cast_eq, hpts_eq]))
-    · -- b < a: outer product zero at a.val, inner product zero at b.val
-      exact Finset.prod_eq_zero (Finset.mem_range.mpr a.isLt)
-        (Finset.prod_eq_zero (Finset.mem_range.mpr h_lt)
-          (by simp [cast_eq, hpts_eq]))
-  · -- Empty set: sSup ∅ ≤ 0
-    rw [Set.not_nonempty_iff_eq_empty] at hne
-    simp [hne, csSup_empty]
+  apply le_antisymm
+  · -- nthDiameter F n ≤ 0
+    unfold nthDiameter
+    -- Case split: is the value set nonempty?
+    by_cases hne : Set.Nonempty
+      {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
+        (∏ i : Fin n, ∏ j in Finset.Iio i,
+          Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
+    · -- Nonempty: show every element is ≤ 0 (and hence = 0 since ≥ 0)
+      apply csSup_le hne
+      rintro _ ⟨⟨pts, hpts⟩, rfl⟩
+      -- By pigeonhole: n > |F|, so pts has a collision
+      have hcard : Fintype.card ↥hF.toFinset < Fintype.card (Fin n) := by
+        rw [Fintype.card_fin]
+        rwa [Fintype.card_coe]
+      let g : Fin n → ↥hF.toFinset := fun i =>
+        ⟨pts i, hF.mem_toFinset.mpr (hpts i)⟩
+      obtain ⟨a, b, hab, hgab⟩ := Fintype.exists_ne_map_eq_of_card_lt g hcard
+      have hptseq : pts a = pts b := congr_arg Subtype.val hgab
+      -- Get a < b or b < a
+      rcases lt_or_gt_of_ne (Fin.ne_iff_vne.mp hab) with h_lt | h_lt
+      · -- Case a < b: factor |pts b - pts a| = 0 in the product
+        have hprod_zero : (∏ i : Fin n, ∏ j in Finset.Iio i,
+            Complex.abs (pts i - pts j)) = 0 := by
+          apply Finset.prod_eq_zero (Finset.mem_univ b)
+          apply Finset.prod_eq_zero (Finset.mem_Iio.mpr h_lt)
+          simp [hptseq.symm, sub_self, map_zero]
+        simp [hprod_zero, Real.zero_rpow (by positivity : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0)]
+      · -- Case b < a: factor |pts a - pts b| = 0 in the product
+        have hprod_zero : (∏ i : Fin n, ∏ j in Finset.Iio i,
+            Complex.abs (pts i - pts j)) = 0 := by
+          apply Finset.prod_eq_zero (Finset.mem_univ a)
+          apply Finset.prod_eq_zero (Finset.mem_Iio.mpr h_lt)
+          simp [hptseq, sub_self, map_zero]
+        simp [hprod_zero, Real.zero_rpow (by positivity : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0)]
+    · -- Empty value set: sSup ∅ = 0
+      rw [Set.not_nonempty_iff_eq_empty] at hne
+      simp [hne, csSup_empty]
+  · exact nthDiameter_nonneg F n
 
 /-- Finite sets have transfinite diameter 0.
     Proof: for large n, nthDiameter = 0 (pigeonhole), so iInf ≤ 0.
@@ -434,33 +446,33 @@ theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
   exact absurd hle (not_le.mpr (ENNReal.lt_add_right hmu_ne_top hε.ne'))
 
 /-
-## Positive μ when transfinite diameter < 1
+## Positive μ When Transfinite Diameter < 1
 -/
 
-/-- When ρ(F) < 1, muPosDeg F > 0: the small_diameter_disc axiom gives a uniform
-    lower bound on sublevel set size via translation-invariant Haar measure. -/
+/-- When transfinite diameter < 1, corrected μ is positive.
+    Every sublevel set contains a ball of radius ≥ c (from small_diameter_disc),
+    so sublevelMeasure ≥ volume(ball 0 c) > 0 uniformly across all degree ≥ 1 polynomials. -/
 theorem muPosDeg_pos_of_small_diameter (F : Set ℂ) (hF : IsClosed F) (hFi : F.Infinite)
     (hρ : transfiniteDiameter F < 1) : muPosDeg F > 0 := by
-  -- Get uniform disc radius from small_diameter_disc
+  -- Get uniform constant c > 0 from small_diameter_disc axiom
   obtain ⟨c, hc_pos, hdisc⟩ := small_diameter_disc F hF hFi hρ
-  -- volume(ball 0 c) > 0 since c > 0 and ℂ is a proper metric space
+  -- volume(ball 0 c) > 0 in ℂ (Haar measure on finite-dimensional space)
   have hball_pos : (0 : ℝ≥0∞) < MeasureTheory.volume (Metric.ball (0 : ℂ) c) :=
-    Metric.isOpen_ball.measure_pos _ (Metric.nonempty_ball.mpr hc_pos)
-  -- muPosDeg F ≥ volume(ball 0 c): every degree ≥ 1 polynomial's sublevel set
-  -- contains a ball of radius ≥ c, so sublevelMeasure p ≥ volume(ball 0 c) for all such p
-  calc (0 : ℝ≥0∞) < MeasureTheory.volume (Metric.ball (0 : ℂ) c) := hball_pos
-    _ ≤ muPosDeg F := by
-        unfold muPosDeg
-        apply le_iInf₂
-        intro p hp
-        obtain ⟨z₀, r, _, hr_ge_c, hball_sub⟩ := hdisc p (by omega : p.degree > 0)
-        calc MeasureTheory.volume (Metric.ball (0 : ℂ) c)
-            = MeasureTheory.volume (Metric.ball z₀ c) := by
-              rw [MeasureTheory.Measure.addHaar_ball_center]
-            _ ≤ MeasureTheory.volume (Metric.ball z₀ r) :=
-              MeasureTheory.measure_mono (Metric.ball_subset_ball hr_ge_c)
-            _ ≤ sublevelMeasure p :=
-              MeasureTheory.measure_mono hball_sub
+    MeasureTheory.measure_ball_pos _ _ hc_pos
+  -- Suffices to show volume(ball 0 c) ≤ muPosDeg F
+  suffices h : MeasureTheory.volume (Metric.ball (0 : ℂ) c) ≤ muPosDeg F from
+    lt_of_lt_of_le hball_pos h
+  -- Bound each sublevel measure from below uniformly
+  unfold muPosDeg
+  exact le_iInf₂ fun p hp => by
+    obtain ⟨z₀, r, hr_pos, hr_ge_c, hball_sub⟩ := hdisc p (by omega : p.degree > 0)
+    calc MeasureTheory.volume (Metric.ball (0 : ℂ) c)
+        = MeasureTheory.volume (Metric.ball z₀ c) :=
+          (MeasureTheory.Measure.addHaar_ball_center z₀ c).symm
+      _ ≤ MeasureTheory.volume (Metric.ball z₀ r) :=
+          MeasureTheory.measure_mono (Metric.ball_subset_ball hr_ge_c)
+      _ ≤ sublevelMeasure p :=
+          MeasureTheory.measure_mono hball_sub
 
 /-
 ## The Open Question
@@ -469,28 +481,32 @@ theorem muPosDeg_pos_of_small_diameter (F : Set ℂ) (hF : IsClosed F) (hFi : F.
 /-- The main question: is μ(F) = 0 when ρ(F) ≥ 1? (Using corrected μ.) -/
 def erdos_1040_question : Prop := diameterOneConjecture
 
-/-- Part 1: For line segments and discs with ρ ≥ 1, muPosDeg = 0.
-    Requires the specific EHP 1958 Chebyshev polynomial formula for μ. -/
-theorem erdos_1040_part1 :
-    ∀ F : Set ℂ, isLineSegment F ∨ isClosedDisc F →
-      transfiniteDiameter F ≥ 1 → muPosDeg F = 0 := by
-  sorry
+/-- The specific known results for line segments and discs with ρ ≥ 1.
+    This requires explicit computation of μ for these shapes (EHP 1958).
+    Note: `lineSegment_determined` and `disc_determined` are now theorems
+    (vacuously true as stated — f depends on F), so these axioms carry
+    the actual mathematical content about μ = 0 when ρ ≥ 1. -/
+axiom lineSegment_muPosDeg_zero (F : Set ℂ) (hF : isLineSegment F) :
+  transfiniteDiameter F ≥ 1 → muPosDeg F = 0
 
-/-- Part 2: For any F with ρ < 1, muPosDeg > 0.
-    Proved via small_diameter_disc and Haar measure positivity. -/
-theorem erdos_1040_part2 :
-    ∀ F : Set ℂ, IsClosed F → F.Infinite →
-      transfiniteDiameter F < 1 → muPosDeg F > 0 :=
-  fun F hF hFi hρ => muPosDeg_pos_of_small_diameter F hF hFi hρ
+axiom disc_muPosDeg_zero (F : Set ℂ) (hF : isClosedDisc F) :
+  transfiniteDiameter F ≥ 1 → muPosDeg F = 0
 
 /-- Current state: known for special cases, open in general.
-    Uses corrected muPosDeg (degree ≥ 1 restriction). -/
+    Uses corrected muPosDeg (degree ≥ 1 restriction).
+    Part 1 (μ = 0 for line segments/discs with ρ ≥ 1) needs explicit EHP 1958 formulas.
+    Part 2 (μ > 0 when ρ < 1) follows from small_diameter_disc. -/
 theorem erdos_1040_current_state :
     (∀ F : Set ℂ, isLineSegment F ∨ isClosedDisc F →
       transfiniteDiameter F ≥ 1 → muPosDeg F = 0) ∧
     (∀ F : Set ℂ, IsClosed F → F.Infinite →
-      transfiniteDiameter F < 1 → muPosDeg F > 0) :=
-  ⟨erdos_1040_part1, erdos_1040_part2⟩
+      transfiniteDiameter F < 1 → muPosDeg F > 0) := by
+  constructor
+  · intro F hF hρ
+    rcases hF with hL | hD
+    · exact lineSegment_muPosDeg_zero F hL hρ
+    · exact disc_muPosDeg_zero F hD hρ
+  · exact fun F hF hFi hρ => muPosDeg_pos_of_small_diameter F hF hFi hρ
 
 /-
 ## OQ-05: Extension of Erdős-Netanyahu Bound
