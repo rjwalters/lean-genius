@@ -509,6 +509,68 @@ The abundancy index of n.
 noncomputable def abundancyIndex (n : ℕ) : ℚ := sigma n / n
 
 /-
+## Verified Weird Number Sequence (OEIS A006037)
+
+Computationally verify the first several weird numbers.
+All are even, consistent with the open question about odd weird numbers.
+-/
+
+/--
+836 is the second weird number.
+-/
+theorem weird_836 : IsWeird 836 := by
+  constructor
+  · unfold IsAbundant sigma; native_decide
+  · intro ⟨S, hS_sub, hS_sum⟩
+    have : ∀ T ∈ (836 : ℕ).properDivisors.powerset, T.sum id ≠ 836 := by native_decide
+    exact this S (Finset.mem_powerset.mpr hS_sub) hS_sum
+
+/--
+1575 = 3² × 5² × 7 is the second smallest odd abundant number, and is semiperfect.
+-/
+theorem nine45_1575_semiperfect : IsPseudoperfect 1575 := by
+  have : ∃ S ∈ (1575 : ℕ).properDivisors.powerset, S.sum id = 1575 := by native_decide
+  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
+
+/--
+No odd number in [945, 1575] is abundant except 945 and 1575.
+(Abundancy-only check — fast for native_decide.)
+-/
+theorem no_odd_abundant_945_to_1575 (n : ℕ) (h1 : 945 < n) (h2 : n < 1575)
+    (hodd : Odd n) : ¬IsAbundant n := by
+  have h : ∀ m ∈ Finset.Ico 946 1575, Odd m → ¬IsAbundant m := by native_decide
+  exact h n (Finset.mem_Ico.mpr ⟨by omega, h2⟩) hodd
+
+/--
+No odd number ≤ 1575 is weird. Proof by cases:
+- Below 945: not abundant
+- 945: semiperfect
+- (945, 1575): not abundant
+- 1575: semiperfect
+-/
+theorem no_odd_weird_to_1575 (n : ℕ) (hn : n ≤ 1575) (hodd : Odd n) :
+    ¬IsWeird n := by
+  intro ⟨hab, hnp⟩
+  by_cases h945 : n < 945
+  · exact absurd hab (no_odd_abundant_below_945 n h945 hodd)
+  · push_neg at h945
+    by_cases h945eq : n = 945
+    · exact hnp (h945eq ▸ nine45_semiperfect)
+    · by_cases h1575 : n < 1575
+      · exact absurd hab (no_odd_abundant_945_to_1575 n (by omega) h1575 hodd)
+      · -- n = 1575
+        have : n = 1575 := by omega
+        exact hnp (this ▸ nine45_1575_semiperfect)
+
+/--
+Any odd weird number must exceed 1575. Improvement over the 945 bound.
+-/
+theorem odd_weird_gt_1575 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 1575 < n := by
+  by_contra h
+  push_neg at h
+  exact absurd hw (no_odd_weird_to_1575 n h hodd)
+
+/-
 ## Summary
 
 **Erdős Problem #470**: Both questions remain OPEN.

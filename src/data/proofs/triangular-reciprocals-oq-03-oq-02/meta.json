@@ -105,8 +105,7 @@
         "summary": "Derives a closed-form formula for ∑(-1)^{n+1}/(n(n+k)) for arbitrary k, revealing a beautiful even-odd dichotomy where even k gives rational answers and odd k involves log(2).",
         "implications": "Demonstrates that partial fraction decomposition combined with the alternating harmonic series yields closed forms for a wide family of alternating reciprocal product sums.",
         "openQuestions": [
-            "Can the HasSum proofs (3 sorries) be completed using Mathlib's HasSum.nat_add?",
-            "Generalize further to ∑(-1)^{n+1}/(n+a)(n+b) for arbitrary a, b?",
+            "Generalize further to ∑(-1)^{n+1}/((n+a)(n+b)) for arbitrary a, b?",
             "What is the asymptotics of A_k/k as k → ∞?"
         ]
     },
@@ -121,7 +120,7 @@
     ],
     "leanFile": {
         "imports": [
-            "Mathlib"
+            "Proofs.TriangularReciprocalAlternatingOQ03"
         ],
         "opens": [
             "Finset",
