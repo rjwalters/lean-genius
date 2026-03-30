@@ -93,8 +93,55 @@ We axiomatize what is known about prime chain growth.
 axiom linnik_bound : ∃ L : ℕ, L > 0 ∧
   ∀ q : ℕ, q.Prime → ∃ p : ℕ, p.Prime ∧ p % q = 1 ∧ p ≤ q ^ L
 
--- Greedy algorithm produces a prime chain
-axiom greedy_chain_exists : ∃ p : ℕ → ℕ, IsPrimeChain p
+/-- For any prime q, Linnik's theorem gives a prime p ≡ 1 (mod q) with p ≤ q^L.
+    This prime satisfies p > q (since p ≡ 1 mod q with p prime forces p ≥ q+1). -/
+private noncomputable def nextChainPrime (q : ℕ) (hq : q.Prime) : ℕ :=
+  (linnik_bound.choose_spec.2 q hq).choose
+
+private lemma nextChainPrime_prime (q : ℕ) (hq : q.Prime) :
+    (nextChainPrime q hq).Prime :=
+  (linnik_bound.choose_spec.2 q hq).choose_spec.1
+
+private lemma nextChainPrime_mod (q : ℕ) (hq : q.Prime) :
+    nextChainPrime q hq % q = 1 :=
+  (linnik_bound.choose_spec.2 q hq).choose_spec.2.1
+
+private lemma nextChainPrime_gt (q : ℕ) (hq : q.Prime) :
+    nextChainPrime q hq > q := by
+  have hmod := nextChainPrime_mod q hq
+  have hp := (nextChainPrime_prime q hq).two_le
+  by_contra h; push_neg at h
+  rcases Nat.lt_or_eq_of_le h with h | h
+  · rw [Nat.mod_eq_of_lt h] at hmod; omega
+  · rw [h, Nat.mod_self] at hmod; omega
+
+/-- Build a prime chain recursively: start at 2, use Linnik's theorem for each step. -/
+private noncomputable def greedyChainData : ℕ → { p : ℕ // p.Prime }
+  | 0 => ⟨2, by decide⟩
+  | n + 1 =>
+    let ⟨q, hq⟩ := greedyChainData n
+    ⟨nextChainPrime q hq, nextChainPrime_prime q hq⟩
+
+private noncomputable def greedyChain (n : ℕ) : ℕ := (greedyChainData n).val
+
+private theorem greedyChain_prime (n : ℕ) : (greedyChain n).Prime :=
+  (greedyChainData n).prop
+
+private theorem greedyChain_mod (n : ℕ) : greedyChain (n + 1) % greedyChain n = 1 := by
+  show (greedyChainData (n + 1)).1 % (greedyChainData n).1 = 1
+  simp only [greedyChainData, greedyChain]
+  exact nextChainPrime_mod (greedyChainData n).1 (greedyChainData n).2
+
+private theorem greedyChain_strictMono : StrictMono greedyChain := by
+  apply strictMono_nat_of_lt_succ
+  intro n
+  show (greedyChainData n).1 < (greedyChainData (n + 1)).1
+  simp only [greedyChainData]
+  exact nextChainPrime_gt (greedyChainData n).1 (greedyChainData n).2
+
+/-- Greedy algorithm produces a prime chain (proved from linnik_bound). -/
+theorem greedy_chain_exists : ∃ p : ℕ → ℕ, IsPrimeChain p :=
+  ⟨greedyChain, greedyChain_strictMono, greedyChain_prime, greedyChain_mod⟩
 
 -- Greedy growth bound: p_k ≤ exp(exp(O(k)))
 axiom greedy_doubly_exponential : ∃ C : ℝ, C > 0 ∧
@@ -117,10 +164,6 @@ theorem conjecture_implies_question2 :
 
 Prime chains connect to OEIS A061092 and Cunningham chains.
 -/
-
--- OEIS A061092: Smallest prime ≡ 1 (mod p_k) for k-th prime p_k
-def smallestPrimeCongruentOne (p : ℕ) (hp : p.Prime) : ℕ :=
-  Nat.find ⟨p + 1, sorry⟩  -- Existence by Dirichlet
 
 -- Cunningham chain of the first kind: p, 2p+1, 4p+3, ...
 def IsCunninghamChainFirst (p : ℕ → ℕ) : Prop :=
