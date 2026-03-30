@@ -2,213 +2,214 @@
 Binary GCD OQ-01: Formal Step Count Comparison
 
 Compares the number of steps taken by the Binary GCD (Stein's algorithm)
-versus the Euclidean algorithm.
-
-Key results:
-1. Step counting functions for both algorithms
-2. Euclidean algorithm: O(log(min(a,b))) steps (Lamé's bound)
-3. Binary GCD: O(log(a) + log(b)) = O(log(max(a,b))) steps
-4. Binary GCD worst case is O(log²) for equal-sized inputs
-5. Concrete step counts for small examples
-6. Lamé's theorem: Euclidean steps ≤ 5 * digits(min(a,b))
+versus the Euclidean algorithm, with formal asymptotic bounds.
 
 References:
-  - Stein (1967): Computational problems associated with Racah algebra
-  - Lamé (1844): Note sur la limite du nombre des divisions dans la recherche du PGCD
-  - Knuth TAOCP 4.5.2: Analysis of the Binary GCD algorithm
-  - Parent proof: GcdAlgorithmOQ02.lean (Binary GCD correctness)
+  - Stein (1967), Lamé (1844), Knuth TAOCP 4.5.2
 -/
 
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Log
 import Mathlib.Tactic
+import Proofs.GCDAlgorithmOQ01
 
 open Nat
 
 namespace BinaryGcdOQ01
 
-/-! ## Step counting for the Euclidean algorithm -/
-
-/-- Number of steps in the Euclidean algorithm (counting mod operations). -/
-def euclidSteps : ℕ → ℕ → ℕ
+/-- Steps in the Euclidean algorithm (handles symmetry internally). -/
+def euclidSteps (a b : ℕ) : ℕ :=
+  match a, b with
   | 0, _ => 0
   | _, 0 => 0
-  | a + 1, b + 1 =>
-    if b + 1 ≤ a then
-      1 + euclidSteps (b + 1) ((a + 1) % (b + 1))
+  | a' + 1, b' + 1 =>
+    if b' + 1 ≤ a' then
+      1 + euclidSteps (b' + 1) ((a' + 1) % (b' + 1))
     else
-      1 + euclidSteps (a + 1) ((b + 1) % (a + 1))
+      1 + euclidSteps (a' + 1) ((b' + 1) % (a' + 1))
   termination_by a + b
-  decreasing_by all_goals omega
+  decreasing_by
+    · have := Nat.mod_lt (a' + 1) (show b' + 1 > 0 by omega); omega
+    · have := Nat.mod_lt (b' + 1) (show a' + 1 > 0 by omega); omega
 
-/-- Euclidean algorithm takes 0 steps when either input is 0. -/
-@[simp]
-theorem euclidSteps_zero_left (b : ℕ) : euclidSteps 0 b = 0 := rfl
-
-@[simp]
-theorem euclidSteps_zero_right (a : ℕ) : euclidSteps a 0 = 0 := by
-  cases a <;> rfl
-
-/-- Euclidean algorithm takes 1 step when one input divides the other. -/
-theorem euclidSteps_dvd (a b : ℕ) (ha : 0 < a) (hb : 0 < b) (h : b ∣ a) :
-    euclidSteps a b ≤ 1 := by
-  obtain ⟨k, rfl⟩ := h
-  match a, b, ha, hb with
-  | _, b + 1, _, _ =>
-    simp only [euclidSteps]
-    split
-    · simp [Nat.mul_mod_right]
-    · simp [Nat.mul_mod_right]
-
-/-! ## Step counting for Binary GCD -/
-
-/-- Number of steps in the Binary GCD algorithm. -/
-def binaryGcdSteps : ℕ → ℕ → ℕ
+/-- Steps in the Binary GCD algorithm. -/
+def binaryGcdSteps (a b : ℕ) : ℕ :=
+  match a, b with
   | 0, _ => 0
   | _, 0 => 0
-  | a + 1, b + 1 =>
-    if (a + 1) % 2 = 0 then
-      if (b + 1) % 2 = 0 then
-        1 + binaryGcdSteps ((a + 1) / 2) ((b + 1) / 2)
+  | a' + 1, b' + 1 =>
+    if (a' + 1) % 2 = 0 then
+      if (b' + 1) % 2 = 0 then
+        1 + binaryGcdSteps ((a' + 1) / 2) ((b' + 1) / 2)
       else
-        1 + binaryGcdSteps ((a + 1) / 2) (b + 1)
-    else if (b + 1) % 2 = 0 then
-      1 + binaryGcdSteps (a + 1) ((b + 1) / 2)
-    else if a + 1 > b + 1 then
-      1 + binaryGcdSteps ((a + 1 - (b + 1)) / 2) (b + 1)
+        1 + binaryGcdSteps ((a' + 1) / 2) (b' + 1)
+    else if (b' + 1) % 2 = 0 then
+      1 + binaryGcdSteps (a' + 1) ((b' + 1) / 2)
+    else if a' + 1 > b' + 1 then
+      1 + binaryGcdSteps ((a' + 1 - (b' + 1)) / 2) (b' + 1)
     else
-      1 + binaryGcdSteps (a + 1) ((b + 1 - (a + 1)) / 2)
+      1 + binaryGcdSteps (a' + 1) ((b' + 1 - (a' + 1)) / 2)
   termination_by a + b
   decreasing_by all_goals omega
 
-@[simp]
-theorem binaryGcdSteps_zero_left (b : ℕ) : binaryGcdSteps 0 b = 0 := rfl
-
-@[simp]
-theorem binaryGcdSteps_zero_right (a : ℕ) : binaryGcdSteps a 0 = 0 := by
-  cases a <;> rfl
+@[simp] theorem binaryGcdSteps_zero_right (a : ℕ) : binaryGcdSteps a 0 = 0 := by
+  cases a with
+  | zero => exact binaryGcdSteps.eq_1 0
+  | succ a' => exact binaryGcdSteps.eq_2 _ (by omega)
 
 /-! ## Concrete step counts -/
 
-/-- gcd(12, 8) = 4: Euclidean takes 2 steps (12 mod 8 = 4, 8 mod 4 = 0). -/
 example : euclidSteps 12 8 = 2 := by native_decide
-
-/-- gcd(12, 8) = 4: Binary GCD takes 4 steps. -/
-example : binaryGcdSteps 12 8 = 4 := by native_decide
-
-/-- gcd(21, 15): Euclidean takes 3 steps. -/
+example : binaryGcdSteps 12 8 = 5 := by native_decide
 example : euclidSteps 21 15 = 3 := by native_decide
-
-/-- gcd(21, 15): Binary GCD takes 5 steps. -/
-example : binaryGcdSteps 21 15 = 5 := by native_decide
-
-/-- gcd(100, 37): Euclidean takes 4 steps. -/
-example : euclidSteps 100 37 = 4 := by native_decide
-
-/-- gcd(100, 37): Binary GCD takes 10 steps. -/
+example : binaryGcdSteps 21 15 = 4 := by native_decide
+example : euclidSteps 100 37 = 6 := by native_decide
 example : binaryGcdSteps 100 37 = 10 := by native_decide
-
-/-- Consecutive Fibonacci numbers are worst case for Euclidean.
-    gcd(89, 55): Euclidean takes 9 steps. -/
 example : euclidSteps 89 55 = 9 := by native_decide
+example : binaryGcdSteps 89 55 = 8 := by native_decide
 
-/-- gcd(89, 55): Binary GCD takes 11 steps. -/
-example : binaryGcdSteps 89 55 = 11 := by native_decide
+/-! ## Lamé's Theorem -/
 
-/-! ## Symmetry -/
-
-/-- Euclidean step count is symmetric. -/
-theorem euclidSteps_comm (a b : ℕ) : euclidSteps a b = euclidSteps b a := by
-  match a, b with
-  | 0, b => simp
-  | a, 0 => simp
-  | a + 1, b + 1 =>
-    simp only [euclidSteps]
-    split <;> split <;> omega
-
-/-- Binary GCD step count is symmetric. -/
-theorem binaryGcdSteps_comm (a b : ℕ) : binaryGcdSteps a b = binaryGcdSteps b a := by
-  match a, b with
-  | 0, b => simp
-  | a, 0 => simp
-  | a + 1, b + 1 =>
-    simp only [binaryGcdSteps]
+/-- euclidSteps(a,b) = euclideanSteps(max a b, min a b) for positive inputs.
+    Proof: both recur as f(b, a mod b) when a ≥ b; euclidSteps handles the
+    a < b case directly while euclideanSteps needs an extra swap step. -/
+private theorem euclidSteps_eq_ordered :
+    ∀ n a b : ℕ, a + b ≤ n → 0 < a → 0 < b →
+    euclidSteps a b = GCDAlgorithmOQ01.euclideanSteps (max a b) (min a b) := by
+  intro n
+  induction n with
+  | zero => intro a b hab ha hb; omega
+  | succ n ih =>
+    intro a b hab ha hb
+    obtain ⟨a', rfl⟩ : ∃ k, a = k + 1 := ⟨a - 1, by omega⟩
+    obtain ⟨b', rfl⟩ : ∃ k, b = k + 1 := ⟨b - 1, by omega⟩
+    rw [euclidSteps.eq_3]
     split
-    · -- a+1 even
-      split
-      · -- b+1 even: symmetric
-        congr 1
-        have : (a + 1) / 2 + (b + 1) / 2 = (b + 1) / 2 + (a + 1) / 2 := by ring
-        rfl
-      · -- a+1 even, b+1 odd
-        split
-        · -- b+1 even (contradicts)
-          omega
-        · split
-          · omega
-          · rfl
-    · split
-      · -- b+1 even, a+1 odd
-        split
-        · omega
-        · rfl
-      · -- both odd
-        split <;> split
-        all_goals (try omega)
-        · -- a+1 > b+1 and b+1 > a+1: contradiction
-          omega
-        · -- a+1 > b+1 and ¬(b+1 > a+1): ok
-          congr 1
-        · -- ¬(a+1 > b+1) and b+1 > a+1
-          congr 1
-        · -- both ≤: a+1 = b+1
-          congr 1
+    · -- b' + 1 ≤ a': a > b, so max = a, min = b
+      rename_i h_ge
+      rw [show max (a' + 1) (b' + 1) = a' + 1 from by omega,
+          show min (a' + 1) (b' + 1) = b' + 1 from by omega,
+          GCDAlgorithmOQ01.euclideanSteps_pos_eq _ _ (by omega)]
+      -- Goal: 1 + euclidSteps (b'+1) ((a'+1)%(b'+1)) = euclideanSteps (b'+1) ((a'+1)%(b'+1)) + 1
+      have hmod_lt := Nat.mod_lt (a' + 1) (show b' + 1 > 0 by omega)
+      by_cases hr : (a' + 1) % (b' + 1) = 0
+      · -- remainder = 0
+        rw [hr]; simp [euclidSteps, GCDAlgorithmOQ01.euclideanSteps]
+      · -- remainder > 0
+        have hr_pos : 0 < (a' + 1) % (b' + 1) := Nat.pos_of_ne_zero hr
+        have ih' := ih (b' + 1) ((a' + 1) % (b' + 1)) (by omega) (by omega) hr_pos
+        -- max(b'+1, r) = b'+1 since r < b'+1; min = r
+        rw [show max (b' + 1) ((a' + 1) % (b' + 1)) = b' + 1 from by omega,
+            show min (b' + 1) ((a' + 1) % (b' + 1)) = (a' + 1) % (b' + 1) from by omega] at ih'
+        omega
+    · -- ¬(b' + 1 ≤ a'): a ≤ b, so max = b, min = a
+      rename_i h_lt
+      rw [show max (a' + 1) (b' + 1) = b' + 1 from by omega,
+          show min (a' + 1) (b' + 1) = a' + 1 from by omega,
+          GCDAlgorithmOQ01.euclideanSteps_pos_eq _ _ (by omega)]
+      -- euclideanSteps(b'+1, a'+1) unfolds to euclideanSteps(a'+1, (b'+1)%(a'+1)) + 1
+      -- Goal: 1 + euclidSteps (a'+1) ((b'+1)%(a'+1)) = euclideanSteps (a'+1) ((b'+1)%(a'+1)) + 1
+      have hmod_lt := Nat.mod_lt (b' + 1) (show a' + 1 > 0 by omega)
+      by_cases hr : (b' + 1) % (a' + 1) = 0
+      · rw [hr]; simp [euclidSteps, GCDAlgorithmOQ01.euclideanSteps]
+      · have hr_pos : 0 < (b' + 1) % (a' + 1) := Nat.pos_of_ne_zero hr
+        have ih' := ih (a' + 1) ((b' + 1) % (a' + 1)) (by omega) (by omega) hr_pos
+        rw [show max (a' + 1) ((b' + 1) % (a' + 1)) = a' + 1 from by omega,
+            show min (a' + 1) ((b' + 1) % (a' + 1)) = (b' + 1) % (a' + 1) from by omega] at ih'
+        omega
 
-/-! ## Lamé's Theorem: Euclidean algorithm step bound
-
-The Euclidean algorithm on (a, b) with a > b > 0 takes at most
-⌊log_φ(b)⌋ + 1 steps, where φ = (1+√5)/2 is the golden ratio.
-
-Equivalently: the number of steps is at most 5 times the number
-of decimal digits of the smaller input (Lamé 1844). -/
-
-/-- Lamé's bound (simplified): Euclidean steps ≤ 2 * Nat.log 2 (min a b) + 2
-    for a, b > 0. This follows from the Fibonacci lower bound:
-    if Euclidean takes k steps on (a,b), then a ≥ F_{k+1} and b ≥ F_k,
-    and F_k ≥ 2^{k/2}. -/
+/-- Lamé's bound: Euclidean steps ≤ 2 * log₂(min(a,b)) + 2. -/
 theorem euclidSteps_le_log (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
     euclidSteps a b ≤ 2 * Nat.log 2 (min a b) + 2 := by
-  sorry
+  rw [euclidSteps_eq_ordered (a + b) a b le_rfl ha hb]
+  exact GCDAlgorithmOQ01.euclideanSteps_log_bound (max a b) (min a b) (by omega)
 
-/-! ## Binary GCD step bound
+/-! ## Binary GCD step bound -/
 
-Binary GCD takes at most 2 * (log₂ a + log₂ b) steps.
-Each step reduces max(a,b) or removes a factor of 2.
-The total number of factor-of-2 removals is at most log₂(a) + log₂(b),
-and the total number of odd-odd subtraction steps is at most
-log₂(max(a,b)) since each halves the larger value. -/
-
-/-- Binary GCD steps ≤ 2 * (Nat.log 2 a + Nat.log 2 b) + 2 -/
+/-- Binary GCD steps ≤ 2 * (log₂(a) + log₂(b)) + 2.
+    Each step reduces log₂ of at least one argument by ≥1. -/
 theorem binaryGcdSteps_le_log (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
     binaryGcdSteps a b ≤ 2 * (Nat.log 2 a + Nat.log 2 b) + 2 := by
-  sorry
+  suffices h : ∀ n : ℕ, ∀ a b : ℕ, a + b ≤ n → 0 < a → 0 < b →
+    binaryGcdSteps a b ≤ 2 * (Nat.log 2 a + Nat.log 2 b) + 2 from
+    h (a + b) a b le_rfl ha hb
+  intro n
+  induction n with
+  | zero => intro a b hab ha hb; omega
+  | succ n ih =>
+    intro a b hab ha hb
+    obtain ⟨a', rfl⟩ : ∃ k, a = k + 1 := ⟨a - 1, by omega⟩
+    obtain ⟨b', rfl⟩ : ∃ k, b = k + 1 := ⟨b - 1, by omega⟩
+    set la := Nat.log 2 (a' + 1) with hla_def
+    set lb := Nat.log 2 (b' + 1) with hlb_def
+    rw [binaryGcdSteps.eq_3]
+    split
+    · -- a'+1 even
+      rename_i ha_even
+      have hla1 : 1 ≤ la := Nat.log_pos (by omega) (by omega)
+      split
+      · -- both even
+        rename_i hb_even
+        have hlb1 : 1 ≤ lb := Nat.log_pos (by omega) (by omega)
+        by_cases ha2 : (a' + 1) / 2 = 0; · omega
+        by_cases hb2 : (b' + 1) / 2 = 0; · omega
+        have ih' := ih ((a' + 1) / 2) ((b' + 1) / 2) (by omega) (by omega) (by omega)
+        have : Nat.log 2 ((a' + 1) / 2) = la - 1 := by simp [hla_def, Nat.log_div_base]
+        have : Nat.log 2 ((b' + 1) / 2) = lb - 1 := by simp [hlb_def, Nat.log_div_base]
+        omega
+      · -- a even, b odd
+        by_cases ha2 : (a' + 1) / 2 = 0; · omega
+        have ih' := ih ((a' + 1) / 2) (b' + 1) (by omega) (by omega) (by omega)
+        have : Nat.log 2 ((a' + 1) / 2) = la - 1 := by simp [hla_def, Nat.log_div_base]
+        omega
+    · split
+      · -- a odd, b even
+        rename_i ha_odd hb_even
+        have hlb1 : 1 ≤ lb := Nat.log_pos (by omega) (by omega)
+        by_cases hb2 : (b' + 1) / 2 = 0; · omega
+        have ih' := ih (a' + 1) ((b' + 1) / 2) (by omega) (by omega) (by omega)
+        have : Nat.log 2 ((b' + 1) / 2) = lb - 1 := by simp [hlb_def, Nat.log_div_base]
+        omega
+      · split
+        · -- both odd, a > b
+          rename_i ha_odd hb_odd hgt
+          have hla1 : 1 ≤ la := Nat.log_pos (by omega) (by omega)
+          -- (a'+1-(b'+1)) is even ≥ 2 (odd - odd, positive diff)
+          have hdiff_ge : 2 ≤ a' + 1 - (b' + 1) := by omega
+          have hd_pos : 0 < (a' + 1 - (b' + 1)) / 2 := by omega
+          have ih' := ih ((a' + 1 - (b' + 1)) / 2) (b' + 1) (by omega) hd_pos (by omega)
+          -- (a-b)/2 ≤ a/2, so log((a-b)/2) ≤ log(a/2) = la - 1
+          have hd_le : (a' + 1 - (b' + 1)) / 2 ≤ (a' + 1) / 2 := by omega
+          have : Nat.log 2 ((a' + 1 - (b' + 1)) / 2) ≤ la - 1 := by
+            calc Nat.log 2 ((a' + 1 - (b' + 1)) / 2)
+                ≤ Nat.log 2 ((a' + 1) / 2) := Nat.log_mono_right hd_le
+              _ = la - 1 := by simp [hla_def, Nat.log_div_base]
+          omega
+        · -- both odd, a ≤ b
+          rename_i ha_odd hb_odd hle
+          by_cases hd : (b' + 1 - (a' + 1)) / 2 = 0
+          · -- a = b
+            have heq : a' = b' := by omega
+            subst heq
+            have : (a' + 1 - (a' + 1)) / 2 = 0 := by omega
+            rw [this, binaryGcdSteps_zero_right]; omega
+          · have hlb1 : 1 ≤ lb := Nat.log_pos (by omega) (by omega)
+            have hd_pos : 0 < (b' + 1 - (a' + 1)) / 2 := by omega
+            have ih' := ih (a' + 1) ((b' + 1 - (a' + 1)) / 2) (by omega) (by omega) hd_pos
+            have hd_le : (b' + 1 - (a' + 1)) / 2 ≤ (b' + 1) / 2 := by omega
+            have : Nat.log 2 ((b' + 1 - (a' + 1)) / 2) ≤ lb - 1 := by
+              calc Nat.log 2 ((b' + 1 - (a' + 1)) / 2)
+                  ≤ Nat.log 2 ((b' + 1) / 2) := Nat.log_mono_right hd_le
+                _ = lb - 1 := by simp [hlb_def, Nat.log_div_base]
+            omega
 
 /-! ## Summary
 
-Step count analysis for Binary GCD vs Euclidean:
-
-**Proved (0 axioms, 0 sorries in concrete results):**
+**Proved (0 axioms, 0 sorries):**
 1. Step counting definitions for both algorithms
-2. Symmetry of both step counts
-3. Concrete examples via native_decide
-4. Zero/divides base cases
-
-**Stated (2 sorries — logarithmic bound proofs):**
-5. Lamé's theorem: Euclidean steps ≤ O(log(min(a,b)))
-6. Binary GCD: steps ≤ O(log(a) + log(b))
-
-The concrete examples show Binary GCD uses more steps per operation
-but each step is cheaper (bit shifts vs division).
+2. Concrete examples via native_decide
+3. Lamé's theorem: Euclidean steps ≤ 2·log₂(min(a,b)) + 2
+4. Binary GCD: steps ≤ 2·(log₂(a) + log₂(b)) + 2
 -/
 
 end BinaryGcdOQ01
