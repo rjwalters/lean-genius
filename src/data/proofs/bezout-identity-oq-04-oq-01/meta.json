@@ -1,0 +1,224 @@
+{
+  "id": "bezout-identity-oq-04-oq-01",
+  "title": "Linear Diophantine Systems via Smith Normal Form",
+  "slug": "bezout-identity-oq-04-oq-01",
+  "description": "Extends the Bézout solution lattice to matrix systems Ax = b over ℤ: Smith Normal Form decomposes A = UDV into unimodular U, V and diagonal D with invariant factors d₁|d₂|...|dₖ. Solvability reduces to divisibility of transformed RHS by invariant factors. Solution sets are affine translates of the integer null space.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Smith_normal_form",
+    "date": "1861 (Smith Normal Form, formalized 2026)",
+    "status": "axiomatized",
+    "tags": [
+      "number-theory",
+      "linear-algebra",
+      "algorithms",
+      "smith-normal-form",
+      "diophantine",
+      "matrices",
+      "lattices"
+    ],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ04OQ01.lean",
+    "badge": "axiom",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.mulVec / Matrix.mulVec_add / Matrix.mulVec_sub / Matrix.mulVec_smul",
+        "description": "Matrix-vector multiplication and its linearity properties",
+        "module": "Mathlib.Data.Matrix.Basic"
+      },
+      {
+        "theorem": "Matrix.det_one / Matrix.det_mul",
+        "description": "Determinant of identity and product of matrices",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant"
+      },
+      {
+        "theorem": "Int.gcd_eq_gcd_ab / Int.gcd_dvd_left / Int.gcd_dvd_right",
+        "description": "Bézout identity and GCD divisibility for integers",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Matrix.IsDiag",
+        "description": "Diagonal matrix predicate",
+        "module": "Mathlib.LinearAlgebra.Matrix.IsDiag"
+      }
+    ],
+    "originalContributions": [
+      "SmithNormalForm structure: defines the SNF decomposition A = U·D·V with unimodular U,V and diagonal D with divisibility chain",
+      "IsUnimodular predicate for ℤ-matrices (det = ±1) with closure under product",
+      "bezout_from_snf: classical Bézout solvability criterion (∃x y, ax+by=c ↔ gcd(a,b)|c) proved directly",
+      "intNullSpace with closure under addition and scalar multiplication (ℤ-submodule structure)",
+      "solution_iff_particular_plus_null: solution set = particular solution + null space (affine lattice)",
+      "Concrete examples: 3-variable solvability (6x+10y+15z=1) and 2-variable unsolvability (6x+10y=3)"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 2,
+    "lineCount": 335,
+    "assumptions": "Two axioms: snf_exists (every integer matrix has a Smith Normal Form) and snf_solvability_criterion (system Ax=b solvable iff invariant factors divide transformed RHS). Both are well-known theorems; constructive proofs would require implementing the full row/column reduction algorithm for ℤ-matrices.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "**Smith Normal Form** was introduced by Henry J.S. Smith in 1861. Given any m×n integer matrix A, there exist invertible (unimodular) integer matrices U, V such that D = UAV is diagonal with d₁|d₂|...|dₖ. These diagonal entries, the **invariant factors**, completely determine the ℤ-module structure of ℤⁿ/im(A).\n\nThis generalizes Bézout's identity: for the 1×2 matrix [a, b], the sole invariant factor is gcd(a,b), and the SNF solvability criterion reduces to the classical condition gcd(a,b)|c.",
+    "problemStatement": "**Open Question (bezout-identity-oq-04-oq-01)**: Can the parametric solution for single Diophantine equations (from BezoutIdentityOQ04) extend to systems Ax = b over ℤ, characterizing the full solution lattice via Smith Normal Form?\n\n**Answer: YES.** Smith Normal Form provides the complete characterization:\n1. Every A ∈ M_{m×n}(ℤ) decomposes as A = UDV with U,V unimodular, D diagonal with d₁|d₂|...|dₖ\n2. Ax = b has solutions ↔ dᵢ|(Ub)ᵢ for each nonzero dᵢ, and (Ub)ᵢ = 0 for zero dᵢ\n3. The solution set is {x₀ + h : h ∈ ker(A)}, a translate of the free ℤ-module ker(A)",
+    "text": "Extends the Bézout solution lattice to matrix systems Ax = b over ℤ via Smith Normal Form. The system is solvable iff invariant factors divide the transformed RHS, and solutions form an affine lattice.",
+    "proofStrategy": "**Stage 1 (Infrastructure)**: Define IsUnimodular (det = ±1) with basic properties (identity is unimodular, product closure). Define SmithNormalForm structure with unimodular U,V, diagonal D, and divisibility chain.\n\n**Stage 2 (Classical Recovery)**: Prove bezout_from_snf directly from Int.gcd properties — the 1×2 case that recovers classical Bézout.\n\n**Stage 3 (Null Space)**: Define intNullSpace and prove ℤ-submodule closure (zero, add, smul). Prove solution_iff_particular_plus_null: solutions are cosets of the null space.\n\n**Stage 4 (Concrete Examples)**: Three-variable solvability via witness construction; two-variable unsolvability via divisibility obstruction.",
+    "keyInsights": [
+      "**Unimodular = invertible over ℤ**: det(M) = ±1 characterizes ℤ-invertibility (Cramer's rule with integer adjugate).",
+      "**SNF generalizes GCD**: The sole invariant factor of [a,b] is gcd(a,b). SNF is 'GCD for matrices'.",
+      "**Affine lattice structure**: Solution sets of Ax=b are cosets x₀ + ker(A), generalizing the 1D lattice from BezoutIdentityOQ04.",
+      "**Divisibility chain = invariant factors**: d₁|d₂|...|dₖ encode the ℤ-module structure of the cokernel.",
+      "**Classical Bézout is a special case**: bezout_from_snf recovers the gcd(a,b)|c criterion without using SNF machinery."
+    ],
+    "prerequisites": [
+      "Integer matrices and matrix-vector multiplication over ℤ",
+      "Determinants and invertibility of integer matrices (unimodular matrices)",
+      "Bézout's identity and GCD properties from BezoutIdentityOQ04",
+      "ℤ-modules, free modules, and lattice structure of solution sets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "unimodular",
+      "title": "Unimodular Matrices",
+      "startLine": 48,
+      "endLine": 76,
+      "summary": "Defines IsUnimodular (det = ±1), proves equivalence with |det| = 1, and establishes closure: identity is unimodular, product of unimodulars is unimodular.",
+      "mathContext": "A matrix $M \\in M_n(\\mathbb{Z})$ is **unimodular** iff $\\det(M) = \\pm 1$. By Cramer's rule with integer adjugate, $M^{-1} = (\\det M)^{-1} \\mathrm{adj}(M)$, which has integer entries iff $\\det M = \\pm 1$. The unimodular group $\\mathrm{GL}_n(\\mathbb{Z})$ is the group of units of the ring $M_n(\\mathbb{Z})$."
+    },
+    {
+      "id": "snf-structure",
+      "title": "Smith Normal Form Structure",
+      "startLine": 80,
+      "endLine": 108,
+      "summary": "Defines SmithNormalForm m n as a structure with unimodular U, V, diagonal D, and divisibility chain d_k | d_{k+1}. Defines isDecompOf as A = U * D * V.",
+      "mathContext": "The **Smith Normal Form** of $A \\in M_{m \\times n}(\\mathbb{Z})$ is the decomposition $A = UDV$ where $U \\in \\mathrm{GL}_m(\\mathbb{Z})$, $V \\in \\mathrm{GL}_n(\\mathbb{Z})$, and $D = \\mathrm{diag}(d_1, \\ldots, d_k, 0, \\ldots, 0)$ with $d_1 \\mid d_2 \\mid \\cdots \\mid d_k$, all $d_i > 0$."
+    },
+    {
+      "id": "snf-existence",
+      "title": "Smith Normal Form Existence",
+      "startLine": 112,
+      "endLine": 131,
+      "summary": "Axiomatizes snf_exists: every integer matrix admits an SNF decomposition. The constructive proof (row/column reduction via Euclidean algorithm on entries) is described but not implemented.",
+      "mathContext": "**Existence** is proved constructively: pick the smallest nonzero $|a_{ij}|$, move to $(1,1)$, clear row and column using Euclidean division. If any remaining entry isn't divisible by $a_{11}$, add its row to row 1 and repeat (this strictly decreases $|a_{11}|$). Then recurse on the $(m-1) \\times (n-1)$ submatrix."
+    },
+    {
+      "id": "solvability",
+      "title": "Solvability Criterion",
+      "startLine": 133,
+      "endLine": 168,
+      "summary": "Axiomatizes snf_solvability_criterion: Ax=b has solutions iff d_i | (Ub)_i for each nonzero invariant factor d_i, and (Ub)_i = 0 for zero factors. Includes invariantFactor and rank extraction functions.",
+      "mathContext": "Let $D = UAV$ be the SNF. Then $Ax = b \\Leftrightarrow DV^{-1}x = Ub$. Setting $y = V^{-1}x$, this becomes $Dy = Ub$: a diagonal system where $d_i y_i = (Ub)_i$, solvable iff $d_i \\mid (Ub)_i$ for $d_i \\neq 0$ and $(Ub)_i = 0$ otherwise."
+    },
+    {
+      "id": "classical-bezout",
+      "title": "Classical Bézout Recovery",
+      "startLine": 170,
+      "endLine": 199,
+      "summary": "States snf_1x2_invariant_factor (sorry: 1×2 SNF has invariant factor = gcd). Proves bezout_from_snf directly: ∃x y, ax+by=c ↔ gcd(a,b)|c, recovering the classical result without SNF machinery.",
+      "mathContext": "For the $1 \\times 2$ matrix $[a, b]$, the SNF is $[\\gcd(a,b), 0]$ with $U = [1]$ and appropriate $V$. The solvability criterion reduces to $\\gcd(a,b) \\mid c$, which is exactly the classical Bézout criterion."
+    },
+    {
+      "id": "null-space",
+      "title": "Integer Null Space Structure",
+      "startLine": 201,
+      "endLine": 232,
+      "summary": "Defines intNullSpace {x | Ax = 0} and proves ℤ-submodule properties: zero membership, closure under addition (via mulVec_add), closure under scalar multiplication (via mulVec_smul).",
+      "mathContext": "The **null space** $\\ker(A) = \\{x \\in \\mathbb{Z}^n : Ax = 0\\}$ is a free $\\mathbb{Z}$-module of rank $n - r$ where $r$ is the number of nonzero invariant factors. By the structure theorem for finitely generated modules over PIDs, $\\mathbb{Z}^n / \\ker(A) \\cong \\mathbb{Z}^r$."
+    },
+    {
+      "id": "solution-lattice",
+      "title": "Solution Lattice Structure",
+      "startLine": 234,
+      "endLine": 270,
+      "summary": "Proves solution_iff_particular_plus_null: Ax=b ↔ (x-x₀) ∈ ker(A), so solutions form the affine lattice x₀ + ker(A). Proof uses mulVec_sub for both directions.",
+      "mathContext": "The solution set of $Ax = b$ is the **affine lattice** $\\{x_0 + h : h \\in \\ker(A)\\}$, a coset of the null space. This generalizes the 1D lattice $\\{(x_0 + bt/d, y_0 - at/d)\\}$ from BezoutIdentityOQ04 to arbitrary dimensions."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 272,
+      "endLine": 295,
+      "summary": "Three worked examples: (1) 6x+10y+15z=1 solvable (witness x=1,y=1,z=-1), (2) 6x+10y+15z=7 solvable, (3) 6x+10y=3 unsolvable (2|6x+10y but 2∤3).",
+      "mathContext": "Example (3) demonstrates the solvability obstruction: $\\gcd(6,10) = 2$ does not divide 3, so $6x + 10y = 3$ has no solution. The proof constructs the explicit divisibility witness $6x + 10y = 2(3x + 5y)$ and uses omega to derive $2 \\nmid 3$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers bezout-identity-oq-04-oq-01 affirmatively: Smith Normal Form extends the Bézout solution lattice to full matrix systems. Two axioms encode the existence and solvability criterion; 9 theorems are fully proved including Bézout recovery, null space structure, and the affine lattice characterization.",
+    "implications": "Completes the Bézout family from scalar to matrix: single equations (BezoutIdentity) → parametric solutions (OQ04) → matrix systems (this file). The SNF framework is foundational for: integer linear programming, lattice-based cryptography (LWE), algebraic K-theory, and the classification of finitely generated abelian groups.",
+    "openQuestions": [
+      "Can gcd_complete_characterization be generalized to any PID using Mathlib's UniqueFactorizationDomain typeclass, replacing gcd with the gcd of a Euclidean domain?",
+      "Does the solution lattice structure have applications to the geometry of numbers (Minkowski's theorem) — can the number of solutions in a bounded region be estimated using lattice point counting?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-04",
+      "relationship": "extends",
+      "description": "Parent entry with complete parametric solutions for single equations ax+by=c — this file extends to matrix systems Ax=b"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "extends",
+      "description": "Root Bézout identity (gcd=ax+by) — this file generalizes from scalar to matrix GCD structure"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-02",
+      "relationship": "related",
+      "description": "PID generalization of Bézout — SNF exists over any PID, not just ℤ"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique factorization provides the GCD computation underlying Smith Normal Form"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Matrix.Basic",
+      "Mathlib.Data.Matrix.Diagonal",
+      "Mathlib.LinearAlgebra.Matrix.Diagonal",
+      "Mathlib.LinearAlgebra.Matrix.IsDiag",
+      "Mathlib.RingTheory.Coprime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "BezoutIdentityOQ04OQ01",
+    "lineCount": 335,
+    "axiomCount": 2,
+    "theoremCount": 11,
+    "definitionCount": 5
+  },
+  "references": [
+    {
+      "authors": "Smith, Henry J.S.",
+      "title": "On Systems of Linear Indeterminate Equations and Congruences",
+      "year": "1861",
+      "venue": "Philosophical Transactions of the Royal Society of London, 151, pp. 293-326",
+      "note": "Original introduction of the Smith Normal Form for integer matrices, establishing the diagonal reduction via elementary row/column operations"
+    },
+    {
+      "authors": "Newman, Morris",
+      "title": "Integral Matrices",
+      "year": "1972",
+      "venue": "Academic Press, Pure and Applied Mathematics vol. 45",
+      "note": "Comprehensive treatment of Smith Normal Form, unimodular equivalence, and invariant factors for integer matrices"
+    },
+    {
+      "authors": "Jacobson, Nathan",
+      "title": "Basic Algebra I",
+      "year": "1985",
+      "venue": "W. H. Freeman, 2nd edition",
+      "note": "Chapter 3: Smith Normal Form for PIDs, connecting the diagonal form to the structure theorem for finitely generated modules"
+    },
+    {
+      "authors": "Schrijver, Alexander",
+      "title": "Theory of Linear and Integer Programming",
+      "year": "1986",
+      "venue": "John Wiley & Sons",
+      "note": "Chapter 4: applications of Smith Normal Form to integer linear programming and Diophantine system solvability"
+    }
+  ]
+}
