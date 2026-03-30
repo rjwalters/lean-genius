@@ -1,0 +1,43 @@
+{
+  "id": "euler-totient-oq-02",
+  "title": "Multiplicativity of Euler's Totient Function",
+  "slug": "euler-totient-oq-02",
+  "description": "The multiplicative property of Euler's totient: phi(mn) = phi(m)*phi(n) when gcd(m,n) = 1. Proves multiplicativity via Mathlib, prime power formula, special cases, and non-coprime counterexamples.",
+  "meta": {
+    "status": "verified",
+    "tags": ["number-theory", "multiplicative-functions", "modular-arithmetic", "totient"],
+    "proofRepoPath": "Proofs/EulerTotientOQ02.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All results from Mathlib's Nat.totient API.",
+    "lineCount": 170,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-03-30"
+  },
+  "overview": {
+    "problemStatement": "Prove that Euler's totient function is multiplicative: phi(mn) = phi(m)*phi(n) for coprime m, n.",
+    "text": "The multiplicativity of phi follows from the Chinese Remainder Theorem: when gcd(m,n) = 1, the ring isomorphism Z/mnZ = Z/mZ x Z/nZ induces an isomorphism on unit groups, so phi(mn) = |units of Z/mnZ| = |units of Z/mZ| * |units of Z/nZ| = phi(m)*phi(n).",
+    "proofStrategy": "Core result from Mathlib's Nat.totient_mul. Extended with prime power formula, three-factor products, special cases (phi(2m) for odd m), and native_decide verifications including non-coprime counterexamples.",
+    "keyInsights": [
+      "Multiplicativity follows from CRT: (Z/mnZ)* = (Z/mZ)* x (Z/nZ)* when gcd(m,n) = 1",
+      "Combined with phi(p^k) = p^(k-1)(p-1), gives the complete product formula for phi",
+      "Coprimality is essential: phi(2*4) != phi(2)*phi(4) demonstrates failure for non-coprime factors",
+      "phi(n) = card of units in Z/nZ connects number theory to group theory"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Proves the multiplicative property of the totient function from the parent formalization"
+    },
+    {
+      "targetId": "euler-totient-oq-04",
+      "relationship": "complements",
+      "description": "The divisor sum identity n = sum_{d|n} phi(d) uses multiplicativity implicitly"
+    }
+  ]
+}
