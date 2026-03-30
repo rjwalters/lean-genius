@@ -1,6 +1,8 @@
 import Mathlib.NumberTheory.Transcendental.Liouville.Basic
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
+import Mathlib.NumberTheory.Transcendental.Liouville.Residual
+import Mathlib.Topology.Algebra.Module.PerfectSpace
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
@@ -262,14 +264,23 @@ theorem liouville_constant_irrational : Irrational (liouvilleNumber 10) :=
 PART V: PROPERTIES OF LIOUVILLE NUMBERS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Axiom: Liouville numbers form an uncountable set.**
+/-- **Liouville numbers form an uncountable set.** (formerly axiom, now proved)
 
-    **Proof idea**: The set of Liouville numbers contains a perfect set (a closed set
-    with no isolated points), hence is uncountable by the Cantor-Bendixson theorem.
-
-    Alternatively: Consider numbers of the form Σₙ aₙ · 10^(-n!) where aₙ ∈ {0, 1}.
-    This gives 2^ℕ = cardinality of continuum many distinct Liouville numbers. -/
-axiom liouville_uncountable_axiom : ¬Set.Countable {x : ℝ | Liouville x}
+    The set of Liouville numbers is residual (comeagre) in ℝ by
+    `eventually_residual_liouville` from Mathlib. In a nonempty Baire space like ℝ,
+    residual sets are not meagre. But any countable subset of ℝ is meagre: each
+    singleton has empty interior (since ℝ is a perfect space with no isolated points),
+    hence is nowhere dense, hence meagre, and a countable union of meagre sets is
+    meagre. Contradiction. -/
+theorem liouville_uncountable_axiom : ¬Set.Countable {x : ℝ | Liouville x} := by
+  intro hcount
+  have hnotmeagre : ¬IsMeagre {x : ℝ | Liouville x} :=
+    not_isMeagre_of_mem_residual eventually_residual_liouville
+  apply hnotmeagre
+  have eq : {x : ℝ | Liouville x} = ⋃ x ∈ {x : ℝ | Liouville x}, ({x} : Set ℝ) := by ext; simp
+  rw [eq]
+  exact isMeagre_biUnion hcount fun x _ =>
+    (isClosed_singleton.isNowhereDense_iff.mpr (interior_singleton x)).isMeagre
 
 theorem liouville_uncountable : ¬Set.Countable {x : ℝ | Liouville x} :=
   liouville_uncountable_axiom
