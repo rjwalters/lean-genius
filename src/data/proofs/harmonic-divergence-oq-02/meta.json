@@ -1,0 +1,70 @@
+{
+    "id": "harmonic-divergence-oq-02",
+    "title": "Divergence of the Log-Harmonic Series",
+    "slug": "harmonic-divergence-oq-02",
+    "description": "The series Σ 1/(n·log n) diverges, proved via the Cauchy condensation test. The condensed series 2^k/(2^k·k·log 2) = Σ 1/(k·log 2) is a rescaled harmonic series.",
+    "meta": {
+        "author": "Classical",
+        "status": "verified",
+        "proofRepoPath": "Proofs/HarmonicDivergenceOQ02.lean",
+        "tags": [
+            "analysis",
+            "series",
+            "divergence",
+            "condensation test",
+            "logarithmic"
+        ],
+        "badge": "verified",
+        "sorries": 0,
+        "axiomCount": 0,
+        "lineCount": 142,
+        "assumptions": "None. All results fully proved via Cauchy condensation.",
+        "mathlib_version": "4.26.0"
+    },
+    "overview": {
+        "historicalContext": "The harmonic series Σ 1/n diverges at rate log(n). The next natural question is the 'log-harmonic' series Σ 1/(n·log n), which also diverges but slower, with partial sums growing like log(log n). This connects to the hierarchy of iterated logarithmic series.",
+        "problemStatement": "Prove that the series Σ_{n≥2} 1/(n·log n) diverges, and characterize its divergence rate.",
+        "text": "The proof uses the Cauchy condensation test: for f(n) = 1/(n·log n), the condensed series is 2^k · f(2^k) = 2^k/(2^k · k·log 2) = 1/(k·log 2), which is (1/log 2) times the harmonic series. Since the harmonic series diverges, so does the log-harmonic series.",
+        "proofStrategy": "Apply the Cauchy condensation test (from HarmonicDivergenceOQ04) to f(n) = 1/(n·log n). The condensed series simplifies to 1/(k·log 2), a rescaled harmonic series.",
+        "keyInsights": [
+            "2^k · 1/(2^k · log(2^k)) = 1/(k·log 2) by cancellation and log(2^k) = k·log 2",
+            "The condensed series is exactly (1/log 2) · Σ 1/k, connecting log-harmonic divergence to harmonic divergence",
+            "logHarmonic is antitone because n·log n is increasing for n ≥ 2",
+            "The hierarchy: Σ 1/n diverges at rate log n, Σ 1/(n·log n) at rate log(log n), etc."
+        ],
+        "prerequisites": [
+            "Cauchy condensation test (HarmonicDivergenceOQ04)",
+            "Harmonic series divergence (Mathlib)",
+            "Properties of Real.log (Mathlib)"
+        ]
+    },
+    "leanFile": {
+        "imports": [
+            "Mathlib"
+        ],
+        "opens": [
+            "Finset",
+            "Filter",
+            "BigOperators",
+            "Topology",
+            "Real"
+        ],
+        "namespace": "HarmonicDivergenceOQ02",
+        "lineCount": 142,
+        "axiomCount": 0,
+        "theoremCount": 7,
+        "definitionCount": 1
+    },
+    "crossReferences": [
+        {
+            "targetId": "harmonic-divergence",
+            "relationship": "extends",
+            "description": "Proves divergence of the next series in the logarithmic hierarchy after the harmonic series"
+        },
+        {
+            "targetId": "harmonic-divergence-oq-04",
+            "relationship": "uses",
+            "description": "Uses the Cauchy condensation test formalized in OQ-04"
+        }
+    ]
+}
