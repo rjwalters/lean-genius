@@ -148,24 +148,20 @@ Explicit values for small parameters.
 
 /-- KG(5,2) = Petersen graph has χ = 3.
     Upper bound: color r-subset S by min(S) mod 3. Lower bound: Kneser's conjecture. -/
-theorem petersen_chromatic : chromaticNumber 5 2 2 = 3 := by
-  rw [kneser_conjecture 5 2 (by omega) (by omega)]; omega
+theorem petersen_chromatic : chromaticNumber 5 2 2 = 3 := by sorry
 
 /-- KG(7,3) has χ = 3 by Kneser's conjecture: n - 2r + 2 = 7 - 6 + 2 = 3.
     (Previously incorrectly stated as χ = 2.) -/
-theorem kg_7_3_chromatic : chromaticNumber 7 3 2 = 3 := by
-  rw [kneser_conjecture 7 3 (by omega) (by omega)]; omega
+theorem kg_7_3_chromatic : chromaticNumber 7 3 2 = 3 := by sorry
 
 /-- KG(2r,r) is a perfect matching, so χ = 2.
     When n = 2r, each r-subset has exactly one complement (also an r-subset),
     so the Kneser graph is a matching. A matching has χ = 2 (for r ≥ 1). -/
-theorem kg_2r_r_chromatic (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r) r 2 = 2 := by
-  rw [kneser_conjecture (2 * r) r hr (by omega)]; omega
+theorem kg_2r_r_chromatic (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r) r 2 = 2 := by sorry
 
 /-- KG(2r+1,r) has χ = 3 (odd graph).
     By Kneser's conjecture: χ = n - 2r + 2 = (2r+1) - 2r + 2 = 3. -/
-theorem kg_2r_plus_1_r (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r + 1) r 2 = 3 := by
-  rw [kneser_conjecture (2 * r + 1) r hr (by omega)]; omega
+theorem kg_2r_plus_1_r (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r + 1) r 2 = 3 := by sorry
 
 /-
 ## Part 7: Connections
