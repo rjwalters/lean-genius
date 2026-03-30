@@ -1,0 +1,145 @@
+{
+  "id": "binomial-theorem-oq-04-oq-03",
+  "title": "The q-Vandermonde Identity",
+  "slug": "binomial-theorem-oq-04-oq-03",
+  "description": "Formalizes the q-Vandermonde identity using Gaussian binomial coefficients defined via a division-free recurrence. Proves the q=1 specialization recovers the classical Vandermonde identity. Establishes q-integer and q-binomial infrastructure for future q-analog work.",
+  "leanFile": "Proofs/BinomialTheoremOQ04OQ03.lean",
+  "meta": {
+    "author": "Vandermonde (1772), Cauchy (1840), formalized",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
+    "date": "1840",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "gaussian-binomial",
+      "vandermonde",
+      "quantum-groups"
+    ],
+    "badge": "formalized",
+    "sorries": 3,
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Vandermonde identity in antidiagonal form",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's recurrence for binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "qBinom: Gaussian binomial coefficients via division-free recurrence",
+      "qInt: q-integers as geometric partial sums",
+      "qBinom_at_one: specialization [n choose k]_1 = C(n,k) proved",
+      "qVandermonde_at_one: classical Vandermonde recovered at q=1",
+      "qBinom_self, qBinom_eq_zero_of_lt: structural properties proved",
+      "qBinom_one: [n choose 1]_q = [n]_q proved",
+      "qVandermonde: main q-identity stated (sorry)"
+    ],
+    "axiomCount": 0,
+    "lineCount": 200,
+    "assumptions": "No axioms. 3 sorries: qVandermonde (main identity), qBinom_symmetry (q-symmetry), catalan_pos (minor). The q-Vandermonde sorry is an Aristotle candidate."
+  },
+  "overview": {
+    "historicalContext": "**The q-Analog Revolution**\n\nThe Gaussian binomial coefficient [n choose k]_q was introduced by Gauss in the context of counting subspaces of finite vector spaces over F_q. Cauchy (1840) established the q-Vandermonde identity. The q-analog framework became central to partition theory (Euler, Ramanujan), quantum groups (Drinfeld, Jimbo, 1985), and modern algebraic combinatorics.\n\nThe q-Vandermonde identity is a cornerstone: it generalizes the classical Vandermonde identity by introducing a parameter q that tracks additional combinatorial structure.",
+    "problemStatement": "**Question**: Can the q-Vandermonde identity be formalized in Lean?\n\n**Answer**: Yes, using Gaussian binomial coefficients defined via a Pascal-type recurrence. The q=1 specialization is proved to recover the classical identity.",
+    "text": "Formalizes Gaussian binomial coefficients and the q-Vandermonde identity, connecting q-analog combinatorics to the classical Vandermonde identity.",
+    "proofStrategy": "1. Define q-integers [n]_q = Σ q^i as geometric partial sums\n2. Define Gaussian binomials via recurrence (avoids division)\n3. Prove structural properties (base cases, vanishing)\n4. Prove q=1 specialization to ordinary binomials\n5. State q-Vandermonde identity\n6. Verify classical Vandermonde as special case",
+    "keyInsights": [
+      "**Division-free definition**: The recurrence [n+1 choose k+1]_q = [n choose k]_q + q^{k+1}·[n choose k+1]_q avoids division and works over any commutative ring.",
+      "**q=1 recovers classics**: At q=1, all q-factors become 1 and Gaussian binomials reduce to ordinary binomial coefficients. This is the bridge between q-analog and classical combinatorics.",
+      "**q-symmetry is asymmetric**: Unlike C(n,k) = C(n,n-k), q-symmetry introduces a power of q: [n choose k]_q = q^{k(n-k)} · [n choose n-k]_q.",
+      "**Finite geometry interpretation**: [n choose k]_q counts the number of k-dimensional subspaces of F_q^n when q is a prime power."
+    ],
+    "prerequisites": [
+      "Vandermonde's identity (parent proof)",
+      "Binomial coefficients and Pascal's recurrence",
+      "Basic ring theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "q-integers",
+      "title": "q-Integers and q-Factorials",
+      "startLine": 42,
+      "endLine": 62,
+      "summary": "Defines the q-integer $[n]_q = 1 + q + \\cdots + q^{n-1}$ and proves $[n]_1 = n$.",
+      "mathContext": "The q-integer $[n]_q = \\frac{1 - q^n}{1 - q}$ is the fundamental building block of q-analog theory. As $q \\to 1$, $[n]_q \\to n$ by L'Hôpital's rule."
+    },
+    {
+      "id": "gaussian-binomials",
+      "title": "Gaussian Binomial Coefficients",
+      "startLine": 68,
+      "endLine": 115,
+      "summary": "Defines $\\binom{n}{k}_q$ via Pascal-type recurrence. Proves base cases, self-value $\\binom{n}{n}_q = 1$, and vanishing when $k > n$.",
+      "mathContext": "The Gaussian binomial $\\binom{n}{k}_q = \\frac{[n]_q!}{[k]_q! [n-k]_q!}$ counts $k$-dimensional subspaces of $\\mathbb{F}_q^n$. The recurrence definition avoids the division formula."
+    },
+    {
+      "id": "specialization",
+      "title": "Specialization q = 1",
+      "startLine": 121,
+      "endLine": 140,
+      "summary": "Proves $\\binom{n}{k}_1 = \\binom{n}{k}$: at $q = 1$, Gaussian binomials reduce to ordinary binomial coefficients.",
+      "mathContext": "This is the key bridge between q-analog and classical combinatorics. The proof proceeds by induction using the matching recurrences."
+    },
+    {
+      "id": "q-vandermonde",
+      "title": "The q-Vandermonde Identity",
+      "startLine": 146,
+      "endLine": 175,
+      "summary": "States the q-Vandermonde identity and verifies that at $q = 1$ it recovers the classical Vandermonde identity.",
+      "mathContext": "$\\binom{m+n}{r}_q = \\sum_{k=0}^{r} q^{k(n-r+k)} \\binom{m}{k}_q \\binom{n}{r-k}_q$ generalizes the classical identity with a q-weight factor."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-04",
+      "relationship": "extends",
+      "description": "Extends the classical Vandermonde identity to its q-analog, the q-Vandermonde identity."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem provides the algebraic foundation; q-analogs extend this to quantum and finite-field settings."
+    }
+  ],
+  "conclusion": {
+    "summary": "The q-Vandermonde identity is formalized using Gaussian binomial coefficients defined via a division-free recurrence. The q=1 specialization is proved to recover the classical Vandermonde identity. The main q-Vandermonde proof remains a sorry — a good target for future work or Aristotle.",
+    "implications": "The Gaussian binomial infrastructure (qBinom, qInt) enables future formalization of q-series identities, quantum group representations, and partition-theoretic results. The q-Vandermonde is a gateway to deeper identities like the q-Chu-Vandermonde and Rogers-Ramanujan identities.",
+    "openQuestions": []
+  },
+  "references": [
+    {
+      "authors": "Andrews, George E.",
+      "title": "The Theory of Partitions",
+      "year": "1976",
+      "venue": "Cambridge University Press"
+    },
+    {
+      "authors": "Kac, Victor and Cheung, Pokman",
+      "title": "Quantum Calculus",
+      "year": "2002",
+      "venue": "Springer"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "qBinom_at_one",
+      "type": "core",
+      "description": "Gaussian binomials at q=1 equal ordinary binomials",
+      "leanType": "qBinom 1 n k = Nat.choose n k"
+    },
+    {
+      "name": "qVandermonde",
+      "type": "key",
+      "description": "The q-Vandermonde identity (sorry)",
+      "leanType": "qBinom q (m+n) r = Σ q^{k(n-r+k)} · qBinom q m k · qBinom q n (r-k)"
+    }
+  ]
+}
