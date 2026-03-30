@@ -111,10 +111,8 @@ theorem weak_from_strong (P : ℕ → Prop)
 /-- **Well-ordering principle for ℕ**: Every non-empty set of natural
     numbers has a least element. This is equivalent to induction. -/
 theorem nat_well_ordering (S : Set ℕ) (hne : S.Nonempty) :
-    ∃ n ∈ S, ∀ m ∈ S, n ≤ m := by
-  exact Nat.find_spec_and_min (hne.to_subtype) |>.imp fun n hn =>
-    ⟨hn.1, fun m hm => hn.2 m hm⟩
-  sorry
+    ∃ n ∈ S, ∀ m ∈ S, n ≤ m :=
+  ⟨Nat.find hne, Nat.find_spec hne, fun m hm => Nat.find_min' hne hm⟩
 
 /-- Well-ordering implies induction: if there were a counterexample,
     the smallest counterexample leads to contradiction. -/
