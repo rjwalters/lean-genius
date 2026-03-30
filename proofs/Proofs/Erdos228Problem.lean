@@ -123,8 +123,9 @@ Key milestones:
 - 1980s-2010s: Various partial results
 - 2019: Full resolution by BBMST
 -/
-axiom littlewood_original :
+theorem littlewood_original :
     ∃ _statement : Prop, True  -- Historical record placeholder
+    := ⟨True, trivial⟩
 
 /- ## Related Problems -/
 
