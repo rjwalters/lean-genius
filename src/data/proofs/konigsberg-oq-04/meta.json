@@ -1,0 +1,119 @@
+{
+  "id": "konigsberg-oq-04",
+  "title": "Computational Complexity of Counting Eulerian Circuits",
+  "slug": "konigsberg-oq-04",
+  "description": "Surveys the computational complexity of counting Eulerian circuits. Decision is trivial (Euler's criterion), but counting is #P-complete for undirected graphs (Brightwell-Winkler 2005). For directed graphs, the BEST theorem gives a polynomial formula via the matrix tree theorem.",
+  "leanFile": "Proofs/KonigsbergOQ04.lean",
+  "meta": {
+    "author": "BEST (1951), Brightwell-Winkler (2005)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/BEST_theorem",
+    "date": "2005",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/KonigsbergOQ04.lean",
+    "tags": [
+      "graph-theory",
+      "complexity",
+      "eulerian-circuits",
+      "counting",
+      "matrix-tree-theorem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Undirected simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "euler_criterion_decidable: Euler's criterion is decidable for finite graphs",
+      "BEST theorem statement: documented formula for directed Eulerian circuit counting",
+      "#P-completeness: documented for undirected case (Brightwell-Winkler)",
+      "Complexity landscape table: decision vs finding vs counting",
+      "Concrete examples: cycle graphs, complete graphs"
+    ],
+    "axiomCount": 0,
+    "lineCount": 157,
+    "assumptions": "No axioms, no sorries. Results are stated as documented facts (True) since #P-completeness and BEST theorem require Turing machine formalization beyond current scope."
+  },
+  "overview": {
+    "historicalContext": "**From Euler to #P-completeness**\n\nEuler (1736) solved the Königsberg bridges problem by showing Eulerian circuits require even degrees. Hierholzer (1873) gave an efficient algorithm to find them. The BEST theorem (de Bruijn, van Aardenne-Ehrenfest, Smith, Tutte, 1951) gave an exact formula for counting directed Eulerian circuits. Brightwell and Winkler (2005) proved the surprising result that counting undirected Eulerian circuits is #P-complete.",
+    "problemStatement": "**Question**: What is the computational complexity of counting Eulerian circuits?\n\n**Answer**: Decision is O(|V|), finding is O(|E|), but counting is #P-complete for undirected graphs. For directed graphs, the BEST theorem gives polynomial counting via the matrix tree theorem.",
+    "text": "The complexity of counting Eulerian circuits exhibits a remarkable gap: trivial to decide, polynomial to find, but #P-complete to count in the undirected case.",
+    "proofStrategy": "Survey approach: state Euler's decidable criterion, document the BEST theorem formula, record the #P-completeness result, and provide concrete examples.",
+    "keyInsights": [
+      "**Decision-counting gap**: Existence is trivial (check degrees), but counting is as hard as counting SAT solutions.",
+      "**Directed vs undirected gap**: Counting directed Eulerian circuits is polynomial (BEST theorem), but undirected is #P-complete.",
+      "**BEST formula**: EC(G) = t_w(G) · ∏(deg⁺(v)-1)! reduces to a single determinant computation.",
+      "**Matrix tree theorem connection**: The arborescence count t_w(G) is computed via the Laplacian matrix cofactor."
+    ],
+    "prerequisites": [
+      "Königsberg bridges problem (parent proof)",
+      "Basic graph theory (degrees, connectivity)",
+      "Computational complexity (P, #P)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "decision",
+      "title": "Euler's Criterion (Decision is Easy)",
+      "startLine": 41,
+      "endLine": 51,
+      "summary": "Euler's criterion for Eulerian circuits (all even degrees) is decidable in O(|V|) time.",
+      "mathContext": "A connected graph has an Eulerian circuit iff every vertex has even degree. This is trivially checkable."
+    },
+    {
+      "id": "best-theorem",
+      "title": "The BEST Theorem",
+      "startLine": 73,
+      "endLine": 100,
+      "summary": "The BEST theorem gives a formula for counting directed Eulerian circuits: $\\text{EC}(G) = t_w(G) \\cdot \\prod_{v} (\\deg^+(v) - 1)!$.",
+      "mathContext": "The formula combines the arborescence count (from the matrix tree theorem) with a product of degree factorials. This yields polynomial-time counting for directed graphs."
+    },
+    {
+      "id": "complexity",
+      "title": "Complexity Results",
+      "startLine": 106,
+      "endLine": 127,
+      "summary": "Counting undirected Eulerian circuits is #P-complete (Brightwell-Winkler 2005). This is one of the most striking decision-counting gaps in combinatorics.",
+      "mathContext": "#P is the class of counting problems associated with NP decision problems. #P-completeness means the counting problem is at least as hard as any problem in #P."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "konigsberg",
+      "relationship": "extends",
+      "description": "Extends the Königsberg bridges problem from existence to counting: how many Eulerian circuits exist?"
+    }
+  ],
+  "conclusion": {
+    "summary": "Counting Eulerian circuits reveals a dramatic complexity gap: decision is trivial (O(|V|)), but counting is #P-complete for undirected graphs. The BEST theorem gives polynomial counting for directed graphs via the matrix tree theorem.",
+    "implications": "The decision-counting gap for Eulerian circuits parallels similar gaps elsewhere (e.g., 2-coloring vs counting 2-colorings). Formalizing #P-completeness in Lean would require Turing machine infrastructure.",
+    "openQuestions": []
+  },
+  "references": [
+    {
+      "authors": "de Bruijn, N.G. and van Aardenne-Ehrenfest, T.",
+      "title": "Circuits and Trees in Oriented Linear Graphs",
+      "year": "1951",
+      "venue": "Simon Stevin 28, 203-217"
+    },
+    {
+      "authors": "Brightwell, Graham and Winkler, Peter",
+      "title": "Counting Eulerian Circuits is #P-Complete",
+      "year": "2005",
+      "venue": "ALENEX/ANALCO, 259-262"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "euler_criterion_decidable",
+      "type": "core",
+      "description": "Euler's criterion is decidable for finite graphs",
+      "leanType": "Decidable (∀ v, Even (G.degree v))"
+    }
+  ]
+}
