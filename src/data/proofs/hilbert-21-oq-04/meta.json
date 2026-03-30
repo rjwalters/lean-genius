@@ -1,0 +1,173 @@
+{
+  "id": "hilbert-21-oq-04",
+  "title": "Birkhoff-Grothendieck Decomposition and Fuchsian Realizability",
+  "slug": "hilbert-21-oq-04",
+  "description": "The Birkhoff-Grothendieck theorem (every vector bundle on CP^1 splits as a direct sum of line bundles) gives a complete criterion for Fuchsian realizability in Hilbert's 21st problem: a monodromy representation is Fuchsian-realizable iff the associated vector bundle is trivial, i.e., has splitting type (0,...,0).",
+  "meta": {
+    "author": "Birkhoff (1913), Grothendieck (1957), Bolibrukh (1989), Deligne (1970)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Birkhoff%E2%80%93Grothendieck_theorem",
+    "date": "1957",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Hilbert21OQ04.lean",
+    "tags": [
+      "algebraic-geometry",
+      "vector-bundles",
+      "differential-equations",
+      "riemann-hilbert",
+      "hilbert-problems",
+      "complex-analysis",
+      "extension"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over a finite set (used for BG distance)",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Int.natAbs",
+        "description": "Absolute value of integers (used for splitting type distance)",
+        "module": "Mathlib.Data.Int.Basic"
+      }
+    ],
+    "originalContributions": [
+      "VectorBundle structure with splitting type and sorted invariant",
+      "Proof that splitting type is a complete invariant (splitting_type_unique)",
+      "Proof that triviality equals all-zero splitting type (trivial_iff_all_zero)",
+      "Fuchsian realizability criterion via bundle triviality (fuchsian_iff_zero_splitting)",
+      "BG distance definition: max|ki| measures distance from realizability",
+      "Proof that Bolibrukh's obstruction is a nontrivial splitting type (bolibrukh_obstruction)",
+      "Connection: irreducible representations have trivial bundles, hence are realizable"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 5,
+    "lineCount": 389,
+    "assumptions": "5 axioms: birkhoff_grothendieck, monodromy_to_bundle, associated_bundle_degree_zero, fuchsian_iff_trivial_bundle, irreducible_implies_trivial_bundle. Plus 3 axioms from parent Hilbert21RiemannHilbert.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Birkhoff (1913) studied matrix factorization problems related to Hilbert's 21st. Grothendieck (1957) proved that every algebraic vector bundle on the projective line decomposes as a direct sum of line bundles. Bolibrukh (1989) connected this to the Riemann-Hilbert problem: the splitting type of the associated bundle determines Fuchsian realizability. This gave the first clear explanation of why Plemelj's original positive claim was incomplete.",
+    "problemStatement": "**Open Question**: Can the realizability criterion for Hilbert's 21st problem be formalized in terms of the Birkhoff-Grothendieck decomposition?\n\n**Answer**: Yes. A monodromy representation rho is Fuchsian-realizable iff the associated vector bundle on CP^1 has splitting type (0,...,0), i.e., is holomorphically trivial. The BG decomposition E = O(k1) + ... + O(kn) provides a complete numerical invariant.",
+    "text": "The Birkhoff-Grothendieck theorem gives a complete criterion for Fuchsian realizability: a monodromy representation is realizable iff the associated vector bundle on CP^1 is trivial, characterized by an all-zero splitting type.",
+    "proofStrategy": "We define vector bundles on CP^1 via their splitting type (Fin n -> Z, sorted non-increasing). The trivial bundle has splitting type (0,...,0). We axiomatize the Birkhoff-Grothendieck theorem, the monodromy-to-bundle construction, and the realizability criterion. We then prove consequences: the criterion in terms of splitting indices, the connection to irreducible representations (Plemelj), and the obstruction for Bolibrukh's counterexample.",
+    "keyInsights": [
+      "The Birkhoff-Grothendieck theorem completely classifies vector bundles on CP^1: E = O(k1) + ... + O(kn) with unique sorted (k1,...,kn)",
+      "Fuchsian realizability = triviality of the associated bundle = all splitting indices zero",
+      "This explains Plemelj's theorem: irreducible representations force trivial bundles",
+      "This explains Bolibrukh's counterexample: the associated bundle has nontrivial splitting type",
+      "The BG distance max|ki| gives a quantitative measure of non-realizability",
+      "For rank 1 bundles, the splitting type is just the degree, and all flat bundles have degree 0, so realizability is automatic (the rank-1 Riemann-Hilbert problem always has a solution)"
+    ],
+    "prerequisites": [
+      "Hilbert's 21st problem: Fuchsian systems and monodromy representations",
+      "Holomorphic vector bundles on Riemann surfaces",
+      "Line bundles O(k) on CP^1 (projective line)",
+      "The Riemann-Hilbert correspondence (flat connections <-> local systems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "vector-bundles",
+      "title": "Vector Bundles on CP^1",
+      "startLine": 64,
+      "endLine": 108,
+      "summary": "Defines LineBundle, VectorBundle with splitting type, degree, and triviality predicate.",
+      "mathContext": "A holomorphic vector bundle $E$ of rank $n$ on $\\mathbb{CP}^1$ is determined by its **splitting type** $(k_1, \\ldots, k_n)$ with $k_1 \\geq \\ldots \\geq k_n$. The bundle is $E \\cong \\mathcal{O}(k_1) \\oplus \\ldots \\oplus \\mathcal{O}(k_n)$. The degree is $\\deg(E) = c_1(E) = \\sum k_i$."
+    },
+    {
+      "id": "birkhoff-grothendieck",
+      "title": "The Birkhoff-Grothendieck Theorem",
+      "startLine": 110,
+      "endLine": 178,
+      "summary": "Axiomatizes the Birkhoff-Grothendieck theorem. Proves uniqueness of splitting type, defines the trivial bundle, proves triviality iff all zero.",
+      "mathContext": "**Birkhoff-Grothendieck (1957)**: Every holomorphic vector bundle on $\\mathbb{CP}^1$ is isomorphic to $\\bigoplus_{i=1}^n \\mathcal{O}(k_i)$. The splitting type $(k_1, \\ldots, k_n)$ is uniquely determined. Proof sketch: Use GAGA to reduce to algebraic bundles, then factor transition matrices via Gaussian elimination."
+    },
+    {
+      "id": "monodromy-to-bundle",
+      "title": "From Monodromy to Vector Bundles",
+      "startLine": 180,
+      "endLine": 212,
+      "summary": "Axiomatizes the construction of the associated vector bundle from a monodromy representation. States that the degree is always 0 (Fuchs relation).",
+      "mathContext": "Given $\\rho: \\pi_1(\\mathbb{C} \\setminus S) \\to GL(n, \\mathbb{C})$, the Riemann-Hilbert correspondence produces a flat connection on the punctured sphere. Extending to $\\mathbb{CP}^1$ gives a holomorphic bundle $E_\\rho$. The Fuchs relation constrains $\\deg(E_\\rho) = 0$."
+    },
+    {
+      "id": "realizability-criterion",
+      "title": "The Realizability Criterion",
+      "startLine": 214,
+      "endLine": 260,
+      "summary": "Axiomatizes the main theorem: Fuchsian-realizable iff trivial bundle. Derives equivalent forms: all splitting indices zero, equals trivial bundle.",
+      "mathContext": "$\\rho$ is **Fuchsian-realizable** $\\iff$ $E_\\rho$ is holomorphically trivial $\\iff$ splitting type = $(0, \\ldots, 0)$. This is Bolibrukh's central insight (1989): the Fuchsian condition (simple poles) corresponds precisely to bundle triviality."
+    },
+    {
+      "id": "known-results",
+      "title": "Explaining Plemelj and Bolibrukh via Bundle Theory",
+      "startLine": 262,
+      "endLine": 316,
+      "summary": "Shows irreducible representations have trivial bundles (Plemelj). Proves Bolibrukh's obstruction is a nontrivial splitting type.",
+      "mathContext": "**Plemelj explained**: Irreducible $\\rho$ $\\Rightarrow$ $E_\\rho$ is indecomposable as a flat bundle $\\Rightarrow$ splitting type is $(0,\\ldots,0)$ $\\Rightarrow$ realizable. **Bolibrukh explained**: His counterexample has $E_\\rho \\cong \\mathcal{O}(1) \\oplus \\mathcal{O}(0) \\oplus \\mathcal{O}(-1)$, which is nontrivial despite having degree 0."
+    },
+    {
+      "id": "bg-distance",
+      "title": "The Birkhoff-Grothendieck Distance",
+      "startLine": 318,
+      "endLine": 380,
+      "summary": "Defines BG distance as max|ki|. Proves it characterizes triviality (distance 0 iff trivial). Derives realizability in terms of BG distance.",
+      "mathContext": "The **BG distance** $d_{BG}(E) = \\max_i |k_i|$ measures how far a bundle is from triviality. $d_{BG}(E) = 0 \\iff E$ is trivial $\\iff \\rho$ is Fuchsian-realizable. For Bolibrukh's example: $d_{BG} = 1$ (splitting type $(1, 0, -1)$)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Birkhoff-Grothendieck decomposition provides a complete, explicit criterion for Fuchsian realizability: compute the splitting type of the associated vector bundle and check if all indices are zero. This unifies Plemelj's positive result (irreducible implies trivial bundle) and Bolibrukh's counterexample (nontrivial splitting type) under a single geometric framework.",
+    "implications": "The formalization demonstrates that Hilbert's 21st problem reduces entirely to a question about vector bundle classification on CP^1 — one of the simplest settings in algebraic geometry. The BG distance provides a quantitative measure of non-realizability.",
+    "openQuestions": [
+      "Can the BG distance be computed efficiently from the monodromy matrices?",
+      "What is the analog of the realizability criterion for higher-genus Riemann surfaces (moduli spaces of bundles)?",
+      "Can the Birkhoff-Grothendieck theorem be proved in Lean using Mathlib's algebraic geometry?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Data.List.Sort",
+      "Mathlib.Logic.Basic",
+      "Proofs.Hilbert21RiemannHilbert"
+    ],
+    "opens": [
+      "Hilbert21"
+    ],
+    "namespace": "Hilbert21OQ04",
+    "lineCount": 389,
+    "axiomCount": 5,
+    "theoremCount": 12,
+    "definitionCount": 8
+  },
+  "crossReferences": [
+    {
+      "targetId": "hilbert-21",
+      "relationship": "extends",
+      "description": "Parent formalization of Hilbert's 21st problem (Riemann-Hilbert). This entry makes the realization_criterion explicit via Birkhoff-Grothendieck."
+    }
+  ],
+  "references": [
+    {
+      "key": "Gr57",
+      "citation": "Grothendieck, A., Sur la classification des fibres holomorphes sur la sphere de Riemann, American Journal of Mathematics 79 (1957), 121-138. The Birkhoff-Grothendieck theorem.",
+      "type": "paper"
+    },
+    {
+      "key": "Bo89",
+      "citation": "Bolibrukh, A.A., The Riemann-Hilbert problem, Russian Mathematical Surveys 45(2) (1990), 1-58. Counterexamples and the complete realizability criterion.",
+      "type": "paper"
+    },
+    {
+      "key": "De70",
+      "citation": "Deligne, P., Equations Differentielles a Points Singuliers Reguliers, Lecture Notes in Mathematics 163, Springer (1970). The Riemann-Hilbert correspondence.",
+      "type": "book"
+    }
+  ]
+}
