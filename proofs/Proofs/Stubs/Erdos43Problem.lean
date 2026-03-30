@@ -84,11 +84,37 @@ axiom barreto_counterexample : ¬EqualSizeVariant
 theorem sidon_pair_bound (A : Finset ℤ) (N : ℕ)
     (hS : IsSidonSet A) (hR : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) :
   A.card.choose 2 ≤ N := by
-  -- Proof: The nonzero differences of a Sidon set A ⊆ {1,...,N} all lie in
-  -- {-(N-1),...,-1,1,...,N-1}. There are |A|(|A|-1) distinct nonzero differences
-  -- (by the Sidon property), so |A|(|A|-1) ≤ 2(N-1) ≤ 2N. Hence C(|A|,2) ≤ N.
-  -- Key subgoal: the difference map (a,b) ↦ a-b is injective on off-diagonal pairs.
-  sorry
+  -- C(n,2) = n*(n-1)/2, so it suffices to show n*(n-1) ≤ 2*N
+  rw [Nat.choose_two_right]
+  suffices h : A.card * (A.card - 1) ≤ 2 * N by omega
+  -- n*(n-1) = |A.offDiag| (off-diagonal pairs)
+  rw [← Finset.card_offDiag]
+  -- The difference map (a,b) ↦ a-b is injective on A.offDiag (by Sidon)
+  -- and maps into Finset.Icc (1-N) (N-1) which has ≤ 2N elements
+  set f : ℤ × ℤ → ℤ := fun p => p.1 - p.2
+  set T := Finset.Icc (1 - (N : ℤ)) ((N : ℤ) - 1)
+  -- Injectivity on offDiag
+  have hinj : Set.InjOn f ↑A.offDiag := by
+    intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    simp only [Finset.mem_coe, Finset.mem_offDiag] at h₁ h₂
+    have := sidon_diff_injective A hS h₁.1 h₁.2.1 h₂.1 h₂.2.1 h₁.2.2 heq
+    exact Prod.ext this.1 this.2
+  -- Image maps into T
+  have hfT : A.offDiag.image f ⊆ T := by
+    intro d hd
+    obtain ⟨⟨a, b⟩, hp, rfl⟩ := Finset.mem_image.mp hd
+    simp only [Finset.mem_offDiag] at hp
+    have ⟨ha1, haN⟩ := hR a hp.1
+    have ⟨hb1, hbN⟩ := hR b hp.2.1
+    simp only [T, f, Finset.mem_Icc]
+    constructor <;> omega
+  -- Card inequality: |offDiag| = |image| ≤ |T| ≤ 2N
+  calc A.offDiag.card
+      = (A.offDiag.image f).card := (Finset.card_image_of_injOn hinj).symm
+    _ ≤ T.card := Finset.card_le_card hfT
+    _ ≤ 2 * N := by
+        simp only [T, Finset.card_Icc, Int.toNat_le]
+        omega
 
 /-- Disjoint differences force the nonzero differences of A and B
     to be completely disjoint, so the total number of distinct nonzero
@@ -99,10 +125,67 @@ theorem disjoint_diff_combined_bound (A B : Finset ℤ) (N : ℕ)
     (hRA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) (hRB : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N)
     (hD : DisjointDifferences A B) :
   A.card.choose 2 + B.card.choose 2 ≤ N := by
-  -- Proof: Disjoint nonzero differences of A and B together give
-  -- |A|(|A|-1) + |B|(|B|-1) distinct nonzero integers in {-(N-1),...,N-1}.
-  -- So |A|(|A|-1) + |B|(|B|-1) ≤ 2(N-1), giving C(|A|,2) + C(|B|,2) ≤ N-1 ≤ N.
-  sorry
+  -- Reduce to: |A|*(|A|-1) + |B|*(|B|-1) ≤ 2*N
+  simp only [Nat.choose_two_right]
+  suffices h : A.card * (A.card - 1) + B.card * (B.card - 1) ≤ 2 * N by omega
+  rw [← Finset.card_offDiag, ← Finset.card_offDiag]
+  set f : ℤ × ℤ → ℤ := fun p => p.1 - p.2
+  set T := Finset.Icc (1 - (N : ℤ)) ((N : ℤ) - 1)
+  -- Images of A.offDiag and B.offDiag under f are disjoint
+  have hdisj : Disjoint (A.offDiag.image f) (B.offDiag.image f) := by
+    rw [Finset.disjoint_left]
+    intro d hda hdb
+    -- d ∈ diffSet A and d ∈ diffSet B
+    obtain ⟨⟨a₁, b₁⟩, hp₁, rfl⟩ := Finset.mem_image.mp hda
+    obtain ⟨⟨a₂, b₂⟩, hp₂, heq⟩ := Finset.mem_image.mp hdb
+    simp only [Finset.mem_offDiag] at hp₁ hp₂
+    -- a₁ - b₁ ∈ diffSet A
+    have hfA : f (a₁, b₁) ∈ diffSet A := by
+      simp only [diffSet, Finset.mem_image]
+      exact ⟨(a₁, b₁), Finset.mem_product.mpr ⟨hp₁.1, hp₁.2.1⟩, rfl⟩
+    -- a₂ - b₂ ∈ diffSet B (and equals a₁ - b₁)
+    have hfB : f (a₁, b₁) ∈ diffSet B := by
+      rw [show f (a₁, b₁) = f (a₂, b₂) from heq]
+      simp only [diffSet, Finset.mem_image]
+      exact ⟨(a₂, b₂), Finset.mem_product.mpr ⟨hp₂.1, hp₂.2.1⟩, rfl⟩
+    -- By DisjointDifferences, a₁ - b₁ = 0, contradicting a₁ ≠ b₁
+    have h0 := hD _ hfA hfB
+    simp only [f] at h0
+    exact absurd (sub_eq_zero.mp h0) hp₁.2.2
+  -- Both injective on their offDiags
+  have hinjA : Set.InjOn f ↑A.offDiag := by
+    intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    simp only [Finset.mem_coe, Finset.mem_offDiag] at h₁ h₂
+    exact Prod.ext (sidon_diff_injective A hA h₁.1 h₁.2.1 h₂.1 h₂.2.1 h₁.2.2 heq).1
+      (sidon_diff_injective A hA h₁.1 h₁.2.1 h₂.1 h₂.2.1 h₁.2.2 heq).2
+  have hinjB : Set.InjOn f ↑B.offDiag := by
+    intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
+    simp only [Finset.mem_coe, Finset.mem_offDiag] at h₁ h₂
+    exact Prod.ext (sidon_diff_injective B hB h₁.1 h₁.2.1 h₂.1 h₂.2.1 h₁.2.2 heq).1
+      (sidon_diff_injective B hB h₁.1 h₁.2.1 h₂.1 h₂.2.1 h₁.2.2 heq).2
+  -- Both images ⊆ T
+  have hAT : A.offDiag.image f ⊆ T := by
+    intro d hd; obtain ⟨⟨a, b⟩, hp, rfl⟩ := Finset.mem_image.mp hd
+    simp only [Finset.mem_offDiag] at hp
+    have ⟨ha1, haN⟩ := hRA a hp.1
+    have ⟨hb1, hbN⟩ := hRA b hp.2.1
+    simp only [T, f, Finset.mem_Icc]
+    constructor <;> omega
+  have hBT : B.offDiag.image f ⊆ T := by
+    intro d hd; obtain ⟨⟨a, b⟩, hp, rfl⟩ := Finset.mem_image.mp hd
+    simp only [Finset.mem_offDiag] at hp
+    have ⟨ha1, haN⟩ := hRB a hp.1
+    have ⟨hb1, hbN⟩ := hRB b hp.2.1
+    simp only [T, f, Finset.mem_Icc]
+    constructor <;> omega
+  -- Combined: |offDiag A| + |offDiag B| = |image A ∪ image B| ≤ |T| ≤ 2N
+  calc A.offDiag.card + B.offDiag.card
+      = (A.offDiag.image f).card + (B.offDiag.image f).card := by
+          rw [Finset.card_image_of_injOn hinjA, Finset.card_image_of_injOn hinjB]
+    _ = (A.offDiag.image f ∪ B.offDiag.image f).card :=
+          (Finset.card_union_of_disjoint hdisj).symm
+    _ ≤ T.card := Finset.card_le_card (Finset.union_subset hAT hBT)
+    _ ≤ 2 * N := by simp only [T, Finset.card_Icc, Int.toNat_le]; omega
 
 /- ## Tao's Partial Result
 
@@ -122,11 +205,20 @@ theorem tao_equal_size_bound (A B : Finset ℤ) (N : ℕ)
     (hRA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) (hRB : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N)
     (hD : DisjointDifferences A B) (hEq : A.card = B.card) :
   (A.card : ℝ) ^ 2 ≤ 2 * N + 1 := by
-  -- Proof from disjoint_diff_combined_bound: 2·C(m,2) ≤ N where m = A.card
-  -- → m*(m-1) ≤ N (via Nat.choose_two_right)
-  -- → m ≤ N+1 (case split: m ≥ 2 gives m ≤ m*(m-1) ≤ N)
-  -- → m² = m*(m-1)+m ≤ N+(N+1) = 2N+1 (in ℝ via nlinarith)
-  sorry
+  -- From disjoint_diff_combined_bound: C(m,2) + C(m,2) ≤ N
+  have hcomb := disjoint_diff_combined_bound A B N hA hB hRA hRB hD
+  rw [hEq] at hcomb
+  -- So 2 * C(m,2) ≤ N, i.e., m*(m-1) ≤ N
+  set m := A.card with hm_def
+  have hm_bound : m * (m - 1) ≤ N := by
+    rw [Nat.choose_two_right] at hcomb; omega
+  -- m ≤ N + 1 (from m*(m-1) ≤ N)
+  have hm_le : m ≤ N + 1 := by nlinarith [Nat.zero_le m]
+  -- m² ≤ 2N+1 in ℕ, then cast to ℝ
+  have hm_sq_nat : m * m ≤ 2 * N + 1 := by nlinarith
+  calc (m : ℝ) ^ 2 = ↑(m * m) := by push_cast; ring
+    _ ≤ ↑(2 * N + 1) := Nat.cast_le.mpr hm_sq_nat
+    _ = 2 * ↑N + 1 := by push_cast; ring
 
 /- ## Counting Arguments -/
 
