@@ -368,6 +368,52 @@ theorem pascal_std_conic_parametrized (a b c d e f : ℝ) :
   ring
 
 -- ============================================================
+-- PART 12: Projective Invariance (Toward General Conics)
+-- ============================================================
+
+/-!
+## Projective Invariance of Pascal's Constraint
+
+The key fact for lifting from the standard conic to general conics:
+
+1. `det(M·u, M·v, M·w) = det(M) · det(u, v, w)` (determinant multiplicativity)
+2. `cross(M·u, M·v) = det(M) · M⁻ᵀ · cross(u, v)` (cross product transforms contravariantly)
+3. Together: `collinear (M·p) (M·q) (M·r) ↔ collinear p q r` (when det(M) ≠ 0)
+4. And: `pascalConstraint (M·A) (M·B) ... ↔ pascalConstraint A B ...`
+
+### Full axiom elimination roadmap:
+- [x] Part 11: Pascal for standard conic via parametrization
+- [ ] Part 12: Projective invariance of pascalConstraint (this section, partial)
+- [ ] Part 13: Sylvester's law — any non-degenerate conic ≅ standard conic
+- [ ] Part 14: Degenerate conics (pair of lines) — separate argument
+-/
+
+/-- Apply an invertible matrix M to a projective point.
+    In projective geometry, this is a projective transformation. -/
+def projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (p : ProjPoint) : ProjPoint :=
+  M.mulVec p
+
+/-- The threeVectorMatrix of M-transformed vectors equals M times the original matrix.
+    Specifically: if the rows of the matrix are M·u, M·v, M·w, then the determinant
+    is det(M) times det(u, v, w). -/
+theorem threeVectorMatrix_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (u v w : Fin 3 → ℝ) :
+    (threeVectorMatrix (projTransform M u) (projTransform M v) (projTransform M w)).det =
+    M.det * (threeVectorMatrix u v w).det := by
+  simp only [threeVectorMatrix, projTransform, Matrix.mulVec, Matrix.dotProduct,
+    Matrix.det_fin_three, Matrix.of_apply, Fin.sum_univ_three, Finset.univ_fin_eq]
+  ring
+
+/-- Collinearity is preserved under invertible projective transformations. -/
+theorem collinear_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.det ≠ 0)
+    (p q r : ProjPoint) :
+    collinear (projTransform M p) (projTransform M q) (projTransform M r) ↔ collinear p q r := by
+  unfold collinear
+  rw [threeVectorMatrix_projTransform]
+  constructor
+  · intro h; exact (mul_eq_zero.mp h).resolve_left hM
+  · intro h; rw [h, mul_zero]
+
+-- ============================================================
 -- Export main results
 -- ============================================================
 

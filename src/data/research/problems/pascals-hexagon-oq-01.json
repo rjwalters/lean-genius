@@ -37,7 +37,10 @@
       "stdConicPoint — rational parametrization of standard conic",
       "stdConic — the matrix diag(1,1,-1)",
       "stdConicPoint_on_conic — points lie on conic (ring)",
-      "pascal_std_conic_parametrized — Pascal for parametrized standard conic (simp+ring, needs build verify)"
+      "pascal_std_conic_parametrized — Pascal for parametrized standard conic (simp+ring, needs build verify)",
+      "projTransform — apply matrix to projective point",
+      "threeVectorMatrix_projTransform — det multiplicativity: det(M·u,M·v,M·w) = det(M)·det(u,v,w)",
+      "collinear_projTransform — collinearity preserved under invertible projective transforms"
     ],
     "insights": [
       "The axiom conic_implies_pascal_constraint cannot be proved from Mathlib algebraic geometry (no Bezout/Cayley-Bacharach). Must use direct algebraic proof.",
@@ -49,18 +52,21 @@
       "Rational parametrization P(t)=(1-t²,2t,1+t²) covers ALL real points on x₀²+x₁²=x₂² (no real points at infinity)",
       "det(P,Q,R) for parametrized points is identically 0 as polynomial — verified in sympy",
       "simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, crossProduct] + ring is the Desargues pattern for cross product determinant proofs",
-      "Full axiom elimination requires: (1) this parametrized proof, (2) projective equivalence preserves pascalConstraint, (3) any non-degenerate conic ≅ standard conic, (4) degenerate conic case"
+      "Full axiom elimination requires: (1) this parametrized proof, (2) projective equivalence preserves pascalConstraint, (3) any non-degenerate conic ≅ standard conic, (4) degenerate conic case",
+      "det multiplicativity for 3×3 is a 36-term polynomial identity — ring handles it easily",
+      "Full Pascal invariance needs cross product transformation law: cross(M·u,M·v) = det(M)·M⁻ᵀ·cross(u,v) — then Pascal points transform as M·P_old up to scalar",
+      "Roadmap: Part 11 (done) → Part 12 collinearity invariance (done) → Part 12 full Pascal invariance (needs cross product law) → Part 13 Sylvester law of inertia → Part 14 degenerate conics"
     ],
     "mathlibGaps": [
       "No Bezout theorem for projective curves in Mathlib",
       "No Cayley-Bacharach theorem in Mathlib"
     ],
     "nextSteps": [
-      "Docker build verify the parametrized proof",
-      "If simp+ring fails: adjust simp lemma set (may need Fin.isValue, Matrix.cons_val_zero/one, Matrix.head_cons)",
-      "Prove projective equivalence preserves pascalConstraint",
-      "Prove any non-degenerate conic is projectively equivalent to standard one",
-      "Handle degenerate conics (pair of lines) as separate case"
+      "Prove cross product transformation: cross(M·u,M·v) = det(M)·M⁻ᵀ·cross(u,v)",
+      "Use cross product law to show pascalConstraint is projective-invariant",
+      "Prove Sylvesters law of inertia for 3×3 symmetric matrices (any signature (2,1) form ≅ diag(1,1,-1))",
+      "Handle degenerate conics (det C = 0) as separate case",
+      "Combine all parts to fully eliminate conic_implies_pascal_constraint axiom"
     ],
     "markdown": "# Knowledge Base: pascals-hexagon-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
