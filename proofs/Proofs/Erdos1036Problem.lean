@@ -51,15 +51,6 @@ noncomputable def IsNonRamsey (G : SimpleGraph V) (c : ℝ) : Prop :=
 noncomputable def numInducedSubgraphClasses (G : SimpleGraph V) : ℕ :=
   Fintype.card (Finset V) -- placeholder: counts subsets, not isomorphism classes
 
-/- ## Classical Ramsey Bound -/
-
-/-- Ramsey's theorem (R(k,k) ≤ 2^{2k}): every n-vertex graph with
-    n ≥ R(k,k) has a clique or independent set of size k.
-    Equivalently, every n-vertex graph has max(ω,α) ≥ (1/2) log₂ n. -/
-axiom ramsey_lower_bound (G : SimpleGraph V) (hn : Fintype.card V ≥ 2) :
-    (cliqueNumber G : ℝ) ≥ log (Fintype.card V) / (2 * log 2) ∨
-    (independenceNumber G : ℝ) ≥ log (Fintype.card V) / (2 * log 2)
-
 /- ## Main Results: Induced Subgraph Diversity -/
 
 /-- Shelah's theorem (1998): Every non-Ramsey graph on n vertices contains
@@ -71,11 +62,27 @@ axiom shelah_1998 (c : ℝ) (hc : c > 0) :
       (numInducedSubgraphClasses G : ℝ) ≥ 2 ^ (c' * Fintype.card V)
 
 /-- Alon-Hajnal (1991): The sub-exponential precursor to Shelah's result.
-    They proved exp(n · (log n)^{-O(log log n)}) using regularity. -/
-axiom alon_hajnal_1991 (c : ℝ) (hc : c > 0) :
+    They proved exp(n · (log n)^{-O(log log n)}) using regularity.
+    Here derived from Shelah's stronger exponential bound, since 2^{c'n} ≥ (c'·ln2)·n. -/
+theorem alon_hajnal_1991 (c : ℝ) (hc : c > 0) :
     ∃ c' > 0, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsNonRamsey G c →
-      (numInducedSubgraphClasses G : ℝ) ≥ c' * Fintype.card V
+      (numInducedSubgraphClasses G : ℝ) ≥ c' * Fintype.card V := by
+  obtain ⟨c'', hc''_pos, hc''⟩ := shelah_1998 c hc
+  refine ⟨c'' * Real.log 2, by positivity, ?_⟩
+  intro V _ _ G hG
+  have hshelah := hc'' V G hG
+  -- Shelah: numInducedSubgraphClasses G ≥ 2^(c''·n)
+  -- We show: 2^(c''·n) ≥ (c''·log 2)·n using exp(t) ≥ t
+  calc (numInducedSubgraphClasses G : ℝ)
+      ≥ (2 : ℝ) ^ (c'' * Fintype.card V) := hshelah
+    _ = Real.exp (Real.log 2 * (c'' * Fintype.card V)) :=
+        Real.rpow_def_of_pos (by norm_num : (2:ℝ) > 0) _
+    _ = Real.exp (c'' * ↑(Fintype.card V) * Real.log 2) := by congr 1; ring
+    _ ≥ c'' * ↑(Fintype.card V) * Real.log 2 := by
+        have h := Real.add_one_le_exp (c'' * ↑(Fintype.card V) * Real.log 2)
+        linarith
+    _ = c'' * Real.log 2 * ↑(Fintype.card V) := by ring
 
 /- ## The Optimal Constant Question (oq-01) -/
 
