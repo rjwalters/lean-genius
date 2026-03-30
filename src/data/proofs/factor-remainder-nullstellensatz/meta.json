@@ -2,7 +2,7 @@
   "id": "factor-remainder-nullstellensatz",
   "title": "Factor Theorem to Nullstellensatz Bridge",
   "slug": "factor-remainder-nullstellensatz",
-  "description": "The univariate Factor Theorem as the base case of the Nullstellensatz hierarchy: over algebraically closed fields, nonconstant polynomials have roots and factor into linear terms",
+  "description": "The univariate Factor Theorem as the base case of the Nullstellensatz hierarchy: over algebraically closed fields, nonconstant polynomials have roots. Includes multivariate zero loci and vanishing ideals with Galois connection.",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_Nullstellensatz",
@@ -38,12 +38,13 @@
     "originalContributions": [
       "Bridge between the Factor Theorem and the Nullstellensatz framework",
       "Univariate weak Nullstellensatz from IsAlgClosed",
-      "Nullstellensatz hierarchy documentation (4 levels)",
-      "Roadmap for multivariate formalization"
+      "Multivariate zeroLocus and vanishingIdeal definitions for MvPolynomial",
+      "V-I Galois connection with idempotence (V∘I∘V = V, I∘V∘I = I)",
+      "Nullstellensatz hierarchy documentation (4 levels)"
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 169,
+    "lineCount": 284,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
@@ -90,10 +91,18 @@
     {
       "id": "hierarchy",
       "title": "The Nullstellensatz Hierarchy",
-      "startLine": 108,
-      "endLine": 147,
+      "startLine": 113,
+      "endLine": 148,
       "summary": "Documents the four levels of Nullstellensatz results: Factor Theorem → weak → strong → combinatorial.",
       "mathContext": "Each level generalizes the previous. The documentation outlines what Mathlib infrastructure would be needed for a full formalization of the multivariate Nullstellensatz."
+    },
+    {
+      "id": "multivariate",
+      "title": "Multivariate Zero Loci and Vanishing Ideals",
+      "startLine": 150,
+      "endLine": 254,
+      "summary": "Defines the zero locus V(S) and vanishing ideal I(W) for multivariate polynomials over any commutative ring. Proves the fundamental Galois connection: S ⊆ V(I(S)), S ⊆ I(V(S)), and the idempotence properties V(I(V(S))) = V(S) and I(V(I(W))) = I(W). Also proves union distribution V(S ∪ T) = V(S) ∩ V(T) and basic structural results.",
+      "mathContext": "The V-I correspondence is the foundation of algebraic geometry: zero loci (geometry) and vanishing ideals (algebra) form a Galois connection between the lattice of subsets of affine space and the lattice of ideals. The strong Nullstellensatz would say I(V(J)) = √J, strengthening the idempotence to a precise characterization. The definitions here work over any commutative ring, not just algebraically closed fields."
     }
   ],
   "crossReferences": [
@@ -104,8 +113,8 @@
     }
   ],
   "conclusion": {
-    "summary": "A bridge formalization connecting the univariate Factor Theorem to the Nullstellensatz framework. Six theorems, 0 sorries, 0 axioms. Documents the full Nullstellensatz hierarchy and what would be needed for multivariate formalization.",
-    "implications": "The univariate weak Nullstellensatz is a direct consequence of algebraic closure and the Factor Theorem. Formalizing the multivariate case would require Jacobson ring theory or Zariski's lemma, which are partially available in Mathlib.",
+    "summary": "A bridge formalization connecting the univariate Factor Theorem to the Nullstellensatz framework. 15 theorems + 2 definitions, 0 sorries, 0 axioms. Includes multivariate zero loci and vanishing ideals with the full V-I Galois connection.",
+    "implications": "The multivariate definitions (zeroLocus, vanishingIdeal) and their Galois connection properties provide the algebraic geometry infrastructure needed to state and eventually prove the Nullstellensatz. The idempotence V(I(V(S))) = V(S) holds unconditionally; the strong Nullstellensatz would strengthen I(V(J)) to equal √J.",
     "openQuestions": [
       "Can the strong Nullstellensatz I(V(J)) = rad(J) be formalized using Mathlib's Jacobson ring infrastructure?",
       "Can Alon's combinatorial Nullstellensatz be formalized in Lean, connecting algebraic geometry to combinatorics?"
@@ -125,10 +134,10 @@
     "namespace": null,
     "lineCount": 169,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "substantiveTheoremCount": 3,
+    "theoremCount": 15,
+    "substantiveTheoremCount": 7,
     "duplicateTheorems": 0,
-    "definitionCount": 0
+    "definitionCount": 2
   },
   "mainTheorems": [
     {
@@ -142,6 +151,18 @@
       "type": "core",
       "description": "Over an algebraically closed field, every nonconstant polynomial has a linear factor",
       "leanType": "[IsAlgClosed k] → (f : k[X]) → f ≠ 0 → 0 < f.natDegree → ∃ a, (X - C a) ∣ f"
+    },
+    {
+      "name": "Nullstellensatz.zeroLocus_vanishingIdeal_zeroLocus",
+      "type": "key",
+      "description": "Idempotence: V(I(V(S))) = V(S) for zero loci and vanishing ideals of MvPolynomial",
+      "leanType": "(S : Set (MvPolynomial σ k)) → zeroLocus ↑(vanishingIdeal (zeroLocus S)) = zeroLocus S"
+    },
+    {
+      "name": "Nullstellensatz.vanishingIdeal_zeroLocus_vanishingIdeal",
+      "type": "key",
+      "description": "Idempotence: I(V(I(W))) = I(W) for vanishing ideals and zero loci of MvPolynomial",
+      "leanType": "(W : Set (σ → k)) → vanishingIdeal (zeroLocus ↑(vanishingIdeal W)) = vanishingIdeal W"
     }
   ]
 }
