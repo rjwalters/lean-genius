@@ -45,6 +45,39 @@ theorem normElemSymm_nonneg (k : ℕ) (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i
     0 ≤ normElemSymm k x := by
   apply div_nonneg (elemSymm_nonneg k x hx) (Nat.cast_nonneg _)
 
+/-- Zero propagation: for non-negative inputs, if normElemSymm m = 0 then
+    normElemSymm (m+1) = 0. Each (m+1)-subset contains an m-subset whose
+    product is zero (since all m-subset products are zero). -/
+private lemma normElemSymm_zero_succ (m : ℕ) (x : Fin n → ℝ)
+    (hx : ∀ i, 0 ≤ x i) (hmn : m ≤ n)
+    (hm : normElemSymm m x = 0) : normElemSymm (m + 1) x = 0 := by
+  -- Extract elemSymm m x = 0 from normElemSymm m x = 0
+  unfold normElemSymm at hm ⊢
+  have hcm_ne : (Nat.choose n m : ℝ) ≠ 0 := by
+    exact_mod_cast (Nat.choose_pos hmn).ne'
+  have h_elem : elemSymm m x = 0 := (div_eq_zero_iff.mp hm).resolve_right hcm_ne
+  -- Suffices to show elemSymm (m+1) x = 0
+  suffices h : elemSymm (m + 1) x = 0 by rw [h]; exact zero_div _
+  -- Unfold elemSymm in h_elem and goal
+  unfold elemSymm at h_elem ⊢
+  -- Each m-subset product is 0 (non-negative sum = 0 implies each term = 0)
+  have h_terms : ∀ s ∈ (Finset.univ : Finset (Fin n)).powersetCard m,
+      ∏ i in s, x i = 0 := by
+    intro s hs
+    have h_le := Finset.single_le_sum
+      (fun t _ => Finset.prod_nonneg fun i _ => hx i) hs
+    have h_ge := Finset.prod_nonneg (s := s) fun i _ => hx i
+    linarith
+  -- Each (m+1)-subset product is 0: decompose as element × m-subset
+  exact Finset.sum_eq_zero fun t ht => by
+    obtain ⟨j, hj⟩ := Finset.card_pos.mp
+      (show 0 < t.card by rw [(Finset.mem_powersetCard.mp ht).2]; omega)
+    rw [← Finset.mul_prod_erase _ _ hj,
+        h_terms _ (Finset.mem_powersetCard.mpr ⟨Finset.subset_univ _,
+          show (t.erase j).card = m by
+            rw [Finset.card_erase_of_mem hj, (Finset.mem_powersetCard.mp ht).2]; omega⟩),
+        mul_zero]
+
 /-- Newton's log-concavity restated in terms of normElemSymm:
     aₖ² ≥ aₖ₋₁ · aₖ₊₁ for 1 ≤ k and k+1 ≤ n. -/
 theorem newton_lc (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
@@ -105,7 +138,7 @@ theorem power_inequality (k : ℕ) (hkn : k + 1 ≤ n)
           -- if a_{k+1} = 0 then e_{k+1} = 0
           -- For non-negative x, e_{k+1} = 0 implies every (k+1)-subset product is 0
           -- meaning at most k non-zero variables, so e_{k+2} = 0 too
-          sorry -- elemSymm zero propagation for non-negative inputs
+          exact normElemSymm_zero_succ (k + 1) x hx (by omega) hak1_pos
         · exact h
       rw [hak1_pos, hak2_zero]; simp
     · -- Case: a_{k+1} > 0
