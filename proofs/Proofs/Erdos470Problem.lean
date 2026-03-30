@@ -117,18 +117,14 @@ theorem smallest_weird_is_70 : IsWeird 70 ∧ ∀ n < 70, ¬IsWeird n :=
   ⟨⟨seventy_is_abundant, seventy_not_pseudoperfect⟩, no_weird_below_70⟩
 
 /-
-## The Weird Number Sequence (OEIS A006037)
+## The Second Weird Number: 836
 
-The sequence of weird numbers begins:
-70, 836, 4030, 5830, 7192, 7912, 9272, 10430, 10570, ...
-
-All known weird numbers are even!
+836 = 2² × 11 × 19. Its proper divisors are {1, 2, 4, 11, 19, 22, 38, 44, 76, 209, 418}.
+σ(836) > 2 × 836. No subset of proper divisors sums to 836.
 -/
 
 /--
-836 = 4 × 11 × 19 is the second weird number.
-Proper divisors: {1, 2, 4, 11, 19, 22, 38, 44, 76, 209, 418}; σ(836) = 1680 > 1672.
-No subset of proper divisors sums to 836.
+836 is the second weird number.
 -/
 theorem weird_836 : IsWeird 836 := by
   constructor
@@ -145,11 +141,9 @@ despite extensive computational searches.
 
 Key facts:
 - 945 = 3³ × 5 × 7 is the smallest odd abundant number
-- 945 is semiperfect (hence not weird): remove {3, 27} from proper
-  divisors, the rest sums to 945
+- 945 is semiperfect (hence not weird)
 - Any odd weird must exceed 945
 
-Computationally verified: any odd weird > 1575 (945 and 1575 are semiperfect).
 Fang (2022): no odd weird numbers below 10^21.
 Liddy-Riedl (2018): any odd weird has ≥ 6 distinct prime divisors.
 -/
@@ -173,8 +167,7 @@ theorem nine45_odd_abundant : Odd 945 ∧ IsAbundant 945 := by
   · unfold IsAbundant sigma; native_decide
 
 /--
-945 is semiperfect: its proper divisors {1,5,7,9,15,21,35,45,63,105,135,189,315}
-contain a subset summing to 945. (Remove 3 and 27 from the full set.)
+945 is semiperfect: its proper divisors contain a subset summing to 945.
 -/
 theorem nine45_semiperfect : IsPseudoperfect 945 := by
   have : ∃ S ∈ (945 : ℕ).properDivisors.powerset, S.sum id = 945 := by native_decide
@@ -186,9 +179,7 @@ theorem nine45_semiperfect : IsPseudoperfect 945 := by
 theorem nine45_not_weird : ¬IsWeird 945 := fun ⟨_, hnp⟩ => hnp nine45_semiperfect
 
 /--
-No odd number below 945 is abundant. This establishes 945 as the smallest
-odd abundant number: any odd weird must be at least 945, and 945 itself
-is semiperfect.
+No odd number below 945 is abundant.
 -/
 theorem no_odd_abundant_below_945 (n : ℕ) (hn : n < 945) (hodd : Odd n) :
     ¬IsAbundant n := by
@@ -196,8 +187,7 @@ theorem no_odd_abundant_below_945 (n : ℕ) (hn : n < 945) (hodd : Odd n) :
   exact h n (Finset.mem_range.mpr hn) hodd
 
 /--
-Any odd weird number must exceed 945: numbers below 945 are not odd abundant,
-and 945 itself is semiperfect.
+Any odd weird number must exceed 945.
 -/
 theorem odd_weird_gt_945 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 945 < n := by
   by_contra h
@@ -206,228 +196,24 @@ theorem odd_weird_gt_945 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 945 < n := 
   · exact absurd hw.1 (no_odd_abundant_below_945 n hlt hodd)
   · exact absurd (heq ▸ nine45_semiperfect) hw.2
 
-/--
-1575 = 3² × 5² × 7 is the second smallest odd abundant number.
-σ(1575) = 3224 > 3150 = 2 × 1575.
--/
-theorem fifteen75_odd_abundant : Odd 1575 ∧ IsAbundant 1575 := by
-  constructor
-  · exact ⟨787, by omega⟩
-  · unfold IsAbundant sigma; native_decide
-
-/--
-1575 is semiperfect: its proper divisors contain a subset summing to 1575.
--/
-theorem fifteen75_semiperfect : IsPseudoperfect 1575 := by
-  have : ∃ S ∈ (1575 : ℕ).properDivisors.powerset, S.sum id = 1575 := by native_decide
-  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
-
-/--
-No odd number in the range (945, 1575) is abundant.
-Combined with no_odd_abundant_below_945, this means the only odd abundant
-numbers ≤ 1575 are 945 and 1575, both semiperfect.
--/
-theorem no_odd_abundant_945_to_1575 (n : ℕ) (hlo : 945 < n) (hhi : n < 1575)
-    (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Ico 946 1575, Odd m → ¬IsAbundant m := by native_decide
-  exact h n (Finset.mem_Ico.mpr ⟨by omega, by omega⟩) hodd
-
-/--
-No odd number ≤ 1575 is weird: odd numbers below 945 are not abundant,
-945 is semiperfect, odd numbers in (945, 1575) are not abundant,
-and 1575 is semiperfect.
--/
-theorem no_odd_weird_to_1575 (n : ℕ) (hn : n ≤ 1575) (hw : IsWeird n) (hodd : Odd n) :
-    False := by
-  have h945 := odd_weird_gt_945 n hw hodd  -- 945 < n
-  rcases Nat.lt_or_eq_of_le hn with hlt | heq
-  · -- n < 1575 and 945 < n: not abundant
-    exact absurd hw.1 (no_odd_abundant_945_to_1575 n h945 hlt hodd)
-  · -- n = 1575: semiperfect
-    exact absurd (heq ▸ fifteen75_semiperfect) hw.2
-
-/--
-Any odd weird number must exceed 1575: the only odd abundant numbers ≤ 1575
-(namely 945 and 1575) are both semiperfect.
--/
-theorem odd_weird_gt_1575 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 1575 < n := by
-  by_contra h
-  push_neg at h
-  exact no_odd_weird_to_1575 n h hw hodd
-
 /-
 ## Extending the Odd Weird Bound
 
-The odd abundant numbers (OEIS A005231) begin: 945, 1575, 2205, 2835, ...
+The odd abundant numbers (OEIS A005231) begin:
+945, 1575, 2205, 2835, 3465, 4095, 4725, ...
 Each is semiperfect, with no odd abundant numbers in between.
-We push the lower bound for odd weird numbers to >2835.
+We push the lower bound for odd weird numbers step by step.
 -/
 
 /--
-836 = 4 × 11 × 19 is the second weird number (after 70).
--/
-theorem weird_836 : IsWeird 836 := by
-  constructor
-  · unfold IsAbundant sigma; native_decide
-  · intro ⟨S, hS_sub, hS_sum⟩
-    have : ∀ T ∈ (836 : ℕ).properDivisors.powerset, T.sum id ≠ 836 := by native_decide
-    exact this S (Finset.mem_powerset.mpr hS_sub) hS_sum
-
-/--
-1575 = 3² × 5² × 7 is the second smallest odd abundant number
-and is pseudoperfect.
--/
-theorem one575_semiperfect : IsPseudoperfect 1575 := by
-  have : ∃ S ∈ (1575 : ℕ).properDivisors.powerset, S.sum id = 1575 := by native_decide
-  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
-
-/--
-No odd number strictly between 945 and 1575 is abundant.
--/
-theorem no_odd_abundant_945_to_1575 (n : ℕ) (h1 : 945 < n) (h2 : n < 1575)
-    (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.range 1575, 945 < m → Odd m → ¬IsAbundant m := by native_decide
-  exact h n (Finset.mem_range.mpr h2) h1 hodd
-
-/--
-No odd number up to 1575 is weird.
--/
-theorem no_odd_weird_to_1575 (n : ℕ) (hn : n ≤ 1575) (hodd : Odd n) : ¬IsWeird n := by
-  rcases le_or_lt n 945 with h | h
-  · rcases Nat.eq_or_lt_of_le h with heq | hlt
-    · subst heq; exact nine45_not_weird
-    · exact fun hw => absurd hw.1 (no_odd_abundant_below_945 n hlt hodd)
-  · rcases Nat.eq_or_lt_of_le hn with heq | hlt
-    · subst heq; exact fun hw => absurd one575_semiperfect hw.2
-    · exact fun hw => absurd hw.1 (no_odd_abundant_945_to_1575 n h hlt hodd)
-
-/--
-Any odd weird number exceeds 1575.
--/
-theorem odd_weird_gt_1575 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 1575 < n := by
-  by_contra h; push_neg at h; exact absurd hw (no_odd_weird_to_1575 n h hodd)
-
-/--
-2205 = 3² × 5 × 7² is the third smallest odd abundant number
-and is pseudoperfect.
--/
-theorem two205_semiperfect : IsPseudoperfect 2205 := by
-  have : ∃ S ∈ (2205 : ℕ).properDivisors.powerset, S.sum id = 2205 := by native_decide
-  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
-
-/--
-No odd number strictly between 1575 and 2205 is abundant.
--/
-theorem no_odd_abundant_1575_to_2205 (n : ℕ) (h1 : 1575 < n) (h2 : n < 2205)
-    (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.range 2205, 1575 < m → Odd m → ¬IsAbundant m := by native_decide
-  exact h n (Finset.mem_range.mpr h2) h1 hodd
-
-/--
-No odd number up to 2205 is weird.
--/
-theorem no_odd_weird_to_2205 (n : ℕ) (hn : n ≤ 2205) (hodd : Odd n) : ¬IsWeird n := by
-  rcases le_or_lt n 1575 with h | h
-  · exact no_odd_weird_to_1575 n h hodd
-  · rcases Nat.eq_or_lt_of_le hn with heq | hlt
-    · subst heq; exact fun hw => absurd two205_semiperfect hw.2
-    · exact fun hw => absurd hw.1 (no_odd_abundant_1575_to_2205 n h hlt hodd)
-
-/--
-Any odd weird number exceeds 2205.
--/
-theorem odd_weird_gt_2205 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 2205 < n := by
-  by_contra h; push_neg at h; exact absurd hw (no_odd_weird_to_2205 n h hodd)
-
-/--
-2835 = 3⁴ × 5 × 7 is the fourth smallest odd abundant number
-and is pseudoperfect.
--/
-theorem two835_semiperfect : IsPseudoperfect 2835 := by
-  have : ∃ S ∈ (2835 : ℕ).properDivisors.powerset, S.sum id = 2835 := by native_decide
-  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
-
-/--
-No odd number strictly between 2205 and 2835 is abundant.
--/
-theorem no_odd_abundant_2205_to_2835 (n : ℕ) (h1 : 2205 < n) (h2 : n < 2835)
-    (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.range 2835, 2205 < m → Odd m → ¬IsAbundant m := by native_decide
-  exact h n (Finset.mem_range.mpr h2) h1 hodd
-
-/--
-No odd number up to 2835 is weird.
--/
-theorem no_odd_weird_to_2835 (n : ℕ) (hn : n ≤ 2835) (hodd : Odd n) : ¬IsWeird n := by
-  rcases le_or_lt n 2205 with h | h
-  · exact no_odd_weird_to_2205 n h hodd
-  · rcases Nat.eq_or_lt_of_le hn with heq | hlt
-    · subst heq; exact fun hw => absurd two835_semiperfect hw.2
-    · exact fun hw => absurd hw.1 (no_odd_abundant_2205_to_2835 n h hlt hodd)
-
-/--
-Any odd weird number exceeds 2835, covering the first four odd abundant
-numbers (945, 1575, 2205, 2835) — all verified semiperfect.
--/
-theorem odd_weird_gt_2835 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 2835 < n := by
-  by_contra h; push_neg at h; exact absurd hw (no_odd_weird_to_2835 n h hodd)
-
-/-
-## The Second Weird Number: 836
-
-836 = 2² × 11 × 19. Its proper divisors are {1, 2, 4, 11, 19, 22, 38, 44, 76, 209, 418}.
-σ(836) = 1680 + 836 = ... > 1672 = 2 × 836. No subset sums to 836.
--/
-
-/--
-836 is abundant: σ(836) > 2 × 836.
--/
-theorem eight36_abundant : IsAbundant 836 := by
-  unfold IsAbundant sigma; native_decide
-
-/--
-836 is not pseudoperfect: no subset of its proper divisors sums to 836.
--/
-theorem eight36_not_pseudoperfect : ¬IsPseudoperfect 836 := by
-  intro ⟨S, hS_sub, hS_sum⟩
-  have : ∀ T ∈ (836 : ℕ).properDivisors.powerset, T.sum id ≠ 836 := by native_decide
-  exact this S (Finset.mem_powerset.mpr hS_sub) hS_sum
-
-/--
-836 is the second weird number.
--/
-theorem weird_836 : IsWeird 836 := ⟨eight36_abundant, eight36_not_pseudoperfect⟩
-
-/-
-## Extending the Odd Weird Bound
-
-1575 = 3² × 5² × 7 is the second smallest odd abundant number.
-It is semiperfect, hence not weird. No odd number in (945, 1575) is abundant,
-so any odd weird exceeds 1575.
--/
-
-/--
-1575 = 3² × 5² × 7 is odd and abundant: σ(1575) > 2 × 1575.
--/
-theorem fifteen75_odd_abundant : Odd 1575 ∧ IsAbundant 1575 := by
-  constructor
-  · exact ⟨787, by omega⟩
-  · unfold IsAbundant sigma; native_decide
-
-/--
-1575 is semiperfect: some subset of its proper divisors sums to 1575.
+1575 = 3² × 5² × 7 is semiperfect.
 -/
 theorem fifteen75_semiperfect : IsPseudoperfect 1575 := by
   have : ∃ S ∈ (1575 : ℕ).properDivisors.powerset, S.sum id = 1575 := by native_decide
   exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
 
 /--
-1575 is not weird (it is semiperfect).
--/
-theorem fifteen75_not_weird : ¬IsWeird 1575 := fun ⟨_, hnp⟩ => hnp fifteen75_semiperfect
-
-/--
-No odd number in the range (945, 1575) is abundant.
+No odd number in (945, 1575) is abundant.
 -/
 theorem no_odd_abundant_946_to_1575 (n : ℕ) (hn1 : 945 < n) (hn2 : n < 1575)
     (hodd : Odd n) : ¬IsAbundant n := by
@@ -435,8 +221,7 @@ theorem no_odd_abundant_946_to_1575 (n : ℕ) (hn1 : 945 < n) (hn2 : n < 1575)
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
-Any odd weird number must exceed 1575: no odd abundant in (945, 1575),
-and 1575 is semiperfect.
+Any odd weird number must exceed 1575.
 -/
 theorem odd_weird_gt_1575 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 1575 < n := by
   have h945 := odd_weird_gt_945 n hw hodd
@@ -446,35 +231,15 @@ theorem odd_weird_gt_1575 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 1575 < n :
   · exact absurd hw.1 (no_odd_abundant_946_to_1575 n h945 hlt hodd)
   · exact absurd (heq ▸ fifteen75_semiperfect) hw.2
 
-/-
-## Further extending the odd weird bound: >2205
-
-2205 = 3² × 5 × 7² is the third smallest odd abundant number.
-It is semiperfect. No odd number in (1575, 2205) is abundant.
--/
-
 /--
-2205 = 3² × 5 × 7² is odd and abundant.
--/
-theorem twenty205_odd_abundant : Odd 2205 ∧ IsAbundant 2205 := by
-  constructor
-  · exact ⟨1102, by omega⟩
-  · unfold IsAbundant sigma; native_decide
-
-/--
-2205 is semiperfect: some subset of its proper divisors sums to 2205.
+2205 = 3² × 5 × 7² is semiperfect.
 -/
 theorem twenty205_semiperfect : IsPseudoperfect 2205 := by
   have : ∃ S ∈ (2205 : ℕ).properDivisors.powerset, S.sum id = 2205 := by native_decide
   exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
 
 /--
-2205 is not weird (it is semiperfect).
--/
-theorem twenty205_not_weird : ¬IsWeird 2205 := fun ⟨_, hnp⟩ => hnp twenty205_semiperfect
-
-/--
-No odd number in the range (1575, 2205) is abundant.
+No odd number in (1575, 2205) is abundant.
 -/
 theorem no_odd_abundant_1576_to_2205 (n : ℕ) (hn1 : 1575 < n) (hn2 : n < 2205)
     (hodd : Odd n) : ¬IsAbundant n := by
@@ -492,35 +257,15 @@ theorem odd_weird_gt_2205 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 2205 < n :
   · exact absurd hw.1 (no_odd_abundant_1576_to_2205 n h1575 hlt hodd)
   · exact absurd (heq ▸ twenty205_semiperfect) hw.2
 
-/-
-## Further extending the odd weird bound: >2835
-
-2835 = 3⁴ × 5 × 7 is the fourth smallest odd abundant number.
-It is semiperfect. No odd number in (2205, 2835) is abundant.
--/
-
 /--
-2835 = 3⁴ × 5 × 7 is odd and abundant.
--/
-theorem twenty835_odd_abundant : Odd 2835 ∧ IsAbundant 2835 := by
-  constructor
-  · exact ⟨1417, by omega⟩
-  · unfold IsAbundant sigma; native_decide
-
-/--
-2835 is semiperfect: some subset of its proper divisors sums to 2835.
+2835 = 3⁴ × 5 × 7 is semiperfect.
 -/
 theorem twenty835_semiperfect : IsPseudoperfect 2835 := by
   have : ∃ S ∈ (2835 : ℕ).properDivisors.powerset, S.sum id = 2835 := by native_decide
   exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
 
 /--
-2835 is not weird (it is semiperfect).
--/
-theorem twenty835_not_weird : ¬IsWeird 2835 := fun ⟨_, hnp⟩ => hnp twenty835_semiperfect
-
-/--
-No odd number in the range (2205, 2835) is abundant.
+No odd number in (2205, 2835) is abundant.
 -/
 theorem no_odd_abundant_2206_to_2835 (n : ℕ) (hn1 : 2205 < n) (hn2 : n < 2835)
     (hodd : Odd n) : ¬IsAbundant n := by
@@ -537,6 +282,85 @@ theorem odd_weird_gt_2835 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 2835 < n :
   rcases Nat.lt_or_eq_of_le hle with hlt | heq
   · exact absurd hw.1 (no_odd_abundant_2206_to_2835 n h2205 hlt hodd)
   · exact absurd (heq ▸ twenty835_semiperfect) hw.2
+
+/--
+3465 = 3² × 5 × 7 × 11 is semiperfect.
+-/
+theorem thirty465_semiperfect : IsPseudoperfect 3465 := by
+  have : ∃ S ∈ (3465 : ℕ).properDivisors.powerset, S.sum id = 3465 := by native_decide
+  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
+
+/--
+No odd number in (2835, 3465) is abundant.
+-/
+theorem no_odd_abundant_2836_to_3465 (n : ℕ) (hn1 : 2835 < n) (hn2 : n < 3465)
+    (hodd : Odd n) : ¬IsAbundant n := by
+  have h : ∀ m ∈ Finset.Icc 2836 3464, Odd m → ¬IsAbundant m := by native_decide
+  exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
+
+/--
+Any odd weird number must exceed 3465.
+-/
+theorem odd_weird_gt_3465 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 3465 < n := by
+  have h2835 := odd_weird_gt_2835 n hw hodd
+  by_contra hle
+  push_neg at hle
+  rcases Nat.lt_or_eq_of_le hle with hlt | heq
+  · exact absurd hw.1 (no_odd_abundant_2836_to_3465 n h2835 hlt hodd)
+  · exact absurd (heq ▸ thirty465_semiperfect) hw.2
+
+/--
+4095 = 3² × 5 × 7 × 13 is semiperfect.
+-/
+theorem forty95_semiperfect : IsPseudoperfect 4095 := by
+  have : ∃ S ∈ (4095 : ℕ).properDivisors.powerset, S.sum id = 4095 := by native_decide
+  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
+
+/--
+No odd number in (3465, 4095) is abundant.
+-/
+theorem no_odd_abundant_3466_to_4095 (n : ℕ) (hn1 : 3465 < n) (hn2 : n < 4095)
+    (hodd : Odd n) : ¬IsAbundant n := by
+  have h : ∀ m ∈ Finset.Icc 3466 4094, Odd m → ¬IsAbundant m := by native_decide
+  exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
+
+/--
+Any odd weird number must exceed 4095.
+-/
+theorem odd_weird_gt_4095 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 4095 < n := by
+  have h3465 := odd_weird_gt_3465 n hw hodd
+  by_contra hle
+  push_neg at hle
+  rcases Nat.lt_or_eq_of_le hle with hlt | heq
+  · exact absurd hw.1 (no_odd_abundant_3466_to_4095 n h3465 hlt hodd)
+  · exact absurd (heq ▸ forty95_semiperfect) hw.2
+
+/--
+4725 = 3³ × 5² × 7 is semiperfect.
+-/
+theorem forty725_semiperfect : IsPseudoperfect 4725 := by
+  have : ∃ S ∈ (4725 : ℕ).properDivisors.powerset, S.sum id = 4725 := by native_decide
+  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
+
+/--
+No odd number in (4095, 4725) is abundant.
+-/
+theorem no_odd_abundant_4096_to_4725 (n : ℕ) (hn1 : 4095 < n) (hn2 : n < 4725)
+    (hodd : Odd n) : ¬IsAbundant n := by
+  have h : ∀ m ∈ Finset.Icc 4096 4724, Odd m → ¬IsAbundant m := by native_decide
+  exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
+
+/--
+Any odd weird number must exceed 4725, covering the first seven odd abundant
+numbers (945, 1575, 2205, 2835, 3465, 4095, 4725) — all verified semiperfect.
+-/
+theorem odd_weird_gt_4725 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 4725 < n := by
+  have h4095 := odd_weird_gt_4095 n hw hodd
+  by_contra hle
+  push_neg at hle
+  rcases Nat.lt_or_eq_of_le hle with hlt | heq
+  · exact absurd hw.1 (no_odd_abundant_4096_to_4725 n h4095 hlt hodd)
+  · exact absurd (heq ▸ forty725_semiperfect) hw.2
 
 /-
 ## Computational Bounds on Odd Weird Numbers
@@ -588,9 +412,6 @@ theorem seventy_is_primitive_weird : IsPrimitiveWeird 70 := by
 
 /-
 ## Open Question 2: Infinitely Many Primitive Weird Numbers
-
-The second part of Erdős's question asks whether there are infinitely
-many primitive weird numbers.
 -/
 
 /--
@@ -604,7 +425,6 @@ weird numbers?
 -/
 def erdos_470_part2 : Prop := PrimitiveWeirdSet.Infinite
 
-
 /-
 ## Conditional Result: Prime Gaps
 
@@ -615,7 +435,6 @@ for all large n. This would follow from conjectures like Cramér's.
 
 /--
 The n-th prime: nthPrime 0 = 2, nthPrime 1 = 3, nthPrime 2 = 5, etc.
-Uses Mathlib's `Nat.nth` with the `Nat.Prime` predicate.
 -/
 noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
@@ -647,7 +466,6 @@ axiom melfi_conditional :
 ## Positive Density of Weird Numbers
 
 Benkoski and Erdős proved that weird numbers have positive asymptotic density.
-This means a positive fraction of all natural numbers are weird.
 -/
 
 /--
@@ -661,107 +479,35 @@ Benkoski-Erdős: Weird numbers have positive asymptotic density.
 axiom benkoski_erdos_density : ∃ c > 0,
     ∀ᶠ N in Filter.atTop, (↑((WeirdSet ∩ {n | n ≤ N}).ncard) : ℝ) / N ≥ c
 
-/-
-## Abundancy Index
-
-The abundancy index of n is σ(n)/n. For weird numbers, this is > 2.
-If there are no odd weird numbers, then all weird numbers have
-abundancy index < 4.
--/
-
 /--
 The abundancy index of n.
 -/
 noncomputable def abundancyIndex (n : ℕ) : ℚ := sigma n / n
 
 /-
-## Verified Weird Number Sequence (OEIS A006037)
-
-Computationally verify the first several weird numbers.
-All are even, consistent with the open question about odd weird numbers.
--/
-
-/--
-836 is the second weird number.
--/
-theorem weird_836 : IsWeird 836 := by
-  constructor
-  · unfold IsAbundant sigma; native_decide
-  · intro ⟨S, hS_sub, hS_sum⟩
-    have : ∀ T ∈ (836 : ℕ).properDivisors.powerset, T.sum id ≠ 836 := by native_decide
-    exact this S (Finset.mem_powerset.mpr hS_sub) hS_sum
-
-/--
-1575 = 3² × 5² × 7 is the second smallest odd abundant number, and is semiperfect.
--/
-theorem nine45_1575_semiperfect : IsPseudoperfect 1575 := by
-  have : ∃ S ∈ (1575 : ℕ).properDivisors.powerset, S.sum id = 1575 := by native_decide
-  exact let ⟨S, hmem, hsum⟩ := this; ⟨S, Finset.mem_powerset.mp hmem, hsum⟩
-
-/--
-No odd number in [945, 1575] is abundant except 945 and 1575.
-(Abundancy-only check — fast for native_decide.)
--/
-theorem no_odd_abundant_945_to_1575 (n : ℕ) (h1 : 945 < n) (h2 : n < 1575)
-    (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Ico 946 1575, Odd m → ¬IsAbundant m := by native_decide
-  exact h n (Finset.mem_Ico.mpr ⟨by omega, h2⟩) hodd
-
-/--
-No odd number ≤ 1575 is weird. Proof by cases:
-- Below 945: not abundant
-- 945: semiperfect
-- (945, 1575): not abundant
-- 1575: semiperfect
--/
-theorem no_odd_weird_to_1575 (n : ℕ) (hn : n ≤ 1575) (hodd : Odd n) :
-    ¬IsWeird n := by
-  intro ⟨hab, hnp⟩
-  by_cases h945 : n < 945
-  · exact absurd hab (no_odd_abundant_below_945 n h945 hodd)
-  · push_neg at h945
-    by_cases h945eq : n = 945
-    · exact hnp (h945eq ▸ nine45_semiperfect)
-    · by_cases h1575 : n < 1575
-      · exact absurd hab (no_odd_abundant_945_to_1575 n (by omega) h1575 hodd)
-      · -- n = 1575
-        have : n = 1575 := by omega
-        exact hnp (this ▸ nine45_1575_semiperfect)
-
-/--
-Any odd weird number must exceed 1575. Improvement over the 945 bound.
--/
-theorem odd_weird_gt_1575 (n : ℕ) (hw : IsWeird n) (hodd : Odd n) : 1575 < n := by
-  by_contra h
-  push_neg at h
-  exact absurd hw (no_odd_weird_to_1575 n h hodd)
-
-/-
 ## Summary
 
 **Erdős Problem #470**: Both questions remain OPEN.
-We combine the key established results:
-1. 70 is the smallest weird number
+Key established results:
+1. 70 is the smallest weird number, 836 is the second
 2. 70 is primitive weird
-3. Weird numbers have positive density (Benkoski-Erdős)
-4. Melfi's conditional infinitude of primitive weirds
+3. Any odd weird exceeds 4725 (first 7 odd abundants verified semiperfect)
+4. Weird numbers have positive density (Benkoski-Erdős)
+5. Melfi's conditional infinitude of primitive weirds
 -/
 
 /--
 **Complete summary of Erdős Problem #470.**
-Combines the smallest weird number result, 836 as second weird,
-primitive weirdness of 70, odd weird lower bound, positive density,
-and Melfi's conditional result.
 -/
 theorem erdos_470 :
     (IsWeird 70 ∧ ∀ n < 70, ¬IsWeird n) ∧
     IsWeird 836 ∧
     IsPrimitiveWeird 70 ∧
-    (∀ n, IsWeird n → Odd n → 2835 < n) ∧
+    (∀ n, IsWeird n → Odd n → 4725 < n) ∧
     (∃ c > 0, ∀ᶠ N in Filter.atTop, (↑((WeirdSet ∩ {n | n ≤ N}).ncard) : ℝ) / N ≥ c) ∧
     ((∀ᶠ n in Filter.atTop, (primeGap n : ℝ) < Real.sqrt (nthPrime n) / 10) →
       PrimitiveWeirdSet.Infinite) :=
   ⟨smallest_weird_is_70, weird_836, seventy_is_primitive_weird,
-   odd_weird_gt_2835, benkoski_erdos_density, melfi_conditional⟩
+   odd_weird_gt_4725, benkoski_erdos_density, melfi_conditional⟩
 
 end Erdos470
