@@ -102,14 +102,51 @@ theorem reciprocal_sum_three_primes_le {Q : Finset ℕ}
   have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
   have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
   have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hc2
-  -- Among {a,b,c}, at most one can be 2, at most one can be 3
-  -- So at least one is ≥ 5: its reciprocal ≤ 1/5
-  -- At most two can be < 5, and they are distinct primes < 5: so ∈ {2, 3}
-  -- The third is ≥ 5.
-  -- Bound: 1/2 + 1/3 + 1/5 = 31/30
-  -- General bound: sum ≤ 1/2 + 1/3 + 1/5 since these are the three largest
-  -- reciprocals of distinct primes.
-  sorry
+  -- Pigeonhole: at least one of a, b, c is ≥ 5
+  -- (Only primes < 5 are 2 and 3, so at most 2 of 3 distinct primes can be < 5)
+  have h5 : (5 : ℚ) ≤ a ∨ (5 : ℚ) ≤ b ∨ (5 : ℚ) ≤ c := by
+    by_contra h; push_neg at h
+    have ha5 : a < 5 := by exact_mod_cast h.1
+    have hb5 : b < 5 := by exact_mod_cast h.2.1
+    have hc5 : c < 5 := by exact_mod_cast h.2.2
+    interval_cases a <;> interval_cases b <;> interval_cases c <;> simp_all
+  -- For the one ≥ 5: reciprocal ≤ 1/5. Among the other two distinct primes,
+  -- one is ≥ 3 (can't both be 2), so its reciprocal ≤ 1/3.
+  -- Total ≤ 1/2 + 1/3 + 1/5 = 31/30.
+  rcases h5 with h5a | h5b | h5c
+  · have ha5 : (a : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h5a
+    have : (3 : ℚ) ≤ b ∨ (3 : ℚ) ≤ c := by
+      by_contra h; push_neg at h
+      have : b = 2 := by have : b < 3 := by exact_mod_cast h.1; omega
+      have : c = 2 := by have : c < 3 := by exact_mod_cast h.2; omega
+      exact hbc (by omega)
+    rcases this with h3 | h3
+    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      linarith
+    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      linarith
+  · have hb5 : (b : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h5b
+    have : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ c := by
+      by_contra h; push_neg at h
+      have : a = 2 := by have : a < 3 := by exact_mod_cast h.1; omega
+      have : c = 2 := by have : c < 3 := by exact_mod_cast h.2; omega
+      exact hac (by omega)
+    rcases this with h3 | h3
+    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      linarith
+    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      linarith
+  · have hc5 : (c : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h5c
+    have : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ b := by
+      by_contra h; push_neg at h
+      have : a = 2 := by have : a < 3 := by exact_mod_cast h.1; omega
+      have : b = 2 := by have : b < 3 := by exact_mod_cast h.2; omega
+      exact hab (by omega)
+    rcases this with h3 | h3
+    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      linarith
+    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      linarith
 
 -- ============================================================
 -- Part III: No |P|=2, |Q|=3 Prime Solution (Sorry Elimination)
