@@ -119,7 +119,16 @@ theorem limInf_ge_log_c1 :
 
 /-- liminf ≤ limsup (always true for bounded sequences) -/
 theorem limInf_le_limSup : growthRateLimInf ≤ growthRateLimSup := by
-  sorry -- standard analysis result
+  unfold growthRateLimInf growthRateLimSup
+  apply Filter.liminf_le_limsup
+  · -- IsBoundedUnder: growthRate is eventually bounded above
+    obtain ⟨U, hU⟩ := growthRate_upper_bound
+    exact ⟨U, Filter.eventually_atTop.mpr ⟨1, fun n hn => hU n hn⟩⟩
+  · -- IsCoboundedUnder: every eventual upper bound is ≥ L
+    obtain ⟨L, _, hL⟩ := growthRate_lower_bound
+    exact ⟨L, fun a ha => by
+      obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp ha
+      linarith [hL (max N 1) (le_max_right _ _), hN (max N 1) (le_max_left _ _)]⟩
 
 /-
 ## Part IV: The Open Question
