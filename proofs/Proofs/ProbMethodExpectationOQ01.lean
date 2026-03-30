@@ -47,7 +47,8 @@ theorem finset_expectation_eq_integral {α : Type*} [Fintype α]
     (X : α → ℝ) :
     (∑ a : α, X a) / Fintype.card α =
     ∫ a, X a ∂(uniformProbMeasure α) := by
-  sorry
+  simp only [uniformProbMeasure, integral_smul_measure, smul_eq_mul, integral_count]
+  rw [ENNReal.toReal_inv, ENNReal.toReal_natCast, div_eq_inv_mul]
 
 -- ============================================================
 -- PART III: First Moment Method via MeasureTheory
@@ -56,13 +57,37 @@ theorem finset_expectation_eq_integral {α : Type*} [Fintype α]
 /-- The first moment method: if E[X] < 1, then P(X = 0) > 0.
     This is the core of the probabilistic method.
     In measure-theoretic language: if ∫ X dP < 1 and X ≥ 0 integer-valued,
-    then μ({X = 0}) > 0. -/
+    then μ({X = 0}) > 0.
+
+    Note: integrability is required because Lean's Bochner integral
+    returns 0 for non-integrable functions by convention. -/
 theorem first_moment_method {Ω : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) [IsProbabilityMeasure μ]
     (X : Ω → ℕ) (hX_meas : Measurable X)
+    (hX_integ : Integrable (fun ω => (X ω : ℝ)) μ)
     (hX_int : ∫ ω, (X ω : ℝ) ∂μ < 1) :
     0 < μ {ω | X ω = 0} := by
-  sorry
+  -- By contradiction: if μ({X = 0}) = 0, then X ≥ 1 a.e.,
+  -- so ∫ X ≥ ∫ 1 = 1, contradicting ∫ X < 1.
+  by_contra h
+  push_neg at h
+  have h0 : μ {ω | X ω = 0} = 0 := le_antisymm h (zero_le _)
+  -- X ω ≥ 1 a.e. (ℕ-valued: either 0 or ≥ 1)
+  have hae : ∀ᵐ ω ∂μ, (1 : ℝ) ≤ (X ω : ℝ) := by
+    rw [ae_iff]
+    convert h0 using 1
+    ext ω
+    simp only [Set.mem_setOf_eq, not_le]
+    constructor
+    · intro hlt
+      have h_nat : X ω < 1 := by exact_mod_cast hlt
+      omega
+    · intro h_eq
+      simp [h_eq]
+  have h1 : 1 ≤ ∫ ω, (X ω : ℝ) ∂μ := by
+    have hle := integral_mono_ae (integrable_const 1) hX_integ hae
+    rwa [integral_const, measure_univ, ENNReal.one_toReal, one_smul] at hle
+  linarith
 
 -- ============================================================
 -- PART IV: Linearity of Expectation (Measure-Theoretic)
