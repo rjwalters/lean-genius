@@ -63,11 +63,12 @@
       "generalGap_telescope: telescoping d_j - d_i = Σ consecutive gaps (by induction)",
       "consecutiveGap_le_generalGap: interior consecutive gap ≤ general gap",
       "reciprocal_gap_index_bound: 1/(d_j-d_i) ≤ 1/(j-i) from gap growth",
-      "reciprocal_gap_consecutive_bound: 1/(d_j-d_i) ≤ 1/g_i from gap domination"
+      "reciprocal_gap_consecutive_bound: 1/(d_j-d_i) ≤ 1/g_i from gap domination",
+      "allPairsSum_le_tau_mul_consecutive: sum-level bound S_all ≤ (τ-1)·S_consec"
     ],
     "axiomCount": 1,
-    "assumptions": "1 axiom: erdos_884 (the OPEN main conjecture). All 8 supporting axioms eliminated: divisorList_pairwise_lt, mem_divisorList_iff, consecutiveGap_pos, generalGap_pos, divisors_6, divisors_prime, prime_case_equality, gap_lower_bound — all proved. numDivisors_mul_coprime sorry also proved via σ₀ multiplicativity.",
-    "lineCount": 399
+    "assumptions": "1 axiom: erdos_884 (the OPEN main conjecture). All 8 supporting axioms eliminated: divisorList_pairwise_lt, mem_divisorList_iff, consecutiveGap_pos, generalGap_pos, divisors_6, divisors_prime, prime_case_equality, gap_lower_bound — all proved. numDivisors_mul_coprime sorry also proved via σ��� multiplicativity.",
+    "lineCount": 482
   },
   "overview": {
     "historicalContext": "Erdős Problem #884 appears in [Er98] and asks about the relationship between two sums over divisor gaps. Given the divisors d₁ < d₂ < ··· < d_t of a positive integer n, one can form either the all-pairs sum (summing 1/(d_j - d_i) over all i < j) or the consecutive-pairs sum (summing only over adjacent divisors). The question is whether the all-pairs sum is controlled by the consecutive-pairs sum up to an absolute constant.\n\nThe problem is related to Erdős Problem #144 on divisor arithmetic. Terence Tao has indicated that this problem appears tractable, suggesting it may be amenable to combinatorial or analytic arguments about divisor distributions.\n\nThe trivial observation is that for primes p, both sums equal 1/(p-1) since there is only one pair of divisors {1, p}. For composite numbers with many divisors, the all-pairs sum has O(τ²) terms while the consecutive-pairs sum has only O(τ) terms, making the conjectured bound non-trivial.",
@@ -174,6 +175,14 @@
       "endLine": 399,
       "summary": "Defines `divisorHarmonicSum n` ($\\sigma_{-1}(n) = \\sum_{d|n} 1/d$) and proves `erdos_884_statement` (the conjecture definition matches the informal statement, by `rfl`).",
       "mathContext": "The divisor harmonic sum $\\sigma_{-1}(n) = \\sum_{d \\mid n} 1/d$ is related but distinct — it sums reciprocals of divisors, not reciprocals of gaps. The `erdos_884_statement` confirms definitional correctness."
+    },
+    {
+      "id": "sum-level-bound",
+      "title": "Sum-Level Bound",
+      "startLine": 399,
+      "endLine": 482,
+      "summary": "Proves `allPairsSum_le_tau_mul_consecutive`: for n > 1, allPairsSum(n) ≤ (τ(n)-1) · consecutivePairsSum(n). Uses per-pair bound 1/(d_j-d_i) ≤ 1/g_i, card(Ioo i τ) ≤ τ-1, and that the last consecutive gap vanishes (out-of-bounds). Helper lemmas: `numDivisors_ge_two`, `list_getD_zero_of_ge`, `divisor_eq_zero_of_ge`, `consecutiveGap_last_eq_zero`.",
+      "mathContext": "$S_{\\text{all}}(n) \\leq (\\tau(n) - 1) \\cdot S_{\\text{consec}}(n)$. For each pair $(i,j)$ with $i < j$, we have $\\frac{1}{d_j - d_i} \\leq \\frac{1}{g_i}$. Summing over $j > i$ gives at most $\\tau - 1$ copies of $\\frac{1}{g_i}$. Summing over $i$ yields $(\\tau-1) \\cdot S_{\\text{consec}}$. This is weaker than Erdős 884 (which asks for an absolute constant), but is an unconditional bound."
     }
   ],
   "references": [
@@ -229,9 +238,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos884",
-    "lineCount": 399,
+    "lineCount": 482,
     "axiomCount": 1,
-    "theoremCount": 28,
+    "theoremCount": 33,
     "definitionCount": 9
   }
 }
