@@ -108,6 +108,18 @@ theorem mu_eq_zero (F : Set ℂ) : mu F = 0 := by
         ext z; simp [Finset.prod_empty, map_one, not_lt.mpr (le_refl _)]
   · exact zero_le _
 
+/-- The uncorrected mu is always 0 (degree-0 bug: constant polynomial 1 has empty sublevel set).
+    This makes mu_infimum trivially true. The meaningful version uses muPosDeg (degree ≥ 1). -/
+theorem mu_eq_zero (F : Set ℂ) : mu F = 0 := by
+  apply le_antisymm
+  · have p0 : PolynomialInF F := ⟨0, Fin.elim0, fun i => i.elim0⟩
+    calc mu F ≤ sublevelMeasure p0 := iInf_le _ p0
+      _ = 0 := by
+        simp only [sublevelMeasure, sublevelSet, PolynomialInF.eval]
+        convert MeasureTheory.measure_empty
+        ext z; simp [Finset.prod_empty, map_one, not_lt.mpr (le_refl _)]
+  · exact zero_le _
+
 /-- μ(F) is achieved or approached for infinite F.
     Trivially true because mu F = 0 (degree-0 bug). -/
 theorem mu_infimum (F : Set ℂ) (hF : F.Infinite) :
