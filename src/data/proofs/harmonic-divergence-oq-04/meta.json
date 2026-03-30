@@ -46,7 +46,7 @@
     ],
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries.",
-    "lineCount": 113
+    "lineCount": 106
   },
   "overview": {
     "historicalContext": "Nicole Oresme (~1350) proved the harmonic series diverges by grouping terms: each group of 2^k terms sums to at least 1/2, giving infinitely many groups each contributing at least 1/2. Augustin-Louis Cauchy (1821) generalized this to the condensation test: for any nonneg antitone sequence f, Σ f(n) converges iff Σ 2^k·f(2^k) converges. This completely characterizes convergence for monotone decreasing sequences.",
@@ -137,7 +137,7 @@
       "Real"
     ],
     "namespace": "HarmonicDivergenceOQ04",
-    "lineCount": 113,
+    "lineCount": 106,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0
