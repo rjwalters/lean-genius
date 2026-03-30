@@ -66,9 +66,11 @@ theorem sum_sq_le_card_mul_max_sq (A : Finset ℕ) (N : ℕ) (hA : ∀ a ∈ A, 
     Equivalently: Σaᵢ²/n ≥ (Σaᵢ/n)². This is Cauchy–Schwarz for 1 and aᵢ. -/
 theorem sum_sq_cauchy_schwarz (A : Finset ℕ) :
     (A.sum id) ^ 2 ≤ A.card * A.sum (fun a => a ^ 2) := by
-  -- Cauchy-Schwarz: (Σ 1·aᵢ)² ≤ (Σ 1²)(Σ aᵢ²) = n · Σaᵢ²
-  -- Standard result; proof via expanding (Σᵢ<ⱼ (aᵢ - aⱼ)² ≥ 0)
-  sorry
+  -- Use Cauchy-Schwarz / Chebyshev in ℤ, then cast back to ℕ
+  suffices h : ((A.sum id : ℕ) : ℤ) ^ 2 ≤ ↑(A.card * A.sum (fun a => a ^ 2)) by
+    exact_mod_cast h
+  push_cast [Nat.cast_sum, Nat.cast_pow]
+  exact sq_sum_le_card_mul_sum_sq
 
 /-- The maximum element is at least the average: max(A) ≥ sum(A)/card(A).
     Equivalently: sum(A) ≤ card(A) · max(A). -/
