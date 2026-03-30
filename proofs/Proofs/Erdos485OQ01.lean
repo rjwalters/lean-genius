@@ -34,11 +34,10 @@ We formalize:
 4. Concrete verified examples for small k
 5. Structural lemmas about polynomial squaring and term counts
 
-## Axiom Budget: 4 axioms (deep analytic number theory results)
-- erdos_upper_bound: f(k) < k^(1-c)
-- schinzel_lower_bound: f(k) > c · log k
+## Axiom Budget: 3 axioms (deep analytic number theory results)
+- erdos_upper: f(k) < k^(1-c)
+- schinzel_zannier_lower: f(k) > c · log k
 - f_diverges: f(k) → ∞
-- lacunary_lower_bound: lacunary polynomial squares have ≥ 2k-1 terms
 
 Original formalization for Lean Genius.
 -/
@@ -199,9 +198,61 @@ theorem lacunary_positive_lower_bound (p : Polynomial ℚ) (k : ℕ) (hk : k ≥
     (hpos : ∀ n, 0 ≤ p.coeff n)
     (hsome : ∀ n ∈ p.support, 0 < p.coeff n) :
     termCount (p ^ 2) ≥ 2 * k - 1 := by
-  -- With all-positive coefficients, squaring produces all-positive cross-terms.
-  -- The sumset A + A has ≥ 2|A| - 1 elements, each with positive coefficient.
-  sorry
+  -- Strategy: construct two disjoint subsets of support(p²), each contained in
+  -- the sumset support(p) + support(p), with combined size 2k - 1.
+  -- T₁ = {a + min | a ∈ support} has k elements in [2·min, min+max]
+  -- T₂ = {max + a | a ∈ support \ {min}} has k-1 elements in (min+max, 2·max]
+  -- These are disjoint since every element of T₁ ≤ min+max < every element of T₂.
+  -- Positive coefficients ensure all sumset positions have nonzero coefficient in p².
+  unfold termCount at *
+  have hAne : p.support.Nonempty := Finset.card_pos.mp (by omega)
+  let m := p.support.min' hAne
+  let M := p.support.max' hAne
+  have hm_mem : m ∈ p.support := Finset.min'_mem _ hAne
+  have hM_mem : M ∈ p.support := Finset.max'_mem _ hAne
+  -- Key: for a, b ∈ support(p), coefficient of p² at a+b is positive (hence nonzero)
+  have coeff_pos : ∀ a ∈ p.support, ∀ b ∈ p.support, a + b ∈ (p ^ 2).support := by
+    intro a ha b hb
+    rw [Polynomial.mem_support_iff, sq, Polynomial.coeff_mul]
+    intro h_zero
+    have h1 : 0 < p.coeff a * p.coeff b := mul_pos (hsome a ha) (hsome b hb)
+    have h2 : p.coeff a * p.coeff b ≤
+        ∑ x ∈ Finset.Nat.antidiagonal (a + b), p.coeff x.1 * p.coeff x.2 :=
+      Finset.single_le_sum (fun x _ => mul_nonneg (hpos x.1) (hpos x.2))
+        (Finset.Nat.mem_antidiagonal.mpr rfl)
+    linarith
+  -- T₁ = {a + m | a ∈ support(p)} ⊆ support(p²), |T₁| = k
+  have hT₁_sub : p.support.image (· + m) ⊆ (p ^ 2).support := by
+    intro x hx; obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp hx
+    exact coeff_pos a ha m hm_mem
+  have hT₁_card : (p.support.image (· + m)).card = k := by
+    rw [Finset.card_image_of_injective _ (fun a b (h : a + m = b + m) => by omega), htc]
+  -- T₂ = {M + a | a ∈ support(p) \ {m}} ⊆ support(p²), |T₂| = k - 1
+  have hT₂_sub : (p.support.erase m).image (M + ·) ⊆ (p ^ 2).support := by
+    intro x hx; obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp hx
+    exact coeff_pos M hM_mem a (Finset.mem_erase.mp ha).2
+  have hT₂_card : ((p.support.erase m).image (M + ·)).card = k - 1 := by
+    rw [Finset.card_image_of_injective _ (fun a b (h : M + a = M + b) => by omega),
+        Finset.card_erase_of_mem hm_mem, htc]
+  -- T₁ and T₂ are disjoint: all of T₁ ≤ m+M, all of T₂ > m+M
+  have hDisj : Disjoint (p.support.image (· + m)) ((p.support.erase m).image (M + ·)) := by
+    rw [Finset.disjoint_left]
+    intro x hx₁ hx₂
+    obtain ⟨a₁, ha₁, rfl⟩ := Finset.mem_image.mp hx₁
+    obtain ⟨a₂, ha₂, heq⟩ := Finset.mem_image.mp hx₂
+    obtain ⟨ha₂_ne, ha₂_mem⟩ := Finset.mem_erase.mp ha₂
+    have : m ≤ a₂ := Finset.min'_le _ a₂ ha₂_mem
+    have : m < a₂ := lt_of_le_of_ne ‹m ≤ a₂› (Ne.symm ha₂_ne)
+    have : a₁ ≤ M := Finset.le_max' _ a₁ ha₁
+    omega  -- a₁ + m ≤ M + m < M + a₂, but a₁ + m = M + a₂
+  -- Combine: |support(p²)| ≥ |T₁ ∪ T₂| = k + (k-1) = 2k-1
+  calc (p ^ 2).support.card
+      ≥ (p.support.image (· + m) ∪ (p.support.erase m).image (M + ·)).card :=
+        Finset.card_le_card (Finset.union_subset hT₁_sub hT₂_sub)
+    _ = (p.support.image (· + m)).card + ((p.support.erase m).image (M + ·)).card :=
+        Finset.card_union_of_disjoint hDisj
+    _ = k + (k - 1) := by rw [hT₁_card, hT₂_card]
+    _ = 2 * k - 1 := by omega
 
 /-
 ## Part V: Small Cases and Examples
