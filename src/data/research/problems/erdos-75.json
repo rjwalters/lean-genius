@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Converted pigeonhole axiom to theorem with sorry. Now 2 axioms (both open conjectures) + 1 sorry (provable by pigeonhole). Added indepNumber_ge_of_exists helper.",
+    "progressSummary": "COMPLETE: All sorries eliminated. 2 axioms remain (both open conjectures). Proved finite_chromatic_independence by partitioning into color classes, showing each is independent with card ≤ indepNumber, summing to n ≤ k * indepNumber.",
     "builtItems": [
       "Proved high_girth_cochromatic (trivially True)",
       "Converted 10 unused axiom propositions to def Prop in Erdos759Problem.lean",
@@ -49,7 +49,8 @@
       "finite_chromatic_independence axiom corrected to use Colorable hypothesis (was chromaticNum)",
       "Converted finite_chromatic_independence from axiom to theorem (3→2 axioms)",
       "theorem indepNumber_ge_of_exists: if independent set of size m exists, indepNumber ≥ m",
-      "Proof structure for pigeonhole: restrict coloring, find largest fiber, show it is independent"
+      "Proof structure for pigeonhole: restrict coloring, find largest fiber, show it is independent",
+      "finite_chromatic_independence: PROVED (was sorry) — color fiber partition + Finset.card_biUnion + sum_le_sum"
     ],
     "insights": [
       "Erdos759Problem.lean: 11 axioms eliminated (17→6). 10 unused props→def Prop, high_girth_cochromatic proved (was trivially True)",
@@ -61,7 +62,9 @@
       "chromaticNum_mono proved: monotonicity follows from definition via lt_of_lt_of_le",
       "indepNumber_le proved: independence number ≤ n via Finset.card_le_card and Finset.subset_univ",
       "indepNumber defined via Finset.sup over range(n+1) with Classical decidability — avoids sSup/ConditionallyCompleteLattice dependency",
-      "finite_chromatic_independence: restrict k-coloring to subgraph, pigeonhole gives fiber ≥ n/k, fiber is independent"
+      "finite_chromatic_independence: restrict k-coloring to subgraph, pigeonhole gives fiber ≥ n/k, fiber is independent",
+      "finite_chromatic_independence PROVED: partition Fin n by color, each fiber is independent (proper coloring) so ≤ indepNumber, fibers are disjoint and cover all vertices, so n = Σ|fib| ≤ k·indepNumber",
+      "Fixed stale import Mathlib.Data.Rat.Basic → Mathlib.Data.Rat.Defs, added open Classical at namespace level, fixed Finset.le_sup explicit f argument for Lean 4.26.0"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
