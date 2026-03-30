@@ -18,7 +18,7 @@
       "konig-theorem",
       "open-question"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
@@ -55,8 +55,8 @@
       "smallest_excluded_is_aleph_omega: ℵ_ω is first excluded value"
     ],
     "axiomCount": 0,
-    "lineCount": 227,
-    "assumptions": "None. All results proved from Mathlib's cofinality API with 0 axioms."
+    "lineCount": 255,
+    "assumptions": "0 axioms, 0 sorries. Core result (konig_cofinality) derived from Mathlib's Cardinal.lt_cof_power. All other results built on Mathlib cofinality API."
   },
   "overview": {
     "historicalContext": "**König's Theorem and the Continuum Problem**\n\n- **1905**: Julius König proved his inequality on sums and products of cardinals\n- **1940-1963**: Gödel and Cohen showed CH is independent of ZFC\n- **1970**: Easton proved König's constraint is the ONLY ZFC constraint on 2^ℵ₀\n- **Present**: Mathlib formalizes König's theorem as Cardinal.lt_cof_power\n\nKönig's constraint is the strongest thing ZFC can say about the size of the continuum beyond Cantor's basic bound ℵ₁ ≤ 2^ℵ₀.",
