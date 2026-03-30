@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-14T21:29:39.410Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 10 theorems, 2 axioms (down from 3), 0 sorries. Eliminated false axiom small_primes_divide via Kummer counterexample.",
+    "progressSummary": "PROGRESS: 17T/2A/0S (was 10T). Added centralBinom_pos, concrete values (n=0..5), building testable infrastructure.",
     "builtItems": [
       "Proved erdos_731_conjecture (True placeholder)",
       "Proved kummer_carries (True placeholder)",
@@ -74,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:29:39.410Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-03-30T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

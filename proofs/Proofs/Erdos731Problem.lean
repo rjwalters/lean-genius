@@ -41,6 +41,28 @@ noncomputable def leastNonDivisor (m : ℕ) : ℕ :=
 noncomputable def leastNonDivCentral (n : ℕ) : ℕ :=
   leastNonDivisor (centralBinom n)
 
+/-- C(2n, n) > 0 for all n. -/
+theorem centralBinom_pos (n : ℕ) : 0 < centralBinom n := by
+  unfold centralBinom; exact Nat.choose_pos (by omega)
+
+/-- C(0, 0) = 1. -/
+theorem centralBinom_zero : centralBinom 0 = 1 := by native_decide
+
+/-- C(2, 1) = 2. -/
+theorem centralBinom_one : centralBinom 1 = 2 := by native_decide
+
+/-- C(4, 2) = 6. -/
+theorem centralBinom_two : centralBinom 2 = 6 := by native_decide
+
+/-- C(6, 3) = 20. -/
+theorem centralBinom_three : centralBinom 3 = 20 := by native_decide
+
+/-- C(8, 4) = 70. -/
+theorem centralBinom_four : centralBinom 4 = 70 := by native_decide
+
+/-- C(10, 5) = 252. -/
+theorem centralBinom_five : centralBinom 5 = 252 := by native_decide
+
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #731** (OPEN): For almost all n, the least m with
