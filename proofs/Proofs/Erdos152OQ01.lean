@@ -156,11 +156,164 @@ theorem gap_existence_two (A : Finset ℕ) (hS : IsSidonFinset A)
           _ ≤ 1 + 1 := Finset.card_insert_le _ _
           _ = 2 := by ring
       omega
-    · -- M-1 ∈ A, m+1 ∉ A: 2m is isolated. Need second isolated element.
-      -- This case requires interior analysis (harder).
-      sorry
+    · -- M-1 ∈ A, m+1 ∉ A: 2m is isolated. Second isolated: m + s₂.
+      -- s₂ = min(A \ {m}), the second-smallest element.
+      have hA'ne : (A.erase m).Nonempty :=
+        Finset.card_pos.mp (by rw [Finset.card_erase_of_mem hm_mem]; omega)
+      set s₂ := (A.erase m).min' hA'ne
+      have hs₂_er : s₂ ∈ A.erase m := Finset.min'_mem _ hA'ne
+      have hs₂_mem : s₂ ∈ A := Finset.mem_of_mem_erase hs₂_er
+      have hs₂_ne_m : s₂ ≠ m := Finset.ne_of_mem_erase hs₂_er
+      have hs₂_gt_m : m < s₂ := lt_of_le_of_ne (Finset.min'_le A s₂ hs₂_mem) hs₂_ne_m.symm
+      have hs₂_ge_m2 : s₂ ≥ m + 2 := by
+        have : m + 1 ≠ s₂ := fun h => hm1 (h ▸ hs₂_mem); omega
+      have hs₂_min : ∀ x ∈ A, x ≠ m → s₂ ≤ x :=
+        fun x hx hxm => Finset.min'_le _ x (Finset.mem_erase.mpr ⟨hxm, hx⟩)
+      -- s₂ + 1 ∉ A: Sidon prevents second consecutive pair
+      have hs₂1_not : s₂ + 1 ∉ A := by
+        intro hs₂1
+        -- Sidon: (s₂+1) + (M-1) = s₂ + M → {s₂+1, M-1} = {s₂, M}
+        have heq : (s₂ + 1) + (M - 1) = s₂ + M := by omega
+        have hpair := hS (s₂ + 1) (M - 1) s₂ M hs₂1 hM1 hs₂_mem hM_mem heq
+        have : s₂ + 1 ∈ ({s₂, M} : Finset ℕ) :=
+          hpair ▸ Finset.mem_insert_self _ _
+        simp only [Finset.mem_insert, Finset.mem_singleton] at this
+        rcases this with h | h
+        · omega  -- s₂ + 1 = s₂
+        · -- s₂ + 1 = M → s₂ = M - 1 → A ⊆ {m, M-1, M} → |A| ≤ 3
+          have hsub : A ⊆ ({m, M - 1, M} : Finset ℕ) := by
+            intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton]
+            by_cases hxm : x = m; · left; exact hxm
+            · right; have := hs₂_min x hx hxm; have := Finset.le_max' A x hx; omega
+          linarith [Finset.card_le_card hsub,
+            Finset.card_insert_le m ({M - 1, M} : Finset ℕ),
+            Finset.card_insert_le (M - 1) ({M} : Finset ℕ),
+            Finset.card_singleton M]
+      -- m + s₂ ∈ A+A, and both neighbors absent
+      have hms₂_in : m + s₂ ∈ sumsetFinset A := Finset.add_mem_add hm_mem hs₂_mem
+      have hms₂_left : m + s₂ - 1 ∉ sumsetFinset A := by
+        intro h; obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp h
+        by_cases ham : a = m
+        · -- b = s₂ - 1, but s₂-1 is between m and s₂ exclusive → not in A
+          have : s₂ - 1 ∉ A := by
+            intro hmem; have := hs₂_min (s₂ - 1) hmem (by omega); omega
+          exact this (by have : b = s₂ - 1 := by omega; rwa [this] at hb)
+        · -- a ≥ s₂, b ≥ m → a + b ≥ m + s₂ > m + s₂ - 1
+          linarith [hs₂_min a ha ham, Finset.min'_le A b hb]
+      have hms₂_right : m + s₂ + 1 ∉ sumsetFinset A := by
+        intro h; obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp h
+        by_cases ham : a = m
+        · exact hs₂1_not (by have : b = s₂ + 1 := by omega; rwa [this] at hb)
+        · by_cases hbm : b = m
+          · exact hs₂1_not (by have : a = s₂ + 1 := by omega; rwa [this] at ha)
+          · -- a ≥ s₂, b ≥ s₂ → a + b ≥ 2s₂ > m + s₂ + 1 (since s₂ ≥ m + 2)
+            linarith [hs₂_min a ha ham, hs₂_min b hb hbm]
+      -- 2m is also isolated
+      have h2m_in : m + m ∈ sumsetFinset A := Finset.add_mem_add hm_mem hm_mem
+      have h2m_left : m + m - 1 ∉ sumsetFinset A := by
+        intro h; obtain ⟨a, ha, b, hb, rfl⟩ := Finset.mem_add.mp h
+        linarith [Finset.min'_le A a ha, Finset.min'_le A b hb]
+      have h2m_right : m + m + 1 ∉ sumsetFinset A := by
+        intro h; obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp h
+        have ha_ge := Finset.min'_le A a ha; have hb_ge := Finset.min'_le A b hb
+        by_cases ha_eq : a = m
+        · exact hm1 (by have : b = m + 1 := by omega; rwa [this] at hb)
+        · exact hm1 (by have : a = m + 1 := by omega; rwa [this] at ha)
+      -- Two distinct isolated elements → count ≥ 2
+      have hne_sums : m + m ≠ m + s₂ := by omega
+      calc isolatedCount A
+          = ((sumsetFinset A).filter (fun s =>
+              s - 1 ∉ sumsetFinset A ∧ s + 1 ∉ sumsetFinset A)).card := rfl
+        _ ≥ ({m + m, m + s₂} : Finset ℕ).card := by
+            apply Finset.card_le_card; intro x hx
+            simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+            rcases hx with rfl | rfl
+            · exact Finset.mem_filter.mpr ⟨h2m_in, h2m_left, h2m_right⟩
+            · exact Finset.mem_filter.mpr ⟨hms₂_in, hms₂_left, hms₂_right⟩
+        _ = 2 := Finset.card_pair hne_sums
   · by_cases hm1 : m + 1 ∈ A
-    · -- M-1 ∉ A, m+1 ∈ A: 2M is isolated. Need second from interior.
-      sorry
+    · -- M-1 ∉ A, m+1 ∈ A: 2M is isolated. Second isolated: M + s_last.
+      -- s_last = max(A \ {M}), the second-largest element.
+      have hM4 : M ≥ 4 := by
+        have : A ⊆ Finset.range (M + 1) := fun a ha =>
+          Finset.mem_range.mpr (Nat.lt_succ.mpr (Finset.le_max' A a ha))
+        linarith [Finset.card_le_card this, Finset.card_range (M + 1)]
+      have hA'ne : (A.erase M).Nonempty :=
+        Finset.card_pos.mp (by rw [Finset.card_erase_of_mem hM_mem]; omega)
+      set sL := (A.erase M).max' hA'ne
+      have hsL_er : sL ∈ A.erase M := Finset.max'_mem _ hA'ne
+      have hsL_mem : sL ∈ A := Finset.mem_of_mem_erase hsL_er
+      have hsL_ne_M : sL ≠ M := Finset.ne_of_mem_erase hsL_er
+      have hsL_lt_M : sL < M := lt_of_le_of_ne (Finset.le_max' A sL hsL_mem) hsL_ne_M
+      have hsL_le_M2 : sL ≤ M - 2 := by
+        have : M - 1 ≠ sL := fun h => hM1 (h ▸ hsL_mem); omega
+      have hsL_max : ∀ x ∈ A, x ≠ M → x ≤ sL :=
+        fun x hx hxM => Finset.le_max' _ x (Finset.mem_erase.mpr ⟨hxM, hx⟩)
+      -- sL - 1 ∉ A: Sidon prevents second consecutive pair (m, m+1 already exists)
+      have hsL_prev_not : sL - 1 ∉ A := by
+        intro hsL_prev
+        -- Sidon: sL + m = (sL-1) + (m+1) → {sL, m} = {sL-1, m+1}
+        have heq : sL + m = (sL - 1) + (m + 1) := by omega
+        have hpair := hS sL m (sL - 1) (m + 1) hsL_mem hm_mem hsL_prev hm1 heq
+        have : sL ∈ ({sL - 1, m + 1} : Finset ℕ) :=
+          hpair ▸ Finset.mem_insert_self _ _
+        simp only [Finset.mem_insert, Finset.mem_singleton] at this
+        rcases this with h | h
+        · omega  -- sL = sL - 1
+        · -- sL = m + 1 → A ⊆ {m, m+1, M} → |A| ≤ 3
+          have hsub : A ⊆ ({m, m + 1, M} : Finset ℕ) := by
+            intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton]
+            by_cases hxM : x = M; · right; right; exact hxM
+            · left; have := hsL_max x hx hxM; have := Finset.min'_le A x hx; omega
+          linarith [Finset.card_le_card hsub,
+            Finset.card_insert_le m ({m + 1, M} : Finset ℕ),
+            Finset.card_insert_le (m + 1) ({M} : Finset ℕ),
+            Finset.card_singleton M]
+      -- sL + 1 ∉ A (between sL and M, no elements since sL = max(A\{M}))
+      have hsL_next_not : sL + 1 ∉ A := by
+        intro hs; have := hsL_max (sL + 1) hs (by omega); omega
+      -- M + sL ∈ A+A, and both neighbors absent
+      have hMsL_in : M + sL ∈ sumsetFinset A := Finset.add_mem_add hM_mem hsL_mem
+      have hMsL_right : M + sL + 1 ∉ sumsetFinset A := by
+        intro h; obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp h
+        by_cases haM : a = M
+        · exact hsL_next_not (by have : b = sL + 1 := by omega; rwa [this] at hb)
+        · by_cases hbM : b = M
+          · exact hsL_next_not (by have : a = sL + 1 := by omega; rwa [this] at ha)
+          · -- a ≤ sL, b ≤ sL → a + b ≤ 2sL < M + sL + 1 (since sL < M)
+            linarith [hsL_max a ha haM, hsL_max b hb hbM]
+      have hMsL_left : M + sL - 1 ∉ sumsetFinset A := by
+        intro h; obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp h
+        by_cases haM : a = M
+        · -- b = sL - 1, but sL - 1 ∉ A
+          exact hsL_prev_not (by have : b = sL - 1 := by omega; rwa [this] at hb)
+        · by_cases hbM : b = M
+          · exact hsL_prev_not (by have : a = sL - 1 := by omega; rwa [this] at ha)
+          · -- a ≤ sL, b ≤ sL → a + b ≤ 2sL. But a + b = M + sL - 1
+            -- → sL ≥ M - 1, contradicting sL ≤ M - 2
+            linarith [hsL_max a ha haM, hsL_max b hb hbM]
+      -- 2M is also isolated
+      have h2M_in : M + M ∈ sumsetFinset A := Finset.add_mem_add hM_mem hM_mem
+      have h2M_right : M + M + 1 ∉ sumsetFinset A := by
+        intro h; obtain ⟨a, ha, b, hb, rfl⟩ := Finset.mem_add.mp h
+        linarith [Finset.le_max' A a ha, Finset.le_max' A b hb]
+      have h2M_left : M + M - 1 ∉ sumsetFinset A := by
+        intro h; obtain ⟨a, ha, b, hb, hab⟩ := Finset.mem_add.mp h
+        have ha_le := Finset.le_max' A a ha; have hb_le := Finset.le_max' A b hb
+        by_cases ha_eq : a = M
+        · exact hM1 (by have : b = M - 1 := by omega; rwa [this] at hb)
+        · exact hM1 (by have : a = M - 1 := by omega; rwa [this] at ha)
+      -- Two distinct isolated elements → count ≥ 2
+      have hne_sums : M + M ≠ M + sL := by omega
+      calc isolatedCount A
+          = ((sumsetFinset A).filter (fun s =>
+              s - 1 ∉ sumsetFinset A ∧ s + 1 ∉ sumsetFinset A)).card := rfl
+        _ ≥ ({M + M, M + sL} : Finset ℕ).card := by
+            apply Finset.card_le_card; intro x hx
+            simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+            rcases hx with rfl | rfl
+            · exact Finset.mem_filter.mpr ⟨h2M_in, h2M_left, h2M_right⟩
+            · exact Finset.mem_filter.mpr ⟨hMsL_in, hMsL_left, hMsL_right⟩
+        _ = 2 := Finset.card_pair hne_sums
     · -- Neither M-1 nor m+1 in A: both endpoints isolated
       exact two_isolated_no_consecutive A hS (by omega) hm_pos hM1 hm1
