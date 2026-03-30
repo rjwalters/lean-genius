@@ -78,11 +78,6 @@ the known sufficient condition due to Prikry. -/
 axiom positive_density_bounded_gaps (A : Set ℕ) :
     HasPositiveUpperDensity A → HasBoundedGaps (diffSet A)
 
-/-- Positive upper density implies `D(A)` has positive density itself. -/
-axiom positive_density_diffset_dense (A : Set ℕ) :
-    HasPositiveUpperDensity A →
-      HasPositiveUpperDensity { n : ℕ | (n : ℤ) ∈ diffSet A }
-
 /-- The difference set is symmetric: `d ∈ D(A)` iff `-d ∈ D(A)`.
     Proof: the swap map `(a₁, a₂) ↦ (a₂, a₁)` sends pairs with
     difference `d` to pairs with difference `-d`, preserving membership. -/
@@ -253,11 +248,3 @@ def ErdosProblem332 : Prop :=
       (∀ A : Set ℕ, P A → HasBoundedGaps (diffSet A)) →
         ∀ A : Set ℕ, HasPositiveUpperDensity A → P A
 
-/- ## Related questions -/
-
-/-- Does `∑_{d ∈ D(A)} 1/d = ∞` when `A` has positive upper density? -/
-axiom diffSet_harmonic_diverges (A : Set ℕ) :
-    HasPositiveUpperDensity A →
-      ∀ B : ℚ, ∃ (S : Finset ℕ),
-        (∀ n ∈ S, (n : ℤ) ∈ diffSet A) ∧
-          B ≤ S.sum (fun n => (1 : ℚ) / (n : ℚ))

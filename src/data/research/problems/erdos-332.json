@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 20 theorems, 3 deep axioms, 0 sorries. Complete D(A) characterization: empty↔finite, nonempty↔infinite, syndetic↔positive density. Full implication chain proved. Axioms: positive_density_bounded_gaps (Prikry), positive_density_diffset_dense, diffSet_harmonic_diverges — all deep additive combinatorics results.",
+    "progressSummary": "COMPLETE: 1 axiom (positive_density_bounded_gaps, Prikry), 0 sorries. Removed 2 unused axioms (positive_density_diffset_dense, diffSet_harmonic_diverges).",
     "builtItems": [
       "Assessment: all 3A appropriate and deep",
       "Proved diffSet_mono in Erdos332Problem.lean:102",
@@ -50,7 +50,8 @@
       "positive_upper_density_infinite in Erdos332Problem.lean",
       "positive_upper_density_diffSet_nonempty in Erdos332Problem.lean",
       "density_chain in Erdos332Problem.lean",
-      "Graduated problem to completed status (iteration 4)"
+      "Graduated problem to completed status (iteration 4)",
+      "Removed 2 unused axioms from Erdos332Problem.lean (3→1)"
     ],
     "insights": [
       "3 axioms all deep: positive_density_bounded_gaps (Furstenberg), positive_density_diffset_dense (additive combinatorics), diffSet_harmonic_diverges. None provable from Mathlib.",
