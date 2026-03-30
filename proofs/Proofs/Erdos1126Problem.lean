@@ -123,12 +123,6 @@ theorem additive_ae_unique :
 
 /- ## Part V: Wild Additive Functions and Regularity -/
 
-/-- **Existence of wild additive functions:**
-Using the Axiom of Choice, there exist additive functions that
-are discontinuous everywhere and unbounded on every interval. -/
-axiom wild_additive_exist :
-    ∃ f : ℝ → ℝ, IsAdditive f ∧ ¬Continuous f
-
 /-- **Measurable additive functions are linear:**
 If f is additive and Lebesgue measurable, then f(x) = cx.
 Non-linear additive functions are necessarily non-measurable. -/
