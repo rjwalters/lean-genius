@@ -485,10 +485,9 @@ theorem conditionalEntropy_nonneg {α β : Type*} [Fintype α] [Fintype β]
           Finset.single_le_sum (f := fun x' => pXY (x', y))
             (fun x' _ => hp (x', y)) (Finset.mem_univ x)
     have hle : pXY (x, y) / (∑ x' : α, pXY (x', y)) ≤ 1 :=
-      div_le_one_of_le
+      (div_le_one hpy_pos).mpr
         (Finset.single_le_sum (f := fun x' => pXY (x', y))
           (fun x' _ => hp (x', y)) (Finset.mem_univ x))
-        (le_of_lt hpy_pos)
     exact mul_nonpos_of_nonneg_of_nonpos (le_of_lt hpxy_pos)
       (Real.log_nonpos (le_of_lt (div_pos hpxy_pos hpy_pos)) hle)
 

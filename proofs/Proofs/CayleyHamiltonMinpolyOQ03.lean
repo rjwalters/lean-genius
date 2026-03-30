@@ -159,7 +159,7 @@ theorem annihilating_poly_kills_vec (M : Matrix (Fin n) (Fin n) K)
     This theorem is the reason the Krylov method terminates: after at most
     d = deg(μ_M) matrix-vector products, we obtain a linear dependence from
     which the minimal polynomial coefficients can be extracted. -/
-theorem krylov_dependent_at_minpoly_degree [hn : NeZero n]
+theorem krylov_dependent_at_minpoly_degree [_hn : NeZero n]
     (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K) :
     ¬ LinearIndependent K
       (fun i : Fin ((minpoly K M).natDegree + 1) => krylovVec M v i) := by

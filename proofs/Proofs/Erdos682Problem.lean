@@ -36,20 +36,24 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.NumberTheory.Primorial
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Order.OrderIsoNat
 
 open Nat
 
 namespace Erdos682
+
+noncomputable section
 
 /-
 ## Part I: Basic Definitions
 -/
 
 /--
-**The n-th Prime:**
-p_n is the n-th prime number (1-indexed: p_1 = 2, p_2 = 3, etc.)
+**The n-th Prime (0-indexed):**
+`nthPrime n` is the n-th prime: nthPrime 0 = 2, nthPrime 1 = 3, etc.
+Defined via `Nat.nth Nat.Prime` from Mathlib (was previously an axiom).
 -/
-axiom nthPrime (n : ℕ) : ℕ
+def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
 /--
 **Least Prime Factor:**
@@ -151,11 +155,12 @@ def isExceptional (n : ℕ) : Prop := ¬hasRoughNumberInGap n
 -/
 
 /--
-**Primorial Definition:**
+**Primorial:**
 n# = product of all primes ≤ n.
 30030 = 2·3·5·7·11·13 = 13#
+Available as `Nat.primorial` from Mathlib.NumberTheory.Primorial.
+(Removed axiom — was unused in any theorem.)
 -/
-axiom primorial (n : ℕ) : ℕ
 
 /--
 **Dickson's Conjecture (Special Case):**
@@ -346,5 +351,7 @@ The number of exceptional n ≤ X is O(X/(log X)²).
 Conditionally, it is asymptotic to c·X/(log X)² for explicit c > 0.
 -/
 theorem erdos_682 : erdos682Question := erdos682_answer
+
+end
 
 end Erdos682
