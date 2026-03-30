@@ -29,9 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Eliminated the sole axiom (morleys_theorem_axiom). Proved Morley theorem via sine rule + cosine rule identity. File now has 0 axioms, 0 sorries, 11 theorems.",
+    "builtItems": [
+      "Proved sin_triple_product (line 203)",
+      "Proved cosine_rule_identity (line 260)",
+      "Proved morley_arm_cosine_rule (line 319)",
+      "Proved morleys_theorem_side_formula (line 381)",
+      "Proved morleys_theorem_equilateral (line 416)",
+      "Eliminated 1 axiom: morleys_theorem_axiom → fully proved"
+    ],
+    "insights": [
+      "The morleys_theorem_axiom was mathematically incorrect as stated: MorleyTriangle was an unconstrained structure (arbitrary 3 points)",
+      "Proof strategy: sine rule in trisector sub-triangles + cosine rule + triple sine identity + symmetry of 8R sin(a/3)sin(b/3)sin(c/3)",
+      "Key identity proved: cosine_rule_identity — sin²p+sin²q-2sin(p)sin(q)cos(c)=sin²c when p+q+c=π",
+      "Key identity proved: sin_triple_product — sin(3x) = 4sin(x)sin(π/3+x)sin(π/3-x)",
+      "Core lemma: morley_arm_cosine_rule factors out k² from cosine rule and applies the identity",
+      "All three Morley sides equal (8R sin α₃ sin β₃ sin γ₃)² by cyclic symmetry of the formula"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: morleys-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"

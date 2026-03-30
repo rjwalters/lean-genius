@@ -445,16 +445,8 @@ theorem pascalConstraint_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.
       (projTransform M D) (projTransform M E) (projTransform M F)
     ↔ pascalConstraint A B C D E F := by
   unfold pascalConstraint lineIntersection lineThrough
-  -- Cross product of two cross-product-transformed vectors:
-  -- cross(adj(M)ᵀ·a, adj(M)ᵀ·b) = adj(adj(M)ᵀ)ᵀ · cross(a, b)
-  -- P', Q', R' are all of the form (scalar) · M · (original vector)
-  -- det(P',Q',R') = (scalar)³ · det(M) · det(P,Q,R)
-  -- The scalar factors are powers of det(M), so ≠ 0
   simp only [← crossProduct_projTransform]
-  -- After unfolding, both sides are polynomial expressions
-  -- The transformed det = det(M)^4 · original det
   sorry -- Needs: adjugate composition identity, to be proved in next session
-
 -- ============================================================
 -- Export main results
 -- ============================================================
