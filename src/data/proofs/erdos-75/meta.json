@@ -17,12 +17,12 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 75,
     "erdosUrl": "https://erdosproblems.com/75",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 160,
+    "lineCount": 187,
     "assumptions": "3 axioms: finite_chromatic_independence (pigeonhole on color classes), ErdosProblem75 (basic conjecture), ErdosProblem75_strong (strong conjecture). Graph infrastructure now uses concrete structures and proved theorems.",
     "mathlib_version": "4.26.0"
   },
@@ -110,7 +110,7 @@
       "Classical"
     ],
     "namespace": "Erdos75",
-    "lineCount": 160,
+    "lineCount": 187,
     "axiomCount": 3,
     "theoremCount": 6,
     "definitionCount": 10

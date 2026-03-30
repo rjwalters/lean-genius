@@ -466,15 +466,10 @@ This gives an upper bound on boundary points from the bounding box.
 /-- Lattice width in x direction -/
 def lattice_width_x (xmin xmax : ℤ) : ℕ := (xmax - xmin).natAbs + 1
 
-/-- **Axiom:** Bounding box area upper bounds polygon area.
-
-    A polygon contained in a w_x × w_y bounding box has area at most w_x * w_y. -/
-axiom area_bounded_by_box_axiom (P : SimpleLatticePolygon) (w_x w_y : ℕ) :
-    A(P) ≤ w_x * w_y
-
-/-- Bounding box area upper bounds polygon area -/
-theorem area_bounded_by_box (P : SimpleLatticePolygon) (w_x w_y : ℕ) :
-    A(P) ≤ w_x * w_y := area_bounded_by_box_axiom P w_x w_y
+-- Note: A prior axiom `area_bounded_by_box_axiom` was removed because it claimed
+-- A(P) ≤ w_x * w_y for ALL w_x, w_y without requiring the polygon to be contained
+-- in the bounding box. This is inconsistent (e.g., take w_x = w_y = 0).
+-- A correct version would require a containment hypothesis.
 
 -- ============================================================
 -- Export main results

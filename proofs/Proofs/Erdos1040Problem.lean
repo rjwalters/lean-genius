@@ -173,13 +173,13 @@ def isLineSegment (F : Set ℂ) : Prop :=
 def isClosedDisc (F : Set ℂ) : Prop :=
   ∃ c : ℂ, ∃ r > 0, F = Metric.closedBall c r
 
-/-- For line segments, μ is determined by transfinite diameter. -/
+/-- For line segments, μ is determined by transfinite diameter (using corrected μ). -/
 axiom lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
-  ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F)
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
-/-- For discs, μ is determined by transfinite diameter. -/
+/-- For discs, μ is determined by transfinite diameter (using corrected μ). -/
 axiom disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
-  ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F)
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
 /-- Line segment of length L has transfinite diameter L/4. -/
 axiom lineSegment_diameter (a b : ℂ) :
@@ -244,7 +244,20 @@ theorem transfiniteDiameter_mono (F G : Set ℂ) (h : F ⊆ G) :
     transfiniteDiameter F ≤ transfiniteDiameter G := by
   sorry
 
-/-- Transfinite diameter is non-negative. -/
+/-- Each element in the nthDiameter supremum set is non-negative. -/
+private theorem nthDiameter_val_nonneg (n : ℕ) (pts : Fin n → ℂ) :
+    (∏ i in Finset.range n, ∏ j in Finset.range i,
+      Complex.abs (pts i - pts j)) ^ (2 / (n * (n - 1) : ℝ)) ≥ 0 := by
+  apply Real.rpow_nonneg
+  apply Finset.prod_nonneg
+  intro i _
+  apply Finset.prod_nonneg
+  intro j _
+  exact Complex.abs.nonneg _
+
+/-- Transfinite diameter is non-negative.
+    Proof: each nthDiameter is sSup of non-negative values, and the
+    infimum of non-negative values is non-negative. -/
 theorem transfiniteDiameter_nonneg (F : Set ℂ) :
     transfiniteDiameter F ≥ 0 := by
   sorry

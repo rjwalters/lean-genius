@@ -131,9 +131,31 @@ axiom upper_bound :
 -- Part VI: Small Values
 -- ============================================================================
 
-/-- Known exact values: M(1) = 1, M(2) = 1, M(3) = 2, M(4) = 2, M(5) = 3. -/
-axiom small_values :
-  M 1 = 1 ∧ M 2 = 1 ∧ M 3 = 2 ∧ M 4 = 2 ∧ M 5 = 3
+/-- Computable version of `maxOverlap`. Mirrors the noncomputable definition
+    but is accepted by Lean's compiler for evaluation via `native_decide`. -/
+def maxOverlapC (A B : Finset ℤ) : ℕ :=
+  ((A ×ˢ B).image (fun p : ℤ × ℤ => p.1 - p.2)).sup (overlap A B)
+
+/-- Computable version of `M(N)`. Uses `maxOverlapC` and inline definitions
+    to avoid noncomputable intermediate functions. -/
+def MC (N : ℕ) : ℕ :=
+  let I := Finset.Icc (1 : ℤ) (2 * ↑N)
+  let parts := I.powerset.filter (fun A => A.card = N)
+  let vals := parts.image (fun A => maxOverlapC A (I \ A))
+  if h : vals.Nonempty then vals.min' h else 0
+
+/-- `MC` agrees with `M`: both compute the same min-max overlap value.
+    After unfolding all intermediate definitions, the expressions are identical.
+    The `noncomputable` tag on `M` only affects code generation, not definitional equality. -/
+theorem MC_eq (N : ℕ) : MC N = M N := rfl
+
+/-- Known exact values: M(1) = 1, M(2) = 1, M(3) = 2, M(4) = 2, M(5) = 3.
+    Verified computationally via `native_decide` on the computable mirror `MC`. -/
+theorem small_values :
+    M 1 = 1 ∧ M 2 = 1 ∧ M 3 = 2 ∧ M 4 = 2 ∧ M 5 = 3 := by
+  have h : ∀ n, M n = MC n := fun n => (MC_eq n).symm
+  simp only [h]
+  native_decide
 
 -- ============================================================================
 -- Part VII: Consequences and Observations

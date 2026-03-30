@@ -20,8 +20,8 @@
     "erdosNumber": 151,
     "erdosUrl": "https://erdosproblems.com/151",
     "erdosProblemStatus": "open",
-    "axiomCount": 12,
-    "assumptions": "12 axioms encoding graph-theoretic predicates and their properties. 4 unused axioms removed (IsClique, cliqueTransversal_spec, triangleFree_isK4Free, IsK4Free). Remaining axioms: vertexCount, IsMaximalClique, IsIndependent, IsTriangleFree (graph predicates) + cliqueTransversal, cliqueTransversal_min, triangleFreeIndep, triangleFreeIndep_spec, triangleFreeIndep_sqrt, triangleFreeIndep_le, complement_of_indep_is_transversal, clique_transversal_easy_bound.",
+    "axiomCount": 11,
+    "assumptions": "11 axioms encoding graph-theoretic predicates and their properties. Eliminated triangleFreeIndep_le (was only used in a buggy proof — strengthened triangleFreeIndep_spec instead). Remaining axioms: vertexCount, IsMaximalClique, IsIndependent, IsTriangleFree (graph predicates) + cliqueTransversal, cliqueTransversal_min, triangleFreeIndep, triangleFreeIndep_spec, triangleFreeIndep_sqrt, complement_of_indep_is_transversal, clique_transversal_easy_bound.",
     "prerequisites": [
       "Graph theory basics (cliques, independent sets)",
       "Ramsey theory (R(3,t) bounds)",
@@ -59,7 +59,7 @@
         "relationship": "Both involve graph coloring/independence structure; the four-color theorem guarantees large independent sets in planar graphs"
       }
     ],
-    "lineCount": 180,
+    "lineCount": 173,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -135,9 +135,9 @@
     ],
     "opens": [],
     "namespace": "Erdos151",
-    "lineCount": 180,
-    "axiomCount": 16,
-    "theoremCount": 8,
+    "lineCount": 173,
+    "axiomCount": 11,
+    "theoremCount": 5,
     "definitionCount": 2
   },
   "crossReferences": [

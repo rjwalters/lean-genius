@@ -205,12 +205,12 @@ theorem typeI_rect_iterated_one (a b c d : ℝ) (hab : a < b) (hcd : c ≤ d) :
 axiom greens_theorem_typeI
     (R : TypeIRegion)
     (P Q dPdy dQdx : ℝ × ℝ → ℝ)
-    (hP_smooth : ∀ x ∈ Set.Icc R.a R.b, ∀ y ∈ Set.Icc (R.f x) (R.g x),
+    (hP_smooth : ∀ x y, (x, y) ∈ R.toSet →
       HasDerivAt (fun y => P (x, y)) (dPdy (x, y)) y)
-    (hQ_smooth : ∀ y, ∀ x ∈ Set.Icc R.a R.b,
+    (hQ_smooth : ∀ x y, (x, y) ∈ R.toSet →
       HasDerivAt (fun x => Q (x, y)) (dQdx (x, y)) x) :
     R.iteratedIntegral (fun p => dQdx p - dPdy p) =
-    (∫ x in R.a..R.b, (Q (x, R.g x) * deriv R.g x - Q (x, R.f x) * deriv R.f x)) +
+    (∫ x in R.a..R.b, (Q (x, R.f x) * deriv R.f x - Q (x, R.g x) * deriv R.g x)) +
     (∫ y in R.f R.b..R.g R.b, Q (R.b, y)) -
     (∫ y in R.f R.a..R.g R.a, Q (R.a, y)) +
     (∫ x in R.a..R.b, (P (x, R.f x) - P (x, R.g x)))

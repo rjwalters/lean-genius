@@ -563,4 +563,81 @@ theorem mutual_info_le_entropy_snd {α β : Type*} [Fintype α] [Fintype β]
   rw [hchain, hmarg]
   linarith
 
+-- ============================================================
+-- Strong Subadditivity of Entropy
+-- ============================================================
+
+-- Three-variable marginals for a joint distribution on α × β × γ
+noncomputable def marginalXY {α β γ : Type*} [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) : α × β → ℝ :=
+  fun (x, y) => ∑ z : γ, pXYZ (x, y, z)
+
+noncomputable def marginalYZ {α β γ : Type*} [Fintype α]
+    (pXYZ : α × β × γ → ℝ) : β × γ → ℝ :=
+  fun (y, z) => ∑ x : α, pXYZ (x, y, z)
+
+noncomputable def marginalY {α β γ : Type*} [Fintype α] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) : β → ℝ :=
+  fun y => ∑ x : α, ∑ z : γ, pXYZ (x, y, z)
+
+/-- **Strong Subadditivity of Entropy** (Lieb-Ruskai 1973)
+
+For a joint distribution p(X,Y,Z) over finite types α × β × γ:
+  H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z)
+
+Equivalently: conditioning on more variables reduces entropy:
+  H(X|Y,Z) ≤ H(X|Y)
+
+This is equivalent to the non-negativity of conditional mutual information:
+  I(X;Z|Y) ≥ 0
+
+**Proof strategy**: Express the LHS - RHS as a conditional KL divergence:
+  H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y) = Σ_y p(y) D(p(x,z|y) || p(x|y)p(z|y))
+where D(·||·) is the KL divergence. Since D ≥ 0 (Gibbs inequality), SSA follows.
+
+**Dependencies**: Uses gibbs_inequality (KL divergence non-negativity, proved above)
+and the conditional distributions p(x,z|y) = p(x,y,z)/p(y). -/
+theorem strong_subadditivity {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ}
+    (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    shannonEntropy pXYZ + shannonEntropy (marginalY pXYZ) ≤
+      shannonEntropy (marginalXY pXYZ) + shannonEntropy (marginalYZ pXYZ) := by
+  sorry
+
+/-- **Entropy chain rule**: H(X,Y) = H(Y) + H(X|Y).
+    Joint entropy decomposes into marginal plus conditional.
+
+    Proof: expand definitions; the cross-terms ∑_{x,y} p(x,y) log p_Y(y)
+    simplify to ∑_y p_Y(y) log p_Y(y) since ∑_x p(x,y) = p_Y(y). -/
+theorem entropy_chain_rule {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    {pXY : α × β → ℝ} (hp : ∀ xy, 0 ≤ pXY xy)
+    (hsum : ∑ xy : α × β, pXY xy = 1) :
+    shannonEntropy pXY =
+      shannonEntropy (fun y => ∑ x : α, pXY (x, y)) + conditionalEntropy pXY := by
+  sorry
+
+/-- **Subadditivity of entropy**: H(X,Y) ≤ H(X) + H(Y).
+    From entropy_chain_rule + conditioning_reduces_entropy:
+    H(X,Y) = H(Y) + H(X|Y) ≤ H(Y) + H(X) = H(X) + H(Y). -/
+theorem subadditivity {α β : Type*}
+    [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β]
+    {pXY : α × β → ℝ}
+    (hp : ∀ xy, 0 ≤ pXY xy)
+    (hsum : ∑ xy : α × β, pXY xy = 1) :
+    shannonEntropy pXY ≤
+      shannonEntropy (fun x => ∑ y : β, pXY (x, y)) +
+      shannonEntropy (fun y => ∑ x : α, pXY (x, y)) := by
+  calc shannonEntropy pXY
+      = shannonEntropy (fun y => ∑ x, pXY (x, y)) + conditionalEntropy pXY :=
+        entropy_chain_rule hp hsum
+    _ ≤ shannonEntropy (fun y => ∑ x, pXY (x, y)) +
+        shannonEntropy (fun x => ∑ y, pXY (x, y)) := by
+        linarith [conditioning_reduces_entropy hp hsum]
+    _ = shannonEntropy (fun x => ∑ y, pXY (x, y)) +
+        shannonEntropy (fun y => ∑ x, pXY (x, y)) := by ring
+
 end InformationTheory

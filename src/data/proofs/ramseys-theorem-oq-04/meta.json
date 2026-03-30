@@ -28,11 +28,12 @@
       "kSubsets_card: |kSubsets s k| = C(|s|, k)",
       "kSubsets_subset: k-subsets monotone under set inclusion",
       "ramsey_property_mono: Ramsey property monotone in N",
-      "ramsey_base: base case n ≤ k (vacuously/trivially monochromatic)"
+      "ramsey_base: base case n ≤ k (vacuously/trivially monochromatic)",
+      "pigeonhole_ramsey: k=1 base case proved via Finset.exists_lt_card_fiber_of_nsmul_lt_card"
     ],
     "axiomCount": 1,
-    "assumptions": "1 axiom: hypergraph_ramsey_exists (the deep existence result requiring iterated stepping-up lemma). All infrastructure, special cases, base case, and monotonicity are proved.",
-    "lineCount": 194
+    "assumptions": "1 axiom: hypergraph_ramsey_exists (the deep existence result requiring stepping-up lemma). All infrastructure, special cases, both base cases (n ≤ k and k = 1 pigeonhole), and monotonicity are proved.",
+    "lineCount": 259
   },
   "overview": {
     "historicalContext": "Ramsey (1930) proved the theorem in full generality for k-element subsets, not just edges. The k=2 (graph) case became most famous. Erdős and Rado (1952) showed hypergraph Ramsey numbers grow as towers of exponentials with height proportional to k.",
@@ -83,9 +84,9 @@
     "imports": ["Mathlib"],
     "opens": ["Finset"],
     "namespace": "HypergraphRamsey",
-    "lineCount": 194,
+    "lineCount": 259,
     "axiomCount": 1,
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 5
   }
 }

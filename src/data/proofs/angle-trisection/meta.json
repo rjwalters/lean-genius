@@ -7,7 +7,7 @@
         "author": "Pierre Wantzel (1837)",
         "sourceUrl": "https://en.wikipedia.org/wiki/Angle_trisection",
         "date": "1837",
-        "status": "verified",
+        "status": "axiomatized",
         "tags": [
             "geometry",
             "galois-theory",
@@ -18,7 +18,7 @@
             "wiedijk-100"
         ],
         "proofRepoPath": "Proofs/AngleTrisection.lean",
-        "badge": "verified",
+        "badge": "axiom",
         "sorries": 0,
         "mathlibDependencies": [
             {
@@ -60,7 +60,7 @@
         ],
         "dateAdded": "2025-12-26",
         "wiedijkNumber": 8,
-        "axiomCount": 0,
+        "axiomCount": 2,
         "prerequisites": [
             "Field extensions and algebraic degree",
             "Polynomial rings and irreducibility over Q",

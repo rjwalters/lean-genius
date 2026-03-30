@@ -1,0 +1,157 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "ptolemys-complex-proof",
+    "range": {
+      "startLine": 1,
+      "endLine": 3
+    },
+    "title": "Library Imports",
+    "type": "concept",
+    "content": "Imports `Mathlib.Analysis.Complex.Basic` for ℂ and its normed field structure, `Mathlib.Topology.MetricSpace.Basic` for metric distance, and `Mathlib.Tactic` for proof automation.",
+    "mathContext": "The key Mathlib facts used are `norm_mul` (‖a·b‖ = ‖a‖·‖b‖ for normed fields), `norm_add_le` (‖a+b‖ ≤ ‖a‖+‖b‖), `Complex.norm_eq_abs` (‖z‖ = Complex.abs z), and `dist_eq_norm` (dist x y = ‖x-y‖).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "normed field",
+      "complex numbers",
+      "metric space"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib analysis library"
+    ]
+  },
+  {
+    "id": "ann-algebraic-identity",
+    "proofId": "ptolemys-complex-proof",
+    "range": {
+      "startLine": 47,
+      "endLine": 50
+    },
+    "title": "Algebraic Identity (CommRing)",
+    "type": "concept",
+    "content": "The identity $(z_1 - z_3)(z_2 - z_4) = (z_1 - z_2)(z_3 - z_4) + (z_2 - z_3)(z_1 - z_4)$ holds in any commutative ring. Proved by `ring` (polynomial identity checking).",
+    "mathContext": "This identity is the algebraic heart of Ptolemy's theorem. It expresses the 'diagonal product' $(z_1-z_3)(z_2-z_4)$ as a sum of two 'opposite side products'. Both sides expand to the same polynomial $z_1 z_2 - z_1 z_4 - z_2 z_3 + z_3 z_4$ in the free commutative ring on four generators. The generality (any CommRing, not just $\\mathbb{C}$) shows that Ptolemy is purely algebraic — the geometry enters only through the norm in the next step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "CommRing",
+      "ring tactic",
+      "polynomial identity"
+    ],
+    "prerequisites": [
+      "commutative ring axioms"
+    ]
+  },
+  {
+    "id": "ann-complex-specialization",
+    "proofId": "ptolemys-complex-proof",
+    "range": {
+      "startLine": 53,
+      "endLine": 55
+    },
+    "title": "Specialization to ℂ",
+    "type": "concept",
+    "content": "The algebraic identity specialized to the complex numbers ℂ. A direct instantiation of the CommRing version.",
+    "mathContext": "Since $\\mathbb{C}$ is a commutative ring (in fact a field), the identity holds automatically. This intermediate theorem is provided for convenience: downstream proofs can cite `ptolemy_complex_identity` without specifying the type class.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ℂ",
+      "type specialization"
+    ],
+    "prerequisites": [
+      "ptolemy_algebraic_identity"
+    ]
+  },
+  {
+    "id": "ann-ptolemy-inequality",
+    "proofId": "ptolemys-complex-proof",
+    "range": {
+      "startLine": 72,
+      "endLine": 80
+    },
+    "title": "Ptolemy's Inequality (Main Theorem)",
+    "type": "concept",
+    "content": "For any four complex numbers: $\\|z_1 - z_3\\| \\cdot \\|z_2 - z_4\\| \\leq \\|z_1 - z_2\\| \\cdot \\|z_3 - z_4\\| + \\|z_2 - z_3\\| \\cdot \\|z_1 - z_4\\|$. The calc proof chains four equalities/inequalities.",
+    "mathContext": "The proof proceeds:\n1. $\\|z_1-z_3\\| \\cdot \\|z_2-z_4\\| = \\|(z_1-z_3)(z_2-z_4)\\|$ by `norm_mul` (multiplicativity in normed fields)\n2. $= \\|(z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4)\\|$ by the algebraic identity\n3. $\\leq \\|(z_1-z_2)(z_3-z_4)\\| + \\|(z_2-z_3)(z_1-z_4)\\|$ by `norm_add_le` (triangle inequality)\n4. $= \\|z_1-z_2\\| \\cdot \\|z_3-z_4\\| + \\|z_2-z_3\\| \\cdot \\|z_1-z_4\\|$ by `norm_mul` again\n\nThis is arguably the shortest known proof of Ptolemy's inequality. Equality holds iff $(z_1-z_2)(z_3-z_4)$ and $(z_2-z_3)(z_1-z_4)$ have the same argument, which is equivalent to the four points being concyclic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_mul",
+      "norm_add_le",
+      "triangle inequality",
+      "normed field",
+      "concyclicity"
+    ],
+    "prerequisites": [
+      "ptolemy_complex_identity",
+      "multiplicativity of norm",
+      "triangle inequality"
+    ]
+  },
+  {
+    "id": "ann-abs-form",
+    "proofId": "ptolemys-complex-proof",
+    "range": {
+      "startLine": 86,
+      "endLine": 91
+    },
+    "title": "Complex.abs Formulation",
+    "type": "concept",
+    "content": "Ptolemy's inequality restated using `Complex.abs` instead of `‖·‖`. The two agree on ℂ via `Complex.norm_eq_abs`.",
+    "mathContext": "In Mathlib, `Complex.abs` is the complex absolute value (modulus) defined via `Complex.normSq`. The norm `‖z‖` on ℂ equals `Complex.abs z` by `Complex.norm_eq_abs`. This formulation may be more natural for users working with `Complex.abs` directly.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Complex.abs",
+      "Complex.norm_eq_abs",
+      "modulus"
+    ],
+    "prerequisites": [
+      "ptolemy_inequality"
+    ]
+  },
+  {
+    "id": "ann-dist-form",
+    "proofId": "ptolemys-complex-proof",
+    "range": {
+      "startLine": 94,
+      "endLine": 99
+    },
+    "title": "Distance Formulation",
+    "type": "concept",
+    "content": "Ptolemy's inequality in metric distance form: $\\text{dist}(z_1, z_3) \\cdot \\text{dist}(z_2, z_4) \\leq \\text{dist}(z_1, z_2) \\cdot \\text{dist}(z_3, z_4) + \\text{dist}(z_2, z_3) \\cdot \\text{dist}(z_1, z_4)$.",
+    "mathContext": "The bridge `dist_eq_norm` gives $\\text{dist}(x, y) = \\|x - y\\|$ for normed add comm groups. This formulation connects the complex-number proof to the classical geometric statement about distances in the plane, and directly parallels the `dist`-based formulation in `PtolemysTheorem.lean`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dist_eq_norm",
+      "metric space",
+      "Euclidean distance"
+    ],
+    "prerequisites": [
+      "ptolemy_inequality",
+      "metric spaces"
+    ]
+  },
+  {
+    "id": "ann-equality-characterization",
+    "proofId": "ptolemys-complex-proof",
+    "range": {
+      "startLine": 115,
+      "endLine": 133
+    },
+    "title": "Ptolemy's Equality (Sufficient Condition)",
+    "type": "concept",
+    "content": "If $(z_2-z_3)(z_1-z_4) = t \\cdot (z_1-z_2)(z_3-z_4)$ for some real $t \\geq 0$, then Ptolemy's inequality becomes equality. Both sides equal $(1+t) \\cdot \\|(z_1-z_2)(z_3-z_4)\\|$.",
+    "mathContext": "The equality case of $\\|a+b\\| \\leq \\|a\\| + \\|b\\|$ occurs when $a$ and $b$ point in the same direction. For Ptolemy, the two 'opposite side products' $(z_1-z_2)(z_3-z_4)$ and $(z_2-z_3)(z_1-z_4)$ must be positively proportional. This condition is satisfied when the four points are concyclic in the correct ordering, as the cross-ratio is then real and positive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle inequality equality",
+      "concyclicity",
+      "cross-ratio",
+      "proportionality"
+    ],
+    "prerequisites": [
+      "ptolemy_complex_identity",
+      "norm_mul",
+      "Complex.norm_real"
+    ]
+  }
+]

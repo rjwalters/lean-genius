@@ -1,0 +1,152 @@
+{
+  "id": "infinitude-primes-oq-03",
+  "title": "Infinitely Many Primes Congruent to 2 (mod 3)",
+  "slug": "infinitude-primes-oq-03",
+  "description": "Elementary proof that there are infinitely many primes p with p ≡ 2 (mod 3), using a Euclid-style argument with no analytic number theory.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions",
+    "date": "Classical result, formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InfinitudePrimes3k2.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number definitions",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function and basic properties",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.exists_prime_and_dvd",
+        "description": "Every integer ≥ 2 has a prime divisor",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_factorial",
+        "description": "p divides n! iff p ≤ n (for p > 0)",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Set.infinite_of_not_bddAbove",
+        "description": "A set of naturals is infinite if it has no upper bound",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "mul_mod_three_one: PROVED — product of 1 (mod 3) integers stays 1 (mod 3)",
+      "prime_mod_three: PROVED — primes ≠ 3 are ≡ 1 or ≡ 2 (mod 3)",
+      "factors_determine_mod_three: PROVED (strong induction) — if all prime factors of n are 3 or ≡ 1 (mod 3), then n ≢ 2 (mod 3)",
+      "has_prime_factor_2_mod_3: PROVED — every n ≡ 2 (mod 3) with n ≥ 2 has a prime factor ≡ 2 (mod 3)",
+      "infinitely_many_primes_2_mod_3: PROVED — for any n, there exists p > n prime with p ≡ 2 (mod 3), using N = 3·(n+1)! - 1",
+      "primes_2_mod_3_infinite: PROVED — the set {p prime | p ≡ 2 (mod 3)} is infinite",
+      "no_largest_prime_2_mod_3: PROVED — there is no largest such prime"
+    ],
+    "dateAdded": "2026-03-30",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classic",
+      "dirichlet",
+      "arithmetic-progressions",
+      "research"
+    ],
+    "lineCount": 196,
+    "prerequisites": [
+      "Natural number arithmetic and divisibility (Nat.dvd)",
+      "Prime numbers (Nat.Prime) from Mathlib",
+      "Factorial function (Nat.factorial) from Mathlib",
+      "Modular arithmetic (Nat.mod)",
+      "Strong induction (Nat.strong_induction_on)"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's theorem (1837) states that every arithmetic progression a, a+d, a+2d, ... with gcd(a,d) = 1 contains infinitely many primes. The general proof requires L-functions and analytic number theory. However, for specific residue classes — particularly those where a ≡ -1 (mod d) — elementary Euclid-style proofs exist. The case of primes ≡ 2 (mod 3) is one of the simplest: it uses N = 3·(n+1)! - 1, which is ≡ 2 (mod 3) and too large for small primes to divide.",
+    "problemStatement": "**Open Question (OQ-03)**: Dirichlet's theorem generalizes to arithmetic progressions: if gcd(a,d) = 1, there are infinitely many primes p ≡ a (mod d). Can we prove the case a = 2, d = 3 elementarily?\n\n**Answer**: Yes. Using the candidate N = 3·(n+1)! - 1, we show N ≡ 2 (mod 3) and N has a prime factor ≡ 2 (mod 3) that exceeds n.",
+    "text": "Elementary proof that there are infinitely many primes congruent to 2 modulo 3. No L-functions or analytic number theory required.",
+    "proofStrategy": "The proof follows Euclid's method with a twist for arithmetic progressions:\n\n1. **Candidate construction**: Given n, set N = 3·(n+1)! - 1\n2. **Modular arithmetic**: N ≡ -1 ≡ 2 (mod 3)\n3. **Factoring argument**: If all prime factors of N were ≡ 1 (mod 3) or equal to 3, then N ≡ 0 or 1 (mod 3), contradicting N ≡ 2 (mod 3). So N has a prime factor p ≡ 2 (mod 3).\n4. **Size argument**: p > n because p | N but p does not divide 3·(n+1)!, since p ≤ n+1 would imply p | (n+1)! and hence p | (N - (N+1)) = 1, contradiction.\n\nThe key lemma (proved by strong induction) is that the product of integers ≡ 1 (mod 3) is ≡ 1 (mod 3), so a number ≡ 2 (mod 3) must have a prime factor ≡ 2 (mod 3).",
+    "keyInsights": [
+      "**Euclid-style for residue classes**: The trick N = d·M - 1 ensures N ≡ -1 (mod d), which works whenever the target residue class is -1 mod d.",
+      "**Strong induction for factoring**: The lemma that all-1-mod-3 factors imply not-2-mod-3 requires strong induction to peel off one factor at a time.",
+      "**Size via factorial**: Using (n+1)! ensures every prime ≤ n+1 divides the factorial, so the prime factor of N exceeds n."
+    ],
+    "prerequisites": [
+      "Euclid's proof of infinitude of primes",
+      "Modular arithmetic",
+      "The fundamental theorem of arithmetic (every n ≥ 2 has a prime factor)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "mod-arithmetic",
+      "title": "Modular Arithmetic Lemmas",
+      "startLine": 43,
+      "endLine": 63,
+      "summary": "Proves mul_mod_three_one (product of 1-mod-3 stays 1-mod-3) and prime_mod_three (primes ≠ 3 are 1 or 2 mod 3).",
+      "mathContext": "Z/3Z is a field, so the product of units is a unit. Primes ≠ 3 are nonzero mod 3."
+    },
+    {
+      "id": "factoring",
+      "title": "The Factoring Argument",
+      "startLine": 65,
+      "endLine": 123,
+      "summary": "Proves factors_determine_mod_three by strong induction: if all prime factors are 3 or ≡ 1 (mod 3), then n ≢ 2 (mod 3). Derives has_prime_factor_2_mod_3 as the contrapositive.",
+      "mathContext": "The key number-theoretic lemma: a number's residue mod 3 is determined by the residues of its prime factors."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 125,
+      "endLine": 165,
+      "summary": "Proves infinitely_many_primes_2_mod_3 using N = 3·(n+1)! - 1. Shows N ≡ 2 (mod 3), extracts a prime factor p ≡ 2 (mod 3), and proves p > n via the factorial divisibility argument. Also proves the set-theoretic formulation.",
+      "mathContext": "The Euclid-style construction adapted for primes in arithmetic progressions."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 175,
+      "endLine": 196,
+      "summary": "Verified examples: 2, 5, 11, 17, 23 are all primes ≡ 2 (mod 3).",
+      "mathContext": "Concrete witnesses for the first few primes in this residue class."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves that there are infinitely many primes congruent to 2 modulo 3, using a completely elementary Euclid-style argument with 0 axioms and 0 sorries. The proof is self-contained and requires only basic Mathlib facts about primes, factorials, and divisibility.",
+    "implications": "This is a special case of Dirichlet's theorem on primes in arithmetic progressions. The elementary proof works because 2 ≡ -1 (mod 3). Similar arguments apply to primes ≡ 3 (mod 4) and other residue classes where the target is -1 mod d.",
+    "openQuestions": [
+      "Can the same elementary approach handle primes ≡ 1 (mod 3)? (No — this requires quadratic reciprocity or L-functions)",
+      "Can the argument be generalized to prove: for any d and a ≡ -1 (mod d), there are infinitely many primes ≡ a (mod d)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "extends",
+      "description": "The base Euclid proof of infinitude of primes. OQ-03 extends it to a specific arithmetic progression."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "InfinitudePrimes3k2",
+    "lineCount": 196,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0
+  }
+}

@@ -101,16 +101,35 @@ theorem cosTermAbs_nonneg (x : ℝ) (k : ℕ) : 0 ≤ cosTermAbs x k :=
     |x|^{2k+3}/(2k+3)! ≤ |x|^{2k+1}/(2k+1)! ⟺ |x|² ≤ (2k+2)(2k+3). -/
 theorem sinTermAbs_antitone (x : ℝ) (hx : |x| ≤ 1) :
     Antitone (sinTermAbs x) := by
-  -- For |x| ≤ 1: sinTermAbs x k = |x|^{2k+1}/(2k+1)!
-  -- is decreasing since the ratio a_{k+1}/a_k = |x|²/((2k+2)(2k+3)) ≤ 1/(2·3) < 1
-  sorry
+  apply antitone_nat_of_succ_le
+  intro k
+  simp only [sinTermAbs]
+  -- Goal: |x|^(2(k+1)+1) / (2(k+1)+1)! ≤ |x|^(2k+1) / (2k+1)!
+  -- Step 1: |x|^(2k+3) ≤ |x|^(2k+1) since |x| ≤ 1 and 2k+1 ≤ 2k+3
+  -- Step 2: (2k+1)! ≤ (2k+3)! so dividing by larger denom gives smaller result
+  calc (|x| ^ (2 * (k + 1) + 1) : ℝ) / ↑(Nat.factorial (2 * (k + 1) + 1))
+      ≤ |x| ^ (2 * k + 1) / ↑(Nat.factorial (2 * (k + 1) + 1)) := by
+        apply div_le_div_of_nonneg_right
+        · exact pow_le_pow_of_le_one (abs_nonneg x) hx (by omega)
+        · exact Nat.cast_nonneg' _
+    _ ≤ |x| ^ (2 * k + 1) / ↑(Nat.factorial (2 * k + 1)) := by
+        apply div_le_div_of_nonneg_left (pow_nonneg (abs_nonneg x) _)
+        · exact Nat.cast_pos.mpr (Nat.factorial_pos _)
+        · exact Nat.cast_le.mpr (Nat.factorial_mono (by omega))
 
 /-- Sin series terms tend to 0 for any fixed x. -/
 theorem sinTermAbs_tendsto (x : ℝ) :
     Filter.Tendsto (sinTermAbs x) Filter.atTop (nhds 0) := by
   -- sinTermAbs x k = |x|^{2k+1}/(2k+1)! → 0 since it's a subsequence of
   -- |x|^n/n! → 0 (from summable_pow_div_factorial)
-  sorry
+  simp only [sinTermAbs]
+  have base : Filter.Tendsto (fun n => |x| ^ n / (Nat.factorial n : ℝ))
+      Filter.atTop (nhds 0) :=
+    (summable_pow_div_factorial ‖x‖).tendsto_atTop_zero.congr fun n => by
+      simp [Real.norm_eq_abs]
+  exact (base.comp (Filter.tendsto_atTop_atTop_of_monotone
+    (fun _ _ h => by omega : Monotone (fun k => 2 * k + 1))
+    (fun n => ⟨n, by omega⟩)))
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART III: Tighter Remainder Bounds
