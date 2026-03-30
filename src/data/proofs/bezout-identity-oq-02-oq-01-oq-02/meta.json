@@ -1,0 +1,42 @@
+{
+  "id": "bezout-identity-oq-02-oq-01-oq-02",
+  "title": "FTA Generalization to Euclidean Domains",
+  "slug": "bezout-identity-oq-02-oq-01-oq-02",
+  "description": "The Fundamental Theorem of Arithmetic generalizes to all Euclidean domains via Mathlib's UniqueFactorizationMonoid. Every Euclidean domain is a UFD, with irreducible ↔ prime and unique factorization automatic from instance resolution.",
+  "meta": {
+    "status": "verified",
+    "tags": ["algebra", "number-theory", "euclidean-domain", "ufd", "factorization"],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ02.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All results follow from Mathlib's instance chain: EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid.",
+    "lineCount": 68,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-03-30"
+  },
+  "overview": {
+    "problemStatement": "Can the Fundamental Theorem of Arithmetic be generalized to Euclidean domains using Mathlib's UniqueFactorizationDomain framework?",
+    "text": "Yes — Mathlib's instance chain EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid provides this generalization automatically. Irreducible elements are prime in any UFD (generalizing Euclid's lemma), and factorization existence + uniqueness follow from the UFD structure.",
+    "proofStrategy": "Leverage Mathlib's algebraic hierarchy: demonstrate that ℤ and Polynomial F are UFDs via instance resolution, and state the key structural theorems (irreducible_iff_prime, factors_exist) in the general UFD setting.",
+    "keyInsights": [
+      "Mathlib already encodes the full chain: EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid",
+      "The key generalization is irreducible_iff_prime: in any UFD, irreducible = prime",
+      "Polynomial rings over fields are Euclidean domains, giving unique factorization of polynomials for free"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Extends the FTA proof from integers to all Euclidean domains"
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity is the foundation: it gives the GCD structure that makes Euclidean domains into UFDs"
+    }
+  ]
+}
