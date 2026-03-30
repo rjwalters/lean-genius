@@ -2,7 +2,7 @@
   "id": "de-moivre-oq-03-oq-01",
   "title": "De Moivre Extension to Irrational Exponents",
   "slug": "de-moivre-oq-03-oq-01",
-  "description": "Extends De Moivre's theorem to real and irrational exponents via Complex.cpow. Shows rational exponents give multi-valued roots, irrational exponents are single-valued on the principal branch, and connects to Weyl equidistribution.",
+  "description": "Extends De Moivre's theorem to real exponents via Complex.cpow. Proves the real-exponent formula on the principal branch, constructs rational multi-valued roots, and states Weyl equidistribution (axiom). Note: irrational single-valuedness theorem is a True stub (placeholder).",
   "meta": {
     "author": "De Moivre (1707), Weyl (1916)",
     "date": "1707",
@@ -18,7 +18,7 @@
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
-    "assumptions": "1 axiom: weyl_equidistribution (density of irrational rotations on unit circle). de_moivre_real_exponent proved with principal branch hypothesis θ ∈ (-π, π].",
+    "assumptions": "1 axiom: weyl_equidistribution (density of irrational rotations on unit circle). 1 True stub: irrational_exponent_single_valued (proves True, not the actual claim). de_moivre_real_exponent proved with principal branch hypothesis θ ∈ (-π, π].",
     "lineCount": 74
   },
   "sections": [],
