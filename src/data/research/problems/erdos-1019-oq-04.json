@@ -16,41 +16,41 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-03-30T01:04:30.838Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-03-30T14:06:00Z",
+    "iteration": 2,
+    "focus": "Axiom elimination: proved K4_saturated_planar, removed 2 unused axioms (6→3)",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Remaining 3 axioms are deep results (Simonovits PhD, Erdős construction, C_l+2K₁ planarity). cyclePlus2K1_saturated_planar could potentially be proved with similar approach to K4.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved turan_triangle from Mathlib (8→7 axioms). Remaining axioms depend on isPlanar (sorry) or deep theorems. Kuratowski formalization in Mathlib NOT feasible: no graph minor/subdivision infrastructure.",
+    "progressSummary": "PROGRESS: 3A remaining (down from 6). Proved K4_saturated_planar via no_minor_of_card_lt + edge count squeeze (card_edgeFinset_le_card_choose_two ∧ card_edgeFinset_top). Removed 2 unused axioms (planar_edge_bound, erdos_size_bound). 13 theorems proved, 0 sorries.",
     "builtItems": [
-      "Proved turan_triangle theorem in Erdos1019Problem.lean:118-135 (from Mathlib Turán bound)"
+      "Proved turan_triangle theorem in Erdos1019Problem.lean (from Mathlib Turán bound)",
+      "Proved K4_saturated_planar: planarity via no_minor_of_card_lt (4<5, 4<6), edge count via squeeze between card_edgeFinset_le_card_choose_two and card_edgeFinset_top_eq_card_choose_two",
+      "Removed unused axiom planar_edge_bound (Euler's formula bound, never referenced)",
+      "Removed unused axiom erdos_size_bound and def saturatedPlanarSize (never referenced)"
     ],
     "insights": [
-      "Mathlib has no graph minor definitions (SimpleGraph.Minor does not exist)",
-      "Mathlib has no planarity definition or Kuratowski/Wagner theorem",
-      "isPlanar is currently sorry — cannot be defined without graph minor infrastructure",
-      "All 8 axioms depend on isPlanar, so none can be eliminated without the definition",
-      "Wagner characterization (forbidden K₅/K₃,₃ minors) is the simplest correct approach",
-      "Estimated infrastructure needed: ~1000+ lines for graph minors + forbidden minor characterization",
-      "bipartite_not_saturated sorry is vacuously true (K_{m,n} for m,n≥3 is not planar)",
-      "turan_triangle axiom proved from Mathlib CliqueFree.card_edgeFinset_le (8→7 axioms)",
-      "Remaining 7 axioms all depend on isPlanar or deep results (Simonovits, Erdős construction)",
-      "bipartite_not_saturated sorry blocked on isPlanar sorry — K_{4,6} case requires knowing K_{4,6} is not planar",
-      "FourColorTheorem.lean has a Planar class based on edge bound but this is necessary-not-sufficient for planarity"
+      "isPlanar is defined via HasMinor (Wagner's characterization) — NOT sorry",
+      "GraphMinorWitness and HasMinor defined locally (Mathlib has no graph minor API)",
+      "no_minor_of_card_lt: pigeonhole blocks minors when |V(G)| < |V(H)|",
+      "K4_saturated_planar: key insight is squeeze — complete graph on ↑S has exactly C(4,2)=6 edges by card_edgeFinset_top_eq_card_choose_two, and any graph has ≤ C(n,2) by card_edgeFinset_le_card_choose_two",
+      "⊤ ≤ inducedSubgraph G S for cliques: every distinct pair of subtype elements is adjacent via the clique hypothesis",
+      "edgeFinset_mono preserves the subset relationship across different DecidableRel instances",
+      "cyclePlus2K1_saturated_planar could potentially be proved similarly but needs general l (not fixed 4)",
+      "erdos_construction_exists and simonovits_theorem are deep results unlikely to be provable from Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Define graph minors in Mathlib (SimpleGraph.Minor)",
-      "Define isPlanar via Wagner forbidden minor characterization",
-      "Once isPlanar defined: K3_saturated_planar and K4_saturated_planar become provable by computation"
+      "Attempt cyclePlus2K1_saturated_planar: similar squeeze approach but parameterized by l",
+      "erdos_construction_exists: would need explicit graph construction (deep)",
+      "simonovits_theorem: PhD thesis result (deep)"
     ]
   },
   "tags": [
@@ -79,10 +79,10 @@
     {
       "path": "Proofs/Erdos1019Problem.lean",
       "filename": "Erdos1019Problem.lean",
-      "lineCount": 453,
-      "theoremCount": 10,
-      "axiomCount": 6,
-      "defCount": 19,
+      "lineCount": 456,
+      "theoremCount": 13,
+      "axiomCount": 3,
+      "defCount": 18,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1019Problem.lean"

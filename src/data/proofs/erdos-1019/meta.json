@@ -22,9 +22,10 @@
     "erdosUrl": "https://erdosproblems.com/1019",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
-    "axiomCount": 6,
-    "lineCount": 452,
-    "assumptions": "6 axioms (planar_edge_bound, K4_saturated_planar, cyclePlus2K1_saturated_planar, erdos_construction_exists, simonovits_theorem, erdos_size_bound). isPlanar defined via Wagner's forbidden minor characterization (no K₅ or K₃,₃ minor). K3_saturated_planar proved by pigeonhole. turan_triangle proved from Mathlib. bipartite_not_saturated proved by K₃,₃ minor embedding.",
+    "axiomCount": 3,
+    "lineCount": 456,
+    "theoremCount": 13,
+    "assumptions": "3 axioms (cyclePlus2K1_saturated_planar, erdos_construction_exists, simonovits_theorem). isPlanar defined via Wagner's forbidden minor characterization (no K₅ or K₃,₃ minor). K3_saturated_planar and K4_saturated_planar proved by pigeonhole + edge count bounds. turan_triangle proved from Mathlib. planar_edge_bound and erdos_size_bound removed (unused).",
     "mathlib_version": "4.26.0"
   },
   "overview": {

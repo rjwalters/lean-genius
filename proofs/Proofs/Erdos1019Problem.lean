@@ -96,10 +96,6 @@ A graph is planar iff it has no K₅ or K₃,₃ minor (Wagner's theorem, 1937).
 def isPlanar (G : SimpleGraph V) : Prop :=
   ¬HasMinor G K5 ∧ ¬HasMinor G K33
 
-/-- Euler's formula bound: planar graphs have ≤ 3n - 6 edges. -/
-axiom planar_edge_bound (G : SimpleGraph V) [DecidableRel G.Adj] :
-  isPlanar G → Fintype.card V ≥ 3 → edgeCount G ≤ 3 * Fintype.card V - 6
-
 /-
 ## Saturated Planar Graphs
 
@@ -226,11 +222,36 @@ def containsK4 (G : SimpleGraph V) : Prop :=
   ∃ S : Finset V, S.card = 4 ∧ ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v
 
 /-- Any 4-clique in a graph induces a saturated planar subgraph.
-    K₄ is a triangulation: 6 = 3·4 - 6 edges. -/
-axiom K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
+    K₄ is a triangulation: 6 = 3·4 - 6 edges.
+    PROVED: planarity via no_minor_of_card_lt (|↑S| = 4 < 5, 4 < 6),
+    edge count via squeeze between card_edgeFinset bounds. -/
+theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
     (S : Finset V) (hCard : S.card = 4)
     (hClique : ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v) :
-    ∀ [DecidableRel (inducedSubgraph G S).Adj], isSaturatedPlanar (inducedSubgraph G S)
+    ∀ [DecidableRel (inducedSubgraph G S).Adj], isSaturatedPlanar (inducedSubgraph G S) := by
+  intro _
+  have hcard_S : Fintype.card ↑S = 4 := by simp [hCard]
+  -- The induced subgraph on a clique contains ⊤ (every pair is adjacent)
+  have hComplete : ⊤ ≤ inducedSubgraph G S := by
+    intro u v hadj
+    exact hClique u.val u.prop v.val v.prop (fun h => hadj (Subtype.ext h))
+  refine ⟨⟨?_, ?_⟩, ?_, ?_⟩
+  · -- No K₅ minor: |↑S| = 4 < 5 = |Fin 5|
+    exact no_minor_of_card_lt _ K5 (by simp [hcard_S])
+  · -- No K₃,₃ minor: |↑S| = 4 < 6 = |Fin 3 ⊕ Fin 3|
+    exact no_minor_of_card_lt _ K33 (by simp [hcard_S, Fintype.card_sum, Fintype.card_fin])
+  · -- |↑S| ≥ 3
+    omega
+  · -- edgeCount = 6 = 3 * 4 - 6
+    unfold edgeCount
+    have hchoose : (4 : ℕ).choose 2 = 6 := by norm_num [Nat.choose_two_right]
+    have h_upper := (inducedSubgraph G S).card_edgeFinset_le_card_choose_two
+    rw [hcard_S, hchoose] at h_upper
+    have h_lower : (⊤ : SimpleGraph ↑S).edgeFinset.card ≤
+        (inducedSubgraph G S).edgeFinset.card :=
+      Finset.card_le_card (SimpleGraph.edgeFinset_mono hComplete)
+    rw [SimpleGraph.card_edgeFinset_top_eq_card_choose_two, hcard_S, hchoose] at h_lower
+    rw [hcard_S]; omega
 
 /-- K₄ gives a saturated planar subgraph on 4 vertices. -/
 theorem K4_gives_large_saturated (G : SimpleGraph V) [DecidableRel G.Adj] :
@@ -319,24 +340,6 @@ theorem erdos_1019_solved : erdos_1019_question := by
   obtain h | ⟨l, hl, hCycle⟩ := simonovits_theorem V hn G hDense
   · exact K4_gives_large_saturated G h
   · exact cyclePlus2K1_gives_large_saturated G l hl hCycle
-
-/-
-## Related Results
-
-Erdős also proved a quantitative lower bound on the size of saturated planar subgraphs.
--/
-
-/-- The lower bound on saturated planar subgraph size. -/
-def saturatedPlanarSize (n k : ℕ) : ℕ := k / n
-
-/-- Erdős (1969): Graphs with n²/4 + k edges have saturated planar subgraphs on ≫ k/n vertices. -/
-axiom erdos_size_bound (n k : ℕ) (hn : n ≥ 4) :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    Fintype.card V = n →
-    ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-      edgeCount G ≥ turanEdges n + k →
-      ∃ S : Finset V, S.card ≥ saturatedPlanarSize n k ∧
-        ∀ [DecidableRel (inducedSubgraph G S).Adj], isSaturatedPlanar (inducedSubgraph G S)
 
 /-
 ## Connection to Turán Theory
@@ -440,13 +443,14 @@ contain a saturated planar graph with more than 3 vertices?
 
 **Key Results**:
 - Simonovits: Affirmative answer via K₄ or C_l + 2K₁
+- K₃ and K₄ saturated planarity proved (no minors + edge count)
 - Erdős construction: ⌊n²/4⌋ + ⌊(n-1)/2⌋ edges is achievable without large saturated planar
 - The threshold is optimal (gap of exactly 1 edge)
 
-**Related Topics**:
-- Turán theory for triangles
-- Extremal graph theory
-- Planar graph characterization
+**Axioms** (3 remaining):
+- `cyclePlus2K1_saturated_planar`: C_l + 2K₁ is saturated planar
+- `erdos_construction_exists`: extremal construction exists
+- `simonovits_theorem`: Simonovits's PhD thesis result
 -/
 
 end Erdos1019

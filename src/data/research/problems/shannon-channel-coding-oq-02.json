@@ -1,0 +1,96 @@
+{
+  "slug": "shannon-channel-coding-oq-02",
+  "title": "Shannon random coding argument via Mathlib probability",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in probability theory: Shannon random coding argument via Mathlib probability.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T13:07:48.620Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved BSC capacity formula (0 axioms, 0 sorries). Eliminates bsc_capacity_eq axiom from parent.",
+    "builtItems": [
+      "ShannonChannelCodingOQ02.lean: bsc_capacity_proved (BSC capacity = log 2 - h(p))",
+      "ShannonChannelCodingOQ02.lean: bsc_conditional_output_entropy (H(Y|X) = h(p))",
+      "ShannonChannelCodingOQ02.lean: random_coding_existence (probabilistic method)",
+      "Gallery entry: src/data/proofs/shannon-channel-coding-oq-02/"
+    ],
+    "insights": [
+      "BSC is doubly stochastic: uniform input produces uniform output, maximizing H(Y) = log 2",
+      "H(Y|X) = h(p) for BSC regardless of input distribution because the channel noise is input-independent",
+      "Chain rule MI = H(Y) - H(Y|X) gives both achievability (uniform -> equality) and upper bound (entropy bound)",
+      "For degenerate (point mass) inputs, MI = 0 because H(X) = 0; handles edge case via entropy_point_mass",
+      "The BSC capacity proof eliminates the bsc_capacity_eq axiom from the parent ShannonChannelCoding.lean"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove Fano inequality (another parent axiom)",
+      "Formalize joint typicality for full achievability",
+      "Prove channel coding converse via Fano"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "information-theory",
+    "probability",
+    "coding-theory"
+  ],
+  "relatedProofs": [
+    "shannon-channel-coding",
+    "shannon-channel-coding-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:07:48.620Z",
+  "lastUpdate": "2026-03-30T13:30:00Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonChannelCoding.lean",
+      "filename": "ShannonChannelCoding.lean",
+      "lineCount": 229,
+      "theoremCount": 8,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCoding.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ04.lean",
+      "filename": "ShannonChannelCodingOQ04.lean",
+      "lineCount": 225,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04.lean"
+    }
+  ]
+}
