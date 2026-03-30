@@ -1,0 +1,29 @@
+{
+  "id": "erdos-1-oq-02",
+  "name": "Improve Dubroff-Fox-Xu subset sum lower bound",
+  "status": "progress",
+  "knowledge": {
+    "insights": [
+      "DFX uses variance of random subset sum: Var = sum(a_i^2)/4",
+      "Berry-Esseen anticoncentration bounds number of distinct values by range/stddev",
+      "The improvement over counting is by factor sqrt(n), asymptotically",
+      "Key algebraic bounds: sum(a_i^2) <= n*N^2 and sum(a_i) <= n*N are straightforward",
+      "Cauchy-Schwarz for sums (sum(a_i))^2 <= n*sum(a_i^2) needs careful induction",
+      "The assembly step combining anticoncentration with variance bounds needs real analysis"
+    ],
+    "builtItems": [
+      "sum_sq_le_card_mul_max_sq: variance bound proved",
+      "sum_le_card_mul_max: max bound proved",
+      "anticoncentration_bound: axiom from Berry-Esseen",
+      "dfx_lower_bound: statement (sorry)",
+      "f_one: f(1)=1 small case",
+      "Gallery entry: src/data/proofs/erdos-1-oq-02/"
+    ],
+    "progressSummary": "PROGRESS: Algebraic framework built (variance bounds proved). Anticoncentration axiomatized. Assembly and Cauchy-Schwarz have sorries.",
+    "nextSteps": [
+      "Prove Cauchy-Schwarz for finite sums (induction on Finset)",
+      "Prove dfx_lower_bound from anticoncentration + variance bounds",
+      "Build probability infrastructure in Mathlib to eliminate anticoncentration axiom"
+    ]
+  }
+}
