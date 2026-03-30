@@ -87,10 +87,13 @@ theorem powerSumRatio_tendsto (k : ℕ) :
   -- The proof strategy:
   -- 1. By Faulhaber: (k+1) * ∑ i^k = B_{k+1}(n) - B_{k+1}(0)
   -- 2. So powerSumRatio k n = (B_{k+1}(n) - B_{k+1}(0)) / ((k+1) * n^{k+1})
-  -- 3. B_{k+1}(n)/n^{k+1} → 1 by monic_poly_ratio_tendsto
-  --    (using bernoulli_poly_leading, now proved)
+  -- 3. B_{k+1}(n)/n^{k+1} → 1 by monic_poly_ratio_tendsto (axiom)
   -- 4. B_{k+1}(0)/n^{k+1} → 0 since B_{k+1}(0) is constant
   -- 5. Combining: ratio → (1 - 0)/(k+1) = 1/(k+1)
+  --
+  -- The full proof requires combining Faulhaber's formula with filter limits.
+  -- The algebraic rewriting from sum to Bernoulli polynomials and the
+  -- limit composition are technically involved in Lean's filter framework.
   sorry
 
 /-- Special case k=0: ∑ 1 / n = n/n = 1 → 1/(0+1) = 1. -/

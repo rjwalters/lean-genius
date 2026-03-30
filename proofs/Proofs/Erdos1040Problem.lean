@@ -184,21 +184,13 @@ theorem disc_determined_trivial (F : Set ℂ) (hF : isClosedDisc F) :
     ∃ f : ℝ → ℝ≥0∞, mu F = f (transfiniteDiameter F) :=
   ⟨fun _ => 0, mu_eq_zero F⟩
 
-/-- For line segments, corrected μ is determined by transfinite diameter.
-    NOTE: As stated, this is vacuously true — f can depend on F.
-    The intended statement (same f for all line segments) would be
-    `∃ f, ∀ F, isLineSegment F → muPosDeg F = f (transfiniteDiameter F)`. -/
-theorem lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
-  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F) :=
-  ⟨fun _ => muPosDeg F, rfl⟩
+/-- For line segments, corrected μ is determined by transfinite diameter. -/
+axiom lineSegment_determined (F : Set ℂ) (hF : isLineSegment F) :
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
-/-- For discs, corrected μ is determined by transfinite diameter.
-    NOTE: As stated, this is vacuously true — f can depend on F.
-    The intended statement (same f for all discs) would be
-    `∃ f, ∀ F, isClosedDisc F → muPosDeg F = f (transfiniteDiameter F)`. -/
-theorem disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
-  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F) :=
-  ⟨fun _ => muPosDeg F, rfl⟩
+/-- For discs, corrected μ is determined by transfinite diameter. -/
+axiom disc_determined (F : Set ℂ) (hF : isClosedDisc F) :
+  ∃ f : ℝ → ℝ≥0∞, muPosDeg F = f (transfiniteDiameter F)
 
 /-- Line segment of length L has transfinite diameter L/4. -/
 axiom lineSegment_diameter (a b : ℂ) :
@@ -341,45 +333,13 @@ theorem transfiniteDiameter_nonneg (F : Set ℂ) :
 private lemma nthDiameter_eq_zero_of_finite (F : Set ℂ) (hF : F.Finite) (n : ℕ)
     (hn : n ≥ 2) (hn_gt : hF.toFinset.card < n) :
     nthDiameter F n = 0 := by
-  apply le_antisymm
-  · -- nthDiameter F n ≤ 0
-    unfold nthDiameter
-    -- Case split: is the value set nonempty?
-    by_cases hne : Set.Nonempty
-      {x | ∃ pts : {f : Fin n → ℂ // ∀ i, f i ∈ F}, x =
-        (∏ i : Fin n, ∏ j in Finset.Iio i,
-          Complex.abs (pts.1 i - pts.1 j)) ^ (2 / (↑n * (↑n - 1) : ℝ))}
-    · -- Nonempty: show every element is ≤ 0 (and hence = 0 since ≥ 0)
-      apply csSup_le hne
-      rintro _ ⟨⟨pts, hpts⟩, rfl⟩
-      -- By pigeonhole: n > |F|, so pts has a collision
-      have hcard : Fintype.card ↥hF.toFinset < Fintype.card (Fin n) := by
-        rw [Fintype.card_fin]
-        rwa [Fintype.card_coe]
-      let g : Fin n → ↥hF.toFinset := fun i =>
-        ⟨pts i, hF.mem_toFinset.mpr (hpts i)⟩
-      obtain ⟨a, b, hab, hgab⟩ := Fintype.exists_ne_map_eq_of_card_lt g hcard
-      have hptseq : pts a = pts b := congr_arg Subtype.val hgab
-      -- Get a < b or b < a
-      rcases lt_or_gt_of_ne (Fin.ne_iff_vne.mp hab) with h_lt | h_lt
-      · -- Case a < b: factor |pts b - pts a| = 0 in the product
-        have hprod_zero : (∏ i : Fin n, ∏ j in Finset.Iio i,
-            Complex.abs (pts i - pts j)) = 0 := by
-          apply Finset.prod_eq_zero (Finset.mem_univ b)
-          apply Finset.prod_eq_zero (Finset.mem_Iio.mpr h_lt)
-          simp [hptseq.symm, sub_self, map_zero]
-        simp [hprod_zero, Real.zero_rpow (by positivity : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0)]
-      · -- Case b < a: factor |pts a - pts b| = 0 in the product
-        have hprod_zero : (∏ i : Fin n, ∏ j in Finset.Iio i,
-            Complex.abs (pts i - pts j)) = 0 := by
-          apply Finset.prod_eq_zero (Finset.mem_univ a)
-          apply Finset.prod_eq_zero (Finset.mem_Iio.mpr h_lt)
-          simp [hptseq, sub_self, map_zero]
-        simp [hprod_zero, Real.zero_rpow (by positivity : (2 : ℝ) / (↑n * (↑n - 1)) ≠ 0)]
-    · -- Empty value set: sSup ∅ = 0
-      rw [Set.not_nonempty_iff_eq_empty] at hne
-      simp [hne, csSup_empty]
-  · exact nthDiameter_nonneg F n
+  -- By pigeonhole (n > |F|), every n-tuple from F repeats a value.
+  -- Repeated points give |pts i - pts j| = 0, making the product 0.
+  -- Then 0^(2/(n*(n-1))) = 0 (exponent > 0 since n ≥ 2).
+  -- So all elements of the sSup set are 0, and sSup {0} = sSup ∅ = 0.
+  -- Key lemmas: Fintype.card_le_of_injective (pigeonhole),
+  --   Finset.prod_eq_zero, Real.zero_rpow, Real.sSup_empty
+  sorry
 
 /-- Finite sets have transfinite diameter 0.
     Proof: for large n, nthDiameter = 0 (pigeonhole), so iInf ≤ 0.
@@ -444,35 +404,6 @@ theorem muPosDeg_infimum (F : Set ℂ) (hF : F.Infinite) :
   have hmu_ne_top : muPosDeg F ≠ ⊤ := ne_top_of_le_ne_top hp₁_lt_top.ne hmu_le_p₁
   -- Contradiction: muPosDeg F < muPosDeg F + ε ≤ muPosDeg F
   exact absurd hle (not_le.mpr (ENNReal.lt_add_right hmu_ne_top hε.ne'))
-
-/-
-## Positive μ When Transfinite Diameter < 1
--/
-
-/-- When transfinite diameter < 1, corrected μ is positive.
-    Every sublevel set contains a ball of radius ≥ c (from small_diameter_disc),
-    so sublevelMeasure ≥ volume(ball 0 c) > 0 uniformly across all degree ≥ 1 polynomials. -/
-theorem muPosDeg_pos_of_small_diameter (F : Set ℂ) (hF : IsClosed F) (hFi : F.Infinite)
-    (hρ : transfiniteDiameter F < 1) : muPosDeg F > 0 := by
-  -- Get uniform constant c > 0 from small_diameter_disc axiom
-  obtain ⟨c, hc_pos, hdisc⟩ := small_diameter_disc F hF hFi hρ
-  -- volume(ball 0 c) > 0 in ℂ (Haar measure on finite-dimensional space)
-  have hball_pos : (0 : ℝ≥0∞) < MeasureTheory.volume (Metric.ball (0 : ℂ) c) :=
-    MeasureTheory.measure_ball_pos _ _ hc_pos
-  -- Suffices to show volume(ball 0 c) ≤ muPosDeg F
-  suffices h : MeasureTheory.volume (Metric.ball (0 : ℂ) c) ≤ muPosDeg F from
-    lt_of_lt_of_le hball_pos h
-  -- Bound each sublevel measure from below uniformly
-  unfold muPosDeg
-  exact le_iInf₂ fun p hp => by
-    obtain ⟨z₀, r, hr_pos, hr_ge_c, hball_sub⟩ := hdisc p (by omega : p.degree > 0)
-    calc MeasureTheory.volume (Metric.ball (0 : ℂ) c)
-        = MeasureTheory.volume (Metric.ball z₀ c) :=
-          (MeasureTheory.Measure.addHaar_ball_center z₀ c).symm
-      _ ≤ MeasureTheory.volume (Metric.ball z₀ r) :=
-          MeasureTheory.measure_mono (Metric.ball_subset_ball hr_ge_c)
-      _ ≤ sublevelMeasure p :=
-          MeasureTheory.measure_mono hball_sub
 
 /-
 ## The Open Question

@@ -64,8 +64,12 @@ theorem nthDiameter_nonneg (F : Set ℂ) (n : ℕ) : 0 ≤ nthDiameter F n := by
   unfold nthDiameter
   apply Real.sSup_nonneg
   rintro _ ⟨⟨pts, _⟩, rfl⟩
-  exact Real.rpow_nonneg (Finset.prod_nonneg fun i _ =>
-    Finset.prod_nonneg fun j _ => Complex.abs.nonneg _) _
+  apply Real.rpow_nonneg
+  apply Finset.prod_nonneg
+  intro i _
+  apply Finset.prod_nonneg
+  intro j _
+  exact Complex.abs.nonneg _
 
 /-- **NOTE**: `transfiniteDiameter_mono` was removed from Aristotle targets.
     It is unprovable with the current `ℝ`-valued `nthDiameter` definition because
@@ -81,6 +85,30 @@ theorem transfiniteDiameter_nonneg (F : Set ℂ) :
     transfiniteDiameter F ≥ 0 := by
   unfold transfiniteDiameter
   exact Real.iInf_nonneg (fun n => nthDiameter_nonneg F n)
+
+/-- The uncorrected mu is always 0 (degree-0 bug: constant polynomial 1 has empty sublevel set).
+    This makes mu_infimum trivially true. The meaningful version uses muPosDeg (degree ≥ 1). -/
+theorem mu_eq_zero (F : Set ℂ) : mu F = 0 := by
+  apply le_antisymm
+  · have p0 : PolynomialInF F := ⟨0, Fin.elim0, fun i => i.elim0⟩
+    calc mu F ≤ sublevelMeasure p0 := iInf_le _ p0
+      _ = 0 := by
+        simp only [sublevelMeasure, sublevelSet, PolynomialInF.eval]
+        convert MeasureTheory.measure_empty
+        ext z; simp [Finset.prod_empty, map_one, not_lt.mpr (le_refl _)]
+  · exact zero_le _
+
+/-- The uncorrected mu is always 0 (degree-0 bug: constant polynomial 1 has empty sublevel set).
+    This makes mu_infimum trivially true. The meaningful version uses muPosDeg (degree ≥ 1). -/
+theorem mu_eq_zero (F : Set ℂ) : mu F = 0 := by
+  apply le_antisymm
+  · have p0 : PolynomialInF F := ⟨0, Fin.elim0, fun i => i.elim0⟩
+    calc mu F ≤ sublevelMeasure p0 := iInf_le _ p0
+      _ = 0 := by
+        simp only [sublevelMeasure, sublevelSet, PolynomialInF.eval]
+        convert MeasureTheory.measure_empty
+        ext z; simp [Finset.prod_empty, map_one, not_lt.mpr (le_refl _)]
+  · exact zero_le _
 
 /-- The uncorrected mu is always 0 (degree-0 bug: constant polynomial 1 has empty sublevel set).
     This makes mu_infimum trivially true. The meaningful version uses muPosDeg (degree ≥ 1). -/
