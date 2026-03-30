@@ -101,10 +101,6 @@ def carnielli_carolino_counterexample (n : ℕ) (hn : Even n) (hn2 : n ≥ 2) :
 
 /-- The counterexample always has |sum| ≥ √2.
 Axiomatized because verifying this requires complex norm estimates. -/
-axiom counterexample_always_large (n : ℕ) (hn : Even n) (hn2 : n ≥ 2)
-    (ε : Fin n → ℤ) (hε : isSignVector ε) :
-    signedSumAbs (carnielli_carolino_counterexample n hn hn2) ε ≥ Real.sqrt 2
-
 /-- Erdős's original question is FALSE.
 Axiomatized: Carnielli-Carolino (2011) showed the counterexample works. -/
 axiom erdos_original_is_false :
@@ -150,11 +146,6 @@ def extremal_example (n : ℕ) : Fin n → ℂ :=
 
 /-- The extremal example has probability exactly Θ(1/n).
 Axiomatized because the precise computation requires CLT-type arguments. -/
-axiom extremal_example_tight (n : ℕ) (hn : n ≥ 4) :
-  ∃ (c C : ℝ), c > 0 ∧ C > 0 ∧
-  c / n ≤ probSmallSum (extremal_example n) ∧
-  probSmallSum (extremal_example n) ≤ C / n
-
 /-
 ## Part VI: Summary
 

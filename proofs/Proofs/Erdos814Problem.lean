@@ -91,32 +91,12 @@ with at most n - cₖ√n vertices.
 
 This was the first quantitative result.
 -/
-axiom efrs_original_bound (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k - 1)
-    (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hcard : Fintype.card V = n)
-    (hedges : G.edgeFinset.card ≥ edgeThreshold k n) :
-    ∃ (c : ℚ) (S : Finset V),
-      c > 0 ∧
-      (S.card : ℚ) ≤ n - c * (n : ℚ).sqrt ∧
-      S.card ≥ k ∧
-      ∀ v ∈ S, (G.neighborFinset v ∩ S).card ≥ k
-
 /--
 **Mousset-Noever-Skorić Improvement (2017):**
 Improved the bound to n - cₖ·n/log(n) vertices.
 
 This was a significant improvement over the √n bound.
 -/
-axiom mns_bound (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k - 1)
-    (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
-    (hcard : Fintype.card V = n)
-    (hedges : G.edgeFinset.card ≥ edgeThreshold k n) :
-    ∃ (c : ℚ) (S : Finset V),
-      c > 0 ∧
-      (S.card : ℚ) ≤ n - c * (n : ℚ) / (n : ℚ).log ∧
-      S.card ≥ k ∧
-      ∀ v ∈ S, (G.neighborFinset v ∩ S).card ≥ k
-
 /-
 ## Part III: Sauermann's Theorem
 
@@ -196,13 +176,6 @@ that avoid minimum-degree-k subgraphs on (1-ε)n vertices.
 
 This shows the bound is tight.
 -/
-axiom extremal_construction (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
-    Fintype.card V = n ∧
-    G.edgeFinset.card = edgeThreshold k n - 1 ∧
-    ∀ S : Finset V, (S.card : ℚ) ≤ (1 - 1/(2 * k : ℚ)) * n →
-      ∃ v ∈ S, (G.neighborFinset v ∩ S).card < k
-
 /-
 ## Part V: The k=3 Case (Erdős-Hajnal)
 

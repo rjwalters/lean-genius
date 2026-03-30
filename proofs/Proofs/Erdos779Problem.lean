@@ -206,13 +206,6 @@ axiom oeis_A005235 : ℕ → ℕ
 
 /-- The first few values of A005235 (axiomatized from OEIS).
 a(n) = smallest prime p > p_n such that primorial(n) + p is prime. -/
-axiom oeis_A005235_values :
-  oeis_A005235 2 = 5 ∧
-  oeis_A005235 3 = 7 ∧
-  oeis_A005235 4 = 13 ∧
-  oeis_A005235 5 = 23 ∧
-  oeis_A005235 6 = 17
-
 /-
 ## The Problem is Open but Heuristically True
 
@@ -221,10 +214,5 @@ strongly suggests it should be true for all n, but no proof exists.
 -/
 
 /-- **Computational Verification**: The conjecture has been verified for n ≤ 1000. -/
-axiom deaconescu_verification : ∀ n, 2 ≤ n → n ≤ 1000 → (validPrimes n).Nonempty
-
 /-- The heuristic probability that no valid prime exists is extremely small. -/
-axiom heuristic_failure_probability (n : ℕ) (hn : n ≥ 2) :
-    ∃ c > 0, ∃ (prob : ℝ), prob < Real.exp (-(n : ℝ)^c)
-
 end Erdos779

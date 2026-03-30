@@ -176,10 +176,6 @@ This is a modified version where the range is scaled by 3.
 def scaledSumsetRatio (A : Set ℕ) (N : ℕ) : ℝ :=
   (countingFunction (hFoldSumset 3 A) (3 * N) : ℝ) / countingFunction A N
 
-axiom ruzsa_turjanyi_positive :
-    ∀ A : Set ℕ, isAdditiveBasisFiniteOrder A → isSparse A →
-      ∀ M > 0, ∃ N₀, ∀ N ≥ N₀, scaledSumsetRatio A N > M
-
 /-
 ## Part VI: The Open Conjecture
 -/
@@ -214,11 +210,6 @@ The conjecture fails because a cleverly constructed basis can have
 Key insight: The sumset A+A can have many "collisions" - different pairs
 (a,b) and (a',b') giving the same sum a+b = a'+b'.
 -/
-axiom construction_insight :
-    -- Turjányi's construction creates a basis where
-    -- the sumset has many collisions, limiting its growth
-    True
-
 /-
 **The Role of Sparsity:**
 Being sparse (o(N) elements) is not enough to guarantee
@@ -236,10 +227,6 @@ More precisely: |hA| ≤ |A|^h.
 
 This gives an upper bound but not a lower bound.
 -/
-axiom plunnecke_ruzsa (A : Finset ℕ) (h : ℕ) (hh : h ≥ 1) :
-    (hFoldSumset h (A : Set ℕ) ∩ {n | ∃ a ∈ A, ∃ b ∈ A, n ≤ a + b}).ncard
-      ≤ A.card ^ h
-
 /-
 **Lower bounds are harder:**
 There's no general lower bound for |A+A| in terms of |A|
@@ -256,16 +243,12 @@ A = {2^k : k ∈ ℕ} is sparse: |A ∩ [1,N]| ≈ log₂(N) = o(N).
 But A is NOT an additive basis of any order.
 -/
 /-- Powers of 2 are not an additive basis of any finite order. -/
-axiom powers_of_two_not_basis : ∀ h : ℕ, ¬isAdditiveBasis h {n | ∃ k, n = 2^k}
-
 /--
 **Example: Squares**
 A = {n² : n ∈ ℕ} is sparse: |A ∩ [1,N]| ≈ √N = o(N).
 A is an additive basis of order 4 (Lagrange's theorem).
 This is a natural example to study.
 -/
-axiom squares_are_basis : isAdditiveBasis 4 {n | ∃ k, n = k^2}
-
 /-
 ## Part X: Summary
 -/

@@ -90,17 +90,11 @@ no set A can have ∑ 1_A * 1_A = cN + o(N^{1/4} / (log N)^{1/2}).
 No set has ∑ 1_A * 1_A = cN + o(N^{1/4} / (log N)^{1/2}).
 The foundational result for representation function error terms.
 -/
-axiom erdos_fuchs_theorem (A : Set ℕ) (c : ℝ) (hc : c > 0) :
-  ¬ IsLinearVaughan (sumConv2 A) c
-
 /--
 **Corollary of Erdős-Fuchs:**
 No set has ∑ 1_A * 1_A = cN + O(1).
 Since O(1) ⊂ o(N^{1/4} / (log N)^{1/2}), bounded error is also impossible.
 -/
-axiom erdos_fuchs_corollary (A : Set ℕ) (c : ℝ) (hc : c > 0) :
-  ¬ IsLinearBounded (sumConv2 A) c
-
 /- ## Part IV: Vaughan's Theorem (Problem #764)
 
 Generalization to 3-fold and h-fold convolutions.
@@ -146,10 +140,6 @@ def ErrorOscillates (f : ℕ → ℕ) (c : ℝ) : Prop :=
 For any infinite set A, the error must oscillate by at least N^{1/4}
 infinitely often — it cannot even stay on one side.
 -/
-axiom error_oscillation (A : Set ℕ) (c : ℝ) (hc : c > 0)
-    (hA : Set.Infinite A) :
-  ErrorOscillates (sumConv3 A) c
-
 /- ## Part VI: Examples and Special Cases -/
 
 /-- Square numbers: A = {0, 1, 4, 9, 16, ...}. -/
@@ -169,17 +159,11 @@ Montgomery and Vaughan (1990) refined the Erdős-Fuchs result.
 **Montgomery-Vaughan (1990):**
 Refined Erdős-Fuchs to show o(N^{1/4}) is impossible (without the log factor).
 -/
-axiom montgomery_vaughan_refinement (A : Set ℕ) (c : ℝ) (hc : c > 0) :
-  ¬ IsLinearLittleO (sumConv2 A) c (1/4 : ℝ)
-
 /--
 **Tightness of the 1/4 exponent:**
 There exist sets where the error is O(N^{α}) for any α > 1/4.
 The 1/4 exponent is essentially best possible.
 -/
-axiom quarter_exponent_tight : ∃ A : Set ℕ, ∃ c : ℝ, c > 0 ∧
-  ∀ α > (1/4 : ℝ), IsLinearLittleO (sumConv2 A) c α
-
 /- ## Part VIII: Summary -/
 
 /--

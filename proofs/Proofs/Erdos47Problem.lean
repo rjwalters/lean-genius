@@ -105,28 +105,12 @@ There exists an absolute constant C such that if A ⊆ {1, …, N}
 and ∑ 1/a ≥ C · (log log log N / log log N) · log N, then
 A contains a unit fraction subset.
 -/
-axiom bloom_quantitative :
-  ∃ C : ℚ, C > 0 ∧
-    ∀ N : ℕ, N ≥ 2 →
-      ∀ A : Finset ℕ, A ⊆ Icc1 N →
-        reciprocalSum A ≥ C * (Real.log (Real.log (Real.log N)) /
-          Real.log (Real.log N)) * Real.log N →
-        ContainsUnitFraction A
-
 /- ## Part V: Liu–Sawhney Improvement -/
 
 /--
 **Liu–Sawhney Improvement [LiSa24]:**
 The threshold can be improved to ∑ 1/a ≫ (log N)^{4/5 + o(1)}.
 -/
-axiom liu_sawhney_improvement :
-  ∀ ε : ℚ, ε > 0 →
-    ∃ N₀ : ℕ,
-      ∀ N : ℕ, N ≥ N₀ →
-        ∀ A : Finset ℕ, A ⊆ Icc1 N →
-          reciprocalSum A ≥ (Real.log N : ℚ) ^ ((4 : ℚ) / 5 + ε) →
-          ContainsUnitFraction A
-
 /- ## Part VI: Pomerance's Optimality -/
 
 /--
@@ -135,12 +119,6 @@ There exist sets A ⊆ {1, …, N} with ∑ 1/a ≫ (log log N)²
 that contain no unit fraction subset. This shows Erdős's guess
 of (log log N)² as the threshold would be essentially tight.
 -/
-axiom pomerance_lower_bound :
-  ∀ N₀ : ℕ, ∃ N : ℕ, N ≥ N₀ ∧
-    ∃ A : Finset ℕ, A ⊆ Icc1 N ∧
-      reciprocalSum A ≥ (Real.log (Real.log N) : ℚ) ^ 2 ∧
-      ¬ContainsUnitFraction A
-
 /- ## Part VII: Summary -/
 
 /--

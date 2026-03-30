@@ -117,16 +117,11 @@ def Erdos72Statement : Prop :=
     Note: Arithmetic progressions have positive density, so this doesn't
     directly solve the problem, but shows the cycle-forcing phenomenon.
 -/
-axiom bollobas_arithmetic_progression (a d : ℕ) (hd : d > 0) (heven : ∃ k, a + k * d ∈ ({n | Even n} : Set ℕ)) :
-    isStronglyUnavoidable (arithmeticProgression a d)
-
 /-- **Verstraëte (2005)**
 
     Non-constructively proved that Erdős Problem #72 has an affirmative answer.
     Some density-0 set A exists with the required property.
 -/
-axiom verstraete_existence : Erdos72Statement
-
 /-- **Liu-Montgomery (2020)**
 
     The set of powers of 2 is strongly unavoidable.
@@ -178,8 +173,6 @@ noncomputable def optimalThreshold (A : Set ℕ) : ℝ :=
   sInf {c : ℝ | c > 0 ∧ isUnavoidable A c}
 
 /-- Liu-Montgomery gives some explicit bound for powers of 2. -/
-axiom liu_montgomery_explicit_bound : optimalThreshold powersOfTwo < 10^6
-
 /-- Finding the exact optimal threshold for powers of 2 remains open. -/
 def openQuestion_optimal_threshold : Prop :=
   ∃ c : ℝ, optimalThreshold powersOfTwo = c ∧ c < 100
@@ -192,11 +185,6 @@ def hasControlledGrowth (A : Set ℕ) (f : ℕ → ℕ) : Prop :=
 
 /-- Liu-Montgomery actually proves a more general result for sets with
     logarithmic growth of even numbers. -/
-axiom liu_montgomery_general (A : Set ℕ)
-    (hgrowth : hasControlledGrowth A (fun n => Nat.log 2 n + 1))
-    (heven : ∀ a ∈ A, Even a ∨ a = 1) :
-    isStronglyUnavoidable A
-
 end Erdos72
 
 /-

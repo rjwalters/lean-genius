@@ -134,9 +134,6 @@ noncomputable def centralIndex (f : EntireFunction) (r : ℝ) : ℕ :=
   Classical.choose (⟨0, le_refl _⟩ : ∃ n, Complex.abs (f.coeff n) * r ^ n ≤ maxTerm f r)
 
 /-- Central index grows to infinity as r → ∞ -/
-axiom central_index_unbounded (f : EntireFunction) :
-    Tendsto (centralIndex f) atTop atTop
-
 /-
 ## Part 6: Asymptotic Relations
 
@@ -144,9 +141,6 @@ Relation between μ(r), M(r), and the growth of f.
 -/
 
 /-- For any entire function, μ(r) ≤ M(r) -/
-axiom max_term_le_max_modulus (f : EntireFunction) (r : ℝ) (hr : r > 0) :
-    maxTerm f r ≤ maxModulus f r
-
 /-- Asymptotic: M(r) ~ μ(r) for "normal" functions -/
 def IsNormal (f : EntireFunction) : Prop :=
   Tendsto (termModulusRatio f) atTop (nhds 0)
@@ -174,9 +168,6 @@ noncomputable def typeOfOrder (f : EntireFunction) (ρ : ℝ) : ℝ :=
   sInf { σ : ℝ | ∃ C : ℝ, ∀ r > 0, maxModulus f r ≤ C * Real.exp (σ * r ^ ρ) }
 
 /-- Functions of order 0 have ratio tending to 0 -/
-axiom order_zero_normal (f : EntireFunction) (h : order f = 0) :
-    IsNormal f
-
 /-
 ## Part 8: Examples
 
@@ -184,18 +175,7 @@ Specific examples illustrating the theorem.
 -/
 
 /-- The exponential function has ratio → 0 -/
-axiom exp_is_normal : ∃ f : EntireFunction,
-    (∀ n, f.coeff n = 1 / (n.factorial : ℂ)) ∧ IsNormal f
-
 /-- Existence of pathological examples -/
-axiom pathological_examples_exist :
-    ∀ λ : ℝ, 0 < λ → λ < 1/2 →
-      ∃ f : EntireFunction,
-        -- Not of finite order
-        (∀ ρ > 0, ∃ r > 0, maxModulus f r > Real.exp (r ^ ρ)) ∧
-        -- But has limit λ
-        Tendsto (termModulusRatio f) atTop (nhds λ)
-
 /-
 ## Part 9: Main Problem Statement
 -/

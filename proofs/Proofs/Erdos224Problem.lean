@@ -99,14 +99,10 @@ axiom danzer_grunbaum (d : ℕ) : ErdosObtuseConjecture d
 **d = 2: Trivial Case**
 Any 5 points in the plane contain an obtuse triple.
 -/
-axiom case_d2 : ErdosObtuseConjecture 2
-
 /--
 **d = 3: Kuiper-Boerdijk**
 Any 9 points in ℝ³ contain an obtuse triple.
 -/
-axiom case_d3 : ErdosObtuseConjecture 3
-
 /-
 **Why d = 2 is Trivial:**
 In the plane, 5 points must either have 4 in convex position
@@ -160,13 +156,6 @@ For hypercube vertices, angles are:
 - 90° if they form an L-shape along edges
 - Never obtuse
 -/
-axiom hypercube_angle_classification (d : ℕ) (A B C : EuclideanPoint d)
-    (hA : A ∈ hypercubeVertices d)
-    (hB : B ∈ hypercubeVertices d)
-    (hC : C ∈ hypercubeVertices d)
-    (hdist : A ≠ B ∧ B ≠ C ∧ A ≠ C) :
-    angle A B C ≤ Real.pi / 2
-
 /-
 **Orthogonal Directions:**
 The hypercube has 2d orthogonal directions from each vertex.
@@ -182,10 +171,6 @@ This geometric structure prevents obtuse angles.
 ℝᵈ is divided into 2ᵈ orthants by coordinate hyperplanes.
 With 2ᵈ + 1 points, some orthant contains 2 points.
 -/
-axiom pigeonhole_orthants (d : ℕ) (P : Finset (EuclideanPoint d))
-    (hcard : P.card = 2^d + 1) :
-    ∃ (orthant : Finset (EuclideanPoint d)), orthant ⊆ P ∧ orthant.card ≥ 2
-
 /-
 **Two Points in Same Orthant:**
 If two points are in the same orthant relative to a third,

@@ -177,9 +177,6 @@ on denominators.
 
 /-- Every positive rational can be written with squarefree denominator
 (by reducing to lowest terms). -/
-axiom reduce_to_squarefree : ∀ q : ℚ, 0 < q →
-  ∃ a b : ℤ, 0 < b ∧ Squarefree b.natAbs ∧ q = a / b
-
 /-
 ## The Density of k-Distinct-Prime Products
 
@@ -194,13 +191,8 @@ This sparsity affects the difficulty of the problem.
 axiom twoPrimeProductCount : ℕ → ℕ
 
 /-- The number of products of 3 distinct primes up to n. -/
-axiom threePrimeProductCount : ℕ → ℕ
-
 /-- Asymptotic density of products of k distinct primes.
 The count is roughly n × (log log n)^(k-1) / ((k-1)! × log n). -/
-axiom k_prime_product_density (k : ℕ) (hk : 0 < k) :
-  ∃ c > 0, ∀ n ≥ 10, c * n / (Nat.log 2 n) ≤ twoPrimeProductCount n
-
 /-
 ## Why 2 Primes is Harder than 3 Primes
 
@@ -215,8 +207,6 @@ the representation exists.
 -/
 
 /-- The 2-prime case is open. -/
-axiom erdos_306_open : ¬(erdos_306_conjecture ↔ True) ∧ ¬(erdos_306_conjecture ↔ False)
-
 /-- The 3-prime integer version is solved. -/
 theorem three_prime_status : three_prime_integer_version := three_prime_solved
 
@@ -235,9 +225,6 @@ For the constrained problem, we need more sophisticated methods.
 
 /-- The greedy algorithm gives an Egyptian fraction, but without
 guarantees on the prime structure of denominators. -/
-axiom greedy_egyptian_exists : ∀ q : ℚ, 0 < q →
-  ∃ k : ℕ, ∃ repr : EgyptianRepr k, repr.sum = q
-
 /-
 ## Summary
 

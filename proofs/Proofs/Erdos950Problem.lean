@@ -68,16 +68,12 @@ def question1 : Prop :=
   Filter.liminf (fun n => f n) atTop = 1
 
 /-- Question 1 stated as a conjecture. -/
-axiom erdos_950_q1 : question1
-
 /-- Question 2 (OPEN): Is f(n) unbounded (lim sup f(n) = ∞)?
     This asks whether f(n) can be arbitrarily large. -/
 def question2 : Prop :=
   ∀ M : ℝ, ∃ᶠ n in atTop, M < f n
 
 /-- Question 2 stated as a conjecture. -/
-axiom erdos_950_q2 : question2
-
 /-- Question 3 (OPEN): Is f(n) = o(log log n)?
     This asks for a universal upper bound: does f(n) grow slower
     than log(log(n))? -/
@@ -85,16 +81,12 @@ def question3 : Prop :=
   ∀ᶠ n in atTop, f n < Real.log (Real.log n)
 
 /-- Question 3 stated as a conjecture. -/
-axiom erdos_950_q3 : question3
-
 /-- Stronger Form of Q3: f(n) = o(log log n).
     The precise asymptotic version: f(n)/log(log(n)) → 0. -/
 def fLittleO : Prop :=
   Tendsto (fun n => f n / Real.log (Real.log n)) atTop (nhds 0)
 
 /-- The strong form of Question 3. -/
-axiom erdos_950_q3_strong : fLittleO
-
 /-
 ## Part 3: Known Results (de Bruijn–Erdős–Turán)
 
@@ -178,9 +170,6 @@ def weakerConjecture : Prop :=
 
 /-- If π(x) < π(y) + O((x-y)/log x) for all y < x - (log x)^C for some C > 0,
     then f(n) ≪ log log log n. This is a conditional bound on f(n). -/
-axiom weaker_implies_bound : weakerConjecture →
-    ∃ C > 0, ∀ᶠ n in atTop, f n ≤ C * Real.log (Real.log (Real.log n))
-
 /-
 ## Part 6: Connection to Prime Distribution
 -/
@@ -215,20 +204,8 @@ theorem dense_primes_increase_f (n k : ℕ) (_hk : k > 0) :
 
 /-- The existence of c > 0 with ≫ n^c/log n primes in [n, n+n^c]
     implies lim inf f(n) > 0 (Erdős's observation). -/
-axiom dense_short_intervals_imply_liminf_pos :
-    (∃ c : ℝ, c > 0 ∧ ∃ C > 0, ∀ᶠ (n : ℕ) in atTop,
-      ((primesLessThan (n + ⌊(↑n : ℝ) ^ c⌋₊) \ primesLessThan n).card : ℝ) ≥
-        C * (↑n : ℝ) ^ c / Real.log ↑n) →
-    ∃ δ > 0, ∀ᶠ (n : ℕ) in atTop, f n ≥ δ
-
 /-- Erdős could not prove ∑_{p<x} f(p)² ~ π(x), where the sum is
     restricted to prime arguments. This remains open. -/
-axiom f_at_primes_open :
-    -- The conjecture: ∑_{p<x, p prime} f(p)² ~ π(x)
-    ∃ g : ℕ → ℝ, (∀ n, g n = ∑ p ∈ primesLessThan n |>.filter Nat.Prime,
-      (f p)^2 / primeCountingFunction n) ∧
-    Tendsto g atTop (nhds 1)
-
 /-
 ## Part 7: Summary
 -/

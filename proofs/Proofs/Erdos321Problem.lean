@@ -137,79 +137,8 @@ noncomputable def maxDistinctReciprocal (N : ℕ) : ℕ :=
 
 /-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ N/log N asymptotically.
     More precisely, R(N) ≥ (N/log N) · Π_{i=3}^{k} log_i N. -/
-axiom bleicher_erdos_lower :
-  ∀ k : ℕ, k ≥ 4 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    (maxDistinctReciprocal N : ℝ) ≥
-      (N : ℝ) / Real.log N
-
 /-- **Bleicher–Erdős upper bound (1976)**: R(N) ≤ C · (N/log N) · log log N. -/
-axiom bleicher_erdos_upper :
-  ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-    (maxDistinctReciprocal N : ℝ) ≤
-      C * (N : ℝ) / Real.log N * Real.log (Real.log N)
-
-/-- R(N) ≥ 1 for all N ≥ 1: the singleton {1} has distinct reciprocal sums. -/
-lemma maxDistinctReciprocal_ge_one (N : ℕ) (hN : N ≥ 1) :
-    1 ≤ maxDistinctReciprocal N := by
-  unfold maxDistinctReciprocal
-  have hmem : ({1} : Finset ℕ) ∈ Finset.filter
-      (fun A => HasDistinctReciprocalSums A ∧ ∀ n ∈ A, 1 ≤ n ∧ n ≤ N)
-      (Finset.range (N + 1)).powerset := by
-    rw [Finset.mem_filter]
-    refine ⟨Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr ?_),
-            singleton_hasDistinctReciprocalSums 1 le_rfl,
-            fun n hn => ⟨Finset.mem_singleton.mp hn ▸ le_rfl, Finset.mem_singleton.mp hn ▸ hN⟩⟩
-    exact Finset.mem_range.mpr (by omega)
-  calc 1 = Finset.card ({1} : Finset ℕ) := (Finset.card_singleton _).symm
-    _ ≤ Finset.sup _ Finset.card := Finset.le_sup hmem
-
-/-- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors.
-    Derived from bleicher_erdos_lower + bleicher_erdos_upper. -/
-theorem main_term_n_over_log_n :
-    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-      c₁ * (N : ℝ) / Real.log N ≤ (maxDistinctReciprocal N : ℝ) ∧
-      (maxDistinctReciprocal N : ℝ) ≤ c₂ * (N : ℝ) / Real.log N * Real.log (Real.log N) := by
-  obtain ⟨C, hC_pos, hC_bound⟩ := bleicher_erdos_upper
-  obtain ⟨N₀, hN₀⟩ := bleicher_erdos_lower 4 (by norm_num)
-  -- c₁ handles both ranges: for N ≥ N₀ use lower bound directly,
-  -- for 2 ≤ N < N₀ use R(N) ≥ 1 with N/log(N) ≤ N₀/log(2).
-  refine ⟨min 1 (Real.log 2 / (↑N₀ + 1)), C,
-    lt_min one_pos (div_pos (Real.log_pos (by norm_num)) (by positivity)),
-    hC_pos, fun N hN => ⟨?_, hC_bound N hN⟩⟩
-  by_cases hle : N₀ ≤ N
-  · -- Large N: bleicher_erdos_lower gives R(N) ≥ N/log(N) ≥ c₁·N/log(N)
-    have hlog_pos : (0 : ℝ) < Real.log N :=
-      Real.log_pos (by exact_mod_cast (show 1 < N by omega))
-    calc min 1 (Real.log 2 / (↑N₀ + 1)) * ↑N / Real.log ↑N
-        ≤ 1 * ↑N / Real.log ↑N := by
-          apply div_le_div_of_nonneg_right
-            (mul_le_mul_of_nonneg_right (min_le_left _ _) (Nat.cast_nonneg')) (le_of_lt hlog_pos)
-      _ = ↑N / Real.log ↑N := by ring
-      _ ≤ ↑(maxDistinctReciprocal N) := hN₀ N hle
-  · -- Small N (2 ≤ N < N₀): use R(N) ≥ 1 and bound N/log(N)
-    push_neg at hle
-    have hR : (1 : ℝ) ≤ ↑(maxDistinctReciprocal N) := by
-      exact_mod_cast maxDistinctReciprocal_ge_one N (by omega)
-    have hlog_pos : (0 : ℝ) < Real.log ↑N :=
-      Real.log_pos (by exact_mod_cast (show 1 < N by omega))
-    have hlog2_le : Real.log 2 ≤ Real.log ↑N :=
-      Real.log_le_log (by norm_num) (by exact_mod_cast hN)
-    have hN_le : (N : ℝ) ≤ ↑N₀ := by exact_mod_cast (show N ≤ N₀ by omega)
-    -- c₁ · N / log(N) ≤ (log 2 / (N₀+1)) · N₀ / log 2 = N₀/(N₀+1) < 1 ≤ R(N)
-    calc min 1 (Real.log 2 / (↑N₀ + 1)) * ↑N / Real.log ↑N
-        ≤ (Real.log 2 / (↑N₀ + 1)) * ↑N / Real.log ↑N := by
-          apply div_le_div_of_nonneg_right
-            (mul_le_mul_of_nonneg_right (min_le_right _ _) (Nat.cast_nonneg')) (le_of_lt hlog_pos)
-      _ ≤ (Real.log 2 / (↑N₀ + 1)) * ↑N₀ / Real.log 2 := by
-          apply div_le_div (mul_nonneg (div_nonneg (le_of_lt (Real.log_pos (by norm_num)))
-            (by positivity)) (Nat.cast_nonneg'))
-            (mul_le_mul_of_nonneg_left hN_le (div_nonneg (le_of_lt (Real.log_pos (by norm_num)))
-              (by positivity)))
-            (Real.log_pos (by norm_num)) hlog2_le
-      _ = ↑N₀ / (↑N₀ + 1) := by field_simp
-      _ < 1 := by apply div_lt_one_of_lt (by linarith : (↑N₀ : ℝ) < ↑N₀ + 1) (by positivity)
-      _ ≤ ↑(maxDistinctReciprocal N) := hR
-
+/-- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors. -/
 /- ## Main Conjecture -/
 
 /-- **Erdős Problem #321** (OPEN): Determine the exact asymptotic

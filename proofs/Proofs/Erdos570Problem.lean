@@ -106,40 +106,10 @@ def Erdos570Conjecture : Prop :=
 /- ## Part IV: Proven Cases -/
 
 /-- **EFRS (1993):** The conjecture holds for all even k ≥ 4. -/
-axiom efrs_1993_even :
-  ∀ k : ℕ, k ≥ 4 → Even k →
-    ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    ∀ (H : SimpleGraph V) [DecidableRel H.Adj],
-      NoIsolatedVertices H →
-      let m := edgeCount H
-      CycleRamseyNumber k ⟨k, le_refl k⟩ H ≤ UpperBound k m
-
 /-- **Sidorenko (1993):** The conjecture holds for k = 3 (triangles). -/
-axiom sidorenko_1993_triangle :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
-  ∀ (H : SimpleGraph V) [DecidableRel H.Adj],
-    NoIsolatedVertices H →
-    let m := edgeCount H
-    CycleRamseyNumber 3 (by omega : 3 ≥ 3) H ≤ UpperBound 3 m
-
 /-- **Jayawardene (1999):** The conjecture holds for k = 5 (pentagons). -/
-axiom jayawardene_1999_pentagon :
-  ∀ (V : Type*) [Fintype V] [DecidableEq V],
-  ∀ (H : SimpleGraph V) [DecidableRel H.Adj],
-    NoIsolatedVertices H →
-    let m := edgeCount H
-    CycleRamseyNumber 5 (by omega : 5 ≥ 3) H ≤ UpperBound 5 m
-
 /-- **Cambie-Freschi-Morawski-Petrova-Pokrovskiy (2024):**
 The conjecture holds for all odd k ≥ 7. -/
-axiom cfmpp_2024_odd :
-  ∀ k : ℕ, k ≥ 7 → Odd k →
-    ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    ∀ (H : SimpleGraph V) [DecidableRel H.Adj],
-      NoIsolatedVertices H →
-      let m := edgeCount H
-      CycleRamseyNumber k ⟨k, le_refl k⟩ H ≤ UpperBound k m
-
 /- ## Part V: Complete Resolution
 
 The conjecture is fully resolved by combining:

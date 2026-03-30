@@ -129,9 +129,6 @@ axiom wagon_1980 :
 **Recursive bound:**
 d(t+1, 2) ≤ d(t, 2) + t.
 -/
-axiom wagon_recursive :
-  ∀ t : ℕ, t ≥ 2 → d_func (t + 1) 2 ≤ d_func t 2 + t
-
 /-
 ## Part V: El Zahar-Erdős Results (1985)
 -/
@@ -140,10 +137,6 @@ axiom wagon_recursive :
 **Reduction to t ≤ c:**
 El Zahar and Erdős showed it suffices to prove the conjecture when t ≤ c.
 -/
-axiom reduction_to_t_le_c :
-  (∀ t c : ℕ, t ≤ c → ∃ d, HasElZaharErdosProperty t c d) →
-  ElZaharErdosConjecture
-
 /--
 **d(3, 3) ≤ 8:**
 K₃-free graphs with χ ≥ 8 have anticomplete parts with χ ≥ 3.
@@ -154,10 +147,6 @@ axiom d_3_3_bound : d_func 3 3 ≤ 8
 **General bound for c = 3:**
 d(t, 3) ≤ 2·C(t-1, 3) + 7·C(t-1, 2) + t for t > 3.
 -/
-axiom el_zahar_erdos_c3_bound :
-  ∀ t : ℕ, t > 3 →
-    d_func t 3 ≤ 2 * Nat.choose (t - 1) 3 + 7 * Nat.choose (t - 1) 2 + t
-
 /-
 ## Part VI: Nguyen-Scott-Seymour (2024)
 -/
@@ -191,21 +180,11 @@ The problem relates to Ramsey-type questions. High chromatic number with
 bounded clique number forces rich graph structure, analogous to how
 large Ramsey numbers force monochromatic cliques.
 -/
-axiom ramsey_connection :
-    ∀ t : ℕ, t ≥ 2 → ∃ d : ℕ, HasElZaharErdosProperty t 2 d
-
 /--
 **χ-boundedness connection:**
 Graphs with ω(G) < t and χ(G) large have special structure.
 The problem asks specifically what anticomplete substructure must appear.
 -/
-axiom chi_boundedness :
-    ∀ t c : ℕ, t ≥ 1 → c ≥ 1 →
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    G.chromaticNumber ≥ d_func t c → cliqueNumber G < t →
-    ∃ A B : Finset V, IsAnticomplete G A B ∧
-      inducedChromaticNumber G A ≥ c ∧ inducedChromaticNumber G B ≥ c
-
 /-
 ## Part IX: Summary
 -/

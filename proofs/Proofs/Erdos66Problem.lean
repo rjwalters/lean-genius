@@ -109,11 +109,6 @@ with error o(√log n). More precisely:
 
 This shows that even if r_A(n) ~ log(n), the fluctuations must be significant.
 -/
-axiom erdosSarkozy :
-  ¬∃ (A : Set ℕ),
-    Tendsto (fun n => |((representationFunction A n : ℝ) - Real.log n)| / Real.sqrt (Real.log n))
-            atTop (𝓝 0)
-
 /--
 **Horváth's Improvement (2007)**
 
@@ -123,11 +118,6 @@ Horváth strengthened the Erdős-Sárközy result: the error cannot stay below
 Formally: For all ε > 0, there exist infinitely many n with
   |r_A(n) - log(n)| > (1-ε)√(log n)
 -/
-axiom horvath2007 :
-  ∀ (A : Set ℕ) (ε : ℝ), ε > 0 →
-    ∀ᶠ n in atTop,
-      |((representationFunction A n : ℝ) - Real.log n)| > (1 - ε) * Real.sqrt (Real.log n)
-
 /-
 ## Connection to Random Sets
 

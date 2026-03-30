@@ -157,9 +157,6 @@ This is the polynomial-factor approximation to the full conjecture.
 
 There exists a constant O > 0 such that 3^n / n^O = O(g_3(n)).
 This is a partial result toward the main conjecture. -/
-axiom erdosSarkozy_partial :
-  ∃ O : ℝ, O > 0 ∧ (fun n : ℕ => (3 ^ n : ℝ) / (n : ℝ) ^ O) =O[atTop] fun n => (g 3 n : ℝ)
-
 /-
 ## Basic Properties
 -/
@@ -232,8 +229,4 @@ how sparse must ⟨A⟩ be, and how does this constrain A?
 -/
 
 /-- Szemerédi's theorem (axiom): dense sets contain long arithmetic progressions. -/
-axiom szemeredi_theorem :
-  ∀ k ≥ 3, ∀ δ : ℝ, δ > 0 → ∃ N₀, ∀ N ≥ N₀, ∀ S : Finset ℕ, S ⊆ Icc 1 N →
-    S.card ≥ δ * N → ¬IsAPFreeOfLength k (S : Set ℕ)
-
 end Erdos817

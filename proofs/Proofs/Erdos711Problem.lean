@@ -211,9 +211,6 @@ The position of m relative to multiples of k affects how many are available.
 
 Standard bound: any interval of length L contains at most L/k + 1 multiples of k.
 -/
-axiom residue_class_effect (m k L : ℕ) (hk : k > 0) :
-    multiplesInInterval k m L ≤ L / k + 1
-
 /-
 ## Part VII: Connection to Problem #710
 -/
@@ -222,12 +219,6 @@ axiom residue_class_effect (m k L : ℕ) (hk : k > 0) :
 **Problem #710 Bounds (for reference):**
 n · √(log n / log log n) ≪ f(n,n) ≪ n · √(log n)
 -/
-axiom problem_710_bounds :
-    ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧
-      ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-        C₁ * n * Real.sqrt (Real.log n / Real.log (Real.log n)) ≤ (f(n, n) : ℝ) ∧
-        (f(n, n) : ℝ) ≤ C₂ * n * Real.sqrt (Real.log n)
-
 /--
 **van Doorn's Result in Context:**
 The difference f(n,m) - f(n,n) can be as large as the main term!

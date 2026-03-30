@@ -127,11 +127,6 @@ Erdős made two conjectures about the growth rate:
     NOTE: This follows from kovac_tao_theorem — if a_n^{1/β^n} → ∞ for some β > 1,
     then a_n^{1/n} → ∞ since a_n^{1/n} ≥ a_n^{1/β^n} for large n (when β^n ≥ n).
     See Erdos265Aristotle.lean for the reduction. -/
-axiom erdos_265_singleExp_achievable :
-  ∃ a : ℕ → ℕ, IsPositiveIntSeq a ∧ IsStrictlyIncreasing a ∧
-    hasBothRationalSums a ∧
-    Filter.Tendsto (singleExpGrowth a) Filter.atTop Filter.atTop
-
 /-- Erdős's second conjecture: double exponential implies limit 1
     NOTE: This is still an OPEN CONJECTURE (not a proven result).
     The Kovač-Tao result (2024) only shows β > 1 is achievable, not β = 2.
@@ -173,11 +168,6 @@ forces ∑ 1/aₙ to be irrational.
 -/
 
 /-- Fast double-exponential growth implies irrational sum -/
-axiom irrationality_threshold :
-  ∀ a : ℕ → ℕ, IsPositiveIntSeq a → IsStrictlyIncreasing a →
-    (∃ c > 1, Filter.Tendsto (doubleExpGrowth a) Filter.atTop (nhds c)) →
-    ∀ q : ℚ, reciprocalSum a ≠ q
-
 /-
 ## The Valid Set
 
@@ -200,12 +190,6 @@ Higher-degree polynomials can work with different shifts.
 -/
 
 /-- Polynomial sequences can work with appropriate shifts -/
-axiom polynomial_examples :
-  ∃ p : ℕ → ℕ, ∃ k : ℕ, 
-    (∀ n, p n = n^3 + 6*n^2 + 5*n) ∧
-    (∃ q : ℚ, ∑' n, (1 : ℝ) / p n = q) ∧
-    (∃ q : ℚ, ∑' n, (1 : ℝ) / (p n - k) = q)
-
 /-
 ## Main Open Problem Statement
 -/

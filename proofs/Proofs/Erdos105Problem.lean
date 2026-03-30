@@ -120,15 +120,6 @@ theorem erdos_105_disproved : ¬ErdosPurdyConjecture := by
 /-- **Hickerson's Construction:**
     The conjecture already fails with n-2 obstacles.
     This shows n-3 is the "critical" case (if the conjecture were true). -/
-axiom hickerson_n_minus_2 :
-    ∃ (A B : Finset Point) (n : ℕ),
-      n ≥ 3 ∧
-      A.card = n ∧
-      B.card = n - 2 ∧
-      Disjoint A B ∧
-      NonCollinear (A : Set Point) ∧
-      ∀ L : Line, L.isRich (A : Set Point) → ¬L.unblocked (B : Set Point)
-
 /-- **Beck-Szemerédi-Trotter Positive Result:**
     With only cn obstacles (for some constant c > 0), the conjecture IS true.
     There must exist a rich line avoiding all obstacles. -/
@@ -151,11 +142,6 @@ noncomputable def incidenceCount (P : Finset Point) (L : Finset Line) : ℕ :=
     O(n^(2/3) m^(2/3) + n + m).
 
     This is optimal up to constants. -/
-axiom szemeredi_trotter (P : Finset Point) (L : Finset Line) :
-    ∃ C : ℝ, C > 0 ∧
-    (incidenceCount P L : ℝ) ≤ C * ((P.card : ℝ)^(2/3 : ℝ) * (L.card : ℝ)^(2/3 : ℝ)
-                                    + P.card + L.card)
-
 /-- Any set of ≥ 2 points has a rich line (any two distinct points determine one).
     Formerly an axiom stated as a corollary of Szemerédi-Trotter, but the basic
     existence of at least one rich line is trivially true from the definitions. -/
@@ -184,13 +170,7 @@ theorem many_rich_lines_exist (A : Finset Point) (hncoll : NonCollinear (A : Set
 axiom thresholdFunction (n : ℕ) : ℕ
 
 /-- **Lower bound:** f(n) ≥ c·n for some c > 0. -/
-axiom threshold_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, (thresholdFunction n : ℝ) ≥ c * n
-
 /-- **Upper bound:** f(n) ≤ n - 4 (from Xichuan's counterexample). -/
-axiom threshold_upper_bound :
-    ∀ n : ℕ, n ≥ 4 → thresholdFunction n ≤ n - 4
-
 /- ## Part VII: Open Problems -/
 
 /-- **Open Problem 1:** Does the conjecture hold with n-4 obstacles? -/

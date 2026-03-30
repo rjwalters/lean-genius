@@ -83,8 +83,6 @@ theorem F_upper_trivial (N : ℕ) : F N ≤ N + 1 := by
 
 /-- Lower bound: F(N) ≥ 2 for N ≥ 1.
     Proof: Empty set can't measure 1; singleton a-a=0, can't measure 1. -/
-axiom F_lower_two (N : ℕ) (hN : N ≥ 1) : F N ≥ 2
-
 /- ## The Limit Theorem -/
 
 /-- **Erdős-Gál (1948)**: The limit lim_{N→∞} F(N)/√N exists. -/
@@ -108,14 +106,8 @@ theorem limit_in_interval : 1.56 ≤ limitValue ∧ limitValue ≤ Real.sqrt 3 :
 
 /-- **Wichmann Rulers**: Achieve asymptotic density √3.
     For certain N, the ruler {0, 1, 3, 6, ..., (k²+k)/2, ..., N} is optimal. -/
-axiom wichmann_construction :
-    ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀, (F N : ℝ) / Real.sqrt N ≤ Real.sqrt 3 + ε
-
 /-- **Redei-Renyi Lower Bound**: Any perfect ruler needs at least ~√(2N) marks
     to cover all differences. -/
-axiom redei_renyi_lower :
-    ∀ N : ℕ, N ≥ 1 → (F N : ℝ) ≥ Real.sqrt (2 * N) - 1
-
 /- ## Unrestricted Version -/
 
 /-- The unrestricted version: A can be any finite subset of ℕ. -/
@@ -127,19 +119,12 @@ noncomputable def F' (N : ℕ) : ℕ :=
   sInf { m : ℕ | ∃ A : Finset ℕ, IsUnrestrictedPerfectRuler N A ∧ A.card = m }
 
 /-- Unrestricted rulers can be smaller: F'(N) ≤ F(N). -/
-axiom unrestricted_le_restricted : ∀ N, F' N ≤ F N
-
 /- ## Examples -/
 
 /-- Example: {0, 1, 3} is a 3-perfect ruler.
     Differences: 1-0=1, 3-0=3, 3-1=2. -/
-axiom example_3_ruler : IsPerfectRuler 3 {0, 1, 3}
-
 /-- Example: {0, 1, 2, 6, 10, 14, 17, 21, 25, 27, 28, 29, 30} is a 30-perfect ruler
     with only 13 marks (instead of 31). This is an optimal ruler for N=30. -/
-axiom example_30_ruler :
-    IsPerfectRuler 30 {0, 1, 2, 6, 10, 14, 17, 21, 25, 27, 28, 29, 30}
-
 /- ## Summary
 
 **Problem Status: PARTIALLY SOLVED**

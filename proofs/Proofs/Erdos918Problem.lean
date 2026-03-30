@@ -93,8 +93,6 @@ with chromatic number *exactly* ℵ₀ for all subgraphs (rather than *at most* 
 
 This is because any graph contains finite subgraphs with finite chromatic number.
 -/
-axiom eq_aleph0_impossible_statement : Prop
-
 /- ## Background: Aleph Cardinals
 
 The aleph cardinals form a hierarchy of infinite cardinals:
@@ -115,8 +113,6 @@ theorem aleph_1_lt_2 : aleph 1 < aleph 2 :=
   aleph_lt_aleph.mpr (by omega)
 
 /-- ℵ_ω is the supremum of ℵ_n for finite n (axiomatized). -/
-axiom aleph_omega0_is_sup : aleph Ordinal.omega0 = ⨆ n : ℕ, aleph n
-
 /- ## Why This Problem is Difficult
 
 The jump from finite k to k = 2 (or to ω + 1) is nontrivial because:

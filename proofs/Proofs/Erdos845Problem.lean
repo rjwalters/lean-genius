@@ -97,15 +97,11 @@ This disproves Erdős's conjecture: the set has density 1, not 0.
 Reference: W. van Doorn and A. Everts, "Smooth sums with small spacings",
 arXiv:2511.04585 (2025).
 -/
-axiom vanDoornEverts_universal : ∀ n : ℕ, 0 < n → hasBoundedRep 6 n
-
 /--
 Corollary: Erdős's conjecture is false.
 Since all positive integers have 6-bounded representations, the set
 has density 1, not 0 as conjectured.
 -/
-axiom erdosConjecture_false : ¬erdosConjecture
-
 /-
 ## Lower Bounds on the Optimal Constant
 
@@ -121,8 +117,6 @@ There exist arbitrarily large integers that cannot be written as
 Reference: Erdős, P. and Lewin, M., "d-complete sequences of integers",
 Math. Comp. (1996), 837-840.
 -/
-axiom erdosLewin_lowerBound : ∃ᶠ n in Filter.atTop, ¬hasBoundedRep 2 n
-
 /--
 van Doorn and Everts (2025): The optimal constant C* satisfies C* ≥ 3.
 There exist arbitrarily large integers that cannot be written as
@@ -131,8 +125,6 @@ sums with ratio less than 3.
 Reference: W. van Doorn and A. Everts, "Smooth sums with small spacings",
 arXiv:2511.04585 (2025).
 -/
-axiom vanDoornEverts_lowerBound : ∃ᶠ n in Filter.atTop, ¬hasBoundedRep 3 n
-
 /-
 ## Related Result: The "Silly Conjecture"
 
@@ -156,11 +148,6 @@ numbers where no summand divides any other (Jansen et al.).
 This is the "silly conjecture" that Erdős mentioned, which turned out
 to have a simple inductive proof.
 -/
-axiom sillyConjecture_true : ∀ n : ℕ, 0 < n →
-  ∃ (B : Finset (ℕ × ℕ)), B.Nonempty ∧
-    n = ∑ p ∈ B, smoothNum p.1 p.2 ∧
-    nonDivisible B
-
 /-
 ## Computational Examples
 

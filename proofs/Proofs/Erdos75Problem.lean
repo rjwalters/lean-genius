@@ -208,12 +208,6 @@ theorem strong_implies_basic :
 
 /-- Erdős Problem 75 (basic form): There exists a graph with uncountable
     chromatic number and the large independence set property -/
-axiom ErdosProblem75 :
-  ∃ G : Graph, HasUncountableChromaticNum G ∧ HasLargeIndepSets G
-
 /-- Erdős Problem 75 (strong form): There exists a graph with uncountable
     chromatic number where every large finite subgraph has linear independence number -/
-axiom ErdosProblem75_strong :
-  ∃ G : Graph, HasUncountableChromaticNum G ∧ HasLinearIndepSets G
-
 end Erdos75

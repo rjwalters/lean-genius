@@ -60,9 +60,6 @@ For n > 2: If n is odd, then 2^n is even and n is odd, so 2^n ≢ 1 (mod n).
 For n > 1, we have 2^n ≢ 1 (mod n).
 This is why Graham's conjecture requires k ≠ 1.
 -/
-axiom two_pow_not_one_mod_n (n : ℕ) (hn : n > 1) :
-    ¬((2 : ℤ) ^ n ≡ 1 [ZMOD n])
-
 /--
 The solution set for k = 1 is empty (except possibly n = 1, which is trivial).
 -/
@@ -85,9 +82,6 @@ axiom powers_of_two_infinite (i : ℕ) (hi : i ≥ 1) :
 For k = -1 (equivalently k = n-1 mod n), there are infinitely many solutions.
 Also proved by Graham, Lehmer, and Lehmer.
 -/
-axiom minus_one_infinite :
-    { n : ℕ | n > 0 ∧ (2 : ℤ) ^ n ≡ -1 [ZMOD n] }.Infinite
-
 /-
 ## The Open Conjecture
 
@@ -122,15 +116,9 @@ theorem odd_primes_give_two (p : ℕ) (hp : Nat.Prime p) (_hodd : p > 2) :
 For k = 3, the smallest solution is n = 4700063497.
 This huge value illustrates the computational difficulty.
 -/
-axiom smallest_for_three :
-    4700063497 ∈ SolutionSet 3
-
 /--
 For any n < 4700063497, we have 2^n ≢ 3 (mod n).
 -/
-axiom three_no_smaller_solutions (n : ℕ) (hn : 0 < n) (hn' : n < 4700063497) :
-    n ∉ SolutionSet 3
-
 /-
 ## Understanding the Structure
 

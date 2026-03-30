@@ -1,0 +1,33 @@
+{
+  "id": "angle-trisection-oq-02-oq-04-oq-01",
+  "name": "Tower-Galois Equivalence via Mathlib Correspondence",
+  "status": "active",
+  "knowledge": {
+    "insights": [
+      "Previous TowerCriterion = DegreeCriterion was mathematically incorrect — needed proper inductive definition",
+      "Hard direction (Galois → Tower) reduces to: every non-trivial 2-group has index-2 subgroup",
+      "Main bottleneck is API glue between Polynomial.Gal and IntermediateField, not missing theory",
+      "IsPGroup.isSolvable and IsPGroup.to_subgroup available directly from Mathlib",
+      "Estimated ~500-800 lines of Lean 4 for complete proof"
+    ],
+    "builtItems": [
+      "AngleTrisectionOQ02OQ04OQ01.lean: 311-line formalization with QuadraticTower inductive definition",
+      "Proved tower_satisfies_degree: QuadraticTower → DegreeCriterion",
+      "Proved 2-group structural lemmas (solvability, subgroup preservation, trivial characterization)",
+      "Stated full tower_iff_galois_two_group equivalence",
+      "Detailed feasibility analysis of Mathlib gaps",
+      "Gallery data: meta.json with full annotations"
+    ],
+    "mathlibGaps": [
+      "Bridge between Polynomial.Gal and IntermediateField.fixingSubgroup (~100 lines)",
+      "Index-2 subgroup existence for 2-groups (standard but not directly in Mathlib)",
+      "Index-degree relation [G:H] = [Fix(H):K] API connection to Module.finrank"
+    ],
+    "nextSteps": [
+      "Prove exists_index_two_subgroup from center-of-p-group theory",
+      "Build Polynomial.Gal ↔ IntermediateField bridge",
+      "Submit routine sorries to Aristotle via companion file"
+    ],
+    "progressSummary": "COMPLETED: Proper inductive QuadraticTower definition replacing incorrect alias. Stated full Tower ↔ Galois 2-group equivalence. Proved supporting lemmas. Detailed feasibility analysis: YES, provable with Mathlib but needs ~500-800 lines of API glue. 0 axioms, 7 sorries."
+  }
+}

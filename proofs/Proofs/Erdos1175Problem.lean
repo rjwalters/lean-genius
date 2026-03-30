@@ -48,9 +48,6 @@ def IsColorable {V : Type*} (G : SimpleGraph V) (k : Cardinal) : Prop :=
 axiom cardinalChromaticNumber {V : Type*} (G : SimpleGraph V) : Cardinal
 
 /-- The chromatic number is at most k iff G is k-colorable. -/
-axiom chromaticNumber_le_iff {V : Type*} (G : SimpleGraph V) (k : Cardinal) :
-    cardinalChromaticNumber G ≤ k ↔ IsColorable G k
-
 /-
 ## Part II: Triangle-Free Subgraphs
 
@@ -137,18 +134,9 @@ For finite graphs, the situation is well-understood.
 
 /-- Mycielski's theorem: For every k ≥ 1, there exists a triangle-free graph
     with chromatic number k. This is a classical constructive result. -/
-axiom mycielski_theorem (k : ℕ) (hk : k ≥ 1) :
-  ∃ (V : Type*) (G : SimpleGraph V),
-    IsTriangleFree G ∧ cardinalChromaticNumber G = k
-
 /-- For finite κ, the conjecture holds via Ramsey-type results:
     graphs with sufficiently large chromatic number contain triangle-free
     subgraphs with any prescribed finite chromatic number. -/
-axiom finite_case (k : ℕ) (hk : k ≥ 1) :
-  ∃ (n : ℕ), ∀ (V : Type*) (G : SimpleGraph V),
-    cardinalChromaticNumber G ≥ n →
-    HasTriangleFreeSubgraphWithChromatic G k
-
 /-
 ## Part VI: Girth Variant
 
@@ -180,10 +168,6 @@ with structural graph theory (forbidden subgraphs).
 
 /-- Erdős (1959) showed: for every k, g ≥ 3 there exist finite graphs
     with girth ≥ g and chromatic number ≥ k (via probabilistic method). -/
-axiom erdos_1959_existence (k : ℕ) (g : ℕ) (hk : k ≥ 1) (hg : g ≥ 3) :
-  ∃ (n : ℕ) (G : SimpleGraph (Fin n)),
-    HasGirthAtLeast G g ∧ cardinalChromaticNumber G ≥ k
-
 /-
 ## Part VIII: Formal Problem Statement and Status
 -/

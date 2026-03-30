@@ -63,13 +63,7 @@ def HasHypergraphRamseyProperty (k m n : ℕ) : Prop :=
 axiom R : ℕ → ℕ → ℕ
 
 /-- R_k(n) has the Ramsey property. -/
-axiom R_has_property (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
-    HasHypergraphRamseyProperty k (R k n) n
-
 /-- R_k(n) is minimal with the Ramsey property. -/
-axiom R_is_minimal (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
-    ∀ m < R k n, ¬HasHypergraphRamseyProperty k m n
-
 /-
 ## Known Bounds (Erdős-Hajnal-Rado 1965)
 
@@ -157,11 +151,7 @@ For very small cases, we can state known values of R₃(n).
     yields a monochromatic triangle (3 vertices with all 3 triples same colour).
 
     It's known that R₃(3) = 4. -/
-axiom R3_3_eq_4 : R 3 3 = 4
-
 /-- R₃(4) is known to be 13. -/
-axiom R3_4_eq_13 : R 3 4 = 13
-
 /-
 ## Comparison with Graph Ramsey Numbers
 
@@ -172,11 +162,6 @@ This is singly exponential. For 3-uniform hypergraphs, growth is much faster.
 -/
 
 /-- Graph Ramsey numbers are exponential (Erdős-Szekeres bounds). -/
-axiom graph_ramsey_exponential :
-    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧
-      ∀ n : ℕ, n ≥ 2 →
-        (2 : ℝ)^(c * n) < R 2 n ∧ (R 2 n : ℝ) < (2 : ℝ)^(C * n)
-
 /-- The known bounds can be restated using tower functions:
     For k = 2 (graphs): R₂(n) ~ tower(1, n)
     For k = 3: tower(1, n²) < R₃(n) < tower(2, n)
@@ -199,11 +184,6 @@ also have such a bound.
     (Erdős-Hajnal-Máté-Rado 1984)
 
     This is evidence that the 2-colour case might also have such a bound. -/
-axiom four_colour_doubly_exponential :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-      -- The 4-colour hypergraph Ramsey number has a doubly exponential lower bound
-      True  -- The actual bound statement would involve a 4-colour R function
-
 /-
 ## Why the Problem is Hard
 

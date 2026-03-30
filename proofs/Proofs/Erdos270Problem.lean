@@ -168,9 +168,6 @@ def centralBinomial (n : ℕ) : ℕ := Nat.choose (2 * n) n
 /-- **Connection to Rising Product:**
 1/C(2n,n) = n! / ((n+1)(n+2)⋯(2n)) = 1/((n+1)⋯(n+n)).
 Technical: involves factorial identities. -/
-axiom central_binomial_connection (n : ℕ) (hn : n ≥ 1) :
-    (centralBinomial n : ℝ)⁻¹ = seriesTerm (fun _ => n) n
-
 /--
 **Hansen's Constant:**
 The sum Σ 1/C(2n,n) equals this transcendental number.
@@ -183,9 +180,6 @@ noncomputable def hansenConstant : ℝ := 1/3 + 2 * Real.pi / (3 : ℝ)^(5/2 : �
 
 This is a transcendental number!
 -/
-axiom hansen_1975 :
-    (∑' n, (centralBinomial n : ℝ)⁻¹) = hansenConstant
-
 /--
 **Hansen's Constant is Transcendental:**
 It involves π, which is transcendental.
@@ -215,11 +209,6 @@ The set of possible values for nondecreasing f has Lebesgue measure zero.
 This is strong evidence that the nondecreasing case might always be irrational,
 but it's not a proof!
 -/
-axiom nondecreasing_measure_zero :
-    ∃ S : Set ℝ, (∀ f : ℕ → ℕ, TendsToInfinity f → IsNondecreasing f →
-      productReciprocalSeries f ∈ S) ∧
-      MeasureTheory.volume S = 0
-
 /-
 ## Part VII: Examples and Bounds
 -/
@@ -230,18 +219,9 @@ For any f with f(n) → ∞, the series converges.
 
 Proof idea: Eventually f(n) ≥ 2, so terms are ≤ 1/((n+1)(n+2)) ∼ 1/n².
 -/
-axiom series_converges (f : ℕ → ℕ) (hf : TendsToInfinity f) :
-    Summable (seriesTerm f)
-
 /-- **Upper Bound:**
 The series is bounded above by Σ 1/n! (comparison with exponential series). -/
-axiom series_upper_bound (f : ℕ → ℕ) (hf : TendsToInfinity f) :
-    productReciprocalSeries f ≤ Real.exp 1 - 1
-
 /-- **Lower Bound:** The series is positive (all terms are positive). -/
-axiom series_positive (f : ℕ → ℕ) (hf : TendsToInfinity f) :
-    productReciprocalSeries f > 0
-
 /-
 ## Part VIII: Summary
 -/

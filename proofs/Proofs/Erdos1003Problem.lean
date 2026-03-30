@@ -153,10 +153,6 @@ is at most x/exp((log x)^(1/3)).
 
 This is a strong sparsity result that shows solutions are rare.
 -/
-axiom eps_upper_bound :
-    ∀ᶠ x : ℕ in atTop, (countConsecutiveEqual x : ℝ) ≤
-      (x : ℝ) / exp ((log (x : ℝ)) ^ (1/3 : ℝ))
-
 /-
 ## Known Values from OEIS A001274
 
@@ -171,9 +167,6 @@ Note: 5186 and 5187 are consecutive members, meaning
 /--
 The sequence A001274 contains at least the first few known values.
 -/
-axiom oeis_A001274_partial :
-    {1, 3, 15, 104, 164, 194, 255} ⊆ ConsecutiveEqualTotients
-
 /-
 ## Connection to Other Totient Questions
 
@@ -246,15 +239,10 @@ A remarkable fact: there exist three consecutive integers with equal totient.
 /--
 There exist three consecutive integers with equal totient value.
 -/
-axiom triple_consecutive_equal :
-    φ 5186 = φ 5187 ∧ φ 5187 = φ 5188 ∧ φ 5186 = 1728
-
 /--
 5186 ∈ ConsecutiveKEqualTotients 2 means
 φ(5186) = φ(5187) = φ(5188).
 -/
-axiom n_5186_triple : 5186 ∈ ConsecutiveKEqualTotients 2
-
 /-
 ## Lower Bound on Solutions
 
@@ -270,7 +258,4 @@ formally open.
 Ford-Luca-Pomerance result: there are many solutions.
 For any ε > 0, eventually the count exceeds x^(1-ε).
 -/
-axiom flp_lower_bound (ε : ℝ) (hε : 0 < ε) :
-    ∀ᶠ x : ℕ in atTop, (x : ℝ) ^ (1 - ε) ≤ (countConsecutiveEqual x : ℝ)
-
 end Erdos1003

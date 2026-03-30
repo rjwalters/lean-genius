@@ -126,14 +126,6 @@ axiom tijdeman_1966_odd (n : ℕ) (hn : n ≥ 3) (hodd : Odd n)
     (ht2 : consecutiveZeroTuple z k₂) :
   isEssentiallyRootsOfUnity z
 
-axiom tijdeman_1966_even (n : ℕ) (hn : n ≥ 4) (heven : Even n)
-    (z : Configuration n)
-    (hfirst : hasFirstElementOne z)
-    (k₁ k₂ : ℕ) (hdiff : k₁ ≠ k₂)
-    (ht1 : consecutiveZeroTuple z k₁)
-    (ht2 : consecutiveZeroTuple z k₂) :
-  isTwoRegularPolygons z
-
 /- ## Part V: Erdős Problem #974 Resolution
 -/
 
@@ -155,9 +147,6 @@ theorem erdos_974_solved (n : ℕ) (hn : n ≥ 2) (z : Configuration n)
 -/
 
 /-- The nth roots of unity DO have the zero-tuple property when n > 1. -/
-axiom roots_of_unity_have_zero_tuples (n : ℕ) (hn : n ≥ 2) :
-    hasInfinitelyManyZeroTuples (standardRootsOfUnity n)
-
 /- ## Part VII: Connection to Newton's Identities
 
 Newton's identities connect power sums to elementary symmetric polynomials:
@@ -171,12 +160,6 @@ constrained.
 -/
 
 /-- Power sums are invariant under permutation of the configuration. -/
-axiom essentially_means_up_to_permutation (n : ℕ) (hn : n > 0)
-    (z₁ z₂ : Configuration n)
-    (σ : Fin n ≃ Fin n)
-    (hperm : ∀ i, z₁ i = z₂ (σ i)) :
-    ∀ k, powerSum z₁ k = powerSum z₂ k
-
 /- ## Summary
 
 **Erdős Problem #974: SOLVED (YES)**

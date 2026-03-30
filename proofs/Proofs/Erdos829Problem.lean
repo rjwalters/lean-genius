@@ -103,17 +103,10 @@ axiom mordell_unbounded :
 **Infinitely Many Large Values:**
 For any fixed k, there exist arbitrarily large n with r₂(n) > k.
 -/
-axiom infinitely_many_large_aux (k N : ℕ) : ∃ n > N, cubeRepresentations n > k
-
 /--
 **Mahler's Theorem (1935):**
 For infinitely many n, r₂(n) ≫ (log n)^{1/4}.
 -/
-axiom mahler_1935 :
-  ∃ c : ℝ, c > 0 ∧
-    ∀ M : ℕ, ∃ n : ℕ, n ≥ M ∧
-      (cubeRepresentations n : ℝ) ≥ c * (Real.log n) ^ (1/4 : ℝ)
-
 /--
 **Stewart's Theorem (2008):**
 For infinitely many n, r₂(n) ≫ (log n)^{11/13}.
@@ -154,8 +147,6 @@ theorem hardy_ramanujan_1729 : cubeRepresentations 1729 = 2 := by native_decide
 The smallest number with 3 representations as sum of two cubes.
 87539319 = 167³ + 436³ = 228³ + 423³ = 255³ + 414³
 -/
-axiom taxicab_3 : cubeRepresentations 87539319 = 3
-
 /- ## Part V: Theoretical Framework -/
 
 /--
@@ -163,23 +154,10 @@ axiom taxicab_3 : cubeRepresentations 87539319 = 3
 The counting function of numbers representable as sums of two positive cubes
 is asymptotically ~ c · x^{2/3} for some constant c.
 -/
-axiom density_of_sums :
-  ∃ c : ℝ, c > 0 ∧
-    Filter.Tendsto
-      (fun x : ℕ => (Finset.filter (fun n => cubeRepresentations n > 0) (Finset.range x)).card / (x : ℝ) ^ (2/3 : ℝ))
-      Filter.atTop
-      (nhds c)
-
 /--
 **Cube-Free Numbers:**
 Most integers cannot be expressed as sums of two cubes.
 -/
-axiom most_not_sum_of_cubes :
-  Filter.Tendsto
-    (fun x : ℕ => (Finset.filter (fun n => cubeRepresentations n = 0) (Finset.range x)).card / x)
-    Filter.atTop
-    (nhds 1)
-
 /- ## Part VI: The Gap -/
 
 /--

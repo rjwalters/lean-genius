@@ -550,25 +550,11 @@ theorem sum_of_reps_bound (A B : Set ℕ) (N : ℕ) :
 
 /-- If A + B is a basis and both sets have density ≫ √N, then the average
     representation grows without bound. -/
-axiom average_rep_grows (A B : Set ℕ)
-    (hBasis : IsTwoSetBasis A B)
-    (hA : ∃ c > 0, ∀ N : ℕ, 1 ≤ N → (countingFn A N : ℝ) ≥ c * Real.sqrt N)
-    (hB : ∃ c > 0, ∀ N : ℕ, 1 ≤ N → (countingFn B N : ℝ) ≥ c * Real.sqrt N) :
-    Tendsto (fun N =>
-      (Finset.range (N + 1)).sum (fun n => twoSetRepFunc A B n) / (N + 1))
-      atTop atTop
-
 /- ## Part IX: Partial Results -/
 
 /-- If A = B and the conjecture holds (i.e., from Erdős–Turán),
     then r_{A,A}(n) ≥ 6 infinitely often (Grekos et al.).
     This extends to the two-set case when A and B are "close enough." -/
-axiom grekos_two_set (A B : Set ℕ)
-    (hInf_A : A.Infinite) (hInf_B : B.Infinite)
-    (hRatio : HasAsymptoticRatio A B)
-    (hBasis : IsTwoSetBasis A B) :
-    ∀ M : ℕ, ∃ n > M, twoSetRepFunc A B n ≥ 6
-
 /- ## Part X: Structural Results -/
 
 /-- Symmetry: swapping the roles of A and B preserves the representation

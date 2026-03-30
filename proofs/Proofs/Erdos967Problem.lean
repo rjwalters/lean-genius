@@ -111,10 +111,6 @@ noncomputable def sum235 (t : ℝ) : ℂ :=
 The Four Exponentials conjecture implies that for {2, 3, 5},
 the sum never vanishes. (See MathOverflow discussion.)
 -/
-axiom four_exponentials_implies_235_nonzero :
-    -- If Four Exponentials conjecture holds, then sum235 t ≠ 0 for all t
-    True  -- simplified statement
-
 /-
 ## Part V: The Tauberian Equivalence
 -/
@@ -196,11 +192,6 @@ theorem yip_construction_t_dependent :
 When t = 0, the sum is real: 1 + ∑ₖ 1/aₖ > 1 > 0.
 So the conjecture trivially holds at t = 0.
 -/
-axiom sum_positive_at_zero (a : IntegerSequence) (ha : hasConvergentReciprocalSum a) :
-    generalizedDirichletSum a 0 ≠ 0
-  -- At t = 0, all terms are positive real numbers (1/aₖ > 0)
-  -- So the sum equals 1 + ∑ₖ 1/aₖ > 1, which is nonzero
-
 /-
 **Oscillatory Behavior:**
 For large |t|, the terms 1/aₖ^(1+it) = (1/aₖ) · e^(-it·log(aₖ)) oscillate rapidly.

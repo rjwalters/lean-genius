@@ -47,33 +47,14 @@ noncomputable def signedSumCount {n : ℕ} (z : Fin n → ℂ) (w : ℂ) (r : �
 /-- **Kleitman (1965)**: For complex z₁,...,zₙ with |zᵢ| ≥ 1,
     the number of signed sums Σ εᵢzᵢ falling in any unit disc
     is at most C(n, ⌊n/2⌋). -/
-axiom kleitman_littlewood_offord (n : ℕ) (hn : n ≥ 1)
-  (z : Fin n → ℂ) (hz : ∀ i, Complex.abs (z i) ≥ 1)
-  (w : ℂ) :
-  signedSumCount z w 1 ≤ Nat.choose n (n / 2)
-
 /- ## Historical Results -/
 
 /-- **Erdős (1945)**: For real z₁,...,zₙ with |zᵢ| ≥ 1, at most
     C(n, ⌊n/2⌋) signed sums fall in any interval of length 2.
     This was the original Littlewood–Offord result for reals. -/
-axiom erdos_real_case (n : ℕ) (hn : n ≥ 1)
-  (z : Fin n → ℝ) (hz : ∀ i, |z i| ≥ 1)
-  (a : ℝ) :
-  Finset.card (Finset.filter
-    (fun ε : Fin n → Fin 2 =>
-      let s := Finset.sum Finset.univ (fun i => (if (ε i) = 0 then (1 : ℝ) else -1) * z i)
-      a ≤ s ∧ s ≤ a + 2)
-    Finset.univ) ≤ Nat.choose n (n / 2)
-
 /-- **Erdős (1961)**: For complex zᵢ with |zᵢ| ≥ 1, the count
     of signed sums in any unit disc is O(2ⁿ/√n). This was
     Erdős's partial result before Kleitman's sharp bound. -/
-axiom erdos_complex_weak (n : ℕ) (hn : n ≥ 1)
-  (z : Fin n → ℂ) (hz : ∀ i, Complex.abs (z i) ≥ 1)
-  (w : ℂ) :
-  ∃ C : ℝ, C > 0 ∧ (signedSumCount z w 1 : ℝ) ≤ C * 2 ^ n / Real.sqrt n
-
 /- ## Generalizations -/
 
 /- **Kleitman (1970)**: The result extends to arbitrary Hilbert

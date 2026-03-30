@@ -94,17 +94,9 @@ def IsPellSolution (x y D : ℕ) : Prop :=
 The Pell equation x² = 8y² + 1 gives consecutive powerful numbers.
 If (x, y) is a solution, then 8y² = x² - 1 = (x-1)(x+1).
 Both 8y² and 8y² + 1 can be powerful. -/
-axiom mahler_pell_gives_powerful :
-    ∀ x y : ℕ, IsPellSolution x y 8 → x ≥ 1 →
-      IsPowerful (8 * y^2) ∧ IsPowerful (8 * y^2 + 1)
-
 /-- **Infinitely many from Pell:**
 The Pell equation x² - 8y² = 1 has infinitely many solutions.
 Fundamental solution: (3, 1) giving 8·1 = 8 and 9. -/
-axiom infinitely_many_pell : ∃ f : ℕ → ℕ × ℕ,
-    (∀ k, IsPellSolution (f k).1 (f k).2 8) ∧
-    (∀ k₁ k₂, k₁ < k₂ → (f k₁).2 < (f k₂).2)
-
 /- ## Part IV: Question 1 - Must One Be a Square? -/
 
 /-- **Question 1:**
@@ -145,13 +137,6 @@ axiom walker_infinitely_many :
       (∀ k₁ k₂, k₁ < k₂ → (f k₁).2 < (f k₂).2)
 
 /-- **Walker solutions give non-square pairs:** -/
-axiom walker_gives_nonsquare :
-    ∀ x y : ℕ, WalkerEquation x y →
-      let n := 3^3 * y^2
-      IsConsecutivePowerfulPair n ∧
-      (¬∃ k : ℕ, n = k^2) ∧
-      (¬∃ k : ℕ, n + 1 = k^2)
-
 /- ## Part VI: Question 2 - Counting -/
 
 /-- **Counting function:**

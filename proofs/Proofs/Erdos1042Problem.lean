@@ -40,18 +40,8 @@ Axiomatized since the full definition requires Chebyshev constant machinery. -/
 axiom transfiniteDiameter (F : Set ℂ) : ℝ
 
 /-- Transfinite diameter is nonneg (equals logarithmic capacity). -/
-axiom transfiniteDiameter_nonneg :
-    ∀ F : Set ℂ, transfiniteDiameter F ≥ 0
-
 /-- The transfinite diameter of a disc of radius r is r. -/
-axiom disc_transfinite_diameter :
-    ∀ r : ℝ, r > 0 →
-      transfiniteDiameter {z : ℂ | Complex.abs z ≤ r} = r
-
 /-- The transfinite diameter of [-1,1] ⊆ ℂ is 1/2. -/
-axiom interval_transfinite_diameter :
-    transfiniteDiameter {z : ℂ | z.im = 0 ∧ -1 ≤ z.re ∧ z.re ≤ 1} = 1/2
-
 /- ## Polynomial Lemniscates -/
 
 /-- A monic polynomial f(z) = ∏ᵢ(z - zᵢ) with all roots in F. -/
@@ -102,17 +92,8 @@ def mainQuestion2 : Prop :=
 
 /-- For the unit disc, the lemniscate can have n connected components.
 Example: f(z) = zⁿ + 1 has n components. -/
-axiom ehp_disc_result :
-    ∀ n : ℕ, n > 0 →
-      maxComponents {z : ℂ | Complex.abs z ≤ 1} n = n
-
 /-- f(z) = zⁿ + 1 has its roots on the unit circle and its lemniscate
 has n connected components. -/
-axiom roots_of_unity_example :
-    ∀ n : ℕ, n > 0 →
-      let f := fun z : ℂ => z^n + 1
-      numComponents (lemniscate f) = n
-
 /- ## Ghosh-Ramachandran Solution (2024) -/
 
 /-- GR Theorem 1: If 0 < d < 1, the lemniscate has at most (1-c)n
@@ -125,11 +106,6 @@ axiom ghosh_ramachandran_small_diameter :
 
 /-- GR Theorem 2: If d ≤ 1/4 and F is connected, then the lemniscate
 has only one connected component. -/
-axiom ghosh_ramachandran_small_connected :
-    ∀ F : Set ℂ, transfiniteDiameter F ≤ 1/4 →
-      IsConnected F →
-        ∀ n : ℕ, maxComponents F n = 1
-
 /-- GR Theorem 3: There exist sets with transfinite diameter 1 such that
 the lemniscate has n components for infinitely many n. -/
 axiom ghosh_ramachandran_diameter_one_examples :
@@ -141,14 +117,6 @@ axiom ghosh_ramachandran_diameter_one_examples :
 /-- The answer depends on geometry, not just diameter.
 Both the disc of radius 1/2 and [-1,1] have transfinite diameter 1/2,
 but the disc always gives 1 component while [-1,1] can give many. -/
-axiom diameter_not_sufficient :
-    let F1 : Set ℂ := {z : ℂ | Complex.abs z ≤ 1/2}
-    let F2 : Set ℂ := {z : ℂ | z.im = 0 ∧ -1 ≤ z.re ∧ z.re ≤ 1}
-    transfiniteDiameter F1 = 1/2 ∧
-    transfiniteDiameter F2 = 1/2 ∧
-    (∀ n : ℕ, maxComponents F1 n = 1) ∧
-    (∀ N : ℕ, ∃ n : ℕ, n > N ∧ (maxComponents F2 n : ℝ) ≥ 0.01 * n)
-
 /- ## Summary -/
 
 /-- **Erdős Problem #1042 Summary.**

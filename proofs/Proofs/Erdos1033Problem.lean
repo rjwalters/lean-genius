@@ -54,10 +54,6 @@ def isAboveTuran (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   edgeCount G > turanThreshold (Fintype.card V)
 
 /-- Turán's theorem: graphs above threshold have triangles. -/
-axiom turan_has_triangle (G : SimpleGraph V) [DecidableRel G.Adj] :
-  isAboveTuran G → ∃ (a b c : V), a ≠ b ∧ b ≠ c ∧ a ≠ c ∧
-    G.Adj a b ∧ G.Adj b c ∧ G.Adj a c
-
 /-
 ## Triangles and Degree Sums
 
@@ -149,13 +145,6 @@ axiom erdos_laskar_upper (n : ℕ) (hn : n ≥ 3) :
   (h n : ℝ) ≤ erdosLaskarConstant * n
 
 /-- There exists a graph achieving the upper bound. -/
-axiom upper_bound_tight : ∃ N : ℕ, ∀ n ≥ N,
-  ∃ (V : Type*) [DecidableEq V] [Fintype V],
-  Fintype.card V = n ∧
-  ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
-  isAboveTuran G ∧
-  (∀ T : Triangle G, (triangleDegreeSum G T : ℝ) ≤ erdosLaskarConstant * n + o(1))
-
 /-
 ## Erdős-Laskar Lower Bound (1985)
 
@@ -327,10 +316,6 @@ def isExtremal (n : ℕ) (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   ∀ T : Triangle G, triangleDegreeSum G T ≤ h n
 
 /-- Extremal graphs exist. -/
-axiom extremal_exists (n : ℕ) (hn : n ≥ 3) :
-  ∃ (V : Type*) [DecidableEq V] [Fintype V],
-  ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj], isExtremal n G
-
 /-
 ## Relation to Turán Graph
 

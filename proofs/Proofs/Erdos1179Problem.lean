@@ -141,16 +141,6 @@ theorem gEps_pos (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥
 -- The proof uses second moment method: for a random k-subset A,
 -- when k ≈ 2 log₂ N, the variance is small enough relative to the
 -- mean that concentration occurs.
-axiom erdos_renyi_upper (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
-    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-      (gEps ε N : ℝ) ≤ 2 * Real.logb 2 N + C
-
--- **Erdős-Hall (1976):** Improved upper bound.
---
--- g_ε(N) ≤ (1 + O_ε(log log log N / log log N)) · log₂ N
---
--- This brings the leading coefficient from 2 down to 1 + o(1).
--- The proof uses character sum estimates and large deviation bounds.
 axiom erdos_hall_upper (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
     ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
       (gEps ε N : ℝ) ≤ (1 + C * Real.log (Real.log (Real.log ↑N)) /
@@ -205,10 +195,6 @@ theorem uniform_implies_spanning {G : Type*} [AddCommGroup G] [Fintype G]
 /- ## Part IX: Monotonicity -/
 
 -- g_ε is non-increasing in ε: tighter tolerance requires more elements.
-axiom gEps_mono (ε₁ ε₂ : ℝ) (N : ℕ) (h : ε₁ ≤ ε₂)
-    (hε₁ : 0 < ε₁) (hε₂ : ε₂ < 1) (hN : N ≥ 2) :
-    gEps ε₁ N ≥ gEps ε₂ N
-
 /- ## Part X: Axiom Elimination — Deriving main_asymptotic -/
 
 -- The main_asymptotic axiom can be derived from trivial_lower_bound and

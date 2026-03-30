@@ -193,9 +193,6 @@ theorem basis_monotone {A B : Set ℕ} (hA : isAdditiveBasis2 A) (hAB : A ⊆ B)
 **Minimal Bases are Thin:**
 A minimal basis cannot have too many redundant elements.
 -/
-axiom minimal_basis_thin (A : Set ℕ) (hA : isMinimalBasis A) :
-    ∀ a ∈ A, ∃ n : ℕ, n ∉ doubling (A \ {a})
-
 /--
 **Essential Elements Form a Basis:**
 The set of essential elements of a basis forms a sub-basis.
@@ -214,15 +211,10 @@ The set {1, 2, 4, 8, 16, ...} = {2^n : n ∈ ℕ} is NOT a basis of order 2.
 -/
 def powersOfTwo : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
 
-axiom powersOfTwo_not_basis : ¬isAdditiveBasis2 powersOfTwo
-
 /--
 **Example: Complement of Sparse Set**
 If A = ℕ \ S where S is sparse enough, then A is a basis of order 2.
 -/
-axiom dense_set_is_basis (S : Set ℕ) (hS : S.Finite) :
-    isAdditiveBasis2 (univ \ S)
-
 /--
 **Example: Two Disjoint Bases**
 We can construct disjoint bases A₁ and A₂ by partitioning ℕ carefully.
@@ -241,20 +233,12 @@ axiom disjoint_bases_exist :
 The Härtter-Nathanson examples show that bases without minimal sub-bases exist.
 But those examples may not arise from unions of disjoint bases.
 -/
-axiom challenge_hartter_nathanson :
-    ∃ A : Set ℕ, isAdditiveBasis2 A ∧ ¬containsMinimalBasis A ∧
-    ¬∃ A₁ A₂ : Set ℕ, areDisjointBases A₁ A₂ ∧ A = A₁ ∪ A₂
-
 /--
 **Challenge 2:**
 The disjointness condition is restrictive. When A₁ and A₂ are disjoint,
 cross-sums a₁ + a₂ (with a₁ ∈ A₁, a₂ ∈ A₂) are "new" representations.
 Does this extra structure help?
 -/
-axiom cross_sums_matter :
-    ∀ A₁ A₂ : Set ℕ, areDisjoint A₁ A₂ →
-      sumset A₁ A₂ ⊆ doubling (A₁ ∪ A₂)
-
 /-
 ## Part IX: Summary
 -/

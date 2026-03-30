@@ -86,12 +86,6 @@ theorem finite_chromatic_subgraphs (V : Type*) (G : SimpleGraph V)
 /-- If the induced subgraph version holds universally,
     then 2^κ < 2^ν for all cardinals κ < ν. This connects the
     graph-theoretic question to deep cardinal arithmetic. -/
-axiom galvin_set_theory_implication :
-    (∀ V : Type*, ∀ G : SimpleGraph V,
-      ∀ κ : Cardinal, κ.IsLimit → κ < chromaticNumber G →
-        ∃ S : Set V, chromaticNumber (G.induce S) = κ) →
-      ∀ κ ν : Cardinal, κ < ν → (2 : Cardinal) ^ κ < (2 : Cardinal) ^ ν
-
 /- ## Part V: Komjáth's Consistency Result (1988) -/
 
 /-- Komjáth (1988): It is consistent with ZFC that a graph with
@@ -106,10 +100,6 @@ axiom komjath_consistency :
 
 /-- Shelah (1990): Under V=L, if χ(G) = ℵ₂, then G has a subgraph
     with χ = ℵ₁. Combined with Komjáth, this establishes independence. -/
-axiom shelah_constructibility (V : Type*) (G : SimpleGraph V) :
-    chromaticNumber G = aleph 2 →
-      HasSubgraphWithChromaticNumber G (aleph 1)
-
 /- ## Part VII: The GCH Question (OPEN) -/
 
 /-- The Generalized Continuum Hypothesis: for all infinite κ, 2^κ = κ⁺ -/

@@ -97,9 +97,6 @@ def densitySum (C : CoveringSystem) : ℚ :=
 **Density lemma:**
 For an exact covering system, the sum of densities equals 1.
 -/
-axiom exact_density_sum (C : CoveringSystem) (hE : isExact C) :
-    densitySum C = 1
-
 /- ## Part III: The Main Theorem -/
 
 /--
@@ -130,10 +127,6 @@ This imposes analytic constraints on the moduli that cannot be satisfied
 when all moduli are distinct. Axiomatized since the proof requires
 complex analysis of formal power series.
 -/
-axiom mirsky_newman_argument (C : CoveringSystem) :
-    hasDistinctModuli C → isExact C →
-    densitySum C = 1
-
 /--
 **Davenport-Rado LCM argument:**
 If distinct moduli n₁ < n₂ < ... < nₖ give an exact covering,
@@ -141,11 +134,6 @@ the largest modulus nₖ must divide lcm(n₁, ..., n_{k-1}).
 But then nₖ is not "new" — it's already a factor of the LCM —
 contradicting the ability to partition residues the covering requires.
 -/
-axiom davenport_rado_argument (C : CoveringSystem) :
-    hasDistinctModuli C → isExact C →
-    ∃ p ∈ C.classes, ∀ q ∈ C.classes, q.2 < p.2 →
-      p.2 ∣ C.classes.lcm (fun r => r.2)
-
 /- ## Part V: Related Results -/
 
 /--
@@ -162,10 +150,6 @@ axiom covering_systems_exist :
 {0 (mod 2), 0 (mod 3), 1 (mod 4), 5 (mod 6), 7 (mod 12)}
 covers all integers with distinct moduli > 1.
 -/
-axiom erdos_covering_example :
-    ∃ C : CoveringSystem, hasDistinctModuli C ∧
-      C.classes = {(0, 2), (0, 3), (1, 4), (5, 6), (7, 12)}
-
 /--
 **Allowing repeated moduli:**
 If we allow repeated moduli, exact coverings exist.

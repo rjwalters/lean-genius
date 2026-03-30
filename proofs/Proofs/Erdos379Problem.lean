@@ -60,12 +60,7 @@ noncomputable def S' (n : ℕ) : ℕ :=
 /-- S(n) is always at least 1 for n ≥ 2, since every C(n,k) for 1 ≤ k < n
     is divisible by at least 1 = p^0 for any prime p trivially, but actually
     by some prime p^1 since C(n,k) > 1 for such k when n ≥ 2. -/
-axiom S_ge_one (n : ℕ) (hn : 2 ≤ n) : S n ≥ 1
-
 /-- For any prime p and s such that p^s divides all C(n,k), we have s ≤ S(n). -/
-axiom S_is_max (n : ℕ) (p : ℕ) (hp : p.Prime) (s : ℕ)
-    (hdiv : ∀ k ∈ Finset.Ico 1 n, p ^ s ∣ n.choose k) : s ≤ S n
-
 /-
 ## Part III: The Key Construction
 
@@ -136,15 +131,8 @@ noncomputable def s (n : ℕ) : ℕ :=
   sSup {maxPrimePowerExp n k | k ∈ Finset.Ico 1 n}
 
 /-- s(n) is always at least S(n). -/
-axiom s_ge_S (n : ℕ) : s n ≥ S n
-
 /-- s(n) → ∞ as n → ∞ (this is much easier than the S(n) result). -/
-axiom s_tendsto_infty : Tendsto (fun n => (s n : ℕ∞)) atTop atTop
-
 /-- In fact, s(n) grows like log(n). -/
-axiom s_asymptotic : ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    ∀ᶠ (n : ℕ) in atTop, c₁ * Real.log n ≤ (s n : ℝ) ∧ (s n : ℝ) ≤ c₂ * Real.log n
-
 /-
 ## Part VII: Connection to Lucas' Theorem
 
@@ -155,18 +143,10 @@ coefficients modulo primes.
 /-- Lucas' theorem: C(m, n) mod p depends only on the base-p digits of m and n.
     Specifically, C(m, n) ≡ ∏ C(m_i, n_i) (mod p) where m = Σ m_i p^i, n = Σ n_i p^i.
     This is a Mathlib result we reference. -/
-axiom lucas_theorem (p m n : ℕ) (hp : p.Prime) :
-    m.choose n ≡ (Nat.digits p m).zip (Nat.digits p n) |>.map (fun ⟨a, b⟩ => a.choose b) |>.prod [MOD p]
-
 /-- Key insight for 3^{2^m}: The base-3 representation of 3^{2^m} is
     a 1 followed by 2^m zeros. For any 1 ≤ k < 3^{2^m}, the base-3
     representation of k has digits that are "smaller" than those of n
     in a way that forces divisibility by 3^m. -/
-axiom base3_structure (m k : ℕ) (hk : 1 ≤ k) (hk' : k < witnessSeq m) :
-    ∃ (positions : Finset ℕ), positions.card = m ∧
-    ∀ i ∈ positions, (Nat.digits 3 (witnessSeq m))[i]?.getD 0 = 0 ∧
-                     (Nat.digits 3 k)[i]?.getD 0 > 0
-
 /-
 ## Summary
 

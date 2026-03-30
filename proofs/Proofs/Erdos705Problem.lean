@@ -150,11 +150,6 @@ axiom wormald_graph_exists :
 47 vertices, girth 4, χ = 4.
 Smallest known triangle-free 4-chromatic unit distance graph.
 -/
-axiom chilakamarri_family :
-    ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    V.card = 47 ∧ (4 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
-    (unitDistGraph ↑V).chromaticNumber = 4
-
 /-
 # Part 4: The Erdős Conjecture
 
@@ -225,10 +220,6 @@ Known: 5 ≤ χ(ℝ²) ≤ 7
 
 Problem #705 concerns finite subgraphs with girth restrictions.
 -/
-axiom de_grey_lower_bound :
-    ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
-    (unitDistGraph ↑V).chromaticNumber ≥ 5
-
 /-
 # Part 7: Abstract vs. Geometric Graphs
 
@@ -245,10 +236,6 @@ But for UNIT DISTANCE graphs, the Euclidean structure of ℝ²
 may prevent this. Problem #705 asks exactly whether it does
 (at least for χ ≥ 4).
 -/
-axiom erdos_1959_girth_chromatic :
-    ∀ g k : ℕ, ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V),
-    (g : ℕ∞) ≤ G.girth ∧ G.chromaticNumber ≥ k
-
 /-
 # Part 7b: Lower Bound on the Threshold
 

@@ -73,20 +73,11 @@ def h_exists (n : ℕ) : Prop :=
 
 /-- The function h(n) (axiomatized) -/
 axiom h (n : ℕ) : ℕ
-axiom h_pos (n : ℕ) (hn : n ≥ 1) : h n > 0
-axiom h_achievable (n : ℕ) (hn : n ≥ 1) :
-    ∀ A : Finset ℤ, A.card = n →
-    ∃ B : Finset ℤ, B ⊆ A ∧ B.card ≥ h n ∧ SumLengthFree B
-
 /-
 ## Part III: Upper Bounds
 -/
 
 /-- Erdős (1962): h(n) ≪ n^{5/6} -/
-axiom erdos_1962_upper :
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-      (h n : ℝ) ≤ C * (n : ℝ) ^ (5/6 : ℝ)
-
 /-- Straus (1966): h(n) ≪ n^{1/2} (best known upper bound) -/
 axiom straus_1966_upper :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
@@ -102,10 +93,6 @@ theorem best_upper_bound :
 -/
 
 /-- Erdős (1962): h(n) ≫ n^{1/3} via probabilistic construction -/
-axiom erdos_1962_lower :
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-      (h n : ℝ) ≥ c * (n : ℝ) ^ (1/3 : ℝ)
-
 /-- Erdős-Choi (1974): h(n) ≫ (n log n)^{1/3} (best known lower bound) -/
 axiom erdos_choi_1974_lower :
     ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
@@ -151,14 +138,7 @@ def IsSidonSet (B : Finset ℤ) : Prop :=
     a + b = c + d → ({a, b} : Finset ℤ) = {c, d}
 
 /-- Sidon sets are sum-length-free (length 2 sums are unique) -/
-axiom sidon_implies_sum_length_free (B : Finset ℤ) (h : IsSidonSet B) :
-    SumLengthFree B
-
 /-- Maximum Sidon subset has size ≈ √n (Erdős-Turán) -/
-axiom sidon_bound : ∀ n : ℕ, ∃ C : ℝ, C > 0 ∧
-    ∀ A : Finset ℤ, A.card = n →
-    ∃ B : Finset ℤ, B ⊆ A ∧ IsSidonSet B ∧ (B.card : ℝ) ≥ C * Real.sqrt n
-
 /-
 ## Part VIII: Related Problems
 -/
@@ -172,8 +152,6 @@ axiom sidon_bound : ∀ n : ℕ, ∃ C : ℝ, C > 0 ∧
 -/
 
 /-- For n = 1: h(1) = 1 trivially -/
-axiom h_one : h 1 = 1
-
 /- For small sets, explicit bounds can be computed -/
 
 /-

@@ -98,15 +98,8 @@ axiom exC3C4_le_exC4 (n : ℕ) : exC3C4 n ≤ exC4 n
 ex(n; C₄) ≤ (1/2)n^(3/2) + (1/4)n
 
 This gives the upper bound for C₄-free graphs. -/
-axiom kovari_sos_turan (n : ℕ) (hn : n ≥ 1) :
-    (exC4 n : ℝ) ≤ (1/2) * (n : ℝ)^(3/2 : ℝ) + (1/4) * (n : ℝ)
-
 /-- **KST asymptotic:**
 ex(n; C₄) ~ (1/2)n^(3/2) as n → ∞. -/
-axiom kovari_sos_turan_asymptotic :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      |(exC4 n : ℝ) - (1/2) * (n : ℝ)^(3/2 : ℝ)| ≤ ε * (n : ℝ)^(3/2 : ℝ)
-
 /- ## Part V: Erdős-Simonovits Result -/
 
 /-- **Extremal number for {C₄, C₅}:**
@@ -115,10 +108,6 @@ axiom exC4C5 (n : ℕ) : ℕ
 
 /-- **{C₄, C₅}-free extremal number:**
 Erdős and Simonovits proved ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n). -/
-axiom erdos_simonovits_c4c5 :
-    ∃ C : ℝ, ∀ n : ℕ, n ≥ 1 →
-      |(exC4C5 n : ℝ) - ((n : ℝ)/2)^(3/2 : ℝ)| ≤ C * (n : ℝ)
-
 /- ## Part VI: The Conjecture -/
 
 /-- **Erdős Problem #573 Conjecture:**
@@ -134,9 +123,6 @@ def erdos573Conjecture : Prop :=
 
 /-- **Upper bound (from KST):**
 ex(n; {C₃, C₄}) ≤ ex(n; C₄) ≤ (1/2)n^(3/2) + O(n). -/
-axiom exC3C4_upper_bound (n : ℕ) (hn : n ≥ 1) :
-    (exC3C4 n : ℝ) ≤ (1/2) * (n : ℝ)^(3/2 : ℝ) + (1/4) * (n : ℝ)
-
 /-- **Lower bound construction:**
 Certain bipartite graphs (like incidence graphs of projective planes)
 achieve edges close to (1/2)n^(3/2). -/
@@ -155,10 +141,6 @@ def polarityGraphEdges (q : ℕ) : ℕ :=
 /-- **Projective plane construction achieves near-optimal density:**
 The incidence graph of PG(2, q) for prime q is {C₃, C₄}-free
 with 2(q² + q + 1) vertices and (q + 1)³ edges. -/
-axiom projective_plane_construction (q : ℕ) (hq : Nat.Prime q) :
-    ∃ n : ℕ, n = 2 * (q^2 + q + 1) ∧
-      (exC3C4 n : ℝ) ≥ ((q : ℝ) + 1)^3
-
 /- ## Part IX: The Asymptotic Gap -/
 
 /-- **The asymptotic gap between C₄-free and {C₃,C₄}-free:**
@@ -168,9 +150,6 @@ axiom projective_plane_construction (q : ℕ) (hq : Nat.Prime q) :
 
 The question is whether the triangle-free constraint reduces
 the leading constant from 1/2 to 1/(2√2). -/
-axiom asymptotic_gap_ratio :
-    (1 : ℝ)/2 / ((1 : ℝ)/(2 * Real.sqrt 2)) = Real.sqrt 2
-
 /- ## Part X: Summary -/
 
 /-- **Erdős Problem #573: OPEN**

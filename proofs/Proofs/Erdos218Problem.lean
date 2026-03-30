@@ -244,8 +244,6 @@ There are infinitely many n with d_n = d_{n+1}.
 This is equivalent to the existence of infinitely many 3-term
 arithmetic progressions of consecutive primes.
 -/
-axiom erdos_218c : gapEqualSet.Infinite
-
 /- ## Part VI: Connection to Arithmetic Progressions -/
 
 /--
@@ -297,9 +295,6 @@ For any k, there exist arbitrarily long arithmetic progressions in the primes.
 This is much stronger than Erdős 218c, though it doesn't directly imply
 that consecutive primes form APs.
 -/
-axiom green_tao (k : ℕ) : ∃ a d : ℕ, d > 0 ∧
-    ∀ i < k, (a + i * d).Prime
-
 /- ## Part IX: Partial Results -/
 
 /--
@@ -338,9 +333,6 @@ theorem gapDecreasingSet_infinite : gapDecreasingSet.Infinite :=
 By the Prime Number Theorem, the average gap around p is about log(p).
 This grows without bound, but locally gaps fluctuate.
 -/
-axiom average_gap_growth (n : ℕ) (hn : n > 0) :
-    ∃ C : ℝ, ∀ m ≥ n, (primeGap m : ℝ) / Real.log (nthPrime m) ≤ C
-
 /- ## Part X: Symmetry Argument (Heuristic) -/
 
 /--

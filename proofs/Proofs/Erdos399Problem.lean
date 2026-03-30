@@ -69,27 +69,18 @@ when gcd(x,y) = 1 and k ≠ 4.
 The proof uses deep results from algebraic number theory including the
 analysis of the Fermat equation in cyclotomic fields.
 -/
-axiom erdos_oblath {n x y k : ℕ} :
-    x.Coprime y → 1 < x * y → 2 < k → k ≠ 4 →
-    n! ≠ x^k + y^k ∧ n! + y^k ≠ x^k
-
 /--
 **Pollack-Shapiro Theorem (1973)**: There are no solutions to n! = x^4 - 1.
 
 This was called "the next to last case" because it left open the
 case of n! = x^4 - y^4 with y > 1, which Barfield later resolved.
 -/
-axiom pollack_shapiro (n x : ℕ) : n! + 1 ≠ x^4
-
 /--
 **Cambie's Observation**: There are no solutions to n! = x^4 + y^4
 with gcd(x,y) = 1 and xy > 1.
 
 This follows from considerations modulo 8.
 -/
-axiom cambie {n x y : ℕ} :
-    x.Coprime y → 1 < x * y → n! ≠ x^4 + y^4
-
 /- ## Sum of Two Squares -/
 
 /-- Verification: 6! = 720 -/
@@ -109,10 +100,6 @@ The proof uses Breusch's result that consecutive primes ≡ 3 (mod 4)
 satisfy q_{i+1} < 2q_i (except q_1 = 3), together with Fermat's theorem
 on sums of two squares.
 -/
-axiom sum_two_squares_unique :
-    ∀ {n x y : ℕ}, 1 < x * y → n! = x^2 + y^2 →
-    n = 6 ∧ (x = 12 ∧ y = 24 ∨ x = 24 ∧ y = 12)
-
 /- ## Properties of the Solution -/
 
 /-- GCD(48, 36) = 12, so they are NOT coprime -/

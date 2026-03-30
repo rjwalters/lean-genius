@@ -61,8 +61,6 @@ def IsLimitPointOfGaps (C : ℝ) : Prop :=
 
 /-- 0 ∈ S: Goldston–Pintz–Yıldırım (2009) proved
     lim inf (p_{n+1} - p_n) / log(p_n) = 0. -/
-axiom zero_is_limit_point : IsLimitPointOfGaps 0
-
 /-- ∞ ∈ S: Westzynthius (1931) proved the gaps can be arbitrarily large
     relative to log(p_n). Formally: for every M, there exist infinitely many n
     with g(n) > M. -/
@@ -79,14 +77,8 @@ theorem hildebrand_maier_large_gaps (C : ℝ) (hC : 0 < C) :
 /-- Merikoski (2020): at least 1/3 of any bounded interval [0, T]
     is covered by S. Formally: the Lebesgue measure of
     S ∩ [0, T] is at least T/3 for all T > 0. -/
-axiom merikoski_density (T : ℝ) (hT : 0 < T) :
-  ∃ (pts : Finset ℝ), ↑pts.card ≥ T / 3 ∧
-    ∀ c ∈ pts, 0 ≤ c ∧ c ≤ T ∧ IsLimitPointOfGaps c
-
 /- ## The Conjecture -/
 
 /-- Erdős Problem #5: The set S of limit points of (p_{n+1} - p_n)/log(p_n)
     equals [0, ∞). That is, for every C ≥ 0, C is a limit point of
     the normalized gap sequence. -/
-axiom erdos_5_conjecture :
-  ∀ C : ℝ, 0 ≤ C → IsLimitPointOfGaps C

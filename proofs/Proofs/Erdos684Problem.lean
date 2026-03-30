@@ -209,15 +209,7 @@ Recent results by Tang & ChatGPT on explicit bounds for f(n).
 -- The exponent 30/43 ≈ 0.698
 noncomputable def tang_exponent : ℝ := 30 / 43
 
-axiom tang_bound : ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
-    (f n : ℝ) ≤ n^(tang_exponent + ε)
-
--- Under Riemann Hypothesis: f(n) ≤ n^{2/3 + o(1)}
 noncomputable def rh_exponent : ℝ := 2 / 3
-
-axiom rh_conditional_bound : ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
-    -- Assuming RH
-    (f n : ℝ) ≤ n^(rh_exponent + ε)
 
 /-
 # Part 5: Heuristic Conjectures
@@ -232,11 +224,6 @@ noncomputable def heuristic_bound (n : ℕ) : ℝ := 2 * Real.log n
 -- The heuristic (not proven)
 -- Informal: for "most" n, f(n) ≈ 2 log n
 -- Formal statement uses natural density of a decidable subset
-axiom heuristic_conjecture : ∀ ε : ℝ, ε > 0 →
-    ∃ S : ℕ → Prop, ∃ _ : DecidablePred S,
-    (∀ N : ℕ, (↑(Finset.filter S (Finset.range N)).card / (N : ℝ)) > 1 - ε) ∧
-    (∀ n, S n → |((f n : ℝ) - heuristic_bound n) / heuristic_bound n| < ε)
-
 /-
 # Part 6: Structure of Smooth Part
 

@@ -70,14 +70,6 @@ def HasSingletonPair (F : Finset (Finset ℕ)) : Prop :=
 /-- **The extremal construction:**
     Fix two elements x, y. Take all k-sets containing both x and y.
     This family has size C(n-2, k-2) and avoids singleton intersections. -/
-axiom extremal_construction :
-    ∀ n k : ℕ, k ≥ 2 → n ≥ k →
-    ∃ F : Finset (Finset ℕ),
-      IsKUniform F k ∧
-      IsOverGroundSet F n ∧
-      F.card = Nat.choose (n - 2) (k - 2) ∧
-      AvoidsSingletonIntersections F
-
 /- **Why C(n-2, k-2)?**
     If all sets contain {x, y}, then any two sets A, B satisfy
     |A ∩ B| ≥ 2 (they share at least x and y), so |A ∩ B| ≠ 1. -/
@@ -100,14 +92,6 @@ axiom frankl_theorem :
 
 /-- **Katona's case k = 4 (unpublished):**
     The first case, proved before Frankl's general result. -/
-axiom katona_k4 :
-    ∀ n : ℕ, n ≥ 4 →
-    ∀ F : Finset (Finset ℕ),
-      IsKUniform F 4 →
-      IsOverGroundSet F n →
-      F.card > Nat.choose (n - 2) 2 →
-      HasSingletonPair F
-
 /-
 ## Part V: Special Cases
 -/
@@ -121,13 +105,6 @@ example : Nat.choose 4 2 = 6 := by native_decide
 /-- **The condition k ≥ 4 is necessary:**
     For k = 3, the statement fails. There exist large 3-uniform
     families avoiding singleton intersections. -/
-axiom k3_fails :
-    ∃ n : ℕ, ∃ F : Finset (Finset ℕ),
-      IsKUniform F 3 ∧
-      IsOverGroundSet F n ∧
-      F.card > Nat.choose (n - 2) 1 ∧
-      AvoidsSingletonIntersections F
-
 /-
 ## Part VI: Proof Technique
 -/

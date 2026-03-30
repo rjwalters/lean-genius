@@ -102,20 +102,10 @@ def HasPerfectKrFactor (G : SimpleGraph V) (r : ℕ) : Prop :=
 A graph on 2m vertices with min degree ≥ m has m vertex-disjoint edges.
 This follows from Dirac's theorem or basic matching theory.
 -/
-axiom case_r_equals_2 (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℕ) :
-    Fintype.card V = 2 * m →
-    minDegree G ≥ m →
-    HasMDisjointRCliques G m 2
-
 /--
 **Corrádi-Hajnal Theorem (r = 3, 1963):**
 A graph on 3m vertices with min degree ≥ 2m contains m vertex-disjoint triangles.
 -/
-axiom corradi_hajnal (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℕ) :
-    Fintype.card V = 3 * m →
-    minDegree G ≥ 2 * m →
-    HasMDisjointRCliques G m 3
-
 /- ## Part IV: Hajnal-Szemerédi Theorem -/
 
 /--
@@ -138,13 +128,6 @@ Equivalently: a graph on rm vertices with δ(G) ≥ (r-1)m has a perfect K_r-fac
 Axiomatized since the covering property (biUnion = univ) requires
 additional cardinality reasoning beyond the disjoint cliques result.
 -/
-axiom hajnal_szemeredi_factor (G : SimpleGraph V) [DecidableRel G.Adj] (r m : ℕ) :
-    r ≥ 2 →
-    m ≥ 1 →
-    Fintype.card V = r * m →
-    minDegree G ≥ m * (r - 1) →
-    HasPerfectKrFactor G r
-
 /- ## Part V: Tightness -/
 
 /--

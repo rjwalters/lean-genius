@@ -81,10 +81,6 @@ def isBipartite {V : Type*} (G : SimpleGraph' V) : Prop :=
 
 /-- Bipartite graphs are precisely those with no odd cycles.
     This is a classical characterization (König's theorem). -/
-axiom bipartite_iff_no_odd_cycle {V : Type*} (G : SimpleGraph' V) :
-    isBipartite G ↔ ∀ (C : List V), (∀ i, G.Adj (C.get! i) (C.get! ((i + 1) % C.length))) →
-      C.length % 2 = 0
-
 /-
 # Part 3: Edge Deletion
 
@@ -140,8 +136,6 @@ f_4(n) ≤ O(n^{1/2})
 Gallai showed that 4-critical graphs have at most O(√n) "obstruction"
 edges preventing bipartiteness.
 -/
-axiom gallai_upper_bound : ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (f 4 n : ℝ) ≤ C * n ^ (1/2 : ℝ)
-
 /--
 **Lovász's Upper Bound**
 
@@ -149,9 +143,6 @@ f_k(n) ≤ O(n^{1 - 1/(k-2)})
 
 Lovász generalized Gallai's bound to all k ≥ 4.
 -/
-axiom lovasz_upper_bound (k : ℕ) (hk : k ≥ 4) :
-    ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (f k n : ℝ) ≤ C * n ^ (1 - 1 / ((k : ℝ) - 2))
-
 /-
 # Part 5: The Original Conjecture
 
@@ -237,9 +228,6 @@ bipartite. This is independent of how large the graph is!
 -/
 
 /-- The complete graph K_{k-1} is (k-1)-chromatic. -/
-axiom complete_graph_chromatic (k : ℕ) (hk : k ≥ 2) :
-    ∃ G : SimpleGraph' (Fin (k-1)), isKChromatic G (k-1)
-
 /-- K_{k-1} has C(k-1, 2) = (k-1)(k-2)/2 edges.
     This relates the Rödl-Tuza bound to the structure of complete graphs. -/
 theorem complete_graph_edges (k : ℕ) (hk : k ≥ 2) :

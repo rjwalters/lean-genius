@@ -131,9 +131,6 @@ axiom f_prime (p : ℕ) (hp : p.Prime) : f p = p * p
 
 /-- When u is even, f(u) ≤ 2^k where 2^k is the smallest power of 2 > u.
     Reason: 2^k is smooth with respect to any even number. -/
-axiom f_even_bound (u : ℕ) (hu : Even u) (hu_pos : u > 0) :
-    ∃ k : ℕ, 2^k > u ∧ (∀ j < k, 2^j ≤ u) ∧ f u ≤ 2^k
-
 /-- f(u) = u + 2 when u = 2^k - 2 for k ≥ 2.
     Reason: u + 2 = 2^k, which is smooth with respect to 2^k - 2 = u. -/
 axiom f_minimal_case (k : ℕ) (hk : k ≥ 2) : f (2^k - 2) = 2^k
@@ -144,11 +141,6 @@ axiom f_minimal_case (k : ℕ) (hk : k ≥ 2) : f (2^k - 2) = 2^k
 
 /-- For almost all n, f(n) = (1 + o(1))n.
     This means f(n)/n → 1 for a density-1 set of integers. -/
-axiom f_almost_all_linear :
-    ∀ ε > 0, ∃ N : ℕ,
-      let good := { n : ℕ | n ≤ N ∧ (f n : ℝ) ≤ (1 + ε) * n }
-      (good.ncard : ℝ) / N ≥ 1 - ε
-
 /-- Alternative formulation: The density of n with f(n) > (1+ε)n tends to 0. -/
 def LinearGrowthAlmostSurely : Prop :=
   ∀ ε : ℝ, ε > 0 →

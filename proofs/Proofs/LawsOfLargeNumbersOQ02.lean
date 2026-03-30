@@ -210,12 +210,6 @@ not just an upper bound on tail probabilities.
 axiom standardNormalCDF : ℝ → ℝ
 
 /-- Properties of the standard normal CDF -/
-axiom standardNormalCDF_mono : Monotone standardNormalCDF
-axiom standardNormalCDF_range : ∀ x, 0 ≤ standardNormalCDF x ∧ standardNormalCDF x ≤ 1
-axiom standardNormalCDF_limit_neg : Tendsto standardNormalCDF atBot (nhds 0)
-axiom standardNormalCDF_limit_pos : Tendsto standardNormalCDF atTop (nhds 1)
-axiom standardNormalCDF_at_zero : standardNormalCDF 0 = 1 / 2
-
 /-- **Central Limit Theorem** (Lindeberg-Lévy):
 
     For i.i.d. X with mean μ and variance σ² > 0:
@@ -223,21 +217,6 @@ axiom standardNormalCDF_at_zero : standardNormalCDF 0 = 1 / 2
 
     This gives the precise asymptotic behavior of the fluctuations
     at scale O(1/√n), refining the Chebyshev rate. -/
-axiom central_limit_theorem
-    (X : ℕ → Ω → ℝ) (mean : ℝ) (σ : ℝ) (hσ : σ > 0)
-    (h_mean : ∀ i, ∫ ω, X i ω = mean)
-    (h_var : ∀ i, variance (X i) volume = σ ^ 2)
-    (hℒp : ∀ i, Memℒp (X i) 2 volume)
-    (h_indep : Pairwise fun i j => IndepFun (X i) (X j) volume) :
-    ∀ x : ℝ, Tendsto
-      (fun n : ℕ => (volume {ω | Real.sqrt n * (sampleMean X n ω - mean) / σ ≤ x}).toReal)
-      atTop
-      (nhds (standardNormalCDF x))
-
--- ============================================================
--- SECTION 6: Berry-Esseen Bound (Axiom)
--- ============================================================
-
 /-
 **Berry-Esseen Theorem** (1941-1942):
 
@@ -252,29 +231,10 @@ The rate O(1/√n) is optimal: it cannot be improved in general.
 
 /-- The Berry-Esseen constant C (best known: C < 0.4748) -/
 axiom berryEsseenConstant : ℝ
-axiom berryEsseenConstant_pos : berryEsseenConstant > 0
-axiom berryEsseenConstant_bound : berryEsseenConstant < 0.4748
-
 /-- **Berry-Esseen Theorem**:
     The CLT approximation error is bounded by C·ρ/(σ³√n).
 
     This is the sharpest known uniform bound on the normal approximation. -/
-axiom berry_esseen_bound
-    (X : ℕ → Ω → ℝ) (mean σ ρ : ℝ) (hσ : σ > 0) (hρ : ρ ≥ 0)
-    (h_mean : ∀ i, ∫ ω, X i ω = mean)
-    (h_var : ∀ i, variance (X i) volume = σ ^ 2)
-    (h_third : ∀ i, ∫ ω, |X i ω - mean| ^ 3 = ρ)
-    (hℒp : ∀ i, Memℒp (X i) 2 volume)
-    (h_indep : Pairwise fun i j => IndepFun (X i) (X j) volume)
-    (n : ℕ) (hn : 0 < n) (x : ℝ) :
-    |(volume {ω | Real.sqrt n * (sampleMean X n ω - mean) / σ ≤ x}).toReal
-     - standardNormalCDF x| ≤
-    berryEsseenConstant * ρ / (σ ^ 3 * Real.sqrt n)
-
--- ============================================================
--- SECTION 7: Convergence Rate Hierarchy
--- ============================================================
-
 /-
 The three rates form a hierarchy of progressively sharper results:
 

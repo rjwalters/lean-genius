@@ -43,9 +43,6 @@ def primesWithPrimePrimitiveRoot : Set ℕ :=
 
 /-- For any prime p > 2, there exists at least one primitive root modulo p.
     This follows from the fact that (ℤ/pℤ)× is cyclic. -/
-axiom exists_primitive_root (p : ℕ) (hp : p.Prime) (hp2 : p ≠ 2) :
-    ∃ g : ℕ, 0 < g ∧ g < p ∧ orderOf (g : ZMod p) = p - 1
-
 /-- The multiplicative group of a finite field is cyclic.
     Proved via Mathlib's instance for finite fields. -/
 theorem zmod_units_cyclic (p : ℕ) (hp : p.Prime) :
@@ -120,9 +117,6 @@ theorem erdos985_for_23 : ∃ q, q.Prime ∧ q < 23 ∧ orderOf (q : ZMod 23) = 
     primitive root modulo p.
 
     This is still open unconditionally, but Hooley proved it assuming GRH. -/
-axiom artin_conjecture_for_2 :
-    Set.Infinite {p : ℕ | p.Prime ∧ orderOf (2 : ZMod p) = p - 1}
-
 /-- Heath-Brown's Theorem (1986): At least one of 2, 3, or 5 is a primitive
     root for infinitely many primes. This is an unconditional result. -/
 axiom heath_brown_theorem :
@@ -182,9 +176,6 @@ theorem erdos_985_iff_all_odd_primes :
     φ(p-1)/log(p) prime primitive roots.
 
     For p large enough, this is > 0, suggesting the conjecture should hold. -/
-axiom heuristic_prime_primitive_roots (p : ℕ) (hp : p.Prime) (hp_large : p > 100) :
-    ∃ q, q.Prime ∧ q < p ∧ orderOf (q : ZMod p) = p - 1
-
 /- ## Connection to Other Problems -/
 
 /-- If Artin's conjecture holds for all primes q, then Erdős 985 follows.

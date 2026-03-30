@@ -346,9 +346,6 @@ theorem representable_120 : IsRepresentable 120 :=
   borwein_loring_family 6 (by omega)
 
 /-- Tengely–Ulas–Zygadło: all n ≤ 10000 are representable -/
-axiom tengely_ulas_zygadlo (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 10000) :
-  IsRepresentable n
-
 /- ## The Erdős Conjectures -/
 
 /-- Erdős Problem 261, Part 1: infinitely many n are representable.
@@ -358,9 +355,6 @@ theorem ErdosProblem261_infinitely_many :
   cusick_infinitely_many
 
 /-- Erdős Problem 261, Part 2 (stronger conjecture): every n ≥ 1 is representable -/
-axiom ErdosProblem261_all (n : ℕ) (hn : 1 ≤ n) :
-  IsRepresentable n
-
 /- ## Continuum Representations -/
 
 /-- An infinite representation: a sequence a : ℕ → ℕ of distinct positive integers.

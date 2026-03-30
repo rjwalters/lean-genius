@@ -303,10 +303,6 @@ theorem twin_prime_gives_pair (p : ℕ) (hp : p.Prime) (hp2 : (p + 2).Prime) :
 **Twin Prime Conjecture Implication:**
 If there are infinitely many twin primes, then Erdős #48 follows.
 -/
-axiom twin_prime_implies_erdos_48 :
-    (∃ S : Set ℕ, S.Infinite ∧ ∀ p ∈ S, p.Prime ∧ (p + 2).Prime) →
-    totientSigmaPairs.Infinite
-
 /-
 ## Part VIII: Special Cases
 -/
@@ -422,10 +418,6 @@ theorem twelve_is_common : (12 : ℕ) ∈ commonValues := by
 **σ is Multiplicative:**
 For coprime m, n: σ(m·n) = σ(m)·σ(n).
 -/
-axiom sumDivisors_multiplicative (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1)
-    (hcop : Nat.Coprime m n) :
-    σ(m * n) = σ(m) * σ(n)
-
 /--
 **φ is Multiplicative:**
 For coprime m, n: φ(m·n) = φ(m)·φ(n).

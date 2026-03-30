@@ -79,9 +79,6 @@ Definition of the extremal function.
 Maximum edges in a bipartite subgraph of G.
 Axiomatized as the supremum over all bipartite subgraphs.
 -/
-axiom maxBipartiteEdges {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ
-
 /--
 **The Function f(m):**
 f(m) = min over triangle-free graphs G with m edges
@@ -107,9 +104,6 @@ Proof sketch: Take a random 2-coloring; in expectation, each edge
 has probability 1/2 of being bichromatic. By derandomization,
 a 2-coloring achieving m/2 exists.
 -/
-axiom half_edges_bipartite (m : ℕ) :
-    f m ≥ m / 2
-
 /-
 ## Part IV: Alon's Upper Bound
 
@@ -207,31 +201,17 @@ we only get m/2 guaranteed bipartite edges.
 
 Triangle-freeness gives us the extra Θ(m^{4/5}) term.
 -/
-axiom general_graph_bound (G : SimpleGraph V) [Fintype V] [DecidableEq V]
-    [DecidableRel G.Adj] :
-    ∃ H : SimpleGraph V, IsSubgraph H G ∧ IsBipartite H ∧
-    2 * edgeCount H ≥ edgeCount G
-
 /--
 **Mantel's Theorem (1907):**
 A triangle-free graph on n vertices has at most n²/4 edges.
 
 This is a classical bound on triangle-free graphs.
 -/
-axiom mantel_theorem {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] (hG : IsTriangleFree G) :
-    4 * edgeCount G ≤ (Fintype.card V) ^ 2
-
 /--
 **Kővári-Sós-Turán Theorem:**
 Bounds on bipartite Turán numbers, which constrains
 the structure of triangle-free graphs.
 -/
-axiom KST_bound {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] (hG : IsTriangleFree G) :
-    (edgeCount G : ℝ) ≤ (1/2 : ℝ) * (Fintype.card V : ℝ) ^ (3/2 : ℝ) +
-                        (1/4 : ℝ) * (Fintype.card V : ℝ)
-
 /-
 ## Part VIII: Main Results
 

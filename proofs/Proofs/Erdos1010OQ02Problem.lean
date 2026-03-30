@@ -90,12 +90,6 @@ if |E(G)| > ex(n, H), then G contains Ω(n^{v(H)}) copies of H.
 
 /-- Erdős-Simonovits supersaturation: exceeding the Turán threshold for K_r
     by a positive fraction forces Ω(n^r) copies of K_r. -/
-axiom erdos_simonovits_supersaturation (r : ℕ) (hr : r ≥ 3) (δ : ℝ) (hδ : δ > 0) :
-    ∃ c : ℝ, c > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V]
-      (G : SimpleGraph V) [DecidableRel G.Adj],
-      (G.edgeFinset.card : ℝ) ≥ (1 + δ) * turanNumber (Fintype.card V) r →
-      (cliqueCount G r : ℝ) ≥ c * (Fintype.card V : ℝ)^r
-
 /-
 ## The Kruskal-Katona Theorem
 
@@ -111,10 +105,6 @@ def shadow (F : Finset (Finset V)) : Finset (Finset V) :=
 /-- Kruskal-Katona theorem: the shadow of a k-uniform family of size m
     is minimized by the initial segment of the colex order.
     Here stated as a lower bound on shadow size. -/
-axiom kruskal_katona (k m : ℕ) (F : Finset (Finset V))
-    (hk : ∀ s ∈ F, s.card = k) (hm : F.card = m) :
-    ∃ lower : ℕ, (shadow F).card ≥ lower
-
 /-
 ## Razborov's Triangle Density Theorem (2010)
 
@@ -177,8 +167,6 @@ def exactKrDensityOpen (r : ℕ) : Prop :=
       cliqueDensity G r ≥ g d - ε
 
 /-- **Open Question**: Exact K_r density for r ≥ 5. -/
-axiom kr_density_conjecture : ∀ r : ℕ, exactKrDensityOpen r
-
 /-
 ## Summary
 

@@ -62,9 +62,6 @@ def isSumFreeWithResp (C B : Finset ℕ) : Prop :=
   ∀ c₁ ∈ C, ∀ c₂ ∈ C, c₁ ≠ c₂ → c₁ + c₂ ∉ B
 
 /-- Equivalent: C is sum-free w.r.t. B iff pairwiseSums(C) and B are disjoint -/
-axiom sumFree_iff_disjoint (C B : Finset ℕ) :
-    isSumFreeWithResp C B ↔ Disjoint (pairwiseSums C) B
-
 /- ## Part II: The Function f(n) -/
 
 /-- A pair (B, C) is valid: B ⊂ (2n,4n), C ⊂ (n,2n), C sum-free w.r.t. B -/
@@ -81,9 +78,6 @@ axiom f (n : ℕ) : ℕ
 /- ## Part III: Choi's Bound and Conjecture (1971) -/
 
 /-- Choi (1971): f(n) ≪ n^{3/4} -/
-axiom choi_upper_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → (f n : ℝ) ≤ C * (n : ℝ) ^ (3/4 : ℝ)
-
 /-- Choi's conjecture: f(n) ≤ n^{1/2+o(1)} (OPEN) -/
 def choiConjecture : Prop :=
   ∀ ε > 0, ∃ n₀ : ℕ, ∀ n ≥ n₀, (f n : ℝ) ≤ (n : ℝ) ^ (1/2 + ε : ℝ)
@@ -102,17 +96,9 @@ def isSidonSet (S : Finset ℕ) : Prop :=
     a₁ ≤ b₁ → a₂ ≤ b₂ → a₁ + b₁ = a₂ + b₂ → (a₁ = a₂ ∧ b₁ = b₂)
 
 /-- There exist Sidon sets of size ~√n in any interval of length n -/
-axiom sidon_sets_exist :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 → ∃ S ⊆ lowerInterval n,
-    isSidonSet S ∧ (S.card : ℝ) ≥ c * (n : ℝ) ^ (1/2 : ℝ)
-
 /- ## Part V: Hunter's and BSS Improvements -/
 
 /-- Hunter: f(n) ≪ n^{2/3+o(1)}, improving Choi's 3/4 exponent -/
-axiom hunter_bound :
-  ∀ ε > 0, ∃ n₀ : ℕ, ∃ C : ℝ, C > 0 ∧
-    ∀ n ≥ n₀, (f n : ℝ) ≤ C * (n : ℝ) ^ (2/3 + ε : ℝ)
-
 /-- Baltz-Schoen-Srivastav (2000): best known upper bound
 f(n) ≪ (n log n)^{2/3}, using probabilistic construction
 of large Sidon sets. -/

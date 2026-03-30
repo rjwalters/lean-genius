@@ -101,7 +101,22 @@ theorem adenwalla_implies_geneson :
   exact ⟨f, hperm, fun ⟨xs, hlen, hmap⟩ => by
     -- A 6-MAP contains a 5-MAP prefix, contradicting AvoidsMAP f 5
     apply havoid
-    exact ⟨xs.take 5, by simp [List.length_take, hlen], by sorry⟩⟩
+    obtain ⟨⟨hlen2, d, hd, hAP⟩, hchain, hpos⟩ := hmap
+    refine ⟨xs.take 5, by simp [List.length_take, hlen], ?_⟩
+    refine ⟨⟨by simp [List.length_take, hlen]; omega, d, hd, fun i hi => ?_⟩,
+            List.Chain'.take hchain, fun i j hij hjlen => ?_⟩
+    · -- AP property preserved under take
+      have hi' : i + 1 < xs.length := by
+        simp [List.length_take, hlen] at hi; omega
+      rw [List.get!_take (by simp [List.length_take, hlen] at hi ⊢; omega),
+          List.get!_take (by simp [List.length_take, hlen] at hi ⊢; omega)]
+      exact hAP i hi'
+    · -- Position monotonicity preserved under take
+      have hjlen' : j < xs.length := by
+        simp [List.length_take, hlen] at hjlen; omega
+      rw [List.get!_take (by simp [List.length_take, hlen] at hjlen ⊢; omega),
+          List.get!_take (by simp [List.length_take, hlen] at hjlen ⊢; omega)]
+      exact hpos i j hij hjlen'⟩
 
 /- ## Part VII: Examples -/
 

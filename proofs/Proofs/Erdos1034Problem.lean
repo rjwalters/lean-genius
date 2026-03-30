@@ -398,14 +398,6 @@ but this term has type
 Note: Expected a function because this term is being applied to the argument
   G-/
 /-- Every graph with > n²/4 edges has a book of size n/6. -/
-axiom book_lemma : ∃ N : ℕ, ∀ n ≥ N,
-  ∀ (V : Type*) [DecidableEq V] [Fintype V],
-  Fintype.card V = n →
-  ∀ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
-  isAboveTuran G →
-  ∃ T : Triangle G, ∃ pages : Finset V,
-    isBook G T pages ∧ bookSize pages ≥ n / 6
-
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
 Function expected at
@@ -514,14 +506,6 @@ theorem k4Free_approx : k4FreeConstant > 0.46 ∧ k4FreeConstant < 0.47 := by
   exact ⟨ by norm_num; nlinarith [ Real.sqrt_nonneg 3, Real.sq_sqrt ( show 0 ≤ 3 by norm_num ) ], by norm_num; nlinarith [ Real.sqrt_nonneg 3, Real.sq_sqrt ( show 0 ≤ 3 by norm_num ) ] ⟩
 
 /-- Ma-Tang K₄-free result. The bound `+ 1` replaces `+ o(1)`. -/
-axiom maTang_k4free : ∃ N : ℕ, ∀ n ≥ N,
-  ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
-    Fintype.card V = n ∧
-    ∃ G : SimpleGraph V,
-      ∀ [DecidableRel G.Adj],
-        isAboveTuran G ∧ isK4Free G ∧
-        (∀ T : Triangle G, (goodNeighborCount G T : ℝ) ≤ k4FreeConstant * n + 1)
-
 /-- K₄-free bound is worse (higher) than general bound. -/
 theorem k4free_worse : k4FreeConstant > maTangConstant := by
   unfold k4FreeConstant maTangConstant

@@ -90,18 +90,6 @@ We axiomatize what is known about prime chain growth.
 
 -- Linnik's theorem gives a bound on the least prime in an arithmetic progression
 -- This implies greedy growth p_k ≤ exp(exp(O(k)))
-axiom linnik_bound : ∃ L : ℕ, L > 0 ∧
-  ∀ q : ℕ, q.Prime → ∃ p : ℕ, p.Prime ∧ p % q = 1 ∧ p ≤ q ^ L
-
--- Greedy algorithm produces a prime chain
-axiom greedy_chain_exists : ∃ p : ℕ → ℕ, IsPrimeChain p
-
--- Greedy growth bound: p_k ≤ exp(exp(O(k)))
-axiom greedy_doubly_exponential : ∃ C : ℝ, C > 0 ∧
-  ∃ p : ℕ → ℕ, IsPrimeChain p ∧
-    ∀ k, (p k : ℝ) ≤ exp (exp (C * k))
-
--- Conjectured: for any prime p, there exists p' ≤ p(log p)^{O(1)} with p' ≡ 1 (mod p)
 axiom small_prime_conjecture : ∃ C : ℝ, C > 0 ∧
   ∀ p : ℕ, p.Prime → ∃ p' : ℕ, p'.Prime ∧ p' % p = 1 ∧
     (p' : ℝ) ≤ p * (log p) ^ C
@@ -206,11 +194,6 @@ FKL (2010) conducted an extensive study of prime chain growth.
 -/
 
 -- FKL showed various bounds on prime chain lengths and growth
-axiom fkl_analysis : ∃ f : ℕ → ℕ,
-  (∀ n, ∃ p : ℕ → ℕ, IsPrimeChain p ∧ p 0 = 2 ∧
-    (∀ k < f n, p k ≤ n)) ∧
-  Tendsto f atTop atTop
-
 /-
 # Part 6: Problem Status
 

@@ -81,14 +81,8 @@ Known exact values of g_d(n).
 -/
 
 /-- g_1(3) = 4: four points on a line give 3 distinct distances -/
-axiom g_1_3 : g 1 3 = 4
-
 /-- g_2(3) = 6: six points in the plane guarantee 3 distinct distances -/
-axiom g_2_3 : g 2 3 = 6
-
 /-- g_3(3) = 7 (Croft 1962) -/
-axiom g_3_3 : g 3 3 = 7
-
 /-- Trivial: g_d(1) = 2 (any two distinct points give 1 distance) -/
 theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
   apply le_antisymm
@@ -378,9 +372,6 @@ noncomputable def f (d n : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ P : Finset (Point d), P.card = n ∧ numDistinctDistances P = k}
 
 /-- Relationship: g_d(n) = min{m : f_d(m) ≥ n} -/
-axiom g_f_relationship :
-  ∀ d n : ℕ, n ≥ 1 → g d n = sInf {m : ℕ | f d m ≥ n}
-
 /-
 ## The Open Problem
 

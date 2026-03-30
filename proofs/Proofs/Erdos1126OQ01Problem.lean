@@ -362,11 +362,6 @@ apply de Bruijn-Jurkat, then exponentiate back.
 Known result: follows from de Bruijn-Jurkat via log/exp conjugation
 for positive solutions. The general case (allowing sign changes)
 requires additional arguments. -/
-axiom almost_multiplicative_stability :
-    ∀ f : ℝ → ℝ, IsAlmostMultiplicative f →
-    (∃ N : Set ℝ, MeasureTheory.volume N = 0 ∧ ∀ x, x ∉ N → x ≠ 0 → f x ≠ 0) →
-      ∃ g : ℝ → ℝ, IsMultiplicative g ∧ ae_eq f g
-
 /-- **Almost Jensen Stability Theorem:**
 If f is almost Jensen, then there exists a Jensen function g
 with f = g a.e.
@@ -473,11 +468,6 @@ theorem stability_paradigm_summary :
 If f: (0,∞) → ℝ is multiplicative and measurable, then f(x) = x^c
 for some constant c. This parallels the additive case where
 measurable additive functions are linear. -/
-axiom measurable_multiplicative_is_power :
-    ∀ f : ℝ → ℝ, IsMultiplicative f → Measurable f →
-    (∀ x : ℝ, x > 0 → f x > 0) →
-      ∃ c : ℝ, ∀ x : ℝ, x > 0 → f x = x ^ c
-
 /-- **Measurable derivations are zero:**
 Any measurable derivation on ℝ is identically zero.
 Combined with derivation stability: an almost-derivation that

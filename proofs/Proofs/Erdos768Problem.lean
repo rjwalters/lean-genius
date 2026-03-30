@@ -140,14 +140,7 @@ noncomputable def exponentFunc (N : ℕ) : ℝ :=
   Real.sqrt (Real.log N) * Real.log (Real.log N)
 
 /-- Erdős's lower bound: density ≥ exp(-c·√(log N)·log log N) -/
-axiom erdos_768_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ N ≥ 10, densityA N ≥ Real.exp (-c * exponentFunc N)
-
 /-- Erdős's upper bound: density ≤ exp(-(1+o(1))·√(log N·log log N)) -/
-axiom erdos_768_upper_bound :
-  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    densityA N ≤ Real.exp (-(1 - ε) * Real.sqrt (Real.log N * Real.log (Real.log N)))
-
 /-
 ## The Main Conjecture
 
@@ -156,15 +149,6 @@ A(N)/N = exp(-(c+o(1))√(log N)·log log N)
 -/
 
 /-- Erdős Problem #768: Does the exact asymptotic exist? -/
-axiom erdos_768_conjecture :
-  (∃ c : ℝ, c > 0 ∧
-    Filter.Tendsto 
-      (fun N => -Real.log (densityA N) / exponentFunc N)
-      Filter.atTop (nhds c)) ∨
-  (∀ c : ℝ, ¬Filter.Tendsto 
-      (fun N => -Real.log (densityA N) / exponentFunc N)
-      Filter.atTop (nhds c))
-
 /-
 ## Connection to Simple Groups
 
@@ -183,9 +167,6 @@ def isNonCyclicSimpleGroupOrder (n : ℕ) : Prop :=
     Fintype.card G = n ∧ IsSimpleGroup G ∧ IsCyclic G
 
 /-- Orders of non-cyclic simple groups are in A -/
-axiom nonCyclic_simple_in_setA :
-  ∀ n : ℕ, isNonCyclicSimpleGroupOrder n → n ∈ setA
-
 /-
 ## Structural Properties
 
@@ -211,11 +192,6 @@ noncomputable def logLogDensity (N : ℕ) : ℝ :=
   Real.log (-Real.log (densityA N))
 
 /-- The expected scaling -/
-axiom logLogDensity_scaling :
-  Filter.Tendsto
-    (fun N => logLogDensity N / (Real.sqrt (Real.log N) * Real.log (Real.log N)))
-    Filter.atTop Filter.atTop
-
 /-
 ## Known Values and OEIS
 
@@ -301,9 +277,4 @@ Known bounds:
 
 Motivation: |A ∩ [1,N]| bounds the count of orders of non-cyclic simple groups.
 -/
-axiom erdos_768_main :
-  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧
-    (∀ N ≥ 10, densityA N ≥ Real.exp (-c₂ * exponentFunc N)) ∧
-    (∀ N ≥ 10, densityA N ≤ Real.exp (-c₁ * exponentFunc N))
-
 end Erdos768

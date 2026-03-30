@@ -99,11 +99,6 @@ For bipartite r-degenerate H: ex(n; H) ≪ n^{2-1/4r}.
 
 This is weaker than the conjecture (1/4r instead of 1/r).
 -/
-axiom aks_theorem (V : Type*) [Fintype V] [DecidableEq V]
-    (H : SimpleGraph V) (r : ℕ) (hr : r ≥ 1)
-    (hBip : IsBipartite H) (hDeg : IsRDegenerate H r) :
-    IsAsymptoticallyBounded (turanNumber V H) (2 - 1/(4*r))
-
 /--
 **AKS Special Case:**
 When the maximum degree in one side of the bipartition equals r,
@@ -113,11 +108,6 @@ def MaxDegreeOneSide (H : SimpleGraph V) (r : ℕ) : Prop :=
   ∃ (A B : Set V), A ∪ B = Set.univ ∧ A ∩ B = ∅ ∧
     (∀ u v : V, H.Adj u v → (u ∈ A ∧ v ∈ B) ∨ (u ∈ B ∧ v ∈ A)) ∧
     (∀ v ∈ A, H.degree v ≤ r)
-
-axiom aks_special_case (V : Type*) [Fintype V] [DecidableEq V]
-    (H : SimpleGraph V) (r : ℕ) (hr : r ≥ 1)
-    (hBip : IsBipartite H) (hMaxDeg : MaxDegreeOneSide H r) :
-    IsAsymptoticallyBounded (turanNumber V H) (2 - 1/r)
 
 /-
 ## Part IV: Comparison of Bounds
@@ -162,26 +152,16 @@ def completeBipartiteGraph (r s : ℕ) : SimpleGraph (Fin (r + s)) where
 /--
 **K_{r,s} is r-degenerate (when r ≤ s):**
 -/
-axiom complete_bipartite_degenerate (r s : ℕ) (hrs : r ≤ s) :
-    IsRDegenerate (completeBipartiteGraph r s) r
-
 /--
 **Known Turán Number for K_{r,s}:**
 ex(n; K_{r,s}) = Θ(n^{2-1/r}) when r ≤ s.
 
 This is the Kővári-Sós-Turán theorem!
 -/
-axiom kovari_sos_turan (r s : ℕ) (hrs : r ≤ s) (hs : s ≥ 1) :
-    IsAsymptoticallyBounded (turanNumber (Fin (r + s)) (completeBipartiteGraph r s)) (2 - 1/r)
-
 /--
 **Cycles C_{2k}:**
 Even cycles are 2-degenerate.
 -/
-axiom even_cycle_2_degenerate (k : ℕ) (hk : k ≥ 2) :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      IsRDegenerate G 2 ∧ IsBipartite G
-
 /-
 ## Part VI: The r = 2 Case
 -/
@@ -202,11 +182,6 @@ theorem r2_case_exponents :
 The 4-cycle C_4 is 2-degenerate and bipartite.
 ex(n; C_4) = Θ(n^{3/2}) is known (Bondy-Simonovits).
 -/
-axiom c4_turan :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      IsRDegenerate G 2 ∧ IsBipartite G ∧
-      IsAsymptoticallyBounded (turanNumber V G) (3/2)
-
 /-
 ## Part VII: Summary
 

@@ -184,19 +184,12 @@ theorem cambie_ratio3 : GeneralRatioRelation 738 4 3 :=
   ⟨0, fun k _ => (ratio3_738_aux k).2⟩
 
 /-- Cambie found ratio-4 solutions as well. -/
-axiom cambie_ratio4_148646 : GeneralRatioRelation 148646 4 4
-axiom cambie_ratio4_4325798 : GeneralRatioRelation 4325798 4 4
-
 /-
 ## Section V: Steinerberger's Reduction
 -/
 
 /-- Steinerberger showed the r = 2 case is equivalent to solving
 φ(n) + φ(n + φ(n)) = n. -/
-axiom steinerberger_r2_equiv (n : ℕ) :
-  DoublingRelation n 2 ↔
-    n.totient + (n + n.totient).totient = n
-
 /-
 ## Section VI: Structural Properties
 -/

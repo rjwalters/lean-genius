@@ -91,8 +91,6 @@ Is F(x) ≤ (log x)^{O(1)}? That is, is the maximal length of consecutive
 integers with distinct divisor counts bounded by a polynomial in log x?
 
 This remains unproven despite significant progress on bounds. -/
-axiom erdos945_conjecture : Erdos945Prop
-
 /-
 ## Equivalent Formulation
 
@@ -109,8 +107,6 @@ def Erdos945Collision : Prop :=
     τ a = τ b
 
 /-- The two formulations are equivalent -/
-axiom erdos945_equivalence : Erdos945Prop ↔ Erdos945Collision
-
 /-
 ## Known Bounds (Erdős-Mirsky 1952)
 
@@ -123,19 +119,11 @@ The gap between them remains open after 70+ years.
 F(x) ≫ (log x)^{1/2} / log log x
 
 This shows F(x) grows at least like a fractional power of log x. -/
-axiom erdos_mirsky_lower_bound :
-    (fun (x : ℕ) => (x : ℝ).log.sqrt / (x : ℝ).log.log) =O[atTop]
-    fun (n : ℕ) => (F n : ℝ)
-
 /-- **Erdős-Mirsky Upper Bound** (1952)
 
 log F(x) ≪ (log x)^{1/2} / log log x
 
 Equivalently: F(x) ≪ exp(O((log x)^{1/2} / log log x)) -/
-axiom erdos_mirsky_upper_bound :
-    (fun (n : ℕ) => (F n : ℝ).log) =O[atTop]
-    fun (x : ℕ) => (x : ℝ).log.sqrt / (x : ℝ).log.log
-
 /-
 ## Improved Upper Bound (Beker)
 
@@ -147,11 +135,6 @@ Beker improved the Erdős-Mirsky upper bound significantly.
 F(x) ≪ exp(O((log x)^{1/3 + o(1)}))
 
 This is currently the best known upper bound. -/
-axiom beker_upper_bound :
-    ∃ o : ℝ → ℝ, o =o[atTop] (1 : ℝ → ℝ) ∧
-    (fun (n : ℕ) => (F n : ℝ).log) =O[atTop]
-    fun (x : ℕ) => (x : ℝ).log ^ (1/3 + o x)
-
 /-
 ## Conditional Result (Cramér's Conjecture)
 
@@ -162,9 +145,4 @@ Under Cramér's conjecture about prime gaps, F(x) ≪ (log x)².
 
 If Cramér's conjecture holds (prime gaps ≪ (log p)²), then F(x) ≪ (log x)².
 This would nearly resolve the problem. -/
-axiom cramer_implies_bound :
-    (∀ᶠ p in atTop, ∀ q : ℕ, q.Prime → p.Prime → p < q →
-      (∀ r, p < r → r < q → ¬r.Prime) → (q - p : ℝ) ≤ (p : ℝ).log ^ 2) →
-    ∀ᶠ x in atTop, (F x : ℝ) ≤ x.log ^ 2
-
 end Erdos945

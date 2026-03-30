@@ -141,10 +141,6 @@ axiom furedi_bound :
 **Aggarwal's Bound (2015):**
 n log₂n + 4n unit distance pairs (current best).
 -/
-axiom aggarwal_bound :
-  ∀ A : Finset Point, IsConvexPolygon A → A.card ≥ 3 →
-    (unitDistanceCount A : ℝ) ≤ A.card * Real.log A.card / Real.log 2 + 4 * A.card
-
 /-
 **Brass-Pach Simplification (2001):**
 Gave a simpler proof of the O(n log n) bound.
@@ -203,11 +199,6 @@ def ErdosSumConjecture : Prop :=
 **Sum Conjecture Lower Bound:**
 The Edelsbrunner-Hajnal construction shows ∑g(x) can exceed 4n - O(1).
 -/
-axiom sum_lower_bound :
-  ∀ ε > 0, ∃ n₀ : ℕ, ∀ n ≥ n₀, ∃ A : Finset Point,
-    IsConvexPolygon A ∧ A.card = n ∧
-    (A.sum fun x => equidistantCount A x : ℝ) ≥ 4 * n - ε * n
-
 /-
 ## Part VII: Connection to Problem #97
 -/

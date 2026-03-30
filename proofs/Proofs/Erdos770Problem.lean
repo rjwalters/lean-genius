@@ -213,19 +213,8 @@ theorem erdos_770_density_exists :
 
 /-- **Q2 (OPEN)**: Is h(n) unbounded? Specifically, does
     lim inf h(n) = ∞? -/
-axiom erdos_770_unbounded :
-  ∀ M : ℕ, ∃ n : ℕ, ∀ k ∈ Finset.Icc 2 M, gcdPowerSeq n k ≠ 1
-
 /-- **Q3 (OPEN)**: If p is the largest prime with (p-1)|n and p > n^ε,
     is h(n) = p? -/
-axiom erdos_770_largest_prime :
-  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    ∀ p : ℕ, Nat.Prime p → (p - 1 ∣ n) →
-      (p : ℝ) > (n : ℝ) ^ ε →
-      gcdPowerSeq n p = 1
-
--- ## Structural property
-
 /-- The gcd fold value divides any individual term. -/
 private theorem fold_gcd_dvd_mem {S : Finset ℕ} {a : ℕ} (ha : a ∈ S) (f : ℕ → ℕ) :
     S.fold Nat.gcd 0 f ∣ f a := by

@@ -212,15 +212,6 @@ theorem primesInInterval_succ_le (a : ℕ) : primesInInterval a (a + 1) ≤ 1 :=
     - Under RH, needs h > x^{1/2 + ε}
     - Cramér's conjecture: d ~ (log x)², so Cd ~ C(log x)²
     - Even under RH, C(log x)² is far too short for PNT -/
-axiom erdos_1138 :
-  ∀ C : ℝ, C > 1 →
-    ∀ ε : ℝ, ε > 0 →
-      ∃ N : ℕ, ∀ x : ℕ, x ≥ N →
-        ∀ y : ℕ, x / 2 < y ∧ y < x →
-          let d := maxPrimeGap x
-          (1 - ε) * (C * d / Real.log y) ≤ (primesInInterval y (y + Nat.floor (C * d))) ∧
-          (primesInInterval y (y + Nat.floor (C * d)) : ℝ) ≤ (1 + ε) * (C * d / Real.log y)
-
 /- ## Part V: Related Known Results -/
 
 /-- Bertrand's postulate: for n ≥ 1, there exists a prime in (n, 2n].
@@ -233,9 +224,4 @@ theorem bertrand_postulate (n : ℕ) (hn : 1 ≤ n) :
 /-- Cramér's conjecture on maximal prime gaps:
     lim sup d(x) / (log x)² = 1, where d(x) is the maximal gap below x.
     This is OPEN and much stronger than what is currently known. -/
-axiom cramer_conjecture :
-  ∀ ε : ℝ, ε > 0 →
-    ∃ N : ℕ, ∀ x : ℕ, x ≥ N →
-      (maxPrimeGap x : ℝ) ≤ (1 + ε) * (Real.log x) ^ 2
-
 end Erdos1138

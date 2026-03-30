@@ -107,8 +107,6 @@ theorem example_k4 : HasShortIntervalRepresentation 4 18 := by
 /-- k=2 is impossible: 1/a + 1/b = 1 has no solution with distinct positive integers.
 The only solution to 1/a + 1/b = 1 with a,b > 0 is a = b = 2, but Finset elements
 are distinct, so no 2-element Finset can sum to 1. -/
-axiom no_k2_representation : ¬∃ width, HasShortIntervalRepresentation 2 width
-
 /- ## The Optimal Constant -/
 
 /--
@@ -191,10 +189,6 @@ theorem erdos_286 :
 /-- The constant (e - 1) is asymptotically optimal: one cannot do better than
 (e - 1 - ε)k for any ε > 0 and all sufficiently large k.
 Deep result from Croot (2001). -/
-axiom optimality :
-    ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
-    ¬HasShortIntervalRepresentation k ⌊(ErdosGrahamConstant - ε) * k⌋₊
-
 /- ## Related Concepts -/
 
 /--
@@ -213,9 +207,6 @@ theorem egyptian_eq_unit_fraction (S : Finset ℕ) (q : ℚ) :
 
 /-- The greedy algorithm (Fibonacci-Sylvester) gives an Egyptian fraction
 representation for any positive rational ≤ 1. Known classical result. -/
-axiom greedy_algorithm_exists (q : ℚ) (hq : 0 < q ∧ q ≤ 1) :
-    ∃ S : Finset ℕ, IsEgyptianFraction S q
-
 /- ## Summary
 
 **Problem Status: SOLVED**

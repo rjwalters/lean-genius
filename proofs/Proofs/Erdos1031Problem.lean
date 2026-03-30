@@ -183,13 +183,6 @@ The conjecture follows from Prömel-Rödl.
 -/
 
 /-- Any k ≥ 3 has a non-trivial k-regular graph. -/
-axiom exists_nontrivial_regular (k : ℕ) (hk : k ≥ 3) :
-  ∃ (W : Type*) (_ : DecidableEq W) (_ : Fintype W),
-  ∃ H : SimpleGraph W, Fintype.card W ≤ 2 * k ∧
-    (∀ v : W, H.degree v = k) ∧
-    ¬(∀ x y : W, x ≠ y → H.Adj x y) ∧
-    ¬(∀ x y : W, x ≠ y → ¬H.Adj x y)
-
 /-
 ## Connection to Ramsey Theory
 
@@ -227,8 +220,6 @@ noncomputable def ramseyNumber (k : ℕ) : ℕ :=
 axiom ramsey_upper_bound (k : ℕ) : ramseyNumber k ≤ 4^k
 
 /-- R(k,k) ≥ 2^(k/2) (probabilistic lower bound). -/
-axiom ramsey_lower_bound (k : ℕ) : ramseyNumber k ≥ 2^(k/2)
-
 /-- Ramsey implies log n trivial subgraph. -/
 theorem ramsey_log_trivial (n : ℕ) (hn : n ≥ 4) :
     ∀ (V : Type*) [DecidableEq V] [Fintype V],
@@ -260,12 +251,6 @@ def isNonRamsey (G : SimpleGraph V) (c : ℝ) : Prop :=
   noLargeTrivial G (Nat.ceil (c * Real.log (Fintype.card V)))
 
 /-- Non-Ramsey graphs are rare but exist. -/
-axiom nonRamsey_exist (c : ℝ) (hc : c > 0) :
-  ∃ N : ℕ, ∀ n ≥ N,
-  ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
-  Fintype.card V = n ∧
-  ∃ G : SimpleGraph V, isNonRamsey G c
-
 /-
 ## Universality
 

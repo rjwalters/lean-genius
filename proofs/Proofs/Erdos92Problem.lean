@@ -152,35 +152,22 @@ theorem f_le_n_minus_one (n : ℕ) (hn : n ≥ 1) : f n ≤ n - 1 := by
 
 f(n) ≪ √n. This follows from basic counting arguments.
 -/
-axiom sqrtBound :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop, (f n : ℝ) ≤ c * Real.sqrt n
-
 /--
 **Pach-Sharir Bound (1992)**
 
 f(n) ≪ n^{2/5}. This uses incidence geometry bounds.
 -/
-axiom pachSharirBound :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop, (f n : ℝ) ≤ c * (n : ℝ)^(2/5 : ℝ)
-
 /--
 **JJMT Bound (2024)**
 
 f(n) ≪ n^{4/11}. This is the best known upper bound, from circle-point
 incidence bounds by Janzer, Janzer, Methuku, and Tardos.
 -/
-axiom jjmtBound :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop, (f n : ℝ) ≤ c * (n : ℝ)^(4/11 : ℝ)
-
 /--
 **Lattice Lower Bound**
 
 f(n) > n^{c/log log n} for some c > 0. The √n × √n integer lattice achieves this.
 -/
-axiom latticeLowerBound :
-  ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
-    (n : ℝ)^(c / Real.log (Real.log n)) ≤ f n
-
 /-
 ## Small Values
 
@@ -190,13 +177,9 @@ Fishburn computed exact values for small n.
 /--
 **f(6) = 3**: 6 is the smallest n with f(n) = 3.
 -/
-axiom f_6_eq_3 : f 6 = 3
-
 /--
 **f(8) = 4**: 8 is the smallest n with f(n) = 4.
 -/
-axiom f_8_eq_4 : f 8 = 4
-
 /-
 ## Consequences
 

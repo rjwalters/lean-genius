@@ -116,9 +116,6 @@ axiom seymour_construction (m : ℕ) : c(3*m + 2) ≥ 3^m
 
 Taking the mth root of c(3m+2) ≥ 3^m and letting m → ∞.
 -/
-axiom seymour_lower_bound :
-  ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, (c(n) : ℝ) ^ (1 / n : ℝ) ≥ 3 ^ (1/3 : ℝ) - ε
-
 /-
 ## Part IV: Binary Entropy Function
 
@@ -142,9 +139,6 @@ axiom binaryEntropy_one_third : binaryEntropy (1/3) = Real.log 3 / Real.log 2 - 
 /--
 2^{H(1/3)} ≈ 1.8899
 -/
-axiom two_pow_entropy_one_third :
-  (2 : ℝ) ^ binaryEntropy (1/3) = 3 / (2 : ℝ) ^ (2/3 : ℝ)
-
 /-
 ## Part V: Bradač's Theorem
 

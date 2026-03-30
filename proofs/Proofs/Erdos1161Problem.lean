@@ -176,20 +176,11 @@ to capture the formal problem resolution.
 
 /-- Beker's characterization: for sufficiently large n, if f_k(n) ≥ (n-1)!
     then lcm(1,...,n-k) divides k. [Beker, Be25d] -/
-axiom beker_characterization (n k : ℕ) (hn : n ≥ 100)
-    (hfk : permCountByOrder n k ≥ (n - 1).factorial) :
-    lcmRange (n - k) ∣ k
-
 /-- Beker's maximizer theorem: for all sufficiently large n,
     f_k(n) = (n-1)! if and only if k is the minimal positive integer
     such that lcm(1,...,n-k) divides k.
     We state one direction: the minimal k with lcmRange(n-k) | k achieves (n-1)!.
     [Beker, Be25d] -/
-axiom beker_maximizer_achieves (n : ℕ) (hn : n ≥ 100)
-    (k : ℕ) (hk : 0 < k) (hdvd : lcmRange (n - k) ∣ k)
-    (hmin : ∀ j, 0 < j → j < k → ¬(lcmRange (n - j) ∣ j)) :
-    permCountByOrder n k = (n - 1).factorial
-
 /-- max_k f_k(n) ≥ (n-1)! for n ≥ 2.
     Direct proof: the (n-1)! many n-cycles in S_n each have order n.
     This proof does NOT depend on Beker's axioms above. -/

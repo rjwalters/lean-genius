@@ -256,11 +256,7 @@ def erdos190Conjecture : Prop :=
 /- ## Part VII: Small Cases -/
 
 /-- H(3) is small (exact value depends on careful analysis). -/
-axiom H_3_bound : H 3 ≤ 10
-
 /-- H(4) is larger. -/
-axiom H_4_bound : H 4 ≤ 100
-
 /- ## Part VIII: Connections -/
 
 /--

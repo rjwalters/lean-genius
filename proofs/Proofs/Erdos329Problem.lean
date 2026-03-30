@@ -94,9 +94,6 @@ noncomputable def maxSidonDensity : ℝ :=
 /--
 **Erdős**: There exists a Sidon set with upper density at least 1/2.
 -/
-axiom erdos_lower_bound :
-    ∃ A : Set ℕ, IsSidon A ∧ sidonUpperDensity A ≥ 1 / 2
-
 /--
 **Krückeberg (1961)**: There exists a Sidon set with upper density exactly 1/√2.
 
@@ -141,20 +138,10 @@ theorem max_density_le_one :
 **Conditional Result**: If every finite Sidon set can be embedded in a
 perfect difference set, then the maximum density is exactly 1.
 -/
-axiom embedding_implies_density_one :
-    (∀ A : Finset ℕ, IsSidon ↑A → ∃ D : Set ℕ, ∃ n : ℕ,
-      ↑A ⊆ D ∧ IsPerfectDifferenceSet D n) →
-    maxSidonDensity = 1
-
 /--
 **Converse**: If the maximum density is 1, then every finite Sidon set
 can be embedded in a perfect difference set.
 -/
-axiom density_one_implies_embedding :
-    maxSidonDensity = 1 →
-    (∀ A : Finset ℕ, IsSidon ↑A → ∃ D : Set ℕ, ∃ n : ℕ,
-      ↑A ⊆ D ∧ IsPerfectDifferenceSet D n)
-
 /- ## Basic Examples -/
 
 /-- The empty set is trivially Sidon. -/
@@ -170,8 +157,6 @@ theorem singleton_is_sidon (n : ℕ) : IsSidon {n} := by
   exact ⟨rfl, rfl⟩
 
 /-- The set {1, 2, 5, 10} is a Sidon set (all 6 pairwise sums are distinct). -/
-axiom sidon_example_1_2_5_10 : IsSidon ({1, 2, 5, 10} : Set ℕ)
-
 /- ## Verified Computations -/
 
 /-- 1 + 2 = 3 -/

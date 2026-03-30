@@ -119,32 +119,14 @@ theorem alekseyev_example : (∑ n ∈ ({2, 4, 6, 12} : Finset ℕ), (n : ℤ)^2
 /- ## Part VI: van Doorn's Extensions (2025) -/
 
 /-- van Doorn proved results for p(x) = x + c for various c. -/
-axiom van_doorn_linear (c : ℤ) :
-  c ≥ 0 → ∃ M : ℤ, ∀ m : ℤ, m > M →
-    ∃ s : Finset ℕ, IsEgyptianDecomposition s ∧
-    (∑ n ∈ s, (n : ℤ) + c * s.card) = m
-
 /-- van Doorn proved results for p(x) = x² + c for various c. -/
-axiom van_doorn_quadratic (c : ℤ) :
-  c ≥ 0 → ∃ M : ℤ, ∀ m : ℤ, m > M →
-    ∃ s : Finset ℕ, IsEgyptianDecomposition s ∧
-    (∑ n ∈ s, (n : ℤ)^2 + c) = m
-
 /- ## Part VII: Cassels' Theorem -/
 
 /-- **Cassels (1960)**: Under the polynomial conditions, every sufficiently large
     integer is a sum of p(nᵢ) with distinct nᵢ (without Egyptian fraction constraint). -/
-axiom cassels_theorem (p : ℤ[X]) :
-  HasNoUniversalDivisor p →
-  ∀ᶠ m : ℤ in atTop, ∃ s : Finset ℕ,
-    (∀ n ∈ s, n > 0) ∧ (∑ n ∈ s, p.eval (n : ℤ)) = m
-
 /- ## Part VIII: Egyptian Fraction Structure -/
 
 /-- There are infinitely many Egyptian fraction decompositions summing to 1. -/
-axiom infinitely_many_egyptian_decompositions :
-  Infinite { s : Finset ℕ | IsEgyptianDecomposition s }
-
 /-- The simplest Egyptian fraction decomposition: {1} since 1/1 = 1. -/
 theorem trivial_egyptian : IsEgyptianDecomposition {1} := by
   constructor

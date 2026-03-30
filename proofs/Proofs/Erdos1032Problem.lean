@@ -48,18 +48,8 @@ def IsKChromaticCritical (G : Type) (k : ℕ) : Prop :=
 /- ## Known constructions -/
 
 /-- Dirac: there exist 6-chromatic critical graphs with δ > n/2. -/
-axiom dirac_6_critical :
-    ∀ N : ℕ, ∃ (G : Type),
-      vertexCount G = N ∧ IsKChromaticCritical G 6 ∧
-      N / 2 < minDegree G
-
 /-- Simonovits–Toft: there exist 4-chromatic critical graphs with
     δ ≫ n^{1/3}. -/
-axiom simonovits_toft_4_critical :
-    ∃ c : ℚ, 0 < c ∧ ∀ N : ℕ, ∃ (G : Type),
-      vertexCount G = N ∧ IsKChromaticCritical G 4 ∧
-      c * (N : ℚ) ^ ((1 : ℚ) / 3) ≤ (minDegree G : ℚ)
-
 /- ## Toft's conjecture -/
 
 /-- Toft: every 4-chromatic critical graph on n vertices has

@@ -80,27 +80,18 @@ theorem four_is_totient : ∃ m : ℕ, m.totient = 4 := ⟨5, by native_decide�
 The density of totient values is 0. Most integers are NOT totient values.
 This was the first quantitative result about the sparsity of totient values.
 -/
-axiom Pillai_1929 : V =o[atTop] id
-
 /--
 **Erdős (1935)**: V(x) = x · (log x)^(-1+o(1))
 
 This refines Pillai's result: V(x) behaves like x/log x up to sub-polynomial
 factors in the exponent. The density decays like 1/log x.
 -/
-axiom Erdos_1935 : ∃ f : ℝ → ℝ, f =o[atTop] (1 : ℝ → ℝ) ∧
-    ∀ᶠ x in atTop, V x = x * x.log ^ (-1 + f x)
-
 /--
 **Maier-Pomerance (1988)**: V(x) = (x/log x) · e^((C+o(1))(log log log x)²)
 
 A more precise asymptotic: the correction factor is exponential in (log log log x)².
 The constant C is explicitly computable.
 -/
-axiom Maier_Pomerance_1988 :
-    ∃ C : ℝ, 0 < C ∧ ∃ f : ℝ → ℝ, f =o[atTop] (1 : ℝ → ℝ) ∧
-      ∀ᶠ x in atTop, V x = x / x.log * Real.exp ((C + f x) * x.log.log.log ^ 2)
-
 /--
 **Ford (1998)**: The most precise bound known
 
@@ -108,14 +99,6 @@ V(x) ≍ (x/log x) · exp(C₁(log log log x - log log log log x)² + C₂ log l
 
 This determines V(x) up to constant factors but still falls short of an asymptotic formula.
 -/
-axiom Ford_1998 :
-    ∃ C₁ C₂ C₃ : ℝ, 0 < C₁ ∧ 0 < C₂ ∧ 0 < C₃ ∧
-    let G (x : ℝ) := x / x.log * Real.exp (
-      C₁ * (x.log.log.log - x.log.log.log.log) ^ 2 +
-      C₂ * x.log.log.log -
-      C₃ * x.log.log.log.log)
-    V =Θ[atTop] G
-
 /- ## Main Open Questions -/
 
 /--

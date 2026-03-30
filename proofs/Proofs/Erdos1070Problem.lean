@@ -72,13 +72,7 @@ This is the function Erdős asks to estimate.
 axiom f (n : ℕ) : ℕ
 
 /-- f(n) is a valid minimum: every n-point configuration has an independent set of size f(n) -/
-axiom f_is_minimum : ∀ n : ℕ, ∀ G : UnitDistanceGraph n,
-  independenceNumber G ≥ f n
-
 /-- f(n) is achieved: some configuration has independence number exactly f(n) -/
-axiom f_is_achieved : ∀ n : ℕ, ∃ G : UnitDistanceGraph n,
-  independenceNumber G = f n
-
 /- ## The Density Approach
 
 The key insight of Larman and Rogers is to connect the discrete problem
@@ -90,11 +84,7 @@ to the continuous density of unit-distance-free measurable sets.
 axiom m1 : ℝ
 
 /-- m₁ is positive -/
-axiom m1_pos : m1 > 0
-
 /-- m₁ is at most 1 -/
-axiom m1_le_one : m1 ≤ 1
-
 /- ### Larman-Rogers Theorem
 
 The fundamental connection between discrete independence and continuous density.
@@ -131,9 +121,6 @@ def moserSpindleVertices : ℕ := 7
 def moserSpindleIndependence : ℕ := 2
 
 /-- The Moser spindle exists as a unit distance graph -/
-axiom moser_spindle_exists : ∃ G : UnitDistanceGraph moserSpindleVertices,
-  independenceNumber G = moserSpindleIndependence
-
 /-- Moser spindle upper bound: f(n) ≤ (2/7)n -/
 axiom moser_spindle_upper_bound :
   ∀ n : ℕ, (f n : ℝ) ≤ (2 / 7) * n

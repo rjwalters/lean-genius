@@ -111,11 +111,6 @@ axiom h3_upper_bound (V : Type*) [Fintype V] (G : SimpleGraph V) :
 There exist triangle-free graphs G on n vertices with h₃(G) ≥ n - c.
 This shows the h₃ ≤ n bound is tight up to a constant.
 -/
-axiom h3_lower_bound :
-    ∃ c : ℕ, ∀ n : ℕ, ∃ V : Type*, ∃ _ : Fintype V, Fintype.card V = n ∧
-      ∃ G : SimpleGraph V, G.Connected ∧ TriangleFree G ∧
-        h G 3 ≥ n - c
-
 /--
 **h₅(G) ≤ (n-1)/2:**
 For any triangle-free connected graph G on n vertices, h₅(G) ≤ (n-1)/2.
@@ -155,11 +150,6 @@ def erdos_619_upper_bound_form : Prop :=
 Adding n/2 edges always suffices to achieve diameter 4 when triangles are allowed.
 The triangle-free constraint is what makes the h₄ case significantly harder.
 -/
-axiom without_triangle_free_constraint (V : Type*) [Fintype V] (G : SimpleGraph V) :
-    G.Connected →
-    ∃ E : Finset (Sym2 V), E.card ≤ Fintype.card V / 2 ∧
-      HasDiameterAtMost (addEdges G E) 4
-
 /- ## Part VI: Examples and Special Cases -/
 
 /--
@@ -172,12 +162,7 @@ def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   loopless := by intro v h; cases h <;> omega
 
 /-- The path graph is triangle-free. -/
-axiom path_is_triangle_free (n : ℕ) : TriangleFree (pathGraph n)
-
 /-- Pₙ has diameter n-1. -/
-axiom path_diameter (n : ℕ) (hn : n ≥ 1) :
-    diameter (pathGraph n) = n - 1
-
 /- ## Part VII: Monotonicity Properties -/
 
 /--
@@ -185,9 +170,6 @@ axiom path_diameter (n : ℕ) (hn : n ≥ 1) :
 Larger target diameter is easier to achieve, so h_r(G) ≥ h_{r+1}(G).
 This gives the chain h₃(G) ≥ h₄(G) ≥ h₅(G).
 -/
-axiom h_monotone (G : SimpleGraph V) (r : ℕ) :
-    h G r ≥ h G (r + 1)
-
 /- ## Part VIII: Summary
 
 **Erdős Problem #619: OPEN**

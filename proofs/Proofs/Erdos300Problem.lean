@@ -101,8 +101,6 @@ axiom croot_theorem :
 Croot's theorem directly contradicts the conjecture, which asserts A(N)/N → 1.
 Axiomatized because the proof requires careful asymptotic analysis.
 -/
-axiom erdos_graham_conjecture_false : ¬erdosGrahamConjecture
-
 /-
 ## Part III: The Trivial Lower Bound
 -/
@@ -131,9 +129,6 @@ axiom trivial_lower_bound :
 If all 1/n < 1/e, then the greedy algorithm avoids sum reaching exactly 1.
 Axiomatized because the detailed subset-sum analysis is non-trivial.
 -/
-axiom small_fractions_safe (N : ℕ) :
-    IsUnitSumFree (smallUnitFractionSet N)
-
 /-
 ## Part IV: Liu-Sawhney Theorem (2024)
 -/
@@ -203,11 +198,6 @@ def HasEgyptianRepresentation (r : ℚ) : Prop :=
 etc.
 Axiomatized: the existence of two distinct representations.
 -/
-axiom one_egyptian_representations :
-    ∃ S₁ S₂ : Finset ℕ, S₁ ≠ S₂ ∧
-      (∑ n in S₁, (1 : ℚ) / n) = 1 ∧
-      (∑ n in S₂, (1 : ℚ) / n) = 1
-
 /-
 ## Part VI: Variants and Generalizations
 -/
@@ -234,11 +224,6 @@ Start with ∅, add n if current sum + 1/n ≠ 1.
 This gives a set of density ≥ 1 - 1/e.
 Axiomatized: constructing such a set requires detailed combinatorial analysis.
 -/
-axiom greedy_achieves_lower_bound :
-    ∀ ε > 0, ∀ᶠ N in Filter.atTop,
-      ∃ A : Finset ℕ, A ⊆ intervalN N ∧ IsUnitSumFree A ∧
-        (A.card : ℝ) ≥ (1 - Real.exp (-1) - ε) * N
-
 /-
 ## Part VII: Summary
 -/

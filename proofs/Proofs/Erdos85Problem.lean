@@ -101,9 +101,6 @@ f(n) < √n + 1 for all n ≥ 4.
 
 This means if minimum degree exceeds √n, a 4-cycle must exist.
 -/
-axiom minDegreeForC4_upperBound :
-  ∀ n : ℕ, n ≥ 4 → minDegreeForC4 n < Nat.sqrt n + 1
-
 /--
 **Asymptotic Behavior**
 
@@ -111,17 +108,12 @@ f(n) = (1 + o(1))√n as n → ∞.
 
 The minimum degree threshold grows like the square root of n.
 -/
-axiom minDegreeForC4_asymptotic :
-  Tendsto (fun n => (minDegreeForC4 n : ℝ) / Real.sqrt n) atTop (𝓝 1)
-
 /--
 **Base Case**: f(4) = 2.
 
 In a graph on 4 vertices, minimum degree ≥ 2 guarantees a 4-cycle.
 (In fact, such a graph must be the 4-cycle itself.)
 -/
-axiom minDegreeForC4_base : minDegreeForC4 4 = 2
-
 /-
 ## Connection to Ramsey Numbers
 
@@ -189,9 +181,4 @@ The monotonicity question is subtle because adding vertices might create
 The Kővári-Sós-Turán theorem gives bounds on C₄-free graphs:
 A C₄-free graph on n vertices has at most (1/2)n^{3/2} + n/2 edges.
 -/
-axiom kovariSosTuran :
-  ∀ n : ℕ, ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
-    ¬containsC4 (Fin n) G →
-    G.edgeFinset.card ≤ n^2 / 4 + n / 2
-
 end Erdos85

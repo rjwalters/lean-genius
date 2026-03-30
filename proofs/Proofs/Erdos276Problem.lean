@@ -42,20 +42,12 @@ def HasNoUniversalDivisor (a : ℕ → ℕ) : Prop :=
 /-- **Erdős Problem #276**: Does there exist a primefree Lucas sequence
     with no universal divisor? The answer is YES (Graham 1964), but the
     deeper question is whether covering congruences are necessary. -/
-axiom erdos_276_existence :
-  ∃ a : ℕ → ℕ,
-    IsLucasSequence a ∧ IsPrimefree a ∧ HasNoUniversalDivisor a
-
 /- ## Graham's Construction -/
 
 /-- **Graham (1964)**: There exist coprime composites a₀, a₁ such that
     the Lucas sequence they generate is primefree. The construction
     uses covering congruences: for each index position, some prime in
     a fixed finite set divides the corresponding term. -/
-axiom graham_construction :
-  ∃ a : ℕ → ℕ,
-    IsLucasSequence a ∧ IsPrimefree a ∧ Nat.Coprime (a 0) (a 1)
-
 /-- **GCD propagation**: if d divides both a₀ and a₁, then d divides
     every term. Proof: two-step induction using a_{n+2} = a_{n+1} + a_n. -/
 theorem gcd_propagation (a : ℕ → ℕ) (hluc : IsLucasSequence a)
@@ -75,14 +67,6 @@ theorem gcd_propagation (a : ℕ → ℕ) (hluc : IsLucasSequence a)
     a_i (mod m_i) that covers all integers. Graham's proof shows
     the Fibonacci-like sequence is periodic mod each m_i, and the
     residue classes where each prime divides form a covering system. -/
-axiom covering_system_mechanism :
-  ∃ (S : Finset ℕ),
-    (∀ p ∈ S, Nat.Prime p) ∧
-    ∀ a : ℕ → ℕ, IsLucasSequence a →
-      Nat.Coprime (a 0) (a 1) →
-      IsPrimefree a →
-      ∀ k, ∃ p ∈ S, p ∣ a k
-
 /- ## Further Results -/
 
 /- **Smaller starting values**: Vsemirnov (2004) found a primefree

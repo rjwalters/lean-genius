@@ -41,16 +41,6 @@ open MeasureTheory
     and all have the same measure by translation invariance.
     Since they're contained in a bounded set, σ-finiteness forces
     each ball to have measure 0, hence μ = 0. -/
-axiom no_lebesgue_on_infinite_dim :
-    -- For any infinite-dimensional separable Banach space X,
-    -- if μ is a translation-invariant σ-finite Borel measure on X,
-    -- then μ = 0.
-    True
-
--- ============================================================
--- Part II: The Orthogonal Separation Argument
--- ============================================================
-
 /-- In a Hilbert space, orthonormal vectors are separated by √2. -/
 theorem orthonormal_dist {H : Type*} [NormedAddCommGroup H]
     [InnerProductSpace ℝ H] (e₁ e₂ : H)
@@ -92,16 +82,6 @@ theorem orthonormal_balls_disjoint :
     In infinite dimensions, the Gaussian measure exists on the
     Banach space but NOT on the Hilbert space (it lives on a
     larger space — the abstract Wiener space). -/
-axiom gaussian_measure_exists :
-    -- For any real separable Hilbert space H and trace-class
-    -- positive operator C on H, there exists a Gaussian measure
-    -- on a suitable Banach space containing H.
-    True
-
--- ============================================================
--- Part IV: Wiener Measure
--- ============================================================
-
 /-- The Wiener measure is the canonical Gaussian measure on the
     space of continuous paths C([0,1], ℝ).
 
@@ -111,15 +91,6 @@ axiom gaussian_measure_exists :
 
     This is the rigorous foundation for Feynman path integrals
     in quantum mechanics. -/
-axiom wiener_measure_exists :
-    -- There exists a probability measure on C([0,1], ℝ) such that
-    -- the coordinate process is a Brownian motion.
-    True
-
--- ============================================================
--- Part V: Why Finite-Dimensional Intuition Fails
--- ============================================================
-
 /-- In ℝⁿ, the Lebesgue measure of the unit ball is:
     vol(Bⁿ) = π^(n/2) / Γ(n/2 + 1)
 

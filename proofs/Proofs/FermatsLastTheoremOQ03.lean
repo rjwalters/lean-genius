@@ -72,14 +72,6 @@ theorem asymptotic_flt_Q : AsymptoticFLT ℚ := by
 
     More precisely: for 5/6 of all squarefree d > 0, FLT holds
     over ℚ(√d) for all sufficiently large prime exponents. -/
-axiom freitas_hung_siksek :
-    -- For 5/6 of squarefree d, Asymptotic FLT holds over ℚ(√d).
-    True
-
--- ============================================================
--- Part V: Why It's Harder over Number Fields
--- ============================================================
-
 /-
   Wiles's proof over ℚ uses:
   1. Frey curve: associate an elliptic curve E to (a,b,c)
@@ -100,15 +92,6 @@ axiom freitas_hung_siksek :
     Over ℚ: proved by Breuil-Conrad-Diamond-Taylor (2001).
     Over totally real fields: partial results (many cases proved).
     Over general number fields: wide open. -/
-axiom modularity_obstruction :
-    -- Modularity of elliptic curves over general number fields
-    -- is the main obstruction to proving FLT over number fields.
-    True
-
--- ============================================================
--- Part VI: Trivial Solutions and Units
--- ============================================================
-
 /-- Over number fields with more units, "trivial" solutions
     involving units can exist even for large n.
 

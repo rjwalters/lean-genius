@@ -65,10 +65,6 @@ This is the central object of Problem #765.
 axiom ex_C4 (n : ℕ) : ℕ
 
 /-- ex(n; C₄) is realized by some C₄-free graph on n vertices. -/
-axiom ex_C4_realized (n : ℕ) :
-    ∃ V : Type*, ∃ _ : Fintype V, ∃ G : SimpleGraph V,
-      isFourCycleFree G ∧ Fintype.card V = n
-
 /- ## Part III: Historical Bounds
 -/
 
@@ -77,18 +73,11 @@ axiom ex_C4_realized (n : ℕ) :
 ex(n; C₄) = O(n^{3/2}).
 This was the first upper bound, establishing the order of magnitude.
 -/
-axiom erdos_klein_upper (n : ℕ) (hn : n > 0) :
-    ∃ c : ℝ, c > 0 ∧ (ex_C4 n : ℝ) ≤ c * (n : ℝ)^(3/2 : ℝ)
-
 /--
 **Reiman's Bounds (1958):**
 1/(2√2) ≤ lim ex(n;C₄)/n^{3/2} ≤ 1/2.
 This refined the constant, showing the limit exists.
 -/
-axiom reiman_bounds :
-    ∃ L : ℝ, L > 0 ∧ L ≤ 1/2 ∧
-      (1 / (2 * Real.sqrt 2)) ≤ L
-
 /--
 **Erdős-Rényi-Brown Construction:**
 For n = q² + q + 1 where q is a prime power:
@@ -96,11 +85,6 @@ ex(n; C₄) ≥ (1/2)q(q+1)².
 This is the incidence graph of a projective plane.
 -/
 def projectivePlaneVertices (q : ℕ) : ℕ := q^2 + q + 1
-
-axiom projective_plane_construction (q : ℕ)
-    (hq : Nat.Prime q ∨ (∃ p k, Nat.Prime p ∧ k > 0 ∧ q = p^k)) :
-    let n := projectivePlaneVertices q
-    (ex_C4 n : ℝ) ≥ (1/2 : ℝ) * q * (q + 1)^2
 
 /- ## Part IV: The Asymptotic Formula
 -/
@@ -138,11 +122,6 @@ For q > 13 a prime power and n = q² + q + 1:
 ex(n; C₄) = (1/2)q(q+1)².
 This gives exact values for infinitely many n.
 -/
-axiom furedi_exact (q : ℕ) (hq : q > 13)
-    (hprime : Nat.Prime q ∨ (∃ p k, Nat.Prime p ∧ k > 0 ∧ q = p^k)) :
-    let n := projectivePlaneVertices q
-    ex_C4 n = q * (q + 1)^2 / 2
-
 /- ## Part VI: Refined Bounds and Erdős's Conjecture
 -/
 
@@ -150,10 +129,6 @@ axiom furedi_exact (q : ℕ) (hq : q > 13)
 **Erdős's Upper Bound (1975):**
 ex(n; C₄) ≤ (1/2)n^{3/2} + (1/4)n + O(n^{1/2}).
 -/
-axiom erdos_refined_upper (n : ℕ) (hn : n > 0) :
-    ∃ c : ℝ, (ex_C4 n : ℝ) ≤ (1/2 : ℝ) * (n : ℝ)^(3/2 : ℝ) +
-      (1/4 : ℝ) * n + c * (n : ℝ)^(1/2 : ℝ)
-
 /--
 **Erdős's Conjecture (Disproved):**
 Erdős conjectured ex(n; C₄) = (1/2)n^{3/2} + (1/4)n + O(n^{1/2}).
@@ -167,12 +142,6 @@ def erdos_conjecture : Prop :=
 Erdős's conjecture is FALSE. There exists c > 0 such that for
 a positive density set of n: ex(n; C₄) ≤ (1/2)n^{3/2} + (1/4 - c)n.
 -/
-axiom ma_yang_disproof :
-    ∃ c : ℝ, c > 0 ∧
-      ∃ δ : ℝ, δ > 0 ∧ ∀ N : ℕ, ∃ S : Finset ℕ,
-        (↑S.card : ℝ) ≥ δ * N ∧
-        ∀ n ∈ S, (ex_C4 n : ℝ) ≤ (1/2 : ℝ) * (n : ℝ)^(3/2 : ℝ) + (1/4 - c) * n
-
 /- ## Part VII: Connection to Number Theory
 -/
 

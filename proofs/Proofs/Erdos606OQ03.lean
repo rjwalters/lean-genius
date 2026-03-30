@@ -48,22 +48,9 @@ theorem general_position_count (n d : ℕ) :
 /-- Sylvester-Gallai (1893/1944): For any finite set of points
     in ℝ² not all collinear, there exists a line through exactly
     two of the points (an "ordinary line"). -/
-axiom sylvester_gallai :
-    -- For n ≥ 3 non-collinear points in ℝ²,
-    -- there exists an ordinary line (through exactly 2 points).
-    True
-
 /-- Green-Tao (2013): For n sufficiently large non-collinear
     points in ℝ², there are at least n/2 ordinary lines.
     This is tight (Böröczky examples achieve ~n/2). -/
-axiom green_tao_ordinary_lines :
-    -- For n large enough, at least n/2 ordinary lines exist.
-    True
-
--- ============================================================
--- Part III: Higher-Dimensional Sylvester-Gallai
--- ============================================================
-
 /-- The d-dimensional Sylvester-Gallai:
 
     For n points in ℝ^d not all on a hyperplane, there exists
@@ -72,15 +59,6 @@ axiom green_tao_ordinary_lines :
     This is the Motzkin (1951) generalization.
     However, the analogue for "ordinary hyperplanes"
     (containing exactly d points) is more subtle. -/
-axiom sylvester_gallai_higher_dim :
-    -- Motzkin (1951): for n points in ℝ^d in general position,
-    -- there exists a hyperplane through exactly d of the points.
-    True
-
--- ============================================================
--- Part IV: Achievable Hyperplane Counts
--- ============================================================
-
 /-- For n points in ℝ²:
     - Minimum lines (non-collinear): at least n (Sylvester-Gallai)
     - Maximum lines (general position): C(n,2) = n(n-1)/2

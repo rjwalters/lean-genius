@@ -63,11 +63,6 @@ def squares : Set ℕ := { n | ∃ m : ℕ, n = m^2 }
 
     Construction idea: Include enough elements to cover all residue classes
     that aren't covered by squares, but not too many. -/
-axiom erdos_existence_result :
-  ∃ A : Set ℕ, IsAdditiveComplementOfSquares A ∧
-    ∃ c : ℝ, c > 1 ∧
-    limsup (fun N => normalizedDensity A N) atTop = c
-
 /- ## Lower Bounds on liminf -/
 
 /-- **Moser (1965)**: For any additive complement of squares A,
@@ -75,9 +70,6 @@ axiom erdos_existence_result :
 
     This was the first quantitative lower bound, showing you can't be
     too sparse while covering all integers. -/
-axiom moser_lower_bound (A : Set ℕ) (hA : IsAdditiveComplementOfSquares A) :
-  (1.06 : ℝ) < liminf (fun N => normalizedDensity A N) atTop
-
 /-- **Best known lower bound** (Cilleruelo 1993, Habsieger 1995,
     Balasubramanian-Ramana 2001):
     liminf |A ∩ {1,...,N}| / √N ≥ 4/π ≈ 1.273.
@@ -119,13 +111,7 @@ noncomputable def vanDoornConstant : ℝ := 2 * goldenRatio^((5 : ℝ)/2)
 
     The construction uses a greedy algorithm that adds elements to A
     in a way that optimizes coverage while minimizing density. -/
-axiom vanDoorn_upper_bound :
-  ∃ A : Set ℕ, IsAdditiveComplementOfSquares A ∧
-    ∀ N : ℕ, normalizedDensity A N ≤ vanDoornConstant
-
 /-- 2φ^(5/2) ≈ 6.66 -/
-axiom vanDoorn_constant_approx : vanDoornConstant < 7
-
 /- ## The Main Open Questions -/
 
 /-- **Open Question 1**: What is the exact minimum value of the limsup?

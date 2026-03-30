@@ -59,20 +59,10 @@ def grahamSeq (n : ℕ) : ℕ :=
     if n % 2 = 0 then Nat.fib n - 1 else Nat.fib n + 1
 
 /-- Graham (1964): grahamSeq satisfies strong completeness. -/
-axiom graham_strongly_complete :
-    IsStronglyComplete { n | ∃ k, n = grahamSeq k ∧ 0 < n }
-
 /-- Graham (1964): grahamSeq satisfies fragility. -/
-axiom graham_fragile :
-    IsFragile { n | ∃ k, n = grahamSeq k ∧ 0 < n }
-
 /- ## Golden ratio threshold -/
 
 /-- If a_{n+1}/a_n > φ for all n, then A is automatically fragile. -/
-axiom golden_ratio_fragile (a : ℕ → ℕ)
-    (h : ∀ n : ℕ, goldenRatio * (a n : ℚ) < (a (n + 1) : ℚ)) :
-    IsFragile { n | ∃ k, n = a k }
-
 /- ## Main conjecture -/
 
 /-- Erdős Problem 346: if A is lacunary, strongly complete, and fragile,
@@ -88,9 +78,3 @@ def ErdosProblem346 : Prop :=
 
 /-- There exist very irregular sequences satisfying both properties
     whose ratio does not converge. -/
-axiom irregular_examples :
-    ∃ (a : ℕ → ℕ),
-      IsStronglyComplete { n | ∃ k, n = a k } ∧
-      IsFragile { n | ∃ k, n = a k } ∧
-      ¬(∀ δ : ℚ, 0 < δ → ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n → 0 < a n →
-          |((a (n + 1) : ℚ) / (a n : ℚ)) - goldenRatio| < δ)

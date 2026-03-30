@@ -151,8 +151,6 @@ def erdos1122Conjecture : Prop :=
   ∀ f : ℕ → ℝ, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f
 
 /-- The conjecture is axiomatized as the problem is OPEN. -/
-axiom erdos_1122 : erdos1122Conjecture
-
 /- ## Condition Hierarchy -/
 
 /-- If A = ∅, then |A ∩ [1,X]| = 0 = o(X). -/
@@ -169,9 +167,6 @@ theorem empty_implies_littleO (f : ℕ → ℝ) (h : hasEmptyDefectSet f) : defe
   simp [this, hε]
 
 /-- Mangerel's condition implies o(X): X/(log X)^{2+c} = o(X) as X → ∞. -/
-axiom mangerel_implies_littleO (f : ℕ → ℝ) (h : satisfiesMangerelDensity f) :
-    defectIsLittleO f
-
 /-- The hierarchy of conditions:
     empty defect ⊂ Mangerel density ⊂ o(X) density (each strictly weaker). -/
 def conditionHierarchy : Prop :=
@@ -193,11 +188,7 @@ theorem log_has_empty_defect : hasEmptyDefectSet (fun n => Real.log n) := by
 def omega (n : ℕ) : ℕ := n.primeFactors.card
 
 /-- ω is additive: ω(ab) = ω(a) + ω(b) for coprime a, b. -/
-axiom omega_is_additive : IsAdditive (fun n => (omega n : ℝ))
-
 /-- ω is not logarithmic: it grows much slower than log. -/
-axiom omega_not_logarithmic : ¬hasLogarithmicForm (fun n => (omega n : ℝ))
-
 /- ## Summary of Known Results -/
 
 /-- Consolidation of the three known positive results:

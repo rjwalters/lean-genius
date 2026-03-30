@@ -136,8 +136,6 @@ noncomputable def u (x : ℕ) : ℝ :=
 **Trivial Upper Bound:**
 L(x) ≤ x (can't have more squares than partial products, which is ≤ sequence length ≤ x).
 -/
-axiom L_le_x : ∀ x : ℕ, x ≥ 2 → L x ≤ x
-
 /--
 **o(x) Upper Bound (Erdős-Graham):**
 L(x) = o(x), i.e., L(x)/x → 0 as x → ∞.
@@ -198,20 +196,11 @@ axiom L_upper_bound :
 An elliptic curve over ℚ has only finitely many integral points.
 This implies the o(x) upper bound.
 -/
-axiom siegel_theorem_consequence :
-  ∀ x : ℕ, x ≥ 2 → ∃ C : ℝ, C < x ∧ (L x : ℝ) ≤ C
-
 /--
 **Hyperelliptic Curves Connection:**
 The problem reduces to counting integral points on hyperelliptic curves.
 Bui-Pratt-Zaharescu analyze this using techniques from algebraic number theory.
 -/
-axiom hyperelliptic_connection :
-  ∀ a : List ℕ, IsStrictlyIncreasing a →
-  ∃ curve_degree : ℕ, curve_degree ≥ 3 ∧
-    -- Partial products being squares relates to integral points
-    squareCount a ≤ a.length
-
 /-
 ## Part IX: Examples
 -/
@@ -231,11 +220,6 @@ theorem powers_of_four_all_squares :
 If a₁ is not a square and aᵢ are distinct primes for i ≥ 2,
 then at most one partial product is a square.
 -/
-axiom primes_few_squares (a : List ℕ) :
-    IsStrictlyIncreasing a →
-    (∀ i : Fin a.length, i.val ≥ 1 → (a[i]).Prime) →
-    squareCount a ≤ 1
-
 /-
 ## Part X: Asymptotic Analysis
 -/

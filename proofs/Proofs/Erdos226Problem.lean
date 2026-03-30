@@ -150,15 +150,6 @@ axiom barth_schneider_1970 :
 The Barth-Schneider construction yields a function that is
 monotonic when restricted to the real line.
 -/
-axiom barth_schneider_monotone :
-  ∀ (A B : Set ℝ),
-    IsCountableDense A →
-    IsCountableDense B →
-    ∃ (f : ℂ → ℂ),
-      IsTranscendental f ∧
-      (∀ x : ℝ, x ∈ A ↔ (f x).re ∈ B) ∧
-      StrictMono (fun x : ℝ => (f x).re)
-
 /- ## Part VII: The Answer to Erdős's Question -/
 
 /--
@@ -213,14 +204,6 @@ Barth and Schneider extended their result to ℂ in 1971.
 For countable dense A, B ⊆ ℂ, there exists a transcendental
 entire f with f(A) = B.
 -/
-axiom barth_schneider_complex :
-  ∀ (A B : Set ℂ),
-    A.Countable ∧ Dense A →
-    B.Countable ∧ Dense B →
-    ∃ (f : ℂ → ℂ),
-      IsTranscendental f ∧
-      (∀ z : ℂ, z ∈ A ↔ f z ∈ B)
-
 /- ## Part IX: Why This Works -/
 
 /--
@@ -235,10 +218,6 @@ some rational inputs (by analyzing the roots of p(x) - r for rational r).
 
 The formal proof requires algebraic number theory.
 -/
-axiom no_polynomial_works :
-    ¬∃ (p : Polynomial ℝ), p.natDegree > 1 ∧
-      ∀ x : ℝ, (∃ q : ℚ, (q : ℝ) = x) ↔ (∃ q : ℚ, (q : ℝ) = p.eval x)
-
 /- ## Part X: Summary -/
 
 /--

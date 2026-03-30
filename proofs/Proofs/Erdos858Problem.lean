@@ -183,9 +183,6 @@ def InRange (A : Finset ℕ) (N : ℕ) : Prop :=
 /--
 For A ⊆ {1, ..., N}, the reciprocal sum is at most H_N.
 -/
-axiom reciprocalSum_le_harmonic (A : Finset ℕ) (N : ℕ) (hA : InRange A N) :
-    reciprocalSum A ≤ log N + 1
-
 /-
 ## Part VI: Alexander's Result (1966)
 -/
@@ -218,11 +215,6 @@ theorem max_weighted_sum_little_o :
 Independent proof of the same result using different methods.
 Published in J. London Math. Soc.
 -/
-axiom erdos_sarkozy_szemeredi_1968 :
-    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, ∀ A : Finset ℕ,
-    InRange A N → SatisfiesCondition A →
-    weightedSum A N < ε
-
 /-
 ## Part VIII: Behrend's Bound for Primitive Sets (1935)
 -/
@@ -234,12 +226,6 @@ For primitive sets A ⊆ {1, ..., N}:
 
 This is a stronger bound that applies to the stronger condition.
 -/
-axiom behrend_primitive_bound :
-    ∃ C : ℝ, C > 0 ∧
-    ∀ N : ℕ, N ≥ 10 → ∀ A : Finset ℕ,
-    InRange A N → IsPrimitive A →
-    weightedSum A N ≤ C / Real.sqrt (log (log N))
-
 /-
 ## Part IX: Example Construction
 -/
@@ -257,9 +243,6 @@ def exampleSet (N : ℕ) : Finset ℕ :=
 /--
 The example set satisfies the condition.
 -/
-axiom exampleSet_satisfies_condition (N : ℕ) (hN : N ≥ 4) :
-    SatisfiesCondition (exampleSet N)
-
 /--
 The example set is in range.
 -/
@@ -300,12 +283,6 @@ theorem erdos_858_solution :
 /--
 Alternative statement using limits.
 -/
-axiom erdos_858_limit :
-    ∀ f : ℕ → Finset ℕ,
-    (∀ N, InRange (f N) N) →
-    (∀ N, SatisfiesCondition (f N)) →
-    Filter.Tendsto (fun N => weightedSum (f N) N) Filter.atTop (nhds 0)
-
 /-
 ## Part XI: Relationship to Problem #143
 -/

@@ -72,9 +72,6 @@ def areParallel (l₁ l₂ : Line2D) : Prop :=
 Non-parallel lines intersect at exactly one point.
 This is a standard result in linear algebra (solving 2×2 linear systems).
 -/
-axiom unique_intersection (l₁ l₂ : Line2D) (hpar : ¬areParallel l₁ l₂) :
-    ∃! p : ℝ × ℝ, l₁.contains p ∧ l₂.contains p
-
 /-
 ## Part II: Line Arrangements
 
@@ -154,27 +151,11 @@ ordinary line (containing exactly 2 points).
 Dual version: Any arrangement of ≥ 3 non-concurrent lines has at least
 one ordinary point (where exactly 2 lines meet).
 -/
-axiom sylvester_gallai (A : LineArrangement) :
-    A.card ≥ 3 →
-    NoParallels A →
-    (∃ p₁ p₂ p₃ : ℝ × ℝ, ∃ l₁ l₂ l₃ ∈ A,
-      l₁.contains p₁ ∧ l₁.contains p₂ ∧ l₂.contains p₂ ∧ l₂.contains p₃ ∧
-      l₃.contains p₃ ∧ l₃.contains p₁) →
-    -- Not all lines through one point
-    ∃ p : ℝ × ℝ, IsOrdinaryPoint A p
-
 /--
 **Corollary: At least 3 ordinary points exist**
 For arrangements with d ≥ 3 lines and no parallels, there are at least
 3 ordinary points. (But they might not form a triangle!)
 -/
-axiom at_least_three_ordinary_points (A : LineArrangement) :
-    A.card ≥ 3 →
-    NoParallels A →
-    NoFourConcurrent A →
-    ∃ p₁ p₂ p₃ : ℝ × ℝ, p₁ ≠ p₂ ∧ p₂ ≠ p₃ ∧ p₁ ≠ p₃ ∧
-      IsOrdinaryPoint A p₁ ∧ IsOrdinaryPoint A p₂ ∧ IsOrdinaryPoint A p₃
-
 /-
 ## Part V: The Erdős Question and Its Disproof
 
@@ -188,25 +169,11 @@ concurrent lines, must there exist a Gallai triangle?
 
 Answer: NO!
 -/
-axiom erdos_question_false :
-    ∃ A : LineArrangement,
-      A.card ≥ 4 ∧
-      NoParallels A ∧
-      NoFourConcurrent A ∧
-      ¬HasGallaiTriangle A
-
 /--
 **Füredi-Palásti Construction (1984):**
 For d not divisible by 9, there exist d-line arrangements with no
 parallels, no 4-concurrent points, and no Gallai triangles.
 -/
-axiom furedi_palasti_1984 (d : ℕ) (hd : d ≥ 4) (h9 : ¬(9 ∣ d)) :
-    ∃ A : LineArrangement,
-      A.card = d ∧
-      NoParallels A ∧
-      NoFourConcurrent A ∧
-      ¬HasGallaiTriangle A
-
 /--
 **Escudero's Construction (2016):**
 For ALL d ≥ 4, there exist d-line arrangements with no parallels,
