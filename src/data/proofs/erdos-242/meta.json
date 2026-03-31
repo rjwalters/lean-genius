@@ -2,11 +2,11 @@
   "id": "erdos-242",
   "title": "Erdős Problem #242: The Erdős-Straus Conjecture",
   "slug": "erdos-242",
-  "description": "For every n > 2, can 4/n be expressed as a sum of three distinct unit fractions 1/x + 1/y + 1/z? This famous conjecture remains OPEN.",
+  "description": "For every n >= 2, can 4/n be expressed as a sum of three unit fractions 1/x + 1/y + 1/z? Proved for all n except primes in 6 residue classes mod 840. This famous conjecture remains OPEN.",
   "meta": {
     "author": "Erdős (1948), Straus",
     "sourceUrl": "https://erdosproblems.com/242",
-    "date": "2026-01-15",
+    "date": "2026-03-30",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos242Problem.lean",
     "tags": [
@@ -14,7 +14,9 @@
       "egyptian-fractions",
       "number-theory",
       "diophantine-equations",
-      "unit-fractions"
+      "unit-fractions",
+      "modular-arithmetic",
+      "sums-of-squares"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -27,136 +29,210 @@
       {
         "theorem": "Rat",
         "description": "Rational number type for unit fractions",
-        "module": "Mathlib.Data.Rat.Defs"
+        "module": "Mathlib.Data.Rat.Basic"
       },
       {
-        "theorem": "Filter.atTop",
-        "description": "Eventually quantifier for large n",
-        "module": "Mathlib.Order.Filter.Basic"
+        "theorem": "Nat.Prime.sq_add_sq",
+        "description": "Fermat's theorem: primes p = 1 mod 4 are sums of two squares",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
       },
       {
-        "theorem": "Set.ncard",
-        "description": "Cardinality for density statements",
-        "module": "Mathlib.Data.Set.Card"
+        "theorem": "Int.ModEq",
+        "description": "Modular equivalence for lattice parity arguments",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality and prime factorization for case analysis",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
       }
     ],
     "originalContributions": [
-      "Complete formalization of the Erdős-Straus conjecture",
-      "Verified concrete examples for n=3, 5, 7",
-      "Definition of Egyptian fraction representation",
-      "Connection to Schinzel's generalization",
-      "Summary of computational verification status"
+      "Full proof of ES for n = 0 mod 4, n = 3 mod 4, n = 2 mod 3, primes p = 5 mod 8",
+      "Conic (k,d) family method covering 23 of 29 residue classes mod 840",
+      "ED2 triple algebraic framework connecting Dyachenko lattice theory to unit fractions",
+      "Rectangle-hitting lemma for ED2-admissible lattice points",
+      "Scaling lemma reducing composites to primes via strong induction",
+      "Machine-checked proof that no small conic covers the 6 hard residues",
+      "Concrete examples for n=3, 5, 7"
     ],
-    "axiomCount": 5,
-    "lineCount": 161,
-    "assumptions": "5 axioms: four_fractions_suffice, erdos_straus_almost_all, computational_verification, and 2 more. See Lean source for complete statements."
+    "externalAttribution": "Proof structure adapted from github.com/Suro-One/auro-zera_Erdos-Straus_proof",
+    "axiomCount": 1,
+    "lineCount": 590,
+    "assumptions": "1 axiom: dyachenko_box (Dyachenko's Theorem 9.21, arXiv:2511.07465) asserting the existence of ED2 lattice box parameters for primes p = 1 mod 4. Used only for 6 hard residue classes mod 840: {1, 121, 169, 289, 361, 529}. All other cases fully proved."
   },
   "overview": {
-    "historicalContext": "The Erdős-Straus conjecture was posed by Paul Erdős and Ernst Straus in 1948. It asks whether every fraction 4/n with n > 2 can be written as a sum of exactly three unit fractions with distinct denominators.\n\nThis is one of the most famous unsolved problems in elementary number theory. Despite its simple statement, it has resisted proof for over 75 years. The conjecture has been verified computationally for all n up to 10^17 (over 100 quadrillion values), yet no general proof exists.\n\nThe problem is related to ancient Egyptian mathematics, where fractions were always written as sums of distinct unit fractions. The conjecture essentially asks: can the Egyptians always express 4/n using exactly three unit fractions?",
-    "problemStatement": "**Conjecture (Erdős-Straus, 1948)**: For every integer $n > 2$, there exist distinct positive integers $x < y < z$ such that\n$$\\frac{4}{n} = \\frac{1}{x} + \\frac{1}{y} + \\frac{1}{z}.$$\n\n**Status:** OPEN\n\n**Verified:** For all $n \\leq 10^{17}$ (Swett, and others)\n\n**Examples:**\n- $4/3 = 1/1 + 1/4 + 1/12$\n- $4/5 = 1/2 + 1/4 + 1/20$\n- $4/7 = 1/2 + 1/15 + 1/210$",
-    "text": "For every n > 2, can 4/n be expressed as a sum of three distinct unit fractions 1/x + 1/y + 1/z? This famous conjecture remains OPEN.",
-    "proofStrategy": "We formalize the conjecture and known partial results:\n\n1. **ErdosStrausConjecture**: The main statement as a universal quantifier\n2. **IsEgyptianFractionRep**: General Egyptian fraction representation\n3. **Concrete examples**: Verified for n=3, 5, 7 using norm_num\n4. **Partial results axiomatized**: Four fractions suffice, density 1, computational bounds\n5. **Schinzel's generalization**: For any a, a/n has a representation for large n\n\nThe conjecture itself remains axiomatized as open.",
+    "historicalContext": "The Erdős-Straus conjecture was posed by Paul Erdős and Ernst Straus in 1948. It asks whether every fraction 4/n with n >= 2 can be written as a sum of exactly three unit fractions.\n\nThis is one of the most famous unsolved problems in elementary number theory. Despite its simple statement, it has resisted proof for over 75 years. The conjecture has been verified computationally for all n up to 10^17 (over 100 quadrillion values), yet no general proof exists.\n\nThe problem is related to ancient Egyptian mathematics, where fractions were always written as sums of distinct unit fractions.",
+    "problemStatement": "**Conjecture (Erdős-Straus, 1948)**: For every integer $n \\geq 2$, there exist positive integers $x, y, z$ such that\n$$\\frac{4}{n} = \\frac{1}{x} + \\frac{1}{y} + \\frac{1}{z}.$$\n\n**Status:** OPEN\n\n**Verified:** For all $n \\leq 10^{17}$ (Swett, and others)\n\n**Examples:**\n- $4/3 = 1/1 + 1/4 + 1/12$\n- $4/5 = 1/2 + 1/4 + 1/20$\n- $4/7 = 1/2 + 1/15 + 1/210$",
+    "text": "For every n >= 2, can 4/n be expressed as a sum of three unit fractions? This formalization proves the conjecture for all n except primes in 6 residue classes mod 840, which require an axiomatized lattice existence result.",
+    "proofStrategy": "The proof proceeds by strong induction on n with a four-way case split:\n\n1. **n = 0 mod 4**: Direct algebraic construction 4/(4k) = 1/(2k) + 1/(3k) + 1/(6k)\n2. **n = 2 mod 4**: Reduce to n/2 via the scaling lemma ES(a) -> ES(a*b)\n3. **n prime**: Exhaustive case analysis by residue class:\n   - p = 3 mod 4, p = 2 mod 3, p = 5 mod 8: explicit constructions\n   - p = 1 mod 24: split into 29 residue classes mod 840\n     - 23 classes covered by the conic (k,d) family (fully proved)\n     - 6 hard classes {1,121,169,289,361,529} via Fermat two-squares + Dyachenko ED2 (axiomatized)\n4. **n composite**: Factor out smallest prime, apply scaling + induction\n\nThe only axiom is Dyachenko's lattice box existence theorem for primes p = 1 mod 4.",
     "keyInsights": [
-      "**Unit fractions**: A unit fraction has numerator 1 (like 1/2, 1/7). The Egyptians used only these.",
-      "**The difficulty**: The 'distinct' requirement is crucial. Without it, 4/n = 1/n + 1/n + 1/n + 1/n is trivial.",
-      "**Why 4?**: The case a=3 (3/n as 3 unit fractions) is proved. The case a=4 remains open.",
-      "**Computational evidence**: 10^17 verified cases with no counterexample, yet no proof.",
-      "**Schinzel's generalization**: For any a, a/n works for sufficiently large n."
+      "**Conic family method**: For k >= 2 and divisor d | k^2, if (4k-1) | (p + 4d) then ES(p). This single identity handles 23 of 29 residue classes.",
+      "**The 6 hard residues**: p % 840 in {1, 121, 169, 289, 361, 529} resist all small conic families. These are exactly the primes = 1 mod 4 not covered by conics with k in {2, 4, 9}.",
+      "**Fermat bridge**: For the hard cases, Fermat's sum-of-two-squares theorem (p = 1 mod 4 implies p = a^2 + b^2) connects to Dyachenko's ED2 lattice construction.",
+      "**Scaling reduces to primes**: If ES(p) for all primes p, then ES(n) for all n >= 2. Composites are handled by factoring and induction.",
+      "**Computational evidence**: 10^17 verified cases with no counterexample, yet no proof for the 6 hard classes."
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Number theory (primes, divisibility, modular arithmetic)",
+      "Fermat's theorem on sums of two squares",
+      "Rational arithmetic and unit fractions"
     ]
   },
   "sections": [
     {
       "id": "header",
-      "title": "Problem Overview",
+      "title": "Problem Overview and Attribution",
       "startLine": 1,
-      "endLine": 27,
-      "summary": "Problem statement, known results, and references",
-      "mathContext": "Mathematical content: Problem statement, known results, and references"
+      "endLine": 47,
+      "summary": "Problem statement, known results, references, and attribution to external formalization",
+      "mathContext": "Header documentation including the conjecture statement and proof strategy overview"
     },
     {
-      "id": "egyptian-fraction",
-      "title": "Egyptian Fraction Definition",
-      "startLine": 35,
-      "endLine": 44,
-      "summary": "General definition of Egyptian fraction representation",
-      "mathContext": "Formal definition: General definition of Egyptian fraction representation"
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 48,
+      "endLine": 60,
+      "summary": "ES (Erdős-Straus property) and HasNormSplit (sum of two nonzero squares)",
+      "mathContext": "ES(n) := exists x y z > 0, 4/n = 1/x + 1/y + 1/z. HasNormSplit(n) := exists a b != 0, n = a^2 + b^2."
     },
     {
-      "id": "conjecture",
-      "title": "The Erdős-Straus Conjecture",
-      "startLine": 45,
-      "endLine": 62,
-      "summary": "Formal statement of the main conjecture",
-      "mathContext": "Mathematical content: Formal statement of the main conjecture"
+      "id": "fermat",
+      "title": "Fermat's Two-Squares Theorem",
+      "startLine": 61,
+      "endLine": 85,
+      "summary": "Every prime p = 1 mod 4 is a sum of two nonzero squares [PROVED]",
+      "mathContext": "Uses Mathlib's Nat.Prime.sq_add_sq, then verifies both summands are nonzero via primality contradiction"
     },
     {
-      "id": "partial-results",
-      "title": "Known Partial Results",
-      "startLine": 63,
-      "endLine": 93,
-      "summary": "Four fractions suffice, density results, computational verification",
-      "mathContext": "Mathematical content: Four fractions suffice, density results, computational verification"
+      "id": "ed2-structure",
+      "title": "Dyachenko ED2 Triple",
+      "startLine": 86,
+      "endLine": 115,
+      "summary": "Structure encoding ED2 decomposition parameters and algebraic bound [PROVED]",
+      "mathContext": "ED2Triple captures delta, b, c satisfying (4b-1)(4c-1) = 4*p*delta + 1 with divisibility and bound conditions"
     },
     {
-      "id": "specific-cases",
-      "title": "Specific Cases",
-      "startLine": 94,
-      "endLine": 113,
-      "summary": "Results for specific residue classes mod 4",
-      "mathContext": "Mathematical content: Results for specific residue classes mod 4"
+      "id": "lattice",
+      "title": "Lattice Infrastructure and Dyachenko Axiom",
+      "startLine": 116,
+      "endLine": 155,
+      "summary": "Rectangle-hitting lemma [PROVED] and Dyachenko box existence [AXIOMATIZED]",
+      "mathContext": "The lattice L(d') has index 2d' in Z^2. Rectangle lemma proved; Dyachenko's box theorem axiomatized from arXiv:2511.07465"
     },
     {
-      "id": "schinzel",
-      "title": "Schinzel's Generalization",
-      "startLine": 114,
-      "endLine": 137,
-      "summary": "Generalization to a/n for arbitrary a",
-      "mathContext": "Mathematical content: Generalization to a/n for arbitrary a"
+      "id": "ed2-construction",
+      "title": "ED2 Triple Construction and Algebraic Correctness",
+      "startLine": 156,
+      "endLine": 225,
+      "summary": "Constructing witnesses from Dyachenko box [AXIOM-DEP] and proving 4/p = 1/A + 1/(bp) + 1/(cp) [PROVED]",
+      "mathContext": "The algebraic identity proof is axiom-free; only the witness existence depends on dyachenko_box"
+    },
+    {
+      "id": "arithmetic-helpers",
+      "title": "Arithmetic Helpers",
+      "startLine": 226,
+      "endLine": 245,
+      "summary": "Modular arithmetic lemmas: pmod_dvd and coprime_sq_4k1 [PROVED]",
+      "mathContext": "Key helper: gcd(k^2, 4k-1) = 1, used to ensure conic family denominators are well-formed"
+    },
+    {
+      "id": "conic-family",
+      "title": "Conic (k,d) Family Method",
+      "startLine": 246,
+      "endLine": 340,
+      "summary": "Main workhorse theorem covering most residue classes, plus 5 specializations [PROVED]",
+      "mathContext": "For k >= 2 and d | k^2, if (4k-1) | (p + 4d) then ES(p). Specializations: k=2 with d=1,2,4 and k=4 with d=2,8"
+    },
+    {
+      "id": "easy-cases",
+      "title": "Explicit Families for Special Residue Classes",
+      "startLine": 341,
+      "endLine": 380,
+      "summary": "Direct constructions for n = 0 mod 4, n = 3 mod 4, n = 2 mod 3, p = 5 mod 8 [PROVED]",
+      "mathContext": "Four explicit algebraic decompositions handling the majority of natural numbers"
+    },
+    {
+      "id": "hard-residues",
+      "title": "Hard Residues mod 840",
+      "startLine": 381,
+      "endLine": 405,
+      "summary": "The 6 hard residue classes handled via Fermat + Dyachenko [AXIOM-DEPENDENT]",
+      "mathContext": "p % 840 in {1, 121, 169, 289, 361, 529} -> HasNormSplit -> ES via ED2. Plus machine-checked proof no small conic works."
+    },
+    {
+      "id": "conic-witnesses",
+      "title": "23 Conic Witnesses for Non-Hard Residues",
+      "startLine": 406,
+      "endLine": 455,
+      "summary": "Each non-hard residue class mod 840 dispatched to a specific conic specialization [PROVED]",
+      "mathContext": "23 theorems, each reducing a specific residue to ES_k2_d1/d2/d4 or ES_k4_d2/d8"
+    },
+    {
+      "id": "mod24-case-split",
+      "title": "Primes p = 1 mod 24: Full Case Split",
+      "startLine": 456,
+      "endLine": 495,
+      "summary": "All 29 residues mod 840 covered: 23 by conics [PROVED], 6 by Dyachenko [AXIOM-DEP]",
+      "mathContext": "Uses interval_cases to enumerate all valid residues, then dispatches to appropriate theorem"
+    },
+    {
+      "id": "es-prime",
+      "title": "ES for All Primes",
+      "startLine": 496,
+      "endLine": 520,
+      "summary": "Case split on p mod 8 reducing to easy families or the mod-24 analysis",
+      "mathContext": "p=2: direct. p=3,7 mod 8: mod3_mod4. p=5 mod 8: explicit. p=1 mod 8: split on p mod 24."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Scaling and Main Theorem",
+      "startLine": 521,
+      "endLine": 580,
+      "summary": "ES_scale [PROVED] and ErdosStraus_conjecture by strong induction [AXIOMATIZED]",
+      "mathContext": "Strong induction: 4|n direct, 2 mod 4 halve, prime by ES_prime, composite by minFac + scaling"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
-      "startLine": 138,
-      "endLine": 160,
-      "summary": "Verified examples for n=3, 5, 7",
-      "mathContext": "Mathematical content: Verified examples for n=3, 5, 7"
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 161,
-      "endLine": 186,
-      "summary": "Current status and summary theorem",
-      "mathContext": "Verified: Current status and summary theorem"
+      "startLine": 581,
+      "endLine": 590,
+      "summary": "Verified examples for n=3, 5, 7 via norm_num [PROVED]",
+      "mathContext": "4/3 = 1/1 + 1/4 + 1/12, 4/5 = 1/2 + 1/4 + 1/20, 4/7 = 1/2 + 1/15 + 1/210"
     }
   ],
   "conclusion": {
-    "summary": "We formalize the Erdős-Straus conjecture, one of the most famous open problems in elementary number theory. The conjecture that 4/n can always be written as a sum of three distinct unit fractions remains unproved despite 75 years of effort and computational verification up to 10^17.",
-    "implications": "**Theoretical Significance**: The problem illustrates how simple-sounding questions about integers can be extremely difficult.\n\nA proof would advance our understanding of Diophantine equations and Egyptian fraction decompositions. The extensive computational verification without proof shows the limits of empirical evidence in mathematics.",
+    "summary": "We formalize the Erdős-Straus conjecture with substantive partial results. The conjecture is fully proved for all n except primes in 6 residue classes mod 840 (p % 840 in {1, 121, 169, 289, 361, 529}), which require Dyachenko's axiomatized lattice existence theorem. This covers the vast majority of cases with machine-checked proofs.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates the precise boundary of what is known about the Erdős-Straus conjecture. The proof architecture reveals that the difficulty concentrates in exactly 6 residue classes mod 840, all corresponding to primes p = 1 mod 4 where conic families fail.\n\nThe conic (k,d) family method and ED2 triple framework provide a clear path: proving Dyachenko's box theorem would complete the proof.",
     "openQuestions": [
+      "Can Dyachenko's box theorem (arXiv:2511.07465, Theorem 9.21) be formally verified?",
       "Is the Erdős-Straus conjecture true for all n > 2?",
-      "Are there infinitely many n requiring the maximum denominator z > n²?",
-      "Does Schinzel's generalization hold for all a ≥ 1?",
+      "Are there alternative approaches to the 6 hard residue classes that avoid lattice arguments?",
       "What is the growth rate of the smallest required z as a function of n?"
     ]
   },
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib.Tactic.Ring",
+      "Mathlib.Tactic.Linarith",
+      "Mathlib.Tactic.FieldSimp",
+      "Mathlib.Tactic.Positivity",
+      "Mathlib.Tactic.Omega",
+      "Mathlib.Tactic.NormNum",
+      "Mathlib.Tactic.IntervalCases",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Data.ZMod.Basic"
     ],
-    "opens": [
-      "Nat",
-      "Filter"
-    ],
+    "opens": [],
     "namespace": "Erdos242",
-    "lineCount": 161,
-    "axiomCount": 5,
-    "theoremCount": 5,
-    "definitionCount": 3
+    "lineCount": 590,
+    "axiomCount": 1,
+    "theoremCount": 50,
+    "definitionCount": 5
   },
   "crossReferences": [
     {
@@ -186,6 +262,26 @@
       "year": "2004",
       "edition": "3rd",
       "note": "Standard reference for Egyptian fraction unsolved problems"
+    },
+    {
+      "key": "Dy25",
+      "authors": [
+        "E. Dyachenko"
+      ],
+      "title": "Constructive Proofs of the Erdős-Straus Conjecture for Primes p = 1 (mod 4)",
+      "venue": "arXiv:2511.07465",
+      "year": "2025",
+      "note": "Source of the axiomatized lattice box existence theorem (Theorem 9.21)"
+    },
+    {
+      "key": "AZ25",
+      "authors": [
+        "Suro-One"
+      ],
+      "title": "auro-zera Erdős-Straus Proof (Lean 4 formalization)",
+      "venue": "GitHub",
+      "year": "2025",
+      "note": "External formalization adapted for this entry: github.com/Suro-One/auro-zera_Erdos-Straus_proof"
     }
   ]
 }
