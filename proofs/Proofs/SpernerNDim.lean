@@ -33,12 +33,6 @@ open Finset BigOperators
 -- SECTION I: ZMod 2 Parity Helpers
 -- ============================================================
 
-private lemma zmod2_add_self (a : ZMod 2) : a + a = 0 := by
-  have h2 : (2 : ZMod 2) = 0 := by decide
-  calc a + a = 2 * a := by ring
-    _ = 0 * a := by rw [h2]
-    _ = 0 := by ring
-
 private lemma odd_of_zmod2_one (m : ℕ) (h : (m : ZMod 2) = 1) : Odd m := by
   rw [Nat.odd_iff]
   have hval := ZMod.val_natCast (n := 2) m
