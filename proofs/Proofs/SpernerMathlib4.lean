@@ -138,20 +138,18 @@ private lemma door_filter_empty_of_missing_color (d : ℕ)
   intro k _; push_neg
   exact ⟨j₀, fun i _ h => hmiss ⟨i, h⟩⟩
 
-/-- When `f : Fin (d+1) → Fin d` is surjective, the door
-positions are exactly the two elements of the unique fiber of
-size 2 (pigeonhole). In particular, the door count is even. -/
-private lemma even_card_doors_of_surjective (d : ℕ)
+/-- **Pigeonhole for one extra element**: a surjection
+`Fin (d+1) → Fin d` has exactly one fiber of size 2, with
+all other fibers of size 1. -/
+private lemma surjection_unique_dup_fiber (d : ℕ)
     (f : Fin (d + 1) → Fin d)
     (hcov : ∀ j : Fin d, ∃ i, f i = j) :
-    Even (univ.filter (fun k : Fin (d + 1) =>
-      ∀ j : Fin d,
-        ∃ i : Fin (d + 1), i ≠ k ∧ f i = j)).card := by
-  -- Step 1: Each fiber has ≥ 1 element (surjectivity).
-  -- Step 2: Total fiber sizes = d + 1, excess over 1 sums
-  --   to exactly 1, so exactly one fiber has size 2.
-  -- Step 3: The two elements of that fiber are precisely
-  --   the two door positions.
+    ∃ c₀ : Fin d,
+      (univ.filter
+        (fun i : Fin (d + 1) => f i = c₀)).card = 2 ∧
+      ∀ c ≠ c₀, (univ.filter
+        (fun i : Fin (d + 1) => f i = c)).card =
+        1 := by
   have hcard_ge : ∀ c : Fin d,
       (univ.filter
         (fun i : Fin (d + 1) => f i = c)).card ≥ 1 := by
@@ -195,66 +193,71 @@ private lemma even_card_doors_of_surjective (d : ℕ)
       Finset.sum_const, card_univ, Fintype.card_fin,
       htotal, smul_eq_mul] at this
     omega
-  -- Unique duplicate fiber: exactly one color c₀ has
-  -- fiber of size 2; all others have size 1.
-  obtain ⟨c₀, hc₀_eq, hc₀_rest⟩ : ∃ c₀ : Fin d,
+  have : ∃ c₀ ∈ univ,
+      0 < (univ.filter
+        (fun i : Fin (d + 1) => f i = c₀)).card -
+        1 := by
+    by_contra hall; push_neg at hall
+    have h0 := fun c =>
+      Nat.eq_zero_of_le_zero (hall c (mem_univ _))
+    simp [h0] at hexcess
+  obtain ⟨c₀, _, hc₀⟩ := this
+  refine ⟨c₀, ?_, ?_⟩
+  · by_contra hne2
+    have hge2 :
+        (univ.filter
+          (fun i : Fin (d + 1) =>
+            f i = c₀)).card - 1 ≥ 2 := by
+      omega
+    let F : Fin d → ℕ := fun c =>
       (univ.filter
-        (fun i : Fin (d + 1) => f i = c₀)).card = 2 ∧
-      ∀ c ≠ c₀, (univ.filter
-        (fun i : Fin (d + 1) => f i = c)).card = 1 := by
-    have : ∃ c₀ ∈ univ,
-        0 < (univ.filter
-          (fun i : Fin (d + 1) => f i = c₀)).card -
-          1 := by
-      by_contra hall; push_neg at hall
-      have h0 := fun c =>
-        Nat.eq_zero_of_le_zero (hall c (mem_univ _))
-      simp [h0] at hexcess
-    obtain ⟨c₀, _, hc₀⟩ := this
-    refine ⟨c₀, ?_, ?_⟩
-    · by_contra hne2
-      have hge2 :
-          (univ.filter
-            (fun i : Fin (d + 1) =>
-              f i = c₀)).card - 1 ≥ 2 := by
-        omega
-      let F : Fin d → ℕ := fun c =>
+        (fun i : Fin (d + 1) => f i = c)).card - 1
+    have hFc₀ : F c₀ ≥ 2 := hge2
+    have hle : F c₀ ≤ ∑ x : Fin d, F x :=
+      single_le_sum
+        (fun _ _ => Nat.zero_le _) (mem_univ c₀)
+    have hexcess' : ∑ c : Fin d, F c = 1 := hexcess
+    omega
+  · intro c hc; by_contra hne1
+    have hge1_card :
         (univ.filter
-          (fun i : Fin (d + 1) => f i = c)).card - 1
-      have hFc₀ : F c₀ ≥ 2 := hge2
-      have hle : F c₀ ≤ ∑ x : Fin d, F x :=
-        single_le_sum
-          (fun _ _ => Nat.zero_le _) (mem_univ c₀)
-      have hexcess' : ∑ c : Fin d, F c = 1 := hexcess
-      omega
-    · intro c hc; by_contra hne1
-      have hge1_card :
-          (univ.filter
-            (fun i : Fin (d + 1) =>
-              f i = c)).card ≥ 2 := by
-        have := hcard_ge c; omega
-      have hge1 :
-          (univ.filter
-            (fun i : Fin (d + 1) =>
-              f i = c)).card - 1 ≥ 1 := by
-        omega
-      let F : Fin d → ℕ := fun c =>
+          (fun i : Fin (d + 1) =>
+            f i = c)).card ≥ 2 := by
+      have := hcard_ge c; omega
+    have hge1 :
         (univ.filter
-          (fun i : Fin (d + 1) => f i = c)).card - 1
-      have hFc₀ : F c₀ ≥ 1 := by
-        have := hc₀; show _ - 1 ≥ 1; omega
-      have hFc : F c ≥ 1 := hge1
-      have h₁ : F c₀ ≤ ∑ x : Fin d, F x :=
-        single_le_sum
-          (fun _ _ => Nat.zero_le _) (mem_univ c₀)
-      have h₂ : F c ≤ ∑ x : Fin d, F x :=
-        single_le_sum
-          (fun _ _ => Nat.zero_le _) (mem_univ c)
-      have hsum := sum_le_sum_of_subset (f := F)
-        (subset_univ ({c₀, c} : Finset (Fin d)))
-      rw [sum_pair hc.symm] at hsum
-      have hexcess' : ∑ c : Fin d, F c = 1 := hexcess
+          (fun i : Fin (d + 1) =>
+            f i = c)).card - 1 ≥ 1 := by
       omega
+    let F : Fin d → ℕ := fun c =>
+      (univ.filter
+        (fun i : Fin (d + 1) => f i = c)).card - 1
+    have hFc₀ : F c₀ ≥ 1 := by
+      have := hc₀; show _ - 1 ≥ 1; omega
+    have hFc : F c ≥ 1 := hge1
+    have h₁ : F c₀ ≤ ∑ x : Fin d, F x :=
+      single_le_sum
+        (fun _ _ => Nat.zero_le _) (mem_univ c₀)
+    have h₂ : F c ≤ ∑ x : Fin d, F x :=
+      single_le_sum
+        (fun _ _ => Nat.zero_le _) (mem_univ c)
+    have hsum := sum_le_sum_of_subset (f := F)
+      (subset_univ ({c₀, c} : Finset (Fin d)))
+    rw [sum_pair hc.symm] at hsum
+    have hexcess' : ∑ c : Fin d, F c = 1 := hexcess
+    omega
+
+/-- When `f : Fin (d+1) → Fin d` is surjective, the door
+positions are exactly the two elements of the unique fiber of
+size 2. In particular, the door count is even. -/
+private lemma even_card_doors_of_surjective (d : ℕ)
+    (f : Fin (d + 1) → Fin d)
+    (hcov : ∀ j : Fin d, ∃ i, f i = j) :
+    Even (univ.filter (fun k : Fin (d + 1) =>
+      ∀ j : Fin d,
+        ∃ i : Fin (d + 1), i ≠ k ∧ f i = j)).card := by
+  obtain ⟨c₀, hc₀_eq, hc₀_rest⟩ :=
+    surjection_unique_dup_fiber d f hcov
   obtain ⟨k₁, k₂, hk₁, hk₂, hne12, hpair⟩ :
       ∃ k₁ k₂ : Fin (d + 1),
         f k₁ = c₀ ∧ f k₂ = c₀ ∧ k₁ ≠ k₂ ∧
@@ -314,9 +317,128 @@ private lemma even_card_doors_of_surjective (d : ℕ)
           by rw [hj_c0, hk₁]⟩
     · exact ⟨i₀, hik, hi₀⟩
 
+/-- A bijection `Fin (d+1) → Fin (d+1)` has exactly one door
+position: the unique preimage of the top color `d`. -/
+private lemma door_count_of_surj (d : ℕ)
+    (f : Fin (d + 1) → Fin (d + 1))
+    (hsurj : Function.Surjective f) :
+    (univ.filter (fun k : Fin (d + 1) =>
+      ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
+        f i = ⟨j.val, by omega⟩)).card = 1 := by
+  have hinj :=
+    Finite.injective_iff_surjective.mpr hsurj
+  obtain ⟨k₀, hk₀⟩ := hsurj ⟨d, by omega⟩
+  have huniq : ∀ k, f k = ⟨d, by omega⟩ → k = k₀ :=
+    fun k hk => hinj (hk.trans hk₀.symm)
+  suffices hset : univ.filter
+      (fun k : Fin (d + 1) =>
+        ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
+          f i = ⟨j.val, by omega⟩) = {k₀} by
+    rw [hset, card_singleton]
+  ext k
+  simp only [mem_filter, mem_univ, true_and,
+    mem_singleton]
+  constructor
+  · intro hk; by_contra hne
+    have hfk_ne : f k ≠ ⟨d, by omega⟩ :=
+      fun h => hne (huniq k h)
+    have hfk_val_ne : (f k).val ≠ d :=
+      fun h => hfk_ne (Fin.ext h)
+    have hfk_lt : (f k).val < d := by
+      have := (f k).isLt; omega
+    obtain ⟨i, hi_ne, hi_eq⟩ :=
+      hk ⟨(f k).val, hfk_lt⟩
+    have hval : (f i).val = (f k).val := by
+      have h1 := congr_arg Fin.val hi_eq
+      simp at h1; exact h1
+    exact hi_ne (hinj (Fin.ext hval))
+  · intro hk; subst hk; intro ⟨j, hj⟩
+    obtain ⟨i, hi⟩ := hsurj ⟨j, by omega⟩
+    exact ⟨i,
+      fun hik => by
+        subst hik; rw [hk₀] at hi
+        exact absurd hi (by simp; omega),
+      by rw [hi]⟩
+
+/-- A non-surjection `Fin (d+1) → Fin (d+1)` has an even
+number of door positions (0 if a lower color is missing,
+or paired via the duplicated fiber if no top color appears
+but the truncation is surjective). -/
+private lemma door_count_even_of_not_surj (d : ℕ)
+    (f : Fin (d + 1) → Fin (d + 1))
+    (hnsurj : ¬Function.Surjective f) :
+    Even (univ.filter (fun k : Fin (d + 1) =>
+      ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
+        f i = ⟨j.val, by omega⟩)).card := by
+  by_cases hd_app : ∃ i, f i = ⟨d, by omega⟩
+  · -- Top color d has a preimage but f is not surjective,
+    -- so some lower color j₀ is missing. No doors.
+    have ⟨j₀, hj₀⟩ : ∃ j : Fin d,
+        ¬∃ i, f i =
+          ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩ := by
+      by_contra hall; push_neg at hall; apply hnsurj
+      intro ⟨y, hy⟩; by_cases hyd : y = d
+      · subst hyd; exact hd_app
+      · exact hall ⟨y, by omega⟩
+    rw [Finset.card_eq_zero.mpr
+      (door_filter_empty_of_missing_color d f j₀ hj₀)]
+    exact ⟨0, by omega⟩
+  · -- Top color d never appears. Truncate to
+    -- g : Fin (d+1) → Fin d.
+    push_neg at hd_app
+    have hlt : ∀ i, (f i).val < d := by
+      intro i; have := (f i).isLt
+      by_contra h; push_neg at h
+      have hlt2 := (f i).isLt
+      have : (f i).val = d := by omega
+      exact hd_app i (Fin.ext this)
+    let g : Fin (d + 1) → Fin d :=
+      fun i => ⟨(f i).val, hlt i⟩
+    by_cases hgsurj : Function.Surjective g
+    · -- g surjective: doors pair via the duplicated fiber.
+      have heven :=
+        even_card_doors_of_surjective d g hgsurj
+      suffices heq : univ.filter
+          (fun k : Fin (d + 1) =>
+            ∀ j : Fin d,
+              ∃ i : Fin (d + 1), i ≠ k ∧
+                f i = ⟨j.val, by omega⟩) =
+          univ.filter (fun k : Fin (d + 1) =>
+            ∀ j : Fin d,
+              ∃ i : Fin (d + 1),
+                i ≠ k ∧ g i = j) by
+        rw [heq]; exact heven
+      ext k
+      simp only [mem_filter, mem_univ, true_and]
+      constructor <;> intro h j
+      · obtain ⟨i, hi, hfi⟩ := h j
+        exact ⟨i, hi, Fin.ext (by
+          simp [g]
+          exact congr_arg Fin.val hfi)⟩
+      · obtain ⟨i, hi, hgi⟩ := h j
+        exact ⟨i, hi, Fin.ext (by
+          have := congr_arg Fin.val hgi
+          simp [g] at this; exact this)⟩
+    · -- g not surjective: some lower color missing. No doors.
+      have ⟨j₀, hj₀⟩ :
+          ∃ j : Fin d, ¬∃ i, g i = j := by
+        by_contra h; push_neg at h; exact hgsurj h
+      suffices h0 : (univ.filter
+          (fun k : Fin (d + 1) =>
+            ∀ j : Fin d,
+              ∃ i : Fin (d + 1), i ≠ k ∧
+                f i = ⟨j.val, by omega⟩)).card =
+          0 by rw [h0]; exact ⟨0, by omega⟩
+      rw [Finset.card_eq_zero, filter_eq_empty_iff]
+      intro k _; push_neg
+      exact ⟨j₀, fun i _ h =>
+        hj₀ ⟨i, Fin.ext (by
+          have := congr_arg Fin.val h
+          simp at this; exact this)⟩⟩
+
 /-- **Door count parity**: the number of door positions of a
 coloring `f : Fin (d+1) → Fin (d+1)` has parity equal to 1
-if `f` is surjective, and 0 otherwise. -/
+if `f` is surjective (bijective), and 0 otherwise. -/
 theorem door_count_parity (d : ℕ)
     (f : Fin (d + 1) → Fin (d + 1)) :
     (univ.filter (fun k : Fin (d + 1) =>
@@ -324,113 +446,10 @@ theorem door_count_parity (d : ℕ)
         f i = ⟨j.val, by omega⟩)).card % 2 =
     if Function.Surjective f then 1 else 0 := by
   by_cases hsurj : Function.Surjective f
-  · -- Case 1: f is surjective (bijective).
-    -- The unique preimage of d is the sole door position.
-    rw [if_pos hsurj]
-    have hinj :=
-      Finite.injective_iff_surjective.mpr hsurj
-    obtain ⟨k₀, hk₀⟩ := hsurj ⟨d, by omega⟩
-    have huniq : ∀ k, f k = ⟨d, by omega⟩ → k = k₀ :=
-      fun k hk => hinj (hk.trans hk₀.symm)
-    suffices hset : univ.filter
-        (fun k : Fin (d + 1) =>
-          ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
-            f i = ⟨j.val, by omega⟩) = {k₀} by
-      rw [hset, card_singleton]
-    ext k
-    simp only [mem_filter, mem_univ, true_and,
-      mem_singleton]
-    constructor
-    · intro hk; by_contra hne
-      have hfk_ne : f k ≠ ⟨d, by omega⟩ :=
-        fun h => hne (huniq k h)
-      have hfk_val_ne : (f k).val ≠ d :=
-        fun h => hfk_ne (Fin.ext h)
-      have hfk_lt : (f k).val < d := by
-        have := (f k).isLt; omega
-      obtain ⟨i, hi_ne, hi_eq⟩ :=
-        hk ⟨(f k).val, hfk_lt⟩
-      have hval : (f i).val = (f k).val := by
-        have h1 := congr_arg Fin.val hi_eq
-        simp at h1; exact h1
-      exact hi_ne (hinj (Fin.ext hval))
-    · intro hk; subst hk; intro ⟨j, hj⟩
-      obtain ⟨i, hi⟩ := hsurj ⟨j, by omega⟩
-      exact ⟨i,
-        fun hik => by
-          subst hik; rw [hk₀] at hi
-          exact absurd hi (by simp; omega),
-        by rw [hi]⟩
+  · rw [if_pos hsurj, door_count_of_surj d f hsurj]
   · rw [if_neg hsurj]
-    by_cases hd_app : ∃ i, f i = ⟨d, by omega⟩
-    · -- Case 2: Not surjective, but top color d has a
-      -- preimage. Some lower color j₀ must be missing,
-      -- so no door positions exist.
-      have ⟨j₀, hj₀⟩ : ∃ j : Fin d,
-          ¬∃ i, f i =
-            ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩ := by
-        by_contra hall; push_neg at hall; apply hsurj
-        intro ⟨y, hy⟩; by_cases hyd : y = d
-        · subst hyd; exact hd_app
-        · exact hall ⟨y, by omega⟩
-      rw [Finset.card_eq_zero.mpr
-        (door_filter_empty_of_missing_color d f j₀ hj₀)]
-    · -- Case 3: Top color d never appears. Truncate f to
-      -- g : Fin (d+1) → Fin d and analyze g's surjectivity.
-      push_neg at hd_app
-      have hlt : ∀ i, (f i).val < d := by
-        intro i; have := (f i).isLt
-        by_contra h; push_neg at h
-        have hlt2 := (f i).isLt
-        have : (f i).val = d := by omega
-        exact hd_app i (Fin.ext this)
-      let g : Fin (d + 1) → Fin d :=
-        fun i => ⟨(f i).val, hlt i⟩
-      by_cases hgsurj : Function.Surjective g
-      · -- Case 3a: g is surjective. By pigeonhole, g has
-        -- a unique duplicated fiber, giving two door
-        -- positions (even count).
-        have heven :=
-          even_card_doors_of_surjective d g hgsurj
-        suffices heq : univ.filter
-            (fun k : Fin (d + 1) =>
-              ∀ j : Fin d,
-                ∃ i : Fin (d + 1), i ≠ k ∧
-                  f i = ⟨j.val, by omega⟩) =
-            univ.filter (fun k : Fin (d + 1) =>
-              ∀ j : Fin d,
-                ∃ i : Fin (d + 1),
-                  i ≠ k ∧ g i = j) by
-          rw [heq]; exact Nat.even_iff.mp heven
-        ext k
-        simp only [mem_filter, mem_univ, true_and]
-        constructor <;> intro h j
-        · obtain ⟨i, hi, hfi⟩ := h j
-          exact ⟨i, hi, Fin.ext (by
-            simp [g]
-            exact congr_arg Fin.val hfi)⟩
-        · obtain ⟨i, hi, hgi⟩ := h j
-          exact ⟨i, hi, Fin.ext (by
-            have := congr_arg Fin.val hgi
-            simp [g] at this; exact this)⟩
-      · -- Case 3b: g is not surjective. Some lower color
-        -- j₀ has no preimage under g (hence under f),
-        -- so no door positions exist.
-        have ⟨j₀, hj₀⟩ :
-            ∃ j : Fin d, ¬∃ i, g i = j := by
-          by_contra h; push_neg at h; exact hgsurj h
-        suffices h0 : (univ.filter
-            (fun k : Fin (d + 1) =>
-              ∀ j : Fin d,
-                ∃ i : Fin (d + 1), i ≠ k ∧
-                  f i = ⟨j.val, by omega⟩)).card =
-            0 by rw [h0]
-        rw [Finset.card_eq_zero, filter_eq_empty_iff]
-        intro k _; push_neg
-        exact ⟨j₀, fun i _ h =>
-          hj₀ ⟨i, Fin.ext (by
-            have := congr_arg Fin.val h
-            simp at this; exact this)⟩⟩
+    exact Nat.even_iff.mp
+      (door_count_even_of_not_surj d f hsurj)
 
 end DoorCountParity
 
@@ -448,11 +467,6 @@ structure CellComplex (V : Type*) [DecidableEq V]
   cellFintype : Fintype Cell
   /-- The `d + 1` vertices of each cell. -/
   vertex : Cell → Fin (d + 1) → V
-  /-- Vertices of each cell are distinct. Not used in the
-  abstract parity proof, but required by geometric instances
-  (e.g., simplicial complexes satisfy this). -/
-  vertex_injective :
-    ∀ s, Function.Injective (vertex s)
   /-- Adjacency: the face opposite vertex `k` in cell `s`
   is shared with another cell, or is a boundary face. -/
   adj : Cell → Fin (d + 1) →
