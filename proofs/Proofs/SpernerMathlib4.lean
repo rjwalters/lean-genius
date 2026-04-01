@@ -110,14 +110,48 @@ theorem Finset.even_card_of_fpf_invol {α : Type*}
 
 section DoorCountParity
 
-/-- When `f : Fin (d+1) → Fin d` is surjective (all colors
-below top are used), the number of "door" positions is even. -/
+/-! ### Door count parity
+
+The central combinatorial fact: the number of "door positions"
+of a coloring `f : Fin (d+1) → Fin (d+1)` has parity equal to
+the surjectivity indicator of `f`.
+
+The key invariant is the **fiber structure** of the coloring.
+A surjection `Fin (d+1) → Fin d` has exactly one fiber of
+size 2 (by pigeonhole), giving two door positions (even).
+A bijection `Fin (d+1) → Fin (d+1)` has exactly one door
+position. A non-surjection missing some lower color has none.
+-/
+
+/-- If a lower color `j₀ : Fin d` has no preimage under `f`,
+then no position is a door: we cannot cover all of
+`{0, ..., d-1}` while omitting any vertex. -/
+private lemma door_filter_empty_of_missing_color (d : ℕ)
+    (f : Fin (d + 1) → Fin (d + 1))
+    (j₀ : Fin d)
+    (hmiss : ¬∃ i : Fin (d + 1),
+      f i = ⟨j₀.val, by omega⟩) :
+    (univ.filter (fun k : Fin (d + 1) =>
+      ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
+        f i = ⟨j.val, by omega⟩)) = ∅ := by
+  rw [filter_eq_empty_iff]
+  intro k _; push_neg
+  exact ⟨j₀, fun i _ h => hmiss ⟨i, h⟩⟩
+
+/-- When `f : Fin (d+1) → Fin d` is surjective, the door
+positions are exactly the two elements of the unique fiber of
+size 2 (pigeonhole). In particular, the door count is even. -/
 private lemma even_card_doors_of_surjective (d : ℕ)
     (f : Fin (d + 1) → Fin d)
     (hcov : ∀ j : Fin d, ∃ i, f i = j) :
     Even (univ.filter (fun k : Fin (d + 1) =>
       ∀ j : Fin d,
         ∃ i : Fin (d + 1), i ≠ k ∧ f i = j)).card := by
+  -- Step 1: Each fiber has ≥ 1 element (surjectivity).
+  -- Step 2: Total fiber sizes = d + 1, excess over 1 sums
+  --   to exactly 1, so exactly one fiber has size 2.
+  -- Step 3: The two elements of that fiber are precisely
+  --   the two door positions.
   have hcard_ge : ∀ c : Fin d,
       (univ.filter
         (fun i : Fin (d + 1) => f i = c)).card ≥ 1 := by
@@ -161,6 +195,8 @@ private lemma even_card_doors_of_surjective (d : ℕ)
       Finset.sum_const, card_univ, Fintype.card_fin,
       htotal, smul_eq_mul] at this
     omega
+  -- Unique duplicate fiber: exactly one color c₀ has
+  -- fiber of size 2; all others have size 1.
   obtain ⟨c₀, hc₀_eq, hc₀_rest⟩ : ∃ c₀ : Fin d,
       (univ.filter
         (fun i : Fin (d + 1) => f i = c₀)).card = 2 ∧
@@ -288,7 +324,9 @@ theorem door_count_parity (d : ℕ)
         f i = ⟨j.val, by omega⟩)).card % 2 =
     if Function.Surjective f then 1 else 0 := by
   by_cases hsurj : Function.Surjective f
-  · rw [if_pos hsurj]
+  · -- Case 1: f is surjective (bijective).
+    -- The unique preimage of d is the sole door position.
+    rw [if_pos hsurj]
     have hinj :=
       Finite.injective_iff_surjective.mpr hsurj
     obtain ⟨k₀, hk₀⟩ := hsurj ⟨d, by omega⟩
@@ -325,23 +363,21 @@ theorem door_count_parity (d : ℕ)
         by rw [hi]⟩
   · rw [if_neg hsurj]
     by_cases hd_app : ∃ i, f i = ⟨d, by omega⟩
-    · have ⟨j₀, hj₀⟩ : ∃ j : Fin d,
+    · -- Case 2: Not surjective, but top color d has a
+      -- preimage. Some lower color j₀ must be missing,
+      -- so no door positions exist.
+      have ⟨j₀, hj₀⟩ : ∃ j : Fin d,
           ¬∃ i, f i =
             ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩ := by
         by_contra hall; push_neg at hall; apply hsurj
         intro ⟨y, hy⟩; by_cases hyd : y = d
         · subst hyd; exact hd_app
         · exact hall ⟨y, by omega⟩
-      suffices h0 : (univ.filter
-          (fun k : Fin (d + 1) =>
-            ∀ j : Fin d,
-              ∃ i : Fin (d + 1), i ≠ k ∧
-                f i = ⟨j.val, by omega⟩)).card =
-          0 by rw [h0]
-      rw [Finset.card_eq_zero, filter_eq_empty_iff]
-      intro k _; push_neg
-      exact ⟨j₀, fun i _ h => hj₀ ⟨i, h⟩⟩
-    · push_neg at hd_app
+      rw [Finset.card_eq_zero.mpr
+        (door_filter_empty_of_missing_color d f j₀ hj₀)]
+    · -- Case 3: Top color d never appears. Truncate f to
+      -- g : Fin (d+1) → Fin d and analyze g's surjectivity.
+      push_neg at hd_app
       have hlt : ∀ i, (f i).val < d := by
         intro i; have := (f i).isLt
         by_contra h; push_neg at h
@@ -351,7 +387,10 @@ theorem door_count_parity (d : ℕ)
       let g : Fin (d + 1) → Fin d :=
         fun i => ⟨(f i).val, hlt i⟩
       by_cases hgsurj : Function.Surjective g
-      · have heven :=
+      · -- Case 3a: g is surjective. By pigeonhole, g has
+        -- a unique duplicated fiber, giving two door
+        -- positions (even count).
+        have heven :=
           even_card_doors_of_surjective d g hgsurj
         suffices heq : univ.filter
             (fun k : Fin (d + 1) =>
@@ -374,7 +413,10 @@ theorem door_count_parity (d : ℕ)
           exact ⟨i, hi, Fin.ext (by
             have := congr_arg Fin.val hgi
             simp [g] at this; exact this)⟩
-      · have ⟨j₀, hj₀⟩ :
+      · -- Case 3b: g is not surjective. Some lower color
+        -- j₀ has no preimage under g (hence under f),
+        -- so no door positions exist.
+        have ⟨j₀, hj₀⟩ :
             ∃ j : Fin d, ¬∃ i, g i = j := by
           by_contra h; push_neg at h; exact hgsurj h
         suffices h0 : (univ.filter
@@ -406,7 +448,9 @@ structure CellComplex (V : Type*) [DecidableEq V]
   cellFintype : Fintype Cell
   /-- The `d + 1` vertices of each cell. -/
   vertex : Cell → Fin (d + 1) → V
-  /-- Vertices of each cell are distinct. -/
+  /-- Vertices of each cell are distinct. Not used in the
+  abstract parity proof, but required by geometric instances
+  (e.g., simplicial complexes satisfy this). -/
   vertex_injective :
     ∀ s, Function.Injective (vertex s)
   /-- Adjacency: the face opposite vertex `k` in cell `s`
