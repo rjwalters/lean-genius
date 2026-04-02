@@ -138,6 +138,30 @@ private lemma door_filter_empty_of_missing_color (d : ℕ)
   intro k _; push_neg
   exact ⟨j₀, fun i _ h => hmiss ⟨i, h⟩⟩
 
+/-- If natural numbers indexed by a finset sum to 1, exactly one
+equals 1 and the rest equal 0. -/
+private lemma exists_of_sum_eq_one {ι : Type*} [DecidableEq ι]
+    {s : Finset ι} {f : ι → ℕ}
+    (hsum : ∑ i ∈ s, f i = 1) :
+    ∃ a ∈ s, f a = 1 ∧ ∀ b ∈ s, b ≠ a → f b = 0 := by
+  have ⟨a, ha, hfa⟩ : ∃ a ∈ s, 0 < f a := by
+    by_contra h; push_neg at h
+    have := Finset.sum_eq_zero (fun i hi =>
+      Nat.eq_zero_of_le_zero (h i hi))
+    omega
+  have hle : f a ≤ 1 :=
+    hsum ▸ Finset.single_le_sum
+      (fun _ _ => Nat.zero_le _) ha
+  have hfa_eq : f a = 1 := by omega
+  have hrest : ∑ x ∈ s.erase a, f x = 0 := by
+    have := Finset.add_sum_erase s f ha
+    omega
+  exact ⟨a, ha, hfa_eq, fun b hb hne =>
+    Nat.eq_zero_of_le_zero
+      ((Finset.single_le_sum (fun _ _ => Nat.zero_le _)
+        (Finset.mem_erase.mpr ⟨hne, hb⟩)).trans
+        hrest.le)⟩
+
 /-- **Pigeonhole for one extra element**: a surjection
 `Fin (d+1) → Fin d` has exactly one fiber of size 2, with
 all other fibers of size 1. -/
@@ -193,59 +217,13 @@ private lemma surjection_unique_dup_fiber (d : ℕ)
       Finset.sum_const, card_univ, Fintype.card_fin,
       htotal, smul_eq_mul] at this
     omega
-  have : ∃ c₀ ∈ univ,
-      0 < (univ.filter
-        (fun i : Fin (d + 1) => f i = c₀)).card -
-        1 := by
-    by_contra hall; push_neg at hall
-    have h0 := fun c =>
-      Nat.eq_zero_of_le_zero (hall c (mem_univ _))
-    simp [h0] at hexcess
-  obtain ⟨c₀, _, hc₀⟩ := this
-  refine ⟨c₀, ?_, ?_⟩
-  · by_contra hne2
-    have hge2 :
-        (univ.filter
-          (fun i : Fin (d + 1) =>
-            f i = c₀)).card - 1 ≥ 2 := by
-      omega
-    let F : Fin d → ℕ := fun c =>
-      (univ.filter
-        (fun i : Fin (d + 1) => f i = c)).card - 1
-    have hFc₀ : F c₀ ≥ 2 := hge2
-    have hle : F c₀ ≤ ∑ x : Fin d, F x :=
-      single_le_sum
-        (fun _ _ => Nat.zero_le _) (mem_univ c₀)
-    have hexcess' : ∑ c : Fin d, F c = 1 := hexcess
-    omega
-  · intro c hc; by_contra hne1
-    have hge1_card :
-        (univ.filter
-          (fun i : Fin (d + 1) =>
-            f i = c)).card ≥ 2 := by
-      have := hcard_ge c; omega
-    have hge1 :
-        (univ.filter
-          (fun i : Fin (d + 1) =>
-            f i = c)).card - 1 ≥ 1 := by
-      omega
-    let F : Fin d → ℕ := fun c =>
-      (univ.filter
-        (fun i : Fin (d + 1) => f i = c)).card - 1
-    have hFc₀ : F c₀ ≥ 1 := by
-      have := hc₀; show _ - 1 ≥ 1; omega
-    have hFc : F c ≥ 1 := hge1
-    have h₁ : F c₀ ≤ ∑ x : Fin d, F x :=
-      single_le_sum
-        (fun _ _ => Nat.zero_le _) (mem_univ c₀)
-    have h₂ : F c ≤ ∑ x : Fin d, F x :=
-      single_le_sum
-        (fun _ _ => Nat.zero_le _) (mem_univ c)
-    have hsum := sum_le_sum_of_subset (f := F)
-      (subset_univ ({c₀, c} : Finset (Fin d)))
-    rw [sum_pair hc.symm] at hsum
-    have hexcess' : ∑ c : Fin d, F c = 1 := hexcess
-    omega
+  obtain ⟨c₀, _, hc₀_eq, hc₀_rest⟩ :=
+    exists_of_sum_eq_one hexcess
+  exact ⟨c₀,
+    by have := hcard_ge c₀; omega,
+    fun c hc => by
+      have := hc₀_rest c (mem_univ _) hc
+      have := hcard_ge c; omega⟩
 
 /-- When `f : Fin (d+1) → Fin d` is surjective, the door
 positions are exactly the two elements of the unique fiber of
