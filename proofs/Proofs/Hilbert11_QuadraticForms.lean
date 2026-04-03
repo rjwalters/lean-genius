@@ -3,6 +3,7 @@ import Mathlib.LinearAlgebra.QuadraticForm.Isometry
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.NumberTheory.Padics.PadicNumbers
 import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.SumFourSquares
 import Mathlib.Tactic
 
 /-!
@@ -236,20 +237,18 @@ theorem ternary_representation (Q : QuadraticForm ℚ (Fin 3 → ℚ)) (a : ℚ)
     True := by
   trivial -- Key application of Hasse-Minkowski
 
-/-- **Axiom: Four Squares Theorem (Lagrange)**
+/-- **Four Squares Theorem (Lagrange)**
 
-    Every positive integer is a sum of four squares. This can be viewed as a special
+    Every natural number is a sum of four integer squares. This can be viewed as a special
     case of the theory: the form x₁² + x₂² + x₃² + x₄² represents all positive integers.
 
-    **Why axiomatized**: While Mathlib contains a proof of Lagrange's four squares theorem,
-    integrating it here would require:
-    - Converting between natural number statements and quadratic form representation
-    - Quaternion algebra techniques or descent methods
-    - Careful handling of the algebraic identity for products of sums of four squares
-
-    Proven by Lagrange in 1770 using Euler's four-square identity. -/
-axiom four_squares_connection :
-    ∀ n : ℕ, ∃ a b c d : ℤ, n = a^2 + b^2 + c^2 + d^2
+    Proven by Lagrange in 1770 using Euler's four-square identity.
+    This proof uses Mathlib's `Nat.sum_four_squares`. -/
+theorem four_squares_connection :
+    ∀ n : ℕ, ∃ a b c d : ℤ, n = a^2 + b^2 + c^2 + d^2 := by
+  intro n
+  obtain ⟨a, b, c, d, h⟩ := Nat.sum_four_squares n
+  exact ⟨a, b, c, d, by exact_mod_cast h.symm⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART V: CLASSIFICATION RESULTS
