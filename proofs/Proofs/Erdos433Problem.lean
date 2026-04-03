@@ -31,11 +31,7 @@ References:
 - Dixmier (1990): Proved the asymptotic g(k,n) ~ n²/(k-1)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open Nat Finset BigOperators
 
@@ -84,28 +80,24 @@ axiom sylvester_frobenius (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) (hcop : Nat.
 The numbers 1, 2, 4, 7 are not representable; 7 is the largest.
 -/
 theorem frobenius_3_5 : G(({3, 5} : Finset ℕ)) = 7 := by
-  have : Nat.Coprime 3 5 := by decide
-  have := sylvester_frobenius 3 5 (by norm_num) (by norm_num) this
-  simp at this ⊢
-  omega
+  have h : Nat.Coprime 3 5 := by decide
+  rw [sylvester_frobenius 3 5 (by norm_num) (by norm_num) h]
 
 /--
 **Example: G({2, 3}) = 1**
 Only 1 is not representable as 2a + 3b.
 -/
 theorem frobenius_2_3 : G(({2, 3} : Finset ℕ)) = 1 := by
-  have : Nat.Coprime 2 3 := by decide
-  have := sylvester_frobenius 2 3 (by norm_num) (by norm_num) this
-  simp at this ⊢
-  omega
+  have h : Nat.Coprime 2 3 := by decide
+  rw [sylvester_frobenius 2 3 (by norm_num) (by norm_num) h]
 
-/--
+/-
 **Fundamental Theorem:**
 If gcd(A) = 1 and A is nonempty, then G(A) is finite.
 More precisely, there exists N such that all n ≥ N are representable.
 -/
 
-/--
+/-
 **Monotonicity:**
 Adding more elements to A can only decrease G(A) (more combinations available).
 -/
@@ -116,29 +108,29 @@ Adding more elements to A can only decrease G(A) (more combinations available).
 
 /--
 **Coprimality condition:**
-A finite set A has gcd = 1.
+A finite set A ⊆ ℕ has gcd equal to 1.
 -/
-def IsCoprime (A : Finset ℕ) : Prop := A.gcd id = 1
+def SetGCDOne (A : Finset ℕ) : Prop := A.gcd id = 1
 
 /--
 **The function g(k, n):**
-Maximum Frobenius number over all k-element subsets of {1,...,n} with gcd = 1.
+Maximum Frobenius number over all k-element subsets of {0,...,n} with gcd = 1.
 -/
 noncomputable def g (k n : ℕ) : ℕ :=
-  sSup {G(A) | A : Finset ℕ // A ⊆ Finset.range (n + 1) ∧ A.card = k ∧ IsCoprime A}
+  sSup {v : ℕ | ∃ A : Finset ℕ, A ⊆ Finset.range (n + 1) ∧ A.card = k ∧ SetGCDOne A ∧ v = G(A)}
 
 /-
 ## Part IV: Erdős-Graham Bounds
 -/
 
-/--
+/-
 **Erdős-Graham Upper Bound (1972):**
 g(k, n) < 2n²/k
 
 This was the first general bound.
 -/
 
-/--
+/-
 **Lower Bound Construction:**
 For k ≥ 2, there exist sets A achieving:
   G(A) ≥ n²/(k-1) - 5n
@@ -174,9 +166,9 @@ As n → ∞ with k fixed:
 This confirms Erdős and Graham's conjecture.
 -/
 def AsymptoticFormula : Prop :=
-  ∀ k ≥ 2, ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    (1 - ε) * (n^2 : ℝ) / (k - 1) ≤ g k n ∧
-    (g k n : ℝ) ≤ (1 + ε) * n^2 / (k - 1)
+  ∀ (k : ℕ), k ≥ 2 → ∀ (ε : ℝ), ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
+    (1 - ε) * (n ^ 2 : ℝ) / ((k : ℝ) - 1) ≤ (g k n : ℝ) ∧
+    (g k n : ℝ) ≤ (1 + ε) * (n : ℝ) ^ 2 / ((k : ℝ) - 1)
 
 /--
 **Erdős Problem #433: SOLVED**
@@ -188,7 +180,7 @@ axiom erdos_433_solved : AsymptoticFormula
 ## Part VI: Exact Values
 -/
 
-/--
+/-
 **Dixmier's Exact Formula:**
 When (k-1) | n, (k-1) | (n-1), or (k-1) | (n-2), exact values are known.
 -/
@@ -199,14 +191,14 @@ g(2, n) = G({n-1, n}) = (n-1)·n - (n-1) - n = n² - 3n + 1
 
 Using Sylvester-Frobenius when gcd(n-1, n) = 1.
 -/
-theorem g_two (n : ℕ) (hn : n ≥ 3) : g 2 n = n^2 - 3*n + 1 := by
+theorem g_two (n : ℕ) (hn : n ≥ 3) : g 2 n = n ^ 2 - 3 * n + 1 := by
   sorry -- Follows from Sylvester-Frobenius applied to {n-1, n}
 
 /-
 ## Part VII: Extremal Sets
 -/
 
-/--
+/-
 **Extremal Set Structure:**
 The sets achieving g(k, n) are concentrated near {n-k+1, ..., n}.
 
@@ -223,13 +215,10 @@ leave more gaps, maximizing the Frobenius number.
 ## Part VIII: Connection to Classical Frobenius Problem
 -/
 
-/--
+/-
 **The Chicken McNugget Theorem:**
 With nuggets sold in packs of 6, 9, 20, the largest non-buyable quantity is 43.
-
-G({6, 9, 20}) = 43
-
-This popularized the Frobenius number problem.
+G({6, 9, 20}) = 43. This popularized the Frobenius number problem.
 -/
 
 /--
@@ -239,7 +228,8 @@ For a, b coprime: G({a, b}) = ab - a - b < ab.
 theorem schur_bound (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) (hcop : Nat.Coprime a b) :
     G(({a, b} : Finset ℕ)) < a * b := by
   rw [sylvester_frobenius a b ha hb hcop]
-  omega
+  calc a * b - a - b ≤ a * b - a := Nat.sub_le _ _
+    _ < a * b := Nat.sub_lt (Nat.mul_pos ha hb) (by omega)
 
 /-
 **Frobenius for 3 generators:**
@@ -251,7 +241,7 @@ Ramirez Alfonsin showed the problem is NP-hard in general.
 ## Part IX: Counting Gaps
 -/
 
-/--
+/-
 **Number of Gaps:**
 For coprime a, b, the number of gaps (non-representable numbers) is:
   (a-1)(b-1)/2
@@ -259,7 +249,7 @@ For coprime a, b, the number of gaps (non-representable numbers) is:
 This is exactly half the "conductor" ab - a - b + 1.
 -/
 
-/--
+/-
 **Symmetric Property:**
 The gaps for {a, b} are symmetric around (ab - a - b)/2.
 If n is a gap, so is (ab - a - b) - n.

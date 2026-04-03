@@ -1,7 +1,7 @@
 {
   "slug": "erdos-433-incomplete-01",
   "title": "Erdős Problem #433: Maximum Frobenius Numbers",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "fast",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-03T08:27:10.206Z",
     "iteration": 1,
     "focus": "",
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Fixed >15 compilation errors; Erdos433Problem.lean compiles with 1 sorry (g_two). Aristotle companion created with 4 sorries.",
+    "builtItems": [
+      "Fixed Erdos433Problem.lean: notation, IsCoprime→SetGCDOne, g definition, AsymptoticFormula, schur_bound proof",
+      "Created Erdos433Aristotle.lean: dixmier_k2_arith, frobenius_pair_max, g_two_nonneg, coprime_pred_self (sorry), frobenius_ub_pair (sorry), frobenius_bound_int (sorry), pair_subset_range, pair_card, finset_gcd_pred_self (sorry)"
+    ],
+    "insights": [
+      "Lean notation bug: notation \"G(\\\" A \\\")\\\"\" caused unterminated string error; fixed to three-token notation",
+      "IsCoprime name conflicts with Mathlib ring predicate; renamed to SetGCDOne",
+      "g definition {G(A) | A // ...} invalid Lean 4 syntax; use {v | ∃ A, ... ∧ v = G(A)}",
+      "omega treats m*m as atom; obtain substitution n=m+3 eliminates ℕ subtraction issues for quadratic identities",
+      "Nat.sub_sub is universally valid (no preconditions) for combining double subtraction",
+      "schur_bound a*b-a-b < a*b is nonlinear; omega fails; use calc with Nat.sub_le + Nat.sub_lt",
+      "AsymptoticFormula needs explicit (n^2 : ℝ) and (g k n : ℝ) type annotations to avoid coercion ambiguity"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Check Aristotle results for coprime_pred_self, frobenius_ub_pair, frobenius_bound_int, finset_gcd_pred_self",
+      "Integrate Aristotle solutions into Erdos433Aristotle.lean",
+      "Prove g_two: show {n-1,n} achieves sSup, using upper bound (frobenius_ub_pair) + Sylvester-Frobenius lower bound"
+    ]
   },
   "tags": [],
   "relatedProofs": [
