@@ -64,7 +64,79 @@
     "openQuestionOf": "erdos-19",
     "lineCount": 394
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "The Erdős-Faber-Lovász (EFL) conjecture was proposed in 1972: if G is the union of n edge-disjoint copies of the complete graph K_n, then the chromatic number χ(G) = n. This was one of Erdős's favorite combinatorics conjectures, with a $500 prize — a remarkably clean statement about the interaction of clique structure and graph coloring. The conjecture is tight: the n cliques provide an n-coloring if one assigns color i to all vertices belonging exclusively to clique i, but vertices shared between cliques (at most one per pair of cliques, by the edge-disjointness condition) require careful treatment.\n\nFor nearly five decades, the EFL conjecture resisted proof. Kahn (1992) proved the weakened bound χ(G) ≤ (1+o(1))n, an important but incomplete step. The breakthrough came in 2021 when Kang, Kelly, Kühn, Methuku, and Osthus proved the conjecture for all 'sufficiently large' n using the absorbing method and fractional relaxations. Meanwhile, Hindman (1981) had verified the conjecture for small cases n ≤ 9. Together, these two results prove EFL for all n outside a finite gap [10, N₀), where N₀ is the explicit threshold from the asymptotic proof.\n\nThe remaining open question — the focus of this formalization — is: what is N₀? The Kang et al. paper establishes existence but gives only tower-type bounds on N₀ from the absorbing method. Closing the gap would either require (a) making the asymptotic constants explicit (reducing N₀ to something computationally tractable), or (b) proving EFL directly for n in [10, N₀) through targeted case analysis or flag algebra methods. This Lean formalization establishes the structural framework: the threshold N₀ exists and is well-defined, the finite reduction theorem shows EFL is equivalent to checking [10, N₀), and various gap properties (counterexample forcing, gap decidability) are formally verified.",
+    "problemStatement": "Let $G$ be the union of $n$ edge-disjoint copies of the complete graph $K_n$ on a shared vertex set. The EFL conjecture states $\\chi(G) = n$. The open question is: what is the explicit threshold $N_0 = \\min\\{N : \\forall n \\geq N, \\chi(G) = n\\}$? The EFL conjecture is equivalent to checking all $n \\in [10, N_0)$ (the 'gap'). Kang et al. (2021) imply $N_0 < \\infty$; Hindman (1981) gives $N_0 \\leq$ some tower-type constant. Improving the explicit bound on $N_0$ would make the conjecture computationally verifiable.",
+    "proofStrategy": "The Lean formalization uses three axioms: (1) `kang_kelly_kuhn_methuku_osthus_asymptotic` (EFL holds for all n ≥ some N), (2) `hindman_small_cases` (EFL holds for 1 ≤ n ≤ 9), and (3) `kahn_asymptotic_bound` (Kahn's (1+o(1))n chromatic bound). From axiom (1), `Nat.find` constructs the minimal threshold `eflThreshold`. The key theorem `efl_finite_reduction` proves the equivalence: EFLConjecture ↔ (∀ n ∈ [10, eflThreshold), EFLHoldsAt n). Session 2 adds 8 more structural results: efl_holds_one (n=1 without axioms), gap decidability via Finset.Ico, counterexample-forces-threshold-up, and the three-way case split on n.",
+    "keyInsights": [
+      "The finite reduction theorem `efl_finite_reduction` is the central result: an infinite conjecture about all n ≥ 1 is equivalent to checking finitely many cases [10, N₀). The proof is a three-way case analysis: n ≤ 9 (Hindman), n ∈ [10, N₀) (gap — what we need to verify), n ≥ N₀ (Kang et al.). The Lean proof uses `by_cases` and `push_neg` to navigate these cases cleanly.",
+      "The threshold `eflThreshold` is defined via `Nat.find kang_kelly_kuhn_methuku_osthus_asymptotic`, which returns the MINIMUM N satisfying the existential. This means eflThreshold is the actual smallest N where the asymptotic proof 'kicks in'. The minimality theorem `efl_threshold_minimal` proves that if the threshold is nonzero, then there exists some n below the threshold where EFL is not known to hold for ALL m ≥ n.",
+      "The structure `EFLFamily n` encodes the edge-disjoint cliques condition combinatorially: n cliques (as Finsets of Fin(n²)), each of size n, with pairwise intersection at most 1. This is cleaner than working with the actual graph — it captures the essence of 'edge-disjoint K_n copies' via the intersection condition, which is equivalent to edge-disjointness for cliques.",
+      "The n=1 case `efl_holds_one` is proved WITHOUT any axioms by structural reasoning: each clique in F has exactly 1 element, so no two distinct vertices can be in the same clique, meaning the graph has no edges, and a 1-coloring trivially works. The proof checks `(F.cliques i).card ≥ 2` for a contradiction, using `Finset.one_lt_card` from Mathlib.",
+      "Kahn's 1992 bound `kahn_asymptotic_bound` (χ(G) ≤ (1+ε)n for all ε > 0 and large n) is axiomatized separately from the KKMO result. Its Lean type is more complex: it quantifies over ε : ℝ and gives a threshold N_ε depending on ε. This finer structure allows the formalization to distinguish 'KKMO threshold' (exact EFL) from 'Kahn threshold' (approximate EFL), a useful conceptual separation."
+    ]
+  },
+  "sections": [
+    {
+      "id": "documentation",
+      "title": "Module Documentation and Setup",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Describes the EFL conjecture, the Kang et al. (2021) asymptotic proof, the Hindman (1981) small cases, the gap [10, N₀), and the 6 key structural results formalized. Imports Mathlib; opens Finset, SimpleGraph, Classical."
+    },
+    {
+      "id": "efl-family",
+      "title": "Parts I–II: EFL Family Structure and Colorability",
+      "startLine": 37,
+      "endLine": 82,
+      "summary": "Defines EFLFamily n (n cliques of size n in Fin(n²) with pairwise intersection ≤ 1). Defines eflGraph (adjacency via shared clique), SatisfiesEFL (n-colorability), EFLHoldsAt n, and EFLConjecture."
+    },
+    {
+      "id": "threshold",
+      "title": "Parts III–IV: Threshold and Hindman's Cases",
+      "startLine": 83,
+      "endLine": 132,
+      "summary": "Axiomatizes kang_kelly_kuhn_methuku_osthus_asymptotic. Defines eflThreshold via Nat.find. Proves efl_holds_above_threshold and efl_threshold_minimal. Axiomatizes hindman_small_cases (n ≤ 9). Proves efl_holds_zero (vacuous) and efl_holds_le_nine (combining both)."
+    },
+    {
+      "id": "finite-reduction",
+      "title": "Part V: Finite Reduction Theorem",
+      "startLine": 133,
+      "endLine": 165,
+      "summary": "Defines eflGapSize. Proves efl_finite_reduction (EFLConjecture ↔ checking [10, N₀)) and efl_from_small_threshold (threshold ≤ 10 resolves conjecture). The key structural result of the file."
+    },
+    {
+      "id": "bounds",
+      "title": "Parts VI–VII: Monotonicity and Explicit Bounds",
+      "startLine": 166,
+      "endLine": 226,
+      "summary": "threshold_le_of_holds_from: Nat.find_le gives upper bound. threshold_le_ten_iff: equivalence for threshold ≤ 10. threshold_pos_or_trivial: threshold ≥ 1 or everything trivial. gap_finite_bound and empty_gap_resolves_efl complete the structural picture."
+    },
+    {
+      "id": "kahn",
+      "title": "Parts VIII–IX: Kahn's Bound and Open Questions",
+      "startLine": 227,
+      "endLine": 260,
+      "summary": "Axiomatizes kahn_asymptotic_bound (χ ≤ (1+ε)n for large n). Lists 4 open questions: explicit threshold value, polynomial bound on N₀, projective plane EFL, explicit N_ε dependence."
+    },
+    {
+      "id": "session2",
+      "title": "Part X: Extended Structural Theorems",
+      "startLine": 261,
+      "endLine": 394,
+      "summary": "8 additional theorems: efl_holds_one (n=1 without axioms), efl_holds_le_one, threshold_ge_2_or_resolved, gap_single_failure (single failure refutes conjecture), threshold_gt_of_counterexample, gap_card_bound (via Finset.range), efl_coverage_summary (three-way case split), efl_gap_enumeration (gap decidability via Finset.Ico)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the complete structural framework for the EFL threshold question. Three axioms (KKMO 2021, Hindman 1981, Kahn 1992) underpin 19 theorems covering: the threshold definition and minimality, the finite reduction (EFL ↔ [10, N₀) check), monotonicity bounds, gap decidability, and counterexample propagation. The n=0,1 cases are proved without axioms via direct structural reasoning.",
+    "implications": "The finite reduction theorem is the key result: to prove EFL completely, it suffices to verify EFLHoldsAt n for each n in the finite set [10, eflThreshold). This transforms an infinite conjecture into a decision problem. If the KKMO bound N₀ could be made explicit (and small enough — ideally N₀ ≤ 10²), then a computer search over EFL families could close the gap. The formalization provides the Lean infrastructure for such a verification, should the bounds improve.",
+    "openQuestions": [
+      "What is the explicit value of eflThreshold? The KKMO paper uses the absorbing method with probabilistic arguments, giving tower-type bounds. Can these constants be made explicit in Lean?",
+      "Is there a polynomial bound on eflThreshold? If N₀ ≤ poly(n), then computational verification becomes feasible.",
+      "For n in [10, N₀), can EFL be proved using flag algebras or semidefinite programming, as has been done for related chromatic number problems?",
+      "Can the Kahn bound (χ ≤ (1+ε)n) be formalized completely from first principles, replacing the axiom `kahn_asymptotic_bound`? Kahn's 1992 proof uses linear algebra over finite fields."
+    ]
+  },
   "leanFile": {
     "axiomCount": 3
   }
