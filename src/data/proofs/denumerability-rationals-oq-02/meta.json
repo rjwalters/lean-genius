@@ -2,7 +2,7 @@
   "id": "denumerability-rationals-oq-02",
   "title": "Cantor's Characterization of ℚ as the Unique Countable Dense Linear Order",
   "slug": "denumerability-rationals-oq-02",
-  "description": "Formalizes Cantor's theorem: ℚ is (up to order-isomorphism) the unique countable dense linear order without endpoints. Proves ℚ is order-isomorphic to any other countable dense linear order without endpoints using back-and-forth construction, and extends the denumerability theory with Cantor-Bendixson structure, the η-set characterization, and universality properties. 18 theorems, 0 axioms.",
+  "description": "Derived from Mathlib's Order.iso_of_countable_dense: ℚ is (up to order-isomorphism) the unique countable dense linear order without endpoints. Provides bridge formalization showing ℚ satisfies the CDLO axioms, plus independent embedding results (ℤ ↪o ℚ, Fin n ↪o ℚ). Core Cantor characterization via Mathlib's back-and-forth implementation. 18 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -16,22 +16,19 @@
       "countable-dense-linear-order",
       "back-and-forth"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified using Mathlib's Rat.Denumerable and CountableDenseLinearOrder.",
+    "assumptions": "Core results (cantor_characterization, countable_dense_linear_orders_iso, rationals_selfsimilar) derived directly from Mathlib's Order.iso_of_countable_dense. Bridge and infrastructure formalization only.",
     "lineCount": 237,
     "theoremCount": 18,
     "definitionCount": 0,
     "originalContributions": [
-      "cantor_characterization: ℚ is order-isomorphic to any countable dense linear order without endpoints",
-      "rationals_are_dense_linear_order: ℚ satisfies the DenselyOrdered and NoMinOrder/NoMaxOrder predicates",
-      "integers_embed: ℤ embeds strictly monotonically into ℚ (as n ↦ n : ℚ)",
-      "fin_embeds: any finite ordered set Fin n embeds into ℚ",
-      "no_integer_between: no integer lies strictly between n and n+1 (completeness gap in ℤ vs ℚ)",
-      "nat_has_min: ℕ has a minimum 0 (contrast with ℚ having no minimum)",
-      "Universality: ℚ receives strict monotone embeddings from all countable linear orders"
+      "integers_embed: ℤ embeds strictly monotonically into ℚ (as n ↦ n : ℚ) — independent proof",
+      "fin_embeds: any finite ordered set Fin n embeds into ℚ — independent proof",
+      "no_integer_between: no integer lies strictly between n and n+1 (omega tactic)",
+      "nat_has_min: ℕ has a minimum 0 — trivial but stated"
     ]
   },
   "overview": {
