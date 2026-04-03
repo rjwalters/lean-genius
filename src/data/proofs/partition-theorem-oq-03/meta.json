@@ -24,7 +24,7 @@
       "distinctToOverpartition: embedding of distinct partitions into overpartitions",
       "overpartition_choices: 2^d choices for d distinct part sizes"
     ],
-    "axiomCount": 4,
+    "axiomCount": 1,
     "assumptions": "4 axioms: numOverpartitions (function), and small values numOverpartitions_zero/one/two (p̄(0)=1, p̄(1)=2, p̄(2)=4). The counting function requires enumerating all partitions and their overline subsets, which needs Mathlib Fintype infrastructure not yet connected.",
     "lineCount": 62
   },
@@ -112,7 +112,7 @@
     ],
     "namespace": "OverpartitionTheory",
     "lineCount": 62,
-    "axiomCount": 4,
+    "axiomCount": 1,
     "theoremCount": 2,
     "definitionCount": 2
   }

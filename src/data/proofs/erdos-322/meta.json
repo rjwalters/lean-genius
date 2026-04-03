@@ -55,7 +55,7 @@
       "hypothesisKStar: weaker squared sum bound",
       "erdos_positive_density_claim: unbounded representations from dense sets"
     ],
-    "axiomCount": 5,
+    "axiomCount": 3,
     "lineCount": 182,
     "assumptions": "5 axioms: (1) representationCount — the function $r_k(n)$ counting representations as sums of $k$ $k$-th powers; (2) mahler_theorem — $\\exists c > 0$ with $r_3(n) \\geq c \\cdot n^{1/12}$ infinitely often; (3) hypothesisK_fails_for_3 — Hypothesis K is false for $k=3$; (4) erdos_chowla_bound — $r_k(n) \\geq n^{c/\\log\\log n}$ infinitely often for all $k \\geq 3$; (5) erdos_positive_density_claim — $k$-th powers of positive-density sets have unbounded representation counts."
   },
@@ -166,7 +166,7 @@
     ],
     "namespace": "Erdos322",
     "lineCount": 182,
-    "axiomCount": 5,
+    "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 5
   },

@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/1029",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100/$1000",
-    "axiomCount": 5,
+    "axiomCount": 4,
     "lineCount": 211,
     "assumptions": "5 axioms: ramsey_exists (Ramsey's theorem finiteness), erdos_szekeres_upper (upper bound R(k) ≤ C(2k-2,k-1)), spencer_lower_bound (Spencer's probabilistic lower bound), R_3 (R(3)=6), R_4 (R(4)=18). See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
@@ -210,7 +210,7 @@
     ],
     "namespace": null,
     "lineCount": 211,
-    "axiomCount": 5,
+    "axiomCount": 4,
     "theoremCount": 4,
     "definitionCount": 9
   }

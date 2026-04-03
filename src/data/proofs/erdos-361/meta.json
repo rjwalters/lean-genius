@@ -57,7 +57,7 @@
       "Proved maxNonRepr_ge_one: lower bound ≥ 1 for c ≥ 1, n ≥ 2",
       "Fixed incorrect maxNonRepr_large_n (was false) with correct conditional theorem"
     ],
-    "axiomCount": 2,
+    "axiomCount": 0,
     "assumptions": "2 axiom declarations: maxNonRepr_bigO_bound (asymptotic upper bound exists), maxNonRepr_plausible_theta (Theta(sqrt n) growth conjecture)",
     "lineCount": 140
   },
@@ -159,7 +159,7 @@
     ],
     "namespace": null,
     "lineCount": 140,
-    "axiomCount": 2,
+    "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 5
   },
