@@ -22,9 +22,9 @@
     "erdosNumber": 1020,
     "erdosUrl": "https://erdosproblems.com/1020",
     "erdosProblemStatus": "open",
-    "axiomCount": 11,
+    "axiomCount": 6,
     "lineCount": 326,
-    "assumptions": "11 axiom(s) and 0 sorry(s). See the Lean source for details.",
+    "assumptions": "6 axiom declarations: erdos_gallai_graphs (Erdős-Gallai theorem for graphs), luczak_mieczkowska (r=3 case, Łuczak-Mieczkowska 2014), huang_loh_sudakov (large n regime), frankl_upper_bound (Frankl's (k-1)·C(n-1,r-1) upper bound), construction1_lower (first extremal construction), construction2_lower (second extremal construction). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -185,7 +185,7 @@
     ],
     "namespace": null,
     "lineCount": 326,
-    "axiomCount": 11,
+    "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 11
   },
