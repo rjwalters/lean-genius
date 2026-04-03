@@ -20,8 +20,8 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 9,
     "assumptions": "9 axioms for deep analytic number theory results: vinogradov_ternary_goldbach (Vinogradov 1937: every sufficiently large odd number is sum of 3 primes), helfgott_weak_goldbach (Helfgott 2013: proved unconditionally for all odd n>5), circle_method_asymptotic (circle method asymptotic formula for ternary representations), schnirelmann_basis_theorem (every dense enough set is an additive basis), ramare_six_primes (Ramare 1995: every even n > 1 is sum of ≤ 6 primes), tao_five_primes (Tao 2012: every odd n > 1 is sum of ≤ 5 primes), chen_theorem (Chen 1973: every sufficiently large even n = p + P₂), binary_goldbach_verified (verified for n ≤ 4·10¹⁸), helfgott_explicit_bound (Helfgott's explicit bound).",
-    "lineCount": 484,
-    "theoremCount": 27,
+    "lineCount": 480,
+    "theoremCount": 24,
     "definitionCount": 0,
     "originalContributions": [
       "WeakGoldbachConjecture: formal statement — ∀ n odd, n > 5 → ∃ p q r prime, n = p+q+r",
@@ -63,9 +63,9 @@
   },
   "leanFile": {
     "namespace": "WeakGoldbach",
-    "lineCount": 484,
+    "lineCount": 480,
     "axiomCount": 9,
-    "theoremCount": 27,
+    "theoremCount": 24,
     "definitionCount": 0
   },
   "crossReferences": [

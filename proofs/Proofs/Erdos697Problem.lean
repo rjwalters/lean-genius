@@ -91,10 +91,8 @@ theorem hallThreshold_in_range : hallThreshold > 1 := by
 
 /-- For α < 1: δ(m, α) < (m^α + 1)/m → 0 as m → ∞ -/
 /-- The trivial bound comes from counting divisors d ≡ 1 (mod m) -/
-theorem trivial_bound_proof :
-  -- Number of d ≡ 1 (mod m) with d < exp(m^α) is about exp(m^α)/m = m^{α-1}
-  -- which → 0 when α < 1
-  True := trivial
+/- trivial_bound_proof: the number of d ≡ 1 (mod m) with d < exp(m^α)
+  is about exp(m^α)/m = m^{α-1} → 0 when α < 1. -/
 
 /-
 ## Part 4: Erdős's Claim for α = 1
@@ -142,10 +140,8 @@ theorem threshold_is_one_over_log_two :
     enough divisors exist to cover a positive density of integers. -/
 
 /-- The value 1/log 2 arises from the multiplicative structure of divisors -/
-theorem why_one_over_log_two :
-  -- Hall's analysis shows that the critical exponent is determined by
-  -- the distribution of prime factors in numbers of the form d ≡ 1 (mod m)
-  True := trivial
+/- why_one_over_log_two: the critical exponent 1/log 2 is determined
+  by the distribution of prime factors in numbers d ≡ 1 (mod m). -/
 
 /-
 ## Part 7: Behavior at Threshold
@@ -158,9 +154,8 @@ def AtThresholdBehavior : Prop :=
   True
 
 /-- Hall's theorem doesn't specify the behavior exactly at the threshold -/
-theorem at_threshold_open :
-  -- This is a more subtle question not addressed in Hall (1992)
-  True := trivial
+/- at_threshold_open: behavior of δ(m, 1/log 2) at the critical exponent
+  is a more subtle open question not addressed in Hall (1992). -/
 
 /-
 ## Part 8: Connection to Problem #696

@@ -132,10 +132,8 @@ axiom biro_2000 :
 **Best Known Constant:**
 Based on computation, the optimal c is approximately 0.7.
 -/
-theorem optimal_constant_conjecture :
-  -- The optimal c is approximately 0.7
-  -- This is based on computational evidence
-  True := trivial
+/- optimal_constant_conjecture: the optimal c is approximately 0.7,
+  based on computational evidence. -/
 
 /-
 ## Part V: Key Observations
@@ -224,9 +222,8 @@ theorem optimal_lower_bound :
 **Computational Evidence:**
 Numerical experiments suggest c ≈ 0.7 is the optimal value.
 -/
-theorem computational_evidence :
-  -- Experiments suggest the true optimal c ≈ 0.7
-  True := trivial
+/- computational_evidence: numerical experiments suggest the true
+  optimal constant c ≈ 0.7. -/
 
 /-
 **Gap:**
