@@ -619,15 +619,25 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
       fun i hi => h_ins i hi
     rcases tournament_cycle_non_insertable D hT l ⟨hnd, hlen, harcs⟩ u hu h_ni with
       h_all | h_u_beats
-    · -- Case A: All l[i] → u, u beats no l[j].
-      -- u has no arcs to cycle vertices; by SC, u can reach l[0] via non-cycle vertices.
-      -- That path combined with l[j-1]→u (h_all) and the cycle l[j]→…→l[j-1] gives
-      -- a strictly longer cycle. Formalizing requires extracting a simple path from SC.
+    · -- Case A: All l[i] → u. Key insight: u cannot arc to any cycle vertex
+      -- (by D.antisymm: l[i]→u means u↛l[i]). By SC, ∃ path from u to l[j].
+      -- Since u can only go to non-cycle vertices first (u↛l[i] for all i),
+      -- the path u = p[0] → p[1] → … → p[m] = l[j] has p[1],…,p[m-1] ∉ l.
+      -- Build longer cycle: l[j] → … → l[j-1] → u → p[1] → … → p[m-1] → l[j]
+      -- (length k+m > k, since m ≥ 1).
+      -- Requires:
+      -- (1) SC path from u to some l[j], simple and avoiding l as intermediates.
+      -- (2) Nodup: l-vertices + u + p[1..m-1] all distinct (p[i]∉l by construction,
+      --     u∉l by hu, l-part is nodup).
+      -- Key missing lemma: ∃ simple path in SC tournament from u to l (first entry).
       sorry
-    · -- Case B: All u → l[i], no l[j] → u.
-      -- By SC, l[0] can reach u via non-cycle vertices.
-      -- That path combined with u→l[j] (h_u_beats) and cycle l[j]→…→l[-1]→l[0] gives
-      -- a strictly longer cycle.
+    · -- Case B: All u → l[i]. Key insight: no l[j] → u (by D.antisymm).
+      -- By SC, ∃ path from l[0] to u via non-cycle intermediate vertices.
+      -- Path l[0] = q[0] → q[1] → … → q[s] = u has q[1],…,q[s-1] ∉ l.
+      -- Build longer cycle: u → l[j] → … → l[j-1] → q[0]=l[j-1?] → …
+      -- Actually: cycle is l[0] → q[1] → … → q[s-1] → u → l[j] → … → l[k-1] → l[0]
+      -- (length k+s > k, since s ≥ 1 as l[0] cannot directly reach u ∉ l via l-arc).
+      -- Requires same machinery as Case A.
       sorry
 
 /-! ── IV.D: List Cycle to Hamiltonian Cycle Equivalence ──────────────────── -/
