@@ -32,15 +32,17 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) has a powerful computational corollary: any matrix polynomial reduces to degree < n. This means A^100 can be expressed as c₀I + c₁A + ... + c_{n-1}A^{n-1}. The matrix exponential e^{tA} = Σ (tA)^k/k! reduces to e^{tA} = c₀(t)I + c₁(t)A + ... + c_{n-1}(t)A^{n-1}, where c_i(t) satisfy a linear ODE from charpoly.",
+    "historicalContext": "The Cayley-Hamilton theorem was proved independently by Arthur Cayley (1858, for 2×2 and 3×3 matrices) and William Hamilton (1853, for quaternion matrices). The general proof was given by Ferdinand Frobenius (1879) using the Laplace expansion of the adjugate. The computational corollary — that polynomial functions of A reduce to degree < n — was exploited by Sylvester (1883) in his 'matrix function' theory and later systematized by Buchheim (1886) for computing f(A) via interpolation at eigenvalues. The matrix exponential formula e^{tA} = ∑_{k<n} αₖ(t)Aᵏ is the basis of the Putzer algorithm (1966), which computes αₖ(t) by solving a triangular ODE system. This representation is central to the Cayley-Hamilton approach to ODE: solutions to ẋ = Ax with x(0) = x₀ are x(t) = e^{tA}x₀ = ∑αₖ(t)Aᵏx₀. Lean 4 formalization uses `Matrix.aeval_self_charpoly` (Wiedijk's Formalizing 100 Theorems #49) as the foundation.",
     "problemStatement": "Prove that aeval A p = aeval A (p mod charpoly A) and derive the degree bound and computational applications.",
     "text": "The characteristic polynomial charpoly(A) is monic of degree n and satisfies aeval A (charpoly A) = 0 (Cayley-Hamilton). For any polynomial p, write p = q * charpoly + r (polynomial division). Then aeval A p = aeval A r, since the charpoly term vanishes. The remainder r has degree < n by the division algorithm. This reduction applies to any matrix polynomial: power series, matrix exponentials, etc.",
     "proofStrategy": "Apply Cayley-Hamilton via Matrix.aeval_self_charpoly. Use Polynomial.modByMonic_add_div for the division algorithm. Prove the reduction theorem. Derive power reduction, congruence property, and partial sum reduction as corollaries.",
     "keyInsights": [
-      "Cayley-Hamilton gives aeval A (charpoly) = 0, so charpoly is in the annihilator",
-      "Division algorithm: any p = q*charpoly + r, so aeval A p = aeval A r",
-      "Degree < n: the Cayley-Hamilton reduction is dimension-bounded",
-      "Matrix exponential: reduces to a degree-(n-1) polynomial in A with time-dependent coefficients"
+      "The evaluation map e_A: R[X] → M_n(R) factors through R[X]/(charpoly): K[A] ≅ R[X]/(charpoly A) as R-algebras, making every polynomial in A a linear combination of {I, A, ..., A^{n-1}}",
+      "The division algorithm proof (4 lines: monic + annihilate + divide + substitute) is the same structure as the minpoly version in OQ-01, differing only by using charpoly instead of minpoly",
+      "Power reduction A^k = (X^k mod charpoly)(A) gives a linear recurrence: the coefficients satisfy the recurrence relation from the charpoly coefficients — analogous to the characteristic equation of a linear recurrence sequence",
+      "Partial sum reduction is the algebraic foundation for the Putzer algorithm: the convergence e^{tA} = ∑αₖ(t)Aᵏ follows from applying polynomial evaluation to the exponential series",
+      "Over commutative rings R (not just fields), charpoly is always available via the determinant formula — making this reduction applicable to integer and polynomial matrix rings",
+      "The nilpotent and idempotent special cases give closed-form matrix exponentials: exp(tA) = ∑_{k<d} tᵏAᵏ/k! (nilpotent, d = nilpotency index) and exp(tA) = I + (eᵗ-1)A (idempotent)"
     ],
     "prerequisites": [
       "Cayley-Hamilton theorem: M satisfies its characteristic polynomial",
@@ -49,12 +51,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Cayley-Hamilton reduction for matrix functions: aeval A p = aeval A (p mod charpoly), degree < n bound, power reduction, matrix exponential framework. 20 theorems, 358 lines, 0 axioms.",
-    "implications": "This is the theoretical foundation for efficient matrix exponentiation and ODE solving. The computation of e^{tA} by reducing X^k/k! mod charpoly(A) is the Putzer algorithm. Applications include numerical ODEs, signal processing, and control theory.",
+    "summary": "20 theorems, 358 lines, 0 axioms. A complete formalization of the Cayley-Hamilton polynomial reduction: the core theorem (f(A) = (f mod χ_A)(A)), degree bounds (<n), power reduction (A^k via X^k mod χ_A), congruence and ideal structure, partial sum reduction, and special cases (nilpotent, idempotent, 2×2, scalar). Works over any commutative ring R, not just fields. The file provides the theoretical foundation for matrix function computation, with partial sums as the bridge to analytic functions like exp(tA).",
+    "implications": "The Cayley-Hamilton reduction theorem is the algebraic foundation for numerical matrix computations. The Putzer algorithm (1966) computes e^{tA} = ∑αₖ(t)Aᵏ by using this reduction to derive a triangular ODE for the αₖ. This is a concrete, verified mathematical foundation for: (1) exact solution of ODEs ẋ = Ax (control theory); (2) efficient discrete-time propagation A^k (signal processing, Markov chains); (3) Chebyshev approximations to matrix functions in numerical linear algebra. The connection to the quotient ring R[X]/(χ_A) shows that K[A] is an n-dimensional commutative subalgebra of M_n(K), with the reduction theorem being the surjection K[X] → K[A].",
     "openQuestions": [
-      "Formalize the Putzer algorithm for e^{tA} using this reduction",
-      "Prove Sylvester's formula for functions of matrices (rational canonical form)",
-      "Apply to discrete-time systems: A^k via Cayley-Hamilton"
+      "Formalize the Putzer algorithm: given eigenvalues λ₁,...,λₙ of A, prove e^{tA} = ∑ₖ Pₖ(t)ρₖ where ρₖ = ∏_{i<k}(A-λᵢI) and Ṗₖ = λₖPₖ + Pₖ₋₁?",
+      "Prove Sylvester's interpolation formula f(A) = ∑ⱼ f(λⱼ)Zⱼ where Zⱼ are the Frobenius covariants (projections onto eigenspaces)?",
+      "Extend `partial_sum_reduces` to formal power series over complete rings (p-adics, formal Laurent series)?",
+      "Can this file be used to derive discrete-time transition matrix A^k in closed form from the characteristic equation?"
     ]
   },
   "leanFile": {
@@ -76,5 +79,62 @@
       "description": "OQ-01 uses minpoly (tighter); OQ-02 uses charpoly (more accessible for computation)"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "module-doc",
+      "title": "Module Documentation: Cayley-Hamilton as Computational Tool",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Header with computational framing (A^100 via degree-n reduction), 5 key results, mathematical significance (matrix exponential, ODEs, signal processing), and Mathlib dependencies including aeval_self_charpoly and modByMonic_add_div."
+    },
+    {
+      "id": "part1-reduction",
+      "title": "Part 1: The Polynomial Reduction Theorem",
+      "startLine": 59,
+      "endLine": 102,
+      "summary": "charpoly_annihilates (one-line Cayley-Hamilton), aeval_eq_aeval_modByMonic (core reduction via division algorithm), aeval_sub_mod_eq_zero (difference in annihilator). Works over any commutative ring R."
+    },
+    {
+      "id": "part2-degree",
+      "title": "Part 2: Degree Bounds",
+      "startLine": 104,
+      "endLine": 130,
+      "summary": "degree_reduced_lt_charpoly (deg(r) < deg(χ_A)) and degree_reduced_lt_dim (deg(r) < n). Both use calc chains and Nontrivial hypothesis to ensure the ring is non-degenerate."
+    },
+    {
+      "id": "part3-power",
+      "title": "Part 3: Matrix Power Reduction",
+      "startLine": 131,
+      "endLine": 161,
+      "summary": "power_eq_aeval_mod (A^k = aeval A (X^k mod χ_A), one-liner via simp) and aeval_reduced (existential: every evaluation equals one of degree < n). K[A] = span{I,...,A^{n-1}}."
+    },
+    {
+      "id": "part4-congruence",
+      "title": "Part 4: Congruence and Annihilator Ideal Structure",
+      "startLine": 162,
+      "endLine": 195,
+      "summary": "congruence (same remainder → same evaluation), charpoly_multiple_annihilates (ideal generator), annihilator_add and annihilator_mul_left (ideal closure). Together show ker(e_A) ⊇ (χ_A)."
+    },
+    {
+      "id": "part5-partial-sums",
+      "title": "Part 5: Partial Sum Reduction for Power Series",
+      "startLine": 197,
+      "endLine": 224,
+      "summary": "partial_sum_reduces (truncated power series reduces mod χ_A) and partial_sum_reduced_bound (degree bound on reduced sum). Foundation for matrix exponential via Putzer algorithm."
+    },
+    {
+      "id": "part6-nilpotent",
+      "title": "Part 6: Nilpotent Matrices — Charpoly = X^n",
+      "startLine": 226,
+      "endLine": 251,
+      "summary": "nilpotent_from_charpoly (χ_A = X^n → A^n = 0, direct from Cayley-Hamilton) and nilpotent_higher_powers_vanish (A^d = 0 → A^k = 0 for k ≥ d via pow_add)."
+    },
+    {
+      "id": "part7-special",
+      "title": "Parts 7: Idempotent Matrices and Concrete Examples",
+      "startLine": 253,
+      "endLine": 310,
+      "summary": "idempotent_power (A^k = A by induction, closed-form exponential I+(e^t-1)A). Concrete 2×2 power reduction, identity powers (one_pow), zero powers (zero_pow), scalar matrices. Closes with summary comment and 5 #check commands."
+    }
+  ]
 }
