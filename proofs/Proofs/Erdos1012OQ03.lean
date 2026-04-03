@@ -533,8 +533,82 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
       --   j = k:     l[k-1] → l[0] (wrap)             (from original cycle)
       intro j hj_bound
       simp only [List.length_insertIdx (show i + 1 ≤ k by omega)] at hj_bound
-      sorry -- arc condition: correct by case analysis on j vs i+1, follows from
-            -- harc_iu, harc_ul, and harcs; pending API verification
+      -- hj_bound : j < k + 1
+      have hl'len : (l.insertIdx (i + 1) u).length = k + 1 :=
+        List.length_insertIdx_of_le_length (show i + 1 ≤ k by omega) u
+      -- Convert bound for getElem lemmas
+      have hbnd : j < (l.insertIdx (i + 1) u).length := hl'len.symm ▸ hj_bound
+      -- Case split on j vs insertion point (i+1)
+      rcases lt_trichotomy j (i + 1) with hlt | heq | hgt
+      · -- j < i+1 ─────────────────────────────────────────────────────────────
+        have ej : (l.insertIdx (i + 1) u)[j]'hbnd = l[j]'(by omega) :=
+          List.getElem_insertIdx_of_lt hlt hbnd
+        rcases Nat.lt_or_eq_of_le (Nat.lt_succ_iff.mp hlt) with hlt2 | heq2
+        · -- j < i: l'[j] = l[j], l'[j+1] = l[j+1]; use original arc harcs j
+          have enxt : (l.insertIdx (i + 1) u)[(j + 1) % (k + 1)]'(hl'len.symm ▸
+              Nat.mod_lt _ (by omega)) = l[j + 1]'(by omega) := by
+            rw [Nat.mod_eq_of_lt (by omega : j + 1 < k + 1)]
+            exact List.getElem_insertIdx_of_lt (by omega : j + 1 < i + 1)
+              (hl'len.symm ▸ (by omega : j + 1 < k + 1))
+          rw [ej, enxt]
+          have := harcs j (by omega)
+          rwa [Nat.mod_eq_of_lt (show j + 1 < k by omega)] at this
+        · -- j = i: l'[i] = l[i], l'[i+1] = u; use harc_iu
+          have hji : j = i := by omega
+          subst hji
+          have enxt : (l.insertIdx (i + 1) u)[(i + 1) % (k + 1)]'(hl'len.symm ▸
+              Nat.mod_lt _ (by omega)) = u := by
+            rw [Nat.mod_eq_of_lt (by omega : i + 1 < k + 1)]
+            exact List.getElem_insertIdx_self (hl'len.symm ▸ (by omega : i + 1 < k + 1))
+          rw [ej, enxt]; exact harc_iu
+      · -- j = i+1 (insertion point): l'[i+1] = u ─────────────────────────────
+        subst heq
+        have ej : (l.insertIdx (i + 1) u)[i + 1]'hbnd = u :=
+          List.getElem_insertIdx_self hbnd
+        rcases Nat.lt_or_eq_of_le (Nat.lt_succ_iff.mp hi) with hlt2 | heq2
+        · -- i+1 < k: l'[i+2] = l[i+1] = l[(i+1)%k]; use harc_ul
+          have enxt : (l.insertIdx (i + 1) u)[(i + 2) % (k + 1)]'(hl'len.symm ▸
+              Nat.mod_lt _ (by omega)) = l[i + 1]'(by omega) := by
+            rw [Nat.mod_eq_of_lt (by omega : i + 2 < k + 1)]
+            exact List.getElem_insertIdx_of_gt (by omega : i + 1 < i + 2)
+              (hl'len.symm ▸ (by omega : i + 2 < k + 1))
+          rw [ej, enxt]
+          have := harc_ul
+          rwa [Nat.mod_eq_of_lt hlt2] at this
+        · -- i = k-1: l'[0] = l[0] = l[(i+1)%k = 0]; use harc_ul
+          have hik : i + 1 = k := heq2
+          have enxt : (l.insertIdx (i + 1) u)[(i + 2) % (k + 1)]'(hl'len.symm ▸
+              Nat.mod_lt _ (by omega)) = l[0]'(by omega) := by
+            rw [show (i + 2) % (k + 1) = 0 from by omega]
+            exact List.getElem_insertIdx_of_lt (by omega : 0 < i + 1)
+              (hl'len.symm ▸ (by omega : 0 < k + 1))
+          rw [ej, enxt]
+          have := harc_ul
+          rwa [show (i + 1) % k = 0 from by rw [hik, Nat.mod_self]] at this
+      · -- j > i+1: l'[j] = l[j-1] ────────────────────────────────────────────
+        have ej : (l.insertIdx (i + 1) u)[j]'hbnd = l[j - 1]'(by omega) :=
+          List.getElem_insertIdx_of_gt hgt hbnd
+        rcases Nat.lt_or_eq_of_le (Nat.lt_succ_iff.mp hj_bound) with hlt2 | heq2
+        · -- j < k: l'[j+1] = l[j]; use harcs (j-1)
+          have enxt : (l.insertIdx (i + 1) u)[(j + 1) % (k + 1)]'(hl'len.symm ▸
+              Nat.mod_lt _ (by omega)) = l[j]'(by omega) := by
+            rw [Nat.mod_eq_of_lt (by omega : j + 1 < k + 1)]
+            exact List.getElem_insertIdx_of_gt (by omega : i + 1 < j + 1)
+              (hl'len.symm ▸ (by omega : j + 1 < k + 1))
+          rw [ej, enxt]
+          have := harcs (j - 1) (by omega)
+          rwa [show j - 1 + 1 = j from by omega,
+               Nat.mod_eq_of_lt (show j < k by omega)] at this
+        · -- j = k: l'[0] = l[0]; use harcs (k-1)
+          have hjk : j = k := heq2
+          have enxt : (l.insertIdx (i + 1) u)[(j + 1) % (k + 1)]'(hl'len.symm ▸
+              Nat.mod_lt _ (by omega)) = l[0]'(by omega) := by
+            rw [show (j + 1) % (k + 1) = 0 from by rw [hjk]; simp]
+            exact List.getElem_insertIdx_of_lt (by omega : 0 < i + 1)
+              (hl'len.symm ▸ (by omega : 0 < k + 1))
+          rw [ej, enxt]
+          have := harcs (j - 1) (by omega)
+          rwa [show j - 1 + 1 = k from by omega, Nat.mod_self] at this
     · -- l.length < (l.insertIdx (i+1) u).length
       simp [List.length_insertIdx (show i + 1 ≤ k by omega)]; omega
   · -- ── No direct insertion ─────────────────────────────────────────────
