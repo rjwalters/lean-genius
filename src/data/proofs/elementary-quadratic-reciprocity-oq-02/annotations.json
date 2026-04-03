@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "gauss-sum-sq-axiom",
+    "proofId": "elementary-quadratic-reciprocity-oq-02",
+    "range": { "startLine": 29, "endLine": 38 },
+    "type": "axiom",
+    "title": "gauss_sum_sq: The Fundamental Gauss Sum Evaluation",
+    "content": "The central axiom: for any odd prime p, there exists τ ∈ ℤ with τ² = (−1)^(p/2)·p. This is the evaluation of the Gauss sum τ = Σ_{a=0}^{p-1} (a/p)·ζ^a ∈ ℚ(ζ_p), where ζ = e^(2πi/p). The proof sketch in the docstring outlines the double-sum argument: expand τ², substitute b = ac, apply character orthogonality (Σ_a ζ^{ak} = p·δ_{p|k}), and only the c = −1 term survives, giving τ² = χ(−1)·p = (−1)^((p−1)/2)·p.",
+    "mathContext": "The Gauss sum $\\tau = \\sum_{a=0}^{p-1} \\left(\\frac{a}{p}\\right) \\zeta^a \\in \\mathbb{Q}(\\zeta_p)$ satisfies $\\tau^2 = \\chi(-1) \\cdot p$ where $\\chi(-1) = \\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$. Proof: $\\tau^2 = \\sum_{a,b} \\chi(ab) \\zeta^{a+b}$; substituting $b = ac$ gives $\\tau^2 = \\sum_c \\chi(c) \\sum_a \\zeta^{a(1+c)}$. Orthogonality forces only $c \\equiv -1 \\pmod{p}$, yielding $\\tau^2 = \\chi(-1) \\cdot p$. The axiomatization isolates exactly this cyclotomic evaluation as the hard step.",
+    "significance": "key",
+    "relatedConcepts": ["Gauss sums", "character orthogonality", "cyclotomic fields", "Legendre symbol", "Frobenius endomorphism"],
+    "prerequisites": ["Legendre symbol χ = (·/p)", "primitive p-th root of unity ζ", "Galois theory of ℚ(ζ_p)", "character sums over 𝔽_p"]
+  },
+  {
+    "id": "qr-gauss-derivation",
+    "proofId": "elementary-quadratic-reciprocity-oq-02",
+    "range": { "startLine": 54, "endLine": 85 },
+    "type": "theorem",
+    "title": "QR via Gauss Sum: The Frobenius Derivation",
+    "content": "The theorem qr_matches_gauss_derivation proves (p/q)·(q/p) = (−1)^((p/2)·(q/2)) by delegating to Mathlib's legendreSym.quadratic_reciprocity. The 6-step derivation sketch in the docstring shows how gauss_sum_sq logically implies QR: raise τ to q-th power, apply Fermat (p^q ≡ p, (−1)^q = −1 mod q), factor τ^{2q} differently via (τ²)^((q-1)/2)·τ², cancel, apply Euler's criterion (p^{(q-1)/2} ≡ (p/q) mod q), then symmetrize to get the full law.",
+    "mathContext": "The Gauss sum derivation: in $\\mathbb{Z}[\\zeta_p]/(q)$, the Frobenius $\\sigma_q$ acts by $\\sigma_q(\\zeta) = \\zeta^q$ and sends $\\tau \\mapsto \\left(\\frac{q}{p}\\right)\\tau$ (since $\\sigma_q(\\tau) = \\sum_a \\chi(a)\\zeta^{aq} = \\chi(q^{-1})\\tau = \\left(\\frac{q}{p}\\right)\\tau$). But also $\\sigma_q(\\tau) \\equiv \\tau^q \\equiv \\tau \\cdot (\\chi(-1)\\cdot p)^{(q-1)/2} \\pmod{q}$. Since $p^{(q-1)/2} \\equiv \\left(\\frac{p}{q}\\right) \\pmod{q}$ by Euler, comparing gives $\\left(\\frac{q}{p}\\right) = (-1)^{(p-1)(q-1)/4} \\left(\\frac{p}{q}\\right)$.",
+    "significance": "key",
+    "relatedConcepts": ["Frobenius endomorphism", "Euler's criterion", "Galois group of cyclotomic field", "legendreSym.quadratic_reciprocity"],
+    "prerequisites": ["gauss_sum_sq", "Fermat's little theorem", "Euler's criterion", "legendreSym.eq_pow"]
+  },
+  {
+    "id": "first-supplementary-law",
+    "proofId": "elementary-quadratic-reciprocity-oq-02",
+    "range": { "startLine": 91, "endLine": 104 },
+    "type": "theorem",
+    "title": "First Supplementary Law: (−1/p) = (−1)^((p−1)/2)",
+    "content": "Two theorems about −1 as a quadratic residue. first_supplementary proves legendreSym p (−1) = χ₄(p) via legendreSym.at_neg_one, where χ₄ is the non-principal character mod 4. neg_one_is_square_iff gives the IsSquare form: −1 is a square mod p iff p % 4 ≠ 3. From the Gauss sum perspective: τ² = χ(−1)·p shows the sign of τ² equals χ(−1), giving the supplementary law directly from the axiom.",
+    "mathContext": "The first supplementary law: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$, equivalently $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$. The Gauss sum proof is elegant: from $\\tau^2 = \\chi(-1) \\cdot p$ and $\\tau^2 \\in \\mathbb{Z}$ with $p > 0$, we get $\\text{sign}(\\tau^2) = \\chi(-1)$. Verified: $(-1/5) = 1$ since $2^2 = 4 \\equiv -1 \\pmod 5$; $(-1/7) = -1$ since $7 \\equiv 3 \\pmod 4$.",
+    "significance": "supporting",
+    "relatedConcepts": ["first supplementary law", "chi_4 character", "quadratic residues", "IsSquare", "ZMod.exists_sq_eq_neg_one_iff"],
+    "prerequisites": ["Legendre symbol", "χ₄ character mod 4", "legendreSym.at_neg_one"]
+  },
+  {
+    "id": "three-proofs-comparison",
+    "proofId": "elementary-quadratic-reciprocity-oq-02",
+    "range": { "startLine": 110, "endLine": 128 },
+    "type": "context",
+    "title": "Three Independent QR Proofs: Eisenstein, Zolotarev, Gauss Sums",
+    "content": "The three_proofs_agree theorem formalizes that all three approaches yield the same QR law. (1) Eisenstein (1832): count lattice points in a p×q rectangle — geometric and elementary. File: ElementaryQuadraticReciprocity.lean. (2) Zolotarev (1872): (a/p) equals the sign of the permutation x ↦ ax on ℤ/pℤ — group-theoretic. File: ElementaryQuadraticReciprocityOQ01.lean. (3) Gauss sums (Gauss c. 1801): τ² = χ(−1)·p → Frobenius → QR — cyclotomic. All three delegate to legendreSym.quadratic_reciprocity.",
+    "mathContext": "Gauss gave 8 proofs of QR starting with his June 1, 1796 diary entry (he was 19) and first publication in Disquisitiones Arithmeticae (1801), §§125–145. Today over 200 proofs are known. The three Lean 4 proofs span different mathematical worlds: Eisenstein's is purely combinatorial (lattice points), Zolotarev's connects to group theory (permutation signs = Legendre symbol), and the Gauss sum proof connects to analytic number theory and the Langlands program (automorphic L-functions generalize Gauss sums).",
+    "significance": "context",
+    "relatedConcepts": ["Eisenstein proof", "Zolotarev proof", "Disquisitiones Arithmeticae", "Langlands program", "legendreSym.quadratic_reciprocity"],
+    "prerequisites": ["ElementaryQuadraticReciprocity.lean (Eisenstein)", "ElementaryQuadraticReciprocityOQ01.lean (Zolotarev)"]
+  },
+  {
+    "id": "concrete-qr-verifications",
+    "proofId": "elementary-quadratic-reciprocity-oq-02",
+    "range": { "startLine": 134, "endLine": 160 },
+    "type": "example",
+    "title": "Concrete QR and Supplementary Law Verifications",
+    "content": "Verifies QR for four prime pairs and the first supplementary law for two primes via native_decide. For (p=3, q=5): legendreSym 5 3 = −1 (3 is not a QR mod 5), legendreSym 3 5 = −1 (5 ≡ 2 is not a QR mod 3), product = 1 = (−1)^(1·2). For (p=11, q=13): both primes are ≡ 1,3 mod 4 respectively; QR law gives (11/13)·(13/11) = 1. The Fact instances at lines 134–138 are required by legendreSym.",
+    "mathContext": "Concretely: $\\left(\\frac{3}{5}\\right) = -1$ (QRs mod 5 are $\\{1, 4\\}$) and $\\left(\\frac{5}{3}\\right) = \\left(\\frac{2}{3}\\right) = -1$ (QRs mod 3 are $\\{1\\}$), so $(-1)(-1) = 1 = (-1)^{1 \\cdot 2}$ ✓. For supplementary: $(-1/5) = 1$ since $2^2 \\equiv -1 \\pmod 5$; $(-1/7) = -1$ since QRs mod 7 are $\\{1,2,4\\}$ and $-1 \\equiv 6 \\notin \\{1,2,4\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "Legendre symbol computation", "quadratic residues mod p", "Fact p.Prime instances"],
+    "prerequisites": ["Fact p.Prime instance", "native_decide", "legendreSym for small primes"]
+  },
+  {
+    "id": "gauss-sum-abs",
+    "proofId": "elementary-quadratic-reciprocity-oq-02",
+    "range": { "startLine": 166, "endLine": 175 },
+    "type": "theorem",
+    "title": "Gauss Sum Absolute Value and Mathlib Interface",
+    "content": "gauss_sum_abs restates gauss_sum_sq as a named theorem: |τ|² = p. The #check commands at lines 170–173 document the four Mathlib lemmas underlying this file: legendreSym.quadratic_reciprocity (QR), legendreSym.at_neg_one (first supplementary law), legendreSym.eq_pow (Euler's criterion), and legendreSym.mul (multiplicativity of Legendre symbol). These four cover the algebraic skeleton; only the Gauss sum evaluation itself is axiomatized.",
+    "mathContext": "The absolute value result $|\\tau|^2 = p$ parallels the Riemann Hypothesis for function fields: Weil's theorem states that exponential sums $\\sum_{x \\in \\mathbb{F}_q} \\psi(f(x))$ have absolute value $\\leq (\\deg f - 1)\\sqrt{q}$. Gauss sums are the $\\deg f = 1$ case with exact absolute value $\\sqrt{p}$. The Weil conjectures (proved by Deligne 1974) vastly generalize this to character sums over varieties over finite fields.",
+    "significance": "technical",
+    "relatedConcepts": ["Gauss sum absolute value", "Weil conjectures", "Deligne 1974", "algebraic integers", "legendreSym Mathlib interface"],
+    "prerequisites": ["gauss_sum_sq", "legendreSym.quadratic_reciprocity", "legendreSym.at_neg_one", "legendreSym.eq_pow", "legendreSym.mul"]
+  }
+]
