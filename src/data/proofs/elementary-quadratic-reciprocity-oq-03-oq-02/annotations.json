@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-kron-kronecker2-def",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 39, "endLine": 42 },
+    "type": "concept",
+    "title": "The Mod-8 Pattern of (a/2)",
+    "content": "The definition of `kronecker2` encodes the value of the Kronecker symbol at the prime 2 via the residue of a modulo 8. The three-branch if-else captures: (i) a even gives 0 (the symbol vanishes on non-units), (ii) a ≡ ±1 (mod 8) gives 1, (iii) a ≡ ±3 (mod 8) gives -1. This is the unique extension of the Legendre second supplement (2/p) = (-1)^((p²-1)/8) to all odd integers — since p² ≡ 1 (mod 8) for all odd p, the exponent depends only on p mod 8. The conditions `a % 8 = 1 ∨ a % 8 = -1 ∨ a % 8 = 7` consolidate the three Lean-integer residue classes representing +1 mod 8 (Lean's % for negative numbers can return -7 ≡ 1 or 7 ≡ -1 mod 8).",
+    "mathContext": "The second supplement: for odd prime $p$, $\\left(\\frac{2}{p}\\right) = (-1)^{(p^2-1)/8}$. Since $p^2 \\equiv 1 \\pmod{8}$ for all odd $p$, this is $1$ iff $p \\equiv \\pm 1 \\pmod{8}$. The Kronecker extension: $(a/2) = (-1)^{(a^2-1)/8}$ for odd $a$, depending only on $a \\bmod 8$.",
+    "significance": "key",
+    "relatedConcepts": ["second supplement of Legendre symbol", "mod-8 residues", "Dirichlet character at prime 2", "2-adic valuation"],
+    "prerequisites": ["Legendre symbol (2/p)", "quadratic residues modulo 8", "integer modular arithmetic in Lean 4"]
+  },
+  {
+    "id": "ann-kron-full-def",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 107, "endLine": 114 },
+    "type": "technique",
+    "title": "The Full Kronecker Symbol: Sign × Jacobi Factorization",
+    "content": "The `noncomputable def kronecker` assembles the symbol via a 4-way case split on n. The critical insight in the general case is the factorization `sign * jacobiSym a m` where sign = kroneckerNeg1 a when n < 0 else 1, and m = n.natAbs. This separates the archimedean place (sign character at the real embedding) from the finite places (Jacobi symbol for the odd part). The `noncomputable` keyword is required because `jacobiSym` and `natAbs` involve computations that Lean's kernel cannot definitionally reduce — a formalization artifact, not a mathematical obstruction.",
+    "mathContext": "For $n \\neq 0, \\pm 1$: $(a/n) = (a/-1)^{[n<0]} \\cdot J(a, |n|)$, where $(a/-1) = \\mathrm{sgn}(a)$ and $J$ is the Jacobi symbol. This factorization expresses the Kronecker symbol as a product over all places of $\\mathbb{Q}$: archimedean (sign) times finite (Jacobi).",
+    "significance": "key",
+    "relatedConcepts": ["Jacobi symbol", "sign character (archimedean place)", "noncomputable definitions in Lean 4", "natAbs", "completely multiplicative symbol"],
+    "prerequisites": ["jacobiSym in Mathlib", "Int.natAbs", "kroneckerNeg1", "noncomputable annotation in Lean 4"]
+  },
+  {
+    "id": "ann-kron-jacobi-agreement",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 121, "endLine": 128 },
+    "type": "insight",
+    "title": "Agreement with the Jacobi Symbol for Odd Positive Moduli",
+    "content": "`kronecker_eq_jacobi` proves that for odd positive n, the Kronecker symbol coincides with the Jacobi symbol. The proof unfolds `kronecker` and resolves all if-then-else branches: `omega` excludes n=0, n=-1, n=1 given n is odd and positive, leaving the general case where sign=1 and |n|=n, giving `1 * jacobiSym a n = jacobiSym a n`. This theorem is the consistency guarantee: the Kronecker symbol is a genuine extension of the Jacobi symbol, not merely a new definition with the same name in special cases.",
+    "mathContext": "For odd $n > 0$: $(a/n)_{\\mathrm{Kron}} = J(a, n)_{\\mathrm{Jacobi}}$. The proof verifies that the three special-case branches (n=0, n=-1, n=1) are excluded by the hypotheses $n > 0$ and $n$ odd, and that `natAbs_ofNat` reduces $|n|$ to $n$ in the general case.",
+    "significance": "key",
+    "relatedConcepts": ["Jacobi symbol extension", "Int.natAbs_ofNat", "monotone extensions of arithmetic functions"],
+    "prerequisites": ["kronecker definition", "jacobiSym in Mathlib", "Int.natAbs for natural number casts"]
+  },
+  {
+    "id": "ann-kron-neg1-mul",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 150, "endLine": 167 },
+    "type": "technique",
+    "title": "Sign Character Multiplicativity: Four-Way Case Split",
+    "content": "The private `kroneckerNeg1_mul` proves the sign character is multiplicative for nonzero inputs using a 4-way case split on `a < 0` and `b < 0`. In the (−−) case, `Int.mul_pos_of_neg_of_neg` gives a*b > 0 and `ring` closes (-1)*(-1) = 1. In (−+), `Int.mul_neg_of_neg_of_pos` gives a*b < 0, with positivity of b derived from `ha : a ≠ 0` and `¬(a < 0)` via `omega`. In (++) `Int.mul_pos` applies. The nonzero hypotheses prevent the degenerate case where a or b is 0 (sign(0) = 1 but sign(0)*sign(b) might not be 1).",
+    "mathContext": "The sign homomorphism $\\mathrm{sgn}: \\mathbb{Z} \\setminus \\{0\\} \\to \\{\\pm 1\\}$ satisfies $\\mathrm{sgn}(ab) = \\mathrm{sgn}(a) \\cdot \\mathrm{sgn}(b)$. This is the unique real character of order 2 on $\\mathbb{Z}^\\times$, corresponding to the Kronecker symbol at the archimedean place: $(a/-1) = \\mathrm{sgn}(a)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sign homomorphism", "archimedean place", "Int.mul_neg_of_neg_of_pos", "completely multiplicative function"],
+    "prerequisites": ["kroneckerNeg1 definition", "Int.mul_pos, Int.mul_neg lemmas"]
+  },
+  {
+    "id": "ann-kron-mul-left",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 197, "endLine": 209 },
+    "type": "insight",
+    "title": "Complete Multiplicativity in the First Argument",
+    "content": "`kronecker_mul_left` proves (a·b/n) = (a/n)·(b/n) for all n when a·b ≠ 0. The proof unfolds `kronecker` and uses `split_ifs` to case-split on the four-level if-then-else structure of `kronecker`, generating many branches. Most are dismissed by `simp_all`. Surviving branches delegate to `kronecker0_mul`, `kroneckerNeg1_mul`, and `jacobiSym.mul_left` combined with `ring`. This theorem is the heart of the formalization: it establishes that (·/n) is a group homomorphism on (ℤ/nℤ)^×, the defining property of a Dirichlet character.",
+    "mathContext": "$(ab/n) = (a/n)(b/n)$ for $ab \\neq 0$. For the general case: $\\mathrm{sgn}(ab)^{[n<0]} \\cdot J(ab, |n|) = (\\mathrm{sgn}(a) \\cdot \\mathrm{sgn}(b))^{[n<0]} \\cdot J(a,|n|) \\cdot J(b,|n|) = (a/n)(b/n)$, using sign multiplicativity and `jacobiSym.mul_left`.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet character", "group homomorphism (ℤ/nℤ)^× → {±1}", "jacobiSym.mul_left", "complete multiplicativity"],
+    "prerequisites": ["kroneckerNeg1_mul", "kronecker0_mul", "jacobiSym.mul_left from Mathlib"]
+  },
+  {
+    "id": "ann-kron-axioms",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 211, "endLine": 222 },
+    "type": "concept",
+    "title": "The Two Axiomatized Results: Multiplicativity in n and Generalized QR",
+    "content": "The file ends with docstring-style comments stating two axiomatized theorems. `kronecker_mul_right` would state (a/mn) = (a/m)(a/n): multiplicativity in the second argument, harder than first-argument multiplicativity because it requires tracking the interaction between the 2-adic valuation of mn and the mod-8 classification of (a/2). `kronecker_reciprocity` states generalized QR for fundamental discriminants d₁, d₂: (d₁/|d₂|)(d₂/|d₁|) = (-1)^((d₁−1)/2·(d₂−1)/2), equivalent to the Artin reciprocity law for quadratic extensions of ℚ. Both are classical theorems but require Gauss sum methods or algebraic machinery not yet formalized here. These two axioms account for both entries in the `axiomCount` field.",
+    "mathContext": "Axiom 1: $(a/mn) = (a/m)(a/n)$ for $mn \\neq 0$, completing the multiplicative structure. Axiom 2: For fundamental discriminants $d_1, d_2$ with $\\gcd(d_1, d_2) = 1$: $(d_1/|d_2|)(d_2/|d_1|) = (-1)^{(d_1-1)/2 \\cdot (d_2-1)/2}$, the generalized quadratic reciprocity law (Neukirch, Algebraic Number Theory, §I.7).",
+    "significance": "key",
+    "relatedConcepts": ["Artin reciprocity law", "fundamental discriminants", "Gauss sums", "axiomatization vs proved theorems"],
+    "prerequisites": ["Complete multiplicativity of Kronecker symbol", "Gauss's quadratic reciprocity", "class field theory for quadratic extensions"]
+  }
+]
