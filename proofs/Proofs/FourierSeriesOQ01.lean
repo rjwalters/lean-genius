@@ -378,8 +378,43 @@ theorem divergenceSet_measure_bound
   -- Uses: MeasureTheory.mul_meas_ge_le_lintegral₀ applied to ‖h‖²
   --       plus lintegral_ofReal for connecting ∫⁻ to ∫.
   have hchebyshev : haarAddCircle {x : AddCircle T | δ / 2 < ‖(f - g) x‖} ≤
-      ENNReal.ofReal (ε ^ 2 / (δ / 2) ^ 2) :=
-    sorry -- Markov/Chebyshev: μ({‖h‖>c}) ≤ ∫‖h‖²/c² — standard measure theory
+      ENNReal.ofReal (ε ^ 2 / (δ / 2) ^ 2) := by
+    have hd2sq_pos : (0 : ℝ) < (δ / 2) ^ 2 := by positivity
+    have hd2sq_ne_zero : ENNReal.ofReal ((δ / 2) ^ 2) ≠ 0 :=
+      (ENNReal.ofReal_pos.mpr hd2sq_pos).ne'
+    -- Integrability of ‖f-g‖² from Memℒp 2
+    have hfmg_sq : Integrable (fun x => ‖(f - g) x‖ ^ 2) haarAddCircle :=
+      (memℒp_two_iff_integrable_sq_norm hfmg_L2.1).mp hfmg_L2
+    -- ENNReal.ofReal(‖f-g‖²) is AEMeasurable
+    have hφ_ae : AEMeasurable (fun x => ENNReal.ofReal (‖(f - g) x‖ ^ 2)) haarAddCircle :=
+      ENNReal.measurable_ofReal.comp_aemeasurable hfmg_sq.aemeasurable
+    -- Markov: (δ/2)² * μ({(δ/2)² ≤ ‖h‖²}) ≤ ∫⁻ ‖h‖²
+    have hmarkov := mul_meas_ge_le_lintegral₀ hφ_ae (ENNReal.ofReal ((δ / 2) ^ 2))
+    -- Connect lintegral to integral via non-negativity and integrability
+    have hlint : ∫⁻ x, ENNReal.ofReal (‖(f - g) x‖ ^ 2) ∂haarAddCircle =
+        ENNReal.ofReal (∫ x, ‖(f - g) x‖ ^ 2 ∂haarAddCircle) := by
+      symm
+      exact ofReal_integral_eq_lintegral_ofReal hfmg_sq
+        (Filter.eventually_of_forall fun x => by positivity)
+    -- {δ/2 < ‖h‖} ⊆ {ENNReal.ofReal((δ/2)²) ≤ ENNReal.ofReal(‖h‖²)}
+    have hset_sub : {x : AddCircle T | δ / 2 < ‖(f - g) x‖} ⊆
+        {x | ENNReal.ofReal ((δ / 2) ^ 2) ≤ ENNReal.ofReal (‖(f - g) x‖ ^ 2)} :=
+      fun x hx => ENNReal.ofReal_le_ofReal
+        (pow_le_pow_left (le_of_lt (half_pos hδ)) (le_of_lt hx) 2)
+    -- Calc: monotone measure + Markov division + integral bound + arithmetic
+    calc haarAddCircle {x | δ / 2 < ‖(f - g) x‖}
+        ≤ haarAddCircle {x | ENNReal.ofReal ((δ / 2) ^ 2) ≤
+            ENNReal.ofReal (‖(f - g) x‖ ^ 2)} := measure_mono hset_sub
+      _ ≤ (∫⁻ x, ENNReal.ofReal (‖(f - g) x‖ ^ 2) ∂haarAddCircle) /
+            ENNReal.ofReal ((δ / 2) ^ 2) := by
+          rw [ENNReal.le_div_iff_mul_le (Or.inl hd2sq_ne_zero)
+              (Or.inl ENNReal.ofReal_ne_top)]
+          rw [mul_comm]; exact hmarkov
+      _ ≤ ENNReal.ofReal (ε ^ 2) / ENNReal.ofReal ((δ / 2) ^ 2) :=
+          ENNReal.div_le_div_right (by rw [hlint];
+            exact ENNReal.ofReal_le_ofReal (le_of_lt happrox_fmg)) _
+      _ = ENNReal.ofReal (ε ^ 2 / (δ / 2) ^ 2) :=
+          (ENNReal.ofReal_div_of_pos hd2sq_pos).symm
   -- Step 7: Combine the two pieces
   calc haarAddCircle (divergenceSet (T := T) f δ)
       ≤ haarAddCircle {x | δ / 2 < ‖(f - g) x‖} +
@@ -575,11 +610,13 @@ theorem fourierPartialSum_smul (c : ℂ) (f : AddCircle T → ℂ) (N : ℕ)
     fourierPartialSum (c • f) N x = c * fourierPartialSum f N x := by
   simp only [fourierPartialSum, fourierCoeff, Pi.smul_apply, smul_eq_mul]
   rw [mul_sum]
-  congr 1
-  ext n
-  ring_nf
-  congr 1
-  simp [mul_comm c, MeasureTheory.integral_mul_left]
+  congr 1; ext n
+  have key : ∫ t : AddCircle T, fourier (-n) t * (c * f t) ∂haarAddCircle =
+             c * ∫ t : AddCircle T, fourier (-n) t * f t ∂haarAddCircle := by
+    have heq : (fun t : AddCircle T => fourier (-n) t * (c * f t)) =
+               fun t => c * (fourier (-n) t * f t) := funext fun t => by ring
+    rw [heq]; exact integral_const_mul c _
+  rw [key]; ring
 
 /-- Partial sums of the zero function are zero. -/
 theorem fourierPartialSum_zero_fn (N : ℕ) (x : AddCircle T) :
