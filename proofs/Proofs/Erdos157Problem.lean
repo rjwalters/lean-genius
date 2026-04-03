@@ -113,8 +113,20 @@ theorem pilatte_existence : Erdos157Conjecture := by
 /- Aristotle failed to find a proof. -/
 /-- No Sidon set can be an asymptotic basis of order 2.
 
-This is because Sidon sets are too sparse: |A ∩ [1,N]| ≤ √N + O(1),
-but an asymptotic basis of order 2 needs |A ∩ [1,N]| ≫ √N. -/
+**Proof strategy** (not yet formalized):
+1. Assume A is Sidon and IsAsymptoticBasis A 2. Let N₀ from basis, C from sidon_counting_bound.
+2. For N large, let M = |A ∩ [1,2N]| ≤ √(2N) + C*(2N)^(1/4) ≈ √2·√N.
+3. ALL 2-element sums a+b (a < b, a,b ∈ A) are DISTINCT by IsSidonAlt (proved below as
+   `sidon_iff_sidon_alt`), so representable integers in SumsetK A 2 that are ≤ 2N is at most
+   |A ∩ [1,2N]| + C(M,2) = M·(M+1)/2.
+4. M·(M+1)/2 ≤ (√(2N) + C·(2N)^(1/4))²/2 + lower order ≈ N + O(N^{3/4}).
+5. But [N₀, 2N] has 2N - N₀ + 1 ≈ 2N elements that ALL must be in SumsetK A 2.
+6. For large N: 2N - N₀ ≤ M·(M+1)/2 ≤ N + O(N^{3/4}), so N - O(N^{3/4}) ≤ N₀. Contradiction.
+
+NOTE: `basis_counting_lower` is NOT sufficient for this proof because it only gives c > 0
+(and c ≤ 1 is consistent with the Sidon bound). The correct proof uses direct counting
+via IsSidonAlt distinctness, not via basis_counting_lower.
+-/
 theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :
     ¬IsAsymptoticBasis A 2 := by
   sorry
