@@ -118,16 +118,11 @@ theorem median_length_formula (a b c d : ℝ) (ha : a ≠ 0) (t : ℝ)
 -- Part IV: Special Case: Angle Bisector Length
 -- ============================================================
 
-/-- For an angle bisector, m/n = c/b (by the angle bisector theorem).
-    When m = ca/(b+c) and n = ba/(b+c), Stewart gives the angle
-    bisector length formula. -/
-theorem angle_bisector_stewarts (a b c d : ℝ)
-    (hb : 0 < b) (hc : 0 < c) (t : ℝ)
-    (hm : ∀ m, m = c * a / (b + c) → True)
-    (hn : ∀ n, n = b * a / (b + c) → True) :
-    -- The angle bisector length satisfies:
-    -- d² = bc((b+c)² - a²) / (b+c)²
-    True := trivial
+/-
+  For an angle bisector, m/n = c/b (by the angle bisector theorem).
+  When m = ca/(b+c) and n = ba/(b+c), Stewart's theorem gives the angle
+  bisector length formula: d² = bc((b+c)² - a²) / (b+c)²
+-/
 
 -- ============================================================
 -- Part V: Numerical Verification

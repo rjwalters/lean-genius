@@ -114,13 +114,14 @@ theorem basis_size_lower_bound_correct (A : Set ℕ) (hA : IsAdditiveBasis A) (N
 -- Part IV: Consistency with Counterexample
 -- ============================================================
 
-/-- The counterexample A = {0,1} ∪ {n ≥ 3} satisfies the CORRECT bound.
-    At N=2: |A ∩ [0,2]| = |{0,1}| = 2, and √3 ≈ 1.73, so 2 ≥ √3. ✓
-    (The FALSE bound used [1,2] giving |{1}| = 1 < √2.) -/
-theorem counterexample_satisfies_correct_bound :
-    -- The corrected bound is consistent with the counterexample
-    -- because including 0 in the interval adds one more element
-    True := trivial
+/-
+  The counterexample A = {0,1} ∪ {n ≥ 3} satisfies the CORRECT bound.
+  At N=2: |A ∩ [0,2]| = |{0,1}| = 2, and √3 ≈ 1.73, so 2 ≥ √3. ✓
+  (The FALSE bound used [1,2] giving |{1}| = 1 < √2.)
+
+  The corrected bound is consistent with the counterexample because including
+  0 in the interval adds one more element to the count.
+-/
 
 -- ============================================================
 -- Part V: Optimality and Tightness
@@ -144,13 +145,13 @@ theorem small_basis_exists (N : ℕ) (hN : 0 < N) :
       by omega⟩
   · simp
 
-/-- **Why the original was wrong**: The interval [1,N] excludes 0, which can be
-    a critical element of the basis. The counterexample A = {0,1} ∪ {n ≥ 3}
-    has 0 ∈ A, so representations like 0 + n = n are available.
-    By excluding 0 from the count, the original bound was too strong. -/
-theorem why_original_was_wrong :
-    -- The fix: include 0 in the counting interval
-    -- [0,N] instead of [1,N]
-    True := trivial
+/-
+  Why the original was wrong: The interval [1,N] excludes 0, which can be
+  a critical element of the basis. The counterexample A = {0,1} ∪ {n ≥ 3}
+  has 0 ∈ A, so representations like 0 + n = n are available.
+  By excluding 0 from the count, the original bound was too strong.
+
+  The fix: include 0 in the counting interval — use [0,N] instead of [1,N].
+-/
 
 end Erdos29OQ02
