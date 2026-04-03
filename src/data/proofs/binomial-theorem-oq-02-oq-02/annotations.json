@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-vdm-header",
+    "proofId": "binomial-theorem-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "Header: Vandermonde's Identity via Coefficient Extraction",
+    "content": "The proof strategy is coefficient extraction from the identity (1+x)^m · (1+x)^n = (1+x)^(m+n). The binomial theorem expands each side: the left side is (Σᵢ C(m,i)xⁱ)(Σⱼ C(n,j)xʲ), and the Cauchy product of these series gives Σᵣ (Σᵢ₊ⱼ₌ᵣ C(m,i)C(n,j))xʳ. The right side is Σᵣ C(m+n,r)xʳ. Comparing xʳ coefficients yields Vandermonde. This file sits at the end of a three-layer formalization chain: binomial theorem → multinomial theorem → Vandermonde and its special cases.",
+    "mathContext": "The coefficient extraction argument: $[x^r](1+x)^m \\cdot [x^r](1+x)^n = [x^r](1+x)^{m+n}$. Formally, $\\binom{m+n}{r} = [x^r] (1+x)^{m+n} = [x^r] \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j} x^{i+j} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$. In Lean, `Finset.antidiagonal r` represents the set of pairs $(i,j)$ with $i+j=r$, so the sum becomes `∑ ij ∈ antidiagonal r, m.choose ij.1 * n.choose ij.2`.",
+    "significance": "key",
+    "relatedConcepts": ["coefficient extraction", "generating functions", "Finset.antidiagonal", "Cauchy product", "multinomial theorem"],
+    "prerequisites": ["binomial theorem", "Finset.antidiagonal definition", "formal power series multiplication"]
+  },
+  {
+    "id": "ann-vdm-core",
+    "proofId": "binomial-theorem-oq-02-oq-02",
+    "range": { "startLine": 44, "endLine": 71 },
+    "type": "technique",
+    "title": "Core Identity and Total Form: Two Faces of Vandermonde",
+    "content": "The `vandermonde` theorem delegates directly to `Nat.add_choose_eq`, which is Mathlib's formalization of the identity in antidiagonal form. The companion `binomial_product_total` theorem specializes to the total count: (Σ C(m,i)) · (Σ C(n,j)) = Σ C(m+n,r), i.e., 2^m · 2^n = 2^(m+n). This is proved by applying `Nat.sum_range_choose` three times and then `ring` — a complete proof in two lines that hides the underlying combinatorial content.",
+    "mathContext": "`Nat.add_choose_eq m n r` : `(m + n).choose r = ∑ ij ∈ antidiagonal r, m.choose ij.1 * n.choose ij.2`. The total form is the degenerate case $r$ ranges over all values: $\\sum_r \\binom{m+n}{r} = \\sum_r \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j} = (\\sum_i \\binom{m}{i})(\\sum_j \\binom{n}{j}) = 2^m \\cdot 2^n = 2^{m+n}$. `Nat.sum_range_choose n` : `∑ k ∈ range (n+1), n.choose k = 2^n`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.add_choose_eq", "Nat.sum_range_choose", "antidiagonal", "Cauchy product of power series", "2^n identity"],
+    "prerequisites": ["Finset.antidiagonal", "Nat.sum_range_choose", "ring tactic"]
+  },
+  {
+    "id": "ann-vdm-symmetry",
+    "proofId": "binomial-theorem-oq-02-oq-02",
+    "range": { "startLine": 80, "endLine": 89 },
+    "type": "technique",
+    "title": "Symmetry: Commutativity in (m,n) and Index Swap",
+    "content": "Two symmetry lemmas expose the structure of the identity. `vandermonde_comm` uses `add_comm` (trivially: C(m+n,r) = C(n+m,r)). `vandermonde_index_swap` swaps the summation index via: rewrite both sides with `add_choose_eq`, swap via `add_comm`, and rewrite back. The proof `rw [← Nat.add_choose_eq, Nat.add_comm, Nat.add_choose_eq]` is a concise three-step transport that avoids any explicit index manipulation.",
+    "mathContext": "Index swap: $\\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j} = \\sum_{i+j=r} \\binom{m}{j}\\binom{n}{i}$. This follows because the antidiagonal $\\{(i,j): i+j=r\\}$ is symmetric under $(i,j) \\mapsto (j,i)$, but the proof avoids this involution directly: it uses $\\binom{m}{i}\\binom{n}{j}$ summed over antidiag $r$ equals $\\binom{m+n}{r}$ (by `add_choose_eq`), then swaps $m \\leftrightarrow n$ via `add_comm`, then re-expands.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.add_comm", "Finset.antidiagonal symmetry", "index substitution", "commutativity of convolution"],
+    "prerequisites": ["Nat.add_choose_eq", "Nat.add_comm", "rw tactic chaining"]
+  },
+  {
+    "id": "ann-vdm-special-cases",
+    "proofId": "binomial-theorem-oq-02-oq-02",
+    "range": { "startLine": 95, "endLine": 131 },
+    "type": "insight",
+    "title": "Special Cases: Pascal's Rule and Self-Convolution C(2n,n) = Σ C(n,k)²",
+    "content": "The most interesting special cases are `pascal_from_vandermonde` and `sum_choose_sq`. Pascal's rule `C(m+1,r) = C(m,r) + C(m,r-1)` falls out of Vandermonde with n=1: C(1,0)=C(1,1)=1 so the sum has exactly two nonzero terms. The proof uses `cases r` for the r=0 base and `Nat.choose_succ_succ` for the successor case. Self-convolution `Σ C(n,k)² = C(2n,n)` is Vandermonde with m=n, r=n: it counts the ways to choose n items from two groups of n (one from each), which is C(2n,n).",
+    "mathContext": "Pascal's rule: set $m \\leftarrow m$, $n \\leftarrow 1$ in Vandermonde. The antidiagonal $\\{(i,j): i+j=r\\}$ has two pairs contributing when $n=1$: $(r,0)$ with $\\binom{1}{0}=1$ and $(r-1,1)$ with $\\binom{1}{1}=1$. Self-convolution: $\\binom{2n}{n} = \\sum_{k=0}^n \\binom{n}{k}^2$, which appears in counting lattice paths (Catalan-adjacent) and in the central binomial coefficient. The Lean proof uses `rw [← Nat.add_choose_eq]` then `ring_nf` to identify $m=n$ and $r=n$ in the general formula.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.choose_succ_succ", "Pascal's triangle", "self-convolution", "central binomial coefficient C(2n,n)", "Catalan numbers"],
+    "prerequisites": ["Nat.choose_succ_succ", "cases tactic", "Finset.antidiagonal for small r", "ring_nf"]
+  },
+  {
+    "id": "ann-vdm-triple",
+    "proofId": "binomial-theorem-oq-02-oq-02",
+    "range": { "startLine": 146, "endLine": 158 },
+    "type": "insight",
+    "title": "Triple Vandermonde: Iterated Convolution via Rewriting",
+    "content": "The `triple_vandermonde` theorem proves C(a+b+c,r) = Σ_{i+j+k=r} C(a,i)·C(b,j)·C(c,k) by two applications of binary Vandermonde. The proof uses `rw [← Nat.add_choose_eq]` then `congr 1` + `ext` to reduce the goal to matching coefficients, then `simp only [Nat.add_choose_eq]` to close via the binary case. The key move is `congr 1`: after rewriting, both sides of the equation have the same outer structure and `congr` reduces to pointwise equality, which `ext` decomposes into the inner Vandermonde application.",
+    "mathContext": "The iteration: $\\binom{a+b+c}{r} = \\sum_{s=0}^r \\binom{a+b}{s}\\binom{c}{r-s}$ (first binary Vandermonde) $= \\sum_{s=0}^r \\left(\\sum_{i=0}^s \\binom{a}{i}\\binom{b}{s-i}\\right)\\binom{c}{r-s}$ (second). In Lean, this is expressed over `antidiagonal r` with inner `antidiagonal ij.1`, giving a nested sum. The $n$-fold generalization handles $\\binom{m_1+\\ldots+m_k}{r} = \\sum_{r_1+\\ldots+r_k=r} \\prod \\binom{m_i}{r_i}$ — the multinomial Vandermonde connection stated in the Part 5 comment.",
+    "significance": "key",
+    "relatedConcepts": ["multinomial Vandermonde", "iterated convolution", "Finset.antidiagonal nesting", "congr tactic", "multinomial theorem"],
+    "prerequisites": ["binary Vandermonde (Nat.add_choose_eq)", "Finset.antidiagonal nesting", "congr 1 + ext tactic"]
+  },
+  {
+    "id": "ann-vdm-chain",
+    "proofId": "binomial-theorem-oq-02-oq-02",
+    "range": { "startLine": 159, "endLine": 173 },
+    "type": "context",
+    "title": "Summary: The Three-Layer Formalization Chain",
+    "content": "The final comment makes explicit the three-layer proof chain: binomial theorem → multinomial theorem → Vandermonde's identity. This layering mirrors the historical development: Newton's binomial theorem (1665-1676) generalized to multinomials, and coefficient extraction from products of binomial series yields Vandermonde. The chain is also an API design: each layer wraps the previous as a Mathlib delegation, exposing only the mathematically meaningful statement.",
+    "mathContext": "Chain structure: `BinomialTheorem.lean` (Σ C(n,k) xᵏ = (1+x)^n) → `BinomialTheoremOQ02.lean` (multinomial: (x₁+…+xₖ)^n = Σ multinomial coefficients) → `BinomialTheoremOQ02OQ02.lean` (Vandermonde from (1+x)^m · (1+x)^n = (1+x)^(m+n)). The triple Vandermonde closes this: it's the special case of the multinomial coefficient sum with k=3 groups.",
+    "significance": "context",
+    "relatedConcepts": ["binomial theorem", "multinomial theorem", "three-layer architecture", "API design", "Newton's generalized binomial"],
+    "prerequisites": ["BinomialTheorem.lean", "BinomialTheoremOQ02.lean", "multinomial coefficients"]
+  }
+]
