@@ -82,5 +82,29 @@
     "significance": "context",
     "relatedConcepts": ["change of variables for limits", "Filter.tendsto_nhdsWithin_iff", "atTop vs nhdsWithin", "sorry"],
     "prerequisites": ["right approach theorem", "filter map theorems", "substitution lemmas"]
+  },
+  {
+    "id": "ann-lhop-examples",
+    "proofId": "lhopital-oq-02",
+    "range": { "startLine": 315, "endLine": 333 },
+    "type": "insight",
+    "title": "Classic Examples: x/eˣ and ln(x)/cot(x)",
+    "content": "Two canonical examples illustrate why the ∞/∞ form is distinct from 0/0. For x/eˣ as x → ∞: both numerator and denominator diverge, L'Hôpital gives lim 1/eˣ = 0. For ln(x)/cot(x) as x → 0⁺: ln(x) → −∞ and cot(x) = cos(x)/sin(x) → +∞, applying L'Hôpital gives lim(1/x)/(−csc²x) = lim −sin²(x)/x = 0 (using the 0/0 form for the final step). These examples cannot be evaluated by the 0/0 form directly, highlighting the practical value of the ∞/∞ case.",
+    "mathContext": "$\\lim_{x \\to \\infty} \\frac{x}{e^x} = \\lim_{x \\to \\infty} \\frac{1}{e^x} = 0$; \\quad $\\lim_{x \\to 0^+} \\frac{\\ln x}{\\cot x} = \\lim_{x \\to 0^+} \\frac{1/x}{-\\csc^2 x} = \\lim_{x \\to 0^+} \\frac{-\\sin^2 x}{x} = 0$",
+    "significance": "context",
+    "relatedConcepts": ["exponential growth", "logarithm", "cotangent", "indeterminate forms", "iterated L'Hôpital"],
+    "prerequisites": ["derivatives: ln, cot, exp", "trigonometric limits"]
+  },
+  {
+    "id": "ann-lhop-comparison",
+    "proofId": "lhopital-oq-02",
+    "range": { "startLine": 335, "endLine": 357 },
+    "type": "insight",
+    "title": "Why ∞/∞ Cannot Reuse the 0/0 Proof",
+    "content": "The 0/0 form applies Cauchy's MVT on [a, x] with f(a) = g(a) = 0, giving f(x)/g(x) = (f(x)−f(a))/(g(x)−g(a)) = f'(ξ)/g'(ξ) directly. For ∞/∞, the limit point a is not in the domain (f and g diverge there), so MVT cannot include a. The ∞/∞ proof must instead use a two-variable argument: fix x₀ > a, apply MVT on [x, x₀], and then use g(x) → ∞ to show correction terms vanish. This requires a fundamentally different epsilon-delta structure with three separate δ values.",
+    "mathContext": "$0/0$: Cauchy MVT on $[a,x]$: $f(x)/g(x) = f'(\\xi)/g'(\\xi)$ directly. $\\infty/\\infty$: must use $f(x)/g(x) = \\frac{f(x)-f(x_0)}{g(x)-g(x_0)}(1 - \\frac{g(x_0)}{g(x)}) + \\frac{f(x_0)}{g(x)}$ with $x_0 > a$ fixed.",
+    "significance": "context",
+    "relatedConcepts": ["0/0 vs ∞/∞ L'Hôpital", "Cauchy MVT", "two-variable argument", "proof by analogy"],
+    "prerequisites": ["L'Hôpital 0/0 form", "Cauchy's Mean Value Theorem"]
   }
 ]
