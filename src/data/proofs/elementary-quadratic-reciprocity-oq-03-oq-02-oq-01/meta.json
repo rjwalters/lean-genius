@@ -69,34 +69,54 @@
     {
       "id": "kronecker0-mul",
       "title": "Multiplicativity of kronecker0",
-      "description": "The unit character at modulus 0: (ab/0) = (a/0)(b/0)",
-      "summary": "Multiplicativity of kronecker0"
+      "startLine": 1,
+      "endLine": 88,
+      "summary": "Imports, module docstring, and theorem kronecker0_mul_of_ne_zero. The unit character at modulus 0: (ab/0) = (a/0)(b/0) for ab ≠ 0. Proved by case analysis: |a| = 1 and |b| = 1 iff |ab| = 1 (since units in ℤ are ±1)."
     },
     {
       "id": "kronecker-neg1-mul",
-      "title": "Multiplicativity of kroneckerNeg1",
-      "description": "The sign character at modulus -1: (ab/-1) = (a/-1)(b/-1)",
-      "summary": "Multiplicativity of kroneckerNeg1"
+      "title": "Multiplicativity of kroneckerNeg1 (Sign Character)",
+      "startLine": 89,
+      "endLine": 125,
+      "summary": "Theorem kroneckerNeg1_mul_of_ne_zero: sgn(ab) = sgn(a)·sgn(b) for ab ≠ 0. Proved by four cases (pos/neg × pos/neg) using linarith and Int.mul_pos_of_neg_of_neg. This is the sign homomorphism property."
     },
     {
       "id": "main-theorem-left",
       "title": "Multiplicativity in the First Argument",
-      "description": "kronecker (a*b) n = kronecker a n * kronecker b n for ab != 0",
-      "summary": "First argument multiplicativity via case analysis on n"
+      "startLine": 126,
+      "endLine": 193,
+      "summary": "Main theorem kronecker_mul_left_proved: kronecker (a*b) n = kronecker a n * kronecker b n for ab ≠ 0. Case split on n: n=0 uses kronecker0_mul_of_ne_zero, n=-1 uses kroneckerNeg1_mul_of_ne_zero, n=1 is trivial, general n reduces to jacobiSym.mul_left + sign factor."
     },
     {
       "id": "main-theorem-right",
       "title": "Multiplicativity in the Second Argument",
-      "description": "kronecker a (m*n) = kronecker a m * kronecker a n for mn != 0",
-      "summary": "Second argument multiplicativity via sign factor analysis + jacobiSym.mul_right"
+      "startLine": 194,
+      "endLine": 268,
+      "summary": "Main theorem kronecker_mul_right_proved: kronecker a (m*n) = kronecker a m * kronecker a n for mn ≠ 0. Harder than left multiplicativity: requires handling signs of m and n separately, using kronecker_neg_modulus to introduce sign factors, then jacobiSym.mul_right for the Jacobi part."
     }
   ],
+  "conclusion": {
+    "summary": "The Kronecker symbol is proved completely multiplicative in both arguments. The four main results — `kronecker0_mul_of_ne_zero`, `kroneckerNeg1_mul_of_ne_zero`, `kronecker_mul_left_proved`, `kronecker_mul_right_proved` — are verified without axioms or sorries, building on Mathlib's `jacobiSym.mul_left` and `jacobiSym.mul_right`.",
+    "implications": "Complete multiplicativity of the Kronecker symbol is the foundation for its use in algebraic number theory: the symbol $n \\mapsto \\left(\\frac{D}{n}\\right)_K$ is a Dirichlet character (a group homomorphism on units mod $|D|$), which determines the splitting behavior of primes in quadratic fields. This is the key input to class field theory's characterization of abelian extensions. In computational number theory, the multiplicativity enables efficient evaluation via prime factorization.",
+    "openQuestions": [
+      "Can the Kronecker symbol be formalized as a Dirichlet character in Lean? The character $\\chi_D(n) = \\left(\\frac{D}{n}\\right)_K$ (for $n$ coprime to $D$) is a primitive character mod $|D|$. Formalizing this would require showing $\\chi_D$ extends to a group homomorphism $(\\mathbb{Z}/|D|\\mathbb{Z})^* \\to \\{\\pm 1\\}$.",
+      "Is the conductor of the Kronecker symbol $\\chi_D$ exactly the discriminant of the quadratic field $\\mathbb{Q}(\\sqrt{D})$? This Dirichlet character / field discriminant correspondence is a deep result connecting the two subjects.",
+      "Can the generalized quadratic reciprocity law for the Kronecker symbol be formalized: $\\left(\\frac{m}{n}\\right)_K \\cdot \\left(\\frac{n}{m}\\right)_K = (-1)^{(m-1)/2 \\cdot (n-1)/2}$ for odd positive $m, n$ coprime? This would extend the current proof from Jacobi to Kronecker.",
+      "Is there a Lean proof of the Artin product formula for Kronecker symbols: $\\prod_p \\left(\\frac{a}{p}\\right)^{v_p(n)} = \\left(\\frac{a}{n}\\right)_K$ for odd positive $n$? This multiplicativity is exactly what the current file proves, but in the reverse direction from the prime factorization."
+    ]
+  },
   "overview": {
     "text": "Proves the Kronecker symbol is completely multiplicative in both arguments. First argument: case analysis on n with kronecker0/kroneckerNeg1 multiplicativity at special moduli. Second argument: case analysis on m,n being ±1 or general, with sign factor analysis and jacobiSym.mul_right.",
     "proofStrategy": "First argument: case split on n = 0, -1, 1, general; use kronecker0_mul, kroneckerNeg1_mul, jacobiSym.mul_left. Second argument: case split on m,n = ±1 (special) vs general; use kronecker_neg_modulus for sign introduction, then jacobiSym.mul_right with sign(m)*sign(n) analysis for 4 quadrants.",
-    "keyInsights": [],
-    "historicalContext": "",
-    "problemStatement": "See the description field for the problem statement."
+    "keyInsights": [
+      "The Kronecker symbol $\\left(\\frac{a}{n}\\right)_K$ extends the Jacobi symbol to all integer moduli by defining $\\left(\\frac{a}{0}\\right) = [|a| = 1]$, $\\left(\\frac{a}{-1}\\right) = \\text{sgn}(a)$, $\\left(\\frac{a}{2}\\right)$ via the 2-adic supplement, and $\\left(\\frac{a}{n}\\right) = $ Jacobi symbol for odd positive $n$. Multiplicativity in both arguments is the key algebraic property making the Kronecker symbol a *completely multiplicative function* (when restricted to nonzero argument products).",
+      "The hypothesis `a * b ≠ 0` (equivalently `a ≠ 0` and `b ≠ 0`) is necessary for first-argument multiplicativity. The parent proof (OQ03OQ02) provides the counterexample: `kroneckerNeg1 0 = 1` but `kroneckerNeg1 (-3) * kroneckerNeg1 0 = -1 * 1 = -1 ≠ 1`. The Kronecker symbol at 0 is the unit function (`kronecker0 a = 1` iff $a$ is a unit, else 0), and `0` is not a unit, breaking the product rule.",
+      "The proof of `kronecker_mul_left_proved` uses case analysis on `n`. Special cases `n = 0, -1, 1` use the auxiliary lemmas `kronecker0_mul_of_ne_zero` and `kroneckerNeg1_mul_of_ne_zero`. The general case ($n \\neq 0, \\pm 1$) reduces to `jacobiSym.mul_left` (Jacobi symbol multiplicativity in the first argument, proved in Mathlib) combined with `kroneckerNeg1_mul_of_ne_zero` for the sign factor.",
+      "`kroneckerNeg1` is the sign character $\\text{sgn}(a) \\in \\{-1, 0, 1\\}$: the value $-1$ if $a < 0$, $0$ if $a = 0$, $1$ if $a > 0$. Its multiplicativity (`kroneckerNeg1 (a*b) = kroneckerNeg1 a * kroneckerNeg1 b` for $ab \\neq 0$) is just the sign homomorphism: $\\text{sgn}(ab) = \\text{sgn}(a) \\cdot \\text{sgn}(b)$ for nonzero integers. The proof requires four cases (positive/negative × positive/negative) and linarith for the sign calculations.",
+      "Second-argument multiplicativity (`kronecker_mul_right_proved`) is harder: the proof must handle the interaction between the sign factor (from $n < 0$) and the Jacobi symbol. The key complication is that `kronecker a (m*n)` for general $m, n$ involves the sign of $m*n$, which decomposes into signs of $m$ and $n$ separately. The proof uses `kronecker_neg_modulus` (negating the modulus introduces the sign character) as a bridge between the two sign factors."
+    ],
+    "historicalContext": "Leopold Kronecker (1885, 'Zur Theorie der elliptischen Functionen') introduced the symbol $\\left(\\frac{a}{n}\\right)_K$ extending the Legendre and Jacobi symbols to arbitrary integer denominators. His motivation was the theory of quadratic forms and elliptic functions: the Kronecker symbol appears naturally in the theory of complex multiplication, where $\\left(\\frac{D}{p}\\right)_K$ determines how primes split in imaginary quadratic fields $\\mathbb{Q}(\\sqrt{D})$. Unlike the Jacobi symbol (defined only for odd positive $n$), the Kronecker symbol handles $n = 0, \\pm 1$, and even $n$ via the 2-adic character, making it the natural generalization for arbitrary integer inputs. Multiplicativity in both arguments is the key structural property that allows the Kronecker symbol to be defined as a product over prime factors and that connects it to class field theory via Artin's reciprocity law.",
+    "problemStatement": "Prove that the Kronecker symbol is completely multiplicative in both arguments: $\\left(\\frac{ab}{n}\\right) = \\left(\\frac{a}{n}\\right)\\left(\\frac{b}{n}\\right)$ for $ab \\neq 0$, and $\\left(\\frac{a}{mn}\\right) = \\left(\\frac{a}{m}\\right)\\left(\\frac{a}{n}\\right)$ for $mn \\neq 0$."
   },
   "references": [
     {
