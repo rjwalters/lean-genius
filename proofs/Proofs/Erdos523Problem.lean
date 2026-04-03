@@ -169,24 +169,18 @@ def LittlewoodProblem : Prop :=
   -- This is related to flatness problems
   True
 
-/-- Random polynomials give typical behavior of Littlewood polynomials. -/
-theorem typical_littlewood :
-  -- Most Littlewood polynomials have max ≈ √(n log n)
-  True := trivial
+/- Random polynomials give typical behavior of Littlewood polynomials:
+  most Littlewood polynomials have max ≈ √(n log n). -/
 
 /-
 ## Part IX: Upper and Lower Bounds
 -/
 
-/-- Upper bound: max ≤ (1+ε)√(n log n) with high probability. -/
-theorem upper_bound_high_prob (n : ℕ) (hn : n ≥ 2) (ε : ℝ) (hε : ε > 0) :
-  -- P(maxModulus s ≤ (1+ε)√(n log n)) → 1 as n → ∞
-  True := trivial
+/- Upper bound: max ≤ (1+ε)√(n log n) with high probability.
+  P(maxModulus s ≤ (1+ε)√(n log n)) → 1 as n → ∞. -/
 
-/-- Lower bound: max ≥ (1-ε)√(n log n) with high probability. -/
-theorem lower_bound_high_prob (n : ℕ) (hn : n ≥ 2) (ε : ℝ) (hε : ε > 0) :
-  -- P(maxModulus s ≥ (1-ε)√(n log n)) → 1 as n → ∞
-  True := trivial
+/- Lower bound: max ≥ (1-ε)√(n log n) with high probability.
+  P(maxModulus s ≥ (1-ε)√(n log n)) → 1 as n → ∞. -/
 
 /-- Halász's proof combines upper and lower bounds. -/
 def halaszProofSketch : Prop :=
