@@ -44,7 +44,7 @@
     ],
     "dateAdded": "2026-04-03",
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "lineCount": 145
+    "lineCount": 144
   },
   "overview": {
     "historicalContext": "Euclid's original proof of the isosceles triangle theorem (Elements I.5, c. 300 BCE) is the first non-trivial theorem in classical geometry, earning the name *Pons Asinorum* (Bridge of Asses) in medieval times because it divided students who could reason deductively from those who could not. Euclid's proof uses an elaborate auxiliary construction: extend both equal sides beyond the base, construct equal outer segments, then prove two triangle congruences before subtracting angles. Pappus of Alexandria (c. 340 AD) noticed a striking shortcut: the triangle ABC is congruent to its own mirror image ACB by SAS. Since AB=AC, ∠A=∠A, and AC=AB, the base angles ∠ABC and ∠ACB are corresponding angles of congruent triangles and must be equal. This elegant self-referential argument requires only one congruence step instead of Euclid's four.",
@@ -127,7 +127,7 @@
       "InnerProductGeometry"
     ],
     "namespace": "IsoscelesTriangleOQ01",
-    "lineCount": 145,
+    "lineCount": 144,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0,
