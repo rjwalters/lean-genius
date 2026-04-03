@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-qbinom-def",
+    "proofId": "arithmetic-series-oq-02-oq-01",
+    "range": { "startLine": 26, "endLine": 31 },
+    "type": "definition",
+    "title": "Gaussian Binomial Coefficient via q-Pascal's Rule",
+    "content": "The Gaussian binomial coefficient qBinom q n k is defined recursively using q-Pascal's rule: any element of the top row equals 1, the extra-diagonal elements vanish, and the interior follows [n+1 choose k+1]_q = q^{k+1}·[n choose k+1]_q + [n choose k]_q. The noncomputable tag is needed because Lean cannot decide which branch applies from types alone; the definition works in any commutative ring R, not just in ℕ or ℤ.",
+    "mathContext": "$\\binom{n}{k}_q$ defined by: $\\binom{n}{0}_q = 1$, $\\binom{0}{k+1}_q = 0$, $\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$",
+    "significance": "key",
+    "relatedConcepts": ["q-Pascal triangle", "Gaussian binomial coefficients", "commutative ring", "q-deformation"],
+    "prerequisites": ["commutative ring theory", "recursive definitions in Lean 4", "natural number induction"]
+  },
+  {
+    "id": "ann-boundary-cases",
+    "proofId": "arithmetic-series-oq-02-oq-01",
+    "range": { "startLine": 37, "endLine": 45 },
+    "type": "technique",
+    "title": "Boundary Conditions: Top Row and Left Column",
+    "content": "Two @[simp] lemmas establish the fundamental boundary conditions for the q-Pascal triangle. qBinom_zero_right proves [n choose 0]_q = 1 for all n (the top row is all ones), while qBinom_zero_succ confirms [0 choose k+1]_q = 0 (the left column beyond the diagonal is zero). These are direct from the definition; the `cases n` tactic handles n = 0 vs n+1 separately. Marking as @[simp] lets Lean discharge these goals automatically in later proofs.",
+    "mathContext": "$\\binom{n}{0}_q = 1$ for all $n$; $\\binom{0}{k+1}_q = 0$ for all $k$",
+    "significance": "supporting",
+    "relatedConcepts": ["base cases", "simp lemmas", "q-Pascal triangle boundary"],
+    "prerequisites": ["Lean 4 simp attribute", "pattern matching on natural numbers"]
+  },
+  {
+    "id": "ann-q-pascal-rule",
+    "proofId": "arithmetic-series-oq-02-oq-01",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "concept",
+    "title": "q-Pascal's Rule: The Central Recurrence",
+    "content": "This theorem makes the defining recurrence explicitly available as a rewrite rule. In ordinary Pascal's triangle, [n+1 choose k+1] = [n choose k+1] + [n choose k]. The q-analog introduces a weight factor q^{k+1} on the 'upper-left' term, encoding the structure of q-counting. When q = 1 all weights collapse to 1 and ordinary Pascal's rule is recovered. Combinatorially, this weights each k-dimensional subspace by the number of inversions in its basis, counted as a power of q.",
+    "mathContext": "$\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$",
+    "significance": "key",
+    "relatedConcepts": ["Pascal's rule", "inversion number", "Gaussian q-binomial", "Grassmannian"],
+    "prerequisites": ["ordinary Pascal's rule", "q-analogs", "combinatorics of subspaces over finite fields"]
+  },
+  {
+    "id": "ann-vanishing",
+    "proofId": "arithmetic-series-oq-02-oq-01",
+    "range": { "startLine": 60, "endLine": 70 },
+    "type": "technique",
+    "title": "Vanishing: [n choose k]_q = 0 when k > n",
+    "content": "This is the q-analog of the fact that C(n,k) = 0 whenever k > n. The proof is by induction on n, using qBinom_succ_succ to unroll the recurrence and then applying the induction hypothesis twice (for both upper-left and upper terms). The two IH applications require careful omega-arithmetic to derive n < k+1 and n < k from the main hypothesis n+1 < k+1. The @[simp] attribute allows Lean's simplifier to automatically eliminate these zero terms in later proofs.",
+    "mathContext": "If $k > n$ then $\\binom{n}{k}_q = 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["vanishing conditions", "induction on natural numbers", "Lean omega tactic"],
+    "prerequisites": ["natural number induction", "Lean omega arithmetic solver"]
+  },
+  {
+    "id": "ann-diagonal",
+    "proofId": "arithmetic-series-oq-02-oq-01",
+    "range": { "startLine": 76, "endLine": 83 },
+    "type": "concept",
+    "title": "Diagonal Identity: [n choose n]_q = 1",
+    "content": "The diagonal of the q-Pascal triangle is identically 1, just as C(n,n) = 1 in ordinary combinatorics. The proof by induction peels off [n+1 choose n+1]_q = q^{n+1}·[n choose n+1]_q + [n choose n]_q, then uses qBinom_eq_zero_of_lt to kill the first term (since n < n+1), and the IH to simplify [n choose n]_q = 1. Combinatorially, there is exactly one way to choose an n-dimensional subspace of an n-dimensional space over any field.",
+    "mathContext": "$\\binom{n}{n}_q = 1$ for all $n \\geq 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["diagonal of Pascal's triangle", "subspace counting", "Grassmannian Gr(n, F^n)"],
+    "prerequisites": ["qBinom_eq_zero_of_lt", "ordinary diagonal identity C(n,n)=1"]
+  },
+  {
+    "id": "ann-q-one-specialization",
+    "proofId": "arithmetic-series-oq-02-oq-01",
+    "range": { "startLine": 89, "endLine": 107 },
+    "type": "insight",
+    "title": "q=1 Specialization Recovers Ordinary Binomial Coefficients",
+    "content": "This theorem confirms that qBinom is a genuine q-deformation: setting q = 1 in ℤ returns exactly Nat.choose n k (when k ≤ n). The proof is an intricate induction requiring case analysis: when k+1 ≤ n both IH instances apply cleanly; when k = n only one term survives via the vanishing lemma. The arithmetic connecting qBinom q (n+1) (k+1) at q=1 to Nat.choose uses `linarith [Nat.choose_succ_succ n k]`, the Lean statement of Pascal's rule for ordinary binomials. The hypothesis k ≤ n is necessary: for k > n, both sides are 0 but the Nat.choose definition diverges from qBinom's for out-of-range inputs.",
+    "mathContext": "For $k \\leq n$: $\\binom{n}{k}_1 = \\binom{n}{k}$ (ordinary binomial). Uses ordinary Pascal: $\\binom{n+1}{k+1} = \\binom{n}{k+1} + \\binom{n}{k}$.",
+    "significance": "key",
+    "relatedConcepts": ["q-deformation", "specialization at q=1", "ordinary binomial coefficients", "Nat.choose"],
+    "prerequisites": ["Nat.choose_succ_succ (Pascal's rule)", "induction on n with k generalizing", "case splitting on k ≤ n vs k = n"]
+  },
+  {
+    "id": "ann-qsimplicial-def",
+    "proofId": "arithmetic-series-oq-02-oq-01",
+    "range": { "startLine": 113, "endLine": 126 },
+    "type": "definition",
+    "title": "q-Simplicial Numbers: Counting Weighted Lattice Paths",
+    "content": "The q-simplicial number qSimplicial q k n = qBinom q (n+k) k is the q-analog of the ordinary simplicial number C(n+k, k), which counts the number of ways to choose a k-element multiset from {1,...,n}. In the q-world, each such selection is weighted by q^{inv}, where inv counts the number of inversions in the corresponding lattice path. The two base cases (k=0 and n=0) both yield 1, reflecting that there is exactly one lattice path in degenerate dimensions, regardless of q.",
+    "mathContext": "$\\text{qSimplicial}(q, k, n) = \\binom{n+k}{k}_q$, the $q$-analog of $\\binom{n+k}{k} = \\frac{(n+k)!}{n!k!}$",
+    "significance": "supporting",
+    "relatedConcepts": ["simplicial numbers", "lattice paths", "inversion statistics", "q-series"],
+    "prerequisites": ["ordinary simplicial numbers C(n+k,k)", "qBinom definition", "inversion number on lattice paths"]
+  },
+  {
+    "id": "ann-qsimplicial-recurrence",
+    "proofId": "arithmetic-series-oq-02-oq-01",
+    "range": { "startLine": 132, "endLine": 142 },
+    "type": "technique",
+    "title": "q-Simplicial Recurrence: Bridge to q-Pascal's Rule",
+    "content": "This recurrence qS(k+1, n+1) = q^{k+1}·qS(k+1, n) + qS(k, n+1) is the key lemma used in the inductive step of qHockeyStick. The proof works by translating indices via ring arithmetic: n+1+(k+1) = (n+(k+1))+1 and similar identities allow the goal to be rewritten as qBinom_succ_succ applied at a specific index pair. At q=1 this becomes S(k+1, n+1) = S(k+1, n) + S(k, n+1), which is exactly the simplicial recurrence from ArithmeticSeriesOQ02. The Lean proof is three lines — all work is done by ring normalization plus a single rewrite.",
+    "mathContext": "$\\binom{n+1+k+1}{k+1}_q = q^{k+1}\\binom{n+k+1}{k+1}_q + \\binom{n+1+k}{k}_q$",
+    "significance": "key",
+    "relatedConcepts": ["simplicial recurrence", "q-Pascal's rule", "index arithmetic", "ring normalization"],
+    "prerequisites": ["qBinom_succ_succ", "ring tactic in Lean 4", "arithmetic identity (n+1+(k+1)) = ((n+(k+1))+1)"]
+  },
+  {
+    "id": "ann-hockey-stick-main",
+    "proofId": "arithmetic-series-oq-02-oq-01",
+    "range": { "startLine": 148, "endLine": 172 },
+    "type": "insight",
+    "title": "q-Hockey Stick: Induction with Exponent Factorization",
+    "content": "The central theorem. The sum ∑_{j=0}^{N} q^{(N-j)(k+1)} · [j+k choose k]_q telescopes to [N+k+1 choose k+1]_q. The proof is by induction on N. The base case N=0 is trivial (single term, exponent 0). In the inductive step, the sum splits into the last term j=N+1 (which has exponent 0, giving qS(k, N+1)) plus the remaining sum. The key move is the exponent identity (N+1-j)(k+1) = (N-j)(k+1) + (k+1), which allows factoring q^{k+1} out of all N+1 earlier terms via Finset.sum_congr and Finset.mul_sum. The IH then identifies the factored sum as q^{k+1}·qS(k+1, N), and qSimplicial_succ_recurrence combines q^{k+1}·qS(k+1,N) + qS(k, N+1) = qS(k+1, N+1).",
+    "mathContext": "$\\sum_{j=0}^{N} q^{(N-j)(k+1)} \\binom{j+k}{k}_q = \\binom{N+k+1}{k+1}_q$. Key step: $(N+1-j)(k+1) = (N-j)(k+1) + (k+1)$, so $q^{(N+1-j)(k+1)} = q^{k+1} \\cdot q^{(N-j)(k+1)}$.",
+    "significance": "key",
+    "relatedConcepts": ["hockey stick identity", "q-binomial convolution", "Finset.sum_congr", "Finset.mul_sum"],
+    "prerequisites": ["qSimplicial_succ_recurrence", "induction on N", "Finset.sum_range_succ", "exponent identity for q-weights"]
+  }
+]
