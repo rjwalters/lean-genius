@@ -53,7 +53,7 @@
       "reflected_construction_bound: PROVED quantitative lower bound maxAlmostSidon(N) ≥ 2|B| for any Sidon B ⊆ {1,...,N/3}"
     ],
     "axiomCount": 1,
-    "lineCount": 823,
+    "lineCount": 806,
     "assumptions": "1 axiom: erdos_freud_lower_bound. Previously 2; sidon_upper_bound ELIMINATED by proving difference-counting bound (sidon_diff_counting_bound, sidon_card_sq_le_2N). reflected_construction_valid was proved as theorem in prior session.",
     "mathlib_version": "4.26.0"
   },
@@ -66,25 +66,11 @@
       "summary": "Defines `sumRepCount A n` as $|\\{(a,b) \\in A \\times A : a \\leq b,\\, a+b = n\\}|$, `multiRepSet A` as $\\{n : \\text{sumRepCount}(A, n) \\geq 2\\}$, `IsAlmostSidon A` as $|\\text{multiRepSet}(A)| \\leq 1$, `IsSidon A` as $|\\text{multiRepSet}(A)| = 0$, and `maxAlmostSidon N` as $\\sup$ over almost-Sidon subsets of $[1, N]$."
     },
     {
-      "id": "conjecture",
-      "title": "Main Conjecture",
-      "startLine": 50,
-      "endLine": 58,
-      "summary": "Axiomatizes `erdos_864_conjecture`: the maximum almost-Sidon set in $\\{1, \\ldots, N\\}$ has size $(1 + o(1)) \\cdot \\frac{2}{\\sqrt{3}} \\cdot \\sqrt{N}$. Currently a placeholder `True` axiom."
-    },
-    {
       "id": "bounds",
       "title": "Known Bounds",
       "startLine": 59,
       "endLine": 85,
       "summary": "Axiomatizes three bounds: Erdős-Freud lower bound $\\geq (2/\\sqrt{3} - \\varepsilon)\\sqrt{N}$, the classical Sidon upper bound $\\leq \\sqrt{N} + O(N^{1/4})$, and `almost_sidon_exceeds_sidon`: almost-Sidon can exceed $\\sqrt{N} + 1$. Proves `sidon_is_almost_sidon` via `omega`."
-    },
-    {
-      "id": "difference",
-      "title": "Difference Version",
-      "startLine": 86,
-      "endLine": 94,
-      "summary": "Axiomatizes `erdos_freud_difference_version`: for the difference analogue (at most one difference collision), the maximum is asymptotically $\\sqrt{N}$. Currently a placeholder `True` axiom."
     },
     {
       "id": "structural",
@@ -118,8 +104,7 @@
       "Is |A| ≤ (1+o(1))·(2/√3)·√N the correct upper bound for almost-Sidon sets?",
       "What is the maximum for k allowed collisions? Is there a formula f(k)·√N?",
       "Is the reflected construction the unique extremal configuration, or are there essentially different constructions?",
-      "Can the placeholder axioms (erdos_864_conjecture, erdos_freud_difference_version) be given non-trivial content?",
-      "What is the connection to Problem #840 (general collision bounds)?"
+"What is the connection to Problem #840 (general collision bounds)?"
     ]
   },
   "crossReferences": [
@@ -158,9 +143,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 822,
+    "lineCount": 806,
     "axiomCount": 1,
-    "theoremCount": 21,
+    "theoremCount": 19,
     "definitionCount": 5
   }
 }
