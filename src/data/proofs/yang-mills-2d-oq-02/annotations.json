@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-ym2doq02-overview",
+    "proofId": "yang-mills-2d-oq-02",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "context",
+    "title": "Structure: Exact in 2D, Broken in 4D",
+    "content": "The file answers OQ-02 (\"Does Casimir scaling persist exactly or approximately in 4D?\") with a two-part strategy. Part I (lines 49–112) proves the 2D exact result directly from the Migdal formula. Part II (lines 113–196) proves the 4D exact failure from string breaking — a clean disproof by exhibiting two distances with different ratios. Part III (lines 197–244) axiomatizes the 4D approximate conjecture. The result is that 2D exact Casimir scaling and 4D approximate Casimir scaling are both formalized, with the conceptual gap between them made precise.",
+    "mathContext": "Casimir scaling: $\\sigma_R / \\sigma_{\\text{fund}} = C_2(R) / C_2(\\text{fund})$. In 2D this is exact for all $r > 0$. In 4D it fails exactly (proved), and holds approximately at intermediate $r$ (open conjecture). The Migdal formula $\\sigma_R = g^2 C_2(R) / (2 \\dim R)$ is the key 2D ingredient.",
+    "significance": "context",
+    "relatedConcepts": ["Casimir scaling", "Migdal formula", "string breaking", "Yang-Mills theory"],
+    "prerequisites": ["Yang-Mills theory basics", "group representations", "string tension"]
+  },
+  {
+    "id": "ann-ym2doq02-migdal-defs",
+    "proofId": "yang-mills-2d-oq-02",
+    "range": { "startLine": 49, "endLine": 63 },
+    "type": "definition",
+    "title": "Migdal String Tension: σ_R = g²·C₂(R)/(2·dim R)",
+    "content": "Two foundational definitions encode the 2D physics. `linearPotential σ r = σ · r` captures the area law: in 2D Yang-Mills every representation confines with a linear potential at all distances, since there is no string breaking. `migdalTension g_sq casimir_R dim_R = g_sq · casimir_R / (2 · dim_R)` encodes the Migdal (1975) formula for the string tension of representation R. The positivity theorem `migdalTension_pos` establishes σ_R > 0 from g² > 0, C₂(R) > 0, dim R ≥ 1 — all physically natural conditions.",
+    "mathContext": "$\\sigma_R = \\frac{g^2 C_2(R)}{2 \\dim R}$; the ratio $\\sigma_R / \\sigma_{\\text{fund}} = C_2(R)/C_2(\\text{fund})$ follows because $g^2$ and $\\dim$ cancel when representations have equal dimension. For general dimension: $\\sigma_R/\\sigma_{\\text{fund}} = (C_2(R)/\\dim_R) / (C_2(\\text{fund})/\\dim_{\\text{fund}})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Migdal formula", "string tension", "area law", "quadratic Casimir"],
+    "prerequisites": ["heat kernel on compact Lie group", "representation theory", "Yang-Mills partition function"]
+  },
+  {
+    "id": "ann-ym2doq02-exact-2d",
+    "proofId": "yang-mills-2d-oq-02",
+    "range": { "startLine": 65, "endLine": 112 },
+    "type": "technique",
+    "title": "2D Exact Casimir Scaling: Potential Ratio = Casimir Ratio",
+    "content": "The core 2D result is proved in three steps. `twoD_potential_ratio_exact` shows that for linear potentials, V_R(r)/V_fund(r) = σ_R/σ_fund for any r > 0 — this is just cancellation of r. `migdalTension_ratio_eq_casimir_ratio` shows σ_R/σ_fund = C₂(R)/C₂(fund) when both representations have the same dimension. The key proof uses `field_simp` and `ring` after establishing non-zero denominators. `twoD_exact_casimir_scaling` combines these: the 2D potential ratio equals the Casimir ratio exactly for all r > 0, g² > 0, dim ≥ 1.",
+    "mathContext": "$\\frac{V_R(r)}{V_{\\text{fund}}(r)} = \\frac{\\sigma_R \\cdot r}{\\sigma_{\\text{fund}} \\cdot r} = \\frac{\\sigma_R}{\\sigma_{\\text{fund}}} = \\frac{C_2(R)}{C_2(\\text{fund})}$. The cancellation of $r$ is the precise reason 2D Casimir scaling is exact: the string tension ratio is distance-independent when both sides are linear. In 4D this argument breaks down because one side saturates.",
+    "significance": "key",
+    "relatedConcepts": ["Casimir scaling", "Migdal formula", "linear potential", "field_simp", "ring"],
+    "prerequisites": ["linear potential definition", "migdalTension definition", "div_pos"]
+  },
+  {
+    "id": "ann-ym2doq02-string-breaking",
+    "proofId": "yang-mills-2d-oq-02",
+    "range": { "startLine": 115, "endLine": 149 },
+    "type": "definition",
+    "title": "String Breaking: Saturation Potential and Break Distance",
+    "content": "`saturationPotential m_gluelump = 2 · m_gluelump` captures the energy of a flux tube after breaking: the tube snaps and two gluelumps (gluon bound states) are created, each with mass m_gluelump. `breakDistance σ_R m_gluelump = 2·m_gluelump/σ_R` is the distance at which string breaking occurs: the linear potential energy σ_R · r_break equals the saturation energy 2·m_gluelump. `potential_at_break` proves this identity precisely: σ_R · (2m/σ_R) = 2m, using `field_simp [ne_of_gt hsig]`.",
+    "mathContext": "$r_{\\text{break}} = \\frac{2 m_{\\text{gluelump}}}{\\sigma_R}$; at this distance $\\sigma_R \\cdot r_{\\text{break}} = 2 m_{\\text{gluelump}}$. For $r > r_{\\text{break}}$, the system prefers to create two gluelumps rather than stretch the flux tube: $V_R(r) = 2 m_{\\text{gluelump}}$ (constant). This only happens for representations with N-ality 0 (e.g., adjoint) — the fundamental representation (N-ality 1) does not break.",
+    "significance": "key",
+    "relatedConcepts": ["string breaking", "gluelump", "flux tube", "N-ality", "confinement"],
+    "prerequisites": ["linearPotential", "field_simp", "ne_of_gt"]
+  },
+  {
+    "id": "ann-ym2doq02-4d-failure",
+    "proofId": "yang-mills-2d-oq-02",
+    "range": { "startLine": 151, "endLine": 201 },
+    "type": "technique",
+    "title": "4D Exact Scaling Fails: Key Inequality via nlinarith",
+    "content": "The private lemma `saturation_lt_linear_post_break` proves: for r > r_break, 2·m_gluelump < σ_R · r. The proof uses `calc` with σ_R · r_break = 2·m_gluelump (from `potential_at_break`) and then `mul_lt_mul_of_pos_left hr hsig`. `post_break_ratio_lt_tension_ratio` converts this to the ratio statement 2·m/(σ_fund·r) < σ_R/σ_fund via `div_lt_div_iff` and `nlinarith`. `exact_casimir_scaling_fails_4d` is the conclusive theorem: at r₁ (pre-break) the ratio equals σ_R/σ_fund, but at r₂ > r_break it is strictly less — the ratio is non-constant, disproving exact Casimir scaling.",
+    "mathContext": "For $r > r_{\\text{break}} = 2m/\\sigma_R$: $\\sigma_R \\cdot r > 2m$ (multiply $r > r_{\\text{break}}$ by $\\sigma_R > 0$). Then $\\frac{2m}{\\sigma_{\\text{fund}} \\cdot r} < \\frac{\\sigma_R}{\\sigma_{\\text{fund}}}$ by cross-multiplication. Key tactic: `nlinarith [mul_lt_mul_of_pos_right key hsig_f]` closes the cross-multiplied goal from the linear inequality.",
+    "significance": "key",
+    "relatedConcepts": ["string breaking", "ratio inequality", "div_lt_div_iff", "nlinarith", "mul_lt_mul_of_pos_left"],
+    "prerequisites": ["saturationPotential", "breakDistance", "linearPotential"]
+  },
+  {
+    "id": "ann-ym2doq02-approx-axiom",
+    "proofId": "yang-mills-2d-oq-02",
+    "range": { "startLine": 203, "endLine": 244 },
+    "type": "concept",
+    "title": "4D Approximate Casimir Scaling: Open Conjecture and Summary",
+    "content": "`ApproximateCasimirScaling4D` formalizes the approximate version: |σ_R/σ_fund − C₂(R)/C₂(fund)| < ε for some small ε > 0. The axiom `casimir_scaling_4d_approximate` asserts existence of such ε for all positive parameters — axiomatized because the analytical proof requires non-perturbative QFT methods beyond current Mathlib. Lattice QCD (Bali et al. 2000) confirms: SU(2) ratio ≈ 2.5 ± 0.2 (Casimir: 8/3 ≈ 2.67) and SU(3) ratio ≈ 2.2 ± 0.1 (Casimir: 9/4 = 2.25). The summary theorem `casimir_scaling_2d_exact_4d_approximate` packages the complete result.",
+    "mathContext": "$|\\sigma_R/\\sigma_{\\text{fund}} - C_2(R)/C_2(\\text{fund})| < \\varepsilon$. The deviation arises from non-perturbative effects: string-breaking corrections, adjoint screening, and higher-order gluon exchange. One-loop corrections give $\\delta \\sim g^2 N / (4\\pi^2)$, but the full non-perturbative treatment is open. Note: the conjecture only makes sense at intermediate $r < r_{\\text{break}}$ — after breaking, the approximate scaling already fails by Part II.",
+    "significance": "key",
+    "relatedConcepts": ["approximate Casimir scaling", "lattice QCD", "open conjecture", "non-perturbative QFT", "Bali et al. 2000"],
+    "prerequisites": ["ApproximateCasimirScaling4D", "exact_casimir_scaling_fails_4d", "casimir_scaling_2d_exact_4d_approximate"]
+  }
+]
