@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "annotation-reptype-structure",
+    "lineStart": 51,
+    "lineEnd": 81,
+    "type": "insight",
+    "mathContext": "`RepType n` is a Lean 4 structure with fields $a_1 \\leq a_2 \\leq a_3 \\leq a_4$ (sorted) and $a_1^2 + a_2^2 + a_3^2 + a_4^2 = n$ (sum constraint). The `contribution` is computed as `permutations * signFactor` where `permutations = 24 / (vals.dedup.map (fun v => (vals.count v)!)).prod` (multinomial $4!/\\prod_i m_i!$) and `signFactor = 2^nonzeroCount`. This encodes the orbit size formula $|\\text{orbit}| = |G|/|\\text{Stab}|$ where $G = S_4 \\times (\\mathbb{Z}/2)^4$ of order 384: each permutation of the 4-tuple is counted by the multinomial (dividing out repeated entries), and each nonzero entry contributes a factor of 2 for its sign.",
+    "significance": "The RepType structure is the key abstraction: it separates the combinatorial type (equality/zero pattern) from the specific values. This makes it possible to prove general theorems ('for all k > 0, trivialType k has contribution 8') rather than only specific instances. The sorted constraint ensures canonical representation — each unordered set of four squares corresponds to exactly one sorted RepType.",
+    "relatedConcepts": [
+      "orbit-stabilizer theorem",
+      "multinomial coefficients",
+      "symmetry group S₄ × (ℤ/2)⁴",
+      "Lagrange representation types"
+    ],
+    "prerequisites": [
+      "Multinomial coefficient 4!/(m₁!m₂!...): permutations of a multiset",
+      "Sign factor 2^k: k nonzero entries each contribute ±1",
+      "Sorted representation: a₁ ≤ a₂ ≤ a₃ ≤ a₄ gives canonical form"
+    ]
+  },
+  {
+    "id": "annotation-general-type-proof-technique",
+    "lineStart": 188,
+    "lineEnd": 230,
+    "type": "technique",
+    "mathContext": "The proof of `trivialType_contribution (k : ℕ) (hk : 0 < k) : contribution = 8` exemplifies the general pattern used for all 6 type families. Step 1: `have h1 : (trivialType 1).contribution = 8 := by native_decide` — verify the canonical instance. Step 2: `suffices hp : (trivialType k).permutations = (trivialType 1).permutations` — reduce to showing permutation counts match. Step 3: `unfold RepType.permutations trivialType; simp only; congr 1; simp [List.dedup, List.count, hne]` — show the dedup/count structure of $[0,0,0,k]$ matches $[0,0,0,1]$ since both have dedup $[0,v]$ with counts $[3,1]$ for any $v \\neq 0$. Step 4: The sign factor equality follows from `trivialType_nonzeroCount` (nonzero count = 1 for all $k > 0$) + `simp [RepType.signFactor]`.",
+    "significance": "This proof technique — native_decide for a canonical instance + congr/simp for the parametric equality — avoids induction on k and works because permutations depend only on the equality pattern (which values are equal to which), not the actual values. The key insight: [0,0,0,k].dedup for k≠0 always gives a list with count structure [3,1], regardless of k. This is the formal version of 'the orbit size depends only on the symmetry type, not the representative'.",
+    "relatedConcepts": [
+      "List.dedup and List.count in Lean 4",
+      "congr tactic for structural equality",
+      "native_decide for canonical verification",
+      "type-theoretic orbit computation"
+    ],
+    "prerequisites": [
+      "List.dedup: deduplicate a list by first occurrence",
+      "List.count: count occurrences of an element",
+      "congr 1: reduce goal to subgoal about argument equality"
+    ]
+  },
+  {
+    "id": "annotation-contribution-table",
+    "lineStart": 543,
+    "lineEnd": 588,
+    "type": "insight",
+    "mathContext": "The complete contribution value table for four-square types has 10 entries, organized by (multiplicity pattern, nonzero count): $\\{1,8,16,24,32,48,64,96,192,384\\}$. These are exactly the divisors of $384 = 4! \\times 2^4$. The extremes: contribution 1 arises only from $(0,0,0,0)$ (the zero type, $n=0$, $\\text{Stab} = G$); contribution 384 arises from all-distinct nonzero $(a,b,c,d)$ ($|\\text{Stab}| = 1$). The pattern: multiplicity pattern determines $4!/\\prod m_i!$ (the multinomial), nonzero count determines $2^k$ (sign factor). A pattern $(2,1,1)$ with 4 nonzero entries gives $12 \\times 16 = 192$; with 3 nonzero gives $12 \\times 8 = 96$; with 2 nonzero gives $12 \\times 4 = 48$.",
+    "significance": "This table is the combinatorial heart of Jacobi's formula. The 10 contribution values partition the $r_4(n)$ count across all sorted types of $n$. The fact that all values are divisors of 384 reflects the orbit-stabilizer theorem: each orbit size divides $|G| = 384$. The table was verified computationally by checking specific instances by `native_decide` and then using the general type theorems for universality.",
+    "relatedConcepts": [
+      "divisors of 384",
+      "orbit-stabilizer theorem",
+      "Jacobi's four-square formula",
+      "multinomial × sign factor product"
+    ],
+    "prerequisites": [
+      "Lagrange's four-square theorem: every n is representable",
+      "Multinomial coefficient for permutations of multisets",
+      "Orbit-stabilizer: |orbit| = |G|/|Stab| = 384/|Stab|"
+    ]
+  },
+  {
+    "id": "annotation-enum-types-decidable",
+    "lineStart": 88,
+    "lineEnd": 115,
+    "type": "insight",
+    "mathContext": "`enumTypes n` uses the list monad to iterate over all sorted 4-tuples: `do let a₄ ← List.range (n+1); let a₃ ← List.range (a₄+1); let a₂ ← List.range (a₃+1); let a₁ ← List.range (a₂+1); guard (a₁^2+a₂^2+a₃^2+a₄^2 = n); return (a₁,a₂,a₃,a₄)`. The nested ranges enforce $a_1 \\leq a_2 \\leq a_3 \\leq a_4 \\leq n$, and `guard` filters to valid sums. `totalFromEnum n = sum of tupleContribution over enumTypes n` gives the total $r_4(n)$. The function `tupleContribution` computes the same formula as `RepType.contribution` directly on tuples. Verification: `totalFromEnum 1 = 8, 2 = 24, 3 = 32, ..., 16 = 24` all by `native_decide`.",
+    "significance": "The decidable enumeration makes the type classification algorithmic: for any concrete n, one can compute all sorted types and their contributions mechanically. This provides a checkable bridge between the abstract combinatorial theory and specific numerical values of r₄(n). The list monad notation makes the nested-loop enumeration concise and idiomatic in Lean 4.",
+    "relatedConcepts": [
+      "list monad for enumeration",
+      "guard combinator for filtering",
+      "native_decide for decidable verification",
+      "r₄(n) representation function"
+    ],
+    "prerequisites": [
+      "List monad: do-notation for list comprehension",
+      "guard: filter in list monad (guard p returns [] or [()])",
+      "List.range: generates [0, 1, ..., n-1]"
+    ]
+  },
+  {
+    "id": "annotation-orbit-stabilizer",
+    "lineStart": 595,
+    "lineEnd": 616,
+    "type": "key-theorem",
+    "mathContext": "The orbit-stabilizer theorems prove `384 / (trivialType k).contribution = 48` (for $k > 0$), `384 / (allEqualType k).contribution = 24`, etc. The stabilizer sizes correspond to the subgroup of $S_4 \\times (\\mathbb{Z}/2)^4$ fixing the sorted type: trivial $(0,0,0,k)$: $S_3 \\times (\\mathbb{Z}/2)^3$ fixes (permutes the three zeros, flips the zero signs) = $6 \\times 8 = 48$; all-equal $(k,k,k,k)$: $S_4$ fixes (any permutation), sign flips of nonzero entries are NOT stabilizers = $24$; all-distinct nonzero: only identity = $1$, orbit $= 384$. `stabilizer_product_trivial: 48 = 3! × 2^3` and `stabilizer_product_allEqual: 24 = 4!` formalize these group-theoretic decompositions.",
+    "significance": "These theorems connect the number-theoretic orbit computation (contribution = permutations × sign_factor) to the group-theoretic stabilizer formula (|orbit| = |G|/|Stab|). This is a formal verification that the combinatorial formula for contributions is consistent with the abstract orbit-stabilizer theorem. The stabilizer sizes 48, 24, 12, 4, 16, 8 for the six type families are all proved to equal 384 divided by the respective contributions.",
+    "relatedConcepts": [
+      "orbit-stabilizer theorem in group actions",
+      "S₄ × (ℤ/2)⁴ symmetry group",
+      "stabilizer subgroup computation",
+      "Burnside's lemma"
+    ],
+    "prerequisites": [
+      "Orbit-stabilizer theorem: |G| = |orbit| × |stabilizer|",
+      "S₄ action on 4-tuples: permutation group",
+      "(ℤ/2)⁴ action on 4-tuples: independent sign flips"
+    ]
+  }
+]

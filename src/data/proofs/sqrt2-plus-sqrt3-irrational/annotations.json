@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "annotation-irrational-definition",
+    "lineStart": 19,
+    "lineEnd": 22,
+    "type": "insight",
+    "mathContext": "`irrational_sqrt_six` uses the Mathlib lemma `irrational_sqrt_natCast_iff : Irrational (sqrt (n : ℝ)) ↔ ¬IsSquare n` (for $n : \\mathbb{N}$). `IsSquare n` means $\\exists k, n = k * k$ (in $\\mathbb{N}$). For $n = 6$: `native_decide` checks all $k \\in \\{0,1,2,\\ldots\\}$ up to $\\sqrt{6} < 3$, verifying $0^2=0, 1^2=1, 2^2=4, 3^2=9 \\neq 6$, so `¬IsSquare 6`. The `Irrational x` predicate in Lean is `¬ ∃ r : ℚ, (r : ℝ) = x` — not the existence of an irrational witness, but the negation of rationality.",
+    "significance": "irrational_sqrt_natCast_iff is the key bridge between computational primality/squareness and analytical irrationality. The decidability of IsSquare for natural numbers (it suffices to check k ≤ √n) makes native_decide applicable. This pattern — verify a finite condition computationally to prove an analytic property — is characteristic of Lean 4 irrationality proofs.",
+    "relatedConcepts": [
+      "irrational_sqrt_natCast_iff",
+      "IsSquare predicate",
+      "native_decide for finite checks",
+      "Irrational definition in Mathlib"
+    ],
+    "prerequisites": [
+      "Irrational x: ¬ ∃ r : ℚ, (r : ℝ) = x",
+      "IsSquare n: ∃ k, n = k * k (for natural n)",
+      "irrational_sqrt_natCast_iff: Irrational √n ↔ ¬IsSquare n"
+    ]
+  },
+  {
+    "id": "annotation-sqrt-mul-identity",
+    "lineStart": 24,
+    "lineEnd": 35,
+    "type": "technique",
+    "mathContext": "The algebraic identity $(\\sqrt{2}+\\sqrt{3})^2 = 5 + 2\\sqrt{6}$ is proved in a structured way: first establish `h6 : sqrt 2 * sqrt 3 = sqrt 6` via `rw [← sqrt_mul h2 3]; norm_num`. Here `sqrt_mul h2 3 : sqrt 2 * sqrt 3 = sqrt (2 * 3)` requires the non-negativity hypothesis `h2 : (0:ℝ) ≤ 2`, and `norm_num` simplifies $\\sqrt{2 \\cdot 3} = \\sqrt{6}$. Then `ring_nf` expands $(\\sqrt{2}+\\sqrt{3})^2 = \\sqrt{2}^2 + 2\\sqrt{2}\\sqrt{3} + \\sqrt{3}^2$, `rw [sq_sqrt h2, sq_sqrt h3, h6]` substitutes $\\sqrt{2}^2 \\to 2$, $\\sqrt{3}^2 \\to 3$, $\\sqrt{2}\\sqrt{3} \\to \\sqrt{6}$, and `ring` finishes.",
+    "significance": "The proof demonstrates the standard Lean 4 approach to sqrt algebra: ring_nf handles polynomial expansion, but sqrt-specific facts (sq_sqrt and sqrt_mul) require explicit rewrites. The non-negativity hypotheses (h2, h3) are required by Lean's Real.sqrt definition (which returns 0 for negative arguments), even though they are obviously true here. This is a common pattern in Lean 4: obvious conditions still need to be spelled out for sqrt rewrites.",
+    "relatedConcepts": [
+      "Real.sqrt_mul: sqrt a * sqrt b = sqrt (a * b) for a ≥ 0",
+      "Real.sq_sqrt: sqrt a ^ 2 = a for a ≥ 0",
+      "ring_nf: normalize ring expressions",
+      "norm_num for numeric goals"
+    ],
+    "prerequisites": [
+      "Real.sqrt_mul: requires non-negativity hypothesis for the first argument",
+      "Real.sq_sqrt: √a² = a requires a ≥ 0",
+      "ring_nf: expand and normalize polynomial/ring expressions"
+    ]
+  },
+  {
+    "id": "annotation-main-proof-structure",
+    "lineStart": 36,
+    "lineEnd": 53,
+    "type": "key-theorem",
+    "mathContext": "The main proof `irrational_sqrt2_plus_sqrt3 : Irrational (sqrt 2 + sqrt 3)` unfolds `Irrational` and takes `intro ⟨r, hr⟩` to get `r : ℚ` and `hr : (r : ℝ) = sqrt 2 + sqrt 3`. The chain: `rw [hr, sqrt2_plus_sqrt3_sq]` gives `hsq : (r:ℝ)^2 = 5 + 2*sqrt 6`; `linarith` gives `h6 : sqrt 6 = ((r:ℝ)^2 - 5)/2`; construct `q : ℚ` as `(r^2 - 5)/2` with `simp [Rat.cast_div, Rat.cast_sub, Rat.cast_pow, Rat.cast_natCast]` to align the cast; `exact irrational_sqrt_six ⟨q, ...⟩` closes by contradiction.",
+    "significance": "The proof is an elegant three-step reduction: (1) if √2+√3=r∈ℚ then (2) √6=(r²-5)/2∈ℚ then (3) contradiction with irrational_sqrt_six. The cast arithmetic (Rat.cast_div, etc.) is the most technical part — converting between ℚ-level arithmetic and ℝ-level arithmetic requires explicit cast lemmas. In modern Lean 4 with norm_cast or push_cast, this can often be automated.",
+    "relatedConcepts": [
+      "Rat.cast arithmetic lemmas",
+      "Irrational as negated existence",
+      "proof by contradiction pattern",
+      "reduction to simpler irrationality"
+    ],
+    "prerequisites": [
+      "Rat.cast_div: (↑(a/b) : ℝ) = ↑a / ↑b",
+      "Rat.cast_pow: (↑(r^n) : ℝ) = (↑r)^n",
+      "intro ⟨r, hr⟩: destructs ∃ r : ℚ, (r:ℝ) = x into witnesses"
+    ]
+  },
+  {
+    "id": "annotation-squaring-trick-generalization",
+    "lineStart": 36,
+    "lineEnd": 53,
+    "type": "insight",
+    "mathContext": "The squaring trick generalizes: $\\sqrt{a} + \\sqrt{b} \\in \\mathbb{Q}$ iff $\\sqrt{a}, \\sqrt{b} \\in \\mathbb{Q}$ (for non-negative rationals $a, b$). Proof: if $\\sqrt{a}+\\sqrt{b} = r \\in \\mathbb{Q}$, then $(\\sqrt{a}+\\sqrt{b})^2 = a+b+2\\sqrt{ab} = r^2$, so $\\sqrt{ab} = (r^2-a-b)/2 \\in \\mathbb{Q}$. Then $(\\sqrt{a}-\\sqrt{b}) = (a-b)/(\\sqrt{a}+\\sqrt{b}) = (a-b)/r \\in \\mathbb{Q}$, giving $\\sqrt{a} = (r + (a-b)/r)/2 \\in \\mathbb{Q}$. This is stronger than what the file proves: it shows rationality of the sum requires rationality of each term.",
+    "significance": "The generalization shows that the file's approach is essentially tight: the reduction to √6 is not just a convenient trick but a necessary consequence. If √6 were rational, then since √2 is irrational, we couldn't have √2+√3=r. The proof can be extended: for distinct squarefree integers a,b, √a+√b is always irrational (since √(ab) is irrational when ab is squarefree).",
+    "relatedConcepts": [
+      "sum of square roots rationality criterion",
+      "Besicovitch independence theorem",
+      "squarefree numbers",
+      "minimal polynomial technique"
+    ],
+    "prerequisites": [
+      "If √a + √b = r ∈ ℚ then √(ab) ∈ ℚ (by squaring)",
+      "Squarefree n: n = 1 or n is not divisible by any perfect square > 1",
+      "Linear independence of {1, √a₁, ..., √aₙ} over ℚ (Besicovitch)"
+    ]
+  },
+  {
+    "id": "annotation-minimal-polynomial",
+    "lineStart": 24,
+    "lineEnd": 35,
+    "type": "insight",
+    "mathContext": "The minimal polynomial of $\\alpha = \\sqrt{2}+\\sqrt{3}$ over $\\mathbb{Q}$ is $f(x) = x^4 - 10x^2 + 1$. Proof: $\\alpha^2 = 5 + 2\\sqrt{6}$ (the identity proved here), so $\\alpha^2 - 5 = 2\\sqrt{6}$, hence $(\\alpha^2-5)^2 = 24$, giving $\\alpha^4 - 10\\alpha^2 + 25 = 24$, so $\\alpha^4 - 10\\alpha^2 + 1 = 0$. The polynomial $f$ is irreducible over $\\mathbb{Q}$ (it has no rational roots by rational root theorem; the only candidates are $\\pm 1$ and both give $f(\\pm 1) = 1-10+1 = -8 \\neq 0$; and $f$ has no quadratic factor over $\\mathbb{Q}$ since any factorization $f = (x^2+ax+b)(x^2-ax+c)$ requires $ac+bc = -10$ and $bc = 1$ and $a(c-b) = 0$, leading to contradictions). Irrationality follows: $f(\\alpha) = 0$ with $f$ irreducible over $\\mathbb{Q}$ means $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 4 > 1$, so $\\alpha \\notin \\mathbb{Q}$.",
+    "significance": "The minimal polynomial perspective gives a stronger result: not only is √2+√3 irrational, but it generates a degree-4 extension of ℚ. The file's squaring trick essentially derives the key relation α²-5=2√6 → (α²-5)²=24, which is exactly computing the minimal polynomial. Formalizing the full irreducibility argument would require polynomial arithmetic over ℚ and the rational root theorem.",
+    "relatedConcepts": [
+      "minimal polynomial over ℚ",
+      "rational root theorem",
+      "degree of field extension",
+      "irreducible polynomial"
+    ],
+    "prerequisites": [
+      "Minimal polynomial: smallest monic polynomial over ℚ vanishing at α",
+      "Rational root theorem: rational roots of monic integer poly are ±divisors of constant term",
+      "[ℚ(α):ℚ] = deg(min_poly(α))"
+    ]
+  }
+]

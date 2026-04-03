@@ -1,1 +1,95 @@
-[]
+[
+  {
+    "id": "annotation-mul-mod-four-closure",
+    "lineStart": 45,
+    "lineEnd": 51,
+    "type": "insight",
+    "mathContext": "`mul_mod_four_one` encodes the group structure of $(\\mathbb{Z}/4\\mathbb{Z})^* = \\{1, 3\\}$: the identity element 1 is closed under multiplication ($1 \\cdot 1 \\equiv 1 \\pmod 4$). The proof is a single `calc` chain using `Nat.mul_mod` (which states $(a \\cdot b) \\% m = ((a \\% m) \\cdot (b \\% m)) \\% m$) and `norm_num` for the arithmetic. This is the arithmetic heart of the proof: any product of integers $\\equiv 1 \\pmod 4$ remains $\\equiv 1 \\pmod 4$, so a product $\\equiv 3 \\pmod 4$ must have at least one factor $\\equiv 3 \\pmod 4$.",
+    "significance": "This single-lemma multiplication closure is the key algebraic fact that makes the Euclid-style construction work for 3 mod 4 but not directly for 1 mod 4. In (ℤ/4ℤ)*, 3 has order 2 and 1 has order 1 — so a product is ≡ 3 iff it has an odd number of factors ≡ 3. The formalization of this in `factors_determine_mod_four` uses strong induction rather than counting, but the underlying reason is this group law.",
+    "relatedConcepts": [
+      "(ℤ/4ℤ)* group structure",
+      "Nat.mul_mod",
+      "multiplicative closure mod 4",
+      "quadratic residues mod 4"
+    ],
+    "prerequisites": [
+      "Nat.mul_mod: (a * b) % m = ((a % m) * (b % m)) % m",
+      "norm_num: numerical computation tactic"
+    ]
+  },
+  {
+    "id": "annotation-prime-dichotomy",
+    "lineStart": 53,
+    "lineEnd": 75,
+    "type": "insight",
+    "mathContext": "`prime_mod_four` establishes that every odd prime satisfies $p \\equiv 1 \\pmod 4$ or $p \\equiv 3 \\pmod 4$. The proof writes $p = 2k+1$ (from `hp.odd_of_ne_two`) and splits on $k$ even ($k = 2m$, giving $p = 4m+1$) vs $k$ odd ($k = 2m+1$, giving $p = 4m+3$). Both cases close by `omega`. This exhausts all possibilities since $p$ odd means $p \\not\\equiv 0, 2 \\pmod 4$, leaving only residues 1 and 3. The four residue classes $\\{0,1,2,3\\}$ mod 4 for odd numbers reduce to $\\{1,3\\}$ — exactly the units $(\\mathbb{Z}/4\\mathbb{Z})^*$.",
+    "significance": "This dichotomy is foundational for all mod-4 prime arguments. It shows that the classification of odd primes into two classes (1 mod 4 and 3 mod 4) is exhaustive and complete — there is no 'third class'. The proof by writing p = 2k+1 and splitting on k's parity is a standard elementary argument that translates cleanly into Lean via Nat.odd_of_ne_two and omega.",
+    "relatedConcepts": [
+      "odd primes mod 4",
+      "Nat.Prime.odd_of_ne_two",
+      "residue class dichotomy",
+      "units mod 4"
+    ],
+    "prerequisites": [
+      "Nat.Prime.odd_of_ne_two: prime p ≠ 2 → Odd p",
+      "Nat.odd_iff: Odd n ↔ n % 2 = 1",
+      "omega: linear arithmetic tactic"
+    ]
+  },
+  {
+    "id": "annotation-strong-induction-factors",
+    "lineStart": 78,
+    "lineEnd": 131,
+    "type": "key-theorem",
+    "mathContext": "`factors_determine_mod_four` proves: if every prime factor of $n$ is 2 or $\\equiv 1 \\pmod 4$, then $n \\not\\equiv 3 \\pmod 4$. The proof is by `Nat.strong_induction_on`: at each step, extract a prime factor $p$ via `Nat.exists_prime_and_dvd` (which requires $n \\neq 1$; since $n \\equiv 3 \\pmod 4$ we have $n \\geq 3$). Two cases: (1) $p = 2$: then $2 \\mid n$, but $n \\equiv 3 \\pmod 4$ implies $n$ is odd, contradiction by `omega`. (2) $p \\equiv 1 \\pmod 4$: write $n = p \\cdot m$. If $m = 1$ then $n = p \\equiv 1 \\pmod 4$, contradicting $n \\equiv 3 \\pmod 4$. If $m \\geq 2$, then $m < n$ and $m \\equiv 3 \\pmod 4$ (from $n \\equiv 3 \\equiv (1 \\cdot m) \\pmod 4$ via `Nat.mul_mod`), so IH applies.",
+    "significance": "This is the technical core of the proof — a strong induction that shows the mod-4 residue of n is completely determined by the residues of its prime factors. The key step is that dividing out a factor ≡ 1 (mod 4) preserves the mod-4 residue of the quotient, so if n ≡ 3 (mod 4), the quotient must also be ≡ 3 (mod 4). Strong induction terminates because m < n. This argument avoids any need for unique factorization (it works by finding one factor and reducing).",
+    "relatedConcepts": [
+      "Nat.strong_induction_on",
+      "Nat.exists_prime_and_dvd",
+      "multiplicativity of mod",
+      "contrapositive argument"
+    ],
+    "prerequisites": [
+      "Nat.strong_induction_on: induction with full IH on all m < n",
+      "Nat.exists_prime_and_dvd: n ≠ 1 → ∃ p prime, p ∣ n",
+      "Nat.mul_mod: (p * m) % 4 = (p % 4 * m % 4) % 4"
+    ]
+  },
+  {
+    "id": "annotation-main-construction",
+    "lineStart": 150,
+    "lineEnd": 191,
+    "type": "key-theorem",
+    "mathContext": "The main theorem constructs $N = 4 \\cdot (n+1)! - 1$ and shows $N \\equiv 3 \\pmod 4$ (immediate since $(n+1)! \\geq 1$ so $4 \\cdot (n+1)! \\geq 4$, hence $N \\geq 3$; and $4 \\cdot (n+1)! \\equiv 0 \\pmod 4$ so $N \\equiv 3 \\pmod 4$). By `has_prime_factor_3_mod_4`, $N$ has a prime factor $p \\equiv 3 \\pmod 4$. To show $p > n$: if $p \\leq n$, then $p \\leq n+1$, so `Nat.dvd_factorial` gives $p \\mid (n+1)!$, hence $p \\mid 4(n+1)!$. But $p \\mid N = 4(n+1)! - 1$, so $p \\mid 1$. Since $p$ is prime ($p \\geq 2$), this contradicts `hp.not_dvd_one`.",
+    "significance": "The factorial construction N = 4·(n+1)!-1 is elegant: the factor 4 ensures N ≡ 3 (mod 4), and (n+1)! ensures every prime ≤ n divides the large term 4·(n+1)!, making N ≡ -1 mod each of those primes. The proof that p ∤ N for p ≤ n is the divisibility chain: p|fact → p|4·fact → p|N+1 → p|1, contradiction. `Nat.dvd_factorial` (p prime, p ≤ m → p | m!) is the key Mathlib lemma.",
+    "relatedConcepts": [
+      "Euclid's proof structure",
+      "Nat.dvd_factorial",
+      "Nat.Prime.not_dvd_one",
+      "N = 4·(n+1)!-1 construction"
+    ],
+    "prerequisites": [
+      "Nat.dvd_factorial: p prime, p ≤ n → p ∣ n!",
+      "Nat.factorial_pos: (n)! ≥ 1",
+      "Nat.Prime.not_dvd_one: p prime → ¬(p ∣ 1)"
+    ]
+  },
+  {
+    "id": "annotation-set-infinitude",
+    "lineStart": 192,
+    "lineEnd": 207,
+    "type": "insight",
+    "mathContext": "`primes_3_mod_4_infinite` uses `Set.infinite_of_not_bddAbove`: a set $S \\subseteq \\mathbb{N}$ is infinite iff it is not bounded above. Given any bound $n$, `infinitely_many_primes_3_mod_4 n` produces $p > n$ with $p \\in S$, so $S$ is not bounded above. `no_largest_prime_3_mod_4` gives the equivalent no-largest-element form: assuming a largest prime $p \\equiv 3 \\pmod 4$, `infinitely_many_primes_3_mod_4 p` produces $q > p$ with $q \\equiv 3 \\pmod 4$, contradicting $p$ being largest. Both are immediate corollaries requiring only `omega` after applying the main theorem.",
+    "significance": "The two alternative formulations (set infinitude and no-largest-prime) demonstrate that the core theorem `infinitely_many_primes_3_mod_4` is the right primitive: both natural ways of stating 'infinitely many primes ≡ 3 (mod 4)' follow as trivial corollaries. The use of `Set.infinite_of_not_bddAbove` over `Set.infinite_of_injective` or `Set.infinite_range_of_injective` reflects Mathlib's standard approach to proving infinite sets via unboundedness.",
+    "relatedConcepts": [
+      "Set.infinite_of_not_bddAbove",
+      "Set.Infinite",
+      "no-largest-prime form",
+      "unbounded sets in ℕ"
+    ],
+    "prerequisites": [
+      "Set.infinite_of_not_bddAbove: ¬(BddAbove S) → S.Infinite",
+      "BddAbove: set has an upper bound in ℕ"
+    ]
+  }
+]

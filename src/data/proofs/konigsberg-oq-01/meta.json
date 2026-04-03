@@ -35,15 +35,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Euler's theorem (1736) for Königsberg bridges: a graph has an Eulerian circuit iff it is connected and all vertices have even degree. An Eulerian path exists iff exactly 0 or 2 vertices have odd degree. This formalization focuses on concrete examples and general necessary conditions, building on the base Königsberg formalization.",
-    "problemStatement": "Which concrete graph families have Eulerian circuits or paths? Prove the criterion for C₄, C₅, K₄, and odd-regular graphs.",
+    "historicalContext": "Leonhard Euler's 1736 paper on the Königsberg bridge problem is considered the birth of graph theory. Euler proved that no walk exists traversing all 7 bridges of Königsberg exactly once by showing the city graph has 4 odd-degree vertices (requiring exactly 0 or 2 for an Eulerian path). His generalization became Euler's theorem: a connected graph has an Eulerian circuit iff all vertices have even degree. This result was the first time a mathematical problem was solved by abstracting a physical structure into a graph and reasoning about connectivity. The proof of sufficiency (Hierholzer's algorithm, 1873) came more than a century after Euler's necessary condition. This formalization extends the basic Königsberg impossibility proof to concrete positive and negative examples: cycles $C_n$ have Eulerian circuits (all degrees 2, even), while $K_4$ and odd-regular graphs fail (too many odd-degree vertices). The central tool from Mathlib is `Walk.IsEulerian.card_odd_degree`, which directly gives the odd-degree count for any Eulerian walk.",
+    "problemStatement": "For the concrete graph families $C_4$, $C_5$, $K_4$, and general $k$-regular graphs with odd $k$: determine whether Eulerian circuits or paths exist. For $C_4$ and $C_5$: construct explicit Eulerian circuits and verify they are Eulerian. For $K_4$ and odd-regular graphs: prove no Eulerian path exists.",
     "text": "C₄ and C₅ (n-cycles) trivially have Eulerian circuits: all vertices have degree 2 (even), and a Hamiltonian cycle is also Eulerian. K₄ has all vertices of odd degree 3, so no Eulerian path exists by the odd-degree criterion. The general theorem: an odd-regular graph on n ≥ 3 vertices has all n vertices of odd degree, so with n ≥ 3 odd-degree vertices, no Eulerian path exists (requires ≤ 2 odd-degree vertices).",
-    "proofStrategy": "Define explicit circuits for C₄ and C₅, verify they visit all vertices and edges exactly once. For K₄: compute degrees = 3 (odd), then apply the odd-degree non-existence criterion. For odd-regular: n ≥ 3 all-odd-degree vertices violates the ≤ 2 odd-degree condition.",
+    "proofStrategy": "For C₄ and C₅: construct Walk.cons chains spelling out the cycle explicitly (A→B→C→D→A and A→B→C→D→E→A). Verify IsEulerian by cases a <;> cases b on the edge type. For K₄: compute degree = 3 by native_decide, show 4 odd-degree vertices, apply hp.card_odd_degree. For odd-regular: show |{v | Odd (deg v)}| = Fintype.card V ≥ 3, apply card_odd_degree to get a contradiction with 0 or 2.",
     "keyInsights": [
-      "Cycles Cₙ are Eulerian for all n ≥ 3: all degrees are 2 (even), and the cycle itself is the Eulerian circuit",
-      "K₄ is the smallest complete graph with no Eulerian path (all degrees 3 = odd)",
-      "Regular odd graphs with ≥3 vertices all fail: too many odd-degree vertices",
-      "Euler trail non-endpoint degrees are even: travel arrives and departs equally"
+      "For cycle graphs $C_n$ (all $n \\geq 3$), the cycle walk itself IS the Eulerian circuit: every edge appears exactly once, and since all degrees are 2 (each vertex appears as both entering and leaving endpoint once), the IsEulerian check reduces to a complete case analysis by `cases a <;> cases b`.",
+      "$K_4$ is the 'canonical' counterexample: it has $\\binom{4}{2} = 6$ edges and all 4 vertices with degree 3, so there are 4 odd-degree vertices. Any Eulerian path would need at most 2 odd-degree vertices — a gap of 2 is enough to prevent any Eulerian path.",
+      "The key Mathlib lemma `Walk.IsEulerian.card_odd_degree` is the central tool: it states that if $p$ is an Eulerian walk from $u$ to $v$, then the number of odd-degree vertices is 0 (if $u = v$, a circuit) or 2 (if $u \\neq v$, a trail). The non-existence proofs all reduce to showing this count exceeds 2.",
+      "The `regular_odd_no_euler` theorem is the cleanest general result: for odd $k$-regular graphs, every vertex has odd degree, so $|\\{v : \\text{Odd}(\\deg v)\\}| = |V| \\geq 3$. The proof converts between the set cardinality and Fintype.card using Finset.card_univ and ext.",
+      "Concrete computations by `native_decide`: degree values, edge counts, circuit lengths, and vertex visitation are all verified by Lean's native evaluator rather than symbolic proof — this keeps the proofs short and avoids constructing explicit inductions over small finite types."
     ],
     "prerequisites": [
       "Eulerian circuits: connected graph, all even degrees",
@@ -51,13 +52,57 @@
       "Graph degrees: handshaking lemma Σ deg = 2|E|"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Imports SimpleGraph.Trails (for Walk.IsEulerian, card_odd_degree), SimpleGraph.Connectivity, Algebra.Ring.Parity (for Even/Odd), and tactics. Opens SimpleGraph namespace."
+    },
+    {
+      "id": "sec-square",
+      "title": "Square Graph C₄: Explicit Eulerian Circuit",
+      "startLine": 25,
+      "endLine": 102,
+      "summary": "Defines SqVerts (inductive A|B|C|D), sqAdj (the cycle adjacency), sqGraph (SimpleGraph), proves sq_degree=2, sq_all_even, sq_edge_count=4, constructs sqCircuit (Walk A A via Walk.cons chain), proves sqCircuit_length=4, sqCircuit_visits_all, sqCircuit_isEulerian (by Sym2.ind + cases a cases b)."
+    },
+    {
+      "id": "sec-pentagon",
+      "title": "Pentagon Graph C₅: Explicit Eulerian Circuit",
+      "startLine": 104,
+      "endLine": 182,
+      "summary": "Analogous to C₄ with 5 vertices (A|B|C|D|E). Defines pentGraph, proves pent_degree=2, pent_all_even, pent_edge_count=5, constructs pentCircuit (5-edge Walk.cons chain), proves pentCircuit_length=5, pentCircuit_visits_all, pentCircuit_isEulerian."
+    },
+    {
+      "id": "sec-k4",
+      "title": "Complete Graph K₄: No Eulerian Path",
+      "startLine": 184,
+      "endLine": 249,
+      "summary": "Defines K4Verts (V1|V2|V3|V4), k4Adj (all 6 pairs), k4Graph. Proves k4_degree=3, k4_all_odd, k4_edge_count=6, k4_four_odd (4 odd-degree vertices by native_decide). k4_not_eulerian applies hp.card_odd_degree and gets 4 ≠ 0 and 4 ≠ 2 by omega."
+    },
+    {
+      "id": "sec-trail-theory",
+      "title": "General Trail Theory",
+      "startLine": 251,
+      "endLine": 298,
+      "summary": "Variable section with general G. Proves: euler_criterion_necessary (necessary condition for Eulerian paths via hp.card_odd_degree), no_eulerian_path_three_or_more_odd (≥3 odd vertices → no Euler path, immediate from card_odd_degree), euler_circuit_implies_all_even (circuit → all even via hp.even_degree_iff), euler_trail_non_endpoint_even (non-endpoint vertices in trail have even degree via tauto)."
+    },
+    {
+      "id": "sec-odd-regular",
+      "title": "Odd-Regular Graphs Have No Eulerian Path",
+      "startLine": 300,
+      "endLine": 356,
+      "summary": "regular_odd_no_euler: for k-odd-regular G with |V| ≥ 3, shows |{v | Odd(deg v)}| = |V| ≥ 3 via Fintype.card_subtype + ext, then contradicts hp.card_odd_degree via omega. Also verifies handshaking lemma (Σ deg = 2|E|) for C₄ and K₄ by native_decide."
+    }
+  ],
   "conclusion": {
-    "summary": "Eulerian circuit existence proved for C₄ and C₅, non-existence proved for K₄ and odd-regular graphs. General necessary conditions verified. 24 theorems, 8 definitions, 404 lines, 0 axioms.",
-    "implications": "This completes the concrete verification of Euler's theorem for common graph families, providing machine-verified examples for graph theory education.",
+    "summary": "Verifies Eulerian circuit existence for $C_4$ (explicit 4-edge circuit) and $C_5$ (explicit 5-edge circuit), and non-existence for $K_4$ (4 odd-degree vertices) and all odd-regular graphs with $|V| \\geq 3$. Proves general necessary conditions: Eulerian circuits require all-even degrees; Eulerian paths require $\\leq 2$ odd-degree vertices. 24 theorems, 8 definitions, 404 lines, 0 axioms.",
+    "implications": "This provides machine-verified concrete examples for Euler's theorem — the foundational result of graph theory. The combination of explicit circuit constructions (positive examples) with odd-degree counting arguments (negative examples) demonstrates both directions of the degree criterion. The `Walk.IsEulerian.card_odd_degree` lemma from Mathlib is the key bridge between the combinatorial structure and the algebraic degree counts.",
     "openQuestions": [
-      "Prove sufficiency of Euler's criterion (connected + all-even → Eulerian circuit) without axioms",
-      "Extend to directed Eulerian paths (see konigsberg-oq-02)",
-      "Prove Euler criterion for multigraphs and hypergraphs"
+      "Prove the sufficiency direction of Euler's theorem: if $G$ is connected and all degrees are even, then $G$ has an Eulerian circuit. This requires Hierholzer's algorithm (1873) or a constructive induction on $|E|$, both of which require more substantial formalization than the necessity direction.",
+      "Extend to Eulerian paths in directed graphs: the characterization is $\\mathrm{indeg}(v) = \\mathrm{outdeg}(v)$ for all $v$ (circuit) or exactly one source with $\\mathrm{outdeg} - \\mathrm{indeg} = 1$ and one sink. The directed version is formalized in konigsberg-oq-02.",
+      "Classify Eulerian graphs by their structure: BEST theorem (de Bruijn, van Aardenne-Ehrenfest, Smith, Tutte) counts the number of Eulerian circuits in a directed graph as $t_w(G) \\cdot \\prod_v (\\mathrm{outdeg}(v) - 1)!$, where $t_w(G)$ is an arborescence count. Can this be formalized using Mathlib's matrix-tree theorem?"
     ]
   },
   "leanFile": {
@@ -69,10 +114,14 @@
   },
   "crossReferences": [
     {
-      "targetId": "konigsberg-oq-02",
-      "relationship": "related",
-      "description": "Directed Euler path characterization; this file covers undirected concrete examples"
+      "id": "konigsberg",
+      "relationship": "parent",
+      "description": "Königsberg Bridges Problem — the original Eulerian impossibility proof that this file extends to positive examples and general theorems."
+    },
+    {
+      "id": "konigsberg-oq-02",
+      "relationship": "sibling",
+      "description": "Directed Euler Paths: In-Degree/Out-Degree Characterization — the directed analogue of this undirected Eulerian circuit theory."
     }
-  ],
-  "sections": []
+  ]
 }
