@@ -56,7 +56,7 @@
       "2024 improvement: GNNW bound 3.7993",
       "Verified theorems: erdos_bounds, current_best_bounds, erdos_conjecture_consistent"
     ],
-    "axiomCount": 1,
+    "axiomCount": 5,
     "lineCount": 244,
     "assumptions": "16 axioms: RamseyNumber, ramseyNumber_pos, ramsey_1, and 13 more. See Lean source for complete statements."
   },
@@ -141,7 +141,7 @@
     ],
     "namespace": "Erdos77",
     "lineCount": 244,
-    "axiomCount": 1,
+    "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 3
   },
@@ -154,12 +154,12 @@
     {
       "targetId": "prob-method-alteration",
       "relationship": "related",
-      "description": "Erdős's 1947 probabilistic lower bound R(k,k) ≥ 2^{k/2} pioneered the probabilistic method formalized here"
+      "description": "Erd\u0151s's 1947 probabilistic lower bound R(k,k) \u2265 2^{k/2} pioneered the probabilistic method formalized here"
     },
     {
       "targetId": "prob-method-lovasz-local",
       "relationship": "related",
-      "description": "The Lovász Local Lemma provides refined Ramsey bounds by handling dependencies in random graph coloring"
+      "description": "The Lov\u00e1sz Local Lemma provides refined Ramsey bounds by handling dependencies in random graph coloring"
     },
     {
       "targetId": "prob-method-second-moment",
@@ -176,7 +176,7 @@
     {
       "key": "Er47",
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "Some remarks on the theory of graphs",
       "venue": "Bulletin of the American Mathematical Society",
@@ -190,12 +190,12 @@
       "authors": [
         "J. Spencer"
       ],
-      "title": "Ramsey's theorem — a new lower bound",
+      "title": "Ramsey's theorem \u2014 a new lower bound",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": "1975",
       "volume": "18",
       "pages": "108-115",
-      "note": "Improved Erdős's lower bound by a √2 factor using the Lovász Local Lemma"
+      "note": "Improved Erd\u0151s's lower bound by a \u221a2 factor using the Lov\u00e1sz Local Lemma"
     },
     {
       "key": "Co09",

@@ -1,10 +1,10 @@
 {
   "id": "erdos-554",
-  "title": "Erdős Problem #554: Odd Cycle vs Triangle Ramsey Numbers",
+  "title": "Erd\u0151s Problem #554: Odd Cycle vs Triangle Ramsey Numbers",
   "slug": "erdos-554",
   "description": "Show that for any n >= 2, the ratio R(C_{2n+1}; k) / R(K_3; k) tends to 0 as k tends to infinity, where R(G; k) is the k-color Ramsey number of G.",
   "meta": {
-    "author": "Erdős-Graham (1981 conjecture)",
+    "author": "Erd\u0151s-Graham (1981 conjecture)",
     "sourceUrl": "https://erdosproblems.com/554",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos554Problem.lean",
@@ -40,33 +40,33 @@
       }
     ],
     "originalContributions": [
-      "ramseyNumber axiomatization: k-color Ramsey number R(G; k) as ℕ → ℕ → ℕ",
+      "ramseyNumber axiomatization: k-color Ramsey number R(G; k) as \u2115 \u2192 \u2115 \u2192 \u2115",
       "triangleRamsey and oddCycleRamsey definitions",
       "erdosConjecture554: ratio-limit formulation using rational arithmetic",
       "triangle_ramsey_exponential: R(K_3; k) >= 2^k lower bound",
       "triangle_ramsey_upper: existence of exponential upper bound",
       "oddCycle_ramsey_upper: R(C_{2n+1}; k) <= (2n+1)^k",
       "oddCycle_ramsey_lower: linear lower bound k*(2n) + 1",
-      "two_color_odd_cycle: R(C_{2n+1}; 2) = 4n+1 (Bondy-Erdős 1973)",
+      "two_color_odd_cycle: R(C_{2n+1}; 2) = 4n+1 (Bondy-Erd\u0151s 1973)",
       "two_color_pentagon_ratio: verified 2-color values from axioms",
       "pentagon_is_special_case: C_5 case follows from full conjecture",
       "erdos_question_chromatic_3: connection to chromatic number question"
     ],
-    "axiomCount": 1,
+    "axiomCount": 3,
     "lineCount": 128,
     "assumptions": "11 axioms: ramseyNumber, ramseyNumber_ge, ramseyNumber_mono_colors, and 8 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #554 was posed by Erdős and Graham in 1981 as part of their influential work on Ramsey theory. The problem concerns the growth rates of multicolor Ramsey numbers for different graph families. In the classical 2-color setting, Ramsey numbers for odd cycles were completely determined by Bondy and Erdős in 1973: R(C_{2n+1}; 2) = 4n + 1 for n >= 2. This showed that odd cycle Ramsey numbers are much smaller than triangle Ramsey numbers even for 2 colors (R(K_3; 2) = 6).\n\nThe natural question is whether this gap persists and widens as the number of colors grows. Erdős and Graham conjectured that the ratio R(C_{2n+1}; k) / R(K_3; k) tends to 0 as k tends to infinity, for any fixed n >= 2. This would mean that, in some precise sense, odd cycles are 'much easier' to find monochromatically than triangles in multicolor settings.\n\nThe conjecture remains OPEN as of 2026, even for the simplest case n = 2 (the pentagon C_5). It is deeply connected to fundamental questions about how graph structure affects Ramsey-theoretic complexity. All odd cycles have chromatic number 3, the same as the triangle K_3, yet the conjecture predicts dramatically different Ramsey behavior.",
-    "problemStatement": "**Problem (Erdős-Graham, 1981):** For any integer $n \\geq 2$, prove that\n$$\\lim_{k \\to \\infty} \\frac{R(C_{2n+1};\\, k)}{R(K_3;\\, k)} = 0$$\nwhere $R(G;\\, k)$ denotes the $k$-color Ramsey number of the graph $G$.\n\n**Status:** OPEN. The conjecture is unresolved even for $n = 2$ (the pentagon $C_5$).",
+    "historicalContext": "Erd\u0151s Problem #554 was posed by Erd\u0151s and Graham in 1981 as part of their influential work on Ramsey theory. The problem concerns the growth rates of multicolor Ramsey numbers for different graph families. In the classical 2-color setting, Ramsey numbers for odd cycles were completely determined by Bondy and Erd\u0151s in 1973: R(C_{2n+1}; 2) = 4n + 1 for n >= 2. This showed that odd cycle Ramsey numbers are much smaller than triangle Ramsey numbers even for 2 colors (R(K_3; 2) = 6).\n\nThe natural question is whether this gap persists and widens as the number of colors grows. Erd\u0151s and Graham conjectured that the ratio R(C_{2n+1}; k) / R(K_3; k) tends to 0 as k tends to infinity, for any fixed n >= 2. This would mean that, in some precise sense, odd cycles are 'much easier' to find monochromatically than triangles in multicolor settings.\n\nThe conjecture remains OPEN as of 2026, even for the simplest case n = 2 (the pentagon C_5). It is deeply connected to fundamental questions about how graph structure affects Ramsey-theoretic complexity. All odd cycles have chromatic number 3, the same as the triangle K_3, yet the conjecture predicts dramatically different Ramsey behavior.",
+    "problemStatement": "**Problem (Erd\u0151s-Graham, 1981):** For any integer $n \\geq 2$, prove that\n$$\\lim_{k \\to \\infty} \\frac{R(C_{2n+1};\\, k)}{R(K_3;\\, k)} = 0$$\nwhere $R(G;\\, k)$ denotes the $k$-color Ramsey number of the graph $G$.\n\n**Status:** OPEN. The conjecture is unresolved even for $n = 2$ (the pentagon $C_5$).",
     "text": "Show that for any n >= 2, the ratio R(C_{2n+1}; k) / R(K_3; k) tends to 0 as k tends to infinity, where R(G; k) is the k-color Ramsey number of G.",
-    "proofStrategy": "Since this is an open problem, we formalize the conjecture and surrounding theory rather than proving it. The Lean file axiomatizes Ramsey numbers as a function ℕ → ℕ → ℕ and states the conjecture using rational arithmetic to avoid real-valued limits. We axiomatize known bounds: exponential growth of R(K_3; k), polynomial-type bounds on odd cycle Ramsey numbers, and the classical 2-color results. We prove that the pentagon case is a special case of the full conjecture, and connect the problem to broader questions about chromatic number and Ramsey complexity.",
+    "proofStrategy": "Since this is an open problem, we formalize the conjecture and surrounding theory rather than proving it. The Lean file axiomatizes Ramsey numbers as a function \u2115 \u2192 \u2115 \u2192 \u2115 and states the conjecture using rational arithmetic to avoid real-valued limits. We axiomatize known bounds: exponential growth of R(K_3; k), polynomial-type bounds on odd cycle Ramsey numbers, and the classical 2-color results. We prove that the pentagon case is a special case of the full conjecture, and connect the problem to broader questions about chromatic number and Ramsey complexity.",
     "keyInsights": [
       "**Ratio-Limit Conjecture**: R(C_{2n+1}; k) / R(K_3; k) -> 0 says odd cycles are asymptotically negligible compared to triangles in multicolor Ramsey theory",
       "**Simplest Open Case**: Even for n = 2 (the pentagon C_5), the conjecture is unknown, making it one of the most basic open problems in multicolor Ramsey theory",
       "**Chromatic Number Paradox**: Odd cycles and triangles both have chromatic number 3, yet the conjecture predicts very different Ramsey behavior, suggesting Ramsey complexity depends on graph structure beyond just chromatic number",
       "**Known Bounds**: R(K_3; k) >= 2^k (exponential) while R(C_{2n+1}; 2) = 4n+1 (linear in n for fixed colors), but the multicolor growth rates are not well understood",
-      "**2-Color Benchmark**: Bondy-Erdős (1973) completely solved the 2-color case: R(C_{2n+1}; 2) = 4n + 1, establishing that odd cycle Ramsey numbers are small relative to triangle Ramsey numbers"
+      "**2-Color Benchmark**: Bondy-Erd\u0151s (1973) completely solved the 2-color case: R(C_{2n+1}; 2) = 4n + 1, establishing that odd cycle Ramsey numbers are small relative to triangle Ramsey numbers"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -126,12 +126,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #554 conjectures that R(C_{2n+1}; k) / R(K_3; k) -> 0 as k -> infinity for any n >= 2. This open problem, posed by Erdős and Graham in 1981, asserts that odd cycles are asymptotically much easier to find monochromatically than triangles. We formalize the conjecture, state known bounds, verify classical 2-color results, and connect the problem to chromatic number questions.",
+    "summary": "Erd\u0151s Problem #554 conjectures that R(C_{2n+1}; k) / R(K_3; k) -> 0 as k -> infinity for any n >= 2. This open problem, posed by Erd\u0151s and Graham in 1981, asserts that odd cycles are asymptotically much easier to find monochromatically than triangles. We formalize the conjecture, state known bounds, verify classical 2-color results, and connect the problem to chromatic number questions.",
     "implications": "**Theoretical Significance**: Resolution would fundamentally advance our understanding of multicolor Ramsey theory.\n\nIt would demonstrate that Ramsey-theoretic complexity of graphs is not determined by chromatic number alone, and would quantify how graph structure (cycles vs. cliques) affects the growth of multicolor Ramsey numbers.",
     "openQuestions": [
       "Does R(C_5; k) / R(K_3; k) -> 0 as k -> infinity? (simplest open case)",
       "What is the exact growth rate of R(C_{2n+1}; k) for k >= 3 colors?",
-      "Is there a graph G with χ(G) = 3 for which R(G; k) / R(K_3; k) does not tend to 0?",
+      "Is there a graph G with \u03c7(G) = 3 for which R(G; k) / R(K_3; k) does not tend to 0?",
       "What is the precise exponential base for R(K_3; k)?"
     ]
   },
@@ -145,7 +145,7 @@
     "opens": [],
     "namespace": "Erdos554",
     "lineCount": 128,
-    "axiomCount": 1,
+    "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 5
   },
@@ -153,17 +153,17 @@
     {
       "targetId": "erdos-558",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
+      "description": "Related Erd\u0151s problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
     },
     {
       "targetId": "erdos-569",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: graph-theory, odd-cycles, ramsey-theory"
+      "description": "Related Erd\u0151s problem sharing themes: graph-theory, odd-cycles, ramsey-theory"
     },
     {
       "targetId": "erdos-925",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
+      "description": "Related Erd\u0151s problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
     }
   ]
 }
