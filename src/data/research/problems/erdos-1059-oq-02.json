@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1059-oq-02",
   "title": "Selberg sieve approach to primes minus factorials compositeness",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T19:39:40.878Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "SURVEY: Created OQ02 file documenting Selberg sieve approach and key obstruction",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Created Erdos1059OQ02.lean (SURVEY). 5 theorems proved: factorial_interval_size, prime_gt_not_dvd_factorial, large_factor_no_small_prime, small_prime_cert_impossible. 1 axiom (Selberg sieve). 2 sorries (coprime proof, main theorem).",
+    "builtItems": [
+      "Erdos1059OQ02.lean: factorial_interval_size — (l+1)! - l! = l * l! (PartitionTheoremOQ04.lean:40)",
+      "Erdos1059OQ02.lean: prime_gt_not_dvd_factorial — p > k implies p ∤ k! (OQ02:50)",
+      "Erdos1059OQ02.lean: large_factor_no_small_prime — n with large factors has no small prime divisors (OQ02:103)",
+      "Erdos1059OQ02.lean: small_prime_cert_impossible — cannot certify n-k! composite via small primes (OQ02:110)",
+      "Erdos1059OQ02.lean: selberg_bound_large_factors axiom — Selberg sieve existence statement (OQ02:92)"
+    ],
+    "insights": [
+      "Selberg sieve gives condition (1) (large prime factors) but NOT condition (2) (composite subtractions)",
+      "Key obstruction: if n has all prime factors > l, no small prime q <= l can divide n, blocking the standard composite-certification approach",
+      "Condition (2) likely requires CRT-based sieve: choose n in progressions that force n-k! divisible by specific large primes",
+      "factorial_interval_size proof: use Nat.succ_mul + Nat.add_sub_cancel_right (not omega — products of variables)",
+      "prime_gt_not_dvd_factorial: prove by induction, using Nat.Prime.dvd_mul in succ case"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove coprime_of_large_factors_lt: needs Nat.exists_prime_and_dvd + prime divisors of factorial are small",
+      "Formalize the CRT-based compositeness argument if possible",
+      "Consider Aristotle for coprime_of_large_factors_lt (routine Mathlib proof)"
+    ]
   },
   "tags": [
     "erdos",
