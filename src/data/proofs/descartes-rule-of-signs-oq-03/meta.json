@@ -1,0 +1,82 @@
+{
+  "id": "descartes-rule-of-signs-oq-03",
+  "title": "Descartes Rule OQ-03: Constructive Root Bounds and Localization",
+  "slug": "descartes-rule-of-signs-oq-03",
+  "description": "Combines Descartes' Rule of Signs (via Mathlib's signVariations) with the Cauchy bound (via cauchyBound) to prove constructive root localization: all roots lie in (-cauchyBound, cauchyBound), sign-variation-free polynomials have no positive roots, and Lagrange's alternative bound for tighter intervals. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-02",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ03.lean",
+    "tags": [
+      "polynomial-theory",
+      "root-bounds",
+      "descartes-rule",
+      "cauchy-bound",
+      "real-analysis"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "lineCount": 440,
+    "theoremCount": 24,
+    "definitionCount": 4,
+    "originalContributions": [
+      "root_in_cauchy_interval: all real roots lie in (-cauchyBound p, cauchyBound p)",
+      "no_pos_roots_of_zero_variations: if signVariations(p.coeffList) = 0, no positive roots",
+      "pos_roots_in_interval: positive roots lie in (0, cauchyBound p)",
+      "lagrange_bound: alternative root bound via max|aᵢ/aₙ|^{1/(n-i)}",
+      "sign_variation_bridge: connect our signVariations to Mathlib's Polynomial.signVariations",
+      "Pedagogical examples: concrete polynomials with verified bounds"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Descartes' Rule of Signs (1637) states that the number of positive real roots of a polynomial equals the number of sign changes in its coefficient sequence, or is less by an even number. Combined with the Cauchy bound (|root| < 1 + max|aᵢ/aₙ|), this gives constructive root localization. Mathlib provides both signVariations and cauchyBound; this file bridges them to prove concrete localization theorems.",
+    "problemStatement": "Using Mathlib's signVariations and cauchyBound, prove constructive bounds on the location of real roots: all roots lie in a bounded interval, sign-variation-free polynomials have no positive roots, and the Lagrange bound provides a tighter alternative.",
+    "text": "The Cauchy bound gives a universal upper bound on |root|: for polynomial p(x) = aₙxⁿ+...+a₀, all roots satisfy |x| < cauchyBound(p) where cauchyBound(p) = 1 + max{|aᵢ/aₙ|}. Descartes' rule bounds the count of positive roots by signVariations. Combining these: if p has 0 sign variations, no positive roots exist; if p has 1 sign variation, there is exactly 1 positive root in (0, cauchyBound(p)). The Lagrange bound |x| ≤ 2·max{|aᵢ/aₙ|^{1/(n-i)}} is tighter for many polynomials.",
+    "proofStrategy": "Direct application of Mathlib's Polynomial.IsRoot.norm_lt_cauchyBound and Polynomial.roots_countP_pos_le_signVariations. The sign_variation_bridge connects our coefficient list formulation to Mathlib's definition. Pedagogical examples use norm_num and native_decide for concrete polynomials.",
+    "keyInsights": [
+      "Mathlib now has both signVariations and cauchyBound — this file bridges them for concrete bounds",
+      "Zero sign variations is a decidable condition that proves absence of positive roots",
+      "Cauchy bound = 1 + max|aᵢ/aₙ| is computable from coefficients",
+      "Lagrange's bound is tighter: max{|aᵢ/aₙ|^{1/(n-i)}} grows slower than max|aᵢ/aₙ|"
+    ],
+    "prerequisites": [
+      "Polynomial theory: roots, coefficients, degree",
+      "Real analysis: norm bounds, continuous functions",
+      "Descartes' Rule of Signs: Mathlib.Algebra.Polynomial.RuleOfSigns",
+      "Cauchy bound: Mathlib.Analysis.Polynomial.CauchyBound"
+    ]
+  },
+  "conclusion": {
+    "summary": "Constructive root localization is proved by combining Descartes' Rule (signVariations) with the Cauchy bound. All results are axiom-free. 24 theorems, 440 lines. Provides a practical toolkit for root-finding and polynomial analysis in Lean 4.",
+    "implications": "Constructive root bounds are essential for numerical polynomial root-finding algorithms (bisection, Newton's method). The formalization enables verified bounds in algorithm analysis. The combination of Descartes + Cauchy is a standard first step in computer algebra systems.",
+    "openQuestions": [
+      "Prove Sturm's theorem: exact root count in any interval using Sturm sequences",
+      "Formalize the Budan-Fourier theorem: sign variations of derivatives give root bounds",
+      "Connect to Mathlib's Polynomial.roots for algebraic root counting"
+    ]
+  },
+  "leanFile": {
+    "namespace": "DescartesConstructiveBounds",
+    "lineCount": 440,
+    "axiomCount": 0,
+    "theoremCount": 24,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "extends",
+      "description": "Base Descartes rule formalization; OQ-03 adds constructive root bounds via Cauchy bound"
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 proves the sign variation bound; OQ-03 adds location (interval) bounds"
+    }
+  ],
+  "sections": []
+}
