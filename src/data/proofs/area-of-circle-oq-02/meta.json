@@ -1,0 +1,84 @@
+{
+  "id": "area-of-circle-oq-02",
+  "title": "n-Dimensional Ball Volume: Generalization of Area of Circle",
+  "slug": "area-of-circle-oq-02",
+  "description": "Generalizes the area-of-circle formula A=πr² to n dimensions: Vol(Bⁿ(r)) = πⁿ/²·rⁿ/Γ(n/2+1). Proves the n=1,2,3 cases directly from Mathlib's volume_ball lemmas, establishes the Gamma function recurrence relation, and connects all cases via one axiom for the general scaling law rⁿ·Vol(Bⁿ(1)).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-02",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ02.lean",
+    "tags": [
+      "measure-theory",
+      "geometry",
+      "n-ball-volume",
+      "gamma-function",
+      "euclidean-space"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: nball_volume_scaling — Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)). This is a standard measure theory fact requiring careful handling of EuclideanSpace/PiLp volume isomorphism in Mathlib.",
+    "lineCount": 211,
+    "theoremCount": 16,
+    "definitionCount": 3,
+    "originalContributions": [
+      "unitBallVolume: definition of Vol(Bⁿ(1)) = πⁿ/² / Γ(n/2+1)",
+      "unitBallVolume_one: Vol(B¹(1)) = 2 (from Real.volume_ball)",
+      "unitBallVolume_two: Vol(B²(1)) = π (from Complex.volume_ball)",
+      "unitBallVolume_three: Vol(B³(1)) = 4π/3 (from Gamma recurrence)",
+      "gamma_recursion: Γ(n/2+1) = (n/2)·Γ(n/2) for even n",
+      "area_scaling_2d: Vol(B²(2r)) = 4·Vol(B²(r)) (follows from axiom)",
+      "ball_volume_n1, ball_volume_n2, ball_volume_n3: explicit formulas for n=1,2,3",
+      "Connection: A=πr² is the n=2 case with Γ(2)=1"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The area of a circle A=πr² (Wiedijk #9) is the 2-dimensional case of the general n-ball volume formula Vol(Bⁿ(r)) = πⁿ/²·rⁿ/Γ(n/2+1). This formula connects sphere volumes to the Gamma function, which itself is the generalization of factorial to non-integer arguments. The key insight: Γ(1)=1, Γ(3/2)=√π/2, Γ(2)=1, giving Vol(B²(1))=π/Γ(2)=π. The 4π/3 formula for 3-sphere volume follows from the Gamma recurrence.",
+    "problemStatement": "How does the circle area formula A=πr² generalize to n dimensions? Prove Vol(Bⁿ(r)) = πⁿ/²·rⁿ/Γ(n/2+1) for n=1,2,3 and state the general scaling law.",
+    "text": "Using Mathlib's Real.volume_ball (n=1: Vol=2r) and Complex.volume_ball (n=2: Vol=πr²), the specific cases are direct applications. For n=3, the Gamma recurrence Γ(5/2)=3√π/4 gives Vol(B³(1))=π^{3/2}/Γ(5/2)=4π/3. The general scaling law Vol(Bⁿ(r))=rⁿ·Vol(Bⁿ(1)) is axiomatized due to EuclideanSpace/PiLp measure theory technicalities in Lean 4.",
+    "proofStrategy": "Parts I-II prove specific cases using Mathlib volume lemmas. Part III establishes the scaling axiom and derives area_scaling_2d from it. The Gamma function values are computed from Mathlib's Real.Gamma API.",
+    "keyInsights": [
+      "A=πr² is precisely the n=2 case: Vol(B²(r))=π^{2/2}·r²/Γ(2)=πr²/1=πr²",
+      "Mathlib has Real.volume_ball and Complex.volume_ball as independent lemmas; this unifies them",
+      "The Gamma recurrence Γ(n/2+1)=(n/2)·Γ(n/2) connects volumes of adjacent dimensions",
+      "The scaling axiom nball_volume_scaling is the main gap: Mathlib's EuclideanSpace measure theory needs careful unfolding"
+    ],
+    "prerequisites": [
+      "Measure theory: Lebesgue measure on Euclidean spaces",
+      "Gamma function: Γ(n+1)=n!, Γ(1/2)=√π",
+      "Euclidean geometry: n-dimensional balls",
+      "Mathlib: MeasureTheory.volume, Real.volume_ball, Complex.volume_ball"
+    ]
+  },
+  "conclusion": {
+    "summary": "The n-ball volume formula is formalized for n=1,2,3 with a single axiom for the general scaling law. The key pedagogical insight — that A=πr² is the 2D case of a unified formula — is formally established.",
+    "implications": "This unification clarifies the role of the Gamma function in geometry. The formula Vol(Bⁿ(r))=πⁿ/²rⁿ/Γ(n/2+1) is fundamental in probability (the Gaussian integral), physics (phase space volumes), and combinatorics (kissing numbers).",
+    "openQuestions": [
+      "Prove nball_volume_scaling: requires establishing the EuclideanSpace volume isomorphism in Mathlib",
+      "Extend to n=4,5,... using the Gamma recurrence theorem",
+      "Prove the surface area formula Vol(∂Bⁿ(r)) = n·Vol(Bⁿ(1))·rⁿ⁻¹"
+    ]
+  },
+  "leanFile": {
+    "namespace": "NBallVolume",
+    "lineCount": 211,
+    "axiomCount": 1,
+    "theoremCount": 16,
+    "definitionCount": 3
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "extends",
+      "description": "Classical area of circle A=πr²; this file proves it as the n=2 case of the general formula"
+    },
+    {
+      "targetId": "area-of-circle-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 formalizes the 2D case; OQ-02 extends to n dimensions"
+    }
+  ],
+  "sections": []
+}

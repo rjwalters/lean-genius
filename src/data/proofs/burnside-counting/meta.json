@@ -1,0 +1,88 @@
+{
+  "id": "burnside-counting",
+  "title": "Burnside's Lemma and Necklace Counting",
+  "slug": "burnside-counting",
+  "description": "Burnside's lemma (orbit-counting theorem): for a finite group G acting on a set X, the number of orbits equals the average number of fixed points. Applied to count binary necklaces of length 4 via cyclic group rotation.",
+  "meta": {
+    "author": "William Burnside (1897), Cauchy (1845), Frobenius (1887), formalized via Mathlib",
+    "date": "1897",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BurnsideCounting.lean",
+    "tags": [
+      "combinatorics",
+      "group-theory",
+      "counting",
+      "orbits",
+      "necklaces",
+      "group-actions",
+      "polya-enumeration"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 5,
+    "assumptions": "5 axioms: rotatedIndex_add (modular arithmetic composition of rotations), fixed_point_sum_binary_4 (computed fixed-point sum = 24), coloringSetoid (orbit equivalence relation), coloringQuotientFintype (fintype instance for quotient), binary_necklaces_4 (6 distinct binary 4-necklaces).",
+    "lineCount": 255,
+    "theoremCount": 6,
+    "definitionCount": 7,
+    "originalContributions": [
+      "burnside_lemma: Burnside orbit-counting theorem from Mathlib (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
+      "rotateColoring: ZMod n acts on colorings by cyclic rotation",
+      "cyclicAddActionOnColorings: AddAction (ZMod n) (Coloring n k) instance",
+      "binary_4_colorings_count: Coloring 4 2 has 16 elements",
+      "constant_coloring_count: exactly k constant colorings for n positions with k colors",
+      "period2_count: 4 binary colorings of length 4 with period dividing 2",
+      "IsFixedByRotation: decidable predicate for fixed colorings"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Burnside's lemma (also known as the Cauchy-Frobenius lemma or orbit-counting theorem) was first stated by Cauchy in 1845 and later by Frobenius (1887); Burnside popularized it in his 1897 book 'Theory of Groups of Finite Order'. The formula |X/G| = (1/|G|) Σ_{g∈G} |Fix(g)| counts distinct objects under symmetry. A classic application: binary necklaces of length n (cyclic sequences of 0s and 1s under rotation) — for n=4, there are exactly 6 distinct necklaces out of 16 total colorings.",
+    "problemStatement": "Apply Mathlib's MulAction orbit-counting theorem (Burnside's lemma) to count distinct colorings under group symmetry, specifically: how many distinct binary necklaces of length 4 exist?",
+    "text": "Burnside's lemma: |X/G| × |G| = Σ_{g∈G} |Fix(g)|. For binary 4-necklaces under Z_4 rotation: |Fix(id)| = 16, |Fix(rot₁)| = 2, |Fix(rot₂)| = 4, |Fix(rot₃)| = 2, sum = 24, so |X/G| = 24/4 = 6 distinct necklaces.",
+    "proofStrategy": "Part I directly applies MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group from Mathlib. Part II defines the ZMod n action on colorings by rotation and establishes its AddAction structure (using rotatedIndex for the explicit formula). Part III provides concrete counting lemmas: all 16 binary colorings, the 2 constant ones, and the 4 period-2 ones. The 5 axioms cover modular arithmetic details (rotatedIndex_add), the specific fixed-point computation (fixed_point_sum_binary_4), and the setoid/quotient structure needed for the necklace count.",
+    "keyInsights": [
+      "Burnside's lemma is already in Mathlib as MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group — direct application, no proof needed",
+      "The additive group ZMod n acts on colorings by 'shift by r': c ↦ (i ↦ c(i - r))",
+      "rotatedIndex_add encodes group homomorphism property: rotating by r then s equals rotating by r+s",
+      "For binary 4-necklaces: identity fixes all 16, rotation by 1 or 3 fixes only 2 (constant), rotation by 2 fixes 4 (period-2)",
+      "The 6 equivalence classes: {0000}, {0001,0010,0100,1000}, {0011,0110,1100,1001}, {0101,1010}, {0111,1110,1101,1011}, {1111}",
+      "rotatedIndex_add is a provable lemma about (a + n - b) % n composition — axiomatized here for clarity"
+    ],
+    "prerequisites": [
+      "Group actions and orbit-stabilizer theorem",
+      "Finite group theory (Lagrange's theorem)",
+      "Modular arithmetic (ZMod n)",
+      "Polya enumeration theorem"
+    ]
+  },
+  "conclusion": {
+    "summary": "Burnside's lemma is formalized from Mathlib and applied to the classic necklace counting problem. The key mathematical content — the orbit-counting formula — is proved. The application to binary 4-necklaces is axiomatized pending formal proof of modular arithmetic details.",
+    "implications": "This formalization demonstrates how abstract group theory (orbit counting) applies to concrete combinatorial problems. Burnside's lemma is the foundation of Polya enumeration theory, used in chemistry (counting molecular structures), graph theory (counting graphs up to isomorphism), and combinatorics generally.",
+    "openQuestions": [
+      "Prove rotatedIndex_add: (a + n - b) % n composition law in Lean 4",
+      "Prove fixed_point_sum_binary_4 via native_decide",
+      "Generalize to Polya enumeration: weighted counting by color frequency",
+      "Extend to dihedral group D_n (necklaces with flip symmetry)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "BurnsideCounting",
+    "lineCount": 255,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 7
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both use combinatorial counting arguments; Ramsey uses pigeonhole while Burnside uses symmetry groups"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem underlies the orbit-stabilizer identity used in Burnside's lemma"
+    }
+  ],
+  "sections": []
+}
