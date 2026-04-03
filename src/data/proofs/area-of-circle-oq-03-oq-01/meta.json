@@ -35,28 +35,52 @@
     ]
   },
   "overview": {
-    "historicalContext": "Archimedes computed π by bounding it between inscribed and circumscribed polygons. The modern question is quantitative: how fast does the inscribed n-gon area converge to πr²? The convergence rate O(1/n²) follows from the Taylor expansion sin(x) ≈ x - x³/6, but formalizing this requires careful analytic estimates.",
-    "problemStatement": "How fast does the area of a regular inscribed n-gon converge to the area of the circle? Prove the rate is O(1/n²) with explicit constant 2π³/3.",
-    "text": "The inscribed n-gon area is Aₙ = n·r²/2·sin(2π/n). As n→∞, 2π/n → 0 and sin(2π/n) ≈ 2π/n, so Aₙ → πr². For the rate: the key inequality sin(x) ≥ x - x³/6 gives Aₙ ≥ n·r²/2·(2π/n - (2π/n)³/6) = πr² - 2π³r²/(3n²). The upper bound Aₙ ≤ πr² follows from sin(x) ≤ x. The sin lower bound is proved via a chain: sin(x) ≤ x → sin²(x) ≤ x² → cos(x) ≥ 1 - x²/2 (half-angle) → sin(x) ≥ x - x³/6 (MVT).",
-    "proofStrategy": "Prove the sin lower bound sin(x) ≥ x - x³/6 via MVT applied to cos. Derive inscribed area bounds. Combine for the explicit rate. Prove strict positivity for n≥3.",
+    "historicalContext": "The quantitative question of how fast inscribed polygon areas converge to the circle is the rigorous heart of Archimedes' method for computing $\\pi$.\n\n**Archimedes (c. 250 BCE)**: In *Measurement of a Circle* (Proposition 3), Archimedes used inscribed and circumscribed regular 96-gons to prove $3 + 10/71 < \\pi < 3 + 1/7$. His method was essentially: compute the area of a regular $n$-gon exactly, and show it differs from $\\pi$ by less than a given bound. Doubling from 6-gon: $6 \\to 12 \\to 24 \\to 48 \\to 96$ sides.\n\n**Liu Hui (263 CE)**: Extended to 3072-gon, giving $\\pi \\approx 3.14159$.\n\n**Viète (1593)**: Expressed $2/\\pi$ as an infinite product using half-angle formulas for inscribed polygons:\n$$\\frac{2}{\\pi} = \\frac{\\sqrt{2}}{2} \\cdot \\frac{\\sqrt{2+\\sqrt{2}}}{2} \\cdot \\frac{\\sqrt{2+\\sqrt{2+\\sqrt{2}}}}{2} \\cdots$$\nThis is the first infinite product expression for $\\pi$, and it directly encodes the doubling process for inscribed polygon side-lengths.\n\n**The convergence rate**: The modern understanding is that $\\pi r^2 - A_n = O(1/n^2)$ because the inscribed polygon area $A_n = n \\cdot r^2/2 \\cdot \\sin(2\\pi/n)$ satisfies $\\sin(x) = x - x^3/6 + O(x^5)$, so $A_n = \\pi r^2 - 2\\pi^3 r^2/(3n^2) + O(1/n^4)$. The leading error is $2\\pi^3 r^2/(3n^2)$, making the convergence 'quadratic' in the number of sides. The explicit constant $2\\pi^3/3 \\approx 20.67$ means that to achieve precision $\\varepsilon$ (as a fraction of $\\pi r^2$), one needs roughly $n \\approx \\pi\\sqrt{2\\pi/(3\\varepsilon)}$ sides.",
+    "problemStatement": "For a regular polygon with $n$ sides inscribed in a circle of radius $r$, the area is $A_n = \\frac{nr^2}{2}\\sin\\frac{2\\pi}{n}$. Prove the convergence rate: $0 \\leq \\pi r^2 - A_n \\leq \\frac{2\\pi^3 r^2}{3n^2}$ for all $n \\geq 1$ and $r \\geq 0$. Also prove the error is strictly positive for $n \\geq 3$ and $r > 0$.",
+    "proofStrategy": "The proof proceeds via a four-step chain of trigonometric inequalities, then applies them to the polygon area formula.\n\n**Step 1** (`sin_sq_le_sq`): For $x \\geq 0$, $\\sin^2(x) \\leq x^2$. Proof: factor $x^2 - \\sin^2(x) = (x-\\sin x)(x+\\sin x)$, show both factors are non-negative using `Real.sin_lt` and `abs_sin_le_one`.\n\n**Step 2** (`cos_ge_one_sub_sq_div_two`): For $x \\geq 0$, $\\cos(x) \\geq 1 - x^2/2$. Proof: use the half-angle identity $\\cos(x) = 1 - 2\\sin^2(x/2)$ and apply Step 1 at $x/2$ to get $\\sin^2(x/2) \\leq x^2/4$, hence $\\cos(x) \\geq 1 - x^2/2$.\n\n**Step 3** (`sin_ge_sub_cube_div_six`): For $x \\geq 0$, $\\sin(x) \\geq x - x^3/6$. Proof: let $g(x) = \\sin(x) - x + x^3/6$. Show $g'(x) = \\cos(x) - 1 + x^2/2 \\geq 0$ by Step 2. Apply MVT (`exists_hasDerivAt_eq_slope`) at $[0, x]$: $g(x) - g(0) = g'(c)(x-0) \\geq 0$. Since $g(0) = 0$, $g(x) \\geq 0$.\n\n**Step 4** (`inscribed_area_rate_bound`): Using $u = 2\\pi/n$ and $\\sin(u) \\geq u - u^3/6$: $A_n = nr^2/2 \\cdot \\sin(u) \\geq nr^2/2 \\cdot (u - u^3/6) = \\pi r^2 - 2\\pi^3r^2/(3n^2)$. The algebra is handled by `field_simp; ring`.",
     "keyInsights": [
-      "The convergence rate 1/n² is sharp: comes from the x³/6 term in the Taylor expansion of sin",
-      "The sin lower bound chain (sin ≤ x → sin² ≤ x² → cos ≥ 1-x²/2 → sin ≥ x-x³/6) is elementary",
-      "The error is exactly O(1/n²) with constant 2π³/3 ≈ 20.7",
-      "For n=6, the hexagon gives 3r²/2·sin(π/3)·2 = 3√3r²/2 ≈ 0.827πr² (22% error)"
-    ],
-    "prerequisites": [
-      "Trigonometry: sin, cos, half-angle formulas",
-      "Mean Value Theorem for continuous functions",
-      "Area formula for regular n-gons: A = n·r²/2·sin(2π/n)"
+      "**The chain: sin ≤ x → sin² ≤ x² → cos ≥ 1-x²/2 → sin ≥ x-x³/6**: Each step uses the previous. The half-angle identity $\\cos(x) = 1 - 2\\sin^2(x/2)$ is the crucial bridge from the quadratic bound on $\\sin^2$ to the quadratic lower bound on $\\cos$. The MVT then lifts the derivative bound to the function bound.",
+      "**MVT as bootstrapping**: The MVT applied to $g(x) = \\sin x - x + x^3/6$ with $g'(x) = \\cos x - 1 + x^2/2 \\geq 0$ (from Step 2) shows $g$ is non-decreasing on $[0,\\infty)$ from $g(0)=0$. This is the classical technique for converting derivative bounds into function bounds — Taylor remainder estimation without the remainder formula.",
+      "**The 1/n² rate from the cubic Taylor term**: The error $\\pi r^2 - A_n$ comes from $u - \\sin(u) \\leq u^3/6$ (where $u = 2\\pi/n$): $\\pi r^2 - A_n = nr^2/2 \\cdot (u - \\sin u) \\leq nr^2/2 \\cdot u^3/6 = nr^2/2 \\cdot (2\\pi/n)^3/6 = 2\\pi^3r^2/(3n^2)$. The cubic $u^3$ term cancels one power of $n$ (from the $n$ coefficient), leaving $1/n^2$.",
+      "**The constant 2π³/3 ≈ 20.67 in practice**: For Archimedes' 96-gon: error $\\leq 2\\pi^3/(3 \\cdot 96^2) \\approx 0.0225$, giving relative error $\\leq 0.0225/\\pi \\approx 0.72\\%$. For $n=1000$: error $\\leq 2\\pi^3/(3 \\cdot 10^6) \\approx 2.07 \\times 10^{-5}$. The explicit bound is actually tight at leading order — the true error is $2\\pi^3r^2/(3n^2) - O(1/n^4)$.",
+      "**Strict positivity requires n≥3**: For $n=1$ (monogon: degenerate), $n=2$ (digon: line segment), and $n=3$ (triangle): $A_3 = 3r^2/2 \\cdot \\sin(2\\pi/3) = 3\\sqrt{3}r^2/4 \\approx 0.413\\pi r^2^2$. The strict inequality $A_n < \\pi r^2$ requires $\\sin(2\\pi/n) < 2\\pi/n$, which holds for all $n \\geq 3$ (since $2\\pi/n \\in (0, 2\\pi]$, and $\\sin(x) < x$ for $x > 0$).",
+      "**hasDerivAt chain for g'**: The derivative of $g(x) = \\sin x - x + x^3/6$ is computed via `HasDerivAt` composition: `h1 = hasDerivAt_sin x`, `h2 = hasDerivAt_id x`, `h3 = (hasDerivAt_pow 3 x).div_const 6`. Then `(h1.sub h2).add h3` gives the composed derivative. The `convert` tactic handles the algebraic simplification from `3 * x^2 / 6` to `x^2 / 2`."
     ]
   },
+  "sections": [
+    {
+      "id": "inscribed-area-def",
+      "title": "Inscribed Area Definition",
+      "startLine": 50,
+      "endLine": 57,
+      "summary": "Defines inscribedArea n r = n * r² / 2 * sin(2π/n) — the area of a regular n-gon inscribed in a circle of radius r, obtained by splitting into n isoceles triangles each with vertex angle 2π/n.",
+      "mathContext": "$A_n(r) = n \\cdot \\frac{r^2}{2} \\cdot \\sin\\frac{2\\pi}{n}$. For $n=4$: $A_4 = 4r^2/2 \\cdot \\sin(\\pi/2) = 2r^2$ (square inscribed in circle). For $n=6$: $A_6 = 6r^2/2 \\cdot \\sin(\\pi/3) = 3\\sqrt{3}r^2/2 \\approx 2.598r^2$, vs $\\pi r^2 \\approx 3.14159r^2$."
+    },
+    {
+      "id": "trig-chain",
+      "title": "Trigonometric Bounds Chain",
+      "startLine": 59,
+      "endLine": 137,
+      "summary": "Four-step chain: (1) sin²(x) ≤ x² (via sin_lt + factoring); (2) cos(x) ≥ 1 - x²/2 (via half-angle identity cos(x) = 1 - 2sin²(x/2)); (3) HasDerivAt for g(x) = sin(x) - x + x³/6; (4) sin(x) ≥ x - x³/6 (via MVT on g with g'≥0 from step 2).",
+      "mathContext": "The chain: $\\sin x \\leq x \\Rightarrow \\sin^2(x/2) \\leq x^2/4 \\Rightarrow \\cos x = 1-2\\sin^2(x/2) \\geq 1-x^2/2 \\Rightarrow g'(x) = \\cos x - 1 + x^2/2 \\geq 0 \\Rightarrow g(x) = \\sin x - x + x^3/6 \\geq g(0) = 0$."
+    },
+    {
+      "id": "convergence-rate",
+      "title": "Convergence Rate Theorems",
+      "startLine": 139,
+      "endLine": 228,
+      "summary": "inscribed_area_upper (Aₙ ≤ πr² via sin_lt); sub_sin_le_cube_div_six (u - sin(u) ≤ u³/6); inscribed_area_rate_bound (πr² - Aₙ ≤ 2π³r²/(3n²)); inscribed_area_convergence_rate (absolute value form); inscribed_area_error_positive (strict positivity for n≥3).",
+      "mathContext": "$\\pi r^2 - A_n = r^2 \\cdot \\pi \\cdot (1 - \\sin(u)/u) \\leq r^2 \\cdot \\pi \\cdot u^2/6 = 2\\pi^3 r^2/(3n^2)$ where $u = 2\\pi/n$. The algebra: $nr^2/2 \\cdot u^3/6 = nr^2/2 \\cdot (2\\pi/n)^3/6 = 4\\pi^3r^2/(3n^2)/n \\cdot n = 2\\pi^3r^2/(3n^2)$."
+    }
+  ],
   "conclusion": {
-    "summary": "Convergence rate of inscribed polygons to πr² is proved: O(1/n²) with explicit constant 2π³/3. The sin lower bound sin(x) ≥ x - x³/6 is the key tool. 9 theorems, 1 definition, 232 lines, 0 axioms.",
-    "implications": "This gives a complete quantitative version of Archimedes' polygon approximation with machine-verified bounds. The explicit rate 2π³r²/(3n²) shows that to achieve precision ε, one needs n ≈ π√(2π/3ε) sides.",
+    "summary": "The convergence rate of inscribed polygon areas to $\\pi r^2$ is proved with an explicit $O(1/n^2)$ bound. The proof demonstrates the MVT-as-bootstrapping technique: use derivative bounds to establish function bounds without the explicit Taylor remainder formula. All 9 theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "This formalization gives the first machine-verified, quantitative version of Archimedes' method for approximating $\\pi$ via inscribed polygons. The explicit bound $|A_n - \\pi r^2| \\leq 2\\pi^3r^2/(3n^2)$ shows the convergence is 'second-order': doubling the number of sides reduces the error by a factor of 4. For error tolerance $\\varepsilon$ (relative to $\\pi r^2$), one needs $n \\approx \\pi\\sqrt{2/(3\\varepsilon)}$ sides.",
     "openQuestions": [
-      "Prove the circumscribed polygon upper bound: Aₙ(circumscribed) - πr² = O(1/n²) with opposite error",
-      "Prove convergence of circumscribed polygon to inscribed polygon area as n→∞"
+      "Prove the circumscribed polygon bound: the area $A_n^{\\text{circ}}$ of the circumscribed $n$-gon satisfies $A_n^{\\text{circ}} - \\pi r^2 \\leq 2\\pi^3r^2/(3n^2)$ with a similar bound from the other side.",
+      "Prove the sharpness: $\\pi r^2 - A_n \\geq c/n^2$ for some $c > 0$. The leading term is exactly $2\\pi^3r^2/(3n^2)$, so the upper bound is tight to leading order.",
+      "Prove convergence of the polygon perimeter to $2\\pi r$: the perimeter of the inscribed $n$-gon is $P_n = 2nr\\sin(\\pi/n)$, and $P_n \\to 2\\pi r$ at rate $O(1/n^2)$ similarly.",
+      "Can the Viète product $2/\\pi = (\\sqrt{2}/2)(\\sqrt{2+\\sqrt{2}}/2)\\cdots$ be formalized in Lean as the limit of the inscribed polygon recursion? This would give the first machine-verified proof of Viète's formula."
     ]
   },
   "leanFile": {
@@ -72,6 +96,5 @@
       "relationship": "extends",
       "description": "Core area-of-circle formalization; this file proves the quantitative convergence rate for inscribed polygons"
     }
-  ],
-  "sections": []
+  ]
 }
