@@ -31,15 +31,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Feit-Thompson theorem (1963) proved that every group of odd order is solvable. The weaker result — all groups of order < 60 are solvable — is more elementary: 60 = |A₅| is the order of the smallest non-solvable group. The proof uses: prime order → cyclic → abelian → solvable; prime-power order → p-group → nilpotent → solvable; two-prime order → Burnside's pᵃqᵇ theorem; and direct arguments for 30=2·3·5 and 42=2·3·7.",
-    "problemStatement": "Prove that every finite group of order < 60 is solvable, using the chain p-group → nilpotent → solvable as the main technical tool.",
+    "historicalContext": "The question of which finite groups are solvable is central to Galois theory and to the classification of finite simple groups. The connection to polynomial equations is direct: Abel and Ruffini (1799–1824) showed the quintic is unsolvable in radicals by establishing that $S_5$ contains the non-solvable group $A_5$. The threshold at order 60 has deep roots: Jordan (1870) proved $A_n$ is simple for $n \\geq 5$, making $A_5$ (of order 60) the smallest non-abelian simple group. Burnside's $p^a q^b$ theorem (1904) handled all groups of two-prime order using character theory — a major advance requiring sophisticated representation theory. The Feit-Thompson theorem (1963) ultimately proved all odd-order groups are solvable in a 255-page proof, one of the most complex results in finite group theory. The partial result (orders $< 60$) is accessible via the $p$-group chain: $p$-groups are nilpotent (by center induction), nilpotent groups are solvable (their lower central series terminates). This file formalizes this elementary core using Mathlib's typeclass instances for `IsPGroup`, `IsNilpotent`, and `IsSolvable`.",
+    "problemStatement": "Prove that every finite group of order $< 60$ is solvable, using the chain $p$-group $\\to$ nilpotent $\\to$ solvable as the main technical tool.",
     "text": "Every n < 60 falls into one of: n=1 (trivial), n=p (prime, cyclic), n=pᵏ (prime power, p-group), n=pᵃqᵇ (two primes, Burnside), n=30 or 42 (three primes, direct). The key chain: IsPGroup p G → IsNilpotent G (Mathlib) → IsSolvable G (Mathlib). For two primes: Burnside's theorem (pᵃqᵇ groups are solvable). The threshold is 60 = |A₅| — the alternating group A₅ is the smallest simple non-abelian group.",
-    "proofStrategy": "Prove pGroup_isSolvable from the Mathlib chain IsPGroup → IsNilpotent → IsSolvable. State s5_not_solvable using Equiv.Perm.fin_5_not_solvable. Document the classification scheme. The full proof for all orders < 60 requires Burnside's theorem (not yet formally proved here).",
+    "proofStrategy": "The file is compact (104 lines, 4 theorems) and works entirely within Mathlib's typeclass infrastructure. The main theorem pGroup_isSolvable chains hG.isNilpotent (IsPGroup → IsNilpotent via center induction) then inferInstance (IsNilpotent → IsSolvable via derived series). The threshold theorem s5_not_solvable delegates to Mathlib's Equiv.Perm.fin_5_not_solvable. A documentation comment and computational proof (primes_below_60 via native_decide) classify all 59 orders by solvability proof method.",
     "keyInsights": [
-      "p-group chain: IsPGroup → IsNilpotent → IsSolvable — one of Mathlib's elegant chains",
-      "Threshold at 60: A₅ has order 60 and is the smallest non-solvable group",
-      "Burnside's pᵃqᵇ theorem: all groups of two-prime order are solvable (not yet formalized in Lean)",
-      "Classification approach: case analysis by prime factorization of |G|"
+      "The p-group chain IsPGroup → IsNilpotent → IsSolvable is resolved entirely by Mathlib typeclass instances: `hG.isNilpotent` + `inferInstance` — a remarkably concise formalization of non-trivial group theory",
+      "The threshold 60 = |A₅| is sharp: A₅ ≅ PSL(2,5) is the unique simple non-abelian group of order 60, and its normal embedding in S₅ makes S₅ (and all Sₙ for n≥5) non-solvable",
+      "Burnside's 1904 theorem is the key missing piece: it would handle 31 of 59 orders below 60 (all two-prime-factor orders), but requires character theory not yet in Mathlib's solvability infrastructure",
+      "The classification by prime factorization (trivial/prime/prime-power/two-prime/three-prime) mirrors the original mathematical argument and is the natural structure for a future complete Lean proof"
     ],
     "prerequisites": [
       "p-groups: IsPGroup, nilpotency",
@@ -48,12 +48,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Key building blocks for groups of order < 60: p-group solvability chain, S₅ not solvable, classification scheme. 4 theorems, 104 lines, 0 axioms.",
-    "implications": "The threshold at 60 is sharp: A₅ is the smallest simple non-solvable group, explaining why quintic polynomials don't have radical formulas. This file complements the Abel-Ruffini formalization with the group-theoretic side.",
+    "summary": "This fully machine-verified file (0 axioms, 0 sorries) establishes the core building blocks for the theorem that all groups of order $< 60$ are solvable: the $p$-group $\\to$ solvable chain covers 26 of 59 orders, the $S_5$ non-solvability gives the sharp threshold, and the classification documents all 59 orders by proof method.",
+    "implications": "The threshold at 60 is sharp in two directions: every group of order $\\leq 59$ is solvable, but $A_5$ (the unique simple non-abelian group of order 60) is not. This explains the Abel-Ruffini theorem: the quintic polynomial $x^5 + ax + b$ has Galois group contained in $S_5$, which has $A_5$ as a composition factor, so $S_5$ is not solvable, so the quintic has no radical formula. The Mathlib typeclass chain (`IsPGroup` $\\to$ `IsNilpotent` $\\to$ `IsSolvable`) shows how abstract algebra infrastructure enables extremely concise formal proofs of non-trivial group theory. The remaining gap (Burnside's $p^a q^b$ theorem) represents a significant Mathlib contribution opportunity: once formalized, 31 additional orders would be resolved automatically.",
     "openQuestions": [
-      "Formalize Burnside's pᵃqᵇ theorem in Lean (would complete the < 60 classification)",
-      "Prove the Feit-Thompson theorem (every odd-order group is solvable) — major undertaking",
-      "Classify all groups of order < 60 up to isomorphism"
+      "Formalize Burnside's $p^a q^b$ theorem in Lean using Mathlib's character theory (this would complete the $< 60$ classification for all 59 orders, needing only the 30 and 42 cases)",
+      "Handle orders 30 and 42 using Sylow counting: for $n=30=2\\cdot3\\cdot5$, show the Sylow subgroups force a normal subgroup, enabling induction",
+      "Prove the Feit-Thompson theorem (every odd-order group is solvable) — a major 255-page result that would be a landmark Lean formalization",
+      "Classify all groups of order $< 60$ up to isomorphism (there are 52 isomorphism classes for orders 1-59)"
     ]
   },
   "leanFile": {
@@ -68,7 +69,44 @@
       "targetId": "abel-ruffini-galois-extensions",
       "relationship": "related",
       "description": "Both study solvability of symmetric groups; extensions covers S_n iff n≤4, this covers all groups of order < 60"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "extends",
+      "description": "Parent OQ-04 establishes A₅ simplicity and S₅ non-solvability; this OQ-03 extends to classify all 59 orders below 60"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "related",
+      "description": "OQ-02 proves S₂, S₃, S₄ are solvable (the complementary direction); this OQ-03 proves groups of order < 60 are solvable using the p-group chain"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "Abel-Ruffini parent formalization: this provides the group-theoretic side (solvability of small groups) complementing the Galois-theoretic side (radical extensions)"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-pgroup-chain",
+      "title": "The p-Group → Solvable Chain",
+      "startLine": 25,
+      "endLine": 35,
+      "summary": "pGroup_isSolvable: IsPGroup p G → IsSolvable G via the two-step Mathlib chain hG.isNilpotent + inferInstance. Covers the 8 prime-power orders below 60: 4, 8, 9, 16, 25, 27, 32, 49."
+    },
+    {
+      "id": "sec-s5-threshold",
+      "title": "The Threshold at Order 60",
+      "startLine": 37,
+      "endLine": 51,
+      "summary": "s5_not_solvable: ¬ IsSolvable (Equiv.Perm (Fin 5)) via Mathlib's Equiv.Perm.fin_5_not_solvable. abelian_isSolvable: CommGroup G → IsSolvable G via inferInstance. Covers the 17 prime-order groups and the trivial group."
+    },
+    {
+      "id": "sec-classification",
+      "title": "Classification of All Orders 1-59",
+      "startLine": 53,
+      "endLine": 103,
+      "summary": "Documentation table classifying all 59 orders by solvability proof method: trivial (1), prime-cyclic (17), prime-power (8), two-prime-Burnside (31), three-prime-direct (2). primes_below_60 verified by native_decide. Summary of proved vs. missing (Burnside's theorem)."
+    }
+  ]
 }
