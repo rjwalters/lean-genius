@@ -7,7 +7,7 @@
     "author": "Dunford & Taylor (1938), formalized via Mathlib",
     "sourceUrl": "https://github.com/rjwalters/lean-genius",
     "date": "1938",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/GeometricSeriesOQ02OQ05.lean",
     "tags": [
       "functional-analysis",
@@ -18,7 +18,7 @@
       "holomorphic-functional-calculus"
     ],
     "badge": "original",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "summable_geometric_of_norm_lt_one",
@@ -40,12 +40,13 @@
       "Resolvent existence: (λ·1-a) is invertible when ‖a‖ < ‖λ‖, proved via Neumann series factorization",
       "Neumann series representation: R(λ,a) = λ⁻¹ ∑ (λ⁻¹a)^n for Banach algebra elements",
       "Resolvent norm bound: ‖R(λ,a)‖ ≤ (‖λ‖ - ‖a‖)⁻¹",
-      "First resolvent identity: R(λ) - R(μ) = (μ-λ)R(λ)R(μ) for arbitrary Banach algebras"
+      "First resolvent identity: R(λ) - R(μ) = (μ-λ)R(λ)R(μ) for arbitrary Banach algebras",
+      "Resolvent vanishes at infinity: ‖R(λ,a)‖ → 0 as ‖λ‖ → ∞, essential for contour integration in the holomorphic functional calculus"
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 200,
-    "assumptions": "1 sorry: resolvent_tendsto_zero (resolvent vanishes at infinity). All other theorems fully proved.",
+    "lineCount": 250,
+    "assumptions": "All theorems fully proved. No sorries, no axioms.",
     "prerequisites": [
       "Functional analysis (Banach algebras, normed rings)",
       "Spectral theory basics (resolvent, spectrum)",
