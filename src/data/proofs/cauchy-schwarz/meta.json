@@ -103,7 +103,9 @@
       "**Euclidean Space Bridge:** The finite sum form is derived by embedding sequences into `EuclideanSpace`, using `inner_eq_star_dotProduct` to connect abstract inner products with concrete sums $\\sum a_i b_i$.",
       "**Equality = Linear Dependence:** The geometric content: $|\\langle u,v\\rangle| = \\|u\\|\\|v\\|$ iff $u = cv$ for some scalar $c$, i.e., the vectors point in the same or opposite directions.",
       "**Triangle Inequality Derivation:** Cauchy-Schwarz immediately implies $\\|u+v\\| \\leq \\|u\\|+\\|v\\|$ by expanding $\\|u+v\\|^2$ and bounding the cross term $\\langle u,v\\rangle \\leq \\|u\\|\\|v\\|$.",
-      "**Correlation Bound:** Dividing both sides by $\\|u\\|\\|v\\|$ gives $|\\rho| \\leq 1$, the fundamental bound on the Pearson correlation coefficient in statistics."
+      "**Correlation Bound:** Dividing both sides by $\\|u\\|\\|v\\|$ gives $|\\rho| \\leq 1$, the fundamental bound on the Pearson correlation coefficient in statistics.",
+      "**Abstract Inner Product Spaces:** The Lean proof works in any `InnerProductSpace` over ℝ or ℂ, not just finite-dimensional Euclidean space. The `EuclideanSpace` embedding is needed only for the finite sum form `∑ aᵢbᵢ` — the abstract inner product form `inner_mul_le_norm_mul_iff` is already in Mathlib.",
+      "**Sesquilinearity in the Complex Case:** Over ℂ, the Cauchy-Schwarz inequality takes the form $|\\langle u,v\\rangle|^2 \\leq \\langle u,u\\rangle \\cdot \\langle v,v\\rangle$. The Lean formalization uses `abs_inner_le_norm` from `Mathlib.Analysis.InnerProductSpace.Basic`, which handles both real and complex cases uniformly via the conjugate-linear second argument."
     ],
     "prerequisites": [
       "Mathematical analysis",
@@ -245,28 +247,28 @@
   },
   "references": [
     {
-      "authors": "A.-L. Cauchy",
+      "authors": ["A.-L. Cauchy"],
       "title": "Cours d'Analyse de l'École Royale Polytechnique",
       "year": "1821",
       "venue": "Paris",
       "note": "First proof of the discrete (finite sum) version of the inequality"
     },
     {
-      "authors": "V. Y. Bunyakovsky",
+      "authors": ["V. Y. Bunyakovsky"],
       "title": "Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies",
       "year": "1859",
       "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg",
       "note": "Extension to integrals"
     },
     {
-      "authors": "H. A. Schwarz",
+      "authors": ["H. A. Schwarz"],
       "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
       "year": "1885",
       "venue": "Acta Societatis Scientiarum Fennicae",
       "note": "Independent proof of the integral version"
     },
     {
-      "authors": "J. M. Steele",
+      "authors": ["J. M. Steele"],
       "title": "The Cauchy-Schwarz Master Class",
       "year": "2004",
       "venue": "Cambridge University Press",
