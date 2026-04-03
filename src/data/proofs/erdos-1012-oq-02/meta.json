@@ -1,0 +1,75 @@
+{
+  "id": "erdos-1012-oq-02",
+  "title": "Erdős #1012 OQ-02: Vertex-Pancyclicity in Dense Graphs",
+  "slug": "erdos-1012-oq-02",
+  "description": "Strengthens Woodall's pancyclicity result to vertex-pancyclicity: every vertex lies on cycles of all lengths 3 to n-k, not just that the graph contains such cycles. Formalizes Bondy's vertex-pancyclicity theorem (1971: dense Hamiltonian graphs are vertex-pancyclic or bipartite), Schmeichel-Hakimi (1988: Ore-type vertex-pancyclicity), and Woodall's vertex-pancyclic extension. 12 theorems, 5 definitions, 2 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1012OQ02.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "vertex-pancyclic",
+      "hamiltonian-cycles",
+      "cycle-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: bondy_vertex_pancyclic (Bondy 1971: n≥3, dense Hamiltonian graph → every vertex is on cycles of all lengths 3..n, unless bipartite), woodall_vertex_pancyclic (Woodall extension: dense graphs are vertex-pancyclic from 3 to n-k).",
+    "lineCount": 389,
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "originalContributions": [
+      "isVertexPancyclic: every vertex v lies on a cycle of length l for all l ∈ [3,n]",
+      "isVertexPancyclicFrom: vertex-pancyclic from length a to b",
+      "isCompleteBipartite: G is the complete bipartite graph K_{m,n}",
+      "woodall_panycyclic_from_iff: vertex-pancyclicity range characterization",
+      "vertex_pancyclic_implies_pancyclic: every vertex-pancyclic graph is pancyclic"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Pancyclicity (cycles of every length) was strengthened by Bondy (1971) to vertex-pancyclicity: every vertex lies on cycles of every length. This is a stronger property — vertex-pancyclicity implies pancyclicity but not vice versa. Bondy showed that Hamiltonian graphs with enough edges are either complete bipartite (the only exception) or vertex-pancyclic. Schmeichel-Hakimi (1988) extended this under Ore-type degree conditions.",
+    "problemStatement": "Prove that dense graphs satisfying Woodall's edge-count condition are not just pancyclic but vertex-pancyclic: every vertex v lies on cycles of all lengths from 3 to n-k.",
+    "text": "Vertex-pancyclicity is the statement: for every vertex v and every length l ∈ [3,n], there is a cycle of length l through v. This is stronger than mere pancyclicity. Bondy (1971) proved: a Hamiltonian graph on n≥3 vertices with ≥n²/4+1 edges is vertex-pancyclic unless it is K_{n/2,n/2}. Woodall's extension: under the denser threshold C(n-k-1,2)+C(k+2,2)+1, the graph is vertex-pancyclic from 3 to n-k.",
+    "proofStrategy": "Define vertex-pancyclicity predicates. Axiomatize Bondy's and Woodall's vertex-pancyclic theorems. Derive structural consequences: vertex-pancyclic implies pancyclic, range structure, bipartite exceptions.",
+    "keyInsights": [
+      "Vertex-pancyclic is strictly stronger than pancyclic: controls all vertices simultaneously",
+      "Bipartite exception: K_{n/2,n/2} is Hamiltonian but NOT vertex-pancyclic (even lengths only)",
+      "Bondy's theorem: the complete bipartite graph is the unique exception",
+      "Applications: vertex-pancyclicity implies universal cycle coverage"
+    ],
+    "prerequisites": [
+      "Pancyclic graphs: cycles of all lengths",
+      "Hamiltonian cycles: spanning cycle",
+      "Complete bipartite graphs: the K_{m,n} family"
+    ]
+  },
+  "conclusion": {
+    "summary": "Vertex-pancyclicity formalized: isVertexPancyclic predicate, Bondy and Woodall axioms, bipartite exception. 12 theorems, 389 lines, 2 axioms.",
+    "implications": "Vertex-pancyclicity is a strong structural property of dense graphs. It has applications in graph embedding theory and network design where cycle coverage through specific vertices is required.",
+    "openQuestions": [
+      "Prove Bondy's vertex-pancyclicity theorem without axioms",
+      "Characterize exactly which non-bipartite dense graphs are NOT vertex-pancyclic",
+      "Formalize the directed version: vertex-pancyclic tournaments"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos1012OQ02",
+    "lineCount": 389,
+    "axiomCount": 2,
+    "theoremCount": 12,
+    "definitionCount": 5
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1012-oq-01",
+      "relationship": "extends",
+      "description": "OQ-01 proves f(k) and pancyclicity; OQ-02 strengthens to vertex-pancyclicity"
+    }
+  ],
+  "sections": []
+}

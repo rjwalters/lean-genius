@@ -1,0 +1,76 @@
+{
+  "id": "inclusion-exclusion-oq-01",
+  "title": "Inclusion-Exclusion: Applications to Number Theory and Combinatorics",
+  "slug": "inclusion-exclusion-oq-01",
+  "description": "Applies the inclusion-exclusion principle to connect combinatorics and number theory. Proves sieve formulas (2-set and 3-set), Euler's totient via IE sieve (φ(pq)=(p-1)(q-1)), surjection counting (|Surj(n,k)| = Σ (-1)^j C(k,j)(k-j)^n), derangement formula (D(n) = Σ (-1)^k C(n,k)(n-k)!), derangement recurrence, divisor-totient identity (Σ_{d|n} φ(d) = n), and alternating binomial sum. 41 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InclusionExclusionOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "inclusion-exclusion",
+      "number-theory",
+      "derangements",
+      "euler-totient"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Nat.totient and Finset.card lemmas.",
+    "lineCount": 382,
+    "theoremCount": 41,
+    "definitionCount": 0,
+    "originalContributions": [
+      "sieve_two / sieve_three: |U \\ (A ∪ B)| and three-set inclusion-exclusion",
+      "totient_prime_product: φ(pq) = (p-1)(q-1) for distinct primes via IE sieve",
+      "surjection_count: |Surj(n,k)| = Σ_{j=0}^k (-1)^j C(k,j)(k-j)^n",
+      "derangement_count: D(n) = Σ_{k=0}^n (-1)^k C(n,k)(n-k)! = n! Σ (-1)^k/k!",
+      "derangement_recurrence: D(n) = (n-1)(D(n-1) + D(n-2))",
+      "sum_totient_eq: Σ_{d|n} φ(d) = n (via Nat.sum_totient)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Inclusion-exclusion (Sylvester 1883, though the principle is older) counts elements in unions/intersections via alternating sums. It connects diverse counting problems: Euler's totient (count integers coprime to n), derangements (permutations with no fixed points), surjections, and Stirling numbers. The divisor-totient identity Σ_{d|n} φ(d) = n is a classical result connecting multiplicative functions.",
+    "problemStatement": "Apply inclusion-exclusion to prove: sieve formulas, Euler totient for prime products, surjection count, derangement formula and recurrence, and the divisor-totient identity.",
+    "text": "The IE principle: |A₁ ∪ ... ∪ Aₖ| = Σ|Aᵢ| - Σ|Aᵢ∩Aⱼ| + ... (alternating sums). Applied to 'bad' sets: |U \\ (A₁ ∪ ... ∪ Aₖ)| = Σ_{S ⊆ [k]} (-1)^|S| |U ∩ ∩_{i∈S} Aᵢ|. For surjections: the 'bad' events are 'element j is not in the image'. For derangements: the 'bad' events are 'element i is a fixed point'. The divisor-totient identity follows from the multiplicativity of φ.",
+    "proofStrategy": "Prove the 2-set and 3-set sieve formulas using Finset.card_sdiff_add_card and card_union_add_card_inter. Use Nat.sum_totient for the divisor-totient identity. Prove derangement recurrence algebraically.",
+    "keyInsights": [
+      "Sieve = complement of bad events: |good| = |total| - |bad|, corrected for overlaps",
+      "Totient via sieve: φ(n) = n · Π_{p|n}(1-1/p) for prime p",
+      "Derangement formula: D(n)/n! → 1/e as n→∞ (alternating exponential series)",
+      "Divisor-totient identity: Σ_{d|n} φ(d) = n — the fundamental totient sum"
+    ],
+    "prerequisites": [
+      "Combinatorics: Finset.card, union, intersection",
+      "Number theory: Nat.totient, Nat.sum_totient",
+      "Permutations: derangements, fixed points"
+    ]
+  },
+  "conclusion": {
+    "summary": "Inclusion-exclusion applications fully verified: sieve formulas, totient for prime products, surjection count, derangement formula and recurrence, divisor-totient identity. 41 theorems, 382 lines, 0 axioms.",
+    "implications": "The IE principle unifies seemingly disparate counting results. The derangement recurrence is a classic application with connections to the subfactorial and e. The divisor-totient identity is foundational for multiplicative number theory.",
+    "openQuestions": [
+      "Formalize the general IE formula for k sets (not just 2 and 3)",
+      "Prove the derangement limit D(n)/n! → 1/e using the Taylor series for e^{-1}",
+      "Apply IE to prove the Möbius inversion formula"
+    ]
+  },
+  "leanFile": {
+    "namespace": "InclusionExclusionOQ01",
+    "lineCount": 382,
+    "axiomCount": 0,
+    "theoremCount": 41,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "extends",
+      "description": "Parent IE formalization; OQ-01 adds number-theoretic applications (totient, surjections, derangements)"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,76 @@
+{
+  "id": "cauchy-schwarz-oq-02",
+  "title": "Cauchy-Schwarz OQ-02: Hölder, L² Theory, and Minkowski",
+  "slug": "cauchy-schwarz-oq-02",
+  "description": "Extends Cauchy-Schwarz to the Hölder-Minkowski family. Proves Hölder's inequality for finite NNReal sums (Cauchy-Schwarz is the p=q=2 case), the L² Pythagorean theorem (orthogonal functions have ‖f+g‖²=‖f‖²+‖g‖²), the parallelogram law in L², the inner product polarization identity, weighted Cauchy-Schwarz for finite sums, and Minkowski's triangle inequality for Lp norms. 18 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ02.lean",
+    "tags": [
+      "analysis",
+      "cauchy-schwarz",
+      "holder-inequality",
+      "l2-spaces",
+      "measure-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's NNReal.inner_le_Lp_mul_Lq and L2Space.",
+    "lineCount": 335,
+    "theoremCount": 18,
+    "definitionCount": 0,
+    "originalContributions": [
+      "holder_finite_nnreal: Hölder's inequality ∑ f·g ≤ (∑ f^p)^{1/p} · (∑ g^q)^{1/q}",
+      "cauchy_schwarz_from_holder: Cauchy-Schwarz as Hölder with p=q=2",
+      "l2_pythagorean: ‖f+g‖² = ‖f‖² + ‖g‖² when ⟨f,g⟩ = 0 in L²",
+      "l2_parallelogram: ‖f+g‖² + ‖f-g‖² = 2‖f‖² + 2‖g‖²",
+      "l2_polarization: ⟨f,g⟩ = (‖f+g‖² - ‖f-g‖²)/4 (real polarization identity)",
+      "weighted_cauchy_schwarz: (Σ w_i a_i)² ≤ (Σ w_i)(Σ w_i a_i²)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cauchy-Schwarz (Cauchy 1821, Schwarz 1888) states |Σ aᵢbᵢ|² ≤ (Σ aᵢ²)(Σ bᵢ²). Hölder (1889) generalized: for conjugate exponents 1/p+1/q=1, Σ|fᵢgᵢ| ≤ (Σ|fᵢ|^p)^{1/p}·(Σ|gᵢ|^q)^{1/q}. Minkowski (1896) used Hölder to prove the triangle inequality for Lp spaces. Together, these are the fundamental inequalities of functional analysis.",
+    "problemStatement": "Formalize the Hölder-Minkowski family as extensions of Cauchy-Schwarz. Prove L² structure theorems (Pythagorean, parallelogram, polarization).",
+    "text": "Hölder's inequality generalizes Cauchy-Schwarz to conjugate exponents p,q. For p=q=2: Hölder becomes Cauchy-Schwarz. For general p: Minkowski's triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p follows from Hölder by the standard proof. In L² specifically: orthogonal functions satisfy ‖f+g‖² = ‖f‖² + ‖g‖² (Pythagorean). The parallelogram law ‖f+g‖²+‖f-g‖² = 2‖f‖²+2‖g‖² characterizes inner product spaces among Banach spaces.",
+    "proofStrategy": "Apply NNReal.inner_le_Lp_mul_Lq from Mathlib for Hölder. Use L2Space, MeasureTheory.inner_le_Lp_mul_Lq for the L² results. Derive Cauchy-Schwarz as p=q=2 specialization. Prove structural identities from inner product axioms.",
+    "keyInsights": [
+      "Hölder contains Cauchy-Schwarz: the p=q=2 case gives ∑ fg ≤ √(∑f²)√(∑g²)",
+      "L² Pythagorean theorem: orthogonality via inner product vanishing",
+      "Parallelogram law: characterizes inner product spaces (vs. general Banach spaces)",
+      "Polarization identity: recovers the inner product from the norm"
+    ],
+    "prerequisites": [
+      "Inner product spaces: L² norm, ⟨f,g⟩, orthogonality",
+      "Measure theory: Bochner integral, L² spaces",
+      "Conjugate exponents: 1/p + 1/q = 1, Hölder conjugates"
+    ]
+  },
+  "conclusion": {
+    "summary": "Cauchy-Schwarz extended to Hölder family: Hölder inequality, L² Pythagorean, parallelogram law, polarization identity, weighted Cauchy-Schwarz, Minkowski. 18 theorems, 335 lines, 0 axioms.",
+    "implications": "The Hölder-Minkowski family underlies all of functional analysis and harmonic analysis. The L² results are foundational for Fourier analysis (Parseval's identity follows from the Pythagorean theorem) and quantum mechanics (Hilbert space formulation).",
+    "openQuestions": [
+      "Formalize Parseval's identity: ∑|ĉₙ|² = ‖f‖² for Fourier coefficients",
+      "Prove the reverse Hölder (Kantorovich) inequality",
+      "Formalize the Riesz representation theorem in L²"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CauchySchwarzExtensions",
+    "lineCount": 335,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "Cauchy-Schwarz inequality; OQ-02 adds Hölder, L² structure theorems, and Minkowski"
+    }
+  ],
+  "sections": []
+}

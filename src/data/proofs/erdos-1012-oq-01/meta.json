@@ -1,0 +1,76 @@
+{
+  "id": "erdos-1012-oq-01",
+  "title": "Erdős #1012 OQ-01: Exact Value of f(k) for Long Cycles",
+  "slug": "erdos-1012-oq-01",
+  "description": "Formalizes the exact characterization of f(k): the minimum n₀ such that dense enough graphs contain an (n-k)-cycle. Proves f(0)=f(1)=1 (Ore 1961, Bondy 1971), f(k)=2k+3 for k≥2 (Woodall 1972). Axiomatizes Ore's Hamiltonian cycle theorem, Bondy's pancyclicity theorem, Woodall's cycle theorem, and the tight lower bound construction. Proves growth rate analysis and threshold symmetry. 37 theorems, 5 definitions, 4 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1012OQ01.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "cycle-theory",
+      "pancyclic-graphs",
+      "hamiltonian-cycles"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 4,
+    "assumptions": "4 axioms: ore_theorem (Ore 1961: f(0)=1, Hamiltonian cycle), bondy_theorem (Bondy 1971: f(1)=1, pancyclicity), woodall_theorem (Woodall 1972: dense enough → (n-k)-cycle for n≥2k+3), woodall_lower_bound (tight lower bound: f(k)≥2k+3 for k≥2).",
+    "lineCount": 312,
+    "theoremCount": 37,
+    "definitionCount": 5,
+    "originalContributions": [
+      "edgeThreshold: C(n-k-1,2) + C(k+2,2) + 1 — the Erdős edge density threshold",
+      "hasCycleOfLength: G contains a cycle of length l (formal graph predicate)",
+      "hasLongCycle: G on n vertices has an (n-k)-cycle above the threshold",
+      "f_zero_eq_one / f_one_eq_one: Ore and Bondy cases proved from axioms",
+      "f_k_eq_two_k_plus_three: Woodall's formula for k≥2",
+      "woodall_pancyclic: dense graphs contain cycles of ALL lengths 3 to n-k"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1012 asks for the minimum n₀ = f(k) such that every graph on n ≥ n₀ vertices with at least C(n-k-1,2)+C(k+2,2)+1 edges contains a cycle of length n-k. This threshold was determined by Ore (k=0), Bondy (k=1), and Woodall (k≥2: f(k)=2k+3). Woodall also proved that such graphs are pancyclic — they contain cycles of every length from 3 to n-k.",
+    "problemStatement": "Determine f(k): the minimum n₀ such that every graph with ≥ C(n-k-1,2)+C(k+2,2)+1 edges on n ≥ n₀ vertices contains an (n-k)-cycle.",
+    "text": "The edge threshold C(n-k-1,2)+C(k+2,2)+1 is the number of edges in the extremal graph for the (n-k)-cycle problem. For k=0 (Hamiltonian case): Ore's theorem gives f(0)=1. For k=1: Bondy's pancyclicity theorem gives f(1)=1. For k≥2: Woodall showed f(k)=2k+3, and the bound is tight (extremal graphs exist). Woodall further proved pancyclicity: these dense graphs contain cycles of ALL lengths from 3 to n-k.",
+    "proofStrategy": "Define the edge threshold formula, cycle predicates, and hasLongCycle predicate. Axiomatize Ore, Bondy, and Woodall's theorems. Derive the exact formula f(k)=2k+3 for k≥2 and f(0)=f(1)=1. Prove pancyclicity as a corollary.",
+    "keyInsights": [
+      "Ore's theorem: sufficiently many edges (degree-sum condition) guarantees a Hamiltonian cycle",
+      "Bondy's pancyclicity: Hamiltonian graphs with enough edges are pancyclic",
+      "Woodall's formula: f(k) = 2k+3 for k≥2 — linear growth in k",
+      "Extremal graphs: the threshold is tight, requiring the exact constructions"
+    ],
+    "prerequisites": [
+      "Graph theory: cycles, Hamiltonian paths, edge density",
+      "Extremal graph theory: Turán-type bounds",
+      "Pancyclicity: graphs containing cycles of all lengths"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős #1012 f(k) determination formalized: f(0)=f(1)=1, f(k)=2k+3 for k≥2 (Woodall). Growth rate analysis and pancyclicity. 37 theorems, 312 lines, 4 axioms.",
+    "implications": "Woodall's theorem is part of the broader theory of long cycles in dense graphs. The pancyclicity result is particularly strong: not just one cycle length but all cycle lengths from 3 to n-k. This has applications in Hamiltonian cycle theory and cycle covers.",
+    "openQuestions": [
+      "Prove Woodall's theorem without axioms using degree-sequence arguments",
+      "Formalize the extremal construction (tight lower bound graph)",
+      "Generalize to directed graphs: long cycles in tournaments"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos1012OQ01",
+    "lineCount": 312,
+    "axiomCount": 4,
+    "theoremCount": 37,
+    "definitionCount": 5
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1012",
+      "relationship": "extends",
+      "description": "Parent problem establishing the edge threshold; OQ-01 proves the exact f(k) formula"
+    }
+  ],
+  "sections": []
+}
