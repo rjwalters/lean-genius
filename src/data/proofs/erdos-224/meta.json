@@ -20,7 +20,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 224,
     "erdosUrl": "https://erdosproblems.com/224",
     "erdosProblemStatus": "solved",
@@ -31,9 +31,9 @@
         "relation": "Erdős Problem #225 asks about the maximum number of right angles among n points in ℝ^d"
       }
     ],
-    "axiomCount": 3,
+    "axiomCount": 1,
     "lineCount": 241,
-    "assumptions": "3 axioms: danzer_grunbaum (Danzer-Grünbaum theorem), hypercube_card, hypercube_obtuse_free. 1 sorry: hypercube extremal configuration. axiomCount corrected from prior 7 to actual 3.",
+    "assumptions": "1 axiom: danzer_grunbaum (Danzer-Grünbaum theorem: any 2^d+1 points contain an obtuse triple). 0 sorries. hypercube_card and hypercube_obtuse_free are proved theorems, not axioms.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -156,7 +156,7 @@
     "opens": [],
     "namespace": "Erdos224",
     "lineCount": 241,
-    "axiomCount": 3,
+    "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 7
   },
