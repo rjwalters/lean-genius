@@ -61,7 +61,7 @@
       "Definition Erdos1146Conjecture (main open question)",
       "Proved growth_satisfies_ruzsa_necessary (rpow algebra: C·x² - x ≥ x^(3/2) for large x)"
     ],
-    "axiomCount": 5,
+    "axiomCount": 8,
     "prerequisites": [
       "erdos-37",
       "schnirelmann-density",
@@ -69,7 +69,7 @@
       "mann-theorem"
     ],
     "lineCount": 287,
-    "assumptions": "5 axioms total: 2 declared in this file (smooth23_not_lacunary — deep result about ratios of smooth numbers; smooth23_schnirelmann_zero — Schnirelmann density of smooth numbers is 0) + 3 from imported Erdos37Problem.lean that are directly used in proofs (smooth23_counting — counting function ~ C·(log N)² used in growth_satisfies_ruzsa_necessary; mann_theorem — used in mann_lower_bound; erdos_37_disproved — used in single_prime_not_essential). No sorries remain."
+    "assumptions": "8 axioms total: 2 own (smooth23_not_lacunary — deep result about ratios of smooth numbers with only 2 and 3 prime factors; smooth23_schnirelmann_zero — Schnirelmann density of smooth numbers is 0) + 6 inherited from Erdos37Problem.lean (ruzsa_essential_component_lower_bound, ruzsa_essential_component_construction, erdos_37_disproved, smooth23_counting, schnirelmann_theorem, mann_theorem). 0 sorries."
   },
   "overview": {
     "historicalContext": "Imre Ruzsa posed this problem in 1999, building on his resolution of Erdős Problem #37 about essential components in additive number theory. A set $B \\subseteq \\mathbb{N}$ is an *essential component* if $\\sigma(A + B) > \\sigma(A)$ for every set $A$ with $0 < \\sigma(A) < 1$, where $\\sigma$ denotes the Schnirelmann density. Ruzsa proved that essential components must have counting function growth $\\geq (\\log N)^{1+c}$ for some $c > 0$, ruling out lacunary sets (which have counting function $O(\\log N)$).\n\nThe set $\\{2^m \\cdot 3^n : m, n \\geq 0\\}$ of 3-smooth numbers has counting function $\\sim C(\\log N)^2$, placing it exactly at the threshold with $c = 1$. Ruzsa called this 'the simplest set with a chance to be an essential component,' making it a natural test case for the boundary between essential and non-essential sets in additive combinatorics.",
@@ -230,7 +230,7 @@
     ],
     "namespace": "Erdos1146",
     "lineCount": 287,
-    "axiomCount": 2,
+    "axiomCount": 8,
     "theoremCount": 13,
     "definitionCount": 2
   }

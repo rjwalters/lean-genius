@@ -54,9 +54,9 @@
       "Summary theorem: both CH-deciding and ¬CH-deciding axioms exist (open question is substantive)"
     ],
     "dateAdded": "2026-02-22",
-    "axiomCount": 10,
+    "axiomCount": 14,
     "lineCount": 317,
-    "assumptions": "10 axioms: VeqL, VeqL_implies_GCH, UltimateL, and 7 more. See Lean source for complete statements.",
+    "assumptions": "14 axioms total: 10 own (VeqL, VeqL_implies_GCH, UltimateL, UltimateL_implies_GCH, PFA, PFA_implies_continuum_eq_aleph_two, MM, MM_implies_PFA, VeqL_incompatible_with_measurable, PFA_large_cardinal_compatible) + 4 inherited from ContinuumHypothesis.lean (L_exists — constructible universe existence, L_satisfies_CH — L satisfies CH, forcing_extension_exists — Cohen forcing extension existence, forcing_violates_CH — the forcing extension violates CH). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
