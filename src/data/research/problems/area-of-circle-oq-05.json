@@ -1,8 +1,8 @@
 {
   "slug": "area-of-circle-oq-05",
   "title": "Prove the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}...",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -29,22 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created AreaOfCircleOQ05.lean (110 lines). Gaussian integral proved via Mathlib. Scaled variant proved. 2 sorries (normal normalization, radial integral). 0 axioms.",
+    "progressSummary": "COMPLETE: All 4 theorems proved (0 sorries). gaussian_integral, scaled_gaussian, standard_normal_normalization, radial_integral all compile.",
     "builtItems": [
-      "proofs/Proofs/AreaOfCircleOQ05.lean (110 lines, 4T, 0A, 2S)",
-      "src/data/proofs/area-of-circle-oq-05/ (gallery entry)"
+      "theorem gaussian_integral_eq_sqrt_pi: \u222b x, rexp(-(x^2)) = \u221a\u03c0 (via integral_gaussian)",
+      "theorem scaled_gaussian: \u2200 a > 0, \u222b x, rexp(-(a*x^2)) = \u221a(\u03c0/a) (via integral_gaussian a)",
+      "theorem standard_normal_normalization: \u222b (1/\u221a(2\u03c0)) * rexp(-(x^2/2)) = 1",
+      "theorem radial_integral: \u222b\u2080^\u221e r * rexp(-(r^2)) dr = 1/2 (via FTC: integral_Ioi_of_hasDerivAt_of_tendsto')"
     ],
     "insights": [
-      "Mathlib has integral_gaussian in Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
-      "The connection to circles: squaring the integral and using polar coordinates reveals a circle area",
-      "Decomposition: I^2 = (2pi)(1/2) = pi — circumference times radial integral",
-      "Scaled Gaussian follows from integral_gaussian with sqrt(a) substitution"
+      "integral_gaussian API changed: now \u222b x, exp(-b*x^2) = \u221a(\u03c0/b), not exp(-(b*x)^2) = \u221a\u03c0/|b|",
+      "Pi.neg_apply needed: (hasDerivAt_pow n x).neg creates Pi.neg wrapper; simp [Pi.neg_apply] reduces it before ring",
+      "\ud835\udcdd notation requires open scoped Topology; use nhds directly to avoid the extra open",
+      "exp_pos not rexp_pos: the correct lemma name is exp_pos in the Real namespace",
+      "integrableOn_Ioi_deriv_of_nonneg' + integral_Ioi_of_hasDerivAt_of_tendsto' give FTC for improper integrals",
+      "convert h using N depth: using 1 leaves integral equality (\u211d), using 2 leaves function equality; ext fails on \u211d",
+      "Antiderivative F(r) = -(1/2)*exp(-r^2) has F'(r) = r*exp(-r^2), F(0) = -1/2, F(\u221e) = 0, giving \u222b\u2080^\u221e = 0 - (-1/2) = 1/2",
+      "simp_rw rewrites under integral binder; needed to equate -(a*x^2) with -a*x^2 form expected by integral_gaussian"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove standard_normal_normalization from scaled_gaussian with a=1/2",
-      "Prove radial_integral via substitution u = r^2"
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: area-of-circle-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -67,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.970Z",
-  "lastUpdate": "2026-03-30T16:34:54.994Z",
+  "lastUpdate": "2026-04-03",
   "leanFiles": [
     {
       "path": "Proofs/AreaOfCircle.lean",
@@ -145,17 +148,6 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03Aristotle.lean"
-    },
-    {
-      "path": "Proofs/AreaOfCircleOQ01OQ03OQ02.lean",
-      "filename": "AreaOfCircleOQ01OQ03OQ02.lean",
-      "lineCount": 176,
-      "theoremCount": 7,
-      "axiomCount": 2,
-      "defCount": 2,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03OQ02.lean"
     },
     {
       "path": "Proofs/AreaOfCircleOQ02.lean",
