@@ -33,7 +33,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős (1975) asked: if n₁ < n₂ < ⋯ with lim sup n_k/k = ∞, is Σ 1/2^{n_k} transcendental? He proved the stronger version (super-polynomial growth) using Liouville-type rational approximation arguments. The general case (merely lim sup → ∞) remains open. Erdős noted in 1988 these problems 'seem hopeless at present'. The sum is a binary expansion with 1s at positions n_k — its transcendence reflects the irrationality of the pattern.",
+    "historicalContext": "Transcendence of lacunary series has a long history. Liouville (1851) proved numbers like $\\sum 1/10^{k!}$ are transcendental by showing they satisfy exceptional rational approximation — the first explicit transcendental numbers constructed. Mahler (1929) introduced his classification of transcendental numbers (S, T, U classes) and proved that numbers with lacunary power series expansions are transcendental, providing a systematic approach. Erdős (1975) asked specifically about binary lacunary sums $\\sum 1/2^{n_k}$: if $\\limsup n_k/k = \\infty$, must the sum be transcendental? He proved YES under the stronger hypothesis $\\limsup n_k/k^t = \\infty$ for all $t \\geq 1$ (super-polynomial growth), using Liouville-type arguments: algebraic numbers of degree $d$ have rational approximation error $> c/q^d$, but lacunary sums with super-polynomial gaps can be approximated to any polynomial order. The general case (just $\\limsup n_k/k = \\infty$) remained open. Erdős wrote in 1988 that such problems 'seem hopeless at present'. The formalization adds a new insight: the factorial sum $\\sum 1/2^{k!}$ equals the Liouville number base 2 minus 1/2, giving an axiom-free transcendence proof bypassing the Erdős 1975 result entirely.",
     "problemStatement": "Prove: if n₁ < n₂ < ⋯ is strictly increasing with lim sup n_k/k = ∞, then Σ 1/2^{n_k} is transcendental. (Open in general; proved for super-polynomial growth by Erdős.)",
     "text": "The sum Σ 1/2^{n_k} is a real number with a binary expansion having 1s at positions n_k. When gaps between consecutive positions grow fast enough, the number cannot be algebraic. The proof uses the fact that algebraic numbers of degree d satisfy |α - p/q| > c/q^d, but lacunary sums with fast-growing gaps can be approximated to any polynomial order, forcing transcendence via Liouville's theorem.",
     "proofStrategy": "Define the formal infrastructure: lacunarySum, HasWeakGrowth, HasStrongGrowth. Prove key examples (2^k, k!) satisfy strong growth. Axiomatize Erdős's theorem for strong growth. Prove the conjecture follows for all super-polynomial sequences. Derive irrationality as a consequence.",
@@ -41,7 +41,8 @@
       "Liouville argument: fast-growing gaps give unusually good rational approximations, forcing transcendence",
       "2^k and (k+1)! satisfy strong growth: proved elementarily",
       "Strong growth ↔ super-polynomial: stronger than lim sup n_k/k = ∞",
-      "Open gap: weak growth (lim sup n_k/k = ∞) may not suffice"
+      "Open gap: weak growth (lim sup n_k/k = ∞) may not suffice",
+      "The factorial sum equals liouvilleNumber 2 - 1/2: this observation gives an axiom-free transcendence proof — the Erdős 1975 axiom is not needed for the most natural example"
     ],
     "prerequisites": [
       "Liouville transcendence theory: rational approximation obstructions",
@@ -50,12 +51,14 @@
     ]
   },
   "conclusion": {
-    "summary": "Lacunary sum transcendence formalized: HasWeakGrowth and HasStrongGrowth predicates, 2^k and k! proved to satisfy strong growth, Erdős 1975 theorem axiomatized. 22 theorems, 506 lines, 1 axiom.",
-    "implications": "The Erdős conjecture (weak growth → transcendence) remains open. The formalization provides the framework for attacking it via Liouville theory. Transcendence of specific lacunary sums like Σ 1/2^{2^k} follows immediately from the axiom.",
+    "summary": "Erdős #247 lacunary transcendence formalized: HasWeakGrowth/HasStrongGrowth predicates, 2^k and k! proved to satisfy strong growth, squareSeq (k²) shows the gap between conditions, Erdős 1975 theorem axiomatized. Two axiom-free proofs of factorial transcendence via Liouville number connection and direct Liouville proof. 22 theorems, 506 lines, 1 axiom.",
+    "implications": "The key insight — the factorial lacunary sum equals liouvilleNumber 2 - 1/2 — shows that for the most natural example, Erdős's 1975 result is not needed at all. The file separates the Lean formalization into: (1) the Erdős 1975 result for general super-polynomial sequences (axiomatized), (2) Mathlib's Liouville theory for factorial sums (fully proved). The squareSeq gap example makes precise what 'open' means: Σ 1/2^{k²} satisfies the conjecture hypothesis but not Erdős's theorem, and its transcendence is unknown.",
     "openQuestions": [
-      "Prove the full Erdős conjecture: weak growth implies transcendence",
-      "Prove the Erdős strong-growth theorem without axioms using Liouville machinery in Mathlib",
-      "Generalize to base-p lacunary sums Σ 1/p^{n_k} for prime p"
+      "Prove the full Erdős conjecture: if lim sup n_k/k = ∞ (weak growth), then Σ 1/2^{n_k} is transcendental",
+      "Prove the Erdős strong-growth theorem without axioms using the Liouville/Mahler framework in Mathlib",
+      "Determine whether Σ 1/2^{k²} is transcendental (the squareSeq gap example)",
+      "Generalize to base-p lacunary sums Σ 1/p^{n_k} for prime p",
+      "Apply Mahler's method to handle the general Erdős conjecture for base-2 sums"
     ]
   },
   "leanFile": {
@@ -72,5 +75,55 @@
       "description": "Both are open Erdős problems in number theory; prime gaps and lacunary transcendence share analytic depth"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-lacunary-sum",
+      "title": "The Lacunary Sum and Growth Conditions",
+      "startLine": 40,
+      "endLine": 68,
+      "summary": "Defines lacunarySum (Σ 1/2^{n_k} as tsum), HasWeakGrowth (∀C, ∃k, n_k > Ck), HasStrongGrowth (∀t≥1, ∀C, ∃k, n_k > Ck^t), and erdos_247_conjecture as a Prop. The open problem is formalized as a definition, not an axiom — explicitly marking it as unproved."
+    },
+    {
+      "id": "sec-erdos-1975",
+      "title": "Erdős's 1975 Theorem (Axiomatized)",
+      "startLine": 70,
+      "endLine": 85,
+      "summary": "Axiomatizes erdos_transcendence_strong: StrictMono n ∧ HasStrongGrowth n → Transcendental ℚ (lacunarySum n). This is the only axiom in the file — Erdős's 1975 result using Liouville-type arguments that the formalization cannot yet reproduce mechanically."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Concrete Examples: 2^k and Factorial Satisfy Strong Growth",
+      "startLine": 87,
+      "endLine": 159,
+      "summary": "Proves pow2_strong_growth (2^k has strong growth via explicit witness k = C*(t+1)^t*(t+1)) and factorial_strong_growth (derived from pow2 via 2^k ≤ (k+1)!). Derives factorial_sum_transcendental and pow2_sum_transcendental as immediate corollaries of the axiom."
+    },
+    {
+      "id": "sec-squareseq-gap",
+      "title": "The Gap: squareSeq Has Weak but Not Strong Growth",
+      "startLine": 161,
+      "endLine": 207,
+      "summary": "Defines squareSeq (n_k = (k+1)²), proves squareSeq_has_weak_growth (∀C, take k=C+1) and squareSeq_not_strong_growth (¬HasStrongGrowth, using t=2,C=4: (k+1)² ≤ 4k² by nlinarith). The sum Σ 1/2^{k²} satisfies the open conjecture's hypothesis but not Erdős's theorem."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Problem 247 Summary Theorem",
+      "startLine": 209,
+      "endLine": 223,
+      "summary": "problem_247_summary bundles the three main proved results in a conjunction: (1) Erdős theorem for strong growth; (2) factorial sum transcendental; (3) pow2 sum transcendental. A clean summary of what the file establishes."
+    },
+    {
+      "id": "sec-liouville-connection",
+      "title": "Path A: Axiom-Free Proof via Liouville Number Identity",
+      "startLine": 225,
+      "endLine": 386,
+      "summary": "Proves factorial_sum_eq_liouville_sub: lacunarySum(k!) = liouvilleNumber 2 - 1/2 (using tsum_eq_zero_add). Derives factorial_sum_transcendental_axiom_free: since liouvilleNumber 2 is transcendental (Mathlib) and subtracting 1/2 preserves transcendence, the factorial sum is transcendental with 0 axioms. Also proves factorialPartialSum_eq_div and lacunarySum_factorial_split infrastructure."
+    },
+    {
+      "id": "sec-direct-liouville",
+      "title": "Path B: Direct Liouville Number Proof",
+      "startLine": 387,
+      "endLine": 506,
+      "summary": "Proves factorial_sum_liouville: the factorial lacunary sum IS a Liouville number. For each m: exhibit p/q with q = 2^{(m+1)!}, |α-p/q| ≤ 2/2^{(m+2)!} < 1/q^m. Key tools: factorialTail_le (geometric series comparison), factorialTail_pos (positivity of tail), factorial_mul_add_one_lt (key inequality). Concludes with factorial_sum_transcendental_liouville."
+    }
+  ]
 }

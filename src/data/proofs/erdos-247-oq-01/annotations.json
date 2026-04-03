@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-growth-conditions",
+    "proofId": "erdos-247-oq-01",
+    "range": { "startLine": 48, "endLine": 68 },
+    "type": "technique",
+    "title": "Two Growth Conditions and the Open Conjecture",
+    "content": "The file defines two predicates on sequences n : ℕ → ℕ. HasWeakGrowth(n): ∀ C, ∃ k > 0, n(k) > C*k (equivalently, lim sup n_k/k = ∞). HasStrongGrowth(n): ∀ t ≥ 1, ∀ C, ∃ k > 0, n(k) > C*k^t (super-polynomial: lim sup n_k/k^t = ∞ for all t). erdos_247_conjecture states the open problem: StrictMono n ∧ HasWeakGrowth n → Transcendental ℚ (lacunarySum n). The strong condition is strictly stronger: strong_implies_weak proves HasStrongGrowth → HasWeakGrowth, while squareSeq (n_k = k²) shows the converse fails.",
+    "mathContext": "**Hierarchy of growth conditions**:\n$$\\text{HasStrongGrowth}(n) \\implies \\text{HasWeakGrowth}(n)$$\nbut $\\not\\Leftarrow$ (counterexample: $n_k = k^2$ has weak but not strong growth).\n\n**Formally**:\n- Weak: $\\limsup_{k\\to\\infty} \\frac{n_k}{k} = \\infty$, i.e., for all $C$, $\\exists k$ with $n_k > Ck$.\n- Strong: $\\limsup_{k\\to\\infty} \\frac{n_k}{k^t} = \\infty$ for ALL $t \\geq 1$, i.e., faster than any polynomial.\n\nThe open conjecture asks about the weaker condition. Erdős proved the theorem for the stronger one.",
+    "significance": "key",
+    "relatedConcepts": ["lim sup growth rates", "polynomial vs super-polynomial growth", "open conjecture", "squareSeq counterexample"],
+    "prerequisites": ["sequences: lim sup", "Transcendental predicate in Lean 4", "strict monotonicity"]
+  },
+  {
+    "id": "ann-pow2-strong-growth",
+    "proofId": "erdos-247-oq-01",
+    "range": { "startLine": 120, "endLine": 143 },
+    "type": "technique",
+    "title": "pow2_strong_growth: Explicit Witness Construction via Chain of Inequalities",
+    "content": "The proof that 2^k satisfies HasStrongGrowth uses an explicit witness k = C*(t+1)^t * (t+1). The chain of inequalities: C*(n*(t+1))^t = C*(t+1)^t * n^t < (n+1)*n^t ≤ (n+1)^{t+1} ≤ (2^n)^{t+1} = 2^{n*(t+1)}. The key steps are (1) C*(t+1)^t < n+1 (by definition n = C*(t+1)^t); (2) n^t ≤ (n+1)^t; (3) the private lemma pow2_ge_succ: n+1 ≤ 2^n. This self-contained proof of 2^k's super-polynomial growth demonstrates how to formalize asymptotic growth claims using explicit witnesses.",
+    "mathContext": "**The explicit witness**: Set $n = C(t+1)^t$. The claimed $k = n(t+1)$ satisfies:\n$$2^{n(t+1)} = (2^n)^{t+1} \\geq (n+1)^{t+1} = (n+1) \\cdot (n+1)^t \\geq (n+1) \\cdot n^t > C(t+1)^t \\cdot n^t = C(n(t+1))^t$$\nwhere the last step uses $n = C(t+1)^t \\leq n+1-1 < n+1$.\n\n**Private lemma** `pow2_ge_succ`: $n + 1 \\leq 2^n$ for all $n$. Proved by induction: $k+1+1 \\leq 2(k+1) \\leq 2 \\cdot 2^k = 2^{k+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["explicit witness construction", "chain of inequalities", "gcongr tactic", "induction on natural numbers"],
+    "prerequisites": ["power functions: 2^n", "polynomial vs exponential growth", "Lean 4: calc blocks and gcongr"]
+  },
+  {
+    "id": "ann-squareseq-gap",
+    "proofId": "erdos-247-oq-01",
+    "range": { "startLine": 171, "endLine": 207 },
+    "type": "insight",
+    "title": "squareSeq: The Critical Gap Between the Two Growth Conditions",
+    "content": "The sequence n_k = (k+1)² provides the key example separating the two conditions. squareSeq_has_weak_growth proves HasWeakGrowth: taking k = C+1, (C+2)² = C²+4C+4 > C²+C = C(C+1). squareSeq_not_strong_growth proves ¬HasStrongGrowth: using t=2 and C=4, strong growth would require k with (k+1)² > 4k², but (k+1)² ≤ 4k² for all k ≥ 1 (since 3k²-2k-1 ≥ 0). Therefore Σ 1/2^{k²} satisfies the OPEN conjecture's hypothesis but NOT Erdős's 1975 theorem — its transcendence is genuinely open.",
+    "mathContext": "**squareSeq** $n_k = (k+1)^2$:\n\n**Weak growth** ✓: $\\limsup \\frac{(k+1)^2}{k} = \\limsup (k + 2 + 1/k) = \\infty$.\n\n**Strong growth** ✗: $\\limsup \\frac{(k+1)^2}{k^2} = 1 \\not= \\infty$ (since $(k+1)^2/k^2 \\to 1$).\n\n**The open problem instance**: Is $\\sum_{k=0}^{\\infty} \\frac{1}{2^{(k+1)^2}}$ transcendental?\n\nThis is a theta-function-like series $\\sum 2^{-(k+1)^2} = \\vartheta_3(0, 1/2)$ (Jacobi theta function), whose transcendence is not known via elementary methods.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial growth", "Jacobi theta functions", "open transcendence problems", "nlinarith tactic"],
+    "prerequisites": ["polynomial vs super-polynomial growth", "lim sup calculation", "proof by contradiction: obtaining k then nlinarith"]
+  },
+  {
+    "id": "ann-liouville-number-connection",
+    "proofId": "erdos-247-oq-01",
+    "range": { "startLine": 353, "endLine": 386 },
+    "type": "insight",
+    "title": "factorial_sum_eq_liouville_sub: The Factorial Sum IS a Liouville Number (minus 1/2)",
+    "content": "The key observation in Part VIII: the factorial lacunary sum Σ_{k=0}^∞ 1/2^{(k+1)!} equals liouvilleNumber 2 minus 1/2. The Liouville number (base 2) is defined as Σ_{n=0}^∞ 1/2^{n!}. The n=0 term is 1/2^{0!} = 1/2^1 = 1/2. The remaining terms Σ_{n=1}^∞ 1/2^{n!} = Σ_{k=0}^∞ 1/2^{(k+1)!} equal the factorial lacunary sum. This observation allows axiom-free transcendence: since liouvilleNumber 2 is transcendental (in Mathlib via Liouville's theorem), and subtracting 1/2 (rational) preserves transcendence, the factorial sum is transcendental without invoking the Erdős 1975 axiom.",
+    "mathContext": "**The key identity**:\n$$\\sum_{k=0}^{\\infty} \\frac{1}{2^{(k+1)!}} = \\underbrace{\\sum_{n=0}^{\\infty} \\frac{1}{2^{n!}}}_{\\text{liouvilleNumber 2}} - \\underbrace{\\frac{1}{2^{0!}}}_{= 1/2}$$\n\n**Transcendence chain**:\n1. `liouvilleNumber 2` is transcendental (Mathlib: `Liouville.transcendental`)\n2. Subtracting $1/2 \\in \\mathbb{Q}$ preserves transcendence (`Transcendental.sub_rat`)\n3. Therefore the factorial lacunary sum is transcendental — with 0 axioms.\n\nThis bypasses the Erdős 1975 axiom entirely and gives a fully machine-verified result.",
+    "significance": "key",
+    "relatedConcepts": ["liouvilleNumber", "tsum_eq_zero_add", "Transcendental.sub_rat", "axiom-free proof"],
+    "prerequisites": ["Liouville numbers: definition and transcendence", "tsum splitting: Summable.tsum_eq_zero_add", "Mathlib: LiouvilleNumber.transcendental"]
+  },
+  {
+    "id": "ann-direct-liouville-proof",
+    "proofId": "erdos-247-oq-01",
+    "range": { "startLine": 461, "endLine": 504 },
+    "type": "technique",
+    "title": "factorial_sum_liouville: A Direct Liouville-Number Proof",
+    "content": "The theorem factorial_sum_liouville proves the factorial lacunary sum IS a Liouville number (satisfies Liouville's approximation condition) directly. For each m, it exhibits approximation a/b with b = 2^{(m+1)!} and |α - a/b| ≤ 2/2^{(m+2)!} < 1/b^m. The bound on the tail uses factorialTail_le (the geometric series comparison) and the inequality (m+2)! > m*(m+1)!+1 (equivalent to 2*(m+1)! > 1). This is a complete standalone proof of Liouville transcendence for the factorial sum without any Erdős axiom.",
+    "mathContext": "**Liouville's theorem**: $\\alpha$ is transcendental if for every $m \\geq 1$, $\\exists p, q \\in \\mathbb{Z}$ with $q > 1$, $\\alpha \\neq p/q$, and $|\\alpha - p/q| < 1/q^m$.\n\n**For the factorial sum**: Take $q = 2^{(m+1)!}$, $p = $ partial sum numerator. Then:\n$$\\left|\\alpha - \\frac{p}{q}\\right| = \\text{factorialTail}(m) \\leq \\frac{2}{2^{(m+2)!}} < \\frac{1}{(2^{(m+1)!})^m} = \\frac{1}{q^m}$$\nbecause $(m+2)! - 1 > m \\cdot (m+1)!$, i.e., $(m+2) \\cdot (m+1)! - 1 > m \\cdot (m+1)!$, i.e., $(m+1)! > 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Liouville numbers", "Liouville's approximation theorem", "geometric series tail bound", "div_lt_div_iff₀"],
+    "prerequisites": ["Liouville's theorem on transcendence", "factorial growth estimates", "Lean 4: Liouville structure in Mathlib"]
+  },
+  {
+    "id": "ann-two-paths",
+    "proofId": "erdos-247-oq-01",
+    "range": { "startLine": 334, "endLine": 386 },
+    "type": "insight",
+    "title": "Two Axiom-Free Paths to Factorial Sum Transcendence",
+    "content": "The file provides two completely independent axiom-free proofs of the same result (Transcendental ℚ (lacunarySum (fun k => (k+1)!))). Path A (lines 334-386): the factorial sum equals liouvilleNumber 2 - 1/2, so transcendence follows from Mathlib's liouvilleNumber transcendence. Path B (lines 387-504): directly prove the factorial sum is a Liouville number by exhibiting good rational approximations for each m. Both paths bypass the Erdős 1975 axiom. The final theorem factorial_sum_transcendental_liouville uses Path B. This dual-proof structure illustrates different formalization strategies for the same mathematical fact.",
+    "mathContext": "**Path A** (shorter): identity + transcendence transfer\n$$\\text{lacunarySum}(k!) = L_2 - 1/2 \\overset{L_2 \\text{ transcendental}}{\\implies} \\text{lacunarySum}(k!) \\text{ transcendental}$$\n\n**Path B** (more direct): show the sum is a Liouville number\n$$|\\alpha - p/q| < 1/q^m \\text{ for all } m \\implies \\alpha \\text{ transcendental}$$\n\n**Path A** uses `factorial_sum_eq_liouville_sub` + `Transcendental.sub_rat`.\n**Path B** uses `factorial_sum_liouville` + `Liouville.transcendental`.\n\nBoth show the power of Mathlib's Liouville infrastructure for transcendence proofs.",
+    "significance": "supporting",
+    "relatedConcepts": ["Liouville's theorem", "Mathlib: liouvilleNumber", "transcendence transfer", "proof redundancy"],
+    "prerequisites": ["Liouville numbers", "algebraic number theory: transcendence criteria", "Mathlib: LiouvilleNumber"]
+  },
+  {
+    "id": "ann-tail-bound",
+    "proofId": "erdos-247-oq-01",
+    "range": { "startLine": 399, "endLine": 450 },
+    "type": "technique",
+    "title": "factorialTail_le: Geometric Series Comparison for the Tail Bound",
+    "content": "The theorem factorialTail_le proves: factorialTail(N) ≤ 2/2^{(N+2)!}. The proof bounds each term 1/2^{(N+1+k+1)!} ≤ (1/2^{(N+2)!}) * (1/2)^k by showing (N+2)! + k ≤ (N+1+k+1)! (proved by induction on k). Then the geometric series sum is (1/2^{(N+2)!}) * Σ (1/2)^k = (1/2^{(N+2)!}) * 2 = 2/2^{(N+2)!}. This uses Mathlib's hasSum_le for comparing two series, summable_geometric_of_lt_one, and tsum_mul_left.",
+    "mathContext": "**Key inequality**: $(N+2)! + k \\leq (N+2+k)!$ for all $k$.\n\nProof by induction on $k$: $k=0$ is trivial. For the step:\n$$(N+2)!(m+1+1) = (N+2)!(m+1) + (N+2)! \\leq (N+2+m)! + (N+2+m)! \\leq (N+2+m)! \\cdot (N+2+m+1)$$\n\n**Tail bound**: $\\sum_{k=0}^{\\infty} \\frac{1}{2^{(N+1+k+1)!}} \\leq \\frac{1}{2^{(N+2)!}} \\sum_{k=0}^{\\infty} \\left(\\frac{1}{2}\\right)^k = \\frac{2}{2^{(N+2)!}}$",
+    "significance": "supporting",
+    "relatedConcepts": ["geometric series", "hasSum_le comparison", "tsum_mul_left", "factorial growth"],
+    "prerequisites": ["infinite series: summability and comparison", "factorial inequalities", "Lean 4: hasSum_le for series comparison"]
+  }
+]
