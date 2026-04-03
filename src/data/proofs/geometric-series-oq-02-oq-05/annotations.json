@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "lineStart": 35,
+    "lineEnd": 37,
+    "annotation": "The type signature encodes the full generality: 𝕜 is a NontriviallyNormedField (e.g., ℝ or ℂ), A is a complete NormedAlgebra over 𝕜 satisfying NormOneClass (‖1‖ = 1). CompleteSpace A is essential — without it the Neumann series ∑ Tⁿ may not converge. NormOneClass ensures the scalar embedding is isometric, which is used crucially in norm_algebraMap.",
+    "mathContext": "NormedAlgebra 𝕜 A means A is simultaneously a NormedRing and a normed 𝕜-module with ‖c • x‖ ≤ ‖c‖ · ‖x‖. NormOneClass adds ‖(1 : A)‖ = 1. Together these imply ‖algebraMap 𝕜 A c‖ = ‖c‖, making the scalar embedding isometric (proved as norm_algebraMap in § 1).",
+    "significance": "This variable declaration encodes the correct mathematical context for spectral theory: Banach algebras over ℝ or ℂ with multiplicative identity of norm 1. The hypotheses are minimal — removing any one makes the theorems false.",
+    "relatedConcepts": ["NormedAlgebra", "CompleteSpace", "NormOneClass", "Banach algebra", "spectral theory"],
+    "prerequisites": ["Normed vector spaces and normed rings", "Algebra over a field", "Completeness and Cauchy sequences"]
+  },
+  {
+    "lineStart": 42,
+    "lineEnd": 50,
+    "annotation": "Two foundational lemmas about the scalar embedding. norm_algebraMap proves ‖algebraMap 𝕜 A λ‖ = ‖λ‖ using algebraMap_eq_smul_one (c ↦ c • 1) and norm_smul combined with ‖1‖ = 1 from NormOneClass. algebraMap_isUnit propagates IsUnit from 𝕜 to A using RingHom.isUnit_map — nonzero scalars are units in A.",
+    "mathContext": "Crucially, algebraMap here is the canonical ring homomorphism 𝕜 → A sending c ↦ c · 1_A. It is not merely additive — it respects multiplication, so it maps units to units. The isometric property (norm-preserving) is stronger than the general NormedAlgebra bound ‖c • x‖ ≤ ‖c‖‖x‖, and requires NormOneClass for equality.",
+    "significance": "These two lemmas are invoked in every subsequent section. Without norm_algebraMap, the estimate ‖λ⁻¹ · a‖ ≤ ‖λ‖⁻¹ · ‖a‖ would not be sharp. Without algebraMap_isUnit, the product formula for units in resolvent_isUnit would fail.",
+    "relatedConcepts": ["algebraMap", "RingHom.isUnit_map", "norm_smul", "NormOneClass"],
+    "prerequisites": ["Ring homomorphisms and units", "Norm properties in NormedAlgebra"]
+  },
+  {
+    "lineStart": 60,
+    "lineEnd": 96,
+    "annotation": "The core of resolvent existence: three lemmas forming a logical chain. (1) norm_inv_smul_lt_one converts ‖a‖ < ‖λ‖ into ‖λ⁻¹a‖ < 1 via a calc chain: ‖λ⁻¹ · a‖ ≤ ‖λ⁻¹‖ · ‖a‖ = ‖λ‖⁻¹ · ‖a‖ < ‖λ‖⁻¹ · ‖λ‖ = 1. (2) resolvent_factorization proves λ·1 - a = λ · (1 - λ⁻¹ · a) algebraically. (3) resolvent_isUnit combines them: both λ·1 and (1 - λ⁻¹a) are units, so their product is.",
+    "mathContext": "The factorization λ·1 - a = λ·(1 - λ⁻¹a) is elementary algebra but requires careful use of mul_inv_cancel₀ and map_mul for the algebraMap. The key identity algebraMap(λ) * algebraMap(λ⁻¹) = algebraMap(λ · λ⁻¹) = algebraMap(1) = 1 is used in resolvent_factorization. In resolvent_isUnit, one_sub_isUnit (imported from OQ-02) handles the (1 - T) part.",
+    "significance": "This section answers the fundamental question: when is λ in the resolvent set ρ(a) = {λ : λ·1 - a is invertible}? Answer: whenever |λ| > ‖a‖, i.e., λ is outside the closed disk of radius ‖a‖. This gives the spectral containment σ(a) ⊆ B(0, ‖a‖).",
+    "relatedConcepts": ["resolvent set", "spectrum containment", "Neumann series", "IsUnit", "one_sub_isUnit"],
+    "prerequisites": ["Neumann series (OQ-02: one_sub_isUnit)", "IsUnit and unit products", "Algebraic manipulations with algebraMap"]
+  },
+  {
+    "lineStart": 109,
+    "lineEnd": 138,
+    "annotation": "resolvent_eq_neumann_series gives the explicit formula Ring.inverse(λ·1 - a) = λ⁻¹ · ∑ (λ⁻¹a)^n. The proof sets T = λ⁻¹a, factors λ·1 - a = λ·(1-T), uses Ring.inverse_unit for the product of units (giving (λ·(1-T))⁻¹ = (1-T)⁻¹ · λ⁻¹), then substitutes neumann_sum T hT for (1-T)⁻¹ = ∑ Tⁿ and map_inv₀ for the scalar inverse.",
+    "mathContext": "Ring.inverse is the unique total function satisfying a · Ring.inverse a = 1 for units and Ring.inverse a = 0 for non-units. For a unit u, Ring.inverse u = ↑u⁻¹. The simp lemma Units.val_mul and mul_comm are used to rearrange (↑uλ⁻¹ · ↑u(1-T)⁻¹) into the canonical order λ⁻¹ · ∑Tⁿ. The proof requires neumann_sum from OQ-02 as a black box.",
+    "significance": "This is the operator-theoretic analog of the geometric series 1/(λ-x) = ∑ xⁿ/λⁿ⁺¹. It shows the resolvent is analytic (hence holomorphic) in λ for |λ| > ‖a‖, with power series coefficients aⁿ/λⁿ⁺¹. This is the foundation for the Laurent expansion of R(λ,a) around ∞.",
+    "relatedConcepts": ["Neumann series", "Ring.inverse", "Laurent expansion", "analytic resolvent", "neumann_sum"],
+    "prerequisites": ["OQ-02: neumann_sum, neumann_summable", "Ring.inverse_unit", "Units.val_mul, map_inv₀"]
+  },
+  {
+    "lineStart": 183,
+    "lineEnd": 219,
+    "annotation": "The first resolvent identity R(λ) - R(μ) = (μ-λ)·R(λ)·R(μ) is proved purely algebraically, with no norm hypotheses — only IsUnit witnesses for both resolvent points. The key algebraic lemma is uλ⁻¹ - uμ⁻¹ = uλ⁻¹·(uμ - uλ)·uμ⁻¹, proved by ring after inserting uμ·uμ⁻¹ = 1 and uλ⁻¹·uλ = 1. The substitution uμ - uλ = algebraMap(μ) - algebraMap(λ) completes the proof.",
+    "mathContext": "The identity R(λ) - R(μ) = (μ-λ)R(λ)R(μ) can also be written R(λ)(λ·1-a) - R(μ)(μ·1-a) = (μ-λ)·1, which is trivially 1-1=0 after cancellation. The Lean proof avoids this slightly circular route by working directly with unit inverses. Note: this identity holds in any ring with two invertible elements — no completeness or norm is needed.",
+    "significance": "The first resolvent identity has several deep consequences: (1) it implies analyticity of R(λ,a) as a function of λ, (2) it shows that if T(λ) satisfies this identity, T is the resolvent of some closed operator, (3) it is used in perturbation theory to show that small perturbations of a move the resolvent continuously, and (4) it implies the resolvent map λ ↦ R(λ,a) is a homomorphism from (ℂ\\σ(a), +) to (A, ·) in the sense of pseudo-resolvents.",
+    "relatedConcepts": ["first resolvent identity", "pseudo-resolvent", "analytic vector-valued functions", "Kato perturbation theory"],
+    "prerequisites": ["IsUnit and ring inverse", "Algebraic manipulation with units", "No completeness needed"]
+  },
+  {
+    "lineStart": 225,
+    "lineEnd": 249,
+    "annotation": "resolvent_tendsto_zero proves ‖R(λ,a)‖ → 0 as ‖λ‖ → ∞ using squeeze_zero_norm'. The filter is Filter.comap (‖·‖) atTop — the neighborhood filter of ∞ on 𝕜 encoded via norms. 'Eventually' uses the set {λ : ‖a‖ + 1 ≤ ‖λ‖}, where resolvent_norm_bound applies (since ‖a‖ < ‖λ‖). The bound (‖λ‖ - ‖a‖)⁻¹ → 0 follows from tendsto_inv_atTop_zero composed with the cofinite shift r ↦ r - ‖a‖.",
+    "mathContext": "Filter.comap (‖·‖) atTop is the correct formulation of 'λ → ∞' for a normed field 𝕜 that may be non-Archimedean or otherwise exotic. It generates the filter of sets containing {λ : ‖λ‖ ≥ M} for all M. The composition tendsto_inv_atTop_zero.comp h_sub.comp tendsto_comap chains: ‖λ‖ → ∞ implies ‖λ‖ - ‖a‖ → ∞ implies (‖λ‖ - ‖a‖)⁻¹ → 0.",
+    "significance": "Decay at infinity is essential for the holomorphic functional calculus: the Dunford-Taylor integral f(a) = (2πi)⁻¹ ∮_Γ f(λ)R(λ,a) dλ converges because f(λ)·O(1/|λ|) is integrable along a large circle. It also shows the spectrum σ(a) is compact (closed and bounded), since R(λ,a) exists for large |λ|.",
+    "relatedConcepts": ["Filter.comap", "squeeze_zero_norm", "tendsto_inv_atTop_zero", "holomorphic functional calculus", "compactness of spectrum"],
+    "prerequisites": ["Mathlib Filter API: comap, atTop, squeeze_zero_norm'", "tendsto_inv_atTop_zero", "resolvent_norm_bound from § 4"]
+  }
+]
