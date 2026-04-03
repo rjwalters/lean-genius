@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-er1151-01",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 39, "endLine": 54 },
+    "type": "definition",
+    "title": "Chebyshev Nodes: Optimal Interpolation Points",
+    "content": "The k-th Chebyshev node of degree n is cos((2k+1)π/(2n)) for k = 0, …, n−1. These are the roots of the Chebyshev polynomial Tₙ(x) = cos(n·arccos(x)). Their defining property is that they minimize the maximum interpolation error among all choices of n nodes in [−1, 1]: for any polynomial of degree ≤ n−1 interpolating f at these nodes, the error is bounded by ‖f‖/(2^{n−1}·n!). The theorem chebyshevNode_mem_Icc proves they lie in [−1, 1] using |cos| ≤ 1, which follows from neg_one_le_cos and cos_le_one.",
+    "mathContext": "$x_k^{(n)} = \\cos\\left(\\frac{(2k+1)\\pi}{2n}\\right)$ for $k = 0,\\ldots,n-1$; these are roots of $T_n(x) = \\cos(n \\arccos x)$; $x_k^{(n)} \\in [-1,1]$",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev polynomials", "optimal interpolation nodes", "minimax approximation", "Runge's phenomenon"],
+    "prerequisites": ["Real.cos", "Fin.val", "Set.Icc", "neg_one_le_cos", "cos_le_one"]
+  },
+  {
+    "id": "ann-er1151-02",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 56, "endLine": 81 },
+    "type": "technique",
+    "title": "Injectivity of Chebyshev Nodes via Strict Monotonicity of Cosine",
+    "content": "chebyshevNodes_injective proves that the n Chebyshev nodes are distinct. The key is that cos is strictly decreasing on [0, π] (Real.strictAntiOn_cos), and all arguments (2k+1)π/(2n) lie in (0, π) ⊆ [0, π]. The proof shows equal cosine values imply equal arguments (by strictAntiOn.injOn), then equal k indices by field_simp + linarith on the linear equation 2k₁+1 = 2k₂+1. The distinctness is essential: if nodes coincide, the Lagrange basis polynomials are undefined (division by zero in (xₖ − xᵢ)).",
+    "mathContext": "$\\cos\\left(\\frac{(2k_1+1)\\pi}{2n}\\right) = \\cos\\left(\\frac{(2k_2+1)\\pi}{2n}\\right) \\Rightarrow 2k_1+1 = 2k_2+1 \\Rightarrow k_1 = k_2$",
+    "significance": "supporting",
+    "relatedConcepts": ["strict monotonicity of cosine", "StrictAntiOn", "injectivity proof strategy", "Lagrange basis well-definedness"],
+    "prerequisites": ["Real.strictAntiOn_cos", "Set.Icc", "Fin.ext", "field_simp", "linarith"]
+  },
+  {
+    "id": "ann-er1151-03",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 83, "endLine": 100 },
+    "type": "definition",
+    "title": "Lagrange Interpolation at Chebyshev Nodes",
+    "content": "The Lagrange basis polynomial ℓₖ(x) = ∏_{i≠k} (x − xᵢ)/(xₖ − xᵢ) satisfies ℓₖ(xₖ) = 1 and ℓₖ(xᵢ) = 0 for i ≠ k. The Lagrange interpolation polynomial 𝓛ⁿf(x) = Σₖ f(xₖ) ℓₖ(x) is the unique polynomial of degree ≤ n−1 agreeing with f at all n nodes. The definition uses Finset.univ.erase k for the product over i ≠ k. chebyshevInterp specializes this to Chebyshev nodes. Note: lagrangeBasis is referenced from the Erdős #1153 formalization, demonstrating code reuse across related gallery entries.",
+    "mathContext": "$\\ell_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$; $\\mathcal{L}^n f(x) = \\sum_{k=0}^{n-1} f(x_k) \\ell_k(x)$; $\\mathcal{L}^n f$ is the unique polynomial of degree $\\leq n-1$ through $(x_k, f(x_k))$",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange interpolation formula", "interpolation polynomial uniqueness", "Finset.univ.erase", "polynomial approximation"],
+    "prerequisites": ["Finset.prod", "Finset.sum", "Fin", "noncomputable def in Lean 4"]
+  },
+  {
+    "id": "ann-er1151-04",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 102, "endLine": 132 },
+    "type": "concept",
+    "title": "Limit Points: Topological Foundation",
+    "content": "IsLimitPoint seq y means y is arbitrarily well approximated by seq for arbitrarily large indices — this is the ε-δ definition of a limit point (also called 'cluster point' or 'accumulation point'). The set limitPointSet seq collects all such y. The key theorem limitPointSet_isClosed proves that for bounded sequences, this set is closed. Proof: the complement is open — if y is not a limit point, there exists ε > 0 and N such that seq is ε-away from y for all n ≥ N; any z within ε/2 of y is also not a limit point by the reverse triangle inequality. This closedness is crucial: the Erdős conjecture asserts every closed set can arise as a limit point set.",
+    "mathContext": "$y \\in \\text{limitPointSet}(a_n) \\iff \\forall \\varepsilon > 0,\\; \\forall N,\\; \\exists n \\geq N: |a_n - y| < \\varepsilon$; $\\text{limitPointSet}(a_n)$ is closed for bounded sequences",
+    "significance": "key",
+    "relatedConcepts": ["limit point / cluster point", "closed sets", "Baire category theorem", "reverse triangle inequality"],
+    "prerequisites": ["IsClosed", "Metric.isOpen_iff", "Metric.mem_ball", "abs_sub_le"]
+  },
+  {
+    "id": "ann-er1151-05",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 141, "endLine": 151 },
+    "type": "context",
+    "title": "Axiom: Erdős's 1941 Divergence Result",
+    "content": "erdos_1941_divergence axiomatizes Erdős's 1941 theorem: for x = cos(πp/q) with odd p, q, there exists a continuous f whose Chebyshev interpolation values diverge to ∞. This was a shocking result at the time — Chebyshev nodes were expected to give good interpolation for smooth functions, but Erdős showed divergence is possible even at rational-cosine points. The axiom parameterizes p, q as positive odd naturals and constructs x via cos. The condition that p, q are odd ensures x = cos(πp/q) is not itself a Chebyshev node of any degree (which would give trivial convergence).",
+    "mathContext": "$x = \\cos(\\pi p/q)$, $p, q$ odd $\\Rightarrow$ $\\exists f \\in C[-1,1]: \\mathcal{L}^n f(x) \\to \\infty$ along a subsequence",
+    "significance": "key",
+    "relatedConcepts": ["Erdős 1941 divergence", "Lebesgue function", "divergence of Lagrange interpolation", "rational multiples of π"],
+    "prerequisites": ["Continuous", "chebyshevInterpSeq", "Odd in ℕ", "axiom keyword in Lean 4"]
+  },
+  {
+    "id": "ann-er1151-06",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 153, "endLine": 164 },
+    "type": "concept",
+    "title": "The Open Conjecture: Any Closed Set Is Realizable",
+    "content": "erdos_1151_conjecture is the open problem: for any x ∈ [−1, 1] and any closed A ⊆ [−1, 1], there exists a continuous f such that limitPointSet(𝓛ⁿf(x)) = A exactly. This would give a complete topological classification of the limit-point behaviors of Lagrange interpolation at Chebyshev nodes — any closed set, however complicated, can appear. The axiom states this as an existence result parameterized by x, A, and their containment conditions. Erdős claimed this without proof in a 1943 note; it was listed as open by Vértesi in 1999.",
+    "mathContext": "$\\forall x \\in [-1,1],\\; \\forall A \\subseteq [-1,1]$ closed, $\\exists f \\in C[-1,1]: \\text{limitPointSet}(\\mathcal{L}^n f(x)) = A$",
+    "significance": "key",
+    "relatedConcepts": ["completeness of limit-point sets", "Baire category methods", "approximation theory", "open problem in analysis"],
+    "prerequisites": ["IsClosed", "Set.Icc", "limitPointSet", "chebyshevInterpSeq", "Continuous"]
+  },
+  {
+    "id": "ann-er1151-07",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 166, "endLine": 183 },
+    "type": "technique",
+    "title": "Special Cases: Convergence and Dense Orbit",
+    "content": "Two special cases are derived from the conjecture as immediate corollaries. erdos_1151_convergent_case takes A = {y}: the limit point set is a singleton, meaning 𝓛ⁿf(x) converges to y. erdos_1151_dense_case takes A = [−1, 1]: the limit point set is the full interval, meaning the sequence visits every point arbitrarily closely (a 'topologically chaotic' orbit). Both proofs are one-liners that apply the axiom with the correct closedness witnesses: isClosed_singleton for {y} and isClosed_Icc for [−1, 1]. These cases bound the spectrum from 'completely convergent' to 'completely divergent' behavior.",
+    "mathContext": "$A = \\{y\\}$: $\\mathcal{L}^n f(x) \\to y$ (convergent); $A = [-1,1]$: $\\overline{\\{\\mathcal{L}^n f(x)\\}} = [-1,1]$ (dense orbit)",
+    "significance": "supporting",
+    "relatedConcepts": ["isClosed_singleton", "isClosed_Icc", "convergent sequence", "dense orbit", "special case derivation"],
+    "prerequisites": ["erdos_1151_conjecture", "isClosed_singleton", "isClosed_Icc", "Set.singleton_subset_iff"]
+  }
+]

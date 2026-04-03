@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-wq01-composite-factorial",
+    "proofId": "wilsons-theorem-oq-01",
+    "range": { "startLine": 88, "endLine": 131 },
+    "type": "insight",
+    "title": "Composite Factorial Vanishing: n divides (n-1)!",
+    "content": "For composite n > 4, n divides (n-1)!. The proof splits into two cases: (1) n = p² for an odd prime p ≥ 3: then 2p ≤ n-1, and p, 2p are distinct factors in (n-1)!, so p·2p = 2p² divides (n-1)! — and p² divides 2p², giving p² | (n-1)!. (2) n = p·q with p ≠ q: both p and q appear in {1,...,n-1}, and distinct_factors_dvd_factorial gives p·q | (n-1)!. The key infrastructure is distinct_factors_dvd_factorial, which uses Finset.prod_dvd_prod_of_subset.",
+    "mathContext": "\\text{Composite } n > 4 \\Rightarrow n \\mid (n-1)!\\\\\n\\text{Case 1: } n = p^2\\ (p \\geq 3) \\Rightarrow p \\cdot 2p = 2p^2 \\mid (n-1)!,\\; p^2 \\mid 2p^2 \\Rightarrow n \\mid (n-1)!\\\\\n\\text{Case 2: } n = pq,\\ p \\neq q \\Rightarrow p,q \\in \\{1,\\ldots,n-1\\},\\; pq \\mid (n-1)!",
+    "significance": "key",
+    "relatedConcepts": ["factorial divisibility", "composite numbers", "minFac decomposition", "Finset.prod_dvd_prod_of_subset"],
+    "prerequisites": ["Nat.minFac_prime", "Nat.minFac_sq_le_self", "distinct_factors_dvd_factorial"]
+  },
+  {
+    "id": "ann-wq01-classification",
+    "proofId": "wilsons-theorem-oq-01",
+    "range": { "startLine": 162, "endLine": 187 },
+    "type": "insight",
+    "title": "Wilson's Complete Trichotomy for All n≥2",
+    "content": "wilson_complete_classification establishes the exact trichotomy of (n-1)! mod n for all n ≥ 2: (1) n prime → (n-1)! ≡ -1 (mod n) by Wilson's theorem; (2) n = 4 → (n-1)! = 3! = 6 ≡ 2 (mod 4), the unique exception; (3) n composite, n > 4 → (n-1)! ≡ 0 (mod n) by composite_factorial_dvd. The case n = 4 is the only composite where (n-1)! mod n is neither 0 nor -1. prime_iff_factorial_neg_one then gives the biconditional: n is prime iff (n-1)! ≡ -1 (mod n), a primality test via Mathlib's Nat.prime_iff_fac_equiv_neg_one.",
+    "mathContext": "\\forall n \\geq 2:\\; (n-1)! \\equiv \\begin{cases} -1 \\pmod{n} & n \\text{ prime} \\\\ 2 \\pmod{4} & n = 4 \\\\ 0 \\pmod{n} & n \\text{ composite},\\ n > 4 \\end{cases}\\\\\nn \\text{ prime} \\iff (n-1)! \\equiv -1 \\pmod{n}",
+    "significance": "key",
+    "relatedConcepts": ["Wilson's theorem", "primality test", "factorial residues", "composite moduli"],
+    "prerequisites": ["composite_factorial_dvd", "Nat.prime_iff_fac_equiv_neg_one", "interval_cases"]
+  },
+  {
+    "id": "ann-wq01-wilson-quotient",
+    "proofId": "wilsons-theorem-oq-01",
+    "range": { "startLine": 193, "endLine": 224 },
+    "type": "definition",
+    "title": "Wilson Quotient: Integer Quotient of (p-1)!+1 by p",
+    "content": "For any prime p, Wilson's theorem guarantees p | (p-1)!+1. The Wilson quotient W_p = ((p-1)!+1)/p is always an integer (wilsonQuotient_mul) and always positive (wilsonQuotient_pos). Concrete values: W_2=1, W_3=1, W_5=5, W_7=103, W_11=329891, W_13=36846277. A prime p is a Wilson prime iff p | W_p (i.e., p² | (p-1)!+1). The quotient grows super-exponentially: W_p ≈ (p-1)!/p.",
+    "mathContext": "W_p = \\frac{(p-1)! + 1}{p} \\in \\mathbb{Z}_{>0}\\\\\np \\text{ Wilson prime} \\iff p \\mid W_p \\iff p^2 \\mid (p-1)!+1\\\\\nW_5 = 5,\\; W_7 = 103,\\; W_{13} = 36846277",
+    "significance": "key",
+    "relatedConcepts": ["Wilson quotient", "Wilson primes", "factorial arithmetic", "p-adic valuations"],
+    "prerequisites": ["wilsonQuotient", "prime_dvd_factorial_succ", "Nat.div_mul_cancel"]
+  },
+  {
+    "id": "ann-wq01-wilson-prime",
+    "proofId": "wilsons-theorem-oq-01",
+    "range": { "startLine": 230, "endLine": 269 },
+    "type": "definition",
+    "title": "Wilson Primes: p² divides (p-1)!+1",
+    "content": "IsWilsonPrime p asserts p is prime and p² | (p-1)!+1 — a second-order divisibility condition. While every prime p divides (p-1)!+1, a Wilson prime requires the square p² to divide it. Verified: five_is_wilson_prime (4!+1=25=5²) and thirteen_is_wilson_prime (12!+1 divisible by 169). Non-Wilson primes proved: 2, 3, 7, 11. The only known Wilson primes are 5, 13, and 563. Connection to Bernoulli numbers: p is Wilson prime iff p | B_{p-1}.",
+    "mathContext": "\\text{IsWilsonPrime}(p) \\iff p \\text{ prime} \\wedge p^2 \\mid (p-1)!+1\\\\\n4! + 1 = 25 = 5^2 \\Rightarrow 5 \\text{ is Wilson prime}\\\\\n12! + 1 = 479001601 \\equiv 0 \\pmod{169} \\Rightarrow 13 \\text{ is Wilson prime}\\\\\np \\text{ Wilson prime} \\iff p \\mid B_{p-1}",
+    "significance": "key",
+    "relatedConcepts": ["Wilson primes", "Bernoulli numbers", "p-adic analysis", "rare primes"],
+    "prerequisites": ["IsWilsonPrime", "wilsonQuotient", "isWilsonPrime_iff_quotient", "native_decide"]
+  },
+  {
+    "id": "ann-wq01-units-product",
+    "proofId": "wilsons-theorem-oq-01",
+    "range": { "startLine": 280, "endLine": 354 },
+    "type": "definition",
+    "title": "Units Product and Gauss-Wilson Form Check",
+    "content": "unitsProduct n = ∏{a < n : gcd(a,n)=1} a is the product of all units mod n. hasGaussWilsonForm n decidably checks whether n ∈ {1,2,4,p^k,2p^k} for odd prime p, using isPowerOfAux. gaussWilsonCheck verifies that unitsProduct n % n = n-1 iff hasGaussWilsonForm n. Computationally confirmed via native_decide for all n ≤ 50 (gaussWilson_verified_le_50) and extended to n ≤ 200 (gaussWilson_verified_le_200). This gives empirical confidence before the abstract algebraic proof.",
+    "mathContext": "\\text{unitsProduct}(n) = \\prod_{\\substack{a < n \\\\ \\gcd(a,n)=1}} a\\\\\n\\text{GaussWilsonForm} \\iff n \\in \\{1,2,4,p^k,2p^k\\} \\text{ for odd prime } p\\\\\n\\forall n \\leq 200:\\; \\text{unitsProduct}(n) \\bmod n = n-1 \\iff \\text{GaussWilsonForm}(n)",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler totient function", "coprime integers", "primitive roots", "cyclic unit groups"],
+    "prerequisites": ["Finset.filter", "Nat.Coprime", "hasGaussWilsonForm", "native_decide"]
+  },
+  {
+    "id": "ann-wq01-sqrt-unity",
+    "proofId": "wilsons-theorem-oq-01",
+    "range": { "startLine": 454, "endLine": 494 },
+    "type": "definition",
+    "title": "Square Roots of Unity: Key to Gauss-Wilson Product Formula",
+    "content": "sqRootsOfUnity n = {a : gcd(a,n)=1, a²≡1 (mod n)} are the self-inverse units. The key structural insight: non-self-inverse pairs (a, a⁻¹) cancel in ∏units, leaving ∏units ≡ ∏{self-inverse units}. For Gauss-Wilson forms: exactly 2 square roots of unity — {1, n-1} — so product = n-1 ≡ -1. For other n: ≥ 4 square roots forming a (ℤ/2)^k subgroup with product 1. This explains why Gauss-Wilson forms give -1 and others give 1. Computationally verified for n ≤ 100 (sqRoot_gaussWilson_le_100).",
+    "mathContext": "\\text{sqRootsOfUnity}(n) = \\{a : a^2 \\equiv 1 \\pmod{n},\\ \\gcd(a,n)=1\\}\\\\\n|\\text{sqRootsOfUnity}(n)| = 2 \\iff n \\in \\{4,p^k,2p^k\\}\\\\\n\\prod_{\\text{units}} \\equiv \\prod_{\\text{self-inverse}} \\equiv \\begin{cases} n-1 \\equiv -1 & 2 \\text{ self-inverse} \\\\ 1 & \\geq 4 \\text{ self-inverse} \\end{cases}",
+    "significance": "supporting",
+    "relatedConcepts": ["square roots of unity", "involution pairing", "Gauss-Wilson theorem", "CRT structure"],
+    "prerequisites": ["sqRootsOfUnity", "Finset.filter", "Nat.Coprime", "sqRoot_gaussWilson_le_100"]
+  },
+  {
+    "id": "ann-wq01-abstract-gauss-wilson",
+    "proofId": "wilsons-theorem-oq-01",
+    "range": { "startLine": 576, "endLine": 592 },
+    "type": "insight",
+    "title": "Abstract Gauss-Wilson: IsCyclic Characterization via Mathlib",
+    "content": "isCyclic_units_iff_gaussWilson restates Mathlib's ZMod.isCyclic_units_iff in simplified form for n ≥ 3: (ℤ/nℤ)* is cyclic iff n = 4 or ∃ p odd prime, k ≥ 1 with n = p^k or n = 2p^k. The proof is a pure case analysis over Mathlib's output, filtering the n = 0,1,2 cases and mapping Odd p ↔ p ≠ 2. This is the abstract group-theoretic heart: cyclic unit group ↔ primitive root exists ↔ Gauss-Wilson holds.",
+    "mathContext": "(\\mathbb{Z}/n\\mathbb{Z})^\\times \\text{ cyclic} \\iff n \\in \\{4,p^k,2p^k\\} \\text{ for odd prime } p\\\\\n\\text{Via Mathlib: } \\texttt{ZMod.isCyclic\\_units\\_iff}\\\\\n\\text{Odd } p \\iff p \\neq 2 \\text{ (for primes)}",
+    "significance": "key",
+    "relatedConcepts": ["cyclic groups", "IsCyclic", "primitive roots", "ZMod.isCyclic_units_iff"],
+    "prerequisites": ["IsCyclic", "ZMod", "ZMod.isCyclic_units_iff", "Mathlib.RingTheory.ZMod.UnitsCyclic"]
+  },
+  {
+    "id": "ann-wq01-gauss-wilson-main",
+    "proofId": "wilsons-theorem-oq-01",
+    "range": { "startLine": 674, "endLine": 687 },
+    "type": "insight",
+    "title": "Gauss-Wilson Classification: The Main Theorem",
+    "content": "gaussWilson_classification is the culminating theorem: for n ≥ 3, unitsProduct n % n = n-1 iff n ∈ {4, p^k, 2p^k} for odd prime p. The proof chain: (1) unitsProduct_eq_neg_one_iff_cyclic reduces the concrete arithmetic to IsCyclic (ℤ/nℤ)* via WilsonsTheoremOQ02's abstract bridge; (2) isCyclic_units_iff_gaussWilson (restating Mathlib's ZMod.isCyclic_units_iff) gives the p^k/2p^k characterization. This connects 200-case computational verification with the abstract group-theoretic proof.",
+    "mathContext": "\\prod_{\\gcd(a,n)=1} a \\equiv -1 \\pmod{n} \\iff n = 4 \\vee \\exists p \\text{ odd prime},\\ k \\geq 1:\\; n = p^k \\vee n = 2p^k\\\\\n\\text{Proof: concrete} \\xrightarrow{\\text{bridge (OQ02)}} \\text{IsCyclic} \\xrightarrow{\\text{Mathlib}} p^k/2p^k",
+    "significance": "key",
+    "relatedConcepts": ["Gauss-Wilson theorem", "primitive roots", "cyclic groups", "ZMod units"],
+    "prerequisites": ["unitsProduct_eq_neg_one_iff_cyclic", "isCyclic_units_iff_gaussWilson", "WilsonsTheoremOQ02.gaussWilson_abstract"]
+  }
+]

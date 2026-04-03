@@ -84,7 +84,69 @@
       "targetId": "central-limit-theorem-oq-01",
       "relationship": "related",
       "description": "Related CLT extension exploring Lindeberg-Feller for non-identically distributed independent sequences"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Both use characteristic function / analytic methods to prove asymptotic results; the Fourier/char fn technique bridges analysis and probability"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-clt02-mda",
+      "title": "Part I: Martingale Difference Array Structure",
+      "startLine": 44,
+      "endLine": 99,
+      "summary": "MartingaleDiffArray structure (rowSize, X, filtration ℱ, mda_property). rowSum definition. rowSum_mean_zero: E[S_n] = 0 via integral_finset_sum + mda_property.",
+      "mathContext": "$\\{X_{n,k}\\}$ MDA: $\\mathbb{E}[X_{n,k} \\mid \\mathcal{F}_{n,k-1}] = 0$; $S_n = \\sum_{k=0}^{\\text{rowSize}(n)-1} X_{n,k}$; $\\mathbb{E}[S_n] = 0$"
+    },
+    {
+      "id": "sec-clt02-conditions",
+      "title": "Parts II–III: Variance, Lindeberg, and Lyapunov Conditions",
+      "startLine": 100,
+      "endLine": 177,
+      "summary": "varianceSum, lindebergSum (indicator 1{|X|>ε}), lindebergCondition (L_n(ε)→0), varianceConverges (V_n→σ²). lyapunovSum (∑E[|X|^{2+δ}]), lyapunovCondition. lindeberg_sum_nonneg via Finset.sum_nonneg.",
+      "mathContext": "$L_n(\\varepsilon) = \\sum_k \\mathbb{E}[X_{n,k}^2 \\cdot \\mathbf{1}_{|X_{n,k}|>\\varepsilon}] \\to 0$; $V_n = \\sum_k \\mathbb{E}[X_{n,k}^2] \\to \\sigma^2$; $\\Lambda_n(\\delta) = \\sum_k \\mathbb{E}[|X_{n,k}|^{2+\\delta}] \\to 0$"
+    },
+    {
+      "id": "sec-clt02-lyapunov-lindeberg",
+      "title": "Part III: Lyapunov Implies Lindeberg (Fully Proved)",
+      "startLine": 181,
+      "endLine": 270,
+      "summary": "rpow_indicator_bound private lemma: x²·ε^δ ≤ |x|^{2+δ} on {|x|>ε} via Real.rpow_add + mul_le_mul. lyapunov_implies_lindeberg: L_n(ε) ≤ Λ_n(δ)/ε^δ → 0 via integral_mono_of_nonneg + squeeze theorem. variance_sum_nonneg.",
+      "mathContext": "$|x| > \\varepsilon, \\delta > 0 \\Rightarrow x^2 \\cdot \\varepsilon^\\delta \\leq |x|^{2+\\delta}$; $L_n(\\varepsilon) \\leq \\Lambda_n(\\delta)/\\varepsilon^\\delta \\to 0$ (squeeze: $0 \\leq L_n \\leq \\Lambda_n/\\varepsilon^\\delta \\to 0$)"
+    },
+    {
+      "id": "sec-clt02-martingale-clt",
+      "title": "Part IV: Martingale CLT (McLeish 1974) — Axiomatized",
+      "startLine": 272,
+      "endLine": 318,
+      "summary": "rowSumCharFun definition (E[exp(itS_n)]). martingale_clt axiom: MDA + Lindeberg + V_n→σ² ⟹ char fn converges to Gaussian exp(-σ²t²/2). Proof sketch via char fn Taylor expansion and conditional expectation.",
+      "mathContext": "$\\text{MDA} + \\text{Lindeberg} + V_n \\to \\sigma^2 \\Rightarrow \\forall t: \\mathbb{E}[e^{itS_n}] \\to e^{-\\sigma^2 t^2/2}$ (McLeish 1974, Brown 1971)"
+    },
+    {
+      "id": "sec-clt02-iid-case",
+      "title": "Part V: i.i.d. Case — Classical CLT as Corollary",
+      "startLine": 320,
+      "endLine": 401,
+      "summary": "IIDSequence structure (mean zero, common variance σ²). IIDSequence.toMDA: X_{n,k} = X_k/√n with trivial filtration. iid_mda_variance_converges: V_n = σ² exactly for n ≥ 1 (proved via integral_mul_const + Real.sq_sqrt + field_simp).",
+      "mathContext": "$X_{n,k} = X_k/\\sqrt{n}$; $V_n = \\sum_{k<n} \\sigma^2/n = \\sigma^2$ (exact for $n \\geq 1$); row sum $S_n = (\\sum_{k<n} X_k)/\\sqrt{n}$"
+    },
+    {
+      "id": "sec-clt02-mixing",
+      "title": "Parts VI–VIII: α-Mixing, Long-Run Variance, Independence",
+      "startLine": 403,
+      "endLine": 499,
+      "summary": "alphaMixingCoeff (nested iSup over measurable sets). AlphaMixingSequence (mixing_bound, mixing_decay α(n)→0). longRunVariance = Var(X₁) + 2∑Cov. independent_implies_zero_mixing (sorry: nested ciSup = 0 in ℝ).",
+      "mathContext": "$\\alpha(\\mathcal{F}_1,\\mathcal{F}_2) = \\sup_{A,B} |P(A\\cap B) - P(A)P(B)|$; $\\sigma^2_\\infty = \\mathrm{Var}(X_1) + 2\\sum_{k\\geq 1}\\mathrm{Cov}(X_1,X_{k+1})$; $\\alpha(n) \\to 0$ (Rosenblatt 1956)"
+    },
+    {
+      "id": "sec-clt02-additional",
+      "title": "Parts IX–XI: Classical CLT Recovery and Additional Results",
+      "startLine": 501,
+      "endLine": 727,
+      "summary": "classical_clt_from_martingale (sorry: i.i.d. Lindeberg via DCT). iid_satisfies_lyapunov (sorry: rpow moment decay). lyapunov_sum_at_zero (δ=0 = varianceSum via sq_abs). rowSumCharFun_zero. Zero-variable lemmas. variance_sum_bounded_of_converges (eventual bound + Finset.sup').",
+      "mathContext": "$(X_1+\\cdots+X_n)/\\sqrt{n} \\xrightarrow{d} N(0,\\sigma^2)$; sorry: $\\mathbb{E}[X^2 \\cdot \\mathbf{1}_{|X|>\\varepsilon\\sqrt{n}}] \\xrightarrow{\\text{DCT}} 0$; $\\Lambda_n(\\delta) = \\mathbb{E}[|X|^{2+\\delta}]/n^{\\delta/2} \\to 0$"
+    }
+  ]
 }

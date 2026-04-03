@@ -51,14 +51,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erd\u0151s studied Lagrange interpolation at Chebyshev nodes starting in 1941, showing divergence is possible for continuous functions.",
+    "historicalContext": "Lagrange interpolation has a troubled history: Runge (1901) famously showed that interpolation at equally-spaced nodes for f(x) = 1/(1+25x²) diverges as n → ∞, despite f being analytic. Chebyshev nodes were introduced precisely to avoid this: by placing nodes at the roots of the Chebyshev polynomials, the interpolation error for smooth functions is dramatically reduced. Chebyshev (1854) showed these nodes minimize the ∞-norm of the Lebesgue function among all choices of n nodes. However, Erdős (1941) proved something deeper and disturbing: even at Chebyshev nodes, Lagrange interpolation can diverge for continuous (not just analytic) functions. Specifically, for x = cos(πp/q) with odd p, q, there exists a continuous f whose interpolation values diverge to ∞. Erdős (1943) then claimed — without proof — that the limit-point behavior is completely flexible: any closed subset of [−1, 1] can arise as the set of limit points of 𝓛ⁿf(x) for some continuous f. This conjecture was listed as open by Vértesi in his 1999 problem compilation [Va99, Problem 2.41]. As of 2026, it remains unresolved.",
     "problemStatement": "Prove that for any closed A \u2286 [-1,1] and suitable x, there exists continuous f such that A is the set of limit points of \ud835\udcdb\u207ff(x).",
     "text": "We formalize the problem, defining Chebyshev nodes, Lagrange interpolation, and limit point sets.",
     "proofStrategy": "Define the mathematical objects and state the conjecture. Derive special cases from it.",
     "keyInsights": [
-      "Chebyshev nodes are cos((2k+1)\u03c0/(2n)), roots of T\u2099",
-      "Lagrange interpolation can fail to converge for continuous functions",
-      "The conjecture would show ALL closed subsets are realizable as limit point sets"
+      "Chebyshev nodes xₖ = cos((2k+1)π/(2n)) minimize the Lebesgue function ‖Σ|ℓₖ|‖_∞ among all node choices, making them optimal for polynomial interpolation of smooth functions",
+      "Injectivity of Chebyshev nodes is proved via strictAntiOn_cos: cosine is strictly decreasing on [0, π], and all node arguments lie there; equal node values imply equal indices",
+      "The limit point set of any bounded sequence is closed (proved here); the conjecture claims the converse: every closed set is the limit point set of some Chebyshev interpolation sequence",
+      "Erdős's 1941 divergence result shows Chebyshev interpolation can fail for continuous functions at rational cosines — this axiom captures the boundary of what is known",
+      "Special cases bound the behavioral spectrum: A = {y} (convergence) and A = [−1, 1] (dense orbit), both derived in one line from the conjecture axiom"
     ],
     "prerequisites": [
       "Polynomial interpolation",
@@ -68,52 +70,61 @@
   },
   "sections": [
     {
-      "title": "Chebyshev Nodes",
-      "content": "Define Chebyshev nodes and prove they lie in [-1,1].",
-      "lineStart": 35,
-      "lineEnd": 55,
-      "theorems": [
-        "chebyshevNode_mem_Icc"
-      ],
-      "summary": "Chebyshev Nodes",
-      "id": "chebyshev-nodes"
+      "id": "chebyshev-nodes",
+      "title": "Part I: Chebyshev Nodes",
+      "startLine": 39,
+      "endLine": 81,
+      "summary": "Defines chebyshevNode and chebyshevNodes. Proves chebyshevNode_mem_Icc (nodes lie in [−1,1]) and chebyshevNodes_injective (nodes are distinct via strictAntiOn_cos).",
+      "mathContext": "$x_k^{(n)} = \\cos\\left(\\frac{(2k+1)\\pi}{2n}\\right) \\in [-1,1]$; all $n$ nodes distinct"
     },
     {
-      "title": "Lagrange Interpolation",
-      "content": "Define Lagrange basis polynomials and the interpolation operator.",
-      "lineStart": 57,
-      "lineEnd": 80,
-      "theorems": [],
-      "summary": "Lagrange Interpolation",
-      "id": "lagrange-interpolation"
+      "id": "lagrange-interpolation",
+      "title": "Part II: Lagrange Interpolation Operator",
+      "startLine": 83,
+      "endLine": 100,
+      "summary": "Defines lagrangeBasis (ℓₖ(x) = ∏_{i≠k} (x−xᵢ)/(xₖ−xᵢ)), lagrangeInterp (𝓛ⁿf(x) = Σₖ f(xₖ)ℓₖ(x)), and chebyshevInterp (specialization to Chebyshev nodes).",
+      "mathContext": "$\\ell_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$; $\\mathcal{L}^n f(x) = \\sum_{k=0}^{n-1} f(x_k^{(n)}) \\ell_k(x)$"
     },
     {
-      "title": "Main Conjecture and Special Cases",
-      "content": "State the conjecture and derive special cases.",
-      "lineStart": 99,
-      "lineEnd": 146,
-      "theorems": [
-        "erdos_1151_convergent_case",
-        "erdos_1151_dense_case"
-      ],
-      "summary": "Main Conjecture and Special Cases",
-      "id": "main-conjecture-and-special-ca"
+      "id": "limit-points",
+      "title": "Part III: Limit Points of Sequences",
+      "startLine": 102,
+      "endLine": 132,
+      "summary": "Defines IsLimitPoint and limitPointSet. Proves limitPointSet_isClosed: for bounded sequences, the limit point set is closed (complement is open by ε/2 argument).",
+      "mathContext": "$y \\in \\text{limitPointSet}(a_n) \\iff \\forall \\varepsilon > 0,\\; \\forall N,\\; \\exists n \\geq N: |a_n - y| < \\varepsilon$"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part IV: The Erdős Conjecture (Axiomatized)",
+      "startLine": 134,
+      "endLine": 164,
+      "summary": "Defines chebyshevInterpSeq. Axiomatizes erdos_1941_divergence (Erdős 1941: divergence at rational cosines) and erdos_1151_conjecture (open: every closed A ⊆ [−1,1] is realizable as a limit point set).",
+      "mathContext": "$\\forall A \\subseteq [-1,1]$ closed, $\\exists f \\in C[-1,1]: \\text{limitPointSet}(\\mathcal{L}^n f(x)) = A$ (open conjecture)"
+    },
+    {
+      "id": "special-cases",
+      "title": "Part V: Special Cases",
+      "startLine": 166,
+      "endLine": 183,
+      "summary": "Derives erdos_1151_convergent_case (A = {y}: convergence) and erdos_1151_dense_case (A = [−1,1]: dense orbit) as one-line corollaries of the conjecture axiom.",
+      "mathContext": "$A = \\{y\\}$: $\\mathcal{L}^n f(x) \\to y$; $A = [-1,1]$: orbit is dense in $[-1,1]$"
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erd\u0151s Problem #1151 on limit-point behavior of Lagrange interpolation at Chebyshev nodes.",
-    "implications": [
-      "Complete classification of convergence/divergence behaviors"
-    ],
+    "summary": "Formalizes Erdős Problem #1151 in 184 lines with 2 axioms. Defines Chebyshev nodes (with injectivity), Lagrange interpolation, limit point sets, and the full conjecture. Derives two extreme special cases: singleton limit sets (convergent behavior) and the full interval (everywhere-dense orbit).",
+    "implications": "If proved, the conjecture would give a complete topological classification of Lagrange interpolation behavior at Chebyshev nodes: the map f ↦ limitPointSet(𝓛ⁿf(x)) would be surjective onto the closed subsets of [−1, 1] for appropriate x. This would be a remarkable flexibility result — any pattern of convergence, divergence, and oscillation can be engineered via choice of continuous f. The formalization also demonstrates that the limit point set of any bounded sequence is closed, which is the forward direction: realizable limit point sets must be closed.",
     "openQuestions": [
-      "Is the conjecture true for all x?",
-      "Can Baire category methods prove existence?"
+      "Is erdos_1151_conjecture true for all x ∈ [−1, 1], or only for certain x (like rational cosines)?",
+      "Can Baire category methods prove existence? A 'generic' continuous function argument might show the set of f with prescribed limit points is dense in C[−1, 1]",
+      "What is the relationship to the Lebesgue function Λₙ(x) = Σ|ℓₖ(x)|? The divergence of 𝓛ⁿf(x) is controlled by Λₙ(x) via ‖𝓛ⁿ‖ ≤ Λₙ",
+      "Can the axiom erdos_1941_divergence be proved in Lean by formalizing the Lebesgue function growth rate for Chebyshev nodes at rational cosine points?"
     ]
   },
   "crossReferences": [
     {
-      "id": "erdos-1153",
-      "relationship": "Related Lagrange interpolation problem"
+      "targetId": "erdos-1153",
+      "relationship": "related",
+      "description": "Erdős #1153 also studies Lagrange interpolation convergence; the lagrangeBasis definition in this file is reused from that formalization"
     }
   ],
   "references": [

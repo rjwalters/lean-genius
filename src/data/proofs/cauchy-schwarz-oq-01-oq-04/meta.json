@@ -62,8 +62,10 @@
     "summary": "Bessel's inequality is fully formalized in Lean 4 via Mathlib. The proof uses the projection identity (a consequence of orthonormality and the Pythagorean theorem) to give both the finite and infinite cases. Parseval's identity follows from the HilbertBasis linear isometry to ℓ². This answers OQ-04 affirmatively: YES, Bessel's inequality can be formalized as a consequence of iterated Cauchy-Schwarz and Pythagoras.",
     "implications": "The formalization demonstrates that Mathlib's Orthonormal API already contains Bessel's inequality as a first-class result, making the proof trivial to state formally. The more interesting part is the Parseval direction, which requires connecting the abstract isometry b.repr to the concrete ℓ² norm formula.",
     "openQuestions": [
-      "Can the decay rate of Fourier coefficients (Bessel energy) be bounded for specific function classes (Hölder, Sobolev)?",
-      "Extend Parseval to measurable settings: the abstract Fourier transform version"
+      "Can the decay rate of Fourier coefficients be bounded for specific function classes? For f ∈ Cᵏ([0,2π]), the classical Fourier coefficients cₙ = O(1/nᵏ) — can this be formalized in Lean?",
+      "Extend Parseval to measurable settings: the Plancherel theorem ∑' n, |f̂(n)|² = ‖f‖²_{L²} for square-integrable functions — is this in Mathlib?",
+      "Can the Riesz-Fischer theorem be derived: the map f ↦ (⟨f,eₙ⟩)ₙ from L² to ℓ² is an isometric isomorphism? This would complete the L² = ℓ² identification",
+      "Prove the converse: if ∑' i, ‖⟪vᵢ,x⟫‖² = ‖x‖² for some orthonormal family, is it necessarily a HilbertBasis? (This characterizes complete orthonormal systems)"
     ]
   },
   "leanFile": {
@@ -85,5 +87,46 @@
       "description": "Answers OQ-04 by formalizing Bessel's inequality as a consequence of Cauchy-Schwarz"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "finite-bessel",
+      "title": "Part I: Finite Bessel Inequality",
+      "startLine": 66,
+      "endLine": 92,
+      "summary": "Proves bessel_finite (∑ᵢ∈s ‖⟪vᵢ,x⟫‖² ≤ ‖x‖² via Orthonormal.sum_inner_products_le), bessel_monotone (sums grow with set inclusion), and bessel_insert (adding one orthonormal vector increases the sum).",
+      "mathContext": "$\\sum_{i \\in s} \\|\\langle v_i, x\\rangle\\|^2 \\leq \\|x\\|^2$; monotone: $s \\subseteq t \\Rightarrow \\Sigma_s \\leq \\Sigma_t$"
+    },
+    {
+      "id": "infinite-bessel",
+      "title": "Part II: Infinite Bessel Inequality",
+      "startLine": 94,
+      "endLine": 116,
+      "summary": "Proves bessel_inequality (∑' i, ‖⟪vᵢ,x⟫‖² ≤ ‖x‖² via tsum_inner_products_le) and bessel_summable (Fourier coefficients are square-summable). The tsum bounded by ‖x‖² is the infinite-dimensional Bessel statement.",
+      "mathContext": "$\\sum_{i} \\|\\langle v_i, x\\rangle\\|^2 \\leq \\|x\\|^2$; summable: $\\sum_i \\|c_i\\|^2 < \\infty$"
+    },
+    {
+      "id": "parseval",
+      "title": "Part III: Parseval's Identity",
+      "startLine": 118,
+      "endLine": 151,
+      "summary": "Proves parseval_identity (∑' i, ‖⟪bᵢ,x⟫‖² = ‖x‖² for HilbertBasis) via three steps: repr_apply_apply, lp.norm_rpow_eq_tsum, and norm_map isometry. Also parseval_norm_sq (‖x‖² = ∑' i, ‖b.repr x i‖²).",
+      "mathContext": "$\\sum_i \\|\\langle b_i, x\\rangle\\|^2 = \\|x\\|^2$; isometry $E \\cong_{\\text{li}} \\ell^2(\\iota, \\mathbb{k})$"
+    },
+    {
+      "id": "cauchy-schwarz-connection",
+      "title": "Part IV: Connection to Cauchy-Schwarz",
+      "startLine": 153,
+      "endLine": 171,
+      "summary": "Proves bessel_extends_cauchy_schwarz (singleton Bessel gives |⟨v,x⟩|² ≤ ‖x‖²) and inner_le_norm (|⟨v,x⟩| ≤ ‖x‖ via nlinarith). Closes the logical circle: Bessel both extends and implies Cauchy-Schwarz.",
+      "mathContext": "$s = \\{i\\}$: $\\|\\langle v_i, x\\rangle\\|^2 \\leq \\|x\\|^2$; $\\Rightarrow \\|\\langle v_i, x\\rangle\\| \\leq \\|x\\|$"
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Bessel Summary Theorem",
+      "startLine": 173,
+      "endLine": 198,
+      "summary": "Packages finite Bessel, infinite Bessel, and summability as bessel_summary — a conjunction answering OQ-04 affirmatively. Parseval's equality case holds when the orthonormal system is a complete Hilbert basis.",
+      "mathContext": "$(\\forall s,\\; \\Sigma_s \\leq \\|x\\|^2) \\wedge (\\sum' \\leq \\|x\\|^2) \\wedge \\text{Summable}$; equality iff HilbertBasis"
+    }
+  ]
 }

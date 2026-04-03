@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-cs04-01",
+    "proofId": "cauchy-schwarz-oq-01-oq-04",
+    "range": { "startLine": 70, "endLine": 79 },
+    "type": "insight",
+    "title": "Finite Bessel via the Projection Identity",
+    "content": "bessel_finite proves ∑ᵢ∈s ‖⟪vᵢ,x⟫‖² ≤ ‖x‖² for any finite set s of orthonormal vectors. The one-line proof applies Mathlib's Orthonormal.sum_inner_products_le. The mathematical content: the projection of x onto span{vᵢ : i∈s} has squared norm exactly ∑ᵢ∈s ‖⟪vᵢ,x⟫‖² (by Pythagoras + orthonormality), and the projection decreases norm (‖projₛ x‖ ≤ ‖x‖). The proof encodes a statement that would classically require several lines of inner product algebra.",
+    "mathContext": "$\\sum_{i \\in s} \\|\\langle v_i, x \\rangle\\|^2 = \\|\\text{proj}_s x\\|^2 \\leq \\|x\\|^2$; Pythagoras: $\\|x\\|^2 = \\|\\text{proj}_s x\\|^2 + \\|x - \\text{proj}_s x\\|^2$",
+    "significance": "key",
+    "relatedConcepts": ["orthogonal projection", "Pythagorean theorem", "Orthonormal.sum_inner_products_le", "projection decreases norm"],
+    "prerequisites": ["Orthonormal in Lean/Mathlib", "InnerProductSpace", "Finset.sum", "‖·‖² notation"]
+  },
+  {
+    "id": "ann-cs04-02",
+    "proofId": "cauchy-schwarz-oq-01-oq-04",
+    "range": { "startLine": 81, "endLine": 92 },
+    "type": "technique",
+    "title": "Monotonicity: More Orthonormal Vectors Capture More Energy",
+    "content": "bessel_monotone proves that the Bessel sum is monotone in the orthonormal set: if s ⊆ t, then ∑ᵢ∈s ‖⟪vᵢ,x⟫‖² ≤ ∑ᵢ∈t ‖⟪vᵢ,x⟫‖². Proof: Finset.sum_le_sum_of_subset, since all terms are nonneg (‖·‖² ≥ 0). bessel_insert is the special case of adding a single new vector i ∉ s. This monotonicity is the key step in taking the limit from finite to infinite Bessel: the supremum over finite subsets equals the tsum.",
+    "mathContext": "$s \\subseteq t \\Rightarrow \\sum_{i \\in s} \\|\\langle v_i, x\\rangle\\|^2 \\leq \\sum_{i \\in t} \\|\\langle v_i, x\\rangle\\|^2$; key: all terms $\\geq 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone sums", "Finset.sum_le_sum_of_subset", "sup of finite Bessel sums", "ennreal monotone convergence"],
+    "prerequisites": ["Finset.subset_insert", "Finset.sum_le_sum_of_subset", "norm_nonneg"]
+  },
+  {
+    "id": "ann-cs04-03",
+    "proofId": "cauchy-schwarz-oq-01-oq-04",
+    "range": { "startLine": 98, "endLine": 116 },
+    "type": "concept",
+    "title": "Infinite Bessel and Square-Summability of Fourier Coefficients",
+    "content": "bessel_inequality extends the finite result to ∑' i, ‖⟪vᵢ,x⟫‖² ≤ ‖x‖² via Orthonormal.tsum_inner_products_le. The tsum (topological sum) is the limit of the directed net of partial sums. The proof uses monotone convergence: partial sums are bounded by ‖x‖², so the tsum exists and is ≤ ‖x‖². bessel_summable extracts the summability statement directly: Summable (fun i => ‖⟪vᵢ,x⟫‖²), which says the Fourier energy series ∑ᵢ ‖cᵢ‖² converges — a precondition for many constructions in Hilbert space theory.",
+    "mathContext": "$\\sum_{i} \\|\\langle v_i, x\\rangle\\|^2 \\leq \\|x\\|^2$; summability: $\\sum_i \\|c_i\\|^2 < \\infty$ where $c_i = \\langle v_i, x\\rangle$ (Fourier coefficients)",
+    "significance": "key",
+    "relatedConcepts": ["tsum in Mathlib", "Summable", "Fourier coefficients", "square-summable sequences", "monotone convergence"],
+    "prerequisites": ["Orthonormal.tsum_inner_products_le", "Orthonormal.inner_products_summable", "tsum definition"]
+  },
+  {
+    "id": "ann-cs04-04",
+    "proofId": "cauchy-schwarz-oq-01-oq-04",
+    "range": { "startLine": 122, "endLine": 151 },
+    "type": "insight",
+    "title": "Parseval's Identity: Isometry of the Hilbert Basis Representation",
+    "content": "parseval_identity proves ∑' i, ‖⟪bᵢ,x⟫‖² = ‖x‖² for a HilbertBasis b. This is the equality case of Bessel's inequality. The three-step proof: (1) rewrite using b.repr_apply_apply: b.repr x i = ⟪bᵢ,x⟫, so the sum becomes ∑' i, ‖b.repr x i‖²; (2) apply lp.norm_rpow_eq_tsum: for the ℓ² function b.repr x, ‖b.repr x‖² = ∑' i, ‖b.repr x i‖²; (3) use the isometry property LinearIsometryEquiv.norm_map: ‖b.repr x‖ = ‖x‖. The elegance lies in routing through the abstract isometry rather than a direct calculation.",
+    "mathContext": "$\\sum_i \\|\\langle b_i, x\\rangle\\|^2 = \\|\\mathbf{b}.\\text{repr}\\, x\\|^2 = \\|x\\|^2$; isometry: $\\mathbf{b}.\\text{repr}: E \\cong_{\\text{li}} \\ell^2(\\iota, \\mathbb{k})$",
+    "significance": "key",
+    "relatedConcepts": ["HilbertBasis", "HilbertBasis.repr", "ℓ² isometry", "lp.norm_rpow_eq_tsum", "LinearIsometryEquiv"],
+    "prerequisites": ["CompleteSpace E", "HilbertBasis", "repr_apply_apply", "lp.norm_rpow_eq_tsum", "LinearIsometryEquiv.norm_map"]
+  },
+  {
+    "id": "ann-cs04-05",
+    "proofId": "cauchy-schwarz-oq-01-oq-04",
+    "range": { "startLine": 157, "endLine": 171 },
+    "type": "concept",
+    "title": "Bessel Implies Cauchy-Schwarz for a Single Vector",
+    "content": "bessel_extends_cauchy_schwarz proves ‖⟪vᵢ,x⟫‖² ≤ ‖x‖² — Cauchy-Schwarz for a unit vector (since ‖vᵢ‖ = 1). This is the special case s = {i} of finite Bessel, extracted via simpa. inner_le_norm then derives ‖⟪vᵢ,x⟫‖ ≤ ‖x‖ using nlinarith from the squared bound. The nlinarith call uses two auxiliary sq_nonneg lemmas to handle the square root relationship ‖a‖² ≤ ‖b‖² → ‖a‖ ≤ ‖b‖. This connection to Cauchy-Schwarz closes the logical circle: Bessel is a simultaneous extension and consequence of Cauchy-Schwarz for orthonormal systems.",
+    "mathContext": "$\\|\\langle v_i, x\\rangle\\|^2 \\leq \\|x\\|^2$ (single-vector Bessel $=$ Cauchy-Schwarz for unit vectors); $\\|\\langle v_i, x\\rangle\\| \\leq \\|x\\|$ via $a^2 \\leq b^2, a,b \\geq 0 \\Rightarrow a \\leq b$",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "unit vector", "nlinarith for quadratic implications", "sq_nonneg"],
+    "prerequisites": ["bessel_extends_cauchy_schwarz", "bessel_finite with singleton", "simpa", "nlinarith", "sq_nonneg"]
+  },
+  {
+    "id": "ann-cs04-06",
+    "proofId": "cauchy-schwarz-oq-01-oq-04",
+    "range": { "startLine": 177, "endLine": 197 },
+    "type": "technique",
+    "title": "Summary Theorem: The Full Bessel Chain",
+    "content": "bessel_summary packages finite Bessel, infinite Bessel, and summability as a conjunction, answering OQ-04 affirmatively. The proof is a one-line anonymous constructor using the three underlying theorems. The structure makes the logical relationship explicit: all three properties follow from Orthonormal.sum_inner_products_le, Orthonormal.tsum_inner_products_le, and Orthonormal.inner_products_summable respectively. This design demonstrates idiomatic Lean proof packaging: prove each component separately, then bundle them.",
+    "mathContext": "$(\\forall s,\\; \\text{finite Bessel}) \\wedge (\\text{infinite Bessel}) \\wedge (\\text{summable})$; all from the single projection identity $\\|x - \\text{proj}_s x\\|^2 = \\|x\\|^2 - \\sum_s \\|c_i\\|^2 \\geq 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["conjunction packaging", "OQ-04 answer", "proof bundling", "And.intro"],
+    "prerequisites": ["bessel_finite", "bessel_inequality", "bessel_summable", "anonymous constructor ⟨·,·,·⟩"]
+  }
+]

@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-sigma-concrete",
+    "proofId": "sum-of-divisors",
+    "range": { "startLine": 47, "endLine": 91 },
+    "type": "concept",
+    "title": "Concrete σ Values via native_decide",
+    "content": "Thirteen specific values of σ are verified computationally using `native_decide`, which compiles and runs code at type-check time. These include σ(6)=12 (perfect number check) and σ(28)=56 (second perfect number). The pattern σ(p) = p+1 for primes is visible in σ(2)=3, σ(3)=4, σ(5)=6, σ(7)=8. Computational verification with `native_decide` provides certainty about specific values while general theorems (proved later) provide structural understanding.",
+    "mathContext": "$$\\sigma(n) = \\sum_{d \\mid n} d$$\nExamples: $\\sigma(6) = 1+2+3+6 = 12 = 2\\cdot 6$ (perfect), $\\sigma(12) = 1+2+3+4+6+12 = 28 > 24$ (abundant), $\\sigma(100) = 217$.",
+    "significance": "context",
+    "relatedConcepts": ["native_decide", "divisor enumeration", "perfect numbers"],
+    "prerequisites": ["ArithmeticFunction.sigma", "Lean native_decide tactic"]
+  },
+  {
+    "id": "ann-sigma-prime-general",
+    "proofId": "sum-of-divisors",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "technique",
+    "title": "General σ(p) = p+1 for All Primes",
+    "content": "The general theorem sigma_prime proves σ(p) = p+1 for any prime p, not just specific values. The proof uses `sigma_apply_prime_pow hp` with k=1 to get σ(p) = Σ_{j=0}^{1} p^j = 1 + p, then simplifies with `simp [pow_one, Finset.sum_range_succ]` and closes with `linarith`. This is the structural key: primes have exactly two divisors (1 and p), so σ = 1 + p.",
+    "mathContext": "$$\\sigma(p) = p + 1 \\text{ for all primes } p$$\nProof: divisors of $p$ are $\\{1, p\\}$ only. From `sigma_apply_prime_pow`: $\\sigma(p^1) = \\sum_{j=0}^{1} p^j = 1 + p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime factorization", "sigma_apply_prime_pow", "Finset.sum_range_succ"],
+    "prerequisites": ["Nat.Prime", "sigma_apply_prime_pow"]
+  },
+  {
+    "id": "ann-classification-defs",
+    "proofId": "sum-of-divisors",
+    "range": { "startLine": 136, "endLine": 194 },
+    "type": "definition",
+    "title": "Number Classification: Deficient, Perfect, Abundant",
+    "content": "Three classification predicates are defined in terms of σ(n) vs 2n: IsDeficient (σ(n) < 2n), IsPerfect (σ(n) = 2n), IsAbundant (σ(n) > 2n). Perfect numbers satisfy σ(n) = 2n because σ(n) = n + s(n) where s(n) is the sum of proper divisors, so σ(n) = 2n means s(n) = n. The first three perfect numbers 6, 28, 496 are all verified by native_decide. All primes are deficient since σ(p) = p+1 < 2p.",
+    "mathContext": "$$\\text{Deficient}: \\sigma(n) < 2n, \\quad \\text{Perfect}: \\sigma(n) = 2n, \\quad \\text{Abundant}: \\sigma(n) > 2n$$\n$$\\sigma(n) = n + s(n) \\text{ where } s(n) = \\sum_{\\substack{d|n \\\\ d < n}} d$$\nPerfect $\\Leftrightarrow s(n) = n$.",
+    "significance": "key",
+    "relatedConcepts": ["perfect numbers", "deficient numbers", "abundant numbers", "aliquot sum"],
+    "prerequisites": ["sigma 1", "Prop in Lean", "native_decide for verification"]
+  },
+  {
+    "id": "ann-classification-theory",
+    "proofId": "sum-of-divisors",
+    "range": { "startLine": 196, "endLine": 217 },
+    "type": "technique",
+    "title": "Classification is Exhaustive and Exclusive via omega",
+    "content": "The three categories (deficient, perfect, abundant) partition the positive integers. Exhaustiveness — every n falls into at least one — follows by trichotomy of natural number comparison: σ(n) < 2n ∨ σ(n) = 2n ∨ σ(n) > 2n, closed by `omega`. Exclusivity of each pair (deficient ∧ perfect → contradiction, etc.) also follows by linear arithmetic after unfolding definitions. The `omega` tactic handles all four theorems elegantly, demonstrating that classification logic reduces entirely to natural number arithmetic.",
+    "mathContext": "$$\\forall n,\\; \\text{IsDeficient}(n) \\vee \\text{IsPerfect}(n) \\vee \\text{IsAbundant}(n)$$\nand the three are pairwise mutually exclusive. Proof by $\\lt, =, >$ trichotomy of $\\sigma(n)$ vs $2n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["trichotomy", "omega tactic", "mutual exclusion", "partition of naturals"],
+    "prerequisites": ["omega tactic handles trichotomy", "unfolding Prop definitions"]
+  },
+  {
+    "id": "ann-amicable-pairs",
+    "proofId": "sum-of-divisors",
+    "range": { "startLine": 219, "endLine": 259 },
+    "type": "insight",
+    "title": "Amicable Pairs (220,284) and (1184,1210) Formally Verified",
+    "content": "Two numbers m and n are amicable if σ(m) - m = n and σ(n) - n = m (each is the sum of proper divisors of the other), equivalently σ(m) = σ(n) = m + n. The pair (220, 284) was known to the Pythagoreans (~300 BCE): σ(220) = 504 = 220 + 284. The pair (1184, 1210) was discovered by 16-year-old Niccolò Paganini in 1866, remarkably overlooked by Euler. Both are verified by native_decide for σ values, then omega for the subtraction arithmetic. Over 1.2 billion amicable pairs are known computationally.",
+    "mathContext": "$$(m,n) \\text{ amicable} \\Leftrightarrow \\sigma(m) = \\sigma(n) = m+n$$\n$\\sigma(220) = 504 = 220+284$; $\\sigma(1184) = 2394 = 1184+1210$.",
+    "significance": "key",
+    "relatedConcepts": ["amicable numbers", "aliquot sequences", "Pythagorean number theory", "Paganini's discovery 1866"],
+    "prerequisites": ["AreAmicable definition", "native_decide", "omega for subtraction"]
+  },
+  {
+    "id": "ann-sigma-gt-self",
+    "proofId": "sum-of-divisors",
+    "range": { "startLine": 348, "endLine": 368 },
+    "type": "technique",
+    "title": "General Bound: σ(n) > n for n > 1 via Finset Summation",
+    "content": "The general bound σ(n) > n for all n > 1 is proved by exhibiting two distinct divisors: 1 and n itself. The proof constructs the subset {1, n} ⊆ n.divisors using `Nat.mem_divisors`, shows these are distinct (1 ≠ n since n > 1), then uses `Finset.sum_le_sum_of_subset_of_nonneg` and `Finset.sum_pair` to bound σ(n) ≥ 1 + n > n. This is an elegant example of bounding a Finset sum by restricting to a chosen subset.",
+    "mathContext": "$$\\sigma(n) = \\sum_{d|n} d \\geq 1 + n > n \\quad \\text{for } n > 1$$\nProof: $\\{1, n\\} \\subseteq \\text{divisors}(n)$, both distinct, so $\\sigma(n) \\geq \\sum_{d \\in \\{1,n\\}} d = 1 + n > n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_le_sum_of_subset", "Finset.sum_pair", "Nat.mem_divisors", "Finset inequalities"],
+    "prerequisites": ["Finset.single_le_sum", "Nat.divisors", "dvd_refl", "one_dvd"]
+  },
+  {
+    "id": "ann-multiplicativity",
+    "proofId": "sum-of-divisors",
+    "range": { "startLine": 386, "endLine": 419 },
+    "type": "technique",
+    "title": "Multiplicativity: σ(mn) = σ(m)σ(n) for Coprime Inputs",
+    "content": "The key structural theorem: σ is a multiplicative arithmetic function. `sigma_multiplicative` is a one-liner invoking Mathlib's `isMultiplicative_sigma`. The coprime version `sigma_mul_coprime` follows from `isMultiplicative_sigma.map_mul_of_coprime h`. Together with the prime power formula, multiplicativity reduces computing σ(n) to computing σ at each prime power in n's factorization. Multiplicativity also means σ is determined by its Dirichlet series: σ(n) = Σ_{d|n} d = (id ∗ 1)(n), the Dirichlet convolution of the identity and constant-1 function.",
+    "mathContext": "$$\\gcd(m,n)=1 \\implies \\sigma(mn) = \\sigma(m)\\cdot\\sigma(n)$$\nDirichlet series: $\\sum_{n=1}^\\infty \\frac{\\sigma(n)}{n^s} = \\zeta(s)\\cdot\\zeta(s-1)$.\nExample: $\\sigma(12) = \\sigma(4)\\cdot\\sigma(3) = 7 \\cdot 4 = 28$.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative arithmetic functions", "Dirichlet convolution", "ArithmeticFunction.IsMultiplicative", "Riemann zeta function"],
+    "prerequisites": ["isMultiplicative_sigma (Mathlib)", "Nat.Coprime", "ArithmeticFunction.IsMultiplicative"]
+  },
+  {
+    "id": "ann-prime-power-formula",
+    "proofId": "sum-of-divisors",
+    "range": { "startLine": 420, "endLine": 469 },
+    "type": "insight",
+    "title": "σ(p^k) = Geometric Sum: The Building Block for All σ Values",
+    "content": "For a prime power p^k, the divisors are exactly {1, p, p², ..., p^k}, giving σ(p^k) = Σ_{i=0}^k p^i = (p^(k+1)-1)/(p-1). The Lean proof uses `sigma_apply_prime_pow hp` (Mathlib) and simplifies with `congr 1; ext i; ring`. Combined with multiplicativity, this gives the complete formula: σ(n) = Π_i (p_i^(a_i+1)-1)/(p_i-1) for n = Π_i p_i^a_i. The k=1,2,3 specializations are proved by unfolding `Finset.sum_range_succ`.",
+    "mathContext": "$$\\sigma(p^k) = 1 + p + p^2 + \\cdots + p^k = \\frac{p^{k+1}-1}{p-1}$$\nGeneral formula:\n$$\\sigma\\!\\left(\\prod_i p_i^{a_i}\\right) = \\prod_i \\frac{p_i^{a_i+1}-1}{p_i-1}$$",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "prime power divisors", "sigma_apply_prime_pow", "Euler product"],
+    "prerequisites": ["sigma_apply_prime_pow (Mathlib)", "Finset.sum_range_succ", "sigma_multiplicative"]
+  },
+  {
+    "id": "ann-smallest-abundant",
+    "proofId": "sum-of-divisors",
+    "range": { "startLine": 505, "endLine": 521 },
+    "type": "technique",
+    "title": "12 is the Smallest Abundant Number: interval_cases Minimality",
+    "content": "The minimality proof that 12 is the smallest abundant number combines `twelve_is_abundant` with `not_abundant_lt_12`. The latter uses `interval_cases n` — a Lean tactic that case-splits on all possible values of n in a bounded integer interval — generating 11 subgoals (n=1 through n=11), each closed by `simp_all` and `native_decide`. This combination of finite case analysis and computation is the standard Lean pattern for minimality proofs over small integer ranges.",
+    "mathContext": "$$12 = 2^2 \\cdot 3 \\text{ is the smallest abundant number: } \\sigma(12) = 28 > 24 = 2\\cdot 12$$\nFor all $n \\in \\{1,\\ldots,11\\}$: $\\sigma(n) \\leq 2n$ (verified case by case).",
+    "significance": "key",
+    "relatedConcepts": ["interval_cases tactic", "minimality proof", "bounded exhaustive search", "abundant numbers"],
+    "prerequisites": ["interval_cases (Mathlib tactic)", "native_decide", "twelve_is_abundant"]
+  }
+]

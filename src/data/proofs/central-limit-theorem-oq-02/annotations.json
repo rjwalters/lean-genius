@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-clt02-mda-structure",
+    "proofId": "central-limit-theorem-oq-02",
+    "range": { "startLine": 65, "endLine": 99 },
+    "type": "definition",
+    "title": "Martingale Difference Array: Triangular Array Abstraction Beyond Independence",
+    "content": "MartingaleDiffArray is the central structure: a triangular array {X_{n,k}} where each row n has rowSize(n) terms equipped with an increasing filtration ℱ, and the martingale difference property E[X_{n,k} | ℱ_{n,k-1}] = 0 holds. This abstracts away independence entirely — only conditional mean zero is required. The structure records square integrability (for variance computations), measurability (adapted to the filtration), and the MDA property via ∫ X_{n,k} dμ = 0 (simplified to unconditional expectation). rowSum_mean_zero (line 92) is the first theorem: the row sum has zero expectation by linearity, proved via integral_finset_sum.",
+    "mathContext": "\\{X_{n,k}\\} \\text{ MDA: } \\mathbb{E}[X_{n,k} | \\mathcal{F}_{n,k-1}] = 0\\\\\nS_n = \\sum_{k=0}^{\\text{rowSize}(n)-1} X_{n,k}, \\quad \\mathbb{E}[S_n] = 0\\\\\n\\text{Subsumes: i.i.d., Lindeberg-Feller, exchangeable arrays}",
+    "significance": "key",
+    "relatedConcepts": ["martingale differences", "triangular arrays", "filtration", "conditional expectation"],
+    "prerequisites": ["MeasurableSpace", "IsProbabilityMeasure", "Measure", "integral_finset_sum"]
+  },
+  {
+    "id": "ann-clt02-lindeberg-condition",
+    "proofId": "central-limit-theorem-oq-02",
+    "range": { "startLine": 131, "endLine": 164 },
+    "type": "definition",
+    "title": "Lindeberg and Lyapunov Conditions: Asymptotic Negligibility",
+    "content": "lindebergCondition (line 131) formalizes Lindeberg's criterion: for all ε > 0, the truncated second moment sum L_n(ε) = ∑_k E[X²_{n,k} · 1{|X_{n,k}|>ε}] → 0. This is the analytic core of the CLT: it ensures no single term dominates the sum — asymptotic negligibility. lindebergSum (line 124) uses an indicator function 1{|x|>ε} formalized as an if-then-else. lyapunovCondition (line 161) is the stronger sufficient condition: ∑_k E[|X_{n,k}|^{2+δ}] → 0 for some δ > 0. varianceConverges (line 137) states V_n → σ², the second hypothesis of the martingale CLT.",
+    "mathContext": "L_n(\\varepsilon) = \\sum_k \\mathbb{E}\\bigl[X_{n,k}^2 \\cdot \\mathbf{1}_{\\{|X_{n,k}|>\\varepsilon\\}}\\bigr] \\xrightarrow{n\\to\\infty} 0\\\\\n\\Lambda_n(\\delta) = \\sum_k \\mathbb{E}[|X_{n,k}|^{2+\\delta}] \\to 0 \\Rightarrow L_n(\\varepsilon) \\to 0\\\\\nV_n = \\sum_k \\mathbb{E}[X_{n,k}^2] \\to \\sigma^2",
+    "significance": "key",
+    "relatedConcepts": ["Lindeberg condition", "Lyapunov condition", "asymptotic negligibility", "truncated moments"],
+    "prerequisites": ["MartingaleDiffArray.lindebergSum", "Tendsto", "atTop", "nhds"]
+  },
+  {
+    "id": "ann-clt02-lyapunov-lindeberg",
+    "proofId": "central-limit-theorem-oq-02",
+    "range": { "startLine": 203, "endLine": 260 },
+    "type": "insight",
+    "title": "Lyapunov Implies Lindeberg: Squeeze via rpow Indicator Bound",
+    "content": "lyapunov_implies_lindeberg is the only fully proved non-trivial theorem in the file. The strategy: on {|X_{n,k}| > ε}, we have x² · ε^δ ≤ |x|^{2+δ} (since |x|^δ > ε^δ), so x² ≤ |x|^{2+δ} / ε^δ. Therefore L_n(ε) ≤ Λ_n(δ) / ε^δ → 0. The key private lemma rpow_indicator_bound (line 181) proves x² · ε^δ ≤ |x|^{2+δ} when |x| > ε, via Real.rpow_add and mul_le_mul_of_nonneg_left. The main proof uses tendsto_of_tendsto_of_tendsto_of_le_of_le (Lean's squeeze theorem) with integral_mono_of_nonneg lifting the pointwise inequality to integrals, and Finset.sum_div + Finset.sum_le_sum for the summand bound.",
+    "mathContext": "|x| > \\varepsilon, \\delta > 0 \\Rightarrow x^2 \\cdot \\varepsilon^\\delta \\leq |x|^{2+\\delta}\\\\\nL_n(\\varepsilon) \\leq \\Lambda_n(\\delta) / \\varepsilon^\\delta \\xrightarrow{n\\to\\infty} 0\\\\\n\\text{Proof: squeeze } 0 \\leq L_n \\leq \\Lambda_n/\\varepsilon^\\delta \\to 0",
+    "significance": "key",
+    "relatedConcepts": ["rpow estimates", "squeeze theorem", "integral monotone", "Billingsley §27"],
+    "prerequisites": ["Real.rpow_add", "integral_mono_of_nonneg", "tendsto_of_tendsto_of_tendsto_of_le_of_le", "Finset.sum_div"]
+  },
+  {
+    "id": "ann-clt02-martingale-clt-axiom",
+    "proofId": "central-limit-theorem-oq-02",
+    "range": { "startLine": 311, "endLine": 318 },
+    "type": "concept",
+    "title": "Martingale CLT (McLeish 1974): Axiomatized Core via Characteristic Functions",
+    "content": "martingale_clt is the central axiom: given a MDA satisfying the Lindeberg condition and variance convergence V_n → σ², the row sum characteristic function E[exp(itS_n)] converges pointwise to the Gaussian characteristic function exp(-σ²t²/2). The proof sketch (characteristic function method): Taylor-expand exp(itX_{n,k}) ≈ 1 + itX - t²X²/2; the linear term has zero conditional expectation (MDA property); the quadratic term approximates -t²·σ²/2 via variance convergence; Lindeberg controls the higher-order error. The product of conditional characteristic functions factorizes under the MDA structure. Full formalization requires Doob's martingale convergence and characteristic function products, beyond current Mathlib.",
+    "mathContext": "\\text{MDA} + \\text{Lindeberg} + V_n \\to \\sigma^2 \\Rightarrow\\\\\n\\forall t \\in \\mathbb{R}: \\mathbb{E}[e^{itS_n}] \\to e^{-\\sigma^2 t^2/2}\\\\\n\\text{(McLeish 1974, Ann. Prob.; Brown 1971, JRSS B)}",
+    "significance": "key",
+    "relatedConcepts": ["characteristic function", "Gaussian limit", "McLeish 1974", "Lindeberg-Feller"],
+    "prerequisites": ["MartingaleDiffArray.rowSumCharFun", "lindebergCondition", "varianceConverges", "Complex.exp"]
+  },
+  {
+    "id": "ann-clt02-iid-mda",
+    "proofId": "central-limit-theorem-oq-02",
+    "range": { "startLine": 354, "endLine": 401 },
+    "type": "insight",
+    "title": "i.i.d. MDA: X_{n,k} = X_k/√n with Exact Variance σ²",
+    "content": "IIDSequence.toMDA constructs a MDA from i.i.d. variables by normalizing X_{n,k} = X_k/√n with trivial filtration (independence makes any σ-algebra valid). iid_mda_variance_converges (line 376) proves the variance sum V_n = σ² exactly for n ≥ 1 — not just asymptotically. The key computation: E[(X_k/√n)²] = σ²/n via integral_mul_const + Real.sq_sqrt, summed over k = 0,...,n-1 gives n · σ²/n = σ² by field_simp. The proof uses tendsto_atTop_of_eventually_const: since V_n = σ² for all n ≥ 1, the constant sequence converges trivially.",
+    "mathContext": "X_{n,k} = X_k/\\sqrt{n}:\\quad V_n = \\sum_{k<n} \\sigma^2/n = \\sigma^2 \\; (n\\geq 1)\\\\\n\\mathbb{E}[(X_k/\\sqrt{n})^2] = \\sigma^2/n \\; \\text{(each term)}\\\\\n\\text{Row sum: } S_n = \\bigl(\\textstyle\\sum_{k<n} X_k\\bigr)/\\sqrt{n}",
+    "significance": "key",
+    "relatedConcepts": ["normalization by √n", "trivial filtration", "exact variance", "i.i.d. embedding"],
+    "prerequisites": ["IIDSequence.toMDA", "integral_mul_const", "Real.sq_sqrt", "tendsto_atTop_of_eventually_const"]
+  },
+  {
+    "id": "ann-clt02-alpha-mixing",
+    "proofId": "central-limit-theorem-oq-02",
+    "range": { "startLine": 419, "endLine": 469 },
+    "type": "definition",
+    "title": "α-Mixing Coefficient: Quantifying Dependence Decay Between σ-Algebras",
+    "content": "alphaMixingCoeff (line 419) formalizes Rosenblatt's 1956 strong mixing: α(ℱ₁, ℱ₂) = sup_{A∈ℱ₁, B∈ℱ₂} |P(A∩B) - P(A)P(B)|, implemented as a nested iSup over measurable sets. For independent σ-algebras α = 0; in general α ≤ 1/4. AlphaMixingSequence (line 427) packages a stationary sequence with its past/future σ-algebras and requires α(n) → 0. longRunVariance (line 463) defines σ²_∞ = E[X²₁] + 2∑_{k≥1} E[X₁ · X_{k+1}] — the classical variance inflated by covariances, which appear in the CLT limit for dependent sequences.",
+    "mathContext": "\\alpha(\\mathcal{F}_1, \\mathcal{F}_2) = \\sup_{A \\in \\mathcal{F}_1,\\, B \\in \\mathcal{F}_2} |P(A\\cap B) - P(A)P(B)|\\\\\n\\sigma^2_\\infty = \\mathrm{Var}(X_1) + 2\\sum_{k \\geq 1} \\mathrm{Cov}(X_1, X_{k+1})\\\\\n\\alpha(n) \\to 0: \\text{ strong mixing (Rosenblatt 1956, Ibragimov 1962)}",
+    "significance": "key",
+    "relatedConcepts": ["alpha-mixing", "strong mixing", "long-run variance", "Rosenblatt 1956"],
+    "prerequisites": ["iSup", "MeasurableSet", "ENNReal.toReal", "Tendsto", "tsum"]
+  },
+  {
+    "id": "ann-clt02-classical-clt",
+    "proofId": "central-limit-theorem-oq-02",
+    "range": { "startLine": 519, "endLine": 549 },
+    "type": "insight",
+    "title": "Classical CLT from Martingale CLT: Recovery with One Sorry",
+    "content": "classical_clt_from_martingale (line 519) recovers the classical CLT: for i.i.d. S with mean 0, variance σ², E[exp(it·S_n/√n)] → exp(-σ²t²/2). The proof applies martingale_clt to the i.i.d. MDA: variance convergence is supplied by iid_mda_variance_converges (fully proved); the Lindeberg condition is left as a sorry requiring DCT for truncated moments (E[X²·1{|X|>ε√n}] → 0). iid_satisfies_lyapunov (line 538) handles the Lyapunov route to Lindeberg, also a sorry: Λ_n(δ) = E[|X|^{2+δ}] · n/n^{(2+δ)/2} = E[|X|^{2+δ}]/n^{δ/2} → 0 requires rpow moment decay.",
+    "mathContext": "(S_1+\\cdots+S_n)/\\sqrt{n} \\xrightarrow{d} N(0,\\sigma^2)\\\\\n\\Leftrightarrow \\mathbb{E}[e^{it(\\sum X_k)/\\sqrt{n}}] \\to e^{-\\sigma^2 t^2/2}\\\\\n\\text{Sorry: } \\mathbb{E}[X^2 \\cdot \\mathbf{1}_{|X|>\\varepsilon\\sqrt{n}}] \\xrightarrow{\\text{DCT}} 0",
+    "significance": "key",
+    "relatedConcepts": ["classical CLT recovery", "DCT for truncated moments", "Lyapunov for i.i.d.", "convergence in distribution"],
+    "prerequisites": ["martingale_clt", "iid_mda_variance_converges", "iid_satisfies_lyapunov", "Classical CLT"]
+  }
+]
