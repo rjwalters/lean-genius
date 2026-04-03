@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-sc-header",
+    "proofId": "subset-count-oq-02",
+    "range": { "startLine": 6, "endLine": 33 },
+    "type": "context",
+    "title": "Header: Multisets, Multiplicity, and the 2^n Formula",
+    "content": "The header explains the critical subtlety distinguishing sets from multisets in the powerset formula. For sets, each element contributes one binary choice (in/out), giving 2^n. For multisets, each OCCURRENCE of an element independently contributes one binary choice — so {a, a, b} has 8 submultisets because the two copies of a are treated as distinguishable. This is not the same as the number of distinct submultisets (which would be 3+1 = 4 for distinct submultisets of {a, a, b}). The header explicitly flags this distinction, noting that the distinct submultiset count follows a product formula.",
+    "mathContext": "For a multiset $s$ with element $x$ appearing with multiplicity $m_x$: $|\\mathcal{P}(s)|_{\\text{with mult.}} = 2^{|s|}$ (each of $|s|$ occurrences is independently in or out), while $|\\mathcal{P}(s)|_{\\text{distinct}} = \\prod_x (m_x + 1)$ (each distinct element can appear $0, 1, \\ldots, m_x$ times). These agree when every $m_x = 1$ (the set case). The product formula is the generating function coefficient: $|\\mathcal{P}(s)|_{\\text{distinct}} = [z^0 + z^1 + \\ldots]$ of $\\prod_x \\sum_{j=0}^{m_x} z^j$.",
+    "significance": "key",
+    "relatedConcepts": ["multiset powerset", "submultiset multiplicity", "distinct submultisets", "product formula", "generating functions"],
+    "prerequisites": ["multiset definition in Lean/Mathlib", "Multiset.card", "submultiset ordering ≤"]
+  },
+  {
+    "id": "ann-sc-main-theorem",
+    "proofId": "subset-count-oq-02",
+    "range": { "startLine": 41, "endLine": 48 },
+    "type": "technique",
+    "title": "Multiset Powerset Theorem: One-Liner from Mathlib",
+    "content": "The main theorem `multiset_powerset_card` delegates entirely to `Multiset.card_powerset s` from Mathlib. This one-liner style is a deliberate choice: the theorem's value is as a named, typed entry point in the `SubsetCountMultiset` namespace, providing a stable API for downstream use. The underlying proof in Mathlib uses induction on the multiset, establishing 2^0 = 1 for the empty case and 2^(n+1) = 2·2^n for the cons case via `Multiset.powerset_cons`.",
+    "mathContext": "The key Mathlib identity is `Multiset.powerset_cons a s = Multiset.powerset s + (Multiset.powerset s).map (a ::ₘ ·)`: the powerset of `a ::ₘ s` is the powerset of `s` (submultisets not containing this occurrence of `a`) concatenated with the powerset of `s` each prepended with `a` (submultisets containing this occurrence). This gives `card (powerset (a ::ₘ s)) = 2 * card (powerset s)`, which inductively yields $2^n$.",
+    "significance": "key",
+    "relatedConcepts": ["Multiset.card_powerset", "Multiset.powerset_cons", "induction on Multiset", "Finset.card_powerset"],
+    "prerequisites": ["Multiset.powerset definition", "Multiset.card", "Mathlib's Multiset.Powerset module"]
+  },
+  {
+    "id": "ann-sc-base-cons",
+    "proofId": "subset-count-oq-02",
+    "range": { "startLine": 50, "endLine": 59 },
+    "type": "insight",
+    "title": "Inductive Structure: Empty Base Case and Doubling Lemma",
+    "content": "The two lemmas `powerset_empty_card` and `powerset_cons_card` expose the inductive structure behind `card_powerset`. The empty case (2^0 = 1) says the only submultiset of the empty multiset is the empty multiset itself. The cons case (doubling) says adding one element doubles the powerset size: the new copies come from taking each existing submultiset and optionally prepending the new element. Together these form a complete inductive characterization that could replace the Mathlib dependency.",
+    "mathContext": "`powerset_empty_card`: $|\\mathcal{P}(\\emptyset)| = 1$ since `Multiset.powerset 0 = {0}` (the singleton containing only $\\emptyset$). `powerset_cons_card`: $|\\mathcal{P}(a ::_m s)| = 2 \\cdot |\\mathcal{P}(s)|$ from `Multiset.powerset_cons`, which decomposes the powerset into two disjoint copies: submultisets of $s$ (not containing this $a$) and `{a} + t` for each $t \\in \\mathcal{P}(s)$ (containing this $a$). The `simp [pow_succ, mul_comm]` closes the goal after unfolding `card_powerset`.",
+    "significance": "technical",
+    "relatedConcepts": ["Multiset.powerset_zero", "Multiset.powerset_cons", "pow_succ", "mul_comm", "inductive definition"],
+    "prerequisites": ["Multiset.powerset for empty and cons cases", "Nat.pow_succ", "Multiset.card_add"]
+  },
+  {
+    "id": "ann-sc-choose",
+    "proofId": "subset-count-oq-02",
+    "range": { "startLine": 63, "endLine": 81 },
+    "type": "insight",
+    "title": "Multiset Choose: powersetCard k s Has Exactly C(n,k) Elements",
+    "content": "The `multiset_choose_card` theorem shows the number of k-element submultisets equals the binomial coefficient C(n,k). The `powersetCard_empty_of_lt` lemma handles the boundary case: when k > n, powersetCard returns the empty multiset (0 elements). The proof uses `Multiset.mem_powersetCard` and `Multiset.card_le_card` plus `omega` to close the arithmetic inequality — a clean combination of membership reasoning and linear arithmetic.",
+    "mathContext": "`Multiset.powersetCard k s` is the multiset of all submultisets of `s` with cardinality exactly `k`. The identity $\\sum_{k=0}^n \\binom{n}{k} = 2^n$ connects this to the total powerset count, since partitioning by size gives $|\\mathcal{P}(s)| = \\sum_{k=0}^{|s|} |\\mathcal{P}_k(s)| = \\sum_{k=0}^n \\binom{n}{k} = 2^n$. The boundary lemma captures $\\binom{n}{k} = 0$ for $k > n$ in the multiset language: `powersetCard k s = 0` means no such submultiset exists.",
+    "significance": "key",
+    "relatedConcepts": ["Multiset.card_powersetCard", "Multiset.powersetCard", "Nat.choose", "binomial theorem", "Multiset.mem_powersetCard"],
+    "prerequisites": ["Multiset.powersetCard definition", "Nat.choose", "Multiset.card_le_card", "omega tactic"]
+  },
+  {
+    "id": "ann-sc-finset-connection",
+    "proofId": "subset-count-oq-02",
+    "range": { "startLine": 83, "endLine": 94 },
+    "type": "technique",
+    "title": "Finset Bridge: Recovering the Set Formula from the Multiset Formula",
+    "content": "The `finset_powerset_via_multiset` theorem shows that applying the multiset formula to `s.val` (the underlying multiset of a Finset) recovers the set formula 2^|s|. Since Finsets have no duplicate elements, every element has multiplicity 1, so the multiset and set formulas agree. The `mem_powerset_iff` theorem provides the membership characterization: a multiset `t` is in the powerset of `s` iff `t ≤ s` (submultiset relation), connecting the set-theoretic notion of subset to the multiset ordering.",
+    "mathContext": "For a Finset `s`, `s.val` is a `Multiset α` with `Nodup s.val` (no repeats). `Finset.card` is defined as `Multiset.card s.val`. So `Multiset.card_powerset s.val = 2 ^ Multiset.card s.val = 2 ^ s.card`. The identity `rw [Multiset.card_powerset, Finset.card]` works because `Finset.card = Multiset.card ∘ Finset.val`. The membership lemma `t ∈ powerset s ↔ t ≤ s` holds by definition: `Multiset.mem_powerset`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.val", "Multiset.Nodup", "Finset.card", "Multiset.mem_powerset", "submultiset ≤"],
+    "prerequisites": ["Finset as nodup Multiset", "Finset.card definition", "Multiset.card_powerset"]
+  },
+  {
+    "id": "ann-sc-examples",
+    "proofId": "subset-count-oq-02",
+    "range": { "startLine": 96, "endLine": 114 },
+    "type": "technique",
+    "title": "Four Concrete Examples: Multiplicity Subtlety in {1,1,2}",
+    "content": "The four examples verify: empty multiset (2^0 = 1), singleton (2^1 = 2), three-element multiset (2^3 = 8), and C(4,2) = 6 for powersetCard. The most pedagogically important is the `{1,1,2}` example: the comment explicitly warns that `{a}` is counted TWICE in the 8 submultisets, once for each copy of `a=1`. This distinguishes the multiset powerset (which tracks which occurrence is included) from the set powerset (which only tracks whether the element value is included).",
+    "mathContext": "For `{1, 1, 2} : Multiset ℕ` with $|s| = 3$: the 8 submultisets (with multiplicity) are $\\{\\}, \\{1\\}, \\{1\\}, \\{2\\}, \\{1,1\\}, \\{1,2\\}, \\{1,2\\}, \\{1,1,2\\}$. Note $\\{1\\}$ appears twice (once per occurrence of 1). The `simp [Multiset.card_powerset]` tactic closes all these goals by reducing to $2^3 = 8$ (or $\\binom{4}{2} = 6$ for the powersetCard example). The C(4,2)=6 example uses `{1,2,3,4}` where all elements are distinct, so the multiset and set powerset formulas agree.",
+    "significance": "technical",
+    "relatedConcepts": ["Multiset.card_powerset", "Multiset.card_powersetCard", "simp", "multiplicity in powerset", "Nat.choose"],
+    "prerequisites": ["Multiset literal notation in Lean 4", "simp with card_powerset", "Nat.choose computation"]
+  }
+]
