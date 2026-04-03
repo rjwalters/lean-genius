@@ -251,10 +251,12 @@
       "result": "clean"
     },
     "area-of-circle-oq-05": {
-      "auditCount": 1,
-      "issues": [],
-      "lastAudited": "2026-03-30T18:01:57Z",
-      "result": "clean"
+      "auditCount": 2,
+      "issues": [
+        "sorries 1\u21920, status formalized\u2192verified, badge wip\u2192mathlib (sorry was completed)"
+      ],
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "issues-fixed"
     },
     "arithmetic-series": {
       "auditCount": 1,
@@ -11205,6 +11207,78 @@
     "minkowski-theorem-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-04-03T08:38:00Z",
+      "result": "clean",
+      "issues": []
+    },
+    "angle-trisection-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "area-of-circle-oq-01-oq-03-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "birthday-problem-oq-03-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cantor-diagonalization-oq-03-oq-01-incomplete-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cramers-rule-oq-01-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "dissection-of-cubes-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1001-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1009-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1098-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1098-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-659-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sperner-ndim-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
       "result": "clean",
       "issues": []
     }
