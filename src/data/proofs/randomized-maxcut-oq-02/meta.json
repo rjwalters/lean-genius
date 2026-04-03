@@ -19,19 +19,81 @@
     "sorries": 0,
     "axiomCount": 1,
     "lineCount": 127,
-    "assumptions": "1 axiom (exists good partition). 0 sorries.",
+    "assumptions": "1 axiom (exists_good_partition): the probabilistic method step asserting that since E[cut weight] = W/2, some partition achieves cut weight ≥ W/2. Axiomatized because the full probability-space formalization is not yet in Mathlib. 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0"
   },
+  "overview": {
+    "historicalContext": "The MaxCut problem — partition the vertices of a graph to maximize the number of edges crossing the cut — is NP-hard (Garey-Johnson, 1976) and was one of Karp's 21 NP-complete problems. The randomized 1/2-approximation is folklore: assign each vertex to side $S$ or $\\overline{S}$ independently with probability $1/2$; by linearity of expectation, $\\mathbb{E}[\\text{cut}] = |E|/2 \\geq \\text{OPT}/2$ (since OPT $\\leq |E|$). For weighted graphs, the same argument gives $\\mathbb{E}[\\text{cut weight}] = W/2$ where $W$ is the total edge weight. The landmark 1995 paper by Goemans and Williamson introduced semidefinite programming (SDP) relaxation followed by random hyperplane rounding, achieving the approximation ratio $\\alpha_{GW} = \\min_{0 \\leq \\theta \\leq \\pi} \\frac{2(1-\\cos\\theta)}{\\pi\\theta} \\approx 0.87856$. Under the Unique Games Conjecture (Khot, 2002), $\\alpha_{GW}$ is the optimal polynomial-time approximation ratio for MaxCut — this was proved by Khot-Kindler-Mossel-O'Donnell (2007).",
+    "problemStatement": "For a weighted graph $G = (V, E, w)$ with nonnegative edge weights $w: E \\to \\mathbb{R}_{\\geq 0}$ and total weight $W = \\sum_{e \\in E} w(e)$: (1) Does a random partition $S \\subseteq V$ (each vertex independently in $S$ with probability $1/2$) achieve expected cut weight $W/2$? (2) Does some partition achieve cut weight $\\geq W/2$ (deterministic guarantee via the probabilistic method)? (3) Can the SDP-based Goemans-Williamson algorithm achieve approximation ratio $\\approx 0.878$?",
+    "proofStrategy": "The formalization establishes the weighted graph framework (`WeightedGraph n` structure with symmetric nonneg weights), total weight, and cut weight as noncomputable real-valued functions. The key theorem `random_partition_expected_cut` proves `totalWeight G / 2 ≥ 0` — a weaker statement than the probabilistic claim (which would require a probability space), serving as a sanity check. The probabilistic method step is axiomatized as `exists_good_partition`. For Goemans-Williamson, the ratio is defined as a placeholder (`2/π · π/2 = 1`) and the theorems `gw_ratio_lower` and `gw_beats_random` verify elementary inequalities.",
+    "keyInsights": [
+      "The `WeightedGraph` structure encodes a complete weighted graph on `Fin n` vertices with symmetric, nonneg weights and no self-loops. This is more general than the unweighted case (which corresponds to $0/1$ weights) and directly models the input to weighted MaxCut. The symmetry field `symmetric : ∀ i j, weight i j = weight j i` ensures each edge is counted correctly in `totalWeight`.",
+      "The `totalWeight` divides by 2 to account for the symmetry: the double sum $\\sum_i \\sum_j w_{ij}$ counts each edge $\\{i,j\\}$ twice (once as $(i,j)$ and once as $(j,i)$). This is the standard convention for symmetric adjacency representations.",
+      "The `axiom exists_good_partition` captures the probabilistic method: $\\mathbb{E}[\\text{cut}] = W/2$ implies $\\exists$ partition with cut $\\geq W/2$. This is a pure existence result — the expectation argument does not construct the partition. A full Lean proof would require: (1) a probability space over partitions, (2) the linearity of expectation argument, (3) the fact that a random variable exceeds its mean with positive probability (equivalently, if $\\mathbb{E}[X] \\geq c$ and $X \\leq \\text{OPT}$, then some outcome achieves $X \\geq c$).",
+      "The `goemansWilliamsonRatio` is a placeholder: `2/π · π/2 = 1`, not the true GW ratio of $\\approx 0.87856$. The true ratio requires evaluating $\\alpha_{GW} = \\min_{\\theta} \\frac{2(1-\\cos\\theta)}{\\pi\\theta}$, which involves a transcendental optimization. The theorems `gw_ratio_lower` and `gw_beats_random` are therefore trivially true (proving $1 > 0.878$ and $1 > 1/2$). A proper formalization would need numerical bounds on the integral.",
+      "MaxCut is one of the few NP-hard optimization problems for which the best known approximation ratio is provably optimal (assuming UGC). The KKMO 2007 result shows: for any $\\varepsilon > 0$, no polynomial-time algorithm achieves ratio $\\alpha_{GW} + \\varepsilon$ unless the UGC fails. This makes the Goemans-Williamson result not just a practical achievement but a threshold result in approximation complexity."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Problem Statement",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Imports Mathlib and the module-level docstring: weighted MaxCut extends the unweighted 1/2-approximation; random partition gives E[cut] = W/2; Goemans-Williamson SDP achieves 0.878."
+    },
+    {
+      "id": "part-i-weighted-graph",
+      "title": "Part I: Weighted Graph Definitions",
+      "startLine": 25,
+      "endLine": 46,
+      "summary": "Defines WeightedGraph n (symmetric nonneg weights on Fin n × Fin n, no self-loops), totalWeight (half the sum of all entries, accounting for symmetry), and cutWeight (sum of cross-partition weights)."
+    },
+    {
+      "id": "part-ii-half-approx",
+      "title": "Part II: The 1/2 Approximation",
+      "startLine": 47,
+      "endLine": 75,
+      "summary": "Theorem random_partition_expected_cut proves totalWeight G / 2 ≥ 0 (sanity check for the probabilistic guarantee). Axiom exists_good_partition states the probabilistic method conclusion: some partition achieves cut weight ≥ W/2."
+    },
+    {
+      "id": "part-iii-unweighted",
+      "title": "Part III: Unweighted as Special Case",
+      "startLine": 76,
+      "endLine": 87,
+      "summary": "Defines isUnweighted (all weights 0 or 1) and notes (as a comment) that totalWeight equals the edge count for unweighted graphs. No theorem proved here."
+    },
+    {
+      "id": "part-iv-gw",
+      "title": "Part IV: Goemans-Williamson SDP",
+      "startLine": 88,
+      "endLine": 110,
+      "summary": "Defines goemansWilliamsonRatio as a placeholder (2/π · π/2 = 1, not the true ≈ 0.8786). Theorems gw_ratio_lower (> 0.878) and gw_beats_random (> 1/2) follow trivially since the placeholder equals 1."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 111,
+      "endLine": 127,
+      "summary": "Summarizes the weighted MaxCut framework: random partition gives W/2 expected cut, existential good partition via probabilistic method, GW placeholder. 1 axiom, 0 sorries, 5 definitions/theorems."
+    }
+  ],
   "conclusion": {
-    "summary": "Weighted MaxCut: random partition gives 1/2 approximation. GW gives 0.878.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "The weighted MaxCut framework is formalized: `WeightedGraph`, `totalWeight`, `cutWeight`, the $W/2$ guarantee via the probabilistic method (axiomatized), and placeholder results for the Goemans-Williamson 0.878-approximation ratio.",
+    "implications": "A complete Lean formalization of Goemans-Williamson would be a landmark in formal algorithm analysis, requiring SDP duality, the random hyperplane rounding technique, and numerical bounds on $\\alpha_{GW} = \\min_\\theta \\frac{2(1-\\cos\\theta)}{\\pi\\theta}$. The result's connection to the Unique Games Conjecture makes it central to complexity theory: $\\alpha_{GW}$ is likely the threshold below which polynomial-time MaxCut approximation is impossible (assuming UGC). Formalizing this connection would require Lean formalizations of PCP theory and UGC.",
+    "openQuestions": [
+      "Can the probabilistic method step `exists_good_partition` be formally proved in Lean? This requires a probability space over $2^V$ partitions, linearity of expectation for weighted sums, and the first-moment method ($\\mathbb{E}[X] \\geq c \\Rightarrow \\mathbb{P}[X \\geq c] > 0$).",
+      "Can the true Goemans-Williamson ratio $\\alpha_{GW} \\approx 0.87856$ be computed and bounded in Lean? This requires evaluating the integral $\\int_0^\\pi \\frac{1-\\cos\\theta}{\\theta/\\pi} d\\theta$ to sufficient precision using interval arithmetic.",
+      "Is the Unique Games Conjecture formalizable as a complexity-theoretic statement in Lean? The conjecture concerns inapproximability thresholds for constraint satisfaction problems and would require a formal complexity hierarchy including NP and polynomial-time reductions.",
+      "Can the random hyperplane rounding technique of Goemans-Williamson be formalized? The key step is: given a solution to the SDP relaxation (unit vectors $v_i$), choose a uniformly random hyperplane (unit normal $r$) and set $S = \\{i : v_i \\cdot r \\geq 0\\}$; the probability that edge $(i,j)$ is cut is $\\frac{1}{\\pi} \\arccos(v_i \\cdot v_j)$."
+    ]
   },
   "crossReferences": [
     {
       "targetId": "randomized-maxcut",
-      "relationship": "parent-problem"
+      "relationship": "parent-problem",
+      "description": "The parent proof covers the unweighted randomized MaxCut approximation. This OQ extends to weighted graphs and adds the Goemans-Williamson SDP approach."
     }
   ],
   "leanFile": {
@@ -43,6 +105,5 @@
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 5
-  },
-  "sections": []
+  }
 }

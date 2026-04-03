@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-maxcut-weighted-graph",
+    "proofId": "randomized-maxcut-oq-02",
+    "range": { "startLine": 32, "endLine": 37 },
+    "type": "definition",
+    "title": "WeightedGraph: Symmetric Nonneg Edge Weights",
+    "content": "The `WeightedGraph n` structure models a weighted graph on `Fin n` vertices as a function `Fin n → Fin n → ℝ` (a symmetric matrix). The four fields enforce: symmetry (`weight i j = weight j i`, needed to count each edge once), nonnegativity (`0 ≤ weight i j`, since cut weights are sums of edge weights), no self-loops (`weight i i = 0`, edges are between distinct vertices). This models a complete graph with potentially zero-weighted edges; the unweighted case corresponds to $0/1$ weights.",
+    "mathContext": "A weighted graph $G = (V, E, w)$ with $V = \\{0,\\ldots,n-1\\}$ is represented as a symmetric matrix $W \\in \\mathbb{R}^{n \\times n}_{\\geq 0}$ with zero diagonal. The edge weight between vertices $i$ and $j$ is $W_{ij} = W_{ji} \\geq 0$. The MaxCut problem asks for $\\text{OPT} = \\max_{S \\subseteq V} \\sum_{i \\in S, j \\notin S} W_{ij}$.",
+    "significance": "key",
+    "relatedConcepts": ["adjacency matrix", "symmetric matrix", "complete graph", "edge weight"],
+    "prerequisites": ["graph theory", "linear algebra", "Lean structures"]
+  },
+  {
+    "id": "ann-maxcut-total-weight",
+    "proofId": "randomized-maxcut-oq-02",
+    "range": { "startLine": 39, "endLine": 46 },
+    "type": "definition",
+    "title": "Total Weight and Cut Weight Definitions",
+    "content": "`totalWeight G` is defined as `(∑ᵢ ∑ⱼ W_{ij}) / 2` — the division by 2 corrects for symmetry, since the double sum counts each edge $\\{i,j\\}$ twice. `cutWeight G S` sums the weights of edges from $S$ to $S^c$: $\\sum_{i \\in S} \\sum_{j \\notin S} W_{ij}$. Both are `noncomputable` because they involve real-valued sums over finite types, which require the `Classical` axiom for evaluation. The cut weight formula directly computes the objective function of weighted MaxCut.",
+    "mathContext": "$W = \\frac{1}{2}\\sum_{i,j} W_{ij}$ (total edge weight). $\\text{cut}(S) = \\sum_{i \\in S, j \\in S^c} W_{ij}$. Note: $\\sum_{i \\in S, j \\in S^c} W_{ij} = \\frac{1}{2}\\sum_{i,j} W_{ij}(x_i - x_j)^2$ where $x_i \\in \\{0,1\\}$ encodes the partition — this is the SDP relaxation connection.",
+    "significance": "key",
+    "relatedConcepts": ["noncomputable", "Finset.sum", "cut value", "SDP relaxation"],
+    "prerequisites": ["graph theory", "Lean real analysis", "Finset operations"]
+  },
+  {
+    "id": "ann-maxcut-random-cut",
+    "proofId": "randomized-maxcut-oq-02",
+    "range": { "startLine": 52, "endLine": 68 },
+    "type": "technique",
+    "title": "Random Partition: Expected Cut Weight = W/2",
+    "content": "`random_partition_expected_cut` proves `totalWeight G / 2 ≥ 0`. This is weaker than the actual claim ($\\mathbb{E}[\\text{cut}] = W/2$), but verifies the key quantity is nonneg. The proof unfolds `totalWeight`, then applies `div_nonneg` twice (for the outer `/2` and inner `/2`), reducing to `G.nonneg i j ≥ 0` which is the `nonneg` field. The full probabilistic statement would require: linearity of expectation for $\\mathbb{E}[\\text{cut}] = \\sum_e \\mathbb{P}[e \\text{ cut}] \\cdot w(e) = \\sum_e \\frac{1}{2} w(e) = W/2$.",
+    "mathContext": "For a uniformly random partition (each vertex $i$ independently in $S$ with probability $1/2$): $\\Pr[\\text{edge}\\{i,j\\}\\text{ is cut}] = \\Pr[i \\in S, j \\notin S] + \\Pr[i \\notin S, j \\in S] = \\frac{1}{4} + \\frac{1}{4} = \\frac{1}{2}$. By linearity of expectation: $\\mathbb{E}[\\text{cut weight}] = \\sum_{\\{i,j\\}} W_{ij} \\cdot \\frac{1}{2} = \\frac{W}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["linearity of expectation", "random partition", "probabilistic method", "div_nonneg"],
+    "prerequisites": ["probability theory", "expected value", "linearity of expectation"]
+  },
+  {
+    "id": "ann-maxcut-probabilistic-method",
+    "proofId": "randomized-maxcut-oq-02",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "axiom",
+    "title": "Axiom: Probabilistic Method — Good Partition Exists",
+    "content": "The `axiom exists_good_partition` encodes the probabilistic method: since the expected cut weight equals $W/2$, some specific partition must achieve cut weight $\\geq W/2$. This is the 'first moment method': if $\\mathbb{E}[X] = \\mu$, then $\\mathbb{P}[X \\geq \\mu] > 0$, so some outcome attains $X \\geq \\mu$. The axiom is justified by the probabilistic argument but not formally proved because Lean's Mathlib probability infrastructure (PMF over finite sets, independence of assignments) would be required. This axiom makes the proof gap explicit rather than hiding it in a sorry.",
+    "mathContext": "Probabilistic method: $\\mathbb{E}[\\text{cut}(\\mathbf{S})] = W/2 \\geq 0$, so $\\exists S: \\text{cut}(S) \\geq W/2$. This holds because a random variable cannot always be below its mean: $\\mathbb{E}[X] = \\mu \\Rightarrow \\exists \\omega: X(\\omega) \\geq \\mu$. Formally: $\\mu = \\mathbb{E}[X] \\leq \\sup_\\omega X(\\omega)$, so $\\sup X \\geq \\mu$, and for finite probability spaces the sup is attained.",
+    "significance": "key",
+    "relatedConcepts": ["probabilistic method", "first moment method", "expectation argument", "deterministic guarantee"],
+    "prerequisites": ["probability theory", "expected value", "existence proofs"]
+  },
+  {
+    "id": "ann-maxcut-gw",
+    "proofId": "randomized-maxcut-oq-02",
+    "range": { "startLine": 93, "endLine": 110 },
+    "type": "insight",
+    "title": "Goemans-Williamson: Placeholder and Elementary Bounds",
+    "content": "`goemansWilliamsonRatio` is defined as `2/π · π/2 = 1` (a placeholder, not the true $\\alpha_{GW} \\approx 0.87856$). Consequently, `gw_ratio_lower` proves `1 > 0.878` and `gw_beats_random` proves `1 > 1/2` — both trivially via `norm_num` and `linarith`. While these placeholders do not formalize the GW algorithm, they document the key relationships: the GW ratio exceeds 0.878 (the 3-significant-figure approximation) and strictly improves on the simple random 1/2 bound. A proper formalization would require computing $\\alpha_{GW} = \\min_{\\theta} \\frac{2(1-\\cos\\theta)}{\\pi\\theta}$ via interval arithmetic.",
+    "mathContext": "True GW ratio: $\\alpha_{GW} = \\min_{0 \\leq \\theta \\leq \\pi} \\frac{2(1-\\cos\\theta)}{\\pi\\theta} \\approx 0.87856$. GW algorithm: (1) solve SDP: $\\max \\sum_{ij} W_{ij}(1-v_i \\cdot v_j)/2$ over unit vectors $v_i \\in S^{n-1}$; (2) random hyperplane rounding: choose $r \\sim \\text{Uniform}(S^{n-1})$, set $S = \\{i : v_i \\cdot r \\geq 0\\}$; (3) analysis: $\\Pr[\\{i,j\\}\\text{ cut}] = \\frac{1}{\\pi}\\arccos(v_i \\cdot v_j) \\geq \\alpha_{GW} \\cdot \\frac{1-v_i \\cdot v_j}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["SDP relaxation", "random hyperplane rounding", "approximation ratio", "Unique Games Conjecture"],
+    "prerequisites": ["semidefinite programming", "approximation algorithms", "complex analysis for integral evaluation"]
+  }
+]
