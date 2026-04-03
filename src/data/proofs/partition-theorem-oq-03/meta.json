@@ -25,36 +25,87 @@
       "overpartition_choices: 2^d choices for d distinct part sizes"
     ],
     "axiomCount": 4,
-    "assumptions": "4 axioms: numOverpartitions (function), numOverpartitions_zero/one/two (small values). The function requires enumerating partitions which needs Mathlib Fintype infrastructure.",
+    "assumptions": "4 axioms: numOverpartitions (function), and small values numOverpartitions_zero/one/two (p̄(0)=1, p̄(1)=2, p̄(2)=4). The counting function requires enumerating all partitions and their overline subsets, which needs Mathlib Fintype infrastructure not yet connected.",
     "lineCount": 62
   },
   "overview": {
-    "historicalContext": "Overpartitions were systematically studied by Corteel and Lovejoy (2004), building on Euler's 1748 partition identity. An overpartition allows the first occurrence of each part size to be optionally marked, doubling the combinatorial choices.",
-    "problemStatement": "How do Euler's partition identities generalize to overpartitions?",
-    "text": "Overpartitions extend Euler's partition framework by allowing optional marking of first occurrences.",
-    "proofStrategy": "Overpartitions extend Euler's partition framework by allowing optional marking of first occurrences.",
-    "keyInsights": []
+    "historicalContext": "Euler (1748) proved his famous partition identity in Introductio in Analysin Infinitorum: the number of partitions of n into odd parts equals the number of partitions of n into distinct parts. This was proved by the bijection between the two sets, or algebraically via generating functions: ∏(1+x^k) = ∏ 1/(1-x^(2k-1)). Overpartitions were formally introduced by Corteel and Lovejoy in 2004 as a natural generalization: an overpartition of n allows the first occurrence of each part size to be optionally 'overlined' (marked). The overlined parts are exactly the distinct parts that can be treated as a separate population. Corteel-Lovejoy proved that the number of overpartitions of n equals 2^ω(n) times the number of ordinary partitions (where ω(n) depends on the partition type), and established many Euler-like identities for overpartitions. The key combinatorial fact: for a partition with d distinct part sizes, there are 2^d overpartition choices (each distinct part size can independently be overlined or not). This connects directly to the generating function (1+q^k)/(1-q^k) = (1+q^k) × 1/(1-q^k) for each part size k.",
+    "problemStatement": "An **overpartition** of $n$ is a partition of $n$ where the first occurrence of each part size may optionally be overlined. For example, the overpartitions of 3 are: $3, \\bar{3}, 2+1, \\bar{2}+1, 2+\\bar{1}, \\bar{2}+\\bar{1}, 1+1+1, \\bar{1}+1+1$, giving $\\bar{p}(3) = 8$. The generating function: $\\sum_{n=0}^\\infty \\bar{p}(n) q^n = \\prod_{k=1}^\\infty \\frac{1+q^k}{1-q^k}$. The key identity: $\\bar{p}(n) = \\sum_{\\lambda \\vdash n} 2^{d(\\lambda)}$ where $d(\\lambda)$ is the number of distinct part sizes in $\\lambda$.",
+    "text": "Overpartitions extend Euler's partition framework by allowing optional marking of first occurrences. This file formalizes the Overpartition structure, the connection to Euler's identity, and the 2^d counting formula.",
+    "proofStrategy": "1. Foundation: euler_partition_identity wraps Mathlib's Theorems100.partition to give the distinct=odd identity. 2. Structure: define Overpartition n as a dependent record (partition + overlined Finset with subset constraint). 3. Axiomatize numOverpartitions: the counting function is axiomatized since computing it requires Fintype infrastructure for Nat.Partition. 4. Embedding: distinctToOverpartition embeds distinct partitions into overpartitions with empty overline set. 5. Counting: overpartition_choices computes |P(supp(p))| = 2^|supp(p)|, giving the 2^d choices formula.",
+    "keyInsights": [
+      "An overpartition is a partition together with a choice of which distinct part sizes to overline. For a partition with d distinct part sizes, there are 2^d choices — this is exactly the powerset of the support, and Finset.card_powerset gives |P(S)| = 2^|S| in Lean.",
+      "Euler's partition identity (distinct = odd parts) is already in Mathlib as Theorems100.partition. The file wraps it with a symmetry flip (.symm) to match the expected statement direction. This is a common Mathlib pattern: the same result with different operand order.",
+      "The Overpartition structure is a dependent type: it has a field `overlined_subset : overlined ⊆ partition.parts.toFinset`, which enforces that only parts actually present in the partition can be overlined. This is a mathematical constraint expressed as a proof obligation in the structure.",
+      "The axiomatized numOverpartitions follows the 'defer to future formalization' pattern: the counting function is axiomatized with its small values because the full definition requires iterating over all partitions of n (a finite but complex enumeration). The structure and key properties can be formalized without the counting function.",
+      "The generating function ∏ (1+q^k)/(1-q^k) decomposes as ∏(1+q^k) × ∏ 1/(1-q^k). The first factor generates the choice of overlined parts (0 or 1 of each distinct size), and the second generates ordinary partitions. This multiplicative structure is the algebraic content of the 2^d formula."
+    ],
+    "prerequisites": [
+      "Euler's partition identity (distinct = odd) and Mathlib's Theorems100",
+      "Nat.Partition structure in Lean/Mathlib",
+      "Finset.toFinset for multisets (support of a partition)",
+      "Finset.powerset and Finset.card_powerset",
+      "Dependent record types in Lean 4"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "euler-identity",
+      "title": "Euler's Partition Identity Foundation",
+      "startLine": 25,
+      "endLine": 27,
+      "summary": "Wraps Mathlib's Theorems100.partition to give the distinct=odd partition identity.",
+      "mathContext": "$|\\{\\text{partitions of } n \\text{ into odd parts}\\}| = |\\{\\text{partitions of } n \\text{ into distinct parts}\\}|$. Mathlib's \\texttt{Theorems100.partition n} states this as \\texttt{IsDistinct.card n = IsOdd.card n} (distinct = odd); the file applies \\texttt{.symm} to get \\texttt{IsOdd.card n = IsDistinct.card n}. The bijective proof: each odd-part partition corresponds to a distinct-part partition via a canonical map involving binary representations of part multiplicities."
+    },
+    {
+      "id": "structure",
+      "title": "Overpartition Structure Definition",
+      "startLine": 33,
+      "endLine": 39,
+      "summary": "Defines Overpartition n as a dependent record with partition, overlined set, and subset constraint.",
+      "mathContext": "The \\texttt{Overpartition n} structure has three fields: (1) \\texttt{partition : Nat.Partition n} — the underlying partition; (2) \\texttt{overlined : Finset ℕ} — the set of overlined part sizes; (3) \\texttt{overlined\\_subset : overlined ⊆ partition.parts.toFinset} — the constraint that overlined sizes are present. The \\texttt{.toFinset} converts the multiset \\texttt{partition.parts : Multiset ℕ} to the set of distinct values (the support). This is a dependent record because field 3 refers to fields 1 and 2."
+    },
+    {
+      "id": "counting",
+      "title": "Overpartition Choices: 2^d via Powerset Cardinality",
+      "startLine": 51,
+      "endLine": 60,
+      "summary": "Proves the powerset has cardinality 2^d (Finset.card_powerset). Axiomatizes the numOverpartitions counting function.",
+      "mathContext": "The overline choices for a partition $p$ are exactly the subsets of $\\text{supp}(p)$: there are $2^{|\\text{supp}(p)|}$ choices. \\texttt{Finset.card\\_powerset S = 2 ^ S.card} is used directly. The \\texttt{distinctToOverpartition} embedding maps distinct partitions to overpartitions with empty overline: \\texttt{\\{partition := p, overlined := ∅, overlined\\_subset := Finset.empty\\_subset \\_\\}}. The angle-bracket constructor \\texttt{⟨p, ∅, ...⟩} works for structures with exactly these fields."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Overpartition structure is formalized in Lean 4 as a dependent record over Nat.Partition. The 2^d counting formula is proved via Finset.card_powerset. The numOverpartitions function is axiomatized, pending connection to a Fintype enumeration of Nat.Partition.",
+    "openQuestions": [
+      "Can numOverpartitions be defined (not axiomatized) in Lean? This requires: (a) a Fintype instance for Nat.Partition n, or (b) an alternative definition via generating functions. Mathlib has some partition Fintype infrastructure — can it be connected?",
+      "Corteel-Lovejoy (2004) proved many Euler-like identities for overpartitions, e.g., overpartitions with all odd parts = overpartitions with distinct parts. Can these be formalized in Lean using the Overpartition structure?",
+      "The generating function ∑ p̄(n) q^n = ∏ (1+q^k)/(1-q^k) is a formal power series identity. Can this be formalized in Lean using Mathlib's PowerSeries infrastructure?",
+      "Mock theta functions and the theory of Ramanujan are connected to overpartitions via their modular forms. Can the connection between p̄(n) and mock theta functions be formalized in Lean?"
+    ],
+    "implications": "Overpartitions provide a clean Lean formalization example of dependent record types with proof obligations in structure fields. The 2^d formula demonstrates how combinatorial identities (Finset.card_powerset) can directly formalize intuitive counting arguments."
+  },
   "references": [
     {
-      "authors": "Corteel, Sylvie and Lovejoy, Jeremy",
+      "author": "Euler, L.",
+      "title": "Introductio in Analysin Infinitorum",
+      "year": 1748,
+      "note": "First proof of the odd=distinct partition identity via generating functions"
+    },
+    {
+      "author": "Corteel, S. and Lovejoy, J.",
       "title": "Overpartitions",
-      "year": "2004",
-      "venue": "Trans. Amer. Math. Soc."
+      "year": 2004,
+      "venue": "Trans. Amer. Math. Soc.",
+      "note": "Systematic study of overpartitions and their partition identities"
     }
   ],
   "crossReferences": [
     {
       "targetId": "partition-theorem",
       "relationship": "extends",
-      "description": "Extends Euler's partition identity to overpartitions"
+      "description": "Extends Euler's partition identity (distinct=odd) to overpartitions via the 2^d generalization"
     }
   ],
-  "conclusion": {
-    "summary": "Overpartition structure defined with connection to Euler's identity. Small values axiomatized.",
-    "implications": "Overpartition structure defined with connection to Euler's identity. Small values axiomatized."
-  },
   "leanFile": {
     "imports": [
       "Mathlib"
