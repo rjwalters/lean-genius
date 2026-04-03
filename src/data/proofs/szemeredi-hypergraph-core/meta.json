@@ -63,7 +63,8 @@
       "k-partite density via transversals naturally generalizes bipartite edge density: for k=2, a transversal of [A, B] is a pair {a, b} with a ∈ A, b ∈ B",
       "The naive regularity condition (density stable under large subset restriction) is correct for graphs but insufficient for hypergraphs — the full Gowers version requires relativization to (k-1)-complexes",
       "Centralizing UHypergraph prevents the 27+ per-problem definitions scattered across Erdős problem files from diverging",
-      "The density bounds [0,1] are the hypergraph analogues of edgeDensity_nonneg and edgeDensity_le_one from SzemerediCore"
+      "The density bounds [0,1] are the hypergraph analogues of edgeDensity_nonneg and edgeDensity_le_one from SzemerediCore",
+      "The transversal count |transversals(V₁,…,Vₖ)| = ∏|Vᵢ| when parts are disjoint — the same product structure that makes the Gowers-Cauchy-Schwarz norm tower work; regularity prevents density variation precisely when this product structure is preserved"
     ],
     "prerequisites": [
       "Graph theory (simple graphs, hypergraphs)",

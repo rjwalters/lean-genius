@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-sz-hypcore-structure",
+    "proofId": "szemeredi-hypergraph-core",
+    "range": { "startLine": 44, "endLine": 60 },
+    "type": "definition",
+    "title": "UHypergraph: Centralized k-Uniform Hypergraph Structure",
+    "content": "The UHypergraph V k structure has two fields: edges (a Finset of Finsets over V) and uniform (a proof that every edge has exactly k elements). This encoding — edges as k-element Finsets rather than lists or functions — naturally supports set operations (intersection, subset, cardinality) and inherits Finset's decidability. The centralization prevents the 27+ per-problem hypergraph definitions across Erdős problem files from diverging. edgeCount is a thin wrapper over edges.card.",
+    "mathContext": "A $k$-uniform hypergraph $H = (V, E)$ where $E \\subseteq \\binom{V}{k}$ (all $k$-element subsets). The uniformity condition $|e| = k$ for all $e \\in E$ is enforced structurally as a proof obligation rather than a proposition to check later. For $k=2$: edges are unordered pairs, recovering the SimpleGraph setting.",
+    "significance": "key",
+    "relatedConcepts": ["SimpleGraph in Mathlib", "Finset structure", "k-uniform hypergraph", "centralization principle"],
+    "prerequisites": ["Lean 4 structures", "Finset (Finset V) as edge type", "DecidableEq V"]
+  },
+  {
+    "id": "ann-sz-hypcore-transversals",
+    "proofId": "szemeredi-hypergraph-core",
+    "range": { "startLine": 72, "endLine": 90 },
+    "type": "definition",
+    "title": "Transversals: Generalized Cross-Product for k-Partite Density",
+    "content": "transversals takes a List (Finset V) of parts and returns all k-element sets picking exactly one vertex from each part. The definition: form the union of all parts, take its powerset, filter for sets with the right cardinality AND exactly one intersection with each part. kPartiteDensity is then the fraction of transversals that are edges: |{e ∈ H.edges : e is a transversal}| / |transversals(parts)|, defaulting to 0 when the denominator is 0.",
+    "mathContext": "A **transversal** of $(V_1, \\ldots, V_k)$ is a set $\\{v_1, \\ldots, v_k\\}$ with $v_i \\in V_i$ for each $i$. The transversal count is $\\prod_{i=1}^k |V_i|$ when the parts are disjoint. $k$-partite density: $d_k(H; V_1, \\ldots, V_k) = |E(H) \\cap \\text{transv}| / |\\text{transv}|$. For $k=2$: $d_2(H; A, B) = |E(H) \\cap (A \\times B)| / (|A| \\cdot |B|)$, recovering bipartite edge density.",
+    "significance": "key",
+    "relatedConcepts": ["bipartite edge density", "cross-product generalization", "Finset.powerset filter", "SzemerediCore.edgeDensity"],
+    "prerequisites": ["List.foldl for union", "Finset.powerset", "Finset.filter with two conditions"]
+  },
+  {
+    "id": "ann-sz-hypcore-density-bound",
+    "proofId": "szemeredi-hypergraph-core",
+    "range": { "startLine": 103, "endLine": 116 },
+    "type": "theorem",
+    "title": "Density Bounds [0,1]: The Hypergraph Analogue of edgeDensity Bounds",
+    "content": "kPartiteDensity_le_one proves density ≤ 1: the filtered set (transversals that are edges) is a subset of all transversals, so Finset.card_filter_le applies. The proof uses split_ifs to handle the 0-denominator case, Nat.pos_of_ne_zero to convert the hypothesis, div_le_one to reduce to the card comparison. kPartiteDensity_nonneg is simpler: positivity handles the non-zero case directly.",
+    "mathContext": "$d_k(H; V_1,\\ldots,V_k) = |E \\cap T| / |T| \\in [0,1]$ where $T = \\text{transversals}$. Non-negativity: both $|E \\cap T|$ and $|T|$ are natural numbers. Upper bound: $|E \\cap T| \\le |T|$ by $E \\cap T \\subseteq T$ and Finset.card monotonicity. These mirror kPartiteDensity_nonneg and kPartiteDensity_le_one in the graph case.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_filter_le", "div_le_one", "positivity tactic", "density invariants"],
+    "prerequisites": ["ℚ arithmetic in Lean", "Finset.card_filter_le", "split_ifs for conditional defs"]
+  },
+  {
+    "id": "ann-sz-hypcore-regularity",
+    "proofId": "szemeredi-hypergraph-core",
+    "range": { "startLine": 131, "endLine": 141 },
+    "type": "definition",
+    "title": "IsHypergraphRegular: Naive ε-Regularity Condition",
+    "content": "IsHypergraphRegular H eps parts requires: (1) parts has length k; (2) for every sub-list parts' of parts (each part' ⊆ part, with |part'| ≥ eps * |part|), the density changes by at most eps. Uses List.get for indexed access and absolute value |·| for the density deviation. This is the naive generalization of IsEpsilonRegular from SzemerediCore. The full Gowers (2007) version would condition on the (k-1)-skeleton rather than raw transversals.",
+    "mathContext": "**Naive ε-regularity**: $(V_1,\\ldots,V_k)$ is $\\varepsilon$-regular for $H$ if $\\forall V'_i \\subseteq V_i$ with $|V'_i| \\ge \\varepsilon|V_i|$: $|d_k(H; V'_1,\\ldots,V'_k) - d_k(H; V_1,\\ldots,V_k)| \\le \\varepsilon$. For $k=2$: recovers graph ε-regularity. **Limitation**: for $k \\ge 3$, this condition is insufficient for the counting lemma — the Gowers version conditions on dense sub-complexes of the $(k-1)$-skeleton.",
+    "significance": "key",
+    "relatedConcepts": ["SzemerediCore.IsEpsilonRegular", "Gowers 2007 relative regularity", "simplicial complex", "counting lemma"],
+    "prerequisites": ["List.get for indexed access", "absolute value in ℚ", "IsEpsilonRegular in SzemerediCore"]
+  },
+  {
+    "id": "ann-sz-hypcore-graph-bridge",
+    "proofId": "szemeredi-hypergraph-core",
+    "range": { "startLine": 162, "endLine": 170 },
+    "type": "definition",
+    "title": "fromSimpleGraph: Bridge from Graph to Hypergraph Framework",
+    "content": "fromSimpleGraph converts a SimpleGraph G into a 2-uniform UHypergraph: each directed adjacency (a, b) with G.Adj a b is mapped to the unordered pair {a, b}. The uniformity proof uses Finset.card_pair with G.ne_of_adj (adjacent vertices are distinct). This bridge confirms that UHypergraph specializes correctly to the graph case (k=2) and allows graph regularity results to be phrased in the unified framework.",
+    "mathContext": "For a simple graph $G = (V, E)$: the 2-uniform hypergraph has edge set $\\{\\{u,v\\} : u \\sim_G v\\}$. Directed adjacency $((u,v), (v,u))$ both map to the same unordered pair $\\{u,v\\}$, so the image removes duplicates. The uniformity $|\\{u,v\\}| = 2$ requires $u \\ne v$, which follows from $G.ne\\_of\\_adj$.",
+    "significance": "supporting",
+    "relatedConcepts": ["SimpleGraph in Mathlib", "Finset.card_pair", "G.ne_of_adj", "2-uniform specialization"],
+    "prerequisites": ["SimpleGraph.Adj", "Finset.image for deduplication", "Fintype.elems ×ˢ Fintype.elems"]
+  }
+]
