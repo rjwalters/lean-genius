@@ -1993,10 +1993,10 @@
       "result": "clean"
     },
     "erdos-1029": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-03-24T05:17:38Z",
-      "result": "clean"
+      "lastAudited": "2026-04-03T07:46:36Z",
+      "result": "issues-found"
     },
     "erdos-103": {
       "auditCount": 2,
@@ -9796,9 +9796,9 @@
       "result": "issues-fixed"
     },
     "inverse-galois-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T03:08:27Z",
+      "lastAudited": "2026-04-03T07:37:44Z",
       "result": "clean"
     },
     "inverse-galois-oq-06": {
@@ -11139,6 +11139,42 @@
       "auditCount": 1,
       "lastAudited": "2026-04-03T06:06:17Z",
       "result": "issues-found",
+      "issues": []
+    },
+    "amgm-inequality-oq-02-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-04-03T07:38:34Z",
+      "result": "clean",
+      "issues": []
+    },
+    "collatz-structured-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T07:39:03Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-10-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T07:39:14Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1021-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T07:39:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "gcd-algorithm-oq-01-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T07:39:55Z",
+      "result": "clean",
+      "issues": []
+    },
+    "isosceles-triangle-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T07:40:04Z",
+      "result": "clean",
       "issues": []
     }
   },
