@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-shannkol-axioms",
+    "proofId": "shannon-entropy-oq-02",
+    "range": { "startLine": 51, "endLine": 59 },
+    "type": "axiom",
+    "title": "Kolmogorov Complexity Axiomatized",
+    "content": "Two axioms capture all that is needed for the entropy-complexity theorem. kolmogorovComplexity is the function K : α → ℕ giving the length of the shortest prefix-free program. kolmogorov_kraft asserts ∑_x (1/2)^K(x) ≤ 1, which follows from prefix-freeness: the set of valid programs forms a prefix-free code. These avoid formalizing Turing machines, universal computation, and halting — an infrastructure that would require thousands of additional lines.",
+    "mathContext": "A **prefix-free code** is a set of binary strings where no codeword is a prefix of another. By Kraft's inequality, any prefix-free code satisfies $\\sum_x 2^{-|c(x)|} \\le 1$. Prefix-free Kolmogorov complexity $K(x)$ is the length of the shortest self-delimiting program producing $x$; the collection $\\{0,1\\}^{K(x)}$ is prefix-free, so $\\sum_x 2^{-K(x)} \\le 1$.",
+    "significance": "key",
+    "relatedConcepts": ["prefix-free codes", "Kraft inequality", "Turing machine universality", "self-delimiting programs"],
+    "prerequisites": ["computability theory", "binary codes", "Kraft inequality"]
+  },
+  {
+    "id": "ann-shannkol-infrastructure",
+    "proofId": "shannon-entropy-oq-02",
+    "range": { "startLine": 66, "endLine": 76 },
+    "type": "definition",
+    "title": "Shannon Entropy, Expected Complexity, and Kraft Validity",
+    "content": "Three definitions: shannonEntropy p = -∑ p(i) * log(p(i)) (using 'if p i = 0 then 0' to handle the 0 * log(0) = 0 convention). expectedComplexity p K = ∑ p(i) * K(i) (weighted average of K values). KraftValid l = ∑ (1/2)^(l i) ≤ 1 (Kraft inequality for code lengths l). All use natural logarithm (Mathlib's Real.log), so entropy is in nats; the factor 'log 2' converts to bits.",
+    "mathContext": "$H(X) = -\\sum_x p(x) \\log p(x)$ (nats), where $0 \\log 0 := 0$ by convention. $E[K(X)] = \\sum_x p(x) K(x)$. Kraft validity: $\\sum_x 2^{-l(x)} \\le 1$. Converting: $H_2(X) = H(X) / \\ln 2$ (bits). The theorem states $H(X) \\le E[K(X)] \\cdot \\ln 2 < H(X) + (c+1) \\ln 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Shannon entropy", "expected value", "prefix-free code lengths", "nat/bits conversion"],
+    "prerequisites": ["Real.log in Mathlib", "Finset.sum", "nats vs bits distinction"]
+  },
+  {
+    "id": "ann-shannkol-kl-bound",
+    "proofId": "shannon-entropy-oq-02",
+    "range": { "startLine": 84, "endLine": 103 },
+    "type": "concept",
+    "title": "Pointwise KL Bound: p · ln(p/q) ≥ p − q",
+    "content": "The fundamental analytical inequality underlying the source coding theorem. Proof: log(q/p) ≤ q/p − 1 (from log t ≤ t − 1, applied at t = q/p). Multiplying by p gives p * log(q/p) ≤ q − p. Since log(p/q) = −log(q/p), rearranging gives p * log(p/q) ≥ p − q. Two supporting lemmas: kraft_term_pos (each (1/2)^l > 0) and log_kraft_term (log((1/2)^l) = −l · log 2), used in the expansion of log(p/r).",
+    "mathContext": "The inequality $p \\ln(p/q) \\ge p - q$ for $p, q > 0$ is the pointwise form of **Gibbs' inequality** (non-negativity of KL divergence). Summing over a distribution with $\\sum p = 1$ and using Kraft's inequality $\\sum q \\le 1$: $\\sum_x p(x) \\ln(p(x)/q(x)) \\ge 0$, with equality iff $p = q$. This is the key step establishing that optimal codes cannot compress below entropy.",
+    "significance": "key",
+    "relatedConcepts": ["KL divergence", "Gibbs' inequality", "log_le_sub_one_of_pos", "source coding theorem"],
+    "prerequisites": ["Real.log_le_sub_one_of_pos from Mathlib", "positivity of Kraft terms", "log div rule"]
+  },
+  {
+    "id": "ann-shannkol-source-coding",
+    "proofId": "shannon-entropy-oq-02",
+    "range": { "startLine": 128, "endLine": 163 },
+    "type": "theorem",
+    "title": "Source Coding Theorem: No Code Beats Entropy",
+    "content": "avg_length_ge_entropy proves the noiseless coding theorem: for any positive distribution p and Kraft-valid code lengths l, the expected code length satisfies E[l(X)] · ln 2 ≥ H(X). Proof: set r(i) = (1/2)^(l i) (Kraft terms). KL non-negativity (via kl_term_bound) gives ∑ p(i) * log(p(i)/r(i)) ≥ 0. Expanding log(p/r) = log(p) + l · log 2 and summing yields the result. The corollary entropy_le_expected_K_times_ln2 applies this to K via kolmogorov_kraft.",
+    "mathContext": "**Shannon's source coding theorem** (1948): For any distribution $p$ and prefix-free code $l$ with $\\sum 2^{-l(x)} \\le 1$, the expected length satisfies $\\mathbb{E}[l(X)] \\ge H_2(X)$. Equivalently in nats: $\\mathbb{E}[l(X)] \\cdot \\ln 2 \\ge H(X)$. This is tight: the Shannon code achieves $\\mathbb{E}[l_S] \\cdot \\ln 2 < H + \\ln 2$ (less than 1 bit overhead).",
+    "significance": "key",
+    "relatedConcepts": ["Shannon source coding theorem", "KL divergence", "Kraft inequality", "noiseless coding"],
+    "prerequisites": ["kl_term_bound", "Finset.sum_sub_distrib", "BigOperators notation"]
+  },
+  {
+    "id": "ann-shannkol-coding-theorem",
+    "proofId": "shannon-entropy-oq-02",
+    "range": { "startLine": 187, "endLine": 189 },
+    "type": "axiom",
+    "title": "Coding Theorem: Computable Distributions Yield Short Programs",
+    "content": "computable_distribution_bound is the third and deepest axiom: for any computable distribution p, there exists a constant c (depending on the universal Turing machine) such that K(x) ≤ ⌈−log₂ p(x)⌉ + c for all x. This captures the content of Solomonoff's universal prior: a computable distribution can be encoded as a program, and the universal machine simulates it with constant overhead. The constant c is uncomputable and distribution-independent.",
+    "mathContext": "The **coding theorem** (Kolmogorov, Levin): If $p$ is a computable distribution, then $K(x) \\le -\\log_2 p(x) + c$ for a constant $c$ depending only on the universal machine. This is proved by constructing an explicit program: given $p$, generate a Huffman code or Shannon code, then encode $x$ using that code. The universal machine simulates this with $O(1)$ overhead. In Lean: $K(x) \\le \\lceil -\\log(p(x)) / \\log 2 \\rceil + c$.",
+    "significance": "key",
+    "relatedConcepts": ["Solomonoff's universal prior", "universal Turing machine", "algorithmic coding theorem", "Kolmogorov-Levin theorem"],
+    "prerequisites": ["computability theory", "Nat.ceil", "Turing machine simulation"]
+  },
+  {
+    "id": "ann-shannkol-shannon-code",
+    "proofId": "shannon-entropy-oq-02",
+    "range": { "startLine": 200, "endLine": 262 },
+    "type": "theorem",
+    "title": "Shannon Code: Kraft-Valid and Near-Optimal",
+    "content": "Two theorems about the Shannon code l_S(x) = ⌈−log₂ p(x)⌉. shannon_kraft_valid proves Kraft validity using exp_le_exp and exp_log: the bound (1/2)^⌈x⌉ ≤ p(x) follows from taking logs, using the ceiling bound, and then exp to recover. shannon_length_upper_bound proves E[l_S(X)] · ln 2 < H(X) + ln 2: each Shannon length satisfies l_S(x) < −log₂ p(x) + 1 (from Nat.ceil_lt_add_one), giving the strict inequality after summing.",
+    "mathContext": "The **Shannon code** uses lengths $l_S(x) = \\lceil -\\log_2 p(x) \\rceil$. Kraft validity: $2^{-l_S(x)} \\le p(x)$ (since $l_S(x) \\ge -\\log_2 p(x)$), so $\\sum_x 2^{-l_S(x)} \\le \\sum_x p(x) = 1$. Expected length: $E[l_S] < H_2(X) + 1$ (in bits) since $l_S(x) < -\\log_2 p(x) + 1$. This 1-bit overhead makes the Shannon code near-optimal.",
+    "significance": "supporting",
+    "relatedConcepts": ["Huffman coding", "Nat.ceil_lt_add_one", "optimal codes", "source coding upper bound"],
+    "prerequisites": ["Nat.ceil", "Real.exp_le_exp", "Real.exp_log", "Real.log_kraft_term"]
+  },
+  {
+    "id": "ann-shannkol-lower-bound-main",
+    "proofId": "shannon-entropy-oq-02",
+    "range": { "startLine": 275, "endLine": 329 },
+    "type": "theorem",
+    "title": "Both Directions: Lower and Upper Bounds on E[K(X)]",
+    "content": "entropy_le_expected_complexity (lines 275-279) is a one-line corollary applying entropy_le_expected_K_times_ln2 to K via kolmogorov_kraft. expected_complexity_le_entropy_plus_const (lines 289-328) provides the upper bound: obtain constant c from computable_distribution_bound; bound E[K] ≤ E[l_S] + c (each term p(i) * K(i) ≤ p(i) * (l_S(i) + c)); apply Shannon code upper bound; chain via calc to get E[K] · ln 2 < H + (c+1) · ln 2.",
+    "mathContext": "Lower bound: $H(X) \\le E[K(X)] \\cdot \\ln 2$ (via Kraft + source coding). Upper bound: $E[K(X)] \\le E[l_S(X)] + c$ (coding theorem) and $E[l_S(X)] \\cdot \\ln 2 < H(X) + \\ln 2$ (Shannon code). Combined: $E[K(X)] \\cdot \\ln 2 < H(X) + (c+1) \\ln 2$. The constant $c+1$ is universal — the $+1$ comes from the Shannon code overhead, $c$ from algorithmic coding.",
+    "significance": "key",
+    "relatedConcepts": ["coding theorem bound", "Shannon code upper bound", "calc chains in Lean", "mul_le_mul_of_nonneg_right"],
+    "prerequisites": ["computable_distribution_bound axiom", "shannon_length_upper_bound", "Finset.sum_le_sum"]
+  },
+  {
+    "id": "ann-shannkol-main-theorem",
+    "proofId": "shannon-entropy-oq-02",
+    "range": { "startLine": 338, "endLine": 346 },
+    "type": "theorem",
+    "title": "Entropy-Complexity Equivalence: The Combined Theorem",
+    "content": "entropy_complexity_equivalence combines both directions into one existential statement: ∃ c, H(X) ≤ E[K(X)] · ln 2 ∧ E[K(X)] · ln 2 < H(X) + (c+1) · ln 2. The proof is two lines: obtain c from expected_complexity_le_entropy_plus_const; return ⟨c, entropy_le_expected_complexity ..., hc⟩. This theorem captures the fundamental equivalence between Shannon's operational information theory and Kolmogorov's algorithmic information theory.",
+    "mathContext": "The theorem states $H(X) = E[K(X)] \\cdot \\ln 2 + O(1)$: the two foundational measures of information — Shannon entropy (average compression limit) and Kolmogorov complexity (individual shortest program length) — agree up to an additive constant independent of the distribution. In bits: $H_2(X) \\le E[K(X)] < H_2(X) + c + 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Shannon-Kolmogorov equivalence", "algorithmic information theory", "minimum description length", "Solomonoff induction"],
+    "prerequisites": ["entropy_le_expected_complexity", "expected_complexity_le_entropy_plus_const"]
+  },
+  {
+    "id": "ann-shannkol-uniform",
+    "proofId": "shannon-entropy-oq-02",
+    "range": { "startLine": 353, "endLine": 381 },
+    "type": "theorem",
+    "title": "Uniform Distribution: Incompressibility Theorem",
+    "content": "Two theorems for the uniform distribution p(i) = 1/n. uniform_entropy_eq_log_card proves H(p) = log n (in nats) via simp_rw [hp], sum_const, and log_div. uniform_complexity_approx_log uses this to show E[K(X)] · ln 2 is between log n and log n + (c+1) · ln 2. This is the incompressibility theorem: most strings of length log₂ n bits cannot be significantly compressed — their Kolmogorov complexity ≈ log₂ n.",
+    "mathContext": "For the uniform distribution on $n$ elements: $H(X) = \\log n$ nats $= \\log_2 n$ bits. By the entropy-complexity theorem, $E[K(X)] \\cdot \\ln 2 \\in [\\log n, \\log n + (c+1) \\ln 2)$, so $E[K(X)] \\approx \\log_2 n$ bits. The **incompressibility theorem** (Kolmogorov) strengthens this: for each $n$, at most $2^{k}-1$ strings of length $n$ have $K(x) < k$, so most strings have $K(x) \\ge n - O(1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["incompressibility theorem", "random strings", "typical sequences", "Kolmogorov randomness"],
+    "prerequisites": ["uniform_entropy_eq_log_card", "entropy_complexity_equivalence", "log_div"]
+  }
+]

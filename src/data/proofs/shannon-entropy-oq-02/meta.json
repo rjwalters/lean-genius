@@ -69,7 +69,8 @@
       "The source coding theorem provides the lower bound: no prefix-free code (including K) can compress below entropy on average",
       "The coding theorem provides the upper bound: any computable distribution yields a code with K(x) <= -log_2(p(x)) + O(1)",
       "The constant c depends on the universal Turing machine but not on the distribution, making the equivalence truly universal",
-      "For the uniform distribution, E[K(X)] = log_2(n) + O(1), implying most strings of length n are incompressible"
+      "For the uniform distribution, E[K(X)] = log_2(n) + O(1), implying most strings of length n are incompressible",
+      "The equivalence grounds the Minimum Description Length (MDL) principle in statistics: model selection by shortest program length (Kolmogorov) is asymptotically equivalent to maximizing Shannon-coded likelihood, bridging information theory and statistical inference"
     ],
     "prerequisites": [
       "Shannon entropy and its properties",
