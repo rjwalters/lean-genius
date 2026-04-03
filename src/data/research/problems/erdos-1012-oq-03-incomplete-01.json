@@ -29,11 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved sc_tournament_has_cycle (was sorry). API modernized (insertNth→insertIdx). tournament_cycle_extendable structured: direct insertion nodup+length proved, 3 sorries remain (arc condition + SC cases A/B). 5 total sorries remain.",
+    "progressSummary": "PROGRESS: Proved sc_tournament_has_cycle and arc condition for direct-insertion case. 4 sorries remain: SC cases A/B of tournament_cycle_extendable, ghouila_houri, directed_hamiltonian_threshold. SC cases require extracting simple path from SC walk through non-cycle vertices.",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
-      "sc_tournament_has_cycle proof in Erdos1012OQ03.lean:330-390"
+      "sc_tournament_has_cycle proof in Erdos1012OQ03.lean:330-390",
+      "tournament_cycle_extendable arc condition proof in Erdos1012OQ03.lean:534-617"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
@@ -41,7 +42,8 @@
       "Surjectivity: List.mem_iff_getElem + hmem (∀ v, v ∈ l from Finset.eq_univ_of_card)",
       "Arc condition: Equiv.ofBijective preserves function values, so σ.symm i = l[i]",
       "sc_tournament_has_cycle proved: uses Rédei Hamiltonian path + SC walk from last to first vertex, extracts cycle via l.drop k (~60 lines)",
-      "API fix: insertNth renamed to insertIdx in Lean 4.26/current Mathlib; all references updated"
+      "API fix: insertNth renamed to insertIdx in Lean 4.26/current Mathlib; all references updated",
+      "Arc condition proved for direct-insertion in tournament_cycle_extendable using getElem_insertIdx_of_lt/self/of_gt (Lean 4.26 API) + Nat.mod_eq_of_lt for index simplification"
     ],
     "mathlibGaps": [],
     "nextSteps": [
