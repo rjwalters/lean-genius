@@ -227,17 +227,49 @@ theorem glaisherBwdStep_pow_two (a b : ℕ) :
     rw [ih (2 * b)]
     congr 1; ring
 
-/-! ## Bijectivity (Structured Sorrys) -/
+/-! ## Bijectivity -/
 
 /-- Backward undoes forward for a single distinct part k.
 
-    Proof strategy: glaisherFwdPart k = replicate (2^a) b, so
-    glaisherBwd (replicate (2^a) b) = glaisherBwdStep b (2^a) = {2^a * b} = {k}. -/
+    Proof: glaisherFwdPart k = replicate (2^a) b where a = padicValNat 2 k and b = k/2^a.
+    Then toFinset = {b}, count b = 2^a, and glaisherBwdStep b (2^a) = {2^a * b} = {k}. -/
 theorem glaisherBwd_glaisherFwdPart {k : ℕ} (hk : k ≠ 0) :
     glaisherBwd (glaisherFwdPart k) = {k} := by
-  sorry
+  set a := padicValNat 2 k
+  set b := k / 2 ^ a
+  have ha_pos : 0 < 2 ^ a := by positivity
+  -- Step 1: toFinset of replicate (2^a) b = {b} (since 2^a ≥ 1)
+  have h_toFinset : (glaisherFwdPart k).toFinset = {b} := by
+    ext x
+    simp only [glaisherFwdPart, Multiset.mem_toFinset, Multiset.mem_replicate,
+               Finset.mem_singleton]
+    exact ⟨fun ⟨_, hx⟩ => hx, fun hx => ⟨ha_pos.ne', hx⟩⟩
+  -- Step 2: count b in replicate (2^a) b = 2^a
+  have h_count : (glaisherFwdPart k).count b = 2 ^ a := by
+    show (Multiset.replicate (2 ^ a) b).count b = 2 ^ a
+    simp [Multiset.count_replicate]
+  -- Step 3: unfold glaisherBwd, reduce singleton multiset bind, finish
+  -- {b}.bind f = (b ::ₘ 0).bind f = f b + 0.bind f = f b  (by Multiset.cons_bind, zero_bind)
+  simp only [glaisherBwd, h_toFinset, Finset.singleton_val,
+             show ({b} : Multiset ℕ) = b ::ₘ 0 from rfl,
+             Multiset.cons_bind, Multiset.zero_bind, add_zero]
+  rw [h_count, glaisherBwdStep_pow_two,
+      show 2 ^ a * b = k from padic_factorization]
 
-/-- The maps are inverses on distinct positive multisets. -/
+/-- The maps are inverses on distinct positive multisets.
+
+    Key sub-lemma needed (marked sorry for future work):
+    glaisherBwdStep b (m1 + m2) = glaisherBwdStep b m1 + glaisherBwdStep b m2
+    when m1 and m2 have disjoint binary representations (m1 &&& m2 = 0).
+    This holds because carry-free binary addition preserves bit patterns.
+
+    Proof sketch for the main theorem:
+    - Group elements of s by their odd part b = k / 2^padicValNat(k)
+    - For each odd b, count b in glaisherFwd s = Σ_{k in s, oddPart k = b} 2^padicValNat(k)
+    - The 2^padicValNat values for distinct k with same odd part are distinct powers of 2
+       (since different k's with same odd part have different 2-adic valuations, and s is Nodup)
+    - glaisherBwdStep b over that sum of distinct powers = union of {2^a * b} by additive decomp
+    - Summing over all odd b recovers exactly s. -/
 theorem glaisherBwd_glaisherFwd {s : Multiset ℕ}
     (hs_pos : ∀ k ∈ s, k ≠ 0) (hs_nodup : s.Nodup) :
     glaisherBwd (glaisherFwd s) = s := by
