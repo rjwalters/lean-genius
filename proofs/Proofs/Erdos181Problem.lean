@@ -222,8 +222,8 @@ This question is OPEN. Note:
   so R(Q_n) / 2^n ≤ C · 2^{(1-c)n}, which still → ∞.
   The question remains unresolved.
 -/
-theorem erdos_sos_question_open :
-  True := trivial -- This question is genuinely OPEN; we do not assert either direction
+/- erdos_sos_question_open: whether R(Q_n)/2^n → ∞ is genuinely OPEN;
+  neither direction is currently proved. -/
 
 /-- The conjecture answers Erdős-Sós negatively: R(Q_n)/2^n is bounded. -/
 theorem conjecture_implies_bounded_ratio :

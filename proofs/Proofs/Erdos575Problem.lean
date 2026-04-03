@@ -71,19 +71,17 @@ The exact order is typically a fractional power of n. -/
 
 /-- ex(n; F) ≤ ex(n; G) for any G ∈ F: excluding more graphs can
 only reduce the extremal function. -/
-theorem exFamily_le_member :
-  -- Adding more forbidden graphs reduces the maximum edge count
-  True := trivial
+/- exFamily_le_member: ex(n; F) ≤ ex(n; G) for any G ∈ F;
+  adding more forbidden graphs reduces the maximum edge count. -/
 
 /-- If F contains a bipartite graph, then ex(n; F) = o(n²):
 the family extremal function is subquadratic. -/
-theorem family_with_bipartite_subquadratic :
-  -- Follows from the Kővári–Sós–Turán bound on the bipartite member
-  True := trivial
+/- family_with_bipartite_subquadratic: if F contains a bipartite graph,
+  then ex(n; F) = o(n²) — follows from Kővári–Sós–Turán bound. -/
 
 /-- The conjecture implies that for families with a bipartite member,
 the asymptotic behavior of ex(n; F) is controlled by a single
 bipartite graph in the family. -/
-theorem single_graph_controls :
-  -- This is the precise content of Erdős Problem #575
-  True := trivial
+/- single_graph_controls: for families with a bipartite member,
+  the asymptotic behavior of ex(n; F) is controlled by a single
+  bipartite graph in the family (Erdős Problem #575 conjecture). -/

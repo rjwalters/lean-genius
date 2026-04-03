@@ -53,16 +53,11 @@ theorem n_divides_rarely :
 /-- Pomerance: the set of n with (n−k) | C(2n, n) has upper density < 1/3.
     The measure-theoretic statement requires density infrastructure;
     the existential structure here is a placeholder. -/
-theorem pomerance_density_bound (k : ℕ) :
-  -- Upper density of {n : (n−k) | C(2n,n)} is less than 1/3
-  True := trivial
+/- pomerance_density_bound (Pomerance 2014): the upper density of
+  {n : (n−k) | C(2n,n)} is less than 1/3. -/
 
-/-- Pomerance: the set of n with ∏(n+i) | C(2n, n) for i=1..k has density 1.
-    The measure-theoretic statement requires density infrastructure;
-    the existential structure here is a placeholder. -/
-theorem pomerance_ascending_density (k : ℕ) :
-  -- {n : ascFactorial(n+1, k) | C(2n,n)} has asymptotic density 1
-  True := trivial
+/- pomerance_ascending_density (Pomerance 2014): the set of n with
+  ∏(n+i) | C(2n, n) for i=1..k has asymptotic density 1. -/
 
 /- ## The Erdős–Graham Conjecture -/
 

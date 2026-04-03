@@ -37,9 +37,8 @@ theorem max_hyperplanes (n d : ℕ) (hd : d ≥ 1) :
 
 /-- In general position (no d+1 points on a hyperplane),
     n points determine exactly C(n,d) hyperplanes. -/
-theorem general_position_count (n d : ℕ) :
-    -- exactly C(n,d) hyperplanes for n points in general position
-    True := trivial
+/- general_position_count: n points in general position (no d+1 on a
+    hyperplane) determine exactly C(n,d) hyperplanes. -/
 
 -- ============================================================
 -- Part II: The Sylvester-Gallai Theorem

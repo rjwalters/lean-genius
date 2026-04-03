@@ -178,10 +178,7 @@ def question1_almost_all_growth : Prop :=
         (fun n => (tauPerp n : ℝ) / (omega n) < M ∧ omega n > 0)
         (Finset.range x)).card / (x : ℝ) < ε
 
-/--
-**Status of Question 1: OPEN**
--/
-theorem question1_open : True := trivial
+/- Status of Question 1 (Erdős-Hall): OPEN -/
 
 /-
 ## Part IV: Question 2 - Upper Bound
@@ -206,10 +203,7 @@ theorem erdos_hall_max_lower_bound :
     ∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
       ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((log (log x))^(2 - ε)) := by sorry
 
-/--
-**Status of Question 2: OPEN**
--/
-theorem question2_open : True := trivial
+/- Status of Question 2 (Erdős-Hall upper bound): OPEN -/
 
 /-
 ## Part V: Question 3 - Growth of g(k)
@@ -295,7 +289,8 @@ For n = p₁^a₁ · ... · p_k^a_k:
 
 The exponential bounds on g(k) show the structure is neither trivial nor chaotic.
 -/
-theorem structural_insight : True := trivial
+/- structural_insight: the exponential bounds on g(k) reflect that
+    consecutive divisors create intricate combinatorial constraints. -/
 
 /-
 ## Part VIII: Summary

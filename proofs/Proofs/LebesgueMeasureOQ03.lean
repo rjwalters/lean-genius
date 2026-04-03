@@ -97,10 +97,8 @@ theorem orthonormal_balls_disjoint :
     This → 0 as n → ∞, showing that "most of the volume
     concentrates near the surface" — a preview of the
     infinite-dimensional pathology. -/
-theorem ball_volume_vanishes :
-    -- The volume of the unit ball in ℝⁿ tends to 0 as n → ∞
-    -- (This is provable from the Gamma function asymptotics)
-    True := trivial
+/- ball_volume_vanishes: the volume of the unit ball in ℝⁿ tends to 0
+    as n → ∞ (provable from Gamma function asymptotics). -/
 
 /-- The concentration of measure phenomenon:
     In high dimensions, a Lipschitz function on the sphere Sⁿ⁻¹
@@ -108,8 +106,8 @@ theorem ball_volume_vanishes :
 
     This is a quantitative version of "no translation-invariant
     measure exists": translations spread mass too thin. -/
-theorem concentration_sketch :
-    True := trivial
+/- concentration_sketch: in high dimensions, a Lipschitz function on
+    the sphere Sⁿ⁻¹ is approximately constant on most of the sphere. -/
 
 /-
   Summary
