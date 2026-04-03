@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-preamble-module",
+    "proofId": "amgm-inequality-oq-03-oq-03",
+    "range": { "startLine": 1, "endLine": 19 },
+    "type": "context",
+    "title": "Power Mean Family Overview",
+    "content": "The module header introduces the power mean $M_r$ for a tuple of positive reals. The definition distinguishes two cases: the standard formula for $r \\neq 0$ and the geometric mean (via product) as the $r = 0$ limit. This two-case definition is the classical choice, since $\\left(\\frac{\\sum x_i^r}{n}\\right)^{1/r}$ does not have a finite limit at $r = 0$ without reinterpretation — the correct limit is the geometric mean by L'Hôpital or log-continuity. Opening `Finset` gives access to `∑`, `∏`, `sup`, and `inf` over finite index types.",
+    "mathContext": "$M_r(x) = \\begin{cases}\\left(\\frac{1}{n}\\sum_{i=1}^n x_i^r\\right)^{1/r} & r \\neq 0 \\\\ \\left(\\prod_{i=1}^n x_i\\right)^{1/n} & r = 0\\end{cases}$",
+    "significance": "context",
+    "relatedConcepts": ["geometric mean", "arithmetic mean", "harmonic mean", "L'Hôpital's rule"],
+    "prerequisites": ["real analysis", "finset operations in Lean", "real exponentiation"]
+  },
+  {
+    "id": "ann-powerMean-def",
+    "proofId": "amgm-inequality-oq-03-oq-03",
+    "range": { "startLine": 25, "endLine": 32 },
+    "type": "definition",
+    "title": "The powerMean Function",
+    "content": "The `powerMean` function is declared `noncomputable` because Lean's kernel cannot evaluate `Real.rpow` (real exponentiation with real exponents) algorithmically — it is defined via the exponential and logarithm, which live outside the computable fragment. The type signature is fully general: any `Fintype ι` (finite index type) with values `x : ι → ℝ` and exponent `r : ℝ`. The `if r = 0` branch uses `∏ i, x i` raised to the power `(card ι)⁻¹`, implementing the geometric mean. The else branch computes `(∑ i, (x i)^r / card ι)^(1/r)` using the power mean formula.",
+    "mathContext": "$M_r(x_1,\\ldots,x_n) = \\left(\\frac{x_1^r + \\cdots + x_n^r}{n}\\right)^{1/r}$, with $M_0 = (x_1 \\cdots x_n)^{1/n}$",
+    "significance": "key",
+    "relatedConcepts": ["noncomputable definitions in Lean", "Real.rpow", "Fintype.card", "geometric mean"],
+    "prerequisites": ["Lean type classes", "real exponentiation", "finset sums and products"]
+  },
+  {
+    "id": "ann-limit-pos-infty",
+    "proofId": "amgm-inequality-oq-03-oq-03",
+    "range": { "startLine": 37, "endLine": 40 },
+    "type": "insight",
+    "title": "Limit as r → +∞: Dominance of the Maximum",
+    "content": "The proof sketch uses a squeeze argument. Let $M = \\max_i x_i$. Then $M^r \\leq \\sum_i x_i^r \\leq n \\cdot M^r$, so $M = (M^r)^{1/r} \\leq M_r \\leq (n \\cdot M^r)^{1/r} = n^{1/r} \\cdot M$. Since $n^{1/r} = e^{\\frac{\\ln n}{r}} \\to e^0 = 1$ as $r \\to +\\infty$, the squeeze theorem gives $M_r \\to M = \\max_i x_i$. Formalizing this in Lean requires `Real.tendsto_rpow_atTop` or similar, plus monotonicity of $x \\mapsto x^{1/r}$.",
+    "mathContext": "$\\max_i x_i \\leq M_r \\leq n^{1/r} \\cdot \\max_i x_i \\xrightarrow{r\\to+\\infty} \\max_i x_i$",
+    "significance": "key",
+    "relatedConcepts": ["squeeze theorem", "L^p norm convergence", "dominated convergence", "max function"],
+    "prerequisites": ["real analysis", "limits at infinity", "finite maxima in Lean"]
+  },
+  {
+    "id": "ann-limit-neg-infty",
+    "proofId": "amgm-inequality-oq-03-oq-03",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "insight",
+    "title": "Limit as r → -∞: Duality with Min",
+    "content": "The sketch invokes the elegant duality $M_{-r}(x) = 1/M_r(1/x)$, which follows from: $M_{-r}(x) = \\left(\\frac{\\sum x_i^{-r}}{n}\\right)^{-1/r} = \\left(\\frac{\\sum (x_i^{-1})^r}{n}\\right)^{-1/r} = \\left(M_r(1/x)^r\\right)^{-1/r} = 1/M_r(1/x)$. Applying the $r \\to +\\infty$ limit: $M_{-r}(x) \\to 1/\\max_i(1/x_i) = \\min_i x_i$. This duality mirrors the relationship $\\min x_i = 1/\\max_i(1/x_i)$ for positive reals.",
+    "mathContext": "$M_{-r}(x) = \\dfrac{1}{M_r(1/x)} \\xrightarrow{r\\to+\\infty} \\dfrac{1}{\\max_i(1/x_i)} = \\min_i x_i$",
+    "significance": "key",
+    "relatedConcepts": ["harmonic-arithmetic duality", "reciprocal means", "min-max duality", "Hölder conjugate"],
+    "prerequisites": ["power mean definition", "limit at +∞ case", "positive reals"]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "amgm-inequality-oq-03-oq-03",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "insight",
+    "title": "Monotonicity of Power Means in r",
+    "content": "The monotonicity $r \\leq s \\Rightarrow M_r \\leq M_s$ is the master inequality subssuming all classical mean inequalities. The standard proof uses Jensen's inequality: for $s > r > 0$, the function $t \\mapsto t^{s/r}$ is strictly convex, so by Jensen applied to the empirical measure $\\mu = \\frac{1}{n}\\sum \\delta_{x_i^r}$, we get $\\left(\\frac{\\sum x_i^r}{n}\\right)^{s/r} \\leq \\frac{\\sum x_i^s}{n}$, which gives $M_r^s \\leq M_s^s$ and thus $M_r \\leq M_s$. The case $r < 0 < s$ and $r < s < 0$ require separate but analogous arguments.",
+    "mathContext": "$r \\leq s \\Rightarrow M_r \\leq M_s$; in particular $M_{-1} \\leq M_0 \\leq M_1 \\leq M_2$ (harmonic $\\leq$ geometric $\\leq$ arithmetic $\\leq$ quadratic)",
+    "significance": "key",
+    "relatedConcepts": ["Jensen's inequality", "convex functions", "AM-GM inequality", "Hölder's inequality"],
+    "prerequisites": ["Jensen's inequality", "convex analysis", "real exponentiation inequalities"]
+  },
+  {
+    "id": "ann-am-instance",
+    "proofId": "amgm-inequality-oq-03-oq-03",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "technique",
+    "title": "Arithmetic Mean as M₁",
+    "content": "This theorem instantiates the power mean at $r = 1$ for two positive reals encoded as `![a, b]` (a `Fin 2`-indexed vector). The expected result is $(a+b)/2$. The proof opens with `simp [powerMean, Fintype.card_fin]` to unfold the definition and normalize the cardinality to 2, then `ring_nf` to normalize the algebraic expression. The remaining sorry is for `Matrix.cons` normalization — Lean requires additional lemmas about how `∑ i, ![a, b] i` reduces to `a + b` over `Fin 2`. This is a routine but tedious finset computation.",
+    "mathContext": "$M_1(a,b) = \\left(\\frac{a^1 + b^1}{2}\\right)^{1/1} = \\frac{a+b}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": ["arithmetic mean", "Fin 2 indexing", "Mathlib Finset.sum", "simp normalization"],
+    "prerequisites": ["Lean 4 vector notation", "Fintype.card_fin", "ring_nf tactic"]
+  },
+  {
+    "id": "ann-hm-instance",
+    "proofId": "amgm-inequality-oq-03-oq-03",
+    "range": { "startLine": 52, "endLine": 55 },
+    "type": "technique",
+    "title": "Harmonic Mean as M₋₁",
+    "content": "The harmonic mean $H = 2ab/(a+b)$ arises as $M_{-1}(a,b)$. To see this: $M_{-1}(a,b) = \\left(\\frac{a^{-1}+b^{-1}}{2}\\right)^{-1} = \\left(\\frac{a+b}{2ab}\\right)^{-1} = \\frac{2ab}{a+b}$. This is precisely the reciprocal of the arithmetic mean of the reciprocals, making precise the classical formula $H = n / \\sum (1/x_i)$. The sorry here requires both finset normalization (as in the $M_1$ case) and careful handling of the negative exponent $(-1)^{-1} = -1$ in `Real.rpow`.",
+    "mathContext": "$M_{-1}(a,b) = \\left(\\frac{a^{-1}+b^{-1}}{2}\\right)^{-1} = \\frac{2ab}{a+b}$",
+    "significance": "supporting",
+    "relatedConcepts": ["harmonic mean", "reciprocal mean", "AM-HM inequality", "Real.rpow with negative exponents"],
+    "prerequisites": ["harmonic mean formula", "Real.rpow properties", "Fin 2 vector computation"]
+  }
+]
