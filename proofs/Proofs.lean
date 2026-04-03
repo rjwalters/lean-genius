@@ -99,6 +99,7 @@ import Proofs.BrouwerFixedPointOQ02Stability
 import Proofs.BuffonsNeedle
 import Proofs.BuffonsNeedleOQ01
 import Proofs.BuffonsNeedleOQ01OQ01
+import Proofs.BuffonsNeedleOQ01OQ01OQ01
 import Proofs.BuffonsNeedleOQ02
 import Proofs.BuffonsNeedleOQ02OQ01
 import Proofs.BuffonsNoodle
@@ -192,6 +193,8 @@ import Proofs.DerangementsConvergence
 import Proofs.DerangementsOQ02
 import Proofs.DerangementsOQ02OQ01
 import Proofs.DerangementsOQ03
+import Proofs.DerangementsOQ03OQ01
+import Proofs.DerangementsOQ03OQ02
 import Proofs.DesarguesTheorem
 import Proofs.DesarguesTheoremOQ01
 import Proofs.DesarguesTheoremOQ02
@@ -201,6 +204,7 @@ import Proofs.DescartesRuleOfSignsOQ01
 import Proofs.DescartesRuleOfSignsOQ03
 import Proofs.DirichletsTheorem
 import Proofs.DirichletsTheoremOQ01
+import Proofs.DirichletsTheoremOQ03Incomplete01
 import Proofs.DissectionOfCubes
 import Proofs.DissectionOfCubesOQ01
 import Proofs.DissectionOfCubesOQ02
