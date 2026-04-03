@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-aleph-defs",
+    "proofId": "erdos-1168",
+    "range": { "startLine": 40, "endLine": 43 },
+    "type": "definition",
+    "title": "ℵ_ω and ℵ_{ω+1} in Lean",
+    "content": "Defines the two cardinals central to the problem. aleph_omega = Cardinal.aleph ω₀ uses Lean's Cardinal.aleph function (which maps ordinals to beth/aleph cardinals) applied to the first infinite ordinal ω₀ = Ordinal.omega0. This gives ℵ_ω = sup{ℵ_0, ℵ_1, ℵ_2, …}, the first singular cardinal with cofinality ω. aleph_omega_succ = Cardinal.aleph (ω₀ + 1) gives ℵ_{ω+1}, its successor. Both are noncomputable because cardinals in Lean are defined via quotient types over types and their cardinalities, requiring classical logic.",
+    "mathContext": "$\\aleph_\\omega = \\sup_{n < \\omega} \\aleph_n$ (cofinality $\\omega$, the only singular cardinal among the $\\aleph_n$'s). $\\aleph_{\\omega+1}$ is a successor cardinal, hence regular, but its predecessor $\\aleph_\\omega$ is singular — the source of difficulty.",
+    "significance": "key",
+    "relatedConcepts": ["Cardinal.aleph in Mathlib", "singular cardinals", "regular cardinals", "cofinality"],
+    "prerequisites": ["set theory", "ordinal arithmetic", "Lean 4 Cardinal library"]
+  },
+  {
+    "id": "ann-is-homogeneous",
+    "proofId": "erdos-1168",
+    "range": { "startLine": 55, "endLine": 64 },
+    "type": "definition",
+    "title": "Homogeneous Sets and Partition Relations",
+    "content": "IsHomogeneous f S i formalizes the Ramsey theory concept: S is i-monochromatic under coloring f if every pair of distinct elements (a, b) in S is colored i. The condition a ≠ b handles the fact that f is defined on all pairs, not just unordered ones. partitionRelation κ targets formalizes κ → (targets)²_{ℵ₀}: for any type V with #V = κ and any ℕ-coloring f of pairs, there exists a color i and a homogeneous set S with |S| ≥ targets(i). The countable color set ℕ is used directly (no finiteness constraint).",
+    "mathContext": "$S$ is $i$-homogeneous for $f : V \\times V \\to \\omega$ if $\\forall a, b \\in S, a \\neq b \\Rightarrow f(a,b) = i$. The partition relation $\\kappa \\to (\\alpha_i)_{i < \\omega}^2$ holds iff $\\forall f : [\\kappa]^2 \\to \\omega, \\exists i, \\exists S, |S| \\geq \\alpha_i \\wedge S$ is $i$-homogeneous.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "infinite Ramsey theorem", "partition calculus", "arrow notation"],
+    "prerequisites": ["set theory", "combinatorics", "coloring problems", "Lean 4 Set and Cardinal"]
+  },
+  {
+    "id": "ann-conjecture-def",
+    "proofId": "erdos-1168",
+    "range": { "startLine": 75, "endLine": 92 },
+    "type": "definition",
+    "title": "The Open Conjecture and GCH Case",
+    "content": "erdos_1168_conjecture is defined as ¬ partitionRelation aleph_omega_succ targets — the negation of the partition relation, which is the desired 'negative relation' ℵ_{ω+1} ↛ (ℵ_{ω+1}, 3, 3, …)². This is a Lean Prop (not an axiom), so asserting it without proof would be circular. erdos_1168_under_gch is the one axiom: it asserts that GCH (formalized as ∀ κ, 2^κ = Order.succ κ) implies the conjecture. gch_implies_conjecture then proves that GCH implies the conjecture — a one-line proof applying the axiom.",
+    "mathContext": "GCH states $2^\\kappa = \\kappa^+$ for all infinite $\\kappa$. Under GCH, the Erdős-Hajnal-Rado stepping-up lemma gives: if $\\kappa \\not\\to (\\kappa, 3, \\ldots)^2_{\\aleph_0}$, then $\\kappa^+ \\not\\to (\\kappa^+, 3, \\ldots)^2_{\\aleph_0}$. Applied at $\\kappa = \\aleph_\\omega$, this gives the desired result.",
+    "significance": "key",
+    "relatedConcepts": ["GCH (Generalized Continuum Hypothesis)", "stepping-up lemma", "Erdős-Hajnal-Rado 1965", "independence from ZFC"],
+    "prerequisites": ["set theory", "cardinal arithmetic", "ordinal functions", "Lean 4 Prop vs axiom"]
+  },
+  {
+    "id": "ann-structural-homogeneity",
+    "proofId": "erdos-1168",
+    "range": { "startLine": 101, "endLine": 116 },
+    "type": "technique",
+    "title": "Homogeneity: Empty, Singleton, Monotonicity",
+    "content": "Three basic properties of IsHomogeneous proved cleanly. empty_homogeneous: ∅ is homogeneous for any color (vacuously: no pairs exist). Proof: Set.not_mem_empty. singleton_homogeneous: {v} is homogeneous (no distinct pairs). Proof: both elements are equal via Set.mem_singleton_iff, contradicting a ≠ b. IsHomogeneous.subset: if S is homogeneous and T ⊆ S then T is homogeneous. Proof: use hTS to embed T's pairs into S's pairs.",
+    "mathContext": "These are the Ramsey-theoretic base cases: size-0 and size-1 sets trivially satisfy any coloring constraint. The subset property is used in the antimonotonicity theorem below.",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuous truth", "subset monotonicity", "set theory basics", "Lean 4 Set library"],
+    "prerequisites": ["elementary set theory", "Lean 4 Set.mem_singleton_iff"]
+  },
+  {
+    "id": "ann-antimonotonicity",
+    "proofId": "erdos-1168",
+    "range": { "startLine": 121, "endLine": 126 },
+    "type": "technique",
+    "title": "Partition Relation Antimonotonicity",
+    "content": "partitionRelation.mono_targets: if targets₂(i) ≤ targets₁(i) for all i, and partitionRelation κ targets₁ holds, then partitionRelation κ targets₂ holds. Weakening the target sizes makes the partition relation easier to satisfy (requires smaller homogeneous sets). The proof extracts the (i, S) pair from hp satisfying targets₁, then shows S satisfies targets₂ via transitivity of ≤. This is the key monotonicity lemma needed to reduce complex partition relation questions to simpler ones.",
+    "mathContext": "If $(\\beta_i) \\leq (\\alpha_i)$ pointwise and $\\kappa \\to (\\alpha_i)_i^2$, then $\\kappa \\to (\\beta_i)_i^2$. Contrapositive: $\\kappa \\not\\to (\\beta_i)_i^2$ does not immediately give $\\kappa \\not\\to (\\alpha_i)_i^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "partition calculus inequalities", "target reduction lemmas"],
+    "prerequisites": ["Cardinal ordering in Lean", "le_trans"]
+  }
+]
