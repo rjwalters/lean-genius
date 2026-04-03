@@ -70,5 +70,41 @@
     "significance": "key",
     "relatedConcepts": ["csSup_le", "le_antisymm", "Finset.card_pair", "problem_447_solution", "stirling_central_approx"],
     "prerequisites": ["Finset.card_pair for 2-element set cardinality", "le_csSup with explicit BddAbove", "rw tactic in theorem body"]
+  },
+  {
+    "id": "ann-1023-monotonicity",
+    "proofId": "erdos-1023-oq-01",
+    "range": { "startLine": 193, "endLine": 220 },
+    "type": "theorem",
+    "title": "unionFreeMax and Monotonicity: Stronger Constraint, Smaller Supremum",
+    "content": "unionFreeMax(n) is defined as sSup over all union-free family sizes. The key inequality unionFreeMax ≤ kUnionFreeMax follows because every union-free family is k-union-free (the stronger constraint admits fewer families). Both suprema are bounded above by 2^n and are nonempty (the empty family witnesses 0). The lower bound unionFreeMax ≥ C(n,⌊n/2⌋) follows from the middle layer being an antichain, hence union-free.",
+    "mathContext": "Constraint monotonicity: $\\{\\mathcal{F}: \\text{union-free}\\} \\subseteq \\{\\mathcal{F}: k\\text{-union-free}\\}$, so $F(n) \\le F_k(n)$. Both are bounded by $2^n$ and nonempty ($\\emptyset$ is trivially union-free). The middle layer shows $F(n) \\ge \\binom{n}{\\lfloor n/2\\rfloor}$. Combined with the main theorem, $F(n) = F_k(n) = \\binom{n}{\\lfloor n/2\\rfloor}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["csSup_le", "le_csSup", "BddAbove", "conditionally complete lattice", "monotone constraints"],
+    "prerequisites": ["conditionally complete lattice in Mathlib", "sSup on bounded nonempty Nat sets"]
+  },
+  {
+    "id": "ann-1023-intersection-free",
+    "proofId": "erdos-1023-oq-01",
+    "range": { "startLine": 308, "endLine": 345 },
+    "type": "theorem",
+    "title": "Intersection-Free Families: Perfect Lattice Dual",
+    "content": "The intersection-free theory is the exact lattice dual of the union-free theory: replace sup with inf, replace 'B ⊆ A' with 'A ⊆ B'. The key lemma inf_sub_mem (F.inf id ⊆ B for each B ∈ F) is the dual of mem_sub_familyUnion. antichain_intersectionFree follows by the same card argument: if A = ⋂G, then A ⊆ B for all B ∈ G, so the antichain condition forces A = B, giving |G| ≤ 1. The middle layer achieves the C(n,⌊n/2⌋) lower bound by duality.",
+    "mathContext": "The complement map $A \\mapsto [n] \\setminus A$ is an order-reversing isomorphism of $2^{[n]}$, converting the middle layer to itself and union to intersection. Therefore $F^\\cap(n) \\ge \\binom{n}{\\lfloor n/2\\rfloor}$ by the same argument. The Lean proof exploits Finset.inf id (meet) as the dual of Finset.sup id (join).",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.inf", "lattice duality", "complement map", "antichain_intersectionFree", "Boolean lattice"],
+    "prerequisites": ["Finset.inf in Mathlib", "partial order duality", "Finset.mem_inf"]
+  },
+  {
+    "id": "ann-1023-symm-diff",
+    "proofId": "erdos-1023-oq-01",
+    "range": { "startLine": 352, "endLine": 358 },
+    "type": "definition",
+    "title": "Symmetric Difference-Free: Bridge to Additive Combinatorics",
+    "content": "symmDiff A B = (A \\ B) ∪ (B \\ A) is the standard symmetric difference. isSymmDiffFree requires that no member equals the symmetric difference of two other distinct members. Unlike union-free and intersection-free, this is NOT automatically satisfied by antichains — an antichain {A, B, A△B} would fail isSymmDiffFree. This section only defines the predicate; the extremal theory is open and connects to cap-set bounds.",
+    "mathContext": "The symmetric difference makes $(2^{[n]}, \\triangle)$ an elementary abelian 2-group isomorphic to $(\\mathbb{F}_2^n, +)$. A symmetric-difference-free family is a **sum-free set** in $(\\mathbb{F}_2^n, +)$: no $A = B + C$ with distinct $B, C \\in \\mathcal{F}$. The maximum sum-free subset of $\\mathbb{F}_2^n$ has size $2^{n-1}$ (all sets of even or odd cardinality), but cap-free bounds give tighter constraints for cap-set-type questions.",
+    "significance": "context",
+    "relatedConcepts": ["F_2 vector space", "sum-free sets", "cap sets", "additive combinatorics", "Roth's theorem"],
+    "prerequisites": ["Finset.sdiff", "elementary abelian groups", "additive combinatorics"]
   }
 ]

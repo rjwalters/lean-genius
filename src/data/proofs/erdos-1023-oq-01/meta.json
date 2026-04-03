@@ -36,13 +36,14 @@
     "historicalContext": "Erdős Problem #1023 asks for the maximum size of a union-free family — a collection F of subsets of [n] where no member is the union of other members. The foundational result is Sperner's theorem (1928): the maximum antichain in 2^[n] has size C(n,⌊n/2⌋), achieved by the middle level. Since antichains are union-free, this gives a lower bound. The matching upper bound uses the LYM inequality (Lubell 1966, Yamamoto 1954, Meshalkin 1963): ∑_{A∈F} 1/C(n,|A|) ≤ 1 for any antichain, extended to union-free families by Erdős and Kleitman. The asymptotic F(n) ~ √(2/π) · 2^n / √n follows from Stirling's approximation (1730). This OQ-01 file extends the formalization to k-union-free families (no member is the union of exactly k others), intersection-free families (dual notion), and symmetric-difference-free families, while making the Stirling constant concrete as √(2/π) and eliminating 3 axioms from the parent formalization.",
     "problemStatement": "Determine the maximum size F(n) of a union-free family of subsets of {0,...,n-1}. Generalize to k-union-free families.",
     "text": "A family F is union-free if no A ∈ F is the union of other members (using ≥2 members). The maximum is achieved by taking all sets of a fixed middle size (Erdős-Kleitman). The k-union-free generalization considers families where no member is the union of exactly k others. For k=2 this specializes to 2-union-free (problem #447). Antichains are a related notion where inclusion is also forbidden.",
-    "proofStrategy": "Define the infrastructure (repCount, isKUnionFree, unionFreeMax). Axiomatize the Erdős-Kleitman result and Stirling bound. Prove F(n) = C(n,n/2) from these axioms. Verify small cases via native_decide.",
+    "proofStrategy": "Define the infrastructure (SetFamily, isKUnionFree, kUnionFreeMax, unionFreeMax, intersectionFreeMax, isSymmDiffFree). Axiomatize the Erdős-Kleitman result (problem_447_solution) and Stirling bound (stirling_central_approx). Prove F(n) = C(n,⌊n/2⌋) via le_antisymm — upper bound by reducing union-free to 2-union-free then applying Problem #447; lower bound via the middle layer antichain. Derive the Stirling asymptotic by substitution. Verify small cases via decide.",
     "keyInsights": [
       "Union-free ↔ antichain-like: no member is a union of others",
       "Middle level C(n,⌊n/2⌋): the level sets of the boolean lattice maximize union-free families",
       "Stirling: √(2/π) · 2^n/√n — the asymptotic density of middle-level sets",
       "k-union-free generalizes 2-union-free: the same structural constraint",
-      "Union-free → 2-union-free reduction: the key step — any union of ≥2 sets has a 2-element sub-witness, connecting F(n) directly to the solved Problem #447 (Erdős-Kleitman). k-union-free and (k+1)-union-free are NOT nested constraints in general."
+      "Union-free → 2-union-free reduction: the key step — any union of ≥2 sets has a 2-element sub-witness, connecting F(n) directly to the solved Problem #447 (Erdős-Kleitman). k-union-free and (k+1)-union-free are NOT nested constraints in general.",
+      "Symmetric-difference-free families connect to cap-set problems: the symmetric difference makes 2^[n] an F_2-vector space, so isSymmDiffFree is exactly the sum-free condition in (F_2^n, +)"
     ],
     "prerequisites": [
       "Set families: power sets, antichains",
@@ -77,6 +78,16 @@
       "targetId": "erdos-1023",
       "relationship": "extends",
       "description": "OQ-01 extends the main Problem #1023 file: adds k-union-free generalization, makes Stirling constant concrete (eliminating 3 axioms), and proves F(n)=C(n,n/2) from 2 deep axioms"
+    },
+    {
+      "targetId": "erdos-447",
+      "relationship": "depends",
+      "description": "Problem #447 (2-union-free families) provides the key axiom problem_447_solution used in unionFreeMax_eq_middle: the 2-union-free maximum equals C(n,⌊n/2⌋)"
+    },
+    {
+      "targetId": "sperner-ndim",
+      "relationship": "related",
+      "description": "Sperner's theorem underpins the middle-layer antichain structure; the n-dimensional Sperner formalization shares the Boolean lattice infrastructure used here"
     }
   ],
   "sections": [
