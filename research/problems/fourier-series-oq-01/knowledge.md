@@ -19,6 +19,38 @@ S*f(x) = sup_N |S_N f(x)|.
 
 ---
 
+## Session 2026-04-02 (Session 4) — Final Sorry Filled: 0 Sorries Remain
+
+**Mode**: REVISIT
+**Outcome**: completed — 1 sorry → 0 sorries, PR #8630 created
+
+### What I Did
+- Filled the final Markov/Chebyshev sorry in `divergenceSet_measure_bound`
+  - Used `mul_meas_ge_le_lintegral₀` for the raw Markov inequality on `‖h‖²`
+  - Used `ofReal_integral_eq_lintegral_ofReal` to connect lintegral ↔ integral
+  - Used `ENNReal.le_div_iff_mul_le` + `ENNReal.div_le_div_right` + `ENNReal.ofReal_div_of_pos`
+  - Proved set inclusion `{‖h‖>δ/2} ⊆ {(δ/2)²≤‖h‖²}` via `pow_le_pow_left`
+- Fixed pre-existing `fourierPartialSum_smul` compilation error
+  - `integral_mul_left` was deprecated; replaced with `integral_const_mul`
+  - Removed broken `ring_nf; congr 1` tactic, replaced with explicit `have` + `funext`/`ring`
+- PR created: https://github.com/rjwalters/lean-genius/pull/8630
+
+### Key Findings
+- Final Markov proof: key insight is to avoid `eLpNorm`-based Chebyshev (requires
+  more API work) and instead use the basic `mul_meas_ge_le_lintegral₀` on `ENNReal.ofReal(‖h‖²)`
+- `Integrable.aemeasurable` gives AEMeasurability for the squared norm integrand
+- `memℒp_two_iff_integrable_sq_norm` is the bridge from L² membership to ∫‖h‖² integrability
+- Approach: {‖h‖>c} ⊆ {c²≤‖h‖²} → Markov on ‖h‖² → divide by c² → compare with ε²
+
+### Files Modified
+- `proofs/Proofs/FourierSeriesOQ01.lean` (644 lines, was 605)
+
+### Next Steps
+- None for this problem — proof architecture complete
+- Follow-up OQ: Can the 4 provable axioms be replaced with actual Mathlib proofs?
+
+---
+
 ## Session 2026-04-02 (Session 3) — Complete Proof Architecture
 
 **Mode**: REVISIT
