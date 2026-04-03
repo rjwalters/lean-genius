@@ -103,5 +103,13 @@
       "content": "The map θ ↦ exp(iαθ) is a continuous group homomorphism from (ℝ, +) to (S¹, ×) for any fixed α ∈ ℝ. The Lean proof composes `Complex.continuous_exp` with the continuous map θ ↦ (αθ : ℂ) · I. This homomorphism property underpins all of De Moivre's theorem: De Moivre says the n-th power of exp(iθ) equals exp(inθ) because φ_n = (φ_1)^n as group homomorphisms."
     }
   ],
-  "conclusion": "This formalization extends De Moivre's theorem to the real-exponent setting using `Complex.cpow`, correctly proving the principal-branch formula and constructing rational multi-valued roots. The key formalization gaps are the True stub for irrational single-valuedness and the axiomatized Weyl equidistribution theorem. Open questions: (1) Can `irrational_exponent_single_valued` be proved from `cpow_def_of_ne_zero`? (2) Is Weyl equidistribution provable from existing Mathlib Fourier analysis? (3) Can the density result be strengthened to full equidistribution? (4) How does cpow's branch cut interact with the monodromy of iterated exponentiation?"
+  "conclusion": {
+    "summary": "This formalization extends De Moivre's theorem to real exponents via `Complex.cpow`, correctly proving the principal-branch formula and constructing rational multi-valued roots. Key gaps: `irrational_exponent_single_valued` is a True stub, and `weyl_equidistribution` is axiomatized (Weyl 1916 proof requires Fourier analysis on the circle group not yet assembled in Mathlib).",
+    "implications": "The principal-branch De Moivre proof establishes a clean Lean template for complex power computations: unfold cpow via log, apply the branch condition, finish with ring. The rational multi-valued root construction demonstrates existence proofs by explicit witness with rfl — avoiding the computational cost of verifying root-checking. The continuous group homomorphism characterization connects all cases (integer, rational, irrational) via the single map φ_α : ℝ → S¹.",
+    "openQuestions": [
+      "Can `irrational_exponent_single_valued` be proved from `cpow_def_of_ne_zero` and the single-valuedness of `Complex.log`? The claim is almost definitional — it reduces to: Complex.log is a function (not a multifunction), so Complex.cpow = exp ∘ (α ·) ∘ log is too.",
+      "Is Weyl equidistribution provable using Mathlib's existing Fourier analysis tools (`MeasureTheory.fourier`, `AddChar.sum_eq_zero_of_ne_one`)? The key step is bounding the geometric sum |Σ exp(2πiαn)| ≤ 1/|1 - exp(2πiα)|.",
+      "How does Complex.cpow's branch cut (at arg = ±π) interact with monodromy when computing iterated powers like (z^{1/2})^{1/2}? Is there a formal statement that (z^{1/q})^q = z holds on the principal branch, provable from `cpow_natCast` or `Complex.cpow_mul`?"
+    ]
+  }
 }
