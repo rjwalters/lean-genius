@@ -31,10 +31,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "problemStatement": "Can the Pick's theorem axiom be proved constructively via triangulation into unit lattice triangles?",
-    "text": "A 206-line formalization answering YES in principle: the algebraic core of the triangulation proof is complete (0 sorries, 0 axioms). Proves Pick's formula for primitive triangles (base case), the shoelace area formula, Pick's formula for rectangles, and the key additivity lemma showing that merging polygons along shared edges preserves Pick's formula. The remaining gap is formalizing polygon triangulation into primitive lattice triangles, which requires computational geometry infrastructure not yet in Mathlib.",
-    "proofStrategy": "1. Base case: primitive (unimodular) lattice triangles have area 1/2, i=0, b=3, so 0+3/2-1=1/2 \u2713\n2. Additivity: when P\u2081 and P\u2082 share an edge with k interior lattice points, the union satisfies Pick's formula if both pieces do\n3. Triangulation: every simple lattice polygon can be decomposed into primitive triangles (ear-clipping + subdivision)\n4. Induction: apply additivity from step 2 repeatedly\n\nSteps 1-2 are fully proved; step 3 needs computational geometry infrastructure.",
-    "keyInsights": []
+    "historicalContext": "Georg Alexander Pick stated his theorem in 1899: for a polygon with vertices at integer lattice points, the area A equals i + b/2 - 1, where i is the number of interior lattice points and b is the number of boundary lattice points. The result was largely forgotten until Hugo Steinhaus included it in his 1969 book 'Mathematical Snapshots', after which it became a staple of mathematical olympiad training. The classical proof uses triangulation: decompose the polygon into primitive (unimodular) triangles — triangles with no lattice points other than their three vertices — and prove that Pick's formula is additive and holds for each primitive triangle. The primitivity condition is equivalent to the triangle having area exactly 1/2, which in turn is equivalent to the determinant of the edge vectors being ±1. This connection to determinants and the Smith normal form gives Pick's theorem deep connections to algebraic K-theory and the theory of lattice polytopes.",
+    "problemStatement": "Can the Pick's theorem axiom be proved constructively via triangulation into unit lattice triangles? The parent `picks-theorem` formalization axiomatizes the result; this file provides the constructive proof strategy and proves all the algebraic components.",
+    "proofStrategy": "The constructive proof has four steps: (1) Base case: primitive (unimodular) triangles satisfy Pick's formula (i=0, b=3, A=1/2, so 0+3/2-1=1/2). (2) Additivity: merging two polygons along a shared edge with k interior lattice points preserves Pick's formula. (3) Triangulation: every simple lattice polygon can be decomposed into primitive triangles by ear-clipping and edge subdivision. (4) Induction: apply additivity repeatedly. Steps 1-2 are fully formalized; step 3 requires computational geometry infrastructure not yet in Mathlib.",
+    "keyInsights": [
+      "A lattice triangle is primitive (unimodular) iff the absolute value of its cross-product determinant equals 1: |x₁(y₂-y₃)+x₂(y₃-y₁)+x₃(y₁-y₂)| = 1. This is the `IsPrimitive` definition in the file, and it is exactly the condition that the edge vectors form a basis for ℤ². `primitive_area` then immediately gives area 1/2 by dividing by 2.",
+      "Pick's formula is additive under polygon merging: if two polygons P₁ and P₂ share an edge with k interior lattice points (plus 2 endpoints), then i(union) = i₁+i₂+k (shared edge points become interior), b(union) = b₁+b₂-2k-2 (shared edge removed), A(union) = A₁+A₂. The key lemma `picks_additivity` proves this by pure linear arithmetic (`linarith`) from the two Pick's formula hypotheses.",
+      "The shoelace formula `shoelaceTriangle x₁ y₁ x₂ y₂ x₃ y₃ = |x₁(y₂-y₃)+x₂(y₃-y₁)+x₃(y₁-y₂)| / 2` always gives a non-negative rational that equals the area of the lattice triangle. The non-negativity `shoelace_nonneg` follows immediately from `abs_nonneg`. The connection to `IsPrimitive` gives a clean proof that primitive triangles have area exactly 1/2.",
+      "The rectangle case `picks_rectangle` provides a clean verification: for an a×b rectangle, i=(a-1)(b-1), b_boundary=2a+2b, A=ab. The Pick's formula identity `(a-1)(b-1) + (2a+2b)/2 - 1 = ab` is purely algebraic, proved by `ring` after `push_cast`. The concrete case `picks_rectangle_3x4` (12 interior, 14 boundary, area 12) is verified by `norm_num`.",
+      "The file is complete as a proof strategy document: steps 1-2 (base case and additivity) are fully machine-checked with 0 sorries; step 3 (triangulation existence) is the mathematical crux that requires computational geometry unavailable in Mathlib. The `picks_from_triangulation` lemma frames the inductive conclusion, making explicit what triangulation existence would give."
+    ]
   },
   "crossReferences": [
     {
@@ -53,5 +59,65 @@
     "theoremCount": 10,
     "definitionCount": 3
   },
-  "sections": []
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Proof Strategy",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Imports Mathlib and provides a detailed docstring explaining the four-step constructive proof strategy: base case (primitive triangles), additivity, triangulation, and induction. Notes which steps are proved and which require missing Mathlib infrastructure."
+    },
+    {
+      "id": "unit-triangle",
+      "title": "Part I: Unit Right Triangle (Base Case Numeric Verification)",
+      "startLine": 42,
+      "endLine": 60,
+      "summary": "Proves `picks_unit_triangle`: Pick's formula 0 + 3/2 - 1 = 1/2 by norm_num. Proves `shoelace_unit_triangle`: the shoelace formula gives area 1/2 for the unit triangle at (0,0),(1,0),(0,1)."
+    },
+    {
+      "id": "shoelace",
+      "title": "Part II: Shoelace Formula Definition and Non-Negativity",
+      "startLine": 62,
+      "endLine": 83,
+      "summary": "Defines `shoelaceTriangle` (noncomputable, returns ℚ) as |x₁(y₂-y₃)+...| / 2. Proves `shoelace_nonneg` by `div_nonneg` and `abs_nonneg`. This gives the area of any lattice triangle."
+    },
+    {
+      "id": "rectangles",
+      "title": "Part III: Pick's Theorem for a×b Rectangles",
+      "startLine": 85,
+      "endLine": 112,
+      "summary": "Proves `picks_rectangle` for any positive a×b rectangle using `push_cast` + `ring`. Proves concrete `picks_rectangle_3x4` by `norm_num`. Confirms the formula (a-1)(b-1) + (2a+2b)/2 - 1 = ab algebraically."
+    },
+    {
+      "id": "additivity",
+      "title": "Part IV: Additivity of Pick's Formula",
+      "startLine": 114,
+      "endLine": 155,
+      "summary": "Proves `picks_additivity`: when two polygons satisfying Pick's formula share an edge with k shared interior lattice points, the union also satisfies Pick's formula. The proof is a one-liner `linarith` after `push_cast`. This is the key inductive lemma."
+    },
+    {
+      "id": "primitive-triangles",
+      "title": "Part V: Primitive (Unimodular) Lattice Triangles",
+      "startLine": 157,
+      "endLine": 183,
+      "summary": "Defines `IsPrimitive` as |det(edge vectors)| = 1. Proves `primitive_area`: primitive triangles have shoelace area 1/2 by unfolding and using h. Proves `picks_primitive_triangle` (alias of picks_unit_triangle). This is the true base case for the induction."
+    },
+    {
+      "id": "full-strategy",
+      "title": "Part VI: Full Proof Strategy and Triangulation Gap",
+      "startLine": 185,
+      "endLine": 206,
+      "summary": "Documents the remaining gap (primitive triangulation requires computational geometry) and proves `picks_from_triangulation`: given n primitive triangles and Pick's formula for the composite, the formula holds. This is the tautological conclusion that makes the inductive hypothesis explicit."
+    }
+  ],
+  "conclusion": {
+    "summary": "This 206-line fully verified file (0 sorries, 0 axioms) establishes the algebraic core of the constructive proof of Pick's theorem via triangulation. The base case (primitive triangles have area 1/2), the shoelace formula, Pick's formula for rectangles, and the additivity lemma are all machine-checked. The only gap is the triangulation existence theorem, which requires computational geometry infrastructure not yet in Mathlib.",
+    "implications": "Pick's theorem connects to several deep mathematical areas: the theory of lattice polytopes (Ehrhart polynomials generalize Pick to higher dimensions), algebraic K-theory (the unimodularity condition is the SL₂(ℤ) orbit), and toric geometry (the Newton polytope of a polynomial's lattice structure). The formalization here demonstrates that the algebraic content of the classical proof is entirely straightforward; the difficulty lies in the combinatorial geometry of triangulation.",
+    "openQuestions": [
+      "Can polygon triangulation into primitive lattice triangles be formalized in Lean/Mathlib? The ear-clipping algorithm requires a simple polygon data structure, Jordan curve theorem for polygons, and a proof that every simple polygon has an ear. None of these are currently in Mathlib.",
+      "Can the Ehrhart polynomial generalization be formalized? For a d-dimensional lattice polytope P, the Ehrhart polynomial i(P, t) counts lattice points in tP. Pick's theorem is the d=2, t=1 case. A Lean formalization would need the Euler characteristic of lattice polytopes.",
+      "Is there a simpler proof of triangulation existence specific to lattice polygons (avoiding general computational geometry)? For instance, the 'cut by a diagonal' approach requires only that some diagonal lies interior to the polygon, which for lattice polygons might be simpler to verify than for general polygons.",
+      "Can Mathlib's `MvPolynomial.Newton` or related machinery be used to give an algebraic proof of Pick's theorem via generating functions or residues, bypassing triangulation entirely?"
+    ]
+  }
 }
