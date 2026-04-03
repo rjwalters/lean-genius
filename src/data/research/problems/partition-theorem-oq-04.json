@@ -1,7 +1,7 @@
 {
   "slug": "partition-theorem-oq-04",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "title": "Glaisher Bijection as Computable Function",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "fast",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-03T05:03:40-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Proving bijectivity round-trip. Core theorems all proved.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Prove glaisherBwd_glaisherFwdPart using Multiset.toFinset and count lemmas",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: 6 theorems proved (sum preservation, odd-parts, core inverse). 3 bijectivity sorries remain.",
+    "builtItems": [
+      "glaisherFwdPart_sum: forward step preserves weight (PartitionTheoremOQ04.lean:96)",
+      "glaisherFwd_sum: forward map preserves total weight (PartitionTheoremOQ04.lean:102)",
+      "glaisherBwdStep_sum: backward step sum = m*b (PartitionTheoremOQ04.lean:113)",
+      "glaisherBwdStep_pow_two: core inverse glaisherBwdStep b (2^a) = {2^a*b} (PartitionTheoremOQ04.lean:214)",
+      "glaisherFwdPart_parts_odd: forward produces only odd parts (PartitionTheoremOQ04.lean:180)",
+      "glaisherFwd_parts_odd: all forward-image elements odd (PartitionTheoremOQ04.lean:190)",
+      "oddPart_odd: k/2^(padicValNat 2 k) is odd for k!=0 (PartitionTheoremOQ04.lean:150)",
+      "padicValNat_two_pow: padicValNat 2 (2^n) = n by induction (PartitionTheoremOQ04.lean:138)"
+    ],
+    "insights": [
+      "Well-founded recursion on m/2 is opaque: simp [f] fails; need cases m with | succ n => simp [f]",
+      "padicValNat.mul gives multiplicativity: key for proving odd part via contradiction",
+      "native_decide required for padicValNat 2 2 = 1 (Nat.find cannot be kernel-reduced)",
+      "After set a := padicValNat 2 k, explicit type annotation needed: have hdec : 2^a*m = k := ...",
+      "glaisherBwdStep_pow_two proof: even case recurse with 2*b, odd case emit b; induction on a",
+      "termination_by m (not termination_by _ m => m) for two-arg (b m) form with match m"
+    ],
+    "mathlibGaps": [
+      "Multiset.toFinset_replicate: toFinset (replicate n b) = {b} for n>=1 (needed for bijectivity)",
+      "Multiset.count_replicate: count b (replicate n b) = n (check if in Mathlib)"
+    ],
+    "nextSteps": [
+      "Prove glaisherBwd_glaisherFwdPart: use toFinset_replicate + count_replicate + glaisherBwdStep_pow_two",
+      "Prove glaisherBwd_glaisherFwd: induction on s with Nodup, using single-part case",
+      "Consider Aristotle for the bijectivity round-trip sorries (HARD, known math)"
+    ],
     "markdown": "# Knowledge Base: partition-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
