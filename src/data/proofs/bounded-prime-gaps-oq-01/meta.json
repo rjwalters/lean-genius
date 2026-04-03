@@ -37,7 +37,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The bounded prime gaps theorem (Zhang 2013, improved by Maynard 2015 and Polymath 2014) established that there are infinitely many prime pairs with gap at most 246. The key combinatorial ingredient is admissible k-tuples: a set H = {h₁,...,hₖ} where H does not cover all residues mod p for any prime p. The Maynard-Tao sieve shows that if an admissible k-tuple has diameter D, then H ≤ D is achievable. This file formalizes the admissible tuple theory and the gap bound hierarchy.",
+    "historicalContext": "The bounded prime gaps theorem represents the most dramatic progress on the twin prime problem since Dirichlet proved that primes are equidistributed in arithmetic progressions. In April 2013, Yitang Zhang (a largely unknown mathematician) shocked the mathematical world by proving that infinitely many prime pairs have gap at most 70 million — the first finite bound ever established. Within months, the Polymath 8 project (organized online, with James Maynard playing a central role) reduced the bound to 246. The key combinatorial ingredient is admissible k-tuples: a set H ⊂ ℤ that does not cover all residues mod p for any prime p. Dickson's conjecture (1904) predicts that if H is admissible, then the pattern n, n+h₁, ..., n+hₖ captures all primes infinitely often — this is still unproven for k ≥ 2. The Maynard-Tao sieve (independently discovered by Maynard and Tao in 2014, extending Zhang's approach) shows that admissible k-tuples with appropriate k and diameter D force infinitely many prime pairs with gap ≤ D. The current unconditional record is H ≤ 246, from a specific 50-element admissible tuple. Assuming the Elliott-Halberstam conjecture (about equidistribution of primes in progressions), H ≤ 12 follows from the 5-tuple {0,2,6,8,12}. The Twin Prime Conjecture (H = 2) remains wide open.",
     "problemStatement": "Can the prime gap bound H ≤ 246 be reduced? The minimum is H = 2 (Twin Prime Conjecture, open). This file formalizes the combinatorial structure of admissible tuples that determines the best achievable bounds.",
     "text": "An admissible k-tuple H satisfies: for every prime p, the image of H under reduction mod p does not cover all of ℤ/pℤ. The minimum diameter of an admissible k-tuple determines the gap bound. Key results: (1) Parity constraint forces all-even or all-odd tuples. (2) {0,2,4} fails at p=3 (covers {0,1,2} mod 3). (3) Minimum diameters: diam(k=2)=2, diam(k=3)=6, diam(k=5)=12. (4) The gap hierarchy: unconditionally H≤246 (from a 50-tuple), assuming Elliott-Halberstam H≤12. (5) H≤2 ↔ Twin Prime Conjecture.",
     "proofStrategy": "Non-admissibility is proved by exhibit: give the failing prime p and show the set covers all residues mod p (via Finset.decide). Minimum diameter is proved by: (a) giving an admissible witness of the claimed diameter, (b) exhaustive case analysis or structural argument showing no smaller diameter works. The gap hierarchy is derived from the BoundedPrimeGaps.lean axioms (maynard_tao_m_tuples, maynard_tao_sieve).",
@@ -59,10 +59,11 @@
     "summary": "A complete formalization of the admissible tuple theory underlying the bounded prime gaps theorem. Proves minimum diameter theorems for k=2,3,5 and the gap bound hierarchy (H≤246 unconditionally, H≤12 conditional). All results are axiom-free. 26 theorems, 0 axioms, 0 sorries.",
     "implications": "This formalization establishes the combinatorial foundation for future work on improving the prime gap bound. The non-admissibility proofs demonstrate how decidable computations (via Lean's native_decide or decide) can verify specific tuple failures at explicit primes. The gap hierarchy is a roadmap for the open problem of reducing H toward 2.",
     "openQuestions": [
-      "Prove H≤12 unconditionally: would require proving the Elliott-Halberstam conjecture",
-      "Find the true minimum diameter for larger k-tuples (computational number theory problem)",
-      "Prove the Twin Prime Conjecture: H = 2 for infinitely many prime pairs",
-      "Eliminate the Maynard-Tao sieve axioms in BoundedPrimeGaps.lean"
+      "Eliminate the Maynard-Tao sieve axioms in BoundedPrimeGaps.lean by formalizing the Selberg sieve and GPY (Goldston-Pintz-Yıldırım) method, which is the analytical foundation of Zhang's argument.",
+      "Prove H ≤ 12 unconditionally: this would require proving Elliott-Halberstam or a variant. A weaker form (Bombieri-Vinogradov) is what Zhang used, giving 70M. Can a better large sieve inequality give a bound between 12 and 246?",
+      "Determine the minimum admissible k-tuple diameter for k=50: the specific tuple that gives 246 is known, but whether 246 is the minimum for k=50 is a computational number theory problem.",
+      "Formalize Dickson's conjecture: if H is admissible, then there are infinitely many n such that n+h is prime for all h ∈ H simultaneously. This would imply TPC (from the admissible pair {0,2}).",
+      "Connect to Bateman-Horn conjecture: a quantitative form predicting the density of prime constellations, which would give the density of prime gaps ≤ H as a function of H."
     ]
   },
   "leanFile": {
@@ -84,5 +85,62 @@
       "description": "RH implies prime gap bound p_{n+1}-pₙ = O(√pₙ log pₙ), strengthening the unconditional result"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Overview: Admissible Tuples and Gap Bounds",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Introduces the bounded prime gaps theorem (Polymath 8b, H≤246) and the admissible tuple framework. Table of minimum diameters for k=2,3,5,50 and their corresponding gap bounds. Import from BoundedPrimeGaps.lean base file."
+    },
+    {
+      "id": "parity-constraint",
+      "title": "Part I: Parity Constraint on Admissible Sets",
+      "startLine": 55,
+      "endLine": 93,
+      "summary": "Proves admissible_zero_implies_even: any admissible set containing 0 must be entirely even (parity constraint from p=2). Establishes that twin-prime candidate tuples must be parity-homogeneous."
+    },
+    {
+      "id": "non-admissible-3-tuples",
+      "title": "Part II: Non-Admissible Small 3-Tuples",
+      "startLine": 94,
+      "endLine": 108,
+      "summary": "Proves not_admissible_0_2_4: {0,2,4} fails admissibility at p=3 (covers all residues mod 3). The key counterexample establishing that not all even 3-tuples are admissible."
+    },
+    {
+      "id": "non-admissible-5-tuples",
+      "title": "Part III: Non-Admissible Even 5-Tuples with Diameter ≤10",
+      "startLine": 109,
+      "endLine": 200,
+      "summary": "Proves non-admissibility of all 5 even 5-tuples with diameter ≤10 ({0,2,4,6,8}, {0,2,4,6,10}, {0,2,4,8,10}, {0,2,6,8,10}, {0,4,6,8,10}), each failing at p=3. Assembles these into all_even_5_tuples_diam_10_not_admissible."
+    },
+    {
+      "id": "minimum-diameter",
+      "title": "Part IV: Minimum Diameter Results",
+      "startLine": 201,
+      "endLine": 281,
+      "summary": "Proves minimum diameter theorems: diam*(k=2) = 2 (witness {0,2}), diam*(k=3) = 6 (witnesses {0,2,6} and {0,4,6}), diam*(k=5,even) = 12 (witnesses {0,2,6,8,12} and second optimal 5-tuple)."
+    },
+    {
+      "id": "gap-bound-hierarchy",
+      "title": "Part V: Gap Bound Hierarchy",
+      "startLine": 282,
+      "endLine": 344,
+      "summary": "Formalizes the gap bound hierarchy: H ≥ 2 (lower bound), H ≤ 246 (Polymath 8b unconditional), H ≤ 12 (conditional on EH), H = 2 ↔ TPC. Proves gap_bound_chain: TPC → EH-bound → Polymath bound."
+    },
+    {
+      "id": "polignac-connections",
+      "title": "Part VI: Connections to Polignac's Conjecture",
+      "startLine": 345,
+      "endLine": 369,
+      "summary": "Proves polignac_1_iff_tpc: Polignac's conjecture for k=1 is equivalent to TPC. Shows Polignac(1) implies H≤2 (infinitely many prime gaps of size 2)."
+    },
+    {
+      "id": "open-question",
+      "title": "Part VII: The Open Question and Summary",
+      "startLine": 370,
+      "endLine": 437,
+      "summary": "Defines OpenQuestion01: existence of unconditional H < 246. Proves tpc_implies_oq (TPC resolves it) and oq_implies_improvement. Summary of all 13 theorems proved. First formalization of the optimal admissible k-tuple diameter problem."
+    }
+  ]
 }
