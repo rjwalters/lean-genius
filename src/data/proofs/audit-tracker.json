@@ -47,9 +47,9 @@
       "result": "clean"
     },
     "amgm-inequality": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-03-24T02:59:23Z",
+      "lastAudited": "2026-04-03T11:08:13Z",
       "result": "clean"
     },
     "amgm-inequality-oq-02": {
@@ -11280,6 +11280,12 @@
       "auditCount": 1,
       "lastAudited": "2026-04-03T09:33:04Z",
       "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T11:15:13Z",
+      "result": "issues-fixed",
       "issues": []
     }
   },
