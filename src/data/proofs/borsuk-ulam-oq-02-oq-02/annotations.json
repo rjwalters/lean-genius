@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-bu-oq02-background",
+    "proofId": "borsuk-ulam-oq-02-oq-02",
+    "range": { "startLine": 6, "endLine": 46 },
+    "type": "context",
+    "title": "Mathematical Background: Equivariant Generalizations of Borsuk-Ulam",
+    "content": "The module docstring surveys the hierarchy of Borsuk-Ulam generalizations. The classical theorem (Borsuk 1933) uses the ℤ/2 antipodal action. Yang's 1954 theorem extends this to free ℤ/p-actions on odd-dimensional spheres. The compact Lie group case asks whether G-equivariant maps f: S(V) → W between representation spheres must vanish when dim V > dim W. This file formalizes the tractable parts — equivariant map algebra and fixed-point properties — while documenting the ~2000 lines of equivariant cohomology infrastructure needed for the full theorem.",
+    "mathContext": "For $G$ compact Lie, representations $V, W$, a $G$-equivariant map $f: S(V) \\to W$ satisfies $f(g \\cdot x) = g \\cdot f(x)$. The dimension-reduction conjecture: $\\dim V^G < \\dim W^G \\Rightarrow f$ has a zero, where $V^G = \\{x \\in V \\mid g \\cdot x = x \\; \\forall g\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["Borsuk-Ulam theorem", "group actions", "representation spheres", "equivariant homotopy theory"],
+    "prerequisites": ["group actions", "representation theory of compact Lie groups", "sphere topology"]
+  },
+  {
+    "id": "ann-bu-oq02-isequivariant-def",
+    "proofId": "borsuk-ulam-oq-02-oq-02",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "IsEquivariant: The Fundamental Equivariance Condition",
+    "content": "This definition captures the core symmetry condition: a map f: α → β is equivariant with respect to G-actions on α and β when group elements commute with f. The formulation is maximally general — G, α, β are arbitrary types with SMul instances, making this applicable to actions on topological spaces, vector spaces, manifolds, or any SMul-compatible structure. In categorical terms, equivariant maps are exactly the morphisms in the category of G-sets.",
+    "mathContext": "$\\text{IsEquivariant}(f) \\iff \\forall g \\in G, x \\in \\alpha,\\; f(g \\cdot x) = g \\cdot f(x)$. Equivalently, the diagram $G \\times \\alpha \\xrightarrow{\\sigma_\\alpha} \\alpha \\xrightarrow{f} \\beta$ equals $G \\times \\alpha \\xrightarrow{\\text{id} \\times f} G \\times \\beta \\xrightarrow{\\sigma_\\beta} \\beta$.",
+    "significance": "key",
+    "relatedConcepts": ["G-sets", "G-modules", "morphisms in equivariant categories", "intertwining operators"],
+    "prerequisites": ["group actions", "SMul typeclass"]
+  },
+  {
+    "id": "ann-bu-oq02-id-comp",
+    "proofId": "borsuk-ulam-oq-02-oq-02",
+    "range": { "startLine": 56, "endLine": 67 },
+    "type": "technique",
+    "title": "Equivariant Maps Form a Category",
+    "content": "These two theorems establish that equivariant maps are closed under identity and composition, making them morphisms in the category G-Set. The identity proof is by reflexivity (`rfl`) — the equivariance of id is definitionally true. For composition, `simp` with the equivariance hypotheses directly unfolds the definition: (g' ∘ f)(g • x) = g'(f(g • x)) = g'(g • f(x)) = g • g'(f(x)) = g • (g' ∘ f)(x). This structural result underpins all of equivariant topology.",
+    "mathContext": "If $f: \\alpha \\to \\beta$ and $g': \\beta \\to \\gamma$ are both $G$-equivariant, then $g' \\circ f: \\alpha \\to \\gamma$ is $G$-equivariant: $(g' \\circ f)(g \\cdot x) = g' (g \\cdot f(x)) = g \\cdot g'(f(x)) = g \\cdot (g' \\circ f)(x)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["G-Set category", "functor categories", "intertwining operators in representation theory"],
+    "prerequisites": ["IsEquivariant definition", "function composition"]
+  },
+  {
+    "id": "ann-bu-oq02-const-equiv",
+    "proofId": "borsuk-ulam-oq-02-oq-02",
+    "range": { "startLine": 68, "endLine": 79 },
+    "type": "insight",
+    "title": "Constant Equivariant Maps and Fixed Points",
+    "content": "This iff theorem characterizes exactly when a constant map is equivariant: the target point must be a fixed point of G. The proof handles a subtle edge case — when α is empty, any map is vacuously equivariant, but the condition 'g • b = b for all g' is independent of α. The `by_cases hα : Nonempty α` split reflects that the forward direction needs at least one element of α to extract the equivariance condition. This result gives the first connection between equivariant maps and fixed-point structure.",
+    "mathContext": "The constant map $c_b: \\alpha \\to \\beta$ with $c_b(x) = b$ is $G$-equivariant $\\iff$ $b \\in \\beta^G$ (i.e., $b$ is a fixed point). In representation theory, the only equivariant maps from an irreducible non-trivial representation to a trivial one are zero maps.",
+    "significance": "key",
+    "relatedConcepts": ["fixed points", "trivial representations", "G-fixed subspaces"],
+    "prerequisites": ["IsEquivariant", "fixedPoints", "Nonempty typeclass"]
+  },
+  {
+    "id": "ann-bu-oq02-fixedpoints-def",
+    "proofId": "borsuk-ulam-oq-02-oq-02",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "definition",
+    "title": "Fixed-Point Subspace: The G-Invariant Locus",
+    "content": "The fixed-point set collects all elements unmoved by every group element. In representation theory, this is the isotypic component for the trivial representation: for a G-representation V, the fixed-point subspace V^G is the largest subrepresentation on which G acts trivially. For SO(n) acting on ℝⁿ by rotation, the fixed-point set is {0}. For U(1) acting on ℂ² by (z, w) ↦ (e^{iθ}z, e^{-iθ}w), the fixed-point set is {(0,0)}. The dimension of V^G plays a key role in the equivariant Borsuk-Ulam statement.",
+    "mathContext": "$\\text{fixedPoints}(G, \\alpha) = \\alpha^G = \\{x \\in \\alpha \\mid \\forall g \\in G, g \\cdot x = x\\}$. For a $G$-representation $V$, $\\dim V^G$ equals the multiplicity of the trivial representation in the isotypic decomposition of $V$.",
+    "significance": "key",
+    "relatedConcepts": ["invariant theory", "isotypic decomposition", "Schur's lemma", "trivial representation"],
+    "prerequisites": ["group actions", "representation theory"]
+  },
+  {
+    "id": "ann-bu-oq02-maps-fixed",
+    "proofId": "borsuk-ulam-oq-02-oq-02",
+    "range": { "startLine": 92, "endLine": 97 },
+    "type": "insight",
+    "title": "Equivariant Maps Restrict to Fixed-Point Subspaces",
+    "content": "This theorem is the key structural lemma connecting equivariant maps to fixed-point subspaces: an equivariant map sends G-fixed points to G-fixed points. The proof is elegant — for x in fixedPoints G α and any g ∈ G, we need g • f(x) = f(x). By equivariance, g • f(x) = f(g • x), and since x is fixed, f(g • x) = f(x). This shows every equivariant map f: V → W induces a map f^G: V^G → W^G between fixed-point subspaces, which is the key functoriality used in the equivariant Borsuk-Ulam proof.",
+    "mathContext": "If $f: V \\to W$ is $G$-equivariant and $x \\in V^G$, then $f(x) \\in W^G$. This gives a natural transformation: equivariant maps $f: V \\to W$ induce maps $f^G: V^G \\to W^G$ on fixed-point subspaces. If $\\dim V^G > \\dim W^G$, any linear equivariant $f^G$ has a kernel, giving the linear case of dimension reduction.",
+    "significance": "key",
+    "relatedConcepts": ["functoriality", "fixed-point functor", "equivariant degree theory", "dimension reduction"],
+    "prerequisites": ["IsEquivariant", "fixedPoints", "isEquivariant_const_iff"]
+  },
+  {
+    "id": "ann-bu-oq02-placeholder",
+    "proofId": "borsuk-ulam-oq-02-oq-02",
+    "range": { "startLine": 115, "endLine": 116 },
+    "type": "definition",
+    "title": "Placeholder: Full Statement Requires Equivariant Cohomology",
+    "content": "The `def EquivariantBorsukUlam : Prop := True` serves as a documented placeholder — it compiles trivially but represents the gap between what is formalized (basic equivariant algebra) and what the actual theorem requires. The full statement needs representation categories and equivariant degree theory unavailable in Mathlib. This is an honest accounting of the current state of formalization, preferable to a false `sorry`-laden theorem.",
+    "mathContext": "The target theorem: for compact Lie group $G$, $G$-representations $V, W$, if $\\dim V > \\dim W$, then any continuous $G$-equivariant $f: S(V) \\to W$ has $f^{-1}(0) \\neq \\emptyset$. The proof requires the equivariant cohomology ring $H^*_G(X; \\mathbb{Z})$ via the Borel construction $EG \\times_G X$.",
+    "significance": "context",
+    "relatedConcepts": ["equivariant cohomology", "Borel construction", "equivariant degree", "tom Dieck splitting"],
+    "prerequisites": ["representation theory of compact Lie groups", "equivariant homotopy theory", "classifying spaces"]
+  },
+  {
+    "id": "ann-bu-oq02-infrastructure",
+    "proofId": "borsuk-ulam-oq-02-oq-02",
+    "range": { "startLine": 118, "endLine": 155 },
+    "type": "context",
+    "title": "Formalization Roadmap: ~2000 Lines of Missing Infrastructure",
+    "content": "This section provides a detailed accounting of what Lean 4/Mathlib currently lacks for the full proof: G-CW complexes (~500 lines), representation theory infrastructure (~300 lines), equivariant cohomology via the Borel construction (~800 lines), and equivariant degree theory (~400 lines). The Mathlib availability checklist distinguishes what exists (basic group actions, partial representation theory, topological groups) from what doesn't (equivariant cohomology, equivariant degree). This infrastructure gap is common in formal mathematics — the proof is mathematically known but the foundational scaffolding requires years of Mathlib development.",
+    "mathContext": "The Borel construction: for $G$ acting on $X$, the equivariant cohomology is $H^*_G(X) = H^*(EG \\times_G X)$ where $EG$ is the universal $G$-bundle. The localization theorem (Atiyah-Segal, Quillen) relates $H^*_G(X)$ to $H^*_G(X^G)$ after inverting certain elements, giving the dimensional restrictions needed for equivariant Borsuk-Ulam.",
+    "significance": "context",
+    "relatedConcepts": ["Borel equivariant cohomology", "Atiyah-Segal completion", "G-CW complexes", "Mathlib contribution roadmap"],
+    "prerequisites": ["algebraic topology", "classifying spaces", "spectral sequences"]
+  }
+]
