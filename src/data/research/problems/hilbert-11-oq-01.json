@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-30T21:46:38.107Z",
-    "iteration": 2,
-    "focus": "Tensor product base change for local isotropy",
+    "phase": "ACT",
+    "since": "2026-04-03T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Eliminated 2 sorries via evaluation functional approach",
     "blockers": [],
-    "nextAction": "Prove injectivity of 1 \u2297\u209c \u00b7 on free modules to eliminate 2 sorries",
+    "nextAction": "Submit PR for sorry elimination, consider Aristotle companion update",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,35 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created Hilbert11OQ01.lean with proper tensor product definitions for local isotropy. Eliminated four_squares_connection axiom via Mathlib. Defined IsIsotropicOverReals and IsIsotropicOverPadic using QuadraticForm.baseChange.",
+    "progressSummary": "PROGRESS: Eliminated 2 sorries in Hilbert11OQ01.lean using evaluation functionals. Both rational_implies_real_isotropic and rational_implies_padic_isotropic now have complete proofs.",
     "builtItems": [
       "Created proofs/Proofs/Hilbert11OQ01.lean: proper local isotropy definitions via baseChange",
-      "Proved four_squares_from_mathlib \u2014 Lagrange 4 squares, no axiom",
-      "Defined IsIsotropicOverReals using QuadraticForm.baseChange \u211d",
-      "Defined IsIsotropicOverPadic using QuadraticForm.baseChange \u211a_[p]",
+      "Proved four_squares_from_mathlib — Lagrange 4 squares, no axiom",
+      "Defined IsIsotropicOverReals using QuadraticForm.baseChange ℝ",
+      "Defined IsIsotropicOverPadic using QuadraticForm.baseChange ℚ_[p]",
       "Proved baseChange_real_tmul and baseChange_padic_tmul computation lemmas",
       "Proved hasse_easy_direction (modulo 2 injectivity sorries)",
-      "Axiomatized hasse_minkowski_refined with proper local conditions"
+      "Axiomatized hasse_minkowski_refined with proper local conditions",
+      "Proved rational_implies_real_isotropic: 1 ⊗ₜ v ≠ 0 via evaluation functionals in ℝ ⊗[ℚ] (Fin n → ℚ)",
+      "Proved rational_implies_padic_isotropic: 1 ⊗ₜ v ≠ 0 via evaluation functionals in ℚ_[p] ⊗[ℚ] (Fin n → ℚ)"
     ],
     "insights": [
       "QuadraticForm.baseChange from Mathlib.LinearAlgebra.QuadraticForm.TensorProduct provides the correct formalization of scalar extension for quadratic forms.",
-      "IsIsotropicOverReals Q = Q.baseChange \u211d has nonzero zero in \u211d \u2297[\u211a] (Fin n \u2192 \u211a) \u2014 this replaces placeholder True.",
-      "IsIsotropicOverPadic Q p = Q.baseChange \u211a_[p] has nonzero zero in \u211a_[p] \u2297[\u211a] (Fin n \u2192 \u211a) \u2014 proper p-adic tensor product.",
-      "Algebra \u211a \u211d and Algebra \u211a \u211a_[p] are automatically available via algebraRat (DivisionRing + CharZero \u2192 Algebra \u211a).",
-      "Invertible (2 : \u211a) is automatically inferred for QuadraticForm.baseChange.",
-      "four_squares_connection is proved directly from Nat.sum_four_squares \u2014 eliminates 1 axiom.",
-      "The easy direction (rational isotropy \u2192 local isotropy) relies on injectivity of 1 \u2297\u209c \u00b7 on free modules \u2014 2 sorries remain for Aristotle."
+      "IsIsotropicOverReals Q = Q.baseChange ℝ has nonzero zero in ℝ ⊗[ℚ] (Fin n → ℚ) — this replaces placeholder True.",
+      "IsIsotropicOverPadic Q p = Q.baseChange ℚ_[p] has nonzero zero in ℚ_[p] ⊗[ℚ] (Fin n → ℚ) — proper p-adic tensor product.",
+      "Algebra ℚ ℝ and Algebra ℚ ℚ_[p] are automatically available via algebraRat (DivisionRing + CharZero → Algebra ℚ).",
+      "Invertible (2 : ℚ) is automatically inferred for QuadraticForm.baseChange.",
+      "four_squares_connection is proved directly from Nat.sum_four_squares — eliminates 1 axiom.",
+      "The easy direction (rational isotropy → local isotropy) relies on injectivity of 1 ⊗ₜ · on free modules — 2 sorries remain for Aristotle.",
+      "Evaluation functional approach: for each i : Fin n, define ev_i : A ⊗[ℚ] (Fin n → ℚ) →ₗ[ℚ] A by a ⊗ₜ w ↦ a * algebraMap ℚ A (w i). Then ev_i(1 ⊗ₜ v) = (v i : A). From 1 ⊗ₜ v = 0 deduce v i = 0 for all i.",
+      "Key tactic: simpa using heval.symm.trans hzero converts algebraMap ℚ A (v i) = 0 to (v i : A) = 0, then exact_mod_cast gives v i = 0."
     ],
     "mathlibGaps": [
-      "Need Hasse-Minkowski itself \u2014 not in Mathlib",
-      "Rational classification of quadratic forms \u2014 not in Mathlib",
-      "Injectivity of base change of free modules \u2014 likely in Mathlib as Module.Flat.lTensor_injective"
+      "Need Hasse-Minkowski itself — not in Mathlib",
+      "Rational classification of quadratic forms — not in Mathlib",
+      "Injectivity of base change of free modules — likely in Mathlib as Module.Flat.lTensor_injective"
     ],
     "nextSteps": [
-      "Prove injectivity sorry: 1 \u2297\u209c v \u2260 0 when v \u2260 0 in A \u2297[\u211a] (Fin n \u2192 \u211a) (free module base change injective)",
-      "Check if TensorProduct.linearIndependent_iff or Module.Flat.lTensor_injective applies",
-      "Add Meyer theorem formalization: forms in \u2265 5 variables are locally isotropic",
-      "Consider Hilbert symbol formalization using IsIsotropicOverPadic"
+      "State Meyers theorem: forms in ≥ 5 variables over ℚ are isotropic",
+      "Add Hilbert symbol formalization using IsIsotropicOverPadic",
+      "Update Aristotle companion file to prove one_tmul_injective_real/padic"
     ]
   },
   "tags": [
@@ -75,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T21:46:38.107Z",
-  "lastUpdate": "2026-03-30T21:46:38.107Z",
+  "lastUpdate": "2026-04-03T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -89,6 +92,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11_QuadraticForms.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01.lean",
+      "filename": "Hilbert11OQ01.lean",
+      "lineCount": 273,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01.lean"
     }
   ]
 }
