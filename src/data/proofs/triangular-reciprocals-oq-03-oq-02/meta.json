@@ -18,8 +18,8 @@
         ],
         "badge": "axiom",
         "sorries": 0,
-        "axiomCount": 2,
-        "assumptions": "2 axioms inherited from TriangularReciprocalAlternatingOQ03.lean: (1) alternating_harmonic_hasSum (∑(-1)^{n+1}/n = log 2, the Mercator series) — used directly at lines 77 and 168; (2) shifted_alternating_hasSum (∑(-1)^{n+1}/(n+1) = 1-log 2) — declared in the imported parent module. Generalized.lean proves its own parametric version as a theorem but both axioms are in scope via the import. 0 sorries.",
+        "axiomCount": 1,
+        "assumptions": "1 axiom: alternating_harmonic_hasSum (∑(-1)^{n+1}/n = log 2, the Mercator series, line 29). File is self-contained — imports only Mathlib. shifted_alternating_hasSum is proved as a theorem (line 100), not assumed. 0 sorries.",
         "dateAdded": "2026-03-29",
         "mathlibDependencies": [
             {
@@ -43,8 +43,7 @@
         "lineCount": 196,
         "theoremCount": 10,
         "definitionCount": 1,
-        "mathlib_version": "4.26.0",
-        "additionalFiles": ["Proofs/TriangularReciprocalAlternatingOQ03.lean"]
+        "mathlib_version": "4.26.0"
     },
     "overview": {
         "historicalContext": "The alternating harmonic series ∑(-1)^{n+1}/n = log(2) was first published by Mercator (1668) and is a special case of the Mercator series for log(1+x). Euler studied many variants involving products n(n+k) in the denominators. The generalization to arbitrary k reveals a beautiful structure: for even k the logarithmic terms cancel giving a rational answer, while for odd k the result involves log(2).",
@@ -122,7 +121,7 @@
     ],
     "leanFile": {
         "imports": [
-            "Proofs.TriangularReciprocalAlternatingOQ03"
+            "Mathlib"
         ],
         "opens": [
             "Finset",
