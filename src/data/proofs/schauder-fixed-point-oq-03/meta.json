@@ -30,60 +30,92 @@
     ]
   },
   "overview": {
-    "historicalContext": "Kakutani (1941) generalized Brouwer's theorem to set-valued maps. Nash (1950) used it to prove existence of Nash equilibria.",
+    "historicalContext": "Shizuo Kakutani's 1941 paper 'A Generalization of Brouwer's Fixed Point Theorem' (Duke Mathematical Journal) extended Brouwer's theorem to set-valued maps (correspondences), replacing the continuity requirement with upper hemicontinuity. Kakutani's motivation was to provide a cleaner proof of the minimax theorem (von Neumann 1928) for zero-sum games. The theorem became famous nine years later when John Nash (1950) used it to prove the existence of Nash equilibria in finite n-player games, for which Nash received the 1994 Nobel Prize in Economics. The key insight of Nash's proof is that the 'best response correspondence' — mapping each strategy profile to the set of profiles where every player is best-responding — satisfies exactly the Kakutani conditions when strategy spaces are taken to be simplices of mixed strategies. The Kakutani fixed point theorem was itself later generalized to infinite-dimensional spaces by Glicksberg (1952) and Fan (1952), and to locally convex topological vector spaces by the Fan-Kakutani theorem. In modern mathematics, it appears in general equilibrium theory (Arrow-Debreu model, 1954), mechanism design, and social choice theory.",
     "problemStatement": "Formalize the Kakutani fixed point theorem for set-valued maps.",
     "text": "Defines set-valued maps, upper hemicontinuity, and axiomatizes Kakutani's theorem. Recovers Brouwer as a corollary.",
     "proofStrategy": "Defines set-valued maps, upper hemicontinuity, and axiomatizes Kakutani's theorem. Recovers Brouwer as a corollary.",
-    "keyInsights": []
+    "keyInsights": [
+      "Kakutani's theorem generalizes Brouwer by replacing the single-valuedness requirement with upper hemicontinuity (UHC) plus nonempty/closed/convex values. UHC is the 'right' continuity for set-valued maps because it prevents the values F(x) from suddenly expanding: for any open neighborhood V of F(x₀), all nearby F(x) are contained in V.",
+      "The Brouwer-from-Kakutani derivation (brouwer_from_kakutani) is a clean proof that F(x) = {f(x)} satisfies all Kakutani conditions trivially: singletons are closed (isClosed_singleton), convex (convex_singleton), nonempty (singleton_nonempty), and a continuous f gives UHC via continuous_is_uhc. This shows Brouwer is a strict special case.",
+      "The axiom kakutani_finite_dim is mathematically honest: the full proof requires simplicial approximation (constructing single-valued approximations to F and passing to a limit), which is technically demanding to formalize. Axiomatic treatment preserves the mathematical framework while flagging what remains unproved.",
+      "Nash's use of Kakutani (1950) transformed game theory: the best response correspondence BR satisfies all four Kakutani conditions when strategy spaces are simplices (mixed strategies), giving the existence of Nash equilibria for arbitrary finite games. This is arguably the most impactful application of a fixed point theorem in mathematics."
+    ]
   },
   "sections": [
     {
-      "id": "set-valued",
-      "title": "Set-Valued Maps",
-      "startLine": 23,
-      "endLine": 55,
-      "summary": "Set-Valued Maps"
+      "id": "sec-header",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Module documentation states the Kakutani fixed point theorem (Kakutani 1941): nonempty compact convex S ⊆ ℝⁿ, upper hemicontinuous F with nonempty/closed/convex values ⟹ ∃x, x ∈ F(x). Notes the connection to Nash equilibria and Brouwer/Schauder."
     },
     {
-      "id": "uhc",
-      "title": "Upper Hemicontinuity",
-      "startLine": 57,
-      "endLine": 82,
-      "summary": "Upper Hemicontinuity"
+      "id": "sec-set-valued",
+      "title": "Part I: Set-Valued Map Framework",
+      "startLine": 26,
+      "endLine": 50,
+      "summary": "Defines SetValuedMap X Y = X → Set Y. Defines graph {(x,y): y∈F(x)}. Predicates: HasNonemptyValues (∀x, F(x)≠∅), HasClosedValues (∀x, IsClosed(F(x))), HasConvexValues (∀x, Convex ℝ (F(x))). These three conditions form part of Kakutani's hypotheses."
     },
     {
-      "id": "fixed-points",
-      "title": "Fixed Points",
-      "startLine": 84,
-      "endLine": 98,
-      "summary": "Fixed Points"
+      "id": "sec-uhc",
+      "title": "Part II: Upper Hemicontinuity",
+      "startLine": 51,
+      "endLine": 74,
+      "summary": "IsUpperHemicontinuous F: for every open V, {x : F(x) ⊆ V} is open. Theorem continuous_is_uhc: a continuous f viewed as F(x)={f(x)} is UHC, proved by identifying {x : {f(x)}⊆V} = f⁻¹(V)."
     },
     {
-      "id": "kakutani",
-      "title": "Kakutani's Theorem",
-      "startLine": 100,
-      "endLine": 132,
-      "summary": "Kakutani's Theorem"
+      "id": "sec-fixed-points",
+      "title": "Part III: Fixed Points of Correspondences",
+      "startLine": 76,
+      "endLine": 87,
+      "summary": "IsFixedPoint F x ↔ x ∈ F(x). Theorem fixedpoint_singlevalued: for F(x)={f(x)}, x ∈ F(x) ↔ f(x)=x (by simp). This bridge lemma is used in brouwer_from_kakutani."
     },
     {
-      "id": "brouwer",
-      "title": "Recovering Brouwer",
-      "startLine": 134,
-      "endLine": 153,
-      "summary": "Recovering Brouwer"
+      "id": "sec-kakutani",
+      "title": "Part IV: Kakutani's Theorem (Axiomatized)",
+      "startLine": 89,
+      "endLine": 113,
+      "summary": "axiom kakutani_finite_dim: for S ⊆ EuclideanSpace ℝ (Fin n) nonempty/compact/convex and F:S→2^S UHC with nonempty/closed/convex values, ∃x:S, IsFixedPoint F x. Axiomatized because the proof requires simplicial approximation and convergence arguments."
+    },
+    {
+      "id": "sec-brouwer",
+      "title": "Part V: Brouwer as a Corollary",
+      "startLine": 115,
+      "endLine": 134,
+      "summary": "brouwer_from_kakutani: given continuous f:S→S, define F(x)={f(x)}. Verifies all four Kakutani conditions for singletons, applies kakutani_finite_dim, and extracts f(x)=x via fixedpoint_singlevalued."
+    },
+    {
+      "id": "sec-nash",
+      "title": "Part VI: Nash Equilibrium Connection",
+      "startLine": 136,
+      "endLine": 168,
+      "summary": "Prose sketch of Nash's (1950) application: best response correspondence BR:S→2^S satisfies Kakutani conditions when strategy spaces are simplices of mixed strategies. A Kakutani fixed point of BR is a Nash equilibrium. File summary confirms 1 axiom, 0 sorries."
     }
   ],
   "conclusion": {
-    "summary": "Kakutani framework formalized with 1 axiom (the main theorem). Brouwer recovered as corollary. Nash equilibrium connection sketched.",
+    "summary": "The Kakutani fixed point theorem framework is formalized with 8 definitions, 3 proved theorems, and 1 axiom (the main theorem). Brouwer's fixed point theorem is recovered as a corollary, and the connection to Nash equilibrium existence is sketched.",
+    "implications": "Kakutani's theorem is the central tool for existence proofs in mathematical economics: Nash equilibria (Nash 1950), Arrow-Debreu general equilibria (1954), and Walrasian equilibria. A Lean formalization would enable machine-verified proofs of fundamental economic existence theorems. The axiom kakutani_finite_dim is a precise statement of what needs to be proved — simplicial approximation + convergence — providing a roadmap for future formalization work.",
     "openQuestions": [
-      "Prove kakutani_finite_dim from Brouwer via simplicial approximation"
-    ],
-    "implications": ""
+      "Prove kakutani_finite_dim from Brouwer via simplicial approximation: the standard proof approximates F by piecewise-linear single-valued maps, applies Brouwer to each, and takes a convergent subsequence using compactness and upper hemicontinuity",
+      "Formalize the infinite-dimensional Kakutani-Fan-Glicksberg theorem: if X is a locally convex topological vector space and S ⊆ X is compact convex, then any UHC F:S→2^S with compact convex values has a fixed point",
+      "Formalize Nash equilibrium existence: define mixed strategies as probability measures on a finite action set, define the best response correspondence, and verify it satisfies the Kakutani conditions"
+    ]
   },
   "crossReferences": [
     {
-      "targetId": "schauder-fixed-point",
-      "relationship": "parent-problem"
+      "id": "schauder-fixed-point",
+      "relationship": "parent",
+      "description": "Schauder Fixed Point Theorem — the infinite-dimensional generalization that Kakutani's theorem further extends to set-valued maps"
+    },
+    {
+      "id": "schauder-fixed-point-oq-01",
+      "relationship": "sibling",
+      "description": "Schauder Projection Lemma — a technical tool in the Schauder/Kakutani proof chain"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Brouwer Fixed Point Theorem — recovered as a corollary of Kakutani in this entry"
     }
   ],
   "leanFile": {
