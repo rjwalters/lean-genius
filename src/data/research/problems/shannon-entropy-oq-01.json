@@ -33,29 +33,29 @@
     "builtItems": [
       "ShannonEntropyOQ01.lean: differentialEntropy (def, line 43)",
       "ShannonEntropyOQ01.lean: klDivergenceCts (def, line 47)",
-      "ShannonEntropyOQ01.lean: kl_term_bound_cts (lemma, line 59) \u2014 proved",
-      "ShannonEntropyOQ01.lean: kl_divergence_continuous_nonneg (theorem, line 90) \u2014 proved",
-      "ShannonEntropyOQ01.lean: gibbs_inequality_continuous (theorem, line 117) \u2014 proved",
-      "ShannonEntropyOQ01.lean: differentialEntropy_translation_invariant (theorem, line 167) \u2014 proved",
+      "ShannonEntropyOQ01.lean: kl_term_bound_cts (lemma, line 59) — proved",
+      "ShannonEntropyOQ01.lean: kl_divergence_continuous_nonneg (theorem, line 90) — proved",
+      "ShannonEntropyOQ01.lean: gibbs_inequality_continuous (theorem, line 117) — proved",
+      "ShannonEntropyOQ01.lean: differentialEntropy_translation_invariant (theorem, line 167) — proved",
       "ShannonEntropyOQ01.lean: gaussianPDF (def, line 210)",
-      "ShannonEntropyOQ01.lean: gaussian_max_entropy (theorem, line 239) \u2014 proved"
+      "ShannonEntropyOQ01.lean: gaussian_max_entropy (theorem, line 239) — proved"
     ],
     "insights": [
-      "gaussian_max_entropy follows from Gibbs inequality + log expansion: log(gaussianPDF) = -\u00bdlog(2\u03c0\u03c3\u00b2) - x\u00b2/(2\u03c3\u00b2), then integrate and use variance bound",
-      "Gibbs inequality h(f) \u2264 -\u222bf log g requires \u222bg = 1 AND integrability of gaussianPDF",
-      "gaussianPDF 0 \u03c3 normalization: congr 1; congr 1; ring to equate -(x-0)\u00b2/(2\u03c3\u00b2) with -(1/(2\u03c3\u00b2))*x\u00b2, since ring handles field division in Lean 4",
-      "integrability of gaussianPDF 0 \u03c3 follows from integrable_exp_neg_mul_sq with b = 1/(2\u03c3\u00b2)",
-      "\u222bx, A - \u222bx, B in Lean 4 parses as \u222bx, (A - \u222bx, B) \u2014 always use explicit parentheses (\u222bx, A) - (\u222bx, B)",
-      "differentialEntropy_scale_equivariant requires \u222bf=1 hypothesis (without it the identity is false)",
-      "gaussianDifferentialEntropy requires Gaussian second moment: \u222bx, x\u00b2 * gaussianPDF 0 \u03c3 x = \u03c3\u00b2"
+      "gaussian_max_entropy follows from Gibbs inequality + log expansion: log(gaussianPDF) = -½log(2πσ²) - x²/(2σ²), then integrate and use variance bound",
+      "Gibbs inequality h(f) ≤ -∫f log g requires ∫g = 1 AND integrability of gaussianPDF",
+      "gaussianPDF 0 σ normalization: congr 1; congr 1; ring to equate -(x-0)²/(2σ²) with -(1/(2σ²))*x², since ring handles field division in Lean 4",
+      "integrability of gaussianPDF 0 σ follows from integrable_exp_neg_mul_sq with b = 1/(2σ²)",
+      "∫x, A - ∫x, B in Lean 4 parses as ∫x, (A - ∫x, B) — always use explicit parentheses (∫x, A) - (∫x, B)",
+      "differentialEntropy_scale_equivariant requires ∫f=1 hypothesis (without it the identity is false)",
+      "gaussianDifferentialEntropy requires Gaussian second moment: ∫x, x² * gaussianPDF 0 σ x = σ²"
     ],
     "mathlibGaps": [
-      "Gaussian second moment: \u222bx, x\u00b2 * exp(-b*x\u00b2) dx = \u221a\u03c0 / (2*b^(3/2)) \u2014 exists in Mathlib but API unclear",
+      "Gaussian second moment: ∫x, x² * exp(-b*x²) dx = √π / (2*b^(3/2)) — exists in Mathlib but API unclear",
       "differentialEntropy_scale_equivariant: needs measure-theoretic substitution/rescaling lemma"
     ],
     "nextSteps": [
-      "Prove gaussianDifferentialEntropy: need \u222bx, x\u00b2 * gaussianPDF 0 \u03c3 x = \u03c3\u00b2. Look for MeasureTheory.integral_mul_exp_neg or gaussian_variance_eq in Mathlib",
-      "Prove differentialEntropy_scale_equivariant: use integral_comp_mul_right or change_of_variables for the rescaling \u222bf(x/a) = |a|*\u222bf(y)"
+      "Prove gaussianDifferentialEntropy: need ∫x, x² * gaussianPDF 0 σ x = σ². Look for MeasureTheory.integral_mul_exp_neg or gaussian_variance_eq in Mathlib",
+      "Prove differentialEntropy_scale_equivariant: use integral_comp_mul_right or change_of_variables for the rescaling ∫f(x/a) = |a|*∫f(y)"
     ]
   },
   "tags": [
@@ -99,6 +99,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyAristotle.lean"
     },
     {
+      "path": "Proofs/ShannonEntropyOQ01.lean",
+      "filename": "ShannonEntropyOQ01.lean",
+      "lineCount": 331,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01.lean"
+    },
+    {
       "path": "Proofs/ShannonEntropyOQ02.lean",
       "filename": "ShannonEntropyOQ02.lean",
       "lineCount": 384,
@@ -130,17 +141,6 @@
       "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSAAristotle.lean"
-    },
-    {
-      "path": "Proofs/ShannonEntropyOQ01.lean",
-      "filename": "ShannonEntropyOQ01.lean",
-      "lineCount": 330,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 2,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01.lean"
     }
   ]
 }

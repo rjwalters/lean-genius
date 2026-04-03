@@ -151,12 +151,124 @@ private lemma sidon_pair_sum_injective (A : Set ℕ) (hSidon : IsSidon A) :
 -- Key counting lemma: integers in SumsetK A 2 with value ≤ 2N
 -- can be injected into A ∪ {pairs from A × A}.
 -- Total target size ≤ M*(M+1)/2 where M = |A ∩ [1,2N]|.
-private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ) (hN : N₀ ≤ N)
+-- Requires N₀ ≥ 1 to ensure all covered elements are positive (avoiding the n=0 edge case).
+private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ)
+    (hN₀_pos : 1 ≤ N₀) (hN : N₀ ≤ N)
     (hcov : ∀ n, N₀ ≤ n → n ≤ 2*N → n ∈ SumsetK A 2) :
     (2 * N - N₀ + 1 : ℝ) ≤
     (Set.ncard (A ∩ Set.Icc 1 (2*N)) : ℝ) *
     ((Set.ncard (A ∩ Set.Icc 1 (2*N)) : ℝ) + 1) / 2 := by
-  sorry
+  -- Setup: FA = A ∩ [1,2N] as a Finset, M = FA.card
+  have hfin : Set.Finite (A ∩ Set.Icc 1 (2*N)) :=
+    (Set.finite_Icc 1 (2*N)).subset Set.inter_subset_right
+  set FA := hfin.toFinset with hFA_def
+  have hM_eq : Set.ncard (A ∩ Set.Icc 1 (2*N)) = FA.card :=
+    (hfin.ncard_eq_toFinset_card _).symm ▸ by simp [hFA_def]
+  rw [hM_eq]
+  -- Key helper: each n in [N₀, 2N] covered by SumsetK A 2 lies in FA or is a strict Sidon pair sum
+  have helem : ∀ n, N₀ ≤ n → n ≤ 2*N → n ∈ SumsetK A 2 →
+      (n ∈ FA) ∨ (∃ a b : ℕ, a ∈ FA ∧ b ∈ FA ∧ a < b ∧ a + b = n) := by
+    intro n hn1 hn2 ⟨S, hSc, hSsub, hSsum⟩
+    -- Case on S.card
+    have hSc2 : S.card ≤ 2 := hSc
+    rcases Nat.lt_succ_iff.mp (Nat.lt_of_lt_of_le (Nat.lt_succ_of_le hSc2) (le_refl 3)) with h
+    interval_cases (S.card)
+    · -- S = ∅, sum = 0, contradicts n ≥ N₀ ≥ 1
+      simp [Finset.card_eq_zero.mp (by omega : S.card = 0)] at hSsum
+      omega
+    · -- S = {a}, sum = a = n
+      obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp (by omega : S.card = 1)
+      simp [Finset.sum_singleton] at hSsum
+      left
+      rw [hFA_def, Set.Finite.mem_toFinset]
+      exact ⟨hSsub (Finset.mem_singleton_self a),
+             ⟨by linarith [hN₀_pos], hSsum ▸ hn2⟩⟩
+    · -- S = {a, b}, sum = a + b = n
+      obtain ⟨a, b, hab_ne, rfl⟩ := Finset.card_eq_two.mp (by omega : S.card = 2)
+      simp [Finset.sum_pair hab_ne] at hSsum
+      have ha_A : a ∈ A := hSsub (Finset.mem_insert_self a {b})
+      have hb_A : b ∈ A := hSsub (by simp)
+      -- Order a and b
+      rcases Nat.lt_or_ge a b with hab | hba
+      · -- a < b case
+        rcases Nat.eq_zero_or_pos a with rfl | ha_pos
+        · -- a = 0: n = b, treat as singleton
+          simp at hSsum; left
+          rw [hFA_def, Set.Finite.mem_toFinset]
+          exact ⟨by rwa [hSsum] at hb_A, ⟨by linarith [hN₀_pos], by linarith⟩⟩
+        · right
+          rw [hFA_def]
+          refine ⟨a, b, Set.Finite.mem_toFinset.mpr ⟨ha_A, ⟨ha_pos, by linarith⟩⟩,
+                        Set.Finite.mem_toFinset.mpr ⟨hb_A, ⟨by linarith, by linarith⟩⟩,
+                        hab, hSsum⟩
+      · -- b ≤ a case: swap
+        rcases Nat.eq_zero_or_pos b with rfl | hb_pos
+        · simp at hSsum; left
+          rw [hFA_def, Set.Finite.mem_toFinset]
+          exact ⟨by rwa [hSsum] at ha_A, ⟨by linarith [hN₀_pos], by linarith⟩⟩
+        · right
+          have hba_lt : b < a := Nat.lt_of_le_of_ne hba (Ne.symm hab_ne)
+          rw [hFA_def]
+          refine ⟨b, a, Set.Finite.mem_toFinset.mpr ⟨hb_A, ⟨hb_pos, by linarith⟩⟩,
+                        Set.Finite.mem_toFinset.mpr ⟨ha_A, ⟨by linarith, by linarith⟩⟩,
+                        hba_lt, by linarith⟩
+  -- Define the representable finset
+  set pairs2 := (FA ×ˢ FA).filter (fun p => p.1 < p.2) with hpairs_def
+  set sums2 := pairs2.image (fun p => p.1 + p.2) with hsums_def
+  set repSet := FA ∪ sums2 with hrep_def
+  -- Step 1: [N₀, 2N] ⊆ repSet
+  have h_sub : Finset.Icc N₀ (2*N) ⊆ repSet := by
+    intro n hn
+    simp only [Finset.mem_Icc] at hn
+    rcases helem n hn.1 hn.2 (hcov n hn.1 hn.2) with h | ⟨a, b, ha, hb, hab, hsum⟩
+    · exact Finset.mem_union_left _ h
+    · apply Finset.mem_union_right
+      rw [hsums_def, hpairs_def]
+      exact Finset.mem_image.mpr ⟨(a, b), Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, hb⟩, hab⟩, hsum⟩
+  -- Step 2: |[N₀, 2N]| ≤ |repSet|
+  have h_card_le : (Finset.Icc N₀ (2*N)).card ≤ repSet.card :=
+    Finset.card_le_card h_sub
+  -- Step 3: |[N₀, 2N]| = 2N - N₀ + 1
+  have h_icc_card : (Finset.Icc N₀ (2*N)).card = 2*N - N₀ + 1 := by
+    rw [Finset.Nat.card_Icc]; omega
+  -- Step 4: |repSet| ≤ M*(M+1)/2
+  have h_rep_card : 2 * repSet.card ≤ FA.card * (FA.card + 1) := by
+    calc 2 * repSet.card
+        ≤ 2 * (FA.card + sums2.card) := by
+          apply Nat.mul_le_mul_left
+          exact (Finset.card_union_le FA sums2)
+      _ ≤ 2 * FA.card + 2 * sums2.card := by ring_nf
+      _ ≤ 2 * FA.card + 2 * pairs2.card := by
+          apply Nat.add_le_add_left
+          apply Nat.mul_le_mul_left
+          exact Finset.card_image_le
+      _ ≤ 2 * FA.card + FA.card * (FA.card - 1) := by
+          apply Nat.add_le_add_left
+          -- |pairs2| = C(M, 2) = M*(M-1)/2, so 2*|pairs2| ≤ M*(M-1)
+          have : 2 * pairs2.card ≤ FA.card * (FA.card - 1) := by
+            rw [hpairs_def]
+            calc 2 * ((FA ×ˢ FA).filter (fun p => p.1 < p.2)).card
+                = FA.offDiag.card := by
+                  rw [Finset.offDiag_card]
+                  congr 1
+                  -- The filter {p ∈ FA×FA | p.1 < p.2} bijects with offDiag/2
+                  sorry
+              _ = FA.card * (FA.card - 1) := Finset.offDiag_card FA
+          exact this
+      _ = FA.card * (FA.card + 1) := by ring_nf; omega
+  -- Step 5: Combine and cast to ℝ
+  have h_combined : 2 * N - N₀ + 1 ≤ FA.card * (FA.card + 1) / 2 := by
+    have := Nat.le_div_iff_mul_le (by norm_num : 0 < 2)
+    rw [this]
+    calc 2 * (2 * N - N₀ + 1) = 2 * (Finset.Icc N₀ (2*N)).card := by rw [h_icc_card]
+      _ ≤ 2 * repSet.card := Nat.mul_le_mul_left 2 h_card_le
+      _ ≤ FA.card * (FA.card + 1) := h_rep_card
+  -- Cast to ℝ
+  have h_cast : (FA.card : ℝ) * ((FA.card : ℝ) + 1) / 2 ≥ (2 * N - N₀ + 1 : ℝ) := by
+    have := @Nat.cast_le ℝ _ _ _ |>.mpr h_combined
+    push_cast at this ⊢
+    linarith
+  linarith
 
 -- Real analysis: for large N, the Sidon bound M ≤ √(2N) + C*(2N)^(1/4)
 -- implies M*(M+1)/2 < 2N - N₀.

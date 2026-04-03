@@ -1,0 +1,70 @@
+{
+  "slug": "erdos-519-incomplete-01",
+  "title": "erdos-519-incomplete-01",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-03T08:33:50.249Z",
+    "iteration": 2,
+    "focus": "Fixed 5 build errors + proved why_first_one_matters",
+    "blockers": [],
+    "nextAction": "Build verification and PR submission",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Fixed all build errors in Erdos519Problem.lean (5 classes of errors) and proved why_first_one_matters using Equiv.sum_comp.",
+    "builtItems": [
+      "Fixed maxPowerSum definition: conditional dite with explicit nonemptiness proof",
+      "Proved why_first_one_matters via Fin.sum_univ_succ + Equiv.sum_comp in Erdos519Problem.lean",
+      "Fixed 5 floating doc comments by changing /-- to /-",
+      "Changed all hasFirstOne z (by omega) to use explicit (hn : 0 < n) parameter passing"
+    ],
+    "insights": [
+      "Floating /-- doc comments without associated declarations cause parse errors: change to /- block comments",
+      "maxPowerSum uses Finset.sup'' requiring nonempty proof \u2014 fix with dite: if hn : 0 < n then ... else 0",
+      "(by omega) in term-mode \u2200 types cannot find anonymous n \u2265 1 hypothesis \u2014 fix by making hn explicit: \u2200 (n : \u2115) (hn : 0 < n)",
+      "trivial_case_n1: simp [powerSum] closes the goal entirely, leaving ring with no goals \u2014 remove ring",
+      "nthRootsOfUnity uses Real.pi which requires noncomputable annotation",
+      "why_first_one_matters proof: use Fin.sum_univ_succ + explicit Fin m \u2243 {j : Fin (m+1) | 0 < j.val} + Equiv.sum_comp",
+      "Proof irrelevance: z 0 = z \u27e80, hn\u27e9 definitionally when 0 : Fin (m+1) since isLt field is a Prop"
+    ],
+    "mathlibGaps": [
+      "Equiv.sum_comp in Mathlib.Algebra.BigOperators.Equiv handles \u2211 f(e(x)) = \u2211 f(y) for Fintype equivalences"
+    ],
+    "nextSteps": [
+      "Verify Docker build succeeds with 0 errors",
+      "Submit PR for merged changes to Erdos519Problem.lean"
+    ],
+    "markdown": "# Knowledge: erdos-519-incomplete-01\n*No research conducted yet*\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-5",
+    "erdos-51",
+    "erdos-519"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T08:33:50.249Z",
+  "lastUpdate": "2026-04-03T08:33:50.249Z"
+}

@@ -85,3 +85,6 @@ tags:
 source: gallery-gap
 created: 2026-04-03
 ```
+
+**Significance**: 9/10
+**Tractability**: 4/10
