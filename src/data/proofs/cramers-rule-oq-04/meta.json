@@ -33,15 +33,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Cramer's rule (1750) gives explicit formulas for linear system solutions using determinants: x_i = det(A_i)/det(A). The adjugate (classical adjoint) adj(A) = det(A)·A⁻¹ generalizes this: A * adj(A) = det(A) * I always holds, regardless of whether A is invertible. This makes adj(A) a 'generalized inverse' in a specific sense. When det(A) = 0, adj(A) still satisfies the 1-reflexive property and gives useful information about the solution set.",
+    "historicalContext": "Gabriel Cramer published his rule in 1750 ('Introduction à l'Analyse des Lignes Courbes Algébriques'), though equivalent formulas appeared in Maclaurin (1748) and were known to Leibniz. The 'classical adjoint' or adjugate matrix traces to Sylvester and Cayley's 19th-century work on invariant theory. The term 'adjugate' (Latin: adjugatus, yoked to) was introduced to distinguish it from the Hermitian adjoint. Frobenius systematized the relationship A·adj(A) = det(A)·I in the 1880s. The theory of generalized inverses—of which the adjugate is the earliest instance—was revived by Moore (1920) and Penrose (1955), culminating in the Moore–Penrose pseudoinverse used in least-squares methods. The algebraic formulation over commutative rings (rather than just fields) became important in commutative algebra and algebraic geometry, where matrices over polynomial rings arise naturally (e.g., the Hilbert–Burch theorem uses the adjugate of a presentation matrix to describe ideals).",
     "problemStatement": "Formalize the adjugate as a generalized inverse: prove A * adj(A) = det(A) * I, the 1-reflexive property, Cramer's solution formula, and the singular case behavior.",
     "text": "For any square matrix A over a commutative ring R: adj(A)_ij = (-1)^{i+j} * det(A without row j, col i). The cofactor expansion gives A * adj(A) = det(A) * I. For invertible A, this means A⁻¹ = adj(A) / det(A). Cramer's rule: the i-th coordinate of A⁻¹b = det(A_i(b)) / det(A) where A_i(b) replaces column i with b. The adjugate satisfies the 1-reflexive property A * G * A = det(A) * A (a weaker form of the Moore-Penrose pseudoinverse).",
     "proofStrategy": "Directly apply Mathlib's Matrix.mul_adjugate and Matrix.adjugate_mul lemmas. Derive the reflexive and symmetric reflexive properties by substitution. Prove Cramer's formula by combining adjugate identities with invertibility.",
     "keyInsights": [
-      "A * adj(A) = det(A) * I: always holds, no invertibility required",
-      "1-reflexive property: A * adj(A) * A = det(A) * A — weaker than Moore-Penrose",
-      "Cramer's formula: x_i = det(A_i)/det(A) follows from adj(A)*b/det(A) = A⁻¹*b",
-      "Singular case: adj(A) * b ∈ null(A) when det(A) = 0 (approximate solution)"
+      "A * adj(A) = det(A) * I holds over ANY commutative ring — no field or invertibility assumption required, making it a universal algebraic identity",
+      "The 1-reflexive property A * adj(A) * A = det(A) * A is strictly weaker than Moore-Penrose: the adjugate is a 'scaled' generalized inverse rather than a true pseudoinverse",
+      "Cramer's classical formula x_i = det(A_i)/det(A) is simply the generalized identity A·adj(A)·b = det(A)·b divided by det(A), unifying the singular and invertible cases",
+      "When det(A) = 0, every column of adj(A) lies in ker(A), so the adjugate collapses the entire ambient space into the null space — a complete collapse rather than an approximation",
+      "The formula det(adj(A)) = det(A)^(n-1) encodes a deep spectral relationship: it can be derived from the characteristic polynomial and connects to the Cayley-Hamilton theorem via adj(xI-A)·(xI-A) = charpoly(A)·I"
     ],
     "prerequisites": [
       "Adjugate matrix: cofactor expansion, classical adjoint",
@@ -50,12 +51,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Adjugate generalized inverse formalized: A*adj(A)=det(A)*I, 1-reflexive property, Cramer's solution formula. 11 theorems, 175 lines, 0 axioms.",
-    "implications": "The adjugate provides a universal 'inverse-like' operation over commutative rings, not just fields. This is key for formulas like the matrix-tree theorem (graph theory), where det(A) counts spanning trees.",
+    "summary": "Fully machine-verified formalization of the adjugate as a generalized inverse over commutative rings: 9 core properties proved including A·adj(A) = det(A)·I, the 1-reflexive property, the universal Cramer formula, singular case kernel analysis, and det(adj(A)) = det(A)^(n-1). Zero axioms, zero sorries.",
+    "implications": "The adjugate identity A·adj(A) = det(A)·I is foundational across mathematics: it underlies the algebraic proof of Cayley-Hamilton (adj(xI-A)·(xI-A) = charpoly(A)·I), the Hilbert-Burch theorem describing ideals via presentation matrices, and the matrix-tree theorem where det of a Laplacian cofactor counts spanning trees. Working over commutative rings rather than fields makes these results available in algebraic geometry and commutative algebra, where matrices over polynomial rings arise in syzygies and free resolutions. The formalization over Lean's CommRing typeclass ensures these results apply uniformly to ℤ, ℚ[x], and any other commutative ring.",
     "openQuestions": [
-      "Formalize the Cayley-Hamilton proof via adjugate (the algebraic proof using adj(xI-A)*(xI-A)=charpoly(A)*I)",
-      "Apply adjugate to the matrix-tree theorem: prove det of Laplacian submatrix counts spanning trees",
-      "Formalize the relationship adj(adj(A)) = det(A)^{n-2} * A"
+      "Formalize the algebraic Cayley-Hamilton proof via adj(xI-A)·(xI-A) = charpoly(A)·I — the adjugate reflexive properties here are the key building block",
+      "Prove the matrix-tree theorem: det of any cofactor of the graph Laplacian counts spanning trees — connects adjugate theory to combinatorics",
+      "Formalize adj(adj(A)) = det(A)^(n-2)·A for n ≥ 2 invertible A, showing the adjugate is a scaled involution",
+      "Develop adjugate-based formulas for matrix functions: the Cayley-Hamilton theorem gives polynomial expressions for A^k in terms of I, A, ..., A^(n-1) via the adjugate"
     ]
   },
   "leanFile": {
@@ -69,8 +71,68 @@
     {
       "targetId": "cayley-hamilton",
       "relationship": "related",
-      "description": "The Cayley-Hamilton theorem has an adjugate-based proof: adj(xI-A)*(xI-A) = charpoly(A)*I"
+      "description": "The Cayley-Hamilton theorem has an adjugate-based proof: adj(xI-A)*(xI-A) = charpoly(A)*I. The adjugate construction in CramersRuleOQ04 is a prerequisite for this algebraic proof."
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "extends",
+      "description": "The parent Cramer's rule entry proves x_i = det(A_i)/det(A) for invertible A. This entry generalizes by removing the invertibility requirement using the adjugate identity A*adj(A)*b = det(A)*b."
+    },
+    {
+      "targetId": "cramers-rule-oq-01",
+      "relationship": "related",
+      "description": "Cayley-Hamilton as a corollary of Cramer's rule uses the adjugate construction. The adjugate reflexive properties proved here are building blocks for that derivation."
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Variable Setup",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Imports Mathlib adjugate and nonsingular inverse libraries. Declares universe-polymorphic variables: n (finite decidable index type) and R (commutative ring). The commutative ring setting is essential — adjugate identities hold over ℤ and polynomial rings, not just fields."
+    },
+    {
+      "id": "core-identities",
+      "title": "Part I: Adjugate Identities (Generalized Inverse Properties)",
+      "startLine": 34,
+      "endLine": 60,
+      "summary": "Proves the four fundamental adjugate identities: A·adj(A) = det(A)·I (adjugate_right), adj(A)·A = det(A)·I (adjugate_left), the 1-reflexive property A·adj(A)·A = det(A)·A (adjugate_reflexive), and its symmetric form adj(A)·A·adj(A) = det(A)·adj(A). All hold unconditionally over any commutative ring."
+    },
+    {
+      "id": "nonsingular-case",
+      "title": "Part II: Non-Singular Case (Adjugate = det · Inverse)",
+      "startLine": 62,
+      "endLine": 76,
+      "summary": "For matrices with invertible determinant ([Invertible A.det]), proves that ⅟det(A) · adj(A) is a right inverse of A, and that Cramer's solution x = ⅟det(A) · adj(A) · b satisfies Ax = b. Uses Lean's Invertible typeclass to encode the non-singularity assumption at the type level."
+    },
+    {
+      "id": "cramer-general",
+      "title": "Part III: Generalized Cramer Formula",
+      "startLine": 78,
+      "endLine": 94,
+      "summary": "Proves A·adj(A)·b = det(A)·b for ALL matrices, using the connection between the adjugate and Mathlib's cramer function (column-replacement determinants). This is the universal form of Cramer's rule that subsumes both the invertible and singular cases."
+    },
+    {
+      "id": "singular-case",
+      "title": "Part IV: Singular Case Analysis",
+      "startLine": 96,
+      "endLine": 117,
+      "summary": "When det(A) = 0: proves adj(A)·b always lies in ker(A) for any vector b (adjugate_kernel_singular), and strengthens this to show each individual column of adj(A) is in ker(A) (adjugate_cols_in_kernel). The column result is extracted from the matrix identity A·adj(A) = 0 via congr_fun."
+    },
+    {
+      "id": "det-adjugate",
+      "title": "Part V: Determinant of the Adjugate",
+      "startLine": 119,
+      "endLine": 127,
+      "summary": "Proves det(adj(A)) = det(A)^(|n|-1) via Mathlib's Matrix.det_adjugate. This formula connects adjugate theory to spectral theory: for 3×3 matrices det(adj(A)) = det(A)², reflecting how eigenvalues of adj(A) are products of pairs of eigenvalues of A."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary Table",
+      "startLine": 139,
+      "endLine": 169,
+      "summary": "A documentation block summarizing all 9 proved properties in a table, clarifying the relationship between the adjugate generalized inverse and the Moore-Penrose pseudoinverse, and restating the connection to classical Cramer's rule."
+    }
+  ]
 }

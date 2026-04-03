@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-cro04-setup",
+    "proofId": "cramers-rule-oq-04",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Setup: Imports and Variable Declarations",
+    "content": "The proof imports Mathlib's adjugate and nonsingular inverse libraries, then establishes the universe-polymorphic setting. The type variable n serves as the index type for rows and columns (e.g., Fin 3 for 3×3 matrices), while R is any commutative ring — critically, not just a field. This generality is the key insight: adjugate identities hold over ℤ, polynomial rings, and any commutative ring, not just invertible fields.",
+    "mathContext": "Let $n$ be a finite decidable type and $R$ a commutative ring. Matrices are $\\operatorname{Matrix}(n, n, R)$, the free $R$-module of $|n| \\times |n|$ matrices.",
+    "significance": "context",
+    "relatedConcepts": ["commutative ring", "fintype", "universe polymorphism"],
+    "prerequisites": ["ring theory", "Lean 4 type classes", "Mathlib matrix library"]
+  },
+  {
+    "id": "ann-cro04-core-identities",
+    "proofId": "cramers-rule-oq-04",
+    "range": { "startLine": 38, "endLine": 46 },
+    "type": "concept",
+    "title": "Core Adjugate Identities: A·adj(A) = det(A)·I",
+    "content": "The two fundamental adjugate identities are proved as single-line applications of Mathlib lemmas. adjugate_right delegates to Matrix.mul_adjugate and adjugate_left to Matrix.adjugate_mul. These identities hold for ANY square matrix over a commutative ring — no invertibility assumption required. This is the precise sense in which adj(A) 'generalizes' the inverse: when det(A) is invertible, dividing through gives A⁻¹ = adj(A)/det(A).",
+    "mathContext": "$A \\cdot \\operatorname{adj}(A) = \\det(A) \\cdot I$ and $\\operatorname{adj}(A) \\cdot A = \\det(A) \\cdot I$. Equivalently, $\\operatorname{adj}(A)_{ij} = (-1)^{i+j} M_{ji}$ where $M_{ji}$ is the $(j,i)$ minor of $A$.",
+    "significance": "key",
+    "relatedConcepts": ["cofactor expansion", "Laplace expansion", "matrix inverse"],
+    "prerequisites": ["determinant", "cofactor matrix", "identity matrix"]
+  },
+  {
+    "id": "ann-cro04-reflexive",
+    "proofId": "cramers-rule-oq-04",
+    "range": { "startLine": 48, "endLine": 60 },
+    "type": "technique",
+    "title": "1-Reflexive Property: A·adj(A)·A = det(A)·A",
+    "content": "The 1-reflexive property is derived from the right identity by substitution: A·adj(A)·A = (det(A)·I)·A = det(A)·A. The proof uses rw to rewrite with Matrix.mul_adjugate, then simplifies via scalar multiplication and the left identity for scalar-matrix products. The symmetric version adj(A)·A·adj(A) = det(A)·adj(A) follows the same pattern using the left identity. These are the defining equations of a '1-reflexive generalized inverse' in the sense of Rao–Mitra.",
+    "mathContext": "A matrix $G$ is a 1-reflexive (or {1,2}-) generalized inverse of $A$ if $AGA = A$ and $GAG = G$. The adjugate satisfies $A \\cdot \\operatorname{adj}(A) \\cdot A = \\det(A) \\cdot A$, which equals the Moore–Penrose condition $AGA = A$ precisely when $\\det(A) = 1$ (unimodular case).",
+    "significance": "key",
+    "relatedConcepts": ["Moore-Penrose pseudoinverse", "generalized inverse", "reflexive inverse"],
+    "prerequisites": ["matrix multiplication", "scalar multiplication of matrices"]
+  },
+  {
+    "id": "ann-cro04-nonsingular",
+    "proofId": "cramers-rule-oq-04",
+    "range": { "startLine": 66, "endLine": 76 },
+    "type": "technique",
+    "title": "Non-Singular Case: Recovering the True Inverse",
+    "content": "When det(A) is invertible (witnessed by an Invertible instance in Lean), scaling adj(A) by ⅟det(A) yields a true right inverse. The proof chains: A·(⅟det·adj) = ⅟det·(A·adj) = ⅟det·det·I = I using invOf_mul_self. Cramer's adjugate solution then shows A·(⅟det·adj·b) = b — recovering the unique solution to Ax = b. The [Invertible A.det] typeclass instance elegantly encodes the assumption that det(A) ≠ 0 at the type level.",
+    "mathContext": "For $A$ invertible, $A^{-1} = \\frac{1}{\\det(A)} \\operatorname{adj}(A)$. The Cramer solution is $x = A^{-1}b = \\frac{\\operatorname{adj}(A) \\cdot b}{\\det(A)}$, where the $i$-th component is $x_i = \\frac{\\det(A_i(b))}{\\det(A)}$ with $A_i(b)$ replacing column $i$ of $A$ by $b$.",
+    "significance": "key",
+    "relatedConcepts": ["Cramer's rule", "matrix inverse", "Invertible typeclass"],
+    "prerequisites": ["invertible determinant", "Lean 4 Invertible typeclass"]
+  },
+  {
+    "id": "ann-cro04-cramer-generalized",
+    "proofId": "cramers-rule-oq-04",
+    "range": { "startLine": 82, "endLine": 94 },
+    "type": "insight",
+    "title": "Universal Cramer Formula: A·adj(A)·b = det(A)·b",
+    "content": "The generalized Cramer formula A·adj(A)·b = det(A)·b holds for ALL matrices, removing the invertibility requirement from the classical formula. The proof is a one-step rewrite: cramer_eq_adjugate_mulVec converts adj(A)·b to the cramer map, then mulVec_cramer supplies the identity A·cramer(A,b) = det(A)·b. This formula is the true heart of Cramer's rule — the classical statement x_i = det(Aᵢ)/det(A) is simply this identity divided by det(A) when invertible.",
+    "mathContext": "Define $\\operatorname{cramer}(A, b)_i = \\det(A_i(b))$ (column $i$ replaced by $b$). Then $\\operatorname{adj}(A) \\cdot b = \\operatorname{cramer}(A, b)$ and $A \\cdot \\operatorname{cramer}(A,b) = \\det(A) \\cdot b$. This is the uniform Cramer identity holding over all commutative rings.",
+    "significance": "key",
+    "relatedConcepts": ["Cramer map", "column replacement", "cofactor expansion"],
+    "prerequisites": ["mulVec", "Mathlib cramer function", "matrix-vector multiplication"]
+  },
+  {
+    "id": "ann-cro04-singular",
+    "proofId": "cramers-rule-oq-04",
+    "range": { "startLine": 100, "endLine": 117 },
+    "type": "insight",
+    "title": "Singular Case: Adjugate Maps to Kernel of A",
+    "content": "When det(A) = 0, the identity A·adj(A)·b = det(A)·b = 0 shows that adj(A)·b always lies in ker(A). The theorem adjugate_cols_in_kernel strengthens this: each individual column of adj(A) lies in ker(A). The proof extracts this from A·adj(A) = 0 (since det(A) = 0) by isolating column j via congr_fun. This gives geometric meaning to the singular adjugate: it collapses the entire space into the null space of A.",
+    "mathContext": "When $\\det(A) = 0$: $A \\cdot \\operatorname{adj}(A) = 0$, so every column of $\\operatorname{adj}(A)$ lies in $\\ker(A)$. Equivalently, $\\operatorname{im}(\\operatorname{adj}(A)) \\subseteq \\ker(A)$. For $1 \\times 1$ matrices this is trivial; for $n \\times n$ with $n \\geq 2$ this is non-trivial and reflects the rank-nullity relationship.",
+    "significance": "supporting",
+    "relatedConcepts": ["kernel of a matrix", "null space", "image of a matrix"],
+    "prerequisites": ["null space", "singular matrix", "rank-nullity theorem"]
+  },
+  {
+    "id": "ann-cro04-det-adjugate",
+    "proofId": "cramers-rule-oq-04",
+    "range": { "startLine": 123, "endLine": 127 },
+    "type": "concept",
+    "title": "Determinant of the Adjugate: det(adj(A)) = det(A)^(n-1)",
+    "content": "The determinant of the adjugate satisfies det(adj(A)) = det(A)^(n-1), proved as a direct call to Mathlib's Matrix.det_adjugate. This elegant formula generalizes: for a 2×2 matrix A, det(adj(A)) = det(A); for 3×3, det(adj(A)) = det(A)². The formula is derived by taking the determinant of both sides of A·adj(A) = det(A)·I: det(A)·det(adj(A)) = det(A)^n, so det(adj(A)) = det(A)^(n-1) when det(A) ≠ 0, and both sides are 0 otherwise.",
+    "mathContext": "$\\det(\\operatorname{adj}(A)) = \\det(A)^{|n|-1}$. Proof sketch: $\\det(A \\cdot \\operatorname{adj}(A)) = \\det(\\det(A) \\cdot I) \\Rightarrow \\det(A) \\cdot \\det(\\operatorname{adj}(A)) = \\det(A)^{|n|}$. For $|n| \\geq 2$ and $\\det(A) \\neq 0$, divide through. The zero case requires separate treatment.",
+    "significance": "supporting",
+    "relatedConcepts": ["spectral theory", "characteristic polynomial", "Cayley-Hamilton theorem"],
+    "prerequisites": ["determinant multiplicativity", "scalar matrix determinant"]
+  }
+]
