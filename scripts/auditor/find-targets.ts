@@ -130,11 +130,19 @@ function countInFile(filePath: string, pattern: RegExp): number {
   return matches ? matches.length : 0
 }
 
+function commonPrefixLength(a: string, b: string): number {
+  let i = 0
+  while (i < a.length && i < b.length && a[i] === b[i]) i++
+  return i
+}
+
 /**
  * Resolve all Lean source files for a proof, including:
  * - The main proofRepoPath file
  * - Any files listed in meta.additionalFiles
  * - Any submodule imports (import Proofs.X.Y → proofs/Proofs/X/Y.lean)
+ * - Sibling imports (import Proofs.X → proofs/Proofs/X.lean) when X shares
+ *   a name prefix with the main file (covers inherited-axiom cases)
  */
 function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
   const files: string[] = []
@@ -152,10 +160,12 @@ function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
     }
   }
 
-  // Detect submodule imports from main file (import Proofs.X.Y)
+  // Detect submodule and sibling imports from main file
   // Follow imports into subdirectories that are either:
   //   1. A prefix of the main file name (e.g., "YangMills" prefix of "YangMillsProblem")
   //   2. The same directory as the main file (e.g., main at YangMills/Exploration.lean → follow Proofs.YangMills.*)
+  // Also follow single-level imports (import Proofs.X) when X shares a name
+  //   prefix of >= 4 chars with the main file (e.g., Erdos2Problem ↔ Erdos2OQ01).
   // This avoids counting sorries in unrelated shared libraries (e.g., GraphCore).
   if (mainLeanPath && fs.existsSync(mainLeanPath)) {
     const mainBaseName = path.basename(mainLeanPath, '.lean')
@@ -165,9 +175,27 @@ function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
     let match
     while ((match = importRegex.exec(content)) !== null) {
       const moduleParts = match[1].split('.')
-      // Only follow multi-level imports (Proofs.X.Y)
-      if (moduleParts.length < 3) continue
       const subDirName = moduleParts[1]
+
+      if (moduleParts.length === 2) {
+        // Single-level import: import Proofs.X → proofs/Proofs/X.lean
+        // Follow only when X shares a meaningful name prefix with the main file
+        // (indicating they belong to the same proof family).
+        // Threshold: prefix must be >= 40% of the shorter name (min 4 chars).
+        // This allows Erdos2OQ01 ↔ Erdos2Problem ("Erdos2", 60% of 10)
+        // while blocking Erdos28AdditiveBases ↔ Erdos340GreedySidon ("Erdos", 26% of 19).
+        const minLen = Math.min(mainBaseName.length, subDirName.length)
+        const threshold = Math.max(4, Math.floor(minLen * 0.4))
+        if (commonPrefixLength(mainBaseName, subDirName) < threshold) continue
+        const subPath = path.join('proofs', 'Proofs', subDirName + '.lean')
+        if (fs.existsSync(subPath) && !files.includes(subPath)) {
+          files.push(subPath)
+        }
+        continue
+      }
+
+      // Multi-level import: import Proofs.X.Y → proofs/Proofs/X/Y.lean
+      if (moduleParts.length < 3) continue
       // Follow if X is a prefix of the main file name, OR if the main file lives in directory X
       if (!mainBaseName.startsWith(subDirName) && mainParentDir !== subDirName) continue
 
