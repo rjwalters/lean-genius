@@ -21,7 +21,51 @@
     "lineCount": 75,
     "assumptions": "0 axioms, 0 sorries. 3 True-stub definitions (HasEulerTour, HasInfiniteEulerPath, HasOneWayEulerPath). Structure fields (uniform, symm, loopless) are definitional, not assumptions."
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "Euler's 1736 solution to the Königsberg bridge problem established that a graph has an Eulerian circuit iff every vertex has even degree, and an Eulerian path iff exactly two vertices have odd degree. This is one of the founding results of graph theory. Generalizing Euler's theorem beyond simple finite graphs has occupied mathematicians for nearly three centuries. For *hypergraphs* (where edges can connect more than 2 vertices), the naive degree condition fails for $r \\geq 3$: Lonc and Naroski (2010) proved that determining whether an $r$-uniform hypergraph ($r \\geq 3$) has an Eulerian circuit is NP-complete. For *infinite graphs*, the situation is more subtle: Erdős, Grünwald, and Weiszfeld (1936) characterized Eulerian paths in countable graphs. Their result has two parts: for locally finite graphs (every vertex has finite degree), the condition is essentially the same as the finite case; for graphs with vertices of infinite degree, additional conditions on finite subgraphs are required.",
+    "problemStatement": "Do the classical Euler path/circuit conditions generalize to (1) $r$-uniform hypergraphs for $r \\geq 3$, and (2) countably infinite graphs? For hypergraphs: does a simple degree condition characterize the existence of Euler tours? For infinite graphs: what does the Erdős-Grünwald-Weiszfeld theorem say, and can it be formalized?",
+    "proofStrategy": "The formalization establishes the mathematical framework: `RUniformHypergraph` (uniform hypergraph structure), `hyperDegree` (vertex degree in a hypergraph), `InfiniteGraph` (adjacency-based structure), and `infiniteDegree` (vertex degree in ℕ∞). The key properties — `HasEulerTour`, `HasInfiniteEulerPath`, `HasOneWayEulerPath` — are stub definitions (`True`) awaiting rigorous formalization. The file serves as a specification: it names the open questions and their known complexity, without yet providing proofs.",
+    "keyInsights": [
+      "For $r$-uniform hypergraphs with $r \\geq 3$, the Euler tour problem is NP-complete (Lonc-Naroski 2010). This is a sharp contrast with the $r = 2$ case (ordinary graphs) where the degree condition is checkable in linear time. The complexity jump at $r = 3$ arises because the 'transition system' structure of a hypergraph Euler tour encodes 3-regular bipartite graph properties, which are NP-complete to verify in general.",
+      "`hyperDegree v` counts the number of hyperedges containing vertex $v$. For $r = 2$, this is the ordinary graph degree. For $r \\geq 3$, a necessary condition for an Euler tour is that the 'link degree' (number of edges through each pair of vertices) is even — a condition that is stronger than just the vertex degree being divisible by $(r-1)$. These conditions are related to the theory of $\\lambda$-designs and resolvable hypergraph decompositions.",
+      "The `InfiniteGraph` structure uses an adjacency relation `adj : V → V → Prop` rather than a `Finset`-based edge set. The `infiniteDegree` is valued in `ℕ∞` (extended naturals) to handle vertices of infinite degree. The `Set.toFinite` guard in the definition makes the degree computable only for locally finite graphs; for vertices with infinite degree, the `Finset.card` computation requires classical reasoning.",
+      "The Erdős-Grünwald-Weiszfeld theorem (1936) for countable graphs has two regimes: (a) *locally finite* case (all degrees finite): Eulerian circuit iff connected and all degrees even; Eulerian path iff connected and exactly 2 odd-degree vertices — same as the finite case. (b) *non-locally-finite* case: additional condition that every finite edge cut is even-sized. The formalization stubs `HasInfiniteEulerPath` and `HasOneWayEulerPath` as `True` pending this case analysis.",
+      "The Chinese Postman Problem (mentioned in comments) asks for the minimum-weight closed walk covering all edges. For finite graphs, this is solvable in polynomial time via minimum-weight perfect matching on odd-degree vertices (Edmond-Johnson 1973). For infinite graphs, the optimal solution may not exist (no finite walk can cover infinitely many edges), requiring the theory of infinite paths and transfinite induction."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module header describing the two generalizations: hypergraph Euler tours (NP-complete for r≥3) and infinite graph Euler paths (Erdős-Grünwald-Weiszfeld 1936). Imports Mathlib and the parent Konigsberg.lean."
+    },
+    {
+      "id": "part-i-hypergraphs",
+      "title": "Part I: Eulerian Paths in Hypergraphs",
+      "startLine": 23,
+      "endLine": 41,
+      "summary": "Defines RUniformHypergraph (edges are r-element Finsets), hyperDegree (count of edges containing a vertex), and HasEulerTour (stub = True for r=2 case). Notes NP-completeness for r≥3 in comments."
+    },
+    {
+      "id": "part-ii-infinite-graphs",
+      "title": "Part II: Eulerian Paths in Infinite Graphs",
+      "startLine": 42,
+      "endLine": 74,
+      "summary": "Defines InfiniteGraph (adjacency relation, symmetric, loopless), infiniteDegree (valued in ℕ∞), HasInfiniteEulerPath (stub), HasOneWayEulerPath (stub). Documents Erdős-Grünwald-Weiszfeld theorem and locally finite case in comments."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization establishes the definitional framework for Euler tours in hypergraphs and infinite graphs, with key complexity and characterization results documented. The three central `Prop` definitions (`HasEulerTour`, `HasInfiniteEulerPath`, `HasOneWayEulerPath`) are stubs awaiting rigorous formalization of infinite path semantics.",
+    "implications": "Formalizing the Erdős-Grünwald-Weiszfeld theorem in Lean would require a theory of infinite walks in graphs — sequences indexed by $\\mathbb{N}$ or $\\omega + 1$ that are eventually defined. Mathlib's `Stream` and `CoList` types may support this. The NP-completeness of hypergraph Euler tours (Lonc-Naroski) is a complexity-theoretic statement whose formalization would require a formal model of NP — a substantial but feasible project using Mathlib's `Computability` library.",
+    "openQuestions": [
+      "Can the Erdős-Grünwald-Weiszfeld theorem be proved in Lean for locally finite countable graphs? The key step is constructing an Euler path as a limit of finite Euler paths on increasing subgraphs — a compactness argument.",
+      "Is there a clean Lean formalization of 'infinite path' (bi-infinite or one-way infinite) in a graph using Mathlib's `Stream` or `Path` API? The `HasInfiniteEulerPath` stub needs this semantic foundation before the theorem can be stated precisely.",
+      "Can the NP-completeness of hypergraph Euler tours (r≥3) be stated as a formal complexity result in Lean? This requires formalizing NP and polynomial-time reductions, which are available in Mathlib's `Computability.TuringMachine` framework.",
+      "Is there a characterization of which $r$-uniform hypergraphs have Euler tours for small $r$ (e.g., $r = 3$)? The known necessary conditions (divisibility of link degrees) are checkable — can a partial converse be formalized for special graph families like complete $r$-uniform hypergraphs $K_n^r$?"
+    ]
+  },
   "leanFile": {
     "axiomCount": 0
   }
