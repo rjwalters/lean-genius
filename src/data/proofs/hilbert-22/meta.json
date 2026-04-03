@@ -7,7 +7,7 @@
     "proofRepoPath": "Proofs/Hilbert22Uniformization.lean",
     "author": "Koebe, Poincare",
     "date": "1907",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "complex-analysis",
       "riemann-surfaces",
@@ -16,7 +16,7 @@
       "automorphic-functions",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -46,7 +46,7 @@
     "hilbertNumber": 22,
     "axiomCount": 0,
     "lineCount": 305,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Main theorems are True stubs (e.g., hilbert_22_status proves existential True propositions, not real uniformization). Real uniformization infrastructure is partially formalized but the core mathematical content is not machine-verified.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -113,7 +113,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Hilbert's twenty-second problem is completely solved by the Uniformization Theorem. The theorem provides a complete classification of simply connected Riemann surfaces and shows that all Riemann surfaces can be uniformized by automorphic functions acting on one of three model spaces.\n\nThe proof by Koebe and Poincare in 1907 represents one of the high points of classical complex analysis and opened vast new areas of mathematics.",
+    "summary": "Hilbert's twenty-second problem is solved mathematically by the Uniformization Theorem (Koebe-Poincaré, 1907). This Lean formalization provides infrastructure for the classification of simply connected Riemann surfaces, but the main theorems are currently True stubs. Full machine-verification of the uniformization result remains as future work.",
     "implications": "**Theoretical Significance**: The Uniformization Theorem has far-reaching implications:\n\n1. **Hyperbolic Geometry**: Surfaces of genus >= 2 inherit a canonical hyperbolic metric from the uniformization\n\n2. **Teichmuller Theory**: The study of moduli spaces of Riemann surfaces relies fundamentally on uniformization\n\n**3. Number Theory**: Modular forms and Shimura varieties arise from uniformization of specific surfaces\n\n4. **String Theory**: Worldsheet physics uses conformal field theory on uniformized surfaces\n\n5. **Kleinian Groups**: 3-dimensional hyperbolic geometry connects to uniformization via quasi-Fuchsian groups.",
     "openQuestions": [
       "How does uniformization generalize to higher-dimensional complex manifolds?",
