@@ -72,7 +72,7 @@
       "green-theorem",
       "research"
     ],
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 557,
     "prerequisites": [
       "Green's theorem: line integral to double integral",
@@ -183,7 +183,7 @@
     ]
   },
   "conclusion": {
-    "summary": "OQ-03 is answered YES with substantial proof content: 31 theorems, 2 axioms, 0 sorries. The abstract GreenRegion is replaced by both TypeI and TypeII concrete region structures. The Inner FTC is proved for both region types — the P contribution (TypeI) and Q contribution (TypeII) — which are the two halves of the standard Green's theorem proof. Disk and semicircle are concrete examples with full membership characterization.",
+    "summary": "OQ-03 is answered YES with substantial proof content: 31 theorems, 3 axioms, 0 sorries. The abstract GreenRegion is replaced by both TypeI and TypeII concrete region structures. The Inner FTC is proved for both region types — the P contribution (TypeI) and Q contribution (TypeII) — which are the two halves of the standard Green's theorem proof. Disk and semicircle are concrete examples with full membership characterization.",
     "significance": "Proves the two FTC halves of Green's theorem (the P and Q contributions) completely, with zero axioms. The remaining axiom is only for combining them (requires Fubini for variable limits). Demonstrates Lean 4 can model the Apostol/Rudin textbook proof structure.",
     "implications": "**Theoretical Significance**: Enables formalization of vector calculus on curved-boundary domains.\n\nTypeI+TypeII framework covers rectangles, disks, and convex regions. The inner FTC results are reusable infrastructure for any Green's theorem application.",
     "openQuestions": [
@@ -222,7 +222,7 @@
     ],
     "namespace": "GreensTheoremOQ03",
     "lineCount": 557,
-    "axiomCount": 2,
+    "axiomCount": 3,
     "theoremCount": 31,
     "definitionCount": 12
   }
