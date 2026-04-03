@@ -1,0 +1,81 @@
+{
+  "id": "dissection-of-cubes-oq-03",
+  "title": "Cube Dissection and Packing: Connections to Impossibility",
+  "slug": "dissection-of-cubes-oq-03",
+  "description": "Explores connections between cube dissection impossibility (Wiedijk #82) and packing problems. Formalizes cube packings (disjoint containment without full coverage), proves dissection-packing bridge (impossible dissection → no perfect packing with distinct sizes), volume bounds, and the 2D vs 3D dimension contrast (squared squares exist, cubed cubes don't). 17 theorems, 0 axioms, 2 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/DissectionOfCubesOQ03.lean",
+    "tags": [
+      "geometry",
+      "dissection",
+      "cube-packing",
+      "de-bruijn",
+      "squared-squares",
+      "dimension"
+    ],
+    "badge": "wip",
+    "sorries": 2,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "2 sorries for geometric confinement lemmas: (1) smallest_above_is_smaller — the smallest cube on a floor is bounded by its neighbors, so the cube directly above a non-top-reaching cube is strictly smaller; (2) global_min_not_reaching_top — the globally minimum-side cube cannot reach the top of the unit cube. Both require local geometric reasoning about cube adjacency.",
+    "lineCount": 599,
+    "theoremCount": 17,
+    "definitionCount": 13,
+    "originalContributions": [
+      "CubePacking: structure for disjoint contained cubes (relaxation of dissection)",
+      "IsReciprocalPacking: packing with all distinct reciprocal-of-integer side lengths",
+      "CoversUnitCube: proper geometric coverage predicate (replaces unsound covers_unit_cube : True)",
+      "distinct_packing_volume_lt_one: any packing with all-distinct cube sizes has total volume < 1",
+      "cube_packing_imperfect: no packing achieves volume 1 with all-distinct sizes (bridge theorem)",
+      "squared_square_exists: 2D squared squares exist (dimension contrast)",
+      "higher_dim_impossibility: 3D all-different-size dissection impossible (uses base file)",
+      "aligned_divisibility_implies_tiling: a·d-dimensional box is tileable by a-dimensional bricks iff d|n (de Bruijn formulation)",
+      "floor_coverage / bottom_floor_nonempty: geometric coverage structure lemmas",
+      "dissection_of_cubes_from_coverage: main impossibility from coverage (modulo 2 geometric sorries)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The cube dissection problem (Wiedijk #82) asks: can a cube be dissected into a finite number of smaller cubes, all of different sizes? The answer is NO in 3D (proved by various methods). The 2D analogue (squared squares) is possible — Sprott et al. found the smallest squared square. This file explores the connection to packing problems and formalizes the geometric arguments needed for the impossibility proof.",
+    "problemStatement": "What are the connections between cube dissection impossibility and packing problems? Can we derive impossibility from geometric coverage constraints without the full algebraic proof?",
+    "text": "A cube packing relaxes dissection: cubes must be disjoint and contained, but need not fill the container. The bridge theorem shows: if all-distinct-size dissections were possible (they're not), then perfect packings with all-distinct sizes would exist. Since they don't (total volume bound < 1), the impossibility transfers. The geometric approach: consider the minimum-side cube in an all-different-size dissection. It must be bounded above by strictly smaller cubes (geometric confinement), creating an infinite descent — contradiction.",
+    "proofStrategy": "Define packings as relaxation of dissections. Prove volume bound (packing volume ≤ 1, equality iff full cover). Prove bridge: impossibility → no perfect packing. Prove squared square existence (2D contrast). For 3D impossibility via geometry: formalize the minimum cube descent argument (2 sorries for confinement lemmas).",
+    "keyInsights": [
+      "Packings are easier to reason about than dissections (no coverage requirement)",
+      "The volume bound shows no distinct-size packing can be perfect — bridges to dissection impossibility",
+      "Minimum cube descent: in a dissection with all-different sizes, the minimum cube has a strictly smaller cube above it — infinite descent gives contradiction",
+      "2D vs 3D contrast: squared squares exist (constructed), cubed cubes provably don't"
+    ],
+    "prerequisites": [
+      "Cube dissection impossibility (DissectionOfCubes.lean base file)",
+      "Volume computation for axis-aligned boxes",
+      "de Bruijn's theorem: brick tiling by smaller boxes"
+    ]
+  },
+  "conclusion": {
+    "summary": "Cube packing formalized as dissection relaxation. Bridge theorem: no perfect distinct-size packing. Volume bound proved. 2D vs 3D dimension contrast demonstrated. Impossibility via geometric descent established modulo 2 geometric confinement sorries. 17 theorems, 13 definitions, 599 lines, 0 axioms.",
+    "implications": "The geometric descent approach (minimum cube → smaller above → infinite descent) is a clean proof strategy that only requires local geometric reasoning. Completing the 2 confinement sorries would give a self-contained geometric proof of cube dissection impossibility.",
+    "openQuestions": [
+      "Prove smallest_above_is_smaller: geometric confinement of minimum-floor cubes",
+      "Prove global_min_not_reaching_top: minimum-side cube is not the top layer",
+      "Formalize the connection to de Bruijn's harmonic series proof: Σ 1/nᵢ = 1 has no all-integer solution"
+    ]
+  },
+  "leanFile": {
+    "namespace": "(builds on DissectionOfCubes namespace)",
+    "lineCount": 599,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 13
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "Base cube dissection impossibility; this file connects to packing problems and gives geometric proof approach"
+    }
+  ],
+  "sections": []
+}
