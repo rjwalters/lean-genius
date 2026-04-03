@@ -7,10 +7,10 @@
     "author": "formalized in Lean 4",
     "sourceUrl": "https://erdosproblems.com/29",
     "date": "2026-03-30",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos29OQ02.lean",
     "tags": ["number-theory", "combinatorics", "additive-combinatorics"],
-    "badge": "formalized",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {"theorem": "Finset.card_image_le", "description": "Image of a Finset has at most as many elements", "module": "Mathlib.Data.Finset.Image"},
@@ -30,29 +30,76 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Aristotle proof search found a counterexample to the original basis_size_lower_bound theorem: A = {0,1} ∪ {n ≥ 3} is a basis with |A ∩ [1,2]| = 1 < √2. The error was using the interval [1,N] which excludes 0. The correct bound uses [0,N].",
+    "historicalContext": "Erdős Problem #29 asks for explicit economical additive bases — sets A ⊆ ℕ with A+A = ℕ and minimal density. The lower bound |A ∩ [0,N]| ≥ √(N+1) (equivalently |A ∩ [0,N]|² ≥ N+1) is elementary but foundational: it shows that any additive basis must have at least Ω(√N) elements in [0,N]. The matching upper bound — bases achieving density O(√N) — is provided by Sidon sets (B₂ sequences), first constructed by Sidon and later by Erdős and Turán (1941) in the context of their work on additive bases. The Erdős–Turán conjecture (a major open problem) asks whether every additive basis has bounded representation function, which would sharpen these density bounds. This gallery entry was motivated by an Aristotle proof search that discovered a counterexample to the original formalization: the set A = {0,1} ∪ {n ≥ 3} is a basis with |A ∩ [1,2]| = 1 < √2. The fix was shifting from the interval [1,N] to [0,N], correctly accounting for 0 as a basis element.",
     "problemStatement": "The original statement '∀ A basis, ∀ N ≥ 1, |A ∩ [1,N]| ≥ √N' is FALSE.\nThe correct statement: '∀ A basis, ∀ N, |A ∩ [0,N]|² ≥ N+1'.\nEquivalently: |A ∩ [0,N]| ≥ √(N+1).",
     "text": "A 156-line formalization correcting the false basis_size_lower_bound from Erdős #29. The counting argument: if A+A = ℕ, every n ∈ {0,...,N} has a representation a+b with a,b ∈ A ∩ [0,N]. The sumset of A ∩ [0,N] has at most |A ∩ [0,N]|² elements, so N+1 ≤ |A ∩ [0,N]|².",
     "proofStrategy": "1. For each n ≤ N, find a,b ∈ A with a+b = n and a,b ≤ N\n2. Map pairs from (A ∩ [0,N])² to their sums\n3. Show {0,...,N} ⊆ image of this map\n4. Use card_image_le to get N+1 ≤ |A ∩ [0,N]|²",
     "keyInsights": [
-      "The original bound failed because [1,N] excludes 0, which can be a critical basis element",
-      "The counting argument is elementary: N+1 distinct sums from a set of size s means s² ≥ N+1",
-      "The corrected bound √(N+1) is tight up to constants"
+      "The original formalization was falsified by Aristotle proof search, which found A = {0,1}∪{n≥3}: this set covers all ℕ (since 0+n=n for n≥3, and 1+1=2), yet |A∩[1,2]| = 1 < √2. The fix is to count from 0, adding one element to the interval.",
+      "The counting argument is a one-shot pigeonhole: |{0,...,N}| = N+1 distinct values, each achievable as a sum from basisRestriction, and the sumset of a set S has at most |S|² elements, so N+1 ≤ |S|².",
+      "The proof is structured as a clean calc chain: N+1 = |range(N+1)| ≤ |pairSumImage(basisRestriction)| ≤ |basisRestriction|². Each step is a single named lemma, making the proof transparent to read.",
+      "The real-valued form √(N+1) ≤ |A∩[0,N]| requires routing through Real.sqrt_le_left and exact_mod_cast for the ℕ-to-ℝ conversion, illustrating a common Lean 4 pattern for translating between integer and real inequalities."
     ],
     "prerequisites": ["Additive bases", "Sumsets", "Finset cardinality"]
   },
   "sections": [
-    {"id": "defs", "title": "Definitions", "startLine": 24, "endLine": 36, "summary": "Sumset and additive basis definitions.", "mathContext": "$A + A = \\mathbb{N}$"},
-    {"id": "counting", "title": "Counting Argument", "startLine": 68, "endLine": 110, "summary": "Core proof: {0,...,N} ⊆ pairwise sums of A ∩ [0,N], hence N+1 ≤ |A ∩ [0,N]|².", "mathContext": "$N+1 \\le |A \\cap [0,N]|^2$"},
-    {"id": "real-form", "title": "Real-Valued Form", "startLine": 112, "endLine": 122, "summary": "Converts to √(N+1) ≤ |A ∩ [0,N]|.", "mathContext": "$\\sqrt{N+1} \\le |A \\cap [0,N]|$"}
+    {
+      "id": "sec-header",
+      "title": "Module Header: The Counterexample and Correction",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Module documentation explains the Aristotle-discovered counterexample A={0,1}∪{n≥3} that falsifies the [1,N] bound, and states the corrected theorem using [0,N]."
+    },
+    {
+      "id": "sec-definitions",
+      "title": "Part I: Definitions (Sumset, IsAdditiveBasis)",
+      "startLine": 25,
+      "endLine": 33,
+      "summary": "Sumset A B = {a+b : a∈A, b∈B} and IsAdditiveBasis A as Sumset A A = ℕ, reused from the parent Erdős #29 entry."
+    },
+    {
+      "id": "sec-representation",
+      "title": "Part II: Representation Lemma and basisRestriction",
+      "startLine": 35,
+      "endLine": 57,
+      "summary": "representation_in_interval: for a basis A and n≤N, finds a,b∈A with a,b≤N and n=a+b. basisRestriction A N = A∩{0,...,N} as a Finset, with membership lemma."
+    },
+    {
+      "id": "sec-counting",
+      "title": "Part III: Counting Argument — Main Bound",
+      "startLine": 59,
+      "endLine": 111,
+      "summary": "pairSumImage S with |pairSumImage| ≤ |S|². range_subset_pairSum: {0,...,N} ⊆ pairSumImage(basisRestriction). basis_size_squared_lower_bound: N+1 ≤ |basisRestriction|². basis_size_lower_bound_correct: √(N+1) ≤ |basisRestriction|."
+    },
+    {
+      "id": "sec-counterexample",
+      "title": "Part IV: Consistency with Counterexample",
+      "startLine": 113,
+      "endLine": 124,
+      "summary": "Explanatory comments: A={0,1}∪{n≥3} at N=2 gives |A∩[0,2]|=2 ≥ √3 (correct), vs |A∩[1,2]|=1 < √2 (wrong original). Including 0 fixes the count."
+    },
+    {
+      "id": "sec-tightness",
+      "title": "Part V: Tightness and Optimality",
+      "startLine": 126,
+      "endLine": 157,
+      "summary": "small_basis_exists: exists S of size ≤N+1 covering all sums to N. Prose discussion of Sidon sets achieving O(√N) density. Explanation of why [1,N] was wrong."
+    }
   ],
   "crossReferences": [
-    {"targetId": "erdos-29", "relationship": "extends", "description": "Corrects the false basis_size_lower_bound and provides the correct statement with proof."}
+    {
+      "id": "erdos-29",
+      "relationship": "parent",
+      "description": "Erdős Problem #29: Explicit Economical Additive Basis — the parent entry whose original basis_size_lower_bound was falsified and corrected here"
+    }
   ],
   "conclusion": {
     "summary": "The corrected basis size lower bound |A ∩ [0,N]| ≥ √(N+1) is proved for all additive bases A and all N, with 0 axioms and 0 sorries. The fix was including 0 in the counting interval.",
     "implications": "The √N growth rate is the correct scaling for additive bases of order 2. This is tight: the Sidon set construction gives |A ∩ [0,N]| = O(√N).",
-    "openQuestions": []
+    "openQuestions": [
+      "Prove a sharp tightness result: construct an explicit Sidon set A with |A∩[0,N]| = O(√N) and verify it is an additive basis of order 2 in Lean 4",
+      "Formalize the Erdős–Turán conjecture: does every additive basis A have the property that every sufficiently large n has at most K representations as a+b for some universal constant K?"
+    ]
   },
   "leanFile": {
     "imports": ["Mathlib"],
