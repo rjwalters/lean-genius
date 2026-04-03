@@ -1,0 +1,182 @@
+{
+  "id": "dissection-of-cubes-oq-01-oq-01",
+  "title": "Minimal Collision is Achievable in Cube Dissections",
+  "slug": "dissection-of-cubes-oq-01-oq-01",
+  "description": "Proves that HasMinimalCollision is achievable: there exists a CubeDissection with exactly 2 colliding cubes. This shows the lower bound of 2 (from OQ-01) is tight within the formalization. Three axis-aligned cubes — two of size 1/4 and one of size 1/3 — form the explicit witness, with the two equal-size cubes as the unique collision pair.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
+    "date": "2026-04-03",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/DissectionOfCubesOQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "impossibility",
+      "combinatorics",
+      "construction",
+      "open-problem",
+      "wiedijk-100"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_pair",
+        "description": "Cardinality of a two-element Finset",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.mem_filter",
+        "description": "Membership in a filtered Finset",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "DissectionOfCubesOQ01.HasMinimalCollision",
+        "description": "Definition of minimal collision: collidingCubes.card = 2",
+        "module": "Proofs.DissectionOfCubesOQ01"
+      }
+    ],
+    "originalContributions": [
+      "cubeA, cubeB, cubeC: explicit Cube constructions with concrete coordinates and sizes",
+      "exampleDissection: explicit CubeDissection witness with pairwise-disjoint, unit-contained cubes",
+      "cubeC_not_collides: C does not collide since size 1/3 is unique in the dissection",
+      "colliding_eq_pair: the colliding cubes are exactly {A, B}",
+      "example_has_minimal_collision: HasMinimalCollision holds for the example",
+      "minimal_collision_achievable: main existential result — lower bound 2 is tight in the formalization",
+      "lower_bound_tight: the lower bound from OQ-01 is exactly achieved"
+    ],
+    "dateAdded": "2026-04-03",
+    "axiomCount": 2,
+    "lineCount": 285
+  },
+  "overview": {
+    "historicalContext": "DissectionOfCubesOQ01 established that every nonempty cube dissection has at least 2 colliding cubes (collidingCubes.card ≥ 2). This OQ sub-question asks whether the lower bound of 2 is tight: can a cube dissection actually achieve exactly 2 colliding cubes?\n\nThis formalization answers YES within our mathematical model, where the covering constraint is a placeholder (covers_unit_cube : True). The geometric question — whether an actual tiling of the unit cube can have exactly one repeated size — remains open.",
+    "problemStatement": "**Sub-question**: Is HasMinimalCollision achievable? Does there exist a valid CubeDissection d with d.cubes.Nonempty and (collidingCubes d).card = 2?\n\n**Answer**: YES, within our formalization. The example dissection {A, B, C} where A and B share size 1/4 and C has distinct size 1/3 witnesses this. The covering constraint (covers_unit_cube : True) is trivially satisfied.\n\n**Caveat**: The open geometric question of whether a genuine unit-cube tiling can achieve this minimum is not addressed.",
+    "text": "Proves that the lower bound of 2 colliding cubes (from OQ-01) is tight: an explicit 3-cube dissection achieves exactly 2 colliding cubes. Two cubes of size 1/4 form the unique collision pair; a third cube of distinct size 1/3 does not collide.",
+    "proofStrategy": "**Explicit construction**: Define three axis-aligned cubes:\n- A: corner (0,0,0), side 1/4\n- B: corner (1/2,0,0), side 1/4 — same size as A\n- C: corner (0,0,1/2), side 1/3 — unique size\n\n**Disjointness**: A and B are x-separated (A.x + 1/4 = 1/4 ≤ 1/2 = B.x). Both A,B are z-separated from C (A.z + 1/4 = 1/4 ≤ 1/2 = C.z, same for B).\n\n**Collision analysis**: A and B collide with each other (same size, different cubes). C does not collide: its size 1/3 ≠ 1/4 for both A and B, and C ≠ C is vacuous.\n\n**Conclusion**: collidingCubes = {A, B} by Finset extensionality. card = 2 by Finset.card_pair.",
+    "keyInsights": [
+      "Three cubes suffice: two sharing size s and one with distinct size t ≠ s",
+      "Disjointness is achieved by coordinate separation in a single axis per pair",
+      "The proof separates combinatorial achievability from geometric covering",
+      "covers_unit_cube : True means the formalization does not require volume = 1",
+      "The lower bound 2 from OQ-01 is tight in the formalization (whether geometrically is open)"
+    ],
+    "prerequisites": [
+      "Geometry (axis-aligned cubes, interior disjointness)",
+      "Finset theory (membership, filter, cardinality)",
+      "DissectionOfCubes (Wiedijk #82 base theorem)",
+      "DissectionOfCubesOQ01 (lower bound, HasMinimalCollision definition)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "concrete-cubes",
+      "title": "Concrete Cube Definitions",
+      "startLine": 50,
+      "endLine": 90,
+      "summary": "Defines cubeA (0,0,0, side=1/4), cubeB (1/2,0,0, side=1/4), cubeC (0,0,1/2, side=1/3) with size lemmas."
+    },
+    {
+      "id": "distinctness",
+      "title": "Cube Distinctness",
+      "startLine": 91,
+      "endLine": 115,
+      "summary": "Proves A≠B (different x), A≠C and B≠C (different sides)."
+    },
+    {
+      "id": "containment",
+      "title": "Containment in Unit Cube",
+      "startLine": 116,
+      "endLine": 135,
+      "summary": "All three cubes lie in [0,1]³ by norm_num."
+    },
+    {
+      "id": "disjointness",
+      "title": "Pairwise Interior Disjointness",
+      "startLine": 136,
+      "endLine": 185,
+      "summary": "All 6 ordered pairs are disjoint via coordinate separation."
+    },
+    {
+      "id": "dissection",
+      "title": "The Example Dissection",
+      "startLine": 186,
+      "endLine": 220,
+      "summary": "Constructs exampleDissection from {cubeA, cubeB, cubeC} satisfying all CubeDissection fields."
+    },
+    {
+      "id": "collision-analysis",
+      "title": "Which Cubes Collide",
+      "startLine": 221,
+      "endLine": 260,
+      "summary": "cubeA and cubeB collide; cubeC does not (unique size 1/3)."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Results",
+      "startLine": 261,
+      "endLine": 285,
+      "summary": "HasMinimalCollision for the example; existential achievability; lower bound tightness."
+    }
+  ],
+  "conclusion": {
+    "summary": "The main result `minimal_collision_achievable` proves there exists a CubeDissection with exactly 2 colliding cubes, showing the lower bound of 2 (from OQ-01) is tight in the formalization. The proof is entirely constructive: an explicit 3-cube dissection with one repeated size witnesses the minimum.",
+    "implications": "**Separating combinatorial from geometric constraints**: The proof shows that pairwise disjointness and containment in the unit cube alone do not force more than 2 colliding cubes. The only potential obstruction to the full geometric open question lies in the covering/volume constraint (covers_unit_cube : True in our formalization).\n\n**Open geometric question**: Does there exist a valid geometric tiling (where the cubes actually cover the unit cube with volume summing to 1) with exactly 2 colliding cubes? Littlewood's cascade argument suggests the actual minimum may be larger, but this has not been formalized.",
+    "openQuestions": [
+      "Does a genuine geometric cube tiling (with covers_unit_cube replacing True) admit HasMinimalCollision?",
+      "Can the volume constraint (∑ c.side³ = 1) combined with disjointness give a strictly better lower bound than 2?",
+      "Does Littlewood's cascade imply a logarithmic lower bound on colliding cubes for n-cube dissections?",
+      "What is the minimum number of colliding cubes in any known explicit cube dissection?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Proofs.DissectionOfCubesOQ01"
+    ],
+    "opens": [
+      "DissectionOfCubes",
+      "DissectionOfCubesOQ01"
+    ],
+    "namespace": "DissectionOfCubesOQ01OQ01",
+    "lineCount": 285,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 5
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes-oq-01",
+      "relationship": "answers",
+      "description": "Directly answers OQ-01's open question: HasMinimalCollision is achievable in the formalization"
+    },
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "extends",
+      "description": "Uses the base Wiedijk #82 formalization via the OQ-01 chain"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling OQ exploring the Dehn invariant and algebraic obstructions to cube dissections"
+    }
+  ],
+  "references": [
+    {
+      "authors": "John Edensor Littlewood",
+      "title": "A Mathematician's Miscellany",
+      "year": "1953",
+      "venue": "Methuen",
+      "note": "Infinite descent proof underlying Wiedijk #82; cascade argument suggests many collisions in practice"
+    },
+    {
+      "authors": "Freek Wiedijk",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "http://www.cs.ru.nl/~freek/100/",
+      "note": "Theorem #82: the impossibility of perfect cube dissection, basis for OQ-01"
+    }
+  ]
+}
