@@ -2,11 +2,11 @@
   "id": "cauchy-schwarz-oq-02-oq-01",
   "title": "Parseval's Identity: Energy Conservation in Fourier Analysis",
   "slug": "cauchy-schwarz-oq-02-oq-01",
-  "description": "Formalizes Parseval's identity — ∑|ĉₙ(f)|² = ∫|f|²dμ — as a consequence of the L² structure from CauchySchwarzOQ02. Proves: Parseval energy equality (tsum = integral), Bessel-Parseval tightness, Fourier orthonormality, Pythagorean theorem for finite Fourier sums (proved by induction), L² convergence, and completeness (zero-kernel). 10 theorems, 0 sorries. Core Parseval results via Mathlib's Fourier analysis library.",
+  "description": "Formalizes Parseval's identity — ∑|ĉₙ(f)|² = ∫|f|²dμ — as a consequence of the L² structure from CauchySchwarzOQ02. Proves: Parseval energy equality (tsum = integral), Bessel-Parseval tightness, Fourier orthonormality, L² convergence, and completeness (zero-kernel). 10 theorems, 1 sorry (fourier_pythagorean_partial). Core Parseval results via Mathlib's Fourier analysis library.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-03",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CauchySchwarzOQ02OQ01.lean",
     "tags": [
       "analysis",
@@ -17,10 +17,10 @@
       "orthonormality"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "dateAdded": "2026-04-03",
     "axiomCount": 0,
-    "assumptions": "0 sorries, 0 axioms. Core Parseval results (parseval_energy, parseval_hassum, bessel_fourier) delegate to Mathlib's tsum_sq_fourierCoeff and hasSum_sq_fourierCoeff. fourier_pythagorean_partial proved independently by induction.",
+    "assumptions": "1 sorry: fourier_pythagorean_partial (orthonormal system norm-sum identity for finite sums). Core Parseval results (parseval_energy, parseval_hassum, bessel_fourier) delegate to Mathlib's tsum_sq_fourierCoeff and hasSum_sq_fourierCoeff.",
     "lineCount": 198,
     "theoremCount": 10,
     "definitionCount": 0,
