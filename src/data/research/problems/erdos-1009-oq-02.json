@@ -29,9 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS: Created K4 problem formalization with Clique4 struct, Turan threshold n^2/3, proved monotone/positivity/comparison lemmas. Open question stated as Prop. 2 sorries: Turan arithmetic + Clique4 bridge.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "Created Erdos1009OQ02Problem.lean: K4 analog of Gyori theorem formalized. Clique4 struct, turanThresholdK4=n^2/3, edge-disjointness, open question as Prop.",
+      "2 sorries: Turan arithmetic (mod 3 nlinarith) + Clique4 bridge to CliqueFree 4",
+      "turanK4_extremal uses CliqueFree.card_edgeFinset_le; arithmetic n%3 cases need nlinarith not omega",
+      "clique4_has_triangle: distinct.2.2.2.1 is b≠c in And-chain a≠b ∧ a≠c ∧ a≠d ∧ b≠c ∧ b≠d ∧ c≠d"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
