@@ -232,6 +232,19 @@ theorem first_resolvent_identity (a : A) {λ μ : 𝕜}
 theorem resolvent_tendsto_zero (a : A) :
     Filter.Tendsto (fun λ : 𝕜 => Ring.inverse (algebraMap 𝕜 A λ - a))
     (Filter.comap (fun λ => ‖λ‖) Filter.atTop) (nhds 0) := by
-  sorry
+  apply squeeze_zero_norm'
+  · -- Eventually ‖R(λ,a)‖ ≤ (‖λ‖ - ‖a‖)⁻¹
+    rw [Filter.eventually_iff, Filter.mem_comap]
+    refine ⟨{r : ℝ | ‖a‖ + 1 ≤ r}, Filter.mem_atTop _, fun λ hλ => ?_⟩
+    simp only [Set.mem_preimage, Set.mem_setOf_eq] at hλ
+    have hpos : 0 < ‖λ‖ := by linarith [norm_nonneg a]
+    exact resolvent_norm_bound a (norm_pos_iff.mp hpos) (by linarith)
+  · -- (‖λ‖ - ‖a‖)⁻¹ → 0 as ‖λ‖ → ∞
+    have h_sub : Filter.Tendsto (fun r : ℝ => r - ‖a‖) Filter.atTop Filter.atTop := by
+      intro s hs
+      obtain ⟨b, hb⟩ := Filter.mem_atTop_sets.mp hs
+      apply Filter.mem_atTop_sets.mpr
+      exact ⟨b + ‖a‖, fun r hr => hb _ (by linarith)⟩
+    exact (tendsto_inv_atTop_zero.comp h_sub).comp Filter.tendsto_comap
 
 end ResolventNeumann
