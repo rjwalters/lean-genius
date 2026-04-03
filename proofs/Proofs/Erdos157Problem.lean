@@ -59,7 +59,7 @@ theorem sidon_iff_sidon_alt (A : Set ℕ) : IsSidon A ↔ IsSidonAlt A := by
   · intro s; by_contra! H
     obtain ⟨ x, hx ⟩ := Set.nonempty_of_ncard_ne_zero ( ne_bot_of_gt H )
     obtain ⟨ y, hy ⟩ := Set.exists_ne_of_one_lt_ncard H x
-    simp_all +decide [ Set.ncard_eq_toFinset_card' ]
+    simp_all +decide
     have := h x.1 x.2 y.1 y.2 ; aesop
   · intro a b c d ha hb hc hd hab hcd hsum
     have := h ( a + b )
@@ -152,7 +152,7 @@ private lemma sidon_pair_sum_injective (A : Set ℕ) (hSidon : IsSidon A) :
 -- can be injected into A ∪ {pairs from A × A}.
 -- Total target size ≤ M*(M+1)/2 where M = |A ∩ [1,2N]|.
 -- Requires N₀ ≥ 1 to ensure all covered elements are positive (avoiding the n=0 edge case).
-private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ)
+private lemma sumsetK2_ncard_le (A : Set ℕ) (_hSidon : IsSidon A) (N₀ N : ℕ)
     (hN₀_pos : 1 ≤ N₀) (hN : N₀ ≤ N)
     (hcov : ∀ n, N₀ ≤ n → n ≤ 2*N → n ∈ SumsetK A 2) :
     (2 * N - N₀ + 1 : ℝ) ≤
@@ -327,7 +327,7 @@ private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ
           exact this
       _ = FA.card * (FA.card + 1) := by
           cases hm : FA.card with
-          | zero => simp [hm]
+          | zero => simp
           | succ m => simp only [Nat.succ_sub_one]; ring
   -- Step 5: Combine and cast to ℝ
   have hNN₀ : N₀ ≤ 2 * N := by omega
@@ -344,6 +344,17 @@ private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ
 
 -- Real analysis: for large N, the Sidon bound M ≤ √(2N) + C*(2N)^(1/4)
 -- implies M*(M+1)/2 < 2N - N₀.
+--
+-- Proof sketch: let t = (2N)^(1/4) ≥ 0, s = t² = √(2N).
+--   f := s + C*t, and 2N = s² = t⁴.
+--   f*(f+1)/2 = (t⁴ + 2C*t³ + (C²+1)*t² + C*t) / 2
+--   So 2N - N₀ - f*(f+1)/2 = t⁴/2 - N₀ - C*t³ - (C²+1)*t²/2 - C*t/2
+--   For t ≥ 8*(|C|+1): each non-t⁴ term is ≤ t⁴/8, so the sum ≥ t⁴*23/64 ≥ 2N₀
+--   when t⁴ ≥ 6*N₀ (i.e., N ≥ 3*N₀).
+--
+-- SORRY: This real analysis argument is correct but requires non-trivial rpow
+-- algebra in Lean to formalize (establishing t² = s, t⁴ = 2N, bounding rpow
+-- terms polynomially). The key tool is Real.rpow_mul and Real.sqrt_eq_rpow.
 private lemma sidon_counting_contradiction (C : ℝ) (N₀ : ℕ) :
     ∃ N : ℕ, N ≥ N₀ ∧
     (Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4)) *
@@ -367,7 +378,7 @@ NOTE: `basis_counting_lower` is NOT sufficient for this proof because it only gi
 (and c ≤ 1 is consistent with the Sidon bound). The correct proof uses direct counting
 via IsSidonAlt distinctness, not via basis_counting_lower.
 -/
-theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :
+theorem sidon_not_basis_2 (A : Set ℕ) (_hA : A.Infinite) (hSidon : IsSidon A) :
     ¬IsAsymptoticBasis A 2 := by
   intro hBasis
   -- Step 1: Extract N₀ (coverage threshold) and C (Sidon counting constant)
