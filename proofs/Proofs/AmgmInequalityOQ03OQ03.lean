@@ -34,24 +34,32 @@ noncomputable def powerMean {ι : Type*} [Fintype ι]
 -- PART II: Extreme Value Limits
 -- ============================================================
 
-/-- As r → +∞, M_r → max(x₁,...,xₙ).
+/- As r → +∞, M_r → max(x₁,...,xₙ).
     Proof idea: (Σ xᵢʳ/n)^{1/r} is dominated by the largest term.
     If M = max xᵢ, then M^r ≤ Σ xᵢʳ ≤ n·M^r, so
     M ≤ M_r ≤ n^{1/r}·M, and n^{1/r} → 1. -/
-/-- As r → -∞, M_r → min(x₁,...,xₙ).
+/- As r → -∞, M_r → min(x₁,...,xₙ).
     Same argument with 1/xᵢ: M_{-r} = 1/M_r(1/x). -/
-/-- Power means are monotone in r: r ≤ s → M_r ≤ M_s.
+/- Power means are monotone in r: r ≤ s → M_r ≤ M_s.
     This is a generalization of AM-GM (M_0 ≤ M_1). -/
 /-- For two positive reals a, b: M₁ = (a+b)/2 (arithmetic mean). -/
 theorem powerMean_1_is_am (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
     powerMean (![a, b]) 1 = (a + b) / 2 := by
-  simp [powerMean, Fintype.card_fin]
-  ring_nf
-  sorry  -- Matrix.cons normalization
+  unfold powerMean
+  rw [if_neg one_ne_zero, Fin.sum_univ_two]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Fintype.card_fin, Nat.cast_ofNat, Real.rpow_one]
+  norm_num [Real.rpow_one]
 
 /-- For two positive reals: M₋₁ = 2ab/(a+b) (harmonic mean). -/
 theorem powerMean_neg1_is_hm (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
     powerMean (![a, b]) (-1) = 2 * a * b / (a + b) := by
-  sorry
+  unfold powerMean
+  rw [if_neg (show (-1:ℝ) ≠ 0 by norm_num), Fin.sum_univ_two]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Fintype.card_fin, Nat.cast_ofNat, show (1:ℝ) / (-1) = -1 from by norm_num]
+  rw [Real.rpow_neg_one, Real.rpow_neg_one, Real.rpow_neg_one]
+  field_simp
+  ring
 
 end AmgmOQ03OQ03
