@@ -1,0 +1,104 @@
+{
+  "slug": "pythagorean-triples-oq-02-oq-01",
+  "title": "Pythagorean Triples: Complete Classification via Gaussian Integers",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Pythagorean Triples: Complete Classification via Gaussian Integers.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T12:23:52.518Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "gaussian-integers",
+    "pythagorean-triples",
+    "classification"
+  ],
+  "relatedProofs": [
+    "pythagorean-triples",
+    "pythagorean-triples-oq-01",
+    "pythagorean-triples-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:23:52.518Z",
+  "lastUpdate": "2026-04-03T12:23:52.518Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/PythagoreanTriples.lean",
+      "filename": "PythagoreanTriples.lean",
+      "lineCount": 269,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriples.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTriplesOQ01.lean",
+      "filename": "PythagoreanTriplesOQ01.lean",
+      "lineCount": 2486,
+      "theoremCount": 117,
+      "axiomCount": 7,
+      "defCount": 39,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ01.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTriplesOQ01Aristotle.lean",
+      "filename": "PythagoreanTriplesOQ01Aristotle.lean",
+      "lineCount": 168,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTriplesOQ02.lean",
+      "filename": "PythagoreanTriplesOQ02.lean",
+      "lineCount": 174,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ02.lean"
+    }
+  ]
+}
