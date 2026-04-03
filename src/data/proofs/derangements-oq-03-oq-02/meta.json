@@ -1,0 +1,95 @@
+{
+  "id": "derangements-oq-03-oq-02",
+  "title": "Derangements OQ-03-OQ-02: Third-Order Asymptotic Expansion",
+  "slug": "derangements-oq-03-oq-02",
+  "description": "Extends the derangements convergence hierarchy to a two-correction asymptotic expansion: |D(n)/n! - 1/e - (-1)^n/(n+1)! - (-1)^(n+1)/(n+2)!| ≤ 1/(n+3)!. The proof applies the tail-splitting lemma from OQ-03-OQ-01 twice, using cancellation lemmas for each correction term, then bounds the residual via alternating_tail_bound.",
+  "meta": {
+    "author": "Montmort (1708), Euler (1751); asymptotic expansion by researcher-3",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Derangement",
+    "date": "1708-2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsOQ03OQ02.lean",
+    "tags": [
+      "derangements",
+      "convergence",
+      "alternating-series",
+      "asymptotic-expansion",
+      "combinatorics",
+      "analysis"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. Fully proved from Mathlib, building on DerangementsOQ03's infrastructure (altFactTerm, altFactPartialSum, alternating_tail_bound, tsum_tail_split).",
+    "originalContributions": [
+      "cancel_first_correction: altFactTerm(n+1) + (-1)^n/(n+1)! = 0",
+      "cancel_second_correction: altFactTerm(n+2) + (-1)^(n+1)/(n+2)! = 0",
+      "third_order_convergence_rate: main bound |D(n)/n! - 1/e - c1 - c2| ≤ 1/(n+3)!",
+      "asymptotic_expansion_two_corrections: rephrasing as proximity to 3-term expansion",
+      "corrections_alternate_sign: sign pattern of consecutive corrections",
+      "error_bound_ratio: ratio 1/(n+3)! / 1/(n+2)! = 1/(n+3)"
+    ],
+    "lineCount": 130,
+    "theoremCount": 6,
+    "defCount": 0
+  },
+  "overview": {
+    "historicalContext": "The derangements problem (Montmort 1708, Euler 1751) gives D(n) = n! · ∑_{k=0}^{n} (-1)^k/k!. The convergence D(n)/n! → 1/e was studied with increasing precision: the first error bound |D(n)/n! - 1/e| ≤ 1/(n+1)! (OQ-03), the second-order correction (-1)^n/(n+1)! with residual ≤ 1/(n+2)! (OQ-03-OQ-01), and now the third-order correction (-1)^(n+1)/(n+2)! with residual ≤ 1/(n+3)!.",
+    "problemStatement": "Extend the asymptotic expansion of D(n)/n! around 1/e to include two correction terms, bounding the residual by 1/(n+3)!",
+    "text": "The third-order asymptotic expansion: D(n)/n! = 1/e + (-1)^n/(n+1)! + (-1)^(n+1)/(n+2)! + R_n where |R_n| ≤ 1/(n+3)!. The corrections alternate in sign. The proof uses two tail-splits of the alternating series for e^{-1} and two algebraic cancellations.",
+    "proofStrategy": "Three steps: (1) write D(n)/n! - 1/e = -(tail from n+1); (2) split twice: tail(n+1) = altFactTerm(n+1) + altFactTerm(n+2) + tail(n+3); (3) the two corrections cancel with -altFactTerm(n+1) and -altFactTerm(n+2) via linear_combination. The residual -tail(n+3) is bounded by 1/(n+3)! via alternating_tail_bound.",
+    "keyInsights": [
+      "cancel_first_correction: altFactTerm(n+1) = (-1)^(n+1)/(n+1)! so -altFactTerm(n+1) = (-1)^n/(n+1)!",
+      "cancel_second_correction: altFactTerm(n+2) = (-1)^n/(n+2)! so -altFactTerm(n+2) = (-1)^(n+1)/(n+2)!",
+      "linear_combination closes the algebraic simplification cleanly after two tail splits",
+      "alternating_tail_bound(n+2) gives |tail(n+3)| ≤ 1/(n+3)!"
+    ]
+  },
+  "sections": [
+    {
+      "id": "helpers",
+      "title": "Cancellation Lemmas",
+      "summary": "cancel_first_correction and cancel_second_correction: the two key algebraic identities",
+      "startLine": 48,
+      "endLine": 65,
+      "mathContext": "Each: altFactTerm(n+k) + (-1)^(n+k-1)/(n+k)! = 0, proved by pow_succ and ring"
+    },
+    {
+      "id": "main",
+      "title": "Third-Order Convergence Rate",
+      "summary": "third_order_convergence_rate: main theorem, 0 sorries",
+      "startLine": 66,
+      "endLine": 105,
+      "mathContext": "Two tail splits + linear_combination -hc1 - hc2 + alternating_tail_bound(n+2)"
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "summary": "Asymptotic expansion form, sign alternation, error ratio, numerical check",
+      "startLine": 106,
+      "endLine": 130,
+      "mathContext": "Rephrasing and consequences of the main bound"
+    }
+  ],
+  "conclusion": {
+    "summary": "The third-order asymptotic expansion D(n)/n! = 1/e + (-1)^n/(n+1)! + (-1)^(n+1)/(n+2)! + R_n with |R_n| ≤ 1/(n+3)! is fully proved. The proof is 0 sorries, 0 axioms, and reuses infrastructure from OQ-03 and OQ-03-OQ-01.",
+    "implications": "This continues the derangements convergence hierarchy. The k-th order expansion has residual 1/(n+k+1)! and corrections (-1)^(n+j)/(n+j)! for j = 1, ..., k. The pattern is uniform and can be extended to any order by induction on k.",
+    "openQuestions": [
+      "Formalize the general k-th order expansion by induction",
+      "Prove the lower bound: |R_n| ≥ 1/(n+3)! - 1/(n+4)! (tightness)",
+      "Connect to the general Euler-Maclaurin formula for alternating series"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Extends OQ-03-OQ-01's second-order expansion to third order",
+      "targetId": "derangements-oq-03-oq-01"
+    },
+    {
+      "relationship": "child-of",
+      "description": "Uses OQ-03's alternating_tail_bound infrastructure",
+      "targetId": "derangements-oq-03"
+    }
+  ]
+}
