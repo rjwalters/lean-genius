@@ -147,7 +147,7 @@ theorem diagonal_lemma (P : Nat → Formula) :
     specific Gödel number would depend on the encoding scheme. -/
 def G : Formula := ⟨42⟩
 
-/-- **Axiom:** The self-referential property of G.
+/- **Axiom:** The self-referential property of G.
 
     This axiom encapsulates the key step that requires the Diagonal Lemma:
     G is equivalent to the statement "G is not provable", i.e., G ↔ ¬Prov(⌜G⌝).
@@ -158,7 +158,6 @@ def G : Formula := ⟨42⟩
     3. Fixed-point construction via self-application
 
     We take this as an axiom to focus on the incompleteness argument structure. -/
-theorem G_self_reference : True := trivial
 
 -- ============================================================
 -- PART 7: The Incompleteness Proof
@@ -331,13 +330,12 @@ then T ⊬ (Prov(⌜⊥⌝) → ⊥), which is T ⊬ (¬Prov(⌜⊥⌝) ∨ ⊥)
     "if I am provable, then φ holds". -/
 def LobSentence (φ : Formula) : Formula := ⟨φ.code * 5 + 17⟩  -- Placeholder encoding
 
-/-- **Axiom:** The fixed-point property of the Löb sentence.
+/- **Axiom:** The fixed-point property of the Löb sentence.
 
     For any φ, there exists L such that: T ⊢ L ↔ (Prov(⌜L⌝) → φ)
 
     This follows from the diagonal lemma applied to the predicate
     λx. (Prov(x) → φ). -/
-theorem lob_sentence_fixed_point : ∀ φ : Formula, True := fun _ => trivial
 
 /-- **Löb's Theorem**
 
