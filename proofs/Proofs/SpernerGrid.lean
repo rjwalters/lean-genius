@@ -497,7 +497,7 @@ noncomputable def BaryPoint.transfer {d N : ℕ}
         else if j = dec then v.coords j - 1
         else v.coords j) + (if j = dec then 1 else 0) =
         v.coords j + (if j = inc then 1 else 0) := by
-      intro j _; split_ifs <;> (simp_all; omega)
+      intro j _; split_ifs <;> simp_all <;> omega
     have hsums := Finset.sum_congr rfl hkey
     rw [Finset.sum_add_distrib, Finset.sum_add_distrib] at hsums
     simp only [Finset.sum_ite_eq', Finset.mem_univ, ite_true] at hsums
@@ -509,7 +509,7 @@ theorem BaryPoint.transfer_coords_inc {d N : ℕ}
     (h_ne : inc ≠ dec) (h_pos : 0 < v.coords dec) :
     (v.transfer inc dec h_ne h_pos).coords inc =
     v.coords inc + 1 := by
-  simp [BaryPoint.transfer, h_ne]
+  simp [BaryPoint.transfer]
 
 @[simp]
 theorem BaryPoint.transfer_coords_dec {d N : ℕ}
@@ -573,9 +573,173 @@ noncomputable def GridSimplex.interiorFlip
         · exact s.miss_ne_inc k
         · exact s.miss_ne_inc k_prev
         · exact s.miss_ne_inc j
-      step_inc := by sorry
-      step_dec := by sorry
-      step_same := by sorry
+      step_inc := by
+        intro j_step
+        simp only [new_incDir]
+        by_cases hjp : j_step = k_prev
+        · -- Case j_step = k_prev
+          subst hjp; simp only [ite_true]
+          have hcs_ne : ¬(k_prev.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+            intro h; simp [Fin.ext_iff, k_prev, Fin.castSucc] at h; omega
+          have hss_eq : (k_prev.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+            ext; simp [k_prev, Fin.succ]; omega
+          simp only [hcs_ne, ite_false, hss_eq, ite_true]
+          exact BaryPoint.transfer_coords_inc v_prev (s.incDir k) s.miss h_ne h_miss_pos
+        · simp only [hjp, ite_false]
+          by_cases hjk : j_step = k
+          · -- Case j_step = k: avoid subst, work via rewriting
+            have hjp' : ¬(k = k_prev) := by
+              intro h; apply hjp; rw [hjk, h]
+            rw [hjk]; simp only [hjp', ite_false, ite_true]
+            have hcs_eq : (k.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              ext; simp [Fin.castSucc]
+            have hss_ne : ¬(k.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              simp [Fin.ext_iff, Fin.succ]
+            simp only [hcs_eq, ite_true, hss_ne, ite_false]
+            -- Goal: s.verts(k.succ).coords(s.incDir k_prev) =
+            --        new_v.coords(s.incDir k_prev) + 1
+            have h_ne_inc : s.incDir k_prev ≠ s.incDir k := by
+              intro heq; have := s.inc_injective heq
+              simp [k_prev, Fin.ext_iff] at this; omega
+            have h_ne_miss : s.incDir k_prev ≠ s.miss := s.miss_ne_inc k_prev
+            rw [BaryPoint.transfer_coords_other v_prev (s.incDir k) s.miss h_ne
+              h_miss_pos (s.incDir k_prev) h_ne_inc h_ne_miss]
+            have hkp_succ : (k_prev.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              ext; simp [k_prev, Fin.succ]; omega
+            have hkp_cs : (k_prev.castSucc : Fin (d + 1)) = prev_v_idx := by
+              ext; simp [k_prev, Fin.castSucc, prev_v_idx]
+            have h_step_kp := s.step_inc k_prev
+            rw [hkp_succ, hkp_cs] at h_step_kp
+            have hne_kpk : k_prev ≠ k := by simp [k_prev, Fin.ext_iff]; omega
+            have h_stable := s.incDir_stable k_prev k hne_kpk
+            have hk_cs : (k.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              ext; simp [Fin.castSucc]
+            rw [hk_cs] at h_stable
+            rw [h_stable, h_step_kp]
+          · -- Case j_step ≠ k_prev, j_step ≠ k
+            simp only [hjk, ite_false]
+            have hcs_ne : ¬(j_step.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              intro h; simp [Fin.ext_iff, Fin.castSucc] at h; exact hjk (Fin.ext h)
+            have hss_ne : ¬(j_step.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              intro h; simp [Fin.ext_iff, Fin.succ] at h
+              exact hjp (Fin.ext (by simp [k_prev]; omega))
+            simp only [hcs_ne, ite_false, hss_ne]
+            exact s.step_inc j_step
+      step_dec := by
+        intro j_step
+        by_cases hjp : j_step = k_prev
+        · -- Case j_step = k_prev
+          subst hjp
+          have hcs_ne : ¬(k_prev.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+            intro h; simp [Fin.ext_iff, k_prev, Fin.castSucc] at h; omega
+          have hss_eq : (k_prev.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+            ext; simp [k_prev, Fin.succ]; omega
+          simp only [hcs_ne, ite_false, hss_eq, ite_true]
+          -- Goal: v_prev.coords miss = new_v.coords miss + 1
+          -- new_v = v_prev.transfer (incDir k) miss, so new_v.coords miss = v_prev.coords miss - 1
+          -- new_v.coords miss = v_prev.coords miss - 1
+          have h_new : new_v.coords s.miss = v_prev.coords s.miss - 1 :=
+            BaryPoint.transfer_coords_dec v_prev (s.incDir k) s.miss h_ne h_miss_pos
+          rw [h_new]; sorry -- omega needs h_miss_pos: Nat.sub_add_cancel
+        · by_cases hjk : j_step = k
+          · -- Case j_step = k
+            have hcs_eq : (j_step.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              ext; simp [Fin.castSucc]; omega
+            have hss_ne : ¬(j_step.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              simp [Fin.ext_iff, Fin.succ]; omega
+            simp only [hcs_eq, ite_true, hss_ne, ite_false]
+            -- Goal: new_v.coords miss = s.verts(j_step.succ).coords miss + 1
+            have h_new : new_v.coords s.miss = v_prev.coords s.miss - 1 :=
+              BaryPoint.transfer_coords_dec v_prev (s.incDir k) s.miss h_ne h_miss_pos
+            rw [h_new]
+            -- Goal: v_prev.coords miss - 1 = s.verts(j_step.succ).coords miss + 1
+            have hkp_succ : (k_prev.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              ext; simp [k_prev, Fin.succ]; omega
+            have hkp_cs : (k_prev.castSucc : Fin (d + 1)) = prev_v_idx := by
+              ext; simp [k_prev, Fin.castSucc, prev_v_idx]
+            have h1 := s.step_dec k_prev
+            rw [hkp_cs, hkp_succ] at h1
+            have hk_cs : (k.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              ext; simp [Fin.castSucc]
+            have h2 := s.step_dec k
+            rw [hk_cs] at h2
+            have hjs_succ : j_step.succ = k.succ := congr_arg Fin.succ hjk
+            simp_all; omega
+          · -- Case j_step ≠ k_prev, j_step ≠ k
+            have hcs_ne : ¬(j_step.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              intro h; simp [Fin.ext_iff, Fin.castSucc] at h; exact hjk (Fin.ext h)
+            have hss_ne : ¬(j_step.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              intro h; simp [Fin.ext_iff, Fin.succ] at h
+              exact hjp (Fin.ext (by simp [k_prev]; omega))
+            simp only [hcs_ne, ite_false, hss_ne]
+            exact s.step_dec j_step
+      step_same := by
+        intro j_step j hj_inc hj_miss
+        simp only [new_incDir] at hj_inc
+        by_cases hjp : j_step = k_prev
+        · -- Case j_step = k_prev
+          subst hjp; simp only [ite_true] at hj_inc
+          have hcs_ne : ¬(k_prev.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+            intro h; simp [Fin.ext_iff, k_prev, Fin.castSucc] at h; omega
+          have hss_eq : (k_prev.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+            ext; simp [k_prev, Fin.succ]; omega
+          simp only [hcs_ne, ite_false, hss_eq, ite_true]
+          exact BaryPoint.transfer_coords_other v_prev (s.incDir k) s.miss h_ne
+            h_miss_pos j hj_inc hj_miss
+        · simp only [hjp, ite_false] at hj_inc
+          by_cases hjk : j_step = k
+          · -- Case j_step = k
+            rw [hjk] at hj_inc; simp only [ite_true] at hj_inc
+            have hcs_eq : (j_step.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              ext; simp [Fin.castSucc]; omega
+            have hss_ne : ¬(j_step.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              intro h; simp [Fin.ext_iff, Fin.succ] at h; omega
+            simp only [hcs_eq, ite_true, hss_ne, ite_false]
+            by_cases hj_inck : j = s.incDir k
+            · -- j = incDir k
+              subst hj_inck
+              rw [BaryPoint.transfer_coords_inc v_prev (s.incDir k) s.miss h_ne h_miss_pos]
+              have hne_kpk : k_prev ≠ k := by simp [k_prev, Fin.ext_iff]; omega
+              have h_ne_inc_kp : s.incDir k ≠ s.incDir k_prev := by
+                intro heq; have := s.inc_injective heq
+                simp [k_prev, Fin.ext_iff] at this; omega
+              have h_ne_miss_k : s.incDir k ≠ s.miss := s.miss_ne_inc k
+              have hkp_cs : (k_prev.castSucc : Fin (d + 1)) = prev_v_idx := by
+                ext; simp [k_prev, Fin.castSucc, prev_v_idx]
+              have hkp_succ : (k_prev.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+                ext; simp [k_prev, Fin.succ]; omega
+              have h_same := s.step_same k_prev (s.incDir k) h_ne_inc_kp h_ne_miss_k
+              rw [hkp_cs, hkp_succ] at h_same
+              have hk_cs : (k.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+                ext; simp [Fin.castSucc]
+              have h_inc_k := s.step_inc k
+              rw [hk_cs] at h_inc_k
+              have hjs_succ : j_step.succ = k.succ := by rw [hjk]
+              rw [hjs_succ, h_inc_k, h_same]
+            · -- j ≠ incDir k
+              rw [BaryPoint.transfer_coords_other v_prev (s.incDir k) s.miss h_ne
+                h_miss_pos j hj_inck hj_miss]
+              have hk_cs : (k.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+                ext; simp [Fin.castSucc]
+              have h_same_k := s.step_same k j hj_inck hj_miss
+              rw [hk_cs] at h_same_k
+              have hkp_cs : (k_prev.castSucc : Fin (d + 1)) = prev_v_idx := by
+                ext; simp [k_prev, Fin.castSucc, prev_v_idx]
+              have hkp_succ : (k_prev.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+                ext; simp [k_prev, Fin.succ]; omega
+              have h_same_kp := s.step_same k_prev j hj_inc hj_miss
+              rw [hkp_cs, hkp_succ] at h_same_kp
+              have hjs_succ : j_step.succ = k.succ := by rw [hjk]
+              rw [hjs_succ, h_same_k, h_same_kp]
+          · -- Case j_step ≠ k_prev, j_step ≠ k
+            simp only [hjk, ite_false] at hj_inc
+            have hcs_ne : ¬(j_step.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              intro h; simp [Fin.ext_iff, Fin.castSucc] at h; exact hjk (Fin.ext h)
+            have hss_ne : ¬(j_step.succ : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
+              intro h; simp [Fin.ext_iff, Fin.succ] at h
+              exact hjp (Fin.ext (by simp [k_prev]; omega))
+            simp only [hcs_ne, ite_false, hss_ne]
+            exact s.step_same j_step j hj_inc hj_miss
       inc_injective := by
         intro a b hab
         simp only [new_incDir] at hab
@@ -643,9 +807,70 @@ noncomputable def GridSimplex.boundaryFlip0
             split_ifs with h
             · exact s.miss_ne_inc ⟨j.val + 1, h⟩
             · exact h_ne
-          step_inc := by sorry
-          step_dec := by sorry
-          step_same := by sorry
+          step_inc := by
+            intro j_step
+            simp only [new_incDir]
+            by_cases hj_mid : j_step.val + 1 < d
+            · -- Middle step: both verts delegate to s
+              simp only [hj_mid, dite_true]
+              have hcs_lt : j_step.castSucc.val < d := by simp [Fin.castSucc]
+              have hss_lt : j_step.succ.val < d := by simp [Fin.succ]; omega
+              simp only [show (j_step.castSucc.val < d) = True from eq_true hcs_lt,
+                         show (j_step.succ.val < d) = True from eq_true hss_lt,
+                         dite_true]
+              -- Goal relates s.verts ⟨j_step.val+2,_⟩ to s.verts ⟨j_step.val+1,_⟩
+              -- via s.incDir ⟨j_step.val+1,_⟩
+              have h := s.step_inc ⟨j_step.val + 1, hj_mid⟩
+              -- Normalize Fin values in h
+              have : (⟨j_step.val + 1, hj_mid⟩ : Fin d).succ =
+                (⟨j_step.val + 2, by omega⟩ : Fin (d + 1)) := by ext; simp [Fin.succ]
+              have : (⟨j_step.val + 1, hj_mid⟩ : Fin d).castSucc =
+                (⟨j_step.val + 1, by omega⟩ : Fin (d + 1)) := by ext; simp [Fin.castSucc]
+              simp_all
+            · -- Last step: j_step.val = d-1
+              simp only [hj_mid, dite_false]
+              have hcs_lt : j_step.castSucc.val < d := j_step.isLt
+              have hss_not_lt : ¬(j_step.succ.val < d) := by simp [Fin.succ]; omega
+              simp only [show (j_step.castSucc.val < d) = True from eq_true hcs_lt,
+                         show (j_step.succ.val < d) = False from eq_false hss_not_lt,
+                         dite_true, dite_false]
+              -- Goal: new_v.coords inc0 = (s.verts ⟨j_step.val+1,_⟩).coords inc0 + 1
+              -- where j_step.val + 1 = d, so s.verts ⟨d,_⟩ = last_v
+              -- s.verts ⟨j_step.val+1,_⟩ = last_v since j_step.val+1=d
+              convert BaryPoint.transfer_coords_inc last_v inc0 s.miss h_ne h_pos using 1
+              sorry -- Fin proof: j_step.val + 1 = d (from j_step.isLt and ¬(j_step.val + 1 < d))
+          step_dec := by
+            intro j_step
+            by_cases hj_mid : j_step.val + 1 < d
+            · -- Middle step
+              have hcs_lt : j_step.castSucc.val < d := by simp [Fin.castSucc]
+              have hss_lt : j_step.succ.val < d := by simp [Fin.succ]; omega
+              simp only [show (j_step.castSucc.val < d) = True from eq_true hcs_lt,
+                         show (j_step.succ.val < d) = True from eq_true hss_lt,
+                         dite_true]
+              have h := s.step_dec ⟨j_step.val + 1, hj_mid⟩
+              have : (⟨j_step.val + 1, hj_mid⟩ : Fin d).succ =
+                (⟨j_step.val + 2, by omega⟩ : Fin (d + 1)) := by ext; simp [Fin.succ]
+              have : (⟨j_step.val + 1, hj_mid⟩ : Fin d).castSucc =
+                (⟨j_step.val + 1, by omega⟩ : Fin (d + 1)) := by ext; simp [Fin.castSucc]
+              simp_all
+            · -- Last step
+              have hcs_lt : j_step.castSucc.val < d := j_step.isLt
+              have hss_not_lt : ¬(j_step.succ.val < d) := by simp [Fin.succ]; omega
+              simp only [show (j_step.castSucc.val < d) = True from eq_true hcs_lt,
+                         show (j_step.succ.val < d) = False from eq_false hss_not_lt,
+                         dite_true, dite_false]
+              have h_new : new_v.coords s.miss = last_v.coords s.miss - 1 :=
+                BaryPoint.transfer_coords_dec last_v inc0 s.miss h_ne h_pos
+              convert_to last_v.coords s.miss = new_v.coords s.miss + 1
+              · sorry -- Fin proof: j_step.val + 1 = d
+              · rw [h_new]; have := h_pos; omega
+          step_same := by
+            intro j_step j hj_inc hj_miss
+            simp only [new_incDir] at hj_inc
+            by_cases hj_mid : j_step.val + 1 < d
+            · sorry -- Middle + Last step_same for boundaryFlip0
+            · sorry
           inc_injective := by
             intro a b hab
             simp only [new_incDir] at hab
@@ -700,9 +925,66 @@ noncomputable def GridSimplex.boundaryFlipLast
             split_ifs with h
             · exact s.miss_ne_inc ⟨d - 1, by omega⟩
             · exact s.miss_ne_inc ⟨j.val - 1, by omega⟩
-          step_inc := by sorry
-          step_dec := by sorry
-          step_same := by sorry
+          step_inc := by
+            intro j_step
+            simp only [new_incDir]
+            by_cases hj0 : j_step.val = 0
+            · -- First step: from new_v to v0
+              simp only [hj0, ite_true]
+              have hcs_zero : j_step.castSucc.val = 0 := by simp [Fin.castSucc]; exact hj0
+              have hss_nz : ¬(j_step.succ.val = 0) := by simp [Fin.succ]
+              simp only [show (j_step.castSucc.val = 0) = True from eq_true hcs_zero,
+                         show (j_step.succ.val = 0) = False from eq_false hss_nz,
+                         ite_true, ite_false]
+              -- s.verts ⟨j_step.val+1-1,_⟩ = v0 (since j_step.val = 0)
+              -- new_v.coords last_inc = v0.coords last_inc - 1 (transfer_coords_dec)
+              -- Goal: v0.coords last_inc = new_v.coords last_inc + 1
+              have h_new : new_v.coords last_inc = v0.coords last_inc - 1 :=
+                BaryPoint.transfer_coords_dec v0 s.miss last_inc (Ne.symm h_ne) h_pos
+              convert_to v0.coords last_inc = new_v.coords last_inc + 1
+              · sorry -- Fin proof: j_step.val + 1 - 1 = 0 (from hj0)
+              · rw [h_new]; have := h_pos; omega
+            · -- Later step
+              simp only [hj0, ite_false]
+              have hcs_nz : ¬(j_step.castSucc.val = 0) := by simp [Fin.castSucc]; exact hj0
+              have hss_nz : ¬(j_step.succ.val = 0) := by simp [Fin.succ]
+              simp only [show (j_step.castSucc.val = 0) = False from eq_false hcs_nz,
+                         show (j_step.succ.val = 0) = False from eq_false hss_nz,
+                         ite_false]
+              have hjd : j_step.val - 1 < d := by omega
+              have h := s.step_inc ⟨j_step.val - 1, hjd⟩
+              have : (⟨j_step.val - 1, hjd⟩ : Fin d).succ =
+                (⟨j_step.val, by omega⟩ : Fin (d + 1)) := by ext; simp; omega
+              have : (⟨j_step.val - 1, hjd⟩ : Fin d).castSucc =
+                (⟨j_step.val - 1, by omega⟩ : Fin (d + 1)) := by ext; simp [Fin.castSucc]
+              simp_all
+          step_dec := by
+            intro j_step
+            by_cases hj0 : j_step.val = 0
+            · -- First step
+              have hcs_zero : j_step.castSucc.val = 0 := by simp [Fin.castSucc]; exact hj0
+              have hss_nz : ¬(j_step.succ.val = 0) := by simp [Fin.succ]
+              simp only [show (j_step.castSucc.val = 0) = True from eq_true hcs_zero,
+                         show (j_step.succ.val = 0) = False from eq_false hss_nz,
+                         ite_true, ite_false]
+              have h_new : new_v.coords s.miss = v0.coords s.miss + 1 :=
+                BaryPoint.transfer_coords_inc v0 s.miss last_inc (Ne.symm h_ne) h_pos
+              convert_to new_v.coords s.miss = v0.coords s.miss + 1
+              · sorry -- Fin proof: j_step.val + 1 - 1 = 0 (from hj0)
+              · exact h_new
+            · -- Later step
+              have hcs_nz : ¬(j_step.castSucc.val = 0) := by simp [Fin.castSucc]; exact hj0
+              have hss_nz : ¬(j_step.succ.val = 0) := by simp [Fin.succ]
+              simp only [show (j_step.castSucc.val = 0) = False from eq_false hcs_nz,
+                         show (j_step.succ.val = 0) = False from eq_false hss_nz,
+                         ite_false]
+              sorry -- Later step_dec: delegate to s.step_dec with index shift
+          step_same := by
+            intro j_step j hj_inc hj_miss
+            simp only [new_incDir] at hj_inc
+            by_cases hj0 : j_step.val = 0
+            · sorry -- First + later step_same for boundaryFlipLast
+            · sorry
           inc_injective := by
             intro a b hab
             simp only [new_incDir] at hab
