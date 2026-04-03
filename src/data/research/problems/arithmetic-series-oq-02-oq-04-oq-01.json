@@ -1,0 +1,163 @@
+{
+  "slug": "arithmetic-series-oq-02-oq-04-oq-01",
+  "title": "Formalize descending factorial analogue of arithmetic series",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Formalize descending factorial analogue of arithmetic series.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "DONE",
+    "since": "2026-04-03T00:00:00Z",
+    "iteration": 1,
+    "focus": "Created ArithmeticSeriesOQ02OQ04OQ01.lean with 11 theorems, 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "Verify compilation with docker-build.sh.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROVED: Created ArithmeticSeriesOQ02OQ04OQ01.lean with 11 theorems (0 sorries, 0 axioms). Main result: C(n,k) * k! = descFactorial(n,k) (ordered selection formula). Dual to ascending: C(n+k,k) * k! = ascFactorial(n+1,k). Key Mathlib lemma: Nat.descFactorial_eq_factorial_mul_choose.",
+    "builtItems": [
+      "choose_descFactorial: C(n,k) * k! = descFactorial(n,k)",
+      "choose_product: C(n,k) * k! = ∏ i in range k, (n-i)",
+      "choose_full_factorial: C(n,k) * k! * (n-k)! = n!",
+      "factorial_dvd_descFactorial: k! | descFactorial(n,k)",
+      "ascending_descending_duality: connects ascending and descending factorial identities",
+      "Specializations: k=1,2,3 and concrete checks"
+    ],
+    "insights": [
+      "Key Mathlib lemma: Nat.descFactorial_eq_factorial_mul_choose states n.descFactorial k = k! * n.choose k",
+      "Key Mathlib lemma: Nat.descFactorial_eq_prod_range states n.descFactorial k = ∏ i in range k, (n-i)",
+      "Dual pair: descending uses C(n,k), ascending uses C(n+k,k) as simplicial numbers",
+      "Nat.descFactorial_self: n.descFactorial n = n! (boundary case)",
+      "Nat.factorial_mul_descFactorial: (n-k)! * descFactorial(n,k) = n! (structural property)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "arithmetic-series",
+    "factorials"
+  ],
+  "relatedProofs": [
+    "arithmetic-series",
+    "arithmetic-series-oq-02",
+    "arithmetic-series-oq-02-oq-02",
+    "arithmetic-series-oq-02-oq-02-oq-03",
+    "arithmetic-series-oq-02-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.769Z",
+  "lastUpdate": "2026-04-03T00:00:00Z",
+  "significance": 5,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/ArithmeticSeries.lean",
+      "filename": "ArithmeticSeries.lean",
+      "lineCount": 181,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeries.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02.lean",
+      "filename": "ArithmeticSeriesOQ02.lean",
+      "lineCount": 210,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ01.lean",
+      "lineCount": 174,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "lineCount": 166,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ03.lean",
+      "lineCount": 208,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04.lean",
+      "lineCount": 159,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean"
+    }
+  ]
+}
