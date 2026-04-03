@@ -146,7 +146,7 @@ private lemma sidon_pair_sum_injective (A : Set ℕ) (hSidon : IsSidon A) :
   intro ⟨a, b⟩ ⟨ha, hb, hab⟩ ⟨c, d⟩ ⟨hc, hd, hcd⟩ h
   simp only at h
   have := hSidon a b c d ha hb hc hd (le_of_lt hab) (le_of_lt hcd) h
-  exact Prod.mk.inj ⟨this.1, this.2⟩
+  exact Prod.ext this.1 this.2
 
 -- Key counting lemma: integers in SumsetK A 2 with value ≤ 2N
 -- can be injected into A ∪ {pairs from A × A}.
@@ -162,8 +162,9 @@ private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ
   have hfin : Set.Finite (A ∩ Set.Icc 1 (2*N)) :=
     (Set.finite_Icc 1 (2*N)).subset Set.inter_subset_right
   set FA := hfin.toFinset with hFA_def
-  have hM_eq : Set.ncard (A ∩ Set.Icc 1 (2*N)) = FA.card :=
-    (hfin.ncard_eq_toFinset_card _).symm ▸ by simp [hFA_def]
+  have hM_eq : Set.ncard (A ∩ Set.Icc 1 (2*N)) = FA.card := by
+    have h : (FA : Set ℕ) = A ∩ Set.Icc 1 (2*N) := hFA_def ▸ hfin.coe_toFinset
+    rw [← h, Set.ncard_coe_finset]
   rw [hM_eq]
   -- Key helper: each n in [N₀, 2N] covered by SumsetK A 2 lies in FA or is a strict Sidon pair sum
   have helem : ∀ n, N₀ ≤ n → n ≤ 2*N → n ∈ SumsetK A 2 →
@@ -171,20 +172,20 @@ private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ
     intro n hn1 hn2 ⟨S, hSc, hSsub, hSsum⟩
     -- Case on S.card
     have hSc2 : S.card ≤ 2 := hSc
-    rcases Nat.lt_succ_iff.mp (Nat.lt_of_lt_of_le (Nat.lt_succ_of_le hSc2) (le_refl 3)) with h
-    interval_cases (S.card)
+    interval_cases h : S.card
     · -- S = ∅, sum = 0, contradicts n ≥ N₀ ≥ 1
-      simp [Finset.card_eq_zero.mp (by omega : S.card = 0)] at hSsum
+      have hSempty : S = ∅ := Finset.card_eq_zero.mp h
+      simp only [hSempty, Finset.sum_empty] at hSsum
       omega
     · -- S = {a}, sum = a = n
-      obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp (by omega : S.card = 1)
+      obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp h
       simp [Finset.sum_singleton] at hSsum
       left
-      rw [hFA_def, Set.Finite.mem_toFinset]
-      exact ⟨hSsub (Finset.mem_singleton_self a),
-             ⟨by linarith [hN₀_pos], hSsum ▸ hn2⟩⟩
+      rw [hFA_def, hfin.mem_toFinset]
+      exact ⟨hSsum ▸ hSsub (Finset.mem_singleton_self a),
+             ⟨by linarith [hN₀_pos], hn2⟩⟩
     · -- S = {a, b}, sum = a + b = n
-      obtain ⟨a, b, hab_ne, rfl⟩ := Finset.card_eq_two.mp (by omega : S.card = 2)
+      obtain ⟨a, b, hab_ne, rfl⟩ := Finset.card_eq_two.mp h
       simp [Finset.sum_pair hab_ne] at hSsum
       have ha_A : a ∈ A := hSsub (Finset.mem_insert_self a {b})
       have hb_A : b ∈ A := hSsub (by simp)
@@ -194,23 +195,23 @@ private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ
         rcases Nat.eq_zero_or_pos a with rfl | ha_pos
         · -- a = 0: n = b, treat as singleton
           simp at hSsum; left
-          rw [hFA_def, Set.Finite.mem_toFinset]
-          exact ⟨by rwa [hSsum] at hb_A, ⟨by linarith [hN₀_pos], by linarith⟩⟩
+          rw [hFA_def, hfin.mem_toFinset]
+          exact ⟨hSsum ▸ hb_A, ⟨by linarith [hN₀_pos], by linarith⟩⟩
         · right
           rw [hFA_def]
-          refine ⟨a, b, Set.Finite.mem_toFinset.mpr ⟨ha_A, ⟨ha_pos, by linarith⟩⟩,
-                        Set.Finite.mem_toFinset.mpr ⟨hb_A, ⟨by linarith, by linarith⟩⟩,
-                        hab, hSsum⟩
+          refine ⟨a, b, hfin.mem_toFinset.mpr ⟨ha_A, ⟨ha_pos, by linarith⟩⟩,
+                        hfin.mem_toFinset.mpr ⟨hb_A, ⟨by linarith, by linarith⟩⟩,
+                        hab, hSsum.symm⟩
       · -- b ≤ a case: swap
         rcases Nat.eq_zero_or_pos b with rfl | hb_pos
         · simp at hSsum; left
-          rw [hFA_def, Set.Finite.mem_toFinset]
-          exact ⟨by rwa [hSsum] at ha_A, ⟨by linarith [hN₀_pos], by linarith⟩⟩
+          rw [hFA_def, hfin.mem_toFinset]
+          exact ⟨hSsum ▸ ha_A, ⟨by linarith [hN₀_pos], by linarith⟩⟩
         · right
           have hba_lt : b < a := Nat.lt_of_le_of_ne hba (Ne.symm hab_ne)
           rw [hFA_def]
-          refine ⟨b, a, Set.Finite.mem_toFinset.mpr ⟨hb_A, ⟨hb_pos, by linarith⟩⟩,
-                        Set.Finite.mem_toFinset.mpr ⟨ha_A, ⟨by linarith, by linarith⟩⟩,
+          refine ⟨b, a, hfin.mem_toFinset.mpr ⟨hb_A, ⟨hb_pos, by linarith⟩⟩,
+                        hfin.mem_toFinset.mpr ⟨ha_A, ⟨by linarith, by linarith⟩⟩,
                         hba_lt, by linarith⟩
   -- Define the representable finset
   set pairs2 := (FA ×ˢ FA).filter (fun p => p.1 < p.2) with hpairs_def
@@ -230,14 +231,14 @@ private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ
     Finset.card_le_card h_sub
   -- Step 3: |[N₀, 2N]| = 2N - N₀ + 1
   have h_icc_card : (Finset.Icc N₀ (2*N)).card = 2*N - N₀ + 1 := by
-    rw [Finset.Nat.card_Icc]; omega
+    simp; omega
   -- Step 4: |repSet| ≤ M*(M+1)/2
   have h_rep_card : 2 * repSet.card ≤ FA.card * (FA.card + 1) := by
     calc 2 * repSet.card
         ≤ 2 * (FA.card + sums2.card) := by
           apply Nat.mul_le_mul_left
           exact (Finset.card_union_le FA sums2)
-      _ ≤ 2 * FA.card + 2 * sums2.card := by ring_nf
+      _ = 2 * FA.card + 2 * sums2.card := by ring
       _ ≤ 2 * FA.card + 2 * pairs2.card := by
           apply Nat.add_le_add_left
           apply Nat.mul_le_mul_left
@@ -246,27 +247,98 @@ private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ
           apply Nat.add_le_add_left
           -- |pairs2| = C(M, 2) = M*(M-1)/2, so 2*|pairs2| ≤ M*(M-1)
           have : 2 * pairs2.card ≤ FA.card * (FA.card - 1) := by
-            rw [hpairs_def]
-            calc 2 * ((FA ×ˢ FA).filter (fun p => p.1 < p.2)).card
-                = FA.offDiag.card := by
-                  rw [Finset.offDiag_card]
-                  congr 1
-                  -- The filter {p ∈ FA×FA | p.1 < p.2} bijects with offDiag/2
-                  sorry
-              _ = FA.card * (FA.card - 1) := Finset.offDiag_card FA
+            -- pairs2 (a<b pairs) and pairs2.image Prod.swap (a>b pairs) are disjoint
+            -- subsets of FA.offDiag, so 2*|pairs2| ≤ |FA.offDiag| = M*(M-1)
+            have h_offDiag : FA.offDiag.card = FA.card * (FA.card - 1) := by
+              have hdiag : (FA.image (fun a : ℕ => (a, a))).card = FA.card :=
+                Finset.card_image_of_injective _ fun a b h => (Prod.mk.inj h).1
+              have hoff_union : FA.offDiag ∪ FA.image (fun a : ℕ => (a, a)) = FA ×ˢ FA := by
+                ext ⟨a, b⟩
+                simp only [Finset.mem_union, Finset.mem_offDiag, Finset.mem_image,
+                           Finset.mem_product]
+                constructor
+                · rintro (⟨ha, hb, _⟩ | ⟨c, hc, h⟩)
+                  · exact ⟨ha, hb⟩
+                  · obtain ⟨rfl, rfl⟩ := Prod.mk.inj h; exact ⟨hc, hc⟩
+                · intro ⟨ha, hb⟩
+                  by_cases heq : a = b
+                  · right; exact ⟨a, ha, Prod.ext rfl heq⟩
+                  · left; exact ⟨ha, hb, heq⟩
+              have hdisj : Disjoint FA.offDiag (FA.image (fun a : ℕ => (a, a))) := by
+                rw [Finset.disjoint_left]
+                intro ⟨a, b⟩ h1 h2
+                rw [Finset.mem_offDiag] at h1
+                obtain ⟨c, _, heq⟩ := Finset.mem_image.mp h2
+                exact h1.2.2 ((Prod.mk.inj heq).1.symm.trans (Prod.mk.inj heq).2)
+              have hsum : FA.offDiag.card + FA.card = FA.card * FA.card := by
+                have h := Finset.card_union_of_disjoint hdisj
+                rw [hoff_union, Finset.card_product, hdiag] at h
+                linarith
+              cases hm : FA.card with
+              | zero =>
+                have hFA_empty : FA = ∅ := Finset.card_eq_zero.mp hm
+                simp [hFA_empty]
+              | succ m =>
+                rw [hm] at hsum
+                simp only [Nat.succ_sub_one]
+                have hkey : (m + 1) * (m + 1) - (m + 1) = (m + 1) * m := by
+                  have : (m + 1) * (m + 1) = (m + 1) * m + (m + 1) := by ring
+                  omega
+                omega
+            have h_sub : pairs2 ⊆ FA.offDiag := by
+              intro ⟨a, b⟩ hmem
+              simp only [hpairs_def, Finset.mem_filter, Finset.mem_product] at hmem
+              simp only [Finset.mem_offDiag]
+              exact ⟨hmem.1.1, hmem.1.2, Nat.ne_of_lt hmem.2⟩
+            have h_swap_sub : pairs2.image Prod.swap ⊆ FA.offDiag := by
+              intro ⟨a, b⟩ hmem
+              rcases Finset.mem_image.mp hmem with ⟨⟨c, d⟩, hcd_mem, heq⟩
+              simp only [hpairs_def, Finset.mem_filter, Finset.mem_product] at hcd_mem
+              have hda : d = a := (Prod.mk.inj heq).1
+              have hcb : c = b := (Prod.mk.inj heq).2
+              simp only [Finset.mem_offDiag]
+              exact ⟨hda ▸ hcd_mem.1.2, hcb ▸ hcd_mem.1.1, by omega⟩
+            have h_disj : Disjoint pairs2 (pairs2.image Prod.swap) := by
+              rw [Finset.disjoint_left]
+              intro ⟨a, b⟩ h1 h2
+              have hab : a < b := by
+                simp only [hpairs_def, Finset.mem_filter, Finset.mem_product] at h1
+                exact h1.2
+              rcases Finset.mem_image.mp h2 with ⟨⟨c, d⟩, hcd_mem, heq⟩
+              have hcd : c < d := by
+                simp only [hpairs_def, Finset.mem_filter, Finset.mem_product] at hcd_mem
+                exact hcd_mem.2
+              have hda : d = a := (Prod.mk.inj heq).1
+              have hcb : c = b := (Prod.mk.inj heq).2
+              omega
+            have h_inj : Function.Injective (Prod.swap : ℕ × ℕ → ℕ × ℕ) :=
+              fun ⟨a, b⟩ ⟨c, d⟩ h => by
+                simp only [Prod.swap] at h
+                exact Prod.ext (Prod.mk.inj h).2 (Prod.mk.inj h).1
+            have h_card_eq : (pairs2.image Prod.swap).card = pairs2.card :=
+              Finset.card_image_of_injective _ h_inj
+            calc 2 * pairs2.card
+                = pairs2.card + (pairs2.image Prod.swap).card := by linarith
+              _ = (pairs2 ∪ pairs2.image Prod.swap).card :=
+                    (Finset.card_union_of_disjoint h_disj).symm
+              _ ≤ FA.offDiag.card :=
+                    Finset.card_le_card (Finset.union_subset h_sub h_swap_sub)
+              _ = FA.card * (FA.card - 1) := h_offDiag
           exact this
-      _ = FA.card * (FA.card + 1) := by ring_nf; omega
+      _ = FA.card * (FA.card + 1) := by
+          cases hm : FA.card with
+          | zero => simp [hm]
+          | succ m => simp only [Nat.succ_sub_one]; ring
   -- Step 5: Combine and cast to ℝ
-  have h_combined : 2 * N - N₀ + 1 ≤ FA.card * (FA.card + 1) / 2 := by
-    have := Nat.le_div_iff_mul_le (by norm_num : 0 < 2)
-    rw [this]
-    calc 2 * (2 * N - N₀ + 1) = 2 * (Finset.Icc N₀ (2*N)).card := by rw [h_icc_card]
-      _ ≤ 2 * repSet.card := Nat.mul_le_mul_left 2 h_card_le
+  have hNN₀ : N₀ ≤ 2 * N := by omega
+  have h_ineq : 2 * (2 * N - N₀ + 1) ≤ FA.card * (FA.card + 1) :=
+    calc 2 * (2 * N - N₀ + 1)
+        = 2 * (Finset.Icc N₀ (2*N)).card := by rw [h_icc_card]
+      _ ≤ 2 * repSet.card := by linarith [h_card_le]
       _ ≤ FA.card * (FA.card + 1) := h_rep_card
-  -- Cast to ℝ
-  have h_cast : (FA.card : ℝ) * ((FA.card : ℝ) + 1) / 2 ≥ (2 * N - N₀ + 1 : ℝ) := by
-    have := @Nat.cast_le ℝ _ _ _ |>.mpr h_combined
-    push_cast at this ⊢
+  have h_ℝ : (2 : ℝ) * (2 * (N : ℝ) - N₀ + 1) ≤ (FA.card : ℝ) * ((FA.card : ℝ) + 1) := by
+    have h := Nat.cast_le (α := ℝ).mpr h_ineq
+    push_cast [Nat.cast_sub hNN₀] at h
     linarith
   linarith
 
@@ -301,18 +373,22 @@ theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :
   -- Step 1: Extract N₀ (coverage threshold) and C (Sidon counting constant)
   obtain ⟨N₀, hN₀⟩ := hBasis
   obtain ⟨C, hC⟩ := sidon_counting_bound A hSidon
+  -- Use N₀' = max N₀ 1 to ensure N₀' ≥ 1 (required by sumsetK2_ncard_le)
+  let N₀' : ℕ := max N₀ 1
+  have hN₀'_pos : 1 ≤ N₀' := le_max_right _ _
+  have hN₀'_ge : N₀ ≤ N₀' := le_max_left _ _
   -- Step 2: Find N large enough for contradiction
-  obtain ⟨N, hNN₀, hcontra⟩ := sidon_counting_contradiction C N₀
-  -- Step 3: At N, all integers in [N₀, 2N] are representable (from hN₀)
-  have hcov : ∀ n, N₀ ≤ n → n ≤ 2*N → n ∈ SumsetK A 2 :=
-    fun n hn₁ hn₂ => hN₀ n hn₁
-  -- Step 4: By counting lemma, M*(M+1)/2 ≥ 2N - N₀
-  have hcount := sumsetK2_ncard_le A hSidon N₀ N hNN₀ hcov
+  obtain ⟨N, hNN₀', hcontra⟩ := sidon_counting_contradiction C N₀'
+  -- Step 3: At N, all integers in [N₀', 2N] are representable (from hN₀)
+  have hcov : ∀ n, N₀' ≤ n → n ≤ 2*N → n ∈ SumsetK A 2 :=
+    fun n hn₁ _ => hN₀ n (Nat.le_trans hN₀'_ge hn₁)
+  -- Step 4: By counting lemma, M*(M+1)/2 ≥ 2N - N₀' + 1
+  have hcount := sumsetK2_ncard_le A hSidon N₀' N hN₀'_pos hNN₀' hcov
   -- Step 5: Sidon bound: M = |A ∩ [1,2N]| ≤ √(2N) + C*(2N)^(1/4)
-  have hM := hC (2 * N)
-  -- Step 6: Derive contradiction: M*(M+1)/2 < 2N - N₀ ≤ M*(M+1)/2
+  -- Step 6: Derive contradiction: M*(M+1)/2 < 2N - N₀' ≤ M*(M+1)/2
   have hMbound : (Set.ncard (A ∩ Set.Icc 1 (2 * N)) : ℝ) ≤
-      Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4) := hM
+      Real.sqrt (2 * ↑N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4) := by
+    have h := hC (2 * N); push_cast at h; linarith
   have hprod : (Set.ncard (A ∩ Set.Icc 1 (2 * N)) : ℝ) *
       ((Set.ncard (A ∩ Set.Icc 1 (2 * N)) : ℝ) + 1) / 2 ≤
       (Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4)) *
