@@ -1,1 +1,83 @@
-[]
+[
+  {
+    "line": 51,
+    "type": "definition",
+    "content": "The **representation function** $r_A(n)$ counts ordered pairs $(a,b) \\in A \\times A$ with $a + b = n$. Each unordered pair $\\{a,b\\}$ with $a \\neq b$ contributes 2; diagonal pairs $(a,a)$ contribute 1.",
+    "symbol": "repFunc",
+    "mathContext": "The Erdős-Turán conjecture concerns $\\limsup_{n \\to \\infty} r_A(n)$. Formally: $r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n\\}|$. The unordered variant $r_A^{\\text{unord}}(n)$ counts pairs with $a \\leq b$ only.",
+    "significance": "Central object of the $500 Erdős problem: does every asymptotic basis have unbounded $r_A(n)$?",
+    "relatedConcepts": ["repFuncUnordered", "repFuncFinset", "IsAsymptoticBasis", "IsSidon"]
+  },
+  {
+    "line": 69,
+    "type": "definition",
+    "content": "**Asymptotic basis of order 2**: $A \\subseteq \\mathbb{N}$ is an asymptotic basis of order 2 if $A + A \\supseteq \\{n : n \\geq N_0\\}$ for some threshold $N_0$. Equivalently, $A+A$ misses only finitely many integers.",
+    "symbol": "IsAsymptoticBasis",
+    "mathContext": "An *exact* basis satisfies $A + A = \\mathbb{N}$; an *asymptotic* basis allows finitely many exceptions. Examples: $\\mathbb{N}$ itself, the squares (Lagrange four-square theorem: order 4). The equivalence with 'cofinite complement' is proved as `isAsymptoticBasis_iff`.",
+    "significance": "Defines the hypothesis of the $500 Erdős-Turán conjecture. Bases must be dense ($|A \\cap [0,N]| \\geq \\sqrt{N}$, proved here) yet might — in principle — have bounded representation counts.",
+    "relatedConcepts": ["IsAsymptoticBasis'", "isAsymptoticBasis_iff", "sumset", "repFunc"]
+  },
+  {
+    "line": 79,
+    "type": "theorem",
+    "content": "The two formulations of asymptotic basis are equivalent: (1) $\\exists N_0, \\forall n \\geq N_0, n \\in A+A$, iff (2) $(A+A)^c$ is finite.",
+    "symbol": "isAsymptoticBasis_iff",
+    "mathContext": "$(\\Rightarrow)$: $A+A \\supseteq [N_0, \\infty)$ gives $(A+A)^c \\subseteq \\{0,\\ldots,N_0-1\\}$, finite. $(\\Leftarrow)$: if $(A+A)^c$ is finite and nonempty, its supremum $M = \\sup(A+A)^c$ exists; then $A+A \\supseteq [M+1, \\infty)$. Uses $\\mathtt{csSup}$ from Mathlib.",
+    "significance": "Connects the 'threshold' formulation to the cleaner 'cofinite complement' formulation, useful for different proof contexts.",
+    "relatedConcepts": ["IsAsymptoticBasis", "IsAsymptoticBasis'", "sumset"]
+  },
+  {
+    "line": 143,
+    "type": "definition",
+    "content": "**Sidon set** (also $B_2$ sequence): $A$ is Sidon if whenever $a + b = c + d$ with $a, b, c, d \\in A$, then $\\{a,b\\} = \\{c,d\\}$ as sets. All pairwise sums are distinct.",
+    "symbol": "IsSidon",
+    "mathContext": "Introduced by Simon Sidon (1932) in harmonic analysis; called $B_2$ sequences in additive combinatorics. Key properties: $|A \\cap [0,N]| = O(\\sqrt{N})$ (tight bound from greedy construction), and $r_A(n) \\leq 2$ for all $n$ (proved as `sidon_repFunc_bounded`). The tension: Sidon sets are maximally 'sparse' while bases must be 'dense'.",
+    "significance": "Sidon sets show bounded representation ($r_A \\leq 2$) is achievable with density $\\sim \\sqrt{N}$, but NOT with being a basis. This is the structural tension at the heart of the Erdős-Turán conjecture.",
+    "relatedConcepts": ["sidon_repFunc_bounded", "sidon_not_basis", "sidon_density_bound"]
+  },
+  {
+    "line": 150,
+    "type": "theorem",
+    "content": "For Sidon sets $A$, $r_A(n) \\leq 2$ for all $n$: at most one unordered pair sums to $n$, giving at most 2 ordered pairs $(a,b)$ and $(b,a)$.",
+    "symbol": "sidon_repFunc_bounded",
+    "mathContext": "Proof: fix a representation $(a,b)$ with $a+b=n$. Any $(c,d)$ with $c+d=n$ satisfies the Sidon condition $\\{c,d\\} = \\{a,b\\}$, so $(c,d) \\in \\{(a,b),(b,a)\\}$. Thus the representation set $S \\subseteq \\{(a,b),(b,a)\\}$, giving $|S| \\leq 2$.",
+    "significance": "Establishes Sidon sets as the 'thinnest possible' representors. The Erdős-Turán conjecture says this bounded representation is incompatible with being an asymptotic basis.",
+    "relatedConcepts": ["IsSidon", "sidon_not_basis", "repFunc", "erdos_turan_weak"]
+  },
+  {
+    "line": 210,
+    "type": "definition",
+    "content": "**Erdős-Turán Conjecture** (weak form, 1941): If $A \\subseteq \\mathbb{N}$ is an asymptotic basis of order 2, then $\\limsup_{n \\to \\infty} r_A(n) = \\infty$. Equivalently: $\\forall k, \\exists n, r_A(n) > k$. **Prize: $500**.",
+    "symbol": "erdos_turan_weak",
+    "mathContext": "Erdős and Turán (1941) posed this after studying Waring's problem. The strong form conjectures $\\limsup r_A(n)/\\log(n) > 0$. Best known: $r_A(n) \\geq 8$ infinitely often (Borwein et al.). Both weak and strong forms remain open. No 'thin basis' (bounded $r_A$) is known; the conjecture says none exists.",
+    "significance": "One of the most important open problems in additive combinatorics. A $500 Erdős prize problem, open since 1941. A positive resolution would mean every basis has a rich additive structure.",
+    "relatedConcepts": ["erdos_turan_strong", "erdos_28", "IsAsymptoticBasis", "repFunc", "grekos_lower_bound", "borwein_lower_bound"]
+  },
+  {
+    "line": 229,
+    "type": "axiom",
+    "content": "**Grekos et al. (2003)**: For any asymptotic basis $A$ of order 2, $r_A(n) \\geq 6$ for infinitely many $n$. **Borwein et al.**: improved to $r_A(n) \\geq 8$ infinitely often.",
+    "symbol": "grekos_lower_bound",
+    "mathContext": "Proved by Grekos, Haddad, Helou, Pihko (2003) via combinatorial averaging. If $r_A(n) \\leq 5$ for all large $n$, a counting contradiction with the basis property arises. Borwein et al. later pushed the bound to 8. The progression 6 → 8 → ... → $\\infty$ (conjectured) shows gradual progress toward the full conjecture.",
+    "significance": "Best unconditional lower bounds toward the Erdős-Turán conjecture. Axiomatized here as the proofs would require substantial new formalization effort beyond the current scope.",
+    "relatedConcepts": ["borwein_lower_bound", "erdos_turan_weak", "IsAsymptoticBasis", "repFunc"]
+  },
+  {
+    "line": 471,
+    "type": "theorem",
+    "content": "**Sidon sets cannot be asymptotic bases**: If $A$ is an infinite Sidon set, then $A \\not\\in \\text{AsympBasis}$. The density bound $|A \\cap [0,N]| \\leq \\sqrt{N} + \\sqrt[4]{N} + 1$ makes full coverage impossible.",
+    "symbol": "sidon_not_basis",
+    "mathContext": "Proof by contradiction. If $A$ is a Sidon basis with threshold $N_0$, set $N = (4N_0+100)^2$. Coverage gives $N-N_0+1 \\leq |\\text{sumset}(A_N)| \\leq \\binom{|A_N|+1}{2}$. The tight Sidon bound (imported from `Erdos340`) gives $|A_N| \\leq 5N_0+126$. So $(5N_0+126)(5N_0+127)/2 \\geq (4N_0+100)^2-N_0+1$, expanding to $7N_0^2+333N_0+4000 \\leq 0$: impossible for any $N_0 \\geq 0$.",
+    "significance": "Structural result: Sidon sets are too sparse to cover all large integers. Proves the key incompatibility: $r_A \\leq 2$ (Sidon) cannot coexist with being an asymptotic basis, giving strong evidence for Erdős-Turán.",
+    "relatedConcepts": ["IsSidon", "sidon_density_bound", "IsAsymptoticBasis", "basis_element_count_sq"]
+  },
+  {
+    "line": 608,
+    "type": "theorem",
+    "content": "**Density lower bound for bases**: If $A$ is an asymptotic basis of order 2, then $|A \\cap [0,N]|^2 \\geq N - N_0 + 1$ for all $N \\geq N_0$. Hence $|A \\cap [0,N]| \\geq \\sqrt{N-N_0+1} \\sim \\sqrt{N}$.",
+    "symbol": "basis_element_count_sq",
+    "mathContext": "Proof: Every $n \\in [N_0, N]$ has a representation $n = a+b$ with $a,b \\in A \\cap [0,N] = S$. So $[N_0,N] \\subseteq \\text{sumset}(S) \\subseteq \\text{image of } S \\times S$, giving $|\\text{sumset}(S)| \\leq |S|^2$. Chaining: $N-N_0+1 = |[N_0,N]| \\leq |\\text{sumset}(S)| \\leq |S|^2$. This $\\sqrt{N}$ lower bound matches the Sidon set upper bound exactly.",
+    "significance": "Proves bases cannot be too sparse. Together with `sidon_not_basis`, $\\sqrt{N}$ is simultaneously the minimum density for bases AND the maximum density for Sidon sets — a beautiful duality in additive combinatorics.",
+    "relatedConcepts": ["IsAsymptoticBasis", "sidon_not_basis", "sidon_density_bound", "sumset"]
+  }
+]

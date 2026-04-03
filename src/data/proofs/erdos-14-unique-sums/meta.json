@@ -33,15 +33,17 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #14 asks about the density of integers representable in exactly one way as a+b with a,b∈A. The set B = uniqueSums(A) and U(N) = |{1,...,N}\\B| measures failures. Sidon sets (B₂ sequences, where all pairwise sums are distinct) have U(N)=0 but are limited to size O(N^{1/2}). Erdős (1975) constructed A with U(N) << N^{1/2+ε}, while Erdős-Freud showed ∃ A with U(N) < 2^{3/2}·N^{1/2} for finite N.",
+    "historicalContext": "Erdős Problem #14 emerged from the study of additive bases and representation functions. A Sidon set (B₂ sequence), introduced by Simon Sidon in 1932, has all pairwise sums distinct — equivalently, every integer has at most one representation as a sum of two elements. Sidon sets achieve U(N) = 0 (all sums are unique), but are limited to size O(√N) by the classical difference argument (k elements produce k(k-1)/2 distinct differences, bounded by N-1).\n\nThe tension in Problem #14: can a set have MANY unique sums without being as sparse as a Sidon set? Erdős asked two questions: (a) must U(N) always grow at least as fast as N^{1/2-ε}? (b) can U(N) grow slower than √N? The known results place tight constraints. Erdős constructed a set A achieving U(N) ≤ C·N^{1/2+ε} for every ε > 0, while Erdős and Freud showed explicit finite constructions with U(N) < 2^{3/2}·√N ≈ 2.83√N.\n\nA delicate formalization point: the quantifier structure of question (a) allows C to depend on ε, making it possible that U(N) = √N/log N satisfies both (a) and (b) simultaneously. The genuine resolution requires an Ω(√N) bound — a uniform lower bound. This subtle distinction between 'for each ε, a bound' versus 'a uniform bound' is made explicit in the Lean formalization.",
     "problemStatement": "Estimate F(N) = min_A U(N), the minimum non-unique count over all A. Is F(N) >> N^{1/2-ε}? Is F(N) = o(N^{1/2}) possible?",
     "text": "For A ⊆ ℕ, define B = {n : n = a+b uniquely with a≤b, a,b∈A}. Let U(N) = |{1,...,N}\\B| count non-uniquely representable integers. Sidon sets (all sums distinct) minimize U(N) = 0 but have |A∩[0,N]| = O(N^{1/2}). Erdős asked: how small can U(N) be for general A? The question connects to additive bases and combinatorial number theory.",
     "proofStrategy": "Define representation counting infrastructure: repCount, uniqueSums, nonUniqueCount. Prove Sidon characterization. Axiomatize the deep analytic results about optimal construction. Define sumset and non-unique count for the main problem statement.",
     "keyInsights": [
-      "Sidon sets: all pairwise sums distinct ↔ repCount=1 for all elements of sumset",
-      "Sidon sets have size O(N^{1/2}): sparse but perfectly unique",
-      "U(N) = 0 is achievable but only by sets too sparse to cover many integers",
-      "Erdős's construction: near-optimal A achieving U(N) << N^{1/2+ε}"
+      "The Sidon size bound $|A \\cap [1,N]| \\leq 2\\sqrt{N}$ is proved by a difference-injection argument: the $\\binom{k}{2}$ pairwise differences of $k$ elements must be distinct (Sidon property) and fit in $\\{1,\\ldots,N-1\\}$, giving $k(k-1)/2 \\leq N-1$.",
+      "Questions 14a and 14b are genuinely independent as stated due to quantifier sensitivity: 14a allows $C = C(\\varepsilon) \\to 0$ as $\\varepsilon \\to 0$, so $U(N) = \\sqrt{N}/\\log N$ satisfies both. Only an $\\Omega(\\sqrt{N})$ uniform lower bound would make 14b impossible.",
+      "The Erdős-Freud constant $2^{3/2} \\approx 2.83$ gives the explicit finite construction bound $U(N) < 2.83\\sqrt{N}$, showing that near-Sidon behavior (most sums unique) is achievable even with a dense set.",
+      "The difference between $B_2$ sequences (unique sums) and Sidon sets (unique sums, defined via a+b=c+d) is terminological: both require $r_A(n) \\leq 1$. The Lean formalization makes this explicit through the `IsSidon` predicate.",
+      "The `sidon_diff_injective` lemma is the key technical step: pairwise differences of a Sidon set are all distinct. This is equivalent to the definition but stated in the contrapositive for the size bound proof.",
+      "The interaction between Sidon sets and additive bases: Sidon sets minimize U(N) (all sums unique) but can't be additive bases (too sparse). Problem #14 asks how much sparsity can be traded for reduced non-uniqueness."
     ],
     "prerequisites": [
       "Additive combinatorics: sumsets, Sidon sets, B₂ sequences",
@@ -72,5 +74,76 @@
       "description": "Both study additive set problems from Erdős; #28 studies bases, #14 studies unique sums"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Problem Statement and Background",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Full statement of Problem #14a/b, known results (Erdős construction, Erdős-Freud bound), connection to Sidon sets, and references."
+    },
+    {
+      "id": "sec-repcount",
+      "title": "Part I: Representation Counting",
+      "startLine": 43,
+      "endLine": 63,
+      "summary": "Defines repCount (ways to write n as a+b with a≤b), uniqueSums, uniqueSums' (ExistsUnique formulation), sumset, nonUniqueSums."
+    },
+    {
+      "id": "sec-counting-functions",
+      "title": "Part II: Counting Functions",
+      "startLine": 65,
+      "endLine": 77,
+      "summary": "Defines nonUniqueCount A N (the main U(N) function), multiRepCount (sums with ≥2 representations), missingCount (missing sums)."
+    },
+    {
+      "id": "sec-sidon",
+      "title": "Part III: Sidon Sets",
+      "startLine": 79,
+      "endLine": 172,
+      "summary": "Defines IsSidon. Proves sidon_all_unique (Sidon → sumset ⊆ uniqueSums). Helper lemmas: sidon_diff_injective (all pairwise differences distinct), card_strict_pairs (k(k-1)/2 pairs via Prod.swap bijection)."
+    },
+    {
+      "id": "sec-sidon-size",
+      "title": "Sidon Size Bound",
+      "startLine": 174,
+      "endLine": 240,
+      "summary": "sidon_size_bound: |A ∩ {1,...,N}| ≤ 2√N. Proof: k(k-1)/2 distinct differences in {1,...,N-1} via Sidon injectivity; contradiction for k ≥ 2⌊√N⌋+1."
+    },
+    {
+      "id": "sec-problems",
+      "title": "Part IV: The Main Questions",
+      "startLine": 242,
+      "endLine": 287,
+      "summary": "Formalizes erdos_14a (∀A,ε: U(N) ≥ C·N^{1/2-ε} eventually) and erdos_14b (∃A: U(N)/√N → 0). Key formalization note: with current quantifiers, 14a does NOT imply ¬14b."
+    },
+    {
+      "id": "sec-omega-implies",
+      "title": "Omega(√N) Implies Not Little-o",
+      "startLine": 289,
+      "endLine": 335,
+      "summary": "omega_sqrt_implies_not_little_o: if ∀A ∃C>0 with U(N) ≥ C·√N eventually, then erdos_14b fails. Proof: contradicts the Tendsto-to-zero condition using a concrete large N."
+    },
+    {
+      "id": "sec-constructions",
+      "title": "Part V: Known Constructions",
+      "startLine": 337,
+      "endLine": 354,
+      "summary": "Three axioms: erdos_upper_construction (∃A with U(N) ≤ C·N^{1/2+ε} eventually), erdos_lower_infinitely_often (U(N) ≥ C·N^{1/3-ε} for ∃^∞ N), erdos_freud_finite (∀N ∃A with U(N) < 2^{3/2}·√N)."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Part VI: Examples",
+      "startLine": 356,
+      "endLine": 422,
+      "summary": "empty_repCount (empty set), singleton_uniqueSums ({k} → uniqueSums = {2k}), consecutive_many_nonunique ({1,...,n} has 4 = 1+3 = 2+2 non-uniquely represented)."
+    },
+    {
+      "id": "sec-perfect-sidon",
+      "title": "Part VII: Perfect Sidon Sets",
+      "startLine": 424,
+      "endLine": 441,
+      "summary": "IsPerfectSidon: Sidon set whose sumset covers ≥ N integers in {1,...,2N}. perfectSidonExists: asks whether (1-ε)-coverage is achievable for all large N."
+    }
+  ]
 }

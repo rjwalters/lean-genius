@@ -29,7 +29,7 @@
       }
     ],
     "dateAdded": "2026-03-29",
-    "axiomCount": 0,
+    "axiomCount": 3,
     "lineCount": 232,
     "prerequisites": [
       "Covering systems and congruence classes",
@@ -65,6 +65,16 @@
       "Well-ordering principle for natural numbers",
       "Achievability monotonicity",
       "Erdős Problem #2 parent formalization"
+    ]
+  },
+  "conclusion": {
+    "summary": "The exact maximum minimum modulus M for covering systems is proved to exist (via Nat.find on the non-achievable set), to be unique (via monotonicity contradiction), and to lie in [42, 616000] (from Owens and Balister bounds). The achievable set is completely characterized as the initial segment {0, 1, ..., M}. All structural theorems are proved without axioms; the bounds 42 and 616000 are inherited as axioms from the parent file.",
+    "implications": "This formalization provides a rigorous mathematical framework for the exact maximum minimum modulus. Any future improvement to either the lower bound (currently 42, from Owens' explicit construction) or upper bound (currently 616,000, from Balister et al.'s 2022 proof) directly constrains M via the gap-narrowing framework. Closing the gap would require either a new explicit covering system with minimum modulus > 42 (new construction) or a tighter upper bound proof.",
+    "openQuestions": [
+      "What is the exact value of M? Currently 42 ≤ M ≤ 616,000",
+      "Can the upper bound be improved below 616,000? Balister's proof uses a complex entropy argument",
+      "Can the lower bound be improved above 42? This requires a new covering system with minimum modulus > 42",
+      "Is there a covering system with minimum modulus 43, 44, ..., or do all such systems require moduli including some ≤ 42?"
     ]
   },
   "sections": [

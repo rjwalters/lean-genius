@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-e177-framework",
+    "proofId": "erdos-177-oq-04",
+    "range": { "startLine": 35, "endLine": 44 },
+    "type": "definition",
+    "title": "Coloring Framework: Colorings, Validity, AP Partial Sums",
+    "content": "Three core definitions establish the framework. `Coloring` is simply a function ℕ → ℤ (integer-valued, allowing any values). `IsValid` restricts to ±1 colorings (the true domain of the problem). `apPartialSum f a d k` computes the sum ∑_{i=0}^{k-1} f(a + i·d) — the partial sum along the arithmetic progression {a, a+d, a+2d, ..., a+(k-1)d}.",
+    "mathContext": "A $\\pm 1$ coloring $f: \\mathbb{N} \\to \\{-1, +1\\}$ assigns signs to integers. The discrepancy of $f$ over the AP $(a, d, k)$ is $\\left|\\sum_{i=0}^{k-1} f(a + id)\\right|$. The optimal discrepancy $h(d)$ minimizes the worst-case discrepancy over all APs with common difference $d$.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős discrepancy problem", "Finset.range", "arithmetic progressions", "sign sequences"],
+    "prerequisites": ["Coloring as a function type", "Finset.sum", "Int.natAbs"]
+  },
+  {
+    "id": "ann-e177-alternating",
+    "proofId": "erdos-177-oq-04",
+    "range": { "startLine": 50, "endLine": 94 },
+    "type": "insight",
+    "title": "Alternating Coloring: Optimal for d=1, Catastrophic for d=2",
+    "content": "The alternating coloring f(n) = (-1)^n is shown valid (takes values ±1 via parity of n). The key theorem `alternating_d1_bound` proves |∑_{i=0}^{k-1} (-1)^{a+i}| ≤ 1 for all a, k — consecutive pairs always cancel. The proof uses 2-step strong induction: base cases k=0 (sum=0) and k=1 (|±1|=1); inductive step reduces k+2 to k using (-1)^n + (-1)^{n+1} = 0.",
+    "mathContext": "For $d=1$: $\\sum_{i=0}^{k-1} (-1)^{a+i} = (-1)^a \\cdot \\sum_{i=0}^{k-1} (-1)^i$. If $k$ is even, the sum is 0; if $k$ is odd, the sum is $\\pm 1$. The maximum is 1. The 2-step induction: $\\mathrm{apSum}(k+2) = \\mathrm{apSum}(k) + (-1)^{a+k} + (-1)^{a+k+1} = \\mathrm{apSum}(k) + 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.strongRecOn", "parity arguments", "telescoping sums", "2-step induction"],
+    "prerequisites": ["Nat.even_or_odd", "pow_succ", "pow_mul", "Finset.sum_range_succ"]
+  },
+  {
+    "id": "ann-e177-alternating-d2",
+    "proofId": "erdos-177-oq-04",
+    "range": { "startLine": 96, "endLine": 112 },
+    "type": "insight",
+    "title": "Alternating Fails Completely for d=2",
+    "content": "The theorem `alternating_d2_all_same` proves that for d=2, the alternating coloring gives a uniform partial sum: ∑_{i=0}^{k-1} (-1)^{a+2i} = (-1)^a · k. This is because every term has the same sign: (-1)^{a+2i} = (-1)^a · ((-1)^2)^i = (-1)^a. So the discrepancy grows linearly in k — the worst possible behavior. This illustrates why d=1 is special for the alternating coloring.",
+    "mathContext": "For $d=2$: $(-1)^{a+i\\cdot 2} = (-1)^a \\cdot ((-1)^2)^i = (-1)^a$. So all $k$ terms have the same sign $(-1)^a$, and $\\sum_{i=0}^{k-1} f(a+2i) = (-1)^a \\cdot k$. The discrepancy is $k$ — unbounded. The Lean proof uses `pow_add` and `neg_one_sq` to simplify $(-1)^{a+2i}$.",
+    "significance": "key",
+    "relatedConcepts": ["pow_add", "neg_one_sq", "period-2 sequences", "bad colorings for even d"],
+    "prerequisites": ["neg_one_sq", "pow_mul", "ring tactic", "push_cast"]
+  },
+  {
+    "id": "ann-e177-optimal-disc",
+    "proofId": "erdos-177-oq-04",
+    "range": { "startLine": 172, "endLine": 198 },
+    "type": "definition",
+    "title": "Optimal Discrepancy h(d) and Three Deep Bounds",
+    "content": "`optimalDisc d` is defined via `sInf` over the set of achievable discrepancy bounds. Three axiomatic results encode the deepest known theorems. `roth_lower_bound`: h(d) ≥ c·√d (Roth, via Fourier analysis on ℤ/Nℤ). `beck_improved_upper`: h(d) ≤ C·d^{1+ε} for any ε>0 (Beck's improvement from d^{8+ε}). `rudin_shapiro_bound`: the Rudin-Shapiro sequence achieves |∑| ≤ C·√N·(log N + 1) for all d and all APs of length N simultaneously.",
+    "mathContext": "The Roth bound uses exponential sums: $\\sum_{n \\leq N} f(n) e^{2\\pi i n \\theta}$ concentrated on arithmetic progressions. The Rudin-Shapiro sequence $r_n = (-1)^{\\text{number of '11' in binary of }n}$ achieves $|\\hat{r}(\\xi)| = O(\\sqrt{N})$ for all frequencies $\\xi$, giving $O(\\sqrt{N}\\log N)$ discrepancy simultaneously for all APs.",
+    "significance": "key",
+    "relatedConcepts": ["Roth's theorem", "Fourier analysis on cyclic groups", "Rudin-Shapiro sequence", "exponential sums", "discrepancy theory"],
+    "prerequisites": ["sInf in Nat", "Real.log", "Real.rpow", "Filter.atTop"]
+  },
+  {
+    "id": "ann-e177-optimalDisc-one",
+    "proofId": "erdos-177-oq-04",
+    "range": { "startLine": 227, "endLine": 256 },
+    "type": "technique",
+    "title": "Exact Computation: optimalDisc 1 = 1 (Axiom-Free)",
+    "content": "The theorem `optimalDisc_one` proves h(1) = 1 exactly using two inequalities via `le_antisymm`. Upper bound: alternating witnesses 1 ∈ {k : h ≤ k for some valid h}, so sInf ≤ 1. Lower bound: every k in the set satisfies k ≥ 1 because any length-1 AP has discrepancy |f(a)| = 1 (since f is a ±1 coloring). The proof uses `csInf_le` and `le_csInf` from Mathlib's conditionally complete lattice API. This is entirely axiom-free.",
+    "mathContext": "For $d=1$: $h(1) = \\min_f \\max_{a,k} \\left|\\sum_{i=0}^{k-1} f(a+i)\\right|$. Lower bound: $k=1$ gives $|f(a)| = 1$ for any valid $f$, so $h(1) \\geq 1$. Upper bound: alternating achieves $\\leq 1$. So $h(1) = 1$ exactly. The Lean proof of the lower bound uses `disc_length_1`: any valid $f$ at any starting point $a$ has $|f(a)| = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["csInf_le", "le_csInf", "conditionally complete lattice", "sInf characterization"],
+    "prerequisites": ["ConditionallyCompleteLinearOrder", "csInf_le", "le_csInf", "Nat.le_antisymm"]
+  },
+  {
+    "id": "ann-e177-trivial-upper",
+    "proofId": "erdos-177-oq-04",
+    "range": { "startLine": 146, "endLine": 166 },
+    "type": "technique",
+    "title": "Trivial Upper and Exact Length-1 Bounds",
+    "content": "`disc_trivial_upper` proves the trivial bound |∑| ≤ k for any valid coloring and AP of length k. The proof is by induction on k using the triangle inequality `Int.natAbs_add_le` and the fact that |f(a+n·d)| = 1 for valid colorings. `disc_length_1` gives the exact result: for k=1, |f(a)| = 1 exactly. These are used as building blocks in the `optimalDisc_one` proof.",
+    "mathContext": "$\\left|\\sum_{i=0}^{k-1} f(a+id)\\right| \\leq \\sum_{i=0}^{k-1} |f(a+id)| = k$ (since $|f(a+id)| = 1$). For $k=1$: $|f(a)| = 1$ exactly. Lean: `Int.natAbs_add_le` gives the triangle inequality for integer absolute values.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.natAbs_add_le", "triangle inequality", "induction on k", "valid colorings"],
+    "prerequisites": ["Int.natAbs", "Finset.sum_range_succ", "omega tactic"]
+  },
+  {
+    "id": "ann-e177-modular",
+    "proofId": "erdos-177-oq-04",
+    "range": { "startLine": 130, "endLine": 141 },
+    "type": "concept",
+    "title": "Modular Colorings: Generalizing Alternating",
+    "content": "`modColoring m` defines a period-m coloring: f(n) = +1 if n mod m < m/2, else -1. This generalizes the alternating coloring (period 2) to arbitrary periods. The theorem `mod2_is_alternating_like` verifies that period-2 modular coloring behaves like the alternating coloring. Modular colorings are designed to minimize discrepancy for APs with specific step sizes dividing m.",
+    "mathContext": "The period-$m$ coloring assigns $+1$ to the first $\\lfloor m/2 \\rfloor$ elements in each period and $-1$ to the rest. For $m=2$: $f(n) = +1$ if $n$ even, $-1$ if $n$ odd (the alternating coloring). For $m=d$: the coloring is tailored to minimize discrepancy for step $d$. Modular colorings give bounded discrepancy for APs whose step divides $m$.",
+    "significance": "supporting",
+    "relatedConcepts": ["period-m sequences", "Legendre symbol", "multiplicative sequences", "character sums"],
+    "prerequisites": ["Nat.dvd", "Nat.mod", "if-then-else in Lean", "simp lemmas for mod"]
+  },
+  {
+    "id": "ann-e177-discrepancy-gap",
+    "proofId": "erdos-177-oq-04",
+    "range": { "startLine": 200, "endLine": 221 },
+    "type": "context",
+    "title": "The Open Gap: √d vs d^{1+ε}",
+    "content": "The `discrepancy_gap` theorem is deliberately trivial (1+1=2 proved by omega) — a placeholder formalizing that the gap between the √d lower and d^{1+ε} upper bounds in discrepancy theory remains open. The docstring explains the mathematical content: closing the gap from exponent difference ~1/2 to 0 would be a major advance in discrepancy theory, with connections to Heilbronn's problem on lattice points in thin triangles and Erdős-Turán bounds.",
+    "mathContext": "The known bounds are $c\\sqrt{d} \\leq h(d) \\leq C \\cdot d^{1+\\varepsilon}$. The conjectured truth is $h(d) \\sim d^{1/2+o(1)}$. The exponent gap is approximately $1/2$: the upper bound exponent is 1 and the lower bound exponent is $1/2$. Beck's original bound was $d^{8+\\varepsilon}$ (1981); later work improved this to $d^{1+\\varepsilon}$. The Roth lower bound from 1964 remains unimproved.",
+    "significance": "context",
+    "relatedConcepts": ["Heilbronn's problem", "lattice points", "Erdős-Turán inequality", "harmonic analysis and number theory"],
+    "prerequisites": ["discrepancy theory overview", "omega tactic", "Roth 1964", "Beck 1981"]
+  }
+]

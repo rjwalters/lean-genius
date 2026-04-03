@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "line": 31,
+    "type": "definition",
+    "content": "The **reciprocal sum** $\\Sigma_{1/P} = \\sum_{p \\in P} \\frac{1}{p}$ over a finite set of primes (or naturals). Erdős #307 asks: can $\\Sigma_{1/P} \\cdot \\Sigma_{1/Q} = 1$ for two prime sets $P, Q$?",
+    "symbol": "reciprocalSum",
+    "mathContext": "Egyptian fraction problems study sums $\\sum 1/n_i = r$ over integer sets. Here the question is whether the product of two such sums can equal 1. The reciprocal sum over the first few primes: $1/2 + 1/3 + 1/5 = 31/30 > 1$ (just barely), $1/2 + 1/3 + 1/5 + 1/7 + \\cdots$ diverges.",
+    "significance": "Core object of Erdős Problem #307: can two prime reciprocal sums multiply to 1? The problem has been open for decades.",
+    "relatedConcepts": ["reciprocalProduct", "IsSetOfPrimes", "reciprocal_sum_three_primes_le"]
+  },
+  {
+    "line": 48,
+    "type": "theorem",
+    "content": "For any 2 distinct primes $\\{p, q\\}$: $\\frac{1}{p} + \\frac{1}{q} \\leq \\frac{5}{6}$. The maximum $\\frac{1}{2} + \\frac{1}{3} = \\frac{5}{6}$ is achieved at $\\{2,3\\}$.",
+    "symbol": "reciprocal_sum_two_primes_le",
+    "mathContext": "Among distinct primes $p < q$: $p \\geq 2$ and $q \\geq 3$ (both can't be 2). So $1/p \\leq 1/2$ and $1/q \\leq 1/3$, giving sum $\\leq 5/6$. This is used as a building block for the 3-prime bound and the no-2-3-solution theorem.",
+    "significance": "Tight bound for 2-prime reciprocal sums. Used as a lemma for ruling out small-case solutions to the product-1 problem.",
+    "relatedConcepts": ["reciprocal_sum_three_primes_le", "no_two_three_solution", "reciprocalSum"]
+  },
+  {
+    "line": 82,
+    "type": "theorem",
+    "content": "For any 3 distinct primes: $\\frac{1}{p_1} + \\frac{1}{p_2} + \\frac{1}{p_3} \\leq \\frac{31}{30}$. The maximum $\\frac{1}{2}+\\frac{1}{3}+\\frac{1}{5} = \\frac{31}{30}$ is achieved at $\\{2,3,5\\}$.",
+    "symbol": "reciprocal_sum_three_primes_le",
+    "mathContext": "Proof by pigeonhole: among 3 distinct primes, at most 2 are in $\\{2,3\\}$, so at least one is $\\geq 5$ (reciprocal $\\leq 1/5$). Among the remaining two, at most one equals 2, so one is $\\geq 3$ (reciprocal $\\leq 1/3$). Total $\\leq 1/2 + 1/3 + 1/5 = 31/30$. The `interval_cases` tactic handles the case analysis over primes $< 5$.",
+    "significance": "Key bound enabling the no-2-3 solution theorem. The tight value 31/30 = 1.0333... just barely exceeds 1, making the product with 5/6 equal to 31/36 < 1.",
+    "relatedConcepts": ["no_two_three_solution", "reciprocal_sum_two_primes_le"]
+  },
+  {
+    "line": 157,
+    "type": "theorem",
+    "content": "There is no solution to $(\\Sigma_{1/P})(\\Sigma_{1/Q}) = 1$ with $|P| = 2$ and $|Q| = 3$ prime sets. The product of their reciprocal sums is bounded above by $\\frac{5}{6} \\cdot \\frac{31}{30} = \\frac{31}{36} < 1$.",
+    "symbol": "no_two_three_solution",
+    "mathContext": "For $|P|=2$: $\\Sigma_{1/P} \\leq 5/6$. For $|Q|=3$: $\\Sigma_{1/Q} \\leq 31/30$. Product $\\leq (5/6)(31/30) = 155/180 = 31/36 \\approx 0.861 < 1$. So no prime sets of these sizes can achieve product exactly 1. This eliminates one infinite family of candidate solutions.",
+    "significance": "Eliminates the (|P|=2, |Q|=3) case of Erdős #307. The proof works by combining two tight bounds; neither bound alone is sufficient.",
+    "relatedConcepts": ["reciprocal_sum_two_primes_le", "reciprocal_sum_three_primes_le", "reciprocalProduct"]
+  },
+  {
+    "line": 181,
+    "type": "theorem",
+    "content": "If $1 \\in P$ and $|P| > 1$ and $(\\Sigma_{1/P})(\\Sigma_{1/Q}) = 1$, then $\\Sigma_{1/P} > 1$. The element 1 contributes reciprocal $1/1 = 1$, and other elements contribute positively.",
+    "symbol": "one_helps_balance",
+    "mathContext": "Splitting: $\\Sigma_{1/P} = 1/1 + \\sum_{p \\in P \\setminus \\{1\\}} 1/p > 1$ since all terms are positive. Note: 1 is not prime, so this applies to the generalized problem. The result forces $\\Sigma_{1/Q} < 1$ (since their product is 1), ruling out 1 being in both sets.",
+    "significance": "Constrains solutions where 1 is included. Eliminates cases where $1 \\in P$ by showing $\\Sigma_{1/Q}$ would need to be less than 1, heavily restricting $Q$.",
+    "relatedConcepts": ["reciprocalSum", "reciprocalProduct"]
+  },
+  {
+    "line": 218,
+    "type": "theorem",
+    "content": "**Axiom eliminated**: The product condition $(\\Sigma_{1/P})(\\Sigma_{1/Q}) = 1$ is equivalent to $\\Sigma_{1/Q} = (\\Sigma_{1/P})^{-1}$. This was previously an axiom in the parent file; it is a trivial algebraic identity.",
+    "symbol": "product_rigidity",
+    "mathContext": "For positive real $a$: $a \\cdot b = 1 \\iff b = 1/a$. Since $\\Sigma_{1/P} > 0$ (P is a nonempty prime set), the equivalence follows from `field_simp` and `mul_inv_cancel`. This axiom was unnecessary — the parent formalization axiomatized a trivial consequence of field arithmetic.",
+    "significance": "Demonstrates that some 'axioms' in early formalizations are really theorems. Eliminating such false axioms is important for maintaining the axiom integrity of a proof gallery.",
+    "relatedConcepts": ["reciprocalProduct", "reciprocalSum", "IsSetOfPrimes"]
+  }
+]

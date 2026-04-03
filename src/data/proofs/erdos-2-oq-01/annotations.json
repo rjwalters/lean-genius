@@ -1,58 +1,74 @@
-{
-  "annotations": [
-    {
-      "line": 38,
-      "type": "definition",
-      "content": "A natural number $m$ is **achievable** if some covering system has minimum modulus $\\geq m$.",
-      "symbol": "Achievable"
-    },
-    {
-      "line": 45,
-      "type": "theorem",
-      "content": "Achievability is downward-monotone: if $m$ is achievable and $m' \\leq m$, then $m'$ is achievable.",
-      "symbol": "achievable_mono"
-    },
-    {
-      "line": 65,
-      "type": "definition",
-      "content": "$M$ is the **exact maximum minimum modulus** iff $\\text{Achievable}(M) \\wedge \\lnot\\text{Achievable}(M+1)$.",
-      "symbol": "IsExactMaxMinModulus"
-    },
-    {
-      "line": 71,
-      "type": "theorem",
-      "content": "Equivalent formulation: $M$ is exact max iff some covering system achieves min modulus $M$ and every covering system has a modulus $\\leq M$.",
-      "symbol": "isExactMax_iff"
-    },
-    {
-      "line": 89,
-      "type": "theorem",
-      "content": "The exact maximum minimum modulus is **unique**: if both $M_1$ and $M_2$ satisfy the definition, then $M_1 = M_2$.",
-      "symbol": "exact_max_unique"
-    },
-    {
-      "line": 100,
-      "type": "theorem",
-      "content": "The exact maximum **exists** by the well-ordering principle: $\\texttt{Nat.find}$ extracts the smallest non-achievable value $n_0$, giving $M = n_0 - 1$.",
-      "symbol": "exists_exact_max"
-    },
-    {
-      "line": 130,
-      "type": "theorem",
-      "content": "**Gap theorem**: $42 \\leq M \\leq 616{,}000$ from Owens' construction and Balister et al.'s bound.",
-      "symbol": "gap_bounds"
-    },
-    {
-      "line": 155,
-      "type": "theorem",
-      "content": "The achievable set is exactly $\\{0, 1, \\ldots, M\\}$: $\\text{Achievable}(m) \\iff m \\leq M$.",
-      "symbol": "achievable_iff_le_max"
-    },
-    {
-      "line": 165,
-      "type": "theorem",
-      "content": "**Gap narrowing**: any improved achievability bound $L$ or non-achievability bound $U+1$ constrains $L \\leq M \\leq U$.",
-      "symbol": "gap_narrowing"
-    }
-  ]
-}
+[
+  {
+    "id": "ann-e2oq1-achievable",
+    "proofId": "erdos-2-oq-01",
+    "range": { "startLine": 35, "endLine": 60 },
+    "type": "definition",
+    "title": "Achievability: Downward-Monotone Predicate",
+    "content": "`Achievable m` holds if some covering system has all moduli ≥ m. This delegates to `CoveringSystem.hasMinModulusAtLeast m` from the parent file. The theorem `achievable_mono` proves downward-monotonicity: if minimum modulus m is achievable, then so is any m' ≤ m (the same covering system witnesses both). Two concrete instances follow: 42 is achievable (Owens 2014) and nothing above 616,000 is achievable (Balister et al. 2022).",
+    "mathContext": "Define $\\mathrm{Achievable}(m)$ iff $\\exists$ covering system $C$ with $\\min_{c \\in C} \\mathrm{mod}(c) \\geq m$. Monotonicity: $m' \\leq m \\Rightarrow \\mathrm{Achievable}(m) \\Rightarrow \\mathrm{Achievable}(m')$. Owens (2014): $\\mathrm{Achievable}(42)$. Balister et al. (2022): $m > 616{,}000 \\Rightarrow \\lnot\\mathrm{Achievable}(m)$.",
+    "significance": "key",
+    "relatedConcepts": ["CoveringSystem", "hasMinModulusAtLeast", "downward-closed sets", "monotone predicates"],
+    "prerequisites": ["Covering systems from Erdos2Problem.lean", "omega tactic", "Lean's ∃ elim"]
+  },
+  {
+    "id": "ann-e2oq1-isExactMax",
+    "proofId": "erdos-2-oq-01",
+    "range": { "startLine": 66, "endLine": 88 },
+    "type": "definition",
+    "title": "IsExactMaxMinModulus: The Boundary Point",
+    "content": "`IsExactMaxMinModulus M` is defined as: M is achievable AND M+1 is not. This makes M the boundary between the achievable and non-achievable regions. The equivalent characterization `isExactMax_iff` rephrases this as: (i) some covering system achieves minimum modulus M, and (ii) every covering system has at least one modulus ≤ M. The equivalence is proved by pushing negation through the definition.",
+    "mathContext": "$M$ is the exact maximum iff $\\mathrm{Achievable}(M) \\land \\lnot\\mathrm{Achievable}(M+1)$. Equivalently: (i) $\\exists C: \\min C \\geq M$ and (ii) $\\forall C: \\exists c \\in C: \\mathrm{mod}(c) \\leq M$. Condition (ii) says no covering system can 'avoid' moduli up to $M$ — some class must have modulus $\\leq M$.",
+    "significance": "key",
+    "relatedConcepts": ["boundary conditions", "infimum characterization", "push_neg tactic", "existential reformulation"],
+    "prerequisites": ["Achievable predicate", "push_neg", "by_contra", "omega"]
+  },
+  {
+    "id": "ann-e2oq1-uniqueness",
+    "proofId": "erdos-2-oq-01",
+    "range": { "startLine": 94, "endLine": 105 },
+    "type": "technique",
+    "title": "Uniqueness via Monotonicity Contradiction",
+    "content": "`exact_max_unique` proves that at most one M can satisfy `IsExactMaxMinModulus`. The proof is a clean contradiction argument: assume M₁ < M₂ are both exact maxima. Then M₁+1 ≤ M₂, and since M₂ is achievable, monotonicity gives Achievable(M₁+1). But M₁ being an exact max requires ¬Achievable(M₁+1) — contradiction. The symmetric case (M₁ > M₂) is handled similarly.",
+    "mathContext": "If $M_1 < M_2$ are both exact maxima: $M_1 + 1 \\leq M_2$, so $\\mathrm{Achievable}(M_2) \\Rightarrow \\mathrm{Achievable}(M_1+1)$ by monotonicity. But $\\mathrm{IsExactMaxMinModulus}(M_1)$ requires $\\lnot\\mathrm{Achievable}(M_1+1)$. Contradiction. The Lean proof uses `Nat.lt_or_gt_of_ne` for the case split.",
+    "significance": "key",
+    "relatedConcepts": ["uniqueness by contradiction", "monotonicity", "Nat.lt_or_gt_of_ne", "boundary uniqueness"],
+    "prerequisites": ["achievable_mono", "omega", "rcases", "Nat.lt_or_gt_of_ne"]
+  },
+  {
+    "id": "ann-e2oq1-existence",
+    "proofId": "erdos-2-oq-01",
+    "range": { "startLine": 107, "endLine": 145 },
+    "type": "technique",
+    "title": "Existence via Well-Ordering: Nat.find on Non-Achievables",
+    "content": "`exists_exact_max` proves that M exists using the well-ordering principle. The set of non-achievable naturals is nonempty (616001 is not achievable by Balister). `Nat.find` extracts its minimum n₀. If n₀ = 0, then 0 is not achievable — but every covering system is trivially achievable at 0 (all moduli ≥ 0), giving a contradiction. So n₀ ≥ 1, and M = n₀ - 1 is achievable (by minimality of n₀) and n₀ = M+1 is not achievable. The gap theorem 42 ≤ M ≤ 616,000 follows from the achievability results.",
+    "mathContext": "Well-ordering: let $n_0 = \\min\\{n \\in \\mathbb{N} : \\lnot\\mathrm{Achievable}(n)\\}$. Claim: $n_0 \\geq 1$ (since $\\mathrm{Achievable}(0)$ is vacuous). Then $M = n_0 - 1$ satisfies: $\\mathrm{Achievable}(M)$ (by minimality of $n_0$: all values $< n_0$ are achievable) and $\\lnot\\mathrm{Achievable}(M+1)$ (since $M+1 = n_0$ is not achievable). Lean: `Nat.find_spec`, `Nat.find_min`, `Nat.sub_add_cancel`.",
+    "significance": "key",
+    "relatedConcepts": ["well-ordering principle", "Nat.find", "Nat.find_spec", "Nat.find_min", "minimum of non-achievable set"],
+    "prerequisites": ["Nat.find API", "Classical.dec", "Nat.sub_add_cancel", "omega for n₀ ≥ 1"]
+  },
+  {
+    "id": "ann-e2oq1-characterization",
+    "proofId": "erdos-2-oq-01",
+    "range": { "startLine": 147, "endLine": 175 },
+    "type": "insight",
+    "title": "Complete Characterization: Achievable Set Is an Initial Segment",
+    "content": "`achievable_iff_le_max` proves that for the unique exact maximum M: Achievable m ↔ m ≤ M. This completely characterizes the achievable set as {0, 1, ..., M} — a downward-closed initial segment of ℕ. The forward direction uses the definition of exact max (M+1 is not achievable, so nothing above M can be achievable by monotonicity). The backward direction uses monotonicity from achievable_42 (which gives Achievable(M) since M ≥ 42).",
+    "mathContext": "The achievable set $\\mathcal{A} = \\{m \\in \\mathbb{N} : \\mathrm{Achievable}(m)\\}$ is exactly $\\{0, 1, \\ldots, M\\}$. This is a formal statement of the 'initial segment' property of downward-closed predicates with a finite maximum. The characterization enables the gap-narrowing framework: any improvement to either the lower bound (42) or upper bound (616000) directly tightens the known range for M.",
+    "significance": "key",
+    "relatedConcepts": ["initial segments", "downward-closed sets", "interval characterization", "gap narrowing"],
+    "prerequisites": ["IsExactMaxMinModulus", "achievable_mono", "not_achievable_gt_616000", "omega"]
+  },
+  {
+    "id": "ann-e2oq1-gap",
+    "proofId": "erdos-2-oq-01",
+    "range": { "startLine": 117, "endLine": 145 },
+    "type": "insight",
+    "title": "The Known Gap: 42 ≤ M ≤ 616,000",
+    "content": "The gap theorem proves 42 ≤ M ≤ 616,000 as a formal consequence of Owens' construction and Balister's bound. Lower bound: if M < 42 then Achievable(42) gives Achievable(M+1) by monotonicity — contradicting M being the exact maximum. Upper bound: if M > 616,000 then M is not achievable by Balister's bound — contradicting the definition of M. The gap between 42 and 616,000 (a factor of ~14,667) remains the fundamental open question.",
+    "mathContext": "From Owens (2014): $\\mathrm{Achievable}(42)$, so $M \\geq 42$. From Balister et al. (2022): $\\lnot\\mathrm{Achievable}(616{,}001)$, so $M \\leq 616{,}000$. Thus $42 \\leq M \\leq 616{,}000$. The Lean proof: lower bound by `achievable_mono` applied to Owens; upper bound by `not_achievable_gt_616000` applied to the definition of exact max.",
+    "significance": "key",
+    "relatedConcepts": ["Owens 2014", "Balister et al. 2022", "Hough 2015", "interval containment"],
+    "prerequisites": ["IsExactMaxMinModulus", "achievable_42", "not_achievable_gt_616000", "omega"]
+  }
+]

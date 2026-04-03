@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-e131-definitions",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 47, "endLine": 68 },
+    "type": "definition",
+    "title": "Two Non-Dividing Definitions and Their Separation",
+    "content": "Two formalizations of 'non-dividing' are compared. `IsNonDividing` requires that no element a divides the sum of a subset S ⊆ A \\ {a} with |S| ≥ 2. `IsNonDividingAlt` is strictly stronger: no element divides the sum of ANY nonempty subset not containing it (including singletons). The theorem `nondividingAlt_implies_nondividing` proves one direction; the converse is shown false by an explicit counterexample.",
+    "mathContext": "$A \\subseteq \\mathbb{N}$ is **non-dividing** if $\\forall a \\in A, \\forall S \\subseteq A\\setminus\\{a\\}$ with $|S| \\geq 2$: $a \\nmid \\sum_{s \\in S} s$. The alternative definition requires $a \\nmid \\sum_{s \\in S} s$ for ALL nonempty $S \\subseteq A \\setminus \\{a\\}$. The counterexample $A = \\{2, 4\\}$: $2 \\nmid$ any sum of $\\geq 2$ elements from $\\{4\\}$ (vacuously), but $2 \\mid 4$.",
+    "significance": "key",
+    "relatedConcepts": ["IsNonAveraging", "sum predicates in Lean", "Finset.erase", "decidability"],
+    "prerequisites": ["divisibility in ℕ", "Finset API in Lean 4", "Finset.card", "Finset.sum"]
+  },
+  {
+    "id": "ann-e131-counterexample",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 70, "endLine": 86 },
+    "type": "technique",
+    "title": "Counterexample {2, 4}: Proving Non-Equivalence",
+    "content": "The theorem `nondividing_not_iff_alt` provides the explicit witness {2, 4} that separates `IsNonDividing` from `IsNonDividingAlt`. The proof that {2,4} is non-dividing is vacuous: the erase sets {4} and {2} each have cardinality ≤ 1, so no S with |S| ≥ 2 exists. The proof that {2,4} fails IsNonDividingAlt is direct: a=2, B={4}, 2 ∣ 4.",
+    "mathContext": "${\\{2, 4\\}}$ satisfies IsNonDividing vacuously (no subset of size $\\geq 2$ in the complement), but fails IsNonDividingAlt since $2 \\mid 4$. This shows the qualifier $|S| \\geq 2$ in the main definition is non-trivial: it makes the property easier to satisfy near the boundary.",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuous truth", "constructive counterexamples", "logical equivalence vs implication"],
+    "prerequisites": ["propositional logic", "Lean's decide tactic", "Finset.mem_insert"]
+  },
+  {
+    "id": "ann-e131-nonaveraging",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 87, "endLine": 104 },
+    "type": "insight",
+    "title": "Non-Dividing Implies Non-Averaging",
+    "content": "A set is non-averaging if no element equals the arithmetic mean of other elements. `nondividing_implies_nonaveraging` proves that non-dividing sets are always non-averaging: if a = (Σbᵢ)/k, then a·k = Σbᵢ, so a divides the sum — contradicting non-dividing. This implication is the key structural link exploited by Pham-Zakharov: bounds on non-averaging sets transfer to non-dividing sets.",
+    "mathContext": "If $a = \\frac{1}{k}\\sum_{i=1}^k b_i$ (non-averaging violation), then $a \\cdot k = \\sum b_i$, so $a \\mid \\sum b_i$ (non-dividing violation). The converse fails: non-averaging allows $a \\mid \\sum b_i$ as long as $\\sum b_i / k \\neq a$. The proof in Lean uses `div_eq_iff` to convert the rational average to an integer divisibility statement.",
+    "significance": "key",
+    "relatedConcepts": ["IsNonAveraging", "cap sets", "non-averaging sets", "arithmetic progressions", "Szemerédi's theorem"],
+    "prerequisites": ["rational arithmetic", "casting ℕ → ℚ in Lean", "Nat.cast_ne_zero"]
+  },
+  {
+    "id": "ann-e131-F-definition",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 108, "endLine": 123 },
+    "type": "definition",
+    "title": "The Extremal Function F(N) and Monotonicity",
+    "content": "F(N) is defined as the supremum of cardinalities over all non-dividing subsets of {1,...,N}. The `noncomputable` keyword reflects that finding the maximum is not constructively computable in general (it requires searching over all 2^N subsets). `F_monotonic` proves F is weakly increasing in N: any non-dividing subset of {1,...,N} is also a subset of {1,...,M} for M ≥ N.",
+    "mathContext": "$F(N) = \\max\\{|A| : A \\subseteq \\{1, \\ldots, N\\},\\, A \\text{ is non-dividing}\\}$. In Lean: $F(N) = \\sup\\{|A| : A \\in \\mathcal{P}(\\{1,\\ldots,N\\}),\\, A \\subseteq [1,N] \\land \\mathrm{IsNonDividing}(A)\\}$. Monotonicity: $N \\leq M \\implies F(N) \\leq F(M)$ follows from $[1,N] \\subseteq [1,M]$.",
+    "significance": "key",
+    "relatedConcepts": ["extremal combinatorics", "Finset.sup", "noncomputable definitions", "powerset enumeration"],
+    "prerequisites": ["Finset.filter", "Finset.powerset", "Finset.Icc", "Finset.sup"]
+  },
+  {
+    "id": "ann-e131-pham-zakharov",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 127, "endLine": 165 },
+    "type": "insight",
+    "title": "The Pham-Zakharov 2024 Upper Bound and Negative Resolution",
+    "content": "The axiom `pham_zakharov_upper_bound` encodes the 2024 result: F(N) ≤ N^{1/4+o(1)}, where o(1) is formalized as a function ε with |ε(N)| → 0. The theorem `original_question_answered_no` then derives the negative answer to Erdős's question from this axiom via a real-analysis argument: if F(N) > N^{1/2-o(1)} were true, then for large N one would have N^{1/2} < F(N) ≤ N^{1/4+o(1)} < N^{1/2}, a contradiction (since 1/4 + o(1) < 1/2 for small enough ε).",
+    "mathContext": "The Pham-Zakharov argument: non-dividing sets are non-averaging (proved above), and non-averaging sets in $\\{1,\\ldots,N\\}$ have size $\\leq N^{1/4+o(1)}$ via a connection to cap sets in $\\mathbb{F}_3^n$ (Gowers 2001 style). The formal proof of `original_question_answered_no` uses `Real.rpow_lt_rpow_of_exponent_lt` to compare $N^{1/4+\\epsilon}$ with $N^{1/2}$ when $1/4+\\epsilon < 1/2$.",
+    "significance": "key",
+    "relatedConcepts": ["cap sets", "non-averaging sets", "Fourier analysis on finite groups", "additive combinatorics", "o(1) notation"],
+    "prerequisites": ["Real.rpow", "limit definitions (o(1))", "axiom declarations in Lean 4", "Real.rpow_lt_rpow_of_exponent_lt"]
+  },
+  {
+    "id": "ann-e131-csaba-straus",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 167, "endLine": 211 },
+    "type": "concept",
+    "title": "Lower Bounds: Csaba's N^{1/5} and the Straus Constant",
+    "content": "Two lower bounds are formalized. Csaba's bound F(N) ≫ N^{1/5} is given as an axiom. The Straus constant √(2/log 2) ≈ 1.699 appears in the exponential lower bound F(N) > exp((√(2/log 2) + o(1))√(log N)), and is bounded: 1.6 < √(2/log 2) < 1.8. The bounds 2/3 < log 2 < 3/4 are proved from scratch using Taylor series approximations to exp.",
+    "mathContext": "The bounds $2/3 < \\log 2 < 3/4$ are proved via: (1) $e^{3/4} > 2$ (Taylor sum of order 3: $1 + 3/4 + 9/32 = 65/32 > 2$), so $\\log 2 < 3/4$; (2) $e^{2/3} < 2$ (using `Real.exp_bound` for $|x| \\leq 1$ with 5 terms), so $\\log 2 > 2/3$. Then $\\sqrt{2/\\log 2} \\in (1.6, 1.8)$ follows from monotonicity of $\\sqrt{\\cdot}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Taylor series for exp", "log bounds", "Real.exp_bound", "Real.sqrt", "Straus construction"],
+    "prerequisites": ["Real.log_lt_iff_lt_exp", "Real.lt_log_iff_exp_lt", "Real.sum_le_exp_of_nonneg", "nlinarith"]
+  },
+  {
+    "id": "ann-e131-erdos-conjecture-false",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 229, "endLine": 295 },
+    "type": "technique",
+    "title": "Disproving Erdős's Original Logarithmic Conjecture",
+    "content": "Erdős originally conjectured F(N) < (log N)^O(1). The theorem `erdos_original_conjecture_false` refutes this using Csaba's polynomial lower bound. The proof is a multi-step real-analysis argument: suppose F(N) ≤ (log N)^C for all large N. Using the inequality log x ≤ x^δ/δ (which follows from `Real.log_le_rpow_div`), one gets (log N)^C ≤ (10C)^C · N^{1/10}. Combined with Csaba's F(N) ≥ c·N^{1/5} = c·N^{1/10}·N^{1/10}, this gives c·N^{1/10} ≤ (10C)^C, contradicting N^{1/10} → ∞.",
+    "mathContext": "Proof sketch: Assume $F(N) \\leq (\\log N)^C$. Then $c \\cdot N^{1/5} \\leq F(N) \\leq (\\log N)^C \\leq (10C)^C N^{1/10}$, so $c \\cdot N^{1/10} \\leq (10C)^C$. But $N^{1/10} \\to \\infty$. In Lean, this uses `Real.log_le_rpow_div` and `Real.rpow_le_rpow` to bound $(\\log N)^C$, then `nlinarith` to derive the contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["log ≤ x^δ/δ inequality", "Real.log_le_rpow_div", "rpow monotonicity", "asymptotic contradiction"],
+    "prerequisites": ["Real.rpow", "Real.log", "Real.rpow_le_rpow", "Real.mul_rpow", "nlinarith"]
+  },
+  {
+    "id": "ann-e131-small-examples",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 299, "endLine": 377 },
+    "type": "concept",
+    "title": "Concrete Non-Dividing Sets: Examples and Counterexamples",
+    "content": "Several concrete sets are verified as non-dividing or shown not to be: {n} is trivially non-dividing; {2,3} is non-dividing (erase sets have size ≤ 1); {2,3,5} is NOT non-dividing (2 ∣ 3+5=8, demonstrating that primes don't form non-dividing sets); {2,4,5} IS non-dividing (2∤9, 4∤7, 5∤6), giving F(5) ≥ 3. These examples make the abstract definition concrete and highlight why constructing large non-dividing sets is difficult.",
+    "mathContext": "Verification for $\\{2, 4, 5\\}$: checking all cases — $a=2$: $S = \\{4,5\\}$, $\\text{sum}=9$, $2 \\nmid 9$; $a=4$: $S=\\{2,5\\}$, $\\text{sum}=7$, $4 \\nmid 7$; $a=5$: $S=\\{2,4\\}$, $\\text{sum}=6$, $5 \\nmid 6$. The proof uses `decide` for finite enumeration and `Finset.card_le_card` for cardinality bounds.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide tactic", "Finset.card_pair", "concrete arithmetic verification", "norm_num"],
+    "prerequisites": ["Lean's decide tactic", "Finset.erase", "Finset.card_le_card"]
+  },
+  {
+    "id": "ann-e131-structural",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 340, "endLine": 378 },
+    "type": "insight",
+    "title": "Structural Constraints: 1 Excluded, 2 Forces |A| ≤ 3",
+    "content": "Two structural results sharpen the understanding of non-dividing sets. First, 1 cannot appear in any non-dividing set of size ≥ 3 (since 1 divides every sum). Second, if 2 ∈ A, then |A| ≤ 3: among any 3 elements of A \\ {2}, at least two share parity (by pigeonhole), and 2 divides the sum of any two elements of the same parity. The example {2,4,5} shows the bound |A| ≤ 3 is tight.",
+    "mathContext": "Parity constraint: given $B = A \\setminus \\{2\\}$ with $|B| \\geq 3$, split $B = B_{\\text{even}} \\cup B_{\\text{odd}}$. By pigeonhole, $|B_{\\text{even}}| \\geq 2$ or $|B_{\\text{odd}}| \\geq 2$. If $a, b$ share parity, $2 \\mid (a+b)$, so $2 \\mid \\sum_{s \\in \\{a,b\\}} s$, violating non-dividing. In Lean: `Finset.filter_card_add_filter_neg_card_eq_card` for the partition, then `Finset.one_lt_card.mp` to extract the pair.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "parity arguments", "Finset.filter", "Nat.dvd_of_mod_eq_zero"],
+    "prerequisites": ["parity in ℕ", "Finset.filter", "Finset.one_lt_card", "pigeonhole via omega"]
+  },
+  {
+    "id": "ann-e131-nonavg-connection",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 379, "endLine": 410 },
+    "type": "insight",
+    "title": "Bridge to Non-Averaging: F(N) ≤ g(N)",
+    "content": "The function g(N) counts the maximum size of a non-averaging subset of {1,...,N}. The theorem `F_le_g` proves F(N) ≤ g(N): the non-dividing condition implies non-averaging (proved earlier), so every non-dividing set is a non-averaging set, hence F(N) ≤ g(N). This is the key bridge: Pham-Zakharov bound non-averaging sets, which then transfers to non-dividing sets via `pham_zakharov_chain`.",
+    "mathContext": "$F(N) \\leq g(N)$ since $\\{A : A \\text{ non-dividing}\\} \\subseteq \\{A : A \\text{ non-averaging}\\}$, so $\\sup_{\\text{non-dividing}} |A| \\leq \\sup_{\\text{non-averaging}} |A|$. In Lean: `Finset.le_sup` and `Finset.mem_filter` are used to transfer membership through the implication.",
+    "significance": "key",
+    "relatedConcepts": ["non-averaging sets", "Problem #186", "cap sets", "Fourier methods in additive combinatorics"],
+    "prerequisites": ["Finset.sup", "Finset.mem_filter", "Finset.le_sup", "subset implications"]
+  },
+  {
+    "id": "ann-e131-four-element",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 493, "endLine": 518 },
+    "type": "technique",
+    "title": "Four-Element Example {3,5,11,18}: F(18) ≥ 4",
+    "content": "The set {3,5,11,18} is verified as non-dividing, establishing F(18) ≥ 4. The proof uses a helper lemma `nondividing_three_subset` that reduces checking all subsets S ⊆ T with |S| ≥ 2 (where |T|=3) to checking the full sum and all pair sums. For each a ∈ {3,5,11,18}, the erase set T has three elements; the lemma applies `decide` to verify all required non-divisibilities.",
+    "mathContext": "For $a=3$, $T = \\{5, 11, 18\\}$: must check $3 \\nmid 5+11+18=34$, $3 \\nmid 5+11=16$, $3 \\nmid 5+18=23$, $3 \\nmid 11+18=29$ — all true. Similarly for $a \\in \\{5, 11, 18\\}$. The helper lemma uses `Finset.sum_sdiff` to relate subset sums to full sums.",
+    "significance": "supporting",
+    "relatedConcepts": ["subset sum verification", "Finset.sum_sdiff", "decide tactic for arithmetic", "lower bounds for F(N)"],
+    "prerequisites": ["Finset.card_sdiff", "Finset.mem_sdiff", "Finset.sum_singleton", "decide for Finset"]
+  },
+  {
+    "id": "ann-e131-exponent-gaps",
+    "proofId": "erdos-131-oq-01",
+    "range": { "startLine": 520, "endLine": 529 },
+    "type": "context",
+    "title": "The Open Gap: 1/20 Between Known Exponents",
+    "content": "Three lemmas formalize the exponent comparison: 1/4 < 1/2 (the main negative result: upper bound < conjectured lower bound), 1/5 < 1/4 (Csaba < Pham-Zakharov), and 1/4 - 1/5 = 1/20 (the exponent gap). These are proved by `norm_num` — elementary rational arithmetic. The gap 1/20 in the polynomial exponent (between N^{1/4} and N^{1/5}) represents a concrete open problem in combinatorial number theory.",
+    "mathContext": "Known bounds: $N^{1/5} \\ll F(N) \\leq N^{1/4+o(1)}$. The polynomial exponent gap is $1/4 - 1/5 = 1/20$. The actual growth may be subpolynomial (Straus's exponential lower bound $\\exp(c\\sqrt{\\log N})$ grows slower than any polynomial). The true growth rate is the main open question.",
+    "significance": "context",
+    "relatedConcepts": ["asymptotic growth rates", "norm_num tactic", "open problems in additive combinatorics"],
+    "prerequisites": ["rational arithmetic", "norm_num", "comparison of exponents"]
+  }
+]
