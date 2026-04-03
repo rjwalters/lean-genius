@@ -87,14 +87,14 @@
       "title": "Bleicher-Erdős Bounds (Axiomatized)",
       "startLine": 136,
       "endLine": 155,
-      "summary": "Three axioms encoding the known bounds: lower bound $R(N) \\geq N/\\log N$ (Bleicher-Erdős 1975, constructive via prime factorization), upper bound $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ (1976, counting argument via $\\text{lcm}(1,\\ldots,N)$), and combined $\\Theta(N/\\log N)$ statement.",
+      "summary": "Three doc-comment descriptions of the known bounds: lower bound $R(N) \\geq N/\\log N$ (Bleicher-Erdős 1975, constructive via prime factorization), upper bound $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$ (1976, counting argument via $\\text{lcm}(1,\\ldots,N)$), and combined $\\Theta(N/\\log N)$ statement.",
       "mathContext": "$c_1 \\cdot \\frac{N}{\\log N} \\leq R(N) \\leq c_2 \\cdot \\frac{N \\log\\log N}{\\log N}$. The gap is one iterated logarithm factor."
     },
     {
       "id": "main-conjecture",
       "title": "Erdős Problem #321: Exact Asymptotics (OPEN)",
-      "startLine": 157,
-      "endLine": 170,
+      "startLine": 143,
+      "endLine": 155,
       "summary": "States the main problem: determine the exact asymptotic behavior of $R(N)$. The formal theorem `erdos_321_asymptotics` is tautological (take $f = R$, proved by `rfl`). The real open problem is finding an explicit closed-form for the iterated log correction.",
       "mathContext": "The conjecture: is $\\lim_{N \\to \\infty} R(N) \\cdot \\log N / N = c$ for some constant $c > 0$, or do iterated log corrections persist?"
     }
