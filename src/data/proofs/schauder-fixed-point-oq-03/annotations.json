@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-set-valued-map",
+    "proofId": "schauder-fixed-point-oq-03",
+    "range": { "startLine": 30, "endLine": 49 },
+    "type": "definition",
+    "title": "Set-Valued Map Framework: Correspondences and Their Properties",
+    "content": "SetValuedMap X Y = X → Set Y is the type of correspondences: functions assigning a set (not a single element) to each input. This is the mathematical object at the heart of Kakutani's theorem. The graph of F is {(x,y) : y ∈ F(x)} ⊆ X × Y, capturing the multi-valued nature. Three property predicates: HasNonemptyValues (∀x, F(x) ≠ ∅), HasClosedValues (each F(x) is closed), HasConvexValues (each F(x) is convex). These three conditions, together with upper hemicontinuity, are exactly the hypotheses of Kakutani's theorem.",
+    "mathContext": "$F: X \\to 2^Y$; $\\text{Graph}(F) = \\{(x,y) : y \\in F(x)\\} \\subseteq X \\times Y$",
+    "significance": "key",
+    "relatedConcepts": ["correspondence", "set-valued map", "graph of a relation", "nonempty values", "convex values"],
+    "prerequisites": ["Set in Lean 4 (= type → Prop)", "Convex ℝ S in Mathlib", "IsClosed in TopologicalSpace"]
+  },
+  {
+    "id": "ann-upper-hemicontinuity",
+    "proofId": "schauder-fixed-point-oq-03",
+    "range": { "startLine": 55, "endLine": 74 },
+    "type": "concept",
+    "title": "Upper Hemicontinuity: Stability of Values Under Open Neighborhoods",
+    "content": "IsUpperHemicontinuous F says: for every open set V, the preimage {x : F(x) ⊆ V} is open. This is the correct generalization of continuity to set-valued maps — the values F(x) cannot 'suddenly explode' as x moves. The classical ε-δ statement is: for every x₀ and open neighborhood V ⊇ F(x₀), there exists a neighborhood U of x₀ such that F(x) ⊆ V for all x ∈ U. The theorem continuous_is_uhc shows that a continuous single-valued f viewed as F(x) = {f(x)} is UHC: {x : {f(x)} ⊆ V} = f⁻¹(V) is open by continuity of f.",
+    "mathContext": "$F$ is UHC iff $\\forall$ open $V \\subseteq Y$: $\\{x : F(x) \\subseteq V\\}$ is open in $X$",
+    "significance": "key",
+    "relatedConcepts": ["upper hemicontinuity", "lower hemicontinuity", "continuous correspondence", "preimage of open set"],
+    "prerequisites": ["TopologicalSpace in Lean 4", "IsOpen (preimage of open under continuous = open)", "Set.singleton_subset_iff"]
+  },
+  {
+    "id": "ann-fixed-point-defs",
+    "proofId": "schauder-fixed-point-oq-03",
+    "range": { "startLine": 80, "endLine": 87 },
+    "type": "definition",
+    "title": "Fixed Points of Set-Valued Maps: x ∈ F(x)",
+    "content": "IsFixedPoint F x asserts x ∈ F(x): the point x is selected by its own image. For single-valued maps f (viewed as F(x) = {f(x)}), fixedpoint_singlevalued confirms this reduces to f(x) = x. This equivalence, proved by simp [IsFixedPoint], is what brouwer_from_kakutani uses: after finding a Kakutani fixed point of F = {f(·)}, it recovers f(x) = x via this lemma.",
+    "mathContext": "$x$ is a fixed point of $F$ iff $x \\in F(x)$. For $F(x) = \\{f(x)\\}$: $x \\in \\{f(x)\\} \\iff f(x) = x$.",
+    "significance": "supporting",
+    "relatedConcepts": ["fixed point", "Brouwer fixed point", "singleton set membership"],
+    "prerequisites": ["Set.mem_singleton_iff", "IsFixedPoint definition"]
+  },
+  {
+    "id": "ann-kakutani-axiom",
+    "proofId": "schauder-fixed-point-oq-03",
+    "range": { "startLine": 93, "endLine": 113 },
+    "type": "concept",
+    "title": "Kakutani's Theorem Axiomatized for Finite-Dimensional Euclidean Space",
+    "content": "kakutani_finite_dim is an axiom asserting the Kakutani fixed point theorem for EuclideanSpace ℝ (Fin n): given S ⊆ ℝⁿ nonempty, compact, convex, and F : S → 2^S upper hemicontinuous with nonempty, closed, convex values, there exists x ∈ S with x ∈ F(x). The proof requires simplicial approximation (a technical finite-dimensional tool) and is axiomatized here rather than proved. The axiomatic approach is honest about what remains unproved while still allowing the framework to be used for corollaries and applications. Note: this is a genuine mathematical axiom (an unproved assumption), not a Lean implementation axiom — Kakutani's theorem is true but its proof has not been machine-verified here.",
+    "mathContext": "Let $S \\subseteq \\mathbb{R}^n$ be nonempty, compact, convex. Let $F: S \\to 2^S$ be UHC with nonempty, closed, convex values. Then $\\exists x \\in S: x \\in F(x)$.",
+    "significance": "key",
+    "relatedConcepts": ["Kakutani fixed point theorem", "simplicial approximation", "axiom vs proved theorem", "EuclideanSpace ℝ (Fin n)"],
+    "prerequisites": ["IsCompact, Convex ℝ S in Mathlib", "EuclideanSpace ℝ (Fin n)", "Lean 4 axiom declaration"]
+  },
+  {
+    "id": "ann-brouwer-corollary",
+    "proofId": "schauder-fixed-point-oq-03",
+    "range": { "startLine": 119, "endLine": 134 },
+    "type": "insight",
+    "title": "Brouwer as a Corollary: Single-Valued = Trivially UHC",
+    "content": "brouwer_from_kakutani derives the Brouwer fixed point theorem from Kakutani. Given a continuous f : S → S, define F(x) = {f(x)}. Then: (1) HasNonemptyValues: {f(x)} is always nonempty; (2) HasClosedValues: singletons are closed; (3) HasConvexValues: singletons are convex; (4) IsUpperHemicontinuous: continuous_is_uhc hf. Applying kakutani_finite_dim gives x with x ∈ {f(x)}, i.e., f(x) = x via fixedpoint_singlevalued. This proof elegantly shows Brouwer is a special case of Kakutani — every single-valued continuous map trivially satisfies all the set-valued hypotheses.",
+    "mathContext": "$F(x) = \\{f(x)\\}$ satisfies all Kakutani conditions; fixed point $x \\in F(x)$ becomes $f(x) = x$.",
+    "significance": "key",
+    "relatedConcepts": ["Brouwer fixed point theorem", "singleton as trivial correspondence", "convex_singleton", "isClosed_singleton"],
+    "prerequisites": ["kakutani_finite_dim (the axiom)", "continuous_is_uhc", "fixedpoint_singlevalued"]
+  },
+  {
+    "id": "ann-nash-connection",
+    "proofId": "schauder-fixed-point-oq-03",
+    "range": { "startLine": 136, "endLine": 166 },
+    "type": "context",
+    "title": "Nash Equilibrium: The Primary Application of Kakutani",
+    "content": "The historical motivation for Kakutani's theorem is Nash's (1950) proof of Nash equilibrium existence. In an n-player game with mixed strategies: each player's strategy space is a simplex (compact convex). The best response correspondence BR(s) = {profiles where every player is best-responding to others} is UHC with nonempty, closed, convex values (best responses to a fixed opponent strategy form a face of the simplex). By Kakutani, BR has a fixed point: a profile s* ∈ BR(s*), which is exactly a Nash equilibrium. The sketch in this file indicates the connection without formalizing the full Nash existence proof, which would require additionally formalizing mixed strategies, payoffs, and best responses.",
+    "mathContext": "Best response: $\\text{BR}(s) = \\{s' : u_i(s'_i, s_{-i}) \\geq u_i(\\sigma_i, s_{-i}) \\forall \\sigma_i, \\forall i\\}$. Kakutani: $\\exists s^*: s^* \\in \\text{BR}(s^*)$ = Nash equilibrium.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nash equilibrium", "best response correspondence", "mixed strategies", "game theory", "simplex"],
+    "prerequisites": ["Nash's 1950 paper", "mixed strategy Nash equilibrium definition", "Kakutani conditions for BR"]
+  }
+]
