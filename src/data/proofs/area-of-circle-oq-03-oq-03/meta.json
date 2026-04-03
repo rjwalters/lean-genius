@@ -12,7 +12,10 @@
       "geometry",
       "method of exhaustion",
       "Archimedes",
-      "convergence"
+      "convergence",
+      "parabola",
+      "ellipse",
+      "geometric series"
     ],
     "badge": "verified",
     "sorries": 0,
@@ -20,32 +23,71 @@
     "lineCount": 190,
     "assumptions": "None. All results proved from Mathlib.",
     "theoremCount": 14,
-    "mathlib_version": "4.26.0"
-  },
-  "overview": {
-    "historicalContext": "Archimedes used the method of exhaustion to compute the area of a circle (\u03c0r\u00b2) and a parabolic segment (4/3 of the inscribed triangle). The method was later generalized by Cavalieri and others, eventually leading to integral calculus. The question of whether the same technique applies to other curves is fundamental to the history of analysis.",
-    "problemStatement": "Can the method of exhaustion be generalized to other curves (ellipses, parabolas)?",
-    "text": "Proves that the method of exhaustion generalizes to ellipses via affine scaling and to parabolic segments via Archimedes' geometric series.",
-    "proofStrategy": "For ellipses: the affine scaling (x,y) \u2192 (ax,by) transforms the unit circle to an ellipse, multiplying area by ab. For parabolas: Archimedes' key insight that each exhaustion step fills 1/4 of the remaining area, giving a geometric series summing to 4/3.",
-    "keyInsights": [
-      "Ellipse area = ab \u00b7 circle area via Jacobian of affine scaling",
-      "Parabolic area follows from geometric series 1 + 1/4 + 1/16 + ... = 4/3",
-      "The general exhaustion principle: geometric convergence C\u00b7r^n \u2192 0 for 0 < r < 1",
-      "Archimedes' parabolic result predates integral calculus by ~2000 years"
-    ],
-    "prerequisites": [
-      "Real analysis (geometric series, convergence)",
-      "Measure theory (basic area concepts)",
-      "Classical geometry (inscribed polygons, parabolic segments)"
+    "definitionCount": 0,
+    "dateAdded": "2026-04-03",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "geom_sum_formula: geometric series identity proved by induction",
+      "archimedes_partial_sum: partial sums of 1 + 1/4 + 1/16 + ... = (4/3)(1 - (1/4)^n)",
+      "archimedes_remainder: error formula (4/3)(1/4)^n",
+      "parabolic_segment_area: T * S_n = T * (4/3) * (1 - (1/4)^n)",
+      "parabolic_area_error: explicit error bound T * (4/3) * (1/4)^n",
+      "exhaustion_error_small: general convergence principle via tendsto_pow_atTop_nhds_zero_of_lt_one"
     ]
   },
+  "overview": {
+    "historicalContext": "The method of exhaustion traces from Eudoxus (c. 370 BCE) through Archimedes (c. 250 BCE) to Cavalieri (1635) and ultimately to Leibniz-Newton calculus.\n\n**Archimedes' *Quadrature of the Parabola* (c. 250 BCE)**: In Proposition 24, Archimedes proved that the area of any parabolic segment is 4/3 of the inscribed triangle. His proof: inscribe triangle $T_0$ with base equal to the chord; in each remaining curved region, inscribe another triangle (each with area exactly 1/4 of its parent — proved geometrically from properties of parabolas); total area $= T_0 \\cdot (1 + 1/4 + 1/16 + \\cdots) = T_0 \\cdot 4/3$. This is arguably the **first explicit use of an infinite series** in mathematics — 1800 years before Newton.\n\n**Archimedes' proof method**: He used *reductio ad absurdum* (double contradiction): assume Area $> 4T/3$, derive contradiction; assume Area $< 4T/3$, derive contradiction; therefore Area $= 4T/3$. He could not write 'take the limit' — instead he argued that the partial sums get arbitrarily close, so neither inequality can hold.\n\n**Ellipses and Cavalieri's Principle (1635)**: Bonaventura Cavalieri proved that if two figures have equal cross-sections at every height, their areas are equal. Applied to ellipses: the affine map $(x,y) \\mapsto (ax, by)$ sends the unit circle to the ellipse $x^2/a^2 + y^2/b^2 \\leq 1$, with Jacobian determinant $ab$, giving Area(ellipse) $= ab \\cdot \\pi$. This equals the change-of-variables formula from measure theory.\n\n**Why these three conics?**: The circle, ellipse, and parabola are the three bounded conic sections. Archimedes computed all their areas using exhaustion. For the hyperbola, the area $\\int_1^t (1/x)dx = \\ln t$ defines the natural logarithm — which Archimedes could not compute. So exhaustion for conics naturally stops at the parabola.",
+    "problemStatement": "Can the method of exhaustion be generalized to other curves (ellipses, parabolas)? Specifically: (1) prove the ellipse area formula $\\pi ab$ using scaling from $\\pi r^2$; (2) prove Archimedes' parabolic segment area formula $A = (4/3)T$ via geometric series; (3) state and prove the general exhaustion convergence principle.",
+    "proofStrategy": "Three parts:\n\n**Part 1 (Ellipse)**: State the algebraic identity $a \\cdot b \\cdot \\pi = \\pi \\cdot a \\cdot b$ (by `ring`) as a placeholder for the scaling principle. The deep result (measure-theoretic change of variables with Jacobian $ab$) is stated conceptually but not formalized in Lean 4.\n\n**Part 2 (Parabola)**: The core is Archimedes' geometric series argument. `geom_sum_formula` proves $\\sum_{k=0}^{n-1} r^k = (1-r^n)/(1-r)$ by induction. `archimedes_partial_sum` specializes to $r = 1/4$, giving $S_n = (4/3)(1-(1/4)^n)$. `archimedes_remainder` proves the error $4/3 - S_n = (4/3)(1/4)^n$. Parabola results scale by triangle area $T$.\n\n**Part 3 (General)**: `exhaustion_error_small` uses `tendsto_pow_atTop_nhds_zero_of_lt_one` from Mathlib: for $0 < r < 1$, $r^n \\to 0$, so for any $\\varepsilon > 0$ there exists $N$ with $C \\cdot r^N < \\varepsilon$. This is the universal convergence principle underlying all exhaustion arguments.",
+    "keyInsights": [
+      "**Archimedes' geometric series as the first infinite series**: The sum $1 + 1/4 + 1/16 + \\cdots = 4/3$ in *Quadrature of the Parabola* (c. 250 BCE) is the first explicit infinite series computation in history. The formalization proves this rigorously: `geom_sum_formula` by induction, `archimedes_partial_sum` by specialization, `archimedes_remainder` by `ring`.",
+      "**The 1/4 ratio is exact**: Archimedes proved geometrically that each sub-triangle (inscribed in a remaining curved parabolic region) has **exactly** 1/4 the area of its parent. This is a theorem about parabolas (the vertex of the new triangle is the midpoint of the parabolic arc), not an approximation. The Lean file formalizes the series identity but not this underlying geometric fact.",
+      "**Ellipse via ring, not measure theory**: The Lean theorems for ellipses (`ellipse_area_from_circle`, `circle_is_ellipse`) are proved by `ring` — algebraic tautologies ($a \\cdot b \\cdot \\pi = \\pi \\cdot a \\cdot b$). The actual content (Jacobian of affine map equals $ab$) is stated conceptually but not proved in Lean. This is a genuine gap in the current formalization.",
+      "**Parabolic convergence is exponential (ratio 1/4), circle convergence is polynomial (O(1/n²))**: The parabola exhaustion converges exponentially faster. After $n$ steps: parabola error $\\leq (4/3)(1/4)^n$ (geometric), circle error $\\leq 2\\pi^3r^2/(3n^2)$ (polynomial). Six parabola steps give error $< 0.087\\%$; six circle steps (a hexagon) give error $\\approx 4.5\\%$. This is why Archimedes needed a 96-gon for the circle but only four steps for the parabola.",
+      "**tendsto_pow_atTop_nhds_zero_of_lt_one is the key Mathlib lemma**: The general exhaustion convergence (`exhaustion_error_small`) unpacks the filter/metric space formulation of this Mathlib result. The proof extracts $N$ from the metric definition and multiplies by $C$ via `mul_lt_mul_of_pos_left`. This is the analytic backbone connecting classical exhaustion to modern analysis.",
+      "**All three bounded conics formalizable, hyperbola requires logarithm**: Circle ($\\pi r^2$), ellipse ($\\pi ab$), parabolic segment ($4T/3$) all have elementary closed-form areas. The hyperbola's area $\\int_1^t (1/x)dx = \\ln t$ transcends elementary functions. This asymmetry between conic sections — visible in any exhaustion analysis — shows where ancient mathematics hit its natural boundary."
+    ],
+    "prerequisites": [
+      "Real analysis (geometric series, limits, convergence)",
+      "Measure theory (change of variables, Jacobian determinant)",
+      "Classical geometry (conic sections, inscribed triangles, parabolic segments)",
+      "Mathlib: tendsto_pow_atTop_nhds_zero_of_lt_one, Finset.sum_range_succ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ellipse-area",
+      "title": "Ellipse Area from Circle Scaling",
+      "startLine": 41,
+      "endLine": 65,
+      "summary": "Four theorems: circle_area (rfl), ellipse_area_from_circle (ring: a·b·π = π·a·b), ellipse_area (positivity: π·a·b ≥ 0), circle_is_ellipse (ring: π·r·r = π·r²). These state the scaling principle algebraically but do not prove the Jacobian argument in Lean.",
+      "mathContext": "The ellipse $x^2/a^2 + y^2/b^2 \\leq 1$ is the image of the unit disk under $(u,v) \\mapsto (au, bv)$. By change of variables with Jacobian $|\\partial(au,bv)/\\partial(u,v)| = ab$: $\\text{Area}(\\text{ellipse}) = ab \\cdot \\text{Area}(\\text{disk}) = ab\\pi$. The Lean proofs are `ring` (algebraic identity), not a genuine measure-theoretic argument."
+    },
+    {
+      "id": "parabolic-exhaustion",
+      "title": "Archimedes' Parabolic Exhaustion",
+      "startLine": 67,
+      "endLine": 130,
+      "summary": "Eight theorems formalizing Archimedes' geometric series: geom_sum_formula (by induction), archimedes_partial_sum, archimedes_remainder (ring), archimedes_remainder_pos (positivity), archimedes_remainder_bound (rfl), parabolic_segment_area, parabolic_area_error (ring), parabolic_area_error_pos (positivity).",
+      "mathContext": "The key identity: $\\sum_{k=0}^{n-1} (1/4)^k = \\frac{4}{3}\\left(1 - (1/4)^n\\right)$. Error: $\\frac{4}{3} - S_n = \\frac{4}{3} \\cdot (1/4)^n$. For $n=4$: error $= 4/(3 \\cdot 256) \\approx 0.52\\%$. For $n=8$: error $= 4/(3 \\cdot 65536) \\approx 0.002\\%$. Compare: the formula $\\sum_{k=0}^\\infty (1/4)^k = 1/(1-1/4) = 4/3$ is the geometric series formula with $r=1/4$."
+    },
+    {
+      "id": "general-exhaustion",
+      "title": "General Exhaustion Convergence Principle",
+      "startLine": 132,
+      "endLine": 175,
+      "summary": "Two theorems: exhaustion_convergence (positivity: C·r^n > 0 for C,r > 0) and exhaustion_error_small (for any ε > 0 there exists N with C·r^N < ε, using tendsto_pow_atTop_nhds_zero_of_lt_one from Mathlib).",
+      "mathContext": "The theorem `exhaustion_error_small` states: $\\forall \\varepsilon > 0, \\exists N, C \\cdot r^N < \\varepsilon$. Proof: apply `tendsto_pow_atTop_nhds_zero_of_lt_one` at $\\varepsilon/C$ to get $N$ with $r^N < \\varepsilon/C$, then multiply by $C$. This is the $\\varepsilon$-$N$ formulation of geometric convergence, abstracting away from the specific base $r = 1/4$ (parabola) or the polynomial case for circles."
+    }
+  ],
   "conclusion": {
-    "summary": "YES, the method of exhaustion generalizes to ellipses and parabolas. For ellipses, the circle exhaustion scales via the Jacobian. For parabolas, Archimedes' triangle exhaustion gives exponential convergence with ratio 1/4.",
-    "implications": "The exhaustion principle is universal: any geometric shape whose inscribed approximations converge geometrically can have its area computed by this method. This unifies circle, ellipse, and parabola area computations.",
+    "summary": "The method of exhaustion generalizes to ellipses (algebraically stated via scaling) and parabolas (fully formalized via Archimedes' geometric series $1 + 1/4 + \\cdots = 4/3$). The parabolic exhaustion gives explicit error bounds $(4/3)(1/4)^n$ with exponential convergence. The general exhaustion principle (geometric convergence $C \\cdot r^n \\to 0$) is proved using Mathlib's `tendsto_pow_atTop_nhds_zero_of_lt_one`. 14 theorems, 0 axioms, 0 sorries.",
+    "implications": "This formalizes one of the oldest infinite series computations in mathematics: Archimedes' *Quadrature of the Parabola* (c. 250 BCE). The convergence rate comparison illuminates why Archimedes' parabola proof is so elegant: the geometric series with ratio 1/4 converges exponentially, while the circle polygon approximation converges only polynomially ($O(1/n^2)$). The parabola is easier to exhaust than the circle.",
     "openQuestions": [
-      "Can the method be extended to surfaces of revolution (sphere, ellipsoid)?",
-      "What is the optimal convergence rate for ellipse exhaustion by inscribed polygons?",
-      "Can Archimedes' spiral area computation be formalized similarly?"
+      "Prove the ellipse area formula rigorously using Mathlib's measure-theoretic change of variables. The `MeasureTheory.MeasurePreserving` API or `integral_comp_mul_right` may provide the right tools. The current proof is an algebraic placeholder.",
+      "Formalize Archimedes' proof that the sub-triangles in parabolic exhaustion have area exactly 1/4 of their parent. This requires showing that the vertex of the new triangle (the midpoint of the parabolic arc) achieves exactly 1/4 the parent area — a non-trivial geometric fact about parabolas.",
+      "Can Archimedes' spiral area computation ($A = \\pi r^2/3$ for the first turn of $r = \\theta$) be formalized? It requires integrating $r^2/2 \\cdot d\\theta = \\theta^2/2 \\cdot d\\theta$ in polar coordinates.",
+      "Prove the ellipsoid surface area formula via scaling from the sphere. Unlike the area formula, surface area under affine maps does not simply scale by the Jacobian — it requires the Gram determinant of the map restricted to the surface."
     ]
   },
   "leanFile": {
@@ -74,13 +116,17 @@
     {
       "targetId": "area-of-circle-oq-03-oq-01",
       "relationship": "related",
-      "description": "OQ03-OQ01 proves convergence rates for circle; this extends to other curves"
+      "description": "OQ03-OQ01 proves O(1/n²) convergence for circle inscribed polygons; this file shows parabola exhaustion converges exponentially (ratio 1/4) — two very different rates"
     },
     {
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "The original circle area proof that this generalizes"
+    },
+    {
+      "targetId": "area-of-circle-oq-02",
+      "relationship": "related",
+      "description": "n-ball volume via Gamma function; ellipse area is the 2D affine scaling case"
     }
-  ],
-  "sections": []
+  ]
 }
