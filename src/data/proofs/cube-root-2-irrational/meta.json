@@ -30,7 +30,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The irrationality of ∛2 is a classical result, analogous to the famous irrationality of √2 attributed to the Pythagoreans. The proof strategy follows the same pattern: show that 2 is not a perfect cube, hence 2^(1/3) cannot be rational. Mathlib provides irrational_nrt_of_notint_nrt as a general lemma: if x^n = m (an integer) and x is not an integer, then x is irrational.",
+    "historicalContext": "The irrationality of ∛2 has roots stretching back to ancient Greece. The Pythagoreans' discovery of the irrationality of √2 (circa 5th century BC) was philosophically shocking, demonstrating that ratios of integers cannot capture all geometric magnitudes. The irrationality of ∛2 is less ancient in its explicit formulation but arises naturally in classical geometry: doubling the cube — the Delian problem of constructing a cube with twice the volume — requires a length of ∛2, and the impossibility of this construction by compass and straightedge (proved only in the 19th century using Galois theory) hinges on ∛2 being a degree-3 algebraic number. Medieval and Renaissance mathematicians worked with cube roots extensively in solving cubic equations, but a systematic theory of irrationals had to await Dedekind and Cantor in the 19th century. The modern proof via `irrational_nrt_of_notint_nrt` encapsulates the classical argument: any rational root $p/q$ of $X^3 - 2$ in lowest terms satisfies $q \\mid 1$ (rational root theorem), so the root would be an integer — but no integer cubes to 2.",
     "problemStatement": "Prove that 2^(1/3) : ℝ is irrational, i.e., ¬∃ r : ℚ, (r : ℝ) = 2^(1/3).",
     "text": "The proof proceeds in three steps. First, cbrt2_cubed: (2^(1/3))^3 = 2, proved using Real.rpow_natCast and Real.rpow_mul. Second, two_not_perfect_cube: no integer n satisfies n³ = 2 — if n ≤ 0 then n³ ≤ 0 < 2; if n ≥ 2 then n³ ≥ 8 > 2; so n = 1 but 1³ = 1 ≠ 2. Third, cbrt2_not_int: ∛2 is not an integer. Finally, irrational_cbrt2 applies irrational_nrt_of_notint_nrt 3 2 with these three facts.",
     "proofStrategy": "two_not_perfect_cube: case split n ≤ 0 (n³ ≤ 0 by nlinarith), n ≥ 2 (n³ ≥ 8 by nlinarith), then n = 1 by omega and norm_num for 1³ ≠ 2. cbrt2_cubed: rpow composition with Real.rpow_mul and the equation (1/3)*3 = 1.",
@@ -38,7 +38,8 @@
       "irrational_nrt_of_notint_nrt is a general Mathlib lemma: x^n = m ∧ ¬IsInt(x) → Irrational(x)",
       "The key number theory fact: integers are either ≤ 1 or ≥ 2 (no gap where n³ = 2)",
       "rpow composition: (2^(1/3))^3 = 2^((1/3)*3) = 2^1 = 2",
-      "The argument is essentially the same as for ∛3 (see companion file)"
+      "The argument is essentially the same as for ∛3 (see companion file)",
+      "The rational root theorem underpins the irrationality machine: a rational p/q root of x^n - m must have q dividing 1 and p dividing m, so it would be an integer — the reduction to 'is m a perfect n-th power?' is both necessary and sufficient"
     ],
     "prerequisites": [
       "Real.rpow: Real.rpow_mul, Real.rpow_natCast",
@@ -48,10 +49,11 @@
   },
   "conclusion": {
     "summary": "∛2 is irrational, proved by showing 2 is not a perfect cube and applying Mathlib's irrational_nrt_of_notint_nrt. 5 theorems, 0 axioms, 91 lines.",
-    "implications": "This is the n=3 case of the general theorem: n√m is irrational whenever m is not a perfect n-th power. Mathlib's irrational_nrt_of_notint_nrt makes such proofs very clean. The companion file CubeRoot3Irrational follows the same pattern for ∛3.",
+    "implications": "This is the n=3 case of the general theorem: $\\sqrt[n]{m}$ is irrational whenever $m$ is not a perfect $n$-th power of an integer. Mathlib's `irrational_nrt_of_notint_nrt` encapsulates the rational root theorem and makes all such proofs one-line applications once the perfect-power check is done. The result also plays a role in the theory of algebraic numbers: $\\sqrt[3]{2}$ is a degree-3 algebraic integer, not a degree-1 one (i.e., not rational), which connects to the classical impossibility of doubling the cube by compass and straightedge. The companion file `CubeRoot3Irrational` follows the identical pattern for $\\sqrt[3]{3}$, and both results are used as lemmas in Gelfond-Schneider-related formalizations.",
     "openQuestions": [
       "Generalize: n√m is irrational iff m is not a perfect n-th power (general theorem)",
-      "Prove the Gelfond-Schneider theorem: 2^√2 is transcendental (much harder)"
+      "Prove the Gelfond-Schneider theorem: 2^√2 is transcendental (much harder)",
+      "Formalize the degree bound: any n-th root of a non-perfect-power is a degree-n algebraic number, which would require Galois theory machinery in Mathlib"
     ]
   },
   "leanFile": {
@@ -73,5 +75,62 @@
       "description": "Irrationality of √2+√3 uses a different technique (squaring and reducing to √6 irrational)"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-imports",
+      "title": "Imports",
+      "startLine": 1,
+      "endLine": 9,
+      "summary": "Imports Mathlib's irrationality library and real power functions needed for the proof."
+    },
+    {
+      "id": "sec-strategy",
+      "title": "Module Documentation and Strategy",
+      "startLine": 11,
+      "endLine": 25,
+      "summary": "Describes the three-step proof strategy: establish (2^{1/3})^3 = 2, show 2 is not a perfect cube, conclude irrationality via irrational_nrt_of_notint_nrt."
+    },
+    {
+      "id": "sec-definition",
+      "title": "Definition of cbrt2",
+      "startLine": 27,
+      "endLine": 30,
+      "summary": "Defines cbrt2 = (2 : ℝ)^(1/3 : ℝ) as a noncomputable real via Real.rpow."
+    },
+    {
+      "id": "sec-cbrt2-cubed",
+      "title": "Key Property: cbrt2^3 = 2",
+      "startLine": 32,
+      "endLine": 37,
+      "summary": "Proves cbrt2^3 = 2 using rpow_natCast and rpow_mul to combine exponents: (2^{1/3})^3 = 2^{(1/3)·3} = 2^1 = 2."
+    },
+    {
+      "id": "sec-not-perfect-cube",
+      "title": "2 Is Not a Perfect Cube",
+      "startLine": 39,
+      "endLine": 66,
+      "summary": "Number-theoretic core: proves ¬∃ n : ℤ, n^3 = 2 by case analysis on n ≤ 0 (n^3 ≤ 0), n ≥ 2 (n^3 ≥ 8), and n = 1 (1^3 = 1 ≠ 2), using nlinarith and omega."
+    },
+    {
+      "id": "sec-not-int",
+      "title": "cbrt2 Is Not an Integer",
+      "startLine": 68,
+      "endLine": 75,
+      "summary": "Bridge lemma: if cbrt2 = n for some n : ℤ, then n^3 = 2 (by cubing), contradicting two_not_perfect_cube. Uses exact_mod_cast for ℝ/ℤ coercion."
+    },
+    {
+      "id": "sec-main-theorem",
+      "title": "Main Theorem: irrational_cbrt2",
+      "startLine": 77,
+      "endLine": 85,
+      "summary": "Applies irrational_nrt_of_notint_nrt 3 2 with the three obligations: cbrt2^3 = 2, cbrt2 not an integer, and 3 > 0."
+    },
+    {
+      "id": "sec-alias",
+      "title": "Alias for Cross-File Use",
+      "startLine": 87,
+      "endLine": 91,
+      "summary": "Exports irrational_two_pow_one_third as an alias matching the form used by GelfondSchneider.lean and other dependent files."
+    }
+  ]
 }
