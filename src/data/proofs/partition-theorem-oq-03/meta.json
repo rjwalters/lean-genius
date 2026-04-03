@@ -29,13 +29,47 @@
     "lineCount": 62
   },
   "overview": {
-    "historicalContext": "Overpartitions were systematically studied by Corteel and Lovejoy (2004), building on Euler's 1748 partition identity. An overpartition allows the first occurrence of each part size to be optionally marked, doubling the combinatorial choices.",
-    "problemStatement": "How do Euler's partition identities generalize to overpartitions?",
-    "text": "Overpartitions extend Euler's partition framework by allowing optional marking of first occurrences.",
-    "proofStrategy": "Overpartitions extend Euler's partition framework by allowing optional marking of first occurrences.",
-    "keyInsights": []
+    "historicalContext": "Partitions have been a central object of combinatorics since Euler's Introductio in analysin infinitorum (1748), where he proved that the number of partitions of n into odd parts equals the number of partitions of n into distinct parts. This identity, now a cornerstone of combinatorics, has many proofs: Euler's generating function argument (1748), Sylvester's bijective proof (1882), and Franklin's combinatorial proof. The Rogers-Ramanujan identities (1894/1919) vastly generalized this pattern. Overpartitions were systematically introduced by Corteel and Lovejoy in 2004 as a natural enrichment of the ordinary partition concept: in an overpartition, the first occurrence of each part size may be optionally 'overlined' (marked). This doubles the choices for each distinct part size present, giving 2^d overpartitions for each partition with d distinct part sizes. Overpartitions connect to mock theta functions (Ramanujan), q-series identities, and the arithmetic of partitions modulo small primes. They have become a major topic in modern combinatorics, with thousands of subsequent papers exploring their analogs of classical partition identities.",
+    "problemStatement": "How do Euler's partition identities generalize to overpartitions? Specifically: define the overpartition structure, formalize the 2^d choice count for each distinct part size, and embed Euler's odd/distinct identity as the underlying foundation.",
+    "text": "Formalizes overpartitions in Lean 4: defines the Overpartition structure (partition + overlined subset), proves the 2^d choice formula via Finset.card_powerset, and connects to Euler's identity via Mathlib's Theorems100.partition.",
+    "proofStrategy": "Three-part structure: (1) invoke Euler's identity as Theorems100.partition from Mathlib; (2) define the Overpartition structure with overlined : Finset ℕ satisfying overlined_subset constraint; (3) prove overpartition_choices using Finset.card_powerset. The numOverpartitions function is axiomatized since computing it requires enumerating Nat.Partition with Fintype infrastructure not yet fully in Lean 4.",
+    "keyInsights": [
+      "The 2^d choice formula for overpartitions follows immediately from Finset.card_powerset: the number of subsets of the support (distinct part sizes) equals 2^|support|. This is the entire mathematical content of overpartition_choices.",
+      "The Overpartition structure cleanly separates concerns: partition holds the underlying Nat.Partition, overlined holds which parts are marked, and overlined_subset ensures validity (only parts present can be overlined). This is idiomatic Lean 4 structure design.",
+      "Euler's partition identity is accessed as Theorems100.partition — a Mathlib theorem from the 100 Theorems formalization project. The proof is a one-liner delegating to Mathlib, demonstrating the power of building on an existing library.",
+      "The numOverpartitions function must be axiomatized because Nat.Partition in Lean 4 lacks the Fintype instance needed to enumerate all partitions of n computably. This is a known gap in Mathlib's partition infrastructure.",
+      "The file has 1 true axiom (numOverpartitions) rather than 4 as originally listed — the three 'small value' axioms in the comments are documentation, not actual Lean axiom declarations. The meta.json axiomCount should reflect the 1 true axiom."
+    ],
+    "prerequisites": [
+      "Nat.Partition from Mathlib (partition structure, parts multiset)",
+      "Finset.powerset and card_powerset",
+      "Euler's partition identity via Theorems100",
+      "Lean 4 structure syntax"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "euler-foundation",
+      "title": "Euler's Partition Identity as Foundation",
+      "startLine": 22,
+      "endLine": 25,
+      "summary": "euler_partition_identity: wraps Mathlib's Theorems100.partition, showing the count of partitions into odd parts equals the count into distinct parts. A one-line proof delegating to the 100 Theorems project."
+    },
+    {
+      "id": "overpartition-structure",
+      "title": "Overpartition Structure Definition",
+      "startLine": 27,
+      "endLine": 48,
+      "summary": "Defines Overpartition n with three fields: partition (underlying Nat.Partition n), overlined (Finset ℕ of marked part sizes), and overlined_subset (validity constraint: overlined ⊆ support). Also declares axiom numOverpartitions : ℕ → ℕ."
+    },
+    {
+      "id": "counting-results",
+      "title": "Counting: Choices and Embedding",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "distinctToOverpartition embeds distinct partitions into overpartitions (with empty overline set). overpartition_choices proves the 2^d formula via Finset.card_powerset applied to the partition's support toFinset."
+    }
+  ],
   "references": [
     {
       "authors": "Corteel, Sylvie and Lovejoy, Jeremy",
@@ -52,8 +86,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Overpartition structure defined with connection to Euler's identity. Small values axiomatized.",
-    "implications": "Overpartition structure defined with connection to Euler's identity. Small values axiomatized."
+    "summary": "Defines overpartitions in Lean 4 with a clean structure separating partition from overlined-parts set. Proves the 2^d choice formula via Finset.card_powerset and embeds Euler's identity as the foundation. The numOverpartitions function is axiomatized due to Mathlib's Fintype gaps for Nat.Partition.",
+    "implications": "This formalization lays the groundwork for machine-verifying overpartition identities analogous to Euler's. The structure design (partition + overlined subset with validity constraint) is reusable for other enriched partition objects (e.g., colored partitions, weighted partitions). The 2^d formula connects to the combinatorics of generating functions: the overpartition generating function is ∏_n (1+q^n)/(1-q^n), which equals ∑_n p̄(n)q^n.",
+    "openQuestions": [
+      "Can Lean 4's Fintype infrastructure for Nat.Partition be completed so that numOverpartitions is computable rather than axiomatized? This would require decidable enumeration of all integer partitions of n.",
+      "Can the overpartition generating function identity ∑ p̄(n)q^n = ∏(1+q^n)/(1-q^n) be formalized using Mathlib's power series / formal product infrastructure?",
+      "Overpartitions satisfy p̄(n) ≡ (-1)^n (mod 4) — a congruence analogue of Ramanujan's partition congruences. Can this be formalized for small n using norm_decide?",
+      "The connection between overpartitions and 2-colored partitions: p̄(n) = number of partitions of n into parts of 2 colors (one color marks 'overlined'). Can this bijection be formalized?"
+    ]
   },
   "leanFile": {
     "imports": [
