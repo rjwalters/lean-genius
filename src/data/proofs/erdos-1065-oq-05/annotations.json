@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-bh-header",
+    "proofId": "erdos-1065-oq-05",
+    "range": { "startLine": 6, "endLine": 27 },
+    "type": "context",
+    "title": "Bateman-Horn Constant: Why 2C₂ Is Independent of k",
+    "content": "The header states the central insight: the BH density constant 2C₂ ≈ 1.32 is the same for every k in the Form A family p = 2^k·q + 1. The argument is local: at each odd prime p, the polynomial pair n(2^k·n+1) has exactly 2 roots mod p regardless of k, because 2^k is a unit mod p (since gcd(2,p)=1). At p=2, the count is 1 for all k≥1 (2^k·n+1 is always odd when n is even). The BH product formula ∏_p (1 - ω(p)/p)/(1-1/p)² then gives the same infinite product regardless of k, yielding identical densities for all k-layers.",
+    "mathContext": "Bateman-Horn conjecture for two polynomials $f_1(n) = n$, $f_2(n) = 2^k n + 1$: the count of $n \\leq x$ with both prime is $\\sim \\mathfrak{S}(f_1,f_2) \\cdot \\text{Li}_2(x)$ where $\\mathfrak{S} = \\prod_p \\frac{p - \\omega(p)}{p-1} \\cdot \\frac{p}{p-1}$. The local factor at odd $p$: $\\omega(p)$ = #{n mod p : n ≡ 0 or n ≡ -2^{-k} mod p} = 2. Since $2^k$ is a unit mod odd $p$, $\\omega(p) = 2$ for all $k$. At $p=2$: for $k \\geq 1$, $2^k n+1$ is always odd, so $\\omega(2) = 1$ (only $n \\equiv 0$ mod 2 is excluded from $f_1$). Result: $\\mathfrak{S} = 2C_2 \\approx 1.32$ for all $k \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Bateman-Horn conjecture", "local factors", "twin primes constant C₂", "2-adic valuation", "polynomial sieve methods"],
+    "prerequisites": ["Hardy-Littlewood conjectures", "multiplicative sieve theory", "local root counting mod p"]
+  },
+  {
+    "id": "ann-bh-definitions",
+    "proofId": "erdos-1065-oq-05",
+    "range": { "startLine": 31, "endLine": 45 },
+    "type": "technique",
+    "title": "Three Predicates: IsFormAWithK, IsFormA, IsSafePrime",
+    "content": "The three definitions form an inclusion chain: `IsSafePrime p ↔ IsFormAWithK 1 p`, and `IsFormAWithK k p → IsFormA p` for any k. `IsFormAWithK k p` uses `2^k` directly (Lean's `HPow` for `ℕ`), making the k-parameter explicit in the type. `IsFormA p` uses an existential over both `q` and `k`, representing any Form A prime. The definitions are all in `Prop` — no computability requirements — which allows `decide` to discharge specific examples via `Nat.Prime.decidable`.",
+    "mathContext": "The three predicates express: $\\text{IsFormAWithK}(k,p) \\iff p \\in \\mathbb{P} \\wedge \\exists q \\in \\mathbb{P}, p = 2^k q + 1$; $\\text{IsFormA}(p) \\iff \\exists k, \\text{IsFormAWithK}(k,p)$; $\\text{IsSafePrime}(p) \\iff p \\in \\mathbb{P} \\wedge \\exists q \\in \\mathbb{P}, p = 2q+1$. Since $2 = 2^1$, IsSafePrime ↔ IsFormAWithK 1 definitionally. The existential in IsFormA quantifies over both $q$ (base prime) and $k$ (2-adic exponent), encoding 'p is Form A for some k'.",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.Prime", "existential quantifiers in Lean 4", "safe primes", "Form A primes", "Prop vs Decidable"],
+    "prerequisites": ["Lean 4 structure unpacking", "Nat.Prime in Mathlib", "HPow for ℕ"]
+  },
+  {
+    "id": "ann-bh-safe-equiv",
+    "proofId": "erdos-1065-oq-05",
+    "range": { "startLine": 49, "endLine": 64 },
+    "type": "insight",
+    "title": "Safe Prime ↔ Form A k=1: One-Line Proof via pow_one",
+    "content": "The theorem `safePrime_iff_formAK1` is proved in a single line: `simp only [IsSafePrime, IsFormAWithK, pow_one]`. This works because `IsSafePrime p` expands to `p.Prime ∧ ∃ q, q.Prime ∧ p = 2 * q + 1`, while `IsFormAWithK 1 p` expands to `p.Prime ∧ ∃ q, q.Prime ∧ p = 2^1 * q + 1`, and `pow_one` converts `2^1 = 2`, making the two statements definitionally equal. The `formAWithK_implies_formA` and `safePrime_implies_formA` inclusion lemmas follow immediately by term-mode extraction of the existential witnesses.",
+    "mathContext": "Lean's `simp` applies `pow_one : 2^1 = 2` to reduce `IsFormAWithK 1` to `IsSafePrime`. The proof is a rewrite-by-definition rather than a mathematical argument — the two predicates are *definitionally equal after unfolding*, because `2 = 2^1`. This illustrates Lean's 'definitional equality' in practice: `simp only [..., pow_one]` suffices where mathematically we say 'by definition'.",
+    "significance": "supporting",
+    "relatedConcepts": ["pow_one", "simp only", "definitional equality", "safe primes", "k=1 specialization"],
+    "prerequisites": ["Lean 4 simp lemmas", "pow_one in Mathlib", "iff for Prop-valued predicates"]
+  },
+  {
+    "id": "ann-bh-uniqueness",
+    "proofId": "erdos-1065-oq-05",
+    "range": { "startLine": 68, "endLine": 90 },
+    "type": "technique",
+    "title": "Uniqueness Sorry: 2-adic Valuation via Nat.multiplicity",
+    "content": "The `formA_decomposition_unique` theorem states: if p = 2^k₁·q₁ + 1 = 2^k₂·q₂ + 1 with q₁,q₂ odd primes, then k₁=k₂ and q₁=q₂. The proof sketch in the comment: from h1 and h2, `2^k₁·q₁ = 2^k₂·q₂` via `omega`. The 2-adic valuation of 2^k·q when q is odd is exactly k, so k₁=k₂ follows from `Nat.multiplicity` applied to both sides. With k₁=k₂ established, q₁=q₂ follows by cancellation (mul_left_cancel). The sorry exists because Mathlib's `Nat.multiplicity` API requires careful case analysis on the exponent. The proof also sets up the oddness: `¬ 2 ∣ q` is derived from `q ≠ 2` via `Nat.Prime.eq_one_or_self_of_dvd`.",
+    "mathContext": "The 2-adic argument: $v_2(2^k q) = k$ when $q$ is odd. Lean formalization requires `Nat.multiplicity 2 (2^k * q) = k` — Mathlib has `Nat.multiplicity_pow_self` and `Nat.multiplicity_mul` for this. The full proof chain: `2^{k_1} q_1 = 2^{k_2} q_2$ → apply $v_2$ both sides → $k_1 + v_2(q_1) = k_2 + v_2(q_2)$ → $v_2(q_i) = 0$ since $q_i$ odd → $k_1 = k_2$ → $q_1 = q_2$ by `Nat.mul_left_cancel`. This is an Aristotle candidate: the theorem is provable but the Mathlib API navigation is nontrivial.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.multiplicity", "2-adic valuation", "Nat.Prime.eq_one_or_self_of_dvd", "mul_left_cancel", "oddness from primality"],
+    "prerequisites": ["Nat.multiplicity in Mathlib", "p-adic valuation theory", "Nat.Prime divisibility facts"]
+  },
+  {
+    "id": "ann-bh-census",
+    "proofId": "erdos-1065-oq-05",
+    "range": { "startLine": 92, "endLine": 218 },
+    "type": "context",
+    "title": "Complete k-Value Census: 15 Form A Primes ≤ 100",
+    "content": "Lines 92-218 provide a complete computational census: all 15 Form A primes ≤ 100 are verified with explicit (k,q) witnesses. The proof pattern is uniform: `constructor; · decide; · exact ⟨q, by decide, by norm_num⟩`. The `decide` tactic verifies `Nat.Prime p` by checking all divisors; `norm_num` verifies the arithmetic `p = 2^k · q + 1`. The `safe_primes_le_100` theorem proves all 7 simultaneously via `List.mem_cons` case splitting. The `k1_dominates_small` theorem encodes the ratio 7/15 via elementary omega arithmetic. Distribution: k=0 (p=3, 1 prime), k=1 (5,7,11,23,47,59,83, 7 primes), k=2 (13,29,53, 3 primes), k=3 (17,41,89, 3 primes), k=5 (97, 1 prime). No k=4 example exists ≤ 100.",
+    "mathContext": "The k=0 case (p=3=1·2+1) is special: q=2 is even, so this technically doesn't fit the 'odd q' assumption of `formA_decomposition_unique`. For $k \\geq 1$, the BH prediction applies uniformly. The k-value distribution for primes up to 100: $\\{k=1\\}$ contributes 47% (7/15), consistent with equal long-run density per $k$-layer (since all k-layers have the same BH constant). The empirical dominance of $k=1$ at small values is a finite-sample effect: safe primes tend to be small because $p = 2q+1$ with small $q$ prime directly gives small $p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide tactic", "norm_num tactic", "List.mem_cons case split", "k-value distribution", "computational verification"],
+    "prerequisites": ["Lean 4 decide tactic for Nat.Prime", "norm_num for arithmetic", "omega tactic for linear arithmetic"]
+  },
+  {
+    "id": "ann-bh-axiom",
+    "proofId": "erdos-1065-oq-05",
+    "range": { "startLine": 220, "endLine": 271 },
+    "type": "insight",
+    "title": "BH Axiom as Set.Infinite: Rewriting via convert + iff.symm",
+    "content": "The `batemanHorn_formAWithK_infinite` axiom weakens the full BH density prediction to just `Set.Infinite {p | IsFormAWithK k p}` — each k-layer is infinite. This is the minimal usable consequence of BH for subsequent theorems. The `batemanHorn_k1_iff_safePrimes` proof uses the pattern `convert h using 1; ext p; exact (safePrime_iff_formAK1 p).symm` — this rewrites the `Set.Infinite` hypothesis by converting the underlying set via `ext`. The final `safe_primes_infinite` is a one-liner: `(batemanHorn_k1_iff_safePrimes).mp (batemanHorn_formAWithK_infinite 1)`, chaining iff equivalence with the axiom specialization at k=1.",
+    "mathContext": "Using `Set.Infinite`: a set $S \\subseteq \\mathbb{N}$ is infinite iff $\\neg \\text{Finite}(S)$. The conversion pattern `convert h using 1; ext p; exact iff_proof` rewrites `Set.Infinite {p | P p}` to `Set.Infinite {p | Q p}` when $P \\leftrightarrow Q$. This is cleaner than `apply Set.Infinite.mono` when the sets are *equivalent* (not just one contained in the other). The full BH asymptotic would be `#{p ≤ x | IsFormAWithK k p} ∼ 2C_2 \\cdot \\text{Li}_2(x)$ — the axiom captures only the corollary that the count is unbounded.",
+    "significance": "key",
+    "relatedConcepts": ["Set.Infinite", "convert tactic", "ext tactic", "Set.Infinite.mono", "safe primes conjecture"],
+    "prerequisites": ["Set.Infinite in Mathlib", "convert vs exact", "Iff.mp and Iff.symm", "set extensionality in Lean 4"]
+  }
+]
