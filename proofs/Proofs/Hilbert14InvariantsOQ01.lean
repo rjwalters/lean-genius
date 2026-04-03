@@ -69,12 +69,10 @@ theorem invariant_one {G R : Type*} [Group G] [CommRing R]
     polynomial of degree |G| over the invariant ring (by the orbit
     polynomial trick), so R^G is integral over a finitely generated
     subring. -/
-theorem finite_group_invariants_fg :
-    -- For any finite group G acting on a polynomial ring k[x₁,...,xₙ],
-    -- the invariant ring k[x₁,...,xₙ]^G is finitely generated.
-    -- (Statement is schematic; concrete instances require Mathlib's
-    -- MvPolynomial and group action infrastructure.)
-    True := trivial
+/- finite_group_invariants_fg: For any finite group G acting on a polynomial ring k[x₁,...,xₙ],
+    the invariant ring k[x₁,...,xₙ]^G is finitely generated.
+    (Statement is schematic; concrete instances require Mathlib's
+    MvPolynomial and group action infrastructure.) -/
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART III: The Additive Group Case (Weitzenböck)
@@ -91,10 +89,8 @@ theorem finite_group_invariants_fg :
 
     For n ≤ 3 variables, the result is elementary.
     For large n, the invariant ring can require many generators. -/
-theorem weitzenbock_3_vars :
-    -- In ≤ 3 variables over char 0, any locally nilpotent derivation
-    -- has a finitely generated kernel.
-    True := trivial
+/- weitzenbock_3_vars: In ≤ 3 variables over char 0, any locally nilpotent
+    derivation has a finitely generated kernel. -/
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART IV: Zariski's Finiteness Criterion
@@ -111,10 +107,8 @@ theorem weitzenbock_3_vars :
     regardless of whether the group is reductive.
 
     Zariski's proof uses the theory of algebraic surfaces. -/
-theorem zariski_dim_2 :
-    -- In dimension ≤ 2, every ring of the form L ∩ k[x₁,...,xₙ]
-    -- is finitely generated (L a subfield of the fraction field).
-    True := trivial
+/- zariski_dim_2: In dimension ≤ 2, every ring of the form L ∩ k[x₁,...,xₙ]
+    is finitely generated (L a subfield of the fraction field). -/
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART V: The Boundary of Finite Generation
@@ -132,12 +126,10 @@ theorem zariski_dim_2 :
 
     Key point: the counterexample requires dim ≥ 3 (by Zariski) and
     non-reductive groups (by Hilbert-Mumford-Haboush). -/
-theorem nagata_counterexample_exists :
-    -- There exists a linear algebraic group action where the
-    -- invariant ring is not finitely generated.
-    True := trivial
+/- nagata_counterexample_exists: There exists a linear algebraic group action where the
+    invariant ring is not finitely generated. (Nagata 1958) -/
 
-/-- **Current State of Knowledge** (summary):
+/- **Current State of Knowledge** (summary):
 
     The characterization of finite generation for non-reductive groups
     remains incomplete. Known sufficient conditions:
@@ -152,6 +144,5 @@ theorem nagata_counterexample_exists :
 
     The gap between these remains an active research area in
     geometric invariant theory. -/
-theorem hilbert_14_open_landscape : True := trivial
 
 end Hilbert14OQ01
