@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-1023-defs",
+    "proofId": "erdos-1023-oq-01",
+    "range": { "startLine": 47, "endLine": 78 },
+    "type": "definition",
+    "title": "Union-Free and k-Union-Free Infrastructure",
+    "content": "Six definitions establish the core representation hierarchy. isUnionOf(A,F): A is the union of a subfamily G ⊆ F with |G| ≥ 2 and A ∉ G (so A is a non-trivial union of others). isUnionFree(F): no member is the union of other members. isAntichain(F): no set contains another. isKUnionOf(k,A,F): A equals the union of exactly k other sets from F. isKUnionFree(k,F): generalizes union-free to exactly-k unions. isTwoUnionFree/isTwoUnionOf: the 2-union-free special case (from Problem #447). Key design: 'A ∉ G' prevents trivial self-inclusion; G must have size exactly k (isKUnionOf) or ≥ 2 (isUnionOf).",
+    "mathContext": "A family $\\mathcal{F} \\subseteq 2^{[n]}$ is **union-free** if no $A \\in \\mathcal{F}$ equals $\\bigcup \\mathcal{G}$ for any $\\mathcal{G} \\subseteq \\mathcal{F}\\setminus\\{A\\}$ with $|\\mathcal{G}| \\geq 2$. The **$k$-union-free** variant requires $|\\mathcal{G}| = k$ exactly. Note: union-free and antichain are distinct — antichain forbids $A \\subsetneq B$ entirely, while union-free allows inclusion as long as $A$ is not expressible as a union of others.",
+    "significance": "key",
+    "relatedConcepts": ["isUnionFree", "isKUnionFree", "isAntichain", "Finset.sup", "familyUnion"],
+    "prerequisites": ["SetFamily = Finset (Finset (Fin n))", "familyUnion via Finset.sup id", "Finset.card ≥ 2 condition"]
+  },
+  {
+    "id": "ann-1023-antichain-thm",
+    "proofId": "erdos-1023-oq-01",
+    "range": { "startLine": 94, "endLine": 128 },
+    "type": "theorem",
+    "title": "Antichains Are k-Union-Free for All k ≥ 2",
+    "content": "antichain_kUnionFree proves: if F is an antichain, it is k-union-free for any k ≥ 2. Proof: suppose A = ⋃G for G ⊆ F\\{A} with |G| = k ≥ 2. Each B ∈ G satisfies B ⊆ A (mem_sub_familyUnion). Since B,A ∈ F and F is an antichain, B = A. So all k elements of G equal A, but Finset.one_lt_card gives two distinct elements — contradiction via omega. Corollaries: antichain_unionFree (antichains are union-free, using the arbitrary-sized version) and unionFree_implies_kUnionFree (union-free implies k-union-free, since a union of ≥ 2 sets contains a k-element sub-witness). Important caveat noted in comments: k-union-free and (k+1)-union-free are NOT nested constraints.",
+    "mathContext": "**Theorem**: Antichains in $2^{[n]}$ are $k$-union-free for all $k \\geq 2$. *Proof*: If $A = \\bigcup_{B \\in G} B$ with $G$ an antichain subfamily, each $B \\subseteq A$ forces $B = A$ (antichain). So $G \\subseteq \\{A\\}$, giving $|G| \\leq 1 < k$. **Note**: $k$-union-free $\\not\\Rightarrow$ $(k+1)$-union-free in general. But union-free (for all sizes) $\\Rightarrow$ $k$-union-free for each specific $k$.",
+    "significance": "key",
+    "relatedConcepts": ["mem_sub_familyUnion lemma", "Finset.one_lt_card", "antichain_unionFree", "unionFree_implies_kUnionFree"],
+    "prerequisites": ["Finset.mem_of_mem_erase for subfamily membership", "Finset.one_lt_card for ≥2 distinct elements", "omega for card arithmetic"]
+  },
+  {
+    "id": "ann-1023-middle-layer",
+    "proofId": "erdos-1023-oq-01",
+    "range": { "startLine": 134, "endLine": 180 },
+    "type": "definition",
+    "title": "Middle Layer Construction and kUnionFreeMax Supremum",
+    "content": "layer(n,k): the k-th level of the Boolean lattice — all k-element subsets of Fin n, defined as (powerSet n).filter (card = k). middleLayer(n) = layer(n, n/2). layer_card: |layer(n,k)| = C(n,k) proved via simp with univ.powerset. middleLayer_antichain: proved by eq_of_subset_of_card_le — all sets have equal size n/2, so A ⊆ B and |A| = |B| implies A = B. kUnionFreeMax(n,k) = sSup of achievable family sizes — uses ConditionallyCompleteLattice.sSup on a bounded nonempty set of naturals. kUnionFreeMax_ge_middle: kUnionFreeMax(n,k) ≥ C(n,n/2) for k ≥ 2, proved by le_csSup exhibiting the middle layer as a witness.",
+    "mathContext": "The **Boolean lattice** $2^{[n]}$ has levels $\\binom{[n]}{k}$. Sperner's theorem (1928): the maximum antichain in $2^{[n]}$ has size $\\binom{n}{\\lfloor n/2\\rfloor}$, achieved by the middle level. Since the middle level is an antichain, it is also union-free and $k$-union-free (for all $k$). The extremal function $f_k(n) = $ kUnionFreeMax$(n,k) \\geq \\binom{n}{\\lfloor n/2\\rfloor}$.",
+    "significance": "key",
+    "relatedConcepts": ["Sperner's theorem", "Finset.eq_of_subset_of_card_le", "ConditionallyCompleteLattice.sSup", "le_csSup"],
+    "prerequisites": ["powerSet = univ.powerset in Lean 4", "Finset.card_filter for layer_card", "BddAbove via 2^n bound"]
+  },
+  {
+    "id": "ann-1023-stirling",
+    "proofId": "erdos-1023-oq-01",
+    "range": { "startLine": 228, "endLine": 239 },
+    "type": "definition",
+    "title": "Stirling Constant √(2/π): Concrete Asymptotic Coefficient",
+    "content": "stirlingConstant = Real.sqrt(2 / Real.pi) — the concrete value of the asymptotic density of the middle layer. stirlingConstant_pos: Real.sqrt_pos_of_pos + div_pos (2 > 0, π > 0). stirlingConstant_sq = 2/π: Real.mul_self_sqrt applied to the non-negative argument 2/π. This concretizes an earlier abstract asymptoticConstant axiom — OQ-01 eliminates that axiom by giving an explicit definition and proving its properties (positivity, square). Numerical value: √(2/π) ≈ 0.7979. The axiom stirling_central_approx (line 370) gives |C(n,n/2) / (stirlingConstant · 2^n / √n) - 1| < ε for large n.",
+    "mathContext": "**Stirling**: $\\binom{n}{n/2} \\sim \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$. The constant $\\sqrt{2/\\pi}$ comes from Stirling's formula $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ applied to $\\binom{n}{n/2} = n!/((n/2)!)^2$. In Lean 4, $\\pi$ is available as Real.pi with Real.pi_pos; $\\sqrt{\\cdot}$ is Real.sqrt with Real.mul_self_sqrt for the square identity.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.sqrt", "Real.pi_pos", "Real.mul_self_sqrt", "stirling_central_approx"],
+    "prerequisites": ["Real.sqrt_pos_of_pos from Mathlib", "div_pos for 2/π > 0", "Real.pi_pos"]
+  },
+  {
+    "id": "ann-1023-axioms",
+    "proofId": "erdos-1023-oq-01",
+    "range": { "startLine": 365, "endLine": 372 },
+    "type": "axiom",
+    "title": "Two Deep Axioms: Erdős-Kleitman and Stirling",
+    "content": "problem_447_solution: sSup{|F| : F is 2-union-free in 2^[n]} = C(n,n/2) — the Erdős-Kleitman bound from Problem #447. stirling_central_approx: ∀ε>0, ∃N, ∀n≥N, |C(n,n/2)/(stirlingConstant·2^n/√n) - 1| < ε — the Stirling approximation. Together they imply the full result erdos_1023_asymptotic. OQ-01 eliminates 3 axioms from the parent file (asymptoticConstant, asymptoticConstant_pos, unionFreeMax_asymptotic) by making the constant concrete and deriving the asymptotic from these 2 deeper facts — a net reduction from 5 axioms to 2.",
+    "mathContext": "**Axiom 1** (Erdős-Kleitman): $\\max\\{|\\mathcal{F}|: \\mathcal{F}$ is 2-union-free$\\} = \\binom{n}{\\lfloor n/2\\rfloor}$. The standard proof uses the **LYM inequality**: $\\sum_{A \\in \\mathcal{F}} 1/\\binom{n}{|A|} \\leq 1$. **Axiom 2** (Stirling): $\\binom{n}{n/2} = (1+o(1))\\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": ["LYM inequality", "Sperner's theorem", "Stirling's formula", "problem_447_solution"],
+    "prerequisites": ["LYM inequality for 2-union-free families", "Stirling asymptotics via Gamma function"]
+  },
+  {
+    "id": "ann-1023-main-thm",
+    "proofId": "erdos-1023-oq-01",
+    "range": { "startLine": 377, "endLine": 413 },
+    "type": "theorem",
+    "title": "F(n) = C(n,⌊n/2⌋) and the Full Stirling Asymptotic",
+    "content": "unionFreeMax_eq_middle proves unionFreeMax(n) = C(n,n/2) by le_antisymm. Upper bound: any union-free family F is 2-union-free — given any G with |G| ≥ 2, extract two distinct elements B,C ∈ G (Finset.card_pair hBC) and form the 2-element witness {B,C} ⊆ F.erase A. Hence F.card ≤ problem_447_solution's bound. Lower bound: middleLayer is union-free (via antichain) and has size C(n,n/2). erdos_1023_asymptotic: one-line proof — rw [unionFreeMax_eq_middle] reduces to stirling_central_approx directly. The modular design (reduce to Problem #447, then apply Stirling) makes the proof very clean.",
+    "mathContext": "**Main theorem**: $F(n) = \\max_{\\mathcal{F} \\text{ union-free}} |\\mathcal{F}| = \\binom{n}{\\lfloor n/2\\rfloor}$. The key reduction: union-free $\\Rightarrow$ 2-union-free (any union of $\\geq 2$ sets contains a 2-element sub-witness). Combined with Problem \\#447 which resolved the 2-union-free case. **Asymptotic**: $F(n) \\sim \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$, proved in one step from Stirling.",
+    "significance": "key",
+    "relatedConcepts": ["csSup_le", "le_antisymm", "Finset.card_pair", "problem_447_solution", "stirling_central_approx"],
+    "prerequisites": ["Finset.card_pair for 2-element set cardinality", "le_csSup with explicit BddAbove", "rw tactic in theorem body"]
+  }
+]

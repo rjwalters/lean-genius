@@ -33,7 +33,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1023 asks for the maximum size of a union-free family — a collection F of subsets of [n] where no member is the union of other members. The answer F(n) = C(n, ⌊n/2⌋) was established by Erdős and Kleitman. The asymptotic is √(2/π) · 2^n / √n by Stirling's approximation. This file extends the formalization to k-union-free families (no member is the union of exactly k others) and related notions.",
+    "historicalContext": "Erdős Problem #1023 asks for the maximum size of a union-free family — a collection F of subsets of [n] where no member is the union of other members. The foundational result is Sperner's theorem (1928): the maximum antichain in 2^[n] has size C(n,⌊n/2⌋), achieved by the middle level. Since antichains are union-free, this gives a lower bound. The matching upper bound uses the LYM inequality (Lubell 1966, Yamamoto 1954, Meshalkin 1963): ∑_{A∈F} 1/C(n,|A|) ≤ 1 for any antichain, extended to union-free families by Erdős and Kleitman. The asymptotic F(n) ~ √(2/π) · 2^n / √n follows from Stirling's approximation (1730). This OQ-01 file extends the formalization to k-union-free families (no member is the union of exactly k others), intersection-free families (dual notion), and symmetric-difference-free families, while making the Stirling constant concrete as √(2/π) and eliminating 3 axioms from the parent formalization.",
     "problemStatement": "Determine the maximum size F(n) of a union-free family of subsets of {0,...,n-1}. Generalize to k-union-free families.",
     "text": "A family F is union-free if no A ∈ F is the union of other members (using ≥2 members). The maximum is achieved by taking all sets of a fixed middle size (Erdős-Kleitman). The k-union-free generalization considers families where no member is the union of exactly k others. For k=2 this specializes to 2-union-free (problem #447). Antichains are a related notion where inclusion is also forbidden.",
     "proofStrategy": "Define the infrastructure (repCount, isKUnionFree, unionFreeMax). Axiomatize the Erdős-Kleitman result and Stirling bound. Prove F(n) = C(n,n/2) from these axioms. Verify small cases via native_decide.",
@@ -41,7 +41,8 @@
       "Union-free ↔ antichain-like: no member is a union of others",
       "Middle level C(n,⌊n/2⌋): the level sets of the boolean lattice maximize union-free families",
       "Stirling: √(2/π) · 2^n/√n — the asymptotic density of middle-level sets",
-      "k-union-free generalizes 2-union-free: the same structural constraint"
+      "k-union-free generalizes 2-union-free: the same structural constraint",
+      "Union-free → 2-union-free reduction: the key step — any union of ≥2 sets has a 2-element sub-witness, connecting F(n) directly to the solved Problem #447 (Erdős-Kleitman). k-union-free and (k+1)-union-free are NOT nested constraints in general."
     ],
     "prerequisites": [
       "Set families: power sets, antichains",
@@ -53,9 +54,10 @@
     "summary": "Erdős #1023 extended: k-union-free families defined, F(n)=C(n,⌊n/2⌋) proved from Erdős-Kleitman axiom, Stirling approximation axiomatized. 36 theorems, 458 lines, 2 axioms.",
     "implications": "The union-free family bound is a prototype for extremal set theory results. The k-union-free generalization opens connections to hypergraph Turán problems.",
     "openQuestions": [
-      "Prove problem_447_solution without axioms using the LYM inequality",
-      "Determine the maximum k-union-free family size for k ≥ 3",
-      "Formalize the Bollobás set-pairs inequality as a unifying framework"
+      "Prove problem_447_solution without axioms using the LYM inequality: ∑_{A∈F} 1/C(n,|A|) ≤ 1",
+      "Determine the maximum k-union-free family size for k ≥ 3 — does the middle level remain optimal?",
+      "Formalize the Bollobás set-pairs inequality as a unifying framework for set family extremal results",
+      "Prove stirling_central_approx from first principles using Gamma function asymptotics in Mathlib"
     ]
   },
   "leanFile": {
@@ -70,7 +72,90 @@
       "targetId": "erdos-ko-rado",
       "relationship": "related",
       "description": "Both are extremal set family problems; Erdős-Ko-Rado bounds intersecting families, #1023 bounds union-free families"
+    },
+    {
+      "targetId": "erdos-1023",
+      "relationship": "extends",
+      "description": "OQ-01 extends the main Problem #1023 file: adds k-union-free generalization, makes Stirling constant concrete (eliminating 3 axioms), and proves F(n)=C(n,n/2) from 2 deep axioms"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "States Erdős Problem #1023 OQ-01: extends Problem #447 (2-union-free) to k-union-free families and generalizes related notions. Imports Finset, Fintype, Real, Sqrt, Tactic, Nat.Choose. Opens Finset namespace. Defines Erdos1023OQ01 namespace."
+    },
+    {
+      "id": "basic-defs",
+      "title": "§1–2: Basic Definitions and k-Union-Free Infrastructure",
+      "startLine": 32,
+      "endLine": 78,
+      "summary": "SetFamily(n) = Finset(Finset(Fin n)). powerSet via univ.powerset. familyUnion via Finset.sup id. isUnionOf (A = ⋃G, |G|≥2, A∉G), isUnionFree, isAntichain (no containment). isKUnionOf (exact k-element witness), isKUnionFree. isTwoUnionOf, isTwoUnionFree (2-union-free specialization from Problem #447). Careful design: A∉G prevents self-inclusion."
+    },
+    {
+      "id": "structural-theorems",
+      "title": "§3: Structural Theorems — Antichains, Hierarchies",
+      "startLine": 82,
+      "endLine": 128,
+      "summary": "mem_sub_familyUnion (private lemma): each B∈G satisfies B ⊆ familyUnion G. antichain_kUnionFree: antichains are k-union-free for all k≥2 (proof: all union members must equal A, contradicting distinct elements). antichain_unionFree: corollary. unionFree_implies_kUnionFree: union-free implies k-union-free for each k≥2. Comment notes k-union-free and (k+1)-union-free are NOT nested."
+    },
+    {
+      "id": "middle-layer",
+      "title": "§4: Middle Layer and kUnionFreeMax Extremal Function",
+      "startLine": 130,
+      "endLine": 180,
+      "summary": "layer(n,k): k-th level of Boolean lattice, defined by filter on powerSet. middleLayer(n) = layer(n, n/2). layer_card: |layer(n,k)| = C(n,k) via simp. middleLayer_antichain: equal-size sets form antichain (eq_of_subset_of_card_le). middleLayer_kUnionFree: corollary from antichain. kUnionFreeMax(n,k) = sSup over bounded nonempty set. kUnionFreeMax_ge_middle: C(n,n/2) ≤ kUnionFreeMax via le_csSup."
+    },
+    {
+      "id": "monotonicity",
+      "title": "§5: Monotonicity — unionFreeMax and Comparison",
+      "startLine": 182,
+      "endLine": 220,
+      "summary": "Explains why k-union-free and (k+1)-union-free are NOT nested (comment). unionFreeMax(n) = sSup for union-free families. unionFreeMax_le_kUnionFreeMax: every union-free family is k-union-free so unionFreeMax ≤ kUnionFreeMax (csSup_le + le_csSup). unionFreeMax_ge_middle: C(n,n/2) ≤ unionFreeMax via middle layer construction."
+    },
+    {
+      "id": "stirling-constant",
+      "title": "§6: Concrete Stirling Constant √(2/π)",
+      "startLine": 222,
+      "endLine": 239,
+      "summary": "stirlingConstant = Real.sqrt(2 / Real.pi) — concrete asymptotic coefficient. stirlingConstant_pos: via Real.sqrt_pos_of_pos + div_pos. stirlingConstant_sq = 2/π: via Real.mul_self_sqrt. Eliminates the abstract asymptoticConstant axiom from the parent formalization. The full Stirling axiom appears later at line 370."
+    },
+    {
+      "id": "small-cases",
+      "title": "§7: Computational Verification for Small n",
+      "startLine": 241,
+      "endLine": 290,
+      "summary": "SmallCases section. Verifies C(0,0)=1, C(1,0)=1, C(2,1)=2, C(3,1)=3, C(4,2)=6, C(5,2)=10, C(6,3)=20, C(8,4)=70, C(10,5)=252 by decide. middleLayer_card_0=1, _2=2, _4=6, _6=20 verified by rw [middleLayer_card]; decide. These ground-truth checks validate the layer definitions."
+    },
+    {
+      "id": "intersection-free",
+      "title": "§8: Intersection-Free Families (Dual Notion)",
+      "startLine": 292,
+      "endLine": 345,
+      "summary": "Defines isIntersectionOf (A = ⋂G, |G|≥2, A∉G using Finset.inf id), isIntersectionFree, intersectionFreeMax. inf_sub_mem lemma: F.inf id ⊆ B for B∈F. antichain_intersectionFree: dual of antichain_unionFree (using inf instead of sup, same card argument). middleLayer_intersectionFree. intersectionFreeMax_ge_middle: C(n,n/2) lower bound."
+    },
+    {
+      "id": "symm-diff-free",
+      "title": "§9: Symmetric Difference-Free Families",
+      "startLine": 347,
+      "endLine": 358,
+      "summary": "symmDiff(A,B) = (A\\B) ∪ (B\\A). isSymmDiffFree: no A equals the symmetric difference of two other distinct members. Pure definition section — no theorems proved. Opens a third structural variant alongside union-free and intersection-free."
+    },
+    {
+      "id": "main-results",
+      "title": "§10: Main Results — F(n) = C(n,n/2) and Stirling Asymptotic",
+      "startLine": 360,
+      "endLine": 413,
+      "summary": "problem_447_solution axiom: 2-union-free max = C(n,n/2). stirling_central_approx axiom: |C(n,n/2)/(stirlingConstant·2^n/√n) - 1| < ε for large n. unionFreeMax_eq_middle: proved by antisymmetry — upper bound via union-free→2-union-free reduction (extract 2-element witness {B,C}) + Problem #447; lower bound via middle layer. erdos_1023_asymptotic: one-line proof via rw [unionFreeMax_eq_middle] + stirling_central_approx."
+    },
+    {
+      "id": "summary",
+      "title": "Research Summary",
+      "startLine": 415,
+      "endLine": 458,
+      "summary": "Summary comment: lists new formalizations (k-union-free, stirlingConstant, intersection-free, symm-diff-free, small cases), 2 axioms used (problem_447_solution, stirling_central_approx), and 3 axioms eliminated vs main file (asymptoticConstant, asymptoticConstant_pos, unionFreeMax_asymptotic). Namespace closed."
+    }
+  ]
 }
