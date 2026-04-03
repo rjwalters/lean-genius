@@ -420,12 +420,10 @@ Mathlib has `IsRealClosed` for fields satisfying these properties.
 -- Note: Mathlib's real closed field theory is in development
 -- #check IsRealClosed (if available)
 
-/-- The real numbers form a real closed field.
-    This is a fundamental fact that enables Artin's proof. -/
-theorem real_is_real_closed : True := by
-  -- In full Mathlib, this would be: IsRealClosed ℝ
-  -- We state as True as a placeholder
-  trivial
+/-
+The real numbers form a real closed field (IsRealClosed ℝ in Mathlib).
+This is a fundamental fact that enables Artin's proof.
+-/
 
 /-- **Transfer Principle**: Statements about polynomial inequalities that hold in one
     real closed field hold in all real closed fields. This is key to Artin's proof.

@@ -183,8 +183,15 @@ provides the foundation for proving this by:
 1. Decomposing general regions into rectangles
 2. Showing boundary integrals cancel on shared edges
 3. Summing to get the result for the full region -/
-theorem greens_theorem_general (F : VectorField2D) (curl : Curl2D) (D : GreenRegion)
-    : True := trivial
+/-
+**Green's Theorem (General Form)**: For a continuously differentiable vector field F = (P, Q)
+and a region D bounded by a positively oriented, piecewise smooth, simple closed curve C:
+
+  ∮_C (P dx + Q dy) = ∬_D (∂Q/∂x - ∂P/∂y) dA
+
+The full formalization requires path integrals over arbitrary curves, which exceed the current
+Mathlib coverage. See axiom `greens_theorem_rectangle` for the axiomatized rectangle case.
+-/
 
 -- ============================================================
 -- PART 6: Special Cases and Applications
@@ -347,6 +354,5 @@ end GreensTheorem
 #check GreensTheorem.VectorField2D
 #check GreensTheorem.Rectangle
 #check GreensTheorem.greens_theorem_rectangle
-#check GreensTheorem.greens_theorem_general
 #check GreensTheorem.areaVectorField
 #check GreensTheorem.unitSquare_area
