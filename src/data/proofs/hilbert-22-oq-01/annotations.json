@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ann-kodaira-dimension-type",
+    "proofId": "hilbert-22-oq-01",
+    "range": { "startLine": 39, "endLine": 52 },
+    "type": "definition",
+    "title": "Kodaira Dimension as an Inductive Type",
+    "content": "The `KodairaDimension` inductive type encodes the classification invariant introduced by Kunihiko Kodaira in the 1960s. The two constructors capture the two qualitatively different regimes: `negInfty` for rational/ruled manifolds (where the canonical bundle has negative self-intersection) and `finite k` for manifolds where the pluricanonical maps are non-trivial up to dimension k. The `riemann_surface_kodaira` function explicitly maps the classical trichotomy {S², ℂ, 𝔻} to Kodaira dimensions {-∞, 0, 1}, making the analogy between 1D uniformization and higher-dimensional classification machine-checkable.",
+    "mathContext": "$\\kappa(X) = \\limsup_{m\\to\\infty} \\frac{\\log \\dim H^0(X, K_X^{\\otimes m})}{\\log m} \\in \\{-\\infty, 0, 1, \\ldots, \\dim X\\}$",
+    "significance": "key",
+    "relatedConcepts": ["canonical bundle", "plurigenera", "minimal model program", "Iitaka fibration"],
+    "prerequisites": ["complex manifolds", "line bundles", "holomorphic sections"]
+  },
+  {
+    "id": "ann-enriques-kodaira",
+    "proofId": "hilbert-22-oq-01",
+    "range": { "startLine": 63, "endLine": 82 },
+    "type": "concept",
+    "title": "Enriques-Kodaira Classification of Complex Surfaces",
+    "content": "The `SurfaceClass` type encodes the Enriques-Kodaira classification: compact complex surfaces fall into exactly 8 classes (up to birational equivalence in the κ = -∞ and κ = 1 cases, exactly up to isomorphism for κ = 0 and κ = 2). The `surfaceKodaira` function assigns the correct Kodaira dimension to each class. This classification, completed by Kodaira in a series of papers 1960–1969 (building on Enriques's work from the 1900s), is the definitive two-dimensional analogue of the uniformization theorem. In dimension ≥ 3, no comparable complete classification exists.",
+    "mathContext": "$\\kappa = -\\infty$: rational, ruled; $\\kappa = 0$: K3, Enriques, abelian, hyperelliptic; $\\kappa = 1$: elliptic; $\\kappa = 2$: general type",
+    "significance": "key",
+    "relatedConcepts": ["K3 surfaces", "abelian surfaces", "elliptic fibrations", "rational surfaces"],
+    "prerequisites": ["algebraic surfaces", "minimal models", "Kodaira dimension"]
+  },
+  {
+    "id": "ann-kobayashi-hyperbolicity",
+    "proofId": "hilbert-22-oq-01",
+    "range": { "startLine": 108, "endLine": 128 },
+    "type": "concept",
+    "title": "Kobayashi Hyperbolicity via Brody's Criterion",
+    "content": "The `IsKobayashiHyperbolic` definition formalizes Brody's theorem criterion (1978): a compact complex space is Kobayashi hyperbolic if and only if every entire holomorphic curve f : ℂ → X is constant. In Lean, this is rendered for normed ℂ-vector spaces: E is 'hyperbolic' if every complex-differentiable function ℂ → E is constant. This is stronger than boundedness (Liouville) — it says no non-trivial entire curve exists, which for a domain in ℂ corresponds to the Poincaré disk. The analogy table in the docstring makes the uniformization dictionary precise: Poincaré metric ↔ Kähler-Einstein; Fuchsian groups ↔ discrete group actions; Riemann mapping ↔ minimal models.",
+    "mathContext": "$X$ is Kobayashi hyperbolic $\\iff$ every holomorphic map $f: \\mathbb{C} \\to X$ is constant (Brody criterion for compact $X$)",
+    "significance": "key",
+    "relatedConcepts": ["Brody hyperbolicity", "entire curves", "Picard theorem", "Ahlfors-Schwarz lemma", "Lang conjecture"],
+    "prerequisites": ["complex analysis", "holomorphic maps", "entire functions"]
+  },
+  {
+    "id": "ann-model-spaces-theorem",
+    "proofId": "hilbert-22-oq-01",
+    "range": { "startLine": 130, "endLine": 135 },
+    "type": "insight",
+    "title": "Simply Connected Model Spaces: Finiteness in Dimension 1",
+    "content": "The single theorem `model_spaces_dim_one` — proved by `decide` — verifies that `Fin 3` has cardinality 3, encoding the fact that in dimension 1, the uniformization theorem gives exactly 3 simply connected model spaces. The docstring contrasts this with dimension ≥ 2: the classification breaks down because simply connected complex manifolds are not classified by finitely many types. This distinction is the core difficulty of the higher-dimensional uniformization problem: compactness + simple connectedness no longer determines the space up to biholomorphism.",
+    "mathContext": "Dim 1: exactly 3 simply connected models ($S^2, \\mathbb{C}, \\mathbb{D}$). Dim $\\ge 2$: infinitely many, including $\\mathbb{B}^n$, $\\mathbb{C}^n$, Stein manifolds, etc.",
+    "significance": "supporting",
+    "relatedConcepts": ["uniformization theorem", "simply connected", "biholomorphism", "higher-dimensional", "ball quotient"],
+    "prerequisites": ["Riemann uniformization theorem", "fundamental group"]
+  }
+]
