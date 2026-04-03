@@ -325,7 +325,82 @@ a closed walk, which in a finite graph contains a simple cycle. -/
 private lemma sc_tournament_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
     (hT : D.IsTournament) (hsc : D.IsStronglyConnected) :
     ∃ l : List V, IsDirectedCycleList D l := by
-  sorry
+  -- Step 1: Get a Hamiltonian path via Rédei's theorem infrastructure
+  obtain ⟨l, hlen, ⟨hnd, harcs⟩⟩ := tournament_full_path_list D hT (by omega)
+  have hmem : ∀ v : V, v ∈ l := fun v => by
+    rw [← List.mem_toFinset]
+    exact Finset.eq_univ_of_card _ (by rw [l.toFinset_card_of_nodup hnd, hlen]) ▸
+      Finset.mem_univ v
+  -- Step 2: Find a back arc — some j > i with D.arc l[j] l[i].
+  -- If no back arc exists, l[n-1] has no outgoing arcs, contradicting SC.
+  suffices h_back : ∃ i j : ℕ, i < j ∧ j < l.length ∧
+      D.arc (l[j]'(by omega)) (l[i]'(by omega)) by
+    -- Step 3: Build cycle from back arc: the sublist l[i..j] with wrap l[j]→l[i]
+    obtain ⟨i, j, hij, hj, harc_back⟩ := h_back
+    let C := (l.drop i).take (j - i + 1)
+    refine ⟨C, ?_, ?_, ?_⟩
+    · -- C.Nodup: sublist of a Nodup list
+      exact (hnd.drop i).take _
+    · -- 2 ≤ C.length = j - i + 1 ≥ 2
+      simp only [C, List.length_take, List.length_drop, hlen]; omega
+    · -- Arc condition on C
+      intro k hk
+      have hC_len : C.length = j - i + 1 := by
+        simp only [C, List.length_take, List.length_drop, hlen]; omega
+      rw [hC_len] at hk
+      -- C[m] = l[i + m] for all valid m
+      have hgetk : ∀ m (hm : m < C.length), C[m]'hm = l[i + m]'(by
+            simp only [C, List.length_take, List.length_drop, hlen] at hm; omega) := by
+        intro m hm
+        simp only [C, List.getElem_take, List.getElem_drop]
+      rw [hgetk k (by omega), hC_len]
+      by_cases hlt : k < j - i
+      · -- Non-wrap arc: use Hamiltonian path arc l[i+k] → l[i+k+1]
+        rw [Nat.mod_eq_of_lt (by omega), hgetk (k + 1) (by omega)]
+        exact harcs (i + k) (by omega)
+      · -- Wrap arc: k = j - i, use back arc l[j] → l[i]
+        have hkeq : k = j - i := by omega
+        rw [hkeq, Nat.mod_self, hgetk 0 (by omega)]
+        convert harc_back using 2; omega
+  -- Step 4: Prove ∃ back arc by contradiction
+  by_contra h_no_back
+  push_neg at h_no_back
+  -- h_no_back: ∀ i j, i < j → j < l.length → ¬D.arc l[j] l[i]
+  -- Under this: l[n-1] has no outgoing arcs.
+  -- Proof: if D.arc l[n-1] u, then u = l[k] for some k.
+  --   If k = n-1: D.arc l[n-1] l[n-1] contradicts loopless.
+  --   If k < n-1: h_no_back k (n-1) gives ¬D.arc l[n-1] l[k]. Contradiction.
+  have h_no_out : ∀ u : V, ¬D.arc (l[l.length - 1]'(by omega)) u := by
+    intro u harc
+    rw [List.mem_iff_getElem] at (hmem u)
+    obtain ⟨k, hk_lt, hk_eq⟩ := hmem u
+    by_cases hk_last : k = l.length - 1
+    · -- u = l[n-1]: loopless contradiction
+      exact D.loopless _ (hk_last ▸ hk_eq ▸ harc)
+    · -- k < n-1: h_no_back gives ¬D.arc l[n-1] l[k] = ¬D.arc l[n-1] u
+      exact h_no_back k (l.length - 1) (by omega) (by omega) (hk_eq ▸ harc)
+  -- SC: path from l[n-1] to l[0] exists (since they're distinct for n ≥ 3)
+  have hln : 0 < l.length := by omega
+  have hne : l[l.length - 1]'(by omega) ≠ l[0]'hln := by
+    intro heq
+    have := (List.Nodup.getElem_inj_iff hnd).mp heq
+    omega -- l.length - 1 = 0 → l.length = 1, but l.length = Fintype.card V ≥ 3
+  obtain ⟨P, hP_head, hP_last, hP_arcs⟩ := hsc _ _ hne
+  -- P.length ≥ 2 (path connects two distinct vertices)
+  have hP2 : 2 ≤ P.length := by
+    rcases P with _ | ⟨a, _ | ⟨b, rest⟩⟩
+    · simp at hP_head
+    · simp only [List.head?_cons, List.getLast?_singleton] at hP_head hP_last
+      exact absurd ((Option.some.inj hP_head).symm ▸ Option.some.inj hP_last) hne
+    · simp; omega
+  -- P[0] = l[n-1] (from hP_head)
+  have hP0 : P[0]'(by omega) = l[l.length - 1]'(by omega) := by
+    rcases P with _ | ⟨a, rest⟩
+    · omega
+    · simp only [List.head?_cons] at hP_head
+      simpa using Option.some.inj hP_head
+  -- D.arc (P[0]) (P[1]) = D.arc l[n-1] (P[1]): contradicts h_no_out
+  exact h_no_out (P[1]'(by omega)) (hP0 ▸ hP_arcs 0 (by omega))
 
 /-! ── IV.B: Non-Insertable Vertex Dichotomy ─────────────────────────────── -/
 

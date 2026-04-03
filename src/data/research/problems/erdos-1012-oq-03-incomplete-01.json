@@ -1,82 +1,100 @@
 {
-  "slug": "erdos-1012-oq-03-incomplete-01",
-  "title": "Complete directed Hamiltonian cycle thresholds proof",
-  "phase": "ACT",
-  "status": "active",
-  "tier": "B",
-  "path": "full",
-  "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Complete directed Hamiltonian cycle thresholds proof.",
-    "whyMatters": []
-  },
-  "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
-  },
-  "currentState": {
+    "slug": "erdos-1012-oq-03-incomplete-01",
+    "title": "Complete directed Hamiltonian cycle thresholds proof",
     "phase": "ACT",
-    "since": "2026-03-30T16:34:54.972Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
-  "knowledge": {
-    "progressSummary": "PROGRESS: Proved list_path_to_hamiltonian (was sorry). Eliminated infrastructure sorry in R\u00e9dei theorem proof chain. 3S remain (all deep theorems).",
-    "builtItems": [
-      "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
-      "Key insight: nodup list of full length gives bijection, arc condition transfers directly"
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "problemStatement": {
+        "formal": "\\text{(formal statement to be added)}",
+        "plain": "Formal mathematical investigation: Complete directed Hamiltonian cycle thresholds proof.",
+        "whyMatters": []
+    },
+    "knownResults": {
+        "proven": [],
+        "open": [],
+        "goal": ""
+    },
+    "currentState": {
+        "phase": "ACT",
+        "since": "2026-03-30T16:34:54.972Z",
+        "iteration": 2,
+        "focus": "Initial exploration of the problem.",
+        "blockers": [],
+        "nextAction": "Begin problem exploration.",
+        "attemptCounts": {
+            "total": 0,
+            "currentApproach": 0,
+            "approachesTried": 0
+        }
+    },
+    "knowledge": {
+        "progressSummary": "PROGRESS: Proved sc_tournament_has_cycle (back arc contradiction), tournament_cycle_non_insertable (successor closure), list_cycle_to_hamiltonian, grow_cycle_to_hamiltonian, moon_moser structure, and redei. 3 sorries remain: ghouila_houri (deep), tournament_cycle_extendable (S+/S- partition, tractable), directed_hamiltonian_threshold (degree argument).",
+        "builtItems": [
+            "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
+            "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
+            "Proved sc_tournament_has_cycle via back arc contradiction (Erdos1012OQ03.lean:325-403)",
+            "Proved tournament_cycle_non_insertable via successor closure argument (Erdos1012OQ03.lean:416-468)",
+            "Proved list_cycle_to_hamiltonian via Equiv.ofBijective with modular indexing (Erdos1012OQ03.lean:497-526)",
+            "Proved grow_cycle_to_hamiltonian by induction on cycle deficit (Erdos1012OQ03.lean:532-543)",
+            "Proved moon_moser (structure complete, depends on tournament_cycle_extendable)",
+            "Proved redei theorem (fully sorry-free, Erdos1012OQ03.lean:568-572)"
+        ],
+        "insights": [
+            "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
+            "Injectivity: List.Nodup.getElem_inj_iff",
+            "Surjectivity: List.mem_iff_getElem + hmem (\u2200 v, v \u2208 l from Finset.eq_univ_of_card)",
+            "Arc condition: Equiv.ofBijective preserves function values, so \u03c3.symm i = l[i]",
+            "sc_tournament_has_cycle: proved via back arc contradiction on Hamiltonian path",
+            "Back arc argument: if no l[j]\u2192l[i] arc exists (j>i), then l[n-1] has no outgoing arcs, contradicting SC (path l[n-1]\u2192l[0] must start with an arc)",
+            "Cycle from back arc: C = (l.drop i).take (j-i+1) with wrap arc l[j]\u2192l[i]; Nodup from list.drop.take; length from omega",
+            "tournament_cycle_non_insertable: proved via successor closure - arc(l[i],u) \u2192 arc(l[(i+1)%k],u) by tournament property; forward iteration gives all-or-none",
+            "list_cycle_to_hamiltonian: proved analogously to list_path_to_hamiltonian (Equiv.ofBijective, modular index matching)",
+            "grow_cycle_to_hamiltonian: proved by induction on deficit n-k, using tournament_cycle_extendable at each step",
+            "moon_moser statement proved (depends on tournament_cycle_extendable which is still sorry)",
+            "redei theorem fully proved via tournament_full_path_list + list_path_to_hamiltonian"
+        ],
+        "mathlibGaps": [],
+        "nextSteps": [
+            "tournament_cycle_extendable (line 490): key remaining sorry - S+/S- partition argument",
+            "Proof: pick u not in C; either insert u (done) or u non-insertable (all-or-none)",
+            "If all C beats u: S- set; SC gives path S-\u2192C; but no arc S-\u2192C \u2192 contradiction",
+            "If u beats all C: S+ set; SC gives path C\u2192S+; but no arc C\u2192S+ \u2192 contradiction",
+            "When both S+, S- exist: find b\u2208S-, a\u2208S+ with arc b\u2192a; form longer cycle \u2192 contradicts maximality",
+            "ghouila_houri (line 300): deep directed Dirac theorem, likely needs its own approach",
+            "directed_hamiltonian_threshold (line 590): reduce to moon_moser via degree argument"
+        ]
+    },
+    "tags": [
+        "seeker-selected",
+        "completion"
     ],
-    "insights": [
-      "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
-      "Injectivity: List.Nodup.getElem_inj_iff",
-      "Surjectivity: List.mem_iff_getElem + hmem (\u2200 v, v \u2208 l from Finset.eq_univ_of_card)",
-      "Arc condition: Equiv.ofBijective preserves function values, so \u03c3.symm i = l[i]"
+    "relatedProofs": [
+        "erdos-1",
+        "erdos-10",
+        "erdos-101",
+        "erdos-1012",
+        "erdos-1012-oq-03"
     ],
-    "mathlibGaps": [],
-    "nextSteps": [
-      "Remaining 3 sorries are deep theorems (ghouila_houri, moon_moser, directed_hamiltonian_threshold)",
-      "ghouila_houri proof outline: longest path \u2192 extend \u2192 close cycle (~200 lines)",
-      "moon_moser follows from R\u00e9dei + tournament rotation"
+    "references": {
+        "papers": [],
+        "urls": [],
+        "mathlib": []
+    },
+    "started": "2026-03-30T16:34:54.972Z",
+    "lastUpdate": "2026-03-30T16:34:54.972Z",
+    "significance": 6,
+    "tractability": 6,
+    "leanFiles": [
+        {
+            "path": "Proofs/Erdos1012OQ03.lean",
+            "filename": "Erdos1012OQ03.lean",
+            "lineCount": 364,
+            "theoremCount": 6,
+            "axiomCount": 0,
+            "defCount": 8,
+            "sorryCount": 3,
+            "isAristotle": false
+        }
     ]
-  },
-  "tags": [
-    "seeker-selected",
-    "completion"
-  ],
-  "relatedProofs": [
-    "erdos-1",
-    "erdos-10",
-    "erdos-101",
-    "erdos-1012",
-    "erdos-1012-oq-03"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-03-30T16:34:54.972Z",
-  "lastUpdate": "2026-03-30T16:34:54.972Z",
-  "significance": 6,
-  "tractability": 6,
-  "leanFiles": [
-    {
-      "path": "Proofs/Erdos1012OQ03.lean",
-      "filename": "Erdos1012OQ03.lean",
-      "lineCount": 364,
-      "theoremCount": 6,
-      "axiomCount": 0,
-      "defCount": 8,
-      "sorryCount": 3,
-      "isAristotle": false
-    }
-  ]
 }
