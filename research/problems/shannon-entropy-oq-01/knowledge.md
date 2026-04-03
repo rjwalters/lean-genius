@@ -1,30 +1,28 @@
 # shannon-entropy-oq-01
-## Differential Entropy Formalization — Near complete: 2 moment lemmas pending Aristotle
+## Differential Entropy Formalization — COMPLETE
 
-**Status: IN PROGRESS** — All top-level theorems proved. 2 helper sorries remain (Gaussian moment lemmas, queued for Aristotle when pipeline unblocks).
+**Status: COMPLETED** — All sorries eliminated. Build succeeds with 0 errors.
 
 ---
 
 ## Summary
 
-`ShannonEntropyOQ01.lean` (~400 lines) formalizes differential entropy for continuous distributions:
+`ShannonEntropyOQ01.lean` (~475 lines) formalizes differential entropy for continuous distributions:
 - `differentialEntropy f = -∫ x, f x * log (f x)`
 - KL divergence non-negativity (Gibbs inequality)
 - Translation invariance, scale equivariance
 - Gaussian maximizes entropy at fixed variance
-- Gaussian entropy formula: h(N(μ,σ²)) = ½log(2πeσ²)
+- Gaussian entropy formula: h(N(μ,σ²)) = ½log(2πeσ²) — **fully proved**
 
-**Proved (0 sorries in body)**:
+**All theorems proved (0 sorries)**:
 - `kl_divergence_continuous_nonneg`: D(f||g) ≥ 0 for probability densities
 - `gibbs_inequality_continuous`: h(f) ≤ -∫ f log g (Gibbs corollary)
 - `differentialEntropy_translation_invariant`: h(f(·-c)) = h(f)
 - `gaussian_max_entropy`: for densities with ∫x²f ≤ σ², h(f) ≤ ½log(2πeσ²)
-- `differentialEntropy_scale_equivariant`: h((1/|a|)·f(·/a)) = h(f) + log|a| [Session 2]
-- `gaussianDifferentialEntropy`: h(gaussianPDF μ σ) = ½log(2πeσ²) modulo moment lemmas [Session 2]
-
-**Pending (Aristotle)**:
-- `gaussian_second_moment`: ∫ (x-μ)² · φ(x) dx = σ² — submitted to Aristotle
-- `gaussian_quad_integrable`: Integrable (fun x => (x-μ)² · φ(x)) — submitted to Aristotle
+- `differentialEntropy_scale_equivariant`: h((1/|a|)·f(·/a)) = h(f) + log|a|
+- `gaussianDifferentialEntropy`: h(gaussianPDF μ σ) = ½log(2πeσ²)
+- `gaussian_second_moment`: ∫ (x-μ)² · φ(x) dx = σ² — proved via IBP
+- `gaussian_quad_integrable`: Integrable (fun x => (x-μ)² · φ(x)) — proved
 
 **PR**: #8914
 
@@ -114,6 +112,36 @@
 
 **Files Modified**:
 - `proofs/Proofs/ShannonEntropyOQ01.lean` (line 274: gaussianPDF_integrable fix)
+
+### Session 2026-04-03 (Session 4) — COMPLETION
+**Mode**: REVISIT
+**Outcome**: completed
+
+**What Was Done**:
+1. Proved `gaussian_second_moment`: ∫(x-μ)²·φ(x)dx = σ² entirely in Lean without Aristotle
+   - Used IBP with antiderivative G(x) = -x/(2b)·exp(-b·x²)
+   - G'(x) = x²·exp(-bx²) - (1/2b)·exp(-bx²)
+   - `integral_Ioi_of_hasDerivAt_of_tendsto'` + `integral_Iic_of_hasDerivAt_of_tendsto'` give ∫G'=0
+   - ∫x²·exp(-bx²) = (1/2b)·∫exp(-bx²) = (1/2b)·√(π/b)
+   - Translation invariance + algebra gives σ²
+2. Proved `gaussian_quad_integrable` via `integrable_rpow_mul_exp_neg_mul_sq hb (s:=2)` + `comp_sub_right` + `const_mul`
+3. Fixed `gaussianPDF_integrable`: `simp_rw` can't rewrite inside `Integrable(f)` (function, not pointwise). Fixed with `funext + rw`.
+4. Fixed `mul_exp_tendsto_zero`: avoided `tendsto_pow_atTop` (unknown), `div_le_iff` (unknown), `pow_le_pow_left` (unknown). Used elementary squeeze via `mul_le_mul` + sqrt bounds.
+5. Fixed alpha-equivalence issue: `(integral_sub h1 h2).symm.trans h_full_zero` fails (Eq.trans sees `∫(a:ℝ)` vs `∫(x:ℝ)`). Fix: `rw [integral_sub h1 h2] at h_full_zero` mutates the hypothesis instead.
+6. Zero sorries. Build succeeds.
+
+**Key Lean Findings**:
+- `pow_le_pow_left` unavailable by that name — use `mul_le_mul` + `Real.sq_sqrt` + `nlinarith`
+- `div_le_iff` may fail in `rw` — compute manually: `calc 2*(-M) = 2*(-M)/b * b := by field_simp [hb.ne']; _ ≤ x^2*b := mul_le_mul_of_nonneg_right hMx hb.le`
+- `squeeze_zero` after `apply`: goals may be type-mismatched — use `tendsto_of_tendsto_of_tendsto_of_le_of_le'` directly
+- Alpha-equiv: `Eq.trans` distinguishes `∫(a:ℝ), f a` from `∫(x:ℝ), f x` syntactically; `rw [...] at h` is the workaround
+- `simp only [Filter.tendsto_atBot, Filter.eventually_atTop]` more robust than `rw [Filter.tendsto_atBot]`
+- `linarith [...]` in term mode is invalid — must use `by linarith [...]`
+
+**Files Modified**:
+- `proofs/Proofs/ShannonEntropyOQ01.lean` (~330 → 475 lines; 0 sorries)
+- `src/data/research/problems/shannon-entropy-oq-01.json`
+- `research/problems/shannon-entropy-oq-01/knowledge.md`
 
 ---
 
