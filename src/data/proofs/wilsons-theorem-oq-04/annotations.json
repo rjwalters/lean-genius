@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-gauss-wilson-theorem",
+    "proofId": "wilsons-theorem-oq-04",
+    "range": { "startLine": 43, "endLine": 52 },
+    "type": "insight",
+    "title": "Gauss–Wilson Classification Theorem",
+    "content": "The main theorem: `gauss_wilson` gives the full classification of moduli where the unit product is −1. The proof is a one-liner — `gaussWilson_classification n hn` — because all the work was done in OQ01. The docstring marks this as the 'standalone answer to open question OQ-04', explicitly connecting the Lean theorem to the informal question it resolves. The statement captures Gauss's 1801 result: primitive-root moduli are exactly {4, p^k, 2p^k}.",
+    "mathContext": "The right-hand side of the iff is an existential over triples $(p, k, \\text{condition})$: $\\exists p, k$ with $p$ prime, $p \\neq 2$, $k \\geq 1$, and $n = p^k$ or $n = 2p^k$, or separately $n = 4$. In Lean this is: `(∃ p k, Nat.Prime p ∧ p ≠ 2 ∧ k ≥ 1 ∧ (n = p ^ k ∨ n = 2 * p ^ k)) ∨ n = 4`.",
+    "significance": "key",
+    "relatedConcepts": ["primitive roots", "Wilson's theorem", "Disquisitiones Arithmeticae", "Euler's totient function"],
+    "prerequisites": ["modular arithmetic", "Nat.Prime in Mathlib", "WilsonsTheoremOQ01.gaussWilson_classification"]
+  },
+  {
+    "id": "ann-cyclic-equivalence",
+    "proofId": "wilsons-theorem-oq-04",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "concept",
+    "title": "Group-Theoretic Formulation: Product = −1 ↔ Cyclic",
+    "content": "The theorem `gauss_wilson_cyclic` states the group-theoretic core: the unit product equals −1 iff the unit group is cyclic. This is the abstract algebraic insight that explains *why* the classification holds. Cyclic groups of even order have a unique element of order 2 (namely the generator raised to the half-power), which acts as the identity for pairing $g ↔ g^{-1}$ across all other elements. The proof is one line: `unitsProduct_eq_neg_one_iff_cyclic hn` from OQ02.",
+    "mathContext": "In a finite cyclic group $G = \\langle g \\rangle$ of even order $m$: $\\prod_{x \\in G} x = g^{0+1+\\cdots+(m-1)} = g^{m(m-1)/2}$. Since $|g| = m$ and $m$ is even, $g^{m/2}$ is the unique element of order 2. The product $g^{m(m-1)/2} = g^{m/2 \\cdot (m-1)} = (g^{m/2})^{m-1} = g^{m/2}$ (since $m-1$ is odd). For $(\\mathbb{Z}/n\\mathbb{Z})^\\times$, this is $-1$.",
+    "significance": "key",
+    "relatedConcepts": ["cyclic groups", "IsCyclic in Mathlib", "ZMod.isCyclic_units_iff", "unit group", "involution"],
+    "prerequisites": ["group theory", "ZMod in Mathlib", "IsCyclic typeclass"]
+  },
+  {
+    "id": "ann-wilson-corollary",
+    "proofId": "wilsons-theorem-oq-04",
+    "range": { "startLine": 59, "endLine": 65 },
+    "type": "technique",
+    "title": "Wilson's Theorem as Corollary: Supplying the Witness",
+    "content": "The corollary `gauss_wilson_prime` recovers Wilson's theorem from Gauss's generalization. The proof applies `gauss_wilson` at `n = p`, then proves the right-hand side by providing the explicit witness `(p, 1)`: `Nat.Prime p` (given), `p ≠ 2` (since `p ≥ 3`), `k = 1 ≥ 1`, and `n = p^1` (by `simp`). The `omega` tactic handles the arithmetic `p ≥ 3 → p ≠ 2`. This pattern — applying a general classification and supplying a witness — is characteristic of how corollaries are derived from `∃`-quantified theorems in Lean.",
+    "mathContext": "Wilson's theorem: $(p-1)! \\equiv -1 \\pmod{p}$ for prime $p$. In the `unitsProduct` formulation: $\\text{unitsProduct}(p) \\bmod p = p-1$. From Gauss–Wilson: this holds iff $p \\in \\{4, p'^k, 2p'^k\\}$ for odd prime $p'$. Taking $p' = p$, $k=1$: $p = p^1$ satisfies the classification for any odd prime $p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Wilson's theorem", "Nat.Prime", "omega tactic", "simp"],
+    "prerequisites": ["WilsonsTheorem.lean", "gauss_wilson theorem", "Lean 4 existential witnesses"]
+  },
+  {
+    "id": "ann-namespace-imports",
+    "proofId": "wilsons-theorem-oq-04",
+    "range": { "startLine": 26, "endLine": 30 },
+    "type": "context",
+    "title": "Module Architecture: OQ Dependency Chain",
+    "content": "This file imports only `Proofs.WilsonsTheoremOQ01` and opens `WilsonsTheoremGeneralization` (from OQ01). The OQ01 module itself imports OQ02 (the abstract bridge), creating a chain: OQ02 (abstract bridge) → OQ01 (classification) → OQ04 (final statement). This modular architecture separates the work: OQ02 handles the concrete↔abstract equivalence, OQ01 applies Mathlib's cyclic classification, and OQ04 presents the clean public API. The `WilsonsTheoremGauss` namespace makes the theorems easily discoverable.",
+    "mathContext": "The import chain: `WilsonsTheoremOQ04` → `WilsonsTheoremOQ01` → `WilsonsTheoremOQ02`. OQ02 proves `unitsProduct_eq_neg_one_iff_cyclic` (the bridge). OQ01 proves `gaussWilson_classification` using Mathlib's `ZMod.isCyclic_units_iff`. OQ04 re-exports as `gauss_wilson` and `gauss_wilson_cyclic`.",
+    "significance": "context",
+    "relatedConcepts": ["Lean 4 namespaces", "modular proof architecture", "ZMod", "IsCyclic"],
+    "prerequisites": ["WilsonsTheoremOQ01", "WilsonsTheoremOQ02"]
+  },
+  {
+    "id": "ann-full-classification",
+    "proofId": "wilsons-theorem-oq-04",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Proof Architecture: Three-Layer Decomposition",
+    "content": "The file header summarizes the three-layer proof architecture. Layer 1 (OQ01): defines `unitsProduct n` as the concrete product of all integers in $\\{1, \\ldots, n-1\\}$ coprime to $n$, proves the classification directly using Mathlib's cyclic group theory, and provides computational verification for $n \\leq 50$ as a sanity check. Layer 2 (OQ02): proves the abstract bridge — that the concrete computation `unitsProduct n % n` equals $n-1$ iff the abstract unit group `(ZMod n)ˣ` satisfies `IsCyclic`. Layer 3 (OQ04, this file): assembles the public-facing statements, re-exports the main theorems under clean names, and proves the Wilson corollary.",
+    "mathContext": "The three layers correspond to three mathematical components: (1) the concrete number theory (products of coprime residues), (2) the algebraic bridge (ZMod units ↔ modular arithmetic), and (3) the classical result (Gauss 1801). The separation cleanly mirrors the historical development: Wilson (1770) → Gauss (1801) → modern group theory.",
+    "significance": "context",
+    "relatedConcepts": ["proof architecture", "modular Lean development", "ZMod", "unitsProduct"],
+    "prerequisites": ["Lean 4 modules", "WilsonsTheoremOQ01", "WilsonsTheoremOQ02"]
+  }
+]
