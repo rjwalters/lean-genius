@@ -29,27 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 10 theorems built, 1 sorry in Pythagorean finite sum (HARD)",
+    "progressSummary": "COMPLETED: fourier_pythagorean_partial proved by Finset induction — 10 theorems, 0 sorries, 0 axioms. Fully verified.",
     "builtItems": [
       "parseval_energy in CauchySchwarzOQ02OQ01.lean (tsum = integral form)",
       "parseval_hassum in CauchySchwarzOQ02OQ01.lean (HasSum form)",
       "bessel_fourier in CauchySchwarzOQ02OQ01.lean (Bessel inequality)",
       "fourier_pythagorean_partial in CauchySchwarzOQ02OQ01.lean (1 sorry)",
       "parseval_implies_completeness via Fourier series uniqueness",
-      "fourier_series_L2_convergence"
+      "fourier_series_L2_convergence",
+      "fourier_pythagorean_partial (0 sorries) - induction proof using @insert pattern, inner_smul_left/inner_sum/inner_smul_right, norm_add_sq (𝕜 := ℂ)"
     ],
     "insights": [
       "Parseval as limit of Pythagorean theorem for finite orthonormal sums",
       "hasSum_sq_fourierCoeff gives integral form (not L² norm form)",
-      "Completeness proved via Fourier series uniqueness (most elegant approach)"
+      "Completeness proved via Fourier series uniqueness (most elegant approach)",
+      "fourier_pythagorean_partial proved by Finset induction_on: orthogonality of new term to existing sum via hON.2, Pythagorean theorem via norm_add_sq, norm identity via hON.1"
     ],
     "mathlibGaps": [
       "lp.inner_eq_tsum needed for inner product Parseval form",
       "Orthonormal.norm_sum_smul_eq not directly available (or needs careful computation)"
     ],
     "nextSteps": [
-      "Submit fourier_pythagorean_partial to Aristotle (HARD sorry)",
-      "Prove inner product form: inner f g = tsum n, coeff f n * conj (coeff g n)"
+      "Prove inner product Parseval: ⟪f,g⟫ = ∑ coeff f n * conj (coeff g n) (bilinear form)",
+      "Extend to abstract Hilbert bases"
     ],
     "markdown": "# Knowledge Base: cauchy-schwarz-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
