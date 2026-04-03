@@ -497,6 +497,20 @@ In Case B: similarly via SC from a C vertex to u.
 The proof below handles the direct-insertion case fully and uses sorry for the
 SC argument needed to construct a longer cycle in Cases A and B.
 -/
+/-- Symmetric to sc_path_to_set: from a vertex u outside S, there exists a simple path
+    FROM some S-vertex TO u, with all vertices except the head not in S.
+    Proof: same as sc_path_to_set applied to the reversed digraph. -/
+private lemma sc_path_from_set (D : Digraph V) (hsc : D.IsStronglyConnected)
+    (u : V) (S : List V) (hu : u ∉ S) (hS : 0 < S.length) :
+    ∃ (Q : List V) (j : ℕ) (hj : j < S.length),
+      Q.head? = some (S[j]'hj) ∧
+      Q.getLast? = some u ∧
+      2 ≤ Q.length ∧
+      Q.Nodup ∧
+      (∀ i (hi : i + 1 < Q.length), D.arc (Q[i]) (Q[i + 1])) ∧
+      ∀ w ∈ Q.tail, w ∉ S := by
+  sorry
+
 private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
     (hsc : D.IsStronglyConnected) (l : List V) (hc : IsDirectedCycleList D l)
     (hl : l.length < Fintype.card V) :
@@ -898,18 +912,113 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
         rcases hT u (l[i]'hi) hne with ⟨_, h2⟩ | ⟨_, h2⟩
         · exact h2
         · exact absurd (h_u_beats i hi) h2
-      -- Step B2: SC gives simple path Q from l[0] to u with no l-intermediates in Q.tail.
-      -- We use SC to get path from u to l[0] REVERSED — but our SC is one-directional.
-      -- Instead, apply hsc l[0] u (since l[0] ≠ u: l[0] ∈ l and u ∉ l).
-      -- We need path from l[0] to u with intermediates ∉ l.
-      -- Use sc_path_to_set on the REVERSE: get path from u to l (then reverse all arcs).
-      -- For simplicity, use the following: since all u→l[i] and SC says l[0] can reach u,
-      -- get direct SC walk from l[0] to u and extract prefix to first non-l vertex.
-      -- This is symmetric to Case A via sc_path_to_set applied from each l-vertex.
-      -- The key observation: apply sc_path_to_set starting from l[0] in the reversed digraph.
-      -- For now we use the fact that ∃ Q (path from l[0] to u avoiding l-intermediates):
-      -- this follows from the same argument as sc_path_to_set (sorry in that lemma).
-      sorry
+      -- Step B2: SC gives simple path Q from some l[j] to u with no l-intermediates in Q.tail.
+      obtain ⟨Q, j, hj, hQ_head, hQ_last, hQ_len, hQ_nd, hQ_arcs, hQ_avoids⟩ :=
+        sc_path_from_set D hsc u l hu (by omega)
+      -- Step B3: Extract Q = l[j] :: Q_tl.
+      obtain ⟨Q_tl, rfl⟩ := List.head?_eq_some_iff.mp hQ_head
+      have hQtl_pos : 0 < Q_tl.length := by
+        rcases Q_tl with _ | ⟨v, tl⟩
+        · simp at hQ_last; exact hu (hQ_last ▸ List.getElem_mem ..)
+        · simp
+      -- Step B4: Q_tl.length ≥ 1 and Q_tl.getLast? = some u. Q_tl[0] ∉ l.
+      have hQtl_last : Q_tl.getLast? = some u := by
+        rwa [← List.getLast?_cons_ne_nil _ Q_tl (by omega : Q_tl ≠ [])]
+      have hQtl0_nl : Q_tl[0]'hQtl_pos ∉ l := by
+        apply hQ_avoids; simp
+      -- Step B5: Last arc Q_tl[last] → u.
+      have h_Qtl_last_arc : D.arc (Q_tl[Q_tl.length - 1]'(by omega)) u := by
+        have := hQ_arcs Q_tl.length (by simp; omega)
+        simp at this; convert this using 2; omega
+      -- Step B6: Q_tl.length ≥ 1 already known; need length ≥ 1 (since ¬arc(l[j],u) means
+      -- Q_tl[0] ≠ u, so there's at least one element between l[j] and u, i.e., Q_tl ≠ []).
+      -- Actually hQtl_pos already gives this.
+      -- Step B7: New cycle: (l[j] :: Q_tl) ++ rotate_l
+      -- = [l[j], Q_tl[0], ..., Q_tl[s], l[(j+1)%k], ..., l[(j-1+k)%k]]
+      -- where Q_tl[s] = u = Q_tl[Q_tl.length-1].
+      -- Length = (1 + Q_tl.length) + (k-1) = k + Q_tl.length ≥ k + 1.
+      -- Since ¬arc(l[j], u) (h_nl), arc(l[j], Q_tl[0]) and Q_tl[0] ≠ u, so Q_tl.length ≥ 2.
+      -- Actually: h_nl says ¬arc(l[j], u), so if Q_tl = [u] then arc(l[j], u) contradicts h_nl.
+      have hQtl_len2 : 2 ≤ Q_tl.length := by
+        rcases Q_tl with _ | ⟨x, _ | ⟨y, tl⟩⟩
+        · exact absurd hQtl_pos (by simp)
+        · exfalso
+          -- Q_tl = [x] and Q_tl.getLast? = some x = some u, so x = u
+          have hxu : x = u := by simp [List.getLast?] at hQtl_last; exact hQtl_last
+          -- But then l[j] :: [x] = [l[j], u] and arc(l[j], x) = arc(l[j], u) from Q arc
+          have harc : D.arc (l[j]'hj) x := by
+            have := hQ_arcs 0 (by simp; omega); simpa using this
+          exact h_nl j hj (hxu ▸ harc)
+        · simp; omega
+      set s := Q_tl.length with hs_def  -- s ≥ 2
+      -- Build new_cycle = [l[j]] ++ Q_tl ++ (l.drop (j+1) ++ l.take j)
+      -- = l[j], Q_tl[0], ..., Q_tl[s-1]=u, l[(j+1)%k], ..., l[(j-1+k)%k]
+      let new_l := ([l[j]'hj] ++ Q_tl) ++ (l.drop (j + 1) ++ l.take j)
+      refine ⟨new_l, ⟨?_, ?_, ?_⟩, ?_⟩
+      · -- Nodup of new_l
+        simp only [new_l, List.nodup_append, List.nodup_cons, List.nodup_nil, List.not_mem_nil,
+          forall_const, and_true]
+        refine ⟨⟨?_, ?_⟩, ?_, ?_⟩
+        · -- l[j] ∉ Q_tl: all Q_tl elements ∉ l (by hQ_avoids), but l[j] ∈ l
+          intro hmem
+          exact absurd (List.getElem_mem (l := l) (n := j) hj) (hQ_avoids _ hmem)
+        · exact hQ_nd.of_cons  -- Q_tl is nodup (sublist of nodup Q)
+        · -- (l.drop(j+1) ++ l.take j) is nodup (rotation of l)
+          rw [List.nodup_append]
+          refine ⟨hnd.drop _, hnd.take _, fun v hv1 hv2 => ?_⟩
+          have : l.count v ≤ 1 := List.nodup_iff_count_le_one.mp hnd v
+          have h1 : 0 < (l.drop (j+1)).count v := List.count_pos_iff_mem.mpr hv1
+          have h2 : 0 < (l.take j).count v := List.count_pos_iff_mem.mpr hv2
+          have := List.count_append (l.drop (j+1)) (l.take j) v
+          have hcount : (l.drop (j+1) ++ l.take j).count v ≤ l.count v := by
+            rw [List.count_append, show (l.drop (j+1)).count v + (l.take j).count v =
+              (l.take j ++ l.drop (j+1)).count v from by rw [List.count_append]; omega]
+            rw [List.take_append_drop]; omega
+          omega
+        · -- Disjointness: [l[j]] ++ Q_tl and l-rotation are disjoint
+          -- l-rotation = l.drop(j+1) ++ l.take(j) ⊆ l; [l[j]]++Q_tl elements ∉ l
+          intro v hv_left hv_right
+          simp only [List.mem_append, List.mem_cons, List.mem_nil_iff, or_false] at hv_left
+          -- hv_right: v ∈ l.drop(j+1) ++ l.take(j), so v ∈ l
+          have hv_in_l : v ∈ l := by
+            rcases List.mem_append.mp hv_right with hd | ht
+            · exact List.mem_of_mem_drop hd
+            · exact List.mem_of_mem_take ht
+          rcases hv_left with rfl | hv_Qtl
+          · -- l[j] ∈ l, but l[j] ∈ Q.tail → contradiction via hQ_avoids...
+            -- Actually: l[j] ∈ l ∩ l-rotation is fine; it's l[j] vs [l[j]]:
+            -- [l[j]] ++ Q_tl contains l[j] (the head). Is l[j] ∈ l-rotation?
+            -- l-rotation = l.drop(j+1)++l.take(j) = l without l[j]. So l[j] ∉ l-rotation.
+            -- Since l is nodup, l[j] appears exactly once, in position j, not in drop(j+1) or take(j).
+            have : l.count (l[j]'hj) = 1 := by
+              rw [List.nodup_iff_count_le_one.mp hnd]; exact le_refl _
+            have hc_drop : (l.drop (j+1)).count (l[j]'hj) = 0 := by
+              by_contra h; push_neg at h
+              have : 0 < (l.drop (j+1)).count (l[j]'hj) := Nat.pos_of_ne_zero h
+              have := List.count_pos_iff_mem.mp this
+              rw [List.mem_drop_iff_getElem] at this
+              obtain ⟨i, hi, rfl⟩ := this
+              have := hnd.getElem_inj_iff.mp rfl
+              omega
+            have hc_take : (l.take j).count (l[j]'hj) = 0 := by
+              by_contra h; push_neg at h
+              have := List.count_pos_iff_mem.mp (Nat.pos_of_ne_zero h)
+              rw [List.mem_take_iff_getElem] at this
+              obtain ⟨i, hi, rfl⟩ := this
+              have := hnd.getElem_inj_iff.mp rfl; omega
+            have : (l.drop (j+1) ++ l.take j).count (l[j]'hj) = 0 := by
+              rw [List.count_append]; omega
+            exact absurd (List.count_pos_iff_mem.mpr hv_right) (by omega)
+          · -- v ∈ Q_tl and v ∈ l: contradicts hQ_avoids
+            exact absurd hv_in_l (hQ_avoids v hv_Qtl)
+      · -- Length ≥ 2
+        simp [new_l, List.length_append, List.length_drop, List.length_take]; omega
+      · -- Arc condition for new_l
+        -- Structure: new_l = [l[j], Q_tl[0], ..., Q_tl[s-1]=u, l[(j+1)%k], ..., l[(j-1+k)%k]]
+        -- Lengths: 1 (l[j]) + s (Q_tl) + (k-1) (remaining l) = k + s
+        sorry -- complex index arithmetic: same structure as Case A arc condition
+      · -- Length strictly greater
+        simp [new_l, List.length_append, List.length_drop, List.length_take]; omega
 
 /-! ── IV.D: List Cycle to Hamiltonian Cycle Equivalence ──────────────────── -/
 
