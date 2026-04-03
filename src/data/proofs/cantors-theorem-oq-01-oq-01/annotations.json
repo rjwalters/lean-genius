@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-proposition-definitions",
+    "proofId": "cantors-theorem-oq-01-oq-01",
+    "range": { "startLine": 38, "endLine": 54 },
+    "type": "definition",
+    "title": "The Proposition as a Lean Definition",
+    "content": "The proposition |𝒫(ℝ)| = ℵ₂ is captured as a Lean definition rather than a theorem — it is a mathematical statement whose truth value is independent of ZFC. The two definitions (powerSetRealIsAlephTwo and bethTwoIsAlephTwo) are immediately proved equivalent, demonstrating that the question can be phrased equivalently in terms of beth numbers. This is a good pattern for encoding independence results: define the proposition, prove equivalences, and then conditionally derive consequences.",
+    "mathContext": "$\\texttt{powerSetRealIsAlephTwo} : \\text{Prop} := \\#(\\text{Set } \\mathbb{R}) = \\aleph_2$. $\\texttt{bethTwoIsAlephTwo} : \\text{Prop} := \\beth_2 = \\aleph_2$. The proof of their equivalence uses $|\\mathcal{P}(\\mathbb{R})| = \\beth_2$ (unconditional), which comes from the parent file. The Lean universe annotation $\\text{Cardinal.}\\{0\\}$ pins everything to the first universe level, avoiding universe-polymorphism issues in cardinal comparisons.",
+    "significance": "key",
+    "relatedConcepts": ["beth hierarchy", "aleph hierarchy", "proposition encoding in Lean", "independence results"],
+    "prerequisites": ["Cardinal.beth definition", "Lean universe levels", "def vs theorem in Lean 4"]
+  },
+  {
+    "id": "ann-reformulations",
+    "proofId": "cantors-theorem-oq-01-oq-01",
+    "range": { "startLine": 60, "endLine": 72 },
+    "type": "theorem",
+    "title": "Reformulations: 2^𝔠 = ℵ₂ and 2^(2^ℵ₀) = ℵ₂",
+    "content": "The two reformulation theorems show that |𝒫(ℝ)| = ℵ₂ can be written as 2^𝔠 = ℵ₂ or 2^(2^ℵ₀) = ℵ₂. These are not trivial restatements — they make the exponential structure explicit, which is important for connecting to GCH (which is about 2^κ for cardinals κ) and to the beth function definition. The proof uses Cardinal.two_power_aleph0 to identify 2^ℵ₀ = 𝔠.",
+    "mathContext": "$|\\mathcal{P}(\\mathbb{R})| = 2^{|\\mathbb{R}|} = 2^{\\mathfrak{c}} = 2^{2^{\\aleph_0}}$. The GCH statement '$2^{\\aleph_n} = \\aleph_{n+1}$' applied at $\\aleph_1$: $2^{\\aleph_1} = \\aleph_2$. Combined with CH ($\\mathfrak{c} = \\aleph_1$): $2^{\\mathfrak{c}} = 2^{\\aleph_1} = \\aleph_2$. So $\\mathsf{GCH}_{\\mathfrak{c}}$ is literally '$2^{\\mathfrak{c}} = \\aleph_2$' and the reformulation makes this transparent.",
+    "significance": "supporting",
+    "relatedConcepts": ["cardinal exponentiation", "2^aleph_0 = continuum", "GCH formulation"],
+    "prerequisites": ["Cardinal.two_power_aleph0", "continuum = 2^aleph_0", "card_powerSet formula"]
+  },
+  {
+    "id": "ann-ch-extraction",
+    "proofId": "cantors-theorem-oq-01-oq-01",
+    "range": { "startLine": 79, "endLine": 99 },
+    "type": "theorem",
+    "title": "Extracting CH via Successor Cardinal Arithmetic",
+    "content": "The key technique: given |𝒫(ℝ)| = ℵ₂, first note that Cantor's theorem gives 𝔠 < |𝒫(ℝ)| = ℵ₂. Then ℵ₂ = succ(ℵ₁) (since aleph is order-preserving and 2 = succ(1)). Finally, x < succ(y) implies x ≤ y (Order.le_of_lt_succ). Combined with the unconditional ℵ₁ ≤ 𝔠, we get equality. This is the standard 'squeeze theorem' for cardinals, using the successor structure. The Lean proof must explicitly establish ℵ₂ = Order.succ(ℵ₁) since Mathlib represents cardinal succession via Order.succ.",
+    "mathContext": "Proof sketch: $\\mathfrak{c} < |\\mathcal{P}(\\mathbb{R})| = \\aleph_2 = \\text{succ}(\\aleph_1)$, so $\\mathfrak{c} \\leq \\aleph_1$ (Order.le\\_of\\_lt\\_succ). Unconditionally $\\aleph_1 \\leq \\mathfrak{c}$ (aleph\\_one\\_le\\_continuum). Thus $\\mathfrak{c} = \\aleph_1$. The identity $\\aleph_2 = \\text{succ}(\\aleph_1)$ requires: $2 = \\text{succ}(1)$ as ordinals (norm\\_num), then $\\aleph_{\\text{succ}(1)} = \\text{succ}(\\aleph_1)$ (Cardinal.aleph\\_succ).",
+    "significance": "key",
+    "relatedConcepts": ["Order.le_of_lt_succ", "Cardinal.aleph_succ", "aleph_one_le_continuum", "successor cardinals"],
+    "prerequisites": ["Cantor's theorem in Lean", "Order.succ for cardinals", "aleph_one_le_continuum"]
+  },
+  {
+    "id": "ann-main-iff",
+    "proofId": "cantors-theorem-oq-01-oq-01",
+    "range": { "startLine": 117, "endLine": 134 },
+    "type": "theorem",
+    "title": "Main Equivalence: The Complete Characterization",
+    "content": "The main theorem powerSetReal_iff_ch_and_gch is the cleanest statement of the result: |𝒫(ℝ)| = ℵ₂ iff CH ∧ GCH_at_continuum. The proof uses exact ⟨...⟩ for the forward direction (bundling the two separate implications) and the parent file's conditional theorem for the reverse direction. The not_powerSetReal_iff theorem immediately follows by push_neg — a one-line logical transformation that converts the iff negation into a disjunction of negations.",
+    "mathContext": "The Lean iff proof: $\\Rightarrow$: \\texttt{exact ⟨ch\\_of\\_powerSetReal h, gch\\_at\\_continuum\\_of\\_powerSetReal h⟩}. $\\Leftarrow$: \\texttt{exact CantorsTheoremOQ01.gch\\_and\\_ch\\_implies\\_powerSet\\_real\\_eq\\_aleph\\_two hgch hch}. The negation: $\\neg(A \\land B) \\iff \\neg A \\lor \\neg B$ by \\texttt{push\\_neg; rfl}. This gives the failure modes: CH fails ($\\mathfrak{c} > \\aleph_1$, which is consistent) or GCH at $\\mathfrak{c}$ fails ($2^{\\mathfrak{c}} \\neq \\aleph_2$, e.g., $2^{\\mathfrak{c}} = \\aleph_3$ under certain forcing models).",
+    "significance": "key",
+    "relatedConcepts": ["iff in Lean 4", "push_neg tactic", "conditional theorems", "failure modes"],
+    "prerequisites": ["CH and GCH_at_continuum definitions", "parent file's reverse direction theorem", "push_neg tactic"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "cantors-theorem-oq-01-oq-01",
+    "range": { "startLine": 147, "endLine": 165 },
+    "type": "theorem",
+    "title": "Summary: Packaging All Results as a Single Theorem",
+    "content": "The summary theorem bundles three results into one anonymous constructor ⟨proof1, proof2, proof3⟩: the main equivalence, the unconditional lower bound, and the unconditional beth representation. This pattern — a summary theorem referencing all previous results — is useful for gallery proofs where readers want a single statement capturing the entire file's content. It also serves as an integration test: if any intermediate result is wrong, the summary fails to type-check.",
+    "mathContext": "The three components: (1) $|\\mathcal{P}(\\mathbb{R})| = \\aleph_2 \\iff \\mathsf{CH} \\land \\mathsf{GCH}_{\\mathfrak{c}}$; (2) $\\aleph_1 < |\\mathcal{P}(\\mathbb{R})|$ (ZFC-provable); (3) $|\\mathcal{P}(\\mathbb{R})| = \\beth_2$ (ZFC-provable). Together: the power set of $\\mathbb{R}$ is always $\\beth_2$, provably $> \\aleph_1$, and equals $\\aleph_2$ iff both CH and GCH at $\\mathfrak{c}$ hold. The gap $\\beth_2 > \\aleph_1$ can be made arbitrarily large by forcing: $\\beth_2$ can equal $\\aleph_3$, $\\aleph_{\\omega+1}$, etc.",
+    "significance": "supporting",
+    "relatedConcepts": ["anonymous constructor syntax", "integration testing via type-checking", "summary patterns in Lean 4"],
+    "prerequisites": ["And.intro / tuple syntax in Lean 4", "previous theorems in the file"]
+  }
+]
