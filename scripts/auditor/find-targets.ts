@@ -249,7 +249,7 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
     const content = stripLeanComments(rawContent)
 
     sorryCount += (content.match(/\bsorry\b/g) || []).length
-    axiomCount += (content.match(/^axiom /gm) || []).length
+    axiomCount += (content.match(/^(?:private\s+)?axiom /gm) || []).length
 
     // True stubs: only count theorem/lemma declarations, not example (Issue #6130)
     for (const line of content.split('\n')) {
