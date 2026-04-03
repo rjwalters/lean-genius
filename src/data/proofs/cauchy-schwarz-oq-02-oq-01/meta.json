@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-oq-02-oq-01",
   "title": "Parseval's Identity: Energy Conservation in Fourier Analysis",
   "slug": "cauchy-schwarz-oq-02-oq-01",
-  "description": "Formalizes Parseval's identity \u2014 \u2211|\u0109\u2099(f)|\u00b2 = \u222b|f|\u00b2d\u03bc \u2014 as a consequence of the L\u00b2 structure from CauchySchwarzOQ02. Proves: Parseval energy equality (tsum = integral), Bessel-Parseval tightness (Bessel's inequality is equality in total), Fourier orthonormality, Pythagorean theorem for finite Fourier sums, L\u00b2 convergence of Fourier series, and completeness (zero-kernel). 10 theorems, 0 sorries.",
+  "description": "Formalizes Parseval's identity — ∑|ĉₙ(f)|² = ∫|f|²dμ — as a consequence of the L² structure from CauchySchwarzOQ02. Proves: Parseval energy equality (tsum = integral), Bessel-Parseval tightness (Bessel's inequality is equality in total), Fourier orthonormality, Pythagorean theorem for finite Fourier sums, L² convergence of Fourier series, and completeness (zero-kernel). 10 theorems, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-03",
@@ -25,32 +25,36 @@
     "theoremCount": 10,
     "definitionCount": 0,
     "originalContributions": [
-      "fourier_pythagorean_partial: \u2016\u2211_{n\u2208S} c\u2099e\u2099\u2016\u00b2 = \u2211_{n\u2208S} |c\u2099|\u00b2 (Pythagorean for ONS \u2014 original proof expanding inner products with Kronecker delta)"
+      "fourier_pythagorean_partial: ‖∑_{n∈S} cₙeₙ‖² = ∑_{n∈S} |cₙ|² (Pythagorean for ONS — original proof expanding inner products with Kronecker delta)"
     ]
   },
   "overview": {
-    "historicalContext": "Parseval (1799) discovered the energy equality for Fourier series; Plancherel (1910) extended it to L\u00b2 functions. The identity \u2211|\u0109\u2099|\u00b2 = \u2016f\u2016\u00b2 is foundational to Fourier analysis, signal processing, and quantum mechanics. It expresses conservation of energy: total power in the frequency domain equals total power in the time domain.",
-    "problemStatement": "Formalize Parseval's identity \u2211_{n\u2208\u2124} |\u0109\u2099(f)|\u00b2 = \u2016f\u2016\u00b2_{L\u00b2} for Fourier coefficients on the circle, as a follow-up to the H\u00f6lder/L\u00b2 theory in CauchySchwarzOQ02.",
-    "text": "Parseval's identity connects the L\u00b2 norm to the Fourier coefficients: \u2211' n : \u2124, \u2016\u0109\u2099(f)\u2016\u00b2 = \u222b |f|\u00b2 d\u03bc for f \u2208 L\u00b2(AddCircle T). This is the limiting form of the Pythagorean theorem: since the Fourier monomials are orthonormal (\u27eae\u2099, e\u2098\u27eb = \u03b4\u2099\u2098), finite partial sums satisfy \u2016\u2211_{n\u2208S} \u0109\u2099e\u2099\u2016\u00b2 = \u2211_{n\u2208S} |\u0109\u2099|\u00b2 (Pythagorean). As the partial sums converge in L\u00b2 to f (completeness of the Fourier system), the left side approaches \u2016f\u2016\u00b2, yielding Parseval.",
-    "proofStrategy": "Apply Mathlib's hasSum_sq_fourierCoeff for Parseval, orthonormal_fourier for orthonormality, and hasSum_fourier_series_L2 for L\u00b2 convergence. The Pythagorean theorem for finite sums requires careful manipulation of inner products with orthonormal systems.",
+    "historicalContext": "Marc-Antoine Parseval des Chênes (1799) stated the identity ∑|ĉₙ|² = ‖f‖² for trigonometric series, motivated by questions about convergence. His proof was non-rigorous; the first rigorous treatment for continuous functions came from Fatou (1906). Michel Plancherel (1910) extended it to L²(ℝ) — showing the Fourier transform is an L² isometry. Bessel's inequality (Friedrich Bessel, 1828) is the finite approximation: ∑_{n∈S}|ĉₙ|² ≤ ‖f‖², with equality in total (Parseval) characterizing completeness of the orthonormal system. In quantum mechanics, Parseval is the normalization condition: total probability ‖ψ‖² = ∑|⟨n|ψ⟩|² is preserved by any orthonormal basis expansion. The conceptual chain formalized here: Pythagorean theorem in L² (CauchySchwarzOQ02) → orthonormality of Fourier monomials → finite Pythagorean sums → L² convergence → Parseval as limit.",
+    "problemStatement": "Formalize Parseval's identity ∑_{n∈ℤ} |ĉₙ(f)|² = ‖f‖²_{L²} for Fourier coefficients on the circle, as a follow-up to the Hölder/L² theory in CauchySchwarzOQ02.",
+    "text": "Parseval's identity connects the L² norm to the Fourier coefficients: ∑' n : ℤ, ‖ĉₙ(f)‖² = ∫ |f|² dμ for f ∈ L²(AddCircle T). This is the limiting form of the Pythagorean theorem: since the Fourier monomials are orthonormal (⟪eₙ, eₘ⟫ = δₙₘ), finite partial sums satisfy ‖∑_{n∈S} ĉₙeₙ‖² = ∑_{n∈S} |ĉₙ|² (Pythagorean). As the partial sums converge in L² to f (completeness of the Fourier system), the left side approaches ‖f‖², yielding Parseval.",
+    "proofStrategy": "Apply Mathlib's hasSum_sq_fourierCoeff for Parseval, orthonormal_fourier for orthonormality, and hasSum_fourier_series_L2 for L² convergence. The Pythagorean theorem for finite sums requires careful manipulation of inner products with orthonormal systems.",
     "keyInsights": [
-      "Parseval = limit of Pythagorean: Bessel's inequality \u2211_{n\u2208S}|\u0109\u2099|\u00b2 \u2264 \u2016f\u2016\u00b2 becomes equality in total",
-      "Completeness of Fourier system: zero-kernel property (all \u0109\u2099 = 0 \u27f9 f = 0)",
-      "L\u00b2 convergence gives Parseval via norm continuity: \u2016S\u2099(f)\u2016\u00b2 \u2192 \u2016f\u2016\u00b2",
-      "Connection to CauchySchwarzOQ02: the Pythagorean theorem applied to orthogonal Fourier modes"
+      "Parseval = limit of Pythagorean: Bessel's inequality ∑_{n∈S}|ĉₙ|² ≤ ‖f‖² becomes equality in total",
+      "Completeness of Fourier system: zero-kernel property (all ĉₙ = 0 ⟹ f = 0) follows from L² convergence",
+      "L² convergence gives Parseval via norm continuity: ‖Sₙ(f)‖² → ‖f‖²",
+      "Connection to CauchySchwarzOQ02: the Pythagorean theorem applied to orthogonal Fourier modes",
+      "fourier_pythagorean_partial is the only original proof: 30 lines expanding inner products using Kronecker delta and Finset.sum_ite_eq",
+      "9 of 10 theorems are Mathlib wrappers — the value is in organizing the API and exposing the conceptual chain"
     ],
     "prerequisites": [
       "Fourier analysis: Fourier coefficients, Fourier monomials, AddCircle",
-      "L\u00b2 spaces: Lp \u2102 2, haarAddCircle measure",
+      "L² spaces: Lp ℂ 2, haarAddCircle measure",
       "Inner product spaces: orthonormality, Hilbert basis"
     ]
   },
   "conclusion": {
-    "summary": "Parseval's identity fully verified: \u2211|\u0109\u2099(f)|\u00b2 = \u222b|f|\u00b2d\u03bc. 10 theorems including Parseval energy equality, Bessel tightness, Fourier orthonormality, Pythagorean theorem for finite Fourier sums, L\u00b2 convergence, and completeness. 0 sorries.",
-    "implications": "Parseval is foundational for Fourier analysis: it enables L\u00b2 theory of Fourier series, underlies Plancherel's theorem for the Fourier transform, and is essential for quantum mechanics (Hilbert space formulation). The connection to Pythagorean theorem shows Parseval as an infinite-dimensional Pythagoras.",
+    "summary": "Parseval's identity fully verified: ∑|ĉₙ(f)|² = ∫|f|²dμ. 10 theorems including Parseval energy equality, Bessel tightness, Fourier orthonormality, Pythagorean theorem for finite Fourier sums, L² convergence, and completeness. Badge: mathlib (9 of 10 wrap Mathlib; 1 original). 0 sorries.",
+    "implications": "Parseval is foundational for Fourier analysis: it enables L² theory of Fourier series, underlies Plancherel's theorem for the Fourier transform, and is essential for quantum mechanics (Hilbert space formulation). The completeness theorem (zero-kernel) is the key uniqueness result for Fourier series. The connection to Pythagorean theorem shows Parseval as an infinite-dimensional Pythagoras in L².",
     "openQuestions": [
-      "Prove the inner product Parseval: \u27eaf,g\u27eb = \u2211 \u0109\u2099(f)\u00b7conj(\u0109\u2099(g)) (Parseval-Plancherel)",
-      "Extend to general Hilbert bases: abstract Parseval for any orthonormal basis"
+      "Prove the inner product Parseval: ⟪f,g⟫ = ∑ ĉₙ(f)·conj(ĉₙ(g)) (Parseval-Plancherel polarization)",
+      "Extend to general Hilbert bases: abstract Parseval for any orthonormal basis in any Hilbert space",
+      "Formalize the Plancherel theorem for the Fourier transform on L²(ℝ): ‖f̂‖ = ‖f‖",
+      "Apply Parseval to the proof of the Riesz-Fischer theorem: L² is complete (Cauchy sequences converge)"
     ]
   },
   "leanFile": {
@@ -65,7 +69,7 @@
     {
       "targetId": "cauchy-schwarz-oq-02",
       "relationship": "extends",
-      "description": "CauchySchwarzOQ02 proves Pythagorean theorem in L\u00b2; OQ-01 applies it to Fourier modes to get Parseval"
+      "description": "CauchySchwarzOQ02 proves Pythagorean theorem in L²; OQ-01 applies it to Fourier modes to get Parseval"
     },
     {
       "targetId": "fourier-series",
@@ -73,5 +77,30 @@
       "description": "Uses Fourier series machinery (orthonormal_fourier, hasSum_fourier_series_L2) from FourierSeries.lean"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "title": "Part I: Parseval's Identity (Energy Equality)",
+      "startLine": 53,
+      "endLine": 95,
+      "summary": "parseval_energy (tsum_sq_fourierCoeff wrapper), parseval_hassum (hasSum_sq_fourierCoeff wrapper), fourier_coeff_sq_summable (summability from HasSum), bessel_fourier (partial sums ≤ L² norm via sum_le_hasSum). All four are one-liners wrapping Mathlib."
+    },
+    {
+      "title": "Part II: Fourier Orthonormality",
+      "startLine": 97,
+      "endLine": 119,
+      "summary": "fourier_orthonormal (exact orthonormal_fourier), fourier_modes_orthogonal (Orthonormal.2 hnm for distinct modes), fourier_modes_norm_one (Orthonormal.1 n for unit norm). Three one-liners exposing the Orthonormal structure components."
+    },
+    {
+      "title": "Part III: Pythagorean Theorem for Finite Fourier Sums",
+      "startLine": 121,
+      "endLine": 176,
+      "summary": "fourier_pythagorean_partial (original, 30-line proof): ‖∑_{n∈S} cₙeₙ‖² = ∑|cₙ|². Step 1: Kronecker delta via case split. Step 2: expand inner product with sum_inner/inner_smul_left/right, apply delta, collapse with sum_ite_eq, reduce mul_conj. Step 3: inner_self_eq_norm_sq_to_K + congr_arg Complex.re + norm_cast."
+    },
+    {
+      "title": "Parts IV-V: Completeness and L² Convergence",
+      "startLine": 178,
+      "endLine": 223,
+      "summary": "parseval_implies_completeness: all ĉₙ = 0 → f = 0, via hasSum_fourier_series_L2 + hf_zero substitution + HasSum.unique with hasSum_zero. fourier_series_L2_convergence: exact hasSum_fourier_series_L2 (one-liner). Together: Fourier system is a Hilbert basis."
+    }
+  ]
 }
