@@ -113,6 +113,31 @@
     ]
   },
   {
+    "id": "ann-bnoq01oq02-mean-width",
+    "proofId": "buffons-needle-oq-01-oq-02",
+    "range": {
+      "startLine": 215,
+      "endLine": 235
+    },
+    "type": "insight",
+    "title": "Mean Width: Connecting Buffon to Convex Geometry",
+    "content": "`meanWidth n L` is defined as `buffonConstant n * L`, capturing the one-dimensional projection width of a segment of length L. The theorem `expectedCrossings_eq_meanWidth` shows E[crossings] = meanWidth(L)/d — the expected number of hyperplane crossings equals the mean width divided by the spacing.\n\nThis is the Cauchy-Crofton formula specialized to line segments. For a general convex body K, the mean width w(K) = ∫_{S^{n-1}} h_K(u) dσ(u) / σ(S^{n-1}) (where h_K is the support function). For a segment of length L, w(K) = c_n · L, recovering the Buffon formula. The theorems `meanWidth_two` and `meanWidth_three` give the explicit values: w₂(L) = 2L/π and w₃(L) = L.",
+    "mathContext": "Mean width of segment: $w_n(L) = c_n \\cdot L$. Cauchy-Crofton: $E[\\text{crossings}] = w_n(L)/d$. Special values: $w_2(L) = 2L/\\pi$ (classical Cauchy formula), $w_3(L) = L$ (sphere projection mean).",
+    "significance": "key",
+    "relatedConcepts": [
+      "mean width",
+      "Cauchy-Crofton formula",
+      "convex body",
+      "support function",
+      "integral geometry"
+    ],
+    "prerequisites": [
+      "buffonConstant",
+      "expectedCrossings",
+      "Cauchy-Crofton formula"
+    ]
+  },
+  {
     "id": "ann-bnoq01oq02-recurrence",
     "proofId": "buffons-needle-oq-01-oq-02",
     "range": {

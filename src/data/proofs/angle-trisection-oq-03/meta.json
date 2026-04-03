@@ -58,15 +58,18 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The question of which geometric constructions are possible with compass and straightedge dates back to ancient Greece. While Wantzel (1837) characterized constructibility algebraically, the computational aspects - how efficiently one can determine constructibility - are a natural extension. The key insight is that constructibility reduces to a pure number-theoretic check: whether a degree is a power of 2.",
+    "historicalContext": "The question of which geometric constructions are possible with compass and straightedge dates back to ancient Greece. While Wantzel (1837) characterized constructibility algebraically (constructible extensions are iterated quadratic extensions), the computational aspects — how efficiently one can decide constructibility — are a natural extension of this work.\n\nThe key insight, formalized here, is that constructibility reduces entirely to a number-theoretic check: a degree d is constructible iff d is a power of 2, which can be decided in O(log d) time by repeated division. This places the constructibility decision problem firmly in P (polynomial time).\n\nFor regular n-gons, the Gauss-Wantzel theorem (proved independently by Gauss in Disquisitiones Arithmeticae, 1801, and by Wantzel in 1837) gives: an n-gon is constructible iff φ(n) is a power of 2. The decidability proof in OQ03 constructs an explicit `Decidable` typeclass instance in Lean 4, which is a stronger statement than 'constructibility is decidable' — it provides the actual decision procedure as a Lean term, from which executable code can be extracted.\n\nThe `Decidable` typeclass is the bridge between mathematical decidability (there exists a procedure) and computational decidability (here is the procedure). By providing `Decidable` instances, OQ03 enables Lean's `decide` and `native_decide` tactics to automatically determine constructibility for any concrete degree — without human proof effort.",
     "problemStatement": "**Computational Complexity of Constructibility**:\n\nGiven the degree $d$ of the minimal polynomial of a real number $\\alpha$ over $\\mathbb{Q}$:\n- Is constructibility decidable? YES\n- What is the complexity? $O(\\log d)$ - just check if $d$ is a power of 2\n\nFor regular $n$-gon constructibility:\n- Compute $\\varphi(n)$ (polynomial time)\n- Check if $\\varphi(n)$ is a power of 2 ($O(\\log n)$ divisions)",
     "text": "We prove that compass-and-straightedge constructibility is decidable and efficiently computable. The key characterization theorem shows that IsConstructible(alpha, d) holds iff d > 0 and d is a power of 2, reducing the geometric question to a single arithmetic check.",
     "proofStrategy": "1. **Characterization**: Prove that $d \\mid 2^n$ for some $n$ iff $d = 2^k$ for some $k$ (for $d > 0$)\n2. **Prime factorization**: Equivalently, all prime factors of $d$ equal 2\n3. **Decidability**: The power-of-2 check is decidable via bounded search over $k \\in \\{0, \\ldots, d\\}$\n4. **Efficiency**: The check reduces to $O(\\log d)$ divisions by 2\n5. **N-gon**: Via Gauss-Wantzel, reduce to checking $\\varphi(n)$ is a power of 2",
     "keyInsights": [
-      "Constructibility is independent of alpha: IsConstructible(alpha, d) depends only on d, not on the specific real number",
-      "The power-of-2 test admits an O(log d) algorithm: repeatedly divide by 2",
-      "For n-gon constructibility, the bottleneck is computing phi(n), not the power-of-2 check",
-      "The entire constructibility decision problem is in P (polynomial time)"
+      "Constructibility is independent of alpha: IsConstructible(alpha, d) depends only on d, not on the specific real number — proved by constructibility_independent_of_alpha",
+      "The power-of-2 test admits an O(log d) algorithm: repeatedly divide by 2 until odd; if remainder = 1, constructible",
+      "For n-gon constructibility, the bottleneck is computing phi(n) in O(sqrt(n)), not the power-of-2 check in O(log n)",
+      "The entire constructibility decision problem is in P (polynomial time)",
+      "Decidability via bounded search: if d = 2^k then k < d, so the existential ∃ k, d = 2^k reduces to a finite search over Finset.range(d+1)",
+      "The Lean Decidable typeclass goes beyond 'decidable in principle': it provides the actual decision procedure as a computable term, enabling decide/native_decide and code extraction",
+      "Proof style contrast: OQ01 uses strong induction on d; OQ03 uses induction on the exponent m. Both prove the same divisibility fact but with different induction structures — OQ03's approach is cleaner since the cancellation step is direct"
     ]
   },
   "leanFile": "Proofs/AngleTrisectionOQ03.lean",
@@ -99,56 +102,93 @@
   ],
   "sections": [
     {
-      "title": "Power-of-2 Characterization",
-      "description": "A positive number divides some power of 2 iff it is a power of 2",
-      "summary": "Power-of-2 Characterization",
-      "id": "power-of-2-characterization"
+      "id": "power-of-2-characterization",
+      "title": "Part I: Power-of-2 Divisibility",
+      "startLine": 26,
+      "endLine": 72,
+      "summary": "dvd_pow_two_is_pow_two (induction on exponent) and dvd_pow_two_iff_pow_two (biconditional). Also zero_not_dvd_pow_two (needed for decidability of the zero case).",
+      "mathContext": "Induction on $m$: if $2 \\mid d$, write $d = 2d'$, get $d' \\mid 2^m$, apply IH. If $2 \\nmid d$, then $d$'s prime factor is odd and divides $2^{m+1}$ — contradiction."
     },
     {
-      "title": "Prime Factor Characterization",
-      "description": "A number is a power of 2 iff all its prime factors equal 2",
-      "summary": "Prime Factor Characterization",
-      "id": "prime-factor-characterization"
+      "id": "prime-factor-characterization",
+      "title": "Part II: Prime Factor Characterization",
+      "startLine": 73,
+      "endLine": 107,
+      "summary": "prime_factor_of_pow_two (any prime dividing 2^m is 2) and pow_two_iff_all_prime_factors_two (d = 2^k ↔ all prime factors equal 2). Proved by strong induction on d.",
+      "mathContext": "$d = 2^k \\iff \\forall p \\text{ prime}, p \\mid d \\Rightarrow p = 2$. Used for the backward direction of the decidable search."
     },
     {
-      "title": "Decidability of Constructibility",
-      "description": "Decidable instances for IsConstructible and related predicates",
-      "summary": "Decidability of Constructibility",
-      "id": "decidability-of-constructibili"
+      "id": "decidability",
+      "title": "Part III: Decidability of Constructibility",
+      "startLine": 108,
+      "endLine": 140,
+      "summary": "decidable_is_pow_two: Decidable instance via Finset.range(d+1) bounded search. decidable_dvd_some_pow_two and decidable_isConstructible follow as corollaries.",
+      "mathContext": "Bound: $d = 2^k \\Rightarrow k < d$, so $\\exists k, d = 2^k$ reduces to finite search over $k \\in \\{0,\\ldots,d\\}$. `Decidable` instance gives computable decision procedure."
     },
     {
-      "title": "N-gon Constructibility",
-      "description": "Decidability of regular polygon constructibility via Gauss-Wantzel",
-      "summary": "N-gon Constructibility",
-      "id": "n-gon-constructibility"
+      "id": "ngon-decidability",
+      "title": "Part IV: N-gon Constructibility Decidability",
+      "startLine": 141,
+      "endLine": 160,
+      "summary": "decidable_totientIsPow2 and decidable_ngon_constructibility. Reduces to gauss_wantzel_theorem (from AngleTrisectionOQ02OQ03.lean) and decidable_is_pow_two applied to φ(n).",
+      "mathContext": "IsConstructibleNgon $n$ $\\iff$ $\\phi(n) = 2^k$ (Gauss-Wantzel). `decidable_of_iff` converts the biconditional to a Decidable instance."
     },
     {
-      "title": "Examples and Summary",
-      "description": "Concrete examples and complexity analysis",
-      "summary": "Examples and Summary",
-      "id": "examples-and-summary"
+      "id": "examples-summary",
+      "title": "Parts V–VI: Examples and Complexity Analysis",
+      "startLine": 161,
+      "endLine": 226,
+      "summary": "Concrete examples (degrees 1, 2, 4 constructible; 3, 6 not). Summary with full O(log d) complexity analysis. constructibility_iff_pos_pow_two and constructibility_independent_of_alpha as capstone theorems.",
+      "mathContext": "O($\\log d$) algorithm: divide $d$ by 2 until odd; check if result = 1. For n-gon: O($\\sqrt{n}$) for $\\phi(n)$, O($\\log n$) for power-of-2 check — total O($\\sqrt{n}$), hence in P."
     }
   ],
   "references": [
     {
-      "title": "Wantzel, P.L. (1837). Recherches sur les moyens de reconnaitre si un probleme de geometrie peut se resoudre avec la regle et le compas",
-      "url": "https://en.wikipedia.org/wiki/Pierre_Wantzel"
+      "authors": ["Wantzel, Pierre Laurent"],
+      "title": "Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
+      "note": "Original algebraic characterization of constructibility; the arithmetic layer (d | 2^n ↔ d = 2^k) formalized in OQ03 is the number-theoretic core of Wantzel's approach"
+    },
+    {
+      "authors": ["Gauss, Carl Friedrich"],
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Fleischer, Leipzig",
+      "note": "Section VII: criterion for regular polygon constructibility via φ(n). The decidability proof in OQ03 turns Gauss's criterion into a computable Lean instance"
+    },
+    {
+      "authors": ["Stewart, Ian"],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC, 4th edition",
+      "note": "Chapter 17: discusses the computational aspects of constructibility and the Gauss-Wantzel theorem"
     }
   ],
   "crossReferences": [
     {
-      "id": "angle-trisection",
-      "relationship": "parent",
-      "description": "Base formalization defining IsConstructible and proving classical impossibilities"
+      "targetId": "angle-trisection",
+      "relationship": "extends",
+      "description": "Base formalization defining IsConstructible and proving classical impossibilities; OQ03 proves the decidability and complexity of the constructibility predicate"
     },
     {
-      "id": "angle-trisection-oq-02-oq-03",
+      "targetId": "angle-trisection-oq-01",
       "relationship": "sibling",
-      "description": "Gauss-Wantzel theorem for n-gon constructibility (used for decidable_ngon_constructibility)"
+      "description": "OQ01 proves the same divisibility facts (d | 2^n ↔ d = 2^k) using strong induction on d; OQ03 uses induction on the exponent and adds Lean Decidable instances"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "depends",
+      "description": "Gauss-Wantzel theorem for n-gon constructibility — OQ03's decidable_ngon_constructibility directly uses gauss_wantzel_theorem from this file"
     }
   ],
   "conclusion": {
-    "summary": "Compass-and-straightedge constructibility, given the minimal polynomial degree, is decidable and efficiently computable. The complete characterization reduces a 2000-year-old geometric question to a simple arithmetic check: is the degree a power of 2?",
-    "implications": "Provides a constructive O(log d) algorithm for deciding constructibility, enabling automated verification of geometric construction problems."
+    "summary": "Compass-and-straightedge constructibility, given the minimal polynomial degree, is decidable and efficiently computable. The complete characterization reduces a 2000-year-old geometric question to a simple arithmetic check: is the degree a power of 2? The Lean 4 formalization provides `Decidable` typeclass instances enabling automated verification.",
+    "implications": "The `Decidable` instances in OQ03 are stronger than existence results: they provide computable decision procedures as Lean terms, enabling `decide` and `native_decide` to determine constructibility for any concrete degree. This reduces geometric impossibility proofs to one-line calls. The O(log d) complexity analysis places constructibility in the lowest complexity class of natural geometric decision problems.",
+    "openQuestions": [
+      "Extend the decision procedure to derive an executable program (via Lean's code extraction) that outputs YES/NO for any input degree",
+      "Formalize the lower bound: prove Ω(log d) is optimal for the constructibility decision problem",
+      "Generalize to higher-dimensional geometric constructions (origami constructions use cubic extensions, requiring a different divisibility criterion)"
+    ]
   }
 }

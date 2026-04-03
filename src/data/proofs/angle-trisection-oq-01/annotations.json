@@ -1,1 +1,149 @@
-[]
+[
+  {
+    "id": "ann-ato01-01-powers-of-2",
+    "proofId": "angle-trisection-oq-01",
+    "range": {
+      "startLine": 43,
+      "endLine": 69
+    },
+    "type": "technique",
+    "title": "Primes Dividing Powers of 2 Must Equal 2",
+    "content": "`prime_dvd_pow_two_eq_two` is the engine of all non-constructibility proofs: any prime p dividing 2^n satisfies p = 2. The proof is a three-line squeeze: p | 2^n → p | 2 (by `Nat.Prime.dvd_of_dvd_pow`), so p ≤ 2 (`Nat.le_of_dvd`), combined with p ≥ 2 (every prime is at least 2), giving p = 2 by `omega`.\n\nFrom this, `odd_prime_dvd_not_dvd_pow_two` derives that any d with an odd prime factor p | d cannot divide any 2^n: if d | 2^n then p | 2^n (transitivity), so p = 2, contradicting p ≠ 2. This is the direct logical path from 'odd prime factor' to 'non-constructible'.",
+    "mathContext": "If $p$ is prime and $p \\mid 2^n$, then $p \\mid 2$, so $p \\leq 2$, and since $p \\geq 2$ (all primes), $p = 2$. Contrapositive: odd prime $p \\mid d \\Rightarrow d \\nmid 2^n$ for all $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.Prime.dvd_of_dvd_pow",
+      "prime divisibility",
+      "powers of 2",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "Nat.Prime in Mathlib",
+      "divisibility in ℕ",
+      "omega arithmetic"
+    ]
+  },
+  {
+    "id": "ann-ato01-02-strong-induction",
+    "proofId": "angle-trisection-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 110
+    },
+    "type": "technique",
+    "title": "Strong Induction: Divisors of 2^n are Powers of 2",
+    "content": "`dvd_pow_two_is_pow_two` proves that every positive divisor of 2^n is a power of 2, using `Nat.strongRecOn` (strong induction). The induction is:\n- **Base**: d = 1 = 2^0, done.\n- **Step**: d > 1 has a prime factor p (by `Nat.exists_prime_and_dvd`). Since p | d | 2^n, we have p = 2. Write d = 2·m with m < d and m | 2^{n-1}. By strong IH, m = 2^j. So d = 2·2^j = 2^{j+1}.\n\nThe key sub-step: if 2m | 2^{n+1} = 2·2^n, then m | 2^n (cancel factor of 2 via `Nat.mul_dvd_mul_iff_left`). The zero case n = 0 requires a special check: 2m | 1 implies m = 0, contradicting m > 0, handled by `simp` + `omega`.",
+    "mathContext": "$d \\mid 2^n$ and $d > 0 \\Rightarrow d = 2^k$ for some $k$. Proof by strong induction: if $d > 1$, let $p \\mid d$ prime, then $p = 2$ (previous lemma), write $d = 2m$, get $m \\mid 2^{n-1}$, apply IH to get $m = 2^j$, conclude $d = 2^{j+1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.strongRecOn",
+      "Nat.exists_prime_and_dvd",
+      "Nat.mul_dvd_mul_iff_left",
+      "strong induction"
+    ],
+    "prerequisites": [
+      "strong induction in Lean 4",
+      "prime factorization",
+      "divisibility algebra"
+    ]
+  },
+  {
+    "id": "ann-ato01-03-constructibility",
+    "proofId": "angle-trisection-oq-01",
+    "range": {
+      "startLine": 114,
+      "endLine": 154
+    },
+    "type": "definition",
+    "title": "IsConstructible Definition and Non-Constructibility Criterion",
+    "content": "`IsConstructible α d` captures the abstract constructibility condition: d > 0 and d | 2^n for some n. This matches the definition in `AngleTrisection.lean`: a real number α has degree d over ℚ, and constructibility requires d to divide a power of 2 (i.e., d is a power of 2).\n\n`not_constructible_of_odd_prime_factor` then gives the non-constructibility criterion in one line: if p is an odd prime with p | d, then ¬IsConstructible α d. The proof is immediate from `odd_prime_dvd_not_dvd_pow_two`: an odd prime factor blocks d from dividing any 2^n.\n\nThe six concrete instances (degrees 3, 5, 6, 7, 9, 10) all reduce to a single call to `not_constructible_of_odd_prime_factor` with the specific prime witness, verified by `decide`.",
+    "mathContext": "$\\text{IsConstructible}(\\alpha, d) \\iff d > 0 \\land \\exists n, d \\mid 2^n$. Since $\\exists n, d \\mid 2^n \\iff d = 2^k$ (for $d > 0$), constructible degrees are exactly the powers of 2. Odd prime $p \\mid d \\Rightarrow \\neg\\text{IsConstructible}(\\alpha, d)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsConstructible",
+      "angle trisection",
+      "degree theory",
+      "field extension degree"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "Wantzel theorem",
+      "divisibility characterization"
+    ]
+  },
+  {
+    "id": "ann-ato01-04-fermat-primes",
+    "proofId": "angle-trisection-oq-01",
+    "range": {
+      "startLine": 157,
+      "endLine": 186
+    },
+    "type": "insight",
+    "title": "Fermat Primes: All 5 Known Instances Verified",
+    "content": "The `IsFermatPrime` definition captures the form $F_k = 2^{2^k} + 1$: a prime of this shape. Five theorems verify the known Fermat primes:\n- F₀ = 3 = 2^1 + 1, F₁ = 5 = 2^2 + 1, F₂ = 17 = 2^4 + 1: proved by `decide` (small enough for kernel).\n- F₃ = 257 = 2^8 + 1, F₄ = 65537 = 2^16 + 1: require `native_decide` (compiled evaluation).\n\nThe primality proofs use `native_decide` because 65537 requires checking all possible divisors up to ~256 — feasible for native execution but slow for the kernel. No other Fermat primes are known; it is an open question whether infinitely many or only finitely many exist.\n\nThe connection to polygon constructibility: a regular n-gon is constructible iff n = 2^a · p₁ · ... · pₖ where each pᵢ is a **distinct** Fermat prime. The heptadecagon (17-gon) is constructible because 17 = F₂ is a Fermat prime — Gauss's 1796 discovery.",
+    "mathContext": "$F_k = 2^{2^k} + 1$: $F_0 = 3$, $F_1 = 5$, $F_2 = 17$, $F_3 = 257$, $F_4 = 65537$. These are the only known Fermat primes. $F_5 = 4294967297 = 641 \\times 6700417$ (Euler 1732) is composite.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fermat primes",
+      "native_decide",
+      "Gauss-Wantzel theorem",
+      "regular polygon",
+      "primality testing"
+    ],
+    "prerequisites": [
+      "Fermat numbers",
+      "native_decide in Lean 4",
+      "IsFermatPrime definition"
+    ]
+  },
+  {
+    "id": "ann-ato01-05-polygon-classification",
+    "proofId": "angle-trisection-oq-01",
+    "range": {
+      "startLine": 190,
+      "endLine": 317
+    },
+    "type": "technique",
+    "title": "Regular Polygon Classification: n = 3..20 via Totient",
+    "content": "`RegularNgonConstructible n` is defined as: n ≥ 3 and φ(n) is a power of 2. The proofs for n = 3..20 split into two patterns:\n\n**Constructible cases** (3, 4, 5, 6, 8, 10, 12, 15, 16, 17, 20): proved by `ngon_constructible_of_totient n hn k h` where k is the exponent and `h : Nat.totient n = 2^k` is verified by `native_decide`.\n\n**Non-constructible cases** (7, 9, 11, 13, 14, 18, 19): proved by contradiction — assume φ(n) = 2^k, compute φ(n) by `native_decide` to get the actual odd value (e.g., φ(7) = 6), deduce 3 | 2^k or 5 | 2^k, then apply `three_not_dvd_pow_two` or `five_not_dvd_pow_two`.\n\nThe complete classification `constructible_ngons_3_to_20` assembles all 18 individual results. Notably, n=15 = 3·5 is constructible because φ(15) = 8 = 2^3 — both 3 and 5 are Fermat primes, and the product of distinct Fermat primes times a power of 2 gives a constructible polygon.",
+    "mathContext": "$\\phi(n)$ is a power of 2 iff $n = 2^a \\cdot p_1 \\cdots p_k$ with distinct Fermat primes $p_i$. Constructible $n \\leq 20$: $\\{3, 4, 5, 6, 8, 10, 12, 15, 16, 17, 20\\}$. Non-constructible: $\\{7, 9, 11, 13, 14, 18, 19\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler totient",
+      "Gauss-Wantzel theorem",
+      "Nat.totient",
+      "native_decide",
+      "regular polygon constructibility"
+    ],
+    "prerequisites": [
+      "Euler totient function",
+      "Gauss-Wantzel theorem",
+      "native_decide for computation"
+    ]
+  },
+  {
+    "id": "ann-ato01-06-complete-criterion",
+    "proofId": "angle-trisection-oq-01",
+    "range": {
+      "startLine": 320,
+      "endLine": 366
+    },
+    "type": "insight",
+    "title": "Complete Non-Constructibility Criterion and Relation to Parent Proof",
+    "content": "`non_constructible_complete_criterion` gives the biconditional: ¬IsConstructible α d ↔ ¬(∃ k, d = 2^k). This combines `dvd_pow_two_iff` (which gives d | 2^n ↔ d = 2^k for d > 0) with the definition of IsConstructible. The proof is a clean four-line `constructor` unwrapping both directions.\n\nThe summary section explicitly connects OQ01 to its parent `AngleTrisection.lean`, which uses 3 axioms:\n1. **Wantzel axiom**: constructible → degree | 2^n (deep geometric result)\n2. **Irreducibility axiom**: 8x³ - 6x - 1 irreducible over ℚ\n3. **Lindemann axiom**: π is transcendental\n\nOQ01 proves the number-theoretic layer (the `d | 2^n ↔ d = 2^k` direction) without those geometric axioms, providing the framework for why degree 3 is the obstruction to angle trisection. The architecture separates the 'why degrees matter' reasoning from the 'why this specific degree' geometric reasoning.",
+    "mathContext": "$\\neg\\text{IsConstructible}(\\alpha, d) \\iff \\neg(\\exists k, d = 2^k)$ for $d > 0$. Combined with Wantzel's theorem: constructible $\\Rightarrow d \\mid 2^n \\Rightarrow d = 2^k$. The angle trisection obstruction: $[\\mathbb{Q}(\\cos(20^\\circ)):\\mathbb{Q}] = 3$, which has odd prime factor 3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete biconditional",
+      "Wantzel theorem",
+      "angle trisection",
+      "proof architecture",
+      "axiom separation"
+    ],
+    "prerequisites": [
+      "dvd_pow_two_iff",
+      "IsConstructible definition",
+      "AngleTrisection.lean"
+    ]
+  }
+]
