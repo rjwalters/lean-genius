@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-cubic01-discriminant-def",
+    "proofId": "solution-of-cubic-oq-03-oq-01",
+    "range": { "startLine": 20, "endLine": 32 },
+    "type": "definition",
+    "title": "Two Faces of the Discriminant: Coefficient vs Root Form",
+    "content": "Two complementary definitions capture the discriminant: `discriminant (p q : R) := -4*p^3 - 27*q^2` (coefficient form) and `rootDiscriminant (x₁ x₂ x₃ : R) := (x₁-x₂)^2*(x₁-x₃)^2*(x₂-x₃)^2` (root-separation form). Both are defined over an arbitrary `CommRing R`, making them applicable over ℤ, ℚ, ℝ, ℂ, and polynomial rings. The main theorem connects these two forms.",
+    "mathContext": "The *discriminant* of a monic polynomial $f$ is $\\Delta(f) = \\prod_{i < j} (r_i - r_j)^2$ where $r_1,\\ldots,r_n$ are the roots. For the depressed cubic $x^3 + px + q$, this gives $\\Delta = (r_1-r_2)^2(r_1-r_3)^2(r_2-r_3)^2 = -4p^3 - 27q^2$. The coefficient formula $-4p^3-27q^2$ comes from eliminating roots via resultants: $\\Delta(f) = (-1)^{n(n-1)/2} \\text{Res}(f, f')/a_n$.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial discriminant", "Vandermonde product", "CommRing generality", "resultant"],
+    "prerequisites": ["polynomial roots", "symmetric polynomials", "CommRing in Lean 4"]
+  },
+  {
+    "id": "ann-cubic01-vieta",
+    "proofId": "solution-of-cubic-oq-03-oq-01",
+    "range": { "startLine": 34, "endLine": 46 },
+    "type": "definition",
+    "title": "IsRootTriple: Vieta's Formulas as a Lean Structure",
+    "content": "The `IsRootTriple p q x₁ x₂ x₃ : Prop` structure has three fields: `sum_zero : x₁+x₂+x₃=0`, `sum_products : x₁x₂+x₁x₃+x₂x₃=p`, `product : x₁x₂x₃=-q`. This encodes Vieta's formulas for the depressed cubic. Using a `structure` rather than a tuple allows dot-notation access (`h.sum_zero`) and makes proof steps more readable. The structure lives in `Prop` since it packages three equations.",
+    "mathContext": "For the depressed cubic $x^3 + 0 \\cdot x^2 + p \\cdot x + q$, Vieta's formulas give: $x_1+x_2+x_3 = 0$, $x_1x_2+x_1x_3+x_2x_3 = p$, $x_1x_2x_3 = -q$. These follow from expanding $(x-x_1)(x-x_2)(x-x_3) = x^3 - e_1 x^2 + e_2 x - e_3$ and matching coefficients with $x^3 + 0 \\cdot x^2 + p \\cdot x + q$.",
+    "significance": "key",
+    "relatedConcepts": ["Vieta's formulas", "elementary symmetric polynomials", "Lean 4 structure syntax"],
+    "prerequisites": ["polynomial factorization", "symmetric functions", "Lean 4 structures"]
+  },
+  {
+    "id": "ann-cubic01-ring-proof",
+    "proofId": "solution-of-cubic-oq-03-oq-01",
+    "range": { "startLine": 55, "endLine": 65 },
+    "type": "technique",
+    "title": "Ring Closes the Discriminant Identity After Vieta Substitution",
+    "content": "The proof of `discriminant_eq_root_form` has three steps: (1) `rw [← h.sum_products, ← show q = -(x₁*x₂*x₃) from by linarith [h.product]]` — rewrite p and q using Vieta's formulas; (2) `have hx₃ : x₃ = -(x₁+x₂) := by linarith [h.sum_zero]` — express x₃ from sum_zero; (3) `rw [hx₃]; ring` — substitute x₃ and close. After these substitutions, both sides are polynomials in x₁, x₂ alone and `ring` checks equality over any CommRing.",
+    "mathContext": "After substituting $p = x_1x_2+x_1x_3+x_2x_3$, $q = -(x_1x_2x_3)$, and $x_3 = -(x_1+x_2)$, both $-4p^3-27q^2$ and $(x_1-x_2)^2(x_1-x_3)^2(x_2-x_3)^2$ become polynomials in $x_1,x_2$ over $\\mathbb{Z}$. Their equality is a universal identity in $\\mathbb{Z}[x_1,x_2]$, verifiable by the `ring` tactic via polynomial normalization.",
+    "significance": "key",
+    "relatedConcepts": ["ring tactic", "linarith tactic", "polynomial identities", "CommRing normalization"],
+    "prerequisites": ["Lean 4 ring tactic", "have tactic", "rw with ← arrow"]
+  },
+  {
+    "id": "ann-cubic01-distinct-roots",
+    "proofId": "solution-of-cubic-oq-03-oq-01",
+    "range": { "startLine": 68, "endLine": 82 },
+    "type": "technique",
+    "title": "Δ > 0 → Distinct Roots: simp with Equality Kills the Product",
+    "content": "`distinct_roots_of_pos_discriminant` uses `rw [discriminant_eq_root_form]` to convert the hypothesis to `rootDiscriminant > 0`, then `refine ⟨?_, ?_, ?_⟩ <;> intro heq <;> simp [heq] at hΔ` handles all three inequality goals at once. For each case (say x₁=x₂): `intro heq` assumes equality, `simp [heq]` evaluates `(x₁-x₂)^2 = 0`, the product becomes 0, contradicting `0 < 0`.",
+    "mathContext": "In an ordered field: if $\\Delta = (x_1-x_2)^2(x_1-x_3)^2(x_2-x_3)^2 > 0$, then each factor must be positive (since all are non-negative, a zero factor would make the product zero). Each factor $(x_i-x_j)^2 > 0$ iff $x_i \\neq x_j$. So $\\Delta > 0$ is equivalent to all pairwise root differences being nonzero, i.e., all three roots are distinct.",
+    "significance": "supporting",
+    "relatedConcepts": ["simp tactic", "linear ordered field", "positivity of squares", "refine with multiple goals"],
+    "prerequisites": ["real analysis in Lean", "simp lemmas for squares", "ordered field"]
+  },
+  {
+    "id": "ann-cubic01-repeated-roots",
+    "proofId": "solution-of-cubic-oq-03-oq-01",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "technique",
+    "title": "Δ = 0 → Repeated Roots: positivity + linarith by Contradiction",
+    "content": "`repeated_root_of_zero_discriminant` proceeds by contradiction: `by_contra h_all_ne; push_neg at h_all_ne` gives `h12: x₁≠x₂`, `h13: x₁≠x₃`, `h23: x₂≠x₃`. Then `have h1 : (x₁-x₂)^2 > 0 := by positivity` (three times) gives each factor positive. `mul_pos (mul_pos h1 h2) h3` gives the product positive, and `linarith` derives False from `product > 0` and `hΔ : product = 0`.",
+    "mathContext": "The key fact: in $\\mathbb{R}$, $(x-y)^2 > 0$ whenever $x \\neq y$. This is handled by `positivity` which uses `sq_pos_of_ne_zero : a ≠ 0 → 0 < a^2` (or similar). If all three roots are distinct, all squared differences are positive, their product is positive (by `mul_pos`), contradicting $\\Delta = 0$. By contrapositive, $\\Delta = 0$ implies some pair of roots coincide.",
+    "significance": "supporting",
+    "relatedConcepts": ["positivity tactic", "sq_pos_of_ne_zero", "mul_pos", "by_contra + push_neg"],
+    "prerequisites": ["positivity tactic in Lean 4", "ordered field properties", "linarith"]
+  }
+]
