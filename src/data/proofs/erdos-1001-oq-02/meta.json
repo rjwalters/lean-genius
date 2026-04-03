@@ -20,9 +20,9 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "axiomCount": 3,
-    "assumptions": "3 axioms: rangeTotientSum_asymptotic (qualitative convergence of weighted totient sum), rangeTotientSum_error (O(log N/N) error bound), convergence_rate_est (main rate: |S(N,A,c)-f(A,c)| = O(A log N/N)). All reduce to Mertens' theorem with quantitative error bounds, missing from Mathlib.",
+    "assumptions": "3 axioms: rangeTotientSum_asymptotic (qualitative convergence of weighted totient sum), rangeTotientSum_error (O(log N/N) error bound), convergence_rate_est (main rate: |S(N,A,c)-f(A,c)| = O(A log N/N)). All reduce to Mertens' theorem with quantitative error bounds, missing from Mathlib. 0 sorries.",
     "erdosNumber": 1001,
     "erdosUrl": "https://erdosproblems.com/1001",
     "mathlibDependencies": [

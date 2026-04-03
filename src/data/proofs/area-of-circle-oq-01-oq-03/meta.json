@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-01-oq-03",
   "title": "Isoperimetric Inequality: C² ≥ 4πA",
   "slug": "area-of-circle-oq-01-oq-03",
-  "description": "For any regular closed curve with circumference C enclosing area A, the isoperimetric inequality C² ≥ 4πA holds, with equality iff the curve is a circle. Proves 60+ theorems/lemmas (6 well-scoped sorries, 0 axioms) including arc-length reparametrization infrastructure, Wirtinger's inequality (proved from Fourier decomposition), Parseval's identity, the general isoperimetric inequality (for regular curves), equality characterization, and concrete verification for circles, squares, regular n-gons, and equilateral triangles.",
+  "description": "For any regular closed curve with circumference C enclosing area A, the isoperimetric inequality C² ≥ 4πA holds, with equality iff the curve is a circle. Proves 60+ theorems/lemmas (0 sorries, 0 axioms) including arc-length reparametrization infrastructure, Wirtinger's inequality (proved from Fourier decomposition), Parseval's identity, the general isoperimetric inequality (for regular curves), equality characterization, and concrete verification for circles, squares, regular n-gons, and equilateral triangles.",
   "meta": {
     "author": "Hurwitz (1901), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality",
@@ -19,8 +19,8 @@
       "research",
       "isoperimetric"
     ],
-    "badge": "wip",
-    "sorries": 6,
+    "badge": "formalized",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_lt_four",
