@@ -31,15 +31,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The infinitude of primes ≡ 3 (mod 4) is a special case of Dirichlet's 1837 theorem on primes in arithmetic progressions, but the elementary proof was known long before Dirichlet. It uses the same structure as Euclid's proof for all primes: construct a specific number that must have a prime factor of the desired form, and show that factor must be new.",
+    "historicalContext": "The infinitude of primes $\\equiv 3 \\pmod{4}$ is a special case of Dirichlet's 1837 theorem on primes in arithmetic progressions, but the elementary proof predates Dirichlet by centuries, being known in essentially the same form as Euclid's proof of the infinitude of all primes. The key asymmetry between the classes $1 \\pmod{4}$ and $3 \\pmod{4}$ is multiplicative: products of integers $\\equiv 1 \\pmod 4$ remain $\\equiv 1 \\pmod 4$ (since $(\\mathbb{Z}/4\\mathbb{Z})^* \\cong \\mathbb{Z}/2\\mathbb{Z}$ and 1 is the identity), but 3 is the unique non-identity element. This means a number $\\equiv 3 \\pmod 4$ must have an odd number of prime factors $\\equiv 3 \\pmod 4$, so at least one. The construction $N = 4 \\cdot (n+1)! - 1$ is the analogue of Euclid's $p_1 \\cdots p_k + 1$, adapted to force $N \\equiv 3 \\pmod 4$. The companion result for primes $\\equiv 1 \\pmod 4$ is more difficult: it requires showing that $x^2 + 1 \\equiv 0 \\pmod p$ has solutions only for $p \\equiv 1 \\pmod 4$, which needs Fermat's two-square theorem or quadratic reciprocity. Dirichlet's full theorem covers all arithmetic progressions $a, a+d, a+2d, \\ldots$ with $\\gcd(a,d)=1$, and uses Dirichlet characters and $L$-functions.",
     "problemStatement": "Prove that for every n : ℕ, there exists a prime p > n with p ≡ 3 (mod 4). This shows the set of such primes is infinite.",
     "text": "The key auxiliary lemma factors_determine_mod_four states: if all prime factors of n are either 2 or ≡ 1 (mod 4), then n ≢ 3 (mod 4). Proof by strong induction: case 2 | n contradicts n ≡ 3 (odd); case p | n with p ≡ 1 (mod 4) reduces to n/p via the identity (n/p) mod 4 = n mod 4 (since p ≡ 1). The main theorem takes N = 4·(n+1)! - 1: N ≡ 3 (mod 4), so has a prime factor p ≡ 3 (mod 4). Since p ≤ n would imply p | (n+1)!, we'd get p | 1, contradicting primality.",
     "proofStrategy": "Strong induction for factors_determine_mod_four: case p = 2 is immediate from parity; case p ≡ 1 uses multiplicativity of mod 4 to reduce to a smaller instance. Main proof: contradiction assuming p ≤ n, using Nat.dvd_factorial and Nat.Prime.not_dvd_one.",
     "keyInsights": [
-      "Products of (1 mod 4) numbers stay (1 mod 4) — the multiplicative structure of (ℤ/4ℤ)*",
-      "N = 4·(n+1)! - 1 avoids all primes ≤ n+1 that divide (n+1)!",
-      "The argument is fully elementary: no Gaussian integers, no quadratic reciprocity",
-      "Compare with the analogous proof for primes ≡ 1 (mod 4) which requires more machinery"
+      "The group $(\\mathbb{Z}/4\\mathbb{Z})^* = \\{1, 3\\}$ is cyclic of order 2: $3^2 \\equiv 1 \\pmod 4$. Products of elements $\\equiv 1$ stay $\\equiv 1$; a product $\\equiv 3$ requires an odd number of factors $\\equiv 3$. This is the multiplicative closure argument formalized in `mul_mod_four_one` and `factors_determine_mod_four`.",
+      "The construction $N = 4 \\cdot (n+1)! - 1 \\equiv 3 \\pmod 4$ is designed so that every prime $p \\leq n+1$ divides $(n+1)!$, hence divides $4 \\cdot (n+1)!$, but cannot divide $N = 4(n+1)! - 1$ (since it would then divide 1). So any prime factor of $N$ exceeds $n$.",
+      "The strong induction in `factors_determine_mod_four` works by finding a prime factor $p$ of $n$, dividing out, and reducing to $n/p < n$ — which inherits the hypothesis that all its prime factors are 2 or $\\equiv 1 \\pmod 4$. The base case $m=1$ gives immediate contradiction from $n=p \\equiv 3 \\pmod 4$ vs $p \\equiv 1 \\pmod 4$.",
+      "The parity constraint is crucial: $n \\equiv 3 \\pmod 4$ implies $n$ is odd, so $2 \\nmid n$. This eliminates the $p=2$ case in the strong induction immediately via `omega`, since $2 \\mid n$ and $n \\equiv 3 \\pmod 4$ would give $n \\equiv 0 \\pmod 2$ contradicting $n \\equiv 3 \\equiv 1 \\pmod 2$.",
+      "The contrast with $\\equiv 1 \\pmod 4$: for that case one cannot construct a Euclid-style number that is forced to have a prime factor $\\equiv 1 \\pmod 4$, because products of primes $\\equiv 3 \\pmod 4$ can also be $\\equiv 1 \\pmod 4$ (e.g., $3 \\times 3 = 9 \\equiv 1$). The proof for $1 \\pmod 4$ requires showing $4(p_1 \\cdots p_k)^2 + 1$ has a prime factor $\\equiv 1 \\pmod 4$, needing Fermat's theorem that $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod 4$."
     ],
     "prerequisites": [
       "Nat.dvd_factorial: every prime ≤ n divides n!",
@@ -48,11 +49,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Elementary proof that primes ≡ 3 (mod 4) are infinite, using N = 4·(n+1)!-1. Includes the set-theoretic infinitude statement and no-largest-prime form. 7 theorems, 0 axioms, 230 lines.",
-    "implications": "This elementary proof predates Dirichlet's theorem and illustrates the power of Euclid-style arguments. The contrast with the ≡ 1 (mod 4) case (which requires Fermat's two-square theorem or quadratic reciprocity) shows that different arithmetic progressions require different proof techniques.",
+    "summary": "Elementary proof that primes ≡ 3 (mod 4) are infinite, using N = 4·(n+1)!-1. The key lemma `factors_determine_mod_four` uses strong induction on the multiplicative structure of (ℤ/4ℤ)*. Includes the set-theoretic infinitude statement and no-largest-prime form. 7 theorems, 0 axioms, 230 lines.",
+    "implications": "This elementary proof predates Dirichlet's theorem and illustrates the power of Euclid-style arguments. The contrast with the ≡ 1 (mod 4) case (which requires Fermat's two-square theorem or quadratic reciprocity) shows that different arithmetic progressions require qualitatively different proof techniques — some progressions admit elementary proofs, others require analytic or algebraic machinery.",
     "openQuestions": [
-      "Prove Dirichlet's theorem in full generality: infinitely many primes in any AP with gcd(a,d)=1",
-      "Formalize the density: primes ≡ 3 (mod 4) have density 1/2 among all primes (equidistribution)"
+      "Prove Dirichlet's theorem in full generality: infinitely many primes in any AP $\\{a + nd : n \\geq 0\\}$ with $\\gcd(a,d) = 1$. This requires Dirichlet characters $\\chi : (\\mathbb{Z}/d\\mathbb{Z})^* \\to \\mathbb{C}^*$ and $L$-functions $L(s, \\chi) = \\sum_{n=1}^\\infty \\chi(n)/n^s$. Formalizing the non-vanishing $L(1, \\chi) \\neq 0$ for non-principal $\\chi$ is the key analytic step.",
+      "Formalize the equidistribution: primes $\\equiv a \\pmod d$ (with $\\gcd(a,d)=1$) have density $1/\\phi(d)$ among all primes (Dirichlet's theorem in its quantitative form, equivalent to the Prime Number Theorem for arithmetic progressions).",
+      "Prove the infinitude of primes $\\equiv 1 \\pmod 4$ elementarily: this requires showing that for any finite set $\\{p_1,\\ldots,p_k\\}$ of primes $\\equiv 1 \\pmod 4$, the number $N = 4(p_1 \\cdots p_k)^2 + 1$ has a prime factor $\\equiv 1 \\pmod 4$. This uses Fermat's theorem: $(-1|p) = 1$ iff $p \\equiv 1 \\pmod 4$."
     ]
   },
   "leanFile": {
@@ -64,10 +66,70 @@
   },
   "crossReferences": [
     {
-      "targetId": "infinitude-primes-4k1",
+      "id": "infinitude-primes-4k1",
+      "relationship": "sibling",
+      "description": "Companion proof for primes ≡ 1 (mod 4) — requires more machinery (Fermat's two-square theorem or quadratic reciprocity) compared to the elementary 3 mod 4 proof here."
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "parent",
+      "description": "The base infinitude of primes result (Euclid's proof) — this proof uses the same Euclid-style factorial construction adapted to force a specific residue class."
+    },
+    {
+      "id": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Companion proof for primes ≡ 1 (mod 4), requiring more machinery (sum of two squares)"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) — the full generalization of this result to all APs a+nd with gcd(a,d)=1, requiring L-functions."
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports Mathlib.Data.Nat.Prime.Basic, Factorial.Basic, ZMod.Basic, and Tactic. Module docstring explains the 8-step proof sketch: N = 4·(n+1)!-1 is ≡ 3 (mod 4), products of 1-mod-4 factors stay 1-mod-4, so N has a prime factor ≡ 3 (mod 4) exceeding n. Namespace InfinitudePrimes4k3, opens Nat."
+    },
+    {
+      "id": "sec-mul-mod-four",
+      "title": "Multiplicative Closure: 1 mod 4 × 1 mod 4 = 1 mod 4",
+      "startLine": 45,
+      "endLine": 51,
+      "summary": "mul_mod_four_one: if a % 4 = 1 and b % 4 = 1 then (a*b) % 4 = 1. Proved by calc chain using Nat.mul_mod and norm_num. This is the key arithmetic lemma encoding that {1 mod 4} is closed under multiplication in (ℤ/4ℤ)*."
+    },
+    {
+      "id": "sec-prime-mod-four",
+      "title": "Odd Prime Dichotomy: ≡ 1 or ≡ 3 (mod 4)",
+      "startLine": 53,
+      "endLine": 75,
+      "summary": "prime_mod_four: for any odd prime p, p % 4 = 1 or p % 4 = 3. Proof uses p.odd_of_ne_two to write p = 2k+1, then splits on k even (k=2m → p=4m+1 ≡ 1) vs k odd (k=2m+1 → p=4m+3 ≡ 3), both by omega. This exhausts all residues: p odd means p ≢ 0, 2 (mod 4)."
+    },
+    {
+      "id": "sec-factors-lemma",
+      "title": "Strong Induction: Factors Determine Mod-4 Residue",
+      "startLine": 78,
+      "endLine": 131,
+      "summary": "factors_determine_mod_four: if all prime factors of n are 2 or ≡ 1 (mod 4), then n % 4 ≠ 3. Proof by Nat.strong_induction_on: find a prime factor p via Nat.exists_prime_and_dvd; case p=2 contradicts n odd (omega); case p ≡ 1 (mod 4) uses Nat.mul_mod to show m = n/p also satisfies n % 4 = 3 (since p ≡ 1), then applies IH to m < n."
+    },
+    {
+      "id": "sec-has-prime-factor",
+      "title": "Key Lemma: n ≡ 3 (mod 4) Has a Prime Factor ≡ 3 (mod 4)",
+      "startLine": 132,
+      "endLine": 148,
+      "summary": "has_prime_factor_3_mod_4: for n ≥ 3 with n % 4 = 3, there exists p prime with p ∣ n and p % 4 = 3. Proved by contradiction: assuming all prime factors are 2 or ≡ 1 (mod 4), applies factors_determine_mod_four to get n % 4 ≠ 3, contradicting the hypothesis."
+    },
+    {
+      "id": "sec-main-theorem",
+      "title": "Main Theorem: Infinitely Many Primes ≡ 3 (mod 4)",
+      "startLine": 150,
+      "endLine": 199,
+      "summary": "infinitely_many_primes_3_mod_4: ∀ n, ∃ p prime, p > n ∧ p % 4 = 3. Construction: N = 4(n+1)!-1 ≡ 3 (mod 4) (by omega from factorial_pos). By has_prime_factor_3_mod_4, N has a prime factor p ≡ 3 (mod 4). If p ≤ n, then p ∣ (n+1)! (by Nat.dvd_factorial) → p ∣ 4(n+1)! → p ∣ 1 (from N + 1 = 4(n+1)!), contradicting hp.not_dvd_one. primes_3_mod_4_infinite and no_largest_prime_3_mod_4 follow by Set.infinite_of_not_bddAbove."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Concrete Examples",
+      "startLine": 209,
+      "endLine": 228,
+      "summary": "Five `example` statements verifying that 3, 7, 11, 19, 23 are primes ≡ 3 (mod 4), each proved by `decide` or `Nat.prime_three`. These serve as sanity checks and illustrate the density of such primes: 3,7,11,19,23,31,43,47,... occupy every other odd residue class mod 4."
+    }
+  ]
 }
