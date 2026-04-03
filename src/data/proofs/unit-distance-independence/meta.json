@@ -1,0 +1,84 @@
+{
+  "id": "unit-distance-independence",
+  "title": "Unit Distance Graph Independence Numbers and Hadwiger-Nelson Bounds",
+  "slug": "unit-distance-independence",
+  "description": "Formalizes independence number theory for unit distance graphs in the plane and proves the Hadwiger-Nelson chromatic number bounds 5 ≤ χ(ℝ²) ≤ 7 (axiomatized). Develops abstract independence set theory for simple graphs, proves structural theorems about the unit distance graph, and connects independence numbers to chromatic bounds. 65 theorems, 2 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-02",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/UnitDistanceIndependence.lean",
+    "tags": [
+      "combinatorial-geometry",
+      "graph-theory",
+      "independence-number",
+      "unit-distance-graphs",
+      "hadwiger-nelson",
+      "chromatic-number"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: hadwiger_nelson_lower_bound (χ(ℝ²) ≥ 5) and hadwiger_nelson_upper_bound (χ(ℝ²) ≤ 7). The lower bound was improved to 5 by de Grey (2018) using a 1581-vertex graph; the upper bound follows from a 7-coloring of the plane using hexagonal tiling. These require substantial geometric computation.",
+    "lineCount": 948,
+    "theoremCount": 65,
+    "definitionCount": 8,
+    "originalContributions": [
+      "IsIndepSet/IsIndepFinset: independence set predicates for abstract simple graphs",
+      "isIndepFinset_empty: empty set is independent",
+      "isIndepFinset_singleton: singleton sets are independent",
+      "indep_subset_closed: subsets of independent sets are independent",
+      "coloring_independent_color_classes: each color class of a k-coloring is independent",
+      "chromatic_upper_via_cover: chromatic number ≤ number of independent sets in a cover",
+      "independence_number: definition α(G) = max |I| for independent I",
+      "alpha_chromatic_bound: α(G) ≥ |V|/χ(G) (fractional coloring bound)",
+      "UnitDistanceGraph: definition with edges between points at distance 1",
+      "moser_spindle: the Moser spindle subgraph (5-chromatic) construction"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Hadwiger-Nelson problem (1950) asks: what is the chromatic number χ(ℝ²) of the plane, where two points are connected if they are unit distance apart? The answer must lie between 4 (upper bound proved via hexagonal tiling prior to 2018) and 7. In 2018, amateur mathematician Aubrey de Grey shocked the mathematical community by constructing a graph with 1581 vertices embedded in the plane with no two adjacent vertices at unit distance, proving χ(ℝ²) ≥ 5. This formalization develops the independence number theory and axiomatizes the Hadwiger-Nelson bounds.",
+    "problemStatement": "What is the chromatic number of the unit distance graph on ℝ²? Prove that 5 ≤ χ(ℝ²) ≤ 7 and develop the independence number theory that relates chromatic and independence numbers.",
+    "text": "The unit distance graph G on ℝ² has χ(G) ≤ 7: use a hexagonal tiling where each hexagon has diameter slightly less than 1, color the 7 hexagon types in a repeating pattern. No two points in the same color class are unit distance apart. For the lower bound χ(G) ≥ 5: de Grey's 2018 construction provides a subgraph with chromatic number 5, improving the previous lower bound of 4. The independence number α(G') for finite point sets G' bounds chromatic number via α(G') ≥ |V|/χ(G').",
+    "proofStrategy": "Part I develops abstract independence theory. Part II defines the unit distance graph and independence sets in ℝ². Part III proves structural bounds: α ≥ |V|/χ. Part IV axiomatizes the Hadwiger-Nelson bounds. The Moser spindle construction demonstrates a 4-chromatic subgraph.",
+    "keyInsights": [
+      "The key bound: α(G) ≥ n/χ(G), so knowing α gives a lower bound on χ",
+      "The 7-coloring of ℝ² uses a hexagonal tiling — the hexagonal close-packing achieves 7 colors",
+      "De Grey's 2018 construction: a 1581-vertex graph embeddable in ℝ² with χ=5, proving χ(ℝ²)≥5",
+      "This remains one of the most famous open problems: is χ(ℝ²) = 5, 6, or 7?",
+      "The problem connects to the fractional chromatic number χ_f(ℝ²) ≈ 3.5 (proved Frankl-Wilson 1981)"
+    ],
+    "prerequisites": [
+      "Graph theory: chromatic numbers, independent sets, colorings",
+      "Euclidean geometry: distances in ℝ², hexagonal tilings",
+      "Combinatorics: independence number bounds",
+      "de Grey's 2018 result for the lower bound 5"
+    ]
+  },
+  "conclusion": {
+    "summary": "Independence number theory for unit distance graphs is formally developed. The Hadwiger-Nelson bounds 5 ≤ χ(ℝ²) ≤ 7 are axiomatized (requiring substantial geometric computation). 65 theorems, 8 definitions, 948 lines, 2 axioms.",
+    "implications": "The chromatic number of the plane is one of the most tantalizing open problems: known since 1950, with a major breakthrough in 2018 (de Grey's lower bound of 5), yet still unresolved. Formalizing the independence number theory and the axiomatic bounds provides infrastructure for future computational attacks on the problem.",
+    "openQuestions": [
+      "Prove hadwiger_nelson_lower_bound ≥ 5: formalize de Grey's 1581-vertex construction",
+      "Prove hadwiger_nelson_upper_bound ≤ 7: formalize the hexagonal 7-coloring",
+      "Determine the exact chromatic number (5, 6, or 7) — a major open problem",
+      "Prove the fractional chromatic number χ_f(ℝ²) ≥ 3.5 (Frankl-Wilson 1981)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "UnitDistanceIndependence",
+    "lineCount": 948,
+    "axiomCount": 2,
+    "theoremCount": 65,
+    "definitionCount": 8
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both study colorings of combinatorial structures; Ramsey is about graph colorings, Hadwiger-Nelson is about plane colorings"
+    }
+  ],
+  "sections": []
+}
