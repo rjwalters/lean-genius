@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1009-oq-02",
-  "title": "Edge-Disjoint K₄ Copies Beyond Turán Threshold",
+  "title": "Edge-Disjoint K\u2084 Copies Beyond Tur\u00e1n Threshold",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in graph theory: Edge-Disjoint K₄ Copies Beyond Turán Threshold.",
+    "plain": "Formal investigation in graph theory: Edge-Disjoint K\u2084 Copies Beyond Tur\u00e1n Threshold.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-30T21:13:16.758Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,13 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created K4 problem formalization with Clique4 struct, Turan threshold n^2/3, proved monotone/positivity/comparison lemmas. Open question stated as Prop. 2 sorries: Turan arithmetic + Clique4 bridge.",
-    "builtItems": [],
+    "progressSummary": "COMPLETE: 0 sorries. turanK4_extremal proved via CliqueFree.card_edgeFinset_le + mod-3 case split. exceeds_turanK4_has_clique4 proved via Finset.card_eq_four.",
+    "builtItems": [
+      "turanK4_arith (Erdos1009OQ02Problem.lean): arithmetic lemma for Turan bound via mod-3 case split",
+      "turanK4_extremal (Erdos1009OQ02Problem.lean): proved K4-free graphs have <= n^2/3 edges",
+      "exceeds_turanK4_has_clique4 (Erdos1009OQ02Problem.lean): proved K4 exists above Turan threshold"
+    ],
     "insights": [
       "Created Erdos1009OQ02Problem.lean: K4 analog of Gyori theorem formalized. Clique4 struct, turanThresholdK4=n^2/3, edge-disjointness, open question as Prop.",
       "2 sorries: Turan arithmetic (mod 3 nlinarith) + Clique4 bridge to CliqueFree 4",
       "turanK4_extremal uses CliqueFree.card_edgeFinset_le; arithmetic n%3 cases need nlinarith not omega",
-      "clique4_has_triangle: distinct.2.2.2.1 is b≠c in And-chain a≠b ∧ a≠c ∧ a≠d ∧ b≠c ∧ b≠d ∧ c≠d"
+      "clique4_has_triangle: distinct.2.2.2.1 is b\u2260c in And-chain a\u2260b \u2227 a\u2260c \u2227 a\u2260d \u2227 b\u2260c \u2227 b\u2260d \u2227 c\u2260d",
+      "turanK4_arith private lemma: simp [h] + omega proves each mod-3 case; simp only does not reduce constants like 3-1 or 0^2",
+      "push_neg on NOT(exists K, True) gives forall K, False (simplifies NOT True to False)"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -67,11 +73,11 @@
     {
       "path": "Proofs/Erdos1009OQ02Problem.lean",
       "filename": "Erdos1009OQ02Problem.lean",
-      "lineCount": 222,
+      "lineCount": 240,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 9,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1009OQ02Problem.lean"
     },

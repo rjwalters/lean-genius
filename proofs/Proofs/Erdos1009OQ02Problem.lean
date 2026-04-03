@@ -141,14 +141,26 @@ K₄-free graphs have at most ⌊n²/3⌋ edges.
     Proof via Mathlib's `SimpleGraph.CliqueFree.card_edgeFinset_le`.
     For CliqueFree 4 (r=3 in Turán notation), the bound is
     ≤ (n²-(n%3)²)*2/6 + (n%3).choose 2 = ⌊n²/3⌋ (verified by mod 3 case split). -/
+-- Helper: arithmetic fact used in turanK4_extremal
+private lemma turanK4_arith (n : ℕ) :
+    (n ^ 2 - (n % 3) ^ 2) * 2 / 6 + (n % 3).choose 2 ≤ n ^ 2 / 3 := by
+  have hmod : n % 3 = 0 ∨ n % 3 = 1 ∨ n % 3 = 2 := by omega
+  rcases hmod with h | h | h
+  · simp [h]; omega
+  · simp [h]; omega
+  · simp [h]
+    have hn4 : 4 ≤ n ^ 2 := by nlinarith [show 2 ≤ n from by omega]
+    omega
+
 theorem turanK4_extremal (G : SimpleGraph V) [DecidableRel G.Adj]
     (hcf : G.CliqueFree 4) :
     numEdges4 G ≤ turanThresholdK4 (numVertices4 G) := by
-  -- Follows from Mathlib's CliqueFree.card_edgeFinset_le (Turán's theorem).
-  -- For CliqueFree 4, the bound is (n²-(n%3)²)*2/6 + (n%3).choose 2 ≤ n²/3,
-  -- verified by mod 3 case split. The integer division arithmetic requires
-  -- nlinarith reasoning that is left as sorry pending a cleaner formulation.
-  sorry
+  unfold numEdges4 turanThresholdK4 numVertices4
+  -- Mathlib's Turán bound: CliqueFree (r+1) → edges ≤ (n²-(n%r)²)*(r-1)/(2r) + (n%r).choose 2
+  -- For r=3 (CliqueFree 4): edges ≤ (n²-(n%3)²)*2/6 + (n%3).choose 2 = ⌊n²/3⌋
+  have hbound := hcf.card_edgeFinset_le
+  simp only at hbound
+  exact hbound.trans (turanK4_arith _)
 
 /-- **K₄ exists above Turán threshold**: graphs exceeding ⌊n²/3⌋ edges contain K₄.
 
@@ -163,9 +175,16 @@ theorem exceeds_turanK4_has_clique4 (G : SimpleGraph V) [DecidableRel G.Adj]
   push_neg at hno
   have hcf : G.CliqueFree 4 := by
     intro t ⟨hclique, hcard⟩
-    -- Extract 4 vertices from the 4-element clique finset t
-    -- and construct a Clique4, contradicting hno
-    sorry
+    rw [Finset.card_eq_four] at hcard
+    obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, rfl⟩ := hcard
+    exact hno ⟨a, b, c, d,
+      hclique (by simp) (by simp) hab,
+      hclique (by simp) (by simp) hac,
+      hclique (by simp) (by simp) had,
+      hclique (by simp) (by simp) hbc,
+      hclique (by simp) (by simp) hbd,
+      hclique (by simp) (by simp) hcd,
+      ⟨hab, hac, had, hbc, hbd, hcd⟩⟩
   exact absurd (turanK4_extremal G hcf) (by omega)
 
 /-
