@@ -1,1 +1,147 @@
-[]
+[
+  {
+    "id": "ann-konig02-digraph",
+    "proofId": "konigsberg-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Digraph: Loopless Arc Relation with Degree Definitions",
+    "content": "The Digraph structure formalizes a finite directed graph with a bare arc relation adj : V → V → Prop and a loopless axiom ∀v, ¬odj v v. In-degree and out-degree are defined as cardinalities of filtered sets: outNeighbors v = Finset.univ.filter (adj v) and inNeighbors v = Finset.univ.filter (fun u => adj u v). isBalanced v := inDegree v = outDegree v. The design choice — not using Mathlib's SimpleGraph (undirected) or MultiGraph — is intentional: the directed case needs a custom definition since Mathlib's graph library focuses on undirected graphs.",
+    "mathContext": "$G = (V, \\text{adj}), \\text{loopless}$; $\\deg^+(v) = |\\{w : \\text{adj}\\, v\\, w\\}|$; $\\deg^-(v) = |\\{u : \\text{adj}\\, u\\, v\\}|$; $\\text{isBalanced}(v) \\iff \\deg^+(v) = \\deg^-(v)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "directed graph",
+      "arc relation",
+      "in-degree/out-degree",
+      "loopless"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Fintype.univ",
+      "SimpleGraph (contrast)"
+    ]
+  },
+  {
+    "id": "ann-konig02-degsum",
+    "proofId": "konigsberg-oq-02",
+    "range": {
+      "startLine": 96,
+      "endLine": 176
+    },
+    "type": "technique",
+    "title": "Degree Sum via Fiberwise Decomposition: Σ outdeg = Σ indeg = |E|",
+    "content": "sum_outDegree_eq_arcCount is proved by a bijection: the arc set decomposes as a disjoint union over sources — each source u contributes its out-neighborhood. Formally: Finset.card_eq_sum_card_fiberwise (f := Prod.fst) decomposes the arc set by source, then Finset.card_nbij maps (v ↦ (u,v)) ∈ outNeighbors u → arcs. The in-degree analogue groups arcs by target. Corollary: Σ indeg = Σ outdeg. This is the directed handshaking lemma — the foundation for the Euler criterion.",
+    "mathContext": "$\\sum_v \\deg^+(v) = |E|$ by fiberwise decomp: $\\{(u,v): \\text{adj}\\}= \\bigsqcup_u \\{u\\}\\times\\text{outNeigh}(u)$; $\\sum_v \\deg^-(v)=|E|$ symmetrically",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_eq_sum_card_fiberwise",
+      "handshaking lemma",
+      "degree sum",
+      "Finset.card_nbij"
+    ],
+    "prerequisites": [
+      "Finset.card_biUnion",
+      "Finset.card_nbij",
+      "Prod.fst/snd"
+    ]
+  },
+  {
+    "id": "ann-konig02-circuit-proof",
+    "proofId": "konigsberg-oq-02",
+    "range": {
+      "startLine": 177,
+      "endLine": 413
+    },
+    "type": "insight",
+    "title": "Circuit Necessity: Source/Target Permutation via Chain Property",
+    "content": "The proof of directed_euler_circuit_necessary is the cleanest part of the file. Key insight: in a circuit walk (a.arcs.Chain' (fun a b => a.2 = b.1) + start = end), the multiset of arc sources is a permutation of the multiset of arc targets. Private lemma circuit_fst_perm_snd proves: arcs.map Prod.fst ~ arcs.map Prod.snd. The chain property gives map fst = u :: M and map snd = M ++ [u] (for the same M), and these are permutations via List.perm_iff_count + count commutativity of addition. Then eulerian_source_count bridges between list filter counts and degree definitions (via Finset.card_nbij). Since the walk is Eulerian (Nodup + all arcs covered), each filtered count equals the degree.",
+    "mathContext": "Chain $\\Rightarrow$ $(u::M, M{++}[u])$ perm $\\Rightarrow$ multisets $\\text{fst}\\sim\\text{snd}$; Eulerian $\\Rightarrow$ count $v$ in sources $=\\deg^+(v)$; conclusion: $\\deg^-(v)=\\deg^+(v)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "List.Perm",
+      "circuit_fst_perm_snd",
+      "eulerian_source_count",
+      "chain connectivity"
+    ],
+    "prerequisites": [
+      "Digraph.Walk",
+      "List.Chain'",
+      "List.Perm.count_eq",
+      "Finset.card_nbij"
+    ]
+  },
+  {
+    "id": "ann-konig02-path-criterion",
+    "proofId": "konigsberg-oq-02",
+    "range": {
+      "startLine": 414,
+      "endLine": 499
+    },
+    "type": "insight",
+    "title": "Path Necessity: Start/End Degree Asymmetry from Chain Structure",
+    "content": "directed_euler_path_necessary proves the path analogue: an Eulerian path u→v implies outdeg(u)-indeg(u)=1, indeg(v)-outdeg(v)=1, and all intermediate vertices are balanced. The private lemma path_fst_snd_eq captures the path chain structure: [start] ++ map snd = map fst ++ [end]. This is the path analogue of the circuit permutation: instead of fst ~ snd (equal multisets), we have a shifted list identity. Compared to the circuit proof, the path case requires careful handling of the asymmetry at the start and end vertices. The sufficiency axiom directed_euler_path_sufficient asserts that these conditions are also sufficient (requiring Hierholzer's construction).",
+    "mathContext": "Path chain: $[u]{++}\\text{map snd}= \\text{map fst}{++}[v]$; implies $\\deg^+(u) - \\deg^-(u) = 1$ and $\\deg^-(v) - \\deg^+(v) = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "path_fst_snd_eq",
+      "degree imbalance",
+      "Eulerian path",
+      "Hierholzer's algorithm"
+    ],
+    "prerequisites": [
+      "directed_euler_circuit_necessary",
+      "path_fst_snd_eq",
+      "List.count"
+    ]
+  },
+  {
+    "id": "ann-konig02-examples",
+    "proofId": "konigsberg-oq-02",
+    "range": {
+      "startLine": 500,
+      "endLine": 690
+    },
+    "type": "concept",
+    "title": "Concrete Examples: Triangles, Squares, and Unbalanced Digraphs",
+    "content": "Parts V–VIII instantiate the abstract theory on concrete small digraphs. The directed triangle (A→B→C→A) and directed square (cycle on 4 vertices) are verified to be balanced with native_decide, then serve as examples of Eulerian circuit candidates. The unbalanced triangle (A has 2 outgoing arcs, 0 incoming) shows the necessity of balance: unbal_no_euler_circuit derives a contradiction from directed_euler_circuit_necessary. The path example (A→B, B→C) illustrates the degree-imbalance conditions: A is a source (outdeg-indeg=1), C is a sink (indeg-outdeg=1), B is balanced. These serve as verification tests that the abstract definitions capture the intended structure.",
+    "mathContext": "Triangle $A\\to B\\to C\\to A$: $\\deg^+=\\deg^-=1$. Unbalanced: $\\deg^+(A)=2, \\deg^-(A)=0 \\Rightarrow$ no circuit. Path $A\\to B\\to C$: $\\deg^+(A)-\\deg^-(A)=1$, $\\deg^-(C)-\\deg^+(C)=1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "directed triangle",
+      "unbalanced digraph",
+      "Eulerian path example"
+    ],
+    "prerequisites": [
+      "Digraph",
+      "isBalanced",
+      "directed_euler_circuit_necessary"
+    ]
+  },
+  {
+    "id": "ann-konig02-debruijn",
+    "proofId": "konigsberg-oq-02",
+    "range": {
+      "startLine": 691,
+      "endLine": 813
+    },
+    "type": "concept",
+    "title": "de Bruijn Sequences: Eulerian Circuits in Overlap Graphs",
+    "content": "Parts IX–X connect the Euler theory to de Bruijn sequences. A de Bruijn graph on alphabet Σ (|k| symbols) of order n has vertices Σ^{n-1} (length-(n-1) strings) and arcs Σ^n (length-n strings, with arc s’ pointing to the suffix of length n-1). An Eulerian circuit in this graph corresponds to a cyclic de Bruijn sequence of length k^n. deBruijn_arc_count proves |E| = k^n via exponential counting. symmetric_digraph_balanced proves any digraph with a symmetric adjacency relation is balanced — a useful sufficient condition. This connects Euler's theorem directly to combinatorics of sequences and the Chinese Postman Problem.",
+    "mathContext": "de Bruijn graph: $|V|=k^{n-1}$, $|E|=k^n$; $\\deg^+(v)=\\deg^-(v)=k$ for all $v$; Eulerian circuit $\\Leftrightarrow$ de Bruijn sequence of length $k^n$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "de Bruijn sequence",
+      "overlap graph",
+      "deBruijn_arc_count",
+      "Chinese Postman"
+    ],
+    "prerequisites": [
+      "Digraph.arcCount",
+      "Nat.pow",
+      "symmetric_digraph_balanced"
+    ]
+  }
+]
