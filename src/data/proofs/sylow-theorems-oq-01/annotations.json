@@ -2,17 +2,61 @@
   {
     "id": "ann-sylow-pq-unique-q",
     "proofId": "sylow-theorems-oq-01",
-    "range": {"startLine": 45, "endLine": 70},
+    "range": { "startLine": 144, "endLine": 159 },
     "type": "insight",
-    "title": "Why the Sylow q-Subgroup is Always Unique",
-    "body": "For p < q, the number n_q of Sylow q-subgroups satisfies n_q | p and n_q ≡ 1 (mod q). Since p < q, we can't have n_q = p (that would require p ≡ 1 mod q, impossible for p < q). So n_q = 1, meaning the Sylow q-subgroup is unique and therefore normal."
+    "title": "Why the Sylow q-Subgroup is Always Unique: p < q Forces n_q = 1",
+    "content": "`unique_sylow_q` is the cleanest argument in the file. From `sylow_q_count_constraint`: n_q | p (via `card_sylow_dvd_index`, using that index of Q = p) and n_q ≡ 1 (mod q) (via `card_sylow_modEq_one`). Since p is prime, `h.hp.eq_one_or_self_of_dvd` gives n_q ∈ {1, p}. If n_q = p: then p % q = 1 by the congruence condition. But p < q, so p % q = p (since p < q, division gives quotient 0 and remainder p). Substituting: p = 1, contradicting p being prime. `omega` closes this immediately after setting up the contradiction. The proof is 4 lines including the two hypothesis unpacking steps.",
+    "mathContext": "Sylow's third theorem: $n_q \\mid \\text{index}(Q)$ and $n_q \\equiv 1 \\pmod{q}$. Here $\\text{index}(Q) = |G|/|Q| = pq/q = p$. So $n_q \\mid p$ with $p$ prime gives $n_q \\in \\{1, p\\}$. If $n_q = p$: then $p \\equiv 1 \\pmod{q}$, i.e., $q \\mid (p-1)$. But $p < q$, so $p - 1 < q$, and the only multiple of $q$ in $\\{0, \\ldots, q-1\\}$ less than $q$ is $0$, giving $p - 1 = 0$, i.e., $p = 1$ — not prime. So $n_q = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["card_sylow_dvd_index: n_p divides index of Sylow subgroup", "card_sylow_modEq_one: n_p ≡ 1 mod p (Sylow's third theorem)", "Nat.Prime.eq_one_or_self_of_dvd: prime divisors are 1 or p", "Nat.mod_eq_of_lt: n % m = n when n < m"],
+    "prerequisites": ["Sylow.card_sylow_dvd_index in Mathlib.GroupTheory.Sylow", "Nat.ModEq and modEq_iff_dvd' in Mathlib.Data.Nat.Defs", "sylow_q_index helper lemma computing index = p"]
   },
   {
-    "id": "ann-sylow-pq-classification",
+    "id": "ann-commutator-commutativity",
     "proofId": "sylow-theorems-oq-01",
-    "range": {"startLine": 130, "endLine": 170},
+    "range": { "startLine": 237, "endLine": 260 },
     "type": "insight",
-    "title": "The p | (q-1) Dichotomy",
-    "body": "The classification hinges on a single divisibility condition: does p divide q-1? If not, both Sylow subgroups are normal and G is cyclic. If yes, there exists a non-abelian semidirect product. The examples are illuminating: order 15 (3×5) is always cyclic since 3∤4, but order 6 (2×3) has S₃ since 2|2."
+    "title": "The Commutator Argument: Normal Subgroups with Trivial Intersection Commute",
+    "content": "The commutativity proof is a textbook argument made fully explicit in Lean. For g ∈ P, k ∈ Q: form c = g⁻¹(k⁻¹gk). Since P is normal: `hPN.conj_mem g hg k⁻¹` gives k⁻¹gk ∈ P (with simp to handle the k⁻¹ conjugation form), and g⁻¹ ∈ P trivially, so c ∈ P. Since Q is normal: `hQN.conj_mem k⁻¹ (...) g⁻¹` gives g⁻¹k⁻¹g ∈ Q, and k ∈ Q, so g⁻¹k⁻¹gk ∈ Q. But g⁻¹k⁻¹gk = g⁻¹(k⁻¹gk) = c by associativity (via `group` tactic). So c ∈ P ∩ Q = {1}. From c = 1: `inv_mul_eq_one` gives k⁻¹gk = g, then `calc` derives gk = kg.",
+    "mathContext": "For normal subgroups $P, Q \\trianglelefteq G$ with $P \\cap Q = \\{1\\}$, all elements of $P$ and $Q$ commute. Proof: for $g \\in P, k \\in Q$, the commutator $[g,k] = g^{-1}k^{-1}gk$. Then $[g,k] \\in P$: since $P \\trianglelefteq G$, $k^{-1}gk \\in P$, so $g^{-1}(k^{-1}gk) \\in P$. Similarly $[g,k] \\in Q$: since $Q \\trianglelefteq G$, $g^{-1}k^{-1}g \\in Q$, so $(g^{-1}k^{-1}g)k \\in Q$. Since $P \\cap Q = \\{1\\}$, $[g,k] = 1$, i.e., $gk = kg$.",
+    "significance": "key",
+    "relatedConcepts": ["Subgroup.Normal.conj_mem for conjugation in normal subgroups", "Subgroup.disjoint_def for P ∩ Q = {1}", "inv_mul_eq_one for a⁻¹b = 1 ↔ a = b", "group tactic for group identity simplification"],
+    "prerequisites": ["Subgroup.Normal definition and conj_mem in Mathlib.GroupTheory.Subgroup", "Disjoint for subgroups via Subgroup.disjoint_def", "P ∩ Q = {1} proved earlier via coprimality"]
+  },
+  {
+    "id": "ann-cyclic-generator",
+    "proofId": "sylow-theorems-oq-01",
+    "range": { "startLine": 261, "endLine": 297 },
+    "type": "technique",
+    "title": "Building a Cyclic Generator: orderOf_mul for Commuting Coprime-Order Elements",
+    "content": "The cyclic generator construction uses `isCyclic_of_prime_card` (prime-order groups are cyclic) to get generators g of P (order p) and k of Q (order q). `orderOf_eq_card_of_forall_mem_zpowers` converts 'g generates P' (∀ x, x ∈ zpowers g) to `orderOf g = |P| = p` after unfolding the Subgroup.orderOf_mk coercion. The key step: `hgk_comm.orderOf_mul_eq_mul_orderOf_of_coprime` states that if g and k commute and their orders are coprime, then orderOf(gk) = orderOf(g) * orderOf(k) = pq. Then `Subgroup.card_zpowers` gives |zpowers(gk)| = orderOf(gk) = pq = |G|, so `Subgroup.eq_top_of_card_eq` gives zpowers(gk) = ⊤, making every group element a power of gk.",
+    "mathContext": "For commuting elements $g, k$ with $\\gcd(\\mathrm{ord}(g), \\mathrm{ord}(k)) = 1$: $\\mathrm{ord}(gk) = \\mathrm{ord}(g) \\cdot \\mathrm{ord}(k)$. Proof: $(gk)^n = g^n k^n$ (by commutativity), so $(gk)^n = 1 \\Leftrightarrow g^n = k^{-n} \\in P \\cap Q = \\{1\\}$ (since $P$ and $Q$ have coprime orders) $\\Leftrightarrow$ $\\mathrm{ord}(g) \\mid n$ and $\\mathrm{ord}(k) \\mid n$ $\\Leftrightarrow$ $\\mathrm{lcm}(p,q) = pq \\mid n$.",
+    "significance": "key",
+    "relatedConcepts": ["isCyclic_of_prime_card: prime-order groups are cyclic", "orderOf_eq_card_of_forall_mem_zpowers for generator order", "Commute.orderOf_mul_eq_mul_orderOf_of_coprime for coprime commuting orders", "Subgroup.eq_top_of_card_eq for subgroup = top from equal cardinality"],
+    "prerequisites": ["IsCyclic.exists_generator in Mathlib.GroupTheory.GroupAction.Basic", "Subgroup.zpowers and card_zpowers in Mathlib.GroupTheory.Subgroup", "Nat.Coprime for p and q (distinct primes)"]
+  },
+  {
+    "id": "ann-factorization-api",
+    "proofId": "sylow-theorems-oq-01",
+    "range": { "startLine": 52, "endLine": 104 },
+    "type": "technique",
+    "title": "The Nat.factorization API: Extracting Prime Valuations with Finsupp",
+    "content": "The helper lemmas factorization_pq_at_q and factorization_pq_at_p compute v_q(pq) = 1 and v_p(pq) = 1 using Mathlib's Nat.factorization (a Finsupp from ℕ to ℕ). The pattern: `Nat.factorization_mul` splits factorization of a product into a sum of Finsupps. `(Nat.Prime.prime hp).factorization` gives the Finsupp.single p 1 for a prime p. `Finsupp.single_apply` then evaluates: `Finsupp.single p 1 q = if p = q then 1 else 0`. The `if_neg (Ne.symm h.hpq)` and `if_pos rfl` close the cases, and omega combines. This pattern generalizes to any product of distinct primes for computing Sylow subgroup orders. The `sylow_q_card` then applies `Q.card_eq_multiplicity` (|Q| = p^{v_p(|G|)}) and `pow_one` to get |Q| = q.",
+    "mathContext": "Mathlib's `Nat.factorization n` is a `Finsupp ℕ ℕ` — a finitely-supported function representing the prime factorization of $n$. For a prime $p$: `(Nat.Prime.prime hp).factorization = Finsupp.single p 1`. `Finsupp.add_apply` gives the value of a sum at a point. `Sylow.card_eq_multiplicity : Nat.card Q = p ^ (Fintype.card G).factorization p` — the Sylow subgroup has order equal to the full $p$-power in $|G|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.factorization as Finsupp ℕ ℕ", "Nat.factorization_mul for products", "Finsupp.single_apply for prime factorization evaluation", "Sylow.card_eq_multiplicity for Sylow subgroup order", "Subgroup.card_mul_index for order × index = |G|"],
+    "prerequisites": ["Nat.factorization in Mathlib.Data.Nat.Factorization.Basic", "Finsupp and Finsupp.single in Mathlib.Data.Finsupp.Basic", "Sylow API in Mathlib.GroupTheory.Sylow"]
+  },
+  {
+    "id": "ann-nonabelian-p-count",
+    "proofId": "sylow-theorems-oq-01",
+    "range": { "startLine": 320, "endLine": 331 },
+    "type": "technique",
+    "title": "nonabelian_sylow_p_count: Proof by Contradiction Using the Full Cyclic Result",
+    "content": "`nonabelian_sylow_p_count` is a elegant proof by contradiction: assume n_p = 1 (from sylow_p_count giving n_p ∈ {1, q}). Then by sylow_normal_of_card_one, P is normal. Combined with sylow_q_normal (Q always normal), the hypothesis of cyclic_of_both_sylow_normal is satisfied, giving IsCyclic G — contradicting hncyc. So n_p = q. The proof structure `rcases ... with h1 | hq` handles the two cases from sylow_p_count; the first branch builds the contradiction in 3 lines, the second branch closes trivially with `exact hq`. This is a standard 'proof by minimum counterexample elimination' pattern.",
+    "mathContext": "When $p \\mid (q-1)$ and $G$ is non-cyclic: $n_p \\in \\{1, q\\}$ by the Sylow divisibility constraint. If $n_p = 1$: $P$ is normal, $Q$ is always normal (proved above), so $G$ is cyclic by the main theorem — contradiction with $G$ non-cyclic. Therefore $n_p = q$. This gives the expected Sylow count for the non-abelian case $\\mathbb{Z}/q \\rtimes \\mathbb{Z}/p$: indeed, the $q$ Sylow $p$-subgroups of $\\mathbb{Z}/q \\rtimes \\mathbb{Z}/p$ are precisely $\\{\\mathbb{Z}/p \\times \\{k\\} : k \\in \\mathbb{Z}/q\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Proof by contradiction using exfalso", "sylow_p_count for the two-case analysis", "cyclic_of_both_sylow_normal as the bridge to the contradiction", "rcases for case-splitting on disjunctions"],
+    "prerequisites": ["sylow_p_count proved in Part III", "cyclic_of_both_sylow_normal proved in Part IV", "sylow_q_normal proved in Part II"]
   }
 ]
