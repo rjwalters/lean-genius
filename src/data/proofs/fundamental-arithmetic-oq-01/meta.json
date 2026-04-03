@@ -25,26 +25,100 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "summary": "Proves the multiplicative property of prime factorization using Mathlib's Nat.factorization_mul. For coprime m, n: factorizations have disjoint support. Includes concrete examples (420 = 12 \u00b7 35) and iterated factorization for lists.",
-    "text": "Proves the multiplicative property of prime factorization: factorization(mn) = factorization(m) + factorization(n), with coprime disjointness and concrete examples.",
-    "historicalContext": "See the parent entry for historical background.",
-    "problemStatement": "See the description field for the problem statement.",
-    "proofStrategy": "See the overview summary for the proof approach.",
+    "historicalContext": "The Fundamental Theorem of Arithmetic — that every positive integer has a unique prime factorization — was known to Euclid but first explicitly proved by Gauss in Disquisitiones Arithmeticae (1801). The multiplicative property of factorization is one of its key corollaries: v_p(mn) = v_p(m) + v_p(n) for all primes p, where v_p is the p-adic valuation. This additive property turns multiplication of integers into addition of 'exponent vectors', making ℕ (under multiplication) isomorphic to the free commutative monoid on primes. The p-adic valuation v_p was formalized by Kürschák (1913) and became central to algebraic number theory through Ostrowski's theorem (1916) and local fields. In Mathlib, Nat.factorization represents this as a Finsupp ℕ ℕ — a finite support function from primes to exponents — making the additive structure of factorization explicit as Finsupp addition.",
+    "problemStatement": "For natural numbers $m, n$ with $m, n \\neq 0$: $\\text{factorization}(mn) = \\text{factorization}(m) + \\text{factorization}(n)$ as elements of the Finsupp type. Pointwise: $v_p(mn) = v_p(m) + v_p(n)$ for every prime $p$. For coprime $m, n$ (i.e., $\\gcd(m,n) = 1$): the factorizations have disjoint support (no prime divides both). Equivalently: $\\forall p$ prime, $v_p(m) = 0$ or $v_p(n) = 0$.",
+    "text": "Proves the multiplicative property of prime factorization using Mathlib's Nat.factorization_mul. For coprime m, n: factorizations have disjoint support. Includes concrete examples (420 = 12 · 35) and iterated factorization for lists.",
+    "proofStrategy": "1. General multiplicativity: direct application of Nat.factorization_mul from Mathlib — a one-line proof. 2. Pointwise form: rewrite using factorization_mul_eq and rfl. 3. Coprime disjointness: use Nat.coprime_iff_disjoint to convert gcd=1 to Finsupp support disjointness. 4. Pointwise exclusive: by contradiction, if v_p(m) > 0 and v_p(n) > 0 then p ∈ support(m) ∩ support(n), contradicting disjointness. 5. Concrete examples: verify factorization(12), factorization(35), factorization(420) by native_decide. 6. Iterated factorization: induction on list, applying factorization_mul at each cons step.",
     "keyInsights": [
-      "See the parent entry for related insights."
+      "Nat.factorization in Lean/Mathlib is a Finsupp ℕ ℕ — a function ℕ → ℕ with finite support. The 'product' of factorizations is just pointwise addition (Finsupp.add), making the multiplicative property of ℕ correspond to additive structure in Finsupp.",
+      "The coprime disjointness theorem (factorization_disjoint_of_coprime) is essentially a rephrasing of what gcd=1 means: gcd is the min of p-adic valuations, so gcd(m,n)=1 means min(v_p(m), v_p(n)) = 0 for all p, which means the supports are disjoint.",
+      "The example 420 = 12 × 35 is pedagogically ideal: 12 = 2²·3 and 35 = 5·7 are coprime, so their factorizations use completely different primes. The split factorization_420_split makes this explicit as a Finsupp equation.",
+      "The iterated factorization theorem (factorization_prod_eq) generalizes the binary case to any finite list. The proof is structural induction: the nil case is trivial, and the cons case reduces to two applications of the binary theorem. This is a clean example of how list induction works in Lean 4.",
+      "The Finsupp representation makes 'factorization of a product = sum of factorizations' completely natural: it's just the statement that Nat.factorization is a monoid homomorphism from (ℕ>0, ×) to (Finsupp ℕ ℕ, +)."
+    ],
+    "prerequisites": [
+      "Prime factorization (Fundamental Theorem of Arithmetic)",
+      "p-adic valuation v_p(n) = largest k with p^k | n",
+      "Finsupp in Lean/Mathlib (finite support functions)",
+      "Nat.Coprime definition (gcd(m,n) = 1)",
+      "Disjoint in Lean (for ordered structures)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "multiplicativity",
+      "title": "Multiplicativity of Factorization",
+      "startLine": 34,
+      "endLine": 41,
+      "summary": "factorization(mn) = factorization(m) + factorization(n) and its pointwise form.",
+      "mathContext": "$\\text{factorization}(mn) = \\text{factorization}(m) + \\text{factorization}(n)$ as Finsupp elements. Pointwise: $v_p(mn) = v_p(m) + v_p(n)$. The Lean proof is a one-liner: \\texttt{Nat.factorization\\_mul hm hn}. The pointwise form uses \\texttt{rfl} after rewriting by the Finsupp equality, since Finsupp application is definitionally equal to pointwise evaluation."
+    },
+    {
+      "id": "coprime-disjoint",
+      "title": "Coprime Factorizations Have Disjoint Support",
+      "startLine": 52,
+      "endLine": 64,
+      "summary": "For coprime m,n: Disjoint support of factorizations, and v_p(m)=0 or v_p(n)=0 for each prime p.",
+      "mathContext": "$\\gcd(m,n) = 1 \\iff \\text{supp}(\\text{fact}(m)) \\cap \\text{supp}(\\text{fact}(n)) = \\emptyset$. This is \\texttt{Nat.coprime\\_iff\\_disjoint}. The pointwise consequence uses contradiction: if both $v_p(m) > 0$ and $v_p(n) > 0$, then $p$ is in both supports, contradicting \\texttt{Disjoint.ne\\_of\\_mem}. The Finsupp.mem\\_support\\_iff lemma converts between $f(x) \\neq 0$ and $x \\in \\text{supp}(f)$."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples: 420 = 12 × 35",
+      "startLine": 71,
+      "endLine": 94,
+      "summary": "Verifies factorization(12), factorization(35), factorization(420) = 2²·3·5·7 by computation.",
+      "mathContext": "$420 = 2^2 \\cdot 3 \\cdot 5 \\cdot 7 = 12 \\cdot 35$. The coprime decomposition: $\\gcd(12, 35) = 1$ (12 uses primes 2,3; 35 uses primes 5,7). \\texttt{factorization\\_420\\_split} proves $\\text{fact}(420) = \\text{fact}(12) + \\text{fact}(35)$ using \\texttt{factorization\\_mul\\_eq} directly — no computation needed, just the multiplicativity theorem."
+    },
+    {
+      "id": "iterated",
+      "title": "Iterated Factorization for Lists",
+      "startLine": 103,
+      "endLine": 111,
+      "summary": "factorization of a list product = sum of individual factorizations, proved by list induction.",
+      "mathContext": "For a list $[a_1, \\ldots, a_k]$ of nonzero naturals: $\\text{fact}(a_1 \\cdots a_k) = \\text{fact}(a_1) + \\cdots + \\text{fact}(a_k)$. The Lean proof uses structural induction on lists. Nil case: $\\text{fact}(1) = 0$ (the Finsupp zero). Cons case: $\\text{fact}(a \\cdot l.\\text{prod}) = \\text{fact}(a) + \\text{fact}(l.\\text{prod})$ by \\texttt{Nat.factorization\\_mul}, then IH. The key auxiliary: \\texttt{List.prod\\_ne\\_zero} ensures the list product is nonzero when all elements are."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified proof of the multiplicative property of factorization: factorization is a monoid homomorphism from (ℕ>0, ×) to (Finsupp ℕ ℕ, +). Coprimality characterizes exactly when factorizations have disjoint prime support.",
+    "openQuestions": [
+      "Can the unique factorization be proved in a way that avoids the parent file, giving a self-contained proof of the Fundamental Theorem from Mathlib primitives?",
+      "The p-adic integers ℤ_p and p-adic valuations v_p : ℤ → ℤ extend the natural number case. Can the multiplicativity theorem be stated uniformly for ℤ (or even general unique factorization domains) in Lean?",
+      "Mathlib's Finsupp.prod computes n from its factorization. Can the round-trip (factorization then product reconstruction) be proved in this file as an additional theorem?",
+      "The multiplicative function theory in analytic number theory (Dirichlet series, Euler products) relies essentially on factorization multiplicativity. Can the Euler product formula for the Riemann zeta function be formalized using this infrastructure?"
+    ],
+    "implications": "Factorization multiplicativity is the foundation for multiplicative function theory, Dirichlet series, and Euler products in analytic number theory. The Finsupp representation in Mathlib makes the additive structure explicit, enabling clean proofs of results that otherwise require careful bookkeeping of prime exponents."
+  },
   "crossReferences": [
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "extends",
-      "description": "Parent entry proving the Fundamental Theorem of Arithmetic. This entry proves the multiplicative property as a corollary."
+      "description": "Parent entry proving the Fundamental Theorem of Arithmetic; this entry proves the multiplicative property as a corollary"
     }
   ],
-  "conclusion": {
-    "summary": "Fully verified proof of the multiplicative property of factorization with 10 theorems, 0 sorries, 0 axioms.",
-    "openQuestions": [],
-    "implications": "See the parent entry for broader implications."
+  "references": [
+    {
+      "author": "Gauss, C.F.",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "note": "First rigorous proof of the Fundamental Theorem of Arithmetic (Section III)"
+    },
+    {
+      "author": "Ostrowski, A.",
+      "title": "Über einige Lösungen der Funktionalgleichung φ(x)φ(y) = φ(xy)",
+      "year": 1916,
+      "note": "Classified all absolute values on ℚ; connects p-adic valuations to primes"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "FundamentalArithmeticOQ01",
+    "lineCount": 113,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
   }
 }
