@@ -27,14 +27,16 @@
     "assumptions": "No axioms. All results proved from Mathlib: Cauchy CDF validity via arctan monotonicity and limits, inner sum periodicity via fractional part invariance under integer shifts."
   },
   "overview": {
-    "historicalContext": "This file proves two supporting results for Erdős Problem #1002 that were previously axiomatized:\n\n1. **Cauchy CDF validity**: The function g(c) = (1/π)arctan(ρc) + 1/2 is a valid distribution function — monotone with g(-∞) = 0 and g(+∞) = 1.\n\n2. **Inner sum periodicity**: For rational α = p/q, the inner sum S(α, n) = Σ(1/2 - {αk}) satisfies S(α, n+q) = S(α, n) + S(α, q).",
+    "historicalContext": "The Cauchy distribution was introduced by Augustin-Louis Cauchy (1789–1857) as a deliberate counterexample to Poisson's claim that the law of large numbers holds universally. Its density $f(x) = \\rho/(\\pi(\\rho^2+x^2))$ has tails so heavy that neither mean nor variance is finite, making it the canonical distribution to which the central limit theorem does not apply.\n\nThe inner sum $S(\\alpha, n) = \\sum_{k=1}^n (1/2 - \\{\\alpha k\\})$ appears in discrepancy theory and three-distance theorem research. For rational $\\alpha = p/q$, the fractional parts $\\{(p/q)k\\}$ cycle with period $q$, giving the relation $S(\\alpha, n+q) = S(\\alpha, n) + S(\\alpha, q)$. This is a direct consequence of the fundamental identity $\\{x + n\\} = \\{x\\}$ for integer $n$.\n\nBoth results were originally stated as axioms in the parent Erdős #1002 formalization. This companion file proves them from Mathlib, contributing to the long-term goal of reducing the axiom count from 7 toward 0. The remaining 5 axioms include deep ergodic and analytic results such as Kesten's theorem and Weyl equidistribution.",
     "problemStatement": "**Axiom Elimination**\n\nTwo axioms in Erdos1002Problem.lean are proved from Mathlib:\n\n1. `cauchy_is_distribution`: The Cauchy CDF g(c) = (1/π)arctan(ρc) + 1/2 is monotone with correct limits at ±∞.\n\n2. `innerSum_periodic_rational`: For rational α = p/q with gcd(p,q) = 1, S(p/q, n+q) = S(p/q, n) + S(p/q, q).",
     "text": "Proves the Cauchy CDF is a valid distribution function and the inner sum is periodic for rational arguments, eliminating 2 of 7 axioms from the Erdős #1002 formalization.",
     "proofStrategy": "**Cauchy CDF**: Monotonicity follows from arctan being strictly monotone (arctan_strictMono) composed with multiplication by ρ > 0. The limits use Real.tendsto_arctan_atTop/atBot composed with scaling, then algebraic simplification (1/π · π/2 + 1/2 = 1).\n\n**Periodic Sum**: The key insight is that deviation(p/q · k) has period q as a function of k, because p/q · (k+q) = p/q · k + p and fract(x + integer) = fract(x). A cyclic sum lemma then shows Σ g(n+k) = Σ g(k) for any periodic g, proved by induction using sum_range_succ and sum_range_succ'.",
     "keyInsights": [
-      "arctan is strictly monotone and tends to ±π/2, making (1/π)arctan(ρ·) + 1/2 a valid CDF",
-      "Fractional parts satisfy fract(x + n) = fract(x) for integer n, giving periodicity of the inner sum for rational α",
-      "Summing a periodic function over any complete period gives the same result, proved by induction"
+      "arctan is strictly monotone and tends to ±π/2, making (1/π)arctan(ρ·) + 1/2 a valid CDF for any scale parameter ρ > 0",
+      "Fractional parts satisfy {x + n} = {x} for integer n, giving the periodicity of the inner sum for rational α = p/q with period q",
+      "The cyclic sum lemma — that any q-periodic function sums equally over any q consecutive integers — is proved by induction using Finset.sum_range_succ and sum_range_succ', and is reusable for any Weyl-type sum",
+      "The coprimality hypothesis gcd(p,q) = 1 appears in the theorem statement but is not used in the formal proof body — the periodicity result holds for all integers p and naturals q ≥ 1",
+      "Filter composition is the key Lean technique: tendsto_mul_atTop/atBot composes with tendsto_arctan_atTop/atBot to derive the CDF limits, with convert handling the arithmetic simplification 1/π·(π/2)+1/2 = 1"
     ],
     "prerequisites": [
       "Real analysis: monotonicity, limits at infinity",
@@ -64,8 +66,9 @@
     "summary": "Two axioms from the Erdős #1002 formalization are proved from Mathlib, reducing the axiom count from 7 to 5. The Cauchy CDF validity follows from standard arctan properties, and the inner sum periodicity follows from the invariance of fractional parts under integer shifts.",
     "implications": "Reduces the assumption count in the Erdős #1002 formalization. The remaining 5 axioms include the open main conjecture, Kesten's deep ergodic result, Weyl equidistribution, and bounds for irrational α.",
     "openQuestions": [
-      "Can the remaining axioms (Weyl equidistribution, inner sum log bound) be proved from Mathlib?",
-      "Can Kesten's theorem be formalized from first principles?"
+      "Can the remaining axioms in Erdős #1002 — Weyl equidistribution and the inner sum log bound for irrational α — be proved from Mathlib?",
+      "Can Kesten's deep ergodic theorem on the behavior of S(α, n) for Liouville numbers α be formalized in Lean 4?",
+      "Is the coprimality condition gcd(p,q) = 1 truly needed for innerSum_periodic_rational, or can the hypothesis be dropped?"
     ]
   },
   "crossReferences": [
