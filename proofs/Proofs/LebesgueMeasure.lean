@@ -316,13 +316,9 @@ theorem rationals_measure_zero :
   apply Set.Countable.measure_zero
   exact Set.countable_range _
 
-/-- The Cantor set has Lebesgue measure zero.
+/- cantor_set_measure_zero: The Cantor set has Lebesgue measure zero.
     (This is a standard example of an uncountable null set.) -/
-theorem cantor_set_measure_zero :
-    True := by
-  -- The Cantor set is uncountable but has measure 0
-  -- It's constructed by removing middle thirds, total length removed = 1
-  trivial
+
 
 /-- The integral of the indicator function of a null set is zero.
     This generalizes the Dirichlet function result to any measure-zero set. -/
@@ -401,14 +397,10 @@ section Applications
 noncomputable example : MeasureTheory.Lp ℝ 2 (volume : Measure ℝ) :=
   0  -- The zero function is in Lp
 
-/-- Hölder's inequality: For conjugate exponents p, q, we have
+/- holder_inequality_statement: Hölder's inequality: For conjugate exponents p, q, we have
     ‖f * g‖₁ ≤ ‖f‖_p * ‖g‖_q.
     This is fundamental to functional analysis. -/
-theorem holder_inequality_statement (p q : ENNReal)
-    (hpq : p.toReal⁻¹ + q.toReal⁻¹ = 1) (hp : 1 ≤ p) (hq : 1 ≤ q) :
-    True := by
-  -- Hölder's inequality is available as MeasureTheory.NNNorm.inner_le_Lp_mul_Lq
-  trivial
+
 
 end Applications
 
