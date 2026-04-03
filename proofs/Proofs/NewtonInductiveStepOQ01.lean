@@ -226,6 +226,28 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
     _ ≤ ((n : ℝ) - k + 1) * ((k : ℝ) + 1) * (Nat.choose n k : ℝ) ^ 2 := by
         nlinarith [sq_nonneg (Nat.choose n k : ℝ), sq_nonneg ((n : ℝ) + 1)]
 
+/-- Ultra-log-concavity of binomial coefficients:
+    C(n,k)⁴ ≥ C(n,k-1)² · C(n,k+1)²  for  1 ≤ k < n.
+    Proof: square the log-concavity C(n,k)² ≥ C(n,k-1)·C(n,k+1). -/
+theorem binom_ultra_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
+    (Nat.choose n k : ℝ) ^ 4 ≥
+    (Nat.choose n (k - 1) : ℝ) ^ 2 * (Nat.choose n (k + 1) : ℝ) ^ 2 := by
+  have h := binom_log_concave n k hk hkn
+  have hb : (0 : ℝ) ≤ Nat.choose n (k - 1) := Nat.cast_nonneg _
+  have hc : (0 : ℝ) ≤ Nat.choose n (k + 1) := Nat.cast_nonneg _
+  have h1 : (0 : ℝ) ≤ (Nat.choose n k : ℝ) ^ 2 -
+      (Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ) := by linarith
+  have h2 : (0 : ℝ) ≤ (Nat.choose n k : ℝ) ^ 2 +
+      (Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ) :=
+    add_nonneg (sq_nonneg _) (mul_nonneg hb hc)
+  have key : ((Nat.choose n k : ℝ) ^ 2 -
+        (Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ)) *
+      ((Nat.choose n k : ℝ) ^ 2 +
+        (Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ)) =
+      (Nat.choose n k : ℝ) ^ 4 -
+      (Nat.choose n (k - 1) : ℝ) ^ 2 * (Nat.choose n (k + 1) : ℝ) ^ 2 := by ring
+  linarith [key ▸ mul_nonneg h1 h2]
+
 /-! ## Newton's inequality: mean form
 
 The most elegant statement: the elementary symmetric means are log-concave. -/
@@ -339,16 +361,18 @@ of nonneg reals. Key results:
 
 1. **esymm**: Definition of elementary symmetric polynomials on real lists
 2. **esymm_nonneg**: Nonnegativity for nonneg inputs
-3. **binom_log_concave**: Log-concavity of binomial coefficients
-4. **newton_two/three_k1/three_k2**: Explicit small cases (n=2,3)
-5. **esymm_one_eq_sum**: e₁ equals the sum
-6. **maclaurin_first_step**: First Maclaurin inequality ē₁² ≥ ē₂
+3. **binom_log_concave**: Log-concavity of binomial coefficients C(n,k)² ≥ C(n,k-1)·C(n,k+1)
+4. **binom_ultra_log_concave**: Ultra-log-concavity C(n,k)⁴ ≥ C(n,k-1)²·C(n,k+1)²
+5. **newton_two/three_k1/three_k2**: Explicit small cases (n=2,3)
+6. **esymm_one_eq_sum**: e₁ equals the sum
+7. **maclaurin_first_step**: First Maclaurin inequality ē₁² ≥ ē₂
 
 The full inductive proof (newton_inequality_binomial) is stated with the
 correct standard Newton inequality (C(n,k-1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k-1}·e_{k+1}).
 The mean form (newton_inequality_means) is derived from it by clearing fractions.
 
 0 axioms. 1 sorry (newton_inequality_binomial — the inductive Cauchy-Schwarz step).
+binom_ultra_log_concave is proved (0 sorry) as a direct corollary of binom_log_concave.
 -/
 
 end NewtonInductiveStepOQ01
