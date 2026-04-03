@@ -1,0 +1,76 @@
+{
+  "id": "buffons-needle-oq-01-oq-01-oq-01",
+  "title": "Buffon's Noodle: Axiom-Free Smooth Case via Concrete Integration",
+  "slug": "buffons-needle-oq-01-oq-01-oq-01",
+  "description": "Eliminates the two axioms from BuffonsNoodle.lean by showing the smooth Buffon-Barbier theorem (E[crossings] = 2L/(πd)) is provable using the angular-average integration framework. The axiomatic smoothExpectedCrossings is replaced by the concrete double-integral definition concreteSmoothExpectedCrossings, and buffon_noodle_smooth_eq becomes a theorem via buffon_smooth_of_contDiff. All downstream results (shape independence, non-negativity, monotonicity) are re-derived axiom-free.",
+  "meta": {
+    "author": "Lean formalization 2026",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "geometric-probability",
+      "integration",
+      "arc-length",
+      "angular-average",
+      "integral-geometry",
+      "cauchy-crofton",
+      "axiom-elimination",
+      "open-question-resolved"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "BuffonsNeedleOQ01.buffon_smooth_of_contDiff",
+        "description": "Buffon-Barbier formula for C¹ curves (ContDiff ℝ 1 γ suffices)",
+        "module": "Proofs.BuffonsNeedleOQ01"
+      },
+      {
+        "theorem": "BuffonsNeedleOQ01OQ01.concreteSmoothExpectedCrossings",
+        "description": "Concrete double-integral definition of expected crossings",
+        "module": "Proofs.BuffonsNeedleOQ01OQ01"
+      },
+      {
+        "theorem": "BuffonsNeedleOQ01OQ01.angular_average",
+        "description": "∫_0^π |a sinθ + b cosθ| dθ = 2√(a²+b²)",
+        "module": "Proofs.BuffonsNeedleOQ01OQ01"
+      }
+    ]
+  },
+  "theorems": [
+    {
+      "name": "planarArcLength_eq",
+      "statement": "planarArcLength γ a b = planarCurveArcLength γ a b",
+      "description": "The two arc length definitions (from OQ01OQ01 and BuffonsNoodle) are equal by rfl"
+    },
+    {
+      "name": "buffon_noodle_smooth_theorem",
+      "statement": "ContDiff ℝ 1 γ → concreteSmoothExpectedCrossings γ a b d = 2 * planarCurveArcLength γ a b / (π * d)",
+      "description": "The axiom buffon_noodle_smooth_eq, proved as a theorem"
+    },
+    {
+      "name": "smooth_shape_independence_free",
+      "statement": "Two C¹ curves with equal arc length have equal expected crossings",
+      "description": "Shape independence theorem without axioms"
+    },
+    {
+      "name": "smooth_expected_crossings_nonneg_free",
+      "statement": "0 ≤ concreteSmoothExpectedCrossings γ a b d",
+      "description": "Non-negativity theorem without axioms"
+    },
+    {
+      "name": "smooth_crossings_mono_free",
+      "statement": "Longer C¹ curves have more expected crossings",
+      "description": "Monotonicity theorem without axioms"
+    },
+    {
+      "name": "straight_line_axiom_free",
+      "statement": "concreteSmoothExpectedCrossings (fun t => (t, 0)) a b d = 2 * (b - a) / (π * d)",
+      "description": "Consistency with original Buffon's Needle formula"
+    }
+  ]
+}
