@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-4ct-oq01-framework",
+    "proofId": "four-color-theorem-oq-01",
+    "range": { "startLine": 62, "endLine": 74 },
+    "type": "definition",
+    "title": "Kempe Chain Framework: Coloring Infrastructure",
+    "content": "Three foundational definitions: ProperColoring G k f asserts that adjacent vertices receive distinct colors from Fin k. neighborColors G f v = (G.neighborFinset v).image f computes the actual set of colors used by v's neighbors. colorFree G f v c holds when color c is absent from neighborColors — a free color allows v to be colored without changing any neighbor. These definitions are the minimum needed to state and prove the Kempe chain obstruction.",
+    "mathContext": "A proper $k$-coloring $f: V \\to [k]$ satisfies $f(u) \\ne f(v)$ whenever $u \\sim v$. The neighbor color set $N_f(v) = \\{f(w) : w \\sim v\\}$ has $|N_f(v)| \\le \\deg(v)$. Color $c$ is **free** for $v$ if $c \\notin N_f(v)$; a free color enables trivial extension without chain swaps.",
+    "significance": "key",
+    "relatedConcepts": ["proper graph coloring", "chromatic number", "Kempe chains", "SimpleGraph.Coloring in Mathlib"],
+    "prerequisites": ["SimpleGraph in Mathlib", "Fin k as color set", "Finset.image for neighbor colors"]
+  },
+  {
+    "id": "ann-4ct-oq01-pigeonhole",
+    "proofId": "four-color-theorem-oq-01",
+    "range": { "startLine": 95, "endLine": 113 },
+    "type": "theorem",
+    "title": "Pigeonhole Free Color: deg(v) < k ⟹ Free Color Exists",
+    "content": "The key trivial case: when G.degree v < k, the neighbor color set has at most deg(v) < k elements, so some color in Fin k is unused. Proof: card(image f (neighborFinset v)) ≤ card(neighborFinset v) = degree v < k = card(Fin k), so the image ≠ univ, and ne_univ_iff_exists_not_mem provides the free color. This is exactly why the Five Color Theorem's 'easy case' needs no chain swaps at all.",
+    "mathContext": "**Pigeonhole principle**: $|N_f(v)| \\le \\deg(v) < k$, so $N_f(v) \\subsetneq [k]$, meaning some color $c \\in [k] \\setminus N_f(v)$ exists. For the Five Color Theorem: any vertex of degree $\\le 4$ in a planar graph immediately has a free color from 5 available. The difficult case is degree-5 vertices where all 5 colors might appear.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "Finset.card_image_le", "Finset.ne_univ_iff_exists_not_mem", "5-color theorem easy case"],
+    "prerequisites": ["Finset.card_image_le", "Fintype.card_fin", "SimpleGraph.degree as neighborFinset cardinality"]
+  },
+  {
+    "id": "ann-4ct-oq01-swap",
+    "proofId": "four-color-theorem-oq-01",
+    "range": { "startLine": 154, "endLine": 163 },
+    "type": "definition",
+    "title": "Color Swap: Kempe Chain Operation Formalized",
+    "content": "swapColors f c₁ c₂ applies Equiv.swap c₁ c₂ pointwise to f, globally swapping colors c₁ and c₂ everywhere. swapColors_proper proves this preserves proper coloring: adjacent vertices still get distinct colors because Equiv.swap is injective. In the Kempe chain argument, one would restrict this swap to a bichromatic connected component (the chain), but this global swap already shows the key algebraic structure.",
+    "mathContext": "A **Kempe chain** $K(c_1, c_2, v)$ is the connected component of the subgraph induced by $\\{c_1, c_2\\}$-colored vertices containing $v$. Swapping $c_1 \\leftrightarrow c_2$ on $K(c_1,c_2,v)$ produces a new proper coloring (the two-color structure ensures no conflicts). The global swap Equiv.swap $c_1$ $c_2$ is the algebraic heart of this operation.",
+    "significance": "supporting",
+    "relatedConcepts": ["Kempe chains", "Equiv.swap", "bichromatic paths", "color permutations"],
+    "prerequisites": ["Equiv.swap in Mathlib", "injective maps preserve distinctness", "ProperColoring definition"]
+  },
+  {
+    "id": "ann-4ct-oq01-interference",
+    "proofId": "four-color-theorem-oq-01",
+    "range": { "startLine": 217, "endLine": 226 },
+    "type": "theorem",
+    "title": "Chain Interference: The Core Obstruction to 4-Color Kempe Proofs",
+    "content": "The central theorem: if vertex w lies in both the (c₁,c₃)-Kempe chain and the (c₂,c₃)-Kempe chain (with distinct colors c₁, c₂, c₃), and w has color c₃, then after swapping c₁ ↔ c₃ on the first chain, w gets color c₁. But w was needed as a c₃-colored vertex in the second chain — its new color c₁ ∉ {c₂, c₃} breaks the bichromatic property. Proof: Equiv.swap_apply_right and the distinctness hypotheses.",
+    "mathContext": "After the $(c_1, c_3)$-swap, $w$ gets color $c_1$. For the $(c_2, c_3)$-chain, we need $w$ to have color $c_2$ or $c_3$, but $c_1 \\ne c_2$ and $c_1 \\ne c_3$. So $K(c_2, c_3)$ through $w$ is broken. This is **Heawood's 1890 observation**: Kempe's proof assumed the two chains were vertex-disjoint, but in planar graphs they need not be. The graph Heawood constructed forces intersection.",
+    "significance": "key",
+    "relatedConcepts": ["Kempe chain interference", "Heawood's 1890 counterexample", "Equiv.swap_apply_right", "bichromatic components"],
+    "prerequisites": ["Equiv.swap in Lean 4", "color distinctness h12, h13, h23", "subst tactic"]
+  },
+  {
+    "id": "ann-4ct-oq01-5vs4",
+    "proofId": "four-color-theorem-oq-01",
+    "range": { "startLine": 246, "endLine": 251 },
+    "type": "theorem",
+    "title": "The 5→4 Gap: Why Color Pairs Matter",
+    "content": "five_color_no_double_swap proves C(5,2) = 10 > 6 = C(4,2) via decide. This encodes the structural reason 5 colors succeed: with 5 colors and 5 neighbors all using different colors, there are 10 color pairs. By planarity (K₅ is non-planar), two neighbors are non-adjacent; their colors form a Kempe chain that can be swapped without interference. With 4 colors and 5 neighbors, only 6 pairs exist, and the Jordan curve theorem forces chain crossings.",
+    "mathContext": "$\\binom{5}{2} = 10 > 6 = \\binom{4}{2}$. For the 5-color case with a degree-5 vertex: among 5 neighbors using all 5 colors, by the non-planarity of $K_5$, some two neighbors are non-adjacent. One Kempe chain swap on those two frees a color. For 4 colors: all 5 neighbors use 4 colors (two share a color), but the same planarity argument gives fewer color pairs, and chains can be forced to cross.",
+    "significance": "key",
+    "relatedConcepts": ["binomial coefficients", "K5 non-planarity", "Jordan curve theorem", "degrees of freedom in color swaps"],
+    "prerequisites": ["Nat.choose", "Lean decide for small values", "planarity arguments"]
+  },
+  {
+    "id": "ann-4ct-oq01-colorable-small",
+    "proofId": "four-color-theorem-oq-01",
+    "range": { "startLine": 341, "endLine": 354 },
+    "type": "theorem",
+    "title": "Human-Readable Special Case: Small Graphs are k-Colorable",
+    "content": "colorable_of_card_le_k proves that any graph on ≤ k vertices is k-colorable: just assign each vertex its own color via Fintype.equivFin. This is the simplest human-readable 4-colorability result, and illustrates the general strategy for restricted graph classes (outerplanar, series-parallel, etc.) that avoid the computational case explosion. The key Lean construction uses Coloring.mk with the bijection as coloring function.",
+    "mathContext": "For $|V| \\le k$: define $f(v) = $ index of $v$ in some enumeration. Adjacent vertices $u \\ne v$ get distinct indices $f(u) \\ne f(v)$ by injectivity. Thus $\\chi(G) \\le |V| \\le k$. More generally: outerplanar graphs are 3-colorable (by induction on ear decompositions), and Brooks' theorem gives $\\chi(G) \\le \\Delta(G)$ for non-complete non-odd-cycle graphs.",
+    "significance": "supporting",
+    "relatedConcepts": ["graph coloring bounds", "Coloring.mono in Mathlib", "Brooks' theorem", "Fintype.equivFin"],
+    "prerequisites": ["SimpleGraph.Colorable in Mathlib", "Fintype.equivFin as bijection", "Coloring.mono for monotone bounds"]
+  },
+  {
+    "id": "ann-4ct-oq01-min-counterexample",
+    "proofId": "four-color-theorem-oq-01",
+    "range": { "startLine": 383, "endLine": 388 },
+    "type": "theorem",
+    "title": "Minimum Counterexample Has Degree 4 or 5",
+    "content": "min_counterexample_has_low_degree proves the structural constraint: any minimum counterexample to 4CT has minimum degree exactly 4 or 5. Lower bound: removing a degree-≤-3 vertex, 4-coloring the rest by minimality, and extending (by free_color_of_degree_lt with 3 < 4 colors) shows G was not a minimum counterexample. Upper bound: Euler's formula for planar graphs gives average degree < 6, so some vertex has degree ≤ 5.",
+    "mathContext": "In a planar triangulation: $|E| \\le 3|V| - 6$, so $\\sum \\deg(v) = 2|E| \\le 6|V| - 12$, giving average degree $< 6$. Therefore $\\delta(G) \\le 5$. Combined with $\\delta(G) \\ge 4$ (by minimality argument), every minimum counterexample has a vertex of degree 4 or 5. This is why the 633 configurations only cover neighborhoods of degree-4 and degree-5 vertices.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler's formula for planar graphs", "handshaking lemma", "minimum counterexample method", "discharging argument"],
+    "prerequisites": ["omega for linear arithmetic", "Euler characteristic", "planar triangulations"]
+  },
+  {
+    "id": "ann-4ct-oq01-configs",
+    "proofId": "four-color-theorem-oq-01",
+    "range": { "startLine": 416, "endLine": 418 },
+    "type": "theorem",
+    "title": "Configuration Reduction: 1936 → 633",
+    "content": "config_reduction proves 633 < 1936 by omega, encoding the historical progress: Appel-Haken (1976) checked 1,936 configurations using computer; Robertson-Sanders-Seymour-Thomas (1997) reduced to 633 with cleaner discharging rules. Each configuration is a local planar pattern around a degree-4 or degree-5 vertex. 'Reducible' means: if G contains this configuration, it cannot be a minimum non-4-colorable graph. The computer checks reducibility by exhausting all boundary colorings.",
+    "mathContext": "A configuration $C$ is **reducible** if every 4-coloring of its boundary extends to its interior. **Unavoidable set**: every planar triangulation contains at least one configuration from the set. By construction: any minimum counterexample contains a configuration from the unavoidable set, but each configuration is reducible, so the minimum counterexample can be simplified — contradiction. The 633-configuration proof uses a clever discharging argument to prove unavoidability.",
+    "significance": "context",
+    "relatedConcepts": ["Appel-Haken 1976 proof", "Robertson-Sanders-Seymour-Thomas 1997", "discharging method", "unavoidable reducible configurations"],
+    "prerequisites": ["reducibility of configurations", "discharging argument", "planar triangulations"]
+  }
+]

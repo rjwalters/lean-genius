@@ -62,7 +62,8 @@
             "**Single vs Double Swap**: 5-coloring needs at most ONE Kempe chain swap (guaranteed by planarity). 4-coloring needs TWO simultaneous swaps, which can interfere.",
             "**Chain Interference**: If vertex w lies in both the (c₁,c₃)-chain and the (c₂,c₃)-chain, swapping on the first chain changes w's color from c₃ to c₁, breaking the second chain's bichromatic property.",
             "**The 5→4 Gap**: The number of color pairs drops from C(5,2)=10 to C(4,2)=6, reducing the 'degrees of freedom' for finding non-interfering chain swaps.",
-            "**Open Question Status**: No human-readable proof of 4CT is known as of 2025. Alternative approaches (algebraic, flow-based, stronger structural theorems) all either use 4CT or remain incomplete."
+            "**Open Question Status**: No human-readable proof of 4CT is known as of 2025. Alternative approaches (algebraic, flow-based, stronger structural theorems) all either use 4CT or remain incomplete.",
+            "**Flow Duality (Tutte)**: For planar graphs, 4-colorability is equivalent to the existence of a nowhere-zero 4-flow (Tutte's theorem). The 6-flow theorem (Seymour 1981) and 5-flow theorem are proved without computers; a human-readable 4-flow proof would give a human-readable 4CT."
         ],
         "prerequisites": [
             "Graph coloring (proper colorings, chromatic number)",
