@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-ie-sieve",
+    "proofId": "inclusion-exclusion-oq-01",
+    "range": { "startLine": 46, "endLine": 75 },
+    "type": "insight",
+    "title": "Sieve Principle: IE for 2 and 3 Bad Sets",
+    "content": "The sieve_two theorem proves |U \\ (A ∪ B)| = |U| - |A| - |B| + |A ∩ B| (in ℤ). The proof uses `card_sdiff_add_card_eq_card` (to remove A ∪ B from U) and `card_union_add_card_inter` (the IE formula for A ∪ B), then closes with `omega`. Working over ℤ (not ℕ) avoids underflow issues: subtraction can go negative in intermediate steps. The 3-set version adds a distributivity step: (A ∪ B) ∩ C = (A ∩ C) ∪ (B ∩ C), proved by `tauto` on the logical equivalence.",
+    "mathContext": "$$|U \\setminus (A \\cup B)| = |U| - |A| - |B| + |A \\cap B|$$\n$$|U \\setminus (A \\cup B \\cup C)| = |U| - |A| - |B| - |C| + |A\\cap B| + |A\\cap C| + |B\\cap C| - |A\\cap B\\cap C|$$",
+    "significance": "key",
+    "relatedConcepts": ["inclusion-exclusion principle", "sieve methods", "card_union_add_card_inter", "ℤ arithmetic for counting"],
+    "prerequisites": ["Finset.card_sdiff_add_card_eq_card", "Finset.card_union_add_card_inter", "omega"]
+  },
+  {
+    "id": "ann-totient-primes",
+    "proofId": "inclusion-exclusion-oq-01",
+    "range": { "startLine": 100, "endLine": 127 },
+    "type": "insight",
+    "title": "Euler Totient: φ(pq) = (p-1)(q-1) via Multiplicativity",
+    "content": "The theorem totient_two_primes proves φ(pq) = (p-1)(q-1) for distinct primes p, q. The proof: first establishes that p and q are coprime using `hp.coprime_iff_not_dvd` (a prime p doesn't divide q, since the only divisor of q that equals p would require p = q, contradicting hpq). Then applies multiplicativity `Nat.totient_mul` and the prime totient formula `Nat.totient_prime`. This is the IE sieve explanation: out of pq elements, remove multiples of p (pq/p = q of them) and multiples of q (pq/q = p of them), then add back multiples of both (1 element).",
+    "mathContext": "$$\\varphi(pq) = pq\\left(1-\\frac{1}{p}\\right)\\left(1-\\frac{1}{q}\\right) = (p-1)(q-1) \\quad \\text{for distinct primes } p, q$$\nSieve: $pq$ total - $q$ multiples of $p$ - $p$ multiples of $q$ + $1$ multiple of $pq$ $= pq - q - p + 1 = (p-1)(q-1)$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler totient function", "multiplicativity", "coprimality", "sieve of Eratosthenes"],
+    "prerequisites": ["Nat.totient_prime", "Nat.totient_mul", "Nat.Prime.coprime_iff_not_dvd"]
+  },
+  {
+    "id": "ann-surjection-count",
+    "proofId": "inclusion-exclusion-oq-01",
+    "range": { "startLine": 134, "endLine": 173 },
+    "type": "definition",
+    "title": "Surjection Counting: IE over k Bad Events",
+    "content": "The surjection count formula counts functions f: [n] → [k] with every element of [k] in the image. The 'bad' events are Bⱼ = {f: j ∉ image(f)}. By IE, |Surj(n,k)| = Σ_{j=0}^k (-1)^j C(k,j)(k-j)^n: the (-1)^j factor alternates, C(k,j) counts subsets of j excluded outputs, and (k-j)^n counts functions avoiding those j outputs. Special cases: surjection_n_1 (n→{1} is 1 surjection) and surjection_n_2 (n→{1,2} gives 2^n - 2 by inclusion-exclusion: all functions minus constant-1 and constant-2).",
+    "mathContext": "$$|\\text{Surj}(n,k)| = \\sum_{j=0}^{k} (-1)^j \\binom{k}{j} (k-j)^n$$\nSpecial cases: $|\\text{Surj}(n,1)| = 1$, $|\\text{Surj}(n,2)| = 2^n - 2$, $|\\text{Surj}(n,n)| = n!$.",
+    "significance": "key",
+    "relatedConcepts": ["surjective functions", "Stirling numbers of second kind", "IE over bad events", "alternating sum"],
+    "prerequisites": ["Nat.choose", "Finset.sum_range_succ", "push_cast for ℤ arithmetic"]
+  },
+  {
+    "id": "ann-derangements",
+    "proofId": "inclusion-exclusion-oq-01",
+    "range": { "startLine": 180, "endLine": 216 },
+    "type": "insight",
+    "title": "Derangements: Permutations with No Fixed Points",
+    "content": "A derangement is a permutation σ: [n] → [n] with σ(i) ≠ i for all i. The IE formula: bad event Bᵢ = {σ: σ(i) = i}. By IE, D(n) = Σ_{k=0}^n (-1)^k C(n,k)(n-k)! = n! Σ_{k=0}^n (-1)^k/k!. The sequence {1,0,1,2,9,44,265,...} satisfies two recurrences: D(n) = (n-1)(D(n-1)+D(n-2)) (element n can go to any of n-1 non-fixed positions, and either element it displaces becomes or doesn't become a fixed point) and D(n) = n·D(n-1)+(-1)^n. All verified via native_decide.",
+    "mathContext": "$$D(n) = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!} \\to \\frac{n!}{e} \\text{ as } n\\to\\infty$$\n$$D(n) = (n-1)(D(n-1)+D(n-2)), \\quad D(n) = n\\cdot D(n-1) + (-1)^n$$\nSequence: $D(0)=1, D(1)=0, D(2)=1, D(3)=2, D(4)=9, D(5)=44, D(6)=265$.",
+    "significance": "key",
+    "relatedConcepts": ["derangements", "fixed-point-free permutations", "subfactorial", "e and alternating series"],
+    "prerequisites": ["Nat.factorial", "Nat.choose", "derangements definition", "native_decide"]
+  },
+  {
+    "id": "ann-altbinom-sum",
+    "proofId": "inclusion-exclusion-oq-01",
+    "range": { "startLine": 252, "endLine": 265 },
+    "type": "concept",
+    "title": "Alternating Binomial Sum = 0 for n ≥ 1",
+    "content": "The alternating binomial sum Σ_{k=0}^n (-1)^k C(n,k) = (1-1)^n = 0 for n ≥ 1 (by the binomial theorem). This is the 'empty IE' — the sum counts the number of elements in the empty set after subtracting all bad events. Verified computationally for n=1..10. This identity underlies why surjectionCount and derangements work: the IE formula, when applied to the full set of 'all events being bad', correctly returns 0.",
+    "mathContext": "$$\\sum_{k=0}^n (-1)^k \\binom{n}{k} = (1-1)^n = 0^n = 0 \\quad \\text{for } n \\geq 1$$\nThis is the binomial theorem $(x+y)^n = \\sum_k \\binom{n}{k} x^k y^{n-k}$ at $x=-1, y=1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial theorem", "alternating sum", "IE principle algebraic form", "zero at x=-1,y=1"],
+    "prerequisites": ["altBinomSum definition", "Nat.choose", "native_decide"]
+  },
+  {
+    "id": "ann-divisor-totient",
+    "proofId": "inclusion-exclusion-oq-01",
+    "range": { "startLine": 272, "endLine": 282 },
+    "type": "insight",
+    "title": "Divisor-Totient Identity: Σ_{d|n} φ(d) = n",
+    "content": "The divisor-totient identity states that the sum of Euler's totient over all divisors of n equals n. Proof via IE and multiplicativity: the integers 1,...,n can be partitioned by their GCD with n: for each divisor d, exactly φ(n/d) integers in {1,...,n} satisfy gcd(k,n)=d (namely multiples of d coprime to n/d). Summing over all divisors gives n. In Lean, this is a one-liner using Mathlib's `Nat.sum_totient`. The identity demonstrates that φ is a 'Dirichlet inverse' of the constant-1 function: if one applies Möbius inversion, φ = μ ∗ id.",
+    "mathContext": "$$\\sum_{d \\mid n} \\varphi(d) = n$$\nPartition proof: $\\{1,\\ldots,n\\} = \\bigsqcup_{d|n} \\{k : \\gcd(k,n) = d\\}$, and $|\\{k : \\gcd(k,n)=d\\}| = \\varphi(n/d)$.",
+    "significance": "key",
+    "relatedConcepts": ["Möbius inversion", "multiplicative functions", "Dirichlet convolution", "Nat.sum_totient"],
+    "prerequisites": ["Nat.sum_totient (Mathlib)", "Nat.divisors", "Nat.totient"]
+  },
+  {
+    "id": "ann-stirling-bell",
+    "proofId": "inclusion-exclusion-oq-01",
+    "range": { "startLine": 309, "endLine": 343 },
+    "type": "definition",
+    "title": "Stirling Numbers S(n,k) and Bell Numbers via IE",
+    "content": "The Stirling numbers of the second kind S(n,k) count set partitions of {1,...,n} into k non-empty blocks. They are derived from surjections: S(n,k) = |Surj(n,k)| / k! (since each surjection corresponds to k! orderings of the k blocks). Bell numbers B(n) = Σ_{k=0}^n S(n,k) count total set partitions. Computed values: B(0)=1, B(1)=1, B(2)=2, B(3)=5, B(4)=15, B(5)=52. Verified by native_decide via the integer division of surjectionCount.",
+    "mathContext": "$$S(n,k) = \\frac{|\\text{Surj}(n,k)|}{k!} = \\frac{1}{k!}\\sum_{j=0}^k (-1)^j \\binom{k}{j}(k-j)^n$$\n$$B(n) = \\sum_{k=0}^n S(n,k), \\quad B(0)=1,\\ B(1)=1,\\ B(2)=2,\\ B(3)=5,\\ B(4)=15,\\ B(5)=52$$",
+    "significance": "supporting",
+    "relatedConcepts": ["Stirling numbers", "Bell numbers", "set partitions", "surjections", "Dobinski's formula"],
+    "prerequisites": ["surjectionCount", "Nat.factorial", "stirling2 definition"]
+  }
+]
