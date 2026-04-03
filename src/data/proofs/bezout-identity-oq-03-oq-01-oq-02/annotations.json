@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-forward-direction",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 28, "endLine": 37 },
+    "type": "technique",
+    "title": "Forward Direction: Divisibility from Congruences via Transitivity",
+    "content": "If x ≡ a (mod m) and x ≡ b (mod n), then gcd(m,n) | (a-b). The proof decomposes a-b = (a-x) - (b-x): since m | (a-x) and gcd | m, we get gcd | (a-x); similarly gcd | (b-x). Then dvd_sub combines them. The key tactic step is using Int.modEq_iff_dvd to convert the modular congruence hypothesis x ≡ a [ZMOD m] into the divisibility m | (a-x), then chaining via Int.gcd_dvd_left. The calculation `a - b = (a - x) - (b - x)` is closed by `ring`, keeping the proof concise.",
+    "mathContext": "$m \\mid (a-x)$ and $n \\mid (b-x)$, so $\\gcd(m,n) \\mid (a-x)$ and $\\gcd(m,n) \\mid (b-x)$, hence $\\gcd(m,n) \\mid (a-b)$.",
+    "significance": "key",
+    "relatedConcepts": ["Int.modEq_iff_dvd", "Int.gcd_dvd_left", "dvd_sub", "divisibility transitivity"],
+    "prerequisites": ["Int.ModEq definition", "divisibility in ℤ", "ring tactic"]
+  },
+  {
+    "id": "ann-backward-direction",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 39, "endLine": 53 },
+    "type": "insight",
+    "title": "Backward Direction: Bézout-Based Explicit Construction",
+    "content": "Given gcd(m,n) | (a-b), the system is solvable by the explicit witness x = a - m·gcdA(m,n)·((a-b)/gcd). The first congruence x ≡ a (mod m) holds unconditionally: a - x = m·gcdA·k is divisible by m for any k. The second congruence x ≡ b (mod n) requires Bézout's identity: since gcd = m·gcdA + n·gcdB, we have b - x = (a-b) - m·gcdA·k = d·k - m·gcdA·k = n·gcdB·k (modulo n). The proof closes by linear_combination with -hk - k * hbez, where hbez is Bézout's identity Int.gcd_eq_gcd_ab and hk is a-b = d·k.",
+    "mathContext": "Witness: $x = a - m \\cdot \\text{gcdA}(m,n) \\cdot \\frac{a-b}{\\gcd(m,n)}$. Verification: $b - x = (a-b) - m \\cdot \\text{gcdA} \\cdot k = dk - m \\cdot \\text{gcdA} \\cdot k = n \\cdot \\text{gcdB} \\cdot k$.",
+    "significance": "key",
+    "relatedConcepts": ["Bézout coefficients", "Int.gcdA", "Int.gcd_eq_gcd_ab", "linear_combination tactic"],
+    "prerequisites": ["Bézout's identity: gcd = m·gcdA + n·gcdB", "Int.ediv_mul_cancel (exact division)"]
+  },
+  {
+    "id": "ann-generalized-crt-iff",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 55, "endLine": 60 },
+    "type": "concept",
+    "title": "Solvability Criterion: The Central Iff Theorem",
+    "content": "generalized_crt_iff packages both directions into a clean biconditional: the system x ≡ a (mod m), x ≡ b (mod n) is solvable if and only if gcd(m,n) | (a-b). The proof is a two-element anonymous constructor, applying the forward and backward lemmas. This is the generalization of the classical CRT (which only handles gcd=1) to arbitrary moduli and is the main theoretical result of the file.",
+    "mathContext": "$(\\exists x \\in \\mathbb{Z}: x \\equiv a \\pmod{m} \\wedge x \\equiv b \\pmod{n}) \\iff \\gcd(m,n) \\mid (a-b)$",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "solvability of congruences", "Gauss's generalization"],
+    "prerequisites": ["solvable_implies_gcd_dvd", "gcd_dvd_implies_solvable"]
+  },
+  {
+    "id": "ann-uniqueness-mod-lcm",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 67, "endLine": 82 },
+    "type": "technique",
+    "title": "Uniqueness via natAbs and lcm Divisibility",
+    "content": "crt_unique_mod_lcm proves that any two common solutions x and y are congruent mod lcm(m,n). The proof is technically subtle: Lean's Nat.lcm_dvd works for ℕ, but the divisibility goals are in ℤ. The proof routes through natAbs: Int.natAbs_dvd_natAbs converts m | (y-x) to m.natAbs | (y-x).natAbs, Nat.lcm_dvd combines these, and then the proof reconstructs the ℤ divisibility by cases on whether (y-x) equals its own natAbs or its negation. The Int.natAbs_eq case split is necessary because ℤ divisibility is signed while ℕ divisibility is unsigned.",
+    "mathContext": "$m \\mid (x-y)$ and $n \\mid (x-y)$ implies $\\text{lcm}(m,n) \\mid (x-y)$",
+    "significance": "key",
+    "relatedConcepts": ["Int.natAbs", "Nat.lcm_dvd", "Int.natAbs_dvd_natAbs", "signed vs unsigned divisibility"],
+    "prerequisites": ["Int.lcm definition", "Nat.lcm_dvd theorem", "Int.natAbs_eq (sign cases)"]
+  },
+  {
+    "id": "ann-gcd-lcm-identity",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 96, "endLine": 104 },
+    "type": "concept",
+    "title": "GCD × LCM = Product: The Fundamental Identity",
+    "content": "gcd_mul_lcm_eq proves m·n = gcd(m,n)·lcm(m,n), which is the fundamental relationship between GCD and LCM. In the coprime case gcd=1, this reduces to lcm(m,n) = m·n, confirming that uniqueness mod lcm(m,n) collapses to uniqueness mod m·n in the standard CRT. The proof of gcd_mul_lcm_eq is a one-liner (Nat.gcd_mul_lcm).symm, since Mathlib already has this identity.",
+    "mathContext": "$m \\cdot n = \\gcd(m,n) \\cdot \\text{lcm}(m,n)$; when $\\gcd(m,n)=1$: $\\text{lcm}(m,n) = m \\cdot n$",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.gcd_mul_lcm", "Nat.Coprime", "LCM as the smallest common multiple"],
+    "prerequisites": ["Nat.lcm definition", "Nat.Coprime.gcd_eq_one"]
+  },
+  {
+    "id": "ann-explicit-solution",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 111, "endLine": 136 },
+    "type": "definition",
+    "title": "Explicit Solution Formula genCRTSolution",
+    "content": "genCRTSolution m n a b = a - m·gcdA(m,n)·((a-b)/gcd(m,n)) is the unique computable formula for the CRT solution. The first congruence x ≡ a (mod m) holds unconditionally — a - x = m·gcdA·k is an explicit multiple of m. The second congruence x ≡ b (mod n) uses the Bézout identity and exact integer division Int.ediv_mul_cancel, then closes by linear_combination. The `set k := (a-b)/gcd` naming makes the proof readable by giving the integer quotient a name throughout.",
+    "mathContext": "$x = a - m \\cdot \\text{gcdA}(m,n) \\cdot \\frac{a-b}{\\gcd(m,n)}$",
+    "significance": "key",
+    "relatedConcepts": ["Int.gcdA", "Int.ediv_mul_cancel", "set tactic", "genCRT_mod_left", "genCRT_mod_right"],
+    "prerequisites": ["Bézout's identity gcd = m·gcdA + n·gcdB", "Int.ediv_mul_cancel (exact division)"]
+  },
+  {
+    "id": "ann-concrete-examples",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 150, "endLine": 170 },
+    "type": "context",
+    "title": "Solvable, Unsolvable, and Uniqueness Examples",
+    "content": "The examples section illustrates the full theory. The system x ≡ 1 (mod 4), x ≡ 3 (mod 6) is solvable (gcd=2, 2 | (-2)) with x=9. The system x ≡ 1 (mod 4), x ≡ 2 (mod 6) is unsolvable (2 ∤ (-1)), proved by omega. The uniqueness example shows x=12 and x=30 both solve x ≡ 0 (mod 6), x ≡ 3 (mod 9), and 30 ≡ 12 (mod 18) = (mod lcm(6,9)) confirms they are the same solution class.",
+    "mathContext": "Solvable: $x \\equiv 1 \\pmod{4}, x \\equiv 3 \\pmod{6}$, $\\gcd=2 \\mid -2$, solution $x=9$. Unsolvable: $2 \\nmid (1-2)$. Unique mod $\\text{lcm}(6,9)=18$: $12 \\equiv 30 \\pmod{18}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide tactic", "omega tactic", "modular arithmetic verification", "lcm as period"],
+    "prerequisites": ["generalized_crt_iff", "crt_unique_mod_lcm", "Int.gcd arithmetic"]
+  },
+  {
+    "id": "ann-image-characterization",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 177, "endLine": 201 },
+    "type": "insight",
+    "title": "Image Characterization and Complete CRT",
+    "content": "generalized_crt_modEq restates solvability as a ≡ b (mod gcd(m,n)): the image of x ↦ (x mod m, x mod n) is exactly the diagonal subgroup {(a,b) : a ≡ b (mod d)} of ℤ/mℤ × ℤ/nℤ. This is the precise sense in which the map fails surjectivity when gcd > 1. The complete theorem generalized_crt_full combines existence and uniqueness: given a ≡ b (mod d), there exists x with both congruences, and all solutions are congruent mod lcm(m,n). This is the Lean 4 machine-verified counterpart of Gauss's classic result in the Disquisitiones Arithmeticae (1801).",
+    "mathContext": "$\\text{Im}(\\mathbb{Z} \\to \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}) = \\{(a,b) : a \\equiv b \\pmod{\\gcd(m,n)}\\}$",
+    "significance": "key",
+    "relatedConcepts": ["image of a ring map", "diagonal subgroup", "Int.modEq_iff_dvd", "CRT ring isomorphism"],
+    "prerequisites": ["generalized_crt_iff", "crt_unique_mod_lcm", "Int.ModEq definition"]
+  }
+]
