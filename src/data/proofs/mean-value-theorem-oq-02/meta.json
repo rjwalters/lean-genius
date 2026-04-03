@@ -41,71 +41,99 @@
     ]
   },
   "overview": {
-    "historicalContext": "Taylor's theorem (Brook Taylor, 1715) with the Lagrange form of the remainder (Joseph-Louis Lagrange, 1797) is one of the most important results in calculus. It generalizes the Mean Value Theorem to higher order: f(b) = T_n(b) + f^(n+1)(c)/(n+1)! \u00b7 (b-a)^(n+1).",
-    "problemStatement": "Is there a Mathlib-compatible formalization of the higher-order MVT (Taylor's theorem with Lagrange remainder)?",
-    "text": "Defines the Taylor polynomial, axiomatizes the Lagrange remainder form, and derives the MVT as a special case. Mathlib has the integral remainder form but converting to Lagrange requires the generalized MVT for integrals.",
-    "proofStrategy": "Define Taylor polynomials using iteratedDeriv and Finset.sum. Axiomatize the Lagrange form. Derive special cases (n=0 gives MVT, n=1 gives second-order expansion) by specializing and simplifying.",
+    "historicalContext": "Taylor's theorem has a layered history. Brook Taylor (1715) published the series formula in *Methodus Incrementorum*, though similar expansions appeared in work of Gregory (1668) and Newton. Taylor's original argument was formal and lacked rigorous error bounds. The crucial improvement came from Joseph-Louis Lagrange (1797), who introduced the remainder term $R_n = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$, making the theorem quantitatively useful for approximation. Augustin-Louis Cauchy (1823) gave the integral remainder $R_n = \\int_a^b \\frac{(b-t)^n}{n!} f^{(n+1)}(t)\\,dt$, which Mathlib uses as its primary form.\n\nThe Mean Value Theorem (also Lagrange, 1797; with precursors in Rolle 1691 and Cauchy) is the $n=0$ case of Taylor's theorem. This connection unifies two of the most important results of calculus under a single framework. Weierstrass's later work on rigorous foundations (1850s) put all of this on the $\\varepsilon$-$\\delta$ footing that modern analysis and formalization require.\n\nModern formalizations of Taylor's theorem in proof assistants typically use the integral remainder form because it arises naturally from the fundamental theorem of calculus. Converting to the Lagrange form requires applying the *mean value theorem for integrals* to the integral remainder, which explains why this file must axiomatize that step.",
+    "problemStatement": "Formalize Taylor's theorem with Lagrange remainder in Lean 4. Specifically: (1) define the Taylor polynomial $T_n f(a)(x) = \\sum_{k=0}^n \\frac{f^{(k)}(a)}{k!}(x-a)^k$; (2) prove the Lagrange remainder theorem: if $f$ is $(n+1)$-times differentiable, then $\\exists c \\in (a,b)$ with $f(b) - T_n f(a)(b) = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$; (3) derive the MVT and second-order expansion as special cases.",
+    "proofStrategy": "Four parts. Part I defines `taylorPolynomial f a n x = Σ_{k=0}^{n} iteratedDeriv k f a / k! · (x-a)^k` using `Finset.sum` over `Finset.range (n+1)`. Concrete cases `taylorPolynomial_zero` and `taylorPolynomial_one` are proved by `simp` with `iteratedDeriv_zero` and `iteratedDeriv_one`. Part II axiomatizes the Lagrange remainder: the conversion from Mathlib's integral form requires the mean value theorem for integrals. Part III derives `mvt_is_first_order_taylor` by specializing the axiom at $n=0$, using `taylorPolynomial_zero` and `iteratedDeriv_one` to simplify to the standard MVT form. Part IV derives `taylor_second_order` similarly at $n=1$, using `taylorPolynomial_one` and specializing the second derivative.",
     "keyInsights": [
-      "Mathlib's taylor module uses integral remainder; the Lagrange form needs additional infrastructure",
-      "MVT is exactly Taylor's theorem at order 0",
-      "The taylorPolynomial_zero and taylorPolynomial_one lemmas enable clean specialization"
-    ],
-    "prerequisites": [
-      "Calculus (differentiation, Taylor series)",
-      "Real analysis (ContDiff, iteratedDeriv)"
+      "**MVT = Taylor at order 0**: The Mean Value Theorem $\\exists c \\in (a,b): f(b) - f(a) = f'(c)(b-a)$ is precisely the Lagrange remainder theorem with $n=0$, since $T_0 f(a)(b) = f(a)$ and $f^{(1)}(c) = f'(c)$. This is more than an analogy: `mvt_is_first_order_taylor` is a *theorem* proved from the Taylor axiom.",
+      "**Lagrange vs integral remainder**: Mathlib's `Mathlib.Analysis.Calculus.Taylor` uses the integral form $R_n = \\int_a^b \\frac{(b-t)^n}{n!}f^{(n+1)}(t)\\,dt$. Converting to the Lagrange form $\\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ requires the MVT for integrals: $\\int_a^b g(t)\\,dt = g(c)(b-a)$ for some $c \\in (a,b)$. This is the content of the one axiom in this file.",
+      "**iteratedDeriv in Lean**: Mathlib's `iteratedDeriv k f a` computes the $k$-th derivative of $f$ at $a$ using the Fréchet derivative infrastructure. For the reals, this coincides with the classical derivative. The `iteratedDeriv_zero` simp lemma says `iteratedDeriv 0 f = f`, and `iteratedDeriv_one` says `iteratedDeriv 1 f = deriv f`.",
+      "**Taylor polynomial as a Finset.sum**: The definition `Σ k in Finset.range (n+1), iteratedDeriv k f a / k! · (x-a)^k` uses Lean's finite sum infrastructure. Proving `taylorPolynomial_zero` and `taylorPolynomial_one` by `simp` demonstrates that the `Finset.range` sum unfolds cleanly for small $n$, matching the explicit formulas.",
+      "**Quantitative error control**: The Lagrange remainder provides a *computable error bound*: $|f(b) - T_n f(a)(b)| \\leq \\frac{M_{n+1}}{(n+1)!}|b-a|^{n+1}$ where $M_{n+1} = \\sup_{c \\in [a,b]} |f^{(n+1)}(c)|$. This bound is the foundation of numerical analysis: polynomial interpolation error, Runge-Kutta method analysis, and approximation theory all use Taylor's theorem in this form."
     ]
   },
   "sections": [
     {
       "id": "taylor-polynomial",
       "title": "The Taylor Polynomial",
-      "summary": "Defines T_n(x) = \u03a3 f^(k)(a)/k! \u00b7 (x-a)^k and proves n=0,1 cases",
       "startLine": 39,
-      "endLine": 69
+      "endLine": 69,
+      "summary": "Defines `taylorPolynomial f a n x = Σ_{k=0}^{n} iteratedDeriv k f a / k! · (x-a)^k` using Finset.sum. Proves the n=0 case: T₀ f(a)(x) = f(a), and the n=1 case: T₁ f(a)(x) = f(a) + f'(a)(x-a), both by simp with iteratedDeriv_zero and iteratedDeriv_one.",
+      "mathContext": "$T_n f(a)(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k$. For $n=0$: $T_0 = f(a)$. For $n=1$: $T_1 = f(a) + f'(a)(x-a)$ (the tangent line approximation). The `noncomputable section` is needed because iteratedDeriv uses classical choice."
     },
     {
       "id": "lagrange-remainder",
-      "title": "Taylor's Theorem with Lagrange Remainder",
-      "summary": "Axiomatizes: f(b) - T_n(b) = f^(n+1)(c)/(n+1)! \u00b7 (b-a)^(n+1)",
+      "title": "Taylor's Theorem with Lagrange Remainder (Axiom)",
       "startLine": 71,
-      "endLine": 99
+      "endLine": 99,
+      "summary": "Axiomatizes `taylor_lagrange_remainder`: for ContDiff ℝ (n+1) f and a < b, there exists c ∈ (a,b) such that f(b) - T_n f(a)(b) = iteratedDeriv (n+1) f c / (n+1)! · (b-a)^(n+1). Axiomatized because converting from Mathlib's integral remainder requires the MVT for integrals.",
+      "mathContext": "The Lagrange remainder: $f(b) = T_n(b) + \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ for some $c \\in (a,b)$. Mathlib provides the integral form: $R_n = \\int_a^b \\frac{(b-t)^n}{n!} f^{(n+1)}(t)\\,dt$. The conversion uses $\\int_a^b h(t) g(t)\\,dt = g(c) \\int_a^b h(t)\\,dt$ (mean value theorem for integrals, with $h(t) = \\frac{(b-t)^n}{n!} \\geq 0$)."
     },
     {
       "id": "mvt-connection",
       "title": "MVT as First-Order Taylor",
-      "summary": "The n=0 case recovers the ordinary Mean Value Theorem",
       "startLine": 100,
-      "endLine": 128
+      "endLine": 128,
+      "summary": "Proves `mvt_is_first_order_taylor`: for ContDiff ℝ 1 f and a < b, ∃ c ∈ (a,b) with f(b) - f(a) = deriv f c · (b-a). Derived from taylor_lagrange_remainder at n=0, using taylorPolynomial_zero (T₀ = f(a)), iteratedDeriv_one (f^(1) = deriv f), and Nat.factorial 1 = 1.",
+      "mathContext": "At $n=0$: $f(b) - T_0(b) = f(b) - f(a) = \\frac{f'(c)}{1!}(b-a)^1 = f'(c)(b-a)$. The `ContDiff ℝ 1 f` hypothesis is exactly what's needed: once differentiable with continuous derivative. The simp call with `Nat.factorial` simplifies $1! = 1$ and the cast from ℕ to ℝ."
     },
     {
       "id": "second-order",
-      "title": "Second-Order Taylor",
-      "summary": "f(b) = f(a) + f'(a)(b-a) + f''(c)/2\u00b7(b-a)\u00b2",
+      "title": "Second-Order Taylor Expansion",
       "startLine": 129,
-      "endLine": 155
+      "endLine": 154,
+      "summary": "Proves `taylor_second_order`: for ContDiff ℝ 2 f and a < b, ∃ c ∈ (a,b) with f(b) = f(a) + f'(a)(b-a) + iteratedDeriv 2 f c / 2 · (b-a)². Derived from taylor_lagrange_remainder at n=1, using taylorPolynomial_one and simplifying 2! = 2.",
+      "mathContext": "At $n=1$: $f(b) = f(a) + f'(a)(b-a) + \\frac{f''(c)}{2}(b-a)^2$. This is the quadratic approximation with exact remainder. Applications: the second-order Taylor expansion is used in Newton's method analysis (quadratic convergence), optimization (second-order conditions), and numerical ODEs (Runge-Kutta order conditions)."
     }
   ],
   "conclusion": {
-    "summary": "Taylor's theorem with Lagrange remainder is formalized using Mathlib's iteratedDeriv. The Lagrange form is axiomatized (1 axiom) because converting from Mathlib's integral remainder requires substantial infrastructure. The MVT and second-order expansion are derived as special cases.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "Taylor's theorem with Lagrange remainder is formalized using Mathlib's iteratedDeriv and ContDiff. The Taylor polynomial is defined as a Finset.sum and specialized at orders 0 and 1. The Lagrange remainder is axiomatized (1 axiom) because the conversion from Mathlib's integral form requires the MVT for integrals. Both the MVT and the second-order expansion are derived as provable corollaries.",
+    "implications": "**Unification of calculus**: This formalization makes explicit the hierarchical relationship: MVT (Lagrange 1797) ⊆ Taylor's theorem at order 0. Taylor's theorem is the higher-order MVT, and the MVT itself is a first-order polynomial approximation theorem. This perspective unifies approximation theory, numerical analysis, and differential calculus under one framework.\n\n**Foundation for numerical analysis**: The Lagrange remainder provides the error bound $|R_n| \\leq \\frac{M_{n+1}}{(n+1)!}|b-a|^{n+1}$ that underlies polynomial approximation theory. Numerical integration methods (Simpson's rule, etc.) and ODE solvers (Runge-Kutta) are analyzed via Taylor's theorem: the order of a method equals the degree of the Taylor polynomial it matches exactly.\n\n**Resolving the axiom**: The one axiom `taylor_lagrange_remainder` would be resolved by proving the mean value theorem for integrals in the specific form needed — that $\\int_a^b h(t) g(t)\\,dt = g(c) \\int_a^b h(t)\\,dt$ for some $c \\in (a,b)$ when $h \\geq 0$ and $g$ is continuous. Mathlib's `MeasureTheory.integral_mean_value` or similar provides this, but matching the exact form to the Taylor context requires careful setup.",
+    "openQuestions": [
+      "Can the axiom `taylor_lagrange_remainder` be proved from Mathlib's integral form? The key missing lemma is the MVT for integrals applied to $h(t) = (b-t)^n / n!$ and $g(t) = f^{(n+1)}(t)$ on $[a,b]$.",
+      "Is there a formalized version of Taylor's theorem for functions $f : \\mathbb{R}^n \\to \\mathbb{R}$? The multivariate Lagrange remainder involves the Hessian and higher-order derivatives, and Mathlib's `HasFDerivAt` infrastructure could support this.",
+      "Can the Taylor polynomial definition be connected to Mathlib's `taylorWithinEval`? Mathlib's Taylor module defines polynomials differently (using `taylorWithinEval`); reconciling the two definitions would allow direct use of Mathlib's existing Taylor remainder bounds.",
+      "Is there a uniform error bound formalization: for all $x \\in [a-r, a+r]$ and $f$ analytic on the disk of radius $R > r$, $|f(x) - T_n f(a)(x)| \\leq M r^{n+1} / (R-r)$? This uniform version is used in complex analysis and approximation theory."
+    ]
   },
   "crossReferences": [
     {
       "targetId": "mean-value-theorem",
       "relationship": "parent-problem",
-      "description": "Parent: Mean Value Theorem formalization"
+      "description": "The parent entry: the ordinary Mean Value Theorem. This OQ-02 entry shows that MVT is the n=0 case of Taylor's theorem — the connection is formalized as a proved theorem (mvt_is_first_order_taylor)."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "complementary",
+      "description": "The fundamental theorem of calculus and Taylor's theorem are complementary: FTC gives differentiation and integration as inverses; Taylor's theorem gives polynomial approximation of smooth functions with explicit error. Mathlib's integral form of the Taylor remainder is derived from FTC applied to iterated antiderivatives."
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The intermediate value theorem underlies the MVT (via Rolle's theorem), and the MVT underlies Taylor's theorem. The existence of the intermediate point c in the Lagrange remainder is a continuity argument analogous to the IVT."
     }
   ],
   "references": [
     {
-      "authors": [
-        "W. Rudin"
-      ],
+      "authors": ["W. Rudin"],
       "title": "Principles of Mathematical Analysis",
       "year": "1976",
       "venue": "McGraw-Hill",
       "note": "Theorem 5.15: Taylor's theorem with Lagrange remainder"
+    },
+    {
+      "authors": ["J.-L. Lagrange"],
+      "title": "Théorie des fonctions analytiques",
+      "year": "1797",
+      "venue": "Paris",
+      "note": "Introduced the Lagrange form of the remainder and the general Taylor theorem"
+    },
+    {
+      "authors": ["B. Taylor"],
+      "title": "Methodus Incrementorum Directa et Inversa",
+      "year": "1715",
+      "venue": "London",
+      "note": "Original publication of the Taylor series formula"
     }
   ],
   "leanFile": {
@@ -116,11 +144,7 @@
       "Mathlib.Analysis.SpecialFunctions.Pow.Deriv",
       "Mathlib.Tactic"
     ],
-    "opens": [
-      "Real",
-      "MeasureTheory",
-      "Set"
-    ],
+    "opens": ["Real", "MeasureTheory", "Set"],
     "namespace": "MeanValueTheoremOQ02",
     "lineCount": 154,
     "axiomCount": 1,
