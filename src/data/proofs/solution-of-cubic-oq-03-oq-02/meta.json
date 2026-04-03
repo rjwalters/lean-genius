@@ -34,7 +34,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The casus irreducibilis was discovered by Cardano in 1545 when he found that some cubic equations with three real roots led to square roots of negative numbers in his formula. Bombelli (1572) showed how to work with these complex expressions to recover the real roots. Wantzel (1843) proved that the passage through complex numbers is unavoidable — it's the simplest example of a real mathematical result that requires non-real intermediate computation.",
+    "historicalContext": "The casus irreducibilis (Latin: 'irreducible case') was first encountered by Gerolamo Cardano (1501–1576) when publishing his cubic formula in *Ars Magna* (1545). Scipione del Ferro had discovered the depressed cubic solution earlier (~1510), and Cardano generalized it, but both found that when Δ > 0 — three distinct real roots — the formula produced square roots of negative numbers. Cardano dismissed these as 'sophistic' but couldn't avoid them.\n\nRafael Bombelli (1526–1572) made the decisive step in his *Algebra* (1572): he defined rules for arithmetic with 'plus of minus' and 'minus of minus' quantities (our i and −i), showed the formula produces a valid answer by treating them algebraically, and verified by direct substitution. This is the birth of complex arithmetic.\n\nFor two centuries, mathematicians debated whether passing through complex numbers was merely computational convenience or a genuine necessity. Pierre Wantzel (1814–1848) settled this definitively in 1843 using Galois theory: the splitting field of a casus irreducibilis cubic over ℚ has Galois group S₃ (or A₃), and the real number field has no radical tower reaching all three roots. Any algebraic expression for the roots in real radicals must fail for at least one root.\n\nThis formalization proves the first half — that Cardano's formula is genuinely complex when Δ > 0 — and states Wantzel's impossibility theorem as an axiom awaiting formal Galois theory infrastructure in Lean 4.",
     "problemStatement": "For the depressed cubic $x^3 + px + q = 0$ with discriminant $\\Delta = -4p^3 - 27q^2 > 0$ (three distinct real roots), Cardano's formula: $x = \\sqrt[3]{-q/2 + \\sqrt{D}} + \\sqrt[3]{-q/2 - \\sqrt{D}}$ where $D = q^2/4 + p^3/27 < 0$, necessarily involves non-real cube roots.",
     "text": "Formalizes the casus irreducibilis with proofs that D<0, Cardano's arguments are non-real, and a concrete example x³-7x+6=0.",
     "proofStrategy": "1. Prove D<0 from Δ>0 using nlinarith. 2. Show Cardano's arguments have nonzero imaginary part from √(-D)>0. 3. Give trigonometric form of real roots. 4. State Wantzel's impossibility.",
@@ -46,14 +46,56 @@
       "x³ - 7x + 6 = 0 is a concrete casus irreducibilis: three real roots (1,2,-3) but Δ = 400 > 0"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "section-definitions",
+      "title": "Depressed Cubic and Discriminant",
+      "startLine": 39,
+      "endLine": 57,
+      "summary": "Defines depressedCubic, discriminant Δ, Cardano's D, and the casus irreducibilis condition Δ > 0",
+      "mathContext": "$\\Delta = -4p^3 - 27q^2$, $D = q^2/4 + p^3/27 = -\\Delta/108$"
+    },
+    {
+      "id": "section-d-neg",
+      "title": "D < 0 in the Casus Irreducibilis",
+      "startLine": 59,
+      "endLine": 74,
+      "summary": "Proves Δ > 0 ⟹ D < 0 (via nlinarith) and p < 0 (necessary for three real roots)",
+      "mathContext": "$\\Delta > 0 \\Rightarrow D = -\\Delta/108 < 0$"
+    },
+    {
+      "id": "section-complex-args",
+      "title": "Cardano's Formula Requires Complex Numbers",
+      "startLine": 76,
+      "endLine": 105,
+      "summary": "Defines cardanoArg = -q/2 + i√(-D) and proves its imaginary part is nonzero when Δ > 0",
+      "mathContext": "$\\text{Im}(z_1) = \\sqrt{-D} > 0 \\Rightarrow z_1 \\notin \\mathbb{R}$"
+    },
+    {
+      "id": "section-trig-roots",
+      "title": "Trigonometric Form: Three Real Roots",
+      "startLine": 107,
+      "endLine": 147,
+      "summary": "Defines Viète's trigonometric roots xₖ = 2√(-p/3)·cos((θ+2πk)/3); axiomatizes distinctness, root verification, and Wantzel's impossibility theorem",
+      "mathContext": "$x_k = 2\\sqrt{-p/3}\\cos\\!\\left(\\frac{\\theta+2\\pi k}{3}\\right)$, $k = 0,1,2$"
+    },
+    {
+      "id": "section-example",
+      "title": "Concrete Example: x³ − 7x + 6 = 0",
+      "startLine": 148,
+      "endLine": 176,
+      "summary": "Verifies x³−7x+6=0 is casus irreducibilis (Δ=400>0), with three real roots 1, 2, −3 proved by ring",
+      "mathContext": "$x^3 - 7x + 6 = (x-1)(x-2)(x+3)$, $\\Delta = 400 > 0$"
+    }
+  ],
   "conclusion": {
     "summary": "The casus irreducibilis demonstrates that complex numbers are not just a convenience but a necessity: some real polynomial equations with entirely real roots cannot be solved without passing through the complex numbers.",
     "openQuestions": [
-      "Formalize Wantzel's theorem using Lean's Galois theory infrastructure",
-      "Extend to quartics: when does the quartic casus irreducibilis occur?"
+      "Formalize Wantzel's theorem in Lean using Mathlib's Galois theory: show the splitting field of a casus irreducibilis cubic has no real radical tower",
+      "Formalize `trigRoot_is_root`: prove the triple angle identity 4cos³φ−3cosφ = cos(3φ) and use it to verify the trigonometric roots satisfy the cubic",
+      "Extend to quartics: classify when quartic equations have the analogous casus irreducibilis, requiring passage through degree-4 complex radicals"
     ],
-    "implications": "The casus irreducibilis demonstrates that complex numbers are not just a convenience but a necessity: some real polynomial equations with entirely real roots cannot be solved without passing through the complex numbers."
+    "implications": "The casus irreducibilis establishes that complex numbers are not merely a computational device but a mathematical necessity: some equations with entirely real solutions cannot be solved by real-number operations alone. This was a key motivation for accepting complex numbers as legitimate mathematical objects, leading to the development of complex analysis in the 19th century."
   },
   "leanFile": {
     "imports": [

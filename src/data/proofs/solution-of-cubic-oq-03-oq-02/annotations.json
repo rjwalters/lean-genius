@@ -1,1 +1,88 @@
-[]
+{
+  "annotations": [
+    {
+      "id": "ann-ci-definitions",
+      "proofId": "solution-of-cubic-oq-03-oq-02",
+      "range": { "startLine": 43, "endLine": 57 },
+      "type": "definition",
+      "title": "Depressed Cubic, Discriminant, and Cardano's D",
+      "content": "Four definitions capture the algebraic setup. `depressedCubic p q x` is x³+px+q, the standard reduced form of any cubic after eliminating the x² term. `discriminant p q` is Δ = −4p³ − 27q², the sign of which determines root structure: Δ > 0 gives three distinct real roots, Δ = 0 gives repeated roots, Δ < 0 gives one real and two complex conjugate roots. `cardanoD p q` is D = q²/4 + p³/27, the quantity appearing under the square root in Cardano's formula — related to the discriminant by D = −Δ/108. `isCasusIrreducibilis` simply asserts Δ > 0.",
+      "mathContext": "$\\Delta = -4p^3 - 27q^2,\\quad D = \\frac{q^2}{4} + \\frac{p^3}{27} = -\\frac{\\Delta}{108}$",
+      "significance": "context",
+      "relatedConcepts": ["depressed cubic", "discriminant", "Cardano's formula", "polynomial root structure"],
+      "prerequisites": ["algebra: polynomial equations", "complex numbers"]
+    },
+    {
+      "id": "ann-ci-d-neg",
+      "proofId": "solution-of-cubic-oq-03-oq-02",
+      "range": { "startLine": 63, "endLine": 74 },
+      "type": "insight",
+      "title": "Δ > 0 Forces D < 0: The Algebraic Key to Casus Irreducibilis",
+      "content": "The core algebraic fact: when the cubic has three distinct real roots (Δ > 0), Cardano's intermediate quantity D = q²/4 + p³/27 is necessarily negative. This is the reason the formula involves √D, which is purely imaginary. The Lean proof closes with a single `nlinarith` call — the arithmetic follows from Δ = −108D, so Δ > 0 directly gives D < 0. The companion theorem `p_neg_of_casus` shows p < 0 is also forced: since Δ = −4p³ − 27q² > 0 and −27q² ≤ 0, we need −4p³ > 0, hence p < 0.",
+      "mathContext": "$\\Delta > 0 \\Rightarrow D = -\\frac{\\Delta}{108} < 0 \\Rightarrow \\sqrt{D} \\in i\\mathbb{R}_{>0}$",
+      "significance": "key",
+      "relatedConcepts": ["discriminant", "Cardano's formula", "complex square roots"],
+      "prerequisites": ["algebra: polynomial discriminants", "nlinarith tactic"]
+    },
+    {
+      "id": "ann-ci-cardano-args",
+      "proofId": "solution-of-cubic-oq-03-oq-02",
+      "range": { "startLine": 80, "endLine": 87 },
+      "type": "definition",
+      "title": "Cardano's Complex Arguments",
+      "content": "When D < 0, Cardano's formula uses z₁ = −q/2 + √D and its conjugate z₂ = −q/2 − √D as cube root arguments. These are defined in ℂ with √D = i·√(−D), making both non-real. The definition uses `Complex.I * Real.sqrt(-cardanoD p q)` — note that `Real.sqrt` applies to the positive quantity −D (since D < 0), and Complex.I is the imaginary unit. The root formula is then x = ∛z₁ + ∛z₂.",
+      "mathContext": "$z_{1,2} = -\\frac{q}{2} \\pm \\sqrt{D} = -\\frac{q}{2} \\pm i\\sqrt{-D} \\in \\mathbb{C} \\setminus \\mathbb{R}$",
+      "significance": "context",
+      "relatedConcepts": ["Cardano's formula", "complex cube roots", "conjugate pairs"],
+      "prerequisites": ["complex numbers", "square roots of negative numbers"]
+    },
+    {
+      "id": "ann-ci-nonreal-proof",
+      "proofId": "solution-of-cubic-oq-03-oq-02",
+      "range": { "startLine": 89, "endLine": 105 },
+      "type": "insight",
+      "title": "Cardano's Arguments Are Non-Real: The Heart of Casus Irreducibilis",
+      "content": "The main theorem of Part I: in the casus irreducibilis, the imaginary part of cardanoArg is nonzero. The proof extracts the imaginary part using `simp` with Complex lemmas, reducing to showing `Real.sqrt(-cardanoD p q) ≠ 0`. This follows from `Real.sqrt_pos`: a real square root is positive iff its argument is positive, and −D > 0 because D < 0 (from cardanoD_neg_of_casus). The conjugate cardanoArgConj is handled identically by symmetry. This establishes that Cardano's formula is genuinely complex in the casus irreducibilis.",
+      "mathContext": "$(z_1).\\text{im} = \\sqrt{-D} > 0 \\neq 0$, so $z_1 \\notin \\mathbb{R}$",
+      "significance": "key",
+      "relatedConcepts": ["imaginary part", "complex cube roots", "Real.sqrt_pos"],
+      "prerequisites": ["complex numbers: real and imaginary parts", "Mathlib: Complex.I_im"]
+    },
+    {
+      "id": "ann-ci-trig-roots",
+      "proofId": "solution-of-cubic-oq-03-oq-02",
+      "range": { "startLine": 111, "endLine": 125 },
+      "type": "technique",
+      "title": "Viète's Trigonometric Form: Real Roots Without Complex Numbers",
+      "content": "The trigonometric (Viète's) substitution x = 2√(−p/3)·cos((θ+2πk)/3) gives three explicitly real roots, bypassing complex numbers entirely. With r = √(−p/3) (real since p < 0) and θ = arccos(−q/(2r³)), the three roots correspond to k = 0, 1, 2. The proof that these are real is trivial (they're explicitly ℝ values). The deeper result — that they satisfy x³+px+q = 0 — uses the triple angle identity 4cos³φ − 3cosφ = cos(3φ), stated but axiomatized in this formalization.",
+      "mathContext": "$x_k = 2\\sqrt{-p/3} \\cos\\!\\left(\\frac{\\theta + 2\\pi k}{3}\\right),\\quad \\theta = \\arccos\\!\\left(\\frac{-q}{2(-p/3)^{3/2}}\\right),\\quad k = 0, 1, 2$",
+      "significance": "key",
+      "relatedConcepts": ["Viète's substitution", "triple angle identity", "arccos", "trigonometric form of cube roots"],
+      "prerequisites": ["trigonometry: cosine, arccos", "triple angle identity", "real analysis"]
+    },
+    {
+      "id": "ann-ci-axioms-gap",
+      "proofId": "solution-of-cubic-oq-03-oq-02",
+      "range": { "startLine": 127, "endLine": 147 },
+      "type": "context",
+      "title": "Three Axiomatized Results: Distinctness, Root Verification, and Wantzel's Theorem",
+      "content": "Three results are described in docstring comments but not yet formally declared in Lean: (1) `trigRoots_distinct` — the three cosine values at angles θ/3, (θ+2π)/3, (θ+4π)/3 are distinct, requiring cos injectivity on [0,π]; (2) `trigRoot_is_root` — each trigonometric root satisfies the cubic, requiring expansion via the triple angle formula 4cos³φ−3cosφ = cos(3φ); (3) `wantzel_casus_irreducibilis` (1843) — the roots cannot be expressed using real-valued radicals alone, a Galois-theoretic result about the splitting field having group S₃. Note: these appear only as comments in the Lean source, not as actual `axiom` declarations.",
+      "mathContext": "$\\text{Wantzel (1843): } \\not\\exists \\text{ real radical expression for all three roots of } x^3+px+q=0 \\text{ when } \\Delta > 0$",
+      "significance": "context",
+      "relatedConcepts": ["Galois theory", "splitting field", "S₃", "radical extensions", "Wantzel's theorem"],
+      "prerequisites": ["Galois theory", "field extensions", "group theory: S₃ and A₃"]
+    },
+    {
+      "id": "ann-ci-example",
+      "proofId": "solution-of-cubic-oq-03-oq-02",
+      "range": { "startLine": 148, "endLine": 176 },
+      "type": "insight",
+      "title": "Concrete Example: x³ − 7x + 6 = 0 Has Three Real Roots",
+      "content": "The equation x³−7x+6 = 0 factors as (x−1)(x−2)(x+3) = 0, with roots 1, 2, −3 — all real. With p = −7, q = 6: Δ = −4(−7)³ − 27(36) = 1372 − 972 = 400 > 0, confirming the casus irreducibilis condition. Cardano's D = 36/4 + (−343)/27 = 9 − 343/27 ≈ 9 − 12.7 < 0, so the formula requires √D = i√(343/27 − 9). All three verifications (x=1, x=2, x=−3) close with `ring`, and `example_three_real_roots` packages them into an existential statement.",
+      "mathContext": "$x^3 - 7x + 6 = (x-1)(x-2)(x+3),\\quad \\Delta = 400 > 0,\\quad D = \\tfrac{36}{4} + \\tfrac{-343}{27} < 0$",
+      "significance": "key",
+      "relatedConcepts": ["polynomial factorization", "casus irreducibilis example", "Cardano's formula", "discriminant computation"],
+      "prerequisites": ["algebra: polynomial roots", "arithmetic"]
+    }
+  ]
+}
