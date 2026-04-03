@@ -37,12 +37,12 @@
       "Euler's proof structure outline connecting product and Taylor representations (relies on Mathlib hasSum_zeta_two; coefficient comparison step is a True placeholder)"
     ],
     "dateAdded": "2026-03-28",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 8,
     "substantiveTheoremCount": 3,
     "trueStubs": 1,
     "lineCount": 189,
-    "assumptions": "2 axioms: weierstrass_sin_product (Weierstrass product formula for sin), product_x2_coefficient (infinite product coefficient extraction). Both are deep results in complex analysis not yet in Mathlib. Note: euler_coefficient_comparison is a True placeholder — the key algebraic step equating x² coefficients is not actually proved.",
+    "assumptions": "1 axiom: weierstrass_sin_product (Weierstrass product formula for sin(πx)/(πx) = ∏(1 - x²/n²)). This is a deep result in complex analysis not yet in Mathlib. Note: product_x2_coefficient was previously axiomatized but is now proved algebraically (field_simp + ring). The euler_coefficient_comparison theorem remains a True placeholder.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
