@@ -92,21 +92,50 @@ theorem sum_fixedPoints_two :
 ## Section III: Key Lemma (hard sorry)
 -/
 
-/-- **Key Lemma (HARD)**: Exactly (n-1)! permutations of Fin n fix a given point x.
+/-- **Key Lemma**: Exactly (n-1)! permutations of Fin n fix a given point x.
 
-    **Proof sketch**: The map Perm(Fin (n-1)) → {σ : Perm(Fin n) | σ x = x} via
-    extension by identity is a bijection. Formalizing this requires:
-    - An equivalence Fin (n-1) ≃ Fin n \ {x} (element deletion)
-    - Showing the extension map is injective and surjective
-    Alternatively: orbit-stabilizer gives |Stab(x)| = n!/|orbit(x)| = n!/n = (n-1)!
-    where orbit(x) = Fin n under the transitive action of Perm(Fin n).
-
-    **Mathlib gap**: `Equiv.Perm.fixingSubgroupEquiv` or orbit-stabilizer for
-    Perm(Fin n) acting on Fin n not directly available in current API. -/
+    **Proof**: Orbit-stabilizer theorem.
+    1. Connect filter to stabilizer: {σ | σ x = x} = Stab_G(x) as subgroup of Perm(Fin n).
+    2. The orbit of x is all of Fin n: Equiv.swap x y maps x to y for any y.
+       So |orbit(x)| = n (pretransitive action).
+    3. Orbit-stabilizer: |orbit| · |stab| = |G| gives n · |stab| = n!
+    4. Therefore |stab| = (n-1)! by cancellation. -/
 lemma card_perm_fixing_point (hn : 1 ≤ n) (x : Fin n) :
     (Finset.univ.filter fun σ : Equiv.Perm (Fin n) => σ x = x).card =
     (n - 1).factorial := by
-  sorry
+  -- Step 1: Rewrite filter card as Nat.card of stabilizer subgroup
+  -- {σ | σ x = x} = stabilizer Perm(Fin n) x (since σ • x = σ x for Equiv.Perm)
+  have hstab_eq : (Finset.univ.filter fun σ : Equiv.Perm (Fin n) => σ x = x).card =
+                  Nat.card ↥(MulAction.stabilizer (Equiv.Perm (Fin n)) x) := by
+    rw [← Fintype.card_coe, ← Nat.card_eq_fintype_card]
+    exact Nat.card_congr (Equiv.subtypeEquiv (Equiv.refl _) (fun σ => by
+      simp [MulAction.mem_stabilizer_iff, Finset.mem_filter]))
+  -- Step 2: Orbit of x = Set.univ (Equiv.swap x y is a perm sending x to y)
+  have horbit_univ : MulAction.orbit (Equiv.Perm (Fin n)) x = Set.univ := by
+    ext y
+    simp only [Set.mem_univ, iff_true, MulAction.mem_orbit_iff]
+    exact ⟨Equiv.swap x y, Equiv.swap_apply_left x y⟩
+  -- Step 3: |orbit(x)| = n (since orbit = Fin n via Equiv.Set.univ)
+  have hcard_orbit : Nat.card ↥(MulAction.orbit (Equiv.Perm (Fin n)) x) = n := by
+    rw [horbit_univ, Nat.card_congr (Equiv.Set.univ _)]
+    simp [Nat.card_eq_fintype_card, Fintype.card_fin]
+  -- Step 4: Orbit-stabilizer: |orbit| · |stab| = |G| = n!
+  -- Uses MulAction.orbitEquivQuotientStabilizer and Subgroup.card_mul_index
+  have h_os : Nat.card ↥(MulAction.orbit (Equiv.Perm (Fin n)) x) *
+              Nat.card ↥(MulAction.stabilizer (Equiv.Perm (Fin n)) x) =
+              Nat.card (Equiv.Perm (Fin n)) := by
+    rw [Nat.card_congr (MulAction.orbitEquivQuotientStabilizer (Equiv.Perm (Fin n)) x),
+        mul_comm]
+    exact Subgroup.card_mul_index (MulAction.stabilizer (Equiv.Perm (Fin n)) x)
+  -- Step 5: |G| = n!
+  have hG : Nat.card (Equiv.Perm (Fin n)) = n.factorial := by
+    rw [Nat.card_eq_fintype_card, Fintype.card_perm, Fintype.card_fin]
+  -- Step 6: Conclude |stab| = (n-1)! by cancellation: n · |stab| = n! = n · (n-1)!
+  rw [hcard_orbit, hG] at h_os
+  rw [hstab_eq]
+  have hn0 : n ≠ 0 := by omega
+  exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < n)
+    (h_os.trans (Nat.mul_factorial_pred hn0).symm)
 
 /-!
 ## Section IV: Main Theorem (proved via Burnside's lemma)
@@ -151,20 +180,51 @@ theorem sum_fixedPoints_eq_factorial (hn : 1 ≤ n) :
 ## Section V: Consequences
 -/
 
+-- Proof by double counting:
+-- ∑_k k·C(n,k)·D(n-k) = ∑_k k·|A_k| = ∑_k ∑_{A_k} fp = ∑_σ fp = n!
+-- where A_k = {σ : fp(σ) = k} and fp(σ) = |Fix(σ)|.
+set_option maxHeartbeats 800000 in
 /-- **Weighted partition identity**: For n ≥ 1,
        ∑_{k=0}^n k · C(n,k) · D(n-k) = n!
 
     This is the "generating function" result: the sequence {S(n,k) = C(n,k)·D(n-k)}
     satisfies ∑_k k·S(n,k) = n! (the derivative of its ordinary generating
-    function at t=1 equals the total count n!). -/
+    function at t=1 equals the total count n!).
+
+    **Proof by double counting**:
+    ∑_k k·C(n,k)·D(n-k)
+    = ∑_k k·|A_k|                       [card_perms_with_kfixed, A_k = {σ : fp=k}]
+    = ∑_k ∑_{σ ∈ A_k} fp(σ)             [k is constant on A_k]
+    = ∑_σ fp(σ)                         [Finset.sum_fiberwise_of_maps_to]
+    = n!                                [sum_fixedPoints_eq_factorial] -/
 theorem weighted_partition_identity (hn : 1 ≤ n) :
     ∑ k ∈ Finset.range (n + 1), k * n.choose k * numDerangements (n - k) = n.factorial := by
-  -- This equals sum_fixedPoints_eq_factorial by exchanging summation order:
-  -- ∑_k k · C(n,k) · D(n-k) = ∑_k k · #{σ : |Fix(σ)|=k}
-  --                           = ∑_σ |Fix(σ)| = n!  (rearranging)
-  -- HARD: The sum-exchange requires careful Finset manipulation with
-  -- the bijection between {σ : |Fix(σ)| = k} and C(n,k)·D(n-k).
-  sorry
+  -- Step 1: k·C(n,k)·D(n-k) = ∑_{σ ∈ A_k} fp(σ)
+  -- (first use card_perms_with_kfixed, then convert k·|A_k| to a sum over A_k)
+  have step1 : ∀ k ∈ Finset.range (n + 1), k * n.choose k * numDerangements (n - k) =
+      ∑ σ ∈ Finset.univ.filter (fun σ : Equiv.Perm (Fin n) =>
+        (Finset.univ.filter fun x => σ x = x).card = k),
+        (Finset.univ.filter fun x => σ x = x).card := by
+    intro k hk
+    rw [Finset.mem_range] at hk
+    rw [mul_assoc, ← PartialDerangements.card_perms_with_kfixed n k (by omega), mul_comm]
+    exact (Finset.sum_const_nat (fun σ hσ => by
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ; exact hσ)).symm
+  -- Step 2: Fiberwise identity ∑_k ∑_{A_k} fp(σ) = ∑_σ fp(σ)
+  have step2 : ∑ k ∈ Finset.range (n + 1),
+      ∑ σ ∈ Finset.univ.filter (fun σ : Equiv.Perm (Fin n) =>
+        (Finset.univ.filter fun x => σ x = x).card = k),
+      (Finset.univ.filter fun x => σ x = x).card =
+      ∑ σ : Equiv.Perm (Fin n), (Finset.univ.filter fun x => σ x = x).card :=
+    Finset.sum_fiberwise_of_maps_to
+      (g := fun σ : Equiv.Perm (Fin n) => (Finset.univ.filter fun x => σ x = x).card)
+      (s := Finset.univ)
+      (fun σ _ => Finset.mem_range.mpr (Nat.lt_succ_of_le
+        ((Finset.card_le_univ _).trans_eq (Fintype.card_fin n))))
+      (fun σ => (Finset.univ.filter fun x => σ x = x).card)
+  -- Chain: ∑_k k·C·D = ∑_k ∑_{A_k} fp = ∑_σ fp = n!
+  rw [Finset.sum_congr rfl step1, step2]
+  exact sum_fixedPoints_eq_factorial hn
 
 /-- The weighted partition identity implies: total fixed points = total permutations. -/
 theorem total_fixed_eq_card_perm (hn : 1 ≤ n) :

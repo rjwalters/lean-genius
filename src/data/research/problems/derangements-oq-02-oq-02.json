@@ -29,13 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROVED: sum_fixedPoints_eq_factorial via Burnside's lemma. DerangementsOQ02OQ02.lean has 13 theorems, 2 sorries (card_perm_fixing_point and weighted_partition_identity), 0 axioms. Verified n=1,2,3,4 cases by native_decide.",
+    "progressSummary": "COMPLETE: All proofs done. 0 sorries, 0 axioms. 12 theorems in DerangementsOQ02OQ02.lean",
     "builtItems": [
       "sum_fixedPoints_eq_factorial proved via Burnside's lemma: ∑_σ |Fix(σ)| = |orbits| · |Perm(Fin n)| = 1 · n! = n!",
       "filter_eq_fixedBy_card (private): (filter fun x => σ x = x).card = Fintype.card (fixedBy (Fin n) σ) via Fintype.card_subtype + Equiv.subtypeEquiv",
       "total_fixed_eq_card_perm proved via sum_fixedPoints_eq_factorial + Fintype.card_perm",
       "summary_expected_fixed_one proved via weighted_partition_identity",
-      "4 native_decide verifications (n=1,2,3,4) for sum_fixedPoints and weighted_sum"
+      "4 native_decide verifications (n=1,2,3,4) for sum_fixedPoints and weighted_sum",
+      "card_perm_fixing_point: orbit-stabilizer gives |{σ : σ x = x}| = (n-1)! in DerangementsOQ02OQ02.lean:103",
+      "weighted_partition_identity: fiberwise identity via Finset.sum_fiberwise_of_maps_to in DerangementsOQ02OQ02.lean:196"
     ],
     "insights": [
       "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) directly gives ∑_σ |Fix(σ)| = |Ω| · |G|",
@@ -43,16 +45,15 @@
       "From IsPretransitive + Nonempty: MulAction.pretransitive_iff_unique_quotient_of_nonempty gives Unique Ω → Fintype Ω (via Unique.fintype) → Fintype.card_unique gives 1",
       "Key pattern: (pretransitive_iff... |>.mp inferInstance).some extracts Unique from Nonempty(Unique ...)",
       "card_perm_fixing_point ({σ | σ x = x}.card = (n-1)!) remains sorry; approach via orbit-stabilizer is valid but needs API work to convert stabilizer.card to filter.card",
-      "weighted_partition_identity (∑_k k·C(n,k)·D(n-k) = n!) remains sorry; needs sum-exchange/bijection between perms-with-k-fixed and C(n,k)·D(n-k)"
+      "weighted_partition_identity (∑_k k·C(n,k)·D(n-k) = n!) remains sorry; needs sum-exchange/bijection between perms-with-k-fixed and C(n,k)·D(n-k)",
+      "card_perm_fixing_point proved via orbit-stabilizer: n·|stab(x)| = n! = n·(n-1)!, so |stab(x)| = (n-1)!",
+      "weighted_partition_identity proved via double counting: k·C(n,k)·D(n-k) = k·|A_k| = ∑_{A_k} fp(σ) → ∑_σ fp(σ) = n!"
     ],
     "mathlibGaps": [
       "No direct API for Fintype.card (stabilizer (Perm (Fin n)) x) = (filter fun σ => σ x = x).card",
       "Sum exchange ∑_k k·#{σ:|Fix|=k} = ∑_σ |Fix(σ)| requires Finset manipulation"
     ],
-    "nextSteps": [
-      "Submit card_perm_fixing_point to Aristotle",
-      "Submit weighted_partition_identity to Aristotle"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected",
