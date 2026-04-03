@@ -53,7 +53,7 @@
       "Prime cycle counting: for prime p, permCountByOrder p p = (p-1)! (proved via cycleType characterization)",
       "Small cases: explicit counts for S_1, S_2, S_3"
     ],
-    "axiomCount": 2,
+    "axiomCount": 0,
     "lineCount": 324,
     "assumptions": "2 axioms from Beker [Be25d]: beker_characterization (f_k(n) ≥ (n-1)! implies lcm divisibility) and beker_maximizer_achieves (minimal lcm-divisible k achieves (n-1)!). All other theorems are fully proved, including max_permCount_ge_sub_factorial which uses a direct n-cycle counting argument independent of Beker's results."
   },
@@ -144,7 +144,7 @@
     ],
     "namespace": null,
     "lineCount": 324,
-    "axiomCount": 2,
+    "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 3
   },

@@ -57,8 +57,8 @@
     ],
     "dateAdded": "2025-12-29",
     "millenniumProblem": "yang-mills",
-    "axiomCount": 16,
-    "assumptions": "16 total assumptions: 1 explicit axiom (gaugeTransform) + 15 structure-encoded: CompactSimpleGaugeGroup (compact, connected, simple \u2014 3), GaugeLieAlgebra (bracket_anticomm, bracket_jacobi \u2014 2), FieldStrength (antisymmetric \u2014 1), YangMillsAction (coupling_pos, action_nonneg \u2014 2), WightmanQFT (vacuum_normalized, energy_bounded_below, vacuum_lowest_energy \u2014 3), QuantumYangMillsTheory (nontrivial \u2014 1), Instanton (action_formula \u2014 1), EnergyMomentumTensor (symmetric, energy_density_nonneg \u2014 2). 1 sorry (coupling_controlled in Exploration.lean, Mathlib drift). The Yang-Mills 4D mass gap conjecture remains OPEN.",
+    "axiomCount": 1,
+    "assumptions": "16 total assumptions: 1 explicit axiom (gaugeTransform) + 15 structure-encoded: CompactSimpleGaugeGroup (compact, connected, simple — 3), GaugeLieAlgebra (bracket_anticomm, bracket_jacobi — 2), FieldStrength (antisymmetric — 1), YangMillsAction (coupling_pos, action_nonneg — 2), WightmanQFT (vacuum_normalized, energy_bounded_below, vacuum_lowest_energy — 3), QuantumYangMillsTheory (nontrivial — 1), Instanton (action_formula — 1), EnergyMomentumTensor (symmetric, energy_density_nonneg — 2). 1 sorry (coupling_controlled in Exploration.lean, Mathlib drift). The Yang-Mills 4D mass gap conjecture remains OPEN.",
     "lineCount": 48,
     "mathlib_version": "4.26.0"
   },
@@ -103,7 +103,7 @@
     {
       "id": "gauge-fields",
       "title": "Gauge Fields and Field Strength",
-      "summary": "Defines `GaugeField G \ud835\udd24` (connection 1-form $A_\\mu(x) \\in \\mathfrak{g}$) and `FieldStrength G \ud835\udd24` ($F_{\\mu\\nu}$ with antisymmetry). Proves $F_{\\mu\\mu} = 0$ using module arithmetic ($a = -a \\implies 2a = 0 \\implies a = 0$) and that the antisymmetric tensor has 6 independent components.",
+      "summary": "Defines `GaugeField G 𝔤` (connection 1-form $A_\\mu(x) \\in \\mathfrak{g}$) and `FieldStrength G 𝔤` ($F_{\\mu\\nu}$ with antisymmetry). Proves $F_{\\mu\\mu} = 0$ using module arithmetic ($a = -a \\implies 2a = 0 \\implies a = 0$) and that the antisymmetric tensor has 6 independent components.",
       "mathContext": "$A_\\mu(x) \\in \\mathfrak{g}$. $F_{\\mu\\nu} = -F_{\\nu\\mu}$, $F_{\\mu\\mu} = 0$ (char $\\neq 2$). $\\binom{4}{2} = 6$ independent components.",
       "file": "Proofs/YangMills/Classical.lean",
       "startLine": 43,
@@ -157,7 +157,7 @@
     {
       "id": "millennium",
       "title": "The Millennium Problem Statement",
-      "summary": "Defines `YangMillsMillenniumProblem G \ud835\udd24`: $\\exists$ quantum Yang-Mills theory for gauge group $G$ with a positive mass gap. This is the formal statement of the Clay Mathematics Institute problem.",
+      "summary": "Defines `YangMillsMillenniumProblem G 𝔤`: $\\exists$ quantum Yang-Mills theory for gauge group $G$ with a positive mass gap. This is the formal statement of the Clay Mathematics Institute problem.",
       "mathContext": "$\\exists\\, \\text{QYM} : \\text{QuantumYangMillsTheory}(G, \\mathfrak{g}),\\; \\exists \\Delta > 0,\\; \\text{hasMassGap}(\\text{QYM}, \\Delta)$.",
       "file": "Proofs/YangMills/Quantum.lean",
       "startLine": 111,
@@ -166,7 +166,7 @@
     {
       "id": "partial-results",
       "title": "Known Partial Results",
-      "summary": "States asymptotic freedom ($\\exists b_0 > 0$), lattice Yang-Mills well-definedness ($\\exists Z > 0$), and Wilson area law ($\\exists \\sigma > 0$). These are proved trivially \u2014 the physical content is in the naming, not the formal proofs.",
+      "summary": "States asymptotic freedom ($\\exists b_0 > 0$), lattice Yang-Mills well-definedness ($\\exists Z > 0$), and Wilson area law ($\\exists \\sigma > 0$). These are proved trivially — the physical content is in the naming, not the formal proofs.",
       "mathContext": "$\\exists b_0 > 0$ (asymptotic freedom). $\\exists Z > 0$ (lattice partition function). $\\exists \\sigma > 0$ (string tension).",
       "file": "Proofs/YangMills/Classical.lean",
       "startLine": 260,
@@ -237,10 +237,10 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides infrastructure for the Yang-Mills Millennium Prize Problem across 28,570 lines and 162 parts. The rigorous core (~36% of the file) covers classical gauge theory, lattice gauge theory with proven gauge invariance and bounds, exactly solvable 2D Yang-Mills with Migdal formula, and a proven finite-volume mass gap via transfer matrix / Perron-Frobenius. The remaining ~64% is heuristic exploration of confinement mechanisms, anomalies, SUSY, and deconfinement physics. The 4D mass gap conjecture remains OPEN \u2014 this is infrastructure, not progress toward the solution.",
+    "summary": "This formalization provides infrastructure for the Yang-Mills Millennium Prize Problem across 28,570 lines and 162 parts. The rigorous core (~36% of the file) covers classical gauge theory, lattice gauge theory with proven gauge invariance and bounds, exactly solvable 2D Yang-Mills with Migdal formula, and a proven finite-volume mass gap via transfer matrix / Perron-Frobenius. The remaining ~64% is heuristic exploration of confinement mechanisms, anomalies, SUSY, and deconfinement physics. The 4D mass gap conjecture remains OPEN — this is infrastructure, not progress toward the solution.",
     "implications": "Resolution of the Yang-Mills mass gap problem would put quantum chromodynamics on rigorous mathematical foundations, explaining from first principles why quarks and gluons are confined inside hadrons. It would be the first rigorous construction of a 4D interacting quantum field theory and would likely require fundamentally new mathematical techniques bridging functional analysis, probability theory, and geometric analysis.",
     "openQuestions": [
-      "Can a rigorous quantum Yang-Mills theory be constructed on $\\mathbb{R}^4$? No 4D interacting QFT satisfying the Wightman axioms has ever been built \u2014 the problem remains the central open challenge in mathematical physics.",
+      "Can a rigorous quantum Yang-Mills theory be constructed on $\\mathbb{R}^4$? No 4D interacting QFT satisfying the Wightman axioms has ever been built — the problem remains the central open challenge in mathematical physics.",
       "Can the continuum limit of lattice Yang-Mills theory ($a \\to 0$ with physics fixed) be rigorously controlled? Wilson's lattice formulation works at finite spacing, but the $a \\to 0$ limit is unproven.",
       "Is confinement (area law for Wilson loops) provable from first principles in 4D? In 2D it follows from exact solvability, but the 4D case requires controlling non-perturbative effects.",
       "What is the role of instantons and topological sectors in the mass gap? The $\\theta$-vacuum structure and chiral symmetry breaking suggest deep connections between topology and the mass gap."
@@ -260,7 +260,7 @@
     {
       "targetId": "hilbert-5",
       "relationship": "foundational",
-      "description": "Hilbert's 5th Problem on Lie groups provides the mathematical foundation for gauge groups \u2014 compact simple Lie groups like SU(2) and SU(3) are the gauge groups of the Standard Model."
+      "description": "Hilbert's 5th Problem on Lie groups provides the mathematical foundation for gauge groups — compact simple Lie groups like SU(2) and SU(3) are the gauge groups of the Standard Model."
     },
     {
       "targetId": "brouwer-fixed-point",
@@ -270,7 +270,7 @@
     {
       "targetId": "yang-mills-transfer-matrix",
       "relationship": "has-submodule",
-      "description": "Proven finite-volume mass gap via transfer matrix / Perron-Frobenius \u2014 the strongest rigorous result in this formalization"
+      "description": "Proven finite-volume mass gap via transfer matrix / Perron-Frobenius — the strongest rigorous result in this formalization"
     },
     {
       "targetId": "yang-mills-lattice",
@@ -313,7 +313,7 @@
     ],
     "namespace": "YangMillsMassGap",
     "lineCount": 48,
-    "axiomCount": 16,
+    "axiomCount": 1,
     "theoremCount": 1787,
     "definitionCount": 260
   },
@@ -323,14 +323,14 @@
       "title": "Conservation of Isotopic Spin and Isotopic Gauge Invariance",
       "year": "1954",
       "venue": "Physical Review 96(1), 191-195",
-      "note": "The foundational paper introducing non-abelian gauge theory \u2014 the mathematical framework for the Standard Model of particle physics"
+      "note": "The foundational paper introducing non-abelian gauge theory — the mathematical framework for the Standard Model of particle physics"
     },
     {
       "authors": "Jaffe, Arthur; Witten, Edward",
       "title": "Quantum Yang-Mills Theory",
       "year": "2000",
       "venue": "Clay Mathematics Institute Millennium Problems",
-      "note": "Official problem statement for the $1 million Clay prize \u2014 proving existence of the mass gap"
+      "note": "Official problem statement for the $1 million Clay prize — proving existence of the mass gap"
     }
   ],
   "mainTheorems": [

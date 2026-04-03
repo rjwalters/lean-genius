@@ -55,7 +55,7 @@
       "HasKernel definition and tau_one_iff_kernel proof",
       "erdos_616_summary theorem combining bounds"
     ],
-    "axiomCount": 4,
+    "axiomCount": 2,
     "assumptions": "optimalCoveringBound (existence of an optimal constant t(r) for all r-uniform hypergraphs satisfying the local condition), eht_lower_bound (Erdos-Hajnal-Tuza 1991 lower bound: t(r) >= (3/16)r + 7/8 via explicit constructions), eht_upper_bound (Erdos-Hajnal-Tuza 1991 upper bound: t(r) <= (1/5)r via counting arguments), fractionalCoveringNumber (LP relaxation of covering number allowing fractional vertex weights)",
     "lineCount": 281,
     "relatedProblems": [
@@ -213,7 +213,7 @@
     "opens": [],
     "namespace": "Erdos616",
     "lineCount": 281,
-    "axiomCount": 4,
+    "axiomCount": 2,
     "theoremCount": 3,
     "definitionCount": 11
   },

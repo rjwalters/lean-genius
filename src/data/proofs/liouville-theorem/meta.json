@@ -38,7 +38,7 @@
       "Uncountability of Liouville numbers proved via Baire category theorem (residual + perfect space argument)"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "assumptions": "2 axiom declarations: liouville_approximation_theorem_axiom (algebraic approximation bound), roth_theorem (optimal exponent 2+epsilon). Previously axiomatized results now proved: liouville_uncountable_axiom (via Baire category), liouville_constant_irrational_axiom (via transcendence), liouville_add_rat_axiom (via LiouvilleWith.add_rat), liouville_mul_rat_axiom (via LiouvilleWith.rat_mul).",
     "lineCount": 528,
     "mathlib_version": "4.26.0"
@@ -242,7 +242,7 @@
     ],
     "namespace": "LiouvilleTheorem",
     "lineCount": 528,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 0
   },

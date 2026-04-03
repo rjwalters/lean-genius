@@ -46,8 +46,8 @@
       "CLTStructure: abstract structure capturing the universal CLT pattern across all independence types",
       "Structural comparison theorems for classical vs free vs boolean CLT"
     ],
-    "historicalContext": "Voiculescu introduced free probability in 1985 to study von Neumann algebras of free groups. The Free CLT \u2014 that the semicircle distribution is the universal limit under free convolution \u2014 was the founding result. Speicher (1990) developed the combinatorial theory via non-crossing partitions, and Muraki (2003) classified all five universal independences, each with its own CLT and limit law.",
-    "axiomCount": 9,
+    "historicalContext": "Voiculescu introduced free probability in 1985 to study von Neumann algebras of free groups. The Free CLT — that the semicircle distribution is the universal limit under free convolution — was the founding result. Speicher (1990) developed the combinatorial theory via non-crossing partitions, and Muraki (2003) classified all five universal independences, each with its own CLT and limit law.",
+    "axiomCount": 8,
     "lineCount": 649,
     "assumptions": "9 axioms (free probability not in Mathlib). Core axioms: freeCumulant (3), freeConv + linearization + identity (3), cumulant_determines_distribution, semicircle_cumulant_higher, free_clt. PROVED: freeConv_comm, freeConv_assoc (from cumulant determinism), Rtransform_additive (from cumulant linearity). Rtransform defined as coefficient sequence.",
     "mathlib_version": "4.26.0"
@@ -104,10 +104,10 @@
     {
       "id": "dilation",
       "title": "Dilation and Normalized Free Convolution",
-      "summary": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ \u2014 the distribution of $(a_1 + \\cdots + a_n)/\\sqrt{n}$.",
+      "summary": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ — the distribution of $(a_1 + \\cdots + a_n)/\\sqrt{n}$.",
       "startLine": 372,
       "endLine": 401,
-      "mathContext": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ \u2014 the distribution of $(a_1 + \\cdots + a_n)/\\sqrt{n}$."
+      "mathContext": "Axiomatizes dilation $D_c$ with cumulant scaling $\\kappa_n(D_c(\\mu)) = c^n \\kappa_n(\\mu)$ and R-transform scaling. Defines the normalized free convolution power $D_{1/\\sqrt{n}}(\\mu^{\\boxplus n})$ — the distribution of $(a_1 + \\cdots + a_n)/\\sqrt{n}$."
     },
     {
       "id": "free-clt",
@@ -135,15 +135,15 @@
     }
   ],
   "overview": {
-    "historicalContext": "Free probability was invented by Dan-Virgil Voiculescu in 1985, motivated by problems in operator algebras \u2014 specifically, the isomorphism question for von Neumann algebras of free groups. The Free Central Limit Theorem was the founding result: if $a_1, a_2, \\ldots$ are freely independent, identically distributed non-commutative random variables with mean 0 and variance 1, then the normalized sums $(a_1 + \\cdots + a_n)/\\sqrt{n}$ converge in distribution to the semicircle (Wigner) distribution.\n\nRoland Speicher (1990) developed the combinatorial approach via non-crossing partitions, showing that free cumulants linearize free convolution \u2014 exactly paralleling how classical cumulants linearize classical convolution. Naofumi Muraki (2003) proved the remarkable classification theorem: there are exactly five universal notions of independence (classical, free, Boolean, monotone, anti-monotone), each with its own convolution, cumulants, partition lattice, and CLT limit law.",
+    "historicalContext": "Free probability was invented by Dan-Virgil Voiculescu in 1985, motivated by problems in operator algebras — specifically, the isomorphism question for von Neumann algebras of free groups. The Free Central Limit Theorem was the founding result: if $a_1, a_2, \\ldots$ are freely independent, identically distributed non-commutative random variables with mean 0 and variance 1, then the normalized sums $(a_1 + \\cdots + a_n)/\\sqrt{n}$ converge in distribution to the semicircle (Wigner) distribution.\n\nRoland Speicher (1990) developed the combinatorial approach via non-crossing partitions, showing that free cumulants linearize free convolution — exactly paralleling how classical cumulants linearize classical convolution. Naofumi Muraki (2003) proved the remarkable classification theorem: there are exactly five universal notions of independence (classical, free, Boolean, monotone, anti-monotone), each with its own convolution, cumulants, partition lattice, and CLT limit law.",
     "problemStatement": "**Open Question #4 from the CLT gallery:**\n\nHow does the topological perspective (renormalization flow, fixed points, attractors) extend to non-commutative probability, specifically to Voiculescu's free probability theory?\n\n**Answer:** The topological structure extends perfectly. In free probability:\n- Free convolution $\\boxplus$ replaces classical convolution $*$\n- The R-transform replaces the log-characteristic function\n- The semicircle distribution replaces the Gaussian\n- The semicircle is the unique fixed point and global attractor of the free renormalization flow\n\nMoreover, this pattern extends to all five universal independences classified by Muraki.",
-    "text": "This formalization shows that the topological perspective on the CLT \u2014 the Gaussian as a renormalization fixed point and global attractor \u2014 extends naturally to free (non-commutative) probability, where the semicircle distribution plays the role of the Gaussian. The formalization introduces a CLTStructure abstraction that captures the universal pattern.",
-    "proofStrategy": "The formalization builds the free probability analog in parallel to the classical CLT:\n\n1. **NC distributions** (\u00a71): Moment sequences with extensionality\n2. **Free independence** (\u00a72): Alternating centered products vanish\n3. **Free cumulants** (\u00a73): Via non-crossing partitions, with moment-cumulant bijection\n4. **Free convolution monoid** (\u00a74): Commutativity, associativity, identity, distribution law. Key proved result: `freeConvPow_cumulant` showing $\\kappa_k(\\mu^{\\boxplus n}) = n \\cdot \\kappa_k(\\mu)$\n5. **R-transform** (\u00a75): Linearizes free convolution (Voiculescu's key insight). Proved: `Rtransform_freeConvPow`\n6. **Semicircle** (\u00a76): Only $\\kappa_2 = 1$ nonzero; $R_w(z) = z$\n7. **Free CLT** (\u00a77\u20138): Semicircle is fixed point of $T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$ and global attractor\n8. **Universal structure** (\u00a79): `CLTStructure` abstraction instantiated for free case, with structural verification theorems",
+    "text": "This formalization shows that the topological perspective on the CLT — the Gaussian as a renormalization fixed point and global attractor — extends naturally to free (non-commutative) probability, where the semicircle distribution plays the role of the Gaussian. The formalization introduces a CLTStructure abstraction that captures the universal pattern.",
+    "proofStrategy": "The formalization builds the free probability analog in parallel to the classical CLT:\n\n1. **NC distributions** (§1): Moment sequences with extensionality\n2. **Free independence** (§2): Alternating centered products vanish\n3. **Free cumulants** (§3): Via non-crossing partitions, with moment-cumulant bijection\n4. **Free convolution monoid** (§4): Commutativity, associativity, identity, distribution law. Key proved result: `freeConvPow_cumulant` showing $\\kappa_k(\\mu^{\\boxplus n}) = n \\cdot \\kappa_k(\\mu)$\n5. **R-transform** (§5): Linearizes free convolution (Voiculescu's key insight). Proved: `Rtransform_freeConvPow`\n6. **Semicircle** (§6): Only $\\kappa_2 = 1$ nonzero; $R_w(z) = z$\n7. **Free CLT** (§7–8): Semicircle is fixed point of $T(\\mu) = D_{1/\\sqrt{2}}(\\mu \\boxplus \\mu)$ and global attractor\n8. **Universal structure** (§9): `CLTStructure` abstraction instantiated for free case, with structural verification theorems",
     "keyInsights": [
       "The R-transform linearizes free convolution exactly as the log-characteristic function linearizes classical convolution: R(mu boxplus nu) = R(mu) + R(nu)",
       "The semicircle's R-transform is R_w(z) = z (linear), just as the Gaussian's log-characteristic function is -t^2/2 (quadratic). Both have only kappa_2 nonzero.",
       "The abstract CLTStructure shows the universal pattern: convolution monoid + cumulant linearization + renormalization = CLT. What varies across the five independences is only the partition lattice.",
-      "Free cumulant scaling (freeConvPow_cumulant): kappa_k(mu^{boxplus n}) = n * kappa_k(mu) \u2014 proved by induction from the linearization axiom and the Dirac identity trick",
+      "Free cumulant scaling (freeConvPow_cumulant): kappa_k(mu^{boxplus n}) = n * kappa_k(mu) — proved by induction from the linearization axiom and the Dirac identity trick",
       "Muraki's classification (2003): classical, free, Boolean, monotone, anti-monotone are the ONLY five universal independences. Each has its own limit law (Gaussian, semicircle, Bernoulli, arcsine, arcsine)."
     ],
     "prerequisites": [
@@ -154,7 +154,7 @@
   },
   "conclusion": {
     "summary": "This formalization answers the open question by showing that the topological perspective on the CLT extends naturally to non-commutative probability. The semicircle distribution is to free probability what the Gaussian is to classical probability: the unique fixed point and global attractor of the renormalization flow. The CLTStructure abstraction reveals this as a universal phenomenon across all five types of independence classified by Muraki. Key proved results include freeConvPow_add (distribution law), freeConvPow_cumulant (cumulant scaling), and Rtransform_freeConvPow (R-transform scaling).",
-    "implications": "**Theoretical significance**: The parallel between classical and free CLT is not a coincidence \u2014 it reflects a deep structural pattern. Muraki's classification shows exactly five universal independences, each producing a CLT with the same topological structure (renormalization fixed point + attractor). This suggests that the 'CLT phenomenon' is primarily about convolution monoid structure and cumulant linearization, not about the specific nature of independence.\n\n**Connections**: Free probability connects to random matrix theory (Wigner's semicircle law for eigenvalues of large random matrices), quantum information theory, and operator algebras. The R-transform is the main computational tool in free probability, analogous to Fourier analysis in classical probability.",
+    "implications": "**Theoretical significance**: The parallel between classical and free CLT is not a coincidence — it reflects a deep structural pattern. Muraki's classification shows exactly five universal independences, each producing a CLT with the same topological structure (renormalization fixed point + attractor). This suggests that the 'CLT phenomenon' is primarily about convolution monoid structure and cumulant linearization, not about the specific nature of independence.\n\n**Connections**: Free probability connects to random matrix theory (Wigner's semicircle law for eigenvalues of large random matrices), quantum information theory, and operator algebras. The R-transform is the main computational tool in free probability, analogous to Fourier analysis in classical probability.",
     "openQuestions": [
       "Can the Boolean CLT (convergence to the Bernoulli distribution) be formalized with the same CLTStructure framework?",
       "Can the moment-cumulant formula via non-crossing partitions be constructively implemented to reduce the axiom count?",
@@ -178,7 +178,7 @@
     ],
     "namespace": "FreeCLT",
     "lineCount": 649,
-    "axiomCount": 9,
+    "axiomCount": 8,
     "theoremCount": 22,
     "definitionCount": 9
   },
@@ -231,12 +231,12 @@
     {
       "targetId": "central-limit-theorem-oq-01-oq-01",
       "relationship": "sibling",
-      "description": "Sibling: Gnedenko-Kolmogorov domain of attraction theorem \u2014 characterizes which distributions are attracted to each stable law via regular variation"
+      "description": "Sibling: Gnedenko-Kolmogorov domain of attraction theorem — characterizes which distributions are attracted to each stable law via regular variation"
     },
     {
       "targetId": "central-limit-theorem-oq-01-oq-02",
       "relationship": "sibling",
-      "description": "Sibling: L\u00e9vy-Khintchine representation for infinitely divisible distributions"
+      "description": "Sibling: Lévy-Khintchine representation for infinitely divisible distributions"
     }
   ]
 }

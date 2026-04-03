@@ -62,7 +62,7 @@
       "Two proved theorems (erdos_780_main, erdos_780_summary) wrapping axioms",
       "Companion file Erdos780Aristotle.lean with 10 routine lemmas for automated proof"
     ],
-    "axiomCount": 4,
+    "axiomCount": 2,
     "assumptions": "4 axiom declarations: alon_frankl_lovasz_1986 (n >= threshold implies monochromatic k-matching, deep topological proof), kneser_hypergraph_chromatic_number (chromatic number formula for Kneser hypergraph), tightness_construction (partition coloring avoids k disjoint monochromatic edges), kneser_conjecture (chi(KG(n,r)) = n-2r+2, Lovász 1978). 0 sorries: all 4 small cases proved from kneser_conjecture, erdos_ko_rado proved from EKR Star construction.",
     "lineCount": 221
   },
@@ -210,7 +210,7 @@
     ],
     "namespace": "Erdos780",
     "lineCount": 221,
-    "axiomCount": 4,
+    "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 12
   },
