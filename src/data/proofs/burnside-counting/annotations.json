@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-burnside-header",
+    "proofId": "burnside-counting",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "definition",
+    "title": "Imports and Setup: Group Actions, ZMod, and Colorings",
+    "content": "The file imports `Mathlib.GroupTheory.GroupAction.Quotient` (which contains Burnside's lemma as `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group`), `GroupTheory.SpecificGroups.Cyclic`, `Data.ZMod.Basic` for $\\mathbb{Z}/n\\mathbb{Z}$ arithmetic, and `Data.Fintype.Card` for cardinality. The docstring outlines three goals: state Burnside's lemma, define the cyclic group action on colorings, and count binary 4-necklaces.",
+    "mathContext": "A *coloring* of $n$ positions with $k$ colors is a function $\\text{Fin}\\, n \\to \\text{Fin}\\, k$. The cyclic group $\\mathbb{Z}/n\\mathbb{Z}$ acts on colorings by rotation: $(r \\cdot c)(i) = c(i - r \\pmod{n})$. The orbit-counting theorem says $|\\mathcal{C}/G| = \\frac{1}{|G|} \\sum_{g \\in G} |\\text{Fix}(g)|$, where $\\text{Fix}(g) = \\{c \\mid g \\cdot c = c\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group", "ZMod n", "Fintype.card"],
+    "prerequisites": ["Mathlib.GroupTheory.GroupAction.Quotient", "Mathlib.Data.ZMod.Basic", "Group actions and orbits"]
+  },
+  {
+    "id": "ann-burnside-lemma",
+    "proofId": "burnside-counting",
+    "range": { "startLine": 38, "endLine": 53 },
+    "type": "technique",
+    "title": "burnside_lemma: Direct Wrapping of Mathlib's Orbit-Counting Theorem",
+    "content": "`burnside_lemma` is a one-line proof that delegates entirely to `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group G X` from Mathlib. The theorem is stated in multiplicative form (avoiding division): $\\sum_{g \\in G} |\\text{Fix}(g)| = |X/G| \\times |G|$. The type signature requires `Fintype G`, `Fintype (fixedBy X g)` for all `g`, and `Fintype (orbitRel.Quotient G X)`.",
+    "mathContext": "The equivalence between the standard $|X/G| = \\frac{1}{|G|}\\sum |\\text{Fix}(g)|$ and the Lean form is: multiply both sides by $|G|$. For $G = \\mathbb{Z}/4\\mathbb{Z}$ and $X = \\{0,1\\}^4$: $|\\text{Fix}(0)| + |\\text{Fix}(1)| + |\\text{Fix}(2)| + |\\text{Fix}(3)| = 6 \\times 4 = 24$, verified by $16 + 2 + 4 + 2 = 24$.",
+    "significance": "key",
+    "relatedConcepts": ["MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group", "orbitRel.Quotient", "fixedBy"],
+    "prerequisites": ["Group theory in Mathlib", "Fintype.card", "MulAction API"]
+  },
+  {
+    "id": "ann-burnside-action",
+    "proofId": "burnside-counting",
+    "range": { "startLine": 54, "endLine": 109 },
+    "type": "definition",
+    "title": "Cyclic Action on Colorings: rotatedIndex, rotateColoring, cyclicAddActionOnColorings",
+    "content": "`rotateColoring n k r c` shifts every position by $-r \\pmod{n}$: position $i$ gets color $c((i + n - r) \\bmod n)$. The helper `rotatedIndex n r i` computes the source index $(i + n - r.\\text{val}) \\bmod n$ as a `Fin n`. The `cyclicAddActionOnColorings` instance proves this is an `AddAction (ZMod n) (Coloring n k)`: `zero_vadd` is proved via `rotatedIndex_zero` (a verified theorem); `add_vadd` uses the axiom `rotatedIndex_add` for composition.",
+    "mathContext": "The formula $(i + n - r) \\bmod n$ computes $i - r$ in $\\mathbb{Z}/n\\mathbb{Z}$ using natural number subtraction (avoiding underflow). `zero_vadd`: $(i + n - 0) \\bmod n = i$ (proved by `Nat.add_mod_right` + `Nat.mod_eq_of_lt`). `add_vadd`: rotating by $s$ then by $r$ equals rotating by $r + s$ — this composition law is `rotatedIndex_add` (axiomatized because the modular arithmetic proof requires careful case analysis in natural number arithmetic).",
+    "significance": "key",
+    "relatedConcepts": ["AddAction typeclass", "ZMod n", "rotatedIndex_zero (proved)", "rotatedIndex_add (axiom)"],
+    "prerequisites": ["Nat modular arithmetic", "AddAction typeclass", "ZMod.val_lt"]
+  },
+  {
+    "id": "ann-burnside-concrete-counts",
+    "proofId": "burnside-counting",
+    "range": { "startLine": 110, "endLine": 160 },
+    "type": "insight",
+    "title": "Counting Fixed Points: binary_4_colorings_count and constant_coloring_count",
+    "content": "`binary_4_colorings_count` verifies there are $2^4 = 16$ binary 4-colorings via `Fintype.card_fun` + `norm_num`. `constant_coloring_count` proves `{c : Coloring n k // IsConstant c}` has cardinality $k$: the bijection $f(c) = c(0)$ and inverse $g(v) = (\\lambda i, v)$ are verified explicitly with `Function.LeftInverse` / `RightInverse`. For $n=4, k=2$: constant colorings are $\\{0000, 1111\\}$, giving $|\\text{Fix}(\\text{rot}_1)| = |\\text{Fix}(\\text{rot}_3)| = 2$.",
+    "mathContext": "A coloring is fixed by rotation-by-1 iff $c(i) = c(i+1)$ for all $i$, i.e., $c$ is constant. A coloring is fixed by rotation-by-3 iff $c(i) = c(i-1)$ for all $i$, again constant. So $|\\text{Fix}(1)| = |\\text{Fix}(3)| = k$. For $k=2$: exactly 2 fixed colorings per odd rotation. The `DecidablePred` instance makes `IsConstant` computable via `decidable_of_iff` reduced to $\\forall i, c\\,i = c\\,0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fintype.card_fun", "Equiv.ofBijective", "IsConstant predicate", "DecidablePred"],
+    "prerequisites": ["Fintype API", "Function.LeftInverse / RightInverse", "Fin arithmetic"]
+  },
+  {
+    "id": "ann-burnside-period2",
+    "proofId": "burnside-counting",
+    "range": { "startLine": 161, "endLine": 193 },
+    "type": "technique",
+    "title": "period2_count: Bijection with Fin 2 × Fin 2 for Period-2 Colorings",
+    "content": "`HasPeriod2 c` asserts $c(0) = c(2) \\wedge c(1) = c(3)$ — fixed by rotation-by-2. `period2_count` proves there are 4 such colorings by explicit bijection with $\\text{Fin}\\, 2 \\times \\text{Fin}\\, 2$: map $c \\mapsto (c(0), c(1))$, inverse $(a, b) \\mapsto [a, b, a, b]$. The `fin_cases` tactic and `Matrix.cons_val` lemmas handle all 4 positions. This gives $|\\text{Fix}(\\text{rot}_2)| = 4$.",
+    "mathContext": "The 4 period-2 binary 4-colorings are $\\{0000, 0101, 1010, 1111\\}$. Rotation by 2 maps $i \\mapsto i+2 \\pmod 4$, fixing exactly those $c$ with $c(0)=c(2)$ and $c(1)=c(3)$. The Lean proof uses the vector literal `![a, b, a, b]` for the inverse map, with `simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]` to reduce `Fin 4` cases.",
+    "significance": "supporting",
+    "relatedConcepts": ["HasPeriod2", "Matrix.cons_val_zero", "fin_cases", "Equiv.ofBijective"],
+    "prerequisites": ["Fintype.card_prod", "Matrix.cons_val API", "fin_cases tactic"]
+  },
+  {
+    "id": "ann-burnside-axioms",
+    "proofId": "burnside-counting",
+    "range": { "startLine": 214, "endLine": 255 },
+    "type": "concept",
+    "title": "Five Axioms: Fixed-Point Sum, Setoid, Quotient Fintype, and Necklace Count",
+    "content": "The file closes with 5 axioms. `fixed_point_sum_binary_4` asserts $\\sum_{r \\in \\mathbb{Z}/4\\mathbb{Z}} |\\text{Fix}(r)| = 24$ (i.e., $16+2+4+2$) — this could be proved by `native_decide` since all predicates are decidable. `coloringSetoid n k` and `coloringQuotientFintype n k` axiomatize that the orbit relation is a setoid with a finite quotient type. `binary_necklaces_4` states the final result: 6 distinct necklaces. `IsFixedByRotation` and `ColoringEquiv` are defined as decidable predicates for downstream use.",
+    "mathContext": "The logical chain to eliminate all 5 axioms: (1) `fixed_point_sum_binary_4` by `native_decide`; (2) `coloringSetoid` from `orbitRel.isEquivalence` in Mathlib after connecting the `AddAction` to a `MulAction`; (3) `coloringQuotientFintype` from `Fintype.ofFinset`; (4) `binary_necklaces_4` by combining `burnside_lemma` with the fixed-point sum and $|\\mathbb{Z}/4\\mathbb{Z}| = 4$. The main obstacle is connecting the `AddAction` (additive) to the `MulAction` (multiplicative) API that `burnside_lemma` requires.",
+    "significance": "key",
+    "relatedConcepts": ["IsFixedByRotation", "ColoringEquiv", "orbitRel.isEquivalence", "native_decide", "AddAction vs MulAction"],
+    "prerequisites": ["Setoid API", "Fintype.card", "orbitRel in Mathlib", "burnside_lemma dependency"]
+  }
+]
