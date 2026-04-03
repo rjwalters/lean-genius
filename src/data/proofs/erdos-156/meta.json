@@ -10,7 +10,7 @@
       "Sós"
     ],
     "sourceUrl": "https://erdosproblems.com/156",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos156Problem.lean",
     "tags": [
       "erdos",
@@ -18,8 +18,8 @@
       "additive-combinatorics",
       "extremal-combinatorics"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "formalized",
+    "sorries": 3,
     "erdosNumber": 156,
     "erdosUrl": "https://erdosproblems.com/156",
     "erdosProblemStatus": "open",
@@ -68,8 +68,8 @@
       "Infimum formulation using iInf over all maximal Sidon sets"
     ],
     "axiomCount": 0,
-    "lineCount": 435,
-    "assumptions": "0 axioms, 0 sorries. All theorems fully proved including sidon_sumset_size counting identity via three-way partition and Prod.swap symmetry.",
+    "lineCount": 651,
+    "assumptions": "0 axioms. 3 sorries: diffShadow_ncard_le, midShadow_ncard_le, greedySidon_cube_lower_bound (greedy Sidon N^{1/3} lower bound framework, added in #8603). Core theorems (sidon_sumset_size, greedySidon correctness, greedy step) fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -188,7 +188,7 @@
     ],
     "opens": [],
     "namespace": "Erdos156",
-    "lineCount": 435,
+    "lineCount": 651,
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 10
