@@ -448,7 +448,7 @@ noncomputable def freeRenormalization (μ : NCDistribution) : NCDistribution :=
   dilate (1 / Real.sqrt 2) (freeConv μ μ)
 
 /-- The semicircle is a FIXED POINT of the free renormalization map:
-    T(w) = w.
+    T(w) = w. -/
 
 /-- Structural verification: the free cumulants are preserved under
     renormalization for the semicircle (κ₂ check). -/

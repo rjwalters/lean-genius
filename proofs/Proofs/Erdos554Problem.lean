@@ -57,13 +57,13 @@ def erdosConjecture554 : Prop :=
 /- ## Part III: Known Bounds -/
 
 /-- **Triangle Ramsey lower bound (exponential):**
-    R(K_3; k) >= 2^k for k >= 2.
+    R(K_3; k) >= 2^k for k >= 2. -/
 
 /-- **Odd cycle Ramsey upper bound:**
-    R(C_{2n+1}; k) <= (2n+1)^k for n >= 2, k >= 2.
+    R(C_{2n+1}; k) <= (2n+1)^k for n >= 2, k >= 2. -/
 
 /-- **Odd cycle Ramsey lower bound:**
-    R(C_{2n+1}; k) >= k * (2n) + 1 for k >= 1, n >= 1.
+    R(C_{2n+1}; k) >= k * (2n) + 1 for k >= 1, n >= 1. -/
 
 /- ## Part IV: Classical 2-Color Results -/
 

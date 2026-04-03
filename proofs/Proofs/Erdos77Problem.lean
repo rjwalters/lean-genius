@@ -58,11 +58,11 @@ axiom RamseyNumber : ℕ → ℕ
 ## Small Ramsey Numbers (Known Values)
 -/
 
-/-- R(3) = 6 (classic result, often the first non-trivial Ramsey number computed).
+/-- R(3) = 6 (classic result, often the first non-trivial Ramsey number computed). -/
 
-/-- R(4) = 18 (Greenwood-Gleason 1955).
+/-- R(4) = 18 (Greenwood-Gleason 1955). -/
 
-/-- R(5) is between 43 and 48 (bounds, exact value unknown as of 2024).
+/-- R(5) is between 43 and 48 (bounds, exact value unknown as of 2024). -/
 
 /-
 ## Classical Bounds
@@ -72,7 +72,7 @@ Erdős proved the following bounds using probabilistic and explicit methods.
 
 /-- **Erdős Lower Bound (1947)**: R(k) ≥ 2^{k/2} for k ≥ 3.
 
-    This was one of the first applications of the **probabilistic method**.
+    This was one of the first applications of the **probabilistic method**. -/
 
 /-- **Erdős-Szekeres Upper Bound**: R(k) ≤ 4^{k-1} for k ≥ 2.
 
@@ -125,10 +125,10 @@ After ~90 years with no improvement to the upper bound, major progress was made.
 -/
 
 /-- **Campos-Griffiths-Morris-Sahasrabudhe (2023)**:
-    R(k) ≤ (4 - ε)^k for ε = 1/128.
+    R(k) ≤ (4 - ε)^k for ε = 1/128. -/
 
 /-- **Gupta-Ndiaye-Norin-Wei (2024)**:
-    R(k) ≤ (3.7993)^k.
+    R(k) ≤ (3.7993)^k. -/
 
 /-- Corollary: limsup R(k)^{1/k} ≤ 3.7993. -/
 axiom gnnw_2024_limsup :
@@ -182,7 +182,7 @@ The probabilistic method gives the best known lower bounds.
 -/
 
 /-- **Refined Probabilistic Lower Bound**:
-    R(k) ≥ (1 + o(1)) · k · 2^{k/2} / (e√2).
+    R(k) ≥ (1 + o(1)) · k · 2^{k/2} / (e√2). -/
 
 /-
 ## Erdős's "Evil Spirit" Parable
