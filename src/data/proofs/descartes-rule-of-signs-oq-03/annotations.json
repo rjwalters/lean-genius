@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-dro03-setup",
+    "proofId": "descartes-rule-of-signs-oq-03",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "context",
+    "title": "Imports and Module Overview",
+    "content": "The file imports Mathlib's Descartes Rule of Signs (RuleOfSigns) and Cauchy bound (CauchyBound) libraries, plus the intermediate value theorem from topology. These two ingredients — Descartes' combinatorial bound on root counts and Cauchy's analytic bound on root magnitudes — are combined to produce constructive root localization results. The namespace DescartesConstructiveBounds opens Polynomial to bring standard polynomial API into scope.",
+    "mathContext": "For $p(x) = a_n x^n + \\cdots + a_0 \\in \\mathbb{R}[x]$, two key bounds: (1) $|\\{\\text{positive roots}\\}| \\leq \\operatorname{signVar}(a_0, \\ldots, a_n)$ (Descartes), (2) $|r| < \\operatorname{cauchyBound}(p)$ for any root $r$ (Cauchy). Together they confine roots to a bounded interval with a counted number of positive ones.",
+    "significance": "context",
+    "relatedConcepts": ["Descartes' Rule of Signs", "Cauchy bound", "intermediate value theorem"],
+    "prerequisites": ["polynomial algebra", "real analysis", "Mathlib polynomial library"]
+  },
+  {
+    "id": "ann-dro03-mathlib-bridge",
+    "proofId": "descartes-rule-of-signs-oq-03",
+    "range": { "startLine": 59, "endLine": 73 },
+    "type": "concept",
+    "title": "Mathlib Bridge: Descartes via signVariations",
+    "content": "Part I establishes the connection between the custom formalization and Mathlib's standard API. descartes_upper_bound_via_mathlib is a single-line delegation to Polynomial.roots_countP_pos_le_signVariations, showing that Mathlib already proves the full Descartes bound for ℝ. The bridge lemmas for the zero polynomial and monomials (signVariations = 0) provide base cases used in subsequent proofs. This 'bridge pattern' is a best practice: prove new theorems by reducing to established Mathlib results.",
+    "mathContext": "$\\operatorname{countP}(0 < \\cdot)(p.\\operatorname{roots}) \\leq p.\\operatorname{signVariations}$ — the number of positive roots (counted with multiplicity) is at most the number of sign changes in the coefficient sequence. For a monomial $a \\cdot x^d$, $\\operatorname{signVariations} = 0$, confirming no sign changes in a single-term polynomial.",
+    "significance": "supporting",
+    "relatedConcepts": ["sign variations", "root multiplicity", "Multiset.countP"],
+    "prerequisites": ["Mathlib Polynomial.RuleOfSigns", "multiset counting", "sign type"]
+  },
+  {
+    "id": "ann-dro03-cauchy",
+    "proofId": "descartes-rule-of-signs-oq-03",
+    "range": { "startLine": 81, "endLine": 94 },
+    "type": "concept",
+    "title": "Cauchy Bound: Universal Root Magnitude Bound",
+    "content": "Part II formalizes three properties of the Cauchy bound: (1) any root's norm is strictly less than cauchyBound (real_root_abs_lt_cauchy_bound), (2) cauchyBound ≥ 1 always (cauchy_bound_ge_one), and (3) scaling by a nonzero constant doesn't change the bound (cauchy_bound_scale). The norm used is the nnnorm (non-negative norm), which for real numbers equals the absolute value. The proof of root containment is a direct application of IsRoot.norm_lt_cauchyBound from Mathlib.",
+    "mathContext": "$\\operatorname{cauchyBound}(p) = 1 + \\max_{0 \\leq i < n} \\left|\\frac{a_i}{a_n}\\right|$ for $p = a_n x^n + \\cdots + a_0$. For any root $r$ of $p$: $\\|r\\|_{+} < \\operatorname{cauchyBound}(p)$. The bound is at least 1 since the constant term in the sum is 1.",
+    "significance": "key",
+    "relatedConcepts": ["root magnitude bound", "leading coefficient", "nnnorm"],
+    "prerequisites": ["normed field", "Mathlib CauchyBound", "nonzero polynomial"]
+  },
+  {
+    "id": "ann-dro03-root-localization",
+    "proofId": "descartes-rule-of-signs-oq-03",
+    "range": { "startLine": 102, "endLine": 179 },
+    "type": "technique",
+    "title": "Root Localization: Combining Descartes and Cauchy",
+    "content": "Part III is the technical core. It proves: (1) positive roots lie in (0, cauchyBound) using nnnorm equality for positive reals; (2) if signVariations = 0, no positive roots exist, using the Descartes bound and Multiset.countP_pos for the contradiction; (3) polynomials with all non-negative coefficients have 0 sign variations, proved via a careful analysis of the SignType structure — all non-negative coefficients map to sign 0 or +1, and a list of identical signs has destutter length ≤ 1. The private lemmas build up the SignType analysis step by step.",
+    "mathContext": "Key chain: $\\operatorname{signVariations}(p) = 0 \\Rightarrow \\operatorname{countP}(0 < \\cdot)(p.\\operatorname{roots}) = 0 \\Rightarrow$ no positive roots. For nonneg-coefficient polynomials: all signs are $0$ or $+1$, so the deduplicated sign sequence has length $\\leq 1$, giving $\\operatorname{signVariations} = \\max(0, \\operatorname{length} - 1) = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["SignType", "destutter", "Multiset.countP", "nonneg coefficients"],
+    "prerequisites": ["SignType algebra", "List.destutter", "polynomial sign analysis"]
+  },
+  {
+    "id": "ann-dro03-lagrange",
+    "proofId": "descartes-rule-of-signs-oq-03",
+    "range": { "startLine": 204, "endLine": 222 },
+    "type": "insight",
+    "title": "Lagrange Bound: Tighter Alternative to Cauchy",
+    "content": "Part V defines the Lagrange bound as max(1, Σ|aᵢ/aₙ|) — the sum of absolute coefficient ratios rather than the maximum. While the Cauchy bound takes max|aᵢ/aₙ| and adds 1, the Lagrange bound sums all ratios. For polynomials with many small coefficients, Lagrange is tighter; for polynomials with one large coefficient, they are comparable. The noncomputable def reflects that division over ℝ is nonconstructive. The constant polynomial case is proved directly: no proper terms in the sum, so the bound collapses to max(1, 0) = 1.",
+    "mathContext": "$\\operatorname{lagrangeBound}(p) = \\max\\!\\left(1,\\ \\sum_{i=0}^{n-1} \\frac{|a_i|}{|a_n|}\\right)$. Compare: $\\operatorname{cauchyBound}(p) = 1 + \\max_i |a_i/a_n|$. For $p = x^3 - 6x^2 + 11x - 6$: Cauchy gives $1 + 6 = 7$, Lagrange gives $\\max(1, 6+11+6) = 23$. But for $p = x^3 - 0.1x + 0.01$: Cauchy gives $1 + 0.1 = 1.1$, Lagrange gives $\\max(1, 0.1+0.01) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["root bound comparison", "coefficient ratios", "noncomputable definition"],
+    "prerequisites": ["polynomial leading coefficient", "Finset.sum", "abs over reals"]
+  },
+  {
+    "id": "ann-dro03-neg-subst",
+    "proofId": "descartes-rule-of-signs-oq-03",
+    "range": { "startLine": 231, "endLine": 257 },
+    "type": "definition",
+    "title": "Negative Root Reduction: Symmetry via p(-x)",
+    "content": "Part VI handles negative roots by the substitution x ↦ -x: a negative root r of p corresponds to the positive root -r of negSubst(p) = p(-x). The negative_root_iff theorem formalizes this bijection and negSubst_negSubst proves the involution property. This reduction is elegant: it converts the non-symmetric negative root problem into the already-solved positive root problem. The proof of involution uses comp_assoc and simp to verify that substituting -X twice recovers the identity.",
+    "mathContext": "$r < 0 \\wedge p(r) = 0 \\iff -r > 0 \\wedge p(-(-r)) = 0 \\iff -r > 0 \\wedge \\hat{p}(-r) = 0$ where $\\hat{p}(x) = p(-x)$. Note $\\operatorname{signVariations}(\\hat{p})$ counts the positive-root analog for negative roots of $p$, giving Descartes' rule for negative roots.",
+    "significance": "supporting",
+    "relatedConcepts": ["polynomial composition", "sign change under negation", "involution"],
+    "prerequisites": ["polynomial composition", "eval_comp", "root bijection"]
+  },
+  {
+    "id": "ann-dro03-certificate",
+    "proofId": "descartes-rule-of-signs-oq-03",
+    "range": { "startLine": 318, "endLine": 337 },
+    "type": "concept",
+    "title": "RootCertificate: Packaging Bounds as a Proof Object",
+    "content": "Part VIII introduces a Lean structure RootCertificate that bundles both the Cauchy bound and the Descartes sign-variation bound into a single verified record. The constructor mkRootCertificate builds this certificate using all_roots_in_cauchy_interval and roots_countP_pos_le_signVariations. This 'certificate' pattern is important for program verification: rather than re-proving bounds at each use site, a single certified structure can be passed around. It represents a step toward a 'certified root finder' in Lean 4.",
+    "mathContext": "A $\\operatorname{RootCertificate}(p)$ packages: (1) $p \\neq 0$; (2) a bound $B$ with $|r| < B$ for all roots $r$; (3) a bound $k$ with $\\#\\{r > 0\\} \\leq k$. The canonical certificate uses $B = \\operatorname{cauchyBound}(p)$ and $k = \\operatorname{signVariations}(p)$.",
+    "significance": "key",
+    "relatedConcepts": ["proof certificates", "verified computation", "structure packing"],
+    "prerequisites": ["Lean 4 structures", "forall quantification", "multiset counting"]
+  }
+]
