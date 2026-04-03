@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-1006-orientation-structure",
+    "proofId": "erdos-1006-oq-01",
+    "range": { "startLine": 43, "endLine": 74 },
+    "type": "definition",
+    "title": "GraphOrientation: Encoding Edge Direction",
+    "content": "The GraphOrientation structure captures an orientation of a SimpleGraph G via four fields: `arc u v : Prop` (a directed edge from u to v), `covers` (every undirected edge is assigned a direction), `exclusive` (no edge is directed both ways), and `respects` (every arc corresponds to a graph edge). This avoids Mathlib's `Orientation` type from linear algebra. The three key predicates then build on top: `isAcyclic` uses a rank function (topological sort witness), `hasDependentArc` captures arcs that 'force' a rank ordering, and `isRobustlyAcyclic` combines acyclicity with absence of dependent arcs.",
+    "mathContext": "An orientation $O$ of $G$ is a function $\\mathrm{arc}: V \\times V \\to \\mathrm{Prop}$ with: for each $\\{u,v\\} \\in E(G)$, exactly one of $\\mathrm{arc}(u,v)$ or $\\mathrm{arc}(v,u)$ holds. $O$ is *acyclic* if $\\exists$ rank$: V \\to \\mathbb{N}$ such that $\\mathrm{arc}(u,v) \\Rightarrow \\mathrm{rank}(u) < \\mathrm{rank}(v)$.",
+    "significance": "key",
+    "relatedConcepts": ["topological sort", "DAG", "Hasse diagram", "acyclicity", "directed graph"],
+    "prerequisites": ["SimpleGraph in Mathlib", "Prop-valued predicates in Lean", "topological ordering"]
+  },
+  {
+    "id": "ann-1006-empty-robust",
+    "proofId": "erdos-1006-oq-01",
+    "range": { "startLine": 80, "endLine": 90 },
+    "type": "technique",
+    "title": "Base Case: Empty Graph is Robustly Acyclic",
+    "content": "emptyOrientation sets arc = False (no directed edges). The three structural conditions hold trivially: covers follows because the empty graph has no edges to cover, exclusive is vacuously true, respects is vacuously true. The proof of empty_graph_robust provides the rank function (constantly 0) and notes that the dependent arc condition is vacuously empty. This establishes the base case and demonstrates the Lean proof pattern for trivial orientations.",
+    "mathContext": "For $G = \\bot$ (the empty graph with no edges), any orientation is robustly acyclic since $E(G) = \\emptyset$ means there are no arcs that could form a cycle or be reversed.",
+    "significance": "technical",
+    "relatedConcepts": ["SimpleGraph.bot", "vacuous truth", "empty graph"],
+    "prerequisites": ["GraphOrientation definition", "isRobustlyAcyclic definition"]
+  },
+  {
+    "id": "ann-1006-cover-orientation",
+    "proofId": "erdos-1006-oq-01",
+    "range": { "startLine": 119, "endLine": 167 },
+    "type": "insight",
+    "title": "Cover Orientation: Posets Admit Robust Orientations",
+    "content": "isCoverGraphOf formalizes that G is the Hasse diagram of a PartialOrder on V: edges of G correspond exactly to covering pairs (u ⋖ v or v ⋖ u). The coverOrientation orients by u → v when u ⋖ v (the covering relation). The posetRank function counts |{x : x < a}|, giving a natural topological sort. posetRank_strictMono proves that a < b implies posetRank a < posetRank b (using Finset.card_lt_card). cover_graph_admits_robust then proves robustness: the rank function witnesses acyclicity, and any dependent arc (u,v) would require rank v ≤ rank u — but posetRank_strictMono guarantees rank u < rank v for u ⋖ v.",
+    "mathContext": "For a cover graph $G$ with poset $(V, \\leq)$: orient by $u \\to v$ iff $u \\lessdot v$ (cover relation). The rank $r(a) = |\\{x \\in V : x < a\\}|$ satisfies $a < b \\Rightarrow r(a) < r(b)$, making every arc go from lower to higher rank. No arc can be dependent since the rank strictly separates every covering pair.",
+    "significance": "key",
+    "relatedConcepts": ["partial order", "cover relation", "Hasse diagram", "topological sort", "Finset.card_lt_card"],
+    "prerequisites": ["PartialOrder in Mathlib", "CovBy (⋖) definition", "Fintype and decidability", "posetRank_strictMono"]
+  },
+  {
+    "id": "ann-1006-bipartite-robust",
+    "proofId": "erdos-1006-oq-01",
+    "range": { "startLine": 207, "endLine": 224 },
+    "type": "insight",
+    "title": "Bipartite Orientation is Robustly Acyclic",
+    "content": "bipartiteOrientation_robust is the most technically interesting proved result. The bipartite orientation sets arc(u,v) iff G.Adj u v ∧ side u = false ∧ side v = true (orient false-side to true-side). Acyclicity uses rank: false-side → 0, true-side → 1. For robustness, suppose arc (u,v) is dependent: for all rank functions consistent with other arcs, rank v ≤ rank u. We instantiate the rank function with false→0, true→1. All other arcs go false→true (rank 0 < 1), so this is a valid witness. But side u = false gives rank u = 0 and side v = true gives rank v = 1, so the dependent arc condition would require 1 ≤ 0 — contradiction by simp [hu, hv].",
+    "mathContext": "Bipartite orientation: $\\mathrm{arc}(u,v) \\Leftrightarrow \\{u,v\\} \\in E(G) \\wedge \\mathrm{side}(u)=0 \\wedge \\mathrm{side}(v)=1$. Rank witness: $r(v) = [\\mathrm{side}(v) = 1]$ (0 or 1). Dependence of $(u,v)$ requires $r(v) \\leq r(u)$ for ALL consistent rankings — but $r(u) = 0 < 1 = r(v)$ for all rank functions extending the bipartite structure.",
+    "significance": "key",
+    "relatedConcepts": ["bipartite graph", "2-coloring", "height-2 poset", "rank function", "proof by contradiction"],
+    "prerequisites": ["isBipartite' definition", "bipartiteOrientation construction", "hasDependentArc semantics"]
+  },
+  {
+    "id": "ann-1006-axioms",
+    "proofId": "erdos-1006-oq-01",
+    "range": { "startLine": 240, "endLine": 260 },
+    "type": "context",
+    "title": "Axiomatized Deep Results: The Full Characterization",
+    "content": "Three axioms capture the deep theorems that require nontrivial proof not yet formalized in Lean. cover_graph_characterization (Pretzel-Brightwell 1985) is the main result: robust orientation ↔ cover graph. The other direction (robust → cover graph) is the harder direction: one must show that the transitive closure of any robust orientation is a poset and the orientation is exactly its Hasse diagram. chromatic_lt_girth_implies_robust (Fisher-Fraughnaugh-Langley-West 1997) gives a sufficient condition for being a cover graph via a chromatic-girth bound. nesetril_rodl_counterexample (1978) asserts existence of non-cover graphs of every girth ≥ 3, showing the characterization is non-trivial and girth alone does not imply cover graph structure.",
+    "mathContext": "Pretzel-Brightwell: $G$ admits robust orientation $\\Leftrightarrow$ $G \\cong \\mathrm{Hasse}(P)$ for some poset $P$. Fisher et al.: $\\chi(G) < g(G) \\Rightarrow G$ is a cover graph. Nešetřil-Rödl: $\\forall g \\geq 3, \\exists G$ with $\\mathrm{girth}(G) = g$ and $G$ not a cover graph.",
+    "significance": "key",
+    "relatedConcepts": ["Pretzel-Brightwell theorem", "chromatic number", "girth", "Nešetřil-Rödl", "poset characterization"],
+    "prerequisites": ["isCoverGraph definition", "admitsRobustAcyclicOrientation", "SimpleGraph.Coloring", "SimpleGraph.Walk.length"]
+  }
+]
