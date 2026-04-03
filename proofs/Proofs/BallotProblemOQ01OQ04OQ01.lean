@@ -522,7 +522,172 @@ private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
       (1 :: D).get? q = some 1 ∧
       ((q < p ∧ prefixSum (1 :: D) q ≥ prefixSum (1 :: D) p) ∨
        (p < q ∧ prefixSum (1 :: D) q > prefixSum (1 :: D) p)))).card := by
-  sorry
+  -- Setup: abbreviations for the key sequences
+  set S : List ℤ := 1 :: D
+  set rot := cyclicRotation S p
+  set T := rot.tail
+  have hSlen : S.length = 2 * n + 1 := by simp [S, balanced_length hD.1]
+  have hSsum : S.sum = 1 := by simp [S, balanced_sum_zero hD.1]
+  have hp_le : p ≤ S.length := le_of_lt hp
+  have hrot_ne : rot ≠ [] := by
+    simp only [rot, cyclicRotation, ← List.length_pos_iff_ne_nil,
+               List.length_append, List.length_drop, List.length_take]; omega
+  have hrot_head : rot.get? 0 = some 1 := by
+    simp only [rot]; rw [cyclicRotation_get?_zero hp]; exact hp_one
+  have hrot_cons : rot = 1 :: T := by
+    cases hc : rot with
+    | nil => exact absurd hc hrot_ne
+    | cons a tl =>
+      have ha : a = 1 := by
+        have h := hrot_head
+        simp only [hc, List.get?_zero] at h
+        exact Option.some.inj h
+      simp only [T, hc, List.tail_cons, ha]
+  have hTlen : T.length = S.length - 1 := by
+    simp only [T, rot, cyclicRotation, List.length_tail, List.length_append,
+               List.length_drop, List.length_take]; omega
+  have hT_get : ∀ j, T.get? j = rot.get? (j + 1) := fun j => by
+    cases hc : rot with
+    | nil => exact absurd hc hrot_ne
+    | cons a tl =>
+      have hTeq : T = tl := by simp [T, hc]
+      rw [hTeq, hc, List.get?_cons_succ]
+  have hrot_take : ∀ j, (rot.take (j + 1)).sum = 1 + (T.take j).sum := fun j => by
+    rw [hrot_cons, List.take_succ_cons, List.sum_cons]
+  have hrot_get_nw : ∀ k, k < S.length - p → rot.get? k = S.get? (p + k) := fun k hk => by
+    simp only [rot, cyclicRotation]
+    rw [List.get?_append_left (by simp [List.length_drop]; omega)]
+    rw [List.get?_drop]
+  have htake_get : ∀ i, i < p → (S.take p).get? i = S.get? i := fun i hi => by
+    conv_rhs => rw [show S = S.take p ++ S.drop p from (List.take_append_drop p S).symm]
+    exact (List.get?_append_left
+      (by rw [List.length_take, Nat.min_eq_left hp_le]; exact hi)).symm
+  have hrot_get_w : ∀ k, S.length - p ≤ k → k < S.length → rot.get? k = S.get? (p + k - S.length) :=
+      fun k hklo hkhi => by
+    simp only [rot, cyclicRotation]
+    rw [List.get?_append_right (by simp [List.length_drop]; omega)]
+    simp only [List.length_drop]
+    rw [show k - (S.length - p) = p + k - S.length from by omega]
+    exact htake_get _ (by omega)
+  have hrot_psum : ∀ k ≤ S.length,
+      (rot.take k).sum = if p + k ≤ S.length then (S.take (p + k)).sum - (S.take p).sum
+                         else (S.take (p + k - S.length)).sum + 1 - (S.take p).sum :=
+      fun k hk => by
+    have h := cyclicRotation_prefixSum S p k hp_le hk
+    simp only [hSsum] at h; exact h
+  have hpsp_pos : ∀ q, 1 ≤ q → 1 ≤ prefixSum S q := fun q hq => by
+    simp only [prefixSum, S]
+    obtain ⟨k, rfl⟩ : ∃ k, q = k + 1 := ⟨q - 1, by omega⟩
+    simp only [List.take_succ_cons, List.sum_cons]
+    linarith [hD.2 k]
+  -- Main: bijection between the two Finsets
+  unfold upstepsAboveAxis
+  rw [hTlen]
+  apply Finset.card_bij'
+    (fun j _ => if p + j + 1 < S.length then p + j + 1 else p + j + 1 - S.length)
+    (fun q _ => if p < q then q - p - 1 else q + (S.length - p - 1))
+  · -- Forward membership: j ∈ J → f(j) ∈ F
+    intro j hj
+    simp only [Finset.mem_filter, Finset.mem_range] at hj ⊢
+    obtain ⟨hj_lt, hj_get, hj_psum⟩ := hj
+    by_cases hcase : p + j + 1 < S.length
+    · simp only [hcase, ↓reduceIte]
+      refine ⟨by omega, ?_, Or.inr ⟨by omega, ?_⟩⟩
+      · rw [show p + j + 1 = p + (j + 1) from by omega,
+            ← hrot_get_nw (j + 1) (by omega), ← hT_get]; exact hj_get
+      · simp only [prefixSum]
+        have hrt := hrot_take j
+        have hrp := hrot_psum (j + 1) (by omega)
+        simp only [show p + (j + 1) = p + j + 1 from by omega,
+                   show p + j + 1 ≤ S.length from by omega, ↓reduceIte] at hrp
+        linarith
+    · push_neg at hcase
+      have hjge : S.length - p ≤ j := by
+        by_cases hp0 : p = 0
+        · subst hp0; omega
+        · have hp1 : 1 ≤ p := by omega
+          by_contra hlt; push_neg at hlt
+          have hrt := hrot_take (S.length - p - 1)
+          simp only [show S.length - p - 1 + 1 = S.length - p from by omega] at hrt
+          have hrp := hrot_psum (S.length - p) (by omega)
+          simp only [show p + (S.length - p) = S.length from by omega,
+                     show p + (S.length - p) ≤ S.length from by omega, ↓reduceIte,
+                     List.take_length, hSsum] at hrp
+          have hpsp := hpsp_pos p hp1; simp only [prefixSum] at hpsp
+          have hjeq : j = S.length - p - 1 := by omega
+          rw [hjeq] at hj_psum; linarith
+      simp only [show ¬ (p + j + 1 < S.length) from by omega, ↓reduceIte]
+      refine ⟨by omega, ?_, Or.inl ⟨by omega, ?_⟩⟩
+      · rw [show p + j + 1 - S.length = p + (j + 1) - S.length from by omega,
+            ← hrot_get_w (j + 1) (by omega) (by omega), ← hT_get]; exact hj_get
+      · simp only [prefixSum, show p + j + 1 - S.length = p + (j + 1) - S.length from by omega]
+        have hrt := hrot_take j
+        have hrp := hrot_psum (j + 1) (by omega)
+        simp only [show ¬ (p + (j + 1) ≤ S.length) from by omega, ↓reduceIte] at hrp
+        linarith
+  · -- Backward membership: q ∈ F → g(q) ∈ J
+    intro q hq
+    simp only [Finset.mem_filter, Finset.mem_range] at hq ⊢
+    obtain ⟨hq_lt, hq_get, hq_cond⟩ := hq
+    by_cases hcase : p < q
+    · simp only [hcase, ↓reduceIte]
+      refine ⟨by omega, ?_, ?_⟩
+      · rw [hT_get, show q - p - 1 + 1 = q - p from by omega,
+            hrot_get_nw (q - p) (by omega), show p + (q - p) = q from by omega]; exact hq_get
+      · rcases hq_cond with ⟨_, _⟩ | ⟨_, hps⟩
+        · omega
+        · simp only [prefixSum] at hps
+          have hrt := hrot_take (q - p - 1)
+          simp only [show q - p - 1 + 1 = q - p from by omega] at hrt
+          have hrp := hrot_psum (q - p) (by omega)
+          simp only [show p + (q - p) = q from by omega,
+                     show p + (q - p) ≤ S.length from by omega, ↓reduceIte] at hrp
+          linarith
+    · push_neg at hcase
+      have hqlt : q < p := by rcases hq_cond with ⟨h, _⟩ | ⟨h, _⟩; exact h; omega
+      have hq1 : 1 ≤ q := by
+        by_contra hq0
+        have hq_eq : q = 0 := by omega
+        subst hq_eq
+        rcases hq_cond with ⟨_, hps⟩ | ⟨h, _⟩
+        · simp only [prefixSum, List.take_zero, List.sum_nil] at hps
+          linarith [hpsp_pos p (by omega : 1 ≤ p)]
+        · omega
+      simp only [show ¬ (p < q) from by omega, ↓reduceIte]
+      refine ⟨by omega, ?_, ?_⟩
+      · rw [hT_get, show q + (S.length - p - 1) + 1 = q + (S.length - p) from by omega,
+            hrot_get_w (q + (S.length - p)) (by omega) (by omega),
+            show p + (q + (S.length - p)) - S.length = q from by omega]; exact hq_get
+      · rcases hq_cond with ⟨_, hps⟩ | ⟨h, _⟩
+        · simp only [prefixSum] at hps
+          have hrt := hrot_take (q + (S.length - p - 1))
+          simp only [show q + (S.length - p - 1) + 1 = q + (S.length - p) from by omega] at hrt
+          have hrp := hrot_psum (q + (S.length - p)) (by omega)
+          simp only [show ¬ (p + (q + (S.length - p)) ≤ S.length) from by omega,
+                     ↓reduceIte,
+                     show p + (q + (S.length - p)) - S.length = q from by omega] at hrp
+          linarith
+        · omega
+  · -- Left inverse: g(f(j)) = j
+    intro j hj
+    simp only [Finset.mem_filter, Finset.mem_range] at hj
+    obtain ⟨hj_lt, _, _⟩ := hj
+    by_cases hcase : p + j + 1 < S.length
+    · simp only [hcase, ↓reduceIte, show p < p + j + 1 from by omega, ↓reduceIte]; omega
+    · simp only [show ¬ (p + j + 1 < S.length) from by omega, ↓reduceIte,
+                 show ¬ (p < p + j + 1 - S.length) from by omega, ↓reduceIte]; omega
+  · -- Right inverse: f(g(q)) = q
+    intro q hq
+    simp only [Finset.mem_filter, Finset.mem_range] at hq
+    obtain ⟨hq_lt, _, hq_cond⟩ := hq
+    by_cases hcase : p < q
+    · simp only [hcase, ↓reduceIte,
+                 show p + (q - p - 1) + 1 < S.length from by omega, ↓reduceIte]; omega
+    · push_neg at hcase
+      have hqlt : q < p := by rcases hq_cond with ⟨h, _⟩ | ⟨h, _⟩; exact h; omega
+      simp only [show ¬ (p < q) from by omega, ↓reduceIte,
+                 show ¬ (p + (q + (S.length - p - 1)) + 1 < S.length) from by omega,
+                 ↓reduceIte]; omega
 
 /-- **Key hard lemma**: The n+1 rotations of 1::D at its 1-positions give
     balanced paths with ALL DISTINCT types.
@@ -707,11 +872,142 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
       exact hdistinct (congrArg Fin.val htype_eq)
   · -- SURJECTIVITY: given (D, k), find l with chungFellerMap l = (D, k)
     intro ⟨⟨D, hDyck⟩, ⟨k, hk⟩⟩
-    -- The rotation of 1::D at 1-position that gives type k
-    -- Among the n+1 rotations at 1-positions, types cover {0,...,n} (all distinct)
-    -- So ∃ p with (1::D)[p]=1 and upstepsAboveAxis(cyclicRotation(1::D,p).tail) = k
     simp only [chungFellerMap, Prod.mk.injEq, Subtype.mk.injEq]
-    sorry
+    -- S = 1::D; 1-positions of S form a Finset of size n+1
+    set S : List ℤ := 1 :: D
+    have hSlen : S.length = 2 * n + 1 := by simp [S, balanced_length hDyck.1]
+    set onePosSet := (Finset.range S.length).filter (fun p => S.get? p = some 1)
+    -- onePosSet has card n+1 (S has count 1 = n+1)
+    have honePosCard : onePosSet.card = n + 1 := by
+      have hS_count1 : S.count 1 = n + 1 := by
+        simp only [S, List.count_cons, show (1 : ℤ) == 1 from rfl, ↓reduceIte,
+                   hDyck.1.1]
+      rw [show onePosSet = (Finset.range S.length).filter (fun i => S.get? i = some (1 : ℤ))
+           from rfl, card_filter_getopt_eq_count S 1, hS_count1]
+    -- typeMap: p ↦ upstepsAboveAxis (cyclicRotation S p).tail
+    set typeMap : ℕ → ℕ := fun p => upstepsAboveAxis (cyclicRotation S p).tail
+    -- typeMap values are < n+1 for p ∈ onePosSet
+    have htypeRange : ∀ p ∈ onePosSet, typeMap p < n + 1 := by
+      intro p hp
+      simp only [onePosSet, Finset.mem_filter, Finset.mem_range] at hp
+      have hbal : IsBalancedPath (cyclicRotation S p).tail n := by
+        -- cyclicRotation S p has the same counts as S (it's a permutation)
+        have hrot_perm : cyclicRotation S p ~ S := by
+          unfold cyclicRotation
+          calc S.drop p ++ S.take p ~ S.take p ++ S.drop p := List.perm_append_comm
+            _ = S := List.take_append_drop p S
+        have hrot_ne : cyclicRotation S p ≠ [] := by
+          rw [← List.length_pos_iff_ne_nil]
+          simp [cyclicRotation, List.length_append, List.length_drop, List.length_take]; omega
+        have hrot_head : (cyclicRotation S p).get? 0 = some 1 := by
+          simp only [S]; rw [cyclicRotation_get?_zero hp.1]; exact hp.2
+        -- Head = 1, construct the cons
+        cases hc : cyclicRotation S p with
+        | nil => exact absurd hc hrot_ne
+        | cons a t =>
+          have ha : a = 1 := by
+            have h := hrot_head; simp only [hc, List.get?_zero] at h
+            exact Option.some.inj h
+          simp only [List.tail_cons]
+          refine ⟨?_, ?_, ?_⟩
+          · -- count 1 = n
+            have := hrot_perm.count_eq (a := (1:ℤ))
+            simp only [hc, ha, List.count_cons, ↓reduceIte] at this
+            simp only [S, List.count_cons, show (1:ℤ) == 1 from rfl, ↓reduceIte,
+                       hDyck.1.1] at this
+            omega
+          · -- count (-1) = n
+            have := hrot_perm.count_eq (a := (-1:ℤ))
+            simp only [hc, ha, List.count_cons,
+                       show (1:ℤ) == (-1:ℤ) from by decide, ↓reduceIte] at this
+            simp only [S, List.count_cons, show (1:ℤ) == (-1:ℤ) from by decide,
+                       ↓reduceIte, hDyck.1.2.1] at this
+            exact this
+          · -- elements ±1
+            intro x hx
+            have hx_in : x ∈ cyclicRotation S p := by rw [hc]; exact List.mem_cons_of_mem _ hx
+            have hx_in_S := hrot_perm.subset hx_in
+            exact hDyck.1.2.2 x hx_in_S
+      have := upstepsAboveAxis_le_n hbal
+      omega
+    -- typeMap is injective on onePosSet (from rotation_types_all_distinct)
+    have htypeInj : Set.InjOn typeMap ↑onePosSet := by
+      intro p₁ hp₁ p₂ hp₂ heq
+      simp only [onePosSet, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe,
+                 Finset.mem_filter, Finset.mem_range] at hp₁ hp₂
+      by_contra hne
+      exact absurd heq (rotation_types_all_distinct hn hDyck hp₁.1 hp₂.1 hp₁.2 hp₂.2 hne)
+    -- image of onePosSet under typeMap = Finset.range(n+1)
+    have himage_sub : onePosSet.image typeMap ⊆ Finset.range (n + 1) := by
+      intro x hx
+      simp only [Finset.mem_image, Finset.mem_range] at hx ⊢
+      obtain ⟨p, hp, rfl⟩ := hx
+      exact htypeRange p hp
+    have himage_card : (onePosSet.image typeMap).card = n + 1 := by
+      rw [Finset.card_image_of_injOn htypeInj, honePosCard]
+    have himage_eq : onePosSet.image typeMap = Finset.range (n + 1) :=
+      Finset.eq_of_subset_of_card_le himage_sub (by rw [himage_card, Finset.card_range])
+    -- k is in the image, so ∃ p ∈ onePosSet with typeMap p = k
+    have hk_in : k ∈ onePosSet.image typeMap := by
+      rw [himage_eq]; simp [hk]
+    obtain ⟨p, hp_mem, hp_type⟩ := Finset.mem_image.mp hk_in
+    simp only [onePosSet, Finset.mem_filter, Finset.mem_range] at hp_mem
+    obtain ⟨hp_lt, hp_one⟩ := hp_mem
+    -- Use l = (cyclicRotation S p).tail as the witness
+    set l := (cyclicRotation S p).tail
+    -- Show l is balanced
+    have hrot_perm_p : cyclicRotation S p ~ S := by
+      unfold cyclicRotation
+      calc S.drop p ++ S.take p ~ S.take p ++ S.drop p := List.perm_append_comm
+        _ = S := List.take_append_drop p S
+    have hrot_ne_p : cyclicRotation S p ≠ [] := by
+      rw [← List.length_pos_iff_ne_nil]
+      simp [cyclicRotation, List.length_append, List.length_drop, List.length_take]; omega
+    have hrot_head_p : (cyclicRotation S p).get? 0 = some 1 := by
+      simp only [S]; rw [cyclicRotation_get?_zero hp_lt]; exact hp_one
+    have hrot_starts_1 : cyclicRotation S p = 1 :: l := by
+      cases hc : cyclicRotation S p with
+      | nil => exact absurd hc hrot_ne_p
+      | cons a t =>
+        have ha : a = 1 := by
+          have h := hrot_head_p; simp only [hc, List.get?_zero] at h
+          exact Option.some.inj h
+        simp only [l, hc, List.tail_cons, ha]
+    have hl_balanced : IsBalancedPath l n := by
+      cases hc : cyclicRotation S p with
+      | nil => exact absurd hc hrot_ne_p
+      | cons a t =>
+        have ha : a = 1 := by
+          have h := hrot_head_p; simp only [hc, List.get?_zero] at h
+          exact Option.some.inj h
+        have hTeq : l = t := by simp only [l, hc, List.tail_cons]
+        rw [hTeq]
+        refine ⟨?_, ?_, ?_⟩
+        · have hc1 := hrot_perm_p.count_eq (a := (1:ℤ))
+          simp only [hc, ha, List.count_cons, show (1:ℤ) == 1 from rfl, ↓reduceIte] at hc1
+          simp only [S, List.count_cons, show (1:ℤ) == 1 from rfl, ↓reduceIte,
+                     hDyck.1.1] at hc1
+          omega
+        · have hcm := hrot_perm_p.count_eq (a := (-1:ℤ))
+          simp only [hc, ha, List.count_cons, show (1:ℤ) == (-1:ℤ) from by decide,
+                     ↓reduceIte] at hcm
+          simp only [S, List.count_cons, show (1:ℤ) == (-1:ℤ) from by decide,
+                     ↓reduceIte, hDyck.1.2.1] at hcm
+          exact hcm
+        · intro x hx
+          have hx_in := hrot_perm_p.subset (hc ▸ List.mem_cons_of_mem _ hx)
+          exact hDyck.1.2.2 x hx_in
+    -- Show (chungFellerRot l).tail = D
+    have hl_tail_eq_D : (chungFellerRot l).tail = D := by
+      -- 1::l = cyclicRotation S p = cyclicRotation (1::D) p
+      -- By orbit_same_dyck: chungFellerRot l = chungFellerRot D = 1::D
+      have horbit : (1 : ℤ) :: l = cyclicRotation ((1 : ℤ) :: D) p := hrot_starts_1
+      have hrot_eq : chungFellerRot l = chungFellerRot D :=
+        orbit_same_dyck hl_balanced hDyck.1 horbit hn (le_of_lt hp_lt)
+      rw [hrot_eq, chungFellerRot_dyck_self hn hDyck]
+      simp
+    -- Construct the answer
+    exact ⟨⟨l, hl_balanced⟩, hl_tail_eq_D, hp_type⟩
 
 /-- **Chung-Feller Theorem (uniform distribution)** — proved via bijection.
     Each path type has the same count; combined with `balanced_path_total`,
