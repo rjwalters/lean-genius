@@ -1,0 +1,60 @@
+{
+  "slug": "erdos-604-incomplete-01",
+  "title": "Erdős #604: Pinned Distance Problem — Complete Proof",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\geq 2,\\ \\exists A \\subset \\mathbb{R}^2,\\ |A| = n,\\ \\forall x \\in A,\\ |\\{d(x,y) : y \\in A\\}| \\leq \\frac{n}{\\sqrt{\\log n}}",
+    "plain": "Given n distinct points in the plane, must some point have nearly n distinct distances to other points? The 'pinned' version of the distinct distances problem. OPEN with $500 prize.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-03T04:51:14-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-604-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "discrete-geometry",
+    "distinct-distances",
+    "combinatorial-geometry",
+    "open-problem",
+    "lattice"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-60",
+    "erdos-604"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T04:51:14-07:00",
+  "significance": 7,
+  "tractability": 4
+}

@@ -60,6 +60,7 @@
     "erdos-115",
     "erdos-1155",
     "erdos-1155-oq-01",
+    "erdos-1155-oq-01-oq-01",
     "erdos-1155-oq-01-oq-07"
   ],
   "references": {
@@ -84,6 +85,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01.lean"
     },
     {
+      "path": "Proofs/Erdos1155OQ01OQ01.lean",
+      "filename": "Erdos1155OQ01OQ01.lean",
+      "lineCount": 297,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/Erdos1155OQ01OQ07.lean",
       "filename": "Erdos1155OQ01OQ07.lean",
       "lineCount": 356,
@@ -97,9 +109,9 @@
     {
       "path": "Proofs/Erdos1155Problem.lean",
       "filename": "Erdos1155Problem.lean",
-      "lineCount": 220,
+      "lineCount": 225,
       "theoremCount": 7,
-      "axiomCount": 4,
+      "axiomCount": 6,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

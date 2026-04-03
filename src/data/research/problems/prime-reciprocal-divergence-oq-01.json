@@ -1,0 +1,80 @@
+{
+  "slug": "prime-reciprocal-divergence-oq-01",
+  "title": "Error Term in Prime Reciprocal Sum",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "What is the precise error term in sum_{p<=n} 1/p = ln ln n + M + E(n).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T12:03:52.282Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analytic-number-theory",
+    "mertens-constant",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "prime-reciprocal-divergence",
+    "prime-reciprocal-divergence-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:03:52.282Z",
+  "lastUpdate": "2026-04-03T12:03:52.282Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PrimeReciprocalDivergence.lean",
+      "filename": "PrimeReciprocalDivergence.lean",
+      "lineCount": 165,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeReciprocalDivergence.lean"
+    },
+    {
+      "path": "Proofs/PrimeReciprocalDivergenceOQ03.lean",
+      "filename": "PrimeReciprocalDivergenceOQ03.lean",
+      "lineCount": 389,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeReciprocalDivergenceOQ03.lean"
+    }
+  ]
+}

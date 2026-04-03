@@ -31,20 +31,20 @@
   "knowledge": {
     "progressSummary": "COMPLETE: Proved Dirichlet approximation theorem via Minkowski geometry of numbers (3 axioms, 0 sorries). PR #8752.",
     "builtItems": [
-      "DirichletFromMinkowski.dirichletSet: {v : |v 0| < Q+1 \u2227 |\u03b1*v 0 - v 1| < 1/Q} (Fin 2 \u2192 \u211d)",
+      "DirichletFromMinkowski.dirichletSet: {v : |v 0| < Q+1 ∧ |α*v 0 - v 1| < 1/Q} (Fin 2 → ℝ)",
       "DirichletFromMinkowski.dirichletSet_symmetric: central symmetry proved (0 axioms)",
       "DirichletFromMinkowski.dirichletSet_volume_gt_four: (2:ENNReal)^2 < vol(S) proved",
-      "DirichletFromMinkowski.stdLattice2_coords: integer coordinate extraction from \u2124\u00b2",
+      "DirichletFromMinkowski.stdLattice2_coords: integer coordinate extraction from ℤ²",
       "DirichletFromMinkowski.dirichlet_approximation_from_minkowski: main theorem (3 axioms)",
-      "DirichletFromMinkowski.dirichlet_approximation_corollary: |\u03b1-p/q| < 1/(Q*q)",
+      "DirichletFromMinkowski.dirichlet_approximation_corollary: |α-p/q| < 1/(Q*q)",
       "dirichlet_from_minkowski: top-level export",
       "proofs/Proofs/MinkowskiTheoremOQ02.lean (3 axioms, 0 sorries)",
       "src/data/proofs/minkowski-theorem-oq-02/ (meta.json, annotations.json, index.ts)",
       "PR #8752"
     ],
     "insights": [
-      "Dirichlet parallelogram S={|x|<Q+1, |\u03b1x-y|<1/Q} has area 4(Q+1)/Q > 4 = 2\u00b2",
-      "Shear map T(x,y)=(x,\u03b1x-y) has det=-1, maps S to axis-aligned rectangle, preserves Lebesgue measure",
+      "Dirichlet parallelogram S={|x|<Q+1, |αx-y|<1/Q} has area 4(Q+1)/Q > 4 = 2²",
+      "Shear map T(x,y)=(x,αx-y) has det=-1, maps S to axis-aligned rectangle, preserves Lebesgue measure",
       "Key parity argument: if first coordinate a=0, then |b|<1/Q<1 forces b=0 (integer), contradicting nonzero point",
       "Sign normalization: replace (a,b) with (|a|, sign(a)*b) to get positive first coordinate q",
       "MinkowskiProved.minkowski_integer_lattice_proved (from companion file) directly applicable with n=2",
@@ -57,8 +57,8 @@
     ],
     "nextSteps": [
       "Eliminate axioms using Mathlib convexity (Convex.inter, convex_ball) and Fubini theorem",
-      "Prove simultaneous Dirichlet approximation in \u211d\u207f using n+1 dimensional Minkowski",
-      "Prove Hurwitz theorem (|\u03b1-p/q| < 1/(\u221a5\u00b7q\u00b2) for infinitely many p/q) via stronger Minkowski"
+      "Prove simultaneous Dirichlet approximation in ℝⁿ using n+1 dimensional Minkowski",
+      "Prove Hurwitz theorem (|α-p/q| < 1/(√5·q²) for infinitely many p/q) via stronger Minkowski"
     ]
   },
   "tags": [
@@ -69,7 +69,8 @@
     "wiedijk-100"
   ],
   "relatedProofs": [
-    "minkowski-theorem"
+    "minkowski-theorem",
+    "minkowski-theorem-oq-02"
   ],
   "references": {
     "papers": [],
@@ -79,5 +80,18 @@
   "started": "2026-03-30T21:13:16.758Z",
   "lastUpdate": "2026-03-30T21:13:16.758Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/MinkowskiTheoremOQ02.lean",
+      "filename": "MinkowskiTheoremOQ02.lean",
+      "lineCount": 285,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02.lean"
+    }
+  ]
 }

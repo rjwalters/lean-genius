@@ -1,0 +1,69 @@
+{
+  "slug": "ramanujan-sum-fallacy-oq-02",
+  "title": "Cesaro Sum Formalization in Lean",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "The Cesaro sum of Grandi's series really is 1/2 - how would you define Cesaro summation in Lean.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T12:03:52.282Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analysis",
+    "summability",
+    "cesaro",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "ramanujan-sum-fallacy"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:03:52.282Z",
+  "lastUpdate": "2026-04-03T12:03:52.282Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/RamanujanSumFallacy.lean",
+      "filename": "RamanujanSumFallacy.lean",
+      "lineCount": 283,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamanujanSumFallacy.lean"
+    }
+  ]
+}
