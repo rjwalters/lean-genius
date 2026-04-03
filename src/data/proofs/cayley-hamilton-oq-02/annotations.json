@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-ch02-background",
+    "proofId": "cayley-hamilton-oq-02",
+    "range": { "startLine": 6, "endLine": 50 },
+    "type": "context",
+    "title": "Cayley-Hamilton as Reduction Algorithm: From Theorem to Computation",
+    "content": "The module docstring reframes Cayley-Hamilton as an algorithm rather than just a theorem. The key perspective: since charpoly(A) = 0 (as a matrix equation), the characteristic polynomial acts as a modular reduction — any polynomial in A reduces to one of degree < n. The docstring documents the Mathlib dependencies explicitly, including `Matrix.aeval_self_charpoly` (the Cayley-Hamilton theorem itself), `Polynomial.modByMonic_add_div` (the division algorithm), and `Polynomial.degree_modByMonic_lt` (the degree bound). This is companion to OQ-01 (which uses the tighter minpoly reduction): OQ-02 uses charpoly because it's always available (charpoly is computable from determinant), while minpoly may require eigenvalue computation.",
+    "mathContext": "$p(A) = p(A) \\bmod \\chi_A(A)$: since $\\chi_A(A) = 0$ (Cayley-Hamilton), any polynomial $p(X) = q(X)\\chi_A(X) + r(X)$ evaluates to $p(A) = r(A)$ where $\\deg(r) < n = \\deg(\\chi_A)$. This makes $K[A] = \\text{span}\\{I, A, \\ldots, A^{n-1}\\}$ an $n$-dimensional $K$-algebra.",
+    "significance": "context",
+    "relatedConcepts": ["Cayley-Hamilton theorem", "polynomial modular reduction", "K[A] as n-dimensional algebra", "matrix function computation"],
+    "prerequisites": ["Cayley-Hamilton theorem", "polynomial division algorithm", "matrix polynomial evaluation"]
+  },
+  {
+    "id": "ann-ch02-core-reduction",
+    "proofId": "cayley-hamilton-oq-02",
+    "range": { "startLine": 63, "endLine": 102 },
+    "type": "insight",
+    "title": "Core Reduction Theorem: The Cayley-Hamilton Modular Reduction",
+    "content": "The main theorem `aeval_eq_aeval_modByMonic` has a clean four-step proof: (1) charpoly is monic (from `Matrix.charpoly_monic`); (2) charpoly annihilates A (from `Matrix.aeval_self_charpoly`); (3) division gives f = q*charpoly + r (from `Polynomial.modByMonic_add_div`); (4) apply `aeval A` to both sides via `congr_arg`, then use step (2) to zero out the charpoly term. The proof structure is identical to OQ-01's minpoly version, but uses `A.charpoly` throughout rather than `minpoly K A`. The companion `aeval_sub_mod_eq_zero` reframes this: f - (f mod charpoly) is in the annihilator ideal. This works over any commutative ring R (not just fields), because charpoly is always available over commutative rings.",
+    "mathContext": "Write $f = q \\cdot \\chi_A + r$, then $f(A) = q(A)\\chi_A(A) + r(A) = q(A) \\cdot 0 + r(A) = r(A)$. Over a commutative ring $R$: $R[A] \\cong R[X]/(\\chi_A)$ as $R$-algebras (surjective via evaluation, kernel = $(\\chi_A)$ by Cayley-Hamilton and degree bound).",
+    "significance": "key",
+    "relatedConcepts": ["modByMonic_add_div", "aeval_self_charpoly", "congr_arg", "annihilator ideal"],
+    "prerequisites": ["Matrix.charpoly_monic", "Matrix.aeval_self_charpoly", "Polynomial.modByMonic_add_div"]
+  },
+  {
+    "id": "ann-ch02-power-reduction",
+    "proofId": "cayley-hamilton-oq-02",
+    "range": { "startLine": 135, "endLine": 161 },
+    "type": "insight",
+    "title": "Power Reduction: A^k as a Linear Combination of I, A, ..., A^{n-1}",
+    "content": "The power reduction theorem `power_eq_aeval_mod` is a one-liner from the core theorem: `A^k = aeval A (X^k) = aeval A (X^k mod charpoly(A))`. The `simp [map_pow, aeval_X]` normalizes `aeval A (X^k)` to `A^k`. This establishes that K[A] = span{I, A, ..., A^{n-1}} — every matrix power is a linear combination of the first n powers. For A a 3×3 matrix with charpoly λ³ - tr·λ² + (cofactors)·λ - det·I: A³ = tr·A² - (cofactors)·A + det·I, and A^100 requires reducing X^100 by this 3-term recurrence. `aeval_reduced` provides the existential form: for any f, there exists q of degree < n with aeval A f = aeval A q.",
+    "mathContext": "$A^k = (X^k \\bmod \\chi_A)(A)$. The computation: $X^k = q_k(X) \\cdot \\chi_A(X) + r_k(X)$ where $\\deg(r_k) < n$. Coefficients of $r_k$: given by the linear recurrence from the charpoly coefficients. For $\\chi_A = X^n - \\sum_{i=0}^{n-1} c_i X^i$: $r_k = c_0 r_{k-n} + \\ldots + c_{n-1} r_{k-1}$ (recurrence from Cayley-Hamilton).",
+    "significance": "key",
+    "relatedConcepts": ["matrix power recurrence", "Cayley-Hamilton recurrence", "K[A] basis", "Horner evaluation"],
+    "prerequisites": ["aeval_eq_aeval_modByMonic", "map_pow", "aeval_X", "degree_reduced_lt_charpoly"]
+  },
+  {
+    "id": "ann-ch02-congruence",
+    "proofId": "cayley-hamilton-oq-02",
+    "range": { "startLine": 166, "endLine": 195 },
+    "type": "insight",
+    "title": "Congruence: Evaluation Factors Through R[X]/(charpoly)",
+    "content": "The congruence theorem and ideal closure lemmas establish the algebraic structure: the evaluation map e_A: R[X] → M_n(R) defined by e_A(f) = f(A) factors through the quotient ring R[X]/(charpoly A). The three closure lemmas (congruence, annihilator_add, annihilator_mul_left) show that ker(e_A) = {f : f(A) = 0} is an ideal in R[X] containing (charpoly A). By Cayley-Hamilton, (charpoly A) ⊆ ker(e_A). Combined with degree bounds, over a field we get ker(e_A) = (charpoly A) exactly when minpoly = charpoly (nonderogatory case), and ker(e_A) = (minpoly A) in general.",
+    "mathContext": "The evaluation ring homomorphism $e_A: R[X] \\to M_n(R)$ satisfies $\\ker(e_A) \\supseteq (\\chi_A)$. Over a field $K$: $\\ker(e_A) = (\\mu_A)$ where $\\mu_A$ is the minimal polynomial. The image: $K[A] \\cong K[X]/(\\mu_A)$, with $\\dim_K K[A] = \\deg(\\mu_A) \\leq n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["quotient ring R[X]/(charpoly)", "ring homomorphism", "annihilator ideal", "evaluation map"],
+    "prerequisites": ["aeval_eq_aeval_modByMonic", "map_mul", "map_add"]
+  },
+  {
+    "id": "ann-ch02-partial-sums",
+    "proofId": "cayley-hamilton-oq-02",
+    "range": { "startLine": 201, "endLine": 224 },
+    "type": "insight",
+    "title": "Partial Sum Reduction: Foundation for Matrix Exponential Computation",
+    "content": "The `partial_sum_reduces` theorem is the key step toward computing matrix exponentials: for any power series truncation ∑_{k<N} cₖ Xᵏ, evaluating at A reduces to evaluating the remainder modulo charpoly. For the matrix exponential truncation ∑_{k<N} (tA)^k/k!, this gives: the N-th partial sum of exp(tA) can be expressed as a polynomial in A of degree < n. As N → ∞, this converges (over ℝ or ℂ) to exp(tA) = α₀(t)I + α₁(t)A + ... + α_{n-1}(t)A^{n-1}. The Putzer algorithm computes these αᵢ(t) by solving a triangular system of ODEs derived from the eigenvalues of A.",
+    "mathContext": "$e^{tA} = \\sum_{k=0}^{\\infty} \\frac{(tA)^k}{k!} = \\sum_{j=0}^{n-1} \\alpha_j(t) A^j$ where $\\alpha_j(t) = \\sum_{k=j}^{\\infty} \\frac{t^k}{k!} \\cdot [X^k \\bmod \\chi_A]_j$. The Putzer algorithm: $\\alpha_j(t)$ satisfies $\\dot{\\alpha} = P\\alpha$ where $P$ is the companion matrix of $\\chi_A$.",
+    "significance": "key",
+    "relatedConcepts": ["matrix exponential", "Putzer algorithm", "matrix ODE", "power series convergence"],
+    "prerequisites": ["partial_sum_reduces", "degree_reduced_lt_dim", "Finset.sum", "C polynomial"]
+  },
+  {
+    "id": "ann-ch02-nilpotent-idempotent",
+    "proofId": "cayley-hamilton-oq-02",
+    "range": { "startLine": 253, "endLine": 310 },
+    "type": "context",
+    "title": "Special Cases: Nilpotent and Idempotent Matrices",
+    "content": "The special cases make the abstract theory concrete. Nilpotent matrices (charpoly = X^n): `nilpotent_from_charpoly` directly applies Cayley-Hamilton — if charpoly = X^n, then A^n = aeval A (X^n) = 0. The idempotent section proves `idempotent_power` by induction: A^1 = A, and A^{k+1} = A^k · A = A · A = A by the induction hypothesis plus A² = A. For idempotents, the matrix exponential has a closed form: exp(tA) = I + (e^t - 1)A (since A^k = A for k ≥ 1, so ∑ (tA)^k/k! = I + A ∑_{k≥1} t^k/k! = I + (e^t - 1)A). The 2×2 examples ground the general theory in a concrete, low-dimensional case.",
+    "mathContext": "Nilpotent $A^n = 0$: $e^{tA} = \\sum_{k=0}^{n-1} \\frac{t^k A^k}{k!}$ (series terminates). Idempotent $A^2 = A$: $e^{tA} = I + (e^t - 1)A$ (since $A^k = A$ for $k \\geq 1$). Projection: $e^{tA}$ is a projection onto $\\text{range}(A)$ along $\\ker(A)$, scaled by $e^t$.",
+    "significance": "supporting",
+    "relatedConcepts": ["nilpotent matrix exponential", "idempotent matrix exponential", "projection exponential", "power induction"],
+    "prerequisites": ["nilpotent_from_charpoly", "idempotent_power", "pow_add", "pow_succ"]
+  }
+]
