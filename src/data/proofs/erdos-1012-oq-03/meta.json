@@ -13,10 +13,10 @@
       "tournaments"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 743,
-    "assumptions": "0 axioms. 3 sorries: (1) ghouila_houri (full proof needs longest-path argument ~200 lines), (2) sc_tournament_has_cycle (extract simple cycle from SC walk), (3) tournament_cycle_extendable (S⁺/S⁻ partition argument). Moon-Moser architecture complete modulo these 2 infrastructure lemmas. Rédei fully proved by induction.",
+    "lineCount": 991,
+    "assumptions": "0 axioms. 2 sorries: (1) ghouila_houri (line 300 — full proof needs longest-path argument), (2) directed_hamiltonian_threshold (line 959 — arc-count threshold). sc_tournament_has_cycle, grow_cycle_to_hamiltonian, tournament_cycle_extendable: fully proved. Moon-Moser and Rédei theorems: complete.",
     "dateAdded": "2026-03-30"
   },
   "overview": {
