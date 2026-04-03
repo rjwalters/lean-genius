@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-bezout-instances",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02",
+    "range": { "startLine": 31, "endLine": 37 },
+    "type": "context",
+    "title": "ℤ is Simultaneously UFD and Euclidean Domain",
+    "content": "Two `example` declarations confirm that `ℤ` has both `UniqueFactorizationMonoid ℤ` and `EuclideanDomain ℤ` instances — both discharged by `inferInstance` with zero proof. This illustrates the power of Lean's typeclass system: the abstract algebraic properties of the integers are pre-proved in Mathlib, and any new theorem that needs 'ℤ has unique factorization' gets it for free. The two instances are not independent: `EuclideanDomain ℤ` automatically implies `UniqueFactorizationMonoid ℤ` through the chain, so both `inferInstance` calls resolve via the same path.",
+    "mathContext": "The instance chain: $\\mathbb{Z}$ is a Euclidean domain (Euclidean function $= |\\cdot|$) $\\Rightarrow$ $\\mathbb{Z}$ is a PID (every ideal is principal) $\\Rightarrow$ $\\mathbb{Z}$ is a GCDMonoid $\\Rightarrow$ $\\mathbb{Z}$ is a UFD. This chain is entirely in Mathlib's `Mathlib.RingTheory.EuclideanDomain` and related files.",
+    "significance": "context",
+    "relatedConcepts": ["inferInstance", "typeclass hierarchy", "EuclideanDomain", "UniqueFactorizationMonoid"],
+    "prerequisites": ["ring theory", "Lean typeclass synthesis"]
+  },
+  {
+    "id": "ann-bezout-irred-prime",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02",
+    "range": { "startLine": 39, "endLine": 45 },
+    "type": "theorem",
+    "title": "Irreducible ↔ Prime in Any UFD",
+    "content": "`irreducible_iff_prime_in_ufd` states that in any `UniqueFactorizationMonoid`, the notions of irreducible and prime coincide. In Lean: `Irreducible p` means $p$ is not a unit and $p = ab \\Rightarrow$ $a$ or $b$ is a unit. `Prime p` means $p \\neq 0$, $p$ is not a unit, and $p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$ (Euclid's lemma). The proof wraps `UniqueFactorizationMonoid.irreducible_iff_prime` — a theorem pre-proved in Mathlib. This equivalence distinguishes UFDs from all other domains: in non-UFDs, irreducible need not be prime.",
+    "mathContext": "In $\\mathbb{Z}[\\sqrt{-5}]$: $2$ is irreducible (if $2 = ab$ then one of $|a|^2, |b|^2$ equals 1 or 4 by the norm, forcing a unit), but not prime: $2 \\mid (1+\\sqrt{-5})(1-\\sqrt{-5}) = 6$ yet $2 \\nmid (1 \\pm \\sqrt{-5})$. This non-UFD behavior is why $\\mathbb{Z}[\\sqrt{-5}]$ needs ideal theory. In any UFD, irreducible $\\Rightarrow$ prime follows from the unique factorization itself.",
+    "significance": "key",
+    "relatedConcepts": ["Irreducible", "Prime", "Euclid's lemma", "non-UFD examples", "UniqueFactorizationMonoid.irreducible_iff_prime"],
+    "prerequisites": ["ring theory", "UFD axioms", "Lean Irreducible and Prime definitions"]
+  },
+  {
+    "id": "ann-bezout-factors-exist",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02",
+    "range": { "startLine": 47, "endLine": 54 },
+    "type": "theorem",
+    "title": "Factorization Existence and Completeness",
+    "content": "`factors_exist` packages two Mathlib results into a single theorem: (1) `irreducible_of_factor`: every element in `UniqueFactorizationMonoid.factors a` is irreducible (the factorization contains only irreducibles); (2) `factors_prod`: the product of the factors is associated to `a` (they differ by a unit). The `Associated` relation (`∃ u, IsUnit u, a = u * b`) is needed because factorizations in rings like $\\mathbb{Z}$ are only unique up to sign: $6 = 2 \\cdot 3 = (-2) \\cdot (-3)$. The theorem requires `CancelCommMonoidWithZero` (cancellative monoid) for uniqueness.",
+    "mathContext": "In $\\mathbb{Z}$: `factors 12 = [2, 2, 3]` (multiset), `factors_prod`: $2 \\cdot 2 \\cdot 3 = 12$ (associated). In $k[x]$: `factors (x^2 - 1) = [x-1, x+1]` over $k$ with $\\text{char}(k) \\neq 2$. The uniqueness part (not stated here) says the multiset of factors is unique up to associates and permutation — this is `UniqueFactorizationMonoid.factors_unique`.",
+    "significance": "key",
+    "relatedConcepts": ["UniqueFactorizationMonoid.factors", "Associated", "irreducible_of_factor", "factors_prod", "CancelCommMonoidWithZero"],
+    "prerequisites": ["UFD theory", "multiset", "units and associates"]
+  },
+  {
+    "id": "ann-bezout-gcd",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "theorem",
+    "title": "GCD Existence: Universal Property in ℤ",
+    "content": "`int_gcd_exists` proves the universal property of the GCD in $\\mathbb{Z}$: there exists $g = \\gcd(a, b)$ such that $g \\mid a$, $g \\mid b$, and every common divisor $d$ satisfies $d \\mid g$ (so $g$ is the 'greatest' in divisibility order). The proof uses `Int.gcd_dvd_left`, `Int.gcd_dvd_right`, and `Int.dvd_gcd` from Mathlib. Note: `Int.gcd : ℤ → ℤ → ℕ` returns a natural number; the proof casts appropriately. This is weaker than Bézout's identity (which gives $g = ax + by$ explicitly), but the divisibility characterization is the algebraically clean form.",
+    "mathContext": "GCD universal property: $g = \\gcd(a,b)$ iff $g \\mid a$, $g \\mid b$, and $\\forall d$: $d \\mid a \\land d \\mid b \\Rightarrow d \\mid g$. In $\\mathbb{Z}$, this is equivalent to $g = |ax + by|$ for some $x, y$ (Bézout). The GCD is unique up to sign ($\\gcd(a,b) = \\gcd(a,b) \\cdot (-1) \\cdot (-1)$); Lean's `Int.gcd` returns the nonneg representative.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.gcd", "GCD universal property", "Bézout's identity", "divisibility order"],
+    "prerequisites": ["integer arithmetic", "divisibility", "GCD theory"]
+  }
+]

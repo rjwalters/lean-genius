@@ -1,1 +1,46 @@
-[]
+[
+  {
+    "id": "r-uniform-hypergraph",
+    "line": 25,
+    "type": "definition",
+    "title": "r-Uniform Hypergraph Structure",
+    "body": "`RUniformHypergraph V r` defines an $r$-uniform hypergraph: a collection of `edges` (Finsets of vertices) where every edge has exactly $r$ elements (`uniform : ∀ e ∈ edges, e.card = r`). For $r = 2$, this recovers ordinary undirected graphs (edges are 2-element sets). For $r = 3$, edges are triangles (3-element subsets). The `edges : Set (Finset V)` type allows infinitely many edges while `Finset V` ensures each edge is finite.",
+    "mathContext": "A hypergraph is $r$-uniform if every hyperedge contains exactly $r$ vertices. This is the most studied class of hypergraphs in combinatorics. Complete $r$-uniform hypergraphs $K_n^r$ (all $r$-element subsets of $[n]$) play the role of $K_n$ in hypergraph theory. Steiner systems $S(t, k, n)$ are $k$-uniform hypergraphs with additional regularity conditions on $t$-element subsets.",
+    "significance": "The foundation for the hypergraph Euler tour question. The uniform structure (fixed edge size $r$) is what enables degree-based conditions: the number of edges through each vertex is meaningful precisely because each edge contributes the same 'amount' to the degree.",
+    "relatedConcepts": ["hypergraph", "uniform-hypergraph", "Finset", "graph-generalization"],
+    "prerequisites": ["Set and Finset in Lean", "graph theory basics"]
+  },
+  {
+    "id": "hyper-degree-def",
+    "line": 30,
+    "type": "definition",
+    "title": "Vertex Degree in a Hypergraph",
+    "body": "`hyperDegree H v` counts the number of edges in hypergraph `H` that contain vertex `v`. The implementation uses `Finset.univ.filter` over all Finsets to count those in `H.edges` containing `v`. The `[Fintype V]` constraint requires finitely many vertices. `hyperDegree` is `noncomputable` because `H.edges` is a `Set` (not `Finset`), making the cardinality computation classical.",
+    "mathContext": "For $r = 2$, `hyperDegree H v` equals the usual graph degree (number of edges incident to $v$). For $r$-uniform hypergraphs, the handshaking lemma generalizes: $\\sum_v \\text{deg}(v) = r \\cdot |E|$. A necessary condition for an Euler tour in an $r$-uniform hypergraph is that $(r-1) \\mid \\text{deg}(v)$ for all vertices $v$ (not just $2 \\mid \\text{deg}(v)$ as in the graph case).",
+    "significance": "The key numerical invariant for the Euler tour question. The NP-completeness result (Lonc-Naroski) shows that satisfying the degree condition is necessary but not sufficient for $r \\geq 3$, in sharp contrast to the graph case.",
+    "relatedConcepts": ["degree-condition", "handshaking-lemma", "Finset.filter", "Fintype"],
+    "prerequisites": ["RUniformHypergraph", "Finset operations", "Fintype typeclass"]
+  },
+  {
+    "id": "infinite-graph-def",
+    "line": 43,
+    "type": "definition",
+    "title": "Infinite Graph via Adjacency Relation",
+    "body": "`InfiniteGraph V` represents an undirected graph (possibly infinite) on vertex type `V` via a symmetric, loopless adjacency relation `adj : V → V → Prop`. Unlike Mathlib's `SimpleGraph`, which uses `Finset`-based neighborhoods, `InfiniteGraph` uses a propositional relation, allowing vertices of infinite degree. The three fields `adj`, `symm`, `loopless` encode the standard undirected, simple graph axioms.",
+    "mathContext": "Infinite graph theory studies graphs with countably or uncountably many vertices/edges. The Erdős-Grünwald-Weiszfeld theorem applies to *countable* graphs (V = ℕ or any countable type). For uncountable graphs, Euler path theory is much harder — even connectedness is not well-behaved. The `Prop`-valued adjacency avoids computational issues with infinite neighborhoods.",
+    "significance": "The foundation for infinite Euler path questions. Using `Prop` rather than `Finset` for edges allows vertices of infinite degree, which are essential for the non-locally-finite case of the Erdős-Grünwald-Weiszfeld theorem.",
+    "relatedConcepts": ["SimpleGraph", "adjacency-relation", "locally-finite-graph", "Erdos-Grunwald-Weiszfeld"],
+    "prerequisites": ["graph theory", "Prop vs Finset in Lean", "infinite structures"]
+  },
+  {
+    "id": "infinite-degree-def",
+    "line": 49,
+    "type": "definition",
+    "title": "Vertex Degree in ℕ∞ for Infinite Graphs",
+    "body": "`infiniteDegree G v` computes the degree of vertex `v` in `InfiniteGraph G`, valued in `ℕ∞` (extended naturals, `WithTop ℕ`). The implementation uses `Set.toFinite {w | G.adj v w}` to get a finiteness proof (classical), then `.toFinset.card` to count neighbors. For locally finite graphs (every neighborhood is finite), this gives a finite natural number. For infinite-degree vertices, the finiteness proof would fail — the `[DecidableEq V]` constraint and classical reasoning allow the definition but give potentially incorrect values for infinite-degree vertices.",
+    "mathContext": "The extended naturals `ℕ∞ = ℕ ∪ {∞}` (Lean: `ℕ∞` or `WithTop ℕ`) are the right codomain for degree in infinite graphs. The degree of a vertex is $\\infty$ iff it has infinitely many neighbors. The Erdős-Grünwald-Weiszfeld theorem distinguishes between locally finite graphs (all degrees finite) and non-locally-finite graphs (some degree is $\\infty$), with different Euler path conditions for each case.",
+    "significance": "Enables stating the Erdős-Grünwald-Weiszfeld theorem in full generality. The ℕ∞ type is essential: using ℕ would force truncation of infinite degrees, losing information needed for the theorem's conditions.",
+    "relatedConcepts": ["WithTop", "ℕ∞", "locally-finite-graph", "Set.toFinite", "DecidableEq"],
+    "prerequisites": ["InfiniteGraph", "WithTop ℕ in Mathlib", "Set.toFinite API"]
+  }
+]

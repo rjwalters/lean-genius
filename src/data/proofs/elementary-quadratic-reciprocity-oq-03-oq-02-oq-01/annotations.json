@@ -1,1 +1,46 @@
-[]
+[
+  {
+    "id": "kronecker0-mul-theorem",
+    "line": 54,
+    "type": "theorem",
+    "title": "kronecker0 Multiplicativity: (ab/0) = (a/0)(b/0)",
+    "body": "`kronecker0_mul_of_ne_zero` proves that `kronecker0 (a*b) = kronecker0 a * kronecker0 b` for $ab \\neq 0$. `kronecker0 a` is the unit indicator: 1 if $|a| = 1$ (i.e., $a = \\pm 1$), else 0. Multiplicativity says: $|ab| = 1$ iff $|a| = |b| = 1$ — exactly when both factors are units. The proof uses `by_cases` on whether $a$ and $b$ are $\\pm 1$, with `simp_all` handling the case arithmetic. The `a ≠ 0` and `b ≠ 0` hypotheses prevent the degenerate case where `kronecker0 0 = 1` would break the product rule.",
+    "mathContext": "`kronecker0` is the Kronecker symbol at modulus 0: $\\left(\\frac{a}{0}\\right) = [|a| = 1]$ (1 if $a$ is a unit in $\\mathbb{Z}$, else 0). This is needed to make the Kronecker symbol well-defined at $n = 0$, unlike the Jacobi symbol which requires $n > 0$ and odd. The units in $\\mathbb{Z}$ are $\\{\\pm 1\\}$, so `kronecker0 a = 1` iff `a = 1 ∨ a = -1`.",
+    "significance": "Auxiliary lemma for the main multiplicativity theorem. Handles the n=0 case in kronecker_mul_left_proved. The unit indicator function is multiplicative on nonzero integers — this is the first step in the case analysis.",
+    "relatedConcepts": ["kronecker0", "unit-indicator", "kronecker_mul_left_proved"],
+    "prerequisites": ["kronecker0 definition", "units in ℤ", "simp_all"]
+  },
+  {
+    "id": "kronecker-neg1-mul-theorem",
+    "line": 89,
+    "type": "theorem",
+    "title": "Sign Character Multiplicativity: sgn(ab) = sgn(a)·sgn(b)",
+    "body": "`kroneckerNeg1_mul_of_ne_zero` proves $\\text{sgn}(ab) = \\text{sgn}(a) \\cdot \\text{sgn}(b)$ for $ab \\neq 0$, where `kroneckerNeg1` is the sign character ($-1$ if $a < 0$, $1$ if $a > 0$). The proof uses four cases: (neg × neg = pos), (neg × pos = neg), (pos × neg = neg), (pos × pos = pos), with `linarith` and `Int.mul_pos_of_neg_of_neg` handling each. This is the sign homomorphism property of $\\text{sgn}: \\mathbb{Z}^* \\to \\{\\pm 1\\}$.",
+    "mathContext": "`kroneckerNeg1` corresponds to the Kronecker symbol at modulus $-1$: $\\left(\\frac{a}{-1}\\right) = \\text{sgn}(a)$ (in the usual convention where $\\left(\\frac{\\cdot}{-1}\\right)$ picks up the sign for negative moduli). The sign character is the unique nontrivial character of $\\mathbb{R}^*$, and its restriction to $\\mathbb{Z}^*$ is $\\{\\pm 1\\}$-valued with this product rule.",
+    "significance": "Critical lemma for both main multiplicativity theorems. The sign factor appears whenever the Kronecker modulus is negative, and separating it via `kroneckerNeg1_mul_of_ne_zero` is the key that makes the second-argument proof tractable.",
+    "relatedConcepts": ["kroneckerNeg1", "sign-character", "kronecker_mul_right_proved", "Int.sign"],
+    "prerequisites": ["kroneckerNeg1 definition", "integer sign properties", "linarith"]
+  },
+  {
+    "id": "kronecker-mul-left-proved",
+    "line": 126,
+    "type": "theorem",
+    "title": "First-Argument Multiplicativity: (ab/n) = (a/n)(b/n)",
+    "body": "`kronecker_mul_left_proved` proves `kronecker (a*b) n = kronecker a n * kronecker b n` for `a*b ≠ 0`. The proof unfolds the `kronecker` definition and does `split_ifs` on `n`: (1) `n = 0`: `kronecker0_mul_of_ne_zero`; (2) `n = -1`: `kroneckerNeg1_mul_of_ne_zero`; (3) `n = 1`: both sides are 1; (4) general `n`: unfolds to `kroneckerNeg1 (sign n) * jacobiSym a |n| * ...` and uses `jacobiSym.mul_left` for the Jacobi part + `kroneckerNeg1_mul_of_ne_zero` for the sign part. This proves the axiom `kronecker_mul_left` from the parent proof OQ03OQ02.",
+    "mathContext": "The Kronecker symbol definition in Mathlib: for general $n \\neq 0, \\pm 1$, `kronecker a n = kroneckerNeg1 (sign n) * jacobiSym a |n|`. So `kronecker (ab) n = kroneckerNeg1(sign(n)) * jacobiSym(ab, |n|) = kroneckerNeg1(sign n) * jacobiSym(a,|n|) * jacobiSym(b,|n|)` (using `jacobiSym.mul_left`) = `kronecker a n * kronecker b n`. The sign factor `kroneckerNeg1(sign n)` cancels correctly because it appears once in the product.",
+    "significance": "The main first-argument multiplicativity theorem. Together with `kronecker_mul_right_proved`, establishes the complete multiplicativity of the Kronecker symbol, its most important algebraic property for number-theoretic applications.",
+    "relatedConcepts": ["jacobiSym.mul_left", "kronecker-definition", "split_ifs", "parent-proof-OQ03OQ02"],
+    "prerequisites": ["kronecker0_mul_of_ne_zero", "kroneckerNeg1_mul_of_ne_zero", "jacobiSym.mul_left", "kronecker unfold"]
+  },
+  {
+    "id": "kronecker-mul-right-proved",
+    "line": 194,
+    "type": "theorem",
+    "title": "Second-Argument Multiplicativity: (a/mn) = (a/m)(a/n)",
+    "body": "`kronecker_mul_right_proved` proves `kronecker a (m*n) = kronecker a m * kronecker a n` for `m*n ≠ 0`. This is harder than first-argument multiplicativity because the sign factor $\\text{sgn}(m \\cdot n) = \\text{sgn}(m) \\cdot \\text{sgn}(n)$ must be correctly distributed. The proof cases on `m = 1`, `m = -1`, `n = 1`, `n = -1`, then general $m, n$. For the general case, it uses `kronecker_neg_modulus` (which says `kronecker a (-n) = kroneckerNeg1 a * kronecker a n`) and `jacobiSym.mul_right` for the Jacobi part, then handles the four sign quadrants ($m > 0, n > 0$), etc.",
+    "mathContext": "For odd positive $m$ and $n$ (the Jacobi case), second-argument multiplicativity is `jacobiSym.mul_right` in Mathlib. The Kronecker extension requires handling the signs: $\\left(\\frac{a}{-n}\\right) = \\text{sgn}(a) \\cdot \\left(\\frac{a}{n}\\right)$ (from `kronecker_neg_modulus`). So for $m < 0$, $n < 0$: $\\left(\\frac{a}{mn}\\right) = \\left(\\frac{a}{|m|n}\\right) = \\left(\\frac{a}{|m|}\\right)\\left(\\frac{a}{n}\\right)$, and the sign factors for $m < 0$ and $n < 0$ cancel: $\\text{sgn}(a) \\cdot \\text{sgn}(a) = 1$.",
+    "significance": "The more complex of the two main theorems. Establishing both left and right multiplicativity completes the proof that the Kronecker symbol is a completely multiplicative arithmetic function — the key property for its use in Dirichlet characters and class field theory.",
+    "relatedConcepts": ["jacobiSym.mul_right", "kronecker_neg_modulus", "complete-multiplicativity", "Dirichlet-character"],
+    "prerequisites": ["kroneckerNeg1_mul_of_ne_zero", "jacobiSym.mul_right", "kronecker_neg_modulus", "kronecker_mul_left_proved"]
+  }
+]

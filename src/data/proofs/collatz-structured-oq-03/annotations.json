@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "id": "stopping-time-def",
+    "line": 47,
+    "type": "definition",
+    "title": "Stopping Time via Nat.find",
+    "body": "`stoppingTime n` is the minimum number of Collatz steps for `n` to reach 1, using `Nat.find` to extract the witness from the existential `reachesOne n`. The `if h : reachesOne n ... else 0` guard handles the case where `n` might not terminate (returning 0 as a sentinel). Since `Nat.find` requires the predicate to be decidable and `reachesOne` is not computably decidable (it involves an unbounded search), `stoppingTime` is marked `noncomputable`.",
+    "mathContext": "In classical mathematics, $\\sigma(n) = \\min\\{k \\geq 0 : \\text{collatzIter}^k(n) = 1\\}$ if the set is nonempty, else undefined. Lean's `Nat.find h` extracts this minimum from the proof `h : ∃ k, collatzIter k n = 1`. The `Nat.find_eq_zero` and `Nat.find_eq_iff` lemmas used in the subsequent theorems give computational access to this minimum.",
+    "significance": "The core definition. Using `Nat.find` is the standard Lean/Mathlib pattern for 'minimum witness' definitions in classical logic. The noncomputability is fundamental: no algorithm is known to compute whether an arbitrary n reaches 1.",
+    "relatedConcepts": ["Nat.find", "reachesOne", "collatz-conjecture", "stopping-time"],
+    "prerequisites": ["reachesOne definition", "Nat.find API", "classical logic in Lean"]
+  },
+  {
+    "id": "stopping-time-one",
+    "line": 51,
+    "type": "theorem",
+    "title": "σ(1) = 0: The Fixed Point",
+    "body": "`stoppingTime_one : stoppingTime 1 = 0` proves that 1 reaches 1 in 0 steps. The proof unfolds `stoppingTime`, uses `simp` to reduce the condition `reachesOne 1` (which holds with witness k=0 since collatzIter 0 1 = 1), and then applies `Nat.find_eq_zero.mpr rfl` to identify the minimum as 0. 1 is the fixed point of the Collatz iteration — the only n where σ(n) = 0.",
+    "mathContext": "σ(1) = 0 because 1 is already the terminal value. The Collatz map sends 1 → (3·1+1)/2 = 2 (if we apply it), but the stopping condition is *reaching* 1, not *leaving* 1. The iteration halts when the value equals 1, so 1 has stopping time 0 by definition.",
+    "significance": "Base case for stopping time. Combined with σ(2) = 1, these are the two concrete verified values in the file, confirming the definitions are correct against expected outputs.",
+    "relatedConcepts": ["Nat.find_eq_zero", "collatzIter", "fixed-point"],
+    "prerequisites": ["stoppingTime definition", "Nat.find_eq_zero lemma"]
+  },
+  {
+    "id": "avg-stopping-time-def",
+    "line": 75,
+    "type": "definition",
+    "title": "Average Stopping Time S(N)",
+    "body": "`avgStoppingTime N` computes the average Collatz stopping time over 1..N as a real number: `(totalStoppingTime N : ℝ) / N` (with a special case 0 for N = 0). The cast `(totalStoppingTime N : ℝ)` lifts the natural number sum to ℝ for division. The division by `(N : ℝ)` avoids Lean's integer division. This is the central quantity for the open question: `avgStoppingTimeAsymptotic` asks whether `avgStoppingTime N / Real.log N` converges.",
+    "mathContext": "$S(N) = \\frac{1}{N}\\sum_{n=1}^N \\sigma(n)$ is the arithmetic mean of stopping times. If all $\\sigma(n) < \\infty$ (full conjecture), S(N) is well-defined for all N. With only the Terras density axiom (density 1 of finite stopping times), S(N) may be influenced by a density-0 set of potentially divergent orbits — but `stoppingTime` returns 0 for these, making S(N) always defined.",
+    "significance": "The subject of the main open question. The asymptotic behavior S(N) ~ c·log N is what the file axiomatizes in `avgStoppingTimeAsymptotic`. This definition is the bridge between the individual stopping times and the statistical question.",
+    "relatedConcepts": ["totalStoppingTime", "avgStoppingTimeAsymptotic", "logarithmicGrowth", "heuristicConstant"],
+    "prerequisites": ["stoppingTime definition", "totalStoppingTime", "Real.log"]
+  },
+  {
+    "id": "heuristic-constant-def",
+    "line": 89,
+    "type": "definition",
+    "title": "Heuristic Constant c = 1/log₂(4/3)",
+    "body": "`heuristicConstant = 1 / (Real.log (4/3) / Real.log 2)` encodes the probabilistic prediction for the Collatz stopping time constant. The formula $1/\\log_2(4/3)$ arises from modeling each Collatz step as an independent Bernoulli trial: with probability 1/2 the number halves (multiplies by 1/2) and with probability 1/2 the odd step multiplies by 3/2 (accounting for immediate halving of $3n+1$). The geometric mean factor per step is $(1/2 \\cdot 3/2)^{1/2} = (3/4)^{1/2}$, giving a log-decrease of $\\log(4/3)/2$ per step and hence ~$1/\\log_2(4/3) \\approx 2.41$ steps per bit on average.",
+    "mathContext": "Numerically: $\\log_2(4/3) = \\log_2 4 - \\log_2 3 \\approx 2 - 1.585 = 0.415$, so $c \\approx 2.41$ for odd-steps count. For total iterations (including even steps), the effective constant is $\\approx 6.95$. In `heuristicGrowthRate`, the comparison is $|S(N)/\\log N - c/\\log 2| < \\varepsilon$, converting between natural log and log₂.",
+    "significance": "The conjectured limit $\\lim_{N\\to\\infty} S(N)/\\log N = c/\\log 2$ would confirm that the probabilistic model is asymptotically exact — a remarkable instance of a random-walk heuristic predicting a deterministic arithmetic average.",
+    "relatedConcepts": ["heuristicGrowthRate", "exactConstant", "Galton-Watson-branching-process", "2-adic-Collatz"],
+    "prerequisites": ["Real.log", "avgStoppingTime", "probabilistic-heuristic"]
+  },
+  {
+    "id": "terras-density-axiom",
+    "line": 106,
+    "type": "axiom",
+    "title": "Terras Density-1 Result (Axiomatized)",
+    "body": "`terras_density` asserts that for any $\\varepsilon > 0$, the fraction of $n \\leq N$ with $\\sigma(n) < \\infty$ (i.e., `reachesOne n`) exceeds $1 - \\varepsilon$ for all sufficiently large $N$. This is Terras's 1976 theorem, the first major unconditional density result toward the Collatz conjecture. It is axiomatized (not proved) because the Lean proof would require 2-adic measure theory: the key ingredient is that the Collatz map on ℤ₂ (2-adic integers) is well-defined and the stopping time has a computable distribution on residue classes.",
+    "mathContext": "Terras proved: $\\lim_{N \\to \\infty} \\frac{1}{N}|\\{1 \\leq n \\leq N : \\sigma(n) < \\infty\\}| = 1$. The proof uses the tree structure of Collatz predecessors: the number of integers $\\leq N$ that reach 1 in exactly $k$ steps grows geometrically in $k$, so the density accumulates to 1. Krasikov-Lagarias (2003) strengthened this to $|\\{n \\leq N : \\sigma(n) < \\infty\\}| \\geq N^{0.84}$.",
+    "significance": "The only axiom in the file. It represents the state of knowledge: almost all n reach 1 (density 1), but whether *all* n reach 1 (the full conjecture) is unknown. This axiom licenses discussion of S(N) as a well-defined average over 'almost all' inputs.",
+    "relatedConcepts": ["Terras-1976", "collatzConjecture", "Krasikov-Lagarias", "2-adic-measure"],
+    "prerequisites": ["reachesOne definition", "Finset.filter", "density-1 in number theory"]
+  },
+  {
+    "id": "avg-stopping-time-asymptotic",
+    "line": 124,
+    "type": "definition",
+    "title": "The Open Question: S(N)/log N Converges",
+    "body": "`avgStoppingTimeAsymptotic` states that `avgStoppingTime N / Real.log N` converges to some positive constant `c` as `N → ∞`, using Mathlib's `Filter.Tendsto ... Filter.atTop (nhds c)`. This is a Lean `def` of type `Prop` — a precise formal statement of the open conjecture. The weaker `logarithmicGrowth` (two-sided logarithmic bound) and the stronger `exactConstant` (limit equals heuristicConstant/log 2) are companion formulations at different levels of precision.",
+    "mathContext": "`Filter.Tendsto f Filter.atTop (nhds c)` is Mathlib's way to say $\\lim_{N \\to \\infty} f(N) = c$. Here $f(N) = S(N)/\\log N$ where $S(N)$ is the average stopping time. The conjecture $f(N) \\to c$ with $c = 1/\\log_2(4/3) / \\log 2 = 1/\\log(4/3)$ is the precise form. Proving this would require: (1) that orbits equidistribute in a suitable sense, (2) that typical stopping times concentrate around $c \\log n$, and (3) that the sum $\\sum_{n \\leq N} \\sigma(n)$ grows like $cN \\log N$.",
+    "significance": "The central open question of the file, formalized as a machine-checkable Lean statement. The formalization is valuable even without a proof: it fixes the precise meaning of 'S(N) ~ c·log N', enabling future proof attempts to target a specific formal goal.",
+    "relatedConcepts": ["Filter.Tendsto", "logarithmicGrowth", "exactConstant", "heuristicConstant"],
+    "prerequisites": ["avgStoppingTime definition", "Filter.atTop", "nhds topology"]
+  }
+]
