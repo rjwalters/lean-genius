@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-parity-constraint",
+    "proofId": "bounded-prime-gaps-oq-01",
+    "range": { "startLine": 55, "endLine": 93 },
+    "type": "concept",
+    "title": "Parity Constraint: The First Filter on Admissible Tuples",
+    "content": "The parity constraint (admissible_zero_implies_even) is the simplest and most immediate constraint on admissible tuples: any admissible set containing 0 must consist entirely of even numbers. The proof is direct: if x is odd and 0 ∈ H, then {0, x} covers both residue classes mod 2, making |H mod 2| = 2 = p, violating admissibility. This forces all prime-gap candidate tuples to be parity-homogeneous — which is why the 'standard' admissible tuples {0,2}, {0,2,6}, {0,2,6,8,12} are all even.",
+    "mathContext": "$H$ is admissible iff $\\forall p$ prime, $|\\{h \\bmod p : h \\in H\\}| < p$. Parity constraint: if $0 \\in H$ and $x \\in H$ with $x$ odd, then $\\{0 \\bmod 2, x \\bmod 2\\} = \\{0, 1\\}$ has cardinality $2 = p$, violating admissibility at $p = 2$. So all elements of $H$ must be even (or all odd if $H$ contains no even element).",
+    "significance": "key",
+    "relatedConcepts": ["IsAdmissible predicate", "prime residue classes", "parity homogeneity"],
+    "prerequisites": ["IsAdmissible definition", "Finset.image (· % p)", "modular arithmetic"]
+  },
+  {
+    "id": "ann-non-admissible-witness",
+    "proofId": "bounded-prime-gaps-oq-01",
+    "range": { "startLine": 94, "endLine": 200 },
+    "type": "technique",
+    "title": "Non-Admissibility by Explicit Prime Witnesses",
+    "content": "Non-admissibility theorems are proved by exhibiting the failing prime. For {0,2,4}: the image mod 3 is {0,2,1} = {0,1,2}, which covers all 3 residues (cardinality 3 = p). The proof uses decide to verify this at p=3. For the 5-tuple family, all even 5-tuples with diameter ≤10 are checked: {0,2,4,6,8}, {0,2,4,6,10}, {0,2,4,8,10}, {0,2,6,8,10}, {0,4,6,8,10} all fail at p=3. The general theorem all_even_5_tuples_diam_10_not_admissible assembles these into a case analysis. This demonstrates the key role of p=3 as the 'next filter' after parity.",
+    "mathContext": "$\\{0,2,4\\} \\bmod 3 = \\{0, 2, 1\\} = \\mathbb{Z}/3\\mathbb{Z}$, so $|\\{0,2,4\\} \\bmod 3| = 3 = p$. For even 5-tuples: any set of 5 even numbers from $\\{0,2,\\ldots,10\\}$ must include values in all three residue classes $\\{0,1,2\\} \\pmod{3}$, since there are only 3 even residue classes mod 6 (namely $0, 2, 4 \\equiv 0, 2, 1 \\pmod 3$).",
+    "significance": "supporting",
+    "relatedConcepts": ["decide tactic", "Finset image mod p", "prime witness p=3"],
+    "prerequisites": ["IsAdmissible definition", "Lean decide tactic", "Finset.card"]
+  },
+  {
+    "id": "ann-minimum-diameter",
+    "proofId": "bounded-prime-gaps-oq-01",
+    "range": { "startLine": 201, "endLine": 281 },
+    "type": "insight",
+    "title": "Minimum Diameter Theorems: Optimality of {0,2,6,8,12}",
+    "content": "The minimum diameter theorems establish sharp bounds: (1) any admissible 2-tuple has diameter ≥ 2, witnessed by {0,2}; (2) any admissible 3-tuple (with 0, all-even) has diameter ≥ 6, witnessed by {0,2,6} and {0,4,6}; (3) any all-even admissible 5-tuple has diameter ≥ 12, witnessed by {0,2,6,8,12}. The lower bounds are proved by case analysis: for 3-tuples, checking that all 3-element even sets with diameter ≤4 fail at some prime; for 5-tuples, using the Part III exhaustion of diameter ≤10. These results directly determine the prime gap bounds achievable from each k.",
+    "mathContext": "$\\mathrm{diam}^*(k) = \\min\\{D : \\exists \\text{ admissible } k\\text{-tuple of diameter } D\\}$: $\\mathrm{diam}^*(2) = 2$, $\\mathrm{diam}^*(3) = 6$, $\\mathrm{diam}^*(5) = 12$. The Maynard-Tao sieve gives prime gap bound $\\leq \\mathrm{diam}^*(k)$ for appropriate $k$: $k=5$ under Elliott-Halberstam gives $H \\leq 12$, $k \\approx 50$ unconditionally gives $H \\leq 246$.",
+    "significance": "key",
+    "relatedConcepts": ["admissible tuple diameter", "twin prime constellation", "Elliott-Halberstam conjecture"],
+    "prerequisites": ["all_even_5_tuples_diam_10_not_admissible", "admissible witnesses", "admissible_twin admissible_triple_0_2_6"]
+  },
+  {
+    "id": "ann-gap-bound-hierarchy",
+    "proofId": "bounded-prime-gaps-oq-01",
+    "range": { "startLine": 282, "endLine": 344 },
+    "type": "concept",
+    "title": "Gap Bound Hierarchy: TPC ← EH-Bound ← Polymath",
+    "content": "The gap bound hierarchy formalizes the chain TPC → H≤12 → H≤246. The lower bound H ≥ 2 is universal: no adjacent primes differ by 1 (since consecutive numbers can't both be prime, except 2 and 3). The gap_bound_chain theorem establishes the full implication chain: TwinPrimeConjecture (H=2 infinitely) implies Elliott-Halberstam-conditional H≤12 bound, which implies the unconditional H≤246 bound. The liminf_two_implies_tpc theorem connects the measure-theoretic formulation to TPC. The tpc_iff_min_gap connects TPC to the minimal admissible 2-tuple {0,2}.",
+    "mathContext": "The chain: $\\mathrm{TPC} \\Rightarrow H \\leq 2 \\Rightarrow H \\leq 12$ (trivially) $\\Rightarrow H \\leq 246$ (trivially). More precisely: $\\mathrm{TPC} \\iff \\liminf_{n\\to\\infty} (p_{n+1} - p_n) = 2$. The Elliott-Halberstam conjecture (about equidistribution of primes in arithmetic progressions) strengthens the Maynard-Tao sieve from $k=50$, $H=246$ to $k=5$, $H=12$.",
+    "significance": "key",
+    "relatedConcepts": ["TwinPrimeConjecture", "Elliott-Halberstam conjecture", "Polignac's conjecture", "liminf of prime gaps"],
+    "prerequisites": ["BoundedPrimeGaps axioms", "primeGap definition", "TwinPrimeConjecture definition"]
+  },
+  {
+    "id": "ann-open-question-formalization",
+    "proofId": "bounded-prime-gaps-oq-01",
+    "range": { "startLine": 370, "endLine": 437 },
+    "type": "insight",
+    "title": "OpenQuestion01: Formal Statement of the Research Frontier",
+    "content": "OpenQuestion01 is a Lean definition capturing the research question: is there an unconditional bound H < 246 with infinitely many prime gaps of that size? This is not trivially false (246 is a strict upper bound that could potentially be improved) and is not known to be true. The theorem tpc_implies_oq shows TPC would resolve it (trivially, since 2 < 246). The summary section documents that this file achieves the first formalization of the admissible tuple diameter optimization problem, connecting Zhang's breakthrough to the combinatorial structure of k-tuples.",
+    "mathContext": "$\\mathtt{OpenQuestion01} := \\exists H < 246,\\ \\forall N \\in \\mathbb{N},\\ \\exists n \\geq N,\\ p_{n+1} - p_n \\leq H$. Known: $\\mathrm{TPC} \\Rightarrow \\mathtt{OQ01}$ (with $H=2$). Open: is $\\mathtt{OQ01}$ provable without TPC? This would require new sieve estimates stronger than Maynard-Tao but not requiring the full Elliott-Halberstam conjecture.",
+    "significance": "context",
+    "relatedConcepts": ["OpenQuestion01 definition", "bounded prime gaps", "Zhang 2013", "Polymath 8b 2014"],
+    "prerequisites": ["polymath_bounded_gaps_246 axiom", "TwinPrimeConjecture", "Maynard-Tao sieve axioms"]
+  }
+]
