@@ -1,0 +1,68 @@
+{
+  "id": "gcd-algorithm-oq-01-oq-03",
+  "title": "Binet's Formula and Lamé's 5-Digit Bound",
+  "slug": "gcd-algorithm-oq-01-oq-03",
+  "description": "Proves Lamé's 5-digit bound without restriction (euclideanSteps(a,b) ≤ 5·decimalDigits(b) for all b > 0) and Binet's formula fib(n) = (φⁿ - ψⁿ)/√5. Part I: the five-step Fibonacci identity fib(5k+7) ≥ 10·fib(5k+2) implies fib(5k+2) ≥ 10^k. Part II: Binet's formula via paired induction, with φ⁵ > 10 explaining why 5 digits correspond to one Euclidean step. 21 theorems, 2 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GcdAlgorithmOQ01OQ03.lean",
+    "tags": [
+      "number-theory",
+      "euclidean-algorithm",
+      "fibonacci",
+      "golden-ratio",
+      "binet-formula"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified. Depends on GCDAlgorithmOQ01 (euclideanSteps, decimalDigits, lame_step_bound).",
+    "lineCount": 280,
+    "theoremCount": 21,
+    "definitionCount": 2,
+    "originalContributions": [
+      "lame_five_digit_bound_general: euclideanSteps(a,b) ≤ 5·decimalDigits(b) for ALL b > 0",
+      "fib_ge_pow10_general: fib(5k+2) ≥ 10^k for all k (no restriction)",
+      "binet_formula: fib(n) = (φⁿ - ψⁿ)/√5 proved by paired induction",
+      "phi_pow5_gt_10: φ⁵ > 10, explaining why 5 digits correspond to one GCD step",
+      "fib_nearest_integer: |fib(n) - φⁿ/√5| < 1/2 (nearest integer property)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Lamé's 1844 theorem was the first analysis of algorithm complexity: the Euclidean algorithm on b requires at most 5·⌊log₁₀(b)⌋ + 1 steps. The connection to Fibonacci numbers is classical: the worst case is consecutive Fibonacci numbers, and Fibonacci numbers grow like φⁿ/√5 by Binet's formula (1843). This file formalizes both the unrestricted 5-digit bound and the deeper golden ratio explanation.",
+    "problemStatement": "Prove (1) fib(5k+2) ≥ 10^k for all k (no restriction on k), giving the unrestricted Lamé bound; (2) Binet's formula fib(n) = (φⁿ - ψⁿ)/√5; (3) φ⁵ > 10, explaining why 5 decimal digits correspond to one Euclidean step.",
+    "text": "Part I: The five-step identity fib(5k+7) = 8·fib(5k+2) + 5·fib(5k+1) with fib monotone gives fib(5k+7) ≥ 10·fib(5k+2). By induction, fib(5k+2) ≥ 10^k. Since b < 10^(⌊log₁₀b⌋+1) ≤ fib(5(⌊log₁₀b⌋+1)+2), the parent module's lame_step_bound gives the result.\n\nPart II (Binet namespace): φ = (1+√5)/2, ψ = (1-√5)/2 satisfy φ² = φ+1 and ψ² = ψ+1 (both roots of x²-x-1=0). Binet's formula is proved by paired induction: for each n, prove fib(n) and fib(n+1) simultaneously; the recurrence step uses φ² = φ+1 to reduce φ^(n+2) to φ^n and φ^(n+1). Consequences: |ψ| < 1 (ψ → 0), nearest integer property, and φ⁵ = 5φ+3 > 10.",
+    "proofStrategy": "Part I: fib_add_five by linear arithmetic from four Fibonacci recurrences. fib_five_step_growth by omega after unfolding 5 Fibonacci values. fib_ge_pow10_general by induction using fib_five_step_growth. Generalized Lamé by connecting to lame_step_bound from parent module.\n\nPart II: phi_sq/psi_sq by ring_nf + Real.sq_sqrt. binet_pair by paired induction; inductive step uses e1/e2 exponent factoring, phi_sq/psi_sq, and ring. phi_pow5_gt_10 by computing φ⁵ = 5φ+3 and bounding φ > 7/5 from √5 > 9/5.",
+    "keyInsights": [
+      "Five-step growth fib(5k+7) ≥ 10·fib(5k+2) is the direct arithmetic explanation of '5 digits'",
+      "Binet's formula shows fib(n) = round(φⁿ/√5), the nearest integer to φⁿ/√5",
+      "φ⁵ > 10: each 5 Fibonacci steps multiplies by more than 10, consuming one decimal digit",
+      "|ψ| < 1: the conjugate root ψ contributes only exponentially vanishing corrections"
+    ],
+    "prerequisites": [
+      "GCDAlgorithmOQ01: euclideanSteps, decimalDigits, lame_step_bound",
+      "Nat.fib: Nat.fib_add_two, Nat.fib_mono",
+      "Real.sqrt: sqrt_pos_of_pos, mul_self_sqrt"
+    ]
+  },
+  "conclusion": {
+    "summary": "Unrestricted Lamé 5-digit bound + Binet's formula + φ⁵ > 10. Two complementary proofs: elementary (Part I) and golden ratio (Part II). 21 theorems, 0 axioms, 280 lines.",
+    "implications": "The connection between Fibonacci numbers, the golden ratio, and the Euclidean algorithm complexity is one of mathematics' most elegant confluences. Binet's formula shows the algorithm's worst-case behavior is governed by φ ≈ 1.618, one of the most important constants in mathematics.",
+    "openQuestions": [
+      "Prove the Fibonacci zeckendorf representation: every positive integer is a unique sum of non-consecutive Fibonacci numbers",
+      "Formalize the tight worst case: the Euclidean algorithm on (fib(n+1), fib(n)) requires exactly n-1 steps"
+    ]
+  },
+  "leanFile": {
+    "namespace": "GCDAlgorithmOQ01OQ03",
+    "lineCount": 280,
+    "axiomCount": 0,
+    "theoremCount": 21,
+    "definitionCount": 2
+  },
+  "crossReferences": [],
+  "sections": []
+}

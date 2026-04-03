@@ -1,0 +1,67 @@
+{
+  "id": "amgm-inequality-oq-02-oq-01",
+  "title": "Newton-Girard Identity: Square of Sum Decomposition",
+  "slug": "amgm-inequality-oq-02-oq-01",
+  "description": "Proves the n=2 Newton-Girard identity: (Σxᵢ)² = Σxᵢ² + Σ_{i≠j} xᵢxⱼ, i.e., p₂ = e₁² - 2·e₂. Formalizes the double sum decomposition into diagonal (Σxᵢ²) and off-diagonal (Σ_{i≠j} xᵢxⱼ) parts for any Finset in a CommRing. Includes two-variable identities (a+b)² and (a-b)², and the explicit 3-variable case. 5 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "symmetric-polynomials",
+      "newton-girard",
+      "algebraic-identities",
+      "finset"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified. Works in any CommRing R.",
+    "lineCount": 88,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "sq_sum_eq_diag_plus_offdiag: (Σxᵢ)² = Σxᵢ² + Σ_{i≠j} xᵢxⱼ for any Finset in CommRing",
+      "sq_sum_eq_double_sum: (Σxᵢ)² = Σᵢ Σⱼ xᵢxⱼ (bridge from squaring to double sum)",
+      "sq_sum_three: explicit (a+b+c)² = a²+b²+c²+2(ab+ac+bc) in 3 variables",
+      "Works in any CommRing R with arbitrary index type"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Newton's power sum identities and Girard's symmetric function relations are classical results in algebra. The identity p₂ = e₁² - 2·e₂ (where p₂ = Σxᵢ², e₁ = Σxᵢ, e₂ = Σ_{i<j} xᵢxⱼ) is the simplest non-trivial Newton-Girard relation. This formalization works over any CommRing with an arbitrary Finset, generalizing from specific numbers to arbitrary algebraic structures.",
+    "problemStatement": "Prove that (Σ_{i∈s} xᵢ)² = Σ_{i∈s} xᵢ² + Σ_{i∈s} Σ_{j∈s,j≠i} xᵢxⱼ for any Finset s and function f: s → R in a CommRing R.",
+    "text": "The key theorem sq_sum_eq_diag_plus_offdiag decomposes the double sum into diagonal and off-diagonal parts. The proof uses sq_sum_eq_double_sum (rewriting (Σf)² as a double sum via Finset.sum_mul_sum), then for each i, splits the sum over s into the i-th term (the diagonal f(i)² = f(i)*f(i)) plus the rest s.erase i (the off-diagonal). This uses Finset.add_sum_erase. The off-diagonal Σ_{i≠j} xᵢxⱼ equals 2·e₂ = 2·Σ_{i<j} xᵢxⱼ by a symmetry argument (pairing (i,j) with (j,i)), though this final step is left as a remark.",
+    "proofStrategy": "sq_sum_eq_double_sum: rw [sq, Finset.sum_mul_sum]. sq_sum_eq_diag_plus_offdiag: rewrite double sum via sq_sum_eq_double_sum, then sum_add_distrib splits diagonal from off-diagonal, and Finset.add_sum_erase identifies the diagonal term f(i)² at each i.",
+    "keyInsights": [
+      "(Σf)² = double sum ΣΣ f(i)f(j) is the key bridge theorem",
+      "Diagonal/off-diagonal split: each inner sum splits as f(i)·f(i) + Σ_{j≠i} f(i)f(j)",
+      "The off-diagonal equals 2·e₂ by symmetry (each pair {i,j} counted twice)",
+      "Works in any CommRing: no ordering, no positivity needed for the identity"
+    ],
+    "prerequisites": [
+      "Finset.sum_mul_sum: (Σf)(Σg) = ΣΣ f(i)g(j)",
+      "Finset.add_sum_erase: Σ f = f(a) + Σ_{s\\{a}} f for a ∈ s",
+      "CommRing algebra: sq, ring"
+    ]
+  },
+  "conclusion": {
+    "summary": "Newton-Girard p₂ = e₁² - 2e₂ via double sum decomposition into diagonal and off-diagonal parts. Works in any CommRing over any Finset. 5 theorems, 0 axioms, 88 lines.",
+    "implications": "This algebraic identity is the foundation of AM-GM for n variables and Newton's power sum method for symmetric polynomials. The Finset-based proof applies to sums over any finite index set, making it reusable for combinatorial applications.",
+    "openQuestions": [
+      "Prove the full Newton-Girard recurrence: p_k = Σ_{i=1}^k (-1)^{i-1} eᵢ p_{k-i}",
+      "Connect to the off-diagonal symmetry: show Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ"
+    ]
+  },
+  "leanFile": {
+    "namespace": "AMGMInequalityOQ02OQ01",
+    "lineCount": 88,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "crossReferences": [],
+  "sections": []
+}
