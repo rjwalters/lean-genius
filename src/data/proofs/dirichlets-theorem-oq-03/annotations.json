@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "id": "linnik-constant-infimum",
+    "type": "insight",
+    "title": "Linnik Constant as sInf of Admissible Exponents",
+    "body": "The formalization defines `linnikConstant = sInf admissibleExponents` where admissibleExponents = {L > 0 : ∃ c > 0, p(a,q) ≤ c·q^L for all coprime (a,q)}. This is the natural mathematical definition: the infimum of all exponents for which Linnik's bound holds. By nonemptiness (from linnik_theorem) and the lower bound L* ≥ 1 (sorry), the infimum is the unique 'best' exponent.",
+    "location": "DirichletsTheoremOQ03.lean:48-60",
+    "tags": ["linnik-constant", "infimum", "number-theory"]
+  },
+  {
+    "id": "monotonicity-trick",
+    "type": "technique",
+    "title": "Monotonicity Derives Heath-Brown from Xylouris",
+    "body": "The proof of `heathBrown_bound` (5.5 ∈ admissibleExponents) derives from `xylouris_bound` (5 ∈ admissibleExponents) using monotonicity: if p(a,q) ≤ c·q^5 then p(a,q) ≤ c·q^{5.5} since q^5 ≤ q^{5.5} for q ≥ 1. In Lean: `Real.rpow_le_rpow (Nat.cast_nonneg q) (by norm_num : (5:ℝ) ≤ 5.5)`. This is immediate but useful — it shows that historical improvements to L are all superseded by Xylouris and that the set of admissible exponents is indeed a ray.",
+    "location": "DirichletsTheoremOQ03.lean:76-83",
+    "tags": ["monotonicity", "rpow", "linnik-constant", "derivation"]
+  },
+  {
+    "id": "optimal-conjecture-contradiction",
+    "type": "insight",
+    "title": "Contradiction via δ = (L*−1)/2",
+    "body": "The `optimal_implies_le_one` proof is the most interesting: assuming L* > 1, choose δ = (linnikConstant − 1)/2. Then 1+δ = (linnikConstant+1)/2 < linnikConstant. The optimal conjecture gives 1+δ ∈ admissibleExponents. Then `csInf_le` yields linnikConstant ≤ 1+δ, contradicting 1+δ < linnikConstant. This is a clean application of how `sInf` works in Lean: csInf_le needs a lower bound (here 0, shown since all admissible L > 0) and membership to get the inequality.",
+    "location": "DirichletsTheoremOQ03.lean:108-118",
+    "tags": ["proof-technique", "csInf", "contradiction", "open-conjecture"]
+  },
+  {
+    "id": "dirichlet-sorry-in-definition",
+    "type": "warning",
+    "title": "leastPrimeInAP Has Two Sorries from Dirichlet's Theorem",
+    "body": "The definition `leastPrimeInAP a q = Nat.find ⟨sorry, sorry⟩` depends on the existence of a prime p ≡ a (mod q), which requires Dirichlet's theorem. The two sorries provide (1) a prime p and (2) the congruence p ≡ a (mod q). Without these, leastPrimeInAP is not well-founded. Filling these sorries would require importing the parent proof (which formalizes Dirichlet's theorem with L-functions or Mathlib's existing results).",
+    "location": "DirichletsTheoremOQ03.lean:33-34",
+    "tags": ["sorry", "dirichlet", "formalization-gap", "well-definedness"]
+  },
+  {
+    "id": "linnik-historical-improvements",
+    "type": "context",
+    "title": "Seven Decades of Improving the Linnik Constant",
+    "body": "The header documents the progression: L ≤ 10000 (Pan, 1957) → L ≤ 40 (Elliott-Halberstam, 1966) → L ≤ 20 (Jutila, 1970) → L ≤ 13.5 (Chen, 1977) → L ≤ 8 (Wang, 1992) → L ≤ 5.5 (Heath-Brown, 1992) → L ≤ 5 (Xylouris, 2011). Each bound uses zero-free regions of Dirichlet L-functions. The formalization axiomatizes only the current best (Xylouris) and derives the predecessor (Heath-Brown) by monotonicity. The gap from L ≤ 5 to the conjectured L = 1 spans 70+ years of unresolved analytic number theory.",
+    "location": "DirichletsTheoremOQ03.lean:1-20",
+    "tags": ["history", "linnik-constant", "analytic-number-theory", "open-problem"]
+  }
+]
