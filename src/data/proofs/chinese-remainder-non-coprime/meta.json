@@ -67,7 +67,9 @@
       "Uniqueness is modulo $\\text{lcm}(m,n) = mn/\\gcd(m,n)$, strictly tighter than $mn$ when $\\gcd(m,n) > 1$",
       "The construction reduces to the coprime case: dividing out $g = \\gcd(m,n)$ produces coprime $m' = m/g$, $n' = n/g$, then Bézout applies",
       "The classical CRT is the exact special case where $\\gcd(m,n) = 1$: solvability is automatic (1 divides everything) and $\\text{lcm}(m,n) = mn$",
-      "For three non-coprime moduli, pairwise gcd conditions $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ are necessary but may not suffice — the gap between pairwise and global solvability is a subtlety absent in the coprime case"
+      "For three non-coprime moduli, pairwise gcd conditions $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ are necessary but may not suffice — the gap between pairwise and global solvability is a subtlety absent in the coprime case",
+      "The reduction to coprime case uses `Nat.coprime_div_gcd_div_gcd`: after dividing both moduli by $g = \\gcd(m,n)$, the quotients $m/g$ and $n/g$ are coprime. This is the key Mathlib lemma enabling the non-coprime proof to piggyback on the coprime CRT machinery",
+      "Uniqueness via lcm is structurally different from the coprime case: in the coprime case, any two solutions differ by a multiple of $mn$; in the non-coprime case, solutions differ by a multiple of $\\text{lcm}(m,n) = mn/g < mn$. This tighter uniqueness modulus reflects the reduced 'independence' of non-coprime residue classes — they share information via their gcd"
     ],
     "prerequisites": [
       "Modular arithmetic (Int.ModEq, ZMOD notation)",
@@ -146,28 +148,28 @@
   },
   "references": [
     {
-      "authors": "O. Ore",
+      "authors": ["O. Ore"],
       "title": "The general Chinese remainder theorem",
       "year": "1952",
       "venue": "Amer. Math. Monthly, 59(6), 365-370",
       "note": "Systematic treatment of CRT for non-coprime moduli with the gcd divisibility criterion"
     },
     {
-      "authors": "C. F. Gauss",
+      "authors": ["C. F. Gauss"],
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
       "venue": "Leipzig: Gerh. Fleischer",
       "note": "Sections 32-36: CRT for coprime moduli; the non-coprime case is implicit in the theory of simultaneous congruences"
     },
     {
-      "authors": "K. Ireland, M. Rosen",
+      "authors": ["K. Ireland", "M. Rosen"],
       "title": "A Classical Introduction to Modern Number Theory",
       "year": "1990",
       "venue": "Springer GTM 84, Chapter 3",
       "note": "Presents both coprime and non-coprime CRT with ring-theoretic perspective"
     },
     {
-      "authors": "G. H. Hardy, E. M. Wright",
+      "authors": ["G. H. Hardy", "E. M. Wright"],
       "title": "An Introduction to the Theory of Numbers",
       "year": "1979",
       "venue": "Oxford University Press, 5th ed., Chapter 5",
