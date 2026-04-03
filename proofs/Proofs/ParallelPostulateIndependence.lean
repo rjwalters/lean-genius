@@ -127,12 +127,11 @@ structure NeutralGeometry extends IncidenceGeometry where
     ℝ² as a model of incidence geometry. -/
 axiom euclidean_incidence_geometry : IncidenceGeometry
 
-/-- **Axiom:** The Euclidean plane satisfies neutral geometry.
+/- **Axiom:** The Euclidean plane satisfies neutral geometry.
 
     **Why an axiom?** Proving this requires verifying all neutral geometry axioms
     (incidence, betweenness, congruence, continuity) for ℝ². This is extensive
     but standard; we focus on the parallel postulate aspect. -/
-theorem euclidean_is_neutral : True := trivial
 
 /-- **Axiom:** The Euclidean plane satisfies the parallel postulate.
 
@@ -153,7 +152,7 @@ axiom euclidean_satisfies_parallel_postulate :
     2. Arcs of circles orthogonal to the unit circle -/
 axiom poincare_incidence_geometry : IncidenceGeometry
 
-/-- **Axiom:** The Poincaré disk satisfies neutral geometry.
+/- **Axiom:** The Poincaré disk satisfies neutral geometry.
 
     **Why an axiom?** The Poincaré disk model satisfies all neutral geometry
     axioms. Proving this requires:
@@ -163,7 +162,6 @@ axiom poincare_incidence_geometry : IncidenceGeometry
     4. Showing Dedekind continuity holds
 
     This was Beltrami's key contribution (1868). -/
-theorem poincare_is_neutral : True := trivial
 
 /-- **Axiom:** The Poincaré disk has the hyperbolic parallel property.
 
