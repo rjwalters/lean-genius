@@ -1,0 +1,70 @@
+{
+  "id": "cube-root-3-irrational",
+  "title": "Irrationality of ∛3",
+  "slug": "cube-root-3-irrational",
+  "description": "Proves that the cube root of 3 is irrational using Mathlib's irrational_nrt_of_notint_nrt. Establishes that 3 is not a perfect cube (1³ = 1 < 3 < 8 = 2³), hence cbrt3 = 3^(1/3) is not an integer, hence irrational. Mirrors the proof structure of CubeRoot2Irrational. 5 theorems, 1 definition, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2025-12-30",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CubeRoot3Irrational.lean",
+    "tags": [
+      "irrationality",
+      "real-analysis",
+      "number-theory",
+      "cube-roots"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Irrational and irrational_nrt_of_notint_nrt.",
+    "lineCount": 83,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "originalContributions": [
+      "irrational_cbrt3: ∛3 is irrational",
+      "three_not_perfect_cube: ¬∃ n : ℤ, n³ = 3, proved by integer bounds 1³ < 3 < 2³",
+      "cbrt3_cubed: (3^(1/3))^3 = 3",
+      "irrational_three_pow_one_third: alternative named form"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The irrationality of ∛3 follows the same proof pattern as ∛2. Both are instances of the general theorem that n√m is irrational when m is not a perfect n-th power. These results are classical in elementary number theory and appear as exercises in introductory courses.",
+    "problemStatement": "Prove that 3^(1/3) : ℝ is irrational.",
+    "text": "Identical structure to CubeRoot2Irrational: (1) cbrt3_cubed via rpow composition, (2) three_not_perfect_cube by integer bound analysis (n ≤ 0 gives n³ ≤ 0 < 3; n ≥ 2 gives n³ ≥ 8 > 3; n = 1 gives 1 ≠ 3), (3) cbrt3_not_int derived from three_not_perfect_cube, (4) irrational_cbrt3 via irrational_nrt_of_notint_nrt 3 3.",
+    "proofStrategy": "Same as CubeRoot2Irrational but with the value 3 instead of 2. The bounds 0 < n < 2 force n = 1, and 1³ = 1 ≠ 3 by norm_num.",
+    "keyInsights": [
+      "The proof structure is identical to ∛2: only the constant changes",
+      "3 lies strictly between 1³ = 1 and 2³ = 8, so it is not a perfect cube",
+      "irrational_nrt_of_notint_nrt is a powerful general lemma for this class of results"
+    ],
+    "prerequisites": [
+      "Real.rpow: Real.rpow_mul, Real.rpow_natCast",
+      "Mathlib Irrational: irrational_nrt_of_notint_nrt",
+      "Integer bounds: nlinarith"
+    ]
+  },
+  "conclusion": {
+    "summary": "∛3 is irrational, proved by showing 3 is not a perfect cube. Mirror of CubeRoot2Irrational. 5 theorems, 0 axioms, 83 lines.",
+    "implications": "Together with CubeRoot2Irrational, demonstrates the template for proving irrationality of cube roots via Mathlib's irrational_nrt_of_notint_nrt. The pattern extends to all m that are not perfect cubes.",
+    "openQuestions": [
+      "Prove the general theorem: ∛m is irrational iff m is not a perfect cube"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CubeRoot3Irrational",
+    "lineCount": 83,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "cube-root-2-irrational",
+      "relationship": "related",
+      "description": "Identical proof structure for ∛2"
+    }
+  ],
+  "sections": []
+}

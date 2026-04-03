@@ -1,0 +1,73 @@
+{
+  "id": "infinitude-primes-4k1",
+  "title": "Infinitely Many Primes ≡ 1 (mod 4)",
+  "slug": "infinitude-primes-4k1",
+  "description": "Proves there are infinitely many primes congruent to 1 modulo 4 using an elementary argument based on Fermat's theorem on sums of two squares. Considers N = (2·(n+1)!)² + 1 and shows every odd prime factor p of N satisfies p ≡ 1 (mod 4), since -1 is a square mod p (Euler's criterion). Uses Mathlib's Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one. 5 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InfinitudePrimes4k1.lean",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "modular-arithmetic",
+      "dirichlet-theorem",
+      "sum-of-two-squares"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Uses Mathlib's Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one (itself proved in Mathlib from Euler's criterion).",
+    "lineCount": 177,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "infinitely_many_primes_1_mod_4: for any n, exists prime p > n with p ≡ 1 (mod 4)",
+      "prime_dvd_sq_add_one_mod_four: if odd prime p | k²+1 then p ≡ 1 (mod 4)",
+      "primes_1_mod_4_infinite: the set {p prime : p ≡ 1 mod 4} is infinite",
+      "no_largest_prime_1_mod_4: there is no largest prime ≡ 1 (mod 4)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The infinitude of primes ≡ 1 (mod 4) is more subtle than the ≡ 3 case. The standard elementary argument uses the fact that if p | k² + 1, then -1 is a square mod p, hence p ≡ 1 (mod 4) by Euler's criterion. This was known to Euler and uses the theory of quadratic residues, in contrast to the purely congruential argument for p ≡ 3 (mod 4).",
+    "problemStatement": "Prove that for every n : ℕ, there exists a prime p > n with p ≡ 1 (mod 4), using N = (2·(n+1)!)² + 1 and Euler's criterion for quadratic residues.",
+    "text": "The key lemma prime_dvd_sq_add_one_mod_four: if odd prime p divides k² + 1, then p ≡ 1 (mod 4). Proof: k² ≡ -1 (mod p) means -1 is a square in ZMod p, which Mathlib's mod_four_ne_three_of_dvd_isSquare_neg_one converts to p ≢ 3 (mod 4); since p is an odd prime, p ≡ 1 (mod 4). For the main theorem: N = (2·(n+1)!)² + 1 is odd (even² + 1) and > 1, so has an odd prime factor p. p cannot equal 2 (N is odd). By the key lemma p ≡ 1 (mod 4). If p ≤ n then p | (n+1)!, so p | N - (2·(n+1)!)² = 1, contradicting primality.",
+    "proofStrategy": "prime_dvd_sq_add_one_mod_four: construct IsSquare (-1 : ZMod p) using k as witness from k² + 1 ≡ 0, then apply Mathlib's lemma. Main: contradiction for p ≤ n via Nat.dvd_factorial + Nat.Prime.not_dvd_one. Set-infinite formulation via Set.infinite_iff_exists_gt.",
+    "keyInsights": [
+      "N = (2·(n+1)!)² + 1 is the p ≡ 1 analogue of 4·(n+1)!-1 used for p ≡ 3",
+      "-1 is a square mod p iff p ≡ 1 (mod 4): Euler's criterion is the key bridge",
+      "The argument requires quadratic residues; the p ≡ 3 case only needed products mod 4",
+      "Compare: for p ≡ 3, multiply-mod-4 suffices; for p ≡ 1, we need -1 square mod p"
+    ],
+    "prerequisites": [
+      "Euler's criterion: -1 is a square mod p iff p ≡ 1 (mod 4)",
+      "Mathlib: Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one",
+      "ZMod arithmetic: ZMod.natCast_zmod_eq_zero_iff_dvd"
+    ]
+  },
+  "conclusion": {
+    "summary": "Infinitely many primes ≡ 1 (mod 4) via N = (2·(n+1)!)² + 1 and Euler's criterion. Uses Mathlib's isSquare_neg_one lemma. 5 theorems, 0 axioms, 177 lines.",
+    "implications": "The contrast between the proofs for p ≡ 1 and p ≡ 3 illustrates the increasing complexity of Euclid-style arguments as one descends into quadratic residue theory. Together they formalize infinitude for all non-trivial residue classes mod 4.",
+    "openQuestions": [
+      "Prove Fermat's theorem on sums of two squares: p ≡ 1 (mod 4) iff p = a² + b² for some a,b",
+      "Generalize Dirichlet's theorem to all arithmetic progressions with formal Dirichlet series proof"
+    ]
+  },
+  "leanFile": {
+    "namespace": "InfinitudePrimes4k1",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes-4k3",
+      "relationship": "related",
+      "description": "Companion proof for primes ≡ 3 (mod 4), using a simpler elementary argument without quadratic residues"
+    }
+  ],
+  "sections": []
+}

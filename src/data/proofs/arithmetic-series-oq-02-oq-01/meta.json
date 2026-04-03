@@ -1,0 +1,67 @@
+{
+  "id": "arithmetic-series-oq-02-oq-01",
+  "title": "q-Hockey Stick Identity for Gaussian Binomial Coefficients",
+  "slug": "arithmetic-series-oq-02-oq-01",
+  "description": "Defines Gaussian (q-)binomial coefficients via q-Pascal's rule and proves the q-hockey stick identity: Σ_{j=0}^N q^{(N-j)(k+1)} · [j+k choose k]_q = [N+k+1 choose k+1]_q. Proves boundary cases, vanishing when k > n, the diagonal [n choose n]_q = 1, and that specializing q=1 recovers ordinary binomial coefficients. Also defines q-simplicial numbers and their recurrence. 10 theorems, 2 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "gaussian-binomial",
+      "hockey-stick",
+      "quantum-calculus"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 173,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "originalContributions": [
+      "qHockeyStick: Σ_{j=0}^N q^{(N-j)(k+1)} · [j+k choose k]_q = [N+k+1 choose k+1]_q",
+      "qBinom_one: specializing q=1 recovers Nat.choose (with hypothesis k ≤ n)",
+      "qSimplicial_succ_recurrence: q-analog of simplicial number recurrence",
+      "qBinom: recursive definition via q-Pascal's rule, works in any CommRing"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Gaussian binomial coefficients [n choose k]_q arise in enumerative combinatorics (counting k-dimensional subspaces of an n-dimensional vector space over GF(q)), combinatorial number theory, and quantum calculus (Kac-Cheung, 2002). They satisfy a q-deformation of Pascal's rule and many identities analogous to ordinary binomial coefficients. The q-hockey stick specializes to the classical hockey stick at q=1.",
+    "problemStatement": "Define [n choose k]_q via q-Pascal's rule and prove the q-hockey stick identity: Σ_{j=0}^N q^{(N-j)(k+1)} · [j+k choose k]_q = [N+k+1 choose k+1]_q.",
+    "text": "The Gaussian binomial qBinom q n k is defined recursively in any CommRing R: qBinom q n 0 = 1, qBinom q 0 (k+1) = 0, qBinom q (n+1) (k+1) = q^{k+1} · qBinom q n (k+1) + qBinom q n k. The proof of qHockeyStick is by induction on N: base N=0 is immediate (single term, q^0 · [k choose k]_q = 1); inductive step factors out q^{k+1} from all previous terms via the exponent identity (N+1-j)(k+1) = (N-j)(k+1) + (k+1), then applies the induction hypothesis and qSimplicial_succ_recurrence.",
+    "proofStrategy": "Induction on N for qHockeyStick. Inductive step: rewrite the sum using Finset.sum_congr to factor q^{k+1} out (using the exponent shift), then use Finset.mul_sum and the IH to get q^{k+1}·qSimplicial q (k+1) N, then conclude via qSimplicial_succ_recurrence.",
+    "keyInsights": [
+      "The q-hockey stick reduces to q-Pascal at each step via a clean exponent factorization",
+      "qBinom is defined in any CommRing, making it useful for both ℤ and polynomial rings ℤ[q]",
+      "At q=1 all q^k = 1 factors vanish, recovering the ordinary hockey stick identity",
+      "q-simplicial numbers count lattice paths with q-weight encoding the inversion number"
+    ],
+    "prerequisites": [
+      "q-analogs: Kac-Cheung 'Quantum Calculus'",
+      "q-Pascal's rule: [n+1 choose k+1]_q = q^{k+1}[n choose k+1]_q + [n choose k]_q",
+      "Ordinary hockey stick: ArithmeticSeriesOQ02 simplicial numbers"
+    ]
+  },
+  "conclusion": {
+    "summary": "q-hockey stick Σ q^{(N-j)(k+1)} [j+k choose k]_q = [N+k+1 choose k+1]_q proved by induction. Recovers classical hockey stick at q=1. Works in any CommRing. 10 theorems, 0 axioms, 173 lines.",
+    "implications": "q-binomial coefficients count subspaces of vector spaces over finite fields: [n choose k]_q = |Gr(k, F_q^n)|. The q-hockey stick identity has applications to q-series, representation theory of quantum groups, and the combinatorics of Young tableaux.",
+    "openQuestions": [
+      "Prove the q-Vandermonde identity: [m+n choose k]_q = Σ q^{j(m-k+j)} [m choose k-j]_q [n choose j]_q",
+      "Connect qBinom to the Gaussian integer polynomial (1-q)(1-q²)···(1-q^n)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "GaussianBinomial",
+    "lineCount": 173,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2
+  },
+  "crossReferences": [],
+  "sections": []
+}

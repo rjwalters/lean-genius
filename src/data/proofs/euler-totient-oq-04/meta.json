@@ -1,0 +1,67 @@
+{
+  "id": "euler-totient-oq-04",
+  "title": "Divisor Sum Identity via GCD Partition",
+  "slug": "euler-totient-oq-04",
+  "description": "Proves the classical identity n = Σ_{d|n} φ(d) by constructing an explicit partition of {0,...,n-1} into GCD classes S_d = {k : gcd(k,n) = d}. Shows each class has exactly φ(n/d) elements via a bijection k ↦ k/d to the coprime set. Derives the partition-of-unity formulation Σ_{d|n} φ(n/d)/n = 1 over ℚ. 9 theorems, 1 definition, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ04.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "divisor-sum",
+      "combinatorics",
+      "gcd"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Nat.totient, Finset.card_bij.",
+    "lineCount": 231,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "originalContributions": [
+      "card_gcdClass_eq_totient: |S_d(n)| = φ(n/d) via explicit bijection k ↦ k/d",
+      "divisor_sum_totient_div: n = Σ_{d|n} φ(n/d) proved by partition argument",
+      "partition_of_unity: Σ_{d|n} φ(n/d)/n = 1 over ℚ (probabilistic interpretation)",
+      "Explicit GCD class partition: S_d covers {0,...,n-1} with pairwise disjoint classes"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The identity n = Σ_{d|n} φ(d) is a fundamental formula in elementary number theory, appearing in Gauss's Disquisitiones and used in the analysis of the Euler product for the Riemann zeta function. The standard proof is via Möbius inversion; this formalization gives the direct combinatorial proof via partition of {0,...,n-1} by GCD classes.",
+    "problemStatement": "Prove that n = Σ_{d|n} φ(d) using an explicit partition of {0,...,n-1} into GCD classes S_d(n) = {k ∈ {0,...,n-1} : gcd(k,n) = d}, where each class has |S_d| = φ(n/d) elements.",
+    "text": "The GCD class S_d(n) = {k ∈ range n : gcd(k,n) = d} partitions {0,...,n-1}: every k belongs to S_{gcd(k,n)}, and classes for different divisors are disjoint. The key lemma card_gcdClass_eq_totient establishes |S_d| = φ(n/d) via the bijection k ↦ k/d: if gcd(k,n) = d then gcd(k/d, n/d) = 1 (coprimality preserved by canceling d). The injectivity is by Nat.div_mul_cancel, and surjectivity maps m ↦ d·m. The divisor sum identity follows by summing cardinalities. The probabilistic interpretation: P(gcd(k,n) = d) = φ(n/d)/n.",
+    "proofStrategy": "Finset.card_bij with f(k) = k/d, proving: (1) image lands in the coprime set of n/d, (2) injectivity via d | k and d | k' implies k = k', (3) surjectivity via d·m ∈ S_d for coprime m < n/d. The partition sum uses Finset.card_biUnion with the disjointness lemma.",
+    "keyInsights": [
+      "GCD classes give a natural partition: each k ∈ {0,...,n-1} belongs to exactly one S_d",
+      "The bijection k ↦ k/d respects both size and coprimality (gcd(k/d, n/d) = 1)",
+      "Partition-of-unity: φ defines a probability distribution on divisors of n",
+      "Cross-validated against Mathlib's Nat.sum_totient"
+    ],
+    "prerequisites": [
+      "Euler's totient function: Nat.totient, Nat.Coprime",
+      "Finset bijection: Finset.card_bij",
+      "GCD arithmetic: Nat.gcd_mul_left, Nat.div_mul_cancel"
+    ]
+  },
+  "conclusion": {
+    "summary": "Divisor sum n = Σ_{d|n} φ(d) via explicit GCD partition with bijection proof. Includes probabilistic interpretation and concrete verifications for n=6,12,30. 9 theorems, 0 axioms, 231 lines.",
+    "implications": "This combinatorial proof is more instructive than Möbius inversion: it shows explicitly why each summand φ(n/d) contributes, via the GCD class interpretation. The partition-of-unity formulation connects to probability theory and the Haar measure on ℤ/nℤ.",
+    "openQuestions": [
+      "Extend to multiplicative functions: prove Σ_{d|n} μ(d) = [n=1] via Möbius inversion",
+      "Formalize the Dirichlet series identity Σ φ(n)/n^s = ζ(s-1)/ζ(s)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "EulerTotientOQ04",
+    "lineCount": 231,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "crossReferences": [],
+  "sections": []
+}

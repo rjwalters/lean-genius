@@ -1,0 +1,67 @@
+{
+  "id": "intermediate-value-theorem-oq-02",
+  "title": "Constructive IVT via Bisection Algorithm",
+  "slug": "intermediate-value-theorem-oq-02",
+  "description": "Formalizes the constructive content of the Intermediate Value Theorem via the bisection algorithm. Proves the bisection interval halves in width each step ((b-a)/2^n), maintains the sign invariant f(left) ≤ 0 ≤ f(right), stays within [a,b], and — the main theorem — produces points x ∈ [a,b] with |f(x)| < ε for any ε > 0. Also proves uniqueness of the zero for strictly monotone f. 13 theorems, 3 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/IntermediateValueTheoremOQ02.lean",
+    "tags": [
+      "real-analysis",
+      "intermediate-value-theorem",
+      "constructive-mathematics",
+      "bisection",
+      "uniform-continuity"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's intermediate_value_Icc, uniformContinuousOn.",
+    "lineCount": 243,
+    "theoremCount": 13,
+    "definitionCount": 3,
+    "originalContributions": [
+      "approx_ivt: for any ε > 0, bisection finds x ∈ [a,b] with |f(x)| < ε",
+      "bisect_width: after n steps, interval width = (b-a)/2^n (exact formula)",
+      "constructive_ivt_summary: packages approximate roots + midpoint containment + width → 0",
+      "monotone_ivt_unique: strict monotonicity implies unique zero"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical IVT is non-constructive: it asserts existence without giving a procedure. The constructive content — the bisection algorithm — was known for centuries but formalizing its precision guarantees requires careful handling of uniform continuity. This file formalizes the algorithm and proves it finds ε-approximate roots for any ε > 0.",
+    "problemStatement": "Give a formal bisection algorithm for continuous f: [a,b] → ℝ with f(a) ≤ 0 ≤ f(b). Prove the interval width decreases as (b-a)/2^n and that for any ε > 0 the algorithm finds x ∈ [a,b] with |f(x)| < ε.",
+    "text": "The bisection step tests the midpoint: if f(mid) ≤ 0, keep [mid, right]; otherwise keep [left, mid]. After n steps the width is exactly (b-a)/2^n. The sign invariant f(left) ≤ 0 ≤ f(right) is maintained throughout. For the approximate IVT: use uniform continuity on [a,b] (compact) to find δ such that |f(x)-f(y)| < ε when |x-y| < δ; choose n so (b-a)/2^n < δ; the midpoint x satisfies dist(x, left) < δ and dist(x, right) < δ, so |f(x) - f(left)| < ε and |f(x) - f(right)| < ε; since f(left) ≤ 0 and f(right) ≥ 0 this forces |f(x)| < ε.",
+    "proofStrategy": "bisect_width by induction using bisectStep_width at each step. bisect_sign by induction using bisectStep_sign. approx_ivt: extract δ from uniform continuity, choose n via exists_pow_lt_of_lt_one, then apply both sign inequalities and uniform continuity at the midpoint.",
+    "keyInsights": [
+      "Width halving: bisectStep_width is proved by pure algebra (no induction needed)",
+      "Sign preservation: bisectStep always keeps f(left) ≤ 0 ≤ f(right)",
+      "Key bridge: uniform continuity converts δ-closeness to ε-closeness of f values",
+      "constructive_ivt_summary packages all three guarantees in one theorem"
+    ],
+    "prerequisites": [
+      "Uniform continuity on compact sets: Metric.uniformContinuousOn_iff",
+      "Intermediate value theorem: intermediate_value_Icc",
+      "Archimedean property: exists_pow_lt_of_lt_one"
+    ]
+  },
+  "conclusion": {
+    "summary": "Constructive IVT via bisection: width = (b-a)/2^n, sign invariant preserved, ε-approximate roots found for any ε > 0. 13 theorems, 0 axioms, 243 lines.",
+    "implications": "This formalization shows that the classical IVT has explicit computational content: bisection is a provably correct root-finding algorithm. The approach connects constructive and classical mathematics within Lean/Mathlib.",
+    "openQuestions": [
+      "Formalize the full classical IVT from the approximate version (take limit of bisection midpoints)",
+      "Prove convergence rate: bisection achieves linear convergence in the number of bits"
+    ]
+  },
+  "leanFile": {
+    "namespace": "ConstructiveIVT",
+    "lineCount": 243,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 3
+  },
+  "crossReferences": [],
+  "sections": []
+}
