@@ -29,19 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Formalized j=1 cycle uniqueness (3n+1=2^M\u00b7n \u2192 n=1,M=2), extended halving bounds to j=5..8, proved minimum cycle lengths, axiomatized Eliahou 1993 bound. 0 sorries, 1 axiom.",
+    "progressSummary": "Formalized j=1 cycle uniqueness (3n+1=2^M·n → n=1,M=2), extended halving bounds to j=5..8, proved minimum cycle lengths, axiomatized Eliahou 1993 bound. 0 sorries, 1 axiom.",
     "builtItems": [
-      "CollatzStructuredOQ02OQ01.lean: j1_cycle_equation_unique \u2014 algebraic uniqueness proof",
-      "min_halvings_five_odd through min_halvings_eight_odd \u2014 halving bounds for j=5..8",
-      "min_cycle_length_j5 through min_cycle_length_j8 \u2014 cycle length bounds",
-      "parity_cases_lower_bound \u2014 2^k \u2265 k+1 exponential case explosion",
-      "eliahou_cycle_bound axiom \u2014 non-trivial cycles have period > 17 billion",
-      "oq01_case_analysis_limited \u2014 all cycles with period \u2264 17 billion reduce to {1,4,2}"
+      "CollatzStructuredOQ02OQ01.lean: j1_cycle_equation_unique — algebraic uniqueness proof",
+      "min_halvings_five_odd through min_halvings_eight_odd — halving bounds for j=5..8",
+      "min_cycle_length_j5 through min_cycle_length_j8 — cycle length bounds",
+      "parity_cases_lower_bound — 2^k ≥ k+1 exponential case explosion",
+      "eliahou_cycle_bound axiom — non-trivial cycles have period > 17 billion",
+      "oq01_case_analysis_limited — all cycles with period ≤ 17 billion reduce to {1,4,2}"
     ],
     "insights": [
       "3n+1 = 2^M*n rearranges to n*(2^M-3)=1, forcing n|1 so n=1 (and M=2)",
-      "For period-4 cycles: j=1 gives 5n=1 (impossible), j\u22652 violates 2^(4-j)>3^j",
-      "Halving bounds grow as ceil(j*log2(3))\u22481.585j; min cycle lengths \u2248 2.585j",
+      "For period-4 cycles: j=1 gives 5n=1 (impossible), j≥2 violates 2^(4-j)>3^j",
+      "Halving bounds grow as ceil(j*log2(3))≈1.585j; min cycle lengths ≈ 2.585j",
       "Parity case explosion: 2^k patterns for k-cycle makes direct analysis infeasible for large k",
       "Eliahou (1993) uses algebraic sum bounds to prove 17-billion lower bound in one argument"
     ],
@@ -57,6 +57,7 @@
   "relatedProofs": [
     "collatz-structured",
     "collatz-structured-oq-02",
+    "collatz-structured-oq-02-oq-01",
     "collatz-structured-oq-03"
   ],
   "references": {
@@ -70,15 +71,37 @@
   "tractability": 5,
   "leanFiles": [
     {
+      "path": "Proofs/CollatzStructured.lean",
+      "filename": "CollatzStructured.lean",
+      "lineCount": 208,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructured.lean"
+    },
+    {
       "path": "Proofs/CollatzStructuredOQ02OQ01.lean",
       "filename": "CollatzStructuredOQ02OQ01.lean",
-      "lineCount": 172,
-      "theoremCount": 14,
+      "lineCount": 214,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CollatzStructuredOQ03.lean",
+      "filename": "CollatzStructuredOQ03.lean",
+      "lineCount": 150,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ03.lean"
     }
   ]
 }

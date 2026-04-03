@@ -1,10 +1,10 @@
 {
-  "slug": "randomized-maxcut-oq-02",
+  "slug": "cayley-hamilton-reduction-oq-02-oq-01-incomplete-01",
   "title": "[Problem Title]",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
-  "path": "fast",
+  "path": "full",
   "problemStatement": {
     "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
     "plain": "[Explain what we're trying to prove in accessible terms]",
@@ -17,7 +17,7 @@
   },
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-03-29T23:03:00-07:00",
+    "since": "2026-04-03T00:17:57-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
@@ -34,7 +34,7 @@
     "insights": [],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Knowledge Base: randomized-maxcut-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: cayley-hamilton-reduction-oq-02-oq-01-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
     "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
@@ -42,27 +42,15 @@
     "sieve-methods"
   ],
   "relatedProofs": [
-    "randomized-maxcut",
-    "randomized-maxcut-oq-02"
+    "cayley-hamilton",
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-reduction-oq-02",
+    "cayley-hamilton-reduction-oq-02-oq-01"
   ],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-03-30T06:03:08.389Z",
-  "lastUpdate": "2026-03-30T06:03:08.397Z",
-  "leanFiles": [
-    {
-      "path": "Proofs/RandomizedMaxcutOQ02.lean",
-      "filename": "RandomizedMaxcutOQ02.lean",
-      "lineCount": 128,
-      "theoremCount": 3,
-      "axiomCount": 1,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RandomizedMaxcutOQ02.lean"
-    }
-  ]
+  "started": "2026-04-03T00:17:57-07:00"
 }

@@ -58,7 +58,8 @@
     "classic"
   ],
   "relatedProofs": [
-    "isosceles-triangle"
+    "isosceles-triangle",
+    "isosceles-triangle-oq-01"
   ],
   "references": {
     "papers": [],
@@ -71,10 +72,21 @@
   "tractability": 7,
   "leanFiles": [
     {
+      "path": "Proofs/IsoscelesTriangle.lean",
+      "filename": "IsoscelesTriangle.lean",
+      "lineCount": 130,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IsoscelesTriangle.lean"
+    },
+    {
       "path": "Proofs/IsoscelesTriangleOQ01.lean",
       "filename": "IsoscelesTriangleOQ01.lean",
       "lineCount": 145,
-      "theoremCount": 4,
+      "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
