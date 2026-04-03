@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-fct02-configuration",
+    "proofId": "four-color-theorem-oq-02",
+    "range": { "startLine": 28, "endLine": 46 },
+    "type": "definition",
+    "title": "Configuration: Ring + Interior Structure",
+    "content": "A Configuration packages two natural numbers: ringSize (the boundary cycle length) and interiorSize (vertices inside the ring), with the constraint ringSize ≥ 2. This matches the mathematical definition: a configuration is a planar graph where the outer face boundary forms a cycle of length ringSize. Reducibility is then about whether a proper 4-coloring of the ring cycle can always be extended to the interior. IsReducible is currently stubbed as True — the actual definition requires enumerating ring colorings and checking extension.",
+    "mathContext": "A configuration $C = (G, \\gamma)$ consists of a planar graph $G$ with outer face boundary $\\gamma$ (the 'ring' of size $r$). $C$ is reducible if for every proper 4-coloring of the ring $\\gamma$, the coloring extends to a proper 4-coloring of all of $G$. Checking this requires examining $\\leq 3^r/r$ essentially different ring colorings.",
+    "significance": "key",
+    "relatedConcepts": ["graph coloring", "planar graphs", "Kempe chains", "ring coloring extension"],
+    "prerequisites": ["graph theory", "planarity", "chromatic polynomials"]
+  },
+  {
+    "id": "ann-fct02-birkhoff-diamond",
+    "proofId": "four-color-theorem-oq-02",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "insight",
+    "title": "Birkhoff Diamond: First Reducible Configuration (1913)",
+    "content": "The Birkhoff diamond (ringSize=6, interiorSize=4) is the simplest non-trivial reducible configuration, discovered by George Birkhoff in 1913. It consists of a hexagonal ring with 4 interior vertices forming a diamond shape. Birkhoff showed that any 4-coloring of the 6-vertex ring can be extended to the 4 interior vertices, which was a key step toward the eventual proof of the Four Color Theorem. The diamond has the smallest ring size of any known reducible configuration.",
+    "mathContext": "The Birkhoff diamond has ring size 6 and is the only reducible configuration with ring size $\\leq 5$ (rings of size $\\leq 5$ are not reducible). Birkhoff's 1913 paper introduced the configuration/reducibility framework and proved this configuration reducible using the theory of Kempe chains.",
+    "significance": "key",
+    "relatedConcepts": ["Birkhoff's theorem", "ring coloring", "Kempe chain reduction", "chromatic polynomial"],
+    "prerequisites": ["graph theory", "graph coloring", "planarity"]
+  },
+  {
+    "id": "ann-fct02-unavoidability",
+    "proofId": "four-color-theorem-oq-02",
+    "range": { "startLine": 43, "endLine": 59 },
+    "type": "technique",
+    "title": "Unavoidability via Discharging",
+    "content": "IsUnavoidable S says every 5-connected planar graph contains a member of S (currently stubbed as True). In practice, unavoidability is proved by the *discharging method*: assign charges 6-deg(v) to each vertex and 6-|f| to each face. By Euler's formula for planar graphs, the total charge is exactly 12 > 0. Discharging rules redistribute charges; if the configuration set S is unavoidable, some element must appear, contradicting the assumption that all charges become ≤ 0.",
+    "mathContext": "Euler's formula: $V - E + F = 2$. For a planar triangulation: $\\sum_v (6 - \\deg v) + \\sum_f (6 - |f|) = 12$. After discharging (redistributing charges by fixed rules), if $S$ is unavoidable, every 5-connected planar graph contains a member of $S$. The total positive charge proves at least one must occur.",
+    "significance": "key",
+    "relatedConcepts": ["discharging method", "Euler's formula", "planar graph structure", "Robertson-Seymour theorem"],
+    "prerequisites": ["planar graph theory", "Euler's formula", "graph minors"]
+  },
+  {
+    "id": "ann-fct02-historical-progress",
+    "proofId": "four-color-theorem-oq-02",
+    "range": { "startLine": 1, "endLine": 21 },
+    "type": "context",
+    "title": "Historical Reduction: 1936 → 1476 → 633 Configurations",
+    "content": "The configuration count tracks the progress of computer-assisted proofs. Appel-Haken (1977) used 1936 configurations in their original proof — the first major computer-assisted proof, requiring months of CPU time. They reduced it to 1476 in the same year. Robertson-Sanders-Seymour-Thomas (1997) achieved 633 with a cleaner discharging proof and more efficient reducibility checking. Gonthier (2008) formally verified the RSST proof in Coq. The minimum unknown set size is the outstanding open question.",
+    "mathContext": "The computational cost of checking reducibility scales as $O(\\text{(ring-colorings)} \\times \\text{(extension checks)}) \\sim O(3^r)$ for ring size $r$. Reducing configuration count often means accepting larger ring sizes, creating a trade-off. RSST achieved 633 with ring sizes up to 11.",
+    "significance": "context",
+    "relatedConcepts": ["computer-assisted proofs", "proof verification", "Coq", "Gonthier's proof"],
+    "prerequisites": ["Four Color Theorem", "graph theory", "proof assistants"]
+  },
+  {
+    "id": "ann-fct02-open-question",
+    "proofId": "four-color-theorem-oq-02",
+    "range": { "startLine": 67, "endLine": 93 },
+    "type": "insight",
+    "title": "The Open Question: Minimum Configuration Set",
+    "content": "The open question documents three obstacles to reducing below 633: (1) computational: reducibility checking is exponential in ring size, (2) unavoidability: removing a configuration requires adjusting discharging rules, potentially adding others, (3) trade-off: fewer configurations often means larger rings. Heuristic estimates suggest ~200-400 configurations suffice, but no tight lower bound is known. The file notes this is heuristic rather than proved — an honest assessment of the mathematical state of the art.",
+    "mathContext": "A lower bound argument would need to show that for any set $S$ of fewer than $k$ configurations, either some configuration fails reducibility or some planar graph avoids all of $S$. No such bound tighter than ~10 is currently proved. The heuristic estimate of 200-400 comes from the structure of the discharging rules in the RSST proof.",
+    "significance": "key",
+    "relatedConcepts": ["computational complexity", "discharging rules", "graph minors", "extremal graph theory"],
+    "prerequisites": ["Four Color Theorem proof strategy", "computational graph theory"]
+  }
+]
