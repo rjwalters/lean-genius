@@ -33,15 +33,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "Abel (1824) proved that the general degree-5 polynomial is not solvable by radicals. Galois (1832) gave the definitive theory: a polynomial is solvable by radicals iff its Galois group is solvable. The key: S_n is solvable for n ≤ 4 (enabling the classical formulas for cubics and quartics) but not for n ≥ 5 (blocking a quintic formula). The obstruction is the simplicity of A₅.",
-    "problemStatement": "Prove the complete solvability classification: S_n is solvable if and only if n ≤ 4. Prove A₅ is the obstruction (simple and non-abelian). Verify specific group properties and orders.",
-    "text": "S₀ and S₁ are trivial. S₂ is commutative (abelian, hence solvable). S₃ is solvable via the short exact sequence 1 → A₃ → S₃ → ℤˣ → 1 (both A₃≅ℤ/3ℤ and ℤˣ are abelian). S₄ is solvable via 1 → A₄ → S₄ → ℤˣ → 1 where A₄ is solvable via the Klein four-group V₄. For n ≥ 5: Mathlib's Equiv.Perm.not_solvable provides the result. The complete iff follows.",
-    "proofStrategy": "Prove each small case separately using structural arguments (exact sequences, commutativity). Use Mathlib's not_solvable for n≥5. Package into the full iff. Prove non-commutativity witnesses via decide/native_decide.",
+    "historicalContext": "The quest for formulas solving polynomial equations spans millennia. The quadratic formula was known to Babylonian mathematicians (~2000 BCE). The cubic formula was found by Scipione del Ferro (~1515) and published by Cardano (1545); the quartic by Ferrari (1540), also in Cardano's Ars Magna. In 1799, Ruffini gave an incomplete argument that the quintic has no radical solution; Abel (1824) gave the first rigorous proof of quintic unsolvability. Galois (1832), in a letter written the night before his fatal duel, laid down the complete theory: a polynomial equation is solvable by radicals if and only if its Galois group is solvable. The key group-theoretic fact is that $S_n$ is solvable for $n \\leq 4$ (via composition series with abelian factors) but not for $n \\geq 5$ — because $A_5$ is simple and non-abelian, appearing as an insoluble composition factor. The simplicity of $A_5$ (the unique normal subgroups of $A_5$ are $\\{e\\}$ and $A_5$ itself) was proved by Galois. The threshold $n = 4$ is the precise boundary, explaining the existence of Cardano's cubic and Ferrari's quartic formulas while blocking any general quintic formula.",
+    "problemStatement": "Prove the complete solvability classification: $S_n$ is solvable if and only if $n \\leq 4$ (and $A_n$ solvable $\\iff n \\leq 4$). Prove $A_5$ is the minimal obstruction (simple and non-abelian). Verify specific group properties and orders. Formalize the Galois connection: non-solvable Galois group implies non-solvability by radicals.",
+    "proofStrategy": "Fifteen sections organized around major themes. Part I proves small symmetric and alternating groups solvable: $S_0, S_1$ by `isSolvable_of_subsingleton`; $S_2$ by `isSolvable_of_comm` after `decide`; $S_3$ via the short exact sequence $1 \\to A_3 \\to S_3 \\to \\mathbb{Z}^\\times \\to 1$ using `solvable_of_ker_le_range`; $S_4$ similarly after proving $A_4$ solvable via the Klein four-group $V_4$ (defined by $x^2 = e$, proved normal by `native_decide`). Part II packages these into the complete biconditional using `interval_cases` and Mathlib's `Equiv.Perm.not_solvable`. Parts III-XV add supporting theorems: A₅ simplicity and order, Galois contrapositive, subgroup/quotient/isomorphism solvability, cardinalities (from $|S_2|=2$ to $|S_8|=40320$), non-commutativity witnesses, and factorial identities.",
     "keyInsights": [
-      "S₂ solvable via commutativity; S₃ and S₄ via short exact sequences with abelian quotients",
-      "A₅ is simple: no non-trivial normal subgroups, blocking solvability of S₅",
-      "Sharp threshold: n=4 is the last solvable case — this is why degree 4 has formulas",
-      "Galois connection: polynomial solvability ↔ Galois group solvability"
+      "The solvability threshold $n = 4$ has a direct geometric meaning: degree-4 polynomial equations can be solved by repeatedly extracting square and cube roots (Cardano/Ferrari formulas), but degree-5 cannot. This corresponds precisely to the group-theoretic fact that $S_4$ is solvable (has a chain $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ with abelian factors) while $S_5$ is not.",
+      "A₅ is the smallest non-abelian simple group: it has no non-trivial normal subgroups and is not commutative. Its order $|A_5| = 60$ makes it significantly smaller than the next example ($PSL(2,7)$ of order 168). Galois's discovery of $A_5$'s simplicity in 1832 was the key insight connecting group theory to polynomial equations.",
+      "The proof of $S_4$ solvability requires the Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$: a normal subgroup of $A_4$ isomorphic to $(\\mathbb{Z}/2\\mathbb{Z})^2$. This is the deepest case — $A_4$ is the smallest non-abelian solvable group, and $V_4$ is the smallest non-trivial normal subgroup in its composition series.",
+      "The Lean proof of the biconditional $S_n$ solvable $\\iff n \\leq 4$ is remarkably concise: the forward direction uses `interval_cases n <;> infer_instance` (5 lines) and the backward direction delegates to Mathlib's `Equiv.Perm.not_solvable`. The heavy mathematical work is done inside Mathlib, demonstrating the power of building on a mature library.",
+      "The `solvable_of_ker_le_range` lemma encodes the exact sequence argument: given $H \\trianglelefteq G$ with $H$ solvable (via a kernel inclusion) and $G/H$ solvable (as the range image), conclude $G$ solvable. This is used three times: for $S_3$, $A_4$, and $S_4$, making it the central technique in the small-groups section."
     ],
     "prerequisites": [
       "Group theory: solvable groups, normal subgroups, composition series",
@@ -72,5 +72,48 @@
       "description": "Abel-Ruffini impossibility theorem; this file adds the complete solvability classification of S_n"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "small-symmetric-groups",
+      "title": "Small Symmetric Groups: S₀–S₄ Solvable",
+      "startLine": 49,
+      "endLine": 152,
+      "summary": "Proves $S_0, S_1$ solvable by subsingleton; $S_2$ by commutativity; $S_3$ via the exact sequence $1 \\to A_3 \\to S_3 \\to \\mathbb{Z}^\\times \\to 1$; $S_4$ via the Klein four-group $V_4 \\trianglelefteq A_4$ and the extension $1 \\to A_4 \\to S_4 \\to \\mathbb{Z}^\\times \\to 1$. Also proves $A_0$–$A_4$ solvable."
+    },
+    {
+      "id": "sharp-threshold",
+      "title": "Sharp Threshold: S_n Solvable ↔ n ≤ 4",
+      "startLine": 154,
+      "endLine": 183,
+      "summary": "Proves the complete biconditional: $S_n$ solvable $\\iff n \\leq 4$. Uses `interval_cases n <;> infer_instance` for $n \\leq 4$ and Mathlib's `Equiv.Perm.not_solvable` for $n \\geq 5$."
+    },
+    {
+      "id": "a5-obstruction",
+      "title": "A₅: The Minimal Obstruction and Galois Connection",
+      "startLine": 185,
+      "endLine": 235,
+      "summary": "Proves $A_5$ is simple (`alternatingGroup.isSimpleGroup_five`), verifies $|A_5| = 60$, and formalizes Galois's contrapositive: non-solvable Galois group implies the polynomial is not solvable by radicals. Also proves Galois group order = extension degree."
+    },
+    {
+      "id": "solvability-infrastructure",
+      "title": "Solvability Infrastructure",
+      "startLine": 237,
+      "endLine": 365,
+      "summary": "Proves solvability of $A_n$ for $n \\leq 4$ and non-solvability for $n \\geq 5$ (complete $A_n$ classification). Group cardinalities from $|S_2|=2$ to $|S_6|=720$. Solvability preservation: subgroups, quotients, isomorphisms. Specific non-solvability of $S_5, S_6, S_7, S_8$ and $A_6, A_7$."
+    },
+    {
+      "id": "chain-properties",
+      "title": "Chain Properties and Sign Kernel Identity",
+      "startLine": 407,
+      "endLine": 429,
+      "summary": "Proves the commutator of a solvable group is solvable, establishes $\\ker(\\text{sign}) = A_n$ formally, and packages the joint solvability of $S_n$ and $A_n$ for $n \\leq 4$."
+    },
+    {
+      "id": "noncommutativity-orders",
+      "title": "Non-Commutativity Witnesses and Higher Group Orders",
+      "startLine": 431,
+      "endLine": 516,
+      "summary": "Proves $S_3, S_4, S_5, A_4, A_5$ non-commutative via `decide`/`native_decide`. Verifies $|S_7|=5040, |S_8|=40320, |A_7|=2520, |A_8|=20160$. Confirms $|S_n| = n!$ and $|A_n| = n!/2$ computationally for small $n$."
+    }
+  ]
 }
