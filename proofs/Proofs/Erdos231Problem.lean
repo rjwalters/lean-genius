@@ -128,7 +128,7 @@ The key result: infinite abelian-square-free strings exist over 4 letters.
 -/
 
 /-- Keränen (1992): There exists an infinite sequence over 4 letters
-    with no abelian squares.
+    with no abelian squares. -/
 
 /-- The Keränen morphism (85 letters per symbol) that generates
     abelian-square-free words. -/
