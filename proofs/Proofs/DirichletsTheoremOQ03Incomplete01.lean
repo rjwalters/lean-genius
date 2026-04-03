@@ -17,7 +17,7 @@
   and k ≥ 1 (else p = 1, not prime). The lower bound linnikConstant ≥ 1 then follows
   because q + 1 ≤ c · q^L for all q, and for L < 1 this fails for large q.
 
-  Sorries: 1 (the Archimedean limit step — submitted to Aristotle)
+  Sorries: 0
   Axioms: 0
 -/
 
@@ -106,10 +106,29 @@ def admissibleExponentsCoprime : Set ℝ :=
 noncomputable def linnikConstantCoprime : ℝ := sInf admissibleExponentsCoprime
 
 /-- **Archimedean step**: For c > 0 and 0 < L < 1, some q ≥ 2 has c · q^L < q + 1.
-    Key: q^(1-L) → ∞ as q → ∞ (since 1-L > 0), so c · q^L / (q+1) → 0. -/
-lemma exists_large_q_breaks_bound (c : ℝ) (L : ℝ) (hc : 0 < c) (hL0 : 0 < L)
+    Key: q^(1-L) → ∞ (since 1-L > 0), so eventually c < q^(1-L), giving c · q^L < q. -/
+lemma exists_large_q_breaks_bound (c : ℝ) (L : ℝ) (_hc : 0 < c) (hL0 : 0 < L)
     (hL1 : L < 1) : ∃ q : ℕ, 2 ≤ q ∧ c * (q : ℝ) ^ L < (q : ℝ) + 1 := by
-  sorry
+  have hLm : 0 < 1 - L := by linarith
+  -- q^(1-L) → ∞ as q : ℕ → ∞
+  have htend : Filter.Tendsto (fun q : ℕ => (q : ℝ) ^ (1 - L)) Filter.atTop Filter.atTop :=
+    (tendsto_rpow_atTop hLm).comp tendsto_natCast_atTop_atTop
+  -- Get q with q ≥ 2 and c + 1 ≤ q^(1-L)
+  have hev1 := htend.eventually_ge_atTop (c + 1)
+  have hev2 : ∀ᶠ q : ℕ in Filter.atTop, 2 ≤ q :=
+    Filter.eventually_atTop.mpr ⟨2, fun q h => h⟩
+  obtain ⟨q, hq_bd, hq2⟩ := (hev1.and hev2).exists
+  refine ⟨q, hq2, ?_⟩
+  have hqpos : (0 : ℝ) < (q : ℝ) := by exact_mod_cast show 0 < q by omega
+  -- q^(1-L) * q^L = q^1 = q
+  have hprod : (q : ℝ) ^ (1 - L) * (q : ℝ) ^ L = q := by
+    rw [← Real.rpow_add hqpos]
+    simp
+  -- c < q^(1-L) (from hq_bd)
+  have hkey : c < (q : ℝ) ^ (1 - L) := by linarith
+  -- c * q^L < q^(1-L) * q^L = q < q+1
+  have hqLpos : (0 : ℝ) < (q : ℝ) ^ L := Real.rpow_pos_of_pos hqpos L
+  nlinarith [mul_lt_mul_of_pos_right hkey hqLpos]
 
 /-- **Linnik constant lower bound**: The Linnik constant (coprime version) is ≥ 1.
 
