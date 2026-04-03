@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-lhop-overview",
+    "proofId": "lhopital-oq-02",
+    "range": { "startLine": 8, "endLine": 54 },
+    "type": "context",
+    "title": "Header: The Two-Variable Cauchy MVT Proof Strategy",
+    "content": "The header docstring explains why the ∞/∞ form requires a completely different proof from the 0/0 form. In the 0/0 case, Cauchy's MVT applies directly on [a, x] with the limit point a included. For ∞/∞, the functions diverge at a, so the MVT cannot be applied there. Instead, the proof fixes an auxiliary point x₀ between a and x, applies Cauchy's MVT on the compact interval [x, x₀], and relies on g → ∞ to make the correction terms involving g(x₀) and f(x₀) vanish.",
+    "mathContext": "The algebraic identity at the heart of the proof: $\\frac{f(x)}{g(x)} = \\frac{f(x)-f(x_0)}{g(x)-g(x_0)} \\cdot \\left(1 - \\frac{g(x_0)}{g(x)}\\right) + \\frac{f(x_0)}{g(x)}$. As $x \\to a^+$ with $x_0$ fixed: $f(x_0)/g(x) \\to 0$ and $g(x_0)/g(x) \\to 0$, so the ratio $f(x)/g(x)$ approaches the Cauchy MVT ratio $f'(\\xi)/g'(\\xi) \\to c$.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy's Mean Value Theorem", "L'Hôpital's rule 0/0 form", "indeterminate form ∞/∞", "two-variable argument"],
+    "prerequisites": ["Cauchy MVT", "filter-based limits in Mathlib", "HasDerivAt"]
+  },
+  {
+    "id": "ann-lhop-c0-signature",
+    "proofId": "lhopital-oq-02",
+    "range": { "startLine": 64, "endLine": 76 },
+    "type": "technique",
+    "title": "Private c=0 Lemma: Reducing the General Case",
+    "content": "The private theorem `lhopital_infty_right_zero` handles the special case where f'/g' → 0, avoiding the c parameter entirely. The general theorem then reduces to this via the substitution h(x) = f(x) − c·g(x), whose derivative ratio h'/g' = f'/g' − c tends to 0. This reduction is a standard trick that simplifies epsilon management: instead of tracking |f'/g' − c| < ε/2, we track |h'/g'| < ε/2.",
+    "mathContext": "If $f'/g' \\to c$, set $h = f - c \\cdot g$. Then $h'/g' = f'/g' - c \\to 0$ and $h(x)/g(x) = f(x)/g(x) - c$. So $f(x)/g(x) \\to c$ iff $h(x)/g(x) \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": ["reduction to c=0", "epsilon management", "private theorem", "linear substitution"],
+    "prerequisites": ["HasDerivAt.sub", "HasDerivAt.const_mul", "Tendsto.sub"]
+  },
+  {
+    "id": "ann-lhop-delta-construction",
+    "proofId": "lhopital-oq-02",
+    "range": { "startLine": 79, "endLine": 115 },
+    "type": "technique",
+    "title": "Three-δ Construction: Finding x₀ and the Critical Bounds",
+    "content": "The proof uses three separate δ values, combined into a single δ₀ via min. δ₁ controls where f'/g' < ε/2. δ_gpos ensures g ≥ 1 (so g is positive and thus g ≠ 0). The anchor point x₀ = a + δ₀ is chosen inside (a,b) satisfying both. A third δ₂ ensures g(x) ≥ M where M = max(g(x₀)+1, 2|f(x₀)|/ε+1), which will force both correction terms to be small.",
+    "mathContext": "Need $x_0 \\in (a,b)$ with: (1) $|f'(\\xi)/g'(\\xi)| < \\varepsilon/2$ for $\\xi < x_0$, (2) $g(x_0) \\ge 1 > 0$. Then for $x < x_0$ close enough to $a$, need $g(x) \\ge M := \\max(g(x_0)+1,\\, 2|f(x_0)|/\\varepsilon + 1)$ to bound the correction terms.",
+    "significance": "technical",
+    "relatedConcepts": ["epsilon-delta argument", "Metric.tendsto_nhdsWithin_nhds", "Filter.tendsto_atTop", "min of deltas"],
+    "prerequisites": ["filter-based limit definitions", "Metric.tendsto_nhdsWithin_nhds", "tendsto_atTop"]
+  },
+  {
+    "id": "ann-lhop-cauchy-mvt",
+    "proofId": "lhopital-oq-02",
+    "range": { "startLine": 138, "endLine": 185 },
+    "type": "insight",
+    "title": "Cauchy's Mean Value Theorem Applied on [x, x₀]",
+    "content": "For fixed x < x₀, both f and g are continuous on [x, x₀] and differentiable on (x, x₀) (inherited from the hypotheses on (a,b)). Mathlib's `exists_ratio_deriv_eq_ratio_slope` (the Cauchy MVT) gives a point ξ ∈ (x, x₀) with (g(x₀)−g(x))·f'(ξ) = (f(x₀)−f(x))·g'(ξ). Since ξ < x₀ < a + δ₁, we have |f'(ξ)/g'(ξ)| < ε/2, giving the key bound on the MVT ratio.",
+    "mathContext": "Cauchy's MVT: for continuous $f,g$ on $[x,x_0]$ differentiable on $(x,x_0)$: $\\exists\\, \\xi \\in (x,x_0)$ with $(g(x_0)-g(x))\\cdot f'(\\xi) = (f(x_0)-f(x))\\cdot g'(\\xi)$, i.e., $\\frac{f(x_0)-f(x)}{g(x_0)-g(x)} = \\frac{f'(\\xi)}{g'(\\xi)}$. Since $\\xi < x_0$: $\\text{dist}(\\xi, a) < \\delta_1$, so $|f'(\\xi)/g'(\\xi)| < \\varepsilon/2$.",
+    "significance": "key",
+    "relatedConcepts": ["exists_ratio_deriv_eq_ratio_slope", "Cauchy MVT", "differentiableWithinAt", "DifferentiableOn"],
+    "prerequisites": ["Cauchy's Mean Value Theorem", "deriv vs HasDerivAt", "DifferentiableOn on Ioo"]
+  },
+  {
+    "id": "ann-lhop-algebraic-bound",
+    "proofId": "lhopital-oq-02",
+    "range": { "startLine": 186, "endLine": 224 },
+    "type": "insight",
+    "title": "Algebraic Identity and the ε/2 + ε/2 Bound",
+    "content": "The final calculation uses the algebraic identity f(x)/g(x) = [f'(ξ)/g'(ξ)] · [1 − g(x₀)/g(x)] + f(x₀)/g(x) to split the goal into two parts. For the first part: |f'(ξ)/g'(ξ)| < ε/2 and |1 − g(x₀)/g(x)| ≤ 1 (since 0 < g(x₀)/g(x) < 1). For the second: |f(x₀)/g(x)| < ε/2 since g(x) > 2|f(x₀)|/ε. The calc block chain makes each step explicit: abs_add, abs_mul, then the two separate bounds.",
+    "mathContext": "$|f/g| = |R(1-g(x_0)/g(x)) + f(x_0)/g(x)| \\le |R||1-g(x_0)/g(x)| + |f(x_0)|/g(x) \\le |R| \\cdot 1 + |f(x_0)|/g(x) < \\varepsilon/2 + \\varepsilon/2 = \\varepsilon$, where $R = f'(\\xi)/g'(\\xi)$ and $0 < g(x_0)/g(x) < 1$.",
+    "significance": "key",
+    "relatedConcepts": ["algebraic identity", "triangle inequality", "abs_add", "calc block", "epsilon split"],
+    "prerequisites": ["abs_add", "abs_mul", "div_lt_iff for positive denominators"]
+  },
+  {
+    "id": "ann-lhop-general-c",
+    "proofId": "lhopital-oq-02",
+    "range": { "startLine": 226, "endLine": 275 },
+    "type": "technique",
+    "title": "General c Case: Reducing to the c=0 Private Lemma",
+    "content": "The public theorem handles arbitrary c by defining h(x) = f(x) − c·g(x) and showing h'/g' → 0 via filter_upwards + field_simp. The key step uses Tendsto.sub and the fact that a constant function tends to c in order to get hdiv.sub tendsto_const_nhds, which after simp gives the zero limit. At the end, f(x)/g(x) = h(x)/g(x) + c (almost everywhere, where g ≠ 0), and since h/g → 0, the conclusion f/g → c follows via key.add tendsto_const_nhds.",
+    "mathContext": "Since $f'/g' \\to c$ and $c \\to c$: $h'/g' = (f'-c g')/g' = f'/g' - c \\to c - c = 0$. Then $f/g = h/g + c \\to 0 + c = c$. Everywhere $g(x) \\neq 0$ (which holds eventually since $g \\to +\\infty$).",
+    "significance": "supporting",
+    "relatedConcepts": ["filter_upwards", "Tendsto.sub", "tendsto_const_nhds", "Filter.tendsto_congr'"],
+    "prerequisites": ["filter-based limit arithmetic", "HasDerivAt.sub for h'", "almost-everywhere filter arguments"]
+  },
+  {
+    "id": "ann-lhop-variants",
+    "proofId": "lhopital-oq-02",
+    "range": { "startLine": 277, "endLine": 313 },
+    "type": "context",
+    "title": "Three Pending Variants: Left, atTop, atBot (3 Sorries)",
+    "content": "The three remaining variants (left approach, at +∞, at -∞) have complete formal statements but sorry proof bodies. Each is intended to reduce to the right-approach theorem via a change of variables: left approach via the reflection u = a + b − x, atTop via u = 1/(x−a) (which maps +∞ to a right neighborhood of 0), and atBot via u = −x. The sorry comments indicate the reduction strategy, making these good candidates for Aristotle proof search.",
+    "mathContext": "Left approach: substitute $u = a+b-x$, which maps $\\mathcal{N}^<[b]$ to $\\mathcal{N}^>[a]$ and reverses inequalities. AtTop: substitute $u = 1/x$, mapping $x \\to +\\infty$ to $u \\to 0^+$, with $f'(1/u)/g'(1/u) = $ a ratio tending to $c$. AtBot: substitute $u = -x$.",
+    "significance": "context",
+    "relatedConcepts": ["change of variables for limits", "Filter.tendsto_nhdsWithin_iff", "atTop vs nhdsWithin", "sorry"],
+    "prerequisites": ["right approach theorem", "filter map theorems", "substitution lemmas"]
+  }
+]

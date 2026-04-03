@@ -59,36 +59,56 @@
   },
   "sections": [
     {
+      "id": "zero-case",
+      "title": "Private Lemma: c = 0 Case (Core Engine)",
+      "startLine": 64,
+      "endLine": 224,
+      "summary": "Private theorem proving g→∞, f'/g'→0 ⟹ f/g→0 via three-δ construction + Cauchy MVT on [x, x₀] + algebraic identity.",
+      "mathContext": "Three-δ: fix $x_0$ near $a$ with $|f'/g'|<\\varepsilon/2$ for $\\xi < x_0$, then ensure $g(x) \\ge M = \\max(g(x_0)+1, 2|f(x_0)|/\\varepsilon+1)$. Key identity: $f/g = (f'/g')\\cdot(1-g(x_0)/g) + f(x_0)/g$."
+    },
+    {
       "id": "right-approach",
-      "title": "∞/∞ L'Hôpital — Right Approach",
-      "startLine": 50,
-      "endLine": 100,
-      "summary": "Main theorem: if g → ∞ as x → a⁺ and f'/g' → c, then f/g → c. Proof uses two-variable Cauchy MVT argument."
+      "title": "Main Theorem: ∞/∞ L'Hôpital, Right Approach",
+      "startLine": 226,
+      "endLine": 275,
+      "summary": "Public theorem for general c: reduce to c=0 via h(x)=f(x)-c·g(x), then apply the private lemma and add c back.",
+      "mathContext": "$f/g \\to c$ iff $h/g = (f-c\\cdot g)/g \\to 0$, where $h'/g' = f'/g' - c \\to 0$."
     },
     {
       "id": "variants",
-      "title": "Additional Variants",
-      "startLine": 105,
-      "endLine": 145,
-      "summary": "Left approach, at +∞, and at -∞ variants, reducible to the right approach case."
+      "title": "Additional Variants (3 Sorries Pending)",
+      "startLine": 277,
+      "endLine": 313,
+      "summary": "Left approach (reflection u=a+b-x), atTop (inversion u=1/x), and atBot (negation u=-x) — all sorry bodies.",
+      "mathContext": "Each reduces to the right approach via a substitution that maps the limit direction to $\\mathcal{N}^+[a]$."
     },
     {
       "id": "examples",
-      "title": "Examples and Relationship to 0/0",
-      "startLine": 150,
-      "endLine": 195,
-      "summary": "Classic examples (x/eˣ, ln(x)/cot(x)) and explanation of why ∞/∞ needs a separate proof."
+      "title": "Classic Examples: x/eˣ and ln(x)/cot(x)",
+      "startLine": 315,
+      "endLine": 333,
+      "summary": "Two canonical ∞/∞ examples as commentary. x/eˣ → 0 (x→∞), ln(x)/cot(x) → 0 (x→0⁺)."
+    },
+    {
+      "id": "comparison",
+      "title": "Why ∞/∞ Needs a Different Proof from 0/0",
+      "startLine": 335,
+      "endLine": 357,
+      "summary": "Explains why the 0/0 Cauchy MVT at the limit point fails for ∞/∞, and why the two-variable argument is necessary.",
+      "mathContext": "For $0/0$: MVT on $[a,x]$ gives $f(x)/g(x) = (f(x)-f(a))/(g(x)-g(a)) = f'(\\xi)/g'(\\xi)$ directly. For $\\infty/\\infty$: $f(a), g(a)$ don't exist; must use MVT on $[x, x_0]$ with $x_0 > a$ as anchor."
     }
   ],
   "overview": {
-    "historicalContext": "L'Hôpital's rule was published in 1696 in the first calculus textbook. The 0/0 form is the most well-known, but the ∞/∞ form is equally fundamental. Both forms are consequences of Cauchy's Mean Value Theorem, but the ∞/∞ case requires a more delicate two-variable argument because the function values at the limit point don't exist (they're infinite).",
+    "historicalContext": "L'Hôpital's rule was published in 1696 in the Marquis de l'Hôpital's textbook Analyse des infiniment petits, the first calculus textbook ever printed. The result was actually discovered by Johann Bernoulli, who communicated it to l'Hôpital as part of a private tutoring arrangement. The 0/0 form was the primary focus in the 18th and 19th centuries, but the ∞/∞ form is equally fundamental and arises naturally in applications like computing lim(x→∞) x/eˣ = 0. The modern rigorous proof using Cauchy's Mean Value Theorem was developed in the 19th century. The ∞/∞ form requires a genuinely different two-variable argument because the functions diverge at the limit point, preventing the direct MVT application that works for 0/0. As of Mathlib 4.26.0, all 26 L'Hôpital variants in Mathlib handle only the 0/0 form — this formalization fills that gap with the complementary ∞/∞ form.",
     "problemStatement": "**∞/∞ L'Hôpital's Rule**: If f and g are differentiable near a, g(x) → ∞ as x → a⁺, g'(x) ≠ 0, and f'(x)/g'(x) → c, then f(x)/g(x) → c.",
     "text": "Formalize the ∞/∞ form of L'Hôpital's rule, complementing Mathlib's 0/0 form.",
     "proofStrategy": "The proof fixes x₀ near a, applies Cauchy's MVT on (x, x₀), and rewrites f(x)/g(x) as a combination of f'(ξ)/g'(ξ) (close to c) and correction terms f(x₀)/g(x) and g(x₀)/g(x) that vanish as g(x) → ∞.",
     "keyInsights": [
-      "**Only g → ∞ is needed**: Unlike naive reductions via 1/f and 1/g, the direct proof only requires g → ∞, not both f and g",
-      "**Two-variable argument**: Fix x₀, let x → a⁺, then optimize x₀ → a⁺. This is fundamentally different from the 0/0 proof",
-      "**Cauchy MVT is the core tool**: Same foundation as the 0/0 form, but applied differently"
+      "Only $g \\to \\infty$ is needed, not both $f$ and $g$: the proof only uses divergence of $g$ to make correction terms $f(x_0)/g(x)$ and $g(x_0)/g(x)$ vanish, never requiring $f \\to \\infty$",
+      "The key algebraic identity $f/g = [f'/g'] \\cdot [1-g(x_0)/g] + f(x_0)/g$ decomposes the ratio into an MVT term (close to $c$) and two correction terms (that vanish as $g \\to \\infty$) — this is the central insight of the two-variable argument",
+      "The bound $|1 - g(x_0)/g(x)| \\le 1$ (since $0 < g(x_0) < g(x)$) is crucial: it ensures the MVT term contributes at most $|f'/g'|$, even without knowing the bracket is small",
+      "The reduction to $c=0$ via $h = f - c \\cdot g$ is a bookkeeping simplification that transforms 'ratio tends to $c$' into 'ratio tends to 0', making the epsilon argument cleaner",
+      "The three pending sorry variants (left, atTop, atBot) are proof-structure exercises — they contain the substitution strategy in comments and should be closable by Aristotle or by direct filter manipulation"
     ],
     "prerequisites": [
       "Cauchy's Mean Value Theorem",
@@ -100,10 +120,12 @@
     ]
   },
   "conclusion": {
-    "summary": "The ∞/∞ L'Hôpital's rule is fully proved for the right approach case via two-variable Cauchy MVT. Three variants (left, at +∞, at -∞) have statements formalized with proof bodies pending (3 sorries).",
-    "implications": "Completing the proofs would fill a genuine gap in Mathlib's calculus library: 26 variants of the 0/0 form but zero variants of the ∞/∞ form.",
+    "summary": "The ∞/∞ L'Hôpital's rule is fully proved for the right approach ($x \\to a^+$) via two-variable Cauchy MVT with explicit epsilon management. Three variants (left approach, $x \\to +\\infty$, $x \\to -\\infty$) are formally stated with sorry proof bodies pending, each accompanied by the intended substitution strategy.",
+    "implications": "This formalization fills a genuine gap in Mathlib's calculus library: as of v4.26.0, all 26 L'Hôpital variants handle only the 0/0 form. The right-approach proof is complete and could be contributed to Mathlib immediately. The two-variable argument with explicit delta construction is a template applicable to other limit theorems where direct MVT application at the limit point fails.",
     "openQuestions": [
-      "Can the proof be done by reducing to the 0/0 form via substitution u = 1/g(x)?"
+      "Can the three pending sorry variants be closed by Aristotle proof search? The substitution strategy is spelled out in comments (reflection for left approach, inversion for atTop, negation for atBot) — these may be straightforward filter manipulations.",
+      "The 0/0 form can sometimes be reduced to the ∞/∞ form via $u = 1/f(x)$. Is there a clean formal proof that the two forms are logically equivalent (derivable from each other), or does each require its own independent epsilon-delta argument?",
+      "Mathlib's 26 L'Hôpital variants include different derivative hypotheses (HasDerivAt, HasStrictDerivAt, DifferentiableOn). Should the ∞/∞ variants be stated for each hypothesis style to match the existing API surface?"
     ]
   },
   "crossReferences": [
