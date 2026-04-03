@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-1012-tournament",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 93, "endLine": 100 },
+    "type": "definition",
+    "title": "Tournament and Strong Connectivity Predicates",
+    "content": "`IsTournament` formalizes the tournament condition: for every pair of distinct vertices $u \\neq v$, exactly one arc direction holds (either $u \\to v$ or $v \\to u$, but not both). This captures 'complete directed graph with no ties'. `IsStronglyConnected` requires a directed path between every ordered pair $(u, v)$ with $u \\neq v$, using a `List`-based path definition. Both predicates work over any finite `DecidableEq` vertex type `V`, keeping the formalization general.",
+    "mathContext": "A tournament on $n$ vertices has exactly $\\binom{n}{2}$ arcs (one for each unordered pair). The strongly connected condition for tournaments has a clean equivalent: a tournament is strongly connected iff it is not 'reducible' (has no dominating subset). Rédei's theorem holds for all tournaments; Moon-Moser requires the additional strongly-connected hypothesis.",
+    "significance": "key",
+    "relatedConcepts": ["tournament", "strongly connected", "directed graph", "arc"],
+    "prerequisites": ["graph theory", "directed graphs", "Lean structures"]
+  },
+  {
+    "id": "ann-1012-hamiltonian-def",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 107, "endLine": 120 },
+    "type": "definition",
+    "title": "Hamiltonian Cycle and Path: Equiv-Based Encoding",
+    "content": "`HasHamiltonianCycle D` asserts the existence of a permutation $\\sigma \\in \\text{Perm}(\\text{Fin}\\ n)$ such that $D.\\text{arc}(\\sigma(i), \\sigma(i+1 \\mod n))$ holds for all $i$. Using `Equiv.Perm` encodes the Hamiltonian cycle as a bijective traversal of all vertices in cyclic order. Similarly, `HasHamiltonianPath D` uses a bijection $\\text{Fin}\\ n \\to V$ for the path. This algebraic encoding is clean but requires converting the list-based proofs to the `Equiv` form, which `list_path_to_hamiltonian` and `list_cycle_to_hamiltonian` handle.",
+    "mathContext": "A Hamiltonian cycle visits every vertex exactly once and returns to the start: $v_{\\sigma(0)} \\to v_{\\sigma(1)} \\to \\cdots \\to v_{\\sigma(n-1)} \\to v_{\\sigma(0)}$. The `Equiv.Perm` encoding ensures bijectivity (visits all $n$ vertices) while the arc conditions enforce the directed path structure.",
+    "significance": "key",
+    "relatedConcepts": ["Hamiltonian cycle", "Equiv.Perm", "bijection", "cyclic ordering"],
+    "prerequisites": ["graph theory", "Lean Equiv type", "Fintype"]
+  },
+  {
+    "id": "ann-1012-path-insert",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 151, "endLine": 220 },
+    "type": "insight",
+    "title": "Tournament Path Insertion: Key Lemma for Rédei",
+    "content": "`tournament_path_insert` proves that given a Hamiltonian path on $k$ vertices of a tournament and a new vertex $v$, the path can be extended to a Hamiltonian path on $k+1$ vertices. The proof considers three cases: (1) $v \\to p_1$ (insert at front), (2) $p_k \\to v$ (append at back), (3) there exists $i$ with $p_i \\to v \\to p_{i+1}$ (insert in middle). In a tournament, one of these must hold: if $p_1 \\to v$ (not case 1) and $v \\to p_k$ (not case 2), then among the arc transitions $p_i \\to v$ and $v \\to p_j$, consecutive indices must transition, giving a valid middle insertion point.",
+    "mathContext": "For a path $p_0 \\to p_1 \\to \\cdots \\to p_{k-1}$ and vertex $v$: define $I = \\{i : p_i \\to v\\}$ and $J = \\{j : v \\to p_j\\}$. Since $I \\cup J = \\{0,\\ldots,k-1\\}$ (tournament), if $I$ and $J$ are both nonempty, let $i = \\max I$ and $j = \\min J$; the tournament condition on $p_i, p_j$ forces $i < j$ (since $p_i \\to v \\to p_j$ and $j > i$ follows from $p_i \\to p_{i+1} \\to \\cdots \\to p_j$ in the path). So insert $v$ between $p_i$ and $p_{i+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["insertion lemma", "Hamiltonian path extension", "tournament property", "inductive step"],
+    "prerequisites": ["tournament definition", "directed path", "List operations in Lean"]
+  },
+  {
+    "id": "ann-1012-ghouila-houri",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 295, "endLine": 300 },
+    "type": "insight",
+    "title": "Ghouila-Houri Theorem (Sorry): Directed Dirac Analogue",
+    "content": "`ghouila_houri` states: a strongly connected digraph on $n \\geq 3$ vertices with $\\delta^+(v), \\delta^-(v) \\geq n/2$ for all $v$ has a Hamiltonian cycle. The proof is deferred (`sorry`). The standard proof mirrors Dirac's undirected argument: take a longest directed path $P = v_0 \\to \\cdots \\to v_k$; since $P$ is longest, $v_k$'s successors and $v_0$'s predecessors all lie in $P$. The out-neighbors of $v_k$ and in-neighbors of $v_0$ each have $\\geq n/2$ elements in $P$, so by pigeonhole some $v_i$ satisfies $v_{i-1} \\to v_0$ and $v_k \\to v_i$, closing $P$ into a Hamiltonian cycle.",
+    "mathContext": "Ghouila-Houri (1960): $G$ strongly connected, $\\forall v: \\delta^+(v) \\geq n/2$ and $\\delta^-(v) \\geq n/2$ $\\Rightarrow$ $G$ Hamiltonian. Compare: Dirac (1952): $G$ undirected, $\\delta(v) \\geq n/2$ $\\Rightarrow$ Hamiltonian. The directed version requires both in- and out-degree bounds (one bound alone is insufficient).",
+    "significance": "key",
+    "relatedConcepts": ["Dirac's theorem", "degree condition", "pigeonhole principle", "longest path argument"],
+    "prerequisites": ["directed graph theory", "degree conditions", "Hamiltonicity"]
+  },
+  {
+    "id": "ann-1012-redei",
+    "proofId": "erdos-1012-oq-03",
+    "range": { "startLine": 689, "endLine": 694 },
+    "type": "theorem",
+    "title": "Rédei's Theorem: Every Tournament Has a Hamiltonian Path",
+    "content": "`redei` proves `D.HasHamiltonianPath` for any tournament on $n \\geq 2$ vertices. The proof uses `tournament_full_path_list` to obtain a list-based Hamiltonian path (by induction via `tournament_path_insert`), then `list_path_to_hamiltonian` to convert to the `Equiv.Perm` encoding. This is the cleanest theorem in the file: fully proved, no sorries, 5 lines. Rédei's 1934 result is a combinatorial cornerstone: it implies that every tournament has a 'consistent ranking' of all players.",
+    "mathContext": "Rédei's theorem (1934): every tournament on $n$ vertices has a Hamiltonian path. Proof by induction: $n=1$ trivial; for $n+1$, take any $n$-vertex subtournament with Hamiltonian path $P$, then insert the $(n+1)$-th vertex using `tournament_path_insert`. This gives a path on all $n+1$ vertices. Rédei's theorem is also equivalent to: every tournament has a topological sort (when restricted to the path direction).",
+    "significance": "key",
+    "relatedConcepts": ["Rédei theorem", "tournament", "Hamiltonian path", "induction", "voting theory"],
+    "prerequisites": ["tournament definition", "Hamiltonian path", "induction on vertex count"]
+  }
+]
