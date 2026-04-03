@@ -8,13 +8,7 @@
     "date": "2026-02-15",
     "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzOQ02.lean",
-    "tags": [
-      "analysis",
-      "cauchy-schwarz",
-      "holder-inequality",
-      "l2-spaces",
-      "measure-theory"
-    ],
+    "tags": ["analysis","cauchy-schwarz","holder-inequality","l2-spaces","measure-theory"],
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-02",
@@ -39,9 +33,11 @@
     "proofStrategy": "Apply NNReal.inner_le_Lp_mul_Lq from Mathlib for Hölder. Use L2Space, MeasureTheory.inner_le_Lp_mul_Lq for the L² results. Derive Cauchy-Schwarz as p=q=2 specialization. Prove structural identities from inner product axioms.",
     "keyInsights": [
       "Hölder contains Cauchy-Schwarz: the p=q=2 case gives ∑ fg ≤ √(∑f²)√(∑g²)",
-      "L² Pythagorean theorem: orthogonality via inner product vanishing",
-      "Parallelogram law: characterizes inner product spaces (vs. general Banach spaces)",
-      "Polarization identity: recovers the inner product from the norm"
+      "L² Pythagorean theorem: orthogonality via inner product vanishing gives ‖f+g‖² = ‖f‖² + ‖g‖²",
+      "Parallelogram law: characterizes inner product spaces among all Banach spaces (Jordan–von Neumann 1935)",
+      "Polarization identity: recovers the inner product from the norm, making ⟨f,g⟩ a derived quantity",
+      "Bessel's inequality: ∑ᵢ ⟨x,eᵢ⟩² ≤ ‖x‖² for any finite orthonormal system; equality in the limit (complete ONB) gives Parseval's identity ∑|ĉₙ|² = ‖f‖²",
+      "Weighted Cauchy-Schwarz via square-root substitution: setting a'ᵢ=√wᵢ, b'ᵢ=√wᵢ·aᵢ reduces the weighted inequality to standard Cauchy-Schwarz, a trick that generalizes to any positive measure"
     ],
     "prerequisites": [
       "Inner product spaces: L² norm, ⟨f,g⟩, orthogonality",
@@ -50,12 +46,14 @@
     ]
   },
   "conclusion": {
-    "summary": "Cauchy-Schwarz extended to Hölder family: Hölder inequality, L² Pythagorean, parallelogram law, polarization identity, weighted Cauchy-Schwarz, Minkowski. 18 theorems, 335 lines, 0 axioms.",
+    "summary": "Cauchy-Schwarz extended to Hölder family: Hölder inequality, L² Pythagorean, parallelogram law, polarization identity, weighted Cauchy-Schwarz, Minkowski, Bessel's inequality. 18 theorems, 335 lines, 0 axioms.",
     "implications": "The Hölder-Minkowski family underlies all of functional analysis and harmonic analysis. The L² results are foundational for Fourier analysis (Parseval's identity follows from the Pythagorean theorem) and quantum mechanics (Hilbert space formulation).",
     "openQuestions": [
-      "Formalize Parseval's identity: ∑|ĉₙ|² = ‖f‖² for Fourier coefficients",
-      "Prove the reverse Hölder (Kantorovich) inequality",
-      "Formalize the Riesz representation theorem in L²"
+      "Formalize Parseval's identity: ∑|ĉₙ|² = ‖f‖² for Fourier coefficients (the infinite-dimensional limit of Bessel's inequality when the ONB is complete)",
+      "Prove Bessel's inequality in infinite dimensions: ∑ᵢ ⟨x,eᵢ⟩² ≤ ‖x‖² for a countably infinite orthonormal system, and show the partial sums converge",
+      "Formalize the complex polarization identity: ⟨f,g⟩ = (‖f+g‖² - ‖f-g‖² + i‖f+ig‖² - i‖f-ig‖²)/4 for complex Hilbert spaces",
+      "Prove the operator-norm version of Cauchy-Schwarz: |⟨Af,g⟩|² ≤ ⟨Af,f⟩·⟨Ag,g⟩ for positive operators A, used in quantum mechanics as the Robertson uncertainty principle",
+      "Formalize the Riesz representation theorem in L²: every bounded linear functional on L² is given by inner product with a unique element"
     ]
   },
   "leanFile": {
@@ -72,5 +70,69 @@
       "description": "Cauchy-Schwarz inequality; OQ-02 adds Hölder, L² structure theorems, and Minkowski"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-01-imports",
+      "title": "Imports and Namespace Setup",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Six Mathlib imports providing NNReal Hölder, L² function spaces, and inner product space infrastructure. Namespace CauchySchwarzExtensions scopes all 18 theorems. Overview comment establishes the organizing principle: Cauchy-Schwarz as the p=q=2 case of Hölder."
+    },
+    {
+      "id": "sec-02-holder",
+      "title": "Part 1: Hölder's Inequality for Finite NNReal Sums",
+      "startLine": 44,
+      "endLine": 67,
+      "summary": "holder_finite_nnreal delegates to NNReal.inner_le_Lp_mul_Lq. cauchy_schwarz_from_holder specializes to p=q=2 via Real.HolderConjugate.conjExponent. Establishes the Hölder-Cauchy-Schwarz hierarchy in the discrete finite-sum setting."
+    },
+    {
+      "id": "sec-03-l2-bridge",
+      "title": "Part 2: L² Norm Bridge Lemmas",
+      "startLine": 68,
+      "endLine": 108,
+      "summary": "Four bridge lemmas connecting abstract inner product notation to measure-theoretic integrals: memLp_two_iff_sq_integrable, L2_inner_integrable, L2_inner_eq_integral' (⟨f,g⟩ = ∫ fg dμ), and L2_norm_sq_eq_integral (‖f‖² = ∫ f² dμ). These are the scaffolding for all subsequent L² results."
+    },
+    {
+      "id": "sec-04-pythagorean",
+      "title": "Part 3: Pythagorean Theorem in L²",
+      "startLine": 110,
+      "endLine": 133,
+      "summary": "pythagorean_L2 proves ⟨f,g⟩=0 implies ‖f+g‖²=‖f‖²+‖g‖² by expanding the inner product and eliminating the cross term. pythagorean_L2_iff establishes the biconditional. Fundamental for Parseval's identity and Fourier analysis."
+    },
+    {
+      "id": "sec-05-parallelogram",
+      "title": "Part 4: Parallelogram Law",
+      "startLine": 134,
+      "endLine": 151,
+      "summary": "parallelogram_law proved for generic InnerProductSpace ℝ E: ‖f+g‖²+‖f-g‖²=2‖f‖²+2‖g‖². parallelogram_law_L2 specializes to L². This law characterizes Hilbert space geometry among all Banach spaces (Jordan–von Neumann 1935)."
+    },
+    {
+      "id": "sec-06-polarization",
+      "title": "Part 5: Polarization Identity",
+      "startLine": 153,
+      "endLine": 173,
+      "summary": "polarization_identity proves ⟨f,g⟩=(‖f+g‖²-‖f-g‖²)/4. Alternative form: (‖f+g‖²-‖f‖²-‖g‖²)/2. The inner product is recovered from norm geometry alone, justifying why the parallelogram law suffices to define an inner product on any Banach space that satisfies it."
+    },
+    {
+      "id": "sec-07-weighted",
+      "title": "Part 6 & 7: Weighted Cauchy-Schwarz and AM-GM",
+      "startLine": 174,
+      "endLine": 218,
+      "summary": "weighted_cauchy_schwarz: (Σ wᵢaᵢ)² ≤ (Σ wᵢ)(Σ wᵢaᵢ²) proved via square-root substitution a'ᵢ=√wᵢ, b'ᵢ=√wᵢaᵢ reducing to standard CS. amgm_from_cauchy_schwarz: √(ab)≤(a+b)/2 via (√a-√b)²≥0. Both show classical scalar inequalities as special cases of the inner product framework."
+    },
+    {
+      "id": "sec-08-norm-triangle",
+      "title": "Part 8: L1-L2 Comparison and Triangle Inequality",
+      "startLine": 219,
+      "endLine": 260,
+      "summary": "L1_le_sqrt_n_L2 proves ‖a‖₁² ≤ n·‖a‖₂² (CS with the all-ones vector). triangle_ineq_via_CS recovers the triangle inequality ‖f+g‖≤‖f‖+‖g‖ from CS, reproducing Minkowski's original argument. Verifies L² is a Banach space."
+    },
+    {
+      "id": "sec-09-bessel",
+      "title": "Part 9: Bessel's Inequality for Finite Orthonormal Systems",
+      "startLine": 261,
+      "endLine": 335,
+      "summary": "bessel_finite proves ∑ᵢ⟨x,eᵢ⟩²≤‖x‖² for orthonormal {e₁,...,eₙ} via ‖x-Px‖²≥0 where Px=∑⟨x,eᵢ⟩eᵢ. Equality would give Parseval. Closing summary section establishes the full dependency chain from Hölder to Bessel and positions Parseval's identity as the natural next step."
+    }
+  ]
 }

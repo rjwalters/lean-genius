@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "csq02-ann-01",
+    "proofId": "cauchy-schwarz-oq-02",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "context",
+    "title": "Imports and Proof Architecture",
+    "content": "The file opens with six targeted Mathlib imports that supply the entire mathematical infrastructure: `Analysis.InnerProductSpace.Basic` for inner product spaces and the Cauchy-Schwarz inequality in abstract Hilbert spaces; `Analysis.MeanInequalities` for Hölder's and Minkowski's inequalities in the NNReal and Lp settings; `MeasureTheory.Function.L2Space` for the concrete L² function space over a measure space; `Analysis.MeanInequalitiesPow` for the power-mean machinery used in the Hölder conjugate calculations; `Topology.Algebra.Module.Basic` for the topological module structure on L²; and `Analysis.InnerProductSpace.Projection` for orthogonal projection results used implicitly in the Bessel section. The namespace `CauchySchwarzExtensions` keeps all 18 theorem names scoped, preventing collision with Mathlib's own Cauchy-Schwarz variants. The overview comment signals the file's organizing principle: Cauchy-Schwarz is not an isolated fact but the p=q=2 tip of the Hölder iceberg, and the L² structure theorems (Pythagorean, parallelogram, polarization) sit naturally adjacent to it.",
+    "mathContext": "The six imports collectively give access to: conjugate exponent arithmetic ($\\frac{1}{p}+\\frac{1}{q}=1$), the inequality $\\sum_{i} f_i g_i \\le \\left(\\sum_i f_i^p\\right)^{1/p}\\left(\\sum_i g_i^q\\right)^{1/q}$, the L² inner product $\\langle f, g\\rangle = \\int f g\\,d\\mu$, and the norm $\\|f\\|_2 = \\left(\\int f^2\\,d\\mu\\right)^{1/2}$.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib import strategy", "namespace scoping", "Lp spaces", "inner product spaces"],
+    "prerequisites": ["Lean 4 module system", "Mathlib library structure", "measure spaces"]
+  },
+  {
+    "id": "csq02-ann-02",
+    "proofId": "cauchy-schwarz-oq-02",
+    "range": { "startLine": 44, "endLine": 108 },
+    "type": "technique",
+    "title": "Hölder's Inequality and the L² Bridge",
+    "content": "Part 1 establishes `holder_finite_nnreal`, which delegates to Mathlib's `NNReal.inner_le_Lp_mul_Lq`. The key insight is that NNReal (non-negative reals) is exactly the right type for Hölder sums: subtraction is not needed, so the NNReal typeclass avoids spurious hypotheses about non-negativity. `cauchy_schwarz_from_holder` then specializes to p=q=2 using `Real.HolderConjugate.conjExponent`, which computes that the conjugate exponent of 2 is 2. This makes explicit the classical fact that Cauchy-Schwarz is Hölder at the self-conjugate point.\n\nPart 2 builds the bridge between abstract inner product space notation and concrete measure-theoretic integrals. `memLp_two_iff_sq_integrable` characterizes membership in L²: a function f is in L²(μ) if and only if f² is μ-integrable. `L2_inner_integrable` ensures that the pointwise product of two L² functions is integrable (a prerequisite for computing ⟨f,g⟩ as an integral). `L2_inner_eq_integral'` makes the identification ⟨f,g⟩ = ∫ f·g dμ fully explicit, and `L2_norm_sq_eq_integral` pins down ‖f‖² = ∫ f² dμ. These bridge lemmas are the scaffolding on which all subsequent L² proofs rest.",
+    "mathContext": "Hölder's inequality: for $\\frac{1}{p}+\\frac{1}{q}=1$, $\\sum_{i} f_i g_i \\le \\left(\\sum_i f_i^p\\right)^{1/p}\\left(\\sum_i g_i^q\\right)^{1/q}$. At $p=q=2$: $\\sum f_i g_i \\le \\sqrt{\\sum f_i^2}\\cdot\\sqrt{\\sum g_i^2}$ (Cauchy-Schwarz). The norm-integral bridge: $\\|f\\|_{L^2}^2 = \\int f(x)^2\\,d\\mu(x)$ and $\\langle f,g\\rangle_{L^2} = \\int f(x)g(x)\\,d\\mu(x)$.",
+    "significance": "key",
+    "relatedConcepts": ["Hölder's inequality", "NNReal", "conjugate exponents", "L² membership", "Bochner integral"],
+    "prerequisites": ["finite measure spaces", "NNReal typeclass", "Lp spaces in Mathlib", "inner product space axioms"]
+  },
+  {
+    "id": "csq02-ann-03",
+    "proofId": "cauchy-schwarz-oq-02",
+    "range": { "startLine": 110, "endLine": 133 },
+    "type": "concept",
+    "title": "Pythagorean Theorem in L²",
+    "content": "`pythagorean_L2` proves that if ⟨f,g⟩ = 0 in L² then ‖f+g‖² = ‖f‖² + ‖g‖². The proof expands ‖f+g‖² = ⟨f+g, f+g⟩ = ⟨f,f⟩ + 2⟨f,g⟩ + ⟨g,g⟩ and uses the hypothesis ⟨f,g⟩ = 0 to eliminate the cross term. `pythagorean_L2_iff` strengthens this to an equivalence: ‖f+g‖² = ‖f‖² + ‖g‖² if and only if ⟨f,g⟩ = 0. The reverse direction uses the fact that 2⟨f,g⟩ = 0 implies ⟨f,g⟩ = 0 (automatically satisfied over ℝ since char ≠ 2).\n\nThis result is the functional-analytic analogue of the classical Pythagorean theorem for right triangles, with orthogonality defined not by angle but by vanishing inner product. In Fourier analysis, this is the engine behind Parseval's identity: mutually orthogonal Fourier modes contribute their squared coefficients additively to the total L² norm.",
+    "mathContext": "Pythagorean theorem in $L^2(\\mu)$: if $\\langle f,g\\rangle = 0$ then $\\|f+g\\|^2 = \\|f\\|^2 + \\|g\\|^2$. Expansion: $\\|f+g\\|^2 = \\langle f+g,f+g\\rangle = \\|f\\|^2 + 2\\langle f,g\\rangle + \\|g\\|^2$. Orthogonality kills the cross term. The equivalence: $\\|f+g\\|^2 = \\|f\\|^2 + \\|g\\|^2 \\iff \\langle f,g\\rangle = 0$ over $\\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": ["orthogonality", "inner product expansion", "Parseval's theorem", "Fourier analysis", "right angle in Hilbert space"],
+    "prerequisites": ["inner product space over ℝ", "L² norm via integral", "bilinearity of inner product"]
+  },
+  {
+    "id": "csq02-ann-04",
+    "proofId": "cauchy-schwarz-oq-02",
+    "range": { "startLine": 134, "endLine": 173 },
+    "type": "insight",
+    "title": "Parallelogram Law and Polarization Identity",
+    "content": "The parallelogram law `parallelogram_law` is proved for any real InnerProductSpace E, not just L². It states ‖f+g‖² + ‖f-g‖² = 2‖f‖² + 2‖g‖². Geometrically, this says the sum of the squares of the diagonals of a parallelogram equals twice the sum of the squares of the sides. Jordan and von Neumann (1935) proved a Banach space is an inner product space if and only if its norm satisfies the parallelogram law, making this the definitive characterization of Hilbert space geometry. `parallelogram_law_L2` specializes to L².\n\nThe polarization identity `polarization_identity` recovers ⟨f,g⟩ from norms alone: ⟨f,g⟩ = (‖f+g‖² - ‖f-g‖²)/4. An alternative form gives (‖f+g‖² - ‖f‖² - ‖g‖²)/2. This makes the inner product a derived quantity from the norm geometry, and explains why any Banach space satisfying the parallelogram law can be endowed with a unique inner product structure. In quantum mechanics, this is how one passes between the bra-ket inner product and norm-based probability amplitudes.",
+    "mathContext": "Parallelogram law: $\\|f+g\\|^2 + \\|f-g\\|^2 = 2\\|f\\|^2 + 2\\|g\\|^2$. Polarization identity (real): $\\langle f,g\\rangle = \\frac{\\|f+g\\|^2 - \\|f-g\\|^2}{4}$. Alternative: $\\langle f,g\\rangle = \\frac{\\|f+g\\|^2 - \\|f\\|^2 - \\|g\\|^2}{2}$. Jordan–von Neumann: a Banach space is a Hilbert space $\\iff$ the parallelogram law holds for its norm.",
+    "significance": "key",
+    "relatedConcepts": ["Jordan-von Neumann theorem", "Banach space characterization", "Hilbert space", "norm geometry", "quantum mechanics"],
+    "prerequisites": ["InnerProductSpace typeclass", "norm vs inner product", "Banach spaces", "real vs complex polarization"]
+  },
+  {
+    "id": "csq02-ann-05",
+    "proofId": "cauchy-schwarz-oq-02",
+    "range": { "startLine": 174, "endLine": 218 },
+    "type": "technique",
+    "title": "Weighted Cauchy-Schwarz and AM-GM via Square-Root Substitution",
+    "content": "`weighted_cauchy_schwarz` proves (Σ wᵢaᵢ)² ≤ (Σ wᵢ)(Σ wᵢaᵢ²) for non-negative weights wᵢ. The proof uses the square-root substitution trick: define a'ᵢ = √wᵢ and b'ᵢ = √wᵢ·aᵢ. Then (Σ wᵢaᵢ) = Σ a'ᵢb'ᵢ, (Σ wᵢ) = Σ (a'ᵢ)², and (Σ wᵢaᵢ²) = Σ (b'ᵢ)². Standard Cauchy-Schwarz applied to the primed sequences yields (Σ a'ᵢb'ᵢ)² ≤ (Σ (a'ᵢ)²)(Σ (b'ᵢ)²), which is exactly the weighted inequality. This substitution is ubiquitous in competition mathematics and in probability theory, where wᵢ are probability weights and the inequality bounds the variance.\n\n`amgm_from_cauchy_schwarz` derives the arithmetic-geometric mean inequality (√(ab) ≤ (a+b)/2 for a,b ≥ 0) from Cauchy-Schwarz via the expansion (√a - √b)² ≥ 0, giving a + b - 2√(ab) ≥ 0. This shows AM-GM is a one-dimensional shadow of the general inner product inequality, and that these classical inequalities form a tightly interlocked system rather than independent facts.",
+    "mathContext": "Weighted Cauchy-Schwarz: $\\left(\\sum_i w_i a_i\\right)^2 \\le \\left(\\sum_i w_i\\right)\\left(\\sum_i w_i a_i^2\\right)$. Substitution: $a_i' = \\sqrt{w_i}$, $b_i' = \\sqrt{w_i}\\,a_i$ reduces to standard CS: $\\left(\\sum a_i' b_i'\\right)^2 \\le \\left(\\sum (a_i')^2\\right)\\left(\\sum (b_i')^2\\right)$. AM-GM: $(\\sqrt{a}-\\sqrt{b})^2 \\ge 0 \\implies \\sqrt{ab} \\le \\tfrac{a+b}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["weighted inequalities", "AM-GM inequality", "square-root substitution", "probability weights", "variance bounds"],
+    "prerequisites": ["standard Cauchy-Schwarz", "NNReal square roots", "Finset sum manipulation"]
+  },
+  {
+    "id": "csq02-ann-06",
+    "proofId": "cauchy-schwarz-oq-02",
+    "range": { "startLine": 219, "endLine": 260 },
+    "type": "concept",
+    "title": "L1-L2 Norm Comparison and Triangle Inequality via Cauchy-Schwarz",
+    "content": "`L1_le_sqrt_n_L2` proves ‖a‖₁² ≤ n·‖a‖₂² for vectors in ℝⁿ. This is Cauchy-Schwarz applied to the pair (|aᵢ|, 1): (Σ |aᵢ|·1)² ≤ (Σ aᵢ²)(Σ 1²) = n·Σaᵢ². The result bounds the L1 norm (computationally tractable, favored in sparse recovery) in terms of the L2 norm (geometrically natural). In compressed sensing and LASSO regression, this inequality is used to pass between sparsity-promoting L1 objectives and energy-measuring L2 objectives.\n\n`triangle_ineq_via_CS` recovers the triangle inequality ‖f+g‖ ≤ ‖f‖ + ‖g‖ from Cauchy-Schwarz, completing the verification that L² is a Banach space. The derivation ‖f+g‖² ≤ ‖f‖² + 2‖f‖‖g‖ + ‖g‖² = (‖f‖+‖g‖)² uses CS to bound the cross term ⟨f,g⟩ ≤ ‖f‖‖g‖. This is the historical argument by which Minkowski established the triangle inequality for L2 norms, predating the abstract inner product space framework.",
+    "mathContext": "L1-L2 comparison in $\\mathbb{R}^n$: $\\|a\\|_1^2 = \\left(\\sum_i |a_i|\\right)^2 \\le n \\sum_i a_i^2 = n\\|a\\|_2^2$. Triangle inequality: $\\|f+g\\|^2 \\le \\|f\\|^2 + 2\\|f\\|\\|g\\| + \\|g\\|^2 = (\\|f\\|+\\|g\\|)^2$, so $\\|f+g\\| \\le \\|f\\|+\\|g\\|$. Factor $\\sqrt{n}$ is tight: achieved by the all-ones vector.",
+    "significance": "supporting",
+    "relatedConcepts": ["norm comparison inequalities", "Minkowski inequality", "triangle inequality", "compressed sensing", "LASSO"],
+    "prerequisites": ["L1 and L2 norms", "Cauchy-Schwarz in inner product spaces", "Finset.card", "NNReal arithmetic"]
+  },
+  {
+    "id": "csq02-ann-07",
+    "proofId": "cauchy-schwarz-oq-02",
+    "range": { "startLine": 261, "endLine": 310 },
+    "type": "concept",
+    "title": "Bessel's Inequality for Finite Orthonormal Systems",
+    "content": "`bessel_finite` proves that for an orthonormal system {e₁,...,eₙ} in an inner product space H, the sum of squared Fourier coefficients is bounded by the norm squared: Σᵢ ⟨x,eᵢ⟩² ≤ ‖x‖² for any x ∈ H. The proof expands ‖x - Σᵢ ⟨x,eᵢ⟩eᵢ‖² ≥ 0. The orthogonal projection Px = Σᵢ ⟨x,eᵢ⟩eᵢ satisfies ‖Px‖² = Σᵢ ⟨x,eᵢ⟩² by the Pythagorean theorem (the orthonormal components are mutually orthogonal). Since x = Px + (x-Px) is an orthogonal decomposition, ‖x‖² = ‖Px‖² + ‖x-Px‖² ≥ ‖Px‖².\n\nBessel's inequality is the key finite-dimensional step toward Parseval's identity. Equality holds when {eᵢ} is a complete orthonormal basis — i.e., when the projection exhausts the entire element. In spectral theory, Bessel's inequality guarantees that for any x, the sequence of Fourier coefficients (⟨x,eᵢ⟩)ᵢ is always square-summable (belongs to l²), even before any completeness assumption is made. This is essential for defining Fourier series as L² objects.",
+    "mathContext": "Bessel's inequality: for orthonormal $\\{e_1,\\ldots,e_n\\}$ in $H$, $\\sum_{i=1}^n \\langle x, e_i\\rangle^2 \\le \\|x\\|^2$. Proof via projection: $0 \\le \\left\\|x - \\sum_i \\langle x,e_i\\rangle e_i\\right\\|^2 = \\|x\\|^2 - \\sum_i \\langle x,e_i\\rangle^2$. Equality (Parseval): $\\sum_i \\langle x,e_i\\rangle^2 = \\|x\\|^2$ iff $\\{e_i\\}$ is a complete ONB.",
+    "significance": "key",
+    "relatedConcepts": ["Bessel's inequality", "Parseval's identity", "orthonormal basis", "spectral theory", "Fourier coefficients", "l² summability"],
+    "prerequisites": ["orthonormal systems", "Pythagorean theorem in Hilbert space", "orthogonal projection", "completeness of ONB"]
+  },
+  {
+    "id": "csq02-ann-08",
+    "proofId": "cauchy-schwarz-oq-02",
+    "range": { "startLine": 311, "endLine": 335 },
+    "type": "insight",
+    "title": "Summary: The Cauchy-Schwarz Landscape",
+    "content": "The closing section consolidates 18 theorems into a coherent picture of the Cauchy-Schwarz landscape. The file demonstrates four perspectives on what is ultimately a single inequality: (1) algebraic — Cauchy-Schwarz is Hölder at the self-conjugate point p=q=2; (2) geometric — the Pythagorean theorem and the parallelogram law characterize the Hilbert space structure of L²; (3) analytic — the polarization identity reconstructs the inner product from purely metric data (the norm); (4) spectral — Bessel's inequality bounds the energy captured by any finite orthonormal subsystem.\n\nThe logical dependency chain is: Hölder (NNReal) → Cauchy-Schwarz (p=q=2) → L² norm bridges → Pythagorean theorem → Bessel's inequality → (limit) Parseval's identity. Every step is machine-verified with 0 sorries and 0 axioms, relying on Mathlib's `NNReal.inner_le_Lp_mul_Lq` and `L2Space`. The file exemplifies a design principle: when formalizing one result, carry through its natural family of extensions in the same namespace, so the logical relationships are visible and verified together.",
+    "mathContext": "The dependency chain: $\\text{H\\\"older}(p,q) \\xrightarrow{p=q=2} \\text{CS} \\xrightarrow{\\text{bridge}} \\|f\\|^2 = \\int f^2 \\xrightarrow{\\langle f,g\\rangle=0} \\text{Pythagorean} \\xrightarrow{\\text{ONB}} \\text{Bessel}: \\sum \\langle x,e_i\\rangle^2 \\le \\|x\\|^2 \\xrightarrow{\\text{complete}} \\text{Parseval}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["proof architecture", "theorem dependency", "functional analysis", "Parseval", "Hilbert space theory"],
+    "prerequisites": ["all previous sections", "Mathlib L2Space", "NNReal.inner_le_Lp_mul_Lq"]
+  }
+]
