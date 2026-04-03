@@ -71,7 +71,7 @@
       "fourierPartialSum_zero_fn: partial sums of zero"
     ],
     "axiomCount": 6,
-    "lineCount": 427,
+    "lineCount": 642,
     "assumptions": "6 axioms: carlesonConstant (existence of universal Carleson constant C > 0), carleson_hunt_maximal (the Carleson-Hunt maximal inequality ‖S*f‖ ≤ C·‖f‖), trigPoly_exact_convergence (trig polys converge exactly), IsTrigPoly.memℒp_two (trig polys are in L²), trigPoly_L2_approx (trig poly L² approximation), carlesonConstant_nonneg (C ≥ 0). 0 sorries (divergenceSet_measure_bound and carleson_ae_convergence proved in #8596, additional framework proved in #8611)."
   },
   "overview": {

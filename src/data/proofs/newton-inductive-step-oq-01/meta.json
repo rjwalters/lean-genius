@@ -45,7 +45,7 @@
       "Newton's inequality in mean form (ē_k² ≥ ē_{k-1}·ē_{k+1}) fully proved, derived from the binomial form"
     ],
     "axiomCount": 0,
-    "lineCount": 336,
+    "lineCount": 378,
     "assumptions": "0 axiom declarations. 1 sorry: newton_inequality_binomial (the general inductive Cauchy-Schwarz step). newton_inequality_means is now fully proved (derived from newton_inequality_binomial).",
     "prerequisites": [
       "Elementary symmetric polynomials",
@@ -174,7 +174,7 @@
       "List"
     ],
     "namespace": "NewtonInductiveStepOQ01",
-    "lineCount": 336,
+    "lineCount": 378,
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 2
