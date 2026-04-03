@@ -16,9 +16,9 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/112",
     "erdosUrl": "https://erdosproblems.com/112",
-    "axiomCount": 7,
+    "axiomCount": 0,
     "badge": "axiom",
-    "assumptions": "7 axioms: erdos_112_well_defined, ramsey_lower, hunter_upper, and 4 more. See Lean source for complete statements.",
+    "assumptions": "0 axioms, 0 sorries. Partial formalization of Directed Ramsey Theory: defines tournament structures and chromatic number concepts. The main open bounds (erdos_112_well_defined, ramsey_lower, hunter_upper) are referenced in comments but not formalized as Lean axioms.",
     "proofRepoPath": "Proofs/Erdos112Problem.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 77
@@ -217,7 +217,7 @@
   "leanFile": {
     "lineCount": 77,
     "structureCount": 0,
-    "axiomCount": 7,
+    "axiomCount": 0,
     "theoremCount": 0,
     "lemmaCount": 0,
     "defCount": 3,

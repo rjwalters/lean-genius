@@ -52,9 +52,9 @@
       "Formalization of Andrews' asymptotic conjecture",
       "Formalization of Porubsky's density bounds"
     ],
-    "axiomCount": 7,
+    "axiomCount": 0,
     "lineCount": 207,
-    "assumptions": "7 axioms: macmahon_initial_values, growth_faster_than_linear, growth_slower_than_polynomial, and 4 more. See Lean source for complete statements."
+    "assumptions": "0 axioms, 0 sorries. Partial formalization of MacMahon's sequence problem: defines the sequence recursively and proves 6 basic structural properties. The main open conjectures about density and asymptotic growth (macmahon_initial_values, growth_faster_than_linear, etc.) are not formalized."
   },
   "overview": {
     "historicalContext": "Erdos Problem #359 concerns MacMahon's 'prime numbers of measurement' (OEIS A002048), a sequence defined by P.A. MacMahon in the early 20th century. The sequence starts with 1, and each subsequent term is the smallest positive integer that cannot be expressed as a sum of consecutive earlier terms.\n\nThe sequence begins: 1, 2, 4, 5, 8, 10, 14, 15, 21, 22, 26, 28, ...\n\nGeorge Andrews studied this sequence in 1975 and conjectured that a_k ~ (k log k) / (log log k). Stefan Porubsky proved partial results in 1977, establishing bounds comparing the sequence to the prime counting function.\n\nThe question of the exact growth rate remains OPEN. It is conjectured that a_k/k tends to infinity (superlinear growth) but a_k/k^{1+c} tends to 0 for any c > 0 (subpolynomial growth).",
@@ -146,7 +146,7 @@
     ],
     "namespace": "Erdos359",
     "lineCount": 207,
-    "axiomCount": 7,
+    "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 7
   },
