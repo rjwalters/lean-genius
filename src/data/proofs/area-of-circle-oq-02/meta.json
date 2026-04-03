@@ -35,30 +35,60 @@
     ]
   },
   "overview": {
-    "historicalContext": "The area of a circle A=πr² (Wiedijk #9) is the 2-dimensional case of the general n-ball volume formula Vol(Bⁿ(r)) = πⁿ/²·rⁿ/Γ(n/2+1). This formula connects sphere volumes to the Gamma function, which itself is the generalization of factorial to non-integer arguments. The key insight: Γ(1)=1, Γ(3/2)=√π/2, Γ(2)=1, giving Vol(B²(1))=π/Γ(2)=π. The 4π/3 formula for 3-sphere volume follows from the Gamma recurrence.",
-    "problemStatement": "How does the circle area formula A=πr² generalize to n dimensions? Prove Vol(Bⁿ(r)) = πⁿ/²·rⁿ/Γ(n/2+1) for n=1,2,3 and state the general scaling law.",
-    "text": "Using Mathlib's Real.volume_ball (n=1: Vol=2r) and Complex.volume_ball (n=2: Vol=πr²), the specific cases are direct applications. For n=3, the Gamma recurrence Γ(5/2)=3√π/4 gives Vol(B³(1))=π^{3/2}/Γ(5/2)=4π/3. The general scaling law Vol(Bⁿ(r))=rⁿ·Vol(Bⁿ(1)) is axiomatized due to EuclideanSpace/PiLp measure theory technicalities in Lean 4.",
-    "proofStrategy": "Parts I-II prove specific cases using Mathlib volume lemmas. Part III establishes the scaling axiom and derives area_scaling_2d from it. The Gamma function values are computed from Mathlib's Real.Gamma API.",
+    "historicalContext": "The formula for the volume of the $n$-dimensional unit ball, $\\text{Vol}(B^n(1)) = \\pi^{n/2}/\\Gamma(n/2+1)$, is classical and appears in various forms going back at least to Legendre's work on the Gamma function (1793–1811) and Liouville (1839).\n\nThe specific values for small $n$ were known much earlier: $n=1$ (length of interval), $n=2$ (Archimedes, 250 BCE: area of circle), $n=3$ (antiquity: volume of sphere $4\\pi/3$). The general formula unifying all these via the Gamma function was part of 19th-century analysis.\n\nA surprising fact — first popularized by Richard Hamming in his 1980 textbook and now fundamental to high-dimensional geometry and machine learning — is that the unit ball volume is **not monotone in dimension**. The volumes $V_n = \\text{Vol}(B^n(1))$ satisfy:\n$$V_0=1, V_1=2, V_2=\\pi\\approx 3.14, V_3=4\\pi/3\\approx 4.19, V_4=\\pi^2/2\\approx 4.93, V_5=8\\pi^2/15\\approx 5.26$$\n\nand then **decrease**: $V_6 = \\pi^3/6 \\approx 5.17 < V_5$. The maximum occurs at $n=5$. As $n \\to \\infty$, $V_n \\to 0$ (by Stirling's approximation for $\\Gamma(n/2+1)$). This counterintuitive behavior — that in very high dimensions, most of the 'volume' is near the surface, not the interior — is the geometric foundation of the **curse of dimensionality** in statistics and machine learning.\n\nThe formula also reveals the odd/even dimension dichotomy: for even $n = 2k$, $\\Gamma(k+1) = k!$ gives $V_{2k} = \\pi^k/k!$; for odd $n = 2k+1$, the Gamma values involve $\\sqrt{\\pi}$. These two families are connected by the recurrence $V_n = V_{n-2} \\cdot 2\\pi/n$.",
+    "problemStatement": "How does the circle area formula $A = \\pi r^2$ generalize to $n$ dimensions? Prove $\\text{Vol}(B^n(1)) = \\pi^{n/2}/\\Gamma(n/2+1)$ for $n = 0, 1, 2, 3, 4, 5$ and the scaling law $\\text{Vol}(B^n(r)) = r^n \\cdot \\text{Vol}(B^n(1))$. Show the chain $1, 2, \\pi, 4\\pi/3, \\pi^2/2, 8\\pi^2/15, \\ldots$ and that the 5D ball has greater volume than the 4D ball.",
+    "proofStrategy": "**Parts I-II** (lines 31-111): Prove specific cases using Mathlib lemmas. `volume_1ball` and `volume_2ball` apply `Real.volume_ball` and `Complex.volume_ball` directly. `unitBallVolume` is defined as `π^(n/2) / Γ(n/2+1)` using `Real.rpow` and `Real.Gamma`. Special values for $n = 0, 1, 2$ are proved by computing the Gamma values: `Gamma_one = 1`, `gamma_three_div_two = √π/2`, `Gamma_two = 1`.\n\n**Part IV** (lines 112-147, moved before Part III for proof ordering): The recurrence `unitBallVolume_recurrence` shows $V_n = V_{n-2} \\cdot 2\\pi/n$ by rewriting the exponent $n/2 = (n-2)/2 + 1$ and applying `Gamma_add_one`. This is used to prove $V_3, V_4, V_5$.\n\n**Part III** (lines 149-174): Axiomatizes `nball_volume_scaling`: $\\text{Vol}(B^n(r)) = r^n \\cdot V_n$ (as an ENNReal equation). Derives `area_scaling_2d` from this axiom. The zero-volume case `nball_volume_zero` uses `Metric.ball_zero`.\n\n**Part V** (lines 176-211): Summary theorems: `unitBallVolume_chain` consolidates $n=0,\\ldots,4$ into one conjunction. `vol_B5_gt_vol_B4` proves $V_5 > V_4$ using the computed values and `linarith`.",
     "keyInsights": [
-      "A=πr² is precisely the n=2 case: Vol(B²(r))=π^{2/2}·r²/Γ(2)=πr²/1=πr²",
-      "Mathlib has Real.volume_ball and Complex.volume_ball as independent lemmas; this unifies them",
-      "The Gamma recurrence Γ(n/2+1)=(n/2)·Γ(n/2) connects volumes of adjacent dimensions",
-      "The scaling axiom nball_volume_scaling is the main gap: Mathlib's EuclideanSpace measure theory needs careful unfolding"
-    ],
-    "prerequisites": [
-      "Measure theory: Lebesgue measure on Euclidean spaces",
-      "Gamma function: Γ(n+1)=n!, Γ(1/2)=√π",
-      "Euclidean geometry: n-dimensional balls",
-      "Mathlib: MeasureTheory.volume, Real.volume_ball, Complex.volume_ball"
+      "**A=πr² as n=2 case**: For $n=2$: $\\pi^{2/2}/\\Gamma(2/2+1) = \\pi^1/\\Gamma(2) = \\pi/1 = \\pi$. The formula $\\pi r^2$ is exactly the $n=2$ case of the general formula with $r$-scaling. No approximations, no special cases — a direct algebraic verification.",
+      "**Volume peaks at n=5 then decreases**: The file proves `vol_B5_gt_vol_B4` (Vol(B⁵) > Vol(B⁴)), which is the start of the decrease. The maximum unit ball volume ($\\approx 5.264$) occurs at $n=5$; for $n \\geq 6$, volumes decrease and approach 0. This 'concentration of measure' phenomenon is fundamental to high-dimensional probability and machine learning.",
+      "**Gamma function as the unifier**: The formula $V_n = \\pi^{n/2}/\\Gamma(n/2+1)$ unifies two separate families. Even dimensions: $V_{2k} = \\pi^k/k!$ (Gamma is factorial). Odd dimensions: $V_{2k+1} = 2(k+1)!\\pi^k/(2k+1)!$ (Gamma involves $\\sqrt{\\pi}$). The recurrence $V_n = V_{n-2} \\cdot 2\\pi/n$ connects both families and is the key to computing values without the Gamma function directly.",
+      "**The axiom gap: EuclideanSpace volume**: The single axiom `nball_volume_scaling` bridges the Lean-level gap: Mathlib's `Real.volume_ball` and `Complex.volume_ball` give formulas for balls in `ℝ` and `ℂ`, but `EuclideanSpace ℝ (Fin n)` requires careful PiLp/EuclideanSpace measure isomorphisms. The axiom states what's mathematically obvious ($r$-scaling) but technically difficult to prove in Lean without substantial infrastructure work.",
+      "**The Gamma function in Lean**: Mathlib's `Real.Gamma` function satisfies `Gamma_one : Γ(1) = 1`, `Gamma_two : Γ(2) = 1`, `Gamma_add_one : Γ(x+1) = x * Γ(x)` for `x ≠ 0`, and `Gamma_one_half_eq : Γ(1/2) = √π`. These four lemmas suffice to compute all the values needed. The proof of `gamma_three_div_two : Γ(3/2) = √π/2` applies `Gamma_add_one` at `x=1/2` and `Gamma_one_half_eq`.",
+      "**Mathlib integration: two separate ball theorems**: The file exposes a gap in Mathlib's presentation: `Real.volume_ball` (1D) and `Complex.volume_ball` (2D) are proven separately in Mathlib, while the general $n$-dimensional case requires `Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls`. This file manually bridges the gap for small $n$ by identifying the dimensions."
     ]
   },
+  "sections": [
+    {
+      "id": "special-cases",
+      "title": "Parts I-II: Special Cases and the General Definition",
+      "startLine": 31,
+      "endLine": 111,
+      "summary": "Four theorems via Mathlib: volume_1ball (2r, from Real.volume_ball), volume_2ball (πr², from Complex.volume_ball), and their unit-ball specializations. Defines unitBallVolume n = π^(n/2)/Γ(n/2+1) noncomputably. Proves values for n=0 (=1), n=1 (=2), n=2 (=π) using Gamma_one, gamma_three_div_two, and Gamma_two.",
+      "mathContext": "$V_n = \\pi^{n/2}/\\Gamma(n/2+1)$. $V_0 = 1$, $V_1 = 2$, $V_2 = \\pi$. The key Gamma values: $\\Gamma(1)=1$, $\\Gamma(3/2)=\\sqrt{\\pi}/2$, $\\Gamma(2)=1$."
+    },
+    {
+      "id": "recurrence",
+      "title": "Part IV: Dimension Recurrence",
+      "startLine": 112,
+      "endLine": 147,
+      "summary": "unitBallVolume_recurrence: Vol(Bⁿ) = Vol(Bⁿ⁻²) · 2π/n for n ≥ 2. Proved by rewriting the exponent n/2 = (n-2)/2 + 1 and applying Gamma_add_one. Uses push_cast for natural number arithmetic and field_simp/ring for the algebraic simplification. Derives n=3 (4π/3), n=4 (π²/2) from this recurrence.",
+      "mathContext": "$V_n = V_{n-2} \\cdot \\frac{2\\pi}{n}$. Proof: $\\pi^{n/2} = \\pi^{(n-2)/2} \\cdot \\pi$ and $\\Gamma(n/2+1) = (n/2) \\cdot \\Gamma(n/2)$, so $V_n = \\pi^{(n-2)/2} \\cdot \\pi / ((n/2) \\cdot \\Gamma((n-2)/2+1)) = V_{n-2} \\cdot 2\\pi/n$."
+    },
+    {
+      "id": "scaling-axiom",
+      "title": "Part III: Scaling Axiom and Applications",
+      "startLine": 149,
+      "endLine": 174,
+      "summary": "Axiom nball_volume_scaling: Vol(Bⁿ(r)) = r^n · Vol(Bⁿ(1)) as an ENNReal equation. Derives area_scaling_2d: Vol(B²(2r)) = 4·Vol(B²(r)) from the axiom. Proves nball_volume_zero: Vol(Bⁿ(0)) = 0 by Metric.ball_zero.",
+      "mathContext": "Axiom: $\\text{Vol}(B^n(r)) = r^n \\cdot V_n$ for $r \\geq 0$. Scaling: $V(2r)/V(r) = (2r)^n/r^n = 2^n$. For $n=2$: factor of $4$."
+    },
+    {
+      "id": "summary-and-max",
+      "title": "Part V: Summary Chain and Volume Maximum",
+      "startLine": 176,
+      "endLine": 211,
+      "summary": "unitBallVolume_chain: collects n=0..4 values in a conjunction. vol_B5_gt_vol_B4: proves Vol(B⁵) = 8π²/15 > Vol(B⁴) = π²/2. This shows the 5D ball has more volume than the 4D ball, with the decrease starting at n=6.",
+      "mathContext": "Chain: $1, 2, \\pi, 4\\pi/3, \\pi^2/2, 8\\pi^2/15, \\ldots$ The comparison $V_4 = \\pi^2/2$ vs $V_5 = 8\\pi^2/15$: $\\pi^2/2 = 7.5\\pi^2/15 < 8\\pi^2/15$, proved by `linarith` with `pow_pos pi_pos 2`."
+    }
+  ],
   "conclusion": {
-    "summary": "The n-ball volume formula is formalized for n=1,2,3 with a single axiom for the general scaling law. The key pedagogical insight — that A=πr² is the 2D case of a unified formula — is formally established.",
-    "implications": "This unification clarifies the role of the Gamma function in geometry. The formula Vol(Bⁿ(r))=πⁿ/²rⁿ/Γ(n/2+1) is fundamental in probability (the Gaussian integral), physics (phase space volumes), and combinatorics (kissing numbers).",
+    "summary": "The $n$-dimensional ball volume formula $V_n = \\pi^{n/2}/\\Gamma(n/2+1)$ is formalized for $n = 0,\\ldots,5$ with a single axiom for the $r$-scaling law. The key insight — that $A = \\pi r^2$ is the $n=2$ case — is formally established. The file also captures the surprising fact that ball volume peaks at $n=5$ and then decreases.",
+    "implications": "This formalization unifies several apparently separate facts: Archimedes' $A = \\pi r^2$, the sphere volume $4\\pi/3$, and the general $n$-ball formula. The Gamma function appears as the unifying structure connecting geometry to analysis. The decreasing behavior $V_n \\to 0$ as $n \\to \\infty$ underlies the curse of dimensionality: in high dimensions, a unit ball has negligible volume compared to its circumscribed cube (which has volume $2^n$). The ratio $V_n/2^n \\to 0$ geometrically, which explains why machine learning in high dimensions requires exponentially more data.",
     "openQuestions": [
-      "Prove nball_volume_scaling: requires establishing the EuclideanSpace volume isomorphism in Mathlib",
-      "Extend to n=4,5,... using the Gamma recurrence theorem",
-      "Prove the surface area formula Vol(∂Bⁿ(r)) = n·Vol(Bⁿ(1))·rⁿ⁻¹"
+      "Prove `nball_volume_scaling`: this requires establishing the EuclideanSpace/PiLp volume isomorphism in Mathlib, which is technically demanding but mathematically clear.",
+      "Prove $V_n \\to 0$ as $n \\to \\infty$: the limit requires Stirling's approximation $\\Gamma(n/2+1) \\sim \\sqrt{\\pi n}(n/(2e))^{n/2}$, which may not yet be in Mathlib.",
+      "Prove the surface area formula $S_n = n \\cdot V_n$ (volume of boundary = $n \\times$ volume of ball). This connects to the divergence theorem.",
+      "Extend to Riemannian manifolds: can the ball-volume formula be generalized to geodesic balls in curved spaces (e.g., Riemannian geometry), where the formula depends on curvature via Bishop-Gromov?"
     ]
   },
   "leanFile": {
@@ -78,7 +108,11 @@
       "targetId": "area-of-circle-oq-01",
       "relationship": "related",
       "description": "OQ-01 formalizes the 2D case; OQ-02 extends to n dimensions"
+    },
+    {
+      "targetId": "area-of-circle-oq-05",
+      "relationship": "related",
+      "description": "OQ-05 connects Gaussian integral to circle area; the n-ball volume formula involves the same π via Gamma function"
     }
-  ],
-  "sections": []
+  ]
 }
