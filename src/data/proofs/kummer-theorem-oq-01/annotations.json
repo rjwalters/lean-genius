@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-kum01-multinomial-def",
+    "proofId": "kummer-theorem-oq-01",
+    "range": { "startLine": 24, "endLine": 33 },
+    "type": "definition",
+    "title": "Multinomial Coefficient: n! / (k₁! · ... · kₘ!)",
+    "content": "The multinomial coefficient `multinomial (ks : List ℕ)` is defined as `(ks.sum).factorial / (ks.map Nat.factorial).prod` — that is, n! / (k₁! · k₂! · ... · kₘ!) where n = k₁ + ... + kₘ. The `noncomputable` annotation is needed because natural number division of factorials is not decidably computable in Lean's kernel (it relies on classical logic). The definition generalizes `Nat.choose (a + b) a = (a+b)! / (a! · b!)` from 2 parts to arbitrarily many.",
+    "mathContext": "The multinomial coefficient $\\binom{n}{k_1, k_2, \\ldots, k_m} = \\frac{n!}{k_1! \\cdot k_2! \\cdots k_m!}$ counts the number of ways to arrange $n$ objects divided into $m$ groups of sizes $k_1, \\ldots, k_m$, equivalently the number of ways to partition a set of $n$ elements into labeled groups of those sizes. It equals the coefficient of $x_1^{k_1} x_2^{k_2} \\cdots x_m^{k_m}$ in $(x_1 + x_2 + \\cdots + x_m)^n$.",
+    "significance": "key",
+    "relatedConcepts": ["multinomial theorem", "counting partitions", "p-adic valuation", "Kummer's theorem"],
+    "prerequisites": ["factorials", "natural number division", "Lean noncomputable definitions"]
+  },
+  {
+    "id": "ann-kum01-iterated-decomp",
+    "proofId": "kummer-theorem-oq-01",
+    "range": { "startLine": 35, "endLine": 45 },
+    "type": "technique",
+    "title": "Iterated Binomial Decomposition via scanl",
+    "content": "The theorem `multinomial_eq_prod_choose` expresses the multinomial coefficient as a product of binomials. The Lean formulation uses `List.scanl (· + ·) 0` to compute partial sums [0, k₁, k₁+k₂, ...], then zips with the original list to form pairs (accumulatedSum, k_i). Each pair (acc, k) contributes `Nat.choose acc k` to the product. The `.tail` removes the initial (0, k₁) element which would give choose 0 k₁ = 0. This sorry is the general case requiring list induction.",
+    "mathContext": "The decomposition $\\binom{n}{k_1, \\ldots, k_m} = \\binom{k_1}{k_1} \\cdot \\binom{k_1+k_2}{k_2} \\cdot \\binom{k_1+k_2+k_3}{k_3} \\cdots \\binom{n}{k_m}$ or equivalently $\\prod_{i=1}^{m} \\binom{\\sum_{j=1}^{i} k_j}{k_i}$ follows from telescoping: $\\frac{n!}{\\prod k_j!} = \\frac{(k_1+k_2)!}{k_1! k_2!} \\cdot \\frac{(k_1+k_2+k_3)!}{(k_1+k_2)! k_3!} \\cdots \\frac{n!}{(n-k_m)! k_m!}$.",
+    "significance": "key",
+    "relatedConcepts": ["telescoping products", "List.scanl", "binomial coefficients", "induction on lists"],
+    "prerequisites": ["multinomial coefficient", "Nat.choose", "list operations in Lean"]
+  },
+  {
+    "id": "ann-kum01-pair-case",
+    "proofId": "kummer-theorem-oq-01",
+    "range": { "startLine": 47, "endLine": 51 },
+    "type": "insight",
+    "title": "Pair Case: Fully Proved via Nat.add_choose_eq",
+    "content": "The theorem `multinomial_pair` is the base case: `multinomial [a, b] = Nat.choose (a + b) a`. The proof is a single `simp` call using `Nat.add_choose_eq`, which states `choose (a+b) a = (a+b)! / (a! · b!)` (matching the definition). This confirms the multinomial definition is correct and consistent with the standard binomial coefficient. It also validates the approach: the pair case needs no induction, just unfolding the list operations.",
+    "mathContext": "For two parts: $\\binom{a+b}{a,b} = \\frac{(a+b)!}{a! \\cdot b!} = \\binom{a+b}{a}$. This is the binomial coefficient, and `Nat.add_choose_eq` in Mathlib states precisely $\\binom{a+b}{a} = (a+b)! / (a! \\cdot (a+b-a)!)$, which matches after noting $b = (a+b) - a$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.add_choose_eq", "Mathlib binomial coefficients", "list simp lemmas"],
+    "prerequisites": ["multinomial definition", "Nat.choose in Mathlib"]
+  },
+  {
+    "id": "ann-kum01-triple-case",
+    "proofId": "kummer-theorem-oq-01",
+    "range": { "startLine": 53, "endLine": 67 },
+    "type": "technique",
+    "title": "Triple Case: Factorial Rearrangement Complete, Division Sorry",
+    "content": "The theorem `multinomial_triple` states `multinomial [a, b, c] = choose (a+b) a * choose (a+b+c) (a+b)`. The proof makes significant progress: it rewrites the sum `a + (b + (c + 0)) = a+b+c` (using `omega`), rearranges the factorial product `a! · (b! · (c! · 1)) = a! · b! · c!` (using `ring`), and then expands both choose terms via `Nat.choose_eq_factorial_div_factorial`. The remaining sorry is the natural number division identity showing `(a+b+c)! / (a! · b! · c!) = ((a+b)! / (a! · b!)) * ((a+b+c)! / ((a+b)! · c!))`. This requires `Nat.div_mul_div_comm` or a similar lemma.",
+    "mathContext": "The identity needed is: $\\frac{(a+b+c)!}{a! \\cdot b! \\cdot c!} = \\frac{(a+b)!}{a! \\cdot b!} \\cdot \\frac{(a+b+c)!}{(a+b)! \\cdot c!}$. The RHS factors share $(a+b)!$ which cancels: $\\frac{(a+b)! \\cdot (a+b+c)!}{a! \\cdot b! \\cdot (a+b)! \\cdot c!} = \\frac{(a+b+c)!}{a! \\cdot b! \\cdot c!}$. In Lean, this requires that the denominators divide the numerators (non-trivial for `Nat.div`).",
+    "significance": "key",
+    "relatedConcepts": ["Nat.choose_eq_factorial_div_factorial", "Nat.div_mul_div_comm", "natural number division"],
+    "prerequisites": ["Nat.factorial divisibility", "Lean omega tactic", "ring tactic"]
+  },
+  {
+    "id": "ann-kum01-statement-stub",
+    "proofId": "kummer-theorem-oq-01",
+    "range": { "startLine": 60, "endLine": 68 },
+    "type": "context",
+    "title": "Kummer Multinomial Statement: Placeholder for Carry-Count Theorem",
+    "content": "The theorem `kummer_multinomial_statement` is a placeholder that returns `True` (via `trivial`). It documents the intended theorem — v_p(multinomial ks) = total carries when adding elements of ks in base p — without formalizing it. This is a deliberate design choice: the carry-counting formalism for base-p arithmetic is not currently in Mathlib, and formalizing it would require a separate development. The placeholder allows the file to document the mathematical goal while acknowledging the gap. This honest stub approach is characteristic of the gallery's formalized-but-not-complete status.",
+    "mathContext": "The full theorem would state: for prime $p$ and list $[k_1,\\ldots,k_m]$ with sum $n$, $v_p\\binom{n}{k_1,\\ldots,k_m} = \\sum_{i=1}^{m-1} c(k_i, k_1+\\cdots+k_{i-1}; p)$ where $c(a,b;p)$ counts carries when adding $a$ and $b$ in base $p$. By Kummer's theorem applied to each binomial factor in the decomposition and summing, $v_p(\\prod \\binom{S_i}{k_i}) = \\sum v_p\\binom{S_i}{k_i} = \\sum c(k_i, S_{i-1}; p)$.",
+    "significance": "context",
+    "relatedConcepts": ["p-adic valuation", "base-p carries", "Kummer's theorem", "Lean stub design"],
+    "prerequisites": ["Kummer's theorem (parent proof)", "p-adic valuation in Mathlib"]
+  }
+]
