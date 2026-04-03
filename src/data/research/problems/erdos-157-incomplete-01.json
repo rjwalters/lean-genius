@@ -1,0 +1,75 @@
+{
+  "slug": "erdos-157-incomplete-01",
+  "title": "Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: 2 sorries in axiomatized Lean proof.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-04-03T07:56:24.931Z",
+    "iteration": 1,
+    "focus": "Counting strategy for sidon_not_basis_2 identified. pilatte_existence blocked.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: 2 sorries remain. pilatte_existence: BLOCKED (deep research). sidon_not_basis_2: proof strategy documented. Key insight: use Sidon distinctness + counting, not basis_counting_lower (too weak).",
+    "builtItems": [
+      "sidon_not_basis_2 proof strategy: counting injection from [N0,2N] into Option(A) union (A x A), bounded by M*(M+1)/2 using IsSidonAlt",
+      "Identified that basis_counting_lower is too weak (c > 0 only, not c > 1)"
+    ],
+    "insights": [
+      "pilatte_existence (BLOCKED): Requires formalizing Pilatte 2023 probabilistic method, >1000 lines. Not tractable.",
+      "sidon_not_basis_2: The two axioms (sidon_counting_bound + basis_counting_lower) are NOT sufficient directly -- basis_counting_lower only gives c > 0, so c*sqrt(N) <= sqrt(N) is consistent with Sidon bound.",
+      "sidon_not_basis_2 CORRECT PROOF: Use direct counting. If A is Sidon basis of order 2, then SumsetK A 2 covers [N0, 2N] (~2N integers). But Sidon: all 2-element sums distinct, so representable count <= M*(M+1)/2 where M = |A cap [1,2N]| <= sqrt(2N) + C*(2N)^(1/4) ≈ sqrt(2N). So M*(M+1)/2 ≈ N < 2N. Contradiction.",
+      "IsSidonAlt (proved in file): each sum s has at most 1 pair (a,b) with a<=b and a+b=s. This is the injectivity needed for the counting argument.",
+      "key lemma needed: SumsetK_A_2_card_bound: |SumsetK A 2 cap [1,2N]| <= |A cap [1,2N]| * (|A cap [1,2N]| + 1) / 2",
+      "basis_counting_lower is not needed for sidon_not_basis_2; the proof uses only sidon_counting_bound + direct Sidon counting",
+      "powers_of_two_sidon and example_is_sidon are already proved (0 sorries). sidon_iff_sidon_alt is proved."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove sidon_not_basis_2 using: (1) sidon_counting_bound, (2) direct counting via IsSidonAlt uniqueness, (3) injection from [N0,2N] to Option(A x A)",
+      "Key helper needed: SumsetK_A_2_card_bound (cardinality of 2-element sumset)",
+      "pilatte_existence: flag as BLOCKED, axiomatize with explicit statement"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "sidon-sets",
+    "additive-number-theory",
+    "erdos",
+    "completion"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-15",
+    "erdos-157"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T07:56:24.931Z",
+  "lastUpdate": "2026-04-03T07:56:24.931Z",
+  "significance": 8,
+  "tractability": 5
+}
