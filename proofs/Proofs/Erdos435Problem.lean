@@ -146,8 +146,8 @@ example : ¬IsPrimePower 6 := by
 If n = p^k, then C(n, p^j) ≡ 0 (mod p) for appropriate j,
 making the representation problem degenerate.
 -/
-theorem prime_power_degenerate (n : ℕ) (hPP : IsPrimePower n) :
-    True := trivial  -- The formula doesn't apply to prime powers
+/- prime_power_degenerate: if n = p^k, then C(n, p^j) ≡ 0 (mod p) for
+    appropriate j, making the representation problem degenerate. -/
 
 /-
 **Lucas' Theorem Connection:**
@@ -178,8 +178,8 @@ For n not a prime power, gcd{C(n,1), C(n,2), ..., C(n,n-1)} = 1
 For coprime a, b, the largest non-representable integer is ab - a - b.
 This is the 2-generator case.
 -/
-theorem classical_frobenius (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
-    True := trivial  -- Sylvester-Frobenius formula (placeholder body)
+/- classical_frobenius (Sylvester-Frobenius): for coprime a, b,
+    the largest non-representable integer is ab - a - b. -/
 
 /-
 **Sylvester-Denumerant:**

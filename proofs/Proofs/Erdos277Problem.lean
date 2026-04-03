@@ -199,10 +199,8 @@ def primorialApproach : Prop :=
   True
 
 /-- The tension: σ(n)/n large ↔ many small divisors ↔ easier to cover? -/
-theorem haight_tension :
-  -- Actually NO: the structure of divisors matters, not just the count
-  -- Haight showed some n with many divisors still block coverings
-  True := trivial
+/- haight_tension: the structure of divisors matters, not just the count;
+  Haight showed some n with many divisors still block exact coverings. -/
 
 /-
 ## Part VIII: Related Concepts

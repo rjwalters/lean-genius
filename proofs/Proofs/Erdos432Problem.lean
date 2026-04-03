@@ -148,9 +148,8 @@ Ostmann's related problem (#431): if A + B = ℕ (an additive
 complement pair), can A + B be pairwise coprime? Clearly not
 for A + B = ℕ, but the question is about near-complements.
 -/
-theorem ostmann_connection :
-    -- Ostmann's problem is the companion to #432
-    True := trivial
+/- ostmann_connection: Ostmann's problem (#431) is the companion to #432;
+    it asks whether additive complement pairs can be pairwise coprime. -/
 
 /- ## Part VI: Summary -/
 

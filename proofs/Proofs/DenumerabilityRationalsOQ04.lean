@@ -115,11 +115,8 @@ theorem algebraic_countable_type :
 
     In particular, we never need to "choose" a root — we just
     know the root set is finite, which suffices for countability. -/
-theorem choiceless_note :
-    -- The proof is constructive in the sense that it avoids
-    -- the full axiom of choice. Lean's Prop-valued choice
-    -- (which is a theorem, not an axiom) suffices.
-    True := trivial
+/- choiceless_note: the proof is constructive in the sense that it avoids
+    the full axiom of choice. Lean's Prop-valued choice (a theorem) suffices. -/
 
 /-
   Summary

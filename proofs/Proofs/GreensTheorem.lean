@@ -183,8 +183,9 @@ provides the foundation for proving this by:
 1. Decomposing general regions into rectangles
 2. Showing boundary integrals cancel on shared edges
 3. Summing to get the result for the full region -/
-theorem greens_theorem_general (F : VectorField2D) (curl : Curl2D) (D : GreenRegion)
-    : True := trivial
+/- greens_theorem_general:
+    ∮_C (P dx + Q dy) = ∬_D (∂Q/∂x - ∂P/∂y) dA
+    (Full formalization requires decomposing general regions into rectangles.) -/
 
 -- ============================================================
 -- PART 6: Special Cases and Applications

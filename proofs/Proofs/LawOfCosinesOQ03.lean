@@ -189,7 +189,8 @@ theorem area_positive (t : HyperbolicTriangleAngles) :
     c² ≈ a² + b² - 2ab·cos(C) + O(a²b²)
 
     The O(a²b²) term vanishes in the limit, recovering the Euclidean law. -/
-theorem euclidean_limit_informal :
-    True := trivial -- Informal statement; formal limit would require o(1) analysis
+/- euclidean_limit_informal:
+    As a, b → 0 in hyperbolic space, the hyperbolic law of cosines reduces
+    to the Euclidean law. Formal proof would require o(1) analysis. -/
 
 end HyperbolicLawOfCosines

@@ -20,9 +20,8 @@ theorem ramsey_lower_bound (k : ℕ) (hk : 3 ≤ k) :
 
 -- Chromatic number vs girth: there exist graphs with high girth and high chromatic number
 -- (Erdős 1959, probabilistic existence)
-theorem high_girth_high_chromatic (g c : ℕ) (hg : 3 ≤ g) (hc : 1 ≤ c) :
-    -- There exists a graph with girth ≥ g and chromatic number ≥ c
-    True := trivial
+/- high_girth_high_chromatic: there exists a graph with girth ≥ g and chromatic number ≥ c
+    (Erdős 1959, probabilistic existence — formalization pending.) -/
 
 -- Tournament domination: every tournament on n vertices has a dominating set of size ≤ log₂ n
 theorem tournament_domination (n : ℕ) (hn : 1 ≤ n) :

@@ -333,9 +333,9 @@ This is axiomatized because the sufficiency proof requires:
   - Analysis of orthogonal prisms and their Dehn invariants
   - An exchange lemma for polyhedral decompositions
   - Induction on the tensor product structure -/
-theorem dehn_sydler_theorem :
-    -- The statement: ∀ P Q, scissors_congruent P Q ↔ Vol P = Vol Q ∧ D P = D Q
-    True := trivial
+/- dehn_sydler_theorem (Dehn 1900, Sydler 1965):
+    ∀ P Q, scissors_congruent P Q ↔ Vol P = Vol Q ∧ D P = D Q
+    (Axiomatized; sufficiency proof requires exchange lemma for polyhedral decompositions.) -/
 
 -- ========================================================================
 -- Part XI: 2D Contrast and Consequences

@@ -199,10 +199,8 @@ In the Lenz construction:
 
 The constant 1/27 = 1/3³ arises from partitioning n points into 3 groups.
 -/
-theorem why_one_27th :
-  -- The 1/27 comes from optimally distributing n points into 3 groups
-  -- Each group contributes equally to the count
-  True := trivial
+/- why_one_27th: the 1/27 constant comes from optimally distributing
+  n points into 3 equal groups on 3 circles; each contributes equally. -/
 
 /-
 ## Part VIII: Related Results
@@ -217,9 +215,9 @@ theorem why_one_27th :
 
 The jump to cubic growth at d = 6 is significant.
 -/
-theorem dimension_behavior :
-  -- d = 2: linear, d = 3: quadratic, d ≥ 6: cubic
-  True := trivial
+/- dimension_behavior:
+  d = 2: T₂(n) = Θ(n), d = 3: T₃(n) = Θ(n²), d ≥ 6 even: T_d(n) = Θ(n³);
+  the jump to cubic growth at d = 6 is significant. -/
 
 /-
 ## Part IX: Summary
