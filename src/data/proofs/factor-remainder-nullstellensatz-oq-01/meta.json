@@ -2,7 +2,7 @@
   "id": "factor-remainder-nullstellensatz-oq-01",
   "title": "Strong Nullstellensatz I(V(J)) = √J via Mathlib",
   "slug": "factor-remainder-nullstellensatz-oq-01",
-  "description": "Bridges the gallery's Factor-Remainder infrastructure to Mathlib's Nullstellensatz (MvPolynomial.vanishingIdeal_zeroLocus_eq_radical). Derives weak Nullstellensatz, membership criterion, and radical ideal correspondence as corollaries.",
+  "description": "Wraps Mathlib's MvPolynomial.vanishingIdeal_zeroLocus_eq_radical to deliver Hilbert's Nullstellensatz (1893) in a gallery-friendly API. Derives the weak Nullstellensatz, polynomial membership criterion, radical ideal correspondence, and the V-I Galois connection as corollaries—establishing the foundational algebra-geometry dictionary for algebraically closed fields.",
   "meta": {
     "author": "Hilbert (1893), formalized via Mathlib",
     "date": "1893",
@@ -12,7 +12,9 @@
       "algebra",
       "algebraic-geometry",
       "nullstellensatz",
-      "polynomial-rings"
+      "polynomial-rings",
+      "galois-connection",
+      "radical-ideals"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -20,5 +22,66 @@
     "axiomCount": 0,
     "lineCount": 81
   },
-  "sections": []
+  "overview": {
+    "historicalContext": "Hilbert's Nullstellensatz ('zero-point theorem') was proved by David Hilbert in 1893 as a cornerstone of his work on invariant theory and polynomial algebra. It establishes the fundamental correspondence between algebraic geometry (varieties = common zeros of polynomials) and commutative algebra (ideals in polynomial rings). The weak form states that a system of polynomial equations over an algebraically closed field either has a solution or generates the whole ring. The strong form gives a precise description of which polynomials vanish on a variety: exactly those in the radical of the defining ideal. Together, these results imply a bijection between algebraic varieties and radical ideals that became the foundation of classical algebraic geometry, formalized further by Zariski, Weil, and Grothendieck in the 20th century. The theorem is equivalent to several foundational results: the Zariski density of algebraically closed fields, the nilradical characterization, and the existence of maximal ideals in finitely generated k-algebras.",
+    "problemStatement": "For an ideal $J$ in $k[x_1, \\ldots, x_n]$ where $k$ is algebraically closed, prove: $I(V(J)) = \\sqrt{J}$, where $V(J) = \\{a \\in k^n : f(a) = 0 \\text{ for all } f \\in J\\}$ is the zero locus and $I(S) = \\{f \\in k[\\mathbf{x}] : f(a) = 0 \\text{ for all } a \\in S\\}$ is the vanishing ideal. Equivalently: $f$ vanishes on $V(J)$ iff $f^m \\in J$ for some $m \\geq 1$.",
+    "proofStrategy": "This formalization is primarily a Mathlib bridge: the strong Nullstellensatz is `vanishingIdeal_zeroLocus_eq_radical I` in Mathlib, requiring only a single-line proof. The mathematical substance lies in the corollaries: (1) the weak Nullstellensatz is derived by contradiction—if V(I) = ∅ then I(∅) = ⊤, so √I = ⊤, implying I = ⊤ via `Ideal.eq_top_of_radical_eq_top`; (2) the membership criterion is immediate by rewriting; (3) radical correspondence uses `IsRadical.radical` to simplify √I = I; (4) the Galois connection uses the `.dual` of Mathlib's built-in adjunction.",
+    "keyInsights": [
+      "The algebraically closed hypothesis is essential: over ℝ, the ideal $(x^2 + 1)$ has no real zeros, so $V(J) = \\emptyset$ and $I(V(J)) = k[x]$, while $\\sqrt{(x^2+1)} = (x^2+1) \\neq k[x]$. The Nullstellensatz fails over non-algebraically-closed fields.",
+      "The bijection between radical ideals and varieties is an anti-isomorphism of lattices: inclusion of varieties reverses inclusion of ideals ($S_1 \\subseteq S_2 \\Rightarrow I(S_2) \\subseteq I(S_1)$), making V and I an antitone Galois connection. In Lean, this is encoded via `OrderDual` to turn the reversal into a standard (covariant) Galois connection.",
+      "The strong Nullstellensatz implies the weak form: if $J$ is proper ($J \\neq k[\\mathbf{x}]$), then $\\sqrt{J} \\neq k[\\mathbf{x}]$ (radicals of proper ideals are proper), so $I(V(J)) = \\sqrt{J} \\neq k[\\mathbf{x}]$, meaning $I(V(J))$ is not the zero ideal of the vanishing, so $V(J) \\neq \\emptyset$.",
+      "Radical ideals are exactly the fixed points of the $I \\circ V$ operator: $I(V(J)) = J$ iff $J$ is radical. This gives a bijection between radical ideals and algebraic varieties that is the foundation of the Zariski topology and classical algebraic geometry.",
+      "Mathlib's `MvPolynomial.vanishingIdeal_zeroLocus_eq_radical` proves the theorem in full generality over any algebraically closed field and any (possibly infinite) variable set $\\sigma$, making this formalization universe-polymorphic."
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-setup",
+      "title": "Imports, Namespace, and Variable Setup",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Imports Mathlib, opens MvPolynomial namespace, and declares universe-polymorphic variables: σ (variable index type), k (algebraically closed field). The `[IsAlgClosed k]` typeclass hypothesis is the key algebraic assumption enabling the Nullstellensatz."
+    },
+    {
+      "id": "section-strong-nullstellensatz",
+      "title": "Part I: Strong Nullstellensatz",
+      "startLine": 28,
+      "endLine": 36,
+      "summary": "Wraps Mathlib's vanishingIdeal_zeroLocus_eq_radical as `strong_nullstellensatz`. One-line term-mode proof demonstrates that the full mathematical content is already in Mathlib. Establishes I(V(J)) = √J as the foundational result."
+    },
+    {
+      "id": "section-corollaries",
+      "title": "Part II: Corollaries",
+      "startLine": 38,
+      "endLine": 64,
+      "summary": "Three corollaries of the strong Nullstellensatz: (1) weak_nullstellensatz—proper ideals over k[x₁,...,xₙ] (Finite σ) have common zeros, proved by contradiction; (2) membership_criterion—f vanishes on V(I) iff f ∈ √I, proved by rewriting; (3) radical_ideal_correspondence—radical ideals satisfy I(V(J)) = J, proved using IsRadical.radical."
+    },
+    {
+      "id": "section-galois-connection",
+      "title": "Part III: Galois Connection",
+      "startLine": 66,
+      "endLine": 81,
+      "summary": "Establishes the V-I Galois connection as a formal antitone adjunction using Lean's GaloisConnection typeclass. Uses OrderDual to handle the order reversal (V and I are both order-reversing), then applies the .dual of zeroLocus_vanishingIdeal_galoisConnection."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization delivers Hilbert's Nullstellensatz in full generality over algebraically closed fields of any characteristic, using Mathlib's existing proof as the engine and providing a clean gallery API with five theorems: the strong form, the weak form, the membership criterion, the radical correspondence, and the Galois connection. The proof is 0 axioms, 0 sorries—a complete machine-verified instance of one of mathematics' most important theorems.",
+    "implications": "The Nullstellensatz is the Rosetta Stone of algebraic geometry: it translates between the geometric language of varieties and the algebraic language of ideals. Every basic theorem of classical algebraic geometry (irreducibility, dimension theory, morphisms of varieties) ultimately rests on it. Formalizing it with the Galois connection structure opens the door to formalizing the Zariski topology, sheaves of rings, and eventually the full spectrum of a commutative ring—the foundation of scheme theory. The membership criterion also has direct computational applications: Gröbner basis membership testing is the algorithmic implementation of the radical membership criterion.",
+    "openQuestions": [
+      "Can the Galois connection be extended to a full adjunction of categories—the beginning of algebraic geometry in the category-theoretic sense—by formalizing morphisms of varieties as ring homomorphisms and building the contravariant functor $k[-]$?",
+      "The Nullstellensatz fails over non-algebraically closed fields. Can the gallery formalize the Positivstellensatz (Artin 1927, the real analogue) or the p-adic Nullstellensatz for specific fields?",
+      "Effective Nullstellensatz (Kollár 1988): if $f^m \\in (f_1, \\ldots, f_k)$, what is the minimal $m$? The bound $m \\leq d^n$ (where $d$ = max degree) is known but not yet in Mathlib—can it be formalized?",
+      "The weak Nullstellensatz uses `Finite σ` (finitely many variables). Can the condition be weakened to a finitely generated ideal, or is the finite variable count truly necessary for the proof?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "factor-remainder-nullstellensatz",
+      "relationship": "extends"
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "uses"
+    }
+  ]
 }
