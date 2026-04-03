@@ -1,0 +1,77 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-04",
+  "title": "Nonderogatory Matrices and Cyclic Vectors",
+  "slug": "cayley-hamilton-minpoly-oq-04",
+  "description": "Characterizes nonderogatory matrices (where minimal polynomial = characteristic polynomial) via cyclic vectors. Proves the forward direction: if M has a cyclic vector v (so {v, Mv, ..., M^{n-1}v} is a basis), then M is nonderogatory. Axiomatizes the converse. Proves equivalent characterizations via natDegree and algebraic dimension. 8 theorems, 1 axiom.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ04.lean",
+    "tags": [
+      "linear-algebra",
+      "cayley-hamilton",
+      "minimal-polynomial",
+      "cyclic-vectors",
+      "nonderogatory-matrices"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: nonderogatory_has_cyclic_vector — the converse direction: if M is nonderogatory (minpoly = charpoly), then there exists a cyclic vector v with {v, Mv, ..., M^{n-1}v} a basis. This requires constructing the cyclic vector from the rational canonical form, which is not yet fully formalized in Mathlib.",
+    "lineCount": 316,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "originalContributions": [
+      "IsCyclicVector: predicate — v is cyclic for M if {v,Mv,...,M^{n-1}v} spans K^n",
+      "IsNonderogatory: predicate — minpoly M = charpoly M",
+      "cyclic_implies_nonderogatory: forward direction — cyclic vector implies minpoly = charpoly (fully proved)",
+      "minpoly_eq_charpoly_of_natDegree_eq: natDeg(minpoly) = n implies minpoly = charpoly",
+      "nonderogatory_iff_cyclic_vector: full iff characterization (modulo converse axiom)",
+      "minpoly_natDegree_eq_dim_of_cyclic: cyclic vector implies natDeg(minpoly) = dim",
+      "nonderogatory_iff_natDegree_eq: equivalent characterization via natDegree",
+      "derogatory_iff_natDegree_lt: derogatory ↔ natDeg(minpoly) < n"
+    ]
+  },
+  "overview": {
+    "historicalContext": "A matrix M is nonderogatory if its minimal polynomial equals its characteristic polynomial. This is equivalent to M having a cyclic vector — a vector v such that {v, Mv, M²v, ..., M^{n-1}v} forms a basis. Nonderogatory matrices are exactly those with a single Jordan block per eigenvalue (i.e., companion matrices in their rational canonical form). This characterization appears in many applications: control theory (controllability), functional calculus, and polynomial matrix theory.",
+    "problemStatement": "Prove that a matrix M ∈ M_n(K) is nonderogatory (minpoly = charpoly) if and only if it has a cyclic vector. Formalize both directions.",
+    "text": "Forward direction: if v is cyclic for M, then the vector space K^n has a basis {v, Mv, ..., M^{n-1}v}. The minimal polynomial of M with respect to v is the unique monic polynomial p of minimal degree with p(M)v = 0. Since v is cyclic, this has degree n = deg(charpoly). Since minpoly | charpoly and both are monic of degree n, they are equal. Converse: if minpoly = charpoly, construct v as a suitable sum of basis vectors via rational canonical form (axiomatized).",
+    "proofStrategy": "Define IsCyclicVector and IsNonderogatory. Prove the forward direction via degree comparison: cyclic → natDeg(minpoly) = n → minpoly = charpoly. Axiomatize the converse (rational canonical form argument). Prove equivalent characterizations via natDegree.",
+    "keyInsights": [
+      "Cyclic vector gives natDeg(minpoly) = n: the annihilator polynomial of a cyclic vector has full degree",
+      "minpoly | charpoly and equal degrees forces minpoly = charpoly (monic polynomials)",
+      "Nonderogatory = one Jordan block per eigenvalue = companion matrix in rational canonical form",
+      "The converse requires rational canonical form: construct cyclic vector from rational canonical basis"
+    ],
+    "prerequisites": [
+      "Minimal polynomial: smallest monic polynomial annihilating M",
+      "Characteristic polynomial: det(xI - M), degree n",
+      "Rational canonical form: companion matrices and cyclic decomposition"
+    ]
+  },
+  "conclusion": {
+    "summary": "Nonderogatory matrices characterized via cyclic vectors: forward direction (cyclic → minpoly = charpoly) fully proved, converse axiomatized. Equivalent natDegree characterizations proved. 8 theorems, 316 lines, 1 axiom.",
+    "implications": "The cyclic vector characterization is central to systems theory: a linear dynamical system is controllable iff its state matrix is nonderogatory. Completing the converse would give a fully verified characterization in Lean.",
+    "openQuestions": [
+      "Prove nonderogatory_has_cyclic_vector: formalize rational canonical form decomposition in Lean 4",
+      "Prove the simultaneous cyclic vector theorem: M₁, ..., M_k have a common cyclic vector iff they generate a cyclic algebra"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CayleyHamiltonMinpolyOQ04",
+    "lineCount": 316,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "extends",
+      "description": "Cayley-Hamilton theorem (M satisfies its own characteristic polynomial); this file studies when minpoly = charpoly"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,77 @@
+{
+  "id": "erdos-1006-oq-01",
+  "title": "Robustly Acyclic Orientations and Cover Graphs",
+  "slug": "erdos-1006-oq-01",
+  "description": "Formalizes Erdős Problem #1006 (OQ-01): characterize which graphs admit robustly acyclic orientations. Axiomatizes the Pretzel-Brightwell characterization (1985): a graph admits a robustly acyclic orientation iff it is a cover graph of some poset. Also axiomatizes: Nešetřil-Rödl counterexamples (1978) for all girths, Fisher-Fraughnaugh-Langley-West criterion (χ < girth implies robust). Proves empty and bipartite graphs have robust orientations. 6 theorems, 3 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1006OQ01.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "orientations",
+      "posets",
+      "cover-graphs",
+      "acyclicity"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 3,
+    "assumptions": "3 axioms: cover_graph_characterization (Pretzel-Brightwell 1985: G admits robustly acyclic orientation ↔ G is a cover graph of some poset), chromatic_lt_girth_implies_robust (Fisher-Fraughnaugh-Langley-West 1997: χ(G) < girth(G) → G has robust orientation), nesetril_rodl_counterexample (Nešetřil-Rödl 1978: for every girth g≥3, there exists a graph with girth g that does NOT have a robust orientation).",
+    "lineCount": 277,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "admitsRobustAcyclicOrientation: predicate — G has an orientation that stays acyclic under any single edge reversal",
+      "isCoverGraph / isCoverGraphOf: G is a cover graph of a poset P if G = Hasse diagram of P",
+      "empty_graph_robust: empty graphs (no edges) trivially admit robust orientations",
+      "bipartiteOrientation_acyclic: the natural 2-coloring orientation of a bipartite graph is acyclic",
+      "cover_graph_iff_robust: the complete characterization (axiomatized)",
+      "dependent_vs_independent_edges: edges in an orientation are dependent if reversing creates a cycle, independent otherwise"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1006 asks for a characterization of which graphs admit 'robustly acyclic' orientations — orientations where no single edge reversal can create a directed cycle. Pretzel (1985) and Brightwell showed these are exactly the cover graphs of partial orders (Hasse diagrams). Nešetřil and Rödl (1978) showed that for every girth g, there exist graphs with girth g that are NOT cover graphs. This connects orientation theory to poset theory in a surprising way.",
+    "problemStatement": "Characterize the finite graphs that admit a robustly acyclic orientation. Prove the Pretzel-Brightwell cover graph characterization.",
+    "text": "An orientation is robustly acyclic if it is acyclic and reversing any single edge preserves acyclicity. Equivalently, an orientation is robust iff every edge is 'independent' (reversing it doesn't create a cycle). The Pretzel-Brightwell theorem: G has a robust orientation iff G is the Hasse diagram of some partial order — i.e., the edges of G can be made into cover relations of a poset. The connection: in a robust orientation, the transitive closure is a partial order, and the orientation is exactly the Hasse diagram.",
+    "proofStrategy": "Define robustly acyclic orientations and cover graphs. Axiomatize the Pretzel-Brightwell characterization. Prove easy cases: empty graphs and bipartite graphs. Axiomatize Nešetřil-Rödl examples showing the characterization is sharp. Axiomatize the sufficient condition χ < girth.",
+    "keyInsights": [
+      "Robust = stable under edge reversal: removing the 'fragile' edges gives the Hasse diagram",
+      "Cover graph ↔ Hasse diagram: edges of G are exactly the cover relations of the poset",
+      "Chromatic number < girth: a sufficient condition that ensures enough structure for robust orientation",
+      "Nešetřil-Rödl: triangle-free graphs with no robust orientation exist — the characterization is non-trivial"
+    ],
+    "prerequisites": [
+      "Graph orientations: directed graphs from undirected",
+      "Acyclicity: no directed cycles",
+      "Posets: partial orders, Hasse diagrams, cover relations"
+    ]
+  },
+  "conclusion": {
+    "summary": "Robustly acyclic orientations formalized: cover graph characterization (Pretzel-Brightwell 1985) axiomatized, easy cases proved (empty, bipartite), Nešetřil-Rödl examples axiomatized. 6 theorems, 277 lines, 3 axioms.",
+    "implications": "The Pretzel-Brightwell characterization connects combinatorial orientation theory to order theory. It has applications in scheduling (poset scheduling = finding a robust orientation) and information flow analysis.",
+    "openQuestions": [
+      "Prove cover_graph_characterization without axioms using Lean 4's poset theory",
+      "Formalize the Nešetřil-Rödl explicit counterexample constructions",
+      "Algorithmic complexity: is recognizing cover graphs in P? (known to be in P)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos1006OQ01",
+    "lineCount": 277,
+    "axiomCount": 3,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both involve Erdős problems in graph combinatorics; Ramsey studies colorings, this studies orientations"
+    }
+  ],
+  "sections": []
+}
