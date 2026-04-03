@@ -1,0 +1,91 @@
+{
+  "id": "ballot-problem-oq-01-oq-02",
+  "title": "Multi-Candidate Ballot Problem: Reduction to Classical Formula",
+  "slug": "ballot-problem-oq-01-oq-02",
+  "description": "Generalizes Bertrand's ballot problem to m ≥ 2 candidates: if candidate 0 leads all opponents combined throughout the count, the probability equals (a-b)/(a+b) — the same classical formula. Proved by projecting multi-candidate sequences to ±1 sequences and showing uniform fiber counts, with one axiom for the measure transfer step.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-02",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BallotProblemOQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "ballot-problem",
+      "probability",
+      "lattice-paths",
+      "projection-principle",
+      "counting"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: uniformOn_fiber_transfer — the uniform measure over multi-candidate sequences transfers to the classical ballot measure under projection, when all fibers have equal size. This is a combinatorial fact requiring measure-theoretic infrastructure for uniformOn over finite sets that is substantial to formalize in Mathlib.",
+    "lineCount": 934,
+    "theoremCount": 36,
+    "definitionCount": 18,
+    "originalContributions": [
+      "projectToSign: projection from multi-candidate sequences to ±1 sequences",
+      "prefixSumPreservation: prefix sums are preserved under projection (leadsAllCombined ↔ positive prefix sums)",
+      "multiCountedSequence: space of multi-candidate election sequences",
+      "multiStaysPositive: predicate for leading all opponents throughout",
+      "fiberSwap: bijection between fibers demonstrating uniform fiber structure",
+      "positiveFiberDichotomy: all-or-nothing property — every multi-candidate sequence either always or never maps to winner",
+      "multi_ballot_theorem: P(leads all combined) = (a-b)/(a+b) for m-candidate elections (via uniformOn_fiber_transfer axiom)",
+      "Concrete verification examples via native_decide"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Bertrand ballot problem (1887, Wiedijk #30) asks: if candidate A receives a votes and B receives b votes (a > b), what is the probability that A leads throughout the count? The answer is (a-b)/(a+b). This file extends the result to m ≥ 2 candidates: candidate 0 receives a votes, and all other candidates receive a combined b votes. The question becomes: does candidate 0 lead all opponents combined throughout the count?",
+    "problemStatement": "In an election with m ≥ 2 candidates where candidate 0 receives a votes and candidates 1,...,m-1 collectively receive b votes (a > b), prove that P(candidate 0 leads all opponents combined throughout the count) = (a-b)/(a+b).",
+    "text": "The key insight is a projection argument: map any multi-candidate sequence to a ±1 sequence by sending votes for candidate 0 to +1 and all other votes to -1. The 'leads all combined' condition is equivalent to all prefix sums being positive, which is exactly the classical ballot condition. The multi-candidate sequences project onto classical sequences with equal fiber sizes (each 2-candidate (±1) pattern has b!/(a₁!·...·aₘ₋₁!) preimages), so the uniform measure is preserved under projection. The classical ballot result (from Mathlib's Archive.Wiedijk100Theorems.BallotProblem) then gives the answer.",
+    "proofStrategy": "Part I defines the projection from multi-candidate sequences (lists over m colors) to ±1 sequences, and proves prefix sum preservation (the key reduction step). Part II defines the multi-candidate counted sequence space and proves its properties. Part III constructs the fiberSwap bijection between fibers, establishing uniform fiber structure. Part IV proves positiveFiberDichotomy: a fiber is either entirely in multiStaysPositive or entirely outside. Part V applies the axiom uniformOn_fiber_transfer to conclude the main theorem from Ballot.ballot_problem.",
+    "keyInsights": [
+      "The multi-candidate reduction works because 'leading all combined' depends only on total opponent votes, not their distribution",
+      "Uniform fiber structure: every multi-candidate sequence has exactly b!/(a₁!·...·aₘ₋₁!) preimages of the same sign sequence",
+      "positiveFiberDichotomy (proved): sequences in the same fiber either all stay positive or all fail — fibers are entirely inside or outside the winning set",
+      "The one axiom (uniformOn_fiber_transfer) is the measure-theoretic statement that uniform probability transfers correctly under the fiber projection",
+      "Mathlib's Archive.Wiedijk100Theorems.BallotProblem provides the classical 2-candidate result"
+    ],
+    "prerequisites": [
+      "Classical ballot problem (Bertrand 1887)",
+      "Probability theory: uniform distribution over finite sets",
+      "Combinatorics: counting principles, bijections, fiber counting",
+      "Mathlib: ProbabilityTheory.uniformOn, Archive.Wiedijk100Theorems.BallotProblem"
+    ]
+  },
+  "conclusion": {
+    "summary": "The multi-candidate ballot theorem is proved with 1 axiom: P(candidate 0 leads all opponents combined) = (a-b)/(a+b), the same formula as the classical 2-candidate case. The combinatorial infrastructure (projection, fiber analysis, bijections) is fully proved. The single axiom covers the measure-theoretic transfer step that requires additional Mathlib infrastructure.",
+    "implications": "This result shows the classical ballot formula is robust: it applies not just to 2-candidate races but to any election where one candidate is measured against a combined opposition. The projection technique (reducing multi-way to 2-way via ±1 sequences) is a general combinatorial method applicable to other problems involving partial sums.",
+    "openQuestions": [
+      "Prove uniformOn_fiber_transfer: requires formalization of fiber cardinality for the uniformOn measure in Mathlib",
+      "Generalize to non-uniform prior distributions over opponent vote distributions",
+      "Connect to the cycle lemma (Dvoretzky-Motzkin): another proof strategy for the ballot formula"
+    ]
+  },
+  "leanFile": {
+    "namespace": "MultiBallot",
+    "lineCount": 934,
+    "axiomCount": 1,
+    "theoremCount": 36,
+    "definitionCount": 18
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem",
+      "relationship": "extends",
+      "description": "Classical 2-candidate ballot problem; this file extends the result to m candidates"
+    },
+    {
+      "targetId": "ballot-problem-oq-01",
+      "relationship": "extends",
+      "description": "OQ-01 provides the foundational ballot infrastructure this file builds on"
+    },
+    {
+      "targetId": "ballot-problem-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 extends via LGV lemma to 2D lattice paths and non-intersecting path counting"
+    }
+  ],
+  "sections": []
+}
