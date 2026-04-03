@@ -2,11 +2,11 @@
   "id": "bounded-prime-gaps-oq-01",
   "title": "Bounded Prime Gaps OQ-01: Optimal Admissible Tuples and Gap Bounds",
   "slug": "bounded-prime-gaps-oq-01",
-  "description": "Formalizes the connection between admissible k-tuples and prime gap bounds in the Maynard-Tao/Polymath framework. Proves parity constraints on admissible sets, non-admissibility of small tuples via explicit prime witnesses, minimum diameter theorems for k=2,3,5, and the gap bound hierarchy H≤2,12,246. 0 axioms, 0 sorries.",
+  "description": "Formalizes the connection between admissible k-tuples and prime gap bounds in the Maynard-Tao/Polymath framework. Proves parity constraints on admissible sets, non-admissibility of small tuples via explicit prime witnesses, minimum diameter theorems for k=2,3,5, and the gap bound hierarchy H≤2,12,246. 0 sorries; axiomatized via inherited maynard_tao_sieve.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BoundedPrimeGapsOQ01.lean",
     "tags": [
       "number-theory",
@@ -16,11 +16,11 @@
       "polymath",
       "maynard-tao"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. (Uses 3 axioms from BoundedPrimeGaps.lean for the Maynard-Tao sieve, not redeclared here.)",
+    "axiomCount": 1,
+    "assumptions": "Inherits 1 axiom from BoundedPrimeGaps.lean: maynard_tao_sieve (Maynard-Tao sieve, used in gap_bound_upper_bound_246 → Polymath 8b H≤246 bound). Parity constraint, non-admissibility, and minimum diameter theorems are axiom-free.",
     "lineCount": 438,
     "theoremCount": 26,
     "definitionCount": 5,
@@ -56,7 +56,7 @@
     ]
   },
   "conclusion": {
-    "summary": "A complete formalization of the admissible tuple theory underlying the bounded prime gaps theorem. Proves minimum diameter theorems for k=2,3,5 and the gap bound hierarchy (H≤246 unconditionally, H≤12 conditional). All results are axiom-free. 26 theorems, 0 axioms, 0 sorries.",
+    "summary": "A complete formalization of the admissible tuple theory underlying the bounded prime gaps theorem. Proves minimum diameter theorems for k=2,3,5 and the gap bound hierarchy (H≤246 unconditionally, H≤12 conditional). 26 theorems, 0 sorries; the H≤246 bound inherits the maynard_tao_sieve axiom from BoundedPrimeGaps.lean.",
     "implications": "This formalization establishes the combinatorial foundation for future work on improving the prime gap bound. The non-admissibility proofs demonstrate how decidable computations (via Lean's native_decide or decide) can verify specific tuple failures at explicit primes. The gap hierarchy is a roadmap for the open problem of reducing H toward 2.",
     "openQuestions": [
       "Eliminate the Maynard-Tao sieve axioms in BoundedPrimeGaps.lean by formalizing the Selberg sieve and GPY (Goldston-Pintz-Yıldırım) method, which is the analytical foundation of Zhang's argument.",
@@ -69,7 +69,7 @@
   "leanFile": {
     "namespace": "BoundedPrimeGapsOQ01",
     "lineCount": 438,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 26,
     "definitionCount": 5
   },
