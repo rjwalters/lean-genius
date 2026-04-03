@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ann-fourier-nd-background",
+    "proofId": "fourier-series-oq-04",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Higher-Dimensional Fourier Series: Key Differences from 1D",
+    "content": "The module header identifies four key ways the n≥2 theory diverges from 1D: (1) pointwise convergence fails for L¹ functions under rectangular summation (Fefferman 1971); (2) rectangular partial sums can diverge even for smooth functions; (3) spherical summation requires separate analysis (Bochner-Riesz theory); (4) L² convergence still holds via Parseval. The critical open question is whether Carleson's 1D theorem (every L² function has a.e. convergent Fourier series) extends to n=2 under spherical summation.",
+    "mathContext": "On the n-torus $\\mathbb{T}^n = (\\mathbb{R}/\\mathbb{Z})^n$, the Fourier series of $f \\in L^1(\\mathbb{T}^n)$ is $f \\sim \\sum_{k \\in \\mathbb{Z}^n} \\hat{f}(k) e^{2\\pi i k \\cdot x}$. Convergence depends critically on the summation method. In 1D: $S_N f(x) \\to f(x)$ a.e. for $f \\in L^2$ (Carleson 1966). In n≥2: this fails for rectangular sums (Fefferman 1971) and is open for spherical sums.",
+    "significance": "context",
+    "relatedConcepts": ["Fourier series", "n-torus", "Carleson's theorem", "Fefferman's theorem", "Bochner-Riesz means"],
+    "prerequisites": ["harmonic analysis", "measure theory", "L^p spaces", "Fourier analysis"]
+  },
+  {
+    "id": "ann-multiindex-setup",
+    "proofId": "fourier-series-oq-04",
+    "range": { "startLine": 26, "endLine": 46 },
+    "type": "definition",
+    "title": "n-Torus, Multi-Index, and Fourier Coefficients",
+    "content": "The formalization models the n-torus as `Fin n → ℝ` (a simplification—the actual torus is (ℝ/ℤ)ⁿ with periodic identification). Multi-indices are `Fin n → ℤ`. The `fourierCoeff` definition is a placeholder (returns 0) since the actual n-fold integral requires a Haar measure on the torus. The `dotProduct k x = ∑ᵢ kᵢ · xᵢ` is fully implemented as the inner product of the multi-index and the torus point, which appears in the exponential e^{2πi k·x} of each Fourier mode.",
+    "mathContext": "The Fourier coefficient $\\hat{f}(k) = \\int_{\\mathbb{T}^n} f(x) e^{-2\\pi i k \\cdot x}\\, dx$ for $k \\in \\mathbb{Z}^n$, $x \\in \\mathbb{T}^n$, $k \\cdot x = \\sum_{j=1}^n k_j x_j$. The Fourier series converges in $L^2$ to $f$ by Parseval: $\\|f\\|_{L^2}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat{f}(k)|^2$.",
+    "significance": "technical",
+    "relatedConcepts": ["Haar measure on torus", "multi-index notation", "Fourier coefficients", "inner product on Z^n"],
+    "prerequisites": ["measure theory on compact groups", "Lebesgue integration", "Pontryagin duality"]
+  },
+  {
+    "id": "ann-summation-methods",
+    "proofId": "fourier-series-oq-04",
+    "range": { "startLine": 47, "endLine": 69 },
+    "type": "insight",
+    "title": "Rectangular vs. Spherical Summation: Four Methods",
+    "content": "The central mathematical difficulty in n-dimensional Fourier series is that there is no canonical summation order for the multi-index k ∈ ℤⁿ. Four methods are described: (1) Rectangular: sum over |kⱼ| ≤ Nⱼ independently per coordinate—behaves badly, fails even for smooth functions in n≥2. (2) Square: sum over max|kⱼ| ≤ N—equivalent to tensor products of 1D Dirichlet kernels; L¹ norm grows as (log N)^n. (3) Spherical: sum over |k|₂ ≤ R—better behavior but requires entirely different kernel analysis. (4) Bochner-Riesz: weighted spherical sums with weight (1 - |k|²/R²)^δ₊ for δ > 0—partially solves convergence via regularization.",
+    "mathContext": "Rectangular partial sum: $S_N f = \\sum_{|k_j| \\leq N} \\hat{f}(k) e_k$. The n-D Dirichlet kernel $D_N^{(n)}(x) = \\prod_{j=1}^n D_N(x_j)$ has $L^1$ norm $\\|D_N^{(n)}\\|_{L^1} \\asymp (\\log N)^n \\to \\infty$, causing divergence. Spherical sum: $S_R^{\\text{sph}} f = \\sum_{|k|_2 \\leq R} \\hat{f}(k) e_k$. Bochner-Riesz: $S_R^\\delta f = \\sum_{|k| \\leq R} (1-|k|^2/R^2)_+^\\delta \\hat{f}(k) e_k$.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet kernel", "Bochner-Riesz means", "summability methods", "L^1 norm of kernels"],
+    "prerequisites": ["Fourier analysis", "functional analysis", "L^p boundedness", "kernel estimates"]
+  },
+  {
+    "id": "ann-fefferman-divergence",
+    "proofId": "fourier-series-oq-04",
+    "range": { "startLine": 70, "endLine": 97 },
+    "type": "insight",
+    "title": "Fefferman's Divergence Theorem and the Carleson-2D Open Problem",
+    "content": "The convergence table in the comment block encapsulates the state of the art. The landmark negative result is Fefferman (1971): rectangular partial sums of Fourier series on T² fail to converge a.e. even for L¹ functions, showing that the 1D theory does NOT generalize to n≥2 for rectangular summation. The positive results that DO extend: L² convergence (Parseval), uniform convergence for Lipschitz functions (all dimensions). The major open problem is the top-left gap: does the SPHERICAL (not rectangular) Fourier series of every L²(T²) function converge a.e.? This is the 2D Carleson conjecture, one of the central open problems in harmonic analysis.",
+    "mathContext": "Fefferman's theorem (1971): $\\exists f \\in L^1(\\mathbb{T}^2)$ such that $\\limsup_{N\\to\\infty} |S_N^{\\text{rect}} f(x)| = \\infty$ for a.e. $x$. 2D Carleson conjecture: for $f \\in L^2(\\mathbb{T}^2)$, does $S_R^{\\text{sph}} f(x) \\to f(x)$ for a.e. $x$? Answer: unknown. Bochner-Riesz conjecture: $S_R^\\delta$ converges in $L^p$ for $\\delta > n|1/p - 1/2| - 1/2$, $1 \\leq p \\leq \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["Fefferman 1971", "2D Carleson conjecture", "Bochner-Riesz conjecture", "a.e. convergence", "L^p boundedness of maximal functions"],
+    "prerequisites": ["Carleson's theorem (1D)", "maximal functions", "Calderón-Zygmund theory", "oscillatory integrals"]
+  }
+]
