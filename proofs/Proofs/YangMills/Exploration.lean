@@ -21455,11 +21455,9 @@ theorem casimir_to_nality_interpolation (f : ℝ) (hf0 : 0 ≤ f) (hf1 : f ≤ 1
     - Center symmetry breaking: NECESSARY for deconfinement
     - Dual monopole condensation: SUFFICIENT (dual Meissner)
     - All are EQUIVALENT to mass gap > 0 in pure gauge theory. -/
-theorem confinement_hierarchy (area_law center_unbr monopole_cond : Prop)
-    (h_area : area_law → True)
-    (h_center : center_unbr → True)
-    (h_monopole : monopole_cond → True) :
-    True := trivial
+/- confinement_hierarchy: area law → confinement; center symmetry breaking →
+    deconfinement; dual monopole condensation → confinement (dual Meissner);
+    all equivalent to mass gap > 0 in pure gauge theory. -/
 
 end ConfinementCriteriaSummary
 

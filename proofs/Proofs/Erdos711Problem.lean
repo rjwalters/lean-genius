@@ -123,9 +123,8 @@ def firstConjecture : Prop :=
 **First Conjecture Status: OPEN**
 No proof or counterexample is known.
 -/
-theorem first_conjecture_open :
-    -- We cannot prove firstConjecture or its negation computationally
-    True := trivial
+/- first_conjecture_open: status of Erdős #711 first conjecture is OPEN;
+    no proof or counterexample is known. -/
 
 /-
 ## Part IV: The Dependence on m
@@ -193,9 +192,8 @@ The starting point m affects which multiples of k are available.
 - For other m, the alignment may be better or worse
 - The second conjecture says: for some m, it's significantly worse
 -/
-theorem starting_point_matters :
-  -- Different starting points have different distributions of multiples
-  True := trivial
+/- starting_point_matters: different starting points have different
+  distributions of multiples of k, affecting the minimum gap. -/
 
 /--
 **Example: m vs n Starting Points**
@@ -227,9 +225,8 @@ Since f(n,n) ~ n · √(log n / log log n) to n · √(log n),
 and f(n,m) - f(n,n) ≫ n · (log n / log log n),
 the difference can dominate when log n / log log n is large.
 -/
-theorem van_doorn_dominates :
-  -- The difference can be of comparable order to f(n,n) itself
-  True := trivial
+/- van_doorn_dominates: the difference f(n,m) - f(n,n) can dominate
+  when log n / log log n is large (comparable to f(n,n) itself). -/
 
 /-
 ## Part VIII: Small Examples

@@ -221,11 +221,9 @@ axiom erdos_761_question2 :
 
 -- ## Known Cases
 
-/-- For odd cycles C_{2k+1}, the dichromatic number is 2 while the
-    chromatic number is 3. This is a simple example showing δ(G) < χ(G).
-    Statement placeholder — cycle graph construction not in Mathlib. -/
-theorem odd_cycle_dichrom (k : ℕ) (_hk : k ≥ 1) :
-    True := trivial
+/- odd_cycle_dichrom: for odd cycles C_{2k+1}, the dichromatic number is 2
+    while the chromatic number is 3 — showing δ(G) < χ(G) is possible.
+    (Cycle graph construction not yet in Mathlib.) -/
 
 -- ## Structural Results
 

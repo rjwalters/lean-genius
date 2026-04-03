@@ -190,9 +190,9 @@ because HahnSeries ℚ R inherits CharZero from R.
 
     These remain open in Mathlib, so this records the inductive
     structure of the argument. -/
-theorem multivariate_puiseux_theorem
-    (K : Type*) [Field K] (hK : IsAlgClosed K) (hchar : CharZero K) (n : ℕ) :
-    True := trivial
+/- multivariate_puiseux_theorem: the n-variable Puiseux theorem holds
+    for algebraically closed fields of characteristic 0. Requires iterated
+    HahnSeries CharZero propagation (open in Mathlib). -/
 
 /-! ═══════════════════════════════════════════════════════════════════
 Part V: Properties of the Iterated Construction
@@ -214,8 +214,7 @@ theorem single_variable_is_univariate (K : Type*) :
 
     This is a non-trivial fact that follows from the uniqueness of
     algebraic closures up to isomorphism. -/
-theorem double_puiseux_redundant
-    (K : Type*) [Field K] (hK : IsAlgClosed K) (hchar : CharZero K) :
-    True := trivial
+/- double_puiseux_redundant: HahnSeries ℚ (HahnSeries ℚ K) ≅ HahnSeries ℚ K
+    as algebraically closed fields; follows from uniqueness of algebraic closures. -/
 
 end PuiseuxTheoremOQ02

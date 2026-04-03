@@ -70,7 +70,7 @@
     ],
     "dateAdded": "2026-03-27",
     "axiomCount": 2,
-    "lineCount": 585,
+    "lineCount": 584,
     "assumptions": "2 axioms: bounding_number_uncountable (ℵ₁ ≤ b, requires diagonalization), MA_implies_b_eq_continuum (MA → b = 2^ℵ₀, deep forcing result). Previously 8 axioms; 6 eliminated: 4 by Mathlib definitions, konig_cofinality by Cardinal.lt_cof_power, dominating_le_continuum trivially.",
     "mathlib_version": "4.26.0"
   },
@@ -179,9 +179,9 @@
       "ContinuumHypothesis"
     ],
     "namespace": "ContinuumHypothesisOQ02",
-    "lineCount": 585,
+    "lineCount": 584,
     "axiomCount": 2,
-    "theoremCount": 33,
+    "theoremCount": 32,
     "definitionCount": 6
   },
   "crossReferences": [
