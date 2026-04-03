@@ -29,12 +29,10 @@
             "threshold(r,k,n) via sSup over configurations",
             "ErdosConjecture960_littleo: f = o(n²) formal statement",
             "ErdosConjecture960_linear: f ≪ n stronger form",
-            "turan_upper_bound (axiom): Turán bound over ℚ",
             "threshold_r2 (proved): f_{2,k}(n) = 0",
             "trivial_bound (proved): at most C(n,2) ordinary lines",
             "linear_implies_littleo (proved): linear bound implies o(n²)",
             "ordinary_pairs_count (proved): r*(r-1) ordered ordinary pairs",
-            "green_tao_ordinary_lines (axiom): ≥ n/2 for general position",
             "erdos_960_summary (proved): combines conjecture with r=2 case"
         ],
         "axiomCount": 1,
@@ -46,7 +44,7 @@
         "historicalContext": "Erdős Problem #960 originates from Erdős's 1984 paper [Er84] and concerns the interplay between ordinary lines and Ramsey-type phenomena in discrete geometry. An ordinary line is one passing through exactly two points of a configuration. The Sylvester-Gallai theorem (1893) guarantees at least one ordinary line for any non-collinear finite point set, and the Green-Tao theorem (2013) strengthened this to at least n/2 ordinary lines when no three points are collinear.\n\nThe problem asks about a higher-order structure: given many ordinary lines, must there exist r points whose C(r,2) connecting lines are all ordinary? The threshold f_{r,k}(n) measures the minimum number of ordinary lines needed to force such an 'all-ordinary' r-subset, among n-point configurations with no k collinear. Turán's theorem from extremal graph theory provides an upper bound by viewing the ordinary line relation as a graph.\n\nThe central conjecture is that f_{r,k}(n) = o(n²), meaning the threshold grows subquadratically. The stronger form asks whether f_{r,k}(n) is actually linear in n. Both questions remain open. The problem connects discrete geometry, extremal graph theory, and Ramsey theory in a way that highlights how local structure (ordinary lines) constrains global combinatorial patterns.",
         "problemStatement": "Let r, k ≥ 2 be fixed. For n points in ℝ² with no k collinear, define f_{r,k}(n) as the minimum number of ordinary lines that guarantees the existence of r points whose C(r,2) connecting lines are all ordinary. Is f_{r,k}(n) = o(n²)? Is f_{r,k}(n) ≪ n? Both questions remain OPEN.",
         "text": "Given n points with no k collinear, determine the threshold f_{r,k}(n) of ordinary lines guaranteeing an r-point all-ordinary subset. Is f_{r,k}(n) = o(n²)? Turán bound: f ≤ (1-1/(r-1))n²/2+1. OPEN.",
-        "proofStrategy": "The formalization defines PointConfig, NoKCollinear, IsOrdinaryLine, AllOrdinary, and the threshold function via sSup. The main conjecture ErdosConjecture960_littleo is stated formally and axiomatized. The Turán upper bound is axiomatized over ℚ to avoid natural number underflow. Additional results include the trivial r=2 case, Green-Tao ordinary lines, and the Ramsey connection. The summary theorem combines the conjecture with the r=2 base case.",
+        "proofStrategy": "The formalization defines PointConfig, NoKCollinear, IsOrdinaryLine, AllOrdinary, and the threshold function via sSup. The main conjecture ErdosConjecture960_littleo is stated formally and axiomatized as an open problem. Additional results include the trivial r=2 case (threshold_r2 proved) and the implication linear→o(n²) (linear_implies_littleo proved). The summary theorem combines the conjecture with the r=2 base case. The Turán upper bound and Green-Tao ordinary line result are discussed in comments but not axiomatized, as they are not needed by the formalized theorems.",
         "keyInsights": [
             "An ordinary line passes through exactly 2 points of the configuration",
             "The threshold f_{r,k}(n) is a Ramsey-type function counting when ordinary lines force all-ordinary subsets",
@@ -115,16 +113,16 @@
             "title": "Part VI: Turan Upper Bound",
             "startLine": 98,
             "endLine": 128,
-            "summary": "Axiomatizes the Turan upper bound: f_{r,k}(n) <= (1 - 1/(r-1)) * n^2/2 + 1 over Q. Then proves trivial_bound: the ordinary line count of any configuration is at most n*(n-1)/2 (i.e., C(n,2)), by showing the filtered set of ordinary pairs is a subset of the off-diagonal and computing its cardinality.",
-            "mathContext": "Tur\\'{a}n's theorem (1941) implies that the ordinary-line graph on $n$ vertices with no $r$-clique has at most $\\bigl(1 - \\tfrac{1}{r-1}\\bigr)\\tfrac{n^2}{2}$ edges, giving the axiom $f_{r,k}(n) \\le \\bigl(1 - \\tfrac{1}{r-1}\\bigr)\\tfrac{n^2}{2} + 1$ over $\\mathbb{Q}$. The trivial bound $\\mathrm{ordinaryLineCount}(P) \\le \\binom{n}{2} = \\tfrac{n(n-1)}{2}$ is proved by showing the filtered product is a subset of $P.\\mathrm{points}.\\mathrm{offDiag}$ and using $|\\mathrm{offDiag}| = n(n-1)$."
+            "summary": "Discusses the Turán upper bound (not axiomatized — bridging from SimpleGraph to PointConfig is non-trivial and the bound is not used by any theorem). Proves trivial_bound: the ordinary line count of any configuration is at most n*(n-1)/2 (i.e., C(n,2)), by showing the filtered set of ordinary pairs is a subset of the off-diagonal and computing its cardinality.",
+            "mathContext": "Tur\\'{a}n's theorem (1941) implies $f_{r,k}(n) \\le \\bigl(1 - \\tfrac{1}{r-1}\\bigr)\\tfrac{n^2}{2} + 1$. Bridging from Mathlib's SimpleGraph Turán to PointConfig requires substantial infrastructure and is not axiomatized here. The trivial bound $\\mathrm{ordinaryLineCount}(P) \\le \\binom{n}{2} = \\tfrac{n(n-1)}{2}$ is proved by showing the filtered product is a subset of $P.\\mathrm{points}.\\mathrm{offDiag}$ and using $|\\mathrm{offDiag}| = n(n-1)$."
         },
         {
             "id": "known-cases",
             "title": "Part VII: Known Cases and Connections",
             "startLine": 130,
             "endLine": 208,
-            "summary": "Proves four results: (1) ordinary_line_exists: if ordinaryLineCount >= 1 then some ordinary line exists. (2) threshold_r2: for r=2 the threshold is 0, since any ordinary line yields a 2-element all-ordinary subset (uses Sylvester-Gallai). (3) green_tao_ordinary_lines axiom: for n >= 13 with no 3 collinear, ordinaryLineCount >= n/2 (Green-Tao 2013). (4) ordinary_pairs_count: an all-ordinary r-subset has r*(r-1) ordered ordinary pairs.",
-            "mathContext": "The lemma `ordinary_line_exists` extracts witnesses from a nonempty filtered Finset. The key theorem `threshold_r2` proves $f_{2,k}(n) = 0$: if $m \\ge 1$ then some ordinary line $\\{p,q\\}$ gives a 2-element all-ordinary subset, contradicting the $\\sup$ condition; the proof uses `csSup_le` and case analysis. The Green-Tao axiom encodes the result from Acta Math. 208 (2013): for $n \\ge 13$ points with no 3 collinear, $\\mathrm{ordinaryLineCount}(P) \\ge \\lfloor n/2 \\rfloor$. The counting lemma shows $|S \\times S| - |S| = r(r-1)$ by `card_product` and `zify`."
+            "summary": "Proves three results: (1) ordinary_line_exists (private): if ordinaryLineCount >= 1 then some ordinary line exists. (2) threshold_r2: for r=2 the threshold is 0, since any ordinary line yields a 2-element all-ordinary subset. (3) ordinary_pairs_count: an all-ordinary r-subset has r*(r-1) ordered ordinary pairs. The Green-Tao theorem (≥ n/2 ordinary lines for general position) is mentioned in comments but not axiomatized.",
+            "mathContext": "The lemma `ordinary_line_exists` extracts witnesses from a nonempty filtered Finset. The key theorem `threshold_r2` proves $f_{2,k}(n) = 0$: if $m \\ge 1$ then some ordinary line $\\{p,q\\}$ gives a 2-element all-ordinary subset, contradicting the $\\sup$ condition; the proof uses `csSup_le` and case analysis. The counting lemma shows $|S \\times S| - |S| = r(r-1)$ by `card_product` and `zify`. Green-Tao (Acta Math. 208, 2013) is noted but not used by any theorem."
         },
         {
             "id": "linear-implies-littleo",
@@ -163,7 +161,7 @@
         "opens": [],
         "namespace": "Erdos960",
         "lineCount": 240,
-        "axiomCount": 3,
+        "axiomCount": 1,
         "theoremCount": 7,
         "definitionCount": 8
     },
