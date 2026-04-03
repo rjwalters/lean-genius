@@ -1,42 +1,62 @@
 [
   {
     "id": "partition-arrow-definition",
+    "proofId": "erdos-70-oq-01",
+    "range": { "startLine": 43, "endLine": 90 },
     "type": "technique",
     "title": "PartitionArrow via Cardinal Comparison (Not Order Type)",
-    "body": "`HasOrderTypeAtLeast S H α := α.card ≤ #H` captures order type via *cardinality* comparison, not actual order-type isomorphism. This is a deliberate simplification: proving that a subset has order type ≥ α (as an ordinal) requires constructing a specific order, while cardinal comparison is easier to formalize. For countable ordinals like ω², the cardinality condition is weaker than the actual order-type condition, making theorems easier to prove but potentially weaker than stated.",
-    "location": "Erdos70OQ01Problem.lean:47-50",
-    "tags": ["partition-calculus", "order-type", "formalization-choice"]
+    "content": "`HasOrderTypeAtLeast S H α := α.card ≤ #H` captures order type via *cardinality* comparison, not actual order-type isomorphism. This is a deliberate simplification: proving that a subset has order type ≥ α (as an ordinal) requires constructing a specific order embedding, while cardinal comparison is easier to formalize. For countable ordinals like ω², the cardinality condition coincides with the order-type condition on ordered sets (any infinite countable set has order type ≥ ω² in some ordering), but the formalization works with the weaker cardinality version. The `PartitionArrow κ α m` definition uses existential witnesses for homogeneous sets rather than explicit colorings.",
+    "mathContext": "The partition arrow $\\kappa \\to (\\alpha, m)_2^3$ (2-colorings, 3-element subsets) is formalized as: for every 2-coloring $c: \\binom{S}{3} \\to \\{0,1\\}$ with $|S| = \\kappa$, either $\\exists H \\subseteq S$ with $|H| \\geq \\alpha.\\text{card}$ and $H$ color-0 homogeneous, or $\\exists H \\subseteq S$ finite with $|H| \\geq m$ and $H$ color-1 homogeneous. The cardinality-based `HasOrderTypeAtLeast` captures the quantitative content while avoiding the complexity of order-type isomorphism (`OrderIso`), which would require specifying the ordering on $H$.",
+    "significance": "technical",
+    "relatedConcepts": ["PartitionArrow", "HasOrderTypeAtLeast", "Cardinal.mk", "partition calculus", "Ordinal.card"],
+    "prerequisites": ["Ordinal.card in Mathlib", "Cardinal.mk for set cardinality", "partition calculus notation"]
   },
   {
     "id": "omega-squared-countable",
+    "proofId": "erdos-70-oq-01",
+    "range": { "startLine": 96, "endLine": 100 },
     "type": "insight",
     "title": "ω² is Countable: card(ω·ω) = ℵ₀",
-    "body": "The theorem `omega_squared_countable` shows card(ω²) = ℵ₀ via `Cardinal.aleph0_mul_aleph0`. This is the fundamental reason why the partition question 𝔠 → (ω², n) makes sense: we are asking whether a set of size 𝔠 = 2^{ℵ₀} can always find a subset of countable order type ω². Since ω² is countable, this is a question about countable subsets of an uncountable set — not about uncountable homogeneous sets.",
-    "location": "Erdos70OQ01Problem.lean:95-98",
-    "tags": ["ordinals", "cardinality", "countable"]
+    "content": "The theorem `omega_squared_countable` shows card(ω²) = ℵ₀ via `Cardinal.aleph0_mul_aleph0`. This is the fundamental reason why the partition question 𝔠 → (ω², n) makes sense: we are asking whether a set of size 𝔠 = 2^{ℵ₀} can always find a subset of countable order type ω². Since ω² is countable, this is a question about countable subsets of an uncountable set — not about uncountable homogeneous sets. The Lean proof uses `Ordinal.card_mul` to reduce cardinal(ω·ω) to ℵ₀·ℵ₀, then `aleph0_mul_aleph0` to conclude.",
+    "mathContext": "In ordinal arithmetic, $\\omega^2 = \\omega \\cdot \\omega$ as an ordinal. Its cardinality: $|\\omega^2| = |\\omega| \\cdot |\\omega| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$. This uses the cardinal identity $\\aleph_0^2 = \\aleph_0$ (countable products of countable sets are countable). Contrast with $2^{\\aleph_0} = \\mathfrak{c} > \\aleph_0$ — the continuum is uncountable, making the partition question nontrivial. The `IsCountableOrdinal` predicate formalizes $|\\alpha| \\leq \\aleph_0$, which characterizes all countable ordinals: $0, 1, \\ldots, \\omega, \\omega+1, \\ldots, \\omega^2, \\ldots, \\omega^\\omega, \\ldots$",
+    "significance": "key",
+    "relatedConcepts": ["Cardinal.aleph0_mul_aleph0", "Ordinal.card_mul", "IsCountableOrdinal", "countable ordinals", "Cardinal.continuum"],
+    "prerequisites": ["Ordinal.omega0 in Mathlib", "Cardinal.aleph0 and aleph0_mul_aleph0", "Ordinal.card for ordinal cardinalities"]
   },
   {
     "id": "monotonicity-proof-technique",
+    "proofId": "erdos-70-oq-01",
+    "range": { "startLine": 130, "endLine": 200 },
     "type": "technique",
     "title": "Threading Witnesses Through Monotonicity",
-    "body": "The proof of `partition_arrow_mono_ordinal` is: given a witness (H, hord, hhom) for the β case, the same H witnesses the α case because `Ordinal.card_le_card hαβ` composed with `hord` gives α.card ≤ #H. For the finite case, the same H witnesses the smaller bound m too. This 'thread the witness' pattern recurs in `omega_squared_implies_omega_plus_n` and `omega_squared_implies_omega_mult_k`.",
-    "location": "Erdos70OQ01Problem.lean:130-145",
-    "tags": ["monotonicity", "witness-threading", "proof-technique"]
+    "content": "The proof of `partition_arrow_mono_ordinal` is: given a witness (H, hord, hhom) for the β case, the same H witnesses the α case because `Ordinal.card_le_card hαβ` composed with `hord` gives α.card ≤ #H. For the finite case in `partition_arrow_mono_size`, the same H witnesses the smaller bound m too. This 'thread the witness' pattern recurs in `omega_squared_implies_omega_plus_n` and `omega_squared_implies_omega_mult_k`. The key Lean tactic is `exact partition_arrow_mono_ordinal _ _ _ _ (ineq_proof) h`, threading the monotonicity result directly.",
+    "mathContext": "Antimonotonicity: if $\\alpha \\leq \\beta$ then $\\kappa \\to (\\beta, m) \\Rightarrow \\kappa \\to (\\alpha, m)$. Proof: any color-0 homogeneous set of cardinality $\\geq |\\beta|$ also has cardinality $\\geq |\\alpha|$ since $|\\alpha| \\leq |\\beta|$. The same coloring avoidance transfers. This gives the implication chain: $\\omega^2$ partition $\\Rightarrow$ $\\omega \\cdot k$ partition (all $k$) $\\Rightarrow$ $\\omega + n$ partition (all $n$). Each step uses `Ordinal.card_le_card` applied to the strict inequality $\\omega+n < \\omega k < \\omega^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ordinal.card_le_card", "partition_arrow_mono_ordinal", "omega_squared_implies_omega_mult_k", "monotonicity", "Set.ncard_le_ncard"],
+    "prerequisites": ["Ordinal.card_le_card in Mathlib", "PartitionArrow definition", "omega_mul_k_lt_omega_squared"]
   },
   {
     "id": "omega-squared-limit-difficulty",
+    "proofId": "erdos-70-oq-01",
+    "range": { "startLine": 204, "endLine": 220 },
     "type": "insight",
     "title": "Limit Ordinal Property Explains Stepping-Up Difficulty",
-    "body": "The `omega_squared_is_limit` theorem (`Ordinal.isLimit_mul_left omega0_isLimit omega0_pos`) confirms ω² is a limit ordinal — not of the form α+1. The Erdős-Rado proof of 𝔠 → (ω+n, 4)₂³ uses the fact that ω+n is 'almost' ω (a successor of ω+n-1). Limit ordinals like ω² require a different argument: you must 'step up' through ω·1, ω·2, ω·3, … simultaneously, which requires controlling infinitely many cofinal sequences. This is the core difficulty.",
-    "location": "Erdos70OQ01Problem.lean:209-211",
-    "tags": ["limit-ordinal", "stepping-up", "open-problem"]
+    "content": "The `omega_squared_is_limit` theorem (`Ordinal.isLimit_mul_left omega0_isLimit omega0_pos`) confirms ω² is a limit ordinal — not of the form α+1. The Erdős-Rado proof of 𝔠 → (ω+n, 4)₂³ uses the fact that ω+n is almost a successor: you can construct the coloring step by step, building order type ω+n by first handling ω, then appending n more elements. Limit ordinals like ω² require handling infinitely many successor steps simultaneously — the 'stepping-up' lemma for limit ordinals requires a fundamentally different combinatorial argument involving cofinal sequences.",
+    "mathContext": "An ordinal $\\alpha$ is a limit ordinal if $\\forall \\beta < \\alpha, \\exists \\gamma, \\beta < \\gamma < \\alpha$. Equivalently, $\\alpha \\neq 0$ and $\\alpha \\neq \\beta + 1$ for any $\\beta$. $\\omega^2$ is a limit because $\\omega^2 = \\sup_{k < \\omega} \\omega \\cdot k$ — it is the supremum of the chain $\\omega, 2\\omega, 3\\omega, \\ldots$ The stepping-up technique for finite $n$: $\\mathfrak{c} \\to (\\omega+n, 4) \\Rightarrow \\mathfrak{c} \\to (\\omega+n+1, 4)$ uses a compactness argument. The analogous step $\\mathfrak{c} \\to (\\omega k, n) \\Rightarrow \\mathfrak{c} \\to (\\omega(k+1), n)$ requires controlling the cofinal sequence $\\{\\omega k + m : m < \\omega\\}$, which interacts with the partition in an essentially new way at each step.",
+    "significance": "key",
+    "relatedConcepts": ["Ordinal.isLimit_mul_left", "limit ordinal", "stepping-up lemma", "cofinal sequences", "Erdős-Rado theorem"],
+    "prerequisites": ["Ordinal.IsLimit in Mathlib", "isLimit_mul_left for ordinal multiplication", "successor vs limit ordinal distinction"]
   },
   {
     "id": "full-conjecture-specialization",
+    "proofId": "erdos-70-oq-01",
+    "range": { "startLine": 157, "endLine": 165 },
     "type": "context",
     "title": "Erdős 70 Full Conjecture Implies ω² Case",
-    "body": "The `erdos70_implies_omega_squared` theorem proves: if 𝔠 → (β, n) for all countable β and all n ≥ 2 (the full conjecture), then 𝔠 → (ω², n) for all n ≥ 2 (the ω² case). The proof is one line: `exact h _ n omega_squared_countable hn`. The converse fails — the ω² conjecture only covers one countable ordinal, while the full conjecture covers all of them. So `OmegaSquaredConjecture` is strictly weaker than `Erdos70Conjecture`.",
-    "location": "Erdos70OQ01Problem.lean:157-161",
-    "tags": ["erdos-70", "specialization", "open-conjecture", "partition-calculus"]
+    "content": "The `erdos70_implies_omega_squared` theorem proves: if 𝔠 → (β, n) for all countable β and all n ≥ 2 (the full Erdős 70 conjecture), then 𝔠 → (ω², n) for all n ≥ 2. The proof is one line: `exact h _ n omega_squared_countable hn`. The converse fails — the ω² conjecture covers only one countable ordinal, while the full conjecture covers all of them. The hierarchy ω² < ω³ < … < ω^ω are all countable, so the full conjecture is strictly stronger. This proves `OmegaSquaredConjecture` is a consequence but not an equivalent reformulation of the full `Erdos70Conjecture`.",
+    "mathContext": "The Erdős 70 conjecture states: for every countable ordinal $\\beta$ and every $n \\geq 2$, $\\mathfrak{c} \\to (\\beta, n)_2^3$. The ω² case ($\\beta = \\omega^2$) is a single specialization. But the full conjecture quantifies over all countable $\\beta$ including $\\omega^3, \\omega^4, \\ldots, \\omega^\\omega, \\omega^{\\omega^\\omega}, \\ldots$ (all are countable). Resolving even just $\\beta = \\omega^2$ would be a major breakthrough, while the full conjecture may be out of reach. The formalization captures this hierarchy precisely: `Erdos70Conjecture → OmegaSquaredConjecture` is proved, but `OmegaSquaredConjecture → Erdos70Conjecture` is not (and is likely false).",
+    "significance": "key",
+    "relatedConcepts": ["Erdos70Conjecture", "OmegaSquaredConjecture", "IsCountableOrdinal", "omega_squared_countable", "partition calculus hierarchy"],
+    "prerequisites": ["Erdős-Rado theorem (parent entry)", "Ordinal.card ≤ aleph0 for countable ordinals", "PartitionArrow definition"]
   }
 ]
