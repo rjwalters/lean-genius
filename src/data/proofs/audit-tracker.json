@@ -2741,9 +2741,9 @@
       "result": "clean"
     },
     "erdos-1126-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-03-30T11:11:39Z",
+      "lastAudited": "2026-04-03T12:59:28Z",
       "result": "issues-fixed"
     },
     "erdos-1127": {
@@ -4523,8 +4523,8 @@
     },
     "erdos-32": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T10:17:33Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-03T12:59:28Z",
       "result": "issues-fixed"
     },
     "erdos-320": {
@@ -9597,9 +9597,9 @@
     },
     "hilbert-11": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T13:12:27Z",
-      "result": "clean"
+      "auditCount": 3,
+      "lastAudited": "2026-04-03T13:34:50Z",
+      "result": "issues-fixed"
     },
     "hilbert-13": {
       "agentId": "auditor-cycle-20-batch",
@@ -9790,15 +9790,15 @@
       "result": "issues-found"
     },
     "inverse-galois": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-03-29T19:27:31Z",
+      "lastAudited": "2026-04-03T12:59:28Z",
       "result": "issues-fixed"
     },
     "inverse-galois-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-03-29T19:27:16Z",
+      "lastAudited": "2026-04-03T12:59:28Z",
       "result": "issues-fixed"
     },
     "inverse-galois-oq-02": {
@@ -10714,10 +10714,10 @@
       "result": "issues-fixed"
     },
     "sum-of-kth-powers-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
-      "result": "clean"
+      "lastAudited": "2026-04-03T12:59:28Z",
+      "result": "issues-fixed"
     },
     "sylow-theorems": {
       "agentId": "auditor-cycle-20-batch",
@@ -11283,9 +11283,27 @@
       "issues": []
     },
     "cauchy-schwarz-oq-02-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T11:47:18Z",
-      "result": "issues-found",
+      "auditCount": 4,
+      "lastAudited": "2026-04-03T13:37:28Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "buffons-needle-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T13:01:13Z",
+      "result": "clean",
+      "issues": []
+    },
+    "chinese-remainder-constructive-oq-04-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T13:01:13Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sum-of-kth-powers-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T13:01:13Z",
+      "result": "clean",
       "issues": []
     }
   },

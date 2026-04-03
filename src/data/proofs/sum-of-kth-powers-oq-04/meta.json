@@ -7,7 +7,7 @@
     "author": "Euler (1738), Maclaurin (1742), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler%E2%80%93Maclaurin_formula",
     "date": "1738",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/SumOfKthPowersOQ04.lean",
     "tags": [
       "analysis",
@@ -16,10 +16,10 @@
       "bernoulli-numbers",
       "open-question"
     ],
-    "badge": "formalized",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: monic_poly_ratio_tendsto (p(n)/n^d -> 1). bernoulli_poly_leading previously axiomatized, now proved from coeff_bernoulli. 1 sorry: powerSumRatio_tendsto (requires combining Faulhaber with filter limits).",
+    "assumptions": "1 axiom: monic_poly_ratio_tendsto (p(n)/n^d -> 1). 0 sorries: powerSumRatio_tendsto is now proved using Faulhaber's formula and filter limits.",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.bernoulli",
