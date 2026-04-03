@@ -40,15 +40,99 @@
       "Choiceless argument documentation"
     ]
   },
+  "overview": {
+    "historicalContext": "Georg Cantor established in 1874 — in the same landmark paper that introduced the diagonal argument — that the algebraic numbers are countable while the reals are not. This dichotomy was revolutionary: it showed that the real line is populated almost entirely by transcendental numbers, yet until Liouville (1844) and later Hermite (1873, for $e$) and Lindemann (1882, for $\\pi$), no specific transcendental number was known. The constructive question addressed here — whether the countability of algebraic numbers can be proved without the axiom of choice — has roots in Hilbert's program and Bishop's constructive analysis. The key insight is that the three-step Cantor argument (polynomial enumeration, finite roots per polynomial, countable union) only requires countable choice at step 3, and that weak form of choice is provable in Lean's type-theoretic foundation without being an additional axiom.",
+    "problemStatement": "The algebraic numbers $\\bar{\\mathbb{Q}} \\cap \\mathbb{C}$ — the set $\\{z \\in \\mathbb{C} \\mid \\exists p \\in \\mathbb{Z}[x],\\, p \\neq 0,\\, p(z) = 0\\}$ — is countable. Moreover, this countability can be witnessed constructively: no appeal to the full axiom of choice is needed, since the root sets are not merely finite in principle but finitely bounded by the polynomial degree.",
+    "proofStrategy": "The proof decomposes into three cleanly separated parts corresponding to the three classical steps. First, $\\mathbb{Z}[x]$ is countable because polynomials are finite sequences of integers, and `Countable (Polynomial ℤ)` is discharged by `inferInstance` via Lean's typeclass machinery. Second, each nonzero $p \\in \\mathbb{Z}[x]$ has finitely many complex roots, which follows from `Polynomial.setOf_isRoot_finite` applied to the image of $p$ under the canonical map $\\mathbb{Z} \\to \\mathbb{C}$. Third, the algebraic numbers are expressed as $\\bigcup_{p \\neq 0} \\text{roots}(p)$, a countable union of finite (hence countable) sets, which is countable by `Set.countable_iUnion`. The final step from `Set.Countable` to the typeclass `Countable` uses `.to_subtype`.",
+    "keyInsights": [
+      "The countability of $\\mathbb{Z}[x]$ is automatic in Lean: polynomials are encoded as finitely-supported functions $\\mathbb{N} \\to \\mathbb{Z}$, and Lean's typeclass system can synthesize `Countable (Polynomial ℤ)` via `inferInstance` without any manual proof.",
+      "The Fundamental Theorem of Algebra enters not as a statement about roots in $\\mathbb{C}$ but as the finite-support lemma `Polynomial.setOf_isRoot_finite`: a nonzero polynomial of degree $n$ has at most $n$ roots, giving an explicit finite bound on fiber size.",
+      "The constructive content lies in the distinction between full AC and countable choice: `Set.countable_iUnion` over a countable index with countable fibers uses at most countable choice, which in Lean's Prop-valued logic is provable (not assumed), so no `axiom` is incurred.",
+      "The gap between `Countable` (there exists an injection $S \\hookrightarrow \\mathbb{N}$) and `Denumerable` (an explicit computable bijection $S \\cong \\mathbb{N}$) is mathematically significant: the former is proved here, while the latter would require an effective root isolation algorithm such as Sturm sequences or Vincent's theorem.",
+      "The result sits at a crucial point in Cantor's hierarchy: $|\\mathbb{N}| = |\\mathbb{Q}| = |\\bar{\\mathbb{Q}}| < |\\mathbb{R}|$. The fact that $\\mathbb{R} \\setminus \\bar{\\mathbb{Q}}$ (the transcendental numbers) has the same cardinality as $\\mathbb{R}$ itself means that in a measure-theoretic sense, 'almost every' real number is transcendental."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Problem Statement",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Imports Mathlib and the module-level docstring explaining the open question: is there a constructive (choice-free) proof of algebraic number countability using Lean's Denumerable typeclass?"
+    },
+    {
+      "id": "part-i-polynomials",
+      "title": "Part I: Polynomials Are Countable",
+      "startLine": 23,
+      "endLine": 43,
+      "summary": "Establishes that Polynomial ℤ is countable via inferInstance, and that the nonzero polynomials (a subset) are countable by injectivity of the coercion map Subtype.val."
+    },
+    {
+      "id": "part-ii-finite-roots",
+      "title": "Part II: Finite Roots per Polynomial",
+      "startLine": 44,
+      "endLine": 57,
+      "summary": "Proves that every nonzero integer polynomial has finitely many complex roots, using Mathlib's Polynomial.setOf_isRoot_finite. The algebraMap ℤ → ℂ is used to transfer the polynomial to ℂ where FTA applies."
+    },
+    {
+      "id": "part-iii-algebraic-countable",
+      "title": "Part III: Algebraic Numbers Are Countable",
+      "startLine": 58,
+      "endLine": 90,
+      "summary": "Defines algebraic numbers as roots of nonzero integer polynomials, then proves the full set is countable by expressing it as a countable union of finite root sets and applying Set.countable_iUnion."
+    },
+    {
+      "id": "part-iv-typeclass",
+      "title": "Part IV: The Denumerable Typeclass Instance",
+      "startLine": 91,
+      "endLine": 105,
+      "summary": "Lifts the Set.Countable result to the Countable typeclass for the algebraic number subtype, using .to_subtype. Discusses the stronger Denumerable typeclass (explicit bijection) and why it requires more work."
+    },
+    {
+      "id": "part-v-choiceless",
+      "title": "Part V: The Key Choiceless Step",
+      "startLine": 106,
+      "endLine": 123,
+      "summary": "Documents why the proof avoids full AC: polynomials are constructively countable, root sets are constructively finite via degree bounds, and Set.countable_iUnion uses only countable choice (a theorem in Lean's logic, not an axiom)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 124,
+      "endLine": 141,
+      "summary": "Summarizes the four proved theorems (nonzero_polys_countable, finitely_many_roots, algebraic_numbers_countable, algebraic_countable_type) and confirms 0 axioms, 0 sorries."
+    }
+  ],
   "conclusion": {
-    "summary": "Algebraic numbers proved countable without full AC. 0 axioms, 0 sorries.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "The algebraic numbers over $\\mathbb{C}$ are proved countable via a three-step constructive argument: $\\mathbb{Z}[x]$ is countable by typeclass inference, each nonzero polynomial has finitely many roots by the Fundamental Theorem of Algebra, and the algebraic numbers are their countable union. The proof incurs 0 axioms and 0 sorries.",
+    "implications": "This result completes the Cantor cardinality hierarchy: $|\\mathbb{N}| = |\\mathbb{Q}| = |\\bar{\\mathbb{Q}}| < |\\mathbb{R}|$, establishing that transcendental numbers not only exist but are uncountable — in fact, they dominate the real line in every measure-theoretic sense. The constructive angle is mathematically relevant: it shows that the countability of $\\bar{\\mathbb{Q}}$ does not require non-constructive choice principles, which matters for implementations (e.g., computer algebra systems that enumerate algebraic numbers must effectively compute this enumeration). In Lean, the proof also demonstrates the power of typeclass synthesis: `Countable (Polynomial ℤ)` is a single `inferInstance` call, abstracting away the explicit Gödel-style encoding of finite sequences.",
+    "openQuestions": [
+      "Can a fully `Computable` (decidable) enumeration of algebraic numbers be formalized in Lean? This would require effective root isolation — Sturm sequences or Vincent's theorem — to list all roots of each polynomial in computable order.",
+      "What is the complexity of deciding algebraic membership? Given a description of a complex number (e.g., as a limit of rationals), can Lean decide `IsAlgebraic z`? This connects to the theory of algebraically closed fields and Richardson's theorem.",
+      "Is there a Lean formalization of Liouville's 1844 construction of explicit transcendental numbers (e.g., $\\sum_{n=0}^\\infty 10^{-n!}$), which predates Cantor's cardinality proof by 30 years?",
+      "Can this proof be promoted from `Countable` to `Denumerable` (an explicit bijection $\\bar{\\mathbb{Q}} \\cong \\mathbb{N}$) without sacrificing constructiveness? The challenge is computing the index of a given algebraic number in the enumeration."
+    ]
   },
   "crossReferences": [
     {
       "targetId": "denumerability-rationals",
-      "relationship": "parent-problem"
+      "relationship": "parent-problem",
+      "description": "The parent proof establishes countability of ℚ; this proof extends the technique to all algebraic numbers ℚ̄ ∩ ℂ."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "complement",
+      "description": "Cantor's diagonalization proves the reals are uncountable — the counterpart to this result, together establishing that transcendental numbers dominate ℝ."
+    },
+    {
+      "targetId": "denumerability-rationals-oq-02",
+      "relationship": "sibling",
+      "description": "A sibling open question in the denumerability family exploring Cantor's characterization of ℚ as the unique countable dense linear order."
+    },
+    {
+      "targetId": "denumerability-rationals-oq-03",
+      "relationship": "sibling",
+      "description": "The Stern-Brocot tree encoding of rationals provides an alternative constructive enumeration of ℚ, complementing this polynomial-based approach."
     }
   ],
   "leanFile": {
@@ -60,6 +144,5 @@
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 1
-  },
-  "sections": []
+  }
 }
