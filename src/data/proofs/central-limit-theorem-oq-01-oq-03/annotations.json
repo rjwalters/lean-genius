@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-free-prob-background",
+    "proofId": "central-limit-theorem-oq-01-oq-03",
+    "range": { "startLine": 4, "endLine": 44 },
+    "type": "context",
+    "title": "Free Probability: Non-Commutative Analog of Classical Probability",
+    "content": "The module header introduces three parallel frameworks: classical probability (Gaussian limit, Lévy stable distributions), free probability (Voiculescu 1983: replace random variables by operators, independence by free independence), and the Bercovici-Pata bijection (1999: canonical map between classical and free infinitely divisible distributions preserving stability indices). The key insight is that the Gaussian—the classical limit of i.i.d. normalized sums—corresponds to the Wigner semicircle distribution in the free world, and the correspondence extends to all stable distributions via the bijection Λ.",
+    "mathContext": "Classical CLT: $(X_1 + \\cdots + X_n)/\\sqrt{n} \\to N(0,1)$ in distribution. Free CLT: $(a_1 + \\cdots + a_n)/\\sqrt{n} \\to \\mu_{\\text{sc}}$ in free distribution, where $\\mu_{\\text{sc}}$ is the Wigner semicircle with density $\\frac{2}{\\pi}\\sqrt{1-x^2}$ on $[-1,1]$. Bercovici-Pata bijection: $\\Lambda: \\text{ID}_{\\text{cl}} \\to \\text{ID}_{\\text{free}}$ preserving the Lévy-Khintchine structure.",
+    "significance": "context",
+    "relatedConcepts": ["Voiculescu 1983", "Wigner semicircle", "Bercovici-Pata bijection", "free convolution", "von Neumann algebras"],
+    "prerequisites": ["classical probability theory", "operator algebras", "non-commutative analysis", "Fourier analysis on groups"]
+  },
+  {
+    "id": "ann-ncp-space",
+    "proofId": "central-limit-theorem-oq-01-oq-03",
+    "range": { "startLine": 46, "endLine": 65 },
+    "type": "definition",
+    "title": "Non-Commutative Probability Space and Variance",
+    "content": "The `NCProbSpace` structure captures the minimal algebraic framework: a ring A (representing the operator algebra) and a linear expectation functional φ: A → ℝ with φ(1) = 1. This is the unital linear functional axiomatizing the 'state' on the algebra. The variance `φ(a²) - φ(a)²` matches the classical formula Var(X) = E[X²] - E[X]². The centering theorem `expect_centered` proves φ(a - φ(a)·1) = 0, which is φ(a) - φ(a)·φ(1) = 0—i.e., after subtracting the mean, the expectation is 0. The proof is one-line: rw [expect_one, mul_one, sub_self].",
+    "mathContext": "A non-commutative probability space $(\\mathcal{A}, \\phi)$: $\\mathcal{A}$ is a unital *-algebra, $\\phi: \\mathcal{A} \\to \\mathbb{C}$ is a state (unital linear functional, positive, tracial). The variance: $\\text{Var}_\\phi(a) = \\phi(a^2) - \\phi(a)^2 = \\phi((a-\\phi(a))^2) \\geq 0$ (non-negative since $\\phi$ is positive).",
+    "significance": "key",
+    "relatedConcepts": ["C*-algebras", "state on operator algebra", "non-commutative variance", "tracial states"],
+    "prerequisites": ["ring theory", "linear algebra", "operator algebras", "Lean 4 structures"]
+  },
+  {
+    "id": "ann-free-independence",
+    "proofId": "central-limit-theorem-oq-01-oq-03",
+    "range": { "startLine": 67, "endLine": 84 },
+    "type": "definition",
+    "title": "Free Independence: Simplified vs. Full Definition",
+    "content": "The definition `IsFreelyIndep φ a b` captures a simplified version: φ(ab) = 0 when φ(a) = φ(b) = 0. The full definition of free independence requires ALL alternating centered moments to vanish: φ(p₁(a)q₁(b)p₂(a)q₂(b)...) = 0 whenever φ(pᵢ(a)) = φ(qᵢ(b)) = 0. The simplified version captures only the first moment condition—necessary but far from sufficient. It is equivalent to classical independence only at the first-moment level. The theorem `freely_indep_product_zero` is immediate from the definition (trivially from hfree ha hb).",
+    "mathContext": "Full free independence: $\\phi(a_1 b_1 a_2 b_2 \\cdots) = 0$ for centered alternating sequences $a_i \\in \\mathcal{A}_1$, $b_i \\in \\mathcal{A}_2$ with $\\phi(a_i) = \\phi(b_i) = 0$. Example: $a, b$ are freely independent iff $\\phi(a^m b^n a^k \\cdots) = $ product of individual moments (via the moment-cumulant formula with free cumulants $\\kappa_n$).",
+    "significance": "supporting",
+    "relatedConcepts": ["free independence", "free cumulants", "R-transform", "moment-cumulant formula"],
+    "prerequisites": ["moment sequences", "Voiculescu free probability", "operator algebras"]
+  },
+  {
+    "id": "ann-stability-index",
+    "proofId": "central-limit-theorem-oq-01-oq-03",
+    "range": { "startLine": 86, "endLine": 114 },
+    "type": "insight",
+    "title": "Stability Index α ∈ (0, 2]: Classical-Free Correspondence Table",
+    "content": "The stability index α classifies stable distributions in both classical and free probability. The table shows: α=2 gives Gaussian (classical) / Wigner semicircle (free); α=1 gives Cauchy (classical) / free Cauchy/arcsine (free); α ∈ (0,2) gives Lévy α-stable (classical) / free α-stable (free). The proven theorems establish numeric facts: `gaussian_index` (α=2 is valid, by norm_num), `cauchy_index` (α=1 is valid), `stability_index_bounded` (valid indices lie in (0,2] as Set.Ioc). These simple verifications are a starting point—the full theory requires connecting stability index to convolution behavior.",
+    "mathContext": "Classical $\\alpha$-stable: characteristic function $\\hat{\\mu}(t) = \\exp(-c|t|^\\alpha)$ (symmetric case). Free $\\alpha$-stable: defined via R-transform $R_\\mu(z) = c z^{\\alpha/2-1}$. The Bercovici-Pata bijection $\\Lambda$ preserves $\\alpha$: $\\Lambda(\\text{classical $\\alpha$-stable}) = \\text{free $\\alpha$-stable}$. For $\\alpha=2$: $\\Lambda(N(0,1)) = \\mu_{\\text{sc}}$ (semicircle). For $\\alpha=1$: $\\Lambda(\\text{Cauchy}) = \\text{arcsine distribution}$.",
+    "significance": "key",
+    "relatedConcepts": ["α-stable distributions", "Lévy stable laws", "Wigner semicircle", "free cumulants", "Bercovici-Pata bijection"],
+    "prerequisites": ["stable distributions", "characteristic functions", "free probability theory"]
+  },
+  {
+    "id": "ann-infrastructure-assessment",
+    "proofId": "central-limit-theorem-oq-01-oq-03",
+    "range": { "startLine": 116, "endLine": 146 },
+    "type": "insight",
+    "title": "~3900 Lines Needed: R-Transform is the Central Gap",
+    "content": "The assessment provides a rigorous breakdown: *-algebras (~200, StarRing partially available in Mathlib), NCP spaces (~300, not available), free independence (~500), free convolution ⊞ (~800), free cumulants/R-transform (~600), Bercovici-Pata bijection (~1000), free stable distributions (~500). Total ~3900, Mathlib has <5%. The R-transform is the crucial technical tool: R_{a⊞b}(z) = R_a(z) + R_b(z) linearizes free convolution, analogously to how log of characteristic functions linearizes classical convolution. Without R-transforms and free cumulants, the free CLT and Bercovici-Pata bijection cannot be formalized.",
+    "mathContext": "R-transform linearizes free convolution: $R_{\\mu \\boxplus \\nu}(z) = R_\\mu(z) + R_\\nu(z)$. Definition: $G_\\mu(z) = \\int \\frac{d\\mu(x)}{z-x}$ (Cauchy transform), $K_\\mu = G_\\mu^{-1}$ (functional inverse), $R_\\mu(z) = K_\\mu(z) - 1/z$. Free CLT: $R_{(a_1+\\cdots+a_n)/\\sqrt{n}}(z) \\to \\kappa_2 z$ (R-transform of semicircle), since free cumulants of order $\\neq 2$ vanish in the limit.",
+    "significance": "key",
+    "relatedConcepts": ["R-transform", "Cauchy transform", "free convolution", "Bercovici-Pata bijection", "Mathlib gap analysis"],
+    "prerequisites": ["complex analysis", "moment-generating functions", "operator algebras", "free probability theory"]
+  }
+]
