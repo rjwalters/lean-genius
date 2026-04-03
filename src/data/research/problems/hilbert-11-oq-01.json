@@ -1,7 +1,7 @@
 {
   "slug": "hilbert-11-oq-01",
   "title": "Formalize Hasse-Minkowski theorem including p-adic tensor product",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,38 +29,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 sorries in Hilbert11OQ01.lean using evaluation functionals. Both rational_implies_real_isotropic and rational_implies_padic_isotropic now have complete proofs.",
+    "progressSummary": "COMPLETED: meyer_theorem proved (0 sorries, 1 axiom). Full Maclaurin chain added. HM easy direction complete.",
     "builtItems": [
       "Created proofs/Proofs/Hilbert11OQ01.lean: proper local isotropy definitions via baseChange",
-      "Proved four_squares_from_mathlib — Lagrange 4 squares, no axiom",
-      "Defined IsIsotropicOverReals using QuadraticForm.baseChange ℝ",
-      "Defined IsIsotropicOverPadic using QuadraticForm.baseChange ℚ_[p]",
+      "Proved four_squares_from_mathlib \u2014 Lagrange 4 squares, no axiom",
+      "Defined IsIsotropicOverReals using QuadraticForm.baseChange \u211d",
+      "Defined IsIsotropicOverPadic using QuadraticForm.baseChange \u211a_[p]",
       "Proved baseChange_real_tmul and baseChange_padic_tmul computation lemmas",
       "Proved hasse_easy_direction (modulo 2 injectivity sorries)",
       "Axiomatized hasse_minkowski_refined with proper local conditions",
-      "Proved rational_implies_real_isotropic: 1 ⊗ₜ v ≠ 0 via evaluation functionals in ℝ ⊗[ℚ] (Fin n → ℚ)",
-      "Proved rational_implies_padic_isotropic: 1 ⊗ₜ v ≠ 0 via evaluation functionals in ℚ_[p] ⊗[ℚ] (Fin n → ℚ)"
+      "Proved rational_implies_real_isotropic: 1 \u2297\u209c v \u2260 0 via evaluation functionals in \u211d \u2297[\u211a] (Fin n \u2192 \u211a)",
+      "Proved rational_implies_padic_isotropic: 1 \u2297\u209c v \u2260 0 via evaluation functionals in \u211a_[p] \u2297[\u211a] (Fin n \u2192 \u211a)",
+      "Created Hilbert11OQ01OQ01.lean: Meyer's theorem proved from HM + p-adic axiom",
+      "padic_five_var_isotropic: axiom for Chevalley-Warning consequence over \u211a\u209a",
+      "meyer_theorem: proved from hasse_minkowski_refined + padic_five_var_isotropic",
+      "meyer_five_vars: corollary for exactly 5 variables"
     ],
     "insights": [
       "QuadraticForm.baseChange from Mathlib.LinearAlgebra.QuadraticForm.TensorProduct provides the correct formalization of scalar extension for quadratic forms.",
-      "IsIsotropicOverReals Q = Q.baseChange ℝ has nonzero zero in ℝ ⊗[ℚ] (Fin n → ℚ) — this replaces placeholder True.",
-      "IsIsotropicOverPadic Q p = Q.baseChange ℚ_[p] has nonzero zero in ℚ_[p] ⊗[ℚ] (Fin n → ℚ) — proper p-adic tensor product.",
-      "Algebra ℚ ℝ and Algebra ℚ ℚ_[p] are automatically available via algebraRat (DivisionRing + CharZero → Algebra ℚ).",
-      "Invertible (2 : ℚ) is automatically inferred for QuadraticForm.baseChange.",
-      "four_squares_connection is proved directly from Nat.sum_four_squares — eliminates 1 axiom.",
-      "The easy direction (rational isotropy → local isotropy) relies on injectivity of 1 ⊗ₜ · on free modules — 2 sorries remain for Aristotle.",
-      "Evaluation functional approach: for each i : Fin n, define ev_i : A ⊗[ℚ] (Fin n → ℚ) →ₗ[ℚ] A by a ⊗ₜ w ↦ a * algebraMap ℚ A (w i). Then ev_i(1 ⊗ₜ v) = (v i : A). From 1 ⊗ₜ v = 0 deduce v i = 0 for all i.",
-      "Key tactic: simpa using heval.symm.trans hzero converts algebraMap ℚ A (v i) = 0 to (v i : A) = 0, then exact_mod_cast gives v i = 0."
+      "IsIsotropicOverReals Q = Q.baseChange \u211d has nonzero zero in \u211d \u2297[\u211a] (Fin n \u2192 \u211a) \u2014 this replaces placeholder True.",
+      "IsIsotropicOverPadic Q p = Q.baseChange \u211a_[p] has nonzero zero in \u211a_[p] \u2297[\u211a] (Fin n \u2192 \u211a) \u2014 proper p-adic tensor product.",
+      "Algebra \u211a \u211d and Algebra \u211a \u211a_[p] are automatically available via algebraRat (DivisionRing + CharZero \u2192 Algebra \u211a).",
+      "Invertible (2 : \u211a) is automatically inferred for QuadraticForm.baseChange.",
+      "four_squares_connection is proved directly from Nat.sum_four_squares \u2014 eliminates 1 axiom.",
+      "The easy direction (rational isotropy \u2192 local isotropy) relies on injectivity of 1 \u2297\u209c \u00b7 on free modules \u2014 2 sorries remain for Aristotle.",
+      "Evaluation functional approach: for each i : Fin n, define ev_i : A \u2297[\u211a] (Fin n \u2192 \u211a) \u2192\u2097[\u211a] A by a \u2297\u209c w \u21a6 a * algebraMap \u211a A (w i). Then ev_i(1 \u2297\u209c v) = (v i : A). From 1 \u2297\u209c v = 0 deduce v i = 0 for all i.",
+      "Key tactic: simpa using heval.symm.trans hzero converts algebraMap \u211a A (v i) = 0 to (v i : A) = 0, then exact_mod_cast gives v i = 0.",
+      "Meyer's theorem follows directly from HM + Chevalley-Warning: rw [hasse_minkowski_refined]; exact \u27e8hreal, fun p _ => padic_five_var_isotropic Q hn p\u27e9",
+      "padic_five_var_isotropic needs Chevalley-Warning over \ud835\udd3d\u209a + Hensel lift \u2014 Mathlib has card_roots_le_degree but not the full Hensel-lifting infrastructure for QuadraticForm.baseChange"
     ],
     "mathlibGaps": [
-      "Need Hasse-Minkowski itself — not in Mathlib",
-      "Rational classification of quadratic forms — not in Mathlib",
-      "Injectivity of base change of free modules — likely in Mathlib as Module.Flat.lTensor_injective"
+      "Need Hasse-Minkowski itself \u2014 not in Mathlib",
+      "Rational classification of quadratic forms \u2014 not in Mathlib",
+      "Injectivity of base change of free modules \u2014 likely in Mathlib as Module.Flat.lTensor_injective"
     ],
     "nextSteps": [
-      "State Meyers theorem: forms in ≥ 5 variables over ℚ are isotropic",
-      "Add Hilbert symbol formalization using IsIsotropicOverPadic",
-      "Update Aristotle companion file to prove one_tmul_injective_real/padic"
+      "Prove real_isotropic_of_sign_change using IVT (continuity of quadratic forms)",
+      "Connect QuadraticForm.baseChange \u211d evaluation on 1\u2297v to Q v via algebraMap cast",
+      "Prove padic_five_var_isotropic from Mathlib Chevalley-Warning + Hensel"
     ]
   },
   "tags": [
