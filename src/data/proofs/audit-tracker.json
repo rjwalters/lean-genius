@@ -1498,9 +1498,11 @@
       "result": "clean"
     },
     "dirichlets-theorem-oq-03": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-03-30T13:40:31Z",
+      "auditCount": 3,
+      "issues": [
+        "sorry mismatch corrected in meta.json"
+      ],
+      "lastAudited": "2026-04-03T09:06:15Z",
       "result": "issues-fixed"
     },
     "dissection-of-cubes": {
@@ -3265,11 +3267,11 @@
       "result": "clean"
     },
     "erdos-138": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [
-        "PR #6446: sorries 4\u21925"
+        "sorry mismatch corrected in meta.json"
       ],
-      "lastAudited": "2026-03-30T13:40:31Z",
+      "lastAudited": "2026-04-03T09:06:15Z",
       "result": "issues-fixed"
     },
     "erdos-139": {
@@ -3399,10 +3401,12 @@
       "result": "clean"
     },
     "erdos-157": {
-      "auditCount": 1,
-      "issues": [],
-      "lastAudited": "2026-03-24T12:44:33Z",
-      "result": "clean"
+      "auditCount": 2,
+      "issues": [
+        "sorry mismatch corrected in meta.json"
+      ],
+      "lastAudited": "2026-04-03T09:06:15Z",
+      "result": "issues-fixed"
     },
     "erdos-158": {
       "auditCount": 1,
@@ -5008,11 +5012,11 @@
       "result": "clean"
     },
     "erdos-392": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [
-        "PR #6444: sorries 2\u21923"
+        "sorry mismatch corrected in meta.json"
       ],
-      "lastAudited": "2026-03-24T18:20:00Z",
+      "lastAudited": "2026-04-03T09:06:15Z",
       "result": "issues-fixed"
     },
     "erdos-393": {
@@ -6629,11 +6633,11 @@
       "result": "clean"
     },
     "erdos-628": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [
-        "PR #6443: sorries 11\u219212, definitionCount 14\u219212"
+        "sorry mismatch corrected in meta.json"
       ],
-      "lastAudited": "2026-03-24T18:10:00Z",
+      "lastAudited": "2026-04-03T09:06:15Z",
       "result": "issues-fixed"
     },
     "erdos-629": {
@@ -10927,9 +10931,12 @@
     },
     "yang-mills": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 6,
-      "lastAudited": "2026-04-03T03:08:27Z",
-      "result": "issues-fixed"
+      "auditCount": 7,
+      "lastAudited": "2026-04-03T09:06:15Z",
+      "result": "issues-fixed",
+      "issues": [
+        "sorry mismatch corrected in meta.json"
+      ]
     },
     "yang-mills-2d": {
       "auditCount": 3,

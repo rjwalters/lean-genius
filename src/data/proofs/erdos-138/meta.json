@@ -2,9 +2,9 @@
   "id": "erdos-138",
   "title": "Van der Waerden Numbers Growth Rate",
   "slug": "erdos-138",
-  "description": "Erdős Problem #138 asks whether W(k)^{1/k} → ∞, where W(k) is the van der Waerden number - the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression. This remains OPEN with a $500 prize.",
+  "description": "Erd\u0151s Problem #138 asks whether W(k)^{1/k} \u2192 \u221e, where W(k) is the van der Waerden number - the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression. This remains OPEN with a $500 prize.",
   "meta": {
-    "author": "Erdős and Hajnal",
+    "author": "Erd\u0151s and Hajnal",
     "sourceUrl": "https://erdosproblems.com/138",
     "date": "1980",
     "status": "axiomatized",
@@ -32,12 +32,12 @@
     "originalContributions": [
       "Formalization of van der Waerden numbers via GuaranteeSet and sInf",
       "Axiomatized Berlekamp, Gowers, and Kozik-Shabanov bounds",
-      "Filter.Tendsto formulation of Erdős's growth rate conjecture",
+      "Filter.Tendsto formulation of Erd\u0151s's growth rate conjecture",
       "Hierarchy of related growth rate conjectures (quotient, difference, exponential)",
       "Proof schema: main conjecture implies ExponentialDiverges"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 5,
     "erdosNumber": 138,
     "erdosUrl": "https://erdosproblems.com/138",
     "erdosProblemStatus": "open",
@@ -48,15 +48,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Van der Waerden proved his theorem in 1927, answering a conjecture of Baudet. The original proof gave Ackermann-type bounds on W(k). Berlekamp (1968) gave the first strong lower bounds using finite field constructions: coloring integers by discrete logarithm mod p avoids long APs. Shelah (1988) obtained the first primitive recursive upper bound, and Gowers (2001) dramatically improved it to tower-of-height-5 using his uniformity norms, winning a Fields Medal partly for this work. Kozik and Shabanov (2016) established the current best general lower bound W(k) ≫ 2^k via the Lovász Local Lemma. Erdős posed this problem in 1980 with a $500 prize, asking whether W(k) grows faster than any exponential — the vast gap between known bounds remains one of the central open problems in Ramsey theory.",
-    "problemStatement": "Does W(k)^{1/k} → ∞ as k → ∞? Equivalently, do the van der Waerden numbers grow faster than any exponential c^k?",
-    "text": "Erdős Problem #138 asks whether W(k)^{1/k} → ∞, where W(k) is the van der Waerden number - the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression. This remains OPEN with a $500 prize.",
-    "proofStrategy": "The formalization defines van der Waerden numbers using Mathlib's Finset infrastructure. Known bounds are axiomatized: Berlekamp's lower bound W(p+1) ≥ p·2^p for primes p, Gowers' tower-type upper bound from his Szemerédi proof, and the Kozik-Shabanov general lower bound W(k) ≫ 2^k. The main conjecture is stated using Filter.Tendsto. Related questions from Erdős (1980-1981) about W(k+1)/W(k), W(k+1)-W(k), and W(k)/2^k are also formalized.",
+    "historicalContext": "Van der Waerden proved his theorem in 1927, answering a conjecture of Baudet. The original proof gave Ackermann-type bounds on W(k). Berlekamp (1968) gave the first strong lower bounds using finite field constructions: coloring integers by discrete logarithm mod p avoids long APs. Shelah (1988) obtained the first primitive recursive upper bound, and Gowers (2001) dramatically improved it to tower-of-height-5 using his uniformity norms, winning a Fields Medal partly for this work. Kozik and Shabanov (2016) established the current best general lower bound W(k) \u226b 2^k via the Lov\u00e1sz Local Lemma. Erd\u0151s posed this problem in 1980 with a $500 prize, asking whether W(k) grows faster than any exponential \u2014 the vast gap between known bounds remains one of the central open problems in Ramsey theory.",
+    "problemStatement": "Does W(k)^{1/k} \u2192 \u221e as k \u2192 \u221e? Equivalently, do the van der Waerden numbers grow faster than any exponential c^k?",
+    "text": "Erd\u0151s Problem #138 asks whether W(k)^{1/k} \u2192 \u221e, where W(k) is the van der Waerden number - the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression. This remains OPEN with a $500 prize.",
+    "proofStrategy": "The formalization defines van der Waerden numbers using Mathlib's Finset infrastructure. Known bounds are axiomatized: Berlekamp's lower bound W(p+1) \u2265 p\u00b72^p for primes p, Gowers' tower-type upper bound from his Szemer\u00e9di proof, and the Kozik-Shabanov general lower bound W(k) \u226b 2^k. The main conjecture is stated using Filter.Tendsto. Related questions from Erd\u0151s (1980-1981) about W(k+1)/W(k), W(k+1)-W(k), and W(k)/2^k are also formalized.",
     "keyInsights": [
       "The gap between exponential lower bounds and tower-type upper bounds remains vast",
       "Berlekamp's 1968 construction using finite field techniques gives strong lower bounds at prime values",
-      "Gowers' 2001 analytic proof of Szemerédi's theorem yields the current best upper bound",
-      "The main conjecture W(k)^{1/k} → ∞ would imply W(k)/2^k → ∞ but is strictly stronger",
+      "Gowers' 2001 analytic proof of Szemer\u00e9di's theorem yields the current best upper bound",
+      "The main conjecture W(k)^{1/k} \u2192 \u221e would imply W(k)/2^k \u2192 \u221e but is strictly stronger",
       "The formalization uses Filter.Tendsto to express divergence, which is the standard Mathlib idiom and enables compositional limit arguments"
     ],
     "prerequisites": [
@@ -95,7 +95,7 @@
       "title": "The Main Conjecture",
       "startLine": 109,
       "endLine": 119,
-      "summary": "Erdős Problem #138: Does W(k)^{1/k} → ∞?",
+      "summary": "Erd\u0151s Problem #138: Does W(k)^{1/k} \u2192 \u221e?",
       "mathContext": "$\\lim_{k \\to \\infty} W(k)^{1/k} = \\infty$ via `Filter.Tendsto atTop atTop`"
     },
     {
@@ -103,18 +103,18 @@
       "title": "Related Questions and Implications",
       "startLine": 120,
       "endLine": 176,
-      "summary": "Additional questions from Erdős (1980-1981) about growth rates, plus the implication chain: main conjecture → ExponentialDiverges",
+      "summary": "Additional questions from Erd\u0151s (1980-1981) about growth rates, plus the implication chain: main conjecture \u2192 ExponentialDiverges",
       "mathContext": "$W(k)^{1/k} \\to \\infty \\implies W(k)/2^k \\to \\infty \\implies W(k+1)/W(k) \\to \\infty$"
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the structure of Erdős Problem #138, an OPEN problem with $500 prize. The van der Waerden numbers W(k) measure the threshold for guaranteed monochromatic arithmetic progressions. Known bounds leave a vast gap between W(k) ≫ 2^k and tower-type upper bounds. The main conjecture that W(k)^{1/k} → ∞ remains unresolved.",
-    "implications": "A proof would establish that van der Waerden numbers grow faster than any exponential, providing fundamental insight into Ramsey-theoretic thresholds. A disproof would show W(k) ≤ c^k for some c, constraining the growth rate.",
+    "summary": "This formalization captures the structure of Erd\u0151s Problem #138, an OPEN problem with $500 prize. The van der Waerden numbers W(k) measure the threshold for guaranteed monochromatic arithmetic progressions. Known bounds leave a vast gap between W(k) \u226b 2^k and tower-type upper bounds. The main conjecture that W(k)^{1/k} \u2192 \u221e remains unresolved.",
+    "implications": "A proof would establish that van der Waerden numbers grow faster than any exponential, providing fundamental insight into Ramsey-theoretic thresholds. A disproof would show W(k) \u2264 c^k for some c, constraining the growth rate.",
     "openQuestions": [
-      "Does W(k)^{1/k} → ∞? (Main conjecture, $500 prize)",
-      "Does W(k+1)/W(k) → ∞?",
-      "Does W(k+1) - W(k) → ∞?",
-      "Does W(k)/2^k → ∞?",
+      "Does W(k)^{1/k} \u2192 \u221e? (Main conjecture, $500 prize)",
+      "Does W(k+1)/W(k) \u2192 \u221e?",
+      "Does W(k+1) - W(k) \u2192 \u221e?",
+      "Does W(k)/2^k \u2192 \u221e?",
       "Can the tower bound be reduced to a simpler function?"
     ]
   },
@@ -146,11 +146,11 @@
       "title": "A construction for partitions which avoid long arithmetic progressions",
       "year": "1968",
       "venue": "Canadian Mathematical Bulletin",
-      "note": "Finite field construction giving W(p+1) ≥ p·2^p for primes p"
+      "note": "Finite field construction giving W(p+1) \u2265 p\u00b72^p for primes p"
     },
     {
       "authors": "W. Timothy Gowers",
-      "title": "A new proof of Szemerédi's theorem",
+      "title": "A new proof of Szemer\u00e9di's theorem",
       "year": "2001",
       "venue": "Geometric and Functional Analysis",
       "note": "Analytic proof yielding tower-of-height-5 upper bound"
@@ -160,24 +160,24 @@
       "title": "Improved algorithms for colorings of simple hypergraphs and applications",
       "year": "2016",
       "venue": "Journal of Combinatorial Theory, Series B",
-      "note": "Best general lower bound W(k) ≫ 2^k via Lovász Local Lemma"
+      "note": "Best general lower bound W(k) \u226b 2^k via Lov\u00e1sz Local Lemma"
     }
   ],
   "crossReferences": [
     {
       "targetId": "erdos-176",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
+      "description": "Related Erd\u0151s problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
     },
     {
       "targetId": "erdos-645",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
+      "description": "Related Erd\u0151s problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
     },
     {
       "targetId": "erdos-966",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
+      "description": "Related Erd\u0151s problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
     }
   ]
 }
