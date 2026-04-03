@@ -31,28 +31,31 @@
     ]
   },
   "overview": {
-    "historicalContext": "The infinitude of primes ≡ 1 (mod 4) is more subtle than the ≡ 3 case. The standard elementary argument uses the fact that if p | k² + 1, then -1 is a square mod p, hence p ≡ 1 (mod 4) by Euler's criterion. This was known to Euler and uses the theory of quadratic residues, in contrast to the purely congruential argument for p ≡ 3 (mod 4).",
-    "problemStatement": "Prove that for every n : ℕ, there exists a prime p > n with p ≡ 1 (mod 4), using N = (2·(n+1)!)² + 1 and Euler's criterion for quadratic residues.",
-    "text": "The key lemma prime_dvd_sq_add_one_mod_four: if odd prime p divides k² + 1, then p ≡ 1 (mod 4). Proof: k² ≡ -1 (mod p) means -1 is a square in ZMod p, which Mathlib's mod_four_ne_three_of_dvd_isSquare_neg_one converts to p ≢ 3 (mod 4); since p is an odd prime, p ≡ 1 (mod 4). For the main theorem: N = (2·(n+1)!)² + 1 is odd (even² + 1) and > 1, so has an odd prime factor p. p cannot equal 2 (N is odd). By the key lemma p ≡ 1 (mod 4). If p ≤ n then p | (n+1)!, so p | N - (2·(n+1)!)² = 1, contradicting primality.",
-    "proofStrategy": "prime_dvd_sq_add_one_mod_four: construct IsSquare (-1 : ZMod p) using k as witness from k² + 1 ≡ 0, then apply Mathlib's lemma. Main: contradiction for p ≤ n via Nat.dvd_factorial + Nat.Prime.not_dvd_one. Set-infinite formulation via Set.infinite_iff_exists_gt.",
+    "historicalContext": "The infinitude of primes $\\equiv 1 \\pmod{4}$ was known to Euler in the 18th century and represents a significant step beyond the elementary infinitude of primes. Unlike the $\\equiv 3$ case — where a simple product-mod-4 argument suffices — the $\\equiv 1$ case requires Euler's criterion from the theory of quadratic residues: $-1$ is a quadratic residue mod $p$ if and only if $p \\equiv 1 \\pmod{4}$. This criterion appears in Euler's work on quadratic forms circa 1750 and is also the foundation for Fermat's theorem on sums of two squares (primes $\\equiv 1 \\pmod 4$ are exactly the primes expressible as $a^2 + b^2$). The full generalization to all arithmetic progressions $a \\pmod{m}$ with $\\gcd(a,m) = 1$ was achieved by Dirichlet in 1837 using L-functions — the first deployment of analytic methods in number theory. The present elementary proof establishes the special case $a=1, m=4$ without any analysis.",
+    "problemStatement": "Prove that for every $n : \\mathbb{N}$, there exists a prime $p > n$ with $p \\equiv 1 \\pmod{4}$. Equivalently, the set $\\{p \\in \\mathbb{N} : p \\text{ prime},\\ p \\equiv 1 \\pmod{4}\\}$ is infinite. The proof uses the specific number $N = (2 \\cdot (n+1)!)^2 + 1$ and Euler's criterion for quadratic residues.",
+    "text": "The key lemma `prime_dvd_sq_add_one_mod_four`: if an odd prime $p$ divides $k^2 + 1$, then $p \\equiv 1 \\pmod 4$. Proof: $k^2 \\equiv -1 \\pmod{p}$ means $-1$ is a square in $\\mathbb{Z}/p\\mathbb{Z}$, which Mathlib's `mod_four_ne_three_of_dvd_isSquare_neg_one` converts to $p \\not\\equiv 3 \\pmod{4}$; since $p$ is an odd prime, $p \\equiv 1 \\pmod{4}$. For the main theorem: $N = (2 \\cdot (n+1)!)^2 + 1$ is odd (even$^2$ + 1) and $> 1$, so has an odd prime factor $p$. $p \\neq 2$ since $N$ is odd. By the key lemma $p \\equiv 1 \\pmod{4}$. If $p \\leq n$ then $p \\mid (n+1)!$, so $p \\mid N - (2(n+1)!)^2 = 1$, contradicting primality.",
+    "proofStrategy": "`prime_dvd_sq_add_one_mod_four`: construct `IsSquare (-1 : ZMod p)` using $k$ as witness from $k^2 + 1 \\equiv 0$, then apply Mathlib's `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one`. Main theorem: contradiction for $p \\leq n$ via `Nat.dvd_factorial` + `Nat.Prime.not_dvd_one`. Set-theoretic formulation via `Set.infinite_iff_exists_gt`.",
     "keyInsights": [
-      "N = (2·(n+1)!)² + 1 is the p ≡ 1 analogue of 4·(n+1)!-1 used for p ≡ 3",
-      "-1 is a square mod p iff p ≡ 1 (mod 4): Euler's criterion is the key bridge",
-      "The argument requires quadratic residues; the p ≡ 3 case only needed products mod 4",
-      "Compare: for p ≡ 3, multiply-mod-4 suffices; for p ≡ 1, we need -1 square mod p"
+      "$N = (2 \\cdot (n+1)!)^2 + 1$ is the $p \\equiv 1$ analogue of $4 \\cdot (n+1)! - 1$ used for $p \\equiv 3$: being a perfect square plus 1 forces all odd prime factors to satisfy $p \\equiv 1 \\pmod 4$.",
+      "Euler's criterion is the essential bridge: $-1$ is a square mod $p$ if and only if $p \\equiv 1 \\pmod{4}$, which distinguishes this argument from the purely congruential $p \\equiv 3$ proof.",
+      "The proof is a Euclidean argument in disguise: the factorial construction guarantees no prime factor $\\leq n$ can divide $N$ without also dividing 1, echoing Euclid's classical proof of infinitude of primes.",
+      "The $\\equiv 1$ and $\\equiv 3$ cases together establish infinitude for all non-trivial residue classes mod 4 by elementary means, illustrating how Dirichlet's theorem reduces to two distinct elementary arguments at level $m = 4$.",
+      "Primes $\\equiv 1 \\pmod 4$ are exactly the primes that split in the Gaussian integers $\\mathbb{Z}[i]$, i.e., primes expressible as $a^2 + b^2$. The quadratic residue condition $-1 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2}$ is exactly the splitting condition in the extension $\\mathbb{Q}(i)/\\mathbb{Q}$."
     ],
     "prerequisites": [
-      "Euler's criterion: -1 is a square mod p iff p ≡ 1 (mod 4)",
-      "Mathlib: Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one",
-      "ZMod arithmetic: ZMod.natCast_zmod_eq_zero_iff_dvd"
+      "Euler's criterion: $-1$ is a square mod $p$ iff $p \\equiv 1 \\pmod{4}$ (for odd primes $p$)",
+      "Mathlib: `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` from `Mathlib.NumberTheory.SumTwoSquares`",
+      "ZMod arithmetic: `ZMod.natCast_zmod_eq_zero_iff_dvd`, `Fact (Nat.Prime p)` typeclass",
+      "Factorial divisibility: `Nat.dvd_factorial`"
     ]
   },
   "conclusion": {
-    "summary": "Infinitely many primes ≡ 1 (mod 4) via N = (2·(n+1)!)² + 1 and Euler's criterion. Uses Mathlib's isSquare_neg_one lemma. 5 theorems, 0 axioms, 177 lines.",
-    "implications": "The contrast between the proofs for p ≡ 1 and p ≡ 3 illustrates the increasing complexity of Euclid-style arguments as one descends into quadratic residue theory. Together they formalize infinitude for all non-trivial residue classes mod 4.",
+    "summary": "Proves infinitely many primes $\\equiv 1 \\pmod{4}$ via $N = (2 \\cdot (n+1)!)^2 + 1$ and Euler's quadratic residue criterion. The formalization uses Mathlib's `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` and delivers 5 theorems, 0 axioms, 177 lines — a complete machine-verified proof of a result that historically required Euler's theory of quadratic forms.",
+    "implications": "The contrast between this proof and the companion $p \\equiv 3 \\pmod 4$ proof (which uses only product-mod-4 arithmetic) illustrates how the arithmetic complexity of Euclid-style arguments scales with the residue class. Together they formalize infinitude for all non-trivial residue classes mod 4 by elementary means. The quadratic residue machinery here is the same ingredient underlying Fermat's two-square theorem and the splitting of primes in $\\mathbb{Z}[i]$, making this proof a gateway to algebraic number theory.",
     "openQuestions": [
-      "Prove Fermat's theorem on sums of two squares: p ≡ 1 (mod 4) iff p = a² + b² for some a,b",
-      "Generalize Dirichlet's theorem to all arithmetic progressions with formal Dirichlet series proof"
+      "Can Fermat's theorem on sums of two squares be formalized using similar Mathlib infrastructure: $p \\equiv 1 \\pmod 4 \\iff p = a^2 + b^2$? (Mathlib.NumberTheory.SumTwoSquares has the pieces.)",
+      "Can Dirichlet's theorem for all arithmetic progressions be formalized in Lean 4 with a complete L-function proof, or only via elementary special cases?",
+      "Is there a Lean 4 proof that primes $\\equiv 1 \\pmod 4$ have density $1/2$ among all primes (Dirichlet density / Chebotarev density theorem)?"
     ]
   },
   "leanFile": {
@@ -66,8 +69,66 @@
     {
       "targetId": "infinitude-primes-4k3",
       "relationship": "related",
-      "description": "Companion proof for primes ≡ 3 (mod 4), using a simpler elementary argument without quadratic residues"
+      "description": "Companion proof for primes ≡ 3 (mod 4), using a simpler elementary argument without quadratic residues — together these two proofs cover all non-trivial residue classes mod 4"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's theorem characterizes primes ≡ 1 (mod 4) as exactly those expressible as a² + b²; the same Euler criterion used here is the key ingredient"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity generalizes Euler's criterion for -1 to characterize all quadratic residues; the -1 case used here is the simplest instance"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem (1837) generalizes this to all arithmetic progressions a (mod m) with gcd(a,m)=1; this proof is an elementary special case for a=1, m=4"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "section-imports",
+      "title": "Imports and Mathematical Background",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports Mathlib modules for prime number theory (Nat.Prime.Basic), factorials, ZMod arithmetic, and critically Mathlib.NumberTheory.SumTwoSquares which contains Euler's criterion for -1 being a quadratic residue. The module docstring explains the full proof strategy."
+    },
+    {
+      "id": "section-key-lemma",
+      "title": "Key Lemma: Odd Primes Dividing k² + 1 Are ≡ 1 (mod 4)",
+      "startLine": 44,
+      "endLine": 77,
+      "summary": "The mathematical core: prime_dvd_sq_add_one_mod_four proves that if an odd prime p divides k² + 1, then p ≡ 1 (mod 4). Uses ZMod to construct IsSquare(-1 : ZMod p) from the divisibility hypothesis, then applies Mathlib's Euler criterion lemma to conclude p ≢ 3 (mod 4), and finishes by casework on p % 4 ∈ {1, 3}."
+    },
+    {
+      "id": "section-helper-lemma",
+      "title": "Helper: Odd Numbers > 1 Have Odd Prime Factors",
+      "startLine": 79,
+      "endLine": 88,
+      "summary": "exists_odd_prime_factor: every odd number > 1 has an odd prime factor. Uses Nat.exists_prime_and_dvd for existence, then shows the factor cannot be 2 (since 2 | n would contradict n being odd)."
+    },
+    {
+      "id": "section-main-theorem",
+      "title": "Main Theorem: Infinitely Many Primes ≡ 1 (mod 4)",
+      "startLine": 89,
+      "endLine": 139,
+      "summary": "infinitely_many_primes_1_mod_4: for every n, there exists a prime p > n with p ≡ 1 (mod 4). Constructs N = (2·(n+1)!)² + 1, shows N is odd and > 1 (so has an odd prime factor p), applies the key lemma to get p ≡ 1 (mod 4), and derives p > n by contradiction (p ≤ n forces p | 1 via factorial divisibility)."
+    },
+    {
+      "id": "section-corollaries",
+      "title": "Equivalent Formulations: Set Infinite and No-Largest",
+      "startLine": 141,
+      "endLine": 154,
+      "summary": "Two immediate corollaries: primes_1_mod_4_infinite states the set of such primes is infinite (via Set.infinite_iff_exists_gt); no_largest_prime_1_mod_4 states there is no largest prime ≡ 1 (mod 4). Both follow directly from the main theorem."
+    },
+    {
+      "id": "section-examples",
+      "title": "Concrete Verified Examples",
+      "startLine": 156,
+      "endLine": 177,
+      "summary": "Proves by decide that 5, 13, 17, 29, 37 are all prime and ≡ 1 (mod 4). These are the first five elements of OEIS A002144 (primes ≡ 1 mod 4), all expressible as sums of two squares: 5=1²+2², 13=2²+3², 17=1²+4², 29=2²+5², 37=1²+6²."
+    }
+  ]
 }
