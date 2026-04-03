@@ -19,7 +19,7 @@
       "research"
     ],
     "badge": "original",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -42,11 +42,11 @@
       "Newton's inequality for n=3 k=2: (xy+xz+yz)² ≥ 3xyz(x+y+z)",
       "First Maclaurin inequality: ē₁² ≥ ē₂",
       "AM-GM connection: (Σxᵢ/n)² ≥ (Σᵢ<ⱼ xᵢxⱼ)/C(n,2)",
-      "Statement of general Newton inequality with inductive proof structure"
+      "Newton's inequality in mean form (ē_k² ≥ ē_{k-1}·ē_{k+1}) fully proved, derived from the binomial form"
     ],
     "axiomCount": 0,
     "lineCount": 336,
-    "assumptions": "None. 0 axiom declarations. 2 sorries in the general inductive case (newton_inequality_binomial, newton_inequality_means).",
+    "assumptions": "0 axiom declarations. 1 sorry: newton_inequality_binomial (the general inductive Cauchy-Schwarz step). newton_inequality_means is now fully proved (derived from newton_inequality_binomial).",
     "prerequisites": [
       "Elementary symmetric polynomials",
       "Binomial coefficients and absorption identities",
