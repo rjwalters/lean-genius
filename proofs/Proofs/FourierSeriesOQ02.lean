@@ -358,24 +358,49 @@ theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
 PART VI: OPTIMALITY
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Optimality**: For 0 < α < 1, there exists an α-Hölder function whose
-    coefficients decay at exactly the rate O(1/|n|^α).
+/-- **Optimality (Sequential)**: For 0 < α < 1, there exists an α-Hölder function and
+    a strictly increasing sequence of frequencies n_k → ∞ with |ĉ_{n_k}| ≥ c/n_k^α.
 
-    Example: Weierstrass function f(x) = Σ_{k≥0} b^{-kα} e^{ib^k x}
-    has |ĉ_{b^k}| = b^{-kα} = 1/|n|^α at frequencies n = b^k. -/
-axiom holder_decay_is_optimal :
+    Witness: Weierstrass-type f(x) = Σ_{k≥0} 2^{-kα} fourier(2^k)(x).
+    - Converges uniformly (Σ 2^{-kα} < ∞, geometric series since 2^α > 1)
+    - ĉ_{2^k}(f) = 2^{-kα} = (2^k)^{-α}: exact lower bound along n_k = 2^k → ∞
+    - f is α-Hölder: split sum at k₀ ~ log₂(1/dist(x,y)) gives O(dist^α) bound
+
+    NOTE: The original incorrect axiom claimed "∀ᶠ n in cofinite" which is FALSE.
+    Weierstrass-type witnesses have ĉ_n = 0 for non-lacunary n, so most coefficients
+    are 0 and the cofinite condition fails. The correct statement is sequential. -/
+axiom holder_decay_is_optimal_seq :
     ∀ (α : ℝ), 0 < α → α < 1 →
     ∃ (C : ℝ≥0) (f : AddCircle T → ℂ), IsHolderOnCircle C α.toNNReal f ∧
       ∃ (c : ℝ), 0 < c ∧
-        ∀ᶠ n in cofinite, c / |↑n| ^ α ≤ ‖fourierCoeff f n‖
+      ∃ (ns : ℕ → ℤ), StrictMono (fun k => (ns k).natAbs) ∧
+        ∀ k, c / |(ns k : ℝ)| ^ α ≤ ‖fourierCoeff f (ns k)‖
 
-/-- **Partial Converse**: ‖ĉ_n‖ = O(1/|n|^β) with β > α + 1/2 implies
-    f is α-Hölder. The gap 1/2 comes from the Sobolev embedding on the circle. -/
-axiom decay_implies_regularity (β α : ℝ) (hβα : α + 1/2 < β) (hα : 0 < α)
-    (f : AddCircle T → ℂ) (C_decay : ℝ)
-    (hdecay : ∀ n : ℤ, n ≠ 0 →
-      ‖fourierCoeff f n‖ ≤ C_decay / |↑n| ^ β) :
-    ∃ (C_holder : ℝ≥0), IsHolderOnCircle C_holder α.toNNReal f
+/-- **Partial Converse (Corrected: β > α+1)**: If ‖ĉ_n‖ = O(|n|^{-β}) with β > α + 1,
+    then f is α-Hölder.
+
+    Proof outline:
+    1. β > 1 → Σ|ĉ_n| < ∞ → Fourier series converges uniformly to f
+       (via has_pointwise_sum_fourier_series_of_summable)
+    2. Individual mode bound: ‖fourier n x - fourier n y‖ ≤ 2(π|n|/T)^α · dist(x,y)^α
+       (from 2|sin θ| ≤ 2|θ|^α for all θ ∈ ℝ, α ∈ (0,1]; θ = πn·dist(x,y)/T)
+    3. Sum converges: Σ|ĉ_n|·|n|^α ≤ C_decay·Σ_{n≠0}|n|^{α-β} < ∞ since β-α > 1
+
+    NOTE: The original axiom had "β > α+1/2" which is INCORRECT. Counterexample:
+    f(x) = Σ_{n≥1} n^{-β} e^{inx} with β ∈ (1/2,1) satisfies |ĉ_n| ≤ C/|n|^β and
+    β > α+1/2 for any α < β-1/2 < 1/2, but f is NOT continuous (Σ n^{-β} diverges),
+    hence not α-Hölder. The correct condition is β > α+1 (equivalently β-α > 1). -/
+theorem decay_implies_regularity (β α : ℝ) (hβα : α + 1 < β) (hα : 0 < α) (hα1 : α ≤ 1)
+    (f : C(AddCircle T, ℂ)) (C_decay : ℝ≥0)
+    (hdecay : ∀ n : ℤ, n ≠ 0 → ‖fourierCoeff (⇑f) n‖ ≤ (C_decay : ℝ) / |↑n| ^ β) :
+    ∃ (C_holder : ℝ≥0), IsHolderOnCircle C_holder α.toNNReal ⇑f := by
+  -- Proof steps (full formalization requires Lipschitz bounds for Fourier modes):
+  -- Step 1: Summability: Σ|ĉ_n| ≤ |ĉ_0| + 2·C_decay·Σ_{n≥1} n^{-β} < ∞ (β > 1)
+  -- Step 2: Fourier inversion: f(x)-f(y) = Σ_n ĉ_n(fourier n x - fourier n y)
+  -- Step 3: ‖fourier n x - fourier n y‖ ≤ 2(π/T)^α|n|^α·dist(x,y)^α
+  -- Step 4: ‖f(x)-f(y)‖ ≤ 2(π/T)^α·dist(x,y)^α·Σ|ĉ_n||n|^α ≤ C_H·dist(x,y)^α
+  -- Step 5: C_H = 2(π/T)^α·C_decay·Σ_{n≠0}|n|^{α-β} (convergent since β-α > 1)
+  sorry
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -453,8 +478,8 @@ PART IX: VERIFICATION
 #check @fourierCoeff_holder_decay      -- Main theorem
 #check @fourierCoeff_lipschitz_decay   -- Lipschitz case
 #check @riemannLebesgue_of_holder      -- Riemann-Lebesgue for Hölder
-#check @holder_decay_is_optimal        -- Optimality
-#check @decay_implies_regularity       -- Partial converse
+#check @holder_decay_is_optimal_seq    -- Optimality (sequential, corrected)
+#check @decay_implies_regularity       -- Partial converse (corrected: β > α+1)
 #check @fourier_norm_one               -- ‖e_n(x)‖ = 1
 #check @lipschitz_is_holder_one        -- Lipschitz ⊂ Hölder(1)
 #check @holder_continuous              -- Hölder ⟹ continuous

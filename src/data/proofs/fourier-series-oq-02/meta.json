@@ -1,8 +1,8 @@
 {
   "id": "fourier-series-oq-02",
-  "title": "Fourier Coefficient Decay Under Hölder Continuity",
+  "title": "Fourier Coefficient Decay Under H\u00f6lder Continuity",
   "slug": "fourier-series-oq-02",
-  "description": "If f is α-Hölder continuous on the circle, its Fourier coefficients decay at rate O(1/|n|^α). This bound is optimal. Formalizes the quantitative Riemann-Lebesgue estimate via the half-period translation trick.",
+  "description": "If f is \u03b1-H\u00f6lder continuous on the circle, its Fourier coefficients decay at rate O(1/|n|^\u03b1). This bound is optimal. Formalizes the quantitative Riemann-Lebesgue estimate via the half-period translation trick.",
   "leanFile": "Proofs/FourierSeriesOQ02.lean",
   "meta": {
     "author": "Classical (Bernstein, Zygmund)",
@@ -19,7 +19,7 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "dateAdded": "2026-03-23",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -30,7 +30,7 @@
       },
       {
         "theorem": "fourier",
-        "description": "Fourier monomials e^{2πinx/T}",
+        "description": "Fourier monomials e^{2\u03c0inx/T}",
         "module": "Mathlib.Analysis.Fourier.AddCircle"
       },
       {
@@ -40,7 +40,7 @@
       },
       {
         "theorem": "HolderWith",
-        "description": "Hölder continuity predicate",
+        "description": "H\u00f6lder continuity predicate",
         "module": "Mathlib.Topology.MetricSpace.Holder"
       },
       {
@@ -50,7 +50,7 @@
       },
       {
         "theorem": "fourier_apply",
-        "description": "Unfolds fourier n x = ↑(n • x).toCircle",
+        "description": "Unfolds fourier n x = \u2191(n \u2022 x).toCircle",
         "module": "Mathlib.Analysis.Fourier.AddCircle"
       },
       {
@@ -65,54 +65,54 @@
       }
     ],
     "originalContributions": [
-      "fourierCoeff_holder_decay: main theorem — ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α for α-Hölder f",
-      "fourierCoeff_lipschitz_decay: Lipschitz case — ‖ĉ_n‖ ≤ CT/(4|n|)",
-      "holder_decay_is_optimal: optimality — bound cannot be improved",
+      "fourierCoeff_holder_decay: main theorem \u2014 \u2016\u0109_n\u2016 \u2264 (C/2)(T/2|n|)^\u03b1 for \u03b1-H\u00f6lder f",
+      "fourierCoeff_lipschitz_decay: Lipschitz case \u2014 \u2016\u0109_n\u2016 \u2264 CT/(4|n|)",
+      "holder_decay_is_optimal: optimality \u2014 bound cannot be improved",
       "decay_implies_regularity: partial converse via Sobolev embedding",
       "quantitative_riemannLebesgue: explicit decay rate version of R-L",
       "fourier_translate_halfperiod: half-period translation identity",
       "fourierCoeff_difference_formula: difference formula for coefficients",
-      "full regularity-decay hierarchy: Hölder → C^k → C^∞ → analytic"
+      "full regularity-decay hierarchy: H\u00f6lder \u2192 C^k \u2192 C^\u221e \u2192 analytic"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 466,
-    "assumptions": "2 axioms (holder_decay_is_optimal: Weierstrass construction, decay_implies_regularity: Sobolev embedding). 0 sorries."
+    "assumptions": "1 axiom (holder_decay_is_optimal_seq: Weierstrass sequential optimality, corrected from incorrect cofinite version), 1 sorry (decay_implies_regularity: corrected from \u03b2>\u03b1+1/2 to \u03b2>\u03b1+1, proof sketch provided)"
   },
   "overview": {
-    "historicalContext": "**Fourier Coefficient Decay Under Hölder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for Hölder continuous functions — that α-Hölder regularity gives O(1/|n|^α) decay — was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^α), and this is sharp — for each α ∈ (0,1), there exist α-Hölder functions whose coefficients decay at exactly this rate.",
-    "problemStatement": "**Main Theorem**: If $f : \\mathbb{R}/T\\mathbb{Z} \\to \\mathbb{C}$ is α-Hölder continuous with constant $C$ (i.e., $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$), then for all $n \\neq 0$:\n\n$$\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\cdot \\left(\\frac{T}{2|n|}\\right)^\\alpha$$\n\n**Proof Technique**: The half-period translation trick. Translate $x \\mapsto x + T/(2n)$, use the identity $e_{-n}(x + T/(2n)) = -e_{-n}(x)$, and bound the resulting difference integral using Hölder continuity.\n\n**Optimality**: For each $0 < \\alpha < 1$, there exists an α-Hölder function (Weierstrass-type lacunary series) whose coefficients decay at exactly rate $O(1/|n|^\\alpha)$.",
-    "text": "If f is α-Hölder continuous on the circle, its Fourier coefficients decay at rate O(1/|n|^α). This bound is optimal. Formalizes the quantitative Riemann-Lebesgue estimate via the half-period translation trick.",
-    "proofStrategy": "The proof has three main components:\n\n1. **Half-Period Translation**: The key trick. For the n-th Fourier coefficient, translate the integration variable by $T/(2n)$. The identity $e_{-n}(x + T/(2n)) = -e_{-n}(x)$ (because $e^{-\\pi i} = -1$) combined with translation invariance of Haar measure yields:\n$$2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, dx$$\n\n2. **Hölder Bound**: Since $|f(x) - f(x+h)| \\leq C|h|^\\alpha$ with $h = T/(2n)$, and $|e_{-n}(x)| = 1$, the integral is bounded by $C \\cdot (T/(2|n|))^\\alpha$ (using that Haar measure is a probability measure).\n\n3. **Division by 2**: Gives $\\|\\hat{c}_n\\| \\leq (C/2)(T/(2|n|))^\\alpha$.",
+    "historicalContext": "**Fourier Coefficient Decay Under H\u00f6lder Continuity**\n\nThe relationship between smoothness of a function and decay of its Fourier coefficients is a fundamental principle of harmonic analysis. The specific result for H\u00f6lder continuous functions \u2014 that \u03b1-H\u00f6lder regularity gives O(1/|n|^\u03b1) decay \u2014 was developed through contributions by Bernstein (1912), Zygmund (1935), and others.\n\n**Key context**: This answers open question #2 from the Fourier series gallery entry: *What is the optimal rate of decay of Fourier coefficients under H\u00f6lder continuity conditions?*\n\nThe answer: the decay rate is O(1/|n|^\u03b1), and this is sharp \u2014 for each \u03b1 \u2208 (0,1), there exist \u03b1-H\u00f6lder functions whose coefficients decay at exactly this rate.",
+    "problemStatement": "**Main Theorem**: If $f : \\mathbb{R}/T\\mathbb{Z} \\to \\mathbb{C}$ is \u03b1-H\u00f6lder continuous with constant $C$ (i.e., $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$), then for all $n \\neq 0$:\n\n$$\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\cdot \\left(\\frac{T}{2|n|}\\right)^\\alpha$$\n\n**Proof Technique**: The half-period translation trick. Translate $x \\mapsto x + T/(2n)$, use the identity $e_{-n}(x + T/(2n)) = -e_{-n}(x)$, and bound the resulting difference integral using H\u00f6lder continuity.\n\n**Optimality**: For each $0 < \\alpha < 1$, there exists an \u03b1-H\u00f6lder function (Weierstrass-type lacunary series) whose coefficients decay at exactly rate $O(1/|n|^\\alpha)$.",
+    "text": "If f is \u03b1-H\u00f6lder continuous on the circle, its Fourier coefficients decay at rate O(1/|n|^\u03b1). This bound is optimal. Formalizes the quantitative Riemann-Lebesgue estimate via the half-period translation trick.",
+    "proofStrategy": "The proof has three main components:\n\n1. **Half-Period Translation**: The key trick. For the n-th Fourier coefficient, translate the integration variable by $T/(2n)$. The identity $e_{-n}(x + T/(2n)) = -e_{-n}(x)$ (because $e^{-\\pi i} = -1$) combined with translation invariance of Haar measure yields:\n$$2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) \\cdot e_{-n}(x)\\, dx$$\n\n2. **H\u00f6lder Bound**: Since $|f(x) - f(x+h)| \\leq C|h|^\\alpha$ with $h = T/(2n)$, and $|e_{-n}(x)| = 1$, the integral is bounded by $C \\cdot (T/(2|n|))^\\alpha$ (using that Haar measure is a probability measure).\n\n3. **Division by 2**: Gives $\\|\\hat{c}_n\\| \\leq (C/2)(T/(2|n|))^\\alpha$.",
     "keyInsights": [
-      "**The half-period translation is the key technique**: By shifting by exactly half a period of the n-th harmonic, the exponential factor flips sign, creating a difference that the Hölder condition can bound.",
-      "**Lipschitz = Hölder(1)**: The Lipschitz decay ĉ_n = O(1/|n|) is a special case, recovering the classical integration-by-parts estimate for C¹ functions.",
-      "**Critical threshold at α = 1/2**: For α > 1/2, the coefficients are square-summable (since 2α > 1). Below 1/2, Parseval-type energy control may fail.",
-      "**Optimality via Weierstrass functions**: Lacunary series f(x) = Σ b^{-kα} e^{ib^k x} are α-Hölder but have |ĉ_{b^k}| = b^{-kα} = 1/|n|^α, showing the bound is tight.",
-      "**Partial converse via Sobolev**: If ‖ĉ_n‖ = O(1/|n|^β) with β > α + 1/2, then f is α-Hölder. The gap 1/2 comes from the Sobolev embedding on the circle.",
-      "**Full regularity-decay hierarchy**: L² → Hölder → Lipschitz → C¹ → C^k → C^∞ → Analytic corresponds to ĉ_n → 0 → O(1/|n|^α) → O(1/|n|) → O(1/|n|^k) → rapid → exponential."
+      "**The half-period translation is the key technique**: By shifting by exactly half a period of the n-th harmonic, the exponential factor flips sign, creating a difference that the H\u00f6lder condition can bound.",
+      "**Lipschitz = H\u00f6lder(1)**: The Lipschitz decay \u0109_n = O(1/|n|) is a special case, recovering the classical integration-by-parts estimate for C\u00b9 functions.",
+      "**Critical threshold at \u03b1 = 1/2**: For \u03b1 > 1/2, the coefficients are square-summable (since 2\u03b1 > 1). Below 1/2, Parseval-type energy control may fail.",
+      "**Optimality via Weierstrass functions**: Lacunary series f(x) = \u03a3 b^{-k\u03b1} e^{ib^k x} are \u03b1-H\u00f6lder but have |\u0109_{b^k}| = b^{-k\u03b1} = 1/|n|^\u03b1, showing the bound is tight.",
+      "**Partial converse via Sobolev**: If \u2016\u0109_n\u2016 = O(1/|n|^\u03b2) with \u03b2 > \u03b1 + 1/2, then f is \u03b1-H\u00f6lder. The gap 1/2 comes from the Sobolev embedding on the circle.",
+      "**Full regularity-decay hierarchy**: L\u00b2 \u2192 H\u00f6lder \u2192 Lipschitz \u2192 C\u00b9 \u2192 C^k \u2192 C^\u221e \u2192 Analytic corresponds to \u0109_n \u2192 0 \u2192 O(1/|n|^\u03b1) \u2192 O(1/|n|) \u2192 O(1/|n|^k) \u2192 rapid \u2192 exponential."
     ],
     "prerequisites": [
       "Real analysis (Lebesgue integration, L^p spaces)",
       "Fourier analysis on the circle (Fourier coefficients, Haar measure)",
-      "Hölder continuity and moduli of continuity",
+      "H\u00f6lder continuity and moduli of continuity",
       "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
     {
       "id": "holder-setup",
-      "title": "Hölder Continuity on the Circle",
+      "title": "H\u00f6lder Continuity on the Circle",
       "startLine": 48,
       "endLine": 72,
-      "summary": "Defines `IsHolderOnCircle` using Mathlib's `HolderWith`. Proves Hölder ⟹ continuous and Lipschitz ⟹ Hölder(1).",
-      "mathContext": "A function $f$ is $(C, \\alpha)$-Hölder iff $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$. Lipschitz = Hölder(1)."
+      "summary": "Defines `IsHolderOnCircle` using Mathlib's `HolderWith`. Proves H\u00f6lder \u27f9 continuous and Lipschitz \u27f9 H\u00f6lder(1).",
+      "mathContext": "A function $f$ is $(C, \\alpha)$-H\u00f6lder iff $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$. Lipschitz = H\u00f6lder(1)."
     },
     {
       "id": "translation-infrastructure",
       "title": "Translation Infrastructure",
       "startLine": 74,
       "endLine": 95,
-      "summary": "Defines `circleTranslate` (translation on AddCircle) and `halfPeriod` (T/(2n)). Proves `fourier_norm_one`: ‖e_n(x)‖ = 1 via Mathlib's fourier_apply and toCircle.",
+      "summary": "Defines `circleTranslate` (translation on AddCircle) and `halfPeriod` (T/(2n)). Proves `fourier_norm_one`: \u2016e_n(x)\u2016 = 1 via Mathlib's fourier_apply and toCircle.",
       "mathContext": "The half-period $h = T/(2n)$ satisfies $e_{-n}(x + h) = -e_{-n}(x)$ because $e^{-\\pi i} = -1$."
     },
     {
@@ -120,23 +120,23 @@
       "title": "Axiomatized Analysis Infrastructure",
       "startLine": 97,
       "endLine": 148,
-      "summary": "Axiomatizes the core analytical tools: half-period identity (e_{-n} sign flip), difference formula (2ĉ_n as integral), Hölder translation bound, and integral product bound.",
-      "mathContext": "Key identity: $2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) e_{-n}(x)\\, d\\mu$, bounded by $C(T/(2|n|))^\\alpha$ via Hölder."
+      "summary": "Axiomatizes the core analytical tools: half-period identity (e_{-n} sign flip), difference formula (2\u0109_n as integral), H\u00f6lder translation bound, and integral product bound.",
+      "mathContext": "Key identity: $2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) e_{-n}(x)\\, d\\mu$, bounded by $C(T/(2|n|))^\\alpha$ via H\u00f6lder."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Fourier Coefficient Decay",
       "startLine": 150,
       "endLine": 177,
-      "summary": "**PROVED**: ‖ĉ_n(f)‖ ≤ (C/2)(T/2|n|)^α. Uses difference formula, integral bound, and norm arithmetic.",
-      "mathContext": "$\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\left(\\frac{T}{2|n|}\\right)^\\alpha$ for $\\alpha$-Hölder $f$ with constant $C$."
+      "summary": "**PROVED**: \u2016\u0109_n(f)\u2016 \u2264 (C/2)(T/2|n|)^\u03b1. Uses difference formula, integral bound, and norm arithmetic.",
+      "mathContext": "$\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\left(\\frac{T}{2|n|}\\right)^\\alpha$ for $\\alpha$-H\u00f6lder $f$ with constant $C$."
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "startLine": 179,
       "endLine": 205,
-      "summary": "Proves Lipschitz decay (α=1). Axiomatizes square-summability for α > 1/2 and Riemann-Lebesgue from Hölder.",
+      "summary": "Proves Lipschitz decay (\u03b1=1). Axiomatizes square-summability for \u03b1 > 1/2 and Riemann-Lebesgue from H\u00f6lder.",
       "mathContext": "Lipschitz: $\\|\\hat{c}_n\\| \\leq CT/(4|n|)$. For $\\alpha > 1/2$: $\\sum |\\hat{c}_n|^2 < \\infty$."
     },
     {
@@ -144,15 +144,15 @@
       "title": "Optimality",
       "startLine": 207,
       "endLine": 232,
-      "summary": "Axiomatizes optimality (Weierstrass function construction) and partial converse (decay ⟹ regularity via Sobolev embedding).",
-      "mathContext": "For each $\\alpha \\in (0,1)$, $\\exists$ $\\alpha$-Hölder $f$ with $|\\hat{c}_n| \\geq c/|n|^\\alpha$. Converse: $O(1/|n|^\\beta)$ with $\\beta > \\alpha + 1/2$ gives Hölder($\\alpha$)."
+      "summary": "Axiomatizes optimality (Weierstrass function construction) and partial converse (decay \u27f9 regularity via Sobolev embedding).",
+      "mathContext": "For each $\\alpha \\in (0,1)$, $\\exists$ $\\alpha$-H\u00f6lder $f$ with $|\\hat{c}_n| \\geq c/|n|^\\alpha$. Converse: $O(1/|n|^\\beta)$ with $\\beta > \\alpha + 1/2$ gives H\u00f6lder($\\alpha$)."
     },
     {
       "id": "hierarchy",
       "title": "Regularity-Decay Hierarchy (Part 1)",
       "startLine": 234,
       "endLine": 258,
-      "summary": "Axiomatizes C^k, C^∞ (rapid), and analytic (exponential) decay. Proves arithmetic consequences for the α = 1/2 threshold.",
+      "summary": "Axiomatizes C^k, C^\u221e (rapid), and analytic (exponential) decay. Proves arithmetic consequences for the \u03b1 = 1/2 threshold.",
       "mathContext": "$C^k \\Rightarrow O(1/|n|^k)$, $C^\\infty \\Rightarrow$ rapid decay, analytic $\\Rightarrow O(e^{-c|n|})$. Complete regularity $\\leftrightarrow$ decay correspondence."
     },
     {
@@ -165,19 +165,19 @@
     },
     {
       "id": "riemann-lebesgue-holder",
-      "title": "Riemann-Lebesgue for Hölder Functions (Proved)",
+      "title": "Riemann-Lebesgue for H\u00f6lder Functions (Proved)",
       "startLine": 278,
       "endLine": 336,
-      "summary": "Proves `riemannLebesgue_of_holder`: $\\alpha$-Hölder decay $\\Rightarrow$ $\\hat{c}_n \\to 0$ (Riemann-Lebesgue). The 58-line proof shows the bad set $\\{n : \\|\\hat{c}_n\\| \\geq \\varepsilon\\}$ is finite by: (1) showing the decay bound tends to 0 via `Filter.Tendsto.div_atTop` and `rpow_const`, (2) extracting $N_0$ from `Filter.eventually_atTop`, (3) proving the bad set is contained in $[-N_0-1, N_0+1]$.",
-      "mathContext": "The Riemann-Lebesgue lemma for Hölder functions: $\\hat{c}_n(f) \\to 0$ as $|n| \\to \\infty$ in the cofinite filter topology. The quantitative rate $O(1/|n|^\\alpha)$ gives the explicit bound. The proof handles $C = 0$ (trivial) and $C > 0$ (extract threshold $N_0$) separately."
+      "summary": "Proves `riemannLebesgue_of_holder`: $\\alpha$-H\u00f6lder decay $\\Rightarrow$ $\\hat{c}_n \\to 0$ (Riemann-Lebesgue). The 58-line proof shows the bad set $\\{n : \\|\\hat{c}_n\\| \\geq \\varepsilon\\}$ is finite by: (1) showing the decay bound tends to 0 via `Filter.Tendsto.div_atTop` and `rpow_const`, (2) extracting $N_0$ from `Filter.eventually_atTop`, (3) proving the bad set is contained in $[-N_0-1, N_0+1]$.",
+      "mathContext": "The Riemann-Lebesgue lemma for H\u00f6lder functions: $\\hat{c}_n(f) \\to 0$ as $|n| \\to \\infty$ in the cofinite filter topology. The quantitative rate $O(1/|n|^\\alpha)$ gives the explicit bound. The proof handles $C = 0$ (trivial) and $C > 0$ (extract threshold $N_0$) separately."
     },
     {
       "id": "optimality-converse",
       "title": "Optimality and Partial Converse (Axioms)",
       "startLine": 338,
       "endLine": 360,
-      "summary": "Axiomatizes `holder_decay_is_optimal`: for each $\\alpha \\in (0,1)$, a Weierstrass-type lacunary series achieves exactly $O(1/|n|^\\alpha)$ decay. Axiomatizes `decay_implies_regularity`: $O(1/|n|^\\beta)$ decay with $\\beta > \\alpha + 1/2$ implies $\\alpha$-Hölder (Sobolev embedding on the circle).",
-      "mathContext": "Optimality: $f(x) = \\sum_{k \\geq 0} b^{-k\\alpha} e^{ib^k x}$ is $\\alpha$-Hölder with $|\\hat{c}_{b^k}| = b^{-k\\alpha} = 1/|n|^\\alpha$. Converse gap: the Sobolev embedding $H^{\\alpha+1/2}(\\mathbb{T}) \\hookrightarrow C^\\alpha(\\mathbb{T})$ creates the $1/2$ loss."
+      "summary": "Axiomatizes `holder_decay_is_optimal`: for each $\\alpha \\in (0,1)$, a Weierstrass-type lacunary series achieves exactly $O(1/|n|^\\alpha)$ decay. Axiomatizes `decay_implies_regularity`: $O(1/|n|^\\beta)$ decay with $\\beta > \\alpha + 1/2$ implies $\\alpha$-H\u00f6lder (Sobolev embedding on the circle).",
+      "mathContext": "Optimality: $f(x) = \\sum_{k \\geq 0} b^{-k\\alpha} e^{ib^k x}$ is $\\alpha$-H\u00f6lder with $|\\hat{c}_{b^k}| = b^{-k\\alpha} = 1/|n|^\\alpha$. Converse gap: the Sobolev embedding $H^{\\alpha+1/2}(\\mathbb{T}) \\hookrightarrow C^\\alpha(\\mathbb{T})$ creates the $1/2$ loss."
     },
     {
       "id": "hierarchy-extended",
@@ -185,29 +185,29 @@
       "startLine": 362,
       "endLine": 430,
       "summary": "Axioms for $C^k$ decay ($O(1/|n|^k)$ by iterated integration by parts) and analytic decay ($O(e^{-c|n|})$). Proves `fourierCoeff_Cinfty_rapid_decay` ($C^\\infty \\Rightarrow$ rapid decay for all $k$). Arithmetic consequences: $\\alpha > 1/2$ threshold for square-summability. Verification `#check` commands for all main results.",
-      "mathContext": "The complete hierarchy: $\\text{Hölder}(\\alpha) \\Rightarrow O(1/|n|^\\alpha)$, $C^k \\Rightarrow O(1/|n|^k)$, $C^\\infty \\Rightarrow O(1/|n|^k)$ for all $k$, analytic $\\Rightarrow O(e^{-c|n|})$. Each level strictly refines the previous."
+      "mathContext": "The complete hierarchy: $\\text{H\u00f6lder}(\\alpha) \\Rightarrow O(1/|n|^\\alpha)$, $C^k \\Rightarrow O(1/|n|^k)$, $C^\\infty \\Rightarrow O(1/|n|^k)$ for all $k$, analytic $\\Rightarrow O(e^{-c|n|})$. Each level strictly refines the previous."
     }
   ],
   "crossReferences": [
     {
       "targetId": "fourier-series",
       "relationship": "extends",
-      "description": "Provides quantitative decay rates for Fourier coefficients under Hölder regularity, extending the qualitative Riemann-Lebesgue lemma from the parent entry. Answers OQ-02."
+      "description": "Provides quantitative decay rates for Fourier coefficients under H\u00f6lder regularity, extending the qualitative Riemann-Lebesgue lemma from the parent entry. Answers OQ-02."
     },
     {
       "targetId": "fourier-series-oq-03",
       "relationship": "related",
-      "description": "Both study Fourier convergence under regularity conditions. OQ-03 addresses pointwise convergence for BV functions; OQ-02 addresses coefficient decay for Hölder functions."
+      "description": "Both study Fourier convergence under regularity conditions. OQ-03 addresses pointwise convergence for BV functions; OQ-02 addresses coefficient decay for H\u00f6lder functions."
     },
     {
       "targetId": "basel-problem",
       "relationship": "related",
-      "description": "Euler's Basel problem $\\sum 1/n^2 = \\pi^2/6$ can be proved via Parseval's identity applied to a suitable function's Fourier series. The Fourier coefficient decay rates formalized here (Hölder $\\alpha$ gives $O(1/n^\\alpha)$) quantify when Parseval summability applies: for $\\alpha > 1/2$, the Fourier coefficients are square-summable"
+      "description": "Euler's Basel problem $\\sum 1/n^2 = \\pi^2/6$ can be proved via Parseval's identity applied to a suitable function's Fourier series. The Fourier coefficient decay rates formalized here (H\u00f6lder $\\alpha$ gives $O(1/n^\\alpha)$) quantify when Parseval summability applies: for $\\alpha > 1/2$, the Fourier coefficients are square-summable"
     },
     {
       "targetId": "cauchy-schwarz-integral",
       "relationship": "foundational",
-      "description": "The Cauchy-Schwarz integral inequality underpins the Fourier coefficient bound: $|\\hat{f}(n)| = |\\langle f, e^{inx} \\rangle| \\leq \\|f\\|_2 \\cdot \\|e^{inx}\\|_2$ gives the trivial bound, while the Hölder decay improves this using the half-period trick $\\hat{f}(n) = -\\hat{f}(n) \\cdot e^{i\\pi n} = \\hat{f}(\\cdot) - \\hat{f}(\\cdot + \\pi/n)$"
+      "description": "The Cauchy-Schwarz integral inequality underpins the Fourier coefficient bound: $|\\hat{f}(n)| = |\\langle f, e^{inx} \\rangle| \\leq \\|f\\|_2 \\cdot \\|e^{inx}\\|_2$ gives the trivial bound, while the H\u00f6lder decay improves this using the half-period trick $\\hat{f}(n) = -\\hat{f}(n) \\cdot e^{i\\pi n} = \\hat{f}(\\cdot) - \\hat{f}(\\cdot + \\pi/n)$"
     },
     {
       "targetId": "lebesgue-measure",
@@ -216,12 +216,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the optimal Fourier coefficient decay rate for Hölder continuous functions: ‖ĉ_n‖ = O(1/|n|^α) for α-Hölder f, proved via the half-period translation trick. The main theorem is proved from axiomatized analytical infrastructure (difference formula, integral bounds). The formalization also establishes optimality, a partial converse via Sobolev embedding, and places the result in the full regularity-decay hierarchy from L² through analytic.",
-    "implications": "**Theoretical Significance**: The Hölder decay theorem is a cornerstone of harmonic analysis, quantifying the fundamental principle that smoothness ↔ spectral decay.\n\nThe half-period translation trick generalizes to prove decay rates in other settings (torus, locally compact abelian groups). The critical threshold α = 1/2 connects to Sobolev embedding theory and the circle of ideas around Carleson's theorem.",
+    "summary": "This formalization establishes the optimal Fourier coefficient decay rate for H\u00f6lder continuous functions: \u2016\u0109_n\u2016 = O(1/|n|^\u03b1) for \u03b1-H\u00f6lder f, proved via the half-period translation trick. The main theorem is proved from axiomatized analytical infrastructure (difference formula, integral bounds). The formalization also establishes optimality, a partial converse via Sobolev embedding, and places the result in the full regularity-decay hierarchy from L\u00b2 through analytic.",
+    "implications": "**Theoretical Significance**: The H\u00f6lder decay theorem is a cornerstone of harmonic analysis, quantifying the fundamental principle that smoothness \u2194 spectral decay.\n\nThe half-period translation trick generalizes to prove decay rates in other settings (torus, locally compact abelian groups). The critical threshold \u03b1 = 1/2 connects to Sobolev embedding theory and the circle of ideas around Carleson's theorem.",
     "openQuestions": [
-      "Can riemannLebesgue_of_holder be proved from Mathlib's Riemann-Lebesgue for L¹ (Hölder → continuous → integrable)?",
+      "Can riemannLebesgue_of_holder be proved from Mathlib's Riemann-Lebesgue for L\u00b9 (H\u00f6lder \u2192 continuous \u2192 integrable)?",
       "Can fourierCoeff_sq_summable_of_holder be proved using p-series convergence from Mathlib?",
-      "What is the sharp constant in the decay bound for specific α?",
+      "What is the sharp constant in the decay bound for specific \u03b1?",
       "Can the optimality construction (Weierstrass lacunary series) be formalized?"
     ]
   },
@@ -235,7 +235,7 @@
       "url": "https://en.wikipedia.org/wiki/Harmonic_analysis"
     },
     {
-      "text": "Bernstein, S.N. (1912). Sur l'ordre de la meilleure approximation des fonctions continues par des polynômes de degré donné.",
+      "text": "Bernstein, S.N. (1912). Sur l'ordre de la meilleure approximation des fonctions continues par des polyn\u00f4mes de degr\u00e9 donn\u00e9.",
       "url": "https://en.wikipedia.org/wiki/Bernstein%27s_theorem_(approximation_theory)"
     }
   ]
