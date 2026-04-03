@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-extgcd-def",
+    "proofId": "bezout-identity-oq-01",
+    "range": { "startLine": 34, "endLine": 41 },
+    "type": "definition",
+    "title": "extGcd: Computable Well-Founded Recursive Algorithm",
+    "content": "The extended Euclidean algorithm extGcd : ℕ → ℕ → ℤ × ℤ × ℕ is defined by structural recursion on b. The base case extGcd a 0 = (1, 0, a) returns the trivial Bézout decomposition a·1 + 0·0 = a. The recursive case swaps the arguments (as in the ordinary Euclidean algorithm) and updates the Bézout coefficients: the new x is the old y, and the new y is old_x - ⌊a/b⌋ · old_y. Lean requires the termination witness `have : a % (b+1) < b+1` to confirm that the recursive call's second argument is strictly smaller. The `have` term proves a % (b+1) < b+1 via Nat.mod_lt, enabling the well-founded recursion.",
+    "mathContext": "Base: $\\text{extGcd}(a, 0) = (1, 0, a)$; Recursive: $\\text{extGcd}(a, b+1) = (y', x' - \\lfloor a/(b+1)\\rfloor \\cdot y', g')$ where $(x', y', g') = \\text{extGcd}(b+1, a \\bmod (b+1))$",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean algorithm", "well-founded recursion", "Bézout coefficients", "termination proof"],
+    "prerequisites": ["Nat.mod_lt (termination)", "well-founded recursion in Lean 4", "extended Euclidean algorithm"]
+  },
+  {
+    "id": "ann-projections",
+    "proofId": "bezout-identity-oq-01",
+    "range": { "startLine": 43, "endLine": 50 },
+    "type": "technique",
+    "title": "Named Projections Avoid Destructuring Pitfalls",
+    "content": "Rather than destructuring the triple output with let-bindings in later proofs (which can cause definitional reduction failures in Lean 4), three helper definitions extract each component: extGcdX, extGcdY, extGcdG. Using named projections `.1`, `.2.1`, `.2.2` via dot notation keeps the proof terms small and allows Lean's elaborator to reduce them definitionally. This is a common Lean 4 idiom when working with tuple-returning recursive functions.",
+    "mathContext": "$\\text{extGcdX}(a,b) = (\\text{extGcd}(a,b))_1$, $\\text{extGcdY}(a,b) = (\\text{extGcd}(a,b))_{2,1}$, $\\text{extGcdG}(a,b) = (\\text{extGcd}(a,b))_{2,2}$",
+    "significance": "technical",
+    "relatedConcepts": ["Lean 4 projections", "tuple destructuring", "definitional reduction", "dot notation"],
+    "prerequisites": ["Lean 4 product types", "projection syntax .1 .2.1 .2.2"]
+  },
+  {
+    "id": "ann-unfolding-lemmas",
+    "proofId": "bezout-identity-oq-01",
+    "range": { "startLine": 52, "endLine": 62 },
+    "type": "technique",
+    "title": "Unfolding Lemmas Make the Algorithm's Cases Explicit",
+    "content": "extGcd_zero and extGcd_succ serve as `simp` and rewrite lemmas that expose the two branches of extGcd without forcing Lean to unfold the well-founded recursion machinery. Without these, proofs would need to reduce extGcd by delta-unfolding, which can be slow or fail. extGcd_succ in particular is non-trivial: it uses `simp [extGcd]` to discharge the definitional equality through Lean's built-in unfolding of well-founded recursive definitions.",
+    "mathContext": "$\\text{extGcd}(a, 0) = (1, 0, a)$ and $\\text{extGcd}(a, b+1) = $ recursive update formula",
+    "significance": "supporting",
+    "relatedConcepts": ["simp lemmas", "well-founded unfolding", "definitional equality", "Lean 4 recursion kernel"],
+    "prerequisites": ["@[simp] attribute", "Lean 4 well-founded recursion elaboration"]
+  },
+  {
+    "id": "ann-gcd-correctness",
+    "proofId": "bezout-identity-oq-01",
+    "range": { "startLine": 70, "endLine": 85 },
+    "type": "technique",
+    "title": "GCD Correctness by Well-Founded Induction",
+    "content": "The proof that (extGcd a b).2.2 = Nat.gcd a b proceeds by well-founded induction on b using Nat.strongRecOn, mirroring the recursion structure of extGcd. The base case b=0 follows from Nat.gcd_zero_right. The inductive step rewrites extGcd_succ, obtains the IH at the reduced pair (b+1, a%(b+1)), and then chains three Nat.gcd identities: gcd_comm to swap arguments, gcd_rec to peel off one step (gcd(b+1, a) = gcd(a%(b+1), b+1)), and gcd_comm again to restore order. The entire argument mirrors the standard textbook proof that the Euclidean algorithm computes the GCD.",
+    "mathContext": "$\\gcd(a, b+1) = \\gcd(b+1, a) = \\gcd(a \\bmod (b+1), b+1) = \\gcd(b+1, a \\bmod (b+1))$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.strongRecOn", "Nat.gcd_rec", "Nat.gcd_comm", "Euclidean algorithm correctness"],
+    "prerequisites": ["well-founded induction in Lean 4", "Nat.gcd_rec: gcd(a,b) = gcd(b, a%b)"]
+  },
+  {
+    "id": "ann-division-algorithm",
+    "proofId": "bezout-identity-oq-01",
+    "range": { "startLine": 116, "endLine": 119 },
+    "type": "insight",
+    "title": "The Division Algorithm as the Algebraic Bridge",
+    "content": "The key identity hdiv : (a : ℤ) = ⌊a/(b+1)⌋ · (b+1) + (a%(b+1)) is the division algorithm a = q·b + r in ℤ. It is proved by lifting Nat.div_add_mod a (b+1) from ℕ to ℤ using `zify`. This identity bridges the recursive Bézout equation (which is stated for (b+1) and a%(b+1)) and the goal (stated for a and b+1). Without it, the linear relationship between a, b+1, and the quotient q cannot be expressed algebraically.",
+    "mathContext": "$a = \\lfloor a/(b+1)\\rfloor \\cdot (b+1) + (a \\bmod (b+1))$ (division algorithm in $\\mathbb{Z}$)",
+    "significance": "key",
+    "relatedConcepts": ["division algorithm", "Nat.div_add_mod", "zify tactic", "integer lifting"],
+    "prerequisites": ["Nat.div_add_mod", "zify tactic in Lean 4", "Euclidean division in ℤ"]
+  },
+  {
+    "id": "ann-linear-combination",
+    "proofId": "bezout-identity-oq-01",
+    "range": { "startLine": 120, "endLine": 120 },
+    "type": "technique",
+    "title": "linear_combination Closes the Bézout Step in One Line",
+    "content": "The single tactic `linear_combination hrec + hdiv * y'` is the algebraic heart of the Bézout proof. Given hrec : (b+1)·x' + (a%(b+1))·y' = g and hdiv : a = q·(b+1) + a%(b+1), the goal is a·y' + (b+1)·(x' - q·y') = g. Expanding: a·y' + (b+1)·x' - q·(b+1)·y' = (q·(b+1) + a%(b+1))·y' + (b+1)·x' - q·(b+1)·y' = (b+1)·x' + a%(b+1)·y' = g. The linear_combination tactic encodes this as a ring identity and verifies it automatically. This one-line closure replaces what would otherwise be several pages of manual ring arithmetic.",
+    "mathContext": "Goal: $a \\cdot y' + (b+1)(x' - q y') = g$. From hrec and hdiv: $a y' + (b+1)x' - q(b+1)y' = (q(b+1) + r)y' + (b+1)x' - q(b+1)y' = (b+1)x' + ry' = g$.",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination tactic", "ring arithmetic", "Bézout identity", "algebraic manipulation"],
+    "prerequisites": ["linear_combination tactic in Lean 4 / Mathlib", "ring identity verification"]
+  },
+  {
+    "id": "ann-bezout-main",
+    "proofId": "bezout-identity-oq-01",
+    "range": { "startLine": 93, "endLine": 120 },
+    "type": "insight",
+    "title": "Main Correctness Theorem: Bézout via Well-Founded Induction",
+    "content": "extGcd_bezout is the central result: for any a, b : ℕ, the output (x, y, g) of extGcd satisfies a·x + b·y = g (in ℤ). The proof structure mirrors extGcd exactly: well-founded induction on b, with base case discharged by simp, and inductive step using the local names x', y', g' for the recursive result. The names are introduced via `set` to give the elaborator concrete terms to work with. The proof is fully abstract — it uses no computation at all, only the algebraic structure of the algorithm's recursion.",
+    "mathContext": "For all $a, b \\in \\mathbb{N}$: $a \\cdot (\\text{extGcd}(a,b))_1 + b \\cdot (\\text{extGcd}(a,b))_{2,1} = (\\text{extGcd}(a,b))_{2,2}$",
+    "significance": "key",
+    "relatedConcepts": ["Bézout's identity", "well-founded induction", "constructive mathematics", "algorithm correctness"],
+    "prerequisites": ["extGcd definition", "Nat.strongRecOn", "division algorithm (hdiv)"]
+  },
+  {
+    "id": "ann-native-decide",
+    "proofId": "bezout-identity-oq-01",
+    "range": { "startLine": 132, "endLine": 163 },
+    "type": "context",
+    "title": "Computational Verification via native_decide",
+    "content": "Nine concrete examples verify the algorithm on pairs including (12,8), (35,15), (17,5), and (252,198). The native_decide tactic compiles these propositions to native code and evaluates them at kernel level — this is both a correctness sanity check and a demonstration that extGcd is genuinely computable (not just axiomatically asserted). The fact that native_decide can evaluate extGcd confirms that the well-founded recursion was defined in a computationally transparent way; a non-computable definition would fail here.",
+    "mathContext": "E.g., $\\text{extGcd}(12, 8) = (x, y, 4)$ with $12x + 8y = 4$; $\\text{extGcd}(252, 198) = (x, y, 18)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide tactic", "computational verification", "decidable propositions", "kernel evaluation"],
+    "prerequisites": ["native_decide in Lean 4", "computability requirements for well-founded recursion"]
+  },
+  {
+    "id": "ann-existential-bezout",
+    "proofId": "bezout-identity-oq-01",
+    "range": { "startLine": 165, "endLine": 208 },
+    "type": "context",
+    "title": "Existential Bézout, Divisibility, and Positivity Properties",
+    "content": "The final section derives corollaries from the main theorems. bezout_via_extGcd provides the classical existential form ∃ x y, gcd(a,b) = a·x + b·y by using extGcdX and extGcdY as explicit witnesses. The gcd positivity lemma (extGcd_gcd_pos) derives from Nat.pos_of_ne_zero plus the fact that a = 0 ∧ b = 0 implies gcd = 0. The divisibility lemmas extGcd_gcd_dvd_left and extGcd_gcd_dvd_right follow immediately from extGcd_gcd plus Nat.gcd_dvd_left/right — they are one-liners because all the work is already done.",
+    "mathContext": "$\\exists x, y \\in \\mathbb{Z}: \\gcd(a,b) = ax + by$; $a \\neq 0 \\lor b \\neq 0 \\Rightarrow \\gcd(a,b) > 0$; $\\gcd(a,b) \\mid a$ and $\\gcd(a,b) \\mid b$",
+    "significance": "supporting",
+    "relatedConcepts": ["existential witnesses", "Nat.gcd_dvd_left", "Nat.pos_of_ne_zero", "Bézout corollaries"],
+    "prerequisites": ["extGcd_bezout", "extGcd_gcd", "Nat.gcd_dvd_left", "Nat.gcd_dvd_right"]
+  }
+]
