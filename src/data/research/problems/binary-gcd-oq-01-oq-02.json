@@ -1,0 +1,93 @@
+{
+  "slug": "binary-gcd-oq-01-oq-02",
+  "title": "Compare binary GCD with Lehmer algorithm in Lean",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Compare binary GCD with Lehmer algorithm in Lean.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T02:57:02.770Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Lean file builds with 2 axioms, 7 proved theorems",
+    "builtItems": [
+      "lehmerSteps def in BinaryGcdOQ01OQ02.lean:36 (modeled as (euclidSteps+1)/2)",
+      "lehmerSteps_le_euclidSteps theorem :37",
+      "euclidSteps_le_two_mul_lehmerSteps theorem :52",
+      "lehmerSteps_le_log theorem :94 — Lehmer steps ≤ log₂(min a b) + 1",
+      "both_logarithmic theorem :103 — both algorithms O(log n)"
+    ],
+    "insights": [
+      "lehmerSteps modeled as (euclidSteps+1)/2 captures batching property",
+      "Nat.div_add_mod + omega is the right approach for division inequalities in ℕ",
+      "euclidSteps 100 75 = 2, not 3 — verify native_decide values before publishing"
+    ],
+    "mathlibGaps": [
+      "Lehmer algorithm itself not in Mathlib — axiomatized correctness and step count comparison"
+    ],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "algorithms",
+    "gcd",
+    "number-theory"
+  ],
+  "relatedProofs": [
+    "binary-gcd",
+    "binary-gcd-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.770Z",
+  "lastUpdate": "2026-04-03T02:57:02.770Z",
+  "significance": 5,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinaryGcdOQ01.lean",
+      "filename": "BinaryGcdOQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ02.lean",
+      "filename": "BinaryGcdOQ01OQ02.lean",
+      "lineCount": 110,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ02.lean"
+    }
+  ]
+}

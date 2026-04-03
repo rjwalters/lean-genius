@@ -1,0 +1,116 @@
+{
+  "slug": "chinese-remainder-constructive-oq-04-oq-04",
+  "title": "Extend CRT to produce minimal non-negative solution",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Extend CRT to produce minimal non-negative solution.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-03T02:57:02.771Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved crt_list_min (∃! solution in [0,M)) via satisfies_mod + uniqueness. 0 sorries.",
+    "builtItems": [
+      "satisfies_mod: x%M satisfies all congruences when each mᵢ|M",
+      "crt_list_minimal_exists: ∃ x < M, Satisfies x sys",
+      "crt_list_minimal_unique: two solutions in [0,M) are equal",
+      "crt_list_min: ∃! x, x < M ∧ Satisfies x sys",
+      "sunzi_minimal_solution, sunzi_solution_is_23, sunzi_unique"
+    ],
+    "insights": [
+      "Nat.mod_mod_of_dvd: if m|M then (x%M)%m = x%m — key for showing x%M satisfies all congruences",
+      "Uniqueness: x≡y[MOD M] + both<M gives x=y via Nat.mod_eq_of_lt",
+      "Minimal solution = any_solution % moduliProd sys — reduction preserves all congruences",
+      "moduliProd [] = 1 (empty product), so M>0 trivially holds for empty system",
+      "Sunzi problem: unique minimal solution x=23 in [0,105) verified by native_decide"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "crt",
+    "constructive"
+  ],
+  "relatedProofs": [
+    "chinese-remainder-constructive",
+    "chinese-remainder-constructive-oq-03",
+    "chinese-remainder-constructive-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.771Z",
+  "lastUpdate": "2026-04-02T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ChineseRemainderConstructive.lean",
+      "filename": "ChineseRemainderConstructive.lean",
+      "lineCount": 417,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructive.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
+      "filename": "ChineseRemainderConstructiveOQ03.lean",
+      "lineCount": 319,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04.lean",
+      "filename": "ChineseRemainderConstructiveOQ04.lean",
+      "lineCount": 157,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ04.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ04.lean",
+      "lineCount": 123,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ04.lean"
+    }
+  ]
+}

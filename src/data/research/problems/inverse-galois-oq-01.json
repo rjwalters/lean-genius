@@ -82,7 +82,9 @@
   ],
   "relatedProofs": [
     "inverse-galois",
-    "inverse-galois-oq-01"
+    "inverse-galois-oq-01",
+    "inverse-galois-oq-02",
+    "inverse-galois-oq-06"
   ],
   "references": {
     "papers": [],
@@ -181,6 +183,17 @@
       "sorryCount": 6,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ01.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisOQ02.lean",
+      "filename": "InverseGaloisOQ02.lean",
+      "lineCount": 389,
+      "theoremCount": 18,
+      "axiomCount": 3,
+      "defCount": 0,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ02.lean"
     }
   ]
 }

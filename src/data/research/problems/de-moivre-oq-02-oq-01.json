@@ -1,0 +1,117 @@
+{
+  "slug": "de-moivre-oq-02-oq-01",
+  "title": "Formalize Chebyshev composition monoid structure",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in algebra: Formalize Chebyshev composition monoid structure.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T02:57:02.771Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "algebra",
+    "de-moivre",
+    "chebyshev"
+  ],
+  "relatedProofs": [
+    "de-moivre",
+    "de-moivre-oq-01",
+    "de-moivre-oq-02",
+    "de-moivre-oq-03",
+    "de-moivre-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.771Z",
+  "lastUpdate": "2026-04-03T02:57:02.771Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DeMoivre.lean",
+      "filename": "DeMoivre.lean",
+      "lineCount": 240,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivre.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ01.lean",
+      "filename": "DeMoivreOQ01.lean",
+      "lineCount": 232,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ02.lean",
+      "filename": "DeMoivreOQ02.lean",
+      "lineCount": 158,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03.lean",
+      "filename": "DeMoivreOQ03.lean",
+      "lineCount": 276,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03OQ01.lean",
+      "filename": "DeMoivreOQ03OQ01.lean",
+      "lineCount": 75,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03OQ01.lean"
+    }
+  ]
+}

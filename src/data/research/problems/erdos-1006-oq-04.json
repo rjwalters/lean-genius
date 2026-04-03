@@ -8,7 +8,9 @@
   "problemStatement": {
     "formal": "\\text{Prove structural properties of the coloring orientation DAG: rank strictness, sources, sinks, arc direction characterization.}",
     "plain": "Prove that the coloring orientation (orienting u→v when col(u)<col(v) for a proper k-coloring) forms a graded DAG: color values are a strict rank, color-0 vertices are sources, color-(k-1) vertices are sinks, and arc direction is determined by color ordering.",
-    "whyMatters": ["Explains the DAG structure underlying the OQ03 result that every finite graph has a robust orientation"]
+    "whyMatters": [
+      "Explains the DAG structure underlying the OQ03 result that every finite graph has a robust orientation"
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -52,6 +54,7 @@
     "erdos-10",
     "erdos-100",
     "erdos-1006",
+    "erdos-1006-oq-01",
     "erdos-1006-oq-02",
     "erdos-1006-oq-02-oq-03"
   ],
@@ -70,7 +73,7 @@
       "theoremCount": 6,
       "axiomCount": 3,
       "defCount": 12,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ01.lean"
     },
@@ -81,7 +84,7 @@
       "theoremCount": 17,
       "axiomCount": 1,
       "defCount": 8,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ02.lean"
     },
@@ -92,9 +95,20 @@
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04.lean",
+      "filename": "Erdos1006OQ04.lean",
+      "lineCount": 164,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
     },
     {
       "path": "Proofs/Erdos1006Problem.lean",
@@ -106,17 +120,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos1006OQ04.lean",
-      "filename": "Erdos1006OQ04.lean",
-      "lineCount": 165,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
     }
   ]
 }

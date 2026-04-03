@@ -190,32 +190,11 @@
     ]
   },
   {
-    "id": "ann-g-not-provable",
-    "proofId": "godel-incompleteness",
-    "range": {
-      "startLine": 150,
-      "endLine": 160
-    },
-    "type": "tactic",
-    "title": "G Is Not Provable",
-    "content": "This is the heart of the argument. Assume for contradiction that $G$ is provable.\n\n1. By representability, $\\vdash\\text{Prov}(\\ulcorner G\\urcorner)$\n2. But $G \\iff \\neg\\text{Prov}(\\ulcorner G\\urcorner)$, so $\\vdash\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n3. We've proved both $\\text{Prov}(\\ulcorner G\\urcorner)$ and $\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n4. This contradicts consistency!\n\nTherefore, if the system is consistent, $G$ cannot be provable. But $G$ *says* \"I am not provable\"—so $G$ is true! A true sentence that cannot be proved.",
-    "mathContext": "$\\text{Consistent}(F) \\implies \\neg\\vdash G$",
-    "significance": "key",
-    "prerequisites": [
-      "ann-godel-sentence-construction",
-      "ann-prov-complete"
-    ],
-    "relatedConcepts": [
-      "proof by contradiction",
-      "consistency"
-    ]
-  },
-  {
     "id": "ann-main-theorem",
     "proofId": "godel-incompleteness",
     "range": {
-      "startLine": 181,
-      "endLine": 185
+      "startLine": 180,
+      "endLine": 184
     },
     "type": "theorem",
     "title": "The First Incompleteness Theorem",
@@ -235,8 +214,8 @@
     "id": "ann-hilbert-program",
     "proofId": "godel-incompleteness",
     "range": {
-      "startLine": 196,
-      "endLine": 204
+      "startLine": 195,
+      "endLine": 203
     },
     "type": "concept",
     "title": "Death of Hilbert's Program",
@@ -252,8 +231,8 @@
     "id": "ann-limits",
     "proofId": "godel-incompleteness",
     "range": {
-      "startLine": 196,
-      "endLine": 204
+      "startLine": 195,
+      "endLine": 203
     },
     "type": "insight",
     "title": "The Inexhaustibility of Mathematics",
@@ -269,8 +248,8 @@
     "id": "ann-mechanism-debate",
     "proofId": "godel-incompleteness",
     "range": {
-      "startLine": 381,
-      "endLine": 429
+      "startLine": 379,
+      "endLine": 427
     },
     "type": "concept",
     "title": "Mind vs. Machine",

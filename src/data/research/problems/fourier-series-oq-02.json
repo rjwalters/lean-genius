@@ -1,13 +1,13 @@
 {
   "slug": "fourier-series-oq-02",
-  "title": "Fourier Coefficient Decay Under H\u00f6lder Continuity",
+  "title": "Fourier Coefficient Decay Under Hölder Continuity",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\u2200 (C : \u211d\u22650) (\u03b1 : \u211d\u22650) (f : AddCircle T \u2192 \u2102), IsHolderOnCircle C \u03b1 f \u2192 \u2200 n \u2260 0, \u2016fourierCoeff f n\u2016 \u2264 (C/2) * (T / (2|n|))^\u03b1",
-    "plain": "Prove that the Fourier coefficients of an \u03b1-H\u00f6lder continuous function on the circle decay at rate O(1/|n|^\u03b1), and that this bound is optimal.",
+    "formal": "∀ (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ), IsHolderOnCircle C α f → ∀ n ≠ 0, ‖fourierCoeff f n‖ ≤ (C/2) * (T / (2|n|))^α",
+    "plain": "Prove that the Fourier coefficients of an α-Hölder continuous function on the circle decay at rate O(1/|n|^α), and that this bound is optimal.",
     "whyMatters": [
       "Fundamental result in harmonic analysis connecting smoothness to frequency decay",
       "Bridges Faulhaber integer power sums to real-exponent zeta theory"
@@ -15,15 +15,15 @@
   },
   "knownResults": {
     "proven": [
-      "fourier_norm_one: \u2016fourier n x\u2016 = 1 (via toCircle)",
+      "fourier_norm_one: ‖fourier n x‖ = 1 (via toCircle)",
       "fourier_translate_halfperiod: fourier(-n)(x + T/(2n)) = -fourier(-n)(x)",
       "fourierCoeff_holder_decay: main theorem from axioms",
       "fourierCoeff_lipschitz_decay: Lipschitz special case",
-      "holder_continuous: H\u00f6lder \u27f9 continuous",
-      "lipschitz_is_holder_one: Lipschitz \u2282 H\u00f6lder(1)"
+      "holder_continuous: Hölder ⟹ continuous",
+      "lipschitz_is_holder_one: Lipschitz ⊂ Hölder(1)"
     ],
     "open": [
-      "Prove remaining 10 axioms: difference formula, H\u00f6lder translation bound, integral product bound, summability, optimality, converse, C^k/C^\u221e/analytic decay"
+      "Prove remaining 10 axioms: difference formula, Hölder translation bound, integral product bound, summability, optimality, converse, C^k/C^∞/analytic decay"
     ],
     "goal": "Reduce axiom count further by proving core analytical infrastructure"
   },
@@ -31,7 +31,7 @@
     "phase": "ACT",
     "since": "2026-03-23T18:00:00Z",
     "iteration": 7,
-    "focus": "1 sorry (decay_implies_regularity: corrected \u03b2>\u03b1+1, proof sketch provided), 1 axiom (holder_decay_is_optimal_seq: sequential optimality, correctly stated).",
+    "focus": "1 sorry (decay_implies_regularity: corrected β>α+1, proof sketch provided), 1 axiom (holder_decay_is_optimal_seq: sequential optimality, correctly stated).",
     "blockers": [],
     "nextAction": "Prove decay_implies_regularity (need Lipschitz bound for fourier modes + Fourier inversion) or prove holder_decay_is_optimal_seq (construct Weierstrass witness).",
     "attemptCounts": {
@@ -41,58 +41,58 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries\u21921 sorry, 2 axioms\u21921 axiom. Fixed 2 incorrect axiom statements: decay_implies_regularity (\u03b2>\u03b1+1/2\u2192\u03b2>\u03b1+1) and holder_decay_is_optimal (cofinite\u2192sequential). Proof sketch provided for decay_implies_regularity.",
+    "progressSummary": "PROGRESS: 0 sorries→1 sorry, 2 axioms→1 axiom. Fixed 2 incorrect axiom statements: decay_implies_regularity (β>α+1/2→β>α+1) and holder_decay_is_optimal (cofinite→sequential). Proof sketch provided for decay_implies_regularity.",
     "builtItems": [
-      "fourier_norm_one: proved via simp [fourier_apply] \u2014 toCircle maps to unit circle",
+      "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
-      "Proved fourierCoeff_Cinfty_rapid_decay: C^\u221e \u27f9 rapid decay, trivially from fourierCoeff_smooth_decay (C^\u221e \u27f9 C^k for all k)",
+      "Proved fourierCoeff_Cinfty_rapid_decay: C^∞ ⟹ rapid decay, trivially from fourierCoeff_smooth_decay (C^∞ ⟹ C^k for all k)",
       "fourierCoeff_difference_formula: proved via half-period identity + Haar measure translation invariance + integral splitting",
-      "Proved quotient norm bound: \u2016(\u2191r : AddCircle T)\u2016 \u2264 \u2016r\u2016 via QuotientAddGroup.norm_mk_le_norm",
+      "Proved quotient norm bound: ‖(↑r : AddCircle T)‖ ≤ ‖r‖ via QuotientAddGroup.norm_mk_le_norm",
       "Eliminated sorry in fourierCoeff_difference_formula: added Continuous f hypothesis, proved non-integrable case impossible via ContinuousOn.integrableOn_compact isCompact_univ",
-      "Added 0 < \u03b1 to fourierCoeff_holder_decay: derives Continuous f from holder_continuous, passes to difference formula",
+      "Added 0 < α to fourierCoeff_holder_decay: derives Continuous f from holder_continuous, passes to difference formula",
       "Converted fourierCoeff_sq_summable_of_holder: axiom -> theorem with sorry",
       "Converted riemannLebesgue_of_holder: axiom -> theorem with sorry (Metric.tendsto_nhds + Filter.eventually_cofinite)",
-      "Proved riemannLebesgue_of_holder: explicit N via limit of bound function, set \u2286 Icc argument",
-      "Proved fourierCoeff_sq_summable_of_holder: H\u00f6lder\u2192continuous\u2192L\u00b2\u2192Parseval via MemLp.mono_exponent",
-      "Proved fourierCoeff_smooth_decay: non-uniform existential (Ck depends on n) \u2014 choose Ck = \u2016\u0109_n\u2016\u00b7|n|^k+1, verify via le_div_iff\u2080",
-      "Proved fourierCoeff_analytic_decay: non-uniform existential \u2014 choose C_an = \u2016\u0109_n\u2016/exp(...)+1, verify via add_mul + div_mul_cancel\u2080"
+      "Proved riemannLebesgue_of_holder: explicit N via limit of bound function, set ⊆ Icc argument",
+      "Proved fourierCoeff_sq_summable_of_holder: Hölder→continuous→L²→Parseval via MemLp.mono_exponent",
+      "Proved fourierCoeff_smooth_decay: non-uniform existential (Ck depends on n) — choose Ck = ‖ĉ_n‖·|n|^k+1, verify via le_div_iff₀",
+      "Proved fourierCoeff_analytic_decay: non-uniform existential — choose C_an = ‖ĉ_n‖/exp(...)+1, verify via add_mul + div_mul_cancel₀"
     ],
     "insights": [
-      "fourier_apply unfolds to \u2191(n \u2022 x).toCircle, which immediately gives unit norm via simp",
-      "fourier_add_half_inv_index takes explicit (hT : 0 < T), not Fact instance \u2014 need hT.out",
+      "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
+      "fourier_add_half_inv_index takes explicit (hT : 0 < T), not Fact instance — need hT.out",
       "fourier_neg relates fourier(-n) to starRingEnd(fourier n), enabling conjugation approach",
       "T/(2*n) vs T/2/n: ring normalizes between these equivalent forms",
-      "holder_translation_bound needs QuotientAddGroup dist API \u2014 dist(x, x+\u2191s) \u2264 |s| on AddCircle",
+      "holder_translation_bound needs QuotientAddGroup dist API — dist(x, x+↑s) ≤ |s| on AddCircle",
       "integral_product_bound needs norm_integral_le + fourier_norm_one + holder_bound + probability measure",
-      "fourierCoeff_Cinfty_rapid_decay is a trivial consequence of fourierCoeff_smooth_decay \u2014 C^\u221e means C^k for all k",
+      "fourierCoeff_Cinfty_rapid_decay is a trivial consequence of fourierCoeff_smooth_decay — C^∞ means C^k for all k",
       "MeasurePreserving.integrable_comp_of_integrable is the key API for translated function integrability",
       "norm_mk_le_norm from Mathlib.Analysis.Normed.Group.Quotient exists but may need explicit import or @-notation to resolve",
-      "QuotientAddGroup.norm_mk_le_norm is the correct API for \u2016(\u2191x : AddCircle T)\u2016 \u2264 \u2016x\u2016 (found via exact?)",
-      "The non-integrable edge case in fourierCoeff_difference_formula is genuinely hard: f-f\u2218\u03c4 can be integrable when f isn't. Needs Continuous f hypothesis.",
+      "QuotientAddGroup.norm_mk_le_norm is the correct API for ‖(↑x : AddCircle T)‖ ≤ ‖x‖ (found via exact?)",
+      "The non-integrable edge case in fourierCoeff_difference_formula is genuinely hard: f-f∘τ can be integrable when f isn't. Needs Continuous f hypothesis.",
       "ContinuousOn.integrableOn_compact isCompact_univ is the right API for showing continuous functions on compact spaces are integrable (with respect to any measure)",
-      "(fourier (-n)).continuous.smul hf_cont gives continuity of fun x => fourier(-n) x \u2022 f x in Lean 4 Mathlib",
+      "(fourier (-n)).continuous.smul hf_cont gives continuity of fun x => fourier(-n) x • f x in Lean 4 Mathlib",
       "Metric.tendsto_nhds unfolds Tendsto into epsilon-delta form; Filter.eventually_cofinite characterizes the cofinite filter",
-      "MemLp (not Mem\u2112p) is the current Lean 4 Mathlib name for Lp membership",
-      "Continuous.aestronglyMeasurable + isCompact_range + isBounded.subset_closedBall gives bounded continuous \u2192 L\u221e",
-      "MemLp.mono_exponent converts L\u221e to L\u00b2 on finite measure spaces (probability measure)",
-      "tendsto_one_div_add_atTop_nhds_zero_nat is a clean base for T/(2*(k+1)) \u2192 0 limit",
+      "MemLp (not Memℒp) is the current Lean 4 Mathlib name for Lp membership",
+      "Continuous.aestronglyMeasurable + isCompact_range + isBounded.subset_closedBall gives bounded continuous → L∞",
+      "MemLp.mono_exponent converts L∞ to L² on finite measure spaces (probability measure)",
+      "tendsto_one_div_add_atTop_nhds_zero_nat is a clean base for T/(2*(k+1)) → 0 limit",
       "fourierCoeff ae-equality: integral_congr_ae + MemLp.coeFn_toLp connects Lp and raw function Fourier coefficients",
-      "fourierCoeff_smooth_decay and fourierCoeff_analytic_decay as stated are non-uniform (Ck depends on n) \u2014 trivially true for fixed n via algebraic witness construction",
+      "fourierCoeff_smooth_decay and fourierCoeff_analytic_decay as stated are non-uniform (Ck depends on n) — trivially true for fixed n via algebraic witness construction",
       "Real.rpow_pos_of_pos (not rpow_pos_of_pos) is the correct qualified name for positivity of rpow in current Mathlib",
-      "fourierCoeffOn_of_hasDerivAt from Mathlib.Analysis.Fourier.AddCircle provides IBP for interval Fourier coefficients \u2014 proved in AreaOfCircleOQ01OQ02OQ02 for periodic real functions",
-      "Uniform C^k decay (\u2203 Ck \u2200 n) requires integration by parts on AddCircle relating fourierCoeff f_deriv n = (2\u03c0in/T)\u00b7fourierCoeff f n \u2014 significant infrastructure not yet built",
-      "decay_implies_regularity axiom had INCORRECT hypothesis \u03b2 > \u03b1+1/2: counterexample f=\u03a3n^{-\u03b2}e^{inx} with \u03b2\u2208(1/2,1) satisfies decay but is not continuous (\u03a3n^{-\u03b2} diverges)",
-      "Correct condition for decay\u2192H\u00f6lder: \u03b2 > \u03b1+1 (not \u03b2 > \u03b1+1/2). Direct proof: 2|sin\u03b8|\u22642|\u03b8|^\u03b1 + \u03a3|n|^{\u03b1-\u03b2}<\u221e iff \u03b2-\u03b1>1",
-      "holder_decay_is_optimal axiom had INCORRECT statement: cofinite lower bound is false for Weierstrass-type functions (\u0109_n=0 for non-lacunary n). Correct version is sequential: \u2203ns:\u2115\u2192\u2124 with ns(k)\u2192\u221e and |\u0109_{ns(k)}|\u2265c/|ns(k)|^\u03b1",
-      "has_pointwise_sum_fourier_series_of_summable: Mathlib theorem for pointwise Fourier inversion when \u03a3|\u0109_n|<\u221e (requires f:C(AddCircle T, \u2102))"
+      "fourierCoeffOn_of_hasDerivAt from Mathlib.Analysis.Fourier.AddCircle provides IBP for interval Fourier coefficients — proved in AreaOfCircleOQ01OQ02OQ02 for periodic real functions",
+      "Uniform C^k decay (∃ Ck ∀ n) requires integration by parts on AddCircle relating fourierCoeff f_deriv n = (2πin/T)·fourierCoeff f n — significant infrastructure not yet built",
+      "decay_implies_regularity axiom had INCORRECT hypothesis β > α+1/2: counterexample f=Σn^{-β}e^{inx} with β∈(1/2,1) satisfies decay but is not continuous (Σn^{-β} diverges)",
+      "Correct condition for decay→Hölder: β > α+1 (not β > α+1/2). Direct proof: 2|sinθ|≤2|θ|^α + Σ|n|^{α-β}<∞ iff β-α>1",
+      "holder_decay_is_optimal axiom had INCORRECT statement: cofinite lower bound is false for Weierstrass-type functions (ĉ_n=0 for non-lacunary n). Correct version is sequential: ∃ns:ℕ→ℤ with ns(k)→∞ and |ĉ_{ns(k)}|≥c/|ns(k)|^α",
+      "has_pointwise_sum_fourier_series_of_summable: Mathlib theorem for pointwise Fourier inversion when Σ|ĉ_n|<∞ (requires f:C(AddCircle T, ℂ))"
     ],
     "mathlibGaps": [
-      "No obvious dist(x, x+\u2191s) \u2264 |s| lemma found for AddCircle quotient metric"
+      "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
     ],
     "nextSteps": [
-      "Prove decay_implies_regularity (\u03b2>\u03b1+1): Step 1=summability via \u03b2>1+p-series, Step 2=Fourier inversion via has_pointwise_sum_fourier_series_of_summable, Step 3=mode H\u00f6lder bound 2|sin\u03b8|\u22642|\u03b8|^\u03b1, Step 4=sum convergence",
-      "Prove holder_decay_is_optimal_seq: Define f=\u03a32^{-k\u03b1}fourier(2^k), show uniform convergence, compute \u0109_{2^k}=2^{-k\u03b1}, prove \u03b1-H\u00f6lder via geometric sum splitting",
-      "Build LipschitzWith bound for fourier n: use hasDerivAt_fourier + MVT to get \u2016fourier n x - fourier n y\u2016 \u2264 (2\u03c0|n|/T)\u00b7dist(x,y)"
+      "Prove decay_implies_regularity (β>α+1): Step 1=summability via β>1+p-series, Step 2=Fourier inversion via has_pointwise_sum_fourier_series_of_summable, Step 3=mode Hölder bound 2|sinθ|≤2|θ|^α, Step 4=sum convergence",
+      "Prove holder_decay_is_optimal_seq: Define f=Σ2^{-kα}fourier(2^k), show uniform convergence, compute ĉ_{2^k}=2^{-kα}, prove α-Hölder via geometric sum splitting",
+      "Build LipschitzWith bound for fourier n: use hasDerivAt_fourier + MVT to get ‖fourier n x - fourier n y‖ ≤ (2π|n|/T)·dist(x,y)"
     ]
   },
   "tags": [
@@ -139,22 +139,22 @@
     {
       "path": "Proofs/FourierSeriesOQ01.lean",
       "filename": "FourierSeriesOQ01.lean",
-      "lineCount": 428,
+      "lineCount": 643,
       "theoremCount": 13,
-      "axiomCount": 1,
+      "axiomCount": 6,
       "defCount": 5,
-      "sorryCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ01.lean"
     },
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 467,
-      "theoremCount": 17,
-      "axiomCount": 2,
+      "lineCount": 492,
+      "theoremCount": 18,
+      "axiomCount": 1,
       "defCount": 3,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     },

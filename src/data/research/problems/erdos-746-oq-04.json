@@ -1,0 +1,82 @@
+{
+  "slug": "erdos-746-oq-04",
+  "title": "Prove hamiltonian_implies_connected (Hamiltonian cycle implies connectivity)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Prove hamiltonian_implies_connected (Hamiltonian cycle implies connectivity).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-03T02:57:02.772Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Fixed IsHamiltonianCycle definition sorries (2→0). hamiltonian_implies_connected proof already written. sorryCount 3→1. erdos_746_answer remains sorry.",
+    "builtItems": [
+      "Fixed IsHamiltonianCycle in Erdos746Problem.lean:90 — no more sorries in definition",
+      "hamiltonian_implies_connected is now sorry-dependency-free (except inherited via erdos_746_answer)"
+    ],
+    "insights": [
+      "IsHamiltonianCycle had 2 sorries: getLast/head needed cycle≠[] proof unavailable at definition site",
+      "Fix: replace getLast/head with cycle.get using ∀ hn : 0 < cycle.length, giving index-based access",
+      "cycle.get ⟨cycle.length-1, by omega⟩ closes with omega given hn:0<cycle.length in scope",
+      "hamiltonian_implies_connected proof destructs last conjunct as _ so definition change is backward-compatible",
+      "erdos_746_answer is a deep theorem (Korshunov/Komlos-Szemeredi 1983) — correctly remains as sorry"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "erdos_746_answer: requires Korshunov theorem (~1000+ line formalization, effectively blocked)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "erdos",
+    "sorry-closing"
+  ],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-74",
+    "erdos-746"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.772Z",
+  "lastUpdate": "2026-04-02T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos746Problem.lean",
+      "filename": "Erdos746Problem.lean",
+      "lineCount": 253,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 17,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos746Problem.lean"
+    }
+  ]
+}
