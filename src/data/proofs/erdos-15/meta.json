@@ -27,7 +27,7 @@
     "relatedProblems": [
       "erdos-28"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 219,
     "prerequisites": [
       "Prime numbers and the prime number theorem",
@@ -35,7 +35,7 @@
       "Analytic number theory",
       "Distribution of primes in arithmetic progressions"
     ],
-    "assumptions": "11 axioms: prime_number_theorem, terms_tend_to_zero, alternating_terms_to_zero, and 8 more. See Lean source for complete statements.",
+    "assumptions": "1 axiom: terms_tend_to_zero (terms n/p_n → 0, consequence of PNT). See Lean source for complete statement.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -147,7 +147,7 @@
     ],
     "namespace": "Erdos15",
     "lineCount": 219,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 0,
     "definitionCount": 8
   },
