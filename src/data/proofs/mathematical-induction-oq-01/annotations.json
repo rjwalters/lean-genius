@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-mi01-wf-induction",
+    "proofId": "mathematical-induction-oq-01",
+    "range": { "startLine": 34, "endLine": 46 },
+    "type": "definition",
+    "title": "Well-Founded Induction: The Abstract Principle",
+    "content": "`wf_induction` wraps `WellFounded.fix` (or equivalently `WellFounded.induction`): given a well-founded relation `r` on type `α`, and a hypothesis that P(x) follows from P(y) for all y with `r y x`, then P holds everywhere. This is provably equivalent to the transfinite induction principle. `nat_induction_from_wf` then applies this to `Nat.lt_wfRel.wf`, recovering strong induction on ℕ. The proof is one line: `wf_induction Nat.lt_wfRel.wf P h`.",
+    "mathContext": "A relation $r$ on $\\alpha$ is *well-founded* if there is no infinite descending chain $x_0 \\mathrel{r} x_1 \\mathrel{r} x_2 \\cdots$. Equivalently, every non-empty subset has an $r$-minimal element. The induction principle is: $(\\forall x,\\, (\\forall y,\\, r\\, y\\, x \\Rightarrow P\\, y) \\Rightarrow P\\, x) \\Rightarrow \\forall x,\\, P\\, x$. In Lean 4, `WellFounded.fix` implements this as a function, not just a proof: `WellFounded.fix : WellFounded r → (∀ x, (∀ y, r y x → C y) → C x) → ∀ x, C x`.",
+    "significance": "key",
+    "relatedConcepts": ["WellFounded.fix", "well-founded relations", "Noetherian induction", "structural recursion"],
+    "prerequisites": ["well-founded relations", "Lean 4 type theory", "Nat.lt_wfRel"]
+  },
+  {
+    "id": "ann-mi01-transfinite",
+    "proofId": "mathematical-induction-oq-01",
+    "range": { "startLine": 53, "endLine": 76 },
+    "type": "technique",
+    "title": "Transfinite Induction: Ordinal.induction + Trichotomy",
+    "content": "`transfinite_induction` is a one-line proof wrapping `Ordinal.induction`: the predicate P and hypothesis h are passed directly. `transfinite_induction_cases` is more interesting: it applies `Ordinal.zero_or_succ_or_limit α` to case-split, then in the successor case extracts `β` with `rfl` (the ordinal is definitionally `Order.succ β`) and uses `Order.lt_succ β` to apply the induction hypothesis. The limit case takes the `IsLimit` witness and passes the full induction hypothesis. All three cases are immediate after the trichotomy.",
+    "mathContext": "The ordinal trichotomy states: for every ordinal $\\alpha$, exactly one of the following holds: (1) $\\alpha = 0$; (2) $\\alpha = \\beta + 1$ for some ordinal $\\beta$ (successor); (3) $\\alpha$ is a *limit ordinal*: $\\alpha \\neq 0$ and $\\alpha \\neq \\beta + 1$ for any $\\beta$. Examples of limit ordinals: $\\omega = \\sup\\{0,1,2,\\ldots\\}$, $\\omega^2$, $\\omega^\\omega$. In Lean: `Ordinal.IsLimit α ↔ α ≠ 0 ∧ ∀ β, β < α → β + 1 < α`.",
+    "significance": "key",
+    "relatedConcepts": ["Ordinal.induction", "Ordinal.zero_or_succ_or_limit", "limit ordinals", "Order.succ"],
+    "prerequisites": ["ordinal numbers", "Lean Ordinal type", "rcases tactic"]
+  },
+  {
+    "id": "ann-mi01-course-of-values",
+    "proofId": "mathematical-induction-oq-01",
+    "range": { "startLine": 85, "endLine": 101 },
+    "type": "insight",
+    "title": "Strong Induction ↔ Weak Induction: Equivalence Proved",
+    "content": "`course_of_values` is a one-liner via `Nat.strongRecOn`. `weak_from_strong` derives the familiar base+step form from strong induction: the proof applies `course_of_values`, then in the zero case returns `hbase`, and in the `n+1` case applies `hstep n (ih n (Nat.lt_succ_of_le le_rfl))`. The `Nat.lt_succ_of_le le_rfl` step produces `n < n+1`, retrieving P(n) from the strong induction hypothesis `ih : ∀ m < n+1, P m`.",
+    "mathContext": "Strong (course-of-values) induction: $(\\forall n,\\, (\\forall m < n,\\, P\\,m) \\Rightarrow P\\,n) \\Rightarrow \\forall n,\\, P\\,n$. Weak induction: $P\\,0 \\wedge (\\forall n,\\, P\\,n \\Rightarrow P\\,(n+1)) \\Rightarrow \\forall n,\\, P\\,n$. Strong implies weak trivially (specialize to the predecessor). Weak implies strong by showing $Q\\,n = \\forall m \\leq n,\\, P\\,m$ satisfies the weak induction hypotheses. Both forms are equivalent to the well-ordering principle.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.strongRecOn", "Nat.lt_succ_of_le", "induction equivalences"],
+    "prerequisites": ["natural number induction", "match tactic in Lean 4"]
+  },
+  {
+    "id": "ann-mi01-well-ordering",
+    "proofId": "mathematical-induction-oq-01",
+    "range": { "startLine": 108, "endLine": 147 },
+    "type": "technique",
+    "title": "Well-Ordering ↔ Induction: Equivalence via Smallest Counterexample",
+    "content": "`nat_well_ordering` is a one-liner: `Nat.find` returns the least element of any non-empty decidable set, `Nat.find_spec` proves membership, and `Nat.find_min'` proves minimality. `induction_from_well_ordering` proves induction from well-ordering by contradiction: `by_contra h` then `push_neg` extracts a counterexample `n`. The set of counterexamples is non-empty, so well-ordering gives a minimal counterexample `m`. A `match m` splits into the 0 and successor cases: m=0 contradicts `hbase`, and m=k+1 requires P(k), but k is smaller than the smallest counterexample, so P(k) holds, and `hstep` gives P(k+1) — contradiction.",
+    "mathContext": "The *well-ordering principle* (WOP) for $\\mathbb{N}$: every non-empty $S \\subseteq \\mathbb{N}$ has a least element. In classical mathematics, WOP, strong induction, and weak induction are all equivalent over the natural numbers. In constructive mathematics (like Lean without classical axioms), WOP requires the set to be decidable. `Nat.find` in Lean requires a `Decidable` instance and gives the least $n$ satisfying a decidable predicate.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.find", "well-ordering principle", "proof by contradiction", "push_neg tactic"],
+    "prerequisites": ["classical logic in Lean", "by_contra", "Nat.find and decidability"]
+  },
+  {
+    "id": "ann-mi01-cantor-stub",
+    "proofId": "mathematical-induction-oq-01",
+    "range": { "startLine": 149, "endLine": 153 },
+    "type": "context",
+    "title": "Cantor Normal Form: Statement Stub",
+    "content": "`cantor_normal_form_exists` states that every ordinal α has a Cantor normal form ω^β₁·c₁ + ... + ω^βₙ·cₙ with β₁ ≥ β₂ ≥ ... ≥ βₙ and each cᵢ < ω, but proves only `True`. This is a conscious stub: the actual formalization exists in Mathlib as `Ordinal.CNF`. The comment points to this. The theorem would be proved by transfinite induction: for α = 0, the empty sum; for successor α = β+1, prepend; for limit α, use the supremum of normal forms below α. Each step requires the ordinal arithmetic operations and the uniqueness of base-ω representation.",
+    "mathContext": "The *Cantor normal form theorem*: every ordinal $\\alpha > 0$ can be written uniquely as $\\alpha = \\omega^{\\beta_1} \\cdot c_1 + \\omega^{\\beta_2} \\cdot c_2 + \\cdots + \\omega^{\\beta_n} \\cdot c_n$ where $\\beta_1 > \\beta_2 > \\cdots > \\beta_n$ are ordinals and $c_1, \\ldots, c_n$ are positive natural numbers. This is the ordinal analogue of positional notation. In Lean: `Ordinal.CNF b o` computes the base-$b$ Cantor normal form of $o$. For $b = \\omega$ this gives the standard CNF.",
+    "significance": "context",
+    "relatedConcepts": ["Ordinal.CNF", "Cantor normal form", "ordinal arithmetic", "transfinite recursion"],
+    "prerequisites": ["ordinal exponentiation", "Ordinal.log in Mathlib", "transfinite induction"]
+  }
+]
