@@ -17,10 +17,10 @@
       "zarankiewicz"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 4,
     "axiomCount": 2,
     "lineCount": 191,
-    "assumptions": "2 axioms: (1) kst_trivial_bound — Kővári-Sós-Turán O(n^{3/2}) upper bound (proven 1954, axiomatized); (2) probabilistic_lower_bound — ex(n, G_k) ≥ c·n^{3/2-1/(k-1)} (probabilistic method, axiomatized). 6 sorries: 4 in this file (k3 weak holds, k independence, uniform O() from o(), limit computation) + 2 in imported Erdos1021Problem.lean (k3_case_solved, trivial_bound) which this file depends on.",
+    "assumptions": "2 axioms: (1) kst_trivial_bound — Kővári-Sós-Turán O(n^{3/2}) upper bound (proven 1954, axiomatized); (2) probabilistic_lower_bound — ex(n, G_k) ≥ c·n^{3/2-1/(k-1)} (probabilistic method, axiomatized). 4 sorries in this file.",
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.26.0"
   },
