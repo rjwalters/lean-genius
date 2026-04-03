@@ -1,0 +1,196 @@
+{
+  "id": "herons-formula-oq-03",
+  "title": "Kahan's Numerically Stable Heron's Formula",
+  "slug": "herons-formula-oq-03",
+  "description": "Formalizes William Kahan's numerically stable variant of Heron's area formula. Proves the algebraic identity kahan_product = 16·heron_product and the equivalence of Kahan area with the classical triangle area.",
+  "meta": {
+    "author": "William Kahan (1986), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Heron%27s_formula#Numerical_stability",
+    "date": "1986",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HeronsFormulaOQ03.lean",
+    "tags": [
+      "geometry",
+      "numerical-analysis",
+      "algebraic-identity",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt_mul",
+        "description": "sqrt(a*b) = sqrt(a)*sqrt(b) for a >= 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sqrt_sq",
+        "description": "sqrt(x^2) = x for x >= 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Kahan product definition (a+(b+c))·(c-(a-b))·(c+(a-b))·(a+(b-c))",
+      "Core algebraic identity: kahan_product = 16·heron_product (by ring)",
+      "Symmetric expansion proving permutation invariance",
+      "Non-negativity from triangle inequality without ordering assumption",
+      "Equivalence of Kahan area and classical Heron area",
+      "Stability lemma: ordering a≥b≥c makes each factor individually non-negative",
+      "Degenerate case: factor vanishes exactly when triangle degenerates",
+      "Examples: 3-4-5 (area 6) and 5-12-13 (area 30) right triangles"
+    ],
+    "dateAdded": "2026-04-03",
+    "lineCount": 215,
+    "theoremCount": 14,
+    "definitionCount": 4,
+    "prerequisites": [
+      "Heron's formula for triangles",
+      "Basic algebra over the reals",
+      "Square roots and non-negativity",
+      "Triangle inequality"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The classical Heron formula $\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$ has been known since antiquity (Hero of Alexandria, c. 60 AD). However, when implemented in finite-precision floating-point arithmetic, the formula suffers from **catastrophic cancellation**: for nearly degenerate triangles where one side is almost equal to the sum of the other two, $s \\approx a$ and $s - a \\approx 0$, losing many significant digits.\n\n**William Kahan** (1986), one of the founders of floating-point arithmetic and recipient of the Turing Award (1989), proposed a numerically stable alternative that avoids this precision loss. For sides $a \\geq b \\geq c$, Kahan's formula groups the computation as\n$$T = (a + (b + c)) \\cdot (c - (a - b)) \\cdot (c + (a - b)) \\cdot (a + (b - c))$$\n$$\\text{Area} = \\frac{1}{4}\\sqrt{T}$$\nThe key is that $a - b$ is computed first (it is small when $a \\approx b$), and then used to compute $c - (a - b)$ — which avoids the large-minus-large catastrophe.\n\nIn **exact arithmetic**, the two formulas are identical: $T = 16 \\cdot s(s-a)(s-b)(s-c)$ (a pure algebraic identity). This formalization proves this identity and the full equivalence.",
+    "problemStatement": "**Kahan's Numerically Stable Heron Formula**:\n\nFor sides $a \\geq b \\geq c \\geq 0$ with triangle inequality $a < b + c$, define\n$$T = (a + (b+c)) \\cdot (c - (a-b)) \\cdot (c + (a-b)) \\cdot (a + (b-c))$$\nThen:\n$$\\text{Area} = \\frac{1}{4}\\sqrt{T} = \\sqrt{s(s-a)(s-b)(s-c)}$$\nwhere $s = (a+b+c)/2$ is the semi-perimeter.",
+    "text": "Formalizes Kahan's numerically stable variant of Heron's area formula. The core result is the algebraic identity kahan_product = 16·heron_product (proved by ring), from which the equivalence of areas follows. Non-negativity, symmetry, and the stability structure for ordered sides are all proved without axioms.",
+    "proofStrategy": "The formalization proceeds in four stages: (1) **Algebraic identity**: `kahan_product = 16 * heron_product` is proved in one step by the `ring` tactic, which reduces both to the same polynomial. (2) **Non-negativity**: The symmetric expansion `(a+b+c)(b+c-a)(a+c-b)(a+b-c)` makes non-negativity transparent — each factor corresponds to one triangle inequality, proved by `linarith`. (3) **Area equivalence**: Using `sqrt(16x) = 4*sqrt(x)` (proved via `Real.sqrt_mul` and `Real.sqrt_sq`) and the algebraic identity, the Kahan area reduces to the Heron area by simple arithmetic. (4) **Stability structure**: With ordering $a \\geq b \\geq c$, the intermediate quantities $a - b$ and $b - c$ are individually non-negative, ensuring each factor in Kahan's product is non-negative — the mathematical basis for numerical stability.",
+    "keyInsights": [
+      "**Ring identity**: The Kahan product equals 16 times Heron's product for ANY reals a, b, c — no triangle inequality needed. This is a pure algebraic fact proved by `ring`",
+      "**Symmetry**: The Kahan product, despite its asymmetric appearance, is symmetric under all permutations of sides. This is proved via the symmetric expansion `(a+b+c)(b+c-a)(a+c-b)(a+b-c)`",
+      "**No ordering needed for validity**: Non-negativity of the Kahan product requires only the triangle inequality — not the ordering $a \\geq b \\geq c$. The ordering is needed only for floating-point stability, not mathematical correctness",
+      "**Degenerate limit**: The factor $c - (a - b) = b + c - a$ vanishes exactly when $a = b + c$ (degenerate triangle). This is the critical factor that Kahan's grouping computes stably",
+      "**Stability mechanism**: For $a \\approx b + c$ (flat triangle), compute $a - b$ (small) first, then $c - (a - b)$ (also small). The naive $b + c - a$ computes a small quantity as the difference of two large ones"
+    ],
+    "prerequisites": [
+      "Heron's formula for triangles (herons-formula)",
+      "Triangle inequality and validity conditions",
+      "Basic algebra and ring arithmetic",
+      "Square root properties"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 34,
+      "endLine": 57,
+      "summary": "Defines heron_product s(s-a)(s-b)(s-c), kahan_product (a+(b+c))·(c-(a-b))·(c+(a-b))·(a+(b-c)), kahan_area = sqrt(kahan_product)/4, and triangle_area = sqrt(heron_product).",
+      "mathContext": "Four noncomputable definitions over ℝ: the classical and Kahan products, and the two area formulas."
+    },
+    {
+      "id": "algebraic",
+      "title": "Algebraic Equivalence",
+      "startLine": 60,
+      "endLine": 90,
+      "summary": "Proves kahan_product = 16·heron_product by ring, and the symmetric expansion. Proves symmetry under permutations of (a,b,c).",
+      "mathContext": "$T = (a+b+c)(b+c-a)(a+c-b)(a+b-c) = 16 s(s-a)(s-b)(s-c)$, proved by `ring`."
+    },
+    {
+      "id": "nonnegativity",
+      "title": "Non-negativity from Triangle Inequality",
+      "startLine": 93,
+      "endLine": 120,
+      "summary": "Proves kahan_product ≥ 0 from triangle inequality (no ordering needed). Derives heron_product ≥ 0 as a corollary.",
+      "mathContext": "Each factor in $(a+b+c)(b+c-a)(a+c-b)(a+b-c)$ is non-negative by one triangle inequality."
+    },
+    {
+      "id": "equivalence",
+      "title": "Equivalence of Area Formulas",
+      "startLine": 123,
+      "endLine": 151,
+      "summary": "Proves sqrt(16x) = 4*sqrt(x) via Real.sqrt_mul and Real.sqrt_sq. Then proves kahan_area = triangle_area for valid triangles.",
+      "mathContext": "Main theorem: $\\frac{1}{4}\\sqrt{T} = \\sqrt{s(s-a)(s-b)(s-c)}$ for valid triangles."
+    },
+    {
+      "id": "stability",
+      "title": "Numerical Stability Structure",
+      "startLine": 153,
+      "endLine": 190,
+      "summary": "Proves that with ordering a≥b≥c, each factor is individually non-negative. Proves the degenerate case where the critical factor vanishes.",
+      "mathContext": "Ordering $a \\geq b \\geq c$ ensures each factor non-negative individually; degenerate case $a = b + c$ gives factor 0."
+    },
+    {
+      "id": "examples",
+      "title": "Worked Examples",
+      "startLine": 193,
+      "endLine": 240,
+      "summary": "Verifies kahan_product(3,4,5) = 576 and kahan_area = 6. Verifies kahan_product(13,12,5) = 14400 and area = 30. Shows kahan_product(10,10,1) = 399 illustrating the 10:1 aspect ratio case.",
+      "mathContext": "Numerical verifications using norm_num and sqrt_sq."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "herons-formula",
+      "relationship": "extends",
+      "description": "Kahan's formula is a numerically stable variant of the classical Heron formula"
+    },
+    {
+      "targetId": "herons-formula-oq-01",
+      "relationship": "related",
+      "description": "Brahmagupta's formula is the cyclic quadrilateral generalization; Kahan stability extends to it as well"
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization proves that Kahan's formula is mathematically equivalent to Heron's formula via a pure algebraic identity (kahan_product = 16·heron_product, proved by ring), with full non-negativity and area equivalence theorems. The stability structure is captured by the ordered-side non-negativity lemma.",
+    "implications": "This bridges exact mathematical proof and numerical algorithm design: the formalization confirms that Kahan's formula is not merely an approximation but an algebraically exact rearrangement. The ring identity explains WHY the formula works, while the stability lemma explains WHY the grouping matters for floating-point.",
+    "openQuestions": [
+      "Can the floating-point error bounds for Kahan's algorithm be formally verified using interval arithmetic or a floating-point model in Lean?",
+      "Does Kahan's stability approach extend to the Cayley-Menger determinant formula for higher-dimensional simplex volumes?",
+      "Can the isoperimetric inequality (equilateral triangle maximizes area for fixed perimeter) be derived using the Kahan product and AM-GM?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Kahan, William",
+      "title": "Miscalculated Areas (personal communication, widely cited)",
+      "year": "1986",
+      "venue": "University of California, Berkeley",
+      "note": "Original source of the numerically stable Heron variant"
+    },
+    {
+      "authors": "Higham, Nicholas J.",
+      "title": "Accuracy and Stability of Numerical Algorithms (2nd ed.)",
+      "year": "2002",
+      "venue": "SIAM",
+      "note": "Chapter 3 discusses Kahan's formula in the context of floating-point summation and triangle area computation"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "KahanHeron",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 4
+  },
+  "mainTheorems": [
+    {
+      "name": "kahan_eq_sixteen_heron",
+      "type": "core",
+      "description": "Kahan product = 16 × Heron product (ring identity)",
+      "leanType": "kahan_product a b c = 16 * heron_product a b c"
+    },
+    {
+      "name": "kahan_area_eq_triangle_area",
+      "type": "core",
+      "description": "Kahan area equals classical Heron area for valid triangles",
+      "leanType": "kahan_area a b c = triangle_area a b c"
+    },
+    {
+      "name": "kahan_product_nonneg",
+      "type": "supporting",
+      "description": "Kahan product is non-negative from triangle inequality",
+      "leanType": "0 ≤ kahan_product a b c"
+    }
+  ]
+}
