@@ -910,6 +910,7 @@ import Proofs.Erdos549Problem
 import Proofs.Erdos54Problem
 import Proofs.Erdos550Problem
 import Proofs.Erdos551Problem
+import Proofs.Erdos551ProblemAristotle
 import Proofs.Erdos554Problem
 import Proofs.Erdos555Problem
 import Proofs.Erdos556Problem
