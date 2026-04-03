@@ -131,8 +131,10 @@ The first proof that c < 1, establishing egyptianCount(N) ≤ 2^{0.93N}.
 /-- Steinerberger's constant: the exponent 0.93 from his upper bound. -/
 def steinerbergerConstant : ℝ := 0.93
 
-/-- **Steinerberger (2024, arXiv:2403.17041):**
+/-
+**Steinerberger (2024, arXiv:2403.17041):**
     The Egyptian count satisfies egyptianCount(N) ≤ 2^{0.93N} for all sufficiently large N.
+-/
 
 /-
 ## Part 6: Liu-Sawhney's Full Asymptotic (April 2024)
@@ -172,9 +174,11 @@ Independent proof of the same asymptotic, plus generalization to arbitrary targe
 noncomputable def egyptianCountTarget (N : ℕ) (x : ℚ) : ℕ :=
   ((subsets N).filter (fun A => harmonicSum A = x ∧ 0 ∉ A)).card
 
-/-- **Conlon et al. generalization:**
+/-
+**Conlon et al. generalization:**
     For any rational x > 0, there exists a constant c_x ∈ (0, 1) such that
     egyptianCountTarget(N, x) = 2^{(c_x + o(1))N}.
+-/
 
 /-
 ## Part 8: The 2017 MathOverflow Precedent
@@ -192,8 +196,10 @@ noncomputable def egyptianCountLeq (N : ℕ) : ℕ :=
 The constraint Σ 1/n = 1 exactly is very restrictive.
 -/
 
-/-- **Heuristic:** For a random subset of {1,...,N}, the expected harmonic sum is
+/-
+**Heuristic:** For a random subset of {1,...,N}, the expected harmonic sum is
     E[Σ 1/n] ≈ (1/2) · H_N ≈ (log N)/2, which grows without bound.
+-/
 
 /-
 ## Part 10: Main Results
