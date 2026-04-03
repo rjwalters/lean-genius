@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created AreaOfCircleOQ01OQ03OQ02.lean with LipschitzClosedCurve structure, 2 clean axioms (wirtinger_ac, exists_lip_nice_reparam), 13 proved theorems (circle equality, square strict inequality, minimum circumference), and full proof architecture for main theorem 4πA≤C²",
+    "progressSummary": "PROGRESS: Session 2026-04-03 proved hCS integrability and harea_bound structure; main theorem lipschitz_isoperimetric is 1 sorry away (hf_int: integrability of xy-yx for Lipschitz curves)",
     "builtItems": [
       "LipschitzClosedCurve structure (proofs/Proofs/AreaOfCircleOQ01OQ03OQ02.lean)",
       "SmoothClosedCurve.toLipschitz embedding (smooth → Lipschitz, preserves C and A by rfl)",
@@ -37,7 +37,11 @@
       "square_isoperimetric_ratio, square_ratio_lt_one, square_strict_isoperimetric: fully proved",
       "wirtinger_sum_sq_bound_lip: Wirtinger bound ∫(x²+y²) ≤ 2πc² from wirtinger_ac axiom",
       "lipschitz_isoperimetric: 4πA ≤ C² proved from 2 axioms + arithmetic kernel reuse",
-      "lip_minimum_circumference: C ≥ 2√(πA) as corollary"
+      "lip_minimum_circumference: C ≥ 2√(πA) as corollary",
+      "hspeed_c: converts hspeed from γ.circumference/(2π) to c=L/(2π) via hcirc_eq",
+      "hCS proof: both integrability goals proved using hcont_f.intervalIntegrable and funext+Real.sq_sqrt",
+      "harea_bound structure: full proof using cross_product_sq_le + MeasureTheory.integral_mono_ae + ae_restrict_of_ae",
+      "Cleaned wirtinger_sum_sq_bound_lip: replaced broken lemma calls (Real.norm_le_of_lipschitzWith etc.) with clean sorries"
     ],
     "insights": [
       "Lipschitz closed curves generalize smooth closed curves: replace ContDiff ℝ 1 with LipschitzWith K",
@@ -46,7 +50,11 @@
       "The proof structure is IDENTICAL to the smooth case (same arithmetic kernel isoperimetric_from_wirtinger_bounds)",
       "Every SmoothClosedCurve is a LipschitzClosedCurve via toLipschitz embedding (circumference and area preserved by definition equality)",
       "Square (piecewise-linear, Lipschitz not smooth): C=4a, A=a², ratio=π/4 < 1 PROVED without sorries",
-      "Circumference/area definitions are literally identical for smooth and Lipschitz curves (same integral formula)"
+      "Circumference/area definitions are literally identical for smooth and Lipschitz curves (same integral formula)",
+      "hCS integrability proved: √(x²+y²) integrable from Lipschitz→continuous; (√f)²=f simplification uses Real.sq_sqrt",
+      "harea_bound proved up to hf_int sorry: area bound 2A≤c·∫√(x²+y²) uses Cauchy-Schwarz a.e. + integral_mono_ae",
+      "hspeed_c conversion needed: hspeed from exists_lip_nice_reparam uses γ.circumference/(2π), must rewrite to c=L/(2π) explicitly",
+      "Remaining blocker: integrability of xy-yx (product of continuous γ.x with essentially-bounded deriv γ.y) requires Rademacher or LipschitzWith.norm_deriv_le in Mathlib"
     ],
     "mathlibGaps": [
       "Mathlib lacks: derivative bound for Lipschitz functions (LipschitzWith K f → |f'(t)| ≤ K when differentiable)",
@@ -54,10 +62,10 @@
       "Mathlib lacks: area bound analog for Lipschitz curves with a.e. constant speed (area_bound_const_speed uses smooth continuity)"
     ],
     "nextSteps": [
-      "Submit wirtinger_sum_sq_bound_lip integrability sorries to Aristotle: should be provable via Lipschitz derivative bounds",
-      "Prove contDiff_periodic_lipschitz via MVT (Mathlib has LipschitzOnWith.of_hasDerivAt_le on intervals)",
-      "Prove area_bound_lip (analog of area_bound_const_speed for Lipschitz): same Cauchy-Schwarz argument but with AE conditions",
-      "Check if Mathlib4 has LipschitzWith.norm_deriv_le or HasDerivAt.le_of_lipschitzWith for the Lipschitz derivative bound"
+      "Prove hf_int: integrability of γ.x*deriv(γ.y) - γ.y*deriv(γ.x) for Lipschitz curves",
+      "Options for hf_int: (1) LipschitzWith.norm_deriv_le + IntegrableOn.mul, (2) MeasurableEmbedding, (3) Rademacher theorem",
+      "Prove hdx_int/hdy_int: (deriv f)^2 integrable when LipschitzWith K f — needs norm_deriv_le_lipschitzWith or similar",
+      "Prove toLipschitz.lip_x/lip_y: C^1 periodic → LipschitzWith via contDiff.lipschitzWith on compact interval + periodicity"
     ]
   },
   "tags": [
