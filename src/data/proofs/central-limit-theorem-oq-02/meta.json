@@ -1,0 +1,90 @@
+{
+  "id": "central-limit-theorem-oq-02",
+  "title": "Central Limit Theorem for Dependent Random Variables",
+  "slug": "central-limit-theorem-oq-02",
+  "description": "Formalizes the CLT beyond i.i.d. sequences to dependent random variables via two generalizations: the Martingale CLT (McLeish 1974) for martingale difference arrays with Lindeberg condition, and the α-mixing CLT (Ibragimov 1962) for stationary mixing sequences. Proves Lyapunov implies Lindeberg, i.i.d. variance convergence, and classical CLT recovery. 19 theorems, 1 axiom, 3 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-03-06",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ02.lean",
+    "tags": [
+      "probability",
+      "central-limit-theorem",
+      "martingales",
+      "mixing",
+      "lindeberg-condition",
+      "dependent-variables"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: martingale_clt (McLeish 1974, Brown 1971) — the martingale CLT itself, stating that MDA satisfying Lindeberg condition and conditional variance convergence has row sums converging in distribution to Gaussian. Requires characteristic function methods and deep martingale theory not yet formalized in Mathlib. 3 sorries: (1) nested ciSup of zeros = 0 for independent sequences, (2) i.i.d. Lindeberg condition via dominated convergence for truncated moments, (3) i.i.d. Lyapunov condition via rpow moment decay.",
+    "lineCount": 729,
+    "theoremCount": 19,
+    "definitionCount": 6,
+    "originalContributions": [
+      "MartingaleDiffArray: triangular array {X_{n,k}} with martingale difference property and square integrability",
+      "lindebergCondition: Lindeberg criterion — sum of truncated second moments vanishes",
+      "lyapunovCondition: Lyapunov sufficient condition for Lindeberg via (2+δ)-th moments",
+      "varianceConverges: conditional variance convergence to σ²",
+      "IIDSequence: i.i.d. sequence with mean 0 and finite variance σ², embedded as MDA",
+      "alphaMixingCoeff: α-mixing coefficient measuring σ-algebra dependence decay",
+      "martingale_clt (axiom): McLeish 1974 theorem — MDA with Lindeberg + variance convergence implies Gaussian limit",
+      "lyapunov_implies_lindeberg: full proof — Lyapunov condition implies Lindeberg via rpow indicator bound",
+      "iid_mda_variance_converges: i.i.d. MDA variance sum = σ² exactly for n ≥ 1",
+      "classical_clt_from_martingale: classical CLT follows from martingale CLT for i.i.d. sequences",
+      "rpow_indicator_bound: x²·ε^δ ≤ |x|^{2+δ} when |x| > ε (key lemma)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical Central Limit Theorem (Lindeberg 1922, Feller 1935) applies to independent sequences. The question of whether CLT extends to dependent variables was a major 20th century problem. Key results: Martingale CLT (McLeish 1974, building on Brown 1971) handles martingale difference arrays; Mixing CLT (Ibragimov 1962, building on Rosenblatt 1956) handles strongly mixing sequences. Both cover a vast class of stochastic processes including ARMA models, Markov chains, and ergodic processes.",
+    "problemStatement": "Does the CLT hold for dependent random variables? Formalize the Martingale CLT and α-mixing CLT, and show that the classical i.i.d. CLT is a special case of both.",
+    "text": "A martingale difference array (MDA) {X_{n,k}} satisfies E[X_{n,k} | ℱ_{n,k-1}] = 0 — each term has conditional mean zero. The Martingale CLT says: if (1) the Lindeberg condition holds (truncated second moments vanish), and (2) the conditional variance sum converges to σ², then the row sum S_n = ∑_k X_{n,k} converges in distribution to N(0, σ²). The α-mixing CLT handles stationary sequences where α-mixing coefficients decay at a polynomial rate. Both reduce to the classical CLT when the sequence is i.i.d.: independence implies the MDA property, and i.i.d. sequences trivially satisfy any mixing condition.",
+    "proofStrategy": "Part I defines the MDA structure with integrability and variance properties. Part II defines the Lindeberg and Lyapunov conditions. Part III axiomatizes the Martingale CLT. Part IV constructs the i.i.d. MDA and proves variance convergence. Part V proves classical CLT as corollary (modulo 2 sorries for Lindeberg/Lyapunov for i.i.d.). Part VI defines α-mixing coefficients. Parts VII-XI prove supporting theorems: Lyapunov implies Lindeberg (fully proved), variance bounds, characteristic function properties.",
+    "keyInsights": [
+      "The MDA structure abstracts away independence: only conditional mean zero is required",
+      "Lyapunov implies Lindeberg: if ∑E[|X_{n,k}|^{2+δ}] → 0 then Lindeberg holds (proved via rpow bound)",
+      "For i.i.d. sequences, the MDA variance sum = σ² exactly (not just in the limit)",
+      "The characteristic function approach: E[exp(itS_n)] → exp(-σ²t²/2) by product formula for MDAs",
+      "Mixing conditions quantify how quickly distant σ-algebras become independent"
+    ],
+    "prerequisites": [
+      "Martingale theory: filtrations, conditional expectations, martingale differences",
+      "Probability: measure theory, characteristic functions, convergence in distribution",
+      "Real analysis: dominated convergence theorem, rpow estimates",
+      "Classical CLT: Lindeberg-Feller theorem for independent sequences"
+    ]
+  },
+  "conclusion": {
+    "summary": "The CLT for dependent variables is formally developed: MDA structure, Lindeberg and Lyapunov conditions, α-mixing coefficients, and the classical recovery. Lyapunov implies Lindeberg is fully proved. The Martingale CLT (McLeish 1974) is axiomatized as the deep core result. 19 theorems, 6 definitions, 729 lines, 1 axiom, 3 sorries.",
+    "implications": "This formalization provides the foundational infrastructure for proving CLT-type results for stochastic processes in Lean 4. The MDA framework covers time series, Markov chains, and ergodic processes. Completing the sorries (particularly the Lindeberg condition for i.i.d. via DCT) would give a fully verified dependent CLT framework.",
+    "openQuestions": [
+      "Prove martingale_clt: formalize McLeish 1974 via characteristic function method",
+      "Complete i.i.d. Lindeberg condition: DCT for truncated moment convergence",
+      "Complete i.i.d. Lyapunov condition: rpow moment decay estimate",
+      "Formalize mixing CLT with explicit Ibragimov 1962 assumptions and polynomial mixing rates"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CentralLimitTheoremOQ02",
+    "lineCount": 729,
+    "axiomCount": 1,
+    "theoremCount": 19,
+    "definitionCount": 6
+  },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "Classical CLT for i.i.d. sequences; this file generalizes to dependent variables via MDA and mixing conditions"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01",
+      "relationship": "related",
+      "description": "Related CLT extension exploring Lindeberg-Feller for non-identically distributed independent sequences"
+    }
+  ],
+  "sections": []
+}

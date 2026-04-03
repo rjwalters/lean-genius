@@ -1,0 +1,82 @@
+{
+  "id": "chinese-remainder-non-coprime-oq-02",
+  "title": "Non-Coprime CRT for Euclidean Domains and Polynomial Rings",
+  "slug": "chinese-remainder-non-coprime-oq-02",
+  "description": "Extends the non-coprime Chinese Remainder Theorem to Euclidean domains (necessity, sufficiency, uniqueness via Bézout), polynomial rings (Lagrange interpolation as CRT specialization), and PIDs via ideal theory. Proves the element-level coprimality ↔ ideal-level coprimality bridge, and gives a unified non-coprime CRT for all PIDs. 55 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderNonCoprimeOQ02.lean",
+    "tags": [
+      "number-theory",
+      "chinese-remainder-theorem",
+      "euclidean-domain",
+      "polynomial-rings",
+      "ideal-theory",
+      "pid"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 705,
+    "theoremCount": 55,
+    "definitionCount": 0,
+    "originalContributions": [
+      "ed_crt_necessary: gcd(m,n)∣(a-b) is necessary for solvability in any EuclideanDomain",
+      "ed_crt_sufficient: sufficiency via Bézout — gcd(m,n)∣(a-b) implies ∃ x solving both congruences",
+      "ed_crt_unique: solutions are unique modulo lcm(m,n)",
+      "ed_crt_iff: full iff for EuclideanDomains (necessity + sufficiency combined)",
+      "Lagrange interpolation as CRT: (X-a) and (X-b) coprime for a≠b, specializing CRT to unique interpolating polynomial",
+      "IsCoprime↔ideal span: element coprimality ↔ Ideal.span {a} ⊔ Ideal.span {b} = ⊤",
+      "ideal_crt_necessary / ideal_crt_sufficient: solvability ↔ a-b ∈ I + J at ideal level",
+      "element_crt_from_ideal: lifting ideal CRT to element level",
+      "pid_noncoprime_crt_iff: non-coprime CRT for PIDs via ideal theory",
+      "pid_noncoprime_crt_full: combined existence + uniqueness for all PIDs"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical CRT requires coprime moduli. The non-coprime extension is classical for ℤ: the system x ≡ a (mod m), x ≡ b (mod n) is solvable iff gcd(m,n)∣(a-b). This file generalizes to Euclidean domains (ℤ, k[X], ℤ[i]) and PIDs, connecting the element-level theory to ideal-theoretic foundations and specializing to Lagrange interpolation.",
+    "problemStatement": "Extend the non-coprime CRT from ℤ to Euclidean domains and PIDs, connect to ideal theory, and show Lagrange interpolation is a special case.",
+    "text": "Part I-III (EuclideanDomain): Necessity, sufficiency via Bézout, uniqueness mod lcm. Part IV (Polynomial rings): (X-a) and (X-b) are coprime for distinct scalars, giving Lagrange interpolation as the unique degree-(n-1) polynomial through n points. Part V (Ideal bridge): IsCoprime a b ↔ span{a} + span{b} = ⊤. Part VI (Ideal CRT): a-b ∈ I + J ↔ ∃x: a ≡ x mod I and b ≡ x mod J. Parts VII-XIII (PID): Lifting ideal CRT to element level, combining existence and uniqueness for the full PID non-coprime CRT.",
+    "proofStrategy": "Bézout's identity in EuclideanDomains provides the explicit solution. For polynomial rings, coprimality of (X-a) and (X-b) follows from gcd computation. For PIDs, all ideals are principal, enabling element-to-ideal translation.",
+    "keyInsights": [
+      "Bézout: gcd(m,n) = um + vn enables explicit construction of the solution x = a + m·v·(b-a)/gcd",
+      "Lagrange interpolation is CRT: finding polynomial through n points = solving n congruences mod (X-aᵢ)",
+      "IsCoprime↔ideal span: the algebraic and ideal-theoretic notions of coprimality agree",
+      "In a PID, I ∩ J = ⟨lcm⟩, so uniqueness is expressible purely in terms of ideals"
+    ],
+    "prerequisites": [
+      "Euclidean domains: GCD algorithm, Bézout's identity",
+      "Polynomial rings: division algorithm, coprimality",
+      "Ideal theory: Ideal.span, supremum, infimum of ideals",
+      "PIDs: every ideal principal implies lcm = ideal intersection"
+    ]
+  },
+  "conclusion": {
+    "summary": "Non-coprime CRT fully verified for EuclideanDomains, polynomial rings, and PIDs. Lagrange interpolation emerges as a specialization. Ideal-element bridge proved. 55 theorems, 705 lines, 0 axioms.",
+    "implications": "This provides a complete algebraic hierarchy: ℤ → EuclideanDomain → PID → the non-coprime CRT holds at each level. The ideal-theoretic formulation is the most general and connects to algebraic geometry (sheaves of rings, local-global principles).",
+    "openQuestions": [
+      "Extend to 3 moduli in PIDs (see ChineseRemainderNonCoprimeOQ03.lean)",
+      "Ideal-theoretic CRT for Noetherian rings (not necessarily PIDs)",
+      "Algorithmic CRT: explicit complexity bounds for the extended Euclidean algorithm"
+    ]
+  },
+  "leanFile": {
+    "namespace": "ChineseRemainderNonCoprimeOQ02",
+    "lineCount": 705,
+    "axiomCount": 0,
+    "theoremCount": 55,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-03",
+      "relationship": "extends",
+      "description": "This file handles 2-moduli case; OQ03 extends to 3 moduli"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,86 @@
+{
+  "id": "wilsons-theorem-oq-01",
+  "title": "Wilson's Theorem: Complete Classification for Non-Prime Moduli",
+  "slug": "wilsons-theorem-oq-01",
+  "description": "Extends Wilson's theorem to all moduli n≥2: for composite n>4, n∣(n-1)!; for n=4, (n-1)! ≡ 2 (mod 4); for primes, (p-1)! ≡ -1 (mod p). Formalizes Wilson primes (p∣(p-1)!+1 with p²), verifies 5, 13 are Wilson primes, and proves the Gauss-Wilson classification (product of units ≡ -1 iff n ∈ {1,2,4,p^k,2p^k}). 33 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ01.lean",
+    "tags": [
+      "number-theory",
+      "wilson-theorem",
+      "wilson-primes",
+      "gauss-wilson",
+      "modular-arithmetic",
+      "composite-moduli"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 688,
+    "theoremCount": 33,
+    "definitionCount": 9,
+    "originalContributions": [
+      "composite_factorial_dvd: for composite n>4, n divides (n-1)!",
+      "composite_factorial_zero: (n-1)! ≡ 0 (mod n) for composite n>4",
+      "factorial_mod_four: 3! = 6 ≡ 2 (mod 4) — the special case n=4",
+      "wilson_complete_classification: trichotomy for n≥2 — prime (≡-1), n=4 (≡2), composite n>4 (≡0)",
+      "prime_iff_factorial_neg_one: p prime ↔ (p-1)! ≡ -1 (mod p) (Wilson's theorem iff)",
+      "IsWilsonPrime: p² | (p-1)!+1 definition",
+      "five_is_wilson_prime / thirteen_is_wilson_prime: verified Wilson primes",
+      "wilsonQuotient_pos: Wilson quotient W_p = ((p-1)!+1)/p is always positive",
+      "gaussWilson_classification: units product ≡ -1 (mod n) iff n ∈ {1,2,4,p^k,2p^k}",
+      "gaussWilson_verified_le_50: Gauss-Wilson verified for all n ≤ 50 (and n ≤ 300)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Wilson's theorem (John Wilson 1770, proved by Lagrange 1773): (p-1)! ≡ -1 (mod p) iff p is prime. The natural generalization asks: what is (n-1)! mod n for composite n? Gauss (1801) proved the complete classification of when the product of all units mod n equals -1 — this is the Gauss-Wilson theorem, characterizing cyclic unit groups. Wilson primes p (where p² | (p-1)!+1) are rare: only 5, 13, 563 are known.",
+    "problemStatement": "Classify (n-1)! mod n for all n≥2. Formalize Wilson primes. Prove the Gauss-Wilson classification of n where ∏units ≡ -1.",
+    "text": "Three cases: (1) If p is prime, (p-1)! ≡ -1 (mod p) by pairing each a with its inverse, except a = ±1. (2) If n = 4, 3! = 6 ≡ 2 (mod 4) — the unique exception. (3) If n is composite and n > 4, then n | (n-1)! because n = a·b with distinct a,b < n both appearing in (n-1)!. The Gauss-Wilson theorem: ∏(ℤ/nℤ)* = -1 iff (ℤ/nℤ)* is cyclic iff n ∈ {1,2,4,p^k,2p^k}.",
+    "proofStrategy": "Prove the three cases of Wilson's theorem directly. Define Wilson quotient and Wilson primes. Use Mathlib's isCyclic_units_iff_gaussWilson for the classification. Verify specific small cases by native_decide.",
+    "keyInsights": [
+      "Composite n>4: n = a·b with a≠b, both factors appear in (n-1)!, so n | (n-1)!",
+      "n=4 is unique: the only composite n where (n-1)! is neither 0 nor -1 mod n",
+      "Wilson primes: p | (p-1)!+1 always (by Wilson); Wilson prime requires p² | it",
+      "Gauss-Wilson ↔ cyclic units: the full classification relies on Mathlib's cyclicity theorem"
+    ],
+    "prerequisites": [
+      "Wilson's theorem for primes: pairing inverses",
+      "Modular arithmetic: ZMod, units group",
+      "Group theory: cyclic groups, IsCyclic"
+    ]
+  },
+  "conclusion": {
+    "summary": "Wilson's theorem fully generalized: complete classification for all n≥2, Wilson primes defined and verified (5 and 13), Gauss-Wilson classification proved. 33 theorems, 9 definitions, 688 lines, 0 axioms.",
+    "implications": "The only known Wilson primes are 5, 13, and 563. Whether infinitely many exist is unknown. The Gauss-Wilson classification is the number-theoretic foundation for understanding cyclic unit groups in algebraic number theory.",
+    "openQuestions": [
+      "Prove Wilson prime finiteness/infinitude — a major open problem",
+      "Formalize the third Wilson prime 563 verification (large native_decide computation)",
+      "Connect Wilson primes to Bernoulli numbers: p is Wilson prime iff p | B_{p-1}"
+    ]
+  },
+  "leanFile": {
+    "namespace": "WilsonsTheoremGeneralization",
+    "lineCount": 688,
+    "axiomCount": 0,
+    "theoremCount": 33,
+    "definitionCount": 9
+  },
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "extends",
+      "description": "Base Wilson's theorem for primes; this file extends to composite moduli and Wilson primes"
+    },
+    {
+      "targetId": "wilsons-theorem-oq-02",
+      "relationship": "uses",
+      "description": "WilsonsTheoremOQ02 provides the Gauss-Wilson abstract framework used here"
+    }
+  ],
+  "sections": []
+}

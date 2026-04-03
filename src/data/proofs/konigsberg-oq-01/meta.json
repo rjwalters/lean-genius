@@ -1,0 +1,78 @@
+{
+  "id": "konigsberg-oq-01",
+  "title": "Eulerian Circuits in Concrete Graph Families",
+  "slug": "konigsberg-oq-01",
+  "description": "Proves Eulerian circuit existence and non-existence for concrete graph families: the square C₄ and pentagon C₅ have Eulerian circuits, K₄ (complete graph on 4 vertices with all odd degrees) has no Euler path, and odd-regular graphs on ≥3 vertices have no Euler path. Extends to general necessary conditions. 24 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KonigsbergOQ01.lean",
+    "tags": [
+      "graph-theory",
+      "eulerian-paths",
+      "konigsberg",
+      "combinatorics",
+      "concrete-graphs"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 404,
+    "theoremCount": 24,
+    "definitionCount": 8,
+    "originalContributions": [
+      "sqCircuit_isEulerian: C₄ (square) has an Eulerian circuit — all degrees 2, circuit visits all 4 vertices",
+      "pentCircuit_isEulerian: C₅ (pentagon) has an Eulerian circuit — all degrees 2, circuit visits all 5 vertices",
+      "k4_not_eulerian: K₄ has no Eulerian path — all 4 vertices have odd degree 3",
+      "regular_odd_no_euler: any odd-regular graph on ≥3 vertices has no Eulerian path",
+      "euler_criterion_necessary: Eulerian circuit implies all-even degrees",
+      "no_eulerian_path_three_or_more_odd: ≥3 odd-degree vertices implies no Eulerian path",
+      "euler_circuit_implies_all_even: circuit → all even (formal direction)",
+      "euler_trail_non_endpoint_even: non-endpoint vertices in an Euler trail have even degree"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler's theorem (1736) for Königsberg bridges: a graph has an Eulerian circuit iff it is connected and all vertices have even degree. An Eulerian path exists iff exactly 0 or 2 vertices have odd degree. This formalization focuses on concrete examples and general necessary conditions, building on the base Königsberg formalization.",
+    "problemStatement": "Which concrete graph families have Eulerian circuits or paths? Prove the criterion for C₄, C₅, K₄, and odd-regular graphs.",
+    "text": "C₄ and C₅ (n-cycles) trivially have Eulerian circuits: all vertices have degree 2 (even), and a Hamiltonian cycle is also Eulerian. K₄ has all vertices of odd degree 3, so no Eulerian path exists by the odd-degree criterion. The general theorem: an odd-regular graph on n ≥ 3 vertices has all n vertices of odd degree, so with n ≥ 3 odd-degree vertices, no Eulerian path exists (requires ≤ 2 odd-degree vertices).",
+    "proofStrategy": "Define explicit circuits for C₄ and C₅, verify they visit all vertices and edges exactly once. For K₄: compute degrees = 3 (odd), then apply the odd-degree non-existence criterion. For odd-regular: n ≥ 3 all-odd-degree vertices violates the ≤ 2 odd-degree condition.",
+    "keyInsights": [
+      "Cycles Cₙ are Eulerian for all n ≥ 3: all degrees are 2 (even), and the cycle itself is the Eulerian circuit",
+      "K₄ is the smallest complete graph with no Eulerian path (all degrees 3 = odd)",
+      "Regular odd graphs with ≥3 vertices all fail: too many odd-degree vertices",
+      "Euler trail non-endpoint degrees are even: travel arrives and departs equally"
+    ],
+    "prerequisites": [
+      "Eulerian circuits: connected graph, all even degrees",
+      "Eulerian paths: exactly 0 or 2 odd-degree vertices",
+      "Graph degrees: handshaking lemma Σ deg = 2|E|"
+    ]
+  },
+  "conclusion": {
+    "summary": "Eulerian circuit existence proved for C₄ and C₅, non-existence proved for K₄ and odd-regular graphs. General necessary conditions verified. 24 theorems, 8 definitions, 404 lines, 0 axioms.",
+    "implications": "This completes the concrete verification of Euler's theorem for common graph families, providing machine-verified examples for graph theory education.",
+    "openQuestions": [
+      "Prove sufficiency of Euler's criterion (connected + all-even → Eulerian circuit) without axioms",
+      "Extend to directed Eulerian paths (see konigsberg-oq-02)",
+      "Prove Euler criterion for multigraphs and hypergraphs"
+    ]
+  },
+  "leanFile": {
+    "namespace": "KonigsbergOQ01",
+    "lineCount": 404,
+    "axiomCount": 0,
+    "theoremCount": 24,
+    "definitionCount": 8
+  },
+  "crossReferences": [
+    {
+      "targetId": "konigsberg-oq-02",
+      "relationship": "related",
+      "description": "Directed Euler path characterization; this file covers undirected concrete examples"
+    }
+  ],
+  "sections": []
+}
