@@ -36,10 +36,12 @@
     "text": "The GCD class S_d(n) = {k ∈ range n : gcd(k,n) = d} partitions {0,...,n-1}: every k belongs to S_{gcd(k,n)}, and classes for different divisors are disjoint. The key lemma card_gcdClass_eq_totient establishes |S_d| = φ(n/d) via the bijection k ↦ k/d: if gcd(k,n) = d then gcd(k/d, n/d) = 1 (coprimality preserved by canceling d). The injectivity is by Nat.div_mul_cancel, and surjectivity maps m ↦ d·m. The divisor sum identity follows by summing cardinalities. The probabilistic interpretation: P(gcd(k,n) = d) = φ(n/d)/n.",
     "proofStrategy": "Finset.card_bij with f(k) = k/d, proving: (1) image lands in the coprime set of n/d, (2) injectivity via d | k and d | k' implies k = k', (3) surjectivity via d·m ∈ S_d for coprime m < n/d. The partition sum uses Finset.card_biUnion with the disjointness lemma.",
     "keyInsights": [
-      "GCD classes give a natural partition: each k ∈ {0,...,n-1} belongs to exactly one S_d",
-      "The bijection k ↦ k/d respects both size and coprimality (gcd(k/d, n/d) = 1)",
-      "Partition-of-unity: φ defines a probability distribution on divisors of n",
-      "Cross-validated against Mathlib's Nat.sum_totient"
+      "GCD classes S_d(n) = {k < n : gcd(k,n) = d} partition {0,...,n-1} as d ranges over divisors of n",
+      "The bijection k ↦ k/d: S_d(n) → coprime set of n/d works because gcd(k,n) = d implies gcd(k/d, n/d) = 1",
+      "Summing cardinalities |S_d| = φ(n/d) gives n = Σ_{d|n} φ(n/d) — directly from the partition",
+      "Partition-of-unity: P(gcd(U,n) = d) = φ(n/d)/n for uniform U on {0,...,n-1} — φ is a probability mass function on divisors",
+      "The combinatorial proof via GCD partition is more instructive than Möbius inversion: it shows explicitly why each summand contributes",
+      "Cross-validated: matches Mathlib's Nat.sum_totient, and verified concretely for n=6,7,12,30"
     ],
     "prerequisites": [
       "Euler's totient function: Nat.totient, Nat.Coprime",
@@ -62,6 +64,61 @@
     "theoremCount": 9,
     "definitionCount": 1
   },
-  "crossReferences": [],
-  "sections": []
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion-oq-01",
+      "relationship": "related",
+      "description": "Inclusion-exclusion is an alternative approach to computing φ(n); this file uses a direct partition instead"
+    }
+  ],
+  "sections": [
+    {
+      "id": "gcd-classes",
+      "title": "GCD Classes",
+      "summary": "Defines gcdClass(n,d) = {k < n : gcd(k,n) = d} and mem_gcdClass membership characterization.",
+      "startLine": 35,
+      "endLine": 45,
+      "mathContext": "The GCD class $S_d(n) = \\{k \\in \\{0,\\ldots,n-1\\} : \\gcd(k,n) = d\\}$ is implemented as a filtered Finset. Note: $d$ must divide $n$ for $S_d$ to be nonempty; $S_1(n)$ is the group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ of coprime residues, with $|S_1| = \\varphi(n)$."
+    },
+    {
+      "id": "partition-structure",
+      "title": "Partition Structure",
+      "summary": "Proves mem_gcdClass_of_gcd (k ∈ S_{gcd(k,n)}), gcdClass_disjoint (different divisors → disjoint classes), and range_eq_biUnion_gcdClass ({0,...,n-1} = ⊔ S_d).",
+      "startLine": 47,
+      "endLine": 70,
+      "mathContext": "The partition of $\\{0,\\ldots,n-1\\}$ by GCD classes: (1) every $k$ belongs to $S_{\\gcd(k,n)}$ (coverage), (2) distinct divisors give disjoint classes (since a number has a unique GCD with $n$). The Lean proof uses `Finset.biUnion` and `Finset.disjoint_filter`."
+    },
+    {
+      "id": "cardinality-bijection",
+      "title": "Cardinality: |S_d| = φ(n/d)",
+      "summary": "Proves card_gcdClass_eq_totient via Finset.card_bij: the map k ↦ k/d bijects S_d(n) with {m < n/d : gcd(m,n/d) = 1}. Proves injectivity (Nat.div_mul_cancel) and surjectivity (m ↦ d·m).",
+      "startLine": 72,
+      "endLine": 135,
+      "mathContext": "For $k \\in S_d(n)$: $d \\mid k$ (since $\\gcd(k,n) = d$), so $k/d$ is well-defined. Then $\\gcd(k/d, n/d) = \\gcd(k,n)/d = 1$. The inverse $m \\mapsto d \\cdot m$ with $\\gcd(dm, dn/d) = d \\cdot \\gcd(m, n/d) = d$ confirms $d \\cdot m \\in S_d$. In Lean, this uses `Nat.gcd_mul_left` and `mul_left_cancel₀`."
+    },
+    {
+      "id": "divisor-sum-identity",
+      "title": "The Divisor Sum Identity",
+      "summary": "Proves divisor_sum_totient_div: n = Σ_{d|n} φ(n/d) by partition summing. Also divisor_sum_totient: the standard form Σ_{d|n} φ(d) = n, cross-validated against Mathlib.",
+      "startLine": 137,
+      "endLine": 172,
+      "mathContext": "$n = |\\{0,\\ldots,n-1\\}| = \\sum_{d \\mid n} |S_d(n)| = \\sum_{d \\mid n} \\varphi(n/d)$. The first equality is `card_range n`, the second uses `card_biUnion` with the disjointness hypothesis, the third substitutes `card_gcdClass_eq_totient`. The standard form $\\sum_{d \\mid n} \\varphi(d) = n$ follows by the symmetry $d \\leftrightarrow n/d$ of divisor summation."
+    },
+    {
+      "id": "partition-of-unity",
+      "title": "Partition of Unity and Probabilistic Interpretation",
+      "summary": "Proves partition_of_unity: Σ_{d|n} φ(n/d)/n = 1 over ℚ. Probabilistic: the divisors of n with weights φ(n/d)/n form a probability mass function.",
+      "startLine": 174,
+      "endLine": 198,
+      "mathContext": "$P(\\gcd(U,n) = d) = \\varphi(n/d)/n$ where $U$ is uniform on $\\{0,\\ldots,n-1\\}$. This gives $\\sum_{d \\mid n} P(\\gcd(U,n) = d) = 1$, which is exactly $\\sum_{d \\mid n} \\varphi(n/d)/n = 1$. Connection to group theory: the distribution of $\\gcd(U,n)$ over divisors is the 'push-forward' of the uniform measure on $\\mathbb{Z}/n\\mathbb{Z}$ through the GCD map."
+    },
+    {
+      "id": "concrete-verifications",
+      "title": "Concrete Verifications",
+      "summary": "Uses native_decide to verify the identity for n=6,12,30 and computes explicit GCD class sizes for n=6 (S_1={1,5}, S_2={2,4}, S_3={3}, S_6={0}) and n=7 (prime).",
+      "startLine": 200,
+      "endLine": 231,
+      "mathContext": "For $n=6$: divisors are $\\{1,2,3,6\\}$, GCD classes $S_1=\\{1,5\\}, S_2=\\{2,4\\}, S_3=\\{3\\}, S_6=\\{0\\}$, with sizes $2,2,1,1$ and $\\varphi(6/d)$ values $\\varphi(6)=2, \\varphi(3)=2, \\varphi(2)=1, \\varphi(1)=1$ — matching! For prime $p=7$: $S_1 = \\{1,2,3,4,5,6\\}$ (size 6 = $\\varphi(7)$) and $S_7 = \\{0\\}$ (size 1 = $\\varphi(1)$), sum = 7. ✓"
+    }
+  ]
 }

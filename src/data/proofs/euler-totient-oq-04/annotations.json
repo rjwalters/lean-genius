@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "line": 40,
+    "type": "definition",
+    "content": "The **GCD class** $S_d(n) = \\{k \\in \\{0,\\ldots,n-1\\} : \\gcd(k,n) = d\\}$. These classes partition $\\{0,\\ldots,n-1\\}$ as $d$ ranges over divisors of $n$.",
+    "symbol": "gcdClass",
+    "mathContext": "Implemented as `(range n).filter (fun k => Nat.gcd k n = d)`. Key facts: $k \\in S_d(n)$ iff $\\gcd(k,n) = d$, which requires $d \\mid n$. The GCD class $S_1(n)$ is exactly the coprime set $\\{k < n : \\gcd(k,n) = 1\\}$, which has $|S_1| = \\varphi(n)$ elements.",
+    "significance": "Central combinatorial object that makes the partition proof concrete. Each GCD class corresponds to one summand in $n = \\sum_{d \\mid n} \\varphi(n/d)$.",
+    "relatedConcepts": ["mem_gcdClass", "card_gcdClass_eq_totient", "range_eq_biUnion_gcdClass"]
+  },
+  {
+    "line": 63,
+    "type": "theorem",
+    "content": "$\\{0,\\ldots,n-1\\} = \\bigsqcup_{d \\mid n} S_d(n)$. Every $k < n$ belongs to exactly one GCD class $S_{\\gcd(k,n)}$, and classes for different divisors are disjoint.",
+    "symbol": "range_eq_biUnion_gcdClass",
+    "mathContext": "Proved via `Finset.biUnion`: the union over divisors $d \\mid n$ of $S_d(n)$ equals $\\{0,\\ldots,n-1\\}$. Membership: $k \\in \\bigsqcup S_d$ iff $\\exists d \\mid n$ with $\\gcd(k,n) = d$ — but $\\gcd(k,n)$ always divides $n$, so $d = \\gcd(k,n)$ works. Disjointness from `gcdClass_disjoint`: if $d_1 \\neq d_2$, any $k$ can have at most one GCD value.",
+    "significance": "Establishes the partition structure. Once the partition is in place, summing cardinalities gives $n = \\sum_{d \\mid n} |S_d| = \\sum_{d \\mid n} \\varphi(n/d)$.",
+    "relatedConcepts": ["gcdClass", "gcdClass_disjoint", "mem_gcdClass_of_gcd", "divisor_sum_totient_div"]
+  },
+  {
+    "line": 83,
+    "type": "theorem",
+    "content": "**Key bijection**: $|S_d(n)| = \\varphi(n/d)$. The map $k \\mapsto k/d$ bijects $S_d(n)$ with $\\{m < n/d : \\gcd(m, n/d) = 1\\}$.",
+    "symbol": "card_gcdClass_eq_totient",
+    "mathContext": "Let $q = n/d$. For $k \\in S_d$: $d \\mid k$ (since $\\gcd(k,n) = d$ and $d \\mid \\gcd(k,n)$), so $k/d$ is a natural number $< q$ with $\\gcd(k/d, q) = \\gcd(k,n)/d = 1$. Injectivity: $k_1/d = k_2/d$ with $d \\mid k_1, k_2$ implies $k_1 = k_2$ by `Nat.div_mul_cancel`. Surjectivity: given coprime $m < q$, the element $k = d \\cdot m \\in S_d$ (since $\\gcd(dm, dq) = d \\cdot \\gcd(m,q) = d$).",
+    "significance": "The heart of the proof. Once this bijection is established, the identity $n = \\sum_{d \\mid n} |S_d| = \\sum_{d \\mid n} \\varphi(n/d)$ is immediate by summing over divisors.",
+    "relatedConcepts": ["gcdClass", "Nat.totient", "Finset.card_bij", "divisor_sum_totient_div"]
+  },
+  {
+    "line": 147,
+    "type": "theorem",
+    "content": "**Divisor sum identity**: $n = \\sum_{d \\mid n} \\varphi(n/d)$. Proved by combining the GCD partition (all $n$ elements covered) with the bijection $|S_d| = \\varphi(n/d)$.",
+    "symbol": "divisor_sum_totient_div",
+    "mathContext": "Equivalently $n = \\sum_{d \\mid n} \\varphi(d)$ (reindexing $d \\leftrightarrow n/d$). Proof: $n = |\\{0,\\ldots,n-1\\}| = \\sum_{d \\mid n} |S_d(n)| = \\sum_{d \\mid n} \\varphi(n/d)$. The first equality uses `card_range n`, the second uses `card_biUnion` with disjointness, the third uses `card_gcdClass_eq_totient`.",
+    "significance": "The main result. Provides an explicit combinatorial proof that reveals the internal structure: each $\\varphi(n/d)$ counts the integers $k < n$ with $\\gcd(k,n) = d$. More instructive than Möbius inversion.",
+    "relatedConcepts": ["range_eq_biUnion_gcdClass", "card_gcdClass_eq_totient", "divisor_sum_totient", "partition_of_unity"]
+  },
+  {
+    "line": 170,
+    "type": "theorem",
+    "content": "**Standard form**: $\\sum_{d \\mid n} \\varphi(d) = n$. Cross-validated against Mathlib's `Nat.sum_totient` — this is a direct citation, not a reproof.",
+    "symbol": "divisor_sum_totient",
+    "mathContext": "The equivalence between $\\sum_{d \\mid n} \\varphi(d) = n$ and $\\sum_{d \\mid n} \\varphi(n/d) = n$ follows by the bijection $d \\leftrightarrow n/d$ on divisors (the set $\\{d : d \\mid n\\}$ is symmetric under this swap). Mathlib's `Nat.sum_totient` proves the standard form directly from the definition of the totient function.",
+    "significance": "Provides independent verification that the main result matches the standard Mathlib formulation, validating the constructive proof.",
+    "relatedConcepts": ["divisor_sum_totient_div", "Nat.sum_totient", "Nat.totient"]
+  },
+  {
+    "line": 182,
+    "type": "theorem",
+    "content": "**Partition of unity**: $\\sum_{d \\mid n} \\frac{\\varphi(n/d)}{n} = 1$ over $\\mathbb{Q}$. Probabilistic interpretation: picking $k$ uniformly from $\\{0,\\ldots,n-1\\}$, the probability that $\\gcd(k,n) = d$ is exactly $\\varphi(n/d)/n$.",
+    "symbol": "partition_of_unity",
+    "mathContext": "Proved by dividing the integer identity by $n$ over $\\mathbb{Q}$: `Finset.sum_div` and `div_eq_one_iff_eq`. The probabilistic content: $P(\\gcd(U,n) = d) = |S_d|/n = \\varphi(n/d)/n$ where $U$ is uniform on $\\{0,\\ldots,n-1\\}$. This connects to the Haar measure on $\\mathbb{Z}/n\\mathbb{Z}$ and the group structure of $(\\mathbb{Z}/n\\mathbb{Z})^\\times$.",
+    "significance": "The most elegant reformulation. The divisors of $n$ with weights $\\varphi(n/d)/n$ form a probability distribution — a discrete 'density function' on the divisor lattice of $n$.",
+    "relatedConcepts": ["divisor_sum_totient_div", "Nat.totient", "Haar measure"]
+  }
+]
