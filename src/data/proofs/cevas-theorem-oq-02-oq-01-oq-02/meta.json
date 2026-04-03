@@ -35,7 +35,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Ceva's theorem has analogues in non-Euclidean geometries. In spherical geometry, sin-ratios replace the Euclidean length ratios (CevasTheoremOQ02OQ01.lean). The natural question is whether the same weight-parameter algebraic framework extends to hyperbolic geometry. The hyperboloid model provides the natural setting, where sinh replaces sin in the distance ratios.",
+    "historicalContext": "Giovanni Ceva proved his concurrence theorem in 1678 ('De Lineis Rectis'), but its extension to non-Euclidean geometry waited until the 19th century. As hyperbolic geometry (Bolyai-Lobachevsky, 1830s) and spherical trigonometry matured, mathematicians discovered that the elegant cross-ratio structure underlying Ceva's theorem persisted across all constant-curvature spaces. The critical insight — that the relevant trigonometric functions (length, sin, sinh) all cancel when forming ratios of cevian segments — was formalized algebraically in the 20th century. Sommerville (1914) and others developed the non-Euclidean analogues: sinh replaces length in hyperbolic, sin replaces length in spherical. The hyperboloid model (Weierstrass, 1880s; popularized by Minkowski for special relativity) expresses hyperbolic geometry as the upper sheet of a two-sheeted hyperboloid in Minkowski space, with the Minkowski bilinear form B(x,y) = x₁y₁ + x₂y₂ − x₃y₃ providing the metric cosh(d(B,C)) = −B(B,C). In this model, the barycentric combination D = (αB + βC)/n lies on the hyperboloid, and the algebraic cancellation mechanism is identical to the spherical case — confirming that Ceva's theorem is fundamentally a theorem of projective (or affine barycentric) geometry, not metric geometry.",
     "problemStatement": "Does the weight-parameter framework for spherical Ceva's theorem (where cevian points are defined by weight pairs (α,β)) extend to hyperbolic geometry? Does the same algebraic cancellation occur in the hyperboloid model?",
     "text": "In the hyperboloid model of hyperbolic geometry, a cevian point D on edge BC is defined by weight parameters (α, β). The key identity: sinh(d(B,D))/sinh(d(D,C)) = β/α holds by algebraic cancellation — the same cancellation as in the spherical (sin) case. The triple product of sinh ratios therefore equals (βD·βE·βF)/(αD·αE·αF), and the cevians are concurrent iff this product equals 1, i.e., αD·αE·αF = βD·βE·βF. The weight-parameter criterion is universal: Euclidean (length ratios), spherical (sin ratios), and hyperbolic (sinh ratios) all give the same algebraic condition.",
     "proofStrategy": "Define HyperbolicCevianConfig with weight parameters. Show sinh ratio = weight ratio by cancellation. Compute the triple product. Prove iff for concurrency. Verify the universality claim.",
@@ -43,7 +43,9 @@
       "The algebraic cancellation (β/α) is geometry-independent: it works for Euclidean, sin, and sinh distance functions",
       "The weight-parameter framework is universal across all constant-curvature geometries",
       "In hyperbolic geometry, sinh replaces the Euclidean length ratio exactly as sin does in spherical",
-      "The concurrency criterion αD·αE·αF = βD·βE·βF is the same in all three geometries"
+      "The concurrency criterion αD·αE·αF = βD·βE·βF is the same in all three geometries",
+      "The key algebraic identity (α+βm)² − n² = β²(m²−1) is cosh²−1 = sinh² in disguise, proved purely by ring arithmetic",
+      "The theorem is fundamentally projective: the weight parameters (α:β) are barycentric coordinates on the edge, preserved by the projective structure regardless of the ambient metric"
     ],
     "prerequisites": [
       "Ceva's theorem (Euclidean): d·e·f = (1-d)(1-e)(1-f)",
@@ -52,11 +54,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Hyperbolic Ceva's theorem is proved via weight parameters: the algebraic concurrency criterion is universal across Euclidean, spherical, and hyperbolic geometries. 13 theorems, 4 definitions, 301 lines, 0 axioms.",
-    "implications": "The universality result suggests that Ceva's theorem is fundamentally an algebraic fact about projective geometry, independent of the specific distance function. This is confirmed by the Projective Ceva theorem, which unifies all three cases.",
+    "summary": "Hyperbolic Ceva's theorem is proved via weight parameters in the hyperboloid model: sinh(d(B,D))/sinh(d(D,C)) = β/α by algebraic cancellation, and the triple product equals 1 iff αD·αE·αF = βD·βE·βF. This unifies with Euclidean and spherical cases. 13 theorems, 4 definitions, 301 lines, 0 axioms.",
+    "implications": "The universality result confirms that Ceva's theorem is fundamentally a theorem of projective/barycentric geometry. The weight parameters (α:β) encode projective cross-ratios on each edge, and the concurrency condition is a projective invariant. This perspective unifies Euclidean, spherical, and hyperbolic cases under the Klein model (where hyperbolic geometry IS projective geometry on the disk).",
     "openQuestions": [
-      "Unify Euclidean, spherical, and hyperbolic cases via projective Ceva's theorem",
-      "Extend to other geometries: parabolic (degenerate case), Minkowski spacetime"
+      "Formalize the projective unification: prove all three cases from a single projective Ceva theorem via the Klein model",
+      "Extend to generalized trigonometry: prove Ceva for Cayley-Klein geometries (parabolic, degenerate curvature cases)",
+      "Formalize the converse direction: concurrent cevians imply weight balance, not just weight balance implies concurrency",
+      "Apply the weight-parameter framework to other triangle theorems: Menelaus, trigonometric form of Ceva"
     ]
   },
   "leanFile": {
@@ -78,5 +82,36 @@
       "description": "Euclidean geometric Ceva in ℝ²; this file covers the hyperbolic analogue"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "title": "Background: Algebraic Universality of Ceva's Theorem",
+      "startLine": 5,
+      "endLine": 42,
+      "summary": "Module docstring establishing the central insight: the geometric cancellation in Ceva's theorem is independent of the ambient geometry. In Euclidean, spherical (sin), and hyperbolic (sinh) cases, the cevian-point ratio always reduces to β/α. The hyperboloid model is introduced with the Minkowski bilinear form B(x,y) = x₁y₁ + x₂y₂ − x₃y₃ and the identity cosh(d(B,C)) = −B(B,C)."
+    },
+    {
+      "title": "HyperbolicCevianConfig: Packaging the Hyperboloid Geometry",
+      "startLine": 50,
+      "endLine": 113,
+      "summary": "The HyperbolicCevianConfig structure bundles: the Minkowski parameter m = cosh(d(B,C)) > 1, positive weight parameters α and β with their positivity proofs, and n_sq = α² + 2αβm + β². Key lemmas hyp_key_identity_BD/DC prove (α+βm)² − n² = β²(m²−1) and (αm+β)² − n² = α²(m²−1) by ring, realizing cosh²−1 = sinh² algebraically."
+    },
+    {
+      "title": "The Sinh-Ratio Formula: Algebraic Cancellation",
+      "startLine": 114,
+      "endLine": 162,
+      "summary": "The heart of the proof: hyp_sinh_ratio proves sinh(d(B,D))/sinh(d(D,C)) = β/α in two steps. First, unfold both sinh expressions (β·√(m²−1)/n and α·√(m²−1)/n respectively). Then field_simp cancels the common √(m²−1) factor. The n normalization also cancels, leaving only β/α. Positivity lemmas ensure division is well-defined."
+    },
+    {
+      "title": "Triple Product and the Full Ceva Criterion",
+      "startLine": 163,
+      "endLine": 228,
+      "summary": "hyp_ceva_product_eq_weight_ratio rewrites all three sinh-ratios using hyp_sinh_ratio, giving product = (βD·βE·βF)/(αD·αE·αF). Then hyp_ceva_iff_weight_balance combines with hyp_weight_balance_iff (proved by field_simp + linarith) to give: cevians concurrent iff αD·αE·αF = βD·βE·βF. The equal_weight_hyp_ceva handles the trivial αD=βD=αE=βE=αF=βF case."
+    },
+    {
+      "title": "Universality and Summary Answer to OQ-02-OQ-01-OQ-02",
+      "startLine": 230,
+      "endLine": 301,
+      "summary": "universal_weight_balance is a purely algebraic theorem (no geometry): αD·αE·αF = βD·βE·βF iff (βD/αD)·(βE/αE)·(βF/αF) = 1, proved by field_simp + linarith. The summary theorem bundles all three geometries into a conjunction. The universality confirms that the weight-parameter criterion is independent of the metric, hinting at the projective foundations of Ceva's theorem."
+    }
+  ]
 }

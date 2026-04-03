@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-cevas-hyp-background",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 5, "endLine": 42 },
+    "type": "context",
+    "title": "The Algebraic Universality of Ceva's Theorem",
+    "content": "The module docstring reveals the central insight: the geometric cancellation in Ceva's theorem is independent of the geometry. In Euclidean, spherical, and hyperbolic cases, the cevian point D on edge BC contributes a ratio (geometric distance of BD) / (geometric distance of DC) = β/α, where the geometry-specific factor √(1-m²)/n (spherical) or √(m²-1)/n (hyperbolic) cancels in the ratio. The algebraic structure is identical across all three geometries. The hyperboloid model uses Minkowski bilinear form B(x,y) = x₁y₁ + x₂y₂ - x₃y₃ with m = cosh(d(B,C)) > 1, and the cevian point D = (αB + βC)/n lies on the unit hyperboloid.",
+    "mathContext": "Hyperboloid model: $\\{x : x_1^2 + x_2^2 - x_3^2 = -1, x_3 > 0\\}$. Metric: $\\cosh(d(B,C)) = -B(B,C)$. Cevian: $D = (\\alpha B + \\beta C)/n$, $n = \\sqrt{\\alpha^2 + 2\\alpha\\beta m + \\beta^2}$. Key: $\\sinh(d(B,D)) = \\beta\\sqrt{m^2-1}/n$, so $\\sinh(d(B,D))/\\sinh(d(D,C)) = \\beta/\\alpha$ (the $\\sqrt{m^2-1}/n$ cancels).",
+    "significance": "context",
+    "relatedConcepts": ["hyperboloid model", "Minkowski bilinear form", "geodesics in hyperbolic space", "Ceva's theorem universality"],
+    "prerequisites": ["Ceva's theorem (Euclidean)", "spherical Ceva via weight parameters", "hyperbolic geometry: hyperboloid model"]
+  },
+  {
+    "id": "ann-cevas-hyp-structure",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 50, "endLine": 113 },
+    "type": "context",
+    "title": "HyperbolicCevianConfig: Packaging the Hyperboloid Geometry",
+    "content": "The `HyperbolicCevianConfig` structure bundles the essential data: the Minkowski inner product parameter m = cosh(d(B,C)) > 1, positive weight parameters α and β, and their positivity proofs hm, hα, hβ. The noncomputable `n_sq` definition computes α² + 2αβm + β². The algebraic key identities (`hyp_key_identity_BD/DC`) prove (α+βm)² - n² = β²(m²-1) and (αm+β)² - n² = α²(m²-1) by `ring` — these are the cosh²-1 = sinh² identities in disguise, and they follow from pure algebra with no geometric reasoning. This algebraic reduction is what makes the proof work: hyperbolic geometry reduces to polynomial identities.",
+    "mathContext": "$(\\alpha + \\beta m)^2 - n^2 = \\beta^2(m^2-1)$ follows from $n^2 = \\alpha^2 + 2\\alpha\\beta m + \\beta^2$ by expansion. Geometrically: $\\cosh^2(d(B,D)) - 1 = \\sinh^2(d(B,D)) = \\beta^2(m^2-1)/n^2$. Since $m^2 - 1 = \\cosh^2(d(B,C)) - 1 = \\sinh^2(d(B,C))$, we get $\\sinh(d(B,D)) = \\beta \\cdot \\sinh(d(B,C)) / n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Minkowski norm", "cosh-sinh identity", "hyperboloid coordinates", "ring identity"],
+    "prerequisites": ["cosh identity: cosh²(x) - 1 = sinh²(x)", "Minkowski bilinear form", "positivity lemmas"]
+  },
+  {
+    "id": "ann-cevas-hyp-sinh-ratio",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 114, "endLine": 162 },
+    "type": "insight",
+    "title": "The Sinh-Ratio Formula: Algebraic Cancellation is the Key",
+    "content": "The `hyp_sinh_ratio` theorem proves sinh(d(B,D))/sinh(d(D,C)) = β/α in two lines: unfold the definitions (both numerator and denominator contain β·√(m²-1) and α·√(m²-1) respectively), then `field_simp [hsqrt_ne, hα_ne]` cancels the common √(m²-1) factor. This is the heart of the proof — the metric factor √(m²-1)/n appears in both distances and cancels in the ratio, leaving only the weight ratio β/α. The helper `hyp_sinh_BD_pos / hyp_sinh_DC_pos` establish that both measures are positive (product of positives), ensuring the division is well-defined. Note: the actual `n` factor doesn't even appear explicitly in the ratio, because both `hyp_sinh_BD` and `hyp_sinh_DC` track only the numerator (×n cancels in the ratio).",
+    "mathContext": "$\\frac{\\sinh(d(B,D))}{\\sinh(d(D,C))} = \\frac{\\beta \\cdot \\sqrt{m^2-1}/n}{\\alpha \\cdot \\sqrt{m^2-1}/n} = \\frac{\\beta \\cdot \\sqrt{m^2-1}}{\\alpha \\cdot \\sqrt{m^2-1}} = \\frac{\\beta}{\\alpha}$. The $\\sqrt{m^2-1}$ factor in numerator and denominator are equal (same edge BC), so they cancel. The $1/n$ factors cancel similarly.",
+    "significance": "key",
+    "relatedConcepts": ["algebraic cancellation", "field_simp", "geometric ratio", "spherical analogue sin_ratio_cevian_point"],
+    "prerequisites": ["hyp_sinh_BD_pos", "hyp_sinh_DC_pos", "sqrt_pos", "field_simp"]
+  },
+  {
+    "id": "ann-cevas-hyp-product",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 163, "endLine": 228 },
+    "type": "insight",
+    "title": "Triple Product and Weight Balance: The Full Theorem",
+    "content": "The `hyp_ceva_product_eq_weight_ratio` theorem is a one-liner: rewrite each ratio using `hyp_sinh_ratio`. The product of three sinh-ratios equals (βD·βE·βF)/(αD·αE·αF). Then `hyp_ceva_iff_weight_balance` combines this with `hyp_weight_balance_iff` — an algebraic iff theorem about when a product of ratios equals 1. The `hyp_weight_balance_iff` proof is symmetric: field_simp on both directions to get βD·βE·βF = αD·αE·αF, then linarith. The full theorem `hyp_ceva_iff_weight_balance` answers OQ-02-OQ-01-OQ-02: hyperbolic cevians are concurrent iff the weight parameters satisfy αD·αE·αF = βD·βE·βF, exactly as in the spherical case.",
+    "mathContext": "$\\frac{\\sinh(d_1)}{\\sinh(d_1')} \\cdot \\frac{\\sinh(d_2)}{\\sinh(d_2')} \\cdot \\frac{\\sinh(d_3)}{\\sinh(d_3')} = \\frac{\\beta_D}{\\alpha_D} \\cdot \\frac{\\beta_E}{\\alpha_E} \\cdot \\frac{\\beta_F}{\\alpha_F} = 1 \\iff \\alpha_D\\alpha_E\\alpha_F = \\beta_D\\beta_E\\beta_F$. This is the hyperbolic Ceva criterion. The case $= 1$ corresponds to cevians meeting at a point (by the Ceva condition in the sinh-metric form).",
+    "significance": "key",
+    "relatedConcepts": ["Ceva's theorem", "weight balance condition", "field_simp", "linarith"],
+    "prerequisites": ["hyp_sinh_ratio", "hyp_weight_balance_iff", "hyp_ceva_product_eq_weight_ratio"]
+  },
+  {
+    "id": "ann-cevas-hyp-universality",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 230, "endLine": 301 },
+    "type": "insight",
+    "title": "Universality: Ceva's Theorem is a Projective Theorem",
+    "content": "Part 5 crystallizes the universality argument. `universal_weight_balance` is a purely algebraic theorem — no geometry whatsoever. It says αD·αE·αF = βD·βE·βF iff (βD/αD)·(βE/αE)·(βF/αF) = 1, proved by field_simp and linarith. The weight-parameter framework works because the ratio (geometric_distance_BD)/(geometric_distance_DC) always simplifies to β/α when the cevian point is parameterized by (α, β): in Euclidean geometry (parameter = t, so D = (1-t)B + tC and ratio = t/(1-t) = β/α), in spherical (sin_ratio = β/α via sin algebraic cancellation), and in hyperbolic (sinh_ratio = β/α via sinh algebraic cancellation). The `summary_answer_oq02oq01oq02` bundles all three parts into a conjunction, answered by a triple of the key theorems.",
+    "mathContext": "The underlying reason: Ceva's theorem is a theorem about projective geometry, not metric geometry. In projective space, the weight-parameter barycentric coordinates $(\\alpha : \\beta)$ for a point on a line are preserved under projective transformations, and the metric distance function (length, sin, sinh) is just a way to express these coordinates in each geometry. The Ceva condition $\\alpha_D\\alpha_E\\alpha_F = \\beta_D\\beta_E\\beta_F$ is the projective cross-ratio condition in disguise.",
+    "significance": "key",
+    "relatedConcepts": ["projective geometry", "barycentric coordinates", "cross-ratio", "Klein model of hyperbolic geometry"],
+    "prerequisites": ["universal_weight_balance", "hyp_sinh_ratio", "field_simp", "linarith"]
+  }
+]
