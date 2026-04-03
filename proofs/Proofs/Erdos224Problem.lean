@@ -154,10 +154,23 @@ All angles are either 60° (from adjacent edges) or 90° (right angles).
 -/
 theorem hypercube_obtuse_free (d : ℕ) :
     IsObtuseFree (hypercubeVertices d) := by
-  -- For any A, B, C ∈ {0,1}^d: ⟪A-B, C-B⟫ = Σᵢ (Aᵢ-Bᵢ)(Cᵢ-Bᵢ) ≥ 0 (pointwise nonneg)
-  -- If Bᵢ=0: Aᵢ·Cᵢ ≥ 0; If Bᵢ=1: (Aᵢ-1)(Cᵢ-1) ≥ 0
-  -- Hence cos(∠ABC) = ⟪A-B,C-B⟫/(‖A-B‖·‖C-B‖) ≥ 0, so ∠ABC ≤ π/2 (not obtuse)
-  sorry
+  unfold IsObtuseFree ContainsObtuseTriple
+  rintro ⟨A, B, C, hA, hB, hC, -, -, -, hForms⟩
+  simp only [hypercubeVertices, Finset.mem_image, Finset.mem_univ, true_and] at hA hB hC
+  obtain ⟨fA, rfl⟩ := hA
+  obtain ⟨fB, rfl⟩ := hB
+  obtain ⟨fC, rfl⟩ := hC
+  simp only [FormsObtuseAngle, IsObtuseAngle, angle] at hForms
+  -- hForms: arccos(dot/norm) > π/2, i.e. dot/norm < 0
+  -- Contradiction: each factor (Aᵢ-Bᵢ)(Cᵢ-Bᵢ) ≥ 0 for {0,1} values
+  apply absurd hForms
+  push_neg
+  apply Real.arccos_le_pi_div_two.mpr
+  apply div_nonneg _ (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _))
+  apply Finset.sum_nonneg
+  intro i _
+  cases hfA : fA i <;> cases hfB : fB i <;> cases hfC : fC i <;>
+    simp
 
 /--
 **Hypercube is Extremal:**
