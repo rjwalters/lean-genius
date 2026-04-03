@@ -15,7 +15,7 @@
       "perfect-numbers",
       "amicable-numbers"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
@@ -24,10 +24,7 @@
     "theoremCount": 81,
     "definitionCount": 4,
     "originalContributions": [
-      "sigma_prime: σ(p) = p+1 for all primes (general theorem, not just specific values)",
-      "sigma_multiplicative: σ is multiplicative — σ(mn) = σ(m)σ(n) when gcd(m,n)=1",
-      "sigma_prime_pow: σ(p^k) = Σ_{i=0}^k p^i for prime p (prime power formula)",
-      "IsDeficient / IsPerfect / IsAbundant: classification predicates",
+      "IsDeficient / IsPerfect / IsAbundant: classification predicates (new definitions)",
       "six_is_perfect / twenty_eight_is_perfect: first two perfect numbers verified",
       "twelve_abundant / smallest_abundant: 12 is the smallest abundant number (minimality proof)",
       "amicable_220_284 / amicable_1184_1210: amicable pair verification",
