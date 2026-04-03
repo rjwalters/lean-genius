@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-29-oq-02",
+    "range": { "startLine": 29, "endLine": 33 },
+    "type": "definition",
+    "title": "Sumset and Additive Basis Definitions",
+    "content": "Sumset A B = {a+b : a ∈ A, b ∈ B} is defined set-theoretically over ℕ (not as a Finset, since A and B can be infinite). IsAdditiveBasis A asserts Sumset A A = ℕ, i.e., A has order 2: every natural number is the sum of two elements of A. These definitions are reused from the parent Erdős #29 proof to maintain consistency across the entry family.",
+    "mathContext": "$A + A = \\{a + b : a \\in A, b \\in A\\} = \\mathbb{N}$",
+    "significance": "supporting",
+    "relatedConcepts": ["additive basis", "sumset", "Erdős #29", "order-2 basis"],
+    "prerequisites": ["Set.univ in Lean 4", "existential set comprehension", "ℕ arithmetic"]
+  },
+  {
+    "id": "ann-representation",
+    "proofId": "erdos-29-oq-02",
+    "range": { "startLine": 42, "endLine": 47 },
+    "type": "technique",
+    "title": "Key Lemma: Representation Forces Both Summands ≤ N",
+    "content": "representation_in_interval is the critical observation: if A is a basis and n ≤ N, then n = a+b for some a,b ∈ A with a,b ≤ N. The proof uses IsAdditiveBasis to find a representation n = a+b with a,b ∈ A, then observes that since a,b ≥ 0 and a+b = n ≤ N, both a ≤ N and b ≤ N follow by omega. This is where the choice of [0,N] (rather than [1,N]) is essential: if 0 ∈ A then n = 0+n and 0 is a valid summand, but [1,N] would exclude 0.",
+    "mathContext": "If $A+A = \\mathbb{N}$ and $n \\leq N$, then $\\exists a, b \\in A$ with $a \\leq N$, $b \\leq N$, $n = a+b$.",
+    "significance": "key",
+    "relatedConcepts": ["additive representation", "omega tactic", "monotone summands", "why [0,N] not [1,N]"],
+    "prerequisites": ["IsAdditiveBasis definition", "Nat arithmetic: a+b=n≤N implies a≤N"]
+  },
+  {
+    "id": "ann-basis-restriction",
+    "proofId": "erdos-29-oq-02",
+    "range": { "startLine": 50, "endLine": 57 },
+    "type": "definition",
+    "title": "basisRestriction: Finite Slice A ∩ [0,N]",
+    "content": "basisRestriction A N = (Finset.range (N+1)).filter (· ∈ A) is the finite set A ∩ {0,...,N}. The membership lemma mem_basisRestriction confirms a ∈ basisRestriction A N iff a ∈ A and a ≤ N (the range condition a < N+1 is converted to a ≤ N by omega). The noncomputable tag is needed because A is a general Set ℕ with no decidable membership in general. This is the finite set whose cardinality we will bound below by √(N+1).",
+    "mathContext": "$\\text{basisRestriction}(A, N) = A \\cap \\{0, 1, \\ldots, N\\}$ as a Finset",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.filter", "Finset.range", "Set vs Finset in Lean 4", "noncomputable"],
+    "prerequisites": ["Finset.mem_filter", "Finset.mem_range", "omega tactic for ≤ conversion"]
+  },
+  {
+    "id": "ann-pair-sum-image",
+    "proofId": "erdos-29-oq-02",
+    "range": { "startLine": 64, "endLine": 73 },
+    "type": "technique",
+    "title": "pairSumImage: |S+S| ≤ |S|²",
+    "content": "pairSumImage S = (S ×ˢ S).image (fun p => p.1 + p.2) is the sumset of S as a Finset. The key inequality pairSumImage_card_le bounds its cardinality: |(S+S)| ≤ |S×S| ≤ |S|². The first inequality uses Finset.card_image_le (image shrinks under non-injective maps) and the second uses Finset.card_product. This is the combinatorial heart of the counting argument: even if S has many pairs (a,b) mapping to the same sum, the image size is at most |S|².",
+    "mathContext": "$|\\text{pairSumImage}(S)| \\leq |S \\times S| = |S|^2$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card_image_le", "Finset.card_product", "sumset size bounds", "pigeonhole principle"],
+    "prerequisites": ["Finset.image cardinality inequality", "Finset.card_product = m*n"]
+  },
+  {
+    "id": "ann-range-subset",
+    "proofId": "erdos-29-oq-02",
+    "range": { "startLine": 77, "endLine": 87 },
+    "type": "technique",
+    "title": "range_subset_pairSum: {0,...,N} ⊆ Sumset of basisRestriction",
+    "content": "range_subset_pairSum proves that every n ∈ {0,...,N} (as a Finset.range N+1) is in the pairSumImage of basisRestriction A N. The proof: given n < N+1, get n ≤ N; apply representation_in_interval to find a,b with a,b ∈ A, a,b ≤ N, n=a+b; then show (a,b) ∈ basisRestriction × basisRestriction via mem_basisRestriction; finally Finset.mem_image finds the pair. This chains the three main ingredients (basis hypothesis, representation lemma, filter membership) into the containment needed for the final cardinality bound.",
+    "mathContext": "$\\{0, 1, \\ldots, N\\} \\subseteq \\text{pairSumImage}(A \\cap [0,N])$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.mem_image", "Finset.mem_product", "subset containment", "representation_in_interval"],
+    "prerequisites": ["representation_in_interval", "mem_basisRestriction", "Finset.mem_image and mem_product"]
+  },
+  {
+    "id": "ann-squared-bound",
+    "proofId": "erdos-29-oq-02",
+    "range": { "startLine": 94, "endLine": 100 },
+    "type": "insight",
+    "title": "Main Theorem: N+1 ≤ |A ∩ [0,N]|²",
+    "content": "basis_size_squared_lower_bound proves the central inequality by a calc chain: N+1 = |{0,...,N}| ≤ |pairSumImage(basisRestriction A N)| ≤ |basisRestriction A N|². The first equality is Finset.card_range. The first inequality uses Finset.card_le_card and range_subset_pairSum. The second uses pairSumImage_card_le. All three steps are one-liners once the lemmas are available, making the overall proof structure completely transparent.",
+    "mathContext": "$N + 1 = |\\{0,\\ldots,N\\}| \\leq |\\text{pairSumImage}(A \\cap [0,N])| \\leq |A \\cap [0,N]|^2$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card_le_card", "calc chains in Lean 4", "counting argument"],
+    "prerequisites": ["range_subset_pairSum", "pairSumImage_card_le", "Finset.card_range = N+1"]
+  },
+  {
+    "id": "ann-sqrt-form",
+    "proofId": "erdos-29-oq-02",
+    "range": { "startLine": 104, "endLine": 111 },
+    "type": "insight",
+    "title": "Real-Valued Form: √(N+1) ≤ |A ∩ [0,N]|",
+    "content": "basis_size_lower_bound_correct converts the squared bound N+1 ≤ s² into the square root form √(N+1) ≤ s using Real.sqrt_le_left. The proof branches: since √(N+1) ≤ s is equivalent to (s ≥ 0) ∧ (s² ≥ N+1), it takes the right branch of the disjunction from sqrt_le_left, establishes s ≥ 0 via Nat.cast_nonneg, and rewrites s² via rw [sq] followed by exact_mod_cast basis_size_squared_lower_bound. The exact_mod_cast handles the ℕ-to-ℝ coercion.",
+    "mathContext": "$\\sqrt{N+1} \\leq |A \\cap [0,N]|$, i.e., $|A \\cap [0,N]| \\geq \\sqrt{N+1}$",
+    "significance": "key",
+    "relatedConcepts": ["Real.sqrt_le_left", "Nat.cast_nonneg", "exact_mod_cast", "square root monotonicity"],
+    "prerequisites": ["Real.sqrt_le_left", "exact_mod_cast for Nat/Real coercion", "basis_size_squared_lower_bound"]
+  },
+  {
+    "id": "ann-tightness",
+    "proofId": "erdos-29-oq-02",
+    "range": { "startLine": 136, "endLine": 146 },
+    "type": "context",
+    "title": "Tightness: Small Bases Achieving √N Growth",
+    "content": "small_basis_exists is a proof-of-concept tightness result: for any N, there exists a Finset S of size ≤ N+1 that covers all sums up to N. The witness is Finset.range (N+1) = {0,...,N} itself. This trivially covers all sums n ≤ N via n = n + 0. The result confirms that the √N growth rate is achievable. A sharper tightness result would construct a basis A with |A ∩ [0,N]| = O(√N) (the B₂ sequence / Sidon set construction), but this is only described in prose comments.",
+    "mathContext": "$\\exists S: |S| \\leq N+1$ and $\\forall n \\leq N, \\exists a, b \\in S: n = a + b$",
+    "significance": "supporting",
+    "relatedConcepts": ["Sidon sets", "B₂ sequences", "tight bounds", "Finset.range as trivial cover"],
+    "prerequisites": ["Finset.range (N+1) = {0,...,N}", "omega tactic for trivial summand bounds"]
+  }
+]
