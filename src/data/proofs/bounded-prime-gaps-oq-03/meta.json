@@ -53,9 +53,9 @@
       "API fix: Mathlib 4.26.0 changed Finset.min'_le and Finset.le_max' — nonemptiness argument removed, signature now (s b hb)"
     ],
     "dateAdded": "2026-02-25",
-    "axiomCount": 1,
+    "axiomCount": 4,
     "lineCount": 279,
-    "assumptions": "1 axiom: engelsma_lower_bound. See Lean source for the complete statement.",
+    "assumptions": "4 axioms total: 1 own (engelsma_lower_bound — Engelsma's lower bound on diameter of optimal 50-tuple) + 3 inherited from BoundedPrimeGaps.lean (maynard_tao_m_tuples, maynard_tao_sieve, maynard_tao_sieve_eh). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

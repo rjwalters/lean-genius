@@ -69,9 +69,9 @@
       "Easton-Konig characterization: complete picture of ZFC constraints on 2^aleph_0"
     ],
     "dateAdded": "2026-03-27",
-    "axiomCount": 2,
+    "axiomCount": 16,
     "lineCount": 584,
-    "assumptions": "2 axioms: bounding_number_uncountable (ℵ₁ ≤ b, requires diagonalization), MA_implies_b_eq_continuum (MA → b = 2^ℵ₀, deep forcing result). Previously 8 axioms; 6 eliminated: 4 by Mathlib definitions, konig_cofinality by Cardinal.lt_cof_power, dominating_le_continuum trivially.",
+    "assumptions": "16 axioms total: 2 own (bounding_number_uncountable, MA_implies_b_eq_continuum) + 4 inherited from ContinuumHypothesis.lean (L_exists, L_satisfies_CH, forcing_extension_exists, forcing_violates_CH) + 10 inherited from ContinuumHypothesisOQ01.lean (VeqL, VeqL_implies_GCH, UltimateL, UltimateL_implies_GCH, PFA, PFA_implies_continuum_eq_aleph_two, MM, MM_implies_PFA, VeqL_incompatible_with_measurable, PFA_large_cardinal_compatible). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

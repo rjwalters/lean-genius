@@ -28,9 +28,9 @@
       "barrier_246: the 246 barrier cannot be broken by k-tuple methods alone"
     ],
     "dateAdded": "2026-03-21",
-    "axiomCount": 2,
+    "axiomCount": 5,
     "lineCount": 383,
-    "assumptions": "2 axioms: minAdmissibleDiameter_50 (D(50) = 246 by Engelsma computation), diameter_upper_bound_exists (existence of admissible tuples achieving D(k)). 0 sorries. D(2)=2 and D(3)=6 fully proved. diameter_lower_bound proved via factorial k-tuple construction.",
+    "assumptions": "5 axioms total: 2 own (minAdmissibleDiameter_50 — minimum diameter of admissible 50-tuple, diameter_upper_bound_exists — existence of diameter upper bound) + 3 inherited from BoundedPrimeGaps.lean (maynard_tao_m_tuples, maynard_tao_sieve, maynard_tao_sieve_eh). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
