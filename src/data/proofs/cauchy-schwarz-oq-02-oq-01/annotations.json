@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-parseval-overview",
+    "proofId": "cauchy-schwarz-oq-02-oq-01",
+    "range": { "startLine": 7, "endLine": 45 },
+    "type": "context",
+    "title": "Parseval's Identity: Energy Conservation as Limit of Pythagorean Theorem",
+    "content": "The module docstring establishes the conceptual chain: CauchySchwarzOQ02 proves the Pythagorean theorem in L² (‖f+g‖² = ‖f‖² + ‖g‖² when ⟪f,g⟫=0). Fourier monomials eₙ(t) = e^{2πint/T} are orthonormal (⟪eₙ, eₘ⟫ = δₙₘ). Therefore finite partial sums satisfy ‖∑_{|k|≤N} ĉₖeₖ‖² = ∑_{|k|≤N}|ĉₖ|² (Pythagorean). As N→∞, the partial sums converge to f in L² (Fourier series L² convergence). By continuity of the norm, ‖Sₙ(f)‖² → ‖f‖². Combining: ∑|ĉₙ|² = ‖f‖². The file formalizes all 10 theorems needed for this chain: Parseval energy equality, HasSum form, summability, Bessel's inequality, orthonormality, orthogonality, norm 1, Pythagorean for finite sums, completeness (zero-kernel), and L² convergence.",
+    "mathContext": "Conceptual chain: $\\|f\\|^2 = \\lim_{N\\to\\infty}\\|S_N f\\|^2 = \\lim_{N\\to\\infty} \\sum_{|k|\\le N} |\\hat{c}_k|^2 = \\sum' k, |\\hat{c}_k|^2$. First equality: L² convergence. Second: Pythagorean for finite sums. Third: convergence of the sum. The chain shows Parseval as an infinite-dimensional Pythagoras.",
+    "significance": "context",
+    "relatedConcepts": ["L² convergence", "Pythagorean theorem", "Fourier monomials", "energy conservation", "Plancherel theorem"],
+    "prerequisites": ["CauchySchwarzOQ02 (pythagorean_L2)", "Fourier series L² theory", "Hilbert space completeness"]
+  },
+  {
+    "id": "ann-parseval-energy",
+    "proofId": "cauchy-schwarz-oq-02-oq-01",
+    "range": { "startLine": 66, "endLine": 95 },
+    "type": "insight",
+    "title": "Parseval, Bessel, and Summability: Three Facets of One Identity",
+    "content": "Parts I contains four theorems about Parseval's energy equality. parseval_energy wraps Mathlib's tsum_sq_fourierCoeff: ∑' n, ‖ĉₙ(f)‖² = ∫|f|² dμ. parseval_hassum wraps hasSum_sq_fourierCoeff: the HasSum form is stronger (it gives the series, not just its sum). fourier_coeff_sq_summable follows immediately from parseval_hassum.summable. bessel_fourier proves finite partial sums ≤ L² norm by sum_le_hasSum: a partial sum of a non-negative HasSum is bounded by the total. All four are one-liners delegating to Mathlib. The key type: f : Lp ℂ 2 (haarAddCircle), which is L²(T→ℂ) with Haar measure on the circle AddCircle T.",
+    "mathContext": "Parseval: $\\sum_{n\\in\\mathbb{Z}} |\\hat{c}_n(f)|^2 = \\int |f|^2 d\\mu$. Bessel: $\\sum_{n\\in S} |\\hat{c}_n|^2 \\le \\|f\\|^2_{L^2}$ for any finite $S$. Types: `Lp ℂ 2 (haarAddCircle (T := T))`, `fourierCoeff : (AddCircle T → ℂ) → ℤ → ℂ`.",
+    "significance": "key",
+    "relatedConcepts": ["parseval_energy", "parseval_hassum", "bessel_fourier", "tsum_sq_fourierCoeff", "sum_le_hasSum"],
+    "prerequisites": ["tsum_sq_fourierCoeff", "hasSum_sq_fourierCoeff", "HasSum.summable", "sum_le_hasSum"]
+  },
+  {
+    "id": "ann-parseval-orthonormal",
+    "proofId": "cauchy-schwarz-oq-02-oq-01",
+    "range": { "startLine": 105, "endLine": 118 },
+    "type": "insight",
+    "title": "Fourier Orthonormality: Three One-Liners from Mathlib",
+    "content": "Part II proves orthonormality of the Fourier system in three one-liner theorems. fourier_orthonormal: exact orthonormal_fourier — Mathlib provides this directly for the Fourier system on AddCircle T. fourier_modes_orthogonal: uses fourier_orthonormal.2 hnm — the second component of Orthonormal is the orthogonality for distinct elements. fourier_modes_norm_one: uses fourier_orthonormal.1 n — the first component is that each element has norm 1. The Orthonormal structure bundles both: Orthonormal 𝕜 v ↔ (∀ i, ‖v i‖ = 1) ∧ (∀ i j, i ≠ j → ⟪v i, v j⟫ = 0). These three theorems expose the Orthonormal structure as separate accessible facts for downstream proofs.",
+    "mathContext": "`Orthonormal ℂ (fourierLp (T := T) 2)` means: $\\|e_n\\|_{L^2} = 1$ and $\\langle e_n, e_m \\rangle = 0$ for $n \\ne m$. Where $e_n(t) = e^{2\\pi i n t / T}$ and inner product $\\langle f, g \\rangle = \\int \\bar{f} g \\, d\\mu$. Verification: $\\langle e_n, e_m \\rangle = \\int e^{2\\pi i(m-n)t/T} dt = \\delta_{nm}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["orthonormal_fourier", "Orthonormal", "fourierLp", "Kronecker delta", "haarAddCircle"],
+    "prerequisites": ["orthonormal_fourier (Mathlib)", "Orthonormal.1 (norm 1)", "Orthonormal.2 (orthogonality)"]
+  },
+  {
+    "id": "ann-parseval-pythagorean",
+    "proofId": "cauchy-schwarz-oq-02-oq-01",
+    "range": { "startLine": 143, "endLine": 176 },
+    "type": "insight",
+    "title": "Fourier Pythagorean Theorem: The One Original Proof in the File",
+    "content": "fourier_pythagorean_partial is the sole original contribution: ‖∑_{n∈S} cₙeₙ‖² = ∑|cₙ|² for any finite S ⊆ ℤ. The proof has three steps. Step 1: establish Kronecker delta — ⟪eₙ, eₘ⟫ = if n=m then 1 else 0 by case-splitting on n=m. Step 2: expand ⟪∑cᵢeᵢ, ∑cⱼeⱼ⟫ using inner product linearity (sum_inner, inner_sum, inner_smul_left, inner_smul_right), apply the Kronecker delta, and reduce via Finset.sum_ite_eq and mul_conj to ↑(∑|cₙ|²). Step 3: relate ‖v‖² = Re(⟪v,v⟫) via inner_self_eq_norm_sq_to_K, extract real part with congr_arg Complex.re, finish with norm_cast. The proof carefully handles the type coercion from ℝ to ℂ (via ↑(∑|cₙ|²)).",
+    "mathContext": "$\\|\\sum_{n\\in S} c_n e_n\\|^2 = \\langle \\sum c_i e_i, \\sum c_j e_j \\rangle = \\sum_i \\sum_j c_i \\overline{c_j} \\langle e_i, e_j \\rangle = \\sum_i c_i \\overline{c_i} = \\sum_i |c_i|^2$. Step 2 uses `inner_smul_left`/`inner_smul_right` to extract scalars, `hd` for Kronecker delta, `Finset.sum_ite_eq` to collapse the double sum, `Complex.mul_conj` for $c \\cdot \\bar{c} = |c|^2$.",
+    "significance": "key",
+    "relatedConcepts": ["fourier_pythagorean_partial", "inner_self_eq_norm_sq_to_K", "Finset.sum_ite_eq", "inner_smul_left", "Complex.mul_conj"],
+    "prerequisites": ["sum_inner", "inner_smul_left/right", "Finset.sum_ite_eq", "inner_self_eq_norm_sq_to_K", "Complex.normSq_eq_norm_sq"]
+  },
+  {
+    "id": "ann-parseval-completeness",
+    "proofId": "cauchy-schwarz-oq-02-oq-01",
+    "range": { "startLine": 189, "endLine": 217 },
+    "type": "insight",
+    "title": "Completeness and L² Convergence: The Two Corollaries",
+    "content": "Parts IV-V prove two corollaries. parseval_implies_completeness shows the Fourier system is complete (zero-kernel): if all Fourier coefficients vanish, f = 0. Proof: use hasSum_fourier_series_L2 to get HasSum (fun n => ĉₙeₙ) f. Substitute hf_zero (all ĉₙ = 0), so HasSum (fun _ => 0) f. By HasSum uniqueness (hL2.unique hasSum_zero), f = 0. fourier_series_L2_convergence is a one-liner wrapping hasSum_fourier_series_L2: the Fourier series ∑ ĉₙeₙ converges in L² to f. Together these prove the Fourier system {eₙ} is a Hilbert basis (orthonormal + complete) for L²(AddCircle T).",
+    "mathContext": "Completeness: $\\forall n, \\hat{c}_n(f) = 0 \\Rightarrow f = 0$. L² convergence: $f = \\sum_{n\\in\\mathbb{Z}} \\hat{c}_n(f) \\cdot e_n$ (convergence in $L^2$). Together: $\\{e_n\\}$ is a Hilbert basis. `HasSum.unique` gives uniqueness of sums in Hausdorff spaces.",
+    "significance": "key",
+    "relatedConcepts": ["parseval_implies_completeness", "fourier_series_L2_convergence", "hasSum_fourier_series_L2", "HasSum.unique", "Hilbert basis completeness"],
+    "prerequisites": ["hasSum_fourier_series_L2", "HasSum.unique", "hasSum_zero"]
+  }
+]
