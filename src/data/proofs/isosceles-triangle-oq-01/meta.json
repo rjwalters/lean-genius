@@ -1,0 +1,150 @@
+{
+  "id": "isosceles-triangle-oq-01",
+  "title": "Euclid I.5: Pappus's Proof (Explicit Formalization)",
+  "slug": "isosceles-triangle-oq-01",
+  "description": "An explicit formalization of Pappus's self-congruence proof of the isosceles triangle theorem, exposing the inner product structure of the angle equality.",
+  "meta": {
+    "author": "Euclid / Pappus (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pons_asinorum",
+    "date": "c. 340 AD",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "euclidean",
+      "classic",
+      "pons-asinorum",
+      "inner-product"
+    ],
+    "proofRepoPath": "Proofs/IsoscelesTriangleOQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq",
+        "description": "If ‖x‖ = ‖y‖ then angle(x, x−y) = angle(y, y−x) — the algebraic core of Pappus's SAS argument",
+        "module": "Mathlib.Geometry.Euclidean.Angle.Unoriented.Basic"
+      },
+      {
+        "theorem": "vsub_add_vsub_cancel",
+        "description": "Affine torsor vsub cancellation: (a−ᵥb) + (b−ᵥc) = a−ᵥc",
+        "module": "Mathlib.Algebra.Torsor"
+      },
+      {
+        "theorem": "neg_vsub_eq_vsub_rev",
+        "description": "Negation reverses vsub: −(a−ᵥb) = b−ᵥa",
+        "module": "Mathlib.Algebra.Torsor"
+      }
+    ],
+    "originalContributions": [
+      "Explicit proof of the vsub decomposition C−ᵥB = (A−ᵥB) − (A−ᵥC) showing base vector = difference of apex vectors",
+      "Structural documentation of Euclid's original two-SAS proof via auxiliary constructions",
+      "Proof of Euclid's outer segment equality: AF = AG ∧ AB = AC → BF = CG",
+      "Clear separation between Pappus's one-step proof and Euclid's four-step proof"
+    ],
+    "dateAdded": "2026-04-03",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "lineCount": 145
+  },
+  "overview": {
+    "historicalContext": "Euclid's original proof of the isosceles triangle theorem (Elements I.5, c. 300 BCE) is the first non-trivial theorem in classical geometry, earning the name *Pons Asinorum* (Bridge of Asses) in medieval times because it divided students who could reason deductively from those who could not. Euclid's proof uses an elaborate auxiliary construction: extend both equal sides beyond the base, construct equal outer segments, then prove two triangle congruences before subtracting angles. Pappus of Alexandria (c. 340 AD) noticed a striking shortcut: the triangle ABC is congruent to its own mirror image ACB by SAS. Since AB=AC, ∠A=∠A, and AC=AB, the base angles ∠ABC and ∠ACB are corresponding angles of congruent triangles and must be equal. This elegant self-referential argument requires only one congruence step instead of Euclid's four.",
+    "problemStatement": "**Pons Asinorum (Euclid I.5)**:\n\nIf $d(A,B) = d(A,C)$, then $\\angle ABC = \\angle ACB$.\n\n**Pappus's Proof Strategy**:\n\nTriangle $ABC \\cong$ Triangle $ACB$ by SAS:\n- $AB = AC$ (given)\n- $\\angle BAC = \\angle CAB$ (same angle)\n- $AC = AB$ (sides swapped)\n\nTherefore $\\angle ABC = \\angle ACB$ (corresponding angles).",
+    "text": "An explicit formalization of Pappus's self-congruence proof, exposing the inner product identity underlying Pons Asinorum.",
+    "proofStrategy": "Setting apex vectors $p = A -_{\\mathrm{v}} B$ and $q = A -_{\\mathrm{v}} C$, the hypothesis $\\|p\\| = \\|q\\|$ (from dist A B = dist A C) and the vsub identity $C -_{\\mathrm{v}} B = p - q$ allow us to invoke `InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq`, which proves $\\mathrm{angle}(p, p-q) = \\mathrm{angle}(q, q-p)$ for equal-norm vectors. This is the inner product space realization of Pappus's SAS argument.",
+    "keyInsights": [
+      "**Pappus's self-congruence**: Triangle ABC is isomorphic to its own mirror image ACB by SAS — the triangle proves the theorem about itself by reflecting across its perpendicular bisector",
+      "**Apex vector decomposition**: The base vector C−ᵥB = (A−ᵥB) − (A−ᵥC) expresses the geometry of the isosceles triangle entirely in terms of the two apex-to-vertex vectors, enabling the inner product proof",
+      "**Pappus vs. Euclid**: Pappus's proof requires one SAS application; Euclid's original requires auxiliary constructions, two SAS applications, and angle subtraction",
+      "**Inner product algebra**: The angle equality reduces to showing cos(∠ABC) = cos(∠ACB), which follows from the identity ‖p-q‖ = ‖q-p‖ and ‖p‖² - ⟪p,q⟫ = ‖q‖² - ⟪p,q⟫ when ‖p‖ = ‖q‖"
+    ],
+    "prerequisites": [
+      "Euclidean geometry (isosceles triangle theorem from IsoscelesTriangle.lean)",
+      "Inner product space geometry",
+      "Affine torsor operations (vsub)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Documents both Euclid's original four-step proof and Pappus's one-step self-congruence proof. Explains the algebraic realization in inner product spaces.",
+      "mathContext": "Two proofs of Euclid I.5 (Pons Asinorum): Euclid's auxiliary construction proof vs Pappus's self-congruence."
+    },
+    {
+      "id": "vsub-lemmas",
+      "title": "Auxiliary vsub Arithmetic Lemmas",
+      "startLine": 53,
+      "endLine": 80,
+      "summary": "Proves C−ᵥB = (A−ᵥB) − (A−ᵥC) and B−ᵥC = (A−ᵥC) − (A−ᵥB) using torsor cancellation and negation.",
+      "mathContext": "These vsub identities reduce the base vectors to differences of apex vectors, enabling the InnerProductGeometry proof."
+    },
+    {
+      "id": "pappus-proof",
+      "title": "Pappus's Proof of Pons Asinorum",
+      "startLine": 87,
+      "endLine": 110,
+      "summary": "Proves ∠ABC = ∠ACB from dist A B = dist A C via the inner product angle identity for equal-norm vectors.",
+      "mathContext": "The main result. Uses `show` to unfold EuclideanGeometry.angle, rewrites base vectors as apex-vector differences, then applies InnerProductGeometry.angle_sub_eq_angle_sub_rev_of_norm_eq."
+    },
+    {
+      "id": "euclid-structure",
+      "title": "Euclid's Original Proof Structure",
+      "startLine": 112,
+      "endLine": 142,
+      "summary": "Documents Euclid's outer segment equality (BF = CG when AF = AG and AB = AC) with a clean algebraic proof. The euclid_i5 theorem wraps the main result under Euclid's name.",
+      "mathContext": "Step 1 of Euclid's proof: the outer segment equality is proved via simple algebra from the equal-length construction."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "isosceles-triangle",
+      "relationship": "companion",
+      "description": "The parent proof proves the same theorem via direct Mathlib delegation. This proof exposes the inner structure via explicit inner product steps."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The Law of Cosines uses similar inner product expansions. The isosceles case c² = 2a²(1−cos(A)) follows from Pons Asinorum when the apex angle A is fixed."
+    }
+  ],
+  "conclusion": {
+    "summary": "The isosceles triangle theorem is re-proved via Pappus's self-congruence argument with 0 sorries and 0 axioms. The proof exposes the algebraic identity underlying Pons Asinorum: the cosine of each base angle equals (‖p‖² − ⟪p,q⟫)/(‖p‖·‖p−q‖) where p = A−ᵥB and q = A−ᵥC, and these are equal when ‖p‖ = ‖q‖.",
+    "implications": "This formalization demonstrates that Pappus's 340 AD shortcut proof has a clean realization in inner product spaces. The algebraic structure (equal-norm vectors with equal angle to their difference) captures the geometric symmetry of the isosceles triangle.",
+    "openQuestions": [
+      "Formalize Euclid's full four-step proof explicitly, completing the auxiliary construction and two congruence arguments",
+      "Prove the isosceles triangle theorem in hyperbolic geometry using the corresponding angle formula"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "EuclideanGeometry",
+      "InnerProductGeometry"
+    ],
+    "namespace": "IsoscelesTriangleOQ01",
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "sorryCount": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "pappus_isosceles",
+      "type": "core",
+      "description": "Pappus's proof of Pons Asinorum: dist A B = dist A C → ∠ A B C = ∠ A C B",
+      "leanType": "dist A B = dist A C → ∠ A B C = ∠ A C B"
+    },
+    {
+      "name": "euclid_i5",
+      "type": "alias",
+      "description": "Euclid I.5 alias for pappus_isosceles",
+      "leanType": "dist A B = dist A C → ∠ A B C = ∠ A C B"
+    }
+  ]
+}
