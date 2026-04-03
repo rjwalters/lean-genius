@@ -16,27 +16,95 @@
     ],
     "badge": "formalized",
     "sorries": 0,
-    "assumptions": "0 sorries, 0 axioms. 3 True-stub theorems (irrationality_measure_ge_two, known_irrationality_measures, zeta_five_status) prove True instead of their stated claims. Genuine content: partial sum bounds, tail estimates, and irrationality measure definition are fully verified.",
+    "assumptions": "0 sorries, 0 axioms. All 7 theorems are fully proved. The file also contains three comment blocks (not theorems) documenting known irrationality measures and the difficulty of ζ(5). Genuine content: partial sum bounds, tail estimates, and irrationality measure definition are fully verified.",
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 154,
+    "lineCount": 144,
     "mathlib_version": "4.26.0"
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "The Basel problem — computing $\\zeta(2) = \\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$ — was solved by Euler in 1735 and stands as one of the landmark achievements of 18th-century analysis. Euler also computed $\\zeta(2n)$ for all positive integers $n$ in terms of Bernoulli numbers and powers of $\\pi$. The odd zeta values $\\zeta(3), \\zeta(5), \\zeta(7), \\ldots$ remained mysterious: no closed forms are known, and their arithmetic nature (rational? irrational? transcendental?) was an open question for centuries. The first breakthrough came from Roger Apéry in 1978 when, at age 61, he stunned the mathematical world by proving $\\zeta(3)$ is irrational using an elementary but miraculous method: an explicit fast-converging rational approximation sequence. His proof was so surprising that Henri Cohen, who reconstructed it at the Journées Arithmétiques conference, reported that 'several people left the auditorium in a huff' upon seeing the formulas. Apéry's constant $\\zeta(3) \\approx 1.2020569\\ldots$ remains the only proved irrational among odd zeta values. For $\\zeta(5) \\approx 1.0369278\\ldots$, irrationality is still unknown. In 2000 Rivoal proved that infinitely many odd zeta values are irrational (the Ball-Rivoal theorem), and Zudilin (2001) improved this to show that at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational — but neither result pins down $\\zeta(5)$ specifically.",
+    "problemStatement": "Is $\\zeta(5) = \\sum_{n=1}^{\\infty} \\frac{1}{n^5}$ irrational? This file does not resolve the question but builds verified computational infrastructure: lower bounds from partial sums, upper bounds from tail estimates via comparison with $\\zeta(2)$, and the irrationality measure framework used in modern approaches.",
+    "proofStrategy": "Rather than attacking irrationality directly (which is open), the file proves three classes of verifiable results. First, partial sums of $\\sum 1/n^5$ are non-negative, monotone, and exceed specific rational values — giving machine-verified lower bounds on $\\zeta(5)$. Second, tail terms $1/(n+1)^5 \\leq 1/(n+1)^2$ give comparison upper bounds on the remainder via the $\\zeta(2)$ tail. Third, the irrationality measure $\\mu(\\alpha)$ is formally defined as the infimum of exponents $s$ for which $|\\alpha - p/q| < 1/q^s$ has only finitely many rational solutions. The file then documents (in comments) the known bounds, the Apéry approach, Zudilin's result, and the Ball-Rivoal theorem.",
+    "keyInsights": [
+      "Partial sums provide certified lower bounds on $\\zeta(5)$: Lean's `positivity` tactic verifies $\\sum_{n=1}^{k} 1/n^5 \\geq 0$, while the two-term computation gives $\\zeta(5) \\geq 1 + 1/2^5 = 33/32 = 1.03125$, machine-verified by `norm_num`.",
+      "The comparison inequality $1/(n+1)^5 \\leq 1/(n+1)^2$ (proved via `pow_le_pow_left`) connects $\\zeta(5)$ to the better-understood $\\zeta(2)$, giving tail bounds $\\sum_{n>k} 1/n^5 \\leq \\sum_{n>k} 1/n^2 \\leq 2/k$.",
+      "The irrationality measure $\\mu(\\alpha)$, defined as $\\inf\\{s \\mid |\\alpha - p/q| < q^{-s}$ has finitely many solutions$\\}$, is the key analytical tool: Dirichlet's theorem gives $\\mu(\\alpha) \\geq 2$ for all irrationals, and bounds $\\mu(\\alpha) < \\infty$ imply irrationality. The best known bound for $\\zeta(3)$ is $\\mu(\\zeta(3)) \\leq 5.513891$ (Rhin-Viola 2001).",
+      "Apéry's 1978 proof for $\\zeta(3)$ succeeds because he found integer sequences $a_n, b_n$ with $|b_n \\zeta(3) - a_n| \\to 0$ at geometric rate $(\\sqrt{2}-1)^{4n}$, while the denominators grow only polynomially (times $\\text{lcm}(1,\\ldots,n)^3 \\sim e^{3n}$). The key: $e^3 < (\\sqrt{2}-1)^{-4}$, so denominators win and irrationality follows by the Criterion.",
+      "The fundamental difficulty for $\\zeta(5)$: no Apéry-style sequence is known. Zudilin (2001) shows some odd value in $\\{\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)\\}$ is irrational via a linear form argument, but the method produces only a combination that is irrational, not an individual value."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Problem Setup",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Imports Mathlib modules for p-series and infinite sums, opens the namespace, and states the open question with its computational infrastructure goals."
+    },
+    {
+      "id": "partial-sums",
+      "title": "Part I: Partial Sum Bounds",
+      "startLine": 27,
+      "endLine": 64,
+      "summary": "Defines zetaFivePartialSum and proves: non-negativity (positivity), monotonicity (sum_le_sum_of_subset), the 1-term bound ζ(5) ≥ 1, and the 2-term bound ζ(5) ≥ 33/32."
+    },
+    {
+      "id": "tail-bound",
+      "title": "Part II: Tail Bound via ζ(2) Comparison",
+      "startLine": 66,
+      "endLine": 85,
+      "summary": "Proves 1/(n+1)^5 ≤ 1/(n+1)^2 and uses this to bound the ζ(5) tail by the ζ(2) tail, giving a concrete remainder estimate."
+    },
+    {
+      "id": "irrationality-measure",
+      "title": "Part III: Irrationality Measure Definition",
+      "startLine": 87,
+      "endLine": 105,
+      "summary": "Formally defines the irrationality measure μ(α) using Filter.atTop to capture 'all but finitely many' rational approximations. Comments document known values: μ(e) = 2, μ(π) ≤ 7.61, μ(ζ(3)) ≤ 5.51."
+    },
+    {
+      "id": "difficulty-gap",
+      "title": "Part IV: Why ζ(5) Is Hard",
+      "startLine": 107,
+      "endLine": 144,
+      "summary": "Documents (in comments) the Apéry argument for ζ(3), the analogous gap for ζ(5), Zudilin's 'at least one' result, and the Ball-Rivoal dimension bound. Ends with a status summary."
+    }
+  ],
+  "conclusion": {
+    "summary": "ζ(5) irrationality remains open. This file provides machine-verified partial sum bounds (ζ(5) ≥ 33/32), tail estimates via ζ(2) comparison, and a formal definition of irrationality measure — the analytic tool used in all known irrationality proofs for specific zeta values.",
+    "implications": "The formalization makes precise what 'computational bounds' means for an open problem: we can certify that ζ(5) lies in a known interval and is not, say, a small integer — but the arithmetic nature question requires wholly different methods. The irrationality measure definition in Lean provides a foundation for potentially formalizing Dirichlet's theorem (μ(α) ≥ 2 for irrationals), and eventually Apéry-style arguments. The Ball-Rivoal result, if formalized, would constitute a dramatic theorem: infinitely many odd zeta values are irrational, proved without knowing which ones.",
+    "openQuestions": [
+      "Is $\\zeta(5)$ irrational? This is one of the most famous open problems in number theory. No proof exists; no conceptual obstruction is known. Computational evidence (including the decimal $1.0369277551433699341386083...$) is consistent with irrationality.",
+      "Can Apéry's proof of $\\zeta(3)$ irrationality be formalized in Lean? The proof uses an explicit combinatorial identity for the approximation sequences; formalizing it would require significant Mathlib infrastructure around hypergeometric functions and WZ-theory.",
+      "Can the Ball-Rivoal theorem (infinitely many odd zeta values are irrational) be formalized? This would require Lean machinery for linear independence over $\\mathbb{Q}$ and asymptotic estimates."
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "basel-problem-oq-01",
       "relationship": "extends",
       "description": "Adds computational bounds and the irrationality measure framework to the ζ(5) investigation."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related"
     }
   ],
-  "conclusion": {
-    "summary": "ζ(5) irrationality remains open. This file provides partial sum bounds, tail estimates, and documents the difficulty gap.",
-    "openQuestions": []
-  },
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Order",
+      "Mathlib.Tactic"
     ],
     "namespace": "BaselProblemOQ01OQ01",
     "lineCount": 144,
