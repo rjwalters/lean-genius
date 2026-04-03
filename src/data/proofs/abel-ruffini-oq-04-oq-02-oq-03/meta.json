@@ -15,19 +15,42 @@
       "burnside-theorem",
       "abel-ruffini"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified using Mathlib's IsPGroup, IsNilpotent, IsSolvable.",
+    "assumptions": "0 axioms, 0 sorries. Core results obtained via Mathlib bridge: pGroup_isSolvable chains hG.isNilpotent + inferInstance; s5_not_solvable aliases Equiv.Perm.fin_5_not_solvable directly; abelian_isSolvable is inferInstance.",
     "lineCount": 104,
     "theoremCount": 4,
     "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPGroup.isNilpotent",
+        "description": "p-groups are nilpotent — core of pGroup_isSolvable",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "IsNilpotent → IsSolvable (instance)",
+        "description": "Nilpotent groups are solvable — resolved by inferInstance in pGroup_isSolvable",
+        "module": "Mathlib.GroupTheory.Nilpotent"
+      },
+      {
+        "theorem": "Equiv.Perm.fin_5_not_solvable",
+        "description": "S₅ is not solvable — s5_not_solvable is a direct alias",
+        "module": "Mathlib.GroupTheory.Perm.Fin"
+      },
+      {
+        "theorem": "CommGroup → IsSolvable (instance)",
+        "description": "Abelian groups are solvable — abelian_isSolvable is inferInstance",
+        "module": "Mathlib.GroupTheory.Solvable"
+      }
+    ],
     "originalContributions": [
-      "pGroup_isSolvable: IsPGroup p G → IsSolvable G (via nilpotency chain)",
-      "s5_not_solvable: S₅ is not solvable (Mathlib's Equiv.Perm.fin_5_not_solvable)",
-      "abelian_isSolvable: every commutative group is solvable",
-      "Classification documentation: all orders 1-59 categorized by solvability argument"
+      "pGroup_isSolvable: bridge theorem composing IsPGroup.isNilpotent + IsSolvable inferInstance",
+      "s5_not_solvable: alias for Mathlib's Equiv.Perm.fin_5_not_solvable",
+      "abelian_isSolvable: bridge alias for CommGroup → IsSolvable typeclass instance",
+      "primes_below_60: computational proof (native_decide) that there are 17 primes below 60",
+      "Classification documentation: all orders 1-59 categorized by solvability proof method"
     ]
   },
   "overview": {
