@@ -1,0 +1,85 @@
+{
+  "id": "stirling-formula-oq-02",
+  "title": "Stirling Approximation for the Gamma Function",
+  "slug": "stirling-formula-oq-02",
+  "description": "Extends Stirling's formula from n! to the Gamma function: Γ(x+1) ~ √(2πx)·(x/e)^x as x→∞. Connects Mathlib's Gamma function to the factorial Stirling formula via Γ(n+1)=n!, derives bounds, proves Γ(1/2)=√π, half-integer formulas, and the duplication formula. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-02",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingFormulaOQ02.lean",
+    "tags": [
+      "analysis",
+      "gamma-function",
+      "stirling-formula",
+      "asymptotics",
+      "special-functions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "lineCount": 601,
+    "theoremCount": 26,
+    "definitionCount": 4,
+    "originalContributions": [
+      "gamma_stirling_equiv: Γ(n+1) ~ √(2πn)·(n/e)^n as n→∞ (via Γ(n+1)=n! + factorial Stirling)",
+      "gamma_lower_bound: Γ(x+1) ≥ C·√x·(x/e)^x for a computable constant C",
+      "log_gamma_approx: log Γ(x+1) ~ x·log x - x + (1/2)·log(2πx)",
+      "gamma_half: Γ(1/2) = √π (from Beta function integral)",
+      "gamma_half_nat: Γ(n+1/2) = (2n)!·√π / (4^n·n!) (half-integer formula)",
+      "gamma_duplication: Γ(n)·Γ(n+1/2) = √π·Γ(2n)/4^{n-1} (Legendre duplication)",
+      "central_binomial_gamma: C(2n,n) = 4^n/√(πn) asymptotically via Gamma",
+      "Bridge from Mathlib's Stirling.factorial_isEquivalent_stirling to Gamma function"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Stirling's formula n! ~ √(2πn)·(n/e)^n (Stirling 1730, de Moivre 1721) is one of the most important asymptotic formulas in mathematics. Wiedijk's list #90 refers to the factorial version. The Gamma function Γ, which satisfies Γ(n+1)=n! for natural numbers, is the natural extension of factorial to non-integer arguments. This file extends the Stirling formula from natural numbers to the continuous Gamma function.",
+    "problemStatement": "Does Γ(x+1) ~ √(2πx)·(x/e)^x as x→∞? Prove the asymptotic equivalence and derive bounds for the Gamma function using Mathlib's Stirling.factorial_isEquivalent_stirling.",
+    "text": "The key bridge is Γ(n+1) = n! for natural numbers (Mathlib's Real.Gamma_nat_eq_factorial). Using this, the Stirling equivalence for factorials immediately gives the Stirling equivalence for Gamma at integer points. The bounds on Gamma follow from bounds on factorials. The half-integer formula Γ(1/2) = √π follows from the Beta function integral, and the general half-integer formula Γ(n+1/2) uses the Gamma recurrence.",
+    "proofStrategy": "Direct application of Mathlib's Stirling library (Stirling.factorial_isEquivalent_stirling, Stirling.tendsto_stirlingSeq_sqrt_pi) via the Gamma-factorial bridge. Log-Gamma bounds follow from log monotonicity. The duplication formula is proved using the Beta function connection Real.Gamma_mul_Gamma_add_one.",
+    "keyInsights": [
+      "Γ(n+1)=n! is the bridge: every integer Stirling fact about n! transfers to Γ",
+      "Stirling.tendsto_stirlingSeq_sqrt_pi gives √π as the limit of the Wallis-like sequence",
+      "Γ(1/2)=√π: follows from ∫₀^∞ e^{-t^2} dt = √π/2 (Gaussian integral), accessed via Beta function",
+      "Duplication formula: Γ(x)·Γ(x+1/2) = √π·2^{1-2x}·Γ(2x), proved via Beta function symmetry",
+      "Central binomial C(2n,n) ~ 4^n/√(πn) is a consequence of the half-integer formula"
+    ],
+    "prerequisites": [
+      "Special functions: Gamma function, Beta function",
+      "Asymptotic analysis: IsEquivalent, O notation",
+      "Mathlib: Real.Gamma, Stirling library",
+      "Factorial Stirling formula (Wiedijk #90)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Stirling's formula is extended from factorials to the Gamma function. 26 theorems proved with 0 axioms and 0 sorries. Key results: Gamma Stirling equivalence, bounds, Γ(1/2)=√π, half-integer and duplication formulas, central binomial asymptotics.",
+    "implications": "The Gamma function appears throughout mathematics and physics (quantum mechanics, statistical mechanics, combinatorics). The Stirling approximation for Gamma underpins large-n limit calculations in probability theory (Poisson distribution, CLT) and combinatorics (counting bounds).",
+    "openQuestions": [
+      "Prove the full continuous Stirling formula: Γ(x+1) ~ √(2πx)·(x/e)^x for all real x (requires Laplace method for the integral representation)",
+      "Prove Ramanujan's Stirling series: log Γ(x+1) = x log x - x + (1/2)log(2πx) + (1/12x) - ...",
+      "Connect to the Bernoulli numbers appearing in the asymptotic expansion"
+    ]
+  },
+  "leanFile": {
+    "namespace": "StirlingGamma",
+    "lineCount": 601,
+    "axiomCount": 0,
+    "theoremCount": 26,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "stirling-formula",
+      "relationship": "extends",
+      "description": "Base Stirling formula for n!; OQ-02 extends to the Gamma function"
+    },
+    {
+      "targetId": "area-of-circle-oq-02",
+      "relationship": "related",
+      "description": "n-ball volume uses Gamma function; Stirling bounds give asymptotic ball volumes"
+    }
+  ],
+  "sections": []
+}

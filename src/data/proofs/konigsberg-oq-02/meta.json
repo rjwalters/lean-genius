@@ -1,0 +1,79 @@
+{
+  "id": "konigsberg-oq-02",
+  "title": "Directed Euler Paths: In-Degree/Out-Degree Characterization",
+  "slug": "konigsberg-oq-02",
+  "description": "Proves the directed analogue of Euler's theorem: a digraph has an Eulerian circuit iff every vertex has indegree = outdegree, and an Eulerian path iff exactly one vertex has outdegree-indegree=1 (start) and exactly one has indegree-outdegree=1 (end). Defines directed graphs from scratch with degree properties and verified examples. 2 axioms for the sufficiency directions.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-02",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/KonigsbergOQ02.lean",
+    "tags": [
+      "graph-theory",
+      "directed-graphs",
+      "euler-paths",
+      "konigsberg",
+      "combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: directed_euler_circuit_sufficient (balanced digraph → Eulerian circuit exists) and directed_euler_path_sufficient (exactly one source + one sink → Eulerian path exists). The necessary conditions are fully proved; the sufficiency requires an Eulerian circuit construction algorithm (e.g., Hierholzer's algorithm) not yet in Mathlib.",
+    "lineCount": 813,
+    "theoremCount": 30,
+    "definitionCount": 8,
+    "originalContributions": [
+      "Digraph: directed graph definition with finite vertex and edge types",
+      "inDegree/outDegree: in-degree and out-degree for each vertex",
+      "degree_balance_necessary: Eulerian circuit → ∀v, indeg(v)=outdeg(v) (proved)",
+      "euler_path_degree_necessary: Eulerian path → degree imbalance at endpoints (proved)",
+      "is_eulerian_circuit: predicate for closed walks traversing every arc exactly once",
+      "Concrete examples: directed triangle, directed square verified to have Eulerian circuits",
+      "Tournament degree sum: Σ outdeg = Σ indeg = |E| in any tournament",
+      "Balance equivalences: total in-degree equals total out-degree ↔ Eulerian circuit exists"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler's 1736 solution to the Königsberg bridges problem is considered the birth of graph theory. The undirected result (Eulerian circuit ↔ all even degrees) is Wiedijk #53. The directed analogue characterizes Eulerian circuits and paths via in-degree/out-degree balance: in a directed graph, an Eulerian circuit exists iff every vertex has indeg = outdeg, and an Eulerian path from u to v exists iff indeg(u)+1 = outdeg(u), indeg(v) = outdeg(v)+1, and all other vertices have equal degrees.",
+    "problemStatement": "Formalize the directed version of Euler's theorem: characterize directed Eulerian circuits and paths in terms of vertex degree balance.",
+    "text": "A directed graph (digraph) has an Eulerian circuit iff it is connected and every vertex has indegree equal to outdegree. It has an Eulerian path from u to v iff it is connected, indeg(u)=outdeg(u)-1 (source imbalance), indeg(v)=outdeg(v)+1 (sink imbalance), and all other vertices are balanced. The necessary conditions follow from degree counting: each arc contributes +1 to the outdegree of its tail and +1 to the indegree of its head. The sufficiency is axiomatized (requires Hierholzer's algorithm).",
+    "proofStrategy": "Necessity is proved by induction on the walk: each step from vertex v uses one outgoing arc and (for a circuit) one incoming arc, maintaining the balance invariant. The concrete examples (directed triangle, directed square) verify the conditions via native_decide. The sufficiency axioms state the standard theorems.",
+    "keyInsights": [
+      "The key asymmetry: directed graphs split even-degree into indeg=outdeg (circuit) vs two-vertex imbalance (path)",
+      "Tournament degree sum: total in-degree = total out-degree = |E| in any digraph (proved via arc counting)",
+      "Necessity is a clean induction; sufficiency requires constructing a walk (algorithmic)",
+      "Hierholzer's algorithm (O(|E|)) constructs Eulerian circuits — not yet in Mathlib",
+      "The directed and undirected cases both need a connectedness condition"
+    ],
+    "prerequisites": [
+      "Graph theory: directed graphs, walks, Eulerian paths",
+      "Combinatorics: degree sequences, handshaking lemma for digraphs",
+      "Euler's theorem for undirected graphs (Wiedijk #53)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The directed Euler theorem is formalized with 2 axioms for the sufficiency directions. Necessity (balanced degrees → needed for Eulerian circuit/path) is fully proved. 30 theorems, 8 definitions, 813 lines.",
+    "implications": "Directed Eulerian path theory is used in computational linguistics (de Bruijn sequences), bioinformatics (genome assembly via de Bruijn graphs), and Chinese Postman Problem algorithms. The formal characterization enables verified routing and traversal algorithms.",
+    "openQuestions": [
+      "Prove directed_euler_circuit_sufficient: formalize Hierholzer's algorithm in Lean 4",
+      "Connect to Mathlib's SimpleGraph Eulerian path infrastructure (undirected case)",
+      "Extend to Eulerian path existence in multigraphs"
+    ]
+  },
+  "leanFile": {
+    "namespace": "DirectedEuler",
+    "lineCount": 813,
+    "axiomCount": 2,
+    "theoremCount": 30,
+    "definitionCount": 8
+  },
+  "crossReferences": [
+    {
+      "targetId": "konigsberg",
+      "relationship": "extends",
+      "description": "Undirected Königsberg bridges (Wiedijk #53); this file proves the directed analogue"
+    }
+  ],
+  "sections": []
+}
