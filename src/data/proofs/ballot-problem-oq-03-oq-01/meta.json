@@ -92,5 +92,46 @@
       "description": "Multi-candidate ballot is another extension of the classical ballot problem"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "lattice-path-defs",
+      "title": "Part I: Lattice Path Definitions and northBeforeEast",
+      "startLine": 70,
+      "endLine": 199,
+      "summary": "Defines LPath (Bool list), eastSteps/northSteps counts, pathType (m East, n North steps), and the key function northBeforeEast. Proves northBeforeEast_mono (monotone in k) and colEntry as the y-offset at column boundaries.",
+      "mathContext": "LPath = List Bool; false = East (+x), true = North (+y). northBeforeEast l k = #{j : j-th step is N, and fewer than k E steps precede it}. colEntry l k = northBeforeEast l (k-1) for k ≥ 1."
+    },
+    {
+      "id": "crossing-lemma",
+      "title": "Part IV: Crossing Lemma (2D Reflection Principle)",
+      "startLine": 200,
+      "endLine": 298,
+      "summary": "Proves the Crossing Lemma: if P₁ starts strictly lower (y₁ < y₂) but ends strictly higher (y₁+n₁ > y₂+n₂), they must share a lattice point. Uses induction on columns via nonIntersecting_entry_order (disjoint interval preservation).",
+      "mathContext": "Inductive invariant: non-intersecting → y₁ + colEntry(l₁, k) < y₂ + colEntry(l₂, k) for all k. Base: hstart. Step: nonIntersecting_entry_order. Contradiction at k=m: hend forces finalRange overlap."
+    },
+    {
+      "id": "path-count-ballot",
+      "title": "Part V–X: Path Count Formula and Ballot Theorem",
+      "startLine": 299,
+      "endLine": 638,
+      "summary": "Proves path_count_eq_choose: |pathType m n| = C(m+n, m). Defines ballotSeqCount and proves ballot_formula via absorption identity (b*p = a*q) and Pascal's rule. Includes native_decide verified examples.",
+      "mathContext": "|pathType m n| = C(m+n, m) by bijection with {0,1}^{m+n} subsets. Ballot formula: ballotSeqCount(p,q)*(p+q) = (p-q)*C(p+q,p) for q < p — proved via Nat.add_one_mul_choose_eq (absorption) + Nat.choose_succ_succ' (Pascal)."
+    },
+    {
+      "id": "swap-involution",
+      "title": "Part XI–XVI: Lindström Involution Infrastructure",
+      "startLine": 639,
+      "endLine": 2832,
+      "summary": "Constructs swapAtPoint (swap path suffixes at a shared lattice point), proves swapAtPoint_involutive via List.take_left/drop_left, and assembles the full Lindström involution on intersecting path pairs via lindstromForward_injective and lindstromBackward_injective.",
+      "mathContext": "swapAtPoint l₁ l₂ a₁ a₂ p = (l₁.take i ++ l₂.drop j, l₂.take j ++ l₁.drop i) where i = splitIdx a₁ p, j = splitIdx a₂ p. Involutivity: List.take_left + List.take_append_drop. Lindström involution: bijection between (A₁→B₁, A₂→B₂) intersecting pairs and (A₁→B₂, A₂→B₁) all pairs."
+    },
+    {
+      "id": "lgv-theorem",
+      "title": "Part XVII: LGV Lemma 2×2 and Non-Negativity",
+      "startLine": 2834,
+      "endLine": 2878,
+      "summary": "Proves lgv_lemma_2x2: |NI pairs| = det[e(Aᵢ,Bⱼ)]. Three cases: equal starts, equal ends, general (strict). General case: complement counting + Lindström involution + algebra. Corollary lgvDet_nonneg: determinant is non-negative since it equals a count.",
+      "mathContext": "|NI| = e(A₁,B₁)e(A₂,B₂) - e(A₁,B₂)e(A₂,B₁). Proof: ni_complement_count' gives |NI| = total - |Int|; lindstrom_involution gives |Int| = crossed total; algebra via omega + zify + ring gives the determinant formula."
+    }
+  ]
 }

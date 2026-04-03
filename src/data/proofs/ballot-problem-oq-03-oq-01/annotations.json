@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-lgv-header",
+    "proofId": "ballot-problem-oq-03-oq-01",
+    "range": { "startLine": 3, "endLine": 63 },
+    "type": "context",
+    "title": "Header: LGV Lemma via Column Entry Order Analysis",
+    "content": "The file header presents both the result (2×2 LGV Lemma) and its complete proof strategy. The classical Bertrand ballot problem uses a 1D reflection: bijecting 'bad ballot sequences' with paths starting below the x-axis. The 2D generalization (LGV) uses a 2D reflection: the Lindström involution swaps path tails at the first crossing point, creating a sign-reversing bijection on intersecting path pairs. The header explicitly gives the four-step inductive proof of the Crossing Lemma, which is the key 2D reflection principle: northBeforeEast tracks y-coordinates at column boundaries, nonIntersecting_entry_order preserves relative order, induction gives global order, and the end condition contradicts global order.",
+    "mathContext": "The 2×2 LGV Lemma: $|\\{(P_1: A_1 \\to B_1, P_2: A_2 \\to B_2) : \\text{non-intersecting}\\}| = e(A_1,B_1) \\cdot e(A_2,B_2) - e(A_1,B_2) \\cdot e(A_2,B_1)$. The proof strategy: all pairs = NI pairs + intersecting pairs; intersecting pairs biject (via Lindström involution) with 'crossed pairs' $(P_1': A_1 \\to B_2, P_2': A_2 \\to B_1)$; so $|\\text{NI}| = e(A_1,B_1)e(A_2,B_2) - e(A_1,B_2)e(A_2,B_1)$. The Crossing Lemma is used to ensure that 'crossed pairs' target is disjoint from 'NI pairs'.",
+    "significance": "key",
+    "relatedConcepts": ["Lindström-Gessel-Viennot lemma", "Bertrand ballot problem", "reflection principle", "sign-reversing involution", "lattice path enumeration"],
+    "prerequisites": ["Monotone lattice paths", "binomial coefficients C(m+n,m)", "inclusion-exclusion principle", "involution argument"]
+  },
+  {
+    "id": "ann-lgv-northbeforeeast",
+    "proofId": "ballot-problem-oq-03-oq-01",
+    "range": { "startLine": 120, "endLine": 168 },
+    "type": "technique",
+    "title": "northBeforeEast: The Key Invariant for Column Entry Tracking",
+    "content": "The recursive function `northBeforeEast l k` counts North steps in path `l` before the k-th East step, giving the y-offset when entering column k+1. It is defined by structural recursion: East at k=0 → return 0 (stop); East at k+1 → consume and decrement; North → count and continue. The monotonicity lemma `northBeforeEast_mono` proves that later East steps always see weakly more accumulated North steps, reflecting the geometry: as you move east, you've accumulated at least as many northward steps as before. `colEntry l k` wraps this as the y-coordinate after k East steps.",
+    "mathContext": "For a path $l = l_1 l_2 \\ldots l_{m+n}$ (false=E, true=N), `northBeforeEast l k` = $|\\{j < \\text{(k-th E position)} : l_j = N\\}|$. Monotonicity: if $i < j$, then northBeforeEast $l$ $i$ $\\leq$ northBeforeEast $l$ $j$, because the prefix to the $j$-th E position contains the prefix to the $i$-th E position. The `colEntry l k = northBeforeEast l (k-1)` for $k \\geq 1$ gives the y-coordinate when the path has completed $k$ East steps, i.e., is at grid column $k$.",
+    "significance": "key",
+    "relatedConcepts": ["column entry y-coordinate", "path invariant", "structural recursion", "monotone function", "List.takeWhile"],
+    "prerequisites": ["Bool list path encoding (false=E, true=N)", "structural recursion in Lean 4", "Nat.add_le_add_left"]
+  },
+  {
+    "id": "ann-lgv-crossing-lemma",
+    "proofId": "ballot-problem-oq-03-oq-01",
+    "range": { "startLine": 257, "endLine": 297 },
+    "type": "insight",
+    "title": "Crossing Lemma: Column Entry Induction Proves 2D Reflection",
+    "content": "The `crossing_lemma` is proved by assuming non-intersection and deriving a contradiction. The core is `horder`: by induction using `nonIntersecting_entry_order`, if the paths are non-intersecting, then P₁ enters every column k strictly below P₂ (y₁ + colEntry l₁ k < y₂ + colEntry l₂ k). At column m (the final column), P₁ still enters below P₂ by `horder m`. But then P₁'s final range [y₁+colEntry_m, y₁+n₁] and P₂'s final range [y₂+colEntry_m, y₂+n₂] are analyzed: the hypothesis `hend : y₂ + n₂ < y₁ + n₁` forces P₁'s final range to extend above P₂'s, creating a range overlap detected by `finalRange` membership.",
+    "mathContext": "The inductive invariant: if $(P_1, P_2)$ is non-intersecting and $y_1 + \\text{colEntry}_{l_1}(k) < y_2 + \\text{colEntry}_{l_2}(k)$ (P₁ enters column $k$ below P₂), then $y_1 + \\text{colEntry}_{l_1}(k+1) < y_2 + \\text{colEntry}_{l_2}(k+1)$ as well — the order is preserved because otherwise the paths would share a point in column $k$. The base case $k=0$ is `hstart : y₁ < y₂`. The contradiction at $k=m$: P₁ enters below P₂ but P₁ ends higher (`hend`), so P₁'s endpoint range $[y_1 + \\text{colEntry}_m, y_1 + n_1]$ overlaps P₂'s $[y_2 + \\text{colEntry}_m, y_2 + n_2]$, contradicting disjointness.",
+    "significance": "key",
+    "relatedConcepts": ["nonIntersecting_entry_order", "finalRange", "disjoint interval argument", "well-founded induction", "2D reflection principle"],
+    "prerequisites": ["NonIntersecting definition", "colEntry monotonicity", "Nat interval intersection", "induction in Lean 4"]
+  },
+  {
+    "id": "ann-lgv-ballot",
+    "proofId": "ballot-problem-oq-03-oq-01",
+    "range": { "startLine": 574, "endLine": 618 },
+    "type": "insight",
+    "title": "Ballot Formula: Absorption Identity and Pascal's Rule",
+    "content": "The ballot formula `ballotSeqCount p q * (p+q) = (p-q) * C(p+q, p)` is proved by a two-step algebraic argument: (1) the absorption identity `b * p = a * q` (where a = C(p+q-1,p-1), b = C(p+q-1,p)), derived via `Nat.add_one_mul_choose_eq`; (2) Pascal's rule C(p+q,p) = a + b from `Nat.choose_succ_succ'`. From these, the formula follows by `linear_combination -2 * h_abs`. The absorption identity is proved by applying the same Mathlib lemma twice (once for p, once for q) and using binomial symmetry C(n,k) = C(n,n-k).",
+    "mathContext": "Absorption identity: $b \\cdot p = a \\cdot q$ where $a = \\binom{p+q-1}{p-1}$, $b = \\binom{p+q-1}{p}$. Proof: `Nat.add_one_mul_choose_eq` gives $(n+1)\\binom{n}{k} = \\binom{n+1}{k+1}(k+1)$; with $n = p+q-2$, $k = p-1$: $(p+q-1)\\binom{p+q-2}{p-1} = b \\cdot p$; with $k = q-1$: $(p+q-1)\\binom{p+q-2}{q-1} = a \\cdot q$ (using symmetry $\\binom{p+q-2}{p-1} = \\binom{p+q-2}{q-1}$). Pascal: $a + b = \\binom{p+q}{p}$ from `choose_succ_succ'`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.add_one_mul_choose_eq", "Nat.choose_succ_succ'", "binomial symmetry", "absorption identity", "linear_combination tactic"],
+    "prerequisites": ["Binomial coefficient identities", "Nat.choose in Mathlib", "linear_combination tactic in Lean 4"]
+  },
+  {
+    "id": "ann-lgv-swap",
+    "proofId": "ballot-problem-oq-03-oq-01",
+    "range": { "startLine": 1727, "endLine": 1754 },
+    "type": "technique",
+    "title": "swapAtPoint: Involutive Tail Swap at a Shared Lattice Point",
+    "content": "The `swapAtPoint` function swaps path suffixes at a given lattice point `p`: the new first path takes `l₁`'s prefix up to `p` plus `l₂`'s suffix from `p`, and vice versa. The split index `splitIdx a p = p.1 + (p.2 - a)` computes the step count for a path starting at height `a` to reach point `p`. The involutivity proof uses two key List lemmas: `List.take_left` (taking k items from a length-k prefix gives back the prefix) and `List.drop_left` (dropping k items from a concatenation where the first part has length k gives the second part). The proof `swapAtPoint_involutive` applies these four times to recover the original pair.",
+    "mathContext": "`swapAtPoint l₁ l₂ a₁ a₂ p = (l₁.take i ++ l₂.drop j, l₂.take j ++ l₁.drop i)` where $i = \\text{splitIdx}(a_1, p)$, $j = \\text{splitIdx}(a_2, p)$. Involutivity: applying the swap twice: $(l_1.\\text{take}(i) ++ l_2.\\text{drop}(j)).\\text{take}(i) = l_1.\\text{take}(i)$ (since $\\text{length}(l_1.\\text{take}(i)) = i$); then $l_1.\\text{take}(i) ++ (l_1.\\text{drop}(i)) = l_1$ by `List.take_append_drop`. The key: the split index is the same on both applications, so the swap is exactly its own inverse.",
+    "significance": "key",
+    "relatedConcepts": ["List.take_left", "List.drop_left", "List.take_append_drop", "involution", "splitIdx", "lattice point step count"],
+    "prerequisites": ["List.take and List.drop in Lean 4/Mathlib", "involution proof strategy", "path encoding step indices"]
+  },
+  {
+    "id": "ann-lgv-main",
+    "proofId": "ballot-problem-oq-03-oq-01",
+    "range": { "startLine": 2834, "endLine": 2876 },
+    "type": "insight",
+    "title": "LGV Lemma 2×2: Complement Counting + Lindström Involution",
+    "content": "The `lgv_lemma_2x2` proof handles three cases: equal starts (a₁ = a₂), equal ends (b₁ = b₂), and the general case (strict inequalities). The general case uses a chain of equalities: (1) ni_complement_count' expresses |NI pairs| as |all pairs| - |crossing pairs|; (2) lindstrom_involution shows |crossing pairs| = |all crossed pairs| (the involution is a bijection); (3) total_identity_count' expresses both counts via binomial coefficients; (4) algebra via omega + zify + ring closes the determinant formula. The non-negativity corollary `lgvDet_nonneg` is immediate: the LGV determinant equals a count, which is non-negative.",
+    "mathContext": "The complement: $|\\text{NI}| = \\binom{m+n_1}{m}\\binom{m+n_2}{m} - |\\text{Int}|$. Lindström involution: $|\\text{Int}| = |\\text{PathPairs}(A_1\\to B_2, A_2\\to B_1)|= \\binom{m+n_1'}{m}\\binom{m+n_2'}{m}$ where $n_1' = b_2-a_1$, $n_2' = b_1-a_2$. So $|\\text{NI}| = \\binom{m+n_1}{m}\\binom{m+n_2}{m} - \\binom{m+n_1'}{m}\\binom{m+n_2'}{m} = e(A_1,B_1)e(A_2,B_2) - e(A_1,B_2)e(A_2,B_1) = \\det[e(A_i,B_j)]$. Non-negativity: $|\\text{NI}| \\geq 0$ since it's a count, so $\\det \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["lgvDet", "niPairCount", "lindstrom_involution", "complement counting", "ni_complement_count'", "zify + ring"],
+    "prerequisites": ["Lindström involution theorem", "path count formula C(m+n,m)", "omega tactic", "zify for Nat ↪ Int"]
+  }
+]
