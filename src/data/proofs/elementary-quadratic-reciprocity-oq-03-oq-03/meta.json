@@ -13,7 +13,12 @@
       "quadratic-reciprocity",
       "hilbert-symbol",
       "class-field-theory",
-      "research"
+      "research",
+      "jacobi-symbol",
+      "legendre-symbol",
+      "local-global-principle",
+      "p-adic",
+      "artin-reciprocity"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -28,5 +33,60 @@
     "lineCount": 102,
     "axiomCount": 3
   },
-  "sections": []
+  "overview": {
+    "historicalContext": "Quadratic reciprocity was first stated by Euler and Legendre, then proved by Gauss (1796, first of his six proofs). The Hilbert symbol (a,b)_v was introduced by Hilbert (1897) in his Zahlbericht as a unified language for local quadratic solubility. The product formula ∏_v (a,b)_v = 1 (over all places v, including the real place) was recognized as the local-global formulation of quadratic reciprocity by Hilbert and later placed in the framework of class field theory by Artin and Tate. The Jacobi symbol J(a,n) = ∏(a/pᵢ) (product of Legendre symbols over the prime factorization of n) was introduced by Jacobi (1837) as a computational tool, useful for primality testing and cryptography. Mathlib 4 formalizes legendreSym and jacobiSym through the Zmod framework; the Hilbert symbol and full class field theory await future Mathlib development.",
+    "problemStatement": "Can the Jacobi-symbol-based quadratic reciprocity (OQ-03) be connected to the Hilbert symbol and the local-global principle in Lean 4? Specifically: (1) Is the proved legendre_characterizes_qr connection sufficient to build Hilbert symbol theory on top of Mathlib's legendreSym? (2) Can the product formula ∏_v (a,b)_v = 1 be formalized once Mathlib has p-adic Hilbert symbols? This file surveys what is currently formalizable (Sections I-II) and axiomatizes the rest.",
+    "proofStrategy": "Three-level architecture. Level 1 (proved via Mathlib): legendre_characterizes_qr uses legendreSym.eq_one_iff_isSquare from Mathlib.NumberTheory.LegendreSymbol; qr_legendre wraps legendreSym.quadratic_reciprocity; first_supplement wraps legendreSym.at_neg_one. Level 2 (axiomatized): HilbertSymbol (a,b,p) is axiomatized as an integer because the p-adic Hilbert symbol requires Padic/p-adic completion machinery not yet integrated with the Legendre symbol framework. Level 3 (commentary): The product formula and Artin reciprocity are documented in the /-! docstring block as future targets.",
+    "keyInsights": [
+      "Legendre symbol = simplest Hilbert symbol: (a/p) = (a, p)_p in Hilbert's notation, where we ask whether ax² + py² = z² has a p-adic solution. For odd prime p and p∤a, these coincide.",
+      "The product formula ∏_v (a,b)_v = 1 (over primes + ∞) is precisely quadratic reciprocity in disguise: it encodes the constraint that local quadratic solubility data must be globally consistent — a manifestation of the Hasse-Minkowski theorem for quadratic forms.",
+      "Three Mathlib one-liners: all three proved theorems are direct applications of corresponding Mathlib lemmas (legendreSym.eq_one_iff_isSquare, legendreSym.quadratic_reciprocity, legendreSym.at_neg_one), demonstrating that Mathlib's QR formalization is complete at the Legendre symbol level.",
+      "Jacobi symbol packages local data: J(a,n) = ∏_p (a/p)^{v_p(n)} condenses the Legendre symbols at all primes dividing n into a single integer in {-1,0,1}. It satisfies QR-like formulas but does not directly measure quadratic residuosity (J(a,n)=1 does not imply a is a square mod n).",
+      "Class field theory gap: Full Artin reciprocity generalizes QR to arbitrary number fields and abelian extensions. Its Lean formalization requires: (1) global class field theory axioms, (2) p-adic Hilbert symbols, (3) idèle class groups — none yet in Mathlib 4 as of 2026."
+    ]
+  },
+  "sections": [
+    {
+      "title": "Section I: Legendre-to-Hilbert Connection",
+      "startLine": 28,
+      "endLine": 57,
+      "description": "Three proved theorems directly from Mathlib's legendreSym API. legendre_characterizes_qr: (a/p) = 1 ↔ a is a square in ZMod p (proved by legendreSym.eq_one_iff_isSquare). qr_legendre: (p/q)(q/p) = (-1)^((p-1)/2·(q-1)/2) (proved by legendreSym.quadratic_reciprocity). first_supplement: (-1/p) = (-1)^((p-1)/2) (proved by legendreSym.at_neg_one). All three are one-line proofs.",
+      "theorems": ["legendre_characterizes_qr", "qr_legendre", "first_supplement"]
+    },
+    {
+      "title": "Section II: Hilbert Symbol Definition",
+      "startLine": 59,
+      "endLine": 77,
+      "description": "Axiomatizes the Hilbert symbol HilbertSymbol (a b : ℤ) (p : ℕ) : ℤ as a placeholder for the p-adic Hilbert symbol. The docstring explains its meaning: (a,b)_p = 1 if ax² + by² = z² has a nontrivial p-adic solution, -1 otherwise. The product formula axiom (∏_v (a,b)_v = 1) is mentioned in the docstring but not formalized — pending p-adic infrastructure.",
+      "theorems": ["HilbertSymbol"]
+    },
+    {
+      "title": "Section III: Bridge Commentary",
+      "startLine": 78,
+      "endLine": 102,
+      "description": "A /-! docstring surveying the full progression from Legendre to Artin reciprocity: (1) Legendre symbol (Mathlib: legendreSym), (2) Jacobi symbol (Mathlib: jacobiSym), (3) Hilbert symbol (requires Padic, axiomatized here), (4) Product formula (this IS quadratic reciprocity in CFT language), (5) Artin reciprocity (requires class field theory, not yet in Mathlib). This section serves as a roadmap for future Mathlib/Lean 4 development."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file bridges Mathlib's complete Legendre/Jacobi symbol formalization with the deeper Hilbert symbol and class field theory framework. Three theorems are machine-verified (the Legendre characterization and quadratic reciprocity in both supplement forms). The Hilbert symbol and product formula are axiomatized pending p-adic infrastructure. The /-! commentary section maps the full progression from elementary to advanced reciprocity.",
+    "implications": "The connection Legendre → Hilbert → product formula shows that elementary quadratic reciprocity is a shadow of deep arithmetic duality. Formalizing the full Hilbert product formula in Lean would require: (1) p-adic Hilbert symbols (building on Mathlib's Padic), (2) the Hasse-Minkowski theorem for ternary quadratic forms, (3) local-global principle for quadratic forms over number fields. This infrastructure would unlock formalization of Artin reciprocity and eventually the Langlands correspondence.",
+    "openQuestions": [
+      "Hilbert product formula: Formalize ∏_v (a,b)_v = 1 using Mathlib's Padic — this requires connecting legendreSym to the p-adic Hilbert symbol via explicit computation in Q_p",
+      "Hasse-Minkowski: Formalize the local-global principle for quadratic forms: ax² + by² + cz² = 0 has a nontrivial rational solution iff it has solutions over ℝ and over Q_p for all primes p",
+      "Jacobi symbol properties: Prove the Jacobi symbol reciprocity J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) for odd coprime m,n directly from Mathlib's jacobiSym, then connect to the Hilbert product formula",
+      "Artin reciprocity: The grand generalization — for an abelian extension L/K, the Artin map gives an isomorphism from the idèle class group to the Galois group. Formalize even the statement in Lean 4."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03",
+      "relationship": "extends",
+      "description": "OQ-03 establishes the Jacobi symbol framework. This OQ-03-OQ-03 file asks the deeper question: how does the Jacobi symbol (local data products) connect to the Hilbert symbol and the local-global principle?"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The root Quadratic Reciprocity formalization in Lean using Mathlib's legendreSym.quadratic_reciprocity."
+    }
+  ]
 }
