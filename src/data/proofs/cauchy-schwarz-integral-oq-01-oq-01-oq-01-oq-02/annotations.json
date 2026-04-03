@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-pm-defs",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 33, "endLine": 44 },
+    "type": "definition",
+    "title": "Four Classical Power Mean Definitions",
+    "content": "Defines the four classical means for two real numbers. Each is declared noncomputable because it involves Real.sqrt, which is a noncomputable function. The four definitions correspond to the Hölder power mean $M_p(a,b) = \\left(\\frac{a^p+b^p}{2}\\right)^{1/p}$ at parameters $p = -1, 0, 1, 2$ respectively: HM is the $p=-1$ case (harmonic), GM is the $p\\to 0$ limit (geometric), AM is $p=1$ (arithmetic), and QM is $p=2$ (quadratic/root-mean-square).",
+    "mathContext": "$HM(a,b) = \\frac{2ab}{a+b}$, $\\quad GM(a,b) = \\sqrt{ab}$, $\\quad AM(a,b) = \\frac{a+b}{2}$, $\\quad QM(a,b) = \\sqrt{\\frac{a^2+b^2}{2}}$. These are the $p=-1, 0, 1, 2$ instances of the power mean $M_p(a,b) = \\left(\\frac{a^p+b^p}{2}\\right)^{1/p}$.",
+    "significance": "key",
+    "relatedConcepts": ["power mean", "Hölder mean", "harmonic mean", "geometric mean", "arithmetic mean", "quadratic mean", "root mean square"],
+    "prerequisites": ["real arithmetic", "square root", "Lean noncomputable functions"]
+  },
+  {
+    "id": "ann-min-le-hm",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 51, "endLine": 63 },
+    "type": "technique",
+    "title": "Minimum Bounds the Harmonic Mean",
+    "content": "Proves min(a,b) ≤ HM(a,b) by case analysis on whether a ≤ b or b ≤ a. In the case a ≤ b, the harmonic mean satisfies HM = 2ab/(a+b) ≥ a, since 2ab ≥ a(a+b) iff ab ≥ a², which holds because b ≥ a > 0. The use of rcases with le_total provides symmetric coverage of both orderings. The nlinarith call closes the goal using sq_nonneg (b - a), which supplies the witness (b-a)² ≥ 0.",
+    "mathContext": "For $a \\leq b$: $HM(a,b) = \\frac{2ab}{a+b} \\geq a$ iff $2ab \\geq a(a+b)$ iff $ab \\geq a^2$ iff $b \\geq a$. The algebraic gap is $HM(a,b) - a = \\frac{a(b-a)}{a+b} \\geq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["harmonic mean", "case split", "nlinarith", "le_total"],
+    "prerequisites": ["positive reals", "division inequality rearrangement"]
+  },
+  {
+    "id": "ann-hm-le-gm",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 73, "endLine": 84 },
+    "type": "technique",
+    "title": "Harmonic–Geometric Mean Inequality via sqrt Monotonicity",
+    "content": "Proves HM ≤ GM by rewriting both sides as square roots and applying Real.sqrt_le_sqrt. Since HM = 2ab/(a+b) ≥ 0, we write HM = sqrt(HM²), allowing a direct comparison under the square root. After clearing denominators, the goal reduces to 4a²b² ≤ ab(a+b)², which simplifies to 4ab ≤ (a+b)², i.e., (a−b)² ≥ 0. The sq_abs lemma handles the absolute value introduced by the squaring of the fraction.",
+    "mathContext": "$HM \\leq GM$ iff $\\frac{4a^2b^2}{(a+b)^2} \\leq ab$ iff $4ab \\leq (a+b)^2 = a^2 + 2ab + b^2$ iff $(a-b)^2 \\geq 0$. The geometric–harmonic inequality is the dual of AM-GM under the map $x \\mapsto 1/x$: if $AM(1/a, 1/b) \\geq GM(1/a, 1/b)$, then $\\frac{1/a + 1/b}{2} \\geq \\frac{1}{\\sqrt{ab}}$, giving $GM \\geq HM$ after inversion.",
+    "significance": "key",
+    "relatedConcepts": ["AM-GM inequality", "harmonic mean duality", "sqrt_le_sqrt", "sq_abs", "Cauchy–Schwarz"],
+    "prerequisites": ["Real.sqrt monotonicity", "rw with sqrt_sq", "polynomial inequalities"]
+  },
+  {
+    "id": "ann-gm-le-am",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 92, "endLine": 97 },
+    "type": "insight",
+    "title": "AM-GM: The Central Inequality",
+    "content": "Proves GM ≤ AM, the classical arithmetic-geometric mean inequality, in four lines. The technique mirrors the other sqrt steps: write AM = sqrt(AM²) using sqrt_sq, then apply sqrt_le_sqrt to reduce to AM² ≥ GM² = ab, i.e., (a+b)²/4 ≥ ab, i.e., (a−b)² ≥ 0. The simplicity of this proof reflects how Lean's nlinarith automates the underlying sum-of-squares certificate.",
+    "mathContext": "$\\sqrt{ab} \\leq \\frac{a+b}{2}$ iff $4ab \\leq (a+b)^2$ iff $(a-b)^2 \\geq 0$. The AM-GM inequality generalizes to $n$ variables as $\\left(\\prod_{i=1}^n x_i\\right)^{1/n} \\leq \\frac{1}{n}\\sum_{i=1}^n x_i$, proved e.g. via Jensen's inequality applied to $-\\log$.",
+    "significance": "key",
+    "relatedConcepts": ["AM-GM inequality", "Jensen's inequality", "log-convexity", "Cauchy's forward-backward induction"],
+    "prerequisites": ["sqrt_le_sqrt", "sqrt_sq for nonneg reals", "nlinarith with sq_nonneg"]
+  },
+  {
+    "id": "ann-am-le-qm",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 105, "endLine": 112 },
+    "type": "technique",
+    "title": "Arithmetic Mean Bounded by Quadratic Mean",
+    "content": "Proves AM ≤ QM using the same sqrt comparison pattern. After rewriting AM = sqrt(AM²) and applying sqrt_le_sqrt, the goal becomes AM² ≤ QM², i.e., (a+b)²/4 ≤ (a²+b²)/2. This is cleared by cross-multiplying (div_le_div_iff₀ with constants 4 and 2) and nlinarith with the witness (a−b)². The QM is also known as the root-mean-square (RMS) and equals the L² norm of (a,b) divided by √2.",
+    "mathContext": "$AM \\leq QM$ iff $\\frac{(a+b)^2}{4} \\leq \\frac{a^2+b^2}{2}$ iff $(a+b)^2 \\leq 2(a^2+b^2)$ iff $a^2 + 2ab + b^2 \\leq 2a^2 + 2b^2$ iff $(a-b)^2 \\geq 0$. Equivalently, $QM(a,b)^2 = \\frac{\\|{(a,b)}\\|_2^2}{2}$ is the mean squared value.",
+    "significance": "supporting",
+    "relatedConcepts": ["root mean square", "L² norm", "Cauchy–Schwarz inequality", "div_le_div_iff₀"],
+    "prerequisites": ["sqrt monotonicity", "cross-multiplication of inequalities"]
+  },
+  {
+    "id": "ann-qm-le-max",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 120, "endLine": 132 },
+    "type": "technique",
+    "title": "Quadratic Mean Bounded by Maximum",
+    "content": "Proves QM ≤ max(a,b) via case split on the order of a and b. For a ≤ b: QM² = (a²+b²)/2 ≤ (b²+b²)/2 = b² = max², using that a² ≤ b² (from sq_le_sq'). The proof avoids dealing with sqrt(max(a,b)²) directly by writing max(a,b) = sqrt(max(a,b)²) using sqrt_sq applied to the nonnegativity of the max.",
+    "mathContext": "$QM(a,b) \\leq \\max(a,b)$ iff $\\frac{a^2+b^2}{2} \\leq \\max(a,b)^2$. For $a \\leq b$: $\\frac{a^2+b^2}{2} \\leq \\frac{b^2+b^2}{2} = b^2$, since $a^2 \\leq b^2$. This is the $p=2$ instance of the general power mean bound $M_p \\leq M_\\infty = \\max$.",
+    "significance": "supporting",
+    "relatedConcepts": ["maximum function", "sq_le_sq'", "power mean and supremum", "case analysis"],
+    "prerequisites": ["sq_le_sq' lemma", "nonnegativity of max"]
+  },
+  {
+    "id": "ann-full-chain",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 140, "endLine": 150 },
+    "type": "insight",
+    "title": "The Complete Power Mean Chain Theorem",
+    "content": "Assembles all five step theorems into a single conjunction using anonymous constructor syntax. The proof term is purely combinatorial: it applies the five lemmas in order, using le_of_lt to downgrade strict positivity hypotheses to weak nonnegativity where required (gm_le_am and am_le_qm accept 0 ≤ a rather than 0 < a). This is the main theorem of the file.",
+    "mathContext": "$\\min(a,b) \\leq HM(a,b) \\leq GM(a,b) \\leq AM(a,b) \\leq QM(a,b) \\leq \\max(a,b)$. This is the $n=2$ case of the general power mean inequality $M_{p_1} \\leq M_{p_2}$ for $p_1 \\leq p_2$, where $M_{-\\infty} = \\min$ and $M_{+\\infty} = \\max$.",
+    "significance": "key",
+    "relatedConcepts": ["power mean inequality", "Hölder's inequality", "n-variable generalization", "le_of_lt coercion"],
+    "prerequisites": ["all five step theorems", "conjunction introduction in Lean"]
+  },
+  {
+    "id": "ann-equality",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 157, "endLine": 174 },
+    "type": "insight",
+    "title": "Equality Conditions: All Means Coincide When a = b",
+    "content": "Proves that HM(a,a) = GM(a,a) = AM(a,a) = QM(a,a) = a. Each case uses a different simplification strategy: HM uses field_simp, AM uses ring, GM uses congr and ring after rewriting with sq_sqrt, and QM manually simplifies the radicand to a² before applying sqrt_sq. This verifies the sharpness of all five inequalities: equality holds throughout the chain if and only if a = b.",
+    "mathContext": "$HM(a,a) = \\frac{2a^2}{2a} = a$, $GM(a,a) = \\sqrt{a^2} = a$, $AM(a,a) = a$, $QM(a,a) = \\sqrt{\\frac{2a^2}{2}} = a$. More generally, for the power mean chain, equality $M_{p_1}(a,b) = M_{p_2}(a,b)$ holds iff $a = b$ (for $p_1 < p_2$).",
+    "significance": "supporting",
+    "relatedConcepts": ["equality conditions in inequalities", "sqrt_sq", "field_simp", "sharpness"],
+    "prerequisites": ["Real.sqrt_sq for nonneg reals", "algebraic simplification"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 181, "endLine": 201 },
+    "type": "context",
+    "title": "Transitivity Corollaries",
+    "content": "Derives four corollaries by composing the chain theorems via le_trans. The corollaries skip intermediate means: HM ≤ AM (skipping GM), GM ≤ max (skipping AM and QM), min ≤ AM (proved directly from the definition by case split), and the trivial min ≤ max (delegated to Mathlib's min_le_max). These are practically useful consequences that avoid reintroducing intermediate quantities.",
+    "mathContext": "$HM \\leq AM$ follows from $HM \\leq GM \\leq AM$. $GM \\leq \\max$ follows from $GM \\leq AM \\leq QM \\leq \\max$. Direct proof of $\\min \\leq AM$: for $a \\leq b$, $\\min(a,b) = a \\leq \\frac{a+b}{2} = AM(a,b)$ iff $a \\leq b$.",
+    "significance": "technical",
+    "relatedConcepts": ["le_trans", "transitivity of inequalities", "min_le_max", "derived inequality"],
+    "prerequisites": ["the five chain step theorems"]
+  }
+]
