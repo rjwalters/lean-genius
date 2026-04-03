@@ -1,0 +1,79 @@
+{
+  "id": "weak-goldbach",
+  "title": "Weak Goldbach Conjecture (Ternary Goldbach)",
+  "slug": "weak-goldbach",
+  "description": "Formalizes the Weak Goldbach Conjecture (proved by Helfgott 2013): every odd integer >5 is a sum of three primes. Axiomatizes Vinogradov's circle method, Helfgott's proof, Schnirelmann density, Ramare's 6-prime bound, Tao's 5-prime bound, and Chen's theorem. Proves structural reductions: binary Goldbach implies ternary, Lévy's conjecture verified for small cases. 27 theorems, 9 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/WeakGoldbach.lean",
+    "tags": [
+      "number-theory",
+      "goldbach",
+      "prime-sums",
+      "circle-method",
+      "schnirelmann-density"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 9,
+    "assumptions": "9 axioms for deep analytic number theory results: vinogradov_ternary_goldbach (Vinogradov 1937: every sufficiently large odd number is sum of 3 primes), helfgott_weak_goldbach (Helfgott 2013: proved unconditionally for all odd n>5), circle_method_asymptotic (circle method asymptotic formula for ternary representations), schnirelmann_basis_theorem (every dense enough set is an additive basis), ramare_six_primes (Ramare 1995: every even n > 1 is sum of ≤ 6 primes), tao_five_primes (Tao 2012: every odd n > 1 is sum of ≤ 5 primes), chen_theorem (Chen 1973: every sufficiently large even n = p + P₂), binary_goldbach_verified (verified for n ≤ 4·10¹⁸), helfgott_explicit_bound (Helfgott's explicit bound).",
+    "lineCount": 484,
+    "theoremCount": 27,
+    "definitionCount": 0,
+    "originalContributions": [
+      "WeakGoldbachConjecture: formal statement — ∀ n odd, n > 5 → ∃ p q r prime, n = p+q+r",
+      "BinaryGoldbachConjecture: ∀ n even, n > 2 → ∃ p q prime, n = p+q",
+      "binary_stronger_than_ternary: binary Goldbach implies weak (ternary) Goldbach",
+      "IsP2: Chen-type predicate for numbers that are prime or product of two primes",
+      "LevyConjecture: every odd n > 5 is sum of a prime and twice a prime",
+      "levy_implies_weak_goldbach: Levy's conjecture implies weak Goldbach (reduction)",
+      "levy_7 / levy_9 / levy_11: Lévy verified for small odd integers",
+      "representationCount: count of ternary Goldbach representations of n",
+      "exponentialSumOverPrimes: Vinogradov exponential sum (circle method infrastructure)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Weak Goldbach Conjecture (also: Ternary Goldbach Conjecture) states every odd integer >5 is the sum of three primes. This was conjectured by Goldbach in 1742. Vinogradov (1937) proved it for all sufficiently large odd integers using the circle method (exponential sums). Helfgott (2013) completed the proof unconditionally for all odd n > 5, making this one of the most recently resolved classical open problems. The stronger Binary Goldbach Conjecture (every even n > 2 = p+q) remains open.",
+    "problemStatement": "Prove: every odd integer n > 5 is the sum of three prime numbers. Develop the circle method infrastructure and axiomatize the key analytic results.",
+    "text": "The proof follows Vinogradov's circle method: write the number of ternary representations as an exponential sum over primes, split into major and minor arcs, and show the major arc contribution dominates. For small odd numbers, verify directly. Helfgott's 2013 proof gives an explicit bound making the verification finite + the Vinogradov asymptotic. The reduction binary → ternary is proved: if n is odd, then n = 2 + (n-2), and if n-2 is even with Goldbach representation p+q, then n = 2+p+q.",
+    "proofStrategy": "Axiomatize Helfgott's result. Prove structural reductions (binary → ternary). Define circle method infrastructure (exponential sums, representation count). Axiomatize intermediate results in the proof hierarchy (Vinogradov, Schnirelmann, Ramare, Tao, Chen). Verify small cases directly.",
+    "keyInsights": [
+      "Circle method: split integration over residues into major arcs (near rationals p/q, small q) and minor arcs",
+      "Binary Goldbach implies ternary: every odd n = 2 + (n-2), use binary for even n-2",
+      "Schnirelmann density: if A has density > 0, A+A+...+A (k times) covers all sufficiently large integers",
+      "Chen's theorem (1973): every large even n = p + P₂ (prime + product of ≤2 primes) — just one step from binary Goldbach"
+    ],
+    "prerequisites": [
+      "Circle method: Hardy-Littlewood-Vinogradov exponential sum technique",
+      "Dirichlet series and L-functions for prime distribution",
+      "Schnirelmann density and Romanov-Schnirelmann theory"
+    ]
+  },
+  "conclusion": {
+    "summary": "Weak Goldbach Conjecture formalized: statement, structural reductions, circle method infrastructure, Lévy verification for small cases. Helfgott 2013 proof axiomatized. 27 theorems, 484 lines, 9 axioms.",
+    "implications": "The resolution of Weak Goldbach (2013) is a landmark. The binary Goldbach Conjecture (every even n>2 = p+q) remains open. Chen's theorem p+P₂ is the closest result to binary Goldbach.",
+    "openQuestions": [
+      "Prove Binary Goldbach Conjecture: every even n>2 = p+q — major open problem",
+      "Formalize Helfgott's complete proof without axioms using Lean's circle method infrastructure",
+      "Prove Levy's conjecture: every odd n>5 = p + 2q for primes p, q"
+    ]
+  },
+  "leanFile": {
+    "namespace": "WeakGoldbach",
+    "lineCount": 484,
+    "axiomCount": 9,
+    "theoremCount": 27,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are classic open/resolved problems; Goldbach studies additive prime structure, Ramsey studies combinatorial density"
+    }
+  ],
+  "sections": []
+}

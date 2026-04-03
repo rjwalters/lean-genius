@@ -1,0 +1,76 @@
+{
+  "id": "chinese-remainder-non-coprime-oq-03",
+  "title": "Chinese Remainder Theorem for Three Non-Coprime Moduli",
+  "slug": "chinese-remainder-non-coprime-oq-03",
+  "description": "Extends the non-coprime CRT from 2 to 3 moduli in any Euclidean domain: the system m₁∣(x-a₁), m₂∣(x-a₂), m₃∣(x-a₃) has a solution iff gcd(mᵢ,mⱼ)∣(aᵢ-aⱼ) for all pairs. Proves necessity (inherited), sufficiency via iterated 2-moduli reduction, and solution uniqueness modulo lcm(m₁,lcm(m₂,m₃)). 7 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderNonCoprimeOQ03.lean",
+    "tags": [
+      "number-theory",
+      "chinese-remainder-theorem",
+      "euclidean-domain",
+      "non-coprime",
+      "gcd-lcm"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified. (Previously had 1 axiom gcd_lcm_distrib, later replaced by direct Bézout proof.)",
+    "lineCount": 391,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "originalContributions": [
+      "gcd_dvd_of_dvd_sub: gcd(m₁,m₂) divides any linear combination of m₁ and m₂ differences",
+      "gcd_dvd_sub_of_congr: pairwise GCD condition transfers through the constructed solution",
+      "lcm_gcd_dvd_gcd_lcm: easy direction of GCD-LCM distributive law in Euclidean domains",
+      "gcd_lcm_dvd_lcm_gcd: hard direction — gcd(lcm(a,b),c) ∣ lcm(gcd(a,c),gcd(b,c)) via Bézout",
+      "ed_crt_three_sufficient: sufficiency direction — pairwise GCD conditions imply 3-moduli solution",
+      "ed_crt_three_iff: full iff characterization for 3-moduli non-coprime CRT",
+      "ed_crt_three_unique: uniqueness — any two solutions agree modulo lcm(m₁,lcm(m₂,m₃))"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical Chinese Remainder Theorem requires pairwise coprime moduli. The non-coprime generalization (for 2 moduli) is: the system has a solution iff gcd(m₁,m₂)∣(a₁-a₂). Extending this to 3 moduli requires the GCD-LCM distributive law, which is nontrivial in general Euclidean domains.",
+    "problemStatement": "In a Euclidean domain R, given moduli m₁, m₂, m₃ and remainders a₁, a₂, a₃, does the system m₁∣(x-a₁), m₂∣(x-a₂), m₃∣(x-a₃) have a solution? Prove it is equivalent to pairwise GCD compatibility.",
+    "text": "The sufficiency proof uses a constructive 2-step reduction. Step 1: solve the first pair (m₁, m₂) using the 2-moduli CRT to get x₀ with m₁∣(x₀-a₁) and m₂∣(x₀-a₂). Step 2: the key is showing gcd(lcm(m₁,m₂), m₃)∣(x₀-a₃), which reduces to the GCD-LCM distributive law. Then apply the 2-moduli CRT again for (lcm(m₁,m₂), m₃). The hard direction of the distributive law gcd_lcm_dvd_lcm_gcd is proved by Bézout decomposition: write gcd(a,b) = u·a + v·b, then expand gcd(a,b)·gcd(a·b/(gcd(a,b)),c) using coprime factoring.",
+    "proofStrategy": "Inherit necessity from ChineseRemainderNonCoprimeOQ02.lean. Prove GCD-LCM distributive law (both directions). Use iterated 2-moduli CRT application. Prove uniqueness via divisibility of the LCM.",
+    "keyInsights": [
+      "The 3-moduli case reduces to two applications of the 2-moduli CRT",
+      "The GCD-LCM distributive law gcd(a, lcm(b,c)) = lcm(gcd(a,b), gcd(a,c)) is the key algebraic fact",
+      "Bézout's identity in Euclidean domains enables the hard direction of the distributive law",
+      "Solution uniqueness follows from divisibility by the iterated LCM"
+    ],
+    "prerequisites": [
+      "Euclidean domains: GCD, LCM, Bézout's identity",
+      "Non-coprime CRT for 2 moduli (ChineseRemainderNonCoprimeOQ02.lean)",
+      "Divisibility arithmetic in commutative rings"
+    ]
+  },
+  "conclusion": {
+    "summary": "The 3-moduli non-coprime CRT is fully verified: solution exists iff pairwise GCD conditions hold, and is unique modulo the iterated LCM. The key GCD-LCM distributive law is proved by direct Bézout expansion. 7 theorems, 0 definitions, 391 lines, 0 axioms.",
+    "implications": "This completes the non-coprime CRT hierarchy up to 3 moduli in any Euclidean domain. The framework naturally extends to any finite number of moduli by induction.",
+    "openQuestions": [
+      "Generalize to n moduli: system solvable iff all pairwise GCD conditions hold (inductive case)",
+      "Module-theoretic version: CRT for modules over principal ideal domains"
+    ]
+  },
+  "leanFile": {
+    "namespace": "ChineseRemainderNonCoprimeOQ03",
+    "lineCount": 391,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-02",
+      "relationship": "extends",
+      "description": "2-moduli non-coprime CRT; this file extends to 3 moduli using iterated reduction"
+    }
+  ],
+  "sections": []
+}

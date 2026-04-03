@@ -51,16 +51,16 @@ theorem brouwer_1d (f : ℝ → ℝ) (hf : Continuous f)
 -- Part II: IVT from 1D Brouwer
 -- ============================================================
 
-/-- Conversely, IVT follows from the 1D Brouwer theorem.
+/-
+  Conversely, IVT follows from the 1D Brouwer theorem.
 
-    Given continuous f : [a,b] → ℝ with f(a) < 0 < f(b),
-    define g : [0,1] → [0,1] by g(t) = clamp(t - f(a + t(b-a))/M)
-    where M is chosen appropriately. Then a fixed point of g
-    gives a zero of f. -/
-theorem ivt_from_brouwer_sketch :
-    -- IVT and 1D Brouwer are equivalent
-    -- (Formal proof would require the clamping construction)
-    True := trivial
+  Given continuous f : [a,b] → ℝ with f(a) < 0 < f(b),
+  define g : [0,1] → [0,1] by g(t) = clamp(t - f(a + t(b-a))/M)
+  where M is chosen appropriately. Then a fixed point of g gives a zero of f.
+
+  IVT and 1D Brouwer are equivalent.
+  (A formal proof would require formalizing the clamping construction.)
+-/
 
 -- ============================================================
 -- Part III: The Dimensional Jump
@@ -117,14 +117,15 @@ theorem ivt_fails_2d :
   See also: schauder-fixed-point-oq-03 (Kakutani framework)
 -/
 
-/-- The key insight: IVT is about sign changes (1D phenomenon),
-    while Brouwer is about topological degree (nD phenomenon).
-    They coincide in 1D because sign change = degree 1 map. -/
-theorem dimensional_summary :
-    -- In 1D: IVT and Brouwer are the same theorem
-    -- In nD: Brouwer is strictly stronger
-    -- In ∞D: compactness is additionally needed
-    True := trivial
+/-
+  Dimensional summary: IVT is about sign changes (1D phenomenon),
+  while Brouwer is about topological degree (nD phenomenon).
+  They coincide in 1D because sign change = degree 1 map.
+
+  - In 1D: IVT and Brouwer are the same theorem
+  - In nD: Brouwer is strictly stronger
+  - In ∞D: compactness is additionally needed
+-/
 
 /-
   Summary

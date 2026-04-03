@@ -12,7 +12,11 @@
       "algebra",
       "polynomials",
       "real-algebraic-geometry",
-      "root-isolation"
+      "root-isolation",
+      "rolle-theorem",
+      "budan-fourier",
+      "sign-variations",
+      "proof-scaffold"
     ],
     "badge": "original",
     "sorries": 0,
@@ -28,10 +32,16 @@
     ]
   },
   "overview": {
-    "problemStatement": "Prove the Budan upper bound: #roots(p, (a,b]) <= V_p(a) - V_p(b).",
-    "text": "Proof scaffold for Budan's upper bound via strong induction on polynomial degree. Building blocks: constant_no_roots, linear bound, Rolle for polynomials, IVT sign change. The full proof requires sign-change accounting across derivative levels.",
-    "proofStrategy": "Strong induction on deg(p). Base: deg 0/1 trivial. Step: Rolle gives derivative roots between polynomial roots, IH on p' for sub-intervals.",
-    "keyInsights": []
+    "historicalContext": "The Budan-Fourier theorem (1807/1820) predates and generalizes Descartes' Rule. François Budan de Boislaurent (1807) and Joseph Fourier (1820) independently proved that the number of real roots of a polynomial p in a half-open interval (a,b] is bounded by V_p(a) - V_p(b), where V_p(x) counts sign variations in the sequence (p(x), p'(x), p''(x), ..., p^(n)(x)). Descartes' Rule is the special case a=0, b=∞ for polynomials with non-negative coefficients. The theorem was central to 19th-century root isolation algorithms and remains the foundation of modern computer algebra systems' polynomial root isolation routines (e.g., Vincent's theorem, Uspensky's algorithm, the VCA/VAS algorithms). A complete Lean formalization requires connecting the Budan-Fourier sign-variation infrastructure from OQ-02 with Rolle's theorem and strong induction — an estimated 240-410 lines of work.",
+    "problemStatement": "Prove the Budan upper bound theorem: for any nonzero polynomial p ∈ ℝ[X] of degree n and real interval (a,b], #{x ∈ (a,b] : p(x) = 0} ≤ V_p(a) - V_p(b), where V_p(x) = #{i : p^(i)(x) and p^(i+1)(x) have opposite signs}. This file establishes the key building blocks and proof strategy as a research scaffold.",
+    "proofStrategy": "Strong induction on natDegree(p). Base cases: constant nonzero polynomial (no roots at all); linear polynomial (at most one root, proved via Finset.card_roots_le_degree). Inductive step: if p has consecutive roots r₁ < r₂ in (a,b], Rolle's theorem gives a root of p' in (r₁,r₂); apply the inductive hypothesis to p' (degree < deg p) on each sub-interval; the sign-change count for p' ≤ sign-change count of p minus the contribution of the root r₁. The main gap is the sign-change accounting lemma relating V_p(x) and V_{p'}(x).",
+    "keyInsights": [
+      "Rolle's theorem is the inductive engine: between consecutive roots of p lies a root of p'. This interleaving means #{roots of p in (a,b]} ≤ 1 + #{roots of p' in (a,b]}, giving room for the IH on p'.",
+      "The sign-variation count V_p(x) is defined via the iterated derivative sequence p, p', p'', ..., p^(n). At each root r of p, V_p changes by at least 1 going from a to r, accounting for the root — this is the sign-change accounting that remains to be formalized.",
+      "linear_at_most_one_root is proved via a counting argument: if x ≠ y are both roots, then {x,y} ⊂ roots(p) as a finset, giving card ≥ 2 > 1 = natDegree, contradicting card_roots_le_degree. This avoids polynomial division.",
+      "The placeholder theorems sign_changes_factor and inductive_step_derivative prove `True := trivial` — they document the proof structure and identify the remaining gaps without introducing unsound axioms.",
+      "root_of_sign_change uses IVT (intermediate_value_Icc): since p is continuous and changes sign from negative to positive, it must cross zero. The proof carefully excludes the endpoints by using the sign condition."
+    ]
   },
   "leanFile": {
     "namespace": "BudanUpperBound",
@@ -58,10 +68,73 @@
       },
       {
         "name": "linear_at_most_one_root",
-        "type": "sorry",
-        "description": "Linear polynomial has at most one root in interval"
+        "type": "proved",
+        "description": "Linear polynomial has at most one root in interval (proved via card_roots_le_degree counting argument)"
+      },
+      {
+        "name": "sign_changes_factor",
+        "type": "placeholder",
+        "description": "Sign-change accounting when factoring out a root (proves True — identifies the gap)"
+      },
+      {
+        "name": "inductive_step_derivative",
+        "type": "placeholder",
+        "description": "Inductive step framework (proves True — documents the induction architecture)"
       }
     ]
   },
-  "sections": []
+  "sections": [
+    {
+      "title": "§ 1. Building Blocks: Degree and Derivative Properties",
+      "startLine": 58,
+      "endLine": 95,
+      "description": "Two foundational theorems. constant_no_roots shows degree-0 polynomials have no roots (proved via eq_C_of_natDegree_eq_zero and simp). linear_at_most_one_root proves degree-1 polynomials have at most 1 root in any interval (a,b], using a card counting argument: if x ≠ y are both roots, {x,y} ⊂ roots(p) gives card ≥ 2 > 1 = natDegree, contradicting card_roots_le_degree.",
+      "theorems": ["constant_no_roots", "linear_at_most_one_root"],
+      "tactics": ["rw", "simp", "apply", "intro", "calc", "omega", "by_contra"]
+    },
+    {
+      "title": "§ 2. Sign Change Properties",
+      "startLine": 109,
+      "endLine": 142,
+      "description": "rolle_polynomial (proved) applies Mathlib's exists_deriv_eq_zero to polynomials: if p(r₁) = p(r₂) = 0 with r₁ < r₂, then p' has a root in (r₁,r₂). Uses p.continuous.continuousOn and Polynomial.deriv to translate between Mathlib's calculus deriv and the algebraic polynomial derivative. sign_changes_factor is a placeholder proving True — it identifies where the sign-change accounting lemma needs to go.",
+      "theorems": ["rolle_polynomial", "root_of_sign_change", "sign_changes_factor"],
+      "tactics": ["obtain", "exact", "simp", "intro", "linarith", "constructor", "rcases"]
+    },
+    {
+      "title": "§ 3. The Induction Framework",
+      "startLine": 144,
+      "endLine": 164,
+      "description": "inductive_step_derivative documents the induction structure for the main Budan bound. It takes the inductive hypothesis (IH: bound holds for all polynomials of degree ≤ n) and outlines how to apply it to p' on sub-intervals. Currently proves True — it is a scaffold identifying the types and dependencies needed for the real inductive step.",
+      "theorems": ["inductive_step_derivative"],
+      "tactics": ["exact"]
+    },
+    {
+      "title": "§ 4. Proof Completion Roadmap",
+      "startLine": 166,
+      "endLine": 204,
+      "description": "A detailed comment documenting the remaining 240-410 lines needed: (1) formalize sign-change counting connecting budanCount from OQ-02 with the derivative sequence (80-120 lines), (2) complete base cases (40-60 lines), (3) inductive step via Rolle with sign-change accounting (100-200 lines), (4) assembly (20-30 lines). Lists key Mathlib dependencies: exists_deriv_eq_zero, natDegree_derivative_le, IVT."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file establishes the foundational building blocks for Budan's upper bound theorem: constant and linear polynomial bounds (proved), Rolle's theorem for polynomials (proved), IVT-based root existence (proved), and documented placeholders for the sign-change accounting and inductive step. The three proved theorems are sound; the two placeholder theorems prove `True` to document proof architecture without introducing unsound assumptions.",
+    "implications": "Budan's theorem is the algorithmic heart of real root isolation: computer algebra systems use V_p(a) - V_p(b) as a quick upper bound on roots in (a,b] to bisect intervals. The theorem also implies Descartes' Rule (sign changes in coefficients = upper bound on positive roots) as a corollary. A complete Lean formalization would: (1) give a verified foundation for root isolation algorithms, (2) enable formal proofs of Sturm's theorem as a tighter cousin, and (3) contribute to Mathlib's polynomial root-counting infrastructure.",
+    "openQuestions": [
+      "Sign-change accounting: Formalize the lemma relating V_p(x) and V_{p'}(x) across a root of p — this is the heart of the induction and requires careful analysis of how sign variations change when a root is factored out",
+      "Sturm's theorem: Prove the exact root count #{x ∈ (a,b] : p(x) = 0} = #{sign changes in the Sturm sequence from a to b}, which gives a sharper (tight) bound compared to Budan",
+      "Vincent's theorem formalization: Prove that after sufficiently many bisections, each interval contains at most one real root (V=0 or V=1), forming the basis of the VAS/VCA root isolation algorithms",
+      "Extension to complex roots: Count complex roots via the argument principle — a contour integral generalization of the Budan-Fourier sign-variation count"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "descartes-rule-of-signs-oq-02",
+      "relationship": "extends",
+      "description": "OQ-02 provides the budanCount infrastructure (sign-variation count over derivative sequence) and the budan_upper_bound_axiom. This file proves the core building blocks needed to replace that axiom with a genuine proof."
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "related",
+      "description": "Descartes' Rule of Signs is the special case of Budan's theorem for positive roots: the number of positive roots of p ≤ the number of sign changes in the coefficient sequence."
+    }
+  ]
 }

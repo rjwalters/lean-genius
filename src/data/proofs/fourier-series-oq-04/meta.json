@@ -2,7 +2,7 @@
   "id": "fourier-series-oq-04",
   "title": "Higher-Dimensional Fourier Series Convergence on Tori",
   "slug": "fourier-series-oq-04",
-  "description": "Extends Fourier series convergence to n-dimensional tori T^n. Key differences: multiple summation methods (rectangular, spherical, Bochner-Riesz), Fefferman's divergence for rectangular sums in n≥2, and the open Carleson conjecture for n=2.",
+  "description": "Extends Fourier series convergence theory to the n-torus T^n = (R/Z)^n. Documents the fundamental discontinuity between 1D and n≥2: rectangular summation fails (Fefferman 1971), while L² convergence holds universally (Parseval). Formalizes the Torus, MultiIndex, dotProduct, and placeholder summation methods. The 2D Carleson conjecture—does spherical summation converge a.e. for L²(T²)—remains a central open problem in harmonic analysis.",
   "meta": {
     "author": "Fefferman (1971), Stein & Weiss (1971)",
     "date": "1971",
@@ -12,7 +12,9 @@
       "harmonic-analysis",
       "fourier-series",
       "convergence",
-      "multi-dimensional"
+      "multi-dimensional",
+      "bochner-riesz",
+      "carleson-conjecture"
     ],
     "badge": "original",
     "sorries": 0,
@@ -20,8 +22,65 @@
     "axiomCount": 0,
     "lineCount": 109
   },
-  "sections": [],
   "leanFile": {
     "axiomCount": 0
-  }
+  },
+  "overview": {
+    "historicalContext": "The theory of Fourier series on the circle (1D torus) was developed by Fourier (1807-1822) and formalized by Dirichlet (1829), who proved pointwise convergence for piecewise smooth functions. The extension to multiple dimensions became urgent in the 20th century as PDEs on rectangular domains and crystallography required multi-dimensional Fourier analysis. A fundamental watershed came in 1966: Lennart Carleson proved (winning the Fields Medal in 2006 for this and related work) that the Fourier series of every L²(T¹) function converges almost everywhere. Charles Fefferman's 1971 result shattered hopes for a straightforward generalization: for n ≥ 2, rectangular partial sums of Fourier series can diverge even for L¹ functions, meaning the summation method fundamentally matters in multiple dimensions. Elias Stein and Guido Weiss (1971) developed the Bochner-Riesz framework for spherical summation. The 2D analogue of Carleson's theorem—does the spherical Fourier series of every L²(T²) function converge a.e.?—remains one of the great open problems in harmonic analysis.",
+    "problemStatement": "For $f \\in L^2(\\mathbb{T}^n)$, does the spherical Fourier partial sum $S_R^{\\text{sph}} f(x) = \\sum_{|k|_2 \\leq R} \\hat{f}(k) e^{2\\pi i k \\cdot x}$ converge to $f(x)$ for almost every $x$ as $R \\to \\infty$? For $n=1$: YES (Carleson 1966). For $n \\geq 2$: OPEN. Related: does the Bochner-Riesz mean $S_R^\\delta f$ converge for $\\delta > n|1/p - 1/2| - 1/2$ in $L^p(\\mathbb{T}^n)$? (Bochner-Riesz conjecture, partially proved)",
+    "proofStrategy": "The file provides a conceptual scaffold rather than a full formalization. Part I defines the Torus type, MultiIndex, and a placeholder `fourierCoeff` (the actual n-fold integral requires Haar measure infrastructure), and implements `dotProduct` (the inner product k·x). Part II defines placeholder partial sums for rectangular and spherical summation methods. Part III documents the convergence landscape via a table and two sentinel theorems (`carleson_1d_reference`, `carleson_2d_open`) that mark the 1D result as proved and the 2D case as open.",
+    "keyInsights": [
+      "Rectangular summation fails in n≥2 because the n-dimensional Dirichlet kernel $D_N^{(n)}(x) = \\prod_j D_N(x_j)$ has $L^1$ norm growing as $(\\log N)^n \\to \\infty$, by the Banach-Steinhaus theorem this implies the existence of L¹ functions with divergent rectangular partial sums—Fefferman made this explicit with a sharp 1971 example.",
+      "Spherical summation avoids the tensor product structure: the kernel for $S_R^{\\text{sph}}$ is the inverse Fourier transform of $\\mathbf{1}_{|k| \\leq R}$, a Bessel function in the continuous setting. While better behaved, its pointwise convergence for L² remains open in n≥2.",
+      "Bochner-Riesz regularization $(1 - |k|^2/R^2)_+^\\delta$ introduces a smooth weight that tapers high-frequency contributions. For $\\delta > (n-1)/2$ (the 'critical index'), the means converge in all $L^p$ ($1 \\leq p \\leq \\infty$). Below the critical index, convergence is more subtle and the full Bochner-Riesz conjecture remains open.",
+      "The Carleson-Hunt theorem (1D): for $f \\in L^p$, $1 < p \\leq \\infty$, the partial sums $S_N f(x) \\to f(x)$ a.e. The maximal function $S^* f = \\sup_N |S_N f|$ is bounded on $L^p$ for $p > 1$. This is the key tool—whether analogous bounds hold for spherical maximal functions in n≥2 is the crux of the 2D conjecture.",
+      "L² convergence via Parseval always holds: $\\|f - S_R^{\\text{sph}} f\\|_{L^2}^2 = \\sum_{|k| > R} |\\hat{f}(k)|^2 \\to 0$ by dominated convergence (Bessel's inequality and L² square-summability). This is independent of dimension and explains why L² is the 'easy' case while pointwise a.e. requires much harder analysis."
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-setup",
+      "title": "Imports, Namespace, and Mathematical Background",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Module header explaining the four key differences from 1D Fourier theory: L¹ rectangular divergence (Fefferman 1971), smooth function divergence, Bochner-Riesz framework, and L² persistence. Lists references: Grafakos, Stein-Weiss, Fefferman. Imports Mathlib and opens MeasureTheory and Complex."
+    },
+    {
+      "id": "section-fourier-coefficients",
+      "title": "Part I: Multi-Dimensional Fourier Coefficients",
+      "startLine": 26,
+      "endLine": 46,
+      "summary": "Defines Torus n = Fin n → ℝ, MultiIndex n = Fin n → ℤ, a placeholder fourierCoeff (n-fold integral not yet implemented), and the fully implemented dotProduct k x = ∑ᵢ kᵢxᵢ (inner product of multi-index and torus point)."
+    },
+    {
+      "id": "section-summation-methods",
+      "title": "Part II: Summation Methods",
+      "startLine": 47,
+      "endLine": 69,
+      "summary": "Mathematical commentary explaining four summation methods: rectangular (product of 1D sums), square (symmetric box), spherical (Euclidean ball), and Bochner-Riesz (weighted spherical). Placeholder implementations of rectPartialSum and spherPartialSum (both return 0)."
+    },
+    {
+      "id": "section-convergence-results",
+      "title": "Part III: Convergence Results and Open Problems",
+      "startLine": 70,
+      "endLine": 109,
+      "summary": "Mathematical commentary summarizing convergence properties in a table: L² always holds (Parseval), pointwise a.e. for L² holds in 1D (Carleson), fails for rectangular in n≥2 (Fefferman), open for spherical in n≥2 (2D Carleson conjecture). Two trivial theorems mark the 1D result as proved and the 2D case as open."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization documents the landscape of n-dimensional Fourier series convergence on tori, with working definitions for the Torus type, multi-indices, and inner products, and placeholder stubs for the summation methods that require full Haar measure infrastructure. The mathematical commentary is substantive, clearly identifying what is proved (L² convergence universally, rectangular divergence in n≥2) and what is open (2D Carleson conjecture for spherical summation).",
+    "implications": "The 2D Carleson conjecture, if resolved, would fundamentally advance our understanding of when multi-dimensional Fourier series can be trusted as pointwise representations of functions. This has implications for PDEs (boundary value problems on rectangular domains), signal processing (multi-dimensional signal reconstruction), and mathematical physics (quantum mechanics on multi-dimensional tori). The Bochner-Riesz conjecture, if settled, would complete the picture of $L^p$ convergence for regularized sums in all dimensions.",
+    "openQuestions": [
+      "Does the spherical Fourier series $S_R^{\\text{sph}} f(x) \\to f(x)$ a.e. for every $f \\in L^2(\\mathbb{T}^2)$? This is the 2D Carleson conjecture.",
+      "Can the Bochner-Riesz conjecture be proved for all $p \\in [1, \\infty]$ and $n \\geq 3$? Current progress: proved for n=2 (Carleson-Sjölin) and in $L^p$ ranges near $p=2$.",
+      "Is there a formalization of Carleson's 1D theorem in Lean 4/Mathlib, and can the techniques (interpolation, Calderón-Zygmund theory) be adapted for the n-dimensional setting?",
+      "Can the placeholder `fourierCoeff` be implemented in Lean 4 using Mathlib's integration and Haar measure on compact groups, turning this scaffold into a complete formalization?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-01",
+      "relationship": "extends"
+    }
+  ]
 }

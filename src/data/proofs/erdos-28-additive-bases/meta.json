@@ -1,0 +1,78 @@
+{
+  "id": "erdos-28-additive-bases",
+  "title": "Erdős Problem #28: Erdős-Turán Conjecture on Additive Bases",
+  "slug": "erdos-28-additive-bases",
+  "description": "Formalizes Erdős Problem #28 (prize: $500): if A+A contains all sufficiently large integers, must lim sup r_A(n) = ∞? Develops representation function theory, asymptotic basis structure, density lower bounds (|A∩[0,N]| ≥ √N), and axiomatizes the known partial results (Grekos 2003: r_A≥6 infinitely often, Borwein: r_A≥8 infinitely often). 15 theorems, 2 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos28AdditiveBases.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "additive-bases",
+      "representation-function",
+      "erdos-turan-conjecture",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 2,
+    "assumptions": "2 axioms for known partial results: grekos_lower_bound (Grekos et al. 2003: if A is an asymptotic basis of order 2, then r_A(n) ≥ 6 for infinitely many n) and borwein_lower_bound (Borwein et al.: r_A(n) ≥ 8 for infinitely many n). The Erdős-Turán conjecture itself (lim sup r_A(n) = ∞) remains open.",
+    "lineCount": 647,
+    "theoremCount": 15,
+    "definitionCount": 11,
+    "originalContributions": [
+      "representationCount: r_A(n) = |{(a,b) ∈ A×A : a+b = n}| counting representations",
+      "IsAsymptoticBasis: A is an asymptotic basis of order 2 if A+A contains all sufficiently large n",
+      "sumset: A+A = {a+b | a,b ∈ A}",
+      "erdos_turan_conjecture_statement: formal statement of the open problem lim sup r_A(n) = ∞",
+      "basis_density_lb: density lower bound |A∩[0,N]|² ≥ N-N₀+1 (proved: |A∩[0,N]| ≥ √N)",
+      "basis_element_count_sq: formal proof that asymptotic bases satisfy |A∩[0,N]|² ≥ N-N₀+1",
+      "greedy_construction: explicit construction showing bases with bounded r_A exist in finite ranges",
+      "representation_product_bound: product of representation counts bounds sumset size"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #28 (Erdős-Turán conjecture on additive bases, 1941) asks: if A ⊆ ℕ is such that A+A contains all but finitely many positive integers (A is an asymptotic basis of order 2), must the representation function r_A(n) = |{(a,b) : a+b=n, a,b∈A}| be unbounded? Erdős offered $500 for a solution. Known: r_A(n) ≥ 6 for infinitely many n (Grekos 2003), r_A(n) ≥ 8 for infinitely many n (Borwein). The full conjecture is open.",
+    "problemStatement": "If A ⊆ ℕ satisfies A+A ⊇ {n : n≥N₀} for some N₀, must lim sup_{n→∞} r_A(n) = ∞? Develop the formal framework and prove what can be proved.",
+    "text": "The density lower bound is proved: if A is an asymptotic basis, then |A∩[0,N]| ≥ √(N-N₀+1), so A has at least polynomial density. The proof: every n ∈ [N₀,N] is a sum of two elements of A∩[0,N], so the sumset of S = A∩[0,N] covers [N₀,N], giving |[N₀,N]| ≤ |sumset(S)| ≤ |S|². The Erdős-Turán conjecture itself is stated but not proved. Known partial results (Grekos, Borwein) are axiomatized.",
+    "proofStrategy": "Define representation function and asymptotic basis. Prove density lower bound via sumset covering argument. State the conjecture. Axiomatize the known quantitative lower bounds. Construct examples showing the problem is non-trivial.",
+    "keyInsights": [
+      "If A is a basis, |A∩[0,N]|² ≥ N, so A has density ≥ √N — proved here",
+      "The conjecture is equivalent to: there is no thin basis (A with very few representations)",
+      "Sidon sets (where all sums a+b are distinct) cannot be bases — the conjecture says bases cannot be too thin",
+      "Progressive lower bounds: 6 (Grekos), 8 (Borwein), the conjecture says ∞"
+    ],
+    "prerequisites": [
+      "Additive combinatorics: sumsets, representation functions, asymptotic bases",
+      "Number theory: density of integer sets, counting arguments"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős-Turán conjecture on additive bases formally developed: representation function theory, density lower bound (√N), conjecture statement, known partial results axiomatized. 15 theorems, 11 definitions, 647 lines, 2 axioms. The main conjecture remains open ($500 prize).",
+    "implications": "This formalization provides verified infrastructure for attacking the Erdős-Turán conjecture. The density lower bound √N is a key quantitative result. Completing the conjecture would resolve a 80+ year open problem in additive number theory.",
+    "openQuestions": [
+      "Prove lim sup r_A(n) = ∞ for any asymptotic basis of order 2 — the $500 Erdős problem",
+      "Formalize Borwein's r_A(n) ≥ 8 result without axioms",
+      "Prove the stronger Erdős-Turán conjecture: lim sup r_A(n)/log(n) > 0"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos28",
+    "lineCount": 647,
+    "axiomCount": 2,
+    "theoremCount": 15,
+    "definitionCount": 11
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are Erdős-originated problems in combinatorics; Ramsey theory and additive combinatorics share density and coloring themes"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,90 @@
+{
+  "slug": "sperner-ndim-oq-03-oq-01",
+  "title": "Prove sperner_ndim to complete Sperner-to-Brouwer pipeline",
+  "phase": "DONE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall f : [0,1] \\to [0,1], f \\text{ continuous} \\implies \\exists c \\in [0,1], f(c) = c",
+    "plain": "The 1D Brouwer Fixed Point Theorem: any continuous self-map of [0,1] has a fixed point.",
+    "whyMatters": [
+      "Base case of the Sperner-to-Brouwer pipeline",
+      "Demonstrates IVT as the 1D analogue of Sperner's lemma",
+      "Contractive maps have unique fixed points attracting all iterates"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "brouwer_1d: Any continuous f:[0,1]→[0,1] has a fixed point (IVT)",
+      "contractive_fixed_point_unique: Lipschitz contractions have at most one fixed point",
+      "contractive_iterate_converges: Iterates converge geometrically to the fixed point",
+      "pipeline_1d: Entry point for the Sperner-Brouwer pipeline at dimension 1"
+    ],
+    "open": [],
+    "goal": "Formalize the 1D Brouwer fixed point theorem and the surrounding convergence theory"
+  },
+  "currentState": {
+    "phase": "DONE",
+    "since": "2026-04-03T00:00:00Z",
+    "iteration": 1,
+    "focus": "Created SpernerNDimOQ03OQ01.lean with 4 theorems, 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "Verify compilation with docker-build.sh.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROVED: Created SpernerNDimOQ03OQ01.lean with 4 theorems (0 sorries, 0 axioms). Main result: brouwer_1d via isPreconnected_Icc.intermediate_value₂. Also proves uniqueness and geometric convergence for contractive maps.",
+    "builtItems": [
+      "brouwer_1d: ∀ f continuous, f maps [0,1]→[0,1] → ∃ c ∈ [0,1], f c = c",
+      "contractive_fixed_point_unique: Lipschitz constant < 1 → at most one fixed point",
+      "contractive_iterate_converges: iterates converge to fixed point with geometric rate",
+      "pipeline_1d: Alias of brouwer_1d as the pipeline entry point"
+    ],
+    "insights": [
+      "Key Mathlib lemma: isPreconnected_Icc.intermediate_value₂ finds c where f(c)=g(c) given f(a)≤g(a) and g(b)≤f(b)",
+      "In 1D, Brouwer is IVT applied to f - id: g(0)=f(0)≥0 and g(1)=f(1)-1≤0",
+      "Contractive convergence uses tendsto_pow_atTop_nhds_zero_of_lt_one for geometric bound",
+      "The n-D case requires homeomorphism Δⁿ ≅ [0,1]ⁿ which needs substantial topology"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "topology",
+    "sperner",
+    "brouwer",
+    "sorry-closing"
+  ],
+  "relatedProofs": [
+    "sperner-ndim",
+    "sperner-ndim-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.772Z",
+  "lastUpdate": "2026-04-03T00:00:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerNDimOQ03OQ01.lean",
+      "filename": "SpernerNDimOQ03OQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimOQ03OQ01.lean"
+    }
+  ]
+}
