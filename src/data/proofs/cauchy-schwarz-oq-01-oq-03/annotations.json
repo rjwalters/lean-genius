@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-cauchy-schwarz-foundation",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 41, "endLine": 50 },
+    "type": "technique",
+    "title": "Cauchy-Schwarz from Mathlib: inner_mul_le_norm_mul_sq",
+    "content": "cauchy_schwarz_sq wraps Mathlib's inner_mul_le_norm_mul_sq with a one-line proof: @inner_mul_le_norm_mul_sq ℂ E _ _ f g. The explicit universe annotation @inner_mul_le_norm_mul_sq ℂ E is needed because the type class arguments must be specified when Lean cannot infer them from the context. This is a deliberate choice to expose the Mathlib theorem rather than re-prove Cauchy-Schwarz — an example of library delegation for foundational facts.",
+    "mathContext": "$|\\langle f, g \\rangle|^2 \\le \\|f\\|^2 \\cdot \\|g\\|^2$ in any inner product space over $\\mathbb{C}$. The Lean form: \\texttt{Complex.normSq (inner f g : ℂ) ≤ ‖f‖^2 * ‖g‖^2}. Here \\texttt{Complex.normSq z = z.re^2 + z.im^2 = |z|^2}. This is the form needed for the subsequent Im-bound step.",
+    "significance": "supporting",
+    "relatedConcepts": ["inner_mul_le_norm_mul_sq", "Complex.normSq", "InnerProductSpace ℂ E", "Mathlib delegation"],
+    "prerequisites": ["Mathlib.Analysis.InnerProductSpace.Basic", "@-syntax for explicit arguments", "Complex.normSq definition"]
+  },
+  {
+    "id": "ann-im-bound",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 62, "endLine": 68 },
+    "type": "technique",
+    "title": "Imaginary Part Bound: (Im z)² ≤ |z|² by linarith",
+    "content": "im_sq_le_normSq proves (Im z)² ≤ |z|² for any z ∈ ℂ by unfolding normSq to z.re²+z.im² and then applying linarith [sq_nonneg z.re]. The proof is: the missing term z.re² is nonneg, so z.im² ≤ z.re²+z.im². This lemma is the bridge from Cauchy-Schwarz (which bounds |⟨f,g⟩|²) to the Robertson relation (which needs Im⟨f,g⟩). The quantum-mechanical interpretation: the commutator inner product ⟨[A,B]⟩ = 2i·Im⟨Aψ,Bψ⟩, so bounding Im² captures exactly the commutator term.",
+    "mathContext": "For $z = a + bi$: $\\text{normSq}(z) = a^2 + b^2 \\ge b^2 = (\\text{Im}\\, z)^2$. Lean: \\texttt{unfold Complex.normSq; simp only [Complex.normSq\\_mk]; linarith [sq\\_nonneg z.re]}. The physics: $|\\langle f, g \\rangle|^2 = (\\text{Re}\\langle f,g\\rangle)^2 + (\\text{Im}\\langle f,g\\rangle)^2 \\ge (\\text{Im}\\langle f,g\\rangle)^2$. The Robertson inequality retains only the Im part, losing the Re contribution (which the Schrödinger-Robertson inequality recovers).",
+    "significance": "key",
+    "relatedConcepts": ["Complex.normSq unfold", "sq_nonneg", "Robertson inequality", "imaginary part of inner product"],
+    "prerequisites": ["Complex.normSq = re² + im²", "linarith for linear arithmetic", "quantum commutator interpretation"]
+  },
+  {
+    "id": "ann-robertson-core",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 70, "endLine": 82 },
+    "type": "key",
+    "title": "robertson_core: The Algebraic Heart via calc Chain",
+    "content": "robertson_core is the main algebraic result: (Im⟨f,g⟩)² ≤ ‖f‖²·‖g‖². The proof is a two-step calc chain: (Im⟨f,g⟩)² ≤ normSq⟨f,g⟩ (by im_sq_le_normSq) ≤ ‖f‖²·‖g‖² (by cauchy_schwarz_sq). This modular composition is pedagogically clean: each step has its own lemma, and robertson_core is just their composition. The calc syntax makes the derivation chain explicit and readable.",
+    "mathContext": "$(\\text{Im}\\langle f, g \\rangle)^2 \\le |\\langle f, g \\rangle|^2 \\le \\|f\\|^2 \\cdot \\|g\\|^2$. Lean proof: \\texttt{calc ... \\_ ≤ Complex.normSq (inner f g : ℂ) := im\\_sq\\_le\\_normSq \\_ \\_ ≤ ‖f‖^2 * ‖g‖^2 := cauchy\\_schwarz\\_sq f g}. This is the Robertson uncertainty relation in abstract form: for $f = \\Delta A \\cdot \\psi$, $g = \\Delta B \\cdot \\psi$: $\\sigma_A^2 \\cdot \\sigma_B^2 = \\|f\\|^2 \\cdot \\|g\\|^2 \\ge (\\text{Im}\\langle f, g \\rangle)^2$.",
+    "significance": "key",
+    "relatedConcepts": ["calc proof syntax", "lemma composition", "Robertson uncertainty relation", "abstract operator inequality"],
+    "prerequisites": ["im_sq_le_normSq", "cauchy_schwarz_sq", "calc chaining in Lean 4"]
+  },
+  {
+    "id": "ann-heisenberg-bound",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 84, "endLine": 100 },
+    "type": "insight",
+    "title": "Heisenberg Bound: Specializing the Commutator Condition",
+    "content": "heisenberg_bound specializes robertson_core to the case Im⟨f,g⟩ = c/2. After rewriting with hc, the proof becomes: c²/4 ≤ ‖f‖²·‖g‖². This is an application of linarith [sq_nonneg (c/2)] after substituting the hypothesis. The condition Im⟨f,g⟩ = c/2 corresponds to the quantum-mechanical situation where [X,P] = iℏ forces Im⟨ΔX·ψ, ΔP·ψ⟩ = ℏ/2 for normalized ψ.",
+    "mathContext": "With $\\text{Im}\\langle f, g \\rangle = c/2$: from robertson\\_core, $(c/2)^2 \\le \\|f\\|^2 \\cdot \\|g\\|^2$, i.e., $c^2/4 \\le \\sigma_A^2 \\sigma_B^2$. In quantum mechanics: the canonical commutation relation $[\\hat{X}, \\hat{P}] = i\\hbar$ (Dirac, 1925) gives $\\text{Im}\\langle \\Delta X \\psi, \\Delta P \\psi \\rangle = \\hbar/2$ for normalized $\\psi$. Substituting $c = \\hbar$: $\\sigma_x^2 \\sigma_p^2 \\ge \\hbar^2/4$, i.e., $\\sigma_x \\sigma_p \\ge \\hbar/2$.",
+    "significance": "key",
+    "relatedConcepts": ["canonical commutation relation [X,P]=iℏ", "linarith tactic", "specialization from abstract to concrete"],
+    "prerequisites": ["robertson_core", "quantum commutator Im⟨Δx·ψ, Δp·ψ⟩=ℏ/2", "linarith for inequality arithmetic"]
+  },
+  {
+    "id": "ann-heisenberg-sqrt",
+    "proofId": "cauchy-schwarz-oq-01-oq-03",
+    "range": { "startLine": 107, "endLine": 128 },
+    "type": "technique",
+    "title": "Square-Root Form: |c|/2 ≤ ‖f‖·‖g‖ via nlinarith",
+    "content": "heisenberg_sqrt converts the squared form c²/4 ≤ ‖f‖²·‖g‖² into the square-root form |c|/2 ≤ ‖f‖·‖g‖. This requires proving that if a² ≤ b² (with b > 0), then |a| ≤ b. The proof uses nlinarith with hints [sq_abs c, sq_nonneg (‖f‖*‖g‖ - |c|/2)]. The hint (‖f‖*‖g‖ - |c|/2)² ≥ 0 gives ‖f‖²·‖g‖² - ‖f‖·‖g‖·|c| + c²/4 ≥ 0; combined with c²/4 ≤ ‖f‖²·‖g‖², nlinarith concludes. The positivity hypotheses hf, hg are needed to ensure division operations are valid.",
+    "mathContext": "From $c^2/4 \\le \\|f\\|^2 \\|g\\|^2$: want to prove $|c|/2 \\le \\|f\\| \\|g\\|$. Since both sides are nonneg, this is equivalent to $c^2/4 \\le (\\|f\\| \\|g\\|)^2$. The nlinarith hint: $(\\|f\\|\\|g\\| - |c|/2)^2 \\ge 0 \\Rightarrow \\|f\\|^2\\|g\\|^2 - \\|f\\|\\|g\\||c| + c^2/4 \\ge 0$. Combined with the hypothesis: $\\|f\\|^2\\|g\\|^2 \\ge c^2/4 \\ge c^2/4 - (\\|f\\|^2\\|g\\|^2 - \\|f\\|\\|g\\||c| + c^2/4) = \\|f\\|\\|g\\||c| - \\|f\\|^2\\|g\\|^2$. After dividing by $\\|f\\|\\|g\\| > 0$: $\\|f\\|\\|g\\| \\ge |c|/2$.",
+    "significance": "technical",
+    "relatedConcepts": ["nlinarith with polynomial hints", "sq_abs", "sqrt of both sides", "division by positive norm"],
+    "prerequisites": ["nlinarith tactic and polynomial hint syntax", "sq_abs for |c|² = c²", "div_le_iff for inequality manipulation"]
+  }
+]
