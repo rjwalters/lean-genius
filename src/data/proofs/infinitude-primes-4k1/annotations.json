@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-4k1-key-lemma",
+    "proofId": "infinitude-primes-4k1",
+    "range": { "startLine": 46, "endLine": 49 },
+    "type": "concept",
+    "title": "The Core Quadratic Residue Lemma",
+    "content": "This is the mathematical heart of the proof. If an odd prime p divides k² + 1, then p ≡ 1 (mod 4). The condition p ∣ k² + 1 is equivalent to k² ≡ -1 (mod p), meaning -1 is a quadratic residue mod p. By Euler's criterion, -1 is a square mod p if and only if p ≡ 1 (mod 4). This sharp characterization is what distinguishes the p ≡ 1 case from the p ≡ 3 case (which uses a simpler product-mod-4 argument).",
+    "mathContext": "If $p \\mid k^2 + 1$ and $p$ is an odd prime, then $k^2 \\equiv -1 \\pmod{p}$, so $-1$ is a quadratic residue mod $p$. Euler's criterion states: $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$.",
+    "significance": "key",
+    "relatedConcepts": ["quadratic residues", "Euler's criterion", "ZMod", "Legendre symbol"],
+    "prerequisites": ["modular arithmetic", "prime numbers", "quadratic residues"]
+  },
+  {
+    "id": "ann-4k1-issquare-construction",
+    "proofId": "infinitude-primes-4k1",
+    "range": { "startLine": 51, "endLine": 65 },
+    "type": "technique",
+    "title": "Constructing IsSquare(-1) in ZMod p",
+    "content": "The proof constructs the witness that -1 is a square in ZMod p directly from the divisibility hypothesis. The key step is: since p ∣ k² + 1, we have (k² + 1 : ZMod p) = 0 (via ZMod.natCast_zmod_eq_zero_iff_dvd). Rearranging gives k² = -1 in ZMod p, which by definition means -1 is a square (with witness k). The calc block carefully manipulates the ring identity k² = k² + 1 - 1 = 0 - 1 = -1.",
+    "mathContext": "$\\texttt{IsSquare}(-1 : \\mathbb{Z}/p\\mathbb{Z})$ is witnessed by $k$: since $p \\mid k^2+1$, we have $\\overline{k}^2 + 1 = 0$ in $\\mathbb{Z}/p\\mathbb{Z}$, hence $\\overline{k}^2 = -1$, so $\\overline{k} \\cdot \\overline{k} = -1$.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod", "IsSquare", "ZMod.natCast_zmod_eq_zero_iff_dvd", "ring identities"],
+    "prerequisites": ["ZMod arithmetic", "type casting in Lean 4", "IsSquare definition"]
+  },
+  {
+    "id": "ann-4k1-mathlib-application",
+    "proofId": "infinitude-primes-4k1",
+    "range": { "startLine": 66, "endLine": 77 },
+    "type": "technique",
+    "title": "Applying Mathlib's Euler Criterion Lemma",
+    "content": "With IsSquare(-1) in hand, the proof invokes Mathlib's Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one, which lives in Mathlib.NumberTheory.SumTwoSquares. This lemma — itself ultimately derived from Euler's criterion for quadratic residues — tells us p % 4 ≠ 3. Since p is an odd prime, p % 4 ∈ {1, 3}. Eliminating p % 4 = 3 leaves p % 4 = 1. The Fact (Nat.Prime p) instance is needed to make the ZMod p field machinery work.",
+    "mathContext": "Mathlib proves: if $p$ is an odd prime and $-1$ is a square in $\\mathbb{Z}/p\\mathbb{Z}$, then $p \\not\\equiv 3 \\pmod{4}$. Combined with $p$ odd and prime ($p \\geq 3$), we get $p \\equiv 1 \\pmod{4}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one", "Fact typeclass", "Euler's criterion", "Mathlib.NumberTheory.SumTwoSquares"],
+    "prerequisites": ["Lean 4 typeclasses", "ZMod field structure", "quadratic residues"]
+  },
+  {
+    "id": "ann-4k1-N-construction",
+    "proofId": "infinitude-primes-4k1",
+    "range": { "startLine": 97, "endLine": 113 },
+    "type": "insight",
+    "title": "The Magic Number N = (2·(n+1)!)² + 1",
+    "content": "The choice N = (2·(n+1)!)² + 1 is carefully engineered. Writing it as a perfect square plus 1 ensures: (1) N is odd, since an even number squared is even, and even + 1 is odd; (2) every odd prime factor p of N satisfies p ∣ k² + 1 with k = 2·(n+1)!, so p ≡ 1 (mod 4) by the key lemma; (3) if p ≤ n then p ∣ (n+1)!, so p ∣ 2·(n+1)!, hence p ∣ (2·(n+1)!)², but also p ∣ N, so p ∣ 1 — contradiction. This is the p ≡ 1 analogue of 4·(n+1)! − 1 used for p ≡ 3.",
+    "mathContext": "$N = (2 \\cdot (n+1)!)^2 + 1$. This is odd since $(2 \\cdot (n+1)!)^2$ is even. Every odd prime factor $p$ of $N$ satisfies $p \\mid k^2 + 1$ with $k = 2 \\cdot (n+1)!$, forcing $p \\equiv 1 \\pmod 4$.",
+    "significance": "key",
+    "relatedConcepts": ["Euclid's proof of infinitude of primes", "factorial", "quadratic construction", "Nat.factorial_pos"],
+    "prerequisites": ["infinitude of primes argument structure", "factorial growth", "divisibility"]
+  },
+  {
+    "id": "ann-4k1-contradiction",
+    "proofId": "infinitude-primes-4k1",
+    "range": { "startLine": 118, "endLine": 137 },
+    "type": "technique",
+    "title": "Contradiction: p ≤ n Forces p ∣ 1",
+    "content": "The argument that p > n proceeds by contradiction. If p ≤ n+1, then p ∣ (n+1)! by Nat.dvd_factorial (since p is prime and p ≤ n+1). Multiplying: p ∣ 2·(n+1)!, and squaring: p ∣ (2·(n+1)!)². But p ∣ N = (2·(n+1)!)² + 1, so by divisibility p ∣ 1. This contradicts p being prime (prime ⟹ p ≥ 2 ⟹ p ∤ 1). The chain of divisibility reasoning is the Euclidean heart of the argument, echoing Euclid's proof of infinitude of primes.",
+    "mathContext": "If $p \\leq n+1$, then $p \\mid (n+1)!$ (Wilson/factorial divisibility), so $p \\mid (2(n+1)!)^2$. Since also $p \\mid N = (2(n+1)!)^2 + 1$, we get $p \\mid 1$, contradicting $p$ prime.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.dvd_factorial", "Nat.Prime.not_dvd_one", "Euclid's argument", "divisibility chains"],
+    "prerequisites": ["factorial divisibility", "primality", "modular arithmetic"]
+  },
+  {
+    "id": "ann-4k1-set-formulation",
+    "proofId": "infinitude-primes-4k1",
+    "range": { "startLine": 141, "endLine": 154 },
+    "type": "concept",
+    "title": "Set-Theoretic and Negation Formulations",
+    "content": "The theorem is restated in two equivalent forms. First, primes_1_mod_4_infinite uses Set.Infinite (the set {p : ℕ | Nat.Prime p ∧ p % 4 = 1} is infinite), characterized via Set.infinite_iff_exists_gt: a set is infinite iff for every n it contains an element > n. Second, no_largest_prime_1_mod_4 gives a direct negation: there is no largest prime ≡ 1 (mod 4). Both are immediate corollaries of infinitely_many_primes_1_mod_4 with trivial one-line proofs.",
+    "mathContext": "$\\{p \\in \\mathbb{N} : p \\text{ prime}, p \\equiv 1 \\pmod 4\\}$ is infinite, equivalently: $\\forall n, \\exists p > n$ in this set.",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.Infinite", "Set.infinite_iff_exists_gt", "corollaries", "equivalent formulations"],
+    "prerequisites": ["Mathlib Set.Infinite API", "propositional logic"]
+  },
+  {
+    "id": "ann-4k1-examples",
+    "proofId": "infinitude-primes-4k1",
+    "range": { "startLine": 156, "endLine": 171 },
+    "type": "context",
+    "title": "Concrete Verified Examples",
+    "content": "The first few primes ≡ 1 (mod 4) are 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97, ... (OEIS A002144). The proof verifies five of these by decide. These primes are exactly the primes that can be written as a sum of two squares (Fermat's theorem): 5 = 1² + 2², 13 = 2² + 3², 17 = 1² + 4², 29 = 2² + 5², 37 = 1² + 6². This connection to Gaussian integers is the deeper structure underlying Euler's criterion.",
+    "mathContext": "Primes $\\equiv 1 \\pmod 4$: $5, 13, 17, 29, 37, 41, 53, 61, \\ldots$ (OEIS A002144). By Fermat's theorem on sums of two squares: $p \\equiv 1 \\pmod 4 \\iff p = a^2 + b^2$ for some $a, b \\in \\mathbb{Z}$.",
+    "significance": "context",
+    "relatedConcepts": ["Fermat's theorem on sums of two squares", "Gaussian integers", "OEIS A002144", "decide tactic"],
+    "prerequisites": ["basic prime arithmetic", "sums of two squares"]
+  }
+]
