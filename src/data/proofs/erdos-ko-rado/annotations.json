@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ekr-katona-overview",
+    "range": {"start": 1, "end": 54},
+    "type": "overview",
+    "title": "Katona's Cyclic Permutation Proof: The Double-Count Strategy",
+    "content": "The EKR theorem (proved 1938, published 1961) is formalized here using Katona's 1972 cyclic permutation double-count — considered one of the most beautiful proofs in combinatorics, featured in Aigner-Ziegler's 'Proofs from THE BOOK'. The strategy: count pairs (S, σ) where S ∈ A is a cyclic interval in cyclic order σ. Counting by sets gives |A|·k!(n-k)!; counting by orders gives ≤ k·(n-1)!. Dividing yields |A| ≤ C(n-1,k-1).",
+    "mathContext": "Fix an intersecting k-family A. Define pairs P = {(S, σ) : S ∈ A, S is a cyclic interval of σ}. Count P two ways: (1) by S: each S ∈ A appears in k!(n-k)! cyclic orders (k cyclic arrangements of k elements × (n-k)! orderings of the rest). (2) by σ: in each of (n-1)! distinct cyclic orders of n elements, at most k members of A appear as cyclic intervals (the at_most_k axiom). So |A|·k!(n-k)! ≤ k·(n-1)!, giving |A| ≤ k(n-1)!/(k!(n-k)!) = C(n-1,k-1).",
+    "significance": "Katona's proof is a canonical example of the double-counting technique: the same quantity (total pairs) counted from two perspectives yields an inequality. The elegance is that the auxiliary cyclic structure has nothing to do with intersecting families — it is introduced purely for counting convenience, bridging a combinatorial bound via factorial arithmetic.",
+    "relatedConcepts": ["cyclic intervals", "double counting", "C(n-1,k-1) bound", "intersecting family", "Proofs from THE BOOK"],
+    "prerequisites": ["Binomial coefficients", "Cyclic permutations", "Double counting as a proof technique"]
+  },
+  {
+    "id": "ekr-core-definitions",
+    "range": {"start": 56, "end": 99},
+    "type": "definition",
+    "title": "IsIntersectingFamily, Star, and cyclicInterval",
+    "content": "Three foundational definitions: (1) IsIntersectingFamily A k — A is a family of k-element sets from Fin n where every pair has nonempty intersection; (2) Star x k — all k-subsets of Fin n containing fixed element x, the unique extremizer for n > 2k; (3) cyclicInterval start k — k consecutive elements of Fin n in cyclic order, the auxiliary structure for Katona's proof that plays no role in the EKR statement itself.",
+    "mathContext": "IsIntersectingFamily A k := (∀ s ∈ A, s.card = k) ∧ ∀ s t, s ∈ A → t ∈ A → (s ∩ t).Nonempty. Star x k := (powersetCard k univ).filter (fun s => x ∈ s). cyclicInterval start k := {i : Fin n | ∃ j < k, i = ⟨(start.val + j) % n, ...⟩}, i.e., the k elements starting at 'start' in the cyclic order 0,1,...,n-1,0,1,.... The card_cyclicInterval theorem verifies |cyclicInterval start k| = k via Finset.card_image_of_injective, using injectivity of i ↦ (start + i) % n on the range {0,...,k-1}.",
+    "significance": "The cyclicInterval definition is the key auxiliary notion — it exists only to facilitate Katona's counting argument. This illustrates a common combinatorial proof technique: introduce a structure unrelated to the problem's statement in order to facilitate a clever double-count from a different angle.",
+    "relatedConcepts": ["k-uniform families", "Star family", "cyclic intervals", "Mathlib powersetCard", "card_cyclicInterval"],
+    "prerequisites": ["Finset.powersetCard", "Finset.filter", "Fin n arithmetic (modular)", "Finset.card_image_of_injective"]
+  },
+  {
+    "id": "ekr-cyclic-interval-axiom",
+    "range": {"start": 100, "end": 109},
+    "type": "axiom",
+    "title": "Key Lemma: At Most k Cyclic Intervals Are Pairwise Intersecting",
+    "content": "The axiom at_most_k_intersecting_cyclic_intervals states: among the n cyclic intervals of length k in a cycle of n ≥ 2k elements, at most k are pairwise intersecting. This is the harder of the two Katona counting lemmas, axiomatized here. The proof sketch: two cyclic intervals [i, i+k-1] and [j, j+k-1] (mod n) intersect iff their starting positions satisfy |i-j| < k (mod n). So any pairwise-intersecting collection has all starts within a window of size k, giving ≤ k intervals.",
+    "mathContext": "Formally: for F ⊆ {cyclicInterval i k n | i : Fin n} with (∀ s t ∈ F, (s ∩ t).Nonempty): F.card ≤ k. Key fact: cyclicInterval i k and cyclicInterval j k intersect iff |(i-j) mod n| < k. For n ≥ 2k, the set of j's within distance k-1 of a fixed i has size exactly 2k-1 (symmetric window), but pairwise intersection requires all starts to be within an arc of length k-1, giving at most k starts. The condition n ≥ 2k ensures the two arcs from i don't wrap around and merge.",
+    "significance": "This is the crucial upper bound in Katona's proof. It converts the abstract 'intersecting family A' condition into a concrete constraint on each cyclic order: A contributes ≤ k pairs to the double-count. Without this lemma, the bound k·(n-1)! on the total count would not hold.",
+    "relatedConcepts": ["cyclic intervals", "pairwise intersecting", "Katona's proof", "double_counting_bound", "n≥2k condition"],
+    "prerequisites": ["cyclicInterval definition", "Modular arithmetic on Fin n", "n≥2k ensures window non-overlap"]
+  },
+  {
+    "id": "ekr-double-counting-axioms",
+    "range": {"start": 111, "end": 146},
+    "type": "axiom",
+    "title": "Double-Counting Axioms: The Katona Counting Machine",
+    "content": "Two axioms complete Katona's double-counting: (1) set_appears_in_cyclic_orders: each k-subset S appears as a cyclic interval in exactly k!(n-k)! cyclic orders; (2) double_counting_bound: the combined double-count yields |A|·k!(n-k)! ≤ k·(n-1)!. Together with at_most_k, these three axioms are the full combinatorial content of Katona's proof, with the remaining algebraic work handled in the main theorem.",
+    "mathContext": "set_appears_in_cyclic_orders: place the k elements of S consecutively starting at each of k positions; within that block, (k-1)! cyclic arrangements of S; the remaining n-k elements in (n-k)! orders. Total: k·(k-1)!·(n-k)! = k!(n-k)!. double_counting_bound: |P| = Σ_{S∈A} (appearances of S) = |A|·k!(n-k)! and |P| = Σ_σ |{S ∈ A : S is cyclic interval of σ}| ≤ (n-1)!·k (using at_most_k for each of (n-1)! cyclic orders). Hence |A|·k!(n-k)! ≤ k·(n-1)!.",
+    "significance": "set_appears_in_cyclic_orders requires careful cyclic combinatorics — accounting for (k-1)! cyclic (not linear) arrangements of S within its consecutive block. This is non-trivial to formalize. Once axiomatized, the main proof is purely algebraic: divide both sides and simplify the factorials into a binomial coefficient.",
+    "relatedConcepts": ["double counting", "cyclic orders", "factorial arithmetic", "Katona's theorem", "set_appears_in_cyclic_orders"],
+    "prerequisites": ["set_appears_in_cyclic_orders", "at_most_k_intersecting_cyclic_intervals", "Nat.factorial", "Nat.choose"]
+  },
+  {
+    "id": "ekr-main-proof",
+    "range": {"start": 148, "end": 278},
+    "type": "proof",
+    "title": "EKR Main Proof: Algebraic Derivation from Double-Count",
+    "content": "The erdos_ko_rado theorem is proved by chaining the double-counting axioms into the binomial coefficient bound. The proof handles edge cases (k=0 trivially), uses factorial positivity, applies double_counting_bound to get |A|·k!(n-k)! ≤ k·(n-1)!, then algebraically reduces via: k/(k!) = 1/(k-1)! (from k! = k·(k-1)!) and choose_eq_factorial_div_factorial. The calc block chains three equalities from the double-count bound to C(n-1,k-1).",
+    "mathContext": "Key algebraic chain: (1) k.factorial = k * (k-1).factorial (Nat.factorial_succ). (2) k·(n-1)!/(k·(k-1)!·(n-k)!) = (n-1)!/((k-1)!·(n-k)!) via Nat.mul_div_mul_left. (3) (n-1)!/((k-1)!·(n-k)!) = C(n-1,k-1) via Nat.choose_eq_factorial_div_factorial and h : n-1-(k-1) = n-k. Positivity: (k-1)!·(n-k)! > 0 by Nat.factorial_pos and Nat.mul_pos.",
+    "significance": "The proof demonstrates a recurring pattern in formal combinatorics: once combinatorial axioms are established, the remaining work is algebraic — canceling factorials and matching Mathlib's choose_eq_factorial form. The Nat.mul_div_mul_left step requires that the common factor k is nonzero, handled by the hk : 0 < k hypothesis.",
+    "relatedConcepts": ["Nat.choose_eq_factorial_div_factorial", "Nat.factorial_succ", "Nat.mul_div_mul_left", "double_counting_bound", "calc block"],
+    "prerequisites": ["double_counting_bound axiom", "Nat.choose formula", "Nat.factorial_succ", "Natural number division (truncated Nat.div)"]
+  },
+  {
+    "id": "ekr-star-properties",
+    "range": {"start": 280, "end": 354},
+    "type": "theorem",
+    "title": "Star Properties: The Extremal Family Achieves Equality",
+    "content": "Two theorems verify the star achieves the EKR bound: (1) star_achieves_bound: |Star x k| = C(n-1,k-1) via a bijection s ↦ s.erase x from Star x k to (k-1)-subsets of univ\\{x}; (2) star_is_intersecting: the star is an intersecting family (any two sets containing x share x). Together these confirm the EKR bound is tight: stars achieve C(n-1,k-1) exactly.",
+    "mathContext": "star_achieves_bound uses Finset.card_bij with map s ↦ s.erase x. Target: powersetCard (k-1) (univ.erase x), card = C(n-1,k-1) (since |univ.erase x| = n-1). Membership: s.erase x ⊆ univ.erase x (since y ∈ s.erase x → y ≠ x ∧ y ∈ s → y ∈ univ.erase x). Injectivity: s₁ = insert x (s₁.erase x) = insert x (s₂.erase x) = s₂. Surjectivity: for t ⊆ univ\\{x} with x ∉ t, use insert x t ∈ Star x k. star_is_intersecting: ∀ s t ∈ Star x k, x ∈ s ∩ t.",
+    "significance": "The Finset.card_bij proof is a clean Lean 4 bijection argument. The bijection Star x k ↔ powersetCard (k-1) (univ.erase x) makes the count transparent: after including x, choose k-1 elements from the remaining n-1. For n > 2k, stars are the UNIQUE extremal families — a result not yet formalized here (open question).",
+    "relatedConcepts": ["Finset.card_bij", "insert_erase", "erase_insert", "C(n-1,k-1)", "bijection", "uniqueness of star for n>2k"],
+    "prerequisites": ["Star definition", "powersetCard", "Finset.card_bij for cardinality via bijections", "insert_erase and erase_insert lemmas"]
+  },
+  {
+    "id": "ekr-concrete-examples",
+    "range": {"start": 356, "end": 390},
+    "type": "application",
+    "title": "Concrete Verifications and Why n≥2k Is Necessary",
+    "content": "Three native_decide verifications: (1) |Star 0 2| = 3 = C(3,1) for n=4 (pairs containing 0: {0,1},{0,2},{0,3}); (2) C(5,2)=10 for n=6,k=3; (3) ekr_condition_necessary: for n=5,k=3, C(5,3)=10 > C(4,2)=6, showing the EKR bound fails when n < 2k. The reason: for n=5,k=3, any two 3-subsets automatically intersect by pigeonhole (|A|+|B|=6>5=n forces |A∩B|≥1), so all C(5,3)=10 sets form an intersecting family exceeding the EKR bound of 6.",
+    "mathContext": "ekr_condition_necessary: (5).choose 3 > (4).choose 2, i.e., 10 > 6, verified by native_decide. The pigeonhole argument for n < 2k: |A∩B| = |A|+|B|-|A∪B| ≥ k+k-n = 2k-n > 0. So when n < 2k, every k-family is automatically intersecting. The EKR theorem gives |A| ≤ C(n-1,k-1) < C(n,k), but the ALL family is also intersecting with size C(n,k). So EKR is NOT the maximum when n < 2k.",
+    "significance": "The condition n≥2k marks the exact threshold where 'intersecting' becomes a nontrivial constraint. For n < 2k, the full family is automatically intersecting and has size C(n,k) >> C(n-1,k-1). The EKR theorem is non-vacuous precisely when n ≥ 2k and intersecting is a genuine restriction.",
+    "relatedConcepts": ["pigeonhole principle", "n≥2k condition", "C(5,3)=10 vs C(4,2)=6", "native_decide"],
+    "prerequisites": ["Nat.choose", "pigeonhole principle for sets", "native_decide for Decidable propositions"]
+  },
+  {
+    "id": "ekr-t-intersecting-frankl-hm",
+    "range": {"start": 392, "end": 492},
+    "type": "generalization",
+    "title": "t-Intersecting Families (Frankl 1977) and Hilton-Milner (1967)",
+    "content": "Part II formalizes t-intersecting families: IsTIntersectingFamily requires every pair to share ≥t elements. TStar T k (all k-sets containing a fixed t-set T) achieves the Frankl bound C(n-t,k-t). frankl_t_intersecting axiom (1977): for n≥(t+1)(k-t+1), any t-intersecting family has |A|≤C(n-t,k-t). one_intersecting_iff_intersecting confirms t=1 recovers EKR. Part III: Hilton-Milner (1967) — the second-largest intersecting family. If A is intersecting but not a star, |A|≤hiltonMilnerBound=C(n-1,k-1)-C(n-k-1,k-1)+1. hm_gap_positive shows this bound is strictly below C(n-1,k-1) when n>2k.",
+    "mathContext": "Frankl (1977): for n ≥ (t+1)(k-t+1), a t-intersecting k-family satisfies |A| ≤ C(n-t,k-t). TStar T k = {s ∈ powersetCard k univ | T ⊆ s} achieves this (bijection with (k-t)-subsets of univ\\T gives C(n-t,k-t)). one_intersecting_iff_intersecting: 1≤|s∩t| ↔ (s∩t).Nonempty. HM bound = C(n-1,k-1)-C(n-k-1,k-1)+1. For n=7,k=3: EKR=C(6,2)=15, HM=15-C(3,2)+1=15-3+1=13. hm_gap_positive: C(n-k-1,k-1) ≥ k ≥ 2 > 1 when n>2k and k≥2.",
+    "significance": "Frankl's theorem shows the star structure persists for t-intersecting: t-stars are the extremizers at every level. Hilton-Milner is a 'stability' theorem — it shows that near-equality in EKR forces near-star structure. For large n, the gap C(n-k-1,k-1) grows, so stars are far from the second-place bound.",
+    "relatedConcepts": ["IsTIntersectingFamily", "TStar", "frankl_t_intersecting", "hiltonMilnerBound", "one_intersecting_iff_intersecting", "stability results"],
+    "prerequisites": ["IsIntersectingFamily", "Frankl's t-intersecting theorem (1977)", "Hilton-Milner theorem (1967)", "IsStar definition"]
+  },
+  {
+    "id": "ekr-cross-intersecting-permutations",
+    "range": {"start": 494, "end": 567},
+    "type": "connection",
+    "title": "Cross-Intersecting Families (Bollobás 1965) and EKR for Permutations",
+    "content": "Part IV: IsCrossIntersecting A B a b — every s ∈ A and t ∈ B have nonempty intersection. bollobas_set_pairs axiom (1965): for set-pair systems (Aᵢ,Bᵢ) with |Aᵢ|=a, |Bᵢ|=b, Aᵢ∩Bⱼ=∅ iff i=j, then m ≤ C(a+b,a). pyber_cross_intersecting axiom (1986): cross-intersecting k-families satisfy |A|+|B| ≤ 1+C(n,k)-C(n-k,k). Part V: EKR for permutations — PermIntersecting σ τ ↔ ∃i, σ(i)=τ(i). Deza-Frankl conjecture (1977), proved Ellis-Friedgut-Pilpel (2011): intersecting permutation families satisfy |A| ≤ (n-1)!, achieved by cosets PermCoset i j = {σ : σ(i)=j}.",
+    "mathContext": "Bollobás set-pairs: the cross condition Aᵢ∩Bⱼ=∅ ↔ i=j forces m ≤ C(a+b,a) via a dimension/inclusion argument (the indicator functions form a linearly independent set in a C(a+b,a)-dimensional space). For permutations: |PermCoset i j| = (n-1)! (fix σ(i)=j, freely choose σ on [n]\\{i}: (n-1)! arrangements). EFP (2011) proved the Deza-Frankl conjecture using eigenvalue bounds on the Cayley graph of Sₙ via representation theory.",
+    "significance": "EKR for permutations (EFP 2011) required new techniques — spectral/algebraic methods in the representation theory of Sₙ — beyond Katona's combinatorial approach. This shows how EKR-type problems at higher algebraic levels demand more sophisticated tools. The EFP proof resolved a 34-year-old conjecture.",
+    "relatedConcepts": ["Bollobás set-pairs (1965)", "IsCrossIntersecting", "PermIntersecting", "Equiv.Perm in Mathlib", "Ellis-Friedgut-Pilpel 2011"],
+    "prerequisites": ["Cross-intersecting families", "Bollobás inequality", "Equiv.Perm (symmetric group in Mathlib)", "Representation theory of Sₙ"]
+  },
+  {
+    "id": "ekr-sunflower-lemma",
+    "range": {"start": 569, "end": 657},
+    "type": "connection",
+    "title": "Sunflower Lemma and the ALZW 2020 Breakthrough",
+    "content": "Part VI: IsSunflower F — all pairwise intersections of F equal the same 'core'. sunflower_lemma axiom (Erdős-Ko 1961): |A|>(p-1)^k·k! → A contains a p-sunflower. improved_sunflower_lemma axiom (Alweiss-Lovett-Wu-Zhang 2020): the threshold drops to C^k·p for absolute constant C, improving the (p-1)^k·k! bound conjectured improvable since 1961. intersecting_no_empty_core_sunflower (proved): intersecting families cannot contain sunflowers with empty core.",
+    "mathContext": "IsSunflower F := ∃ core, ∀ s t ∈ F, s≠t → s∩t = core. sunflower_lemma: A.card > (p-1)^k·k! → HasSunflower A p. ALZW 2020: ∃ C > 0, A.card > C^k·p → HasSunflower A p (C = O(log k · log log k)). intersecting_no_empty_core_sunflower proof: if F ⊆ A is a sunflower with |F|≥2, take distinct s,t ∈ F; s∩t = core (by IsSunflower) and s∩t ≠ ∅ (by IsIntersectingFamily); so core ≠ ∅. The proof uses Finset.card_pos and card_le_one for the |F|≥2 case analysis.",
+    "significance": "The ALZW 2020 result was a major breakthrough with algorithmic implications (matrix multiplication, circuit complexity). Strikingly, the original EKR 1961 paper contained both the EKR intersection theorem AND the sunflower lemma — the two results share origin. The connection proved here (intersecting → nonempty core) captures the direct relationship between these sibling results.",
+    "relatedConcepts": ["IsSunflower", "Δ-system", "ALZW 2020", "Erdős sunflower conjecture", "intersecting_no_empty_core_sunflower", "Finset.card_pos"],
+    "prerequisites": ["sunflower_lemma", "improved_sunflower_lemma (ALZW 2020)", "Erdős-Ko 1961 paper (origin of both results)", "HasSunflower"]
+  }
+]
