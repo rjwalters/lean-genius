@@ -29,55 +29,134 @@
       "kSubsets_subset: k-subsets monotone under set inclusion",
       "ramsey_property_mono: Ramsey property monotone in N",
       "ramsey_base: base case n ≤ k (vacuously/trivially monochromatic)",
-      "pigeonhole_ramsey: k=1 base case proved via Finset.exists_lt_card_fiber_of_nsmul_lt_card"
+      "pigeonhole_ramsey: k=1 proved via Finset.exists_lt_card_fiber_of_nsmul_lt_card"
     ],
     "axiomCount": 1,
-    "assumptions": "1 axiom: hypergraph_ramsey_exists (the deep existence result requiring stepping-up lemma). All infrastructure, special cases, both base cases (n ≤ k and k = 1 pigeonhole), and monotonicity are proved.",
-    "lineCount": 301
-  },
-  "overview": {
-    "historicalContext": "Ramsey (1930) proved the theorem in full generality for k-element subsets, not just edges. The k=2 (graph) case became most famous. Erdős and Rado (1952) showed hypergraph Ramsey numbers grow as towers of exponentials with height proportional to k.",
-    "problemStatement": "How does Ramsey theory extend to hypergraphs and higher dimensions?\n\n**Answer**: The hypergraph Ramsey theorem states that for k-uniform hypergraphs with r colors, sufficiently large sets contain monochromatic k-subsets. The Ramsey numbers grow as iterated towers.",
-    "text": "Ramsey theory extends to hypergraphs via the k-uniform Ramsey theorem.",
-    "proofStrategy": "Define k-subsets, colorings, and the Ramsey property. Show k=1 is pigeonhole, k=2 is classical Ramsey. Axiomatize the general existence. Define tower function for growth rates.",
-    "keyInsights": [
-      "k=1 is pigeonhole, k=2 is classical graph Ramsey, k>=3 is hypergraph Ramsey",
-      "Growth rate: k-uniform Ramsey numbers grow as height-k towers of 2",
-      "The stepping-up lemma converts (k-1)-uniform bounds to k-uniform bounds"
-    ],
-    "prerequisites": [
-      "Combinatorics (Ramsey theory)",
-      "Graph theory (cliques, colorings)"
+    "assumptions": "1 axiom: hypergraph_ramsey_k2 (k ≥ 2 existence requiring the stepping-up lemma). All infrastructure, special cases, both base cases (n ≤ k and k=1 pigeonhole), and monotonicity are fully proved. The axiom isolates exactly the inductive step of the k-uniform stepping-up argument.",
+    "lineCount": 301,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powersetCard",
+        "description": "k-element subsets of a finset",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.exists_lt_card_fiber_of_nsmul_lt_card",
+        "description": "Pigeonhole principle for fibers of a function on a finset",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.exists_subset_card_le",
+        "description": "Existence of a subset of a given size",
+        "module": "Mathlib.Data.Finset.Card"
+      }
     ]
   },
-  "sections": [],
-  "references": [
+  "overview": {
+    "historicalContext": "Frank Plumpton Ramsey proved his theorem in 1930 in 'On a Problem of Formal Logic', originally to establish a decision procedure for a fragment of predicate logic. The combinatorial content — that any 2-coloring of the edges of K_N contains a monochromatic K_n for N large enough — became one of the founding results of combinatorics.\n\nCrucially, Ramsey's original 1930 paper actually proved the general k-uniform hypergraph version, not just the graph (k=2) case. The k=2 case became more famous because it was later rediscovered and popularized, but Ramsey's theorem is inherently about k-element subsets.\n\nErdős and Rado in 1952 ('Combinatorial theorems on classifications of subsets of a given set') gave tight bounds on hypergraph Ramsey numbers, showing they grow as towers of exponentials: R(3;2) grows as a tower of height 3, R(4;2) as height 4, etc. This 'tower-of-exponentials' phenomenon makes hypergraph Ramsey numbers much harder to compute than graph Ramsey numbers.\n\nThe stepping-up lemma — R(k+1, r, n) ≤ R(k, r, R(k+1, r, n-1)) + 1 — is the key inductive tool that converts k-uniform bounds to (k+1)-uniform bounds by fixing a vertex v and using the induced k-coloring on pairs with v.",
+    "problemStatement": "**Problem Statement (Answer to OQ-04)**\n\nHow does Ramsey theory extend to hypergraphs and higher dimensions?\n\n**Answer:** The Hypergraph Ramsey Theorem: For any k ≥ 1, r ≥ 1, n ≥ k, there exists N such that for any r-coloring of the k-element subsets of an N-element set, there exists a monochromatic n-element subset.\n\n**Special cases:**\n- k=1: pigeonhole principle (N = r(n-1)+1)\n- k=2: classical graph Ramsey theorem\n- k≥3: hypergraph Ramsey (proved via stepping-up)",
+    "text": "Ramsey theory extends to hypergraphs via the k-uniform Ramsey theorem. The k=1 case is pigeonhole, k=2 is classical Ramsey, k≥3 requires the stepping-up lemma. Growth rates follow a tower-of-exponentials pattern.",
+    "proofStrategy": "**Six-Part Structure**\n\n1. **Definitions (Part I):** `kSubsets` (powersetCard), `Coloring` (function type), `IsMonochromatic`, `HypergraphRamseyProperty`.\n\n2. **Special Cases (Part II):** k=1 is pigeonhole (unfolds directly), k=2 with `fin_cases` on color.\n\n3. **Existence Theorem (Part III):** `hypergraph_ramsey_exists` splits on k=1 (proved by pigeonhole_ramsey) vs k≥2 (axiomatized).\n\n4. **Growth Rate (Part IV):** `tower b n` = iterated exponentiation; `tower_strictMono` proved by induction using `Nat.lt_two_pow`.\n\n5. **Infrastructure (Part V):** `kSubsets_card` (powersetCard formula), `kSubsets_subset` (monotonicity), `ramsey_property_mono` (N monotone via `Finset.exists_subset_card_le`), `ramsey_base` (n ≤ k case).\n\n6. **Pigeonhole Case (Part VI):** Full proof of k=1 via `Finset.exists_lt_card_fiber_of_nsmul_lt_card`.",
+    "keyInsights": [
+      "**Hierarchy k=1,2,k≥3:** k=1 is pigeonhole (N = r(n-1)+1), k=2 is classical graph Ramsey (doubly-exponential growth), k≥3 is hypergraph Ramsey (tower-of-exponentials growth). The stepping-up lemma converts each level to the next.",
+      "**Tower Numbers:** k-uniform Ramsey numbers grow as towers of height k. tower(2, k) = 2^(2^(...^2)) with k 2s. For k=3 (3-uniform), R₃(n) ≥ tower(2, n), much larger than the doubly-exponential R₂(n). This tower growth is what makes hypergraph Ramsey numbers computationally intractable.",
+      "**Pigeonhole Formalization:** The k=1 proof uses `Finset.exists_lt_card_fiber_of_nsmul_lt_card` — Mathlib's pigeonhole lemma for finsets. It requires r·(n-1) < |S|, which is exactly the condition N ≥ r(n-1)+1. The proof converts the singleton coloring to an element coloring, applies pigeonhole, and recovers monochromaticity by proof irrelevance.",
+      "**Stepping-Up Gap:** The axiom `hypergraph_ramsey_k2` isolates the stepping-up lemma. The stepping-up argument fixes a vertex v, constructs a derived k-coloring on the remaining N-1 elements via c'(T) = c(T ∪ {v}), applies (k-1)-uniform Ramsey, and uses induction. This requires well-founded induction on (k, n), which is provable but requires substantial Lean machinery.",
+      "**Monotonicity via Subset:** `ramsey_property_mono` shows that if N works, so does any N' ≥ N. The proof uses `Finset.exists_subset_card_le` to find an N-element subset of the N'-element set, applies the Ramsey property there, and uses `kSubsets_mem_of_subset` for the coloring restriction."
+    ],
+    "prerequisites": [
+      "Combinatorics: $\\binom{n}{k}$ = number of $k$-subsets, pigeonhole principle",
+      "Ramsey theory: $R(n_1, n_2)$ for graphs, definition of monochromatic cliques",
+      "Finsets in Lean 4: `Finset.powersetCard`, `Finset.filter`, `Finset.biUnion`",
+      "Mathlib: `exists_lt_card_fiber_of_nsmul_lt_card` (pigeonhole for finsets)"
+    ]
+  },
+  "sections": [
     {
-      "authors": "Ramsey, Frank P.",
-      "title": "On a Problem of Formal Logic",
-      "year": "1930",
-      "venue": "Proceedings of the London Mathematical Society"
+      "id": "definitions",
+      "title": "k-Uniform Hypergraph Definitions",
+      "summary": "kSubsets, Coloring, IsMonochromatic, HypergraphRamseyProperty",
+      "startLine": 28,
+      "endLine": 50,
+      "mathContext": "`kSubsets s k = s.powersetCard k`: all $k$-element subsets of $s$. `Coloring s k r = kSubsets s k → Fin r`: an $r$-coloring of $k$-subsets. `HypergraphRamseyProperty k r n N`: for all $S$ with $|S| = N$ and all $c : \\binom{S}{k} \\to [r]$, $\\exists T \\subseteq S$ with $|T| \\geq n$ monochromatic."
     },
     {
-      "authors": "Erdős, Paul and Rado, Richard",
-      "title": "Combinatorial theorems on classifications of subsets of a given set",
-      "year": "1952",
-      "venue": "Proceedings of the London Mathematical Society"
+      "id": "special-cases",
+      "title": "Special Cases: k=1 and k=2",
+      "summary": "k1_is_pigeonhole, classical_ramsey_is_k2",
+      "startLine": 51,
+      "endLine": 73,
+      "mathContext": "k=1: `HypergraphRamseyProperty 1 r n N` unfolds directly to the pigeonhole statement. k=2: `classical_ramsey_is_k2` applies `fin_cases i` on the 2-color index to split into `c = 0` (blue) and `c = 1` (red) cases, matching the classical $R(n_1, n_2)$ formulation."
+    },
+    {
+      "id": "existence",
+      "title": "Hypergraph Ramsey Existence Theorem",
+      "summary": "pigeonhole_ramsey (proved), hypergraph_ramsey_k2 (axiom), hypergraph_ramsey_exists",
+      "startLine": 75,
+      "endLine": 147,
+      "mathContext": "`hypergraph_ramsey_exists k r n`: `rcases eq_or_lt_of_le hk` splits k=1 (proved via `pigeonhole_ramsey r n hr`) vs k≥2 (delegated to axiom). The pigeonhole proof uses `Finset.exists_lt_card_fiber_of_nsmul_lt_card` with $N = r(n-1)+1 > r(n-1)$."
+    },
+    {
+      "id": "tower-function",
+      "title": "Tower Function and Growth Rates",
+      "summary": "tower, tower_2_1, tower_2_2, tower_strictMono",
+      "startLine": 149,
+      "endLine": 178,
+      "mathContext": "`tower b n` = $b^{b^{\\cdots^b}}$ ($n$ times). Base: `tower b 0 = 1`. Step: `tower b (n+1) = b ^ tower b n`. Values: `tower 2 1 = 2`, `tower 2 2 = 4`, `tower 2 3 = 16`, `tower 2 4 = 65536`. Monotonicity: `tower b n < tower b (n+1)` proved by `Nat.lt_two_pow` then `Nat.pow_le_pow_left`."
+    },
+    {
+      "id": "infrastructure",
+      "title": "Infrastructure: Counting and Monotonicity",
+      "summary": "kSubsets_card, kSubsets_subset, ramsey_property_mono, ramsey_base",
+      "startLine": 180,
+      "endLine": 257,
+      "mathContext": "`kSubsets_card s k`: $|\\binom{s}{k}| = \\binom{|s|}{k}$ via `Finset.card_powersetCard`. `ramsey_property_mono`: if $N$ works for Ramsey, so does $N' \\geq N$, via `Finset.exists_subset_card_le`. `ramsey_base k r n (hn : n ≤ k)`: when $n \\leq k$, $N = n$ works vacuously (no k-subsets if $|S| < k$, or all k-subsets are S itself when n=k)."
+    },
+    {
+      "id": "pigeonhole-proof",
+      "title": "Pigeonhole Ramsey: Full k=1 Proof",
+      "summary": "pigeonhole_ramsey via Finset.exists_lt_card_fiber_of_nsmul_lt_card",
+      "startLine": 259,
+      "endLine": 300,
+      "mathContext": "Proof: define `f : ℕ → Fin r` mapping elements to their singleton color. Apply `Finset.exists_lt_card_fiber_of_nsmul_lt_card` (pigeonhole for finsets): $r \\cdot (n-1) < N = r(n-1)+1$. The large fiber gives the monochromatic set; `dif_pos` and proof irrelevance close the monochromaticity subgoal."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ra30",
+      "citation": "Ramsey, F.P., On a Problem of Formal Logic, Proceedings of the London Mathematical Society, Series 2, 30 (1930), 264–286. Original proof of the hypergraph Ramsey theorem (Theorem B in the paper).",
+      "type": "paper"
+    },
+    {
+      "key": "ER52",
+      "citation": "Erdős, P. and Rado, R., Combinatorial theorems on classifications of subsets of a given set, Proceedings of the London Mathematical Society, Series 3, 2 (1952), 417–439. Tower-of-exponentials bounds for hypergraph Ramsey numbers.",
+      "type": "paper"
+    },
+    {
+      "key": "GRS90",
+      "citation": "Graham, R.L., Rothschild, B.L., and Spencer, J.H., Ramsey Theory, 2nd ed., Wiley (1990). Comprehensive treatment including hypergraph theory, stepping-up lemma, and bounds.",
+      "type": "book"
     }
   ],
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
       "relationship": "generalizes",
-      "description": "Generalizes the k=2 Ramsey theorem to k-uniform hypergraphs"
+      "description": "Generalizes the k=2 (graph) Ramsey theorem to k-uniform hypergraphs. The parent proof handles R(n₁, n₂) for graphs; this file handles the general case where k-element subsets play the role of edges."
+    },
+    {
+      "targetId": "erdos-29-oq-02",
+      "relationship": "related",
+      "description": "Erdős's work on Ramsey multiplicity is closely related. The hypergraph Ramsey theorem provides the existence result; Ramsey multiplicity asks how many monochromatic copies appear, an Erdős problem studied in conjunction with the stepping-up techniques."
     }
   ],
   "conclusion": {
-    "summary": "The hypergraph Ramsey theorem is formalized with complete infrastructure (definitions, special cases, growth rates). The deep existence result is axiomatized as it requires the stepping-up lemma.",
-    "implications": "Provides foundation for formalizing hypergraph Ramsey applications and growth rate bounds.",
+    "summary": "The k-uniform hypergraph Ramsey theorem is formalized with complete infrastructure: definitions (kSubsets, Coloring, IsMonochromatic, HypergraphRamseyProperty), special cases (k=1 pigeonhole fully proved, k=2 classical Ramsey), growth rate (tower function, strict monotonicity), and all infrastructure lemmas. The single axiom `hypergraph_ramsey_k2` isolates the stepping-up inductive step for k ≥ 2.",
+    "implications": "This formalization establishes the foundation for Ramsey theory in Lean 4. The full pigeonhole proof (using Mathlib's `Finset.exists_lt_card_fiber_of_nsmul_lt_card`) and the ramsey_property_mono lemma are reusable components for broader combinatorics formalizations. The tower function is the canonical example of non-elementary growth in Lean.",
     "openQuestions": [
-      "Can the stepping-up lemma be formalized to remove the axiom?",
-      "What are the best known hypergraph Ramsey number bounds for small k?"
+      "Can the stepping-up lemma be formalized to remove the axiom? It requires well-founded induction on (k, n) and the construction: fix v, define c'(T) = c(T ∪ {v}), apply (k-1)-uniform Ramsey to the induced coloring.",
+      "What are the best known bounds on hypergraph Ramsey numbers for small k? For k=3, 2-color: R₃(n) lies between tower(2, Ω(n)) and tower(2, O(n²)) (Erdős-Hajnal). Can these bounds be formalized?",
+      "Hales-Jewett theorem is a combinatorial generalization of Ramsey theory to combinatorial lines in [r]^n. Can the HJ theorem be proved from the hypergraph Ramsey theorem in Lean 4?"
     ]
   },
   "leanFile": {
