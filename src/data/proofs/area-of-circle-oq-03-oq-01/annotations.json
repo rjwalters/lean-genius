@@ -1,1 +1,57 @@
-[]
+[
+  {
+    "id": "inscribed-area-def",
+    "line": 55,
+    "endLine": 57,
+    "type": "definition",
+    "label": "inscribedArea",
+    "mathContext": "$$A_n(r) = \\frac{n r^2}{2} \\sin\\frac{2\\pi}{n}$$\nObtained by dividing the $n$-gon into $n$ isoceles triangles, each with two sides of length $r$ and vertex angle $2\\pi/n$. One triangle area: $\\frac{1}{2}r^2\\sin(2\\pi/n)$; summing $n$ triangles gives the formula. Examples: $n=4$: $A_4 = 2r^2$ (square inscribed in circle); $n=6$: $A_6 = 3\\sqrt{3}r^2/2 \\approx 2.598r^2$ vs $\\pi r^2 \\approx 3.14159r^2$.",
+    "significance": "This is the foundation of Archimedes' method of exhaustion: approximate the circle by inscribed regular polygons and take the limit. As $n \\to \\infty$, $n\\sin(2\\pi/n) \\to 2\\pi$ (since $\\sin(x)/x \\to 1$), so $A_n(r) \\to \\pi r^2$. The rest of the file proves the quantitative rate $O(1/n^2)$ for this convergence.",
+    "relatedConcepts": ["inscribed polygon", "isoceles triangle area", "Archimedes exhaustion", "sinc function", "regular polygon"],
+    "prerequisites": ["trigonometry", "regular polygon geometry"]
+  },
+  {
+    "id": "sin-sq-cos-chain",
+    "line": 62,
+    "endLine": 92,
+    "type": "theorem",
+    "label": "sin_sq_le_sq / cos_ge_one_sub_sq_div_two",
+    "mathContext": "**Step 1** ($\\sin^2 x \\leq x^2$): Factor $x^2 - \\sin^2 x = (x - \\sin x)(x + \\sin x)$. Both factors are non-negative: $x - \\sin x \\geq 0$ from `Real.sin_lt` ($\\sin x < x$ for $x > 0$), and $x + \\sin x \\geq 0$ from `abs_sin_le_one`.\n\n**Step 2** ($\\cos x \\geq 1 - x^2/2$): Apply the half-angle identity $\\cos x = 1 - 2\\sin^2(x/2)$ and substitute Step 1 at $x/2$: $\\sin^2(x/2) \\leq x^2/4$, so $\\cos x = 1 - 2\\sin^2(x/2) \\geq 1 - x^2/2$.",
+    "significance": "The half-angle identity $\\cos x = 1 - 2\\sin^2(x/2)$ is the crucial bridge: it converts a bound on $\\sin^2$ into an additive lower bound on $\\cos$. This two-step chain is more elementary than citing the Taylor remainder formula — it works from first principles using only `Real.sin_lt` and `abs_sin_le_one`.",
+    "relatedConcepts": ["half-angle identity", "sin_lt", "abs_sin_le_one", "quadratic cosine bound", "Taylor series"],
+    "prerequisites": ["Real.sin_lt", "abs_sin_le_one", "cos_sq_half_angle"]
+  },
+  {
+    "id": "sin-lb-mvt",
+    "line": 99,
+    "endLine": 137,
+    "type": "theorem",
+    "label": "sin_ge_sub_cube_div_six (sin(x) ≥ x - x³/6)",
+    "mathContext": "Let $g(x) = \\sin x - x + x^3/6$. Then $g'(x) = \\cos x - 1 + x^2/2 \\geq 0$ (by Step 2). The `HasDerivAt` chain: `h1 = hasDerivAt_sin x`, `h2 = hasDerivAt_id x`, `h3 = (hasDerivAt_pow 3 x).div_const 6`, combined as `(h1.sub h2).add h3`. The `convert` tactic handles $3x^2/6 = x^2/2$. By MVT (`exists_hasDerivAt_eq_slope`): $g(x) - g(0) = g'(c) \\cdot x \\geq 0$. Since $g(0) = 0$, we get $\\sin x \\geq x - x^3/6$.",
+    "significance": "This is the **MVT-as-bootstrapping** technique: use a derivative bound to establish a function bound, without the explicit Taylor remainder formula. The pattern: define $g = f - \\text{(approximation)}$, show $g' \\geq 0$ (using a previously proved bound), apply MVT to get $g(x) \\geq g(0) = 0$. This is the classical technique for converting derivative bounds into function bounds.",
+    "relatedConcepts": ["Mean Value Theorem", "HasDerivAt composition", "Taylor remainder", "bootstrapping inequality", "monotone function"],
+    "prerequisites": ["exists_hasDerivAt_eq_slope", "HasDerivAt.sub", "HasDerivAt.add", "hasDerivAt_pow"]
+  },
+  {
+    "id": "rate-bound",
+    "line": 143,
+    "endLine": 201,
+    "type": "theorem",
+    "label": "inscribed_area_rate_bound (0 ≤ πr² - Aₙ ≤ 2π³r²/3n²)",
+    "mathContext": "Set $u = 2\\pi/n$. Using $\\sin u \\geq u - u^3/6$:\n$$A_n = \\frac{nr^2}{2}\\sin u \\geq \\frac{nr^2}{2}\\left(u - \\frac{u^3}{6}\\right) = \\pi r^2 - \\frac{nr^2}{2}\\cdot\\frac{8\\pi^3}{6n^3} = \\pi r^2 - \\frac{2\\pi^3 r^2}{3n^2}$$\nThe upper bound $A_n \\leq \\pi r^2$ uses `Real.sin_lt` (since $A_n = nr^2/2 \\cdot \\sin(u)$ and $\\sin u < u$ for $u > 0$ gives $A_n < \\pi r^2$). Combined: $0 \\leq \\pi r^2 - A_n \\leq 2\\pi^3 r^2/(3n^2)$. Algebra: `field_simp; ring` handles the cancellation.",
+    "significance": "The explicit constant $2\\pi^3/3 \\approx 20.67$ makes this a **computable convergence rate**. The cubic term $u^3/6$ combined with the $n$ factor and $u = 2\\pi/n$: $n \\cdot u^3 = n \\cdot (2\\pi/n)^3 = 8\\pi^3/n^2$. The cubic cancels one power of $n$, leaving $1/n^2$. For Archimedes' 96-gon: bound $\\leq 2\\pi^3/(3 \\cdot 9216) \\approx 0.00225$ (relative error $< 0.072\\%$). Doubling $n$ reduces error by factor 4.",
+    "relatedConcepts": ["O(1/n²) convergence", "Taylor cubic term", "Archimedes 96-gon", "explicit constants", "field_simp ring"],
+    "prerequisites": ["sin_ge_sub_cube_div_six", "inscribed_area_upper", "Real.sin_lt"]
+  },
+  {
+    "id": "error-positive",
+    "line": 204,
+    "endLine": 228,
+    "type": "theorem",
+    "label": "inscribed_area_error_positive (πr² - Aₙ > 0 for n≥3, r>0)",
+    "mathContext": "For $n \\geq 3$ and $r > 0$: $\\sin(2\\pi/n) < 2\\pi/n$ (from `Real.sin_lt`, since $2\\pi/n > 0$), so $A_n = nr^2/2 \\cdot \\sin(2\\pi/n) < nr^2/2 \\cdot 2\\pi/n = \\pi r^2$. The condition $n \\geq 3$ ensures $2\\pi/n \\leq 2\\pi/3$, keeping the argument of $\\sin$ in a valid range. The $n \\geq 3$ threshold is tight: $n=1$ (monogon) and $n=2$ (digon) are degenerate — the polygon has zero area, so $A_1 = A_2 = 0 < \\pi r^2$ holds trivially.",
+    "significance": "Strict positivity confirms that **inscribed polygons always underestimate** the circle area. Geometrically this is obvious (an inscribed polygon is contained in the circle), but the Lean proof makes it formal via `Real.sin_lt`. The $n \\geq 3$ condition marks the first genuine polygon (equilateral triangle). Combined with the upper bound, this gives a **two-sided squeeze**: the inscribed area is neither zero nor the full circle area, and is within $2\\pi^3r^2/(3n^2)$ of $\\pi r^2$.",
+    "relatedConcepts": ["strict inequality", "Real.sin_lt", "degenerate polygon", "inscribed polygon containment", "two-sided bounds"],
+    "prerequisites": ["Real.sin_lt", "inscribed_area_convergence_rate", "n ≥ 3 condition"]
+  }
+]

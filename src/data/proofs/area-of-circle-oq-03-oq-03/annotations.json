@@ -1,1 +1,57 @@
-[]
+[
+  {
+    "id": "ellipse-scaling-gap",
+    "line": 47,
+    "endLine": 57,
+    "type": "theorem",
+    "label": "ellipse_area_from_circle / circle_is_ellipse (algebraic placeholders)",
+    "mathContext": "These theorems prove $a \\cdot b \\cdot \\pi = \\pi \\cdot a \\cdot b$ and $\\pi r r = \\pi r^2$ by `ring`. The intended content is: the affine map $(u,v) \\mapsto (au, bv)$ has Jacobian $ab$, so $\\text{Area}(\\text{ellipse}) = ab \\cdot \\text{Area}(\\text{unit disk}) = ab \\cdot \\pi$. In measure theory: if $T : \\mathbb{R}^2 \\to \\mathbb{R}^2$ is linear with $|\\det T| = ab$, then $\\lambda(T(S)) = ab \\cdot \\lambda(S)$ for any measurable $S$.",
+    "significance": "These are algebraic tautologies, not genuine geometric proofs. The actual content — that area scales by the Jacobian determinant under linear maps — is stated in the comments but not formalized. A complete proof would use Mathlib's `MeasureTheory.Measure.map_linear` or change-of-variables. This gap is explicitly acknowledged in the file's docstring.",
+    "relatedConcepts": ["Jacobian determinant", "affine map", "change of variables", "Cavalieri's principle", "MeasureTheory.Measure.map_linear"],
+    "prerequisites": ["measure theory", "linear algebra", "Cavalieri's principle"]
+  },
+  {
+    "id": "geom-sum-induction",
+    "line": 83,
+    "endLine": 94,
+    "type": "theorem",
+    "label": "geom_sum_formula (geometric series by induction)",
+    "mathContext": "Proves $\\sum_{k=0}^{n-1} r^k = (1 - r^n)/(1 - r)$ for $r \\neq 1$ by induction on $n$. Base: $n=0$, empty sum $= 0$, and $(1-1)/(1-r) = 0$ (handled by `simp`). Step: $S_{n+1} = S_n + r^n = (1-r^n)/(1-r) + r^n = (1-r^n + r^n(1-r))/(1-r) = (1-r^{n+1})/(1-r)$ (by `field_simp; ring`).",
+    "significance": "This is a foundational lemma for the parabolic exhaustion. In classical mathematics, the identity $1 + r + r^2 + \\cdots + r^{n-1} = (1-r^n)/(1-r)$ has been known since antiquity (Euclid *Elements* IX.35 for integer $r$). The Lean proof uses `Finset.sum_range_succ` to rewrite the inductive step, then `field_simp; ring` to close the algebra. Mathlib also has `Finset.geom_sum_eq` covering this case.",
+    "relatedConcepts": ["geometric series", "Finset.sum_range_succ", "induction", "Finset.geom_sum_eq", "Euclid Elements IX.35"],
+    "prerequisites": ["Finset.sum_range_succ", "field_simp", "ring"]
+  },
+  {
+    "id": "archimedes-partial-sum",
+    "line": 96,
+    "endLine": 112,
+    "type": "theorem",
+    "label": "archimedes_partial_sum / archimedes_remainder",
+    "mathContext": "Specializes `geom_sum_formula` to $r = 1/4$:\n$$S_n = \\sum_{k=0}^{n-1} (1/4)^k = \\frac{1 - (1/4)^n}{1 - 1/4} = \\frac{4}{3}\\left(1 - (1/4)^n\\right)$$\n`archimedes_remainder` derives $4/3 - S_n = (4/3)(1/4)^n$ by `ring`. The 4/3 appears because $1/(1-1/4) = 4/3$. For $n \\to \\infty$: $S_n \\to 4/3$ since $(1/4)^n \\to 0$. Error at $n=4$: $(4/3)(1/4)^4 = 4/(3 \\cdot 256) \\approx 0.0052$, so $S_4/S_\\infty \\approx 99.5\\%$ accuracy.",
+    "significance": "This is the algebraic core of Archimedes' *Quadrature of the Parabola*. Archimedes knew that the infinite sum equals 4/3 (he stated it as a ratio), but he could not write the limit — instead he used double contradiction. The Lean proof makes the exact partial sum formula explicit: $S_n = (4/3)(1-(1/4)^n)$, from which both the limit and the error bound follow directly by `ring`.",
+    "relatedConcepts": ["geometric series r=1/4", "Archimedes Quadrature of the Parabola", "double contradiction", "partial sum formula"],
+    "prerequisites": ["geom_sum_formula", "ring"]
+  },
+  {
+    "id": "parabolic-area-error",
+    "line": 115,
+    "endLine": 130,
+    "type": "theorem",
+    "label": "parabolic_segment_area / parabolic_area_error / parabolic_area_error_pos",
+    "mathContext": "For a parabolic segment with inscribed triangle of area $T > 0$:\n- Partial area after $n$ steps: $T \\cdot S_n = T \\cdot (4/3)(1-(1/4)^n)$\n- Error: $T \\cdot (4/3) - T \\cdot S_n = T \\cdot (4/3)(1/4)^n$\n- Positivity: error $> 0$ for all $n$ (proved by `positivity` since $T > 0$ and $(1/4)^n > 0$)\n\nComparison with circle: after $n=6$ steps, parabola error $= T \\cdot 4/(3 \\cdot 4096) \\approx 0.032\\%T$; for the circle, $n=6$ inscribed polygon (hexagon) has error $\\approx 4.5\\% \\pi r^2$. The parabola requires far fewer steps.",
+    "significance": "These three theorems (area, error, positivity) exactly mirror the structure of the circle convergence theorems in OQ03-OQ01 (`inscribed_area_rate_bound`, `inscribed_area_convergence_rate`, `inscribed_area_error_positive`). The parabola has exponential convergence ($r=1/4$), the circle has polynomial convergence ($O(1/n^2)$). This side-by-side comparison shows that Archimedes' parabola method is asymptotically far more efficient than his polygon method for the circle.",
+    "relatedConcepts": ["exponential convergence", "parabolic segment", "positivity tactic", "comparison with circle"],
+    "prerequisites": ["archimedes_partial_sum", "positivity"]
+  },
+  {
+    "id": "exhaustion-error-small",
+    "line": 155,
+    "endLine": 175,
+    "type": "theorem",
+    "label": "exhaustion_error_small (general convergence ∃ N, C·r^N < ε)",
+    "mathContext": "For $0 < C$, $0 < r < 1$, $\\varepsilon > 0$: $\\exists N, C \\cdot r^N < \\varepsilon$.\n\nProof structure:\n1. `tendsto_pow_atTop_nhds_zero_of_lt_one hr0.le hr1` gives $r^n \\xrightarrow{n\\to\\infty} 0$\n2. Rewrite as a filter: `Filter.Tendsto` at `nhds 0`\n3. Apply `Metric.tendsto_atTop` to get $N$ with $|r^N - 0| < \\varepsilon/C$\n4. Since $r^N \\geq 0$: $r^N < \\varepsilon/C$, so $C \\cdot r^N < C \\cdot (\\varepsilon/C) = \\varepsilon$\n5. `mul_lt_mul_of_pos_left` handles the multiplication by $C$.",
+    "significance": "This theorem is the Lean formalization of the **$\\varepsilon$-$N$ definition of convergence** applied to geometric sequences. It abstracts the exhaustion principle: any process where the error is bounded by $C \\cdot r^n$ (for $0 < r < 1$) converges to zero error. This covers all classical exhaustion arguments: parabola ($r=1/4$), circle ($r \\approx 1/(n^2)$ — actually not geometric, but the theorem applies for fixed $n$), and ellipse. The proof technique — unpacking `tendsto` via `Metric.tendsto_atTop` — is a standard Mathlib pattern.",
+    "relatedConcepts": ["tendsto_pow_atTop_nhds_zero_of_lt_one", "Metric.tendsto_atTop", "epsilon-N definition", "geometric convergence", "Filter.Tendsto"],
+    "prerequisites": ["tendsto_pow_atTop_nhds_zero_of_lt_one", "Metric.tendsto_atTop", "mul_lt_mul_of_pos_left"]
+  }
+]

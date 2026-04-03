@@ -13,7 +13,9 @@
       "binomial-coefficients",
       "hockey-stick",
       "lattice-paths",
-      "induction"
+      "induction",
+      "Pascal's triangle",
+      "generating functions"
     ],
     "badge": "original",
     "sorries": 0,
@@ -24,35 +26,74 @@
     "theoremCount": 8,
     "definitionCount": 1,
     "originalContributions": [
-      "multi_hockey_stick: multiHockeySum as n = simplicial (as.sum + as.length) n, proved by list induction",
       "multiHockeySum: recursive definition over the k-simplex by peeling off one variable at a time",
-      "multi_hockey_3d: 3D instance Σ_{i+j+k ≤ n} 1 = C(n+3, 3) (10 for n=2, verified)",
+      "multi_hockey_stick: multiHockeySum as n = simplicial (as.sum + as.length) n, proved by list induction",
+      "multi_hockey_3d: 3D instance sum_{i+j+k <= n} 1 = C(n+3, 3)",
+      "check_3d_zeros: concrete verification C(5,3) = 10 via native_decide",
       "multiHockeySum_mono and multiHockeySum_pos: monotonicity and positivity"
     ]
   },
   "overview": {
-    "historicalContext": "The 1D hockey stick identity Σ_{j=0}^n C(j+k,k) = C(n+k+1,k+1) appears in Graham-Knuth-Patashnik's 'Concrete Mathematics'. The k-dimensional generalization sums over the integer simplex {(i₁,...,iₖ) : Σiⱼ ≤ n} weighted by products of simplicial numbers. The key observation is that iterating the parallel Vandermonde convolution reduces the k-dimensional sum to a single simplicial number.",
-    "problemStatement": "Prove the k-dimensional hockey stick identity: Σ_{i₁+...+iₖ ≤ n} C(i₁+a₁,a₁)·...·C(iₖ+aₖ,aₖ) = C(n + a₁+...+aₖ + k, a₁+...+aₖ + k) by induction on k.",
-    "text": "The multiHockeySum is defined recursively on the parameter list: for an empty list it is 1 (empty product, one point), and for a :: as it sums over the first variable j from 0 to n, taking C(j+a,a) · multiHockeySum as (n-j). The induction step for multi_hockey_stick: the recursive sum becomes Σ_j simplicial a j · simplicial (as.sum + as.length) (n-j) by the induction hypothesis, which is parallel_vandermonde a (as.sum + as.length) n, giving simplicial (a + as.sum + as.length + 1) n = simplicial ((a::as).sum + (a::as).length) n.",
-    "proofStrategy": "List induction on as. Base: multiHockeySum [] n = 1 = simplicial 0 n (since C(n,0) = 1). Inductive step: unfold, apply ih to substitute multiHockeySum as' (n-j), then apply parallel_vandermonde from the parent module, then simplify list.sum and list.length by ring and omega.",
+    "historicalContext": "The hockey stick identity is one of the most-cited combinatorial identities in Pascal's triangle.\n\n**The 1D identity**: $\\sum_{j=0}^n \\binom{j+k}{k} = \\binom{n+k+1}{k+1}$. Named 'hockey stick' because in Pascal's triangle the summed entries form a diagonal line (the stick) and the result is a single cell diagonally adjacent (the blade). Also called the 'Christmas Stocking identity'. Appears in Pascal's *Traité du triangle arithmétique* (1654) and is a standard exercise in Graham-Knuth-Patashnik's *Concrete Mathematics* (1994), Chapter 5.\n\n**Combinatorial proof**: $\\binom{n+k+1}{k+1}$ counts lattice paths from $(0,0)$ to $(n+1, k)$ (right/up steps). Condition on the last right step: if step $j+1$ is the last right step, the path contributes $\\binom{j+k}{k}$, giving $\\sum_{j=0}^n \\binom{j+k}{k}$.\n\n**Parallel Vandermonde** (parent file): $\\sum_{j=0}^n \\binom{j+a}{a}\\binom{n-j+b}{b} = \\binom{n+a+b+1}{a+b+1}$. This convolution identity is the engine for the k-dimensional generalization: each induction step folds two dimensions into one.\n\n**k-dimensional hockey stick**: The identity $\\sum_{i_1+\\cdots+i_k \\leq n} \\prod_{j=1}^k \\binom{i_j+a_j}{a_j} = \\binom{n+\\sum a_j+k}{\\sum a_j+k}$ is the multi-dimensional generalization. With all $a_j = 0$: the number of integer points in the $k$-simplex $\\{i_j \\geq 0, \\sum i_j \\leq n\\}$ equals $\\binom{n+k}{k}$ — the stars-and-bars count.\n\n**Generating functions**: $\\sum_{n \\geq 0} \\binom{n+k}{k} z^n = 1/(1-z)^{k+1}$. The k-dimensional hockey stick becomes: the product $(1/(1-z))^{a_1+1} \\cdots (1/(1-z))^{a_k+1} = (1/(1-z))^{\\sum a_j+k}$, so the coefficient of $z^n$ on the right is $\\binom{n + \\sum a_j + k}{\\sum a_j + k}$.",
+    "problemStatement": "Prove the k-dimensional hockey stick identity: for any list of parameters $[a_1, \\ldots, a_k] \\in \\mathbb{N}^k$ and bound $n \\in \\mathbb{N}$,\n$$\\sum_{i_1+\\cdots+i_k \\leq n} \\binom{i_1+a_1}{a_1}\\cdots\\binom{i_k+a_k}{a_k} = \\binom{n + \\sum a_j + k}{\\sum a_j + k}$$\nby induction on dimension $k$, using the parallel Vandermonde convolution at each step.",
+    "proofStrategy": "List induction on the parameter list `as`.\n\n**Base (k=0)**: `multiHockeySum [] n = 1 = simplicial 0 n` (since $\\binom{n}{0} = 1$). Proved by `simp [multiHockeySum, simplicial_zero]`.\n\n**Inductive step (a :: as')**: The recursive sum $\\sum_j C(j+a, a) \\cdot \\text{multiHockeySum as'} (n-j)$ rewrites by IH (via `Finset.sum_congr`) to $\\sum_j C(j+a, a) \\cdot \\text{simplicial}(\\text{as'.sum} + \\text{as'.length})(n-j)$. This matches `parallel_vandermonde a (as'.sum + as'.length) n`, giving `simplicial(a + as'.sum + as'.length + 1) n`. A `congr 1; simp; omega` step identifies this with `simplicial((a::as').sum + (a::as').length) n` via `List.sum_cons` and `List.length_cons`.",
     "keyInsights": [
-      "Each dimension peels off via parallel Vandermonde, reducing k-dim to (k-1)-dim",
-      "The parameter list encodes both the weights aⱼ and the dimension k = length",
-      "The simplex {Σiⱼ ≤ n} has exactly C(n+k,k) lattice points (multinomial counting)",
-      "Monotonicity follows directly from Nat.choose_le_choose after rewriting via multi_hockey_stick"
+      "**The parameter list encodes both weights and dimension**: The list `[a₁,...,aₖ]` has length $k$ (the dimension) and sum $\\sum a_j$ (the weight offset). The theorem `simplicial (as.sum + as.length) n` packages both into a single `simplicial` call. Peeling off one element `a` from the list updates sum by $+a$ and length by $+1$, and the parallel Vandermonde adds exactly $a+1$ to the parameter, matching the update.",
+      "**parallel_vandermonde is the induction engine**: Each induction step uses exactly one `parallel_vandermonde` call to fold the first dimension into the remaining dimensions. The theorem merges two simplicial parameters $(a, b) \\mapsto a+b+1$. In the list encoding: removing `a` from `[a, a₂,...,aₖ]` requires the new parameter to be $a + (\\text{as'.sum} + \\text{as'.length}) + 1 = (a::as').\\text{sum} + (a::as').\\text{length}$.",
+      "**Lattice point counting**: With all $a_j = 0$, `multiHockeySum [0,...,0] n = C(n+k, k)` counts points in the $k$-simplex. For $k=3$, $n=2$: the tetrahedron $\\{i+j+k \\leq 2\\}$ has 10 points (verified by `check_3d_zeros`). This is the stars-and-bars count: $\\binom{n+k}{k}$ ways to place $n$ identical balls into $k+1$ bins.",
+      "**native_decide for concrete verification**: `check_3d_zeros` and `check_2d_a1b0` use `native_decide` — the kernel evaluates the recursive definition and checks it equals the claimed value. This provides an independent sanity check: if either the recursive definition or the identity had a bug, at least one of these checks would fail. The 3D check at $n=2$ gives $C(5,3) = 10$; the 2D check at $n=3$ with $a_1=1, a_2=0$ gives $C(6,3)=20$.",
+      "**Monotonicity from Nat.choose_le_choose**: After rewriting via `multi_hockey_stick`, `multiHockeySum_mono` reduces to $C(m+k, k) \\leq C(n+k, k)$ when $m \\leq n$. The Mathlib lemma `Nat.choose_le_choose` handles this directly, with `omega` verifying the numeric side condition $m + k \\leq n + k$. The positivity proof `Nat.choose_pos` needs $n + (\\sum a_j + k) \\geq \\sum a_j + k$, i.e., $n \\geq 0$, which is trivial for `Nat`."
     ],
     "prerequisites": [
-      "ArithmeticSeriesOQ02OQ02: parallel_vandermonde and simplicial numbers",
-      "List sum and length: List.sum_cons, List.length_cons",
-      "Nat.choose: Nat.choose_le_choose for monotonicity"
+      "ArithmeticSeriesOQ02OQ02: parallel_vandermonde and simplicial number definitions",
+      "List operations: List.sum_cons, List.length_cons",
+      "Nat.choose: Nat.choose_le_choose for monotonicity, Nat.choose_pos for positivity",
+      "Finset.sum_congr for pointwise rewriting inside sums",
+      "native_decide for concrete evaluation"
     ]
   },
+  "sections": [
+    {
+      "id": "multi-hockey-sum-def",
+      "title": "Multi-dimensional Sum Definition",
+      "startLine": 44,
+      "endLine": 49,
+      "summary": "Defines multiHockeySum : List N -> N -> N recursively: base case (empty list) returns 1; inductive case (a :: as) sums over j from 0 to n, taking simplicial a j * multiHockeySum as (n-j).",
+      "mathContext": "The recursion mirrors the simplex slicing: $\\{\\mathbf{i} : \\sum i_j \\leq n\\} = \\bigsqcup_{j=0}^{n} \\{j\\} \\times \\{\\mathbf{i}' : \\sum i'_j \\leq n-j\\}$. Each slice at first coordinate $j$ is a $(k-1)$-simplex of size $n-j$. The factor $C(j+a, a) = \\text{simplicial } a \\, j$ is the weight for the first coordinate. Using `range (n+1)` gives $j \\in \\{0, 1, \\ldots, n\\}$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "k-Dimensional Hockey Stick Identity",
+      "startLine": 56,
+      "endLine": 86,
+      "summary": "multi_hockey_stick: multiHockeySum as n = simplicial (as.sum + as.length) n. List induction. Base: simp. Step: calc block — unfold, apply IH via Finset.sum_congr, apply parallel_vandermonde, simplify with simp + omega.",
+      "mathContext": "The calc block:\n1. `multiHockeySum (a :: as') n` $=$ `sum_j (simplicial a j) * (multiHockeySum as' (n-j))` (unfold)\n2. $=$ `sum_j (simplicial a j) * (simplicial (as'.sum + as'.length) (n-j))` (IH via `Finset.sum_congr`)\n3. $=$ `simplicial (a + as'.sum + as'.length + 1) n` (parallel_vandermonde)\n4. $=$ `simplicial ((a::as').sum + (a::as').length) n` (simp [sum_cons, length_cons] + omega)"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Concrete Verification",
+      "startLine": 90,
+      "endLine": 130,
+      "summary": "multi_hockey_1d/2d/3d: instances by rewriting with multi_hockey_stick + simp. check_3d_zeros: C(5,3) = 10 via native_decide. check_2d_a1b0: C(6,3) = 20 via native_decide.",
+      "mathContext": "For `multi_hockey_1d (a n)`: `multiHockeySum [a] n = simplicial (a+1) n = C(n+a+1, a+1)` (classical 1D hockey stick with offset $a$). For $a=0$: $\\sum_{j=0}^n 1 = n+1$. The 3D check at $n=2$: 10 lattice points in $\\{i+j+k \\leq 2, i,j,k \\geq 0\\}$ — enumerated: $(0,0,0),(1,0,0),(0,1,0),(0,0,1),(2,0,0),(1,1,0),(1,0,1),(0,2,0),(0,1,1),(0,0,2)$."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Monotonicity and Positivity",
+      "startLine": 133,
+      "endLine": 150,
+      "summary": "multiHockeySum_mono: monotone in n via Nat.choose_le_choose. multiHockeySum_pos: positive via Nat.choose_pos. Both are one-liners after rw [multi_hockey_stick].",
+      "mathContext": "$C(m+k, k) \\leq C(n+k, k)$ when $m \\leq n$ (monotone in top argument). `Nat.choose_le_choose` takes `h : m ≤ n` and derives `C(m+k, k) ≤ C(n+k, k)`. Positivity: $C(n+k, k) \\geq 1$ for all $n,k \\geq 0$ since $n+k \\geq k$ always holds for naturals."
+    }
+  ],
   "conclusion": {
-    "summary": "k-dimensional hockey stick via list induction using parallel Vandermonde at each step. Special cases 1D, 2D, 3D verified. concrete check: Σ_{i+j+k ≤ 2} 1 = 10 = C(5,3). 8 theorems, 0 axioms, 165 lines.",
-    "implications": "The k-dimensional hockey stick identity counts lattice paths in the integer simplex. This formalization shows the inductive structure of multi-dimensional combinatorial identities and provides a template for higher-dimensional analogues.",
+    "summary": "The k-dimensional hockey stick identity is proved by list induction with parallel Vandermonde as the induction engine. The parameter list encoding (length = dimension $k$, sum = offset $\\sum a_j$) makes the inductive step a clean one-application-of-convolution argument. Concrete checks confirm $C(5,3)=10$ (3-simplex at $n=2$) and $C(6,3)=20$. 8 theorems, 0 axioms, 165 lines.",
+    "implications": "This formalization demonstrates that multi-dimensional combinatorial identities often reduce to repeated 1D convolutions. The list induction structure is a clean architectural choice: it makes the $k$-dimensional case literally a consequence of the $(k-1)$-dimensional case plus one Vandermonde step. The parallel between the algebraic structure (list sum + length) and the combinatorial content (weight offset + dimension) is the insight that makes the proof work.",
     "openQuestions": [
-      "Generalize to weighted sums over other polytopes (not just the simplex)",
-      "Connect to the Hilbert series of polynomial rings: Σ C(n+k,k) z^n = 1/(1-z)^{k+1}"
+      "Generalize to weighted sums over other polytopes: for the standard cube $\\{0 \\leq i_j \\leq n_j\\}$, the generating function is $\\prod (1/(1-z^{n_j+1}))/(1-z)$. Does the hockey stick have a cube analog?",
+      "Connect to Hilbert series of polynomial rings: prove $\\sum_{n \\geq 0} \\binom{n+k}{k} z^n = 1/(1-z)^{k+1}$ as a formal power series identity in Lean. This would require Mathlib's `PowerSeries` API.",
+      "Prove the multivariate generating function identity: $\\sum_{\\mathbf{i} \\geq 0} \\prod \\binom{i_j+a_j}{a_j} z^{\\sum i_j} = 1/(1-z)^{\\sum a_j + k}$. This gives an alternative proof via generating functions rather than convolution induction.",
+      "Can the induction be generalized to other polytopes? For the permutohedron $\\{i : \\text{sort}(i) \\text{ dominates } \\lambda\\}$, the Kostka numbers play the role of simplicial numbers."
     ]
   },
   "leanFile": {
@@ -62,6 +103,16 @@
     "theoremCount": 8,
     "definitionCount": 1
   },
-  "crossReferences": [],
-  "sections": []
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent file providing parallel_vandermonde and simplicial numbers — the convolution identity used at each induction step"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02",
+      "relationship": "related",
+      "description": "Root arithmetic series file; hockey stick is a refinement of binomial coefficient summation"
+    }
+  ]
 }
