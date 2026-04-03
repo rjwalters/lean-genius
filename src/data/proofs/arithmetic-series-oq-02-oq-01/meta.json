@@ -31,15 +31,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Gaussian binomial coefficients [n choose k]_q arise in enumerative combinatorics (counting k-dimensional subspaces of an n-dimensional vector space over GF(q)), combinatorial number theory, and quantum calculus (Kac-Cheung, 2002). They satisfy a q-deformation of Pascal's rule and many identities analogous to ordinary binomial coefficients. The q-hockey stick specializes to the classical hockey stick at q=1.",
+    "historicalContext": "Gaussian binomial coefficients [n choose k]_q were introduced by Carl Friedrich Gauss in the early 19th century in his study of cyclotomic polynomials. They count k-dimensional subspaces of F_q^n (the Grassmannian), a fact proved by Gaussian in 1811 and made precise by the formula |Gr(k, F_q^n)| = [n choose k]_q. The hockey stick identity for ordinary binomials has been known since at least the 17th century (Pascal's Arithmetical Triangle, 1654); its q-analog appears in the theory of q-series developed by Euler (18th century) and later systematized in the quantum calculus framework of Kac and Cheung (2002). Gaussian binomials appear naturally in representation theory of GL_n(F_q), in the combinatorics of Young tableaux (where the exponent of q tracks inversion statistics), and in knot invariants via the Jones polynomial. The identity proved here was known in the algebraic combinatorics community, but the machine-verified version in a commutative ring setting is an original contribution of this gallery.",
     "problemStatement": "Define [n choose k]_q via q-Pascal's rule and prove the q-hockey stick identity: Σ_{j=0}^N q^{(N-j)(k+1)} · [j+k choose k]_q = [N+k+1 choose k+1]_q.",
     "text": "The Gaussian binomial qBinom q n k is defined recursively in any CommRing R: qBinom q n 0 = 1, qBinom q 0 (k+1) = 0, qBinom q (n+1) (k+1) = q^{k+1} · qBinom q n (k+1) + qBinom q n k. The proof of qHockeyStick is by induction on N: base N=0 is immediate (single term, q^0 · [k choose k]_q = 1); inductive step factors out q^{k+1} from all previous terms via the exponent identity (N+1-j)(k+1) = (N-j)(k+1) + (k+1), then applies the induction hypothesis and qSimplicial_succ_recurrence.",
     "proofStrategy": "Induction on N for qHockeyStick. Inductive step: rewrite the sum using Finset.sum_congr to factor q^{k+1} out (using the exponent shift), then use Finset.mul_sum and the IH to get q^{k+1}·qSimplicial q (k+1) N, then conclude via qSimplicial_succ_recurrence.",
     "keyInsights": [
-      "The q-hockey stick reduces to q-Pascal at each step via a clean exponent factorization",
-      "qBinom is defined in any CommRing, making it useful for both ℤ and polynomial rings ℤ[q]",
-      "At q=1 all q^k = 1 factors vanish, recovering the ordinary hockey stick identity",
-      "q-simplicial numbers count lattice paths with q-weight encoding the inversion number"
+      "The exponent identity (N+1-j)(k+1) = (N-j)(k+1) + (k+1) is the algebraic engine of the proof: it lets q^{k+1} factor out of the entire partial sum, turning the inductive step into a one-line application of qSimplicial_succ_recurrence.",
+      "Defining qBinom in any CommRing (not just ℤ or ℝ) makes the theorem available over polynomial rings ℤ[q], enabling symbolic manipulation — the q-binomial can be treated as a polynomial in the formal variable q.",
+      "The q=1 specialization theorem (qBinom_one) is non-trivial to prove formally because Nat.choose and qBinom have different domains: the proof requires careful case analysis when k = n to avoid invoking the vanishing lemma in the wrong direction.",
+      "The q-simplicial recurrence qS(k+1, n+1) = q^{k+1}·qS(k+1,n) + qS(k, n+1) is exactly q-Pascal's rule in disguise; the proof reduces to qBinom_succ_succ after three lines of index arithmetic, showing that the algebraic structure carries over perfectly.",
+      "The Lean formalization works entirely in the abstract CommRing setting, with no use of characteristic or finiteness assumptions, so it applies to Q, ℤ, polynomial rings, and rings of formal power series simultaneously."
     ],
     "prerequisites": [
       "q-analogs: Kac-Cheung 'Quantum Calculus'",
@@ -62,6 +63,103 @@
     "theoremCount": 10,
     "definitionCount": 2
   },
-  "crossReferences": [],
-  "sections": []
+  "crossReferences": [
+    {
+      "id": "arithmetic-series-oq-02",
+      "relationship": "parent",
+      "description": "Ordinary simplicial numbers and hockey stick identity that this q-deformation generalizes"
+    },
+    {
+      "id": "arithmetic-series-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "2D hockey stick identity — another generalization of the hockey stick from the same parent"
+    },
+    {
+      "id": "arithmetic-series-oq-02-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "k-dimensional hockey stick identity — a combinatorial generalization in higher dimensions"
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The ordinary binomial theorem whose q-analog lives in the quantum calculus setting"
+    },
+    {
+      "id": "binomial-theorem-oq-04",
+      "relationship": "related",
+      "description": "Vandermonde's identity — another binomial summation identity with a q-analog (q-Vandermonde)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module documentation explaining the q-binomial recurrence and citing Kac–Cheung 'Quantum Calculus' (2002). Imports Mathlib and opens Finset and BigOperators namespaces."
+    },
+    {
+      "id": "sec-qbinom-def",
+      "title": "Definition: Gaussian Binomial Coefficient",
+      "startLine": 22,
+      "endLine": 31,
+      "summary": "Defines qBinom q n k recursively in any CommRing via q-Pascal's rule: base cases [n choose 0]_q = 1 and [0 choose k+1]_q = 0, with interior rule [n+1 choose k+1]_q = q^{k+1}·[n choose k+1]_q + [n choose k]_q."
+    },
+    {
+      "id": "sec-boundary",
+      "title": "Boundary Cases: Top Row and Zero Column",
+      "startLine": 33,
+      "endLine": 45,
+      "summary": "Two @[simp] lemmas establish that [n choose 0]_q = 1 and [0 choose k+1]_q = 0, confirming the base cases of q-Pascal's triangle."
+    },
+    {
+      "id": "sec-q-pascal",
+      "title": "q-Pascal's Rule as an Explicit Lemma",
+      "startLine": 47,
+      "endLine": 54,
+      "summary": "Promotes the defining recurrence to a named theorem qBinom_succ_succ, making it available as a rewrite rule for subsequent proofs."
+    },
+    {
+      "id": "sec-vanishing",
+      "title": "Vanishing: [n choose k]_q = 0 for k > n",
+      "startLine": 56,
+      "endLine": 70,
+      "summary": "Proves by induction on n that the Gaussian binomial vanishes whenever k > n, mirroring C(n,k) = 0 for k > n. Marked @[simp] so Lean can discharge these goals automatically."
+    },
+    {
+      "id": "sec-diagonal",
+      "title": "Diagonal Identity: [n choose n]_q = 1",
+      "startLine": 72,
+      "endLine": 83,
+      "summary": "Proves qBinom q n n = 1 for all n by induction, using qBinom_eq_zero_of_lt to kill the upper-left term and the IH for the diagonal."
+    },
+    {
+      "id": "sec-q-one",
+      "title": "Connection to Ordinary Binomials: q = 1 Specialization",
+      "startLine": 85,
+      "endLine": 107,
+      "summary": "Proves qBinom 1 n k = Nat.choose n k (when k ≤ n), confirming that the Gaussian binomial is a genuine q-deformation of the ordinary binomial coefficient."
+    },
+    {
+      "id": "sec-qsimplicial",
+      "title": "Definition and Base Cases: q-Simplicial Numbers",
+      "startLine": 109,
+      "endLine": 126,
+      "summary": "Defines qSimplicial q k n = qBinom q (n+k) k as the q-analog of C(n+k, k). Establishes base cases: qS(0, n) = 1 (k=0) and qS(k, 0) = 1 (n=0)."
+    },
+    {
+      "id": "sec-qsimplicial-recurrence",
+      "title": "q-Simplicial Recurrence",
+      "startLine": 128,
+      "endLine": 142,
+      "summary": "Proves qS(k+1, n+1) = q^{k+1}·qS(k+1, n) + qS(k, n+1) by index rewriting and qBinom_succ_succ. This is the key lemma completing the inductive step of qHockeyStick."
+    },
+    {
+      "id": "sec-hockey-stick",
+      "title": "Main Theorem: q-Hockey Stick Identity",
+      "startLine": 144,
+      "endLine": 173,
+      "summary": "Proves ∑_{j=0}^{N} q^{(N-j)(k+1)} · [j+k choose k]_q = [N+k+1 choose k+1]_q by induction on N. The inductive step factors q^{k+1} from each summand using the exponent identity (N+1-j)(k+1) = (N-j)(k+1)+(k+1), applies IH, then closes with qSimplicial_succ_recurrence."
+    }
+  ]
 }
