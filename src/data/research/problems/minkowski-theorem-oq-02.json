@@ -2,7 +2,7 @@
   "slug": "minkowski-theorem-oq-02",
   "title": "Dirichlet approximation theorem as corollary of Minkowski lattice point theorem",
   "phase": "NEW",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-30T21:13:16.758Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proved via Minkowski lattice point theorem",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Merged - done",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "COMPLETE: Proved Dirichlet approximation theorem via Minkowski geometry of numbers (3 axioms, 0 sorries). PR #8752.",
+    "builtItems": [
+      "DirichletFromMinkowski.dirichletSet: {v : |v 0| < Q+1 \u2227 |\u03b1*v 0 - v 1| < 1/Q} (Fin 2 \u2192 \u211d)",
+      "DirichletFromMinkowski.dirichletSet_symmetric: central symmetry proved (0 axioms)",
+      "DirichletFromMinkowski.dirichletSet_volume_gt_four: (2:ENNReal)^2 < vol(S) proved",
+      "DirichletFromMinkowski.stdLattice2_coords: integer coordinate extraction from \u2124\u00b2",
+      "DirichletFromMinkowski.dirichlet_approximation_from_minkowski: main theorem (3 axioms)",
+      "DirichletFromMinkowski.dirichlet_approximation_corollary: |\u03b1-p/q| < 1/(Q*q)",
+      "dirichlet_from_minkowski: top-level export",
+      "proofs/Proofs/MinkowskiTheoremOQ02.lean (3 axioms, 0 sorries)",
+      "src/data/proofs/minkowski-theorem-oq-02/ (meta.json, annotations.json, index.ts)",
+      "PR #8752"
+    ],
+    "insights": [
+      "Dirichlet parallelogram S={|x|<Q+1, |\u03b1x-y|<1/Q} has area 4(Q+1)/Q > 4 = 2\u00b2",
+      "Shear map T(x,y)=(x,\u03b1x-y) has det=-1, maps S to axis-aligned rectangle, preserves Lebesgue measure",
+      "Key parity argument: if first coordinate a=0, then |b|<1/Q<1 forces b=0 (integer), contradicting nonzero point",
+      "Sign normalization: replace (a,b) with (|a|, sign(a)*b) to get positive first coordinate q",
+      "MinkowskiProved.minkowski_integer_lattice_proved (from companion file) directly applicable with n=2",
+      "Integer extraction from stdLattice 2 via Submodule.mem_span_range_iff_exists_fun + zsmul_eq_smul_cast"
+    ],
+    "mathlibGaps": [
+      "dirichletSet_convex: convexity of halfplane intersection (axiomatized)",
+      "dirichletSet_measurable: open set measurability (axiomatized)",
+      "dirichletSet_volume: 4(Q+1)/Q via Fubini or shear map (axiomatized)"
+    ],
+    "nextSteps": [
+      "Eliminate axioms using Mathlib convexity (Convex.inter, convex_ball) and Fubini theorem",
+      "Prove simultaneous Dirichlet approximation in \u211d\u207f using n+1 dimensional Minkowski",
+      "Prove Hurwitz theorem (|\u03b1-p/q| < 1/(\u221a5\u00b7q\u00b2) for infinitely many p/q) via stronger Minkowski"
+    ]
   },
   "tags": [
     "seeker-selected",
