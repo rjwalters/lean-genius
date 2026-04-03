@@ -20,7 +20,7 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 2,
     "dateAdded": "2026-03-28",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -70,9 +70,9 @@
       "fourierPartialSum_smul: scalar linearity of partial sums",
       "fourierPartialSum_zero_fn: partial sums of zero"
     ],
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 427,
-    "assumptions": "1 axiom: carlesonConstant (existence of universal Carleson constant C > 0 for the maximal inequality)."
+    "assumptions": "2 axioms: carlesonConstant (existence of universal Carleson constant C > 0), carleson_hunt_maximal (the Carleson-Hunt maximal inequality ‖S*f‖ ≤ C·‖f‖). 2 sorries: divergenceSet_measure_bound, carleson_ae_convergence (combining all pieces). 2 previously sorry'd theorems proved in #8596."
   },
   "overview": {
     "historicalContext": "**Carleson's Theorem (1966)**\n\nOne of the great achievements of 20th-century harmonic analysis. The question of whether Fourier series converge pointwise goes back to Fourier himself (1807) and was a central problem for over 150 years.\n\n**Timeline:**\n- **1807**: Fourier conjectured that every periodic function equals its Fourier series\n- **1829**: Dirichlet proved convergence for piecewise smooth functions\n- **1876**: du Bois-Reymond gave a continuous function whose Fourier series diverges at a point\n- **1923**: Kolmogorov constructed an L¹ function whose Fourier series diverges everywhere\n- **1926**: Kolmogorov asked: does Carleson's theorem hold for L²?\n- **1966**: **Carleson proved it**: L² Fourier series converge pointwise a.e.\n- **1968**: Hunt extended to Lp for all p > 1\n\nCarleson's proof introduced time-frequency analysis techniques that became foundational in modern harmonic analysis. The formal verification project (Carleson4) is ongoing work by Floris van Doorn et al.",
