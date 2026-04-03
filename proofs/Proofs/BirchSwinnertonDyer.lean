@@ -5631,7 +5631,7 @@ structure HeegnerField where
     parametrization X₀(N) → E. -/
 def HeegnerPointExists (_ : WeierstrassCurve ℤ) (_ : HeegnerField) : Prop := True
 
-/-- The Gross-Zagier formula (1986):
+/- The Gross-Zagier formula (1986):
     L'(E/K, 1) = c(E,K) · ĥ(y_K) for explicit c > 0.
     This connects the derivative of the L-function to the height of Heegner points.
     Key consequence: y_K non-torsion ⟺ L'(E,1) ≠ 0 ⟺ analytic rank = 1.
@@ -5703,7 +5703,7 @@ theorem bsd_current_status :
 #check LambdaModule
 -- Part LIII: Kolyvagin's Euler System
 #check HeegnerField
-#check parity_conjecture
+#check parity_conjecture_proved
 -- Part LIV: p-adic BSD
 #check mtt_exceptional_zero
 #check greenberg_stevens
