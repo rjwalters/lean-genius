@@ -21,7 +21,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "lineCount": 143,
-    "assumptions": "1 axiom (min_modulus_1d_bound). 0 sorries.",
+    "assumptions": "1 axiom (min_modulus_1d_bound): placeholder for Konyagin's 1994 result that m(f) ≤ n^(-1/2 + o(1)) a.s. for random 1D Littlewood polynomials. Stated as True pending full formalization. 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -31,15 +31,77 @@
       "Square-root cancellation analysis"
     ]
   },
+  "overview": {
+    "historicalContext": "Littlewood polynomials — polynomials with all coefficients in $\\{-1, +1\\}$ — have been studied since J.E. Littlewood's 1966 conjectures on their $L^4$ norms on the unit circle. Erdős Problem 525 (posed in the 1950s–60s) asks about the minimum modulus $m(f) = \\min_{|z|=1} |f(z)|$ for degree-$n$ Littlewood polynomials: can it be made as small as $n^{-1/2}$? The 1D problem was progressively resolved: Konyagin (1994) established $m(f) \\leq n^{-1/2+o(1)}$ almost surely for random sign choices, and Konyagin-Schlag (1999) gave the matching lower bound; Cook and Nguyen (2021) completed the picture with a precise limiting distribution. The multivariate generalization — polynomials on the $d$-torus $\\mathbb{T}^d$ with $\\pm 1$ coefficients on $n^d$ monomials — replaces the unit circle with a higher-dimensional torus and asks whether the square-root cancellation principle $m(f) \\approx n^{-d/2}$ still governs the minimum modulus. This problem for $d \\geq 2$ remains largely open.",
+    "problemStatement": "For random $d$-variate Littlewood polynomials $f(z_1,\\ldots,z_d) = \\sum_{k \\in [n]^d} \\varepsilon_k z_1^{k_1}\\cdots z_d^{k_d}$ with $\\varepsilon_k \\in \\{-1, +1\\}$ i.i.d. Rademacher, does the minimum modulus $m(f) = \\min_{z \\in \\mathbb{T}^d} |f(z)|$ satisfy $m(f) \\leq n^{-d/2 + o(1)}$ with probability tending to $1$ as $n \\to \\infty$? Is this bound tight?",
+    "proofStrategy": "The Lean formalization establishes the mathematical framework for the open problem: the `LittlewoodPoly` structure, the `onTorus` predicate, the `minModulus` infimum definition, and supporting lemmas about term counts and the dimension effect. The 1D Konyagin bound is axiomatized as `min_modulus_1d_bound` (a `True` placeholder) since its proof requires probabilistic arguments and Fourier analysis over $\\mathbb{T}$ that are not yet in Mathlib. The key nontrivial theorem is `dimension_effect`, proving $n^{d_1} < n^{d_2}$ when $d_1 < d_2$ and $n > 1$.",
+    "keyInsights": [
+      "The `LittlewoodPoly` structure uses `coeffs : (Fin n → Fin d → ℕ) → ℤ` — a slightly non-standard encoding where a multi-index is represented as a function from variable-index to exponent (rather than the more familiar tuple $(k_1, \\ldots, k_d)$). The `pm_one` field enforces the $\\pm 1$ constraint on every coefficient.",
+      "The term count $n^d$ (proved as `Nat.one_le_pow d n hn`) is the crucial dimensional quantity. Having $N = n^d$ terms rather than $n$ terms means the square-root cancellation heuristic predicts $m(f) \\sim N^{-1/2} = n^{-d/2}$ — the decay rate becomes exponentially faster in $d$.",
+      "The `minModulus` definition uses `sInf` (infimum over a set of reals) rather than `Finset.min'` because the torus $\\mathbb{T}^d$ is an uncountable compact set. Proving that the infimum is attained (i.e., is a minimum) requires compactness of $\\mathbb{T}^d$ and continuity of $f$, which would require additional Lean infrastructure.",
+      "The `axiom min_modulus_1d_bound` is a stub for Konyagin's 1994 theorem, whose proof uses probabilistic Fourier analysis: the Riesz product technique for lower bounds on $\\min_{|z|=1}|p(z)|$ and concentration inequalities for random Littlewood polynomials. A full Lean formalization would require the Fourier transform on $L^2(\\mathbb{T})$ and measure-theoretic probability.",
+      "The `dimension_effect` theorem ($n^{d_1} < n^{d_2}$ for $d_1 < d_2$, $n > 1$) captures a key qualitative fact: the number of terms grows exponentially with dimension, so the polynomial becomes increasingly 'complex' (harder to be small everywhere) as $d$ increases. This is the quantitative basis for the faster decay of $m(f)$ in higher dimensions."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Problem Statement",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Imports Mathlib and the module-level docstring describing the open question: how does the minimum modulus of multivariate Littlewood polynomials on T^d behave? States the 1D problem and the d-dimensional generalization."
+    },
+    {
+      "id": "part-i-structure",
+      "title": "Part I: Multivariate Littlewood Polynomials",
+      "startLine": 23,
+      "endLine": 47,
+      "summary": "Defines the LittlewoodPoly structure (coefficients map from multi-indices to ±1 integers) and proves that term count n^d ≥ 1 and polynomial count 2^(n^d) ≥ 1."
+    },
+    {
+      "id": "part-ii-minimum-modulus",
+      "title": "Part II: The Minimum Modulus on the d-Torus",
+      "startLine": 48,
+      "endLine": 59,
+      "summary": "Defines onTorus (the d-torus predicate: all coordinates have modulus 1) and minModulus as an infimum (sInf) over torus evaluations. These are the central objects for the Erdős 525 OQ."
+    },
+    {
+      "id": "part-iii-comparison",
+      "title": "Part III: The 1D vs Multi-D Comparison",
+      "startLine": 60,
+      "endLine": 81,
+      "summary": "Docstring comparing Konyagin's 1D bound m(f) ≤ n^(-1/2+o(1)) with the expected d-dimensional bound m(f) ≤ n^(-d/2+o(1)). Axiom min_modulus_1d_bound stubs the 1D result. Theorem dimension_effect proves n^d₁ < n^d₂ for d₁ < d₂."
+    },
+    {
+      "id": "part-iv-cancellation",
+      "title": "Part IV: The Square-Root Cancellation Heuristic",
+      "startLine": 82,
+      "endLine": 102,
+      "summary": "Docstring explaining why m(f) ≈ 1/√N where N = n^d: the N=n^d terms cancel like independent random variables, predicting minimum modulus ≈ n^(-d/2). Theorem sqrt_cancellation_terms proves n^d ≥ n as an anchoring lemma."
+    },
+    {
+      "id": "part-v-known-results",
+      "title": "Part V: Known Results and Open Problems",
+      "startLine": 103,
+      "endLine": 143,
+      "summary": "Documents the state of the art: d=1 complete (Kashin → Konyagin → Cook-Nguyen), d=2 partial (Granville-Wigman 2011), d≥3 open. States the main open conjecture and summarizes the proof framework."
+    }
+  ],
   "conclusion": {
-    "summary": "Multivariate Littlewood polynomials formalized. 1D solved; d≥2 open.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "The multivariate Littlewood polynomial framework is established in Lean: the $\\pm 1$ polynomial structure, the $d$-torus minimum modulus, and the dimensional scaling $n^d$. The 1D case ($m(f) \\sim c \\cdot n^{-1/2}$) is axiomatized; the multivariate conjecture $m(f) \\leq n^{-d/2+o(1)}$ for $d \\geq 2$ remains open.",
+    "implications": "A resolution of this problem would significantly advance the theory of random trigonometric polynomials and connect to several deep areas: the Littlewood-Offord problem in combinatorics, concentration inequalities for random polynomials, and the equidistribution of zeros of random polynomials on the torus. The square-root cancellation heuristic, if proved for $d \\geq 2$, would also have implications for analytic number theory, where Dirichlet polynomials (partial sums of Dirichlet series) exhibit similar structure. The Cook-Nguyen (2021) result for $d=1$ used techniques from random matrix theory (the Least Singular Value of random matrices), suggesting that the $d \\geq 2$ problem may require higher-dimensional analogues of these tools.",
+    "openQuestions": [
+      "Does $m(f) \\leq n^{-d/2+o(1)}$ hold almost surely for random $d$-variate Littlewood polynomials on $\\mathbb{T}^d$? Is the bound $n^{-d/2}$ tight?",
+      "What is the limiting distribution of $n^{d/2} \\cdot m(f)$ as $n \\to \\infty$ for $d \\geq 2$? For $d=1$, Cook-Nguyen proved it converges to a specific distribution related to the Gumbel law.",
+      "Can Konyagin's 1994 theorem be formalized in Lean? This would require Fourier analysis on $\\mathbb{T}$, Riesz products, and probabilistic estimates for random Littlewood polynomials — tools that would need to be developed in Mathlib.",
+      "Is there a deterministic Littlewood polynomial achieving $m(f) \\leq n^{-d/2+o(1)}$ for $d \\geq 2$, or is the minimum modulus only achieved randomly? The deterministic version would connect to explicit constructions in combinatorics."
+    ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-525",
-      "relationship": "parent-problem"
+      "relationship": "parent-problem",
+      "description": "The parent proof covers Erdős 525 in one variable, with the Konyagin-Schlag bounds. This OQ generalizes the minimum modulus problem to multivariate polynomials on T^d."
     }
   ],
   "leanFile": {
@@ -51,6 +113,5 @@
     "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 4
-  },
-  "sections": []
+  }
 }

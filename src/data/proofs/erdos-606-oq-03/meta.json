@@ -2,7 +2,7 @@
   "id": "erdos-606-oq-03",
   "title": "Hyperplane Determination in Higher Dimensions",
   "slug": "erdos-606-oq-03",
-  "description": "Explores which hyperplane counts are achievable for n points in \u211d^d. Sylvester-Gallai, Green-Tao, and the gap problem.",
+  "description": "Explores which hyperplane counts are achievable for n points in ℝ^d. Sylvester-Gallai, Green-Tao, and the gap problem.",
   "meta": {
     "author": "Sylvester, Green-Tao, Motzkin",
     "sourceUrl": "https://erdosproblems.com/606",
@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 98,
-    "assumptions": "0 axioms, 0 sorries. WARNING: general_position_count proves True (placeholder). Sylvester-Gallai, Green-Tao, and Motzkin are mentioned in comments but not axiomatized.",
+    "assumptions": "0 axioms, 0 sorries. WARNING: general_position_count proves True (placeholder). Sylvester-Gallai, Green-Tao, and Motzkin are mentioned in docstring comments but not axiomatized — they do not contribute to axiomCount.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -29,15 +29,63 @@
       "Achievable set analysis"
     ]
   },
+  "overview": {
+    "historicalContext": "J.J. Sylvester posed the problem in 1893: given $n$ points in the plane, not all collinear, must there exist a line passing through exactly two of them? The problem was forgotten until 1940, when Erdős re-posed it. T. Gallai proved it affirmatively in 1944 (with a simpler proof by L.M. Kelly), giving the Sylvester-Gallai theorem. Motzkin generalized it to higher dimensions in 1951. The quantitative version — how many 'ordinary lines' (through exactly 2 points) must exist? — was studied by Kelly-Moser (1958), who gave a lower bound of $n/2 - 1$. A conjecture of Dirac and Motzkin (1951) that the bound is $\\lfloor n/2 \\rfloor$ was settled only in 2013 by Green and Tao, building on their additive combinatorics work. Erdős Problem 606 asks specifically about which line counts are achievable: the achievable set is not the full interval between minimum and maximum, and characterizing these gaps in the plane ($d=2$) and higher dimensions ($d \\geq 3$) remains open.",
+    "problemStatement": "For $n$ points in $\\mathbb{R}^d$, the number of determined hyperplanes (affine hyperplanes containing at least $d$ of the points) ranges from approximately $n$ (minimum, Sylvester-Gallai type) to $\\binom{n}{d}$ (maximum, general position). For $d=2$: which values in $[n, \\binom{n}{2}]$ are achievable as line counts for some configuration of $n$ non-collinear points? For $d \\geq 3$: which values in $[n, \\binom{n}{d}]$ are achievable as hyperplane counts?",
+    "proofStrategy": "This is primarily a survey and framework formalization. The key nontrivial theorem is `hyperplane_extremes` which proves $n < \\binom{n}{d}$ for $n > d \\geq 2$ using Mathlib's `Nat.lt_choose_self`. The other theorems are either trivial (`max_hyperplanes`: $\\binom{n}{d} \\geq 0$), combinatorial identities (`line_count_range`: $\\binom{n}{2} = n(n-1)/2$ by `omega`), or placeholders (`general_position_count`: `True := trivial`). The docstring sections document the Sylvester-Gallai theorem, Green-Tao's quantitative result, and Motzkin's generalization without formalizing their proofs.",
+    "keyInsights": [
+      "The bound $\\binom{n}{d}$ counts the number of $d$-element subsets of $n$ points, corresponding to hyperplanes through exactly $d$ points (in general position, each such subset determines a unique hyperplane). The inequality $n < \\binom{n}{d}$ for $n > d \\geq 2$, proved here as `hyperplane_extremes`, quantifies the gap between the 'degenerate' minimum and the 'generic' maximum.",
+      "The Sylvester-Gallai theorem has a beautiful short proof (Kelly's proof, 1948): consider all point-line pairs $(P, \\ell)$ where $P \\notin \\ell$ and $\\ell$ passes through at least 2 of the $n$ points. Choose the pair minimizing the distance $d(P, \\ell)$. If $\\ell$ passes through 3+ points, two of them are on the same side of the foot of the perpendicular from $P$, giving a closer pair — contradiction.",
+      "Green and Tao's 2013 proof of the Dirac-Motzkin conjecture ($\\geq \\lfloor n/2 \\rfloor$ ordinary lines) uses the theory of 'dense sets in arithmetic progressions' and structure theorems for sets with few ordinary lines, building directly on their Green-Tao theorem about arithmetic progressions in the primes.",
+      "The 'achievable set' problem (which line counts between the minimum and maximum are realizable?) is equivalent to asking about the structure of all combinatorial configurations of $n$ labeled points. Even for the plane ($d=2$), this is not a simple interval: certain counts are 'forbidden' for all configurations.",
+      "In dimension $d \\geq 3$, far less is known. The Sylvester-Gallai analogue (Motzkin's theorem) guarantees an ordinary hyperplane (through exactly $d$ points), but the quantitative counterpart — how many ordinary hyperplanes must exist? — is essentially open. The achievable set for hyperplane counts is entirely uncharacterized for $d \\geq 3$."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Problem Statement",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Imports Mathlib and the module-level docstring: n points in ℝ^d determine at most C(n,d) hyperplanes; Sylvester-Gallai guarantees ordinary lines; Green-Tao shows ≥ n/2 ordinary lines for large n."
+    },
+    {
+      "id": "part-i-bounds",
+      "title": "Part I: Hyperplane Count Bounds",
+      "startLine": 24,
+      "endLine": 42,
+      "summary": "Two theorems: max_hyperplanes (trivial: C(n,d) ≥ 0) and general_position_count (True placeholder for the exact C(n,d) count in general position). The placeholder acknowledges that the general-position result is not yet formalized."
+    },
+    {
+      "id": "part-ii-sylvester-gallai",
+      "title": "Part II: Sylvester-Gallai and Ordinary Lines",
+      "startLine": 43,
+      "endLine": 81,
+      "summary": "Four docstring blocks documenting: (1) Sylvester-Gallai theorem, (2) Green-Tao ordinary lines result, (3) Motzkin's higher-dimensional generalization, (4) the achievable set gap problem. Anchored by line_count_range (C(n,2) = n(n-1)/2) and hyperplane_extremes (n < C(n,d) for n > d ≥ 2)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 82,
+      "endLine": 98,
+      "summary": "Summarizes the framework: C(n,d) maximum, ~n minimum, achievable set between them uncharacterized. Notes 3 documented theoretical facts and 4 theorems. Clarifies 0 axioms (docstring blocks are not axiom declarations)."
+    }
+  ],
   "conclusion": {
-    "summary": "Achievable hyperplane counts for n points in \u211d^d: between ~n and C(n,d). Full characterization open.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "The higher-dimensional hyperplane determination problem is framed in Lean: the $\\binom{n}{d}$ maximum is established via `Nat.lt_choose_self`, and the classical results (Sylvester-Gallai, Green-Tao, Motzkin) are documented. The achievable set problem — which hyperplane counts between the minimum and $\\binom{n}{d}$ are realizable — remains open for all $d \\geq 2$.",
+    "implications": "A complete characterization of achievable line/hyperplane counts would be a landmark result in combinatorial geometry, resolving a problem that has been open since Sylvester (1893). Green and Tao's 2013 proof of the Dirac-Motzkin conjecture shows the tools of additive combinatorics and arithmetic progressions can be brought to bear on classical incidence geometry problems. A Lean formalization of the Sylvester-Gallai theorem itself (currently absent from Mathlib) would be a significant contribution to the formal mathematics library.",
+    "openQuestions": [
+      "For $n$ non-collinear points in $\\mathbb{R}^2$, exactly which line counts $k$ in $[n, \\binom{n}{2}]$ are achievable by some configuration? Is there a simple characterization of the 'forbidden' values?",
+      "For $n$ points in $\\mathbb{R}^d$ ($d \\geq 3$) not all on a hyperplane, what is the minimum number of ordinary hyperplanes (containing exactly $d$ points)? Is the Dirac-Motzkin bound $\\lfloor n/2 \\rfloor$ still correct?",
+      "Can the Sylvester-Gallai theorem be formalized in Lean/Mathlib? Kelly's proof (1948) is elementary but requires projective geometry or metric arguments about distances in the plane.",
+      "Is Green and Tao's 2013 result (at least $n/2$ ordinary lines) formalizable in Lean? Their proof uses the polynomial method and structure theorems from additive combinatorics that have partial Mathlib coverage."
+    ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-606",
-      "relationship": "parent-problem"
+      "relationship": "parent-problem",
+      "description": "The parent proof covers Erdős 606's line-determination problem in the plane. This OQ extends to hyperplanes in ℝ^d for d ≥ 3."
     }
   ],
   "leanFile": {
@@ -49,6 +97,5 @@
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0
-  },
-  "sections": []
+  }
 }

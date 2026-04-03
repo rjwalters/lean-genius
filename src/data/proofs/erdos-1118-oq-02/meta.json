@@ -2,7 +2,7 @@
   "id": "erdos-1118-oq-02",
   "title": "Superlevel Sets in Several Complex Variables",
   "slug": "erdos-1118-oq-02",
-  "description": "Higher-dimensional analogue of Erd\u0151s 1118: superlevel sets of holomorphic maps \u2102\u207f \u2192 \u2102. Plurisubharmonicity, Oka theory, Hartogs extension.",
+  "description": "Higher-dimensional analogue of Erdős 1118: superlevel sets of holomorphic maps ℂⁿ → ℂ. Plurisubharmonicity, Oka theory, Hartogs extension.",
   "meta": {
     "author": "Camera, Gol'dberg, Oka",
     "sourceUrl": "https://erdosproblems.com/1118",
@@ -20,19 +20,67 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 103,
-    "assumptions": "0 axioms. 0 sorries. All theorems fully proved.",
+    "assumptions": "0 axioms. 0 sorries. All theorems fully proved. The three docstring blocks (Camera-Gol'dberg criterion, SCV differences, plurisubharmonicity) are documentation, not axiom declarations.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0"
   },
+  "overview": {
+    "historicalContext": "Erdős Problem 1118 (published in the 1960s–70s) asks: for a non-constant entire function $f: \\mathbb{C} \\to \\mathbb{C}$ such that the superlevel set $E(c) = \\{z \\in \\mathbb{C} : |f(z)| > c\\}$ has finite area, what minimum growth rate must $f$ satisfy? This was resolved independently by Camera (1977) and Gol'dberg (1979): the criterion is $\\int_0^\\infty \\frac{r}{\\log\\log M(r)}\\, dr < \\infty$, where $M(r) = \\max_{|z|=r} |f(z)|$. This open question (OQ-02) asks: what is the correct generalization to several complex variables (SCV)? SCV is a field developed primarily by Kiyoshi Oka in the 1930s–50s, whose theorem that domains of holomorphy coincide with pseudoconvex domains fundamentally changed complex analysis. The several-variable theory diverges dramatically from one variable: Hartogs' theorem (1906) shows holomorphic functions in $\\mathbb{C}^n$ ($n \\geq 2$) extend automatically across isolated singularities — an impossibility in one dimension.",
+    "problemStatement": "For a holomorphic function $f: \\mathbb{C}^n \\to \\mathbb{C}$ ($n \\geq 2$), characterize the growth conditions under which the superlevel set $E(c) = \\{z \\in \\mathbb{C}^n : |f(z)| > c\\}$ has finite $(2n)$-dimensional Lebesgue measure. What replaces the Camera-Gol'dberg integral criterion $\\int_0^\\infty \\frac{r}{\\log\\log M(r)} dr < \\infty$ in the several-variable setting, where $\\log|f|$ is plurisubharmonic and the geometry of $E(c)^c$ is governed by pseudoconvexity?",
+    "proofStrategy": "This formalization is primarily a survey and documentation proof. The two substantive theorems proved are elementary anchoring lemmas: `constant_superlevel` (for $f \\equiv w$, $E(c)$ is either $\\emptyset$ or $\\mathbb{C}^n$) and `growth_increases_with_dim` (dimension $2n$ grows with $n$, proved by `omega`). The rich mathematical content — the Camera-Gol'dberg criterion, plurisubharmonicity of $\\log|f|$, pseudoconvexity of $E(c)^c$, and Hartogs extension — is documented as docstring commentary, establishing the theoretical landscape for the open problem rather than formalizing the full analytic machinery (which would require extensive Mathlib infrastructure not yet available).",
+    "keyInsights": [
+      "In one variable, $\\log|f|$ is subharmonic: $\\Delta \\log|f| \\geq 0$. In $n$ variables, $\\log|f|$ is plurisubharmonic: its restriction to every complex line $\\{z_0 + tz_1 : t \\in \\mathbb{C}\\}$ is subharmonic. Plurisubharmonicity is strictly stronger than subharmonicity in $\\mathbb{R}^{2n}$.",
+      "The complement $\\{z : |f(z)| \\leq c\\}$ of the superlevel set is a pseudoconvex domain by Oka's theorem — a condition that generalizes convexity to the holomorphic category. This means the SCV superlevel-set problem is intimately connected to the $\\bar\\partial$-equation and Hörmander's $L^2$ estimates.",
+      "Hartogs' extension theorem ($n \\geq 2$) has no one-variable analogue: any holomorphic function on a domain minus a compact set of codimension $\\geq 2$ extends holomorphically to the full domain. This radically constrains what singularity behavior is possible for $f$ in SCV, changing the character of superlevel-set problems.",
+      "The Camera-Gol'dberg criterion $\\int_0^\\infty \\frac{r}{\\log\\log M(r)} dr < \\infty$ involves the growth of the maximum modulus $M(r)$. In SCV, $M(r)$ would be replaced by the pluricomplex Green function $g(r) = \\sup\\{u(z) : u \\text{ psh}, u \\leq 0, u(0) = -\\infty\\}$, a far more analytically subtle object.",
+      "The elementary lemma `growth_increases_with_dim` ($2n_1 < 2n_2$ when $n_1 < n_2$) encodes a key heuristic: in higher dimensions, the superlevel set lives in a space of greater real dimension, so achieving finiteness of $(2n)$-measure requires faster growth of $f$ — the threshold condition becomes more stringent as $n$ increases."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Problem Statement",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Imports Mathlib and the module-level docstring explaining Erdős 1118's open question: characterize superlevel sets of holomorphic f: ℂⁿ → ℂ in the several-complex-variables setting. Lists three key differences from 1D: plurisubharmonicity, pseudoconvexity, Oka theory."
+    },
+    {
+      "id": "part-i-definition",
+      "title": "Part I: Superlevel Sets",
+      "startLine": 27,
+      "endLine": 43,
+      "summary": "Defines superlevelSet as {z ∈ ℂⁿ : |f(z)| > c} and proves constant_superlevel: for constant functions, the superlevel set is either the full space ℂⁿ or empty, depending on whether |w| > c."
+    },
+    {
+      "id": "part-ii-comparison",
+      "title": "Part II: The 1D vs nD Comparison",
+      "startLine": 44,
+      "endLine": 86,
+      "summary": "Three docstring blocks documenting (1) Camera-Gol'dberg criterion for 1D finite-measure superlevel sets, (2) SCV differences (pluricomplex Green function, pseudoconvexity, Hartogs extension), (3) plurisubharmonicity of log|f|. Anchored by two trivial theorems: superlevel_dimension (2n = 2n) and growth_increases_with_dim (dimension grows with n, by omega)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 87,
+      "endLine": 103,
+      "summary": "Recaps the SCV vs 1D differences: plurisubharmonicity, pseudoconvexity, Hartogs extension, pluricomplex Green function. Notes 3 documented (but not axiomatized) theoretical differences, 0 sorries, 4 theorems (including the trivial anchoring results)."
+    }
+  ],
   "conclusion": {
-    "summary": "Several-complex-variables analogue explored. Key differences from 1D: plurisubharmonicity, pseudoconvexity, Hartogs extension.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "The formalization documents the theoretical landscape of superlevel sets in several complex variables: plurisubharmonicity of $\\log|f|$, pseudoconvexity of the sublevel complement, and Hartogs extension phenomena. Two elementary anchoring theorems are fully proved; the Camera-Gol'dberg analogue for $\\mathbb{C}^n$ remains an open problem.",
+    "implications": "A complete SCV generalization of the Camera-Gol'dberg criterion would be a significant result in function theory of several complex variables, connecting growth theory (Nevanlinna theory in SCV) with pluripotential theory (pluricomplex Green functions) and $\\bar\\partial$-methods. The question is open: unlike the 1D case, no exact criterion is known for when $\\{z \\in \\mathbb{C}^n : |f(z)| > c\\}$ has finite $(2n)$-measure. A Lean formalization of the full result would require Mathlib to develop SCV analytic tools (psh functions, pseudoconvex domains, $L^2$ estimates for $\\bar\\partial$) currently not in the library.",
+    "openQuestions": [
+      "What is the exact analogue of the Camera-Gol'dberg integral criterion $\\int_0^\\infty \\frac{r}{\\log\\log M(r)} dr < \\infty$ for holomorphic $f: \\mathbb{C}^n \\to \\mathbb{C}$ ($n \\geq 2$)? Does it involve the pluricomplex Green function or the Lelong number?",
+      "Can Lean's Mathlib be extended to formalize plurisubharmonic functions and pseudoconvex domains, providing the infrastructure needed to state and prove the full SCV version of Erdős 1118?",
+      "Does the finiteness of $\\{z \\in \\mathbb{C}^n : |f(z)| > c\\}$ in $(2n)$-measure impose additional structural constraints on $f$ in SCV that have no 1D counterpart — for instance, constraints on the Lelong numbers of $\\log|f|$ along analytic subvarieties?",
+      "What is the relationship between this problem and the theory of entire curves (Nevanlinna theory for maps $\\mathbb{C} \\to X$ where $X$ is a complex manifold)? Does the SCV superlevel-set problem generalize to holomorphic maps $\\mathbb{C}^n \\to \\mathbb{C}^m$?"
+    ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-1118",
-      "relationship": "parent-problem"
+      "relationship": "parent-problem",
+      "description": "The parent proof covers Erdős 1118 in one variable, with Camera-Gol'dberg's solved criterion. This OQ extends the question to several complex variables."
     }
   ],
   "leanFile": {
@@ -42,8 +90,7 @@
     "namespace": "Erdos1118OQ02",
     "lineCount": 103,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 3,
     "definitionCount": 1
-  },
-  "sections": []
+  }
 }
