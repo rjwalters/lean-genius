@@ -31,15 +31,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The classical Chinese Remainder Theorem (CRT) requires gcd(m,n) = 1. The generalization to arbitrary gcd was known to Gauss: the system is solvable iff the congruence condition d | (a-b) holds, and solutions are unique mod lcm(m,n). This formalization gives a fully machine-checked proof with an explicit solution formula using Bézout coefficients.",
+    "historicalContext": "The Chinese Remainder Theorem in its classical coprime form dates to the Sunzi Suanjing (Master Sun's Mathematical Manual, ~3rd–5th century CE), where a special case appears as a recreational puzzle. The theorem was systematically generalized to non-coprime moduli by Carl Friedrich Gauss in his Disquisitiones Arithmeticae (1801), where he characterizes exactly when a system of congruences is solvable and proves uniqueness modulo the lcm. The key insight — that the image of ℤ → ℤ/mℤ × ℤ/nℤ is the diagonal subgroup defined by a ≡ b (mod gcd(m,n)) — was known to 19th century number theorists but is rarely proved machine-verified with an explicit solution formula. In modern mathematics, the generalized CRT appears in algebraic number theory (ideal factorization in rings of integers), coding theory (construction of linear codes), and computer algebra (polynomial factoring via Hensel lifting). This formalization provides a fully machine-checked proof of the solvability criterion, the explicit Bézout-based solution formula, and uniqueness modulo the lcm.",
     "problemStatement": "Characterize the image of the map x ↦ (x mod m, x mod n) : ℤ → ℤ/mℤ × ℤ/nℤ when gcd(m,n) = d > 1. When is x ≡ a (mod m), x ≡ b (mod n) solvable?",
     "text": "The main result is generalized_crt_iff: the system is solvable iff Int.gcd m n divides (a - b). The forward direction uses that both m | (a-x) and n | (b-x) force d | (a-b) via the transitivity of divisibility. The backward direction constructs x = a - m·gcdA·((a-b)/d) using Bézout's identity. Uniqueness: if x and y are both solutions, then m | (x-y) and n | (x-y), so lcm(m,n) | (x-y). The image characterization follows: Im = {(a,b) : a ≡ b (mod gcd(m,n))}.",
     "proofStrategy": "Forward: Int.gcd_dvd_left and Int.gcd_dvd_right chain via transitivity. Backward: explicit construction using Int.gcdA and Int.gcdB, verified by linear_combination with Bézout's identity. Uniqueness: reduce to natAbs divisibility then cases on sign. The combined theorem generalized_crt_full packages existence + uniqueness.",
     "keyInsights": [
-      "The image of ℤ → ℤ/mℤ × ℤ/nℤ is exactly the congruence class modulo gcd(m,n)",
-      "Explicit solution: x = a - m·gcdA(m,n)·((a-b)/gcd(m,n))",
-      "The coprime case (gcd=1) recovers standard CRT as a special case",
-      "Solutions are unique modulo lcm(m,n), not modulo m·n"
+      "The image characterization Im = {(a,b) : a ≡ b (mod gcd(m,n))} reveals that the failure of surjectivity is precisely controlled by gcd: the larger the gcd, the more constrained the image, and surjectivity is recovered exactly when gcd=1.",
+      "The uniqueness proof routes through natAbs to bridge signed ℤ divisibility with the unsigned ℕ Nat.lcm_dvd theorem — a Lean 4 idiom for lcm-based uniqueness that avoids re-proving the theorem in ℤ.",
+      "The explicit solution x = a - m·gcdA·((a-b)/d) is computable via Mathlib's Int.gcdA, so genCRTSolution is a genuine algorithm, not just an existence proof — it can be evaluated by native_decide on concrete inputs.",
+      "The linear_combination tactic closes the second congruence in the backward direction by a single algebraic identity: -hk - k * hbez, where hbez encodes the Bézout relation gcd = m·gcdA + n·gcdB and hk encodes a-b = d·k.",
+      "The proof is structured in six self-contained parts (solvability, uniqueness, gcd-lcm identity, explicit formula, examples, image characterization), each building on the previous. This modular structure makes the formalization reusable as a library."
     ],
     "prerequisites": [
       "Bézout's identity: Int.gcd_eq_gcd_ab",
@@ -64,10 +65,87 @@
   },
   "crossReferences": [
     {
-      "targetId": "bezout-identity-oq-01",
+      "id": "bezout-identity-oq-03",
+      "relationship": "parent",
+      "description": "CRT via Bézout's Identity — the coprime version that this entry generalizes"
+    },
+    {
+      "id": "bezout-identity-oq-03-oq-01",
+      "relationship": "sibling",
+      "description": "CRT Ring Isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ — the algebraic structure underlying this solvability characterization"
+    },
+    {
+      "id": "bezout-identity-oq-01",
       "relationship": "related",
-      "description": "BezoutIdentityOQ01 formalizes the extended Euclidean algorithm; this file uses Bézout coefficients from Mathlib to solve non-coprime CRT"
+      "description": "Computable extended Euclidean algorithm — provides an alternative to Mathlib's Int.gcdA used in the solution formula"
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "related",
+      "description": "Classical Bézout's Identity whose coefficients Int.gcdA and Int.gcdB drive the explicit CRT solution formula"
+    },
+    {
+      "id": "bezout-identity-oq-02",
+      "relationship": "sibling",
+      "description": "Euclid's Lemma — another application of Bézout's identity in number theory"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header: Problem Statement and Key Results",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Imports Mathlib Int.GCD, Coprime.Basic, and Tactic. Module documentation states the three main results: solvability criterion (gcd | a-b), image characterization, and uniqueness mod lcm."
+    },
+    {
+      "id": "sec-solvability",
+      "title": "Part I: Solvability Condition",
+      "startLine": 23,
+      "endLine": 60,
+      "summary": "Three theorems: solvable_implies_gcd_dvd (forward: congruences imply gcd | a-b via dvd_sub), gcd_dvd_implies_solvable (backward: explicit witness using Int.gcdA via Bézout), and generalized_crt_iff (biconditional package)."
+    },
+    {
+      "id": "sec-uniqueness",
+      "title": "Part II: Uniqueness Modulo LCM",
+      "startLine": 62,
+      "endLine": 89,
+      "summary": "Two theorems: crt_unique_mod_lcm (any two solutions are congruent mod lcm, proved via natAbs route) and crt_unique_iff_lcm (two solutions to the same system are congruent mod lcm)."
+    },
+    {
+      "id": "sec-gcd-lcm",
+      "title": "Part III: GCD and LCM Relationship",
+      "startLine": 91,
+      "endLine": 104,
+      "summary": "Two auxiliary lemmas: gcd_mul_lcm_eq (m·n = gcd·lcm) and coprime_lcm_eq_mul (in the coprime case lcm = product). These support the reduction to standard CRT."
+    },
+    {
+      "id": "sec-explicit-formula",
+      "title": "Part IV: Explicit Solution Formula",
+      "startLine": 106,
+      "endLine": 136,
+      "summary": "Definition genCRTSolution and two correctness lemmas: genCRT_mod_left (first congruence holds unconditionally) and genCRT_mod_right (second congruence under divisibility condition, using Bézout and exact division)."
+    },
+    {
+      "id": "sec-special-cases",
+      "title": "Part V: Special Cases and Concrete Examples",
+      "startLine": 138,
+      "endLine": 170,
+      "summary": "coprime_always_solvable (gcd=1 makes any system solvable) and concrete decide/omega examples: solvable (1 mod 4, 3 mod 6), unsolvable (1 mod 4, 2 mod 6), and uniqueness (12 and 30 both solve mod 6/9, agreeing mod 18)."
+    },
+    {
+      "id": "sec-image-characterization",
+      "title": "Part VI: Image Characterization and Complete CRT",
+      "startLine": 172,
+      "endLine": 201,
+      "summary": "generalized_crt_modEq (solvable iff a ≡ b (mod gcd)) and generalized_crt_full (existence + uniqueness in one theorem). Together these give the complete characterization of Im(ℤ → ℤ/mℤ × ℤ/nℤ)."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Summary and #check Declarations",
+      "startLine": 202,
+      "endLine": 227,
+      "summary": "Prose summary of the four main results (solvability, uniqueness, formula, reduction) and #check declarations confirming all 12 theorems and 1 definition are accessible."
+    }
+  ]
 }
