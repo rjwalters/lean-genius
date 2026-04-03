@@ -45,14 +45,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Fubini's theorem (1907) and its extension by Tonelli (1909) are fundamental results in measure theory that justify interchanging the order of integration in double integrals. The concrete version for iterated Riemann/Lebesgue integrals is essential for applications like Green's theorem.",
+    "historicalContext": "Fubini's theorem was proved by Guido Fubini in 1907, establishing that the double integral of an absolutely integrable function can be computed as an iterated integral in either order. Leonida Tonelli's 1909 extension (now called the Fubini-Tonelli theorem) relaxed the hypothesis from absolute integrability to nonnegativity, enabling the theorem to be used to prove integrability. The result was fundamental to the development of Lebesgue's integration theory and has been a cornerstone of modern analysis ever since. In Lean 4/Mathlib, the theorem appears as `MeasureTheory.integral_integral_swap` for Bochner integrals on product measures, but the gallery's Green's theorem formalization uses Mathlib's `intervalIntegral` API, which requires a concrete bridge. This file provides exactly that bridge: a three-step conversion (interval integral → set integral → product measure integral → Fubini → reverse) that makes the abstract theorem concrete enough for the rectangle integrals appearing in Green's theorem.",
     "problemStatement": "Can the hFubini hypothesis in GreensTheoremOQ01.lean be proved from Mathlib's measure-theoretic Fubini theorem?",
     "text": "Bridges Mathlib's abstract Fubini theorem to the concrete iterated interval integrals needed for Green's theorem.",
     "proofStrategy": "1. Convert intervalIntegral to set_integral on Ioc intervals\n2. Express iterated set_integral as a product measure integral\n3. Apply Mathlib's Fubini (MeasureTheory.integral_integral_swap)\n4. Convert back to interval integrals",
     "keyInsights": [
-      "**intervalIntegral ↔ set_integral**: The interval integral ∫ x in a..b is defined via Lebesgue integral on Ioc, with sign handling.",
-      "**Product measure**: The double integral over a rectangle equals the integral against the product measure, which is what Mathlib's Fubini theorem works with.",
-      "**C¹ sufficiency**: For C¹ vector fields (standard for Green's theorem), all measurability and integrability conditions are automatic."
+      "Mathlib's `integral_of_le` converts `∫ x in a..b` to a set integral over `Ioc a b` — this syntactic bridge is the key that unlocks the abstract Fubini theorem for concrete interval integrals",
+      "The Icc → Ioc measure transfer is measure-theoretically trivial (two boundary points have measure zero) but syntactically essential: `integral_integral_swap` requires the `Ioc` product, while the integrability hypothesis naturally comes in the `Icc` form",
+      "For C¹ vector fields (standard for Green's theorem), all measurability and integrability conditions are automatic via compactness: `isCompact_Icc.prod isCompact_Icc` + `ContinuousOn.integrableOn_compact`",
+      "The proof is a three-step pipeline: (1) convert to set integrals, (2) transfer integrability to smaller Ioc measure, (3) invoke `integral_integral_swap` — all steps are pure API manipulation with no new mathematics",
+      "The same bridge pattern (interval integral → set integral → Fubini → back) is reusable for any theorem that needs to swap integration order over a rectangle, not just Green's theorem"
     ]
   },
   "sections": [
@@ -97,8 +99,9 @@
     "summary": "The hFubini hypothesis in Green's theorem CAN be eliminated using Mathlib's Fubini theorem, under standard measurability/integrability conditions. For C¹ vector fields, these are automatic.",
     "implications": "With the intervalIntegral_swap proof completed, Green's theorem (OQ-01) becomes fully proved from Mathlib without any hypotheses about integration order.",
     "openQuestions": [
-      "Complete the intervalIntegral ↔ set_integral conversion to finish the proof",
-      "Can this bridge be generalized to n-dimensional iterated integrals?"
+      "Can this bridge be generalized to n-dimensional iterated integrals over hyperrectangles, providing a Fubini theorem for `∫ x₁ in a₁..b₁, ∫ x₂ in a₂..b₂, … ∫ xₙ in aₙ..bₙ, f(x₁,…,xₙ)`?",
+      "Does Mathlib contain (or could it be contributed) a version of `intervalIntegral_swap` as a standalone lemma, avoiding the need for each application to reimplement the Ioc/Icc conversion?",
+      "The integrability hypothesis uses the product of Icc-restricted measures. Can this be weakened to just L¹ integrability on the open rectangle `Ioo a b × Ioo c d`, and does Mathlib provide the necessary tools?"
     ]
   },
   "leanFile": {
