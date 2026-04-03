@@ -21,53 +21,88 @@
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 axiom declarations, 0 sorries.",
-    "lineCount": 270
+    "lineCount": 270,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.modEq_nine_digits_sum",
+        "description": "n ≡ digitSum(n) (mod 9) — key congruence from Mathlib",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.sum_digits_lt",
+        "description": "Digit sum is strictly less than n for n ≥ 10",
+        "module": "Mathlib.Data.Nat.Digits"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "The digital root (iterative digit sum) has been used for centuries in 'casting out nines' to check arithmetic. The closed-form formula digitalRoot(n) = 1 + ((n-1) mod 9) reduces this to O(1).",
+    "historicalContext": "The technique of 'casting out nines' — replacing a number with its digit sum repeatedly until reaching a single digit — was known to Indian mathematicians by the 6th century CE and appeared in Arabic arithmetic texts by the 9th century. It was widely used in medieval Europe for checking multiplication: since $n \\equiv \\text{digitSum}(n) \\pmod{9}$ (because $10 \\equiv 1 \\pmod{9}$), errors in multiplication can be detected by checking $dr(a \\times b) = dr(dr(a) \\times dr(b))$. The closed-form formula $dr(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$ was known implicitly through the $\\bmod 9$ characterization but became explicit when algorithmic efficiency was considered. The formula works because the digital root is exactly $n \\bmod 9$, adjusted for the ambiguity between 0 and 9: when $9 \\mid n$ (and $n > 0$), the digital root is 9, not 0. The Lean formalization uses `Nat.modEq_nine_digits_sum` (from Mathlib's `Data.Nat.Digits` module) as the key congruence, and proves the multiplicative and additive homomorphism properties that make the digital root a ring homomorphism $\\mathbb{Z}/9\\mathbb{Z} \\to \\{1,\\ldots,9\\}$.",
     "problemStatement": "Formalize the efficient O(1) digital root computation and its properties.",
     "text": "Formalizes the digital root via modular arithmetic.",
+    "proofStrategy": "Three layers: (1) Define digitalRoot iteratively (via digitSum recursion, terminating because digitSum n < n for n ≥ 10) and digitalRootFormula as the O(1) closed form. (2) Prove key congruences: n ≡ digitSum(n) (mod 9) via Nat.modEq_nine_digits_sum, and n ≡ digitalRootFormula(n) (mod 9) by direct arithmetic. (3) Derive idempotency, divisibility characterizations, and additive/multiplicative homomorphism from the mod 9 congruence.",
     "keyInsights": [
-      "The key identity: 10 \u2261 1 (mod 9), so n \u2261 digitSum(n) (mod 9)",
-      "Iterating digit summation converges to n mod 9 (adjusted for 0/9)",
-      "The digital root is idempotent and respects addition/multiplication mod 9"
+      "The formula dr(n) = 1 + ((n-1) mod 9) works because of the mod 9 ambiguity: the standard remainder n mod 9 gives 0 for multiples of 9, but the digital root gives 9. Shifting n by -1 (before taking mod) then +1 (after) handles this boundary",
+      "The key congruence n ≡ digitSum(n) (mod 9) follows from 10 ≡ 1 (mod 9): writing n = ∑ aᵢ · 10ⁱ, we get n ≡ ∑ aᵢ · 1ⁱ = ∑ aᵢ = digitSum(n) (mod 9). This is the mathematical content of 'casting out nines'",
+      "Idempotency dr(dr(n)) = dr(n) follows from the fact that dr(n) ∈ {0,...,9}, and for single digits d, dr(d) = d (since dr maps single digits to themselves). So applying dr again to a single-digit output is the identity",
+      "The additive and multiplicative homomorphism properties dr(a+b) = dr(dr(a)+dr(b)) and dr(a·b) = dr(dr(a)·dr(b)) follow from the mod 9 congruence: dr(a) ≡ a and dr(b) ≡ b (mod 9), so dr(a)±dr(b) and dr(a)·dr(b) are congruent to a±b and a·b mod 9",
+      "The termination of iterative digitalRoot uses digitSum n < n for n ≥ 10, proved via Mathlib's Nat.sum_digits_lt. The well-founded recursion terminates because repeatedly summing digits strictly decreases the value until n < 10"
     ],
-    "proofStrategy": "Formalizes the digital root via modular arithmetic."
+    "prerequisites": [
+      "Number theory (modular arithmetic, decimal digit representation)",
+      "Mathlib: Nat.digits, Nat.sum_digits_lt, Nat.modEq_nine_digits_sum"
+    ]
   },
   "sections": [
     {
       "id": "digit-sum",
-      "title": "Digit Sum and Digital Root",
-      "startLine": 1,
-      "endLine": 40,
-      "summary": "Defines digitSum and digitalRoot (iterative), digitalRootFormula (closed-form).",
-      "mathContext": "digitSum: sum of base-10 digits. digitalRoot: iterate until single digit."
+      "title": "§ 1. Digit Sum and Iterative Digital Root",
+      "startLine": 31,
+      "endLine": 55,
+      "summary": "Defines digitSum via Nat.digits, and digitalRoot as the iterative fixed point (recurse until single digit). Termination uses digitSum n < n for n ≥ 10.",
+      "mathContext": "`Nat.digits 10 n` returns the list of base-10 digits of $n$; `.sum` adds them. The iterative `digitalRoot` terminates because `digitSum n < n` for $n \\geq 10$ (Mathlib's `Nat.sum_digits_lt`), providing the `decreasing_by` witness."
     },
     {
       "id": "formula",
-      "title": "Closed-Form Formula",
-      "startLine": 41,
-      "endLine": 80,
-      "summary": "Proves formula properties: range, zero, single digits, mod 9 equivalence.",
-      "mathContext": "$dr(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$."
+      "title": "§ 2. Closed-Form Formula",
+      "startLine": 64,
+      "endLine": 88,
+      "summary": "Defines digitalRootFormula = 1 + ((n-1) % 9) for n > 0. Proves range (0-9), zero case, single digit identity, and mod 9 equivalence.",
+      "mathContext": "The formula $1 + ((n-1) \\bmod 9)$ handles the 0/9 boundary: for $n = 9k$ ($k > 0$), $(n-1) = 9k-1 \\equiv 8 \\pmod{9}$, so result is $1 + 8 = 9$. For $n = 9k + r$ ($0 < r < 9$), $(n-1) \\equiv r-1 \\pmod{9}$, so result is $r$. The `omega` tactic closes all the arithmetic cases."
+    },
+    {
+      "id": "congruence",
+      "title": "§ 3. The Key Congruence: n ≡ dr(n) (mod 9)",
+      "startLine": 97,
+      "endLine": 143,
+      "summary": "Proves n % 9 = digitSum(n) % 9 via Nat.modEq_nine_digits_sum, and n % 9 = digitalRootFormula(n) % 9 by direct arithmetic.",
+      "mathContext": "`Nat.modEq_nine_digits_sum n` gives $n \\equiv \\text{digitSum}(n) \\pmod{9}$ — this is the mathematical foundation. The `congruence` theorem then shows $n \\equiv \\text{digitalRootFormula}(n) \\pmod{9}$ by direct computation: for $n > 0$, both $n \\% 9$ and $1 + (n-1) \\% 9 \\% 9$ reduce to $n \\% 9$ via `omega`."
     },
     {
       "id": "properties",
-      "title": "Algebraic Properties",
-      "startLine": 81,
-      "endLine": 160,
-      "summary": "Proves idempotency, div by 3 and 9 characterizations, add/mul (sorry).",
-      "mathContext": "$dr(dr(n)) = dr(n)$. $3|n \\iff 3|dr(n)$."
+      "title": "§ 4. Algebraic Properties",
+      "startLine": 150,
+      "endLine": 221,
+      "summary": "Proves idempotency dr(dr(n))=dr(n), divisibility by 9 (9|n ↔ dr(n)=9), divisibility by 3 (3|n ↔ 3|dr(n)), additive homomorphism, and multiplicative homomorphism.",
+      "mathContext": "All properties follow from the congruence $n \\equiv \\text{dr}(n) \\pmod{9}$: (1) idempotency: $\\text{dr}(n) \\in [1,9]$, single digits are fixed points; (2) div by 9: $9 \\mid n \\iff n \\% 9 = 0 \\iff \\text{dr}(n) = 9$ (boundary case); (3) div by 3: $3 \\mid n \\iff 3 \\mid (n \\% 9) \\iff 3 \\mid \\text{dr}(n) \\% 9 \\iff 3 \\mid \\text{dr}(n)$; (4) $\\text{dr}(a+b) \\equiv a+b \\equiv \\text{dr}(a) + \\text{dr}(b) \\equiv \\text{dr}(\\text{dr}(a) + \\text{dr}(b)) \\pmod{9}$."
     },
     {
       "id": "examples",
-      "title": "Computational Examples",
-      "startLine": 161,
-      "endLine": 200,
-      "summary": "Examples: dr(123)=6, dr(9999)=9, dr(10)=1, dr(18)=9.",
-      "mathContext": "Concrete computations verify the formula."
+      "title": "§ 5. Computational Examples",
+      "startLine": 227,
+      "endLine": 244,
+      "summary": "Five norm_num examples verifying the formula: dr(123)=6, dr(9999)=9, dr(1)=1, dr(10)=1, dr(18)=9.",
+      "mathContext": "All proved by `unfold digitalRootFormula; norm_num` — the closed-form definition unfolds to arithmetic that `norm_num` verifies directly. These examples test boundary cases: dr(9999)=9 (multiple of 9), dr(10)=1 (crossing decade), dr(18)=9 (two-digit multiple of 9)."
     }
   ],
+  "conclusion": {
+    "summary": "The digital root is fully formalized in Lean 4 with 15 theorems, 0 axioms, and 0 sorries. The closed-form O(1) formula, idempotency, divisibility characterizations by 3 and 9, and the additive/multiplicative homomorphism properties are all proved. The `Nat.modEq_nine_digits_sum` Mathlib lemma provides the foundational congruence.",
+    "implications": "The multiplicative homomorphism `dr(a·b) = dr(dr(a)·dr(b))` is the formal basis of 'casting out nines': to check if a multiplication $a \\times b = c$ is correct, compute $dr(a) \\times dr(b)$ and compare to $dr(c)$ — any discrepancy reveals an error. This was a standard pre-calculator arithmetic check for centuries. The formalization provides a verified foundation for understanding why this works (the mod 9 ring structure) and its limitations (it cannot detect errors that preserve the mod 9 value, e.g., transposing digits that sum to the same value).",
+    "openQuestions": [
+      "Can the proof be extended to show that digitalRoot is a ring homomorphism from ℤ/9ℤ to {1,...,9}? The additive and multiplicative homomorphism properties are proved, but the formal ring homomorphism statement would require setting up the appropriate ring structure on the 9-element set.",
+      "The digital root in other bases: for base b, the analog is dr_b(n) = 1 + ((n-1) mod (b-1)). Can Lean 4 formalize a base-parametrized version of all these results, using the general Mathlib `Nat.digits b n` with variable b?",
+      "Error detection by casting out nines: can Lean 4 formally prove that if dr(a·b) ≠ dr(c), then a·b ≠ c? This is the contrapositive of the homomorphism property and could be stated as a verified arithmetic checking algorithm."
+    ]
+  },
   "mainTheorems": [
     {
       "name": "digitalRoot_idempotent",
@@ -87,7 +122,7 @@
     {
       "name": "congruence",
       "type": "supporting",
-      "description": "n \u2261 dr(n) (mod 9)"
+      "description": "n ≡ dr(n) (mod 9)"
     }
   ],
   "crossReferences": [
