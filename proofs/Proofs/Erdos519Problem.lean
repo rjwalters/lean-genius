@@ -29,10 +29,8 @@ References:
 Tags: complex-analysis, power-sums, turán
 -/
 
-import Mathlib.Data.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib.Tactic
 
 open Complex Finset
 
@@ -54,14 +52,16 @@ noncomputable def powerSum (z : Fin n → ℂ) (k : ℕ) : ℂ :=
 The absolute value of the k-th power sum.
 -/
 noncomputable def powerSumMagnitude (z : Fin n → ℂ) (k : ℕ) : ℝ :=
-  Complex.abs (powerSum z k)
+  ‖powerSum z k‖
 
 /--
 **Maximum Power Sum:**
 max_{1 ≤ k ≤ n} |∑ᵢ zᵢᵏ|
 -/
 noncomputable def maxPowerSum (n : ℕ) (z : Fin n → ℂ) : ℝ :=
-  (Finset.range n).sup' (by simp) (fun k => powerSumMagnitude z (k + 1))
+  if hn : 0 < n then
+    (Finset.range n).sup' ⟨0, Finset.mem_range.mpr hn⟩ (fun k => powerSumMagnitude z (k + 1))
+  else 0
 
 /--
 **First Coordinate is 1:**
@@ -74,18 +74,18 @@ def hasFirstOne {n : ℕ} (z : Fin n → ℂ) (hn : n > 0) : Prop :=
 ## Part II: Turán's Original Result
 -/
 
-/--
+/-
 **Turán's Lower Bound:**
 The maximum power sum is at least c/n for some c > 0.
 This was the original result, showing the max doesn't go to 0.
 -/
+
 /--
 **The Question:**
 Can we get an ABSOLUTE constant c, independent of n?
 -/
 def turanQuestion : Prop :=
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
+  ∃ c : ℝ, c > 0 ∧ ∀ (n : ℕ) (hn : 0 < n) (z : Fin n → ℂ), hasFirstOne z hn →
     maxPowerSum n z > c
 
 /-
@@ -97,8 +97,7 @@ def turanQuestion : Prop :=
 c = 1/6 suffices. This was the first proof of an absolute constant.
 -/
 axiom atkinson_theorem :
-  ∀ n : ℕ, n ≥ 1 →
-    ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
+  ∀ (n : ℕ) (hn : 0 < n) (z : Fin n → ℂ), hasFirstOne z hn →
     maxPowerSum n z > 1/6
 
 /--
@@ -115,20 +114,20 @@ theorem turan_question_yes : turanQuestion := by
 ## Part IV: Biró's Improvements
 -/
 
-/--
+/-
 **Biró (1994):**
 Improved the constant to c = 1/2.
 -/
+
 /--
 **Biró (2000):**
 Further improved to some c > 1/2.
 -/
 axiom biro_2000 :
-  ∃ c : ℝ, c > 1/2 ∧ ∀ n : ℕ, n ≥ 1 →
-    ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
+  ∃ c : ℝ, c > 1/2 ∧ ∀ (n : ℕ) (hn : 0 < n) (z : Fin n → ℂ), hasFirstOne z hn →
     maxPowerSum n z > c
 
-/--
+/-
 **Best Known Constant:**
 Based on computation, the optimal c is approximately 0.7.
 -/
@@ -147,7 +146,6 @@ theorem trivial_case_n1 : ∀ k : ℕ, k ≥ 1 →
     powerSum (fun _ : Fin 1 => (1 : ℂ)) k = 1 := by
   intro k hk
   simp [powerSum]
-  ring
 
 /--
 **Why z₁ = 1 Matters:**
@@ -156,9 +154,32 @@ The constraint z₁ = 1 ensures at least one term contributes 1ᵏ = 1.
 -/
 theorem why_first_one_matters :
   -- If z₁ = 1, then ∑zᵢᵏ includes the term 1ᵏ = 1
-  ∀ n : ℕ, n ≥ 1 → ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
+  ∀ (n : ℕ) (hn : 0 < n) (z : Fin n → ℂ), hasFirstOne z hn →
     ∀ k : ℕ, powerSum z k = 1 + ∑ i : {j : Fin n | j.val > 0}, (z i)^k := by
-  sorry
+  intro n hn z hz k
+  cases n with
+  | zero => omega
+  | succ m =>
+    simp only [powerSum]
+    rw [Fin.sum_univ_succ]
+    have hfz : z 0 = 1 := by unfold hasFirstOne at hz; exact hz
+    rw [hfz, one_pow]
+    congr 1
+    -- Bijection Fin m ≃ {j : Fin (m+1) | 0 < j.val} via i ↦ Fin.succ i
+    let e : Fin m ≃ {j : Fin (m + 1) | 0 < j.val} := {
+      toFun := fun i => ⟨Fin.succ i, Nat.succ_pos i.val⟩
+      invFun := fun j => ⟨j.val.val - 1,
+        Nat.lt_of_lt_of_le (Nat.sub_lt j.property Nat.one_pos)
+          (Nat.le_of_lt_succ j.val.isLt)⟩
+      left_inv := fun i => Fin.ext (by simp [Fin.succ])
+      right_inv := fun j => Subtype.ext (Fin.ext (by
+        simp [Fin.succ]
+        exact Nat.sub_add_cancel j.property))
+    }
+    have heq : ∀ i : Fin m, (z i.succ) ^ k = (z (e i).val) ^ k := fun i => by
+      simp [e, Fin.succ]
+    simp_rw [heq]
+    exact Equiv.sum_comp e (fun j => (z j.val) ^ k)
 
 /-
 **Cancellation Challenge:**
@@ -173,10 +194,10 @@ The other terms can cancel the 1, but not too much if we choose k wisely.
 **Roots of Unity:**
 If zᵢ are n-th roots of unity, the power sums exhibit periodic behavior.
 -/
-def nthRootsOfUnity (n : ℕ) : Fin n → ℂ :=
+noncomputable def nthRootsOfUnity (n : ℕ) : Fin n → ℂ :=
   fun k => Complex.exp (2 * Real.pi * Complex.I * k / n)
 
-/--
+/-
 **Power Sums of Roots of Unity:**
 ∑ ω^k where ω ranges over n-th roots of unity equals 0 unless n | k.
 -/
@@ -213,12 +234,11 @@ under various constraints.
 We know c > 1/2 is achievable.
 -/
 theorem optimal_lower_bound :
-    ∃ c : ℝ, c > 1/2 ∧ ∀ n : ℕ, n ≥ 1 →
-      ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
+    ∃ c : ℝ, c > 1/2 ∧ ∀ (n : ℕ) (hn : 0 < n) (z : Fin n → ℂ), hasFirstOne z hn →
       maxPowerSum n z > c :=
   biro_2000
 
-/--
+/-
 **Computational Evidence:**
 Numerical experiments suggest c ≈ 0.7 is the optimal value.
 -/
@@ -257,11 +277,10 @@ theorem erdos_519 : turanQuestion := turan_question_yes
 -/
 theorem erdos_519_summary :
     -- Atkinson's bound
-    (∀ n : ℕ, n ≥ 1 → ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
+    (∀ (n : ℕ) (hn : 0 < n) (z : Fin n → ℂ), hasFirstOne z hn →
       maxPowerSum n z > 1/6) ∧
     -- Biró's improved bound
-    (∃ c : ℝ, c > 1/2 ∧ ∀ n : ℕ, n ≥ 1 →
-      ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
+    (∃ c : ℝ, c > 1/2 ∧ ∀ (n : ℕ) (hn : 0 < n) (z : Fin n → ℂ), hasFirstOne z hn →
       maxPowerSum n z > c) := by
   exact ⟨atkinson_theorem, biro_2000⟩
 
