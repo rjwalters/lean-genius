@@ -1,0 +1,199 @@
+{
+  "slug": "ballot-problem-oq-01-oq-04-oq-01",
+  "title": "Prove Chung-Feller bijection: rotation index to path type",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Prove Chung-Feller bijection: rotation index to path type.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "DONE",
+    "since": "2026-04-02T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Created BallotProblemOQ01OQ04OQ01.lean with explicit Chung-Feller rotation bijection.",
+    "blockers": [
+      "rotation_maps_to_dyck: requires careful prefix-sum tracking after List.rotate",
+      "fiber_has_all_types: requires identifying return-to-zero positions of Dyck paths",
+      "chung_feller_uniform: derives from above two sorry lemmas"
+    ],
+    "nextAction": "Submit rotation_maps_to_dyck and fiber_has_all_types as Aristotle candidates.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created BallotProblemOQ01OQ04OQ01.lean (251 lines, 30 theorems/examples, 4 sorries). Proved: rotation_preserves_balanced (rotation preserves balanced path structure), 18 computational verifications (n=1,2,3 type checks + rotation map examples). Sorry'd: rotation_maps_to_dyck (hardest — prefix sum analysis after last-minimum rotation), fiber_has_all_types (Dyck path return-to-zero analysis), chung_feller_uniform. Key insight: rotating by rightmostMinPos sends all balanced paths to Dyck paths (type n) — verified computationally for n=2.",
+    "builtItems": [
+      "countUpstepsAux: recursive definition of upstep counting (avoids deprecated List.get?)",
+      "upstepsAboveAxisC: computable version using countUpstepsAux (native_decide compatible)",
+      "rotation_preserves_balanced: rotation preserves count(1)=n, count(-1)=n, and ±1 membership",
+      "chungFellerRot_balanced: Chung-Feller map preserves balanced path property",
+      "18 computational examples verifying type values and rotation map for n=1,2,3"
+    ],
+    "insights": [
+      "BallotProblemOQ03.lean has compilation errors (many omega/type failures around line 1424) — must avoid importing it",
+      "List.get? and List.enumFrom are not available in this Lean version — use countUpstepsAux recursive definition",
+      "BallotProblemOQ01OQ04.lean itself doesn't compile (blocked by BallotProblemOQ03) — must re-define ChungFeller definitions",
+      "Rotating balanced path by rightmostMinPos sends it to a Dyck path (type n): all prefix sums become ≥ 0 since min becomes 0",
+      "native_decide fails for all examples in a file if any definition has compilation errors — fix all errors before adding native_decide",
+      "File must import Mathlib (full) to get Int decidability instances and other helpers"
+    ],
+    "mathlibGaps": [
+      "No direct Lean 4 lemma connecting rightmostMinPos rotation to upstepsAboveAxis shift",
+      "List.Perm.sum_eq API may have changed (caused issues in rotation_sum_zero)"
+    ],
+    "nextSteps": [
+      "rotation_maps_to_dyck: formalize prefixSum (l.rotate r) j = prefixSum l (r+j mod 2n) - prefixSum l r",
+      "fiber_has_all_types: identify return-to-zero positions of Dyck path and prove fiber structure"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "ballot",
+    "bijection"
+  ],
+  "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-01",
+    "ballot-problem-oq-01-oq-01",
+    "ballot-problem-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-04",
+    "ballot-problem-oq-02",
+    "ballot-problem-oq-03",
+    "ballot-problem-oq-03-oq-01",
+    "ballot-problem-oq-03-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.769Z",
+  "lastUpdate": "2026-04-02T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BallotProblem.lean",
+      "filename": "BallotProblem.lean",
+      "lineCount": 252,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblem.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01.lean",
+      "filename": "BallotProblemOQ01.lean",
+      "lineCount": 790,
+      "theoremCount": 44,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01.lean",
+      "filename": "BallotProblemOQ01OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02.lean",
+      "lineCount": 935,
+      "theoremCount": 36,
+      "axiomCount": 1,
+      "defCount": 18,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04.lean",
+      "filename": "BallotProblemOQ01OQ04.lean",
+      "lineCount": 188,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
+      "filename": "BallotProblemOQ01OQ04OQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02.lean",
+      "filename": "BallotProblemOQ02.lean",
+      "lineCount": 340,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03.lean",
+      "filename": "BallotProblemOQ03.lean",
+      "lineCount": 2879,
+      "theoremCount": 119,
+      "axiomCount": 0,
+      "defCount": 31,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ02.lean",
+      "filename": "BallotProblemOQ03OQ02.lean",
+      "lineCount": 2315,
+      "theoremCount": 28,
+      "axiomCount": 0,
+      "defCount": 23,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ03.lean",
+      "filename": "BallotProblemOQ03OQ03.lean",
+      "lineCount": 188,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
+    }
+  ]
+}
