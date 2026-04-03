@@ -402,20 +402,37 @@ theorem GridSimplex.miss_coord_at (s : GridSimplex d N)
     --           verts(k.succ).coords miss + 1
     -- So verts(k.succ).coords miss =
     --    verts(k.castSucc).coords miss - 1
-    have hcs : k.castSucc = (k : Fin (d + 1)) := by
-      ext; simp [Fin.castSucc, Fin.val_natCast]
-    rw [hcs] at hsd
-    have hks : (k.succ : Fin (d + 1)) = k.succ := rfl
-    rw [ih]
+    rw [ih] at hsd
+    have hcv : k.castSucc.val = k.val := rfl
+    have hsv : k.succ.val = k.val + 1 := rfl
     omega
 
 /-- The base vertex's miss coordinate is at least d
 (since it decreases by 1 at each of d steps). -/
 theorem GridSimplex.base_miss_ge_d (s : GridSimplex d N) :
     d ≤ (s.verts 0).coords s.miss := by
-  have h := s.miss_coord_at ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩
-  simp at h
-  omega
+  induction d with
+  | zero => omega
+  | succ n ih =>
+    -- At step n, coords = base - n, and step_dec says
+    -- verts(n.castSucc).coords miss = verts(n.succ).coords miss + 1
+    -- so base - n ≥ 1, i.e., base ≥ n + 1.
+    have hsd := s.step_dec ⟨n, by omega⟩
+    have hmca := s.miss_coord_at ⟨n, by omega⟩
+    have : (⟨n, by omega⟩ : Fin (n + 2)).val = n := rfl
+    rw [this] at hmca
+    -- hmca : verts(⟨n,...⟩).coords miss = base - n
+    -- hsd : verts(⟨n,...⟩.castSucc).coords miss = verts(⟨n,...⟩.succ).coords miss + 1
+    have hcv : (⟨n, by omega⟩ : Fin (n + 1)).castSucc.val = n := rfl
+    have hsv : (⟨n, by omega⟩ : Fin (n + 1)).succ.val = n + 1 := rfl
+    -- castSucc and the original Fin (n+2) element have same val
+    have : (⟨n, by omega⟩ : Fin (n + 1)).castSucc = (⟨n, by omega⟩ : Fin (n + 2)) := by
+      ext; simp
+    rw [this] at hsd
+    rw [hmca] at hsd
+    -- hsd : base - n = verts(⟨n,...⟩.succ).coords miss + 1
+    -- This means base - n ≥ 1, so base ≥ n + 1
+    omega
 
 /-- At vertex m, the miss coordinate is at least d - m. -/
 theorem GridSimplex.miss_coord_ge (s : GridSimplex d N)
@@ -445,14 +462,18 @@ theorem GridSimplex.incDir_surj_complement (s : GridSimplex d N)
   have hsub : Finset.univ.image s.incDir ⊆
       (Finset.univ.erase s.miss).erase j := by
     intro x hx
-    simp at hx ⊢
+    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hx
     obtain ⟨k, rfl⟩ := hx
-    exact ⟨(s.miss_ne_inc k).symm, h k⟩
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+    exact ⟨h k, s.miss_ne_inc k⟩
   have hle := Finset.card_le_card hsub
-  simp at hle
   rw [hcard] at hle
-  have : s.miss ≠ j := Ne.symm hj
-  simp [Finset.card_erase_of_mem, this] at hle
+  have hmiss_mem : s.miss ∈ (Finset.univ : Finset (Fin (d + 1))) := Finset.mem_univ _
+  have hj_mem : j ∈ (Finset.univ.erase s.miss) := by
+    rw [Finset.mem_erase]
+    exact ⟨hj, Finset.mem_univ _⟩
+  rw [Finset.card_erase_of_mem hj_mem, Finset.card_erase_of_mem hmiss_mem] at hle
+  simp at hle
   omega
 
 -- ============================================================
@@ -476,7 +497,7 @@ noncomputable def BaryPoint.transfer {d N : ℕ}
         else if j = dec then v.coords j - 1
         else v.coords j) + (if j = dec then 1 else 0) =
         v.coords j + (if j = inc then 1 else 0) := by
-      intro j _; split_ifs <;> omega
+      intro j _; split_ifs <;> (simp_all; omega)
     have hsums := Finset.sum_congr rfl hkey
     rw [Finset.sum_add_distrib, Finset.sum_add_distrib] at hsums
     simp only [Finset.sum_ite_eq', Finset.mem_univ, ite_true] at hsums
@@ -528,7 +549,9 @@ noncomputable def GridSimplex.interiorFlip
     have h3 : k.val < d := k.isLt
     have h4 : prev_v_idx.val < d := by omega
     have h5 : 1 ≤ d - prev_v_idx.val := by omega
-    omega
+    -- h1 : d - prev_v_idx.val ≤ coords, h5 : 1 ≤ d - prev_v_idx.val
+    -- so 1 ≤ coords
+    exact Nat.lt_of_lt_of_le (by omega : 0 < d - prev_v_idx.val) h1
   have h_ne : s.incDir k ≠ s.miss := s.miss_ne_inc k
   let new_v := v_prev.transfer (s.incDir k) s.miss h_ne h_miss_pos
   -- New incDir: swap at positions k_prev and k
@@ -632,10 +655,10 @@ noncomputable def GridSimplex.boundaryFlip0
               ext; simp [Fin.ext_iff] at this; omega
             · -- a+1 < d, b+1 ≥ d (b = d-1)
               exfalso; have := s.inc_injective hab
-              simp [Fin.ext_iff] at this; omega
+              simp [Fin.ext_iff] at this
             · -- a+1 ≥ d, b+1 < d
               exfalso; have := s.inc_injective hab
-              simp [Fin.ext_iff] at this; omega
+              simp [Fin.ext_iff] at this
             · -- Both a+1 ≥ d, b+1 ≥ d
               have ha : a.val = d - 1 := by omega
               have hb : b.val = d - 1 := by omega
@@ -659,9 +682,9 @@ noncomputable def GridSimplex.boundaryFlipLast
     let last_inc := s.incDir ⟨d - 1, by omega⟩
     let v0 := s.verts 0
     if h_pos : 0 < v0.coords last_inc then
-      have h_ne : s.miss ≠ last_inc :=
-        Ne.symm (s.miss_ne_inc ⟨d - 1, by omega⟩)
-      let new_v := v0.transfer s.miss last_inc h_ne h_pos
+      have h_ne : last_inc ≠ s.miss :=
+        s.miss_ne_inc ⟨d - 1, by omega⟩
+      let new_v := v0.transfer s.miss last_inc (Ne.symm h_ne) h_pos
       -- New incDir: cyclic right shift
       let new_incDir : Fin d → Fin (d + 1) := fun j =>
         if j.val = 0 then last_inc
@@ -675,7 +698,7 @@ noncomputable def GridSimplex.boundaryFlipLast
           miss_ne_inc := by
             intro j; simp only [new_incDir]
             split_ifs with h
-            · exact (s.miss_ne_inc ⟨d - 1, by omega⟩).symm
+            · exact s.miss_ne_inc ⟨d - 1, by omega⟩
             · exact s.miss_ne_inc ⟨j.val - 1, by omega⟩
           step_inc := by sorry
           step_dec := by sorry
