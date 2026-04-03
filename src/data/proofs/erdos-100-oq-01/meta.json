@@ -29,7 +29,44 @@
     "text": "Formalizes the growth rate gap between known and conjectured bounds for integer distance set diameters.",
     "proofStrategy": "See the overview summary for the proof approach.",
     "keyInsights": [
-      "See the parent entry for related insights."
+      "The Guth-Katz theorem (2015, Annals of Mathematics) resolved Erdős's distinct distances conjecture: any $n$ points in the plane determine at least $cn/\\log n$ distinct distances. This was a 65-year-old problem. For *integer distance sets* — where all pairwise distances are integers — the conjecture is stronger: the diameter (maximum distance) should grow linearly, $\\Omega(n)$, rather than sublinearly. The gap between the known $\\Omega(n/\\log n)$ and conjectured $\\Omega(n)$ is exactly a factor of $\\log n$.",
+      "`log_tendsto_atTop` and `n_over_log_sublinear` formalize the asymptotic gap: `Real.log` diverges to $+\\infty$ (using `Real.tendsto_log_atTop`), and $n/\\log n = o(n)$ (i.e., $(n/\\log n)/n = 1/\\log n \\to 0$). Together they prove the gap factor $\\log n$ is not a bounded constant but grows without bound — meaning the two bounds are genuinely different asymptotically.",
+      "`linearDiameterConjecture` and `sublinearBound` are Lean `def`s of type `Prop` — formal statements of the open conjecture and the known result. The theorem `linear_implies_known` proves the logical implication (if the linear conjecture holds, then the sublinear bound holds), which is a trivial consequence of $cn \\geq cn/\\log n$ for $\\log n \\geq 1$. This logical relationship confirms the conjecture is a strengthening of the known result.",
+      "The Anning-Erdős theorem (1945) provides a key finiteness constraint: any *infinite* set of non-collinear points with all mutual integer distances is impossible. Equivalently, for fixed diameter $d$, only finitely many non-collinear integer distance configurations fit. This theorem has 1 sorry in the file — its proof requires a clever number-theoretic argument (any triple of integer-distance points with given base determines at most 2 possible third points).",
+      "Piepmeyer's 9-point integer distance configuration (also with 1 sorry) shows that near-equality in the lower bound is achievable for small $n$: 9 non-collinear points with all pairwise integer distances and diameter $\\leq 4$. This is a known extremal construction but requires an explicit witness (specific coordinates) that must be verified by computation."
+    ]
+  },
+  "sections": [
+    {
+      "id": "part-i-gap",
+      "title": "Part I: The Growth Rate Gap",
+      "startLine": 1,
+      "endLine": 79,
+      "summary": "Imports and 4 theorems analyzing the log n gap: log_tendsto_atTop (log → ∞), n_over_log_sublinear (n/log n = o(n)), log_gt_one (log n > 1 for n ≥ 3), linear_implies_sublinear (cn > cn/log n for n ≥ 3). These confirm the gap is real and grows without bound."
+    },
+    {
+      "id": "part-ii-conjecture",
+      "title": "Part II: Linear Conjecture Formalization",
+      "startLine": 80,
+      "endLine": 135,
+      "summary": "Defines linearDiameterConjecture (∃c>0: diameter ≥ cn eventually) and sublinearBound (∃c>0: diameter ≥ cn/log n eventually) as Lean Props. Proves linear_implies_known (linear conjecture → sublinear bound via trivial inequality). Includes the Guth-Katz context comment."
+    },
+    {
+      "id": "part-iii-small-cases",
+      "title": "Part III: Known Small Cases and Anning-Erdős",
+      "startLine": 136,
+      "endLine": 165,
+      "summary": "Two theorems with sorries: piepmeyer_upper (9-point configuration with diameter ≤ 4, awaiting explicit witness) and anning_erdos_finiteness (infinite non-collinear integer distance sets are impossible, awaiting proof). Documents OEIS A186704 for small n values."
+    }
+  ],
+  "conclusion": {
+    "summary": "The $\\log n$ gap between the Guth-Katz bound ($n/\\log n$) and the Erdős conjecture ($n$) is formally analyzed: the gap grows without bound, the linear conjecture implies the known bound, and the Anning-Erdős finiteness constraint is stated. Two sorries remain (Piepmeyer's witness, Anning-Erdős proof).",
+    "implications": "Closing the $\\log n$ gap is one of the central open problems in discrete geometry. The Guth-Katz proof used polynomial method and incidence geometry in a deep way. Improving the exponent or removing the $\\log n$ loss for integer distance sets specifically would require exploiting the arithmetic structure of integers — the fact that pairwise distances are integers, not just real numbers. This structural constraint is expected to prevent the configurations that cause the $\\log n$ loss in the general case.",
+    "openQuestions": [
+      "Can the Anning-Erdős theorem be proved in Lean? The proof requires: (1) for any two points $A, B$ with $|AB| = d$, the locus of points $C$ with $|AC|, |BC|$ integers is discrete; (2) a finite bounding argument. Step (2) uses the fact that integer hyperbolas $|CA| - |CB| = k$ (for $|k| < d$) have only finitely many intersection points for distinct values of $k$.",
+      "Can the Guth-Katz distinct distances theorem be formalized in Lean? This would be a major milestone in formal discrete geometry, requiring the polynomial method (algebraic geometry applied to point configurations) and the Szemerédi-Trotter incidence theorem.",
+      "Can the linear lower bound $N = \\Omega(n)$ be proved for *collinear* integer distance sets? For points on a line, integer distances force a specific arithmetic structure (the differences form an integer sequence), and the diameter is at least the $n$-th term of this sequence.",
+      "Is there a Lean proof that Piepmeyer's 9-point configuration is the densest known non-collinear integer distance set with bounded diameter? This would require verifying the coordinates explicitly and checking all $\\binom{9}{2} = 36$ pairwise distances are integers $\\leq 4$."
     ]
   },
   "crossReferences": [
