@@ -51,8 +51,8 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 0,
-    "lineCount": 220,
-    "assumptions": "No axioms. All three former placeholder axioms (puiseux_theorem, puiseux_is_algebraic_closure, newton_puiseux_terminates) had trivial True conclusions and have been converted to theorems.",
+    "lineCount": 471,
+    "assumptions": "No axiom declarations. 5 True-stub theorems that prove trivial True placeholders instead of actual mathematical content: puiseux_theorem, puiseux_is_algebraic_closure, newton_puiseux_terminates, square_root_puiseux, cusp_parameterization.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -151,8 +151,8 @@
       "Polynomial"
     ],
     "namespace": "PuiseuxTheorem",
-    "lineCount": 220,
-    "axiomCount": 3,
+    "lineCount": 471,
+    "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 2
   },
