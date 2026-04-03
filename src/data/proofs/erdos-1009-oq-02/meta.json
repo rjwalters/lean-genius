@@ -19,7 +19,7 @@
       "open",
       "extremal-combinatorics"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 1009,
     "erdosUrl": "https://erdosproblems.com/1009",
@@ -28,7 +28,7 @@
     "mathlib_version": "4.26.0",
     "lineCount": 240,
     "axiomCount": 0,
-    "assumptions": "Main open question stated as Prop (not asserted true). All supporting theorems fully proved: 0 sorries, 0 axioms.",
+    "assumptions": "Main open question stated as Prop (not asserted true). All supporting theorems fully proved: 0 sorries, 0 axioms. Core Turán bound (turanK4_extremal) uses Mathlib's CliqueFree.card_edgeFinset_le.",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.CliqueFree.card_edgeFinset_le",
@@ -44,7 +44,7 @@
     "originalContributions": [
       "Clique4 structure: formalization of K₄ copies in simple graphs",
       "edgeDisjointK4_question: formal statement of the K₄ analog of Györi's theorem",
-      "turanK4_extremal: K₄-free graphs have ≤ ⌊n²/3⌋ edges (Turán's theorem)",
+      "turanK4_extremal: bridge theorem connecting Mathlib's Turán bound to our K₄ structure",
       "turanK3_le_turanK4: K₄ threshold dominates K₃ threshold",
       "clique4_has_triangle: every K₄ contains a K₃"
     ],

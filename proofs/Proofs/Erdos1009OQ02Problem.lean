@@ -166,8 +166,8 @@ theorem turanK4_extremal (G : SimpleGraph V) [DecidableRel G.Adj]
 
     This is the contrapositive of `turanK4_extremal`: if no K₄ exists then
     CliqueFree 4 holds, giving edges ≤ turanThresholdK4. The bridge from
-    "no Clique4" to CliqueFree 4 requires extracting 4 vertices from a
-    Mathlib clique finset, which we defer via sorry. -/
+    "no Clique4" to CliqueFree 4 is proved by extracting 4 vertices from the
+    Mathlib clique finset via `Finset.card_eq_four`. -/
 theorem exceeds_turanK4_has_clique4 (G : SimpleGraph V) [DecidableRel G.Adj]
     (h : numEdges4 G > turanThresholdK4 (numVertices4 G)) :
     ∃ K : Clique4 G, True := by
