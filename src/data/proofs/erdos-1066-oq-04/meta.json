@@ -2,7 +2,7 @@
   "id": "erdos-1066-oq-04",
   "title": "Higher-Dimensional Unit Distance Independence",
   "slug": "erdos-1066-oq-04",
-  "description": "Explores g_d(n) — the independence number of unit distance graphs in ℝ^d. Kissing number τ(d) bounds degrees, giving g_d(n) ≥ n/(τ(d)+1) by greedy coloring.",
+  "description": "Explores g_d(n) — the independence number of unit distance graphs in ℝ^d. The kissing number τ(d) bounds vertex degrees, giving g_d(n) ≥ n/(τ(d)+1) by greedy coloring. Known kissing numbers (τ(8)=240, τ(24)=196560) are encoded; the greedy bound is axiomatized. Includes exact values for d=1,2,3 and the scaling behavior as d→∞.",
   "meta": {
     "author": "Erdős, Swanepoel, et al.",
     "sourceUrl": "https://erdosproblems.com/1066",
@@ -20,60 +20,98 @@
     "sorries": 2,
     "axiomCount": 2,
     "lineCount": 156,
-    "assumptions": "2 axioms (degree_le_kissing, greedy_independence). 2 sorries.",
+    "assumptions": "2 axioms: degree_le_kissing (each point has ≤ τ(d) unit-distance neighbors) and greedy_independence (greedy coloring gives independent set of size ≥ n/(τ(d)+1)). 2 sorries: independenceRatio definition (requires analytic limit) and ratio_greedy_bound (uses sorry'd definition).",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
-      "SepConfig structure for d-dimensional separated points",
-      "Kissing number lookup with known values",
-      "Greedy bound g_d(n) ≥ n/(τ(d)+1) for specific dimensions",
-      "Scaling analysis: greedy weakens as d grows"
+      "SepConfig structure for d-dimensional separated configurations",
+      "kissingNumber lookup encoding known exact values τ(1)=2, τ(2)=6, τ(3)=12, τ(4)=24, τ(8)=240, τ(24)=196560",
+      "Greedy lower bound g_d(n) ≥ n/(τ(d)+1) via axiomatized greedy_independence",
+      "Exact bounds for d=1,2,3: n/3, n/7, n/13",
+      "Greedy weakens theorem: τ(d)+1 ≥ 3 for all d ≥ 1",
+      "Independence ratio framework documenting the scaling question"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The study of unit distance graphs begins with Erdős's 1946 paper on the unit distance problem in the plane: how many unit distances can occur among $n$ points? The independence number $g(n)$ — the maximum $k$ such that any unit distance graph on $n$ separated points has an independent set of size $\\geq k$ — was introduced to capture the structural sparseness of unit distance graphs.\n\nThe **kissing number** $\\tau(d)$ is one of the most classical problems in geometry: how many non-overlapping unit spheres can simultaneously touch a central unit sphere in $\\mathbb{R}^d$? The 2D answer $\\tau(2) = 6$ is elementary (honeycomb packing). The 3D answer $\\tau(3) = 12$ was famously disputed between Newton (12) and Gregory (13) for nearly 300 years; it was settled by Schütte and van der Waerden in 1953. The exceptional cases $\\tau(8) = 240$ and $\\tau(24) = 196560$ were proved by Viazovska et al. in 2017 using modular forms — the latter being the densest sphere packing in 24 dimensions (Leech lattice), earning Viazovska the Fields Medal in 2022.\n\nFor $g_d(n)$ in higher dimensions, the greedy coloring bound $g_d(n) \\geq n/(\\tau(d)+1)$ is the most direct approach. In 2D, Swanepoel improved this to $g_2(n) \\geq (8/31)n \\approx 0.258n$, leveraging the specific structure of planar point sets. Erdős conjectured $\\lim g_2(n)/n = 1/3$, which remains open.",
+    "problemStatement": "**Erdős Problem #1066 — OQ-04 (Higher Dimensions):** What is the behavior of $g_d(n)$ in dimension $d \\geq 2$?\n\nFormally: let $g_d(n)$ be the maximum $k$ such that every $n$-point configuration in $\\mathbb{R}^d$ with pairwise distances $\\geq 1$ contains an independent set of size $\\geq k$ in the unit distance graph (edges at distance exactly 1).\n\nKnown (d=2): $(8/31)n \\leq g_2(n) \\leq (5/16)n$ (Swanepoel lower, Erdős-Vesztergombi upper).\n\n**Greedy bound** (this file, axiomatized):\n$$g_d(n) \\geq \\frac{n}{\\tau(d)+1}$$\nwhere $\\tau(d)$ is the kissing number in $\\mathbb{R}^d$. This gives:\n- $d=1$: $g_1(n) \\geq n/3$ (tight: every 3rd point on a line)\n- $d=2$: $g_2(n) \\geq n/7$ (weaker than Swanepoel's $8/31$)\n- $d=3$: $g_3(n) \\geq n/13$\n- $d=8$: $g_8(n) \\geq n/241$\n- $d=24$: $g_{24}(n) \\geq n/196561$",
+    "proofStrategy": "The file is organized in five parts:\n\n**Part I (SepConfig):** Defines the fundamental data: a separated configuration as n points in ℝ^d with pairwise distances ≥ 1, the unit distance edge relation (distance exactly 1), and the unit degree of a vertex (number of unit-distance neighbors).\n\n**Part II (Kissing Number):** The kissingNumber function encodes known exact values by pattern matching. For unspecified dimensions, it uses 3^d as a safe upper bound (actual kissing numbers grow more slowly, but 3^d suffices for the bounds).\n\n**Part III (Greedy Bound):** Two axioms carry the mathematical content: `degree_le_kissing` (the unit degree of any vertex is at most τ(d), because unit-distance neighbors lie on a unit sphere and must be pairwise at distance ≥ 1, so at most τ(d) of them fit) and `greedy_independence` (from max-degree ≤ τ(d), greedy coloring yields an independent set of size ≥ n/(τ(d)+1)).\n\n**Part IV (Specific Dimensions):** Simple `decide` computations verify τ(d)+1 for d=1,2,3. The `greedy_weakens` theorem proves τ(d)+1 ≥ 3 for all d ≥ 1 by a case split and omega.\n\n**Part V (Scaling):** The independence ratio lim g_d(n)/n is introduced as a sorry'd definition (the limit requires analytic machinery), and the greedy lower bound 1/(τ(d)+1) is asserted as a sorry'd theorem.",
+    "keyInsights": [
+      "The kissing number τ(d) is the key dimensional parameter: it controls the maximum degree of any unit distance graph on separated points. Since unit-distance neighbors of p lie on the unit sphere centered at p and are pairwise at distance ≥ 1, they form a 'packing' of the sphere — and τ(d) counts exactly how many such packings fit.",
+      "The greedy bound n/(τ(d)+1) follows from a general graph theory fact: any graph with max degree Δ has independence number ≥ n/(Δ+1), achieved by greedy coloring. For unit distance graphs, Δ ≤ τ(d), giving the bound. This is not tight in general — structured arguments do better in low dimensions.",
+      "The kissing numbers τ(8) = 240 and τ(24) = 196560 are exceptional: they are the unique optimal sphere packings in their dimensions (E8 and Leech lattice), proved via linear programming bounds (Delsarte method) and completed by Viazovska's breakthrough. These exact values make the greedy bound particularly explicit for d=8 and d=24.",
+      "The greedy bound degrades rapidly with dimension: τ(d) ≥ 2d for large d (the density of sphere packings), so the fraction 1/(τ(d)+1) → 0 polynomially. Understanding the true behavior of g_d(n)/n as d → ∞ is an open problem — whether it also goes to 0, or has a positive limit, is unknown.",
+      "The 2D case reveals the gap between greedy and structural arguments: the greedy bound gives 1/7 ≈ 0.143, while Swanepoel proved 8/31 ≈ 0.258 using the specific structure of planar configurations. The Erdős conjecture of 1/3 would require a deeper combinatorial argument — possibly related to fractional chromatic numbers."
+    ],
+    "prerequisites": [
+      "Unit distance graphs and independence numbers in combinatorial geometry",
+      "Kissing number problem and sphere packings",
+      "Greedy graph coloring bound (independence number ≥ n/(Δ+1))",
+      "EuclideanSpace in Lean 4 (Mathlib) and distance functions"
     ]
   },
   "sections": [
     {
       "id": "config",
-      "title": "Separated Configurations",
-      "startLine": 20,
-      "endLine": 40,
-      "summary": "Separated Configurations"
+      "title": "Part I: Separated Configurations",
+      "startLine": 26,
+      "endLine": 44,
+      "summary": "Defines SepConfig (n points in ℝ^d with pairwise distance ≥ 1), unitEdge (distance exactly 1), and unitDegree (count of unit-distance neighbors). These are the core data structures for the unit distance graph.",
+      "mathContext": "$\\mathrm{SepConfig}(d, n)$: a type of $n$-tuples of points in $\\mathbb{R}^d$ with $\\forall i \\neq j,\\, \\mathrm{dist}(p_i, p_j) \\geq 1$. The unit edge relation: $\\mathrm{unitEdge}(C, i, j) :\\!\\!\\iff i \\neq j \\land \\mathrm{dist}(p_i, p_j) = 1$. Unit degree: $\\mathrm{deg}(C, i) = |\\{j : \\mathrm{unitEdge}(C, i, j)\\}|$. The separation condition ensures edges (distance = 1) form a graph (not a hypergraph) — no multiple unit distances exist between the same pair."
     },
     {
       "id": "kissing",
-      "title": "Kissing Number Bound",
-      "startLine": 42,
-      "endLine": 70,
-      "summary": "Kissing Number Bound"
+      "title": "Part II: Kissing Number Lookup",
+      "startLine": 45,
+      "endLine": 67,
+      "summary": "Encodes the kissing number τ(d) for known dimensions and uses 3^d as a safe upper bound for unspecified d. The axiom degree_le_kissing bounds vertex degrees.",
+      "mathContext": "Known exact kissing numbers: $\\tau(1) = 2$, $\\tau(2) = 6$, $\\tau(3) = 12$, $\\tau(4) = 24$, $\\tau(8) = 240$, $\\tau(24) = 196560$. For general $d$: $\\tau(d) \\leq 3^d$ (trivial: each $1/2$-sphere cap containing a kissing sphere has angular radius $\\pi/6$, and Euclidean balls in $\\mathbb{R}^{d-1}$ give the bound). The axiom $\\mathrm{degree\\_le\\_kissing}$: unit-distance neighbors of $p$ lie on $S^{d-1}(p)$ and are pairwise at distance $\\geq 1$, so they form a kissing configuration — at most $\\tau(d)$ of them."
     },
     {
       "id": "greedy",
-      "title": "Greedy Independence",
-      "startLine": 72,
-      "endLine": 92,
-      "summary": "Greedy Independence"
+      "title": "Part III: Greedy Independence Bound",
+      "startLine": 69,
+      "endLine": 90,
+      "summary": "Axiomatizes greedy_independence and derives greedy_lower_bound. The axiom is the mathematical heart: greedy coloring on a graph with max degree Δ yields an independent set of size ≥ n/(Δ+1).",
+      "mathContext": "Greedy coloring argument: process vertices in some order; include vertex $v$ in the independent set $S$ if no neighbor of $v$ is already in $S$. In a graph with max degree $\\Delta$, each vertex inclusion eliminates at most $\\Delta$ future vertices. So after processing all $n$ vertices: $|S| \\cdot (\\Delta + 1) \\geq n$, giving $|S| \\geq n/(\\Delta+1)$. Applied with $\\Delta = \\tau(d)$: $g_d(n) \\geq n/(\\tau(d)+1)$."
     },
     {
       "id": "dimensions",
-      "title": "Specific Dimensions",
-      "startLine": 94,
-      "endLine": 128,
-      "summary": "Specific Dimensions"
+      "title": "Part IV: Specific Dimensions",
+      "startLine": 92,
+      "endLine": 117,
+      "summary": "Computes τ(d)+1 for d=1,2,3 by decide and proves greedy_weakens: τ(d)+1 ≥ 3 for all d ≥ 1.",
+      "mathContext": "$\\tau(1) + 1 = 3$ (every 3rd point on a line is independent — optimal for 1D); $\\tau(2) + 1 = 7$ (greedy gives $n/7$, worse than Swanepoel's $8/31$); $\\tau(3) + 1 = 13$ (greedy gives $n/13$). The \\texttt{greedy\\_weakens} proof: cases $d \\in \\{1,2,3\\}$ by \\texttt{decide}; for $d \\geq 4$: $\\tau(d) \\geq 3^d \\geq 3^4 > 2$, so $\\tau(d)+1 \\geq 3$. (The case $d+4$ branch uses \\texttt{simp [kissingNumber]; omega}.)"
+    },
+    {
+      "id": "scaling",
+      "title": "Part V: Scaling Question and Independence Ratio",
+      "startLine": 119,
+      "endLine": 156,
+      "summary": "Introduces the independence ratio lim g_d(n)/n and the greedy lower bound 1/(τ(d)+1). Both are sorry'd — the ratio requires an analytic definition of the limit; the bound requires connecting the discrete bound to the continuous ratio.",
+      "mathContext": "$\\rho_d := \\lim_{n\\to\\infty} g_d(n)/n$ (if exists). Greedy gives $\\rho_d \\geq 1/(\\tau(d)+1)$. For $d=2$: Swanepoel proved $\\rho_2 \\geq 8/31 \\approx 0.258$; Erdős conjectured $\\rho_2 = 1/3$. The sorry'd $\\mathrm{independenceRatio}$ definition would need to formalize the limit in terms of $\\liminf_{n\\to\\infty} g_d(n)/n$ as a real number, requiring Lean's filter/limit infrastructure."
     }
   ],
   "conclusion": {
-    "summary": "Higher-dimensional g_d(n) bounded below by n/(τ(d)+1) via greedy coloring. Structural improvements needed for tighter bounds.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "The higher-dimensional unit distance independence number g_d(n) is bounded below by n/(τ(d)+1) via greedy coloring, where τ(d) is the kissing number. This file formalizes the framework with two axioms (degree bound and greedy bound), encodes known kissing numbers, and documents the specific bounds for d=1,2,3. The two sorries (independence ratio definition and its greedy bound) require analytic limit machinery not yet developed.",
+    "implications": "The kissing number connection reveals a deep structural relationship: the combinatorics of unit distance graphs in ℝ^d is governed by the sphere packing problem in ℝ^{d-1}. The fact that τ(8) and τ(24) are exactly known (due to E8 and Leech lattice's exceptional properties) makes the greedy bounds in those dimensions unusually precise.\n\nThe gap between greedy (n/7 for d=2) and the best known bound (8/31 for d=2) suggests that capturing the full structure of unit distance graphs requires more than just degree bounds — it requires understanding the local geometry of separated configurations. This is connected to the fractional chromatic number of unit distance graphs, which is bounded by Lovász's theta function.\n\nIn the limit d → ∞, the greedy bound degenerates to 0 (since τ(d) ≥ 2d). Whether g_d(n)/n actually goes to 0 as d → ∞ is an open question about the geometry of high-dimensional sphere packings.",
+    "openQuestions": [
+      "Is Erdős's conjecture ρ₂ = 1/3 true? The current best lower bound is 8/31 (Swanepoel) and upper bound is 5/16. The gap [8/31, 5/16] = [0.258, 0.3125] has resisted closure for decades.",
+      "Does lim g_d(n)/n → 0 as d → ∞? The greedy bound gives 1/(τ(d)+1) → 0, but a priori the true ratio might be bounded away from 0 by some non-greedy argument.",
+      "Can the 2 axioms be proved in Lean? The degree_le_kissing axiom requires formalizing the sphere packing argument (Finset.card of neighbors on a sphere of radius 1); greedy_independence is a general graph theory fact that Mathlib might be able to provide.",
+      "What is the behavior of g_d(n) for d ∈ {4, 8, 24}? These exceptional dimensions have exact kissing numbers; does the unit distance independence structure also become exceptional there, as it does for sphere packings?"
+    ]
   },
   "crossReferences": [
     {
       "targetId": "erdos-1066",
-      "relationship": "parent-problem"
+      "relationship": "parent-problem",
+      "description": "The parent Erdős 1066 formalization for the 2D case; this file extends to arbitrary dimensions using the kissing number framework"
     },
     {
       "targetId": "erdos-1084-oq-01",
       "relationship": "related-problem",
-      "description": "Also uses kissing number bounds"
+      "description": "Also uses kissing number bounds for unit distance graph analysis"
     }
   ],
   "leanFile": {
@@ -85,5 +123,28 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "references": [
+    {
+      "authors": "Swanepoel, Konrad J.",
+      "title": "Unit distances and diameters in Euclidean spaces",
+      "year": "2009",
+      "venue": "Discrete and Computational Geometry 41(1), 1–27",
+      "note": "Proves the lower bound g₂(n) ≥ (8/31)n for the plane, improving the greedy bound of n/7. Also surveys the higher-dimensional problem."
+    },
+    {
+      "authors": "Viazovska, Maryna S.",
+      "title": "The sphere packing problem in dimension 8",
+      "year": "2017",
+      "venue": "Annals of Mathematics 185(3), 991–1015",
+      "note": "Proves τ(8) = 240 is optimal (E8 lattice gives the densest sphere packing in ℝ⁸). The analogous result for τ(24) = 196560 (Leech lattice) was proved simultaneously by Cohn, Kumar, Miller, Radchenko, Viazovska."
+    },
+    {
+      "authors": "Schütte, K. and van der Waerden, B.L.",
+      "title": "Das Problem der dreizehn Kugeln",
+      "year": "1953",
+      "venue": "Mathematische Annalen 125, 325–334",
+      "note": "Settles the Newton-Gregory dispute: τ(3) = 12. Thirteen non-overlapping unit spheres cannot simultaneously touch a central unit sphere in ℝ³."
+    }
+  ]
 }

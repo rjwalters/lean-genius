@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-sepconfig",
+    "proofId": "erdos-1066-oq-04",
+    "range": { "startLine": 30, "endLine": 43 },
+    "type": "definition",
+    "title": "SepConfig: Separated Configurations in ℝ^d",
+    "content": "The SepConfig structure formalizes an n-point configuration in ℝ^d where all pairwise distances are at least 1 (separated). The unit edge and unit degree definitions then build the unit distance graph on top. The separation condition (dist ≥ 1) is necessary to make 'distance exactly 1' non-trivial: without it, a configuration with clustered points would have spurious unit-distance edges.",
+    "mathContext": "$\\mathrm{SepConfig}(d, n)$: pairs $(P, \\sigma)$ where $P : \\mathrm{Fin}\\, n \\to \\mathbb{R}^d$ and $\\sigma : \\forall i \\neq j,\\, \\mathrm{dist}(P_i, P_j) \\geq 1$. The unit edge: $\\mathrm{unitEdge}(C, i, j) \\iff i \\neq j \\land \\mathrm{dist}(C.P_i, C.P_j) = 1$. Unit degree: $\\mathrm{deg}(i) := |\\{j \\neq i : \\mathrm{dist}(P_i, P_j) = 1\\}|$. The separation condition ensures no two points coincide and edges are sparse (at distance exactly 1, not at all scales).",
+    "significance": "key",
+    "relatedConcepts": ["unit distance graph", "point configuration", "Euclidean distance", "Finset.card"],
+    "prerequisites": ["EuclideanSpace in Mathlib", "dist function", "Fin n type", "structure syntax in Lean 4"]
+  },
+  {
+    "id": "ann-kissing-number",
+    "proofId": "erdos-1066-oq-04",
+    "range": { "startLine": 49, "endLine": 67 },
+    "type": "definition",
+    "title": "Kissing Number Lookup and the Degree Axiom",
+    "content": "The kissingNumber function encodes exact values for the special dimensions where the kissing problem is solved. The fallback 3^d is a coarse but correct upper bound. The degree_le_kissing axiom captures the key geometric fact: each vertex p in a separated configuration has at most τ(d) unit-distance neighbors, because those neighbors lie on the unit sphere around p and must be pairwise at distance ≥ 1 — forming a kissing configuration.",
+    "mathContext": "Known kissing numbers: $\\tau(1)=2$, $\\tau(2)=6$, $\\tau(3)=12$, $\\tau(4)=24$, $\\tau(8)=240$, $\\tau(24)=196560$. Geometric proof of axiom: neighbors $\\{q_1, \\ldots, q_k\\}$ of $p$ satisfy $\\mathrm{dist}(p, q_i) = 1$ and $\\mathrm{dist}(q_i, q_j) \\geq 1$. Scaling by 2: $\\{q_i / 2\\}$ lie on the unit sphere centered at $p/2$ and pairwise at distance $\\geq 1/2$... Actually: $q_i - p$ are unit vectors with pairwise distance $\\geq 1$. This is exactly the kissing number problem. So $k \\leq \\tau(d)$.",
+    "significance": "key",
+    "relatedConcepts": ["kissing number", "sphere packing", "E8 lattice", "Leech lattice", "Viazovska 2017"],
+    "prerequisites": ["sphere packing problem", "Newton-Gregory problem", "exceptional lattices"]
+  },
+  {
+    "id": "ann-greedy-bound",
+    "proofId": "erdos-1066-oq-04",
+    "range": { "startLine": 74, "endLine": 90 },
+    "type": "definition",
+    "title": "Greedy Independence: From Max Degree to Independent Set",
+    "content": "The greedy_independence axiom encodes the standard greedy graph coloring result: any graph on n vertices with max degree ≤ Δ has an independent set of size ≥ n/(Δ+1). The greedy_lower_bound theorem is an immediate corollary. This is the simplest non-trivial lower bound for independence numbers — constructive (greedy algorithm) but not tight.",
+    "mathContext": "Greedy algorithm: process vertices $v_1, \\ldots, v_n$ in some order; add $v_i$ to $S$ if no current neighbor is in $S$. Each inclusion removes at most $\\Delta$ later vertices from consideration. Total: $|S| \\cdot (\\Delta+1) \\geq n$, so $|S| \\geq \\lceil n/(\\Delta+1) \\rceil$. For unit distance graphs: $\\Delta \\leq \\tau(d)$, giving $g_d(n) \\geq \\lfloor n/(\\tau(d)+1) \\rfloor$. Tighter bounds (like Swanepoel's $8/31$ for $d=2$) use structural properties specific to that dimension.",
+    "significance": "key",
+    "relatedConcepts": ["greedy coloring", "chromatic number", "independence number", "Turán-type bounds"],
+    "prerequisites": ["graph theory (independence number, max degree)", "greedy algorithms", "floor/ceiling division"]
+  },
+  {
+    "id": "ann-specific-dims",
+    "proofId": "erdos-1066-oq-04",
+    "range": { "startLine": 96, "endLine": 117 },
+    "type": "insight",
+    "title": "Explicit Greedy Bounds for d=1,2,3",
+    "content": "The three decide proofs compute τ(d)+1 for d=1,2,3. For d=1, g₁(n) ≥ n/3 is actually tight (every 3rd point on a line is an optimal independent set). For d=2, the greedy bound n/7 is far from the best known (8/31)n; the structure of planar packings allows a richer argument. The greedy_weakens theorem establishes that the denominator is at least 3 in all dimensions, giving a universal lower bound g_d(n) ≥ n/κ for some κ ≥ 3.",
+    "mathContext": "1D: on a line with pairwise separation $\\geq 1$, unit-distance neighbors are exactly the two adjacent points ($\\tau(1)=2$). Taking every 3rd point: $\\{p_0, p_3, p_6, \\ldots\\}$ is independent with size $\\approx n/3$. 2D: $\\tau(2) = 6$ (regular hexagon). Greedy: $n/7$. Swanepoel: $8n/31$. Erdős conjecture: $n/3$. 3D: $\\tau(3) = 12$ (icosahedron vertices). Greedy: $n/13$. The \\texttt{greedy\\_weakens} proof handles $d \\geq 4$ by \\texttt{simp [kissingNumber]; omega} since $\\mathrm{kissingNumber}(d+4) = 3^{d+4} \\geq 3^4 = 81 \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["1D unit distance", "hexagonal packing", "icosahedron", "Erdős conjecture"],
+    "prerequisites": ["decide tactic", "omega tactic", "pattern matching in Lean 4"]
+  },
+  {
+    "id": "ann-independence-ratio",
+    "proofId": "erdos-1066-oq-04",
+    "range": { "startLine": 123, "endLine": 135 },
+    "type": "context",
+    "title": "Independence Ratio: The Open Scaling Question",
+    "content": "The independence ratio ρ_d = lim g_d(n)/n represents the asymptotic fraction of points that can always be chosen as independent. The sorry'd definition and theorem honestly reflect the current state: the limit is mathematically well-defined (existence follows from subadditivity arguments) but requires analytic limit infrastructure in Lean. The greedy bound gives ρ_d ≥ 1/(τ(d)+1), but the true value of ρ_d for each d is the open question.",
+    "mathContext": "$\\rho_d := \\liminf_{n\\to\\infty} g_d(n)/n$. The greedy bound gives $\\rho_d \\geq 1/(\\tau(d)+1)$. Known: $\\rho_2 \\geq 8/31$ (Swanepoel) and $\\rho_2 \\leq 5/16$ (Erdős-Vesztergombi). Erdős conjecture: $\\rho_2 = 1/3$. The two sorries: (1) defining \\texttt{independenceRatio d} as a real number requires Lean's \\texttt{Filter.liminf} or \\texttt{iSup} over all configurations; (2) the bound requires the discrete $g_d(n) \\geq n/(\\tau(d)+1)$ implies $\\rho_d \\geq 1/(\\tau(d)+1)$.",
+    "significance": "context",
+    "relatedConcepts": ["independence ratio", "asymptotic density", "Swanepoel bound", "Erdős conjecture for unit distances"],
+    "prerequisites": ["Filter.liminf in Mathlib", "iSup over sets", "asymptotic analysis"]
+  }
+]
