@@ -13,10 +13,10 @@
     ],
     "proofRepoPath": "Proofs/KummerTheoremOQ01.lean",
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 2 sorries: multinomial_eq_prod_choose (general decomposition), multinomial_triple (a+b+c case). Proved: multinomial_pair (reduces to choose).",
-    "lineCount": 68,
+    "assumptions": "0 axioms. 1 sorry: multinomial_eq_prod_choose (general list induction). Proved: multinomial_pair (binomial case), multinomial_triple (trinomial case via choose_mul_factorial_mul_factorial).",
+    "lineCount": 103,
     "theoremCount": 4,
     "definitionCount": 1,
     "mathlib_version": "4.26.0",
@@ -32,7 +32,7 @@
   "overview": {
     "historicalContext": "Ernst Kummer proved in 1852 that the highest power of a prime p dividing the binomial coefficient C(n, k) equals the number of carries when adding k and n-k in base p. This elegant theorem connects combinatorics (counting subsets) with the arithmetic of positional numeral systems. The result was rediscovered and generalized throughout the 20th century. The multinomial extension is a natural question: the multinomial coefficient C(n; k₁, k₂, ..., kₘ) counts the number of ways to partition n objects into groups of sizes k₁, ..., kₘ (with n = k₁ + ... + kₘ). The key insight is that multinomial coefficients factor as products of binomials via a telescoping decomposition: C(n; k₁,...,kₘ) = C(k₁+k₂, k₁) · C(k₁+k₂+k₃, k₁+k₂) · ... · C(n, n-kₘ). Applying Kummer's theorem to each factor and summing gives the total carry count when adding k₁, k₂, ..., kₘ successively in base p.",
     "problemStatement": "Can Kummer's theorem — $v_p\\binom{n}{k} = c(k, n-k; p)$ where $c$ counts base-$p$ carries — be extended to multinomial coefficients? That is, does $v_p\\binom{n}{k_1,\\ldots,k_m} = $ total carries when adding $k_1,\\ldots,k_m$ in base $p$? Answer: yes, via iterated binomial decomposition.",
-    "proofStrategy": "The file defines the multinomial coefficient as n! / (k₁! · ... · kₘ!) using `List.sum` and `List.prod`. The key identity `multinomial_eq_prod_choose` expresses this as a product of binomials via `List.scanl` accumulation. `multinomial_pair` is fully proved (reduces to `Nat.add_choose_eq`). `multinomial_triple` is partially proved: the factorial rearrangement is complete but the final division step has a sorry. `kummer_multinomial_statement` is a placeholder stub (returns `True`).",
+    "proofStrategy": "The file defines the multinomial coefficient as n! / (k₁! · ... · kₘ!) using `List.sum` and `List.prod`. The key identity `multinomial_eq_prod_choose` expresses this as a product of binomials via `List.scanl` accumulation (1 sorry remains for the general list induction). `multinomial_pair` is fully proved via `Nat.choose_mul_factorial_mul_factorial`. `multinomial_triple` is fully proved: uses `Nat.choose_mul_factorial_mul_factorial` twice to establish C(a+b,a)*C(a+b+c,a+b)*(a!*(b!*c!)) = (a+b+c)!, then concludes via `Nat.mul_div_cancel`. `kummer_multinomial_statement` is a placeholder stub (returns `True`).",
     "keyInsights": [
       "The iterated decomposition $\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m} \\binom{k_1+\\cdots+k_i}{k_1+\\cdots+k_{i-1}}$ is the algebraic heart of the extension. Each factor is an ordinary binomial to which Kummer's theorem applies directly.",
       "Kummer's theorem for each binomial factor gives $v_p\\binom{k_1+\\cdots+k_i}{k_1+\\cdots+k_{i-1}} = c(k_i, k_1+\\cdots+k_{i-1}; p)$ — the carries when adding the $i$-th part to the running sum. Summing over all $i$ gives the total carries for adding all parts.",
