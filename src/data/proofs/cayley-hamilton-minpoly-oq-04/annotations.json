@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-nonderog-overview",
+    "proofId": "cayley-hamilton-minpoly-oq-04",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "Nonderogatory Matrices: Cyclic Vectors and the Degree Bridge",
+    "content": "The module docstring frames the characterization theorem: M is nonderogatory (minpoly = charpoly) iff M has a cyclic vector v such that {v, Mv, ..., M^{n-1}v} forms a basis. The proof strategy is elegant and asymmetric: the forward direction (cyclic → nonderogatory) uses a contradiction argument on polynomial degrees — if deg(minpoly) < n, then minpoly annihilates v with degree < n, contradicting the cyclic vector property; therefore deg(minpoly) = n = deg(charpoly), and the bridge lemma forces minpoly = charpoly. The backward direction (nonderogatory → cyclic) requires the structure theorem for finitely generated K[X]-modules (V ≅ ⊕ K[X]/(dᵢ) with invariant factors d₁ | d₂ | ... | d_k), which is axiomatized since it requires substantial PID module theory. The file references Horn & Johnson §3.2.4 and Hoffman & Kunze §7.2, and extends earlier files on minpoly-charpoly divisibility (MinpolyCharpoly.lean) and similar matrices (CayleyHamiltonMinpolyOQ02.lean).",
+    "mathContext": "The condition $\\mu_M = \\chi_M$ (minpoly = charpoly) is equivalent to: (1) the invariant factor decomposition has a single factor $d_1 = \\chi_M$; (2) each eigenvalue $\\mu$ has exactly one Jordan block; (3) the commutant $\\{N : NM = MN\\}$ equals $K[M]$ (polynomials in $M$). The name 'nonderogatory' comes from 'not derogatory' — a matrix is derogatory if it has repeated eigenvalues with insufficiently large Jordan blocks, causing $\\mu_M \\neq \\chi_M$.",
+    "significance": "context",
+    "relatedConcepts": ["nonderogatory", "cyclic vector", "Krylov sequence", "companion matrix", "invariant factors", "rational canonical form"],
+    "prerequisites": ["LinearAlgebra.Matrix.Charpoly.Minpoly", "minpoly_dvd_charpoly", "charpoly_natDegree_eq_dim"]
+  },
+  {
+    "id": "ann-nonderog-definitions",
+    "proofId": "cayley-hamilton-minpoly-oq-04",
+    "range": { "startLine": 67, "endLine": 88 },
+    "type": "definition",
+    "title": "IsCyclicVector and IsNonderogatory: Two Algebraic Predicates",
+    "content": "Part I introduces three definitions. IsCyclicVector M v (line 67) uses the annihilator formulation: v is cyclic iff every polynomial p of degree < n that annihilates v (i.e., (aeval M p).mulVec v = 0) must be the zero polynomial. This captures the annihilator ideal perspective: the set of polynomials annihilating v forms an ideal in K[X], and IsCyclicVector says this ideal has no nonzero elements of degree < n. IsCyclicVectorLI M v (line 72) is the equivalent linear independence formulation: the Krylov vectors {M^k v : k < n} are linearly independent (hence form a basis since K^n has dimension n). IsNonderogatory M (line 86) is simply minpoly K M = M.charpoly. The file uses the annihilator formulation IsCyclicVector throughout the proofs (rather than IsCyclicVectorLI) because it connects more directly to the polynomial algebra: the annihilator polynomial of v as a K[X]-module element is the key object.",
+    "mathContext": "The K[X]-module structure on $K^n$: scalar multiplication by $X$ acts as $M$, so $X \\cdot v = Mv$. The annihilator of $v$ in $K[X]$ is $\\{p : p(M)v = 0\\}$, a principal ideal $(\\mathrm{ann}(v))$. The cyclic condition $\\mathrm{IsCyclicVector}\\ M\\ v$ says $\\deg(\\mathrm{ann}(v)) \\geq n$, which forces $\\mathrm{ann}(v) = (\\chi_M)$ since $\\mathrm{ann}(v) \\mid \\chi_M$ (Cayley-Hamilton) and $\\deg \\chi_M = n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsCyclicVector", "IsCyclicVectorLI", "IsNonderogatory", "K[X]-module", "annihilator ideal"],
+    "prerequisites": ["Matrix.mulVec", "Polynomial.aeval", "LinearIndependent"]
+  },
+  {
+    "id": "ann-nonderog-bridge",
+    "proofId": "cayley-hamilton-minpoly-oq-04",
+    "range": { "startLine": 98, "endLine": 133 },
+    "type": "insight",
+    "title": "Bridge Lemma: Equal Degree Forces minpoly = charpoly",
+    "content": "The bridge lemma minpoly_eq_charpoly_of_natDegree_eq proves: if natDegree(minpoly K M) = natDegree(M.charpoly), then IsNonderogatory M (i.e., minpoly = charpoly). The proof uses minpoly_dvd_charpoly M to write charpoly = minpoly * r. Degree additivity (natDegree_mul) gives natDegree(charpoly) = natDegree(minpoly) + natDegree(r), so the equal-degree hypothesis forces natDegree(r) = 0, i.e., r is a constant polynomial. Since charpoly is monic and charpoly = minpoly * r, the cofactor r must have leadingCoeff = 1 (proved via Monic.leadingCoeff). A monic polynomial of degree 0 must be 1 (eq_C_of_natDegree_eq_zero + leading coefficient). Therefore charpoly = minpoly * 1 = minpoly. This is the algebraic core: the divisibility relation minpoly | charpoly combined with equal degrees forces equality.",
+    "mathContext": "In any integral domain, if monic $f \\mid g$ and $\\deg f = \\deg g$, then $f = g$. Proof: $g = f \\cdot r$, $\\deg r = 0$, $r$ constant; $g$ monic and $f$ monic imply $r$'s leading coefficient is 1 (from $g = f \\cdot r$), so $r = 1$. This works over any commutative ring where the degree formula $\\deg(fg) = \\deg f + \\deg g$ holds (integral domain suffices).",
+    "significance": "key",
+    "relatedConcepts": ["minpoly_dvd_charpoly", "natDegree_mul", "Polynomial.Monic", "eq_C_of_natDegree_eq_zero"],
+    "prerequisites": ["minpoly.monic", "charpoly_monic", "natDegree_le_of_dvd"]
+  },
+  {
+    "id": "ann-nonderog-forward",
+    "proofId": "cayley-hamilton-minpoly-oq-04",
+    "range": { "startLine": 146, "endLine": 167 },
+    "type": "insight",
+    "title": "Forward Direction: Cyclic Vector Implies Nonderogatory via Degree Argument",
+    "content": "cyclic_implies_nonderogatory is the main forward theorem. Given IsCyclicVector M v, it proves IsNonderogatory M via the bridge lemma. The key step is showing natDegree(minpoly K M) = natDegree(charpoly). We know natDegree(minpoly) ≤ natDegree(charpoly) from minpoly | charpoly (natDegree_le_of_dvd). The proof then proceeds by contradiction: assume natDegree(minpoly) < natDegree(charpoly) = n. The minimal polynomial annihilates M, so (aeval M (minpoly K M)).mulVec v = 0 (via minpoly.aeval + simp). Since natDegree(minpoly) < n and the annihilating vector equation holds, IsCyclicVector says minpoly = 0. But minpoly is monic (Monic.ne_zero), contradiction. Therefore natDegree(minpoly) = n and the bridge lemma gives minpoly = charpoly. The proof is notable for its clean application of the by_contra + omega pattern and the direct use of IsCyclicVector's defining condition.",
+    "mathContext": "The key conceptual step: $\\mathrm{minpoly}(M)$ annihilates $M$, so $p(M)v = 0$ for $p = \\mathrm{minpoly}$. If $\\deg p < n$, this contradicts $v$ being cyclic. Therefore $\\deg(\\mathrm{minpoly}) = n$. Since $\\mathrm{minpoly} \\mid \\chi_M$ and both have degree $n$ and are monic, they are equal. The argument works over any field $K$, with no algebraic closure needed.",
+    "significance": "key",
+    "relatedConcepts": ["cyclic_implies_nonderogatory", "IsCyclicVector", "minpoly_eq_charpoly_of_natDegree_eq", "natDegree_le_of_dvd"],
+    "prerequisites": ["charpoly_natDegree_eq_dim", "minpoly.aeval", "minpoly.monic", "Fintype.card_fin"]
+  },
+  {
+    "id": "ann-nonderog-backward",
+    "proofId": "cayley-hamilton-minpoly-oq-04",
+    "range": { "startLine": 173, "endLine": 206 },
+    "type": "context",
+    "title": "Backward Direction: Three Approaches and the Infrastructure Gap",
+    "content": "Part IV discusses three distinct proof strategies for the backward direction (nonderogatory → cyclic vector) and explains why each requires substantial infrastructure not available as a single Mathlib lemma. Approach 1 (general fields): use the structure theorem for f.g. K[X]-modules — V ≅ K[X]/(d₁) ⊕ ... ⊕ K[X]/(d_k) with d₁ | ... | d_k. If minpoly = charpoly = d_k = d₁ · ... · d_k, then k = 1 (single cyclic summand) and the generator is the cyclic vector. Approach 2 (algebraically closed fields): use Jordan Normal Form — minpoly = charpoly forces exactly one Jordan block per eigenvalue, allowing construction of a cyclic vector by summing Jordan basis generators. Approach 3 (infinite fields): the set of non-cyclic vectors is a finite union of proper subspaces; infinite fields cannot be covered by finitely many proper subspaces. The axiom nonderogatory_has_cyclic_vector (line 205) formalizes this result with a note that it holds over ALL fields — including finite ones, which eliminates Approach 3 for the general case.",
+    "mathContext": "The structure theorem approach: $V \\cong \\bigoplus K[X]/(d_i)$ as $K[X]$-modules. The $i$-th summand has annihilator $(d_i)$. The minpoly is $d_k$ (largest invariant factor) and charpoly is $\\prod d_i$. If $d_k = \\prod d_i$ and $d_1 \\mid d_2 \\mid \\cdots \\mid d_k$, then $k=1$ (any other factoring would give $d_k < \\prod d_i$). The single summand $V \\cong K[X]/(\\chi_M)$ directly gives a cyclic vector: the image of $1 \\in K[X]$ under $K[X] \\to V$.",
+    "significance": "context",
+    "relatedConcepts": ["structure theorem for f.g. modules over PID", "invariant factors", "rational canonical form", "cyclic decomposition", "Jordan Normal Form"],
+    "prerequisites": ["nonderogatory_has_cyclic_vector (axiom)", "K[X]-module structure on V", "IsCyclicVector"]
+  },
+  {
+    "id": "ann-nonderog-summary",
+    "proofId": "cayley-hamilton-minpoly-oq-04",
+    "range": { "startLine": 286, "endLine": 316 },
+    "type": "context",
+    "title": "Summary: The Degree Bridge and the Proof-Infrastructure Gap",
+    "content": "The closing summary catalogs all 8 theorems under three categories. The two predicate definitions (IsCyclicVector, IsNonderogatory) are the algebraic encodings. The main result (nonderogatory_iff_cyclic_vector) is the full equivalence, combining the proved forward direction and the axiomatized backward direction. The degree characterization theorems (nonderogatory_iff_natDegree_eq, derogatory_iff_natDegree_lt) give an equivalent formulation in terms of polynomial degrees, useful for computations. The bridge lemma (minpoly_eq_charpoly_of_natDegree_eq) is the key algebraic ingredient, proving that same-degree monic polynomials related by divisibility must be equal. The asymmetry in the proof — forward direction fully verified (0 sorries, 1 clean contradiction argument), backward direction axiomatized (1 axiom requiring PID structure theorem) — reflects a common pattern in formal linear algebra: polynomial-theoretic properties of operators are easier to verify from first principles than the structural existence of special vectors or bases.",
+    "mathContext": "The degree characterization: $\\mathrm{IsNonderogatory}\\ M \\Leftrightarrow \\deg(\\mathrm{minpoly}\\ K\\ M) = n$. Since always $\\deg(\\mathrm{minpoly}) \\leq \\deg(\\chi_M) = n$, nonderogatory is equivalent to $\\mathrm{minpoly}$ achieving the maximum possible degree. Derogatory matrices ($\\deg(\\mathrm{minpoly}) < n$) have 'more eigenvalue repetition in Jordan blocks than the maximum'.",
+    "significance": "context",
+    "relatedConcepts": ["minpoly_eq_charpoly_of_natDegree_eq", "nonderogatory_iff_natDegree_eq", "derogatory_iff_natDegree_lt", "PID structure theorem gap"],
+    "prerequisites": ["All of Parts I-VI", "nonderogatory_has_cyclic_vector (axiom)"]
+  }
+]
