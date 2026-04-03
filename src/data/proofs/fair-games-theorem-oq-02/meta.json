@@ -36,5 +36,63 @@
     "theoremCount": 10,
     "definitionCount": 5
   },
-  "sections": []
+  "crossReferences": [
+    {
+      "targetId": "fair-games-theorem",
+      "relationship": "extends",
+      "description": "Concrete examples verifying the Optional Stopping Theorem for Gambler's Ruin and the doubling strategy"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Gambler's Ruin problem has roots in Huygens' 'De Ratiociniis in Ludo Aleae' (1657), the first systematic treatment of probability theory. Huygens solved the problem of a gambler starting with $k$ who plays against an opponent with $N-k$: what is the probability of ruin before reaching $N$? The answer, $P(\\text{win}) = k/N$ for a fair coin, was classical by the 18th century. The 'doubling strategy' (martingale betting system) has been used in French casinos since at least the 1700s. In the doubling strategy, you double your bet after every loss, guaranteeing a net profit of $1 whenever you win. Casinos countered this with table maximum bets. The mathematical explanation for why the strategy fails — even without table limits — comes from Doob's Optional Stopping Theorem (1953): for a fair game, the expected value of any stopping strategy with a finite stopping time is zero. This file applies both the classical Gambler's Ruin formulas and a direct computation to confirm these zero-expectation results.",
+    "problemStatement": "Can the abstract Fair Games Theorem (Optional Stopping Theorem) be verified on concrete gambling instances? Specifically: (1) For the Gambler's Ruin with $(k,N)$ parameters, verify the classical formulas $P(\\text{win}) = k/N$ and $E[T] = k(N-k)$. (2) For the doubling strategy with bankroll $B$, verify the expected gain is 0 by direct computation.",
+    "proofStrategy": "The file takes a concrete computational approach. Part I instantiates the GamblersRuin structure (from the parent FairGamesOQ01) with specific parameters (5, 10) and (1, 10), then dispatches to `simp + norm_num` to verify the classical formulas. Part II builds the doubling strategy algebra from scratch: geometric series for total investment, arithmetic for win gain, logarithm for bankroll limit. Part III provides a direct ring computation showing the weighted sum equals 0, confirming the Fair Games Theorem without invoking it abstractly.",
+    "keyInsights": [
+      "The (5, 10) game is perfectly symmetric: both players start with $5, so $P(\\text{win}) = 5/10 = 1/2$ and the expected game length is $E[T] = 5 \\cdot (10-5) = 25$. The formula $E[T] = k(N-k)$ comes from the optional stopping theorem applied to the martingale $X_t^2 - t$ where $X_t$ is the random walk.",
+      "The (1, 10) underdog example shows how dramatically initial position matters: starting with only 1/10 of the total stake gives only a 10% win probability. Casinos exploit this asymmetry: a player with \\$100 against the house with \\$1,000,000 has essentially zero chance of winning.",
+      "The doubling strategy's invariant is `doubling_win_gain`: regardless of how many consecutive losses, if you win the next bet, your net gain is exactly $1. This is proved by noting that $2^k - (2^k - 1) = 1$ — the winning bet covers all previous losses plus $1 profit.",
+      "The fatal flaw is captured by `doubling_bankroll_limit`: with bankroll $B$, you can sustain at most $\\lfloor \\log_2(B+1) \\rfloor$ consecutive losses. Even with a million-dollar bankroll ($2^{20}$), you can only survive 20 consecutive losses, which happens with probability $(1/2)^{20} \\approx 0.000001$ — rare but catastrophic.",
+      "The `doubling_expected_value_zero` computation is a beautiful direct verification: $E = (1 - (1/2)^n) \\cdot 1 + (1/2)^n \\cdot (-(2^n - 1)) = 0$. This holds for all $n$, confirming that no finite-stopping strategy can beat a fair game — even one that 'always wins' when it stops."
+    ]
+  },
+  "sections": [
+    {
+      "id": "gamblers-ruin-concrete",
+      "title": "Concrete Gambler's Ruin Examples (Part I)",
+      "startLine": 21,
+      "endLine": 58,
+      "summary": "Two concrete GamblersRuin instances. game_5_10 (k=5, N=10): P(win)=1/2, E[T]=25 — symmetric fair game. game_1_10 (k=1, N=10): P(win)=1/10, E[T]=9 — severe underdog. Both proved by simp+norm_num dispatching to parent formulas."
+    },
+    {
+      "id": "doubling-strategy",
+      "title": "Doubling Strategy Algebra (Part II)",
+      "startLine": 60,
+      "endLine": 113,
+      "summary": "Formalizes the doubling betting system: doublingBet k = 2^k, total investment = 2^k-1 (geometric series via induction), win gain = 1 always. maxDoublings B = ⌊log₂(B+1)⌋ bounds the strategy's reach; proved via Nat.pow_log_le_self and Nat.log_pow."
+    },
+    {
+      "id": "expected-value-zero",
+      "title": "E[Doubling Strategy] = 0 (Part III)",
+      "startLine": 114,
+      "endLine": 137,
+      "summary": "doubling_expected_value_zero proves (1-(1/2)^n)·1 + (1/2)^n·(-(2^n-1)) = 0 for all n > 0. Direct ring computation via field_simp and ring, confirming the Fair Games Theorem for the doubling strategy."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 138,
+      "endLine": 159,
+      "summary": "Documents Part I (2 game instances, 0 sorries), Part II (doubling strategy, 0 sorries), Part III (expected value, 0 sorries). Total: 0 sorries, 0 axioms, all 10 theorems fully verified."
+    }
+  ],
+  "conclusion": {
+    "summary": "All 10 theorems are fully machine-verified with 0 sorries and 0 axioms. The file provides concrete numerical checks of the Optional Stopping Theorem: P(win) = k/N and E[T] = k(N-k) for Gambler's Ruin, and E[gain] = 0 for the doubling strategy. The proofs are short (1-4 lines each) because the mathematical content was established in the parent file.",
+    "implications": "The concrete examples demonstrate a key principle of probability theory: in any fair game, no betting strategy can improve the expected outcome. This is the mathematical reason casinos have a positive edge — they enforce a slight asymmetry (house edge) that makes the game unfair. The doubling strategy fails not because of mathematical subtlety but because of the exponential growth of required capital (2^n) versus the linear growth of the win (always $1). This exponential-linear gap is precisely captured by `maxDoublings`.",
+    "openQuestions": [
+      "Can the Optional Stopping Theorem itself (not just the Gambler's Ruin formulas) be formalized in Lean 4? Doob's theorem requires a filtered probability space and integrability conditions — is Mathlib's probability library sufficient?",
+      "The doubling strategy with a table maximum bet $M$ (as in real casinos) terminates differently: you can only double ⌊log₂(M)⌋ times before hitting the limit. Can this variant be formalized as a finite stopping time martingale?",
+      "What is the variance of the Gambler's Ruin stopping time? The expected value $k(N-k)$ is classical, but the variance formula is more complex. Can it be formally derived from the martingale $X_t^2 - t$?",
+      "For biased coins with P(win) = p ≠ 1/2, the ruin probability is $(1-(q/p)^k)/(1-(q/p)^N)$ for $p \\neq q$. Can this generalization be formalized as a new structure extending GamblersRuin?"
+    ]
+  }
 }
