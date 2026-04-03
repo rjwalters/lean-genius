@@ -1,0 +1,93 @@
+{
+  "slug": "mean-value-theorem-oq-02-oq-01",
+  "title": "Taylor Lagrange Remainder: Prove from Mathlib Integral MVT",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Taylor Lagrange Remainder: Prove from Mathlib Integral MVT.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T12:23:52.518Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "calculus",
+    "taylor-theorem",
+    "analysis",
+    "axiom-removal"
+  ],
+  "relatedProofs": [
+    "mean-value-theorem",
+    "mean-value-theorem-oq-02",
+    "mean-value-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:23:52.518Z",
+  "lastUpdate": "2026-04-03T12:23:52.518Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/MeanValueTheorem.lean",
+      "filename": "MeanValueTheorem.lean",
+      "lineCount": 164,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheorem.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ02.lean",
+      "filename": "MeanValueTheoremOQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ03.lean",
+      "filename": "MeanValueTheoremOQ03.lean",
+      "lineCount": 462,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ03.lean"
+    }
+  ]
+}
