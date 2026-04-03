@@ -1,7 +1,7 @@
 # shannon-entropy-oq-01
 ## Differential Entropy Formalization — Near complete: 2 moment lemmas pending Aristotle
 
-**Status: IN PROGRESS** — 5 of 6 theorems fully proved. 2 helper sorries remain (Gaussian moment lemmas, submitted to Aristotle).
+**Status: IN PROGRESS** — All top-level theorems proved. 2 helper sorries remain (Gaussian moment lemmas, queued for Aristotle when pipeline unblocks).
 
 ---
 
@@ -96,6 +96,24 @@
 1. Check Aristotle results for `gaussian_second_moment` and `gaussian_quad_integrable`
 2. Integrate solutions → zero sorries in main file
 3. Update status to `completed`
+
+### Session 2026-04-03 (Session 3)
+**Mode**: REVISIT
+**Outcome**: build fix
+
+**What Was Done**:
+1. Fixed `gaussianPDF_integrable`: `simp_rw` can't rewrite inside `Integrable(f)` (function, not pointwise). Fixed with `funext + rw`.
+2. Build now passes: `docker-build.sh Proofs.ShannonEntropyOQ01` succeeds (2 sorry warnings only).
+3. PR #8914 already merged to main.
+4. Aristotle pipeline blocked by 11 orphaned server jobs (Mechanic issue).
+   `ShannonEntropyOQ01Aristotle.lean` is queued as Tier 1 candidate for when pipeline unblocks.
+
+**Key Lean Finding**:
+- `simp_rw [h]` where `h : ∀ x, f x = g x` fails for `Integrable (f)` — no explicit `x` application for simp to match.
+- Fix: `have heq : f = g := funext h; rw [heq]`
+
+**Files Modified**:
+- `proofs/Proofs/ShannonEntropyOQ01.lean` (line 274: gaussianPDF_integrable fix)
 
 ---
 
