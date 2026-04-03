@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-stirl02-bridge",
+    "proofId": "stirling-formula-oq-02",
+    "range": { "startLine": 52, "endLine": 77 },
+    "type": "insight",
+    "title": "The Gamma-Factorial Bridge: \u0393(n+1) = n! Transfers All Stirling Facts",
+    "content": "The entire proof architecture rests on gamma_eq_factorial (line 60): Real.Gamma (\u2191n + 1) = \u2191(n.factorial) for all n : \u2115. This is a thin wrapper over Mathlib's Real.Gamma_nat_eq_factorial and is not a deep result, but it is the key lemma enabling every subsequent theorem. By rewriting with this equality, any proven fact about n! immediately yields the corresponding fact about \u0393(n+1). The proof then never directly manipulates the Gamma integral: every theorem about Gamma at integer points reduces to a theorem about factorials, which can use the Stirling library directly.",
+    "mathContext": "\\Gamma(n+1) = n! \\quad (n \\in \\mathbb{N})\\\\ \\text{Bridge: rw [gamma\\_eq\\_factorial] converts } \\Gamma \\text{ goals to factorial goals}\\\\ \\Gamma(1)=1,\\; \\Gamma(2)=1,\\; \\Gamma(n+1)=n\\cdot\\Gamma(n)",
+    "significance": "key",
+    "relatedConcepts": ["Gamma-factorial connection", "Real.Gamma_nat_eq_factorial", "functional equation"],
+    "prerequisites": ["Real.Gamma", "Nat.factorial", "Real.Gamma_nat_eq_factorial"]
+  },
+  {
+    "id": "ann-stirl02-equiv",
+    "proofId": "stirling-formula-oq-02",
+    "range": { "startLine": 80, "endLine": 132 },
+    "type": "insight",
+    "title": "Gamma Stirling Equivalence: Transfer via Commutativity of Multiplication",
+    "content": "gamma_isEquivalent_stirling (line 105) proves \u0393(n+1) ~ \u221a(2\u03c0n)\u00b7(n/e)^n. The proof: (1) rewrite the Gamma sequence as the factorial sequence (heq via gamma_eq_factorial); (2) note Mathlib's Stirling.factorial_isEquivalent_stirling uses \u221a(2\u00b7n\u00b7\u03c0) while we use \u221a(2\u00b7\u03c0\u00b7n); (3) prove hmul_comm by ring_nf (multiplication commutes); (4) rw [hmul_comm] and exact h. The ratio gamma_div_stirling_tendsto_one (\u0393(n+1)/approx \u2192 1) follows from isEquivalent_iff_tendsto_one, which requires the denominator to be eventually nonzero (gammaStirlingApprox_pos for n \u2265 1).",
+    "mathContext": "\\Gamma(n+1) \\sim \\sqrt{2\\pi n}\\cdot(n/e)^n\\\\ \\frac{\\Gamma(n+1)}{\\sqrt{2\\pi n}(n/e)^n} \\to 1\\\\ \\text{Note: Mathlib uses } \\sqrt{2n\\pi}, \\text{ we use } \\sqrt{2\\pi n} \\text{ (equal by commutativity)}",
+    "significance": "key",
+    "relatedConcepts": ["IsEquivalent", "Stirling.factorial_isEquivalent_stirling", "tendsto_one"],
+    "prerequisites": ["Stirling.factorial_isEquivalent_stirling", "IsEquivalent", "isEquivalent_iff_tendsto_one"]
+  },
+  {
+    "id": "ann-stirl02-lower-bound",
+    "proofId": "stirling-formula-oq-02",
+    "range": { "startLine": 133, "endLine": 204 },
+    "type": "technique",
+    "title": "Gamma Lower Bound via stirlingSeq Antitonicity and ciInf",
+    "content": "gamma_lower_bound (line 164) proves \u221a(2\u03c0n)\u00b7(n/e)^n \u2264 \u0393(n+1) for n \u2265 1. The proof strategy: stirlingSeq n = n!/[\u221a(2n)\u00b7(n/e)^n] is antitone (Stirling.stirlingSeq'_antitone) and tends to \u221a\u03c0. By tendsto_atTop_ciInf, the infimum of the tail sequence equals the limit \u221a\u03c0. Then ciInf_le gives stirlingSeq n \u2265 \u221a\u03c0 at each n. Rearranging: n! \u2265 \u221a\u03c0\u00b7\u221a(2n)\u00b7(n/e)^n = \u221a(2\u03c0n)\u00b7(n/e)^n via the identity \u221a\u03c0\u00b7\u221a(2n) = \u221a(2\u03c0n). The key step le_div_iff\u2080 converts the ratio inequality to a product inequality.",
+    "mathContext": "\\text{stirlingSeq}(n) = \\frac{n!}{\\sqrt{2n}(n/e)^n} \\searrow \\sqrt{\\pi}\\\\ \\Rightarrow \\sqrt{\\pi} \\leq \\text{stirlingSeq}(n) \\Rightarrow n! \\geq \\sqrt{2\\pi n}(n/e)^n\\\\ \\text{Key: } \\sqrt{\\pi}\\cdot\\sqrt{2n} = \\sqrt{2\\pi n}",
+    "significance": "key",
+    "relatedConcepts": ["stirlingSeq antitonicity", "tendsto_atTop_ciInf", "ciInf_le"],
+    "prerequisites": ["Stirling.stirlingSeq'_antitone", "tendsto_atTop_ciInf", "ciInf_le", "le_div_iff\u2080"]
+  },
+  {
+    "id": "ann-stirl02-gamma-half",
+    "proofId": "stirling-formula-oq-02",
+    "range": { "startLine": 320, "endLine": 346 },
+    "type": "insight",
+    "title": "\u0393(1/2) = \u221a\u03c0 from the Reflection Formula via Beta Function",
+    "content": "gamma_one_half (line 331) proves Real.Gamma (1/2) = Real.sqrt \u03c0. The proof uses the reflection formula \u0393(s)\u0393(1-s) = \u03c0/sin(\u03c0s) at s=1/2: sin(\u03c0/2)=1 gives \u0393(1/2)\u00b2 = \u03c0. Since \u0393(1/2) > 0 (Gamma positive on positives), \u0393(1/2) = \u221a\u03c0. The mathematical content: \u0393(1/2) = \u222b\u2080^\u221e t^{-1/2}e^{-t}dt; substituting t=u\u00b2 gives 2\u222b\u2080^\u221e e^{-u\u00b2}du = \u221a\u03c0 (the Gaussian integral). Lean uses Mathlib's Real.Gamma_mul_Gamma_one_sub which encodes the reflection formula, combined with Real.sin_pi_div_two = 1 and a positivity argument to extract the square root.",
+    "mathContext": "\\Gamma(1/2) = \\sqrt{\\pi}\\\\ \\Gamma(s)\\Gamma(1-s) = \\frac{\\pi}{\\sin(\\pi s)} \\Rightarrow \\Gamma(1/2)^2 = \\pi\\\\ \\text{Also: } \\Gamma(1/2) = 2\\int_0^\\infty e^{-u^2}du = \\sqrt{\\pi}",
+    "significance": "key",
+    "relatedConcepts": ["reflection formula", "Gaussian integral", "Real.Gamma_mul_Gamma_one_sub", "Beta function"],
+    "prerequisites": ["Real.Gamma_mul_Gamma_one_sub", "Real.sin_pi_div_two", "Real.Gamma_pos_of_pos", "Real.sqrt_eq_iff_sq_eq"]
+  },
+  {
+    "id": "ann-stirl02-duplication",
+    "proofId": "stirling-formula-oq-02",
+    "range": { "startLine": 349, "endLine": 385 },
+    "type": "concept",
+    "title": "Legendre Duplication Formula at Integer Points",
+    "content": "duplication_at_nat (line 359) proves \u0393(n)\u00b7\u0393(n+1/2) = \u221a\u03c0\u00b7\u0393(2n)/4^{n-1} for n \u2265 1, a special case of the Legendre duplication formula \u0393(x)\u0393(x+1/2) = \u221a\u03c0\u00b72^{1-2x}\u00b7\u0393(2x). At integers: \u0393(n) = (n-1)!, \u0393(2n) = (2n-1)!, and \u0393(n+1/2) = (2n-1)!!\u00b7\u221a\u03c0/2^n (from gamma_half_int_formula). The identity 4^{n-1} = 2^{2n-2} arises from 2^{1-2n} = 2/4^n. The proof uses Real.Gamma_mul_Gamma_add_one from Mathlib (encoding B(x,x+1/2)) and simplifies via the integer Gamma values. The duplication formula generalizes \u0393(2n) = 2^{2n-1}/\u221a\u03c0 \u00b7 \u0393(n)\u00b7\u0393(n+1/2).",
+    "mathContext": "\\Gamma(n)\\Gamma(n+\\tfrac{1}{2}) = \\frac{\\sqrt{\\pi}}{4^{n-1}}\\Gamma(2n)\\\\ \\text{Legendre: } \\Gamma(x)\\Gamma(x+\\tfrac{1}{2}) = \\frac{\\sqrt{\\pi}}{2^{2x-1}}\\Gamma(2x)\\\\ \\Gamma(2n)=(2n-1)!, \\; 4^{n-1} = 2^{2n-2}",
+    "significance": "key",
+    "relatedConcepts": ["Legendre duplication formula", "Real.Gamma_mul_Gamma_add_one", "half-integer Gamma"],
+    "prerequisites": ["Real.Gamma_mul_Gamma_add_one", "gamma_one_half", "gamma_eq_factorial"]
+  },
+  {
+    "id": "ann-stirl02-half-int-formula",
+    "proofId": "stirling-formula-oq-02",
+    "range": { "startLine": 449, "endLine": 486 },
+    "type": "technique",
+    "title": "\u0393(n+1/2) = (2n-1)!! \u00b7 \u221a\u03c0 / 2^n by Induction on Double Factorial",
+    "content": "gamma_half_int_formula (line 457) proves by induction on n. Base n=0: \u0393(1/2) = 1\u00b7\u221a\u03c0/1 (gamma_one_half). Inductive step: \u0393((k+1)+1/2) = \u0393((k+1/2)+1) = (k+1/2)\u00b7\u0393(k+1/2) by Real.Gamma_add_one. Substituting IH: (k+1/2)\u00b7(df(k)\u00b7\u221a\u03c0/2^k) = (2k+1)/2\u00b7df(k)\u00b7\u221a\u03c0/2^k = (2k+1)\u00b7df(k)\u00b7\u221a\u03c0/2^{k+1} = df(k+1)\u00b7\u221a\u03c0/2^{k+1}. The Lean proof uses push_cast to lift \u2115-arithmetic to \u211d, then field_simp + ring. doubleFactorial (line 449) is defined inductively: df(0)=1, df(k+1)=(2k+1)\u00b7df(k), so df(n) = 1\u00b73\u00b75\u00b7\u00b7\u00b7(2n-1).",
+    "mathContext": "\\Gamma(n+\\tfrac{1}{2}) = \\frac{(2n-1)!!}{2^n}\\sqrt{\\pi},\\quad (2n-1)!! = 1\\cdot 3\\cdots(2n-1)\\\\ \\text{Step: } (k+\\tfrac{1}{2})\\cdot\\frac{(2k-1)!!\\sqrt{\\pi}}{2^k} = \\frac{(2k+1)!!\\sqrt{\\pi}}{2^{k+1}}\\\\ \\Gamma(3/2)=\\sqrt{\\pi}/2,\\; \\Gamma(5/2)=3\\sqrt{\\pi}/4",
+    "significance": "key",
+    "relatedConcepts": ["double factorial", "Gamma recurrence", "push_cast + ring", "induction on \u2115"],
+    "prerequisites": ["Real.Gamma_add_one", "gamma_one_half", "doubleFactorial", "push_cast", "ring"]
+  },
+  {
+    "id": "ann-stirl02-central-binom",
+    "proofId": "stirling-formula-oq-02",
+    "range": { "startLine": 488, "endLine": 598 },
+    "type": "concept",
+    "title": "Central Binomial C(2n,n) = 4^n\u0393(n+1/2) / (\u221a\u03c0\u0393(n+1)): Two Representations",
+    "content": "centralBinom_via_gamma (line 488) proves C(2n,n) = \u0393(2n+1)/\u0393(n+1)\u00b2 by rewriting Gammas as factorials and using Nat.choose_mul_factorial_mul_factorial. centralBinom_gamma_half_int (line 532) gives the half-integer representation: C(2n,n) = 4^n\u0393(n+1/2)/(\u221a\u03c0\u0393(n+1)), connecting central binomials to the Gamma function at non-integer points. The key lemma factorial_double_mul (line 514) proves (2n)! = 2^n\u00b7(2n-1)!!\u00b7n! by induction. This identity, combined with \u0393(n+1/2) = (2n-1)!!\u00b7\u221a\u03c0/2^n, gives C(2n,n) = 4^n/(\u221a\u03c0\u00b7\u221a n) asymptotically via Stirling.",
+    "mathContext": "\\binom{2n}{n} = \\frac{\\Gamma(2n+1)}{\\Gamma(n+1)^2} = \\frac{4^n\\,\\Gamma(n+\\frac{1}{2})}{\\sqrt{\\pi}\\,\\Gamma(n+1)}\\\\ (2n)! = 2^n \\cdot (2n-1)!! \\cdot n!\\\\ \\binom{2n}{n} \\sim \\frac{4^n}{\\sqrt{\\pi n}} \\quad (n\\to\\infty)",
+    "significance": "key",
+    "relatedConcepts": ["central binomial coefficient", "double factorial identity", "4^n asymptotics", "Wallis product"],
+    "prerequisites": ["centralBinom_via_gamma", "gamma_half_int_formula", "factorial_double_mul", "Nat.choose_mul_factorial_mul_factorial"]
+  }
+]
