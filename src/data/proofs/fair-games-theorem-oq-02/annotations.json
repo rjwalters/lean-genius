@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-fgt02-game-5-10",
+    "proofId": "fair-games-theorem-oq-02",
+    "range": { "startLine": 26, "endLine": 42 },
+    "type": "definition",
+    "title": "Symmetric Fair Game: k=5, N=10",
+    "content": "game_5_10 instantiates GamblersRuin with N=10 (total stake) and k=5 (player's initial amount). This is the perfectly symmetric case: both players have equal stakes, so the probability of winning is exactly 1/2 by the Gambler's Ruin formula P(win) = k/N. The expected game duration E[T] = k(N-k) = 5·5 = 25. The proofs reduce to norm_num after simp unfolds the definitions.",
+    "mathContext": "Gambler's Ruin: player starts with $k$, opponent with $N-k$. For a fair coin ($p = 1/2$): $P(\\text{win}) = k/N$. Expected stopping time: $E[T] = k(N-k)$. For $(k,N) = (5,10)$: $P(\\text{win}) = 1/2$, $E[T] = 25$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gambler's Ruin", "Optional Stopping Theorem", "random walk on integers", "harmonic functions"],
+    "prerequisites": ["probability theory", "random walks", "martingales"]
+  },
+  {
+    "id": "ann-fgt02-game-1-10",
+    "proofId": "fair-games-theorem-oq-02",
+    "range": { "startLine": 44, "endLine": 58 },
+    "type": "insight",
+    "title": "Underdog Game: P(win) = 1/10",
+    "content": "game_1_10 is the extreme case: player starts with $1 against an opponent with $9 (total $10). The probability of winning is just 1/10 — the player is 9-to-1 against. The expected game duration is only 9 (compared to 25 for the symmetric game). This illustrates a fundamental asymmetry: small initial position means very low win probability AND shorter expected game time (the player is likely to hit 0 quickly).",
+    "mathContext": "For $(k,N) = (1,10)$: $P(\\text{win}) = 1/10$, $E[T] = 1 \\cdot (10-1) = 9$. The formula $E[T] = k(N-k)$ reveals that the expected game length is maximized at $k = N/2$ (symmetric game) and minimized near $k = 1$ or $k = N-1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["asymmetric Gambler's Ruin", "casino advantage", "ruin probability"],
+    "prerequisites": ["Gambler's Ruin formula", "probability theory"]
+  },
+  {
+    "id": "ann-fgt02-doubling-algebra",
+    "proofId": "fair-games-theorem-oq-02",
+    "range": { "startLine": 79, "endLine": 95 },
+    "type": "technique",
+    "title": "Doubling Strategy: Geometric Series and Win Guarantee",
+    "content": "doublingBet k = 2^k is the bet size after k consecutive losses. doubling_total_invested proves by induction that Σᵢ₌₀^{k-1} 2^i = 2^k - 1 (geometric series). doubling_win_gain derives that 2^k - (2^k - 1) = 1: if you win on the k-th bet, your profit is exactly $1 regardless of k. The induction proof uses Finset.sum_range_succ and omega. This invariant explains the strategy's appeal: you always win exactly $1 whenever you eventually win.",
+    "mathContext": "Doubling bets: $b_0 = 1, b_1 = 2, b_2 = 4, \\ldots, b_k = 2^k$. Total investment after $k$ losses: $\\sum_{i=0}^{k-1} 2^i = 2^k - 1$. Win on bet $k$: receive $2 \\cdot 2^k = 2^{k+1}$... wait, actually: bet $2^k$, win doubles: receive $2^k$. Net: $2^k - (2^k - 1) = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "betting strategies", "induction on natural numbers", "Finset.sum_range_succ"],
+    "prerequisites": ["geometric series", "natural number arithmetic", "Lean 4 induction"]
+  },
+  {
+    "id": "ann-fgt02-bankroll-limit",
+    "proofId": "fair-games-theorem-oq-02",
+    "range": { "startLine": 96, "endLine": 113 },
+    "type": "insight",
+    "title": "Bankroll Limits: Logarithmic Ceiling on Doublings",
+    "content": "maxDoublings B = ⌊log₂(B+1)⌋ is the maximum number of doublings possible with bankroll B. doubling_bankroll_limit proves 2^(maxDoublings B) - 1 ≤ B via Nat.pow_log_le_self. maxDoublings_power_of_two_minus_one gives the exact formula for B = 2^n - 1. The logarithmic growth of maxDoublings vs the exponential growth of required capital (2^n) is the mathematical reason the strategy fails: with \\$1000, you can survive only about 10 doublings (since 2^10 = 1024 > 1000).",
+    "mathContext": "$\\text{maxDoublings}(B) = \\lfloor \\log_2(B+1) \\rfloor$. The maximum investment after $m = \\text{maxDoublings}(B)$ losses is $2^m - 1 \\leq B$. But the next bet would require $2^m > B$, exceeding the bankroll. For $B = 2^n - 1$: exactly $n$ doublings possible.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.log in Lean/Mathlib", "exponential vs logarithmic growth", "bankroll management", "casino table limits"],
+    "prerequisites": ["logarithms", "Nat.log in Lean 4", "binary representation"]
+  },
+  {
+    "id": "ann-fgt02-expected-zero",
+    "proofId": "fair-games-theorem-oq-02",
+    "range": { "startLine": 129, "endLine": 136 },
+    "type": "technique",
+    "title": "E[Doubling Strategy] = 0: Direct Computation",
+    "content": "doubling_expected_value_zero proves (1-(1/2)^n)·1 + (1/2)^n·(-(2^n-1)) = 0 for all n > 0. This is a direct computation: the first term is the probability of winning (probability that you don't lose n times) times the gain ($1), and the second term is the probability of losing n times times the loss (2^n-1). The ring computation reduces to 0 after field_simp. This is a concrete instance of the Fair Games Theorem: no stopping strategy improves expected value in a fair game.",
+    "mathContext": "With $n$ doublings possible: $P(\\text{win before ruin}) = 1 - (1/2)^n$, gain $= 1$. $P(\\text{ruin}) = (1/2)^n$, loss $= 2^n - 1$. Expected value: $(1-(1/2)^n) \\cdot 1 + (1/2)^n \\cdot (-(2^n-1)) = 1 - (1/2)^n - 1 + (1/2)^n = 0$. QED by cancellation.",
+    "significance": "key",
+    "relatedConcepts": ["Optional Stopping Theorem", "martingale strategy", "zero-sum games", "field_simp and ring in Lean 4"],
+    "prerequisites": ["probability theory", "expected value", "geometric series", "Lean 4 ring tactics"]
+  }
+]
