@@ -155,16 +155,44 @@ theorem type2_blocked_finite (A : Set ℕ) (hfin : A.Finite) :
   omega
 
 /-- Upper bound on the number of type-1 blocked values:
-    |type1BlockedSet A| ≤ |sumset A| · |A| = |A|²(|A|+1)/2. -/
+    |type1BlockedSet A| ≤ |sumset A| · |A| = |A|²(|A|+1)/2.
+
+    Proof: type1BlockedSet is contained in the image of (σ,a) ↦ σ - a
+    for (σ,a) ∈ sumset(A) × A. The image has at most |sumset A| · |A| elements. -/
 theorem type1_blocked_count (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
     (type1BlockedSet A).ncard ≤ (sumset A).ncard * A.ncard := by
-  sorry
+  have hsfin := sumset_finite A hfin
+  have hpfin : (sumset A ×ˢ A).Finite := hsfin.prod hfin
+  -- type1BlockedSet ⊆ image of subtraction on sumset(A) × A
+  have hsub : type1BlockedSet A ⊆
+      (fun p : ℕ × ℕ => p.1 - p.2) '' (sumset A ×ˢ A) := by
+    intro x hx
+    obtain ⟨a, ha, σ, hσ, heq⟩ := type1_subset_diff A hx
+    exact ⟨(σ, a), Set.mk_mem_prod hσ ha, by omega⟩
+  calc (type1BlockedSet A).ncard
+      ≤ ((fun p : ℕ × ℕ => p.1 - p.2) '' (sumset A ×ˢ A)).ncard :=
+        Set.ncard_le_ncard hsub (hpfin.image _)
+    _ ≤ (sumset A ×ˢ A).ncard := Set.ncard_image_le hpfin
+    _ = (sumset A).ncard * A.ncard := Set.ncard_prod _ _
 
 /-- Upper bound on the number of type-2 blocked values:
-    |type2BlockedSet A| ≤ |sumset A| = |A|(|A|+1)/2. -/
+    |type2BlockedSet A| ≤ |sumset A| = |A|(|A|+1)/2.
+
+    Proof: the map x ↦ 2x injects type2BlockedSet into sumset(A). -/
 theorem type2_blocked_count (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
     (type2BlockedSet A).ncard ≤ (sumset A).ncard := by
-  sorry
+  -- The map x ↦ 2*x is injective on ℕ
+  have hinj : Set.InjOn (· * 2) (type2BlockedSet A) :=
+    fun _ _ _ _ h => by omega
+  -- Its image lands in sumset(A): 2x = b+c means 2x ∈ sumset(A)
+  have himg : (· * 2) '' (type2BlockedSet A) ⊆ sumset A := by
+    intro z ⟨x, ⟨b, c, hb, hc, _, heq⟩, rfl⟩
+    exact ⟨b, c, hb, hc, by omega⟩
+  calc (type2BlockedSet A).ncard
+      = ((· * 2) '' (type2BlockedSet A)).ncard :=
+        (Set.ncard_image_of_injOn hinj (type2_blocked_finite A hfin)).symm
+    _ ≤ (sumset A).ncard :=
+        Set.ncard_le_ncard himg (sumset_finite A hfin)
 
 end Counting
 
@@ -197,17 +225,63 @@ theorem maximal_sidon_finite (A : Set ℕ) (N : ℕ) (hmax : IsMaximalSidonSet A
 /-- **Main Theorem**: Any maximal Sidon set A in {1,...,N} has size s satisfying
     2N ≤ (s+1)³, which gives s ≥ (2N)^{1/3} - 1.
 
-    Proof sketch:
+    Proof:
     - Every x ∈ {1,...,N} \ A is blocked (maximal_sidon_all_blocked)
-    - N = |A| + |{1,...,N} \ A| (partition of the interval)
-    - |{1,...,N} \ A| ≤ |type1BlockedSet| + |type2BlockedSet|
-                     ≤ |sumset A| · |A| + |sumset A|
-                     = |A|(|A|+1)/2 · (|A| + 1)
-                     = |A|(|A|+1)²/2
-    - So 2N ≤ 2|A| + |A|(|A|+1)² ≤ (|A|+1)³ -/
+    - {1,...,N} ⊆ A ∪ type1BlockedSet ∪ type2BlockedSet
+    - N ≤ |A| + |type1| + |type2|
+    - |type1| ≤ |sumset A| · |A|, |type2| ≤ |sumset A|
+    - |sumset A| = |A|(|A|+1)/2, so 2·(|type1| + |type2|) ≤ |A|(|A|+1)²
+    - 2N ≤ 2|A| + |A|(|A|+1)² ≤ (|A|+1)³ -/
 theorem maximal_sidon_size_bound (A : Set ℕ) (N : ℕ) (hmax : IsMaximalSidonSet A N) :
     2 * N ≤ (A.ncard + 1) ^ 3 := by
-  sorry
+  set s := A.ncard with hs_def
+  have hfin := maximal_sidon_finite A N hmax
+  have hA := hmax.2.1
+  have hsub := hmax.1
+  -- Sumset size: 2 * |sumset A| ≤ s * (s + 1)
+  have hss := (sidon_sumset_size A hA hfin).2
+  have h_sumset_bound : (sumset A).ncard * 2 ≤ s * (s + 1) := by
+    rw [hss]; exact Nat.div_mul_le_self _ _
+  -- Covering: every element of {1,...,N} is in A or blocked
+  have h_cover : Interval N ⊆ A ∪ (type1BlockedSet A ∪ type2BlockedSet A) := by
+    intro x hx
+    by_cases hxA : x ∈ A
+    · exact Set.mem_union_left _ hxA
+    · exact Set.mem_union_right _ (by
+        rcases maximal_sidon_all_blocked A N hmax x hx hxA with h | h
+        · exact Set.mem_union_left _ h
+        · exact Set.mem_union_right _ h)
+  -- N ≤ s + |type1| + |type2|
+  have hfin_blocked := (type1_blocked_finite A hfin).union (type2_blocked_finite A hfin)
+  have hN : N ≤ s + ((type1BlockedSet A).ncard + (type2BlockedSet A).ncard) := by
+    rw [← interval_ncard]
+    calc (Interval N).ncard
+        ≤ (A ∪ (type1BlockedSet A ∪ type2BlockedSet A)).ncard :=
+          Set.ncard_le_ncard h_cover (hfin.union hfin_blocked)
+      _ ≤ A.ncard + (type1BlockedSet A ∪ type2BlockedSet A).ncard :=
+          Set.ncard_union_le _ _
+      _ ≤ s + ((type1BlockedSet A).ncard + (type2BlockedSet A).ncard) := by
+          linarith [Set.ncard_union_le (type1BlockedSet A) (type2BlockedSet A)]
+  -- Apply counting bounds
+  have h1 := type1_blocked_count A hA hfin
+  have h2 := type2_blocked_count A hA hfin
+  -- Key intermediate: 2*(|type1| + |type2|) ≤ s*(s+1)²
+  have h_blocked : (type1BlockedSet A).ncard + (type2BlockedSet A).ncard ≤
+      (sumset A).ncard * s + (sumset A).ncard := Nat.add_le_add h1 h2
+  have h2σ : 2 * (sumset A).ncard ≤ s * (s + 1) := by linarith [h_sumset_bound]
+  have h_mid : 2 * ((sumset A).ncard * s + (sumset A).ncard) ≤ s * (s + 1) * (s + 1) := by
+    calc 2 * ((sumset A).ncard * s + (sumset A).ncard)
+        = 2 * (sumset A).ncard * s + 2 * (sumset A).ncard := by ring
+      _ ≤ s * (s + 1) * s + s * (s + 1) := by
+          exact Nat.add_le_add
+            (by calc 2 * (sumset A).ncard * s
+                  = (2 * (sumset A).ncard) * s := by ring
+                _ ≤ (s * (s + 1)) * s := Nat.mul_le_mul_right s h2σ
+                _ = s * (s + 1) * s := by ring)
+            h2σ
+      _ = s * (s + 1) * (s + 1) := by ring
+  -- Final assembly: 2N ≤ 2s + s(s+1)² ≤ (s+1)³
+  nlinarith [hN, h_blocked, h_mid, sq_nonneg s]
 
 /-- Corollary: The greedy Sidon construction has size Ω(N^{1/3}). -/
 theorem greedySidon_size_bound (N : ℕ) :
