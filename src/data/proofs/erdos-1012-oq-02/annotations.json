@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-e1012-02-defs",
+    "proofId": "erdos-1012-oq-02",
+    "range": { "startLine": 47, "endLine": 76 },
+    "type": "definition",
+    "title": "Five-Level VP Definition Hierarchy: From Edge Threshold to Vertex-Pancyclicity",
+    "content": "Seven definitions build the vertex-pancyclicity framework. edgeThreshold(n,k) = C(n-k-1,2)+C(k+2,2)+1 (Woodall's edge density threshold). edgeCount = G.edgeFinset.card. hasCycleThroughVertex(G,v,l): a Walk from v to v that is a cycle (IsCycle) of exactly length l. hasCycleOfLength(G,l): ∃ v, such a cycle. isPancyclicUpTo(G,m): for all l ∈ [3,m], hasCycleOfLength G l (graph-level). isVertexPancyclicUpTo(G,v,m): for all l ∈ [3,m], hasCycleThroughVertex G v l (vertex-specific). isVertexPancyclicGraphUpTo(G,m): for ALL vertices v, VP up to m. The critical strengthening: ∃v (pancyclic) to ∀v (vertex-pancyclic).",
+    "mathContext": "Pancyclicity: $\\forall l \\in [3,m]$, $\\exists v$, cycle through $v$ of length $l$. Vertex-pancyclicity: $\\forall v$, $\\forall l \\in [3,m]$, cycle through $v$ of length $l$. The strict strengthening — VP implies pancyclicity (by Nonempty V) but not vice versa. Example: $K_{2,3}$ is pancyclic (has 5-cycles, 4-cycles) but not vertex-pancyclic (vertices in the part of size 3 cannot be on triangles in a bipartite graph).",
+    "significance": "key",
+    "relatedConcepts": ["SimpleGraph.Walk.IsCycle", "SimpleGraph.edgeFinset", "pancyclic graphs", "Hamiltonian cycles"],
+    "prerequisites": ["SimpleGraph.Walk", "Walk.IsCycle", "Walk.length", "Fintype.card V"]
+  },
+  {
+    "id": "ann-e1012-02-vp-implies-p",
+    "proofId": "erdos-1012-oq-02",
+    "range": { "startLine": 81, "endLine": 113 },
+    "type": "theorem",
+    "title": "Vertex-Pancyclicity Implies Pancyclicity: Quantifier Elimination",
+    "content": "vertexPancyclic_implies_pancyclic extracts any vertex v from Nonempty V and delegates the ∀l condition to that vertex's VP predicate. Three monotonicity lemmas (isPancyclicUpTo_mono, isVertexPancyclicUpTo_mono, isVertexPancyclicGraphUpTo_mono) are all trivial one-liners: decreasing m' ≤ m means all smaller cycle lengths are still in range (le_trans hlm' hmm). These are infrastructure lemmas enabling a 'VP from 3 to n-k' to imply 'VP from 3 to any m ≤ n-k'. The three monotonicity results form the backbone for deriving consequences from the two axioms.",
+    "mathContext": "**Quantifier elimination**: VP $= \\forall v, \\forall l$. P $= \\forall l, \\exists v$. The implication VP $\\Rightarrow$ P drops $\\forall v$ to $\\exists v$ (pick any $v$). **Monotonicity**: $(\\forall l \\in [3,m]) \\Rightarrow (\\forall l \\in [3,m'])$ for $m' \\leq m$, since $l \\leq m' \\leq m$. These structural facts are used directly in every_vertex_on_long_cycle and every_vertex_on_triangle.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nonempty V", "le_trans", "forall/exists quantifier manipulation"],
+    "prerequisites": ["Nonempty V extract", "le_trans hlm' hmm", "fun l hl3 hlm' => h l hl3 ..."]
+  },
+  {
+    "id": "ann-e1012-02-bondy",
+    "proofId": "erdos-1012-oq-02",
+    "range": { "startLine": 137, "endLine": 144 },
+    "type": "axiom",
+    "title": "Bondy's Vertex-Pancyclicity Axiom: The Bipartite Exception",
+    "content": "bondy_vertex_pancyclic axiomatizes Bondy's 1971 theorem: any graph on n ≥ 3 vertices with ≥ n²/4+1 edges is either vertex-pancyclic (every vertex on all cycles 3..n) or bipartite (A ∪ B = univ, Disjoint A B, all cross-edges G.Adj a b). The bipartite exception is exactly K_{⌊n/2⌋,⌈n/2⌉}, which has exactly n²/4 edges (the Turán threshold). Adding one more edge destroys bipartiteness (creates an odd cycle) and forces vertex-pancyclicity. In Lean 4, the bipartite witness is represented as a partition (A,B) with full bipartite adjacency — equivalent to G being the complete bipartite graph.",
+    "mathContext": "**Bondy (1971)**: $G$ on $n \\geq 3$ vertices with $|E| \\geq n^2/4+1$ is either vertex-pancyclic or bipartite. The Turán graph $T(n,2) = K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ achieves $|E| = \\lfloor n^2/4 \\rfloor$ without triangles (bipartite), making it the extremal graph. One additional edge creates a $K_3$ (triangle), breaking bipartiteness and triggering vertex-pancyclicity. The n²/4+1 threshold is thus tight.",
+    "significance": "key",
+    "relatedConcepts": ["Turán's theorem", "complete bipartite K_{n/2,n/2}", "extremal graph theory", "bipartite graph"],
+    "prerequisites": ["Fintype.card V = n", "edgeCount G ≥ n^2/4+1", "Finset.univ partition", "Disjoint A B"]
+  },
+  {
+    "id": "ann-e1012-02-woodall-vp",
+    "proofId": "erdos-1012-oq-02",
+    "range": { "startLine": 180, "endLine": 185 },
+    "type": "axiom",
+    "title": "Woodall's Vertex-Pancyclicity: Every Vertex on Every Cycle Length 3..n-k",
+    "content": "woodall_vertex_pancyclic is the main axiom: for n ≥ 2k+3 and edgeCount G ≥ edgeThreshold(n,k), every vertex lies on cycles of all lengths 3 to n-k. This strengthens Woodall's 1972 result (which only proved existence of such cycles) to vertex-pancyclicity. The argument: edgeThreshold exceeds n²/4+1 (proved in Part VI via Cauchy-Schwarz), so Bondy's theorem applies — the graph is either VP or bipartite. For k ≥ 1, the bipartite exception K_{n/2,n/2} has only n²/4 < edgeThreshold edges, so the bipartite case is impossible, giving VP. For k=0, a more refined argument handles the Hamiltonian case.",
+    "mathContext": "**Theorem** (Woodall VP, axiomatized): $n \\geq 2k+3$, $|E| \\geq \\binom{n-k-1}{2}+\\binom{k+2}{2}+1$ $\\Rightarrow$ $\\forall v \\in V$, $\\forall l \\in [3,n-k]$: hasCycleThroughVertex $G$ $v$ $l$. The Woodall edge threshold exceeds $n^2/4+1$ by the Cauchy-Schwarz inequality (Part VI), so Bondy's theorem applies. The bipartite exception is ruled out by the edge count. This is the file's central result.",
+    "significance": "key",
+    "relatedConcepts": ["Woodall 1972 pancyclicity", "Bondy 1971 VP", "edge threshold", "Schmeichel-Hakimi 1988"],
+    "prerequisites": ["edgeThreshold definition", "isVertexPancyclicGraphUpTo", "n ≥ 2k+3 Woodall condition"]
+  },
+  {
+    "id": "ann-e1012-02-connected",
+    "proofId": "erdos-1012-oq-02",
+    "range": { "startLine": 222, "endLine": 251 },
+    "type": "theorem",
+    "title": "VP Implies Connected: Walk.takeUntil + Pigeonhole Argument",
+    "content": "vertex_pancyclic_implies_connected proves connectivity from VP up to |V|. The proof: given any u, w ∈ V, get a cycle of length |V| through u. The cycle's support.tail is nodup (IsCycle property), has length |V| (from Walk.length_support and hpl : p.length = |V|). By htail_nd.card_toFinset, the Finset has cardinality |V|. Then Finset.eq_univ_of_card concludes support.tail.toFinset = univ — so w is in the support. Finally Walk.takeUntil extracts a walk from u to w. Nonempty V is proved from the hypothesis |V| ≥ 3. This is a constructive proof via the Walk API without abstract connectivity machinery.",
+    "mathContext": "**Connectivity via Hamiltonicity**: if $G$ is VP up to $|V|$, then for any $u$ get a Hamiltonian cycle $p$ (length $|V|$). The support tail is nodup with $|V|$ elements, so it equals all of $V$ (by Finset.eq_univ_of_card). Thus $w \\in p.\\text{support}$, and Walk.takeUntil extracts $u \\rightsquigarrow w$. This is a standard proof of connected-from-Hamiltonian, formalized using the SimpleGraph Walk API.",
+    "significance": "key",
+    "relatedConcepts": ["Walk.takeUntil", "Walk.IsCycle.support_nodup", "Finset.eq_univ_of_card", "SimpleGraph.Connected"],
+    "prerequisites": ["Walk.length_support", "List.Nodup.card_toFinset", "Finset.eq_univ_of_card", "Walk.takeUntil reachable"]
+  },
+  {
+    "id": "ann-e1012-02-cauchy-schwarz",
+    "proofId": "erdos-1012-oq-02",
+    "range": { "startLine": 262, "endLine": 312 },
+    "type": "theorem",
+    "title": "Woodall ≥ Turán+1: Cauchy-Schwarz Threshold Comparison",
+    "content": "threshold_exceeds_turan_for_small_k proves edgeThreshold(n,k) ≥ n²/4+1 for k ≤ n/4 and n ≥ 2k+3. The proof sets a = n-k-1, b = k+2 (so a+b = n+1) and applies Cauchy-Schwarz: (a-b)² ≥ 0 → 2(a²+b²) ≥ (a+b)² = (n+1)². This gives the key bound 2S + 1 ≥ n² where S = a(a-1)+b(b-1). Integer division converts to n²/4 ≤ S/2. The proof uses zify to lift Nat to ℤ (avoiding subtraction issues) and nlinarith with sq_nonneg hints for the Cauchy-Schwarz step. The k=0 corollary follows by omega on the constraint k ≤ n/4.",
+    "mathContext": "**Cauchy-Schwarz**: $(a-b)^2 \\geq 0 \\Rightarrow 2(a^2+b^2) \\geq (a+b)^2$. With $a=n-k-1$, $b=k+2$, $a+b=n+1$: $2S = a(a-1)+b(b-1) = a^2+b^2-(n+1) \\geq \\frac{(n+1)^2}{2}-(n+1) = \\frac{n^2-1}{2}$. So $S/2 \\geq n^2/4$. This bridges from Woodall's edge threshold to Bondy's $n^2/4+1$ threshold, completing the chain Woodall $\\Rightarrow$ Bondy $\\Rightarrow$ VP.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "Nat.choose_two_right", "zify tactic", "nlinarith with sq_nonneg"],
+    "prerequisites": ["Nat.choose_two_right", "zify for Nat subtraction", "nlinarith with sq_nonneg hints", "Nat integer division omega"]
+  },
+  {
+    "id": "ann-e1012-02-spectrum",
+    "proofId": "erdos-1012-oq-02",
+    "range": { "startLine": 325, "endLine": 347 },
+    "type": "definition",
+    "title": "Pancyclic Spectrum: Measuring the Range of Cycle Lengths",
+    "content": "pancyclicSpectrum(G,v) = {l ∈ ℕ | hasCycleThroughVertex G v l}, the set of all cycle lengths through v. spectrum_contains_range proves {3,...,m} ⊆ pancyclicSpectrum G v under VP up to m — a direct unfolding. spectrum_size_lower_bound computes |spectrum ∩ [3,m]| ≥ m-2 for m ≥ 3. The proof converts Set.Icc to Finset.Icc via Finset.coe_Icc coercion (showing the sets agree), then applies Set.ncard_coe_Finset (coerced Finset ncard = card) and Finset.card_Icc (|[3,m]| = m-2+1 = m-2+1... wait, omega handles the off-by-one). This demonstrates the Set vs Finset coercion pattern for cardinality arguments.",
+    "mathContext": "pancyclicSpectrum$(G,v) = \\{l : $ hasCycleThroughVertex $G$ $v$ $l\\}$. Under VP up to $m$: $\\{3,\\ldots,m\\} \\subseteq$ spectrum. $|\\{3,\\ldots,m\\}| = m-2$ for $m \\geq 3$ (so spectrum has at least $m-2$ cycle lengths for vertex $v$). The coercion: Set.Icc 3 m = ↑(Finset.Icc 3 m), enabling Set.ncard_coe_Finset to transfer to Finset.card.",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.ncard", "Finset.coe_Icc", "Set.ncard_coe_Finset", "Finset.card_Icc"],
+    "prerequisites": ["Set.Icc vs Finset.Icc coercion", "Set.ncard_coe_Finset", "Finset.card_Icc", "Set.inter_eq_right"]
+  }
+]
