@@ -5,7 +5,7 @@
   "description": "The Gaussian integral ∫ e^{-x²} dx = √π, proved via Mathlib's integral_gaussian. The appearance of π is explained by the polar-coordinate proof: squaring the integral gives a double integral ∫∫ e^{-(x²+y²)} dx dy that evaluates to the area of a circle.",
   "meta": {
     "author": "Pierre-Simon Laplace (1774, polar coordinate proof)",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AreaOfCircleOQ05.lean",
     "tags": [
       "analysis",
@@ -15,10 +15,10 @@
       "probability",
       "normal-distribution"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "mathlib",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. The Gaussian integral itself is proved via Mathlib. One sorry remains for radial integral (needs FTC for improper integrals).",
+    "assumptions": "None. All results derived from Mathlib's integral_gaussian and standard Mathlib analysis lemmas.",
     "dateAdded": "2026-03-30",
     "lineCount": 118,
     "mathlibDependencies": [
