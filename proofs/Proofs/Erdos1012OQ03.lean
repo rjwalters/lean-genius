@@ -325,7 +325,78 @@ a closed walk, which in a finite graph contains a simple cycle. -/
 private lemma sc_tournament_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
     (hT : D.IsTournament) (hsc : D.IsStronglyConnected) :
     ∃ l : List V, IsDirectedCycleList D l := by
-  sorry
+  -- Strategy: get Hamiltonian path hl, use SC walk from last to first vertex,
+  -- the first step gives arc hl[n-1] → w₁; find w₁ at position j in hl (j < n-1);
+  -- then hl.drop j is a directed cycle.
+  obtain ⟨hl, hlen, ⟨hl_nd, hl_arcs⟩⟩ := tournament_full_path_list D hT (by omega)
+  set n := Fintype.card V with hn_def
+  have h0lt : 0 < hl.length := by omega
+  have hn1lt : n - 1 < hl.length := by omega
+  -- hl[0] ≠ hl[n-1] since n ≥ 3 and Nodup
+  have hne : hl[0]'h0lt ≠ hl[n-1]'hn1lt := by
+    intro heq
+    have : (0 : ℕ) = n - 1 := List.Nodup.getElem_inj_iff hl_nd |>.mp heq
+    omega
+  -- SC: walk from hl[n-1] to hl[0]
+  obtain ⟨walk, hw_head, hw_last, hw_arc⟩ := hsc (hl[n-1]'hn1lt) (hl[0]'h0lt) (Ne.symm hne)
+  -- Walk has ≥ 2 elements (head ≠ last)
+  have hwlen : 2 ≤ walk.length := by
+    rcases walk with _ | ⟨a, _ | ⟨b, t⟩⟩
+    · simp at hw_head
+    · simp only [List.head?, Option.some.injEq, List.getLast?] at hw_head hw_last
+      exact absurd (hw_head ▸ hw_last) (Ne.symm hne)
+    · omega
+  -- walk[0] = hl[n-1] by hw_head
+  have hw0 : walk[0]'(by omega) = hl[n-1]'hn1lt := by
+    rcases walk with _ | ⟨a, t⟩
+    · exact absurd hwlen (by omega)
+    · simp only [List.head?, Option.some.injEq] at hw_head
+      simpa [hw_head]
+  -- First arc of walk: hl[n-1] → w₁ = walk[1]
+  set w₁ := walk[1]'(by omega) with hw1_def
+  have harc_to_w1 : D.arc (hl[n-1]'hn1lt) w₁ := hw0 ▸ hw_arc 0 (by omega)
+  -- w₁ ∈ hl (hl is Hamiltonian, covers all vertices)
+  have hw1_mem : w₁ ∈ hl := by
+    rw [← List.mem_toFinset]
+    rw [show hl.toFinset = Finset.univ from
+      Finset.eq_univ_of_card _ (by rw [List.toFinset_card_of_nodup hl_nd, hlen])]
+    exact Finset.mem_univ _
+  -- j = indexOf w₁ in hl
+  set j := hl.indexOf w₁ with hj_def
+  have hj_lt_hl : j < hl.length := List.indexOf_lt_length.mpr hw1_mem
+  have hj_get : hl[j]'hj_lt_hl = w₁ := List.getElem_indexOf hw1_mem
+  -- j < n-1 since w₁ ≠ hl[n-1] (loopless)
+  have hw1_ne_last : w₁ ≠ hl[n-1]'hn1lt := fun h => D.loopless _ (h ▸ harc_to_w1)
+  have hj_lt_last : j < n - 1 := by
+    by_contra h; push_neg at h
+    apply hw1_ne_last
+    have hjeq : j = n - 1 := by omega
+    calc w₁ = hl[j]'hj_lt_hl := hj_get.symm
+      _ = hl[n-1]'hn1lt := by congr 1; omega
+  -- hl.drop j is a directed cycle of length n - j ≥ 2
+  refine ⟨hl.drop j, List.Nodup.drop j hl_nd, ?_, ?_⟩
+  · simp only [List.length_drop, hlen]; omega
+  · intro i hi
+    simp only [List.length_drop, hlen] at hi
+    -- (hl.drop j)[m] = hl[j + m]
+    have hget : ∀ m (hm : m < n - j),
+        (hl.drop j)[m]'(by simp [List.length_drop, hlen]; omega) = hl[j + m]'(by omega) :=
+      fun m _ => List.getElem_drop ..
+    rw [hget i (by omega)]
+    by_cases hwrap : i + 1 = n - j
+    · -- Closing arc: hl[j+i] = hl[n-1] → hl[j] = w₁
+      have hmod : (i + 1) % (n - j) = 0 := by
+        rw [show i + 1 = n - j from hwrap, Nat.mod_self]
+      rw [hget 0 (by omega), hmod, Nat.zero_add]
+      -- Goal: D.arc (hl[j+i]'_) (hl[j]'_)
+      have hjieq : j + i = n - 1 := by omega
+      convert harc_to_w1 using 2
+      · exact congrArg (hl[·]'(by omega)) hjieq
+      · exact hj_get.symm
+    · -- Interior arc: hl[j+i] → hl[j+i+1] from Hamiltonian path
+      have hmod : (i + 1) % (n - j) = i + 1 := Nat.mod_eq_of_lt (by omega)
+      rw [hget (i + 1) (by omega), hmod]
+      convert hl_arcs (j + i) (by omega) using 2 <;> omega
 
 /-! ── IV.B: Non-Insertable Vertex Dichotomy ─────────────────────────────── -/
 
@@ -408,11 +479,136 @@ Given cycle C of length k < n, pick any u ∉ C.
   – Both nonempty: if ∃ a∈S⁺, b∈S⁻ with arc(b,a): form cycle
     a→w₁→⋯→wₖ→b→a of length k+2, contradicting maximality.
     Otherwise all S⁺ beat all S⁻, trapping S⁻ → contradicts SC. -/
+-- Helper: getElem of insertNth decomposes as three cases
+private lemma insertNth_getElem_eq {α : Type*} (l : List α) (a : α) (i : ℕ)
+    (hi : i ≤ l.length) (j : ℕ) (hj : j < (l.insertNth i a).length) :
+    (l.insertNth i a)[j]'hj =
+      if hlt : j < i then l[j]'(by simp [List.length_insertNth hi] at hj; omega)
+      else if heq : j = i then a
+      else l[j - 1]'(by simp [List.length_insertNth hi] at hj; omega) := by
+  induction i generalizing l j with
+  | zero =>
+    simp only [List.insertNth_zero, Nat.not_lt_zero, ↓reduceDite, Nat.zero_le, le_refl]
+    rcases j with _ | j <;> simp
+  | succ i ih =>
+    rcases l with _ | ⟨a', t⟩
+    · simp [List.length_nil] at hi
+    · simp only [List.insertNth_succ_cons]
+      rcases j with _ | j
+      · simp
+      · simp only [List.getElem_cons_succ]
+        rw [ih t (by simpa using hi) j (by simp [List.length_insertNth (by simpa using hi)] at hj ⊢; omega)]
+        by_cases hlt : j < i <;> by_cases heq : j = i <;> simp_all <;> omega
+
 private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
     (hsc : D.IsStronglyConnected) (l : List V) (hc : IsDirectedCycleList D l)
     (hl : l.length < Fintype.card V) :
     ∃ l' : List V, IsDirectedCycleList D l' ∧ l.length < l'.length := by
-  sorry
+  obtain ⟨hnd, hlen2, harcs⟩ := hc
+  set k := l.length with hk_def
+  -- Find u ∉ l (exists since k < n)
+  have ⟨u, hu⟩ : ∃ u : V, u ∉ l := by
+    by_contra hall; push_neg at hall
+    exact absurd (calc Fintype.card V = Finset.univ.card := Finset.card_univ.symm
+      _ ≤ l.toFinset.card := Finset.card_le_card (fun v _ => List.mem_toFinset.mpr (hall v))
+      _ = k := l.toFinset_card_of_nodup hnd) (by omega)
+  -- Case 1: u is insertable at some position i
+  by_cases h_ins : ∃ (i : ℕ) (hi : i < k),
+      D.arc (l[i]'hi) u ∧ D.arc u (l[(i+1)%k]'(Nat.mod_lt _ (by omega)))
+  · obtain ⟨i, hi, harc_liu, harc_ul⟩ := h_ins
+    -- l.insertNth (i+1) u is a cycle of length k+1
+    use l.insertNth (i + 1) u
+    have hlen_ins : (l.insertNth (i + 1) u).length = k + 1 :=
+      List.length_insertNth (by omega)
+    refine ⟨?_, ?_, ?_⟩
+    · exact List.Nodup.insertNth hu hnd
+    · simp [hlen_ins]; omega
+    · -- Arc condition: split by position relative to i+1
+      intro j hj
+      simp only [hlen_ins] at hj
+      -- Get elements via the helper lemma
+      have heli : ∀ m (hm : m < k + 1),
+          (l.insertNth (i + 1) u)[m]'hm =
+            if m < i + 1 then l[m]'(by omega)
+            else if m = i + 1 then u
+            else l[m - 1]'(by omega) := by
+        intro m hm; exact insertNth_getElem_eq l u (i+1) (by omega) m (by rwa [hlen_ins])
+      rw [heli j hj]
+      -- Determine (j+1) % (k+1) and the element there
+      set jnext := (j + 1) % (k + 1) with hjnext_def
+      have hjnext_lt : jnext < k + 1 := Nat.mod_lt _ (by omega)
+      rw [heli jnext hjnext_lt]
+      -- Now split into 5 cases based on j vs i+1
+      by_cases hji : j < i
+      · -- j < i: both j and jnext = j+1 are below i+1
+        have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt (by omega)
+        simp only [show j < i + 1 from by omega, show j + 1 < i + 1 from by omega,
+                   hjnext, ↓reduceIte, dite_true]
+        exact harcs j (by omega)
+      · by_cases hji2 : j = i
+        · -- j = i: new[i] = l[i], new[i+1] = u (next is i+1)
+          subst hji2
+          have hjnext : jnext = i + 1 := Nat.mod_eq_of_lt (by omega)
+          simp [hjnext]
+          exact harc_liu
+        · by_cases hji3 : j = i + 1
+          · -- j = i+1: new[j] = u
+            subst hji3
+            have hjnext : jnext = if i + 2 < k + 1 then i + 2 else 0 := by
+              simp [hjnext_def]
+              split_ifs with h
+              · exact Nat.mod_eq_of_lt h
+              · push_neg at h
+                rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
+            simp only [show ¬(i + 1 < i + 1) from by omega, show i + 1 = i + 1 from rfl,
+                       if_false, if_true]
+            split_ifs at hjnext with h
+            · -- i + 2 < k + 1: new[i+2] = l[i+1]
+              rw [hjnext]
+              simp only [show ¬(i + 2 < i + 1) from by omega, show ¬(i + 2 = i + 1) from by omega,
+                         if_false, show i + 2 - 1 = i + 1 from by omega]
+              convert harc_ul using 2
+              exact (Nat.mod_eq_of_lt (by omega)).symm
+            · -- i + 2 = k + 1: new[0] = l[0] (wrap)
+              have hik : i + 1 = k := by omega
+              rw [hjnext]
+              simp only [show (0 : ℕ) < i + 1 from by omega, ↓reduceIte]
+              convert harc_ul using 2
+              simp [hik, Nat.mod_self]
+          · -- j > i + 1: new[j] = l[j-1]
+            have hjgt : i + 1 < j := by omega
+            by_cases hwrap : j + 1 < k + 1
+            · -- No wrap: jnext = j + 1
+              have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt hwrap
+              rw [hjnext]
+              simp only [show ¬(j < i + 1) from by omega, show ¬(j = i + 1) from by omega,
+                         show ¬(j + 1 < i + 1) from by omega, show ¬(j + 1 = i + 1) from by omega,
+                         if_false]
+              exact harcs (j - 1) (by omega)
+            · -- Wrap: j = k, jnext = 0
+              have hjk : j = k := by omega
+              have hjnext : jnext = 0 := by simp [hjnext_def, hjk, Nat.mod_self]
+              rw [hjnext, hjk]
+              simp only [show ¬(k < i + 1) from by omega, show ¬(k = i + 1) from by omega,
+                         show (0 : ℕ) < i + 1 from by omega, if_false, ↓reduceIte]
+              have : k - 1 < k := by omega
+              convert harcs (k - 1) this using 2
+              · simp; omega
+              · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
+  · -- Case 2: u is not insertable anywhere
+    push_neg at h_ins
+    -- By the non-insertable dichotomy: all C beats u (u ∈ S⁻) or u beats all C (u ∈ S⁺)
+    have h_ni : (∀ (i : ℕ) (hi : i < k), D.arc (l[i]'hi) u) ∨
+                (∀ (i : ℕ) (hi : i < k), D.arc u (l[i]'hi)) :=
+      tournament_cycle_non_insertable D hT l hc u hu
+        (fun i hi ⟨h1, h2⟩ => h_ins i hi ⟨h1, h2⟩)
+    -- In the u ∈ S⁻ case: SC path from u to l[0]; the last non-cycle vertex before
+    -- hitting C is in S⁺ (since it arcs into C). Combined with u ∈ S⁻, we find
+    -- adjacent S⁻/S⁺ vertices and build a k+2 cycle.
+    -- In the u ∈ S⁺ case: symmetric (SC path from l[0] to u).
+    -- Both cases yield a contradiction with SC if no longer cycle exists.
+    -- Full formalization: find first S⁺ on SC path from u (S⁻ case), use pair to build k+2 cycle.
+    sorry
 
 /-! ── IV.D: List Cycle to Hamiltonian Cycle Equivalence ──────────────────── -/
 
