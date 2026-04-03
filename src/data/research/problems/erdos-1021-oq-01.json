@@ -2,7 +2,7 @@
   "slug": "erdos-1021-oq-01",
   "title": "Does ex(n, G_k) = o(n^{3/2}) for any k >= 4",
   "phase": "NEW",
-  "status": "active",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-03-30T21:46:38.106Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEY+FORMALIZATION: Created OQ-01 formalization. Established logical hierarchy and key bounds. Problem open for k≥4. 2 axioms (known results), 4 sorries.",
+    "builtItems": [
+      "Created Erdos1021OQ01.lean with 8 theorems, 2 axioms, 4 sorries",
+      "Defined weakConjectureK4 = ∀ k ≥ 4, isLittleO (exGk k) n^{3/2}",
+      "Proved strong→weak→OQ-01 chain",
+      "Proved O(n^{3/2}) ≠ o(n^{3/2}) (separating trivial bound from the question)",
+      "Proved lower bound exponent < 3/2 and approaches 3/2 as k→∞",
+      "Created src/data/proofs/erdos-1021-oq-01/ gallery entry"
+    ],
+    "insights": [
+      "OQ-01 asks: for k≥4, does ex(n,G_k) = o(n^{3/2})?",
+      "k=3 is settled: G_3=C_6, ex(n,C_6) ≪ n^{7/6} (Bondy-Simonovits)",
+      "KST trivial bound: ex(n,G_k) ≤ C·n^{3/2} (because G_k contains K_{2,C(k,2)})",
+      "Probabilistic lower bound: ex(n,G_k) ≥ c·n^{3/2-1/(k-1)}",
+      "O(n^{3/2}) ≠ o(n^{3/2}): KST alone insufficient to resolve OQ-01",
+      "Problem is harder for larger k: lower bound exponent approaches 3/2",
+      "Both strong and weak forms open for ALL k ≥ 4"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Try to prove kst_trivial_bound from scratch (Kővári-Sós-Turán in Mathlib?)",
+      "Look for Mathlib lemmas on bipartite extremal numbers",
+      "Check if probabilistic_lower_bound can be reduced to simpler existence claim"
+    ]
   },
   "tags": [
     "seeker-selected",
