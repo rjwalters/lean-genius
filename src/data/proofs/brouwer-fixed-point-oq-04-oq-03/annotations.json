@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "id": "uhc-singleton-reduction",
+    "type": "technique",
+    "title": "UHC of Singleton Maps Equals Continuity",
+    "body": "The `brouwer_from_kakutani_finite` proof uses the key observation that for F(x) = {f(x)}, IsUpperHemicontinuous reduces to continuity. The UHC condition requires {x | F(x) ⊆ U} = {x | f(x) ∈ U} = f⁻¹(U) to be open for every open U. This is precisely `Continuous.isOpen_preimage hcont`. The Lean proof writes this as `by intro U hU; simp; exact hcont.isOpen_preimage U hU`.",
+    "location": "BrouwerFixedPointOQ04OQ03.lean:139-154",
+    "tags": ["upper-hemicontinuity", "singleton-map", "continuity", "fixed-point"]
+  },
+  {
+    "id": "kakutani-four-conditions",
+    "type": "context",
+    "title": "The Four Conditions of Kakutani's Theorem",
+    "body": "Kakutani requires four conditions on F: (1) UHC — closedness of graph; (2) nonempty values — existence; (3) closed values — compactness in image; (4) convex values — the crucial extension beyond Brouwer. Each condition is necessary. Without UHC: discontinuous maps may have no fixed point. Without convexity: consider F(x) = {0,1} on [0,1] — no fixed point. Without closedness: open-valued maps can fail. Without nonemptiness: trivially fails.",
+    "location": "BrouwerFixedPointOQ04OQ03.lean:69-77",
+    "tags": ["kakutani", "upper-hemicontinuity", "convex-values", "fixed-point"]
+  },
+  {
+    "id": "nash-true-stub",
+    "type": "warning",
+    "title": "IsNashEquilibrium = True: Not a Real Nash Result",
+    "body": "The definition `IsNashEquilibrium G σ := True` means every strategy profile is technically a 'Nash equilibrium' in this formalization. The `nash_equilibrium_existence` theorem is trivially proved by ⟨fun _ _ => 0, trivial⟩ — the constant-zero strategy with `trivial` proof. The real Nash equilibrium condition requires: for each player i, σ_i maximizes expected payoff given others' strategies σ_{-i}. Formalizing this needs probability measures and the best-response correspondence.",
+    "location": "BrouwerFixedPointOQ04OQ03.lean:113-120",
+    "tags": ["placeholder", "nash-equilibrium", "formalization-gap", "game-theory"]
+  },
+  {
+    "id": "fan-glicksberg-lctvs",
+    "type": "context",
+    "title": "Fan-Glicksberg: Why Local Convexity is Necessary",
+    "body": "The axiom `fan_glicksberg` requires `[LocallyConvexSpace ℝ E]`. This condition is genuinely necessary: without local convexity, fixed points can fail. For example, the space L^p(0,1) with 0 < p < 1 is a topological vector space but not locally convex; compact convex self-maps can lack fixed points there. Banach and Hilbert spaces are always locally convex. The Lean typeclass `LocallyConvexSpace ℝ E` asserts that every point has a neighborhood basis of convex open sets.",
+    "location": "BrouwerFixedPointOQ04OQ03.lean:85-95",
+    "tags": ["fan-glicksberg", "locally-convex", "functional-analysis", "axiom"]
+  },
+  {
+    "id": "fixed-point-hierarchy",
+    "type": "insight",
+    "title": "Two Independent Generalizations Converge",
+    "body": "The fixed point theorem hierarchy has two axes of generalization: (A) single-valued → set-valued (Brouwer→Kakutani, Schauder→Fan-Glicksberg), and (B) finite-dimensional → infinite-dimensional (Brouwer→Schauder, Kakutani→Fan-Glicksberg). Fan-Glicksberg sits at the intersection of both. This file formalizes the finite-dim set-valued case (Kakutani) and the infinite-dim set-valued case (Fan-Glicksberg) as axioms, and derives Brouwer from Kakutani. The Eilenberg-Montgomery theorem (1946) further generalizes by replacing convex values with acyclic values using homological methods.",
+    "location": "BrouwerFixedPointOQ04OQ03.lean:126-136",
+    "tags": ["hierarchy", "fixed-point", "topology", "generalization"]
+  }
+]
