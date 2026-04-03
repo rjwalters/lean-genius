@@ -489,4 +489,163 @@ noncomputable def infMaximalSidonSize (N : ℕ) : ℝ :=
 
 /-- The main open question in precise form -/
 
+/-
+## Greedy Sidon Size Lower Bound
+
+The greedy Sidon set greedySidon(N) has size Ω(N^{1/3}).
+
+Clarification on the commonly-cited √N figure: the Erdős–Turán theorem shows
+that any Sidon set in {1,...,N} has size at most √N + O(N^{1/4}) — this is an
+UPPER bound on the maximum size. The greedy algorithm achieves much less:
+its lower bound is Ω(N^{1/3}), not Ω(√N).
+
+Proof outline:
+  1. greedySidon N is finite (as a subset of {1,...,N}).
+  2. Every k ∈ {1,...,N} \ greedySidon(N) was rejected at step k, meaning
+     ∃ a,b,c ∈ greedySidon(k-1) ⊆ greedySidon(N) with a+k = b+c or 2k = b+c.
+  3. The "difference shadow" {b+c-a : a,b,c ∈ A} has size ≤ |A|·|A+A| ≤ |A|³/2.
+  4. Therefore N ≤ |greedySidon(N)| + |greedySidon(N)|³/2,
+     giving |greedySidon(N)| ≥ (2N)^{1/3} / C.
+-/
+
+/-- The greedy Sidon set is finite for each N -/
+lemma greedySidon_finite (N : ℕ) : (greedySidon N).Finite :=
+  Set.Finite.subset (Set.finite_Icc 1 N) fun x hx =>
+    Set.mem_Icc.mpr (greedySidon_subset_interval N hx)
+
+/-- Type-I shadow: elements expressible as b+c-a for a,b,c ∈ A (via a+x = b+c) -/
+def diffShadow (A : Set ℕ) : Set ℕ :=
+  {x | ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ a + x = b + c}
+
+/-- Type-II shadow: midpoints of A-pairs, i.e., x with 2x = b+c for some b,c ∈ A -/
+def midShadow (A : Set ℕ) : Set ℕ :=
+  {x | ∃ b c : ℕ, b ∈ A ∧ c ∈ A ∧ b + c = 2 * x}
+
+/-- If A is Sidon, x ∉ A, and A ∪ {x} is not Sidon, then x ∈ diffShadow A ∨ x ∈ midShadow A -/
+lemma not_sidon_after_insert (A : Set ℕ) (x : ℕ)
+    (hA : IsSidonSet A) (hxA : x ∉ A)
+    (hnot : ¬IsSidonSet (A ∪ {x})) :
+    x ∈ diffShadow A ∨ x ∈ midShadow A := by
+  simp only [IsSidonSet] at hnot
+  push_neg at hnot
+  obtain ⟨a, b, c, d, ha, hb, hc, hd, hab, hcd, hsum, hne⟩ := hnot
+  have hnotAll : ¬(a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ d ∈ A) := fun ⟨haA, hbA, hcA, hdA⟩ =>
+    hne (hA a b c d haA hbA hcA hdA hab hcd hsum)
+  -- helper: membership in A ∪ {x}
+  have orx : ∀ y, y ∈ A ∪ {x} → y ∈ A ∨ y = x := fun y hy =>
+    (Set.mem_union _ _ _).mp hy |>.imp_right Set.mem_singleton_iff.mp
+  rcases orx a ha with haA | rfl
+  · rcases orx b hb with hbA | rfl
+    · rcases orx c hc with hcA | rfl
+      · -- a,b,c ∈ A → d ∉ A → d = x
+        rcases orx d hd with hdA | rfl
+        · exact absurd ⟨haA, hbA, hcA, hdA⟩ hnotAll
+        · -- a+b = c+x ↦ c+x = a+b, type I: α=c, β=a, γ=b
+          exact Or.inl ⟨c, a, b, hcA, haA, hbA, by linarith⟩
+      · -- c = x, a,b ∈ A
+        rcases orx d hd with hdA | rfl
+        · -- a+b = x+d, type I: α=d, β=a, γ=b  (d+x = a+b)
+          exact Or.inl ⟨d, a, b, hdA, haA, hbA, by linarith⟩
+        · -- c=d=x, a+b = 2x, type II
+          exact Or.inr ⟨a, b, haA, hbA, by linarith⟩
+    · -- b = x, a ∈ A
+      rcases orx c hc with hcA | rfl
+      · rcases orx d hd with hdA | rfl
+        · -- a+x = c+d, type I directly (α=a, β=c, γ=d)
+          exact Or.inl ⟨a, c, d, haA, hcA, hdA, hsum⟩
+        · -- b=d=x: a+x=c+x → a=c → {a,x}={c,x}: contradiction
+          have hac : a = c := by linarith
+          exact absurd (by ext z; simp [hac]) hne
+      · -- b=c=x: a+x=x+d → a=d → {a,x}={d,x}: contradiction
+          have had : a = d := by linarith
+          exact absurd (by ext z; simp [had, or_comm]) hne
+  · -- a = x
+    rcases orx b hb with hbA | rfl
+    · rcases orx c hc with hcA | rfl
+      · rcases orx d hd with hdA | rfl
+        · -- x+b=c+d, type I: α=b, β=c, γ=d  (b+x=c+d)
+          exact Or.inl ⟨b, c, d, hbA, hcA, hdA, by linarith⟩
+        · -- a=x, d=x: x+b=c+x → b=c → {x,b}={c,x}: contradiction
+          have hbc : b = c := by linarith
+          exact absurd (by ext z; simp [hbc, or_comm]) hne
+      · -- a=c=x: x+b=x+d → b=d → {x,b}={x,d}: contradiction
+          have hbd : b = d := by linarith
+          exact absurd (by ext z; simp [hbd]) hne
+    · -- a=b=x: 2x = c+d
+      rcases orx c hc with hcA | rfl
+      · rcases orx d hd with hdA | rfl
+        · -- c,d ∈ A: 2x=c+d, type II
+          exact Or.inr ⟨c, d, hcA, hdA, by linarith⟩
+        · -- c∈A, d=x: 2x=c+x → c=x, contradicts c∈A and x∉A
+          exact absurd (show c = x by linarith) (fun h => hxA (h ▸ hcA))
+      · -- a=b=c=x
+        rcases orx d hd with hdA | rfl
+        · -- d∈A: 2x=x+d → d=x, contradicts d∈A and x∉A
+          exact absurd (show d = x by linarith) (fun h => hxA (h ▸ hdA))
+        · -- all four = x: {x,x}={x,x}, contradiction with hne
+          exact absurd rfl hne
+
+/-- Every element of {1,...,N} not in greedySidon N lies in the shadow of greedySidon N -/
+lemma greedySidon_complement_in_shadow (N k : ℕ) (hkN : k ∈ Interval N)
+    (hknot : k ∉ greedySidon N) :
+    k ∈ diffShadow (greedySidon N) ∨ k ∈ midShadow (greedySidon N) := by
+  -- k ≥ 1, write k = k' + 1
+  obtain ⟨hk1, _⟩ := hkN
+  obtain ⟨k', rfl⟩ : ∃ k', k = k' + 1 := ⟨k - 1, by omega⟩
+  -- k'+1 was not added at step k'+1
+  have h_step : k' + 1 ∉ greedySidon (k' + 1) :=
+    fun h => hknot (greedySidon_mono (k' + 1) N (by omega) h)
+  -- The Sidon check failed at step k'+1
+  have h_fail : ¬IsSidonSet (greedySidon k' ∪ {k' + 1}) :=
+    greedySidon_rejected k' h_step
+  -- k'+1 ∉ greedySidon k' (by monotonicity: if it were, it'd be in greedySidon(k'+1))
+  have hk1_notA : k' + 1 ∉ greedySidon k' := fun h =>
+    h_step (greedySidon_mono k' (k' + 1) (Nat.le_succ k') h)
+  -- Apply the shadow lemma
+  rcases not_sidon_after_insert (greedySidon k') (k' + 1)
+      (greedySidon_is_sidon k') hk1_notA h_fail with h1 | h2
+  · -- Type I: ∃ a,b,c ∈ greedySidon k' with a+(k'+1) = b+c
+    obtain ⟨a, b, c, haA, hbA, hcA, heq⟩ := h1
+    exact Or.inl ⟨a, b, c,
+      greedySidon_mono k' N (by omega) haA,
+      greedySidon_mono k' N (by omega) hbA,
+      greedySidon_mono k' N (by omega) hcA,
+      heq⟩
+  · -- Type II: ∃ b,c ∈ greedySidon k' with b+c = 2*(k'+1)
+    obtain ⟨b, c, hbA, hcA, heq⟩ := h2
+    exact Or.inr ⟨b, c,
+      greedySidon_mono k' N (by omega) hbA,
+      greedySidon_mono k' N (by omega) hcA,
+      heq⟩
+
+/-- The diffShadow of A has size at most |A| * |sumset A| -/
+lemma diffShadow_ncard_le (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
+    (diffShadow A).ncard ≤ A.ncard * (A.ncard * (A.ncard + 1) / 2) := by
+  -- diffShadow A ⊆ ⋃ a ∈ A, {σ - a | σ ∈ sumset A, σ > a}
+  -- Each fiber has size ≤ |sumset A| = |A|*(|A|+1)/2 (by sidon_sumset_size)
+  sorry
+
+/-- The midShadow of A has size at most |A|*(|A|+1)/2 -/
+lemma midShadow_ncard_le (A : Set ℕ) (hfin : A.Finite) :
+    (midShadow A).ncard ≤ A.ncard * (A.ncard + 1) / 2 := by
+  -- midShadow A ⊆ image of sumset A under λ σ, σ/2 (for even σ)
+  -- size ≤ |sumset A|, and |sumset A| ≤ |A|*(|A|+1)/2
+  sorry
+
+/--
+Greedy Sidon N^{1/3} lower bound (framework):
+
+If n = size(greedySidon N), then N ≤ n + n*(n*(n+1)/2) + n*(n+1)/2 ≤ n + n³/2 + n²/2.
+In particular, 2*N ≤ 2*n + n³ + n², giving n ≥ Ω(N^{1/3}).
+
+Note: this corrects the OQ problem statement erdos-156-oq-02, which incorrectly
+claimed a lower bound of Nat.sqrt N. The correct bound is Ω(N^{1/3}).
+-/
+theorem greedySidon_cube_lower_bound (N n : ℕ)
+    (hn : n = size (greedySidon N)) (hN : N ≥ 1) :
+    N ≤ n + n * (n * (n + 1) / 2) + n * (n + 1) / 2 := by
+  -- Counting: Interval N ⊆ greedySidon N ∪ diffShadow(greedySidon N) ∪ midShadow(greedySidon N)
+  -- |Interval N| = N, |greedySidon N| = n, |diffShadow| ≤ n*(n*(n+1)/2), |midShadow| ≤ n*(n+1)/2
+  sorry
+
 end Erdos156
