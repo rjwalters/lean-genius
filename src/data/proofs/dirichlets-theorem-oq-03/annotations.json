@@ -1,42 +1,74 @@
 [
   {
-    "id": "linnik-constant-infimum",
-    "type": "insight",
-    "title": "Linnik Constant as sInf of Admissible Exponents",
-    "body": "The formalization defines `linnikConstant = sInf admissibleExponents` where admissibleExponents = {L > 0 : ∃ c > 0, p(a,q) ≤ c·q^L for all coprime (a,q)}. This is the natural mathematical definition: the infimum of all exponents for which Linnik's bound holds. By nonemptiness (from linnik_theorem) and the lower bound L* ≥ 1 (sorry), the infimum is the unique 'best' exponent.",
-    "location": "DirichletsTheoremOQ03.lean:48-60",
-    "tags": ["linnik-constant", "infimum", "number-theory"]
-  },
-  {
-    "id": "monotonicity-trick",
-    "type": "technique",
-    "title": "Monotonicity Derives Heath-Brown from Xylouris",
-    "body": "The proof of `heathBrown_bound` (5.5 ∈ admissibleExponents) derives from `xylouris_bound` (5 ∈ admissibleExponents) using monotonicity: if p(a,q) ≤ c·q^5 then p(a,q) ≤ c·q^{5.5} since q^5 ≤ q^{5.5} for q ≥ 1. In Lean: `Real.rpow_le_rpow (Nat.cast_nonneg q) (by norm_num : (5:ℝ) ≤ 5.5)`. This is immediate but useful — it shows that historical improvements to L are all superseded by Xylouris and that the set of admissible exponents is indeed a ray.",
-    "location": "DirichletsTheoremOQ03.lean:76-83",
-    "tags": ["monotonicity", "rpow", "linnik-constant", "derivation"]
-  },
-  {
-    "id": "optimal-conjecture-contradiction",
-    "type": "insight",
-    "title": "Contradiction via δ = (L*−1)/2",
-    "body": "The `optimal_implies_le_one` proof is the most interesting: assuming L* > 1, choose δ = (linnikConstant − 1)/2. Then 1+δ = (linnikConstant+1)/2 < linnikConstant. The optimal conjecture gives 1+δ ∈ admissibleExponents. Then `csInf_le` yields linnikConstant ≤ 1+δ, contradicting 1+δ < linnikConstant. This is a clean application of how `sInf` works in Lean: csInf_le needs a lower bound (here 0, shown since all admissible L > 0) and membership to get the inequality.",
-    "location": "DirichletsTheoremOQ03.lean:108-118",
-    "tags": ["proof-technique", "csInf", "contradiction", "open-conjecture"]
-  },
-  {
-    "id": "dirichlet-sorry-in-definition",
-    "type": "warning",
-    "title": "leastPrimeInAP Has Two Sorries from Dirichlet's Theorem",
-    "body": "The definition `leastPrimeInAP a q = Nat.find ⟨sorry, sorry⟩` depends on the existence of a prime p ≡ a (mod q), which requires Dirichlet's theorem. The two sorries provide (1) a prime p and (2) the congruence p ≡ a (mod q). Without these, leastPrimeInAP is not well-founded. Filling these sorries would require importing the parent proof (which formalizes Dirichlet's theorem with L-functions or Mathlib's existing results).",
-    "location": "DirichletsTheoremOQ03.lean:33-34",
-    "tags": ["sorry", "dirichlet", "formalization-gap", "well-definedness"]
-  },
-  {
-    "id": "linnik-historical-improvements",
+    "id": "ann-linnik-history",
+    "proofId": "dirichlets-theorem-oq-03",
+    "range": { "startLine": 1, "endLine": 20 },
     "type": "context",
     "title": "Seven Decades of Improving the Linnik Constant",
-    "body": "The header documents the progression: L ≤ 10000 (Pan, 1957) → L ≤ 40 (Elliott-Halberstam, 1966) → L ≤ 20 (Jutila, 1970) → L ≤ 13.5 (Chen, 1977) → L ≤ 8 (Wang, 1992) → L ≤ 5.5 (Heath-Brown, 1992) → L ≤ 5 (Xylouris, 2011). Each bound uses zero-free regions of Dirichlet L-functions. The formalization axiomatizes only the current best (Xylouris) and derives the predecessor (Heath-Brown) by monotonicity. The gap from L ≤ 5 to the conjectured L = 1 spans 70+ years of unresolved analytic number theory.",
-    "location": "DirichletsTheoremOQ03.lean:1-20",
-    "tags": ["history", "linnik-constant", "analytic-number-theory", "open-problem"]
+    "content": "The header documents the full progression of upper bounds on the Linnik constant L: from Linnik's original existence result (1944) through Pan (L≤10000, 1957), Elliott-Halberstam (L≤40), Jutila (L≤20), Chen (L≤13.5), Wang (L≤8), Heath-Brown (L≤5.5, 1992), to Xylouris (L≤5, 2011). Each improvement uses increasingly refined zero-free regions for Dirichlet L-functions. The conjectured truth L = 1+ε follows from GRH and represents the boundary of what analytic number theory currently cannot resolve unconditionally.",
+    "mathContext": "Each bound $L \\leq L_k$ is proved by showing: if $L(s, \\chi)$ has no zeros in $\\{\\text{Re}(s) > 1 - \\delta_k\\}$ for a character $\\chi \\pmod q$, then $p(a,q) \\leq c q^{L_k}$. The zero-free region width $\\delta_k$ determines $L_k$: wider zero-free regions → smaller $L_k$. Xylouris improved the Vinogradov-Korobov zero-free region to $\\delta \\geq c / \\log^{2/3} q (\\log \\log q)^{1/3}$, giving $L = 5$. GRH would give $\\delta = 1/2 - \\text{Re}(\\rho)$ effectively infinite for a subconvex zero-free region, yielding $L = 2 + \\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": ["Linnik's theorem", "Dirichlet L-functions", "zero-free regions", "GRH", "Vinogradov-Korobov bound"],
+    "prerequisites": ["Dirichlet characters", "Dirichlet L-functions", "zero-free region methods", "primes in arithmetic progressions"]
+  },
+  {
+    "id": "ann-linnik-sorry-def",
+    "proofId": "dirichlets-theorem-oq-03",
+    "range": { "startLine": 32, "endLine": 40 },
+    "type": "context",
+    "title": "leastPrimeInAP: Two Sorries from Dirichlet's Theorem",
+    "content": "The definition `leastPrimeInAP a q = Nat.find ⟨sorry, sorry⟩` requires an existence witness for `∃ p, p.Prime ∧ p ≡ a [MOD q]` with `Nat.Coprime a q`. The two sorries provide (1) a prime p and (2) the congruence p ≡ a (mod q). Filling these requires Dirichlet's theorem — the parent entry `dirichlets-theorem`. The function is noncomputable but well-defined once the sorries are filled: `Nat.find` gives the least natural number satisfying the decidable predicate.",
+    "mathContext": "Dirichlet's theorem (1837): for $\\gcd(a,q) = 1$, there are infinitely many primes $p \\equiv a \\pmod q$. This gives the existence witness. `Nat.find` requires `∃ n, P n` where `P` is decidable — both `Nat.Prime` and `· ≡ a [MOD q]` are decidable in Lean, so `leastPrimeInAP` is well-typed. The axiom `linnik_theorem` provides the quantitative bound $p(a,q) \\leq c \\cdot q^L$, which cannot be inferred from just existence of a prime in the AP.",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.find", "Nat.Coprime", "Dirichlet's theorem", "primes in AP", "noncomputable definition"],
+    "prerequisites": ["Dirichlet's theorem (parent entry)", "Nat.find in Mathlib", "decidability of Nat.Prime and Nat.ModEq"]
+  },
+  {
+    "id": "ann-linnik-constant-sInf",
+    "proofId": "dirichlets-theorem-oq-03",
+    "range": { "startLine": 48, "endLine": 87 },
+    "type": "technique",
+    "title": "Linnik Constant as sInf: csInf_le and Nonemptiness",
+    "content": "The `linnikConstant = sInf admissibleExponents` uses Mathlib's `csInf_le` to prove `linnikConstant ≤ 5`: this requires showing (1) the set is bounded below (here by 0, since all L > 0 by definition), and (2) 5 ∈ admissibleExponents (the `xylouris_bound` axiom). The proof `csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩ xylouris_bound` is a two-liner that packages both conditions. The nonemptiness theorem `admissible_nonempty` unwraps `linnik_theorem` to produce an explicit member.",
+    "mathContext": "`csInf_le : BoundedBelow s → a ∈ s → sInf s ≤ a`. Here $s = \\text{admissibleExponents}$, $a = 5$. Bounded below: `⟨0, fun L hL => le_of_lt hL.1⟩` witnesses that $0 \\leq L$ for all $L \\in s$ (since all admissible exponents satisfy $L > 0$). Membership: `xylouris_bound`. The `admissible_nonempty` proof: `linnik_theorem` gives $\\exists c, L, \\ldots$, and `⟨L, hL, c, hc, hbound⟩` shows $L \\in \\text{admissibleExponents}$. The lower bound $L^* \\geq 1$ (sorry) would then give the range $1 \\leq L^* \\leq 5$.",
+    "significance": "key",
+    "relatedConcepts": ["csInf_le", "BoundedBelow", "sInf in Lean 4", "ConditionallyCompleteLinearOrder", "Nat.find infimum"],
+    "prerequisites": ["ConditionallyCompleteLinearOrder typeclass", "csInf_le in Mathlib", "sInf on subsets of ℝ"]
+  },
+  {
+    "id": "ann-linnik-monotonicity",
+    "proofId": "dirichlets-theorem-oq-03",
+    "range": { "startLine": 76, "endLine": 83 },
+    "type": "technique",
+    "title": "Monotonicity: Heath-Brown from Xylouris via rpow_le_rpow",
+    "content": "The `heathBrown_bound` proof (5.5 ∈ admissibleExponents) derives from `xylouris_bound` (5 ∈ admissibleExponents) by observing that if p(a,q) ≤ c·q^5 then p(a,q) ≤ c·q^{5.5} since q^5 ≤ q^{5.5} for q ≥ 1. The Lean proof uses `Real.rpow_le_rpow (Nat.cast_nonneg q) (by norm_num : (5:ℝ) ≤ 5.5)` to get the rpow comparison and `mul_le_mul_of_nonneg_left` to propagate through the c·_ multiplication. This shows admissible exponents form a ray [L*, ∞): the infimum is the only mathematically interesting point.",
+    "mathContext": "Monotonicity of admissible exponents: if $L \\in \\text{admissibleExponents}$ and $L' \\geq L$, then $L' \\in \\text{admissibleExponents}$ with the same constant $c$. Proof: $p(a,q) \\leq c q^L \\leq c q^{L'}$ since $q \\geq 1 \\Rightarrow q^L \\leq q^{L'}$. Lean: `Real.rpow_le_rpow (Nat.cast_nonneg q) (by norm_num)`. The set is thus $[L^*, \\infty)$, making `sInf` a natural formalization choice — unlike a finite minimum, the infimum correctly handles the case where the optimal $L^*$ may not be achieved by any single bound.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.rpow_le_rpow", "mul_le_mul_of_nonneg_left", "admissible exponent ray", "monotone set membership"],
+    "prerequisites": ["Real.rpow monotonicity in Mathlib", "mul_le_mul_of_nonneg_left", "norm_num tactic"]
+  },
+  {
+    "id": "ann-linnik-optimal-contradiction",
+    "proofId": "dirichlets-theorem-oq-03",
+    "range": { "startLine": 107, "endLine": 118 },
+    "type": "insight",
+    "title": "Optimal Conjecture → L* ≤ 1: Clean csInf Contradiction",
+    "content": "The `optimal_implies_le_one` proof assumes `optimalLinnikConjecture` (every 1+ε is admissible) and derives a contradiction from L* > 1. Choose δ = (L*-1)/2 > 0. Then 1+δ = (L*+1)/2 < L*. The conjecture gives 1+δ ∈ admissibleExponents. Then `csInf_le` (with the same bounded-below witness as before) gives L* ≤ 1+δ. But 1+δ < L* by construction, giving L* < L*, a contradiction. This is exactly how `sInf` is used in Lean analysis: membership in the set + bounded below → sInf ≤ member.",
+    "mathContext": "Proof structure: assume $L^* > 1$; set $\\delta = (L^*-1)/2 > 0$; then $1+\\delta \\in \\text{admissibleExponents}$ by hypothesis; `csInf_le ⟨0, \\ldots⟩ h1` gives $L^* \\leq 1+\\delta = (L^*+1)/2 < L^*$; `linarith` closes the contradiction. The elegant feature: no explicit computation of $L^*$ is needed — the contradiction is purely from the infimum characterization. This pattern (assume infimum > threshold, find element below threshold, apply csInf_le, contradict) is standard in Lean real analysis proofs.",
+    "significance": "key",
+    "relatedConcepts": ["csInf_le", "contradiction by infimum", "push_neg at hlt", "linarith closing contradiction", "optimalLinnikConjecture"],
+    "prerequisites": ["csInf_le in Lean 4 Mathlib", "linarith tactic", "Real number ordering"]
+  },
+  {
+    "id": "ann-linnik-open-question",
+    "proofId": "dirichlets-theorem-oq-03",
+    "range": { "startLine": 99, "endLine": 133 },
+    "type": "context",
+    "title": "GRH Conditional and the Open Question L* = 1",
+    "content": "The file formalizes two speculative Props: `GRHImpliesSmallLinnik` (under GRH, every 2+ε is admissible) and `optimalLinnikConjecture` (every 1+ε is admissible). Neither is proved — they are mathematical statements formalized as types. The `openQuestion = (linnikConstant = 1)` definition formalizes the deepest conjecture: that L* equals 1, meaning p(a,q) ≤ c·q^{1+ε} for all ε > 0. This has not been proved even under GRH; the GRH conditional only gives L* ≤ 2+ε. The gap from 2+ε to 1+ε represents a profound open problem in analytic number theory.",
+    "mathContext": "The GRH conditional $p(a,q) \\leq c(\\phi(q) \\log q)^2$ (Goldfeld 1981) gives $L \\leq 2 + \\varepsilon$ since $\\phi(q) \\leq q$ and $\\log q \\leq q^\\varepsilon$. The optimal bound $p(a,q) \\leq q^{1+\\varepsilon}$ would follow from the 'optimal' zero-free region — essentially the Riemann Hypothesis for individual Dirichlet $L$-functions at the specific $q$. In practice, known results for fixed small $q$ (e.g., $q = 1, 2, 3$) achieve $L = 1$ trivially (by Bertrand's postulate), but the uniformity in $q$ is what makes the problem hard.",
+    "significance": "key",
+    "relatedConcepts": ["GRH for Dirichlet L-functions", "Goldfeld's conditional bound", "phi(q) log q bound", "Bertrand's postulate for small q", "openQuestion Prop"],
+    "prerequisites": ["Generalized Riemann Hypothesis", "Dirichlet L-function zeros", "zero-free region techniques", "Euler's totient function phi(q)"]
   }
 ]

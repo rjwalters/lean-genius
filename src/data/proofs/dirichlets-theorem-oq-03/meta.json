@@ -106,5 +106,13 @@
       "content": "The `openQuestion` is defined as `linnikConstant = 1`. This is equivalent to: for every \u03b5 > 0, there exist p(a,q) \u2264 c\u00b7q^{1+\u03b5} for all coprime (a,q). The current unconditional best is L* \u2264 5 (Xylouris 2011). Under GRH, L* \u2264 2+\u03b5. The full conjecture L* = 1 is believed to follow from a suitable form of the Generalized Riemann Hypothesis combined with zero-free region estimates for Dirichlet L-functions."
     }
   ],
-  "conclusion": "This formalization captures the Linnik constant framework: the infimum definition of L*, the known upper bound L* \u2264 5 from Xylouris, the monotonicity-based derivation of Heath-Brown's L \u2264 5.5, and a conditional proof that the optimal conjecture implies L* \u2264 1. The main gaps are: (1) sorries in leastPrimeInAP (needs Dirichlet's theorem); (2) linnikConstant_pos sorry (needs Bertrand-type lower bound); (3) GRHImpliesSmallLinnik is stated but not proved. The open question L* = 1 remains one of the central problems in analytic number theory."
+  "conclusion": {
+    "summary": "This formalization captures the Linnik constant framework: the infimum definition of L*, the known upper bound L* \u2264 5 from Xylouris, the monotonicity-based derivation of Heath-Brown's L \u2264 5.5, and a conditional proof that the optimal conjecture implies L* \u2264 1. Two axioms encode the unconditional existence of Linnik's bound and Xylouris's specific value; three sorries mark the remaining gaps.",
+    "implications": "The `csInf`-based definition of the Linnik constant provides a blueprint for formalizing infimum-defined constants in analytic number theory \u2014 including the de Bruijn-Newman constant, the Landau-Siegel zero exponent, and other extremal parameters in L-function theory. The `optimal_implies_le_one` proof illustrates a general Lean pattern: conditional results about infima can be formalized cleanly via contradiction with `csInf_le`, without needing to compute the infimum explicitly.",
+    "openQuestions": [
+      "Can `linnikConstant_pos` (L* \u2265 1) be proved in Lean from Bertrand's postulate? The key step is showing p(1,q) > q for all q, which follows from Bertrand but requires Mathlib's `Nat.exists_infinite_primes` in a specific range.",
+      "Can the GRH conditional `GRHImpliesSmallLinnik` be formalized? This requires: (1) the Goldfeld bound p(a,q) \u2264 c(\u03c6(q)\u00b7log q)\u00b2 under GRH, and (2) showing this gives every 2+\u03b5 as admissible. Step (2) is elementary; step (1) requires formalizing a deep conditional result.",
+      "Is the gap from L* \u2264 2+\u03b5 (GRH) to L* = 1 (optimal) resolvable by any known technique? Current evidence suggests L* = 1 may be harder than GRH itself \u2014 it appears to require both a zero-free region and a precise understanding of low-lying zeros of Dirichlet L-functions."
+    ]
+  }
 }
