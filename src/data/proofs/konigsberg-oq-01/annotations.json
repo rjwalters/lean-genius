@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "annotation-sq-circuit-construction",
+    "lineStart": 77,
+    "lineEnd": 101,
+    "type": "insight",
+    "mathContext": "The explicit Eulerian circuit for $C_4$ is a `Walk.cons` chain spelling out $A \\to B \\to C \\to D \\to A$. Each edge is justified by `trivial` (since `sqAdj A B = True` by definition). `sqCircuit_isEulerian` is proved by `Sym2.ind` (reducing edge membership to vertex pairs) followed by `cases a <;> cases b`, exhausting all $\\binom{4}{2} = 6$ possible undirected edges: for a 4-vertex graph, the full case analysis is feasible and mechanical. The key fact is that $C_4$'s 4-edge circuit visits each of the 4 edges exactly once since each undirected edge $\\{u,v\\}$ appears exactly once in `sqCircuit.edges`.",
+    "significance": "Demonstrates the canonical positive example: n-cycles are always Eulerian because all degrees are 2 (even) and a Hamiltonian circuit is simultaneously Eulerian. The proof technique — exhaustive case analysis via `cases a <;> cases b` — is characteristic of small finite graph verifications in Lean 4 where `native_decide` handles decidable membership checks efficiently.",
+    "relatedConcepts": [
+      "Walk.IsEulerian",
+      "Sym2.ind",
+      "Hamiltonian circuits as Eulerian circuits",
+      "cycle graphs Cₙ"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Walk.IsEulerian: each edge traversed exactly once",
+      "Sym2.ind: induction on unordered pairs",
+      "Walk.cons: extend a walk by prepending an edge"
+    ]
+  },
+  {
+    "id": "annotation-k4-not-eulerian",
+    "lineStart": 241,
+    "lineEnd": 247,
+    "type": "key-theorem",
+    "mathContext": "The proof that $K_4$ has no Eulerian path is a two-line argument: `have hodd := h.card_odd_degree` gives that for any Eulerian walk $p$ from $u$ to $v$, the odd-degree vertex count is 0 or 2; `have := k4_four_odd` establishes (by `native_decide`) that $K_4$ has exactly 4 odd-degree vertices; `omega` resolves $4 = 0 \\lor 4 = 2$ to `False`. The central Mathlib lemma is `Walk.IsEulerian.card_odd_degree : p.IsEulerian → |\\{v : V \\mid \\text{Odd}(\\deg(v))\\}| = 0 \\lor = 2$. $K_4$ has $\\binom{4}{2} = 6$ edges and every vertex has degree 3 (connected to all other 3 vertices), giving 4 odd-degree vertices — exactly 2 too many for any Eulerian path.",
+    "significance": "K₄ is the canonical counterexample to Eulerian path existence. It is the smallest complete graph where all vertices have odd degree, making it a cleaner counterexample than the original Königsberg graph (which had degree sequence [3,3,3,5]). The proof pattern — compute odd-degree count by `native_decide`, then apply `card_odd_degree` and `omega` — is the standard template for all non-existence results in this file.",
+    "relatedConcepts": [
+      "Walk.IsEulerian.card_odd_degree",
+      "complete graph K₄",
+      "odd degree vertices",
+      "Königsberg bridge problem"
+    ],
+    "prerequisites": [
+      "Walk.IsEulerian.card_odd_degree: degree parity constraint for Eulerian walks",
+      "Fintype.card: cardinality of finite subtypes",
+      "native_decide: decidable computation for finite structures"
+    ]
+  },
+  {
+    "id": "annotation-regular-odd-no-euler",
+    "lineStart": 316,
+    "lineEnd": 334,
+    "type": "key-theorem",
+    "mathContext": "For a $k$-regular graph ($k$ odd) on $|V| \\geq 3$ vertices, every vertex has degree $k$ (odd), so the odd-degree set $\\{w : V \\mid \\text{Odd}(\\deg(w))\\}$ equals the full vertex set $V$. The proof establishes this equality via `Fintype.card_subtype` and `Finset.card_univ`, then uses `ext w; simp [hall_odd w]` to show the subtype characterizes all vertices. Once $|\\{w \\mid \\text{Odd}(\\deg w)\\}| = |V| \\geq 3$, `hp.card_odd_degree` gives $|V| = 0 \\lor |V| = 2$, contradicted by `omega`. This captures the general principle: in $\\mathbb{Z}/2\\mathbb{Z}$, odd-degree vertices form an even-cardinality set (handshaking), but when the graph is $k$-regular for odd $k$, the count is $|V|$ — which must be even and $\\geq 4$ for $|V| \\geq 3$.",
+    "significance": "This is the most general result in the file, subsuming K₄ (which is 3-regular) and any Petersen-style graph. The Petersen graph (3-regular on 10 vertices) is the paradigmatic example: all 10 vertices have odd degree 3, so no Eulerian path exists. The proof generalizes the Königsberg impossibility from one graph to an infinite family. The conversion between `Fintype.card_subtype` and `Finset.card_univ` is the key technical step for relating set cardinality to type cardinality in Mathlib.",
+    "relatedConcepts": [
+      "k-regular graphs",
+      "Petersen graph",
+      "handshaking lemma",
+      "Fintype.card_subtype"
+    ],
+    "prerequisites": [
+      "k-regular graph: every vertex has the same degree k",
+      "Fintype.card_subtype: cardinality of a subtype as a finset filter",
+      "Finset.card_univ: |Finset.univ| = Fintype.card V"
+    ]
+  },
+  {
+    "id": "annotation-euler-circuit-all-even",
+    "lineStart": 281,
+    "lineEnd": 296,
+    "type": "insight",
+    "mathContext": "Two complementary necessary conditions are formalized here. (1) `euler_circuit_implies_all_even`: for an Eulerian circuit ($u = v$), `hp.even_degree_iff` states $\\text{Even}(\\deg(w)) \\iff (w = u \\to \\text{False})$; since $u = u$ gives $u \\neq u = \\text{False}$, `false_implies` reduces the condition to `mpr trivial`, yielding evenness for every vertex. (2) `euler_trail_non_endpoint_even`: for a trail from $u$ to $v$ ($u \\neq v$), `even_degree_iff` states $\\text{Even}(\\deg(w)) \\iff (w = u \\lor w = v \\to \\text{False})$; for $w \\neq u, w \\neq v$, `tauto` resolves the hypothesis. Together these prove the necessity direction of Euler's theorem: Eulerian structures force strong degree constraints.",
+    "significance": "These theorems formalize the necessity direction of Euler's theorem in full generality. `Walk.IsEulerian.even_degree_iff` is the key Mathlib interface connecting Eulerian walk structure to vertex degrees. The careful case split on whether the walk is a circuit (u=v) or proper trail (u≠v) reflects the fundamental asymmetry in Euler's theorem: circuits require all-even degrees, while trails allow exactly two odd-degree vertices (the endpoints).",
+    "relatedConcepts": [
+      "Walk.IsEulerian.even_degree_iff",
+      "Euler's theorem necessity direction",
+      "circuit vs trail distinction",
+      "degree parity"
+    ],
+    "prerequisites": [
+      "Walk.IsEulerian.even_degree_iff: characterizes even degrees in Eulerian walks",
+      "Eulerian circuit: closed walk traversing each edge once (u = v)",
+      "Eulerian trail: open walk traversing each edge once (u ≠ v)"
+    ]
+  },
+  {
+    "id": "annotation-native-decide-pattern",
+    "lineStart": 86,
+    "lineEnd": 92,
+    "type": "technique",
+    "mathContext": "Throughout the file, `native_decide` verifies concrete finite computations: `sqCircuit_length : sqCircuit.edges.length = 4`, `sqCircuit_visits_all (v : SqVerts) : v \\in sqCircuit.support` (via `cases v <;> native_decide`), `k4_degree (v : K4Verts) : k4Graph.degree v = 3`, `k4_four_odd : Fintype.card \\{v \\mid \\text{Odd}(k4Graph.degree v)\\} = 4`, and the handshaking lemma verifications. These all reduce to decidable equality on small finite types. `native_decide` compiles Lean terms to native code — exponentially faster than kernel-level `decide` for computations over $\\leq 10$ vertex graphs. The pattern `cases v <;> native_decide` splits a universal statement over an inductive type into individual `native_decide` calls for each constructor.",
+    "significance": "The native_decide tactic is essential for keeping concrete graph proofs tractable. Without it, verifying degree computations or edge counts on K₄ would require explicit inductions over Finset.filter constructions. The technique exemplifies a key Lean 4 proof strategy: use decidability of finite structures to offload combinatorial verification to compiled computation, reserving symbolic proof steps for the mathematical structure.",
+    "relatedConcepts": [
+      "native_decide tactic",
+      "Decidable instances",
+      "finite type computations",
+      "decidable graph properties"
+    ],
+    "prerequisites": [
+      "DecidableEq on inductive types (derived automatically)",
+      "Fintype instances: required for native_decide on finite structures",
+      "native_decide vs decide: native compilation vs kernel reduction"
+    ]
+  }
+]
