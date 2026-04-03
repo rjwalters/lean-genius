@@ -38,15 +38,17 @@
     ]
   },
   "overview": {
-    "historicalContext": "Wilson's theorem (John Wilson 1770, proved by Lagrange 1773): (p-1)! ≡ -1 (mod p) iff p is prime. The natural generalization asks: what is (n-1)! mod n for composite n? Gauss (1801) proved the complete classification of when the product of all units mod n equals -1 — this is the Gauss-Wilson theorem, characterizing cyclic unit groups. Wilson primes p (where p² | (p-1)!+1) are rare: only 5, 13, 563 are known.",
+    "historicalContext": "Wilson's theorem was discovered by John Wilson around 1770 and first proved by Joseph-Louis Lagrange in 1773. The statement — (p-1)! ≡ -1 (mod p) iff p is prime — provides an exact characterization of primality via factorials, though it is computationally impractical as a primality test. The natural generalization asks: what is (n-1)! mod n for composite n? The answer turns out to be a clean trichotomy: 0 for composite n > 4, exactly 2 for n = 4, and -1 for primes. This was known to Gauss by 1801. The deeper Gauss-Wilson theorem classifies when the product of all units mod n equals -1: this happens exactly when (ℤ/nℤ)* is cyclic, i.e., when n ∈ {1,2,4,p^k,2p^k} for odd prime p. Gauss proved this via his theory of primitive roots. Wilson primes — primes p where p² | (p-1)!+1 — were likely observed in the 19th century. The known Wilson primes are 5 (discovered that 4!+1=25=5²), 13 (verified computationally), and 563 (found by Goldberg in 1953 by machine computation). No fourth Wilson prime is known; a search has been completed up to roughly 2×10¹³. The connection to Bernoulli numbers (p Wilson prime iff p | B_{p-1}) links them to Kummer's theory of regular primes and Fermat's Last Theorem.",
     "problemStatement": "Classify (n-1)! mod n for all n≥2. Formalize Wilson primes. Prove the Gauss-Wilson classification of n where ∏units ≡ -1.",
     "text": "Three cases: (1) If p is prime, (p-1)! ≡ -1 (mod p) by pairing each a with its inverse, except a = ±1. (2) If n = 4, 3! = 6 ≡ 2 (mod 4) — the unique exception. (3) If n is composite and n > 4, then n | (n-1)! because n = a·b with distinct a,b < n both appearing in (n-1)!. The Gauss-Wilson theorem: ∏(ℤ/nℤ)* = -1 iff (ℤ/nℤ)* is cyclic iff n ∈ {1,2,4,p^k,2p^k}.",
     "proofStrategy": "Prove the three cases of Wilson's theorem directly. Define Wilson quotient and Wilson primes. Use Mathlib's isCyclic_units_iff_gaussWilson for the classification. Verify specific small cases by native_decide.",
     "keyInsights": [
-      "Composite n>4: n = a·b with a≠b, both factors appear in (n-1)!, so n | (n-1)!",
-      "n=4 is unique: the only composite n where (n-1)! is neither 0 nor -1 mod n",
-      "Wilson primes: p | (p-1)!+1 always (by Wilson); Wilson prime requires p² | it",
-      "Gauss-Wilson ↔ cyclic units: the full classification relies on Mathlib's cyclicity theorem"
+      "Composite n>4: n = a·b with a≠b, both in {1,...,n-1}; for n=p² (p≥3) use p and 2p instead",
+      "n=4 is uniquely exceptional: the only composite where (n-1)! is neither 0 nor -1 mod n",
+      "Wilson quotient W_p = ((p-1)!+1)/p is always a positive integer; Wilson prime requires p | W_p",
+      "Gauss-Wilson ↔ cyclic unit group: (ℤ/nℤ)* cyclic iff exactly 2 self-inverse units iff product = -1",
+      "Self-inverse pairing argument: non-self-inverse pairs (a, a⁻¹) cancel; only ±1 remain in cyclic case",
+      "Mathlib bridge: ZMod.isCyclic_units_iff provides the full p^k/2p^k characterization, used via OQ02"
     ],
     "prerequisites": [
       "Wilson's theorem for primes: pairing inverses",
@@ -55,12 +57,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Wilson's theorem fully generalized: complete classification for all n≥2, Wilson primes defined and verified (5 and 13), Gauss-Wilson classification proved. 33 theorems, 9 definitions, 688 lines, 0 axioms.",
-    "implications": "The only known Wilson primes are 5, 13, and 563. Whether infinitely many exist is unknown. The Gauss-Wilson classification is the number-theoretic foundation for understanding cyclic unit groups in algebraic number theory.",
+    "summary": "Wilson's theorem fully generalized: trichotomy (n-1)! ≡ {-1, 2, 0} mod n for primes, n=4, composite n>4 respectively. Wilson quotient, Wilson primes defined; 5 and 13 verified. Gauss-Wilson classification proved for all n≥3 via Mathlib's ZMod.isCyclic_units_iff and OQ02's abstract bridge. Computationally verified to n≤200. 33 theorems, 9 definitions, 688 lines, 0 axioms.",
+    "implications": "The Gauss-Wilson classification is the number-theoretic foundation for primitive root theory and cyclic unit groups in algebraic number theory. It implies: primitive roots exist mod n iff n ∈ {1,2,4,p^k,2p^k}. Wilson primes connect to irregular primes, Bernoulli numbers, and Kummer's proof strategy for Fermat's Last Theorem. The only known Wilson primes are 5, 13, and 563; this remains a major open problem.",
     "openQuestions": [
-      "Prove Wilson prime finiteness/infinitude — a major open problem",
-      "Formalize the third Wilson prime 563 verification (large native_decide computation)",
-      "Connect Wilson primes to Bernoulli numbers: p is Wilson prime iff p | B_{p-1}"
+      "Are there infinitely many Wilson primes? — equivalent to asking if p | B_{p-1} for infinitely many primes p",
+      "Formalize the third Wilson prime 563 (12-digit native_decide verification would require efficient arbitrary-precision arithmetic)",
+      "Prove or disprove: p is Wilson prime iff p | B_{p-1} — formalize the Bernoulli number connection in Lean",
+      "Formalize the Gauss-Wilson theorem without relying on ZMod.isCyclic_units_iff (direct involution-product proof)"
     ]
   },
   "leanFile": {
@@ -79,8 +82,91 @@
     {
       "targetId": "wilsons-theorem-oq-02",
       "relationship": "uses",
-      "description": "WilsonsTheoremOQ02 provides the Gauss-Wilson abstract framework used here"
+      "description": "WilsonsTheoremOQ02 provides the Gauss-Wilson abstract framework (gaussWilson_abstract, unitsProduct_cast_eq_abstract) used here"
+    },
+    {
+      "targetId": "inclusion-exclusion-oq-01",
+      "relationship": "related",
+      "description": "Both involve counting coprime integers and products over residue classes; Euler's totient φ(n) = |units mod n| links IE and Wilson theory"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-wq01-infra",
+      "title": "Factorial Infrastructure",
+      "startLine": 58,
+      "endLine": 80,
+      "description": "factorial_eq_Icc_prod expresses n! as a Finset.Icc product; distinct_factors_dvd_factorial proves a·b | n! when a,b are distinct elements of {1,...,n}."
+    },
+    {
+      "id": "sec-wq01-composite",
+      "title": "Composite Factorial Vanishing",
+      "startLine": 88,
+      "endLine": 131,
+      "description": "composite_factorial_dvd: for composite n > 4, n | (n-1)!. Case split on n = p² vs n = p·q (p≠q). composite_factorial_zero: ZMod formulation."
+    },
+    {
+      "id": "sec-wq01-classification",
+      "title": "Special Cases and Complete Trichotomy",
+      "startLine": 138,
+      "endLine": 187,
+      "description": "factorial_mod_four (n=4: 3!≡2), small prime/composite verifications, wilson_complete_classification (trichotomy for n≥2), prime_iff_factorial_neg_one (biconditional primality test)."
+    },
+    {
+      "id": "sec-wq01-quotient",
+      "title": "Wilson Quotient",
+      "startLine": 193,
+      "endLine": 224,
+      "description": "wilsonQuotient definition, prime_dvd_factorial_succ (p | (p-1)!+1), wilsonQuotient_mul, wilsonQuotient_pos. Computed values for p = 2,3,5,7,11,13."
+    },
+    {
+      "id": "sec-wq01-wilson-primes",
+      "title": "Wilson Primes",
+      "startLine": 230,
+      "endLine": 269,
+      "description": "IsWilsonPrime definition (p² | (p-1)!+1), isWilsonPrime_iff_quotient, five_is_wilson_prime, thirteen_is_wilson_prime, and non-Wilson primes (2,3,7,11)."
+    },
+    {
+      "id": "sec-wq01-units-product",
+      "title": "Units Product and Gauss-Wilson Form",
+      "startLine": 280,
+      "endLine": 372,
+      "description": "unitsProduct definition, hasGaussWilsonForm decidable check, gaussWilsonCheck verification procedure, gaussWilson_verified_le_50 and extended computational checks."
+    },
+    {
+      "id": "sec-wq01-bridge-factorial",
+      "title": "Bridge: Units Product ↔ Factorial for Primes",
+      "startLine": 383,
+      "endLine": 440,
+      "description": "prime_coprime_iff_pos, unitsProduct_eq_factorial (for primes, unitsProduct = (p-1)!), unitsProduct_prime (Wilson's theorem via unitsProduct), wilson_product_form (Mathlib ZMod.prod_Ico_one_prime)."
+    },
+    {
+      "id": "sec-wq01-sqrt-unity",
+      "title": "Square Roots of Unity Analysis",
+      "startLine": 454,
+      "endLine": 494,
+      "description": "sqRootsOfUnity definition, sqRootsOfUnity_prime_card (primes have 2 sq roots), examples for odd prime powers and 2p^k, sqRoot_gaussWilson_le_100 classification."
+    },
+    {
+      "id": "sec-wq01-involution",
+      "title": "Involution-Product Structure",
+      "startLine": 504,
+      "endLine": 513,
+      "description": "selfInverseProductCheck verifies ∏units = ∏{self-inverse} (mod n) — the pairing argument. selfInverse_product_le_100 computational verification."
+    },
+    {
+      "id": "sec-wq01-gauss-wilson-abstract",
+      "title": "Abstract Gauss-Wilson Classification",
+      "startLine": 576,
+      "endLine": 591,
+      "description": "isCyclic_units_iff_gaussWilson: restates Mathlib's ZMod.isCyclic_units_iff as (ℤ/nℤ)* cyclic iff n = 4 or n = p^k or n = 2p^k (odd prime p). Case analysis over Mathlib output."
+    },
+    {
+      "id": "sec-wq01-gauss-wilson-main",
+      "title": "Main Theorem: Gauss-Wilson Classification",
+      "startLine": 639,
+      "endLine": 687,
+      "description": "natCast_sub_one_eq_neg_one' bridge, unitsProduct_eq_neg_one_iff_cyclic (concrete ↔ abstract via OQ02), prime_odd_iff_ne_two, gaussWilson_classification: the complete main theorem."
+    }
+  ]
 }
