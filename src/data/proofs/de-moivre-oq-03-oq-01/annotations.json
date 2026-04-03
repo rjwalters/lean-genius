@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "id": "de-moivre-principal-branch",
+    "type": "insight",
+    "title": "Principal Branch Makes De Moivre Well-Defined",
+    "body": "The theorem `de_moivre_real_exponent` requires θ ∈ (-π, π] explicitly. Without this constraint, exp(2πi) = 1 = exp(0·i), so both interpretations of log(e^{iθ}) are valid but give different values of z^α. The proof uses `Complex.log_exp` which requires the imaginary part to lie in (-π, π] — the branch conditions `hθ_lo` and `hθ_hi` are exactly this constraint applied to real θ embedded in ℂ.",
+    "location": "DeMoivreOQ03OQ01.lean:28-35",
+    "tags": ["complex-analysis", "branch-cut", "principal-value"]
+  },
+  {
+    "id": "rational-roots-rfl",
+    "type": "technique",
+    "title": "Rational Roots by Explicit Construction (rfl)",
+    "body": "The proof of `rational_exponent_multivalued` uses the simplest possible strategy: define `roots k` to be exactly the claimed formula, then prove correctness by `rfl`. This avoids any computation — it is a definitional equality. The mathematical content (that these are actually q-th roots of (e^{iθ})^p) is left implicit, but the existence claim is trivially witnessed by construction.",
+    "location": "DeMoivreOQ03OQ01.lean:43-46",
+    "tags": ["construction", "roots-of-unity", "rational-exponent"]
+  },
+  {
+    "id": "true-stub-irrational",
+    "type": "warning",
+    "title": "irrational_exponent_single_valued is a True Stub",
+    "body": "This theorem proves `True` with `trivial` — the actual mathematical claim (that cpow gives a single-valued result on the principal branch) is not formalized. The real proof is almost definitional: cpow uses a fixed principal log, so z^α = exp(α · log z) is uniquely determined. But the stub means no formal guarantee is provided. The `assumptions` field documents this acknowledged placeholder.",
+    "location": "DeMoivreOQ03OQ01.lean:55-57",
+    "tags": ["placeholder", "formalization-gap", "irrational"]
+  },
+  {
+    "id": "weyl-equidistribution-ergodic",
+    "type": "context",
+    "title": "Weyl Equidistribution: Ergodic Theory in Complex Analysis",
+    "body": "The axiom `weyl_equidistribution` states that {exp(2πiαn) : n ∈ ℤ} is dense in the unit circle for irrational α. Weyl proved this in 1916 via exponential sums: the Weyl sum Σ exp(2πiαn) decays to zero, forcing equidistribution. This is equivalent to: α is irrational ⟺ the rotation by 2πα on S¹ is minimal (every orbit is dense) ⟺ the rotation is ergodic with respect to Haar measure.",
+    "location": "DeMoivreOQ03OQ01.lean:61-62",
+    "tags": ["ergodic-theory", "equidistribution", "weyl", "axiom"]
+  },
+  {
+    "id": "de-moivre-homomorphism",
+    "type": "insight",
+    "title": "De Moivre as a Group Homomorphism",
+    "body": "The map φ_α : θ ↦ e^{iαθ} is a continuous group homomorphism (ℝ, +) → (S¹, ×). De Moivre's theorem is precisely: φ_n(θ) = (φ_1(θ))^n. For irrational α, φ_α has dense image (Weyl); for rational p/q, φ_{p/q} factors through ℝ/qℤ giving a finite cyclic subgroup. The `continuous_rotation` theorem proves just the continuity part using `Complex.continuous_exp` composed with linear maps.",
+    "location": "DeMoivreOQ03OQ01.lean:69-72",
+    "tags": ["group-homomorphism", "circle-group", "representation-theory"]
+  }
+]

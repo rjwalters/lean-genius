@@ -19,10 +19,89 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
     "assumptions": "1 axiom: weyl_equidistribution (density of irrational rotations on unit circle). 1 True stub: irrational_exponent_single_valued (proves True, not the actual claim). de_moivre_real_exponent proved with principal branch hypothesis θ ∈ (-π, π].",
-    "lineCount": 74
+    "lineCount": 74,
+    "theoremCount": 4,
+    "historicalContext": "Abraham de Moivre stated his famous theorem around 1707, though a full proof appeared later in Euler's 1748 work *Introductio in analysin infinitorum*. Euler's formula e^{iθ} = cos θ + i sin θ reframes De Moivre as the elementary identity (e^{iθ})^n = e^{inθ}. The natural extension to real and complex exponents requires the complex logarithm and its branch structure — a subtlety invisible in the integer case. For irrational exponents, Hermann Weyl's 1916 equidistribution theorem revealed a deep connection to ergodic theory: the orbit {e^{2πiαn} : n ∈ ℤ} is dense in the unit circle precisely when α is irrational. This connects De Moivre's geometric insight to Fourier analysis and the mixing properties of irrational rotations.",
+    "problemStatement": "De Moivre's classical theorem states: for integer n ≥ 1,\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta).$$\n\nThis file investigates three extensions:\n\n1. **Real exponents**: For α ∈ ℝ and θ ∈ (-π, π], using the principal branch z^α = exp(α log z),\n$$e^{i\\theta\\alpha} = (e^{i\\theta})^\\alpha.$$\n\n2. **Rational exponents**: For α = p/q ∈ ℚ, (cos θ + i sin θ)^{p/q} takes exactly q distinct values,\n$$e^{i(p\\theta + 2\\pi k)/q}, \\quad k = 0, 1, \\ldots, q-1.$$\n\n3. **Irrational exponents and equidistribution**: For irrational α, the orbit {e^{2πiαn} : n ∈ ℤ} is dense in the unit circle S¹.",
+    "proofStrategy": "The proofs use Mathlib's `Complex.cpow` — defined via the principal logarithm as z^w = exp(w · log z) for z ≠ 0. Part I unfolds `cpow_def_of_ne_zero` and applies `Complex.log_exp` with the principal branch hypothesis θ ∈ (-π, π], then uses `push_cast` and `ring`. Part II constructs the q distinct values explicitly as a function `Fin q → ℂ` and proves correctness by `rfl`. Part III is a True stub. Part IV proves continuity by composing `Complex.continuous_exp` with multiplication by constants.",
+    "keyInsights": [
+      "The principal branch restriction θ ∈ (-π, π] is essential: exp(2πi) = 1, so z = 1, but z^α = exp(2παi) ≠ 1 for generic α. Without the branch cut, De Moivre's formula is false for real exponents.",
+      "Rational exponents p/q naturally produce multi-valuedness: the q values e^{i(pθ + 2πk)/q} for k = 0, …, q-1 are exactly the q-th roots of the integer-exponent result e^{ipθ}.",
+      "For irrational α, Weyl's equidistribution theorem (axiomatized here) asserts that {e^{2πiαn} : n ∈ ℤ} is dense in S¹. This is equivalent to the equidistribution of {αn mod 1} in [0,1), a cornerstone of ergodic theory.",
+      "Complex.cpow unifies all exponent types through the principal logarithm: integer, rational, and irrational cases all reduce to exp(α · log z), with multi-valuedness encoded by choice of branch rather than by the formula itself.",
+      "The True stub for `irrational_exponent_single_valued` reveals a formalization gap: the actual claim follows immediately from the definition of cpow, but stating it precisely requires careful attention to the domain of log.",
+      "The continuous group homomorphism θ ↦ e^{iαθ} from (ℝ, +) to (S¹, ×) underlies all four parts. De Moivre's theorem is simply the statement that the n-th power map commutes with this homomorphism."
+    ],
+    "mathlib_version": "4.29.0",
+    "originalContributions": [
+      "Principal-branch real-exponent De Moivre formula via cpow",
+      "Explicit construction of q-th root multi-valued set for rational exponents",
+      "Continuous group homomorphism from ℝ to S¹",
+      "Identification of irrational_exponent_single_valued as a True stub and weyl_equidistribution as axiom"
+    ]
   },
-  "sections": [],
   "leanFile": {
-    "axiomCount": 1
-  }
+    "namespace": "DeMoivreOQ03OQ01",
+    "lineCount": 74,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "de_moivre_real_exponent",
+        "status": "proved",
+        "description": "For z = exp(iθ) with θ ∈ (-π, π], z^α = exp(iαθ) via cpow"
+      },
+      {
+        "name": "rational_exponent_multivalued",
+        "status": "proved",
+        "description": "For rational p/q, constructs q distinct q-th roots of (e^{iθ})^p"
+      },
+      {
+        "name": "irrational_exponent_single_valued",
+        "status": "placeholder",
+        "description": "True stub — proves True rather than the actual single-valuedness claim"
+      },
+      {
+        "name": "continuous_rotation",
+        "status": "proved",
+        "description": "The map θ ↦ exp(iαθ) is continuous for any real α"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "de-moivre",
+      "relationship": "extends",
+      "description": "Extends integer-exponent De Moivre to real and irrational exponents"
+    }
+  ],
+  "sections": [
+    {
+      "id": "real-exponent",
+      "title": "De Moivre for Real Exponents",
+      "content": "Using Mathlib's `Complex.cpow` defined via the principal logarithm, the formula (e^{iθ})^α = e^{iαθ} holds for θ ∈ (-π, π]. The proof unfolds `cpow_def_of_ne_zero` and applies `Complex.log_exp` with the branch conditions, finishing with `push_cast; ring`. The principal branch restriction is necessary: at θ = 2π, exp(2πi) = 1 = exp(0), so the base equals 1 but the RHS gives exp(2παi) ≠ 1 for irrational α."
+    },
+    {
+      "id": "rational-multivalued",
+      "title": "Multi-Valued Rational Roots",
+      "content": "For rational exponent p/q with q > 0, the theorem constructs q explicit values: roots(k) = exp(i(pθ + 2πk)/q) for k ∈ {0, …, q-1}. The proof is immediate by `rfl` since the function is defined to equal the explicit formula. These are the q-th roots of the integer-exponent result exp(ipθ)."
+    },
+    {
+      "id": "irrational-stub",
+      "title": "Irrational Exponents: Stub and Gap",
+      "content": "The theorem `irrational_exponent_single_valued` has statement `True` and proof `trivial` — a placeholder acknowledging that the actual single-valuedness claim was not formalized. The genuine claim follows from the definition of cpow: since cpow uses a fixed principal logarithm, z^α is uniquely determined. Formalizing this requires showing that the principal branch of log is single-valued."
+    },
+    {
+      "id": "weyl-equidistribution",
+      "title": "Weyl Equidistribution (Axiom)",
+      "content": "The axiom `weyl_equidistribution` asserts that for irrational α, the set {exp(2πiαn) : n ∈ ℤ} is dense in ℂ. This is Weyl's equidistribution theorem (1916), proved via Weyl sums: for irrational α, the sum Σ_{n=1}^N exp(2πiαn) decays, forcing equidistribution. In Lean, this requires substantial harmonic analysis machinery not yet packaged in Mathlib."
+    },
+    {
+      "id": "continuous-homomorphism",
+      "title": "Continuous Group Homomorphism",
+      "content": "The map θ ↦ exp(iαθ) is a continuous group homomorphism from (ℝ, +) to (S¹, ×) for any fixed α ∈ ℝ. The Lean proof composes `Complex.continuous_exp` with the continuous map θ ↦ (αθ : ℂ) · I. This homomorphism property underpins all of De Moivre's theorem: De Moivre says the n-th power of exp(iθ) equals exp(inθ) because φ_n = (φ_1)^n as group homomorphisms."
+    }
+  ],
+  "conclusion": "This formalization extends De Moivre's theorem to the real-exponent setting using `Complex.cpow`, correctly proving the principal-branch formula and constructing rational multi-valued roots. The key formalization gaps are the True stub for irrational single-valuedness and the axiomatized Weyl equidistribution theorem. Open questions: (1) Can `irrational_exponent_single_valued` be proved from `cpow_def_of_ne_zero`? (2) Is Weyl equidistribution provable from existing Mathlib Fourier analysis? (3) Can the density result be strengthened to full equidistribution? (4) How does cpow's branch cut interact with the monodromy of iterated exponentiation?"
 }

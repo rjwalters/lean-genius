@@ -19,10 +19,80 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 2,
     "lineCount": 156,
-    "assumptions": "2 axioms (kakutani_finite_dim, fan_glicksberg) and 0 sorries. NOTE: IsNashEquilibrium is defined as True (placeholder); nash_equilibrium_existence is trivially proved and does not constitute a real Nash equilibrium result. The genuine content is the Kakutani/Fan-Glicksberg axiomatizations and the brouwer_from_kakutani_finite derivation."
+    "theoremCount": 2,
+    "assumptions": "2 axioms (kakutani_finite_dim, fan_glicksberg) and 0 sorries. NOTE: IsNashEquilibrium is defined as True (placeholder); nash_equilibrium_existence is trivially proved and does not constitute a real Nash equilibrium result. The genuine content is the Kakutani/Fan-Glicksberg axiomatizations and the brouwer_from_kakutani_finite derivation.",
+    "historicalContext": "L.E.J. Brouwer proved in 1911 that every continuous self-map of a compact convex subset of ℝⁿ has a fixed point. Jules Schauder extended this to infinite-dimensional locally convex spaces in 1930. Shizuo Kakutani's 1941 generalization replaced single-valued maps with *set-valued* (multi-valued) maps, requiring upper hemicontinuity with nonempty, closed, convex values — the precise conditions that make the proof work via degree theory. John Nash applied Kakutani's theorem in 1950 to prove that every finite strategic-form game has a Nash equilibrium in mixed strategies, establishing a cornerstone of game theory. Ky Fan (1952) and Irving Glicksberg (1952) independently extended Kakutani's theorem to locally convex topological vector spaces (Fan-Glicksberg theorem), providing the foundation for Arrow-Debreu general equilibrium theory (1954).",
+    "problemStatement": "Given a nonempty compact convex set K and a set-valued map F : K → 2^K, when does F have a fixed point x ∈ F(x)?\n\n**Kakutani's theorem**: If K ⊂ ℝⁿ is nonempty, compact, and convex, and F : K → 2^K satisfies:\n1. Upper hemicontinuity: for every open U ⊇ F(x), nearby y have F(y) ⊆ U\n2. Nonempty values: F(x) ≠ ∅ for all x\n3. Closed values: F(x) is closed for all x\n4. Convex values: F(x) is convex for all x\n\nthen there exists x* ∈ K with x* ∈ F(x*).\n\n**Fan-Glicksberg generalization**: The same conclusion holds when K is a compact convex subset of a *locally convex topological vector space* E.",
+    "proofStrategy": "The two main theorems are axiomatized (`kakutani_finite_dim` and `fan_glicksberg`), reflecting that their proofs require either degree theory, simplicial approximation, or Schauder's theorem, none of which are formalized here. The genuine derivation is `brouwer_from_kakutani_finite`: given a continuous f : K → K, define the singleton-valued map F(x) = {f(x)}. Singletons trivially satisfy all Kakutani conditions — they are nonempty, closed, and convex, and F is UHC because the preimage of an open set U under x ↦ {f(x)} equals f⁻¹(U), which is open by continuity of f. Kakutani then gives x* ∈ {f(x*)} = F(x*), i.e., f(x*) = x*.",
+    "keyInsights": [
+      "Upper hemicontinuity (UHC) is the right continuity notion for set-valued maps: the preimage of any open superset of F(x) must be a neighborhood of x. For singleton maps F(x) = {f(x)}, UHC reduces to ordinary continuity.",
+      "The singleton reduction `brouwer_from_kakutani_finite` is proved, showing Kakutani strictly generalizes Brouwer: fixed point existence for single-valued continuous maps is a special case of fixed point existence for UHC set-valued maps.",
+      "IsNashEquilibrium is defined as `True` — a placeholder. The real definition requires computing expected payoffs: player i deviates from σ only if some mixed strategy σ_i' gives higher expected payoff. Formalizing this requires probability measures on finite action sets and expected value computations.",
+      "The `brouwer_from_kakutani_finite` proof uses `isClosed_singleton` and `convex_singleton` from Mathlib, confirming that singleton sets are both closed and convex — the key properties enabling the reduction.",
+      "Fan-Glicksberg's locally convex assumption (axiom `fan_glicksberg`) is necessary: without local convexity, the result fails. Topological vector spaces like L^p(0,1) with 0 < p < 1 (non-locally-convex) can have continuous self-maps without fixed points on compact convex sets.",
+      "The hierarchy Brouwer → Kakutani → Fan-Glicksberg and Brouwer → Schauder → Fan-Glicksberg shows two independent generalizations (single→set-valued, finite-dim→infinite-dim) converging at the same endpoint."
+    ],
+    "mathlib_version": "4.29.0",
+    "originalContributions": [
+      "Formal definitions of SetValuedMap, IsUpperHemicontinuous, HasConvexValues, HasClosedValues, IsFixedPoint",
+      "Axiomatization of Kakutani (finite-dim) and Fan-Glicksberg (infinite-dim LCTVS)",
+      "Proved derivation of Brouwer from Kakutani via singleton-valued maps",
+      "FiniteGame structure and MixedStrategy type (Nash application stub)",
+      "Fixed point theorem hierarchy table (Brouwer, Schauder, Kakutani, Fan-Glicksberg, Eilenberg-Montgomery)"
+    ]
   },
-  "sections": [],
   "leanFile": {
-    "axiomCount": 2
-  }
+    "namespace": "BrouwerOQ04OQ03",
+    "lineCount": 156,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 9,
+    "mainTheorems": [
+      {
+        "name": "brouwer_from_kakutani_finite",
+        "status": "proved",
+        "description": "Derives Brouwer's fixed point theorem from Kakutani using F(x) = {f(x)}"
+      },
+      {
+        "name": "nash_equilibrium_existence",
+        "status": "placeholder",
+        "description": "Trivially proved via IsNashEquilibrium = True stub; not a real Nash equilibrium result"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "extends",
+      "description": "Kakutani generalizes Brouwer to set-valued maps; Fan-Glicksberg extends to LCTVS"
+    }
+  ],
+  "sections": [
+    {
+      "id": "set-valued-maps",
+      "title": "Set-Valued Maps and Upper Hemicontinuity",
+      "content": "A `SetValuedMap X Y` is simply a function X → Set Y. Upper hemicontinuity (UHC) is defined via the open set condition: F is UHC if for every open U, the set {x | F(x) ⊆ U} is open. This is equivalent to: for every x and every open set U ⊇ F(x), there is a neighborhood V of x such that F(y) ⊆ U for all y ∈ V. For a singleton map F(x) = {f(x)}, UHC reduces to: {x | f(x) ∈ U} = f⁻¹(U) is open, i.e., f is continuous."
+    },
+    {
+      "id": "kakutani-axiom",
+      "title": "Kakutani's Theorem (Axiomatized)",
+      "content": "The axiom `kakutani_finite_dim` states the finite-dimensional Kakutani theorem for `EuclideanSpace ℝ (Fin n)`. The four conditions — UHC, nonempty values, closed values, convex values — are each captured by the auxiliary definitions. The proof of Kakutani requires either simplicial approximation (Kakutani's original argument) or degree-theoretic methods. Neither is available as packaged Mathlib results for this setting."
+    },
+    {
+      "id": "fan-glicksberg-axiom",
+      "title": "Fan-Glicksberg Theorem (Axiomatized)",
+      "content": "The axiom `fan_glicksberg` generalizes to locally convex topological vector spaces (LCTVS), capturing the most general fixed-point theorem for set-valued maps with convex structure. The Lean type signature uses `[LocallyConvexSpace ℝ E]` — a Mathlib typeclass for spaces where every point has a neighborhood basis of convex sets. This covers all Banach spaces, Hilbert spaces, and Fréchet spaces."
+    },
+    {
+      "id": "brouwer-from-kakutani",
+      "title": "Derivation: Brouwer from Kakutani (Proved)",
+      "content": "The theorem `brouwer_from_kakutani_finite` is genuinely proved. Given continuous f : K → K, define F(x) = {f(x)}. The proof verifies:\n- Image condition: {f(x)} ⊆ K since f(x) ∈ K\n- UHC: preimage of open U under x ↦ {f(x)} is {x | f(x) ∈ U} = f⁻¹(U), open by continuity\n- Nonempty: {f(x)} always has f(x)\n- Closed: `isClosed_singleton`\n- Convex: `convex_singleton`\n\nKakutani gives x ∈ K with x ∈ {f(x)}, i.e., f(x) = x."
+    },
+    {
+      "id": "nash-stub",
+      "title": "Nash Equilibrium (Stub)",
+      "content": "The `FiniteGame` structure and `MixedStrategy` type are well-defined. However, `IsNashEquilibrium` is defined as `True` — a placeholder for the full definition which requires computing expected payoffs under mixed strategy profiles. The theorem `nash_equilibrium_existence` is proved trivially via ⟨fun _ _ => 0, trivial⟩. The genuine proof would apply Kakutani to the *best-response correspondence* BR_i(σ) = {σ_i' : player i prefers σ_i' to σ_i given others play σ_{-i}}, which is UHC with nonempty convex values under the mixed extension of payoffs."
+    }
+  ],
+  "conclusion": "This formalization provides the infrastructure for Kakutani's fixed point theorem: formal definitions of set-valued maps and upper hemicontinuity, axiomatization of Kakutani and Fan-Glicksberg, a genuine proof that Kakutani implies Brouwer (via singleton maps), and a stub for Nash equilibrium. The key open formalization tasks are: (1) prove Kakutani from Brouwer via simplicial approximation; (2) formalize the best-response correspondence and prove Nash equilibrium existence without the True stub; (3) formalize the Arrow-Debreu general equilibrium application. The hierarchy table (Brouwer → Kakutani → Fan-Glicksberg) provides a roadmap for further formalization."
 }
