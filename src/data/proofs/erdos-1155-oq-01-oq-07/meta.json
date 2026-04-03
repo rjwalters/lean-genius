@@ -22,11 +22,12 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 3,
+    "axiomCount": 9,
     "assumptions": [
       "kCliqueRemovalEdges: axiomatized function representing expected remaining edges after K_r-removal process on K_n",
       "kCliqueRemovalEdges_nonneg: remaining edge count is non-negative",
-      "kCliqueRemovalEdges_le_complete: remaining edges bounded by C(n,2)"
+      "kCliqueRemovalEdges_le_complete: remaining edges bounded by C(n,2)",
+      "Inherited from Erdos1155Problem.lean (6 axioms): triangleRemovalEdges (triangle removal function), triangleRemovalEdges_nonneg, triangleRemovalEdges_le_complete, bfl_upper_bound (BFL 2015 upper bound f_3(n) ≤ n^(3/2+o(1))), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel-type bound for triangle-free terminal graphs)"
     ],
     "mathlibDependencies": [
       {
@@ -54,7 +55,7 @@
   },
   "theoremCount": 20,
   "defCount": 6,
-  "axiomCount": 3,
+  "axiomCount": 9,
   "lineCount": 355,
   "overview": {
     "historicalContext": "The triangle removal process — start with K_n, repeatedly delete a random triangle until the graph is triangle-free — was studied by Erdős and collaborators as a way to generate 'random' K_3-free graphs and understand their typical edge density. The key question was: how many edges f_3(n) remain when the process halts? In 2015, Bohman, Fonoberova, and Lladó (BFL) proved the remarkable result f_3(n) = n^{3/2 + o(1)}, confirming a conjecture that the exponent is exactly 3/2. This settled a long-standing problem and established a clean connection between random combinatorial processes and the Kruskal–Katona threshold.\n\nThe natural generalization replaces triangles with r-cliques K_r for arbitrary r ≥ 3. The K_r-removal process starts with the complete graph K_n, selects a uniformly random r-clique at each step, removes all C(r,2) = r(r-1)/2 edges of that clique, and halts when no r-clique remains. The expected remaining edge count f_r(n) should satisfy f_r(n) ≍ n^{2-2/(r+1)} — a formula that reduces to n^{3/2} for r = 3 and approaches n^2 as r → ∞. This generalization is open: no rigorous proof exists for any r ≥ 4.\n\nThe exponent 2-2/(r+1) arises from the Kruskal–Katona theorem and its generalizations: for K_r-free graphs, the Turán theorem bounds the edge count by (1-1/(r-1)) · n²/2, but the terminal distribution of the random removal process is conjectured to be much sparser. The gap 2/(r+1) between the Turán exponent 2 and the removal exponent 2-2/(r+1) shrinks as r → ∞, reflecting that larger cliques become rarer in dense graphs and the process takes longer to terminate, leaving more edges.",
