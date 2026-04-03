@@ -37,9 +37,11 @@
     "text": "Proves the Maclaurin step inequality from Newton's log-concavity via the power inequality.",
     "proofStrategy": "The key lemma is the **power inequality** $a_k^{k+1} \\geq a_{k+1}^k$ (where $a_k = e_k/\\binom{n}{k}$), proved by induction on $k$. The base case is trivial ($a_0 = 1$). The inductive step raises log-concavity to the $k$-th power and combines with the IH: $a_{k+1}^{2(k+1)} \\geq a_k^{k+1} \\cdot a_{k+2}^{k+1} \\geq a_{k+1}^k \\cdot a_{k+2}^{k+1}$, then cancels $a_{k+1}^k$. The Maclaurin step $M_k \\geq M_{k+1}$ follows by taking the $1/(k(k+1))$-th power.",
     "keyInsights": [
-      "The power inequality aₖ^{k+1} ≥ aₖ₊₁^k is the natural bridge between log-concavity and the Maclaurin chain.",
-      "The induction exploits a telescoping structure: raising LC to the k-th power creates exactly the right exponent to combine with the IH.",
-      "The zero case requires careful treatment: if aₖ₊₁ = 0, elemSymm zero propagation ensures aₖ₊₂ = 0 too."
+      "The power inequality $a_k^{k+1} \\geq a_{k+1}^k$ is the natural bridge between Newton's log-concavity ($a_k^2 \\geq a_{k-1}a_{k+1}$) and the Maclaurin chain ($M_k = a_k^{1/k} \\geq a_{k+1}^{1/(k+1)} = M_{k+1}$): raising to the right powers makes the exponents cancel cleanly.",
+      "The induction telescopes: raising log-concavity $a_{k+1}^2 \\geq a_k a_{k+2}$ to the $(k+1)$-th power gives $a_{k+1}^{2(k+1)} \\geq a_k^{k+1} a_{k+2}^{k+1}$. The IH $a_k^{k+1} \\geq a_{k+1}^k$ then bounds $a_k^{k+1}$ from below, and canceling $a_{k+1}^k$ leaves exactly $a_{k+1}^{k+2} \\geq a_{k+2}^{k+1}$.",
+      "The zero case requires careful treatment: if $a_{k+1} = 0$, the goal $a_{k+1}^{k+2} \\geq a_{k+2}^{k+1}$ reduces to $0 \\geq a_{k+2}^{k+1}$, which holds only if $a_{k+2} = 0$ too. The `normElemSymm_zero_succ` lemma handles this: vanishing of $e_m$ propagates to $e_{m+1}$ for non-negative inputs.",
+      "The exponent arithmetic for the Maclaurin step is handled by rewriting $1/k = (k+1)/(k(k+1))$ and applying `rpow_natCast_mul` — the identity $(a^n)^r = a^{nr}$ in `Real.rpow` — then `rpow_le_rpow` for monotonicity. This algebraic manipulation is the main proof burden after the power inequality.",
+      "The remaining dependency `newton_log_concavity` is the deeper result: proving $a_k^2 \\geq a_{k-1} a_{k+1}$ for non-negative inputs requires a polarization argument (comparing a random pair to its average) and induction on $n$."
     ],
     "prerequisites": [
       "Elementary symmetric polynomials",
@@ -78,12 +80,22 @@
     {
       "targetId": "amgm-inequality-oq-02",
       "relationship": "extends",
-      "description": "Eliminates the maclaurin_step axiom from the parent Maclaurin inequality formalization"
+      "description": "Eliminates the `maclaurin_step` axiom from the parent Maclaurin inequality formalization — the key open question resolved here"
     },
     {
       "targetId": "amgm-inequality",
       "relationship": "foundational",
-      "description": "The Maclaurin chain generalizes AM-GM (M₁ ≥ Mₙ)"
+      "description": "The Maclaurin chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ generalizes AM-GM: the endpoints give $M_1 = $ arithmetic mean $\\geq M_n = $ geometric mean"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling OQ that proves the Newton-Girard identity $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ — provides the elementary symmetric polynomial algebra used in the Maclaurin chain"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz can be seen as a special case of Maclaurin's inequalities ($M_1 \\geq M_2$ for specific inputs), connecting the two fundamental inequalities of analysis"
     }
   ],
   "leanFile": {
@@ -104,18 +116,18 @@
   },
   "references": [
     {
-      "authors": "Hardy, G.H.; Littlewood, J.E.; Pólya, G.",
+      "authors": ["G. H. Hardy", "J. E. Littlewood", "G. Pólya"],
       "title": "Inequalities",
       "year": "1934",
       "venue": "Cambridge University Press",
-      "note": "§2.22: Newton's inequalities and the Maclaurin chain"
+      "note": "§2.22: Newton's inequalities and the Maclaurin chain — standard reference for the log-concavity approach"
     },
     {
-      "authors": "Maclaurin, Colin",
+      "authors": ["C. Maclaurin"],
       "title": "A Second Letter to Martin Folkes, Esq.",
       "year": "1729",
       "venue": "Philosophical Transactions of the Royal Society",
-      "note": "Original statement of the Maclaurin inequalities"
+      "note": "Original statement of the Maclaurin inequalities $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$"
     }
   ]
 }
