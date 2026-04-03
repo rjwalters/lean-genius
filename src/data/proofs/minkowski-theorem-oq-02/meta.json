@@ -1,0 +1,228 @@
+{
+  "id": "minkowski-theorem-oq-02",
+  "title": "Dirichlet's Approximation Theorem via Minkowski's Lattice Point Theorem",
+  "slug": "minkowski-theorem-oq-02",
+  "description": "Dirichlet's approximation theorem (for any real α and positive integer Q, there exist integers p, q with 1 ≤ q ≤ Q and |qα − p| < 1/Q) proved as a corollary of Minkowski's fundamental theorem via a parallelogram of area 4(Q+1)/Q > 4.",
+  "meta": {
+    "author": "Johann Peter Gustav Lejeune Dirichlet (1842), proof method: Hermann Minkowski (1896)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_approximation_theorem",
+    "date": "1842",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/MinkowskiTheoremOQ02.lean",
+    "tags": [
+      "number-theory",
+      "geometry",
+      "lattice",
+      "diophantine-approximation",
+      "geometry-of-numbers"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "assumptions": "Three axioms handle measure-theoretic steps: (1) dirichletSet_convex: the parallelogram {|x| < Q+1, |αx-y| < 1/Q} is convex — intersection of two halfplanes; (2) dirichletSet_measurable: it is Lebesgue measurable — open set hence Borel; (3) dirichletSet_volume: its area equals 4(Q+1)/Q — proved by Fubini or the shear map T(x,y)=(x,αx-y) with det(T)=-1 mapping S to a rectangle. The main theorem and all logical steps are fully proved.",
+    "dateAdded": "2026-04-03",
+    "mathlibDependencies": [
+      {
+        "theorem": "MinkowskiProved.minkowski_integer_lattice_proved",
+        "description": "Minkowski's theorem for ℤⁿ: if a centrally symmetric convex set has volume > 2ⁿ, it contains a nonzero integer point. Proved from Mathlib's geometry of numbers.",
+        "module": "Proofs.MinkowskiFundamentalTheorem"
+      },
+      {
+        "theorem": "Submodule.mem_span_range_iff_exists_fun",
+        "description": "Membership in ℤ-span of basis: x ∈ span ℤ {e_i} iff ∃ c : ι → ℤ, x = ∑ i, c i • e_i",
+        "module": "Mathlib.LinearAlgebra.Span"
+      },
+      {
+        "theorem": "exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure",
+        "description": "Mathlib's geometry of numbers theorem underlying Minkowski's result",
+        "module": "Mathlib.MeasureTheory.Group.GeometryOfNumbers"
+      }
+    ],
+    "originalContributions": [
+      "dirichletSet definition: {(x,y) : |x| < Q+1, |αx-y| < 1/Q}",
+      "dirichletSet_symmetric: central symmetry proved (0 axioms)",
+      "dirichletSet_volume_gt_four: area > 4 proved from volume axiom",
+      "stdLattice2_coords: integer coordinate extraction from ℤ²-membership",
+      "dirichlet_approximation_from_minkowski: main theorem (3 axioms, 0 sorries)",
+      "dirichlet_approximation_corollary: |α - p/q| < 1/(Qq) derived",
+      "Proof of q ≠ 0 via: q=0 → |p|<1/Q<1 → p=0 → contradiction"
+    ],
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Minkowski's fundamental theorem (geometry of numbers)",
+      "Lebesgue measure and Fubini's theorem",
+      "Linear maps and change of variables",
+      "Integer lattices and ℤ-span decompositions"
+    ],
+    "relatedProofs": [
+      "minkowski-theorem"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's approximation theorem (1842) was one of Dirichlet's early results, predating his major work on Dirichlet series and L-functions. The elementary pigeonhole proof (divide [0,1) into Q subintervals and apply pigeonhole to the fractional parts {α}, {2α}, ..., {Qα}) was already elegant. However, Minkowski (1896) observed that his new lattice point theorem — the founding result of geometry of numbers — immediately yields Dirichlet's theorem as a special case. This geometric proof is one of the earliest applications of Minkowski's program: transforming arithmetic questions into geometric ones about convex bodies containing lattice points.",
+    "problemStatement": "**Dirichlet's Approximation Theorem**: For any real number α and positive integer Q, there exist integers p and q with 1 ≤ q ≤ Q such that |qα − p| < 1/Q.\n\nEquivalently: for any α ∈ ℝ and Q ∈ ℕ₊, there exists a rational p/q with 1 ≤ q ≤ Q satisfying |α − p/q| < 1/(qQ).",
+    "text": "Proves Dirichlet's approximation theorem as a corollary of Minkowski's lattice point theorem. The parallelogram S = {(x,y) ∈ ℝ² : |x| < Q+1, |αx−y| < 1/Q} is centrally symmetric, convex, and has area 4(Q+1)/Q > 4. By Minkowski, S contains a nonzero integer point (q,p). A parity argument shows the first coordinate q is nonzero: if q=0, then |p|<1/Q<1 forces p=0, contradicting the nonzero condition. Thus 1 ≤ |q| ≤ Q and |αq−p| < 1/Q.",
+    "proofStrategy": "**Minkowski-based proof**:\n1. **Construct parallelogram** S = {(x,y) ∈ ℝ² : |x| < Q+1, |αx−y| < 1/Q}\n2. **Area computation**: The shear T(x,y) = (x,αx−y) has det(T) = −1, so maps S to the rectangle (−Q−1, Q+1) × (−1/Q, 1/Q) with area 2(Q+1) · 2/Q = 4(Q+1)/Q > 4\n3. **Apply Minkowski**: Since area(S) > 4 = 2², Minkowski's theorem gives a nonzero integer point (q,p) ∈ S ∩ ℤ²\n4. **First coordinate nonzero**: If q = 0, then |α·0 − p| = |p| < 1/Q < 1, so p = 0 as an integer, contradicting (q,p) ≠ (0,0)\n5. **Bounds**: |q| < Q+1 and q ∈ ℤ give |q| ≤ Q; and |q| ≥ 1 since q ≠ 0\n6. **Sign adjustment**: Replace (q,p) with (|q|, sign(q)·p) to get positive first coordinate\n7. **Conclusion**: 1 ≤ q = |q| ≤ Q and |αq − p| < 1/Q",
+    "keyInsights": [
+      "The shear map T(x,y) = (x, αx−y) has determinant −1, so it preserves Lebesgue measure and maps the oblique parallelogram to an axis-aligned rectangle",
+      "The key asymmetry argument: the first coordinate of a nonzero ℤ²-point in S must be nonzero, else the second coordinate would be a nonzero integer of absolute value less than 1, a contradiction",
+      "The parallelogram is 'tall and thin' when Q is large: height 2/Q in the y-direction but width 2(Q+1) ≈ 2Q in x. Its area is always just barely above 4, giving only one 'extra' nonzero lattice point.",
+      "This proof method generalizes to simultaneous approximation: given α₁,...,αₙ and Q, the n+1 dimensional parallelotope {|x₀| < Q+1, |αᵢx₀ − xᵢ| < Q^(−1/n)} has volume > 2^(n+1), giving nonzero integer points for all coordinates simultaneously"
+    ],
+    "prerequisites": [
+      "Minkowski's fundamental theorem (geometry of numbers)",
+      "Lebesgue measure, Fubini's theorem",
+      "Linear algebra: determinants, change of variables",
+      "Integer lattices ℤⁿ and their properties"
+    ]
+  },
+  "sections": [
+    {
+      "id": "dirichlet-set",
+      "title": "The Dirichlet Parallelogram",
+      "startLine": 57,
+      "endLine": 68,
+      "summary": "Defines the parallelogram S = {(x,y) ∈ ℝ² : |x| < Q+1, |αx−y| < 1/Q} as a set in Fin 2 → ℝ. This is the centrally symmetric convex set to which Minkowski's theorem is applied.",
+      "mathContext": "Expressed as a subset of Fin 2 → ℝ (functions from {0,1} to ℝ, the Lean representation of ℝ²) to interface directly with MinkowskiProved.minkowski_integer_lattice_proved. The first coordinate constraint |v 0| < Q+1 gives width, while |α·v 0 − v 1| < 1/Q gives the 'diagonal' constraint."
+    },
+    {
+      "id": "symmetry",
+      "title": "Central Symmetry (Proved)",
+      "startLine": 72,
+      "endLine": 83,
+      "summary": "Proves the parallelogram is centrally symmetric: (x,y) ∈ S implies (−x,−y) ∈ S. This uses |−x| = |x| (abs_neg) and |α(−x) − (−y)| = |−(αx−y)| = |αx−y| (ring + abs_neg).",
+      "mathContext": "The key computation: α·(−v 0) − (−v 1) = −(α·v 0 − v 1), so the absolute value is unchanged. This is proved by ring normalization followed by abs_neg."
+    },
+    {
+      "id": "axioms",
+      "title": "Measure-Theoretic Axioms",
+      "startLine": 86,
+      "endLine": 115,
+      "summary": "Three axioms state: (1) convexity of S (intersection of halfplanes), (2) measurability of S (open set), (3) volume of S equals 4(Q+1)/Q. The volume follows from the shear T(x,y)=(x,αx−y) with |det(T)|=1 mapping S to a rectangle.",
+      "mathContext": "Volume computation: the image T(S) = {|x| < Q+1} × {|z| < 1/Q} has Lebesgue measure 2(Q+1)·(2/Q) = 4(Q+1)/Q. Since T has det = −1, T is measure-preserving, giving vol(S) = vol(T(S)) = 4(Q+1)/Q."
+    },
+    {
+      "id": "volume-bound",
+      "title": "Volume Exceeds Minkowski Threshold",
+      "startLine": 118,
+      "endLine": 132,
+      "summary": "Proves 4(Q+1)/Q > 4 = 2² when Q ≥ 1, establishing the Minkowski volume condition. Uses ENNReal.ofReal_lt_ofReal_of_nonneg from the parent MinkowskiFundamentalTheorem file.",
+      "mathContext": "4(Q+1)/Q > 4 ↔ Q+1 > Q (after multiplying by Q > 0), which holds since Q+1 = Q + 1 > Q. In ENNReal arithmetic: (2:ENNReal)^2 = ofReal 4 < ofReal(4(Q+1)/Q)."
+    },
+    {
+      "id": "int-coords",
+      "title": "Integer Coordinate Extraction",
+      "startLine": 135,
+      "endLine": 161,
+      "summary": "Proves any point in stdLattice 2 (= ℤ²) has integer coordinates, by decomposing using Submodule.mem_span_range_iff_exists_fun and converting ℤ-smul to ℝ-smul via zsmul_eq_smul_cast.",
+      "mathContext": "stdLattice 2 = Submodule.span ℤ {e₀, e₁} where eᵢ = Pi.basisFun ℝ (Fin 2) i = Pi.single i 1. A point in the span is ∑ i, cᵢ • eᵢ = fun j => cⱼ for integers c₀, c₁."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Dirichlet from Minkowski",
+      "startLine": 163,
+      "endLine": 234,
+      "summary": "Proves dirichlet_approximation_from_minkowski: applies Minkowski to get nonzero integer (a,b) in S, extracts coordinates, shows a≠0 (else |b|<1/Q<1 forces b=0), sets q=|a| and p=b or -b to get positive q. Uses omega for the integer bound argument.",
+      "mathContext": "The q≠0 argument: if a=0, then |α·0 − b| = |b| < 1/Q ≤ 1/1 = 1 (since Q≥1), so b is an integer with |b| < 1, forcing b=0 by omega. But (a,b)=(0,0) contradicts x≠0 in stdLattice 2."
+    },
+    {
+      "id": "corollary",
+      "title": "Corollary: Approximation Bound",
+      "startLine": 237,
+      "endLine": 254,
+      "summary": "Derives |α − p/q| < 1/(Qq) from the main theorem: divides |αq−p| < 1/Q by q and rearranges, using nlinarith to close the nonlinear inequality.",
+      "mathContext": "|α−p/q| = |αq−p|/q < (1/Q)/q = 1/(Qq). The cross-multiplication gives |αq−p|·Q·q < q, which follows from |αq−p|·Q < 1 (the main bound) and q > 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves Dirichlet's approximation theorem as a clean application of Minkowski's geometry of numbers. The geometric argument reduces the arithmetic problem (rational approximation) to a volume computation (area of a parallelogram). Three measure-theoretic axioms cover the volume computation, while all logical steps — central symmetry, the Minkowski application, integer extraction, and the q≠0 argument — are fully proved.",
+    "implications": "This connection between Dirichlet's theorem and Minkowski's theorem is one of the founding examples of the geometry of numbers as a mathematical discipline. The same method generalizes to simultaneous approximation (Kronecker's theorem, Dirichlet multi-dimensional) and to the study of best approximations (continued fractions, LLL algorithm).",
+    "openQuestions": [
+      "Can the three measure-theoretic axioms be eliminated using Mathlib's measure theory (Fubini's theorem, linear maps preserve measure)?",
+      "Can Hurwitz's theorem (|α − p/q| < 1/(√5 · q²) for infinitely many p/q) be proved using Minkowski?",
+      "Can simultaneous Dirichlet approximation (n real numbers α₁,...,αₙ approximated by rationals with common denominator ≤ Q) be proved from higher-dimensional Minkowski?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-theorem",
+      "relationship": "applies-to",
+      "description": "Uses Minkowski's theorem (MinkowskiProved.minkowski_integer_lattice_proved) as the key ingredient: the parallelogram area > 4 = 2² triggers the theorem for n=2"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "The elementary pigeonhole proof of Dirichlet's theorem (via fractional parts) is complementary to this geometric proof"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.MinkowskiFundamentalTheorem",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Group.GeometryOfNumbers",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "DirichletFromMinkowski",
+    "axiomCount": 3,
+    "sorries": 0,
+    "mainTheorems": [
+      {
+        "name": "dirichlet_approximation_from_minkowski",
+        "type": "proved",
+        "description": "Main theorem: for any α and Q > 0, there exist integers q, p with 1 ≤ q ≤ Q and |αq − p| < 1/Q",
+        "leanType": "(α : ℝ) → (Q : ℕ) → 0 < Q → ∃ q p : ℤ, 1 ≤ q ∧ q ≤ Q ∧ |α * q - p| < 1 / Q"
+      },
+      {
+        "name": "dirichletSet_symmetric",
+        "type": "proved",
+        "description": "The Dirichlet parallelogram is centrally symmetric (0 axioms)",
+        "leanType": "∀ v ∈ dirichletSet α Q, -v ∈ dirichletSet α Q"
+      },
+      {
+        "name": "stdLattice2_coords",
+        "type": "proved",
+        "description": "Points in stdLattice 2 have integer coordinates (0 axioms)",
+        "leanType": "(x : stdLattice 2) → ∃ a b : ℤ, x 0 = a ∧ x 1 = b"
+      },
+      {
+        "name": "dirichlet_from_minkowski",
+        "type": "export",
+        "description": "Top-level export of the main result",
+        "leanType": "(α : ℝ) → (Q : ℕ) → 0 < Q → ∃ q p : ℤ, 1 ≤ q ∧ q ≤ Q ∧ |α * q - p| < 1 / Q"
+      }
+    ]
+  },
+  "references": [
+    {
+      "authors": "Dirichlet, Peter Gustav Lejeune",
+      "title": "Verallgemeinerung eines Satzes aus der Lehre von den Kettenbrüchen",
+      "year": "1842",
+      "venue": "Bericht Königl. Preuß. Akad. Wiss., pp. 93–95",
+      "note": "Original statement and elementary proof via the pigeonhole principle applied to fractional parts"
+    },
+    {
+      "authors": "Minkowski, Hermann",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "Leipzig: Teubner",
+      "note": "Minkowski's geometric proof of Dirichlet's theorem as an application of the lattice point theorem (§17)"
+    },
+    {
+      "authors": "Cassels, J. W. S.",
+      "title": "An Introduction to the Geometry of Numbers",
+      "year": "1959",
+      "venue": "Springer, Grundlehren der mathematischen Wissenschaften 99",
+      "note": "Chapter II: Minkowski's theorem and its applications including Dirichlet's theorem (Theorem II.1.1)"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "dirichlet_from_minkowski",
+      "type": "core",
+      "description": "Dirichlet's approximation theorem: for any α ∈ ℝ and Q ∈ ℕ₊, there exist integers p, q with 1 ≤ q ≤ Q and |αq − p| < 1/Q",
+      "leanType": "(α : ℝ) → (Q : ℕ) → 0 < Q → ∃ q p : ℤ, 1 ≤ q ∧ q ≤ Q ∧ |α * q - p| < 1 / Q"
+    }
+  ]
+}
