@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ek4-clique4-structure",
+    "proofId": "erdos-1009-oq-02",
+    "range": { "startLine": 57, "endLine": 69 },
+    "type": "definition",
+    "title": "K₄ Structure: Four Mutually Adjacent Vertices",
+    "content": "The `Clique4` structure encodes a $K_4$ copy as 4 named vertices (a, b, c, d) with all 6 pairwise adjacency conditions explicitly stated. This verbose representation makes each adjacency a named field, enabling clean downstream extraction (e.g., any 3 vertices form a triangle). Mathlib's `CliqueFree 4` uses an abstract finset-based encoding; `Clique4` provides an explicit structural alternative.",
+    "mathContext": "$K_4 = $ complete graph on 4 vertices with $\\binom{4}{2} = 6$ edges: $\\{ab, ac, ad, bc, bd, cd\\}$. A $K_4$ copy in $G$ is a set $\\{a,b,c,d\\} \\subseteq V(G)$ with all 6 pairs adjacent.",
+    "significance": "key",
+    "relatedConcepts": ["complete graph", "clique", "SimpleGraph.Adj", "CliqueFree", "graph embedding"],
+    "prerequisites": ["simple graph theory", "cliques", "Lean 4 structures"]
+  },
+  {
+    "id": "ek4-edge-disjointness",
+    "proofId": "erdos-1009-oq-02",
+    "range": { "startLine": 71, "endLine": 90 },
+    "type": "definition",
+    "title": "Edge-Disjointness and Maximum Packing",
+    "content": "Two $K_4$ copies are edge-disjoint if they share no edges (as unordered pairs `Sym2 V`). The maximum packing `maxEdgeDisjointK4` is defined as the supremum of cardinalities of pairwise edge-disjoint families — a clean non-constructive definition that abstracts away the algorithmic challenge of finding the optimal packing. The symmetry of edge-disjointness is proved by `Finset.inter_comm`.",
+    "mathContext": "$K_1, K_2$ are edge-disjoint iff $E(K_1) \\cap E(K_2) = \\emptyset$. Maximum packing: $\\nu_4(G) = \\max\\{|\\mathcal{F}| : \\mathcal{F}$ is a pairwise edge-disjoint family of $K_4$ copies in $G\\}$. Each $K_4$ uses 6 edges, so $\\nu_4(G) \\leq |E(G)|/6$.",
+    "significance": "key",
+    "relatedConcepts": ["edge-disjoint subgraphs", "packing problem", "graph matching", "hypergraph matching", "Sym2"],
+    "prerequisites": ["edge sets", "finset intersection", "sSup in ℕ"]
+  },
+  {
+    "id": "ek4-turan-threshold",
+    "proofId": "erdos-1009-oq-02",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Turán Threshold for K₄-Free Graphs",
+    "content": "The extremal number $ex(n, K_4) = \\lfloor n^2/3 \\rfloor$ is the maximum number of edges in a $K_4$-free graph on $n$ vertices. It is realized by the balanced complete tripartite graph $T(n,3)$: partition $n$ vertices into three parts of size $\\lfloor n/3 \\rfloor$ or $\\lceil n/3 \\rceil$, and connect all pairs in different parts. This graph is $K_4$-free since any 4 vertices must have two in the same part (and hence non-adjacent by the pigeonhole principle).",
+    "mathContext": "$ex(n, K_4) = t_3(n) = \\lfloor n^2/3 \\rfloor$. General Turán number: $ex(n, K_{r+1}) = t_r(n) = \\left(1 - \\frac{1}{r}\\right)\\frac{n^2}{2}$. For $r=3$: $t_3(n) = \\frac{2}{3} \\cdot \\frac{n^2}{2} = \\frac{n^2}{3}$.",
+    "significance": "key",
+    "relatedConcepts": ["Turán number", "extremal graph theory", "Turán graph T(n,3)", "clique-free graphs", "K₄-free"],
+    "prerequisites": ["extremal graph theory", "Turán's theorem", "balanced complete multipartite graph"]
+  },
+  {
+    "id": "ek4-turan-theorem",
+    "proofId": "erdos-1009-oq-02",
+    "range": { "startLine": 139, "endLine": 169 },
+    "type": "insight",
+    "title": "Turán's Theorem for K₄ — With Sorry Bridge",
+    "content": "Turán's theorem is invoked via Mathlib's `CliqueFree.card_edgeFinset_le`. The main sorry arises because Mathlib's bound expression (involving $n \\bmod 3$ and binomial coefficients) does not simplify directly to $\\lfloor n^2/3 \\rfloor$ — bridging the two requires a case split on $n \\equiv 0, 1, 2 \\pmod{3}$. The second sorry (extracting `Clique4` from Mathlib's abstract `CliqueFree 4` predicate) requires unpacking 4 vertices from a finset. Both are routine but tedious arithmetic tasks.",
+    "mathContext": "Mathlib's bound: $|E(G)| \\leq \\frac{(n^2 - (n \\bmod 3)^2) \\cdot 2}{6} + \\binom{n \\bmod 3}{2}$. For $n \\equiv 0$: $= n^2/3$. For $n \\equiv 1$: $= (n^2-1)/3$. For $n \\equiv 2$: $= (n^2-1)/3$. In all cases $\\leq \\lfloor n^2/3 \\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": ["Turán's theorem", "CliqueFree", "CliqueFree.card_edgeFinset_le", "Mathlib extremal combinatorics"],
+    "prerequisites": ["Turán's theorem", "Mathlib SimpleGraph API", "integer division", "modular arithmetic"]
+  },
+  {
+    "id": "ek4-open-question",
+    "proofId": "erdos-1009-oq-02",
+    "range": { "startLine": 181, "endLine": 205 },
+    "type": "insight",
+    "title": "Formal Statement of the Open Question",
+    "content": "The open question is encoded as a Lean `Prop` (`edgeDisjointK4_question`), not an axiom — it is an unproved mathematical statement rather than a logical assumption. The quantifier structure: for all $c > 0$, there exists $g \\in \\mathbb{N}$ such that all graphs with $k$ excess edges satisfy the packing bound. The easier variant — exceeding the Turán threshold by $\\geq 1$ implies at least one $K_4$ copy — is fully proved as a corollary of the contrapositive of Turán's theorem.",
+    "mathContext": "Open: $\\forall c > 0, \\exists g \\in \\mathbb{N}, \\forall G: n \\text{ vertices}, 0 \\leq k < cn \\Rightarrow \\nu_4(G) \\geq k - g$, where $k = |E(G)| - \\lfloor n^2/3 \\rfloor$. Proved: $k \\geq 1 \\Rightarrow \\nu_4(G) \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Györi's theorem", "Erdős problem 1009", "edge-disjoint packing", "extremal combinatorics", "open problem"],
+    "prerequisites": ["Turán's theorem", "edge-disjoint K₄", "K₄ structure", "contrapositive reasoning"]
+  },
+  {
+    "id": "ek4-comparison",
+    "proofId": "erdos-1009-oq-02",
+    "range": { "startLine": 210, "endLine": 221 },
+    "type": "insight",
+    "title": "K₃ vs K₄: Threshold Ordering and Containment",
+    "content": "Two comparison theorems put the $K_4$ problem in context. First, $\\lfloor n^2/4 \\rfloor \\leq \\lfloor n^2/3 \\rfloor$: the $K_4$ Turán threshold exceeds the $K_3$ threshold, meaning a graph that is dense enough to guarantee $K_4$ is certainly dense enough to guarantee $K_3$. Second, every $K_4$ contains a $K_3$ (any 3 of its 4 vertices form a triangle). Together, these confirm that the $K_4$ problem is genuinely harder than the $K_3$ case.",
+    "mathContext": "$\\lfloor n^2/4 \\rfloor \\leq \\lfloor n^2/3 \\rfloor$ since $1/4 \\leq 1/3$. And $K_4 \\supset K_3$: for a $K_4$ with vertices $\\{a,b,c,d\\}$, the triple $\\{a,b,c\\}$ with edges $ab, bc, ac$ forms a $K_3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Turán numbers", "K₃ vs K₄", "Ramsey theory", "clique hierarchy", "Erdős problem 1009"],
+    "prerequisites": ["K₃ triangles", "K₄ structure", "Turán threshold comparison"]
+  }
+]
