@@ -39,12 +39,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved 2N ≤ (|A|+1)³ for maximal Sidon sets. All 3 sorries filled.",
+    "progressSummary": "COMPLETE: All 3 sorries proved. Erdos156Problem.lean has 0 sorries, 0 axioms. Greedy Ω(N^{1/3}) lower bound fully formalized.",
     "builtItems": [
       "type1_blocked_count: |type1BlockedSet A| ≤ |sumset A| · |A| (Erdos156OQ02.lean:157)",
       "type2_blocked_count: |type2BlockedSet A| ≤ |sumset A| (Erdos156OQ02.lean:179)",
       "maximal_sidon_size_bound: 2N ≤ (|A|+1)³ for any maximal Sidon set (Erdos156OQ02.lean:225)",
-      "greedySidon_size_bound: corollary for greedy construction (Erdos156OQ02.lean:287)"
+      "greedySidon_size_bound: corollary for greedy construction (Erdos156OQ02.lean:287)",
+      "diffShadow_ncard_le in Erdos156Problem.lean:622",
+      "midShadow_ncard_le in Erdos156Problem.lean:652",
+      "greedySidon_cube_lower_bound in Erdos156Problem.lean:697"
     ],
     "insights": [
       "Proof sketch: when |greedySidon k| = s, adding element k+1 is blocked iff ∃ a,b,c ∈ greedySidon(k) with a+k+1 = b+c. For each pair (b,c) there is at most one a, and for each a there are ≤ s choices of (b,c). So ≤ s² elements are blocked at size s.",
@@ -52,7 +55,10 @@
       "Correction: the blocking count should be ≤ 2s-1 per step (each existing element a yields at most one blocking sum a+k=b+c). But actually: at step k with |A|=s, the number of values blocked is the number of x such that ∃ a∈A with x+a = b+c for some b,c∈A, i.e., x = b+c-a. There are at most s³ such triples but many repeat. More carefully: the number of sums in A+A is s(s+1)/2 (Sidon!), and for each sum σ and each a∈A, x=σ-a is blocked. So blocked count ≤ s·s(s+1)/2 ≈ s³/2. Over all steps, N ≤ s³/2, so s ≥ (2N)^{1/3}.",
       "Actually the standard proof gives √N: at step N, if we haven't added k+1, then for A of size s, the sums a+(k+1) must hit an existing sum b+c. The number of existing sums is s(s+1)/2 ≤ N. Since each new element produces s new sums, and these must all be accounted for, the total sum space bounds s² ≤ 2N, giving s ≤ √(2N). But this is an UPPER bound on |A∩{1..N}|, not a lower bound.",
       "The correct lower bound argument for greedy: element n+1 is rejected only if some pair in A gives a collision. The number of distinct sums in A+A is s(s+1)/2. The number of new sums created by adding n+1 is s (one for each a∈A: a+(n+1)). If any of these s new sums collides with the s(s+1)/2 existing ones, we reject. So we reject at most s(s+1)/2 elements before getting our (s+1)-th element. Total: N ≥ Σ_{s=0}^{|A|-1} 1 + ... ≈ |A|³/6, so |A| ≥ (6N)^{1/3}. This is N^{1/3}, not √N.",
-      "The √N bound for Sidon sets in {1,...,N} comes from the upper bound (Erdős-Turán), not the greedy construction. The greedy lower bound is Ω(N^{1/3}), which is the trivial bound for maximal Sidon sets."
+      "The √N bound for Sidon sets in {1,...,N} comes from the upper bound (Erdős-Turán), not the greedy construction. The greedy lower bound is Ω(N^{1/3}), which is the trivial bound for maximal Sidon sets.",
+      "Proved diffShadow_ncard_le: surjection from A×sumset A under (a,s)↦s-a bounds size by n·(n(n+1)/2)",
+      "Proved midShadow_ncard_le: injection x↦2x maps midShadow into sumset, bounding size by n(n+1)/2",
+      "Proved greedySidon_cube_lower_bound: N ≤ n + n·(n(n+1)/2) + n(n+1)/2, establishing Ω(N^{1/3}) greedy lower bound"
     ],
     "mathlibGaps": [],
     "nextSteps": [
