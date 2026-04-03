@@ -32,15 +32,17 @@
     ]
   },
   "overview": {
-    "historicalContext": "The sum of divisors function σ(n) is one of the oldest objects in number theory, studied since antiquity. Perfect numbers (σ(n) = 2n) fascinated the Greeks; 6 and 28 are the first two. Amicable pairs (220, 284) were known to the Pythagoreans. Euler proved that even perfect numbers have the form 2^(p-1)(2^p-1) where 2^p-1 is prime. Abundant and deficient numbers arise in the classification of all positive integers via the ratio σ(n)/n.",
+    "historicalContext": "The sum of divisors function σ(n) = Σ_{d|n} d is one of the oldest objects in number theory. Perfect numbers — where σ(n) = 2n, or equivalently n equals the sum of its proper divisors — fascinated ancient Greek mathematicians: Euclid (c. 300 BCE) proved that 2^(p-1)(2^p-1) is perfect whenever 2^p-1 is prime (Mersenne prime). Euler (1747) proved the converse: every even perfect number has this form. Whether odd perfect numbers exist remains one of mathematics' oldest unsolved problems. Amicable pairs were known to the Pythagoreans: (220, 284) appears in the works of Iamblichus (c. 300 CE). Thabit ibn Qurra (9th century) gave a rule for generating amicable pairs; Euler found 58 more. Remarkably, the second-smallest pair (1184, 1210) was discovered by 16-year-old Niccolò Paganini in 1866, having been missed by Euler and others. The Dirichlet series of σ is Σ σ(n)/n^s = ζ(s)ζ(s-1), connecting σ to the Riemann zeta function. Robin's inequality σ(n) < e^γ n ln(ln(n)) for all n > 5040 is equivalent to the Riemann Hypothesis (Robin, 1984). Gronwall's theorem shows lim sup σ(n)/(n ln(ln(n))) = e^γ ≈ 1.78. This file formalizes the algebraic properties of σ — multiplicativity, prime power formula, number classification — that form the computational foundation of all these deeper results.",
     "problemStatement": "Formalize σ(n) = Σ_{d|n} d with its key properties: concrete values, multiplicativity, prime power formula, number classification (deficient/perfect/abundant), and amicable pairs.",
     "text": "The function σ(n) counts the total 'divisor weight' of n. Key structural result: σ is multiplicative — coprime inputs multiply σ values. For prime powers: σ(p^k) = (p^(k+1)-1)/(p-1). For primes: σ(p) = p+1. This lets σ be computed from the prime factorization. Numbers are classified by σ(n) vs 2n: deficient (σ<2n), perfect (σ=2n), abundant (σ>2n). Amicable pairs (a,b) satisfy σ(a)=a+b and σ(b)=a+b.",
     "proofStrategy": "Use Mathlib's ArithmeticFunction.sigma and native_decide for concrete computations. Prove general multiplicativity and prime power formula via algebraic manipulations. Derive classification predicates and verify all examples computationally.",
     "keyInsights": [
-      "Multiplicativity: the key structural property enabling computation from prime factorization",
-      "Prime power formula σ(p^k) = geometric sum: combines with multiplicativity for general n",
-      "6 and 28 are perfect: the two smallest, both of Euler's even perfect form",
-      "Amicable pairs: (220,284) = first, (1184,1210) = third pair — σ(220)=504=220+284"
+      "Multiplicativity reduces σ computation from any n to prime powers: σ(p₁^a₁·p₂^a₂·...) = σ(p₁^a₁)·σ(p₂^a₂)·... — this is why Mathlib's one-liner `isMultiplicative_sigma.map_mul_of_coprime` is the algebraic core",
+      "σ(p^k) = 1+p+...+p^k = (p^(k+1)-1)/(p-1) is a geometric sum — the key building block; combined with multiplicativity, gives a closed-form formula for σ(n) from prime factorization",
+      "Classification by omega: `IsDeficient ∨ IsPerfect ∨ IsAbundant` and all exclusivity theorems reduce to trichotomy of σ(n) vs 2n, closed entirely by the `omega` tactic",
+      "Amicable pairs encode a symmetric relation: (m,n) amicable ↔ σ(m)=σ(n)=m+n; the Pythagorean pair (220,284) and Paganini's pair (1184,1210) are both machine-verified",
+      "Minimality via interval_cases: proving 12 is the smallest abundant number uses Lean's `interval_cases` to case-split over all n∈{1,...,11}, verifying each by native_decide",
+      "Robin's inequality connects σ to the Riemann Hypothesis: σ(n) < e^γ n ln(ln(n)) for all n > 5040 iff RH holds — the properties formalized here are the starting point for this deep connection"
     ],
     "prerequisites": [
       "Arithmetic functions: multiplicative functions, Dirichlet convolution",
@@ -49,12 +51,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Sum of divisors function fully formalized: concrete values, multiplicativity, prime power formula, number classification, amicable pairs (220,284) and (1184,1210), 12 smallest abundant. 81 theorems, 549 lines, 0 axioms.",
-    "implications": "The multiplicativity of σ is the foundation for computing σ(n) from prime factorizations. It connects to the Riemann zeta function via Dirichlet series and to the study of perfect numbers, one of the oldest open problems (are there odd perfect numbers?).",
+    "summary": "Sum of divisors function fully formalized: concrete values, multiplicativity, prime power formula, complete number classification (deficient/perfect/abundant with exhaustivity and exclusivity), amicable pairs (220,284) and (1184,1210), 12 as smallest abundant. 81 theorems, 549 lines, 0 axioms.",
+    "implications": "This formalization provides the algebraic infrastructure for one of number theory's richest subjects. The multiplicativity of σ connects via Dirichlet series to ζ(s)ζ(s-1), linking divisor sums to the Riemann zeta function. Robin's theorem (1984) shows σ(n) < e^γ n ln(ln(n)) for n > 5040 iff RH holds — a startling connection between a simple arithmetic function and the most famous open problem in mathematics. The classification into deficient/perfect/abundant has been studied since Nicomachus (~100 CE), yet the question of odd perfect numbers remains unsolved after 2000 years of effort.",
     "openQuestions": [
-      "Are there odd perfect numbers? (Oldest unsolved problem in number theory)",
-      "Are there infinitely many amicable pairs?",
-      "Formalize Euler's theorem: even perfect numbers have form 2^(p-1)(2^p-1)"
+      "Are there odd perfect numbers? This 2000-year-old problem remains unsolved; any odd perfect number must be > 10^1500 and have at least 101 prime factors",
+      "Are there infinitely many perfect numbers? Equivalent to asking whether there are infinitely many Mersenne primes (open)",
+      "Formalize Euler's theorem: every even perfect number has the form 2^(p-1)(2^p-1) where 2^p-1 is prime — this would complete the classification of even perfect numbers",
+      "Formalize Robin's inequality: prove σ(n) < e^γ n ln(ln(n)) for small n and connect it to the Riemann Hypothesis formalization"
     ]
   },
   "leanFile": {
@@ -66,10 +69,112 @@
   },
   "crossReferences": [
     {
-      "targetId": "wilsons-theorem",
-      "relationship": "related",
-      "description": "Both study arithmetic properties of integers; Wilson via factorials, this via divisor sums"
+      "id": "wilsons-theorem",
+      "title": "Wilson's Theorem",
+      "relationship": "both study multiplicative arithmetic properties of integers; Wilson via (p-1)! ≡ -1 (mod p), this via divisor sums"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "title": "Riemann Hypothesis",
+      "relationship": "Robin's theorem makes σ directly relevant to RH: σ(n) < e^γ n ln(ln(n)) for n > 5040 iff RH holds"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "title": "Dirichlet's Theorem",
+      "relationship": "Dirichlet series Σ σ(n)/n^s = ζ(s)ζ(s-1) connects σ to the analytic methods of this area"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-sigma-header",
+      "title": "Module Header and Status",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Documents the 14-part structure covering σ values, primes, classification, amicable pairs, abundancy, divisor count, σ₂, bounds, connections to RH, multiplicativity, prime power formula, factorization computation, and minimality. Imports Mathlib and opens SumOfDivisors namespace."
+    },
+    {
+      "id": "sec-sigma-concrete",
+      "title": "Part 1: Concrete σ Values",
+      "startLine": 44,
+      "endLine": 91,
+      "summary": "Verifies σ(1) through σ(10), σ(12), σ(28), σ(100) using native_decide. Establishes the empirical foundation: σ(6)=12, σ(28)=56 (perfect numbers), σ(12)=28 (abundant)."
+    },
+    {
+      "id": "sec-sigma-primes",
+      "title": "Parts 2: σ on Primes",
+      "startLine": 92,
+      "endLine": 123,
+      "summary": "Verifies σ(p) = p+1 for p = 2,3,5,7,11,13 by native_decide, then proves the general theorem for all primes using sigma_apply_prime_pow + simp + linarith."
+    },
+    {
+      "id": "sec-classification",
+      "title": "Part 3: Number Classification (Deficient/Perfect/Abundant)",
+      "startLine": 124,
+      "endLine": 194,
+      "summary": "Defines IsDeficient, IsPerfect, IsAbundant predicates. Proves primes and powers of 2 are deficient; 6, 28, 496 are perfect; 12, 18, 20, 24 are abundant. Uses native_decide for all concrete verifications."
+    },
+    {
+      "id": "sec-classification-theory",
+      "title": "Part 4: Classification Theory (Exhaustive and Exclusive)",
+      "startLine": 195,
+      "endLine": 217,
+      "summary": "Proves classification_exhaustive (every n is one of the three types) and three exclusivity theorems. All proved by omega after unfolding definitions — trichotomy of σ(n) vs 2n."
+    },
+    {
+      "id": "sec-amicable",
+      "title": "Part 5: Amicable Numbers",
+      "startLine": 218,
+      "endLine": 259,
+      "summary": "Defines AreAmicable. Verifies σ(220)=504, σ(284)=504 (Pythagorean pair) and σ(1184)=2394, σ(1210)=2394 (Paganini's pair) by native_decide, then proves amicability by omega."
+    },
+    {
+      "id": "sec-abundancy",
+      "title": "Part 6: Abundancy Index",
+      "startLine": 260,
+      "endLine": 287,
+      "summary": "Defines abundancy index σ(n)/n as a rational number. Proves perfect ↔ abundancy = 2 (for n > 0) via field_simp + exact_mod_cast + omega."
+    },
+    {
+      "id": "sec-divisor-count",
+      "title": "Parts 7-8: Divisor Count and σ₂",
+      "startLine": 288,
+      "endLine": 326,
+      "summary": "Computes d(n) = σ_0(n) (divisor count) for n=1,2,4,6,12,1024 and σ_2(n) (sum of squared divisors) for n=1,2,6 by native_decide."
+    },
+    {
+      "id": "sec-bounds",
+      "title": "Part 9: Key Bounds",
+      "startLine": 327,
+      "endLine": 368,
+      "summary": "Proves σ(n) ≥ n for n ≥ 1 (using n ∈ divisors) and σ(n) > n for n > 1 (using {1,n} ⊆ divisors, Finset.sum_pair). General proofs use Finset.single_le_sum and sum_le_sum_of_subset."
+    },
+    {
+      "id": "sec-connections",
+      "title": "Part 10: Connections to Robin's Inequality and RH",
+      "startLine": 369,
+      "endLine": 384,
+      "summary": "Documentation section: Robin's inequality (σ(n) < e^γ n ln(ln(n)) for n ≥ 5041 iff RH), Gronwall's theorem (lim sup = e^γ), Ramanujan highly composite numbers. No Lean proofs — theoretical context only."
+    },
+    {
+      "id": "sec-multiplicativity",
+      "title": "Part 11: Multiplicativity of σ",
+      "startLine": 385,
+      "endLine": 419,
+      "summary": "Proves σ_k is multiplicative (one-line from isMultiplicative_sigma) and the coprime product formula σ(mn) = σ(m)σ(n). Demonstrates with examples: σ(6)=σ(2)σ(3), σ(12)=σ(4)σ(3), σ(30)=σ(2)σ(15)."
+    },
+    {
+      "id": "sec-prime-power",
+      "title": "Parts 12-13: σ on Prime Powers and Factorization",
+      "startLine": 420,
+      "endLine": 503,
+      "summary": "Proves σ(p^k) = Σ_{i=0}^k p^i by sigma_apply_prime_pow. Specializes to k=1,2,3. Demonstrates factorization-based computation: σ(12) = (1+2+4)(1+3) = 28, σ(30) = (1+2)(1+3)(1+5) = 72."
+    },
+    {
+      "id": "sec-smallest-abundant",
+      "title": "Part 14: 12 is the Smallest Abundant Number",
+      "startLine": 504,
+      "endLine": 547,
+      "summary": "Proves not_abundant_lt_12 (∀ 0<n<12, ¬IsAbundant n) by interval_cases + native_decide, then twelve_smallest_abundant combining this with twelve_is_abundant."
+    }
+  ]
 }
