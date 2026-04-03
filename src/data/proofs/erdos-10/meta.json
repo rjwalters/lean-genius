@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/10",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos10Problem.lean",
     "tags": [
       "erdos",
@@ -16,13 +16,13 @@
       "powers of 2",
       "density"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 10,
     "erdosUrl": "https://erdosproblems.com/10",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "assumptions": "8 axiom declarations: erdos_10_conjecture (main conjecture), gallagher_density (density result), granville_soundararajan_odd/even (representation conjectures), grechuk_counterexample (k=3 counterexample), infinitely_many_exceptions_k2/k3 (exception existence), romanoff_positive_density (positive density). All results are deep number-theoretic facts axiomatized in the formalization.",
+    "assumptions": "Open problem. The Lean file contains only definitional infrastructure (sumPrimeAndTwoPows, Set.lowerDensity) with 0 theorem/lemma declarations and 0 axiom declarations. Key results (Erdos-Graham conjecture, Gallagher density, Granville-Soundararajan conjectures, Grechuk counterexample, covering congruence exceptions, Romanoff positive density) are described in doc-comments only.",
     "lineCount": 94,
     "prerequisites": [
       "Prime numbers and their distribution",
@@ -121,7 +121,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #10 is formalized comprehensively with all major results axiomatized: the Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\underline{d}(S_k) \\to 1$), Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's positive density. The parity barrier between odd and even integers is a central theme. All results are axiomatized (no proved theorems), reflecting the depth of the underlying number theory.",
+    "summary": "Erdős Problem #10 is an open problem with definitional infrastructure in Lean. The file defines $S_k$ (`sumPrimeAndTwoPows`) and `Set.lowerDensity` but contains no theorem, lemma, or axiom declarations. Key results -- the Erdős-Graham conjecture ($\\neg \\exists k: \\{n > 1\\} \\subseteq S_k$), Gallagher's density theorem ($\\underline{d}(S_k) \\to 1$), Granville-Soundararajan conjectures ($k = 3$ for odd, $k = 4$ for even), Grechuk's counterexample ($1117175146 \\notin S_3$), covering congruence exceptions, and Romanoff's positive density -- are described in doc-comments only, reflecting the depth of the underlying number theory.",
     "implications": "**Theoretical Significance**: Resolution would require advances in sieve methods beyond Gallagher's large sieve, or new techniques for handling lacunary additive bases.\n\nThe covering congruence argument connects to Erdős's work on covering systems. Understanding how well powers of 2 complement the primes illuminates fundamental questions in additive number theory and the distribution of primes in arithmetic progressions.",
     "openQuestions": [
       "Does there exist any finite $k$ that works for all sufficiently large integers? (The main open question.)",
