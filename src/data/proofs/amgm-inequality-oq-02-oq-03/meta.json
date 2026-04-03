@@ -16,7 +16,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ03.lean",
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "axioms": 0,
     "mathlibDependencies": [],
@@ -116,14 +116,20 @@
   },
   "references": [
     {
-      "authors": ["G. H. Hardy", "J. E. Littlewood", "G. Pólya"],
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
       "title": "Inequalities",
       "year": "1934",
       "venue": "Cambridge University Press",
       "note": "§2.22: Newton's inequalities and the Maclaurin chain — standard reference for the log-concavity approach"
     },
     {
-      "authors": ["C. Maclaurin"],
+      "authors": [
+        "C. Maclaurin"
+      ],
       "title": "A Second Letter to Martin Folkes, Esq.",
       "year": "1729",
       "venue": "Philosophical Transactions of the Royal Society",
