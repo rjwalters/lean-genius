@@ -116,42 +116,40 @@ theorem scanl_add_append (acc : ℕ) (ks : List ℕ) (k : ℕ) :
     (ks ++ [k]).scanl (· + ·) acc =
     ks.scanl (· + ·) acc ++ [acc + ks.sum + k] := by
   induction ks generalizing acc with
-  | nil => simp [List.scanl_cons]
+  | nil => simp
   | cons h t ih =>
-    simp only [List.cons_append, List.scanl_cons, List.singleton_append, List.sum_cons]
-    rw [ih (acc + h)]
-    simp only [List.append_assoc]
-    congr 2
-    omega
+    simp only [List.cons_append, List.scanl_cons, List.sum_cons]
+    congr 1
+    rw [ih (acc + h), show acc + h + t.sum + k = acc + (h + t.sum) + k from by omega]
+
+/-- Generalized version of zip_scanl_append_singleton with arbitrary initial accumulator.
+    By induction: cons case uses zip_cons_cons, then IH at (acc + h), then omega. -/
+private theorem zip_scanl_append_singleton_gen (acc : ℕ) (ks : List ℕ) (k : ℕ) :
+    ((ks ++ [k]).scanl (· + ·) acc).zip (ks ++ [k]) =
+    (ks.scanl (· + ·) acc).zip ks ++ [(acc + ks.sum, k)] := by
+  induction ks generalizing acc with
+  | nil => simp
+  | cons h t ih =>
+    simp only [List.cons_append, List.scanl_cons, List.sum_cons, List.zip_cons_cons]
+    congr 1
+    rw [ih (acc + h), show acc + h + t.sum = acc + (h + t.sum) from by omega]
 
 /-- The zip of (scanl 0 (ks ++ [k])) with (ks ++ [k]) decomposes as:
     zip (scanl 0 ks) ks ++ [(ks.sum, k)].
-    The last pair has ks.sum as first component (= last element of scanl 0 ks),
-    and k as second; this gives the binomial factor C(ks.sum + k, k) in the product.
-
-    Proof:
-    1. scanl 0 (ks ++ [k]) = scanl 0 ks ++ [ks.sum + k]  (from scanl_add_append with acc=0)
-       But only first |ks ++ [k]| = |ks|+1 elements of this zip are used.
-    2. zip (scanl 0 ks ++ [ks.sum + k]) (ks ++ [k])
-       = zip (scanl 0 ks) (ks ++ [k])          (via zip_append with |scanl ks| = |ks ++ [k]|,
-                                                  the extra [ks.sum+k] element gets dropped)
-       = zip (dropLast(scanl 0 ks) ++ [ks.sum]) (ks ++ [k])
-       = zip (dropLast(scanl 0 ks)) ks ++ [(ks.sum, k)]  (via zip_append with equal lengths)
-       = zip (scanl 0 ks) ks ++ [(ks.sum, k)]   (zip truncates to shorter list)
--/
+    Proved by specializing the generalized accumulator version at acc = 0. -/
 theorem zip_scanl_append_singleton (ks : List ℕ) (k : ℕ) :
     ((ks ++ [k]).scanl (· + ·) (0 : ℕ)).zip (ks ++ [k]) =
     (ks.scanl (· + ·) 0).zip ks ++ [(ks.sum, k)] := by
-  sorry
+  simpa using zip_scanl_append_singleton_gen 0 ks k
 
 /-- The RHS scanl/zip/tail/prod expression picks up factor C(ks.sum + k, k) on appending [k].
     For ks = [], both sides equal 1.
     For ks ≠ [], the tail distributes and the extra pair contributes C(ks.sum + k, k). -/
 theorem rhs_append_singleton (ks : List ℕ) (k : ℕ) :
-    (((ks ++ [k]).scanl (· + ·) (0 : ℕ)).zip (ks ++ [k])).tail.map
-        (fun ⟨acc, j⟩ => Nat.choose (acc + j) j) |>.prod =
-    ((ks.scanl (· + ·) (0 : ℕ)).zip ks).tail.map
-        (fun ⟨acc, j⟩ => Nat.choose (acc + j) j) |>.prod *
+    ((((ks ++ [k]).scanl (· + ·) (0 : ℕ)).zip (ks ++ [k])).tail.map
+        (fun ⟨acc, j⟩ => Nat.choose (acc + j) j)).prod =
+    (((ks.scanl (· + ·) (0 : ℕ)).zip ks).tail.map
+        (fun ⟨acc, j⟩ => Nat.choose (acc + j) j)).prod *
     Nat.choose (ks.sum + k) k := by
   rw [zip_scanl_append_singleton]
   cases ks with
@@ -162,10 +160,9 @@ theorem rhs_append_singleton (ks : List ℕ) (k : ℕ) :
     -- zip (scanl 0 (h :: t)) (h :: t) starts with (0, h), non-empty
     -- tail distributes: (l ++ [x]).tail = l.tail ++ [x] when l ≠ []
     have hne : (List.scanl (· + ·) 0 (h :: t)).zip (h :: t) ≠ [] := by
-      simp [List.scanl_cons]
-    rw [List.tail_append_of_ne_nil _ _ hne]
-    simp only [List.map_append, List.prod_append]
-    ring
+      simp
+    rw [List.tail_append_of_ne_nil hne]
+    simp only [List.map_append, List.prod_append, List.map_singleton, List.prod_singleton]
 
 /-- Main theorem: multinomial ks = product of C(partial_sum + kᵢ, kᵢ) over all kᵢ in ks.
     Proved by backward induction (List.reverseRecOn) using:
