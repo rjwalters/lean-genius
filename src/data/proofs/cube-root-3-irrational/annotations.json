@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-cbrt3-def",
+    "proofId": "cube-root-3-irrational",
+    "type": "definition",
+    "range": { "startLine": 31, "endLine": 31 },
+    "title": "Definition of ∛3 via rpow",
+    "content": "Defines `cbrt3 : ℝ := (3 : ℝ) ^ (1/3 : ℝ)` using Lean's real power function `Real.rpow`. The `noncomputable` attribute is required because `Real.rpow` uses classical choice internally. Note that `1/3 : ℝ` is the real number one-third (not integer division, which would give 0), and `Real.rpow` is defined for all real bases and exponents with the convention that negative bases raised to non-integer exponents give 0.",
+    "mathContext": "`cbrt3 := 3^{1/3}` where $3^{1/3} = e^{\\frac{1}{3}\\ln 3}$ for real exponentiation. Lean uses `Real.rpow x y = x ^ y = \\exp(y \\cdot \\log x)$ for $x > 0$. The cube root is the unique positive real satisfying $(\\sqrt[3]{3})^3 = 3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.rpow", "noncomputable", "cube root", "real exponentiation"],
+    "prerequisites": ["Mathlib.Analysis.SpecialFunctions.Pow.Real", "Real.rpow definition"]
+  },
+  {
+    "id": "ann-cbrt3-cubed",
+    "proofId": "cube-root-3-irrational",
+    "type": "concept",
+    "range": { "startLine": 34, "endLine": 38 },
+    "title": "cbrt3³ = 3 via rpow Composition",
+    "content": "Proves `cbrt3 ^ 3 = 3` — the defining property of a cube root. The proof chain: (1) `Real.rpow_natCast` rewrites `cbrt3^3` as `cbrt3^(3:ℝ)` (converting the ℕ exponent to ℝ); (2) `Real.rpow_mul` applies the exponent rule $(x^a)^b = x^{a \\cdot b}$ to get `(3^(1/3))^3 = 3^((1/3)*3)`; (3) `norm_num` simplifies `(1/3) * 3 = 1` and `3^1 = 3`.",
+    "mathContext": "The key identity: $(x^{1/n})^n = x^{(1/n) \\cdot n} = x^1 = x$ for $x \\geq 0$. `Real.rpow_mul` requires the base to be non-negative: `(0 : ℝ) ≤ 3` is provided by `norm_num`. The `rpow_natCast` coercion bridges between `HPow ℝ ℕ ℝ` and `Real.rpow`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.rpow_mul", "Real.rpow_natCast", "exponent rules", "rpow composition"],
+    "prerequisites": ["Real.rpow_mul", "Real.rpow_natCast", "norm_num for real arithmetic"]
+  },
+  {
+    "id": "ann-cbrt3-not-perfect-cube",
+    "proofId": "cube-root-3-irrational",
+    "type": "insight",
+    "range": { "startLine": 41, "endLine": 61 },
+    "title": "3 is Not a Perfect Cube — Integer Bounds",
+    "content": "Proves ¬∃ (n : ℤ), n³ = 3 by three-case analysis. Case 1 (n ≤ 0): if n ≤ 0 then n³ = n·n·n ≤ 0 < 3, handled by nlinarith. Case 2 (n ≥ 2): if n ≥ 2 then n³ ≥ 8 > 3, handled by nlinarith. omega then deduces n = 1 is the only remaining case. Case 3 (n = 1): 1³ = 1 ≠ 3, closed by norm_num.",
+    "mathContext": "$\\{n \\in \\mathbb{Z} : n^3 = 3\\} = \\emptyset$ because the cube function is strictly monotone: $1^3 = 1 < 3 < 8 = 2^3$, so any integer cube root of 3 would lie in $(1, 2) \\cap \\mathbb{Z} = \\emptyset$. The proof expands $n^3 = n \\cdot n \\cdot n$ to apply `nlinarith` with polynomial arithmetic, then uses `omega` for linear integer reasoning.",
+    "significance": "key",
+    "relatedConcepts": ["perfect cube", "integer bounds", "nlinarith", "omega", "monotone integer functions"],
+    "prerequisites": ["integer arithmetic", "nlinarith for polynomial inequalities", "omega for linear integer arithmetic"]
+  },
+  {
+    "id": "ann-cbrt3-not-int",
+    "proofId": "cube-root-3-irrational",
+    "type": "concept",
+    "range": { "startLine": 64, "endLine": 70 },
+    "title": "∛3 is Not an Integer",
+    "content": "Bridges from `three_not_perfect_cube` to `cbrt3_not_int`: if cbrt3 = n (an integer), then n³ = cbrt3³ = 3, contradicting that 3 is not a perfect cube. The `exact_mod_cast` tactic handles the coercion between ℝ-valued equality `cbrt3 = ↑n` and the ℤ-valued equality `n³ = 3`, using the fact that integer cubing is compatible with the ℤ → ℝ coercion.",
+    "mathContext": "The logical chain: $\\sqrt[3]{3} \\notin \\mathbb{Z}$ because if $\\sqrt[3]{3} = n \\in \\mathbb{Z}$, then $n^3 = (\\sqrt[3]{3})^3 = 3$, but no such $n$ exists by `three_not_perfect_cube`. The `exact_mod_cast` tactic automatically handles the cast $n : \\mathbb{Z} \\to n : \\mathbb{R}$ when the equation $n^3 = 3$ holds over $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["exact_mod_cast", "integer coercion", "not an integer", "algebraic integer"],
+    "prerequisites": ["three_not_perfect_cube", "cbrt3_cubed", "Int.cast", "exact_mod_cast"]
+  },
+  {
+    "id": "ann-cbrt3-main",
+    "proofId": "cube-root-3-irrational",
+    "type": "insight",
+    "range": { "startLine": 73, "endLine": 81 },
+    "title": "Main Theorem: Irrationality via irrational_nrt_of_notint_nrt",
+    "content": "Applies Mathlib's `irrational_nrt_of_notint_nrt 3 3` to conclude `Irrational cbrt3`. The three arguments correspond to: (1) `cbrt3_cubed` cast to ℕ (cbrt3^3 = 3 as a natural number); (2) `cbrt3_not_int` (cbrt3 is not an integer); (3) `norm_num` proving 3 ≠ 1 (the n ≠ 1 non-triviality condition). The alternative form `irrational_three_pow_one_third` simply unfolds the definition.",
+    "mathContext": "`irrational_nrt_of_notint_nrt : ∀ (n m : ℕ), (x : ℝ), x ^ n = m → ¬∃ (k : ℤ), x = k → n ≠ 1 → Irrational x`. The mathematical content: if $x^n = m \\in \\mathbb{N}$ and $x \\notin \\mathbb{Z}$, then $x \\notin \\mathbb{Q}$. Proof: if $x = p/q$ in lowest terms ($q > 1$), then $p^n = m \\cdot q^n$, so $q \\mid p^n$, so $q \\mid p$ (unique factorization), contradicting $\\gcd(p,q) = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["irrational_nrt_of_notint_nrt", "Irrational", "rational root theorem", "Gauss's lemma", "unique factorization"],
+    "prerequisites": ["cbrt3_cubed", "cbrt3_not_int", "Mathlib.Data.Real.Irrational", "irrational_nrt_of_notint_nrt"]
+  }
+]
