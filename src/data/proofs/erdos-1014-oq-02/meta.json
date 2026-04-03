@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1014",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-28",
-    "axiomCount": 0,
+    "axiomCount": 12,
     "lineCount": 186,
-    "assumptions": "Inherits axioms from Erdos1014Problem.lean: ramseyNumber (definition), ramsey_monotone_right, ramsey_recurrence, ramsey_k2, ramsey_symm, R3_lower. All theorems fully proved (0 sorries).",
+    "assumptions": "12 axioms inherited from Erdos1014Problem.lean: ramseyNumber (Ramsey number definition), ramsey_symm (symmetry), ramsey_upper_erdos_szekeres (Erdős-Szekeres upper bound), ramsey_monotone_right (monotonicity), ramsey_recurrence (recurrence relation), ramsey_k2 (R(2,k) = k), R3_lower and R3_upper (bounds on R(3,k)), erdos_1014_conjecture (main conjecture), R33, R34, R35 (specific values). 0 own axioms. 0 sorries.",
     "mathlib_version": "4.26.0",
     "leanFiles": [
       {

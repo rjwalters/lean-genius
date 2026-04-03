@@ -37,10 +37,10 @@
       "Proved completeBipartiteAdj is irreflexive, enabling corollary for K_{m,n}"
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 0,
+    "axiomCount": 4,
     "lineCount": 141,
     "mathlib_version": "4.26.0",
-    "assumptions": "0 axioms, 0 sorries. Parent file (erdos-1007) has 3 axioms; this file proves hasUnitEmbedding_exists without introducing new assumptions."
+    "assumptions": "4 axioms inherited from Erdos1007Problem.lean: hasUnitEmbedding_exists (unit-distance graph embeddability), min_edges_dimension_4 (minimum edges in 4D unit-distance graph), k33_unique_minimum (K₃,₃ is unique minimum in dimension 3), min_edges_dimension_5 (minimum edges in 5D). 0 own axioms. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1007 asks: what is the smallest number of edges in a 4-dimensional graph? The graph dimension dim(G) is the minimum n such that G can be embedded as a unit distance graph in ℝⁿ (all edges have Euclidean length exactly 1). Paul Erdős posed this question in the context of unit distance geometry, an area he contributed to substantially. The answer — 9 edges, uniquely achieved by K_{3,3} — was proved by House (2013) using geometric case analysis. The 5-dimensional analogue (minimum 15 edges) was settled by Chaffee and Noble (2016). This OQ-05 entry is an axiom elimination analysis: one of four axioms in the parent formalization (hasUnitEmbedding_exists) can be proved constructively via scaled standard basis vectors. A notable finding: the original axiom statement contained a subtle logical error — it asserts every finite graph has a unit distance embedding, but this fails for graphs with self-loops (where dist(v,v) = 0 ≠ 1). The corrected theorem adds irreflexivity, recovering the intended mathematical content.",
