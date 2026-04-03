@@ -35,11 +35,13 @@
     "problemStatement": "Prove that (Σ_{i∈s} xᵢ)² = Σ_{i∈s} xᵢ² + Σ_{i∈s} Σ_{j∈s,j≠i} xᵢxⱼ for any Finset s and function f: s → R in a CommRing R.",
     "text": "The key theorem sq_sum_eq_diag_plus_offdiag decomposes the double sum into diagonal and off-diagonal parts. The proof uses sq_sum_eq_double_sum (rewriting (Σf)² as a double sum via Finset.sum_mul_sum), then for each i, splits the sum over s into the i-th term (the diagonal f(i)² = f(i)*f(i)) plus the rest s.erase i (the off-diagonal). This uses Finset.add_sum_erase. The off-diagonal Σ_{i≠j} xᵢxⱼ equals 2·e₂ = 2·Σ_{i<j} xᵢxⱼ by a symmetry argument (pairing (i,j) with (j,i)), though this final step is left as a remark.",
     "proofStrategy": "sq_sum_eq_double_sum: rw [sq, Finset.sum_mul_sum]. sq_sum_eq_diag_plus_offdiag: rewrite double sum via sq_sum_eq_double_sum, then sum_add_distrib splits diagonal from off-diagonal, and Finset.add_sum_erase identifies the diagonal term f(i)² at each i.",
+    "historicalContext": "Isaac Newton discovered the power sum recurrences (Newton's identities) around 1666, connecting the elementary symmetric polynomials $e_k = \\sum_{i_1 < \\cdots < i_k} x_{i_1} \\cdots x_{i_k}$ to the power sums $p_k = \\sum x_i^k$. Albert Girard independently stated the recurrences in 1629. The simplest non-trivial identity is $p_2 = e_1^2 - 2e_2$, which is just $(\\sum x_i)^2 = \\sum x_i^2 + 2\\sum_{i < j} x_i x_j$. This identity is ancient — it generalizes the algebraic identity $(a+b)^2 = a^2 + 2ab + b^2$ to $n$ variables and underpins multiple inequalities: AM-GM (the off-diagonal sum is non-negative by $(a-b)^2 \\geq 0$), Cauchy-Schwarz (via the Lagrange identity), and Maclaurin's inequalities for symmetric means. The Finset-based generalization here works over any commutative ring, making it applicable to formal power series and polynomial coefficient arithmetic.",
     "keyInsights": [
-      "(Σf)² = double sum ΣΣ f(i)f(j) is the key bridge theorem",
-      "Diagonal/off-diagonal split: each inner sum splits as f(i)·f(i) + Σ_{j≠i} f(i)f(j)",
-      "The off-diagonal equals 2·e₂ by symmetry (each pair {i,j} counted twice)",
-      "Works in any CommRing: no ordering, no positivity needed for the identity"
+      "$(\\sum f)^2 = \\sum_i \\sum_j f(i)f(j)$ is the key bridge: squaring a sum produces a double sum of all cross-products, proved in one line by `Finset.sum_mul_sum`",
+      "Diagonal/off-diagonal split: the $n^2$ cross-product terms decompose into $n$ diagonal terms $f(i)^2$ and $n^2 - n$ off-diagonal terms $f(i)f(j)$ with $i \\neq j$, via `Finset.add_sum_erase`",
+      "The off-diagonal sum $\\sum_{i \\neq j} f(i)f(j) = 2e_2 = 2\\sum_{i < j} f(i)f(j)$ by commutativity: each unordered pair $\\{i,j\\}$ contributes both $f(i)f(j)$ and $f(j)f(i)$. This final step (not proved in this file) requires a linear order on the index type",
+      "Over any CommRing: no ordering, no positivity, no limits needed. The identity $(\\sum x_i)^2 = \\sum x_i^2 + \\sum_{i \\neq j} x_i x_j$ is a pure ring identity, which is why `ring` closes the two-variable cases in one line",
+      "`DecidableEq ι` is required for `Finset.erase` but not for `Finset.sum_mul_sum` — a subtle type-class distinction showing that the main bridge theorem (Part I) is more general than the diagonal/off-diagonal decomposition (Part IV)"
     ],
     "prerequisites": [
       "Finset.sum_mul_sum: (Σf)(Σg) = ΣΣ f(i)g(j)",
@@ -62,6 +64,74 @@
     "theoremCount": 5,
     "definitionCount": 0
   },
-  "crossReferences": [],
-  "sections": []
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "parent-problem",
+      "description": "The main AM-GM inequality — this entry provides the symmetric polynomial identity that enables the proof strategy in the parent"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "parent-problem",
+      "description": "Maclaurin's inequalities via elementary symmetric polynomials — this entry proves the Newton-Girard identity needed for Maclaurin's approach"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz inequality is related via the Lagrange identity: $(\\sum a_i b_i)^2 = (\\sum a_i^2)(\\sum b_i^2) - \\sum_{i < j}(a_i b_j - a_j b_i)^2$, which uses the same diagonal/off-diagonal decomposition technique"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["I. Newton"],
+      "title": "Arithmetica Universalis",
+      "year": "1707",
+      "venue": "Cambridge",
+      "note": "Newton's power sum identities connecting elementary symmetric polynomials to power sums $p_k = e_1 p_{k-1} - e_2 p_{k-2} + \\cdots$"
+    },
+    {
+      "authors": ["A. Girard"],
+      "title": "Invention nouvelle en l'algèbre",
+      "year": "1629",
+      "venue": "Amsterdam",
+      "note": "Girard's earlier statement of symmetric function relations including the n=2 power sum identity"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sq-double-sum",
+      "title": "Square of Sum as Double Sum",
+      "startLine": 19,
+      "endLine": 27,
+      "summary": "Proves `sq_sum_eq_double_sum`: $(\\sum_{i \\in s} f(i))^2 = \\sum_{i \\in s} \\sum_{j \\in s} f(i) f(j)$ by one-line rewrite `rw [sq, Finset.sum_mul_sum]`. The bridge theorem converting a square to a double sum — the foundation for all subsequent results."
+    },
+    {
+      "id": "two-variable-identities",
+      "title": "Two-Variable Identities",
+      "startLine": 29,
+      "endLine": 39,
+      "summary": "Proves $(a+b)^2 = a^2 + b^2 + 2ab$ and $(a-b)^2 = a^2 + b^2 - 2ab$ by `ring`. Notes that $(a-b)^2 \\geq 0$ in an ordered ring yields $a^2 + b^2 \\geq 2ab$ — the $n=2$ AM-GM inequality, proved separately in AMGMInequality.lean."
+    },
+    {
+      "id": "three-variable-identity",
+      "title": "Three-Variable Newton-Girard",
+      "startLine": 41,
+      "endLine": 49,
+      "summary": "Proves $(a+b+c)^2 = a^2 + b^2 + c^2 + 2(ab + ac + bc)$ by `ring`. The explicit $n=3$ instance of Newton-Girard $p_2 = e_1^2 - 2e_2$, where $e_2 = ab + ac + bc$ and $p_2 = a^2 + b^2 + c^2$."
+    },
+    {
+      "id": "diag-offdiag-decomposition",
+      "title": "Diagonal/Off-Diagonal Decomposition",
+      "startLine": 51,
+      "endLine": 64,
+      "summary": "The main Newton-Girard result: $(\\sum_i f(i))^2 = \\sum_i f(i)^2 + \\sum_i \\sum_{j \\neq i} f(i)f(j)$. Proved by rewriting to double sum, then using `Finset.add_sum_erase` to split each inner sum at the diagonal element. Requires `DecidableEq ι` for the erase operation."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 65,
+      "endLine": 88,
+      "summary": "Documents the 5 theorems and notes the remaining step: showing the off-diagonal sum $\\sum_{i \\neq j} x_i x_j = 2e_2 = 2\\sum_{i < j} x_i x_j$ requires a linear order on $\\iota$ via commutativity pairing."
+    }
+  ]
 }
