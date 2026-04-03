@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-triangle-ratio-def",
+    "proofId": "erdos-1155-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 59 },
+    "type": "technique",
+    "title": "triangleRatio and convergenceConjecture: Encoding Asymptotic Questions in Filter Topology",
+    "content": "`triangleRatio n = triangleRemovalEdges n / n^{3/2}` is defined using `Real.rpow` (non-computable) rather than natural number exponentiation, since the exponent 3/2 is irrational. The `convergenceConjecture` encodes 'f(n)/n^{3/2} → L' as `Filter.Tendsto triangleRatio atTop (nhds L)`: the `atTop` filter on ℕ captures 'for all sufficiently large n', and `nhds L` captures 'in every neighborhood of L'. The existential over `L : ℝ` with `0 < L` is the correct formulation — without `0 < L`, the trivial L = 0 would be admitted (consistent with a process dying out). The Prop definition `convergenceConjecture : Prop` makes this a statement rather than data, which is correct for an open conjecture whose truth value is unknown.",
+    "mathContext": "The ratio $r(n) = f(n)/n^{3/2}$ is the natural normalization for the triangle removal process. `Filter.Tendsto f atTop (nhds L)` means: for every open neighborhood $U \\ni L$, eventually $f(n) \\in U$. This is the standard topological definition of $\\lim_{n \\to \\infty} f(n) = L$. For $\\mathbb{R}$ with the standard topology, this is equivalent to the classical $\\varepsilon$-$N$ definition. The choice $0 < L$ excludes $L = 0$ and $L = +\\infty$ as degenerate limits.",
+    "significance": "key",
+    "relatedConcepts": ["Filter.Tendsto", "atTop filter on ℕ", "nhds (neighborhood filter)", "Real.rpow for fractional exponents", "noncomputable def for transcendental functions"],
+    "prerequisites": ["Filter and Tendsto in Mathlib.Order.Filter.Basic", "Real.rpow in Mathlib.Analysis.SpecialFunctions.Pow.Real", "triangleRemovalEdges inherited from Erdos1155Problem.lean"]
+  },
+  {
+    "id": "ann-limit-uniqueness",
+    "proofId": "erdos-1155-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 79 },
+    "type": "technique",
+    "title": "Limit Uniqueness via Hausdorff Separation: tendsto_nhds_unique",
+    "content": "Both `convergenceLimit_unique` and `convergence_limit_is_unique` are one-liners delegating to Mathlib's `tendsto_nhds_unique`. The key mathematical content is that $\\mathbb{R}$ is a Hausdorff (T2) space: any two distinct points have disjoint open neighborhoods. If a filter $F$ converges to both $L_1$ and $L_2$ in a T2 space, then the neighborhoods $U_1 \\ni L_1$ and $U_2 \\ni L_2$ with $U_1 \\cap U_2 = \\emptyset$ cannot both be in $F$, giving $L_1 = L_2$. Lean's `tendsto_nhds_unique` encodes exactly this: `h₁ : Tendsto f l (nhds L₁)` and `h₂ : Tendsto f l (nhds L₂)` with `l ≠ ⊥` (non-trivial filter) implies `L₁ = L₂`. The `atTop` filter on ℕ is indeed non-trivial (it is a proper filter, not the empty filter ⊥), so the hypothesis is satisfied automatically.",
+    "mathContext": "In any T2 (Hausdorff) topological space, limits of convergent sequences (or net/filter limits) are unique. $\\mathbb{R}$ with the standard topology is T2 since for $L_1 \\neq L_2$, the open intervals $(L_1 - \\delta, L_1 + \\delta)$ and $(L_2 - \\delta, L_2 + \\delta)$ with $\\delta = |L_1 - L_2|/3$ are disjoint neighborhoods. `tendsto_nhds_unique : Tendsto f l (nhds a) → Tendsto f l (nhds b) → l ≠ ⊥ → a = b` (Mathlib statement).",
+    "significance": "supporting",
+    "relatedConcepts": ["tendsto_nhds_unique", "Hausdorff (T2) topology", "atTop filter is non-trivial", "Filter.NeBot for atTop"],
+    "prerequisites": ["Hausdorff spaces in Mathlib.Topology.Separation", "tendsto_nhds_unique in Mathlib.Topology.Basic", "atTop.ne_bot for ℕ"]
+  },
+  {
+    "id": "ann-sharp-asymptotics",
+    "proofId": "erdos-1155-oq-01-oq-01",
+    "range": { "startLine": 115, "endLine": 141 },
+    "type": "insight",
+    "title": "Sharp Asymptotics: The Icc_mem_nhds Pattern for Multiplicative Bounds",
+    "content": "The proof of `convergence_gives_sharp_asymptotics` demonstrates the standard pattern for converting `Filter.Tendsto` into concrete multiplicative bounds. Step 1: `Icc_mem_nhds (by linarith) (by linarith)` — the closed interval $[L-\\delta, L+\\delta]$ is a neighborhood of $L$ because its interior $(L-\\delta, L+\\delta)$ is an open neighborhood (requires $L-\\delta < L$ and $L < L+\\delta$, both trivial). Step 2: `htends.eventually hIcc` — convergence to $L$ gives $r(n) \\in [L-\\delta, L+\\delta]$ eventually. Step 3: `(hev.and hge1).mono` — intersect with $n \\geq 1$ (needed for $n^{3/2} > 0$). Step 4: `Real.rpow_pos_of_pos` — $n^{3/2} > 0$ for $n \\geq 1$. Step 5: `le_div_iff₀/div_le_iff₀` — un-normalize: $L-\\delta \\leq r(n) \\Leftrightarrow (L-\\delta) n^{3/2} \\leq f(n)$. The `convergence_tight_theta_constants` theorem is then a one-line alias, showing the Θ-constants $c_1 = L-\\delta$, $c_2 = L+\\delta$ are tight as $\\delta \\to 0$.",
+    "mathContext": "The sharp asymptotic $f(n) \\sim L \\cdot n^{3/2}$ means: for any $\\delta > 0$, eventually $(L-\\delta) n^{3/2} \\leq f(n) \\leq (L+\\delta) n^{3/2}$. This is the $o(1)$ error term in the ratio. The key conversion: $r(n) \\in [L-\\delta, L+\\delta]$ with $r(n) = f(n)/n^{3/2}$ and $n^{3/2} > 0$ gives $(L-\\delta) \\leq f(n)/n^{3/2} \\leq (L+\\delta)$, hence $(L-\\delta) n^{3/2} \\leq f(n) \\leq (L+\\delta) n^{3/2}$ by multiplying through. The `le_div_iff₀` lemma in Mathlib states: `0 < c → (a ≤ b/c ↔ a*c ≤ b)`.",
+    "significance": "key",
+    "relatedConcepts": ["Icc_mem_nhds (closed interval neighborhood)", "Filter.Eventually.and for intersecting eventual statements", "Real.rpow_pos_of_pos for positive fractional powers", "le_div_iff₀ and div_le_iff₀ for division inequalities"],
+    "prerequisites": ["Filter.Tendsto.eventually for pulling back membership", "Set.mem_Icc for closed interval membership", "Icc_mem_nhds in Mathlib.Topology.Order"]
+  },
+  {
+    "id": "ann-metric-criterion",
+    "proofId": "erdos-1155-oq-01-oq-01",
+    "range": { "startLine": 241, "endLine": 264 },
+    "type": "technique",
+    "title": "Metric ε-N Criterion: Bridging Filter Convergence and Classical Analysis via tendsto_order",
+    "content": "The `convergenceConjecture_iff_metric` theorem proves the iff between `Filter.Tendsto` and the classical ε-N definition. The ⟹ direction is clean: `convergence_absolute_deviation` gives `|r(n) - L| < ε` eventually, then `Filter.eventually_atTop.mp` unpacks 'eventually for atTop' to `∃ N, ∀ n ≥ N, ...`. The ⟸ direction uses `tendsto_order.mpr`: to prove `Tendsto f atTop (nhds L)` in an ordered topology, it suffices to show (i) ∀ a < L, eventually f(n) > a, and (ii) ∀ b > L, eventually f(n) < b. For (i): use ε = (L-a)/2, get N from the ε-N hypothesis, then for n ≥ N: `abs_lt` gives `-(L-a)/2 < r(n) - L`, so `r(n) > L - (L-a)/2 = (L+a)/2 > a`. For (ii): use ε = (b-L)/2 symmetrically. The `abs_lt` rewrite splits `|x| < c` into `-c < x ∧ x < c`.",
+    "mathContext": "The classical $\\varepsilon$-$N$ definition: $\\lim_{n \\to \\infty} f(n) = L$ iff $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, |f(n) - L| < \\varepsilon$. In Lean 4/Mathlib, `Filter.Tendsto f atTop (nhds L)` is the topological definition, and `Metric.tendsto_atTop` gives the metric equivalent: `Tendsto f atTop (nhds L) ↔ ∀ ε > 0, ∃ N, ∀ n ≥ N, dist (f n) L < ε`. The `tendsto_order` lemma provides an ordered-space alternative: for a linearly ordered space, Tendsto to nhds L iff for all a < L, eventually f(n) > a, and for all b > L, eventually f(n) < b.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto_order for ordered topological spaces", "Filter.eventually_atTop: filter ↔ ∃ N ∀ n ≥ N", "abs_lt splitting absolute value inequality", "Metric.tendsto_atTop as alternative formulation"],
+    "prerequisites": ["Filter.Tendsto and nhds filter in Mathlib.Order.Filter", "tendsto_order in Mathlib.Topology.Order", "abs_lt in Mathlib.Algebra.Order.AbsoluteValue"]
+  },
+  {
+    "id": "ann-strict-hierarchy",
+    "proofId": "erdos-1155-oq-01-oq-01",
+    "range": { "startLine": 273, "endLine": 295 },
+    "type": "context",
+    "title": "The Three-Level Open Hierarchy: Convergence → Erdős → BFL",
+    "content": "`strict_hierarchy` collects the complete forward implications: convergenceConjecture ⟹ (erdos_1155_conjecture ∧ BFL polynomial bounds). Both implications delegate to theorems proved earlier in this file and in the parent files. `convergence_consistent_with_bfl` closes the loop: under convergence, the BFL characterization $n^{-\\varepsilon} \\leq r(n) \\leq n^{\\varepsilon}$ also holds — this might seem contradictory (how can $r(n) \\to L > 0$ while $r(n) \\leq n^{\\varepsilon}$?), but it is perfectly consistent since $L \\leq n^{\\varepsilon}$ eventually for any fixed $L, \\varepsilon > 0$. The forward implications are all proved; the three converses are all open: (1) BFL ⟹ Erdős is Erdős's own conjecture; (2) Erdős ⟹ convergence is this OQ; (3) whether the BFL differential equations uniquely determine the limit is a separate analytic question about ODE asymptotics.",
+    "mathContext": "The hierarchy: $\\text{convergence} \\Rightarrow \\Theta(n^{3/2}) \\Rightarrow n^{3/2+o(1)}$. All three converses are open. For (1): even proving $f(n) = \\Omega(n^{3/2})$ (with an explicit constant) is Erdős's conjecture. For (2): even if $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ for fixed $c_1 < c_2$, the ratio might cycle between two values rather than converge — this requires a separate oscillation analysis. For (3): the BFL differential equations are a coupled system of ODEs; whether their solutions have a well-defined limit as $t \\to \\infty$ requires stability analysis (e.g., Lyapunov methods).",
+    "significance": "context",
+    "relatedConcepts": ["erdos_1155_conjecture from Erdos1155OQ01.lean", "BFL polynomial bounds from Erdos1155Problem.lean", "hierarchy of asymptotic statements", "open problems at each level of implication"],
+    "prerequisites": ["convergence_implies_erdos_conjecture proved in §3", "convergence_implies_bfl proved in §3", "bfl_ratio_characterization axiomatized in parent file"]
+  }
+]

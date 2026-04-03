@@ -140,39 +140,42 @@
     }
   ],
   "overview": {
+    "historicalContext": "Random greedy graph processes — where a combinatorial structure evolves by randomly adding or removing elements subject to local constraints — emerged as a central technique in probabilistic combinatorics starting with Rödl's nibble (1985) and the Rödl-Łuczak sparse regularity work of the 1990s. The triangle removal process studied here is the 'reverse' of the triangle-free process: rather than building a maximal triangle-free graph by adding random edges, one starts from the complete graph $K_n$ and repeatedly deletes all three edges of a uniformly random triangle until no triangles remain. This process is intimately connected to the triangle removal lemma of Ruzsa and Szemerédi (1976), which underpins Roth's theorem on 3-term arithmetic progressions: any graph on $n$ vertices with $\\delta n^2$ triangles can be made triangle-free by removing $o(n^2)$ edges. The 'forward' triangle-free process was analyzed by Bohman (2009) and later refined by Bohman-Keevash, establishing that the random triangle-free process produces near-Ramsey graphs with $\\tilde{\\Omega}(n^{3/2})$ edges. The 'backward' process studied here was analyzed by Bohman, Fonoberova, and Loebl (BFL, 2015), who proved via differential equation methods that the number of surviving edges satisfies $f(n) = n^{3/2+o(1)}$ almost surely — a remarkable result identifying $3/2$ as the critical exponent. Erdős conjectured the sharper bound $f(n) = \\Theta(n^{3/2})$, and this formalization addresses the finest version: whether $f(n)/n^{3/2}$ converges to a specific positive constant $L$, which would be determined by the BFL differential equations.",
     "problemStatement": "The triangle removal process on $K_n$ terminates with $f(n)$ edges. BFL (2015) proved $f(n) = n^{3/2+o(1)}$ a.s. The Erdős conjecture asks for $\\Theta(n^{3/2})$. This OQ asks: does $f(n)/n^{3/2}$ converge to a specific constant $L$?",
-    "approach": "We define the convergenceConjecture formally and prove its structural consequences: the hierarchy convergence ⟹ Θ ⟹ BFL, limit uniqueness, sharp asymptotics, and equivalent characterizations via limsup/liminf and metric criteria.",
-    "keyIdeas": [
-      "The convergence question is strictly stronger than Θ(n^{3/2}): even if bounded, the ratio might oscillate.",
-      "If L exists, it is unique (Hausdorff separation) and determines f(n) ~ L·n^{3/2}.",
-      "Convergence is equivalent to limsup = liminf = L via the metric criterion.",
-      "The limit L (if it exists) would be determined by the differential equations in the BFL analysis."
+    "proofStrategy": "Define the convergenceConjecture formally as $\\exists L > 0,\\, \\mathrm{Tendsto}\\,(f(n)/n^{3/2})\\,(\\mathrm{nhds}\\,L)$ and prove its structural consequences: (1) limit uniqueness via Hausdorff separation; (2) the hierarchy convergence $\\Rightarrow$ Θ $\\Rightarrow$ BFL; (3) sharp asymptotics $f(n) \\sim L n^{3/2}$ from $I_{cc}$ membership; (4) ε-neighborhood and absolute deviation characterizations; (5) bounded ratio corollaries; (6) limsup/liminf equivalence via `tendsto_order`; (7) metric ε-N criterion via `Filter.eventually_atTop`.",
+    "keyInsights": [
+      "The convergence question is strictly stronger than $\\Theta(n^{3/2})$: even if the ratio stays bounded between two positive constants, it might oscillate without converging — this is why convergence is a genuine open problem even after proving Θ",
+      "Limit uniqueness uses only Hausdorff separation (`tendsto_nhds_unique`): $\\mathbb{R}$ is T2, so if $r(n) \\to L_1$ and $r(n) \\to L_2$ in $\\mathrm{nhds}$, then $L_1 = L_2$. The limit $L$, if it exists, is canonically determined by the process",
+      "The sharp asymptotics theorem converts filter convergence to multiplicative $\\delta$-strip bounds using the $I_{cc}$ neighborhood trick: $[L-\\delta, L+\\delta] \\in \\mathrm{nhds}\\,L$ together with `rpow_pos_of_pos` and `le_div_iff₀/div_le_iff₀` to un-normalize",
+      "The metric ε-N equivalence (`convergenceConjecture_iff_metric`) uses `tendsto_order` for the ⟸ direction: lower bounds come from ε = (L-a)/2 and upper bounds from ε = (a-L)/2, with `Filter.eventually_atTop` unpacking the filter quantifier to classical ∃ N ∀ n ≥ N",
+      "The limsup/liminf characterization (`limsup_liminf_implies_convergence`) gives a squeeze criterion: if ∀ ε > 0, eventually $L-\\varepsilon \\leq r(n) \\leq L+\\varepsilon$, then $r(n) \\to L$. This is proved via `tendsto_order` with ε = (L-a)/2 or (a-L)/2 to squeeze each neighborhood",
+      "The three-level hierarchy — convergence $\\Rightarrow$ Erdős $\\Rightarrow$ BFL — is fully proved, but all three converses are open: whether BFL implies Erdős is Erdős's own conjecture; whether Θ implies convergence is this OQ; whether the BFL differential equations uniquely determine $L$ is a deep analytic question"
     ]
   },
   "conclusion": {
-    "summary": "This formalization establishes the mathematical framework for the convergence question in the triangle removal process. While the convergence itself is open, the structural consequences are fully proved: uniqueness, hierarchy, sharp asymptotics, and characterizations.",
-    "significance": "The convergence limit L (if it exists) would provide the precise leading constant in f(n) ~ L·n^{3/2}, completing the asymptotic picture begun by BFL. This would be a major result in probabilistic combinatorics.",
+    "summary": "This formalization establishes the complete mathematical framework for the convergence question in the triangle removal process. The convergence itself is open, but 13 theorems fully prove its structural consequences: limit uniqueness, the three-level hierarchy (convergence ⟹ Erdős ⟹ BFL), sharp asymptotics $f(n) \\sim L n^{3/2}$, four equivalent characterizations (ε-interval, absolute deviation, limsup/liminf, metric ε-N), and the bounded-ratio corollaries.",
+    "implications": "If the convergence conjecture is proved, it would determine the precise leading constant in the triangle removal process, completing the asymptotic theory begun by BFL. The constant $L$ would be determined by the BFL differential equations and would be a universal constant of combinatorics — analogous to the Bollobás-Thomason constant in the evolution of random graphs. The proof techniques here — systematic use of `Filter.Tendsto` with `tendsto_order` and `Icc_mem_nhds` — provide a reusable template for formalizing asymptotic convergence statements about random combinatorial processes. The limsup/liminf squeeze lemma and the metric ε-N iff theorem are general utilities applicable to any such convergence question.",
     "openQuestions": [
-      "Does f(n)/n^{3/2} converge? (Primary open question)",
-      "If it converges, what is the explicit value of L?",
-      "Is convergence implied by the Θ(n^{3/2}) conjecture, or can the ratio oscillate while staying bounded?"
+      "Does $f(n)/n^{3/2}$ converge? The primary open question — even the Θ(n^{3/2}) bound (Erdős conjecture) is unproved, making this OQ doubly open",
+      "If the limit $L$ exists, what is its explicit value? The BFL differential equations provide a system whose fixed point would give $L$, but extracting an explicit constant requires solving or numerically approximating the system",
+      "Is convergence implied by the $\\Theta(n^{3/2})$ conjecture, or can the ratio oscillate between two positive constants $c_1 < c_2$ while remaining bounded? Oscillating ratios arise naturally in many random processes (e.g., sandpile models) and cannot be excluded by current methods"
     ]
   },
   "crossReferences": [
     {
-      "id": "erdos-1155",
-      "title": "Erdős Problem #1155: Triangle Removal Process",
-      "relation": "Parent problem establishing the process definition and axioms"
+      "targetId": "erdos-1155",
+      "relationship": "Open question derived from parent problem",
+      "description": "Parent problem establishing the process definition and BFL axioms"
     },
     {
-      "id": "erdos-1155-oq-01",
-      "title": "Triangle Removal Process: Exact Asymptotics",
-      "relation": "Parent OQ-01: the Θ(n^{3/2}) conjecture that convergence implies"
+      "targetId": "erdos-1155-oq-01",
+      "relationship": "Open question derived from parent OQ",
+      "description": "Parent OQ-01: the Θ(n^{3/2}) conjecture that convergence implies"
     },
     {
-      "id": "erdos-1155-oq-01-oq-07",
-      "title": "K_r-Clique Removal Process Generalization",
-      "relation": "Generalization to K_r-removal; convergence question extends naturally"
+      "targetId": "erdos-1155-oq-01-oq-07",
+      "relationship": "related",
+      "description": "Generalization to K_r-clique removal; the convergence question extends naturally to the K_r case"
     }
   ]
 }
