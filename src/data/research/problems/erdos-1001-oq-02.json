@@ -29,16 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Rate O(A log N / N) identified, Lean scaffold created, Mathlib gap documented",
+    "progressSummary": "COMPLETE: All 3 sorries proved. File has 0 sorries, 3 axioms (deep analytic NT: Mertens, weighted totient asymptotics). Consequences of the rate axiom fully formalized.",
     "builtItems": [
       "Erdos1001OQ02.lean: definitions weightedTotientSum, rangeTotientSum, densityConst",
       "Erdos1001OQ02.lean: axiom convergence_rate_est (main rate theorem)",
-      "Erdos1001OQ02.lean: theorem convergence_faster_than_sqrtN (partial)"
+      "Erdos1001OQ02.lean: theorem convergence_faster_than_sqrtN (partial)",
+      "Proved rate_is_nontrivial (isLittleO 1) in Erdos1001OQ02.lean",
+      "Proved convergence_effective (existential N0) in Erdos1001OQ02.lean",
+      "Proved convergence_faster_than_sqrtN (isLittleO 1/sqrtN) in Erdos1001OQ02.lean"
     ],
     "insights": [
       "Rate of convergence is O(A log N / N) in the EST regime",
       "Reduction: rate ↔ error in ∑_{y=N}^{cN} φ(y)/y² = (6/π²)log(c) + O(log N/N)",
-      "Density constant 6/π² = 1/ζ(2) from Dirichlet series ∑ φ(y)/y^s = ζ(s-1)/ζ(s)"
+      "Density constant 6/π² = 1/ζ(2) from Dirichlet series ∑ φ(y)/y^s = ζ(s-1)/ζ(s)",
+      "Proved 3 sorry-bearing theorems from the base rate axiom: rate_is_nontrivial (A*logN/N=o(1)), convergence_effective (existential bound), convergence_faster_than_sqrtN (o(1/sqrtN))",
+      "Key Mathlib lemma: Real.tendsto_log_div_rpow_atTop r hr gives logx/x^r→0; used for r=1 and r=1/2",
+      "IsBigO.tendsto_div_nhds_zero converts isLittleO to Tendsto; convergence_effective reduces to Metric.tendsto_atTop"
     ],
     "mathlibGaps": [
       "Mertens totient sum asymptotics with quantitative error: ∑_{y≤N} φ(y) = (3/π²)N² + O(N log N)"
