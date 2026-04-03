@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-pell01-regulator-def",
+    "proofId": "pell-equation-oq-01",
+    "range": { "startLine": 50, "endLine": 75 },
+    "type": "definition",
+    "title": "Pell Regulator: log of the Fundamental Unit",
+    "content": "`pellNorm d x y : ℝ` computes `(x : ℝ) + (y : ℝ) * √(d : ℝ)` — the real embedding of x+y√D. `pellRegulator d a : ℝ` is `log(pellNorm d a.x a.y)` for a `Solution₁ d` (a solution to x²-Dy²=1). Both are `noncomputable` because they involve `Real.sqrt` and `Real.log`. The theorems `pellNorm_pos_of_pos` and `pellRegulator_nonneg` establish that these are well-defined (norm ≥ 1, regulator ≥ 0) when x ≥ 1 and y ≥ 0.",
+    "mathContext": "The *regulator* $R(D) = \\log(x_1 + y_1\\sqrt{D})$ of the Pell equation $x^2 - Dy^2 = 1$ measures the size of the fundamental unit $\\varepsilon_D = x_1 + y_1\\sqrt{D}$ in the ring of integers $\\mathbb{Z}[\\sqrt{D}]$. The unit group is $\\{\\pm \\varepsilon_D^n : n \\in \\mathbb{Z}\\}$, so the $n$-th solution satisfies $x_n + y_n\\sqrt{D} = \\varepsilon_D^n$ and $x_n \\sim e^{nR(D)}/2$. In algebraic number theory, $R(D)$ is the *Dirichlet regulator* of the real quadratic field $\\mathbb{Q}(\\sqrt{D})$.",
+    "significance": "key",
+    "relatedConcepts": ["Pell.Solution₁", "IsFundamental", "Real.log", "fundamental unit"],
+    "prerequisites": ["Pell equation", "Mathlib.NumberTheory.Pell", "real analysis"]
+  },
+  {
+    "id": "ann-pell01-small-solutions",
+    "proofId": "pell-equation-oq-01",
+    "range": { "startLine": 90, "endLine": 113 },
+    "type": "insight",
+    "title": "Near-Square D: Smallest Possible Regulator R(D) = O(log D)",
+    "content": "For D = n²-1 (n ≥ 2), the fundamental solution is (n, 1): n²-(n²-1)·1²=1, proved by `ring`. The norm is n+√(n²-1). For large n, this is approximately n+n√(1-1/n²) ≈ 2n, so R(n²-1) ≈ log(2n) = O(log D). This is the smallest possible order of magnitude for R(D), far smaller than the heuristic average √D. The concrete case n=2, D=3: fundamental solution (2,1), R(3)=log(2+√3)≈1.32.",
+    "mathContext": "The near-square family $D = n^2-1$ gives the smallest regulators because the fundamental unit $\\varepsilon_D = n + \\sqrt{n^2-1}$ is close to 1 (its norm is $n^2 - (n^2-1) = 1$, confirming it's a unit). Continued fraction theory explains this: $\\sqrt{D}$ has a period-1 continued fraction expansion $[n-1; \\overline{2(n-1)}]$ when $D = n^2 - 1$, giving the fundamental solution immediately from the first convergent. The regulator $R(D) = \\log(n + \\sqrt{n^2-1}) \\sim \\log(2n) \\sim \\frac{1}{2}\\log D$.",
+    "significance": "key",
+    "relatedConcepts": ["continued fractions", "near-square discriminants", "Pell period", "unit group"],
+    "prerequisites": ["continued fraction expansion of √D", "Pell fundamental solution", "ring tactic"]
+  },
+  {
+    "id": "ann-pell01-fermat-d61",
+    "proofId": "pell-equation-oq-01",
+    "range": { "startLine": 120, "endLine": 130 },
+    "type": "context",
+    "title": "Fermat's D=61: Large Fundamental Solution Verified by norm_num",
+    "content": "The theorem `fermat_d61_solution` proves `1766319049² - 61·226153980² = 1` by `norm_num`. This is a straightforward arithmetic verification of one of the most famous instances of Pell's equation, challenged by Fermat to Wallis and Brouncker in 1657. The regulator is R(61) = log(1766319049 + 226153980·√61) ≈ 35.1, while √61 ≈ 7.81, so R(61) ≈ 4.5·√61 — significantly larger than √D. This contrasts sharply with the near-square case.",
+    "mathContext": "Fermat challenged mathematicians to find the smallest positive integer solution to $x^2 - 61y^2 = 1$. The continued fraction expansion of $\\sqrt{61}$ has period 11, and the fundamental solution appears at convergent $p_{10}/q_{10}$. The size $x_1 \\approx 10^9$ for such a small $D = 61$ illustrates the wild variation in regulator size. The regulator $R(61) \\approx 35.1$ satisfies $R(61)/\\sqrt{61} \\approx 4.5$, consistent with the heuristic that R(D)/√D has a distribution centered near 1-2.",
+    "significance": "supporting",
+    "relatedConcepts": ["continued fraction period", "Fermat's challenge", "norm_num", "regulator distribution"],
+    "prerequisites": ["Pell equation history", "norm_num for large integers"]
+  },
+  {
+    "id": "ann-pell01-conjectures",
+    "proofId": "pell-equation-oq-01",
+    "range": { "startLine": 132, "endLine": 175 },
+    "type": "definition",
+    "title": "Open Conjectures as Prop Definitions: Filter.Tendsto Formalization",
+    "content": "`PellRegulatorBound` is an existential over a constant C, asserting R(D) ≤ C·√D·log(D) for all non-square D ≥ 2. It uses `IsFundamental a` to restrict to the fundamental solution and requires the full `Solution₁ d` type from Mathlib. `AverageRegulatorConjecture` is more elaborate: it uses `Filter.Tendsto ... Filter.atTop (nhds c)` for the limit at infinity of the Cesàro average, with a conditional sum over non-square D ≤ X. This is the correct Lean formalism for `lim_{X→∞} (1/X)·Σ_{D≤X} R(D)/√D = c`.",
+    "mathContext": "The conjectures formalized: (1) $R(D) = O(\\sqrt{D} \\log D)$ — proved unconditionally as $R(D) = O(D^{1/2+\\varepsilon})$, but $O(\\sqrt{D}\\log D)$ requires GRH. (2) $\\frac{1}{X}\\sum_{D \\leq X, D \\text{ non-square}} R(D)/\\sqrt{D} \\to c$ — the Dirichlet density of regulators; c is related to $\\prod_p (1 - p^{-2})^{-1} = \\pi^2/6$. (3) The class number formula $h(D)\\cdot R(D) = \\sqrt{D}\\cdot L(1,\\chi_D)/2$ is a theorem (from algebraic number theory) but formalized here as a Prop definition.",
+    "significance": "key",
+    "relatedConcepts": ["Filter.Tendsto", "IsFundamental", "Cohen-Lenstra heuristics", "Dirichlet class number formula"],
+    "prerequisites": ["Mathlib filter theory", "Pell.IsFundamental", "L-functions", "class numbers"]
+  },
+  {
+    "id": "ann-pell01-polynomial-time",
+    "proofId": "pell-equation-oq-01",
+    "range": { "startLine": 177, "endLine": 195 },
+    "type": "context",
+    "title": "PellPolynomialTime: Complexity Open Question as Prop",
+    "content": "`PellPolynomialTime` is defined as existence of constants (C, k) such that for every non-square D ≥ 2 a Pell solution exists. The comment explains that the polynomial-time condition (bit operations ≤ C·(log D)^k) cannot be expressed in Lean's type theory — only the existence of a solution is stated. This is an honest limitation: computational complexity lower bounds and upper bounds require a model of computation not currently in Mathlib. The open problem is whether the Pell equation can be solved in time polynomial in log D.",
+    "mathContext": "The computational complexity of Pell's equation: (1) classical continued fraction method: $O(\\sqrt{D} \\cdot \\text{polylog}(D))$ arithmetic operations, exponential in $\\log D$; (2) Shanks' infrastructure: $O(D^{1/4+\\varepsilon})$ under GRH; (3) Hallgren (2002): polynomial-time *quantum* algorithm using period-finding on a shifted real quadratic field. Whether a polynomial-time classical algorithm exists is equivalent (under some reductions) to breaking certain lattice-based cryptosystems. Lenstra's survey ('Solving the Pell Equation', 2002) is the standard reference.",
+    "significance": "context",
+    "relatedConcepts": ["continued fractions", "Shanks infrastructure", "Hallgren quantum algorithm", "lattice-based cryptography"],
+    "prerequisites": ["computational complexity theory", "quantum computing basics", "Pell equation algorithms"]
+  }
+]
