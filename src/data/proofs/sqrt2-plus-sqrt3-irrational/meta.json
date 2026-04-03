@@ -29,15 +29,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The irrationality of √2 + √3 is a classical exercise in real analysis, notable because it requires more than just knowing √2 and √3 are irrational individually. The proof via squaring is elegant: if the sum were rational, squaring would make √6 rational, which is known to be false.",
+    "historicalContext": "The irrationality of $\\sqrt{2}$ has been known since ancient Greece — the Pythagoreans discovered it around 500 BC (the legendary proof by contradiction showing $\\sqrt{2} = p/q$ leads to both $p$ and $q$ being even). However, the irrationality of $\\sqrt{2} + \\sqrt{3}$ is more subtle: it does not follow trivially from the individual irrationalities (the sum of two irrationals can be rational, e.g., $\\sqrt{2} + (1 - \\sqrt{2}) = 1$). The correct approach is algebraic: the minimal polynomial of $\\sqrt{2} + \\sqrt{3}$ over $\\mathbb{Q}$ is $x^4 - 10x^2 + 1$ (degree 4, irreducible over $\\mathbb{Q}$), which shows $[\\mathbb{Q}(\\sqrt{2}+\\sqrt{3}):\\mathbb{Q}] = 4$ and in particular $\\sqrt{2}+\\sqrt{3} \\notin \\mathbb{Q}$. The short proof here bypasses field extensions: squaring maps the question to $\\sqrt{6} \\in \\mathbb{Q}$? which fails since 6 is not a perfect square. The general theorem (Besicovitch, 1940) states: $\\sum_i \\sqrt{a_i} \\in \\mathbb{Q}$ iff each $\\sqrt{a_i}$ is already rational.",
     "problemStatement": "Prove that √2 + √3 : ℝ is irrational.",
     "text": "The proof is by contradiction. Assume √2 + √3 = r for some r : ℚ. The algebraic identity (√2 + √3)² = 5 + 2√6 gives r² = 5 + 2√6, hence √6 = (r² - 5)/2. Since r is rational, (r² - 5)/2 is rational, but √6 is irrational (6 is not a perfect square, checked by native_decide). Contradiction. The algebraic identity is proved using sq_sqrt and sqrt_mul.",
     "proofStrategy": "sqrt2_plus_sqrt3_sq: ring_nf then rw [sq_sqrt h2, sq_sqrt h3] to convert √2² and √3², and √2·√3 = √6 via sqrt_mul. Main proof: assume ⟨r, hr⟩, square both sides, rearrange to get √6 = rational, then apply irrational_sqrt_six.",
     "keyInsights": [
-      "Squaring maps the irrationality question to a simpler one about √6",
-      "The identity (√a + √b)² = a + b + 2√(ab) is the key algebraic trick",
-      "√6 irrational: 6 = 2·3 is not a perfect square, checked computationally",
-      "The argument generalizes: √a + √b is irrational whenever ab is not a perfect square"
+      "The squaring technique reduces irrationality of $\\sqrt{a} + \\sqrt{b}$ to irrationality of $\\sqrt{ab}$: if $\\sqrt{a} + \\sqrt{b} = r \\in \\mathbb{Q}$, then $(\\sqrt{a}+\\sqrt{b})^2 = a + b + 2\\sqrt{ab} = r^2 \\in \\mathbb{Q}$, so $\\sqrt{ab} = (r^2 - a - b)/2 \\in \\mathbb{Q}$. For $a=2, b=3$: $\\sqrt{6} \\in \\mathbb{Q}$? No, since $6 = 2 \\cdot 3$ is not a perfect square.",
+      "Lean 4 `Irrational x` is defined as `¬ ∃ r : ℚ, (↑r : ℝ) = x` — literally, $x$ is not in the image of the canonical embedding $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$. The proof `intro ⟨r, hr⟩` destructs this negation, giving $r : \\mathbb{Q}$ and `hr : (↑r : ℝ) = √2 + √3`.",
+      "`irrational_sqrt_natCast_iff` is the key Mathlib lemma: `Irrational (sqrt n) ↔ ¬IsSquare n` (for $n : \\mathbb{N}$). For $n=6$: `¬IsSquare (6 : ℕ)` is verified by `native_decide` since no $k$ satisfies $k^2 = 6$ among the 10 naturals $\\{0, \\ldots, 9\\}$.",
+      "The algebraic identity proof `sqrt2_plus_sqrt3_sq` uses `ring_nf` to expand $(\\sqrt{2}+\\sqrt{3})^2$, then `rw [sq_sqrt h2, sq_sqrt h3]` to replace $\\sqrt{2}^2 \\to 2$ and $\\sqrt{3}^2 \\to 3$, and `rw [← sqrt_mul h2 3]` to convert $\\sqrt{2} \\cdot \\sqrt{3} = \\sqrt{2 \\cdot 3} = \\sqrt{6}$. Finally `ring` closes the goal.",
+      "Generalization: the Besicovitch (1940) theorem states $\\{\\sqrt{a_1}, \\ldots, \\sqrt{a_n}\\}$ are linearly independent over $\\mathbb{Q}$ when the $a_i$ are distinct squarefree positive integers. In particular, $\\sqrt{2} + \\sqrt{3}$ is irrational (and in fact $[\\mathbb{Q}(\\sqrt{2},\\sqrt{3}):\\mathbb{Q}] = 4$). The minimal polynomial $x^4 - 10x^2 + 1$ is irreducible over $\\mathbb{Q}$ (checked by noting it has no rational roots and no quadratic factors over $\\mathbb{Q}$)."
     ],
     "prerequisites": [
       "Real.sqrt: sq_sqrt, sqrt_mul",
@@ -46,11 +47,12 @@
     ]
   },
   "conclusion": {
-    "summary": "√2 + √3 irrational via (√2+√3)² = 5 + 2√6 and irrationality of √6. Concise 54-line proof. 3 theorems, 0 axioms.",
-    "implications": "The squaring technique for proving irrationality of sums of square roots is a powerful method that generalizes to many combinations. This file demonstrates how Lean 4 handles the algebraic manipulation smoothly via ring_nf and sqrt identities.",
+    "summary": "√2 + √3 is irrational: proved via the squaring identity (√2+√3)² = 5+2√6 and irrationality of √6 (from irrational_sqrt_natCast_iff and ¬IsSquare 6 by native_decide). Concise 54-line proof. 3 theorems, 0 axioms.",
+    "implications": "The squaring technique demonstrates how algebraic manipulation can reduce hard irrationality questions to simpler ones. The proof is constructive in the sense that it shows √6 would be rational if √2+√3 were — a clear logical chain. The Lean 4 proof is clean because ring_nf and sqrt_mul handle the algebraic identity automatically, while native_decide handles the finite computation.",
     "openQuestions": [
-      "Prove √2 + √3 + √5 is irrational (requires three-level squaring argument)",
-      "Characterize when Σ_{i} √aᵢ is irrational in terms of the aᵢ"
+      "Prove that $\\sqrt{2} + \\sqrt{3} + \\sqrt{5}$ is irrational: squaring gives $\\sqrt{2}+\\sqrt{3}+\\sqrt{5} = r$ implies $\\sqrt{6}+\\sqrt{10}+\\sqrt{15} \\in \\mathbb{Q}$ (from $(r-\\sqrt{5})^2 = 5 + 2\\sqrt{6} + 2\\sqrt{10}\\cdot ?$); requires a more involved algebraic argument.",
+      "Formalize Besicovitch's theorem (1940): $\\{\\sqrt{a_1}, \\ldots, \\sqrt{a_n}\\}$ are linearly independent over $\\mathbb{Q}$ when $a_1, \\ldots, a_n$ are distinct squarefree positive integers. This would give a complete characterization: $\\sum_i r_i \\sqrt{a_i} \\in \\mathbb{Q}$ iff all $r_i = 0$ for $a_i > 1$.",
+      "Formalize the minimal polynomial of $\\sqrt{2}+\\sqrt{3}$ over $\\mathbb{Q}$: show the polynomial $f(x) = x^4 - 10x^2 + 1$ satisfies $f(\\sqrt{2}+\\sqrt{3}) = 0$ and is irreducible over $\\mathbb{Q}$ (via Eisenstein or rational root theorem). This would give the stronger result $[\\mathbb{Q}(\\sqrt{2}+\\sqrt{3}):\\mathbb{Q}] = 4$."
     ]
   },
   "leanFile": {
@@ -62,10 +64,49 @@
   },
   "crossReferences": [
     {
-      "targetId": "cube-root-2-irrational",
+      "id": "cube-root-2-irrational",
       "relationship": "related",
-      "description": "Companion irrationality result using a different technique (cube roots vs sum of square roots)"
+      "description": "Companion irrationality result using a different technique (minimal polynomial / p-adic valuation for cube roots vs squaring trick for sum of square roots)."
+    },
+    {
+      "id": "irrational-sqrt-2",
+      "relationship": "parent",
+      "description": "Irrationality of √2 — the classical Pythagorean result that provides the foundation. The irrationality of √2+√3 requires √6 ∉ ℚ as an intermediate step, which uses the same non-perfect-square criterion."
+    },
+    {
+      "id": "algebraic-numbers",
+      "relationship": "related",
+      "description": "Algebraic numbers over ℚ: √2+√3 is algebraic of degree 4 with minimal polynomial x⁴-10x²+1. Irrationality is equivalent to this polynomial having degree > 1."
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Module docstring explains the 4-step strategy: assume √2+√3=r, square to get r²=5+2√6, rearrange to √6=(r²-5)/2 ∈ ℚ, contradict √6 irrational. Imports Mathlib.Data.Real.Irrational, Sqrt, Tactic. Opens Real. Namespace Sqrt2PlusSqrt3Irrational."
+    },
+    {
+      "id": "sec-sqrt6-irrational",
+      "title": "√6 is Irrational (Auxiliary Lemma)",
+      "startLine": 19,
+      "endLine": 23,
+      "summary": "irrational_sqrt_six: Irrational (sqrt 6). Proof: native_decide proves ¬IsSquare (6 : ℕ) (no k satisfies k²=6), then irrational_sqrt_natCast_iff.mpr gives the result. This is the key auxiliary that feeds into the main proof."
+    },
+    {
+      "id": "sec-algebraic-identity",
+      "title": "Key Algebraic Identity: (√2+√3)² = 5 + 2√6",
+      "startLine": 24,
+      "endLine": 35,
+      "summary": "sqrt2_plus_sqrt3_sq: (sqrt 2 + sqrt 3)^2 = 5 + 2 * sqrt 6. Proved by: (1) h6 : sqrt 2 * sqrt 3 = sqrt 6 via ← sqrt_mul h2 3 + norm_num; (2) ring_nf expands; (3) rw [sq_sqrt h2, sq_sqrt h3, h6] replaces √2²→2, √3²→3, √2·√3→√6; (4) ring closes."
+    },
+    {
+      "id": "sec-main-theorem",
+      "title": "Main Theorem: √2+√3 is Irrational",
+      "startLine": 36,
+      "endLine": 53,
+      "summary": "irrational_sqrt2_plus_sqrt3: Irrational (sqrt 2 + sqrt 3). Proof by contradiction: intro ⟨r, hr⟩ gives r:ℚ with hr:(r:ℝ)=√2+√3. Squaring via sqrt2_plus_sqrt3_sq gives hsq:(r:ℝ)²=5+2√6. linarith gives h6:√6=(r²-5)/2. Constructs rational witness q=(r²-5)/2 with cast computation, then exact irrational_sqrt_six ⟨q, ...⟩."
+    }
+  ]
 }
