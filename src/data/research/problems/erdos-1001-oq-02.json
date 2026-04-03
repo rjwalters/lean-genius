@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Rate O(A log N / N) proved in consequences; 0 sorries, 3 axioms, 6 theorems",
+    "progressSummary": "BLOCKED: 3 axioms cannot be proved without Mertens theorem (sum of phi(n)/n asymptotics). Mathlib 4 lacks Mertens theorem with error bounds. 6 provable consequences captured.",
     "builtItems": [
       "Erdos1001OQ02.lean: definitions weightedTotientSum, rangeTotientSum, densityConst",
       "Erdos1001OQ02.lean: axiom convergence_rate_est (main rate theorem)",
@@ -42,14 +42,18 @@
       "Rate of convergence is O(A log N / N) in the EST regime",
       "Reduction: rate ↔ error in ∑_{y=N}^{cN} φ(y)/y² = (6/π²)log(c) + O(log N/N)",
       "Density constant 6/π² = 1/ζ(2) from Dirichlet series ∑ φ(y)/y^s = ζ(s-1)/ζ(s)",
-      "div_le_div_iff + nlinarith closes A·logN/N ≤ c/√N arithmetic via N=(√N)²"
+      "div_le_div_iff + nlinarith closes A·logN/N ≤ c/√N arithmetic via N=(√N)²",
+      "Mathlib 4 has Mertens function (sum of mu(n)) for RH but NOT Mertens totient theorem (sum of phi(n)/n ~ 6N/pi^2)",
+      "rangeTotientSum_asymptotic needs Abel summation + average order of totient - both missing from Mathlib",
+      "The 6 consequence theorems (convergence_faster_than_sqrtN, rate_is_nontrivial, etc.) are fully proved from the axioms"
     ],
     "mathlibGaps": [
       "Mertens totient sum asymptotics with quantitative error: ∑_{y≤N} φ(y) = (3/π²)N² + O(N log N)"
     ],
     "nextSteps": [
-      "Check Mathlib for totient sum asymptotics (Nat.totient_sum or similar)",
-      "Formalize Abel summation for weighted totient sums"
+      "Block until Mathlib adds: Nat.totient average order or Mertens theorem for totient",
+      "Search Mathlib4 GitHub PRs for totient asymptotic contributions",
+      "Check if pi_sq_div_six identity could bootstrap a direct proof of rangeTotientSum_asymptotic"
     ],
     "markdown": "# Knowledge Base: erdos-1001-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -67,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:27:56.397Z",
-  "lastUpdate": "2026-03-30T18:27:56.411Z",
+  "lastUpdate": "2026-04-02T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos1001OQ02.lean",
