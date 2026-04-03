@@ -1,8 +1,8 @@
 {
   "slug": "buffons-needle-oq-01-oq-01-oq-01",
   "title": "Integrate BuffonsNoodle removing axioms via concreteSmoothExpectedCrossings",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: All axioms replaced by concrete definition, 4 theorems proven",
+    "builtItems": [
+      "BuffonsNeedleOQ01OQ01OQ01.lean: 4 theorems, 0 sorries, 0 axioms"
+    ],
+    "insights": [
+      "concreteSmoothExpectedCrossings replaces both axioms from BuffonsNoodle.lean with machine-verified theorems",
+      "concrete_main_theorem delegates to buffon_smooth_full — axiom-free Buffon-Barbier under explicit derivative hypotheses",
+      "concreteSmoothExpectedCrossings_nonneg requires no derivative hypotheses: follows directly from |·| ≥ 0",
+      "concrete_shape_independence: equal arc length → equal expected crossings, proven by rewriting via concrete_main_theorem"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
