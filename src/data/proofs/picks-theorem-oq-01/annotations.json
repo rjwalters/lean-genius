@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-pick01-shoelace-def",
+    "proofId": "picks-theorem-oq-01",
+    "range": { "startLine": 70, "endLine": 83 },
+    "type": "definition",
+    "title": "Shoelace Formula: Area of a Lattice Triangle",
+    "content": "`shoelaceTriangle x₁ y₁ x₂ y₂ x₃ y₃ : ℚ` computes the area of the lattice triangle with given vertices as `|x₁(y₂-y₃) + x₂(y₃-y₁) + x₃(y₁-y₂)| / 2`. The `noncomputable` annotation is needed because ℚ division is not kernel-computable in Lean. The non-negativity lemma `shoelace_nonneg` uses `div_nonneg` with `Rat.cast_nonneg.mpr (abs_nonneg _)` — a clean one-liner confirming area ≥ 0.",
+    "mathContext": "The *shoelace formula* (also called the surveyor's formula or Gauss's area formula) computes the signed area of a polygon from its vertices: $2A = \\sum_{i} (x_i y_{i+1} - x_{i+1} y_i)$. For a triangle with vertices $(x_1,y_1),(x_2,y_2),(x_3,y_3)$, this gives $2A = x_1(y_2-y_3) + x_2(y_3-y_1) + x_3(y_1-y_2)$. For lattice points, $2A$ is always an integer, so the area is always a multiple of $\\frac{1}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["shoelace formula", "lattice triangles", "Rat.cast_nonneg", "abs_nonneg"],
+    "prerequisites": ["rational arithmetic in Lean", "absolute value", "noncomputable definitions"]
+  },
+  {
+    "id": "ann-pick01-primitive",
+    "proofId": "picks-theorem-oq-01",
+    "range": { "startLine": 163, "endLine": 183 },
+    "type": "definition",
+    "title": "IsPrimitive: Unimodular Lattice Triangles",
+    "content": "`IsPrimitive x₁ y₁ x₂ y₂ x₃ y₃ : Prop` asserts that `|x₁(y₂-y₃)+x₂(y₃-y₁)+x₃(y₁-y₂)| = 1`. This is the condition for a lattice triangle to contain no lattice points other than its three vertices. The `primitive_area` theorem proves that `IsPrimitive` triangles have shoelace area = 1/2 by simply unfolding the definition and rewriting with the hypothesis h (which states the absolute value equals 1), then `norm_num`.",
+    "mathContext": "A lattice triangle is *primitive* (or *fundamental* or *unimodular*) if the edge vectors from one vertex to the other two form a basis for $\\mathbb{Z}^2$. Equivalently, the $2\\times 2$ determinant $\\det(v_2-v_1, v_3-v_1)$ has absolute value 1. In Pick's theorem terminology, primitive triangles have $i=0$ interior points, $b=3$ boundary points, and area $A = \\frac{1}{2}$, giving $0 + \\frac{3}{2} - 1 = \\frac{1}{2}$. Every lattice triangle can be subdivided into primitive triangles by adding lattice points on edges and in the interior.",
+    "significance": "key",
+    "relatedConcepts": ["unimodular matrices", "SL₂(ℤ)", "lattice bases", "triangulation"],
+    "prerequisites": ["lattice theory", "determinants", "Pick's theorem"]
+  },
+  {
+    "id": "ann-pick01-rectangle",
+    "proofId": "picks-theorem-oq-01",
+    "range": { "startLine": 88, "endLine": 112 },
+    "type": "technique",
+    "title": "Pick's Formula for Rectangles: ring + push_cast",
+    "content": "The theorem `picks_rectangle (a b : ℕ) (ha hb)` proves `(a-1)*(b-1) + (2a+2b)/2 - 1 = a*b` in ℚ. The proof uses `push_cast` to coerce the ℕ arithmetic to ℚ, then `ring` for the algebraic identity. The non-zero casts `ha'` and `hb'` are needed to justify the coercions but the actual identity is handled by `ring`. Note: `Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp ha)` is the proof that `(a : ℚ) ≠ 0` from positivity.",
+    "mathContext": "For an $a \\times b$ axis-aligned rectangle with vertices at $(0,0),(a,0),(a,b),(0,b)$: interior lattice points $= (a-1)(b-1)$, boundary lattice points $= 2a + 2b$, area $= ab$. Pick's formula: $(a-1)(b-1) + \\frac{2a+2b}{2} - 1 = ab - a - b + 1 + a + b - 1 = ab$. This is the simplest non-trivial verification of Pick's theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["push_cast tactic", "Nat.cast_ne_zero", "ring tactic", "rational arithmetic"],
+    "prerequisites": ["Pick's theorem statement", "Lean ring tactics"]
+  },
+  {
+    "id": "ann-pick01-additivity",
+    "proofId": "picks-theorem-oq-01",
+    "range": { "startLine": 114, "endLine": 155 },
+    "type": "technique",
+    "title": "Pick's Additivity: linarith Closes the Key Inductive Lemma",
+    "content": "`picks_additivity` takes two polygons with Pick's formula satisfied (h₁: A₁ = i₁ + b₁/2 - 1, h₂: A₂ = i₂ + b₂/2 - 1) sharing an edge with k internal lattice points. It proves the union satisfies A₁+A₂ = (i₁+i₂+k) + (b₁+b₂-2k-2)/2 - 1. After `push_cast`, this follows immediately from `linarith` using h₁ and h₂. This is the inductive step of the triangulation proof — if both halves satisfy Pick's formula, so does the whole.",
+    "mathContext": "When polygons $P_1$ and $P_2$ share an edge, counting lattice points: the $k$ interior points of the shared edge become interior to the union (contributing $k$ to $i$), and the $k+2$ total shared edge points (including endpoints) are removed from both boundaries and not added back (net boundary change: $-2(k+2) + 2 = -2k-2$ from removing shared edge). The area is additive. So: $i_{\\cup} = i_1 + i_2 + k$, $b_{\\cup} = b_1 + b_2 - 2k - 2$. Substituting into Pick's formula and using $A_1 = i_1 + b_1/2 - 1$, $A_2 = i_2 + b_2/2 - 1$ gives the result by linear arithmetic.",
+    "significance": "key",
+    "relatedConcepts": ["linarith tactic", "polygon merging", "lattice point counting", "inductive proof strategy"],
+    "prerequisites": ["Pick's theorem statement", "linear arithmetic", "Lean push_cast"]
+  },
+  {
+    "id": "ann-pick01-triangulation-gap",
+    "proofId": "picks-theorem-oq-01",
+    "range": { "startLine": 185, "endLine": 206 },
+    "type": "context",
+    "title": "The Triangulation Gap: Mathlib's Missing Computational Geometry",
+    "content": "Part VI documents why the proof cannot be completed: formalizing that every simple lattice polygon admits a triangulation into primitive triangles requires (a) a Lean data type for simple polygons with vertex ordering; (b) proof that ear-clipping terminates and produces lattice triangles; (c) subdivision of any lattice triangle into primitive triangles. None of these exist in Mathlib. The `picks_from_triangulation` lemma is a tautology (proved by `hcount.symm`) that formalizes exactly what triangulation existence would give, making the gap precise. The comment explains the full four-step structure clearly.",
+    "mathContext": "The *ear-clipping* (or *ear decomposition*) algorithm for triangulating a simple polygon works by finding an 'ear' — a vertex v such that the triangle formed by v and its neighbors is entirely inside the polygon. By the two-ears theorem (Meisters 1975), every simple polygon with $\\geq 4$ vertices has at least two non-overlapping ears. Removing an ear reduces vertex count by 1; induction triangulates completely. For lattice polygons, each ear is a lattice triangle. Subdividing into *primitive* triangles requires further work: split any lattice triangle with interior or edge points by adding those lattice points as new vertices.",
+    "significance": "context",
+    "relatedConcepts": ["ear-clipping algorithm", "polygon triangulation", "Meisters two-ears theorem", "Mathlib computational geometry"],
+    "prerequisites": ["Jordan curve theorem", "simple polygon data structures", "Lean inductive types"]
+  }
+]
