@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-ft-ucn-involution",
+    "proofId": "friendship-theorem-oq-01",
+    "range": { "startLine": 59, "endLine": 295 },
+    "type": "insight",
+    "title": "UCN as Involution: Partner Swapping in N(u)",
+    "content": "The `ucn` function extracts the unique common neighbor of distinct vertices u,v using `Set.ncard_eq_one.mp`. The key structural results are: (1) `ucn_ne_left/right`: ucn(u,v) ≠ u and ≠ v, proved via `G.loopless` (no self-adjacency); (2) `ucn_involutive`: ucn(u, ucn(u,v)) = v — the partner map on N(u) is an involution; (3) `friendship_separation`: for adjacent u,v, any other neighbor x of u has ucn(x,v) = u — the neighborhoods N(u)\\{v} and N(v)\\{u} are 'separated'. Together these give the counting identity n-1 = Σ_{w∈N(u)} (deg(w)-1) via a partition of V\\{u} into disjoint fibers {N(w)\\{u} : w ∈ N(u)}.",
+    "mathContext": "The involution $\\sigma_u : N(u) \\to N(u)$ given by $\\sigma_u(v) = \\text{ucn}(u,v)$ is the 'partner map'. Since $\\sigma_u$ is an involution with no fixed points (ucn(u,v) ≠ v would require $v \\sim v$, impossible), $|N(u)|$ is even — an early parity constraint. The counting identity: $V \\setminus \\{u\\} = \\bigsqcup_{v \\in N(u)} (N(v) \\setminus \\{u\\})$, and each fiber has size $\\deg(v) - 1$. Thus $n - 1 = k(k-1)$, giving $n = k(k-1)+1$.",
+    "significance": "key",
+    "relatedConcepts": ["Set.ncard_eq_one", "G.loopless", "involution", "neighborhood partition", "counting identity"],
+    "prerequisites": ["SimpleGraph.commonNeighbors", "Set.ncard_eq_one in Mathlib", "SimpleGraph.loopless"]
+  },
+  {
+    "id": "ann-ft-dvd-lemma",
+    "proofId": "friendship-theorem-oq-01",
+    "range": { "startLine": 302, "endLine": 320 },
+    "type": "technique",
+    "title": "dvd_sq_add_one_imp_one: s | s²+1 ⟹ s = 1 via ℤ",
+    "content": "This 12-line theorem is the core number-theoretic lemma driving the entire proof. The argument: if s ≥ 1 and s | (s²+1), obtain c with s²+1 = s·c. Lifting to ℤ: s·(c-s) = 1. Since s ≥ 1 as a natural number, s ≤ 1 as an integer (because s·(c-s) = 1 with both factors integers forces each factor to be ±1, and since s ≥ 1, s = 1). The Lean proof uses `push_cast` to move to ℤ, then `nlinarith` for the contradiction if s > 1 (since c-s ≥ 1 would force s·(c-s) ≥ 2). The `omega` tactic closes the final step once s ≤ 1 and s ≥ 1 are both known.",
+    "mathContext": "The divisibility s | (s^2 + 1) implies s | 1 (since $s^2 + 1 - s \\cdot s = 1$, so $s | (s^2+1) - s \\cdot s = 1$). This is equivalent: $s \\mid s^2 + 1 \\iff s \\mid 1 \\iff s = 1$ (for $s \\geq 1$). The Lean proof avoids this direct route and instead works in $\\mathbb{Z}$: from $s(c-s) = 1$ in $\\mathbb{Z}$, divisibility of 1 forces $s = \\pm 1$, and $s \\geq 1$ (natural number) gives $s = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["push_cast", "nlinarith", "omega", "divisibility in ℤ", "Int.eq_one_of_pos_of_self_mul_self"],
+    "prerequisites": ["Lean 4 integer coercion via push_cast", "nlinarith for nonlinear arithmetic", "Nat.dvd in Mathlib"]
+  },
+  {
+    "id": "ann-ft-adj-matrix",
+    "proofId": "friendship-theorem-oq-01",
+    "range": { "startLine": 493, "endLine": 710 },
+    "type": "context",
+    "title": "A² = (k-1)I + J: Matrix Equation from Combinatorics",
+    "content": "The matrix equation A² = (k-1)I + J (where J is the all-ones matrix) encodes the friendship condition. The (i,i) diagonal entry of A² is deg(i) = k (from regularity). The (i,j) off-diagonal entry is |N(i) ∩ N(j)| = 1 (from the friendship property, proved as `common_neighbor_finset_card`). The Lean proof `adjMatrix_sq_eq` establishes this by computing matrix entries using `Matrix.ext_iff` and splitting into diagonal/off-diagonal cases. The functional equation `adjMatrix_functional_eq` follows immediately: (A-kI)(A²-(k-1)I) = (A-kI)·J = AJ - kJ. Since A𝟙 = k𝟙 (k-regular), AJ = kJ, giving (A-kI)J = 0.",
+    "mathContext": "$A^2 = (k-1)I + J$ entries: $(A^2)_{ii} = \\sum_j A_{ij}^2 = \\deg(i) = k$; $(A^2)_{ij} = |N(i) \\cap N(j)| = 1$ for $i \\neq j$. Functional equation: $(A - kI)(A^2 - (k-1)I) = (A-kI) \\cdot J = AJ - kJ$. The all-ones vector $\\mathbf{1}$ satisfies $A\\mathbf{1} = k\\mathbf{1}$ (row sums = degree), so $AJ = k \\cdot J$ and $(A-kI)J = 0$. The polynomial $p(X) = (X-k)(X^2-(k-1))$ annihilates $A$, giving the minimal polynomial structure used in the characteristic polynomial analysis.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.ext_iff", "adjMatrix_sq_eq", "adjMatrix_functional_eq", "onesMatrix", "all-ones eigenvector"],
+    "prerequisites": ["SimpleGraph.adjMatrix in Mathlib", "Matrix multiplication entry formula", "common_neighbor_finset_card"]
+  },
+  {
+    "id": "ann-ft-weinstein-aronszajn",
+    "proofId": "friendship-theorem-oq-01",
+    "range": { "startLine": 1024, "endLine": 1160 },
+    "type": "technique",
+    "title": "Weinstein-Aronszajn: det(I-tJ) = 1-nt via det(I-AB) = det(I-BA)",
+    "content": "The key determinant identity `det(I - t·J) = 1 - n·t` is proved using the Weinstein-Aronszajn identity `Matrix.det_one_sub_mul_comm`: det(I - AB) = det(I - BA). With A = (column of t's) and B = (row of 1's), AB = t·J. The product BA is a 1×1 matrix with entry Σᵥ t·1 = nt. Then det(I_{1×1} - BA) = det([1-nt]) = 1-nt. The `Matrix.det_fin_one` lemma reduces the 1×1 determinant to its single entry. The generalized version `det_one_sub_smul_ones_gen` works over any `CommRing`, enabling the characteristic polynomial computation over ℤ[X] later.",
+    "mathContext": "Weinstein-Aronszajn: for $A: V \\times \\{*\\}$ and $B: \\{*\\} \\times V$, $\\det(I_V - AB) = \\det(I_1 - BA)$. With $A_{v,*} = t$ and $B_{*,v} = 1$: $AB = t \\cdot J_V$ and $(BA)_{**} = \\sum_{v \\in V} t \\cdot 1 = nt$. So $\\det(I - tJ) = \\det(1 - nt) = 1 - nt$. This is the rank-1 matrix determinant lemma (matrix determinant lemma for low-rank updates). It allows computing $\\det(\\lambda I - A)$ for the adjacency matrix when $A^2 = (k-1)I + J$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.det_one_sub_mul_comm", "Matrix.det_fin_one", "Weinstein-Aronszajn identity", "rank-1 update formula", "CommRing generalization"],
+    "prerequisites": ["Matrix.det_one_sub_mul_comm in Mathlib", "Fin 1 matrix type", "Matrix.of function encoding"]
+  },
+  {
+    "id": "ann-ft-charpoly-product",
+    "proofId": "friendship-theorem-oq-01",
+    "range": { "startLine": 1268, "endLine": 1530 },
+    "type": "insight",
+    "title": "f(x)·f(-x) = (x²-(k-1))^{n-1}: Product Identity via Polynomial Extensionality",
+    "content": "The central identity `charpoly_quotient_product`: if charpoly(A) = (X-k)·f, then f(x)·f(-x) = (x²-(k-1))^{n-1}. The proof evaluates both sides at every integer n and applies `Polynomial.funext`. For the LHS: f(m)·f(-m) = (charpoly(A) at m-k)·... The key step uses the determinant formula: det(mI-A)·det(-mI-A) = det((m²-(k-1))I - J)·C and the Weinstein-Aronszajn identity to compute det((m²-(k-1))I - J) = (m²-(k-1))^{n-1}·(m²-(k-1)-n). Since n = k(k-1)+1 and k is the unique eigenvalue with multiplicity 1, the n factor from Weinstein-Aronszajn cancels precisely.",
+    "mathContext": "The identity $f(x)f(-x) = (x^2-(k-1))^{n-1}$ follows from: $\\det(xI-A)\\det(-xI-A) = \\det(x^2I^2 - A^2) = \\det((x^2-(k-1))I - J)$ using $A^2 = (k-1)I+J$. By Weinstein-Aronszajn: $\\det((x^2-(k-1))I - J) = (x^2-(k-1))^{n-1}(x^2-(k-1)-n)$. Since $(x-k)$ divides $\\det(xI-A)$ (from $A\\mathbf{1}=k\\mathbf{1}$), and $\\det(xI-A)\\det(-xI-A) = (x-k)(-x-k)f(x)f(-x) = -(x^2-k^2)f(x)f(-x)$, the $(x^2-k^2)$ factor cancels the $-n$ term from W-A.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial.funext", "charpoly_quotient_product", "det(mI-A) formula", "Polynomial.eval", "integer extensionality for polynomials"],
+    "prerequisites": ["Matrix.charpoly in Mathlib", "Polynomial.funext extensionality", "Weinstein-Aronszajn identity", "adjMatrix_sq_eq"]
+  },
+  {
+    "id": "ann-ft-k-eq-two",
+    "proofId": "friendship-theorem-oq-01",
+    "range": { "startLine": 1617, "endLine": 1869 },
+    "type": "insight",
+    "title": "k = 2: UFD + Perfect Square + dvd_sq_add_one Assembly",
+    "content": "The final assembly chains three results: (1) `k_sub_one_is_perfect_square` (from f(x)·f(-x) = (x²-(k-1))^{n-1} and UFD in ℤ[X]): if k-1 were not a perfect square, X²-(k-1) would be irreducible in ℤ[X], forcing f = (X²-(k-1))^{(n-1)/2} — but n-1 is even (k(k-1) is always even), so this is consistent. The UFD lemma `monic_factor_of_symmetric_irreducible_pow` shows f must be a power of X²-(k-1), giving f(0)·f(0) = (k-1)^{n-1} and a coefficient contradiction via parity. (2) `sqrt_k_sub_one_dvd_k`: with k-1 = s², a mod-p argument shows s | k. (3) `dvd_sq_add_one_imp_one`: since k = s²+1, s | (s²+1), so s = 1, giving k = 2.",
+    "mathContext": "UFD argument: $\\mathbb{Z}[X]$ is a UFD (Mathlib: `Polynomial.instUniqueFactorizationMonoid`). If $X^2-d$ is irreducible and $f(x)f(-x) = (x^2-d)^m$, then $f = c(x^2-d)^{m/2}$ for some unit $c \\in \\mathbb{Z}^*$. Mod-$p$ for s|k: let $p$ be any prime dividing $s$. Since $k-1 = s^2$, $p | k-1$, so $p | k-1$. From $s | k$, $p | k$, thus $p | k - (k-1) = 1$, contradiction. Hence $s | k$ forces $s = 1$ via $s | s^2+1$. Final: $k = 1^2 + 1 = 2$, $n = k(k-1)+1 = 3$.",
+    "significance": "key",
+    "relatedConcepts": ["monic_factor_of_symmetric_irreducible_pow", "Polynomial.UniqueFactorizationMonoid", "k_sub_one_is_perfect_square", "sqrt_k_sub_one_dvd_k", "dvd_sq_add_one_imp_one"],
+    "prerequisites": ["UFD in ℤ[X] via Mathlib", "Polynomial.irreducible criteria", "Nat.multiplicity for prime arguments", "charpoly_quotient_product"]
+  }
+]
