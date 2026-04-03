@@ -18,7 +18,7 @@ We connect it to the area-of-circle context and derive standard corollaries.
 - [x] Gaussian integral stated and proved via Mathlib
 - [x] Connection to circle area via polar coordinates (documented)
 - [x] Standard normal normalization (proved via scaled_gaussian)
-- [ ] Radial integral component (sorry — needs FTC for improper integrals)
+- [x] Radial integral component (proved via FTC for improper integrals)
 
 Parent: AreaOfCircle.lean
 -/
@@ -28,7 +28,7 @@ import Mathlib.Tactic
 
 namespace GaussianIntegralCircle
 
-open MeasureTheory Real
+open MeasureTheory Real Filter
 
 /-! ## Part 1: The Gaussian Integral via Mathlib -/
 
@@ -46,24 +46,23 @@ open MeasureTheory Real
     the area of a circle in disguise. -/
 theorem gaussian_integral_eq_sqrt_pi :
     ∫ x : ℝ, rexp (-(x ^ 2)) = √π := by
-  -- Mathlib's integral_gaussian gives the result for the parameterized form
-  -- ∫ x, rexp (-(b * x)^2) = √π / |b|
-  -- Setting b = 1 gives ∫ x, rexp (-x^2) = √π
+  -- Mathlib's integral_gaussian gives ∫ x, exp (-b * x²) = √(π/b)
+  -- Setting b = 1 gives ∫ x, exp (-x²) = √π
   have h := integral_gaussian (1 : ℝ)
-  simp only [one_mul, abs_one, div_one] at h
-  convert h using 1
-  ext x; ring_nf
+  simp only [div_one] at h
+  -- Rewrite -(x²) as -1 * x² to match integral_gaussian's integrand
+  simp_rw [show ∀ x : ℝ, -(x ^ 2) = -(1 : ℝ) * x ^ 2 from fun x => by ring]
+  exact h
 
 /-! ## Part 2: Scaled Gaussian -/
 
 /-- **Scaled Gaussian**: For a > 0, ∫ e^{-ax²} dx = √(π/a). -/
 theorem scaled_gaussian (a : ℝ) (ha : 0 < a) :
     ∫ x : ℝ, rexp (-(a * x ^ 2)) = √(π / a) := by
-  have h := integral_gaussian (√a)
-  simp only [Real.sq_sqrt (le_of_lt ha)] at h
-  convert h using 1
-  · ext x; ring_nf
-  · rw [abs_of_pos (Real.sqrt_pos.mpr ha)]
+  -- integral_gaussian a gives ∫ x, exp (-a * x²) = √(π/a)
+  -- Rewrite -(a * x²) as -a * x² to match
+  simp_rw [show ∀ x : ℝ, -(a * x ^ 2) = -a * x ^ 2 from fun x => by ring]
+  exact integral_gaussian a
 
 /-! ## Part 3: Standard Normal Distribution
 
@@ -76,13 +75,14 @@ Gaussian integral with a = 1/2. -/
 theorem standard_normal_normalization :
     ∫ x : ℝ, (1 / √(2 * π)) * rexp (-(x ^ 2 / 2)) = 1 := by
   -- Pull constant out of integral
-  rw [integral_mul_left]
+  rw [integral_const_mul]
   -- Evaluate ∫ e^{-x²/2} dx via scaled_gaussian with a = 1/2
   have h := scaled_gaussian (1 / 2) (by positivity)
   have h1 : ∫ x : ℝ, rexp (-(x ^ 2 / 2)) = √(2 * π) := by
-    convert h using 2
-    · ext x; congr 1; ring
-    · congr 1; ring
+    have heq : (fun x : ℝ => rexp (-(x ^ 2 / 2))) = (fun x : ℝ => rexp (-(1 / 2 * x ^ 2))) :=
+      funext fun x => by congr 1; ring
+    rw [heq, h]
+    congr 1; field_simp
   rw [h1]
   -- (1/√(2π)) * √(2π) = 1
   rw [one_div, inv_mul_cancel₀]
@@ -110,9 +110,23 @@ So the Gaussian integral is fundamentally a circle area computation. -/
     ∫₀∞ r·e^{-r²} dr = (1/2) ∫₀∞ e^{-u} du = 1/2. -/
 theorem radial_integral :
     ∫ r in Set.Ioi (0 : ℝ), r * rexp (-(r ^ 2)) = 1 / 2 := by
-  -- Antiderivative: d/dr (-e^{-r²}/2) = r·e^{-r²}
-  -- So ∫₀∞ r·e^{-r²} dr = [(-1/2)e^{-r²}]₀∞ = 0 - (-1/2) = 1/2
-  -- This requires FTC for improper integrals; left as sorry for now
-  sorry
+  -- Antiderivative F(r) = -(1/2) * exp(-r²), F'(r) = r * exp(-r²)
+  -- F(0) = -1/2, lim_{r→∞} F(r) = 0
+  -- By FTC for improper integrals: ∫₀^∞ r*exp(-r²) dr = 0 - (-1/2) = 1/2
+  have hderiv : ∀ x ∈ Set.Ici (0 : ℝ),
+      HasDerivAt (fun r => -(1 / 2 : ℝ) * rexp (-(r ^ 2))) (x * rexp (-(x ^ 2))) x := by
+    intro x _
+    exact (((hasDerivAt_pow 2 x).neg.exp).const_mul (-(1 / 2 : ℝ))).congr_deriv
+      (by simp only [Pi.neg_apply, Nat.cast_ofNat, Nat.reduceSub, pow_one]; ring)
+  have hexp_tend : Tendsto (fun r : ℝ => rexp (-(r ^ 2))) atTop (nhds 0) :=
+    tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp (tendsto_pow_atTop two_ne_zero))
+  have htend : Tendsto (fun r : ℝ => -(1 / 2 : ℝ) * rexp (-(r ^ 2))) atTop (nhds 0) := by
+    simpa using hexp_tend.const_mul (-(1 / 2 : ℝ))
+  have hint : IntegrableOn (fun r => r * rexp (-(r ^ 2))) (Set.Ioi 0) :=
+    integrableOn_Ioi_deriv_of_nonneg' hderiv
+      (fun r hr => mul_nonneg (le_of_lt hr) (exp_pos _).le) htend
+  have h := integral_Ioi_of_hasDerivAt_of_tendsto' hderiv hint htend
+  norm_num [Real.exp_zero] at h
+  exact h
 
 end GaussianIntegralCircle
