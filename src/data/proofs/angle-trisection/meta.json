@@ -2,7 +2,7 @@
   "id": "angle-trisection",
   "title": "Impossibility of Trisecting an Angle",
   "slug": "angle-trisection",
-  "description": "The three classical Greek impossibility problems resolved in one file (Wiedijk #8): angle trisection, cube doubling, and circle squaring. Wantzel's 1837 algebraic criterion ($\\cos(20°)$ satisfies an irreducible cubic $8x^3-6x-1$, degree 3 $\\neq 2^n$) settles the first two; Lindemann's transcendence of $\\pi$ (1882, axiomatized in companion file) settles the third. 383 lines, 2 axioms (from PiTranscendental.lean), 0 sorries.",
+  "description": "The three classical Greek impossibility problems resolved in one file (Wiedijk #8): angle trisection, cube doubling, and circle squaring. Wantzel's 1837 algebraic criterion ($\\cos(20°)$ satisfies an irreducible cubic $8x^3-6x-1$, degree 3 $\\neq 2^n$) settles the first two; Lindemann's transcendence of $\\pi$ (1882, axiomatized in companion file) settles the third. 383 lines, 1 axiom (from PiTranscendental.lean), 0 sorries.",
   "meta": {
     "author": "Pierre Wantzel (1837)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Angle_trisection",
@@ -60,7 +60,7 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 8,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "prerequisites": [
       "Field extensions and algebraic degree",
       "Polynomial rings and irreducibility over Q",
@@ -82,7 +82,8 @@
         "relationship": "Further extensions of the constructibility framework"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "assumptions": "1 axiom inherited from PiTranscendental.lean: lindemann_theorem (Lindemann's theorem — e^α is transcendental for nonzero algebraic α ∈ ℂ). Used via pi_transcendental_over_rationals to prove circle squaring is impossible. 0 own axioms. 0 sorries."
   },
   "leanFile": {
     "imports": [
