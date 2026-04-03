@@ -1,0 +1,158 @@
+{
+  "slug": "derangements-oq-02-oq-02",
+  "title": "Prove derangement generating function via Stirling numbers",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Prove derangement generating function via Stirling numbers.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "DONE",
+    "since": "2026-04-03T00:00:00Z",
+    "iteration": 2,
+    "focus": "Proved sum_fixedPoints_eq_factorial via Burnside's lemma. 2 sorries remain (card_perm_fixing_point, weighted_partition_identity).",
+    "blockers": [],
+    "nextAction": "Submit remaining sorries to Aristotle.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROVED: sum_fixedPoints_eq_factorial via Burnside's lemma. DerangementsOQ02OQ02.lean has 13 theorems, 2 sorries (card_perm_fixing_point and weighted_partition_identity), 0 axioms. Verified n=1,2,3,4 cases by native_decide.",
+    "builtItems": [
+      "sum_fixedPoints_eq_factorial proved via Burnside's lemma: ∑_σ |Fix(σ)| = |orbits| · |Perm(Fin n)| = 1 · n! = n!",
+      "filter_eq_fixedBy_card (private): (filter fun x => σ x = x).card = Fintype.card (fixedBy (Fin n) σ) via Fintype.card_subtype + Equiv.subtypeEquiv",
+      "total_fixed_eq_card_perm proved via sum_fixedPoints_eq_factorial + Fintype.card_perm",
+      "summary_expected_fixed_one proved via weighted_partition_identity",
+      "4 native_decide verifications (n=1,2,3,4) for sum_fixedPoints and weighted_sum"
+    ],
+    "insights": [
+      "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) directly gives ∑_σ |Fix(σ)| = |Ω| · |G|",
+      "Equiv.Perm acts transitively on Fin n: IsPretransitive (Perm α) α instance in Algebra.Group.Action.End",
+      "From IsPretransitive + Nonempty: MulAction.pretransitive_iff_unique_quotient_of_nonempty gives Unique Ω → Fintype Ω (via Unique.fintype) → Fintype.card_unique gives 1",
+      "Key pattern: (pretransitive_iff... |>.mp inferInstance).some extracts Unique from Nonempty(Unique ...)",
+      "card_perm_fixing_point ({σ | σ x = x}.card = (n-1)!) remains sorry; approach via orbit-stabilizer is valid but needs API work to convert stabilizer.card to filter.card",
+      "weighted_partition_identity (∑_k k·C(n,k)·D(n-k) = n!) remains sorry; needs sum-exchange/bijection between perms-with-k-fixed and C(n,k)·D(n-k)"
+    ],
+    "mathlibGaps": [
+      "No direct API for Fintype.card (stabilizer (Perm (Fin n)) x) = (filter fun σ => σ x = x).card",
+      "Sum exchange ∑_k k·#{σ:|Fix|=k} = ∑_σ |Fix(σ)| requires Finset manipulation"
+    ],
+    "nextSteps": [
+      "Submit card_perm_fixing_point to Aristotle",
+      "Submit weighted_partition_identity to Aristotle"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "derangements",
+    "generating-functions"
+  ],
+  "relatedProofs": [
+    "derangements",
+    "derangements-oq-02",
+    "derangements-oq-02-oq-01",
+    "derangements-oq-03",
+    "derangements-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.771Z",
+  "lastUpdate": "2026-04-03T04:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Derangements.lean",
+      "filename": "Derangements.lean",
+      "lineCount": 228,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Derangements.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergence.lean",
+      "filename": "DerangementsConvergence.lean",
+      "lineCount": 284,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergence.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02.lean",
+      "filename": "DerangementsOQ02.lean",
+      "lineCount": 358,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ01.lean",
+      "filename": "DerangementsOQ02OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ02.lean",
+      "filename": "DerangementsOQ02OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03.lean",
+      "filename": "DerangementsOQ03.lean",
+      "lineCount": 406,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ01.lean",
+      "filename": "DerangementsOQ03OQ01.lean",
+      "lineCount": 244,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ01.lean"
+    }
+  ]
+}

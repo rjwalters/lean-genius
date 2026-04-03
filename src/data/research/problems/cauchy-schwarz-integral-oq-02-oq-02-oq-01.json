@@ -1,0 +1,193 @@
+{
+  "slug": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+  "title": "Close ENNReal rpow division step sorry in Cauchy-Schwarz",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Close ENNReal rpow division step sorry in Cauchy-Schwarz.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T02:57:02.770Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SUPERSEDED: The ENNReal rpow division step sorry in minkowski_from_holder_explicit was already closed via ENNReal.lintegral_Lp_add_le. OQ02-OQ02 has 0 sorries. No new work needed.",
+    "builtItems": [],
+    "insights": [
+      "Sorry in minkowski_from_holder_explicit is closed: exact ENNReal.lintegral_Lp_add_le (le_of_lt hp) hf hg",
+      "meta.json assumptions text for OQ02-OQ02 was stale - corrected"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "cauchy-schwarz",
+    "sorry-closing"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-integral",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-02",
+    "cauchy-schwarz-integral-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-02-oq-02",
+    "cauchy-schwarz-integral-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.770Z",
+  "lastUpdate": "2026-04-03T02:57:02.770Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/CauchySchwarzIntegral.lean",
+      "filename": "CauchySchwarzIntegral.lean",
+      "lineCount": 118,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegral.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01.lean",
+      "lineCount": 229,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean",
+      "lineCount": 218,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ02.lean",
+      "lineCount": 152,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ02.lean",
+      "lineCount": 601,
+      "theoremCount": 29,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ02.lean",
+      "lineCount": 264,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ02OQ01.lean",
+      "lineCount": 92,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ02OQ02.lean",
+      "lineCount": 407,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ03.lean",
+      "filename": "CauchySchwarzIntegralOQ03.lean",
+      "lineCount": 182,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ03.lean"
+    }
+  ]
+}

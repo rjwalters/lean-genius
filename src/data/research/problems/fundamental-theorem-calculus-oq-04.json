@@ -1,0 +1,101 @@
+{
+  "slug": "fundamental-theorem-calculus-oq-04",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-02T21:57:15-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: fundamental-theorem-calculus-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-calculus",
+    "fundamental-theorem-calculus-oq-01",
+    "fundamental-theorem-calculus-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-02T21:57:15-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalTheoremCalculus.lean",
+      "filename": "FundamentalTheoremCalculus.lean",
+      "lineCount": 166,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculus.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
+      "filename": "FundamentalTheoremCalculusLebesgue.lean",
+      "lineCount": 275,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgue.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokes.lean",
+      "filename": "FundamentalTheoremCalculusStokes.lean",
+      "lineCount": 366,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokes.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokesAristotle.lean",
+      "filename": "FundamentalTheoremCalculusStokesAristotle.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokesAristotle.lean"
+    }
+  ]
+}

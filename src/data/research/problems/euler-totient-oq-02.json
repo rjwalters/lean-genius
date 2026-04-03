@@ -42,7 +42,9 @@
   ],
   "relatedProofs": [
     "euler-totient",
-    "euler-totient-oq-01"
+    "euler-totient-oq-01",
+    "euler-totient-oq-02",
+    "euler-totient-oq-04"
   ],
   "references": {
     "papers": [],
@@ -75,6 +77,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ02.lean",
+      "filename": "EulerTotientOQ02.lean",
+      "lineCount": 173,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02.lean"
     },
     {
       "path": "Proofs/EulerTotientOQ04.lean",

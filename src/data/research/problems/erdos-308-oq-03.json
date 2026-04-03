@@ -1,0 +1,71 @@
+{
+  "slug": "erdos-308-oq-03",
+  "title": "Constructive finiteness proof for non-representable integers in Erdos-308",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Constructive finiteness proof for non-representable integers in Erdos-308.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T02:57:02.772Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "erdos",
+    "constructive"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-30",
+    "erdos-308"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.772Z",
+  "lastUpdate": "2026-04-03T02:57:02.772Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos308Problem.lean",
+      "filename": "Erdos308Problem.lean",
+      "lineCount": 278,
+      "theoremCount": 3,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos308Problem.lean"
+    }
+  ]
+}

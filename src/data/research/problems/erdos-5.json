@@ -88,6 +88,7 @@
   ],
   "relatedProofs": [
     "erdos-5",
+    "erdos-5-prime-gaps",
     "erdos-50",
     "erdos-500",
     "erdos-501",
@@ -510,8 +511,8 @@
     {
       "path": "Proofs/Erdos523Problem.lean",
       "filename": "Erdos523Problem.lean",
-      "lineCount": 248,
-      "theoremCount": 10,
+      "lineCount": 242,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 21,
       "sorryCount": 0,
@@ -532,11 +533,11 @@
     {
       "path": "Proofs/Erdos525OQ02.lean",
       "filename": "Erdos525OQ02.lean",
-      "lineCount": 144,
+      "lineCount": 145,
       "theoremCount": 4,
       "axiomCount": 1,
       "defCount": 2,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos525OQ02.lean"
     },
@@ -1269,8 +1270,8 @@
     {
       "path": "Proofs/Erdos589Problem.lean",
       "filename": "Erdos589Problem.lean",
-      "lineCount": 344,
-      "theoremCount": 9,
+      "lineCount": 340,
+      "theoremCount": 8,
       "axiomCount": 4,
       "defCount": 9,
       "sorryCount": 3,
