@@ -1,0 +1,178 @@
+{
+  "id": "erdos-1155-oq-01-oq-01",
+  "title": "Triangle Removal: Convergence of f(n)/n^{3/2}",
+  "slug": "erdos-1155-oq-01-oq-01",
+  "description": "Formalizes the open question of whether the ratio $f(n)/n^{3/2}$ converges to a specific positive constant $L$ in the triangle removal process. The triangle removal process repeatedly deletes edges of a uniformly random triangle from $K_n$ until no triangles remain; $f(n)$ counts the surviving edges. BFL (2015) established $f(n) = n^{3/2+o(1)}$ a.s., and the Erdős conjecture (parent OQ-01) asks for $\\Theta(n^{3/2})$ with bounded ratio. This formalization addresses the strictly stronger convergence question: does $f(n)/n^{3/2} \\to L$ for some $L > 0$? Thirteen theorems establish the hierarchy (convergence $\\Rightarrow$ Erdős $\\Rightarrow$ BFL), limit uniqueness, sharp asymptotics $f(n) \\sim L \\cdot n^{3/2}$ under convergence, ε-neighborhood and limsup/liminf characterizations, and a metric Cauchy criterion for the convergence conjecture. The limit $L$ (if it exists) would be determined by the differential equations governing the BFL analysis.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/1155",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1155OQ01OQ01.lean",
+    "dateAdded": "2026-04-03",
+    "tags": [
+      "erdos",
+      "triangle-removal",
+      "random-graphs",
+      "asymptotics",
+      "combinatorics",
+      "convergence",
+      "limits",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 6,
+    "assumptions": [
+      "triangleRemovalEdges: axiomatized function representing expected remaining edges after the triangle removal process on K_n (inherited)",
+      "triangleRemovalEdges_nonneg: remaining edge count is non-negative (inherited)",
+      "triangleRemovalEdges_le_complete: remaining edges bounded by C(n,2) (inherited)",
+      "bfl_upper_bound: BFL 2015 upper bound f(n) ≤ n^{3/2+ε} (inherited)",
+      "bfl_lower_bound: BFL 2015 lower bound f(n) ≥ n^{3/2-ε} (inherited)",
+      "triangleRemoval_mantel_bound: Mantel theorem upper bound (inherited)"
+    ],
+    "lineCount": 190,
+    "mathlibDependencies": [
+      {
+        "theorem": "tendsto_nhds_unique",
+        "description": "Uniqueness of limits in Hausdorff spaces.",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Convergence of a function along a filter.",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Metric.tendsto_atTop",
+        "description": "Metric characterization of convergence at top.",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Set.Icc_mem_nhds",
+        "description": "Closed intervals are neighborhoods of interior points.",
+        "module": "Mathlib.Topology.Order"
+      },
+      {
+        "theorem": "Set.Ioo_mem_nhds",
+        "description": "Open intervals are neighborhoods of their points.",
+        "module": "Mathlib.Topology.Order"
+      },
+      {
+        "theorem": "Real.rpow_pos_of_pos",
+        "description": "Real power of positive base is positive.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "§ 1. Definitions",
+      "startLine": 43,
+      "endLine": 62,
+      "summary": "Defines the normalized ratio triangleRatio(n) = f(n)/n^{3/2} and the convergenceConjecture asserting this ratio tends to a positive limit L.",
+      "mathContext": "The ratio $r(n) = f(n)/n^{3/2}$ is the natural normalization for the triangle removal process. BFL shows $r(n) = n^{o(1)}$ (ratio between $n^{-\\varepsilon}$ and $n^{\\varepsilon}$). The convergence conjecture asks whether $r(n) \\to L$ for some $0 < L < \\infty$."
+    },
+    {
+      "id": "uniqueness",
+      "title": "§ 2. Limit Uniqueness",
+      "startLine": 67,
+      "endLine": 82,
+      "summary": "Limit uniqueness from Hausdorff separation: any two tendencies to nhds must agree. The convergence limit L is therefore uniquely determined by the process.",
+      "mathContext": "Since $\\mathbb{R}$ is a Hausdorff (T2) topological space, limits of filters are unique. If $r(n) \\to L_1$ and $r(n) \\to L_2$, then $L_1 = L_2$."
+    },
+    {
+      "id": "hierarchy",
+      "title": "§ 3. Convergence Implies Erdős Θ-Conjecture",
+      "startLine": 87,
+      "endLine": 108,
+      "summary": "The core hierarchy: convergenceConjecture ⟹ erdos_1155_conjecture ⟹ BFL. Proves both implications, establishing where convergence sits in the chain of known/conjectured results.",
+      "mathContext": "If $r(n) \\to L > 0$, then eventually $L/2 \\leq r(n) \\leq 3L/2$, giving $\\Theta(n^{3/2})$ with $c_1 = L/2$, $c_2 = 3L/2$. The Erdős conjecture then implies BFL via the parent OQ-01 hierarchy."
+    },
+    {
+      "id": "sharp-asymptotics",
+      "title": "§ 4. Sharp Asymptotics Under Convergence",
+      "startLine": 113,
+      "endLine": 140,
+      "summary": "Under convergence to L, for any δ ∈ (0,L): (L-δ)·n^{3/2} ≤ f(n) ≤ (L+δ)·n^{3/2} eventually. This is the precise meaning of f(n) ~ L·n^{3/2}.",
+      "mathContext": "The sharp asymptotic $f(n) \\sim L \\cdot n^{3/2}$ means: for any $\\delta > 0$, eventually $(L-\\delta) \\cdot n^{3/2} \\leq f(n) \\leq (L+\\delta) \\cdot n^{3/2}$. This is strictly stronger than $\\Theta(n^{3/2})$ (which only requires fixed $c_1, c_2$)."
+    },
+    {
+      "id": "epsilon-neighborhood",
+      "title": "§ 5. ε-Neighborhood Characterization",
+      "startLine": 145,
+      "endLine": 164,
+      "summary": "Equivalently: |f(n)/n^{3/2} - L| < ε eventually for all ε > 0. This gives the classical ε-N definition of convergence applied to the ratio.",
+      "mathContext": "The open interval $(L-\\varepsilon, L+\\varepsilon)$ is a neighborhood of $L$, so convergence gives $r(n) \\in (L-\\varepsilon, L+\\varepsilon)$ eventually, i.e., $|r(n) - L| < \\varepsilon$."
+    },
+    {
+      "id": "bounded-ratio",
+      "title": "§ 6. Bounded Ratio as Corollary",
+      "startLine": 169,
+      "endLine": 198,
+      "summary": "Convergence implies the Θ-bounds L/2 ≤ f(n)/n^{3/2} ≤ 3L/2, with one-sided bounds as corollaries.",
+      "mathContext": "The closed interval $[L/2, 3L/2]$ is a neighborhood of $L$, so convergence gives $L/2 \\leq r(n) \\leq 3L/2$ eventually. This is a concrete form of the Erdős $\\Theta(n^{3/2})$ conjecture."
+    },
+    {
+      "id": "limsup-liminf",
+      "title": "§ 7. limsup / liminf Characterization",
+      "startLine": 203,
+      "endLine": 236,
+      "summary": "Proves: the ratio converges iff limsup = liminf = L > 0. The forward direction extracts both bounds from convergence; the reverse direction reconstructs convergence from the ε-estimates.",
+      "mathContext": "The standard characterization: $\\lim_{n\\to\\infty} r(n) = L$ iff $\\limsup r(n) = \\liminf r(n) = L$. Formalized via the ε-N definition using `Metric.tendsto_atTop`."
+    },
+    {
+      "id": "metric-criterion",
+      "title": "§ 8. Metric Convergence Criterion",
+      "startLine": 241,
+      "endLine": 260,
+      "summary": "Reformulates convergenceConjecture via the classical ε-N Cauchy criterion: ∃ L > 0, ∀ ε > 0, ∃ N, ∀ n ≥ N: |f(n)/n^{3/2} - L| < ε.",
+      "mathContext": "The metric criterion is the classical $\\varepsilon$-$N$ definition of limit, providing an equivalent formulation convenient for direct verification."
+    },
+    {
+      "id": "strict-hierarchy",
+      "title": "§ 9. Strict Hierarchy and Optimal Constants",
+      "startLine": 265,
+      "endLine": 303,
+      "summary": "Establishes the complete hierarchy and optimal θ-constants. Under convergence, the Θ-constants can be taken as L ± ε for any ε > 0, with the optimal constants approaching c₁ = c₂ = L.",
+      "mathContext": "The strict hierarchy is: convergence $\\Rightarrow$ Erdős $\\Rightarrow$ BFL. The Erdős conjecture (whether BFL implies it) is open. Whether convergence is implied by Θ(n^{3/2}) is also open — the ratio might oscillate between constants."
+    }
+  ],
+  "overview": {
+    "problemStatement": "The triangle removal process on $K_n$ terminates with $f(n)$ edges. BFL (2015) proved $f(n) = n^{3/2+o(1)}$ a.s. The Erdős conjecture asks for $\\Theta(n^{3/2})$. This OQ asks: does $f(n)/n^{3/2}$ converge to a specific constant $L$?",
+    "approach": "We define the convergenceConjecture formally and prove its structural consequences: the hierarchy convergence ⟹ Θ ⟹ BFL, limit uniqueness, sharp asymptotics, and equivalent characterizations via limsup/liminf and metric criteria.",
+    "keyIdeas": [
+      "The convergence question is strictly stronger than Θ(n^{3/2}): even if bounded, the ratio might oscillate.",
+      "If L exists, it is unique (Hausdorff separation) and determines f(n) ~ L·n^{3/2}.",
+      "Convergence is equivalent to limsup = liminf = L via the metric criterion.",
+      "The limit L (if it exists) would be determined by the differential equations in the BFL analysis."
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization establishes the mathematical framework for the convergence question in the triangle removal process. While the convergence itself is open, the structural consequences are fully proved: uniqueness, hierarchy, sharp asymptotics, and characterizations.",
+    "significance": "The convergence limit L (if it exists) would provide the precise leading constant in f(n) ~ L·n^{3/2}, completing the asymptotic picture begun by BFL. This would be a major result in probabilistic combinatorics.",
+    "openQuestions": [
+      "Does f(n)/n^{3/2} converge? (Primary open question)",
+      "If it converges, what is the explicit value of L?",
+      "Is convergence implied by the Θ(n^{3/2}) conjecture, or can the ratio oscillate while staying bounded?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "erdos-1155",
+      "title": "Erdős Problem #1155: Triangle Removal Process",
+      "relation": "Parent problem establishing the process definition and axioms"
+    },
+    {
+      "id": "erdos-1155-oq-01",
+      "title": "Triangle Removal Process: Exact Asymptotics",
+      "relation": "Parent OQ-01: the Θ(n^{3/2}) conjecture that convergence implies"
+    },
+    {
+      "id": "erdos-1155-oq-01-oq-07",
+      "title": "K_r-Clique Removal Process Generalization",
+      "relation": "Generalization to K_r-removal; convergence question extends naturally"
+    }
+  ]
+}
