@@ -47,9 +47,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Remaining 3 sorries are deep theorems (ghouila_houri, moon_moser, directed_hamiltonian_threshold)",
-      "ghouila_houri proof outline: longest path → extend → close cycle (~200 lines)",
-      "moon_moser follows from Rédei + tournament rotation"
+      "Prove simple-path-extraction lemma for SC tournaments: given SC walk from u to v, extract simple subpath avoiding specified set S. (~30 lines, induction on walk length)",
+      "Then Cases A and B of tournament_cycle_extendable follow directly (~20 lines each)",
+      "ghouila_houri needs longest-path approach like Dirac theorem (~200 lines)"
     ]
   },
   "tags": [
