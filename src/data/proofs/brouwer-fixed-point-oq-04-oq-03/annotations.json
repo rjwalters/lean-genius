@@ -1,42 +1,74 @@
 [
   {
-    "id": "uhc-singleton-reduction",
+    "id": "ann-kak-set-valued-defs",
+    "proofId": "brouwer-fixed-point-oq-04-oq-03",
+    "range": { "startLine": 34, "endLine": 60 },
     "type": "technique",
-    "title": "UHC of Singleton Maps Equals Continuity",
-    "body": "The `brouwer_from_kakutani_finite` proof uses the key observation that for F(x) = {f(x)}, IsUpperHemicontinuous reduces to continuity. The UHC condition requires {x | F(x) ⊆ U} = {x | f(x) ∈ U} = f⁻¹(U) to be open for every open U. This is precisely `Continuous.isOpen_preimage hcont`. The Lean proof writes this as `by intro U hU; simp; exact hcont.isOpen_preimage U hU`.",
-    "location": "BrouwerFixedPointOQ04OQ03.lean:139-154",
-    "tags": ["upper-hemicontinuity", "singleton-map", "continuity", "fixed-point"]
+    "title": "Set-Valued Map Definitions: Encoding Upper Hemicontinuity",
+    "content": "The file defines `SetValuedMap X Y` simply as `X → Set Y` — a function to sets rather than points. Upper hemicontinuity (UHC) is captured via the open preimage condition: F is UHC if for every open set U, the set {x | F(x) ⊆ U} is open. This is the global (not pointwise) form of UHC and is equivalent to the local form: for every x and every open U ⊇ F(x), there is a neighborhood V of x with F(y) ⊆ U for all y ∈ V. The five definitions (SetValuedMap, UHC, NonemptyValues, ConvexValues, ClosedValues, IsFixedPoint) form a complete type-theoretic vocabulary for the statement of Kakutani's theorem.",
+    "mathContext": "UHC via open preimages: $F$ is UHC iff for every open $U \\subseteq Y$, $\\{x \\mid F(x) \\subseteq U\\}$ is open in $X$. Contrast with lower hemicontinuity (LHC): $F$ is LHC iff for every open $U$, $\\{x \\mid F(x) \\cap U \\neq \\emptyset\\}$ is open. A single-valued continuous function $f$ is both UHC and LHC. The `IsFixedPoint F x` definition `x ∈ F x` generalizes the single-valued equation `f x = x`: for F(x) = {f(x)}, membership becomes equality.",
+    "significance": "technical",
+    "relatedConcepts": ["upper hemicontinuity", "lower hemicontinuity", "Berge's theorem", "correspondence", "set-valued analysis"],
+    "prerequisites": ["Mathlib.Topology.IsOpen", "Set.Nonempty", "Convex", "IsClosed"]
   },
   {
-    "id": "kakutani-four-conditions",
+    "id": "ann-kak-four-conditions",
+    "proofId": "brouwer-fixed-point-oq-04-oq-03",
+    "range": { "startLine": 66, "endLine": 77 },
     "type": "context",
-    "title": "The Four Conditions of Kakutani's Theorem",
-    "body": "Kakutani requires four conditions on F: (1) UHC — closedness of graph; (2) nonempty values — existence; (3) closed values — compactness in image; (4) convex values — the crucial extension beyond Brouwer. Each condition is necessary. Without UHC: discontinuous maps may have no fixed point. Without convexity: consider F(x) = {0,1} on [0,1] — no fixed point. Without closedness: open-valued maps can fail. Without nonemptiness: trivially fails.",
-    "location": "BrouwerFixedPointOQ04OQ03.lean:69-77",
-    "tags": ["kakutani", "upper-hemicontinuity", "convex-values", "fixed-point"]
+    "title": "Kakutani's Theorem Axiomatized: The Four Conditions",
+    "content": "The axiom `kakutani_finite_dim` encodes Kakutani's 1941 theorem for `EuclideanSpace ℝ (Fin n)`. The four conditions on F are individually necessary: (1) without UHC, a discontinuous map may skip over its fixed point; (2) without nonempty values, F(x) = ∅ trivially has no fixed point; (3) without closedness, an open-valued map can converge to a boundary point not in F; (4) without convexity, F(x) = {0,1} on [0,1] has no fixed point (0∉{0}∪{1} is false, but {0} and {1} have no x∈F(x)). The axiom is marked as such because Kakutani's proof requires either simplicial approximation or degree theory, neither of which is available as packaged Mathlib results.",
+    "mathContext": "Necessity of convexity: define $F: [0,1] \\to 2^{[0,1]}$ by $F(x) = \\{0\\}$ for $x \\in [0,1/2)$ and $F(x) = \\{1\\}$ for $x \\in [1/2,1]$. This is UHC with nonempty closed (but non-convex) values, yet has no fixed point: $x \\in F(x)$ requires $x=0$ but $F(0) = \\{0\\}$ only if $0 \\in [0,1/2)$ ✓, so $0 \\in F(0)$... Actually this example does have a fixed point. Better: $F(x) = \\{0,1\\}$ setminus $\\{x\\}$ — non-convex values, no fixed point. The key is that Brouwer applies to $f:[0,1]\\to[0,1]$ (intermediate value theorem), but set-valued maps without convexity can avoid fixed points.",
+    "significance": "key",
+    "relatedConcepts": ["simplicial approximation", "degree theory", "Sperner's lemma", "axiom", "EuclideanSpace"],
+    "prerequisites": ["Brouwer's fixed point theorem", "degree theory overview", "EuclideanSpace ℝ (Fin n)"]
   },
   {
-    "id": "nash-true-stub",
-    "type": "warning",
-    "title": "IsNashEquilibrium = True: Not a Real Nash Result",
-    "body": "The definition `IsNashEquilibrium G σ := True` means every strategy profile is technically a 'Nash equilibrium' in this formalization. The `nash_equilibrium_existence` theorem is trivially proved by ⟨fun _ _ => 0, trivial⟩ — the constant-zero strategy with `trivial` proof. The real Nash equilibrium condition requires: for each player i, σ_i maximizes expected payoff given others' strategies σ_{-i}. Formalizing this needs probability measures and the best-response correspondence.",
-    "location": "BrouwerFixedPointOQ04OQ03.lean:113-120",
-    "tags": ["placeholder", "nash-equilibrium", "formalization-gap", "game-theory"]
-  },
-  {
-    "id": "fan-glicksberg-lctvs",
+    "id": "ann-kak-fan-glicksberg",
+    "proofId": "brouwer-fixed-point-oq-04-oq-03",
+    "range": { "startLine": 83, "endLine": 95 },
     "type": "context",
-    "title": "Fan-Glicksberg: Why Local Convexity is Necessary",
-    "body": "The axiom `fan_glicksberg` requires `[LocallyConvexSpace ℝ E]`. This condition is genuinely necessary: without local convexity, fixed points can fail. For example, the space L^p(0,1) with 0 < p < 1 is a topological vector space but not locally convex; compact convex self-maps can lack fixed points there. Banach and Hilbert spaces are always locally convex. The Lean typeclass `LocallyConvexSpace ℝ E` asserts that every point has a neighborhood basis of convex open sets.",
-    "location": "BrouwerFixedPointOQ04OQ03.lean:85-95",
-    "tags": ["fan-glicksberg", "locally-convex", "functional-analysis", "axiom"]
+    "title": "Fan-Glicksberg Theorem: Why Local Convexity is Necessary",
+    "content": "The axiom `fan_glicksberg` upgrades Kakutani from `EuclideanSpace ℝ (Fin n)` to any locally convex topological vector space (LCTVS). The Lean signature uses `[LocallyConvexSpace ℝ E]` — Mathlib's typeclass for spaces where every point has a neighborhood basis of convex sets. Local convexity is genuinely necessary: L^p(0,1) for 0 < p < 1 is a complete metrizable TVS but not locally convex, and fixed points can fail there. All Banach spaces, Hilbert spaces, and Fréchet spaces are locally convex, covering essentially all spaces arising in functional analysis and economics.",
+    "mathContext": "The local convexity condition in Lean: `LocallyConvexSpace ℝ E` asserts that the zero element (and by homogeneity, every point) has a neighborhood basis of convex sets. This is equivalent to `E` having a locally convex topology generated by a family of seminorms. For Arrow-Debreu equilibrium theory, the commodity space is typically $L^\\infty$ or $\\mathbb{R}^n_+$ (locally convex), and Fan-Glicksberg applies to the price-simplex best-response correspondence. Fan (1952) proved this independently of Glicksberg (1952) using minimax theory; Glicksberg's proof used the Schauder fixed point theorem directly.",
+    "significance": "key",
+    "relatedConcepts": ["LocallyConvexSpace", "Schauder fixed point theorem", "L^p spaces", "Arrow-Debreu equilibrium", "minimax theory"],
+    "prerequisites": ["LocallyConvexSpace typeclass in Mathlib", "Schauder's theorem", "L^p topology for p < 1"]
   },
   {
-    "id": "fixed-point-hierarchy",
+    "id": "ann-kak-nash-stub",
+    "proofId": "brouwer-fixed-point-oq-04-oq-03",
+    "range": { "startLine": 112, "endLine": 120 },
+    "type": "context",
+    "title": "Nash Equilibrium Stub: IsNashEquilibrium = True",
+    "content": "The `IsNashEquilibrium` definition is `True` — an acknowledged placeholder. The `nash_equilibrium_existence` theorem is therefore trivially proved by the pair ⟨zero strategy, trivial⟩. The comment explains what the real definition requires: computing expected payoffs under mixed strategy profiles and verifying no player can improve by unilateral deviation. Formalizing this would need probability distributions over `Fin (G.actions i)` and expected-value computations — not yet attempted. This makes the Nash stub a documented formalization debt rather than a genuine result.",
+    "mathContext": "The real Nash equilibrium condition: $\\sigma$ is a Nash equilibrium if for every player $i$ and every deviation $\\sigma_i'$: $\\mathbb{E}_{a \\sim \\sigma}[u_i(a)] \\geq \\mathbb{E}_{a_{-i} \\sim \\sigma_{-i}, a_i \\sim \\sigma_i'}[u_i(a_i, a_{-i})]$. Formalizing this requires the type `ProbabilityMeasure (Fin k)` (discrete probability distributions) and `MeasureTheory.integral` to compute expected payoffs. The genuine proof then applies `fan_glicksberg` to the best-response correspondence $\\text{BR}(\\sigma_{-i}) = \\arg\\max_{\\sigma_i'} \\mathbb{E}[u_i(\\sigma_i', \\sigma_{-i})]$, which is UHC with convex values by the maximum theorem.",
+    "significance": "technical",
+    "relatedConcepts": ["Nash equilibrium", "mixed strategy", "best-response correspondence", "maximum theorem", "ProbabilityMeasure"],
+    "prerequisites": ["Finite game theory", "probability distributions over finite sets", "MeasureTheory.integral in Mathlib"]
+  },
+  {
+    "id": "ann-kak-singleton-reduction",
+    "proofId": "brouwer-fixed-point-oq-04-oq-03",
+    "range": { "startLine": 138, "endLine": 154 },
     "type": "insight",
-    "title": "Two Independent Generalizations Converge",
-    "body": "The fixed point theorem hierarchy has two axes of generalization: (A) single-valued → set-valued (Brouwer→Kakutani, Schauder→Fan-Glicksberg), and (B) finite-dimensional → infinite-dimensional (Brouwer→Schauder, Kakutani→Fan-Glicksberg). Fan-Glicksberg sits at the intersection of both. This file formalizes the finite-dim set-valued case (Kakutani) and the infinite-dim set-valued case (Fan-Glicksberg) as axioms, and derives Brouwer from Kakutani. The Eilenberg-Montgomery theorem (1946) further generalizes by replacing convex values with acyclic values using homological methods.",
-    "location": "BrouwerFixedPointOQ04OQ03.lean:126-136",
-    "tags": ["hierarchy", "fixed-point", "topology", "generalization"]
+    "title": "Brouwer from Kakutani: The Singleton Reduction Proved",
+    "content": "The `brouwer_from_kakutani_finite` theorem is the only genuinely proved theorem in the file. The proof defines F(x) = {f(x)} and verifies all four Kakutani conditions: image (singleton_subset_iff), UHC (continuity via isOpen_preimage), nonempty (⟨f x, rfl⟩), closed (isClosed_singleton), convex (convex_singleton). The final step `obtain ⟨x, hx, hfp⟩ := hkak` and `exact ⟨x, hx, hfp⟩` converts `x ∈ {f x}` (Kakutani output) to `f x = x` (Brouwer conclusion). The UHC step `simp; exact hcont.isOpen_preimage U hU` is the key insight: {x | {f(x)} ⊆ U} = {x | f(x) ∈ U} = f⁻¹(U).",
+    "mathContext": "The singleton map reduction: $F(x) = \\{f(x)\\}$ satisfies all Kakutani conditions iff $f$ is a continuous self-map. The four verifications: (image) $f(x) \\in K \\Rightarrow \\{f(x)\\} \\subseteq K$; (UHC) $\\{x \\mid \\{f(x)\\} \\subseteq U\\} = f^{-1}(U)$ open by continuity; (nonempty) $f(x) \\in \\{f(x)\\}$; (closed) singletons are closed in $T_1$ spaces; (convex) singletons are convex. Kakutani gives $x^* \\in \\{f(x^*)\\}$, i.e., $x^* = f(x^*)$. This proves Brouwer ≤ Kakutani in the fixed-point theorem partial order.",
+    "significance": "key",
+    "relatedConcepts": ["isClosed_singleton", "convex_singleton", "Continuous.isOpen_preimage", "singleton_subset_iff", "Set.mem_singleton_iff"],
+    "prerequisites": ["Kakutani's theorem (axiom)", "Continuous.isOpen_preimage", "IsClosed and Convex for singletons"]
+  },
+  {
+    "id": "ann-kak-hierarchy",
+    "proofId": "brouwer-fixed-point-oq-04-oq-03",
+    "range": { "startLine": 126, "endLine": 136 },
+    "type": "insight",
+    "title": "Fixed Point Hierarchy: Two Axes of Generalization",
+    "content": "The hierarchy table shows two independent generalization axes: (A) single-valued → set-valued (Brouwer→Kakutani, Schauder→Fan-Glicksberg) and (B) finite-dimensional → infinite-dimensional (Brouwer→Schauder, Kakutani→Fan-Glicksberg). Fan-Glicksberg sits at the intersection of both generalizations. The Eilenberg-Montgomery theorem (1946) takes a third axis: replacing convexity of values with acyclicity (in homology), requiring Čech cohomology methods. This file formalizes the B→C column (set-valued generalizations) and derives the A→B entry (Brouwer) from the B→B entry (Kakutani).",
+    "mathContext": "Hierarchy: $\\text{Brouwer} (1911) \\leq \\text{Kakutani} (1941) \\leq \\text{Fan-Glicksberg} (1952)$ and $\\text{Brouwer} \\leq \\text{Schauder} (1930) \\leq \\text{Fan-Glicksberg}$. Concretely: Schauder's theorem (fixed point for compact operators on infinite-dim spaces) follows from Brouwer by approximating the compact map by finite-rank operators; Fan-Glicksberg follows from Schauder by the same argument as Kakutani follows from Brouwer. The Eilenberg-Montgomery theorem extends to ANRs (absolute neighborhood retracts) with acyclic fibers, using Čech cohomology to detect fixed points via the Lefschetz number.",
+    "significance": "key",
+    "relatedConcepts": ["Schauder fixed point", "Eilenberg-Montgomery theorem", "ANR", "Lefschetz number", "Čech cohomology"],
+    "prerequisites": ["Brouwer's fixed point theorem", "compact operators", "Schauder's theorem", "homological fixed point theory"]
   }
 ]
