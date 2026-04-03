@@ -34,15 +34,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1006 asks for a characterization of which graphs admit 'robustly acyclic' orientations — orientations where no single edge reversal can create a directed cycle. Pretzel (1985) and Brightwell showed these are exactly the cover graphs of partial orders (Hasse diagrams). Nešetřil and Rödl (1978) showed that for every girth g, there exist graphs with girth g that are NOT cover graphs. This connects orientation theory to poset theory in a surprising way.",
-    "problemStatement": "Characterize the finite graphs that admit a robustly acyclic orientation. Prove the Pretzel-Brightwell cover graph characterization.",
+    "historicalContext": "Erdős Problem #1006 asks: which finite graphs admit a 'robustly acyclic' orientation — one where no single edge reversal creates a directed cycle? The question arises from order theory: Hasse diagrams of partial orders are naturally robustly acyclic (the covering relation can't be reversed without collapsing the order). Oliver Pretzel (1985) proved that these are the *only* such graphs — a graph admits a robustly acyclic orientation if and only if it is the Hasse diagram (cover graph) of some partial order. Nešetřil and Rödl (1978), before the characterization was known, had already shown that the class is non-trivial: for every girth $g \\geq 3$, there exist graphs with girth $g$ that are NOT cover graphs (and hence admit no robust orientation). This was surprising because high girth graphs were expected to be structurally simple. Fisher, Fraughnaugh, Langley, and West (1997) later gave the sufficient condition $\\chi(G) < \\mathrm{girth}(G)$: when chromatic number is strictly less than girth, the graph is 'sparse enough' to be a cover graph. The formalization here proves the easy direction (cover graphs → robust orientation) and the bipartite special case, while axiomatizing the deeper characterization.",
+    "problemStatement": "Characterize the finite graphs that admit a robustly acyclic orientation: an orientation $O$ of $G$ is robustly acyclic if it is acyclic and for every edge $e$, reversing $e$ in $O$ yields another acyclic orientation. Prove the Pretzel-Brightwell theorem: $G$ admits a robustly acyclic orientation $\\Leftrightarrow$ $G$ is a cover graph of some poset.",
     "text": "An orientation is robustly acyclic if it is acyclic and reversing any single edge preserves acyclicity. Equivalently, an orientation is robust iff every edge is 'independent' (reversing it doesn't create a cycle). The Pretzel-Brightwell theorem: G has a robust orientation iff G is the Hasse diagram of some partial order — i.e., the edges of G can be made into cover relations of a poset. The connection: in a robust orientation, the transitive closure is a partial order, and the orientation is exactly the Hasse diagram.",
-    "proofStrategy": "Define robustly acyclic orientations and cover graphs. Axiomatize the Pretzel-Brightwell characterization. Prove easy cases: empty graphs and bipartite graphs. Axiomatize Nešetřil-Rödl examples showing the characterization is sharp. Axiomatize the sufficient condition χ < girth.",
+    "proofStrategy": "Define robustly acyclic orientations via `GraphOrientation` (a structure encoding arc function, coverage, exclusivity, and graph-consistency). Define `isAcyclic` via topological rank function, `hasDependentArc` as the property that some arc (u,v) forces rank v ≤ rank u even when all other arcs are considered. Prove easy cases constructively: empty graphs and bipartite graphs. For the bipartite case, the 2-coloring gives a height-2 rank function that witnesses acyclicity and blocks all dependent arcs. For cover graphs, the `posetRank` (count of elements strictly below) is the topological sort. Axiomatize the full characterization and the Nešetřil-Rödl counterexamples.",
     "keyInsights": [
-      "Robust = stable under edge reversal: removing the 'fragile' edges gives the Hasse diagram",
-      "Cover graph ↔ Hasse diagram: edges of G are exactly the cover relations of the poset",
-      "Chromatic number < girth: a sufficient condition that ensures enough structure for robust orientation",
-      "Nešetřil-Rödl: triangle-free graphs with no robust orientation exist — the characterization is non-trivial"
+      "Robust acyclicity has a topological meaning: an arc $(u,v)$ is *dependent* if every rank function consistent with the other arcs must have $\\mathrm{rank}(v) \\leq \\mathrm{rank}(u)$ — meaning the arc is 'forced' by the structure, and cannot be reversed without contradiction.",
+      "The cover graph connection is natural: the Hasse diagram of a poset is robust by construction, because every covering relation $u \\lessdot v$ has $\\mathrm{posetRank}(u) < \\mathrm{posetRank}(v)$, and no arc can be made dependent when the rank function is strictly monotone on covers.",
+      "Bipartite graphs are exactly the height-$\\leq 2$ cover graphs: the two-coloring corresponds to a poset with all elements on level 0 or level 1, and the bipartite orientation (false → true) is the Hasse diagram of this height-2 poset.",
+      "The Nešetřil-Rödl result is non-constructive: it asserts the existence of non-cover graphs of arbitrarily high girth using probabilistic or explicit algebraic constructions, showing that girth alone cannot bound the complexity of cover graph structure.",
+      "The Fisher-Fraughnaugh-Langley-West condition $\\chi(G) < g$ provides an effective sufficient criterion: graphs with few colors relative to their girth have enough local tree-like structure that a compatible poset orientation can be built."
     ],
     "prerequisites": [
       "Graph orientations: directed graphs from undirected",
@@ -50,13 +51,64 @@
       "Posets: partial orders, Hasse diagrams, cover relations"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-imports",
+      "title": "Imports and Setup",
+      "startLine": 28,
+      "endLine": 39,
+      "summary": "Imports all of Mathlib and opens SimpleGraph namespace. Introduces universe-polymorphic vertex type V. Names the orientation structure GraphOrientation to avoid conflict with Mathlib's Orientation from linear algebra."
+    },
+    {
+      "id": "sec-definitions",
+      "title": "Core Definitions: Orientation Predicates",
+      "startLine": 41,
+      "endLine": 74,
+      "summary": "Defines GraphOrientation (arc function with covers, exclusive, respects), isAcyclic (rank witness for topological order), hasDependentArc (arc forced by structure — reversing creates a cycle), isRobustlyAcyclic (acyclic and no dependent arcs), and admitsRobustAcyclicOrientation (graph has at least one robust orientation)."
+    },
+    {
+      "id": "sec-empty-graph",
+      "title": "Base Case: Empty Graph",
+      "startLine": 76,
+      "endLine": 90,
+      "summary": "Constructs emptyOrientation for the bottom SimpleGraph (no edges) with arc = False everywhere. Proves empty_graph_robust: the empty orientation is robustly acyclic because there are no arcs to form cycles or dependent edges."
+    },
+    {
+      "id": "sec-linear-order",
+      "title": "Linear Order Orientation",
+      "startLine": 92,
+      "endLine": 111,
+      "summary": "Constructs linearOrientation using a LinearOrder on V: orient u → v when u < v. This is acyclic (the linear order itself is the rank function) and is used as a building block for cover orientations."
+    },
+    {
+      "id": "sec-cover-graph",
+      "title": "Poset Orientation and Cover Graph Theorem",
+      "startLine": 113,
+      "endLine": 167,
+      "summary": "Defines isCoverGraphOf: G edges correspond exactly to covering pairs of a PartialOrder on V. Constructs coverOrientation: orient by u ⋖ v. Defines posetRank as |{x : x < a}| (count of elements strictly below). Proves posetRank_strictMono and cover_graph_admits_robust: cover graphs admit robust orientations."
+    },
+    {
+      "id": "sec-bipartite",
+      "title": "Bipartite Orientation",
+      "startLine": 169,
+      "endLine": 230,
+      "summary": "Defines isBipartite' and bipartiteOrientation (orient false-side to true-side). Proves bipartiteOrientation_acyclic (rank: false→0, true→1), bipartiteOrientation_robust (no arc can be dependent since reversing would cross the bipartition), and bipartite_admits_robust."
+    },
+    {
+      "id": "sec-axioms",
+      "title": "Axiomatized Deep Results",
+      "startLine": 232,
+      "endLine": 261,
+      "summary": "Defines isCoverGraph (existence of a PartialOrder making G a cover graph). Axiomatizes: cover_graph_characterization (Pretzel-Brightwell 1985: robust ↔ cover graph), chromatic_lt_girth_implies_robust (Fisher et al. 1997), nesetril_rodl_counterexample (1978: non-cover graphs of every girth ≥ 3 exist)."
+    }
+  ],
   "conclusion": {
-    "summary": "Robustly acyclic orientations formalized: cover graph characterization (Pretzel-Brightwell 1985) axiomatized, easy cases proved (empty, bipartite), Nešetřil-Rödl examples axiomatized. 6 theorems, 277 lines, 3 axioms.",
-    "implications": "The Pretzel-Brightwell characterization connects combinatorial orientation theory to order theory. It has applications in scheduling (poset scheduling = finding a robust orientation) and information flow analysis.",
+    "summary": "Formalizes Erdős #1006 OQ-01: characterizes robustly acyclic orientations as cover graphs of posets. Proves the easy direction constructively (cover graphs and bipartite graphs admit robust orientations) with machine-verified proofs. Axiomatizes the full equivalence (Pretzel-Brightwell 1985) and the counterexample existence (Nešetřil-Rödl 1978). 6 theorems, 277 lines, 3 axioms.",
+    "implications": "The Pretzel-Brightwell characterization is a striking bridge between orientation theory and order theory — it says that 'robustness under perturbation' in orientations is exactly captured by the poset structure of cover graphs. This has applications in scheduling (finding a robust ordering for job dependencies), lattice theory (identifying which graphs are Hasse diagrams), and database theory (stable acyclic transactions). The Nešetřil-Rödl result implies that the property is not monotone in girth alone — high-girth graphs can still fail to be cover graphs.",
     "openQuestions": [
-      "Prove cover_graph_characterization without axioms using Lean 4's poset theory",
-      "Formalize the Nešetřil-Rödl explicit counterexample constructions",
-      "Algorithmic complexity: is recognizing cover graphs in P? (known to be in P)"
+      "Prove cover_graph_characterization without axioms: formalize Pretzel's original proof that robustly acyclic orientations must be Hasse diagrams by showing that dependent arcs produce 'incomparable' elements in any linearization, forcing a poset structure.",
+      "Formalize the algorithmic recognition: cover graph recognition is in polynomial time (it reduces to testing whether a graph is the comparability graph of a partial order). Can this be encoded in Lean using Fintype computability?",
+      "Generalize to robustness under $k$ edge reversals: which graphs admit orientations that remain acyclic after any $k$ simultaneous edge reversals? This extends the Pretzel-Brightwell theory to $k$-robust orientations."
     ]
   },
   "leanFile": {
@@ -68,10 +120,19 @@
   },
   "crossReferences": [
     {
-      "targetId": "ramseys-theorem",
+      "id": "erdos-1006",
+      "relationship": "parent",
+      "description": "Erdős Problem #1006 main entry — the original problem about robustly acyclic orientations and girth constraints."
+    },
+    {
+      "id": "erdos-1006-oq-02",
+      "relationship": "sibling",
+      "description": "Minimum Chromatic Number for Non-Robustly-Orientable Graphs — the companion question about chromatic bounds for graphs that fail to have robust orientations."
+    },
+    {
+      "id": "ramseys-theorem",
       "relationship": "related",
-      "description": "Both involve Erdős problems in graph combinatorics; Ramsey studies colorings, this studies orientations"
+      "description": "Ramsey's Theorem — another foundational Erdős-area result connecting graph structure (colorings) to global combinatorial properties; both exhibit surprising phase transitions."
     }
-  ],
-  "sections": []
+  ]
 }
