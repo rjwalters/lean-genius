@@ -7,11 +7,11 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Green%27s_theorem#Multiply-connected_regions",
     "date": "1828 (Green), formalized 2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/GreensTheoremOQ04.lean",
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 2,
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_const",
@@ -81,7 +81,7 @@
       "Line integrals and boundary orientation",
       "Topology of planar regions (fundamental group, Betti numbers)"
     ],
-    "assumptions": "0 axioms in this file. Depends on imported axioms from OQ-03: greens_theorem_typeI (Green's theorem for simply-connected TypeI regions) and disk_area_eq_pi (area of a disk).",
+    "assumptions": "2 axioms inherited from GreensTheoremOQ03.lean: greens_theorem_typeI (Green's theorem for simply-connected TypeI regions, used at lines 296, 280 to prove the main theorem) and disk_area_eq_pi (area of disk formula, used at lines 170, 179 to compute annular area). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -238,7 +238,7 @@
     ],
     "namespace": "GreensTheoremOQ04",
     "lineCount": 587,
-    "axiomCount": 0,
+    "axiomCount": 2,
     "theoremCount": 23,
     "definitionCount": 14
   }
