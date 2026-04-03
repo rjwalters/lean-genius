@@ -1,0 +1,183 @@
+{
+  "id": "sum-of-kth-powers-oq-01",
+  "title": "Unified Faulhaber Formula via Bernoulli Numbers (OQ-01)",
+  "slug": "sum-of-kth-powers-oq-01",
+  "description": "The general Faulhaber formula for sums of k-th powers is formalized in Lean 4 using Mathlib's Bernoulli infrastructure. All five specific formulas (k=1 through k=5) are derived as special cases of the single unified identity via pure computation — no induction needed.",
+  "meta": {
+    "author": "Johann Faulhaber (1631), Jacob Bernoulli (1713), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Faulhaber%27s_formula",
+    "date": "1713",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SumOfKthPowersOQ01.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "bernoulli-numbers",
+      "power-sums",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All results follow from Mathlib's sum_range_pow theorem.",
+    "mathlibDependencies": [
+      {
+        "theorem": "sum_range_pow",
+        "description": "The unified Faulhaber formula expressing power sums via Bernoulli numbers",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "bernoulli_eq_zero_of_odd",
+        "description": "Odd Bernoulli numbers (index > 1) are zero",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "bernoulli'_two",
+        "description": "B'_2 = 1/6",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "bernoulli'_four",
+        "description": "B'_4 = -1/30",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      }
+    ],
+    "originalContributions": [
+      "faulhaber_unified: The five specific formulas (k=1..5) proved from sum_range_pow as special cases",
+      "sum_pow1_from_faulhaber: Sum of first powers n(n-1)/2 derived from unified formula",
+      "sum_pow2_from_faulhaber: Sum of squares n(n-1)(2n-1)/6 derived from unified formula",
+      "sum_pow3_from_faulhaber: Sum of cubes n²(n-1)²/4 derived from unified formula",
+      "sum_pow4_from_faulhaber: Sum of fourth powers derived from unified formula",
+      "sum_pow5_from_faulhaber: Sum of fifth powers derived from unified formula",
+      "faulhaber_completeness: All five formulas packaged as conjunction"
+    ],
+    "dateAdded": "2026-04-03",
+    "lineCount": 183,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Bernoulli numbers and their Mathlib formalization",
+      "Finset power sums and bigoperator notation",
+      "The sum_range_pow theorem (Faulhaber's formula in Mathlib)"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Johann Faulhaber (1580–1635) discovered closed-form formulas for sums of powers up to k=17 without knowing the general pattern. Jacob Bernoulli (1654–1705) later identified the sequence of rational numbers now bearing his name, which provide the coefficients in the general formula. The unified formula ∑_{i=0}^{n-1} i^k = (1/(k+1)) ∑_{j=0}^{k} C(k+1,j) B_j n^{k+1-j} subsumes all specific cases.",
+    "problemStatement": "$$\\sum_{i=0}^{n-1} i^k = \\frac{1}{k+1} \\sum_{j=0}^{k} \\binom{k+1}{j} B_j \\cdot n^{k+1-j}$$",
+    "text": "A 183-line formalization demonstrating that Mathlib's sum_range_pow theorem provides the unified Faulhaber formula, from which all specific power sum formulas (k=1..5) follow by pure computation: substitute Bernoulli values, reduce binomial coefficients, and close with ring.",
+    "proofStrategy": "For each k, apply sum_range_pow to get a hypothesis h expressing the sum as a Bernoulli sum. Unfold the finite j-sum via simp, substitute known Bernoulli values (B₀=1, B₁=-1/2, B₂=1/6, B₃=0, B₄=-1/30, B₅=0), reduce binomial coefficients explicitly, normalize with norm_num, then close with rw [h]; ring.",
+    "keyInsights": [
+      "sum_range_pow is Mathlib's built-in unified Faulhaber formula — no need to reprove it",
+      "B₃ = B₅ = 0 (odd Bernoulli numbers vanish for index > 1), simplifying the k=3,4,5 cases",
+      "Explicit binomial coefficient reduction is needed before norm_num for k ≥ 3",
+      "The five specific formulas are pure ring computations from the unified identity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "unified-formula",
+      "title": "The Unified Faulhaber Formula",
+      "startLine": 51,
+      "endLine": 55,
+      "summary": "faulhaber_unified restates Mathlib's sum_range_pow theorem.",
+      "mathContext": "$\\sum_{i<n} i^k = \\sum_{j=0}^{k} B_j \\binom{k+1}{j} n^{k+1-j} / (k+1)$"
+    },
+    {
+      "id": "bernoulli-values",
+      "title": "Bernoulli Number Values",
+      "startLine": 57,
+      "endLine": 72,
+      "summary": "Proves B₂=1/6, B₃=0, B₄=-1/30, B₅=0 using Mathlib lemmas.",
+      "mathContext": "$B_2=1/6$, $B_3=0$, $B_4=-1/30$, $B_5=0$"
+    },
+    {
+      "id": "specific-formulas",
+      "title": "Specific Formulas k=1 through k=5",
+      "startLine": 74,
+      "endLine": 145,
+      "summary": "Each formula derived from faulhaber_unified by computation.",
+      "mathContext": "$\\sum i = n(n-1)/2$, $\\sum i^2 = n(n-1)(2n-1)/6$, $\\sum i^3 = n^2(n-1)^2/4$, etc."
+    },
+    {
+      "id": "completeness",
+      "title": "Completeness Theorem",
+      "startLine": 151,
+      "endLine": 159,
+      "summary": "All five formulas packaged as a single completeness theorem.",
+      "mathContext": "Conjunction of all five Faulhaber formulas"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "specializes",
+      "description": "The parent gallery entry with Gauss, squares, and cubes formulas"
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-04",
+      "relationship": "related",
+      "description": "Asymptotic analysis of power sums using Bernoulli polynomials"
+    }
+  ],
+  "conclusion": {
+    "summary": "The general Faulhaber formula can be fully formalized in Lean 4 using Mathlib's sum_range_pow theorem, and all five specific power sum formulas for k=1..5 follow as special cases by pure computation. This answers OQ-01 affirmatively: the Bernoulli infrastructure in Mathlib is sufficient.",
+    "implications": "Any power sum formula can be derived mechanically from sum_range_pow by substituting Bernoulli values and simplifying binomial coefficients. The approach extends to arbitrary k with the same pattern.",
+    "openQuestions": [
+      "Can this be generalized to a meta-theorem automatically deriving the Faulhaber formula for any given k?",
+      "Are there elegant proofs connecting the Bernoulli sum formula to the Bernoulli polynomial evaluation form?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Faulhaber, Johann",
+      "title": "Academia Algebrae",
+      "year": "1631",
+      "venue": "Augsburg"
+    },
+    {
+      "authors": "Bernoulli, Jacob",
+      "title": "Ars Conjectandi",
+      "year": "1713",
+      "venue": "Basel"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Intervals",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.NumberTheory.Bernoulli",
+      "Mathlib.NumberTheory.BernoulliPolynomials",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "FaulhaberUnified",
+    "lineCount": 183,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "faulhaber_unified",
+      "type": "core",
+      "description": "The unified Faulhaber formula as a restatement of Mathlib's sum_range_pow",
+      "leanType": "∑ i ∈ range n, (i : ℚ) ^ k = ∑ j ∈ range (k + 1), bernoulli j * ↑((k + 1).choose j) * (n : ℚ) ^ (k + 1 - j) / (↑k + 1)"
+    },
+    {
+      "name": "faulhaber_completeness",
+      "type": "core",
+      "description": "All five Faulhaber formulas (k=1..5) follow from the unified Bernoulli identity",
+      "leanType": "(∀ n : ℕ, ∑ i ∈ range n, (i : ℚ)^1 = n * (n - 1) / 2) ∧ ..."
+    },
+    {
+      "name": "sum_pow3_from_faulhaber",
+      "type": "supporting",
+      "description": "Sum of cubes n²(n-1)²/4",
+      "leanType": "∑ i ∈ range n, (i : ℚ) ^ 3 = (n : ℚ) ^ 2 * ((n : ℚ) - 1) ^ 2 / 4"
+    }
+  ]
+}
