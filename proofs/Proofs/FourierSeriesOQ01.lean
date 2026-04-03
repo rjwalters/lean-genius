@@ -154,6 +154,7 @@ operator satisfies ‖S*f‖_{L²} ≤ C · ‖f‖_{L²}.
 The exact value is not important for the theorem; what matters is its existence.
 The best known constant is due to work refining Carleson's original argument. -/
 axiom carlesonConstant : ℝ
+
 /-- **Carleson-Hunt Maximal Inequality** (Axiomatized)
 
 For any f ∈ L²(𝕋), the Carleson maximal function S*f satisfies the weak-type
@@ -166,6 +167,12 @@ implies this by Chebyshev's inequality, but the weak form suffices for proving
 a.e. convergence.
 
 Note: We state this for measurable f : AddCircle T → ℂ with finite L² norm. -/
+axiom carleson_hunt_maximal
+    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle)
+    (λ : ℝ) (hλ : 0 < λ) :
+    haarAddCircle {x : AddCircle T | ENNReal.ofReal λ < carlesonMaximal f x} ≤
+      ENNReal.ofReal ((carlesonConstant / λ) ^ 2 *
+        ∫ x, ‖f x‖ ^ 2 ∂haarAddCircle)
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART IV: TRIGONOMETRIC POLYNOMIALS CONVERGE EXACTLY
@@ -236,39 +243,56 @@ def fullDivergenceSet (f : AddCircle T → ℂ) : Set (AddCircle T) :=
   ⋃ k : ℕ, divergenceSet f (1 / (↑k + 1))
 
 /-- The divergence set is contained in the set where either S*h is large
-    or |h| is large, where h = f - g is the approximation error. -/
+    or |h| is large, where h = f - g is the approximation error.
+
+    Proof: If ‖h(x)‖ > δ/2, we're already done. Otherwise, pick N ≥ M₀ with
+    |S_N f(x) - f(x)| > δ. By linearity of partial sums,
+    S_N(f-g) = S_N f - S_N g = S_N f - g (since S_N g = g for N ≥ M₀).
+    Triangle inequality: ‖S_N f - g‖ ≥ ‖S_N f - f‖ - ‖f - g‖ > δ - δ/2 = δ/2.
+    So S*h(x) ≥ ‖S_N h(x)‖ = ‖S_N(f-g)(x)‖ > δ/2. -/
 theorem divergenceSet_subset_of_approx
     (f g : AddCircle T → ℂ) (δ : ℝ) (hδ : 0 < δ)
+    (hf : Integrable f haarAddCircle) (hg : Integrable g haarAddCircle)
     (M₀ : ℕ) (hM₀ : ∀ N : ℕ, M₀ ≤ N → ∀ x, fourierPartialSum g N x = g x) :
     divergenceSet f δ ⊆
       {x | (δ / 2 : ℝ) < ‖(f - g) x‖} ∪
       {x | carlesonMaximal (f - g) x > ENNReal.ofReal (δ / 2)} := by
   intro x hx
-  -- x is in the divergence set: for all M, there exists N ≥ M with |S_N f(x) - f(x)| > δ
   simp only [divergenceSet, Set.mem_setOf_eq] at hx
-  -- If |h(x)| > δ/2, we're in the first set
   by_cases hfg : (δ / 2 : ℝ) < ‖(f - g) x‖
   · exact Or.inl hfg
   · right
     push_neg at hfg
     -- So ‖(f - g) x‖ ≤ δ/2. We need S*h(x) > δ/2.
-    -- Pick N ≥ M₀ with |S_N f(x) - f(x)| > δ
     obtain ⟨N, hNM, hNδ⟩ := hx M₀
-    -- For N ≥ M₀, S_N g(x) = g(x), so S_N f(x) - f(x) = S_N h(x) - h(x)
-    -- where h = f - g
-    -- |S_N f(x) - f(x)| ≤ |S_N (f-g)(x)| + |(f-g)(x)|
-    -- Actually S_N f = S_N g + S_N(f-g) and for N ≥ M₀, S_N g = g
-    -- So S_N f(x) - f(x) = g(x) + S_N(f-g)(x) - f(x) = S_N(f-g)(x) - (f-g)(x)
-    -- |S_N(f-g)(x) - (f-g)(x)| > δ
-    -- Triangle: |S_N(f-g)(x)| ≥ |S_N(f-g)(x) - (f-g)(x)| - |(f-g)(x)| > δ - δ/2 = δ/2
     simp only [Set.mem_setOf_eq]
-    -- We need to show carlesonMaximal (f - g) x > ENNReal.ofReal (δ / 2)
     apply lt_of_lt_of_le _ (le_carlesonMaximal (f - g) N x)
-    rw [ENNReal.ofReal_lt_natCast_iff_lt (by positivity)]
-    -- Need: ENNReal.ofReal (δ / 2) < ‖fourierPartialSum (f - g) N x‖₊
-    -- We know |S_N f(x) - f(x)| > δ and |h(x)| ≤ δ/2
-    -- The linearity of partial sums + S_N g = g gives us the bound
-    sorry -- Technical: relating S_N(f-g) to S_N f - S_N g via linearity
+    -- Goal: ENNReal.ofReal (δ / 2) < ↑‖fourierPartialSum (f - g) N x‖₊
+    -- Step 1: Linearity — S_N(f-g) = S_N f - g (since S_N g = g for N ≥ M₀)
+    have hgN := hM₀ N hNM x
+    have hlin : fourierPartialSum (f - g) N x = fourierPartialSum f N x - g x := by
+      have h_sub : f - g = f + (-1 : ℂ) • g := by simp [sub_eq_add_neg, neg_smul]
+      rw [h_sub, fourierPartialSum_add f ((-1 : ℂ) • g) N x hf (hg.smul_left _)]
+      rw [fourierPartialSum_smul (-1 : ℂ) g N x, hgN]
+      ring
+    rw [hlin]
+    -- Step 2: Real bound — ‖S_N f N x - g x‖ > δ/2
+    have hfx_norm : ‖f x - g x‖ ≤ δ / 2 := by
+      have : ‖(f - g) x‖ = ‖f x - g x‖ := by simp [Pi.sub_apply]
+      linarith [hfg, this.symm.le]
+    have h_bound : δ / 2 < ‖fourierPartialSum f N x - g x‖ := by
+      have htri : ‖fourierPartialSum f N x - f x‖ ≤
+          ‖fourierPartialSum f N x - g x‖ + ‖g x - f x‖ := by
+        calc ‖fourierPartialSum f N x - f x‖
+            = ‖(fourierPartialSum f N x - g x) + (g x - f x)‖ := by ring_nf
+          _ ≤ ‖fourierPartialSum f N x - g x‖ + ‖g x - f x‖ := norm_add_le _ _
+      linarith [hNδ, htri, norm_sub_rev (g x) (f x)]
+    -- Step 3: Convert real bound to ENNReal
+    have hpos : (0 : ℝ) ≤ δ / 2 := le_of_lt (half_pos hδ)
+    rw [show ENNReal.ofReal (δ / 2) = ↑(⟨δ / 2, hpos⟩ : ℝ≥0) from
+          ENNReal.ofReal_eq_coe_nnreal hpos]
+    rw [ENNReal.coe_lt_coe]
+    exact_mod_cast h_bound
 
 /-- **Measure bound on divergence set via maximal inequality.**
 
@@ -379,10 +403,12 @@ theorem fourierPartialSum_add (f g : AddCircle T → ℂ) (N : ℕ) (x : AddCirc
   -- Linearity reduces to integral_add, which needs integrability of each integrand.
   -- fourier(-n) is a character: ‖fourier(-n) t‖ = 1 for all t.
   -- So fourier(-n) * h is integrable whenever h is integrable.
-  -- TODO: replace sorry with the correct Mathlib lemma for ‖fourier n t‖ ≤ 1
-  -- (likely AddCircle.norm_fourier or via fourier_apply + Complex.norm_exp)
+  -- fourier(-n) is a unitary character: ‖fourier(-n) t‖ = 1 for all t.
+  -- This follows from fourier_apply which unfolds to the circle-valued toCircle map.
   have hfourier_bound : ∀ (t : AddCircle T), ‖fourier (-n) t‖ ≤ 1 := by
-    intro t; sorry
+    intro t
+    have : ‖fourier (-n) t‖ = 1 := by simp [fourier_apply]
+    linarith
   have hint : ∀ h : AddCircle T → ℂ, Integrable h haarAddCircle →
       Integrable (fun t => fourier (-n) t * h t) haarAddCircle := by
     intro h hh

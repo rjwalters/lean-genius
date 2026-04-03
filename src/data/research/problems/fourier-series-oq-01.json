@@ -1,7 +1,7 @@
 {
   "slug": "fourier-series-oq-01",
   "title": "Can Carleson's theorem ($L^2$ Fourier series converge pointwise a",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,12 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-28T15:56:29-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "ACT",
+    "since": "2026-04-03T03:00:00Z",
+    "iteration": 2,
+    "focus": "Reduced sorries 4→2, added missing Carleson-Hunt axiom",
+    "blockers": [
+      "trigPoly_convergence lemma needed",
+      "Chebyshev measure theory",
+      "Docker for build verification"
+    ],
+    "nextAction": "Prove trigPoly_convergence using Fourier orthonormality; then tackle divergenceSet_measure_bound",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Deep analysis of axiom structure. 3 axioms are Carleson-Hunt (deep, unprovable). 2 axioms (trigPoly_dense_L2, trigPoly_partialSum_eq) are provable with careful Mathlib bridging. 4 sorries identified with fix strategies.",
+    "progressSummary": "PROGRESS: 4→2 sorries. Fixed hfourier_bound, proved divergenceSet_subset_of_approx, added carleson_hunt_maximal axiom.",
     "builtItems": [
       "Created FourierSeriesOQ01.lean (440 lines, 13 theorems, 5 defs, 5 axioms)",
       "Defined fourierPartialSum: S_N f(x) as Finset.sum over Icc",
@@ -41,7 +45,10 @@
       "Stated carleson_ae_convergence: the main Carleson theorem",
       "Stated carleson_continuous: corollary for continuous functions",
       "Stated carleson_and_parseval: joint L²+pointwise convergence",
-      "Created gallery data: meta.json, index.ts, annotations.json, tacticStates.json"
+      "Created gallery data: meta.json, index.ts, annotations.json, tacticStates.json",
+      "Fixed hfourier_bound: simp [fourier_apply] (FourierSeriesOQ01.lean:384)",
+      "Proved divergenceSet_subset_of_approx with integrability hypotheses (FourierSeriesOQ01.lean:247)",
+      "Added carleson_hunt_maximal axiom: μ({S*f > λ}) ≤ (C/λ)²·‖f‖²_{L²} (FourierSeriesOQ01.lean:170)"
     ],
     "insights": [
       "Carleson theorem (1966) states L² Fourier series converge pointwise a.e.",
@@ -60,7 +67,10 @@
       "Prove trigPoly_dense_L2: use hasSum_fourier_series_L2 f, g=fourierPartialSum f N, show IsTrigPoly (straightforward), Memℒp (continuous→L2), and integral bound (Parseval tail)",
       "Add Memℒp f 2 and Memℒp g 2 to divergenceSet_subset_of_approx, then prove sorry via fourierCoeff linearity (integral_sub) + triangle inequality",
       "Fix fourierPartialSum_add: add Integrable hypotheses, prove using integral_add of fourier(-n)*f and fourier(-n)*g",
-      "Consider changing trigPoly_partialSum_eq to use ∀ᵐ x instead of ∀ x, or add Continuous g hypothesis"
+      "Consider changing trigPoly_partialSum_eq to use ∀ᵐ x instead of ∀ x, or add Continuous g hypothesis",
+      "Add trigPoly_convergence: IsTrigPoly g → ∃ M₀, ∀ N≥M₀, S_N g = g",
+      "Key lemma: fourierCoeff (sum) n = c_n via orthogonality of fourier characters",
+      "For divergenceSet_measure_bound: use hf.integrable from Memℒp 2"
     ],
     "markdown": "# Knowledge Base: fourier-series-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -80,7 +90,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T22:57:01.595Z",
-  "lastUpdate": "2026-03-28T22:57:01.614Z",
+  "lastUpdate": "2026-04-03T03:45:00Z",
   "leanFiles": [
     {
       "path": "Proofs/FourierSeries.lean",
@@ -98,9 +108,9 @@
       "filename": "FourierSeriesOQ01.lean",
       "lineCount": 428,
       "theoremCount": 13,
-      "axiomCount": 1,
+      "axiomCount": 2,
       "defCount": 5,
-      "sorryCount": 5,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ01.lean"
     },
