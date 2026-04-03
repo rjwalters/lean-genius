@@ -2,7 +2,7 @@
   "id": "central-limit-theorem-oq-01-oq-03",
   "title": "Free Probability and Stable Distributions",
   "slug": "central-limit-theorem-oq-01-oq-03",
-  "description": "Survey of stable distributions in free probability theory. Defines NCP spaces, free independence, stability indices. Assesses ~3900 lines needed for full formalization.",
+  "description": "Formalizes the algebraic framework for free probability theory: NCProbSpace structure, variance, free independence (simplified), and stability index classification. Documents the Bercovici-Pata bijection between classical and free stable distributions and provides a rigorous gap analysis showing ~3900 lines of new Mathlib infrastructure (R-transform, free convolution, free cumulants) are needed for the full theory.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -11,7 +11,9 @@
       "probability",
       "free probability",
       "stable distributions",
-      "non-commutative"
+      "non-commutative",
+      "operator-algebras",
+      "voiculescu"
     ],
     "badge": "verified",
     "sorries": 0,
@@ -32,12 +34,70 @@
     "theoremCount": 7,
     "definitionCount": 4
   },
+  "overview": {
+    "historicalContext": "Classical probability theory, with the Central Limit Theorem (CLT) and Lévy's theory of stable distributions (1924), was extended to a non-commutative setting by Dan-Virgil Voiculescu in 1983. Voiculescu introduced 'free probability'—a framework where random variables are replaced by non-commutative operators and statistical independence by 'free independence'—motivated by the isomorphism problem for von Neumann algebras (specifically: are the free group factors L(Fₙ) isomorphic for different n?). The free CLT, proved by Voiculescu in 1985, shows that normalized sums of freely independent variables converge to the Wigner semicircle distribution, first introduced by Wigner (1955) in the context of random matrix eigenvalues. The Bercovici-Pata bijection (1999) established a systematic correspondence between all classical and free infinitely divisible distributions, preserving stability indices. This unified the classical Lévy-Khintchine theory with the free world and showed that free probability is not merely an analogy but a deep structural mirror of classical probability.",
+    "problemStatement": "How do stable distributions appear in free probability? More precisely: for each stability index $\\alpha \\in (0, 2]$, is there a free analog of the classical $\\alpha$-stable distribution, and how is it characterized? The answer (Bercovici-Pata 1999): yes, via $\\Lambda(\\text{classical $\\alpha$-stable}) = \\text{free $\\alpha$-stable}$, where $\\Lambda$ is the Bercovici-Pata bijection preserving $\\alpha$. For $\\alpha=2$: $N(0,\\sigma^2) \\mapsto \\mu_{\\text{sc}}$ (Wigner semicircle). For $\\alpha=1$: Cauchy $\\mapsto$ arcsine distribution.",
+    "proofStrategy": "The formalization establishes the algebraic foundations in four parts: (1) NCProbSpace structure (ring + unital linear functional), variance definition, centering theorem; (2) simplified free independence definition (first-moment condition) and its trivial consequence; (3) stability index classification with numeric verifications for α=2 (Gaussian) and α=1 (Cauchy); (4) infrastructure assessment table quantifying the ~3900 line gap between the current formalization and a complete free probability library in Lean 4.",
+    "keyInsights": [
+      "The Wigner semicircle $d\\mu_{\\text{sc}} = \\frac{2}{\\pi}\\sqrt{1-x^2}\\, dx$ on $[-1,1]$ is both the free CLT limit and the eigenvalue distribution of the Gaussian Unitary Ensemble (GUE) in random matrix theory. This connects free probability to random matrices: as $n \\to \\infty$, the empirical eigenvalue distribution of $n^{-1/2} \\cdot \\text{GUE}(n)$ converges to the semicircle.",
+      "The R-transform linearizes free convolution: $R_{\\mu \\boxplus \\nu}(z) = R_\\mu(z) + R_\\nu(z)$. This is the free analog of $\\log \\hat{\\mu} + \\log \\hat{\\nu} = \\log(\\widehat{\\mu * \\nu})$ (classical characteristic functions). The R-transform is defined via the Cauchy transform $G_\\mu(z)$ through a functional inverse relation, requiring complex analysis.",
+      "The simplified `IsFreelyIndep` definition (φ(ab) = 0 for centered a, b) captures only the first order of free independence. Full free independence requires all alternating centered moments to vanish—an infinite collection of conditions that ensures the free cumulants of mixed products factorize appropriately.",
+      "The Bercovici-Pata bijection $\\Lambda$ maps classical Lévy-Khintchine triplets $(a, \\sigma^2, \\nu)$ to free Lévy-Khintchine triplets via a canonical Stieltjes-type construction. Crucially, $\\Lambda$ preserves the Gaussian component (variance $\\sigma^2$) and transforms the Lévy measure $\\nu$ via the free Lévy-Khintchine formula.",
+      "The current formalization has 0 axioms and 0 sorries—all 7 theorems are proved, but 6 are trivial (norm_num or definitional). The mathematical depth lies in the documentation and assessment, not the Lean proofs themselves. Completing the formalization would require substantial new Mathlib infrastructure (~3900 lines), with the R-transform and free cumulants as the central technical challenges."
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-imports-background",
+      "title": "Imports and Module Background",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Imports Mathlib.Probability.Variance and Mathlib.Tactic. Module docstring explains classical vs. free probability, the free CLT (semicircle limit), and the Bercovici-Pata bijection. Lists the three parallel stable distribution tables."
+    },
+    {
+      "id": "section-ncp-spaces",
+      "title": "Part 1: Non-Commutative Probability Space",
+      "startLine": 46,
+      "endLine": 65,
+      "summary": "Defines NCProbSpace structure (ring A, expectation functional φ with φ(1)=1 and φ(a+b)=φ(a)+φ(b)), noncomputable variance definition (φ(a²)-φ(a)²), and proves expect_centered (centering property) in one line via expect_one and sub_self."
+    },
+    {
+      "id": "section-free-independence",
+      "title": "Part 2: Free Independence",
+      "startLine": 67,
+      "endLine": 84,
+      "summary": "Defines IsFreelyIndep as a simplified first-moment condition (φ(ab)=0 when φ(a)=φ(b)=0), with a docstring noting this is a simplified version of the full alternating-moment definition. Proves freely_indep_product_zero trivially from the definition."
+    },
+    {
+      "id": "section-stability-index",
+      "title": "Part 3: Stability Index and Free Stable Laws",
+      "startLine": 86,
+      "endLine": 114,
+      "summary": "Defines IsStabilityIndex (α ∈ (0,2]), proves gaussian_index (α=2), cauchy_index (α=1), and stability_index_bounded (indices form Set.Ioc 0 2). Docstring table maps stability indices to classical/free distribution pairs."
+    },
+    {
+      "id": "section-assessment",
+      "title": "Part 4: Infrastructure Assessment",
+      "startLine": 116,
+      "endLine": 146,
+      "summary": "Detailed table quantifying what's needed for full free probability in Lean: *-algebras (~200), NCP spaces (~300), free independence (~500), free convolution (~800), free cumulants/R-transform (~600), Bercovici-Pata bijection (~1000), free stable distributions (~500). Total ~3900 lines, Mathlib currently <5%."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the algebraic skeleton of free probability—NCProbSpace, variance, simplified free independence, and stability index classification—with 7 fully proved theorems and 0 axioms. The mathematical content is primarily in the documentation: the Bercovici-Pata bijection, R-transform, and the classical-free stable distribution correspondence are documented precisely. The assessment quantifies the remaining work: ~3900 lines of new Lean infrastructure are needed, centered on the R-transform and free cumulants.",
+    "implications": "Formalizing free probability in Lean 4 would bridge operator algebra and probability theory in a machine-verified framework, enabling formal proofs of: the free CLT (semicircle as free Gaussian limit), the Bercovici-Pata bijection (classical-free correspondence for all stable laws), and free entropy inequalities (Voiculescu's free entropy, with applications to von Neumann algebras). The connection to random matrix theory—where the semicircle arises as the empirical eigenvalue distribution of random symmetric matrices—would also become formalizable, linking free probability to matrix analysis.",
+    "openQuestions": [
+      "Can the R-transform and free cumulants be formalized in Lean 4 using Mathlib's existing complex analysis infrastructure (Cauchy transform, power series)? The functional inverse $K_\\mu = G_\\mu^{-1}$ requires local invertibility of analytic functions.",
+      "Is there a direct path from Mathlib's existing `StarRing` and `CStarRing` infrastructure to a full NCP space formalization that avoids reproving basic operator algebra results?",
+      "Can the Bercovici-Pata bijection be formalized by following Bercovici-Pata's original proof (using the free Lévy-Khintchine representation), or does it require developing free analytic function theory first?",
+      "What is the stability index of the free Cauchy distribution, and can the arcsine distribution be shown to be the correct free analog of the classical Cauchy? This would complete the α=1 row of the stable distribution table."
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "central-limit-theorem-oq-01",
       "relationship": "extends",
       "description": "Free probability analog of CLT"
     }
-  ],
-  "sections": []
+  ]
 }
