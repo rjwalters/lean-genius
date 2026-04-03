@@ -18,10 +18,10 @@
       "erdos"
     ],
     "badge": "formalized",
-    "sorries": 5,
+    "sorries": 7,
     "axiomCount": 1,
     "lineCount": 246,
-    "assumptions": "1 axiom: kostochka_pyber_r2 — the r=2 (graph) case of Kostochka-Pyber theorem (proven 1988, deep result axiomatized). 5 sorries: geometric edge-crossing verifications for K₃ and K₄ planarity, Euler formula bound, parent definition compatibility.",
+    "assumptions": "1 axiom: kostochka_pyber_r2 — the r=2 (graph) case of Kostochka-Pyber theorem (proven 1988, deep result axiomatized). 7 sorries: 5 in this file (geometric edge-crossing verifications for K₃ and K₄ planarity, Euler formula bound, parent definition compatibility) + 2 sorry definitions in parent Erdos1018OQ04.lean (isEmbeddable, turanNumber) that this pass aims to replace.",
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.26.0"
   },
