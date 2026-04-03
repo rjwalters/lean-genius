@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-e1151-chebyshev-nodes",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 43, "endLine": 54 },
+    "type": "definition",
+    "title": "Chebyshev Nodes: Roots of the n-th Chebyshev Polynomial",
+    "content": "chebyshevNode n k = cos((2k+1)π/(2n)) for k = 0,...,n-1 are the Chebyshev nodes — the roots of the n-th Chebyshev polynomial T_n. They are optimal interpolation nodes in the minimax sense: among all choices of n nodes in [-1,1], Chebyshev nodes minimize the maximum error of polynomial interpolation for Lipschitz functions. chebyshevNode_mem_Icc proves they lie in [-1,1] using cos_le_one and neg_one_le_cos.",
+    "mathContext": "x_k^{(n)} = \\cos\\!\\left(\\frac{(2k+1)\\pi}{2n}\\right), \\quad k = 0,1,\\ldots,n-1\\\\\nx_k^{(n)} \\in [-1,1] \\text{ (since } |\\cos\\theta| \\leq 1)\\\\\nT_n(x_k^{(n)}) = 0 \\text{ for all } k",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev polynomials", "interpolation nodes", "cosine function", "minimax approximation"],
+    "prerequisites": ["Real.cos", "Real.pi", "neg_one_le_cos", "cos_le_one"]
+  },
+  {
+    "id": "ann-e1151-nodes-injective",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 59, "endLine": 81 },
+    "type": "insight",
+    "title": "Chebyshev Nodes Are Distinct",
+    "content": "chebyshevNodes_injective proves the n Chebyshev nodes are pairwise distinct, which is essential for the Lagrange interpolation operator to be well-defined (distinct denominators xₖ - xᵢ). The proof uses Real.strictAntiOn_cos: cosine is strictly decreasing on [0, π], and the arguments (2k+1)π/(2n) all lie in (0, π) with distinct values — so distinct indices k give distinct cosines.",
+    "mathContext": "k_1 \\neq k_2 \\Rightarrow \\frac{(2k_1+1)\\pi}{2n} \\neq \\frac{(2k_2+1)\\pi}{2n} \\in (0,\\pi)\\\\\n\\cos \\text{ strictly decreasing on } [0,\\pi] \\Rightarrow \\cos\\!\\left(\\frac{(2k_1+1)\\pi}{2n}\\right) \\neq \\cos\\!\\left(\\frac{(2k_2+1)\\pi}{2n}\\right)",
+    "significance": "supporting",
+    "relatedConcepts": ["cosine injectivity", "strict monotonicity", "distinct nodes", "well-defined interpolation"],
+    "prerequisites": ["Real.strictAntiOn_cos", "StrictAntiOn.injOn", "Fin.ext"]
+  },
+  {
+    "id": "ann-e1151-lagrange-interp",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 87, "endLine": 100 },
+    "type": "definition",
+    "title": "Lagrange Interpolation Operator at Chebyshev Nodes",
+    "content": "lagrangeBasis n nodes k x = ∏_{i≠k} (x-nodes(i))/(nodes(k)-nodes(i)) is the k-th Lagrange basis polynomial: the unique polynomial of degree n-1 that equals 1 at nodes(k) and 0 at all other nodes(i). lagrangeInterp n nodes f x = Σₖ f(nodes(k)) · ℓₖ(x) is the Lagrange interpolation polynomial — the unique polynomial of degree ≤ n-1 agreeing with f at all n nodes. chebyshevInterp specializes to Chebyshev nodes.",
+    "mathContext": "\\ell_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}\\\\\n\\mathcal{L}^n f(x) = \\sum_{k=0}^{n-1} f(x_k) \\ell_k(x)\\\\\n\\mathcal{L}^n f(x_k) = f(x_k) \\text{ (interpolation property)}",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange basis", "polynomial interpolation", "barycentric weights", "Runge phenomenon"],
+    "prerequisites": ["Finset.prod", "Finset.univ.erase", "Finset.sum", "noncomputable"]
+  },
+  {
+    "id": "ann-e1151-limit-points",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 106, "endLine": 132 },
+    "type": "definition",
+    "title": "Limit Points of Sequences and Closed Set Theorem",
+    "content": "IsLimitPoint seq y means y is approached infinitely often: for every ε > 0 and N, there exists n ≥ N with |seq(n) - y| < ε. This is exactly the definition of an accumulation point (or cluster point) of a sequence. limitPointSet seq = {y : IsLimitPoint seq y} collects all limit points. limitPointSet_isClosed proves that for bounded sequences, the limit point set is topologically closed: its complement is open because if y is not a limit point, all z within ε/2 of y are also not limit points (by the reverse triangle inequality).",
+    "mathContext": "y \\in \\text{limitPointSet}(a_n) \\iff \\forall \\varepsilon > 0,\\; N \\in \\mathbb{N},\\; \\exists n \\geq N:\\; |a_n - y| < \\varepsilon\\\\\n\\text{limitPointSet} = \\limsup_{n \\to \\infty} \\{a_n\\} \\text{ (as a set of cluster points)}\\\\\n\\text{boundedness} \\Rightarrow \\text{limitPointSet closed}",
+    "significance": "key",
+    "relatedConcepts": ["cluster points", "accumulation points", "closed sets", "lim sup"],
+    "prerequisites": ["Metric.isOpen_iff", "isOpen_compl_iff", "abs_sub_le"]
+  },
+  {
+    "id": "ann-e1151-erdos-1941",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 147, "endLine": 151 },
+    "type": "concept",
+    "title": "Erdős 1941: Divergence at Rational Multiples of π",
+    "content": "erdos_1941_divergence axiomatizes Erdős's 1941 result: for x = cos(pπ/q) with p, q odd positive integers, there exists a continuous f such that the Chebyshev interpolation values 𝓛ⁿf(x) diverge to +∞. This is the key partial result underlying the conjecture: it shows that limit points need not be finite (i.e., ∞ is achievable). The proof in Erdős's paper uses intricate estimates on the Lebesgue function for Chebyshev nodes at these special points.",
+    "mathContext": "x = \\cos(p\\pi/q),\\; p,q \\text{ odd positive}\\\\\n\\Rightarrow \\exists f \\text{ continuous}:\\; \\mathcal{L}^n f(x) \\to +\\infty\\\\\n\\text{(Erdős 1941, Ann. Math.)}",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue function", "divergence of interpolation", "rational cosines", "Chebyshev nodes"],
+    "prerequisites": ["chebyshevInterpSeq", "Continuous", "Odd predicate"]
+  },
+  {
+    "id": "ann-e1151-conjecture",
+    "proofId": "erdos-1151",
+    "range": { "startLine": 161, "endLine": 164 },
+    "type": "concept",
+    "title": "Erdős Conjecture #1151: All Closed Sets Are Realizable as Limit Points",
+    "content": "erdos_1151_conjecture axiomatizes the open problem: for any closed A ⊆ [-1,1] and any x ∈ [-1,1], there exists a continuous f such that limitPointSet(chebyshevInterpSeq f x) = A. This is the complete characterization: every closed subset of [-1,1] can appear as the set of limit points of Lagrange interpolation at Chebyshev nodes. The special cases derived below (singleton A = {y} → convergence; A = [-1,1] → density) are immediate corollaries. Vértesi (1999) lists this as Problem 2.41.",
+    "mathContext": "\\forall A \\subseteq [-1,1] \\text{ closed},\\; x \\in [-1,1]:\\; \\exists f \\text{ cts}:\\; \\text{LimitPoints}(\\mathcal{L}^n f(x)) = A\\\\\n\\text{Special cases: } A = \\{y\\} \\Rightarrow \\mathcal{L}^n f(x) \\to y;\\\\\nA = [-1,1] \\Rightarrow \\mathcal{L}^n f(x) \\text{ dense}",
+    "significance": "key",
+    "relatedConcepts": ["interpolation limit points", "closed sets", "realizability", "Chebyshev interpolation"],
+    "prerequisites": ["IsClosed", "limitPointSet", "chebyshevInterpSeq", "Continuous"]
+  }
+]
