@@ -18,9 +18,9 @@
     "sorries": 0,
     "originalContributions": [
       "binaryGcd: recursive implementation of Stein's algorithm in Lean 4",
-      "gcd_sub_right: gcd(a-b, b) = gcd(a, b) for b \u2264 a",
+      "gcd_sub_right: gcd(a-b, b) = gcd(a, b) for b ≤ a",
       "gcd_mul_two_left: gcd(2a, b) = gcd(a, b) when b is odd",
-      "gcd_two_mul: gcd(2a, 2b) = 2\u00b7gcd(a, b)",
+      "gcd_two_mul: gcd(2a, 2b) = 2·gcd(a, b)",
       "gcd_odd_sub_half: gcd((a-b)/2, b) = gcd(a, b) for both odd, a > b"
     ],
     "dateAdded": "2026-03-30",
@@ -29,20 +29,52 @@
     "assumptions": ""
   },
   "overview": {
-    "historicalContext": "Josef Stein published this algorithm in 1967. It replaces division with bit shifts, making it faster on binary hardware.",
+    "historicalContext": "GCD computation is one of the oldest algorithms in mathematics, appearing in Euclid's Elements (~300 BC) as 'anthyphairesis' (mutual subtraction). Euclid's algorithm computes gcd(a,b) by repeatedly replacing the larger number with its remainder modulo the smaller — elegant, but division is expensive on binary hardware (requiring multiple clock cycles versus a single bit shift for halving). Josef Stein published the Binary GCD algorithm in 1967, crediting Israeli programmers who had used it on early computers where integer division was slow or unavailable. The algorithm replaces all division with three bit-manipulation identities: gcd(2a,2b) = 2·gcd(a,b), gcd(2a,b) = gcd(a,b) when b is odd (since gcd(2,odd)=1), and gcd(a-b,b) = gcd(a,b). When both arguments are odd, their difference is even (odd minus odd = even), so a halving step always follows the subtraction, and the sum a+b strictly decreases in every recursive call. Modern implementations in the GNU Multiple Precision Arithmetic Library (GMP) and LLVM use variants of this algorithm, often outperforming the Euclidean method by 2-3× on 64-bit hardware where integer division latency can be 20-90 clock cycles versus 1 cycle for bit shifts. The Lean 4 formalization exploits the equation compiler's `binaryGcd.induct` principle — automatically generated from the well-founded recursive definition — providing one induction case per algorithm branch for a proof that mirrors the algorithm's structure exactly.",
     "problemStatement": "Formalize the Binary GCD algorithm and prove it computes the GCD correctly.",
-    "text": "Binary GCD (Stein's algorithm) uses subtraction and division by 2 instead of Euclidean division.",
-    "proofStrategy": "Define the algorithm by well-founded recursion on a+b. Prove three key lemmas (even factor extraction, coprime reduction, odd subtraction) and combine for correctness.",
+    "proofStrategy": "Define binaryGcd by well-founded recursion with `termination_by a + b` (proved by `decreasing_by all_goals omega`). Prove four supporting lemmas: gcd_sub_right by Nat.dvd_antisymm + Nat.dvd_add/dvd_sub'; gcd_mul_two_left by Nat.Coprime.gcd_mul_left_cancel; gcd_two_mul as a one-liner via Nat.gcd_mul_left; gcd_odd_sub_half by combining the previous two. The main correctness theorem binaryGcd_eq_gcd is proved by `binaryGcd.induct` with 7 cases (case1/2: base cases, case3-7: recursive cases), each applying the corresponding lemma and re-assembling with the induction hypothesis.",
     "keyInsights": [
-      "Three key lemmas: gcd(2a,2b)=2\u00b7gcd(a,b), gcd(2a,b)=gcd(a,b) for odd b, gcd(a-b,b)=gcd(a,b)",
-      "When both arguments are odd, their difference is even, enabling the halving step",
-      "Termination: a+b strictly decreases in every recursive call"
-    ],
-    "prerequisites": [
-      "GCD properties",
-      "Basic number theory"
+      "The three algorithm cases cover all parity combinations: both even (factor out 2), one even one odd (drop the even factor using coprimality), both odd (subtract and halve, always getting an even difference since odd−odd=even)",
+      "gcd_mul_two_left uses `Nat.coprime_two_left.mpr hb` to prove Coprime 2 b from b%2=1, then delegates to `Coprime.gcd_mul_left_cancel` — a one-line proof that compactly encodes the argument 'gcd ignores coprime factors'",
+      "The `binaryGcd.induct` principle gives exactly 7 cases matching the 7 branches of the recursive definition (case1: a=0, case2: b=0, case3-4: a even, case5: a odd b even, case6-7: both odd), making each proof case a direct translation of the corresponding algorithm step",
+      "Termination is proved by `decreasing_by all_goals omega`, which dispatches all non-trivial goals of the form (a+1)/2 + (b+1) < a+1+b+1 etc. in one stroke — `omega` handles the linear arithmetic after unfolding the division-by-2 cases",
+      "gcd_odd_sub_half uses a three-step rewrite chain: gcd((a-b)/2, b) = gcd(2·((a-b)/2), b) by gcd_mul_two_left [since b odd] = gcd(a-b, b) [rewriting 2·((a-b)/2) = a-b, valid since a-b is even] = gcd(a, b) by gcd_sub_right",
+      "The basic properties (commutativity, zero cases) are all one-liners via the correctness theorem plus Nat.gcd_comm/gcd_zero_left/right, demonstrating that once correctness is established, all structural properties transfer for free from Nat.gcd"
     ]
   },
+  "sections": [
+    {
+      "id": "gcd-lemmas",
+      "title": "Part I: Key GCD Lemmas",
+      "startLine": 32,
+      "endLine": 62,
+      "summary": "Four GCD lemmas used in the correctness proof. gcd_sub_right: gcd(a-b,b)=gcd(a,b) by dvd_antisymm + dvd_add. gcd_mul_two_left: gcd(2a,b)=gcd(a,b) for odd b, via Coprime.gcd_mul_left_cancel. gcd_mul_two_right: symmetric via gcd_comm. gcd_two_mul: gcd(2a,2b)=2·gcd(a,b) as one-liner.",
+      "mathContext": "The three fundamental GCD identities used by the algorithm: (1) $\\gcd(a-b,b) = \\gcd(a,b)$ for $b \\leq a$ — since any common divisor of $a-b$ and $b$ also divides $a = (a-b)+b$; (2) $\\gcd(2a,b) = \\gcd(a,b)$ when $\\gcd(2,b)=1$ — since $2$ is coprime to $b$, it contributes nothing to the GCD; (3) $\\gcd(2a,2b) = 2\\gcd(a,b)$ — factoring out the common factor 2."
+    },
+    {
+      "id": "algorithm",
+      "title": "Part II: The Binary GCD Algorithm",
+      "startLine": 66,
+      "endLine": 113,
+      "summary": "The binaryGcd definition: well-founded recursion on a+b with 5 cases (base cases, both even, a even/b odd, a odd/b even, both odd with comparison). Termination by decreasing_by all_goals omega. Supporting lemmas gcd_odd_sub_half and gcd_odd_sub_half_right for the both-odd case.",
+      "mathContext": "The algorithm: if $a = 0$ return $b$; if $b = 0$ return $a$; if both even: $2 \\cdot \\text{binaryGcd}(a/2, b/2)$; if $a$ even $b$ odd: $\\text{binaryGcd}(a/2, b)$; if $a$ odd $b$ even: $\\text{binaryGcd}(a, b/2)$; if both odd and $a > b$: $\\text{binaryGcd}((a-b)/2, b)$; if both odd and $a \\leq b$: $\\text{binaryGcd}(a, (b-a)/2)$. Termination: in each recursive case, $a' + b' < a + b$ since at least one argument is halved."
+    },
+    {
+      "id": "correctness",
+      "title": "Part II: Correctness Theorem",
+      "startLine": 119,
+      "endLine": 159,
+      "summary": "binaryGcd_eq_gcd: binaryGcd a b = Nat.gcd a b, proved by binaryGcd.induct with 7 cases. Each case applies the corresponding GCD lemma (gcd_two_mul, gcd_mul_two_left/right, gcd_odd_sub_half/right) and re-assembles with the induction hypothesis.",
+      "mathContext": "The correctness invariant: at each recursive call with arguments $(a', b')$, we have $\\gcd(a', b') = \\gcd(a, b)$. By induction (using the well-founded measure $a+b$), $\\text{binaryGcd}(a', b') = \\text{Nat.gcd}(a', b') = \\text{Nat.gcd}(a, b)$. The 7-case `binaryGcd.induct` principle provides exactly the case structure of the recursive definition."
+    },
+    {
+      "id": "properties",
+      "title": "Part III: Basic Properties",
+      "startLine": 163,
+      "endLine": 174,
+      "summary": "Three one-liners: binaryGcd_comm via gcd_comm + correctness; binaryGcd_zero_left by simp; binaryGcd_zero_right by cases + simp.",
+      "mathContext": "Commutativity: $\\text{binaryGcd}(a,b) = \\text{Nat.gcd}(a,b) = \\text{Nat.gcd}(b,a) = \\text{binaryGcd}(b,a)$, using correctness twice and Nat.gcd_comm. Zero cases follow directly from the base case equations of the definition."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "gcd-algorithm",
@@ -51,10 +83,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Defines binaryGcd with well-founded recursion and proves all supporting lemmas. The main correctness theorem binaryGcd_eq_gcd is fully proved using equation compiler induction.",
-    "implications": "Binary GCD is the standard GCD algorithm in modern hardware-optimized libraries.",
+    "summary": "A complete Lean 4 formalization of Stein's Binary GCD algorithm: definition by well-founded recursion, four supporting GCD lemmas, and the main correctness theorem binaryGcd_eq_gcd = Nat.gcd via the equation compiler's binaryGcd.induct principle. 10 theorems, 0 axioms, 0 sorries.",
+    "implications": "The formalization demonstrates two important Lean 4 techniques: (1) the `termination_by` / `decreasing_by omega` pattern for algorithm termination — applicable to any algorithm with a decreasing numeric measure; (2) the equation compiler's auto-generated induction principle (`binaryGcd.induct`) that mirrors the recursive definition's case structure. The `Nat.Coprime.gcd_mul_left_cancel` approach to gcd_mul_two_left generalizes to any coprimality argument about GCD factors. The proof that binaryGcd = Nat.gcd establishes full correctness, giving all of Nat.gcd's properties (commutativity, associativity, Bezout identity, etc.) to binaryGcd for free.",
     "openQuestions": [
-      "What is the formal step count comparison with the Euclidean algorithm?"
+      "What is the formal step count comparison with the Euclidean algorithm? The binary algorithm uses O(log²n) bit operations versus O(M(n) log n) for the Euclidean method with fast multiplication M(n) — can this comparison be formalized in Lean 4?",
+      "Can the algorithm be extended to the integer GCD (handling negative inputs) or to Gaussian integers ℤ[i], where the binary GCD structure generalizes via norm arguments?",
+      "The GMP library uses a Lehmer-Schönhage hybrid that switches between binary and Euclidean methods based on input size. Can a formally verified adaptive implementation be built in Lean 4 that matches GMP's performance model?"
     ]
   },
   "leanFile": {
@@ -79,6 +113,5 @@
       "type": "core",
       "description": "Correctness: binaryGcd a b = Nat.gcd a b"
     }
-  ],
-  "sections": []
+  ]
 }
