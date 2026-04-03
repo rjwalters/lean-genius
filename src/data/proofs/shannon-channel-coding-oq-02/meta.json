@@ -7,7 +7,7 @@
     "author": "Claude Shannon (1948), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binary_symmetric_channel",
     "date": "1948",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ShannonChannelCodingOQ02.lean",
     "tags": [
       "information-theory",
@@ -17,7 +17,7 @@
       "channel-capacity",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -38,9 +38,9 @@
       "Shannon entropy of uniform distribution on Bool = log 2",
       "Random coding existence lemma (probabilistic method for codebook selection)"
     ],
-    "assumptions": "0 axioms. 0 sorries. All results proved from Mathlib and the parent ShannonEntropy/ShannonChannelCoding infrastructure.",
+    "assumptions": "4 axioms inherited from ShannonChannelCoding.lean: fano_inequality, channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. 0 sorries. Note: bsc_capacity_proved in this file independently proves bsc_capacity_eq, but the import still carries those axioms in scope.",
     "dateAdded": "2026-03-30",
-    "axiomCount": 0,
+    "axiomCount": 4,
     "lineCount": 297,
     "prerequisites": [
       "Shannon entropy and mutual information (ShannonEntropy.lean)",

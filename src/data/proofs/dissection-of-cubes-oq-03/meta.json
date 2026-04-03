@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ03.lean",
     "tags": [
       "geometry",
@@ -16,11 +16,11 @@
       "squared-squares",
       "dimension"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 2,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "2 sorries for geometric confinement lemmas: (1) smallest_above_is_smaller — the smallest cube on a floor is bounded by its neighbors, so the cube directly above a non-top-reaching cube is strictly smaller; (2) global_min_not_reaching_top — the globally minimum-side cube cannot reach the top of the unit cube. Both require local geometric reasoning about cube adjacency.",
+    "axiomCount": 2,
+    "assumptions": "2 axioms inherited from DissectionOfCubes.lean: smaller_cube_above_axiom, all_different_implies_long_chains_axiom. 2 sorries for geometric confinement lemmas (smallest_above_is_smaller, global_min_not_reaching_top).",
     "lineCount": 599,
     "theoremCount": 17,
     "definitionCount": 13,
