@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-rcf-background",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-03",
+    "range": { "startLine": 5, "endLine": 28 },
+    "type": "context",
+    "title": "Rational Canonical Form: Mathematical Background",
+    "content": "The module header introduces the Rational Canonical Form (RCF), also called the Frobenius normal form. Unlike the Jordan canonical form — which requires an algebraically closed field — the RCF exists over any field $F$. It represents each matrix as a block diagonal of companion matrices $C(p_1), \\ldots, C(p_k)$ where the invariant factors $p_1 \\mid p_2 \\mid \\cdots \\mid p_k$ are the elementary divisors of the $F[x]$-module $F^n$ (with $x$ acting by multiplication by $A$). This module-theoretic perspective, combined with the structure theorem for finitely generated modules over PIDs, is the conceptual foundation of the RCF.",
+    "mathContext": "$A \\sim B \\Leftrightarrow$ they have the same invariant factors $p_1 \\mid \\cdots \\mid p_k$, where $p_k = m_A$ and $\\prod p_i = \\chi_A$",
+    "significance": "context",
+    "relatedConcepts": ["Jordan canonical form", "Smith normal form", "PID module classification", "invariant factors", "Frobenius normal form"],
+    "prerequisites": ["linear algebra over fields", "polynomial rings", "module theory", "PIDs"]
+  },
+  {
+    "id": "ann-variable-setup",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-03",
+    "range": { "startLine": 29, "endLine": 33 },
+    "type": "technical",
+    "title": "Generic Matrix Setup with DecidableEq",
+    "content": "The `variable` declaration uses `{n : Type*}` (an arbitrary type) with `[DecidableEq n]` and `[Fintype n]` type class constraints. This is the idiomatic Lean/Mathlib way to parametrize over arbitrary finite index types, more general than fixing `Fin n`. The `DecidableEq` requirement enables `if-then-else` and equality checks in matrix computations. Opening `Matrix` and `Polynomial` namespaces gives direct access to `Matrix.charpoly`, `minpoly`, and polynomial operations.",
+    "mathContext": "$A \\in M_{n \\times n}(F)$ where $n$ is a finite type and $F$ is a field",
+    "significance": "technical",
+    "relatedConcepts": ["Fintype type class", "DecidableEq", "Mathlib matrix conventions", "universe polymorphism"],
+    "prerequisites": ["Lean 4 type classes", "Mathlib matrix types"]
+  },
+  {
+    "id": "ann-charpoly-similar",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-03",
+    "range": { "startLine": 37, "endLine": 44 },
+    "type": "technique",
+    "title": "Characteristic Polynomial Invariance via Conjugation",
+    "content": "The proof of `charpoly_similar` is a single call to `Matrix.charpoly_conj_of_isUnit`, after `subst hSim` eliminates the hypothesis $B = P^{-1}AP$ by substituting. The mathematical reason: $\\chi_{P^{-1}AP}(x) = \\det(xI - P^{-1}AP) = \\det(P^{-1}(xI-A)P) = \\det(P^{-1})\\det(xI-A)\\det(P) = \\chi_A(x)$, using multiplicativity of the determinant and $\\det(P^{-1})\\det(P) = 1$. The use of `IsUnit P` (rather than `Invertible P` or `det P ≠ 0`) reflects Mathlib's preferred algebraic formulation of invertibility.",
+    "mathContext": "$\\chi_{P^{-1}AP}(x) = \\det(xI - P^{-1}AP) = \\det(P)^{-1}\\det(xI-A)\\det(P) = \\chi_A(x)$",
+    "significance": "key",
+    "relatedConcepts": ["characteristic polynomial", "determinant multiplicativity", "conjugation invariance", "IsUnit in Mathlib"],
+    "prerequisites": ["characteristic polynomial definition", "matrix determinant", "invertible matrices"]
+  },
+  {
+    "id": "ann-minpoly-similar",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-03",
+    "range": { "startLine": 46, "endLine": 52 },
+    "type": "technique",
+    "title": "Minimal Polynomial Invariance via Polynomial Evaluation",
+    "content": "The proof delegates to `minpoly_conj_of_isUnit`, which encapsulates the key insight: for any polynomial $p \\in F[x]$, we have $p(P^{-1}AP) = P^{-1}p(A)P$. This holds by induction since $(P^{-1}AP)^k = P^{-1}A^kP$ and linearity. Consequently, $p(P^{-1}AP) = 0 \\Leftrightarrow p(A) = 0$, meaning $A$ and $P^{-1}AP$ share their set of annihilating polynomials. The minimal polynomial — the monic generator of this ideal — is therefore the same for both.",
+    "mathContext": "$p(P^{-1}AP) = P^{-1}p(A)P$, so $\\{p : p(A) = 0\\} = \\{p : p(P^{-1}AP) = 0\\}$ and $m_{P^{-1}AP} = m_A$",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial", "annihilating polynomial", "polynomial evaluation at matrix", "Cayley-Hamilton theorem"],
+    "prerequisites": ["minimal polynomial definition", "polynomial ring over matrices", "ideal theory"]
+  },
+  {
+    "id": "ann-invariant-factors-def",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-03",
+    "range": { "startLine": 54, "endLine": 74 },
+    "type": "definition",
+    "title": "InvariantFactorsEqual: A Necessary Proxy",
+    "content": "The definition `InvariantFactorsEqual A B := A.charpoly = B.charpoly ∧ minpoly F A = minpoly F B` captures two necessary conditions for similarity but is explicitly noted as \"necessary but not sufficient\". The full invariant factor sequence $(p_1, \\ldots, p_k)$ determines the similarity class; knowing only the product (charpoly) and the largest element (minpoly) does not uniquely determine the sequence. For example, two 4×4 matrices with charpoly $x^4$ and minpoly $x^2$ might have invariant factor sequences $(x^2, x^2)$ or — if the minimal polynomial equals the charpoly — $(1, x^4)$ cannot arise. The `similar_implies_invariant_data` theorem bundles both invariance results into this predicate.",
+    "mathContext": "Two $n \\times n$ matrices are similar $\\Rightarrow$ `InvariantFactorsEqual`, but the converse requires the full invariant factor sequence, not just $\\chi$ and $m$",
+    "significance": "supporting",
+    "relatedConcepts": ["invariant factors", "Smith normal form", "elementary divisors", "similarity classification"],
+    "prerequisites": ["characteristic polynomial", "minimal polynomial", "invariant factor theory"]
+  },
+  {
+    "id": "ann-companion-matrix",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-03",
+    "range": { "startLine": 76, "endLine": 92 },
+    "type": "definition",
+    "title": "Companion Matrix: Building Block of RCF",
+    "content": "The `CompanionMatrixProp C p` definition captures what makes $C$ a companion matrix for monic polynomial $p$: both its characteristic polynomial and its minimal polynomial equal $p$. The companion matrix $C(p)$ for $p(x) = x^d + c_{d-1}x^{d-1} + \\cdots + c_0$ is the $d \\times d$ matrix with 1s on the subdiagonal and the negated coefficients in the last column. The key property — $p(C(p)) = 0$ with $p$ of minimal degree — is immediate from Cayley-Hamilton plus the fact that $p$ is both the characteristic and minimal polynomial of $C(p)$. The RCF theorem states that every matrix is similar to a block diagonal of companion matrices.",
+    "mathContext": "$C(p) = \\begin{pmatrix} 0 & 0 & \\cdots & -c_0 \\\\ 1 & 0 & \\cdots & -c_1 \\\\ 0 & 1 & \\cdots & -c_2 \\\\ \\vdots & & \\ddots & \\vdots \\\\ 0 & 0 & \\cdots & -c_{d-1}\\end{pmatrix}$, with $\\chi_{C(p)} = m_{C(p)} = p$",
+    "significance": "supporting",
+    "relatedConcepts": ["companion matrix", "cyclic module", "Cayley-Hamilton theorem", "rational canonical form blocks"],
+    "prerequisites": ["characteristic polynomial", "minimal polynomial", "block diagonal matrices"]
+  },
+  {
+    "id": "ann-gap-analysis",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-03",
+    "range": { "startLine": 94, "endLine": 130 },
+    "type": "insight",
+    "title": "RCF Formalization Roadmap: ~1800 Lines Needed",
+    "content": "The assessment section provides a structured gap analysis. Mathlib already has: `Matrix.charpoly`, the Cayley-Hamilton theorem (`aeval_self_charpoly`), `minpoly`, and both conjugation invariance lemmas. What's missing for the full RCF: (1) **Smith normal form** for matrices over $F[x]$ (~800 lines): diagonalization via elementary row/column operations, invariant factor extraction — this is the hardest piece; (2) **Companion matrix construction** (~200 lines): explicit building of $C(p)$ from a polynomial and proof that charpoly = minpoly = $p$; (3) **Block diagonal assembly** (~300 lines) and **full RCF theorem** (~500 lines): existence, uniqueness, and the characterization $A \\sim B \\Leftrightarrow$ same RCF. The total of ~1800 lines is substantial but well-scoped.",
+    "mathContext": "Full RCF: $A \\sim \\text{diag}(C(p_1), \\ldots, C(p_k))$ for unique invariant factors $p_1 \\mid \\cdots \\mid p_k$, extracted from Smith normal form of $(xI - A) \\in M_n(F[x])$",
+    "significance": "context",
+    "relatedConcepts": ["Smith normal form", "PID diagonalization", "elementary operations", "block diagonal matrices", "Mathlib formalization effort"],
+    "prerequisites": ["matrices over PIDs", "Smith normal form algorithm", "module structure theorem"]
+  }
+]
