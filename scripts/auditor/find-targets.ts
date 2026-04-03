@@ -153,19 +153,23 @@ function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
   }
 
   // Detect submodule imports from main file (import Proofs.X.Y)
-  // Only follow imports into subdirectories that are prefixes of the main file name,
-  // to avoid counting sorries in shared libraries (e.g., GraphCore).
+  // Follow imports into subdirectories that are either:
+  //   1. A prefix of the main file name (e.g., "YangMills" prefix of "YangMillsProblem")
+  //   2. The same directory as the main file (e.g., main at YangMills/Exploration.lean → follow Proofs.YangMills.*)
+  // This avoids counting sorries in unrelated shared libraries (e.g., GraphCore).
   if (mainLeanPath && fs.existsSync(mainLeanPath)) {
     const mainBaseName = path.basename(mainLeanPath, '.lean')
+    const mainParentDir = path.basename(path.dirname(mainLeanPath))
     const content = fs.readFileSync(mainLeanPath, 'utf-8')
     const importRegex = /^import (Proofs\.\S+)/gm
     let match
     while ((match = importRegex.exec(content)) !== null) {
       const moduleParts = match[1].split('.')
-      // Only follow multi-level imports (Proofs.X.Y) where X is a prefix of the main file name
+      // Only follow multi-level imports (Proofs.X.Y)
       if (moduleParts.length < 3) continue
       const subDirName = moduleParts[1]
-      if (!mainBaseName.startsWith(subDirName)) continue
+      // Follow if X is a prefix of the main file name, OR if the main file lives in directory X
+      if (!mainBaseName.startsWith(subDirName) && mainParentDir !== subDirName) continue
 
       const modulePath = moduleParts.join('/')
       const subPath = path.join('proofs', modulePath + '.lean')
