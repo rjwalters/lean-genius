@@ -485,7 +485,7 @@ theorem sidon_card_sq_le_2N (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
   · have h_eq : (n + 1) ^ 2 = (n + 1) * n + (n + 1) := by ring
     omega
 
-/-- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
+/- **FALSE (removed)**: The original claimed k(k+1)/2 - 1 ≤ 2N - 1 for
     almost-Sidon A ⊆ {1,...,N} with |A| = k.
 
     COUNTEREXAMPLE: A = {1, 2, 4, 6, 7} ⊆ {1,...,7} is almost-Sidon
@@ -497,7 +497,6 @@ theorem sidon_card_sq_le_2N (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
     strictly less than k(k+1)/2 - 1. The correct bound is:
     #{distinct sums} ≤ 2N - 1, i.e., k(k+1)/2 - (c-1) ≤ 2N - 1.
     The correct PROVED bound is `distinct_sums_bounded` above. -/
-theorem almost_sidon_sum_range_false_note : True := trivial
 
 /-- IsSidon means every sum has at most one representation. -/
 private lemma isSidon_sumRepCount_le_one {B : Finset ℕ} (hS : IsSidon B) (n : ℕ) :

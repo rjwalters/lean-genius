@@ -385,14 +385,13 @@ theorem f_case_k_eq_1 :
   -- preserving both hasPropertyP and edgeCount.
   sorry  -- Type transport via Fintype.equivFin
 
-/-- **FALSE THEOREM (removed)**: The original claimed k=n-2 forces complete graph.
+/- **FALSE THEOREM (removed)**: The original claimed k=n-2 forces complete graph.
     COUNTEREXAMPLE: The star graph K_{1,n-1} has n-1 edges and satisfies P(n-2),
     since the center has degree n-1 ≥ n-2 in the only n-subset (= V itself).
     So f(n, n-2) ≤ n-1 << n(n-1)/2 for n ≥ 4.
 
     The correct statement is: P(n-2) only requires max degree ≥ n-2 in the
     whole graph, which a single high-degree vertex achieves. -/
-theorem f_max_k_false_note : True := trivial
 
 /-
 ## Part 6: Monotonicity
