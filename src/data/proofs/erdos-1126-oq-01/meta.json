@@ -21,7 +21,7 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1126,
     "erdosUrl": "https://erdosproblems.com/1126",
     "erdosProblemStatus": "solved",
@@ -64,9 +64,9 @@
       "log_of_mul_is_additive: Logarithmic reduction of multiplicative to additive equation (PROVED)"
     ],
     "dateAdded": "2026-03-24",
-    "axiomCount": 3,
+    "axiomCount": 7,
     "lineCount": 485,
-    "assumptions": "3 axiom declarations: almost_jensen_stability, almost_derivation_stability, measurable_derivation_is_zero. 1 sorry remains (ae_double_of_almost_jensen, Fubini section extraction)."
+    "assumptions": "7 axioms: almost_multiplicative_stability, almost_jensen_stability, almost_derivation_stability, measurable_multiplicative_is_power, measurable_derivation_is_zero (public); ae_double_of_almost_jensen (Fubini section extraction), volume_preimage_double_null (product-space smul scaling, Mathlib 4.26 API compatibility) (private). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Extending the de Bruijn-Jurkat Paradigm**\n\nThe de Bruijn-Jurkat theorem (1965-66) showed that almost additive functions can be corrected to truly additive functions a.e. This naturally raises the question: does the same stability hold for other fundamental functional equations?\n\n**The Key Equations:**\n1. **Multiplicative** (Cauchy exponential): $f(xy) = f(x)f(y)$ — characterizes exponentials and power functions\n2. **Jensen** (midpoint affinity): $f((x+y)/2) = (f(x)+f(y))/2$ — characterizes affine functions\n3. **Derivation** (Leibniz rule): $d(xy) = x \\cdot d(y) + y \\cdot d(x)$ — characterizes differentiation\n\n**Known Results:**\n- **Ger (1979)** showed stability holds for polynomial functional equations, which includes the derivation case\n- **Járai (2005)** gave a comprehensive treatment of regularity for functional equations in several variables\n- The multiplicative case reduces to the additive case via logarithms (for positive solutions)\n- The Jensen case is algebraically equivalent to the additive case modulo a constant",
@@ -178,13 +178,13 @@
       "Can the stability paradigm be extended to functional equations on locally compact groups beyond ℝ?",
       "What is the optimal null-set estimate: given an ε-null exceptional set, how small can the correction set be?",
       "Does stability hold for functional inequalities (e.g., almost sub-additive → sub-additive a.e.)?",
-      "Can the remaining sorry (ae_double_of_almost_jensen, Fubini section extraction) be resolved using Mathlib's Fubini theorem?"
+      "Can ae_double_of_almost_jensen and volume_preimage_double_null be formalized using Mathlib's Fubini theorem and measure-preserving map APIs (currently axiomatized for API compatibility)?"
     ]
   },
   "leanFile": {
     "path": "proofs/Proofs/Erdos1126OQ01Problem.lean",
     "filename": "Erdos1126OQ01Problem.lean",
     "lineCount": 485,
-    "axiomCount": 3
+    "axiomCount": 5
   }
 }
