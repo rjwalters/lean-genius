@@ -20,7 +20,7 @@
     "erdosNumber": 42,
     "erdosUrl": "https://erdosproblems.com/42",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
+    "axiomCount": 0,
     "lineCount": 165,
     "prerequisites": [
       "Sidon sets (B₂ sequences) and their properties",
@@ -28,7 +28,7 @@
       "Extremal combinatorics and Ramsey theory",
       "Finite field constructions (Singer difference sets)"
     ],
-    "assumptions": "4 axiom declarations: sedov_M2, sedov_M3, ErdosProblem42, ErdosProblem42_constructive. sidon_size_bound proved from Mathlib via difference counting injection.",
+    "assumptions": "0 axioms, 0 sorries. The main conjecture (Erdős Problem 42) and Sedov's partial results are referenced in comments but not formally stated as Lean axioms or theorems. Open problem.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -152,7 +152,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 165,
-    "axiomCount": 4,
+    "axiomCount": 0,
     "theoremCount": 1,
     "definitionCount": 5
   },
