@@ -85,52 +85,46 @@
   },
   "sections": [
     {
+      "id": "scalar-embedding",
       "title": "§ 1. Scalar Embedding and Norm Properties",
       "startLine": 38,
       "endLine": 51,
-      "description": "Establishes that the scalar embedding algebraMap 𝕜 A is isometric (norm_algebraMap) and maps nonzero scalars to units (algebraMap_isUnit). These foundational lemmas underpin every subsequent estimate in the file.",
-      "theorems": ["norm_algebraMap", "algebraMap_isUnit"],
-      "tactics": ["rw", "simp", "exact"]
+      "summary": "Establishes that the scalar embedding algebraMap 𝕜 A is isometric (norm_algebraMap) and maps nonzero scalars to units (algebraMap_isUnit). These foundational lemmas underpin every subsequent estimate in the file."
     },
     {
+      "id": "resolvent-exists",
       "title": "§ 2. The Resolvent Exists via Neumann Series",
       "startLine": 52,
       "endLine": 97,
-      "description": "Three lemmas building to resolvent existence. norm_inv_smul_lt_one converts ‖a‖ < ‖λ‖ into ‖λ⁻¹a‖ < 1 via a calc chain. resolvent_factorization proves λ·1 - a = λ·(1 - λ⁻¹a) algebraically. resolvent_isUnit combines these with the Neumann series from OQ-02 to show λ·1 - a is invertible.",
-      "theorems": ["norm_inv_smul_lt_one", "resolvent_factorization", "resolvent_isUnit"],
-      "tactics": ["calc", "rw", "exact", "apply", "linarith"]
+      "summary": "Three lemmas building to resolvent existence. norm_inv_smul_lt_one converts ‖a‖ < ‖λ‖ into ‖λ⁻¹a‖ < 1 via a calc chain. resolvent_factorization proves λ·1 - a = λ·(1 - λ⁻¹a) algebraically. resolvent_isUnit combines these with the Neumann series from OQ-02 to show λ·1 - a is invertible."
     },
     {
+      "id": "neumann-series-repr",
       "title": "§ 3. Neumann Series Representation of the Resolvent",
       "startLine": 98,
       "endLine": 138,
-      "description": "Explicitly computes Ring.inverse (λ·1 - a) = λ⁻¹ · ∑ (λ⁻¹a)^n. The summability follows from norm_inv_smul_lt_one and neumann_summable. The series identity uses resolvent_factorization, Ring.inverse_unit for products of units, and neumann_sum from OQ-02.",
-      "theorems": ["resolvent_series_summable", "resolvent_eq_neumann_series"],
-      "tactics": ["set", "rw", "simp", "congr", "exact"]
+      "summary": "Explicitly computes Ring.inverse (λ·1 - a) = λ⁻¹ · ∑ (λ⁻¹a)^n. The summability follows from norm_inv_smul_lt_one and neumann_summable. The series identity uses resolvent_factorization, Ring.inverse_unit for products of units, and neumann_sum from OQ-02."
     },
     {
+      "id": "norm-bound",
       "title": "§ 4. Norm Bound on the Resolvent",
       "startLine": 139,
       "endLine": 178,
-      "description": "Proves ‖R(λ,a)‖ ≤ (‖λ‖ - ‖a‖)⁻¹ via a six-step calc chain: submultiplicativity of norm, norm_neumann_le from OQ-02, norm_inv, and algebraic simplification of ‖λ‖⁻¹·(1 - ‖λ‖⁻¹·‖a‖)⁻¹ = (‖λ‖ - ‖a‖)⁻¹ by field_simp.",
-      "theorems": ["resolvent_norm_bound"],
-      "tactics": ["calc", "apply", "rw", "linarith", "field_simp"]
+      "summary": "Proves ‖R(λ,a)‖ ≤ (‖λ‖ - ‖a‖)⁻¹ via a six-step calc chain: submultiplicativity of norm, norm_neumann_le from OQ-02, norm_inv, and algebraic simplification of ‖λ‖⁻¹·(1 - ‖λ‖⁻¹·‖a‖)⁻¹ = (‖λ‖ - ‖a‖)⁻¹ by field_simp."
     },
     {
+      "id": "first-resolvent-identity",
       "title": "§ 5. First Resolvent Identity",
       "startLine": 179,
       "endLine": 220,
-      "description": "Proves R(λ) - R(μ) = (μ-λ)·R(λ)·R(μ) for any two resolvent points. Uses only algebraic manipulations on units: extracts IsUnit witnesses, rewrites Ring.inverse as unit inverses, and proves the identity via uλ⁻¹ - uμ⁻¹ = uλ⁻¹·(uμ - uλ)·uμ⁻¹ by ring after cancellation.",
-      "theorems": ["first_resolvent_identity"],
-      "tactics": ["obtain", "rw", "have", "ring", "simp"]
+      "summary": "Proves R(λ) - R(μ) = (μ-λ)·R(λ)·R(μ) for any two resolvent points. Uses only algebraic manipulations on units: extracts IsUnit witnesses, rewrites Ring.inverse as unit inverses, and proves the identity via uλ⁻¹ - uμ⁻¹ = uλ⁻¹·(uμ - uλ)·uμ⁻¹ by ring after cancellation."
     },
     {
+      "id": "vanishes-at-infinity",
       "title": "§ 6. Resolvent Vanishes at Infinity",
       "startLine": 221,
       "endLine": 250,
-      "description": "Proves Filter.Tendsto (R(λ,a)) (comap ‖·‖ atTop) (nhds 0) via squeeze_zero_norm'. The upper bound (‖R(λ)‖ ≤ (‖λ‖ - ‖a‖)⁻¹) is eventually verified using resolvent_norm_bound. The bound itself tends to 0 via tendsto_inv_atTop_zero composed with the shift r ↦ r - ‖a‖.",
-      "theorems": ["resolvent_tendsto_zero"],
-      "tactics": ["apply", "rw", "refine", "simp", "linarith", "exact"]
+      "summary": "Proves Filter.Tendsto (R(λ,a)) (comap ‖·‖ atTop) (nhds 0) via squeeze_zero_norm'. The upper bound (‖R(λ)‖ ≤ (‖λ‖ - ‖a‖)⁻¹) is eventually verified using resolvent_norm_bound. The bound itself tends to 0 via tendsto_inv_atTop_zero composed with the shift r ↦ r - ‖a‖."
     }
   ],
   "conclusion": {
