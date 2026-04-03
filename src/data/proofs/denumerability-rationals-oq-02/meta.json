@@ -32,15 +32,17 @@
     ]
   },
   "overview": {
-    "historicalContext": "Cantor (1895) proved that ℚ is, up to order-isomorphism, the unique countable dense linear order without endpoints. This means any two countable dense linear orders without endpoints are order-isomorphic — and both are isomorphic to ℚ. The proof uses Cantor's back-and-forth method: build an isomorphism step by step, alternating between extending the forward and backward maps. This is a fundamental result in model theory (ℚ is the unique countable homogeneous model of DLO).",
+    "historicalContext": "Georg Cantor published his characterization of ℚ in 1895 as part of his groundbreaking work on set theory and infinite ordinals. He proved that any two countable dense linear orders without endpoints are order-isomorphic — establishing ℚ as the unique (up to isomorphism) countable dense linear order without endpoints. The proof introduced what is now called the 'back-and-forth method' (Hin-und-Her-Methode): build an isomorphism step by step, at even steps mapping forward to cover the next element in the domain enumeration, at odd steps mapping backward to cover the next element in the codomain enumeration. Density and no-endpoints guarantee each extension step always succeeds.\n\nThis result was a landmark for what later became model theory. In 1954, Vaught identified the connection to first-order theories: the theory DLO (Dense Linear Orders without endpoints) is ω-categorical — it has exactly one countable model up to isomorphism. Ehrenfeucht-Fraïssé games (1950s–60s) reinterpreted the back-and-forth steps as moves in a two-player game, giving a game-theoretic foundation for model-theoretic equivalence. Cantor's result is also the prototype for Fraïssé's 1954 theorem on limits of finite structures.\n\nIn modern terms, DLO admits quantifier elimination (every formula is equivalent to a quantifier-free one), which implies completeness and ω-categoricity. This makes DLO one of the cleanest examples of a first-order theory with decidable model-checking.",
     "problemStatement": "Prove Cantor's characterization: ℚ is the unique countable dense linear order without endpoints (up to order-isomorphism). Formalize back-and-forth and the universality of ℚ.",
     "text": "A countable dense linear order without endpoints (CDLO) satisfies: (1) countable, (2) dense (∀a<b, ∃c: a<c<b), (3) no minimum, (4) no maximum. Cantor's theorem: any two CDLOs are order-isomorphic. Proof by back-and-forth: enumerate both orders as (a₀, a₁, ...) and (b₀, b₁, ...). Build isomorphism step by step, at even steps extending the domain to include the next aᵢ, at odd steps extending the range to include the next bⱼ. Density ensures we can always find the required intermediate element.",
-    "proofStrategy": "Use Mathlib's CountableDenseLinearOrder.iso for the isomorphism existence. Prove ℚ satisfies the CDLO axioms. Derive universality: any countable linear order embeds into ℚ. Prove structural properties.",
+    "proofStrategy": "The formalization proceeds in twelve parts. First, establish that ℚ satisfies all six CDLO typeclass axioms (LinearOrder, Countable, DenselyOrdered, NoMinOrder, NoMaxOrder, Nonempty). Second, state Cantor's characterization as a direct delegation to Mathlib's `Order.iso_of_countable_dense`, which implements the full back-and-forth construction internally. Third, expose the `Order.PartialIso` infrastructure and the key density-extension lemma `Order.exists_between_finsets`, which guarantees that a finite partial isomorphism can always be extended when density and no-endpoints hold. Fourth, prove self-similarity (ℚ ≃o ℚ) and universality results: ℤ ↪o ℚ and Fin n ↪o ℚ. Fifth, add concrete density witnesses (midpoint formula, explicit numeric examples) and cardinal arithmetic results connecting to OQ-01's countability theorem.",
     "keyInsights": [
-      "Back-and-forth: the key technique for proving categoricity of countable models",
-      "ℚ is the unique model of DLO (Dense Linear Order without endpoints) in the countable case",
-      "All countable linear orders embed into ℚ (ℚ is universal for countable linear orders)",
-      "The Cantor-Bendixson theorem studies uncountable linear orders; ℚ is the countable case"
+      "Back-and-forth is the canonical technique for ω-categoricity: by alternating extension steps, the density axiom ensures the partial map can always be completed to a total order isomorphism.",
+      "ℚ is characterized entirely by its order type: no metric, no field structure, no topology — just the bare order. This makes DLO the archetypal 'complete description by simple axioms'.",
+      "All countable linear orders embed into ℚ, making ℚ universal for this class — analogous to how the Urysohn space is universal for separable metric spaces.",
+      "The discreteness of ℤ (no integer between n and n+1) contrasts sharply with ℚ's density, even though both are countably infinite — countability and density are independent properties.",
+      "ℚ's automorphism group is huge and oligomorphic: for any two $n$-tuples of rationals with the same order type, an automorphism maps one to the other. This makes ℚ homogeneous as a relational structure.",
+      "Quantifier elimination for DLO (every formula reduces to a Boolean combination of atomic order comparisons) follows from the back-and-forth method and implies decidability of the theory."
     ],
     "prerequisites": [
       "Order theory: linear orders, dense orders, order-isomorphisms",
@@ -71,5 +73,97 @@
       "description": "Countability of ℚ; this file adds Cantor's characterization and back-and-forth isomorphism"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-imports-header",
+      "title": "Imports and Module Header",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports Mathlib's CountableDenseLinearOrder, Denumerable, Cardinal, and order homomorphism libraries. The module docstring explains the back-and-forth method and lists the five key results proved."
+    },
+    {
+      "id": "sec-cdlo-instances",
+      "title": "Part I: ℚ as a CDLO",
+      "startLine": 43,
+      "endLine": 63,
+      "summary": "Assembles the six typeclass instances proving ℚ is a Countable Dense Linear Order Without Endpoints. States density (rationals_dense), no-minimum (rationals_no_min), and no-maximum (rationals_no_max) as explicit theorems."
+    },
+    {
+      "id": "sec-cantor-theorem",
+      "title": "Part II: Cantor's Characterization Theorem",
+      "startLine": 65,
+      "endLine": 84,
+      "summary": "The central theorem: any CDLO is order-isomorphic to ℚ (cantor_characterization), and any two CDLOs are isomorphic to each other (countable_dense_linear_orders_iso). Both delegate to Mathlib's Order.iso_of_countable_dense."
+    },
+    {
+      "id": "sec-back-forth-infra",
+      "title": "Part III: Back-and-Forth Infrastructure",
+      "startLine": 86,
+      "endLine": 101,
+      "summary": "Exposes Mathlib's Order.PartialIso type and its .comm operation. Proves the density_extension_lemma: given finite lower and upper bound sets with lo < hi, some element lies strictly between all of them."
+    },
+    {
+      "id": "sec-self-similarity",
+      "title": "Part IV: Self-Similarity of ℚ",
+      "startLine": 103,
+      "endLine": 111,
+      "summary": "Proves ℚ is order-isomorphic to itself (rationals_selfsimilar) via back-and-forth, and defines the trivial_automorphism as OrderIso.refl."
+    },
+    {
+      "id": "sec-embeddings",
+      "title": "Part V: Embedding Results",
+      "startLine": 113,
+      "endLine": 133,
+      "summary": "Constructs explicit order embeddings: integers_embed (ℤ ↪o ℚ) and naturals_embed (ℕ ↪o ℚ) via the canonical cast maps, with explicit proofs of injectivity and order-preservation."
+    },
+    {
+      "id": "sec-density-examples",
+      "title": "Part VI: Concrete Density Examples",
+      "startLine": 135,
+      "endLine": 154,
+      "summary": "Proves the midpoint theorem (midpoint_between), an explicit numeric witness (5/12 between 1/3 and 1/2), and half_between_zero — concrete witnesses demonstrating density using linarith."
+    },
+    {
+      "id": "sec-no-endpoints-witnesses",
+      "title": "Part VII: Constructive No-Endpoint Witnesses",
+      "startLine": 156,
+      "endLine": 161,
+      "summary": "Two one-liners: pred_lt (q - 1 < q) and succ_gt (q < q + 1) provide explicit arithmetic witnesses for the no-minimum and no-maximum properties."
+    },
+    {
+      "id": "sec-density-propagation",
+      "title": "Part IX: Density Propagation",
+      "startLine": 163,
+      "endLine": 181,
+      "summary": "Proves two_between and three_between: by iterated density, between any two rationals there exist at least two (resp. three) strictly intermediate rationals."
+    },
+    {
+      "id": "sec-cardinal-arithmetic",
+      "title": "Part X: Cardinal Arithmetic",
+      "startLine": 183,
+      "endLine": 193,
+      "summary": "Proves card_rat_aleph0 (|ℚ| = ℵ₀) and card_rat_eq_nat (|ℚ| = |ℕ|) using Mathlib's Cardinal.mk_denumerable."
+    },
+    {
+      "id": "sec-contrast-integers",
+      "title": "Part XI: Contrast with Discrete Orders",
+      "startLine": 195,
+      "endLine": 205,
+      "summary": "no_integer_between proves the discreteness of ℤ (no integer strictly between n and n+1, proved by omega). nat_has_min states ℕ's minimum. These contrast with ℚ's density."
+    },
+    {
+      "id": "sec-universality",
+      "title": "Part XII: Universality of ℚ",
+      "startLine": 207,
+      "endLine": 221,
+      "summary": "fin_embeds proves any Fin n embeds strictly monotonically into ℚ via casting, establishing the finite case of ℚ's universality for all countable linear orders."
+    },
+    {
+      "id": "sec-verification",
+      "title": "Verification Examples",
+      "startLine": 223,
+      "endLine": 236,
+      "summary": "Three inline examples verify: cantor_characterization applied to ℚ, the midpoint formula on 1/4 and 3/4, and integers_embed preserving 3 < 5."
+    }
+  ]
 }
