@@ -37,7 +37,7 @@ namespace ChungFellerBijection
 
 open GeneralizedBallot ChungFeller
 
-/-! ## Part I: Setup and Notation -/
+/- ## Part I: Setup and Notation -/
 
 variable {n : ℕ} (hn : 0 < n)
 
@@ -50,7 +50,7 @@ def IsDyckPath (l : List ℤ) (n : ℕ) : Prop :=
 noncomputable def chungFellerRot (l : List ℤ) : List ℤ :=
   cyclicRotation (1 :: l) (rightmostMinPos (1 :: l))
 
-/-! ## Part II: The Good Rotation Starts With 1 -/
+/- ## Part II: The Good Rotation Starts With 1 -/
 
 /-- If a sequence's cyclic rotation is a good rotation, its first element is positive.
     Since elements are ±1, it must be 1. -/
@@ -104,7 +104,7 @@ theorem chungFellerRot_head_eq_one {l : List ℤ} {n : ℕ}
   simp only [List.headI_take_one] at hpos
   rcases hpm with h | h <;> simp [h] at hpos ⊢
 
-/-! ## Part III: The Tail is a Dyck Path -/
+/- ## Part III: The Tail is a Dyck Path -/
 
 /-- Prefix sums of the tail of a good rotation are non-negative.
     If rot = 1::D is the good rotation, then prefixSum(rot, j+1) ≥ 1,
@@ -165,7 +165,7 @@ theorem chungFellerRot_tail_upsteps_all_above {l : List ℤ} {n : ℕ}
     0 ≤ ((chungFellerRot l).tail.take i).sum :=
   chungFellerRot_tail_nonneg_prefixSum hn hbal i
 
-/-! ## Part IV: upstepsAboveAxis of the Tail Equals n -/
+/- ## Part IV: upstepsAboveAxis of the Tail Equals n -/
 
 /-- Helper: card of range filter by get? equals List.count.
     Standard combinatorial fact: positions of value x in a list = count of x.
@@ -274,7 +274,7 @@ theorem chungFellerRot_tail_type_eq_n {l : List ℤ} {n : ℕ}
   rw [upstepsAboveAxis_of_all_nonneg _ (chungFellerRot_tail_nonneg_prefixSum hn hbal)]
   exact chungFellerRot_tail_count_one hn hbal
 
-/-! ## Part V: Well-Typing Lemmas (Session 2) -/
+/- ## Part V: Well-Typing Lemmas (Session 2) -/
 
 /-- **Bound**: For any balanced path, the number of upsteps above the axis is at most n.
     Proof: upstepsAboveAxis is a subset of all +1 positions, which number n. -/
@@ -335,9 +335,9 @@ theorem chungFellerRot_tail_is_dyck {l : List ℤ} {n : ℕ}
   ⟨chungFellerRot_tail_is_balanced hn hbal,
    chungFellerRot_tail_nonneg_prefixSum hn hbal⟩
 
-/-! ## Part VI: The Full Bijection -/
+/- ## Part VI: The Full Bijection -/
 
-/-! ### Orbit Structure -/
+/- ### Orbit Structure -/
 
 /-- **Modular rotation composition**: composing two cyclic rotations that "wrap around"
     equals a single rotation. When r + m > |A|, the composition rotates by r+m-|A|.
@@ -460,7 +460,7 @@ noncomputable def chungFellerMap (n : ℕ) (hn : 0 < n) :
     ⟨⟨(chungFellerRot l).tail, chungFellerRot_tail_is_dyck hn hbal⟩,
      ⟨upstepsAboveAxis l, upstepsAboveAxis_le_n hbal⟩⟩
 
-/-! ## Part VII: Bijectivity Infrastructure -/
+/- ## Part VII: Bijectivity Infrastructure -/
 
 /-- When D is a Dyck path, `chungFellerRot D = 1 :: D`.
     Key: all prefix sums of 1::D at positions ≥ 1 are ≥ 1, so position 0
@@ -511,16 +511,27 @@ private lemma cyclicRotation_get?_zero {A : List ℤ} {p : ℕ} (hp : p < A.leng
   rw [List.get?_append_left (by simp [List.length_drop]; omega)]
   rw [List.get?_drop]; simp
 
+/-- Type formula: the type of rotation at position p equals the cardinality of
+    F(p) = {q ∈ [2n+1] : S[q]=1 ∧ ((q<p ∧ PS q ≥ PS p) ∨ (p<q ∧ PS q > PS p))}.
+    Proof: unfold cyclicRotation, split at wrap-around, and use cyclicRotation_prefixSum. -/
+private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
+    (hD : IsDyckPath D n) (p : ℕ) (hp : p < (1 :: D).length)
+    (hp_one : (1 :: D).get? p = some 1) :
+    upstepsAboveAxis (cyclicRotation (1 :: D) p).tail =
+    ((Finset.range (1 :: D).length).filter (fun q =>
+      (1 :: D).get? q = some 1 ∧
+      ((q < p ∧ prefixSum (1 :: D) q ≥ prefixSum (1 :: D) p) ∨
+       (p < q ∧ prefixSum (1 :: D) q > prefixSum (1 :: D) p)))).card := by
+  sorry
+
 /-- **Key hard lemma**: The n+1 rotations of 1::D at its 1-positions give
     balanced paths with ALL DISTINCT types.
 
-    **Proof sketch** (double counting):
-    Let q₀<q₁<...<qₙ be the 1-positions of S=1::D, with heights hᵢ=PS(qᵢ).
-    For rotation index i, type(lᵢ) = #{k>i: hₖ>hᵢ} + #{k<i: hₖ≥hᵢ}.
-    Sum over i: Σ type(lᵢ) = #{(i,k): i<k, hₖ>hᵢ} + #{(i,k): i<k, hᵢ≥hₖ}
-                            = #{(i,k): i<k} = n*(n+1)/2.
-    Since each type ≤ n (from upstepsAboveAxis_le_n) and n+1 values in
-    {0,...,n} sum to n*(n+1)/2, they must be exactly {0,...,n}. -/
+    **Proof** (via type formula + Finset strict subset argument):
+    For 1-positions p₁ < p₂ of S = 1::D, define F(p) via the type formula above.
+    Case 1 (PS p₂ > PS p₁): F(p₂) ⊊ F(p₁) because p₂ ∈ F(p₁) \ F(p₂).
+    Case 2 (PS p₂ ≤ PS p₁): F(p₁) ⊊ F(p₂) because p₁ ∈ F(p₂) \ F(p₁).
+    Either way, |F(p₁)| ≠ |F(p₂)|. -/
 private lemma rotation_types_all_distinct {D : List ℤ} {n : ℕ} (hn : 0 < n)
     (hD : IsDyckPath D n) (p₁ p₂ : ℕ) (hp₁ : p₁ < (1 :: D).length)
     (hp₂ : p₂ < (1 :: D).length)
@@ -529,7 +540,72 @@ private lemma rotation_types_all_distinct {D : List ℤ} {n : ℕ} (hn : 0 < n)
     (hne : p₁ ≠ p₂) :
     upstepsAboveAxis (cyclicRotation (1 :: D) p₁).tail ≠
     upstepsAboveAxis (cyclicRotation (1 :: D) p₂).tail := by
-  sorry
+  -- Work with S := 1 :: D via local let (avoids set/rw mismatch with rotation_type_formula)
+  let S : List ℤ := 1 :: D
+  let F := fun p => (Finset.range S.length).filter (fun q =>
+    S.get? q = some 1 ∧
+    ((q < p ∧ prefixSum S q ≥ prefixSum S p) ∨
+     (p < q ∧ prefixSum S q > prefixSum S p)))
+  -- Helper: p is never in F(p) itself
+  have self_not_mem : ∀ p, p ∉ F p := by
+    intro p hp
+    simp only [F, Finset.mem_filter] at hp
+    rcases hp.2.2 with ⟨h, _⟩ | ⟨h, _⟩ <;> exact absurd h (lt_irrefl p)
+  -- Core ordered claim: for a < b, the types (as |F|) differ
+  have h_ord : ∀ a b : ℕ, a < b → a < S.length → b < S.length →
+      S.get? a = some 1 → S.get? b = some 1 →
+      (F a).card ≠ (F b).card := by
+    intro a b hab ha hb ha_one hb_one
+    by_cases hPS : prefixSum S a < prefixSum S b
+    · -- PS a < PS b: F(b) ⊊ F(a), so |F(a)| > |F(b)|
+      apply Nat.ne_of_gt
+      apply Finset.card_lt_card
+      rw [Finset.ssubset_def]
+      refine ⟨?_, ?_⟩
+      · -- F(b) ⊆ F(a)
+        intro q hq
+        simp only [F, Finset.mem_filter, Finset.mem_range] at hq ⊢
+        obtain ⟨hqlen, hqone, hqcond⟩ := hq
+        refine ⟨hqlen, hqone, ?_⟩
+        rcases hqcond with ⟨hqlt, hqps⟩ | ⟨hqgt, hqps⟩
+        · rcases lt_trichotomy q a with h | rfl | h
+          · exact Or.inl ⟨h, le_of_lt (lt_of_lt_of_le hPS hqps)⟩
+          · exact absurd hqps (not_le.mpr hPS)
+          · exact Or.inr ⟨h, lt_of_lt_of_le hPS hqps⟩
+        · exact Or.inr ⟨lt_trans hab hqgt, lt_trans hPS hqps⟩
+      · -- b ∈ F(a) but b ∉ F(b)
+        intro h_rev
+        exact self_not_mem b (h_rev (by
+          simp only [F, Finset.mem_filter, Finset.mem_range]
+          exact ⟨hb, hb_one, Or.inr ⟨hab, hPS⟩⟩))
+    · -- PS a ≥ PS b: F(a) ⊊ F(b), so |F(b)| > |F(a)|
+      push_neg at hPS
+      apply Nat.ne_of_lt
+      apply Finset.card_lt_card
+      rw [Finset.ssubset_def]
+      refine ⟨?_, ?_⟩
+      · -- F(a) ⊆ F(b)
+        intro q hq
+        simp only [F, Finset.mem_filter, Finset.mem_range] at hq ⊢
+        obtain ⟨hqlen, hqone, hqcond⟩ := hq
+        refine ⟨hqlen, hqone, ?_⟩
+        rcases hqcond with ⟨hqlt, hqps⟩ | ⟨hqgt, hqps⟩
+        · exact Or.inl ⟨lt_trans hqlt hab, le_trans hPS hqps⟩
+        · rcases lt_trichotomy q b with h | rfl | h
+          · exact Or.inl ⟨h, le_of_lt (lt_of_le_of_lt hPS hqps)⟩
+          · exact absurd hPS (not_le.mpr hqps)
+          · exact Or.inr ⟨h, lt_of_le_of_lt hPS hqps⟩
+      · -- a ∈ F(b) but a ∉ F(a)
+        intro h_rev
+        exact self_not_mem a (h_rev (by
+          simp only [F, Finset.mem_filter, Finset.mem_range]
+          exact ⟨ha, ha_one, Or.inl ⟨hab, hPS⟩⟩))
+  -- Apply h_ord: rewrite types as |F| via type formula, then WLOG p₁ < p₂
+  rw [rotation_type_formula hn hD p₁ hp₁ hp₁_one,
+      rotation_type_formula hn hD p₂ hp₂ hp₂_one]
+  rcases Nat.lt_or_gt_of_ne hne with hp_lt | hp_gt
+  · exact h_ord p₁ p₂ hp_lt hp₁ hp₂ hp₁_one hp₂_one
+  · exact Ne.symm (h_ord p₂ p₁ hp_gt hp₂ hp₁ hp₂_one hp₁_one)
 
 /-- **Chung-Feller bijection**: The map `chungFellerMap` is bijective.
 
@@ -654,7 +730,7 @@ theorem chung_feller_uniform' (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n
     Set.ncard (balancedPathsOfType n j) = Set.ncard (balancedPathsOfType n k) :=
   chung_feller_uniform n j k hj hk
 
-/-! ## Part VII: Computational Verification -/
+/- ## Part VII: Computational Verification -/
 
 /-- upstepsAboveAxis of good rotation tail for n=2 paths. -/
 
@@ -671,7 +747,7 @@ example : upstepsAboveAxisC [-1,1,-1,1] = 0 := by native_decide
 
 example : upstepsAboveAxisC [1,1,-1,-1] = 2 := by native_decide  -- Dyck (type 2 = n)
 
-/-! ## Summary of Progress -/
+/- ## Summary of Progress -/
 
 /-- **Progress Summary**: We have proved the COMPLETE FORWARD DIRECTION of the Chung-Feller bijection,
     plus new supporting lemmas that well-type the bijection candidate:
