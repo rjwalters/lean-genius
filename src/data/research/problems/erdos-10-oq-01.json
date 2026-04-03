@@ -2,7 +2,7 @@
   "slug": "erdos-10-oq-01",
   "title": "Finite k for Erdős problem 10 for all large integers",
   "phase": "NEW",
-  "status": "active",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T16:34:54.971Z",
+    "phase": "ORIENT",
+    "since": "2026-04-03T00:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalization complete. Next: proof of Crocker axiom or density lemma.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEY+FORMALIZATION: Created full formalization of OQ-01 with logical hierarchy. 3 axioms (2 for known deep results, 1 for main conjecture). Proved key structural lemmas. Gallery entry created.",
+    "builtItems": [
+      "Created Erdos10OQ01.lean with 12 theorems, 3 axioms, 1 sorry",
+      "Defined IsPrimePlusKPowers, RepSet, OQ01, Erdos10Main in namespace Erdos10OQ01",
+      "Proved repSet_mono, repSet_mono_le, repSet_zero_eq_primes",
+      "Proved main_implies_oq01: parent question implies OQ-01",
+      "Proved k_two_not_sufficient_large: Crocker→k=2 fails for large n",
+      "Proved granville_soundararajan_implies_oq01: G-S→k=4 suffices for n≥3",
+      "Proved oq01_false_from_conjecture: E-G conjecture→¬OQ-01",
+      "Created src/data/proofs/erdos-10-oq-01/meta.json with gallery entry"
+    ],
+    "insights": [
+      "OQ-01 is the sufficiently-large variant: ∃k N, ∀n≥N, n∈RepSet k",
+      "Crocker (1971) rules out k=2: infinitely many odd integers not in RepSet 2",
+      "Gallagher (1975) gives density→1 but NOT universal coverage for large n",
+      "Granville-Soundararajan conjecture implies k=4 works for all n≥3",
+      "Erdős-Graham conjecture implies OQ-01 is FALSE for all finite k",
+      "The logical hierarchy: Erdos10Main → OQ-01 ← G-S conj; Gallagher ≠→ OQ-01",
+      "Non-squares example shows density-1 set need not cover all large integers"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Try to prove Crocker-style result directly (would eliminate the crocker_theorem axiom)",
+      "Investigate whether Granville-Soundararajan can be partially verified (density methods)",
+      "Check if the gallagher_does_not_imply_oq01 sorry can be filled (involves density of squares)"
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -1596,7 +1617,7 @@
       "path": "Proofs/Erdos1068Problem.lean",
       "filename": "Erdos1068Problem.lean",
       "lineCount": 265,
-      "theoremCount": 6,
+      "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
