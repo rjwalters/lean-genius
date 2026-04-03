@@ -2,7 +2,7 @@
   "id": "erdos-909-oq-01",
   "title": "Characterize Dimension-Stable Spaces",
   "slug": "erdos-909-oq-01",
-  "description": "Characterize all topological spaces S with dim(S × S) = dim(S). Anderson-Keisler showed such spaces exist for all n ≥ 1, but the structural criterion is unknown. This formalization defines dimension-stability, proves necessary conditions from the product inequality, handles the 0-dimensional case, and shows that dimension mismatch precludes stability.",
+  "description": "Formalizes the open question of characterizing topological spaces with dim(S×S) = dim(S). Defines covering dimension via finite open cover refinements, proves 10 structural theorems about dimension-stable spaces (including the zero-dimensional case and mismatch exclusion), axiomatizes the product inequality and Anderson-Keisler existence, and formalizes the characterization question itself as a Lean proposition.",
   "meta": {
     "author": "Anderson, Keisler (1967); Engelking (1978)",
     "sourceUrl": "https://erdosproblems.com/909",
@@ -21,8 +21,8 @@
     "sorries": 0,
     "axiomCount": 2,
     "assumptions": [
-      "dimension_product_ineq: dim(X x Y) <= dim(X) + dim(Y)",
-      "anderson_keisler_existence: dimension-stable spaces exist for all n >= 1"
+      "dimension_product_ineq: dim(X×Y) ≤ dim(X)+dim(Y) for covering dimension (a deep theorem in general topology, requires substantial infrastructure to prove from the definition)",
+      "anderson_keisler_existence: for every n≥1, there exists a topological space S with dim(S×S)=dim(S)=n (the Anderson-Keisler 1967 construction via descriptive set theory)"
     ],
     "erdosNumber": 909,
     "erdosUrl": "https://erdosproblems.com/909",
@@ -35,7 +35,78 @@
     "openQuestionOf": "erdos-909",
     "lineCount": 255
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "Topological dimension theory has three classical formulations: the **small inductive dimension** (ind, Menger-Urysohn, 1920s), the **large inductive dimension** (Ind), and the **covering dimension** (dim, also called Čech-Lebesgue dimension), defined via finite open cover refinements. For separable metrizable spaces, all three coincide (a landmark theorem of 20th-century topology). The covering dimension of Euclidean space $\\mathbb{R}^n$ is $n$, and crucially $\\dim(X \\times Y) \\leq \\dim(X) + \\dim(Y)$ with equality for \"nice\" (e.g., compact metrizable) spaces.\n\n**Erdős Problem #909** asks: for which topological spaces $S$ does $\\dim(S \\times S) = \\dim(S)$? This property — **dimension-stability** — is impossible for compact metrizable manifolds (where dimension is additive) but possible for highly irregular spaces. **Anderson and Keisler** (1967) proved by construction that for every $n \\geq 1$, there exists a (necessarily non-metrizable or non-compact) topological space $S$ with $\\dim(S \\times S) = \\dim(S) = n$. Their construction uses descriptive set theory and is quite intricate.\n\nThe structural characterization of dimension-stable spaces remains open — which topological properties force or prevent this behavior? The spaces constructed by Anderson-Keisler are totally disconnected, and some evidence suggests that a structural criterion might involve transfinite inductive dimension or some notion of \"thinness\" that is preserved under self-products.",
+    "problemStatement": "A topological space $S$ is **dimension-stable at level $n$** if $\\dim(S) = \\dim(S \\times S) = n$, where $\\dim$ denotes covering dimension (the least $n$ such that every finite open cover has a finite refinement of order $\\leq n+1$). Anderson-Keisler proved that such spaces exist for all $n \\geq 1$. The question (OQ-01): **Is there a structural criterion (in terms of standard topological properties) that characterizes exactly which spaces are dimension-stable?** This entry formalizes the question as `CharacterizationQuestion`, proves necessary conditions, and identifies the gap with known examples.",
+    "proofStrategy": "The file formalizes covering dimension directly as `coveringDimension X n : Prop` using `HasOrderAtMost` (order of a cover). Two previously-axiomatized results are now proved: monotonicity `dimension_mono` follows from the definition by noting that a refinement of order $\\leq n+1$ also has order $\\leq m+1$ for $m \\geq n$. Ten theorems are proved (many trivially), two axioms remain (product inequality and Anderson-Keisler). The `CharacterizationQuestion` definition cleanly formalizes the open question as a Lean proposition: existence of a topological predicate $P$ such that dimension-stability is equivalent to $P$ for all spaces with exact dimension $n$.",
+    "keyInsights": [
+      "The covering dimension definition in this file is mathematically precise: `dimLeq X n` requires every finite open cover to have a finite open refinement of order $\\leq n+1$ (each point in at most $n+1$ refinement sets). This is the standard Čech-Lebesgue definition, and the `HasOrderAtMost` predicate captures the order condition cleanly.",
+      "Dimension-stable spaces must violate **dimension additivity**: for $n \\geq 1$, if $\\dim(S \\times S) = n = \\dim(S)$, then $n < n + n$, so the product inequality is strict. This means dimension-stable spaces are precisely the \"hard\" cases where the product inequality is not sharp.",
+      "Zero-dimensional spaces are trivially stable: $\\dim(S \\times S) \\leq \\dim(S) + \\dim(S) = 0 + 0 = 0$, so $\\dim(S \\times S) = 0 = \\dim(S)$. This is the simplest non-trivial family of stable spaces, and the proof (`zero_dim_product`) follows immediately from the product inequality axiom.",
+      "The `CharacterizationQuestion` is formalized as: $\\exists P: \\forall S, n, \\dim(S) = n \\Rightarrow (\\dim(S \\times S) = n \\Leftrightarrow P(S))$. This is a second-order statement (quantifying over predicates on spaces), which cannot be naively reduced to a first-order topological condition.",
+      "The file achieved a 50% axiom reduction (from 4 to 2) by proving `coveringDimension` as a genuine Lean definition and deriving `dimension_mono` from it. The remaining 2 axioms (`dimension_product_ineq` and `anderson_keisler_existence`) encode the deep results that require substantial infrastructure to formalize."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Context",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Introduces dimension-stable spaces and Erdős Problem #909. Notes the 4→2 axiom reduction achieved by formalizing coveringDimension and proving dimension_mono. References Anderson-Keisler (1967) and Engelking's *Dimension Theory* (1978)."
+    },
+    {
+      "id": "covering-dimension",
+      "title": "Part I: Covering Dimension Definition",
+      "startLine": 35,
+      "endLine": 81,
+      "summary": "Defines `HasOrderAtMost f k`: family $f$ has order $\\leq k$ if each point is in at most $k$ sets. Defines `coveringDimension X n`: every finite open cover has a finite open refinement of order $\\leq n+1$. Proves `dimension_mono` from the definition. Axiomatizes `dimension_product_ineq` (dim(X×Y) ≤ dim(X)+dim(Y)). Defines `hasDimensionExactly`."
+    },
+    {
+      "id": "dimension-stable",
+      "title": "Part II: Dimension-Stable Spaces",
+      "startLine": 82,
+      "endLine": 95,
+      "summary": "Defines `IsDimensionStable S n`: $S$ has exact dimension $n$ and $S\\times S$ has exact dimension $n$. Defines `IsDimensionStableSpace S` as the existential version. These are the core definitions capturing the Anderson-Keisler property."
+    },
+    {
+      "id": "necessary-conditions",
+      "title": "Part III: Necessary Conditions from Product Inequality",
+      "startLine": 97,
+      "endLine": 125,
+      "summary": "Proves `stable_below_additive`: $\\dim(S\\times S) \\leq 2n$ from the product inequality. Proves `stable_violates_additivity`: $n < 2n$ for $n \\geq 1$ (by omega). Defines `IsNotDimensionAdditive` and proves `stable_not_additive`: dimension-stable spaces are not dimension-additive."
+    },
+    {
+      "id": "zero-dimensional",
+      "title": "Part IV: Zero-Dimensional Case",
+      "startLine": 127,
+      "endLine": 145,
+      "summary": "Proves `zero_dim_product`: 0-dimensional spaces have 0-dimensional self-products (via product inequality). Proves `zero_dim_stable`: every 0-dimensional space is dimension-stable. The proof uses `dimension_mono` to show the product inequality gives dim ≤ 0."
+    },
+    {
+      "id": "anderson-keisler",
+      "title": "Part V: Anderson-Keisler Existence and Open Question",
+      "startLine": 147,
+      "endLine": 164,
+      "summary": "Axiomatizes `anderson_keisler_existence`: for all $n \\geq 1$, there exists a dimension-stable space at level $n$. Formalizes `CharacterizationQuestion` as the existence of a topological predicate $P$ equivalent to dimension-stability."
+    },
+    {
+      "id": "structural-examples",
+      "title": "Parts VI-VII: Structural Properties and Examples",
+      "startLine": 166,
+      "endLine": 253,
+      "summary": "Proves 4 further structural theorems (product_has_same_dim, stable_product_dimleq, stable_dimleq as tautologies; not_stable_if_product_lower as the non-trivial exclusion). Notes Euclidean spaces are not stable. Lists known partial results: 0-dim spaces stable, compact manifolds not stable, some totally disconnected spaces stable."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry provides a precise Lean formalization of covering dimension and dimension-stability, proving 10 structural theorems while axiomatizing only the two deepest results (product inequality, Anderson-Keisler existence). The `CharacterizationQuestion` proposition cleanly encodes the open problem. The characterization of dimension-stable topological spaces remains open — no structural criterion in terms of standard topological properties is known for $n \\geq 1$.",
+    "implications": "Understanding dimension-stable spaces has implications for the general theory of topological products and dimension inequalities. In descriptive set theory, the spaces constructed by Anderson-Keisler are related to **Borel complexity** and the structure of countable ordinals, suggesting a connection between dimension theory and descriptive set-theoretic classification. For metrizable spaces, compactness and local compactness are known obstructions to dimension-stability. A complete characterization would clarify which pathological features are required and might unify several anomalous dimension-theoretic phenomena.",
+    "openQuestions": [
+      "What is the structural characterization of dimension-stable spaces? Is it expressible purely in terms of separation axioms ($T_n$), compactness, or metrizability conditions, or does it require descriptive set-theoretic notions?",
+      "Can the product inequality `dimension_product_ineq` (dim(X×Y) ≤ dim(X)+dim(Y)) be formally proved in Lean from the `coveringDimension` definition, using Mathlib's existing topology infrastructure?",
+      "Are there dimension-stable spaces with additional regularity properties (e.g., Hausdorff, first-countable) for all $n \\geq 2$? Or does dimension-stability at $n \\geq 2$ necessarily require separation axiom violations?"
+    ]
+  },
   "leanFile": {
     "axiomCount": 2
   }
