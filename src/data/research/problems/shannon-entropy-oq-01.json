@@ -1,7 +1,7 @@
 {
   "slug": "shannon-entropy-oq-01",
   "title": "Can differential entropy $h(X) = -\\int f(x) \\ln f(x)\\,dx$ for continuous dist...",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T17:32:58.852Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Proved gaussian_max_entropy and Gibbs inequality. 2 sorries remain.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove differentialEntropy_scale_equivariant and gaussianDifferentialEntropy.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Proved gaussian_max_entropy via Gibbs inequality. 2/6 theorems still sorry.",
+    "builtItems": [
+      "ShannonEntropyOQ01.lean: differentialEntropy (def, line 43)",
+      "ShannonEntropyOQ01.lean: klDivergenceCts (def, line 47)",
+      "ShannonEntropyOQ01.lean: kl_term_bound_cts (lemma, line 59) \u2014 proved",
+      "ShannonEntropyOQ01.lean: kl_divergence_continuous_nonneg (theorem, line 90) \u2014 proved",
+      "ShannonEntropyOQ01.lean: gibbs_inequality_continuous (theorem, line 117) \u2014 proved",
+      "ShannonEntropyOQ01.lean: differentialEntropy_translation_invariant (theorem, line 167) \u2014 proved",
+      "ShannonEntropyOQ01.lean: gaussianPDF (def, line 210)",
+      "ShannonEntropyOQ01.lean: gaussian_max_entropy (theorem, line 239) \u2014 proved"
+    ],
+    "insights": [
+      "gaussian_max_entropy follows from Gibbs inequality + log expansion: log(gaussianPDF) = -\u00bdlog(2\u03c0\u03c3\u00b2) - x\u00b2/(2\u03c3\u00b2), then integrate and use variance bound",
+      "Gibbs inequality h(f) \u2264 -\u222bf log g requires \u222bg = 1 AND integrability of gaussianPDF",
+      "gaussianPDF 0 \u03c3 normalization: congr 1; congr 1; ring to equate -(x-0)\u00b2/(2\u03c3\u00b2) with -(1/(2\u03c3\u00b2))*x\u00b2, since ring handles field division in Lean 4",
+      "integrability of gaussianPDF 0 \u03c3 follows from integrable_exp_neg_mul_sq with b = 1/(2\u03c3\u00b2)",
+      "\u222bx, A - \u222bx, B in Lean 4 parses as \u222bx, (A - \u222bx, B) \u2014 always use explicit parentheses (\u222bx, A) - (\u222bx, B)",
+      "differentialEntropy_scale_equivariant requires \u222bf=1 hypothesis (without it the identity is false)",
+      "gaussianDifferentialEntropy requires Gaussian second moment: \u222bx, x\u00b2 * gaussianPDF 0 \u03c3 x = \u03c3\u00b2"
+    ],
+    "mathlibGaps": [
+      "Gaussian second moment: \u222bx, x\u00b2 * exp(-b*x\u00b2) dx = \u221a\u03c0 / (2*b^(3/2)) \u2014 exists in Mathlib but API unclear",
+      "differentialEntropy_scale_equivariant: needs measure-theoretic substitution/rescaling lemma"
+    ],
+    "nextSteps": [
+      "Prove gaussianDifferentialEntropy: need \u222bx, x\u00b2 * gaussianPDF 0 \u03c3 x = \u03c3\u00b2. Look for MeasureTheory.integral_mul_exp_neg or gaussian_variance_eq in Mathlib",
+      "Prove differentialEntropy_scale_equivariant: use integral_comp_mul_right or change_of_variables for the rescaling \u222bf(x/a) = |a|*\u222bf(y)"
+    ]
   },
   "tags": [
     "seeker-selected"
@@ -107,6 +130,17 @@
       "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSAAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ01.lean",
+      "filename": "ShannonEntropyOQ01.lean",
+      "lineCount": 330,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01.lean"
     }
   ]
 }
