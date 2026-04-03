@@ -204,6 +204,7 @@ import Proofs.DescartesRuleOfSignsOQ01
 import Proofs.DescartesRuleOfSignsOQ03
 import Proofs.DirichletsTheorem
 import Proofs.DirichletsTheoremOQ01
+import Proofs.DirichletsTheoremOQ03Incomplete01
 import Proofs.DissectionOfCubes
 import Proofs.DissectionOfCubesOQ01
 import Proofs.DissectionOfCubesOQ02
