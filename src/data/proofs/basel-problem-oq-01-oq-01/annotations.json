@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-partial-sum-def",
+    "proofId": "basel-problem-oq-01-oq-01",
+    "range": { "startLine": 31, "endLine": 33 },
+    "type": "definition",
+    "title": "Partial Sum of the ζ(5) Series",
+    "content": "`zetaFivePartialSum k` computes $\\sum_{n=0}^{k-1} 1/(n+1)^5 = \\sum_{n=1}^{k} 1/n^5$. The shift from `Finset.range k` (which gives $\\{0, \\ldots, k-1\\}$) to $1/(n+1)^5$ ensures we sum the terms $1/1^5, 1/2^5, \\ldots, 1/k^5$, avoiding division by zero at $n=0$. The `noncomputable` annotation reflects that the real-number type in Lean is not computationally representable by default.",
+    "mathContext": "$\\text{zetaFivePartialSum}(k) = \\sum_{n=1}^{k} \\frac{1}{n^5}$. The full series is $\\zeta(5) = \\lim_{k \\to \\infty} \\text{zetaFivePartialSum}(k) \\approx 1.03693$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.range", "Riemann zeta function", "p-series", "noncomputable"],
+    "prerequisites": ["BigOperators notation", "real-number arithmetic in Lean"]
+  },
+  {
+    "id": "ann-nonneg-mono",
+    "proofId": "basel-problem-oq-01-oq-01",
+    "range": { "startLine": 35, "endLine": 47 },
+    "type": "technique",
+    "title": "Non-negativity and Monotonicity of Partial Sums",
+    "content": "Non-negativity follows immediately from `Finset.sum_nonneg` plus `positivity` on each term $1/(n+1)^5 \\geq 0$. Monotonicity is proved by `Finset.sum_le_sum_of_subset` with `Finset.range_mono`: if $j \\leq k$, then $\\{0,\\ldots,j-1\\} \\subseteq \\{0,\\ldots,k-1\\}$, and summing over a larger set gives a larger value (since all terms are non-negative). These two lemmas together imply the partial sums converge (they are monotone and bounded above).",
+    "mathContext": "For all $j \\leq k$: $0 \\leq \\text{zetaFivePartialSum}(j) \\leq \\text{zetaFivePartialSum}(k) \\leq \\zeta(5)$. Monotone bounded sequences in $\\mathbb{R}$ converge by the completeness of $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_nonneg", "Finset.sum_le_sum_of_subset", "monotone convergence"],
+    "prerequisites": ["positivity tactic", "Finset.range_mono"]
+  },
+  {
+    "id": "ann-two-term-bound",
+    "proofId": "basel-problem-oq-01-oq-01",
+    "range": { "startLine": 55, "endLine": 64 },
+    "type": "insight",
+    "title": "Machine-Verified Two-Term Lower Bound",
+    "content": "`zetaFive_partial_two` computes the 2-term partial sum exactly as $1 + 1/2^5$ using `simp [Finset.sum_range_succ]` to unfold the sum and `norm_num` for arithmetic. `zetaFive_ge_1_03` then verifies $1 + 1/32 = 33/32$ by `norm_num`. Together these give the machine-certified lower bound $\\zeta(5) \\geq 1.03125$. This demonstrates that Lean can certify concrete numerical lower bounds for transcendentally-defined constants using only finitely many terms.",
+    "mathContext": "$\\zeta(5) \\geq \\frac{1}{1^5} + \\frac{1}{2^5} = 1 + \\frac{1}{32} = \\frac{33}{32} = 1.03125$. The true value is $\\zeta(5) \\approx 1.036927755\\ldots$",
+    "significance": "key",
+    "relatedConcepts": ["norm_num", "Finset.sum_range_succ", "certified arithmetic"],
+    "prerequisites": ["real arithmetic", "Finset.sum expansion"]
+  },
+  {
+    "id": "ann-tail-comparison",
+    "proofId": "basel-problem-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 85 },
+    "type": "technique",
+    "title": "Tail Bound via ζ(2) Comparison",
+    "content": "`tail_term_le_inverse_sq` proves the pointwise comparison $1/(n+1)^5 \\leq 1/(n+1)^2$ using `div_le_div_of_nonneg_left` (numerators equal; denominator grows with exponent) and `pow_le_pow_left` ($(n+1)^2 \\leq (n+1)^5$ for $n+1 \\geq 1$). `tail_bounded_by_harmonic_sq` extends this to the tail sum: the remainder of $\\zeta(5)$ beyond index $k$ is bounded by the corresponding remainder of $\\zeta(2)$, which is known to be $\\leq 2/k$.",
+    "mathContext": "For all $n \\geq 0$: $\\frac{1}{(n+1)^5} \\leq \\frac{1}{(n+1)^2}$, so $\\sum_{n=k}^{\\infty} \\frac{1}{n^5} \\leq \\sum_{n=k}^{\\infty} \\frac{1}{n^2} \\leq \\frac{2}{k}$. This is a crude but useful comparison bound.",
+    "significance": "supporting",
+    "relatedConcepts": ["comparison test", "p-series", "ζ(2)", "integral comparison"],
+    "prerequisites": ["pow_le_pow_left", "div_le_div", "Basel problem"]
+  },
+  {
+    "id": "ann-irrationality-measure-def",
+    "proofId": "basel-problem-oq-01-oq-01",
+    "range": { "startLine": 91, "endLine": 96 },
+    "type": "definition",
+    "title": "Irrationality Measure via Filter.atTop",
+    "content": "The irrationality measure $\\mu(\\alpha)$ is defined as the infimum of exponents $s$ for which the inequality $|\\alpha - p/q| < 1/q^s$ has only finitely many integer solutions $(p, q)$ with $q > 0$. In Lean, 'all but finitely many' is captured by `Filter.atTop` on $\\mathbb{Z} \\times \\mathbb{N}$ with the product order. The `sInf` ensures we take the infimum over the set of such exponents. This definition is equivalent to the classical Mahler-Liouville definition: $\\mu(\\alpha) = \\sup\\{s : |\\alpha - p/q| < q^{-s}$ infinitely often$\\}$.",
+    "mathContext": "$\\mu(\\alpha) = \\inf\\left\\{s \\in \\mathbb{R} : \\text{for all but finitely many } (p,q) \\in \\mathbb{Z} \\times \\mathbb{N}^+,\\; \\left|\\alpha - \\frac{p}{q}\\right| \\geq \\frac{1}{q^s}\\right\\}$. All irrationals satisfy $\\mu(\\alpha) \\geq 2$ (Dirichlet), rationals have $\\mu = 1$, Liouville numbers have $\\mu = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet approximation", "Liouville numbers", "Mahler classification", "Filter.atTop", "sInf"],
+    "prerequisites": ["rational approximation", "Filters in Lean", "lattice infimum"]
+  },
+  {
+    "id": "ann-difficulty-gap",
+    "proofId": "basel-problem-oq-01-oq-01",
+    "range": { "startLine": 111, "endLine": 143 },
+    "type": "context",
+    "title": "The Apéry Gap and Why ζ(5) Resists Current Techniques",
+    "content": "This section documents (as formal comments) the state of the art for ζ(5) irrationality. Apéry's 1978 proof for ζ(3) works by constructing integer sequences $a_n, b_n$ such that $b_n \\zeta(3) - a_n \\to 0$ at geometric rate while the denominators grow only polynomially. The Apéry numbers $1, 5, 73, 1445, \\ldots$ satisfy a recurrence with remarkable integrality properties. For ζ(5), extensive computer searches have found no such sequence. Zudilin's 2001 result uses linear forms in multiple zeta values to show at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational, but cannot isolate which. Ball-Rivoal gives only a dimension bound: $\\dim_{\\mathbb{Q}} \\text{span}\\{1, \\zeta(3), \\zeta(5), \\ldots, \\zeta(2n+1)\\} \\geq (1 + o(1)) \\log(n) / (1 + \\log 2)$.",
+    "mathContext": "Irrationality criterion (Bertrand-style): if $\\alpha \\in \\mathbb{R}$ and there exist integer sequences $a_n, b_n$ with $b_n \\alpha - a_n \\to 0$ but $b_n \\alpha - a_n \\neq 0$, and $|b_n \\alpha - a_n| < |b_n|^{-1-\\varepsilon}$ for some $\\varepsilon > 0$, then $\\alpha$ is irrational. Apéry shows this for $\\alpha = \\zeta(3)$ with $|b_n \\zeta(3) - a_n| \\sim C (\\sqrt{2}-1)^{4n}$ and $b_n \\sim C' ((1 + \\sqrt{2})^4)^n$.",
+    "significance": "context",
+    "relatedConcepts": ["Apéry numbers", "irrationality criterion", "Ball-Rivoal theorem", "Zudilin's theorem", "linear forms in zeta values"],
+    "prerequisites": ["irrationality measure", "Padé approximation", "p-adic methods"]
+  }
+]
