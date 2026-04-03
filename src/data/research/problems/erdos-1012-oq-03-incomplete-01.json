@@ -29,22 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved list_path_to_hamiltonian (was sorry). Eliminated infrastructure sorry in R\u00e9dei theorem proof chain. 3S remain (all deep theorems).",
+    "progressSummary": "PROGRESS: Proved sc_tournament_has_cycle (was sorry). API modernized (insertNth→insertIdx). tournament_cycle_extendable structured: direct insertion nodup+length proved, 3 sorries remain (arc condition + SC cases A/B). 5 total sorries remain.",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
-      "Key insight: nodup list of full length gives bijection, arc condition transfers directly"
+      "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
+      "sc_tournament_has_cycle proof in Erdos1012OQ03.lean:330-390"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
       "Injectivity: List.Nodup.getElem_inj_iff",
-      "Surjectivity: List.mem_iff_getElem + hmem (\u2200 v, v \u2208 l from Finset.eq_univ_of_card)",
-      "Arc condition: Equiv.ofBijective preserves function values, so \u03c3.symm i = l[i]"
+      "Surjectivity: List.mem_iff_getElem + hmem (∀ v, v ∈ l from Finset.eq_univ_of_card)",
+      "Arc condition: Equiv.ofBijective preserves function values, so σ.symm i = l[i]",
+      "sc_tournament_has_cycle proved: uses Rédei Hamiltonian path + SC walk from last to first vertex, extracts cycle via l.drop k (~60 lines)",
+      "API fix: insertNth renamed to insertIdx in Lean 4.26/current Mathlib; all references updated"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Remaining 3 sorries are deep theorems (ghouila_houri, moon_moser, directed_hamiltonian_threshold)",
-      "ghouila_houri proof outline: longest path \u2192 extend \u2192 close cycle (~200 lines)",
-      "moon_moser follows from R\u00e9dei + tournament rotation"
+      "ghouila_houri proof outline: longest path → extend → close cycle (~200 lines)",
+      "moon_moser follows from Rédei + tournament rotation"
     ]
   },
   "tags": [
