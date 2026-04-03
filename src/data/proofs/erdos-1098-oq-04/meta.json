@@ -1,0 +1,98 @@
+{
+  "id": "erdos-1098-oq-04",
+  "title": "Commutativity Degree and the Non-Commuting Graph",
+  "slug": "erdos-1098-oq-04",
+  "description": "Formalizes the commutativity degree (commuting probability) of finite groups and its relationship to the non-commuting graph. Proves commProb G ≤ 1 with equality iff G is abelian, and states Gustafson's 5/8 theorem as a formalization goal.",
+  "meta": {
+    "author": "Erdős (connected to Problem #1098), Gustafson 1973, Neumann 1976",
+    "sourceUrl": "https://erdosproblems.com/1098",
+    "date": "1973",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1098OQ04.lean",
+    "tags": [
+      "erdos",
+      "group-theory",
+      "graph-theory",
+      "non-commuting-graph",
+      "commutativity-degree",
+      "commuting-probability",
+      "open"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 1098,
+    "erdosUrl": "https://erdosproblems.com/1098",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-04-02",
+    "mathlib_version": "4.26.0",
+    "lineCount": 134,
+    "axiomCount": 0,
+    "assumptions": "0 sorries, 0 axioms. The 5/8 theorem is stated as a Prop (open formalization goal, not an axiom). All proved theorems are fully verified.",
+    "mathlibDependencies": [
+      {
+        "theorem": "commProb_pos",
+        "description": "commProb G > 0 for finite groups",
+        "module": "Mathlib.GroupTheory.CommProbability"
+      },
+      {
+        "theorem": "commProb_le_one",
+        "description": "commProb G ≤ 1",
+        "module": "Mathlib.GroupTheory.CommProbability"
+      },
+      {
+        "theorem": "commProb_eq_one_iff",
+        "description": "commProb G = 1 ↔ Std.Commutative (· * ·)",
+        "module": "Mathlib.GroupTheory.CommProbability"
+      }
+    ],
+    "originalContributions": [
+      "nonCommGraph: the non-commuting graph Γ(G) as a SimpleGraph",
+      "five_eighths_theorem: Gustafson's 5/8 bound as a formal Prop statement",
+      "commProb_one_iff_abelian: commProb G = 1 ↔ ∀ a b, Commute a b",
+      "commProb_abelian: commProb H = 1 for CommGroup H",
+      "commProb_lt_one_of_noncomm: commProb G < 1 when non-commuting elements exist",
+      "nonCommDensity: the fraction of non-commuting ordered pairs",
+      "nonCommDensity_zero_iff_abelian: density = 0 iff G is abelian",
+      "nonCommDensity_pos_of_noncomm: density > 0 for non-abelian groups"
+    ],
+    "prerequisites": [
+      "Group theory (commuting elements, center)",
+      "Simple graphs (Mathlib.Combinatorics.SimpleGraph)",
+      "commProb / CommProbability (Mathlib.GroupTheory.CommProbability)",
+      "Lean 4 and Mathlib"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1098",
+      "relationship": "extends",
+      "description": "Parent problem: Neumann's theorem that Γ(G) has no infinite clique iff [G:Z(G)] < ∞. This OQ studies the complementary global density perspective."
+    },
+    {
+      "targetId": "erdos-1098-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 formalizes Neumann's clique theorem. This OQ-04 formalizes the commutativity degree / 5/8 theorem aspect."
+    }
+  ],
+  "overview": "## Commutativity Degree of Finite Groups\n\nThe **commutativity degree** (or commuting probability) of a finite group $G$ is:\n$$\\text{Pr}(G) = \\frac{|\\{(g,h) \\in G^2 : gh = hg\\}|}{|G|^2}$$\n\nThis measures the probability that two randomly chosen group elements commute.\n\n## Key Results\n\n1. **Basic bounds**: $0 < \\text{Pr}(G) \\leq 1$ for any finite group\n2. **Abelian characterization**: $\\text{Pr}(G) = 1$ if and only if $G$ is abelian\n3. **The 5/8 theorem** (Gustafson 1973): For non-abelian $G$, $\\text{Pr}(G) \\leq 5/8$, with equality achieved by $D_4$ and $Q_8$\n\n## The Non-Commuting Graph\n\nThe **non-commuting graph** $\\Gamma(G)$ has vertex set $G$ with an edge between $g$ and $h$ iff $gh \\neq hg$ (and $g \\neq h$). The commutativity degree measures the global density of $\\Gamma(G)$:\n$$\\text{edge density of } \\Gamma(G) = 1 - \\text{Pr}(G)$$\n\n## Connection to Erdős 1098\n\nNeumann (1976) proved: $\\omega(\\Gamma(G)) < \\infty$ iff $[G:Z(G)] < \\infty$.\nThe 5/8 theorem gives a quantitative companion: the density of $\\Gamma(G)$ is always $\\leq 3/8$.\n\nThese are complementary views of the same non-abelian structure:\n- **Neumann**: clique number of $\\Gamma(G)$ ↔ index of center\n- **Gustafson**: global edge density of $\\Gamma(G)$ ≤ 3/8\n\n## Formalization Notes\n\nThe 5/8 theorem is stated as an open formalization goal (`five_eighths_theorem : Prop`). All other theorems in this file are fully proved with 0 sorries using Mathlib's `commProb` infrastructure.",
+  "references": [
+    {
+      "type": "paper",
+      "title": "What is the probability that two group elements commute?",
+      "authors": ["W.H. Gustafson"],
+      "year": 1973,
+      "journal": "Amer. Math. Monthly",
+      "volume": "80",
+      "pages": "1031-1034"
+    },
+    {
+      "type": "paper",
+      "title": "A problem of Paul Erdős on groups",
+      "authors": ["B.H. Neumann"],
+      "year": 1976,
+      "journal": "J. Austral. Math. Soc. Ser. A",
+      "volume": "21",
+      "pages": "467-472"
+    }
+  ]
+}
