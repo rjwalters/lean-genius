@@ -58,9 +58,9 @@
       "higher_dimensional_analog: d-dimensional trivial bounds (axiomatized)"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 7,
+    "axiomCount": 0,
     "lineCount": 83,
-    "assumptions": "7 axioms: lower_bound_trivial, upper_bound_trivial, kps_lower_bound, and 4 more. See Lean source for complete statements."
+    "assumptions": "0 axioms, 0 sorries. Partial formalization of Heilbronn's Triangle Problem: defines triangle geometry framework. The main bounds (lower_bound_trivial, kps_lower_bound, Heilbronn upper bound) are referenced in comments but not formalized as Lean axioms."
   },
   "overview": {
     "historicalContext": "Hans Heilbronn posed the triangle problem in the 1940s while at the University of Bristol: given $n$ points in a convex region, how small must the smallest triangle area be? Erdős quickly observed the lower bound $\\alpha(n) \\geq c/n^2$ via a greedy placement argument and conjectured that the true order should be closer to $1/n^2$ than to $1/n$. The problem attracted attention from some of the strongest combinatorialists of the 20th century. In 1981, Komlós, Pintz, and Szemerédi [KPS81] achieved the first breakthrough on the upper bound side, proving $\\alpha(n) \\leq C/n^{8/7}$ using Szemerédi's regularity lemma—one of the early geometric applications of this fundamental tool. The following year, the same trio [KPS82] improved the lower bound to $\\alpha(n) \\geq c(\\log n)/n^2$ using a sophisticated probabilistic argument involving the Lovász Local Lemma. Remarkably, both bounds stood essentially unchanged for over 40 years. In 2024, Cohen, Pohoata, and Zakharov [CPZ24] finally improved the upper bound to $\\alpha(n) \\leq C/n^{7/6+o(1)}$ using incidence geometry and the polynomial method of Guth and Katz. The gap between the lower bound exponent 2 and upper bound exponent 7/6 remains enormous, making this one of the most fundamental open problems in combinatorial geometry.",
@@ -175,7 +175,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 83,
-    "axiomCount": 7,
+    "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 4
   },
