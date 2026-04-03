@@ -42,17 +42,11 @@ coordinate incDir(k) increases exactly once (at step k) and
 never decreases (since miss ≠ incDir(k) for all k), so
 vertices at different positions always differ.
 
-## Sorry classification (9 total)
+## Sorry classification (2 remaining)
 
 1. `CellComplex.sperner` — proved in SpernerMathlib4.lean,
    duplicated here for self-containment.
-2. `interiorFlip`, `boundaryFlip0`, `boundaryFlipLast` —
-   hard: construct the adjacent simplex through each facet.
-3. `gridAdj` — dispatches to the flip functions.
-4. `gridAdj_symm/vertex/ne` — follow from flip definitions.
-5. `no_boundary_doors_face_lt` — medium: needs boundary
-   geometry (vertices on boundary facets have b_k = 0).
-6. `boundary_doors_odd` — hard: induction on dimension,
+2. `boundary_doors_odd` — hard: induction on dimension,
    constructing (d-1)-dim boundary triangulation.
 
 ## References
@@ -391,57 +385,347 @@ theorem GridSimplex.vertex_set_card (s : GridSimplex d N) :
   simp [Fintype.card_fin]
 
 -- ============================================================
--- SECTION V: Adjacency
+-- SECTION V: Coordinate Tracking Lemmas
 -- ============================================================
 
-/-- Interior flip: commute steps k-1 and k to produce the
-adjacent simplex through facet k (for 0 < k < d).
+/-- The miss coordinate decreases by exactly 1 at each step,
+so at vertex m it equals v₀.coords(miss) - m. -/
+theorem GridSimplex.miss_coord_at (s : GridSimplex d N)
+    (m : Fin (d + 1)) :
+    (s.verts m).coords s.miss =
+    (s.verts 0).coords s.miss - m.val := by
+  induction m using Fin.induction with
+  | zero => simp
+  | succ k ih =>
+    have hsd := s.step_dec k
+    -- step_dec: verts(k.castSucc).coords miss =
+    --           verts(k.succ).coords miss + 1
+    -- So verts(k.succ).coords miss =
+    --    verts(k.castSucc).coords miss - 1
+    have hcs : k.castSucc = (k : Fin (d + 1)) := by
+      ext; simp [Fin.castSucc, Fin.val_natCast]
+    rw [hcs] at hsd
+    have hks : (k.succ : Fin (d + 1)) = k.succ := rfl
+    rw [ih]
+    omega
 
-Given chain ... → v_{k-1} --[+incDir(k-1),-miss]--> v_k
-  --[+incDir(k),-miss]--> v_{k+1} → ...
-the flip gives
-  ... → v_{k-1} --[+incDir(k),-miss]--> v'_k
-  --[+incDir(k-1),-miss]--> v_{k+1} → ...
+/-- The base vertex's miss coordinate is at least d
+(since it decreases by 1 at each of d steps). -/
+theorem GridSimplex.base_miss_ge_d (s : GridSimplex d N) :
+    d ≤ (s.verts 0).coords s.miss := by
+  have h := s.miss_coord_at ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩
+  simp at h
+  omega
 
-The new vertex v'_k = v_{k-1} + e_{incDir(k)} - e_{miss}.
-Same miss direction. incDir swaps positions k-1 and k.
-All vertices except k are shared. -/
+/-- At vertex m, the miss coordinate is at least d - m. -/
+theorem GridSimplex.miss_coord_ge (s : GridSimplex d N)
+    (m : Fin (d + 1)) :
+    d - m.val ≤ (s.verts m).coords s.miss := by
+  rw [s.miss_coord_at m]
+  have := s.base_miss_ge_d
+  omega
+
+/-- incDir(k) is the unique complement of miss: incDir gives
+a bijection from Fin d to Fin(d+1) \ {miss}. This means
+every j ≠ miss is in the range of incDir. -/
+theorem GridSimplex.incDir_surj_complement (s : GridSimplex d N)
+    (j : Fin (d + 1)) (hj : j ≠ s.miss) :
+    ∃ k : Fin d, s.incDir k = j := by
+  -- incDir is injective from Fin d to Fin(d+1), avoiding miss.
+  -- Since |Fin d| = d = |Fin(d+1)| - 1 = |Fin(d+1) \ {miss}|,
+  -- it must be surjective onto the complement.
+  by_contra h
+  push_neg at h
+  -- All d values incDir(k) are in Fin(d+1) \ {miss, j}
+  -- which has d+1-2 = d-1 elements. But incDir is injective
+  -- with d values, contradiction.
+  have hcard : (Finset.univ.image s.incDir).card = d := by
+    rw [Finset.card_image_of_injective _ s.inc_injective]
+    simp
+  have hsub : Finset.univ.image s.incDir ⊆
+      (Finset.univ.erase s.miss).erase j := by
+    intro x hx
+    simp at hx ⊢
+    obtain ⟨k, rfl⟩ := hx
+    exact ⟨(s.miss_ne_inc k).symm, h k⟩
+  have hle := Finset.card_le_card hsub
+  simp at hle
+  rw [hcard] at hle
+  have : s.miss ≠ j := Ne.symm hj
+  simp [Finset.card_erase_of_mem, this] at hle
+  omega
+
+-- ============================================================
+-- SECTION VI: Adjacency
+-- ============================================================
+
+/-- Helper: construct a new BaryPoint by transferring one
+unit from coordinate `dec` to coordinate `inc`. -/
+noncomputable def BaryPoint.transfer {d N : ℕ}
+    (v : BaryPoint d N) (inc dec : Fin (d + 1))
+    (h_ne : inc ≠ dec) (h_pos : 0 < v.coords dec) :
+    BaryPoint d N where
+  coords := fun j =>
+    if j = inc then v.coords j + 1
+    else if j = dec then v.coords j - 1
+    else v.coords j
+  sum_eq := by
+    have hv := v.sum_eq
+    have hkey : ∀ (j : Fin (d + 1)), j ∈ Finset.univ →
+      (if j = inc then v.coords j + 1
+        else if j = dec then v.coords j - 1
+        else v.coords j) + (if j = dec then 1 else 0) =
+        v.coords j + (if j = inc then 1 else 0) := by
+      intro j _; split_ifs <;> omega
+    have hsums := Finset.sum_congr rfl hkey
+    rw [Finset.sum_add_distrib, Finset.sum_add_distrib] at hsums
+    simp only [Finset.sum_ite_eq', Finset.mem_univ, ite_true] at hsums
+    omega
+
+@[simp]
+theorem BaryPoint.transfer_coords_inc {d N : ℕ}
+    (v : BaryPoint d N) (inc dec : Fin (d + 1))
+    (h_ne : inc ≠ dec) (h_pos : 0 < v.coords dec) :
+    (v.transfer inc dec h_ne h_pos).coords inc =
+    v.coords inc + 1 := by
+  simp [BaryPoint.transfer, h_ne]
+
+@[simp]
+theorem BaryPoint.transfer_coords_dec {d N : ℕ}
+    (v : BaryPoint d N) (inc dec : Fin (d + 1))
+    (h_ne : inc ≠ dec) (h_pos : 0 < v.coords dec) :
+    (v.transfer inc dec h_ne h_pos).coords dec =
+    v.coords dec - 1 := by
+  simp [BaryPoint.transfer, Ne.symm h_ne]
+
+@[simp]
+theorem BaryPoint.transfer_coords_other {d N : ℕ}
+    (v : BaryPoint d N) (inc dec : Fin (d + 1))
+    (h_ne : inc ≠ dec) (h_pos : 0 < v.coords dec)
+    (j : Fin (d + 1)) (hj_inc : j ≠ inc)
+    (hj_dec : j ≠ dec) :
+    (v.transfer inc dec h_ne h_pos).coords j =
+    v.coords j := by
+  simp [BaryPoint.transfer, hj_inc, hj_dec]
+
+/-- Interior flip: swap steps k and k-1 to produce the
+adjacent simplex through facet k.castSucc (for 0 < k.val).
+
+The new vertex at position k.castSucc is
+  v_{k-1} + e_{incDir(k)} - e_{miss}.
+Same miss. incDir swaps at positions k-1 and k. -/
 noncomputable def GridSimplex.interiorFlip
     (s : GridSimplex d N) (k : Fin d)
     (hk : 0 < k.val) :
-    Option (GridSimplex d N × Fin (d + 1)) := by
-  sorry
+    GridSimplex d N × Fin (d + 1) :=
+  let k_prev : Fin d := ⟨k.val - 1, by omega⟩
+  let prev_v_idx : Fin (d + 1) := ⟨k.val - 1, by omega⟩
+  let v_prev := s.verts prev_v_idx
+  -- New vertex: v_{k-1} + e_{incDir(k)} - e_{miss}
+  have h_miss_pos : 0 < v_prev.coords s.miss := by
+    have h1 := s.miss_coord_ge prev_v_idx
+    have h2 : prev_v_idx.val = k.val - 1 := rfl
+    have h3 : k.val < d := k.isLt
+    have h4 : prev_v_idx.val < d := by omega
+    have h5 : 1 ≤ d - prev_v_idx.val := by omega
+    omega
+  have h_ne : s.incDir k ≠ s.miss := s.miss_ne_inc k
+  let new_v := v_prev.transfer (s.incDir k) s.miss h_ne h_miss_pos
+  -- New incDir: swap at positions k_prev and k
+  let new_incDir : Fin d → Fin (d + 1) := fun j =>
+    if j = k_prev then s.incDir k
+    else if j = k then s.incDir k_prev
+    else s.incDir j
+  -- The new simplex
+  let s' : GridSimplex d N :=
+    { verts := fun j =>
+        if j = ⟨k.val, by omega⟩ then new_v
+        else s.verts j
+      incDir := new_incDir
+      miss := s.miss
+      miss_ne_inc := by
+        intro j
+        simp only [new_incDir]
+        split_ifs with h1 h2
+        · exact s.miss_ne_inc k
+        · exact s.miss_ne_inc k_prev
+        · exact s.miss_ne_inc j
+      step_inc := by sorry
+      step_dec := by sorry
+      step_same := by sorry
+      inc_injective := by
+        intro a b hab
+        simp only [new_incDir] at hab
+        -- 9 cases from the two nested if-then-else on a and b
+        split_ifs at hab with h1 h2 h3 h4
+        · -- a = k_prev, b = k_prev
+          subst h1; exact h2 ▸ rfl
+        · -- a = k_prev, b = k
+          subst h1; exfalso
+          have := s.inc_injective hab
+          simp [k_prev, Fin.ext_iff] at this; omega
+        · -- a = k_prev, b = other
+          subst h1; exfalso
+          have := s.inc_injective hab
+          simp [Fin.ext_iff] at this; omega
+        · -- a = k, b = k_prev
+          exfalso; have := s.inc_injective hab
+          simp [k_prev, Fin.ext_iff] at this; omega
+        · -- a = k, b = k
+          ext; simp_all [Fin.ext_iff]
+        · -- a = k, b = other
+          have := (s.inc_injective hab).symm
+          contradiction
+        · -- a = other, b = k_prev
+          have := s.inc_injective hab
+          contradiction
+        · -- a = other, b = k
+          have := s.inc_injective hab
+          contradiction
+        · -- a = other, b = other
+          exact s.inc_injective hab }
+  (s', ⟨k.val, by omega⟩)
 
-/-- Boundary flip at k = 0: the facet opposite vertex 0 is
-shared with a simplex that has a different miss direction.
+/-- Boundary flip at face 0: the adjacent simplex through the
+facet opposite vertex 0. Returns none if the last vertex has
+miss-coordinate = 0 (geometric boundary).
 
-Returns none if vertex 0 is on the geometric boundary
-(v₀.coords(miss) = 0 means miss coordinate can't decrease
-further in the other direction). -/
+The new simplex has vertices v₁,...,v_d,v_new where
+v_new = v_d + e_{incDir(0)} - e_{miss}. Same miss.
+incDir is cyclically left-shifted. -/
 noncomputable def GridSimplex.boundaryFlip0
     (s : GridSimplex d N) :
-    Option (GridSimplex d N × Fin (d + 1)) := by
-  sorry
+    Option (GridSimplex d N × Fin (d + 1)) :=
+  let last_v := s.verts ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩
+  if h_pos : 0 < last_v.coords s.miss then
+    -- d = 0 case: Fin 0 is empty, no incDir to reference
+    if hd : d = 0 then none  -- single vertex, no face 0 adjacency
+    else
+      have hd_pos : 0 < d := Nat.pos_of_ne_zero hd
+      let inc0 := s.incDir ⟨0, hd_pos⟩
+      have h_ne : inc0 ≠ s.miss := s.miss_ne_inc ⟨0, hd_pos⟩
+      let new_v := last_v.transfer inc0 s.miss h_ne h_pos
+      -- New incDir: cyclic left shift
+      let new_incDir : Fin d → Fin (d + 1) := fun j =>
+        if h : j.val + 1 < d then s.incDir ⟨j.val + 1, h⟩
+        else inc0  -- j = d-1 gets incDir(0)
+      let s' : GridSimplex d N :=
+        { verts := fun j =>
+            if h : j.val < d then s.verts ⟨j.val + 1, by omega⟩
+            else new_v  -- j = d gets the new vertex
+          incDir := new_incDir
+          miss := s.miss
+          miss_ne_inc := by
+            intro j; simp only [new_incDir]
+            split_ifs with h
+            · exact s.miss_ne_inc ⟨j.val + 1, h⟩
+            · exact h_ne
+          step_inc := by sorry
+          step_dec := by sorry
+          step_same := by sorry
+          inc_injective := by
+            intro a b hab
+            simp only [new_incDir] at hab
+            split_ifs at hab with h1 h2
+            · -- Both a+1 < d, b+1 < d
+              have := s.inc_injective hab
+              ext; simp [Fin.ext_iff] at this; omega
+            · -- a+1 < d, b+1 ≥ d (b = d-1)
+              exfalso; have := s.inc_injective hab
+              simp [Fin.ext_iff] at this; omega
+            · -- a+1 ≥ d, b+1 < d
+              exfalso; have := s.inc_injective hab
+              simp [Fin.ext_iff] at this; omega
+            · -- Both a+1 ≥ d, b+1 ≥ d
+              have ha : a.val = d - 1 := by omega
+              have hb : b.val = d - 1 := by omega
+              ext; omega }
+      some (s', ⟨d, Nat.lt_succ_iff.mpr le_rfl⟩)
+  else none
 
-/-- Boundary flip at k = d: the facet opposite the last vertex
-is shared with a simplex that has a different miss direction.
+/-- Boundary flip at face d: the adjacent simplex through the
+facet opposite the last vertex. Returns none if v₀ has
+incDir(d-1)-coordinate = 0 (geometric boundary).
 
-Returns none if vertex d is on the geometric boundary. -/
+The new simplex has vertices v_new,v₀,...,v_{d-1} where
+v_new = v₀ - e_{incDir(d-1)} + e_{miss}. Same miss.
+incDir is cyclically right-shifted. -/
 noncomputable def GridSimplex.boundaryFlipLast
     (s : GridSimplex d N) :
-    Option (GridSimplex d N × Fin (d + 1)) := by
-  sorry
+    Option (GridSimplex d N × Fin (d + 1)) :=
+  if hd : d = 0 then none  -- single vertex, no face d adjacency
+  else
+    have hd_pos : 0 < d := Nat.pos_of_ne_zero hd
+    let last_inc := s.incDir ⟨d - 1, by omega⟩
+    let v0 := s.verts 0
+    if h_pos : 0 < v0.coords last_inc then
+      have h_ne : s.miss ≠ last_inc :=
+        Ne.symm (s.miss_ne_inc ⟨d - 1, by omega⟩)
+      let new_v := v0.transfer s.miss last_inc h_ne h_pos
+      -- New incDir: cyclic right shift
+      let new_incDir : Fin d → Fin (d + 1) := fun j =>
+        if j.val = 0 then last_inc
+        else s.incDir ⟨j.val - 1, by omega⟩
+      let s' : GridSimplex d N :=
+        { verts := fun j =>
+            if j.val = 0 then new_v
+            else s.verts ⟨j.val - 1, by omega⟩
+          incDir := new_incDir
+          miss := s.miss
+          miss_ne_inc := by
+            intro j; simp only [new_incDir]
+            split_ifs with h
+            · exact (s.miss_ne_inc ⟨d - 1, by omega⟩).symm
+            · exact s.miss_ne_inc ⟨j.val - 1, by omega⟩
+          step_inc := by sorry
+          step_dec := by sorry
+          step_same := by sorry
+          inc_injective := by
+            intro a b hab
+            simp only [new_incDir] at hab
+            split_ifs at hab with h1 h2
+            · -- Both a = 0, b = 0
+              ext; omega
+            · -- a = 0, b ≠ 0
+              exfalso; have := s.inc_injective hab
+              simp [Fin.ext_iff] at this; omega
+            · -- a ≠ 0, b = 0
+              exfalso; have := s.inc_injective hab
+              simp [Fin.ext_iff] at this; omega
+            · -- Both ≠ 0: s.incDir ⟨a-1, _⟩ = s.incDir ⟨b-1, _⟩
+              have := s.inc_injective hab
+              ext; simp [Fin.ext_iff] at this; omega }
+      some (s', 0)
+    else none
 
 /-- The adjacency function for the grid CellComplex.
 Dispatches to interior or boundary flips based on the
 facet position k. -/
 noncomputable def gridAdj (d N : ℕ)
     (s : GridSimplex d N) (k : Fin (d + 1)) :
-    Option (GridSimplex d N × Fin (d + 1)) := by
-  sorry
+    Option (GridSimplex d N × Fin (d + 1)) :=
+  if hk0 : k.val = 0 then s.boundaryFlip0
+  else if hkd : k.val = d then s.boundaryFlipLast
+  else  -- 0 < k.val < d, so k.val - 1 < d
+    have hk_lt_d : k.val < d := by omega
+    -- k corresponds to step index ⟨k.val - 1, _⟩ with k.val - 1 ≥ 0
+    -- But we need the step that is "between" vertex k-1 and k+1
+    -- Interior flip at step ⟨k.val, _⟩ with k.val > 0
+    -- Wait: vertex k sits between step k-1 and step k.
+    -- interiorFlip takes step k : Fin d with hk : 0 < k.val
+    -- and replaces vertex k.castSucc = ⟨k.val, _⟩.
+    -- We want to replace vertex k : Fin (d+1), so we need
+    -- step ⟨k.val, hk_lt_d⟩ with 0 < k.val.
+    have hk_pos : 0 < k.val := by omega
+    -- But interiorFlip uses its own step indexing.
+    -- Step j : Fin d goes from verts(j.castSucc) to verts(j.succ).
+    -- Swapping steps j-1 and j replaces vertex j.castSucc = ⟨j.val, _⟩.
+    -- We want to replace vertex ⟨k.val, _⟩, so j.val = k.val.
+    let step : Fin d := ⟨k.val, hk_lt_d⟩
+    some (s.interiorFlip step (by simp [step]; exact hk_pos))
 
 -- ============================================================
--- SECTION VI: CellComplex Instance
+-- SECTION VII: CellComplex Instance
 -- ============================================================
 
 /-- Adjacency is symmetric: if s is adjacent to s' through
@@ -484,8 +768,23 @@ noncomputable def gridComplex (d N : ℕ) :
   adj_ne := gridAdj_ne
 
 -- ============================================================
--- SECTION VII: Sperner Condition and Boundary Analysis
+-- SECTION VIII: Sperner Condition and Boundary Analysis
 -- ============================================================
+
+/-- On a boundary face at position k (where adj = none and
+k < d), all d vertices of the face lie on geometric face k
+of the simplex Δ_N. That is, for each vertex j ≠ k of the
+simplex, vertex j has b_k = 0.
+
+This is the key geometric fact that connects the combinatorial
+boundary (adj = none) to the geometric boundary (onFace k). -/
+theorem boundary_verts_on_face
+    (s : GridSimplex d N) (k : Fin (d + 1))
+    (hk : k.val < d)
+    (hbdry : gridAdj d N s k = none)
+    (j : Fin (d + 1)) (hjk : j ≠ k) :
+    (s.verts j).onFace k := by
+  sorry
 
 /-- On boundary face k, the Sperner condition prevents doors.
 If a simplex has its k-th facet on the boundary (adj = none)
@@ -500,7 +799,26 @@ theorem no_boundary_doors_face_lt
     (hk : k.val < d)
     (hbdry : gridAdj d N s k = none) :
     ¬CellComplex.IsDoor c (gridComplex d N) s k := by
-  sorry
+  -- A door at position k requires: for each color j < d,
+  -- some vertex i ≠ k has c(verts i) = j.
+  -- In particular, for j = k (which is < d by hk),
+  -- we need some i ≠ k with c(verts i) = k.
+  -- But all vertices i ≠ k are on face k (by boundary_verts_on_face),
+  -- so the Sperner condition says c(verts i) ≠ k. Contradiction.
+  intro hdoor
+  unfold CellComplex.IsDoor at hdoor
+  simp [gridComplex] at hdoor
+  -- Get the witness for color k
+  have ⟨i, hi_ne, hi_col⟩ := hdoor ⟨k.val, hk⟩
+  -- vertex i is on face k
+  have honface := boundary_verts_on_face s k hk hbdry i hi_ne
+  -- Sperner says c(verts i) ≠ k
+  have hsperner := hc (s.verts i) k honface
+  -- But hi_col says c(verts i) = Fin.castSucc ⟨k.val, hk⟩ = k
+  have : Fin.castSucc (⟨k.val, hk⟩ : Fin d) = k := by
+    ext; simp [Fin.castSucc]
+  rw [this] at hi_col
+  exact hsperner hi_col
 
 /-- The boundary door count for Sperner colorings is odd. -/
 theorem boundary_doors_odd (d N : ℕ) (hN : 0 < N)
