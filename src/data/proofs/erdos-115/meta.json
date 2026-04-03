@@ -41,9 +41,9 @@
       "Eremenko-Lempert theorem axiom: max|p'| ≤ (1/2 + ε)n² for all ε > 0 and large n",
       "Sharpness theorem proved from Chebyshev asymptotics (the only non-axiom result)"
     ],
-    "axiomCount": 15,
+    "axiomCount": 6,
     "lineCount": 64,
-    "assumptions": "15 axioms: ComplexPoly, polyDegree, polyDegree_eq, and 12 more. See Lean source for complete statements.",
+    "assumptions": "6 axioms: ComplexPoly, IsLemniscateConnected, maxDerivOnLemniscate, chebyshev_poly, chebyshev_connected, chebyshev_deriv_asymptotic. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -148,7 +148,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 64,
-    "axiomCount": 15,
+    "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 0
   },
