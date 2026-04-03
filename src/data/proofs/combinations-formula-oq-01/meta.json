@@ -34,15 +34,17 @@
     ]
   },
   "overview": {
-    "historicalContext": "Binomial coefficients C(n,k) = n!/(k!(n-k)!) are fundamental in combinatorics, probability, and algebra. Beyond the basic identity C(n,k) = C(n-1,k-1) + C(n-1,k) (Pascal's rule), there are many deeper identities. Vandermonde's identity (A. Vandermonde, 1772) counts paths in a grid. The Hockey Stick identity appears in Pascal's triangle as a diagonal sum. These are standard combinatorics but their formal verification organizes the infrastructure for more advanced combinatorial proofs.",
+    "historicalContext": "Binomial coefficient identities have a rich history spanning centuries. Pascal's triangle (Yang Hui 1261, Blaise Pascal 1654) organizes C(n,k) and makes recursive identities visual. Vandermonde's convolution was proved by Alexandre-Théophile Vandermonde (1772) and corresponds to coefficient comparison in (1+x)^{m+n} = (1+x)^m·(1+x)^n. The Hockey Stick identity (also called the 'Christmas stocking' identity) was known to early Pascal's triangle analysts and follows by repeated application of Pascal's rule. The Fibonacci diagonal sum Σ_j C(n-j,j) = F(n+1) was noted by 19th-century combinatorialists via the tiling bijection: C(n-j,j) counts 1×n strip tilings with exactly j dominoes. The double-counting product identity appears in texts on algebraic combinatorics as the 'subset of a subset' identity. Formal verification of these identities in Lean/Mathlib provides a foundation for more complex combinatorial arguments, and demonstrates that Mathlib's Nat.choose library contains sufficient infrastructure to prove all six identities cleanly.",
     "problemStatement": "Formalize the key binomial coefficient identities: Vandermonde convolution, Hockey Stick, double-counting product, row sums, and bounds.",
     "text": "Vandermonde's identity C(m+n,r) = Σ C(m,k)·C(n,r-k) counts ways to choose r elements from a set split into parts of size m and n. The Hockey Stick identity Σᵢ C(i+r,r) = C(n+r+1,r+1) follows from Pascal's rule applied repeatedly along a diagonal. The product identity C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j) counts the same set (choosing j and k-j from n) in two ways.",
     "proofStrategy": "Use Mathlib's Nat.choose.Sum for Vandermonde. Prove Hockey Stick by induction using Pascal's rule. Use factorial algebra for the product identity. Bound by row sum for 2^n, and specialize for central binomial. Verify Fibonacci diagonals by native_decide.",
     "keyInsights": [
-      "Vandermonde's identity is equivalent to the Cauchy product formula for (1+x)^m · (1+x)^n",
-      "Hockey Stick counts paths avoiding a boundary in Pascal's triangle",
-      "The Fibonacci diagonal sum Σ C(n-j,j) = F(n+1) connects combinatorics to number theory",
-      "All identities can be unified as special cases of the Zhu-Vandermonde identity in hypergeometric form"
+      "Vandermonde's identity is equivalent to the Cauchy product formula for (1+x)^m · (1+x)^n — a two-line Lean proof via Nat.add_choose_eq",
+      "Hockey Stick identity is proved by induction on n using Pascal's rule (Nat.choose_succ_succ) as the inductive step",
+      "The Fibonacci diagonal sum Σ C(n-j,j) = F(n+1) arises from a tiling bijection (only verified for small n by native_decide)",
+      "The product identity C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j) requires 30 lines of factorial cancellation, despite being 'obvious' combinatorially",
+      "All bounds (C(n,k) ≤ 2ⁿ and C(2n,n) ≤ 4ⁿ) follow from the row sum identity via Finset.single_le_sum",
+      "Mathlib's Nat.choose library is rich enough to prove all six identities, with the main work being index arithmetic (handled by omega)"
     ],
     "prerequisites": [
       "Basic combinatorics: binomial coefficients, Pascal's rule, factorial",
@@ -50,12 +52,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Key binomial coefficient identities formalized: Vandermonde, Hockey Stick, double-counting product, bounds, and Fibonacci diagonals. 8 theorems, 185 lines, 0 axioms.",
-    "implications": "Provides a verified combinatorics toolkit for higher-level proofs involving binomial sums, generating functions, and probabilistic arguments.",
+    "summary": "Six binomial coefficient identities fully verified: Vandermonde (2 lines), Hockey Stick (induction), double-counting product (30-line factorial algebra), row sum (1 line), binomial bound (via single_le_sum), and central binomial bound. Fibonacci diagonal sums verified by native_decide for small n. 8 theorems, 185 lines, 0 axioms.",
+    "implications": "This provides a verified combinatorics toolkit for higher-level proofs. The Vandermonde identity enables combinatorial proofs of hypergeometric identities. The Hockey Stick enables counting arguments in lattice path combinatorics. The product identity enables multinomial coefficient arguments. Together they cover the standard binomial coefficient toolkit for probabilistic and algebraic combinatorics.",
     "openQuestions": [
-      "Formal proof of Fibonacci diagonal sums (currently verified only by native_decide for small n)",
-      "Zhu-Vandermonde identity: generalization to hypergeometric series",
-      "q-binomial (Gaussian) analogues of these identities"
+      "Formal proof of Fibonacci diagonal sum Σ C(n-j,j) = F(n+1) by induction using F(n+2) = F(n+1) + F(n)",
+      "Zhu-Vandermonde identity: generalization to hypergeometric series _2F_1",
+      "q-binomial (Gaussian binomial) analogues: replace factorials by q-factorials",
+      "Prove the Lindström-Gessel-Viennot lemma as a matrix generalization of Vandermonde"
     ]
   },
   "leanFile": {
@@ -72,5 +75,36 @@
       "description": "Basic combinations formula C(n,k) = n!/(k!(n-k)!); this file adds Vandermonde, Hockey Stick, and other advanced identities"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "title": "Part I: Vandermonde's Identity",
+      "startLine": 24,
+      "endLine": 40,
+      "summary": "vandermonde proves C(m+n,r) = Σ C(m,k)·C(n,r-k) in two lines: rw [Nat.add_choose_eq] then exact with Finset.Nat.sum_antidiagonal_eq_sum_range_succ. Verified by native_decide for C(8,4)=70 and the matching sum."
+    },
+    {
+      "title": "Part II: Hockey Stick Identity",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "hockey_stick proves Σ_{i=0}^{n} C(i+r,r) = C(n+r+1,r+1) by induction. Base: simp [Nat.choose_self]. Step: Finset.sum_range_succ + induction hypothesis + Nat.choose_succ_succ (Pascal's rule) + omega. Verified by native_decide for r=0,1,2."
+    },
+    {
+      "title": "Part III: Product/Double Counting Identity",
+      "startLine": 67,
+      "endLine": 109,
+      "summary": "choose_product proves C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j) for j≤k≤n. Strategy: multiply by j!·(k-j)!·(n-k)! and show both sides equal n! using Nat.choose_mul_factorial_mul_factorial. Cancel with mul_right_cancel₀ (positivity shows denominator ≠ 0). 30 lines of ring arithmetic."
+    },
+    {
+      "title": "Parts IV-VI: Row Sums and Binomial Bounds",
+      "startLine": 111,
+      "endLine": 158,
+      "summary": "choose_row_sum: exact Nat.sum_range_choose n (1 line). choose_alternating_sum: exact Int.alternating_sum_range_choose_of_ne. choose_le_pow2: C(n,k) ≤ Σ C(n,i) = 2ⁿ via Finset.single_le_sum; k>n case by Nat.choose_eq_zero_of_lt. central_binom_le: C(2n,n) ≤ 2^{2n} = 4ⁿ via choose_le_pow2 + pow_mul."
+    },
+    {
+      "title": "Parts VII-VIII: Fibonacci Diagonals and Summary",
+      "startLine": 160,
+      "endLine": 185,
+      "summary": "Fibonacci diagonals Σ C(n-j,j) = F(n+1) verified by native_decide for n=5 (=8=F(6)) and n=6 (=13=F(7)). General proof is open. identities_summary bundles four identities as a conjunction: ⟨Nat.sum_range_choose, hockey_stick, vandermonde, choose_le_pow2⟩."
+    }
+  ]
 }

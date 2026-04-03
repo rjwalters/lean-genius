@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-comb-oq01-background",
+    "proofId": "combinations-formula-oq-01",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Six Binomial Identities: Classical Results in Lean",
+    "content": "The module covers six extensions of the basic binomial formula: (1) Vandermonde's convolution; (2) Hockey Stick diagonal sum; (3) Double-counting product identity; (4) Row sum and alternating row sum; (5) Binomial bound C(n,k) ≤ 2ⁿ; (6) Central binomial bound C(2n,n) ≤ 4ⁿ. Plus Fibonacci diagonal sums verified by native_decide. The Mathlib imports used are Nat.Choose.Basic, Nat.Choose.Sum, and Finset.Basic. Two key Mathlib lemmas carry the heavy lifting: Nat.add_choose_eq (for Vandermonde) and Nat.sum_range_choose (for row sum). The proof strategies range from one-liners (row sum: exact Nat.sum_range_choose n) to 30-line factorial algebra (product identity).",
+    "mathContext": "The file covers: $\\binom{m+n}{r} = \\sum_k \\binom{m}{k}\\binom{n}{r-k}$, $\\sum_{i=0}^n \\binom{i+r}{r} = \\binom{n+r+1}{r+1}$, $\\binom{n}{k}\\binom{k}{j} = \\binom{n}{j}\\binom{n-j}{k-j}$, $\\sum_k \\binom{n}{k} = 2^n$, $\\binom{n}{k} \\le 2^n$, $\\binom{2n}{n} \\le 4^n$.",
+    "significance": "context",
+    "relatedConcepts": ["Nat.choose", "Nat.sum_range_choose", "Nat.add_choose_eq", "Pascal's rule", "BigOperators"],
+    "prerequisites": ["Nat.choose_mul_factorial_mul_factorial", "Nat.choose_succ_succ (Pascal's rule)", "Finset.sum_range_succ"]
+  },
+  {
+    "id": "ann-comb-oq01-vandermonde",
+    "proofId": "combinations-formula-oq-01",
+    "range": { "startLine": 33, "endLine": 40 },
+    "type": "insight",
+    "title": "Vandermonde's Identity: A Two-Line Proof via Mathlib",
+    "content": "The vandermonde theorem proves C(m+n,r) = Σ_{k=0}^{r} C(m,k)·C(n,r-k) in just two lines: rw [Nat.add_choose_eq] rewrites C(m+n,r) as a sum over antidiagonals, and then exact (Finset.Nat.sum_antidiagonal_eq_sum_range_succ ...) r converts the antidiagonal sum to a range sum. The proof delegates entirely to Mathlib's existing infrastructure for Vandermonde. The combinatorial interpretation: choosing r items from a set split into parts of sizes m and n can be decomposed by how many are chosen from each part (k from the first, r-k from the second). This is equivalent to the coefficient of xʳ in (1+x)ᵐ·(1+x)ⁿ = (1+x)^{m+n}.",
+    "mathContext": "$\\binom{m+n}{r} = [x^r](1+x)^{m+n} = [x^r](1+x)^m(1+x)^n = \\sum_{k=0}^r \\binom{m}{k}\\binom{n}{r-k}$. Mathlib: `Nat.add_choose_eq` rewrites the LHS; `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` converts to a range sum.",
+    "significance": "key",
+    "relatedConcepts": ["Vandermonde identity", "Nat.add_choose_eq", "Finset.Nat.sum_antidiagonal_eq_sum_range_succ", "generating functions"],
+    "prerequisites": ["Nat.add_choose_eq", "Finset.Nat.sum_antidiagonal_eq_sum_range_succ"]
+  },
+  {
+    "id": "ann-comb-oq01-hockey",
+    "proofId": "combinations-formula-oq-01",
+    "range": { "startLine": 51, "endLine": 65 },
+    "type": "insight",
+    "title": "Hockey Stick Identity: Induction via Pascal's Rule",
+    "content": "The hockey_stick theorem proves Σ_{i=0}^{n} C(i+r,r) = C(n+r+1,r+1) by induction on n. Base case: Σ = C(r,r) = 1 = C(r+1,r+1) by simp [Nat.choose_self]. Inductive step: expose the last term via Finset.sum_range_succ, apply the induction hypothesis, then use Nat.choose_succ_succ (Pascal's rule) with omega for index arithmetic. The 'hockey stick' name: in Pascal's triangle, the partial sum runs diagonally (the stick), and the final value is a single entry one step further (the blade). The identity has applications in counting lattice paths that avoid a boundary, and in combinatorial proofs of Catalan numbers.",
+    "mathContext": "$\\sum_{i=0}^n \\binom{i+r}{r} = \\binom{n+r+1}{r+1}$. Inductive step: $\\binom{k+r+1}{r+1} + \\binom{k+1+r}{r} = \\binom{k+1+r+1}{r+1}$ by Pascal $\\binom{n}{k} + \\binom{n}{k+1} = \\binom{n+1}{k+1}$ (Nat.choose_succ_succ).",
+    "significance": "key",
+    "relatedConcepts": ["Hockey Stick identity", "Pascal's rule", "Nat.choose_succ_succ", "Finset.sum_range_succ"],
+    "prerequisites": ["Nat.choose_succ_succ", "Finset.sum_range_succ", "Nat.choose_self"]
+  },
+  {
+    "id": "ann-comb-oq01-product",
+    "proofId": "combinations-formula-oq-01",
+    "range": { "startLine": 76, "endLine": 109 },
+    "type": "insight",
+    "title": "Double-Counting Product Identity: Factorial Cancellation",
+    "content": "The choose_product theorem proves C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j) via a 30-line factorial argument. Strategy: multiply both sides by j!·(k-j)!·(n-k)! and show both equal n! via Nat.choose_mul_factorial_mul_factorial. For the LHS: C(n,k)·(C(k,j)·j!·(k-j)!)·(n-k)! = C(n,k)·k!·(n-k)! = n!. For the RHS: C(n,j)·j!·(C(n-j,k-j)·(k-j)!·(n-k)!) = C(n,j)·j!·(n-j)! = n!. Then mul_right_cancel₀ finishes (positivity proves j!·(k-j)!·(n-k)! ≠ 0). Combinatorial meaning: 'choose k from n then j from those k' equals 'choose j from n then k-j from the remaining n-j'.",
+    "mathContext": "$\\binom{n}{k}\\binom{k}{j} = \\frac{n!}{k!(n-k)!} \\cdot \\frac{k!}{j!(k-j)!} = \\frac{n!}{j!(k-j)!(n-k)!} = \\binom{n}{j}\\binom{n-j}{k-j}$. Lean: multiply by $j!(k-j)!(n-k)!$ and reduce both sides to $n!$ using `Nat.choose_mul_factorial_mul_factorial`.",
+    "significance": "key",
+    "relatedConcepts": ["double counting", "Nat.choose_mul_factorial_mul_factorial", "mul_right_cancel₀", "positivity tactic"],
+    "prerequisites": ["Nat.choose_mul_factorial_mul_factorial", "mul_right_cancel₀", "positivity"]
+  },
+  {
+    "id": "ann-comb-oq01-bounds",
+    "proofId": "combinations-formula-oq-01",
+    "range": { "startLine": 116, "endLine": 158 },
+    "type": "insight",
+    "title": "Row Sums, Alternating Row Sum, and Binomial Bounds",
+    "content": "Parts IV-VI prove four results. choose_row_sum: Σ C(n,k) = 2ⁿ — a one-liner exact Nat.sum_range_choose n. choose_alternating_sum: Σ (-1)^k · C(n,k) = 0 for n≥1 via Int.alternating_sum_range_choose_of_ne. choose_le_pow2: C(n,k) ≤ 2ⁿ by Finset.single_le_sum (C(n,k) is a single term of the row sum) then row sum = 2ⁿ; the k > n case uses Nat.choose_eq_zero_of_lt. central_binom_le: C(2n,n) ≤ 4ⁿ by choose_le_pow2 and pow_mul identity: 2^{2n} = (2²)ⁿ = 4ⁿ.",
+    "mathContext": "$\\sum_{k=0}^n \\binom{n}{k} = 2^n$; $\\sum (-1)^k \\binom{n}{k} = 0$ for $n \\ge 1$; $\\binom{n}{k} \\le 2^n$; $\\binom{2n}{n} \\le 4^n$. The bounds follow from $\\binom{n}{k} \\le \\sum_{k} \\binom{n}{k} = 2^n$ and $4^n = 2^{2n}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.sum_range_choose", "Int.alternating_sum_range_choose_of_ne", "Finset.single_le_sum", "central_binom_le"],
+    "prerequisites": ["Nat.sum_range_choose", "Finset.single_le_sum", "Nat.choose_eq_zero_of_lt", "pow_mul"]
+  },
+  {
+    "id": "ann-comb-oq01-fibonacci",
+    "proofId": "combinations-formula-oq-01",
+    "range": { "startLine": 178, "endLine": 185 },
+    "type": "insight",
+    "title": "Fibonacci Diagonal Sums and Summary Theorem",
+    "content": "Part VII verifies Σ_j C(n-j,j) = F(n+1) for small n by native_decide: n=5 gives 1+4+3+0=8=F(6); n=6 gives 1+5+6+1=13=F(7). The general proof is an open question. Part VIII bundles all results into identities_summary: a conjunction of row sum, hockey stick, Vandermonde, and binomial bound, proved by ⟨Nat.sum_range_choose, hockey_stick, vandermonde, choose_le_pow2⟩. The Fibonacci connection is deep: Σ_j C(n-j,j) counts tilings of a 1×n strip with 1×1 squares and 1×2 dominoes. Term C(n-j,j) counts tilings using exactly j dominoes (and n-2j squares), since placing j non-overlapping dominoes in n positions is a stars-and-bars problem with n-j slots.",
+    "mathContext": "$\\sum_{j=0}^{\\lfloor n/2 \\rfloor} \\binom{n-j}{j} = F(n+1)$ where $F$ is the Fibonacci sequence. Bijection: tilings of $1 \\times n$ strip with $j$ dominoes have $\\binom{n-j}{j}$ choices (choosing positions for $j$ non-adjacent dominoes among $n-j$ effective slots). The general proof proceeds by induction using the Fibonacci recurrence $F(n+2) = F(n+1) + F(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fibonacci numbers", "Pascal's triangle diagonals", "native_decide", "strip tiling bijection", "identities_summary"],
+    "prerequisites": ["hockey_stick", "vandermonde", "choose_le_pow2", "Nat.sum_range_choose"]
+  }
+]
