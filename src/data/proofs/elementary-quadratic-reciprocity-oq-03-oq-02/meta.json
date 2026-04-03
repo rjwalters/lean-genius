@@ -22,24 +22,74 @@
     "defCount": 4,
     "lineCount": 223,
     "dateAdded": "2026-03-28",
-    "assumptions": "2 axioms: kronecker_mul_right (multiplicativity), kronecker_reciprocity (generalized QR). No sorries.",
+    "assumptions": "2 axioms: kronecker_mul_right (multiplicativity in the second argument), kronecker_reciprocity (generalized QR for fundamental discriminants). No sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Leopold Kronecker extended the Jacobi symbol in 1885 to handle all integer arguments, creating a symbol fundamental to algebraic number theory, Dirichlet L-functions, and modular forms.",
-    "problemStatement": "Define the Kronecker symbol (a/n) for all integers a,n and prove its basic properties.",
-    "text": "Formalizes the Kronecker symbol extension of the Jacobi symbol.",
-    "proofStrategy": "Formalizes the Kronecker symbol extension of the Jacobi symbol.",
-    "keyInsights": []
+    "historicalContext": "Carl Friedrich Gauss introduced the Legendre symbol and proved quadratic reciprocity by 1801. Carl Gustav Jacob Jacobi generalized it in 1837 to composite odd moduli, producing the Jacobi symbol. The remaining gap — even moduli, zero, and negative integers — was closed by Leopold Kronecker in 1885, who defined (a/2), (a/-1), and (a/0) via case analysis, then extended multiplicatively to produce a completely multiplicative symbol defined on all of ℤ×ℤ. The Kronecker symbol is now the canonical quadratic character in analytic number theory: for a fundamental discriminant D of a quadratic field ℚ(√D), the map n ↦ (D/n) is a primitive Dirichlet character that encodes splitting behavior of primes in ℚ(√D) via class field theory. It appears in the functional equations of Dedekind zeta functions, in the genus theory of binary quadratic forms, in the theory of modular forms and theta series, and in Hecke's treatment of L-functions attached to quadratic fields. Hardy and Wright (Chapter 6) provide the classical treatment; the modern algebraic context is developed by Neukirch in Algebraic Number Theory.",
+    "problemStatement": "Define the Kronecker symbol (a/n) for all integers a, n, extending the Jacobi symbol to handle n = 0, n = -1, and even n. Prove basic properties: values at (1/2), (-1/2), (3/2), (5/2), (7/2), (0/2); the sign character (a/-1); the unit character (a/0); agreement with jacobiSym for odd positive n; values at the fundamental discriminant -4; and complete multiplicativity (a·b/n) = (a/n)·(b/n).",
+    "text": "Formalizes the Kronecker symbol as a completely multiplicative arithmetic symbol on all integers, built by case-splitting on the modulus n and using the Jacobi symbol for the odd part.",
+    "proofStrategy": "The formalization proceeds in four stages. First, three auxiliary definitions handle the special moduli: kronecker2 (the mod-8 pattern for n=2), kroneckerNeg1 (the sign character for n=-1), and kronecker0 (the unit indicator for n=0). Second, ten concrete-value theorems are proved by `decide` or `omega` over finite residue classes. Third, the main `noncomputable def kronecker` assembles the symbol as sign * jacobiSym for general n, where sign = kroneckerNeg1 a when n < 0 and 1 otherwise, and jacobiSym handles the odd part of |n|. Fourth, multiplicativity in the first argument is proved by case splitting on n and delegating to kronecker0_mul, kroneckerNeg1_mul, and Mathlib's jacobiSym.mul_left. Two hard results — multiplicativity in n and generalized quadratic reciprocity for fundamental discriminants — are axiomatized as they require Gauss sum methods not yet formalized here.",
+    "keyInsights": [
+      "The mod-8 pattern for (a/2): the value is 0 if 2|a, equals 1 if a ≡ ±1 (mod 8), and equals -1 if a ≡ ±3 (mod 8). This exactly parallels the second supplement of the Legendre symbol — (2/p) = (-1)^((p²-1)/8) — and the Kronecker extension to all integers uses the same mod-8 classification.",
+      "The sign character (a/-1) = kroneckerNeg1 a encodes the real embedding: -1 if a < 0, else 1. It is the unique real-valued character of order 2 on ℝ^×, and its inclusion lets the Kronecker symbol serve as a Hecke character at the archimedean place.",
+      "Complete multiplicativity in the first argument — (ab/n) = (a/n)(b/n) for ab ≠ 0 — is the structural property that promotes the Kronecker symbol from a set function to a group homomorphism (ℤ/nℤ)^× → {±1}, i.e., a Dirichlet character. For a fundamental discriminant D, the map n ↦ (D/n) is a primitive Dirichlet character of conductor |D|, establishing the link to Dirichlet L-functions.",
+      "The Kronecker symbol requires two axioms — multiplicativity in the second argument and generalized quadratic reciprocity — because both demand case analysis over the 2-adic valuation of n combined with Gauss sum arguments or induction over prime factorizations. The generalized QR is equivalent to Artin reciprocity for quadratic extensions restricted to ℚ.",
+      "The definition is `noncomputable` in Lean 4 because it builds on `jacobiSym`, which uses integer division in ways Lean's kernel cannot definitionally reduce. This is a type-theoretic artifact, not a mathematical obstruction: the Kronecker symbol is entirely explicit and could be computed on any input by a straightforward algorithm."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "File Header and Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Docstring block defining the Kronecker symbol conceptually: four cases (a/0), (a/-1), (a/2), (a/p); the multiplicative extension; and four areas of application (L-functions, class field theory, quadratic forms, modular forms). Imports JacobiSymbol and Tactic."
+    },
+    {
+      "id": "special-moduli-defs",
+      "title": "Section 1: Definitions at Special Moduli",
+      "startLine": 33,
+      "endLine": 52,
+      "summary": "Three core definitions: kronecker2 (the symbol at n=2, a 3-way if-else on a mod 2 and a mod 8), kroneckerNeg1 (the sign character), and kronecker0 (the unit indicator). These three definitions encode all the non-Jacobi data of the Kronecker symbol."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Section 2: Basic Properties at Special Moduli",
+      "startLine": 54,
+      "endLine": 97,
+      "summary": "Ten concrete-value theorems proved by decide or omega: kronecker2 at 1, -1, 3, 5, 7, 0; kroneckerNeg1 for nonneg and negative inputs; kronecker0 at 1, -1, 2. Verifies the mod-8 pattern and sign character behavior."
+    },
+    {
+      "id": "full-kronecker-def",
+      "title": "Section 3: The Full Kronecker Symbol",
+      "startLine": 99,
+      "endLine": 114,
+      "summary": "Defines noncomputable kronecker via a 4-way case split: n=0 to kronecker0, n=-1 to kroneckerNeg1, n=1 returns 1, general case computes sign * jacobiSym a n.natAbs."
+    },
+    {
+      "id": "jacobi-agreement-discriminants",
+      "title": "Sections 4 & 5: Jacobi Agreement and Discriminant Values",
+      "startLine": 116,
+      "endLine": 142,
+      "summary": "Proves kronecker_eq_jacobi (for odd positive n, Kronecker equals Jacobi) and kronecker_neg4_values (the character of Z[i] at discriminant -4: both (−4/1) and (−4/3) equal 1)."
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Section 6: Multiplicativity and Axioms",
+      "startLine": 143,
+      "endLine": 222,
+      "summary": "Proves kroneckerNeg1_mul (sign character multiplicativity, 4-way case split), kronecker0_mul (unit character multiplicativity), kronecker_mul_left (full symbol multiplicativity in first argument via split_ifs + jacobiSym.mul_left). Ends with docstring-style statements of the two axiomatized results: kronecker_mul_right and kronecker_reciprocity."
+    }
+  ],
   "conclusion": {
-    "summary": "The Kronecker symbol provides a uniform framework for quadratic characters over all integers.",
+    "summary": "The Kronecker symbol formalization provides 4 definitions and 13 proved theorems, establishing the symbol's concrete values, agreement with the Jacobi symbol for odd positive moduli, the character structure of Z[i] at discriminant -4, and complete multiplicativity in the first argument. Two deep results — multiplicativity in the second argument and generalized quadratic reciprocity for fundamental discriminants — are axiomatized.",
+    "implications": "The Kronecker symbol sits at the interface of three major branches of algebraic number theory. In Dirichlet's theory, for each fundamental discriminant D the map χ_D(n) = (D/n) is a primitive Dirichlet character of conductor |D|, whose L-function L(s, χ_D) appears in the analytic class number formula. In class field theory, the Kronecker symbol encodes the Artin map for ℚ(√D)/ℚ: a prime p splits, ramifies, or is inert according to whether (D/p) is 1, 0, or -1. In modular forms, theta series ∑(D/n)q^(n²) are Hecke eigenforms with nebentypus character (D/·). The formalization of multiplicativity in the first argument already establishes the homomorphism property needed to connect the Kronecker symbol to these structures, with the two axioms precisely delineating the frontier of what remains to be formalized.",
     "openQuestions": [
-      "Prove multiplicativity from the definition",
-      "Formalize connection to Dirichlet characters"
-    ],
-    "implications": "The Kronecker symbol provides a uniform framework for quadratic characters over all integers."
+      "Prove multiplicativity in the second argument (kronecker_mul_right): the key difficulty is handling the interaction between the 2-adic valuation of n and the mod-8 classification of (a/2), requiring a case split on v₂(m) + v₂(n) vs v₂(mn).",
+      "Formalize the connection to Dirichlet characters: define the map D ↦ χ_D = (D/·) from fundamental discriminants to primitive Dirichlet characters, and prove every real primitive Dirichlet character is a Kronecker character.",
+      "Formalize generalized quadratic reciprocity for fundamental discriminants (kronecker_reciprocity): the statement (d₁/|d₂|)(d₂/|d₁|) = (-1)^((d₁-1)/2·(d₂-1)/2) is equivalent to Artin reciprocity for quadratic extensions and may be within reach via Mathlib's quadratic reciprocity infrastructure."
+    ]
   },
   "leanFile": {
     "imports": [
@@ -55,7 +105,17 @@
     {
       "targetId": "elementary-quadratic-reciprocity-oq-03",
       "relationship": "extends",
-      "description": "Extends the Jacobi symbol formalization to the Kronecker symbol for all integers"
+      "description": "Extends the Jacobi symbol formalization to the Kronecker symbol for all integers, adding special moduli n = 0, -1, 2 and the noncomputable multiplicative assembly"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
+      "relationship": "parent",
+      "description": "The child proof formalizes complete multiplicativity in both arguments, proving the result axiomatized here as kronecker_mul_right"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The foundational quadratic reciprocity result that motivates the Legendre → Jacobi → Kronecker symbol chain"
     }
   ]
 }
