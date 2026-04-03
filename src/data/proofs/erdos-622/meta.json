@@ -99,31 +99,31 @@
       "summary": "Problem statement, DKM 2025 solution, and note on regularity necessity.",
       "startLine": 1,
       "endLine": 19,
-      "mathContext": "Mathematical content: Problem statement, DKM 2025 solution, and note on regularity necessity."
+      "mathContext": "Problem: Is $|\\{S \\subseteq V(G) : \\exists \\text{ cycle } C \\text{ with } V(C) = S\\}| \\gg 2^{2n}$ for every $(n+1)$-regular $G$ on $2n$ vertices? Answer (DKM 2025): yes, at least $(1/2 + o(1)) \\cdot 2^{2n}$."
     },
     {
       "id": "imports",
       "title": "Imports and Namespace",
-      "summary": "Imports `SimpleGraph.Basic`, `WalkCounting`, `Fintype.Basic`, `Asymptotics` (for `Filter.atTop`), and `Tactic`. Opens `SimpleGraph` and `Finset` namespaces.",
+      "summary": "Imports SimpleGraph.Basic, WalkCounting, Fintype.Basic, Asymptotics (for Filter.atTop), and Tactic. Opens SimpleGraph and Finset namespaces.",
       "startLine": 20,
       "endLine": 31,
-      "mathContext": "Mathematical content: Imports `SimpleGraph.Basic`, `WalkCounting`, `Fintype.Basic`, `Asymptotics` (for `Filter.atTop`), and `Tactic`. Opens `SimpleGraph` and `Finset` namespaces."
+      "mathContext": "`Filter.atTop` enables $\\forall^\\infty n$ quantification for asymptotic bounds. `SimpleGraph V` models undirected graphs as `Adj : V → V → Prop`. `Walk` infrastructure provides cycle definitions."
     },
     {
       "id": "graph-basics",
       "title": "Graph Definitions",
-      "summary": "Defines `IsRegular` ($\\deg(v) = d$ for all $v$), `vertexCount`, and `IsErdosFaudreeGraph` ($2n$ vertices, $(n+1)$-regular).",
+      "summary": "Defines IsRegular (deg(v) = d for all v), vertexCount, and IsErdosFaudreeGraph (2n vertices, (n+1)-regular).",
       "startLine": 32,
       "endLine": 44,
-      "mathContext": "Formal definition: Defines `IsRegular` ($\\deg(v) = d$ for all $v$), `vertexCount`, and `IsErdosFaudreeGraph` ($2n$ vertices, $(n+1)$-regular)."
+      "mathContext": "$G$ is $(n+1)$-regular on $2n$ vertices: $\\deg(v) = n+1$ for all $v \\in V(G)$, $|V(G)| = 2n$. Edge count: $|E| = 2n(n+1)/2 = n(n+1)$. Exceeds Dirac threshold: $n+1 > n = |V|/2$."
     },
     {
       "id": "cycles",
       "title": "Cycles and Spanning",
-      "summary": "Defines `IsCycle` (closed vertex-disjoint walk of length $\\geq 3$), `SpannedByCycle` ($\\exists$ cycle with $V(C) = S$), and `cycleSpannedCount` ($|\\{S \\subseteq V : \\text{SpannedByCycle}(G,S)\\}|$).",
+      "summary": "Defines IsCycle (closed vertex-disjoint walk of length ≥ 3), SpannedByCycle (∃ cycle with V(C) = S), and cycleSpannedCount (|{S ⊆ V : SpannedByCycle(G,S)}|).",
       "startLine": 45,
       "endLine": 59,
-      "mathContext": "Formal definition: Defines `IsCycle` (closed vertex-disjoint walk of length $\\geq 3$), `SpannedByCycle` ($\\exists$ cycle with $V(C) = S$), and `cycleSpannedCount` ($|\\{S \\subseteq V : \\text{SpannedByCycle}(G,S)\\}|$)."
+      "mathContext": "$\\text{SpannedByCycle}(G, S) \\iff \\exists$ cycle $C$ in $G$ with $V(C) = S$ (exact vertex equality). $\\text{cycleSpannedCount}(G) = |\\{S \\in \\mathcal{P}(V) : \\text{SpannedByCycle}(G, S)\\}|$. Total subsets: $2^{2n}$."
     },
     {
       "id": "main-theorem",
@@ -139,7 +139,7 @@
       "summary": "Defines `nonCycleCount = 2^{|V|} - \\text{cycleSpannedCount}$. Axiomatizes Erdős's observation ($\\text{nonCycleCount} \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$) and `half_half` (both bounds combined).",
       "startLine": 81,
       "endLine": 103,
-      "mathContext": "Defines `nonCycleCount = $$2^{{|V|}$}$ - \\text{cycleSpannedCount}$. Axiomatizes Erdős's observation ($\\text{nonCycleCount} \\geq (1/2 - \\varepsilon) \\cdot $$2^{{2n}$}$$) and `half_half` (both bounds combined)."
+      "mathContext": "$\\text{nonCycleCount}(G) = 2^{2n} - \\text{cycleSpannedCount}(G)$. Erdős's observation: $\\text{nonCycleCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$. Combined: $(1/2-\\varepsilon) \\cdot 2^{2n} \\leq \\text{cycleSpannedCount}(G) \\leq (1/2+\\varepsilon) \\cdot 2^{2n}$."
     },
     {
       "id": "regularity",
@@ -155,7 +155,7 @@
       "summary": "Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). Axiomatizes `random_regular_bound` (DKM holds with high probability for random regular graphs).",
       "startLine": 148,
       "endLine": 172,
-      "mathContext": "Formal definition: Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). Axiomatizes `random_regular_bound` (DKM holds with high probability for random regular graphs)."
+      "mathContext": "Paley graph $P(q)$ for $q \\equiv 1 \\pmod{4}$: $V = \\mathbb{F}_q$, $u \\sim v \\iff u - v \\in (\\mathbb{F}_q^\\times)^2$. $(q-1)/2$-regular, self-complementary. Random $(n+1)$-regular model $\\mathcal{G}(2n, n+1)$ satisfies DKM bound with high probability."
     },
     {
       "id": "hamiltonian",
@@ -163,7 +163,7 @@
       "summary": "Defines `IsHamiltonianCycle` ($V(C) = V$) and `hamiltonianCount`. Axiomatizes existence via **Dirac's theorem**: $\\delta(G) \\geq |V|/2 \\implies$ Hamiltonian.",
       "startLine": 173,
       "endLine": 188,
-      "mathContext": "Defines `IsHamiltonianCycle` ($V(C) = V$) and `hamiltonianCount`. Axiomatizes existence via **Dirac's theorem**: $\\$\\delta$(G) \\geq |V|/2 \\implies$ Hamiltonian."
+      "mathContext": "Hamiltonian cycle: $V(C) = V$ (cycle visits all vertices). Dirac (1952): $\\delta(G) \\geq |V|/2 \\implies G$ Hamiltonian. For Erdős–Faudree: $\\delta = n+1 > n = |V|/2$, so Hamiltonian exists."
     },
     {
       "id": "turan",
