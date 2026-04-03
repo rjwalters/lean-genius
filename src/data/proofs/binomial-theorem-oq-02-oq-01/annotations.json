@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-multinom-def",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": { "startLine": 42, "endLine": 65 },
+    "type": "definition",
+    "title": "multinomialProb: PMF Definition and Nonnegativity",
+    "content": "`multinomialProb s p n k` defines the probability mass function of the multinomial distribution: $\\binom{n}{k} \\prod_{i \\in s} p(i)^{k(i)}$ where $\\binom{n}{k} = \\text{Nat.multinomial}\\, s\\, k$ is the multinomial coefficient. The function is parameterized by a finite set $s$, probability function $p : \\alpha \\to \\mathbb{R}$, number of trials $n$, and outcome function $k : \\alpha \\to \\mathbb{N}$. `multinomialProb_nonneg` proves nonnegativity when all $p(i) \\geq 0$ via `mul_nonneg`: the multinomial coefficient casts to $\\geq 0$, and the product of powers of nonneg numbers is nonneg.",
+    "mathContext": "The multinomial coefficient $\\binom{n}{k_1,\\ldots,k_m} = \\frac{n!}{k_1! \\cdots k_m!}$ counts the number of ways to assign $n$ distinguishable trials to $m$ outcome categories with $k_i$ trials in category $i$. In Lean, `Nat.multinomial s k` with `∑ i ∈ s, k i = n` gives this coefficient. The `piAntidiag s n` finset contains exactly the functions $k : \\alpha \\to \\mathbb{N}$ with support in $s$ and $\\sum k(i) = n$ — the valid outcome distributions.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.multinomial", "Finset.piAntidiag", "multinomial coefficient", "PMF (probability mass function)"],
+    "prerequisites": ["Mathlib.Data.Nat.Choose.Multinomial", "Finset.prod_nonneg", "Nat.cast_nonneg"]
+  },
+  {
+    "id": "ann-multinom-normalization",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": { "startLine": 67, "endLine": 83 },
+    "type": "insight",
+    "title": "multinomialProb_sum_eq_one: Normalization IS the Multinomial Theorem",
+    "content": "`multinomialProb_sum_eq_one` proves $\\sum_{k : \\sum k = n} P(k) = 1$ in 3 lines: unfold the definition, apply `Finset.sum_pow_eq_sum_piAntidiag` (the multinomial theorem), then rewrite using $\\sum p(i) = 1$ to get $1^n = 1$. The proof is: `rw [hp, one_pow] at h; exact h.symm`. The multinomial theorem literally *is* the normalization proof — no further work needed.",
+    "mathContext": "The multinomial theorem states $(\\sum_{i \\in s} x_i)^n = \\sum_{k \\in \\text{piAntidiag}\\, s\\, n} \\binom{n}{k} \\prod_{i \\in s} x_i^{k(i)}$. Setting $x_i = p(i)$ and using $\\sum p(i) = 1$: the left side becomes $1^n = 1$. The right side is $\\sum_{k} \\text{multinomialProb}\\, s\\, p\\, n\\, k$. This identifies probability normalization with the multinomial theorem, showing probability theory and combinatorics are two faces of the same algebraic identity.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_pow_eq_sum_piAntidiag", "multinomial theorem", "probability normalization"],
+    "prerequisites": ["Finset.sum_pow_eq_sum_piAntidiag in Mathlib", "one_pow", "ring lemmas"]
+  },
+  {
+    "id": "ann-multinom-mgf",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": { "startLine": 85, "endLine": 130 },
+    "type": "technique",
+    "title": "MGF Derivation: multinomial_weighted_sum and multinomial_mgf_factored",
+    "content": "`multinomial_weighted_sum` proves $(\\sum p(i) \\cdot g(i))^n = \\sum_{k} \\binom{n}{k} \\prod (p(i) g(i))^{k(i)}$ — again a direct application of `sum_pow_eq_sum_piAntidiag` with $f(i) = p(i) \\cdot g(i)$. `multinomial_mgf_factored` then factors $(p(i) g(i))^{k(i)} = p(i)^{k(i)} \\cdot g(i)^{k(i)}$ using `Finset.prod_mul_distrib` and `mul_pow`, separating probability weights from the $g$-terms. This works over *any commutative semiring* — not just $\\mathbb{R}$.",
+    "mathContext": "The generality is key: the MGF derivation holds in any `CommSemiring`, so it applies to formal power series (generating functions), polynomial rings, and more. The factorization $\\prod (p \\cdot g)^k = (\\prod p^k)(\\prod g^k)$ is the multiplicativity of the product over independent factors, proved by `Finset.prod_mul_distrib`. When $g(i) = \\exp(t_i)$: $\\sum P(k) \\prod g(i)^{k(i)} = \\mathbb{E}[\\exp(\\sum t_i X_i)] = (\\sum p(i) e^{t_i})^n$, the classical MGF formula.",
+    "significance": "key",
+    "relatedConcepts": ["CommSemiring generality", "Finset.prod_mul_distrib", "mul_pow", "moment-generating function"],
+    "prerequisites": ["Finset.sum_pow_eq_sum_piAntidiag", "Finset.prod_mul_distrib", "CommSemiring typeclass"]
+  },
+  {
+    "id": "ann-multinom-binomial",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": { "startLine": 140, "endLine": 170 },
+    "type": "concept",
+    "title": "Binomial as 2-Outcome Multinomial: Bool-Indexed Distribution",
+    "content": "`multinomial_is_binomial` proves that the multinomial distribution over `{false, true}` with $p(\\text{true}) = p$, $p(\\text{false}) = 1-p$ normalizes to 1. The proof calls `multinomialProb_sum_eq_one` after reducing $\\sum_{b \\in \\{F,T\\}} p(b) = (1-p) + p = 1$ via `ring`. `binomial_normalization` proves the same result directly: $((1-p) + p)^n = 1^n = 1$ by `simp`.",
+    "mathContext": "For $s = \\{F, T\\}$, `piAntidiag {F,T} n` contains functions $k : \\text{Bool} \\to \\mathbb{N}$ with $k(F) + k(T) = n$, corresponding to $(n-j, j)$ for $j = 0, \\ldots, n$. The multinomial coefficient $\\binom{n}{n-j, j} = \\binom{n}{j}$ is the standard binomial coefficient. So $P(k) = \\binom{n}{j} p^j (1-p)^{n-j}$ — exactly the binomial PMF. This shows `binomial-theorem-oq-03` (binomial distribution) is a special case derivable from this more general formalization.",
+    "significance": "supporting",
+    "relatedConcepts": ["piAntidiag Bool n", "binomial coefficient as multinomial", "Finset.sum_pair"],
+    "prerequisites": ["Bool.false_ne_true", "Finset.sum_pair", "ring normalization"]
+  },
+  {
+    "id": "ann-multinom-count",
+    "proofId": "binomial-theorem-oq-02-oq-01",
+    "range": { "startLine": 195, "endLine": 222 },
+    "type": "technique",
+    "title": "multinomial_count: |s|^n = ∑ Multinomial Coefficients",
+    "content": "`multinomial_count` proves $|s|^n = \\sum_{k \\in \\text{piAntidiag}\\, s\\, n} \\binom{n}{k}$ by applying `sum_pow_eq_sum_piAntidiag` with $f \\equiv 1$: $(\\sum_{i \\in s} 1)^n = (|s|)^n$ and $\\prod_{i \\in s} 1^{k(i)} = 1$. This is the multinomial analog of $\\sum_{j=0}^n \\binom{n}{j} = 2^n$. For $|s| = 2$: the identity says $2^n = \\sum_{j=0}^n \\binom{n}{j}$ (sum of binomial coefficients). The proof uses `simp` with `one_pow`, `prod_const_one`, `sum_const`, and cast lemmas.",
+    "mathContext": "The identity $|s|^n = \\sum_{k} \\binom{n}{k}$ counts two things: $|s|^n$ is the number of functions $\\text{Fin}\\, n \\to s$ (all sequences of $n$ choices from $s$); $\\sum_k \\binom{n}{k}$ counts by distributing $n$ trials into outcome categories. The bijection is: any function $f : \\text{Fin}\\, n \\to s$ induces an outcome count $k(i) = |f^{-1}(\\{i\\})|$, and $\\binom{n}{k}$ counts the functions with that distribution. This is the counting argument underlying both the multinomial theorem and the multinomial distribution.",
+    "significance": "supporting",
+    "relatedConcepts": ["sum_pow_eq_sum_piAntidiag", "sum_const", "prod_const_one", "counting functions"],
+    "prerequisites": ["Finset.sum_const", "Finset.prod_const_one", "Nat.cast lemmas", "smul_eq_mul"]
+  }
+]
