@@ -32,15 +32,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Vandermonde's identity (1772) states C(m+n,r) = Σ_{k=0}^r C(m,k)·C(n,r-k). The algebraic proof uses polynomial multiplication: (1+x)^m · (1+x)^n = (1+x)^{m+n}. But there is a beautiful combinatorial proof via an explicit bijection: choose r elements from m+n by splitting at position m — the low-part has k elements from {0,...,m-1} and the high-part has r-k elements from {m,...,m+n-1}.",
+    "historicalContext": "Vandermonde's identity C(m+n,r) = Σ_{k=0}^r C(m,k)·C(n,r-k) is one of the fundamental identities in combinatorics, with a history stretching back centuries before Vandermonde.\n\n**Chu Shih-chieh (1303 CE)**: In *Precious Mirror of the Four Elements*, the Chinese mathematician Zhu Shijie (Chu Shih-chieh) listed several binomial coefficient identities, including what we now call Vandermonde's convolution. This predates the European rediscovery by nearly 500 years.\n\n**Pascal (1654)**: In *Traité du triangle arithmétique*, Pascal implicitly used the identity in his recursive construction of the arithmetic triangle. The identity is essentially equivalent to Pascal's rule applied across rows.\n\n**Vandermonde (1772)**: Alexandre-Théophile Vandermonde's *Mémoire sur des irrationnelles de différens ordres avec une application au cercle* provided one of the first systematic treatments of the identity in Europe, establishing it as a special case of his more general hypergeometric formula. Ironically, Vandermonde is better known for the determinant bearing his name (which he did NOT introduce) than for the identity that does bear his name.\n\n**The algebraic proof** (polynomial multiplication): (1+x)^m · (1+x)^n = (1+x)^{m+n}; comparing coefficients of x^r on both sides yields Vandermonde's identity. This proof is short but gives no insight into *why* the identity holds.\n\n**The combinatorial proof** (split-by-threshold): Choose r elements from {0,...,m+n-1} by classifying them as 'low' (below m) or 'high' (m or above). Any r-subset S has k elements in the low part and r-k in the high part for some k ∈ {0,...,r}. The low part is a k-subset of {0,...,m-1} (C(m,k) choices), and the high part is an (r-k)-subset of {0,...,n-1} after shifting (C(n,r-k) choices). This bijective argument, formalized here, makes the identity *self-explanatory*.\n\n**Chu-Vandermonde generalization**: Gauss (1812) generalized Vandermonde's identity to hypergeometric series: ₂F₁(-n, b; c; 1) = (c-b)_n / (c)_n. Modern combinatorics uses the identity for convolution formulas in generating function theory, WZ (Wilf-Zeilberger) certification, and the theory of symmetric functions.",
     "problemStatement": "Prove Vandermonde's identity combinatorially, via an explicit bijection on Finsets, without algebraic or generating function arguments.",
     "text": "The bijection: for S ⊆ range(m+n) with |S|=r, define split(S) = (S ∩ range(m), S∩[m,m+n) - m). The forward map sends S to (lowPart m S, highPart m S). The inverse merge(A,B) = A ∪ B.image(·+m). These are mutually inverse: split(merge(A,B)) = (A,B) and merge(split(S)) = S. Since C(m,k)·C(n,r-k) counts pairs of appropriate sizes, summing over k gives C(m+n,r).",
     "proofStrategy": "Define lowPart, highPart, and merge explicitly on Finsets. Prove the roundtrip properties: split∘merge = id and merge∘split = id. Derive Vandermonde's formula by cardinality counting via the bijection.",
     "keyInsights": [
-      "Split at threshold: elements < m go to the low part, elements ≥ m shift down to the high part",
-      "Merge is the inverse: union with upshift reverses the split",
-      "Bijective proof: directly establishes C(m+n,r) = Σ C(m,k)·C(n,r-k) without algebra",
-      "Cleaner than polynomial proof: gives combinatorial insight, not just algebraic identity"
+      "**The split-by-threshold bijection** is more informative than the algebraic proof: lowPart m S = S.filter(·<m) and highPart m S = (S.filter(m≤·)).image(·-m) partition S into low and high pieces normalized to their respective ranges. The critical insight is that the high part is *shifted* by subtracting m, so it lands in range(n) rather than range(m,m+n). This normalization is what makes the bijection with (range m)-subsets × (range n)-subsets work.",
+      "**Fiber decomposition**: The key intermediate structure is `fiber m n r k` — the set of all r-subsets of range(m+n) whose low part has exactly k elements. The main lemma `card_fiber` proves |fiber m n r k| = C(m,k)·C(n,r-k) via `Finset.card_bij`. The bijection witness is (A,B) ↔ merge m A B, and the three conditions (maps-into, injectivity, surjectivity) all reduce to the roundtrip theorems lowPart_merge, highPart_merge, and merge_lowPart_highPart.",
+      "**Injectivity via calc chain**: The injectivity proof in card_fiber is a two-line calc: S₁ = merge(low S₁, high S₁) = merge(low S₂, high S₂) = S₂ — using merge_lowPart_highPart twice and the hypothesis (low S₁, high S₁) = (low S₂, high S₂). This is the characteristic pattern for injectivity of bijections defined by roundtrip: the identity S = merge(low S, high S) lets you substitute and conclude S₁ = S₂.",
+      "**Sum-of-squares corollary** C(2n,n) = Σ C(n,k)²: Setting m = n in Vandermonde gives C(2n,n) = Σ C(n,k)·C(n,n-k). Then Nat.choose_symm (C(n,n-k) = C(n,k)) converts the product to a square. Combinatorially: each n-subset of a 2n-set is uniquely determined by its intersection with the first half, so the sum over k (choosing k from the first n, and n-k from the second n) counts all C(2n,n) subsets. The central binomial coefficient C(2n,n) appears in random walk return probabilities, Catalan numbers (C_n = C(2n,n)/(n+1)), and the Wallis product for π.",
+      "**Bijective proofs vs algebraic proofs**: The algebraic proof (polynomial identity) is a 2-line proof in Lean using Nat.add_choose_eq. The bijective proof is 299 lines. The value of the longer proof is not efficiency but *explanation*: it reveals the combinatorial structure that makes the identity true, and the same technique (split a set by threshold, count pairs) generalizes to other sum identities. The Finset infrastructure (lowPart, highPart, merge, fiber) developed here is reusable for similar combinatorial bijection arguments."
     ],
     "prerequisites": [
       "Finset theory: filter, image, union, card",
@@ -49,12 +50,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Vandermonde's identity proved via explicit bijection: split-by-threshold map, merge inverse, bijectivity verified. 14 theorems, 299 lines, 0 axioms.",
-    "implications": "Bijective proofs of combinatorial identities are valuable because they reveal the combinatorial structure that explains 'why' the identity holds. This approach generalizes to other convolution identities (Chu-Vandermonde, Zhu-Vandermonde variants).",
+    "summary": "Vandermonde's identity C(m+n,r) = Σ C(m,k)·C(n,r-k) proved via explicit split-by-threshold bijection. 14 theorems, 4 definitions, 299 lines, 0 axioms. The sum-of-squares corollary C(2n,n) = Σ C(n,k)² follows by symmetry.",
+    "implications": "Bijective proofs of combinatorial identities are valuable because they reveal *why* identities hold, not just that they hold. The split/merge/fiber infrastructure developed here is a reusable pattern for Lean formalization of combinatorial bijection proofs. The fiber decomposition technique — partitioning powersetCard by a statistic and computing fiber cardinalities — applies broadly to convolution-type identities.",
     "openQuestions": [
-      "Extend to the Chu-Vandermonde identity for hypergeometric functions",
-      "Prove the Zhu-Vandermonde generalization for negative integers",
-      "Apply the bijection technique to other binomial sum identities"
+      "Prove the Chu-Vandermonde identity for hypergeometric functions: ₂F₁(-n, b; c; 1) = (c-b)_n/(c)_n, generalizing the combinatorial proof to the complex analytic setting",
+      "Formalize Zeilberger's WZ algorithm to automatically verify binomial coefficient identities; Vandermonde's identity is in WZ's catalog of certifiable identities",
+      "Prove the q-Vandermonde identity (Gauss binomial coefficients): C_q(m+n,r) = Σ q^{k(m-k)} C_q(m,k)·C_q(n,r-k), which counts subspaces of vector spaces over GF(q)",
+      "Apply the fiber bijection technique to other convolutions: the Leibniz identity for derivatives, the convolution formula for Stirling numbers, or the ballot problem bijection"
     ]
   },
   "leanFile": {
@@ -66,10 +68,77 @@
   },
   "crossReferences": [
     {
-      "targetId": "binomial-theorem",
+      "id": "binomial-theorem",
       "relationship": "extends",
-      "description": "Binomial theorem and coefficients; OQ-04-OQ-01 proves Vandermonde's identity via combinatorial bijection"
+      "description": "Binomial theorem and coefficients — the parent entry establishing Nat.choose and C(n,k) in the gallery"
+    },
+    {
+      "id": "binomial-theorem-oq-04",
+      "relationship": "answers",
+      "description": "Open question OQ-04: can Vandermonde's identity be proved combinatorially? This file answers YES with an explicit bijection"
+    },
+    {
+      "id": "arithmetic-series-oq-02-oq-01",
+      "relationship": "related",
+      "description": "q-Hockey Stick Identity — another combinatorial identity in the gallery using Finset-theoretic induction"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-split-map",
+      "title": "Part I–II: Split and Merge Maps",
+      "startLine": 32,
+      "endLine": 51,
+      "summary": "Defines the three core maps: lowPart m S = S.filter(·<m) (elements below threshold), highPart m S = (S.filter(m≤·)).image(·-m) (elements ≥ m, shifted down), and merge m A B = A ∪ B.image(·+m) (the inverse: A plus B shifted up by m)."
+    },
+    {
+      "id": "sec-range-properties",
+      "title": "Part III: Range and Cardinality Properties",
+      "startLine": 53,
+      "endLine": 93,
+      "summary": "lowPart_subset_range: lowPart m S ⊆ range m. highPart_subset_range: highPart m S ⊆ range n (when S ⊆ range(m+n)). lowPart_card_add_highPart_card: |lowPart m S| + |highPart m S| = |S| (proved via partition + injectivity of (·-m) on the high filter)."
+    },
+    {
+      "id": "sec-roundtrip",
+      "title": "Part IV: Round-Trip Properties",
+      "startLine": 94,
+      "endLine": 140,
+      "summary": "Three theorems certifying the bijection roundtrip: lowPart_merge (merge then split recovers A), highPart_merge (merge then split recovers B), merge_lowPart_highPart (split then merge recovers S). Together they establish split and merge are mutually inverse maps."
+    },
+    {
+      "id": "sec-merge-card",
+      "title": "Part V: Merge Cardinality and Range",
+      "startLine": 141,
+      "endLine": 165,
+      "summary": "merge_card: |merge m A B| = |A| + |B| (proved by disjointness of A and B.image(·+m), using Finset.card_union_of_disjoint). merge_subset_range: merge m A B ⊆ range(m+n) when A ⊆ range m, B ⊆ range n."
+    },
+    {
+      "id": "sec-fiber",
+      "title": "Part VI: Fiber Bijection — card_fiber",
+      "startLine": 166,
+      "endLine": 236,
+      "summary": "Defines fiber m n r k = r-subsets of range(m+n) with |lowPart| = k. Key lemmas: fiber_disjoint (fibers for different k are disjoint), powersetCard_eq_biUnion_fiber (all r-subsets = disjoint union of fibers). Main: card_fiber: |fiber m n r k| = C(m,k)·C(n,r-k), proved by Finset.card_bij with the (A,B) ↔ merge m A B bijection."
+    },
+    {
+      "id": "sec-vandermonde",
+      "title": "Part VII: Vandermonde's Identity — Main Theorem",
+      "startLine": 238,
+      "endLine": 263,
+      "summary": "vandermonde_combinatorial m n r: C(m+n,r) = Σ_{k=0}^r C(m,k)·C(n,r-k). Proof: LHS = |powersetCard r (range(m+n))| = |biUnion fibers| = Σ |fiber k| = Σ C(m,k)·C(n,r-k). The disjoint union uses fiber_disjoint; card_biUnion applies; card_fiber handles each summand."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Part VIII: Concrete Verifications",
+      "startLine": 264,
+      "endLine": 281,
+      "summary": "Four native_decide examples: C(8,4)=70, lowPart 5 {0,1,4,6}={0,1,4}, highPart 5 {0,1,4,6}={1} (since 6-5=1), merge 5 {0,1,4} {1}={0,1,4,6}, and the sum-of-squares check C(8,4)=Σ C(4,k)²=70."
+    },
+    {
+      "id": "sec-sum-squares",
+      "title": "Part IX: Sum-of-Squares Corollary",
+      "startLine": 282,
+      "endLine": 299,
+      "summary": "sum_squares_combinatorial n: C(2n,n) = Σ_{k=0}^n C(n,k)². Derived from vandermonde_combinatorial at m=n, using Nat.choose_symm to convert C(n,n-k) to C(n,k) and sq to rewrite the product as a square."
+    }
+  ]
 }
