@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ann-fermat-equation",
+    "proofId": "fermats-last-theorem-oq-03",
+    "range": { "startLine": 28, "endLine": 35 },
+    "type": "definition",
+    "title": "FermatEquation over Arbitrary CommRing",
+    "content": "FermatEquation K n = ∃ x y z : K, x ≠ 0 ∧ y ≠ 0 ∧ z ≠ 0 ∧ x^n + y^n = z^n abstracts the Fermat equation over any commutative ring. The [CommRing K] typeclass is the right generality: the equation makes sense in any ring with addition and multiplication. The nontriviality conditions x ≠ 0 ∧ y ≠ 0 ∧ z ≠ 0 exclude 'trivial' solutions like (1, 0, 1) or (0, 0, 0). Note that over rings like ℤ/6ℤ there are nontrivial solutions even for large n — the statement is only interesting over fields or integer rings.",
+    "mathContext": "$x^n + y^n = z^n,\\quad x,y,z \\in K \\setminus \\{0\\}$",
+    "significance": "key",
+    "relatedConcepts": ["CommRing", "existential witness", "nontrivial solution", "Fermat's Last Theorem"],
+    "prerequisites": ["commutative ring", "power notation", "existential types in Lean"]
+  },
+  {
+    "id": "ann-flt-axiom",
+    "proofId": "fermats-last-theorem-oq-03",
+    "range": { "startLine": 35, "endLine": 38 },
+    "type": "concept",
+    "title": "flt_over_Q: Wiles's Theorem Axiomatized",
+    "content": "axiom flt_over_Q (n : ℕ) (hn : n ≥ 3) : ¬ FermatEquation ℚ n encodes Wiles's 1995 theorem as a Lean axiom. This is correct: Wiles's proof uses modern algebraic geometry (modular forms, Galois representations, elliptic curves) that is far beyond current Lean/Mathlib infrastructure. The Lean FLT project (Lean4 community, 2024-) is working toward a formal proof but has not yet completed it. Using this as an axiom is honest — it acknowledges the dependence on a deep result while making it available for derived theorems.",
+    "mathContext": "$n \\geq 3 \\implies \\nexists x,y,z \\in \\mathbb{Q}^\\times : x^n + y^n = z^n$",
+    "significance": "key",
+    "relatedConcepts": ["Wiles's theorem", "axiom declaration", "Lean FLT project", "modularity theorem"],
+    "prerequisites": ["axiom in Lean", "FLT history", "Fermat equation over ℚ"]
+  },
+  {
+    "id": "ann-pythagorean",
+    "proofId": "fermats-last-theorem-oq-03",
+    "range": { "startLine": 48, "endLine": 55 },
+    "type": "insight",
+    "title": "fermat_n2: Pythagorean Triple (3,4,5) as Witness",
+    "content": "fermat_n2 : FermatEquation ℚ 2 is proved by providing the concrete Pythagorean triple (3, 4, 5): 3² + 4² = 9 + 16 = 25 = 5². The proof uses norm_num for all four goals: 3 ≠ 0, 4 ≠ 0, 5 ≠ 0, and 3^2 + 4^2 = 5^2. This is a simple but important example showing that FLT fails for n=2 — one of the earliest non-trivial facts about the equation. The (3,4,5) triple was known to ancient Babylonians (2000 BCE), and there are infinitely many primitive Pythagorean triples.",
+    "mathContext": "$3^2 + 4^2 = 9 + 16 = 25 = 5^2$",
+    "significance": "supporting",
+    "relatedConcepts": ["Pythagorean triple", "norm_num", "FermatEquation ℚ 2", "primitive triple"],
+    "prerequisites": ["FermatEquation definition", "norm_num tactic", "rational arithmetic"]
+  },
+  {
+    "id": "ann-asymptotic-flt",
+    "proofId": "fermats-last-theorem-oq-03",
+    "range": { "startLine": 57, "endLine": 75 },
+    "type": "insight",
+    "title": "AsymptoticFLT: ∃ B, ∀ Large Primes p > B, No Solution",
+    "content": "AsymptoticFLT K = ∃ B : ℕ, ∀ p prime, p > B → ¬FermatEquation K p captures the 'eventual' version of FLT: solutions may exist for small exponents but must fail for all large enough primes. asymptotic_flt_Q proves this over ℚ with B = 2: by flt_over_Q, for any prime p > 2 (i.e., p ≥ 3), there's no solution. The proof uses omega to show p ≥ 3 from p > 2 and p prime. Over a number field K, AsymptoticFLT K is the correct statement since n=1 always has solutions and n=2 may have solutions.",
+    "mathContext": "$\\exists B,\\; \\forall p > B \\text{ prime}: \\nexists x,y,z \\in K^\\times, x^p + y^p = z^p$",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic result", "Nat.Prime", "existential bound", "Freitas-Hung-Siksek"],
+    "prerequisites": ["AsymptoticFLT definition", "flt_over_Q axiom", "omega tactic"]
+  }
+]

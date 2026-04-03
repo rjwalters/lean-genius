@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-1118-superlevel-def",
+    "proofId": "erdos-1118-oq-02",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "definition",
+    "title": "Superlevel Set Definition",
+    "content": "The `superlevelSet` is defined for any function `f : (Fin n → ℂ) → ℂ` as the preimage of the open half-line $(c, \\infty)$ under the modulus map. Using `Fin n → ℂ` rather than a built-in `ℂⁿ` type is idiomatic in Lean/Mathlib for finite-dimensional complex vector spaces, where $\\mathbb{C}^n$ is modeled as functions from a finite index type. The strict inequality `> c` makes the superlevel set open when `f` is continuous.",
+    "mathContext": "$E_f(c) = \\{z \\in \\mathbb{C}^n : |f(z)| > c\\}$ for $c \\geq 0$. For entire $f$, this is an open subset of $\\mathbb{C}^n \\cong \\mathbb{R}^{2n}$, whose $(2n)$-dimensional Lebesgue measure is the quantity studied in Erdős 1118.",
+    "significance": "context",
+    "relatedConcepts": ["modulus", "preimage", "Fin n type", "open set"],
+    "prerequisites": ["complex analysis", "Lean type theory"]
+  },
+  {
+    "id": "ann-1118-constant",
+    "proofId": "erdos-1118-oq-02",
+    "range": { "startLine": 38, "endLine": 43 },
+    "type": "insight",
+    "title": "Constant Functions: Superlevel Sets are Trivial",
+    "content": "For a constant function $f \\equiv w$, the superlevel set is either $\\mathbb{C}^n$ (if $|w| > c$) or $\\emptyset$ (if $|w| \\leq c$). This is the degenerate case excluded by Erdős's problem, which specifies non-constant (in fact, entire non-constant) functions. The proof uses `simp [superlevelSet]` with the `if-then-else` from the `Set.ite` pattern. This lemma provides the base case in any analysis of superlevel sets: non-trivial behavior only arises for non-constant maps.",
+    "mathContext": "If $f(z) \\equiv w \\in \\mathbb{C}$, then $E_f(c) = \\mathbb{C}^n$ if $|w| > c$ and $E_f(c) = \\emptyset$ if $|w| \\leq c$. In particular, $|E_f(c)| = \\infty$ or $0$ — never a nontrivial finite value. This confirms that Erdős 1118 is only interesting for non-constant entire functions.",
+    "significance": "supporting",
+    "relatedConcepts": ["constant function", "degenerate case", "Set.univ", "empty set"],
+    "prerequisites": ["complex modulus", "set theory"]
+  },
+  {
+    "id": "ann-1118-camera-goldberg",
+    "proofId": "erdos-1118-oq-02",
+    "range": { "startLine": 49, "endLine": 54 },
+    "type": "context",
+    "title": "Camera-Gol'dberg Criterion (1D)",
+    "content": "This docstring documents the solved 1D result without formalizing it. Camera (1977) and Gol'dberg (1979) independently proved that for a non-constant entire function $f: \\mathbb{C} \\to \\mathbb{C}$, the superlevel set $E(c)$ has finite area if and only if the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$ satisfies the integral convergence condition. The integrand $r / \\log\\log M(r)$ captures a logarithmic-logarithmic growth regime: functions growing faster than doubly exponential have finite superlevel sets.",
+    "mathContext": "Camera-Gol'dberg: $|\\{z \\in \\mathbb{C} : |f(z)| > c\\}| < \\infty$ if and only if $\\int_0^\\infty \\frac{r}{\\log\\log M(r)}\\, dr < \\infty$, where $M(r) = \\max_{|z|=r}|f(z)|$. For example, $f(z) = e^{e^z}$ satisfies the criterion ($M(r) = e^{e^r}$ grows doubly-exponentially), while $f(z) = e^z$ does not ($M(r) = e^r$ grows too slowly).",
+    "significance": "key",
+    "relatedConcepts": ["Camera-Gol'dberg theorem", "maximum modulus", "integral criterion", "Nevanlinna theory"],
+    "prerequisites": ["complex analysis", "entire functions", "Lebesgue measure"]
+  },
+  {
+    "id": "ann-1118-scv-differences",
+    "proofId": "erdos-1118-oq-02",
+    "range": { "startLine": 55, "endLine": 64 },
+    "type": "insight",
+    "title": "Three Key Differences in Several Complex Variables",
+    "content": "This docstring identifies three structural differences between $n = 1$ and $n \\geq 2$. (1) Growth measurement: in SCV, $M(r)$ is replaced by more sophisticated objects — the Siciak extremal function $\\Phi_K(z) = \\sup\\{|p(z)|^{1/\\deg p} : p \\text{ polynomial}, \\|p\\|_K \\leq 1\\}$ or the pluricomplex Green function, which encode the pluripotential-theoretic structure. (2) Pseudoconvexity: the complement $\\{|f| \\leq c\\}$ is pseudoconvex (this follows because $\\log|f|$ is psh, so sublevel sets of psh functions are pseudoconvex). (3) Hartogs extension: in $n \\geq 2$, singularities of codimension $\\geq 2$ are removable — a phenomenon with no 1D analogue.",
+    "mathContext": "In $\\mathbb{C}^n$ ($n \\geq 2$): $\\{z : |f(z)| \\leq c\\}$ is pseudoconvex (satisfies the $\\bar\\partial$-problem, admits plurisubharmonic exhaustion). Hartogs theorem: if $\\Omega \\subset \\mathbb{C}^n$ and $K \\subset \\Omega$ is compact with $\\Omega \\setminus K$ connected, then any function holomorphic on $\\Omega \\setminus K$ extends to $\\Omega$. This prevents isolated singularities entirely.",
+    "significance": "key",
+    "relatedConcepts": ["plurisubharmonic function", "pseudoconvex domain", "Hartogs extension", "Siciak extremal function", "Oka theory"],
+    "prerequisites": ["several complex variables", "pluripotential theory", "Oka-Weil theorem"]
+  },
+  {
+    "id": "ann-1118-psh",
+    "proofId": "erdos-1118-oq-02",
+    "range": { "startLine": 65, "endLine": 69 },
+    "type": "concept",
+    "title": "Plurisubharmonicity of log|f|",
+    "content": "For any holomorphic function $f: \\mathbb{C}^n \\to \\mathbb{C}$, the function $\\log|f|$ is plurisubharmonic (psh): its restriction to every complex affine line is subharmonic. This is the SCV analogue of the fact that $\\log|f|$ is subharmonic in one variable (where every function on $\\mathbb{C}$ is plurisubharmonic by triviality). Plurisubharmonicity of $\\log|f|$ is the key structural property that makes the theory work: it implies the maximum principle, the sub-mean-value property, and the pseudoconvexity of sublevel sets.",
+    "mathContext": "A function $u: \\Omega \\subset \\mathbb{C}^n \\to [-\\infty, \\infty)$ is plurisubharmonic if for every $a \\in \\Omega$ and $b \\in \\mathbb{C}^n$, the map $t \\mapsto u(a + tb)$ is subharmonic on $\\{t \\in \\mathbb{C} : a + tb \\in \\Omega\\}$. For holomorphic $f$: $\\log|f|$ is psh because $\\log|\\cdot|$ is subharmonic and composition with holomorphic maps preserves psh. In particular, $\\partial\\bar\\partial \\log|f| \\geq 0$ in the sense of currents.",
+    "significance": "supporting",
+    "relatedConcepts": ["plurisubharmonic function", "subharmonic function", "Lelong number", "current"],
+    "prerequisites": ["complex analysis", "subharmonic functions", "several complex variables"]
+  },
+  {
+    "id": "ann-1118-dimension",
+    "proofId": "erdos-1118-oq-02",
+    "range": { "startLine": 76, "endLine": 85 },
+    "type": "insight",
+    "title": "Dimension Scaling: Why Higher Dimensions Are Harder",
+    "content": "Two trivial theorems anchor the dimensional analysis. `superlevel_dimension` states $2n = 2n$ (the dimension of $\\mathbb{C}^n$ as a real manifold is $2n$). `growth_increases_with_dim` states $n_1 < n_2 \\Rightarrow 2n_1 < 2n_2$, proved by `omega`. These lemmas capture an important heuristic: as dimension increases, the superlevel set $E(c) \\subset \\mathbb{C}^n \\cong \\mathbb{R}^{2n}$ lives in a space of increasing real dimension. For $|E(c)|_{2n}$ to be finite, the function $f$ must grow fast enough to make $E(c)$ 'thin' relative to $\\mathbb{R}^{2n}$ — and the required growth threshold increases with $n$.",
+    "mathContext": "Heuristically, if $f$ grows like $e^{r^\\alpha}$ for large $r$ (where $r = \\|z\\|$), then $|E_f(c)|_{2n} < \\infty$ requires roughly $\\alpha > 2n/(2n-1)$. As $n \\to \\infty$, the threshold $2n/(2n-1) \\to 1$, so for entire maps on infinite-dimensional spaces the condition approaches $\\alpha > 1$ (faster than polynomial-exponential growth). This dimension dependence is one reason the SCV problem is harder than the 1D case.",
+    "significance": "supporting",
+    "relatedConcepts": ["real dimension", "growth rate", "omega tactic", "finiteness condition"],
+    "prerequisites": ["real analysis", "dimensional analysis"]
+  }
+]

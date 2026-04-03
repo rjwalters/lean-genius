@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-poly-countable-instance",
+    "proofId": "denumerability-rationals-oq-04",
+    "range": { "startLine": 31, "endLine": 35 },
+    "type": "technique",
+    "title": "Polynomial Countability via Typeclass Inference",
+    "content": "The `Countable (Polynomial ℤ)` instance is discharged by a single `inferInstance` call. This works because Lean's typeclass system knows that polynomials are finitely-supported functions `ℕ →₀ ℤ` (the `Finsupp` encoding), and `Finsupp` over a countable type is countable. This is the 'combinatorial backbone' of the entire proof: without the automatic countability of ℤ[x], the three-step Cantor argument cannot begin.",
+    "mathContext": "A polynomial $p \\in \\mathbb{Z}[x]$ is encoded as a finitely-supported function $\\mathbb{N} \\to \\mathbb{Z}$, i.e., an element of $\\mathbb{N} \\to_0 \\mathbb{Z}$. Since $\\mathbb{Z}$ is countable and finite sequences over countable types are countable, $\\mathbb{Z}[x]$ is countable: $|\\mathbb{Z}[x]| = |\\mathbb{N}|$.",
+    "significance": "key",
+    "relatedConcepts": ["Finsupp encoding", "typeclass synthesis", "countable type", "polynomial ring"],
+    "prerequisites": ["type theory", "Lean typeclasses", "ring of polynomials"]
+  },
+  {
+    "id": "ann-nonzero-polys-countable",
+    "proofId": "denumerability-rationals-oq-04",
+    "range": { "startLine": 37, "endLine": 43 },
+    "type": "technique",
+    "title": "Nonzero Polynomials as a Countable Subset",
+    "content": "Rather than restricting the polynomial enumeration post-hoc, the proof explicitly handles the nonzero condition by showing the nonzero polynomials `{p : Polynomial ℤ | p ≠ 0}` are countable as a subset of the already-countable `Polynomial ℤ`. The key tool is `Set.countable_of_injective_of_countable_image` with the coercion `Subtype.val` as the injective function, whose range is a subset of `Polynomial ℤ` — hence countable.",
+    "mathContext": "For any injective $f: S \\to T$ with $T$ countable, $S$ is countable. Here $S = \\{p \\in \\mathbb{Z}[x] \\mid p \\neq 0\\}$ and $f = \\iota$ (coercion), so $|\\{p \\neq 0\\}| \\leq |\\mathbb{Z}[x]| = |\\mathbb{N}|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["subtype", "injection", "countable subset", "Subtype.val"],
+    "prerequisites": ["set theory basics", "injection principle"]
+  },
+  {
+    "id": "ann-fta-finite-roots",
+    "proofId": "denumerability-rationals-oq-04",
+    "range": { "startLine": 48, "endLine": 57 },
+    "type": "technique",
+    "title": "Finite Root Count via the Fundamental Theorem of Algebra",
+    "content": "This is the key finite-fiber lemma: `finitely_many_roots` proves that for any nonzero $p \\in \\mathbb{Z}[x]$, the set $\\{z \\in \\mathbb{C} \\mid p(z) = 0\\}$ is finite. The proof uses `Polynomial.setOf_isRoot_finite` applied to the image of $p$ under the canonical ring homomorphism `algebraMap ℤ ℂ`. The `convert` tactic handles the equivalence between `Polynomial.IsRoot` and `Polynomial.aeval z p = 0`. Without this finite bound, the union argument in Part III would produce a countable union of countably-infinite sets, which requires stronger hypotheses.",
+    "mathContext": "By the Fundamental Theorem of Algebra, a nonzero polynomial $p(x) = a_n x^n + \\cdots + a_0$ of degree $n$ has at most $n$ roots in $\\mathbb{C}$ (counted without multiplicity). Formally: $|\\{z \\in \\mathbb{C} \\mid p(z) = 0\\}| \\leq \\deg p < \\infty$. In Mathlib, this is `Polynomial.setOf_isRoot_finite`.",
+    "significance": "key",
+    "relatedConcepts": ["Fundamental Theorem of Algebra", "root multiplicity", "algebraMap", "degree bound"],
+    "prerequisites": ["polynomial ring", "algebraic closure", "FTA"]
+  },
+  {
+    "id": "ann-isalgebraic-def",
+    "proofId": "denumerability-rationals-oq-04",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "Definition: Algebraic Number",
+    "content": "The definition `IsAlgebraic z` says that $z \\in \\mathbb{C}$ is algebraic if it is a root of some nonzero integer polynomial. Note the deliberate choice to use `Polynomial ℤ` rather than `Polynomial ℚ` or `Polynomial ℝ`: integer polynomials suffice (by clearing denominators), and this choice makes the countability argument cleaner since `Polynomial ℤ` is directly countable without needing the countability of ℚ[x] as an intermediate step.",
+    "mathContext": "$z \\in \\mathbb{C}$ is algebraic over $\\mathbb{Q}$ iff $\\exists p \\in \\mathbb{Z}[x],\\, p \\neq 0,\\, p(z) = 0$. The algebraic numbers form a field $\\bar{\\mathbb{Q}} \\subset \\mathbb{C}$, the algebraic closure of $\\mathbb{Q}$. Every algebraic number over $\\mathbb{Q}$ is also algebraic over $\\mathbb{Z}$ by clearing denominators: if $q(z) = 0$ for $q \\in \\mathbb{Q}[x]$ nonzero, multiply through by the LCM of denominators to get an integer polynomial with the same root.",
+    "significance": "context",
+    "relatedConcepts": ["algebraic closure", "minimal polynomial", "algebraic integer", "clearing denominators"],
+    "prerequisites": ["polynomial ring", "field extensions", "algebraic numbers"]
+  },
+  {
+    "id": "ann-main-countability",
+    "proofId": "denumerability-rationals-oq-04",
+    "range": { "startLine": 66, "endLine": 90 },
+    "type": "insight",
+    "title": "Main Theorem: Algebraic Numbers Are Countable",
+    "content": "The proof of `algebraic_numbers_countable` has two steps. First, a set-equality rewrite: the algebraic numbers equal the indexed union $\\bigcup_{(p, hp)} \\{z \\mid \\text{aeval}\\, z\\, p = 0\\}$ over nonzero polynomials. This rewrite is a definitional unfolding (`ext z; simp [IsAlgebraic]`) plus a constructor/destructor pair. Second, `Set.countable_iUnion` dispatches the main obligation: a countable-indexed union of countable sets is countable. Since the index `{q : Polynomial ℤ // q ≠ 0}` is countable (from Part I) and each fiber `{z | aeval z p = 0}` is finite (from Part II), hence countable, the conclusion follows.",
+    "mathContext": "The algebraic numbers admit the decomposition $\\bar{\\mathbb{Q}} \\cap \\mathbb{C} = \\bigcup_{p \\in \\mathbb{Z}[x],\\, p \\neq 0} \\text{roots}(p)$. Since the index set is countable and each $\\text{roots}(p)$ is finite, countable choice suffices: $\\left|\\bigcup_{i \\in I} A_i\\right| \\leq |I| \\cdot \\sup_i |A_i| \\leq \\aleph_0$.",
+    "significance": "key",
+    "relatedConcepts": ["countable union", "countable index", "Set.countable_iUnion", "fiber countability"],
+    "prerequisites": ["set theory", "countable union theorem", "FTA"]
+  },
+  {
+    "id": "ann-typeclass-lift",
+    "proofId": "denumerability-rationals-oq-04",
+    "range": { "startLine": 95, "endLine": 105 },
+    "type": "technique",
+    "title": "Lifting to the Countable Typeclass",
+    "content": "The `algebraic_countable_type` theorem converts the propositional `Set.Countable S` result to the typeclass instance `Countable {z : ℂ | IsAlgebraic z}` via `.to_subtype`. This is the form needed for most typeclass-driven infrastructure in Lean/Mathlib. The docstring also discusses `Denumerable` — the stronger notion that provides an explicit bijection `α ≃ ℕ`. Constructing a `Denumerable` instance would require computing canonical representatives: listing roots in a computable order (e.g., by increasing degree, then by height of polynomial, then by real part, then by imaginary part).",
+    "mathContext": "In Lean, `Countable α` means $\\exists f : \\alpha \\to \\mathbb{N},\\, \\text{Injective}\\, f$ (i.e., there exists an injection). `Denumerable α` means $\\exists e : \\alpha \\simeq \\mathbb{N}$ (a computable equivalence). The gap: $\\text{Denumerable} \\Rightarrow \\text{Countable}$ but not conversely in constructive mathematics. Here we have `Countable` but not necessarily `Denumerable`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Countable typeclass", "Denumerable typeclass", "Set.Countable.to_subtype", "Equiv"],
+    "prerequisites": ["type theory", "Lean typeclasses", "constructive mathematics"]
+  },
+  {
+    "id": "ann-choiceless-argument",
+    "proofId": "denumerability-rationals-oq-04",
+    "range": { "startLine": 110, "endLine": 123 },
+    "type": "context",
+    "title": "Why the Proof Avoids Full AC",
+    "content": "This section documents the constructive content of the proof. The argument avoids the full Axiom of Choice because: (1) the polynomial enumeration is explicit (finite sequences of integers); (2) the root bound is effective (degree of the polynomial); (3) `Set.countable_iUnion` with a countable index and countable fibers uses at most countable choice, which is provable in Lean's Prop-valued type theory without being an additional axiom. In classical ZFC, countable choice ($\\text{AC}_\\omega$) is a proper weakening of AC; in Lean's Calculus of Constructions, it follows from the propositional truncation principle. The `choiceless_note` theorem is itself a `True` stub — it is purely documentary, not a mathematical statement.",
+    "mathContext": "Full $\\text{AC}$ says: for any family $(A_i)_{i \\in I}$ of nonempty sets, there is a choice function $f: I \\to \\bigcup_i A_i$ with $f(i) \\in A_i$. Countable choice $\\text{AC}_\\omega$ restricts to countable $I$. The implication $\\text{AC} \\Rightarrow \\text{AC}_\\omega$ is strict in ZF. In this proof, we never need to pick a root from each polynomial's root set — we only need to know the root sets are finite, which suffices for $\\text{Set.countable\\_iUnion}$.",
+    "significance": "context",
+    "relatedConcepts": ["Axiom of Choice", "countable choice", "constructive mathematics", "propositional truncation"],
+    "prerequisites": ["set theory", "foundations of mathematics", "constructive logic"]
+  }
+]

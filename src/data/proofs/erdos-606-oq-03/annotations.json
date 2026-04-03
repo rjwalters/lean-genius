@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-606-max-hyperplanes",
+    "proofId": "erdos-606-oq-03",
+    "range": { "startLine": 31, "endLine": 36 },
+    "type": "insight",
+    "title": "Maximum Hyperplane Count: C(n,d)",
+    "content": "`max_hyperplanes` states that $\\binom{n}{d} \\geq 0$, which is trivial but anchors the combinatorial bound. The mathematical content is in the docstring: $n$ points in $\\mathbb{R}^d$ determine at most $\\binom{n}{d}$ distinct hyperplanes, since each hyperplane (in general position) is determined by exactly $d$ of the $n$ points. This is the 'obvious' upper bound from double counting: $|\\{\\text{hyperplanes}\\}| \\leq |\\{\\text{d-element subsets}\\}| = \\binom{n}{d}$.",
+    "mathContext": "A hyperplane in $\\mathbb{R}^d$ is determined by $d$ points in general position (no three collinear, no four coplanar, etc.). With $n$ points and general position, each $d$-element subset determines a distinct hyperplane, giving $\\binom{n}{d}$ hyperplanes total. For $d=2$: $\\binom{n}{2} = n(n-1)/2$ lines. For $d=3$: $\\binom{n}{3} = n(n-1)(n-2)/6$ planes.",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial coefficient", "general position", "hyperplane", "double counting"],
+    "prerequisites": ["combinatorics", "affine geometry"]
+  },
+  {
+    "id": "ann-606-general-position",
+    "proofId": "erdos-606-oq-03",
+    "range": { "startLine": 38, "endLine": 42 },
+    "type": "insight",
+    "title": "General Position: Maximum Achieved (Placeholder)",
+    "content": "`general_position_count` is a `True := trivial` placeholder acknowledging that the exact count $\\binom{n}{d}$ in general position is not yet formalized. In general position (no $d+1$ of the $n$ points lying on any hyperplane), each $d$-element subset determines a unique hyperplane, and all $\\binom{n}{d}$ resulting hyperplanes are distinct. This is the 'generic' case. A formalization would require a definition of 'general position' and a bijectivity argument between $d$-subsets and determined hyperplanes.",
+    "mathContext": "A set of $n$ points $P_1,\\ldots,P_n \\in \\mathbb{R}^d$ is in general position if no $d+1$ of them lie on a common hyperplane (equivalently, any $d$ of them are affinely independent). Under this condition, the $\\binom{n}{d}$ hyperplanes through $d$-element subsets are pairwise distinct, achieving the maximum count.",
+    "significance": "supporting",
+    "relatedConcepts": ["general position", "affine independence", "True placeholder", "maximum count"],
+    "prerequisites": ["affine geometry", "combinatorics"]
+  },
+  {
+    "id": "ann-606-sylvester-gallai-context",
+    "proofId": "erdos-606-oq-03",
+    "range": { "startLine": 48, "endLine": 69 },
+    "type": "context",
+    "title": "Sylvester-Gallai, Green-Tao, and Motzkin: Context",
+    "content": "Three docstring blocks document the key theoretical results. (1) Sylvester-Gallai (1893/1944): for $n$ non-collinear points in $\\mathbb{R}^2$, there exists an 'ordinary line' through exactly 2 of the points. Kelly's 1948 proof: among all point-line pairs $(P, \\ell)$ with $P \\notin \\ell$ and $\\ell$ containing $\\geq 2$ points, choose the pair minimizing $d(P, \\ell)$; if $\\ell$ has $\\geq 3$ points, two lie on the same side of the perpendicular foot, giving a closer pair — contradiction. (2) Green-Tao (2013): for large $n$, at least $n/2$ ordinary lines. (3) Motzkin (1951): generalization to $d$ dimensions — for $n$ points not all on a hyperplane, there exists a 'ordinary hyperplane' through exactly $d$ points.",
+    "mathContext": "Sylvester-Gallai: $\\forall$ finite $S \\subset \\mathbb{R}^2$ not all collinear, $\\exists$ line $\\ell$ with $|\\ell \\cap S| = 2$. Green-Tao: $|\\{$ordinary lines$\\}| \\geq n/2$ for $n \\geq n_0$. Böröczky example: $n$ points achieving $n/2$ ordinary lines (points on a circle minus arithmetic-progression structure). Motzkin $d$-dim: $\\forall$ finite $S \\subset \\mathbb{R}^d$ not all on a hyperplane, $\\exists$ hyperplane $H$ with $|H \\cap S| = d$.",
+    "significance": "key",
+    "relatedConcepts": ["Sylvester-Gallai theorem", "ordinary line", "Green-Tao theorem", "Motzkin theorem", "Böröczky example"],
+    "prerequisites": ["affine geometry", "combinatorial geometry", "additive combinatorics"]
+  },
+  {
+    "id": "ann-606-line-count-range",
+    "proofId": "erdos-606-oq-03",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "insight",
+    "title": "Combinatorial Identity: C(n,2) = n(n-1)/2",
+    "content": "`line_count_range` proves $\\binom{n}{2} = n(n-1)/2$ using `omega`. This is the standard formula for the number of lines in general position. The proof by `omega` works because Lean's `Nat.choose n 2` is definitionally unfolded and the arithmetic identity can be verified by the omega decision procedure. This establishes the maximum line count for $d=2$ as a concrete formula rather than just a binomial coefficient.",
+    "mathContext": "$\\binom{n}{2} = \\frac{n!}{2!(n-2)!} = \\frac{n(n-1)}{2}$. For $n=10$: $\\binom{10}{2} = 45$ maximum lines. The achievable set for $n$ non-collinear points lies in $[n, \\binom{n}{2}]$, but certain intermediate values are not achievable.",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial coefficient", "Nat.choose", "omega tactic", "combinatorial identity"],
+    "prerequisites": ["combinatorics", "Lean arithmetic"]
+  },
+  {
+    "id": "ann-606-hyperplane-extremes",
+    "proofId": "erdos-606-oq-03",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "insight",
+    "title": "Key Inequality: n < C(n,d) for n > d ≥ 2",
+    "content": "`hyperplane_extremes` is the key substantive theorem: for $n > d \\geq 2$, the general-position maximum $\\binom{n}{d}$ strictly exceeds $n$, using `Nat.lt_choose_self`. This proves that the minimum and maximum hyperplane counts are genuinely different — there is a nontrivial interval of potentially achievable values. The condition $n > d$ ensures we're in the non-trivial regime ($n > 2$ for lines, $n > 3$ for planes, etc.).",
+    "mathContext": "For $n > d \\geq 2$: $n < \\binom{n}{d}$ iff $\\binom{n}{d} > n$ iff $\\frac{n!}{d!(n-d)!} > n$ iff $\\frac{(n-1)!}{d!(n-d)!} > 1$, which holds for $n > d \\geq 2$. In Mathlib, `Nat.lt_choose_self : n > d → d ≥ 2 → n < n.choose d`. This is a non-trivial inequality that requires $d \\geq 2$ (for $d=1$: $\\binom{n}{1} = n$ so equality, not strict).",
+    "significance": "key",
+    "relatedConcepts": ["Nat.lt_choose_self", "binomial coefficient bound", "extremal combinatorics"],
+    "prerequisites": ["combinatorics", "binomial coefficients", "Mathlib number theory"]
+  }
+]
