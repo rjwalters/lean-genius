@@ -40,5 +40,77 @@
       "Extremal example has unit vectors (proved)"
     ]
   },
-  "sections": []
+  "crossReferences": [
+    {
+      "targetId": "erdos-395",
+      "relationship": "extends",
+      "description": "Open question branch studying the optimal constant in the reverse Littlewood-Offord inequality from the parent Erdős Problem #395"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Littlewood-Offord problem (1943) asks: given complex numbers $z_1, \\ldots, z_n$ with $|z_i| \\geq 1$, how many of the $2^n$ signed sums $\\pm z_1 \\pm z_2 \\cdots \\pm z_n$ can land in a disk of radius 1? Littlewood and Offord proved an $O(2^n/\\sqrt{n})$ upper bound. Erdős (1945) improved this using the symmetry of the binomial distribution, obtaining the sharp bound $\\binom{n}{\\lfloor n/2 \\rfloor}$. Kleitman (1970) extended this to real vectors, and subsequent work (Frankl-Füredi 1988, Tao-Vu 2009) developed the theory for more general settings. The *reverse* direction asks for lower bounds: given that the $z_i$ are unit vectors, must at least one signed sum be small? Erdős Problem #395 asks whether $P(|\\text{sum}| \\leq 1) \\geq c/n$ holds for some universal $c > 0$. Carnielli and Carolino (2011) showed this fails: the vectors $z_1 = 1, z_2 = i$ give $|\\pm 1 \\pm i| = \\sqrt{2} > 1$ for all sign choices. He, Juškevičius, Narayanan, and Spiro (HJNS, 2024) resolved the revised question: $P(|\\text{sum}| \\leq \\sqrt{2}) \\geq c/n$ for some $c > 0$ and all unit vectors. The exact value of $c$ remains open.",
+    "problemStatement": "Define the optimal constant $$c^* = \\sup\\left\\{c > 0 \\mid \\forall n \\geq 1,\\, \\forall\\text{ unit vectors } z_1,\\ldots,z_n \\in \\mathbb{C},\\; P\\left(\\left|\\sum_{i=1}^n \\varepsilon_i z_i\\right| \\leq \\sqrt{2}\\right) \\geq \\frac{c}{n}\\right\\}.$$ Is $c^* > 0$? HJNS (2024) proves yes. What is the exact value of $c^*$?",
+    "proofStrategy": "The file imports the parent Erdős 395 formalization (which axiomatizes HJNS and the Carnielli-Carolino counterexample) and builds the structural theory on top. Six theorem groups are developed: (1) the optimal constant defined as an sSup and shown nonempty, (2) the original threshold-1 problem derived as false from the parent counterexample axiom, (3) monotonicity of the count in the threshold by a direct Finset.card_le_card argument, (4) the criticality of √2 as a conjunction of HJNS and the falsity theorem, (5) rate tightness via the extremal example, (6) summary combining the main results.",
+    "keyInsights": [
+      "The threshold $\\sqrt{2}$ is sharp: the Carnielli-Carolino counterexample $z_1 = 1, z_2 = i$ satisfies $|\\pm 1 \\pm i| = \\sqrt{2}$ for all sign choices. This means no signed sum is below $\\sqrt{2}$ in absolute value, so the threshold-1 problem fails completely. The `counterexample_exceeds_one` theorem derives this from $|\\text{sum}| \\geq \\sqrt{2} > 1$ via `Real.sqrt_lt_sqrt`.",
+      "Defining $c^*$ as a supremum (sSup) captures the best possible constant cleanly, but positivity requires proving the supremum is attained above 0 — which in Lean requires showing the valid set is bounded above and nonempty. The `valid_constants_nonempty` theorem handles nonemptiness via `hjns_2024`; the `optimal_constant_pos` sorry awaits a bound on the supremum.",
+      "The monotonicity theorem (Section 3) is elementary but conceptually important: if we raise the threshold from $t_1$ to $t_2$, strictly more sign vectors contribute. The Lean proof `Finset.card_le_card` + set containment is a clean two-line argument that mirrors the obvious geometric intuition.",
+      "The 1/n rate is tight: the extremal example achieves $P(|\\text{sum}| \\leq \\sqrt{2}) = \\Theta(1/n)$, with matching upper and lower bounds $c/n \\leq P \\leq C/n$. This means any improvement to the rate (e.g., $c/n^{1-\\varepsilon}$ for $\\varepsilon > 0$) would fail on this example. The open question is thus about the constant $c^*$, not the rate.",
+      "The `erdos_original_is_false_proved` theorem demonstrates the parent-child proof architecture: once `counterexample_always_large` (an axiom in the parent) is available, the falsity of the threshold-1 bound follows by a computation about the Carnielli-Carolino counterexample. The remaining sorry handles the Set.toFinset count being zero — a bookkeeping detail about how to count sign vectors with no successful choices."
+    ]
+  },
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background and Imports",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Problem statement, references (HJNS 2024, Carnielli-Carolino 2011, Erdős Problem #395), and import of the parent Erdos395Problem formalization. Opens the Erdos395 and Complex namespaces."
+    },
+    {
+      "id": "optimal-constant",
+      "title": "The Optimal Constant (Section 1)",
+      "startLine": 32,
+      "endLine": 52,
+      "summary": "Defines optimalConstant as sSup of the set of valid c > 0. Proves valid_constants_nonempty via hjns_2024. Leaves optimal_constant_pos as a sorry (requires bounding the sSup from below)."
+    },
+    {
+      "id": "original-false",
+      "title": "Original Problem is False (Section 2)",
+      "startLine": 54,
+      "endLine": 95,
+      "summary": "Proves counterexample_exceeds_one: the Carnielli-Carolino counterexample has |sum| > 1 for all sign choices. Then proves erdos_original_is_false_proved: the threshold-1 problem has no valid c > 0 for n=2. One sorry remains for the Set.toFinset zero-count computation."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity in Threshold (Section 3)",
+      "startLine": 97,
+      "endLine": 109,
+      "summary": "Proves count_monotone_threshold: the count of sign vectors achieving |sum| ≤ t is monotone in t. Clean proof via Finset.card_le_card and set containment."
+    },
+    {
+      "id": "criticality-and-rate",
+      "title": "√2 is Critical and Rate Tightness (Sections 4–5)",
+      "startLine": 111,
+      "endLine": 143,
+      "summary": "Section 4 proves sqrt2_is_critical as a conjunction: HJNS holds at √2, Carnielli-Carolino fails at 1. Section 5 proves rate_is_tight (Θ(1/n) for the extremal example, n ≥ 4) and extremal_is_unit (extremal vectors 1 and i have unit norm)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary (Section 6)",
+      "startLine": 145,
+      "endLine": 161,
+      "summary": "optimal_constant_summary combines: c > 0 exists (from hjns_2024) and the 1/n rate is tight for all n ≥ 4. Serves as the canonical statement of what the file proves."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the structural framework for the optimal constant in the reverse Littlewood-Offord problem. Five of the six theorem groups are machine-verified (or nearly so). The main open question — the exact value of $c^*$ — remains open in both mathematics and formalization. The file clearly demarcates what HJNS 2024 proved (existence and rate) from what remains (exact value, completion of two sorries).",
+    "implications": "The reverse Littlewood-Offord problem connects to several areas. In combinatorics, it is part of the study of discrepancy and random walk concentration. In theoretical computer science, small-ball probability bounds appear in anti-concentration results used in data structure lower bounds and arithmetic circuit complexity. The Θ(1/n) rate of the extremal example matches the best-known lower bound for certain communication complexity problems. The exact value of $c^*$ would give optimal constants in these applications.",
+    "openQuestions": [
+      "What is the exact value of the optimal constant $c^*$? HJNS (2024) proves $c^* > 0$ but does not determine it. Is $c^* = 1/4$ (the value achieved by the extremal alternating 1/i example)?",
+      "Can the two remaining sorries be closed in Lean? `optimal_constant_pos` requires bounding $\\text{sSup}$ from below given nonemptiness + upper bound; `erdos_original_is_false_proved` requires computing that the Carnielli-Carolino counterexample gives zero sign vectors with $|\\text{sum}| \\leq 1$.",
+      "Does the $c/n$ bound generalize to vectors in $\\mathbb{R}^d$ for fixed $d$? The HJNS result is for complex (equivalently, $\\mathbb{R}^2$) unit vectors; higher-dimensional analogs are not fully understood.",
+      "Is there a more constructive proof of the HJNS theorem that would yield an explicit (if not optimal) value for $c$? The current proof is existential; a constructive bound would be more useful for applications."
+    ]
+  }
 }
