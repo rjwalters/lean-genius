@@ -20,8 +20,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "bombieriVinogradov: The Bombieri-Vinogradov theorem — primes equidistribute in arithmetic progressions on average over moduli q ≤ √x.",
+    "axiomCount": 4,
+    "assumptions": "4 axioms total: 1 own (bombieriVinogradov — Bombieri-Vinogradov theorem on primes in progressions) + 3 inherited from BoundedPrimeGaps.lean (maynard_tao_m_tuples, maynard_tao_sieve, maynard_tao_sieve_eh). 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.vonMangoldt",

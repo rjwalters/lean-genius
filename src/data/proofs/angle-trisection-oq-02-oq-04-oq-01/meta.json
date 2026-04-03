@@ -46,9 +46,9 @@
       }
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 334,
-    "assumptions": "No axioms. 3 sorries remain for deep theorems requiring Galois correspondence glue: both directions of Tower ↔ Galois equivalence and the ℚ(√2) concrete example. Proved: quadratic_tower_degree (finrank multiplicativity), exists_index_two_subgroup (Sylow), gal_x2_minus_2_is_two_group (imported).",
+    "assumptions": "1 axiom inherited from AngleTrisectionOQ02.lean: wantzel_galois_characterization (Wantzel's Galois-theoretic characterization of constructible numbers). 0 own axioms. 0 sorries.",
     "originalContributions": [
       "Proper inductive definition of QuadraticTower replacing the alias TowerCriterion = DegreeCriterion",
       "Statement and proof structure of Tower ↔ Galois 2-group equivalence",

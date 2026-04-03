@@ -45,7 +45,7 @@
       "Infrastructure for proving powers of 2 form Sidon sets",
       "Proof that isSidon_singleton holds"
     ],
-    "axiomCount": 1,
+    "axiomCount": 4,
     "lineCount": 346,
     "prerequisites": [
       "Sidon sets (B₂ sequences) and pairwise distinct sums",
@@ -53,7 +53,7 @@
       "Finite field constructions (for dense Sidon sets)",
       "Counting arguments and asymptotic analysis"
     ],
-    "assumptions": "1 axiom: erdos_44. See Lean source for the complete statement."
+    "assumptions": "4 axioms total: 1 own (erdos_44 — Erdős conjecture on Sidon sets) + 3 inherited from Erdos340GreedySidon.lean (greedySidonSeq, greedySidonSeq_strictMono, greedySidonSeq_isSidon — greedy Sidon sequence existence and properties). 0 sorries."
   },
   "overview": {
     "historicalContext": "A **Sidon set** (or B_2 sequence) is a set of integers where all pairwise sums are distinct. These sets, named after Simon Sidon who studied them in the 1930s, appear throughout additive combinatorics.\n\nErdős Problem #44 asks whether any Sidon set can be extended to achieve near-optimal density. The famous Erdős-Turán conjecture (Problem #28) posits that Sidon sets in [1,N] have at most (1+o(1))sqrt(N) elements, and this problem asks about the reverse: can we always extend a Sidon set to approach this bound?\n\nThis file proves auxiliary undergraduate-level results from the formal-conjectures repository while the main conjecture remains open.",

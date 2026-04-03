@@ -22,11 +22,11 @@
     "erdosNumber": 1131,
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "sorries": 0,
+    "axiomCount": 2,
+    "sorries": 2,
     "theoremCount": 11,
     "lineCount": 293,
-    "assumptions": "1 axiom: erdos_1131_variance_conjecture (reformulation of OPEN Erdős conjecture in variance form: min ∫variance ≈ 2 - 3/n). All 11 theorems fully proved, 0 sorries. Key results: variance identity, integral decomposition, strict lower bound I > 2/n via epsilon-delta continuity argument.",
+    "assumptions": "2 axioms total: 1 own (erdos_1131_variance_conjecture — variance form of Erdős #1131 conjecture) + 1 inherited from Erdos1131Problem.lean (erdos_1131_conjecture). 2 sorries inherited from Erdos1131Problem.lean parent file.",
     "parentProof": "erdos-1131",
     "prerequisites": [
       "Lagrange interpolation and basis polynomials",
@@ -40,63 +40,6 @@
         "id": "erdos-1131",
         "relationship": "Parent formalization defining Lagrange basis, partition of unity, and the Cauchy-Schwarz lower bound I ≥ 2/n"
       }
-    ]
-  },
-  "sections": [],
-  "leanFile": {
-    "imports": [
-      "Proofs.Erdos1131Problem"
-    ],
-    "opens": [
-      "MeasureTheory",
-      "Erdos1131"
-    ],
-    "namespace": "Erdos1131OQ01",
-    "axiomCount": 1,
-    "sorries": 0,
-    "theoremCount": 11,
-    "lineCount": 293,
-    "mainTheorems": [
-      {
-        "name": "variance_identity",
-        "type": "structural",
-        "description": "Pointwise decomposition: Σ l_k(x)² = 1/n + Σ (l_k(x) - 1/n)²"
-      },
-      {
-        "name": "integratedVariance_strictly_pos",
-        "type": "original",
-        "description": "For n ≥ 2, the integrated variance is strictly positive (epsilon-delta argument)"
-      },
-      {
-        "name": "lagrangeIntegral_strict_lower",
-        "type": "synthesis",
-        "description": "Main result: I > 2/n strictly for n ≥ 2 distinct nodes in [-1,1]"
-      },
-      {
-        "name": "erdos_1131_oq01",
-        "type": "headline",
-        "description": "Named wrapper for the strict lower bound theorem"
-      }
-    ]
-  },
-  "overview": {
-    "title": "Variance Decomposition and Strict Lower Bound",
-    "historicalContext": "Erdős Problem #1131 originates from the study of optimal interpolation nodes, a classical topic in approximation theory. Fejér (1932) proved that the zeros of Legendre polynomials minimize the maximum of the Lebesgue function $\\Lambda_n(x) = \\sum |l_k(x)|$ over $[-1,1]$. The $L^2$ analog — minimizing $I = \\int \\sum l_k(x)^2\\,dx$ — proved more subtle. Szabados (1966, Acta Math. Acad. Sci. Hungar.) showed that Legendre nodes are NOT optimal for $n > 3$: slightly perturbed nodes give smaller integrals. Erdős then conjectured $\\min I = 2 - (1+o(1))/n$. The best known bounds, due to Erdős, Szabados, Varma, and Vértesi (1994, Studia Sci. Math. Hungar.), are $2 - O((\\log n)^2/n) \\leq \\min I \\leq 2 - 2/(2n-1)$, leaving a logarithmic factor gap. The lower bound $I \\geq 2/n$ follows from the Cauchy-Schwarz inequality and the partition of unity $\\sum l_k = 1$. This file proves that this lower bound is never achieved — $I > 2/n$ strictly — by introducing a variance decomposition that quantifies the gap.",
-    "problemStatement": "For $n \\geq 2$ distinct nodes $x_1, \\ldots, x_n \\in [-1,1]$ with Lagrange basis polynomials $l_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$, prove that $I = \\int_{-1}^{1} \\sum_{k=1}^n l_k(x)^2\\,dx > \\frac{2}{n}$ (strict inequality).",
-    "text": "This file investigates Erdős Problem #1131 by decomposing the Lagrange basis integral I = ∫₋₁¹ Σ l_k(x)² dx into a 'uniform floor' and 'variance excess'. The key structural insight is the identity I = 2/n + ∫ variance, where variance = Σ(l_k(x) - 1/n)² measures non-uniformity. This decomposition shows: (1) the Cauchy-Schwarz bound I ≥ 2/n is exactly the uniform floor contribution, (2) the bound is NEVER tight for n ≥ 2, because variance > 0 at every node point (with value (n-1)/n), and a continuous non-negative function that's positive at an interior point has positive integral. The Erdős conjecture min I = 2 - (1+o(1))/n is reformulated as min ∫variance = 2 - (3+o(1))/n, separating the well-understood floor from the open conjecture about the excess.",
-    "proofStrategy": "The proof proceeds through a variance decomposition in seven parts:\n\n1. **Definitions** (Part I): Define pointwise variance $\\text{var}(x) = \\sum (l_k(x) - 1/n)^2$ and its integral, and prove continuity.\n\n2. **Variance identity** (Part II): Establish $\\sum l_k(x)^2 = 1/n + \\text{var}(x)$ by expanding the square and using the partition of unity $\\sum l_k = 1$.\n\n3. **Node evaluation** (Part III): Prove $\\sum l_k(x_j)^2 = 1$ via the Kronecker delta property, then derive $\\text{var}(x_j) = (n-1)/n > 0$ for $n \\geq 2$.\n\n4. **Integral decomposition** (Part IV): Integrate the pointwise identity to get $I = 2/n + \\int \\text{var}$.\n\n5. **Strict positivity** (Part V): The technical core. Use epsilon-delta continuity to find a subinterval $[a,b] \\ni x_0$ where $\\text{var} > c/2$, then bound $\\int \\text{var} \\geq (c/2)(b-a) > 0$ by splitting the integral.\n\n6. **Conjecture reformulation** (Part VI): Reformulate Erdős's conjecture as $\\min \\int \\text{var} = 2 - (3+o(1))/n$.\n\n7. **Main result** (Part VII): Combine Parts IV and V to conclude $I > 2/n$.",
-    "keyInsights": [
-      "**Bias-variance decomposition for interpolation**: The identity $\\sum l_k^2 = 1/n + \\sum (l_k - 1/n)^2$ decomposes the integrand into a uniform floor (the 'bias' $1/n$) and a variance excess, completely analogous to the statistical bias-variance tradeoff $\\text{E}[X^2] = (\\text{E}[X])^2 + \\text{Var}(X)$.",
-      "**Cauchy-Schwarz gap is irremovable**: The variance at every node equals $(n-1)/n \\geq 1/2$ for $n \\geq 2$, so the continuous variance function is bounded away from zero near nodes. No choice of nodes can make the Lagrange basis uniform, because the Kronecker delta property forces spikes at node locations.",
-      "**Epsilon-delta for integral positivity**: The proof uses a textbook real analysis argument — a continuous non-negative function positive at an interior point has positive integral — but the Lean formalization requires explicit construction of the subinterval $[a,b]$, epsilon-delta bounds, and integral splitting into three pieces.",
-      "**Conjecture separation**: By writing $\\min I = 2/n + \\min \\int \\text{var}$, the well-understood constant $2/n$ is separated from the open conjecture about the variance excess. This converts the Erdős conjecture into a statement purely about how uniformly Lagrange bases can distribute their squared values.",
-      "**Structural vs. computational**: All 11 theorems are fully proved (0 sorries) — the only axiom is the reformulated Erdős conjecture about the exact asymptotics of $\\min \\int \\text{var}$. The file proves everything that can be proved from structural properties of Lagrange interpolation, leaving only the quantitative optimization problem open."
-    ],
-    "prerequisites": [
-      "Lagrange interpolation and basis polynomials",
-      "Measure theory and Lebesgue integration on ℝ",
-      "Cauchy-Schwarz inequality for sums",
-      "Epsilon-delta continuity arguments"
     ]
   },
   "sections": [
@@ -157,6 +100,62 @@
       "mathContext": "$I > 2/n$ for all $n \\geq 2$ and all distinct node configurations in $[-1,1]$."
     }
   ],
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1131Problem"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Erdos1131"
+    ],
+    "namespace": "Erdos1131OQ01",
+    "axiomCount": 1,
+    "sorries": 0,
+    "theoremCount": 11,
+    "lineCount": 293,
+    "mainTheorems": [
+      {
+        "name": "variance_identity",
+        "type": "structural",
+        "description": "Pointwise decomposition: Σ l_k(x)² = 1/n + Σ (l_k(x) - 1/n)²"
+      },
+      {
+        "name": "integratedVariance_strictly_pos",
+        "type": "original",
+        "description": "For n ≥ 2, the integrated variance is strictly positive (epsilon-delta argument)"
+      },
+      {
+        "name": "lagrangeIntegral_strict_lower",
+        "type": "synthesis",
+        "description": "Main result: I > 2/n strictly for n ≥ 2 distinct nodes in [-1,1]"
+      },
+      {
+        "name": "erdos_1131_oq01",
+        "type": "headline",
+        "description": "Named wrapper for the strict lower bound theorem"
+      }
+    ]
+  },
+  "overview": {
+    "title": "Variance Decomposition and Strict Lower Bound",
+    "historicalContext": "Erdős Problem #1131 originates from the study of optimal interpolation nodes, a classical topic in approximation theory. Fejér (1932) proved that the zeros of Legendre polynomials minimize the maximum of the Lebesgue function $\\Lambda_n(x) = \\sum |l_k(x)|$ over $[-1,1]$. The $L^2$ analog — minimizing $I = \\int \\sum l_k(x)^2\\,dx$ — proved more subtle. Szabados (1966, Acta Math. Acad. Sci. Hungar.) showed that Legendre nodes are NOT optimal for $n > 3$: slightly perturbed nodes give smaller integrals. Erdős then conjectured $\\min I = 2 - (1+o(1))/n$. The best known bounds, due to Erdős, Szabados, Varma, and Vértesi (1994, Studia Sci. Math. Hungar.), are $2 - O((\\log n)^2/n) \\leq \\min I \\leq 2 - 2/(2n-1)$, leaving a logarithmic factor gap. The lower bound $I \\geq 2/n$ follows from the Cauchy-Schwarz inequality and the partition of unity $\\sum l_k = 1$. This file proves that this lower bound is never achieved — $I > 2/n$ strictly — by introducing a variance decomposition that quantifies the gap.",
+    "problemStatement": "For $n \\geq 2$ distinct nodes $x_1, \\ldots, x_n \\in [-1,1]$ with Lagrange basis polynomials $l_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$, prove that $I = \\int_{-1}^{1} \\sum_{k=1}^n l_k(x)^2\\,dx > \\frac{2}{n}$ (strict inequality).",
+    "text": "This file investigates Erdős Problem #1131 by decomposing the Lagrange basis integral I = ∫₋₁¹ Σ l_k(x)² dx into a 'uniform floor' and 'variance excess'. The key structural insight is the identity I = 2/n + ∫ variance, where variance = Σ(l_k(x) - 1/n)² measures non-uniformity. This decomposition shows: (1) the Cauchy-Schwarz bound I ≥ 2/n is exactly the uniform floor contribution, (2) the bound is NEVER tight for n ≥ 2, because variance > 0 at every node point (with value (n-1)/n), and a continuous non-negative function that's positive at an interior point has positive integral. The Erdős conjecture min I = 2 - (1+o(1))/n is reformulated as min ∫variance = 2 - (3+o(1))/n, separating the well-understood floor from the open conjecture about the excess.",
+    "proofStrategy": "The proof proceeds through a variance decomposition in seven parts:\n\n1. **Definitions** (Part I): Define pointwise variance $\\text{var}(x) = \\sum (l_k(x) - 1/n)^2$ and its integral, and prove continuity.\n\n2. **Variance identity** (Part II): Establish $\\sum l_k(x)^2 = 1/n + \\text{var}(x)$ by expanding the square and using the partition of unity $\\sum l_k = 1$.\n\n3. **Node evaluation** (Part III): Prove $\\sum l_k(x_j)^2 = 1$ via the Kronecker delta property, then derive $\\text{var}(x_j) = (n-1)/n > 0$ for $n \\geq 2$.\n\n4. **Integral decomposition** (Part IV): Integrate the pointwise identity to get $I = 2/n + \\int \\text{var}$.\n\n5. **Strict positivity** (Part V): The technical core. Use epsilon-delta continuity to find a subinterval $[a,b] \\ni x_0$ where $\\text{var} > c/2$, then bound $\\int \\text{var} \\geq (c/2)(b-a) > 0$ by splitting the integral.\n\n6. **Conjecture reformulation** (Part VI): Reformulate Erdős's conjecture as $\\min \\int \\text{var} = 2 - (3+o(1))/n$.\n\n7. **Main result** (Part VII): Combine Parts IV and V to conclude $I > 2/n$.",
+    "keyInsights": [
+      "**Bias-variance decomposition for interpolation**: The identity $\\sum l_k^2 = 1/n + \\sum (l_k - 1/n)^2$ decomposes the integrand into a uniform floor (the 'bias' $1/n$) and a variance excess, completely analogous to the statistical bias-variance tradeoff $\\text{E}[X^2] = (\\text{E}[X])^2 + \\text{Var}(X)$.",
+      "**Cauchy-Schwarz gap is irremovable**: The variance at every node equals $(n-1)/n \\geq 1/2$ for $n \\geq 2$, so the continuous variance function is bounded away from zero near nodes. No choice of nodes can make the Lagrange basis uniform, because the Kronecker delta property forces spikes at node locations.",
+      "**Epsilon-delta for integral positivity**: The proof uses a textbook real analysis argument — a continuous non-negative function positive at an interior point has positive integral — but the Lean formalization requires explicit construction of the subinterval $[a,b]$, epsilon-delta bounds, and integral splitting into three pieces.",
+      "**Conjecture separation**: By writing $\\min I = 2/n + \\min \\int \\text{var}$, the well-understood constant $2/n$ is separated from the open conjecture about the variance excess. This converts the Erdős conjecture into a statement purely about how uniformly Lagrange bases can distribute their squared values.",
+      "**Structural vs. computational**: All 11 theorems are fully proved (0 sorries) — the only axiom is the reformulated Erdős conjecture about the exact asymptotics of $\\min \\int \\text{var}$. The file proves everything that can be proved from structural properties of Lagrange interpolation, leaving only the quantitative optimization problem open."
+    ],
+    "prerequisites": [
+      "Lagrange interpolation and basis polynomials",
+      "Measure theory and Lebesgue integration on ℝ",
+      "Cauchy-Schwarz inequality for sums",
+      "Epsilon-delta continuity arguments"
+    ]
+  },
   "conclusion": {
     "summary": "This formalization demonstrates that the Cauchy-Schwarz lower bound $I \\geq 2/n$ for Lagrange basis integrals is never achieved for $n \\geq 2$. The variance decomposition $I = 2/n + \\int\\text{var}$ provides a clean structural explanation: the Kronecker delta property forces non-uniformity at every node, making the integrated variance strictly positive. All 11 theorems are fully proved; only the Erdős conjecture about the exact asymptotics of $\\min \\int\\text{var}$ remains axiomatized.",
     "implications": "The variance decomposition isolates the open part of Erdős Problem #1131: the question $\\min I = 2 - (1+o(1))/n$ reduces to understanding how evenly Lagrange bases can spread their squared values over $[-1,1]$. The strict lower bound $I > 2/n$ rules out perfectly uniform distributions, but the gap between $2/n$ and $2 - O(1/n)$ — a factor of roughly $n$ — remains unexplained. Progress on the conjecture would require understanding the global optimization landscape over node configurations, connecting to the spectral theory of Gram matrices $G_{jk} = \\int l_j l_k\\,dx$.",
