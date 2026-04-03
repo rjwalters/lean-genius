@@ -1,0 +1,73 @@
+{
+  "id": "bezout-identity-oq-03-oq-01-oq-02",
+  "title": "Generalized CRT: Non-Coprime Image Characterization",
+  "slug": "bezout-identity-oq-03-oq-01-oq-02",
+  "description": "Formalizes the generalized Chinese Remainder Theorem when gcd(m,n) = d > 1. Proves the solvability criterion (x ≡ a mod m ∧ x ≡ b mod n has a solution iff d | (a-b)), uniqueness modulo lcm(m,n), an explicit Bézout-based solution formula, and the image characterization Im = {(a,b) : a ≡ b mod d}. Includes concrete examples (solvable and unsolvable systems). 12 theorems, 1 definition, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ03OQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "chinese-remainder-theorem",
+      "bezout-identity",
+      "modular-arithmetic",
+      "gcd"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Int.gcd, Int.lcm, Int.modEq.",
+    "lineCount": 227,
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "originalContributions": [
+      "generalized_crt_iff: solvability iff gcd(m,n) | (a-b), fully proved",
+      "crt_unique_mod_lcm: uniqueness of solutions modulo lcm(m,n)",
+      "generalized_crt_full: combined existence + uniqueness theorem",
+      "genCRTSolution: explicit computable solution formula via Bézout coefficients"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical Chinese Remainder Theorem (CRT) requires gcd(m,n) = 1. The generalization to arbitrary gcd was known to Gauss: the system is solvable iff the congruence condition d | (a-b) holds, and solutions are unique mod lcm(m,n). This formalization gives a fully machine-checked proof with an explicit solution formula using Bézout coefficients.",
+    "problemStatement": "Characterize the image of the map x ↦ (x mod m, x mod n) : ℤ → ℤ/mℤ × ℤ/nℤ when gcd(m,n) = d > 1. When is x ≡ a (mod m), x ≡ b (mod n) solvable?",
+    "text": "The main result is generalized_crt_iff: the system is solvable iff Int.gcd m n divides (a - b). The forward direction uses that both m | (a-x) and n | (b-x) force d | (a-b) via the transitivity of divisibility. The backward direction constructs x = a - m·gcdA·((a-b)/d) using Bézout's identity. Uniqueness: if x and y are both solutions, then m | (x-y) and n | (x-y), so lcm(m,n) | (x-y). The image characterization follows: Im = {(a,b) : a ≡ b (mod gcd(m,n))}.",
+    "proofStrategy": "Forward: Int.gcd_dvd_left and Int.gcd_dvd_right chain via transitivity. Backward: explicit construction using Int.gcdA and Int.gcdB, verified by linear_combination with Bézout's identity. Uniqueness: reduce to natAbs divisibility then cases on sign. The combined theorem generalized_crt_full packages existence + uniqueness.",
+    "keyInsights": [
+      "The image of ℤ → ℤ/mℤ × ℤ/nℤ is exactly the congruence class modulo gcd(m,n)",
+      "Explicit solution: x = a - m·gcdA(m,n)·((a-b)/gcd(m,n))",
+      "The coprime case (gcd=1) recovers standard CRT as a special case",
+      "Solutions are unique modulo lcm(m,n), not modulo m·n"
+    ],
+    "prerequisites": [
+      "Bézout's identity: Int.gcd_eq_gcd_ab",
+      "Integer modular arithmetic: Int.modEq",
+      "GCD and LCM: Int.gcd, Int.lcm, Nat.lcm_dvd"
+    ]
+  },
+  "conclusion": {
+    "summary": "Complete formalization of generalized CRT: solvability criterion, explicit Bézout formula, uniqueness mod lcm, image = {(a,b) : a ≡ b mod gcd}. 12 theorems, 0 axioms, 227 lines.",
+    "implications": "The generalized CRT is fundamental in algebraic number theory and coding theory. This formalization provides a reusable verified component for reasoning about simultaneous congruences when the moduli are not coprime.",
+    "openQuestions": [
+      "Generalize to systems of k congruences (iterated CRT)",
+      "Connect to the structure theorem for ℤ/nℤ as a product of rings"
+    ]
+  },
+  "leanFile": {
+    "namespace": "NonCoprimeCRT",
+    "lineCount": 227,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-01",
+      "relationship": "related",
+      "description": "BezoutIdentityOQ01 formalizes the extended Euclidean algorithm; this file uses Bézout coefficients from Mathlib to solve non-coprime CRT"
+    }
+  ],
+  "sections": []
+}

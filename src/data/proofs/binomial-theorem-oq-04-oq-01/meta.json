@@ -1,0 +1,75 @@
+{
+  "id": "binomial-theorem-oq-04-oq-01",
+  "title": "Vandermonde's Identity: Combinatorial Bijection Proof",
+  "slug": "binomial-theorem-oq-04-oq-01",
+  "description": "Proves Vandermonde's convolution identity C(m+n,r) = Σ_k C(m,k)·C(n,r-k) via an explicit bijection rather than algebraic/generating function methods. Constructs the bijection between r-subsets of {0,...,m+n-1} and pairs (k-subsets of {0,...,m-1}) × ((r-k)-subsets of {0,...,n-1}), using a 'split by threshold m' map. Proves forward and inverse maps and bijectivity. 14 theorems, 4 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "vandermonde-identity",
+      "bijective-proofs",
+      "binomial-coefficients",
+      "finset-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Finset theory.",
+    "lineCount": 299,
+    "theoremCount": 14,
+    "definitionCount": 4,
+    "originalContributions": [
+      "lowPart: filter elements below threshold m",
+      "highPart: filter elements ≥ m, then shift down by m",
+      "merge: combine low-part A and shifted B into A ∪ shift(B)",
+      "split_merge_inverse: split and merge are mutually inverse",
+      "vandermonde_bijective_proof: C(m+n,r) = Σ_k C(m,k)·C(n,r-k) via explicit bijection"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Vandermonde's identity (1772) states C(m+n,r) = Σ_{k=0}^r C(m,k)·C(n,r-k). The algebraic proof uses polynomial multiplication: (1+x)^m · (1+x)^n = (1+x)^{m+n}. But there is a beautiful combinatorial proof via an explicit bijection: choose r elements from m+n by splitting at position m — the low-part has k elements from {0,...,m-1} and the high-part has r-k elements from {m,...,m+n-1}.",
+    "problemStatement": "Prove Vandermonde's identity combinatorially, via an explicit bijection on Finsets, without algebraic or generating function arguments.",
+    "text": "The bijection: for S ⊆ range(m+n) with |S|=r, define split(S) = (S ∩ range(m), S∩[m,m+n) - m). The forward map sends S to (lowPart m S, highPart m S). The inverse merge(A,B) = A ∪ B.image(·+m). These are mutually inverse: split(merge(A,B)) = (A,B) and merge(split(S)) = S. Since C(m,k)·C(n,r-k) counts pairs of appropriate sizes, summing over k gives C(m+n,r).",
+    "proofStrategy": "Define lowPart, highPart, and merge explicitly on Finsets. Prove the roundtrip properties: split∘merge = id and merge∘split = id. Derive Vandermonde's formula by cardinality counting via the bijection.",
+    "keyInsights": [
+      "Split at threshold: elements < m go to the low part, elements ≥ m shift down to the high part",
+      "Merge is the inverse: union with upshift reverses the split",
+      "Bijective proof: directly establishes C(m+n,r) = Σ C(m,k)·C(n,r-k) without algebra",
+      "Cleaner than polynomial proof: gives combinatorial insight, not just algebraic identity"
+    ],
+    "prerequisites": [
+      "Finset theory: filter, image, union, card",
+      "Binomial coefficients: Nat.choose, combinatorial interpretation",
+      "Bijective proofs: counting via explicit bijection"
+    ]
+  },
+  "conclusion": {
+    "summary": "Vandermonde's identity proved via explicit bijection: split-by-threshold map, merge inverse, bijectivity verified. 14 theorems, 299 lines, 0 axioms.",
+    "implications": "Bijective proofs of combinatorial identities are valuable because they reveal the combinatorial structure that explains 'why' the identity holds. This approach generalizes to other convolution identities (Chu-Vandermonde, Zhu-Vandermonde variants).",
+    "openQuestions": [
+      "Extend to the Chu-Vandermonde identity for hypergeometric functions",
+      "Prove the Zhu-Vandermonde generalization for negative integers",
+      "Apply the bijection technique to other binomial sum identities"
+    ]
+  },
+  "leanFile": {
+    "namespace": "BinomialTheoremOQ04OQ01",
+    "lineCount": 299,
+    "theoremCount": 14,
+    "axiomCount": 0,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "extends",
+      "description": "Binomial theorem and coefficients; OQ-04-OQ-01 proves Vandermonde's identity via combinatorial bijection"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,74 @@
+{
+  "id": "cantor-diagonalization-oq-02-oq-03",
+  "title": "Diagonal Argument Generalized to Regular Cardinals",
+  "slug": "cantor-diagonalization-oq-02-oq-03",
+  "description": "Generalizes the Cantor diagonal argument from countable ordinals (ω₁) to arbitrary regular cardinals κ. For any regular uncountable cardinal κ: (1) any family of ordinals below κ.ord indexed by < κ elements has supremum still below κ.ord (regular_sup_bounded), (2) there exists an ordinal above all elements of any such family (regular_diagonal), (3) no < κ-sized family can surject onto ordinals below κ.ord (regular_no_surjection). 6 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ02OQ03.lean",
+    "tags": [
+      "set-theory",
+      "cantor-diagonalization",
+      "regular-cardinals",
+      "ordinals",
+      "cofinality"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's SetTheory.Cardinal.Cofinality.",
+    "lineCount": 142,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "regular_sup_bounded: for regular κ, sup of < κ-many ordinals below κ.ord stays below κ.ord",
+      "card_succ_lt_of_lt_infinite: for infinite κ, μ < κ → μ+1 < κ",
+      "regular_diagonal: for any < κ-indexed family below κ.ord, an ordinal above all exists",
+      "regular_no_surjection: no < κ-indexed family surjects onto ordinals below κ.ord"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Hausdorff (1908) introduced the notion of regular cardinals: those equal to their own cofinality. For ℵ₀ (countability), regularity means no countable union of finite sets is countably infinite (in a set-theoretic sense). For ℵ₁, regularity means no countably-indexed family of countable ordinals has sup equal to ω₁. The diagonal argument — the engine behind Cantor's theorem — generalizes: for any regular κ, ordinals below κ cannot be 'reached' from below by < κ elements.",
+    "problemStatement": "Prove that the Cantor diagonal argument generalizes to regular cardinals: for any regular κ, there is no surjection from a set of size < κ onto ordinals below κ.ord.",
+    "text": "A cardinal κ is regular if cof(κ.ord) = κ — its cofinality equals itself. Regular cardinals include all successor cardinals (ℵ_{α+1}) and ℵ₀. For regular κ: if f : ι → κ.ord with #ι < κ, then iSup f < κ.ord. This is the abstract diagonal: we can always find an ordinal 'above' any bounded family. The key tool is Ordinal.iSup_lt_ord from Mathlib's cofinality theory.",
+    "proofStrategy": "Apply Ordinal.iSup_lt_ord directly using hκ.cof_eq (cofinality of κ.ord equals κ for regular κ). Derive the successor bound from case split (finite/infinite). Prove the diagonal result. Prove no surjection by taking the sup+1.",
+    "keyInsights": [
+      "Regular cardinal: cof(κ.ord) = κ — the abstract form of countable-closure",
+      "iSup_lt_ord: key Mathlib lemma about ordinal suprema and cofinality",
+      "Diagonal argument: take the sup of the family + 1 to exceed all values",
+      "No surjection: existence of the diagonal ordinal blocks any surjection"
+    ],
+    "prerequisites": [
+      "Cardinals and ordinals: basic set theory",
+      "Cofinality: cof(α) = smallest cofinal ordinal",
+      "Regular cardinals: κ = cof(κ.ord)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Cantor diagonal generalized to regular cardinals: regular_sup_bounded, regular_diagonal, regular_no_surjection. All from Mathlib cofinality theory. 6 theorems, 142 lines, 0 axioms.",
+    "implications": "The regular cardinal version is the abstract backbone of many set-theoretic constructions: forcing posets, tree arguments, and closure systems. It generalizes the countable argument to uncountable cardinals.",
+    "openQuestions": [
+      "Prove König's theorem: cf(Π κ_i) > Σ κ_i (the cardinal product cofinality bound)",
+      "Formalize the diagonal lemma in logic (Cantor's theorem for definability)",
+      "Prove that singular cardinals (cof(κ) < κ) do NOT satisfy the diagonal property"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CantorDiagonalizationOQ02OQ03",
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "denumerability-rationals-oq-02",
+      "relationship": "related",
+      "description": "Both use diagonal/back-and-forth arguments in set theory; ℚ characterization uses countable case, this uses regular cardinal generalization"
+    }
+  ],
+  "sections": []
+}

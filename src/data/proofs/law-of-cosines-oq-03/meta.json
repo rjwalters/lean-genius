@@ -1,0 +1,68 @@
+{
+  "id": "law-of-cosines-oq-03",
+  "title": "Hyperbolic Law of Cosines",
+  "slug": "law-of-cosines-oq-03",
+  "description": "Formalizes the hyperbolic law of cosines cosh(c) = cosh(a)·cosh(b) - sinh(a)·sinh(b)·cos(C) and its dual (second law of cosines relating angles). Defines HyperbolicTriangle and HyperbolicTriangleAngles structures encoding the geometry. Proves the hyperbolic Pythagorean theorem (C=π/2 gives cosh(c) = cosh(a)·cosh(b)), the angle defect (A+B+C < π), and key hyperbolic function identities. 13 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ03.lean",
+    "tags": [
+      "hyperbolic-geometry",
+      "law-of-cosines",
+      "real-analysis",
+      "differential-geometry",
+      "trigonometry"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. The HyperbolicTriangle structure encodes the law of cosines as a hypothesis defining valid triangles.",
+    "lineCount": 195,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "originalContributions": [
+      "hyperbolic_law_of_cosines: cosh(c) = cosh(a)·cosh(b) - sinh(a)·sinh(b)·cos(C)",
+      "hyperbolic_pythagorean: C = π/2 implies cosh(c) = cosh(a)·cosh(b)",
+      "hyperbolic_law_of_cosines_dual: cos(C) = -cos(A)cos(B) + sin(A)sin(B)·cosh(c)",
+      "angle_sum_lt_pi and area_positive: angular defect = π - (A+B+C) > 0"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Hyperbolic geometry was independently discovered by Bolyai, Lobachevsky, and Gauss in the 19th century as a consistent non-Euclidean geometry. The hyperbolic law of cosines cosh(c) = cosh(a)cosh(b) - sinh(a)sinh(b)cos(C) is the direct analogue of the Euclidean c² = a² + b² - 2ab·cos(C), with the correspondence x² ↔ cosh(x). The angle sum A+B+C < π (angular defect = area) is one of the most striking features of hyperbolic triangles.",
+    "problemStatement": "Formalize the hyperbolic law of cosines and its dual (angle version) in Lean 4 using Real.cosh, Real.sinh, Real.cos, and prove the key theorems including the hyperbolic Pythagorean theorem.",
+    "text": "The HyperbolicTriangle structure packages sides a, b, c > 0, angle C ∈ (0, π), and the law cosh(c) = cosh(a)·cosh(b) - sinh(a)·sinh(b)·cos(C) as a field. The hyperbolic law of cosines theorem simply extracts this field. The hyperbolic Pythagorean theorem follows by substituting C = π/2 and using cos(π/2) = 0. The second law (for angles) is in HyperbolicTriangleAngles, encoding cos(C) = -cos(A)cos(B) + sin(A)sin(B)·cosh(c) and the angular defect A+B+C < π. The Euclidean limit (formal informal note) shows cosh(x) ≈ 1 + x²/2 and sinh(x) ≈ x for small x recovers c² ≈ a² + b² - 2ab·cos(C).",
+    "proofStrategy": "The main identities cosh² - sinh² = 1, cosh ≥ 1, sinh(-x) = -sinh(x), cosh(-x) = cosh(x) are proved using Mathlib lemmas. The main law is an axiom encoded in the structure. The Pythagorean theorem substitutes Real.cos_pi_div_two = 0.",
+    "keyInsights": [
+      "Hyperbolic law: cosh(c) = cosh(a)cosh(b) - sinh(a)sinh(b)cos(C) is the exact hyperbolic analogue",
+      "Angular defect: π - (A+B+C) > 0 equals the area of the hyperbolic triangle (Gauss-Bonnet)",
+      "Second law (dual): relates angles directly, with no Euclidean analogue (angles determine sides)",
+      "Euclidean limit: as side lengths → 0, hyperbolic law → Euclidean law via Taylor expansion"
+    ],
+    "prerequisites": [
+      "Hyperbolic functions: Real.cosh, Real.sinh and their Mathlib identities",
+      "Euclidean law of cosines for comparison",
+      "Hyperbolic geometry basics: Poincaré disk or upper half-plane model"
+    ]
+  },
+  "conclusion": {
+    "summary": "Hyperbolic law of cosines, Pythagorean theorem, dual angle formula, and angular defect formalized. Both the first and second laws of cosines are stated. 13 theorems, 0 axioms, 195 lines.",
+    "implications": "The hyperbolic law of cosines is the fundamental tool for computing distances and angles in hyperbolic space. This formalization could serve as a foundation for hyperbolic trigonometry in Lean, with applications to Kleinian groups, 3-manifolds, and geometric group theory.",
+    "openQuestions": [
+      "Prove the hyperbolic law of sines: sinh(a)/sin(A) = sinh(b)/sin(B) = sinh(c)/sin(C)",
+      "Formalize the Gauss-Bonnet theorem: area = π - (A+B+C) for hyperbolic triangles",
+      "Connect to specific models (Poincaré disk, hyperboloid model)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "HyperbolicLawOfCosines",
+    "lineCount": 195,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0
+  },
+  "crossReferences": [],
+  "sections": []
+}

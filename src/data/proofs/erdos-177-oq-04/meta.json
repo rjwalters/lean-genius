@@ -1,0 +1,68 @@
+{
+  "id": "erdos-177-oq-04",
+  "title": "Optimal Colorings for AP Discrepancy (Erdős #177 OQ4)",
+  "slug": "erdos-177-oq-04",
+  "description": "Formalizes coloring constructions for Erdős Problem #177 on arithmetic progression discrepancy. Proves the alternating coloring is valid and optimal for d=1 (achieving h(1)=1 exactly), the alternating coloring fails badly for d=2, and the trivial upper bound disc ≤ k for any valid coloring. States the Roth lower bound h(d) ≥ c√d, Beck's improved upper bound, and the Rudin-Shapiro simultaneous bound as axioms. 12 theorems, 8 definitions, 3 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos177OQ04.lean",
+    "tags": [
+      "discrepancy-theory",
+      "arithmetic-progressions",
+      "combinatorics",
+      "erdos-problems",
+      "colorings"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 3,
+    "assumptions": "roth_lower_bound (Roth's √d lower bound via Fourier analysis), beck_improved_upper (Beck's d^{1+ε} upper bound), rudin_shapiro_bound (Rudin-Shapiro O(√N log N) simultaneous bound).",
+    "lineCount": 282,
+    "theoremCount": 12,
+    "definitionCount": 8,
+    "originalContributions": [
+      "alternating_d1_bound: alternating coloring achieves discrepancy ≤ 1 for d=1 (two-step induction)",
+      "optimalDisc_one: h(1) = 1 exactly (sInf characterization, axiom-free)",
+      "alternating_isOptimal_d1: alternating is optimal for d=1",
+      "disc_trivial_upper: discrepancy ≤ k for any valid ±1 coloring"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #177 asks for the minimum discrepancy h(d) of a ±1 coloring over all arithmetic progressions with common difference d. The best known bounds are c√d ≤ h(d) ≤ C·d^{1+ε}, leaving a gap of exponent ~1/2. The alternating coloring (-1)^n is optimal for d=1; for d=2 it fails completely. The Rudin-Shapiro sequence simultaneously bounds discrepancy over all d.",
+    "problemStatement": "For a ±1 coloring f: ℕ → {±1}, define the discrepancy over AP (a, d, k) as |Σ_{i=0}^{k-1} f(a + i·d)|. The optimal discrepancy h(d) = min_f max_{a,k} |Σ f(a+id)|. Find the growth rate of h(d).",
+    "text": "The file defines colorings, valid ±1 colorings, AP partial sums, and the optimal discrepancy h(d) = optimalDisc d via sInf. The alternating coloring (-1)^n is proved valid and gives partial sums of magnitude ≤ 1 for d=1 (pairs of consecutive terms cancel). For d=2 the alternating coloring gives all same-sign terms, making it useless. The modular coloring with period m is defined as a generalization. Three major results from discrepancy theory — Roth's lower bound, Beck's upper bound, and the Rudin-Shapiro bound — are included as axioms.",
+    "proofStrategy": "Two-step strong induction for alternating_d1_bound: base cases k=0,1; inductive step uses that (-1)^n + (-1)^{n+1} = 0 to reduce k+2 to k. The optimalDisc_one proof uses both csInf_le (upper bound: alternating witnesses 1 ∈ S) and le_csInf (lower bound: every k in S has k ≥ 1 since any 1-term AP has discrepancy 1).",
+    "keyInsights": [
+      "Alternating coloring is optimal for d=1: consecutive pairs always cancel",
+      "Alternating fails completely for d=2: all terms have the same sign",
+      "h(1) = 1 is proved exactly, without axioms, via sInf characterization",
+      "Gap: c√d ≤ h(d) ≤ C·d^{1+ε} remains one of the major open problems"
+    ],
+    "prerequisites": [
+      "Discrepancy theory: AP partial sums, optimal coloring",
+      "Modular arithmetic and ±1 colorings",
+      "Roth's theorem on irregularities of distribution"
+    ]
+  },
+  "conclusion": {
+    "summary": "Coloring constructions for Erdős #177 AP discrepancy: alternating is optimal for d=1 (h(1)=1 exact), fails for d=2. Three deep bounds axiomatized. 12 theorems, 3 axioms, 282 lines.",
+    "implications": "The exact computation h(1) = 1 is a clean model for studying optimal colorings. The gap between the √d lower bound and d^{1+ε} upper bound is a major open problem in discrepancy theory with connections to number theory and harmonic analysis.",
+    "openQuestions": [
+      "Close the gap: is h(d) ~ d^{1/2+o(1)}?",
+      "Formalize Roth's Fourier analysis lower bound for h(d) ≥ c√d",
+      "Prove the Rudin-Shapiro bound from the definition of the sequence"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos177OQ04",
+    "lineCount": 282,
+    "axiomCount": 3,
+    "theoremCount": 12,
+    "definitionCount": 8
+  },
+  "crossReferences": [],
+  "sections": []
+}

@@ -1,0 +1,73 @@
+{
+  "id": "bezout-identity-oq-01",
+  "title": "Extended Euclidean Algorithm as Computable Function",
+  "slug": "bezout-identity-oq-01",
+  "description": "Formalizes the extended Euclidean algorithm as a fully computable Lean 4 function extGcd : ℕ → ℕ → ℤ × ℤ × ℕ with correctness proof. Proves (1) Bézout correctness: a·x + b·y = g, (2) GCD correctness: g = gcd(a,b), and (3) derived properties (positivity, divisibility). Verified on concrete inputs (12,8), (35,15), (252,198) by native_decide. 10 theorems, 4 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ01.lean",
+    "tags": [
+      "number-theory",
+      "bezout-identity",
+      "euclidean-algorithm",
+      "computable-mathematics",
+      "gcd"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified with a fully computable implementation.",
+    "lineCount": 208,
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "originalContributions": [
+      "extGcd: computable well-founded recursive implementation of extended Euclidean algorithm",
+      "extGcd_bezout: a·x + b·y = g for any inputs, proved by well-founded induction",
+      "extGcd_gcd: the gcd component equals Nat.gcd a b",
+      "bezout_via_extGcd: existential Bézout identity via computable witnesses"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Bézout's identity gcd(a,b) = a·x + b·y (with x, y ∈ ℤ) is proved non-constructively by Mathlib (Int.gcdA, Int.gcdB). The question is whether the extended Euclidean algorithm can be formalized as a fully computable function with a verified correctness proof in Lean 4. This file gives a self-contained implementation using well-founded recursion on b.",
+    "problemStatement": "Define a computable function extGcd : ℕ → ℕ → ℤ × ℤ × ℕ implementing the extended Euclidean algorithm and prove a·extGcd(a,b).x + b·extGcd(a,b).y = gcd(a,b).",
+    "text": "The algorithm: extGcd a 0 = (1, 0, a) (base case); extGcd a (b+1) = let r = extGcd (b+1) (a mod (b+1)) in (r.y, r.x - ⌊a/(b+1)⌋·r.y, r.z). The GCD correctness proof tracks the standard Euclidean algorithm: extGcd_gcd reduces to Nat.gcd_comm and Nat.gcd_rec. The Bézout proof uses well-founded induction with the key step: setting hdiv : a = (a/(b+1))·(b+1) + (a%(b+1)), the linear_combination tactic closes the goal from the inductive hypothesis via hdiv * y'.",
+    "proofStrategy": "Well-founded induction using Nat.strongRecOn (matches the recursion structure). GCD proof: straightforward Nat.gcd identity chain. Bézout proof: set x' and y' as the recursive results, use hdiv (division algorithm) to express a = q(b+1) + r, then linear_combination closes via one-step algebra.",
+    "keyInsights": [
+      "Using projections (r.1, r.2.1, r.2.2) instead of let-destructuring avoids definitional issues",
+      "Lean's well-founded recursion on `b` tracks termination via Nat.mod_lt",
+      "linear_combination closes the key Bézout step in one tactic from hrec + hdiv * y'",
+      "native_decide enables efficient concrete verification for specific inputs"
+    ],
+    "prerequisites": [
+      "Well-founded recursion in Lean 4: Nat.strongRecOn",
+      "Division algorithm: Nat.div_add_mod",
+      "Nat.gcd properties: gcd_comm, gcd_rec"
+    ]
+  },
+  "conclusion": {
+    "summary": "Computable extended Euclidean algorithm with Bézout correctness proof. Verified on (12,8), (35,15), (252,198) by native_decide. 10 theorems, 4 definitions, 0 axioms, 208 lines.",
+    "implications": "This formalization proves that the extended Euclidean algorithm is not just correct in principle (via existential Bézout) but yields explicit computable coefficients with machine-verified proofs. Useful for constructive number theory and cryptographic protocol verification.",
+    "openQuestions": [
+      "Prove the binary extended GCD algorithm correct (faster in practice)",
+      "Connect extGcd to matrix arithmetic: the algorithm corresponds to unimodular 2×2 integer matrices"
+    ]
+  },
+  "leanFile": {
+    "namespace": "BezoutIdentityOQ01",
+    "lineCount": 208,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-03-oq-01-oq-02",
+      "relationship": "related",
+      "description": "BezoutIdentityOQ03OQ01OQ02 uses Bézout coefficients from Mathlib; this file provides a computable alternative implementation"
+    }
+  ],
+  "sections": []
+}

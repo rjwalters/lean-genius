@@ -1,0 +1,67 @@
+{
+  "id": "arithmetic-series-oq-02-oq-02-oq-01",
+  "title": "k-Dimensional Hockey Stick Identity",
+  "slug": "arithmetic-series-oq-02-oq-02-oq-01",
+  "description": "Proves the k-dimensional hockey stick identity by induction on dimension k. Defines multiHockeySum [a₁,...,aₖ] n = Σ_{i₁+...+iₖ ≤ n} C(i₁+a₁,a₁)·...·C(iₖ+aₖ,aₖ) and proves it equals C(n + Σaⱼ + k, Σaⱼ + k). The induction step applies the parallel Vandermonde convolution from the parent file. Includes 1D, 2D, 3D special cases and concrete numerical verification. 8 theorems, 1 definition, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "hockey-stick",
+      "lattice-paths",
+      "induction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified. Depends on ArithmeticSeriesOQ02OQ02 (parallel Vandermonde).",
+    "lineCount": 165,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "originalContributions": [
+      "multi_hockey_stick: multiHockeySum as n = simplicial (as.sum + as.length) n, proved by list induction",
+      "multiHockeySum: recursive definition over the k-simplex by peeling off one variable at a time",
+      "multi_hockey_3d: 3D instance Σ_{i+j+k ≤ n} 1 = C(n+3, 3) (10 for n=2, verified)",
+      "multiHockeySum_mono and multiHockeySum_pos: monotonicity and positivity"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The 1D hockey stick identity Σ_{j=0}^n C(j+k,k) = C(n+k+1,k+1) appears in Graham-Knuth-Patashnik's 'Concrete Mathematics'. The k-dimensional generalization sums over the integer simplex {(i₁,...,iₖ) : Σiⱼ ≤ n} weighted by products of simplicial numbers. The key observation is that iterating the parallel Vandermonde convolution reduces the k-dimensional sum to a single simplicial number.",
+    "problemStatement": "Prove the k-dimensional hockey stick identity: Σ_{i₁+...+iₖ ≤ n} C(i₁+a₁,a₁)·...·C(iₖ+aₖ,aₖ) = C(n + a₁+...+aₖ + k, a₁+...+aₖ + k) by induction on k.",
+    "text": "The multiHockeySum is defined recursively on the parameter list: for an empty list it is 1 (empty product, one point), and for a :: as it sums over the first variable j from 0 to n, taking C(j+a,a) · multiHockeySum as (n-j). The induction step for multi_hockey_stick: the recursive sum becomes Σ_j simplicial a j · simplicial (as.sum + as.length) (n-j) by the induction hypothesis, which is parallel_vandermonde a (as.sum + as.length) n, giving simplicial (a + as.sum + as.length + 1) n = simplicial ((a::as).sum + (a::as).length) n.",
+    "proofStrategy": "List induction on as. Base: multiHockeySum [] n = 1 = simplicial 0 n (since C(n,0) = 1). Inductive step: unfold, apply ih to substitute multiHockeySum as' (n-j), then apply parallel_vandermonde from the parent module, then simplify list.sum and list.length by ring and omega.",
+    "keyInsights": [
+      "Each dimension peels off via parallel Vandermonde, reducing k-dim to (k-1)-dim",
+      "The parameter list encodes both the weights aⱼ and the dimension k = length",
+      "The simplex {Σiⱼ ≤ n} has exactly C(n+k,k) lattice points (multinomial counting)",
+      "Monotonicity follows directly from Nat.choose_le_choose after rewriting via multi_hockey_stick"
+    ],
+    "prerequisites": [
+      "ArithmeticSeriesOQ02OQ02: parallel_vandermonde and simplicial numbers",
+      "List sum and length: List.sum_cons, List.length_cons",
+      "Nat.choose: Nat.choose_le_choose for monotonicity"
+    ]
+  },
+  "conclusion": {
+    "summary": "k-dimensional hockey stick via list induction using parallel Vandermonde at each step. Special cases 1D, 2D, 3D verified. concrete check: Σ_{i+j+k ≤ 2} 1 = 10 = C(5,3). 8 theorems, 0 axioms, 165 lines.",
+    "implications": "The k-dimensional hockey stick identity counts lattice paths in the integer simplex. This formalization shows the inductive structure of multi-dimensional combinatorial identities and provides a template for higher-dimensional analogues.",
+    "openQuestions": [
+      "Generalize to weighted sums over other polytopes (not just the simplex)",
+      "Connect to the Hilbert series of polynomial rings: Σ C(n+k,k) z^n = 1/(1-z)^{k+1}"
+    ]
+  },
+  "leanFile": {
+    "namespace": "ArithmeticSeriesOQ02OQ02OQ01",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "crossReferences": [],
+  "sections": []
+}

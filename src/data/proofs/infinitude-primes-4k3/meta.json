@@ -1,0 +1,73 @@
+{
+  "id": "infinitude-primes-4k3",
+  "title": "Infinitely Many Primes ≡ 3 (mod 4)",
+  "slug": "infinitude-primes-4k3",
+  "description": "Proves there are infinitely many primes congruent to 3 modulo 4 using an elementary Euclid-style argument. Considers N = 4·(n+1)! - 1, which is ≡ 3 (mod 4), and shows N must have a prime factor ≡ 3 (mod 4) since products of primes ≡ 1 (mod 4) stay ≡ 1 (mod 4). The factor exceeds n since it cannot divide 4·(n+1)!. No analytic number theory required. 7 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InfinitudePrimes4k3.lean",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "modular-arithmetic",
+      "dirichlet-theorem",
+      "elementary-number-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Nat.Prime, Nat.dvd_factorial.",
+    "lineCount": 230,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "originalContributions": [
+      "infinitely_many_primes_3_mod_4: for any n, there exists a prime p > n with p ≡ 3 (mod 4)",
+      "primes_3_mod_4_infinite: the set {p prime : p ≡ 3 mod 4} is infinite",
+      "factors_determine_mod_four: if all prime factors are 2 or ≡ 1 (mod 4), then n ≢ 3 (mod 4)",
+      "has_prime_factor_3_mod_4: any n ≡ 3 (mod 4) has a prime factor ≡ 3 (mod 4)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The infinitude of primes ≡ 3 (mod 4) is a special case of Dirichlet's 1837 theorem on primes in arithmetic progressions, but the elementary proof was known long before Dirichlet. It uses the same structure as Euclid's proof for all primes: construct a specific number that must have a prime factor of the desired form, and show that factor must be new.",
+    "problemStatement": "Prove that for every n : ℕ, there exists a prime p > n with p ≡ 3 (mod 4). This shows the set of such primes is infinite.",
+    "text": "The key auxiliary lemma factors_determine_mod_four states: if all prime factors of n are either 2 or ≡ 1 (mod 4), then n ≢ 3 (mod 4). Proof by strong induction: case 2 | n contradicts n ≡ 3 (odd); case p | n with p ≡ 1 (mod 4) reduces to n/p via the identity (n/p) mod 4 = n mod 4 (since p ≡ 1). The main theorem takes N = 4·(n+1)! - 1: N ≡ 3 (mod 4), so has a prime factor p ≡ 3 (mod 4). Since p ≤ n would imply p | (n+1)!, we'd get p | 1, contradicting primality.",
+    "proofStrategy": "Strong induction for factors_determine_mod_four: case p = 2 is immediate from parity; case p ≡ 1 uses multiplicativity of mod 4 to reduce to a smaller instance. Main proof: contradiction assuming p ≤ n, using Nat.dvd_factorial and Nat.Prime.not_dvd_one.",
+    "keyInsights": [
+      "Products of (1 mod 4) numbers stay (1 mod 4) — the multiplicative structure of (ℤ/4ℤ)*",
+      "N = 4·(n+1)! - 1 avoids all primes ≤ n+1 that divide (n+1)!",
+      "The argument is fully elementary: no Gaussian integers, no quadratic reciprocity",
+      "Compare with the analogous proof for primes ≡ 1 (mod 4) which requires more machinery"
+    ],
+    "prerequisites": [
+      "Nat.dvd_factorial: every prime ≤ n divides n!",
+      "Odd prime ≡ 1 or 3 (mod 4): basic modular arithmetic",
+      "Strong induction: Nat.strong_induction_on"
+    ]
+  },
+  "conclusion": {
+    "summary": "Elementary proof that primes ≡ 3 (mod 4) are infinite, using N = 4·(n+1)!-1. Includes the set-theoretic infinitude statement and no-largest-prime form. 7 theorems, 0 axioms, 230 lines.",
+    "implications": "This elementary proof predates Dirichlet's theorem and illustrates the power of Euclid-style arguments. The contrast with the ≡ 1 (mod 4) case (which requires Fermat's two-square theorem or quadratic reciprocity) shows that different arithmetic progressions require different proof techniques.",
+    "openQuestions": [
+      "Prove Dirichlet's theorem in full generality: infinitely many primes in any AP with gcd(a,d)=1",
+      "Formalize the density: primes ≡ 3 (mod 4) have density 1/2 among all primes (equidistribution)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "InfinitudePrimes4k3",
+    "lineCount": 230,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes-4k1",
+      "relationship": "related",
+      "description": "Companion proof for primes ≡ 1 (mod 4), requiring more machinery (sum of two squares)"
+    }
+  ],
+  "sections": []
+}

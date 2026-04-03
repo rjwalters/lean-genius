@@ -1,0 +1,80 @@
+{
+  "id": "cayley-hamilton-oq-02",
+  "title": "Computing Matrix Functions via Cayley-Hamilton Reduction",
+  "slug": "cayley-hamilton-oq-02",
+  "description": "Proves that any polynomial function of a matrix reduces modulo the characteristic polynomial: aeval A p = aeval A (p mod charpoly(A)). The reduced polynomial has degree < n, enabling efficient matrix function computation. Proves power reduction (A^k as linear combination of I,...,A^{n-1}), polynomial congruence (same remainder → same matrix value), and partial sum reduction. Foundation for computing matrix exponentials e^{tA}. 20 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonOQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "cayley-hamilton",
+      "matrix-functions",
+      "polynomial-reduction",
+      "matrix-exponential"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Cayley-Hamilton theorem.",
+    "lineCount": 358,
+    "theoremCount": 20,
+    "definitionCount": 0,
+    "originalContributions": [
+      "charpoly_reduces_eval: aeval A p = aeval A (p %ₘ charpoly A)",
+      "charpoly_degree_bound: deg(p mod charpoly) < n",
+      "power_reduction: A^k = aeval A (X^k mod charpoly A) — degree < n",
+      "poly_congr_eval: p ≡ q (mod charpoly) → aeval A p = aeval A q",
+      "partial_sum_reduction: finite polynomial sums reduce via Cayley-Hamilton"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Cayley-Hamilton theorem (every matrix satisfies its characteristic polynomial) has a powerful computational corollary: any matrix polynomial reduces to degree < n. This means A^100 can be expressed as c₀I + c₁A + ... + c_{n-1}A^{n-1}. The matrix exponential e^{tA} = Σ (tA)^k/k! reduces to e^{tA} = c₀(t)I + c₁(t)A + ... + c_{n-1}(t)A^{n-1}, where c_i(t) satisfy a linear ODE from charpoly.",
+    "problemStatement": "Prove that aeval A p = aeval A (p mod charpoly A) and derive the degree bound and computational applications.",
+    "text": "The characteristic polynomial charpoly(A) is monic of degree n and satisfies aeval A (charpoly A) = 0 (Cayley-Hamilton). For any polynomial p, write p = q * charpoly + r (polynomial division). Then aeval A p = aeval A r, since the charpoly term vanishes. The remainder r has degree < n by the division algorithm. This reduction applies to any matrix polynomial: power series, matrix exponentials, etc.",
+    "proofStrategy": "Apply Cayley-Hamilton via Matrix.aeval_self_charpoly. Use Polynomial.modByMonic_add_div for the division algorithm. Prove the reduction theorem. Derive power reduction, congruence property, and partial sum reduction as corollaries.",
+    "keyInsights": [
+      "Cayley-Hamilton gives aeval A (charpoly) = 0, so charpoly is in the annihilator",
+      "Division algorithm: any p = q*charpoly + r, so aeval A p = aeval A r",
+      "Degree < n: the Cayley-Hamilton reduction is dimension-bounded",
+      "Matrix exponential: reduces to a degree-(n-1) polynomial in A with time-dependent coefficients"
+    ],
+    "prerequisites": [
+      "Cayley-Hamilton theorem: M satisfies its characteristic polynomial",
+      "Polynomial division: division algorithm, remainder theorem",
+      "Matrix algebra: polynomial evaluation at a matrix"
+    ]
+  },
+  "conclusion": {
+    "summary": "Cayley-Hamilton reduction for matrix functions: aeval A p = aeval A (p mod charpoly), degree < n bound, power reduction, matrix exponential framework. 20 theorems, 358 lines, 0 axioms.",
+    "implications": "This is the theoretical foundation for efficient matrix exponentiation and ODE solving. The computation of e^{tA} by reducing X^k/k! mod charpoly(A) is the Putzer algorithm. Applications include numerical ODEs, signal processing, and control theory.",
+    "openQuestions": [
+      "Formalize the Putzer algorithm for e^{tA} using this reduction",
+      "Prove Sylvester's formula for functions of matrices (rational canonical form)",
+      "Apply to discrete-time systems: A^k via Cayley-Hamilton"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CayleyHamiltonOQ02",
+    "lineCount": 358,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "extends",
+      "description": "Cayley-Hamilton theorem; this file develops the computational polynomial reduction corollary"
+    },
+    {
+      "targetId": "cayley-hamilton-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 uses minpoly (tighter); OQ-02 uses charpoly (more accessible for computation)"
+    }
+  ],
+  "sections": []
+}

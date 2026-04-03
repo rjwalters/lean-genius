@@ -1,0 +1,76 @@
+{
+  "id": "cramers-rule-oq-04",
+  "title": "Cramer's Rule OQ-04: Adjugate as Generalized Inverse",
+  "slug": "cramers-rule-oq-04",
+  "description": "Formalizes the adjugate matrix as a generalized inverse extending Cramer's rule to singular matrices. Proves the fundamental identities A * adj(A) = det(A) * I and adj(A) * A = det(A) * I, the 1-reflexive property A * adj(A) * A = det(A) * A, and Cramer's solution formula for non-singular systems. Proves what adj(A)*b computes in the singular case. 11 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CramersRuleOQ04.lean",
+    "tags": [
+      "linear-algebra",
+      "cramers-rule",
+      "adjugate-matrix",
+      "generalized-inverse",
+      "determinants"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Matrix.adjugate.",
+    "lineCount": 175,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "originalContributions": [
+      "adjugate_right: A * adj(A) = det(A) * I",
+      "adjugate_left: adj(A) * A = det(A) * I",
+      "adjugate_reflexive: A * adj(A) * A = det(A) * A (1-reflexive property)",
+      "adjugate_reflexive_sym: adj(A) * A * adj(A) = det(A) * adj(A)",
+      "cramer_solution: for invertible A, A⁻¹ * b via adjugate",
+      "singular_adjugate_action: what adj(A) * b computes when det(A) = 0"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cramer's rule (1750) gives explicit formulas for linear system solutions using determinants: x_i = det(A_i)/det(A). The adjugate (classical adjoint) adj(A) = det(A)·A⁻¹ generalizes this: A * adj(A) = det(A) * I always holds, regardless of whether A is invertible. This makes adj(A) a 'generalized inverse' in a specific sense. When det(A) = 0, adj(A) still satisfies the 1-reflexive property and gives useful information about the solution set.",
+    "problemStatement": "Formalize the adjugate as a generalized inverse: prove A * adj(A) = det(A) * I, the 1-reflexive property, Cramer's solution formula, and the singular case behavior.",
+    "text": "For any square matrix A over a commutative ring R: adj(A)_ij = (-1)^{i+j} * det(A without row j, col i). The cofactor expansion gives A * adj(A) = det(A) * I. For invertible A, this means A⁻¹ = adj(A) / det(A). Cramer's rule: the i-th coordinate of A⁻¹b = det(A_i(b)) / det(A) where A_i(b) replaces column i with b. The adjugate satisfies the 1-reflexive property A * G * A = det(A) * A (a weaker form of the Moore-Penrose pseudoinverse).",
+    "proofStrategy": "Directly apply Mathlib's Matrix.mul_adjugate and Matrix.adjugate_mul lemmas. Derive the reflexive and symmetric reflexive properties by substitution. Prove Cramer's formula by combining adjugate identities with invertibility.",
+    "keyInsights": [
+      "A * adj(A) = det(A) * I: always holds, no invertibility required",
+      "1-reflexive property: A * adj(A) * A = det(A) * A — weaker than Moore-Penrose",
+      "Cramer's formula: x_i = det(A_i)/det(A) follows from adj(A)*b/det(A) = A⁻¹*b",
+      "Singular case: adj(A) * b ∈ null(A) when det(A) = 0 (approximate solution)"
+    ],
+    "prerequisites": [
+      "Adjugate matrix: cofactor expansion, classical adjoint",
+      "Determinants: properties over commutative rings",
+      "Generalized inverses: Moore-Penrose pseudoinverse"
+    ]
+  },
+  "conclusion": {
+    "summary": "Adjugate generalized inverse formalized: A*adj(A)=det(A)*I, 1-reflexive property, Cramer's solution formula. 11 theorems, 175 lines, 0 axioms.",
+    "implications": "The adjugate provides a universal 'inverse-like' operation over commutative rings, not just fields. This is key for formulas like the matrix-tree theorem (graph theory), where det(A) counts spanning trees.",
+    "openQuestions": [
+      "Formalize the Cayley-Hamilton proof via adjugate (the algebraic proof using adj(xI-A)*(xI-A)=charpoly(A)*I)",
+      "Apply adjugate to the matrix-tree theorem: prove det of Laplacian submatrix counts spanning trees",
+      "Formalize the relationship adj(adj(A)) = det(A)^{n-2} * A"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CramersRuleOQ04",
+    "lineCount": 175,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem has an adjugate-based proof: adj(xI-A)*(xI-A) = charpoly(A)*I"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,71 @@
+{
+  "id": "sqrt2-plus-sqrt3-irrational",
+  "title": "Irrationality of √2 + √3",
+  "slug": "sqrt2-plus-sqrt3-irrational",
+  "description": "Proves that √2 + √3 is irrational by contradiction: if √2 + √3 = r ∈ ℚ, then squaring gives r² = 5 + 2√6, so √6 = (r² - 5)/2 ∈ ℚ, contradicting the irrationality of √6. Also proves √6 irrational using Mathlib's irrational_sqrt_natCast_iff. 3 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Sqrt2PlusSqrt3Irrational.lean",
+    "tags": [
+      "irrationality",
+      "real-analysis",
+      "square-roots",
+      "number-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Uses Mathlib's irrational_sqrt_natCast_iff and native_decide for ¬IsSquare 6.",
+    "lineCount": 54,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "originalContributions": [
+      "irrational_sqrt2_plus_sqrt3: √2 + √3 is irrational, proved by squaring and √6 irrationality",
+      "sqrt2_plus_sqrt3_sq: (√2 + √3)² = 5 + 2√6 (key algebraic identity)",
+      "irrational_sqrt_six: √6 is irrational (auxiliary using irrational_sqrt_natCast_iff)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The irrationality of √2 + √3 is a classical exercise in real analysis, notable because it requires more than just knowing √2 and √3 are irrational individually. The proof via squaring is elegant: if the sum were rational, squaring would make √6 rational, which is known to be false.",
+    "problemStatement": "Prove that √2 + √3 : ℝ is irrational.",
+    "text": "The proof is by contradiction. Assume √2 + √3 = r for some r : ℚ. The algebraic identity (√2 + √3)² = 5 + 2√6 gives r² = 5 + 2√6, hence √6 = (r² - 5)/2. Since r is rational, (r² - 5)/2 is rational, but √6 is irrational (6 is not a perfect square, checked by native_decide). Contradiction. The algebraic identity is proved using sq_sqrt and sqrt_mul.",
+    "proofStrategy": "sqrt2_plus_sqrt3_sq: ring_nf then rw [sq_sqrt h2, sq_sqrt h3] to convert √2² and √3², and √2·√3 = √6 via sqrt_mul. Main proof: assume ⟨r, hr⟩, square both sides, rearrange to get √6 = rational, then apply irrational_sqrt_six.",
+    "keyInsights": [
+      "Squaring maps the irrationality question to a simpler one about √6",
+      "The identity (√a + √b)² = a + b + 2√(ab) is the key algebraic trick",
+      "√6 irrational: 6 = 2·3 is not a perfect square, checked computationally",
+      "The argument generalizes: √a + √b is irrational whenever ab is not a perfect square"
+    ],
+    "prerequisites": [
+      "Real.sqrt: sq_sqrt, sqrt_mul",
+      "Mathlib Irrational: irrational_sqrt_natCast_iff",
+      "Rat.cast arithmetic for the rational witness"
+    ]
+  },
+  "conclusion": {
+    "summary": "√2 + √3 irrational via (√2+√3)² = 5 + 2√6 and irrationality of √6. Concise 54-line proof. 3 theorems, 0 axioms.",
+    "implications": "The squaring technique for proving irrationality of sums of square roots is a powerful method that generalizes to many combinations. This file demonstrates how Lean 4 handles the algebraic manipulation smoothly via ring_nf and sqrt identities.",
+    "openQuestions": [
+      "Prove √2 + √3 + √5 is irrational (requires three-level squaring argument)",
+      "Characterize when Σ_{i} √aᵢ is irrational in terms of the aᵢ"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Sqrt2PlusSqrt3Irrational",
+    "lineCount": 54,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cube-root-2-irrational",
+      "relationship": "related",
+      "description": "Companion irrationality result using a different technique (cube roots vs sum of square roots)"
+    }
+  ],
+  "sections": []
+}

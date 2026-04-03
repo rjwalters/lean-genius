@@ -1,0 +1,76 @@
+{
+  "id": "erdos-131-oq-01",
+  "title": "Erdős #131: Non-Dividing Sets Growth Rate",
+  "slug": "erdos-131-oq-01",
+  "description": "Formalizes Erdős Problem #131: estimate F(N) = max size of A ⊆ {1,...,N} where no element divides the sum of other distinct elements. Defines IsNonDividing predicate, proves the two formulations are not equivalent (counterexample {2,4}), monotonicity of F, and derives the negative resolution: Pham-Zakharov (2024) shows F(N) ≤ N^{1/4+o(1)}, answering Erdős's question negatively. 20 theorems, 6 definitions, 2 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos131Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "non-dividing-sets",
+      "combinatorial-number-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: pham_zakharov_upper_bound (Pham-Zakharov 2024: F(N) ≤ N^{1/4+o(1)}), csaba_lower_bound (Csaba: F(N) >> N^{1/5}).",
+    "lineCount": 556,
+    "theoremCount": 20,
+    "definitionCount": 6,
+    "originalContributions": [
+      "IsNonDividing: no a ∈ A divides sum of ≥2 distinct elements from A\\{a}",
+      "IsNonDividingAlt: no a ∈ A divides sum of ANY nonempty subset",
+      "nondividingAlt_implies_nondividing: Alt is strictly stronger (proved with counterexample)",
+      "nondividing_not_iff_alt: explicit counterexample {2,4} distinguishing the two definitions",
+      "F: the maximum non-dividing set size function",
+      "original_question_answered_no: Erdős's question is answered negatively (proved from Pham-Zakharov axiom)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős (1975) asked whether F(N) > N^{1/2-o(1)}. This was believed plausible given the ELRSS (1999) upper bound F(N) < 3√N+1. However, Pham and Zakharov (2024) proved F(N) ≤ N^{1/4+o(1)} via a connection to non-averaging sets, definitively answering the question in the negative. Csaba's lower bound F(N) >> N^{1/5} shows the true growth is between N^{1/5} and N^{1/4+o(1)}.",
+    "problemStatement": "Estimate F(N) = max{|A| : A ⊆ {1,...,N}, A is non-dividing}. Is F(N) > N^{1/2-o(1)}?",
+    "text": "A set A is non-dividing if no element a ∈ A divides the sum of any ≥2 other distinct elements from A. This property implies non-averaging: no element is the arithmetic mean of others. F(N) counts the maximum such set. ELRSS (1999) gave F(N) < 3√N+1. Pham-Zakharov (2024) sharpened this dramatically to F(N) ≤ N^{1/4+o(1)}, using the connection to non-averaging sets and cap sets.",
+    "proofStrategy": "Define IsNonDividing and IsNonDividingAlt. Show they differ (counterexample {2,4}). Define F(N) via supremum. Axiomatize Pham-Zakharov and Csaba bounds. Prove the logical consequence that Erdős's question is answered negatively.",
+    "keyInsights": [
+      "Non-dividing implies non-averaging: if a | Σb_i then a can be the average of the b_i",
+      "The two definitions differ: requiring no divisibility of singletons is strictly stronger",
+      "Pham-Zakharov 2024: dramatic improvement from N^{1/2} to N^{1/4+o(1)}",
+      "The answer to Erdős's question is NO: F(N) = o(N^{1/2})"
+    ],
+    "prerequisites": [
+      "Divisibility: Nat.dvd, sum predicates",
+      "Combinatorial number theory: density bounds",
+      "Cap sets and non-averaging sets: connections to combinatorics"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős #131 formalized: IsNonDividing defined, counterexample distinguishing two formulations, F(N) function, original question answered NO via Pham-Zakharov 2024. 20 theorems, 556 lines, 2 axioms.",
+    "implications": "The Pham-Zakharov result (2024) is very recent and represents a major advance. The connection to non-averaging sets and cap sets is the new technique. The exact growth rate of F(N) between N^{1/5} and N^{1/4} remains open.",
+    "openQuestions": [
+      "Determine the exact growth rate of F(N): is it N^{1/5+o(1)} or some other power?",
+      "Prove the Pham-Zakharov bound without axioms using cap set techniques",
+      "Formalize the ELRSS bound F(N) < 3√N+1 (simpler than Pham-Zakharov)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos131",
+    "lineCount": 556,
+    "axiomCount": 2,
+    "theoremCount": 20,
+    "definitionCount": 6
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28-additive-bases",
+      "relationship": "related",
+      "description": "Both are Erdős problems on additive structure of integer sets"
+    }
+  ],
+  "sections": []
+}
