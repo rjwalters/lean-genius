@@ -73,7 +73,7 @@ def AlternatingPrimeSeriesConverges : Prop :=
 The Prime Number Theorem tells us p_n ~ n log n.
 -/
 
-/-- The Prime Number Theorem: p_n / (n log n) → 1 as n → ∞.
+/-- The Prime Number Theorem: p_n / (n log n) → 1 as n → ∞. -/
 
 /-- Consequence: n / p_n ~ 1 / log n → 0.
 
