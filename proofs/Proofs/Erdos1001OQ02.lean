@@ -157,55 +157,95 @@ The rate theorem has several provable corollaries.
 -/
 
 /-- From the rate O(A log N / N), deduce that convergence is faster than O(1/√N).
-    This is immediate from log N / N = o(1/√N) being FALSE — actually log N/N is
-    faster (approaches 0 faster) than 1/√N is FALSE.
 
-    Actually: 1/√N ≫ log N / N since N^{1/2} → ∞ faster than (log N)·N / N^{1/2}.
-
-    Wait: log N / N vs 1/√N:
-    (log N / N) / (1/√N) = (log N / N) · √N = log N / √N → 0
-    So log N / N = o(1/√N), meaning the rate IS better than 1/√N. -/
+    Key fact: log N / N = o(1/√N), since
+      (log N / N) / (1/√N) = log N · √N / N = log N / √N → 0
+    This follows from Real.tendsto_log_div_rpow_atTop with p = 1/2. -/
 theorem convergence_faster_than_sqrtN (A c : ℝ) (hA : 0 < A) (hc : c > 1)
     (hregime : inESTRegime A c) :
     (fun N : ℕ => |S N A c - f A c|) =o[atTop] (fun N : ℕ => 1 / Real.sqrt N) := by
-  -- From the rate O(A log N / N) and log N / N = o(1/√N)
-  have hrate := convergence_rate_est A c hA hc hregime
-  apply hrate.trans_isLittleO
-  -- Need: A * (log N / N) = o(1 / √N)
-  -- Equivalently: A * log N / N = o(1/√N)
-  -- i.e., A * log N · √N / N = A · log N / √N → 0 as N → ∞
-  simp only [IsLittleO]
+  apply (convergence_rate_est A c hA hc hregime).trans_isLittleO
+  -- Need: A * (log N / N) = o(1/√N), proved via isLittleO_iff with explicit norm bound
+  rw [isLittleO_iff]
   intro c' hc'
-  apply Filter.Eventually.mono (Filter.eventually_atTop.mpr ⟨2, fun _ _ => le_refl _⟩)
-  intro N _
-  simp only [norm_mul, Real.norm_eq_abs]
-  sorry -- requires: log N / √N → 0, a standard Mathlib lemma
+  -- log x / x^(1/2) → 0, so A * log N / √N → 0 on ℕ
+  have hA_log_sqrt : Tendsto (fun n : ℕ => A * (Real.log ↑n / Real.sqrt ↑n)) atTop (nhds 0) := by
+    have hlog12 : Tendsto (fun x : ℝ => Real.log x / x ^ ((1:ℝ)/2)) atTop (nhds 0) :=
+      Real.tendsto_log_div_rpow_atTop (1/2) (by norm_num)
+    have h : Tendsto (fun n : ℕ => A * (Real.log ↑n / (↑n : ℝ) ^ ((1:ℝ)/2))) atTop (nhds 0) := by
+      have := (hlog12.comp tendsto_natCast_atTop_atTop).const_mul A
+      simpa [mul_zero] using this
+    exact h.congr' (Filter.Eventually.of_forall fun n => by rw [← Real.sqrt_eq_rpow])
+  -- Eventually |A * log N / √N| < c', and A * |log N| / N ≤ |A * log N / √N| / √N ≤ c' / √N
+  filter_upwards [hA_log_sqrt.eventually (Metric.ball_mem_nhds 0 hc'),
+                  eventually_gt_atTop 0] with N hN hNpos
+  have hNr : (0 : ℝ) < ↑N := Nat.cast_pos.mpr hNpos
+  have hsqrt_pos : 0 < Real.sqrt ↑N := Real.sqrt_pos.mpr hNr
+  have hsq : Real.sqrt ↑N * Real.sqrt ↑N = ↑N := Real.mul_self_sqrt (le_of_lt hNr)
+  simp only [Metric.mem_ball, Real.dist_eq, sub_zero, Real.norm_eq_abs] at hN
+  -- hN : |A * (log N / sqrt N)| < c'
+  -- Derive: A * |log N| / sqrt N < c'
+  have hN_abs : A * |Real.log ↑N| / Real.sqrt ↑N < c' := by
+    rwa [abs_mul, abs_div, abs_of_pos hA, abs_of_pos hsqrt_pos] at hN
+  -- Multiply out: A * |log N| < c' * sqrt N
+  -- Then: A * |log N| * sqrt N < c' * (sqrt N)² = c' * N
+  have hkey : A * |Real.log ↑N| * Real.sqrt ↑N < c' * (Real.sqrt ↑N * Real.sqrt ↑N) := by
+    have hmul : A * |Real.log ↑N| < c' * Real.sqrt ↑N := by
+      rwa [div_lt_iff hsqrt_pos] at hN_abs
+    calc A * |Real.log ↑N| * Real.sqrt ↑N
+        < c' * Real.sqrt ↑N * Real.sqrt ↑N := mul_lt_mul_of_pos_right hmul hsqrt_pos
+      _ = c' * (Real.sqrt ↑N * Real.sqrt ↑N) := by ring
+  -- Rewrite goal norms explicitly then use div_le_div_iff
+  have h1 : ‖A * (Real.log ↑N / ↑N)‖ = A * |Real.log ↑N| / ↑N := by
+    rw [Real.norm_eq_abs, abs_mul, abs_of_pos hA, abs_div, abs_of_pos hNr]
+  have h2 : c' * ‖1 / Real.sqrt ↑N‖ = c' / Real.sqrt ↑N := by
+    rw [Real.norm_eq_abs, abs_div, abs_one, abs_of_pos hsqrt_pos]; ring
+  -- A * |log N| / N ≤ c' / sqrt N ↔ A * |log N| * sqrt N ≤ c' * N = c' * (sqrt N)²
+  rw [h1, h2, div_le_div_iff hNr hsqrt_pos, ← hsq]
+  linarith [hkey]
 
-/-- The rate implies S(N,A,c) is within ε of f(A,c) for all N ≥ N₀(ε, A, c).
-    This gives an explicit, though non-constructive, bound. -/
-theorem convergence_effective (A c ε : ℝ) (hA : 0 < A) (hc : c > 1)
-    (hε : 0 < ε) (hregime : inESTRegime A c) :
-    ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → |S N A c - f A c| < ε := by
-  have hrate := convergence_rate_est A c hA hc hregime
-  -- From IsBigO and the fact that A * log N / N → 0, get eventual < ε
-  -- The rate function A * log N / N → 0 (standard: log N / N → 0)
-  -- So ∃ N₀ such that A * log N / N < ε for all N ≥ N₀
-  -- Then the IsBigO bound gives |S(N) - f| ≤ C * A * log N / N < C * ε
-  -- (rescaling ε by 1/C gives the result)
-  sorry -- HARD: requires combining IsBigO with A·log N/N → 0; standard analysis
+/-- The rate is sharper than the a priori O(1) bound (trivially).
 
-/-- The rate is sharper than the a priori O(1) bound (trivially). -/
+    Proof: A * log N / N → 0 from Real.tendsto_log_div_rpow_atTop (p=1). -/
 theorem rate_is_nontrivial (A c : ℝ) (hA : 0 < A) (hc : c > 1)
     (hregime : inESTRegime A c) :
     (fun N : ℕ => |S N A c - f A c|) =o[atTop] (fun _ : ℕ => (1 : ℝ)) := by
   apply (convergence_rate_est A c hA hc hregime).trans_isLittleO
-  -- A * log N / N = o(1)
-  rw [isLittleO_iff]
-  intro c' hc'
-  apply Filter.Eventually.mono (eventually_atTop.mpr ⟨1, fun _ _ => le_refl _⟩)
-  intro N _
-  simp only [norm_mul, Real.norm_eq_abs, norm_one]
-  sorry -- A * log N / N < c' for large N, standard
+  -- A * (log N / N) = o(1): use Tendsto characterization
+  -- isLittleO_of_tendsto: if f N / g N → 0 then f = o(g)
+  apply isLittleO_of_tendsto (fun _ h => by norm_num at h)
+  -- Goal: Tendsto (fun N => A * (log N / N) / 1) atTop (nhds 0)
+  simp only [div_one]
+  -- log x / x → 0 on ℝ (from tendsto_log_div_rpow_atTop with p = 1)
+  have hlogdiv : Tendsto (fun x : ℝ => Real.log x / x) atTop (nhds 0) := by
+    have h := Real.tendsto_log_div_rpow_atTop 1 one_pos
+    simpa [Real.rpow_one] using h
+  -- Pull back to ℕ via Nat.cast coercion
+  have hlogdiv_nat : Tendsto (fun n : ℕ => Real.log ↑n / (↑n : ℝ)) atTop (nhds 0) :=
+    hlogdiv.comp tendsto_natCast_atTop_atTop
+  -- A * (log N / N) → A * 0 = 0
+  have h := hlogdiv_nat.const_mul A
+  simpa [mul_zero] using h
+
+/-- The rate implies S(N,A,c) is within ε of f(A,c) for all N ≥ N₀(ε, A, c).
+    This gives an explicit, though non-constructive, bound.
+
+    Proof: From rate_is_nontrivial (|S(N)-f| = o(1)):
+    for all ε > 0, eventually |S(N) - f(A,c)| ≤ ε/2 < ε. -/
+theorem convergence_effective (A c ε : ℝ) (hA : 0 < A) (hc : c > 1)
+    (hε : 0 < ε) (hregime : inESTRegime A c) :
+    ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → |S N A c - f A c| < ε := by
+  -- From rate_is_nontrivial: |S N - f| = o(1)
+  have ho := rate_is_nontrivial A c hA hc hregime
+  rw [isLittleO_iff] at ho
+  have h_ev := ho (ε/2) (by linarith)
+  simp only [norm_one, mul_one] at h_ev
+  rw [Filter.eventually_atTop] at h_ev
+  obtain ⟨N₀, hN₀⟩ := h_ev
+  exact ⟨N₀, fun N hN => by
+    have hle := hN₀ N hN
+    simp only [Real.norm_eq_abs, abs_abs] at hle
+    linarith⟩
 
 /-
 ## Connection to Quantitative Metric Theory
