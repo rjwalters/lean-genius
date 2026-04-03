@@ -34,10 +34,14 @@
     ]
   },
   "overview": {
-    "problemStatement": "Verify Vieta's formulas for the general (non-depressed) cubic over a commutative ring.",
-    "proofStrategy": "Expand (x-r₁)(x-r₂)(x-r₃) via ring, then extract coefficients at each degree to obtain the three Vieta relations.",
-    "keyInsights": [],
-    "historicalContext": ""
+    "historicalContext": "François Viète (1540–1603) discovered the fundamental relationship between the roots and coefficients of a polynomial in his posthumous *De Aequationum Recognitione et Emendatione* (1615). The formulas bearing his name connect the elementary symmetric polynomials $\\sigma_1 = \\sum r_i$, $\\sigma_2 = \\sum_{i<j} r_i r_j$, $\\sigma_3 = r_1 r_2 r_3$ to the coefficients of the polynomial. For the cubic $x^3 + ax^2 + bx + c$, they state $a = -\\sigma_1$, $b = \\sigma_2$, $c = -\\sigma_3$ — and the proof is simply the factored form $(x - r_1)(x - r_2)(x - r_3)$ expanded.\n\nVieta's formulas are the foundation of the **theory of symmetric polynomials**: the fact that every symmetric polynomial in $r_1, \\ldots, r_n$ can be expressed as a polynomial in $\\sigma_1, \\ldots, \\sigma_n$ (the fundamental theorem of symmetric polynomials, proved by Newton). This is the starting point for Galois theory, since the Galois group of a polynomial permutes its roots while preserving the coefficients (which are symmetric functions of the roots).\n\nClassically, the formulas were stated over $\\mathbb{C}$ or $\\mathbb{R}$. The Lean proof here works over any commutative ring $R$, making the formulas valid for polynomials with coefficients and roots in $\\mathbb{Z}$, $\\mathbb{Z}/p\\mathbb{Z}$, finite fields, or any algebraic structure satisfying the ring axioms.",
+    "problemStatement": "For the general cubic $x^3 + ax^2 + bx + c = (x - r_1)(x - r_2)(x - r_3)$ in a commutative ring $R$, Vieta's formulas state:\n$$a = -(r_1 + r_2 + r_3), \\quad b = r_1 r_2 + r_1 r_3 + r_2 r_3, \\quad c = -r_1 r_2 r_3$$\nEquivalently, the coefficients are (up to sign) the elementary symmetric polynomials $\\sigma_1, \\sigma_2, \\sigma_3$ in the roots.",
+    "proofStrategy": "The proof proceeds in two steps. First, `cubic_factor_expansion` expands $(x - r_1)(x - r_2)(x - r_3)$ using `ring`, giving an explicit polynomial with coefficients expressed in $r_1, r_2, r_3$. Then, each Vieta formula extracts one coefficient via `Polynomial.coeff` applied to both sides of the factorization identity, using `congr_arg` to extract the coefficient comparison, `simp` to evaluate the coefficient operations, and `linarith` to close the arithmetic goal. The combined theorem `vieta_cubic` packages all three into a conjunction.",
+    "keyInsights": [
+      "**Polynomial coefficient extraction**: the proof technique — apply `congr_arg (Polynomial.coeff · k)` to a polynomial equality — extracts the coefficient at each degree, reducing a polynomial identity to a ring identity. This is the canonical Lean approach to proving results about polynomial coefficients",
+      "**Generality over CommRing**: the formulas hold over any commutative ring, not just fields or ℂ. This covers e.g. polynomials over ℤ (integer roots, integer coefficients) or ℤ/pℤ (finite field roots), making the results applicable in modular arithmetic and number theory",
+      "**Elementary symmetric polynomials**: Vieta's formulas are the isomorphism σ: roots → coefficients via e₁, e₂, e₃. The Newton-Girard identities (expressing power sums p_k = Σ rᵢᵏ in terms of eₖ) follow from Vieta's, connecting the formulas to generating functions and partition theory"
+    ]
   },
   "sorryCount": 0,
   "status": "verified",
@@ -53,5 +57,42 @@
     "theoremCount": 6,
     "definitionCount": 0
   },
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-expansion",
+      "title": "Product Expansion of Linear Factors",
+      "startLine": 22,
+      "endLine": 35,
+      "summary": "Proves the key algebraic identity: (x-r₁)(x-r₂)(x-r₃) = x³ - (r₁+r₂+r₃)x² + (r₁r₂+r₁r₃+r₂r₃)x - r₁r₂r₃. The proof is a single `ring` call — purely computational in the polynomial ring over R."
+    },
+    {
+      "id": "sec-vieta-three",
+      "title": "Three Vieta Formulas",
+      "startLine": 37,
+      "endLine": 78,
+      "summary": "Proves each Vieta formula separately: vieta_sigma1 (a = -(r₁+r₂+r₃)), vieta_sigma2 (b = r₁r₂+r₁r₃+r₂r₃), vieta_sigma3 (c = -r₁r₂r₃). Each proof extracts the coefficient at degree 2, 1, 0 respectively using congr_arg + Polynomial.coeff + simp + linarith."
+    },
+    {
+      "id": "sec-combined",
+      "title": "Combined Vieta's Theorem",
+      "startLine": 80,
+      "endLine": 95,
+      "summary": "Packages all three Vieta formulas into a single conjunction: vieta_cubic proves a = -(r₁+r₂+r₃) ∧ b = r₁r₂+r₁r₃+r₂r₃ ∧ c = -r₁r₂r₃. The proof assembles the three individual results into a triple using angle brackets."
+    },
+    {
+      "id": "sec-roots",
+      "title": "Roots Satisfy the Polynomial",
+      "startLine": 97,
+      "endLine": 111,
+      "summary": "Proves that if the cubic factors as (x-r₁)(x-r₂)(x-r₃), then evaluating at r₁ gives 0. The proof rewrites using the factorization and evaluates the product: (r₁-r₁)·(r₁-r₂)·(r₁-r₃) = 0·(···) = 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "Vieta's formulas for the general cubic are fully machine-verified over any commutative ring, with no axioms and no sorries. The proof by coefficient extraction from the factored form is clean and generalizes immediately to polynomials of any degree.",
+    "implications": "These formulas connect the roots of a cubic to its coefficients and are the foundation for: (1) the discriminant Δ = 18abcd - 4b³d + b²c² - 4ac³ - 27a²d² expressed in terms of roots; (2) the resolvent cubic in Galois theory; (3) Newton's identities relating power sums to elementary symmetric polynomials. In Lean, they provide the formal basis for any proof that needs to relate polynomial coefficients to roots.",
+    "openQuestions": [
+      "Can Vieta's formulas for degree-n polynomials be proved in generality in Lean using Mathlib's `Polynomial.roots` and `Multiset` infrastructure?",
+      "Do Mathlib's `Polynomial.Vieta` lemmas cover the general case, or only specific fields like ℂ?"
+    ]
+  }
 }
