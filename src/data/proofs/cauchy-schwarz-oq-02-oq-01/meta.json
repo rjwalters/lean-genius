@@ -2,11 +2,11 @@
   "id": "cauchy-schwarz-oq-02-oq-01",
   "title": "Parseval's Identity: Energy Conservation in Fourier Analysis",
   "slug": "cauchy-schwarz-oq-02-oq-01",
-  "description": "Formalizes Parseval's identity — ∑|ĉₙ(f)|² = ∫|f|²dμ — as a consequence of the L² structure from CauchySchwarzOQ02. Proves: Parseval energy equality (tsum = integral), Bessel-Parseval tightness, Fourier orthonormality, L² convergence, and completeness (zero-kernel). 10 theorems, 1 sorry (fourier_pythagorean_partial). Core Parseval results via Mathlib's Fourier analysis library.",
+  "description": "Formalizes Parseval's identity — ∑|ĉₙ(f)|² = ∫|f|²dμ — as a consequence of the L² structure from CauchySchwarzOQ02. Proves: Parseval energy equality (tsum = integral), Bessel-Parseval tightness (Bessel's inequality is equality in total), Fourier orthonormality, Pythagorean theorem for finite Fourier sums, L² convergence of Fourier series, and completeness (zero-kernel). 10 theorems, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-03",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzOQ02OQ01.lean",
     "tags": [
       "analysis",
@@ -16,12 +16,12 @@
       "cauchy-schwarz",
       "orthonormality"
     ],
-    "badge": "mathlib",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "dateAdded": "2026-04-03",
     "axiomCount": 0,
-    "assumptions": "1 sorry: fourier_pythagorean_partial (orthonormal system norm-sum identity for finite sums). Core Parseval results (parseval_energy, parseval_hassum, bessel_fourier) delegate to Mathlib's tsum_sq_fourierCoeff and hasSum_sq_fourierCoeff.",
-    "lineCount": 198,
+    "assumptions": "None. All 10 theorems fully verified.",
+    "lineCount": 223,
     "theoremCount": 10,
     "definitionCount": 0,
     "originalContributions": [
@@ -52,10 +52,9 @@
     ]
   },
   "conclusion": {
-    "summary": "Parseval's identity formalized: ∑|ĉₙ(f)|² = ∫|f|²dμ. 10 theorems including Parseval energy equality, Bessel tightness, Fourier orthonormality, L² convergence, and completeness. 0 sorries. Core results via Mathlib; Pythagorean finite-sum identity proved independently by induction.",
+    "summary": "Parseval's identity fully verified: ∑|ĉₙ(f)|² = ∫|f|²dμ. 10 theorems including Parseval energy equality, Bessel tightness, Fourier orthonormality, Pythagorean theorem for finite Fourier sums, L² convergence, and completeness. 0 sorries.",
     "implications": "Parseval is foundational for Fourier analysis: it enables L² theory of Fourier series, underlies Plancherel's theorem for the Fourier transform, and is essential for quantum mechanics (Hilbert space formulation). The connection to Pythagorean theorem shows Parseval as an infinite-dimensional Pythagoras.",
     "openQuestions": [
-      "Prove the inner product Parseval: ⟪f,g⟫ = ∑ ĉₙ(f)·conj(ĉₙ(g)) (Parseval-Plancherel) without Mathlib",
       "Prove the inner product Parseval: ⟪f,g⟫ = ∑ ĉₙ(f)·conj(ĉₙ(g)) (Parseval-Plancherel)",
       "Extend to general Hilbert bases: abstract Parseval for any orthonormal basis"
     ]

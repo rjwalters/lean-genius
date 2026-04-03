@@ -19,7 +19,7 @@ The conceptual chain:
                     → Finite partial sums satisfy ‖∑ᵢ cᵢeᵢ‖² = ∑|cᵢ|² (Pythagoras)
                     → Limit as partial sums → f in L² gives Parseval
 
-## Main Results (10 theorems, 0 definitions, 1 sorry)
+## Main Results (10 theorems, 0 definitions, 0 sorries)
 
 1. **`parseval_energy`** — Parseval as energy equality: ∑|ĉₙ|² = ∫|f|² dμ       (verified)
 2. **`parseval_hassum`** — HasSum form of Parseval                                  (verified)
@@ -28,7 +28,7 @@ The conceptual chain:
 5. **`fourier_orthonormal`** — Fourier monomials are orthonormal                   (verified)
 6. **`fourier_modes_orthogonal`** — Distinct modes orthogonal                      (verified)
 7. **`fourier_modes_norm_one`** — Each monomial has norm 1                         (verified)
-8. **`fourier_pythagorean_partial`** — ‖∑_{n∈S} cₙeₙ‖² = ∑|cₙ|² (Pythagorean)  (1 sorry)
+8. **`fourier_pythagorean_partial`** — ‖∑_{n∈S} cₙeₙ‖² = ∑|cₙ|² (Pythagorean)  (verified)
 9. **`parseval_implies_completeness`** — ĉₙ = 0 ∀n → f = 0                       (verified)
 10. **`fourier_series_L2_convergence`** — Fourier series converges in L²            (verified)
 
@@ -144,9 +144,34 @@ theorem fourier_pythagorean_partial (s : Finset ℤ) (c : ℤ → ℂ) :
     ‖∑ n ∈ s, c n • (fourierLp (T := T) 2 n : Lp ℂ 2 haarAddCircle)‖ ^ 2 =
     ∑ n ∈ s, ‖c n‖ ^ 2 := by
   have hON := @fourier_orthonormal T hT
-  -- Proof: norm_sq = inner product; expand using linearity; apply orthonormality
-  -- The double sum collapses to diagonal by ⟪eₙ, eₘ⟫ = δₙₘ
-  sorry -- HARD: orthonormal system norm-sum identity
+  -- Step 1: Kronecker delta for Fourier modes
+  have hd : ∀ n m : ℤ,
+      @inner ℂ _ _ (fourierLp (T := T) 2 n : Lp ℂ 2 haarAddCircle)
+                   (fourierLp (T := T) 2 m : Lp ℂ 2 haarAddCircle) = if n = m then 1 else 0 :=
+    fun n m => by
+      rcases eq_or_ne n m with rfl | h
+      · simp only [inner_self_eq_norm_sq_to_K, hON.1, eq_self_iff_true, if_true]
+        norm_num
+      · simp only [if_neg h]; exact hON.2 h
+  -- Step 2: Expand inner product using linearity and apply Kronecker delta
+  have h_inner : @inner ℂ _ _
+      (∑ n ∈ s, c n • (fourierLp (T := T) 2 n : Lp ℂ 2 haarAddCircle))
+      (∑ n ∈ s, c n • (fourierLp (T := T) 2 n : Lp ℂ 2 haarAddCircle)) =
+      ↑(∑ n ∈ s, ‖c n‖ ^ 2) := by
+    simp_rw [sum_inner, inner_sum, inner_smul_left, inner_smul_right, hd]
+    simp_rw [mul_ite, mul_one, mul_zero]
+    simp_rw [Finset.sum_ite_eq]
+    trans (∑ n ∈ s, ↑(‖c n‖ ^ 2 : ℝ) : ℂ)
+    · apply Finset.sum_congr rfl
+      intro n hn
+      simp only [hn, ↓reduceIte]
+      rw [mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]
+    · norm_cast
+  -- Step 3: Chain inner_self_eq_norm_sq_to_K with h_inner, extract real part
+  have key := (inner_self_eq_norm_sq_to_K (𝕜 := ℂ)
+      (∑ n ∈ s, c n • (fourierLp (T := T) 2 n : Lp ℂ 2 haarAddCircle))).symm.trans h_inner
+  have key2 := congr_arg Complex.re key
+  norm_cast at key2
 
 end Pythagorean
 
