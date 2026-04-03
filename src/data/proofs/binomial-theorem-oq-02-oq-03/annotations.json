@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-qmult-overview",
+    "proofId": "binomial-theorem-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "q-Multinomial: Quantum Generalization of Multinomials",
+    "content": "This file formalizes the q-multinomial coefficient over arbitrary CommRings. The key relationship: `qMultinom q k` for k : Fin m → ℕ is the product ∏ᵢ qBinom q (∑_{j≥i} kⱼ) (kᵢ). At q=1, each qBinom reduces to a classical binomial, and the product telescopes to the classical multinomial coefficient n!/(k₁!···kₘ!). The file depends on `CombinationsFormulaOQ03`, which provides `qBinom` (Gaussian binomial), `qFactorial`, and their key identities.",
+    "mathContext": "$\\binom{n}{k_1,\\ldots,k_m}_q = \\prod_{i=0}^{m-1} \\binom{\\sum_{j \\geq i} k_j}{k_i}_q$. For prime power $q$, this counts flags of subspaces $V_1 \\subset V_2 \\subset \\cdots$ in $\\mathbb{F}_q^n$ with $\\dim V_i/V_{i-1} = k_i$.",
+    "significance": "context",
+    "relatedConcepts": ["q-analog", "Gaussian binomial coefficient", "quantum groups", "finite geometry"],
+    "prerequisites": ["q-binomial coefficients", "commutative ring", "Fin type"]
+  },
+  {
+    "id": "ann-qmult-def",
+    "proofId": "binomial-theorem-oq-02-oq-03",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "definition",
+    "title": "Recursive Definition via Iterated q-Binomials",
+    "content": "`qMultinom q k` is defined by structural recursion on m. Base case (m=0): returns 1 (empty product). Recursive case (m+1): `qBinom q (∑ kᵢ) (k 0) * qMultinom q (k ∘ Fin.succ)`. The `k ∘ Fin.succ` argument shifts to the tail, choosing k₁ items from the remaining ∑_{j≥1} kⱼ, and so on. The `noncomputable` annotation is needed because `qBinom` is noncomputable (defined via division in a ring).",
+    "mathContext": "$\\binom{k_0 + k_1 + \\cdots}{k_0}_q \\cdot \\binom{k_1 + k_2 + \\cdots}{k_1}_q \\cdots$ The full product equals $\\frac{[n]_q!}{[k_0]_q! [k_1]_q! \\cdots}$ where $[n]_q! = \\prod_{i=1}^n [i]_q$, by the product identity proved in `qMultinom_product_qFactorial`.",
+    "significance": "key",
+    "relatedConcepts": ["structural recursion", "noncomputable", "Fin.succ", "qBinom"],
+    "prerequisites": ["qBinom from CombinationsFormulaOQ03", "Fin type", "function composition"]
+  },
+  {
+    "id": "ann-qmult-at-one",
+    "proofId": "binomial-theorem-oq-02-oq-03",
+    "range": { "startLine": 89, "endLine": 121 },
+    "type": "technique",
+    "title": "Reduction at q=1: Connecting to Classical Multinomials",
+    "content": "`qMultinom_at_one` proves by induction that `qMultinom (1:R) k = Nat.multinomial univ k`. The inductive step uses `qBinom_at_one` (Gaussian binomial at q=1 is the classical binomial) and then connects `Nat.multinomial` to the classical `Nat.multinomial_insert`. The key decomposition: `Finset.univ (Fin (m+1)) = insert 0 (image Fin.succ univ)`. This allows `Nat.multinomial_insert` to split off the head term, and `Finset.sum_image`/`prod_image` with `Fin.succ_injective` handle the tail.",
+    "mathContext": "At $q=1$: $[n]_1 = n$ (q-integers become classical), $[n]_1! = n!$, $\\binom{n}{k}_1 = \\binom{n}{k}$. So the q-multinomial becomes the classical multinomial $\\frac{(k_0+k_1+\\cdots)!}{k_0! k_1! \\cdots}$.",
+    "significance": "key",
+    "relatedConcepts": ["qBinom_at_one", "Nat.multinomial_insert", "Fin.succ_injective", "Finset.univ decomposition"],
+    "prerequisites": ["qBinom_at_one (from CombinationsFormulaOQ03)", "Nat.multinomial", "Fin.sum_univ_succ"]
+  },
+  {
+    "id": "ann-qmult-product-identity",
+    "proofId": "binomial-theorem-oq-02-oq-03",
+    "range": { "startLine": 161, "endLine": 185 },
+    "type": "technique",
+    "title": "Product Identity: The q-Analog of multinomial × ∏kᵢ! = n!",
+    "content": "`qMultinom_product_qFactorial` proves `qMultinom q k * ∏ qFactorial q (kᵢ) = qFactorial q (∑ kᵢ)`. The proof is by induction: in the inductive step, `qBinom_product` (from CombinationsFormulaOQ03) gives `qBinom q n k * qFactorial q k * qFactorial q (n-k) = qFactorial q n`. The `calc` block carefully rearranges the product to apply this identity at each step. The `hsum` trick handles the Nat subtraction `∑(k∘succ) = (k0 + ∑succ) - k0`.",
+    "mathContext": "$\\binom{n}{k_0,k_1,\\ldots}_q \\cdot [k_0]_q! \\cdot [k_1]_q! \\cdots = [n]_q!$. This is the q-analog of the identity $\\frac{n!}{k_0! k_1! \\cdots} \\cdot k_0! \\cdot k_1! \\cdots = n!$. It characterizes q-multinomials as the unique polynomials in q satisfying this factorial product relation.",
+    "significance": "key",
+    "relatedConcepts": ["qBinom_product", "qFactorial", "Fin.prod_univ_succ", "calc block"],
+    "prerequisites": ["qBinom_product (from CombinationsFormulaOQ03)", "qFactorial", "qMultinom_cons"]
+  },
+  {
+    "id": "ann-qmult-unit-allones",
+    "proofId": "binomial-theorem-oq-02-oq-03",
+    "range": { "startLine": 191, "endLine": 241 },
+    "type": "technique",
+    "title": "Unit Partitions and All-Ones: Special Cases",
+    "content": "`qMultinom_unit_partition`: for a unit vector k = eⱼ (1 at position j, 0 elsewhere), the q-multinomial is 1. The proof by induction on m and cases on j (zero vs succ) uses `qBinom_self` (qBinom q n n = 1) and `qBinom_zero_right` (qBinom q n 0 = 1). `qMultinom_all_ones`: the all-ones partition k = (1,1,...,1) gives `qFactorial q m`. Proved by induction using `qBinom_one_right` (qBinom q n 1 = q-number [n]_q) and `qFactorial_succ`.",
+    "mathContext": "Unit partition: $\\binom{0+\\cdots+1+\\cdots}{1}_q \\cdot \\binom{0}{0}_q \\cdots = 1 \\cdot 1 \\cdots = 1$. All-ones: $\\binom{m}{1}_q \\cdot \\binom{m-1}{1}_q \\cdots \\binom{1}{1}_q = [m]_q [m-1]_q \\cdots [1]_q = [m]_q!$.",
+    "significance": "supporting",
+    "relatedConcepts": ["qBinom_self", "qBinom_zero_right", "qBinom_one_right", "qFactorial_succ"],
+    "prerequisites": ["qMultinom_cons", "qBinom identities from CombinationsFormulaOQ03"]
+  },
+  {
+    "id": "ann-qmult-three",
+    "proofId": "binomial-theorem-oq-02-oq-03",
+    "range": { "startLine": 247, "endLine": 269 },
+    "type": "concept",
+    "title": "Three-Variable Formula and Row Sum Identity",
+    "content": "`qMultinom_three` gives the explicit formula for m=3: `qBinom q (k₀+k₁+k₂) k₀ * qBinom q (k₁+k₂) k₁`. The proof uses `qMultinom_cons` and `qMultinom_two` with `Fin.sum_univ_three` to simplify the sum. `qMultinom_two_row_sum` proves a row sum identity: ∑_{j=0}^{n} qMultinom q (j, n-j) = ∑_{j=0}^{n} qBinom q n j. This holds because the two-variable q-multinomial qMultinom q (j, n-j) = qBinom q (j+n-j) j = qBinom q n j.",
+    "mathContext": "$\\binom{k_0+k_1+k_2}{k_0}_q \\binom{k_1+k_2}{k_1}_q$. The row sum $\\sum_{j=0}^n \\binom{n}{j,n-j}_q = \\sum_{j=0}^n \\binom{n}{j}_q$ is related to the q-binomial theorem: $\\sum_j \\binom{n}{j}_q x^j = \\prod_{i=0}^{n-1} (1 + q^i x)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["qMultinom_cons", "qMultinom_two", "Fin.sum_univ_three", "q-binomial theorem"],
+    "prerequisites": ["qMultinom_two", "qBinom", "Finset.range"]
+  }
+]
