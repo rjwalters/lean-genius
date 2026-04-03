@@ -1,0 +1,81 @@
+{
+  "slug": "ramseys-theorem-oq-04-oq-01",
+  "title": "Hypergraph Ramsey: Formalize Stepping-Up Lemma",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Hypergraph Ramsey: Formalize Stepping-Up Lemma.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T12:23:52.518Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "combinatorics",
+    "ramsey-theory",
+    "hypergraphs",
+    "axiom-removal"
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "ramseys-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:23:52.518Z",
+  "lastUpdate": "2026-04-03T12:23:52.518Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/RamseysTheorem.lean",
+      "filename": "RamseysTheorem.lean",
+      "lineCount": 628,
+      "theoremCount": 24,
+      "axiomCount": 1,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseysTheorem.lean"
+    },
+    {
+      "path": "Proofs/RamseysTheoremOQ04.lean",
+      "filename": "RamseysTheoremOQ04.lean",
+      "lineCount": 302,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseysTheoremOQ04.lean"
+    }
+  ]
+}
