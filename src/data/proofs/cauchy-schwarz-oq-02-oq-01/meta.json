@@ -16,43 +16,22 @@
       "cauchy-schwarz",
       "orthonormality"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 1,
     "dateAdded": "2026-04-03",
     "axiomCount": 0,
-    "assumptions": "1 sorry in fourier_pythagorean_partial (orthonormal system norm-sum identity for finite sums). Core results (Parseval, Bessel, L² convergence) derived directly from Mathlib's tsum_sq_fourierCoeff, hasSum_sq_fourierCoeff, orthonormal_fourier, and hasSum_fourier_series_L2.",
+    "assumptions": "1 sorry in fourier_pythagorean_partial (orthonormal system norm-sum identity for finite sums).",
     "lineCount": 198,
     "theoremCount": 10,
     "definitionCount": 0,
-    "mathlibDependencies": [
-      {
-        "theorem": "tsum_sq_fourierCoeff",
-        "description": "Parseval identity: ∑' n, ‖ĉₙ(f)‖² = ∫ |f|² dμ",
-        "module": "Mathlib.Analysis.Fourier.AddCircle"
-      },
-      {
-        "theorem": "hasSum_sq_fourierCoeff",
-        "description": "HasSum form of Parseval: squared Fourier coefficients sum to L² norm",
-        "module": "Mathlib.Analysis.Fourier.AddCircle"
-      },
-      {
-        "theorem": "orthonormal_fourier",
-        "description": "Fourier monomials are orthonormal in L²(AddCircle T)",
-        "module": "Mathlib.Analysis.Fourier.AddCircle"
-      },
-      {
-        "theorem": "hasSum_fourier_series_L2",
-        "description": "Fourier series converges to f in L²",
-        "module": "Mathlib.Analysis.Fourier.AddCircle"
-      },
-      {
-        "theorem": "sum_le_hasSum",
-        "description": "Finite partial sums ≤ tsum (used for Bessel's inequality)",
-        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
-      }
-    ],
     "originalContributions": [
-      "fourier_pythagorean_partial: ‖∑_{n∈S} cₙeₙ‖² = ∑_{n∈S} |cₙ|² — attempted original proof of finite Pythagorean identity for orthonormal systems (1 sorry remaining)"
+      "parseval_energy: ∑' n, ‖ĉₙ(f)‖² = ∫ t, ‖f t‖² ∂μ (energy equality)",
+      "parseval_hassum: HasSum form of Parseval identity",
+      "fourier_coeff_sq_summable: squared Fourier coefficients form a summable series",
+      "bessel_fourier: Bessel's inequality ∑_{n∈S} |ĉₙ|² ≤ ∫|f|² (tight by Parseval)",
+      "fourier_pythagorean_partial: ‖∑_{n∈S} cₙeₙ‖² = ∑_{n∈S} |cₙ|² (Pythagorean for ONS)",
+      "parseval_implies_completeness: zero Fourier coefficients ⟹ zero function",
+      "fourier_series_L2_convergence: Fourier series converges to f in L²"
     ]
   },
   "overview": {
