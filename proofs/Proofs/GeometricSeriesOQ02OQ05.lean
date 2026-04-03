@@ -232,6 +232,26 @@ theorem first_resolvent_identity (a : A) {λ μ : 𝕜}
 theorem resolvent_tendsto_zero (a : A) :
     Filter.Tendsto (fun λ : 𝕜 => Ring.inverse (algebraMap 𝕜 A λ - a))
     (Filter.comap (fun λ => ‖λ‖) Filter.atTop) (nhds 0) := by
-  sorry
+  -- Strategy: for ‖λ‖ ≥ ε⁻¹ + ‖a‖ + 1, apply resolvent_norm_bound then
+  -- use (‖λ‖ - ‖a‖)⁻¹ < (ε⁻¹)⁻¹ = ε via strict antitone of inv.
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  simp only [dist_zero_right]
+  rw [Filter.eventually_comap, Filter.eventually_atTop]
+  refine ⟨ε⁻¹ + ‖a‖ + 1, fun r hr λ hλr => ?_⟩
+  -- hr : ε⁻¹ + ‖a‖ + 1 ≤ r,  hλr : ‖λ‖ = r
+  have hλ_ne : λ ≠ 0 := by
+    intro h; rw [h, norm_zero] at hλr
+    linarith [hλr.symm.le, norm_nonneg a, inv_pos.mpr hε]
+  have ha_lt : ‖a‖ < ‖λ‖ := by
+    linarith [hλr.symm.le, inv_pos.mpr hε, norm_nonneg a]
+  have h_pos : (0 : ℝ) < ‖λ‖ - ‖a‖ := by linarith
+  have hd : ε⁻¹ < ‖λ‖ - ‖a‖ := by linarith [hλr.symm.le, norm_nonneg a]
+  calc ‖Ring.inverse (algebraMap 𝕜 A λ - a)‖
+    _ ≤ (‖λ‖ - ‖a‖)⁻¹ := resolvent_norm_bound a hλ_ne ha_lt
+    _ < ε := by
+        calc (‖λ‖ - ‖a‖)⁻¹
+            < (ε⁻¹)⁻¹ := inv_lt_inv_of_lt (inv_pos.mpr hε) hd
+          _ = ε := inv_inv ε
 
 end ResolventNeumann
