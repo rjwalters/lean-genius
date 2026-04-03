@@ -83,10 +83,10 @@
       "result": "clean"
     },
     "amgm-inequality-oq-03-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-03-30T13:41:29Z",
-      "result": "clean"
+      "lastAudited": "2026-04-03T10:21:34Z",
+      "result": "issues-fixed"
     },
     "amgm-inequality-oq-04": {
       "auditCount": 1,
@@ -10102,10 +10102,10 @@
       "result": "clean"
     },
     "navier-stokes": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-03-24T15:16:42Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-03T10:21:34Z",
+      "result": "clean"
     },
     "navier-stokes-existence": {
       "auditCount": 2,
@@ -10933,17 +10933,17 @@
     },
     "yang-mills": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 8,
-      "lastAudited": "2026-04-03T10:17:33Z",
+      "auditCount": 9,
+      "lastAudited": "2026-04-03T10:21:34Z",
       "result": "issues-fixed",
       "issues": [
         "sorry mismatch corrected in meta.json"
       ]
     },
     "yang-mills-2d": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
+      "lastAudited": "2026-04-03T10:21:34Z",
       "result": "issues-fixed"
     },
     "yang-mills-2d-oq-01": {
@@ -10959,15 +10959,15 @@
       "result": "clean"
     },
     "yang-mills-lattice": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
+      "lastAudited": "2026-04-03T10:21:34Z",
       "result": "issues-fixed"
     },
     "yang-mills-transfer-matrix": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-03T10:17:33Z",
+      "lastAudited": "2026-04-03T10:21:34Z",
       "result": "issues-fixed"
     },
     "abel-ruffini-galois-extensions": {
