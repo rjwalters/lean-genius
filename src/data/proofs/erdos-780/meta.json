@@ -62,8 +62,8 @@
       "Two proved theorems (erdos_780_main, erdos_780_summary) wrapping axioms",
       "Companion file Erdos780Aristotle.lean with 10 routine lemmas for automated proof"
     ],
-    "axiomCount": 2,
-    "assumptions": "2 axiom declarations: alon_frankl_lovasz_1986 (n >= threshold implies monochromatic k-matching, deep topological proof), kneser_conjecture (chi(KG(n,r)) = n-2r+2, Lovász 1978). 0 sorries. Note: kneser_hypergraph_chromatic_number and tightness_construction appear in the assumptions text but are not declared as axioms in the Lean file.",
+    "axiomCount": 14,
+    "assumptions": "14 axioms total: 2 own (alon_frankl_lovasz_1986 — Alon-Frankl-Lovász 1986 matching bound; kneser_conjecture — chromatic number of Kneser graph KG(n,r) = n-2r+2, Lovász 1978) + 12 inherited from ErdosKoRado.lean (at_most_k_intersecting_cyclic_intervals, set_appears_in_cyclic_orders, double_counting_bound, frankl_t_intersecting, tstar_achieves_frankl_bound, hilton_milner, bollobas_set_pairs, cross_intersecting_bound, pyber_cross_intersecting, ekr_for_permutations, sunflower_lemma, improved_sunflower_lemma). 0 sorries.",
     "lineCount": 221
   },
   "overview": {
