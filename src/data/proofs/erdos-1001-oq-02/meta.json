@@ -1,0 +1,183 @@
+{
+  "id": "erdos-1001-oq-02",
+  "title": "Erdős #1001 OQ: Rate of Convergence of S(N,A,c)",
+  "slug": "erdos-1001-oq-02",
+  "description": "What is the rate at which S(N,A,c) approaches f(A,c)? In the EST regime (0 < A < c/(1+c²)) where approximation intervals are disjoint, the rate is O(A log N / N). This formalization axiomatizes this rate, reduces it to the error in weighted Euler totient sums, and derives consequences including that convergence is faster than O(1/√N).",
+  "meta": {
+    "author": "Erdős-Szüsz-Turán (1958), Kesten-Sós (1966); rate analysis by researcher-7",
+    "sourceUrl": "https://erdosproblems.com/1001",
+    "date": "1958-2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1001OQ02.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "diophantine-approximation",
+      "measure-theory",
+      "farey-fractions",
+      "rate-of-convergence",
+      "research",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "axiomCount": 3,
+    "assumptions": "3 axioms: rangeTotientSum_asymptotic (qualitative convergence of weighted totient sum), rangeTotientSum_error (O(log N/N) error bound), convergence_rate_est (main rate: |S(N,A,c)-f(A,c)| = O(A log N/N)). All reduce to Mertens' theorem with quantitative error bounds, missing from Mathlib.",
+    "erdosNumber": 1001,
+    "erdosUrl": "https://erdosproblems.com/1001",
+    "mathlibDependencies": [
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O notation for asymptotic bounds",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter convergence for limits",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.pi",
+        "description": "The mathematical constant π",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure on ℝ",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      }
+    ],
+    "originalContributions": [
+      "weightedTotientSum: definition of ∑_{y≤n} φ(y)/y²",
+      "rangeTotientSum: definition of ∑_{y=N}^{cN} φ(y)/y²",
+      "densityConst: the constant 6/π² = 1/ζ(2)",
+      "rangeTotientSum_asymptotic: qualitative convergence to (6/π²)log(c)",
+      "rangeTotientSum_error: quantitative O(log N/N) error bound",
+      "convergence_rate_est: main rate theorem |S(N,A,c)-f(A,c)| = O(A log N/N)",
+      "convergence_faster_than_sqrtN: rate is better than O(1/√N)",
+      "three_distance_connection: connects rate to three-distance theorem"
+    ],
+    "lineCount": 200,
+    "theoremCount": 6,
+    "defCount": 5
+  },
+  "overview": {
+    "historicalContext": "The existence of the limit lim_{N→∞} S(N,A,c) was established by Kesten and Sós in 1966. A natural follow-up question is quantitative: how fast does S(N,A,c) converge to its limit f(A,c)? In the EST regime where the approximation intervals are disjoint, S(N,A,c) is exactly the sum of their measures, reducing the problem to understanding the error in the weighted totient sum ∑_{y=N}^{cN} φ(y)/y².",
+    "problemStatement": "Given that lim_{N→∞} S(N,A,c) = f(A,c) (Kesten-Sós), what is the rate? Specifically, what is the order of magnitude of |S(N,A,c) - f(A,c)| as N → ∞?",
+    "text": "Rate of convergence of S(N,A,c) to f(A,c). In EST regime: |S(N,A,c) - f(A,c)| = O(A log N / N).",
+    "proofStrategy": "Reduce to error in weighted totient sum. In EST regime: S(N,A,c) = 2A · ∑_{y=N}^{cN} φ(y)/y² + O(A/N). The key asymptotic (Mertens + Abel summation): ∑_{y=N}^{cN} φ(y)/y² = (6/π²)log(c) + O(log N/N). This gives the rate O(A log N/N).",
+    "keyInsights": [
+      "In EST regime, S(N,A,c) = 2A · ∑_{y=N}^{cN} φ(y)/y² + O(A/N) (disjoint intervals)",
+      "The density constant 6/π² = 1/ζ(2) comes from ∑ φ(y)/y^s = ζ(s-1)/ζ(s) at s=2",
+      "Rate O(log N/N) beats the naive 1/√N from central limit heuristics",
+      "Error O(log N/N) comes from Mertens: ∑_{y≤N} φ(y) = (3/π²)N² + O(N log N)",
+      "Mathlib gap: Mertens' totient sum with quantitative error is not yet in Mathlib 4.x"
+    ]
+  },
+  "sections": [
+    {
+      "id": "weighted-totient-sum",
+      "title": "Weighted Totient Sum",
+      "summary": "Definitions: weightedTotientSum, rangeTotientSum, densityConst",
+      "startLine": 75,
+      "endLine": 100,
+      "mathContext": "Formal definition: T(n) = ∑_{y=1}^n φ(y)/y² and range variant"
+    },
+    {
+      "id": "asymptotic-analysis",
+      "title": "Asymptotic Analysis",
+      "summary": "Axioms for qualitative and quantitative asymptotics of the range totient sum",
+      "startLine": 101,
+      "endLine": 135,
+      "mathContext": "Mathematical content: ∑_{y=N}^{cN} φ(y)/y² = (6/π²)log(c) + O(log N/N)"
+    },
+    {
+      "id": "main-rate",
+      "title": "Main Rate Theorem",
+      "summary": "Axiom: |S(N,A,c) - f(A,c)| = O(A log N / N) in EST regime",
+      "startLine": 136,
+      "endLine": 160,
+      "mathContext": "Mathematical content: convergence_rate_est axiom with proof sketch"
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "summary": "Rate better than 1/√N; effective bound; connection to three-distance theorem",
+      "startLine": 161,
+      "endLine": 200,
+      "mathContext": "Bound: rate implies convergence faster than O(1/√N)"
+    }
+  ],
+  "conclusion": {
+    "summary": "The rate of convergence of S(N,A,c) to f(A,c) is O(A log N / N) in the EST regime, reducing to Mertens' quantitative totient sum theorem.",
+    "implications": "The O(log N/N) rate is optimal in the sense that the error in ∑_{y≤N} φ(y) = (3/π²)N² has lower bound Ω(√N) unconditionally (assuming oscillation). Under GRH, the error in Mertens' sum improves to O(N^{1/2+ε}), which would give rate O(N^{-1/2+ε}) for S(N,A,c).",
+    "openQuestions": [
+      "Is the O(log N/N) rate sharp, or can it be improved?",
+      "What is the rate of convergence outside the EST regime?",
+      "Can we achieve O(1/N) with effective constants?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Rate question for the parent Erdős #1001 limit theorem",
+      "targetId": "erdos-1001"
+    },
+    {
+      "relationship": "uses",
+      "description": "Euler's totient function φ(n) is central to the totient sum reduction",
+      "targetId": "euler-totient"
+    },
+    {
+      "relationship": "related",
+      "description": "Basel problem ζ(2) = π²/6 explains the density constant 6/π²",
+      "targetId": "basel-problem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.NumberTheory.Diophantine",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Topology.Instances.Real.Basic",
+      "Mathlib.NumberTheory.ArithmeticFunction"
+    ],
+    "namespace": "Erdos1001OQ02",
+    "lineCount": 200,
+    "axiomCount": 3,
+    "theoremCount": 6,
+    "definitionCount": 5
+  },
+  "references": [
+    {
+      "key": "EST58",
+      "authors": ["P. Erdős", "P. Szüsz", "P. Turán"],
+      "title": "On some applications of the metric theory of diophantine approximation",
+      "venue": "Acta Mathematica Hungarica",
+      "year": "1958",
+      "note": "Original paper proving f(A,c) = 12A log(c)/π² in EST regime"
+    },
+    {
+      "key": "KS66",
+      "authors": ["H. Kesten", "V.T. Sós"],
+      "title": "On two problems of Erdős and a problem of Turán concerning rational approximations",
+      "venue": "Acta Arithmetica",
+      "year": "1966",
+      "note": "Proved limit exists for all valid A, c; proof method doesn't directly give rate"
+    }
+  ]
+}
