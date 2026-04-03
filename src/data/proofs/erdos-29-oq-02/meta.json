@@ -22,10 +22,10 @@
       "Explanation of why [1,N] was wrong (excludes 0 as a basis element)",
       "Real-valued form: |A ∩ [0,N]| ≥ √(N+1)"
     ],
-    "assumptions": "0 sorries, 0 axioms. 2 True-stub theorems (counterexample_satisfies_correct_bound, why_original_was_wrong) prove True instead of their stated claims. Core counting argument and sqrt bound are fully verified.",
+    "assumptions": "0 sorries, 0 axioms. All core results fully verified.",
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 156,
+    "lineCount": 157,
     "prerequisites": ["Additive bases", "Sumsets", "Finset cardinality"],
     "mathlib_version": "4.26.0"
   },
@@ -57,9 +57,9 @@
   "leanFile": {
     "imports": ["Mathlib"],
     "namespace": "Erdos29OQ02",
-    "lineCount": 156,
+    "lineCount": 157,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 7,
     "definitionCount": 4,
     "mainTheorems": [
       {"name": "basis_size_squared_lower_bound", "type": "proved", "description": "N+1 ≤ |A ∩ [0,N]|²"},
