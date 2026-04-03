@@ -1,0 +1,81 @@
+{
+  "id": "erdos-1009-oq-02",
+  "title": "Edge-Disjoint K₄ Copies Beyond Turán",
+  "slug": "erdos-1009-oq-02",
+  "description": "Is there a K₄ analogue of Györi's theorem? If a graph on n vertices has more than ex(n, K₄) = ⌊n²/3⌋ edges (the Turán threshold for K₄-free graphs), can we guarantee many edge-disjoint K₄ copies?",
+  "meta": {
+    "author": "Erdős (open question, K₄ analog of #1009)",
+    "sourceUrl": "https://erdosproblems.com/1009",
+    "date": "1971",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1009OQ02Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "cliques",
+      "K4",
+      "edge-disjoint",
+      "turan-numbers",
+      "open",
+      "extremal-combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 2,
+    "erdosNumber": 1009,
+    "erdosUrl": "https://erdosproblems.com/1009",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-04-02",
+    "mathlib_version": "4.26.0",
+    "lineCount": 221,
+    "axiomCount": 0,
+    "assumptions": "2 sorries: (1) Turán bound arithmetic (n²/3 from CliqueFree 4 mod 3 cases); (2) bridge from absence of Clique4 to CliqueFree 4. Main open question stated as Prop.",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.CliqueFree.card_edgeFinset_le",
+        "description": "Turán's theorem: K_{r+1}-free graphs have ≤ t_r(n) edges",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.CliqueFree",
+        "description": "Definition of clique-free graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      }
+    ],
+    "originalContributions": [
+      "Clique4 structure: formalization of K₄ copies in simple graphs",
+      "edgeDisjointK4_question: formal statement of the K₄ analog of Györi's theorem",
+      "turanK4_extremal: K₄-free graphs have ≤ ⌊n²/3⌋ edges (Turán's theorem)",
+      "turanK3_le_turanK4: K₄ threshold dominates K₃ threshold",
+      "clique4_has_triangle: every K₄ contains a K₃"
+    ],
+    "prerequisites": [
+      "Graph theory (simple graphs, cliques, edge-disjoint subgraphs)",
+      "Turán theory (ex(n,K_r) Turán numbers)",
+      "Extremal combinatorics",
+      "Lean 4 and Mathlib"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1009",
+      "relationship": "extends",
+      "description": "The parent problem: edge-disjoint triangles (K₃) beyond Turán threshold ⌊n²/4⌋, SOLVED by Györi 1988. This OQ asks for the K₄ analog."
+    }
+  ],
+  "overview": "## Motivation\n\n**Erdős Problem #1009** (SOLVED, Györi 1988) asks: if a graph has $\\lfloor n^2/4 \\rfloor + k$ edges, does it contain $\\geq k - f(c)$ edge-disjoint triangles (for $k < cn$)? The answer is yes, with $f(c) \\ll c^2$.\n\nThis **open question** asks for the analogous result with $K_4$ instead of $K_3$:\n- The Turán threshold for $K_4$-free graphs is $\\lfloor n^2/3 \\rfloor$ (the balanced tripartite graph $T(n,3)$)\n- If $G$ has $\\lfloor n^2/3 \\rfloor + k$ edges, how many edge-disjoint $K_4$ copies does it contain?\n\n## Formalization\n\nThis file establishes:\n1. **$K_4$ structure**: four mutually adjacent vertices with their 6 edges\n2. **Turán threshold** $\\lfloor n^2/3 \\rfloor$ for $K_4$-free graphs\n3. **Turán's theorem for $K_4$**: $K_4$-free $\\Rightarrow$ edges $\\leq \\lfloor n^2/3 \\rfloor$\n4. **Open question**: formal statement of the $K_4$ analog of Györi's theorem\n\n## Key Comparison\n\n| Problem | Clique | Threshold | Status |\n|---------|--------|-----------|--------|\n| Erdős 1009 | $K_3$ | $\\lfloor n^2/4 \\rfloor$ | Solved (Györi 1988) |\n| This OQ | $K_4$ | $\\lfloor n^2/3 \\rfloor$ | Open |",
+  "references": [
+    {
+      "type": "paper",
+      "title": "On the number of edge disjoint triangles in K₄-free graphs",
+      "authors": ["E. Györi"],
+      "year": 1988,
+      "journal": "Combinatorica"
+    },
+    {
+      "type": "paper",
+      "title": "On an extremal problem in graph theory",
+      "authors": ["P. Turán"],
+      "year": 1941
+    }
+  ]
+}
