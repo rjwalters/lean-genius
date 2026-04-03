@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-e1012-01-defs",
+    "proofId": "erdos-1012-oq-01",
+    "range": { "startLine": 46, "endLine": 69 },
+    "type": "definition",
+    "title": "Edge Threshold and Long Cycle Predicates",
+    "content": "Four definitions build the formal framework. edgeThreshold(n,k) = C(n-k-1,2) + C(k+2,2) + 1 is the Erdős edge density threshold — the number of edges in the extremal graph K_{k+2} ∨ K_{n-k-2} (complete bipartite join). hasCycleOfLength checks for a cycle of exact length l using an injective vertex sequence with consecutive adjacencies (modular arithmetic for the closing edge). hasLongCycle is the universal statement: every n-vertex graph above the threshold has an (n-k)-cycle.",
+    "mathContext": "$\\operatorname{edgeThreshold}(n,k) = \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$. This equals the edge count of $K_{k+2} \\vee \\overline{K_{n-k-2}}$ (a clique of size $k+2$ plus an independent set of size $n-k-2$, with all cross-edges). This is the extremal graph: maximum edges without an $(n-k)$-cycle.",
+    "significance": "key",
+    "relatedConcepts": ["Turán-type extremal problems", "cycle length", "edge density threshold"],
+    "prerequisites": ["binomial coefficients", "Fintype.card", "SimpleGraph adjacency"]
+  },
+  {
+    "id": "ann-e1012-01-fdef",
+    "proofId": "erdos-1012-oq-01",
+    "range": { "startLine": 79, "endLine": 95 },
+    "type": "definition",
+    "title": "The Function f(k): Exact Values by Cases",
+    "content": "The function f is defined directly by its known exact values: f(0) = f(1) = 1 and f(k+2) = 2(k+2)+3 = 2k+7. This is a noncomputable definition only in principle; the three cases are concrete natural numbers computable by pattern matching. The key theorem f_ge_two shows the Woodall formula: f(k) = 2k+3 for k ≥ 2. The alternative form f_ge_two_alt rewrites this as 2k+7 (using the shift by 2). Concrete values f(2)=7, f(3)=9, f(4)=11, f(5)=13 are immediately derivable.",
+    "mathContext": "$f(k) = \\begin{cases} 1 & k \\in \\{0, 1\\} \\\\ 2k+3 & k \\geq 2 \\end{cases}$. This is the minimum $n_0$ such that every $n$-vertex graph with $\\geq \\operatorname{edgeThreshold}(n,k)$ edges has an $(n-k)$-cycle, for all $n \\geq n_0$.",
+    "significance": "key",
+    "relatedConcepts": ["Ore's theorem", "Bondy's pancyclicity", "Woodall's theorem"],
+    "prerequisites": ["natural number pattern matching", "omega tactic"]
+  },
+  {
+    "id": "ann-e1012-01-axioms",
+    "proofId": "erdos-1012-oq-01",
+    "range": { "startLine": 102, "endLine": 112 },
+    "type": "axiom",
+    "title": "Four Axioms: Ore, Bondy, Woodall Upper and Lower Bounds",
+    "content": "Four landmark theorems are axiomatized. Ore's theorem (1961): every graph on n ≥ 1 vertices above the threshold has a Hamiltonian cycle (the k=0 case). Bondy's theorem (1971): every graph on n ≥ 1 vertices above the threshold has an (n-1)-cycle (k=1 case), and in fact such graphs are pancyclic. Woodall's upper bound (1972): for n ≥ 2k+3, the threshold guarantees an (n-k)-cycle for any k. Woodall's lower bound: for k ≥ 2, n=2k+2 is too small — extremal graphs at n=2k+2 have no (k+2)-cycle. Together these four axioms pin down f(k) exactly.",
+    "mathContext": "Ore (1961): $\\forall n \\geq 1, \\operatorname{hasLongCycle}(n, 0)$. Bondy (1971): $\\forall n \\geq 1, \\operatorname{hasLongCycle}(n, 1)$. Woodall (1972): $n \\geq 2k+3 \\Rightarrow \\operatorname{hasLongCycle}(n,k)$ [upper bound]. Lower bound: $k \\geq 2 \\Rightarrow \\neg\\operatorname{hasLongCycle}(2k+2, k)$. The lower bound uses explicit extremal graphs: $K_{k+2} \\cup K_{k}$ achieves the edge threshold without an $(k+2)$-cycle.",
+    "significance": "key",
+    "relatedConcepts": ["Hamiltonian cycle", "pancyclic graphs", "extremal graph theory"],
+    "prerequisites": ["Ore's theorem", "Bondy's pancyclicity theorem", "Woodall's sufficient condition"]
+  },
+  {
+    "id": "ann-e1012-01-correctness",
+    "proofId": "erdos-1012-oq-01",
+    "range": { "startLine": 119, "endLine": 174 },
+    "type": "concept",
+    "title": "Correctness and Growth Rate: Combining Axioms into f(k)",
+    "content": "The proved theorems derive f(k)'s properties from the axioms. f_is_upper_bound: by case analysis on k (using Lean's match), reduce to the appropriate axiom. f_tight: f(k)-1 fails for k ≥ 2, proved by showing 2k+3-1 = 2k+2 and applying the Woodall lower bound. Growth rate: f is strictly increasing for k ≥ 1 (2-step increase for k ≥ 2), linearly bounded by 2k+3, and at least 1. The cycle_length_at_boundary theorem shows the cycle length at n = f(k) is k+3 — the first 'interesting' cycle beyond the trivial triangle (k+2 > k+2... wait, k+3 for k≥2 means a (k+3)-cycle in a (2k+3)-vertex graph).",
+    "mathContext": "$f$ is the minimum threshold: $\\forall n \\geq f(k), \\operatorname{hasLongCycle}(n,k)$ and $\\neg\\operatorname{hasLongCycle}(f(k)-1, k)$ for $k \\geq 2$. Growth: $f(k+1) - f(k) = 2$ for $k \\geq 2$, giving an arithmetic progression $7, 9, 11, 13, \\ldots$ At the boundary $n = f(k) = 2k+3$: the cycle length is $n-k = k+3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimum threshold", "tight bounds", "arithmetic progression"],
+    "prerequisites": ["omega tactic", "natural number subtraction", "Lean case analysis"]
+  },
+  {
+    "id": "ann-e1012-01-threshold",
+    "proofId": "erdos-1012-oq-01",
+    "range": { "startLine": 182, "endLine": 225 },
+    "type": "insight",
+    "title": "Threshold Symmetry at the Woodall Boundary",
+    "content": "A key structural insight: at the Woodall boundary n = 2k+3, the threshold is symmetric — both binomial terms C(n-k-1,2) and C(k+2,2) equal C(k+2,2), making the threshold 2·C(k+2,2)+1. This is because n-k-1 = 2k+3-k-1 = k+2, the same as the second argument. The threshold difference between n=2k+3 and n=2k+2 is C(k+2,2) - C(k+1,2) = k+1. Concrete boundary values are computed by decide: threshold(3,0)=3, threshold(5,1)=7, threshold(7,2)=13, threshold(9,3)=21, threshold(11,4)=31.",
+    "mathContext": "At $n = 2k+3$: $\\operatorname{edgeThreshold}(2k+3, k) = \\binom{k+2}{2} + \\binom{k+2}{2} + 1 = 2\\binom{k+2}{2}+1$. The symmetry $n-k-1 = k+2$ is the reason this is the Woodall boundary — it's the balanced point where both halves of the extremal graph have the same size. The sequence $3, 7, 13, 21, 31, \\ldots$ follows the pattern $\\binom{k+2}{2} \\cdot 2 + 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial coefficient identity", "symmetric threshold", "extremal graph balance"],
+    "prerequisites": ["Nat.choose", "ring arithmetic", "omega"]
+  },
+  {
+    "id": "ann-e1012-01-anomaly",
+    "proofId": "erdos-1012-oq-01",
+    "range": { "startLine": 272, "endLine": 289 },
+    "type": "insight",
+    "title": "The Ore-Bondy Anomaly: f(0)=f(1)=1",
+    "content": "For k=0 and k=1, f(k)=1 — the threshold works for ALL n ≥ 1, not just large n. This is anomalous compared to k ≥ 2 where f(k) = 2k+3 ≥ 7. The k=0 threshold simplifies to C(n-1,2)+2 (Ore's Hamiltonian condition) and k=1 to C(n-2,2)+4. These are exactly the conditions in Ore's and Bondy's original theorems. The jump from f(1)=1 to f(2)=7 (a gap of 6) is by far the largest relative jump in the sequence, reflecting a phase transition in the difficulty of the problem.",
+    "mathContext": "For $k=0$: $\\operatorname{edgeThreshold}(n,0) = \\binom{n-1}{2}+2$, which corresponds to Ore's condition $\\sum \\deg(v) \\geq n^2/2$ for Hamiltonian cycles. For $k=1$: $\\operatorname{edgeThreshold}(n,1) = \\binom{n-2}{2}+4$ for $n \\geq 2$. The anomaly $f(0)=f(1)=1$ reflects that Ore/Bondy work for all sufficiently large $n$ (without a lower threshold on $n$), while Woodall needs $n \\geq 2k+3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ore's condition", "Dirac's theorem", "Hamiltonian graph theory"],
+    "prerequisites": ["Nat.choose simplification", "omega", "decide tactic"]
+  }
+]

@@ -33,15 +33,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1012 asks for the minimum n₀ = f(k) such that every graph on n ≥ n₀ vertices with at least C(n-k-1,2)+C(k+2,2)+1 edges contains a cycle of length n-k. This threshold was determined by Ore (k=0), Bondy (k=1), and Woodall (k≥2: f(k)=2k+3). Woodall also proved that such graphs are pancyclic — they contain cycles of every length from 3 to n-k.",
+    "historicalContext": "Erdős asked in his problem list: what is the minimum n₀ = f(k) such that every n ≥ n₀ vertex graph with ≥ C(n-k-1,2)+C(k+2,2)+1 edges must contain an (n-k)-cycle? The edge threshold C(n-k-1,2)+C(k+2,2) is the edge count of the extremal graph K_{k+2} ∨ K̄_{n-k-2} (clique of size k+2 joined to independent set of size n-k-2), the Turán-type extremal for the (n-k)-cycle problem. Oystein Ore (1961) proved the k=0 case: above this threshold, every n-vertex graph is Hamiltonian (has an n-cycle). John Adrian Bondy (1971) proved the k=1 case using his pancyclicity theorem: such dense graphs contain cycles of ALL lengths 3 to n. D.R. Woodall (1972, 'Sufficient conditions for circuits in graphs') completed the picture: for k ≥ 2, f(k) = 2k+3, and the threshold at n ≥ 2k+3 also guarantees pancyclicity from length 3 to n-k. The extremal sharpness was demonstrated by explicit constructions showing n = 2k+2 is insufficient. This resolved Erdős's problem completely and connected it to the broader Turán-type theory of forced subgraphs.",
     "problemStatement": "Determine f(k): the minimum n₀ such that every graph with ≥ C(n-k-1,2)+C(k+2,2)+1 edges on n ≥ n₀ vertices contains an (n-k)-cycle.",
     "text": "The edge threshold C(n-k-1,2)+C(k+2,2)+1 is the number of edges in the extremal graph for the (n-k)-cycle problem. For k=0 (Hamiltonian case): Ore's theorem gives f(0)=1. For k=1: Bondy's pancyclicity theorem gives f(1)=1. For k≥2: Woodall showed f(k)=2k+3, and the bound is tight (extremal graphs exist). Woodall further proved pancyclicity: these dense graphs contain cycles of ALL lengths from 3 to n-k.",
     "proofStrategy": "Define the edge threshold formula, cycle predicates, and hasLongCycle predicate. Axiomatize Ore, Bondy, and Woodall's theorems. Derive the exact formula f(k)=2k+3 for k≥2 and f(0)=f(1)=1. Prove pancyclicity as a corollary.",
     "keyInsights": [
-      "Ore's theorem: sufficiently many edges (degree-sum condition) guarantees a Hamiltonian cycle",
-      "Bondy's pancyclicity: Hamiltonian graphs with enough edges are pancyclic",
-      "Woodall's formula: f(k) = 2k+3 for k≥2 — linear growth in k",
-      "Extremal graphs: the threshold is tight, requiring the exact constructions"
+      "The edge threshold C(n-k-1,2)+C(k+2,2)+1 comes from the Turán-type extremal graph K_{k+2} ∨ K̄_{n-k-2}: this graph has exactly the threshold edges and no (n-k)-cycle, making it the tight construction",
+      "Ore's theorem (k=0) is the historic anchor: the edge threshold for Hamiltonian cycles is equivalent to the degree-sum condition deg(u)+deg(v)≥n for all non-adjacent u,v",
+      "The jump from f(1)=1 to f(2)=7 is a phase transition: for k≥2, small graphs (n < 2k+3) can achieve the threshold without containing the required cycle, but k=0,1 have no such obstruction",
+      "The symmetry at the Woodall boundary n=2k+3: both binomial terms equal C(k+2,2), revealing that the extremal graph is balanced at exactly this point",
+      "Consecutive differences f(k+1)-f(k)=2 for k≥2 show the problem becomes linearly harder: each additional excluded vertex requires 2 more vertices to guarantee the cycle"
     ],
     "prerequisites": [
       "Graph theory: cycles, Hamiltonian paths, edge density",
@@ -50,12 +51,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős #1012 f(k) determination formalized: f(0)=f(1)=1, f(k)=2k+3 for k≥2 (Woodall). Growth rate analysis and pancyclicity. 37 theorems, 312 lines, 4 axioms.",
-    "implications": "Woodall's theorem is part of the broader theory of long cycles in dense graphs. The pancyclicity result is particularly strong: not just one cycle length but all cycle lengths from 3 to n-k. This has applications in Hamiltonian cycle theory and cycle covers.",
+    "summary": "Complete formal treatment of Erdős Problem #1012 OQ-01: the exact formula f(0)=f(1)=1, f(k)=2k+3 (k≥2) is derived from 4 axioms (Ore, Bondy, Woodall upper and lower bounds) through 37 proved theorems. Includes growth rate analysis, threshold symmetry at Woodall boundary, concrete values for small k, and the Ore-Bondy anomaly analysis. 312 lines, 0 sorries.",
+    "implications": "The Woodall-Ore-Bondy triangle resolves Erdős #1012 completely and places it in the broader context of Turán-type extremal graph theory. The pancyclicity result (dense graphs contain cycles of ALL lengths from 3 to n-k) is particularly powerful: it gives a continuum of cycle lengths rather than just one. Applications include: (1) Hamiltonian cycle theory — the Ore bound is a precursor to Dirac's condition (minimum degree ≥ n/2); (2) cycle cover problems in combinatorial optimization; (3) network design — graphs that must be robust to vertex deletions and still contain long cycles. The formalization demonstrates that Erdős-type extremal problems with known closed-form solutions are well-suited for Lean 4: the combinatorial definitions are straightforward, the axioms capture the hard analysis, and the algebraic consequences (f values, growth rates) can be fully machine-checked.",
     "openQuestions": [
-      "Prove Woodall's theorem without axioms using degree-sequence arguments",
-      "Formalize the extremal construction (tight lower bound graph)",
-      "Generalize to directed graphs: long cycles in tournaments"
+      "Formalize the lower bound construction: prove Woodall's lower bound by exhibiting an explicit extremal graph K_{k+2} ∪ K_k on 2k+2 vertices achieving the threshold without a (k+2)-cycle",
+      "Prove Ore's theorem without axioms: the degree-sum condition deg(u)+deg(v)≥n for all non-adjacent pairs implies Hamiltonicity — this requires Lean 4's Hamiltonian cycle theory",
+      "Generalize to directed graphs: what is the minimum n₀ such that dense enough tournaments contain a directed cycle of length n-k? (Thomassen's results)",
+      "Formalize Woodall's pancyclicity: dense graphs above the threshold contain cycles of ALL lengths from 3 to n-k — not just one long cycle"
     ]
   },
   "leanFile": {
@@ -72,5 +74,69 @@
       "description": "Parent problem establishing the edge threshold; OQ-01 proves the exact f(k) formula"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "States Erdős Problem #1012, gives known results (Ore k=0, Bondy k=1, Woodall k≥2), and lists the 5 goals formalized. References the original papers."
+    },
+    {
+      "id": "core-defs",
+      "title": "Core Definitions: Edge Threshold and Cycle Predicates",
+      "startLine": 40,
+      "endLine": 69,
+      "summary": "Defines edgeThreshold (Binomial sum formula), edgeCount (graph edge count via edgeFinset), hasCycleOfLength (cycle as injective sequence with modular adjacency), and hasLongCycle (universal property for all graphs above threshold)."
+    },
+    {
+      "id": "f-definition",
+      "title": "The Function f(k): Woodall's Formula",
+      "startLine": 71,
+      "endLine": 95,
+      "summary": "Defines f by cases: f(0)=f(1)=1, f(k+2)=2(k+2)+3. Proves the three cases as rfl (definitional equality). Shows f(k+2)=2k+7 as an arithmetic rewriting."
+    },
+    {
+      "id": "axioms",
+      "title": "Axioms: Ore, Bondy, Woodall Upper and Lower Bounds",
+      "startLine": 97,
+      "endLine": 112,
+      "summary": "Four axioms encode the deep results: ore_theorem (k=0, Hamiltonian), bondy_theorem (k=1), woodall_theorem (k≥0, n≥2k+3), woodall_lower_bound (k≥2, n=2k+2 fails)."
+    },
+    {
+      "id": "correctness",
+      "title": "Correctness Proofs: f_is_upper_bound and f_tight",
+      "startLine": 114,
+      "endLine": 133,
+      "summary": "f_is_upper_bound: case analysis reduces to the appropriate axiom. f_tight: for k≥2, the formula fails at f(k)-1 = 2k+2 by the Woodall lower bound."
+    },
+    {
+      "id": "growth-rate",
+      "title": "Growth Rate Analysis",
+      "startLine": 135,
+      "endLine": 174,
+      "summary": "Proves f is non-decreasing and strictly increasing for k≥1, bounded by 2k+3, positive, and ≥3 for k≥2. Shows cycle length at boundary n=f(k) is k+3. Concrete values f(0)=1 through f(5)=13."
+    },
+    {
+      "id": "threshold-analysis",
+      "title": "Threshold Analysis: Symmetry at Woodall Boundary",
+      "startLine": 176,
+      "endLine": 225,
+      "summary": "Proves threshold_symmetric: at n=2k+3, edgeThreshold(2k+3,k)=2·C(k+2,2)+1. Proves concrete boundary values by decide: 3,7,13,21,31 for k=0..4. Analyzes the threshold difference between n=2k+3 and n=2k+2."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences: Long Cycle Range and Linear Growth",
+      "startLine": 227,
+      "endLine": 264,
+      "summary": "Derives: long cycles are guaranteed for all n≥f(k), f grows linearly (k≤f(k)≤2k+3 for k≥2), consecutive differences f(k+1)-f(k)=2 for k≥2, and the largest_jump f(2)-f(1)=6."
+    },
+    {
+      "id": "anomaly",
+      "title": "The Ore-Bondy Anomaly: f(0)=f(1)=1",
+      "startLine": 266,
+      "endLine": 289,
+      "summary": "Analyzes the k=0 and k=1 special cases: threshold simplifications, threshold_at_boundary_pos. Shows the Ore (C(n-1,2)+2) and Bondy (C(n-2,2)+4) thresholds and why they work for all n≥1."
+    }
+  ]
 }
