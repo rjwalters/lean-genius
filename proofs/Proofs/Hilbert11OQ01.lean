@@ -136,19 +136,29 @@ If Q has a nonzero rational zero `v₀`, then `(1 : ℝ) ⊗ₜ v₀` gives a ze
 The nonzero condition follows from the injectivity of `1 ⊗ₜ · : (Fin n → ℚ) → ℝ ⊗[ℚ] (Fin n → ℚ)`,
 which holds because `Fin n → ℚ` is a free ℚ-module.
 
-Note: The injectivity argument is deferred (sorry) as it requires facts about the
-tensor product of a free module — a good Aristotle target. -/
+Note: Injectivity is proved via evaluation functionals — for each i, map a ⊗ₜ w ↦ a * (w i : ℝ).
+This extracts each coordinate, showing 1 ⊗ₜ v = 0 implies v = 0. -/
 theorem rational_implies_real_isotropic (Q : QuadraticForm ℚ (Fin n → ℚ))
     (h : ∃ v : Fin n → ℚ, v ≠ 0 ∧ Q v = 0) : IsIsotropicOverReals Q := by
   obtain ⟨v, hv_ne, hv_zero⟩ := h
   refine ⟨(1 : ℝ) ⊗ₜ[ℚ] v, ?_, ?_⟩
   · -- 1 ⊗ₜ v ≠ 0 because v ≠ 0 and the canonical map Fin n → ℚ → ℝ ⊗[ℚ] (Fin n → ℚ) is injective
-    -- (Fin n → ℚ is a free ℚ-module, so base change is injective)
+    -- Proved via evaluation functionals: for each i, ev_i(a ⊗ₜ w) = a * (w i : ℝ)
     intro heq
     apply hv_ne
-    -- The map v ↦ 1 ⊗ₜ v is ℚ-linear and injective; from heq : 1 ⊗ₜ v = 0 conclude v = 0
-    have : (TensorProduct.mk ℚ ℝ (Fin n → ℚ) 1) v = 0 := heq
-    sorry  -- injectivity of 1 ⊗ₜ · on free module; suitable for Aristotle/further work
+    funext i
+    -- Evaluation functional ev_i : ℝ ⊗[ℚ] (Fin n → ℚ) →ₗ[ℚ] ℝ defined by a ⊗ₜ w ↦ a * (w i : ℝ)
+    let ev : ℝ ⊗[ℚ] (Fin n → ℚ) →ₗ[ℚ] ℝ :=
+      TensorProduct.lift (LinearMap.mk₂ ℚ (fun (a : ℝ) (w : Fin n → ℚ) => a * algebraMap ℚ ℝ (w i))
+        (fun _ _ _ => by ring)
+        (fun c _ _ => by simp only [Algebra.smul_def]; ring)
+        (fun _ _ _ => by simp only [Pi.add_apply, map_add]; ring)
+        (fun c _ w => by simp only [Pi.smul_apply, smul_eq_mul, map_mul, Algebra.smul_def]; ring))
+    have heval : ev ((1 : ℝ) ⊗ₜ[ℚ] v) = algebraMap ℚ ℝ (v i) := by
+      simp only [ev, TensorProduct.lift.tmul, LinearMap.mk₂_apply, one_mul]
+    have hzero : ev ((1 : ℝ) ⊗ₜ[ℚ] v) = 0 := by rw [heq]; exact map_zero ev
+    have hvi : (v i : ℝ) = 0 := by simpa using heval.symm.trans hzero
+    exact_mod_cast hvi
   · rw [baseChange_real_tmul, hv_zero]
     simp
 
@@ -160,10 +170,22 @@ theorem rational_implies_padic_isotropic (Q : QuadraticForm ℚ (Fin n → ℚ))
     (h : ∃ v : Fin n → ℚ, v ≠ 0 ∧ Q v = 0) : IsIsotropicOverPadic Q p := by
   obtain ⟨v, hv_ne, hv_zero⟩ := h
   refine ⟨(1 : ℚ_[p]) ⊗ₜ[ℚ] v, ?_, ?_⟩
-  · intro heq
+  · -- 1 ⊗ₜ v ≠ 0 via evaluation functionals: for each i, ev_i(a ⊗ₜ w) = a * (w i : ℚ_[p])
+    intro heq
     apply hv_ne
-    have : (TensorProduct.mk ℚ ℚ_[p] (Fin n → ℚ) 1) v = 0 := heq
-    sorry  -- injectivity of 1 ⊗ₜ · on free module; suitable for Aristotle/further work
+    funext i
+    -- Evaluation functional ev_i : ℚ_[p] ⊗[ℚ] (Fin n → ℚ) →ₗ[ℚ] ℚ_[p]
+    let ev : ℚ_[p] ⊗[ℚ] (Fin n → ℚ) →ₗ[ℚ] ℚ_[p] :=
+      TensorProduct.lift (LinearMap.mk₂ ℚ (fun (a : ℚ_[p]) (w : Fin n → ℚ) => a * algebraMap ℚ ℚ_[p] (w i))
+        (fun _ _ _ => by ring)
+        (fun c _ _ => by simp only [Algebra.smul_def]; ring)
+        (fun _ _ _ => by simp only [Pi.add_apply, map_add]; ring)
+        (fun c _ w => by simp only [Pi.smul_apply, smul_eq_mul, map_mul, Algebra.smul_def]; ring))
+    have heval : ev ((1 : ℚ_[p]) ⊗ₜ[ℚ] v) = algebraMap ℚ ℚ_[p] (v i) := by
+      simp only [ev, TensorProduct.lift.tmul, LinearMap.mk₂_apply, one_mul]
+    have hzero : ev ((1 : ℚ_[p]) ⊗ₜ[ℚ] v) = 0 := by rw [heq]; exact map_zero ev
+    have hvi : (v i : ℚ_[p]) = 0 := by simpa using heval.symm.trans hzero
+    exact_mod_cast hvi
   · rw [baseChange_padic_tmul, hv_zero]
     simp
 
@@ -193,7 +215,7 @@ axiom hasse_minkowski_refined (Q : QuadraticForm ℚ (Fin n → ℚ)) :
 
 /-- The "easy direction" of Hasse-Minkowski: rational isotropy implies local isotropy.
 
-This is proved (modulo the tensor product injectivity sorry in the helper lemmas). -/
+This is fully proved: injectivity uses evaluation functionals, not sorry. -/
 theorem hasse_easy_direction (Q : QuadraticForm ℚ (Fin n → ℚ))
     (h : ∃ v : Fin n → ℚ, v ≠ 0 ∧ Q v = 0) :
     IsIsotropicOverReals Q ∧ ∀ p : ℕ, [Fact (Nat.Prime p)] → IsIsotropicOverPadic Q p :=
@@ -223,18 +245,19 @@ PART VI: SUMMARY AND STATUS
 1. `four_squares_from_mathlib` — Lagrange's 4 squares, proved from Mathlib (axiom eliminated)
 2. `baseChange_real_tmul` — computation lemma for local isotropy over ℝ
 3. `baseChange_padic_tmul` — computation lemma for local isotropy over ℚₚ
-4. `hasse_easy_direction` — easy direction of Hasse-Minkowski (modulo injectivity sorry)
+4. `hasse_easy_direction` — easy direction of Hasse-Minkowski (fully proved, no sorry)
+5. `rational_implies_real_isotropic` — rational ⟹ ℝ-isotropic (proved via evaluation functionals)
+6. `rational_implies_padic_isotropic` — rational ⟹ ℚₚ-isotropic (proved via evaluation functionals)
 
-### Remaining Sorries (Aristotle Targets)
+### Remaining Sorries
 
-Two sorries in `rational_implies_real_isotropic` and `rational_implies_padic_isotropic`:
-- Proving `1 ⊗ₜ v ≠ 0` when `v ≠ 0` in `A ⊗[ℚ] (Fin n → ℚ)`
-- Follows from flatness/freeness of `Fin n → ℚ` over ℚ
-- These are likely provable by Aristotle or via `TensorProduct.linearIndependent_iff`
+None. All sorries have been eliminated:
+- `rational_implies_real_isotropic`: proved `1 ⊗ₜ v ≠ 0` via coordinate evaluation functionals
+- `rational_implies_padic_isotropic`: proved `1 ⊗ₜ v ≠ 0` via coordinate evaluation functionals
 
 ### Next Steps
 
-1. Prove the two injectivity sorries (free module base change is injective)
+1. State Meyer's theorem: dim ≥ 5 forms over ℚ are isotropic
 2. State the p-adic classification theorem (Meyer's theorem: dim ≥ 5 forms are isotropic)
 3. Add Hilbert symbol formalization using `IsIsotropicOverPadic`
 -/
