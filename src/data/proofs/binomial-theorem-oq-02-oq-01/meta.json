@@ -23,15 +23,16 @@
         "mathlib_version": "4.26.0"
     },
     "overview": {
-        "historicalContext": "The multinomial distribution is a fundamental probability distribution that models the outcome of n independent trials where each trial can result in one of k categories. It generalizes the binomial distribution (k=2). The moment-generating function (MGF) provides a compact encoding of all moments of a distribution. For the multinomial, the MGF has the elegant closed form (sum of p_i * exp(t_i))^n, which follows directly from the multinomial theorem.",
+        "historicalContext": "The multinomial distribution generalizes the binomial to $k \\geq 2$ outcome categories. It was implicit in the work of Jacob Bernoulli and Abraham de Moivre in the early 18th century, and explicitly formalized by Laplace in his *Théorie Analytique des Probabilités* (1812). The multinomial theorem itself is much older: Newton and later Johann Bernoulli established the $k$-variable expansion $(x_1 + \\cdots + x_k)^n = \\sum \\binom{n}{j_1,\\ldots,j_k} x_1^{j_1} \\cdots x_k^{j_k}$. Moment-generating functions (MGFs) were systematized in the 19th–20th centuries: for random variable $X$, $M_X(t) = \\mathbb{E}[e^{tX}]$ encodes all moments as derivatives at $t=0$. For the multinomial, the joint MGF $(\\sum p_i e^{t_i})^n$ follows immediately from the multinomial theorem — illustrating that the same algebraic identity underlies combinatorics, probability, and generating functions. This formalization reveals that the `CommSemiring` structure is the correct level of abstraction: `multinomial_mgf_factored` holds over *any* commutative semiring, making it applicable to formal power series, tropical semirings, and polynomials simultaneously.",
         "problemStatement": "Can the multinomial distribution and its moment-generating function be formalized in Lean 4 using the multinomial theorem?",
         "text": "Formalizes the multinomial distribution PMF, proves normalization from the multinomial theorem, derives the MGF formula, and shows the binomial distribution is the 2-outcome special case.",
         "proofStrategy": "The key insight is that the multinomial theorem directly provides both the normalization proof and the MGF formula. Setting sum p(i) = 1 in the multinomial theorem gives normalization. Applying the theorem with f(i) = p(i)*g(i) gives the general weighted expectation formula, which specializes to the MGF when g(i) = exp(t(i)).",
         "keyInsights": [
-            "The multinomial theorem IS the normalization proof for the multinomial distribution",
-            "The MGF formula is just the multinomial theorem applied to f(i) = p(i)*exp(t(i))",
-            "The algebraic factorization (p*g)^k = p^k * g^k separates probability weights from expectation terms",
-            "The binomial distribution is the 2-outcome (Bool-indexed) special case"
+            "The multinomial theorem `Finset.sum_pow_eq_sum_piAntidiag` directly *is* the normalization proof: setting $x_i = p(i)$ and using $\\sum p(i) = 1$ gives $\\sum P(k) = 1^n = 1$ in a single rewrite",
+            "The MGF formula follows from the *same* theorem with $x_i = p(i) \\cdot g(i)$: `multinomial_weighted_sum` delegates entirely to `sum_pow_eq_sum_piAntidiag`. No extra work needed beyond the theorem application",
+            "`multinomial_mgf_factored` holds over any `CommSemiring`, making it applicable to formal power series, polynomial rings, and tropical semirings — not just $\\mathbb{R}$. The probability interpretation is a semantic layer on top of the algebraic identity",
+            "The `piAntidiag s n` finset encodes exactly the valid outcome distributions (functions $k : \\alpha \\to \\mathbb{N}$ with $\\sum k(i) = n$). Both `normalization` and `MGF` proofs rely on summing over this same index set, connecting the combinatorial and probabilistic interpretations",
+            "`multinomial_count` gives $|s|^n = \\sum_k \\binom{n}{k}$ (multinomial analog of $2^n = \\sum \\binom{n}{j}$), proved by the theorem with $f \\equiv 1$. This is a purely combinatorial identity: it counts functions $\\text{Fin}\\, n \\to s$ both globally and by outcome distribution"
         ],
         "prerequisites": [
             "Multinomial theorem (Mathlib)",
