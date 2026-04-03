@@ -43,8 +43,10 @@
     "keyInsights": [
       "If A is a basis, |A∩[0,N]|² ≥ N, so A has density ≥ √N — proved here",
       "The conjecture is equivalent to: there is no thin basis (A with very few representations)",
-      "Sidon sets (where all sums a+b are distinct) cannot be bases — the conjecture says bases cannot be too thin",
-      "Progressive lower bounds: 6 (Grekos), 8 (Borwein), the conjecture says ∞"
+      "Sidon sets (all pairwise sums distinct) cannot be bases — proved here via the density contradiction",
+      "Progressive lower bounds: 6 (Grekos 2003), 8 (Borwein) — the conjecture says ∞",
+      "The √N threshold is a perfect duality: it is simultaneously the minimum density for bases AND the maximum density for Sidon sets",
+      "Two Erdős problems intersect: #14 (unique sums/Sidon) and #28 (additive bases) share the Sidon impossibility result"
     ],
     "prerequisites": [
       "Additive combinatorics: sumsets, representation functions, asymptotic bases",
@@ -69,10 +71,96 @@
   },
   "crossReferences": [
     {
+      "targetId": "erdos-14-unique-sums",
+      "relationship": "related",
+      "description": "Both formalize Sidon set theory: #14 studies unique sums and Sidon characterization, #28 proves Sidon sets cannot be asymptotic bases"
+    },
+    {
       "targetId": "ramseys-theorem",
       "relationship": "related",
       "description": "Both are Erdős-originated problems in combinatorics; Ramsey theory and additive combinatorics share density and coloring themes"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "representation-function",
+      "title": "Representation Function",
+      "summary": "Defines repFunc (ordered), repFuncUnordered, and repFuncFinset — three ways to count additive representations.",
+      "startLine": 46,
+      "endLine": 60,
+      "mathContext": "The representation function $r_A(n) = |\\{(a,b) \\in A \\times A : a+b=n\\}|$ counts ordered pairs. The unordered version restricts to $a \\leq b$. For a Sidon set, $r_A(n) \\leq 2$; the Erdős-Turán conjecture says no basis can have all $r_A(n)$ bounded."
+    },
+    {
+      "id": "asymptotic-basis",
+      "title": "Sumset and Asymptotic Basis",
+      "summary": "Defines the sumset A+A, IsAsymptoticBasis (threshold N₀), IsAsymptoticBasis' (cofinite complement), and proves their equivalence.",
+      "startLine": 62,
+      "endLine": 109,
+      "mathContext": "An asymptotic basis of order 2 satisfies $A + A \\supseteq [N_0, \\infty)$. Equivalently, $(A+A)^c$ is finite. The equivalence uses $\\mathtt{csSup}$ (conditional supremum) from Mathlib: the finite complement has a maximum, giving the threshold."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "Proves pairs_summing_finite (finiteness of representation sets), repFunc_pos for sumset elements, IsSidon definition, and sidon_repFunc_bounded (r_A ≤ 2 for Sidon sets).",
+      "startLine": 110,
+      "endLine": 201,
+      "mathContext": "Key result: for Sidon sets, $r_A(n) \\leq 2$ for all $n$, since any two representations $(a,b)$ and $(c,d)$ of the same sum must satisfy $\\{a,b\\} = \\{c,d\\}$ as sets. Finiteness of the representation set is proved by bounding both components by $n$."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "Formally defines erdos_turan_weak (lim sup r_A(n) = ∞), erdos_turan_strong (lim sup r_A(n)/log(n) > 0), and erdos_28 ($500 prize problem).",
+      "startLine": 202,
+      "endLine": 225,
+      "mathContext": "The Erdős-Turán conjecture (1941): if $A$ is an asymptotic basis of order 2, then $r_A(n) \\to \\infty$. Formally: $\\forall k, \\exists n, r_A(n) > k$. The strong form conjectures $\\limsup r_A(n)/\\log(n) > 0$. Prize: $500. Both remain open after 80+ years."
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "summary": "Axiomatizes Grekos et al. (2003): r_A(n) ≥ 6 infinitely often, and Borwein et al.: r_A(n) ≥ 8 infinitely often.",
+      "startLine": 226,
+      "endLine": 235,
+      "mathContext": "Best known toward the conjecture: $r_A(n) \\geq 8$ for infinitely many $n$ (Borwein et al.). The progression 6 (Grekos 2003) $\\to$ 8 (Borwein) $\\to \\cdots \\to \\infty$ (conjectured) represents decades of hard work. These are stated as axioms since the proofs require substantial analytic tools not yet formalized."
+    },
+    {
+      "id": "examples",
+      "title": "Examples: Evens and ℕ",
+      "summary": "Proves even numbers form a basis for even integers (evens_sumset, evens_repFunc), and ℕ itself is a trivial basis with repFuncUnordered(ℕ, n) = n/2 + 1.",
+      "startLine": 236,
+      "endLine": 347,
+      "mathContext": "For $A = 2\\mathbb{N}$: $A+A = A$ (even sums of evens) with $r_A(2n) = n/2 + 1$ unordered pairs. For $A = \\mathbb{N}$: $r_{\\mathbb{N}}^{\\text{unord}}(n) = n/2 + 1$ (pairs $(k, n-k)$ for $k \\leq n/2$), giving $r_{\\mathbb{N}}(n) \\to \\infty$ — the conjecture holds trivially for $\\mathbb{N}$."
+    },
+    {
+      "id": "sidon-connection",
+      "title": "Sidon Set Density Bound",
+      "summary": "Imports Erdős #340 Sidon upper bound via bridge lemma. Proves sidon_density_bound: |A∩[0,N]| ≤ √(2N)+1 for Sidon A. Supporting lemmas: card_upper_triangle, finset_sumset_card_bound.",
+      "startLine": 349,
+      "endLine": 460,
+      "mathContext": "Bridge lemma converts Set-based IsSidon to Finset-based Erdos340.IsSidon. Key technical result: $|\\text{sumset}(F)| \\cdot 2 \\leq |F|(|F|+1)$ (each sum from an unordered pair, of which there are $\\binom{|F|+1}{2}$). The Sidon density bound $|A \\cap [0,N]| \\leq \\sqrt{2N}+1$ follows from $\\mathtt{Erdos340.sidon\\_upper\\_bound}$."
+    },
+    {
+      "id": "sidon-not-basis",
+      "title": "Sidon Sets Are Not Asymptotic Bases",
+      "summary": "Proves sidon_not_basis: no infinite Sidon set is an asymptotic basis. The density upper bound √N contradicts the coverage requirement.",
+      "startLine": 462,
+      "endLine": 560,
+      "mathContext": "For Sidon basis with threshold $N_0$, choose $N = (4N_0+100)^2 = T^2$. Coverage gives $N-N_0+1 \\leq |A_N|(|A_N|+1)/2$. Sidon density: $|A_N| \\leq T + \\sqrt{T}+1 \\leq 5N_0+126$. So $|A_N|(|A_N|+1)/2 \\leq (5N_0+126)(5N_0+127)/2$, but $N-N_0+1 \\geq (4N_0+100)^2-N_0+1$. Expanding gives $7N_0^2+333N_0+4000 \\leq 0$: impossible."
+    },
+    {
+      "id": "ordered-unordered",
+      "title": "Ordered vs Unordered Representations",
+      "summary": "Proves repFunc ≥ repFuncUnordered. Shows nat_repFuncUnordered_unbounded (r(2k+2) = k+2 > k) and erdos_turan_holds_for_nat (conjecture holds trivially for ℕ).",
+      "startLine": 561,
+      "endLine": 594,
+      "mathContext": "Every unordered pair $(a,b)$ with $a \\leq b$ is also an ordered pair, so $r_A^{\\text{ord}} \\geq r_A^{\\text{unord}}$. For $A = \\mathbb{N}$: $r^{\\text{unord}}(2k+2) = (2k+2)/2+1 = k+2 > k$, so the Erdős-Turán conjecture holds trivially for $A = \\mathbb{N}$."
+    },
+    {
+      "id": "density-lower-bound",
+      "title": "Basis Density Lower Bound",
+      "summary": "Proves basis_element_count_sq: for any asymptotic basis A, |A∩[0,N]|² ≥ N-N₀+1. Bases must contain at least √N elements up to N.",
+      "startLine": 595,
+      "endLine": 647,
+      "mathContext": "Coverage: $[N_0,N] \\subseteq \\text{sumset}(A \\cap [0,N])$. Sumset size: $|\\text{sumset}(S)| \\leq |S|^2$ (image of $S \\times S$ under addition). Chain: $N-N_0+1 = |[N_0,N]| \\leq |\\text{sumset}(S)| \\leq |S|^2$. This $\\sqrt{N}$ bound matches the Sidon density upper bound — a beautiful duality: bases are exactly as dense as Sidon sets are sparse."
+    }
+  ]
 }
