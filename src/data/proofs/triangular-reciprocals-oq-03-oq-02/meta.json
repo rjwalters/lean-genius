@@ -121,7 +121,7 @@
     ],
     "leanFile": {
         "imports": [
-            "Proofs.TriangularReciprocalAlternatingOQ03"
+            "Mathlib"
         ],
         "opens": [
             "Finset",
@@ -131,8 +131,8 @@
             "Real"
         ],
         "namespace": "AlternatingTriangularReciprocals.Generalized",
-        "lineCount": 196,
-        "axiomCount": 0,
+        "lineCount": 202,
+        "axiomCount": 1,
         "theoremCount": 10,
         "definitionCount": 1
     }
