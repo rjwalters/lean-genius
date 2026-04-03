@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-header-context",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "context",
+    "title": "Problem Background: The Structure of Prime Gap Limit Points",
+    "content": "Erdős Problem #5 asks whether the set S of limit points of (p_{n+1}-p_n)/log(n) equals the entire half-line [0,∞). The normalization by log(n) is natural: by the prime number theorem, the average gap near the prime p_n is ~log(p_n), so normalized gaps should be ~1 on average. The known partial results listed in the header span nearly a century: Westzynthius (1931) showed ∞ ∈ S; Erdős and Ricci independently showed S has positive Lebesgue measure (1954, 1956); GPY (2005) and Zhang (2013) showed 0 ∈ S; Merikoski showed S has bounded gaps and at least 1/3 of [0,∞). The full conjecture remains open.",
+    "mathContext": "$S = \\{C \\geq 0 : \\exists n_k \\to \\infty, \\lim_{k\\to\\infty} \\frac{p_{n_k+1} - p_{n_k}}{\\log n_k} = C\\}$. Prime number theorem: $\\frac{p_n}{n \\log n} \\to 1$ as $n \\to \\infty$, so the average gap $p_{n+1} - p_n \\sim \\log n$. Cramér's random model suggests $S = [0,\\infty)$.",
+    "significance": "context",
+    "relatedConcepts": ["prime number theorem", "prime gaps", "Cramér's model", "sieve methods"],
+    "prerequisites": ["prime number theorem", "asymptotic notation", "topology of real sets"]
+  },
+  {
+    "id": "ann-core-defs",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 46, "endLine": 73 },
+    "type": "definition",
+    "title": "Core Definitions: nthPrime, primeGap, normalizedGap, IsLimitPoint",
+    "content": "Four key definitions: nthPrime(n) is the n-th prime (0-indexed, via Mathlib's Nat.nth); primeGap(n) = p_{n+1} - p_n is the prime gap; normalizedGap(n) = primeGap(n)/log(n) is the normalized gap (set to 0 at n=0 to avoid log(0)). IsLimitPoint(C) asserts C is a subsequential limit: there exists a strictly increasing f: ℕ→ℕ with normalizedGap ∘ f → C. The limitPointSet is the set of all such C. The use of Tendsto at nhds C encodes sequential convergence in the real line topology.",
+    "mathContext": "IsLimitPoint $C$: $\\exists f: \\mathbb{N} \\to \\mathbb{N}$ strictly increasing, $(\\text{normalizedGap} \\circ f)(k) \\to C$. Equivalently: $\\exists n_k \\nearrow \\infty$ with $\\frac{g(n_k)}{\\log n_k} \\to C$. The `StrictMono` requirement ensures $n_k$ is a genuine subsequence.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.nth", "StrictMono", "Tendsto", "nhds", "Filter.atTop"],
+    "prerequisites": ["Lean 4 Filter library", "Mathlib topology", "Nat.nth for prime enumeration"]
+  },
+  {
+    "id": "ann-conjecture-axioms",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 74, "endLine": 100 },
+    "type": "concept",
+    "title": "The Conjecture erdos_5 and Deep Partial Results",
+    "content": "The conjecture erdos_5 asserts (∀ C ≥ 0, IsLimitPoint C) ∧ InfinityIsLimitPoint — S = [0,∞] using ∞ as a separate clause. Three axioms encode deep analytic number theory: westzynthius_large_gaps gives InfinityIsLimitPoint (Westzynthius 1931, proved by primorial construction: p_1·...·p_k + j has no small prime factors for j = 1,...,p_k, creating a gap of at least p_k); zhang_bounded_gaps gives ∃H, primeGap ≤ H frequently (Zhang 2013, H originally 70M, then 246 by Polymath8b); hildebrand_maier_large_limit_points gives finite limit points above any M (Hildebrand-Maier 1988).",
+    "mathContext": "Westzynthius gap construction: let $N = \\prod_{p \\leq P} p$ (primorial). Then $N+2, N+3, \\ldots, N+P$ all have small prime factors (since $p | N+p$ for each prime $p \\leq P$), creating a gap of at least $P \\sim e^P/P$ after normalization — demonstrating $\\limsup_{n} g(n)/\\log n = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["Westzynthius 1931", "Zhang 2013", "Hildebrand-Maier 1988", "primorial construction"],
+    "prerequisites": ["sieve methods", "primorial numbers", "analytic number theory"]
+  },
+  {
+    "id": "ann-basic-prime-props",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 101, "endLine": 161 },
+    "type": "technique",
+    "title": "Basic Prime Properties: Monotonicity and Growth Bounds",
+    "content": "The basic properties section establishes infrastructure: explicit values nthPrime(0)=2, nthPrime(1)=3, nthPrime(2)=5 via Mathlib lemmas; primeGap_pos shows all gaps are positive via Nat.nth_strictMono; primeGap_zero=1 and primeGap_one=2 are concrete computations; nthPrime_strictMono shows primes strictly increase; nthPrime_ge shows p_n ≥ n+2 by induction (p_0=2=0+2, and strict monotonicity gives p_{n+1} > p_n ≥ n+2). This p_n ≥ n+2 bound is used later to show f k → ∞ along strictly increasing subsequences.",
+    "mathContext": "Key bound: $p_n \\geq n + 2$ for all $n \\geq 0$ (proved by induction using $p_0 = 2$ and strict monotonicity). This implies $f(k) \\to \\infty$ for any strictly monotone $f : \\mathbb{N} \\to \\mathbb{N}$ with values in primes.",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.nth_strictMono", "Nat.nth_prime_zero_eq_two", "prime enumeration"],
+    "prerequisites": ["Mathlib prime library", "Nat.nth for infinite sets"]
+  },
+  {
+    "id": "ann-cramer-conjecture",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 162, "endLine": 172 },
+    "type": "context",
+    "title": "Cramér's Conjecture and the Heuristic Model",
+    "content": "The averageGap function log(p_n) and cramer_conjecture definition provide context for the normalization. Cramér's conjecture (1936) states the maximal gap near p_n is O((log p_n)²). This is a famous open problem independent of Erdős #5, but it motivates the normalization: if gaps are O((log n)²), normalized gaps are O(log n) and certainly cannot all of [0,∞) be limit points by trivial reasons. The actual conjecture S = [0,∞) would follow from much weaker distributional statements than Cramér.",
+    "mathContext": "Cramér's conjecture: $\\max_{p_n \\leq x} (p_{n+1} - p_n) = O((\\log x)^2)$. If true, the normalized gaps are at most $O(\\log n)$ in each window. The random model: treating gaps as Exp(1/log n) gives $P(g(n)/\\log n > t) = e^{-t}$, predicting $S = [0,\\infty)$ with each $C$ being a limit point with 'probability 1'.",
+    "significance": "context",
+    "relatedConcepts": ["Cramér's random model", "Maier's theorem", "gap distribution"],
+    "prerequisites": ["prime number theorem", "probabilistic heuristics in number theory"]
+  },
+  {
+    "id": "ann-zhang-zero-limit",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 173, "endLine": 337 },
+    "type": "technique",
+    "title": "Zhang 2013 Implies 0 ∈ S: The Formal Proof",
+    "content": "The section proves 0 ∈ S via two routes: the twin prime conjecture (theorem twin_prime_implies_zero_limit) and Zhang's theorem (zhang_implies_zero_limit). The proof structure for both is the same: given a frequently-bounded gap subsequence (via strictly_increasing_from_frequently), extract an increasing f: ℕ→ℕ along which gaps are bounded by H. Since log(f k) → ∞ (as f k → ∞ by strict monotonicity), the ratios H/log(f k) → 0. The dist_zero_right computation uses Real.norm_of_nonneg (gaps are non-negative) and div_lt_iff₀ to finish.",
+    "mathContext": "Proof that $0 \\in S$: find $f$ with $g(f(k)) \\leq H$ and $f(k) \\to \\infty$. Then $\\frac{g(f(k))}{\\log f(k)} \\leq \\frac{H}{\\log f(k)} \\to 0$ since $\\log f(k) \\to \\infty$. Formally: given $\\varepsilon > 0$, eventually $\\log f(k) > H/\\varepsilon$, so $H/\\log f(k) < \\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": ["Zhang 2013", "Polymath8b H≤246", "bounded gaps", "GPY 2005"],
+    "prerequisites": ["Filter.tendsto_atTop_atTop", "Real.tendsto_log_atTop", "div_lt_iff₀"]
+  },
+  {
+    "id": "ann-structural-S",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 338, "endLine": 413 },
+    "type": "insight",
+    "title": "Structural Properties of S: Non-negativity, Unboundedness, and Westzynthius",
+    "content": "Key structural results: normalizedGap_nonneg shows all gaps are ≥0 (trivial but needed for convergence arguments); normalizedGap_pos shows gaps are strictly positive for n≥2; limitPoint_nonneg shows S ⊆ [0,∞) by ge_of_tendsto applied to a non-negative sequence; limitPointSet_nonempty follows from 0 ∈ S; westzynthius_implies_frequently_large shows that for any C, infinitely many normalized gaps exceed C (using the Westzynthius axiom and sequential extraction); hildebrand_maier_large_limit_points axiom + limitPointSet_unbounded_above prove S has finite values above any M.",
+    "mathContext": "$S \\subseteq [0,\\infty)$: since $\\text{normalizedGap}(n) \\geq 0$ for all $n$ and limits of non-negative sequences are non-negative. $S$ unbounded above: Hildebrand-Maier gives $\\forall M>0, \\exists C \\in S, C > M$. Westzynthius: $\\forall C, N, \\exists n \\geq N$ with $\\text{normalizedGap}(n) > C$ — arbitrarily large VALUES (not limit points) exist.",
+    "significance": "supporting",
+    "relatedConcepts": ["ge_of_tendsto", "Tendsto.atTop", "Westzynthius 1931", "Hildebrand-Maier 1988"],
+    "prerequisites": ["Filter.tendsto", "bounded sequences", "real analysis"]
+  },
+  {
+    "id": "ann-S-closed",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 415, "endLine": 487 },
+    "type": "technique",
+    "title": "S is Closed: Diagonal Extraction Argument",
+    "content": "The theorem limitPointSet_isClosed is the most technically complex in the file. It uses the characterization: S is closed iff its complement is open in the Euclidean topology. For C ∉ S: there exists ε>0 such that only finitely many n have normalizedGap(n) within ε of C (otherwise, one can diagonally extract a converging subsequence using 1/(k+1) radii). Given such ε, the ball of radius ε/2 around C contains no limit points: if C' ∈ ball(C, ε/2) were a limit point, eventually normalizedGap(f k) ∈ ball(C', ε/2), hence within ε of C — but there are infinitely many such f k, contradicting finiteness.",
+    "mathContext": "Proof of closedness: $\\complement S$ is open. For $C \\notin S$: $\\exists \\varepsilon > 0$, $\\{n : |\\text{normalizedGap}(n) - C| < \\varepsilon\\}$ is finite. Then $B(C, \\varepsilon/2) \\cap S = \\emptyset$ by triangle inequality: if $C' \\in B(C, \\varepsilon/2)$ and $C' \\in S$ with witness $f$, then eventually $|\\text{normalizedGap}(f(k)) - C| \\leq |\\text{normalizedGap}(f(k)) - C'| + |C' - C| < \\varepsilon/2 + \\varepsilon/2 = \\varepsilon$, contradicting finiteness.",
+    "significance": "key",
+    "relatedConcepts": ["Metric.isOpen_iff", "Set.Finite", "triangle inequality", "diagonal extraction"],
+    "prerequisites": ["Metric.tendsto_atTop", "exists_nat_gt", "bddAbove for finite sets"]
+  },
+  {
+    "id": "ann-set-equivalences",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 488, "endLine": 518 },
+    "type": "concept",
+    "title": "S = [0,∞) Equivalences: Reformulations of Erdős #5",
+    "content": "Three equivalences reformulate the conjecture. erdos_5_implies_set_eq: if Erdős #5 holds, then S = [0,∞) (by definition). set_eq_implies_erdos_5: if S = [0,∞), then Erdős #5 holds using westzynthius_large_gaps for the ∞ clause. erdos_5_iff packages both directions. The theorem known_properties_of_S gives a 4-property summary: S is nonempty, closed, contained in [0,∞), and unbounded — these four properties are unconditionally provable from the three axioms.",
+    "mathContext": "$S = [0,\\infty) \\iff$ Erdős #5. Known unconditionally: $S \\neq \\emptyset$ ($0 \\in S$ from Zhang), $S$ closed (topology), $S \\subseteq [0,\\infty)$ (non-negativity of gaps), $S$ unbounded (Hildebrand-Maier). What remains: $S$ is dense (equivalently, there are no 'gaps' in $S$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.Ici", "IsClosed.ext", "Westzynthius axiom"],
+    "prerequisites": ["set equality", "IsClosed", "Set.Ici (half-line)"]
+  },
+  {
+    "id": "ann-density-reduction",
+    "proofId": "erdos-5-prime-gaps",
+    "range": { "startLine": 520, "endLine": 572 },
+    "type": "insight",
+    "title": "The Density Reduction: Erdős #5 from Frequence Density",
+    "content": "The key reduction theorem erdos_5_from_dense_values proves that Erdős #5 follows if normalized gaps are dense in [0,∞): ∀C≥0, ε>0, {n : |normalizedGap(n)-C| < ε} is infinite. The lemma isLimitPoint_of_frequently_near converts this density condition into an actual convergent subsequence via the diagonal argument: use radii 1/(k+1) and extract a subsequence f with dist(normalizedGap(f k), C) < 1/(k+1) → 0. This converts the distributional statement 'gaps appear near every value' into the sequential definition of limit point.",
+    "mathContext": "Reduction: $S = [0,\\infty)$ follows from density of $\\{\\text{normalizedGap}(n)\\}$ in $[0,\\infty)$. Specifically: if $\\forall C \\geq 0, \\varepsilon > 0$, infinitely many $n$ with $|g(n)/\\log n - C| < \\varepsilon$, then by diagonal extraction $C \\in S$. The construction uses $f(k) = g_{k+1}(f(k-1))$ where $g_k(N)$ is some $n > N$ with distance to $C$ less than $1/(k+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["diagonal argument", "density of sequences", "sequential compactness"],
+    "prerequisites": ["exists_nat_gt", "Filter.tendsto_atTop", "Metric.tendsto_atTop"]
+  }
+]
