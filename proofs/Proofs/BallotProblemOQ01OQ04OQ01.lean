@@ -37,7 +37,7 @@ namespace ChungFellerBijection
 
 open GeneralizedBallot ChungFeller
 
-/-! ## Part I: Setup and Notation -/
+/- ## Part I: Setup and Notation -/
 
 variable {n : ℕ} (hn : 0 < n)
 
@@ -50,7 +50,7 @@ def IsDyckPath (l : List ℤ) (n : ℕ) : Prop :=
 noncomputable def chungFellerRot (l : List ℤ) : List ℤ :=
   cyclicRotation (1 :: l) (rightmostMinPos (1 :: l))
 
-/-! ## Part II: The Good Rotation Starts With 1 -/
+/- ## Part II: The Good Rotation Starts With 1 -/
 
 /-- If a sequence's cyclic rotation is a good rotation, its first element is positive.
     Since elements are ±1, it must be 1. -/
@@ -104,7 +104,7 @@ theorem chungFellerRot_head_eq_one {l : List ℤ} {n : ℕ}
   simp only [List.headI_take_one] at hpos
   rcases hpm with h | h <;> simp [h] at hpos ⊢
 
-/-! ## Part III: The Tail is a Dyck Path -/
+/- ## Part III: The Tail is a Dyck Path -/
 
 /-- Prefix sums of the tail of a good rotation are non-negative.
     If rot = 1::D is the good rotation, then prefixSum(rot, j+1) ≥ 1,
@@ -165,7 +165,7 @@ theorem chungFellerRot_tail_upsteps_all_above {l : List ℤ} {n : ℕ}
     0 ≤ ((chungFellerRot l).tail.take i).sum :=
   chungFellerRot_tail_nonneg_prefixSum hn hbal i
 
-/-! ## Part IV: upstepsAboveAxis of the Tail Equals n -/
+/- ## Part IV: upstepsAboveAxis of the Tail Equals n -/
 
 /-- Helper: card of range filter by get? equals List.count.
     Standard combinatorial fact: positions of value x in a list = count of x.
@@ -274,7 +274,7 @@ theorem chungFellerRot_tail_type_eq_n {l : List ℤ} {n : ℕ}
   rw [upstepsAboveAxis_of_all_nonneg _ (chungFellerRot_tail_nonneg_prefixSum hn hbal)]
   exact chungFellerRot_tail_count_one hn hbal
 
-/-! ## Part V: Well-Typing Lemmas (Session 2) -/
+/- ## Part V: Well-Typing Lemmas (Session 2) -/
 
 /-- **Bound**: For any balanced path, the number of upsteps above the axis is at most n.
     Proof: upstepsAboveAxis is a subset of all +1 positions, which number n. -/
@@ -335,9 +335,9 @@ theorem chungFellerRot_tail_is_dyck {l : List ℤ} {n : ℕ}
   ⟨chungFellerRot_tail_is_balanced hn hbal,
    chungFellerRot_tail_nonneg_prefixSum hn hbal⟩
 
-/-! ## Part VI: The Full Bijection -/
+/- ## Part VI: The Full Bijection -/
 
-/-! ### Orbit Structure -/
+/- ### Orbit Structure -/
 
 /-- **Modular rotation composition**: composing two cyclic rotations that "wrap around"
     equals a single rotation. When r + m > |A|, the composition rotates by r+m-|A|.
@@ -460,7 +460,7 @@ noncomputable def chungFellerMap (n : ℕ) (hn : 0 < n) :
     ⟨⟨(chungFellerRot l).tail, chungFellerRot_tail_is_dyck hn hbal⟩,
      ⟨upstepsAboveAxis l, upstepsAboveAxis_le_n hbal⟩⟩
 
-/-! ## Part VII: Bijectivity Infrastructure -/
+/- ## Part VII: Bijectivity Infrastructure -/
 
 /-- When D is a Dyck path, `chungFellerRot D = 1 :: D`.
     Key: all prefix sums of 1::D at positions ≥ 1 are ≥ 1, so position 0
@@ -730,7 +730,7 @@ theorem chung_feller_uniform' (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n
     Set.ncard (balancedPathsOfType n j) = Set.ncard (balancedPathsOfType n k) :=
   chung_feller_uniform n j k hj hk
 
-/-! ## Part VII: Computational Verification -/
+/- ## Part VII: Computational Verification -/
 
 /-- upstepsAboveAxis of good rotation tail for n=2 paths. -/
 
@@ -747,7 +747,7 @@ example : upstepsAboveAxisC [-1,1,-1,1] = 0 := by native_decide
 
 example : upstepsAboveAxisC [1,1,-1,-1] = 2 := by native_decide  -- Dyck (type 2 = n)
 
-/-! ## Summary of Progress -/
+/- ## Summary of Progress -/
 
 /-- **Progress Summary**: We have proved the COMPLETE FORWARD DIRECTION of the Chung-Feller bijection,
     plus new supporting lemmas that well-type the bijection candidate:
