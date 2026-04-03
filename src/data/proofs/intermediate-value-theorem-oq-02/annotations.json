@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-ivt-defs",
+    "proofId": "intermediate-value-theorem-oq-02",
+    "range": { "startLine": 25, "endLine": 37 },
+    "type": "definition",
+    "title": "Bisection Algorithm: bisectStep, bisect, bisectMid",
+    "content": "Three noncomputable definitions encode the bisection algorithm. bisectStep takes a pair (left, right) and a function f, computes mid = (left+right)/2, and keeps [mid, right] if f(mid) ≤ 0, otherwise keeps [left, mid]. bisect iterates this n times via structural recursion. bisectMid extracts the midpoint of the n-th iterate. All are noncomputable because they depend on real-valued function evaluation, which is generally undecidable.",
+    "mathContext": "$\\text{bisectStep}(f, (l, r)) = \\begin{cases} ((l+r)/2, r) & \\text{if } f((l+r)/2) \\leq 0 \\\\ (l, (l+r)/2) & \\text{otherwise} \\end{cases}$. Iterating $n$ times gives $\\text{bisect}(f, n, (a,b))$.",
+    "significance": "key",
+    "relatedConcepts": ["bisection algorithm", "noncomputable", "structural recursion", "ℝ × ℝ pairs"],
+    "prerequisites": ["real-valued functions in Lean 4", "noncomputable definitions", "pattern matching"]
+  },
+  {
+    "id": "ann-ivt-width",
+    "proofId": "intermediate-value-theorem-oq-02",
+    "range": { "startLine": 39, "endLine": 67 },
+    "type": "technique",
+    "title": "Width Bounds: Exact Formula (b-a)/2^n",
+    "content": "bisectStep_width proves by pure ring arithmetic (no induction needed) that each step exactly halves the width. bisect_width then proves by induction that after n steps the width is exactly (p.2 - p.1)/2^n. The inductive step rewrites using bisectStep_width and the IH, then closes by ring. This clean exact formula (rather than an inequality) is what enables the precise δ-bound in the main theorem.",
+    "mathContext": "After $n$ bisection steps: $(\\text{bisect}(f,n,p))_2 - (\\text{bisect}(f,n,p))_1 = (p_2 - p_1) / 2^n$. Each step: width $\\mapsto$ width$/2$. Total shrinkage: factor $1/2^n$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric convergence", "ring tactic", "induction", "exact formula"],
+    "prerequisites": ["bisectStep definition", "induction on ℕ", "ring arithmetic on ℝ"]
+  },
+  {
+    "id": "ann-ivt-sign",
+    "proofId": "intermediate-value-theorem-oq-02",
+    "range": { "startLine": 69, "endLine": 88 },
+    "type": "concept",
+    "title": "Sign Invariant: f(left) ≤ 0 ≤ f(right) Preserved",
+    "content": "bisectStep_sign proves that each bisection step preserves the sign invariant f(left) ≤ 0 ≤ f(right). The proof splits on whether f(mid) ≤ 0: if yes, the new left is mid and new right is the old right (f(mid) ≤ 0 ✓, f(right) ≥ 0 ✓); if no, i.e., f(mid) > 0, the new right is mid and new left is the old left (f(left) ≤ 0 ✓, f(mid) > 0 means f(new right) > 0 ✓). The bisect_sign induction is then trivial.",
+    "mathContext": "Invariant: $f(l_n) \\leq 0 \\leq f(r_n)$ for all $n$. By the classical IVT, there must be a zero in $[l_n, r_n]$ at every stage. The constructive content makes the nested interval sequence explicit.",
+    "significance": "key",
+    "relatedConcepts": ["loop invariant", "split_ifs", "sign preservation", "IVT condition"],
+    "prerequisites": ["bisectStep definition", "split_ifs tactic", "push_neg"]
+  },
+  {
+    "id": "ann-ivt-containment",
+    "proofId": "intermediate-value-theorem-oq-02",
+    "range": { "startLine": 90, "endLine": 125 },
+    "type": "technique",
+    "title": "Interval Containment: bisect(f,n,(a,b)) ⊆ [a,b]",
+    "content": "bisect_left_mono and bisect_right_mono prove the left endpoint is non-decreasing and the right endpoint is non-increasing (both by induction + split_ifs). Together they give bisect_contained: the n-th bisection interval is contained in the original [a,b]. bisectMid_mem then shows the midpoint lies in [a,b], using containment + ordering (ordering ensures left ≤ right, so mid = (left+right)/2 ∈ [left, right] ⊆ [a,b]).",
+    "mathContext": "$a \\leq l_n \\leq r_n \\leq b$ for all $n$. Combined with $l_n \\leq r_n$: the midpoint $(l_n + r_n)/2 \\in [l_n, r_n] \\subseteq [a,b]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone sequences", "containment", "linarith", "Icc"],
+    "prerequisites": ["bisect_ordered", "induction", "linarith tactic"]
+  },
+  {
+    "id": "ann-ivt-main",
+    "proofId": "intermediate-value-theorem-oq-02",
+    "range": { "startLine": 127, "endLine": 188 },
+    "type": "concept",
+    "title": "Main Theorem: Approximate IVT via Bisection",
+    "content": "approx_ivt is the main result: for continuous f on [a,b] with f(a) ≤ 0 ≤ f(b), for any ε > 0 there exists x ∈ [a,b] with |f(x)| < ε. The proof extracts δ from uniform continuity (compactness of [a,b] gives uniform continuity via isCompact_Icc), chooses n via the Archimedean property (exists_pow_lt_of_lt_one: (1/2)^n < δ/(b-a)), then uses the midpoint of the n-th bisection interval. The midpoint is within (b-a)/2^(n+1) of both endpoints, hence within δ of both, so uniform continuity gives |f(x) - f(left)| < ε and |f(x) - f(right)| < ε. The sign invariant forces |f(x)| < ε.",
+    "mathContext": "Given $\\varepsilon > 0$: find $\\delta$ (uniform continuity of $f$ on $[a,b]$), then $n$ with $(b-a)/2^n < \\delta$. Midpoint $x = (l_n+r_n)/2$ satisfies $|x - l_n| = |x - r_n| = (r_n-l_n)/2 < \\delta$. By UC: $|f(x)-f(l_n)| < \\varepsilon$ and $|f(x)-f(r_n)| < \\varepsilon$. Sign invariant $f(l_n) \\leq 0 \\leq f(r_n)$ then forces $|f(x)| < \\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": ["uniform continuity", "isCompact_Icc", "exists_pow_lt_of_lt_one", "Archimedean property", "ε-δ argument"],
+    "prerequisites": ["uniform continuity on compact sets", "Archimedean property", "sign invariant", "width bound"]
+  },
+  {
+    "id": "ann-ivt-unique",
+    "proofId": "intermediate-value-theorem-oq-02",
+    "range": { "startLine": 190, "endLine": 206 },
+    "type": "insight",
+    "title": "Uniqueness of Zero via Strict Monotonicity",
+    "content": "monotone_ivt_unique proves that for strictly monotone f on [a,b] with f(a) < 0 < f(b), the zero is unique (∃! x ∈ [a,b], f(x) = 0). Existence uses Mathlib's intermediate_value_Icc directly; uniqueness by contradiction: if x ≠ y are both zeros, then x < y or y < x, and in either case strict monotonicity gives f(x) < f(y) = 0 or f(y) < f(x) = 0, a contradiction. This recovers the full exact IVT for monotone functions.",
+    "mathContext": "If $f$ is strictly monotone on $[a,b]$ with $f(a) < 0 < f(b)$, then $\\exists! x \\in [a,b], f(x) = 0$. Uniqueness: if $f(x) = f(y) = 0$ and $x < y$, then $f(x) < f(y)$ by $\\text{StrictMonoOn}$ — contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": ["StrictMonoOn", "∃! (unique existence)", "intermediate_value_Icc", "by_contra"],
+    "prerequisites": ["intermediate value theorem (Mathlib)", "StrictMonoOn", "rcases + omega"]
+  },
+  {
+    "id": "ann-ivt-summary",
+    "proofId": "intermediate-value-theorem-oq-02",
+    "range": { "startLine": 208, "endLine": 243 },
+    "type": "context",
+    "title": "Summary: Three Constructive Guarantees",
+    "content": "constructive_ivt_summary packages three guarantees: (1) approximate roots ∀ ε > 0, ∃ x ∈ [a,b], |f(x)| < ε; (2) midpoint containment ∀ n, bisectMid ∈ [a,b]; (3) width → 0: ∀ ε > 0, ∃ N, ∀ n ≥ N, width < ε. The third requires an Archimedean argument and implies the bisection midpoints form a Cauchy sequence. By completeness of ℝ, they converge to a limit, which is an exact zero by (1). This is how the constructive approximate IVT recovers the classical existence statement.",
+    "mathContext": "The three guarantees together imply: the bisection midpoints form a Cauchy sequence $(x_n) \\subset [a,b]$ with $|f(x_n)| < 1/n$. By completeness of $\\mathbb{R}$: $x_n \\to x^*$, and by continuity $f(x^*) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cauchy sequences", "completeness of ℝ", "constructive vs classical", "exists_pow_lt_of_lt_one"],
+    "prerequisites": ["approx_ivt", "bisect_width", "Archimedean property", "ℝ completeness"]
+  }
+]

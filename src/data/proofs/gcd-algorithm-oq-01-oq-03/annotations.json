@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-binet-defs",
+    "proofId": "gcd-algorithm-oq-01-oq-03",
+    "range": { "startLine": 115, "endLine": 119 },
+    "type": "definition",
+    "title": "Golden Ratio φ and Conjugate ψ",
+    "content": "The golden ratio φ = (1+√5)/2 ≈ 1.618 and its conjugate ψ = (1-√5)/2 ≈ -0.618 are the two roots of the characteristic equation x² - x - 1 = 0 of the Fibonacci recurrence. Together they satisfy Vieta's formulas: φ + ψ = 1 (sum of roots) and φ·ψ = -1 (product of roots). Both are declared noncomputable since they live in ℝ and involve √5.",
+    "mathContext": "$\\varphi = \\frac{1+\\sqrt{5}}{2} \\approx 1.618$, $\\psi = \\frac{1-\\sqrt{5}}{2} \\approx -0.618$. Both satisfy $x^2 = x + 1$, i.e., they are roots of $x^2 - x - 1 = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["golden ratio", "characteristic equation", "Vieta's formulas", "noncomputable", "Real.sqrt"],
+    "prerequisites": ["real numbers in Lean 4", "algebraic numbers", "Fibonacci recurrence"]
+  },
+  {
+    "id": "ann-binet-algebraic",
+    "proofId": "gcd-algorithm-oq-01-oq-03",
+    "range": { "startLine": 121, "endLine": 167 },
+    "type": "technique",
+    "title": "Algebraic Properties: φ² = φ+1 and Vieta's Formulas",
+    "content": "The key algebraic facts are proved by ring_nf combined with Real.sq_sqrt. The defining property φ² = φ + 1 (and identically ψ² = ψ + 1) is what makes paired induction work in Binet's formula: the recurrence step reduces φ^(n+2) = φ^n · φ² = φ^n · (φ+1) = φ^(n+1) + φ^n, mirroring the Fibonacci recurrence. Vieta's formulas (φ+ψ=1, φψ=-1) reflect that φ and ψ are roots of x²-x-1=0.",
+    "mathContext": "$\\varphi^2 = \\varphi + 1$, $\\psi^2 = \\psi + 1$, $\\varphi + \\psi = 1$, $\\varphi\\psi = -1$, $\\varphi - \\psi = \\sqrt{5}$. The last identity is the key for the initial case of Binet's formula: $F_1 = (\\varphi - \\psi)/\\sqrt{5} = \\sqrt{5}/\\sqrt{5} = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["ring_nf", "Real.sq_sqrt", "Vieta's formulas", "characteristic polynomial"],
+    "prerequisites": ["ring arithmetic", "Real.sqrt properties", "Lean 4 ring tactic"]
+  },
+  {
+    "id": "ann-binet-formula",
+    "proofId": "gcd-algorithm-oq-01-oq-03",
+    "range": { "startLine": 170, "endLine": 204 },
+    "type": "concept",
+    "title": "Binet's Formula: fib(n) = (φⁿ - ψⁿ)/√5",
+    "content": "Binet's formula is proved by paired induction: simultaneously prove the formula for fib(n) and fib(n+1). The base case uses fib(0)=0=(1-1)/√5 and fib(1)=1=(φ-ψ)/√5=√5/√5. The inductive step uses the Fibonacci recurrence fib(n+2)=fib(n)+fib(n+1) and the algebraic identities φ²=φ+1, ψ²=ψ+1. The formula simultaneously encodes the exact integer value (discrete) and continuous exponential growth governed by φ.",
+    "mathContext": "$F_n = \\frac{\\varphi^n - \\psi^n}{\\sqrt{5}}$ for all $n \\geq 0$. Proof by paired induction: assume $F_n = \\frac{\\varphi^n - \\psi^n}{\\sqrt{5}}$ and $F_{n+1} = \\frac{\\varphi^{n+1} - \\psi^{n+1}}{\\sqrt{5}}$; then $F_{n+2} = F_n + F_{n+1} = \\frac{(\\varphi^n + \\varphi^{n+1}) - (\\psi^n + \\psi^{n+1})}{\\sqrt{5}} = \\frac{\\varphi^n(1+\\varphi) - \\psi^n(1+\\psi)}{\\sqrt{5}} = \\frac{\\varphi^{n+2} - \\psi^{n+2}}{\\sqrt{5}}$.",
+    "significance": "key",
+    "relatedConcepts": ["paired induction", "Fibonacci recurrence", "exponential growth", "discrete-continuous bridge"],
+    "prerequisites": ["Nat.fib_add_two", "induction in Lean 4", "phi_sq", "psi_sq"]
+  },
+  {
+    "id": "ann-five-step-identity",
+    "proofId": "gcd-algorithm-oq-01-oq-03",
+    "range": { "startLine": 32, "endLine": 66 },
+    "type": "technique",
+    "title": "Five-Step Fibonacci Identity: fib(5k+7) ≥ 10·fib(5k+2)",
+    "content": "The arithmetic core of Part I. fib_add_five establishes fib(n+5) = 5·fib(n+1) + 3·fib(n) by unfolding four applications of the recurrence and letting omega close by linear arithmetic. fib_five_step_growth then shows fib(5k+7) ≥ 10·fib(5k+2) by expanding all intermediate Fibonacci values and using monotonicity fib(5k) ≤ fib(5k+1). The key inequality fib(5k+7) = 8·fib(5k+2) + 5·fib(5k+1) ≥ 10·fib(5k+2) uses 3·fib(5k+1) ≥ 2·fib(5k).",
+    "mathContext": "$F_{n+5} = 5F_{n+1} + 3F_n$. Consequently $F_{5k+7} = 8F_{5k+2} + 5F_{5k+1} \\geq 10 F_{5k+2}$ (using $F_{5k+1} \\geq F_{5k}$ and $3F_{5k+1} \\geq 2F_{5k+2} - 2F_{5k}$).",
+    "significance": "key",
+    "relatedConcepts": ["Fibonacci recurrence", "Nat.fib_mono", "omega tactic", "linear arithmetic"],
+    "prerequisites": ["Nat.fib_add_two", "Fibonacci monotonicity", "omega tactic"]
+  },
+  {
+    "id": "ann-pow10-bound",
+    "proofId": "gcd-algorithm-oq-01-oq-03",
+    "range": { "startLine": 68, "endLine": 96 },
+    "type": "insight",
+    "title": "fib(5k+2) ≥ 10^k and the Unrestricted Lamé Bound",
+    "content": "fib_ge_pow10_general proves 10^k ≤ fib(5k+2) for all k by induction, using the multiplicative growth lemma as the inductive step: 10^(k+1) = 10·10^k ≤ 10·fib(5k+2) ≤ fib(5k+7) = fib(5(k+1)+2). The Lamé bound then follows: given b > 0 with d = ⌊log₁₀ b⌋, we have b < 10^(d+1) ≤ fib(5(d+1)+2), and the parent module's lame_step_bound converts this Fibonacci lower bound into a step count upper bound.",
+    "mathContext": "$F_{5k+2} \\geq 10^k$ for all $k \\geq 0$. Combined with $b < 10^{d+1}$ where $d = \\lfloor \\log_{10} b \\rfloor$: $b < F_{5(d+1)+2}$, so the Euclidean algorithm on $b$ takes at most $5(d+1)-1 \\leq 5 \\cdot \\text{decimalDigits}(b)$ steps.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.log", "Nat.lt_pow_succ_log_self", "lame_step_bound", "induction"],
+    "prerequisites": ["GCDAlgorithmOQ01 module", "Nat.log API", "Fibonacci growth"]
+  },
+  {
+    "id": "ann-phi5-gt-10",
+    "proofId": "gcd-algorithm-oq-01-oq-03",
+    "range": { "startLine": 234, "endLine": 269 },
+    "type": "insight",
+    "title": "φ⁵ > 10: The Golden Ratio Explanation for 5 Digits",
+    "content": "The computation φ⁵ = 5φ+3 > 10 is the geometric reason Lamé's bound has coefficient 5: each 5-step block in the Fibonacci sequence multiplies by φ⁵ > 10, consuming exactly one decimal digit. The proof reduces powers of φ using φ² = φ+1 iteratively (phi_pow3, phi_pow4, phi_pow5), then bounds φ > 7/5 from √5 > 9/5 (itself from √5·√5 = 5 and √5 > 0). The numerical value φ⁵ ≈ 11.09 explains why the bound is not tight at 4 digits.",
+    "mathContext": "$\\varphi^5 = 5\\varphi + 3$. Since $\\varphi > 7/5$: $5\\varphi + 3 > 5 \\cdot 7/5 + 3 = 7 + 3 = 10$. Numerically: $\\varphi^5 \\approx 11.09$, confirming $\\varphi^5 > 10$.",
+    "significance": "key",
+    "relatedConcepts": ["powers of golden ratio", "Lucas numbers", "phi_sq reduction", "nlinarith"],
+    "prerequisites": ["phi_sq", "sqrt5_sq", "nlinarith tactic"]
+  },
+  {
+    "id": "ann-nearest-integer",
+    "proofId": "gcd-algorithm-oq-01-oq-03",
+    "range": { "startLine": 206, "endLine": 232 },
+    "type": "concept",
+    "title": "Nearest Integer Property: fib(n) = round(φⁿ/√5)",
+    "content": "Since |ψ| < 1, we have |ψ^n| ≤ 1 for all n ≥ 0, and the Binet formula gives |fib(n) - φⁿ/√5| = |ψⁿ|/√5 ≤ 1/√5 < 1/2 (since √5 > 2). This means fib(n) is exactly the nearest integer to φⁿ/√5, giving a closed-form approximation accurate to within 1/2. The proof uses abs_psi_lt_one (|ψ| < 1 from √5 < 3 and √5 > 1), then combines pow_le_one with bounds on √5.",
+    "mathContext": "$|F_n - \\varphi^n/\\sqrt{5}| = |\\psi|^n/\\sqrt{5} \\leq 1/\\sqrt{5} < 1/2$, so $F_n = \\text{round}(\\varphi^n/\\sqrt{5})$. This gives the Fibonacci numbers as round($\\varphi^n / 2.236\\ldots$) for all $n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["nearest integer", "exponential approximation", "abs_psi_lt_one", "pow_le_one"],
+    "prerequisites": ["Binet's formula", "absolute value", "field_simp", "nlinarith"]
+  }
+]
