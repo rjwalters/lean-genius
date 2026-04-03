@@ -42,14 +42,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The power mean inequality is one of the most fundamental results in classical analysis. For a parameter p, the p-th power mean of positive reals a, b is M_p(a,b) = ((a^p+b^p)/2)^(1/p). Special cases include the harmonic (p=-1), geometric (p→0), arithmetic (p=1), and quadratic (p=2) means. The chain min = M_{-∞} ≤ M_{-1} ≤ M_0 ≤ M_1 ≤ M_2 ≤ M_{+∞} = max has been known since at least the 19th century.",
+    "historicalContext": "The power mean inequality has roots stretching back centuries. The AM-GM inequality for two variables was known to ancient Greek mathematicians and appears in Euclid's Elements in geometric form. The harmonic mean was studied by Pythagoras and the Pythagoreans as part of their theory of musical ratios. Cauchy gave the first rigorous proof of the general n-variable AM-GM inequality in 1821 using his celebrated forward-backward induction. The systematic study of the family of power means $M_p(a,b) = ((a^p+b^p)/2)^{1/p}$ was developed in the early 20th century, with the complete monotonicity result $M_{p_1} \\leq M_{p_2}$ for $p_1 \\leq p_2$ established in the landmark 1934 book Inequalities by Hardy, Littlewood, and Pólya. The quadratic mean (root-mean-square) gained practical prominence in physics and engineering as the natural measure of signal power. This Lean formalization captures the $n=2$ case of the full chain $\\min = M_{-\\infty} \\leq M_{-1} \\leq M_0 \\leq M_1 \\leq M_2 \\leq M_{+\\infty} = \\max$, providing a machine-verified foundation for these classical results.",
     "problemStatement": "Prove the complete power mean inequality chain for two positive reals: min(a,b) ≤ HM(a,b) ≤ GM(a,b) ≤ AM(a,b) ≤ QM(a,b) ≤ max(a,b).",
     "text": "Formalizes all five links of the power mean chain for two variables, with each step proved from algebraic identities and the monotonicity of square root. No axioms or sorries.",
     "proofStrategy": "Each inequality is reduced to a sum-of-squares argument: the gap between consecutive means can be expressed as a nonneg expression involving (a-b)². For steps involving square roots, we use sqrt monotonicity to reduce to polynomial inequalities, then close with nlinarith.",
     "keyInsights": [
-      "Each step in the chain reduces to (a-b)² ≥ 0 after algebraic manipulation",
-      "The sqrt steps (HM ≤ GM, AM ≤ QM, QM ≤ max) use Real.sqrt_le_sqrt to reduce to polynomial comparisons",
-      "All five inequalities are tight if and only if a = b"
+      "Every inequality in the chain reduces to the single algebraic fact $(a-b)^2 \\geq 0$ after clearing denominators and square roots — revealing that all power mean inequalities share the same one-line proof certificate",
+      "The sqrt-based proof strategy (write $x = \\sqrt{x^2}$ for $x \\geq 0$, then apply $\\sqrt{\\cdot}$ monotonicity) converts nonlinear root comparisons into polynomial ones, making all five steps amenable to nlinarith automation",
+      "The harmonic mean is the dual of the arithmetic mean under inversion: $HM(a,b) = 1/AM(1/a, 1/b)$, so $HM \\leq GM$ is equivalent to $AM(1/a,1/b) \\geq GM(1/a,1/b)$, which is just AM-GM applied to the reciprocals",
+      "All five inequalities are tight simultaneously if and only if $a = b$, and the gap in each step is proportional to $(a-b)^2$, quantifying exactly how much the means diverge as $a$ and $b$ separate",
+      "The proof requires only two Mathlib lemmas beyond arithmetic: Real.sqrt_le_sqrt (monotonicity) and Real.sqrt_sq (inversion of squaring for nonneg inputs) — all else is handled by nlinarith and linarith"
     ],
     "prerequisites": [
       "Basic real analysis",
@@ -122,9 +124,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The complete power mean inequality chain min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max is fully verified for two positive reals with 0 axioms and 0 sorries.",
-    "openQuestions": [],
-    "implications": "The complete power mean inequality chain min ≤ HM ≤ GM ≤ AM ≤ QM ≤ max is fully verified for two positive reals with 0 axioms and 0 sorries."
+    "summary": "The complete power mean inequality chain $\\min(a,b) \\leq HM(a,b) \\leq GM(a,b) \\leq AM(a,b) \\leq QM(a,b) \\leq \\max(a,b)$ is fully verified for two positive reals, with equality throughout if and only if $a = b$. All 11 theorems are proved from first principles with 0 axioms and 0 sorries.",
+    "implications": "This formalization provides a machine-checked foundation for the classical power mean hierarchy at $n=2$. Beyond the immediate result, the proof technique — reducing every step to $(a-b)^2 \\geq 0$ via sqrt monotonicity — is a reusable pattern applicable to any pair of power means. The verified equality conditions enable downstream proofs that require knowing when a mean is strictly less than another. The companion file (parent: cauchy-schwarz-integral-oq-01-oq-01-oq-01) extends these techniques to Young's inequality and Schur's inequality, illustrating the fertility of the sum-of-squares approach for classical analysis.",
+    "openQuestions": [
+      "Can the $n$-variable power mean chain $M_{p_1}(x_1,\\ldots,x_n) \\leq M_{p_2}(x_1,\\ldots,x_n)$ for $p_1 \\leq p_2$ be formalized in Lean 4 with comparable brevity, or does the general case require substantially more infrastructure (e.g., Jensen's inequality for convex functions)?",
+      "The Lean proof uses nlinarith with explicit hints like sq_nonneg (a - b). Can polyrith or positivity close these goals hint-free, and would this yield a fully automated proof of the entire chain?",
+      "The weighted power mean $M_p^w(a,b) = (w_1 a^p + w_2 b^p)^{1/p}$ for weights $w_1 + w_2 = 1$ satisfies the same monotonicity. Does Mathlib contain the infrastructure needed to formalize this generalization?"
+    ]
   },
   "crossReferences": [
     {
