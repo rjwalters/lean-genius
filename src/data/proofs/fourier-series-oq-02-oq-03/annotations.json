@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-holder-circle-def",
+    "proofId": "fourier-series-oq-02-oq-03",
+    "range": { "startLine": 41, "endLine": 53 },
+    "type": "definition",
+    "title": "Hölder Continuity on AddCircle and the Decay Bound",
+    "content": "Three definitions set up the formal framework. IsHolderOnCircle wraps Mathlib's HolderWith predicate for functions on AddCircle T. decayConstant = 1/2 encodes the universal constant from the half-period translation trick. decayBound C α n = (1/2)·C·(T/(2|n|))^α gives the Fourier coefficient decay rate for α-Hölder functions with constant C. The period T is a variable with Fact (0 < T), making the formalization valid for any positive period.",
+    "mathContext": "$\\text{decayBound}(C, \\alpha, n) = \\frac{1}{2} \\cdot C \\cdot \\left(\\frac{T}{2|n|}\\right)^\\alpha$",
+    "significance": "key",
+    "relatedConcepts": ["HolderWith", "AddCircle T", "Fourier coefficient decay", "half-period translation"],
+    "prerequisites": ["Hölder continuity (HolderWith in Mathlib)", "AddCircle T period space", "NNReal exponents"]
+  },
+  {
+    "id": "ann-decay-positivity",
+    "proofId": "fourier-series-oq-02-oq-03",
+    "range": { "startLine": 59, "endLine": 71 },
+    "type": "technique",
+    "title": "Positivity Properties of the Decay Bound",
+    "content": "Two basic structural lemmas. decayConstant_pos proves 0 < 1/2 by norm_num, trivially. decayBound_nonneg proves the bound is nonneg for n ≠ 0: the product (1/2)·C·(T/(2|n|))^α is nonneg by positivity of each factor — (1/2) > 0 by norm_num, C ≥ 0 as an NNReal, T > 0 by the Fact hypothesis, and the real power of a nonneg number is nonneg by Real.rpow_nonneg. These are prerequisites for antitone and limit arguments.",
+    "mathContext": "$\\text{decayBound}(C, \\alpha, n) \\geq 0$ when $n \\neq 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.rpow_nonneg", "positivity tactic", "NNReal.coe_nonneg"],
+    "prerequisites": ["Real.rpow_nonneg", "Fact (0 < T)", "NNReal coercion"]
+  },
+  {
+    "id": "ann-antitone",
+    "proofId": "fourier-series-oq-02-oq-03",
+    "range": { "startLine": 73, "endLine": 81 },
+    "type": "technique",
+    "title": "Decay Bound is Antitone in |n|",
+    "content": "decayBound_antitone proves that the bound decreases as |n| grows: if |m| ≥ |n| then decayBound(C,α,m) ≤ decayBound(C,α,n). The proof uses mul_le_mul_of_nonneg_left to reduce to showing (T/(2|m|))^α ≤ (T/(2|n|))^α, which follows from Real.rpow_le_rpow applied to the reversed inequality T/(2|m|) ≤ T/(2|n|) (since |n| ≤ |m| implies 1/|m| ≤ 1/|n|). The hypothesis α > 0 (hα) is needed to make x ↦ x^α antitone in the denominator.",
+    "mathContext": "$|n| \\leq |m| \\Rightarrow \\left(\\frac{T}{2|m|}\\right)^\\alpha \\leq \\left(\\frac{T}{2|n|}\\right)^\\alpha$",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.rpow_le_rpow", "div_le_div", "antitone functions", "monotone decay"],
+    "prerequisites": ["Real.rpow_le_rpow (monotonicity)", "div_le_div_of_nonneg_left", "α > 0"]
+  },
+  {
+    "id": "ann-tendsto-zero",
+    "proofId": "fourier-series-oq-02-oq-03",
+    "range": { "startLine": 83, "endLine": 96 },
+    "type": "insight",
+    "title": "Decay Bound Tends to Zero: Riemann–Lebesgue in Structural Form",
+    "content": "decayBound_tendsto_zero proves Filter.Tendsto (decayBound C α (n+1)) atTop (nhds 0) for α > 0. This is a structural version of the Riemann–Lebesgue lemma: not the full statement (which requires L¹ measurability) but the bound's qualitative decay. The proof computes the limit by rewriting 0 as (1/2)·C·0 and using Filter.Tendsto.mul with the constant numerator and the limit T/(2(n+1)) → 0. The limit chain T/(2(n+1)) →^{n→∞} 0 uses atTop_nonneg_mul_left (growth of the denominator) and tendsto_natCast_atTop_atTop.",
+    "mathContext": "$\\lim_{n\\to\\infty} \\frac{T}{2(n+1)} = 0$, so $\\lim_{n\\to\\infty} \\frac{1}{2}C\\left(\\frac{T}{2(n+1)}\\right)^\\alpha = 0$ for $\\alpha > 0$",
+    "significance": "key",
+    "relatedConcepts": ["Riemann-Lebesgue lemma", "Filter.Tendsto", "Filter.atTop", "polynomial decay"],
+    "prerequisites": ["Filter.Tendsto.mul", "Filter.atTop_nonneg_mul_left", "tendsto_natCast_atTop_atTop"]
+  },
+  {
+    "id": "ann-half-period-trick",
+    "proofId": "fourier-series-oq-02-oq-03",
+    "range": { "startLine": 98, "endLine": 120 },
+    "type": "concept",
+    "title": "The Half-Period Translation Trick and Sharpness",
+    "content": "The central mathematical idea behind the 1/2 constant is the half-period translation trick: for any f and nonzero n, we have 2ĉ_n(f) = ∫ (f(x) - f(x + T/(2n)))·e_{-n}(x) dx. This follows because e_{-n}(x + T/(2n)) = e^{-2πin·T/(2nT)}·e_{-n}(x) = -e_{-n}(x). Applying the Hölder bound to |f(x) - f(x + T/(2n))| ≤ C·(T/(2|n|))^α gives the estimate. The sharpness — that 1/2 cannot be replaced by a smaller constant — is stated in prose but not formalized as an axiom in the current file. The extremal construction (piecewise-linear sawtooth variants that saturate the Hölder bound) would require constructing explicit functions in AddCircle T.",
+    "mathContext": "$2\\hat{c}_n(f) = \\int (f(x) - f(x + T/2n)) e_{-n}(x) dx$, so $|\\hat{c}_n| \\leq \\frac{C}{2} \\left(\\frac{T}{2|n|}\\right)^\\alpha$",
+    "significance": "key",
+    "relatedConcepts": ["half-period translation", "Fourier coefficient symmetry", "extremal Hölder functions", "sawtooth function"],
+    "prerequisites": ["Fourier coefficient definition", "Hölder continuity", "e_{-n}(x+T/2n) = -e_{-n}(x)"]
+  },
+  {
+    "id": "ann-boundary-cases",
+    "proofId": "fourier-series-oq-02-oq-03",
+    "range": { "startLine": 121, "endLine": 131 },
+    "type": "context",
+    "title": "Boundary Cases: α=0 and Lipschitz (α=1)",
+    "content": "Two lemmas handle the boundary exponents. small_alpha_bound (α=0): the decay bound becomes (1/2)·C regardless of n — the bound is vacuous (O(1)) because Hölder continuity with α=0 is just boundedness. lipschitz_gives_linear_decay (α=1): the bound becomes (1/2)·C·T/(2|n|), i.e., O(1/|n|) decay. This is the classical 1/|n| Fourier decay for Lipschitz functions. The proofs are one-liners via simp, reducing to rpow 0 = 1 and rpow 1 = id respectively.",
+    "mathContext": "$\\alpha=0$: $\\text{decayBound}(C,0,n) = C/2$. $\\alpha=1$: $\\text{decayBound}(C,1,n) = \\frac{C}{2} \\cdot \\frac{T}{2|n|}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hölder exponent boundary cases", "Lipschitz Fourier decay O(1/n)", "simp with rpow"],
+    "prerequisites": ["Real.rpow_zero (= 1)", "Real.rpow_one (= id)"]
+  }
+]
