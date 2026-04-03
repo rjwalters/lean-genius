@@ -1,0 +1,109 @@
+{
+  "id": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+  "title": "Completing Categorical Lawvere: Explicit Evaluation Morphism",
+  "slug": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+  "description": "Resolves the 2 sorries in CantorDiagonalizationOQ03OQ01.lean by identifying the root cause (the evaluation morphism e : Pt A → Pt(B^A) was implicit and replaced by a sorry placeholder) and providing the correct formulation. The key fix: make e explicit as a parameter, so C.apply (e a) x is well-typed. The categorical theorem then reduces immediately to lawvere_abstract via an EvalStructure with eval = fun a x => C.apply (e a) x. Also proves categorical Cantor's theorem and shows the categorical version specializes to the type-theoretic version.",
+  "meta": {
+    "author": "researcher-3",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean",
+    "tags": [
+      "set-theory",
+      "category-theory",
+      "fixed-point-theorems",
+      "diagonal-argument",
+      "cantor",
+      "lawvere",
+      "completion",
+      "open-question",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. The categorical Lawvere theorem is fully proved by reduction to lawvere_abstract. The EvalStructure construction is the key bridge.",
+    "originalContributions": [
+      "Diagnosis of the sorry: the parent's sorry arose from C.apply (sorry : C.Pt (C.exp A B)) x — a constant element used where a function of a : Pt A was needed",
+      "lawvere_categorical (corrected): makes e : Pt A → Pt(exp A B) explicit; proof reduces to lawvere_abstract via EvalStructure",
+      "no_categorical_surjection: if f has no fixed point, no point-surjective e can exist",
+      "categorical_cantor: Cantor's theorem in the categorical framework (no e : A → (A → Prop) can be point-surjective)",
+      "categorical_specializes_to_type_theoretic: connects lawvere_categorical to Function.Surjective version via typeUniverse",
+      "typeUniverse: CategoricalEval instance from the type universe (objects = types, apply = function application)",
+      "sorry_diagnosis_resolved: documents that making e explicit is sufficient and necessary"
+    ],
+    "lineCount": 185,
+    "theoremCount": 7,
+    "defCount": 3
+  },
+  "overview": {
+    "historicalContext": "Lawvere's 1969 paper proves a fixed-point theorem in any cartesian closed category (CCC): if e : A → B^A is a point-surjection, every endomorphism B → B has a fixed point. This unifies Cantor's theorem (B = Ω = subobject classifier, f = negation), Russell's paradox, the halting problem, and Gödel's first incompleteness theorem. The categorical formulation is strictly more general than the type-theoretic one: it applies in any topos, not just the category of types. The formalization challenge in Lean is that full topos machinery is not yet in Mathlib, requiring an abstract intermediate layer.",
+    "problemStatement": "**Completion Task**: The parent proof `cantor-diagonalization-oq-03-oq-01` had 2 sorries in the `lawvere_categorical` theorem:\n\n```lean\ntheorem lawvere_categorical (C : CategoricalEval) {A B : C.Obj}\n    (hSurj : ∀ g : C.Pt A → C.Pt B, ∃ a : C.Pt A,\n      ∀ x : C.Pt A, C.apply (sorry : C.Pt (C.exp A B)) x = g x)\n    (f : C.Pt B → C.Pt B) : C.HasFixedPoint f := by\n  sorry\n```\n\nThe `sorry` in the hypothesis is a type error: it tries to use a constant element of type `C.Pt (C.exp A B)` where a function `e a : C.Pt (C.exp A B)` (depending on `a : C.Pt A`) was intended.\n\n**Fix**: Add `e : C.Pt A → C.Pt (C.exp A B)` as an explicit parameter.",
+    "text": "The completion adds an explicit evaluation morphism e : Pt A → Pt(B^A) to lawvere_categorical, making the hypothesis well-typed. The proof then constructs an EvalStructure where eval a x = C.apply (e a) x, and applies lawvere_abstract. This is a clean, zero-sorry, zero-axiom proof of the full categorical Lawvere theorem.",
+    "proofStrategy": "**The core insight**: C.apply and e together define an EvalStructure:\n```\nE = { Ob := C.Pt A, Val := C.Pt B, eval := fun a x => C.apply (e a) x }\n```\nPoint-surjectivity of e translates to E.IsPointSurjective exactly. Then lawvere_abstract gives ∃ v, f v = v, which is exactly C.HasFixedPoint f.",
+    "keyInsights": [
+      "**The sorry was a type error, not a logic gap**: the parent's proof body was actually trivial once the hypothesis was corrected",
+      "**EvalStructure is the key bridge**: by packaging (apply, e) into EvalStructure, the categorical theorem reduces to the already-proved abstract theorem in one step",
+      "**Explicitness matters**: in dependent type theory, implicit arguments (like e) must be made explicit when they appear in the hypothesis — there's no Lean mechanism to 'infer' a morphism from an existential",
+      "**typeUniverse instance**: the type universe forms a CategoricalEval where apply = function application, showing the abstract structure is inhabited",
+      "**Cantor as categorical corollary**: Not : Prop → Prop has no fixed point (¬P = P is impossible), so by no_categorical_surjection, no e : A → (A → Prop) is point-surjective"
+    ]
+  },
+  "sections": [
+    {
+      "id": "evalstruct",
+      "title": "Evaluation Structures (Copied from Parent)",
+      "startLine": 35,
+      "endLine": 65,
+      "summary": "Re-states EvalStructure, IsPointSurjective, and lawvere_abstract for self-containedness. These are proved identically to the parent file.",
+      "mathContext": "An evaluation structure $(\\text{Ob}, \\text{Val}, \\text{eval})$ models the evaluation map $\\text{ev}: B^A \\times A \\to B$ at the global-element level. Point-surjectivity says every function $\\text{Ob} \\to \\text{Val}$ is representable."
+    },
+    {
+      "id": "categorical",
+      "title": "Categorical Evaluation Structure",
+      "startLine": 67,
+      "endLine": 100,
+      "summary": "Re-states CategoricalEval (from parent). Obj, Hom, exp, Pt, apply, ptSurj. HasFixedPoint definition.",
+      "mathContext": "A CategoricalEval models a CCC: objects, morphisms, exponentials, global elements, and the evaluation map. The apply field is $\\text{ev}(-, -) : \\text{Pt}(B^A) \\times \\text{Pt}(A) \\to \\text{Pt}(B)$."
+    },
+    {
+      "id": "main",
+      "title": "lawvere_categorical (FIXED)",
+      "startLine": 102,
+      "endLine": 145,
+      "summary": "The corrected categorical Lawvere theorem (0 sorries). Makes e : Pt A → Pt(exp A B) explicit. Proof: construct EvalStructure from (e, apply), apply lawvere_abstract.",
+      "mathContext": "The morphism $e: A \\to B^A$ at the level of global elements is $e: \\text{Pt}(A) \\to \\text{Pt}(B^A)$. Point-surjectivity: $\\forall g: \\text{Pt}(A) \\to \\text{Pt}(B), \\exists a, \\forall x, \\text{ev}(e(a), x) = g(x)$."
+    },
+    {
+      "id": "cantor",
+      "title": "Categorical Cantor and Connections",
+      "startLine": 148,
+      "endLine": 185,
+      "summary": "categorical_cantor: no e : A → (A → Prop) is point-surjective (via Not having no fixed point). categorical_specializes_to_type_theoretic: Function.Surjective e → lawvere_categorical applies.",
+      "mathContext": "In a topos, $B = \\Omega$ (subobject classifier) with internal negation $\\neg: \\Omega \\to \\Omega$. Since $\\neg P = P$ is impossible for any proposition $P$, Lawvere prevents any $A \\twoheadrightarrow \\Omega^A$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The categorical Lawvere fixed-point theorem is completed with 0 sorries and 0 axioms. The fix was to make the evaluation morphism e explicit as a parameter. The proof reduces to lawvere_abstract in one step via EvalStructure. The categorical framework now properly connects to the type-theoretic version.",
+    "implications": "The completion shows that the abstract categorical framework for Lawvere's theorem requires only the evaluation morphism to be explicit — no full CCC or topos machinery is needed. The EvalStructure serves as the minimal interface between category theory and type theory. This architecture (abstract structure → reduction → type-theoretic core) is the right pattern for formalizing category-theoretic results in a type-theoretic proof assistant.",
+    "openQuestions": [
+      "Can Mathlib's category theory library (CategoryTheory.Limits, CategoryTheory.CartesianClosed) be used to state lawvere_categorical more faithfully?",
+      "Is there a constructive proof of categorical Cantor without propositional extensionality?",
+      "Can Rice's theorem (undecidability of semantic properties) be stated as a Lawvere instance via CategoricalEval?",
+      "Can the Gödel incompleteness theorem be stated categorically using a CategoricalEval where Ob = provable sentences?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01",
+      "relationship": "completes",
+      "description": "Resolves the 2 sorries in the categorical Lawvere formalization"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03",
+      "relationship": "related",
+      "description": "Grandparent: type-theoretic Lawvere FPT from which this categorical version descends"
+    }
+  ]
+}
