@@ -30,9 +30,9 @@
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 11,
-    "axiomCount": 6,
+    "axiomCount": 5,
     "lineCount": 497,
-    "assumptions": "6 axioms: diagonalForm, sylvester_law_of_inertia, hasse_minkowski_alt, and 3 more. See Lean source for complete statements.",
+    "assumptions": "5 axioms: diagonalForm, sylvester_law_of_inertia, hasse_minkowski_alt, rational_classification_complete, selmer_curve_no_rational_points. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -206,7 +206,7 @@
     ],
     "namespace": "Hilbert11QuadraticForms",
     "lineCount": 497,
-    "axiomCount": 6,
+    "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 17
   },
