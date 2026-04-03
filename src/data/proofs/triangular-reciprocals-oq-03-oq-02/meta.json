@@ -7,7 +7,7 @@
         "author": "Generalization of Mercator (1668) / Euler series identities",
         "sourceUrl": "https://en.wikipedia.org/wiki/Harmonic_number#Alternating_harmonic_numbers",
         "date": "2026",
-        "status": "verified",
+        "status": "axiomatized",
         "proofRepoPath": "Proofs/TriangularReciprocalGeneralized.lean",
         "tags": [
             "analysis",
@@ -16,9 +16,10 @@
             "harmonic-numbers",
             "partial-fractions"
         ],
-        "badge": "verified",
+        "badge": "axiom",
         "sorries": 0,
-        "axiomCount": 0,
+        "axiomCount": 1,
+        "assumptions": "1 axiom inherited from TriangularReciprocalAlternatingOQ03.lean: alternating_harmonic_hasSum (∑(-1)^{n+1}/n = log 2, the Mercator series). Used in proofs at lines 77 and 168 to establish the generalized series formula. 0 sorries.",
         "dateAdded": "2026-03-29",
         "mathlibDependencies": [
             {
