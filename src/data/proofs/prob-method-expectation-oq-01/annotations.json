@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-pmeoq01-uniform-measure",
+    "proofId": "prob-method-expectation-oq-01",
+    "range": { "startLine": 26, "endLine": 37 },
+    "type": "definition",
+    "title": "uniformProbMeasure: Counting Measure Normalized to Probability",
+    "content": "`uniformProbMeasure (α : Type*) : Measure α` is defined as `(Fintype.card α : ℝ≥0∞)⁻¹ • Measure.count`. The first theorem `counting_measure_is_uniform` establishes that `Measure.count (Set.univ) = Fintype.card α` via `simp [Measure.count_apply_finite]`. The scalar `(card α)⁻¹` in `ℝ≥0∞` normalizes to total mass 1. Multiple typeclasses are required: `[Fintype α]`, `[MeasurableSpace α]`, `[MeasurableSingletonClass α]`, `[Nonempty α]` — the last ensuring card α > 0.",
+    "mathContext": "The *counting measure* on a finite set $\\{\\omega_1,\\ldots,\\omega_n\\}$ assigns measure $|A|$ to each set $A \\subseteq \\Omega$. Normalizing by $1/n$ gives the uniform probability measure $P(A) = |A|/n$. In Mathlib, `Measure.count` is the counting measure on a measurable space, and `ENNReal` (`ℝ≥0∞`) is used because measures can be infinite. The scaling `(n : ℝ≥0∞)⁻¹ • μ` multiplies all measure values by $1/n$.",
+    "significance": "key",
+    "relatedConcepts": ["Measure.count", "MeasurableSingletonClass", "Fintype.card", "ENNReal arithmetic"],
+    "prerequisites": ["Mathlib MeasureTheory", "Fintype and MeasurableSpace typeclasses", "ENNReal vs ℝ"]
+  },
+  {
+    "id": "ann-pmeoq01-bridge",
+    "proofId": "prob-method-expectation-oq-01",
+    "range": { "startLine": 39, "endLine": 51 },
+    "type": "technique",
+    "title": "Finset Expectation = Bochner Integral: The Bridge Lemma",
+    "content": "`finset_expectation_eq_integral` proves `(∑ a : α, X a) / Fintype.card α = ∫ a, X a ∂(uniformProbMeasure α)`. The proof uses `simp [uniformProbMeasure, integral_smul_measure, smul_eq_mul, integral_count]` to expand the RHS, then `rw [ENNReal.toReal_inv, ENNReal.toReal_natCast, div_eq_inv_mul]` to match the LHS. The key identity is `integral_count : ∫ a, f a ∂Measure.count = ∑ a, f a` (summing over all elements).",
+    "mathContext": "For a finite type $\\alpha$ with uniform probability measure $P = \\frac{1}{|\\alpha|} \\text{count}$, the Bochner integral $\\int f \\, dP = \\frac{1}{|\\alpha|} \\int f \\, d(\\text{count}) = \\frac{1}{|\\alpha|} \\sum_a f(a) = \\mathbb{E}[f]$ (the finite expectation). This identifies the gallery's Finset-based definition of expectation with the measure-theoretic Bochner integral, enabling use of Mathlib's integral lemmas.",
+    "significance": "key",
+    "relatedConcepts": ["integral_smul_measure", "integral_count", "ENNReal.toReal_inv", "Bochner integral"],
+    "prerequisites": ["Mathlib.MeasureTheory.Integral", "integral_count lemma", "ENNReal conversions"]
+  },
+  {
+    "id": "ann-pmeoq01-first-moment",
+    "proofId": "prob-method-expectation-oq-01",
+    "range": { "startLine": 53, "endLine": 95 },
+    "type": "technique",
+    "title": "First Moment Method: Contradiction via integral_mono_ae",
+    "content": "`first_moment_method` proves that if X : Ω → ℕ is measurable and integrable with E[X] < 1, then P({X = 0}) > 0. The proof: `by_contra h; push_neg at h` gives `μ {X=0} = 0`. Then `ae_iff` converts this to `X ω ≥ 1` a.e. (using that X is ℕ-valued, so X < 1 ↔ X = 0). Then `integral_mono_ae (integrable_const 1) hX_integ hae` gives E[X] ≥ 1, and `integral_const, measure_univ, ENNReal.one_toReal` gives ∫ 1 = 1. `linarith` closes with E[X] ≥ 1 contradicting the hypothesis.",
+    "mathContext": "The *first moment method* (or Markov's inequality argument): for a non-negative integer-valued random variable $X$, $\\mathbb{E}[X] = \\mathbb{E}[X \\cdot 1_{X \\geq 1}] \\geq \\mathbb{P}(X \\geq 1)$. If $\\mathbb{E}[X] < 1$, then $\\mathbb{P}(X \\geq 1) < 1$, so $\\mathbb{P}(X = 0) > 0$. This is used in the probabilistic method: if the expected number of 'bad' events is less than 1, then with positive probability there are no bad events, so a 'good' configuration exists.",
+    "significance": "key",
+    "relatedConcepts": ["integral_mono_ae", "ae_iff", "IsProbabilityMeasure", "Markov inequality", "probabilistic method"],
+    "prerequisites": ["Bochner integral monotonicity", "almost everywhere reasoning", "IsProbabilityMeasure typeclass"]
+  },
+  {
+    "id": "ann-pmeoq01-linearity",
+    "proofId": "prob-method-expectation-oq-01",
+    "range": { "startLine": 97, "endLine": 110 },
+    "type": "insight",
+    "title": "Linearity of Expectation = integral_add: The Simplest Proof",
+    "content": "`linearity_of_expectation` is proved by `integral_add hX hY` — a single term that directly applies the Mathlib lemma `MeasureTheory.integral_add`. This one-liner illustrates that linearity of expectation is not a deep theorem but a direct consequence of the linearity of the Bochner integral, itself built into the definition via the L¹ space structure. The `Integrable` hypotheses are essential: Lean's Bochner integral returns 0 for non-integrable functions, so without them linearity would fail.",
+    "mathContext": "Linearity of expectation $\\mathbb{E}[X+Y] = \\mathbb{E}[X] + \\mathbb{E}[Y]$ holds for all integrable random variables (no independence required). This is the most powerful elementary tool of the probabilistic method: when X = Σ Xᵢ (indicator sum), E[X] = Σ E[Xᵢ] = Σ P(Aᵢ), giving a clean formula for the expected number of elements. The proof `integral_add hX hY` uses the L¹ completion of the Bochner integral.",
+    "significance": "supporting",
+    "relatedConcepts": ["integral_add", "Integrable", "linearity of Bochner integral", "L¹ space"],
+    "prerequisites": ["Bochner integral definition", "Integrable predicate", "MeasureTheory.integral_add"]
+  },
+  {
+    "id": "ann-pmeoq01-indicator",
+    "proofId": "prob-method-expectation-oq-01",
+    "range": { "startLine": 111, "endLine": 119 },
+    "type": "definition",
+    "title": "Indicator RVs: E[1_A] = P(A) via integral_indicator",
+    "content": "`indicatorRV A = A.indicator (fun _ => 1)` is the indicator function of A, taking value 1 inside A and 0 outside. `expectation_indicator` proves `∫ ω, indicatorRV A ω ∂μ = (μ A).toReal` by `simp [indicatorRV, integral_indicator hA]`. The `.toReal` coercion converts from `ℝ≥0∞` (where μ A lives) to `ℝ` (where the Bochner integral lives). The `MeasurableSet A` hypothesis is needed by `integral_indicator`.",
+    "mathContext": "The *indicator random variable* $1_A(\\omega) = \\begin{cases} 1 & \\omega \\in A \\\\ 0 & \\omega \\notin A \\end{cases}$ is fundamental to probability: $\\mathbb{E}[1_A] = \\mathbb{P}(A)$. In measure theory, $\\int 1_A \\, d\\mu = \\mu(A)$ (assuming $A$ is measurable). The `.toReal` coercion from `ℝ≥0∞` to `ℝ` is lossless for finite measures and probability measures. Together with linearity, $\\mathbb{E}[X] = \\sum_i \\mathbb{P}(A_i)$ when $X = \\sum_i 1_{A_i}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.indicator", "integral_indicator", "MeasurableSet", "ENNReal.toReal"],
+    "prerequisites": ["Set.indicator in Lean", "integral_indicator lemma", "measure-theoretic integration"]
+  }
+]
