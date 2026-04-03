@@ -6,7 +6,7 @@
   "meta": {
     "author": "Gross (1967), Wiener",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/LebesgueMeasureOQ03.lean",
     "tags": [
       "measure-theory",
@@ -14,11 +14,11 @@
       "gaussian-measure",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 132,
-    "assumptions": "0 axioms, 0 sorries. 2 True-stub theorems (gaussian_measure_exists, abstract_wiener_well_defined). Previously claimed axioms don't exist in file.",
+    "assumptions": "0 axioms, 0 sorries. 2 True-stub placeholder theorems (ball_volume_vanishes, concentration_sketch). Orthonormal separation and framework theorems fully proved.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
