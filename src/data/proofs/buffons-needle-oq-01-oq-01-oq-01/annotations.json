@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-bnoq3-arc-length-bridge",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01",
+    "range": { "startLine": 89, "endLine": 99 },
+    "type": "insight",
+    "title": "The Zero-Cost Bridge: Arc Length by Definitional Equality",
+    "content": "The theorem `planarArcLength_eq` says the two arc-length functions are equal. Its proof is just `rfl` — they are the same integral by definition. `BuffonsNoodle.planarCurveArcLength` and `BuffonsNeedleOQ01OQ01.planarArcLength` were defined independently in different modules but with identical formulas: both integrate `√(x'(t)² + y'(t)²)` over `[a,b]`. This definitional equality is the key to the entire axiom elimination: it means `buffon_smooth_of_contDiff` (which uses `planarArcLength`) directly applies to `planarCurveArcLength` (used in the downstream theorems), with no additional proof needed.",
+    "mathContext": "$L = \\int_a^b \\sqrt{(x'(t))^2 + (y'(t))^2}\\,dt$ — the arc-length formula for a planar curve $\\gamma(t) = (x(t), y(t))$. Two identical integral definitions are definitionally equal in Lean (proved by `rfl`), even when defined in different namespaces.",
+    "significance": "key",
+    "relatedConcepts": ["definitional equality", "rfl", "arc length", "Lean namespaces", "planarCurveArcLength"],
+    "prerequisites": ["Lean 4 definitional equality", "intervalIntegral", "Real.sqrt"]
+  },
+  {
+    "id": "ann-bnoq3-arc-length-nonneg",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01",
+    "range": { "startLine": 100, "endLine": 107 },
+    "type": "technique",
+    "title": "Arc Length Non-Negativity",
+    "content": "Proves that arc length is always non-negative. The proof uses `intervalIntegral.integral_nonneg` which requires `a ≤ b` and a pointwise non-negativity condition. The integrand `√((x'(t))² + (y'(t))²)` is non-negative by `Real.sqrt_nonneg`. This lemma is needed downstream for the non-negativity of expected crossings: if arc length ≥ 0, then `2 * L / (π * d) ≥ 0` for positive `d`.",
+    "mathContext": "$L = \\int_a^b |\\gamma'(t)|\\,dt \\geq 0$ because $|\\gamma'(t)| = \\sqrt{(x'(t))^2 + (y'(t))^2} \\geq 0$ for all $t$.",
+    "significance": "supporting",
+    "relatedConcepts": ["intervalIntegral.integral_nonneg", "Real.sqrt_nonneg", "arc length", "non-negativity"],
+    "prerequisites": ["intervalIntegral", "Real.sqrt_nonneg", "Lean 4 interval integrals"]
+  },
+  {
+    "id": "ann-bnoq3-main-theorem",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01",
+    "range": { "startLine": 117, "endLine": 131 },
+    "type": "insight",
+    "title": "The Old Axiom, Now a Theorem",
+    "content": "This two-line proof is the mathematical heart of the file. The original axiom `buffon_noodle_smooth_eq` in `BuffonsNoodle.lean` stated exactly this formula but was unproved. Here it becomes `buffon_noodle_smooth_theorem`, a verified theorem. The proof: (1) rewrite `planarCurveArcLength` as `planarArcLength` using the `rfl` bridge; (2) apply `buffon_smooth_of_contDiff` from `BuffonsNeedleOQ01`, which was proved through the angular-average integration chain in `BuffonsNeedleOQ01OQ01`. The entire proof chain — from the angular average integral through arc-length computation to the Buffon-Barbier formula — is thus machine-checked.",
+    "mathContext": "$E[\\text{crossings}] = \\frac{2L}{\\pi d}$ where $L = \\int_a^b |\\gamma'(t)|\\,dt$ and $\\gamma$ is C¹. The formula follows from integrating the angular average: $\\int_0^\\pi |\\gamma'(t) \\cdot e_\\theta|\\,d\\theta = 2|\\gamma'(t)|$ for each $t$, then integrating over $t$ and dividing by $\\pi d$.",
+    "significance": "key",
+    "relatedConcepts": ["Buffon-Barbier theorem", "axiom elimination", "buffon_smooth_of_contDiff", "planarArcLength_eq", "ContDiff ℝ 1"],
+    "prerequisites": ["BuffonsNeedleOQ01.buffon_smooth_of_contDiff", "ContDiff ℝ 1", "angular average formula"]
+  },
+  {
+    "id": "ann-bnoq3-shape-independence",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01",
+    "range": { "startLine": 139, "endLine": 149 },
+    "type": "concept",
+    "title": "Shape Independence: Barbier's Surprise",
+    "content": "The shape independence theorem formalizes the most counterintuitive aspect of Buffon's Noodle: the expected number of crossings depends only on arc length, not on the curve's shape, orientation, or complexity. A straight line, a circle, and a random scribble — all with the same arc length L — have the same expected crossing count 2L/(πd). The proof is a two-line rewrite: both sides are rewritten to `2 * L / (π * d)` using the main theorem, after which `hSameLen` closes the goal immediately. This elegance reflects the theorem's mathematical content.",
+    "mathContext": "$E_1 = \\frac{2L_1}{\\pi d} = \\frac{2L_2}{\\pi d} = E_2$ whenever $L_1 = L_2$. The Buffon-Barbier formula $E = 2L/(\\pi d)$ is a function of arc length alone — shape, orientation, and position are irrelevant.",
+    "significance": "key",
+    "relatedConcepts": ["Barbier's theorem", "shape independence", "arc length", "integral geometry", "Cauchy-Crofton formula"],
+    "prerequisites": ["Buffon-Barbier formula", "arc length invariance", "planarCurveArcLength"]
+  },
+  {
+    "id": "ann-bnoq3-monotonicity-nonneg",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01",
+    "range": { "startLine": 151, "endLine": 172 },
+    "type": "technique",
+    "title": "Non-Negativity and Monotonicity via Inequality Arithmetic",
+    "content": "Two quantitative properties of expected crossings are proved axiom-free. Non-negativity: rewrite using the main theorem, then apply `div_nonneg` with numerator `2 * planarCurveArcLength γ a b ≥ 0` (by `mul_nonneg` and arc-length non-negativity) and denominator `π * d > 0` (by `mul_pos pi_pos hd`). Monotonicity: rewrite both sides, reduce to comparing `2 * L₁` vs `2 * L₂` after dividing by `π * d`, and close with `linarith`. Both proofs demonstrate how the Buffon-Barbier formula converts geometric properties into standard arithmetic inequalities.",
+    "mathContext": "$0 \\leq \\frac{2L}{\\pi d}$ since $L \\geq 0$ and $d > 0$. Monotonicity: $L_1 \\leq L_2 \\implies \\frac{2L_1}{\\pi d} \\leq \\frac{2L_2}{\\pi d}$, by `div_le_div_of_nonneg_right` and `linarith`.",
+    "significance": "supporting",
+    "relatedConcepts": ["div_nonneg", "mul_pos", "pi_pos", "div_le_div_of_nonneg_right", "linarith"],
+    "prerequisites": ["Real.pi_pos", "div_nonneg", "linarith", "Lean 4 inequality tactics"]
+  },
+  {
+    "id": "ann-bnoq3-straight-line",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01",
+    "range": { "startLine": 174, "endLine": 199 },
+    "type": "technique",
+    "title": "Straight Line Check: Recovering Buffon's Needle",
+    "content": "The consistency check proves that for the horizontal line γ(t) = (t, 0), the expected crossings equal 2(b−a)/(πd), matching the original Buffon's Needle formula. The proof explicitly computes the arc length: `Prod.fst ∘ γ = id` so its derivative is 1 (by `hasDerivAt_id`); `Prod.snd ∘ γ = const 0` so its derivative is 0 (by `hasDerivAt_const`); thus √(1² + 0²) = 1, and integrating 1 over [a,b] gives b−a (by `intervalIntegral.integral_const` and `smul_eq_mul`). This concrete computation validates the abstract formula against the original problem.",
+    "mathContext": "For $\\gamma(t) = (t, 0)$: $L = \\int_a^b \\sqrt{1^2 + 0^2}\\,dt = b - a$, so $E = 2(b-a)/(\\pi d)$ — the original Buffon's Needle result for a needle of length $b-a$.",
+    "significance": "supporting",
+    "relatedConcepts": ["hasDerivAt_id", "hasDerivAt_const", "integral_const", "Buffon's Needle", "straight line arc length"],
+    "prerequisites": ["deriv of identity", "deriv of constant", "intervalIntegral.integral_const", "Real.sqrt_one"]
+  }
+]

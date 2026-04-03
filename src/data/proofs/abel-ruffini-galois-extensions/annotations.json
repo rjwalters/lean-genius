@@ -1,5 +1,41 @@
 [
   {
+    "id": "arg-trivial-abelian-cases",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 49, "endLine": 93 },
+    "type": "technique",
+    "title": "Trivial and Abelian Base Cases: S₀–S₂ and A₀–A₃",
+    "content": "The solvability proofs for the smallest groups use the simplest possible arguments. S₀ and S₁ are trivial (unique element — `isSolvable_of_subsingleton`). S₂ is abelian: `decide` verifies commutativity by exhaustive computation over the 4 elements, then `isSolvable_of_comm` upgrades commutativity to solvability. A₀–A₂ are instances (Mathlib derives solvability automatically since they are subgroups of solvable S₀–S₂). A₃ is the cyclic group of order 3 — `decide` confirms commutativity on 9 element pairs, yielding `isSolvable_of_comm`. The ℤˣ solvability instance (last line of this range) prepares for the S₃ exact sequence: the sign homomorphism maps to ℤˣ, which must be solvable as the codomain.",
+    "mathContext": "$S_0 \\cong S_1 \\cong \\{e\\}$ (trivial). $S_2 \\cong \\mathbb{Z}/2\\mathbb{Z}$ (abelian, order 2). $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic, order 3). $\\mathbb{Z}^\\times \\cong \\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$. All abelian groups are solvable (the derived subgroup is trivial).",
+    "significance": "supporting",
+    "relatedConcepts": ["isSolvable_of_subsingleton", "isSolvable_of_comm", "decide tactic", "abelian group solvability", "ℤˣ"],
+    "prerequisites": ["IsSolvable typeclass", "Lean decide", "cyclic groups", "abelian groups are solvable"]
+  },
+  {
+    "id": "arg-an-complete-classification",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 254, "endLine": 287 },
+    "type": "insight",
+    "title": "Complete A_n Classification: Solvable ↔ n ≤ 4",
+    "content": "The complete solvability classification for alternating groups mirrors the symmetric group case. `alternating_not_solvable_of_five_le` proves A_n not solvable for n ≥ 5 by contradiction: if A_n were solvable, then the exact sequence $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$ would give S_n solvable (via `solvable_of_ker_le_range`), contradicting `symmetric_not_solvable_of_five_le`. The positive direction `alternating_solvable_of_le_four` uses that A_n is a subgroup of S_n for n ≤ 4, and subgroups of solvable groups are solvable. The biconditional `alternating_solvable_iff` assembles these by contradiction with `push_neg` and `omega`.",
+    "mathContext": "$A_n$ solvable $\\iff n \\leq 4$. Key step: $A_n \\trianglelefteq S_n$ with $S_n/A_n \\cong \\mathbb{Z}/2\\mathbb{Z}$. If $A_n$ solvable, then from $1 \\to A_n \\to S_n \\to \\mathbb{Z}/2\\mathbb{Z} \\to 1$, $S_n$ is solvable (solvability extension). Contradiction for $n \\geq 5$ since $S_n$ is not solvable.",
+    "significance": "key",
+    "relatedConcepts": ["alternatingGroup", "symmetric_not_solvable_of_five_le", "solvable_of_ker_le_range", "subgroup solvability"],
+    "prerequisites": ["alternating group A_n", "normal subgroup", "solvability extension", "A₅ not solvable"]
+  },
+  {
+    "id": "arg-solvability-preservation",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 330, "endLine": 405 },
+    "type": "technique",
+    "title": "Solvability Preservation: Subgroups, Quotients, Isomorphisms",
+    "content": "Three structural closure properties make solvability a robust invariant. (1) Subgroups of solvable groups are solvable — proved by `inferInstance` (Mathlib's typeclass system derives this automatically). (2) Quotient groups of solvable groups are solvable — also by `inferInstance`. (3) Isomorphic groups share solvability — proved by `solvable_of_surjective`, using surjectivity of the isomorphism. Together these three facts make solvability behave like a hereditary property through the Galois correspondence: if the Galois group is solvable, all intermediate extensions have solvable Galois groups, enabling radical tower construction. The section also includes all specific non-solvability results (S₅–S₈, A₅–A₇) derived from the general `symmetric_not_solvable_of_five_le`.",
+    "mathContext": "Key facts: (1) $H \\leq G$, $G$ solvable $\\Rightarrow H$ solvable (derived series of $H$ is contained in that of $G$). (2) $N \\trianglelefteq G$, $G$ solvable $\\Rightarrow G/N$ solvable. (3) $G \\cong H$, $G$ solvable $\\Rightarrow H$ solvable. These three facts together say: solvability is preserved by taking subgroups, quotients, and isomorphic images — the closure properties needed for the Galois-radical correspondence.",
+    "significance": "supporting",
+    "relatedConcepts": ["subgroup solvability", "quotient solvability", "isomorphism invariance", "solvable_of_surjective", "Galois correspondence"],
+    "prerequisites": ["derived series", "normal subgroup", "group isomorphism", "typeclass inference in Lean"]
+  },
+  {
     "id": "arg-s3-exact-sequence",
     "proofId": "abel-ruffini-galois-extensions",
     "range": { "startLine": 94, "endLine": 103 },

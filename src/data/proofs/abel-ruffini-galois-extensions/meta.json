@@ -69,7 +69,57 @@
     {
       "targetId": "abel-ruffini",
       "relationship": "extends",
-      "description": "Abel-Ruffini impossibility theorem; this file adds the complete solvability classification of S_n"
+      "description": "Abel-Ruffini impossibility theorem — this file adds the complete solvability classification of S_n, the group-theoretic engine underlying Abel-Ruffini"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "Inverse Galois problem: while this file asks 'is S_n solvable?', the inverse Galois problem asks 'which groups occur as Galois groups?' The non-solvability of S₅ makes general quintics unsolvable, but the inverse Galois problem for S_n (every S_n occurs as a Galois group over ℚ) is also relevant"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "Both proofs use the same Galois theory machinery: this file proves S_n non-solvable for n ≥ 5 (blocking radical solutions), while angle-trisection-oq-02 proves the Galois group criterion for constructibility (2-group structure)"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem |G| = |H| · [G:H] is used implicitly: the solvability chain S₄ ⊃ A₄ ⊃ V₄ ⊃ {e} has indices 2, 3, 4, and the tower law [S_n:ℤˣ] = |A_n| depends on Lagrange's theorem"
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "related",
+      "description": "Sylow theory provides the structural decomposition of groups used in solvability proofs. A group is solvable iff its Sylow subgroups satisfy certain conditions — the p-group components in the composition series are exactly the Sylow subgroups"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["N. H. Abel"],
+      "title": "Beweis der Unmöglichkeit algebraische Gleichungen von höheren als dem vierten Grade allgemein aufzulösen",
+      "year": "1824",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "note": "Abel's original proof of quintic unsolvability — the paper that motivated the group-theoretic approach"
+    },
+    {
+      "authors": ["É. Galois"],
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de Mathématiques Pures et Appliquées",
+      "note": "Posthumous foundational work: polynomial solvable by radicals iff Galois group is solvable"
+    },
+    {
+      "authors": ["I. Stewart"],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC, 4th edition",
+      "note": "Chapter 12-13: complete proof that S_n is solvable iff n ≤ 4, including the Klein four-group and A₅ simplicity arguments"
+    },
+    {
+      "authors": ["J. J. Rotman"],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "Springer GTM 148, 4th edition",
+      "note": "Chapter 5: solvable groups, composition series, Jordan-Hölder theorem — the algebraic foundation for this formalization"
     }
   ],
   "sections": [

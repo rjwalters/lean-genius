@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-amgm-oq201-context",
+    "proofId": "amgm-inequality-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "context",
+    "title": "CommRing Generality: Identities Without Order",
+    "content": "The module header and variable declaration establish the key generalization: the Newton-Girard identity holds over any `CommRing R`, not just the real numbers. The proof never needs an order relation, positivity, or limits — just ring axioms: commutativity, associativity, distributivity. The `Finset` abstraction (via `BigOperators`) allows the identity to work for any finite index type `ι`, making it applicable to vectors of any finite dimension. This generality makes the identity useful for polynomial ring computations, formal power series, and algebraic combinatorics over arbitrary coefficient rings.",
+    "mathContext": "A `CommRing R` satisfies: $a + b = b + a$, $(a+b)+c = a+(b+c)$, $a \\cdot b = b \\cdot a$, $a \\cdot (b+c) = a \\cdot b + a \\cdot c$. No ordering is needed for the identity $(\\sum x_i)^2 = \\sum x_i^2 + \\sum_{i \\neq j} x_i x_j$.",
+    "significance": "context",
+    "relatedConcepts": ["CommRing", "Finset", "BigOperators", "ring axioms", "algebraic generalization"],
+    "prerequisites": ["CommRing typeclass", "Finset.sum", "BigOperators notation", "Lean 4 typeclasses"]
+  },
+  {
+    "id": "ann-amgm-oq201-sq-double-sum",
+    "proofId": "amgm-inequality-oq-02-oq-01",
+    "range": { "startLine": 23, "endLine": 27 },
+    "type": "technique",
+    "title": "Squaring to Double Sum: The Bridge Theorem",
+    "content": "The one-line proof `rw [sq, Finset.sum_mul_sum]` expands squaring into a double sum. `sq` rewrites `(Σf)² = (Σf) * (Σf)`, and `Finset.sum_mul_sum` distributes the product of two sums: $(\\sum_{i \\in s} f(i)) \\cdot (\\sum_{j \\in s} g(j)) = \\sum_{i \\in s} \\sum_{j \\in s} f(i) \\cdot g(j)$. Setting $f = g$ gives the double sum. This is the algebraic restatement of FOIL/distributivity: every term $f(i)$ in the first factor multiplies every term $f(j)$ in the second, producing the $n^2$ cross-product terms.",
+    "mathContext": "$(\\sum_{i \\in s} f(i))^2 = (\\sum_{i \\in s} f(i)) \\cdot (\\sum_{j \\in s} f(j)) = \\sum_{i \\in s} \\sum_{j \\in s} f(i) f(j)$. This is `Finset.sum_mul_sum` with equal summands.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_mul_sum", "sq", "double sum", "distributivity", "FOIL"],
+    "prerequisites": ["Finset.sum_mul_sum", "sq definition", "CommRing distributivity"]
+  },
+  {
+    "id": "ann-amgm-oq201-two-var",
+    "proofId": "amgm-inequality-oq-02-oq-01",
+    "range": { "startLine": 32, "endLine": 39 },
+    "type": "concept",
+    "title": "Two-Variable Instances and the AM-GM Connection",
+    "content": "The two-variable identities `sq_add_two` and `sq_sub_two` are proved in one line each by `ring` — the ring tactic verifies polynomial identities automatically. The comment at line 38 identifies the key connection to AM-GM: $(a-b)^2 \\geq 0$ in an ordered ring, expanding to $a^2 + b^2 \\geq 2ab$. This is exactly AM-GM for $n=2$: the arithmetic mean $(a^2 + b^2)/2$ of two squares is at least their geometric mean $\\sqrt{a^2 \\cdot b^2} = |ab|$. The algebraic identity proved here (over any CommRing) is the pure algebraic half; the inequality requires positivity of squares, which needs an `OrderedRing` and is proved separately.",
+    "mathContext": "$(a+b)^2 = a^2 + 2ab + b^2$, $(a-b)^2 = a^2 - 2ab + b^2$. In an ordered ring: $(a-b)^2 \\geq 0 \\Rightarrow a^2 + b^2 \\geq 2ab$ (AM-GM for $n=2$). The `ring` tactic proves polynomial identities in any CommRing by normalizing both sides.",
+    "significance": "supporting",
+    "relatedConcepts": ["ring tactic", "AM-GM inequality", "ordered ring", "sq_nonneg", "two-variable AM-GM"],
+    "prerequisites": ["ring tactic", "CommRing", "polynomial identity verification"]
+  },
+  {
+    "id": "ann-amgm-oq201-three-var",
+    "proofId": "amgm-inequality-oq-02-oq-01",
+    "range": { "startLine": 45, "endLine": 48 },
+    "type": "concept",
+    "title": "Explicit Three-Variable Newton-Girard",
+    "content": "The three-variable identity $(a+b+c)^2 = a^2 + b^2 + c^2 + 2(ab + ac + bc)$ is the explicit $n=3$ instance of Newton-Girard. It shows that the sum of squares $e_2^{(\\text{diag})} = a^2 + b^2 + c^2$ plus twice the sum of products $2e_2 = 2(ab + ac + bc)$ equals the square of the sum. Here $e_1 = a + b + c$, $e_2 = ab + ac + bc$ in the notation of elementary symmetric polynomials. The proof is a one-liner by `ring`. This explicit form is often used in proofs of AM-GM for $n=3$ and in Cauchy-Schwarz applications.",
+    "mathContext": "$(a+b+c)^2 = a^2 + b^2 + c^2 + 2(ab + ac + bc) = p_2 + 2e_2$, where $p_2 = \\sum x_i^2$ (power sum), $e_2 = \\sum_{i < j} x_i x_j$ (elementary symmetric polynomial). Newton-Girard: $p_2 = e_1^2 - 2e_2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["elementary symmetric polynomial", "power sum", "Newton-Girard e₂", "three-variable AM-GM"],
+    "prerequisites": ["elementary symmetric polynomials e₁ e₂", "ring tactic", "n=3 Newton-Girard"]
+  },
+  {
+    "id": "ann-amgm-oq201-diag-offdiag",
+    "proofId": "amgm-inequality-oq-02-oq-01",
+    "range": { "startLine": 54, "endLine": 64 },
+    "type": "insight",
+    "title": "Diagonal/Off-Diagonal Decomposition: The Main Newton-Girard Result",
+    "content": "The main theorem splits the double sum $\\sum_i \\sum_j f(i)f(j)$ into diagonal ($i = j$: terms $f(i)^2$) and off-diagonal ($i \\neq j$: terms $f(i)f(j)$ for $j \\in s \\setminus \\{i\\}$). The proof: (1) rewrite $(\\sum f)^2$ as the double sum using `sq_sum_eq_double_sum`; (2) swap the order of the sum+distrib using `← sum_add_distrib`; (3) for each fixed $i$, apply `← Finset.add_sum_erase s (fun j => f i * f j) hi` to split the inner sum over $s$ into the term at $j=i$ (giving $f(i) \\cdot f(i) = f(i)^2$) plus the remaining sum over $s \\setminus \\{i\\}$. The `DecidableEq ι` hypothesis is required for `Finset.erase`. The off-diagonal sum $\\sum_i \\sum_{j \\neq i} f(i)f(j)$ equals $2e_2 = 2\\sum_{i < j} f(i)f(j)$ by commutativity of multiplication (each unordered pair $\\{i,j\\}$ contributes both $f(i)f(j)$ and $f(j)f(i)$), but this final step requires a linear order and is noted as a remark.",
+    "mathContext": "$(\\sum_{i \\in s} f(i))^2 = \\sum_{i \\in s} f(i)^2 + \\sum_{i \\in s} \\sum_{j \\in s \\setminus \\{i\\}} f(i)f(j)$. The off-diagonal sum $= 2\\sum_{i < j} f(i)f(j) = 2e_2$ where $e_2$ is the second elementary symmetric polynomial. Lean: `Finset.add_sum_erase s g hi : \\sum_{j \\in s} g(j) = g(i) + \\sum_{j \\in s \\setminus \\{i\\}} g(j)` for $i \\in s$.",
+    "significance": "key",
+    "relatedConcepts": ["diagonal decomposition", "Finset.add_sum_erase", "sq_sum_eq_double_sum", "sum_add_distrib", "Newton-Girard p₂ = e₁² - 2e₂"],
+    "prerequisites": ["Finset.add_sum_erase", "sum_add_distrib", "DecidableEq", "elementary symmetric polynomials"]
+  }
+]

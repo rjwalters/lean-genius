@@ -41,6 +41,96 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Georges-Louis Leclerc, Comte de Buffon (1707–1788) posed the needle problem in his 1777 *Essai d'arithmétique morale*: drop a needle of length $l$ onto a floor with parallel lines spaced $d$ apart; the probability of crossing a line is $2l/(\\pi d)$. In 1860, Joseph-Émile Barbier extended the result dramatically: *any* planar curve of arc length $L$ has the same expected crossing count $E = 2L/(\\pi d)$, regardless of its shape. This is Barbier's theorem, or the Buffon-Barbier formula for Buffon's Noodle.\n\nThe result is a foundational example of integral geometry — a special case of the Cauchy-Crofton formula (Cauchy 1850, Crofton 1868), which expresses arc length as an integral of crossing counts over all lines: $L = (\\pi d/2) \\cdot E[\\text{crossings}]$.\n\nThe Lean Genius formalization proceeded in stages: the original `BuffonsNoodle.lean` axiomatized the smooth case; `BuffonsNeedleOQ01` and `BuffonsNeedleOQ01OQ01` built the angular-average integration infrastructure; this file completes the chain, eliminating all axioms for a fully machine-checked proof of Barbier's theorem for C¹ curves.",
+    "problemStatement": "Given a C¹ curve $\\gamma : \\mathbb{R} \\to \\mathbb{R}^2$ on $[a,b]$ with arc length $L = \\int_a^b |\\gamma'(t)|\\,dt$, dropped randomly onto a plane ruled with parallel lines distance $d$ apart, the expected number of crossings is $E = 2L/(\\pi d)$. Can this be formalized in Lean 4 without axioms?",
+    "proofStrategy": "Three files build the proof chain. `BuffonsNeedleOQ01OQ01` proves the angular average formula $\\int_0^\\pi |a\\sin\\theta + b\\cos\\theta|\\,d\\theta = 2\\sqrt{a^2 + b^2}$, defines `concreteSmoothExpectedCrossings` as a double integral, and proves the Buffon-Barbier formula for it. `BuffonsNeedleOQ01` packages this as `buffon_smooth_of_contDiff` requiring only `ContDiff ℝ 1 γ`. This file provides the final bridge: `planarArcLength_eq` (proved by `rfl`) equates the two arc-length definitions, making the entire chain axiom-free. Downstream theorems (shape independence, non-negativity, monotonicity) follow by simple rewrites.",
+    "keyInsights": [
+      "The two arc-length definitions — `planarCurveArcLength` from `BuffonsNoodle` and `planarArcLength` from `BuffonsNeedleOQ01OQ01` — are literally the same integral expression, making `planarArcLength_eq` a `rfl` proof. This zero-cost bridge is the critical insight enabling axiom elimination.",
+      "Barbier's theorem — that expected crossings depend only on arc length, not on shape — is formalized as `smooth_shape_independence_free`: two C¹ curves with equal arc length have identical expected crossings. The proof is a two-line rewrite, making the theorem's mathematical transparency visible in the proof structure.",
+      "The mathematical core is the angular average formula $\\int_0^\\pi |a\\sin\\theta + b\\cos\\theta|\\,d\\theta = 2\\sqrt{a^2+b^2}$ (proved in `BuffonsNeedleOQ01OQ01`). Integrating this over the tangent vector $(x'(t), y'(t))$ and then over $t$ yields exactly the arc-length integral.",
+      "The `ContDiff ℝ 1 γ` (once continuously differentiable) hypothesis is minimal: it ensures the arc-length integral converges. The formula holds for all C¹ curves — no analyticity, compactness, or convexity is required.",
+      "Axiom elimination matters for trustworthiness: replacing the function axiom `smoothExpectedCrossings` with `concreteSmoothExpectedCrossings` (the explicit double-integral formula) makes the object being studied fully transparent — there is no longer a black box assumed to exist with certain properties."
+    ]
+  },
+  "sections": [
+    {
+      "id": "arc-length-equivalence",
+      "title": "Arc Length Equivalence",
+      "startLine": 82,
+      "endLine": 107,
+      "summary": "Defines `planarCurveArcLength` to match `BuffonsNoodle.planarCurveArcLength` exactly, and proves `planarArcLength_eq` by `rfl` — the two definitions are the same integral. Also proves non-negativity of arc length via `intervalIntegral.integral_nonneg` and `Real.sqrt_nonneg`. This definitional equality is the critical bridge enabling axiom elimination."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Buffon-Barbier Smooth Noodle Theorem (Axiom-Free)",
+      "startLine": 108,
+      "endLine": 131,
+      "summary": "The central theorem: for any C¹ curve, `concreteSmoothExpectedCrossings γ a b d = 2 * planarCurveArcLength γ a b / (π * d)`. Proved in two lines: rewrite using `planarArcLength_eq`, then apply `buffon_smooth_of_contDiff` from `BuffonsNeedleOQ01`. This is the old axiom `buffon_noodle_smooth_eq`, now a machine-checked theorem."
+    },
+    {
+      "id": "downstream-theorems",
+      "title": "Downstream Theorems — All Axiom-Free",
+      "startLine": 133,
+      "endLine": 199,
+      "summary": "Four consequences proved without axioms: (1) Shape independence: two C¹ curves with equal arc length have equal expected crossings. (2) Non-negativity: expected crossings ≥ 0, from `div_nonneg` and arc-length non-negativity. (3) Monotonicity: longer curves cross more lines, from `div_le_div_of_nonneg_right` and `linarith`. (4) Straight-line check: γ(t) = (t,0) gives crossings = 2(b−a)/(πd), computed by explicit differentiation and integration."
+    },
+    {
+      "id": "summary-axiom-elimination",
+      "title": "Summary: Axiom Elimination",
+      "startLine": 200,
+      "endLine": 223,
+      "summary": "Documents the before/after: `BuffonsNoodle.lean` had 2 axioms (function axiom `smoothExpectedCrossings` and formula axiom `buffon_noodle_smooth_eq`); this file eliminates both. Result: 0 axioms, 0 sorries."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file completes the Buffon's Noodle formalization chain by eliminating all 2 axioms from `BuffonsNoodle.lean`. The Buffon-Barbier theorem E[crossings] = 2L/(πd) for any C¹ curve is proved as a machine-checked theorem, with shape independence, non-negativity, and monotonicity as verified corollaries.",
+    "implications": "This formalization demonstrates how axiomatic stubs evolve into full proofs as a formal library grows. The result is a special case of the Cauchy-Crofton formula from integral geometry, with applications to stereology (estimating biological surface areas from cross-sections), image processing (Minkowski functionals for shape analysis), and Monte Carlo geometry. Having Barbier's theorem machine-verified enables formally derived error bounds for Monte Carlo arc-length estimation: if E[crossings] is measured from N trials, the standard error is $\\sqrt{E/(N)} \\cdot \\pi d / 2$.",
+    "openQuestions": [
+      "Can Barbier's theorem be extended to rectifiable (not necessarily C¹) curves in Lean? The formula E = 2L/(πd) holds for any curve of finite length, but the proof requires integration against a measure on line directions that is more delicate to formalize without differentiability.",
+      "Is there a Lean formalization of the full Cauchy-Crofton formula: $L = \\frac{1}{2} \\int_{S^1} n(\\gamma, \\theta)\\,d\\theta$ where $n(\\gamma, \\theta)$ counts crossings with lines of direction $\\theta$? This would require the kinematic measure on the space of lines in $\\mathbb{R}^2$."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle",
+      "relationship": "parent-problem",
+      "description": "The original Buffon's Needle formalization — this entry eliminates axioms introduced when generalizing from needles to arbitrary C¹ curves"
+    },
+    {
+      "targetId": "buffons-needle-oq-01",
+      "relationship": "dependency",
+      "description": "Provides `buffon_smooth_of_contDiff`, the key theorem that the Buffon-Barbier formula holds for C¹ curves"
+    },
+    {
+      "targetId": "buffons-needle-oq-01-oq-01",
+      "relationship": "dependency",
+      "description": "Provides the angular average formula and the concrete `concreteSmoothExpectedCrossings` double-integral definition"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["J.-É. Barbier"],
+      "title": "Note sur le problème de l'aiguille et le jeu du joint couvert",
+      "year": "1860",
+      "venue": "Journal de mathématiques pures et appliquées",
+      "note": "Barbier's original extension of Buffon's needle to arbitrary smooth curves"
+    },
+    {
+      "authors": ["G.-L. L. de Buffon"],
+      "title": "Essai d'arithmétique morale",
+      "year": "1777",
+      "venue": "Supplément à l'Histoire naturelle, vol. 4",
+      "note": "Original formulation of the needle problem"
+    },
+    {
+      "authors": ["L. A. Santaló"],
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "1976",
+      "venue": "Addison-Wesley",
+      "note": "Comprehensive treatment of the Cauchy-Crofton formula and integral geometry"
+    }
+  ],
   "theorems": [
     {
       "name": "planarArcLength_eq",

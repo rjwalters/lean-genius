@@ -268,49 +268,49 @@
   },
   "references": [
     {
-      "authors": "Hardy, G.H.; Littlewood, J.E.; Pólya, G.",
+      "authors": ["Hardy, G.H.", "Littlewood, J.E.", "Pólya, G."],
       "title": "Inequalities",
       "year": "1934",
       "venue": "Cambridge University Press",
       "note": "Section 2.9: the geometric mean as the limit of power means, proved via exp/log representation"
     },
     {
-      "authors": "Bullen, P.S.",
+      "authors": ["Bullen, P.S."],
       "title": "Handbook of Means and Their Inequalities",
       "year": "2003",
       "venue": "Kluwer Academic Publishers",
       "note": "Section III.1: comprehensive treatment of power mean continuity and limit cases"
     },
     {
-      "authors": "Rényi, Alfréd",
+      "authors": ["Rényi, Alfréd"],
       "title": "On Measures of Entropy and Information",
       "year": "1961",
       "venue": "Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability, vol. 1, pp. 547-561",
       "note": "Introduces Rényi entropy H_α = (1/(1-α)) log ∑ pᵢ^α, whose limit α→1 gives Shannon entropy by the same derivative-at-singular-point technique used in this power mean limit proof"
     },
     {
-      "authors": "Steele, J. Michael",
+      "authors": ["Steele, J. Michael"],
       "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
       "year": "2004",
       "venue": "Cambridge University Press, MAA Problem Books Series",
       "note": "Chapter 3 covers power mean inequalities and the geometric mean as a limit, with exercises on the exp/log proof technique used in this formalization"
     },
     {
-      "authors": "Beckenbach, E.F.; Bellman, R.",
+      "authors": ["Beckenbach, E.F.", "Bellman, R."],
       "title": "Inequalities",
       "year": "1961",
       "venue": "Springer, Ergebnisse der Mathematik und ihrer Grenzgebiete, Band 30",
       "note": "Chapter 2: comprehensive treatment of means and their inequalities, including the power mean family and its continuity properties at r = 0"
     },
     {
-      "authors": "Kolmogorov, A.N.",
+      "authors": ["Kolmogorov, A.N."],
       "title": "Sur la notion de la moyenne",
       "year": "1930",
       "venue": "Atti della Reale Accademia Nazionale dei Lincei, Rendiconti, Classe di Scienze Fisiche, Matematiche e Naturali, ser. 6, vol. 12, pp. 388–391",
       "note": "Independently of Nagumo, characterized the power mean family as the unique class of quasi-arithmetic means satisfying continuity, strict monotonicity, and homogeneity. The r→0 limit proved in this formalization is the continuity condition at the singular point that makes the power mean family a smooth one-parameter family from min to max"
     },
     {
-      "authors": "Nagumo, Mitio",
+      "authors": ["Nagumo, Mitio"],
       "title": "Über eine Klasse der Mittelwerte",
       "year": "1930",
       "venue": "Japanese Journal of Mathematics, vol. 7, pp. 71–79",

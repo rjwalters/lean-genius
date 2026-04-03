@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-maclaurin-norm-esp",
+    "proofId": "amgm-inequality-oq-02-oq-03",
+    "range": { "startLine": 35, "endLine": 47 },
+    "type": "definition",
+    "title": "Normalized Elementary Symmetric Polynomials",
+    "content": "Defines `normElemSymm k x = elemSymm k x / C(n,k)` — the $k$-th elementary symmetric polynomial divided by the binomial coefficient. This normalization is crucial: it converts $e_k/\\binom{n}{k}$ into the $k$-th Maclaurin mean $M_k = (e_k/\\binom{n}{k})^{1/k}$. The two supporting lemmas prove: (1) `normElemSymm_zero = 1` (since $e_0 = 1$ and $\\binom{n}{0} = 1$), and (2) `normElemSymm_nonneg` (non-negative for non-negative inputs, since $e_k \\geq 0$ when all $x_i \\geq 0$ and $\\binom{n}{k} \\geq 0$). The `noncomputable` annotation is required since real division is not computably decidable.",
+    "mathContext": "$a_k := \\frac{e_k}{\\binom{n}{k}}$ where $e_k(x_1,\\ldots,x_n) = \\sum_{1 \\leq i_1 < \\cdots < i_k \\leq n} x_{i_1} \\cdots x_{i_k}$. The Maclaurin mean is $M_k = a_k^{1/k}$. Newton's log-concavity: $a_k^2 \\geq a_{k-1} a_{k+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["elementary symmetric polynomial", "Maclaurin mean", "normalization", "log-concavity", "binomial coefficient"],
+    "prerequisites": ["elemSymm", "Nat.choose", "div_nonneg", "noncomputable definition"]
+  },
+  {
+    "id": "ann-maclaurin-zero-prop",
+    "proofId": "amgm-inequality-oq-02-oq-03",
+    "range": { "startLine": 48, "endLine": 65 },
+    "type": "technique",
+    "title": "Zero Propagation: If a_m = 0 Then a_{m+1} = 0",
+    "content": "A critical boundary lemma: for non-negative inputs, if the $m$-th normalized ESP vanishes ($a_m = 0$), then so does $a_{m+1} = 0$. This is needed in the power inequality proof to handle the base cases where some $a_k = 0$. The proof: extract `elemSymm m x = 0` from `normElemSymm m x = 0` (the denominator $\\binom{n}{m} \\neq 0$ since $m \\leq n$). Then show `elemSymm (m+1) x = 0` by showing every $(m+1)$-subset product vanishes — each $(m+1)$-subset contains an $m$-subset whose product is 0 (by the hypothesis that all $m$-subset products vanish). This is marked `private` since it is only used internally in the power inequality proof.",
+    "mathContext": "If $e_m(x_1,\\ldots,x_n) = 0$ for non-negative $x_i$, then $e_{m+1}(x_1,\\ldots,x_n) = 0$. Proof: $e_m = 0$ means every $m$-element product is 0; each $(m+1)$-element product is a sum of $m$-element products (by expanding), hence also 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["elementary symmetric polynomial", "zero divisors", "Finset.powersetCard", "div_eq_zero_iff"],
+    "prerequisites": ["elemSymm definition", "Finset.powersetCard", "Nat.choose_pos"]
+  },
+  {
     "id": "ann-maclaurin-power-ineq",
     "proofId": "amgm-inequality-oq-02-oq-03",
     "range": {
@@ -23,23 +47,25 @@
   {
     "id": "ann-maclaurin-rpow-step",
     "proofId": "amgm-inequality-oq-02-oq-03",
-    "range": {
-      "startLine": 122,
-      "endLine": 160
-    },
+    "range": { "startLine": 122, "endLine": 160 },
     "type": "technique",
     "title": "Maclaurin Step via Root Extraction",
-    "content": "From $a_k^{k+1} \\geq a_{k+1}^k$, taking the $1/(k(k+1))$-th power gives $a_k^{1/k} \\geq a_{k+1}^{1/(k+1)}$, i.e., $M_k \\geq M_{k+1}$. The proof uses `rpow_le_rpow` for monotonicity of the real power function on non-negative reals.",
-    "mathContext": "$a_k^{1/k} = (a_k^{k+1})^{1/(k(k+1))} \\geq (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{1/(k+1)}$",
+    "content": "From $a_k^{k+1} \\geq a_{k+1}^k$, taking the $1/(k(k+1))$-th power gives $a_k^{1/k} \\geq a_{k+1}^{1/(k+1)}$, i.e., $M_k \\geq M_{k+1}$. The proof uses `rpow_le_rpow` for monotonicity of the real power function on non-negative reals. The exponent arithmetic is handled by `field_simp` for the two equations $1/k = (k+1)/(k(k+1))$ and $1/(k+1) = k/(k(k+1))$, then `rpow_natCast_mul` rewrites $(a^n)^r = a^{nr}$.",
+    "mathContext": "$a_k^{1/k} = (a_k^{k+1})^{1/(k(k+1))} \\geq (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{1/(k+1)}$. The key Lean lemma: `rpow_le_rpow` — for $a \\leq b$ and $0 \\leq r$: $a^r \\leq b^r$.",
     "significance": "key",
-    "relatedConcepts": [
-      "Maclaurin mean",
-      "rpow monotonicity",
-      "AM-GM generalization"
-    ],
-    "prerequisites": [
-      "power inequality",
-      "real power functions"
-    ]
+    "relatedConcepts": ["Maclaurin mean", "rpow_le_rpow", "rpow_natCast_mul", "Real.rpow", "field_simp"],
+    "prerequisites": ["power inequality", "Real.rpow", "rpow monotonicity"]
+  },
+  {
+    "id": "ann-maclaurin-step-proved",
+    "proofId": "amgm-inequality-oq-02-oq-03",
+    "range": { "startLine": 215, "endLine": 224 },
+    "type": "insight",
+    "title": "Axiom Eliminated: maclaurin_step Now a Theorem",
+    "content": "The final theorem `maclaurin_step_proved` is a one-line wrapper around `maclaurin_step_from_newton`, making explicit that the axiom `maclaurin_step` from `AmgmInequalityOQ02.lean` is now a proved theorem. The statement is identical to the original axiom: for $0 < k$, $k+1 \\leq n$, and non-negative inputs $x$, $M_k(x) \\geq M_{k+1}(x)$. The elimination of this axiom completes the proof of the Maclaurin step from Newton's log-concavity: the remaining dependency is the `newton_log_concavity` axiom in the parent file, which is the deeper result requiring polarization arguments.",
+    "mathContext": "$M_k \\geq M_{k+1}$ for $k \\geq 1$ and non-negative inputs — the individual step in the Maclaurin chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$. The full chain $M_1 \\geq M_n$ specializes to AM-GM: $M_1 = \\frac{1}{n}\\sum x_i$ (arithmetic mean) and $M_n = (\\prod x_i)^{1/n}$ (geometric mean).",
+    "significance": "key",
+    "relatedConcepts": ["axiom elimination", "maclaurin_step", "Maclaurin chain", "AM-GM connection", "newton_log_concavity"],
+    "prerequisites": ["maclaurin_step_from_newton", "maclaurinMean", "IsPGroup"]
   }
 ]
