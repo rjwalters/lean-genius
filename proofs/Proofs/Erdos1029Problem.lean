@@ -33,6 +33,7 @@
 -/
 
 import Mathlib
+import Proofs.RamseysTheorem
 
 open Nat Filter
 
@@ -54,9 +55,46 @@ def HasMonochromaticClique {V : Type*} [Fintype V] (coloring : EdgeColoring V) (
   ∃ S : Finset V, S.card = k ∧ (IsMonochromatic coloring S true ∨ IsMonochromatic coloring S false)
 
 /-- Ramsey's theorem: for every k, there exists n such that every 2-coloring
-    of K_n contains a monochromatic K_k. The classical proof gives n = 4^k. -/
-axiom ramsey_exists (k : ℕ) :
-  ∃ n, ∀ coloring : EdgeColoring (Fin n), HasMonochromaticClique coloring k
+    of K_n contains a monochromatic K_k. Proved by bridging to RamseysTheorem.lean
+    which formalizes the classical inductive proof (Wiedijk #31).
+
+    The bridge converts a Sym2-based coloring (col : Sym2 (Fin n) → Bool) to the
+    RamseysTheorem.EdgeColoring structure by forcing the diagonal to false (which
+    doesn't affect clique membership since cliques only involve distinct vertices). -/
+theorem ramsey_exists (k : ℕ) :
+    ∃ n, ∀ coloring : EdgeColoring (Fin n), HasMonochromaticClique coloring k := by
+  rcases Nat.eq_zero_or_pos k with rfl | hk
+  · -- k = 0: the empty finset is a monochromatic 0-clique in any graph
+    exact ⟨0, fun _ => ⟨∅, by simp, Or.inl (fun x y hx _ _ => hx.elim)⟩⟩
+  -- k ≥ 1: use RamseysTheorem's inductive proof
+  obtain ⟨n, _, hn⟩ := RamseysTheorem.ramsey_theorem k k (by omega) (by omega)
+  refine ⟨n, fun col => ?_⟩
+  -- Construct a RamseysTheorem.EdgeColoring from the Sym2-based coloring.
+  -- Diagonal is forced to false (satisfying irrefl); this is harmless since
+  -- IsMonochromatic only queries col s(x, y) for distinct x ≠ y.
+  let c : RamseysTheorem.EdgeColoring (Fin n) :=
+    { color := fun x y => if x = y then false else col s(x, y)
+      symm := fun x y => by
+        by_cases h : x = y
+        · simp [h]
+        · simp only [if_neg h, if_neg (Ne.symm h)]
+          congr 1; exact Sym2.eq_swap
+      irrefl := fun x => by simp }
+  -- Apply the Ramsey property to get a monochromatic k-clique
+  rcases hn c with ⟨S, hcard, hred⟩ | ⟨S, hcard, hblue⟩
+  · -- Red k-clique → monochromatic clique with color true
+    refine ⟨S, hcard, Or.inl fun x y hx hy hne => ?_⟩
+    -- Extract: c.redGraph.Adj x y ↔ c.color x y = true ∧ x ≠ y (by def of redGraph)
+    have hcolor : c.color x y = true ∧ x ≠ y := hred hx hy hne
+    -- c.color x y = (if x = y then false else col s(x,y)) = col s(x,y) since x ≠ y
+    rw [show c.color x y = col s(x, y) from if_neg hne] at hcolor
+    exact hcolor.1
+  · -- Blue k-clique → monochromatic clique with color false
+    refine ⟨S, hcard, Or.inr fun x y hx hy hne => ?_⟩
+    -- Extract: c.blueGraph.Adj x y ↔ c.color x y = false ∧ x ≠ y (by def of blueGraph)
+    have hcolor : c.color x y = false ∧ x ≠ y := hblue hx hy hne
+    rw [show c.color x y = col s(x, y) from if_neg hne] at hcolor
+    exact hcolor.1
 
 /-- The diagonal Ramsey number R(k): minimal n such that every 2-coloring
     of K_n contains a monochromatic K_k -/
