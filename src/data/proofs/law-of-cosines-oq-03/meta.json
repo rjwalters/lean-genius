@@ -2,11 +2,11 @@
   "id": "law-of-cosines-oq-03",
   "title": "Hyperbolic Law of Cosines",
   "slug": "law-of-cosines-oq-03",
-  "description": "Formalizes the hyperbolic law of cosines cosh(c) = cosh(a)·cosh(b) - sinh(a)·sinh(b)·cos(C) and its dual (second law of cosines relating angles). Defines HyperbolicTriangle and HyperbolicTriangleAngles structures encoding the geometry. Proves the hyperbolic Pythagorean theorem (C=π/2 gives cosh(c) = cosh(a)·cosh(b)), the angle defect (A+B+C < π), and key hyperbolic function identities. 13 theorems, 0 definitions, 0 axioms.",
+  "description": "Axiomatizes the hyperbolic law of cosines cosh(c) = cosh(a)·cosh(b) - sinh(a)·sinh(b)·cos(C) and its dual (second law of cosines relating angles). The laws are encoded as structure fields (assumptions), not proved from a hyperbolic metric model. Proves the hyperbolic Pythagorean theorem (C=π/2 gives cosh(c) = cosh(a)·cosh(b)), the angle defect (A+B+C < π), and key hyperbolic function identities from Mathlib. 13 theorems, 2 structures, 3 structure-encoded axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LawOfCosinesOQ03.lean",
     "tags": [
       "hyperbolic-geometry",
@@ -15,11 +15,11 @@
       "differential-geometry",
       "trigonometry"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. The HyperbolicTriangle structure encodes the law of cosines as a hypothesis defining valid triangles.",
+    "axiomCount": 3,
+    "assumptions": "3 structure-encoded assumptions: (1) HyperbolicTriangle.law — the first law of cosines cosh(c)=cosh(a)cosh(b)-sinh(a)sinh(b)cos(C) is a structure field (not proved from metric axioms); (2) HyperbolicTriangleAngles.law2 — the second law of cosines cos(C)=-cos(A)cos(B)+sin(A)sin(B)cosh(c) is a structure field; (3) HyperbolicTriangleAngles.defect_pos — the angular defect A+B+C<π is a structure field. Also contains 1 True-stub theorem (euclidean_limit_informal).",
     "lineCount": 195,
     "theoremCount": 13,
     "definitionCount": 0,
@@ -48,7 +48,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Hyperbolic law of cosines, Pythagorean theorem, dual angle formula, and angular defect formalized. Both the first and second laws of cosines are stated. 13 theorems, 0 axioms, 195 lines.",
+    "summary": "Hyperbolic law of cosines scaffold: both laws encoded as structure assumptions, Pythagorean theorem and angular defect derived from those assumptions. 13 theorems, 3 structure-encoded axioms, 195 lines.",
     "implications": "The hyperbolic law of cosines is the fundamental tool for computing distances and angles in hyperbolic space. This formalization could serve as a foundation for hyperbolic trigonometry in Lean, with applications to Kleinian groups, 3-manifolds, and geometric group theory.",
     "openQuestions": [
       "Prove the hyperbolic law of sines: sinh(a)/sin(A) = sinh(b)/sin(B) = sinh(c)/sin(C)",
@@ -59,9 +59,9 @@
   "leanFile": {
     "namespace": "HyperbolicLawOfCosines",
     "lineCount": 195,
-    "axiomCount": 0,
+    "axiomCount": 3,
     "theoremCount": 13,
-    "definitionCount": 0
+    "definitionCount": 2
   },
   "crossReferences": [],
   "sections": []
