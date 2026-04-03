@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-ceva01-ceva-condition",
+    "proofId": "cevas-theorem-oq-01",
+    "range": { "startLine": 104, "endLine": 105 },
+    "type": "definition",
+    "title": "Ceva Condition: d·e·f = (1-d)·(1-e)·(1-f)",
+    "content": "cevaCondition d e f formalizes the algebraic criterion for cevian concurrency: d·e·f = (1-d)·(1-e)·(1-f), where d, e, f ∈ (0,1) are the affine parameters of cevian points D on BC, E on CA, F on AB. The classical signed-ratio form is BD/DC · CE/EA · AF/FB = 1; translating: BD/DC = d/(1-d), so the product = d·e·f/((1-d)(1-e)(1-f)) = 1 iff d·e·f = (1-d)(1-e)(1-f). The symmetric form makes the condition easy to check: for medians d=e=f=1/2, both sides equal 1/8.",
+    "mathContext": "d = BD/(BC),\\; e = CE/(CA),\\; f = AF/(AB)\\\\\n\\frac{d}{1-d} \\cdot \\frac{e}{1-e} \\cdot \\frac{f}{1-f} = 1 \\iff d \\cdot e \\cdot f = (1-d)(1-e)(1-f)\\\\\n\\text{Medians: } d=e=f=1/2 \\Rightarrow \\tfrac{1}{8}=\\tfrac{1}{8} \\checkmark",
+    "significance": "key",
+    "relatedConcepts": ["signed ratios", "affine parameters", "concurrency criterion", "Giovanni Ceva 1678"],
+    "prerequisites": ["affineComb", "GeomCevianConfig"]
+  },
+  {
+    "id": "ann-ceva01-concurrency-point",
+    "proofId": "cevas-theorem-oq-01",
+    "range": { "startLine": 162, "endLine": 168 },
+    "type": "definition",
+    "title": "Explicit Concurrency Point: ((1-d)(1-e)/w, d(1-e)/w) where w = 1-e+de",
+    "content": "cevaConcurrencyPoint gives the explicit coordinates of the intersection of cevians AD and BE for the standard triangle A=(0,0), B=(1,0), C=(0,1). Line AD parametrized as (s(1-d), sd); line BE as (1-t, t(1-e)). Solving: s(1-d) = 1-t and sd = t(1-e) gives s = (1-e)/w where w = 1-e+de. The concurrency point is ((1-d)(1-e)/w, d(1-e)/w). w_pos (line 167) proves w > 0 from d,e ∈ (0,1) via nlinarith, guaranteeing well-definedness. The third cevian CF passes through this point precisely when the Ceva condition holds, proved in concurrency_on_CF via nlinarith on the Ceva identity.",
+    "mathContext": "w = 1 - e + de > 0 \\quad (d,e \\in (0,1))\\\\\nP = \\left(\\frac{(1-d)(1-e)}{w},\\; \\frac{d(1-e)}{w}\\right) = AD \\cap BE\\\\\nP \\in CF \\iff d \\cdot e \\cdot f = (1-d)(1-e)(1-f)",
+    "significance": "key",
+    "relatedConcepts": ["parametric intersection", "affine coordinates", "denominator positivity", "concurrency witness"],
+    "prerequisites": ["lineThrough", "w_pos", "concurrency_on_AD", "concurrency_on_BE", "concurrency_on_CF"]
+  },
+  {
+    "id": "ann-ceva01-forward",
+    "proofId": "cevas-theorem-oq-01",
+    "range": { "startLine": 216, "endLine": 226 },
+    "type": "insight",
+    "title": "Forward Direction: Ceva Condition Implies Concurrency",
+    "content": "ceva_geometric_standard is the main forward theorem: the Ceva condition implies the three cevians AD, BE, CF of the standard triangle A=(0,0), B=(1,0), C=(0,1) are concurrent. The proof supplies cevaConcurrencyPoint as the explicit witness: it lies on AD (concurrency_on_AD) and BE (concurrency_on_BE) by construction; it lies on CF (concurrency_on_CF) exactly when the Ceva condition holds. The proof of concurrency_on_CF uses the parameter u = (1-d)(1-e)/(f·w) and nlinarith combining hceva and w_pos to verify the second coordinate identity.",
+    "mathContext": "d \\cdot e \\cdot f = (1-d)(1-e)(1-f) \\Rightarrow \\exists P:\\; P \\in AD \\cap BE \\cap CF\\\\\n\\text{Witness: } P = \\left(\\frac{(1-d)(1-e)}{w}, \\frac{d(1-e)}{w}\\right)\\\\\nP \\in CF \\text{ with param } u = \\frac{(1-d)(1-e)}{fw}",
+    "significance": "key",
+    "relatedConcepts": ["concurrency witness", "nlinarith", "areConcurrent", "standard triangle"],
+    "prerequisites": ["cevaConcurrencyPoint", "concurrency_on_AD", "concurrency_on_BE", "concurrency_on_CF"]
+  },
+  {
+    "id": "ann-ceva01-converse",
+    "proofId": "cevas-theorem-oq-01",
+    "range": { "startLine": 272, "endLine": 346 },
+    "type": "insight",
+    "title": "Converse: Concurrency Implies Ceva via System of Line-Parameter Equations",
+    "content": "ceva_converse_standard proves the converse: if all three cevians share a common point P, then d·e·f = (1-d)·(1-e)·(1-f). The proof destructures the areConcurrent hypothesis to obtain line parameters (s, t, u) at P, derives equations (hP1_AD, hP2_AD, etc.) via linarith, then extracts two key constraints: (1) u·f·d = (1-u)·(1-d) (from P on AD and CF), (2) u·(1-f+e·f) = e (from P on BE and CF). Combined via nlinarith with the positivity 1-f+ef > 0, these give d·e·f = (1-d)·(1-e)·(1-f). The long inline comment traces the algebraic derivation explicitly.",
+    "mathContext": "P \\in AD \\cap BE \\cap CF \\Rightarrow d \\cdot e \\cdot f = (1-d)(1-e)(1-f)\\\\\n\\text{From line params: } u \\cdot fd = (1-u)(1-d) \\text{ and } u(1-f+ef) = e\\\\\n\\text{Cross-multiply: } efd = (1-d)(1-e)(1-f)",
+    "significance": "key",
+    "relatedConcepts": ["converse Ceva", "parameter extraction", "nlinarith", "system of equations"],
+    "prerequisites": ["areConcurrent", "lineThrough", "cevaCondition", "nlinarith"]
+  },
+  {
+    "id": "ann-ceva01-affine",
+    "proofId": "cevas-theorem-oq-01",
+    "range": { "startLine": 381, "endLine": 430 },
+    "type": "definition",
+    "title": "AffineMap2D: Invertible Affine Maps Preserve Cevian Concurrency",
+    "content": "AffineMap2D (line 381) is a 2×2 affine map with matrix (a₁₁ a₁₂; a₂₁ a₂₂) and translation. affine_preserves_line (line 403) proves that injective affine maps preserve collinearity (P ∈ lineThrough A B → M(P) ∈ lineThrough M(A) M(B)), proved by exhibiting the same parameter t. affine_preserves_concurrency (line 414) lifts this to concurrency by applying affine_preserves_line three times to the witness. stdToTriangle (line 433) sends the standard triangle to any (A,B,C) with determinant = signedArea(A,B,C) (proved via stdToTriangle_det). The non-degeneracy condition triangleNonDegenerate ↔ det ≠ 0 allows reduction of the general case to the standard one.",
+    "mathContext": "\\det(M) \\neq 0 \\Rightarrow M \\text{ preserves collinearity and concurrency}\\\\\n\\text{stdToTriangle}(A,B,C): (0,0)\\mapsto A,\\; (1,0)\\mapsto B,\\; (0,1)\\mapsto C\\\\\n\\det(\\text{stdToTriangle}) = \\text{signedArea}(A,B,C) \\neq 0 \\iff \\text{non-degenerate}",
+    "significance": "key",
+    "relatedConcepts": ["affine invariance", "signed area", "non-degeneracy", "general triangle reduction"],
+    "prerequisites": ["AffineMap2D.apply", "AffineMap2D.det", "signedArea", "triangleNonDegenerate"]
+  },
+  {
+    "id": "ann-ceva01-angle-bisectors",
+    "proofId": "cevas-theorem-oq-01",
+    "range": { "startLine": 754, "endLine": 770 },
+    "type": "insight",
+    "title": "Angle Bisectors Concurrent: Incenter via Ceva's Theorem",
+    "content": "angle_bisectors_concurrent (line 754) proves the angle bisectors of any non-degenerate triangle with side lengths a, b, c > 0 are concurrent — the incenter exists — via Ceva's theorem. The angle bisector to side a divides the opposite side in ratio b:c (angle bisector theorem), giving cevian parameter d = b/(a+b), e = c/(b+c), f = a/(c+a). angle_bisectors_ceva (line 729) verifies the Ceva condition: d·e·f = abc/((a+b)(b+c)(c+a)) = (1-d)(1-e)(1-f). angle_bisector_param_pos (line 739) proves d, e, f ∈ (0,1) from a, b, c > 0 so ceva_iff_general applies.",
+    "mathContext": "d = \\frac{b}{a+b},\\; e = \\frac{c}{b+c},\\; f = \\frac{a}{c+a}\\\\\nd \\cdot e \\cdot f = \\frac{abc}{(a+b)(b+c)(c+a)} = (1-d)(1-e)(1-f)\\\\\n\\Rightarrow \\text{angle bisectors concurrent (incenter)}",
+    "significance": "supporting",
+    "relatedConcepts": ["angle bisector theorem", "incenter", "side length ratios", "Ceva applications"],
+    "prerequisites": ["cevaCondition", "ceva_iff_general", "angle_bisectors_ceva", "angle_bisector_param_pos"]
+  },
+  {
+    "id": "ann-ceva01-routh",
+    "proofId": "cevas-theorem-oq-01",
+    "range": { "startLine": 838, "endLine": 907 },
+    "type": "concept",
+    "title": "Routh's Theorem: Inner Triangle Area = 1/7 at d=e=f=1/3",
+    "content": "routhRatio (line 838) defines R(d,e,f) = (d·e·f - (1-d)(1-e)(1-f))² / ((1-d+de)(1-e+ef)(1-f+fd)) — the ratio of the inner triangle area (formed by the three cevians) to the original triangle area. routh_zero_iff_ceva (line 844) proves R = 0 iff the Ceva condition holds: when the cevians are concurrent, the inner triangle degenerates to a point. routh_medial_thirds (line 871) proves the famous 1/7 result: at d=e=f=1/3, the three cevians divide the triangle into seven regions of equal area, with the inner triangle having area = 1/7 of the whole. This is a celebrated combinatorial geometry fact.",
+    "mathContext": "R(d,e,f) = \\frac{(def-(1-d)(1-e)(1-f))^2}{(1-d+de)(1-e+ef)(1-f+fd)}\\\\\nd=e=f=1/3: R = \\frac{(1/27-8/27)^2}{(7/9)^3} = \\frac{49/729}{343/729} = \\frac{1}{7}\\\\\nR = 0 \\iff d \\cdot e \\cdot f = (1-d)(1-e)(1-f) \\iff \\text{concurrent}",
+    "significance": "supporting",
+    "relatedConcepts": ["Routh's theorem", "inner triangle area", "1/7 formula", "area ratios"],
+    "prerequisites": ["cevaCondition", "routhRatio", "routh_zero_iff_ceva", "norm_num"]
+  }
+]

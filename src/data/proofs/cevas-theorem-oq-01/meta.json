@@ -82,7 +82,62 @@
       "targetId": "cevas-theorem-oq-02",
       "relationship": "related",
       "description": "Further extensions of Ceva's theorem including trigonometric and projective forms"
+    },
+    {
+      "targetId": "intermediate-value-theorem-oq-02",
+      "relationship": "related",
+      "description": "Both use constructive witness arguments in ℝ²: IVT bisects intervals, Ceva constructs explicit concurrency points via parametric line intersection"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-ceva01-primitives",
+      "title": "Points, Lines, and Affine Combinations",
+      "startLine": 25,
+      "endLine": 105,
+      "description": "Point abbrev (ℝ×ℝ), lineThrough (parametric), areConcurrent (∃ common point), affineComb (D = (1-d)B + dC). Basic lemmas: self_on_line, affineComb_on_line. cevaCondition definition: d·e·f = (1-d)·(1-e)·(1-f)."
+    },
+    {
+      "id": "sec-ceva01-standard-config",
+      "title": "Cevian Configuration and Standard Triangle",
+      "startLine": 59,
+      "endLine": 161,
+      "description": "GeomCevianConfig structure (A,B,C,d,e,f with positivity bounds). D, E, F definitions via affineComb. cevianAD, cevianBE, cevianCF as lineThrough. stdTriangleConfig (A=(0,0), B=(1,0), C=(0,1)). std_D/E/F coordinate formulas."
+    },
+    {
+      "id": "sec-ceva01-forward",
+      "title": "Forward Direction: Ceva Condition Implies Concurrency (Standard Triangle)",
+      "startLine": 149,
+      "endLine": 247,
+      "description": "cevaConcurrencyPoint: explicit intersection ((1-d)(1-e)/w, d(1-e)/w) with w = 1-e+de. w_pos, concurrency_on_AD, concurrency_on_BE, concurrency_on_CF. ceva_geometric_standard main theorem. medians_ceva and medians_concurrent (centroid at (1/3,1/3))."
+    },
+    {
+      "id": "sec-ceva01-converse",
+      "title": "Converse and Biconditional (Standard Triangle)",
+      "startLine": 249,
+      "endLine": 361,
+      "description": "ceva_converse_standard: extract parameters (s,t,u) at common point P, derive u·fd = (1-u)(1-d) and u(1-f+ef) = e, nlinarith to conclude Ceva condition. ceva_iff_standard: biconditional combining both directions."
+    },
+    {
+      "id": "sec-ceva01-affine",
+      "title": "Affine Reduction to General Triangle",
+      "startLine": 363,
+      "endLine": 592,
+      "description": "signedArea, triangleNonDegenerate. AffineMap2D structure + apply + det. affine_preserves_comb, affine_preserves_line, affine_preserves_concurrency. stdToTriangle (maps standard to ABC), triangleToStd (inverse, explicit Cramer formula). ceva_geometric_general via stdToTriangle + ceva_iff_standard."
+    },
+    {
+      "id": "sec-ceva01-general-apps",
+      "title": "General Triangle Theorems and Applications",
+      "startLine": 593,
+      "endLine": 837,
+      "description": "GeneralCevianConfig structure. ceva_general_forward, ceva_converse_general, ceva_iff_general, ceva_general_iff. angle_bisectors_ceva (d=b/(a+b) etc.), angle_bisector_param_pos, angle_bisectors_concurrent (incenter). equilateral_altitudes_ceva, altitude_ceva_algebraic."
+    },
+    {
+      "id": "sec-ceva01-routh",
+      "title": "Routh's Theorem: Inner Triangle Area Ratio",
+      "startLine": 838,
+      "endLine": 907,
+      "description": "routhRatio definition: (def-(1-d)(1-e)(1-f))²/((1-d+de)(1-e+ef)(1-f+fd)). routh_zero_iff_ceva: R=0 iff Ceva condition. routh_medial_thirds: d=e=f=1/3 gives R=1/7 (famous medial inner triangle result)."
+    }
+  ]
 }
