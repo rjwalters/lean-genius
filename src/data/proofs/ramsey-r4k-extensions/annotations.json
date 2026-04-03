@@ -1,1 +1,149 @@
-[]
+[
+  {
+    "id": "ann-r4k-prob",
+    "proofId": "ramsey-r4k-extensions",
+    "range": {
+      "startLine": 40,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Erdős 1947: First Moment Method Gives R(k,k) > 2^{k/2}",
+    "content": "erdos_probabilistic_lower_bound axiomatizes Erdős's revolutionary 1947 argument. Color K_n edges uniformly at random (each edge red/blue with probability 1/2). For a fixed k-subset S, P[S monochromatic] = 2^{1-C(k,2)}. Expected number of monochromatic k-cliques: E[X] = C(n,k) · 2^{1-C(k,2)}. For n = ⌊2^{k/2}⌋, this expectation is < 1, so there exists a coloring with no monochromatic k-clique. This shows R(k,k) > n = 2^{k/2}. In Lean, the axiom exhibits a coloring function satisfying symmetry, irreflexivity, and the no-mono-clique conditions. Formalizing this requires a probability space over colorings and expectation, not yet in Mathlib.",
+    "mathContext": "$\\mathbb{E}[X] = \\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}} < 1$ for $n \\leq 2^{k/2}$ $\\Rightarrow$ $R(k,k) > 2^{k/2}$; Erdős 1947 founding result of probabilistic combinatorics",
+    "significance": "key",
+    "relatedConcepts": [
+      "first moment method",
+      "probabilistic method",
+      "random coloring",
+      "Ramsey number lower bound"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Finset.card",
+      "Bool coloring",
+      "expected value"
+    ]
+  },
+  {
+    "id": "ann-r4k-pascal",
+    "proofId": "ramsey-r4k-extensions",
+    "range": {
+      "startLine": 207,
+      "endLine": 260
+    },
+    "type": "technique",
+    "title": "Pascal Triangle Bound: R(r,s) ≤ C(r+s-2,r-1) via Binomial Recursion",
+    "content": "ramseyUpperBound_pascal proves the classical bound R(r,s) ≤ C(r+s-2,r-1) from the Pascal recursion R(r,s) ≤ R(r-1,s) + R(r,s-1). In terms of binomials: C(r+s-2,r-1) = C(r-1+s-2,r-2) + C(r+s-3,r-1) = C((r-1)+(s)-2,(r-1)-1) + C(r+(s-1)-2,r-1) = R(r-1,s) + R(r,s-1). The Lean proof uses Nat.choose_symm_diff and Nat.add_choose_eq. This is the Erdős-Szekeres 1935 bound (predating the probabilistic method), giving R(r,s) ≤ C(r+s-2,r-1) ≤ 2^{r+s-2}.",
+    "mathContext": "$\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$; Erdős-Szekeres 1935: $R(r,s) \\leq \\binom{r+s-2}{r-1}$; $R(3,3)\\leq 6, R(4,4)\\leq 20, R(5,5)\\leq 70$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pascal triangle",
+      "Nat.choose_symm_diff",
+      "Erdos-Szekeres 1935",
+      "binomial bound"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "ramseyUpperBound_pascal",
+      "Nat.add_choose_eq"
+    ]
+  },
+  {
+    "id": "ann-r4k-paley",
+    "proofId": "ramsey-r4k-extensions",
+    "range": {
+      "startLine": 427,
+      "endLine": 590
+    },
+    "type": "insight",
+    "title": "Paley Graph Constructions: Verified Lower Bounds via native_decide",
+    "content": "The R(4,4) ≥ 18 lower bound uses the Paley graph P_{17}: vertices are elements of ℤ/17ℤ, and (i,j) are connected (red) iff their difference is a quadratic residue mod 17. The quadratic residues mod 17 are {1,2,4,8,9,13,15,16}. paley17_no_red_K4 and paley17_no_blue_K4 are both proved by native_decide — Lean's computational decision procedure. Since P_{17} is self-complementary (the complement is also a Paley graph, on non-residues), both colorings are identical up to symmetry. Similarly, Paley-13 and a circulant graph on 13 vertices provide R(4,5) > 13 and R(3,5) ≥ 14.",
+    "mathContext": "Paley $P_{17}$: $(i-j) \\in QR_{17} \\Rightarrow$ red; $|QR_{17}|=8$; $\\deg=8$ for all vertices; no red $K_4$, no blue $K_4$ (native_decide) $\\Rightarrow R(4,4)\\geq 18$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Paley graph",
+      "quadratic residues",
+      "native_decide",
+      "R(4,4) lower bound",
+      "self-complementary graph"
+    ],
+    "prerequisites": [
+      "Fin 17",
+      "qr17 definition",
+      "native_decide",
+      "paleyColor17"
+    ]
+  },
+  {
+    "id": "ann-r4k-c5",
+    "proofId": "ramsey-r4k-extensions",
+    "range": {
+      "startLine": 369,
+      "endLine": 430
+    },
+    "type": "technique",
+    "title": "C_5 Construction: R(3,3) ≥ 6 via Pentagon 2-Coloring",
+    "content": "r3_3_lower_bound proves R(3,3) ≥ 6 by exhibiting an explicit 2-coloring of K_5 with no monochromatic triangle. c5Color colors edge (i,j) based on whether |i-j| mod 5 ∈ {1,2} (the cyclic pentagonal distance). c5_no_red_K3 and c5_no_blue_K3 are verified by native_decide. The coloring is exactly the edges of C_5 (red) vs its complement (the Petersen-adjacent pairs, blue). This is the simplest non-trivial Ramsey construction, showing that the complete graph K_5 can be 2-colored monochromatically K_3-free.",
+    "mathContext": "$c_5: \\text{Fin 5} \\to \\text{Fin 5} \\to \\text{Bool}$, $(i,j) \\mapsto |i-j|\\,\\text{mod}\\, 5 \\in \\{1,2\\}$; no red $K_3$, no blue $K_3$ (native_decide) $\\Rightarrow R(3,3)\\geq 6$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "C_5 construction",
+      "R(3,3)=6",
+      "native_decide",
+      "Ramsey lower bound witness"
+    ],
+    "prerequisites": [
+      "c5Color definition",
+      "Fin 5",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-r4k-cgms",
+    "proofId": "ramsey-r4k-extensions",
+    "range": {
+      "startLine": 1005,
+      "endLine": 1060
+    },
+    "type": "concept",
+    "title": "CGMS 2009: Exponentially Better Diagonal Upper Bound",
+    "content": "cgms_diagonal_upper_bound axiomatizes the Conlon-Fox-Sudakov 2009 improvement to the Erdős-Szekeres diagonal Ramsey bound. CGMS prove R(k,k) ≤ k^{-c·log k} · 4^k, exponentially better than the classical C(2k-2,k-1) ≤ 4^{k-1} bound. cgms_improves_erdos_szekeres quantifies this: CGMS ≤ Erdős-Szekeres for all large k. cgms_exponentially_better shows the ratio is exponential. The cgms_epsilon_estimate axiom bounds the improvement factor. The conjectured value R(k,k) ~ √2 · k · 2^{k/2} would require a matching lower bound improvement — the gap between Erdős's 2^{k/2} lower and CGMS's 4^k upper is a factor of 2^{k/2}/k.",
+    "mathContext": "CGMS: $R(k,k) \\leq k^{-c\\log k} \\cdot 4^k$; conjectured: $R(k,k) \\sim \\sqrt{2}\\cdot k \\cdot 2^{k/2}$; gap: $4^k/2^{k/2} = 2^{k/2}$ (exponential in $k$)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Conlon-Fox-Sudakov 2009",
+      "diagonal Ramsey",
+      "exponential improvement",
+      "Ramsey gap"
+    ],
+    "prerequisites": [
+      "cgms_diagonal_upper_bound",
+      "cgms_epsilon_estimate",
+      "ramseyUpperBound"
+    ]
+  },
+  {
+    "id": "ann-r4k-mattheus",
+    "proofId": "ramsey-r4k-extensions",
+    "range": {
+      "startLine": 1075,
+      "endLine": 1142
+    },
+    "type": "context",
+    "title": "Mattheus-Verstraete 2024: R(4,t) = Θ(t³/log² t)",
+    "content": "mattheus_verstraete_r4t axiomatizes the 2024 breakthrough by Mattheus and Verstraete closing the R(4,t) gap: R(4,t) = Θ(t^3/log^2 t). Previously, the best lower bound was Ω(t^2/log t) (from the probabilistic method) and upper bound O(t^3/log t), a factor of t gap. Mattheus-Verstraete achieved a matching lower bound via an algebraic construction (finite geometry over ℤ/pℤ), resolving a 40-year gap in off-diagonal Ramsey theory. The Burr-Erdős conjecture (burr_erdos_conjecture axiom) and Ramsey multiplicity (ramsey_multiplicity axiom) are also axiomatized as additional frontier results. This is one of the most significant recent advances in extremal combinatorics.",
+    "mathContext": "Mattheus-Verstraete 2024: $R(4,t) = \\Theta(t^3/\\log^2 t)$; closes $[\\Omega(t^2/\\log t), O(t^3/\\log t)]$ gap; algebraic lower bound via $\\mathbb{F}_p$ geometry",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mattheus-Verstraete 2024",
+      "R(4,t) exact order",
+      "algebraic construction",
+      "Burr-Erdos conjecture"
+    ],
+    "prerequisites": [
+      "r4k_lower_bound",
+      "mattheus_verstraete_r4t",
+      "burr_erdos_conjecture"
+    ]
+  }
+]

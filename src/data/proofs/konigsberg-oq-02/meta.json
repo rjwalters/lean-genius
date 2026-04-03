@@ -75,5 +75,54 @@
       "description": "Undirected Königsberg bridges (Wiedijk #53); this file proves the directed analogue"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "digraph-definitions",
+      "title": "Part I: Directed Graph Definitions",
+      "startLine": 53,
+      "endLine": 95,
+      "summary": "Defines Digraph (loopless arc relation), outNeighbors/inNeighbors (filtered Finset.univ), outDegree/inDegree (cardinalities), and isBalanced (indeg = outdeg).",
+      "mathContext": "$\\text{Digraph}\\, V = (V, \\text{adj}: V\\to V\\to\\text{Prop},\\; \\forall v\\, \\neg\\text{adj}\\, v\\, v)$; $\\deg^+(v) = |\\{w : \\text{adj}\\, v\\, w\\}|$; $\\deg^-(v) = |\\{u : \\text{adj}\\, u\\, v\\}|$"
+    },
+    {
+      "id": "degree-sum",
+      "title": "Part II: Degree Sum Lemma",
+      "startLine": 96,
+      "endLine": 176,
+      "summary": "Proves sum_outDegree_eq_arcCount and sum_inDegree_eq_arcCount via Finset.card_eq_sum_card_fiberwise, then derives sum_inDegree_eq_sum_outDegree as corollary.",
+      "mathContext": "$\\sum_v \\deg^+(v) = \\sum_v \\deg^-(v) = |E|$; proof: biject outNeighbors fiber over source (resp. target) with arcs"
+    },
+    {
+      "id": "eulerian-circuit",
+      "title": "Part III: Directed Eulerian Circuit (Necessity Proved, Sufficiency Axiomatized)",
+      "startLine": 177,
+      "endLine": 413,
+      "summary": "Defines Walk (arc list with chain property, starts_at, ends_at), isEulerian (Nodup + coverage). Private lemmas: circuit_fst_perm_snd (List.Perm), eulerian_source/target_count. Proves necessity; axiomatizes sufficiency (Hierholzer's algorithm).",
+      "mathContext": "Circuit necessity: $\\text{Eulerian circuit} \\Rightarrow \\forall v: \\deg^+(v)=\\deg^-(v)$. Proof: arc source multiset $\\cong$ target multiset via chain (List.Perm). Sufficiency: axiom (Hierholzer)."
+    },
+    {
+      "id": "eulerian-path",
+      "title": "Part IV: Directed Eulerian Path Criterion",
+      "startLine": 414,
+      "endLine": 499,
+      "summary": "Defines path degree conditions: exactly one vertex with outdeg-indeg=1 (source), one with indeg-outdeg=1 (sink). Proves necessity via path_fst_snd_eq lemma; axiomatizes sufficiency.",
+      "mathContext": "Path $u\\to v$ necessary conditions: $\\deg^+(u)-\\deg^-(u)=1$ (source), $\\deg^-(v)-\\deg^+(v)=1$ (sink), $\\deg^+(w)=\\deg^-(w)$ for $w\\notin\\{u,v\\}$"
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Parts V-VIII: Concrete Examples and Non-Existence",
+      "startLine": 500,
+      "endLine": 690,
+      "summary": "Directed triangle (3 arcs, degree 1 each, balanced), directed square (4 arcs, balanced), unbalanced triangle (no Eulerian circuit by contradiction), Eulerian path example (A→B→C path conditions).",
+      "mathContext": "$K_3^{\\to}$ (triangle): $\\deg^+ = \\deg^- = 1$; $C_4^{\\to}$ (square): balanced; unbalanced graph: $\\deg^+(A)=2, \\deg^-(A)=0 \\Rightarrow$ no circuit"
+    },
+    {
+      "id": "undirected-connection",
+      "title": "Parts IX-X: Undirected Connection and de Bruijn Sequences",
+      "startLine": 691,
+      "endLine": 813,
+      "summary": "symmetric_digraph_balanced (symmetric adj implies balanced). De Bruijn arc count: |E| = k^n in de Bruijn graph on k symbols length n. deBruijn_length: sequence length = k^n + n - 1.",
+      "mathContext": "De Bruijn graph: vertices = $\\Sigma^{n-1}$, arcs = $\\Sigma^n$; $|E| = k^n$; de Bruijn sequence length = $k^n + n - 1$; Eulerian circuit $\\Rightarrow$ de Bruijn sequence exists"
+    }
+  ]
 }

@@ -34,7 +34,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Ramsey's theorem (1930) guarantees that R(r,s) is finite for all r,s. The off-diagonal case R(4,k) has attracted sustained attention: the upper bound R(4,k) = O(k³/log k) (from the Zarankiewicz problem) and the lower bound R(4,k) = Ω(k²/log k) (Kim 1995) represent the best known bounds. The Erdős 1947 proof that R(k,k) ≥ 2^(k/2) established the probabilistic method in combinatorics. The diagonal bounds (Spencer 1975, Conlon-Fox-Sudakov 2009) remain far from the conjectured R(k,k) ~ √2·k·2^(k/2).",
+    "historicalContext": "Ramsey's theorem (1930) guarantees that for any r,s, there exists a finite n such that any 2-coloring of K_n contains a red r-clique or blue s-clique. The Erdős-Szekeres 1935 bound R(r,s) ≤ C(r+s-2,r-1) gives doubly exponential growth. The landmark 1947 Erdős probabilistic lower bound R(k,k) ≥ 2^(k/2) established the probabilistic method as a tool in combinatorics, showing existence without construction. The off-diagonal case R(4,k) attracted intensive study: upper bound O(k³/log k) via Zarankiewicz and lower bound Ω(k²/log k) via Kim (1995). For 30 years this was a factor-k gap. In 2024, Mattheus and Verstraete proved R(4,t) = Θ(t³/log²t) via algebraic constructions over finite fields, one of the biggest recent breakthroughs in Ramsey theory. The diagonal gap R(k,k) between Spencer's 2^(k/2)·√k lower and Conlon-Fox-Sudakov's k^(-c log k)·4^k upper remains exponential and open.",
     "problemStatement": "Formalize the probabilistic method lower bounds for Ramsey numbers and the current best bounds for R(4,k): lower bound Ω(k²/log k) and upper bound O(k³/log k).",
     "text": "The Erdős lower bound R(k,k) ≥ 2^(k/2): color the edges of K_n uniformly at random. The expected number of monochromatic k-cliques is C(n,k)·2·(k choose 2)/2^{-C(k,2)} = C(n,k)·2^{1-C(k,2)}. For n = 2^{k/2-1}, this expectation is < 1, so a coloring with no monochromatic k-clique exists. The first moment method is the archetype of the probabilistic method. R(4,k) bounds require more sophisticated tools (nibble method, Turán-type arguments).",
     "proofStrategy": "The binomial bound R(r,s) ≤ C(r+s-2,r-1) is proved by standard inclusion-exclusion on the Pascal triangle identity. The probabilistic lower bound follows from E[X] = C(n,k)·2^{1-C(k,2)} < 1. The off-diagonal bounds R(4,k) are axiomatized as they require analytic number theory and probabilistic graph theory not in Mathlib.",
@@ -75,5 +75,54 @@
       "description": "Base Ramsey theorem; R4K extensions focus on the off-diagonal case and probabilistic bounds"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "ramsey-definition",
+      "title": "Definition and Probabilistic Lower Bound",
+      "startLine": 26,
+      "endLine": 90,
+      "summary": "ramseyUpperBound R(r,s) = C(r+s-2, r-1) (binomial bound). Axiomatizes Erdos probabilistic lower bound (R(k,k) > 2^(k/2)) and off-diagonal AKS/Kim bounds for R(3,k).",
+      "mathContext": "$R(r,s) \\leq \\binom{r+s-2}{r-1}$; Erdős 1947: $R(k,k) > 2^{k/2}$ (first moment, random coloring); AKS: $R(3,k) = O(k^2/\\log k)$; Kim: $R(3,k) = \\Omega(k^2/\\log k)$"
+    },
+    {
+      "id": "small-values-properties",
+      "title": "Small Values and Pascal Triangle Properties",
+      "startLine": 91,
+      "endLine": 260,
+      "summary": "Computes ramseyUpperBound for R(3,3) through R(6,6) via native_decide. Proves monotonicity, symmetry R(r,s)=R(s,r), ramseyUpperBound_pascal recursion, and strict monotonicity.",
+      "mathContext": "$R(3,3)\\leq 6, R(4,4)\\leq 20, R(5,5)\\leq 70, R(6,6)\\leq 252$; Pascal: $R(r,s)\\leq R(r-1,s)+R(r,s-1)$ from $\\binom{n}{k}=\\binom{n-1}{k-1}+\\binom{n-1}{k}$"
+    },
+    {
+      "id": "r4k-bounds",
+      "title": "R(4,k) Bounds and Structural Properties",
+      "startLine": 261,
+      "endLine": 430,
+      "summary": "Axiomatizes r4k_upper_bound O(k^3/log k) and r4k_lower_bound Omega(k^2/log k). ramseyUpperBound_ge_right/left. C5 construction: explicit coloring of K_5 with no monochromatic K_3 proving R(3,3) >= 6.",
+      "mathContext": "$R(4,k) = O(k^3/\\log k)$ (upper, axiom); $R(4,k) = \\Omega(k^2/\\log k)$ (lower, axiom); C_5 construction: $R(3,3) \\geq 6$ via 2-coloring on 5 vertices with no mono-$K_3$"
+    },
+    {
+      "id": "explicit-constructions",
+      "title": "Explicit Lower Bound Constructions via Paley and Circulant Graphs",
+      "startLine": 427,
+      "endLine": 865,
+      "summary": "Constructions: Paley-17 (R(4,4) >= 18, native_decide verified), Spencer diagonal bound axiom, R(4,k) quadratic lower, R(3,4) >= 9 via K_8 coloring, Paley-13 (R(4,5) > 13), Circulant-13 (R(3,5) >= 14).",
+      "mathContext": "Paley graph $P_{17}$: vertices $\\mathbb{F}_{17}$, edge iff $(i-j)$ QR; no red $K_4$, no blue $K_4$ $\\Rightarrow R(4,4)\\geq 18$. Spencer: $R(k,k) \\geq \\sqrt{2}\\cdot k \\cdot 2^{k/2}/(e\\sqrt{2})$"
+    },
+    {
+      "id": "diagonal-upper-bounds",
+      "title": "Exponential Upper Bounds for Diagonal Ramsey",
+      "startLine": 866,
+      "endLine": 950,
+      "summary": "Proves R(k,k) <= C(2k,k) <= 4^k via central_binom_le_four_pow. ramseyUpperBound_diag_le_four_pow: R(k,k) <= 4^k. Also ramseyUpperBound_le_two_pow from Erdos-Szekeres.",
+      "mathContext": "$\\binom{2k}{k} \\leq 4^k$ (proved); $R(k,k) \\leq \\binom{2k-2}{k-1} \\leq 4^{k-1}$; Erdős-Szekeres: $R(r,s) \\leq 2^{r+s}$"
+    },
+    {
+      "id": "cgms-off-diagonal",
+      "title": "CGMS Upper Bound and Off-Diagonal Theory",
+      "startLine": 951,
+      "endLine": 1142,
+      "summary": "Axiomatizes Conlon-Fox-Sudakov (CGMS) 2009 diagonal upper bound improvement. cgms_improves_erdos_szekeres and cgms_exponentially_better theorems. Off-diagonal axioms: Bohman-Keevash R(3,t), Mattheus-Verstraete R(4,t), Burr-Erdos conjecture, Ramsey multiplicity.",
+      "mathContext": "CGMS: $R(k,k) \\leq k^{-c\\log k}\\cdot 4^k$ (exponentially better). Mattheus-Verstraete: $R(4,t) = \\Theta(t^3/\\log^2 t)$. Burr-Erdős: $R(G,H) \\leq c(\\Delta(G))\\cdot |V(H)|$ for sparse $G$"
+    }
+  ]
 }
