@@ -22,20 +22,64 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "problemStatement": "Can the Four Color Theorem (Gonthier 2005 Coq proof) be re-formalized in Lean 4?",
+    "historicalContext": "The Four Color Problem was posed by Francis Guthrie in 1852 and stated publicly by his brother Frederick to Augustus De Morgan. Alfred Kempe published a 'proof' in 1879 that convinced the mathematical community for a decade, until Percy Heawood found a gap in 1890 — a famous cautionary tale about complex proofs. Heawood salvaged the five-color theorem from Kempe's argument. The problem stood for another 86 years until Appel and Haken (1977) gave the first proof, relying on an IBM 360 to check 1936 unavoidable configurations — the first major theorem proved with substantial computer assistance, sparking philosophical debate about the nature of proof. Robertson, Sanders, Seymour, and Thomas (1997) gave a cleaner proof using only 633 configurations. Georges Gonthier formalized the 4CT in Coq (2005) using the SSReflect proof assistant extension, producing approximately 60,000 lines of verified mathematics. This survey assesses the feasibility of re-formalizing the 4CT in Lean 4, identifying that planar graph infrastructure — currently missing from Mathlib — is the primary obstacle.",
+    "problemStatement": "Can Gonthier's Coq proof of the Four Color Theorem be re-formalized in Lean 4? What infrastructure is needed, and what is the estimated scale?",
     "text": "Survey: 4CT formalization requires ~43K lines. Proves small cases. Identifies starting points.",
+    "proofStrategy": "The file proves the easy base cases: colorability monotonicity, 0-colorability of empty graphs, 1-colorability of edgeless graphs, n-colorability of n-vertex graphs, and the 4CT for ≤4 vertices (trivially 4-colorable) and bipartite graphs (2-colorable → 4-colorable). The main content is a feasibility assessment: tabulating the ~43K lines needed across 5 components, and comparing three approaches: Coq port, native_decide-based computational kernel, and RSST 1997 proof.",
     "keyInsights": [
-      "Gonthier's Coq proof was ~60K lines; Lean 4 estimate ~43K with native_decide",
-      "Planar graph formalization is the key missing infrastructure in Mathlib",
-      "Five Color Theorem (~2000 lines) is a feasible intermediate target",
-      "native_decide could replace much of the computational kernel"
-    ],
-    "proofStrategy": "Survey: 4CT formalization requires ~43K lines. Proves small cases. Identifies starting points.",
-    "historicalContext": ""
+      "Gonthier's Coq proof (~60K lines) translates to an estimated ~43K lines in Lean 4, with native_decide potentially replacing the ~12K-line computational kernel — a substantial reduction for the hardest component",
+      "Planar graph formalization (embeddings in ℝ², Euler's formula V-E+F=2, internal 6-connectivity) is the primary missing infrastructure in Mathlib — without this, even stating the 4CT requires new foundational work",
+      "The Five Color Theorem (~2000 lines) is the natural intermediate target: every planar graph has a vertex of degree ≤ 5 (from Euler's formula: $E \\le 3V-6$, average degree $< 6$), and Kempe-chain arguments give 5-colorability without the full reducibility framework",
+      "The proved theorems (≤4 vertices → 4-colorable, bipartite → 4-colorable) are trivial corollaries of `colorable_of_fintype` and color monotonicity — they demonstrate the API but do not approach the genuine 4CT content, which requires planarity",
+      "The Robertson-Sanders-Seymour-Thomas (1997) proof uses only 633 reducible configurations (vs 1936 in Appel-Haken) — this is what Gonthier formalized, and it represents the most viable target for a Lean 4 port because of the smaller configuration set",
+      "Lean 4's `native_decide` compiles proof terms to native code for verification, offering a fundamentally different trust model than Coq's computational kernel: it is faster but relies on the Lean compiler's correctness in addition to the kernel"
+    ]
   },
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background: 4CT History and Lean 4 Status",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Header with historical context: Appel-Haken 1977, Gonthier 2005 Coq proof, and the proof strategy (minimal counterexample → 6-connected triangulation → 633 unavoidable configurations → each reducible). Status: Mathlib has SimpleGraph.Coloring but lacks planar graph definitions. Estimates ~20K-60K lines needed."
+    },
+    {
+      "id": "coloring-basics",
+      "title": "Part 1: Graph Coloring Basics",
+      "startLine": 49,
+      "endLine": 70,
+      "summary": "Four theorems establishing the coloring API: colorable_of_le (monotonicity: n ≤ m and Colorable n → Colorable m, by Colorable.mono), empty_colorable (0-colorable for empty type), edgeless_one_colorable (1-colorable for ⊥ graph), colorable_of_fintype (G.colorable_of_fintype delegates to Mathlib)."
+    },
+    {
+      "id": "small-cases",
+      "title": "Part 2: Small Cases of 4CT",
+      "startLine": 72,
+      "endLine": 84,
+      "summary": "four_colorable_small: ≤4 vertices → 4-colorable (one line via colorable_of_fintype.mono hV). four_colorable_of_bipartite: 2-colorable → 4-colorable (one line via h.mono (by omega)). These are genuinely easy but correctly stated."
+    },
+    {
+      "id": "five-color",
+      "title": "Part 3: Five Color Theorem Discussion",
+      "startLine": 86,
+      "endLine": 99,
+      "summary": "A docstring section explaining the key ingredient for the Five Color Theorem: every planar graph has a vertex of degree ≤ 5, proved via Euler's formula E ≤ 3V-6 giving average degree < 6. PlanarHasLowDegreeVertex is defined as True (placeholder, requires planar graph infrastructure)."
+    },
+    {
+      "id": "feasibility-assessment",
+      "title": "Part 4: Feasibility Assessment",
+      "startLine": 101,
+      "endLine": 136,
+      "summary": "A detailed table estimating component-by-component effort (graph basics ~2K, planar ~6K, reducibility ~12K, configs ~15K, computation ~8K, total ~43K lines). Three approaches: Coq port (~43K), native_decide-based (~shorter), RSST 1997 (633 configs). Conclusion: multi-year project, start with planar graphs → Five Color Theorem."
+    }
+  ],
   "conclusion": {
-    "summary": "A full 4CT in Lean 4 is a multi-year project. The recommended path: planar graphs → Five Color Theorem → reducibility framework → computational verification via native_decide.",
-    "implications": "A full 4CT in Lean 4 is a multi-year project. The recommended path: planar graphs → Five Color Theorem → reducibility framework → computational verification via native_decide."
+    "summary": "A complete Lean 4 formalization of the Four Color Theorem is feasible but requires an estimated ~43K lines of new Mathlib infrastructure, with planar graph theory as the foundational prerequisite. The file proves the trivially easy cases (≤4 vertices, bipartite) as proof-of-concept for the coloring API.",
+    "implications": "The 4CT formalization project would require building the entire theory of planar graphs in Lean 4 — a major contribution to Mathlib in its own right. This infrastructure would also enable formalizations of the Kuratowski theorem (K₅ and K₃,₃ characterization of planar graphs), Euler's formula, and the Fáry-Wagner theorem. The native_decide approach offers a new proof paradigm: encode reducibility as a decidable predicate and let the kernel verify it, potentially producing a much shorter proof at the cost of increased trust in the compiler.",
+    "openQuestions": [
+      "Has planar graph theory been added to Mathlib since this survey? The Mathlib community maintains active development, and planar graph definitions may now be available — if so, the Five Color Theorem path becomes immediately viable.",
+      "Can Lean 4's `native_decide` realistically handle the ~10⁹-case computational verification needed for the 633 configurations? What are the memory and time requirements, and can it complete in the CI environment?",
+      "Is there a synthetic proof of the 4CT — one that avoids configuration checking entirely — that might be accessible at a fraction of the ~43K line estimate? Recent work on topological and algebraic approaches (e.g., via chromatic polynomials or algebraic topology) might offer shorter paths."
+    ]
   },
   "leanFile": {
     "imports": [
@@ -55,6 +99,5 @@
       "relationship": "extends",
       "description": "Addresses 4CT question from Euler formula context"
     }
-  ],
-  "sections": []
+  ]
 }
