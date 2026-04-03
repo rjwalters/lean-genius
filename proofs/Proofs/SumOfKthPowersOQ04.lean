@@ -24,7 +24,7 @@ import Mathlib.NumberTheory.BernoulliPolynomials
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Tactic
 
 open Finset Filter Polynomial
@@ -39,7 +39,7 @@ namespace SumOfKthPowersAsymptotic
 private theorem bernoulli_coeff_top (k : ℕ) :
     (Polynomial.bernoulli (k + 1)).coeff (k + 1) = 1 := by
   rw [coeff_bernoulli]
-  simp [le_refl, Nat.sub_self, _root_.bernoulli_zero, Nat.choose_self]
+  simp [le_refl, _root_.bernoulli_zero, Nat.choose_self]
 
 /-- The Bernoulli polynomial B_{k+1} has degree exactly k+1 and leading coefficient 1.
     PROVED from coeff_bernoulli (was previously an axiom). -/
@@ -74,7 +74,7 @@ axiom monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
     (hd : p.natDegree = d) (hlc : p.leadingCoeff = 1) (hd_pos : 0 < d) :
     Tendsto (fun n : ℕ => p.eval (n : ℚ) / (n : ℚ) ^ d) atTop (nhds 1)
 
-/-- **Main theorem**: The ratio ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1) as n → ∞.
+/- **Main theorem**: The ratio ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1) as n → ∞.
 
     This is the asymptotic leading term of Faulhaber's formula. The proof
     combines the Bernoulli polynomial formula with the polynomial asymptotics.
@@ -88,11 +88,19 @@ private lemma const_div_pow_tendsto_zero (c : ℚ) (d : ℕ) (hd : 0 < d) :
     Tendsto (fun n : ℕ => c / (n : ℚ) ^ d) atTop (nhds 0) := by
   rw [show (0 : ℚ) = c * 0 from by ring]
   apply Filter.Tendsto.const_mul
-  rw [show (fun n : ℕ => (1 : ℚ) / (n : ℚ) ^ d) = (fun n : ℕ => ((n : ℚ) ^ d)⁻¹) from by
-    ext; simp [one_div]]
   apply Filter.Tendsto.inv_tendsto_atTop
-  apply Filter.Tendsto.atTop_nonneg_mul_left (show (0 : ℚ) < 1 from one_pos)
-  sorry -- Tendsto (fun n : ℕ => (n : ℚ) ^ d) atTop atTop — routine
+  -- (n : ℚ)^d → ∞: for n ≥ 1, n^d ≥ n^1 = n → ∞
+  apply tendsto_atTop_atTop.mpr
+  intro b
+  obtain ⟨N₀, hN₀⟩ := exists_nat_gt b
+  refine ⟨max 1 N₀, fun n hn => ?_⟩
+  have hn1 : 1 ≤ n := (le_max_left 1 N₀).trans hn
+  have hn2 : N₀ ≤ n := (le_max_right 1 N₀).trans hn
+  have hn1q : (1 : ℚ) ≤ (n : ℚ) := by exact_mod_cast hn1
+  have hbn : b < (n : ℚ) := hN₀.trans_le (by exact_mod_cast hn2)
+  calc b ≤ (n : ℚ) := hbn.le
+    _ = (n : ℚ) ^ 1 := (pow_one _).symm
+    _ ≤ (n : ℚ) ^ d := pow_le_pow_right₀ hn1q hd
 
 theorem powerSumRatio_tendsto (k : ℕ) :
     Tendsto (powerSumRatio k) atTop (nhds (1 / (↑k + 1 : ℚ))) := by
@@ -106,34 +114,36 @@ theorem powerSumRatio_tendsto (k : ℕ) :
       powerSumRatio k n = (B.eval (↑n) - c) / ((↑k + 1) * (↑n) ^ (k + 1)) := by
     filter_upwards [eventually_gt_atTop 0] with n hn
     simp only [powerSumRatio, show n ≠ 0 from by omega, ↓reduceIte]
-    have faulhaber := Finset.sum_range_pow_eq_bernoulli_sub n k
+    have faulhaber := sum_range_pow_eq_bernoulli_sub n k
+    have hc_eq : c = _root_.bernoulli (k + 1) :=
+      hc_def.trans (bernoulli_eval_zero (k + 1))
     have hsum : ∑ i ∈ Finset.range n, (↑i : ℚ) ^ k =
         (B.eval (↑n) - c) / (↑k + 1) := by
-      rw [eq_div_iff hk1_ne]; linarith
+      rw [eq_div_iff hk1_ne]
+      push_cast at faulhaber ⊢
+      linarith
     rw [hsum, div_div]
   -- Step 2: The limit of the rewritten form
   suffices h : Tendsto (fun n : ℕ => (B.eval (↑n) - c) / ((↑k + 1) * (↑n) ^ (k + 1)))
-      atTop (nhds (1 / (↑k + 1))) from h.congr' h_eq.symm
-  -- Step 3: Split into B(n)/((k+1)n^{k+1}) - c/((k+1)n^{k+1})
+      atTop (nhds (1 / (↑k + 1))) from h.congr' (h_eq.mono (fun _ h => h.symm))
+  -- Step 3: Split numerator then subtract limits
+  simp_rw [sub_div]
   rw [show (1 : ℚ) / (↑k + 1) = 1 / (↑k + 1) - 0 from by ring]
   apply Filter.Tendsto.sub
   · -- B(n) / ((k+1) * n^(k+1)) → 1/(k+1)
     have h_bern := monic_poly_ratio_tendsto B (k + 1) hndeg hlc (by omega)
-    have := h_bern.div_const (↑k + 1 : ℚ)
-    simp only [one_div] at this
-    refine this.congr (fun n => ?_)
-    simp only [div_div]
+    exact (h_bern.div_const (↑k + 1 : ℚ)).congr (fun n => by rw [div_div, mul_comm])
   · -- c / ((k+1) * n^(k+1)) → 0
-    rw [show (0 : ℚ) = c / (↑k + 1) * 0 from by ring]
-    apply Filter.Tendsto.const_mul
-    exact const_div_pow_tendsto_zero 1 (k + 1) (by omega) |>.congr (fun n => by simp)
+    exact (const_div_pow_tendsto_zero (c / (↑k + 1)) (k + 1) (by omega)).congr
+        (fun n => by rw [div_div])
 
 /-- Special case k=0: ∑ 1 / n = n/n = 1 → 1/(0+1) = 1. -/
 theorem powerSumRatio_k0 (n : ℕ) (hn : n ≠ 0) :
     powerSumRatio 0 n = 1 := by
-  simp [powerSumRatio, hn, Finset.sum_range_id_eq_sum_range_succ]
-  simp [pow_zero, Finset.sum_const, Finset.card_range]
-  field_simp
+  have hn' : (n : ℚ) ≠ 0 := by exact_mod_cast hn
+  simp only [powerSumRatio, hn, ↓reduceIte, pow_zero, Finset.sum_const,
+             Finset.card_range, nsmul_one, Nat.zero_add, pow_one]
+  exact div_self hn'
 
 /-- Gauss sum over ℚ: 2 · ∑_{i=0}^{n-1} i = n·(n-1). -/
 private lemma gauss_sum_rat (n : ℕ) :
@@ -149,10 +159,11 @@ private lemma gauss_sum_rat (n : ℕ) :
 theorem powerSumRatio_k1 (n : ℕ) (hn : 0 < n) :
     powerSumRatio 1 n = ((n : ℚ) - 1) / (2 * n) := by
   simp only [powerSumRatio, show n ≠ 0 from Nat.pos_iff_ne_zero.mp hn, ↓reduceIte,
-    pow_one, pow_succ]
+    pow_succ]
   have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hn)
   have h := gauss_sum_rat n
   have h2 : ∑ i ∈ range n, (i : ℚ) = (n : ℚ) * ((n : ℚ) - 1) / 2 := by linarith
-  rw [h2]; field_simp
+  field_simp
+  nlinarith [h2]
 
 end SumOfKthPowersAsymptotic
