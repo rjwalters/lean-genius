@@ -46,48 +46,74 @@
         "mathlib_version": "4.26.0"
     },
     "overview": {
-        "historicalContext": "The alternating harmonic series ∑(-1)^{n+1}/n = log(2) was first published by Mercator (1668) and is a special case of the Mercator series for log(1+x). Euler studied many variants involving products n(n+k) in the denominators. The generalization to arbitrary k reveals a beautiful structure: for even k the logarithmic terms cancel giving a rational answer, while for odd k the result involves log(2).",
+        "historicalContext": "The alternating harmonic series ∑_{n=1}^∞ (−1)^{n+1}/n = log 2 was first published by Nicolaus Mercator in 1668 in his Logarithmotechnia. Mercator derived it by integrating the geometric series 1/(1+x) = 1 − x + x² − ⋯ term by term and evaluating at x = 1. The rigorous justification requires Abel's theorem on boundary convergence of power series, published much later by Abel in 1826. Leonhard Euler studied numerous variants of harmonic and alternating harmonic sums in the 18th century, introducing what we now call the Euler-Mascheroni constant and the digamma function. The product denominators n(n+k) appear naturally via partial fractions: 1/(n(n+k)) = (1/k)(1/n − 1/(n+k)), reducing the product sum to a telescoping structure. The even-odd dichotomy — rational answers for even k, answers involving log 2 for odd k — is a recurring theme in the theory of alternating Euler sums and polylogarithms.",
         "problemStatement": "Compute ∑_{n=1}^∞ (-1)^{n+1}/(n(n+k)) for arbitrary k ≥ 1 in closed form.",
         "text": "Generalizes the alternating sum of reciprocal products to arbitrary offset k, giving a closed form via partial fractions and the alternating harmonic series.",
         "proofStrategy": "1. Partial fractions: 1/(n(n+k)) = (1/k)(1/n - 1/(n+k))\n2. The first sum ∑(-1)^{n+1}/n = log(2) (axiom)\n3. The shifted sum ∑(-1)^{n+1}/(n+k) = (-1)^k(log(2) - A_k) via tail decomposition\n4. Combine: (1/k)(log(2) - (-1)^k(log(2) - A_k))",
         "keyInsights": [
-            "**Even-odd dichotomy**: For even k, the log(2) terms cancel and the answer is purely rational (A_k/k). For odd k, the answer involves log(2).",
-            "**Partial fraction backbone**: The entire generalization rests on the identity 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)), reducing the product sum to differences of simpler sums.",
-            "**Alternating harmonic partial sums A_k**: These interpolate between A_1 = 1 and lim A_k = log(2), with A_k = H_k - 2H_{⌊k/2⌋} + H_{k} where H_k is the harmonic number."
+            "Even-odd dichotomy: for even k, (−1)^k = 1 and the log 2 terms cancel giving the rational answer A_k/k; for odd k, the answer is (1/k)(2 log 2 − A_k), involving log 2",
+            "Partial fraction backbone: 1/(n(n+k)) = (1/k)(1/n − 1/(n+k)) reduces the product sum to a difference of the alternating harmonic series and its shifted version — the entire proof flows from this one algebraic identity",
+            "Shifted sum via self-inverse: ∑(−1)^{n+1}/(n+k) = (−1)^k(log 2 − A_k) is derived by factoring (−1)^{n+k+2} = (−1)^k · (−1)^{n+2} and using (−1)^k · (−1)^k = 1",
+            "A_k interpolates between A_1 = 1 and log 2: each A_k is a rational number (signed harmonic partial sum) that approaches log 2; for even k, A_k = 1 − 1/2 + ⋯ + 1/(k-1) − 1/k = H_k − 2H_{k/2} where H_k is the harmonic number",
+            "Self-contained design: the file declares its own axiom (alternating_harmonic_hasSum) and imports only Mathlib, avoiding dependency on the parent OQ03 proof — a deliberate modularity choice"
         ]
     },
     "sections": [
         {
             "id": "axiom",
-            "title": "Part I: Alternating Harmonic Series Axiom",
-            "startLine": 1,
-            "endLine": 30,
-            "summary": "Axiomatizes the alternating harmonic series ∑(-1)^{n+1}/n = log(2).",
-            "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n} = \\log 2$ (Mercator 1668)"
+            "title": "Part I: Mercator's Alternating Harmonic Series (Axiom)",
+            "startLine": 22,
+            "endLine": 31,
+            "summary": "Axiomatizes ∑_{n=1}^∞ (−1)^{n+1}/n = log 2 (Mercator 1668). Formal proof requires Abel's theorem not yet in Mathlib. The function is 0-indexed with a guard for n=0.",
+            "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n} = \\log 2$"
         },
         {
             "id": "partial-sums",
-            "title": "Part II: Alternating Harmonic Partial Sums",
-            "startLine": 31,
-            "endLine": 50,
-            "summary": "Defines A_k = ∑_{m=1}^k (-1)^{m+1}/m. Proves A_0 = 0 and A_1 = 1.",
-            "mathContext": "$A_k = \\sum_{m=1}^k \\frac{(-1)^{m+1}}{m}$"
+            "title": "Part II: Alternating Harmonic Partial Sums A_k",
+            "startLine": 33,
+            "endLine": 67,
+            "summary": "Defines altHarmonicPartial k = ∑_{m=1}^k (−1)^{m+1}/m. Proves A_0 = 0 and A_1 = 1. The private lemma partialSum_eq connects the definition to the HasSum function for use with hasSum_nat_add_iff.",
+            "mathContext": "$A_k = \\sum_{m=1}^k \\frac{(-1)^{m+1}}{m}$; $A_0 = 0$, $A_1 = 1$, $A_k \\to \\log 2$"
+        },
+        {
+            "id": "tail-sum",
+            "title": "Part III: Tail of the Alternating Harmonic Series",
+            "startLine": 68,
+            "endLine": 88,
+            "summary": "Proves alternating_harmonic_tail k: the tail ∑_{n=0}^∞ (−1)^{n+k+2}/(n+k+1) = log 2 − A_k via hasSum_nat_add_iff.",
+            "mathContext": "$\\sum_{n=0}^{\\infty} \\frac{(-1)^{n+k+2}}{n+k+1} = \\log 2 - A_k$"
+        },
+        {
+            "id": "shifted-sum",
+            "title": "Part IV: Shifted Alternating Sum",
+            "startLine": 90,
+            "endLine": 126,
+            "summary": "Proves shifted_alternating_hasSum k: ∑_{n=1}^∞ (−1)^{n+1}/(n+k) = (−1)^k(log 2 − A_k). Three-step proof: factor (−1)^k from the tail, use (−1)^k · (−1)^k = 1 (self-inverse), remove +1 shift.",
+            "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n+k} = (-1)^k(\\log 2 - A_k)$"
         },
         {
             "id": "partial-fractions",
-            "title": "Part V: Partial Fractions",
-            "startLine": 80,
-            "endLine": 95,
-            "summary": "Proves 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)) via field_simp + ring. 0 sorries.",
+            "title": "Part V: Partial Fraction Decomposition",
+            "startLine": 128,
+            "endLine": 141,
+            "summary": "Proves partial_fraction: 1/(n(n+k)) = (1/k)(1/n − 1/(n+k)) for n, k ≠ 0 via field_simp and ring. The algebraic backbone of the entire generalization.",
             "mathContext": "$\\frac{1}{n(n+k)} = \\frac{1}{k}\\left(\\frac{1}{n} - \\frac{1}{n+k}\\right)$"
         },
         {
             "id": "main-theorem",
-            "title": "Part VI: Main Theorem",
-            "startLine": 96,
-            "endLine": 130,
-            "summary": "States the generalized formula and verifies k=1 gives 2·log(2)-1 and k=2 gives 1/4.",
-            "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n(n+k)} = \\frac{1}{k}\\left(\\log 2 - (-1)^k(\\log 2 - A_k)\\right)$"
+            "title": "Part VI: Main Theorem and tsum Version",
+            "startLine": 142,
+            "endLine": 181,
+            "summary": "Proves generalized_alternating_sum: the closed form for all k ≥ 1. Proof: rewrite summand via partial fractions (h_feq), then exact HasSum.sub + HasSum.mul_left. Also provides the tsum version via .tsum_eq.",
+            "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n(n+k)} = \\frac{1}{k}\\bigl(\\log 2 - (-1)^k(\\log 2 - A_k)\\bigr)$"
+        },
+        {
+            "id": "special-cases",
+            "title": "Part VII: Verification of Special Cases",
+            "startLine": 183,
+            "endLine": 202,
+            "summary": "Verifies k=1 gives 2 log 2 − 1 (matching the parent OQ03 proof) and k=2 gives 1/4 (demonstrating even-k rational cancellation of logarithmic terms).",
+            "mathContext": "$k=1: 2\\log 2 - 1; \\quad k=2: \\tfrac{1}{4}$ (even-$k$ cancellation)"
         }
     ],
     "crossReferences": [
@@ -103,11 +129,13 @@
         }
     ],
     "conclusion": {
-        "summary": "Derives a closed-form formula for ∑(-1)^{n+1}/(n(n+k)) for arbitrary k, revealing a beautiful even-odd dichotomy where even k gives rational answers and odd k involves log(2).",
-        "implications": "Demonstrates that partial fraction decomposition combined with the alternating harmonic series yields closed forms for a wide family of alternating reciprocal product sums.",
+        "summary": "Proves a closed form for ∑_{n=1}^∞ (−1)^{n+1}/(n(n+k)) for all k ≥ 1 in 196 lines with 1 axiom (the Mercator series). The proof uses partial fractions, tail sum extraction via hasSum_nat_add_iff, and a sign factorization using (−1)^k as a self-inverse. Special cases k=1 and k=2 verify the general formula against known values.",
+        "implications": "This generalization reveals the even-odd structure of alternating Euler sums: products in the denominator create a parity dichotomy where even k gives purely rational answers (A_k/k) and odd k involves log 2. The technique — reduce product sums to simpler sums via partial fractions, then use known series — extends to many families of alternating harmonic sums and polylogarithm evaluations. The self-contained design (single axiom, imports only Mathlib) makes this a clean standalone formalization that could serve as a template for similar series computations.",
         "openQuestions": [
-            "Generalize further to ∑(-1)^{n+1}/((n+a)(n+b)) for arbitrary a, b?",
-            "What is the asymptotics of A_k/k as k → ∞?"
+            "Generalize to ∑(−1)^{n+1}/((n+a)(n+b)) for arbitrary positive integers a < b: the partial fraction still applies, but the shifted sums need a more general framework",
+            "Prove the axiom alternating_harmonic_hasSum in Lean by formalizing Abel's theorem in Mathlib — this would make the entire file axiom-free",
+            "What is the asymptotics of A_k/k as k → ∞? Since A_k → log 2, we have A_k/k → 0; the rate is A_k/k ~ (log 2)/k, a harmonic decay",
+            "Extend to alternating Euler sums: ∑(−1)^{n+1} H_n / n^k where H_n is the harmonic number — these have known closed forms in terms of ζ(k) and log 2"
         ]
     },
     "references": [
