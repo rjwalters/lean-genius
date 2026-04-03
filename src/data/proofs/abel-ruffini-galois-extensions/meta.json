@@ -1,0 +1,76 @@
+{
+  "id": "abel-ruffini-galois-extensions",
+  "title": "Abel-Ruffini Galois Theory Extensions",
+  "slug": "abel-ruffini-galois-extensions",
+  "description": "Extends the Abel-Ruffini formalization with the complete solvability classification of symmetric groups. Proves S₀–S₄ are solvable, S_n is solvable if and only if n ≤ 4, A₅ is simple (the key obstruction), and non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅. Verifies group orders |S₇|=5040, |A₈|=20160. 57 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniGaloisExtensions.lean",
+    "tags": [
+      "group-theory",
+      "galois-theory",
+      "symmetric-groups",
+      "solvability",
+      "abel-ruffini"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's solvability infrastructure.",
+    "lineCount": 534,
+    "theoremCount": 57,
+    "definitionCount": 0,
+    "originalContributions": [
+      "symmetric_solvable_of_le_four: S_n is solvable for n ≤ 4 (general theorem)",
+      "alternating_solvable_of_le_four: A_n is solvable for n ≤ 4",
+      "symmetric_not_solvable_of_five_le: S_n not solvable for n ≥ 5",
+      "solvable_iff_le_four: S_n solvable ↔ n ≤ 4 (complete characterization)",
+      "s3_not_comm / s4_not_comm / s5_not_comm: non-commutativity witnesses",
+      "sign_kernel_is_alternating: ker(sign) = A_n formally verified"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Abel (1824) proved that the general degree-5 polynomial is not solvable by radicals. Galois (1832) gave the definitive theory: a polynomial is solvable by radicals iff its Galois group is solvable. The key: S_n is solvable for n ≤ 4 (enabling the classical formulas for cubics and quartics) but not for n ≥ 5 (blocking a quintic formula). The obstruction is the simplicity of A₅.",
+    "problemStatement": "Prove the complete solvability classification: S_n is solvable if and only if n ≤ 4. Prove A₅ is the obstruction (simple and non-abelian). Verify specific group properties and orders.",
+    "text": "S₀ and S₁ are trivial. S₂ is commutative (abelian, hence solvable). S₃ is solvable via the short exact sequence 1 → A₃ → S₃ → ℤˣ → 1 (both A₃≅ℤ/3ℤ and ℤˣ are abelian). S₄ is solvable via 1 → A₄ → S₄ → ℤˣ → 1 where A₄ is solvable via the Klein four-group V₄. For n ≥ 5: Mathlib's Equiv.Perm.not_solvable provides the result. The complete iff follows.",
+    "proofStrategy": "Prove each small case separately using structural arguments (exact sequences, commutativity). Use Mathlib's not_solvable for n≥5. Package into the full iff. Prove non-commutativity witnesses via decide/native_decide.",
+    "keyInsights": [
+      "S₂ solvable via commutativity; S₃ and S₄ via short exact sequences with abelian quotients",
+      "A₅ is simple: no non-trivial normal subgroups, blocking solvability of S₅",
+      "Sharp threshold: n=4 is the last solvable case — this is why degree 4 has formulas",
+      "Galois connection: polynomial solvability ↔ Galois group solvability"
+    ],
+    "prerequisites": [
+      "Group theory: solvable groups, normal subgroups, composition series",
+      "Symmetric groups: permutations, alternating groups, sign homomorphism",
+      "Galois theory: Galois group, radical extensions"
+    ]
+  },
+  "conclusion": {
+    "summary": "Complete solvability classification: S_n solvable ↔ n ≤ 4. A_n solvable ↔ n ≤ 4. Non-commutativity witnesses. Group order verifications up to S₈. 57 theorems, 534 lines, 0 axioms.",
+    "implications": "The solvability threshold is the theoretical explanation for why cubics and quartics have explicit formulas (Cardano/Ferrari) but quintics do not. This is a cornerstone of Galois theory and the bridge from classical algebra to modern group theory.",
+    "openQuestions": [
+      "Formalize the explicit quintic unsolvability: construct a specific degree-5 polynomial with Galois group S₅",
+      "Prove the Galois correspondence theorem (subfields ↔ subgroups)",
+      "Formalize that A_n is simple for n ≥ 5 directly from the triple transposition argument"
+    ]
+  },
+  "leanFile": {
+    "namespace": "AbelRuffiniGaloisExtensions",
+    "lineCount": 534,
+    "axiomCount": 0,
+    "theoremCount": 57,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "Abel-Ruffini impossibility theorem; this file adds the complete solvability classification of S_n"
+    }
+  ],
+  "sections": []
+}

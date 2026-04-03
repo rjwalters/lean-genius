@@ -1,0 +1,78 @@
+{
+  "id": "sum-of-divisors",
+  "title": "Sum of Divisors Function: Properties and Classification",
+  "slug": "sum-of-divisors",
+  "description": "Formalizes the arithmetic function σ(n) = Σ_{d|n} d with concrete values, multiplicativity, prime power formula, and number classification. Proves σ(p) = p+1 for all primes, σ(mn) = σ(m)σ(n) when gcd(m,n)=1, σ(p^k) = Σ p^i, and classifies deficient/perfect/abundant numbers. Verifies amicable pairs (220,284) and (1184,1210). Proves 12 is the smallest abundant number. 81 theorems, 4 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SumOfDivisors.lean",
+    "tags": [
+      "number-theory",
+      "arithmetic-functions",
+      "multiplicative-functions",
+      "perfect-numbers",
+      "amicable-numbers"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's ArithmeticFunction.sigma.",
+    "lineCount": 549,
+    "theoremCount": 81,
+    "definitionCount": 4,
+    "originalContributions": [
+      "sigma_prime: σ(p) = p+1 for all primes (general theorem, not just specific values)",
+      "sigma_multiplicative: σ is multiplicative — σ(mn) = σ(m)σ(n) when gcd(m,n)=1",
+      "sigma_prime_pow: σ(p^k) = Σ_{i=0}^k p^i for prime p (prime power formula)",
+      "IsDeficient / IsPerfect / IsAbundant: classification predicates",
+      "six_is_perfect / twenty_eight_is_perfect: first two perfect numbers verified",
+      "twelve_abundant / smallest_abundant: 12 is the smallest abundant number (minimality proof)",
+      "amicable_220_284 / amicable_1184_1210: amicable pair verification",
+      "abundancy_index: σ(n)/n characterization"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The sum of divisors function σ(n) is one of the oldest objects in number theory, studied since antiquity. Perfect numbers (σ(n) = 2n) fascinated the Greeks; 6 and 28 are the first two. Amicable pairs (220, 284) were known to the Pythagoreans. Euler proved that even perfect numbers have the form 2^(p-1)(2^p-1) where 2^p-1 is prime. Abundant and deficient numbers arise in the classification of all positive integers via the ratio σ(n)/n.",
+    "problemStatement": "Formalize σ(n) = Σ_{d|n} d with its key properties: concrete values, multiplicativity, prime power formula, number classification (deficient/perfect/abundant), and amicable pairs.",
+    "text": "The function σ(n) counts the total 'divisor weight' of n. Key structural result: σ is multiplicative — coprime inputs multiply σ values. For prime powers: σ(p^k) = (p^(k+1)-1)/(p-1). For primes: σ(p) = p+1. This lets σ be computed from the prime factorization. Numbers are classified by σ(n) vs 2n: deficient (σ<2n), perfect (σ=2n), abundant (σ>2n). Amicable pairs (a,b) satisfy σ(a)=a+b and σ(b)=a+b.",
+    "proofStrategy": "Use Mathlib's ArithmeticFunction.sigma and native_decide for concrete computations. Prove general multiplicativity and prime power formula via algebraic manipulations. Derive classification predicates and verify all examples computationally.",
+    "keyInsights": [
+      "Multiplicativity: the key structural property enabling computation from prime factorization",
+      "Prime power formula σ(p^k) = geometric sum: combines with multiplicativity for general n",
+      "6 and 28 are perfect: the two smallest, both of Euler's even perfect form",
+      "Amicable pairs: (220,284) = first, (1184,1210) = third pair — σ(220)=504=220+284"
+    ],
+    "prerequisites": [
+      "Arithmetic functions: multiplicative functions, Dirichlet convolution",
+      "Divisor theory: Nat.divisors, divisor sum",
+      "Number classification: perfect, deficient, abundant numbers"
+    ]
+  },
+  "conclusion": {
+    "summary": "Sum of divisors function fully formalized: concrete values, multiplicativity, prime power formula, number classification, amicable pairs (220,284) and (1184,1210), 12 smallest abundant. 81 theorems, 549 lines, 0 axioms.",
+    "implications": "The multiplicativity of σ is the foundation for computing σ(n) from prime factorizations. It connects to the Riemann zeta function via Dirichlet series and to the study of perfect numbers, one of the oldest open problems (are there odd perfect numbers?).",
+    "openQuestions": [
+      "Are there odd perfect numbers? (Oldest unsolved problem in number theory)",
+      "Are there infinitely many amicable pairs?",
+      "Formalize Euler's theorem: even perfect numbers have form 2^(p-1)(2^p-1)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "SumOfDivisors",
+    "lineCount": 549,
+    "axiomCount": 0,
+    "theoremCount": 81,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Both study arithmetic properties of integers; Wilson via factorials, this via divisor sums"
+    }
+  ],
+  "sections": []
+}

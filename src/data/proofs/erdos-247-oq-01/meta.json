@@ -1,0 +1,76 @@
+{
+  "id": "erdos-247-oq-01",
+  "title": "Erdős #247: Transcendence of Lacunary Sums",
+  "slug": "erdos-247-oq-01",
+  "description": "Formalizes Erdős Problem #247: transcendence of lacunary binary sums Σ 1/2^{n_k} when the sequence n_k grows fast. Defines HasWeakGrowth (lim sup n_k/k = ∞) and HasStrongGrowth (super-polynomial). Proves 2^k satisfies strong growth. Axiomatizes Erdős's 1975 result: strong growth implies transcendence. Proves the conjecture (open general case) is implied by the axiom for factorial and 2^k sequences. 22 theorems, 7 definitions, 1 axiom.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos247Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "transcendence",
+      "lacunary-series",
+      "liouville-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: erdos_transcendence_strong — Erdős 1975: if n_k is strictly increasing with HasStrongGrowth (lim sup n_k/k^t = ∞ for all t ≥ 1), then Σ 1/2^{n_k} is transcendental over ℚ.",
+    "lineCount": 506,
+    "theoremCount": 22,
+    "definitionCount": 7,
+    "originalContributions": [
+      "lacunarySum: Σ_{k=1}^∞ 1/2^{n_k} — the lacunary binary sum",
+      "HasWeakGrowth: lim sup n_k/k = ∞ predicate",
+      "HasStrongGrowth: lim sup n_k/k^t = ∞ for all t — stronger condition",
+      "pow2_strong_growth: 2^k satisfies HasStrongGrowth (proved)",
+      "factorial_strong_growth: (k+1)! satisfies HasStrongGrowth (proved)",
+      "strong_implies_weak: HasStrongGrowth → HasWeakGrowth"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős (1975) asked: if n₁ < n₂ < ⋯ with lim sup n_k/k = ∞, is Σ 1/2^{n_k} transcendental? He proved the stronger version (super-polynomial growth) using Liouville-type rational approximation arguments. The general case (merely lim sup → ∞) remains open. Erdős noted in 1988 these problems 'seem hopeless at present'. The sum is a binary expansion with 1s at positions n_k — its transcendence reflects the irrationality of the pattern.",
+    "problemStatement": "Prove: if n₁ < n₂ < ⋯ is strictly increasing with lim sup n_k/k = ∞, then Σ 1/2^{n_k} is transcendental. (Open in general; proved for super-polynomial growth by Erdős.)",
+    "text": "The sum Σ 1/2^{n_k} is a real number with a binary expansion having 1s at positions n_k. When gaps between consecutive positions grow fast enough, the number cannot be algebraic. The proof uses the fact that algebraic numbers of degree d satisfy |α - p/q| > c/q^d, but lacunary sums with fast-growing gaps can be approximated to any polynomial order, forcing transcendence via Liouville's theorem.",
+    "proofStrategy": "Define the formal infrastructure: lacunarySum, HasWeakGrowth, HasStrongGrowth. Prove key examples (2^k, k!) satisfy strong growth. Axiomatize Erdős's theorem for strong growth. Prove the conjecture follows for all super-polynomial sequences. Derive irrationality as a consequence.",
+    "keyInsights": [
+      "Liouville argument: fast-growing gaps give unusually good rational approximations, forcing transcendence",
+      "2^k and (k+1)! satisfy strong growth: proved elementarily",
+      "Strong growth ↔ super-polynomial: stronger than lim sup n_k/k = ∞",
+      "Open gap: weak growth (lim sup n_k/k = ∞) may not suffice"
+    ],
+    "prerequisites": [
+      "Liouville transcendence theory: rational approximation obstructions",
+      "Series convergence: infinite sums in ℝ",
+      "Algebraic and transcendental numbers: Transcendental predicate"
+    ]
+  },
+  "conclusion": {
+    "summary": "Lacunary sum transcendence formalized: HasWeakGrowth and HasStrongGrowth predicates, 2^k and k! proved to satisfy strong growth, Erdős 1975 theorem axiomatized. 22 theorems, 506 lines, 1 axiom.",
+    "implications": "The Erdős conjecture (weak growth → transcendence) remains open. The formalization provides the framework for attacking it via Liouville theory. Transcendence of specific lacunary sums like Σ 1/2^{2^k} follows immediately from the axiom.",
+    "openQuestions": [
+      "Prove the full Erdős conjecture: weak growth implies transcendence",
+      "Prove the Erdős strong-growth theorem without axioms using Liouville machinery in Mathlib",
+      "Generalize to base-p lacunary sums Σ 1/p^{n_k} for prime p"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos247",
+    "lineCount": 506,
+    "axiomCount": 1,
+    "theoremCount": 22,
+    "definitionCount": 7
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-5-prime-gaps",
+      "relationship": "related",
+      "description": "Both are open Erdős problems in number theory; prime gaps and lacunary transcendence share analytic depth"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,76 @@
+{
+  "id": "erdos-1023-oq-01",
+  "title": "Erdős #1023 OQ-01: k-Union-Free Families",
+  "slug": "erdos-1023-oq-01",
+  "description": "Extends Erdős Problem #1023 (union-free families) to k-union-free families. Proves F(n) = C(n, ⌊n/2⌋) using the Erdős-Kleitman result. Formalizes k-union-free generalization, antichain structure, symmetric-difference-free families, and Stirling approximation for the central binomial constant √(2/π). Verifies small cases computationally. 36 theorems, 20 definitions, 2 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1023OQ01.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-families",
+      "union-free",
+      "antichains"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: problem_447_solution (Erdős-Kleitman: max union-free family in 2^[n] has size C(n,⌊n/2⌋)), stirling_central_approx (Stirling: C(n,n/2) ~ √(2/π) · 2^n / √n).",
+    "lineCount": 458,
+    "theoremCount": 36,
+    "definitionCount": 20,
+    "originalContributions": [
+      "isKUnionFree: k-union-free family predicate (generalization of 2-union-free)",
+      "unionFreeMax: supremum of union-free family sizes",
+      "unionFreeMax_eq_middle: F(n) = C(n, ⌊n/2⌋) (fully proved from axioms)",
+      "stirlingConstant: the asymptotic constant √(2/π) for central binomials",
+      "isSymmDiffFree: symmetric-difference-free family predicate",
+      "isAntichain: no set contains another (related structure)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1023 asks for the maximum size of a union-free family — a collection F of subsets of [n] where no member is the union of other members. The answer F(n) = C(n, ⌊n/2⌋) was established by Erdős and Kleitman. The asymptotic is √(2/π) · 2^n / √n by Stirling's approximation. This file extends the formalization to k-union-free families (no member is the union of exactly k others) and related notions.",
+    "problemStatement": "Determine the maximum size F(n) of a union-free family of subsets of {0,...,n-1}. Generalize to k-union-free families.",
+    "text": "A family F is union-free if no A ∈ F is the union of other members (using ≥2 members). The maximum is achieved by taking all sets of a fixed middle size (Erdős-Kleitman). The k-union-free generalization considers families where no member is the union of exactly k others. For k=2 this specializes to 2-union-free (problem #447). Antichains are a related notion where inclusion is also forbidden.",
+    "proofStrategy": "Define the infrastructure (repCount, isKUnionFree, unionFreeMax). Axiomatize the Erdős-Kleitman result and Stirling bound. Prove F(n) = C(n,n/2) from these axioms. Verify small cases via native_decide.",
+    "keyInsights": [
+      "Union-free ↔ antichain-like: no member is a union of others",
+      "Middle level C(n,⌊n/2⌋): the level sets of the boolean lattice maximize union-free families",
+      "Stirling: √(2/π) · 2^n/√n — the asymptotic density of middle-level sets",
+      "k-union-free generalizes 2-union-free: the same structural constraint"
+    ],
+    "prerequisites": [
+      "Set families: power sets, antichains",
+      "Extremal combinatorics: Dilworth's theorem, LYM inequality",
+      "Stirling's approximation: central binomials"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős #1023 extended: k-union-free families defined, F(n)=C(n,⌊n/2⌋) proved from Erdős-Kleitman axiom, Stirling approximation axiomatized. 36 theorems, 458 lines, 2 axioms.",
+    "implications": "The union-free family bound is a prototype for extremal set theory results. The k-union-free generalization opens connections to hypergraph Turán problems.",
+    "openQuestions": [
+      "Prove problem_447_solution without axioms using the LYM inequality",
+      "Determine the maximum k-union-free family size for k ≥ 3",
+      "Formalize the Bollobás set-pairs inequality as a unifying framework"
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos1023OQ01",
+    "lineCount": 458,
+    "axiomCount": 2,
+    "theoremCount": 36,
+    "definitionCount": 20
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-ko-rado",
+      "relationship": "related",
+      "description": "Both are extremal set family problems; Erdős-Ko-Rado bounds intersecting families, #1023 bounds union-free families"
+    }
+  ],
+  "sections": []
+}
