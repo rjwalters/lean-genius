@@ -14,9 +14,9 @@
       "advanced"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "axiomCount": 19,
-    "assumptions": "19 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) Greenberg-Stevens theorem, (9) regulator positivity. Previously 21 axioms: BSD_CM_rank_zero was proved redundant (subsumed by Kolyvagin general result), gross_zagier_formula_detail was dead code (captured by GrossZagierData structure). No sorries.",
+    "assumptions": "19 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) Greenberg-Stevens theorem, (9) regulator positivity. 1 sorry: regulator_rank_one_is_height (R = ĥ(generator) for rank-1 curves).",
     "mathlibDependencies": [
       {
         "theorem": "WeierstrassCurve",

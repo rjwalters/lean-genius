@@ -52,8 +52,8 @@
       "Roots of unity special case"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 5,
-    "assumptions": "7 axiom declarations: turan_bound (max power sum >= c/n), atkinson_theorem (absolute constant c=1/6), biro_1994 (improved to c=1/2), biro_2000 (c > 1/2), optimal_constant_conjecture (optimal c ~ 0.7), roots_of_unity_sum (orthogonality relation), computational_evidence (numerical c ~ 0.7)",
+    "axiomCount": 2,
+    "assumptions": "2 axiom declarations: atkinson_theorem (absolute constant c=1/6), biro_2000 (c > 1/2).",
     "prerequisites": [
       "Complex number arithmetic and absolute value",
       "Finite sums over indexed families (Finset.sum)",
@@ -181,7 +181,7 @@
     ],
     "namespace": "Erdos519",
     "lineCount": 268,
-    "axiomCount": 7,
+    "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 7
   },
