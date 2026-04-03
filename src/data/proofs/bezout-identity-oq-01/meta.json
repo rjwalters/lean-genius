@@ -31,15 +31,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Bézout's identity gcd(a,b) = a·x + b·y (with x, y ∈ ℤ) is proved non-constructively by Mathlib (Int.gcdA, Int.gcdB). The question is whether the extended Euclidean algorithm can be formalized as a fully computable function with a verified correctness proof in Lean 4. This file gives a self-contained implementation using well-founded recursion on b.",
+    "historicalContext": "The extended Euclidean algorithm traces its roots to Euclid's Elements (Book VII, ~300 BCE), where Propositions 1–3 describe the process for finding the greatest common divisor using repeated subtraction. The efficient division-based form (computing remainders rather than subtracting) was known in India by the 7th century (Brahmagupta) and described algorithmically by al-Khwarizmi (~825 CE). The identity now known as Bézout's identity — that gcd(a,b) is always an integer linear combination ax + by — was proved in full generality by Étienne Bézout in his 1779 work on algebraic equations. The extended version of the Euclidean algorithm that actually computes the Bézout coefficients x and y appears in number theory textbooks as a companion to the GCD algorithm. In computer science, the algorithm is a cornerstone of modular arithmetic, RSA key generation, and polynomial GCD computations. Modern proof assistants typically prove Bézout's identity existentially via Mathlib's Int.gcdA/Int.gcdB (which extract coefficients from the Euclidean algorithm internally), but this gallery entry provides a fully transparent, computable Lean 4 implementation with a machine-verified correctness proof.",
     "problemStatement": "Define a computable function extGcd : ℕ → ℕ → ℤ × ℤ × ℕ implementing the extended Euclidean algorithm and prove a·extGcd(a,b).x + b·extGcd(a,b).y = gcd(a,b).",
     "text": "The algorithm: extGcd a 0 = (1, 0, a) (base case); extGcd a (b+1) = let r = extGcd (b+1) (a mod (b+1)) in (r.y, r.x - ⌊a/(b+1)⌋·r.y, r.z). The GCD correctness proof tracks the standard Euclidean algorithm: extGcd_gcd reduces to Nat.gcd_comm and Nat.gcd_rec. The Bézout proof uses well-founded induction with the key step: setting hdiv : a = (a/(b+1))·(b+1) + (a%(b+1)), the linear_combination tactic closes the goal from the inductive hypothesis via hdiv * y'.",
     "proofStrategy": "Well-founded induction using Nat.strongRecOn (matches the recursion structure). GCD proof: straightforward Nat.gcd identity chain. Bézout proof: set x' and y' as the recursive results, use hdiv (division algorithm) to express a = q(b+1) + r, then linear_combination closes via one-step algebra.",
     "keyInsights": [
-      "Using projections (r.1, r.2.1, r.2.2) instead of let-destructuring avoids definitional issues",
-      "Lean's well-founded recursion on `b` tracks termination via Nat.mod_lt",
-      "linear_combination closes the key Bézout step in one tactic from hrec + hdiv * y'",
-      "native_decide enables efficient concrete verification for specific inputs"
+      "The linear_combination tactic closes the entire Bézout inductive step in a single line (hrec + hdiv * y'), replacing what would otherwise be several manual ring-arithmetic steps. This demonstrates the power of Lean 4's algebraic tactic infrastructure for number theory.",
+      "Using dot-projection syntax (.1, .2.1, .2.2) instead of let-destructuring is a deliberate design choice: let-bound variables in Lean 4 can fail to reduce definitionally inside recursive functions, while projections always reduce. This is an important idiom for well-founded recursive definitions returning tuples.",
+      "The termination argument is explicit: Lean requires the `have : a % (b+1) < b+1 := Nat.mod_lt ...` term before the recursive call, making the proof of termination local to the definition rather than deferred to a separate `termination_by` clause.",
+      "native_decide proves concrete examples (12,8), (35,15), (252,198) by kernel-level native code evaluation, confirming both correctness and genuine computability. A non-computable sorry-free proof would still satisfy `decide` for small instances, but native_decide is the gold standard.",
+      "The GCD correctness proof (extGcd_gcd) and Bézout correctness proof (extGcd_bezout) are structurally parallel but mathematically independent: extGcd_gcd only uses Nat.gcd identities, while extGcd_bezout uses the division algorithm. Combining them gives extGcd_correct, the combined form."
     ],
     "prerequisites": [
       "Well-founded recursion in Lean 4: Nat.strongRecOn",
@@ -64,10 +65,94 @@
   },
   "crossReferences": [
     {
-      "targetId": "bezout-identity-oq-03-oq-01-oq-02",
+      "id": "bezout-identity",
+      "relationship": "parent",
+      "description": "The classical Bézout's identity whose computability this entry establishes"
+    },
+    {
+      "id": "bezout-identity-oq-03-oq-01-oq-02",
       "relationship": "related",
-      "description": "BezoutIdentityOQ03OQ01OQ02 uses Bézout coefficients from Mathlib; this file provides a computable alternative implementation"
+      "description": "Uses Mathlib's Int.gcdA/Int.gcdB for Bézout coefficients; this file provides a computable alternative"
+    },
+    {
+      "id": "bezout-identity-oq-02",
+      "relationship": "sibling",
+      "description": "Euclid's Lemma via Bézout — a key application of the identity proved here"
+    },
+    {
+      "id": "bezout-identity-oq-03",
+      "relationship": "sibling",
+      "description": "Chinese Remainder Theorem via Bézout — another application enabled by the computable coefficients"
+    },
+    {
+      "id": "binary-gcd",
+      "relationship": "related",
+      "description": "Binary GCD (Stein's algorithm) — an alternative computable GCD algorithm of the same spirit"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Imports Mathlib GCD and tactic libraries. Module documentation states the open question (can extGcd be fully formalized as computable?), lists the three things proved (Bézout correctness, GCD correctness, computability), and describes the approach (well-founded recursion on b using explicit projections)."
+    },
+    {
+      "id": "sec-extgcd-def",
+      "title": "Definition: Extended Euclidean Algorithm",
+      "startLine": 27,
+      "endLine": 51,
+      "summary": "Defines extGcd : ℕ → ℕ → ℤ × ℤ × ℕ by well-founded recursion on b with explicit termination proof Nat.mod_lt. Defines three projection helpers: extGcdX, extGcdY, extGcdG."
+    },
+    {
+      "id": "sec-unfolding",
+      "title": "Unfolding Lemmas: Base and Recursive Cases",
+      "startLine": 52,
+      "endLine": 62,
+      "summary": "extGcd_zero and extGcd_succ expose the two branches of extGcd as @[simp] / rewrite lemmas, avoiding direct unfolding of the well-founded recursion machinery in later proofs."
+    },
+    {
+      "id": "sec-gcd-correctness",
+      "title": "GCD Correctness: Third Component Equals Nat.gcd",
+      "startLine": 64,
+      "endLine": 85,
+      "summary": "Proves (extGcd a b).2.2 = Nat.gcd a b by well-founded induction on b. Inductive step chains Nat.gcd_comm and Nat.gcd_rec to align with the Euclidean recursion."
+    },
+    {
+      "id": "sec-bezout-correctness",
+      "title": "Bézout Correctness: a·x + b·y = gcd(a,b)",
+      "startLine": 87,
+      "endLine": 120,
+      "summary": "Main theorem: extGcd_bezout proves a·x + b·y = g by well-founded induction. Key step: division algorithm identity hdiv lifts Nat.div_add_mod to ℤ; linear_combination closes the goal in one line."
+    },
+    {
+      "id": "sec-combined",
+      "title": "Combined Correctness and Existential Bézout",
+      "startLine": 122,
+      "endLine": 130,
+      "summary": "extGcd_correct combines extGcd_bezout and extGcd_gcd to state the full correctness: a·x + b·y = Nat.gcd a b."
+    },
+    {
+      "id": "sec-native-decide",
+      "title": "Computational Verification via native_decide",
+      "startLine": 132,
+      "endLine": 163,
+      "summary": "Nine concrete examples verify extGcd on (12,8), (35,15), (17,5), and (252,198) using native_decide, confirming both the GCD output and the Bézout identity for each pair."
+    },
+    {
+      "id": "sec-existential-bezout",
+      "title": "Existential Bézout via Computable Witnesses",
+      "startLine": 165,
+      "endLine": 182,
+      "summary": "bezout_via_extGcd derives the classical existential form ∃ x y, gcd(a,b) = a·x+b·y using extGcdX and extGcdY as explicit computable witnesses."
+    },
+    {
+      "id": "sec-properties",
+      "title": "Derived Properties: Positivity and Divisibility",
+      "startLine": 184,
+      "endLine": 208,
+      "summary": "Three corollaries: extGcd_gcd_pos (gcd > 0 when a ≠ 0 ∨ b ≠ 0), extGcd_gcd_dvd_left (gcd ∣ a), extGcd_gcd_dvd_right (gcd ∣ b). All follow immediately from extGcd_gcd plus standard Nat.gcd lemmas."
+    }
+  ]
 }
