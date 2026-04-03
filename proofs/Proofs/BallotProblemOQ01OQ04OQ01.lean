@@ -460,23 +460,182 @@ noncomputable def chungFellerMap (n : ℕ) (hn : 0 < n) :
     ⟨⟨(chungFellerRot l).tail, chungFellerRot_tail_is_dyck hn hbal⟩,
      ⟨upstepsAboveAxis l, upstepsAboveAxis_le_n hbal⟩⟩
 
+/-! ## Part VII: Bijectivity Infrastructure -/
+
+/-- When D is a Dyck path, `chungFellerRot D = 1 :: D`.
+    Key: all prefix sums of 1::D at positions ≥ 1 are ≥ 1, so position 0
+    is the unique minimum (value 0), hence rightmostMinPos = 0. -/
+private lemma chungFellerRot_dyck_self {D : List ℤ} {n : ℕ} (hn : 0 < n)
+    (hD : IsDyckPath D n) :
+    chungFellerRot D = 1 :: D := by
+  unfold chungFellerRot
+  suffices h : rightmostMinPos (1 :: D) = 0 by rw [h, cyclicRotation_zero]
+  -- Prefix sums of 1::D at j ≥ 1 are ≥ 1
+  have hps_pos : ∀ j, 1 ≤ j → j ≤ (1 :: D).length →
+      1 ≤ prefixSum (1 :: D) j := by
+    intro j hj _
+    unfold prefixSum
+    cases j with
+    | zero => omega
+    | succ k =>
+      simp only [List.take_succ_cons, List.sum_cons]
+      linarith [hD.2 k]
+  -- minPrefixSum = 0
+  have hmin_zero : minPrefixSum (1 :: D) = 0 := by
+    apply le_antisymm (minPrefixSum_le _ 0 (by simp))
+    apply Finset.le_min'
+    intro x hx
+    simp only [Finset.mem_image, Finset.mem_range] at hx
+    obtain ⟨i, hi, rfl⟩ := hx
+    by_cases h0 : i = 0
+    · simp [h0, prefixSum]
+    · linarith [hps_pos i (Nat.one_le_iff_ne_zero.mpr h0) (by omega)]
+  -- Filter = {0}, so max = 0
+  have hfilter : (Finset.range ((1 :: D).length + 1)).filter
+      (fun i => prefixSum (1 :: D) i = minPrefixSum (1 :: D)) = {0} := by
+    rw [hmin_zero]
+    ext i
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton,
+               prefixSum, List.take_zero, List.sum_nil]
+    constructor
+    · rintro ⟨hi, hps⟩
+      by_contra h0
+      linarith [hps_pos i (Nat.one_le_iff_ne_zero.mpr h0) (by omega)]
+    · rintro rfl; exact ⟨by simp, by simp [prefixSum]⟩
+  unfold rightmostMinPos; rw [hfilter]; simp
+
+/-- Helper: the 0th element of a cyclic rotation equals the p-th element of the original. -/
+private lemma cyclicRotation_get?_zero {A : List ℤ} {p : ℕ} (hp : p < A.length) :
+    (cyclicRotation A p).get? 0 = A.get? p := by
+  simp only [cyclicRotation]
+  rw [List.get?_append_left (by simp [List.length_drop]; omega)]
+  rw [List.get?_drop]; simp
+
+/-- **Key hard lemma**: The n+1 rotations of 1::D at its 1-positions give
+    balanced paths with ALL DISTINCT types.
+
+    **Proof sketch** (double counting):
+    Let q₀<q₁<...<qₙ be the 1-positions of S=1::D, with heights hᵢ=PS(qᵢ).
+    For rotation index i, type(lᵢ) = #{k>i: hₖ>hᵢ} + #{k<i: hₖ≥hᵢ}.
+    Sum over i: Σ type(lᵢ) = #{(i,k): i<k, hₖ>hᵢ} + #{(i,k): i<k, hᵢ≥hₖ}
+                            = #{(i,k): i<k} = n*(n+1)/2.
+    Since each type ≤ n (from upstepsAboveAxis_le_n) and n+1 values in
+    {0,...,n} sum to n*(n+1)/2, they must be exactly {0,...,n}. -/
+private lemma rotation_types_all_distinct {D : List ℤ} {n : ℕ} (hn : 0 < n)
+    (hD : IsDyckPath D n) (p₁ p₂ : ℕ) (hp₁ : p₁ < (1 :: D).length)
+    (hp₂ : p₂ < (1 :: D).length)
+    (hp₁_one : (1 :: D).get? p₁ = some 1)
+    (hp₂_one : (1 :: D).get? p₂ = some 1)
+    (hne : p₁ ≠ p₂) :
+    upstepsAboveAxis (cyclicRotation (1 :: D) p₁).tail ≠
+    upstepsAboveAxis (cyclicRotation (1 :: D) p₂).tail := by
+  sorry
+
 /-- **Chung-Feller bijection**: The map `chungFellerMap` is bijective.
 
-    **Core difficulty** (key unsolved step):
-    For a Dyck path D, the n+1 "1-starting" rotations of (1::D) produce
-    ALL n+1 distinct types {0,...,n}. This requires showing that:
-    if p₁ ≠ p₂ are positions of 1 in (1::D), then the tails of the
-    corresponding rotations have different upstepsAboveAxis values.
-    (Proof requires careful prefix sum tracking under modular rotation.)
-
-    **Given the type-distinctness claim, bijectivity follows**:
-    - Injectivity: f(l₁)=f(l₂) implies l₁,l₂ are in the same orbit with the
-      same Dyck image; distinct rotations within the orbit give distinct types,
-      so equal types force l₁=l₂.
-    - Surjectivity: Given (D,k), some 1-position rotation of (1::D) has type k. -/
+    **Proof structure**:
+    - `chungFellerRot_dyck_self`: chungFellerRot(D) = 1::D for Dyck D.
+    - `orbit_same_dyck`: same orbit → same Dyck image.
+    - `rotation_types_all_distinct`: distinct 1-position rotations → distinct types.
+    These combine to give injectivity and surjectivity. -/
 theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
     Function.Bijective (chungFellerMap n hn) := by
-  sorry
+  constructor
+  · -- INJECTIVITY
+    intro ⟨l₁, hbal₁⟩ ⟨l₂, hbal₂⟩ heq
+    simp only [chungFellerMap, Prod.mk.injEq, Subtype.mk.injEq] at heq
+    obtain ⟨htail_eq, htype_eq⟩ := heq
+    -- Same tail means same chungFellerRot (both heads = 1)
+    have hrot_eq : chungFellerRot l₁ = chungFellerRot l₂ := by
+      have h1 : (chungFellerRot l₁).headI = 1 := chungFellerRot_head_eq_one hn hbal₁
+      have h2 : (chungFellerRot l₂).headI = 1 := chungFellerRot_head_eq_one hn hbal₂
+      -- Decompose by case analysis: both lists are non-empty (headI = 1 ≠ default = 0)
+      cases chungFellerRot l₁ with
+      | nil => simp [List.headI] at h1
+      | cons a₁ t₁ =>
+        cases chungFellerRot l₂ with
+        | nil => simp [List.headI] at h2
+        | cons a₂ t₂ =>
+          simp [List.headI, List.tail_cons] at h1 h2 htail_eq
+          rw [h1, h2, htail_eq]
+    -- Both l₁ and l₂ are rotations of D = (chungFellerRot l₁).tail
+    set D := (chungFellerRot l₁).tail
+    set D_full : List ℤ := 1 :: D
+    have hD_eq₁ : chungFellerRot l₁ = D_full := by
+      have h1' : (chungFellerRot l₁).headI = 1 := chungFellerRot_head_eq_one hn hbal₁
+      have hne' : chungFellerRot l₁ ≠ [] := by intro h; simp only [h, List.headI] at h1'
+      cases chungFellerRot l₁ with
+      | nil => exact absurd rfl hne'
+      | cons a t =>
+        simp only [List.headI_cons] at h1'
+        -- h1' : a = 1; goal: a :: t = D_full; D := t, D_full := 1 :: t (definitionally)
+        rw [h1']; rfl
+    have hD_eq₂ : chungFellerRot l₂ = D_full := by rw [← hrot_eq, hD_eq₁]
+    -- Find rotation positions
+    set m₁ := rightmostMinPos (1 :: l₁)
+    set m₂ := rightmostMinPos (1 :: l₂)
+    have hm₁_lt : m₁ < (1 :: l₁).length :=
+      rightmostMinPos_lt _ (by simp [List.sum_cons, balanced_sum_zero hbal₁])
+    have hm₂_lt : m₂ < (1 :: l₂).length :=
+      rightmostMinPos_lt _ (by simp [List.sum_cons, balanced_sum_zero hbal₂])
+    -- D_full = cyclicRotation(1::l₁, m₁) = cyclicRotation(1::l₂, m₂)
+    have hrot₁ : D_full = cyclicRotation (1 :: l₁) m₁ := hD_eq₁.symm
+    have hrot₂ : D_full = cyclicRotation (1 :: l₂) m₂ := hD_eq₂.symm
+    -- Compute inverse rotations to express 1::l₁ and 1::l₂ as rotations of D_full
+    have hlen₁ : (1 :: l₁).length = 2 * n + 1 := by
+      simp [balanced_length hbal₁]
+    have hlen₂ : (1 :: l₂).length = 2 * n + 1 := by
+      simp [balanced_length hbal₂]
+    -- 1::l₁ = cyclicRotation(D_full, 2n+1-m₁) and 1::l₂ = cyclicRotation(D_full, 2n+1-m₂)
+    have hinv₁ : 1 :: l₁ = cyclicRotation D_full (2 * n + 1 - m₁) := by
+      conv_rhs => rw [hrot₁]
+      rw [cyclicRotation_compose (1 :: l₁) m₁ (2*n+1-m₁)
+          (by rw [hlen₁]; omega) (by rw [hlen₁]; omega)]
+      rw [show m₁ + (2*n+1-m₁) = (1::l₁).length from by omega]
+      exact (cyclicRotation_length_self _).symm
+    have hinv₂ : 1 :: l₂ = cyclicRotation D_full (2 * n + 1 - m₂) := by
+      conv_rhs => rw [hrot₂]
+      rw [cyclicRotation_compose (1 :: l₂) m₂ (2*n+1-m₂)
+          (by rw [hlen₂]; omega) (by rw [hlen₂]; omega)]
+      rw [show m₂ + (2*n+1-m₂) = (1::l₂).length from by omega]
+      exact (cyclicRotation_length_self _).symm
+    have hDyck_D : IsDyckPath D n := by
+      simp only [D]; exact chungFellerRot_tail_is_dyck hn hbal₁
+    have hlen_Dfull : D_full.length = 2 * n + 1 := by
+      simp [D_full, balanced_length hDyck_D.1]
+    -- Both p₁=2n+1-m₁ and p₂=2n+1-m₂ are 1-positions of D_full
+    -- (D_full[p] = cyclicRotation(D_full,p)[0] = (1::l₁)[0] = 1)
+    have hbound₁ : 2 * n + 1 - m₁ < D_full.length := by omega
+    have hbound₂ : 2 * n + 1 - m₂ < D_full.length := by omega
+    have hp₁_one : D_full.get? (2 * n + 1 - m₁) = some 1 := by
+      rw [← cyclicRotation_get?_zero hbound₁, hinv₁.symm]; rfl
+    have hp₂_one : D_full.get? (2 * n + 1 - m₂) = some 1 := by
+      rw [← cyclicRotation_get?_zero hbound₂, hinv₂.symm]; rfl
+    -- If 2n+1-m₁ = 2n+1-m₂ then m₁ = m₂, and l₁ = l₂ directly
+    by_cases hm_eq : 2 * n + 1 - m₁ = 2 * n + 1 - m₂
+    · -- Same rotation position → same l₁ = l₂
+      have h12 : 1 :: l₁ = 1 :: l₂ := by
+        rw [hinv₁, hinv₂, hm_eq]
+      exact Subtype.ext (List.cons.inj h12).2
+    · -- Different rotation positions → different types (by rotation_types_all_distinct)
+      -- But types are equal (htype_eq), contradiction
+      exfalso
+      have hdistinct := rotation_types_all_distinct hn hDyck_D
+        (2 * n + 1 - m₁) (2 * n + 1 - m₂) hbound₁ hbound₂ hp₁_one hp₂_one hm_eq
+      -- But upstepsAboveAxis l₁ = upstepsAboveAxis l₂, and these tails are l₁, l₂
+      have htail₁ : (cyclicRotation D_full (2 * n + 1 - m₁)).tail = l₁ := by
+        rw [hinv₁.symm]; simp
+      have htail₂ : (cyclicRotation D_full (2 * n + 1 - m₂)).tail = l₂ := by
+        rw [hinv₂.symm]; simp
+      rw [htail₁, htail₂] at hdistinct
+      exact hdistinct (congrArg Fin.val htype_eq)
+  · -- SURJECTIVITY: given (D, k), find l with chungFellerMap l = (D, k)
+    intro ⟨⟨D, hDyck⟩, ⟨k, hk⟩⟩
+    -- The rotation of 1::D at 1-position that gives type k
+    -- Among the n+1 rotations at 1-positions, types cover {0,...,n} (all distinct)
+    -- So ∃ p with (1::D)[p]=1 and upstepsAboveAxis(cyclicRotation(1::D,p).tail) = k
+    simp only [chungFellerMap, Prod.mk.injEq, Subtype.mk.injEq]
+    sorry
 
 /-- **Chung-Feller Theorem (uniform distribution)** — proved via bijection.
     Each path type has the same count; combined with `balanced_path_total`,
@@ -543,18 +702,23 @@ example : upstepsAboveAxisC [1,1,-1,-1] = 2 := by native_decide  -- Dyck (type 2
         parent's `chung_feller_uniform` axiom (this axiom is what we're trying to eliminate
         in the long run, but proves the theorem unconditionally for now).
 
-    **Remaining (1 sorry)**:
-    - `chung_feller_bijection_exists`: bijectivity of `chungFellerMap`
-      (HARD — requires "type-distinctness under rotation": different 1-starting rotations
-      of a Dyck path give all n+1 distinct path types)
+    **Session 4 results (proved)**:
+    15. `chungFellerRot_dyck_self`: chungFellerRot(D) = 1::D for Dyck D.
+        (rightmostMinPos(1::D) = 0 since all prefix sums ≥ 1 for positions ≥ 1.)
+    16. `cyclicRotation_get?_zero`: (cyclicRotation A p)[0] = A[p] for p < |A|.
+    17. Injectivity of `chungFellerMap`: proved assuming `rotation_types_all_distinct`.
+        (Uses: inverse rotation formula, cyclicRotation_get?_zero for 1-position extraction.)
 
-    **Proof structure using orbit_same_dyck**:
-    - Injectivity: if f(l₁)=f(l₂)=(D,k), then l₁,l₂ have same Dyck image D (same orbit)
-      and same type k; type-distinctness → l₁=l₂.
-    - Surjectivity: given (D,k), take the k-th 1-position rotation of (1::D); its tail
-      has the right Dyck image (orbit_same_dyck) and type k (type-distinctness).
-    The ONLY remaining gap is type-distinctness: different 1-starting rotations of any
-    fixed Dyck path D produce all n+1 distinct balanced path types {0,...,n}. -/
+    **Remaining sorrys (2)**:
+    1. `rotation_types_all_distinct` (HARD — type-distinctness within orbit)
+       Proof plan: double-counting. Sum of types = #{pairs (i,k): i<k} = n*(n+1)/2.
+       Since each type ≤ n, n+1 values summing to n*(n+1)/2 must be {0,...,n}.
+    2. Surjectivity (blocked by rotation_types_all_distinct).
+
+    **Next steps**:
+    - Prove rotation_types_all_distinct via the prefix sum formula:
+      type(lᵢ) = #{k>i: h_k>h_i} + #{k<i: h_k≥h_i} where h_j = PS_S(q_j).
+      Sum over i = #{(i,k): i<k} = n*(n+1)/2. -/
 theorem summary_progress : True := trivial
 
 end ChungFellerBijection
