@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-core-definitions",
+    "proofId": "weak-goldbach",
+    "range": { "startLine": 23, "endLine": 37 },
+    "type": "definition",
+    "title": "Core Definitions: Ternary and Binary Goldbach",
+    "content": "The four core predicates establish the formal language for the Goldbach problems. `IsSumOfThreePrimes n` asserts existence of three primes $p,q,r$ with $n = p+q+r$. `WeakGoldbachConjecture` universally quantifies over odd $n>5$. The binary analogues mirror this structure. Lean's existential quantifiers encode the constructive witness form, making these definitions immediately usable for both verification and proof by providing explicit witnesses.",
+    "mathContext": "$\\text{IsSumOfThreePrimes}(n) :\\equiv \\exists p,q,r \\in \\mathbb{P},\\, n = p + q + r$ and $\\text{WeakGoldbach} :\\equiv \\forall n > 5,\\, n \\text{ odd} \\Rightarrow \\text{IsSumOfThreePrimes}(n)$",
+    "significance": "key",
+    "relatedConcepts": ["existential witnesses", "prime predicate", "additive number theory", "propositional logic in type theory"],
+    "prerequisites": ["Nat.Prime in Mathlib", "existential quantifiers in Lean 4", "natural number arithmetic"]
+  },
+  {
+    "id": "ann-small-case-verification",
+    "proofId": "weak-goldbach",
+    "range": { "startLine": 45, "endLine": 69 },
+    "type": "technique",
+    "title": "Explicit Witness Verification for Small Cases",
+    "content": "These five theorems verify the ternary Goldbach property for specific small odd integers by providing explicit prime triples. The pattern `use p, q, r; refine ⟨hp, hq, hr, rfl⟩` follows the existential witness approach. Notably, `decide` is used to automatically verify primality of larger primes (e.g., 5 at line 59, and all three primes for 101). The case $101 = 5 + 43 + 53$ demonstrates that explicit witnesses can be non-trivial — there is no canonical choice, and different decompositions exist.",
+    "mathContext": "$7 = 2+2+3,\\quad 9 = 3+3+3,\\quad 11 = 3+3+5,\\quad 21 = 7+7+7,\\quad 101 = 5+43+53$",
+    "significance": "supporting",
+    "relatedConcepts": ["primality testing", "decide tactic", "explicit witnesses", "Nat.prime_two", "Nat.prime_three"],
+    "prerequisites": ["primality of small primes", "rfl tactic", "Lean 4 decide kernel"]
+  },
+  {
+    "id": "ann-decidable-infrastructure",
+    "proofId": "weak-goldbach",
+    "range": { "startLine": 71, "endLine": 173 },
+    "type": "technique",
+    "title": "Decidable Instances via Brute-Force Search",
+    "content": "A `Decidable` instance for `IsSumOfThreePrimes n` enables Lean's kernel to automatically verify or refute any concrete case using `decide`. The implementation uses a brute-force bounded search over triples $(p,q,r) \\in [0,n]^3$. Soundness (`isSumOfThreePrimesDecide_sound`) and completeness (`isSumOfThreePrimesDecide_complete`) are fully proved, establishing a verified decision procedure. This pattern — verified decision procedure + `Decidable` instance — is fundamental to computational verification in Lean and enables both positive examples (`IsSumOfThreePrimes 13`) and negative examples (`¬IsSumOfThreePrimes 5`) to be checked automatically.",
+    "mathContext": "$\\text{decide}_{\\text{ThreePrimes}}(n) = \\bigvee_{p,q,r \\leq n} [n = p+q+r \\land p,q,r \\in \\mathbb{P}]$",
+    "significance": "key",
+    "relatedConcepts": ["Decidable typeclass", "brute-force search", "soundness and completeness", "computational verification", "decide tactic"],
+    "prerequisites": ["List.any in Lean 4", "Bool.and_eq_true", "Decidable typeclass hierarchy", "isFalse/isTrue constructors"]
+  },
+  {
+    "id": "ann-binary-implies-ternary",
+    "proofId": "weak-goldbach",
+    "range": { "startLine": 199, "endLine": 231 },
+    "type": "insight",
+    "title": "Structural Reduction: Binary Goldbach Implies Ternary",
+    "content": "This is the most mathematically substantive fully-proved result in the file. The reduction works via parity: every odd $n > 5$ can be written as $n = 3 + (n-3)$, where $n-3$ is even and $> 2$. If the Binary Goldbach Conjecture holds, then $n-3 = p + q$ for primes $p,q$, giving $n = 3 + p + q$ as a ternary representation. The theorem `odd_gt_five_eq_three_plus_even` formalizes the parity arithmetic using `omega`, and `sumOfTwoPrimes_add_three` lifts a binary decomposition to a ternary one. This reduction shows that weak (ternary) Goldbach is a consequence of the still-open strong (binary) Goldbach conjecture.",
+    "mathContext": "$n > 5,\\, n \\text{ odd} \\Rightarrow n = 3 + (n-3)$ where $n-3$ is even and $> 2$. If $n-3 = p + q$ then $n = 3 + p + q$.",
+    "significance": "key",
+    "relatedConcepts": ["parity arithmetic", "Odd predicate in Lean", "omega tactic", "logical reduction", "additive structure of primes"],
+    "prerequisites": ["Odd n definition (∃ k, n = 2k+1)", "omega tactic for linear arithmetic", "IsSumOfTwoPrimes", "IsSumOfThreePrimes"]
+  },
+  {
+    "id": "ann-axiomatized-results",
+    "proofId": "weak-goldbach",
+    "range": { "startLine": 233, "endLine": 245 },
+    "type": "context",
+    "title": "Axiomatized Results: Vinogradov and Helfgott",
+    "content": "The two central axioms capture historical analytic number theory breakthroughs that lie beyond the scope of current Lean formalization. `vinogradov_ternary_goldbach` (1937) gives existence of a threshold $N_0$ above which all odd integers have ternary representations — Vinogradov's proof via exponential sums was groundbreaking but his $N_0$ was effectively uncomputable. `helfgott_weak_goldbach` (2013) asserts the conjecture unconditionally for all $n > 5$; Helfgott's proof spans two papers totaling ~130 pages of analytic estimates. The theorem `weak_goldbach` simply applies the Helfgott axiom, providing the named interface to the main result.",
+    "mathContext": "$\\exists N_0,\\, \\forall n > N_0,\\, n \\text{ odd} \\Rightarrow n = p+q+r$ (Vinogradov 1937); $\\forall n > 5,\\, n \\text{ odd} \\Rightarrow n = p+q+r$ (Helfgott 2013)",
+    "significance": "key",
+    "relatedConcepts": ["axiom declarations in Lean 4", "analytic number theory", "Vinogradov's circle method", "Helfgott's proof", "sufficiently large vs unconditional"],
+    "prerequisites": ["axiom keyword in Lean 4", "Vinogradov exponential sums", "Hardy-Littlewood circle method"]
+  },
+  {
+    "id": "ann-circle-method",
+    "proofId": "weak-goldbach",
+    "range": { "startLine": 247, "endLine": 317 },
+    "type": "concept",
+    "title": "Vinogradov's Circle Method: Infrastructure and Asymptotic",
+    "content": "The circle method — developed by Hardy, Littlewood, and Ramanujan in 1918–1920 and refined by Vinogradov — is the central tool in additive prime number theory. The exponential sum $S(\\alpha) = \\sum_{p \\leq N} e(p\\alpha)$ where $e(x) = e^{2\\pi ix}$, is the Fourier transform of the prime indicator on $[1,N]$. The number of ternary representations $r_3(n)$ equals $\\int_0^1 S(\\alpha)^3 e(-n\\alpha)\\,d\\alpha$. The method splits this integral into major arcs (near rationals $a/q$ with $q$ small, where $S(\\alpha)$ is large and evaluable) and minor arcs (where $|S(\\alpha)|$ is small by Vinogradov's bound). The axiomatized asymptotic $r_3(n) \\sim \\frac{1}{2}S(n)\\frac{n^2}{(\\log n)^3}$ encapsulates this analysis, where $S(n)$ is the singular series encoding Euler product local corrections.",
+    "mathContext": "$r_3(n) = \\int_0^1 S(\\alpha)^3 e(-n\\alpha)\\,d\\alpha,\\quad S(\\alpha) = \\sum_{p \\leq N} e^{2\\pi i p\\alpha},\\quad r_3(n) \\sim \\tfrac{1}{2}\\mathfrak{S}(n)\\cdot\\frac{n^2}{(\\log n)^3}$",
+    "significance": "key",
+    "relatedConcepts": ["Hardy-Littlewood circle method", "exponential sums", "Fourier analysis on Z/nZ", "singular series", "major and minor arcs", "Dirichlet L-functions"],
+    "prerequisites": ["complex exponentials", "Fourier analysis", "prime number theorem", "L-functions", "Finset.range in Lean 4"]
+  },
+  {
+    "id": "ann-schnirelmann-density",
+    "proofId": "weak-goldbach",
+    "range": { "startLine": 319, "endLine": 367 },
+    "type": "concept",
+    "title": "Schnirelmann Density and the Additive Basis Theorem",
+    "content": "Schnirelmann (1930) introduced a combinatorial approach to additive problems by defining the density $\\sigma(A) = \\inf_{n \\geq 1} |A \\cap [1,n]|/n$ for sets $A \\subseteq \\mathbb{N}$. His key theorem: if $\\sigma(A) > 0$, then $A$ is an additive basis of finite order (every sufficiently large integer is a sum of boundedly many elements of $A$). Schnirelmann proved the set of sums of two primes has positive density, yielding the first unconditional result that every large integer is a bounded sum of primes — though the bound (estimated in the hundreds) was far from optimal. The cascade of results formalized here — Ramaré (6 primes, 1995), Tao (5 primes, 2012), Helfgott (3 primes for odd, 2013) — traces the subsequent dramatic improvements.",
+    "mathContext": "$\\sigma(A) = \\inf_{n \\geq 1} \\frac{|A \\cap \\{1,\\ldots,n\\}|}{n}$; if $\\sigma(A) > 0$ then $\\exists h: A^{+h} \\supseteq \\mathbb{N}_{\\geq N}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Schnirelmann density", "additive basis", "sumset", "Romanov-Schnirelmann theory", "Ramaré 1995", "Tao 2012", "IsAdditiveBasis"],
+    "prerequisites": ["infimum over natural numbers", "additive combinatorics", "sieve theory", "prime number theorem"]
+  },
+  {
+    "id": "ann-chen-levy-open",
+    "proofId": "weak-goldbach",
+    "range": { "startLine": 368, "endLine": 451 },
+    "type": "insight",
+    "title": "Chen's Theorem, the Goldbach Comet, and Lévy's Conjecture",
+    "content": "This section formalizes the rich structure of the gap between weak and binary Goldbach. Chen's theorem (1966, published 1973) — every sufficiently large even $n = p + P_2$ where $P_2$ is prime or semiprime — is the deepest unconditional result toward binary Goldbach and uses the large sieve. The `IsP2` predicate captures this. The Hardy-Littlewood asymptotic $G(n) \\sim 2C_2 \\prod_{p|n, p>2} \\frac{p-1}{p-2} \\cdot \\frac{n}{(\\log n)^2}$ predicts the number of binary representations, with the twin prime constant $C_2 \\approx 0.6602$. Lévy's conjecture ($n = p + 2q$) is strictly stronger than weak Goldbach: if true, it immediately gives ternary Goldbach (since $p + 2q = p + q + q$), and it is verified here for the small cases 7, 9, 11.",
+    "mathContext": "$\\text{Chen}: n = p + P_2$ (large even $n$); $G(n) \\sim 2C_2 \\prod_{p | n,\\, p > 2}\\frac{p-1}{p-2}\\cdot\\frac{n}{(\\log n)^2}$; $C_2 = \\prod_{p > 2}\\left(1 - \\frac{1}{(p-1)^2}\\right) \\approx 0.6602$",
+    "significance": "key",
+    "relatedConcepts": ["Chen's theorem", "almost-primes", "twin prime constant", "Goldbach comet", "Hardy-Littlewood conjecture", "Lévy conjecture 1963", "large sieve"],
+    "prerequisites": ["semiprime definition", "Hardy-Littlewood conjectures", "Euler product", "sieve of Eratosthenes"]
+  }
+]
