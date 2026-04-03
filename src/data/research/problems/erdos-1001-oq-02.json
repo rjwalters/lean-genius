@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1001-oq-02",
   "title": "erdos-1001-oq-02",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: Rate O(A log N / N) identified, Lean scaffold created, Mathlib gap documented",
+    "builtItems": [
+      "Erdos1001OQ02.lean: definitions weightedTotientSum, rangeTotientSum, densityConst",
+      "Erdos1001OQ02.lean: axiom convergence_rate_est (main rate theorem)",
+      "Erdos1001OQ02.lean: theorem convergence_faster_than_sqrtN (partial)"
+    ],
+    "insights": [
+      "Rate of convergence is O(A log N / N) in the EST regime",
+      "Reduction: rate ↔ error in ∑_{y=N}^{cN} φ(y)/y² = (6/π²)log(c) + O(log N/N)",
+      "Density constant 6/π² = 1/ζ(2) from Dirichlet series ∑ φ(y)/y^s = ζ(s-1)/ζ(s)"
+    ],
+    "mathlibGaps": [
+      "Mertens totient sum asymptotics with quantitative error: ∑_{y≤N} φ(y) = (3/π²)N² + O(N log N)"
+    ],
+    "nextSteps": [
+      "Check Mathlib for totient sum asymptotics (Nat.totient_sum or similar)",
+      "Formalize Abel summation for weighted totient sums"
+    ],
     "markdown": "# Knowledge Base: erdos-1001-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
