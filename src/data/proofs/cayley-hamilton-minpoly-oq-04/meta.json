@@ -19,31 +19,33 @@
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
-    "assumptions": "1 axiom: nonderogatory_has_cyclic_vector — the converse direction: if M is nonderogatory (minpoly = charpoly), then there exists a cyclic vector v with {v, Mv, ..., M^{n-1}v} a basis. This requires constructing the cyclic vector from the rational canonical form, which is not yet fully formalized in Mathlib.",
+    "assumptions": "1 axiom: nonderogatory_has_cyclic_vector \u2014 the converse direction: if M is nonderogatory (minpoly = charpoly), then there exists a cyclic vector v with {v, Mv, ..., M^{n-1}v} a basis. This requires constructing the cyclic vector from the rational canonical form, which is not yet fully formalized in Mathlib.",
     "lineCount": 316,
     "theoremCount": 8,
     "definitionCount": 0,
     "originalContributions": [
-      "IsCyclicVector: predicate — v is cyclic for M if {v,Mv,...,M^{n-1}v} spans K^n",
-      "IsNonderogatory: predicate — minpoly M = charpoly M",
-      "cyclic_implies_nonderogatory: forward direction — cyclic vector implies minpoly = charpoly (fully proved)",
+      "IsCyclicVector: predicate \u2014 v is cyclic for M if {v,Mv,...,M^{n-1}v} spans K^n",
+      "IsNonderogatory: predicate \u2014 minpoly M = charpoly M",
+      "cyclic_implies_nonderogatory: forward direction \u2014 cyclic vector implies minpoly = charpoly (fully proved)",
       "minpoly_eq_charpoly_of_natDegree_eq: natDeg(minpoly) = n implies minpoly = charpoly",
       "nonderogatory_iff_cyclic_vector: full iff characterization (modulo converse axiom)",
       "minpoly_natDegree_eq_dim_of_cyclic: cyclic vector implies natDeg(minpoly) = dim",
       "nonderogatory_iff_natDegree_eq: equivalent characterization via natDegree",
-      "derogatory_iff_natDegree_lt: derogatory ↔ natDeg(minpoly) < n"
+      "derogatory_iff_natDegree_lt: derogatory \u2194 natDeg(minpoly) < n"
     ]
   },
   "overview": {
-    "historicalContext": "A matrix M is nonderogatory if its minimal polynomial equals its characteristic polynomial. This is equivalent to M having a cyclic vector — a vector v such that {v, Mv, M²v, ..., M^{n-1}v} forms a basis. Nonderogatory matrices are exactly those with a single Jordan block per eigenvalue (i.e., companion matrices in their rational canonical form). This characterization appears in many applications: control theory (controllability), functional calculus, and polynomial matrix theory.",
-    "problemStatement": "Prove that a matrix M ∈ M_n(K) is nonderogatory (minpoly = charpoly) if and only if it has a cyclic vector. Formalize both directions.",
+    "historicalContext": "The concept of a cyclic vector is classical in matrix theory and control theory. A matrix M \u2208 M_n(K) is nonderogatory (Frobenius, 1879) if its minimal and characteristic polynomials coincide; equivalently, it is similar to the companion matrix of its characteristic polynomial. The cyclic vector characterization connects to Krylov subspace methods (Krylov, 1931), now fundamental in numerical linear algebra (Lanczos, Arnoldi, GMRES). In control theory (Kalman, 1960s), the state matrix of a controllable linear system is nonderogatory, and the existence of a cyclic vector is equivalent to controllability from a single input. The Frobenius invariant factor decomposition establishes that nonderogatory matrices have a single invariant factor, while derogatory matrices have multiple. Mathlib 4.26.0 has the necessary minpoly and charpoly machinery but not the full structure theorem for f.g. modules over PIDs needed for the backward direction.",
+    "problemStatement": "Prove that a matrix M \u2208 M_n(K) is nonderogatory (minpoly = charpoly) if and only if it has a cyclic vector. Formalize both directions.",
     "text": "Forward direction: if v is cyclic for M, then the vector space K^n has a basis {v, Mv, ..., M^{n-1}v}. The minimal polynomial of M with respect to v is the unique monic polynomial p of minimal degree with p(M)v = 0. Since v is cyclic, this has degree n = deg(charpoly). Since minpoly | charpoly and both are monic of degree n, they are equal. Converse: if minpoly = charpoly, construct v as a suitable sum of basis vectors via rational canonical form (axiomatized).",
-    "proofStrategy": "Define IsCyclicVector and IsNonderogatory. Prove the forward direction via degree comparison: cyclic → natDeg(minpoly) = n → minpoly = charpoly. Axiomatize the converse (rational canonical form argument). Prove equivalent characterizations via natDegree.",
+    "proofStrategy": "Define IsCyclicVector and IsNonderogatory. Prove the forward direction via degree comparison: cyclic \u2192 natDeg(minpoly) = n \u2192 minpoly = charpoly (bridge lemma: equal-degree monic polynomials where one divides the other must be equal). Axiomatize the converse (rational canonical form / PID structure theorem argument). Prove equivalent characterizations via natDegree.",
     "keyInsights": [
       "Cyclic vector gives natDeg(minpoly) = n: the annihilator polynomial of a cyclic vector has full degree",
-      "minpoly | charpoly and equal degrees forces minpoly = charpoly (monic polynomials)",
+      "minpoly | charpoly and equal degrees forces minpoly = charpoly (monic cofactor must be 1)",
       "Nonderogatory = one Jordan block per eigenvalue = companion matrix in rational canonical form",
-      "The converse requires rational canonical form: construct cyclic vector from rational canonical basis"
+      "The converse requires rational canonical form: construct cyclic vector from invariant factor decomposition",
+      "Three approaches to the backward direction: PID structure theorem (all fields), JNF (alg. closed), union of proper subspaces (infinite fields only)",
+      "Annihilator formulation of IsCyclicVector captures the K[X]-module structure: v generates V as a K[M]-module"
     ],
     "prerequisites": [
       "Minimal polynomial: smallest monic polynomial annihilating M",
@@ -52,15 +54,17 @@
     ]
   },
   "conclusion": {
-    "summary": "Nonderogatory matrices characterized via cyclic vectors: forward direction (cyclic → minpoly = charpoly) fully proved, converse axiomatized. Equivalent natDegree characterizations proved. 8 theorems, 316 lines, 1 axiom.",
-    "implications": "The cyclic vector characterization is central to systems theory: a linear dynamical system is controllable iff its state matrix is nonderogatory. Completing the converse would give a fully verified characterization in Lean.",
+    "summary": "Nonderogatory matrices characterized via cyclic vectors: forward direction (cyclic \u2192 minpoly = charpoly) fully proved via degree bridge lemma, converse axiomatized (requires PID structure theorem). Equivalent natDegree characterizations proved. 8 theorems, 316 lines, 1 axiom.",
+    "implications": "The cyclic vector characterization is central to systems theory: a linear dynamical system is controllable from a single input iff its state matrix is nonderogatory. The bridge lemma (equal-degree monic polynomials where one divides the other are equal) is a reusable algebraic tool. Completing the converse would give a fully verified characterization useful in both pure and applied linear algebra.",
     "openQuestions": [
-      "Prove nonderogatory_has_cyclic_vector: formalize rational canonical form decomposition in Lean 4",
-      "Prove the simultaneous cyclic vector theorem: M₁, ..., M_k have a common cyclic vector iff they generate a cyclic algebra"
+      "Prove nonderogatory_has_cyclic_vector: formalize the rational canonical form (invariant factor decomposition) for matrices over a field in Lean 4",
+      "Prove the simultaneous cyclic vector theorem: M\u2081, ..., M_k have a common cyclic vector iff they generate a cyclic algebra",
+      "Extend to linear maps over infinite-dimensional spaces: cyclic vector theory for compact operators",
+      "Prove the Krylov basis theorem: IsCyclicVector M v \u2194 IsCyclicVectorLI M v (the annihilator and linear independence formulations are equivalent)"
     ]
   },
   "leanFile": {
-    "namespace": "CayleyHamiltonMinpolyOQ04",
+    "namespace": "Nonderogatory",
     "lineCount": 316,
     "axiomCount": 1,
     "theoremCount": 8,
@@ -73,5 +77,48 @@
       "description": "Cayley-Hamilton theorem (M satisfies its own characteristic polynomial); this file studies when minpoly = charpoly"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "title": "Part I: Definitions",
+      "startLine": 53,
+      "endLine": 88,
+      "summary": "IsCyclicVector M v (annihilator formulation): every polynomial of degree < n annihilating v must be 0. IsCyclicVectorLI M v (linear independence formulation): Krylov vectors {M^k v : k < n} are linearly independent. IsNonderogatory M: minpoly K M = M.charpoly. The annihilator formulation is used throughout proofs; IsCyclicVectorLI is included for reference. The docstring explains the K[X]-module perspective: IsCyclicVector says the annihilator ideal has no low-degree elements."
+    },
+    {
+      "title": "Part II: Bridge Lemma",
+      "startLine": 89,
+      "endLine": 133,
+      "summary": "minpoly_eq_charpoly_of_natDegree_eq: natDeg(minpoly) = natDeg(charpoly) \u21d2 minpoly = charpoly. Proof: write charpoly = minpoly * r via minpoly_dvd_charpoly; degree additivity forces natDeg(r) = 0; r is monic (leadingCoeff = 1 from charpoly monic and minpoly monic); monic degree-0 polynomial must be 1; so charpoly = minpoly * 1 = minpoly."
+    },
+    {
+      "title": "Part III: Forward Direction (Cyclic \u2192 Nonderogatory)",
+      "startLine": 134,
+      "endLine": 167,
+      "summary": "cyclic_implies_nonderogatory: applies bridge lemma after proving natDeg(minpoly) = n. Key steps: (1) natDeg(minpoly) \u2264 natDeg(charpoly) = n from minpoly | charpoly; (2) by contradiction assume natDeg(minpoly) < n; (3) minpoly.aeval gives (aeval M (minpoly K M)).mulVec v = 0; (4) IsCyclicVector forces minpoly = 0; (5) contradiction with Monic.ne_zero. Clean by_contra + omega proof."
+    },
+    {
+      "title": "Part IV: Backward Direction (Nonderogatory \u2192 Cyclic, Axiomatized)",
+      "startLine": 169,
+      "endLine": 206,
+      "summary": "Comment discusses three approaches: (1) PID structure theorem V \u2245 K[X]/(d\u2081) \u2295 ... \u2295 K[X]/(d_k), minpoly = charpoly forces k = 1; (2) Jordan Normal Form for alg. closed fields; (3) union of proper subspaces for infinite fields. axiom nonderogatory_has_cyclic_vector: IsNonderogatory M \u2192 \u2203 v, IsCyclicVector M v. Holds over ALL fields (finite included), ruling out Approach 3 for the general statement."
+    },
+    {
+      "title": "Part V: Full Characterization",
+      "startLine": 208,
+      "endLine": 223,
+      "summary": "nonderogatory_iff_cyclic_vector: full iff combining the proved forward direction and the axiomatized backward direction. nonderogatory_has_cyclic_vector provides the \u2192 direction, cyclic_implies_nonderogatory provides the \u2190 direction."
+    },
+    {
+      "title": "Part VI: Corollaries",
+      "startLine": 225,
+      "endLine": 253,
+      "summary": "minpoly_natDegree_eq_dim_of_cyclic: cyclic \u2192 natDeg(minpoly) = n (repackages intermediate step from forward direction). nonderogatory_algebra_dim: nonderogatory \u2192 natDeg(minpoly) = n (same via IsNonderogatory). nonderogatory_minpoly_dvd_charpoly: minpoly | charpoly for nonderogatory M (trivially, since they're equal)."
+    },
+    {
+      "title": "Part VII: Degree Characterization",
+      "startLine": 254,
+      "endLine": 284,
+      "summary": "nonderogatory_iff_natDegree_eq: IsNonderogatory M \u2194 natDeg(minpoly) = n. derogatory_iff_natDegree_lt: \u00acIsNonderogatory M \u2194 natDeg(minpoly) < n (requires Nontrivial hypothesis). Both proved cleanly by combining bridge lemma with charpoly_natDegree_eq_dim."
+    }
+  ]
 }
