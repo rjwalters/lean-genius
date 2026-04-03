@@ -44,6 +44,45 @@
             "Finset.range and bounded quantifier decidability"
         ]
     },
+    "sections": [
+        {
+            "id": "definition",
+            "title": "Core Definition",
+            "startLine": 24,
+            "endLine": 30,
+            "summary": "Defines `AllFactorialSubtractionsComposite n`: for every k with k! < n, n − k! is composite (≥ 2 and not prime). An unbounded universal quantifier, not yet decidable."
+        },
+        {
+            "id": "decidability",
+            "title": "Decidability Infrastructure",
+            "startLine": 32,
+            "endLine": 56,
+            "summary": "Proves k ≤ k! bounds the quantifier to Finset.range n, derives an iff with a decidable bounded form, and creates the Decidable instance via decidable_of_iff."
+        },
+        {
+            "id": "witnesses",
+            "title": "Witness Verification (101, 211)",
+            "startLine": 58,
+            "endLine": 76,
+            "summary": "Verifies AFSC(101) and AFSC(211) by native_decide, and packages both as `erdos_1059_witnesses`. Each is a prime satisfying the Erdős 1059 condition."
+        },
+        {
+            "id": "non-witnesses",
+            "title": "Non-Witness Verification (89, 223)",
+            "startLine": 78,
+            "endLine": 87,
+            "summary": "Verifies ¬AFSC(89) (since 89−3! = 83 is prime) and ¬AFSC(223) (since 223−4! = 199 is prime) by native_decide."
+        }
+    ],
+    "conclusion": {
+        "summary": "The Decidable instance `decAllFactorialSubtractionsComposite` eliminates all boilerplate from Erdős 1059 prime verification. Any concrete n can be tested by a single `native_decide`. Four examples are verified: witnesses 101 and 211, non-witnesses 89 and 223.",
+        "implications": "The pattern used here — bounding an unbounded quantifier via a monotone size argument (k ≤ k!), then deriving decidability — is a general proof engineering technique. It appears in proofs about Fibonacci, Catalan numbers, and any property quantifying over 'small enough' inputs. The infrastructure makes it straightforward to search computationally for additional witnesses to Erdős 1059, or to verify that a gap between witnesses has no new primes satisfying the property.",
+        "openQuestions": [
+            "The main Erdős 1059 problem: are there infinitely many primes p with AllFactorialSubtractionsComposite(p) true? No theoretical progress is known; computational search with this decidable instance extends verification to any specific range.",
+            "Can the decidable instance be used to prove a density result: among the first N primes, what fraction satisfy the property? Does this fraction stabilize or vary?",
+            "Are there analogous Decidable instances for related factorial-subtraction properties (e.g., n − k! is prime for all k with k! < n)?"
+        ]
+    },
     "leanFile": {
         "imports": [
             "Mathlib.Data.Nat.Prime.Basic",
