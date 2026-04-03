@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-e453-indexing-bridge",
+    "proofId": "erdos-453-oq-02",
+    "range": { "startLine": 49, "endLine": 62 },
+    "type": "insight",
+    "title": "The Indexing Bridge: 1-Indexed nthPrime Unfolds to Nat.nth Nat.Prime",
+    "content": "The central design insight of this file is the definition `nthPrime n = if n = 0 then 0 else Nat.nth Nat.Prime (n - 1)` (line 49). This 1-indexed convention (p_1 = 2, p_2 = 3, ...) is conventional in number theory but Mathlib's Nat.nth is 0-indexed. The bridge `nthPrime n = Nat.nth Nat.Prime (n - 1)` for n ≥ 1 makes every Mathlib theorem about Nat.nth Nat.Prime directly applicable after unfolding nthPrime and simp-ing away the n ≠ 0 guard. The shifted function `fun n => nthPrime (n + 1) = fun n => Nat.nth Nat.Prime n` is exactly Nat.nth Nat.Prime, which is critical for the monotonicity theorem: Nat.nth_strictMono applies to the 0-indexed form, not the 1-indexed form.",
+    "mathContext": "\\text{nthPrime}(n) = \\begin{cases} 0 & n = 0 \\\\ \\text{Nat.nth Nat.Prime}(n-1) & n \\geq 1 \\end{cases}\\\\ \\text{Key: } (\\lambda n.\\, \\text{nthPrime}(n+1)) = (\\lambda n.\\, \\text{Nat.nth Nat.Prime}(n))\\\\ p_1=2,\\; p_2=3,\\; p_3=5,\\; p_4=7 \\quad (\\text{1-indexed})",
+    "significance": "key",
+    "relatedConcepts": ["Nat.nth", "1-indexed vs 0-indexed", "prime enumeration", "index shift"],
+    "prerequisites": ["Nat.nth", "Nat.Prime", "Nat.infinite_setOf_prime"]
+  },
+  {
+    "id": "ann-e453-primality-proof",
+    "proofId": "erdos-453-oq-02",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "technique",
+    "title": "nthPrime_is_prime: Nat.nth_mem_of_infinite Replaces Parent Axiom",
+    "content": "nthPrime_is_prime (line 59) proves that nthPrime n is prime for n ≥ 1. The proof: (1) `unfold nthPrime` expands the definition; (2) `simp [Nat.not_eq_zero_of_lt (by omega : 0 < n)]` resolves the `if n = 0` guard using hn : n ≥ 1; (3) `exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime (n - 1)` applies Mathlib's theorem that every element enumerated by Nat.nth over an infinite set satisfies the predicate. The theorem `Nat.nth_mem_of_infinite {s : Set ℕ} (hs : s.Infinite) (k : ℕ) : Nat.nth s k ∈ s` directly gives primality since `∈ {n : ℕ | Nat.Prime n} = Nat.Prime n`. This is the cleanest of the three eliminations — one line once the indexing is resolved.",
+    "mathContext": "\\text{Nat.nth\\_mem\\_of\\_infinite}: s \\text{ infinite} \\Rightarrow \\text{Nat.nth}\\, s\\, k \\in s\\\\ \\text{Apply: } s = \\{p \\mid \\text{Nat.Prime}\\, p\\}, \\; k = n-1\\\\ \\Rightarrow \\text{Nat.nth Nat.Prime}(n-1) \\in \\{p \\mid \\text{Prime}\\, p\\} \\Rightarrow \\text{nthPrime}(n)\\text{ is prime}",
+    "significance": "key",
+    "relatedConcepts": ["Nat.nth_mem_of_infinite", "Nat.infinite_setOf_prime", "axiom elimination"],
+    "prerequisites": ["Nat.nth_mem_of_infinite", "Nat.infinite_setOf_prime", "Nat.not_eq_zero_of_lt"]
+  },
+  {
+    "id": "ann-e453-monotonicity-proof",
+    "proofId": "erdos-453-oq-02",
+    "range": { "startLine": 71, "endLine": 75 },
+    "type": "technique",
+    "title": "nthPrime_strictMono: Shifted Sequence + Nat.nth_strictMono",
+    "content": "nthPrime_strictMono (line 71) proves `StrictMono (fun n => nthPrime (n + 1))`. The shift n ↦ n+1 converts from 1-indexing to 0-indexing: `nthPrime (n+1) = Nat.nth Nat.Prime n`. The proof: (1) `intro a b hab` introduces a < b; (2) `unfold nthPrime; simp` reduces both sides to Nat.nth Nat.Prime; (3) `exact Nat.nth_strictMono Nat.infinite_setOf_prime hab` applies Mathlib's theorem `Nat.nth_strictMono : s.Infinite → StrictMono (Nat.nth s)`. The shift in the statement (n+1 instead of n) is necessary because 0-indexed strict monotonicity would trivially follow from 1-indexed via the shift; without it, we'd need to separately handle the n=0 case (nthPrime 0 = 0, which is not prime). The shifted version `StrictMono (fun n => nthPrime (n+1))` states exactly that the sequence of primes p_1, p_2, p_3, ... is strictly increasing.",
+    "mathContext": "\\text{Nat.nth\\_strictMono}: s \\text{ infinite} \\Rightarrow \\text{StrictMono}(\\text{Nat.nth}\\, s)\\\\ \\text{Statement: } a < b \\Rightarrow \\text{nthPrime}(a+1) < \\text{nthPrime}(b+1)\\\\ \\text{Unfolded: } a < b \\Rightarrow \\text{Nat.nth Nat.Prime}(a) < \\text{Nat.nth Nat.Prime}(b)\\; \\checkmark\\\\ p_1 < p_2 < p_3 < \\cdots \\quad (\\text{strict monotonicity of prime sequence})",
+    "significance": "key",
+    "relatedConcepts": ["Nat.nth_strictMono", "StrictMono", "index shift", "axiom elimination"],
+    "prerequisites": ["Nat.nth_strictMono", "Nat.infinite_setOf_prime", "StrictMono"]
+  },
+  {
+    "id": "ann-e453-nth-count",
+    "proofId": "erdos-453-oq-02",
+    "range": { "startLine": 81, "endLine": 104 },
+    "type": "technique",
+    "title": "Nat.count + decide: Proving Concrete Prime Values (esp. p_4 = 7)",
+    "content": "nthPrime_values proves p_1=2, p_2=3, p_3=5, p_4=7. For the first three, Mathlib has named constants: `Nat.nth_prime_zero_eq_two`, `Nat.nth_prime_one_eq_three`, `Nat.nth_prime_two_eq_five`. For p_4 = 7, there is no named constant, requiring the Nat.count technique (helper lemma nth_prime_three_eq_seven, line 81). The technique: (1) `have h_count : Nat.count Nat.Prime 7 = 3 := by decide` — Nat.count Nat.Prime n counts how many primes are ≤ n, and `Nat.count Nat.Prime 7 = 3` (the primes ≤ 7 are 2, 3, 5, 7, and 3 of them are < 7: 2, 3, 5) is decidable. (2) `have h_prime : Nat.Prime 7 := by decide` — primality of small numbers is decidable. (3) `rw [← h_count]; exact Nat.nth_count h_prime` — `Nat.nth_count : Nat.Prime p → Nat.nth Nat.Prime (Nat.count Nat.Prime p) = p` recovers p from its count. This pattern generalizes to any concrete prime beyond Mathlib's named constants.",
+    "mathContext": "\\text{Nat.nth\\_count}: \\text{Prime}\\, p \\Rightarrow \\text{Nat.nth Nat.Prime}(\\text{Nat.count Nat.Prime}\\, p) = p\\\\ \\text{Nat.count Nat.Prime}\\, 7 = 3 \\quad (2,3,5 \\text{ are the 3 primes} < 7)\\\\ \\Rightarrow \\text{Nat.nth Nat.Prime}\\, 3 = 7 \\Rightarrow \\text{nthPrime}\\, 4 = 7\\\\ \\text{General pattern: } p \\text{ prime}, c = |\\{q \\text{ prime} : q < p\\}| \\Rightarrow p_{c+1} = p",
+    "significance": "key",
+    "relatedConcepts": ["Nat.nth_count", "Nat.count", "decide tactic", "prime constants"],
+    "prerequisites": ["Nat.nth_count", "Nat.count", "Nat.Prime.decidable", "decide"]
+  },
+  {
+    "id": "ann-e453-log-product",
+    "proofId": "erdos-453-oq-02",
+    "range": { "startLine": 158, "endLine": 186 },
+    "type": "technique",
+    "title": "Convexity → Product Bound: Log Inequality → Real Inequality → Integer Inequality",
+    "content": "convexity_implies_product_bound (line 158) proves: if (n, log p_n) is a convex hull vertex, then p_n² > p_{n+i}·p_{n-i}. The proof chain has three stages. Stage 1 (log inequality): The convex hull vertex condition `2*a_n > a_{n-i} + a_{n+i}` where a_n = log p_n gives `2 log p_n > log p_{n-i} + log p_{n+i} = log(p_{n-i}·p_{n+i})`, hence `log(p_{n-i}·p_{n+i}) < log(p_n²)`. Stage 2 (real inequality): `Real.log_lt_log_iff (mul_pos ...) (pow_pos ...)` converts the log inequality to `p_{n-i}·p_{n+i} < p_n²`. Stage 3 (integer inequality): `exact_mod_cast` converts from ℝ to ℤ, using `Nat.mul_comm` to reorder factors. The positivity hypotheses for primes (`Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime ...))`) use the freshly-proved nthPrime_is_prime — demonstrating that eliminating the axiom propagates correctness through the whole argument.",
+    "mathContext": "\\text{IsConvexHullVertex}: 2a_n > a_{n-i} + a_{n+i} \\;\\forall\\, 0 < i < n\\\\ a_n = \\log p_n \\Rightarrow \\log(p_{n-i}p_{n+i}) < \\log(p_n^2)\\\\ \\xrightarrow{\\text{log\\_lt\\_log\\_iff}} p_{n-i}p_{n+i} < p_n^2\\\\ \\xrightarrow{\\text{exact\\_mod\\_cast}} p_n^2 > p_{n+i}p_{n-i} \\text{ in } \\mathbb{Z}",
+    "significance": "key",
+    "relatedConcepts": ["Real.log_lt_log_iff", "Real.log_mul", "Real.log_pow", "exact_mod_cast"],
+    "prerequisites": ["Real.log_lt_log_iff", "Real.log_mul", "Real.log_pow", "Nat.Prime.pos", "exact_mod_cast"]
+  },
+  {
+    "id": "ann-e453-remaining-axioms",
+    "proofId": "erdos-453-oq-02",
+    "range": { "startLine": 127, "endLine": 146 },
+    "type": "concept",
+    "title": "Remaining Axioms: PNT Consequence and Pomerance's Convex Hull Lemma",
+    "content": "Two axioms remain axiomatized in this file. (1) `logPrime_ratio_tendsto_zero` (line 127): log p_n / n → 0. This follows from the Prime Number Theorem: by PNT, p_n ~ n log n, so log p_n ~ log n + log log n = o(n). Mathlib has a version of PNT (`Nat.Prime.prime_counting_asymptotic`) but connecting it to the 1-indexed nthPrime and extracting the log/n → 0 consequence requires additional infrastructure. (2) `pomerance_convex_hull_lemma` (line 144): for any sequence a_n = o(n), there are infinitely many n where (n, a_n) is on the upper boundary of the convex hull. This is Pomerance's key geometric insight from 1979. A full proof would require formalizing discrete convex hull theory — the convex hull of the integer points {(k, a_k)} and the criteria for upper boundary vertices. This is substantially harder than routine Mathlib API work.",
+    "mathContext": "\\text{Axiom 1: } \\frac{\\log p_n}{n} \\to 0 \\quad (\\text{PNT: } p_n \\sim n\\log n \\Rightarrow \\log p_n = \\log n + \\log\\log n = o(n))\\\\ \\text{Axiom 2 (Pomerance 1979): } a_n = o(n) \\Rightarrow \\exists^\\infty n:\\; (n,a_n) \\in \\partial\\text{conv}\\{(k,a_k)\\}\\\\ \\text{Gap: discrete convex hull vertex theory not in Mathlib}",
+    "significance": "key",
+    "relatedConcepts": ["Prime Number Theorem", "Pomerance 1979", "convex hull vertex", "o(n) asymptotic"],
+    "prerequisites": ["PNT (Mathlib)", "Filter.Tendsto", "IsConvexHullVertex", "convex hull theory"]
+  }
+]
