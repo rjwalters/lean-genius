@@ -1,0 +1,76 @@
+{
+  "id": "combinations-formula-oq-01",
+  "title": "Extended Binomial Coefficient Identities",
+  "slug": "combinations-formula-oq-01",
+  "description": "Formalizes key binomial coefficient identities extending the basic combinations formula: Vandermonde's identity C(m+n,r) = Σ C(m,k)·C(n,r-k), the Hockey Stick identity Σᵢ C(i+r,r) = C(n+r+1,r+1), the double-counting product identity C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j), row sums, bounds C(n,k) ≤ 2ⁿ and C(2n,n) ≤ 4ⁿ, and Fibonacci diagonal sums. 8 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "pascal-triangle",
+      "vandermonde",
+      "hockey-stick"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Nat.choose library.",
+    "lineCount": 185,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "originalContributions": [
+      "vandermonde: C(m+n,r) = Σ_{k=0}^{r} C(m,k)·C(n,r-k) (Vandermonde's convolution identity)",
+      "hockey_stick: Σ_{i=0}^{n} C(i+r,r) = C(n+r+1,r+1) (Hockey Stick / Christmas Stocking identity)",
+      "double_counting: C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j) (product identity via double counting)",
+      "choose_le_pow2: C(n,k) ≤ 2^n (upper bound via row sum)",
+      "central_choose_le_pow4: C(2n,n) ≤ 4^n (central binomial coefficient bound)",
+      "identities_summary: combined theorem packaging all key identities",
+      "Fibonacci diagonal sums: Σ_{j} C(n-j,j) = F(n+1) verified for small cases"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Binomial coefficients C(n,k) = n!/(k!(n-k)!) are fundamental in combinatorics, probability, and algebra. Beyond the basic identity C(n,k) = C(n-1,k-1) + C(n-1,k) (Pascal's rule), there are many deeper identities. Vandermonde's identity (A. Vandermonde, 1772) counts paths in a grid. The Hockey Stick identity appears in Pascal's triangle as a diagonal sum. These are standard combinatorics but their formal verification organizes the infrastructure for more advanced combinatorial proofs.",
+    "problemStatement": "Formalize the key binomial coefficient identities: Vandermonde convolution, Hockey Stick, double-counting product, row sums, and bounds.",
+    "text": "Vandermonde's identity C(m+n,r) = Σ C(m,k)·C(n,r-k) counts ways to choose r elements from a set split into parts of size m and n. The Hockey Stick identity Σᵢ C(i+r,r) = C(n+r+1,r+1) follows from Pascal's rule applied repeatedly along a diagonal. The product identity C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j) counts the same set (choosing j and k-j from n) in two ways.",
+    "proofStrategy": "Use Mathlib's Nat.choose.Sum for Vandermonde. Prove Hockey Stick by induction using Pascal's rule. Use factorial algebra for the product identity. Bound by row sum for 2^n, and specialize for central binomial. Verify Fibonacci diagonals by native_decide.",
+    "keyInsights": [
+      "Vandermonde's identity is equivalent to the Cauchy product formula for (1+x)^m · (1+x)^n",
+      "Hockey Stick counts paths avoiding a boundary in Pascal's triangle",
+      "The Fibonacci diagonal sum Σ C(n-j,j) = F(n+1) connects combinatorics to number theory",
+      "All identities can be unified as special cases of the Zhu-Vandermonde identity in hypergeometric form"
+    ],
+    "prerequisites": [
+      "Basic combinatorics: binomial coefficients, Pascal's rule, factorial",
+      "Mathlib: Nat.choose, Nat.sum_range_choose, Finset.sum"
+    ]
+  },
+  "conclusion": {
+    "summary": "Key binomial coefficient identities formalized: Vandermonde, Hockey Stick, double-counting product, bounds, and Fibonacci diagonals. 8 theorems, 185 lines, 0 axioms.",
+    "implications": "Provides a verified combinatorics toolkit for higher-level proofs involving binomial sums, generating functions, and probabilistic arguments.",
+    "openQuestions": [
+      "Formal proof of Fibonacci diagonal sums (currently verified only by native_decide for small n)",
+      "Zhu-Vandermonde identity: generalization to hypergeometric series",
+      "q-binomial (Gaussian) analogues of these identities"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CombinationsFormulaOQ01",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula",
+      "relationship": "extends",
+      "description": "Basic combinations formula C(n,k) = n!/(k!(n-k)!); this file adds Vandermonde, Hockey Stick, and other advanced identities"
+    }
+  ],
+  "sections": []
+}

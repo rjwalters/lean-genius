@@ -1,0 +1,80 @@
+{
+  "id": "brouwer-fixed-point-oq-01",
+  "title": "Brouwer Fixed Point Theorem: 1D Elementary Proof via IVT",
+  "slug": "brouwer-fixed-point-oq-01",
+  "description": "Proves the 1D Brouwer Fixed Point Theorem elementarily using only the Intermediate Value Theorem, without algebraic topology. Shows 1D Brouwer is equivalent to IVT and proves Borsuk-Ulam in 1D, the No-Retraction theorem, and Banach contraction as a stronger special case. Explains why n≥2 requires algebraic topology (homology). 16 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ01.lean",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "intermediate-value-theorem",
+      "borsuk-ulam",
+      "banach-contraction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using only Mathlib's IVT and basic topology.",
+    "lineCount": 402,
+    "theoremCount": 16,
+    "definitionCount": 0,
+    "originalContributions": [
+      "brouwer_1d: Brouwer FPT for [a,b] — any continuous f:[a,b]→[a,b] has a fixed point",
+      "brouwer_1d_via_ivt: direct IVT proof (g(x) = f(x)-x has a zero)",
+      "no_retraction_1d: there is no continuous retraction from [a,b] to {a,b}",
+      "borsuk_ulam_1d: any continuous f:[−1,1]→ℝ has a point where f(x) = f(−x)",
+      "banach_contraction_fixed_point: contraction maps on complete metric spaces have unique fixed points",
+      "banach_implies_brouwer_1d: Banach contraction implies 1D Brouwer for contractions",
+      "brouwer_nonunique: non-injective maps can have multiple fixed points (identity has all)",
+      "dimension_gap: 1D case is IVT-elementary; n≥2 requires algebraic topology"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Brouwer Fixed Point Theorem (L.E.J. Brouwer, 1911) states every continuous map from a closed ball Bⁿ to itself has a fixed point. In dimension 1, this reduces to the Intermediate Value Theorem — a high school result. In dimensions 2 and above, the proof requires algebraic topology (degree theory or homology), and Brouwer's original proof used simplicial homology. This formalization answers: can we prove 1D Brouwer without any algebraic topology?",
+    "problemStatement": "Can the Brouwer Fixed Point Theorem in 1D be proved using only the Intermediate Value Theorem, without degree theory, homology, or other algebraic topology? And why does this approach fail in higher dimensions?",
+    "text": "In 1D: any continuous f:[a,b]→[a,b] satisfies f(a) ≥ a and f(b) ≤ b. The function g(x) = f(x) - x is continuous, g(a) ≥ 0, g(b) ≤ 0, so IVT gives g(c) = 0 for some c ∈ [a,b]. In n≥2 dimensions, the key obstacle is the No-Retraction Theorem: there is no continuous retraction from Bⁿ to Sⁿ⁻¹. In 1D, the No-Retraction theorem (no retraction from [a,b] to {a,b}) also follows from IVT. But in higher dimensions, the sphere Sⁿ⁻¹ has nontrivial (n-1)-th homology ℤ while the ball Bⁿ is contractible, and a retraction would force ℤ → 0, a contradiction requiring homology.",
+    "proofStrategy": "Define g(x) = f(x) - x and apply IVT to get a zero. Prove the 1D No-Retraction theorem, Borsuk-Ulam, and Banach contraction as additional fixed-point results. Discuss the dimensional gap: why the same approach fails for n≥2.",
+    "keyInsights": [
+      "1D Brouwer ≡ IVT: both are equivalent to the completeness of ℝ",
+      "The No-Retraction theorem in 1D is also IVT-elementary: no continuous surjection [a,b]→{a,b}",
+      "Borsuk-Ulam in 1D: f(x)=f(-x) has a solution (also IVT via f(x)-f(-x))",
+      "Banach contraction gives existence AND uniqueness; Brouwer gives only existence",
+      "Dimension gap: H_{n-1}(Sⁿ⁻¹) = ℤ ≠ 0 forces use of homology for n≥2"
+    ],
+    "prerequisites": [
+      "Intermediate Value Theorem",
+      "Continuous functions on compact intervals",
+      "Metric spaces and completeness (for Banach contraction)"
+    ]
+  },
+  "conclusion": {
+    "summary": "1D Brouwer Fixed Point Theorem is proved elementarily via IVT. Additional results: No-Retraction (1D), Borsuk-Ulam (1D), Banach contraction. The dimensional gap is explained: n≥2 requires algebraic topology. 16 theorems, 402 lines, 0 axioms.",
+    "implications": "This formalization cleanly separates what is elementary (1D) from what requires algebraic topology (n≥2). The IVT equivalence shows that the essential content of the 1D case is continuity of ℝ.",
+    "openQuestions": [
+      "Prove 2D Brouwer via Sperner's Lemma (see BrouwerFixedPoint.lean and BrouwerFixedPointOQ02.lean)",
+      "Formalize No-Retraction theorem for n≥2 using singular homology",
+      "Prove Borsuk-Ulam in n dimensions"
+    ]
+  },
+  "leanFile": {
+    "namespace": "BrouwerOQ01",
+    "lineCount": 402,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "extends",
+      "description": "General Brouwer FPT (axiomatized); this file proves the 1D case elementarily via IVT"
+    }
+  ],
+  "sections": []
+}

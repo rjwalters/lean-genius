@@ -1,0 +1,77 @@
+{
+  "id": "area-of-circle-oq-03-oq-01",
+  "title": "Convergence Rate of Inscribed Polygon Area to πr²",
+  "slug": "area-of-circle-oq-03-oq-01",
+  "description": "Proves that the area of a regular inscribed n-gon converges to πr² at rate O(1/n²): specifically 0 ≤ πr² - Aₙ ≤ 2π³r²/(3n²). The proof uses the chain sin(x) ≥ x - x³/6 (derived via MVT and half-angle identities) to bound the error. Also proves the error is strictly positive for n≥3. 9 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ03OQ01.lean",
+    "tags": [
+      "analysis",
+      "geometry",
+      "area-of-circle",
+      "convergence-rate",
+      "inscribed-polygons",
+      "trigonometry"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 232,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "originalContributions": [
+      "inscribedArea: area of regular n-gon inscribed in circle of radius r = n·r²/2·sin(2π/n)",
+      "sin_lb: sin(x) ≥ x - x³/6 for x ≥ 0 (proved via MVT + half-angle identity chain)",
+      "inscribed_area_lower: Aₙ ≥ πr² - 2π³r²/(3n²) (lower bound from sin lower bound)",
+      "inscribed_area_upper: Aₙ ≤ πr² (inscribed area never exceeds circle area)",
+      "inscribed_area_rate_bound: explicit O(1/n²) convergence rate 0 ≤ πr² - Aₙ ≤ 2π³r²/(3n²)",
+      "inscribed_area_convergence_rate: absolute value form of the rate bound",
+      "inscribed_area_error_positive: the error πr² - Aₙ > 0 strictly for n≥3 and r>0"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Archimedes computed π by bounding it between inscribed and circumscribed polygons. The modern question is quantitative: how fast does the inscribed n-gon area converge to πr²? The convergence rate O(1/n²) follows from the Taylor expansion sin(x) ≈ x - x³/6, but formalizing this requires careful analytic estimates.",
+    "problemStatement": "How fast does the area of a regular inscribed n-gon converge to the area of the circle? Prove the rate is O(1/n²) with explicit constant 2π³/3.",
+    "text": "The inscribed n-gon area is Aₙ = n·r²/2·sin(2π/n). As n→∞, 2π/n → 0 and sin(2π/n) ≈ 2π/n, so Aₙ → πr². For the rate: the key inequality sin(x) ≥ x - x³/6 gives Aₙ ≥ n·r²/2·(2π/n - (2π/n)³/6) = πr² - 2π³r²/(3n²). The upper bound Aₙ ≤ πr² follows from sin(x) ≤ x. The sin lower bound is proved via a chain: sin(x) ≤ x → sin²(x) ≤ x² → cos(x) ≥ 1 - x²/2 (half-angle) → sin(x) ≥ x - x³/6 (MVT).",
+    "proofStrategy": "Prove the sin lower bound sin(x) ≥ x - x³/6 via MVT applied to cos. Derive inscribed area bounds. Combine for the explicit rate. Prove strict positivity for n≥3.",
+    "keyInsights": [
+      "The convergence rate 1/n² is sharp: comes from the x³/6 term in the Taylor expansion of sin",
+      "The sin lower bound chain (sin ≤ x → sin² ≤ x² → cos ≥ 1-x²/2 → sin ≥ x-x³/6) is elementary",
+      "The error is exactly O(1/n²) with constant 2π³/3 ≈ 20.7",
+      "For n=6, the hexagon gives 3r²/2·sin(π/3)·2 = 3√3r²/2 ≈ 0.827πr² (22% error)"
+    ],
+    "prerequisites": [
+      "Trigonometry: sin, cos, half-angle formulas",
+      "Mean Value Theorem for continuous functions",
+      "Area formula for regular n-gons: A = n·r²/2·sin(2π/n)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Convergence rate of inscribed polygons to πr² is proved: O(1/n²) with explicit constant 2π³/3. The sin lower bound sin(x) ≥ x - x³/6 is the key tool. 9 theorems, 1 definition, 232 lines, 0 axioms.",
+    "implications": "This gives a complete quantitative version of Archimedes' polygon approximation with machine-verified bounds. The explicit rate 2π³r²/(3n²) shows that to achieve precision ε, one needs n ≈ π√(2π/3ε) sides.",
+    "openQuestions": [
+      "Prove the circumscribed polygon upper bound: Aₙ(circumscribed) - πr² = O(1/n²) with opposite error",
+      "Prove convergence of circumscribed polygon to inscribed polygon area as n→∞"
+    ]
+  },
+  "leanFile": {
+    "namespace": "AreaOfCircleOQ03OQ01",
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "extends",
+      "description": "Core area-of-circle formalization; this file proves the quantitative convergence rate for inscribed polygons"
+    }
+  ],
+  "sections": []
+}
