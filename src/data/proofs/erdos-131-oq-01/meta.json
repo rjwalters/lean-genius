@@ -33,15 +33,17 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős (1975) asked whether F(N) > N^{1/2-o(1)}. This was believed plausible given the ELRSS (1999) upper bound F(N) < 3√N+1. However, Pham and Zakharov (2024) proved F(N) ≤ N^{1/4+o(1)} via a connection to non-averaging sets, definitively answering the question in the negative. Csaba's lower bound F(N) >> N^{1/5} shows the true growth is between N^{1/5} and N^{1/4+o(1)}.",
+    "historicalContext": "Erdős posed Problem #131 in 1975, asking for an estimate of F(N) — the maximum size of a subset A ⊆ {1,...,N} where no element divides the sum of other distinct elements. Erdős originally believed F(N) might be as small as (log N)^O(1), but Ernst Straus showed this is wrong by constructing sets of size exp((√(2/log 2)+o(1))·√(log N)).\n\nThe question 'Is F(N) > N^{1/2-o(1)}?' appeared plausible in light of the ELRSS bound (Erdős, Lev, Rauzy, Sándor, Sárközy, 1999): F(N) < 3√N+1. The ELRSS argument used a connection between non-dividing sets and sequences with no element dividing the sum of any other: if a|Σbᵢ and Σbᵢ/|S| = a, then non-dividing implies non-averaging, giving a foothold for Fourier-analytic bounds.\n\nPham and Zakharov (2024) dramatically improved this: F(N) ≤ N^{1/4+o(1)}, exploiting the cap set connection more carefully. Cap sets in 𝔽₃ⁿ relate to 3-term arithmetic progressions via Fourier analysis (Gowers, Bourgain); the non-averaging condition translates to cap set bounds, which in turn give polynomial improvements over √N. This answered Erdős's question definitively in the negative.\n\nThe problem connects to Erdős's broader program on additive structure of integer sets, including Problems #28 (additive bases), #186 (non-averaging sets), and the theory of Sidon sets.",
     "problemStatement": "Estimate F(N) = max{|A| : A ⊆ {1,...,N}, A is non-dividing}. Is F(N) > N^{1/2-o(1)}?",
     "text": "A set A is non-dividing if no element a ∈ A divides the sum of any ≥2 other distinct elements from A. This property implies non-averaging: no element is the arithmetic mean of others. F(N) counts the maximum such set. ELRSS (1999) gave F(N) < 3√N+1. Pham-Zakharov (2024) sharpened this dramatically to F(N) ≤ N^{1/4+o(1)}, using the connection to non-averaging sets and cap sets.",
-    "proofStrategy": "Define IsNonDividing and IsNonDividingAlt. Show they differ (counterexample {2,4}). Define F(N) via supremum. Axiomatize Pham-Zakharov and Csaba bounds. Prove the logical consequence that Erdős's question is answered negatively.",
+    "proofStrategy": "The formalization proceeds in 15 sections. (1) Define IsNonDividing and IsNonDividingAlt, prove the implication (Alt → Standard) and exhibit the counterexample {2,4} showing non-equivalence. (2) Define IsNonAveraging and prove non-dividing implies non-averaging (the key bridge). (3) Define F(N) via a powerset supremum (noncomputable) and prove monotonicity. (4) Axiomatize the Pham-Zakharov 2024 bound F(N) ≤ N^{1/4+o(1)}, then formally derive the negative answer to Erdős's question via rpow monotonicity. (5) Axiomatize Csaba's lower bound; prove the Straus constant √(2/log 2) ∈ (1.6,1.8) from scratch using Taylor approximations for exp. (6) Prove Erdős's original logarithmic conjecture is false using log ≤ x^δ/δ and the Csaba bound. (7-8) Verify concrete non-dividing sets ({2,3}, {2,4,5}, {3,5,11,18}) and counterexamples ({2,3,5}, {3,5,7}). (9) Prove structural constraints: 1 ∉ large non-dividing sets; if 2 ∈ A then |A| ≤ 3. (10) Formally connect F ≤ g and derive the Pham-Zakharov bound for F from the bound for g.",
     "keyInsights": [
-      "Non-dividing implies non-averaging: if a | Σb_i then a can be the average of the b_i",
-      "The two definitions differ: requiring no divisibility of singletons is strictly stronger",
-      "Pham-Zakharov 2024: dramatic improvement from N^{1/2} to N^{1/4+o(1)}",
-      "The answer to Erdős's question is NO: F(N) = o(N^{1/2})"
+      "The bridge to non-averaging: if $a = \\frac{\\Sigma b_i}{k}$, then $a \\mid \\Sigma b_i$. This converts an averaging violation into a divisibility violation, allowing Fourier-analytic bounds on non-averaging sets to transfer to non-dividing sets.",
+      "The two formulations differ: the standard definition requires the subset to have ≥ 2 elements, making {2,4} vacuously non-dividing. The alternative (all nonempty subsets) is strictly stronger — a meaningful distinction for small sets near the extremal construction.",
+      "Erdős's original conjecture F(N) < (log N)^O(1) was already disproved by Straus, who found sets of superpolylogarithmic size. The ELRSS 1999 bound F(N) < 3√N was a major improvement; Pham-Zakharov 2024's N^{1/4+o(1)} is a further 50% reduction in the exponent.",
+      "The parity constraint: if 2 ∈ A, then |A| ≤ 3. Among any 4 elements with 2 present, three non-2 elements must include two of the same parity; their sum is even. This illustrates why constructing large non-dividing sets avoids even elements.",
+      "Element 1 is always excluded from non-dividing sets of size ≥ 3: since 1 | (any sum), the condition fails immediately. So large non-dividing sets live in {2,...,N}, not {1,...,N}.",
+      "The gap 1/4 - 1/5 = 1/20 between polynomial bound exponents (Pham-Zakharov vs Csaba) leaves open whether F(N) is closer to N^{1/4} or to the subpolynomial Straus bound exp(c√(log N)). The correct growth rate is unknown."
     ],
     "prerequisites": [
       "Divisibility: Nat.dvd, sum predicates",
@@ -72,5 +74,111 @@
       "description": "Both are Erdős problems on additive structure of integer sets"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Problem Statement and References",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module header with the full problem statement, known results (ELRSS 1999, Pham-Zakharov 2024, Csaba, Straus), and references to [Er75b], [ELRSS99], [PhZa24], [Gu04]."
+    },
+    {
+      "id": "sec-definitions",
+      "title": "Basic Definitions",
+      "startLine": 43,
+      "endLine": 68,
+      "summary": "Defines IsNonDividing and IsNonDividingAlt, proves the implication Alt → Standard (nondividingAlt_implies_nondividing), with docstring explaining the counterexample {2,4}."
+    },
+    {
+      "id": "sec-counterexample",
+      "title": "Counterexample: Separation of Definitions",
+      "startLine": 70,
+      "endLine": 86,
+      "summary": "nondividing_not_iff_alt exhibits {2,4} as a non-dividing set that is NOT non-dividing-alt, proving the two definitions are inequivalent."
+    },
+    {
+      "id": "sec-nonaveraging",
+      "title": "Non-Dividing Implies Non-Averaging",
+      "startLine": 87,
+      "endLine": 104,
+      "summary": "Defines IsNonAveraging and proves nondividing_implies_nonaveraging: if a = (Σbᵢ)/k then a|Σbᵢ, so non-dividing is strictly stronger than non-averaging."
+    },
+    {
+      "id": "sec-F-function",
+      "title": "The Extremal Function F(N)",
+      "startLine": 106,
+      "endLine": 123,
+      "summary": "Defines F(N) as the supremum of cardinalities over non-dividing subsets of {1,...,N} (noncomputable). Proves F_monotonic: N ≤ M implies F(N) ≤ F(M)."
+    },
+    {
+      "id": "sec-pham-zakharov",
+      "title": "Upper Bound: Pham-Zakharov 2024",
+      "startLine": 125,
+      "endLine": 165,
+      "summary": "Axiomatizes pham_zakharov_upper_bound (F(N) ≤ N^{1/4+o(1)}). Proves original_question_answered_no: Erdős's question 'Is F(N) > N^{1/2-o(1)}?' is answered NO via a real-analysis contradiction."
+    },
+    {
+      "id": "sec-lower-bounds",
+      "title": "Lower Bounds: Csaba and Straus",
+      "startLine": 167,
+      "endLine": 211,
+      "summary": "Axiomatizes csaba_lower_bound (F(N) ≫ N^{1/5}). Proves bounds on log 2 via Taylor approximations to exp, establishing the Straus constant √(2/log 2) ∈ (1.6, 1.8)."
+    },
+    {
+      "id": "sec-open-question",
+      "title": "The Open Question and Erdős's Original Conjecture",
+      "startLine": 213,
+      "endLine": 295,
+      "summary": "States erdos_131_open_question. Proves erdos_original_conjecture_false: Erdős's original belief F(N) < (log N)^O(1) is refuted by Csaba's polynomial lower bound via log ≤ x^δ/δ."
+    },
+    {
+      "id": "sec-small-examples",
+      "title": "Small Examples",
+      "startLine": 297,
+      "endLine": 338,
+      "summary": "singleton_nondividing, two_three_nondividing (vacuous), primes_not_nondividing ({2,3,5} fails since 2|8), two_four_five_nondividing ({2,4,5} works, giving F(5) ≥ 3)."
+    },
+    {
+      "id": "sec-structural",
+      "title": "Structural Results",
+      "startLine": 340,
+      "endLine": 377,
+      "summary": "one_not_in_large_nondividing: 1 cannot appear in a non-dividing set of size ≥ 3. two_in_nondividing_bound: if 2 ∈ A, then |A| ≤ 3 (parity constraint via pigeonhole)."
+    },
+    {
+      "id": "sec-nonavg-connection",
+      "title": "Connection to Non-Averaging Sets",
+      "startLine": 379,
+      "endLine": 410,
+      "summary": "Defines g(N) (max non-averaging subset size). Proves F_le_g (F(N) ≤ g(N)) and pham_zakharov_chain: bounds on g transfer to F via the implication non-dividing → non-averaging."
+    },
+    {
+      "id": "sec-hard-to-find",
+      "title": "Constructive Difficulty",
+      "startLine": 412,
+      "endLine": 426,
+      "summary": "nondividing_hard_to_find: {3,5,7} fails (3|12) and {3,7,11} fails (3|18), illustrating why constructing large non-dividing sets is non-trivial."
+    },
+    {
+      "id": "sec-parity",
+      "title": "Parity Constraint for Sets Containing 2",
+      "startLine": 428,
+      "endLine": 466,
+      "summary": "two_in_nondividing_bound (repeated for context): if 2 ∈ A and A is non-dividing, then |A| ≤ 3, proved via parity pigeonhole on A \\ {2}."
+    },
+    {
+      "id": "sec-four-element",
+      "title": "Four-Element Example and Helper Lemma",
+      "startLine": 468,
+      "endLine": 518,
+      "summary": "Helper lemma nondividing_three_subset reduces checking to full+pair sums. three_five_eleven_eighteen_nondividing verifies {3,5,11,18} is non-dividing (F(18) ≥ 4)."
+    },
+    {
+      "id": "sec-exponent-gaps",
+      "title": "Exponent Comparisons",
+      "startLine": 520,
+      "endLine": 529,
+      "summary": "quarter_lt_half (1/4 < 1/2), fifth_lt_quarter (1/5 < 1/4), polynomial_exponent_gap (1/4 - 1/5 = 1/20): formalizing the numeric relationships between known bound exponents."
+    }
+  ]
 }
