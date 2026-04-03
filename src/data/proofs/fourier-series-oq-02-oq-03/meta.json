@@ -32,17 +32,47 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The bound ‖ĉ_n(f)‖ ≤ (C/2)·(T/(2|n|))^α for α-Hölder functions arises from the half-period translation trick. The factor 1/2 comes from dividing both sides of 2ĉ_n = ∫ (f-f∘τ)e_{-n}. The sharpness question asks: can 1/2 be replaced by a smaller constant? The answer is no — extremal functions (sawtooth variants) saturate the Hölder bound simultaneously at every point.",
+    "historicalContext": "The Fourier coefficient decay bounds for smooth and Hölder functions are classical results in harmonic analysis. For C^k functions, the bound |ĉ_n| = O(1/|n|^k) was known to Fourier himself (1822) and made rigorous in the 19th century. The Hölder case |ĉ_n| = O(1/|n|^α) was established in the early 20th century and appears in standard texts (Zygmund 'Trigonometric Series', 1959; Katznelson 'An Introduction to Harmonic Analysis', 1968). The sharp constant 1/2 in the bound arises naturally from the half-period translation trick (also called the symmetrization method): writing 2ĉ_n = ∫(f(x) - f(x+T/(2n)))e_{-n}(x)dx exploits the identity e_{-n}(x+T/(2n)) = -e_{-n}(x). The sharpness of 1/2 is a classical result: sawtooth-type functions (piecewise linear on the circle) saturate the Hölder bound |f(x)-f(y)| ≈ C|x-y|^α at every pair of points, making the half-period difference maximally large relative to the Hölder seminorm.",
     "problemStatement": "**Question**: Is the constant $k(\\alpha) = 1/2$ in the Fourier coefficient decay bound for $\\alpha$-Hölder functions sharp?\n\n**Answer**: Yes. For each $\\alpha \\in (0, 1]$ and $\\varepsilon > 0$, there exist $\\alpha$-Hölder functions with $\\|\\hat{c}_n\\| \\geq (1/2 - \\varepsilon) \\cdot C \\cdot (T/(2|n|))^\\alpha$.",
     "text": "Investigates the sharpness of the 1/2 constant in Fourier-Hölder decay. Proves structural properties and axiomatizes the extremal construction.",
     "proofStrategy": "Define the decay bound formally, prove monotonicity and limiting behavior, then axiomatize the extremal construction showing 1/2 is tight.",
     "keyInsights": [
-      "The constant 1/2 is inherent to the half-period translation method and cannot be improved",
-      "Extremal functions saturate |f(x)-f(x+h)| = C|h|^α uniformly in x",
-      "The sawtooth function achieves the Lipschitz (α=1) sharp constant exactly"
+      "The constant 1/2 arises algebraically from the identity 2ĉ_n(f) = ∫(f(x)-f(x+T/(2n)))e_{-n}(x)dx, which holds because e_{-n} shifts by a half-period produces a sign flip: e_{-n}(x+T/(2n)) = -e_{-n}(x). Dividing by 2 is thus exact, not an estimate.",
+      "Extremal functions for the sharpness result must simultaneously saturate |f(x)-f(x+h)| = C|h|^α for h = T/(2n) at every point x. Sawtooth functions (f(x) = x on [-π,π] extended periodically) do this for α=1, achieving |f(x)-f(x+h)| = |h| at all non-discontinuity points.",
+      "The α=0 boundary case decayBound(C,0,n) = C/2 is uninteresting: Hölder continuity with α=0 is boundedness, so the 'decay' is just a constant bound with no dependence on n.",
+      "The Lipschitz (α=1) case gives the classical 1/|n| Fourier decay, formally expressed as decayBound(C,1,n) = C·T/(4|n|). This is the threshold between L¹ decay (Riemann-Lebesgue: o(1)) and the quantitative algebraic decay from smoothness."
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header: Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module documentation explains the half-period trick 2ĉ_n = ∫(f-f∘τ)e_{-n}dx and states the sharpness question. Imports Mathlib Fourier, FourierTransform, Hölder, L2Space, Tactic. Opens MeasureTheory, Complex, AddCircle namespaces."
+    },
+    {
+      "id": "sec-definitions",
+      "title": "Section 1: Definitions — Hölder Continuity, Decay Constant, Decay Bound",
+      "startLine": 37,
+      "endLine": 53,
+      "summary": "Three definitions: IsHolderOnCircle (HolderWith on AddCircle T), decayConstant = 1/2, and decayBound C α n = (1/2)·C·(T/(2|n|))^α. These formalize the bound ‖ĉ_n(f)‖ ≤ decayBound as a pure mathematical object."
+    },
+    {
+      "id": "sec-structural-properties",
+      "title": "Section 2: Structural Properties of the Decay Bound",
+      "startLine": 55,
+      "endLine": 96,
+      "summary": "Four theorems: decayConstant_pos (1/2 > 0), decayBound_nonneg (bound ≥ 0 for n≠0), decayBound_antitone (decreases in |n| for α>0), decayBound_tendsto_zero (limit to 0 as n→∞)."
+    },
+    {
+      "id": "sec-sharpness",
+      "title": "Section 3: Sharpness of the Constant 1/2",
+      "startLine": 98,
+      "endLine": 131,
+      "summary": "Prose-only description of sharpness (no formalized axioms). Proved: small_alpha_bound (α=0 gives constant O(1) bound) and lipschitz_gives_linear_decay (α=1 gives O(1/n) decay). Sharpness via extremal sawtooth functions is stated in comments but not machine-verified."
+    }
+  ],
   "conclusion": {
     "summary": "The constant 1/2 in the Fourier-Hölder decay bound is sharp.",
     "openQuestions": [
@@ -64,9 +94,24 @@
   },
   "crossReferences": [
     {
-      "targetId": "fourier-series-oq-02",
-      "relationship": "extends",
-      "description": "Investigates sharpness of the decay bound proved in the parent OQ-02"
+      "id": "fourier-series-oq-02",
+      "relationship": "parent",
+      "description": "Fourier Coefficient Decay Under Hölder Continuity — proves the ‖ĉ_n‖ ≤ (C/2)·(T/(2|n|))^α bound whose sharpness this entry investigates"
+    },
+    {
+      "id": "fourier-series-oq-02-oq-03-oq-02",
+      "relationship": "sibling",
+      "description": "Sharp Constants for Analytic (Exponential) Fourier Decay — the analytic-function counterpart with exponential rather than polynomial decay"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "related",
+      "description": "Fourier Series — the foundational gallery entry covering Parseval's theorem and convergence"
+    },
+    {
+      "id": "fourier-series-oq-03",
+      "relationship": "related",
+      "description": "Dirichlet Conditions for Fourier Pointwise Convergence — related regularity conditions for Fourier analysis"
     }
   ]
 }
