@@ -94,5 +94,13 @@
       "content": "The `FiniteGame` structure and `MixedStrategy` type are well-defined. However, `IsNashEquilibrium` is defined as `True` — a placeholder for the full definition which requires computing expected payoffs under mixed strategy profiles. The theorem `nash_equilibrium_existence` is proved trivially via ⟨fun _ _ => 0, trivial⟩. The genuine proof would apply Kakutani to the *best-response correspondence* BR_i(σ) = {σ_i' : player i prefers σ_i' to σ_i given others play σ_{-i}}, which is UHC with nonempty convex values under the mixed extension of payoffs."
     }
   ],
-  "conclusion": "This formalization provides the infrastructure for Kakutani's fixed point theorem: formal definitions of set-valued maps and upper hemicontinuity, axiomatization of Kakutani and Fan-Glicksberg, a genuine proof that Kakutani implies Brouwer (via singleton maps), and a stub for Nash equilibrium. The key open formalization tasks are: (1) prove Kakutani from Brouwer via simplicial approximation; (2) formalize the best-response correspondence and prove Nash equilibrium existence without the True stub; (3) formalize the Arrow-Debreu general equilibrium application. The hierarchy table (Brouwer → Kakutani → Fan-Glicksberg) provides a roadmap for further formalization."
+  "conclusion": {
+    "summary": "This formalization provides the infrastructure for Kakutani's fixed point theorem: formal definitions of set-valued maps and upper hemicontinuity, axiomatization of Kakutani (finite-dim) and Fan-Glicksberg (LCTVS), a genuine proof that Kakutani implies Brouwer via singleton maps, and a documented stub for Nash equilibrium existence. 2 axioms, 2 theorems, 9 definitions.",
+    "implications": "The singleton reduction `brouwer_from_kakutani_finite` confirms Kakutani strictly generalizes Brouwer within the Lean type system. The Fan-Glicksberg axiom establishes a formal foothold for Arrow-Debreu equilibrium theory. The Nash stub documents a concrete formalization path: once `ProbabilityMeasure (Fin k)` and expected payoff integration are available, the best-response correspondence approach can close the gap.",
+    "openQuestions": [
+      "Can Kakutani's theorem be proved (not just axiomatized) from Brouwer via simplicial approximation? The key step is approximating an UHC set-valued map by a continuous single-valued map using the Michael selection theorem or a direct triangulation argument.",
+      "Can the `IsNashEquilibrium` definition be formalized using `ProbabilityMeasure (Fin k)` and `MeasureTheory.integral` to compute expected payoffs, then `nash_equilibrium_existence` proved by applying `fan_glicksberg` to the best-response correspondence?",
+      "The Eilenberg-Montgomery theorem (1946) extends Kakutani to acyclic-valued maps using Čech cohomology. Could this be axiomatized as a fourth entry in the hierarchy, above Fan-Glicksberg? The Lefschetz fixed point theorem would provide the homological foundation."
+    ]
+  }
 }
