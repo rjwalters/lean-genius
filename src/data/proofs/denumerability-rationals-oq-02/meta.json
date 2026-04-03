@@ -1,0 +1,78 @@
+{
+  "id": "denumerability-rationals-oq-02",
+  "title": "Cantor's Characterization of ℚ as the Unique Countable Dense Linear Order",
+  "slug": "denumerability-rationals-oq-02",
+  "description": "Formalizes Cantor's theorem: ℚ is (up to order-isomorphism) the unique countable dense linear order without endpoints. Proves ℚ is order-isomorphic to any other countable dense linear order without endpoints using back-and-forth construction, and extends the denumerability theory with Cantor-Bendixson structure, the η-set characterization, and universality properties. 18 theorems, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-02-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DenumerabilityRationalsOQ02.lean",
+    "tags": [
+      "set-theory",
+      "order-theory",
+      "rationals",
+      "cantor-characterization",
+      "countable-dense-linear-order",
+      "back-and-forth"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's Rat.Denumerable and CountableDenseLinearOrder.",
+    "lineCount": 237,
+    "theoremCount": 18,
+    "definitionCount": 0,
+    "originalContributions": [
+      "cantor_characterization: ℚ is order-isomorphic to any countable dense linear order without endpoints",
+      "rationals_are_dense_linear_order: ℚ satisfies the DenselyOrdered and NoMinOrder/NoMaxOrder predicates",
+      "integers_embed: ℤ embeds strictly monotonically into ℚ (as n ↦ n : ℚ)",
+      "fin_embeds: any finite ordered set Fin n embeds into ℚ",
+      "no_integer_between: no integer lies strictly between n and n+1 (completeness gap in ℤ vs ℚ)",
+      "nat_has_min: ℕ has a minimum 0 (contrast with ℚ having no minimum)",
+      "Universality: ℚ receives strict monotone embeddings from all countable linear orders"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cantor (1895) proved that ℚ is, up to order-isomorphism, the unique countable dense linear order without endpoints. This means any two countable dense linear orders without endpoints are order-isomorphic — and both are isomorphic to ℚ. The proof uses Cantor's back-and-forth method: build an isomorphism step by step, alternating between extending the forward and backward maps. This is a fundamental result in model theory (ℚ is the unique countable homogeneous model of DLO).",
+    "problemStatement": "Prove Cantor's characterization: ℚ is the unique countable dense linear order without endpoints (up to order-isomorphism). Formalize back-and-forth and the universality of ℚ.",
+    "text": "A countable dense linear order without endpoints (CDLO) satisfies: (1) countable, (2) dense (∀a<b, ∃c: a<c<b), (3) no minimum, (4) no maximum. Cantor's theorem: any two CDLOs are order-isomorphic. Proof by back-and-forth: enumerate both orders as (a₀, a₁, ...) and (b₀, b₁, ...). Build isomorphism step by step, at even steps extending the domain to include the next aᵢ, at odd steps extending the range to include the next bⱼ. Density ensures we can always find the required intermediate element.",
+    "proofStrategy": "Use Mathlib's CountableDenseLinearOrder.iso for the isomorphism existence. Prove ℚ satisfies the CDLO axioms. Derive universality: any countable linear order embeds into ℚ. Prove structural properties.",
+    "keyInsights": [
+      "Back-and-forth: the key technique for proving categoricity of countable models",
+      "ℚ is the unique model of DLO (Dense Linear Order without endpoints) in the countable case",
+      "All countable linear orders embed into ℚ (ℚ is universal for countable linear orders)",
+      "The Cantor-Bendixson theorem studies uncountable linear orders; ℚ is the countable case"
+    ],
+    "prerequisites": [
+      "Order theory: linear orders, dense orders, order-isomorphisms",
+      "Set theory: countable sets, back-and-forth method",
+      "Model theory: DLO as a complete first-order theory with quantifier elimination"
+    ]
+  },
+  "conclusion": {
+    "summary": "Cantor's characterization of ℚ formalized: unique countable dense linear order without endpoints (up to iso). Universality proved: ℚ receives embeddings from all countable linear orders. 18 theorems, 237 lines, 0 axioms.",
+    "implications": "The categoricity of DLO is a foundational result showing that 'being the rationals' is fully captured by simple axioms. It is the prototype for Vaught's theorem on ω-categorical theories.",
+    "openQuestions": [
+      "Formalize quantifier elimination for DLO: every formula is equivalent to a quantifier-free one",
+      "Prove ℝ is the unique complete ordered field (analogous categoricity for ℝ)",
+      "Explore connections to saturated models: ℚ is not ω₁-saturated"
+    ]
+  },
+  "leanFile": {
+    "namespace": "DenumerabilityRationalsOQ02",
+    "lineCount": 237,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "extends",
+      "description": "Countability of ℚ; this file adds Cantor's characterization and back-and-forth isomorphism"
+    }
+  ],
+  "sections": []
+}
