@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-header-imports",
+    "proofId": "area-of-circle-oq-05",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "context",
+    "title": "File Overview: Gaussian Integral Meets the Circle",
+    "content": "The file header explains the central miracle: a purely one-dimensional integral $\\int_{-\\infty}^\\infty e^{-x^2}\\,dx$ secretly encodes a circle. The three-line proof sketch in the comment is the polar-coordinate argument:\n\n1. Square the integral: $I^2 = \\int\\!\\int e^{-(x^2+y^2)}\\,dx\\,dy$\n2. Switch to polar: $= \\int_0^{2\\pi}\\!\\int_0^\\infty e^{-r^2} r\\,dr\\,d\\theta$\n3. Separate: $= 2\\pi \\cdot \\tfrac{1}{2} = \\pi$, so $I = \\sqrt{\\pi}$\n\nThe two Lean imports supply everything needed:\n- `Gaussian.GaussianIntegral`: Mathlib's `integral_gaussian`, the key black box\n- `Mathlib.Tactic`: All-purpose tactic infrastructure\n\nThe `open MeasureTheory Real Filter` line brings `rexp`, `atTop`, `nhds`, and measure-theory notation into scope without namespace qualifiers.",
+    "mathContext": "$\\left(\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx\\right)^2 = \\int_0^{2\\pi}\\int_0^{\\infty} e^{-r^2}\\,r\\,dr\\,d\\theta = 2\\pi \\cdot \\frac{1}{2} = \\pi$",
+    "significance": "context",
+    "relatedConcepts": ["Gaussian integral", "polar coordinates", "Fubini's theorem", "Mathlib"],
+    "prerequisites": ["Lebesgue integration", "multivariable calculus", "Lean 4 namespacing"]
+  },
+  {
+    "id": "ann-main-gaussian",
+    "proofId": "area-of-circle-oq-05",
+    "range": { "startLine": 33, "endLine": 55 },
+    "type": "technique",
+    "title": "Main Theorem: Gaussian Integral = √π via Mathlib",
+    "content": "The theorem `gaussian_integral_eq_sqrt_pi` states $\\int_{\\mathbb{R}} e^{-x^2}\\,dx = \\sqrt{\\pi}$ and proves it by massaging the expression into Mathlib's `integral_gaussian` form.\n\n**Mathlib's `integral_gaussian`** proves: $\\int_\\mathbb{R} e^{-b x^2}\\,dx = \\sqrt{\\pi / b}$ for any $b > 0$ (and also for complex $b$ with positive real part).\n\n**Proof steps:**\n1. Specialise at $b = 1$: `integral_gaussian 1` gives $\\int e^{-1 \\cdot x^2}\\,dx = \\sqrt{\\pi/1} = \\sqrt{\\pi}$\n2. `simp only [div_one]` simplifies $\\pi/1$ to $\\pi$\n3. `simp_rw` rewrites $-x^2$ as $-1 \\cdot x^2$ to match the exact integrand shape\n4. `exact h` closes the goal\n\n**Why the rewrite is necessary**: Lean's definitional equality does not automatically unify $-x^2$ with $-1 \\cdot x^2$; the `simp_rw` with the `ring`-proved funext makes the syntactic match explicit. This is a common pattern when adapting Mathlib theorems to slightly different-but-mathematically-equal forms.",
+    "mathContext": "$\\int_{\\mathbb{R}} e^{-x^2}\\,dx = \\sqrt{\\pi}$; Mathlib's `integral_gaussian b`: $\\int_{\\mathbb{R}} e^{-bx^2}\\,dx = \\sqrt{\\pi/b}$ for $b > 0$",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian integral", "integral_gaussian", "simp_rw", "ring", "Mathlib specialisation"],
+    "prerequisites": ["Lebesgue integration on ℝ", "Mathlib MeasureTheory", "Real.sqrt"]
+  },
+  {
+    "id": "ann-scaled-gaussian",
+    "proofId": "area-of-circle-oq-05",
+    "range": { "startLine": 57, "endLine": 65 },
+    "type": "technique",
+    "title": "Scaled Gaussian: ∫ e^{−ax²} dx = √(π/a)",
+    "content": "The theorem `scaled_gaussian` generalises to arbitrary scale factor $a > 0$. This is essentially a direct invocation of Mathlib's `integral_gaussian a`.\n\n**Proof strategy**: The only subtlety is again a syntactic mismatch: the goal has $-(a \\cdot x^2)$ while `integral_gaussian` expects $-a \\cdot x^2$. A `simp_rw` with `ring` resolves this, then `exact integral_gaussian a` closes it immediately.\n\n**Mathematical content**: The substitution $t = \\sqrt{a}\\,x$ transforms $\\int e^{-ax^2}\\,dx = \\tfrac{1}{\\sqrt{a}} \\int e^{-t^2}\\,dt = \\tfrac{\\sqrt{\\pi}}{\\sqrt{a}} = \\sqrt{\\pi/a}$. This is the standard scaling argument; Lean avoids reproving it by delegating to Mathlib.\n\n**Applications**: This single formula is used in Fourier transforms (the Fourier transform of $e^{-ax^2}$ is $\\sqrt{\\pi/a}\\,e^{-\\pi^2\\xi^2/a}$), in the heat kernel $p_t(x) = (4\\pi t)^{-1/2} e^{-x^2/(4t)}$, and in the next theorem for standard normal normalisation.",
+    "mathContext": "$\\int_{\\mathbb{R}} e^{-ax^2}\\,dx = \\sqrt{\\frac{\\pi}{a}}, \\quad a > 0$",
+    "significance": "key",
+    "relatedConcepts": ["scaling substitution", "Fourier transform of Gaussian", "heat kernel", "characteristic function"],
+    "prerequisites": ["Gaussian integral", "change of variables in Lebesgue integrals", "Real.sqrt arithmetic"]
+  },
+  {
+    "id": "ann-standard-normal",
+    "proofId": "area-of-circle-oq-05",
+    "range": { "startLine": 67, "endLine": 89 },
+    "type": "insight",
+    "title": "Standard Normal Density Normalises to 1",
+    "content": "The theorem `standard_normal_normalization` confirms that $\\int_{\\mathbb{R}} \\frac{1}{\\sqrt{2\\pi}} e^{-x^2/2}\\,dx = 1$, making $\\phi(x) = \\frac{1}{\\sqrt{2\\pi}} e^{-x^2/2}$ a genuine probability density.\n\n**Proof structure (4 steps)**:\n1. **Pull constant out**: `integral_const_mul` rewrites the integral as $\\tfrac{1}{\\sqrt{2\\pi}} \\cdot \\int e^{-x^2/2}\\,dx$\n2. **Identify sub-integral**: Show $\\int e^{-x^2/2}\\,dx = \\sqrt{2\\pi}$ by matching to `scaled_gaussian (1/2)`\n3. **Funext rewrite**: Prove $e^{-x^2/2} = e^{-(1/2)x^2}$ via `funext` + `ring` — again bridging syntactic gap\n4. **Arithmetic close**: $(1/\\sqrt{2\\pi}) \\cdot \\sqrt{2\\pi} = 1$ via `inv_mul_cancel₀` after checking non-zeroness with `positivity`\n\n**Significance**: This bridges analysis (the Gaussian integral) and probability theory. The standard normal $\\mathcal{N}(0,1)$ is the unique maximum-entropy distribution on $\\mathbb{R}$ with mean 0 and variance 1 — a fact proved using the calculus of variations, not formalised here but a natural extension.",
+    "mathContext": "$\\int_{\\mathbb{R}} \\frac{1}{\\sqrt{2\\pi}} e^{-x^2/2}\\,dx = 1$; equivalently, $\\phi(x) = \\frac{1}{\\sqrt{2\\pi}} e^{-x^2/2}$ is the standard normal density",
+    "significance": "key",
+    "relatedConcepts": ["normal distribution", "probability density", "maximum entropy", "characteristic function", "central limit theorem"],
+    "prerequisites": ["scaled Gaussian integral", "integral_const_mul", "Real.sqrt arithmetic", "positivity tactic"]
+  },
+  {
+    "id": "ann-circle-connection",
+    "proofId": "area-of-circle-oq-05",
+    "range": { "startLine": 91, "endLine": 106 },
+    "type": "insight",
+    "title": "Why π Appears: The Hidden Circle in the Gaussian",
+    "content": "This comment section provides the conceptual heart of the file: the polar-coordinate decomposition that makes $\\pi$ appear in a one-dimensional integral.\n\n**The five-step argument**:\n1. Let $I = \\int_{-\\infty}^\\infty e^{-x^2}\\,dx$ (positive)\n2. $I^2 = \\int_{-\\infty}^\\infty e^{-x^2}\\,dx \\cdot \\int_{-\\infty}^\\infty e^{-y^2}\\,dy = \\iint_{\\mathbb{R}^2} e^{-(x^2+y^2)}\\,dx\\,dy$ (by Fubini, since the integrand is $L^1$ by integrability of $e^{-r}$)\n3. Convert: $x = r\\cos\\theta$, $y = r\\sin\\theta$, Jacobian $= r$, so $dx\\,dy = r\\,dr\\,d\\theta$\n4. $I^2 = \\int_0^{2\\pi}\\int_0^\\infty e^{-r^2} r\\,dr\\,d\\theta = \\underbrace{2\\pi}_{\\text{circumference}} \\cdot \\underbrace{\\tfrac{1}{2}}_{\\text{radial integral}}$\n5. $I = \\sqrt{\\pi}$\n\n**The geometric insight**: In step 4, the angular integral $\\int_0^{2\\pi} d\\theta = 2\\pi$ is precisely the circumference of the unit circle. The radial integral $\\int_0^\\infty r e^{-r^2}\\,dr = \\tfrac{1}{2}$ is proved as the next theorem. Together they give $I^2 = \\pi$ — the area of the unit circle — which is why $\\pi$ appears.\n\n**Fubini applicability**: Justified because $x \\mapsto e^{-x^2}$ is in $L^1(\\mathbb{R})$ (it decays super-exponentially), so the product function is in $L^1(\\mathbb{R}^2)$.",
+    "mathContext": "$I^2 = \\int_0^{2\\pi}\\!\\int_0^{\\infty} e^{-r^2}\\,r\\,dr\\,d\\theta = 2\\pi \\cdot \\frac{1}{2} = \\pi$, where $2\\pi$ is the circumference of the unit circle",
+    "significance": "key",
+    "relatedConcepts": ["polar coordinates", "Fubini's theorem", "Jacobian determinant", "area of unit circle", "circumference of unit circle"],
+    "prerequisites": ["multivariable integration", "polar coordinate change of variables", "Fubini's theorem", "L¹ integrability"]
+  },
+  {
+    "id": "ann-radial-integral",
+    "proofId": "area-of-circle-oq-05",
+    "range": { "startLine": 108, "endLine": 132 },
+    "type": "technique",
+    "title": "Radial Integral: ∫₀^∞ r e^{−r²} dr = 1/2 via FTC",
+    "content": "The theorem `radial_integral` computes the radial component of the polar decomposition: $\\int_0^\\infty r\\,e^{-r^2}\\,dr = \\tfrac{1}{2}$.\n\n**Proof approach — Fundamental Theorem of Calculus for improper integrals**:\n\nThe antiderivative is $F(r) = -\\tfrac{1}{2} e^{-r^2}$, satisfying $F'(r) = r\\,e^{-r^2}$. Then:\n$$\\int_0^\\infty r\\,e^{-r^2}\\,dr = \\lim_{R\\to\\infty} F(R) - F(0) = 0 - \\left(-\\tfrac{1}{2}\\right) = \\tfrac{1}{2}$$\n\n**Lean implementation (four lemmas)**:\n1. `hderiv`: Proves $F'(r) = r\\,e^{-r^2}$ using `HasDerivAt` chain: `hasDerivAt_pow` → `.neg` → `.exp` → `.const_mul`, closed by `congr_deriv` + `ring`\n2. `hexp_tend`: Proves $e^{-r^2} \\to 0$ as $r \\to \\infty$ by composing `tendsto_exp_atBot` with $r \\mapsto -r^2 \\to -\\infty$\n3. `htend`: Proves $F(r) = -\\tfrac{1}{2}e^{-r^2} \\to 0$ from `hexp_tend` via `Tendsto.const_mul`\n4. `hint`: Proves integrability of $r\\,e^{-r^2}$ on $(0,\\infty)$ using `integrableOn_Ioi_deriv_of_nonneg'` — the integrand is non-negative and dominated by the FTC antiderivative\n\nFinally, `integral_Ioi_of_hasDerivAt_of_tendsto'` combines these four pieces to give the value $\\tfrac{1}{2}$, and `norm_num [Real.exp_zero]` evaluates $F(0) = -\\tfrac{1}{2} e^0 = -\\tfrac{1}{2}$.\n\n**Key technique**: The use of `HasDerivAt` chaining is idiomatic Lean 4/Mathlib: build the derivative proof compositionally from primitive `HasDerivAt` facts rather than computing by `ring` alone.",
+    "mathContext": "$\\int_0^{\\infty} r\\,e^{-r^2}\\,dr = \\frac{1}{2}$; antiderivative $F(r) = -\\frac{1}{2}e^{-r^2}$, $F(0) = -\\frac{1}{2}$, $\\lim_{r\\to\\infty} F(r) = 0$",
+    "significance": "key",
+    "relatedConcepts": ["fundamental theorem of calculus", "HasDerivAt", "integrability", "improper integral", "Tendsto", "substitution u = r²"],
+    "prerequisites": ["Lebesgue integration on half-line", "HasDerivAt chain rule", "Mathlib Tendsto API", "integrableOn_Ioi_deriv_of_nonneg'"]
+  }
+]
