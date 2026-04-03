@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved gaussian_max_entropy via Gibbs inequality. 2/6 theorems still sorry.",
+    "progressSummary": "NEAR-COMPLETE: 2 top-level sorries replaced with proofs; 2 moment lemmas pending Aristotle",
     "builtItems": [
       "ShannonEntropyOQ01.lean: differentialEntropy (def, line 43)",
       "ShannonEntropyOQ01.lean: klDivergenceCts (def, line 47)",
@@ -38,7 +38,13 @@
       "ShannonEntropyOQ01.lean: gibbs_inequality_continuous (theorem, line 117) — proved",
       "ShannonEntropyOQ01.lean: differentialEntropy_translation_invariant (theorem, line 167) — proved",
       "ShannonEntropyOQ01.lean: gaussianPDF (def, line 210)",
-      "ShannonEntropyOQ01.lean: gaussian_max_entropy (theorem, line 239) — proved"
+      "ShannonEntropyOQ01.lean: gaussian_max_entropy (theorem, line 239) — proved",
+      "differentialEntropy_scale_equivariant proved in ShannonEntropyOQ01.lean via integral_comp_div",
+      "gaussianPDF_eq_gaussianPDFReal helper lemma (bridges to Mathlib gaussianPDFReal)",
+      "gaussianPDF_integral_eq_one proved via ProbabilityTheory.integral_gaussianPDFReal_eq_one",
+      "gaussianPDF_integrable proved via ProbabilityTheory.integrable_gaussianPDFReal",
+      "gaussianPDF_log proved - expands log density into linear form",
+      "gaussianDifferentialEntropy proved modulo gaussian_second_moment + gaussian_quad_integrable"
     ],
     "insights": [
       "gaussian_max_entropy follows from Gibbs inequality + log expansion: log(gaussianPDF) = -½log(2πσ²) - x²/(2σ²), then integrate and use variance bound",
@@ -47,15 +53,20 @@
       "integrability of gaussianPDF 0 σ follows from integrable_exp_neg_mul_sq with b = 1/(2σ²)",
       "∫x, A - ∫x, B in Lean 4 parses as ∫x, (A - ∫x, B) — always use explicit parentheses (∫x, A) - (∫x, B)",
       "differentialEntropy_scale_equivariant requires ∫f=1 hypothesis (without it the identity is false)",
-      "gaussianDifferentialEntropy requires Gaussian second moment: ∫x, x² * gaussianPDF 0 σ x = σ²"
+      "gaussianDifferentialEntropy requires Gaussian second moment: ∫x, x² * gaussianPDF 0 σ x = σ²",
+      "integral_comp_div is the key for scale equivariance: ∫f(x/a)dx = |a|*∫f, simp [smul_eq_mul] needed to convert • to *",
+      "Integrable.comp_div from Mathlib.MeasureTheory.Measure.Haar.NormedSpace handles integrability under scaling",
+      "gaussianPDFReal in ProbabilityTheory namespace uses NNReal variance ⟨σ²,sq_nonneg σ⟩ - bridge via NNReal.coe_mk",
+      "gaussianDifferentialEntropy proof architecture: expand log → split integral → normalization + second moment → algebra"
     ],
     "mathlibGaps": [
       "Gaussian second moment: ∫x, x² * exp(-b*x²) dx = √π / (2*b^(3/2)) — exists in Mathlib but API unclear",
       "differentialEntropy_scale_equivariant: needs measure-theoretic substitution/rescaling lemma"
     ],
     "nextSteps": [
-      "Prove gaussianDifferentialEntropy: need ∫x, x² * gaussianPDF 0 σ x = σ². Look for MeasureTheory.integral_mul_exp_neg or gaussian_variance_eq in Mathlib",
-      "Prove differentialEntropy_scale_equivariant: use integral_comp_mul_right or change_of_variables for the rescaling ∫f(x/a) = |a|*∫f(y)"
+      "Aristotle: prove gaussian_second_moment via variance_fun_id_gaussianReal",
+      "Aristotle: prove gaussian_quad_integrable via polynomial * Gaussian integrability",
+      "After Aristotle: zero sorries remain in main proof, update status to completed"
     ]
   },
   "tags": [
@@ -108,6 +119,17 @@
       "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ01Aristotle.lean",
+      "filename": "ShannonEntropyOQ01Aristotle.lean",
+      "lineCount": 29,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01Aristotle.lean"
     },
     {
       "path": "Proofs/ShannonEntropyOQ02.lean",

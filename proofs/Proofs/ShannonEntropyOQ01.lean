@@ -17,7 +17,7 @@
   - Translation invariant: h(f(·-c)) = h(f)
   - Scale equivariant: h(f(·/a)/|a|) = h(f) + ln|a|
 
-  Gaussian entropy: h(N(μ,σ²)) = ½ ln(2πeσ²) [stated; sorry for Gaussian integral]
+  Gaussian entropy: h(N(μ,σ²)) = ½ ln(2πeσ²) [proved modulo second moment lemma]
 -/
 import Mathlib
 
@@ -195,10 +195,57 @@ h(f(·/a)/|a|) = h(f) + ln|a| — stated with sorry for the substitution step.
 
     Requires ∫f = 1 (f is a probability density). -/
 theorem differentialEntropy_scale_equivariant (f : ℝ → ℝ) {a : ℝ} (ha : a ≠ 0)
-    (hf_sum : ∫ x, f x = 1) :
+    (hf_nn : ∀ x, 0 ≤ f x)
+    (hf_sum : ∫ x, f x = 1)
+    (hf_int : Integrable f)
+    (hflog_int : Integrable (fun x => f x * Real.log (f x))) :
     differentialEntropy (fun x => (1 / |a|) * f (x / a)) =
     differentialEntropy f + Real.log |a| := by
-  sorry
+  unfold differentialEntropy
+  have ha_pos : (0 : ℝ) < |a| := abs_pos.mpr ha
+  have h_ptwise : ∀ x : ℝ,
+      (1/|a|) * f (x/a) * Real.log ((1/|a|) * f (x/a)) =
+      (1/|a|) * f (x/a) * (-Real.log |a|) + (1/|a|) * f (x/a) * Real.log (f (x/a)) := by
+    intro x
+    by_cases hfx : f (x/a) = 0
+    · simp [hfx]
+    · have hfx_pos : 0 < f (x/a) := lt_of_le_of_ne (hf_nn _) (Ne.symm hfx)
+      rw [show (1 : ℝ) / |a| = |a|⁻¹ from one_div _,
+          Real.log_mul (inv_pos.mpr ha_pos).ne' hfx_pos.ne', Real.log_inv]
+      ring
+  simp_rw [h_ptwise]
+  have hf_div_int : Integrable (fun x => f (x/a)) := hf_int.comp_div ha
+  have hflog_div_int : Integrable (fun x => f (x/a) * Real.log (f (x/a))) :=
+    hflog_int.comp_div ha
+  have hint1 : Integrable (fun x => (1/|a|) * f (x/a) * (-Real.log |a|)) := by
+    have : (fun x : ℝ => (1/|a|) * f (x/a) * (-Real.log |a|)) =
+        fun x => (-Real.log |a| / |a|) * f (x/a) := by funext; ring
+    rw [this]; exact hf_div_int.const_mul _
+  have hint2 : Integrable (fun x => (1/|a|) * f (x/a) * Real.log (f (x/a))) := by
+    have : (fun x : ℝ => (1/|a|) * f (x/a) * Real.log (f (x/a))) =
+        fun x => (1/|a|) * (f (x/a) * Real.log (f (x/a))) := by funext; ring
+    rw [this]; exact hflog_div_int.const_mul _
+  rw [integral_add hint1 hint2]
+  have hcov1 : ∫ x : ℝ, (1/|a|) * f (x/a) * (-Real.log |a|) = -Real.log |a| := by
+    have key : ∫ x : ℝ, f (x/a) = |a| * ∫ x : ℝ, f x := by
+      have hh := MeasureTheory.Measure.integral_comp_div (g := f) a
+      simp only [smul_eq_mul] at hh; exact hh
+    have heq : (fun x : ℝ => (1/|a|) * f (x/a) * (-Real.log |a|)) =
+        fun x => (-Real.log |a| / |a|) * f (x/a) := by funext; ring
+    rw [heq, integral_const_mul, key, hf_sum, mul_one]
+    field_simp [ha_pos.ne']
+  have hcov2 : ∫ x : ℝ, (1/|a|) * f (x/a) * Real.log (f (x/a)) =
+      ∫ x : ℝ, f x * Real.log (f x) := by
+    have key : ∫ x : ℝ, f (x/a) * Real.log (f (x/a)) = |a| * ∫ x : ℝ, f x * Real.log (f x) := by
+      have hh := MeasureTheory.Measure.integral_comp_div
+        (g := fun y => f y * Real.log (f y)) a
+      simp only [smul_eq_mul] at hh; exact hh
+    have heq : (fun x : ℝ => (1/|a|) * f (x/a) * Real.log (f (x/a))) =
+        fun x => (1/|a|) * (f (x/a) * Real.log (f (x/a))) := by funext; ring
+    rw [heq, integral_const_mul, key]
+    field_simp [ha_pos.ne']
+  rw [hcov1, hcov2]
+  ring
 
 /-!
 ## Gaussian Differential Entropy
@@ -210,6 +257,41 @@ For X ~ N(μ, σ²), h(X) = ½ ln(2πeσ²).
 noncomputable def gaussianPDF (μ σ : ℝ) (x : ℝ) : ℝ :=
   (Real.sqrt (2 * Real.pi * σ ^ 2))⁻¹ * Real.exp (-(x - μ) ^ 2 / (2 * σ ^ 2))
 
+private lemma gaussianPDF_eq_gaussianPDFReal (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) (x : ℝ) :
+    gaussianPDF μ σ x = ProbabilityTheory.gaussianPDFReal μ ⟨σ ^ 2, sq_nonneg σ⟩ x := by
+  unfold gaussianPDF ProbabilityTheory.gaussianPDFReal
+  simp only [NNReal.coe_mk]
+
+private lemma gaussianPDF_integral_eq_one (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
+    ∫ x : ℝ, gaussianPDF μ σ x = 1 := by
+  simp_rw [gaussianPDF_eq_gaussianPDFReal μ hσ]
+  apply ProbabilityTheory.integral_gaussianPDFReal_eq_one
+  apply NNReal.coe_ne_zero.mp
+  simp only [NNReal.coe_mk]
+  exact (pow_pos hσ 2).ne'
+
+private lemma gaussianPDF_integrable (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
+    Integrable (gaussianPDF μ σ) := by
+  simp_rw [gaussianPDF_eq_gaussianPDFReal μ hσ]
+  exact ProbabilityTheory.integrable_gaussianPDFReal μ _
+
+private lemma gaussianPDF_log (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) (x : ℝ) :
+    Real.log (gaussianPDF μ σ x) =
+    -(1 / 2) * Real.log (2 * Real.pi * σ ^ 2) - (x - μ) ^ 2 / (2 * σ ^ 2) := by
+  unfold gaussianPDF
+  rw [Real.log_mul (inv_pos.mpr (Real.sqrt_pos_of_pos (by positivity))).ne'
+        (Real.exp_ne_zero _),
+      Real.log_inv, Real.log_sqrt (by positivity), Real.log_exp]
+  ring
+
+private lemma gaussian_second_moment (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
+    ∫ x : ℝ, (x - μ) ^ 2 * gaussianPDF μ σ x = σ ^ 2 := by
+  sorry  -- Submitted to Aristotle
+
+private lemma gaussian_quad_integrable (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
+    Integrable (fun x : ℝ => (x - μ) ^ 2 * gaussianPDF μ σ x) := by
+  sorry  -- Submitted to Aristotle
+
 /-- Differential entropy of the Gaussian N(μ, σ²) is ½ ln(2πeσ²).
 
     Proof (requiring Gaussian integral and second moment):
@@ -220,7 +302,31 @@ noncomputable def gaussianPDF (μ σ : ℝ) (x : ℝ) : ℝ :=
 theorem gaussianDifferentialEntropy (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
     differentialEntropy (gaussianPDF μ σ) =
     (1 / 2) * Real.log (2 * Real.pi * Real.exp 1 * σ ^ 2) := by
-  sorry
+  unfold differentialEntropy
+  have h_eq : (fun x : ℝ => gaussianPDF μ σ x * Real.log (gaussianPDF μ σ x)) =
+      fun x => -(1/2) * Real.log (2 * Real.pi * σ^2) * gaussianPDF μ σ x +
+               (-1/(2*σ^2)) * ((x - μ)^2 * gaussianPDF μ σ x) := by
+    funext x; rw [gaussianPDF_log μ hσ]; ring
+  have hint1 : Integrable (fun x : ℝ =>
+      -(1/2) * Real.log (2 * Real.pi * σ^2) * gaussianPDF μ σ x) :=
+    (gaussianPDF_integrable μ hσ).const_mul _
+  have hint2 : Integrable (fun x : ℝ =>
+      (-1/(2*σ^2)) * ((x - μ)^2 * gaussianPDF μ σ x)) :=
+    (gaussian_quad_integrable μ hσ).const_mul _
+  have h1 : ∫ x : ℝ, -(1/2) * Real.log (2 * Real.pi * σ^2) * gaussianPDF μ σ x =
+      -(1/2) * Real.log (2 * Real.pi * σ^2) := by
+    rw [integral_const_mul, gaussianPDF_integral_eq_one μ hσ, mul_one]
+  have h2 : ∫ x : ℝ, (-1/(2*σ^2)) * ((x - μ)^2 * gaussianPDF μ σ x) =
+      -1/(2*σ^2) * σ^2 := by
+    rw [integral_const_mul, gaussian_second_moment μ hσ]
+  rw [h_eq, integral_add hint1 hint2, h1, h2]
+  have hlog : (1/2 : ℝ) * Real.log (2 * Real.pi * Real.exp 1 * σ^2) =
+      (1/2) * Real.log (2 * Real.pi * σ^2) + 1/2 := by
+    rw [show 2 * Real.pi * Real.exp 1 * σ^2 = 2 * Real.pi * σ^2 * Real.exp 1 from by ring,
+        Real.log_mul (by positivity) (Real.exp_pos 1).ne', Real.log_exp]
+    ring
+  rw [hlog]
+  linarith [show (-1 : ℝ) / (2 * σ^2) * σ^2 = -1/2 from by field_simp [hσ.ne']]
 
 /-!
 ## Maximum Entropy Property (Gaussian Optimality)
