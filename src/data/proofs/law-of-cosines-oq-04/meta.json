@@ -2,7 +2,7 @@
   "id": "law-of-cosines-oq-04",
   "title": "Stewart's Theorem from Law of Cosines",
   "slug": "law-of-cosines-oq-04",
-  "description": "Derives Stewart's theorem b\u00b2m + c\u00b2n = a(d\u00b2 + mn) from the law of cosines applied to sub-triangles with supplementary angles. Includes median length formula as special case.",
+  "description": "Derives Stewart's theorem b²m + c²n = a(d² + mn) from the law of cosines applied to sub-triangles with supplementary angles. Includes median length formula as special case.",
   "meta": {
     "author": "Matthew Stewart (1746)",
     "date": "2026",
@@ -24,49 +24,92 @@
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Stewart's theorem derived from supplementary angle law of cosines",
-      "Median length formula d\u00b2 = (2b\u00b2+2c\u00b2-a\u00b2)/4 as special case",
+      "Median length formula d² = (2b²+2c²-a²)/4 as special case",
       "Pure algebraic proof via ring and nlinarith"
     ]
   },
   "overview": {
-    "historicalContext": "Stewart's theorem (Matthew Stewart, 1746) relates the length of a cevian to the sides of a triangle. It generalizes the law of cosines.",
-    "problemStatement": "Derive Stewart's theorem from the law of cosines / inner product form.",
+    "historicalContext": "Stewart's theorem was proved by Matthew Stewart in 1746 in his paper 'Some General Theorems of Considerable Use in the Higher Parts of Mathematics', published posthumously. It generalizes the law of cosines by relating a cevian length to all three sides of a triangle. The result was likely known earlier — it can be found in the work of Archimedes and is related to Apollonius's theorem (the case where the cevian is a median). Ceva's theorem (1678) had already unified the study of cevians in triangles. The median length formula d² = (2b²+2c²-a²)/4 is a special case corresponding to the midpoint of the opposite side. In modern terms, Stewart's theorem is a direct consequence of the law of cosines applied to the two sub-triangles, using the key observation that the angles ∠BDA and ∠CDA are supplementary (cos(∠CDA) = -cos(∠BDA)), so the cosine terms cancel when the two equations are combined.",
+    "problemStatement": "In triangle $ABC$ with a cevian $AD$ of length $d$ from $A$ to a point $D$ on $BC$, where $BD = m$ and $DC = n$ (so $m + n = a$), prove **Stewart's theorem**: $b^2 m + c^2 n = a(d^2 + mn)$. Here $b = AC$, $c = AB$, $a = BC$. Special case (median): when $D$ is the midpoint, $m = n = a/2$, giving $d^2 = (2b^2 + 2c^2 - a^2)/4$.",
     "text": "Applies law of cosines to both sub-triangles using supplementary angles, then eliminates cosines by adding.",
-    "proofStrategy": "Applies law of cosines to both sub-triangles using supplementary angles, then eliminates cosines by adding.",
-    "keyInsights": []
+    "proofStrategy": "1. Algebraic identity: Stewart's theorem is equivalent to an algebraic identity after substituting the law of cosines. 2. Sub-triangle setup: define lawOfCosines_ABD and lawOfCosines_ACD for the two sub-triangles, using supplementary angle variable t = cos(∠BDA) so that cos(∠CDA) = -t. 3. stewarts_from_cosines: multiply the ABD equation by n and ACD by m, add to eliminate the t-terms, and simplify using ring. 4. Median formula: specialize m = n = a/2 in Stewart's theorem, then use field_simp and nlinarith. 5. Numerical verification: right triangle 3-4-5 with median to hypotenuse gives d = 5/2 (median to hypotenuse = half hypotenuse), verified by norm_num.",
+    "keyInsights": [
+      "The supplementary angle trick is the heart of the proof: ∠BDA + ∠CDA = π, so cos(∠CDA) = -cos(∠BDA). Setting t = cos(∠BDA), the two law of cosines equations become c² = d²+m²-2dmt and b² = d²+n²+2dnt. Multiplying by n and m respectively and adding, the ±2dmnt terms cancel exactly.",
+      "The algebraic form stewarts_algebraic verifies the identity ring-theoretically: b²m + c²n - a(d²+mn) = m(b²-d²-n²) + n(c²-d²-m²). This is trivially true after substituting m+n=a, proved by ring. The geometric content lies in identifying b²-d²-n² with the law of cosines for triangle ACD.",
+      "The median length formula d² = (2b²+2c²-a²)/4 follows by setting m=n=a/2 in Stewart's theorem: b²(a/2)+c²(a/2) = a(d²+(a/2)²) → (b²+c²)/2 = d²+a²/4 → d² = (b²+c²)/2-a²/4. Lean requires field_simp (to clear 1/4 and 1/2) and nlinarith (for the nonlinear arithmetic).",
+      "For a right triangle with hypotenuse a=5, legs b=4, c=3: the median to the hypotenuse satisfies d² = (32+18-25)/4 = 25/4, so d = 5/2 = a/2. This is the general theorem that the median to the hypotenuse of a right triangle equals half the hypotenuse (proved by recognizing the right triangle inscribed in a semicircle).",
+      "The Lean proof is primarily algebraic: ring handles the core identity (stewarts_from_cosines) in one tactic, after substituting the hypotheses. The median formula requires nlinarith because the equation is degree 2 in a after field_simp clears denominators. The law of cosines hypotheses are abstract real-number equations, not geometric constructions."
+    ],
+    "prerequisites": [
+      "Law of cosines: a² = b² + c² - 2bc·cos(A)",
+      "Supplementary angles: cos(π - θ) = -cos(θ)",
+      "Cevian in a triangle (line from vertex to opposite side)",
+      "Lean 4 tactics: ring, nlinarith, field_simp"
+    ]
   },
   "sections": [
     {
       "id": "algebraic",
-      "title": "Algebraic Identity",
-      "startLine": 30,
-      "endLine": 42,
-      "summary": "Algebraic Identity"
+      "title": "Algebraic Identity Form",
+      "startLine": 43,
+      "endLine": 47,
+      "summary": "stewarts_algebraic: the identity as a pure ring-theoretic fact, valid for any real a,b,c,d,m,n with m+n=a.",
+      "mathContext": "$b^2 m + c^2 n - a(d^2 + mn) = m(b^2 - d^2 - n^2) + n(c^2 - d^2 - m^2)$. This is verified by substituting $a = m + n$ and expanding both sides. The right side is where the law of cosines will be substituted: $b^2 - d^2 - n^2 = -2dn \\cdot t$ and $c^2 - d^2 - m^2 = 2dm \\cdot t$ (with sign convention $t = \\cos(\\angle BDA)$). The geometric magic happens when these sum to 0."
     },
     {
       "id": "derivation",
-      "title": "Stewart's from Cosines",
-      "startLine": 44,
-      "endLine": 100,
-      "summary": "Stewart's from Cosines"
+      "title": "Stewart's Theorem from Law of Cosines",
+      "startLine": 50,
+      "endLine": 97,
+      "summary": "Defines the law of cosines for both sub-triangles with supplementary angle variable t, then proves the main theorem in two steps.",
+      "mathContext": "Setup: $c^2 = d^2 + m^2 - 2dm \\cdot t$ (triangle ABD) and $b^2 = d^2 + n^2 + 2dn \\cdot t$ (triangle ACD, note the $+$ sign from supplementary angle). Multiply first by $n$, second by $m$, add: $c^2 n + b^2 m = n(d^2+m^2) - 2dmnt + m(d^2+n^2) + 2dmnt = (m+n)d^2 + m^2 n + mn^2 = a(d^2 + mn(m+n)/a)$... actually $= (m+n)(d^2+mn) = a(d^2+mn)$. The Lean proof: \\texttt{rw [h\\_ABD, h\\_ACD]; ring}."
     },
     {
       "id": "median",
       "title": "Median Length Formula",
-      "startLine": 102,
-      "endLine": 121,
-      "summary": "Median Length Formula"
+      "startLine": 109,
+      "endLine": 115,
+      "summary": "Specializes Stewart's theorem to m=n=a/2, deriving d² = (2b²+2c²-a²)/4.",
+      "mathContext": "Substituting $m = n = a/2$: $b^2(a/2) + c^2(a/2) = a(d^2 + (a/2)^2)$. Dividing by $a$ (requires $a \\neq 0$): $(b^2+c^2)/2 = d^2 + a^2/4$, so $d^2 = (b^2+c^2)/2 - a^2/4 = (2b^2+2c^2-a^2)/4$. Lean: \\texttt{field\\_simp at hstewart ⊢; nlinarith} after applying \\texttt{stewarts\\_theorem} with $m = n = a/2$ and \\texttt{by ring} for $a/2 + a/2 = a$."
+    },
+    {
+      "id": "verification",
+      "title": "Numerical Verification: Right Triangle 3-4-5",
+      "startLine": 135,
+      "endLine": 137,
+      "summary": "Verifies the median to the hypotenuse of a 3-4-5 right triangle equals 5/2.",
+      "mathContext": "For the 3-4-5 right triangle ($a=5$, $b=4$, $c=3$): median formula gives $d^2 = (2 \\cdot 16 + 2 \\cdot 9 - 25)/4 = (32+18-25)/4 = 25/4$. So $d = 5/2 = a/2$. This confirms the general theorem: in a right triangle, the median to the hypotenuse equals half the hypotenuse (since the right triangle inscribes in a semicircle of diameter $a$, and the median = radius = $a/2$). Proved by \\texttt{norm\\_num}."
     }
   ],
   "conclusion": {
-    "summary": "Stewart's theorem fully derived from law of cosines. 0 axioms, 0 sorries.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "Stewart's theorem b²m + c²n = a(d²+mn) is derived from the law of cosines by applying it to both sub-triangles with the supplementary angle trick. The Lean proof is primarily algebraic: ring handles the main computation, field_simp + nlinarith handle the median formula.",
+    "openQuestions": [
+      "Can Stewart's theorem be derived more directly using inner products in a Euclidean space formalization in Lean, avoiding the explicit law of cosines hypothesis setup?",
+      "The angle bisector length formula t² = bc[(b+c)² - a²]/(b+c)² follows from Stewart's theorem with m=ca/(b+c), n=ba/(b+c). Can this be formalized as a corollary in Lean?",
+      "Ceva's theorem states that three cevians AD, BE, CF are concurrent iff (m/n)·(e/f)·(g/h) = 1. Can this be formalized and connected to Stewart's theorem in Lean?",
+      "Ptolemy's theorem and the generalized law of cosines for spherical triangles extend these ideas. Can the spherical Stewart's theorem be formalized using Mathlib's differential geometry infrastructure?"
+    ],
+    "implications": "Stewart's theorem demonstrates how the law of cosines unifies multiple triangle geometry results. The supplementary angle trick — which eliminates cosine terms by combining equations — is a general method applicable whenever two supplementary angles share a vertex. The algebraic framing in Lean makes the proof independent of any geometric diagram."
   },
   "crossReferences": [
     {
       "targetId": "law-of-cosines",
-      "relationship": "parent-problem"
+      "relationship": "parent-problem",
+      "description": "Uses the law of cosines framework as the foundational tool"
+    }
+  ],
+  "references": [
+    {
+      "author": "Stewart, M.",
+      "title": "Some General Theorems of Considerable Use in the Higher Parts of Mathematics",
+      "year": 1746,
+      "note": "Original publication of the theorem; relates cevian lengths to triangle sides"
+    },
+    {
+      "author": "Ceva, G.",
+      "title": "De Lineis Rectis se Invicem Secantibus",
+      "year": 1678,
+      "note": "Concurrence theorem for cevians; complementary to Stewart's theorem"
     }
   ],
   "leanFile": {
