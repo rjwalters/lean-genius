@@ -270,6 +270,232 @@ theorem f_4_lb : 4 < f 4 := by
 theorem f_4_ub : f 4 ≤ 5 := by
   rw [f_four_eq]
 
+/- ## Lower Bound for f(4) -/
+
+/-- Non-collinearity via the existential characterization: if three points
+    p₁, p₂, p₃ satisfy (p₂ - p₁) and (p₃ - p₁) not parallel
+    (i.e., component cross product ≠ 0), they are not collinear.
+
+    The proof uses `collinear_iff_exists_forall_eq_smul_vadd`: if all three
+    lie on a line p₀ + ℝ·v, then (p₂ - p₁) and (p₃ - p₁) are both multiples
+    of v, hence parallel — contradicting the cross product being nonzero. -/
+private lemma not_collinear_of_cross
+    {a b c : EuclideanSpace ℝ (Fin 2)}
+    (h : (b 0 - a 0) * (c 1 - a 1) - (b 1 - a 1) * (c 0 - a 0) ≠ 0) :
+    ¬Collinear ℝ ({a, b, c} : Set _) := by
+  rw [collinear_iff_exists_forall_eq_smul_vadd]
+  push_neg
+  intro p₀ v
+  -- If all three lie on p₀ + ℝ·v, then (b - a) and (c - a) are parallel
+  by_contra hall
+  push_neg at hall
+  obtain ⟨rA, hA⟩ := hall a (Set.mem_insert a _)
+  obtain ⟨rB, hB⟩ := hall b (Set.mem_insert_of_mem a (Set.mem_insert b _))
+  obtain ⟨rC, hC⟩ := hall c
+    (Set.mem_insert_of_mem a (Set.mem_insert_of_mem b (Set.mem_singleton_iff.mpr rfl)))
+  -- b - a = (rB - rA) • v and c - a = (rC - rA) • v
+  have hBA : b - a = (rB - rA) • v := by
+    have hb : b = rB • v + p₀ := hB
+    have ha : a = rA • v + p₀ := hA
+    rw [hb, ha, add_sub_add_right_eq_sub, ← sub_smul]
+  have hCA : c - a = (rC - rA) • v := by
+    have hc : c = rC • v + p₀ := hC
+    have ha : a = rA • v + p₀ := hA
+    rw [hc, ha, add_sub_add_right_eq_sub, ← sub_smul]
+  -- Cross product of (b - a) and (c - a) is 0 when both are multiples of v
+  have h0 := congr_fun hBA (0 : Fin 2)
+  have h1 := congr_fun hBA (1 : Fin 2)
+  have h2 := congr_fun hCA (0 : Fin 2)
+  have h3 := congr_fun hCA (1 : Fin 2)
+  simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at h0 h1 h2 h3
+  -- h0 : b 0 - a 0 = (rB - rA) * v 0
+  -- h1 : b 1 - a 1 = (rB - rA) * v 1
+  -- h2 : c 0 - a 0 = (rC - rA) * v 0
+  -- h3 : c 1 - a 1 = (rC - rA) * v 1
+  -- Cross = (rB-rA)*v0*(rC-rA)*v1 - (rB-rA)*v1*(rC-rA)*v0 = 0
+  apply h
+  have heq : (b 0 - a 0) * (c 1 - a 1) = (b 1 - a 1) * (c 0 - a 0) := by
+    rw [h0, h1, h2, h3]; ring
+  linarith
+
+/-- Four points {(0,0), (6,0), (0,6), (2,2)} are in general position
+    and contain no convex quadrilateral. This provides the counterexample
+    showing f(4) > 4 (fewer than 5 points don't always contain a convex quad).
+
+    The point (2,2) = (1/3)(0,0) + (1/3)(6,0) + (1/3)(0,6) lies inside
+    the triangle formed by the other three, so the only possible 4-element
+    subset fails the extreme-point condition for a convex quadrilateral. -/
+private lemma four_points_gp_no_quad :
+    ∃ (pts : Finset (EuclideanSpace ℝ (Fin 2))),
+      pts.card = 4 ∧
+      InGeneralPosition (↑pts) ∧
+      ¬HasConvexNGon 4 pts := by
+  -- Define concrete points
+  let A : EuclideanSpace ℝ (Fin 2) := 0
+  let B : EuclideanSpace ℝ (Fin 2) := ![6, 0]
+  let C : EuclideanSpace ℝ (Fin 2) := ![0, 6]
+  let D : EuclideanSpace ℝ (Fin 2) := ![2, 2]
+  -- Pairwise distinctness
+  have hAB : A ≠ B := by
+    intro h; have := congr_fun h (0 : Fin 2); simp [A, B, Matrix.cons_val_zero] at this
+  have hAC : A ≠ C := by
+    intro h; have := congr_fun h (1 : Fin 2)
+    simp [A, C, Matrix.cons_val_one, Matrix.vecHead] at this
+  have hAD : A ≠ D := by
+    intro h; have := congr_fun h (0 : Fin 2); simp [A, D, Matrix.cons_val_zero] at this
+  have hBC : B ≠ C := by
+    intro h; have := congr_fun h (0 : Fin 2)
+    simp [B, C, Matrix.cons_val_zero] at this
+  have hBD : B ≠ D := by
+    intro h; have := congr_fun h (0 : Fin 2)
+    simp [B, D, Matrix.cons_val_zero] at this
+  have hCD : C ≠ D := by
+    intro h; have := congr_fun h (1 : Fin 2)
+    simp [C, D, Matrix.cons_val_one, Matrix.vecHead] at this
+  -- Cardinality = 4
+  have hDC : D ∉ ({C} : Finset _) := by simp [Finset.mem_singleton, hCD.symm]
+  have hBC' : B ∉ ({D, C} : Finset _) := by
+    simp [Finset.mem_insert, Finset.mem_singleton, hBD, hBC]
+  have hABDC : A ∉ ({B, D, C} : Finset _) := by
+    simp [Finset.mem_insert, Finset.mem_singleton, hAB, hAD, hAC]
+  have hcard : ({A, B, D, C} : Finset (EuclideanSpace ℝ (Fin 2))).card = 4 := by
+    rw [Finset.card_insert_of_not_mem hABDC, Finset.card_insert_of_not_mem hBC',
+        Finset.card_insert_of_not_mem hDC, Finset.card_singleton]
+  -- General position: case analysis on which 3 of 4 points are chosen
+  -- After substitution, each surviving case has concrete points whose
+  -- cross product is nonzero, so not_collinear_of_cross applies directly.
+  have hgp : InGeneralPosition (↑({A, B, D, C} : Finset _)) := by
+    intro p q r hp hq hr hpq hqr hpr
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+               Set.mem_singleton_iff] at hp hq hr
+    rcases hp with rfl | rfl | rfl | rfl <;>
+      rcases hq with rfl | rfl | rfl | rfl <;>
+      rcases hr with rfl | rfl | rfl | rfl <;>
+    first
+    | exact absurd rfl hpq | exact absurd rfl hqr | exact absurd rfl hpr
+    | exact absurd rfl hpq.symm | exact absurd rfl hqr.symm | exact absurd rfl hpr.symm
+    | (exact not_collinear_of_cross (by
+        simp only [A, B, C, D, Pi.zero_apply,
+          Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.vecHead]
+        norm_num))
+  -- No convex 4-gon: D ∈ convexHull ℝ {A, B, C}
+  have hno : ¬HasConvexNGon 4 ({A, B, D, C} : Finset _) := by
+    intro ⟨T, hT, hTcard, hTextreme⟩
+    -- T ⊆ {A,B,D,C} with |T| = 4 and |{A,B,D,C}| = 4, so T = {A,B,D,C}
+    have hTeq : T = {A, B, D, C} :=
+      Finset.eq_of_subset_of_card_le hT (hTcard ▸ hcard ▸ le_refl _)
+    -- D must be extreme: D ∉ convexHull ℝ (T.erase D)
+    have hDT : D ∈ T := hTeq ▸ Finset.mem_insert_of_mem
+      (Finset.mem_insert_of_mem (Finset.mem_insert_self D _))
+    have hDext := hTextreme D hDT
+    -- T.erase D = {A, B, C}
+    have hTerD : T.erase D = {A, B, C} := by
+      rw [hTeq]
+      ext x; simp [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · rintro ⟨hne, rfl | rfl | rfl | rfl⟩ <;> simp_all
+      · rintro (rfl | rfl | rfl) <;> simp_all [hAD, hBD, hCD]
+    rw [hTerD] at hDext
+    -- But D = (1/3)A + (1/3)B + (1/3)C ∈ convexHull ℝ {A, B, C}
+    apply hDext
+    -- D ∈ convexHull ℝ ↑{A, B, C} via 2-step convex combination
+    have hconv := convex_convexHull ℝ (↑({A, B, C} : Finset _) : Set _)
+    have hAh : A ∈ convexHull ℝ (↑({A, B, C} : Finset _) : Set _) :=
+      subset_convexHull ℝ _ (by simp [Finset.mem_coe])
+    have hBh : B ∈ convexHull ℝ (↑({A, B, C} : Finset _) : Set _) :=
+      subset_convexHull ℝ _ (by simp [Finset.mem_coe])
+    have hCh : C ∈ convexHull ℝ (↑({A, B, C} : Finset _) : Set _) :=
+      subset_convexHull ℝ _ (by simp [Finset.mem_coe])
+    -- M = (1/2)B + (1/2)C ∈ hull
+    have hM := hconv hBh hCh (by norm_num : (0:ℝ) ≤ 1/2)
+      (by norm_num : (0:ℝ) ≤ 1/2) (by ring : (1:ℝ)/2 + 1/2 = 1)
+    -- D' = (1/3)A + (2/3)M ∈ hull
+    have hD' := hconv hAh hM (by norm_num : (0:ℝ) ≤ 1/3)
+      (by norm_num : (0:ℝ) ≤ 2/3) (by ring : (1:ℝ)/3 + 2/3 = 1)
+    -- D = (1/3)•A + (2/3)•((1/2)•B + (1/2)•C)
+    convert hD' using 1
+    ext j; fin_cases j <;>
+      simp [A, B, C, D, Pi.add_apply, Pi.smul_apply, Pi.zero_apply,
+            Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.vecHead,
+            smul_eq_mul] <;>
+      ring
+  exact ⟨{A, B, D, C}, hcard, hgp, hno⟩
+
+/-- **Lower bound**: f(4) ≥ 5. Any set of fewer than 5 points in general
+    position does not necessarily contain a convex quadrilateral.
+
+    For m < 4: no 4-element subset can exist (cardinality).
+    For m = 4: a triangle + interior point is a counterexample (proved above). -/
+lemma cardSet_four_lower_bound : ∀ m ∈ CardSet 4, 5 ≤ m := by
+  intro m hm
+  by_contra hlt
+  push_neg at hlt
+  -- hlt : m < 5
+  interval_cases m
+  · -- m = 0: use ∅
+    exact absurd
+      (hm ∅ rfl (by intro p _ _ hp; simp [Finset.mem_coe] at hp))
+      (not_hasConvexNGon_of_card_lt (by norm_num))
+  · -- m = 1: use {0}
+    exact absurd
+      (hm {(0 : EuclideanSpace ℝ (Fin 2))} (by simp) (by
+        intro p q _ hp hq _ hpq
+        rw [Finset.mem_coe, Finset.mem_singleton] at hp hq
+        exact absurd (hp.trans hq.symm) hpq))
+      (not_hasConvexNGon_of_card_lt (by simp))
+  · -- m = 2: use {0, e₁}
+    have hne : (0 : EuclideanSpace ℝ (Fin 2)) ≠ (![1, 0] : EuclideanSpace ℝ (Fin 2)) := by
+      intro h; have := congr_fun h (0 : Fin 2); simp [Matrix.cons_val_zero] at this
+    exact absurd
+      (hm {(0 : EuclideanSpace ℝ (Fin 2)), ![1, 0]}
+        (by rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_singleton, hne]),
+                Finset.card_singleton]) (by
+        intro p q r hp hq hr hpq hqr hpr
+        simp only [Finset.coe_insert, Finset.coe_singleton,
+                   Set.mem_insert_iff, Set.mem_singleton_iff] at hp hq hr
+        rcases hp with rfl | rfl <;> rcases hq with rfl | rfl <;> rcases hr with rfl | rfl <;>
+          first | exact absurd rfl hpq | exact absurd rfl hqr | exact absurd rfl hpr))
+      (not_hasConvexNGon_of_card_lt (by
+        rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_singleton, hne]),
+            Finset.card_singleton]; norm_num))
+  · -- m = 3: use {0, e₁, e₂} — three non-collinear points
+    have hne01 : (0 : EuclideanSpace ℝ (Fin 2)) ≠ (![1, 0] : EuclideanSpace ℝ (Fin 2)) := by
+      intro h; have := congr_fun h (0 : Fin 2); simp [Matrix.cons_val_zero] at this
+    have hne02 : (0 : EuclideanSpace ℝ (Fin 2)) ≠ (![0, 1] : EuclideanSpace ℝ (Fin 2)) := by
+      intro h; have := congr_fun h (1 : Fin 2)
+      simp [Matrix.cons_val_one, Matrix.vecHead] at this
+    have hne12 : (![1, 0] : EuclideanSpace ℝ (Fin 2)) ≠ (![0, 1] : EuclideanSpace ℝ (Fin 2)) := by
+      intro h; have := congr_fun h (0 : Fin 2); simp [Matrix.cons_val_zero] at this
+    have h12not : (![0, 1] : EuclideanSpace ℝ (Fin 2)) ∉ ({![1, 0]} : Finset _) := by
+      simp [Finset.mem_singleton, hne12.symm]
+    have h0not : (0 : EuclideanSpace ℝ (Fin 2)) ∉
+        ({![1, 0], ![0, 1]} : Finset _) := by
+      simp [Finset.mem_insert, Finset.mem_singleton, hne01, hne02]
+    exact absurd
+      (hm {(0 : EuclideanSpace ℝ (Fin 2)), ![1, 0], ![0, 1]}
+        (by rw [Finset.card_insert_of_not_mem h0not,
+                Finset.card_insert_of_not_mem h12not, Finset.card_singleton])
+        (by
+          intro p q r hp hq hr hpq hqr hpr
+          simp only [Finset.coe_insert, Finset.coe_singleton,
+                     Set.mem_insert_iff, Set.mem_singleton_iff] at hp hq hr
+          rcases hp with rfl | rfl | rfl <;>
+          rcases hq with rfl | rfl | rfl <;>
+          rcases hr with rfl | rfl | rfl <;>
+          first
+          | exact absurd rfl hpq | exact absurd rfl hqr | exact absurd rfl hpr
+          | exact absurd rfl hpq.symm | exact absurd rfl hqr.symm
+          | exact absurd rfl hpr.symm
+          | (exact not_collinear_of_cross (by
+              simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.vecHead]
+              norm_num))))
+      (not_hasConvexNGon_of_card_lt (by
+        rw [Finset.card_insert_of_not_mem h0not,
+            Finset.card_insert_of_not_mem h12not, Finset.card_singleton]; norm_num))
+  · -- m = 4: triangle + interior point counterexample
+    obtain ⟨pts, hcard, hgp, hno⟩ := four_points_gp_no_quad
+    exact absurd (hm pts hcard hgp) hno
+
 /- ## Historical Notes
 
 The problem gets its name "Happy Ending" because two mathematicians
