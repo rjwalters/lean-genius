@@ -192,6 +192,8 @@ import Proofs.DerangementsConvergence
 import Proofs.DerangementsOQ02
 import Proofs.DerangementsOQ02OQ01
 import Proofs.DerangementsOQ03
+import Proofs.DerangementsOQ03OQ01
+import Proofs.DerangementsOQ03OQ02
 import Proofs.DesarguesTheorem
 import Proofs.DesarguesTheoremOQ01
 import Proofs.DesarguesTheoremOQ02
