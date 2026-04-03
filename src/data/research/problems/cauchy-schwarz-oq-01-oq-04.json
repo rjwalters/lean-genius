@@ -1,0 +1,111 @@
+{
+  "slug": "cauchy-schwarz-oq-01-oq-04",
+  "title": "Formalize Bessel inequality in Hilbert spaces",
+  "phase": "DONE",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∀ {𝕜 E ι : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] (v : ι → E) (hv : Orthonormal 𝕜 v) (x : E), ∑' i, ‖⟪v i, x⟫_𝕜‖ ^ 2 ≤ ‖x‖ ^ 2",
+    "plain": "For any orthonormal family {vᵢ}ᵢ in a Hilbert space E and any vector x, the sum ∑ᵢ |⟨vᵢ,x⟩|² ≤ ‖x‖². When {vᵢ} is a complete orthonormal system (Hilbert basis), equality holds: Parseval's identity.",
+    "whyMatters": [
+      "Fundamental result in functional analysis connecting orthonormal systems to ℓ²",
+      "Generalizes Cauchy-Schwarz from single vectors to orthonormal families",
+      "Foundation for Fourier analysis and spectral theory in Hilbert spaces"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "bessel_finite: ∑ᵢ∈s |⟨vᵢ,x⟩|² ≤ ‖x‖² for any finite set s (via Orthonormal.sum_inner_products_le)",
+      "bessel_monotone: Bessel sum grows with larger orthonormal sets",
+      "bessel_insert: adding one orthonormal vector increases the Bessel sum",
+      "bessel_inequality: ∑' i, |⟨vᵢ,x⟩|² ≤ ‖x‖² (infinite case, via tsum_inner_products_le)",
+      "bessel_summable: Fourier coefficients are square-summable (via inner_products_summable)",
+      "parseval_identity: ∑' i, |⟨bᵢ,x⟩|² = ‖x‖² for HilbertBasis (via lp.norm_rpow_eq_tsum + LinearIsometryEquiv.norm_map)",
+      "bessel_extends_cauchy_schwarz: singleton Bessel recovers Cauchy-Schwarz",
+      "inner_le_norm: |⟨vᵢ,x⟩| ≤ ‖x‖ from bessel_extends_cauchy_schwarz via nlinarith",
+      "bessel_summary: combined statement of finite, infinite, and summability"
+    ],
+    "open": [],
+    "goal": "COMPLETED: All goals proved, 0 sorries, 0 axioms."
+  },
+  "currentState": {
+    "phase": "DONE",
+    "since": "2026-04-02T06:00:00Z",
+    "iteration": 2,
+    "focus": "Completed: Lean file CauchySchwarzOQ01OQ04.lean fully proved. Gallery entry created.",
+    "blockers": [],
+    "nextAction": "PR merged and deployed.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full formalization of Bessel's inequality and Parseval's identity in 199 lines, 11 theorems, 0 axioms, 0 sorries. Key: Mathlib already contains Bessel's inequality as Orthonormal.sum_inner_products_le and tsum_inner_products_le. Parseval uses HilbertBasis.repr_apply_apply + lp.norm_rpow_eq_tsum + LinearIsometryEquiv.norm_map.",
+    "builtItems": [
+      "CauchySchwarzOQ01OQ04.lean: 199 lines, 11 theorems, 0 axioms, 0 sorries",
+      "bessel_finite: directly from Orthonormal.sum_inner_products_le",
+      "bessel_inequality: directly from Orthonormal.tsum_inner_products_le",
+      "bessel_summable: directly from Orthonormal.inner_products_summable",
+      "parseval_identity: HilbertBasis.repr_apply_apply x i = ⟪b i, x⟫ + lp.norm_rpow_eq_tsum + LinearIsometryEquiv.norm_map",
+      "inner_le_norm: bessel_extends_cauchy_schwarz (singleton) + nlinarith with sq_nonneg"
+    ],
+    "insights": [
+      "Bessel's inequality is already in Mathlib as Orthonormal.sum_inner_products_le (finite) and tsum_inner_products_le (infinite)",
+      "Parseval: HilbertBasis.repr is a LinearIsometryEquiv E ≃ₗᵢ[𝕜] ℓ²(ι,𝕜) with repr_apply_apply x i = ⟪b i, x⟫_𝕜",
+      "lp.norm_rpow_eq_tsum converts ‖f‖^p.toReal to ∑' i, ‖f i‖^p.toReal for f ∈ ℓ^p; apply_mod_cast handles the cast",
+      "LinearIsometryEquiv.norm_map gives ‖b.repr x‖ = ‖x‖ — the isometry property",
+      "Inner product norm bound: |⟨vᵢ,x⟩| ≤ ‖x‖ follows from singleton Bessel via nlinarith [sq_nonneg (‖x‖ - ‖⟪v i, x⟫‖)]",
+      "The projection identity ‖x - projₛ x‖² = ‖x‖² - ∑ᵢ∈s |⟨vᵢ,x⟩|² is the algebraic core of Bessel",
+      "Monotonicity (bessel_monotone) is Finset.sum_le_sum_of_subset — standard Finset API"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "functional-analysis",
+    "cauchy-schwarz",
+    "hilbert-space",
+    "completed"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-oq-01-oq-01",
+    "cauchy-schwarz-oq-01-oq-02",
+    "cauchy-schwarz-oq-01-oq-03",
+    "cauchy-schwarz-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Orthonormal.sum_inner_products_le (Mathlib.Analysis.InnerProductSpace.Basic)",
+      "Orthonormal.tsum_inner_products_le (Mathlib.Analysis.InnerProductSpace.Basic)",
+      "Orthonormal.inner_products_summable (Mathlib.Analysis.InnerProductSpace.Basic)",
+      "HilbertBasis.repr_apply_apply (Mathlib.Analysis.InnerProductSpace.l2Space)",
+      "lp.norm_rpow_eq_tsum (Mathlib.Analysis.Normed.Lp.lpSpace)",
+      "LinearIsometryEquiv.norm_map (Mathlib.Analysis.Normed.Group.Basic)"
+    ]
+  },
+  "started": "2026-04-03T02:57:02.770Z",
+  "lastUpdate": "2026-04-02T06:00:00Z",
+  "significance": 7,
+  "tractability": 9,
+  "leanFiles": [
+    {
+      "path": "Proofs/CauchySchwarzOQ01OQ04.lean",
+      "filename": "CauchySchwarzOQ01OQ04.lean",
+      "lineCount": 199,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01OQ04.lean"
+    }
+  ]
+}
