@@ -1,0 +1,181 @@
+{
+  "slug": "amgm-inequality-oq-02-oq-03-oq-03",
+  "title": "Formalize full Maclaurin chain M₁ ≥ M₂ ≥ ... ≥ Mₙ as a single theorem",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall j k : \\mathbb{N}, 0 < j \\to j \\le k \\to k \\le n \\to M_j(x) \\ge M_k(x)",
+    "plain": "For non-negative reals x₁,...,xₙ, the Maclaurin means satisfy M₁ ≥ M₂ ≥ ... ≥ Mₙ as a complete chain theorem proved by induction on the step gap.",
+    "whyMatters": [
+      "Unifies all n-1 adjacent Maclaurin inequalities into a single transitive chain",
+      "Enables direct comparison of any two Maclaurin means without iterating through steps",
+      "The M₁ ≥ Mₙ corollary generalizes AM-GM"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "maclaurin_full_chain: For 0 < j ≤ k ≤ n, M_j(x) ≥ M_k(x)",
+      "maclaurin_m1_ge_mn: M₁(x) ≥ Mₙ(x) for n ≥ 1"
+    ],
+    "open": [],
+    "goal": "Complete chain theorem proved from maclaurin_step (axiom in parent)"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-03T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proof complete.",
+    "blockers": [],
+    "nextAction": "None — proved.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "tags": [
+    "seeker-selected",
+    "inequalities",
+    "symmetric-polynomials",
+    "maclaurin"
+  ],
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-03",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-03",
+    "amgm-inequality-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Hardy-Littlewood-Pólya 'Inequalities' (1934) §2.22",
+      "Maclaurin, C. (1729)"
+    ],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T00:00:00.000Z",
+  "lastUpdate": "2026-04-03T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full Maclaurin chain proved by induction on gap d. 1 axiom: maclaurin_step from AmgmInequalityOQ02.lean.",
+    "insights": [
+      "Key insight: induction on the gap d in 'j + d ≤ n' cleanly proves M_j ≥ M_{j+d} using maclaurin_step d times",
+      "Nat.exists_eq_add_of_le converts j ≤ k into j + d = k, enabling the inductive structure",
+      "AmgmInequalityOQ02OQ03.lean has a broken import (imports both AmgmInequalityOQ02Defs and AmgmInequalityOQ02 which both define elemSymm at root namespace); workaround: import AmgmInequalityOQ02 directly"
+    ],
+    "builtItems": [
+      "maclaurin_chain_aux in AmgmInequalityOQ02OQ03OQ03.lean (induction lemma)",
+      "maclaurin_full_chain in AmgmInequalityOQ02OQ03OQ03.lean (main theorem)",
+      "maclaurin_m1_ge_mn in AmgmInequalityOQ02OQ03OQ03.lean (AM ≥ GM-power-mean corollary)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityOQ02.lean",
+      "filename": "AmgmInequalityOQ02.lean",
+      "lineCount": 544,
+      "theoremCount": 16,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Aristotle.lean",
+      "filename": "AmgmInequalityOQ02Aristotle.lean",
+      "lineCount": 353,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02Defs.lean",
+      "filename": "AmgmInequalityOQ02Defs.lean",
+      "lineCount": 394,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02Defs.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ02.lean",
+      "filename": "AmgmInequalityOQ02OQ02.lean",
+      "lineCount": 960,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03.lean",
+      "lineCount": 227,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03OQ03.lean",
+      "lineCount": 67,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03.lean",
+      "filename": "AmgmInequalityOQ03.lean",
+      "lineCount": 373,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ03OQ03.lean",
+      "lineCount": 66,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04.lean",
+      "filename": "AmgmInequalityOQ04.lean",
+      "lineCount": 308,
+      "theoremCount": 21,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04.lean"
+    }
+  ]
+}

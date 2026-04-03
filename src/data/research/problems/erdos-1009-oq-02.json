@@ -29,9 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS: Created K4 problem formalization with Clique4 struct, Turan threshold n^2/3, proved monotone/positivity/comparison lemmas. Open question stated as Prop. 2 sorries: Turan arithmetic + Clique4 bridge.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "Created Erdos1009OQ02Problem.lean: K4 analog of Gyori theorem formalized. Clique4 struct, turanThresholdK4=n^2/3, edge-disjointness, open question as Prop.",
+      "2 sorries: Turan arithmetic (mod 3 nlinarith) + Clique4 bridge to CliqueFree 4",
+      "turanK4_extremal uses CliqueFree.card_edgeFinset_le; arithmetic n%3 cases need nlinarith not omega",
+      "clique4_has_triangle: distinct.2.2.2.1 is b≠c in And-chain a≠b ∧ a≠c ∧ a≠d ∧ b≠c ∧ b≠d ∧ c≠d"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -46,7 +51,8 @@
     "erdos-1",
     "erdos-10",
     "erdos-100",
-    "erdos-1009"
+    "erdos-1009",
+    "erdos-1009-oq-02"
   ],
   "references": {
     "papers": [],
@@ -59,15 +65,15 @@
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos1009OQ02.lean",
-      "filename": "Erdos1009OQ02.lean",
-      "lineCount": 230,
-      "theoremCount": 5,
+      "path": "Proofs/Erdos1009OQ02Problem.lean",
+      "filename": "Erdos1009OQ02Problem.lean",
+      "lineCount": 222,
+      "theoremCount": 8,
       "axiomCount": 0,
-      "defCount": 7,
-      "sorryCount": 1,
+      "defCount": 9,
+      "sorryCount": 4,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1009OQ02.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1009OQ02Problem.lean"
     },
     {
       "path": "Proofs/Erdos1009Problem.lean",

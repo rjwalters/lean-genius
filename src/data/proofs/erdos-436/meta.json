@@ -21,7 +21,7 @@
     "erdosNumber": 436,
     "erdosUrl": "https://erdosproblems.com/436",
     "erdosProblemStatus": "partially-solved",
-    "axiomCount": 13,
+    "axiomCount": 9,
     "assumptions": "13 axiom declarations: consecutive_residues_exist (runs exist for large primes), lambda_2_2 (Lambda(2,2) = 9), lambda_3_2 (Lambda(3,2) = 77), lambda_4_2 (Lambda(4,2) = 1224), lambda_5_2 (Lambda(5,2) = 7888), lambda_6_2 (Lambda(6,2) = 202124), lambda_7_2 (Lambda(7,2) = 1649375), hildebrand_theorem (Lambda(k,2) finite for all k), lambda_3_3 (Lambda(3,3) = 23532), lambda_even_3_infinite (Lambda(k,3) infinite for even k), graham_theorem (Lambda(k,m) infinite for m>=4), lambda_2_2_achieved (Lambda(2,2)=9 is sharp), growth_appears_super_polynomial (super-polynomial growth). Previously axiomatized qr_product_non_residues and euler_criterion_backward now proved via Mathlib Legendre symbol and ZMod.euler_criterion.",
     "lineCount": 686,
     "mathlib_version": "4.26.0"
@@ -167,7 +167,7 @@
     ],
     "namespace": "Erdos436",
     "lineCount": 686,
-    "axiomCount": 13,
+    "axiomCount": 9,
     "theoremCount": 49,
     "definitionCount": 8
   },

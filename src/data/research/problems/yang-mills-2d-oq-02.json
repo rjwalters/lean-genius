@@ -1,7 +1,7 @@
 {
   "slug": "yang-mills-2d-oq-02",
   "title": "Casimir Scaling in 4D Continuum Limit",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-03-30T11:35:14-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Formalization complete. Added annotations. Gallery data complete.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Mark as completed.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,13 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: Requires >1000 lines gauge theory infrastructure. Documented blocker.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: Lean file has 0 sorries, 1 axiom (open 4D conjecture). Parts I+II fully proved. Added 6 annotations to gallery.",
+    "builtItems": [
+      "Added 6 annotations to src/data/proofs/yang-mills-2d-oq-02/annotations.json: overview, migdal-defs, exact-2d, string-breaking, 4d-failure, approx-axiom"
+    ],
     "insights": [
       "BLOCKED: requires foundational gauge theory infrastructure (>1000 lines)",
       "Question is about 4D continuum limit - far beyond current Lean formalization state",
       "Existing YangMills/ files have Core.lean, Classical.lean, Quantum.lean but lack representation theory infrastructure",
-      "Would need: Lie groups, representations, Casimir operators, lattice gauge theory, continuum limits"
+      "Would need: Lie groups, representations, Casimir operators, lattice gauge theory, continuum limits",
+      "Formalization is COMPLETE: YangMills2DOQ02.lean has 0 sorries, 1 axiom for the open 4D conjecture",
+      "Prior BLOCKED status was incorrect — the formalization uses a simpler minimal approach (244 lines) that avoids heavy gauge theory infrastructure",
+      "Key insight: 2D exact scaling proved purely from cancellation of r in V_R(r)/V_fund(r); 4D failure proved from string breaking inequality r > r_break => sigma_R*r > 2m_gluelump"
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -1,14 +1,18 @@
 {
   "slug": "ballot-problem-oq-01-oq-04-oq-01",
   "title": "Prove Chung-Feller bijection: rotation index to path type",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in combinatorics: Prove Chung-Feller bijection: rotation index to path type.",
-    "whyMatters": []
+    "formal": "∃ f : {l : List ℤ // IsBalancedPath l n} → {l : List ℤ // IsDyckPath l n} × Fin (n+1), Function.Bijective f",
+    "plain": "Prove the Chung-Feller bijection: the map sending a balanced path l to (chungFellerRot(l).tail, upstepsAboveAxis(l)) is a bijection between balanced paths of length 2n and Dyck paths of length 2n × {0,...,n}.",
+    "whyMatters": [
+      "Proves the uniform distribution of balanced lattice paths over n+1 types",
+      "Eliminates the axiom chung_feller_uniform from the parent file BallotProblemOQ01OQ04.lean",
+      "Provides an explicit bijection where the parent file only axiomatizes existence"
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -16,24 +20,48 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-03T02:57:02.770Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-04-03T07:36:00Z",
+    "iteration": 2,
+    "focus": "Proving well-typing lemmas for the Chung-Feller bijection candidate",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove type-distinctness under rotation to complete bijectivity",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Forward direction complete (balanced paths → Dyck paths via rotation). Bijection candidate well-typed. 2 sorries remain: bijectivity and uniform distribution.",
+    "builtItems": [
+      "upstepsAboveAxis_le_n: type k ≤ n for balanced path (well-types Fin(n+1) component)",
+      "chungFellerRot_tail_is_balanced: tail of rotation is balanced (count1=n, count-1=n, all ±1)",
+      "chungFellerRot_tail_is_dyck: tail of rotation is a DYCK PATH (forward direction complete)",
+      "chungFellerMap: bijection candidate fully well-typed (IsDyckPath × Fin(n+1))",
+      "chungFellerRot_head_eq_one: good rotation starts with 1 [inherited]",
+      "chungFellerRot_tail_nonneg_prefixSum: tail prefix sums ≥ 0 [inherited]",
+      "chungFellerRot_tail_type_eq_n: tail upstepsAboveAxis = n [inherited]"
+    ],
+    "insights": [
+      "The Chung-Feller bijection f(l) = (chungFellerRot(l).tail, upstepsAboveAxis(l)) is now FULLY well-typed",
+      "Forward direction: any balanced path maps to a Dyck path via the good rotation",
+      "Key blocker: type-distinctness under rotation — different 1-position rotations of (1::D) must give distinct path types",
+      "Computational verification confirms the bijection works for n=2: types {0,1,2} all achieved",
+      "The rotation map sends type k to type n (Dyck) — verified for specific examples",
+      "The hard core is the type-shift analysis: between 1-positions p_j and p_{j+1}, the prefix sum relationship determines type change"
+    ],
+    "mathlibGaps": [
+      "No Mathlib theorem for type-shift under cyclic rotation of ballot sequences",
+      "cyclicRotation_prefixSum exists but connecting it to upstepsAboveAxis changes requires work"
+    ],
+    "nextSteps": [
+      "Prove type_distinctness_under_rotation: for Dyck path D, 1-position rotations give distinct types",
+      "Key approach: induct on the position difference using cyclicRotation_prefixSum",
+      "Use the fact that between consecutive 1-positions there is a -1, causing prefix sum drop then recovery",
+      "Alternative: use Fintype + cardinality argument once injectivity is proved",
+      "Consider Aristotle submission for specific helper lemmas about prefix sum tracking"
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -58,7 +86,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T02:57:02.769Z",
-  "lastUpdate": "2026-04-03T02:57:02.769Z",
+  "lastUpdate": "2026-04-03T07:36:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -87,11 +115,11 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ01.lean",
       "filename": "BallotProblemOQ01OQ01.lean",
-      "lineCount": 131,
+      "lineCount": 152,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
     },
@@ -116,6 +144,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
+      "filename": "BallotProblemOQ01OQ04OQ01.lean",
+      "lineCount": 561,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ02.lean",

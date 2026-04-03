@@ -2,7 +2,7 @@
   "id": "pythagorean-triples-oq-02",
   "title": "Pythagorean Triples via Gaussian Integers",
   "slug": "pythagorean-triples-oq-02",
-  "description": "Shows that the parametric formula for Pythagorean triples (m\u00b2-n\u00b2, 2mn, m\u00b2+n\u00b2) is the squaring map in \u2124[i]. Norm multiplicativity gives the Brahmagupta-Fibonacci identity and a product rule for triples. Fully verified, 0 axioms.",
+  "description": "Shows that the parametric formula for Pythagorean triples (m²-n², 2mn, m²+n²) is the squaring map in ℤ[i]. Norm multiplicativity gives the Brahmagupta-Fibonacci identity and a product rule for triples. Fully verified, 0 axioms.",
   "meta": {
     "author": "Brahmagupta (628), Fibonacci (1225), Gauss (1801)",
     "date": "1801",
@@ -25,28 +25,29 @@
     "mathlibDependencies": [
       {
         "theorem": "PythagoreanTriple",
-        "description": "Predicate a\u00b2 + b\u00b2 = c\u00b2",
+        "description": "Predicate a² + b² = c²",
         "module": "Mathlib.NumberTheory.PythagoreanTriples"
       }
     ],
     "originalContributions": [
       "Gaussian integer arithmetic framework (gaussMul, gaussNorm, gaussConj, gaussSq)",
-      "Norm multiplicativity: N(z\u2081z\u2082) = N(z\u2081)N(z\u2082)",
+      "Norm multiplicativity: N(z₁z₂) = N(z₁)N(z₂)",
       "Pythagorean triple from Gaussian squaring: gaussSq_pythagorean",
       "Brahmagupta-Fibonacci identity from norm multiplicativity",
       "Product rule for Pythagorean triples via Gaussian multiplication"
     ]
   },
   "overview": {
-    "text": "Connects Pythagorean triples to Gaussian integers: the parametric formula is squaring in \u2124[i], and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
+    "historicalContext": "Pythagorean triples have been known since antiquity. The Babylonian tablet Plimpton 322 (~1800 BC) lists 15 pairs of Pythagorean triples, suggesting a systematic method for generating them. Pythagoras himself (or his school, ~500 BC) knew the formula $(2k+1, 2k^2+2k, 2k^2+2k+1)$ for $k \\geq 1$. Plato (~400 BC) found a different family. The *complete* parametric formula $(m^2-n^2, 2mn, m^2+n^2)$ covering all primitive triples appears in Diophantus's *Arithmetica* (c. 250 CE, Book III) and was known to Euclid in an earlier form.\n\nBrahmagupta (628 CE), in his *Brahmasphutasiddhanta*, proved what we now call the Brahmagupta–Fibonacci identity: $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$. This shows sums of two squares are closed under multiplication — a key structural fact. Fibonacci rediscovered it in his 1225 *Liber Quadratorum*, discussing when numbers are sums of two squares.\n\nThe deep algebraic reason behind all of this was identified by Gauss (1801, *Disquisitiones Arithmeticae*) and developed throughout the 19th century: the Gaussian integers $\\mathbb{Z}[i]$ form a Euclidean domain (hence a unique factorization domain, UFD). The norm $N(a+bi) = a^2+b^2$ is *multiplicative* because it is the norm map of the field extension $\\mathbb{Q}(i)/\\mathbb{Q}$. The parametric formula is simply the squaring map $z \\mapsto z^2$ applied to $z = m+ni$; the Pythagorean triple arises because $|z^2|^2 = |z|^4$.",
+    "problemStatement": "Show that the parametric formula $(m^2-n^2, 2mn, m^2+n^2)$ for Pythagorean triples is the squaring map in $\\mathbb{Z}[i]$. Specifically: (1) define Gaussian integer arithmetic (multiplication, norm, conjugate); (2) prove norm multiplicativity $N(z_1 z_2) = N(z_1) N(z_2)$; (3) show that squaring $z = m+ni$ gives the parametric formula; (4) derive the Brahmagupta-Fibonacci identity and the product rule for triples.",
+    "proofStrategy": "Six parts. Part I defines the Gaussian integer operations: `gaussMul`, `gaussNorm`, `gaussConj`, `gaussSq` as functions on integer pairs — no typeclass machinery, just explicit formulas. Part II proves the core algebraic properties: norm multiplicativity, the squaring formula, and the conjugate-norm relation $z \\cdot \\bar{z} = N(z)$ — all by `ring`. Part III connects to Pythagorean triples: `pythagorean_from_gaussian` is just `ring`, and `gaussian_gives_pythagorean_triple` connects to Mathlib's `PythagoreanTriple` predicate. Part IV derives Brahmagupta-Fibonacci by `ring` and the product rule by `nlinarith`. Part V shows the factoring perspective: $a^2+b^2 = (a+bi)(a-bi)$. Part VI gives concrete examples (3-4-5, 5-12-13, 8-15-17) by specializing `gaussian_gives_pythagorean_triple`.",
     "keyInsights": [
-      "The parametric formula (m\u00b2-n\u00b2, 2mn, m\u00b2+n\u00b2) IS z\u00b2 where z = m + ni",
-      "Norm multiplicativity explains why sums of squares are closed under multiplication",
-      "Product of Pythagorean triples corresponds to Gaussian multiplication"
-    ],
-    "proofStrategy": "Connects Pythagorean triples to Gaussian integers: the parametric formula is squaring in \u2124[i], and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
-    "historicalContext": "",
-    "problemStatement": "See the description field for the problem statement."
+      "**The parametric formula IS squaring in ℤ[i]**: $z = m+ni \\Rightarrow z^2 = (m^2-n^2) + 2mni$, and $|z^2|^2 = |z|^4 = (m^2+n^2)^2$. The Pythagorean identity $(m^2-n^2)^2 + (2mn)^2 = (m^2+n^2)^2$ is just $|z^2|^2 = (|z|^2)^2$.",
+      "**Norm multiplicativity is the algebraic core**: The identity $N(z_1 z_2) = N(z_1) N(z_2)$ — proved in two lines by `ring` — implies both the Brahmagupta-Fibonacci identity and the product rule for Pythagorean triples. It reflects that $N$ is the norm map of the field extension $\\mathbb{Q}(i)/\\mathbb{Q}$.",
+      "**Brahmagupta-Fibonacci = norm multiplicativity**: $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$ is exactly $N(a+bi) \\cdot N(c+di) = N((a+bi)(c+di))$. Expanding the Gaussian product and taking the norm gives the identity.",
+      "**Product of Pythagorean triples**: If $(a_1, b_1, c_1)$ and $(a_2, b_2, c_2)$ are Pythagorean triples, then $(a_1 a_2 - b_1 b_2, a_1 b_2 + b_1 a_2, c_1 c_2)$ is also a Pythagorean triple. This is Gaussian multiplication of the corresponding Gaussian integers, with hypotenuses multiplying by norm multiplicativity.",
+      "**Ring-level proofs**: Most theorems in this file are proved by `ring` — the polynomial identity checker. This reflects the fact that the connections between Pythagorean triples and Gaussian integers are *algebraic identities*, not deep theorems. The formalization makes explicit what was previously known as 'just algebra'."
+    ]
   },
   "sections": [
     {
@@ -54,64 +55,99 @@
       "title": "Gaussian Integer Arithmetic",
       "startLine": 24,
       "endLine": 46,
-      "summary": "Gaussian Integer Arithmetic"
+      "summary": "Defines four functions on integer pairs: `gaussMul` (complex multiplication formula), `gaussNorm` (a² + b²), `gaussConj` (negates imaginary part), and `gaussSq` (squaring via gaussMul with itself). These are explicit formulas over ℤ, not using Mathlib's ℤ[i] typeclass — this keeps the formalization elementary.",
+      "mathContext": "`gaussMul (a₁ b₁ a₂ b₂) = (a₁a₂ - b₁b₂, a₁b₂ + b₁a₂)` is complex multiplication $(a_1+b_1 i)(a_2+b_2 i)$. `gaussNorm a b = a² + b²` is the norm $|a+bi|^2$. `gaussConj a b = (a, -b)$ is the conjugate. `gaussSq a b = gaussMul a b a b = (a²-b², 2ab)$."
     },
     {
       "id": "core-properties",
-      "title": "Core Properties",
+      "title": "Core Properties: Norm Multiplicativity",
       "startLine": 51,
       "endLine": 68,
-      "summary": "Core Properties"
+      "summary": "Three theorems proved by ring: (1) norm_multiplicative: N(z₁z₂) = N(z₁)N(z₂); (2) gaussSq_formula: (a+bi)² = (a²-b²) + 2abi as pairs; (3) mul_conj_eq_norm: z · conj(z) = (N(z), 0). Norm multiplicativity is the algebraic heart: it gives Brahmagupta-Fibonacci and the product rule for triples.",
+      "mathContext": "$N(z_1 z_2) = N(z_1) N(z_2)$: expands as $(a_1 a_2 - b_1 b_2)^2 + (a_1 b_2 + b_1 a_2)^2 = (a_1^2 + b_1^2)(a_2^2 + b_2^2)$, an algebraic identity. $z \\cdot \\bar{z} = (a+bi)(a-bi) = a^2+b^2 = N(z)$: the norm as a product with the conjugate."
     },
     {
       "id": "pythagorean-triples",
-      "title": "Pythagorean Triples from Squaring",
+      "title": "Pythagorean Triples from Gaussian Squaring",
       "startLine": 73,
       "endLine": 95,
-      "summary": "Pythagorean Triples from Squaring"
+      "summary": "Three theorems: (1) pythagorean_from_gaussian: (m²-n²)² + (2mn)² = (m²+n²)² by ring; (2) gaussSq_pythagorean: sq.1² + sq.2² = gaussNorm m n ^ 2, showing the norm of z² equals |z|⁴; (3) gaussian_gives_pythagorean_triple: connects to Mathlib's PythagoreanTriple predicate via unfold + ring.",
+      "mathContext": "For $z = m+ni$: $z^2 = (m^2-n^2) + 2mni$, $N(z^2) = (m^2-n^2)^2 + (2mn)^2 = (m^2+n^2)^2 = N(z)^2$. This is $|z^2| = |z|^2$ since $N(z) = |z|^2$. The Pythagorean identity is precisely this norm calculation."
     },
     {
       "id": "brahmagupta-fibonacci",
-      "title": "Brahmagupta-Fibonacci Identity",
+      "title": "Brahmagupta-Fibonacci Identity and Triple Products",
       "startLine": 100,
       "endLine": 120,
-      "summary": "Brahmagupta-Fibonacci Identity"
+      "summary": "brahmagupta_fibonacci: (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)², proved by ring — this is N(z₁)·N(z₂) = N(z₁z₂) expanded. pythagorean_triple_product: if (a₁,b₁,c₁) and (a₂,b₂,c₂) are Pythagorean triples, then (a₁a₂-b₁b₂, a₁b₂+b₁a₂, c₁c₂) is also a triple, proved by nlinarith using brahmagupta_fibonacci.",
+      "mathContext": "Brahmagupta-Fibonacci = $N((a+bi)(c+di)) = N(a+bi)\\cdot N(c+di)$. Triple product: given $a_1^2 + b_1^2 = c_1^2$ and $a_2^2 + b_2^2 = c_2^2$, Brahmagupta-Fibonacci gives $(a_1 a_2 - b_1 b_2)^2 + (a_1 b_2 + b_1 a_2)^2 = (a_1^2+b_1^2)(a_2^2+b_2^2) = c_1^2 c_2^2 = (c_1 c_2)^2$."
     },
     {
       "id": "factoring",
       "title": "The Factoring Perspective",
       "startLine": 125,
       "endLine": 140,
-      "summary": "The Factoring Perspective"
+      "summary": "sum_sq_factors: the real part of z · conj(z) is a² + b² — showing a²+b² = c² factors as (a+bi)(a-bi) = c² in ℤ[i]. triple_from_square_norm: if N(a,b) = c², then (a,b,c) is a Pythagorean triple. These give the algebraic factoring perspective on Pythagorean triples.",
+      "mathContext": "In $\\mathbb{Z}[i]$: $a^2 + b^2 = (a+bi)(a-bi)$. So $a^2 + b^2 = c^2$ means $(a+bi)(a-bi) = c^2$. For the Gaussian integer $c$ (viewed as $c + 0i$), this factors $c^2$ into conjugate pairs in $\\mathbb{Z}[i]$. The full characterization uses unique factorization in $\\mathbb{Z}[i]$: $c^2$ factors into primes $p \\equiv 1 \\pmod 4$ (which split as $(a+bi)(a-bi)$) and $p = 2 = -i(1+i)^2$ (which ramifies)."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 145,
       "endLine": 170,
-      "summary": "Concrete Examples"
+      "summary": "Three Pythagorean triples derived from gaussian_gives_pythagorean_triple: (3,4,5) from z=2+i (z²=3+4i), (5,12,13) from z=3+2i, (8,15,17) from z=4+i. The Brahmagupta-Fibonacci example: (1²+2²)(3²+4²) = 5·25 = 125 = 11²+2².",
+      "mathContext": "Parameterization: $m=2, n=1 \\Rightarrow (m^2-n^2, 2mn, m^2+n^2) = (3, 4, 5)$. $m=3, n=2 \\Rightarrow (5, 12, 13)$. $m=4, n=1 \\Rightarrow (15, 8, 17)$ (equivalently $(8, 15, 17)$). BF example: $(1+2i)(3+4i) = (3-8) + (4+6)i = -5 + 10i$, and $|-5+10i|^2 = 125 = |1+2i|^2 \\cdot |3+4i|^2 = 5 \\cdot 25$."
     }
   ],
   "conclusion": {
-    "summary": "The Gaussian integer connection reveals the algebraic structure behind Pythagorean triples: the parametric formula is squaring, and norm multiplicativity gives the Brahmagupta-Fibonacci identity.",
-    "implications": "Demonstrates that Gaussian integer arithmetic unifies the parametric formula and the sum-of-two-squares closure property into a single algebraic framework.",
-    "openQuestions": []
+    "summary": "The parametric formula for Pythagorean triples is the squaring map in ℤ[i], and norm multiplicativity is the algebraic explanation for the Brahmagupta-Fibonacci identity and the product rule for triples. All 14 theorems are fully verified with 0 axioms, 0 sorries — most proofs reduce to `ring`.",
+    "implications": "**Algebraic explanation of parametric triples**: The proof explains *why* $(m^2-n^2, 2mn, m^2+n^2)$ is always a Pythagorean triple — not just verifies it algebraically, but reveals the structural reason: it's squaring in $\\mathbb{Z}[i]$ with the norm map. This is the beginning of the algebraic number theory of Pythagorean triples.\n\n**Sum-of-two-squares closure**: The Brahmagupta-Fibonacci identity shows numbers representable as sums of two squares form a multiplicative subset of $\\mathbb{Z}$. Euler (1747) proved the characterization: $n$ is a sum of two squares iff every prime factor $p \\equiv 3 \\pmod{4}$ appears to an even power. This uses the fact that $\\mathbb{Z}[i]$ is a UFD — a consequence of it being Euclidean.\n\n**Fermat's theorem on sums of two squares**: A prime $p$ is a sum of two squares iff $p = 2$ or $p \\equiv 1 \\pmod 4$ (Fermat, proved by Euler). This is equivalent to $p$ splitting in $\\mathbb{Z}[i]$, i.e., $-1$ being a quadratic residue mod $p$ (which holds iff $p \\equiv 1 \\pmod 4$ by quadratic reciprocity). The `elementary-quadratic-reciprocity` entries in this gallery are closely related.",
+    "openQuestions": [
+      "Can the *classification* of all primitive Pythagorean triples be formalized? Every primitive triple has the form $(m^2-n^2, 2mn, m^2+n^2)$ with $\\gcd(m,n)=1$ and $m > n > 0$ with $m \\not\\equiv n \\pmod 2$. This uses the UFD property of $\\mathbb{Z}[i]$. Mathlib's `Nat.Coprime` and `PythagoreanTriple.eq_iff` may be relevant.",
+      "Is there a Lean proof of Fermat's theorem on sums of two squares: $p \\equiv 1 \\pmod{4}$ iff $p = a^2 + b^2$? This would use $\\mathbb{Z}[i]$ being a Euclidean domain and the connection to the Legendre symbol $(-1/p)$.",
+      "Can the Gaussian integer framework be extended to Eisenstein integers $\\mathbb{Z}[\\omega]$ (where $\\omega = e^{2\\pi i/3}$) to characterize Loeschian numbers ($a^2 - ab + b^2$)?  The formalization pattern here would transfer directly.",
+      "Is there a connection to the `elementary-quadratic-reciprocity` gallery entry? The splitting of primes in $\\mathbb{Z}[i]$ is governed by whether $-1$ is a quadratic residue mod $p$, which is exactly the $p \\equiv 1 \\pmod{4}$ criterion from quadratic reciprocity."
+    ]
   },
   "crossReferences": [
     {
-      "slug": "pythagorean-triples",
-      "title": "Formula for Pythagorean Triples",
-      "relation": "parent-problem",
-      "relationship": "extends"
+      "targetId": "pythagorean-triples",
+      "relationship": "extends",
+      "description": "The parent entry: the parametric formula for Pythagorean triples and basic properties. This OQ-02 entry explains the algebraic reason behind the formula: it's squaring in ℤ[i]."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem a²+b²=c² is the geometric foundation. Pythagorean triples are integer solutions. The Gaussian integer perspective reveals the algebraic structure of these integer solutions."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "thematic",
+      "description": "Quadratic reciprocity determines which primes split in ℤ[i] (those with p ≡ 1 mod 4), which in turn determines which primes are sums of two squares — the deep number-theoretic complement to the algebraic approach here."
     }
   ],
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "namespace": "PythagoreanTriplesOQ02",
-    "lineCount": 173,
-    "axiomCount": 0,
-    "theoremCount": 14
-  }
+  "references": [
+    {
+      "type": "book",
+      "title": "Brahmasphutasiddhanta",
+      "authors": ["Brahmagupta"],
+      "year": 628,
+      "note": "First statement of the Brahmagupta-Fibonacci identity (sums of two squares are closed under multiplication)"
+    },
+    {
+      "type": "book",
+      "title": "Disquisitiones Arithmeticae",
+      "authors": ["C. F. Gauss"],
+      "year": 1801,
+      "note": "Introduced Gaussian integers ℤ[i] and established their unique factorization"
+    },
+    {
+      "type": "book",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "authors": ["K. Ireland", "M. Rosen"],
+      "year": 1990,
+      "venue": "Springer",
+      "note": "Chapters 5-9: Gaussian integers, sums of two squares, Fermat's theorem"
+    }
+  ]
 }

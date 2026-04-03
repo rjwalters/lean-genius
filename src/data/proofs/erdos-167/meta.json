@@ -21,14 +21,14 @@
     "erdosNumber": 167,
     "erdosUrl": "https://erdosproblems.com/167",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
+    "axiomCount": 1,
     "prerequisites": [
       "graph theory fundamentals",
       "triangle packing and covering",
       "extremal combinatorics",
       "linear programming relaxation"
     ],
-    "lineCount": 274,
+    "lineCount": 275,
     "assumptions": "5 axioms: haxell_kohayakawa, tuza_for_k4_free, IsPlanar, and 2 more. See Lean source for complete statements.",
     "mathlib_version": "4.26.0"
   },
@@ -136,8 +136,8 @@
       "Set"
     ],
     "namespace": "Erdos167",
-    "lineCount": 274,
-    "axiomCount": 5,
+    "lineCount": 275,
+    "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 7
   },

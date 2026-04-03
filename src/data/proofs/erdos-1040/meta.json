@@ -24,7 +24,7 @@
     "relatedProblems": [
       1039
     ],
-    "axiomCount": 7,
+    "axiomCount": 4,
     "assumptions": "7 axiom declarations: transfiniteDiameter_eq (Fekete's limit theorem), lineSegment_diameter (line segment capacity = length/4), disc_diameter (disc capacity = radius), small_diameter_disc (qualitative disc containment for ρ < 1), erdos_netanyahu (quantitative disc bounds, 1973), lineSegment_muPosDeg_zero (EHP 1958 line segment case), disc_muPosDeg_zero (EHP 1958 disc case). 1 sorry in theorem. Previously axiomatized lineSegment_determined and disc_determined proved trivially (statements are vacuous for fixed F).",
     "prerequisites": [
       "Complex analysis: polynomial lemniscates and sublevel sets",
@@ -231,7 +231,7 @@
     "opens": [],
     "namespace": null,
     "lineCount": 576,
-    "axiomCount": 7,
+    "axiomCount": 4,
     "theoremCount": 24,
     "substantiveTheoremCount": 19,
     "trivialSpecializations": 0,

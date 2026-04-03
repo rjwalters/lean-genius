@@ -21,7 +21,7 @@
     "erdosNumber": 100,
     "erdosUrl": "https://erdosproblems.com/100",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
+    "axiomCount": 2,
     "lineCount": 482,
     "assumptions": "4 axioms: kanold_bound (n^(3/4) bound), guthKatz_distinct_distances (n/log n distinct distances), piepmeyer_construction (9-point counterexample), erdos_anning_theorem (infinite collinearity). 0 sorries. distinctDistances_le_diam PROVED via injection into {1,...,⌊diam⌋}. diam_is_integer PROVED (diameter is a positive integer). Open problem - linear diameter growth conjectured.",
     "mathlibDependencies": [
@@ -260,7 +260,7 @@
     ],
     "namespace": "Erdos100",
     "lineCount": 482,
-    "axiomCount": 4,
+    "axiomCount": 2,
     "theoremCount": 14,
     "definitionCount": 9
   }

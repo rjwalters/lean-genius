@@ -1,0 +1,81 @@
+{
+  "slug": "hilbert-17-oq-03",
+  "title": "Complexity of Deciding PSD Polynomial Sum-of-Squares",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "What is the computational complexity of deciding if a given PSD polynomial is a sum of squares.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T12:03:52.282Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "computational-algebra",
+    "PSD",
+    "sum-of-squares",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "hilbert-17",
+    "hilbert-17-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:03:52.282Z",
+  "lastUpdate": "2026-04-03T12:03:52.282Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert17OQ01.lean",
+      "filename": "Hilbert17OQ01.lean",
+      "lineCount": 191,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert17OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert17SumOfSquares.lean",
+      "filename": "Hilbert17SumOfSquares.lean",
+      "lineCount": 571,
+      "theoremCount": 10,
+      "axiomCount": 10,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert17SumOfSquares.lean"
+    }
+  ]
+}

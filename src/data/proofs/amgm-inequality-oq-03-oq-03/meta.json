@@ -6,7 +6,7 @@
   "meta": {
     "author": "Hardy-Littlewood-Pólya (1934)",
     "date": "1934",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AmgmInequalityOQ03OQ03.lean",
     "tags": [
       "inequalities",
@@ -14,11 +14,11 @@
       "analysis",
       "limits"
     ],
-    "badge": "formalized",
-    "sorries": 2,
+    "badge": "original",
+    "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 57
+    "lineCount": 65
   },
   "overview": {
     "historicalContext": "The classical means — harmonic, geometric, and arithmetic — were studied since antiquity. Pythagoras and his school recognized all three; they appear in Euclid's *Elements* and in the music theory of ancient Greece. Cauchy gave the first rigorous proof of the AM-GM inequality in his 1821 *Cours d'analyse*. The unification of all these means under a single parametric family — the power mean $M_r$ — was systematically developed by Hardy, Littlewood, and Pólya in their landmark 1934 monograph *Inequalities*, which remains a standard reference in mathematical analysis. The extreme cases ($M_r \\to \\max$ as $r \\to +\\infty$, $M_r \\to \\min$ as $r \\to -\\infty$) complete this family geometrically: the power mean traces a continuous, monotone path from the minimum value through the geometric mean, arithmetic mean, and beyond, ultimately converging to the maximum. This perspective reveals the AM-GM inequality ($M_0 \\leq M_1$) as just one instance of a much richer monotonicity principle.",

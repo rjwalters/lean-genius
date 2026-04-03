@@ -108,31 +108,221 @@ There exists an infinite Sidon set that is an asymptotic basis of order 3.
 theorem pilatte_existence : Erdos157Conjecture := by
   sorry
 
+/- ## Counting Axioms -/
+
+/-- Sidon sets have counting function at most √N + O(N^{1/4}). -/
+axiom sidon_counting_bound (A : Set ℕ) (hSidon : IsSidon A) :
+    ∃ C : ℝ, ∀ N : ℕ, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) ≤ Real.sqrt N + C * N^(1/4 : ℝ)
+
+/-- Asymptotic bases of order k have counting function at least N^{1/k}. -/
+axiom basis_counting_lower (A : Set ℕ) (k : ℕ) (hk : k ≥ 1) (hBasis : IsAsymptoticBasis A k) :
+    ∃ c : ℝ, c > 0 ∧ ∀ᶠ (N : ℕ) in Filter.atTop,
+      c * (N : ℝ)^(1/k : ℝ) ≤ Set.ncard (A ∩ Set.Icc 1 N)
+
 /- ## Related Results -/
 
 /- Aristotle failed to find a proof. -/
 /-- No Sidon set can be an asymptotic basis of order 2.
 
-This is because Sidon sets are too sparse: |A ∩ [1,N]| ≤ √N + O(1),
-but an asymptotic basis of order 2 needs |A ∩ [1,N]| ≫ √N. -/
-theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :
-    ¬IsAsymptoticBasis A 2 := by
+**Proof strategy** (not yet formalized):
+1. Assume A is Sidon and IsAsymptoticBasis A 2. Let N₀ from basis, C from sidon_counting_bound.
+2. For N large, let M = |A ∩ [1,2N]| ≤ √(2N) + C*(2N)^(1/4) ≈ √2·√N.
+3. ALL 2-element sums a+b (a < b, a,b ∈ A) are DISTINCT by IsSidonAlt (proved below as
+   `sidon_iff_sidon_alt`), so representable integers in SumsetK A 2 that are ≤ 2N is at most
+   |A ∩ [1,2N]| + C(M,2) = M·(M+1)/2.
+4. M·(M+1)/2 ≤ (√(2N) + C·(2N)^(1/4))²/2 + lower order ≈ N + O(N^{3/4}).
+5. But [N₀, 2N] has 2N - N₀ + 1 ≈ 2N elements that ALL must be in SumsetK A 2.
+6. For large N: 2N - N₀ ≤ M·(M+1)/2 ≤ N + O(N^{3/4}), so N - O(N^{3/4}) ≤ N₀. Contradiction.
+
+NOTE: `basis_counting_lower` is NOT sufficient for this proof because it only gives c > 0
+(and c ≤ 1 is consistent with the Sidon bound). The correct proof uses direct counting
+via IsSidonAlt distinctness, not via basis_counting_lower.
+-/
+-- Key helper: the 2-element sums in a Sidon set are distinct.
+-- The map (a,b) ↦ a+b is injective on pairs with a < b in A.
+private lemma sidon_pair_sum_injective (A : Set ℕ) (hSidon : IsSidon A) :
+    Set.InjOn (fun p : ℕ × ℕ => p.1 + p.2)
+      {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 < p.2} := by
+  intro ⟨a, b⟩ ⟨ha, hb, hab⟩ ⟨c, d⟩ ⟨hc, hd, hcd⟩ h
+  simp only at h
+  have := hSidon a b c d ha hb hc hd (le_of_lt hab) (le_of_lt hcd) h
+  exact Prod.mk.inj ⟨this.1, this.2⟩
+
+-- Key counting lemma: integers in SumsetK A 2 with value ≤ 2N
+-- can be injected into A ∪ {pairs from A × A}.
+-- Total target size ≤ M*(M+1)/2 where M = |A ∩ [1,2N]|.
+-- Requires N₀ ≥ 1 to ensure all covered elements are positive (avoiding the n=0 edge case).
+private lemma sumsetK2_ncard_le (A : Set ℕ) (hSidon : IsSidon A) (N₀ N : ℕ)
+    (hN₀_pos : 1 ≤ N₀) (hN : N₀ ≤ N)
+    (hcov : ∀ n, N₀ ≤ n → n ≤ 2*N → n ∈ SumsetK A 2) :
+    (2 * N - N₀ + 1 : ℝ) ≤
+    (Set.ncard (A ∩ Set.Icc 1 (2*N)) : ℝ) *
+    ((Set.ncard (A ∩ Set.Icc 1 (2*N)) : ℝ) + 1) / 2 := by
+  -- Setup: FA = A ∩ [1,2N] as a Finset, M = FA.card
+  have hfin : Set.Finite (A ∩ Set.Icc 1 (2*N)) :=
+    (Set.finite_Icc 1 (2*N)).subset Set.inter_subset_right
+  set FA := hfin.toFinset with hFA_def
+  have hM_eq : Set.ncard (A ∩ Set.Icc 1 (2*N)) = FA.card :=
+    (hfin.ncard_eq_toFinset_card _).symm ▸ by simp [hFA_def]
+  rw [hM_eq]
+  -- Key helper: each n in [N₀, 2N] covered by SumsetK A 2 lies in FA or is a strict Sidon pair sum
+  have helem : ∀ n, N₀ ≤ n → n ≤ 2*N → n ∈ SumsetK A 2 →
+      (n ∈ FA) ∨ (∃ a b : ℕ, a ∈ FA ∧ b ∈ FA ∧ a < b ∧ a + b = n) := by
+    intro n hn1 hn2 ⟨S, hSc, hSsub, hSsum⟩
+    -- Case on S.card
+    have hSc2 : S.card ≤ 2 := hSc
+    rcases Nat.lt_succ_iff.mp (Nat.lt_of_lt_of_le (Nat.lt_succ_of_le hSc2) (le_refl 3)) with h
+    interval_cases (S.card)
+    · -- S = ∅, sum = 0, contradicts n ≥ N₀ ≥ 1
+      simp [Finset.card_eq_zero.mp (by omega : S.card = 0)] at hSsum
+      omega
+    · -- S = {a}, sum = a = n
+      obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp (by omega : S.card = 1)
+      simp [Finset.sum_singleton] at hSsum
+      left
+      rw [hFA_def, Set.Finite.mem_toFinset]
+      exact ⟨hSsub (Finset.mem_singleton_self a),
+             ⟨by linarith [hN₀_pos], hSsum ▸ hn2⟩⟩
+    · -- S = {a, b}, sum = a + b = n
+      obtain ⟨a, b, hab_ne, rfl⟩ := Finset.card_eq_two.mp (by omega : S.card = 2)
+      simp [Finset.sum_pair hab_ne] at hSsum
+      have ha_A : a ∈ A := hSsub (Finset.mem_insert_self a {b})
+      have hb_A : b ∈ A := hSsub (by simp)
+      -- Order a and b
+      rcases Nat.lt_or_ge a b with hab | hba
+      · -- a < b case
+        rcases Nat.eq_zero_or_pos a with rfl | ha_pos
+        · -- a = 0: n = b, treat as singleton
+          simp at hSsum; left
+          rw [hFA_def, Set.Finite.mem_toFinset]
+          exact ⟨by rwa [hSsum] at hb_A, ⟨by linarith [hN₀_pos], by linarith⟩⟩
+        · right
+          rw [hFA_def]
+          refine ⟨a, b, Set.Finite.mem_toFinset.mpr ⟨ha_A, ⟨ha_pos, by linarith⟩⟩,
+                        Set.Finite.mem_toFinset.mpr ⟨hb_A, ⟨by linarith, by linarith⟩⟩,
+                        hab, hSsum⟩
+      · -- b ≤ a case: swap
+        rcases Nat.eq_zero_or_pos b with rfl | hb_pos
+        · simp at hSsum; left
+          rw [hFA_def, Set.Finite.mem_toFinset]
+          exact ⟨by rwa [hSsum] at ha_A, ⟨by linarith [hN₀_pos], by linarith⟩⟩
+        · right
+          have hba_lt : b < a := Nat.lt_of_le_of_ne hba (Ne.symm hab_ne)
+          rw [hFA_def]
+          refine ⟨b, a, Set.Finite.mem_toFinset.mpr ⟨hb_A, ⟨hb_pos, by linarith⟩⟩,
+                        Set.Finite.mem_toFinset.mpr ⟨ha_A, ⟨by linarith, by linarith⟩⟩,
+                        hba_lt, by linarith⟩
+  -- Define the representable finset
+  set pairs2 := (FA ×ˢ FA).filter (fun p => p.1 < p.2) with hpairs_def
+  set sums2 := pairs2.image (fun p => p.1 + p.2) with hsums_def
+  set repSet := FA ∪ sums2 with hrep_def
+  -- Step 1: [N₀, 2N] ⊆ repSet
+  have h_sub : Finset.Icc N₀ (2*N) ⊆ repSet := by
+    intro n hn
+    simp only [Finset.mem_Icc] at hn
+    rcases helem n hn.1 hn.2 (hcov n hn.1 hn.2) with h | ⟨a, b, ha, hb, hab, hsum⟩
+    · exact Finset.mem_union_left _ h
+    · apply Finset.mem_union_right
+      rw [hsums_def, hpairs_def]
+      exact Finset.mem_image.mpr ⟨(a, b), Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, hb⟩, hab⟩, hsum⟩
+  -- Step 2: |[N₀, 2N]| ≤ |repSet|
+  have h_card_le : (Finset.Icc N₀ (2*N)).card ≤ repSet.card :=
+    Finset.card_le_card h_sub
+  -- Step 3: |[N₀, 2N]| = 2N - N₀ + 1
+  have h_icc_card : (Finset.Icc N₀ (2*N)).card = 2*N - N₀ + 1 := by
+    rw [Finset.Nat.card_Icc]; omega
+  -- Step 4: |repSet| ≤ M*(M+1)/2
+  have h_rep_card : 2 * repSet.card ≤ FA.card * (FA.card + 1) := by
+    calc 2 * repSet.card
+        ≤ 2 * (FA.card + sums2.card) := by
+          apply Nat.mul_le_mul_left
+          exact (Finset.card_union_le FA sums2)
+      _ ≤ 2 * FA.card + 2 * sums2.card := by ring_nf
+      _ ≤ 2 * FA.card + 2 * pairs2.card := by
+          apply Nat.add_le_add_left
+          apply Nat.mul_le_mul_left
+          exact Finset.card_image_le
+      _ ≤ 2 * FA.card + FA.card * (FA.card - 1) := by
+          apply Nat.add_le_add_left
+          -- |pairs2| = C(M, 2) = M*(M-1)/2, so 2*|pairs2| ≤ M*(M-1)
+          have : 2 * pairs2.card ≤ FA.card * (FA.card - 1) := by
+            rw [hpairs_def]
+            calc 2 * ((FA ×ˢ FA).filter (fun p => p.1 < p.2)).card
+                = FA.offDiag.card := by
+                  rw [Finset.offDiag_card]
+                  congr 1
+                  -- The filter {p ∈ FA×FA | p.1 < p.2} bijects with offDiag/2
+                  sorry
+              _ = FA.card * (FA.card - 1) := Finset.offDiag_card FA
+          exact this
+      _ = FA.card * (FA.card + 1) := by ring_nf; omega
+  -- Step 5: Combine and cast to ℝ
+  have h_combined : 2 * N - N₀ + 1 ≤ FA.card * (FA.card + 1) / 2 := by
+    have := Nat.le_div_iff_mul_le (by norm_num : 0 < 2)
+    rw [this]
+    calc 2 * (2 * N - N₀ + 1) = 2 * (Finset.Icc N₀ (2*N)).card := by rw [h_icc_card]
+      _ ≤ 2 * repSet.card := Nat.mul_le_mul_left 2 h_card_le
+      _ ≤ FA.card * (FA.card + 1) := h_rep_card
+  -- Cast to ℝ
+  have h_cast : (FA.card : ℝ) * ((FA.card : ℝ) + 1) / 2 ≥ (2 * N - N₀ + 1 : ℝ) := by
+    have := @Nat.cast_le ℝ _ _ _ |>.mpr h_combined
+    push_cast at this ⊢
+    linarith
+  linarith
+
+-- Real analysis: for large N, the Sidon bound M ≤ √(2N) + C*(2N)^(1/4)
+-- implies M*(M+1)/2 < 2N - N₀.
+private lemma sidon_counting_contradiction (C : ℝ) (N₀ : ℕ) :
+    ∃ N : ℕ, N ≥ N₀ ∧
+    (Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4)) *
+    ((Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4)) + 1) / 2 <
+    2 * (N : ℝ) - N₀ := by
   sorry
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+/-- No Sidon set can be an asymptotic basis of order 2.
 
-Unexpected axioms were added during verification: ['Erdos157.sidon_counting_bound', 'harmonicSorry959915']-/
-/-- Sidon sets have counting function at most √N + O(N^{1/4}). -/
-axiom sidon_counting_bound (A : Set ℕ) (hSidon : IsSidon A) :
-    ∃ C : ℝ, ∀ N : ℕ, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) ≤ Real.sqrt N + C * N^(1/4 : ℝ)
+**Proof strategy** (not yet formalized):
+1. Assume A is Sidon and IsAsymptoticBasis A 2. Let N₀ from basis, C from sidon_counting_bound.
+2. For N large, let M = |A ∩ [1,2N]| ≤ √(2N) + C*(2N)^(1/4) ≈ √2·√N.
+3. ALL 2-element sums a+b (a < b, a,b ∈ A) are DISTINCT by IsSidonAlt (proved below as
+   `sidon_iff_sidon_alt`), so representable integers in SumsetK A 2 that are ≤ 2N is at most
+   |A ∩ [1,2N]| + C(M,2) = M·(M+1)/2.
+4. M·(M+1)/2 ≤ (√(2N) + C·(2N)^(1/4))²/2 + lower order ≈ N + O(N^{3/4}).
+5. But [N₀, 2N] has 2N - N₀ + 1 ≈ 2N elements that ALL must be in SumsetK A 2.
+6. For large N: 2N - N₀ ≤ M·(M+1)/2 ≤ N + O(N^{3/4}), so N - O(N^{3/4}) ≤ N₀. Contradiction.
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Unexpected axioms were added during verification: ['Erdos157.basis_counting_lower', 'harmonicSorry489465']-/
-/-- Asymptotic bases of order k have counting function at least N^{1/k}. -/
-axiom basis_counting_lower (A : Set ℕ) (k : ℕ) (hk : k ≥ 1) (hBasis : IsAsymptoticBasis A k) :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ (N : ℕ) in Filter.atTop,
-      c * (N : ℝ)^(1/k : ℝ) ≤ Set.ncard (A ∩ Set.Icc 1 N)
+NOTE: `basis_counting_lower` is NOT sufficient for this proof because it only gives c > 0
+(and c ≤ 1 is consistent with the Sidon bound). The correct proof uses direct counting
+via IsSidonAlt distinctness, not via basis_counting_lower.
+-/
+theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :
+    ¬IsAsymptoticBasis A 2 := by
+  intro hBasis
+  -- Step 1: Extract N₀ (coverage threshold) and C (Sidon counting constant)
+  obtain ⟨N₀, hN₀⟩ := hBasis
+  obtain ⟨C, hC⟩ := sidon_counting_bound A hSidon
+  -- Step 2: Find N large enough for contradiction
+  obtain ⟨N, hNN₀, hcontra⟩ := sidon_counting_contradiction C N₀
+  -- Step 3: At N, all integers in [N₀, 2N] are representable (from hN₀)
+  have hcov : ∀ n, N₀ ≤ n → n ≤ 2*N → n ∈ SumsetK A 2 :=
+    fun n hn₁ hn₂ => hN₀ n hn₁
+  -- Step 4: By counting lemma, M*(M+1)/2 ≥ 2N - N₀
+  have hcount := sumsetK2_ncard_le A hSidon N₀ N hNN₀ hcov
+  -- Step 5: Sidon bound: M = |A ∩ [1,2N]| ≤ √(2N) + C*(2N)^(1/4)
+  have hM := hC (2 * N)
+  -- Step 6: Derive contradiction: M*(M+1)/2 < 2N - N₀ ≤ M*(M+1)/2
+  have hMbound : (Set.ncard (A ∩ Set.Icc 1 (2 * N)) : ℝ) ≤
+      Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4) := hM
+  have hprod : (Set.ncard (A ∩ Set.Icc 1 (2 * N)) : ℝ) *
+      ((Set.ncard (A ∩ Set.Icc 1 (2 * N)) : ℝ) + 1) / 2 ≤
+      (Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4)) *
+      ((Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4)) + 1) / 2 := by
+    -- Use: M ≤ A → M*(M+1)/2 ≤ A*(A+1)/2, which follows since A*(A+1) - M*(M+1) = (A-M)*(A+M+1) ≥ 0
+    have hM_nn : (0 : ℝ) ≤ (Set.ncard (A ∩ Set.Icc 1 (2 * N)) : ℝ) := Nat.cast_nonneg _
+    have hD := hMbound  -- M ≤ bound
+    nlinarith [hM_nn, hD, sq_nonneg (Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4) -
+                                     (Set.ncard (A ∩ Set.Icc 1 (2 * N)) : ℝ))]
+  linarith
 
 /- ## Construction Outline
 

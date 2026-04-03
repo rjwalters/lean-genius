@@ -57,7 +57,7 @@
       "prime_binomial_structure theorem: p divides C(p,k)",
       "fGeneral definition: generalized problem"
     ],
-    "axiomCount": 6,
+    "axiomCount": 3,
     "lineCount": 399,
     "assumptions": "6 axioms (soundness fix: was 5 but f_property was false for small n). Added f_domain_large and restricted f_property/erdos_684_statement to require f_domain. Remaining axioms: f_property, f_domain_large, mahler_ineffective, tang_bound, rh_conditional_bound, heuristic_conjecture."
   },
@@ -174,7 +174,7 @@
     ],
     "namespace": "Erdos684",
     "lineCount": 399,
-    "axiomCount": 6,
+    "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 10
   },

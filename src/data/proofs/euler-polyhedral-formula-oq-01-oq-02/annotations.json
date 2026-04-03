@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ann-colorable-api",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-02",
+    "range": { "startLine": 52, "endLine": 70 },
+    "type": "technique",
+    "title": "Colorability Basics: The Lean 4 API for Graph Coloring",
+    "content": "Four theorems establish the foundation: `colorable_of_le` uses `Colorable.mono : G.Colorable n → n ≤ m → G.Colorable m` (monotonicity). `empty_colorable` uses `isEmptyElim` — for an empty type V, any function from V is vacuously defined. `edgeless_one_colorable` constructs the coloring explicitly: `fun _ => ⟨0, by omega⟩` sends every vertex to color 0 (the only fin 1 element), and the adjacency condition is vacuously true since the graph has no edges (SimpleGraph.Bot.not_adj). `colorable_of_fintype` is a one-line delegation to Mathlib's `G.colorable_of_fintype`, which constructs a coloring by assigning distinct colors to each vertex (index by Fintype).",
+    "mathContext": "A proper coloring of $G$ with $k$ colors is a map $c : V \\to \\{0,\\ldots,k-1\\}$ such that $G.\\text{Adj}\\, u\\, v \\Rightarrow c(u) \\ne c(v)$. Mathlib's `SimpleGraph.Colorable n G` wraps this: `G.Colorable n ↔ ∃ c : G.Coloring (Fin n), True`. Monotonicity: more colors never hurts. The $n$-vertex coloring: assign color $i$ to the $i$-th vertex, giving a proper coloring since $c(u) \\ne c(v)$ whenever $u \\ne v$ (which is required by adjacency).",
+    "significance": "supporting",
+    "relatedConcepts": ["SimpleGraph.Colorable", "SimpleGraph.Coloring", "Colorable.mono", "colorable_of_fintype", "isEmptyElim"],
+    "prerequisites": ["SimpleGraph.Colorable and Coloring types", "Fin n as color type", "IsEmpty for empty vertex sets"]
+  },
+  {
+    "id": "ann-small-cases",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-02",
+    "range": { "startLine": 76, "endLine": 84 },
+    "type": "insight",
+    "title": "Small Cases: The Easy 4CT is Trivial by Monotonicity",
+    "content": "`four_colorable_small` (card V ≤ 4 → 4-colorable) is a one-liner: `G.colorable_of_fintype.mono hV`. Since V has ≤4 vertices, G is Fintype.card V ≤ 4 colorable, and monotonicity gives 4-colorable. `four_colorable_of_bipartite` (2-colorable → 4-colorable) is also one line: `h.mono (by omega)`. The mathematical content of the genuine 4CT is that PLANAR graphs are 4-colorable — these trivial cases avoid planarity entirely and do not represent genuine progress toward the 4CT. They are best understood as sanity checks that the coloring API works correctly.",
+    "mathContext": "For graphs with $\\le 4$ vertices: any $n$-vertex graph is $n$-colorable (just assign distinct colors). For bipartite graphs: 2-colorability is equivalent to having no odd cycles (König's theorem), giving 2-colorability directly. Both are special cases of 4-colorability by monotonicity. The genuine 4CT claim is about PLANAR graphs with arbitrarily many vertices — a fundamentally different statement requiring planarity theory.",
+    "significance": "context",
+    "relatedConcepts": ["Colorable.mono", "colorable_of_fintype", "bipartite graphs and 2-colorability", "4CT vs small-case trivializations"],
+    "prerequisites": ["colorable_of_fintype from above", "Colorable.mono for n ≤ m", "omega for 2 ≤ 4 arithmetic"]
+  },
+  {
+    "id": "ann-five-color-ingredient",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-02",
+    "range": { "startLine": 94, "endLine": 99 },
+    "type": "context",
+    "title": "PlanarHasLowDegreeVertex: The Key Ingredient for Five Color",
+    "content": "`PlanarHasLowDegreeVertex` is defined as `def ... : Prop := True` — a placeholder requiring planar graph infrastructure. The mathematical content: every simple planar graph has a vertex of degree ≤ 5. Proof sketch from Euler's formula: for a connected planar graph, V - E + F = 2. Each face has ≥ 3 edges and each edge borders ≤ 2 faces, so 3F ≤ 2E, giving F ≤ 2E/3. Substituting: V - E + 2E/3 ≥ 2, so E ≤ 3V - 6. Thus average degree = 2E/V < 6, giving a vertex of degree ≤ 5. This is the induction hypothesis for the Five Color Theorem proof.",
+    "mathContext": "Euler's formula: $V - E + F = 2$ for connected planar graphs. Handshaking for faces: $\\sum_f \\deg(f) = 2E$ with $\\deg(f) \\ge 3$ for all faces, giving $3F \\le 2E$. Combined: $V - E + \\frac{2E}{3} \\ge 2$, so $E \\le 3V - 6$. Average vertex degree $= 2E/V \\le (6V-12)/V < 6$, so $\\min \\deg \\le 5$. For the Five Color Theorem: by induction, remove a minimum-degree vertex $v$ (degree $\\le 5$), 5-color the rest, then reinsert $v$ — if its neighbors use $\\le 4$ colors, color $v$ with the 5th.",
+    "significance": "context",
+    "relatedConcepts": ["Euler's formula V-E+F=2", "face degree bounds", "minimum degree of planar graphs", "Five Color Theorem induction"],
+    "prerequisites": ["Planar graph definitions (not in Mathlib)", "Euler's formula for planar graphs", "Five Color Theorem proof strategy"]
+  },
+  {
+    "id": "ann-feasibility-table",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-02",
+    "range": { "startLine": 103, "endLine": 136 },
+    "type": "insight",
+    "title": "Feasibility Assessment: ~43K Lines Across 5 Components",
+    "content": "The tabulated estimate breaks the 4CT into 5 components: (1) graph theory basics (~2K lines, partially in Mathlib); (2) planar embeddings (~6K lines, not in Mathlib); (3) reducibility framework (~12K lines); (4) unavoidable configurations — 633 in RSST 1997 — (~15K lines); (5) computational kernel (~8K lines, candidate for native_decide). The three approaches differ mainly in how they handle the computational kernel: Coq port (~43K total), native_decide-based (~potentially shorter), RSST route (favored by Gonthier for its 633 vs 1936 configurations). The < 5% current status reflects only the basic coloring theorems being in Mathlib.",
+    "mathContext": "The Robertson-Sanders-Seymour-Thomas (1997) proof: (1) every minimal 4CT counterexample is an internally 6-connected triangulation; (2) such triangulations contain one of 633 'unavoidable' configurations; (3) each configuration is 'reducible' (Birkhoff 1913 notion: replacing the configuration with a smaller graph preserves the property that the graph is a minimal counterexample — contradiction). Steps (2) and (3) are verified computationally. `native_decide` in Lean 4 compiles the decision procedure to native code, checking in seconds what takes hours symbolically.",
+    "significance": "key",
+    "relatedConcepts": ["RSST 633 configurations", "Birkhoff reducibility", "native_decide vs kernel verification", "planar graph embeddings in ℝ²"],
+    "prerequisites": ["Appel-Haken and RSST 4CT proofs", "Lean 4 native_decide tactic", "SSReflect/Coq vs Lean 4 proof styles"]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-afsc-definition",
+    "proofId": "erdos-1059-oq-03",
+    "range": { "startLine": 21, "endLine": 22 },
+    "type": "definition",
+    "title": "AllFactorialSubtractionsComposite: The Erdős 1059 Property",
+    "content": "The AFSC definition captures the Erdős 1059 property in Lean: for every k with k! < n, the difference n - k! must be both composite (not prime) and at least 2. The ≥ 2 condition ensures we exclude cases where the difference is 0 or 1, which are neither prime nor composite in the usual sense. This definition is used by all subsequent theorems.",
+    "mathContext": "$\\mathrm{AFSC}(n) :\\!\\!\\iff \\forall k \\in \\mathbb{N},\\, (k! < n) \\Rightarrow (\\neg\\mathrm{Prime}(n - k!) \\land n - k! \\geq 2)$. For $n = 101$: $k \\in \\{1,2,3,4\\}$ since $4! = 24 < 101 \\leq 120 = 5!$. For $n = 211$: $k \\in \\{1,\\ldots,5\\}$ since $5! = 120 < 211 \\leq 720 = 6!$. The condition grows more restrictive as $n$ grows.",
+    "significance": "key",
+    "relatedConcepts": ["factorial", "composite numbers", "prime numbers", "Erdős Problem 1059"],
+    "prerequisites": ["Nat.factorial", "Nat.Prime", "decidable propositions"]
+  },
+  {
+    "id": "ann-decide-proofs",
+    "proofId": "erdos-1059-oq-03",
+    "range": { "startLine": 24, "endLine": 31 },
+    "type": "technique",
+    "title": "Verification by decide: Machine-Checking Small Number Facts",
+    "content": "All three computational lemmas (prime_223, next_prime_after_211, prime_199) are proved by the `decide` tactic. In Lean 4, `decide` works by reducing the proposition to a Boolean computation and evaluating it in the kernel. For small numbers like 223 and 199, primality testing by trial division is fast: √223 ≈ 14.9, so only divisors 2 through 14 need to be checked. The `next_prime_after_211` theorem checks all 11 numbers in (211, 223) — a finite, fast computation.",
+    "mathContext": "Primality test for $n$: check $\\neg\\exists d \\in \\{2, \\ldots, \\lfloor\\sqrt{n}\\rfloor\\},\\, d \\mid n$. For $n = 223$: check $d \\in \\{2, 3, 5, 7, 11, 13\\}$ (primes $\\leq 14$). $223 / 2 = 111.5$, $223 / 3 = 74.3$, $223 / 5 = 44.6$, $223 / 7 = 31.9$, $223 / 11 = 20.3$, $223 / 13 = 17.2$ — none divide evenly. For the gap: primes $p \\in (211, 223)$ would need $\\sqrt{p} < 15$, and trial division confirms the gap is empty.",
+    "significance": "technical",
+    "relatedConcepts": ["decide tactic", "Lean kernel evaluation", "trial division", "decidable instances"],
+    "prerequisites": ["Lean 4 tactics", "Nat.Prime decidability", "kernel reduction"]
+  },
+  {
+    "id": "ann-counterexample-proof",
+    "proofId": "erdos-1059-oq-03",
+    "range": { "startLine": 33, "endLine": 38 },
+    "type": "insight",
+    "title": "The Counterexample: AFSC(223) Fails via k = 4",
+    "content": "The proof of counterexample_223 uses a proof-by-contradiction structure: assume AFSC(223) holds, instantiate with k = 4 (since 4! = 24 < 223), and derive the requirement that 223 - 24 = 199 must be composite. But prime_199 says 199 is prime — contradiction. The `simp [Nat.factorial]` step computes 4! = 24, and `exact h4 (by decide)` closes the goal using the fact that 199 is prime.",
+    "mathContext": "Proof of $\\neg\\mathrm{AFSC}(223)$: Suppose $\\mathrm{AFSC}(223)$ holds. Instantiate $k = 4$: $4! = 24 < 223$, so $\\mathrm{AFSC}(223)$ gives $\\neg\\mathrm{Prime}(223 - 24) \\land 223 - 24 \\geq 2$. But $223 - 24 = 199$ and $\\mathrm{Prime}(199)$. Contradiction. The proof has the structure: \\texttt{intro h; have h4 := h 4 (fact); simp at h4; exact h4 prime\\_199}.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "instantiation", "Nat.factorial computation", "simp lemmas"],
+    "prerequisites": ["Lean 4 proof structure", "have tactic", "exact tactic", "intro tactic"]
+  },
+  {
+    "id": "ann-conjunction-assembly",
+    "proofId": "erdos-1059-oq-03",
+    "range": { "startLine": 40, "endLine": 45 },
+    "type": "insight",
+    "title": "Assembling the Main Result as a Conjunction",
+    "content": "The smallest_failing_prime_after_211 theorem packages all three results into a single conjunction: (1) 223 is prime, (2) AFSC(223) fails, (3) no prime exists in (211, 223). This conjunction directly witnesses the claim '223 is the smallest prime > 211 failing AFSC.' The proof is a direct anonymous constructor ⟨prime_223, counterexample_223, next_prime_after_211⟩ — a simple bundling of three already-proved lemmas.",
+    "mathContext": "Main theorem: $\\mathrm{Prime}(223) \\land \\neg\\mathrm{AFSC}(223) \\land (\\forall p,\\, 211 < p \\land p < 223 \\Rightarrow \\neg\\mathrm{Prime}(p))$. This directly formalizes 'smallest failing prime after 211': primality of 223 (it IS a prime), failure of the property (it DOES fail), and minimality (no smaller prime > 211 exists to fail it, since the prime gap is empty).",
+    "significance": "supporting",
+    "relatedConcepts": ["conjunction introduction", "anonymous constructor", "minimality witness", "bundling lemmas"],
+    "prerequisites": ["Lean 4 conjunction syntax", "anonymous constructor ⟨_, _, _⟩"]
+  }
+]

@@ -54,7 +54,7 @@
       "Small values h(1)=2 through h(5)=14",
       "small_values_consistent theorem combining known values"
     ],
-    "axiomCount": 12,
+    "axiomCount": 8,
     "assumptions": "12 axiom declarations: h (Jacobsthal function definition), h_spec (h(k) specification property), h_minimal (h(k) minimality), iwaniec_upper_bound (h(k) <= C(k log k)^2), rankin_lower_bound (Rankin-type lower bound), fgkmt_lower_bound (FGKMT best lower bound), h_one (h(1)=2), h_two (h(2)=4), h_three (h(3)=6), h_four (h(4)=10), h_five (h(5)=14), jacobsthal_extremal_at_primorial (primorial extremal)",
     "lineCount": 157
   },
@@ -160,7 +160,7 @@
     ],
     "namespace": "Erdos970",
     "lineCount": 157,
-    "axiomCount": 12,
+    "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 5
   },

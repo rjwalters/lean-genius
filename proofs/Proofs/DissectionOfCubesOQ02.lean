@@ -333,14 +333,12 @@ theorem polygon_dehn_zero (angles : List ℝ) (h : ∀ θ ∈ angles, ∃ n : �
 -- Part VII: The Dehn-Sydler Theorem (Statement)
 -- ========================================================================
 
-/-- **Dehn-Sydler Theorem** (1965): Two polyhedra in 3D are scissors congruent
+/- dehn_sydler_statement: **Dehn-Sydler Theorem** (1965): Two polyhedra in 3D are scissors congruent
 if and only if they have the same volume AND the same Dehn invariant.
 
 This shows that Dehn's invariant is not just necessary but SUFFICIENT
 (together with volume) for scissors congruence. -/
-theorem dehn_sydler_statement :
-    True := -- Placeholder: full formalization would require measure theory
-  trivial
+
 
 /-
 The Dehn-Sydler theorem was conjectured by Dehn (1901) and proved by

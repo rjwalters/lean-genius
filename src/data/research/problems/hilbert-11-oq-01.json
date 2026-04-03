@@ -1,7 +1,7 @@
 {
   "slug": "hilbert-11-oq-01",
   "title": "Formalize Hasse-Minkowski theorem including p-adic tensor product",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T21:46:38.107Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proved four_squares_connection from Mathlib; reduced axiom count from 6 to 5.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Consider improving RepresentsZeroOverReals/Padic placeholders; commit and push.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Converted four_squares_connection axiom to theorem using Nat.sum_four_squares",
+    "builtItems": [
+      "Proved four_squares_connection in Hilbert11_QuadraticForms.lean:251 using Nat.sum_four_squares"
+    ],
+    "insights": [
+      "Nat.sum_four_squares (n : ℕ) : ∃ a b c d : ℕ, a^2 + b^2 + c^2 + d^2 = n — exact_mod_cast + .symm converts ℕ form to ℤ form",
+      "four_squares_connection axiom comment was wrong — Mathlib does have the proof, conversion is 3 lines"
+    ],
+    "mathlibGaps": [
+      "RepresentsZeroOverReals / RepresentsZeroOverPadic still True placeholders — QuadraticForm.baseChange needed for proper p-adic tensor extension"
+    ],
+    "nextSteps": [
+      "Improve RepresentsZeroOverReals using QuadraticForm.baseChange from Mathlib.LinearAlgebra.QuadraticForm.TensorProduct"
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -50,20 +59,53 @@
     "mathlib": []
   },
   "started": "2026-03-30T21:46:38.107Z",
-  "lastUpdate": "2026-03-30T21:46:38.107Z",
+  "lastUpdate": "2026-04-03T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Hilbert11_QuadraticForms.lean",
       "filename": "Hilbert11_QuadraticForms.lean",
-      "lineCount": 498,
-      "theoremCount": 7,
-      "axiomCount": 6,
+      "lineCount": 497,
+      "theoremCount": 8,
+      "axiomCount": 5,
       "defCount": 17,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11_QuadraticForms.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01.lean",
+      "filename": "Hilbert11OQ01.lean",
+      "lineCount": 275,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01Aristotle.lean",
+      "filename": "Hilbert11OQ01Aristotle.lean",
+      "lineCount": 65,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01OQ01.lean",
+      "filename": "Hilbert11OQ01OQ01.lean",
+      "lineCount": 125,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01OQ01.lean"
     }
   ]
 }

@@ -54,7 +54,7 @@
       "Proved n_not_in_antichain_sizes: size n excluded from antichain distinct sizes"
     ],
     "axiomCount": 3,
-    "lineCount": 266,
+    "lineCount": 391,
     "assumptions": "4 axioms: erdos_trotter_r1 (known, Griggs 1983), erdos_trotter_upper (known), erdos_trotter_achievable (known), erdos_776_threshold (OPEN conjecture). sperner_theorem is proved via Mathlib.",
     "mathlib_version": "4.26.0"
   },
@@ -166,8 +166,8 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 266,
-    "axiomCount": 4,
+    "lineCount": 391,
+    "axiomCount": 3,
     "theoremCount": 10,
     "definitionCount": 6
   }

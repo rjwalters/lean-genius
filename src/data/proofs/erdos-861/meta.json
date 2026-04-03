@@ -51,7 +51,7 @@
       "Proof that combined bounds hold"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 6,
+    "axiomCount": 4,
     "assumptions": "7 axiom declarations: sidon_equiv (two Sidon definitions equivalent), erdos_turan_sidon (f(N) ~ sqrt(N)), cameron_erdos_q1_true (A(N)/2^f(N) diverges), cameron_erdos_q2_false (exponent not 1+o(1)), saxton_thomason_lower_bound (2^{1.16f(N)} lower), klrs_upper_bound (2^{6.442f(N)} upper), extend_sidon (Sidon set extension)",
     "lineCount": 265
   },
@@ -170,7 +170,7 @@
     ],
     "namespace": "Erdos861",
     "lineCount": 265,
-    "axiomCount": 6,
+    "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 7
   },

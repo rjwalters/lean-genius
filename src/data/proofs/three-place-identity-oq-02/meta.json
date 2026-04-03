@@ -18,16 +18,81 @@
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. All theorems fully proved.",
     "originalContributions": [
-      "stereoToRelative: Two equivalence relations \u2192 relative identity (consensus construction)",
-      "relativeToStereo: Relative identity \u2192 two equivalence relations (viewpoint extraction)",
+      "stereoToRelative: Two equivalence relations → relative identity (consensus construction)",
+      "relativeToStereo: Relative identity → two equivalence relations (viewpoint extraction)",
       "Stereo equality theorem: two equalities always give valid relative identity",
       "Flat identity is trivial: single equivalence makes all viewpoints agree",
-      "Stereo nontrivial: disagreeing viewpoints \u2192 distinct equivalence relations"
+      "Stereo nontrivial: disagreeing viewpoints → distinct equivalence relations"
     ],
     "dateAdded": "2026-03-30",
     "lineCount": 175,
     "theoremCount": 8,
     "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Three-place (relative) identity was introduced by Peter Geach in his 1967 paper 'Identity' (Review of Metaphysics), where he argued against the absoluteness of identity: the same object can be 'the same F' but 'a different G' for sortals F and G. This challenged Leibniz's law and sparked decades of philosophical debate between Geach and W.V.O. Quine, who insisted that numerical identity must be absolute. Tom Etter, working at the Boundary Institute, proposed a formal reconciliation in his 2001 paper 'Equalities and Quine Identities': two equivalence relations ('stereo equality', by analogy with stereoscopic vision) suffice to model relative identity, providing a two-predicate foundation that avoids Quine's objections. This formalization proves Etter's theorem in Lean 4, establishing both the forward construction (stereo pair → relative identity) and the reverse (relative identity → stereo pair), along with the negative result that a single equivalence relation is insufficient — it produces only a 'flat' (viewpoint-independent) identity.",
+    "problemStatement": "Can two equivalence relations $E_1, E_2$ on a type $U$ encode a three-place relative identity predicate $\\mathrm{Id}(x,y,z)$ satisfying reflexivity, symmetry, and transitivity in $(y,z)$ for each viewpoint $x$? Conversely, does every relative identity arise from some stereo pair?",
+    "proofStrategy": "Five parts: (1) construct stereoToRelative mapping (E₁, E₂) to Id(x,y,z) := E₁(y,z) ∧ E₂(y,z) (consensus); (2) extract relativeToStereo by fixing two viewpoints a, b; (3) prove round-trip properties; (4) prove Etter's main theorem and converse; (5) prove flatness of single-equivalence identity and nontriviality of the stereo pair when viewpoints disagree.",
+    "keyInsights": [
+      "The 'consensus' encoding Id(x,y,z) := E₁(y,z) ∧ E₂(y,z) makes the viewpoint x irrelevant — the real perspectival content of relative identity requires the extraction direction where different viewpoints give genuinely different equivalences",
+      "A single equivalence relation yields only 'flat' identity where all viewpoints agree (Id(x₁,y,z) ↔ Id(x₂,y,z) for all x₁,x₂), proving that two relations are the minimum needed for genuine viewpoint-dependence",
+      "The stereo metaphor is apt: just as two slightly different images create the perception of depth, two slightly different equivalence relations create the perspectival structure of relative identity",
+      "The constructions form a Galois connection: stereoToRelative and relativeToStereo are functors in opposite directions, with the round-trip going via a consensus that is weaker than the original in one direction",
+      "This formalization provides a machine-verified foundation for Etter's claim that Quine-style identity (single absolute equality) can be recovered as the degenerate case where E₁ = E₂"
+    ]
+  },
+  "sections": [
+    {
+      "id": "structures",
+      "title": "Part I: Core Structures",
+      "startLine": 37,
+      "endLine": 57,
+      "summary": "Defines `StereoEquality U` (two equivalence relations) and `RelativeIdentity U` (three-place Id with reflexivity, symmetry, transitivity in the y,z positions)."
+    },
+    {
+      "id": "stereo-to-relative",
+      "title": "Part I: Stereo → Relative Identity",
+      "startLine": 59,
+      "endLine": 78,
+      "summary": "Constructs `stereoToRelative`: Id(x,y,z) := E₁(y,z) ∧ E₂(y,z). Viewpoint x is ignored; the axioms follow from componentwise application of the equivalence axioms."
+    },
+    {
+      "id": "relative-to-stereo",
+      "title": "Part II: Relative Identity → Stereo",
+      "startLine": 80,
+      "endLine": 97,
+      "summary": "Extracts `relativeToStereo` by fixing two viewpoints a, b: E₁(y,z) := Id(a,y,z), E₂(y,z) := Id(b,y,z)."
+    },
+    {
+      "id": "round-trip",
+      "title": "Part III: Round-Trip Properties",
+      "startLine": 99,
+      "endLine": 121,
+      "summary": "Proves the two round-trip theorems: stereo→relative→stereo preserves consensus; relative→stereo→relative weakens to consensus but is implied by the original."
+    },
+    {
+      "id": "stereo-theorem",
+      "title": "Part IV: Stereo Equality Theorem",
+      "startLine": 122,
+      "endLine": 143,
+      "summary": "Main theorem: every stereo pair gives a relative identity. Converse: every relative identity gives a stereo pair (via any two viewpoints). Together: the theories are mutually interpretable."
+    },
+    {
+      "id": "mono-insufficient",
+      "title": "Part V: One Equivalence is Insufficient",
+      "startLine": 144,
+      "endLine": 175,
+      "summary": "Proves `flat_identity_trivial` (single equivalence makes all viewpoints agree) and `stereo_nontrivial` (disagreeing viewpoints require two distinct equivalence relations)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization proves Etter's Stereo Equality Theorem in both directions: two equivalence relations suffice to encode relative identity (stereoToRelative), and every relative identity arises from a stereo pair (relativeToStereo). The negative result — a single equivalence relation is insufficient — is also machine-verified. All 8 theorems and 5 definitions are fully proved, 0 sorries.",
+    "implications": "This result provides a formal foundation for the Geach-Etter position in the philosophy of identity: relative identity is not a weakening of Leibniz identity but an extension requiring a richer structure. In Lean 4, the proof is elementary (just propositional logic and equivalence axioms), making it a clean example of philosophy-to-machine-verification. The framework is relevant to database theory (where two records may be 'the same person' under one schema and 'different' under another) and to coalgebraic models of identity in process algebra.",
+    "openQuestions": [
+      "Can the viewpoint-dependent construction (where Id(x,y,z) genuinely depends on x) be formalized in Lean 4, and does it yield a richer theory than the viewpoint-independent consensus?",
+      "Etter's full framework in 'Equalities and Quine Identities' includes a quantification over equivalence relations; can the indexed version — Id(x,y,z) := E_x(y,z) for a family of equivalences indexed by x — be formalized and shown to be equivalent to stereo equality?",
+      "Is the stereo equality theorem optimal: are there relative identity structures requiring strictly more than two equivalence relations for faithful representation?"
+    ]
   },
   "crossReferences": [
     {
@@ -46,6 +111,5 @@
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 5
-  },
-  "sections": []
+  }
 }

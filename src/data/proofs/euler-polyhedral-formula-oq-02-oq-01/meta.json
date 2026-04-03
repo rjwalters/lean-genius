@@ -2,7 +2,7 @@
   "id": "euler-polyhedral-formula-oq-02-oq-01",
   "title": "Smooth Gauss-Bonnet Theorem",
   "slug": "euler-polyhedral-formula-oq-02-oq-01",
-  "description": "Formalizes the smooth Gauss-Bonnet theorem \u222b_M K dA = 2\u03c0\u03c7(M) and its consequences for compact Riemannian surfaces. The core theorem is axiomatized (Mathlib lacks Riemannian geometry infrastructure), with 20+ consequence theorems fully proved: genus determination from curvature sign, curvature-topology constraints, average curvature formulas, and connections to the discrete case.",
+  "description": "Formalizes the smooth Gauss-Bonnet theorem ∫_M K dA = 2πχ(M) and its consequences for compact Riemannian surfaces. The core theorem is axiomatized (Mathlib lacks Riemannian geometry infrastructure), with 20+ consequence theorems fully proved: genus determination from curvature sign, curvature-topology constraints, average curvature formulas, and connections to the discrete case.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gauss%E2%80%93Bonnet_theorem",
@@ -25,12 +25,12 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_pos",
-        "description": "\u03c0 > 0, used throughout for curvature sign arguments.",
+        "description": "π > 0, used throughout for curvature sign arguments.",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
         "theorem": "Int.cast_injective",
-        "description": "Injectivity of \u2124 \u2192 \u211d cast, used to lift real-valued equalities back to integer Euler characteristics.",
+        "description": "Injectivity of ℤ → ℝ cast, used to lift real-valued equalities back to integer Euler characteristics.",
         "module": "Mathlib.Data.Int.Cast.Lemmas"
       },
       {
@@ -41,23 +41,23 @@
     ],
     "originalContributions": [
       "Axiomatic CompactRiemannianSurface structure encoding Gauss-Bonnet",
-      "Genus determination from curvature sign (positive \u2192 sphere, zero \u2192 torus, negative \u2192 genus \u2265 2)",
+      "Genus determination from curvature sign (positive → sphere, zero → torus, negative → genus ≥ 2)",
       "Total curvature as topological invariant (metric-independent)",
       "Average curvature formula and unit sphere verification",
       "Area bound for positively curved surfaces (Bonnet-type)",
-      "Connection to discrete Gauss-Bonnet (same 2\u03c0\u03c7 formula)",
+      "Connection to discrete Gauss-Bonnet (same 2πχ formula)",
       "Chern-Gauss-Bonnet generalization to 2n-manifolds (axiomatic)",
       "Concrete examples: standard sphere, flat torus, hyperbolic genus 2",
-      "Gauss-Bonnet with boundary: \u222bK dA + \u222b\u03ba_g ds = 2\u03c0\u03c7 for compact surfaces with boundary",
+      "Gauss-Bonnet with boundary: ∫K dA + ∫κ_g ds = 2πχ for compact surfaces with boundary",
       "Girard's formula: geodesic triangle area = angular excess/K on constant curvature surfaces",
-      "Hyperbolic triangle area formula and area bound (< \u03c0 for ideal triangles)",
-      "Poincar\u00e9-Hopf index theorem \u2192 hairy ball theorem (complete \u03c7=0 classification)",
+      "Hyperbolic triangle area formula and area bound (< π for ideal triangles)",
+      "Poincaré-Hopf index theorem → hairy ball theorem (complete χ=0 classification)",
       "Morse theory: critical point counts constrained by Euler characteristic"
     ],
-    "historicalContext": "The Gauss-Bonnet theorem is one of the deepest results connecting geometry and topology. Gauss (1827) discovered that Gaussian curvature is intrinsic (Theorema Egregium). Bonnet (1848) proved \u222bK dA = 2\u03c0\u03c7 for closed surfaces. Chern (1944) generalized to 2n-manifolds using the Pfaffian of the curvature form. The theorem bridges local geometry (curvature) and global topology (Euler characteristic), and is a precursor to the Atiyah-Singer index theorem.",
-    "axiomCount": 10,
+    "historicalContext": "The Gauss-Bonnet theorem is one of the deepest results connecting geometry and topology. Gauss (1827) discovered that Gaussian curvature is intrinsic (Theorema Egregium). Bonnet (1848) proved ∫K dA = 2πχ for closed surfaces. Chern (1944) generalized to 2n-manifolds using the Pfaffian of the curvature form. The theorem bridges local geometry (curvature) and global topology (Euler characteristic), and is a precursor to the Atiyah-Singer index theorem.",
+    "axiomCount": 0,
     "lineCount": 786,
-    "assumptions": "0 sorries but 10 structure-encoded assumptions: Gauss-Bonnet theorem (CompactRiemannianSurface.gauss_bonnet), chi-genus formula (OrientableClosedSurface.chi_genus), Chern-Gauss-Bonnet (ChernGaussBonnetManifold), Gauss-Bonnet with boundary, geodesic polygon formula, constant curvature formula, geodesic triangle Gauss-Bonnet, Poincar\u00e9-Hopf index theorem, nonvanishing vector field index, Morse relation. Core differential geometry axiomatized due to Mathlib lacking Riemannian geometry.",
+    "assumptions": "0 sorries but 10 structure-encoded assumptions: Gauss-Bonnet theorem (CompactRiemannianSurface.gauss_bonnet), chi-genus formula (OrientableClosedSurface.chi_genus), Chern-Gauss-Bonnet (ChernGaussBonnetManifold), Gauss-Bonnet with boundary, geodesic polygon formula, constant curvature formula, geodesic triangle Gauss-Bonnet, Poincaré-Hopf index theorem, nonvanishing vector field index, Morse relation. Core differential geometry axiomatized due to Mathlib lacking Riemannian geometry.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
@@ -144,10 +144,10 @@
     {
       "id": "applications",
       "title": "Applications",
-      "summary": "Topological applications: sphere has $\\chi = 2$ (hairy ball theorem consequence via Poincar\u00e9-Hopf), torus has $\\chi = 0$ (admits nowhere-vanishing vector fields). Proves same genus implies same $\\chi$ and same total curvature.",
+      "summary": "Topological applications: sphere has $\\chi = 2$ (hairy ball theorem consequence via Poincaré-Hopf), torus has $\\chi = 0$ (admits nowhere-vanishing vector fields). Proves same genus implies same $\\chi$ and same total curvature.",
       "startLine": 350,
       "endLine": 384,
-      "mathContext": "Topological applications: sphere has $\\chi = 2$ (hairy ball theorem consequence via Poincar\u00e9-Hopf), torus has $\\chi = 0$ (admits nowhere-vanishing vector fields). Proves same genus implies same $\\chi$ and same total curvature."
+      "mathContext": "Topological applications: sphere has $\\chi = 2$ (hairy ball theorem consequence via Poincaré-Hopf), torus has $\\chi = 0$ (admits nowhere-vanishing vector fields). Proves same genus implies same $\\chi$ and same total curvature."
     },
     {
       "id": "examples",
@@ -183,11 +183,11 @@
     },
     {
       "id": "poincare-hopf",
-      "title": "Poincar\u00e9-Hopf Index Theorem",
-      "summary": "Axiomatizes the Poincar\u00e9-Hopf theorem ($\\sum \\text{index}(V, p_i) = \\chi(M)$) and derives the **hairy ball theorem**: no nowhere-vanishing vector field on $S^2$ ($\\chi = 2 \\neq 0$). Complete classification: only $\\chi = 0$ surfaces (torus) support non-vanishing fields.",
+      "title": "Poincaré-Hopf Index Theorem",
+      "summary": "Axiomatizes the Poincaré-Hopf theorem ($\\sum \\text{index}(V, p_i) = \\chi(M)$) and derives the **hairy ball theorem**: no nowhere-vanishing vector field on $S^2$ ($\\chi = 2 \\neq 0$). Complete classification: only $\\chi = 0$ surfaces (torus) support non-vanishing fields.",
       "startLine": 612,
       "endLine": 681,
-      "mathContext": "Poincar\u00e9-Hopf: $\\sum_i \\text{ind}(V, p_i) = \\chi(M)$. Hairy ball: $\\chi(S^2) = 2 \\neq 0$, so every vector field on $S^2$ vanishes somewhere."
+      "mathContext": "Poincaré-Hopf: $\\sum_i \\text{ind}(V, p_i) = \\chi(M)$. Hairy ball: $\\chi(S^2) = 2 \\neq 0$, so every vector field on $S^2$ vanishes somewhere."
     },
     {
       "id": "morse-theory",
@@ -199,13 +199,13 @@
     }
   ],
   "overview": {
-    "summary": "The smooth Gauss-Bonnet theorem \u222b_M K dA = 2\u03c0\u03c7(M) is one of the most profound results in differential geometry, connecting local curvature to global topology. This formalization axiomatizes the core theorem (since Mathlib lacks Riemannian geometry) and proves 35+ consequence theorems covering genus determination, curvature constraints, the discrete connection, Girard's spherical triangle formula, Poincar\u00e9-Hopf index theorem (hairy ball theorem), and Morse theory.",
-    "historicalContext": "The Gauss-Bonnet theorem has a rich 200-year history spanning differential geometry and topology. Gauss (1827) introduced Gaussian curvature in his *Disquisitiones generales circa superficies curvas* and proved the **Theorema Egregium** \u2014 that curvature is an intrinsic invariant, independent of the embedding. Bonnet (1848) proved the integral formula $\\int_M K\\,dA = 2\\pi\\chi(M)$ for closed surfaces, establishing the bridge between local geometry and global topology. The theorem was revolutionary: it showed that a purely geometric quantity (total curvature) equals a purely topological one (Euler characteristic). In 1944, **Chern** gave an intrinsic proof and generalized to $2n$-manifolds using the Pfaffian of the curvature form, yielding $\\int_M \\text{Pf}(\\Omega) = (2\\pi)^n \\chi(M)$. This generalization became a cornerstone of modern differential geometry and a precursor to the **Atiyah-Singer index theorem** (1963), which subsumes Gauss-Bonnet as a special case for the de Rham complex.",
-    "text": "Formalizes the smooth Gauss-Bonnet theorem \u222b_M K dA = 2\u03c0\u03c7(M) and its consequences for compact Riemannian surfaces. The core theorem is axiomatized (Mathlib lacks Riemannian geometry infrastructure), with 20+ consequence theorems fully proved: genus determination from curvature sign, curvature-topology constraints, average curvature formulas, and connections to the discrete case.",
+    "summary": "The smooth Gauss-Bonnet theorem ∫_M K dA = 2πχ(M) is one of the most profound results in differential geometry, connecting local curvature to global topology. This formalization axiomatizes the core theorem (since Mathlib lacks Riemannian geometry) and proves 35+ consequence theorems covering genus determination, curvature constraints, the discrete connection, Girard's spherical triangle formula, Poincaré-Hopf index theorem (hairy ball theorem), and Morse theory.",
+    "historicalContext": "The Gauss-Bonnet theorem has a rich 200-year history spanning differential geometry and topology. Gauss (1827) introduced Gaussian curvature in his *Disquisitiones generales circa superficies curvas* and proved the **Theorema Egregium** — that curvature is an intrinsic invariant, independent of the embedding. Bonnet (1848) proved the integral formula $\\int_M K\\,dA = 2\\pi\\chi(M)$ for closed surfaces, establishing the bridge between local geometry and global topology. The theorem was revolutionary: it showed that a purely geometric quantity (total curvature) equals a purely topological one (Euler characteristic). In 1944, **Chern** gave an intrinsic proof and generalized to $2n$-manifolds using the Pfaffian of the curvature form, yielding $\\int_M \\text{Pf}(\\Omega) = (2\\pi)^n \\chi(M)$. This generalization became a cornerstone of modern differential geometry and a precursor to the **Atiyah-Singer index theorem** (1963), which subsumes Gauss-Bonnet as a special case for the de Rham complex.",
+    "text": "Formalizes the smooth Gauss-Bonnet theorem ∫_M K dA = 2πχ(M) and its consequences for compact Riemannian surfaces. The core theorem is axiomatized (Mathlib lacks Riemannian geometry infrastructure), with 20+ consequence theorems fully proved: genus determination from curvature sign, curvature-topology constraints, average curvature formulas, and connections to the discrete case.",
     "proofStrategy": "The formalization takes an axiomatic approach: a `CompactRiemannianSurface` structure encodes $\\chi$, $\\int K\\,dA$, area, and the Gauss-Bonnet equality as a single axiom. This minimal axiomatization bypasses Mathlib's lack of Riemannian geometry while preserving mathematical correctness. All 20+ consequences are then proved purely from this axiom using `nlinarith`, `omega`, `field_simp`, and `ring`, with $\\pi > 0$ as the key analytic input. The strategy of encoding deep theorems as structure axioms and proving consequences is a common pattern in formalization when foundational infrastructure is missing.",
-    "keyIdea": "The total Gaussian curvature of a closed surface is a topological invariant: it equals 2\u03c0\u03c7 regardless of the metric. This single equation determines the genus from curvature sign and constrains which geometries a surface can support.",
+    "keyIdea": "The total Gaussian curvature of a closed surface is a topological invariant: it equals 2πχ regardless of the metric. This single equation determines the genus from curvature sign and constrains which geometries a surface can support.",
     "keyInsights": [
-      "**One axiom, 20+ theorems**: The entire formalization rests on a single axiom ($\\int K\\,dA = 2\\pi\\chi$) from which genus determination, curvature-topology constraints, average curvature, area bounds, and the discrete connection all follow \u2014 demonstrating the enormous deductive power of Gauss-Bonnet.",
+      "**One axiom, 20+ theorems**: The entire formalization rests on a single axiom ($\\int K\\,dA = 2\\pi\\chi$) from which genus determination, curvature-topology constraints, average curvature, area bounds, and the discrete connection all follow — demonstrating the enormous deductive power of Gauss-Bonnet.",
       "**Curvature determines topology**: Positive total curvature forces the sphere ($g=0$), zero forces the torus ($g=1$), and negative forces genus $\\geq 2$. This trichotomy is the foundation of the uniformization theorem: every closed surface admits a metric of constant curvature $+1$, $0$, or $-1$.",
       "**Metric independence**: Two Riemannian metrics on the same surface give different pointwise curvatures $K$ but identical total curvatures $\\int K\\,dA$. This is formalized as `curvature_metric_independent`: surfaces with equal $\\chi$ have equal total curvature.",
       "**Smooth-discrete bridge**: The smooth formula $\\int K\\,dA = 2\\pi\\chi$ and the discrete formula $\\sum_v \\delta(v) = 2\\pi\\chi$ (from angular deficiency) agree exactly on the topological invariant. As a triangulation refines, discrete angular deficiency converges to smooth Gaussian curvature.",
@@ -213,15 +213,15 @@
     ],
     "prerequisites": [
       "Gaussian curvature of surfaces",
-      "Euler characteristic \u03c7 = 2 - 2g",
+      "Euler characteristic χ = 2 - 2g",
       "Compact Riemannian manifolds",
       "Discrete Gauss-Bonnet (parent proof)"
     ],
     "problemStatement": "See the description field for the problem statement."
   },
   "conclusion": {
-    "summary": "We formalize the smooth Gauss-Bonnet theorem and its extensive consequences across differential geometry and topology. From the core axiom (\u222bK dA = 2\u03c0\u03c7), we derive 35+ theorems covering genus determination, curvature constraints, Girard's spherical triangle formula, the Poincar\u00e9-Hopf index theorem (hairy ball), and Morse-theoretic critical point bounds \u2014 all with 0 sorries.",
-    "implications": "**Theoretical Significance**: This formalization demonstrates that the Gauss-Bonnet theorem, when taken as an axiom, is sufficient to derive not only the curvature-topology classification of surfaces but also classical results in spherical/hyperbolic geometry (Girard's formula), vector field theory (hairy ball theorem via Poincar\u00e9-Hopf), and Morse theory (critical point lower bounds).\n\nThe approach validates the axiomatic strategy for formalizing deep results ahead of foundational infrastructure. As Mathlib develops Riemannian geometry infrastructure, these axioms can be replaced by proofs, automatically inheriting all 35+ consequences.",
+    "summary": "We formalize the smooth Gauss-Bonnet theorem and its extensive consequences across differential geometry and topology. From the core axiom (∫K dA = 2πχ), we derive 35+ theorems covering genus determination, curvature constraints, Girard's spherical triangle formula, the Poincaré-Hopf index theorem (hairy ball), and Morse-theoretic critical point bounds — all with 0 sorries.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates that the Gauss-Bonnet theorem, when taken as an axiom, is sufficient to derive not only the curvature-topology classification of surfaces but also classical results in spherical/hyperbolic geometry (Girard's formula), vector field theory (hairy ball theorem via Poincaré-Hopf), and Morse theory (critical point lower bounds).\n\nThe approach validates the axiomatic strategy for formalizing deep results ahead of foundational infrastructure. As Mathlib develops Riemannian geometry infrastructure, these axioms can be replaced by proofs, automatically inheriting all 35+ consequences.",
     "openQuestions": [
       "Can the full smooth Gauss-Bonnet be proved from first principles once Mathlib adds Riemannian metrics, differential forms, and integration on manifolds?",
       "Can the Chern-Gauss-Bonnet theorem for 4-manifolds be formalized with Pfaffians and exterior algebra in Lean 4?",
@@ -238,7 +238,7 @@
     ],
     "namespace": "SmoothGaussBonnet",
     "lineCount": 786,
-    "axiomCount": 10,
+    "axiomCount": 0,
     "theoremCount": 60,
     "definitionCount": 4
   },
@@ -246,17 +246,17 @@
     {
       "targetId": "euler-polyhedral-formula-oq-02",
       "relationship": "extends",
-      "description": "Extends the discrete Gauss-Bonnet theorem (\u03a3\u03b4(v) = 2\u03c0\u03c7 for polyhedra) to the smooth case (\u222bK dA = 2\u03c0\u03c7 for Riemannian surfaces), plus Girard's formula, Poincar\u00e9-Hopf, and Morse theory"
+      "description": "Extends the discrete Gauss-Bonnet theorem (Σδ(v) = 2πχ for polyhedra) to the smooth case (∫K dA = 2πχ for Riemannian surfaces), plus Girard's formula, Poincaré-Hopf, and Morse theory"
     },
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "foundational",
-      "description": "The Euler characteristic \u03c7 = V-E+F=2 is the topological invariant that both the discrete and smooth Gauss-Bonnet theorems connect to curvature; the base formalization establishes this foundation"
+      "description": "The Euler characteristic χ = V-E+F=2 is the topological invariant that both the discrete and smooth Gauss-Bonnet theorems connect to curvature; the base formalization establishes this foundation"
     },
     {
       "targetId": "euler-polyhedral-formula-oq-01",
       "relationship": "related",
-      "description": "OQ-01 develops graph-theoretic consequences of Euler's formula (coloring, planarity); this OQ-02-OQ-01 develops the differential-geometric consequences (curvature, genus, Poincar\u00e9-Hopf)"
+      "description": "OQ-01 develops graph-theoretic consequences of Euler's formula (coloring, planarity); this OQ-02-OQ-01 develops the differential-geometric consequences (curvature, genus, Poincaré-Hopf)"
     }
   ],
   "references": [
@@ -269,9 +269,9 @@
     },
     {
       "authors": "Pierre Ossian Bonnet",
-      "title": "M\u00e9moire sur la th\u00e9orie g\u00e9n\u00e9rale des surfaces",
+      "title": "Mémoire sur la théorie générale des surfaces",
       "year": "1848",
-      "venue": "Journal de l'\u00c9cole Polytechnique",
+      "venue": "Journal de l'École Polytechnique",
       "note": "Proved the Gauss-Bonnet theorem for geodesic triangles"
     },
     {
@@ -290,7 +290,7 @@
     },
     {
       "authors": "W. Mantel",
-      "title": "\u00dcber die Eigenschaft der Kugel, unter allen geschlossenen Fl\u00e4chen...",
+      "title": "Über die Eigenschaft der Kugel, unter allen geschlossenen Flächen...",
       "year": "1907",
       "venue": "Jahresbericht der DMV",
       "note": "Early topology-curvature connections"

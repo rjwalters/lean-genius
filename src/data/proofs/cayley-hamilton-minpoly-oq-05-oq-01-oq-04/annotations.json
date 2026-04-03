@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-ch-oq05-oq01-oq04-aeval-conj",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+    "range": { "startLine": 57, "endLine": 77 },
+    "type": "technique",
+    "title": "aeval_conj: Conjugation as AlgHom via Polynomial.aeval_algHom_apply",
+    "content": "`aeval_conj` proves `aeval (P⁻¹MP) p = P⁻¹ · aeval M p · P` by constructing the conjugation-by-P map as an explicit `AlgHom` named `φ`. The AlgHom fields are filled manually: `map_one'` uses `Units.inv_mul`, `map_mul'` uses associativity to insert `P·P⁻¹ = 1`, `map_zero'` and `map_add'` follow from `simp`, and `commutes'` uses scalar commutativity. The key application is `Polynomial.aeval_algHom_apply φ M p`, which states `φ (aeval M p) = aeval (φ M) p` for any K-algebra endomorphism φ. Since `φ M = P⁻¹MP`, this gives the result. The explicit AlgHom construction is necessary because Lean cannot automatically infer the conjugation endomorphism.",
+    "mathContext": "For any $K$-algebra endomorphism $\\varphi: A \\to A$ and polynomial $p \\in K[X]$: $\\varphi(p(M)) = p(\\varphi(M))$. Applied to conjugation $\\varphi_P(A) = P^{-1}AP$: $p(P^{-1}MP) = P^{-1}p(M)P$. This is the functional calculus commutation property — conjugation commutes with polynomial evaluation because it is a ring homomorphism.",
+    "significance": "supporting",
+    "relatedConcepts": ["AlgHom construction in Lean 4", "Polynomial.aeval_algHom_apply", "functional calculus", "Units.inv_mul"],
+    "prerequisites": ["AlgHom typeclass in Mathlib", "Polynomial.aeval definition", "Units in ring theory"]
+  },
+  {
+    "id": "ann-ch-oq05-oq01-oq04-bezout",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+    "range": { "startLine": 107, "endLine": 130 },
+    "type": "technique",
+    "title": "annihilator_dvd_minpoly: GCD Annihilation via Bezout calc Chain",
+    "content": "`annihilator_dvd_minpoly` is the core algebraic lemma: if `p(M)v = 0`, then `gcd(p, minpoly(M))(M)v = 0`. The proof is a 15-line `calc` chain that expands `gcd(p, μ) = gcdA·p + gcdB·μ` (Bezout), distributes polynomial evaluation via `map_add/map_mul`, factors the matrix-vector product as `A·(B·v) = (AB)·v`, then substitutes `p(M)v = 0` and `μ(M) = 0` (Cayley-Hamilton via `minpoly.aeval`). The proof is completely sorry-free and constitutes the hard algebraic content of the file. The Bezout witness `EuclideanDomain.gcd_eq_gcd_ab` provides the specific coefficients `gcdA`, `gcdB`.",
+    "mathContext": "The Bezout identity in the Euclidean domain $K[X]$: $\\gcd(p, \\mu) = A \\cdot p + B \\cdot \\mu$ for some $A, B \\in K[X]$. Since $p(M)v = 0$ and $\\mu(M) = 0$ (minimal polynomial annihilates the matrix), we get $\\gcd(p,\\mu)(M)v = A(M)(p(M)v) + B(M)(\\mu(M)v) = 0$. This is the annihilator-ideal version of Bézout's theorem.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanDomain.gcd_eq_gcd_ab", "minpoly.aeval (Cayley-Hamilton)", "Matrix.mulVec_mulVec", "calc chain in Lean 4"],
+    "prerequisites": ["EuclideanDomain structure on K[X]", "minpoly.aeval from Mathlib.FieldTheory.Minpoly", "Matrix.add_mulVec and Matrix.mulVec_mulVec"]
+  },
+  {
+    "id": "ann-ch-oq05-oq01-oq04-cyclic-iff",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+    "range": { "startLine": 134, "endLine": 178 },
+    "type": "insight",
+    "title": "cyclic_iff_ann_eq_minpoly: Degree Comparison Closes the Forward Direction",
+    "content": "`cyclic_iff_ann_eq_minpoly` proves that for nonderogatory M, `IsCyclicVector M v ↔ ∀ p, p(M)v = 0 → minpoly | p`. The forward direction is the interesting one: assume v is cyclic and p(M)v = 0. Let d = gcd(p, μ). By `annihilator_dvd_minpoly`, d(M)v = 0. Since d ∣ μ and μ has degree n, either deg(d) < n (cyclicity forces d = 0, contradicting d ∣ μ ≠ 0) or deg(d) = deg(μ) (then q = μ/d has degree 0, so q is a unit, giving μ ∣ d ∣ p). The backward direction is simpler: if μ ∣ p and p(M)v = 0 for deg(p) < n, then deg(μ) = n ≤ deg(p) < n, contradiction. The `rcases hd_deg_le.lt_or_eq` is the degree dichotomy at the heart of the proof.",
+    "mathContext": "The annihilator ideal $\\text{Ann}(v) = \\{p : p(M)v = 0\\}$ is a principal ideal $(a_v)$ with $a_v \\mid \\mu_M$. For nonderogatory $M$ (so $\\deg \\mu_M = n = \\dim V$): $v$ is cyclic iff $a_v = \\mu_M$ (up to units). The proof uses that $K[X]$ is a PID, so divisibility is determined by degree for monic polynomials.",
+    "significance": "key",
+    "relatedConcepts": ["annihilator ideal", "Polynomial.natDegree_le_of_dvd", "IsUnit q via degree 0", "rcases dichotomy"],
+    "prerequisites": ["annihilator_dvd_minpoly (this file)", "Polynomial.natDegree_mul for degree of products", "isUnit_C for constant polynomial units"]
+  },
+  {
+    "id": "ann-ch-oq05-oq01-oq04-sorry",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+    "range": { "startLine": 196, "endLine": 206 },
+    "type": "concept",
+    "title": "The Sorry: PID Structure Theorem as Mathlib Gap",
+    "content": "`nonderogatory_has_cyclic_vector_any_field` has a single sorry at line 206 with an explanatory comment: 'Requires: structure theorem for f.g. modules over PID (not in Mathlib)'. The comment above (lines 201-205) gives the complete mathematical proof: $K^n \\cong K[X]/(d_1) \\oplus \\cdots \\oplus K[X]/(d_r)$ with $d_1 \\mid \\cdots \\mid d_r$; nonderogatory means $d_r = \\chi_M = d_1 \\cdots d_r$, forcing $r = 1$; so $K^n \\cong K[X]/(\\mu_M)$, a cyclic module. The n=0 case is handled without sorry: `Fin.elim0` gives a vacuous cyclic vector (there are no degree-< 0 polynomials). This sorry-boundary design is optimal: the sorry is precisely isolated to the Mathlib gap, not to any mathematical uncertainty.",
+    "mathContext": "The structure theorem for f.g. modules over PIDs (Invariant Factor Theorem): every f.g. torsion $R$-module over a PID $R$ is isomorphic to $R/(d_1) \\oplus \\cdots \\oplus R/(d_k)$ with $d_1 \\mid \\cdots \\mid d_k$. For $R = K[X]$, this gives the rational canonical form of a linear operator. Nonderogatory forces the single-factor case. This theorem is in most algebra textbooks but its Mathlib formalization is incomplete.",
+    "significance": "key",
+    "relatedConcepts": ["PID structure theorem (invariant factors)", "rational canonical form", "Mathlib formalization gap", "Fin.elim0 for n=0 base case"],
+    "prerequisites": ["Structure theorem for f.g. modules over PID", "K[X] as PID", "invariant factor decomposition"]
+  },
+  {
+    "id": "ann-ch-oq05-oq01-oq04-f2",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+    "range": { "startLine": 223, "endLine": 235 },
+    "type": "insight",
+    "title": "F2_union_covers: fin_cases Decision Procedure for Union Avoidance Failure",
+    "content": "`F2_union_covers` proves that every nonzero vector in $\\mathbb{F}_2^2$ lies in $\\{(1,0), (0,1), (1,1)\\}$. The proof uses `fin_cases v using 2` to enumerate all $2^2 = 4$ vectors of `Fin 2 → ZMod 2`, then handles the zero case with `exfalso` and the three nonzero cases with the appropriate left/right/left-right selection. The `simp_all [Function.funext_iff, Fin.forall_fin_two]` tactic reduces vector equality to componentwise equality. This is a decision procedure proof: the statement is a finite check, and Lean verifies it by brute enumeration. The theorem demonstrates that for $n = 2$, $|K| = 2 \\leq n$, so any union-avoidance argument (which needs $|K| > n$) fails here.",
+    "mathContext": "$\\mathbb{F}_2^2$ has $2^2 = 4$ vectors. The 3 nonzero vectors are $(1,0)$, $(0,1)$, $(1,1)$, spanning 3 distinct 1-dimensional subspaces. These 3 subspaces cover all of $\\mathbb{F}_2^2 \\setminus \\{0\\}$, so any attempt to find a vector outside all 'bad' proper subspaces fails when there are $\\geq 3$ bad subspaces over $\\mathbb{F}_2$. In contrast, the main theorem still holds — union avoidance is one proof strategy, not a necessary condition.",
+    "significance": "supporting",
+    "relatedConcepts": ["fin_cases tactic", "ZMod 2 (F₂ in Lean 4)", "Function.funext_iff", "union avoidance failure"],
+    "prerequisites": ["ZMod 2 as finite field", "Fin.forall_fin_two for 2-component vectors", "fin_cases enumeration tactic"]
+  }
+]

@@ -49,14 +49,6 @@ noncomputable def maxAlmostSidon (N : ℕ) : ℕ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #864** (OPEN): The maximum almost-Sidon set in {1,...,N}
-    has size (1+o(1)) · (2/√3) · √N. -/
-theorem erdos_864_conjecture :
-  -- For all ε > 0, for sufficiently large N:
-  -- maxAlmostSidon N ≤ (2/√3 + ε) · √N
-  -- NOTE: The actual conjecture is OPEN. This placeholder states True only.
-  True := trivial
-
 /- ## Known Bounds -/
 
 /-- **Erdős–Freud (1991)**: Lower bound via reflected Sidon construction.
@@ -145,14 +137,6 @@ theorem isAlmostSidon_subset {A B : Finset ℕ} (h : IsAlmostSidon B) (hsub : A 
   omega
 
 /- ## Difference Version -/
-
-/-- For the difference analogue (at most one n with multiple a − b
-    representations), Erdős–Freud proved |A| ~ √N. -/
-theorem erdos_freud_difference_version :
-  -- The maximum size of A ⊆ {1,...,N} with at most one difference collision
-  -- is asymptotically √N
-  -- NOTE: The actual result is deep. This placeholder states True only.
-  True := trivial
 
 /- ## Structural Properties -/
 

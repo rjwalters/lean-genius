@@ -1,8 +1,8 @@
 {
   "id": "buffons-needle-oq-02-oq-02",
-  "title": "Smooth 3D Buffon Noodle: E[crossings] = L/(2d) for C\u00b9 Curves in \u211d\u00b3",
+  "title": "Smooth 3D Buffon Noodle: E[crossings] = L/(2d) for C¹ Curves in ℝ³",
   "slug": "buffons-needle-oq-02-oq-02",
-  "description": "Extends the 3D Buffon formula from polygonal paths to smooth C\u00b9 curves in \u211d\u00b3. Defines 3D arc length via component-wise integration, axiomatizes the smooth expected crossing formula E = L/(2d), and verifies shape independence, monotonicity, approximation convergence, Lipschitz stability, and the dimension comparison 3D < 2D (ratio 4/\u03c0).",
+  "description": "Extends the 3D Buffon formula from polygonal paths to smooth C¹ curves in ℝ³. Defines 3D arc length via component-wise integration, axiomatizes the smooth expected crossing formula E = L/(2d), and verifies shape independence, monotonicity, approximation convergence, Lipschitz stability, and the dimension comparison 3D < 2D (ratio 4/π).",
   "meta": {
     "author": "Buffon (1777), Barbier (1860); 3D smooth extension formalized 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
@@ -42,7 +42,7 @@
       },
       {
         "theorem": "ContDiff",
-        "description": "C\u00b9 smoothness condition for curves",
+        "description": "C¹ smoothness condition for curves",
         "module": "Mathlib.Analysis.Calculus.ContDiff.Defs"
       },
       {
@@ -52,31 +52,31 @@
       }
     ],
     "originalContributions": [
-      "arcLength3D: 3D arc length via component-wise integration \u222b\u221a(x'\u00b2+y'\u00b2+z'\u00b2) dt",
-      "smooth3D_buffon_eq: axiomatized Buffon\u2013Barbier theorem for smooth 3D curves",
-      "smooth3D_shape_independence: shape of C\u00b9 3D curve does not affect expected crossings",
+      "arcLength3D: 3D arc length via component-wise integration ∫√(x'²+y'²+z'²) dt",
+      "smooth3D_buffon_eq: axiomatized Buffon–Barbier theorem for smooth 3D curves",
+      "smooth3D_shape_independence: shape of C¹ 3D curve does not affect expected crossings",
       "approximation_limit_3D: polygonal approximation convergence to smooth formula",
       "lipschitz_3D: Lipschitz stability with constant 1/(2d)",
-      "smooth3D_lt_smooth2D: 3D crossings < 2D crossings, ratio 4/\u03c0",
+      "smooth3D_lt_smooth2D: 3D crossings < 2D crossings, ratio 4/π",
       "smooth3D_mono/strictMono: monotonicity of expected crossings in arc length"
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 376,
-    "assumptions": "Two axioms: smooth3DExpectedCrossings (defines the expected crossing count for smooth curves) and smooth3D_buffon_eq (the Buffon\u2013Barbier formula E = L/(2d)). These require measure theory on the Grassmannian Gr(2,3) and the Cauchy\u2013Crofton integral formula, which are beyond current Mathlib.",
+    "assumptions": "Two axioms: smooth3DExpectedCrossings (defines the expected crossing count for smooth curves) and smooth3D_buffon_eq (the Buffon–Barbier formula E = L/(2d)). These require measure theory on the Grassmannian Gr(2,3) and the Cauchy–Crofton integral formula, which are beyond current Mathlib.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Buffon's 1777 needle problem and Barbier's 1860 noodle extension show that the expected crossing count depends only on arc length, not shape. The 3D version replaces parallel lines with parallel planes. BuffonsNeedleOQ02.lean proved the 3D formula E = L/(2d) for polygonal paths using the sphere average E_{S\u00b2}[|cos \u03c6|] = 1/2. This file extends the result to smooth C\u00b9 curves via the approximation argument: inscribed polygonal paths converge in arc length, so expected crossings converge by continuity.",
-    "problemStatement": "**Theorem (Smooth 3D Buffon\u2013Barbier)**: For a C\u00b9 curve \u03b3 : \u211d \u2192 \u211d\u00b3 of arc length L dropped on parallel planes (spacing d > 0), the expected number of plane crossings is:\n\n$$E[\\text{crossings}] = \\frac{L}{2d}$$\n\nThe result depends only on total arc length, not on the curve's shape.",
-    "text": "Extends the 3D Buffon formula from polygonal paths to smooth C\u00b9 curves in \u211d\u00b3. Defines 3D arc length via component-wise integration, axiomatizes the smooth expected crossing formula E = L/(2d), and verifies shape independence, monotonicity, approximation convergence, Lipschitz stability, and the dimension comparison 3D < 2D (ratio 4/\u03c0).",
-    "proofStrategy": "**Part I (3D Arc Length)**: Define arcLength3D(\u03b3, a, b) = \u222b_a^b \u221a(x'\u00b2 + y'\u00b2 + z'\u00b2) dt for \u03b3 : \u211d \u2192 \u211d\u00b3. Prove nonnegativity, constancy, and additivity over adjacent intervals.\n\n**Part II (Polygonal Infrastructure)**: Define Polygonal3D structure with segment lengths and total length. The expected crossing formula totalLength/(2d) follows from the 3D noodle theorem.\n\n**Part III (Smooth Buffon\u2013Barbier)**: Axiomatize smooth3DExpectedCrossings and the formula E = arcLength3D/(2d). The axiom bridges the gap between polygonal (fully verified) and smooth (requires Cauchy\u2013Crofton).\n\n**Parts IV\u2013VII (Consequences)**: Shape independence, nonnegativity, approximation limit, Lipschitz stability, monotonicity, and the 3D vs 2D comparison L/(2d) < 2L/(\u03c0d) are all proved from the axiomatized formula.",
+    "historicalContext": "Buffon's 1777 needle problem and Barbier's 1860 noodle extension show that the expected crossing count depends only on arc length, not shape. The 3D version replaces parallel lines with parallel planes. BuffonsNeedleOQ02.lean proved the 3D formula E = L/(2d) for polygonal paths using the sphere average E_{S²}[|cos φ|] = 1/2. This file extends the result to smooth C¹ curves via the approximation argument: inscribed polygonal paths converge in arc length, so expected crossings converge by continuity.",
+    "problemStatement": "**Theorem (Smooth 3D Buffon–Barbier)**: For a C¹ curve γ : ℝ → ℝ³ of arc length L dropped on parallel planes (spacing d > 0), the expected number of plane crossings is:\n\n$$E[\\text{crossings}] = \\frac{L}{2d}$$\n\nThe result depends only on total arc length, not on the curve's shape.",
+    "text": "Extends the 3D Buffon formula from polygonal paths to smooth C¹ curves in ℝ³. Defines 3D arc length via component-wise integration, axiomatizes the smooth expected crossing formula E = L/(2d), and verifies shape independence, monotonicity, approximation convergence, Lipschitz stability, and the dimension comparison 3D < 2D (ratio 4/π).",
+    "proofStrategy": "**Part I (3D Arc Length)**: Define arcLength3D(γ, a, b) = ∫_a^b √(x'² + y'² + z'²) dt for γ : ℝ → ℝ³. Prove nonnegativity, constancy, and additivity over adjacent intervals.\n\n**Part II (Polygonal Infrastructure)**: Define Polygonal3D structure with segment lengths and total length. The expected crossing formula totalLength/(2d) follows from the 3D noodle theorem.\n\n**Part III (Smooth Buffon–Barbier)**: Axiomatize smooth3DExpectedCrossings and the formula E = arcLength3D/(2d). The axiom bridges the gap between polygonal (fully verified) and smooth (requires Cauchy–Crofton).\n\n**Parts IV–VII (Consequences)**: Shape independence, nonnegativity, approximation limit, Lipschitz stability, monotonicity, and the 3D vs 2D comparison L/(2d) < 2L/(πd) are all proved from the axiomatized formula.",
     "keyInsights": [
       "The smooth 3D formula E = L/(2d) extends the polygonal case by approximation and continuity",
       "Shape independence in 3D mirrors the 2D noodle phenomenon: only arc length matters",
-      "The Lipschitz constant 1/(2d) in 3D is tighter than 2/(\u03c0d) in 2D, reflecting the smaller crossing factor",
-      "The universal 2D/3D crossing ratio 4/\u03c0 \u2248 1.273 applies to smooth curves just as to polygonal paths",
-      "Full formalization requires the Cauchy\u2013Crofton formula on Gr(2,3), motivating the axiomatization"
+      "The Lipschitz constant 1/(2d) in 3D is tighter than 2/(πd) in 2D, reflecting the smaller crossing factor",
+      "The universal 2D/3D crossing ratio 4/π ≈ 1.273 applies to smooth curves just as to polygonal paths",
+      "Full formalization requires the Cauchy–Crofton formula on Gr(2,3), motivating the axiomatization"
     ],
     "prerequisites": [
       "Integral calculus (arc length via integration)",
@@ -90,7 +90,7 @@
       "title": "Part I: 3D Arc Length",
       "startLine": 46,
       "endLine": 90,
-      "summary": "Defines arcLength3D for curves \u03b3 : \u211d \u2192 \u211d \u00d7 \u211d \u00d7 \u211d via \u222b\u221a(x'\u00b2+y'\u00b2+z'\u00b2) dt. Proves nonnegativity, constancy (zero for constant curves), and additivity over adjacent intervals.",
+      "summary": "Defines arcLength3D for curves γ : ℝ → ℝ × ℝ × ℝ via ∫√(x'²+y'²+z'²) dt. Proves nonnegativity, constancy (zero for constant curves), and additivity over adjacent intervals.",
       "mathContext": "3D arc length: $L(\\gamma, a, b) = \\int_a^b \\sqrt{x'(t)^2 + y'(t)^2 + z'(t)^2}\\, dt$ where $\\gamma = (x, y, z)$."
     },
     {
@@ -103,18 +103,18 @@
     },
     {
       "id": "part-iii",
-      "title": "Part III: Smooth 3D Buffon\u2013Barbier Theorem",
+      "title": "Part III: Smooth 3D Buffon–Barbier Theorem",
       "startLine": 120,
       "endLine": 158,
-      "summary": "Axiomatizes smooth3DExpectedCrossings and the Buffon\u2013Barbier formula: E = arcLength3D/(2d) for C\u00b9 curves with parallel planes.",
-      "mathContext": "Axiom: for a $C^1$ curve $\\gamma$ of arc length $L$, $E[\\text{crossings}] = \\frac{L}{2d}$. Requires the Cauchy\u2013Crofton formula on the Grassmannian $\\mathrm{Gr}(2,3)$."
+      "summary": "Axiomatizes smooth3DExpectedCrossings and the Buffon–Barbier formula: E = arcLength3D/(2d) for C¹ curves with parallel planes.",
+      "mathContext": "Axiom: for a $C^1$ curve $\\gamma$ of arc length $L$, $E[\\text{crossings}] = \\frac{L}{2d}$. Requires the Cauchy–Crofton formula on the Grassmannian $\\mathrm{Gr}(2,3)$."
     },
     {
       "id": "part-iv",
       "title": "Part IV: Shape Independence",
       "startLine": 160,
       "endLine": 187,
-      "summary": "Two C\u00b9 curves with the same arc length have identical expected crossings. Expected crossings are nonneg.",
+      "summary": "Two C¹ curves with the same arc length have identical expected crossings. Expected crossings are nonneg.",
       "mathContext": "Shape independence: $\\mathrm{arcLength3D}(\\gamma_1) = \\mathrm{arcLength3D}(\\gamma_2) \\implies E[\\text{crossings}(\\gamma_1)] = E[\\text{crossings}(\\gamma_2)]$."
     },
     {
@@ -122,7 +122,7 @@
       "title": "Part V: Approximation and Lipschitz Stability",
       "startLine": 189,
       "endLine": 238,
-      "summary": "Polygonal approximation convergence: if |P_k| \u2192 L, then E[crossings(P_k)] \u2192 L/(2d). Lipschitz constant 1/(2d).",
+      "summary": "Polygonal approximation convergence: if |P_k| → L, then E[crossings(P_k)] → L/(2d). Lipschitz constant 1/(2d).",
       "mathContext": "Approximation: $|P_k| \\to L \\implies E[\\text{crossings}(P_k)] \\to L/(2d)$. Lipschitz: $|E_1 - E_2| \\leq \\frac{1}{2d}|L_1 - L_2|$."
     },
     {
@@ -130,7 +130,7 @@
       "title": "Part VI: 3D vs 2D Dimension Comparison",
       "startLine": 240,
       "endLine": 274,
-      "summary": "L/(2d) < 2L/(\u03c0d) for L,d > 0. The 2D/3D crossing ratio is 4/\u03c0.",
+      "summary": "L/(2d) < 2L/(πd) for L,d > 0. The 2D/3D crossing ratio is 4/π.",
       "mathContext": "Dimension comparison: $\\frac{L}{2d} < \\frac{2L}{\\pi d}$ since $\\frac{1}{2} < \\frac{2}{\\pi}$ (i.e., $\\pi < 4$). Ratio: $\\frac{2L/(\\pi d)}{L/(2d)} = \\frac{4}{\\pi}$."
     },
     {
@@ -146,16 +146,16 @@
       "title": "Part VIII: Concrete Examples",
       "startLine": 312,
       "endLine": 346,
-      "summary": "Helix and great circle examples. A helix of arc length 2\u03c0\u221a(r\u00b2+h\u00b2) has expected crossings \u03c0\u221a(r\u00b2+h\u00b2)/d.",
+      "summary": "Helix and great circle examples. A helix of arc length 2π√(r²+h²) has expected crossings π√(r²+h²)/d.",
       "mathContext": "Helix: $L = 2\\pi\\sqrt{r^2+h^2}$, $E = \\pi\\sqrt{r^2+h^2}/d$. Great circle: $L = 2\\pi R$, $E = \\pi R/d$."
     }
   ],
   "conclusion": {
-    "summary": "The smooth 3D Buffon noodle formula E = L/(2d) is formalized with 2 axioms (for the smooth expected crossings primitive and the Buffon\u2013Barbier formula), 0 sorries, and 15 verified theorems. The proof builds on the fully verified 3D polygonal theory (BuffonsNeedleOQ02.lean) and parallels the 2D smooth axiomatization (BuffonsNoodle.lean).",
-    "implications": "**Mathematical Significance**:\n\n**1. Complete Smooth 3D Theory**: Shape independence, monotonicity, approximation convergence, and Lipschitz stability are all verified for smooth C\u00b9 curves in \u211d\u00b3.\n\n**2. Dimension Comparison**: The universal 3D < 2D crossing inequality and the ratio 4/\u03c0 now extend to smooth curves, not just polygonal paths.\n\n**3. Infrastructure**: The 3D arc length definition and Polygonal3D structure provide reusable components for future integral geometry formalizations.\n\n**4. Axiom Gap**: The 2 axioms isolate exactly what Mathlib lacks: the Cauchy\u2013Crofton formula on Gr(2,3). Once Mathlib gains integral geometry infrastructure, these axioms become theorems.",
+    "summary": "The smooth 3D Buffon noodle formula E = L/(2d) is formalized with 2 axioms (for the smooth expected crossings primitive and the Buffon–Barbier formula), 0 sorries, and 15 verified theorems. The proof builds on the fully verified 3D polygonal theory (BuffonsNeedleOQ02.lean) and parallels the 2D smooth axiomatization (BuffonsNoodle.lean).",
+    "implications": "**Mathematical Significance**:\n\n**1. Complete Smooth 3D Theory**: Shape independence, monotonicity, approximation convergence, and Lipschitz stability are all verified for smooth C¹ curves in ℝ³.\n\n**2. Dimension Comparison**: The universal 3D < 2D crossing inequality and the ratio 4/π now extend to smooth curves, not just polygonal paths.\n\n**3. Infrastructure**: The 3D arc length definition and Polygonal3D structure provide reusable components for future integral geometry formalizations.\n\n**4. Axiom Gap**: The 2 axioms isolate exactly what Mathlib lacks: the Cauchy–Crofton formula on Gr(2,3). Once Mathlib gains integral geometry infrastructure, these axioms become theorems.",
     "openQuestions": [
-      "Prove the Cauchy\u2013Crofton formula in \u211d\u00b3 to eliminate the axioms",
-      "Extend to Lipschitz curves (weaker than C\u00b9) in 3D",
+      "Prove the Cauchy–Crofton formula in ℝ³ to eliminate the axioms",
+      "Extend to Lipschitz curves (weaker than C¹) in 3D",
       "General smooth n-dimensional Buffon noodle formula using the crossing factor recurrence"
     ]
   },
@@ -163,17 +163,17 @@
     {
       "targetId": "buffons-needle-oq-02",
       "relationship": "extends",
-      "description": "Parent proof: 3D Buffon formula for polygonal paths (E = L/(2d), verified). This file extends to smooth C\u00b9 curves."
+      "description": "Parent proof: 3D Buffon formula for polygonal paths (E = L/(2d), verified). This file extends to smooth C¹ curves."
     },
     {
       "targetId": "buffons-needle-oq-02-oq-01",
       "relationship": "related",
-      "description": "Sibling: n-dimensional crossing factor recurrence \u03b1_{n+2} = (n/(n+1))\u03b1_n. The 3D crossing factor \u03b1\u2083 = 1/2 determines this file's formula."
+      "description": "Sibling: n-dimensional crossing factor recurrence α_{n+2} = (n/(n+1))α_n. The 3D crossing factor α₃ = 1/2 determines this file's formula."
     },
     {
       "targetId": "buffons-needle",
       "relationship": "foundational",
-      "description": "Root ancestor: classical 2D Buffon's needle (P = 2\u2113/(\u03c0d)). The 3D smooth extension is three levels of generalization from the original."
+      "description": "Root ancestor: classical 2D Buffon's needle (P = 2ℓ/(πd)). The 3D smooth extension is three levels of generalization from the original."
     },
     {
       "targetId": "buffons-needle-oq-01-oq-01",
@@ -184,24 +184,24 @@
   "references": [
     {
       "authors": "Buffon, G.-L. L.",
-      "title": "Essai d'arithm\u00e9tique morale",
+      "title": "Essai d'arithmétique morale",
       "year": "1777",
-      "venue": "Suppl\u00e9ment \u00e0 l'Histoire Naturelle, vol. 4",
+      "venue": "Supplément à l'Histoire Naturelle, vol. 4",
       "note": "Original Buffon needle problem"
     },
     {
       "authors": "Barbier, E.",
-      "title": "Note sur le probl\u00e8me de l'aiguille et le jeu du joint couvert",
+      "title": "Note sur le problème de l'aiguille et le jeu du joint couvert",
       "year": "1860",
-      "venue": "Journal de math\u00e9matiques pures et appliqu\u00e9es, 2e s\u00e9rie, 5:273\u2013286",
+      "venue": "Journal de mathématiques pures et appliquées, 2e série, 5:273–286",
       "note": "First extension of Buffon's needle to curved needles (noodles)"
     },
     {
-      "authors": "Santal\u00f3, L. A.",
+      "authors": "Santaló, L. A.",
       "title": "Integral Geometry and Geometric Probability",
       "year": "1976",
       "venue": "Addison-Wesley (Encyclopedia of Mathematics and its Applications, vol. 1)",
-      "note": "Definitive treatment of the Cauchy\u2013Crofton formula in arbitrary dimension"
+      "note": "Definitive treatment of the Cauchy–Crofton formula in arbitrary dimension"
     },
     {
       "authors": "Klain, D. A. and Rota, G.-C.",
@@ -228,7 +228,7 @@
     ],
     "namespace": "BuffonsNeedleOQ02OQ02",
     "lineCount": 376,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 15,
     "definitionCount": 4
   }

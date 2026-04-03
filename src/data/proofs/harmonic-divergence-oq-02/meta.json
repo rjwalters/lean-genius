@@ -1,70 +1,131 @@
 {
-    "id": "harmonic-divergence-oq-02",
-    "title": "Divergence of the Log-Harmonic Series",
-    "slug": "harmonic-divergence-oq-02",
-    "description": "The series Σ 1/(n·log n) diverges, proved via the Cauchy condensation test. The condensed series 2^k/(2^k·k·log 2) = Σ 1/(k·log 2) is a rescaled harmonic series.",
-    "meta": {
-        "author": "Classical",
-        "status": "verified",
-        "proofRepoPath": "Proofs/HarmonicDivergenceOQ02.lean",
-        "tags": [
-            "analysis",
-            "series",
-            "divergence",
-            "condensation test",
-            "logarithmic"
-        ],
-        "badge": "verified",
-        "sorries": 0,
-        "axiomCount": 0,
-        "lineCount": 142,
-        "assumptions": "None. All results fully proved via Cauchy condensation.",
-        "mathlib_version": "4.26.0"
-    },
-    "overview": {
-        "historicalContext": "The harmonic series Σ 1/n diverges at rate log(n). The next natural question is the 'log-harmonic' series Σ 1/(n·log n), which also diverges but slower, with partial sums growing like log(log n). This connects to the hierarchy of iterated logarithmic series.",
-        "problemStatement": "Prove that the series Σ_{n≥2} 1/(n·log n) diverges, and characterize its divergence rate.",
-        "text": "The proof uses the Cauchy condensation test: for f(n) = 1/(n·log n), the condensed series is 2^k · f(2^k) = 2^k/(2^k · k·log 2) = 1/(k·log 2), which is (1/log 2) times the harmonic series. Since the harmonic series diverges, so does the log-harmonic series.",
-        "proofStrategy": "Apply the Cauchy condensation test (from HarmonicDivergenceOQ04) to f(n) = 1/(n·log n). The condensed series simplifies to 1/(k·log 2), a rescaled harmonic series.",
-        "keyInsights": [
-            "2^k · 1/(2^k · log(2^k)) = 1/(k·log 2) by cancellation and log(2^k) = k·log 2",
-            "The condensed series is exactly (1/log 2) · Σ 1/k, connecting log-harmonic divergence to harmonic divergence",
-            "logHarmonic is antitone because n·log n is increasing for n ≥ 2",
-            "The hierarchy: Σ 1/n diverges at rate log n, Σ 1/(n·log n) at rate log(log n), etc."
-        ],
-        "prerequisites": [
-            "Cauchy condensation test (HarmonicDivergenceOQ04)",
-            "Harmonic series divergence (Mathlib)",
-            "Properties of Real.log (Mathlib)"
-        ]
-    },
-    "leanFile": {
-        "imports": [
-            "Mathlib"
-        ],
-        "opens": [
-            "Finset",
-            "Filter",
-            "BigOperators",
-            "Topology",
-            "Real"
-        ],
-        "namespace": "HarmonicDivergenceOQ02",
-        "lineCount": 142,
-        "axiomCount": 0,
-        "theoremCount": 7,
-        "definitionCount": 1
-    },
-    "crossReferences": [
-        {
-            "targetId": "harmonic-divergence",
-            "relationship": "extends",
-            "description": "Proves divergence of the next series in the logarithmic hierarchy after the harmonic series"
-        },
-        {
-            "targetId": "harmonic-divergence-oq-04",
-            "relationship": "uses",
-            "description": "Uses the Cauchy condensation test formalized in OQ-04"
-        }
+  "id": "harmonic-divergence-oq-02",
+  "title": "Divergence of the Log-Harmonic Series",
+  "slug": "harmonic-divergence-oq-02",
+  "description": "The series Σ 1/(n·log n) diverges, proved via the Cauchy condensation test. The condensed series 2^k/(2^k·k·log 2) = Σ 1/(k·log 2) is a rescaled harmonic series.",
+  "meta": {
+    "author": "Classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HarmonicDivergenceOQ02.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "divergence",
+      "condensation test",
+      "logarithmic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 156,
+    "assumptions": "None. All results fully proved via Cauchy condensation.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The log-harmonic series Σ 1/(n log n) sits in a classical hierarchy of divergent series established in the 19th century. Oresme (ca. 1350) proved the harmonic series Σ 1/n diverges. Cauchy (1827) introduced the condensation test in Cours d'Analyse, giving a powerful criterion for positive decreasing series. The Cauchy condensation test reduces the convergence of Σ f(n) to that of Σ 2^k f(2^k), and for f(n) = 1/(n log n) this gives the elegant computation 2^k · 1/(2^k · k log 2) = 1/(k log 2). The connection to logarithm iteration was systematized by du Bois-Reymond (1873) in the 'logarithmico-exponential scale': the hierarchy Σ 1/n, Σ 1/(n log n), Σ 1/(n log n log log n), etc., all diverge, but successively slower. Hardy's 'A Course of Pure Mathematics' (1908) popularized these examples as illustrations of the subtlety of series convergence. The partial sums grow as log N, log log N, log log log N respectively, giving a countable tower of divergence rates.",
+    "problemStatement": "Prove that $\\sum_{n=2}^{\\infty} \\frac{1}{n \\log n}$ diverges. The proof uses the Cauchy condensation test: for $f$ nonneg and antitone, $\\sum f(n)$ converges iff $\\sum 2^k f(2^k)$ converges. The key computation: $2^k \\cdot f(2^k) = 2^k / (2^k \\cdot k \\log 2) = 1/(k \\log 2)$. Since $\\sum 1/k$ diverges, so does $\\sum 1/(k \\log 2)$, hence $\\sum f(n)$ diverges.",
+    "text": "The proof uses the Cauchy condensation test: for f(n) = 1/(n·log n), the condensed series is 2^k · f(2^k) = 2^k/(2^k · k·log 2) = 1/(k·log 2), which is (1/log 2) times the harmonic series. Since the harmonic series diverges, so does the log-harmonic series.",
+    "proofStrategy": "1. Define logHarmonic n = 1/(n·log n) for n ≥ 2 (else 0). 2. Prove logHarmonic_nonneg: logHarmonic n ≥ 0 for all n. 3. Prove logHarmonic_antitone: n·log n is increasing for n ≥ 2, so logHarmonic is decreasing. 4. Compute condensed_logHarmonic_eq: 2^k · logHarmonic(2^k) = 1/(k·log 2) for k ≥ 1, using log(2^k) = k·log 2. 5. Prove condensed_logHarmonic_not_summable: by contradiction, if the condensed series were summable, then Σ 1/(k+1) would be summable (by extracting the tail and removing the log 2 factor), contradicting Real.not_summable_one_div_natCast. 6. Apply summable_condensed_iff_of_nonneg to transfer non-summability from the condensed to the original series.",
+    "keyInsights": [
+      "2^k · 1/(2^k · log(2^k)) = 1/(k·log 2) — the 2^k factors cancel exactly, and log(2^k) = k·log 2 by logarithm properties. This beautiful cancellation is why the Cauchy condensation test works so cleanly for power-law · log-power functions.",
+      "The condensed series is (1/log 2) · Σ 1/k: a scalar multiple of the harmonic series. Non-summability of the harmonic series is therefore the *only* fact needed to establish log-harmonic divergence — the entire proof reduces to one classical result.",
+      "logHarmonic is antitone for n ≥ 2: n·log n is increasing (both n and log n are increasing), so 1/(n·log n) is decreasing. The Lean proof handles the edge case m=1 separately (logHarmonic 1 = 0, and logHarmonic n ≥ 0 for all n).",
+      "The divergence argument by contradiction: if Σ 2^k f(2^k) were summable, then the tail Σ_{k≥1} 1/(k·log 2) would be summable. Multiplying by log 2 gives summability of Σ 1/(k+1) = Σ 1/k, contradicting Real.not_summable_one_div_natCast.",
+      "The log hierarchy Σ 1/n, Σ 1/(n log n), Σ 1/(n log n log log n), ... all diverge. Each level requires one more application of the condensation test, peeling off one logarithm. This gives a countable family of divergent series with divergence rates log N, log log N, log log log N, ..."
+    ],
+    "prerequisites": [
+      "Cauchy condensation test (summable_condensed_iff_of_nonneg from HarmonicDivergenceOQ04)",
+      "Harmonic series divergence (Real.not_summable_one_div_natCast from Mathlib)",
+      "Real.log properties (Real.log_pow, Real.log_pos for x > 1)",
+      "Summable.comp_injective for extracting tails of series",
+      "Field_simp and ring tactics for rational function manipulation"
     ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The logHarmonic Function",
+      "startLine": 32,
+      "endLine": 46,
+      "summary": "Defines logHarmonic n = 1/(n·log n) for n ≥ 2, else 0. Proves nonnegativity.",
+      "mathContext": "The definition uses a conditional: $\\texttt{logHarmonic}(n) = \\begin{cases} 0 & n < 2 \\\\ 1/(n \\log n) & n \\geq 2 \\end{cases}$. The guard $n < 2$ excludes $n = 0$ (where $\\log 0 = 0$ in Lean's Real.log, undefined mathematically) and $n = 1$ (where $\\log 1 = 0$, making $n \\log n = 0$). The nonnegativity proof splits on the conditional: the $n < 2$ case returns $0 \\geq 0$; the $n \\geq 2$ case uses \\texttt{div\\_nonneg} and \\texttt{mul\\_nonneg}."
+    },
+    {
+      "id": "antitone",
+      "title": "logHarmonic is Antitone",
+      "startLine": 57,
+      "endLine": 79,
+      "summary": "Proves logHarmonic is antitone (decreasing), required as a hypothesis for the condensation test.",
+      "mathContext": "Antitone means: $m \\leq n \\Rightarrow f(n) \\leq f(m)$. The proof splits: (a) if $m = 1$, then $f(m) = 0 \\leq f(n)$ trivially. (b) if $m \\geq 2$, then both $f(m)$ and $f(n)$ have the form $1/(x \\log x)$, and $1/(n \\log n) \\leq 1/(m \\log m)$ iff $m \\log m \\leq n \\log n$ (using \\texttt{div\\_le\\_div\\_iff}). The bound $m \\log m \\leq n \\log n$ follows from $m \\leq n$ and monotonicity of log."
+    },
+    {
+      "id": "condensation",
+      "title": "Condensed Series Equals Rescaled Harmonic",
+      "startLine": 83,
+      "endLine": 102,
+      "summary": "The key computation: 2^k · logHarmonic(2^k) = 1/(k·log 2) for k ≥ 1.",
+      "mathContext": "The computation: $2^k \\cdot \\frac{1}{2^k \\cdot \\log(2^k)} = \\frac{2^k}{2^k \\cdot k \\log 2} = \\frac{1}{k \\log 2}$, using $\\log(2^k) = k \\log 2$ (\\texttt{Real.log\\_pow}). The Lean proof uses \\texttt{field\\_simp} and \\texttt{ring} to handle the algebraic manipulation after substituting the logarithm identity. The nonzero guards ($k \\neq 0$, $\\log 2 \\neq 0$, $2^k \\neq 0$) are necessary for \\texttt{field\\_simp} to work."
+    },
+    {
+      "id": "not-summable",
+      "title": "Condensed Series Diverges",
+      "startLine": 106,
+      "endLine": 142,
+      "summary": "Proves the condensed series is not summable, then applies the condensation test to conclude log-harmonic diverges.",
+      "mathContext": "The proof by contradiction: assume $\\sum_k 2^k f(2^k)$ is summable. Extract the tail $\\sum_{k \\geq 1} 1/(k \\log 2)$ using \\texttt{Summable.comp\\_injective} (the injection $k \\mapsto k+1$). Multiply by $\\log 2$: get $\\sum 1/(k+1)$ summable. But $\\sum 1/(k+1) = \\sum_{n \\geq 1} 1/n$ diverges (\\texttt{Real.not\\_summable\\_one\\_div\\_natCast}). The final step: \\texttt{summable\\_condensed\\_iff\\_of\\_nonneg logHarmonic\\_nonneg logHarmonic\\_antitone} transfers the condensed non-summability to the original series."
+    }
+  ],
+  "conclusion": {
+    "summary": "The series Σ 1/(n log n) diverges. The proof is a clean application of the Cauchy condensation test: the key computation 2^k · f(2^k) = 1/(k log 2) reduces log-harmonic divergence to harmonic divergence in one elegant step.",
+    "openQuestions": [
+      "Can the full du Bois-Reymond hierarchy be formalized? Each iterated level Σ 1/(n log n log log n ··· log^(k) n) diverges by one more application of the condensation test. Can this be captured as a single inductive theorem in Lean?",
+      "The integral test gives an alternative proof: ∫₂^∞ 1/(x log x) dx = [log log x]₂^∞ = ∞. Can this be formalized in Lean using Mathlib's integral/MeasureTheory infrastructure?",
+      "The partial sums H(N) = Σ_{n=2}^N 1/(n log n) grow like log(log N). Can this asymptotic be proved formally: H(N)/log(log N) → 1 as N → ∞?",
+      "Bertrand's postulate connects to the log series: the prime counting function π(n) ~ n/log n (prime number theorem) implies Σ 1/p (sum over primes) diverges. Can this connection between log-harmonic divergence and the divergence of Σ 1/p be formalized in Lean?"
+    ],
+    "implications": "The Cauchy condensation test is a powerful technique that reduces the convergence/divergence of slow series to simpler ones. This file demonstrates that the technique formalizes cleanly in Lean: the key algebraic computation (condensed series identification) is handled by field_simp + ring, and the divergence transfer is a one-line application of the condensation iff theorem."
+  },
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "extends",
+      "description": "Proves divergence of the next series in the logarithmic hierarchy after the harmonic series"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-04",
+      "relationship": "uses",
+      "description": "Uses the Cauchy condensation test (summable_condensed_iff_of_nonneg) formalized in OQ-04"
+    }
+  ],
+  "references": [
+    {
+      "author": "Cauchy, A.-L.",
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": 1827,
+      "note": "First rigorous presentation of the condensation test; Part II, Chapter VI"
+    },
+    {
+      "author": "du Bois-Reymond, P.",
+      "title": "Sur la grandeur relative des infinis des fonctions",
+      "year": 1873,
+      "note": "Systematized the logarithmic hierarchy and comparison scales for series"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "BigOperators",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "HarmonicDivergenceOQ02",
+    "lineCount": 156,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1
+  }
 }

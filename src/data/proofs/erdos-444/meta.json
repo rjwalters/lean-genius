@@ -56,7 +56,7 @@
       "Stated exponential_lower_bound and no_uniform_bound structural properties",
       "Proved erdos_444_summary and limsup_infinite from axiomatized result"
     ],
-    "axiomCount": 6,
+    "axiomCount": 1,
     "assumptions": "erdos_graham_conjecture_true (the Erdos-Sarkozy 1980 proof that lim sup M_A(x)/H_A(x)^k = infinity for all infinite A and k >= 1), case_all_naturals (specialization to A = N: d_A = tau, max d(n) grows like exp(c log x / log log x)), case_primes (specialization to A = primes: d_A = omega, max omega(n) ~ log x / log log x), highly_composite_relative (existence of A-highly composite numbers achieving large d_A values for any infinite A), exponential_lower_bound (M_A(x) >= exp(c * H_A(x)) for some c > 0), no_uniform_bound (no single function f bounds M_A(x) in terms of H_A(x) for all infinite A)",
     "lineCount": 137,
     "relatedProblems": [
@@ -195,7 +195,7 @@
   "leanFile": {
     "lineCount": 137,
     "structureCount": 0,
-    "axiomCount": 6,
+    "axiomCount": 1,
     "theoremCount": 2,
     "lemmaCount": 0,
     "defCount": 6,

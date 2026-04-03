@@ -65,7 +65,7 @@
       "erdos_lower_bound: (2/π)log(n) lower bound",
       "erdos_max_theorem: maximum exceeds threshold"
     ],
-    "axiomCount": 5,
+    "axiomCount": 2,
     "lineCount": 297,
     "assumptions": "5 axioms: erdos_lower_bound, chebyshev_lebesgue_constant, bernstein_density_theorem, erdos_max_theorem, equidistant_exponential_growth. 0 sorries: lagrangeBasis_sum_eq_one (partition of unity). See Lean source for complete statements."
   },
@@ -241,7 +241,7 @@
     ],
     "namespace": "Erdos1132",
     "lineCount": 297,
-    "axiomCount": 5,
+    "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 11
   }

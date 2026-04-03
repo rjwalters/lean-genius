@@ -7,12 +7,14 @@
     "score": 4,
     "insights": [
       "M_r → max via n^{1/r} → 1 squeezing",
-      "M_r mono in r generalizes AM-GM"
+      "M_r mono in r generalizes AM-GM",
+      "powerMean_1_is_am proved via Fin.sum_univ_two + simp + norm_num",
+      "powerMean_neg1_is_hm proved via Real.rpow_neg_one (no arg) + field_simp + ring"
     ],
     "builtItems": [
       "AmgmInequalityOQ03OQ03.lean"
     ],
-    "progressSummary": "COMPLETED: Survey of power mean limits."
+    "progressSummary": "COMPLETED: powerMean_1_is_am and powerMean_neg1_is_hm proved (0 sorries)."
   },
   "leanFiles": [
     {
@@ -71,6 +73,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03.lean"
     },
     {
+      "path": "Proofs/AmgmInequalityOQ02OQ03OQ03.lean",
+      "filename": "AmgmInequalityOQ02OQ03OQ03.lean",
+      "lineCount": 67,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ03OQ03.lean"
+    },
+    {
       "path": "Proofs/AmgmInequalityOQ03.lean",
       "filename": "AmgmInequalityOQ03.lean",
       "lineCount": 373,
@@ -84,11 +97,11 @@
     {
       "path": "Proofs/AmgmInequalityOQ03OQ03.lean",
       "filename": "AmgmInequalityOQ03OQ03.lean",
-      "lineCount": 58,
+      "lineCount": 66,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ03OQ03.lean"
     },

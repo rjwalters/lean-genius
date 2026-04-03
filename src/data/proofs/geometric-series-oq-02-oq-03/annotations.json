@@ -1,34 +1,86 @@
-{
-  "annotations": [
-    {
-      "line": 40,
-      "type": "theorem",
-      "content": "If $A$ is a unit and $\\|B - A\\| \\cdot \\|A^{-1}\\| < 1$, then $B$ is also a unit.",
-      "symbol": "isUnit_of_near_unit"
-    },
-    {
-      "line": 69,
-      "type": "theorem",
-      "content": "Every element $B$ with $\\|1 - B\\| < 1$ is a unit (open ball around identity).",
-      "symbol": "isUnit_of_near_one"
-    },
-    {
-      "line": 86,
-      "type": "theorem",
-      "content": "$B^{-1} = \\sum_{n=0}^\\infty (1-B)^n$ when $\\|1-B\\| < 1$ (Neumann series for perturbed inverse).",
-      "symbol": "perturbed_inverse_series"
-    },
-    {
-      "line": 100,
-      "type": "theorem",
-      "content": "$\\|B^{-1}\\| \\leq (1 - \\|1-B\\|)^{-1}$ when $\\|1 - B\\| < 1$ (quantitative bound).",
-      "symbol": "perturbed_inverse_norm_bound"
-    },
-    {
-      "line": 118,
-      "type": "theorem",
-      "content": "Inversion is locally bounded: for $\\|1 - B\\| \\leq \\varepsilon < 1$, $\\|B^{-1}\\| \\leq (1-\\varepsilon)^{-1}$.",
-      "symbol": "inverse_locally_bounded"
-    }
-  ]
-}
+[
+  {
+    "id": "ann-imports-setup",
+    "proofId": "geometric-series-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "Imports: Building on the Neumann Series Foundation",
+    "content": "This file imports Proofs.GeometricSeriesOQ02, which provides the core results `invertible_near_one`, `inverse_near_one`, `neumann_summable`, `norm_neumann_le`, `right_inverse_identity`, and `left_inverse_identity`. Opening the `NeumannSeries` namespace gives direct access to these without qualification. The variable declaration `[NormedRing R] [CompleteSpace R]` sets up the minimal algebraic and analytic structure: a ring with a compatible norm satisfying the submultiplicativity condition `‖ab‖ ≤ ‖a‖·‖b‖`, and Cauchy completeness so that the Neumann series actually converges.",
+    "mathContext": "A complete normed ring $(R, \\|\\cdot\\|)$ satisfies: (1) ring axioms, (2) $\\|ab\\| \\le \\|a\\|\\|b\\|$ (submultiplicativity), (3) Cauchy sequences converge. This is strictly weaker than a Banach algebra (which requires a unit with $\\|1\\| = 1$). The `NormOneClass` typeclass (requiring $\\|1\\| = 1$) is added only where needed for norm bounds.",
+    "significance": "context",
+    "relatedConcepts": ["NormedRing", "CompleteSpace", "NormOneClass", "NeumannSeries namespace", "GeometricSeriesOQ02"],
+    "prerequisites": ["Lean 4 import system", "NormedRing typeclass", "CompleteSpace typeclass"]
+  },
+  {
+    "id": "ann-perturbation-unit",
+    "proofId": "geometric-series-oq-02-oq-03",
+    "range": { "startLine": 43, "endLine": 64 },
+    "type": "technique",
+    "title": "isUnit_of_near_unit: The Master Perturbation Theorem",
+    "content": "This is the most general perturbation result: any B within distance ‖A⁻¹‖⁻¹ of a unit A is itself a unit. The proof uses the factorization `B = A * (1 - A⁻¹(A-B))`. Setting `T := A⁻¹ * (A - B)`, the calc chain bounds ‖T‖ ≤ ‖A⁻¹‖·‖A-B‖ = ‖B-A‖·‖A⁻¹‖ < 1 (using norm_mul_le and norm_sub_rev). Since ‖T‖ < 1, `one_sub_isUnit T hT_norm` gives that (1 - T) is a unit. The algebraic identity hB_eq : B = ↑u * (1 - T) requires careful ring manipulation with Units.mul_inv_cancel_right, and the conclusion follows from IsUnit.mul.",
+    "mathContext": "Key identity: $B = A(1 - A^{-1}(A-B))$. Proof: $A(1 - A^{-1}(A-B)) = A - A \\cdot A^{-1}(A-B) = A - (A-B) = B$. The norm estimate: $\\|T\\| = \\|A^{-1}(A-B)\\| \\le \\|A^{-1}\\| \\cdot \\|A-B\\| = \\|B-A\\| \\cdot \\|A^{-1}\\| < 1$ by hypothesis. Since $B$ is a product of two units ($A$ and $1-T$), $B$ is a unit. The invertibility radius is exactly $r = \\|A^{-1}\\|^{-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["isUnit", "Units.mul_inv_cancel_right", "one_sub_isUnit", "norm_mul_le", "norm_sub_rev", "IsUnit.mul"],
+    "prerequisites": ["Unit type in Mathlib", "norm_mul_le (submultiplicativity)", "invertible_near_one from GeometricSeriesOQ02", "ring identities with units"]
+  },
+  {
+    "id": "ann-near-one",
+    "proofId": "geometric-series-oq-02-oq-03",
+    "range": { "startLine": 74, "endLine": 84 },
+    "type": "insight",
+    "title": "Unit Group Openness: Two Equivalent Formulations",
+    "content": "`isUnit_of_near_one` is a direct wrapper for `invertible_near_one` from OQ-02, exposing the result under a descriptive name. `isUnit_of_dist_one_lt` proves the metric-ball version: dist B 1 < 1 implies IsUnit B. The proof converts `dist B 1 < 1` to `‖B - 1‖ < 1` (via dist_eq_norm), then to `‖1 - B‖ < 1` (via norm_neg after rewriting B - 1 = -(1 - B)). Both theorems together show that the open ball B(1, 1) in the metric sense coincides with the algebraically-defined neighborhood of invertibility.",
+    "mathContext": "The unit group $R^\\times$ is open: for each unit $A$, the ball $B(A, \\|A^{-1}\\|^{-1})$ lies in $R^\\times$. Near identity: $\\|1 - B\\| < 1 \\Rightarrow B \\in R^\\times$. Metric version: $d(B, 1) = \\|B - 1\\| = \\|-(1-B)\\| = \\|1-B\\| < 1 \\Rightarrow B \\in R^\\times$. The two formulations are identical — `norm_neg` and `norm_sub_rev` are the bridges.",
+    "significance": "key",
+    "relatedConcepts": ["invertible_near_one", "dist_eq_norm", "norm_neg", "norm_sub_rev", "open sets in normed spaces"],
+    "prerequisites": ["dist_eq_norm in NormedAddCommGroup", "norm_neg for ‖-x‖ = ‖x‖", "IsUnit in algebra"]
+  },
+  {
+    "id": "ann-neumann-series-repr",
+    "proofId": "geometric-series-oq-02-oq-03",
+    "range": { "startLine": 94, "endLine": 125 },
+    "type": "technique",
+    "title": "Neumann Series Formula: Explicit Inverse Construction",
+    "content": "`perturbed_inverse_series` proves that `Ring.inverse B = ∑' n, (1 - B)^n` when ‖1-B‖ < 1, by delegating directly to `inverse_near_one` from OQ-02. `perturbed_inverse_summable` proves the series converges via `neumann_summable`. `perturbation_radius_one` packages both into a single `∀ B, ‖1-B‖ < 1 → IsUnit B ∧ Summable (fun n => (1-B)^n)`. The tsum notation `∑'` is Mathlib's unconditional sum, which equals the series sum when the series is summable. These results provide not just existence but a computable representation of the inverse.",
+    "mathContext": "For $\\|1-B\\| < 1$: $B^{-1} = (1-(1-B))^{-1} = \\sum_{n=0}^\\infty (1-B)^n$. This is the operator Neumann series, paralleling the scalar identity $\\frac{1}{1-r} = \\sum_{n=0}^\\infty r^n$ for $|r| < 1$. In Lean: `Ring.inverse B` is Mathlib's notation for the multiplicative inverse (equals 0 if B is not a unit). The proof that the tsum equals `Ring.inverse B` uses the completeness of the norm to guarantee convergence, then verifies the product identity.",
+    "significance": "key",
+    "relatedConcepts": ["Ring.inverse", "tsum (∑')", "Summable", "inverse_near_one", "neumann_summable", "geometric series for operators"],
+    "prerequisites": ["Ring.inverse in Mathlib", "tsum notation and summability", "inverse_near_one from GeometricSeriesOQ02", "power series for operators"]
+  },
+  {
+    "id": "ann-norm-bound",
+    "proofId": "geometric-series-oq-02-oq-03",
+    "range": { "startLine": 113, "endLine": 116 },
+    "type": "technique",
+    "title": "Norm Bound: Quantitative Control via norm_neumann_le",
+    "content": "`perturbed_inverse_norm_bound` requires the additional hypothesis `[NormOneClass R]` (meaning ‖1‖ = 1), which is needed for the norm bound on the Neumann series to hold. The proof rewrites `Ring.inverse B` using `perturbed_inverse_series`, then applies `norm_neumann_le (1 - B) hB` from OQ-02 which gives `‖∑' n, (1-B)^n‖ ≤ (1 - ‖1-B‖)⁻¹`. This is a two-line proof that delegates all the real work to the parent file, demonstrating clean hierarchical proof organization.",
+    "mathContext": "$\\left\\|\\sum_{n=0}^\\infty (1-B)^n\\right\\| \\le \\sum_{n=0}^\\infty \\|(1-B)^n\\| \\le \\sum_{n=0}^\\infty \\|1-B\\|^n = \\frac{1}{1-\\|1-B\\|}$. The inequality $\\|(1-B)^n\\| \\le \\|1-B\\|^n$ uses submultiplicativity of the norm and $\\|1\\| = 1$ (NormOneClass). The bound is tight: as $\\|1-B\\| \\to 1^-$, $\\|B^{-1}\\| \\to \\infty$, reflecting the fact that $B$ approaches the boundary of invertibility.",
+    "significance": "key",
+    "relatedConcepts": ["NormOneClass", "norm_neumann_le", "norm_tsum_le", "submultiplicativity ‖ab‖ ≤ ‖a‖·‖b‖", "geometric series norm bound"],
+    "prerequisites": ["NormOneClass (‖1‖ = 1)", "norm_neumann_le from GeometricSeriesOQ02", "perturbed_inverse_series"]
+  },
+  {
+    "id": "ann-local-boundedness",
+    "proofId": "geometric-series-oq-02-oq-03",
+    "range": { "startLine": 135, "endLine": 144 },
+    "type": "insight",
+    "title": "inverse_locally_bounded: Uniform Bound on a Closed Ball",
+    "content": "`inverse_locally_bounded` strengthens `perturbed_inverse_norm_bound` from an open ball condition (‖1-B‖ < 1) to a closed ball condition (‖1-B‖ ≤ ε < 1) with a uniform constant (1-ε)⁻¹ independent of the specific B. The proof first converts ‖1-B‖ ≤ ε < 1 to ‖1-B‖ < 1, applies `perturbed_inverse_norm_bound` to get ‖B⁻¹‖ ≤ (1 - ‖1-B‖)⁻¹, then uses `inv_anti_of_pos` (monotone decrease of inverse for positive reals) to upgrade to ‖B⁻¹‖ ≤ (1-ε)⁻¹. This uniform bound is exactly what is needed to prove continuity of the inversion map.",
+    "mathContext": "For $\\|1-B\\| \\le \\varepsilon < 1$: $\\|B^{-1}\\| \\le \\frac{1}{1-\\|1-B\\|} \\le \\frac{1}{1-\\varepsilon}$. The second inequality uses monotone decrease of $t \\mapsto (1-t)^{-1}$: since $\\|1-B\\| \\le \\varepsilon$, we have $1-\\|1-B\\| \\ge 1-\\varepsilon > 0$, so $(1-\\|1-B\\|)^{-1} \\le (1-\\varepsilon)^{-1}$. Lean: `inv_anti_of_pos (by linarith)` applies the `inv` antitone lemma for positive reals, then `linarith` closes the inequality.",
+    "significance": "supporting",
+    "relatedConcepts": ["inv_anti_of_pos", "linarith", "uniform continuity", "closed ball vs open ball", "monotone inverse"],
+    "prerequisites": ["perturbed_inverse_norm_bound", "inv_anti_of_pos for real monotone inverse", "linarith tactic"]
+  },
+  {
+    "id": "ann-inverse-identities",
+    "proofId": "geometric-series-oq-02-oq-03",
+    "range": { "startLine": 149, "endLine": 163 },
+    "type": "technique",
+    "title": "Left and Right Inverse Identities via Neumann Series",
+    "content": "`left_inv_near_one` and `right_inv_near_one` prove B * Ring.inverse B = 1 and Ring.inverse B * B = 1 for ‖1-B‖ < 1. Both proofs follow the same strategy: rewrite Ring.inverse B using `perturbed_inverse_series`, rewrite B = 1 - (1-B) using `sub_sub_cancel`, then apply `right_inverse_identity` or `left_inverse_identity` from OQ-02 (which establish that ∑(1-B)^n is a right/left inverse for 1-(1-B)). The two separate theorems for left vs. right inverses are necessary because R is a noncommutative ring — left and right invertibility are a priori distinct, and both must be verified.",
+    "mathContext": "Let $T = 1-B$, so $B = 1-T$ and $\\|T\\| < 1$. Then: $(1-T) \\cdot \\sum_{n=0}^\\infty T^n = \\sum_{n=0}^\\infty T^n - \\sum_{n=0}^\\infty T^{n+1} = 1$ (telescoping). Similarly $\\sum_{n=0}^\\infty T^n \\cdot (1-T) = 1$. In a commutative ring these are the same; in a noncommutative ring they require separate proofs. The Lean proof uses `sub_sub_cancel 1 B : 1 - (1-B) = B` (as $1-(1-B)=B$) to put $B$ in the form $1-T$ required by the parent file's lemmas.",
+    "significance": "supporting",
+    "relatedConcepts": ["left_inverse_identity", "right_inverse_identity", "sub_sub_cancel", "noncommutative ring invertibility", "two-sided inverse"],
+    "prerequisites": ["left_inverse_identity and right_inverse_identity from GeometricSeriesOQ02", "sub_sub_cancel identity", "Ring.inverse as two-sided inverse"]
+  }
+]

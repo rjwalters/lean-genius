@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-definition",
+    "proofId": "erdos-1059-oq-05",
+    "range": { "startLine": 28, "endLine": 30 },
+    "type": "definition",
+    "title": "AllFactorialSubtractionsComposite: Core Predicate",
+    "content": "The predicate `AllFactorialSubtractionsComposite n` asserts that for every k with k! < n, the number n − k! is composite (≥ 2 and not prime). This is the exact property Erdős 1059 asks about: do infinitely many primes p satisfy it? The definition is an unbounded universal quantifier (over all ℕ), making it a priori not decidable — the key contribution of this file is to make it decidable by bounding the quantifier.",
+    "mathContext": "$\\mathrm{AFSC}(n) \\iff \\forall k.\\, k! < n \\Rightarrow \\neg\\mathrm{Prime}(n - k!) \\wedge n - k! \\ge 2$",
+    "significance": "key",
+    "relatedConcepts": ["Erdős 1059", "factorial", "composite numbers", "unbounded quantifier"],
+    "prerequisites": ["Nat.factorial", "Nat.Prime", "Prop in Lean 4"]
+  },
+  {
+    "id": "ann-decidability",
+    "proofId": "erdos-1059-oq-05",
+    "range": { "startLine": 36, "endLine": 56 },
+    "type": "technique",
+    "title": "Decidability via Bounded Quantifier: k ≤ k! Bounds the Range",
+    "content": "The key lemma `factorial_lt_implies_lt` uses `Nat.self_le_factorial` (k ≤ k! for all k) to deduce k < n from k! < n. This bounds the universal quantifier to `Finset.range n`. The equivalence theorem `allFactorialSubtractionsComposite_iff_bounded` replaces the unbounded `∀ k : ℕ` with `∀ k ∈ Finset.range n`, and the `Decidable` instance is derived by `decidable_of_iff` since the bounded quantifier inherits decidability from `Finset.decidableBAll` and the decidability of `Nat.Prime`, `Nat.lt`, and arithmetic. This is a clean example of the Lean 4 pattern: show equivalence with a decidable form, then inherit decidability.",
+    "mathContext": "$k \\le k!$ for all $k$, so $k! < n \\Rightarrow k < n$; thus $\\mathrm{AFSC}(n) \\iff \\forall k < n.\\, k! < n \\Rightarrow \\ldots$, which is decidable over $\\mathrm{Finset.range}\\, n$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.self_le_factorial", "decidable_of_iff", "Finset.decidableBAll", "Decidable typeclass"],
+    "prerequisites": ["Decidable typeclass in Lean 4", "Finset.range", "Nat.self_le_factorial"]
+  },
+  {
+    "id": "ann-witnesses",
+    "proofId": "erdos-1059-oq-05",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "insight",
+    "title": "Witnesses 101 and 211: Uniform Verification by native_decide",
+    "content": "With the Decidable instance in place, `witness_101` and `witness_211` are each proved by a single `by native_decide` — no bespoke helper lemmas needed. The combined theorem `erdos_1059_witnesses` packages both witnesses as a single proposition: 101 and 211 are prime and satisfy AFSC. For comparison, the parent proof (Erdos1059Problem.lean) required a `factorial_lt_bound_101` helper and `interval_cases` over k = 0, ..., 4 for each prime. This file reduces that boilerplate by a factor of ~10 lines per prime verified.",
+    "mathContext": "101 and 211 are prime; $\\mathrm{AFSC}(101)$ and $\\mathrm{AFSC}(211)$ are verified computationally",
+    "significance": "key",
+    "relatedConcepts": ["native_decide", "Decidable instance application", "Erdős 1059 witnesses"],
+    "prerequisites": ["decAllFactorialSubtractionsComposite instance"]
+  },
+  {
+    "id": "ann-nonwitnesses",
+    "proofId": "erdos-1059-oq-05",
+    "range": { "startLine": 82, "endLine": 87 },
+    "type": "insight",
+    "title": "Non-Witnesses 89 and 223: Verified Failures",
+    "content": "The negation `¬AllFactorialSubtractionsComposite n` is also decidable, so non-witnesses are verified by `native_decide` too. For 89: 89 − 3! = 89 − 6 = 83, which is prime — a counterexample to AFSC(89). For 223: 223 − 4! = 223 − 24 = 199, which is prime — counterexample to AFSC(223). These non-witnesses demarcate the property precisely: not every prime satisfies it, and finding those that do (infinitely many?) is the open problem.",
+    "mathContext": "$89 - 3! = 83$ is prime (so $\\neg\\mathrm{AFSC}(89)$); $223 - 4! = 199$ is prime (so $\\neg\\mathrm{AFSC}(223)$)",
+    "significance": "supporting",
+    "relatedConcepts": ["non-witness", "counterexample", "decidable negation"],
+    "prerequisites": ["decAllFactorialSubtractionsComposite instance"]
+  }
+]

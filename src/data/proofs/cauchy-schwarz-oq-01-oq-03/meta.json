@@ -23,19 +23,61 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "problemStatement": "Can the Heisenberg uncertainty principle be derived from the complex Cauchy-Schwarz inequality?",
+    "problemStatement": "Can the Heisenberg uncertainty principle $\\sigma_x \\cdot \\sigma_p \\geq \\hbar/2$ be derived from the complex Cauchy-Schwarz inequality $|\\langle f, g \\rangle|^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$?",
+    "historicalContext": "Werner Heisenberg introduced the uncertainty principle in 1927 in his paper 'Über den anschaulichen Inhalt der quantentheoretischen Kinematik und Mechanik', originally motivated by thought experiments about the limits of simultaneous measurement. However, the precise mathematical formulation came from Earle Kennard the same year, who proved $\\sigma_x \\cdot \\sigma_p \\geq \\hbar/2$ rigorously. The elegant Cauchy-Schwarz derivation was given by Howard Percy Robertson in 1929, who generalized the result to arbitrary pairs of observables: $\\sigma_A \\cdot \\sigma_B \\geq \\frac{1}{2}|\\langle[A,B]\\rangle|$. Erwin Schrödinger sharpened this in 1930 to include an anti-commutator term. Robertson's 1929 approach — reducing the physical inequality to a pure inner-product fact — is exactly what this Lean formalization captures. The result reveals that the uncertainty principle is not about measurement disturbance (as Heisenberg originally imagined) but is a fundamental geometric property of complex inner product spaces.",
+    "proofStrategy": "The proof proceeds in three algebraic stages. First, Cauchy-Schwarz is invoked from Mathlib to give $|\\langle f, g \\rangle|^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$ for any $f, g$ in a complex inner product space. Second, the bound $z.\\mathrm{im}^2 \\leq |z|^2$ for any complex number $z$ is proved by positivity of the real part squared, then chained with Cauchy-Schwarz to yield $(\\mathrm{Im}\\langle f, g \\rangle)^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$ — the abstract Robertson core. Third, the Heisenberg bound is obtained by substituting the commutator constraint $\\mathrm{Im}\\langle f, g \\rangle = c/2$: this turns the inequality into $c^2/4 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$. Taking square roots via `nlinarith` then gives the standard $\\sigma_x \\cdot \\sigma_p \\geq \\hbar/2$ form. All of this is purely algebraic — the physical interpretation enters only in the substitution step.",
     "keyInsights": [
-      "Cauchy-Schwarz: |⟨f,g⟩|² ≤ ‖f‖²·‖g‖²",
-      "Im bound: (Im⟨f,g⟩)² ≤ |⟨f,g⟩|²",
-      "Commutator substitution: Im⟨Δx·ψ, Δp·ψ⟩ = ℏ/2",
-      "Pure algebraic derivation — works in any complex inner product space"
-    ],
-    "proofStrategy": "",
-    "historicalContext": ""
+      "The uncertainty principle is a theorem about geometry, not physics: it holds in any complex inner product space whenever the imaginary part of an inner product satisfies a commutator constraint.",
+      "The three-step chain — Cauchy-Schwarz → imaginary part bound → commutator substitution — mirrors Robertson's 1929 derivation exactly, now machine-checked in Lean 4.",
+      "Dropping the real part of $\\langle f, g \\rangle$ (keeping only $\\mathrm{Im}$) is the key step: it converts the modulus-squared inequality into the one-sided bound that the commutator $[X,P] = i\\hbar$ requires.",
+      "The `robertson_core` theorem is the abstract reusable kernel: $(\\mathrm{Im}\\langle f, g \\rangle)^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$ is all you need to derive uncertainty relations for any non-commuting pair of observables.",
+      "The `heisenberg_sqrt` proof uses `nlinarith` with squared-norm witnesses to pass from the squared inequality $c^2/4 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$ to the product form $|c|/2 \\leq \\|f\\| \\cdot \\|g\\|$, illustrating how nonlinear arithmetic automation handles Cauchy-Schwarz-type square root arguments."
+    ]
   },
+  "sections": [
+    {
+      "id": "imports-background",
+      "title": "Imports and Background",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports Mathlib inner product space infrastructure and documents the physical and mathematical background: the Cauchy-Schwarz inequality, the Robertson derivation, and the three-stage proof plan."
+    },
+    {
+      "id": "cauchy-schwarz-part1",
+      "title": "Part 1: Cauchy-Schwarz Variance Bound",
+      "startLine": 38,
+      "endLine": 54,
+      "summary": "Sets up the complex inner product space context and proves the squared Cauchy-Schwarz inequality $|\\langle f, g \\rangle|^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$ via Mathlib's `inner_mul_le_norm_mul_sq`."
+    },
+    {
+      "id": "robertson-part2",
+      "title": "Part 2: Robertson Uncertainty Relation",
+      "startLine": 56,
+      "endLine": 86,
+      "summary": "Proves the imaginary part bound $(\\mathrm{Im}\\,z)^2 \\leq |z|^2$ for complex numbers, then chains it with Cauchy-Schwarz to establish `robertson_core`: $(\\mathrm{Im}\\langle f, g \\rangle)^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$."
+    },
+    {
+      "id": "heisenberg-part3",
+      "title": "Part 3: Heisenberg Bound",
+      "startLine": 88,
+      "endLine": 120,
+      "summary": "Derives the Heisenberg uncertainty principle in two forms: squared ($\\hbar^2/4 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$) and square-root ($\\hbar/2 \\leq \\|f\\| \\cdot \\|g\\|$), by substituting the commutator constraint $\\mathrm{Im}\\langle f, g \\rangle = c/2$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 122,
+      "endLine": 138,
+      "summary": "Concludes the proof with an explicit three-step answer: Cauchy-Schwarz → Im bound → commutator substitution. Notes that the derivation is purely algebraic and the physics enters only through the identification of $f, g$ with quantum observables."
+    }
+  ],
   "conclusion": {
-    "summary": "YES. The uncertainty principle is a direct consequence of Cauchy-Schwarz applied to centered observables, plus the imaginary part bound.",
-    "implications": "YES. The uncertainty principle is a direct consequence of Cauchy-Schwarz applied to centered observables, plus the imaginary part bound."
+    "summary": "The Heisenberg uncertainty principle $\\sigma_x \\cdot \\sigma_p \\geq \\hbar/2$ is a direct machine-checked consequence of the complex Cauchy-Schwarz inequality, obtained by extracting the imaginary part and substituting the canonical commutation relation $[X, P] = i\\hbar$.",
+    "implications": "This formalization confirms Robertson's 1929 insight: uncertainty is not a quirk of quantum measurement but a universal geometric property of complex inner product spaces. Any two operators $A$, $B$ on a Hilbert space satisfying $\\mathrm{Im}\\langle A\\psi, B\\psi \\rangle = c/2$ automatically satisfy $\\sigma_A \\cdot \\sigma_B \\geq |c|/2$. The Lean proof also demonstrates that `nlinarith` can handle the nonlinear arithmetic needed to extract square-root forms from squared-norm inequalities, a useful pattern for Hilbert space inequalities more broadly.",
+    "openQuestions": [
+      "Can the Schrödinger uncertainty relation — which sharpens Robertson by adding the anticommutator term $\\sigma_A^2 \\cdot \\sigma_B^2 \\geq |\\frac{1}{2}\\langle\\{A,B\\}\\rangle - \\langle A\\rangle\\langle B\\rangle|^2 + |\\frac{1}{2i}\\langle[A,B]\\rangle|^2$ — be formalized in Lean using this same inner product approach?",
+      "Can the entropic uncertainty principle (Maassen–Uffink 1988) — a strictly stronger bound expressed in terms of Shannon entropy rather than standard deviation — be formalized in Lean 4 using Mathlib's information-theoretic library?"
+    ]
   },
   "leanFile": {
     "namespace": "CauchySchwarzOQ01OQ03",
@@ -49,7 +91,16 @@
       "targetId": "cauchy-schwarz-oq-01",
       "relationship": "extends",
       "description": "Derives uncertainty principle from complex Cauchy-Schwarz"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "uses",
+      "description": "Relies on the foundational Cauchy-Schwarz inequality for real and complex inner product spaces"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Bessel's inequality is another inner-product-space consequence of Cauchy-Schwarz at the same level of generality"
     }
-  ],
-  "sections": []
+  ]
 }

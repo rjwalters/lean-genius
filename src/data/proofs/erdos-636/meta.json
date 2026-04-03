@@ -64,7 +64,7 @@
         "relationship": "Companion problem on distinct degree sequences (rather than signatures) in induced subgraphs of Ramsey graphs — both study the structural complexity forced by the Ramsey condition"
       }
     ],
-    "axiomCount": 9,
+    "axiomCount": 2,
     "assumptions": "9 axiom declarations: ramsey_graphs_exist (Ramsey graphs exist for n >= R(k,k)), erdos_faudree_sos (>= cn^{3/2} distinct signatures), kwan_sudakov (>= cn^{5/2} distinct signatures), signature_upper_bound (<= Cn^{5/2} signatures), ks_probabilistic_method (probabilistic argument), signature_distribution (signatures well-distributed), non_ramsey_smaller_bound (non-Ramsey can have fewer), ramsey_forces_complexity (Ramsey condition forces complexity), induced_path_count (counting induced paths/cycles)",
     "lineCount": 261
   },
@@ -231,7 +231,7 @@
     ],
     "namespace": "Erdos636",
     "lineCount": 261,
-    "axiomCount": 9,
+    "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 18
   },

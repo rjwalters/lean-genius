@@ -2,7 +2,7 @@
   "id": "euler-totient-oq-02",
   "title": "Multiplicativity of Euler's Totient Function",
   "slug": "euler-totient-oq-02",
-  "description": "The multiplicative property of Euler's totient: phi(mn) = phi(m)*phi(n) when gcd(m,n) = 1. Proves multiplicativity via Mathlib, prime power formula, special cases, and non-coprime counterexamples.",
+  "description": "The multiplicative property of Euler's totient: φ(mn) = φ(m)·φ(n) when gcd(m,n) = 1. Proves multiplicativity via CRT, the prime power formula φ(p^k) = p^(k-1)(p-1), three-factor products, φ(2m)=φ(m) for odd m, and native_decide verifications including non-coprime counterexamples. 0 sorries, 0 axioms.",
   "meta": {
     "status": "verified",
     "tags": ["number-theory", "multiplicative-functions", "modular-arithmetic", "totient"],
@@ -10,34 +10,126 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. All results from Mathlib's Nat.totient API.",
-    "lineCount": 170,
+    "assumptions": "0 axioms, 0 sorries. All results from Mathlib's Nat.totient API, ZMod, and CRT.",
+    "lineCount": 172,
     "theoremCount": 14,
     "definitionCount": 0,
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-03-30"
   },
   "overview": {
-    "problemStatement": "Prove that Euler's totient function is multiplicative: phi(mn) = phi(m)*phi(n) for coprime m, n.",
-    "text": "The multiplicativity of phi follows from the Chinese Remainder Theorem: when gcd(m,n) = 1, the ring isomorphism Z/mnZ = Z/mZ x Z/nZ induces an isomorphism on unit groups, so phi(mn) = |units of Z/mnZ| = |units of Z/mZ| * |units of Z/nZ| = phi(m)*phi(n).",
-    "proofStrategy": "Core result from Mathlib's Nat.totient_mul. Extended with prime power formula, three-factor products, special cases (phi(2m) for odd m), and native_decide verifications including non-coprime counterexamples.",
+    "historicalContext": "Euler introduced the totient function $\\varphi(n)$ in 1763 — he called it the 'totient' (from Latin *tot*, 'so many') because $\\varphi(n)$ counts how many numbers among $1, 2, \\ldots, n$ are coprime to $n$. Carl Friedrich Gauss used it extensively in his 1801 *Disquisitiones Arithmeticae*, particularly in the proof of primitive roots modulo primes.\n\nThe **multiplicativity** property $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for $\\gcd(m,n) = 1$ is the totient's most important structural property. Euler knew it, and it follows naturally from the **Chinese Remainder Theorem** (attributed to Sun Tzu, 3rd century AD): when $\\gcd(m,n)=1$, there is a ring isomorphism $(\\mathbb{Z}/mn\\mathbb{Z}) \\cong (\\mathbb{Z}/m\\mathbb{Z}) \\times (\\mathbb{Z}/n\\mathbb{Z})$, which restricts to an isomorphism on unit groups and thus implies $\\varphi(mn) = \\varphi(m)\\varphi(n)$.\n\nThe totient function has enormous practical significance. In the **RSA public-key cryptosystem** (1977), $\\varphi(n) = \\varphi(p)\\varphi(q) = (p-1)(q-1)$ for a semiprime $n = pq$ is the modulus for key generation. The multiplicativity property ensures that $\\varphi$ can be computed efficiently from the prime factorization without factoring $n$ again.",
+    "problemStatement": "**Multiplicativity (OQ-02):** Prove that Euler's totient function $\\varphi$ is multiplicative:\n$$\\varphi(mn) = \\varphi(m) \\cdot \\varphi(n) \\quad \\text{whenever } \\gcd(m, n) = 1.$$\nCombined with the **prime power formula** $\\varphi(p^k) = p^{k-1}(p-1)$ and the factorization $n = \\prod p_i^{k_i}$, this gives the **Euler product formula**:\n$$\\varphi(n) = n \\cdot \\prod_{p \\mid n} \\left(1 - \\frac{1}{p}\\right).$$\nThe file also establishes: $\\varphi(2m) = \\varphi(m)$ for odd $m$; $\\varphi(6) = 2$, $\\varphi(12) = 4$, $\\varphi(30) = 8$, $\\varphi(100) = 40$; and that coprimality is necessary ($\\varphi(8) \\neq \\varphi(2)\\varphi(4)$).",
+    "proofStrategy": "The proof is organized in seven parts:\n\n**Part I:** `totient_mul_coprime` wraps Mathlib's `Nat.totient_mul` with explicit coprimality hypotheses. Two variants (symmetric and GCD-form) are derived.\n\n**Part II:** The totient as a multiplicative arithmetic function: $\\varphi(1) = 1$ (base case), and `totient_mul_three` extends multiplicativity to three-factor products via chained applications.\n\n**Part III:** The prime power formula $\\varphi(p^k) = p^{k-1}(p-1)$ from Mathlib, with the special case $\\varphi(p) = p-1$ and $\\varphi(p^2) = p(p-1)$.\n\n**Part IV:** The special case $\\varphi(2m) = \\varphi(m)$ for odd $m$ — a useful identity in number theory (it explains why $\\varphi$ of an even number often equals $\\varphi$ of its odd part).\n\n**Parts V-VI:** Concrete computations via `native_decide`, including non-coprime counterexamples demonstrating that the coprimality hypothesis is necessary.\n\n**Part VII:** The algebraic proof that $\\varphi(n) = |(\\mathbb{Z}/n\\mathbb{Z})^*|$ and the CRT explanation of multiplicativity.",
     "keyInsights": [
-      "Multiplicativity follows from CRT: (Z/mnZ)* = (Z/mZ)* x (Z/nZ)* when gcd(m,n) = 1",
-      "Combined with phi(p^k) = p^(k-1)(p-1), gives the complete product formula for phi",
-      "Coprimality is essential: phi(2*4) != phi(2)*phi(4) demonstrates failure for non-coprime factors",
-      "phi(n) = card of units in Z/nZ connects number theory to group theory"
+      "Multiplicativity is the totient's deepest structural property: it says φ is not just an arithmetic function but a *completely multiplicative* one on coprime pairs. This structure allows computing φ(n) in O(√n) time via trial division, or O(log n) given the factorization.",
+      "The CRT proof is conceptually cleanest: (ℤ/mnℤ)* ≅ (ℤ/mℤ)* × (ℤ/nℤ)* when gcd(m,n)=1. Taking cardinalities gives φ(mn) = φ(m)φ(n). In Lean, this is `ZMod.chineseRemainder` composed with `ZMod.card_units_eq_totient`.",
+      "The prime power formula φ(p^k) = p^(k-1)(p-1) follows by direct counting: among {1,...,p^k}, exactly p^(k-1) are multiples of p (namely p, 2p, ..., p^k), so φ(p^k) = p^k - p^(k-1) = p^(k-1)(p-1). This plus multiplicativity gives the Euler product formula.",
+      "The coprimality hypothesis is necessary: φ(8) = 4 but φ(2)·φ(4) = 1·2 = 2. The failure for non-coprime factors comes from overcounting in the CRT — when gcd(m,n) > 1, the rings ℤ/mℤ and ℤ/nℤ share structure and (ℤ/mnℤ)* is strictly smaller than (ℤ/mℤ)* × (ℤ/nℤ)*.",
+      "The identity φ(2m) = φ(m) for odd m is a useful special case: since gcd(2,m)=1 for odd m, multiplicativity gives φ(2m) = φ(2)·φ(m) = 1·φ(m). This explains why φ takes the same value on an odd number and twice that number, which has implications for the structure of primitive roots.",
+      "RSA cryptography uses φ(n) = (p-1)(q-1) for n=pq. Multiplicativity of φ is what makes this formula work: φ(pq) = φ(p)·φ(q) = (p-1)(q-1) since primes p and q are always coprime. The security of RSA depends on the difficulty of computing φ(n) without knowing the factorization."
+    ],
+    "prerequisites": [
+      "Euler's totient function definition: φ(n) = |{k ≤ n : gcd(k,n) = 1}|",
+      "Chinese Remainder Theorem (ZMod.chineseRemainder in Mathlib)",
+      "Prime power factorization and Nat.Prime",
+      "Ring units and ZMod structure in Lean 4",
+      "Nat.Coprime and Nat.gcd"
+    ]
+  },
+  "sections": [
+    {
+      "id": "multiplicativity",
+      "title": "Part I: The Multiplicative Property",
+      "startLine": 40,
+      "endLine": 60,
+      "summary": "Core result: φ(mn) = φ(m)φ(n) for coprime m, n. Derived from Mathlib's Nat.totient_mul with three equivalent formulations (coprime, symmetric, GCD-form).",
+      "mathContext": "$\\varphi(mn) = \\varphi(m)\\varphi(n)$ when $\\gcd(m,n) = 1$. Proof source: \\texttt{Nat.totient\\_mul h} from Mathlib (where \\texttt{h : Nat.Coprime m n}). Three formulations: (1) \\texttt{Coprime m n}, (2) \\texttt{Coprime n m} (symmetric), (3) \\texttt{gcd m n = 1} (extensional). All are equivalent; the variants provide convenient entry points."
+    },
+    {
+      "id": "arithmetic-function",
+      "title": "Part II: φ as a Multiplicative Arithmetic Function",
+      "startLine": 62,
+      "endLine": 75,
+      "summary": "Establishes φ(1)=1 (the identity element for multiplicative functions) and extends multiplicativity to three-factor products a·b·c.",
+      "mathContext": "$\\varphi(1) = 1$ (trivial: every number $\\leq 1$ is coprime to 1). Three-factor: $\\varphi(abc) = \\varphi(a)\\varphi(b)\\varphi(c)$ when $a,b,c$ pairwise coprime. Proof: $\\varphi(abc) = \\varphi(ab \\cdot c) = \\varphi(ab)\\varphi(c) = \\varphi(a)\\varphi(b)\\varphi(c)$, using \\texttt{Coprime.mul\\_right hbc} to show $\\gcd(ab, c) = 1$."
+    },
+    {
+      "id": "prime-power",
+      "title": "Part III: Prime Power Formula",
+      "startLine": 77,
+      "endLine": 95,
+      "summary": "φ(p^k) = p^(k-1)(p-1) for prime p and k ≥ 1. Special cases: φ(p) = p-1 and φ(p²) = p(p-1).",
+      "mathContext": "$\\varphi(p^k) = p^{k-1}(p-1)$. Counting proof: among $\\{1, \\ldots, p^k\\}$, the non-coprime elements to $p^k$ are exactly the multiples of $p$: $p, 2p, \\ldots, p^{k-1} \\cdot p$, giving $p^{k-1}$ excluded elements. So $\\varphi(p^k) = p^k - p^{k-1} = p^{k-1}(p-1)$. Special cases: $\\varphi(p) = p^0(p-1) = p-1$; $\\varphi(p^2) = p^1(p-1) = p(p-1)$."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part IV: Special Case φ(2m) = φ(m) for Odd m",
+      "startLine": 97,
+      "endLine": 105,
+      "summary": "Since gcd(2,m)=1 for odd m and φ(2)=1, multiplicativity gives φ(2m) = 1·φ(m) = φ(m).",
+      "mathContext": "$\\varphi(2m) = \\varphi(2) \\cdot \\varphi(m) = 1 \\cdot \\varphi(m) = \\varphi(m)$ for $\\gcd(2,m) = 1$ (i.e., $m$ odd). Consequence: $\\varphi$ takes the same value on every odd number and its double. Example: $\\varphi(3) = \\varphi(6) = 2$; $\\varphi(5) = \\varphi(10) = 4$; $\\varphi(7) = \\varphi(14) = 6$."
+    },
+    {
+      "id": "computations",
+      "title": "Parts V-VI: Concrete Computations and Counterexamples",
+      "startLine": 107,
+      "endLine": 145,
+      "summary": "Verifies φ(6)=2, φ(12)=4, φ(15)=8, φ(30)=8, φ(100)=40 by native_decide. Non-coprime counterexamples: φ(8) ≠ φ(2)·φ(4) and φ(24) ≠ φ(4)·φ(6).",
+      "mathContext": "Sample computations: $\\varphi(6) = \\varphi(2)\\varphi(3) = 1 \\cdot 2 = 2$; $\\varphi(30) = \\varphi(2)\\varphi(3)\\varphi(5) = 1 \\cdot 2 \\cdot 4 = 8$; $\\varphi(100) = \\varphi(4)\\varphi(25) = 2 \\cdot 20 = 40$. Counterexamples: $\\varphi(8) = 4 \\neq 1 \\cdot 2 = \\varphi(2)\\varphi(4)$ (since $\\gcd(2,4) = 2 \\neq 1$); $\\varphi(24) = 8 \\neq 2 \\cdot 2 = \\varphi(4)\\varphi(6)$."
+    },
+    {
+      "id": "group-theory",
+      "title": "Part VII: Group-Theoretic Interpretation",
+      "startLine": 147,
+      "endLine": 172,
+      "summary": "Proves φ(n) = |(ℤ/nℤ)*| via ZMod.card_units_eq_totient. The CRT explanation: (ℤ/mnℤ)* ≅ (ℤ/mℤ)* × (ℤ/nℤ)* when gcd(m,n)=1.",
+      "mathContext": "$\\varphi(n) = |(\\mathbb{Z}/n\\mathbb{Z})^*|$: the totient counts units in the ring $\\mathbb{Z}/n\\mathbb{Z}$. CRT: when $\\gcd(m,n) = 1$, $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ as rings (\\texttt{ZMod.chineseRemainder}). Restricting to units: $(\\mathbb{Z}/mn\\mathbb{Z})^* \\cong (\\mathbb{Z}/m\\mathbb{Z})^* \\times (\\mathbb{Z}/n\\mathbb{Z})^*$. Taking cardinalities: $\\varphi(mn) = \\varphi(m)\\varphi(n)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The multiplicativity of Euler's totient function φ(mn) = φ(m)φ(n) for coprime m,n is fully formalized. The proof uses Mathlib's Nat.totient_mul (which implements the CRT argument), extends to three-factor products, verifies the prime power formula φ(p^k) = p^(k-1)(p-1), computes concrete values, and includes non-coprime counterexamples. All 14 theorems are machine-verified with 0 axioms.",
+    "implications": "The multiplicativity of φ is the key to the Euler product formula $\\varphi(n) = n \\prod_{p \\mid n}(1-1/p)$, which enables efficient computation of φ(n) from the prime factorization. This is fundamental to RSA cryptography: for $n = pq$, $\\varphi(n) = (p-1)(q-1)$, and the correctness of RSA decryption follows from Euler's theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$.\n\nMore abstractly, multiplicative arithmetic functions form a group under Dirichlet convolution, and φ is a key example. The Möbius function μ is the Dirichlet inverse of the constant-1 function, and φ = μ * id (where * is Dirichlet convolution), which gives another way to compute φ.\n\nIn group theory, φ(n) is the order of the multiplicative group (ℤ/nℤ)*, and Lagrange's theorem implies that the order of any element divides φ(n). A primitive root modulo n (if one exists) is an element of order exactly φ(n), and their existence is connected to the structure of (ℤ/nℤ)*.",
+    "openQuestions": [
+      "Can the totient product formula φ(n) = n·∏_{p|n}(1-1/p) be formalized directly in Lean using Mathlib's prime factorization infrastructure? This would generalize totient_prime_pow by expressing φ as a product over distinct prime divisors.",
+      "Is there a Lean formalization of Euler's theorem a^φ(n) ≡ 1 (mod n) for gcd(a,n)=1? This is the key ingredient for RSA correctness and follows directly from the group theory interpretation φ(n) = |(ℤ/nℤ)*|.",
+      "Can the connection to Dirichlet convolution be formalized? φ = μ * id as Dirichlet convolution would provide a second proof of multiplicativity (since convolutions of multiplicative functions are multiplicative).",
+      "The divisor sum n = ∑_{d|n} φ(d) (formalized in euler-totient-oq-04) is dual to multiplicativity — how do these two properties together characterize the totient among all multiplicative functions?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "euler-totient",
       "relationship": "extends",
-      "description": "Proves the multiplicative property of the totient function from the parent formalization"
+      "description": "Proves the multiplicative property of the totient function from the parent formalization; the parent defines φ and proves Euler's theorem"
     },
     {
       "targetId": "euler-totient-oq-04",
       "relationship": "complements",
-      "description": "The divisor sum identity n = sum_{d|n} phi(d) uses multiplicativity implicitly"
+      "description": "The divisor sum identity n = ∑_{d|n} φ(d) uses multiplicativity implicitly; together these two properties characterize φ among arithmetic functions"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Theoremata arithmetica nova methodo demonstrata",
+      "year": "1763",
+      "venue": "Novi Commentarii academiae scientiarum imperialis Petropolitanae 8, 74–104",
+      "note": "Introduces the totient function and proves the generalization of Fermat's little theorem: a^φ(n) ≡ 1 (mod n) for gcd(a,n) = 1."
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Develops the theory of quadratic residues and primitive roots using the totient function. Multiplicativity of φ is central to the structure theory of (ℤ/nℤ)*."
+    },
+    {
+      "authors": "Rivest, R.L., Shamir, A., and Adleman, L.",
+      "title": "A Method for Obtaining Digital Signatures and Public-Key Cryptosystems",
+      "year": "1978",
+      "venue": "Communications of the ACM 21(2), 120–126",
+      "note": "Introduces RSA. The key formula φ(pq) = (p-1)(q-1) relies on the multiplicativity proved here."
     }
   ]
 }

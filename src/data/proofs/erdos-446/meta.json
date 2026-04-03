@@ -1,10 +1,10 @@
 {
   "id": "erdos-446",
-  "title": "Erdős Problem #446: Density of Integers with Divisors in (n, 2n)",
+  "title": "Erd\u0151s Problem #446: Density of Integers with Divisors in (n, 2n)",
   "slug": "erdos-446",
-  "description": "Let δ(n) denote the density of integers divisible by some d ∈ (n, 2n). Ford (2008) proved δ(n) ≍ 1/((log n)^α (log log n)^{3/2}) where α ≈ 0.08607, and disproved δ₁(n) = o(δ(n)).",
+  "description": "Let \u03b4(n) denote the density of integers divisible by some d \u2208 (n, 2n). Ford (2008) proved \u03b4(n) \u224d 1/((log n)^\u03b1 (log log n)^{3/2}) where \u03b1 \u2248 0.08607, and disproved \u03b4\u2081(n) = o(\u03b4(n)).",
   "meta": {
-    "author": "Ford (2008 resolution), Erdős-Tenenbaum (earlier bounds)",
+    "author": "Ford (2008 resolution), Erd\u0151s-Tenenbaum (earlier bounds)",
     "sourceUrl": "https://erdosproblems.com/446",
     "date": "2008",
     "status": "axiomatized",
@@ -41,16 +41,16 @@
       }
     ],
     "originalContributions": [
-      "hasDivisorInInterval definition: ∃d ∈ (n, 2n) with d | m",
+      "hasDivisorInInterval definition: \u2203d \u2208 (n, 2n) with d | m",
       "delta axiom: asymptotic density with non-negativity and upper bound",
       "divisorCount: computable number of divisors in (n, 2n)",
       "deltaR axiom: density with exactly r divisors",
-      "delta_decomposition axiom: δ(n) = Σᵣ δᵣ(n)",
-      "alpha constant: 1 - (1 + log log 2)/log 2 ≈ 0.08607",
-      "Historical axioms: Besicovitch 1934, Erdős 1935, Erdős 1960",
+      "delta_decomposition axiom: \u03b4(n) = \u03a3\u1d63 \u03b4\u1d63(n)",
+      "alpha constant: 1 - (1 + log log 2)/log 2 \u2248 0.08607",
+      "Historical axioms: Besicovitch 1934, Erd\u0151s 1935, Erd\u0151s 1960",
       "ford_2008_main axiom: exact asymptotic",
-      "ford_2008_disproof axiom: δ₁(n) is NOT o(δ(n))",
-      "ford_2008_general axiom: δᵣ(n) ≫ᵣ δ(n) for all r",
+      "ford_2008_disproof axiom: \u03b4\u2081(n) is NOT o(\u03b4(n))",
+      "ford_2008_general axiom: \u03b4\u1d63(n) \u226b\u1d63 \u03b4(n) for all r",
       "prime_no_divisor theorem: primes > 2n avoid the interval",
       "erdos_446_summary theorem: combines Ford's results"
     ],
@@ -59,17 +59,17 @@
     "assumptions": "12 axioms: delta, delta_nonneg, delta_le_one, and 9 more. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #446 studies the density of integers having a divisor in the interval (n, 2n), a question with a remarkable 74-year history spanning from Besicovitch to Ford. Besicovitch (1934) first showed liminf δ(n) = 0, and Erdős (1935) strengthened this to δ(n) → 0. In 1960, Erdős found the correct exponent: δ(n) = (log n)^{-α + o(1)} where α = 1 - (1 + log log 2)/log 2 ≈ 0.08607.\n\nThe problem has two parts. The first asks for the exact growth rate of δ(n). Kevin Ford resolved this completely in a 2008 Annals of Mathematics paper, proving δ(n) ≍ 1/((log n)^α (log log n)^{3/2}). The secondary (log log n)^{3/2} correction factor refined Erdős's 1960 estimate. Tenenbaum (1984) had made partial progress with improved bounds in Compositio Math.\n\nThe second part asks whether δ₁(n) = o(δ(n)), i.e., whether integers with exactly one divisor in (n, 2n) are negligible. Erdős was \"quite sure\" this was true at Oberwolfach in 1986, but noted that \"recent results of Tenenbaum throw some doubt on this.\" His doubt was prescient: Ford proved δ₁(n) is NOT o(δ(n)), and in fact δᵣ(n) ≫ᵣ δ(n) for all r ≥ 1, meaning the divisor count distribution is surprisingly flat.",
-    "problemStatement": "Let δ(n) denote the density of integers divisible by some integer in the interval (n, 2n). **Part 1:** What is the growth rate of δ(n)? **Answer:** $\\delta(n) \\asymp \\frac{1}{(\\log n)^\\alpha (\\log\\log n)^{3/2}}$ where $\\alpha = 1 - \\frac{1 + \\log\\log 2}{\\log 2} \\approx 0.08607$. **Part 2:** If $\\delta_1(n)$ is the density with exactly one divisor in $(n, 2n)$, is $\\delta_1(n) = o(\\delta(n))$? **Answer:** NO (Ford 2008). In fact $\\delta_r(n) \\gg_r \\delta(n)$ for all $r \\geq 1$.",
-    "text": "Let δ(n) denote the density of integers divisible by some d ∈ (n, 2n). Ford (2008) proved δ(n) ≍ 1/((log n)^α (log log n)^{3/2}) where α ≈ 0.08607, and disproved δ₁(n) = o(δ(n)).",
-    "proofStrategy": "The formalization defines the core predicate hasDivisorInInterval and the computable divisorCount function. The asymptotic densities δ(n) and δᵣ(n) are axiomatized since their definitions require measure-theoretic limits. The constant α is defined explicitly. Historical results (Besicovitch, Erdős) and Ford's resolution are stated as axioms with their precise quantitative forms. A proved theorem demonstrates that primes larger than 2n avoid the interval. The summary theorem combines Ford's two main results.",
+    "historicalContext": "Erd\u0151s Problem #446 studies the density of integers having a divisor in the interval (n, 2n), a question with a remarkable 74-year history spanning from Besicovitch to Ford. Besicovitch (1934) first showed liminf \u03b4(n) = 0, and Erd\u0151s (1935) strengthened this to \u03b4(n) \u2192 0. In 1960, Erd\u0151s found the correct exponent: \u03b4(n) = (log n)^{-\u03b1 + o(1)} where \u03b1 = 1 - (1 + log log 2)/log 2 \u2248 0.08607.\n\nThe problem has two parts. The first asks for the exact growth rate of \u03b4(n). Kevin Ford resolved this completely in a 2008 Annals of Mathematics paper, proving \u03b4(n) \u224d 1/((log n)^\u03b1 (log log n)^{3/2}). The secondary (log log n)^{3/2} correction factor refined Erd\u0151s's 1960 estimate. Tenenbaum (1984) had made partial progress with improved bounds in Compositio Math.\n\nThe second part asks whether \u03b4\u2081(n) = o(\u03b4(n)), i.e., whether integers with exactly one divisor in (n, 2n) are negligible. Erd\u0151s was \"quite sure\" this was true at Oberwolfach in 1986, but noted that \"recent results of Tenenbaum throw some doubt on this.\" His doubt was prescient: Ford proved \u03b4\u2081(n) is NOT o(\u03b4(n)), and in fact \u03b4\u1d63(n) \u226b\u1d63 \u03b4(n) for all r \u2265 1, meaning the divisor count distribution is surprisingly flat.",
+    "problemStatement": "Let \u03b4(n) denote the density of integers divisible by some integer in the interval (n, 2n). **Part 1:** What is the growth rate of \u03b4(n)? **Answer:** $\\delta(n) \\asymp \\frac{1}{(\\log n)^\\alpha (\\log\\log n)^{3/2}}$ where $\\alpha = 1 - \\frac{1 + \\log\\log 2}{\\log 2} \\approx 0.08607$. **Part 2:** If $\\delta_1(n)$ is the density with exactly one divisor in $(n, 2n)$, is $\\delta_1(n) = o(\\delta(n))$? **Answer:** NO (Ford 2008). In fact $\\delta_r(n) \\gg_r \\delta(n)$ for all $r \\geq 1$.",
+    "text": "Let \u03b4(n) denote the density of integers divisible by some d \u2208 (n, 2n). Ford (2008) proved \u03b4(n) \u224d 1/((log n)^\u03b1 (log log n)^{3/2}) where \u03b1 \u2248 0.08607, and disproved \u03b4\u2081(n) = o(\u03b4(n)).",
+    "proofStrategy": "The formalization defines the core predicate hasDivisorInInterval and the computable divisorCount function. The asymptotic densities \u03b4(n) and \u03b4\u1d63(n) are axiomatized since their definitions require measure-theoretic limits. The constant \u03b1 is defined explicitly. Historical results (Besicovitch, Erd\u0151s) and Ford's resolution are stated as axioms with their precise quantitative forms. A proved theorem demonstrates that primes larger than 2n avoid the interval. The summary theorem combines Ford's two main results.",
     "keyInsights": [
-      "**The Constant α**: α = 1 - (1 + log log 2)/log 2 ≈ 0.08607 governs the decay rate",
-      "**Slow Decay**: δ(n) → 0 very slowly — like 1/(log n)^{0.086}",
-      "**Log-log Correction**: The (log log n)^{3/2} factor refines Erdős's 1960 estimate",
-      "**Disproof**: δ₁(n) = o(δ(n)) is FALSE — most integers with a divisor in (n, 2n) have exactly one",
-      "**Generalization**: For each r, δᵣ(n) is comparable to δ(n), not negligible",
-      "**Erdős's Prescient Doubt**: His 1986 uncertainty about the secondary conjecture was justified"
+      "**The Constant \u03b1**: \u03b1 = 1 - (1 + log log 2)/log 2 \u2248 0.08607 governs the decay rate",
+      "**Slow Decay**: \u03b4(n) \u2192 0 very slowly \u2014 like 1/(log n)^{0.086}",
+      "**Log-log Correction**: The (log log n)^{3/2} factor refines Erd\u0151s's 1960 estimate",
+      "**Disproof**: \u03b4\u2081(n) = o(\u03b4(n)) is FALSE \u2014 most integers with a divisor in (n, 2n) have exactly one",
+      "**Generalization**: For each r, \u03b4\u1d63(n) is comparable to \u03b4(n), not negligible",
+      "**Erd\u0151s's Prescient Doubt**: His 1986 uncertainty about the secondary conjecture was justified"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -86,15 +86,15 @@
     },
     {
       "id": "alpha",
-      "title": "The Constant α",
-      "summary": "Definition and numerical bounds for α ≈ 0.08607",
+      "title": "The Constant \u03b1",
+      "summary": "Definition and numerical bounds for \u03b1 \u2248 0.08607",
       "startLine": 75,
       "endLine": 84
     },
     {
       "id": "historical",
       "title": "Historical Results",
-      "summary": "Besicovitch 1934, Erdős 1935, Erdős 1960 axioms",
+      "summary": "Besicovitch 1934, Erd\u0151s 1935, Erd\u0151s 1960 axioms",
       "startLine": 85,
       "endLine": 106
     },
@@ -121,12 +121,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #446 was completely resolved by Kevin Ford in 2008. The density δ(n) of integers with a divisor in (n, 2n) decays like 1/((log n)^α (log log n)^{3/2}) where α ≈ 0.08607. Erdős's secondary conjecture that δ₁(n) = o(δ(n)) was disproved — in fact, δᵣ(n) ≫ δ(n) for all r.",
+    "summary": "Erd\u0151s Problem #446 was completely resolved by Kevin Ford in 2008. The density \u03b4(n) of integers with a divisor in (n, 2n) decays like 1/((log n)^\u03b1 (log log n)^{3/2}) where \u03b1 \u2248 0.08607. Erd\u0151s's secondary conjecture that \u03b4\u2081(n) = o(\u03b4(n)) was disproved \u2014 in fact, \u03b4\u1d63(n) \u226b \u03b4(n) for all r.",
     "implications": "Ford's result shows that divisors in (n, 2n) are surprisingly common and well-distributed by count. The work advanced analytic number theory techniques for divisor distribution problems and appeared in the Annals of Mathematics.",
     "openQuestions": [
-      "What are the exact constants in the asymptotic for δ(n)?",
+      "What are the exact constants in the asymptotic for \u03b4(n)?",
       "How does the distribution of divisor counts vary with n?",
-      "Can similar results be proved for intervals (n, cn) with c ≠ 2?"
+      "Can similar results be proved for intervals (n, cn) with c \u2260 2?"
     ]
   },
   "leanFile": {
@@ -149,17 +149,17 @@
     {
       "targetId": "erdos-427",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: divisibility, number-theory, solved"
     },
     {
       "targetId": "erdos-459",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: asymptotic-density, number-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: asymptotic-density, number-theory, solved"
     },
     {
       "targetId": "erdos-728",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+      "description": "Related Erd\u0151s problem sharing themes: divisibility, number-theory, solved"
     }
   ]
 }

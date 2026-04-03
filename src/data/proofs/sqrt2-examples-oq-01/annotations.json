@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "sqr-nonneg-general",
+    "proofId": "sqrt2-examples-oq-01",
+    "range": { "startLine": 23, "endLine": 31 },
+    "type": "insight",
+    "title": "Maximum Generalization via mul_self_nonneg",
+    "content": "The theorem `square_nonneg_general` shows that $0 \\leq x \\cdot x$ holds in any `LinearOrderedSemiring`, not just the integers. The proof is a one-liner delegating to Mathlib's `mul_self_nonneg`. The `LinearOrderedSemiring` typeclass is the minimal algebraic structure for this result: it requires a total order, associative addition and multiplication, and distributivity — but NOT subtraction, division, or commutativity.",
+    "mathContext": "$0 \\leq x \\cdot x$ for any $x$ in a `LinearOrderedSemiring`. Equivalently: $0 \\leq x^2$ via `sq_nonneg`. The key Mathlib lemma is `mul_self_nonneg : ∀ (a : α), 0 ≤ a * a` in `Mathlib.Algebra.Order.Ring.Lemmas`.",
+    "significance": "key",
+    "relatedConcepts": ["LinearOrderedSemiring", "mul_self_nonneg", "sq_nonneg", "ordered ring axioms", "Mathlib typeclass hierarchy"],
+    "prerequisites": ["ordered algebra", "Lean 4 typeclasses", "Mathlib ring hierarchy"]
+  },
+  {
+    "id": "sqr-concrete-instances",
+    "proofId": "sqrt2-examples-oq-01",
+    "range": { "startLine": 37, "endLine": 47 },
+    "type": "definition",
+    "title": "Concrete Instances: ℕ, ℤ, ℚ, ℝ",
+    "content": "Four specializations of `square_nonneg_general` to standard number systems. Each is a one-liner application, demonstrating that the general theorem subsumes all specific cases. Notably, `ℕ` is included even though $n \\cdot n \\geq 0$ for naturals is trivially true — it fits the `LinearOrderedSemiring` framework uniformly.",
+    "mathContext": "Instances of `LinearOrderedSemiring`: $\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R}$. The semiring structure on $\\mathbb{N}$ lacks subtraction; the ring structure on $\\mathbb{Z}$ adds it. All satisfy $0 \\leq x^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["number systems", "integer arithmetic", "rational numbers", "real numbers", "typeclass instances"],
+    "prerequisites": ["natural numbers", "integers", "rationals", "reals", "Lean 4 coercions"]
+  },
+  {
+    "id": "sqr-case-analysis-proof",
+    "proofId": "sqrt2-examples-oq-01",
+    "range": { "startLine": 53, "endLine": 64 },
+    "type": "insight",
+    "title": "Case-Analysis Proof for LinearOrderedRing",
+    "content": "An independent proof by cases on the sign of $x$, generalizing the parent file's integer-specific proof technique. If $x \\geq 0$: `mul_nonneg h h` gives $x \\cdot x \\geq 0$ directly. If $x < 0$: negate to get $-x > 0$, then use `ring` to rewrite $x \\cdot x = (-x) \\cdot (-x)$, and apply `mul_nonneg` again. This uses `LinearOrderedRing` (rather than `LinearOrderedSemiring`) because negation requires subtraction/ring structure.",
+    "mathContext": "If $x \\geq 0$: $x \\cdot x \\geq 0$ by `mul_nonneg`. If $x < 0$: $-x > 0$ (by `neg_nonneg`) and $x \\cdot x = (-x)(-x) \\geq 0$. The `calc` block: $x \\cdot x = (-x) \\cdot (-x) \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["proof by cases", "sign analysis", "neg_nonneg", "mul_nonneg", "LinearOrderedRing", "case split tactic"],
+    "prerequisites": ["ordered ring", "negation in rings", "case analysis in Lean 4"]
+  },
+  {
+    "id": "sqr-sum-abs",
+    "proofId": "sqrt2-examples-oq-01",
+    "range": { "startLine": 70, "endLine": 77 },
+    "type": "insight",
+    "title": "Sum of Squares and Absolute Value Identity",
+    "content": "Two corollaries: (1) the sum of squares $x^2 + y^2 \\geq 0$ via `add_nonneg` applied to the two square non-negativity results; (2) $|x| \\cdot |x| = x \\cdot x$ in any `LinearOrderedCommRing`, using Mathlib's `abs_mul_self`. The second identity shows that absolute value is a 'square root' in the ordering sense: $|x|^2 = x^2$.",
+    "mathContext": "$0 \\leq x^2 + y^2$ (sum of squares, basis of inner product non-negativity). $|x|^2 = x^2$ since $|x| = x$ if $x \\geq 0$ and $|x| = -x$ if $x < 0$, so $|x|^2 = x^2$ in both cases.",
+    "significance": "supporting",
+    "relatedConcepts": ["sum of squares", "absolute value", "inner product", "norm", "abs_mul_self"],
+    "prerequisites": ["absolute value in ordered rings", "sum of squares", "LinearOrderedCommRing"]
+  },
+  {
+    "id": "sqr-am-gm",
+    "proofId": "sqrt2-examples-oq-01",
+    "range": { "startLine": 79, "endLine": 83 },
+    "type": "insight",
+    "title": "AM-GM Inequality via the Cauchy-Schwarz Trick",
+    "content": "The AM-GM inequality $ab \\leq (a^2 + b^2)/2$ is derived from $(a-b)^2 \\geq 0$: expanding gives $a^2 - 2ab + b^2 \\geq 0$, hence $2ab \\leq a^2 + b^2$. The Lean proof uses `nlinarith` to close the arithmetic after establishing `0 ≤ (a-b)*(a-b)` from `square_nonneg_general`. Requires `LinearOrderedField` (for division by 2) rather than just `LinearOrderedRing`.",
+    "mathContext": "$(a-b)^2 \\geq 0 \\Rightarrow a^2 - 2ab + b^2 \\geq 0 \\Rightarrow ab \\leq \\frac{a^2+b^2}{2}$. This is the 2-variable case of the AM-GM inequality. The Cauchy-Schwarz inequality $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ similarly follows from $(u-\\lambda v)^2 \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["AM-GM inequality", "Cauchy-Schwarz inequality", "quadratic expansion", "nlinarith", "LinearOrderedField"],
+    "prerequisites": ["ordered field", "AM-GM inequality", "nlinarith tactic"]
+  }
+]

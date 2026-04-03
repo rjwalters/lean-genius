@@ -27,45 +27,89 @@
       "Framework: impossibility → Gaussian → Wiener"
     ]
   },
+  "overview": {
+    "historicalContext": "The question of extending Lebesgue measure to infinite dimensions was a central problem in 20th-century analysis. Wiener (1923) constructed the first rigorous measure on infinite-dimensional path space — the Wiener measure describing Brownian motion. Kolmogorov (1933) axiomatized probability theory, enabling rigorous treatment of infinite-dimensional random processes. The impossibility of a translation-invariant σ-finite measure was recognized as a fundamental obstruction by the mid-20th century. Gross (1967) gave the definitive framework: abstract Wiener spaces, where a Gaussian measure lives on a Banach space extension of a Hilbert space. This resolved the apparent paradox — Gaussian measures in infinite dimensions exist, but they cannot be defined on the Hilbert space itself (they 'spill over' into a larger space). The file formalizes the key argument: the orthonormal separation lemma, which shows that the balls B(eₙ, 1/3) centered at orthonormal vectors are disjoint (since ‖eₙ - eₘ‖ = √2 > 2/3), making an uncountable disjoint family with equal measure — forcing any translation-invariant σ-finite measure to assign measure 0 to each ball.",
+    "problemStatement": "Can Lebesgue measure be generalized to infinite-dimensional spaces? Specifically: does there exist a nonzero, translation-invariant, $\\sigma$-finite Borel measure on an infinite-dimensional separable Banach space? The answer is **no**. The orthonormal separation argument: in a Hilbert space $H$, if $\\{e_n\\}$ is an orthonormal sequence, then $\\|e_n - e_m\\| = \\sqrt{2}$ for $n \\neq m$. The balls $B(e_n, 1/3)$ are disjoint (radius $1/3 < \\sqrt{2}/2$), have equal measure by translation invariance, and are contained in $B(0, 2)$. $\\sigma$-finiteness forces $\\mu(B(e_n, 1/3)) = 0$, hence $\\mu = 0$. The alternatives: Gaussian measures (determined by a covariance operator) and Wiener measure on $C([0,1], \\mathbb{R})$.",
+    "text": "Explores why Lebesgue measure fails in infinite dimensions and what replaces it. Proves orthonormal_dist (‖e₁ - e₂‖ = √2 for orthonormal e₁, e₂) and orthonormal_balls_disjoint (√2 > 2/3). Framework sections cover Gaussian and Wiener measures as replacements.",
+    "proofStrategy": "1. Impossibility via orthonormal separation: construct a docstring proof that balls B(eₙ, 1/3) are pairwise disjoint (iff ‖eₙ - eₘ‖ > 2/3) and uncountably many have equal measure by translation invariance, forcing σ-finiteness to assign 0. 2. Formalize the key geometric fact: orthonormal vectors satisfy ‖e₁ - e₂‖ = √2 (proved via inner product algebra: ‖e₁ - e₂‖² = ‖e₁‖² - 2⟪e₁,e₂⟫ + ‖e₂‖² = 1 + 0 + 1 = 2). 3. Prove the separation is sufficient: √2 > 2/3 (proved by showing √2 > 1 then arithmetic). 4. Framework sections: Gaussian measures (covariance structure) and Wiener measure (Brownian motion construction) as True-stubs pending full formalization.",
+    "keyInsights": [
+      "The impossibility proof is elementary: the infinite orthonormal system creates uncountably many disjoint equal-measure balls in a bounded region — a contradiction with σ-finiteness. This works because ‖eₙ - eₘ‖ = √2 > 2/3, so balls of radius 1/3 don't overlap.",
+      "The Pythagorean theorem in Hilbert space gives the key computation: ‖e₁ - e₂‖² = ‖e₁‖² - 2⟪e₁,e₂⟫ + ‖e₂‖² = 1 - 0 + 1 = 2, so ‖e₁ - e₂‖ = √2. This is a higher-dimensional analogue of ‖(1,0) - (0,1)‖ = √2.",
+      "Gaussian measures don't fail in infinite dimensions — they just don't live on the Hilbert space itself. Abstract Wiener spaces (Gross 1967) resolve this: the Gaussian measure μ on a Hilbert space H extends to a larger Banach space B ⊃ H, where μ(H) = 0 but μ(B) = 1.",
+      "The ball volume formula vol(Bⁿ) = π^(n/2)/Γ(n/2+1) → 0 as n → ∞ is a finite-dimensional preview of the infinite-dimensional pathology: 'most' of the volume of a high-dimensional ball concentrates near its surface (concentration of measure).",
+      "Wiener measure is the measure of Brownian motion: a random path W : [0,1] → ℝ with W(0) = 0, Gaussian increments, and variance proportional to time. It's the foundation for stochastic calculus (Itô, 1944) and quantum field theory path integrals."
+    ],
+    "prerequisites": [
+      "Inner product spaces and Hilbert spaces",
+      "σ-finite measures and translation invariance",
+      "Orthonormal systems in Hilbert spaces",
+      "Gaussian distributions and covariance operators",
+      "Brownian motion (for Wiener measure context)"
+    ]
+  },
   "sections": [
     {
-      "id": "impossibility",
-      "title": "The Impossibility Result",
-      "startLine": 20,
-      "endLine": 50,
-      "summary": "The Impossibility Result"
+      "id": "separation",
+      "title": "Orthonormal Separation: ‖e₁ - e₂‖ = √2",
+      "startLine": 45,
+      "endLine": 55,
+      "summary": "Proves that orthonormal vectors in a Hilbert space are separated by exactly √2.",
+      "mathContext": "$\\|e_1 - e_2\\|^2 = \\langle e_1 - e_2, e_1 - e_2 \\rangle = \\|e_1\\|^2 - 2\\langle e_1, e_2 \\rangle + \\|e_2\\|^2 = 1 - 0 + 1 = 2$. The Lean proof uses \\texttt{inner\\_sub\\_left/right} to expand, \\texttt{inner\\_self\\_eq\\_norm\\_mul\\_norm} to convert to norms, and \\texttt{ring} for arithmetic. The formula \\texttt{Real.sqrt\\_sq} is used to convert from $\\|\\cdot\\|^2$ back to $\\|\\cdot\\|$."
     },
     {
-      "id": "separation",
-      "title": "Orthogonal Separation",
-      "startLine": 52,
-      "endLine": 82,
-      "summary": "Orthogonal Separation"
+      "id": "disjoint-balls",
+      "title": "Disjoint Balls: √2 > 2/3",
+      "startLine": 61,
+      "endLine": 68,
+      "summary": "Proves √2 > 2/3, establishing that balls of radius 1/3 around orthonormal vectors are disjoint.",
+      "mathContext": "Balls $B(e_n, r)$ and $B(e_m, r)$ are disjoint iff $\\|e_n - e_m\\| > 2r$. With $\\|e_n - e_m\\| = \\sqrt{2}$ and $r = 1/3$, we need $\\sqrt{2} > 2/3$. The Lean proof: first shows $\\sqrt{2} > 1$ via $\\sqrt{2} > \\sqrt{1}$ (Real.sqrt\\_lt\\_sqrt with $1 < 2$), then concludes $\\sqrt{2} > 2/3$ by linarith since $1 > 2/3$."
     },
     {
       "id": "gaussian",
-      "title": "Gaussian Measures",
-      "startLine": 84,
-      "endLine": 108,
-      "summary": "Gaussian Measures"
+      "title": "Gaussian Measures: The Replacement",
+      "startLine": 74,
+      "endLine": 103,
+      "summary": "Framework section explaining Gaussian measures as replacements for Lebesgue measure in infinite dimensions.",
+      "mathContext": "A Gaussian measure on a Banach space $X$ is determined by a mean $m \\in X$ and a covariance operator $C: X^* \\to X$ that is positive and trace-class. The standard Gaussian $\\gamma$ on $\\mathbb{R}^n$ has density $(2\\pi)^{-n/2} e^{-|x|^2/2}$. In infinite dimensions, $\\gamma$ lives on the Banach completion $B$ of $H$, not on $H$ itself: $\\gamma(H) = 0$. The ball volume formula $\\text{vol}(B^n) = \\pi^{n/2}/\\Gamma(n/2+1) \\to 0$ illustrates the concentration phenomenon."
     },
     {
       "id": "wiener",
-      "title": "Wiener Measure",
-      "startLine": 110,
-      "endLine": 130,
-      "summary": "Wiener Measure"
+      "title": "Wiener Measure: Brownian Motion",
+      "startLine": 85,
+      "endLine": 112,
+      "summary": "Framework section describing Wiener measure as the canonical Gaussian measure on path space.",
+      "mathContext": "Wiener measure is the distribution of Brownian motion $W: [0,1] \\to \\mathbb{R}$ with $W(0) = 0$, independent increments, and $W(t) - W(s) \\sim \\mathcal{N}(0, t-s)$. The Wiener measure lives on $C([0,1], \\mathbb{R})$, which is the Banach completion of the Cameron-Martin Hilbert space $H = \\{f: [0,1] \\to \\mathbb{R} \\mid f(0)=0, f' \\in L^2\\}$ with inner product $\\langle f, g \\rangle = \\int_0^1 f'(t)g'(t)dt$."
     }
   ],
   "conclusion": {
-    "summary": "No Lebesgue measure in ∞-dim. Gaussian and Wiener measures are the replacements.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "No nonzero translation-invariant σ-finite measure exists on infinite-dimensional Hilbert/Banach spaces. The orthonormal separation argument (‖eₙ - eₘ‖ = √2 > 2/3) provides the formal obstruction. Gaussian and Wiener measures are the standard replacements, living on abstract Wiener spaces rather than Hilbert spaces.",
+    "openQuestions": [
+      "Can the impossibility theorem be fully formalized in Lean using Mathlib's MeasureTheory infrastructure? The argument is elementary but requires formalizing infinite disjoint families of sets with the same measure.",
+      "Can the abstract Wiener space construction (Gross 1967) be formalized in Lean 4? This would require: a Hilbert space H, a Banach space B containing H as a dense subspace, and a Gaussian measure on B. Mathlib has some infrastructure for this.",
+      "The Cameron-Martin theorem describes how Wiener measure changes under translation by a Cameron-Martin direction. Can this be formalized and connected to the impossibility result (Cameron-Martin directions form a set of measure zero)?",
+      "Malliavin calculus extends differentiation to Wiener space. Can its foundational results (Meyer's inequalities, Ornstein-Uhlenbeck operator) be formalized in Lean 4 using Mathlib's analysis infrastructure?"
+    ],
+    "implications": "The impossibility result explains why functional analysis requires probability theory for infinite-dimensional analysis. The Gaussian measure framework is foundational for quantum field theory, statistical mechanics, and stochastic PDEs. The orthonormal separation technique — using infinite disjoint equal-measure sets to force measure zero — is a fundamental proof pattern in measure theory."
   },
   "crossReferences": [
     {
       "targetId": "lebesgue-measure",
-      "relationship": "parent-problem"
+      "relationship": "parent-problem",
+      "description": "Extends the Lebesgue measure formalization to the infinite-dimensional setting"
+    }
+  ],
+  "references": [
+    {
+      "author": "Wiener, N.",
+      "title": "Differential-Space",
+      "year": 1923,
+      "note": "Constructed the first rigorous measure on infinite-dimensional path space (Wiener measure)"
+    },
+    {
+      "author": "Gross, L.",
+      "title": "Abstract Wiener Spaces",
+      "year": 1967,
+      "note": "Definitive framework: Gaussian measures on Banach completions of Hilbert spaces (abstract Wiener spaces)"
     }
   ],
   "leanFile": {
@@ -74,7 +118,7 @@
     ],
     "namespace": "LebesgueMeasureOQ03",
     "lineCount": 132,
-    "axiomCount": 3,
+    "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0
   }

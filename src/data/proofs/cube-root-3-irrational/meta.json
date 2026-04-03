@@ -30,41 +30,107 @@
     ]
   },
   "overview": {
-    "historicalContext": "The irrationality of ∛3 follows the same proof pattern as ∛2. Both are instances of the general theorem that n√m is irrational when m is not a perfect n-th power. These results are classical in elementary number theory and appear as exercises in introductory courses.",
-    "problemStatement": "Prove that 3^(1/3) : ℝ is irrational.",
-    "text": "Identical structure to CubeRoot2Irrational: (1) cbrt3_cubed via rpow composition, (2) three_not_perfect_cube by integer bound analysis (n ≤ 0 gives n³ ≤ 0 < 3; n ≥ 2 gives n³ ≥ 8 > 3; n = 1 gives 1 ≠ 3), (3) cbrt3_not_int derived from three_not_perfect_cube, (4) irrational_cbrt3 via irrational_nrt_of_notint_nrt 3 3.",
-    "proofStrategy": "Same as CubeRoot2Irrational but with the value 3 instead of 2. The bounds 0 < n < 2 force n = 1, and 1³ = 1 ≠ 3 by norm_num.",
+    "historicalContext": "The irrationality of roots has a history stretching to ancient Greece. The Pythagoreans, around 500 BC, discovered to their philosophical dismay that $\\sqrt{2}$ is irrational — a result traditionally attributed to Hippasus of Metapontum. This discovery shattered the Pythagorean belief that all magnitudes are commensurable (ratio of integers). The Greek proof, preserved in Euclid's *Elements* (Book X), proceeds by contradiction: assume $\\sqrt{2} = p/q$ in lowest terms, derive $p^2 = 2q^2$, conclude $p$ is even, then $q$ is even, contradicting the lowest-terms assumption.\n\nThe generalization to $n$-th roots followed naturally. The general principle — $\\sqrt[n]{m}$ is irrational whenever $m$ is not a perfect $n$-th power — was understood in antiquity for square roots and extended to cube roots by medieval mathematicians. The rigorous algebraic proof uses the *rational root theorem* (a corollary of Gauss's lemma on primitive polynomials): any rational root of a monic polynomial with integer coefficients must be an integer. Applied to $X^3 - 3$, whose roots are $\\sqrt[3]{3}$, $\\omega\\sqrt[3]{3}$, $\\omega^2\\sqrt[3]{3}$ (where $\\omega = e^{2\\pi i/3}$), the only possible rational root would be an integer dividing 3. Since $1^3 = 1 \\neq 3$ and $3^3 = 27 \\neq 3$, there is no integer cube root.\n\nFrom the perspective of algebraic number theory, $\\sqrt[3]{3}$ is an algebraic number of degree 3 over $\\mathbb{Q}$: its minimal polynomial $X^3 - 3$ is irreducible over $\\mathbb{Q}$ by Eisenstein's criterion with prime $p = 3$. Irrationality is equivalent to degree $> 1$, so it follows from irreducibility.",
+    "problemStatement": "Prove that $\\sqrt[3]{3} = 3^{1/3} : \\mathbb{R}$ is irrational — that it cannot be expressed as a ratio of integers. The Lean formalization defines `cbrt3 = (3 : ℝ) ^ (1/3 : ℝ)` and proves `Irrational cbrt3`.",
+    "proofStrategy": "Four lemmas in sequence. (1) `cbrt3_cubed`: $(3^{1/3})^3 = 3$, proved by applying `Real.rpow_mul` to compose the exponents $3 \\cdot (1/3) = 1$ and `Real.rpow_natCast` to convert. (2) `three_not_perfect_cube`: $\\nexists\\, n : \\mathbb{Z},\\ n^3 = 3$, proved by integer bound analysis — any $n > 0$ satisfies $n \\geq 1$; if $n \\geq 2$ then $n^3 \\geq 8 > 3$; so $n = 1$ but $1^3 = 1 \\neq 3$. (3) `cbrt3_not_int`: $\\nexists\\, n : \\mathbb{Z},\\ \\text{cbrt3} = n$, deduced from (2) by substituting and using `cbrt3_cubed`. (4) `irrational_cbrt3`: from Mathlib's `irrational_nrt_of_notint_nrt 3 3` using (1) and (3).",
     "keyInsights": [
-      "The proof structure is identical to ∛2: only the constant changes",
-      "3 lies strictly between 1³ = 1 and 2³ = 8, so it is not a perfect cube",
-      "irrational_nrt_of_notint_nrt is a powerful general lemma for this class of results"
-    ],
-    "prerequisites": [
-      "Real.rpow: Real.rpow_mul, Real.rpow_natCast",
-      "Mathlib Irrational: irrational_nrt_of_notint_nrt",
-      "Integer bounds: nlinarith"
+      "**Rational root theorem connection**: The fact that $3$ is not a perfect cube is equivalent to $X^3 - 3$ having no integer (and hence no rational) roots. The proof works by exhaustion in a bounded range: any positive integer cube root of 3 would satisfy $1 < n < 2$, but there are no integers in the open interval $(1, 2)$.",
+      "**rpow_mul as the arithmetic core**: The identity `cbrt3_cubed : cbrt3^3 = 3` uses `Real.rpow_mul` to compute $(3^{1/3})^3 = 3^{(1/3) \\cdot 3} = 3^1 = 3$. This exponent arithmetic is the only non-trivial computation in the proof; everything else is integer logic.",
+      "**irrational_nrt_of_notint_nrt as a powerful template**: Mathlib's lemma says: if $x^n = m$ (for $m : \\mathbb{N}$) and $x$ is not an integer, then $x$ is irrational. This reduces irrationality to showing (a) the root satisfies the defining equation and (b) it is not an integer. The proof template works for any $\\sqrt[n]{m}$ where $m$ is not a perfect $n$-th power.",
+      "**Minimal polynomial perspective**: $\\sqrt[3]{3}$ has minimal polynomial $X^3 - 3$ over $\\mathbb{Q}$, which is Eisenstein-irreducible at $p = 3$: $3 \\nmid 1$ (leading coeff), $3 \\mid -3$ (constant term), $9 \\nmid -3$. Irreducibility implies degree 3 over $\\mathbb{Q}$, hence $\\sqrt[3]{3} \\notin \\mathbb{Q}$. The Lean proof achieves the same conclusion by a more elementary route.",
+      "**Proof by integer bounds — a completely elementary argument**: The `three_not_perfect_cube` proof avoids any heavy machinery. It uses only: (1) $n \\leq 0 \\Rightarrow n^3 \\leq 0 < 3$ (by nlinarith); (2) $n \\geq 2 \\Rightarrow n^3 \\geq 8 > 3$ (by nlinarith); (3) omega to conclude $n = 1$; (4) norm_num to verify $1^3 \\neq 3$. This exemplifies how formal proofs can be elementary yet completely rigorous."
     ]
   },
+  "sections": [
+    {
+      "id": "sec-setup",
+      "title": "Imports and Header",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "File header documenting the proof strategy. Imports Mathlib.Data.Real.Irrational (for the Irrational predicate and irrational_nrt_of_notint_nrt), Mathlib.Analysis.SpecialFunctions.Pow.Real (for Real.rpow_mul and real power arithmetic), and Mathlib.Tactic. Opens the CubeRoot3Irrational namespace.",
+      "mathContext": "`Irrational x : Prop` is defined in Mathlib as $x \\notin \\mathbb{Q}$ (equivalently, $x$ is not the image of any $q : \\mathbb{Q}$ under the coercion $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$). The lemma `irrational_nrt_of_notint_nrt` is the key Mathlib tool used."
+    },
+    {
+      "id": "sec-definition",
+      "title": "Definition of ∛3",
+      "startLine": 30,
+      "endLine": 31,
+      "summary": "Defines `cbrt3 : ℝ := (3 : ℝ) ^ (1/3 : ℝ)` as a noncomputable real number using real power (rpow). The `noncomputable` attribute is required because real exponentiation uses classical reasoning.",
+      "mathContext": "`cbrt3 := (3 : ℝ) ^ (1/3 : ℝ)` uses `Real.rpow`. Note: `1/3 : ℝ` is the real number $1/3$ (not integer division, which would give 0). The rpow function takes $(x, y) \\mapsto x^y$ for $x \\geq 0$ and real $y$."
+    },
+    {
+      "id": "sec-cbrt3-cubed",
+      "title": "cbrt3³ = 3",
+      "startLine": 34,
+      "endLine": 38,
+      "summary": "Proves cbrt3^3 = 3 by: (1) rewriting ^3 as rpow using Real.rpow_natCast, (2) applying Real.rpow_mul to compose the exponents (1/3) · 3 = 1, (3) simplifying by norm_num.",
+      "mathContext": "Key identity: $(x^a)^n = x^{a \\cdot n}$ for $x \\geq 0$, $a : \\mathbb{R}$, $n : \\mathbb{N}$. Here $a = 1/3$, $n = 3$, so $a \\cdot n = 1$ and $x^1 = x$. The `rpow_mul` rewrite requires `(0 : ℝ) ≤ 3`, provided by `norm_num`."
+    },
+    {
+      "id": "sec-not-perfect-cube",
+      "title": "3 is Not a Perfect Cube",
+      "startLine": 41,
+      "endLine": 61,
+      "summary": "Proves ¬∃ (n : ℤ), n³ = 3 by contradiction. Case n ≤ 0: n³ ≤ 0 < 3, contradiction. Case n ≥ 2: n³ ≥ 8 > 3, contradiction. The remaining case n = 1 gives 1³ = 1 ≠ 3, closed by norm_num.",
+      "mathContext": "The cube function $n \\mapsto n^3$ is strictly monotone on the positive integers: $1^3 = 1 < 3 < 8 = 2^3$. So the unique positive integer in $[1, 8)$ is 1, which does not satisfy $1^3 = 3$. The nlinarith calls handle the polynomial inequalities $n^3 = n \\cdot n \\cdot n \\geq 8$ when $n \\geq 2$."
+    },
+    {
+      "id": "sec-not-int",
+      "title": "∛3 is Not an Integer",
+      "startLine": 64,
+      "endLine": 70,
+      "summary": "Proves ¬∃ (n : ℤ), cbrt3 = n. If cbrt3 = n, then n³ = cbrt3³ = 3 (from cbrt3_cubed), contradicting three_not_perfect_cube. The cast between ℝ and ℤ is handled by exact_mod_cast.",
+      "mathContext": "Bridge: $\\sqrt[3]{3} \\notin \\mathbb{Z}$ follows from $3 \\notin \\{n^3 : n \\in \\mathbb{Z}\\}$. The implication is: if $\\sqrt[3]{3} = n \\in \\mathbb{Z}$, then $n^3 = (\\sqrt[3]{3})^3 = 3$. The `exact_mod_cast` coercion handles the $\\mathbb{R}$ vs $\\mathbb{Z}$ cast."
+    },
+    {
+      "id": "sec-irrational",
+      "title": "Main Theorem and Alternative Form",
+      "startLine": 73,
+      "endLine": 82,
+      "summary": "Proves irrational_cbrt3 : Irrational cbrt3 by applying irrational_nrt_of_notint_nrt 3 3 with: cbrt3_cubed (cbrt3^3 = 3 as ℕ cast), cbrt3_not_int (cbrt3 is not an integer), and norm_num (3 ≠ 1). The alternative form irrational_three_pow_one_third unfolds the definition.",
+      "mathContext": "`irrational_nrt_of_notint_nrt n m` requires: (1) $x^n = m$ (with $m : \\mathbb{N}$), (2) $x \\notin \\mathbb{Z}$, (3) $n \\neq 1$ (to avoid the trivial case). All three are supplied. The `Irrational` predicate then follows: $x \\notin \\mathbb{Q}$ because any rational $p/q$ satisfying $(p/q)^n = m$ (integer) must have $q = 1$ by unique factorization (Gauss's lemma)."
+    }
+  ],
   "conclusion": {
-    "summary": "∛3 is irrational, proved by showing 3 is not a perfect cube. Mirror of CubeRoot2Irrational. 5 theorems, 0 axioms, 83 lines.",
-    "implications": "Together with CubeRoot2Irrational, demonstrates the template for proving irrationality of cube roots via Mathlib's irrational_nrt_of_notint_nrt. The pattern extends to all m that are not perfect cubes.",
+    "summary": "∛3 is irrational, proved by showing 3 is not a perfect cube via integer bounds, then applying Mathlib's irrational_nrt_of_notint_nrt. The proof is a clean instance of the general template: for any natural m that is not a perfect n-th power, the n-th root m^(1/n) is irrational. 5 theorems, 0 axioms, 0 sorries, 83 lines.",
+    "implications": "**General template for nth root irrationality**: The proof pattern here — define x = m^(1/n), prove x^n = m, show m is not a perfect n-th power, apply `irrational_nrt_of_notint_nrt` — works for any m that is not a perfect n-th power. The `nth-root-irrational` gallery entry formalizes this general version. The instantiation to specific values (∛2, ∛3, ∜5, etc.) requires only verifying the 'not a perfect power' condition by integer bounds.\n\n**Connection to unique factorization**: The mathematical reason nth roots of non-perfect-powers are irrational is the *rational root theorem*: rational roots of monic integer polynomials are integers. For $x = m^{1/n}$, the polynomial is $X^n - m$; a rational root $p/q$ in lowest terms satisfies $p^n = mq^n$, so $q | p^n$, hence $q | p$ (by prime factorization), contradicting $\\gcd(p,q) = 1$. Thus $q = 1$ and $x \\in \\mathbb{Z}$.\n\n**Algebraic number degree**: $\\sqrt[3]{3}$ is a degree-3 algebraic number: its minimal polynomial $X^3 - 3$ is irreducible over $\\mathbb{Q}$ by Eisenstein's criterion (prime $p = 3$). Irrationality is degree $> 1$; the minimal polynomial has degree 3, so $[\\mathbb{Q}(\\sqrt[3]{3}) : \\mathbb{Q}] = 3$ and $\\sqrt[3]{3} \\notin \\mathbb{Q}$.",
     "openQuestions": [
-      "Prove the general theorem: ∛m is irrational iff m is not a perfect cube"
+      "Can the general theorem be stated and proved in Lean: $\\forall m n : \\mathbb{N},\\ n \\geq 2 \\to \\neg (\\exists k : \\mathbb{N}, k^n = m) \\to \\text{Irrational}\\, (m^{1/n} : \\mathbb{R})$? The `nth-root-irrational` gallery entry makes progress here.",
+      "Is there a Lean proof of Eisenstein's irreducibility criterion? Combined with the rational root theorem (Mathlib's `Polynomial.isInteger_of_is_root_of_monic`), this would give a cleaner algebraic proof of ∛3's irrationality via the degree argument.",
+      "Can the irrationality be extended to linear independence: is $\\{1, \\sqrt[3]{3}, (\\sqrt[3]{3})^2\\}$ linearly independent over $\\mathbb{Q}$? This would prove $\\sqrt[3]{3}$ is not just irrational but of degree exactly 3 over $\\mathbb{Q}$.",
+      "What is the continued fraction expansion of ∛3? The partial quotients of $\\sqrt[3]{3} \\approx 1.4422$ begin $[1; 2, 3, 1, 5, 1, 1, 4, ...]$ with no known closed pattern, unlike $\\sqrt{2} = [1; 2, 2, 2, ...]$. Can Lean's number theory infrastructure verify the first several partial quotients?"
     ]
-  },
-  "leanFile": {
-    "namespace": "CubeRoot3Irrational",
-    "lineCount": 83,
-    "axiomCount": 0,
-    "theoremCount": 5,
-    "definitionCount": 1
   },
   "crossReferences": [
     {
       "targetId": "cube-root-2-irrational",
       "relationship": "related",
-      "description": "Identical proof structure for ∛2"
+      "description": "Identical proof structure: cbrt2_cubed → two_not_perfect_cube → cbrt2_not_int → irrational_cbrt2. Only the constant changes (2 → 3). The integer bounds use 1³=1 < 2 < 8=2³ vs 1³=1 < 3 < 8=2³."
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "specializes",
+      "description": "This entry is the n=3, m=3 specialization of the general theorem: m^(1/n) is irrational whenever m is not a perfect n-th power. The nth-root-irrational entry formalizes the general version."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "The classical irrationality of √2 is the n=2 case of the same pattern. The Lean proof techniques are similar: establish √2² = 2, show 2 is not a perfect square, apply Mathlib's irrationality lemma."
     }
   ],
-  "sections": []
+  "references": [
+    {
+      "type": "book",
+      "title": "Elements (Book X)",
+      "authors": ["Euclid"],
+      "year": -300,
+      "note": "Classical proof of irrationality of √2 via contradiction; the pattern extends to cube roots."
+    },
+    {
+      "type": "theorem",
+      "title": "irrational_nrt_of_notint_nrt",
+      "authors": ["Mathlib Contributors"],
+      "note": "Mathlib lemma used in the proof: if x^n = m (nat) and x is not an integer, then x is irrational."
+    }
+  ]
 }

@@ -22788,7 +22788,29 @@ theorem running_coupling_near_bare' (g0_sq beta0 : ℝ) :
 theorem coupling_controlled (g0_sq beta0 : ℝ) (k : ℕ)
     (hg : g0_sq > 0) (hg_small : g0_sq < 1) (hb : beta0 > 0) (hk : (k : ℝ) ≤ 1 / (beta0 * g0_sq)) :
     runningCoupling' g0_sq beta0 k < 2 * g0_sq := by
-  sorry -- MATHLIB-DRIFT: multi-line proof with broken Real.log + calc chain
+  unfold runningCoupling'
+  suffices h : beta0 * g0_sq ^ 2 * (k : ℝ) * Real.log 2 < g0_sq by linarith
+  have hbg : beta0 * g0_sq > 0 := mul_pos hb hg
+  have hk' : beta0 * g0_sq * (k : ℝ) ≤ 1 := by
+    calc beta0 * g0_sq * (k : ℝ)
+        ≤ beta0 * g0_sq * (1 / (beta0 * g0_sq)) :=
+          mul_le_mul_of_nonneg_left hk (le_of_lt hbg)
+      _ = 1 := by field_simp
+  have hlog_pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have h2_lt_e : (2 : ℝ) < Real.exp 1 := by linarith [Real.exp_one_gt_d9]
+  have hlog_lt : Real.log 2 < 1 := by
+    have h := Real.log_lt_log (by norm_num : (0 : ℝ) < 2) h2_lt_e
+    simp [Real.log_exp] at h
+    exact h
+  calc beta0 * g0_sq ^ 2 * (k : ℝ) * Real.log 2
+      = (beta0 * g0_sq * (k : ℝ)) * g0_sq * Real.log 2 := by ring
+    _ ≤ 1 * g0_sq * Real.log 2 := by
+        apply mul_le_mul_of_nonneg_right
+        · exact mul_le_mul_of_nonneg_right hk' (le_of_lt hg)
+        · exact le_of_lt hlog_pos
+    _ = g0_sq * Real.log 2 := by ring
+    _ < g0_sq * 1 := mul_lt_mul_of_pos_left hlog_lt hg
+    _ = g0_sq := mul_one g0_sq
 
 /-- The effective action after k RG steps decomposes as:
     S_eff = S_classical + δS_small + δS_large

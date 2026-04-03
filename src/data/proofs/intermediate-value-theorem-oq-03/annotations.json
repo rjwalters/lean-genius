@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ann-ivt-brouwer-1d",
+    "proofId": "intermediate-value-theorem-oq-03",
+    "range": { "startLine": 30, "endLine": 48 },
+    "type": "technique",
+    "title": "The g(x) = f(x) - x Reduction",
+    "content": "The proof reduces the fixed point problem to a zero-finding problem via g(x) = f(x) - x. This is a canonical technique in analysis: instead of asking 'where does f equal x?' (a diagonal-crossing question), ask 'where does g equal zero?' (a sign-change question). The sign conditions g(0) ≥ 0 and g(1) ≤ 0 come directly from f mapping [0,1] into [0,1]. The Lean proof uses `intermediate_value_zero_of_le` which wraps the IVT for exactly this sign-change pattern.",
+    "mathContext": "Let $g(x) := f(x) - x$. Since $f : [0,1] \\to [0,1]$: $g(0) = f(0) - 0 = f(0) \\geq 0$ and $g(1) = f(1) - 1 \\leq 0$ (since $f(1) \\leq 1$). By IVT: $\\exists\\, c \\in [0,1]$ with $g(c) = 0$, i.e., $f(c) = c$. Continuity: $g = f - \\mathrm{id}$ is continuous since both $f$ (by hypothesis) and $\\mathrm{id}$ (always) are continuous.",
+    "significance": "key",
+    "relatedConcepts": ["intermediate value theorem", "sign change", "diagonal", "root finding"],
+    "prerequisites": ["continuous functions on intervals", "IVT statement", "arithmetic of continuous functions"]
+  },
+  {
+    "id": "ann-brouwer-2d-axiom",
+    "proofId": "intermediate-value-theorem-oq-03",
+    "range": { "startLine": 69, "endLine": 83 },
+    "type": "context",
+    "title": "The 2D Brouwer Axiom: Why It Cannot Be Proved by IVT",
+    "content": "The 2D Brouwer theorem is stated as an axiom. This is mathematically honest: the theorem requires topological machinery (degree theory, simplicial homology, or Sperner's lemma + simplicial approximation) that is not available from IVT alone. All standard proofs proceed by contradiction: assume f has no fixed point, construct a retraction r : D² → S¹ from the disk to its boundary, then show this contradicts the fact that S¹ is not contractible (degree theory or H₁(S¹) ≠ 0).",
+    "mathContext": "$\\mathrm{brouwer\\_2d}$: $\\forall f : \\mathbb{R}^2 \\to \\mathbb{R}^2$ continuous, $(\\forall x,\\, \\|x\\| \\leq 1 \\Rightarrow \\|f(x)\\| \\leq 1) \\Rightarrow \\exists\\, x,\\, \\|x\\| \\leq 1 \\land f(x) = x$. Contradiction proof: if $f(x) \\neq x$ for all $x \\in D^2$, define $r(x) :=$ intersection of ray from $f(x)$ through $x$ with $\\partial D^2$. Then $r : D^2 \\to S^1$ is continuous and $r|_{S^1} = \\mathrm{id}_{S^1}$, but no such retraction exists ($\\deg(\\mathrm{id}_{S^1}) = 1 \\neq 0$).",
+    "significance": "key",
+    "relatedConcepts": ["topological degree", "homology groups", "Sperner's lemma", "retraction"],
+    "prerequisites": ["algebraic topology (informal)", "homotopy groups", "topological invariants"]
+  },
+  {
+    "id": "ann-ivt-fails-2d",
+    "proofId": "intermediate-value-theorem-oq-03",
+    "range": { "startLine": 89, "endLine": 99 },
+    "type": "insight",
+    "title": "Identity on S¹ Has No Zero: Dimension Illustration",
+    "content": "The theorem `ivt_fails_2d` proves that the map (x,y) ↦ (x,y) has no zero on S¹ (since the unit circle doesn't contain the origin — a tautology). The conceptual point is that in 2D, a continuous map can avoid the origin entirely by 'going around' it, which is impossible on an interval. The map x ↦ x on [-1,1] ⊂ ℝ must cross 0 (trivially: it equals 0 at x=0), but the analogous 2D map on S¹ need not pass through the origin.",
+    "mathContext": "Statement: $\\forall x, y \\in \\mathbb{R},\\, x^2 + y^2 = 1 \\Rightarrow \\neg(x = 0 \\land y = 0)$. Proof: substituting $x = y = 0$ gives $0 = 1$, a contradiction ($\\texttt{norm\\_num}$). This is tautological but illustrates that $S^1 \\subset \\mathbb{R}^2 \\setminus \\{0\\}$: the circle 'surrounds' the origin without touching it. In 1D, the analogous 'loop' $[-1,0] \\cup [0,1]$ must pass through 0; in 2D, the loop $S^1$ can orbit 0 indefinitely.",
+    "significance": "supporting",
+    "relatedConcepts": ["winding number", "origin avoidance", "unit circle", "topological degree"],
+    "prerequisites": ["norm in Euclidean space", "negation in Lean", "norm_num tactic"]
+  },
+  {
+    "id": "ann-fixed-point-hierarchy",
+    "proofId": "intermediate-value-theorem-oq-03",
+    "range": { "startLine": 105, "endLine": 128 },
+    "type": "insight",
+    "title": "The Fixed Point Hierarchy: IVT ⊂ Brouwer ⊂ Schauder",
+    "content": "The hierarchy IVT ↔ Brouwer₁ᴅ ⊊ Brouwerₙᴅ ⊊ Schauder captures a fundamental progression in mathematical abstraction. Each step requires genuinely new machinery: (1) IVT ↔ 1D Brouwer: same theorem, connectivity of interval; (2) 1D → nD Brouwer: degree theory, homotopy groups; (3) nD → ∞D Schauder: compactness (Schauder projection), functional analysis. The shift operator on ℓ² shows Brouwer genuinely fails in ∞D without compactness.",
+    "mathContext": "Three levels of fixed point theory: Level 1 (1D): $f : [0,1] \\to [0,1]$ continuous $\\Rightarrow$ fixed point. Proof: IVT on $g = f - \\mathrm{id}$. Level 2 ($n$D): $f : D^n \\to D^n$ continuous $\\Rightarrow$ fixed point. Proof: topological degree theory or Sperner's lemma. Level 3 ($\\infty$D): $f : K \\to K$ continuous, $K \\subset X$ compact convex (Banach space $X$) $\\Rightarrow$ fixed point. Schauder's key insight: approximate $f$ by finite-dimensional maps (Schauder projection) and apply Brouwer.",
+    "significance": "key",
+    "relatedConcepts": ["Schauder fixed point theorem", "Kakutani fixed point theorem", "Nash equilibrium", "Lefschetz fixed point theorem"],
+    "prerequisites": ["topological degree theory", "functional analysis", "compact operators", "Schauder projection"]
+  }
+]

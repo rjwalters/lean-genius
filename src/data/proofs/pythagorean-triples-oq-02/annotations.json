@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-pt02-gaussian-arith",
+    "proofId": "pythagorean-triples-oq-02",
+    "type": "definition",
+    "range": { "startLine": 30, "endLine": 40 },
+    "title": "Gaussian Integer Arithmetic — Elementary Definitions",
+    "content": "Defines four functions over integer pairs (ℤ × ℤ) without Mathlib's ℤ[i] typeclass: `gaussMul` encodes complex multiplication $(a_1+b_1 i)(a_2+b_2 i) = (a_1 a_2 - b_1 b_2) + (a_1 b_2 + b_1 a_2)i$; `gaussNorm` is the squared modulus $N(a+bi) = a^2 + b^2$; `gaussConj` negates the imaginary part $\\overline{a+bi} = a - bi$; `gaussSq` is squaring via `gaussMul a b a b`. The elementary representation avoids typeclass complexity while remaining sufficient for all theorems.",
+    "mathContext": "`gaussMul a₁ b₁ a₂ b₂ = (a₁a₂ - b₁b₂, a₁b₂ + b₁a₂)` encodes $(a_1+b_1 i)(a_2+b_2 i)$. `gaussNorm a b = a^2 + b^2 = |a+bi|^2$. `gaussConj a b = (a, -b)` is $\\overline{a+bi}$. `gaussSq a b = (a^2-b^2, 2ab)$ is $(a+bi)^2$. Note: `gaussNorm` returns a value in $\\mathbb{Z}$, not $\\mathbb{N}$ — non-negativity is not encoded in the type but follows from $a^2, b^2 \\geq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["gaussMul", "gaussNorm", "gaussConj", "gaussSq", "Gaussian integers", "complex multiplication"],
+    "prerequisites": ["integer arithmetic", "complex number multiplication formula"]
+  },
+  {
+    "id": "ann-pt02-norm-mult",
+    "proofId": "pythagorean-triples-oq-02",
+    "type": "insight",
+    "range": { "startLine": 48, "endLine": 61 },
+    "title": "Norm Multiplicativity — The Algebraic Core",
+    "content": "The theorem `norm_multiplicative` proves $N(z_1 z_2) = N(z_1) N(z_2)$ in a single `ring` call. This one line encodes the deepest algebraic fact in the file: the norm is a ring homomorphism from $(\\mathbb{Z}[i], \\cdot)$ to $(\\mathbb{Z}, \\cdot)$. `gaussSq_formula` confirms $(a+bi)^2 = (a^2-b^2) + 2abi$ — the template for all Pythagorean triples. `mul_conj_eq_norm` proves $z \\cdot \\bar{z} = N(z)$, the conjugate characterization of the norm. All three proofs are `ring` — reflecting that these are polynomial identities, not analytic theorems.",
+    "mathContext": "Expanding: $N(z_1 z_2) = (a_1 a_2 - b_1 b_2)^2 + (a_1 b_2 + b_1 a_2)^2 = (a_1^2+b_1^2)(a_2^2+b_2^2) = N(z_1) N(z_2)$. The `ring` tactic verifies this as a polynomial identity in $a_1, b_1, a_2, b_2$. Abstractly: $N$ is the norm map of the quadratic field extension $\\mathbb{Q}(i)/\\mathbb{Q}$, and norm maps of field extensions are always multiplicative. The `simp only [gaussMul, gaussNorm]; ring` pattern unfolds the definitions then delegates to polynomial arithmetic.",
+    "significance": "key",
+    "relatedConcepts": ["norm_multiplicative", "gaussSq_formula", "mul_conj_eq_norm", "ring tactic", "polynomial identity", "norm map of field extension"],
+    "prerequisites": ["gaussMul", "gaussNorm", "gaussConj", "ring tactic for polynomial identities"]
+  },
+  {
+    "id": "ann-pt02-pythagorean",
+    "proofId": "pythagorean-triples-oq-02",
+    "type": "concept",
+    "range": { "startLine": 72, "endLine": 87 },
+    "title": "Pythagorean Triples from Gaussian Squaring",
+    "content": "Three theorems connect Gaussian squaring to Pythagorean triples. `pythagorean_from_gaussian` proves $(m^2-n^2)^2 + (2mn)^2 = (m^2+n^2)^2$ by `ring`. `gaussSq_pythagorean` phrases it as: the squared components of $z^2$ sum to $N(z)^2$, connecting `gaussSq` to `gaussNorm`. `gaussian_gives_pythagorean_triple` wraps this in Mathlib's `PythagoreanTriple` predicate (defined as $a^2 + b^2 = c^2$), with proof `unfold PythagoreanTriple; ring`. Together these show the parametric formula for Pythagorean triples is exactly the squaring map in $\\mathbb{Z}[i]$.",
+    "mathContext": "For $z = m + ni$: $z^2 = (m^2-n^2) + 2mni$, so the triple is $(m^2-n^2, 2mn, m^2+n^2)$. Norm calculation: $N(z^2) = (m^2-n^2)^2 + (2mn)^2 = (m^2+n^2)^2 = N(z)^2$. The identity $N(z^2) = N(z)^2$ is norm multiplicativity with $z_1 = z_2 = z$: $N(z \\cdot z) = N(z) \\cdot N(z) = N(z)^2$. `PythagoreanTriple a b c` is Mathlib's predicate `a^2 + b^2 = c^2` in `Mathlib.NumberTheory.PythagoreanTriples`.",
+    "significance": "key",
+    "relatedConcepts": ["pythagorean_from_gaussian", "gaussSq_pythagorean", "gaussian_gives_pythagorean_triple", "PythagoreanTriple", "Mathlib.NumberTheory.PythagoreanTriples"],
+    "prerequisites": ["gaussSq_formula", "gaussNorm", "norm_multiplicative", "Mathlib.NumberTheory.PythagoreanTriples"]
+  },
+  {
+    "id": "ann-pt02-brahmagupta",
+    "proofId": "pythagorean-triples-oq-02",
+    "type": "insight",
+    "range": { "startLine": 100, "endLine": 113 },
+    "title": "Brahmagupta-Fibonacci Identity and Triple Product Rule",
+    "content": "The `brahmagupta_fibonacci` theorem proves $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$ by `ring` — historically attributed to Brahmagupta (628 CE) and rediscovered by Fibonacci (1225). This is precisely `norm_multiplicative` written out: $N(a+bi) \\cdot N(c+di) = N((a+bi)(c+di))$. `pythagorean_triple_product` applies this: if $(a_1,b_1,c_1)$ and $(a_2,b_2,c_2)$ are Pythagorean triples, then $(a_1 a_2-b_1 b_2, a_1 b_2+b_1 a_2, c_1 c_2)$ is also a triple. The proof uses `nlinarith` with `h₁`, `h₂`, and `brahmagupta_fibonacci` — combining the two Pythagorean hypotheses via the identity.",
+    "mathContext": "Given $a_1^2 + b_1^2 = c_1^2$ and $a_2^2 + b_2^2 = c_2^2$: Brahmagupta-Fibonacci gives $(a_1 a_2-b_1 b_2)^2 + (a_1 b_2+b_1 a_2)^2 = (a_1^2+b_1^2)(a_2^2+b_2^2) = c_1^2 c_2^2 = (c_1 c_2)^2$. Gaussian interpretation: if $N(z_k) = c_k^2$, then $N(z_1 z_2) = N(z_1) N(z_2) = c_1^2 c_2^2 = (c_1 c_2)^2$. The triple product corresponds to the Gaussian product $z_1 z_2 = (a_1 a_2-b_1 b_2) + (a_1 b_2+b_1 a_2)i$.",
+    "significance": "key",
+    "relatedConcepts": ["brahmagupta_fibonacci", "pythagorean_triple_product", "Brahmagupta-Fibonacci identity", "nlinarith", "sums of two squares closure"],
+    "prerequisites": ["PythagoreanTriple", "norm_multiplicative", "nlinarith for nonlinear arithmetic"]
+  },
+  {
+    "id": "ann-pt02-factoring",
+    "proofId": "pythagorean-triples-oq-02",
+    "type": "concept",
+    "range": { "startLine": 121, "endLine": 129 },
+    "title": "The Factoring Perspective — a²+b² = (a+bi)(a-bi)",
+    "content": "`sum_sq_factors` shows the first component of $z \\cdot \\bar{z}$ is $a^2+b^2$, giving the factorization $a^2+b^2 = (a+bi)(a-bi)$ in $\\mathbb{Z}[i]$ (proof: `simp [gaussMul]; ring`). `triple_from_square_norm` gives the converse: if `gaussNorm a b = c²`, then `(a, b, c)` is a Pythagorean triple, proved by `linarith` from the definition. Together these establish that $a^2+b^2 = c^2$ in $\\mathbb{Z}$ corresponds to the factorization $(a+bi)(a-bi) = c^2$ in $\\mathbb{Z}[i]$ — the algebraic geometry of Pythagorean triples.",
+    "mathContext": "The factorization $a^2+b^2 = (a+bi)(a-bi)$ is the key to understanding which integers are sums of two squares. In $\\mathbb{Z}[i]$ (a UFD), a rational prime $p$ factors as: $p = -i(1+i)^2$ if $p=2$ (ramifies); $p = \\pi \\bar{\\pi}$ for distinct primes $\\pi, \\bar{\\pi}$ if $p \\equiv 1 \\pmod 4$ (splits); $p$ stays prime if $p \\equiv 3 \\pmod 4$ (inert). A number $n$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod 4$ divides $n$ to an even power (Euler, 1747).",
+    "significance": "supporting",
+    "relatedConcepts": ["sum_sq_factors", "triple_from_square_norm", "unique factorization in ℤ[i]", "splitting of primes", "Fermat's theorem on sums of two squares"],
+    "prerequisites": ["gaussMul", "gaussConj", "gaussNorm", "mul_conj_eq_norm", "UFD property of ℤ[i]"]
+  },
+  {
+    "id": "ann-pt02-examples",
+    "proofId": "pythagorean-triples-oq-02",
+    "type": "context",
+    "range": { "startLine": 136, "endLine": 152 },
+    "title": "Concrete Examples — (3,4,5), (5,12,13), (8,15,17)",
+    "content": "Three classic Pythagorean triples proved by specializing `gaussian_gives_pythagorean_triple`: `triple_345` uses $m=2, n=1$ ($z = 2+i$, $z^2 = 3+4i$, $|z|^2 = 5$); `triple_5_12_13` uses $m=3, n=2$ ($z=3+2i$, $z^2=5+12i$, $|z|^2=13$); `triple_8_15_17` uses $m=4, n=1$ ($z=4+i$, $z^2=15+8i$, $|z|^2=17$). `bf_example` verifies $(1^2+2^2)(3^2+4^2) = 11^2+2^2$ as a concrete Brahmagupta-Fibonacci instance. The proof pattern `have := gaussian_gives_pythagorean_triple m n; simp at this; exact this` uses `simp` to numerically reduce $(m^2-n^2, 2mn, m^2+n^2)$.",
+    "mathContext": "Parameterization: $m=2, n=1 \\Rightarrow (4-1, 4, 4+1) = (3, 4, 5)$. $m=3, n=2 \\Rightarrow (9-4, 12, 13) = (5, 12, 13)$. $m=4, n=1 \\Rightarrow (15, 8, 17)$. BF example: $N(1+2i) = 5$, $N(3+4i) = 25$, $(1+2i)(3+4i) = (3-8)+(4+6)i = -5+10i$, so $N(-5+10i) = 25+100 = 125 = 5 \\cdot 25$. And $11^2+2^2 = 121+4 = 125$ matches because $(1\\cdot3-2\\cdot4)^2+(1\\cdot4+2\\cdot3)^2 = 25+100 = 125$.",
+    "significance": "supporting",
+    "relatedConcepts": ["triple_345", "triple_5_12_13", "triple_8_15_17", "bf_example", "gaussian_gives_pythagorean_triple", "brahmagupta_fibonacci"],
+    "prerequisites": ["gaussian_gives_pythagorean_triple", "brahmagupta_fibonacci", "simp for numerical reduction", "norm_num"]
+  }
+]

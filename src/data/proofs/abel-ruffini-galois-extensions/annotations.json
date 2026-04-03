@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "arg-s3-exact-sequence",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 94, "endLine": 103 },
+    "type": "insight",
+    "title": "S₃ Solvability via Short Exact Sequence",
+    "content": "S₃ is proved solvable using the short exact sequence $1 \\to A_3 \\to S_3 \\xrightarrow{\\text{sign}} \\mathbb{Z}^\\times \\to 1$. The Lean proof uses `solvable_of_ker_le_range`: if the kernel of a group homomorphism is solvable (here $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$, cyclic, proved solvable by commutativity) and the codomain is solvable ($\\mathbb{Z}^\\times \\cong \\mathbb{Z}/2\\mathbb{Z}$, commutative), then the domain is solvable. This is the solvability extension theorem for group extensions.",
+    "mathContext": "$1 \\to A_3 \\to S_3 \\xrightarrow{\\text{sign}} \\mathbb{Z}^\\times \\to 1$. $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic, abelian). $\\mathbb{Z}^\\times \\cong \\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$ (abelian). Solvability extension: $H, G/H$ solvable $\\Rightarrow G$ solvable.",
+    "significance": "key",
+    "relatedConcepts": ["short exact sequence", "sign homomorphism", "alternating group", "solvable group extension", "solvable_of_ker_le_range"],
+    "prerequisites": ["group extensions", "sign homomorphism", "solvable groups", "Mathlib group theory API"]
+  },
+  {
+    "id": "arg-klein-four-a4",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 105, "endLine": 141 },
+    "type": "insight",
+    "title": "Klein Four-Group and A₄ Solvability",
+    "content": "A₄ is proved solvable via the Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$. The Lean proof defines $V_4$ as the set of elements $x$ in $A_4$ satisfying $x^2 = e$, proves $V_4 \\trianglelefteq A_4$ (by `native_decide`), and uses the short exact sequence $1 \\to V_4 \\to A_4 \\to A_4/V_4 \\to 1$. Both $V_4 \\cong \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$ (abelian) and $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic) are solvable. This construction is the only way to prove $A_4$ solvable — $A_4$ itself is non-abelian.",
+    "mathContext": "$V_4 = \\ker(A_4 \\to A_4) \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$ (Klein four-group). $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$. Solvability chain: $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$, with abelian factors $V_4/\\{e\\} \\cong V_4$, $A_4/V_4 \\cong \\mathbb{Z}/3\\mathbb{Z}$, $S_4/A_4 \\cong \\mathbb{Z}/2\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["Klein four-group", "A₄", "normal subgroup", "composition series", "solvability series", "native_decide"],
+    "prerequisites": ["alternating group A₄", "normal subgroups", "group quotients", "Klein four-group"]
+  },
+  {
+    "id": "arg-sharp-threshold",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 160, "endLine": 182 },
+    "type": "insight",
+    "title": "The Sharp Solvability Threshold: n ≤ 4",
+    "content": "The complete biconditional $S_n$ solvable $\\iff n \\leq 4$ is assembled from two halves. For $n \\leq 4$: `symmetric_solvable_of_le_four` uses `interval_cases n <;> infer_instance` to dispatch to the four concrete instances. For $n \\geq 5$: `Equiv.Perm.not_solvable` from Mathlib is the key ingredient. The proof `solvable_iff_le_four` combines these via `by_contra` and `omega`. The threshold $n = 4$ is sharp: S₄ is the last solvable symmetric group, explaining why quartics have radical formulas but quintics do not.",
+    "mathContext": "$S_n$ solvable $\\iff n \\leq 4$. Proof: for $n \\leq 4$, explicit. For $n \\geq 5$: Mathlib's `Equiv.Perm.not_solvable` (which internally uses $A_5$ simple). `interval_cases n` dispatches $n \\in \\{0,1,2,3,4\\}$ to five instances via `infer_instance`.",
+    "significance": "key",
+    "relatedConcepts": ["solvable group", "symmetric group", "interval_cases", "Equiv.Perm.not_solvable", "Galois theory", "quintic unsolvability"],
+    "prerequisites": ["IsSolvable typeclass", "Mathlib symmetric group API", "interval_cases tactic"]
+  },
+  {
+    "id": "arg-a5-simple",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 191, "endLine": 198 },
+    "type": "insight",
+    "title": "A₅ is Simple: The Minimal Obstruction",
+    "content": "A₅ is the smallest non-abelian simple group ($|A_5| = 60$). Its simplicity is the root obstruction to S₅'s non-solvability: a solvable group has a composition series with abelian factors, but A₅ is simple and non-abelian, so it cannot appear in any such series. Lean invokes `alternatingGroup.isSimpleGroup_five` from Mathlib. The simplicity of A₅ was proved by Galois himself in 1832 and is the centerpiece of the unsolvability proof.",
+    "mathContext": "$A_5$ is simple: the only normal subgroups are $\\{e\\}$ and $A_5$ itself. $|A_5| = 60 = 5!/2$. In the composition series of $S_5$: $\\{e\\} \\trianglelefteq A_5 \\trianglelefteq S_5$, where $A_5/\\{e\\} \\cong A_5$ is simple and non-abelian. A group is solvable iff all composition factors are cyclic of prime order.",
+    "significance": "key",
+    "relatedConcepts": ["simple group", "composition series", "Jordan-Hölder theorem", "A₅ simplicity", "IsSimpleGroup", "non-abelian simple group"],
+    "prerequisites": ["simple groups", "composition series", "Jordan-Hölder theorem", "alternating group"]
+  },
+  {
+    "id": "arg-galois-contrapositive",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 207, "endLine": 217 },
+    "type": "insight",
+    "title": "Galois's Theorem — Contrapositive Form",
+    "content": "The key theorem connecting group theory to polynomial solvability: if the Galois group $\\text{Gal}(q)$ of an irreducible polynomial $q$ is not solvable, then no root of $q$ is expressible by radicals. This is the contrapositive of Galois's fundamental theorem ($\\alpha$ solvable by radicals $\\Rightarrow \\text{Gal}(q)$ solvable). The Lean proof uses `solvableByRad.isSolvable'` from Mathlib, which formalizes the radical tower construction. Together with $S_5$ not solvable, this proves the general quintic unsolvability.",
+    "mathContext": "$q$ irreducible, $q(\\alpha)=0$, $\\text{Gal}(q)$ not solvable $\\Rightarrow \\alpha \\notin F(\\text{radicals})$. Formal: `¬IsSolvable q.Gal → ¬IsSolvableByRad F α`. The positive direction: $\\alpha \\in F(\\text{radicals}) \\Rightarrow \\text{Gal}(q)$ is solvable (proved by Galois 1832).",
+    "significance": "key",
+    "relatedConcepts": ["Galois group", "solvable by radicals", "IsSolvableByRad", "radical tower", "field extension", "Abel-Ruffini theorem"],
+    "prerequisites": ["Galois theory", "radical extensions", "IsSolvableByRad", "Mathlib field theory API"]
+  },
+  {
+    "id": "arg-sign-kernel",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 418, "endLine": 422 },
+    "type": "definition",
+    "title": "Sign Homomorphism Kernel = Alternating Group",
+    "content": "The formal identity `ker(sign) = A_n` connects the abstract definition of the alternating group (even permutations) to the sign homomorphism $\\text{sign}: S_n \\to \\mathbb{Z}^\\times$. In Lean, the alternating group is defined as the kernel of `Equiv.Perm.sign`, so this theorem is almost definitional — verified by `simp [MonoidHom.mem_ker, Equiv.Perm.mem_alternatingGroup]`. This identity is used throughout the file to apply `solvable_of_ker_le_range` for extending solvability through the sequence $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$.",
+    "mathContext": "$\\ker(\\text{sign}: S_n \\to \\{\\pm 1\\}) = A_n$. The sign of a permutation is $(-1)^{\\text{number of inversions}}$. Even permutations (sign = +1) form a normal subgroup of index 2: $[S_n : A_n] = 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sign homomorphism", "alternating group", "even permutation", "kernel of homomorphism", "normal subgroup of index 2"],
+    "prerequisites": ["permutation sign", "group homomorphism kernel", "alternating group definition"]
+  },
+  {
+    "id": "arg-noncommutativity",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": { "startLine": 437, "endLine": 461 },
+    "type": "insight",
+    "title": "Non-Commutativity Witnesses via decide/native_decide",
+    "content": "Five non-commutativity witnesses (S₃, S₄, S₅, A₄, A₅) are proved by exhibiting specific non-commuting pairs. The proofs use `push_neg` (to turn $\\neg \\forall a b, ab = ba$ into $\\exists a b, ab \\neq ba$) followed by `decide` or `native_decide`. This demonstrates that S₃, S₄, S₅, A₄, A₅ are all non-abelian, which is consistent with their solvability/non-solvability classification: S₃ and S₄ are solvable-but-non-abelian, while S₅, A₄ (solvable), A₅ (simple) also have non-commutativity verified computationally.",
+    "mathContext": "Non-commutativity: $\\exists a, b \\in G$ with $ab \\neq ba$. Small cases use `decide` (fintype enumeration over all pairs). Larger cases (S₅, A₄, A₅) require `native_decide` for performance. The only abelian symmetric groups are $S_1$ and $S_2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["non-abelian groups", "commutativity", "decide tactic", "native_decide", "fintype enumeration"],
+    "prerequisites": ["symmetric group", "decide tactic", "Fintype.decidable_forall_fintype"]
+  }
+]

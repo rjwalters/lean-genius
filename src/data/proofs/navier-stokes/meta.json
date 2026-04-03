@@ -54,7 +54,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 5,
+    "axiomCount": 0,
     "assumptions": "5 structure-encoded assumptions in NSAxioms (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion). 0 Lean axiom declarations, but the 3D regularity theorem is conditional on the NSAxioms structure (5 fields encoding physical hypotheses: Type II exponent, spectral gap, theta dynamics, blowup rate, and BKM criterion). These structure fields are mathematically equivalent to axiom declarations -- the assumptions were reorganized, not eliminated. The 2D global existence theorem (Ladyzhenskaya 1969) is genuinely unconditional. The Millennium Prize problem remains unsolved.",
     "mathlibDependencies": [
       {
@@ -73,7 +73,7 @@
     "millenniumProblem": "navier-stokes",
     "proofRepoPath": "Proofs/NavierStokes.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 21110
+    "lineCount": 21111
   },
   "objection": {
     "verdict": "CONDITIONAL 3D + PROVEN 2D",
@@ -335,9 +335,9 @@
     }
   ],
   "leanFile": {
-    "lineCount": 21110,
+    "lineCount": 21111,
     "structureCount": 249,
-    "axiomCount": 5,
+    "axiomCount": 0,
     "theoremCount": 832,
     "lemmaCount": 14,
     "defCount": 101,

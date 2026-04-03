@@ -1,0 +1,34 @@
+{
+  "started_at": "2026-04-03T07:34:33Z",
+  "running": true,
+  "config": {
+    "enricher": 2,
+    "aristotle": 1,
+    "researcher": 5,
+    "auditor": 1,
+    "seeker": 1,
+    "deployer": 1,
+    "tester": 1,
+    "herald": 1,
+    "mechanic": 1
+  },
+  "agents": {},
+  "session_stats": {
+    "stubs_enhanced": 1146,
+    "proofs_submitted": 1,
+    "proofs_integrated": 0,
+    "deployments": 13,
+    "gallery_total": 1195,
+    "gallery_quality_pct": 95.9,
+    "stubs_remaining": 49,
+    "entries_enriched": 104,
+    "problems_selected": 21,
+    "research_completed": 11
+  },
+  "previous_stopped_at": "2026-01-26T19:15:00Z",
+  "schedule_window": "peak",
+  "schedule_time": "05:07",
+  "daemon_cycles": 196,
+  "daemon_respawns": 187,
+  "last_daemon_cycle": "2026-04-03T12:06:11Z"
+}

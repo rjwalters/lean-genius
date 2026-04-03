@@ -2,7 +2,7 @@
     "id": "erdos-1059-oq-03",
     "title": "Smallest Prime > 211 Failing Erdős 1059",
     "slug": "erdos-1059-oq-03",
-    "description": "The smallest prime p > 211 failing the Erdős 1059 property (all p - k! composite) is p = 223. Since 223 - 4! = 199 is prime, 223 does not satisfy the property.",
+    "description": "The smallest prime p > 211 failing the Erdős 1059 property (all p - k! composite) is p = 223. Since 223 - 4! = 199 is prime, 223 does not satisfy the property. Fully verified by decision procedure with 0 sorries and 0 axioms.",
     "meta": {
         "author": "Erdős",
         "sourceUrl": "https://erdosproblems.com/1059",
@@ -21,24 +21,78 @@
         "erdosUrl": "https://erdosproblems.com/1059",
         "erdosProblemStatus": "open",
         "axiomCount": 0,
-        "lineCount": 47,
+        "lineCount": 45,
         "assumptions": "None. All results proved by computation (decide/native_decide).",
         "mathlib_version": "4.26.0"
     },
     "overview": {
-        "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes p satisfy the property that p - k! is composite for every k with k! < p. Known examples include 101 and 211. This open question investigates computational aspects: finding the next prime after 211 that fails the property.",
-        "problemStatement": "Find the smallest prime $p > 211$ such that some $p - k!$ is prime (i.e., $p$ fails the Erdős 1059 property).",
-        "text": "The answer is p = 223. Since 223 - 4! = 223 - 24 = 199 is prime, 223 does not satisfy AllFactorialSubtractionsComposite. Moreover, 223 is the very next prime after 211 (there are no primes between 212 and 222).",
-        "proofStrategy": "Direct computation: verify 223 is prime, verify 199 = 223 - 24 is prime, and verify no prime exists in (211, 223).",
+        "historicalContext": "Paul Erdős Problem #1059 asks whether there are **infinitely many** primes $p$ such that $p - k!$ is composite for every positive integer $k$ satisfying $k! < p$. Such primes are 'factorial-avoiding' — no factorial subtraction yields another prime.\n\nThe first known examples are $p = 101$ and $p = 211$. After 211, this open question (OQ-03) asks: what is the next prime failing the property? The answer is 223 — the very next prime after 211 — and 223 fails immediately via $223 - 4! = 223 - 24 = 199$ (prime).\n\nThis computational result has two implications. First, it shows the 'window' of primes satisfying the Erdős 1059 property is narrow: between 211 and the next prime (223), there is literally no prime that could fail. Second, it illustrates the rarity of the property: among the first few hundred primes, only 101 and 211 are known to satisfy it. Whether the list continues is open.\n\nThe proof uses Lean 4's `decide` tactic, which evaluates the statement at the kernel level (reducing to Boolean computation). For small numbers like 223 and 199, this is entirely feasible — primality testing is decidable and fast for numbers of this magnitude.",
+        "problemStatement": "**Erdős Problem #1059 (Open):** Are there infinitely many primes $p$ such that $p - k!$ is composite for every positive integer $k$ with $k! < p$?\n\nDefine: $\\mathrm{AFSC}(p) :\\!\\!\\iff \\forall k \\in \\mathbb{N},\\, k! < p \\Rightarrow (\\neg\\, \\mathrm{Prime}(p - k!) \\land p - k! \\geq 2)$.\n\nKnown examples: $\\mathrm{AFSC}(101)$ and $\\mathrm{AFSC}(211)$ hold.\n\n**OQ-03 (this file):** The smallest prime $p > 211$ with $\\neg\\, \\mathrm{AFSC}(p)$ is $p = 223$.\n\nProof sketch: $223 - 4! = 223 - 24 = 199$ is prime, so $\\mathrm{AFSC}(223)$ fails. Since 223 is the next prime after 211 (no primes in $\\{212, \\ldots, 222\\}$), it is the smallest failing prime after 211.",
+        "proofStrategy": "The proof is entirely computational. Lean 4's `decide` tactic evaluates decidable propositions at the kernel level, checking them by actual computation.\n\n**Step 1** (`prime_223`): Verify 223 is prime. `decide` evaluates `Nat.Prime 223` directly.\n\n**Step 2** (`prime_199`): Verify 199 is prime. Needed to show that $223 - 4! = 199$ is prime, demonstrating AFSC fails.\n\n**Step 3** (`next_prime_after_211`): Verify no prime exists in $\\{212, 213, \\ldots, 222\\}$. `decide` checks all 11 numbers.\n\n**Step 4** (`counterexample_223`): From the definition of AFSC, instantiate $k = 4$ (since $4! = 24 < 223$) and derive a contradiction: AFSC(223) would require $223 - 24 = 199$ to be composite, but step 2 says it is prime.\n\n**Step 5** (`smallest_failing_prime_after_211`): Bundle the three conclusions into a conjunction.",
         "keyInsights": [
-            "The smallest prime after 211 is 223, and it immediately fails the property via 223 - 24 = 199 (prime)",
-            "The check uses only k = 4 (4! = 24); larger factorials (5! = 120) would give 223 - 120 = 103 which is also prime",
-            "This shows the Erdős 1059 property is rare among primes — the very next prime after a witness fails"
+            "The `decide` tactic transforms mathematical verification into computation: for small concrete numbers, `Nat.Prime 223` is evaluated directly by the Lean kernel without any mathematical proof infrastructure. This is possible because primality is decidable (the kernel can trial-divide up to √223 ≈ 14.9).",
+            "The counterexample uses k = 4 because 4! = 24 is the factorial nearest to 223 that gives a prime difference: 223 - 24 = 199. One could also use k = 5 since 5! = 120 < 223 and 223 - 120 = 103 is prime — there are multiple witnesses to the failure of AFSC(223).",
+            "The 'smallest failing prime' result is almost immediate once we know 223 is the next prime after 211: since there are no primes between 211 and 223, the search space is trivial. This is an instance of a common pattern: the answer to 'smallest X satisfying Y' is determined by the structure of primes.",
+            "AFSC(p) becomes harder to satisfy as p grows because there are more factorials below p to check. For p = 101, only k ∈ {1,2,3,4} matter (4! = 24 < 101 ≤ 5! = 120). For p = 211, k ranges up to 5 (5! = 120 < 211 ≤ 6! = 720). This increasing checking burden may be why examples become sparser.",
+            "The open question — whether infinitely many such primes exist — is deeply connected to the distribution of primes among arithmetic progressions and factorial residues. The problem has the flavor of Diophantine questions about primes in special sets, like Mersenne primes or prime gaps, where the answer is expected to be 'yes' but a proof seems far out of reach."
         ],
         "prerequisites": [
-            "Elementary number theory (primality testing, factorials)"
+            "Elementary number theory (primality, factorials)",
+            "Lean 4 `decide` tactic (decidable computations at the kernel level)",
+            "Erdős Problem #1059 main formalization (erdos-1059)"
         ]
     },
+    "sections": [
+        {
+            "id": "definition",
+            "title": "AllFactorialSubtractionsComposite Definition",
+            "startLine": 19,
+            "endLine": 22,
+            "summary": "Defines the AFSC property: all factorial subtractions p - k! (with k! < p) are composite and ≥ 2.",
+            "mathContext": "$\\mathrm{AFSC}(n) :\\!\\!\\iff \\forall k \\in \\mathbb{N},\\, k! < n \\Rightarrow (\\neg\\, \\mathrm{Prime}(n - k!) \\land n - k! \\geq 2)$. The $\\geq 2$ condition ensures the subtraction is meaningful (avoids 0 and 1 which are not prime but also not 'composite' in the standard sense)."
+        },
+        {
+            "id": "primality-lemmas",
+            "title": "Primality Computations: 223 and 199",
+            "startLine": 24,
+            "endLine": 31,
+            "summary": "Proves 223 and 199 are prime by decide. Also proves no prime exists in (211, 223).",
+            "mathContext": "Three facts by \\texttt{decide}: (1) $223$ is prime; (2) $199$ is prime; (3) $\\forall n \\in \\{212, \\ldots, 222\\}$, $n$ is not prime. These are verified by the Lean kernel computing trial division. $\\sqrt{223} < 15$ and $\\sqrt{199} < 15$, so only divisors $\\leq 14$ need to be checked."
+        },
+        {
+            "id": "counterexample",
+            "title": "223 Fails AFSC via 223 - 4! = 199",
+            "startLine": 33,
+            "endLine": 38,
+            "summary": "Proves AFSC(223) is false: k=4 gives 223 - 24 = 199 which is prime.",
+            "mathContext": "Proof by contradiction: assume $\\mathrm{AFSC}(223)$ holds. Instantiate with $k = 4$: since $4! = 24 < 223$, AFSC would require $\\neg\\mathrm{Prime}(223 - 24)$ and $223 - 24 \\geq 2$. But $223 - 24 = 199$ and $\\mathrm{Prime}(199)$ (proved above). Contradiction."
+        },
+        {
+            "id": "smallest-failing",
+            "title": "Main Result: 223 is the Smallest Failing Prime after 211",
+            "startLine": 40,
+            "endLine": 45,
+            "summary": "Bundles all three results: 223 is prime, AFSC(223) fails, and no prime exists between 211 and 223.",
+            "mathContext": "The conjunction $\\mathrm{Prime}(223) \\land \\neg\\mathrm{AFSC}(223) \\land (\\forall p,\\, 211 < p < 223 \\Rightarrow \\neg\\mathrm{Prime}(p))$ directly encodes '223 is the smallest prime $> 211$ failing AFSC.' The conjunction is assembled from the three previously proved lemmas."
+        }
+    ],
+    "conclusion": {
+        "summary": "The smallest prime greater than 211 failing the Erdős 1059 property (AFSC) is 223, proved by direct computation. The key witness is 223 - 4! = 199, which is prime. All proofs use the `decide` tactic, making the verification entirely computational and machine-checked without any mathematical axioms.",
+        "implications": "This computational result characterizes the 'gap' after the known example p = 211: the very next prime (223) already fails the Erdős 1059 property, suggesting that examples satisfying AFSC are quite sparse. Whether there are infinitely many remains open.\n\nThe proof technique — direct computation via `decide` — is characteristic of finitely verifiable number-theoretic claims. For the main Erdős 1059 question (infinitely many examples), no such finite verification is possible; it would require either an infinite pattern or a structural argument about prime distributions relative to factorial gaps.",
+        "openQuestions": [
+            "Are there infinitely many primes p satisfying AFSC(p)? The sequence starts 101, 211, ... and appears sparse. No pattern is known.",
+            "What is the next prime after 211 that satisfies AFSC (i.e., follows 101 and 211 in the sequence)? This would require checking all primes between 223 and the next candidate, verifying that each p - k! is composite for all relevant k.",
+            "Do the examples 101 and 211 have a structural explanation? Both are near factorial values (5! = 120 is near 101; 5! = 120 is not near 211, but 4! = 24 divides into both). The connection between factorial structure and prime avoidance properties is unexplored.",
+            "Can this computational verification be extended to larger primes using Lean's `native_decide` (which compiles to native code) or external verification tools? For primes up to, say, 10,000, a comprehensive search for all AFSC-satisfying primes would be a natural next step."
+        ]
+    },
+    "crossReferences": [
+        {
+            "targetId": "erdos-1059",
+            "relationship": "extends",
+            "description": "Computational extension of the main Erdős 1059 formalization — this file finds the first prime after 211 that fails the property, complementing the main file's verification that 211 satisfies it"
+        }
+    ],
     "leanFile": {
         "imports": [
             "Mathlib.Data.Nat.Prime.Basic",
@@ -47,16 +101,18 @@
         ],
         "opens": [],
         "namespace": null,
-        "lineCount": 47,
+        "lineCount": 45,
         "axiomCount": 0,
         "theoremCount": 5,
         "definitionCount": 1
     },
-    "crossReferences": [
+    "references": [
         {
-            "targetId": "erdos-1059",
-            "relationship": "extends",
-            "description": "Computational extension of the main Erdős 1059 formalization"
+            "authors": "Erdős, Paul",
+            "title": "Problem #1059",
+            "year": "unknown",
+            "venue": "Erdős Problems Archive (erdosproblems.com/1059)",
+            "note": "The original problem: are there infinitely many primes p such that p - k! is composite for all k with k! < p? Known examples: 101, 211."
         }
     ]
 }

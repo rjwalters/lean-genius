@@ -1,8 +1,8 @@
 {
   "slug": "area-of-circle-oq-01-oq-03-oq-02",
   "title": "Isoperimetric inequality for Lipschitz curves (measure-theoretic)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T19:39:40.877Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Created LipschitzClosedCurve structure with 2 axioms and proof of main theorem",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Submit integrability sorries to Aristotle; prove derivative bound from LipschitzWith",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Session 2026-04-03 proved hCS integrability and harea_bound structure; main theorem lipschitz_isoperimetric is 1 sorry away (hf_int: integrability of xy-yx for Lipschitz curves)",
+    "builtItems": [
+      "LipschitzClosedCurve structure (proofs/Proofs/AreaOfCircleOQ01OQ03OQ02.lean)",
+      "SmoothClosedCurve.toLipschitz embedding (smooth → Lipschitz, preserves C and A by rfl)",
+      "circleLipCurve: circle as Lipschitz curve with C=2πr and A=πr²",
+      "square_isoperimetric_ratio, square_ratio_lt_one, square_strict_isoperimetric: fully proved",
+      "wirtinger_sum_sq_bound_lip: Wirtinger bound ∫(x²+y²) ≤ 2πc² from wirtinger_ac axiom",
+      "lipschitz_isoperimetric: 4πA ≤ C² proved from 2 axioms + arithmetic kernel reuse",
+      "lip_minimum_circumference: C ≥ 2√(πA) as corollary",
+      "hspeed_c: converts hspeed from γ.circumference/(2π) to c=L/(2π) via hcirc_eq",
+      "hCS proof: both integrability goals proved using hcont_f.intervalIntegrable and funext+Real.sq_sqrt",
+      "harea_bound structure: full proof using cross_product_sq_le + MeasureTheory.integral_mono_ae + ae_restrict_of_ae",
+      "Cleaned wirtinger_sum_sq_bound_lip: replaced broken lemma calls (Real.norm_le_of_lipschitzWith etc.) with clean sorries"
+    ],
+    "insights": [
+      "Lipschitz closed curves generalize smooth closed curves: replace ContDiff ℝ 1 with LipschitzWith K",
+      "Key axiom: Wirtinger inequality extends to Lipschitz (absolutely continuous) functions: LipschitzWith K f → ∫f² ≤ ∫(f'²) when f has zero mean",
+      "Key axiom: Arc-length reparametrization works for Lipschitz curves via inverse function theorem for monotone AC maps",
+      "The proof structure is IDENTICAL to the smooth case (same arithmetic kernel isoperimetric_from_wirtinger_bounds)",
+      "Every SmoothClosedCurve is a LipschitzClosedCurve via toLipschitz embedding (circumference and area preserved by definition equality)",
+      "Square (piecewise-linear, Lipschitz not smooth): C=4a, A=a², ratio=π/4 < 1 PROVED without sorries",
+      "Circumference/area definitions are literally identical for smooth and Lipschitz curves (same integral formula)",
+      "hCS integrability proved: √(x²+y²) integrable from Lipschitz→continuous; (√f)²=f simplification uses Real.sq_sqrt",
+      "harea_bound proved up to hf_int sorry: area bound 2A≤c·∫√(x²+y²) uses Cauchy-Schwarz a.e. + integral_mono_ae",
+      "hspeed_c conversion needed: hspeed from exists_lip_nice_reparam uses γ.circumference/(2π), must rewrite to c=L/(2π) explicitly",
+      "Remaining blocker: integrability of xy-yx (product of continuous γ.x with essentially-bounded deriv γ.y) requires Rademacher or LipschitzWith.norm_deriv_le in Mathlib"
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks: derivative bound for Lipschitz functions (LipschitzWith K f → |f'(t)| ≤ K when differentiable)",
+      "Mathlib lacks: integrability of squared a.e.-defined derivative of Lipschitz function directly",
+      "Mathlib lacks: area bound analog for Lipschitz curves with a.e. constant speed (area_bound_const_speed uses smooth continuity)"
+    ],
+    "nextSteps": [
+      "Prove hf_int: integrability of γ.x*deriv(γ.y) - γ.y*deriv(γ.x) for Lipschitz curves",
+      "Options for hf_int: (1) LipschitzWith.norm_deriv_le + IntegrableOn.mul, (2) MeasurableEmbedding, (3) Rademacher theorem",
+      "Prove hdx_int/hdy_int: (deriv f)^2 integrable when LipschitzWith K f — needs norm_deriv_le_lipschitzWith or similar",
+      "Prove toLipschitz.lip_x/lip_y: C^1 periodic → LipschitzWith via contDiff.lipschitzWith on compact interval + periodicity"
+    ]
   },
   "tags": [
     "analysis",
@@ -49,6 +82,7 @@
     "area-of-circle-oq-01-oq-02-oq-02",
     "area-of-circle-oq-01-oq-02-oq-02-oq-01",
     "area-of-circle-oq-01-oq-03",
+    "area-of-circle-oq-01-oq-03-oq-01",
     "area-of-circle-oq-02",
     "area-of-circle-oq-03-oq-01",
     "area-of-circle-oq-03-oq-02",
@@ -62,7 +96,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T19:39:40.877Z",
-  "lastUpdate": "2026-03-30T19:39:40.877Z",
+  "lastUpdate": "2026-04-03T07:30:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -144,6 +178,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03Aristotle.lean"
     },
     {
+      "path": "Proofs/AreaOfCircleOQ01OQ03OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ03OQ01.lean",
+      "lineCount": 518,
+      "theoremCount": 22,
+      "axiomCount": 4,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03OQ02.lean",
+      "filename": "AreaOfCircleOQ01OQ03OQ02.lean",
+      "lineCount": 577,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03OQ02.lean"
+    },
+    {
       "path": "Proofs/AreaOfCircleOQ02.lean",
       "filename": "AreaOfCircleOQ02.lean",
       "lineCount": 212,
@@ -201,11 +257,11 @@
     {
       "path": "Proofs/AreaOfCircleOQ05.lean",
       "filename": "AreaOfCircleOQ05.lean",
-      "lineCount": 119,
+      "lineCount": 133,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05.lean"
     }

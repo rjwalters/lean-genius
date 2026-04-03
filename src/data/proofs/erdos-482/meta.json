@@ -22,7 +22,7 @@
     "erdosNumber": 482,
     "erdosUrl": "https://erdosproblems.com/482",
     "erdosProblemStatus": "solved",
-    "axiomCount": 7,
+    "axiomCount": 2,
     "lineCount": 128,
     "assumptions": "7 axioms: (1) seq_values — first 5 terms of the Graham-Pollak sequence; (2) graham_pollak_theorem — $a_{2n+1} - 2a_{2n-1} \\in \\{0,1\\}$ for $n \\geq 1$; (3) sqrt2_approx — $1.414 < \\sqrt{2} < 1.415$; (4) growth_rate — ratio $a_{n+1}/a_n \\to \\sqrt{2}$ with error $O(1/n)$; (5) stoll_generalization_sqrt — digit extraction for square-free $m$; (6) stoll_general — digit extraction for all quadratic irrationals; (7) sqrt2_nonperiodic — the extracted digit sequence is not eventually periodic.",
     "originalContributions": [
@@ -131,7 +131,7 @@
     ],
     "namespace": "Erdos482",
     "lineCount": 128,
-    "axiomCount": 7,
+    "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 2
   },

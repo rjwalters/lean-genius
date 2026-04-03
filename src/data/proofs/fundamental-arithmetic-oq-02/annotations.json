@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-norm-def",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 38, "endLine": 54 },
+    "type": "definition",
+    "title": "normZ5: The Multiplicative Norm That Powers Everything",
+    "content": "normZ5 z = z.re * z.re + 5 * z.im * z.im defines the norm $N(a+b\\sqrt{-5}) = a^2+5b^2$. This is the restriction of the complex absolute value squared to $\\mathbb{Z}[\\sqrt{-5}]$: for $z = a+ib\\sqrt{5}$, $|z|^2 = a^2 + 5b^2$. Multiplicativity (normZ5_mul) is proved purely by `ring` from the definition — a single tactic closes a computation that took pages in classical texts. normZ5_eq_one_of_isUnit: if z is a unit with z·z⁻¹=1, then N(z)·N(z⁻¹)=1. Since both factors are nonneg (sum of squares), each must equal 1. The proof uses `omega` to conclude from `N(z)·N(z⁻¹)=1` with `N(z)≥0` and `N(z⁻¹)≥0`.",
+    "mathContext": "$N(a+b\\sqrt{-5}) = a^2 + 5b^2$ is the absolute value squared: $|a+b\\sqrt{-5}|^2$. Multiplicativity: $(a^2+5b^2)(c^2+5d^2) = (ac-5bd)^2 + 5(ad+bc)^2$ (Brahmagupta-Fibonacci identity for $d = -5$). For units: $N(z) \\cdot N(z^{-1}) = N(1) = 1$. Since $N(z) \\in \\mathbb{Z}_{\\ge 0}$, the only solution is $N(z) = N(z^{-1}) = 1$. The only elements with $N = 1$ are $a^2 + 5b^2 = 1$, forcing $b=0$ and $a = \\pm 1$, so the units of $\\mathbb{Z}[\\sqrt{-5}]$ are exactly $\\{\\pm 1\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Zsqrtd.norm", "norm multiplicativity", "units via norm=1", "Brahmagupta-Fibonacci identity"],
+    "prerequisites": ["Zsqrtd basic operations", "ring tactic for algebraic identities", "omega for integer linear arithmetic"]
+  },
+  {
+    "id": "ann-two-factorizations",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 63, "endLine": 90 },
+    "type": "insight",
+    "title": "The Two Factorizations: A Combinatorial Norm Check",
+    "content": "factorization_1 (six = ⟨2,0⟩ * ⟨3,0⟩) and factorization_2 (six = ⟨1,1⟩ * ⟨1,-1⟩) are verified by `simp [six, Zsqrtd.ext_iff, Zsqrtd.mul_def]; ring_nf; constructor <;> ring`. The key check is `Zsqrtd.ext_iff`: equality of ℤ√(-5) elements reduces to real and imaginary parts separately. For factorization_2: (1+√(-5))(1-√(-5)) = 1·1 + (-5)·1·1 + (1·(-1)+1·1)·√(-5) = (1+5) + 0·√(-5) = 6. The norm products confirm: N(2)·N(3) = 4·9 = 36 = N(6), and N(1+√(-5))·N(1-√(-5)) = 6·6 = 36 = N(6).",
+    "mathContext": "The second factorization: $(1+\\sqrt{-5})(1-\\sqrt{-5}) = 1^2 - (\\sqrt{-5})^2 = 1-(-5) = 6$. This is a difference of squares identity with $\\sqrt{-5}$ in place of $x$. The norm confirms: $N(1+\\sqrt{-5}) = 1^2 + 5 \\cdot 1^2 = 6$ and $N(1-\\sqrt{-5}) = 1^2 + 5 \\cdot (-1)^2 = 6$, with product 36 = N(6). Both factorizations are into elements of the same norm (4,9) vs (6,6) — note that $(4,9)$ and $(6,6)$ are different multisets, anticipating that the factorizations are essentially different.",
+    "significance": "key",
+    "relatedConcepts": ["Zsqrtd.ext_iff", "Zsqrtd.mul_def", "difference of squares", "ring_nf tactic"],
+    "prerequisites": ["Zsqrtd multiplication formula", "ring_nf for normalizing ring expressions", "Zsqrtd.ext_iff for element equality"]
+  },
+  {
+    "id": "ann-norm-gap",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 123, "endLine": 128 },
+    "type": "technique",
+    "title": "no_norm_two_or_three: The Arithmetic Gap That Forces Irreducibility",
+    "content": "no_norm_two_or_three proves that no element of ℤ[√(-5)] has norm 2 or 3. The proof uses `nlinarith [sq_nonneg z.re, sq_nonneg z.im]` for both cases. For norm=2: $a^2 + 5b^2 = 2$ with $a,b \\in \\mathbb{Z}$. If $b \\ne 0$, then $5b^2 \\ge 5 > 2$, contradiction. If $b=0$, then $a^2=2$ — but $1^2=1 < 2 < 4=2^2$, and nlinarith catches this. The key to the irreducibility argument: divisors of N(2)=4 in $\\mathbb{Z}_{>0}$ are $\\{1,2,4\\}$, but 2 and 3 are excluded, leaving only 1 and 4 as possible norms of divisors of 2.",
+    "mathContext": "The 'norm gap' is a characteristic feature of imaginary quadratic rings. For $\\mathbb{Z}[\\sqrt{-d}]$ with $d > 0$: $N(a+b\\sqrt{-d}) = a^2 + db^2$. For $d \\ge 2$, any nonzero $b$ contributes at least $d \\ge 2$. So $N(z) \\in \\{1, 1+d, 4, 1+4d, \\ldots\\}$ for small values. For $d=5$: the achievable small norms are $\\{1, 4, 5, 6, 9, \\ldots\\}$, explicitly missing 2 and 3. This gap is exactly what makes the norm argument for irreducibility of 2 work, and it's specific to $d=5$ — for $d=1$ (Gaussian integers), norm 2 IS achievable as $N(1+i)=2$.",
+    "significance": "key",
+    "relatedConcepts": ["nlinarith with sq_nonneg hints", "norm gap for imaginary quadratic rings", "achievable norms in Z[√(-5)]"],
+    "prerequisites": ["nlinarith tactic and polynomial hints", "sq_nonneg : 0 ≤ x^2", "integer solutions to a²+5b²=n"]
+  },
+  {
+    "id": "ann-two-irreducible",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 141, "endLine": 166 },
+    "type": "technique",
+    "title": "two_irreducible: The Norm-Based Irreducibility Proof",
+    "content": "two_irreducible proves Irreducible ⟨2,0⟩ by: (1) two_not_unit (N(2)=4≠1), and (2) if 2=ab then N(a)·N(b)=4. The proof establishes N(a)>0 and N(b)>0 (neither is zero since product is 4), N(a)≤4 (by `nlinarith` from N(b)≥1), then uses `omega` to conclude N(a)∈{1,4} (ruling out 2 and 3 via no_norm_two_or_three). If N(a)=1 then `isUnit_of_normZ5_eq_one` gives a is a unit; if N(a)=4 then N(b)=1 and b is a unit. The `rcases` at the end cleanly handles both cases.",
+    "mathContext": "The Irreducible predicate in Mathlib: `Irreducible x ↔ ¬IsUnit x ∧ ∀ a b, x = a*b → IsUnit a ∨ IsUnit b`. The norm argument: if $2 = ab$, then $4 = N(a) \\cdot N(b)$ with $N(a), N(b) > 0$. Factorizations of 4 with positive factors: $(1,4), (2,2), (4,1)$. But no element has norm 2, so $(2,2)$ is impossible, leaving only $(1,4)$ or $(4,1)$. The factor with norm 1 is a unit. This is a classic proof pattern: use the norm to reduce to integer factorizations, then use the norm gap to eliminate impossible cases.",
+    "significance": "key",
+    "relatedConcepts": ["Irreducible in Mathlib", "isUnit_of_normZ5_eq_one", "rcases for case splitting", "nlinarith for norm upper bound"],
+    "prerequisites": ["Irreducible predicate definition", "isUnit_of_normZ5_eq_one proved just above", "omega for {1,2,3,4} case elimination"]
+  },
+  {
+    "id": "ann-divisibility",
+    "proofId": "fundamental-arithmetic-oq-02",
+    "range": { "startLine": 168, "endLine": 191 },
+    "type": "insight",
+    "title": "two_not_dvd: Elementary Divisibility via Component Comparison",
+    "content": "two_not_dvd_one_plus proves ¬⟨2,0⟩ ∣ ⟨1,1⟩ by: assume (1+√(-5)) = 2·z for some z, extract the imaginary part equation `2 * z.im = 1`, and close by `omega` (no integer solution). The proof uses `congr_arg Zsqrtd.im` to extract the imaginary equation from the hypothesis, then `simp [Zsqrtd.mul_def]` to normalize, then `linarith`. The simplicity of this argument — omega immediately solves `2 * z.im = 1` — shows that the essential content is a single parity argument: (1+√(-5)) has odd imaginary coefficient (1), but any multiple of 2 has even imaginary coefficient.",
+    "mathContext": "The divisibility $2 \\mid (1+\\sqrt{-5})$ would require $(1+\\sqrt{-5}) = 2(a+b\\sqrt{-5})$ for $a,b \\in \\mathbb{Z}$, i.e., $2a = 1$ (impossible, no integer solution) and $2b = 1$ (also impossible). The imaginary part alone suffices: $2b = 1$ has no integer solution. This elementary parity argument is more direct than the norm argument and shows the two factorizations are independent without any complex calculation. The overall proof strategy: irreducibility uses norms, independence uses parity.",
+    "significance": "supporting",
+    "relatedConcepts": ["congr_arg for component extraction", "Zsqrtd.mul_def", "omega for Presburger arithmetic", "parity argument for divisibility"],
+    "prerequisites": ["congr_arg f h for applying f to equality h", "Zsqrtd.im projection", "omega for linear integer arithmetic"]
+  }
+]

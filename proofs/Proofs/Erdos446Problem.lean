@@ -80,7 +80,7 @@ from liminf to full convergence. -/
 
 /-- **Erdős (1960):** δ(n) = (log n)^{-α + o(1)}.
 First quantitative estimate with the correct exponent α.
-For any ε > 0 and large enough n:
+For any ε > 0 and large enough n: -/
 
 /- ## Ford's Resolution (2008) -/
 

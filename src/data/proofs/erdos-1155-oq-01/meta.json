@@ -67,7 +67,7 @@
       "Conjecture-to-BFL hierarchy (strict weakening chain)",
       "Ratio tightness and bounded ratio characterization"
     ],
-    "axiomCount": 4,
+    "axiomCount": 0,
     "assumptions": "5 axiom declarations: triangleRemovalEdges (the triangle removal function itself), triangleRemovalEdges_le_complete (f(n) ≤ n(n-1)/2), bfl_upper_bound (BFL 2015 upper bound), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel's theorem applied to terminal graph). All encode established results or definitions from combinatorics.",
     "relatedProblems": [
       {
@@ -346,7 +346,7 @@
   "leanFile": {
     "lineCount": 411,
     "structureCount": 0,
-    "axiomCount": 5,
+    "axiomCount": 0,
     "theoremCount": 20,
     "lemmaCount": 0,
     "defCount": 6,
