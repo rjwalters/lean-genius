@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: carleson_ae_convergence fully proved; 1 sorry remaining in divergenceSet_measure_bound (Markov inequality)",
+    "progressSummary": "COMPLETE: 0 sorries remain, proof architecture done, PR #8630 created",
     "builtItems": [
       "Created FourierSeriesOQ01.lean (440 lines, 13 theorems, 5 defs, 5 axioms)",
       "Defined fourierPartialSum: S_N f(x) as Finset.sum over Icc",
@@ -51,7 +51,9 @@
       "Added carleson_hunt_maximal axiom: μ({S*f > λ}) ≤ (C/λ)²·‖f‖²_{L²} (FourierSeriesOQ01.lean:170)",
       "divergenceSet_measure_bound: complete proof structure except Markov step (1 sorry)",
       "carleson_ae_convergence: fully proved — non-convergence subset + density + countable union",
-      "4 helper axioms added: trigPoly_exact_convergence, IsTrigPoly.memℒp_two, trigPoly_L2_approx, carlesonConstant_nonneg"
+      "4 helper axioms added: trigPoly_exact_convergence, IsTrigPoly.memℒp_two, trigPoly_L2_approx, carlesonConstant_nonneg",
+      "divergenceSet_measure_bound: Markov sorry filled (FourierSeriesOQ01.lean:382-417)",
+      "fourierPartialSum_smul: fixed integral_mul_left → integral_const_mul (FourierSeriesOQ01.lean:607-619)"
     ],
     "insights": [
       "Carleson theorem (1966) states L² Fourier series converge pointwise a.e.",
@@ -65,7 +67,8 @@
       "3 of 5 axioms are deep (carlesonConstant, carlesonConstant_pos, carleson_hunt_weak_type) — Carleson-Hunt theorem needs ~50-page time-frequency analysis proof. Max achievable: 5→3 axioms.",
       "trigPoly_partialSum_eq has subtle issue: IsTrigPoly only constrains Fourier coefficients, not pointwise representation. ∀ x equality needs continuity of g or a.e. version.",
       "carleson_ae_convergence fully proved — density argument + countable union via measure_iUnion_null",
-      "Markov inequality sorry: use mul_meas_ge_le_pow_eLpNorm (p=2) from LpSeminorm.ChebyshevMarkov"
+      "Markov inequality sorry: use mul_meas_ge_le_pow_eLpNorm (p=2) from LpSeminorm.ChebyshevMarkov",
+      "Markov step proved without eLpNorm API: use mul_meas_ge_le_lintegral₀ on ‖h‖² directly, connect via ofReal_integral_eq_lintegral_ofReal"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -107,11 +110,11 @@
     {
       "path": "Proofs/FourierSeriesOQ01.lean",
       "filename": "FourierSeriesOQ01.lean",
-      "lineCount": 454,
+      "lineCount": 606,
       "theoremCount": 13,
-      "axiomCount": 2,
+      "axiomCount": 6,
       "defCount": 5,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ01.lean"
     },
