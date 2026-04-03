@@ -5,7 +5,7 @@
   "description": "Survey of equivariant Borsuk-Ulam for compact Lie groups (SO(n), U(n)). Formalizes equivariant map definitions, fixed-point subspace properties, and identifies ~2000 lines of infrastructure needed for the full theorem.",
   "meta": {
     "author": "Lean Genius",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BorsukUlamOQ02OQ02.lean",
     "tags": [
       "topology",
@@ -14,37 +14,37 @@
       "representation theory",
       "Lie groups"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 160,
-    "assumptions": "None. Survey file with basic definitions proved from Mathlib.",
+    "assumptions": "The main theorem EquivariantBorsukUlam is a True placeholder \u2014 the full equivariant Borsuk-Ulam for compact Lie groups requires ~2000 lines of equivariant topology infrastructure not yet in Mathlib (G-CW complexes, equivariant cohomology, equivariant degree theory). The 7 supporting lemmas about equivariant map algebra and fixed-point subspaces are fully verified.",
     "theoremCount": 7,
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Karol Borsuk proved the antipodal theorem in 1933 (a problem Stanisław Ulam posed), establishing that every continuous f: Sⁿ → ℝⁿ has a point with f(x) = f(-x). The ℤ/2 antipodal action was soon recognized as a special case of equivariant topology. C.T. Yang (1954) generalized Borsuk-Ulam to free ℤ/p-actions on spheres. The program of extending BU to arbitrary compact Lie groups gained momentum through the development of equivariant cohomology by Borel (1960), Quillen (1971), and Atiyah-Segal (1969). Their localization theorem — relating equivariant cohomology of a G-space to that of its fixed-point set — is the engine behind the dimensional reduction principle for compact Lie group actions. The specific question for SO(n) and U(n) arises naturally in equivariant degree theory (Ize-Vignoli, 2003) and appears in surveys of Borsuk-Ulam variants by Marzantowicz and Wasserman. This file represents the frontier of what is currently formalizable: the equivariant algebra is elementary and provable from Mathlib primitives, but the topological heart of the theorem requires infrastructure that does not yet exist in Lean 4.",
+    "historicalContext": "Karol Borsuk proved the antipodal theorem in 1933 (a problem Stanis\u0142aw Ulam posed), establishing that every continuous f: S\u207f \u2192 \u211d\u207f has a point with f(x) = f(-x). The \u2124/2 antipodal action was soon recognized as a special case of equivariant topology. C.T. Yang (1954) generalized Borsuk-Ulam to free \u2124/p-actions on spheres. The program of extending BU to arbitrary compact Lie groups gained momentum through the development of equivariant cohomology by Borel (1960), Quillen (1971), and Atiyah-Segal (1969). Their localization theorem \u2014 relating equivariant cohomology of a G-space to that of its fixed-point set \u2014 is the engine behind the dimensional reduction principle for compact Lie group actions. The specific question for SO(n) and U(n) arises naturally in equivariant degree theory (Ize-Vignoli, 2003) and appears in surveys of Borsuk-Ulam variants by Marzantowicz and Wasserman. This file represents the frontier of what is currently formalizable: the equivariant algebra is elementary and provable from Mathlib primitives, but the topological heart of the theorem requires infrastructure that does not yet exist in Lean 4.",
     "problemStatement": "For compact Lie groups $G$ (specifically $\\mathrm{SO}(n)$, $\\mathrm{U}(n)$) and $G$-representations $V$, $W$: does every continuous $G$-equivariant map $f: S(V) \\to W$ vanish somewhere when $\\dim V > \\dim W$? More precisely: does $\\dim V^G < \\dim W^G$ force any equivariant $f: S(V) \\to W$ to have a zero?",
     "text": "Surveys the equivariant Borsuk-Ulam generalization for compact Lie groups.",
-    "proofStrategy": "The file proceeds in layers. Parts 1–2 establish the equivariant algebra that is immediately formalizable: the definition of equivariant maps and their closure under identity and composition, the fixed-point set functor, and the key lemma that equivariant maps restrict to fixed-point subspaces. Part 3 states the dimension-reduction principle informally — the statement can be written but not proved, as the proof requires the Borel construction EG ×_G X and either equivariant cohomology or equivariant degree theory. Part 4 audits the ~2000 lines of Mathlib infrastructure that would be needed: G-CW complexes, irreducible representation decomposition, equivariant cohomology rings, and equivariant degree. The def EquivariantBorsukUlam := True serves as an honest placeholder acknowledging this gap.",
+    "proofStrategy": "The file proceeds in layers. Parts 1\u20132 establish the equivariant algebra that is immediately formalizable: the definition of equivariant maps and their closure under identity and composition, the fixed-point set functor, and the key lemma that equivariant maps restrict to fixed-point subspaces. Part 3 states the dimension-reduction principle informally \u2014 the statement can be written but not proved, as the proof requires the Borel construction EG \u00d7_G X and either equivariant cohomology or equivariant degree theory. Part 4 audits the ~2000 lines of Mathlib infrastructure that would be needed: G-CW complexes, irreducible representation decomposition, equivariant cohomology rings, and equivariant degree. The def EquivariantBorsukUlam := True serves as an honest placeholder acknowledging this gap.",
     "keyInsights": [
-      "Equivariant maps preserve fixed-point subspaces: f: V → W equivariant implies f(V^G) ⊆ W^G, providing a linear shadow of the topological dimension-reduction principle",
-      "The composition theorem shows equivariant maps form a category (G-Set), and the fixed-point assignment V ↦ V^G is a functor — functoriality is the conceptual core of the BU generalization",
+      "Equivariant maps preserve fixed-point subspaces: f: V \u2192 W equivariant implies f(V^G) \u2286 W^G, providing a linear shadow of the topological dimension-reduction principle",
+      "The composition theorem shows equivariant maps form a category (G-Set), and the fixed-point assignment V \u21a6 V^G is a functor \u2014 functoriality is the conceptual core of the BU generalization",
       "The constant-map characterization reveals the tight link between equivariance and fixed points: the only equivariant constant maps land on fixed points of the action",
-      "The Borel construction is the missing piece: equivariant cohomology H*_G(X) = H*(EG ×_G X) turns the equivariant topology into ordinary cohomology of a (non-equivariant) space, enabling dimension counts",
+      "The Borel construction is the missing piece: equivariant cohomology H*_G(X) = H*(EG \u00d7_G X) turns the equivariant topology into ordinary cohomology of a (non-equivariant) space, enabling dimension counts",
       "The ~2000-line infrastructure gap is typical of frontier formalization: the mathematical community solved this problem decades ago, but Lean 4 / Mathlib must still build the scaffolding from first principles",
-      "Yang's theorem (ℤ/p case) is a potential intermediate target — it requires less equivariant machinery than the full compact Lie group case and may be provable with Smith theory via existing Mathlib cohomology tools"
+      "Yang's theorem (\u2124/p case) is a potential intermediate target \u2014 it requires less equivariant machinery than the full compact Lie group case and may be provable with Smith theory via existing Mathlib cohomology tools"
     ]
   },
   "conclusion": {
     "summary": "This file formalizes the tractable equivariant algebra for the compact Lie group Borsuk-Ulam question: equivariant map composition, fixed-point preservation, and the structural connection between equivariant maps and fixed-point subspaces. The full dimension-reduction theorem for SO(n) and U(n) is beyond current Mathlib, requiring approximately 2000 lines of equivariant topology infrastructure not yet available in Lean 4.",
     "openQuestions": [
       "Can equivariant cohomology H*_G(X) be built in Lean 4 on top of Mathlib's existing singular cohomology and classifying space machinery?",
-      "Is Yang's theorem (equivariant Borsuk-Ulam for ℤ/p) provable in Mathlib via Smith theory without requiring the full equivariant cohomology stack?",
+      "Is Yang's theorem (equivariant Borsuk-Ulam for \u2124/p) provable in Mathlib via Smith theory without requiring the full equivariant cohomology stack?",
       "Does an equivariant K-theory approach (Atiyah-Segal completion theorem) offer a shorter path to the compact Lie group case?",
       "Which compact Lie groups admit the weakest form of the dimension-reduction principle, and can those cases be isolated for earlier formalization?"
     ],
-    "implications": "The equivariant Borsuk-Ulam program illustrates a recurring pattern in formal mathematics: elementary aspects of deep theorems (categorical structure, basic properties) are immediately formalizable, while the topological heart requires substantial infrastructure investment. The infrastructure audit in this file — identifying exactly which Mathlib components are missing — serves as a roadmap for future Lean 4 development in equivariant topology. Progress here would directly enable formalization of other results in equivariant homotopy theory, including the Atiyah-Segal completion theorem and equivariant versions of the Lefschetz fixed-point theorem."
+    "implications": "The equivariant Borsuk-Ulam program illustrates a recurring pattern in formal mathematics: elementary aspects of deep theorems (categorical structure, basic properties) are immediately formalizable, while the topological heart requires substantial infrastructure investment. The infrastructure audit in this file \u2014 identifying exactly which Mathlib components are missing \u2014 serves as a roadmap for future Lean 4 development in equivariant topology. Progress here would directly enable formalization of other results in equivariant homotopy theory, including the Atiyah-Segal completion theorem and equivariant versions of the Lefschetz fixed-point theorem."
   },
   "leanFile": {
     "imports": [
@@ -77,28 +77,28 @@
       "title": "Mathematical Background and Survey Overview",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Imports, module docstring, and background on the three tiers of Borsuk-Ulam generalizations: classical ℤ/2 (Borsuk 1933), ℤ/p (Yang 1954), and compact Lie groups. Lists what the file formalizes vs. what remains open."
+      "summary": "Imports, module docstring, and background on the three tiers of Borsuk-Ulam generalizations: classical \u2124/2 (Borsuk 1933), \u2124/p (Yang 1954), and compact Lie groups. Lists what the file formalizes vs. what remains open."
     },
     {
       "id": "equivariant-maps",
       "title": "Part 1: Equivariant Map Algebra",
       "startLine": 48,
       "endLine": 79,
-      "summary": "Defines IsEquivariant (f(g • x) = g • f(x)) and proves that equivariant maps are closed under identity and composition (making them morphisms in G-Set). Characterizes constant equivariant maps as exactly those landing on fixed points."
+      "summary": "Defines IsEquivariant (f(g \u2022 x) = g \u2022 f(x)) and proves that equivariant maps are closed under identity and composition (making them morphisms in G-Set). Characterizes constant equivariant maps as exactly those landing on fixed points."
     },
     {
       "id": "fixed-point-subspaces",
       "title": "Part 2: Fixed-Point Subspaces",
       "startLine": 81,
       "endLine": 97,
-      "summary": "Defines fixedPoints G α = {x | ∀ g, g • x = x} and proves the key structural lemma: equivariant maps send fixed points to fixed points, establishing the functoriality of the fixed-point assignment."
+      "summary": "Defines fixedPoints G \u03b1 = {x | \u2200 g, g \u2022 x = x} and proves the key structural lemma: equivariant maps send fixed points to fixed points, establishing the functoriality of the fixed-point assignment."
     },
     {
       "id": "dimension-bounds",
       "title": "Part 3: Representation-Theoretic Dimension Bounds",
       "startLine": 99,
       "endLine": 116,
-      "summary": "States informally the dimension-reduction principle (dim V > dim W implies equivariant maps S(V) → W vanish) and explains why the proof requires equivariant cohomology or degree theory. The placeholder def EquivariantBorsukUlam := True marks the current formalization boundary."
+      "summary": "States informally the dimension-reduction principle (dim V > dim W implies equivariant maps S(V) \u2192 W vanish) and explains why the proof requires equivariant cohomology or degree theory. The placeholder def EquivariantBorsukUlam := True marks the current formalization boundary."
     },
     {
       "id": "infrastructure-survey",
