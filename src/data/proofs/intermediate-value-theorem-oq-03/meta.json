@@ -2,7 +2,7 @@
   "id": "intermediate-value-theorem-oq-03",
   "title": "IVT and Brouwer Fixed Point Connection",
   "slug": "intermediate-value-theorem-oq-03",
-  "description": "Explores the equivalence of IVT and Brouwer in 1D, and why Brouwer is strictly stronger in higher dimensions. Proves the 1D case via g(x) = f(x) - x.",
+  "description": "Explores the equivalence of IVT and Brouwer in 1D, and why Brouwer is strictly stronger in higher dimensions. Proves the 1D Brouwer fixed point theorem from IVT via g(x) = f(x) - x, states the 2D case as an axiom (requiring degree theory), and documents the dimensional hierarchy IVT ⊂ Brouwer ⊂ Schauder.",
   "meta": {
     "author": "Classical topology",
     "date": "2026",
@@ -19,45 +19,104 @@
     "sorries": 0,
     "axiomCount": 1,
     "lineCount": 143,
-    "assumptions": "1 axiom (brouwer_2d). 0 sorries.",
+    "assumptions": "1 axiom (brouwer_2d — Brouwer's fixed point theorem in 2D, which requires degree theory or homology to prove formally). 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
-      "1D Brouwer from IVT via g(x) = f(x) - x",
-      "IVT fails in 2D: S¹ example",
-      "Dimensional hierarchy: IVT ⊂ Brouwer ⊂ Schauder"
+      "1D Brouwer from IVT via g(x) = f(x) - x (fully proved)",
+      "IVT fails for norm-preserving maps on S¹ (no zero exists on the unit circle)",
+      "Dimensional hierarchy: IVT ⟺ Brouwer in 1D, IVT ⊊ Brouwer in nD ≥ 2, Schauder needed in ∞D"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The **Brouwer Fixed Point Theorem** was proved by L.E.J. Brouwer in 1911 using degree theory — a topological invariant that counts how many times a map winds around a point. Brouwer's original proof was non-constructive (later results showed that the fixed point cannot be computed in general). The 1D case was long known: it is exactly the Intermediate Value Theorem applied to g(x) = f(x) - x, a reduction that appears in calculus textbooks of the 19th century.\n\nThe relationship between IVT and Brouwer illuminates a fundamental transition in mathematics: from **analysis** (continuous functions and sign changes) to **topology** (degree theory and homology groups). The IVT is about 0-dimensional topology — it detects when a connected set crosses zero. Brouwer's theorem is about n-dimensional topology — it detects when a map cannot be contracted to a point.\n\nKey historical milestones:\n- **1817**: Bolzano stated the IVT for continuous functions (Cauchy's 1821 rigorous proof)\n- **1911**: Brouwer proved the n-dimensional fixed point theorem via degree theory\n- **1928**: Sperner's combinatorial lemma gave an elementary proof\n- **1930**: Schauder extended Brouwer to infinite-dimensional compact convex sets\n- **1941**: Kakutani extended to multivalued maps (used in Nash's equilibrium proof)",
+    "problemStatement": "**OQ-03**: How does the Intermediate Value Theorem relate to Brouwer's fixed point theorem in higher dimensions?\n\n**1D Case (proved)**: If $f : [0,1] \\to [0,1]$ is continuous, then $\\exists\\, c \\in [0,1]$ with $f(c) = c$. Proof: $g(x) := f(x) - x$ satisfies $g(0) = f(0) \\geq 0$ and $g(1) = f(1) - 1 \\leq 0$. By IVT, $\\exists\\, c$ with $g(c) = 0$, i.e., $f(c) = c$.\n\n**Converse (sketched)**: IVT follows from 1D Brouwer via a clamping construction, showing they are logically equivalent in 1D.\n\n**2D Case (axiom)**: Every continuous $f : D^2 \\to D^2$ (closed unit disk) has a fixed point. This cannot be proved by IVT — it requires topological machinery (degree theory, simplicial homology, or Sperner's lemma).\n\n**Hierarchy**: $\\mathrm{IVT} \\iff \\mathrm{Brouwer}_{1D}$, $\\mathrm{IVT} \\subsetneq \\mathrm{Brouwer}_{nD}$, $\\mathrm{Brouwer}_{nD} \\subsetneq \\mathrm{Schauder}_{\\infty D}$.",
+    "proofStrategy": "**Part I (1D Brouwer from IVT):** Define g(x) = f(x) - x. Since f maps [0,1] to itself: g(0) = f(0) - 0 ≥ 0 and g(1) = f(1) - 1 ≤ 0. Apply `intermediate_value_zero_of_le` from Mathlib (which wraps IVT for sign change detection): this gives c with g(c) = 0, i.e., f(c) = c.\n\n**Part II (IVT from 1D Brouwer, sketched):** Given f : [a,b] → ℝ with f(a) < 0 < f(b), define a clamped map h : [0,1] → [0,1] whose fixed point gives a zero of f. This direction is documented but not formally proved.\n\n**Part III (Dimensional Jump):** The 2D Brouwer theorem is axiomatized — it cannot be proved using only IVT-type reasoning. The standard proofs all require topological invariants (degree theory: the map on the boundary has degree 1, so cannot be extended to a retraction of the disk to its boundary; homology: $H_n(S^n) \\cong \\mathbb{Z}$ is the key).\n\n**Part IV (IVT fails in 2D):** A simple witness: the identity map on S¹ has no zero (since ‖(x,y)‖ = 1 ≠ 0 on the unit circle). This illustrates that 2D IVT-style reasoning breaks down.\n\n**Part V (Hierarchy):** Documents the tower IVT ↔ Brouwer₁ᴅ ⊊ Brouwerₙᴅ ⊊ Schauder, with the machinery needed at each level.",
+    "keyInsights": [
+      "The reduction g(x) = f(x) - x converts a fixed point problem into a root-finding problem. This is perhaps the simplest and most elegant proof technique in all of analysis — it transforms the question 'where does f hit the diagonal?' into 'where does g cross zero?'",
+      "The 1D equivalence IVT ⟺ Brouwer reveals that both theorems are manifestations of the same topological fact: the interval [0,1] is connected. IVT detects connectivity via sign changes; Brouwer detects it via the fact that continuous maps on connected sets cannot 'jump over' values.",
+      "The dimensional jump from 1D to nD requires topological degree theory: the degree of a continuous map f : Sⁿ → Sⁿ counts algebraic winding. A retraction D^{n+1} → Sⁿ would have degree 0 on the boundary (from outside) but degree 1 (as identity), contradicting that degree is a homotopy invariant.",
+      "The Schauder fixed point theorem extends Brouwer to infinite dimensions by requiring compactness: an infinite-dimensional convex set admits fixed-point-free continuous self-maps (e.g., shift operators on ℓ²), so Brouwer genuinely fails without compactness.",
+      "The axiomatization of brouwer_2d is mathematically honest: degree theory and homology are non-trivial to formalize in Lean, requiring hundreds of lines of algebraic topology infrastructure. The axiom honestly represents the state of the formalization, not a gap in mathematical knowledge."
+    ],
+    "prerequisites": [
+      "Intermediate Value Theorem (IVT for continuous functions on intervals)",
+      "Continuous functions and Continuous_on in Mathlib",
+      "Euclidean spaces and norms (EuclideanSpace ℝ (Fin n))",
+      "Topological degree theory (informal background for Brouwer)",
+      "Simplicial homology or Sperner's lemma (for Brouwer proofs)"
     ]
   },
   "sections": [
     {
-      "id": "1d-brouwer",
-      "title": "1D Brouwer from IVT",
+      "id": "header",
+      "title": "Introduction: OQ-03 Setup",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module header describing OQ-03: the relationship between IVT and Brouwer's fixed point theorem across dimensions.",
+      "mathContext": "Core question: in 1D, IVT $\\iff$ Brouwer (both assert existence of zeros/fixed points for sign-changing/self-mapping continuous functions). In $n \\geq 2$D, Brouwer requires topological invariants not accessible to IVT."
+    },
+    {
+      "id": "brouwer-1d",
+      "title": "Part I: 1D Brouwer from IVT",
       "startLine": 23,
-      "endLine": 45,
-      "summary": "1D Brouwer from IVT"
+      "endLine": 48,
+      "summary": "Proves the 1D Brouwer fixed point theorem from IVT via the reduction g(x) = f(x) - x. Uses intermediate_value_zero_of_le from Mathlib.",
+      "mathContext": "For $f : [0,1] \\to [0,1]$ continuous: $g(0) = f(0) \\geq 0$, $g(1) = f(1) - 1 \\leq 0$. By IVT: $\\exists\\, c \\in [0,1],\\, g(c) = 0$. Then $f(c) = c$. In Lean: \\texttt{intermediate\\_value\\_zero\\_of\\_le} handles the sign-change IVT application."
+    },
+    {
+      "id": "ivt-from-brouwer",
+      "title": "Part II: IVT from 1D Brouwer (Sketch)",
+      "startLine": 50,
+      "endLine": 63,
+      "summary": "Sketches the converse direction: IVT follows from 1D Brouwer via a clamping construction, establishing 1D equivalence.",
+      "mathContext": "Given $f : [a,b] \\to \\mathbb{R}$ with $f(a) < 0 < f(b)$, define a clamped self-map $h : [0,1] \\to [0,1]$ whose fixed point gives a zero of $f$. A fixed point $t^*$ of the appropriately clamped version satisfies $f(a + t^*(b-a)) = 0$. Not formally proved — illustrates the equivalence direction."
+    },
+    {
+      "id": "dimensional-jump",
+      "title": "Part III: The Dimensional Jump",
+      "startLine": 65,
+      "endLine": 84,
+      "summary": "Axiomatizes the 2D Brouwer theorem and explains why IVT-type reasoning is insufficient in higher dimensions.",
+      "mathContext": "$\\mathrm{brouwer\\_2d}$: $\\forall f : \\mathbb{R}^2 \\to \\mathbb{R}^2$ continuous with $\\|f(x)\\| \\leq 1$ whenever $\\|x\\| \\leq 1$, $\\exists\\, x$ with $\\|x\\| \\leq 1$ and $f(x) = x$. Standard proofs use: (1) degree theory: $\\deg(\\mathrm{id}_{S^1}) = 1$ cannot extend to a retraction of $D^2$; (2) Sperner's lemma + simplicial approximation; (3) homology: $H_1(S^1) \\cong \\mathbb{Z}$."
     },
     {
       "id": "ivt-fails",
-      "title": "Why IVT Fails in 2D",
-      "startLine": 62,
-      "endLine": 82,
-      "summary": "Why IVT Fails in 2D"
+      "title": "Part IV: Why IVT Fails in 2D",
+      "startLine": 85,
+      "endLine": 99,
+      "summary": "Simple example: the identity on S¹ has no zero, showing that norm-preserving maps on the unit circle never pass through the origin.",
+      "mathContext": "Theorem: $\\forall x, y \\in \\mathbb{R}$, $x^2 + y^2 = 1 \\Rightarrow \\neg(x = 0 \\land y = 0)$. This is tautological (the unit circle doesn't contain the origin), but illustrates the conceptual point: in 2D, a continuous map can 'go around' the origin, which IVT cannot detect."
+    },
+    {
+      "id": "hierarchy",
+      "title": "Part V: The Fixed Point Hierarchy",
+      "startLine": 101,
+      "endLine": 143,
+      "summary": "Documents the full hierarchy: IVT ↔ Brouwer₁ᴅ ⊊ Brouwerₙᴅ ⊊ Schauder. Each step requires strictly new mathematical machinery.",
+      "mathContext": "Hierarchy: (1) 1D: IVT $\\iff$ Brouwer (connectedness of interval); (2) $n$D ($n \\geq 2$): Brouwer requires topological degree (Brouwer $\\supsetneq$ IVT); (3) $\\infty$D: Schauder requires compactness (Schauder $\\supsetneq$ Brouwer). Example showing Brouwer fails in $\\infty$D: the shift $T(x_1, x_2, \\ldots) = (0, x_1, x_2, \\ldots)$ on the unit ball of $\\ell^2$ has no fixed point."
     }
   ],
   "conclusion": {
-    "summary": "IVT and Brouwer are equivalent in 1D but Brouwer is strictly stronger in higher dimensions.",
-    "openQuestions": [],
-    "implications": ""
+    "summary": "The 1D Brouwer fixed point theorem is proved from IVT via the classical g(x) = f(x) - x reduction. The 2D case is axiomatized, honestly representing the need for topological machinery (degree theory or homology) that is not yet formalized here. The dimensional hierarchy IVT ↔ Brouwer₁ᴅ ⊊ Brouwerₙᴅ ⊊ Schauder is documented with the conceptual reason for each gap.",
+    "implications": "This file illustrates a fundamental theme in modern mathematics: the progression from analysis to topology. The IVT is an analytic statement (about sign changes of real functions) that happens to be equivalent to a topological one (connectivity of the interval). As dimension increases, the purely analytic perspective gives way to algebraic topology — homology groups, degree theory, homotopy — which provide the invariants needed to detect fixed points.\n\nBrouwer's theorem has enormous mathematical reach: it is used in the proof of Nash's equilibrium theorem (via Kakutani's multivalued extension), in numerical analysis (Brouwer degree and topological methods for nonlinear equations), and in global analysis (as a building block for Lefschetz fixed point theorem, Atiyah-Singer index theorem, and beyond).\n\nThe Lean formalization honestly reflects the state of the art: elementary analysis (IVT, g=f-x) is accessible; topological degree theory requires substantial additional infrastructure.",
+    "openQuestions": [
+      "Can the 2D Brouwer axiom be filled using Sperner's lemma? Sperner's lemma has been formalized in Lean/Mathlib; composing it with simplicial approximation might give a combinatorial proof of Brouwer without full homology.",
+      "Can the converse (IVT from 1D Brouwer) be formalized? The clamping construction is mathematically clear but requires careful handling of the normalization parameter in Lean.",
+      "Is there a Lean 4 formalization of topological degree theory? This is the standard approach for Brouwer; with degree theory, all higher-dimensional cases would follow from one theorem.",
+      "How does this connect to the formalization of the Nash equilibrium theorem in Lean? Nash's proof uses Kakutani's fixed point theorem (multivalued Brouwer); a full game-theory formalization would need this chain."
+    ]
   },
   "crossReferences": [
     {
       "targetId": "intermediate-value-theorem",
-      "relationship": "parent-problem"
+      "relationship": "parent-problem",
+      "description": "The parent IVT formalization; the 1D Brouwer proof in this file directly uses intermediate_value_zero_of_le from the IVT toolkit"
     },
     {
       "targetId": "schauder-fixed-point-oq-03",
       "relationship": "related-problem",
-      "description": "Kakutani framework for infinite-dimensional extensions"
+      "description": "Kakutani framework for infinite-dimensional extensions; the hierarchy documented here (IVT ⊂ Brouwer ⊂ Schauder) connects directly to the Schauder formalization"
     }
   ],
   "leanFile": {
@@ -69,5 +128,28 @@
     "axiomCount": 1,
     "theoremCount": 2,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Brouwer, L.E.J.",
+      "title": "Über Abbildung von Mannigfaltigkeiten",
+      "year": "1911",
+      "venue": "Mathematische Annalen 71(1), 97–115",
+      "note": "The original paper proving the fixed point theorem for n-dimensional balls via degree theory."
+    },
+    {
+      "authors": "Sperner, Emanuel",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": "1928",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6, 265–272",
+      "note": "Sperner's combinatorial lemma, which gives an elementary (though non-trivial) proof of Brouwer without full algebraic topology."
+    },
+    {
+      "authors": "Kakutani, Shizuo",
+      "title": "A generalization of Brouwer's fixed point theorem",
+      "year": "1941",
+      "venue": "Duke Mathematical Journal 8(3), 457–459",
+      "note": "Extends Brouwer to multivalued maps; used in Nash's 1950 proof of equilibrium existence in non-cooperative games."
+    }
+  ]
 }
