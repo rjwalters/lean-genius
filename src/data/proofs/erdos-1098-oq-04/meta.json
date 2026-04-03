@@ -74,7 +74,62 @@
       "description": "OQ-01 formalizes Neumann's clique theorem. This OQ-04 formalizes the commutativity degree / 5/8 theorem aspect."
     }
   ],
-  "overview": "## Commutativity Degree of Finite Groups\n\nThe **commutativity degree** (or commuting probability) of a finite group $G$ is:\n$$\\text{Pr}(G) = \\frac{|\\{(g,h) \\in G^2 : gh = hg\\}|}{|G|^2}$$\n\nThis measures the probability that two randomly chosen group elements commute.\n\n## Key Results\n\n1. **Basic bounds**: $0 < \\text{Pr}(G) \\leq 1$ for any finite group\n2. **Abelian characterization**: $\\text{Pr}(G) = 1$ if and only if $G$ is abelian\n3. **The 5/8 theorem** (Gustafson 1973): For non-abelian $G$, $\\text{Pr}(G) \\leq 5/8$, with equality achieved by $D_4$ and $Q_8$\n\n## The Non-Commuting Graph\n\nThe **non-commuting graph** $\\Gamma(G)$ has vertex set $G$ with an edge between $g$ and $h$ iff $gh \\neq hg$ (and $g \\neq h$). The commutativity degree measures the global density of $\\Gamma(G)$:\n$$\\text{edge density of } \\Gamma(G) = 1 - \\text{Pr}(G)$$\n\n## Connection to Erdős 1098\n\nNeumann (1976) proved: $\\omega(\\Gamma(G)) < \\infty$ iff $[G:Z(G)] < \\infty$.\nThe 5/8 theorem gives a quantitative companion: the density of $\\Gamma(G)$ is always $\\leq 3/8$.\n\nThese are complementary views of the same non-abelian structure:\n- **Neumann**: clique number of $\\Gamma(G)$ ↔ index of center\n- **Gustafson**: global edge density of $\\Gamma(G)$ ≤ 3/8\n\n## Formalization Notes\n\nThe 5/8 theorem is stated as an open formalization goal (`five_eighths_theorem : Prop`). All other theorems in this file are fully proved with 0 sorries using Mathlib's `commProb` infrastructure.",
+  "overview": {
+    "historicalContext": "The commutativity degree (commuting probability) Pr(G) = |{(g,h) : gh=hg}|/|G|² was introduced implicitly by Erdős and Turán in the 1960s in their studies of random group elements. W.H. Gustafson (1973) proved the celebrated 5/8 theorem: for any non-abelian finite group G, Pr(G) ≤ 5/8, with equality achieved by the dihedral group D₄ and the quaternion group Q₈. The proof uses a clever counting argument via Burnside's lemma and the center Z(G). Shortly after, B.H. Neumann (1976, 'A problem of Paul Erdős on groups') proved the companion clique result: the non-commuting graph Γ(G) has no infinite clique iff the center has finite index. Together, these results show that the non-commutativity of a finite group is tightly constrained: either globally (density ≤ 3/8) or via the clique structure. The 5/8 bound appears in many sources as a striking example where a continuous probability question about groups has a clean rational sharp bound.",
+    "problemStatement": "Formalize the commutativity degree of finite groups, its connection to the non-commuting graph, and state Gustafson's 5/8 theorem as a formalization target.",
+    "text": "Formalizes commProb G, proves basic bounds, and connects to the non-commuting graph Γ(G).",
+    "proofStrategy": "Use Mathlib's `commProb` infrastructure from `GroupTheory.CommProbability` for the bounds. Define `nonCommGraph` as a `SimpleGraph` with adjacency `¬Commute g h ∧ g ≠ h`. Define `nonCommDensity = 1 - commProb G`. Prove equivalences via the characterization that `commProb G = 1 ↔ G abelian`. State the 5/8 theorem as an open `Prop` goal.",
+    "keyInsights": [
+      "The commutativity degree Pr(G) = |{(g,h) : gh=hg}|/|G|² is a natural probability measure on G × G. Mathlib's `commProb G` computes this exactly as a rational number, enabling exact arithmetic rather than approximate floating-point computations",
+      "The 5/8 threshold is a phase transition: for Pr(G) > 5/8, G must be abelian (Pr(G) = 1), so there is no finite group with commuting probability strictly between 5/8 and 1. This gap makes the 5/8 theorem surprising — it is not just an upper bound but a structure theorem",
+      "The non-commuting graph Γ(G) connects commutativity degree to graph theory: the edge density of Γ(G) is exactly 1 - Pr(G) = nonCommDensity. So Gustafson's theorem says the edge density of Γ(G) is at most 3/8 for non-abelian G",
+      "The proof of commProb_lt_one_of_noncomm uses the fact that if a, b exist with ¬Commute a b, then the commuting pairs are a strict subset of G × G, giving a strict rational inequality",
+      "The 5/8 bound is tight: D₄ (dihedral group of order 8) has exactly 5 conjugacy classes, and Pr(D₄) = (number of solutions to gh=hg)/|D₄|² = 5/8 by Burnside's lemma (the conjugacy class count equals |G|·Pr(G))"
+    ]
+  },
+  "sections": [
+    {
+      "id": "non-commuting-graph",
+      "title": "§ 1. The Non-Commuting Graph",
+      "startLine": 35,
+      "endLine": 50,
+      "summary": "Defines nonCommGraph as a SimpleGraph on G with adjacency ¬Commute g h ∧ g ≠ h. Verifies symmetry and looplessness.",
+      "mathContext": "`SimpleGraph G` in Lean 4 requires `Adj` to be symmetric and irreflexive. The `symm` field uses `Commute.symm` (`gh = hg → hg = gh`). The `loopless` field proves `¬(g Adj g)` using `hg rfl`. The `noncomputable` annotation is needed because `SimpleGraph` operations on general `Type*` may be non-constructive."
+    },
+    {
+      "id": "five-eighths",
+      "title": "§ 2. The 5/8 Theorem Statement",
+      "startLine": 52,
+      "endLine": 60,
+      "summary": "States Gustafson's 5/8 theorem as a formal Prop: for non-abelian finite groups, commProb H ≤ 5/8. Left as an open formalization goal.",
+      "mathContext": "The hypothesis `¬(∃ inst : CommGroup H, True)` encodes 'H is not abelian' by negating the existence of a commutative group instance. This type-class approach is needed because `CommGroup` is a Lean typeclass, not a first-class proposition. The 5/8 constant is encoded as `5 / 8 : ℚ`, matching the type of `commProb`."
+    },
+    {
+      "id": "basic-bounds",
+      "title": "§ 3. Basic Bounds from Mathlib",
+      "startLine": 62,
+      "endLine": 97,
+      "summary": "Five theorems: commProb_pos' (0 < Pr(G)), commProb_at_most_one (Pr(G) ≤ 1), commProb_one_iff_abelian (Pr=1 ↔ abelian), commProb_abelian (abelian groups achieve 1), commProb_lt_one_of_noncomm (strict < 1 when non-abelian).",
+      "mathContext": "All five theorems delegate to Mathlib's `commProb_pos`, `commProb_le_one`, `commProb_eq_one_iff`. The `commProb_one_iff_abelian` unfolding converts the Mathlib type-class form (`Std.Commutative`) to the element-wise form (`∀ a b, Commute a b`) that is more natural for downstream use."
+    },
+    {
+      "id": "non-comm-density",
+      "title": "§ 4. Non-Commuting Density",
+      "startLine": 99,
+      "endLine": 132,
+      "summary": "Defines nonCommDensity = 1 - commProb G. Proves density = 0 ↔ abelian, density > 0 ↔ non-abelian.",
+      "mathContext": "`nonCommDensity = 1 - commProb G` is the fraction of non-commuting ordered pairs — equivalently, the edge density of Γ(G). The proofs `nonCommDensity_zero_iff_abelian` and `nonCommDensity_pos_of_noncomm` are direct applications of `commProb_one_iff_abelian` and `commProb_lt_one_of_noncomm` via `linarith` on rationals."
+    }
+  ],
+  "conclusion": {
+    "summary": "The commutativity degree Pr(G) is formalized with 8 original theorems using Mathlib's commProb infrastructure. The non-commuting graph Γ(G) is defined as a SimpleGraph. The 5/8 theorem is stated as an open formalization goal. All proved theorems have 0 axioms and 0 sorries.",
+    "implications": "The formalization provides a verified foundation for group commutativity degree computations. The connection `nonCommDensity = 1 - commProb G` makes the graph-theoretic and probabilistic views interchangeable in formal proofs. Once the 5/8 theorem is proved, the framework would yield sharp bounds on the non-commuting graph's edge density.",
+    "openQuestions": [
+      "Can Gustafson's 5/8 theorem be fully formalized in Lean 4? The proof requires analyzing groups G with Pr(G) > 1/4 and showing G/Z(G) has order ≤ 4, which requires detailed Sylow theory and the classification of groups of order ≤ 4.",
+      "Neumann's theorem (Γ(G) has no infinite clique iff [G:Z(G)] < ∞) is formalized in OQ-01. Can the two results be combined to prove a uniform bound: the edge density of Γ(G) times the clique number of Γ(G) is bounded by a universal constant?",
+      "For which families of groups (symmetric groups Sₙ, dihedral groups D₂ₙ, etc.) can the commuting probability be computed exactly as a function of n? This would give a verified table of Pr values for common groups."
+    ]
+  },
   "references": [
     {
       "type": "paper",
@@ -93,6 +148,23 @@
       "journal": "J. Austral. Math. Soc. Ser. A",
       "volume": "21",
       "pages": "467-472"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "commProb_one_iff_abelian",
+      "type": "core",
+      "description": "commProb G = 1 ↔ G is abelian"
+    },
+    {
+      "name": "nonCommDensity_zero_iff_abelian",
+      "type": "core",
+      "description": "nonCommDensity G = 0 ↔ G is abelian"
+    },
+    {
+      "name": "five_eighths_theorem",
+      "type": "open-goal",
+      "description": "commProb H ≤ 5/8 for non-abelian H (Gustafson 1973)"
     }
   ]
 }

@@ -1,0 +1,57 @@
+[
+  {
+    "proofId": "erdos-1098-oq-04",
+    "range": { "startLine": 35, "endLine": 40 },
+    "type": "definition",
+    "title": "The Non-Commuting Graph Γ(G)",
+    "content": "`nonCommGraph` defines the non-commuting graph Γ(G) as a Lean 4 `SimpleGraph`: two vertices g, h are adjacent iff they do not commute and are distinct.",
+    "mathContext": "`SimpleGraph G` requires three fields: `Adj` (the relation), `symm` (symmetry), and `loopless` (irreflexivity). Symmetry uses `Commute.symm` to convert `¬Commute g h` to `¬Commute h g`. Looplessness follows from `g ≠ g` being false. The graph is `noncomputable` because the proof that `¬Commute g h` is decidable for general `Group G` may require classical logic.",
+    "significance": "Connecting Erdős problem 1098 (about cliques in Γ(G)) to the commutativity degree (about density of Γ(G)) requires this graph to be formally defined. The `SimpleGraph` type provides the full Mathlib graph library for downstream use.",
+    "relatedConcepts": ["simple-graph", "non-commuting-graph", "commute-predicate"],
+    "prerequisites": ["SimpleGraph (Mathlib.Combinatorics.SimpleGraph)", "Commute (Mathlib.GroupTheory.Basic)"]
+  },
+  {
+    "proofId": "erdos-1098-oq-04",
+    "range": { "startLine": 52, "endLine": 60 },
+    "type": "definition",
+    "title": "The 5/8 Theorem as an Open Formalization Goal",
+    "content": "`five_eighths_theorem` formalizes Gustafson's 1973 result as a `Prop` statement: for non-abelian finite groups H, `commProb H ≤ 5/8`. It is defined as a `def`, not proved — this is an explicit open formalization target.",
+    "mathContext": "The non-abelian hypothesis `¬(∃ inst : CommGroup H, True)` encodes 'H does not admit a commutative group structure' using Lean 4's typeclass machinery. The bound `5/8 : ℚ` matches the type of `commProb`. The original proof by Gustafson uses the fact that if Pr(G) > 1/4 then G/Z(G) has order ≤ 4, which forces abelianness — a class equation argument.",
+    "significance": "The 5/8 theorem is a celebrated 'phase transition': no finite group has commuting probability strictly between 5/8 and 1. Formalizing this statement as a named Prop makes the open goal explicit and ready for future attack by Aristotle or a researcher agent.",
+    "relatedConcepts": ["five-eighths-theorem", "gustafson-1973", "commuting-probability-phase-transition"],
+    "prerequisites": ["commProb", "CommGroup typeclass", "class equation"]
+  },
+  {
+    "proofId": "erdos-1098-oq-04",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "insight",
+    "title": "Commutativity Degree = 1 iff Abelian",
+    "content": "`commProb_one_iff_abelian` proves that `commProb G = 1 ↔ ∀ a b, Commute a b`. This is the element-wise version of Mathlib's typeclass-based `commProb_eq_one_iff`.",
+    "mathContext": "Mathlib's `commProb_eq_one_iff` states `commProb G = 1 ↔ Std.Commutative (· * ·)` using the `Std.Commutative` predicate. This theorem unwraps it to the explicit `∀ a b : G, Commute a b` form. The proof uses `Std.Commutative.comm` to extract element-wise commutativity from the typeclass, making the equivalence more useful for downstream `apply` and `rw` tactics.",
+    "significance": "The iff form enables proofs of the type 'G is non-abelian → Pr(G) < 1' and 'Pr(G) = 1 → G is abelian' by direct rewriting, connecting the quantitative measure to the algebraic property.",
+    "relatedConcepts": ["abelian-group", "commutativity-degree", "Std.Commutative"],
+    "prerequisites": ["commProb_eq_one_iff", "Std.Commutative", "Commute definition"]
+  },
+  {
+    "proofId": "erdos-1098-oq-04",
+    "range": { "startLine": 99, "endLine": 100 },
+    "type": "definition",
+    "title": "Non-Commuting Density: The Edge Density of Γ(G)",
+    "content": "`nonCommDensity G = 1 - commProb G` is the fraction of ordered pairs (g, h) with gh ≠ hg. This equals the edge density of the non-commuting graph Γ(G).",
+    "mathContext": "The edge density of a graph on n vertices with m edges is `2m / (n(n-1))` for simple graphs, but for directed edges (ordered pairs including g=h), it is `m / n²`. Since `commProb G` counts commuting ordered pairs (including g=h), `1 - commProb G` counts non-commuting ordered pairs as a fraction of all. Note that `nonCommDensity G = 0 ↔ G abelian` (by `nonCommDensity_zero_iff_abelian`), making density the exact probabilistic dual of the commutativity degree.",
+    "significance": "Connecting the probabilistic measure to the graph density allows the 5/8 theorem to be rephrased: the edge density of Γ(G) is at most 3/8 for non-abelian G.",
+    "relatedConcepts": ["edge-density", "non-commuting-graph", "commutativity-degree"],
+    "prerequisites": ["commProb", "SimpleGraph edge density"]
+  },
+  {
+    "proofId": "erdos-1098-oq-04",
+    "range": { "startLine": 114, "endLine": 130 },
+    "type": "insight",
+    "title": "Positive Density ↔ Non-Abelian",
+    "content": "`nonCommDensity_pos_of_noncomm` proves that when non-commuting elements exist, the non-commuting density is strictly positive. This is the quantitative complement to Neumann's theorem.",
+    "mathContext": "The proof: `nonCommDensity G > 0 ↔ commProb G < 1 ↔ G is non-abelian`. The chain uses `commProb_lt_one_of_noncomm` (which establishes strict < 1 from a non-commuting pair via the density counting argument) and `linarith` on rationals. The hypothesis `¬Commute a b` is the existential witness that G is non-abelian.",
+    "significance": "Completes the density picture: `nonCommDensity = 0 ↔ abelian` and `nonCommDensity > 0 ↔ non-abelian`. Combined with the 5/8 goal, this establishes that non-abelian groups have density in the interval (0, 3/8].",
+    "relatedConcepts": ["non-abelian-groups", "density-positive", "quantitative-non-commutativity"],
+    "prerequisites": ["nonCommDensity_zero_iff_abelian", "commProb_lt_one_of_noncomm", "linarith"]
+  }
+]
