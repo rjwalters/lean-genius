@@ -265,8 +265,10 @@ private lemma gaussianPDF_eq_gaussianPDFReal (μ : ℝ) {σ : ℝ} (hσ : 0 < σ
 private lemma gaussianPDF_integral_eq_one (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
     ∫ x : ℝ, gaussianPDF μ σ x = 1 := by
   simp_rw [gaussianPDF_eq_gaussianPDFReal μ hσ]
-  exact ProbabilityTheory.integral_gaussianPDFReal_eq_one μ
-    (by simp [NNReal.ne_iff, (pow_pos hσ 2).ne'])
+  apply ProbabilityTheory.integral_gaussianPDFReal_eq_one
+  apply NNReal.coe_ne_zero.mp
+  simp only [NNReal.coe_mk]
+  exact (pow_pos hσ 2).ne'
 
 private lemma gaussianPDF_integrable (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
     Integrable (gaussianPDF μ σ) := by
