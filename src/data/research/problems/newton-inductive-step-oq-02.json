@@ -29,12 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Fixed newton_inequality_binomial statement (binomial coefficients were on wrong side). Proved newton_inequality_means from corrected version. 1 sorry remains (inductive Cauchy-Schwarz step).",
+    "builtItems": [
+      "Fixed newton_inequality_binomial to standard form: C(n,k-1)*C(n,k+1)*e_k^2 >= C(n,k)^2*e_{k-1}*e_{k+1}",
+      "Proved newton_inequality_means by clearing fractions from corrected binomial form"
+    ],
+    "insights": [
+      "Original statement had C(n,k)^2 * e_k^2 >= C(n,k-1)*C(n,k+1)*e_{k-1}*e_{k+1} which is WEAKER than standard",
+      "Standard Newton inequality has coefficients swapped, making it equivalent to mean form",
+      "Mean form proof: unfold esymmMean, rw [div_pow, div_mul_div_comm, div_le_div_iff], linarith"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: newton-inductive-step-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Prove newton_inequality_binomial inductive step using Cauchy-Schwarz on esymm recurrence"
+    ]
   },
   "tags": [],
   "relatedProofs": [

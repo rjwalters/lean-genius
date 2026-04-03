@@ -1,6 +1,6 @@
 {
   "slug": "erdos-776",
-  "title": "Erdős #776",
+  "title": "Erd\u0151s #776",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T08:39:26.858Z",
-    "iteration": 3,
-    "focus": "Added structural lemmas and IsAntichain rename. Ready for axiom elimination.",
+    "iteration": 4,
+    "focus": "Proved size1_and_complement_pair_only + distinctSizes_card_le_n_sub_two. Upper bound for r=1 case established. Need achievability construction.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,41 +29,48 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: Proved erdos_776_threshold from erdos_trotter_exact (4→3 axioms)",
+    "progressSummary": "AXIOM ELIMINATION: Proved size1_and_complement_pair_only (structural pair lemma) + distinctSizes_card_le_n_sub_two (n-2 upper bound). Building toward proving erdos_trotter_r1.",
     "builtItems": [
       "Proved size_availability (axiom->theorem) in Erdos776Problem.lean",
       "Proved size_variety_tradeoff (axiom->theorem) via Finset.card_biUnion + Finset.sum_le_sum",
       "Proved middle_layer_antichain (axiom->theorem) via powersetCard construction",
       "Proved sperner_theorem (axiom->theorem) via Mathlib LYM bridge",
-      "Renamed IsAntichain → IsAntichainFamily (Mathlib collision fix)",
+      "Renamed IsAntichain \u2192 IsAntichainFamily (Mathlib collision fix)",
       "Proved empty_not_in_nontrivial_antichain via Finset.empty_subset + antichain contradiction",
       "Proved univ_not_in_nontrivial_antichain via Finset.subset_univ + antichain contradiction",
       "Proved same_size_is_antichain via Finset.eq_of_subset_of_card_le + omega",
       "Proved zero_not_in_antichain_sizes via Finset.card_eq_zero + card_le_one",
       "Proved n_not_in_antichain_sizes via Finset.eq_univ_of_card + card_le_one",
-      "erdos_776_threshold proved from erdos_trotter_exact + Nat.find (was axiom)"
+      "erdos_776_threshold proved from erdos_trotter_exact + Nat.find (was axiom)",
+      "Proved size1_and_complement_pair_only: size-1 + size-(n-1) coexistence forces F \u2286 {A,B} (2-element family)",
+      "Proved distinctSizes_card_le_n_sub_two: any antichain over Fin n (n\u22654) has \u2264 n-2 distinct sizes"
     ],
     "insights": [
-      "size_availability axiom has trivially True conclusion — provable with intro; trivial",
+      "size_availability axiom has trivially True conclusion \u2014 provable with intro; trivial",
       "size_variety_tradeoff provable via partition-by-cardinality: biUnion of disjoint filters, sum of lower bounds",
       "middle_layer_antichain provable by constructing powersetCard (n/2) univ and showing antichain + singleton image",
       "sperner_theorem: Mathlib has IsAntichain.sperner via LYM, but custom IsAntichain definition creates bridge gap",
-      "IsAntichain.sperner in Mathlib.Combinatorics.SetFamily.LYM gives Sperner bound directly. Bridge: custom IsAntichain ↔ Mathlib IsAntichain (· ⊆ ·) via Finset.mem_coe.",
-      "IsAntichain naming conflict with Mathlib.Order.Antichain — renamed to IsAntichainFamily",
-      "SubsetFamily is opaque def: theorems using ∈ F need F : Finset (Finset (Fin n)) in signatures",
-      "Key structural results proved: ∅ and univ excluded from non-trivial antichains",
-      "Sizes 0 and n excluded from distinctSizes of antichains with ≥2 sets",
+      "IsAntichain.sperner in Mathlib.Combinatorics.SetFamily.LYM gives Sperner bound directly. Bridge: custom IsAntichain \u2194 Mathlib IsAntichain (\u00b7 \u2286 \u00b7) via Finset.mem_coe.",
+      "IsAntichain naming conflict with Mathlib.Order.Antichain \u2014 renamed to IsAntichainFamily",
+      "SubsetFamily is opaque def: theorems using \u2208 F need F : Finset (Finset (Fin n)) in signatures",
+      "Key structural results proved: \u2205 and univ excluded from non-trivial antichains",
+      "Sizes 0 and n excluded from distinctSizes of antichains with \u22652 sets",
       "Same-size families are automatically antichains (via Finset.eq_of_subset_of_card_le)",
       "Remaining 3 known-result axioms require substantial combinatorial constructions to prove",
-      "erdos_776_threshold follows from erdos_trotter_exact via Nat.find — the threshold is just the minimum N"
+      "erdos_776_threshold follows from erdos_trotter_exact via Nat.find \u2014 the threshold is just the minimum N",
+      "Key structural insight: if {a}\u2208F and B (size n-1) \u2208F in antichain, then B=univ\\{a} (forced by antichain+cardinality)",
+      "Upper bound proof splits into 3 cases: both sizes 1,n-1 present (\u2192F\u22642 sets\u2264n-2), size n-1 absent (\u2192Icc 1 (n-2)), size 1 absent (\u2192Icc 2 (n-1))",
+      "The upper bound for erdos_trotter_r1 is now proved as a theorem (distinctSizes_card_le_n_sub_two)",
+      "Remaining: achievability lower bound (need explicit n-2 size antichain construction) for erdos_trotter_r1"
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "Prove achievability: for n>3, exhibit antichain F with n-2 distinct sizes and r=1 \u2014 construction needed",
+      "Convert erdos_trotter_r1 from axiom to theorem using distinctSizes_card_le_n_sub_two + achievability",
       "Prove erdos_trotter_achievable constructively (need antichain with n-3 distinct sizes and multiplicity r)",
-      "Prove erdos_trotter_r1 using structural lemmas (sizes 0,n excluded → at most n-1, need 1 more exclusion)",
-      "erdos_trotter_upper is hardest known-result axiom — may need Bollobás set-pairs inequality"
+      "erdos_trotter_upper is hardest remaining axiom \u2014 may need Bollobas set-pairs inequality"
     ],
-    "markdown": "# Erdős #776 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ be such that $A_i\\not\\subseteq A_j$ for all $i\\neq j$ and for any $t$ if there exists some $i$ with $\\lvert A_i\\rvert=t$ then there must exist at least $r$ sets of that size.\n\nHow large must $n$ be (as a function of $r$) to ensure that there is such a family which achieves $n-3$ distinct sizes of sets?\n\n\n\nA problem of Erd\\H{o}s and Trotter. For $r=1$ and $n>3$ the maximum possible is $n-2$. For $r>1$ and $n$ sufficiently large $n-3$ is achievable, but $n-2$ is never achievable.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #775\n- Problem #777\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu83\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #776 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ be such that $A_i\\not\\subseteq A_j$ for all $i\\neq j$ and for any $t$ if there exists some $i$ with $\\lvert A_i\\rvert=t$ then there must exist at least $r$ sets of that size.\n\nHow large must $n$ be (as a function of $r$) to ensure that there is such a family which achieves $n-3$ distinct sizes of sets?\n\n\n\nA problem of Erd\\H{o}s and Trotter. For $r=1$ and $n>3$ the maximum possible is $n-2$. For $r>1$ and $n$ sufficiently large $n-3$ is achievable, but $n-2$ is never achievable.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #775\n- Problem #777\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu83\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -86,8 +93,8 @@
     {
       "path": "Proofs/Erdos776Problem.lean",
       "filename": "Erdos776Problem.lean",
-      "lineCount": 267,
-      "theoremCount": 11,
+      "lineCount": 391,
+      "theoremCount": 13,
       "axiomCount": 3,
       "defCount": 6,
       "sorryCount": 0,
