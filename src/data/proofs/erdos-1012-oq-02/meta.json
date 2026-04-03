@@ -32,7 +32,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Pancyclicity (cycles of every length) was strengthened by Bondy (1971) to vertex-pancyclicity: every vertex lies on cycles of every length. This is a stronger property — vertex-pancyclicity implies pancyclicity but not vice versa. Bondy showed that Hamiltonian graphs with enough edges are either complete bipartite (the only exception) or vertex-pancyclic. Schmeichel-Hakimi (1988) extended this under Ore-type degree conditions.",
+    "historicalContext": "Pancyclicity — a graph contains cycles of every length from 3 to n — was introduced by Bondy (1971) as a strengthening of Hamiltonicity. In the same paper, Bondy proved the stronger vertex-pancyclicity theorem: a Hamiltonian graph on n vertices with ≥ n²/4+1 edges is either the balanced complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} (the unique exception, which has no triangles) or vertex-pancyclic (every vertex lies on cycles of ALL lengths 3..n). The edge threshold n²/4+1 comes from the Turán graph T(n,2): adding one edge past the Turán number forces a triangle, breaking bipartiteness and triggering VP. Schmeichel and Hakimi (1988) extended this to Ore-type degree conditions (deg(u)+deg(v) ≥ n for non-adjacent pairs). This file extends Woodall's 1972 edge-count result (dense graphs have long cycles) to vertex-pancyclicity: under Woodall's threshold C(n-k-1,2)+C(k+2,2)+1, every vertex lies on cycles of all lengths 3 to n-k. The key bridge is a Cauchy-Schwarz argument showing the Woodall threshold exceeds the Turán threshold n²/4+1, enabling Bondy's theorem to apply.",
     "problemStatement": "Prove that dense graphs satisfying Woodall's edge-count condition are not just pancyclic but vertex-pancyclic: every vertex v lies on cycles of all lengths from 3 to n-k.",
     "text": "Vertex-pancyclicity is the statement: for every vertex v and every length l ∈ [3,n], there is a cycle of length l through v. This is stronger than mere pancyclicity. Bondy (1971) proved: a Hamiltonian graph on n≥3 vertices with ≥n²/4+1 edges is vertex-pancyclic unless it is K_{n/2,n/2}. Woodall's extension: under the denser threshold C(n-k-1,2)+C(k+2,2)+1, the graph is vertex-pancyclic from 3 to n-k.",
     "proofStrategy": "Define vertex-pancyclicity predicates. Axiomatize Bondy's and Woodall's vertex-pancyclic theorems. Derive structural consequences: vertex-pancyclic implies pancyclic, range structure, bipartite exceptions.",
@@ -40,7 +40,8 @@
       "Vertex-pancyclic is strictly stronger than pancyclic: controls all vertices simultaneously",
       "Bipartite exception: K_{n/2,n/2} is Hamiltonian but NOT vertex-pancyclic (even lengths only)",
       "Bondy's theorem: the complete bipartite graph is the unique exception",
-      "Applications: vertex-pancyclicity implies universal cycle coverage"
+      "Applications: vertex-pancyclicity implies universal cycle coverage",
+      "VP implies connected: the Hamiltonian cycle through any vertex visits all vertices (pigeonhole on nodup support), and Walk.takeUntil extracts a path to any target — a fully constructive connectivity proof"
     ],
     "prerequisites": [
       "Pancyclic graphs: cycles of all lengths",
@@ -49,12 +50,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Vertex-pancyclicity formalized: isVertexPancyclic predicate, Bondy and Woodall axioms, bipartite exception. 12 theorems, 389 lines, 2 axioms.",
-    "implications": "Vertex-pancyclicity is a strong structural property of dense graphs. It has applications in graph embedding theory and network design where cycle coverage through specific vertices is required.",
+    "summary": "Vertex-pancyclicity formalized: 5-level definition hierarchy from edgeThreshold to isVertexPancyclicGraphUpTo; Bondy (1971) and Woodall VP axioms with bipartite exception; structural theorems (VP→P, monotonicity); consequences (every vertex on long cycles and triangles); VP→connected via Walk.takeUntil; Cauchy-Schwarz threshold comparison; pancyclic spectrum. 12 theorems, 389 lines, 2 axioms.",
+    "implications": "Vertex-pancyclicity is a strong structural property with applications in graph embedding and network design. The Walk.takeUntil connectivity proof is a template for deriving graph connectivity from Hamiltonian properties in Lean 4. The Cauchy-Schwarz threshold comparison (Woodall ≥ Turán+1) demonstrates how classical algebraic inequalities can bridge between different edge-count conditions in combinatorial graph theory.",
     "openQuestions": [
-      "Prove Bondy's vertex-pancyclicity theorem without axioms",
-      "Characterize exactly which non-bipartite dense graphs are NOT vertex-pancyclic",
-      "Formalize the directed version: vertex-pancyclic tournaments"
+      "Prove bondy_vertex_pancyclic without axioms — requires the structural analysis of graphs just below the Turán threshold",
+      "Formalize Schmeichel-Hakimi (1988): vertex-pancyclicity under Ore-type degree conditions (deg(u)+deg(v) ≥ n)",
+      "Characterize exactly which dense non-bipartite graphs are NOT vertex-pancyclic",
+      "Formalize the directed version: vertex-pancyclic tournaments (Thomassen 1982)"
     ]
   },
   "leanFile": {
@@ -71,5 +73,62 @@
       "description": "OQ-01 proves f(k) and pancyclicity; OQ-02 strengthens to vertex-pancyclicity"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: Problem Statement and References",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "States the vertex-pancyclicity strengthening problem, explains the background (Woodall → VP), references Bondy (1971), Schmeichel-Hakimi (1988), Woodall (1972). Imports SimpleGraph connectivity modules and opens SimpleGraph/Finset namespaces."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Part I: Core Definitions — Edge Threshold to Vertex-Pancyclicity",
+      "startLine": 42,
+      "endLine": 76,
+      "summary": "Defines edgeThreshold(n,k) = C(n-k-1,2)+C(k+2,2)+1, edgeCount, hasCycleThroughVertex (Walk.IsCycle of length l through vertex v), hasCycleOfLength (∃v), isPancyclicUpTo (graph-level), isVertexPancyclicUpTo (vertex-level), isVertexPancyclicGraphUpTo (∀v). The 5-level hierarchy captures the distinction between pancyclicity and vertex-pancyclicity."
+    },
+    {
+      "id": "structural-relationships",
+      "title": "Part II: Structural Relationships and Monotonicity",
+      "startLine": 77,
+      "endLine": 113,
+      "summary": "vertexPancyclic_implies_pancyclic: VP → P by extracting any vertex (Nonempty V). Three monotonicity lemmas (isPancyclicUpTo_mono, isVertexPancyclicUpTo_mono, isVertexPancyclicGraphUpTo_mono): pancyclicity up to m implies up to any m' ≤ m, proved by le_trans. These are used in every subsequent consequence theorem."
+    },
+    {
+      "id": "bondy-axiom",
+      "title": "Part III: Bondy's Vertex-Pancyclicity Axiom (1971)",
+      "startLine": 114,
+      "endLine": 145,
+      "summary": "Axiomatizes Bondy's theorem: G on n ≥ 3 vertices with ≥ n²/4+1 edges is either VP (isVertexPancyclicGraphUpTo G n) or bipartite (partition A ∪ B = univ with all cross-edges). The bipartite exception is K_{n/2,n/2} — the Turán graph T(n,2). The n²/4+1 threshold is tight: T(n,2) has exactly n²/4 edges and is bipartite (no triangles)."
+    },
+    {
+      "id": "woodall-vp",
+      "title": "Part IV: Woodall's Vertex-Pancyclicity Axiom",
+      "startLine": 146,
+      "endLine": 185,
+      "summary": "Axiomatizes woodall_vertex_pancyclic: for n ≥ 2k+3 and edgeCount G ≥ edgeThreshold(n,k), every vertex lies on cycles of all lengths 3..n-k. Strengthens Woodall's 1972 pancyclicity (existence) to vertex-pancyclicity (all vertices). This is the file's central result, combining Woodall's edge-count analysis with Bondy's bipartite-exception theorem."
+    },
+    {
+      "id": "consequences",
+      "title": "Part V: Consequences of Vertex-Pancyclicity",
+      "startLine": 187,
+      "endLine": 251,
+      "summary": "every_vertex_on_long_cycle: under Woodall conditions, every vertex lies on an (n-k)-cycle. every_vertex_on_triangle: every vertex lies on a triangle (3-cycle). vertex_pancyclic_implies_connected: VP up to |V| implies G is connected, proved constructively via Walk.takeUntil (Hamiltonian cycle visits all vertices by pigeonhole on nodup support; extract path to any target)."
+    },
+    {
+      "id": "threshold-comparison",
+      "title": "Part VI: Edge Threshold Comparison via Cauchy-Schwarz",
+      "startLine": 253,
+      "endLine": 318,
+      "summary": "threshold_exceeds_turan_for_small_k: edgeThreshold(n,k) ≥ n²/4+1 for k ≤ n/4. Proof via Cauchy-Schwarz: with a=n-k-1, b=k+2, (a-b)² ≥ 0 gives 2(a²+b²) ≥ (a+b)² = (n+1)². Uses zify + nlinarith + sq_nonneg. threshold_k0_exceeds_turan: corollary for k=0 by omega."
+    },
+    {
+      "id": "spectrum-summary",
+      "title": "Parts VII–VIII: Pancyclic Spectrum and Summary",
+      "startLine": 320,
+      "endLine": 389,
+      "summary": "Defines pancyclicSpectrum(G,v) = set of cycle lengths through v. spectrum_contains_range: {3,...,m} ⊆ spectrum under VP. spectrum_size_lower_bound: |spectrum ∩ [3,m]| ≥ m-2 via Set.ncard_coe_Finset and Finset.card_Icc. Summary block documents all 12 proved theorems, 2 axioms, and proof architecture."
+    }
+  ]
 }
