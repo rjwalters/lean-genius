@@ -9,7 +9,11 @@
     "date": "2026-03-30",
     "status": "formalized",
     "proofRepoPath": "Proofs/BaselProblemOQ01OQ01.lean",
-    "tags": ["number-theory", "analysis", "open-problem"],
+    "tags": [
+      "number-theory",
+      "analysis",
+      "open-problem"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "assumptions": "0 sorries, 0 axioms. 3 True-stub theorems (irrationality_measure_ge_two, known_irrationality_measures, zeta_five_status) prove True instead of their stated claims. Genuine content: partial sum bounds, tail estimates, and irrationality measure definition are fully verified.",
@@ -20,9 +24,25 @@
   },
   "sections": [],
   "crossReferences": [
-    {"targetId": "basel-problem-oq-01", "relationship": "extends", "description": "Adds computational bounds and the irrationality measure framework to the ζ(5) investigation."}
+    {
+      "targetId": "basel-problem-oq-01",
+      "relationship": "extends",
+      "description": "Adds computational bounds and the irrationality measure framework to the ζ(5) investigation."
+    }
   ],
-  "conclusion": {"summary": "ζ(5) irrationality remains open. This file provides partial sum bounds, tail estimates, and documents the difficulty gap.", "openQuestions": []},
-  "leanFile": {"imports": ["Mathlib"], "namespace": "BaselProblemOQ01OQ01", "lineCount": 154, "axiomCount": 0, "theoremCount": 10, "definitionCount": 2},
+  "conclusion": {
+    "summary": "ζ(5) irrationality remains open. This file provides partial sum bounds, tail estimates, and documents the difficulty gap.",
+    "openQuestions": []
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "BaselProblemOQ01OQ01",
+    "lineCount": 144,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
   "references": []
 }

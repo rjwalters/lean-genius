@@ -100,10 +100,10 @@ for some Γ₀(N) such that E and f have the same L-function. This means:
 
 where aₚ(E) = p + 1 - #E(𝔽ₚ) counts points over the finite field. -/
 
-/-- The Modularity Theorem for semi-stable elliptic curves (axiomatized).
-    This is the main theorem Wiles proved, requiring ~100 pages of proof. -/
-theorem ModularityTheorem_semistable :
-  True := trivial  -- Placeholder: "All semi-stable elliptic curves over ℚ are modular"
+/- The Modularity Theorem for semi-stable elliptic curves:
+    All semi-stable elliptic curves over ℚ are modular.
+    This is the main theorem Wiles proved, requiring ~100 pages of proof.
+    (Axiomatized in this file as the key step toward FLT.) -/
 
 /-! ## Part IV: Ribet's Theorem
 

@@ -332,15 +332,13 @@ Modern formulation: There is an equivalence of categories between:
 This is a cornerstone of the geometric Langlands program.
 -/
 
-/-- **The Riemann-Hilbert Correspondence (Derived Category Version)**
+/- **The Riemann-Hilbert Correspondence (Derived Category Version)**
 
     There is an equivalence of derived categories:
     D^b(RegularSingularDMod) ≃ D^b(Perv)
 
-    This was established by Kashiwara, Mebkhout, and others. -/
-theorem riemann_hilbert_correspondence :
-    -- An equivalence of categories (stated abstractly)
-    True := trivial
+    This was established by Kashiwara, Mebkhout, and others.
+    (Formalization requires derived category machinery not yet in Mathlib.) -/
 
 -- ============================================================
 -- PART 10: Summary

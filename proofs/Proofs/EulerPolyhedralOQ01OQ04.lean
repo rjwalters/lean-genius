@@ -338,9 +338,8 @@ theorem hadwiger_5_from_4ct (G : SimpleGraph V) [DecidableRel G.Adj]
 axiom petersen_not_planar :
     ∃ (P : SimpleGraph (Fin 10)), ∀ [DecidableRel P.Adj], ¬ IsPlanar P
 
-/-- Whitney (1932): 3-connected planar graphs have unique embeddings. -/
-theorem whitney_unique_embedding (G : SimpleGraph V) [DecidableRel G.Adj]
-    (_hplanar : IsPlanar G) (_h3conn : True) : True := trivial
+/- Whitney (1932): 3-connected planar graphs have unique embeddings.
+    (Full formalization requires embedding uniqueness machinery.) -/
 
 /-- Euler's formula: V - E + F = 2 for connected planar graphs. -/
 axiom euler_formula (G : SimpleGraph V) [DecidableRel G.Adj]

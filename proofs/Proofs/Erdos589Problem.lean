@@ -290,13 +290,9 @@ def ExactGrowthOpen : Prop :=
     (∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ n : ℕ, n ≥ 10 →
       c * (n : ℝ)^α ≤ (g n : ℝ) ∧ (g n : ℝ) ≤ C * (n : ℝ)^α)
 
-/--
-**Balogh-Solymosi conjecture:**
+/- **Balogh-Solymosi conjecture:**
 The construction giving n^(5/6) may be close to optimal.
--/
-theorem balogh_solymosi_conjecture :
-  -- They suggest 5/6 might be the correct exponent
-  True := trivial
+(They suggest 5/6 might be the correct exponent — open conjecture.) -/
 
 /-
 ## Part X: Summary

@@ -282,16 +282,11 @@ axiom rateDistortion_convex {α β : Type*} [Fintype α] [Fintype β]
 -- Connection to Lossless Coding
 -- ============================================================
 
-/-- At zero Hamming distortion (D = 0), the only admissible test channel
+/- At zero Hamming distortion (D = 0), the only admissible test channel
     is the identity channel X̂ = X, so I(X;X̂) = H(X).
     Thus R(0) = H(X), recovering the lossless source coding theorem.
 
     This connects rate-distortion theory to Shannon's 1948 source
     coding theorem: the lossless case is the D = 0 endpoint. -/
-theorem rd_lossless_connection :
-    -- R(0) = H(X) for Hamming distortion on finite alphabets
-    -- The identity channel is the unique D=0-admissible channel
-    -- because d(x,x̂) = 0 iff x = x̂ under Hamming
-    True := trivial
 
 end InformationTheory.RateDistortion

@@ -95,21 +95,14 @@ noncomputable def irrationalityMeasure (α : ℝ) : ℝ :=
   sInf { s : ℝ | ∀ᶠ (pq : ℤ × ℕ) in Filter.atTop,
     pq.2 > 0 → |α - (pq.1 : ℝ) / (pq.2 : ℝ)| ≥ 1 / (pq.2 : ℝ) ^ s }
 
-/-- For any irrational number, the irrationality measure is at least 2
-    (by Dirichlet's approximation theorem). -/
-theorem irrationality_measure_ge_two (α : ℝ) (hα : Irrational α) :
-    -- Dirichlet: there are infinitely many p/q with |α - p/q| < 1/q²
-    -- so μ(α) ≥ 2
-    True := trivial  -- The actual proof requires Dirichlet's theorem
+/- For any irrational number, the irrationality measure is at least 2
+    (by Dirichlet's approximation theorem).
+    Dirichlet: there are infinitely many p/q with |α - p/q| < 1/q², so μ(α) ≥ 2. -/
 
-/-- Known irrationality measures:
+/- Known irrationality measures:
     - μ(e) = 2 (optimal — e is not a Liouville number)
     - μ(π) ≤ 7.6063 (Zeilberger-Zudilin, 2020)
     - μ(ζ(3)) ≤ 5.513891 (Rhin-Viola, 2001) -/
-theorem known_irrationality_measures :
-    -- These are specific numerical bounds from the literature
-    -- that calibrate the difficulty of proving irrationality
-    True := trivial
 
 -- ============================================================
 -- Part IV: Why ζ(5) is Hard
@@ -141,14 +134,11 @@ proving dim_ℚ(1, ζ(3), ζ(5), ..., ζ(2n+1)) ≥ (1 + o(1)) log(n)/(1 + log 2
 But this dimension bound doesn't specify which values are irrational.
 -/
 
-/-- **Summary**: ζ(5) irrationality remains open.
+/- **Summary**: ζ(5) irrationality remains open.
     - ζ(5) ≈ 1.0369277551...
     - ζ(5) is conjectured irrational (no conceptual obstruction)
     - Known: at least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational
     - Known: infinitely many odd zeta values are irrational
     - Unknown: which specific odd zeta values (beyond ζ(3)) are irrational -/
-theorem zeta_five_status :
-    -- The irrationality of ζ(5) is an open problem as of 2025
-    True := trivial
 
 end BaselProblemOQ01OQ01

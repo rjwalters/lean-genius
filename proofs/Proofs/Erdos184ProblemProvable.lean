@@ -243,25 +243,19 @@ def completeDecompProblem : Prop :=
 ## Part VIII: Why This Is Hard
 -/
 
-/--
-**The Gap:**
+/- **The Gap:**
 - Lower bound: (1+c)n from K_{3,n-3}
 - Upper bound: O(n log* n) from Bucić-Montgomery
 - Conjecture: O(n)
 
-Closing this gap is the challenge.
--/
-theorem open_problem_difficulty : True := trivial
+Closing this gap is the challenge. -/
 
-/--
-**Progress History:**
+/- **Progress History:**
 - 1966: Erdős-Gallai conjecture O(n)
 - 1966: Erdős-Gallai prove O(n log n)
 - 2014: Conlon-Fox-Sudakov prove O(n) for dense graphs
 - 2022: Bucić-Montgomery prove O(n log* n)
-- ???: General O(n) remains open
--/
-theorem progress_timeline : True := trivial
+- ???: General O(n) remains open -/
 
 /-
 ## Part IX: Summary
