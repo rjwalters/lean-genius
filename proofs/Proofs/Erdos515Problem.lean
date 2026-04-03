@@ -178,14 +178,9 @@ there exists a single path C such that ∫_C |f|^{-λ} dz < ∞ for ALL λ > 0.
 This is the complete solution to Erdős's question.
 -/
 axiom lewis_rossi_weitsman_1984 : UniversalQuestion
-
-/--
-**Stronger Form:**
+/- lrw_subharmonic_version: **Stronger Form:**
 The Lewis-Rossi-Weitsman result actually holds for e^u where u is any
-subharmonic function, not just u = log|f| for entire f.
--/
-theorem lrw_subharmonic_version :
-  True := trivial  -- Placeholder for more general statement
+subharmonic function, not just u = log|f| for entire f. -/
 
 /-
 ## Part VII: Why This is Surprising

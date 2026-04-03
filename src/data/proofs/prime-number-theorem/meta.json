@@ -55,7 +55,7 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 8,
-    "lineCount": 462,
+    "lineCount": 460,
     "assumptions": "8 axioms: primeNumberTheorem (PNT itself), li_equiv_approx_axiom (Li ~ x/ln x), nth_prime_asymptotic_axiom, mertens_sum_primes_axiom, prime_gaps_sublinear_axiom, RiemannHypothesis_statement, pnt_rh_error_axiom, chebyshev_bounds_axiom. Eliminated 5 axioms by proving from Mathlib: ratio_iff_equiv (via isEquivalent_iff_tendsto_one), equiv_iff_error (definitional), li_iff_equiv (transitivity of ~), prime_counting_tendsto_top (Nat.tendsto_primeCounting), prime_density_tends_to_zero (from PNT).",
     "mathlib_version": "4.26.0",
     "prerequisites": [
@@ -320,7 +320,7 @@
       "BigOperators"
     ],
     "namespace": "PrimeNumberTheorem",
-    "lineCount": 462,
+    "lineCount": 460,
     "axiomCount": 8,
     "theoremCount": 15,
     "definitionCount": 9,

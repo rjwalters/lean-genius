@@ -329,12 +329,8 @@ axiom schauder_bootstrap
 The Alexandrov-Bakelman-Pucci (ABP) maximum principle is the foundation
 for all regularity theory in the fully nonlinear setting.
 -/
-
-/-- **ABP implies comparison**: The ABP maximum principle implies
+/- abp_implies_comparison: **ABP implies comparison**: The ABP maximum principle implies
     the comparison principle (uniqueness of viscosity solutions). -/
-theorem abp_implies_comparison :
-    (∃ (C : ℝ), C > 0) → True := by
-  intro _; trivial
 
 /-
 ## Section VII: Krylov-Safonov Theory
@@ -372,12 +368,8 @@ theorem sup_of_affine_is_convex (f : ℕ → ℝ → ℝ)
   simp only [hf]
   ring_nf
   linarith [mul_comm t (a * x), mul_comm t (a * y)]
-
-/-- Isaacs equations (differential games): F(M) = sup_α inf_β L_{αβ}(M).
+/- isaacs_regularity_open: Isaacs equations (differential games): F(M) = sup_α inf_β L_{αβ}(M).
     These are generally NOT convex, so Evans-Krylov does not directly apply. -/
-theorem isaacs_regularity_open :
-    True := by trivial
-    -- Full C^{2,α} for non-convex uniformly elliptic F is still partially open
 
 /-
 ## Section IX: Counterexamples — Limits of Regularity

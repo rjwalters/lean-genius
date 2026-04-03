@@ -150,14 +150,8 @@ For k ≥ 3: ex(n; H_k) ≪ k · n^(3/2).
 
 This improves Füredi's (kn)^(3/2) to k · n^(3/2).
 -/
-
-/--
-**Erdős Problem #926: SOLVED**
-The answer is YES: ex(n; H_k) ≪_k n^(3/2).
--/
-theorem erdos_926 (k : ℕ) (hk : k ≥ 4) :
-    True :=  -- ex(n; H_k) ≪_k n^(3/2)
-  trivial
+/- erdos_926: **Erdős Problem #926: SOLVED**
+The answer is YES: ex(n; H_k) ≪_k n^(3/2). -/
 
 /-
 ## Part VII: Connection to Degeneracy
@@ -237,11 +231,7 @@ theorem erdos_926_summary :
     True    -- Problem is a special case of 2-degenerate conjecture
   := ⟨trivial, trivial, trivial⟩
 
-/--
-The order of magnitude is n^(3/2) for all k ≥ 3.
--/
-theorem erdos_926_order :
-    True :=  -- ex(n; H_k) = Θ_k(n^(3/2))
-  trivial
+/- erdos_926_order: The order of magnitude is n^(3/2) for all k ≥ 3. -/
+
 
 end Erdos926
