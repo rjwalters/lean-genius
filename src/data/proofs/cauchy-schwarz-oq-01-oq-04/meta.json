@@ -83,7 +83,48 @@
       "targetId": "cauchy-schwarz-oq-04",
       "relationship": "answers",
       "description": "Answers OQ-04 by formalizing Bessel's inequality as a consequence of Cauchy-Schwarz"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Bessel's inequality is the foundational bound on Fourier coefficient energy; Parseval's identity is the pointwise convergence analogue for ℓ² Fourier series"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-cs0104-finite-bessel",
+      "title": "Part I: Finite Bessel's Inequality",
+      "startLine": 66,
+      "endLine": 92,
+      "description": "bessel_finite (∑ᵢ∈s |⟨vᵢ,x⟩|² ≤ ‖x‖²), bessel_monotone (monotone under set inclusion), bessel_insert (additive step for single vector). All proved from Orthonormal.sum_inner_products_le via the projection identity."
+    },
+    {
+      "id": "sec-cs0104-infinite-bessel",
+      "title": "Part II: Infinite Bessel's Inequality",
+      "startLine": 94,
+      "endLine": 116,
+      "description": "bessel_inequality (∑' i, |⟨vᵢ,x⟩|² ≤ ‖x‖²) via Orthonormal.tsum_inner_products_le. bessel_summable: the coefficient sequence i ↦ |⟨vᵢ,x⟩|² is square-summable for any x."
+    },
+    {
+      "id": "sec-cs0104-parseval",
+      "title": "Part III: Parseval's Identity for Hilbert Bases",
+      "startLine": 118,
+      "endLine": 151,
+      "description": "parseval_identity (∑' i, |⟨bᵢ,x⟩|² = ‖x‖²) and parseval_norm_sq (‖x‖² = ∑' i, ‖b.repr x i‖²) for Hilbert bases. Proved via HilbertBasis.repr isometry and lp.norm_rpow_eq_tsum."
+    },
+    {
+      "id": "sec-cs0104-cauchy-schwarz-connection",
+      "title": "Part IV: Connection Back to Cauchy-Schwarz",
+      "startLine": 153,
+      "endLine": 171,
+      "description": "bessel_extends_cauchy_schwarz: singleton Bessel sum recovers |⟨v,x⟩|² ≤ ‖x‖². inner_le_norm: |⟨vᵢ,x⟩| ≤ ‖x‖ via nlinarith. Shows Bessel strictly subsumes Cauchy-Schwarz for unit vectors."
+    },
+    {
+      "id": "sec-cs0104-summary",
+      "title": "Part V: Bessel Summary and Open Questions",
+      "startLine": 173,
+      "endLine": 196,
+      "description": "bessel_summary: consolidated statement of all three Bessel results (finite, infinite, summable). Closes OQ-01 and OQ-04 affirmatively. Comments on Fourier coefficient decay and extension to Sobolev spaces."
+    }
+  ]
 }
