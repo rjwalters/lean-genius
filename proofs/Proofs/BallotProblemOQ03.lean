@@ -1421,9 +1421,8 @@ theorem mem_visitedPoints_cons_false {xs : LPath} {a x y : ℕ}
     (x + 1, y) ∈ visitedPoints (false :: xs) a := by
   rw [visitedPoints, Finset.mem_image] at h ⊢
   obtain ⟨i, hi, hpos⟩ := h
-  have hi' := Finset.mem_range.mp hi
   exact ⟨i + 1, Finset.mem_range.mpr (by simp [List.length_cons]; omega),
-    by rw [posAfter_cons_false]; simp [hpos]⟩
+    by rw [posAfter_cons_false]; rw [← hpos]⟩
 
 /-- If (x, y) ∈ visitedPoints xs (a+1), then (x, y) ∈ visitedPoints (true :: xs) a -/
 theorem mem_visitedPoints_cons_true {xs : LPath} {a x y : ℕ}
@@ -1431,7 +1430,6 @@ theorem mem_visitedPoints_cons_true {xs : LPath} {a x y : ℕ}
     (x, y) ∈ visitedPoints (true :: xs) a := by
   rw [visitedPoints, Finset.mem_image] at h ⊢
   obtain ⟨i, hi, hpos⟩ := h
-  have hi' := Finset.mem_range.mp hi
   exact ⟨i + 1, Finset.mem_range.mpr (by simp [List.length_cons]; omega),
     by rw [posAfter_cons_true]; exact hpos⟩
 
@@ -1456,17 +1454,13 @@ theorem visitedPoints_covers_column (l : LPath) (a : ℕ) (x y : ℕ)
       cases x with
       | zero =>
         -- Column 0 with East first: colEntry 0 = 0, colEntry 1 = 0, so y = a
-        have hco0 : colEntry (false :: xs) 0 = 0 := colEntry_zero _
-        have hco1 : colEntry (false :: xs) 1 = 0 := by simp [colEntry, northBeforeEast]
-        rw [hco0] at hy_lo; rw [hco1] at hy_hi
+        have : colEntry (false :: xs) 1 = 0 := by simp [colEntry, northBeforeEast]
         have : y = a := by omega
         subst this; exact mem_visitedPoints_start _ _
       | succ k =>
         -- Shift from xs column k to (false :: xs) column k+1
         have hk : k < eastSteps xs := by
-          have hes : eastSteps (false :: xs) = eastSteps xs + 1 := by
-            simp [eastSteps, List.countP_cons]
-          omega
+          simp [eastSteps, List.countP_cons] at hx; omega
         have hlo : a + colEntry xs k ≤ y := by
           rw [colEntry_cons_false] at hy_lo; exact hy_lo
         have hhi : y ≤ a + colEntry xs (k + 1) := by
@@ -1476,21 +1470,11 @@ theorem visitedPoints_covers_column (l : LPath) (a : ℕ) (x y : ℕ)
       -- North step first: posAfter (true :: xs) a (i+1) = posAfter xs (a+1) i
       by_cases hy : y = a
       · -- y = a only possible at column 0 (via start point)
-        subst hy
-        have hx0 : x = 0 := by
-          cases x with
-          | zero => rfl
-          | succ k =>
-            exfalso
-            have hcol := colEntry_cons_true xs k
-            omega
-        subst hx0; exact mem_visitedPoints_start _ _
+        subst hy; exact mem_visitedPoints_start _ _
       · -- y > a: use IH with xs and start a+1
         have hya : a < y := by omega
         have hx' : x < eastSteps xs := by
-          have hes : eastSteps (true :: xs) = eastSteps xs := by
-            simp [eastSteps, List.countP_cons]
-          omega
+          simp [eastSteps, List.countP_cons] at hx; exact hx
         have hlo : (a + 1) + colEntry xs x ≤ y := by
           cases x with
           | zero => simp [colEntry]; omega
@@ -1530,21 +1514,12 @@ theorem visitedPoints_covers_final (l : LPath) (a : ℕ) (y : ℕ)
       have hes : eastSteps (true :: xs) = eastSteps xs := by
         simp [eastSteps, List.countP_cons]
       by_cases hy : y = a
-      · subst hy
-        have hes0 : eastSteps (true :: xs) = 0 := by
-          cases h_es : eastSteps xs with
-          | zero => rw [hes]; exact h_es
-          | succ k =>
-            exfalso
-            have hcol := colEntry_cons_true xs k
-            rw [hes, h_es] at hy_lo
-            omega
-        rw [hes0]; exact mem_visitedPoints_start _ _
+      · subst hy; exact mem_visitedPoints_start _ _
       · have hlo' : (a + 1) + colEntry xs (eastSteps xs) ≤ y := by
           rw [hes] at hy_lo
           cases heq : eastSteps xs with
           | zero => simp [colEntry] at hy_lo ⊢; omega
-          | succ k => rw [heq, colEntry_cons_true] at hy_lo; omega
+          | succ k => rw [colEntry_cons_true] at hy_lo; omega
         have hhi' : y ≤ (a + 1) + northSteps xs := by rw [hns] at hy_hi; omega
         rw [hes]
         exact mem_visitedPoints_cons_true (ih (a + 1) y hlo' hhi')
@@ -1731,13 +1706,13 @@ theorem lindstromSwapAt_fst_length (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
   have h_e₂ := take_east_at_stepIndex l₂ a₂ p h₂
   -- stepIndexOf l a p = (l.take i).length = countP false + countP true
   have hi_eq : stepIndexOf l₁ a₁ p h₁ = p.1 + (p.2 - a₁) := by
-    have hlen := bool_list_countP_sum (l₁.take (stepIndexOf l₁ a₁ p h₁))
-    rw [List.length_take, min_eq_left hi] at hlen
-    rw [h_e₁, h_n₁] at hlen; exact hlen.symm
+    have := bool_list_countP_sum (l₁.take (stepIndexOf l₁ a₁ p h₁))
+    rw [List.length_take, min_eq_left hi] at this
+    omega
   have hj_eq : stepIndexOf l₂ a₂ p h₂ = p.1 + (p.2 - a₂) := by
-    have hlen := bool_list_countP_sum (l₂.take (stepIndexOf l₂ a₂ p h₂))
-    rw [List.length_take, min_eq_left hj] at hlen
-    rw [h_e₂, h_n₂] at hlen; exact hlen.symm
+    have := bool_list_countP_sum (l₂.take (stepIndexOf l₂ a₂ p h₂))
+    rw [List.length_take, min_eq_left hj] at this
+    omega
   rw [hi_eq, hj_eq]; omega
 
 /- ### Computable Swap and Involutivity
@@ -1784,13 +1759,20 @@ theorem swapAtPoint_fst_east (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × �
     (heast₁ : eastSteps l₁ = m) (heast₂ : eastSteps l₂ = m) :
     (swapAtPoint l₁ l₂ a₁ a₂ p).1.countP (· = false) = m := by
   simp only [swapAtPoint, List.countP_append]
+  -- p ∈ visitedPoints l a means ∃ i, posAfter l a i = p ∧ i ≤ l.length
+  -- At step splitIdx a p, the prefix has p.1 East steps
   simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h₁ h₂
   obtain ⟨i₁, hi₁_bound, hi₁_eq⟩ := h₁
   obtain ⟨i₂, hi₂_bound, hi₂_eq⟩ := h₂
+  -- posAfter l a i gives (countP false in take i, a + countP true in take i)
   simp [posAfter] at hi₁_eq hi₂_eq
+  -- The prefix l₁.take (splitIdx a₁ p) has p.1 East steps
+  -- The suffix l₂.drop (splitIdx a₂ p) has (m - p.1) East steps
+  -- Total: m
   have h_take₁ : (l₁.take i₁).countP (· = false) = p.1 := hi₁_eq.1
   have h_take₂ : (l₂.take i₂).countP (· = false) = p.1 := hi₂_eq.1
   have h_sum₂ := take_drop_countP_sum l₂ i₂ (· = false)
+  -- splitIdx a₁ p = i₁ because i₁ = p.1 + (p.2 - a₁) = splitIdx a₁ p
   have h_idx₁ : i₁ = splitIdx a₁ p := by
     have : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₁.take i₁)
@@ -1806,9 +1788,11 @@ theorem swapAtPoint_fst_east (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × �
 theorem swapAtPoint_snd_east (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × ℕ)
     (h₁ : p ∈ visitedPoints l₁ a₁) (h₂ : p ∈ visitedPoints l₂ a₂)
     (heast₁ : eastSteps l₁ = m) (heast₂ : eastSteps l₂ = m) :
-    (swapAtPoint l₁ l₂ a₁ a₂ p).2.countP (· = false) = m :=
-  -- Symmetric to fst case: (swapAtPoint l₁ l₂ a₁ a₂ p).2 = (swapAtPoint l₂ l₁ a₂ a₁ p).1
-  swapAtPoint_fst_east l₂ l₁ a₂ a₁ p h₂ h₁ heast₂ heast₁
+    (swapAtPoint l₁ l₂ a₁ a₂ p).2.countP (· = false) = m := by
+  -- Symmetric to fst case: swap roles of l₁ and l₂
+  have := swapAtPoint_fst_east l₂ l₁ a₂ a₁ p h₂ h₁ heast₂ heast₁
+  convert this using 1
+  simp [swapAtPoint]
 
 /-- **KEY**: North step count of first swapped path = n₂ + (a₂ - a₁) -/
 theorem swapAtPoint_fst_north (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × ℕ)
@@ -1838,15 +1822,16 @@ theorem swapAtPoint_snd_north (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × 
     (h₁ : p ∈ visitedPoints l₁ a₁) (h₂ : p ∈ visitedPoints l₂ a₂)
     (ha₁ : a₁ ≤ p.2) (ha₂ : a₂ ≤ p.2) :
     (swapAtPoint l₁ l₂ a₁ a₂ p).2.countP (· = true) =
-    l₁.countP (· = true) + (a₁ - a₂) :=
-  -- Symmetric: (swapAtPoint l₁ l₂ a₁ a₂ p).2 = (swapAtPoint l₂ l₁ a₂ a₁ p).1
-  swapAtPoint_fst_north l₂ l₁ a₂ a₁ p h₂ h₁ ha₂ ha₁
+    l₁.countP (· = true) + (a₁ - a₂) := by
+  have := swapAtPoint_fst_north l₂ l₁ a₂ a₁ p h₂ h₁ ha₂ ha₁
+  convert this using 1
+  simp [swapAtPoint]
 
 /-- Length of first swapped path -/
 theorem swapAtPoint_fst_length (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × ℕ)
     (h₁ : p ∈ visitedPoints l₁ a₁) (h₂ : p ∈ visitedPoints l₂ a₂) :
     (swapAtPoint l₁ l₂ a₁ a₂ p).1.length =
-    (l₁.take (splitIdx a₁ p)).length + (l₂.drop (splitIdx a₂ p)).length := by
+    l₁.take (splitIdx a₁ p) |>.length + l₂.drop (splitIdx a₂ p) |>.length := by
   simp [swapAtPoint, List.length_append]
 
 /-- **Bridge Lemma**: If the first i steps of path l have exactly x East steps,
@@ -2479,22 +2464,22 @@ private theorem minSharedStepIdx_preserved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     -- For Q₂: splitIdx a₂ q < j because splitIdx a₁ q = splitIdx a₂ q + (a₂ - a₁)
     -- and i = j + (a₂ - a₁) (same point cp has both indices)
     have hq_y_ge_a₂ : a₂ ≤ q.2 := by
-      obtain ⟨k', _, hk'_pos, _⟩ := visitedPoint_splitIdx_eq Q₂ a₂ q hq_Q₂
-      rw [← hk'_pos]; simp [posAfter]; omega
+      obtain ⟨k', _, hk'_eq⟩ := visitedPoint_splitIdx_eq Q₂ a₂ q hq_Q₂
+      rw [← hk'_eq]; simp [posAfter]; omega
     have hq_y_ge_a₁ : a₁ ≤ q.2 := by omega
     have h_diff_q := splitIdx_const_diff a₁ a₂ q hq_y_ge_a₁ hq_y_ge_a₂ (le_of_lt h_strict)
     have h_diff_cp := splitIdx_const_diff a₁ a₂ cp ha₁ ha₂ (le_of_lt h_strict)
-    have hk₂_idx_eq : k₂ = splitIdx a₂ q := hk₂_idx.symm
+    have hk₂_idx_eq : k₂ = splitIdx a₂ q := hk₂_idx
     have hk₂_lt_j : k₂ < j := by omega
     -- Since k₁ < i, prefix of Q₁ at step k₁ = prefix of l₁ at step k₁
     -- So posAfter Q₁ a₁ k₁ = posAfter l₁ a₁ k₁
     have h_prefix₁ := swapAtPoint_fst_take_prefix l₁ l₂ a₁ a₂ cp hi k₁ (le_of_lt hk₁_lt_i)
     have h_pos₁ : posAfter Q₁ a₁ k₁ = posAfter l₁ a₁ k₁ := by
-      simp only [posAfter]; rw [h_prefix₁]
+      simp [posAfter]; congr 1 <;> (congr 1; exact h_prefix₁)
     -- Similarly for Q₂
     have h_prefix₂ := swapAtPoint_snd_take_prefix l₁ l₂ a₁ a₂ cp hj k₂ (le_of_lt hk₂_lt_j)
     have h_pos₂ : posAfter Q₂ a₂ k₂ = posAfter l₂ a₂ k₂ := by
-      simp only [posAfter]; rw [h_prefix₂]
+      simp [posAfter]; congr 1 <;> (congr 1; exact h_prefix₂)
     -- So q = posAfter l₁ a₁ k₁ = posAfter l₂ a₂ k₂, meaning q is shared by (l₁, l₂)
     rw [hk₁_eq] at h_pos₁; rw [hk₂_eq] at h_pos₂
     have hq_P₁ : q ∈ visitedPoints l₁ a₁ := by
@@ -2506,11 +2491,7 @@ private theorem minSharedStepIdx_preserved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     have hq_orig : q ∈ sharedPoints l₁ l₂ a₁ a₂ :=
       Finset.mem_inter.mpr ⟨hq_P₁, hq_P₂⟩
     -- By minimality of cp in (l₁, l₂): splitIdx a₁ q ≥ i
-    have h_canon_min := canonSharedPoint_isMin l₁ l₂ a₁ a₂ h_shared q hq_orig
-    -- splitIdx a₁ (canonSharedPoint ...) = i by set/rfl
-    have h_i_eq : splitIdx a₁ (canonSharedPoint l₁ l₂ a₁ a₂ h_shared) = i := rfl
-    rw [h_i_eq] at h_canon_min
-    -- now h_canon_min : i ≤ splitIdx a₁ q, and hk₁_lt_i : k₁ < i, hk₁_idx : k₁ = splitIdx a₁ q
+    have := canonSharedPoint_isMin l₁ l₂ a₁ a₂ h_shared q hq_orig
     omega
   -- Combine: minSwap = i = minOrig
   omega
