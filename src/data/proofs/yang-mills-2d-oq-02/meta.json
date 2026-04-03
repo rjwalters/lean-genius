@@ -1,0 +1,88 @@
+{
+  "id": "yang-mills-2d-oq-02",
+  "title": "Casimir Scaling: Exact in 2D, Approximate in 4D",
+  "slug": "yang-mills-2d-oq-02",
+  "description": "In 2D Yang-Mills (Migdal formula), Casimir scaling holds exactly for all r: the potential ratio equals C₂(R)/C₂(fund). In 4D, exact Casimir scaling fails due to string breaking—after r_break, the adjoint potential saturates while the fundamental grows linearly, so the ratio decreases. The 4D approximate conjecture is axiomatized as open.",
+  "meta": {
+    "author": "Migdal (1975); Bali et al. (2000)",
+    "date": "2000",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/YangMills2DOQ02.lean",
+    "tags": [
+      "mathematical-physics",
+      "yang-mills",
+      "gauge-theory",
+      "casimir-scaling",
+      "string-breaking",
+      "confinement",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: casimir_scaling_4d_approximate (the 4D approximate Casimir scaling conjecture). Parts I and II are fully proved: 2D exact scaling follows from Migdal formula; exact 4D scaling fails from string breaking.",
+    "lineCount": 210,
+    "originalContributions": [
+      "linearPotential: V(r) = σ·r definition",
+      "migdalTension: σ_R = g²·C₂(R)/(2·dim R)",
+      "twoD_potential_ratio_exact (proved): ratio equals tension ratio for all r > 0",
+      "migdalTension_ratio_eq_casimir_ratio (proved): Migdal tension ratio = Casimir ratio",
+      "twoD_exact_casimir_scaling (proved): 2D potential ratio = Casimir ratio exactly",
+      "saturationPotential, breakDistance: string breaking formalization",
+      "potential_at_break (proved): σ_R·r_break = 2·m_gluelump",
+      "post_break_ratio_lt_tension_ratio (proved): after breaking, ratio < σ_R/σ_fund",
+      "exact_casimir_scaling_fails_4d (proved): ratio changes → exact scaling fails",
+      "ApproximateCasimirScaling4D: |σ_R/σ_f - C₂_R/C₂_f| < ε",
+      "casimir_scaling_4d_approximate (axiom): approximate 4D scaling conjecture",
+      "casimir_scaling_2d_exact_4d_approximate (proved): summary theorem"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Casimir scaling in Yang-Mills theory refers to the hypothesis that the string tension ratio between two representations equals the ratio of their quadratic Casimir eigenvalues. In 2D Yang-Mills, this is an exact consequence of the Migdal formula (1975): the partition function decomposes by representation, giving string tension σ_R = g²·C₂(R)/(2·dim R), so the ratio is exactly C₂(R)/C₂(fund). In 4D, Casimir scaling was observed in lattice simulations by Bali et al. (2000) at intermediate distances with high precision for SU(2) and SU(3), but the theoretical status is unclear. String breaking—the physical mechanism by which a flux tube snaps to create a particle pair—provides a rigorous reason why exact Casimir scaling cannot hold in 4D: after string breaking, the potential saturates rather than growing linearly.",
+    "problemStatement": "Does Casimir scaling σ_R/σ_fund = C₂(R)/C₂(fund) persist exactly or only approximately in the 4D continuum limit?",
+    "text": "In 2D Yang-Mills, Casimir scaling holds exactly from the Migdal formula. In 4D, string breaking at r = r_break = 2m_gluelump/σ_R causes the potential to saturate, violating the constant-ratio requirement of exact Casimir scaling. The 4D conjecture that σ_R/σ_fund ≈ C₂(R)/C₂(fund) at intermediate distances is supported by lattice QCD but remains open analytically.",
+    "proofStrategy": "Part I uses the Migdal formula to show the 2D potential ratio is exactly σ_R/σ_fund = C₂(R)/C₂(fund) for all r > 0. Part II formalizes string breaking: at r > r_break, the adjoint potential is V_R(r) = 2·m_gluelump (constant) while V_fund(r) = σ_fund·r (linear). The key inequality 2·m_gluelump < σ_R·r follows from r > r_break = 2m/σ_R, and div_lt_div_iff converts this to the ratio comparison. The 4D approximate conjecture is axiomatized.",
+    "keyInsights": [
+      "2D: No string breaking — the area law holds for all representations at all distances, giving exact Casimir scaling",
+      "4D: String breaking occurs for screened (N-ality 0) representations like the adjoint at distance r_break = 2m_gluelump/σ_R",
+      "After breaking, the potential ratio V_R/V_fund = 2m_gluelump/(σ_fund·r) → 0, contradicting the constant Casimir ratio",
+      "The key inequality: r > r_break ⟹ σ_R·r > 2·m_gluelump ⟹ post-break ratio < σ_R/σ_fund",
+      "Approximate Casimir scaling (at intermediate r) is observed in lattice QCD but not analytically proved"
+    ],
+    "prerequisites": [
+      "2D Yang-Mills: Migdal formula, area law, string tension from heat kernel",
+      "String breaking: flux tube energy, gluelump mass, saturation potential",
+      "Casimir eigenvalues: C₂(R) for SU(N) representations",
+      "Basic real analysis: monotone functions, ratio inequalities"
+    ]
+  },
+  "leanFile": {
+    "namespace": "YangMills2DOQ02",
+    "lineCount": 210,
+    "axiomCount": 1,
+    "theoremCount": 9,
+    "definitionCount": 5
+  },
+  "conclusion": {
+    "summary": "Casimir scaling holds EXACTLY in 2D Yang-Mills (proved) and only APPROXIMATELY in 4D (open conjecture). The failure of exactness in 4D is a proved consequence of string breaking for screened representations.",
+    "implications": "The result clarifies why lattice measurements show near-Casimir ratios at intermediate distances: the Migdal formula provides an exact 2D blueprint that gets broken by non-perturbative effects in 4D. Understanding the deviation may illuminate the mechanism of confinement.",
+    "openQuestions": [
+      "What is the precise correction to Casimir scaling in 4D? (perturbative one-loop corrections are known but full non-perturbative treatment is open)",
+      "Does Casimir scaling hold in the N → ∞ (planar) limit of SU(N)?",
+      "Can the Migdal formula be extended to 3D in a useful approximation?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "yang-mills-2d",
+      "relationship": "derives-from",
+      "description": "This open question is derived from the 2D Yang-Mills exact solution"
+    },
+    {
+      "targetId": "yang-mills-2d-oq-01",
+      "relationship": "related",
+      "description": "Related OQ on heat kernel techniques for 3D/4D extension"
+    }
+  ]
+}
