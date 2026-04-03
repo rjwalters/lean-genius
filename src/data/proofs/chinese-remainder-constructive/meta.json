@@ -69,7 +69,9 @@
       "The solution is constructive: Bezout coefficients $mu + nv = 1$ give the explicit formula $x = a \\cdot nv + b \\cdot mu$",
       "Uniqueness modulo $m_1 m_2 \\cdots m_k$ follows from coprime divisibility: $m \\mid d$ and $n \\mid d$ with $\\gcd(m,n)=1$ implies $mn \\mid d$",
       "CRT gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$, the theoretical basis for Residue Number Systems",
-      "The iterative generalization to $k$ moduli reduces each step to the two-moduli case: coprimality of products ($\\gcd(m_1 m_2, m_3) = 1$) is the key structural property that makes induction work"
+      "The iterative generalization to $k$ moduli reduces each step to the two-moduli case: coprimality of products ($\\gcd(m_1 m_2, m_3) = 1$) is the key structural property that makes induction work",
+      "Complexity of the constructive formula: computing Bezout coefficients via the extended Euclidean algorithm takes $O(\\log\\min(m,n))$ steps, making the CRT reconstruction $O(k \\log M)$ for $k$ moduli with product $M$. This efficiency underlies the RSA-CRT speedup: private key operations can be done modulo $p$ and $q$ separately, giving a ~4x speedup over working modulo $N = pq$",
+      "The Lean proof uses `Nat.chineseRemainder'` from Mathlib, which provides the ring isomorphism $(\\mathbb{Z}/m\\mathbb{Z}) \\times (\\mathbb{Z}/n\\mathbb{Z}) \\xrightarrow{\\sim} \\mathbb{Z}/mn\\mathbb{Z}$ for coprime $m, n$. The constructive aspect — explicitly computing the Bezout witness — bridges the abstract isomorphism to the concrete formula, showing the Lean formalization captures both the mathematical and computational content"
     ],
     "prerequisites": [
       "Modular arithmetic (Nat.ModEq)",
@@ -239,42 +241,42 @@
   ],
   "references": [
     {
-      "authors": "Sun Tzu (Sunzi)",
+      "authors": ["Sun Tzu (Sunzi)"],
       "title": "Sunzi Suanjing (The Mathematical Classic of Sun Tzu)",
       "year": "~400 CE",
       "venue": "China",
       "note": "Earliest known statement of the Chinese Remainder Theorem: 'There are certain things whose number is unknown. Repeatedly divided by 3, the remainder is 2; by 5 the remainder is 3; and by 7 the remainder is 2. What will be the number?' Answer: 23"
     },
     {
-      "authors": "Gauss, Carl Friedrich",
+      "authors": ["Gauss, Carl Friedrich"],
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
       "venue": "Leipzig: Gerhard Fleischer",
       "note": "Section 36 gives the general formulation of CRT for pairwise coprime moduli, establishing the modern algebraic framework"
     },
     {
-      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "authors": ["Ireland, Kenneth", "Rosen, Michael"],
       "title": "A Classical Introduction to Modern Number Theory",
       "year": "1990",
       "venue": "Springer GTM 84, 2nd edition",
       "note": "Chapter 3 presents CRT as a ring isomorphism, with applications to quadratic residues and the structure of (Z/nZ)*"
     },
     {
-      "authors": "Shoup, Victor",
+      "authors": ["Shoup, Victor"],
       "title": "A Computational Introduction to Number Theory and Algebra",
       "year": "2009",
       "venue": "Cambridge University Press, 2nd edition",
       "note": "Algorithmic perspective on CRT: the constructive Bezout-based formula, its complexity, and applications to RSA-CRT and residue number systems"
     },
     {
-      "authors": "Sun Zi",
+      "authors": ["Sun Zi"],
       "title": "Sunzi Suanjing (The Mathematical Classic of Sun Zi)",
       "year": "~400 CE",
       "venue": "Chinese mathematical treatise",
       "note": "Earliest known statement of the Chinese Remainder Theorem as a concrete problem"
     },
     {
-      "authors": "O. Ore",
+      "authors": ["O. Ore"],
       "title": "The general Chinese remainder theorem",
       "year": "1952",
       "venue": "Amer. Math. Monthly, 59(6), 365-370",
