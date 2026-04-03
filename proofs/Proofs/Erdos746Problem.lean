@@ -87,7 +87,7 @@ def IsHamiltonianCycle (G : GraphOnN n) (cycle : List (Fin n)) : Prop :=
   cycle.Nodup ∧
   (∀ v : Fin n, v ∈ cycle) ∧
   (∀ i, i + 1 < cycle.length → G.Adj (cycle.get ⟨i, by omega⟩) (cycle.get ⟨i + 1, by omega⟩)) ∧
-  (n > 0 → G.Adj (cycle.getLast (by sorry)) (cycle.head (by sorry)))
+  (∀ hn : 0 < cycle.length, G.Adj (cycle.get ⟨cycle.length - 1, by omega⟩) (cycle.get ⟨0, hn⟩))
 
 /-- A graph is Hamiltonian if it contains a Hamiltonian cycle. -/
 def IsHamiltonian (G : GraphOnN n) : Prop :=
