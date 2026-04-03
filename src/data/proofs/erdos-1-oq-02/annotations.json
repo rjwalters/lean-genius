@@ -1,1 +1,46 @@
-[]
+[
+  {
+    "id": "sum-sq-cauchy-schwarz",
+    "line": 67,
+    "type": "theorem",
+    "title": "Cauchy-Schwarz: (Σa)² ≤ n·Σa²",
+    "body": "`sum_sq_cauchy_schwarz` proves $\\left(\\sum_{a \\in A} a\\right)^2 \\leq |A| \\cdot \\sum_{a \\in A} a^2$ for any `Finset ℕ`. This is the Cauchy-Schwarz inequality applied to $\\langle (a_1, \\ldots, a_n), (1, \\ldots, 1) \\rangle \\leq \\|a\\| \\cdot \\|\\mathbf{1}\\|$. In the DFX framework: with $V = \\sum a_i^2/4$ being the variance, Cauchy-Schwarz gives $V \\geq (\\sum a_i)^2/(4n) = S^2/(4n)$. This lower bound on variance is the key to deriving the final $N$ bound.",
+    "mathContext": "Cauchy-Schwarz for finite sums: $(\\sum_i x_i y_i)^2 \\leq (\\sum_i x_i^2)(\\sum_i y_i^2)$. With $y_i = 1$: $(\\sum_i x_i)^2 \\leq n \\cdot \\sum_i x_i^2$. Equivalently (by algebra), this says the arithmetic mean squared is at most the quadratic mean squared, which is the variance formula. Lean's proof uses induction on `Finset.sum` and the `sq_nonneg` lemma.",
+    "significance": "Core algebraic inequality for the DFX argument. The variance lower bound $V \\geq S^2/(4n)$ is what allows the anticoncentration step to bound $N$ from below. Without Cauchy-Schwarz, only the crude bound $V \\leq nN^2/4$ (sum-sq-le-card-mul-max-sq) would be available, giving a weaker result.",
+    "relatedConcepts": ["Cauchy-Schwarz", "variance-lower-bound", "DFX-framework", "Finset.sum"],
+    "prerequisites": ["Finset.sum API", "Nat/Int inequality lemmas", "sq_nonneg"]
+  },
+  {
+    "id": "anticoncentration-axiom",
+    "line": 122,
+    "type": "axiom",
+    "title": "Anticoncentration Bound (Berry-Esseen, Axiomatized)",
+    "body": "`anticoncentration_bound` axiomatizes the Berry-Esseen step: if $A$ has distinct subset sums, then $\\max(A) \\geq \\sqrt{2/\\pi} \\cdot 2^{|A|} / |A|$. This is the key step that requires probability theory: the distribution of $X = \\sum \\varepsilon_i a_i$ (random subset sum) is approximately normal, and the normal distribution's anticoncentration property bounds the number of distinct values achievable. The axiom captures the conclusion without the probabilistic machinery.",
+    "mathContext": "Berry-Esseen theorem: if $X_1, \\ldots, X_n$ are i.i.d. with mean 0, variance 1, and finite third moment, then the CDF of $(X_1+\\ldots+X_n)/\\sqrt{n}$ is within $C/\\sqrt{n}$ of the standard normal CDF. For subset sums: $X = \\sum \\varepsilon_i a_i$ with $\\varepsilon_i$ Bernoulli(1/2) has variance $\\sum a_i^2/4$. The anticoncentration of the normal distribution then bounds $\\max_k \\mathbb{P}[X = k] \\leq C/\\sqrt{\\text{Var}(X)}$. Since all $2^n$ subset sums are distinct, there must be $2^n$ values $k$ with $\\mathbb{P}[X = k] > 0$, each ≤ $C/\\sqrt{V}$, giving $1 \\geq 2^n \\cdot C/\\sqrt{V}$... The exact DFX argument is slightly different.",
+    "significance": "The sole axiom of the file. Represents the frontier of what is currently formalized: the Berry-Esseen step requires probability theory (CLT, anticoncentration) that is not yet streamlined in Mathlib for this specific application. Proving this axiom in Lean would complete the formalization.",
+    "relatedConcepts": ["Berry-Esseen", "anticoncentration", "normal-approximation", "subset-sum-distribution"],
+    "prerequisites": ["hasDistinctSubsetSums", "Real.sqrt", "probability theory background"]
+  },
+  {
+    "id": "dfx-lower-bound",
+    "line": 137,
+    "type": "theorem",
+    "title": "DFX Lower Bound: N ≥ √(2/π)·2ⁿ/√n (1 sorry)",
+    "body": "`dfx_lower_bound` states: if $A \\subseteq \\{1, \\ldots, N\\}$ has distinct subset sums and $|A| = n$, then $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$. The proof has 1 sorry (base case issues for small $n$). The proof strategy chains: (1) `anticoncentration_bound` gives $\\max(A) \\geq \\sqrt{2/\\pi} \\cdot 2^n/n$; (2) $\\max(A) \\leq N$; so $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/n$. But the stated bound is $\\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ (better by $\\sqrt{n}$), suggesting the anticoncentration bound is tighter than captured in the axiom.",
+    "mathContext": "The DFX bound $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ is the best known lower bound for Erdős Problem #1 as of 2021. It improves the counting bound $N \\geq (2^n-1)/n$ (which only gives $N \\geq 2^n/n$) by a factor of $\\sqrt{n}$. The constant $\\sqrt{2/\\pi}$ comes from the Gaussian anticoncentration: the maximum probability that a normal distribution takes any specific value is $1/\\sqrt{2\\pi\\sigma^2}$, and $1/\\sqrt{2\\pi} \\approx 0.399$.",
+    "significance": "The main theorem of the file. Currently has 1 sorry due to base case issues. Once fixed (by verifying small $n$ cases directly and adjusting the axiom strength), this would be the formal statement of the DFX 2021 result.",
+    "relatedConcepts": ["DFX-2021", "distinct-subset-sums", "anticoncentration_bound", "counting-bound"],
+    "prerequisites": ["anticoncentration_bound axiom", "sum_sq_cauchy_schwarz", "hasDistinctSubsetSums"]
+  },
+  {
+    "id": "dfx-improves-counting",
+    "line": 153,
+    "type": "theorem",
+    "title": "DFX Strictly Improves Counting Bound for n ≥ 2",
+    "body": "`dfx_improves_counting` proves that the DFX bound $\\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ is strictly better than the counting bound $(2^n - 1)/n$ for $n \\geq 2$. This uses `improvement_factor` ($n < n^2$ for $n \\geq 2$) and real number inequalities. The asymptotic improvement factor is $\\approx \\sqrt{n}/(\\sqrt{2/\\pi}) = \\sqrt{\\pi n/2}$, growing without bound.",
+    "mathContext": "The counting bound gives $N \\geq (2^n-1)/n \\approx 2^n/n$. The DFX bound gives $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$. Ratio: $(\\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}) / (2^n/n) = \\sqrt{2/\\pi} \\cdot \\sqrt{n} \\to \\infty$. For $n = 100$: DFX gives $\\approx 0.8 \\cdot 2^{100}/10$, counting gives $\\approx 2^{100}/100$, so DFX is 8× better. For $n = 10000$: DFX is 80× better.",
+    "significance": "Confirms the qualitative improvement of DFX over the basic bound. This is the main reason the DFX result is significant — it shows the counting bound is not tight, and any subset sum set with the counting bound as maximum must have a slack of $\\sqrt{n}$.",
+    "relatedConcepts": ["counting-bound", "improvement-factor", "asymptotic-comparison"],
+    "prerequisites": ["dfx_lower_bound", "Real arithmetic in Lean", "n < n^2 for n ≥ 2"]
+  }
+]
