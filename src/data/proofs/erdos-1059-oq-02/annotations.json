@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-primorial-interval",
+    "proofId": "erdos-1059-oq-02",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "definition",
+    "title": "PrimorialInterval: The Natural Sieve Domain",
+    "content": "The primorial interval I(l) = (l!, (l+1)!] is the fundamental organizing structure for the Selberg sieve approach. For any prime p in I(l), the factorials 0!, 1!, ..., l! are exactly those less than p. So AllFactorialSubtractionsComposite(p) requires precisely l+1 conditions: each p - k! for k = 0, ..., l must be composite.",
+    "mathContext": "$I(l) = (l!, (l+1)!] = \\{n \\in \\mathbb{N} : l! < n \\leq (l+1)!\\}$. Size: $|I(l)| = (l+1)! - l! = l \\cdot l!$. First few levels: $I(1) = \\{2\\}$, $I(2) = \\{3,4,5,6\\}$, $I(3) = \\{7,...,24\\}$, $I(4) = \\{25,...,120\\}$, $I(5) = \\{121,...,720\\}$. The primes 101 ∈ I(4) and 211 ∈ I(5) are the known examples.",
+    "significance": "key",
+    "relatedConcepts": ["primorial", "factorial interval", "sieve domain"],
+    "prerequisites": ["Nat.factorial", "Finset.Ioc"]
+  },
+  {
+    "id": "ann-interval-size",
+    "proofId": "erdos-1059-oq-02",
+    "range": { "startLine": 63, "endLine": 72 },
+    "type": "technique",
+    "title": "Interval Size: l · l! Elements",
+    "content": "The primorial interval I(l) has exactly l · l! elements. This is proved using Nat.card_Ioc (the cardinality of half-open intervals in ℕ) together with the factorial recursion (l+1)! = (l+1) · l! = l · l! + l!. The size grows super-exponentially, which is what makes the sieve argument work: the 'bad' prime count grows slower than the total prime count.",
+    "mathContext": "$|I(l)| = (l+1)! - l! = (l+1) \\cdot l! - l! = l \\cdot l!$. Growth: $|I(1)| = 1$, $|I(2)| = 4$, $|I(3)| = 18$, $|I(4)| = 96$, $|I(5)| = 600$. By PNT, $\\#\\{\\text{primes in } I(l)\\} \\approx l!/\\log(l!)$, which grows faster than the bad count $\\approx (l+1) \\cdot l!/(\\log(l!))^2$.",
+    "significance": "standard",
+    "relatedConcepts": ["Nat.card_Ioc", "factorial recursion", "super-exponential growth"],
+    "prerequisites": ["Nat.factorial_succ", "Finset.card_Ioc"]
+  },
+  {
+    "id": "ann-factorial-bound",
+    "proofId": "erdos-1059-oq-02",
+    "range": { "startLine": 80, "endLine": 89 },
+    "type": "insight",
+    "title": "Factorial Bound: k! < p ∈ I(l) Implies k ≤ l",
+    "content": "A key structural lemma: if p lies in I(l) and k! < p, then k ≤ l. This bounds the universal quantifier in AllFactorialSubtractionsComposite(p) to finitely many k. The proof is by contradiction: if k > l, then (l+1)! ≤ k! but (l+1)! ≥ p, contradicting k! < p.",
+    "mathContext": "Proof: Assume $p \\in I(l)$ (so $p \\leq (l+1)!$) and $k > l$ (so $k \\geq l+1$). Then $k! \\geq (l+1)!$ by monotonicity of factorial. Combined with $p \\leq (l+1)! \\leq k!$, we get $k! \\geq p$, contradicting $k! < p$. This bound means AFSC(p) for $p \\in I(l)$ is a FINITE condition with $l+1$ clauses.",
+    "significance": "key",
+    "relatedConcepts": ["factorial monotonicity", "Nat.factorial_le", "finite sieve condition"],
+    "prerequisites": ["Nat.factorial_le"]
+  },
+  {
+    "id": "ann-bad-indices",
+    "proofId": "erdos-1059-oq-02",
+    "range": { "startLine": 127, "endLine": 135 },
+    "type": "definition",
+    "title": "BadFactorialIndices: The Sieve Target Set",
+    "content": "For candidate prime p at level l, the bad factorial indices are those k ≤ l where p - k! is prime. The AllFactorialSubtractionsComposite property holds iff this set is empty (with the ≥ 2 side condition). The Selberg sieve bounds the number of p ∈ I(l) with nonempty bad set.",
+    "mathContext": "$\\mathrm{Bad}(p, l) = \\{k \\leq l : p - k! \\in \\mathbb{P}\\}$. By condition_count_at_level, $|\\mathrm{Bad}(p,l)| \\leq l+1$. Each bad index $k$ witnesses that $p$ lies in the set $\\{n \\in I(l) : n - k! \\in \\mathbb{P}\\}$ — a shifted prime set to which the Selberg sieve applies.",
+    "significance": "key",
+    "relatedConcepts": ["Selberg sieve", "shifted primes", "sieve target"],
+    "prerequisites": ["Finset.filter", "Nat.Prime"]
+  },
+  {
+    "id": "ann-selberg-axiom",
+    "proofId": "erdos-1059-oq-02",
+    "range": { "startLine": 157, "endLine": 175 },
+    "type": "insight",
+    "title": "Selberg Density Axiom: Where Analysis Meets Formalization",
+    "content": "The selberg_density_axiom is the bridge between the structural (proved) and analytic (axiomatized) parts of the argument. It asserts that for l ≥ 3, some prime p ∈ I(l) satisfies AllFactorialSubtractionsComposite. The full sieve argument (PNT + Brun-Titchmarsh + Selberg λ² sieve) shows the count is ≫ l!/(log l!)² → ∞, making the existence trivial for large l. Formalizing this requires analytic tools not yet in Mathlib.",
+    "mathContext": "The Selberg λ² sieve upper bound: $\\#\\{n \\in I(l) : n - k! \\in \\mathbb{P}\\} \\leq \\frac{2l!}{(\\log l!)(\\log(l!/\\log l!))}$. Summing over $k = 0, \\ldots, l$ gives a bad prime count $\\ll (l+1) \\cdot l!/(\\log l!)^2$. Comparing with $\\#\\{\\text{primes in } I(l)\\} \\approx l!/\\log(l!)$ (PNT), the bad fraction is $O((l+1)/\\log(l!)) \\to 0$. For $l \\geq 3$, qualifying primes exist.",
+    "significance": "key",
+    "relatedConcepts": ["Selberg sieve", "lambda-squared method", "Brun-Titchmarsh", "Prime Number Theorem"],
+    "prerequisites": ["sieve theory", "analytic number theory", "PNT"]
+  },
+  {
+    "id": "ann-conditional-proof",
+    "proofId": "erdos-1059-oq-02",
+    "range": { "startLine": 179, "endLine": 196 },
+    "type": "technique",
+    "title": "selberg_implies_erdos: Infinitude from Density",
+    "content": "The main conditional theorem shows the density axiom implies Erdős #1059. For any N, we choose l = N + 3 ≥ 3 and extract a qualifying prime p from I(l) via the axiom. Since l! > l > N, we have p > l! > N. Varying N gives infinitely many distinct qualifying primes. The disjointness of primorial intervals (primorial_intervals_disjoint) ensures primes from different levels are distinct.",
+    "mathContext": "Proof: For $N \\in \\mathbb{N}$, set $l = N + 3$. Then $l \\geq 3$, so by selberg_density_axiom, $\\exists p \\in I(l)$ qualifying. Since $p > l! \\geq N + 3 > N$, we have $p > N$. The map $l \\mapsto p_l$ (one qualifying prime per interval) is injective by primorial_intervals_disjoint. Thus $|\\{p : \\mathrm{AFSC}(p) \\wedge p \\text{ prime}\\}| = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["Set.infinite_iff_exists_gt", "primorial_intervals_disjoint", "infinitude argument"],
+    "prerequisites": ["Set.Infinite", "Nat.self_le_factorial"]
+  }
+]
