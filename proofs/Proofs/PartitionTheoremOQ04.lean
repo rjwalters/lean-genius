@@ -256,20 +256,77 @@ theorem glaisherBwd_glaisherFwdPart {k : ℕ} (hk : k ≠ 0) :
   rw [h_count, glaisherBwdStep_pow_two,
       show 2 ^ a * b = k from padic_factorization]
 
+/-- Key sub-lemma: if the a-th bit of m is 0, then adding 2^a to m gives {2^a * b} in the backward step.
+    Condition: (m / 2^a) % 2 = 0 means "bit a of m is zero" (carry-free addition at position a). -/
+private lemma glaisherBwdStep_add_pow_two : ∀ (a b m : ℕ),
+    (m / 2^a) % 2 = 0 →
+    glaisherBwdStep b (2^a + m) = {2^a * b} + glaisherBwdStep b m := by
+  intro a
+  induction a with
+  | zero =>
+    intro b m h
+    simp only [pow_zero, Nat.div_one] at h
+    obtain ⟨k, hk⟩ := Nat.dvd_of_mod_eq_zero h
+    subst hk
+    simp only [pow_zero, one_mul]
+    rw [glaisherBwdStep_eq b (by omega : 1 + 2 * k ≠ 0)]
+    simp only [if_pos (show (1 + 2 * k) % 2 = 1 from by omega)]
+    rw [show (1 + 2 * k) / 2 = k from by omega]
+    rcases Nat.eq_zero_or_pos k with rfl | hk
+    · simp [glaisherBwdStep]
+    · rw [glaisherBwdStep_eq b (by omega : 2 * k ≠ 0)]
+      simp only [if_neg (show 2 * k % 2 ≠ 1 from by omega), zero_add]
+      rw [show 2 * k / 2 = k from by omega]
+  | succ a ih =>
+    intro b m h
+    have h_shifted : (m / 2 / 2^a) % 2 = 0 := by
+      rwa [Nat.div_div_eq_div_mul, show 2 * 2^a = 2^(a+1) from by ring]
+    rcases Nat.even_or_odd m with ⟨k, hk⟩ | ⟨k, hk⟩
+    · -- Even case: hk : m = k + k; we need m = 2 * k for the rewrites
+      have hk2 : m = 2 * k := by omega
+      subst hk2
+      rw [glaisherBwdStep_eq b (by positivity : 2^(a+1) + 2*k ≠ 0)]
+      rw [if_neg (show (2^(a+1) + 2*k) % 2 ≠ 1 from by rw [pow_succ]; omega)]
+      simp only [zero_add]
+      rw [show (2^(a+1) + 2*k) / 2 = 2^a + k from by rw [pow_succ]; omega]
+      have hk_bit : (k / 2^a) % 2 = 0 := by
+        have heq : 2 * k / 2 = k := by omega
+        rw [heq] at h_shifted; exact h_shifted
+      rw [ih (2*b) k hk_bit]
+      -- Goal: {2^a * (2*b)} + glaisherBwdStep (2*b) k = {2^(a+1) * b} + glaisherBwdStep b (2*k)
+      have step_double : glaisherBwdStep b (2*k) = glaisherBwdStep (2*b) k := by
+        rcases Nat.eq_zero_or_pos k with rfl | hk_pos
+        · simp [glaisherBwdStep]
+        · rw [glaisherBwdStep_eq b (by omega : 2*k ≠ 0)]
+          rw [if_neg (show 2*k % 2 ≠ 1 from by omega)]
+          simp only [zero_add]
+          rw [show 2*k/2 = k from by omega]
+      rw [step_double]
+      congr 1; ring
+    · -- Odd case: hk : m = 2 * k + 1
+      subst hk
+      rw [glaisherBwdStep_eq b (by positivity : 2^(a+1) + (2*k+1) ≠ 0)]
+      rw [if_pos (show (2^(a+1) + (2*k+1)) % 2 = 1 from by rw [pow_succ]; omega)]
+      rw [show (2^(a+1) + (2*k+1)) / 2 = 2^a + k from by rw [pow_succ]; omega]
+      have hk_bit : (k / 2^a) % 2 = 0 := by
+        have heq : (2*k+1) / 2 = k := by omega
+        rw [heq] at h_shifted; exact h_shifted
+      rw [ih (2*b) k hk_bit]
+      rw [glaisherBwdStep_eq b (by omega : 2*k+1 ≠ 0)]
+      rw [if_pos (show (2*k+1) % 2 = 1 from by omega)]
+      rw [show (2*k+1)/2 = k from by omega]
+      rw [show 2^(a+1) * b = 2^a * (2*b) from by ring]
+      exact add_left_comm _ _ _
+
 /-- The maps are inverses on distinct positive multisets.
 
-    Key sub-lemma needed (marked sorry for future work):
-    glaisherBwdStep b (m1 + m2) = glaisherBwdStep b m1 + glaisherBwdStep b m2
-    when m1 and m2 have disjoint binary representations (m1 &&& m2 = 0).
-    This holds because carry-free binary addition preserves bit patterns.
-
-    Proof sketch for the main theorem:
-    - Group elements of s by their odd part b = k / 2^padicValNat(k)
-    - For each odd b, count b in glaisherFwd s = Σ_{k in s, oddPart k = b} 2^padicValNat(k)
-    - The 2^padicValNat values for distinct k with same odd part are distinct powers of 2
-       (since different k's with same odd part have different 2-adic valuations, and s is Nodup)
-    - glaisherBwdStep b over that sum of distinct powers = union of {2^a * b} by additive decomp
-    - Summing over all odd b recovers exactly s. -/
+    Proof sketch (sorry pending full formalization of glaisherBwd_glaisherFwd):
+    - Induction on s (Nodup)
+    - For s = k ::ₘ t with k ∉ t: let a = padicValNat 2 k, b = k/2^a
+    - Key: (glaisherFwd t).count b has its a-th bit = 0 (since k = 2^a*b ∉ t)
+    - glaisherBwdStep_add_pow_two: glaisherBwdStep b (2^a + ft.count b) = {k} + glaisherBwdStep b (ft.count b)
+    - Remaining terms reconstruct t by inductive hypothesis
+    - Full formalization requires splitting bind over toFinset and tracking count changes -/
 theorem glaisherBwd_glaisherFwd {s : Multiset ℕ}
     (hs_pos : ∀ k ∈ s, k ≠ 0) (hs_nodup : s.Nodup) :
     glaisherBwd (glaisherFwd s) = s := by
