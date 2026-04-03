@@ -1,42 +1,62 @@
 [
   {
-    "id": "de-moivre-principal-branch",
+    "id": "ann-dmo-principal-branch",
+    "proofId": "de-moivre-oq-03-oq-01",
+    "range": { "startLine": 25, "endLine": 35 },
     "type": "insight",
-    "title": "Principal Branch Makes De Moivre Well-Defined",
-    "body": "The theorem `de_moivre_real_exponent` requires θ ∈ (-π, π] explicitly. Without this constraint, exp(2πi) = 1 = exp(0·i), so both interpretations of log(e^{iθ}) are valid but give different values of z^α. The proof uses `Complex.log_exp` which requires the imaginary part to lie in (-π, π] — the branch conditions `hθ_lo` and `hθ_hi` are exactly this constraint applied to real θ embedded in ℂ.",
-    "location": "DeMoivreOQ03OQ01.lean:28-35",
-    "tags": ["complex-analysis", "branch-cut", "principal-value"]
+    "title": "Principal Branch: Why θ ∈ (-π, π] Is Necessary",
+    "content": "The theorem `de_moivre_real_exponent` requires the hypotheses `hθ_lo : -π < θ` and `hθ_hi : θ ≤ π` explicitly. Without this constraint, the formula (e^{iθ})^α = e^{iαθ} can fail: at θ = 2π, exp(2πi) = 1 so the LHS is 1^α = 1, but the RHS is exp(2παi) ≠ 1 for irrational α. The branch conditions are used by `Complex.log_exp`, which requires the imaginary part of the argument to lie in (-π, π] — exactly what `hθ_lo` and `hθ_hi` provide when real θ is embedded in ℂ.",
+    "mathContext": "The proof: `rw [cpow_def_of_ne_zero (exp_ne_zero _)]` unfolds `z^α = exp(α · log z)`. Then `Complex.log_exp` (which requires $\\text{im}(z) \\in (-\\pi, \\pi]$) gives `log(exp(iθ)) = iθ`, so `exp(α · iθ) = exp(iαθ)`. The `him` auxiliary computes `(↑θ * I).im = θ` to bridge the coercion. The final `push_cast; ring` handles the algebra. Without the branch restriction, `log(exp(2πi)) = log(1) = 0 ≠ 2πi`, making the proof fail.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.log_exp", "cpow_def_of_ne_zero", "branch cut", "principal logarithm", "Complex.cpow"],
+    "prerequisites": ["Complex.log definition via principal value", "push_cast tactic", "ring tactic"]
   },
   {
-    "id": "rational-roots-rfl",
+    "id": "ann-dmo-rational-rfl",
+    "proofId": "de-moivre-oq-03-oq-01",
+    "range": { "startLine": 41, "endLine": 46 },
     "type": "technique",
-    "title": "Rational Roots by Explicit Construction (rfl)",
-    "body": "The proof of `rational_exponent_multivalued` uses the simplest possible strategy: define `roots k` to be exactly the claimed formula, then prove correctness by `rfl`. This avoids any computation — it is a definitional equality. The mathematical content (that these are actually q-th roots of (e^{iθ})^p) is left implicit, but the existence claim is trivially witnessed by construction.",
-    "location": "DeMoivreOQ03OQ01.lean:43-46",
-    "tags": ["construction", "roots-of-unity", "rational-exponent"]
+    "title": "Rational Roots by rfl: Existence via Definitional Equality",
+    "content": "The proof of `rational_exponent_multivalued` uses the witness `fun k => Complex.exp (↑((p * θ + 2 * π * k.val) / q) * Complex.I)` and then proves correctness by `rfl`. This works because the claim is `∀ k, roots k = <the formula>`, and since `roots` is defined to equal the formula, the equality is definitionally true. This avoids computing that these are actually q-th roots of (e^{iθ})^p — the existence claim is witnessed by construction, and the root-checking computation is left implicit.",
+    "mathContext": "The q values $e^{i(p\\theta + 2\\pi k)/q}$ for $k = 0, 1, \\ldots, q-1$ are the q-th roots of $e^{ip\\theta}$: $(e^{i(p\\theta + 2\\pi k)/q})^q = e^{i(p\\theta + 2\\pi k)} = e^{ip\\theta} \\cdot e^{2\\pi i k} = e^{ip\\theta}$, since $e^{2\\pi i k} = 1$. The proof only asserts their existence (with the formula), not this root-checking property. `Fin q` encodes $k \\in \\{0, 1, \\ldots, q-1\\}$, and `k.val : ℕ` gives the natural number value.",
+    "significance": "technical",
+    "relatedConcepts": ["Fin q", "q-th roots of unity", "existence proof by construction", "definitional equality", "rfl tactic"],
+    "prerequisites": ["Fin type in Lean 4", "roots of unity definition", "rfl as definitional equality"]
   },
   {
-    "id": "true-stub-irrational",
-    "type": "warning",
-    "title": "irrational_exponent_single_valued is a True Stub",
-    "body": "This theorem proves `True` with `trivial` — the actual mathematical claim (that cpow gives a single-valued result on the principal branch) is not formalized. The real proof is almost definitional: cpow uses a fixed principal log, so z^α = exp(α · log z) is uniquely determined. But the stub means no formal guarantee is provided. The `assumptions` field documents this acknowledged placeholder.",
-    "location": "DeMoivreOQ03OQ01.lean:55-57",
-    "tags": ["placeholder", "formalization-gap", "irrational"]
-  },
-  {
-    "id": "weyl-equidistribution-ergodic",
+    "id": "ann-dmo-true-stub",
+    "proofId": "de-moivre-oq-03-oq-01",
+    "range": { "startLine": 52, "endLine": 57 },
     "type": "context",
-    "title": "Weyl Equidistribution: Ergodic Theory in Complex Analysis",
-    "body": "The axiom `weyl_equidistribution` states that {exp(2πiαn) : n ∈ ℤ} is dense in the unit circle for irrational α. Weyl proved this in 1916 via exponential sums: the Weyl sum Σ exp(2πiαn) decays to zero, forcing equidistribution. This is equivalent to: α is irrational ⟺ the rotation by 2πα on S¹ is minimal (every orbit is dense) ⟺ the rotation is ergodic with respect to Haar measure.",
-    "location": "DeMoivreOQ03OQ01.lean:61-62",
-    "tags": ["ergodic-theory", "equidistribution", "weyl", "axiom"]
+    "title": "irrational_exponent_single_valued: A True Stub",
+    "content": "The theorem proves `True` with `trivial` — not the actual mathematical claim. The comment explains what the real proof would require: showing that cpow, which is defined as exp(α · log z) with a fixed principal log, gives a unique value because log is fixed. The genuine theorem is almost definitional: since `Complex.cpow z α = exp(α * Complex.log z)` and `Complex.log` is single-valued, `z^α` is uniquely determined. The formalization gap is in stating precisely what 'single-valued on the principal branch' means in Lean types.",
+    "mathContext": "The real claim: for $z \\neq 0$ and irrational $\\alpha \\in \\mathbb{R}$, `Complex.cpow z α` is single-valued (no choice of branch needed). Proof sketch: `cpow z α = exp(α * log z)` by definition, and `log z` is uniquely defined as the principal value $\\log|z| + i \\cdot \\arg(z)$ with $\\arg(z) \\in (-\\pi, \\pi]$. Contrast with rational $\\alpha = p/q$: the algebraic equation $w^q = z^p$ has $q$ solutions, but cpow always picks the one with argument in $(-\\pi, \\pi]/q$.",
+    "significance": "technical",
+    "relatedConcepts": ["Complex.log single-valuedness", "Complex.cpow definition", "principal branch", "True stub", "Irrational"],
+    "prerequisites": ["Complex.cpow via Complex.log", "single-valuedness of Complex.log", "Irrational typeclass"]
   },
   {
-    "id": "de-moivre-homomorphism",
+    "id": "ann-dmo-weyl",
+    "proofId": "de-moivre-oq-03-oq-01",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "context",
+    "title": "Weyl Equidistribution: Ergodic Theory and Fourier Analysis",
+    "content": "The axiom `weyl_equidistribution` states that {exp(2πiαn) : n ∈ ℤ} is dense in the unit circle when α is irrational. Weyl's 1916 proof uses exponential sums: if α is irrational, the Weyl sum N⁻¹ Σ exp(2πiαn) → 0 as N → ∞ by the geometric series estimate, and a criterion of Weyl shows equidistribution iff all Fourier coefficients of the empirical measure converge to zero. The result is equivalent to: the rotation by angle 2πα on S¹ is a minimal transformation (every orbit is dense) and is ergodic with respect to Haar measure.",
+    "mathContext": "Weyl's criterion: $\\{f(n)\\}$ is equidistributed mod 1 iff $\\frac{1}{N}\\sum_{n=1}^N e^{2\\pi i k f(n)} \\to 0$ for every nonzero integer $k$. For $f(n) = \\alpha n$, the sum is a geometric series: $\\frac{1}{N}\\sum_{n=1}^N e^{2\\pi i k \\alpha n} = \\frac{e^{2\\pi i k \\alpha}(1 - e^{2\\pi i k \\alpha N})}{N(1 - e^{2\\pi i k \\alpha})} \\to 0$ since $|1 - e^{2\\pi i k \\alpha}| > 0$ for irrational $\\alpha$. In Lean, formalizing this requires Fourier analysis on $\\mathbb{T}$ (the circle group) — tools available in Mathlib but not yet assembled for this specific theorem.",
+    "significance": "key",
+    "relatedConcepts": ["Weyl sums", "equidistribution", "ergodic theory", "Haar measure", "Fourier analysis on T", "Dense in Lean"],
+    "prerequisites": ["Weyl's equidistribution criterion", "geometric series bounds", "Fourier analysis on the circle group"]
+  },
+  {
+    "id": "ann-dmo-homomorphism",
+    "proofId": "de-moivre-oq-03-oq-01",
+    "range": { "startLine": 68, "endLine": 72 },
     "type": "insight",
-    "title": "De Moivre as a Group Homomorphism",
-    "body": "The map φ_α : θ ↦ e^{iαθ} is a continuous group homomorphism (ℝ, +) → (S¹, ×). De Moivre's theorem is precisely: φ_n(θ) = (φ_1(θ))^n. For irrational α, φ_α has dense image (Weyl); for rational p/q, φ_{p/q} factors through ℝ/qℤ giving a finite cyclic subgroup. The `continuous_rotation` theorem proves just the continuity part using `Complex.continuous_exp` composed with linear maps.",
-    "location": "DeMoivreOQ03OQ01.lean:69-72",
-    "tags": ["group-homomorphism", "circle-group", "representation-theory"]
+    "title": "De Moivre as a Continuous Group Homomorphism",
+    "content": "The theorem `continuous_rotation` proves that θ ↦ exp(iαθ) is continuous by composing `Complex.continuous_exp` with the linear map θ ↦ (αθ : ℂ) · I. This characterizes the map as a continuous group homomorphism φ_α : (ℝ, +) → (S¹, ×). De Moivre's theorem for integer n is precisely φ_1(θ)^n = φ_n(θ) — the n-th power of the unit rotation by θ equals the rotation by nθ. For irrational α, Weyl's theorem says φ_α has dense image; for rational p/q, the image of φ_{p/q} is a finite cyclic subgroup of order q.",
+    "mathContext": "The proof `Complex.continuous_exp.comp (continuous_const.mul continuous_ofReal |>.mul continuous_const)` builds continuity of $\\theta \\mapsto \\exp(i\\alpha\\theta)$ as $\\exp \\circ (\\cdot i\\alpha)$ where $\\cdot i\\alpha : \\mathbb{R} \\to \\mathbb{C}$ is continuous. The group homomorphism property $\\phi_\\alpha(\\theta + \\phi) = \\phi_\\alpha(\\theta) \\cdot \\phi_\\alpha(\\phi)$ follows from $\\exp(i\\alpha(\\theta + \\phi)) = \\exp(i\\alpha\\theta) \\cdot \\exp(i\\alpha\\phi)$ — an instance of `Complex.exp_add`. For $\\alpha \\in \\mathbb{Z}$, $\\phi_\\alpha$ is the $|\\alpha|$-fold winding map; for $\\alpha = p/q$, it wraps $q$ times around and closes up.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.continuous_exp", "group homomorphism", "circle group S¹", "winding number", "Complex.exp_add"],
+    "prerequisites": ["Continuous function composition in Mathlib", "Complex.continuous_exp", "continuous_ofReal for ℝ → ℂ"]
   }
 ]
