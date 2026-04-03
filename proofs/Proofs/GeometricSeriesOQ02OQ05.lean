@@ -3,19 +3,19 @@
 
   Open Question: Extend the Neumann series to the holomorphic functional
   calculus: for holomorphic f on a neighborhood of σ(T), define
-  f(T) = (2πi)⁻¹ ∮ f(λ)R(λ,T) dλ.
+  f(T) = (2πi)⁻¹ ∮ f(z)R(z,T) dz.
 
   This file formalizes the resolvent of a Banach algebra element and its
   Neumann series representation — the essential bridge between the Neumann
   series (OQ-02) and spectral theory. Specifically:
 
-  1. The resolvent R(λ,a) = (λ·1 - a)⁻¹ exists when ‖a‖ < ‖λ‖
-  2. Neumann series expansion: R(λ,a) = λ⁻¹ ∑ (λ⁻¹·a)^n
+  1. The resolvent R(z,a) = (z·1 - a)⁻¹ exists when ‖a‖ < ‖z‖
+  2. Neumann series expansion: R(z,a) = z⁻¹ ∑ (z⁻¹·a)^n
   3. Norm bound on the resolvent
-  4. First resolvent identity: R(λ) - R(μ) = (μ-λ)·R(λ)·R(μ)
+  4. First resolvent identity: R(z) - R(w) = (w-z)·R(z)·R(w)
 
   These results are the analytical core needed to define the Dunford-Taylor
-  integral f(a) = (2πi)⁻¹ ∮ f(λ)R(λ,a) dλ.
+  integral f(a) = (2πi)⁻¹ ∮ f(z)R(z,a) dz.
 
   References:
   - Dunford & Schwartz, "Linear Operators, Part I" (1958), VII.3
@@ -24,7 +24,7 @@
 -/
 
 import Proofs.GeometricSeriesOQ02
-import Mathlib.Analysis.NormedSpace.Basic
+import Mathlib.Analysis.Normed.Algebra.Basic
 
 open NeumannSeries Topology Filter
 
@@ -40,60 +40,60 @@ variable {A : Type*} [NormedRing A] [NormedAlgebra 𝕜 A] [CompleteSpace A] [No
 -- ══════════════════════════════════════════════════════════════════
 
 /-- Norm of an embedded scalar in a NormOneClass algebra equals the scalar's norm. -/
-theorem norm_algebraMap (λ : 𝕜) : ‖algebraMap 𝕜 A λ‖ = ‖λ‖ := by
+theorem norm_algebraMap (z : 𝕜) : ‖algebraMap 𝕜 A z‖ = ‖z‖ := by
   rw [Algebra.algebraMap_eq_smul_one]
   rw [norm_smul]
   simp [norm_one]
 
 /-- Embedded nonzero scalar is a unit in the algebra. -/
-theorem algebraMap_isUnit {λ : 𝕜} (hλ : λ ≠ 0) : IsUnit (algebraMap 𝕜 A λ) := by
-  exact (algebraMap 𝕜 A).isUnit_map (Ne.isUnit hλ)
+theorem algebraMap_isUnit {z : 𝕜} (hz : z ≠ 0) : IsUnit (algebraMap 𝕜 A z) := by
+  exact (algebraMap 𝕜 A).isUnit_map (Ne.isUnit hz)
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 2. The Resolvent Exists via Neumann Series
 -- ══════════════════════════════════════════════════════════════════
 
-/-- **Key norm estimate**: ‖(algebraMap λ⁻¹) * a‖ < 1 when ‖a‖ < ‖λ‖.
+/-- **Key norm estimate**: ‖(algebraMap z⁻¹) * a‖ < 1 when ‖a‖ < ‖z‖.
 
     This is the bridge from the Neumann series convergence condition ‖T‖ < 1
-    to the spectral theory condition ‖a‖ < ‖λ‖. -/
-theorem norm_inv_smul_lt_one (a : A) {λ : 𝕜} (hλ : λ ≠ 0) (ha : ‖a‖ < ‖λ‖) :
-    ‖algebraMap 𝕜 A λ⁻¹ * a‖ < 1 := by
-  calc ‖algebraMap 𝕜 A λ⁻¹ * a‖
-    _ ≤ ‖algebraMap 𝕜 A λ⁻¹‖ * ‖a‖ := norm_mul_le _ _
-    _ = ‖λ⁻¹‖ * ‖a‖ := by rw [norm_algebraMap]
-    _ = ‖λ‖⁻¹ * ‖a‖ := by rw [norm_inv]
-    _ < ‖λ‖⁻¹ * ‖λ‖ := by {
+    to the spectral theory condition ‖a‖ < ‖z‖. -/
+theorem norm_inv_smul_lt_one (a : A) {z : 𝕜} (hz : z ≠ 0) (ha : ‖a‖ < ‖z‖) :
+    ‖algebraMap 𝕜 A z⁻¹ * a‖ < 1 := by
+  calc ‖algebraMap 𝕜 A z⁻¹ * a‖
+    _ ≤ ‖algebraMap 𝕜 A z⁻¹‖ * ‖a‖ := norm_mul_le _ _
+    _ = ‖z⁻¹‖ * ‖a‖ := by rw [norm_algebraMap]
+    _ = ‖z‖⁻¹ * ‖a‖ := by rw [norm_inv]
+    _ < ‖z‖⁻¹ * ‖z‖ := by {
         apply mul_lt_mul_of_pos_left ha
-        exact inv_pos.mpr (norm_pos_iff.mpr hλ)
+        exact inv_pos.mpr (norm_pos_iff.mpr hz)
       }
-    _ = 1 := inv_mul_cancel₀ (norm_ne_zero_iff.mpr hλ)
+    _ = 1 := inv_mul_cancel₀ (norm_ne_zero_iff.mpr hz)
 
-/-- **Factorization of λ·1 - a**
+/-- **Factorization of z·1 - a**
 
-    λ·1 - a = (algebraMap λ) * (1 - (algebraMap λ⁻¹) * a)
+    z·1 - a = (algebraMap z) * (1 - (algebraMap z⁻¹) * a)
 
-    This algebraic identity allows us to reduce invertibility of λ·1 - a
-    to the Neumann series condition ‖T‖ < 1 where T = λ⁻¹·a. -/
-theorem resolvent_factorization (a : A) {λ : 𝕜} (hλ : λ ≠ 0) :
-    algebraMap 𝕜 A λ - a =
-    algebraMap 𝕜 A λ * (1 - algebraMap 𝕜 A λ⁻¹ * a) := by
+    This algebraic identity allows us to reduce invertibility of z·1 - a
+    to the Neumann series condition ‖T‖ < 1 where T = z⁻¹·a. -/
+theorem resolvent_factorization (a : A) {z : 𝕜} (hz : z ≠ 0) :
+    algebraMap 𝕜 A z - a =
+    algebraMap 𝕜 A z * (1 - algebraMap 𝕜 A z⁻¹ * a) := by
   rw [mul_sub, mul_one, ← mul_assoc]
   congr 1
-  rw [← map_mul, mul_inv_cancel₀ hλ, map_one]
+  rw [← map_mul, mul_inv_cancel₀ hz, map_one, one_mul]
 
 /-- **Resolvent existence via Neumann series**
 
-    For a in a Banach algebra and λ with ‖a‖ < ‖λ‖, the element
-    (λ·1 - a) is invertible. This shows λ is in the resolvent set of a.
+    For a in a Banach algebra and z with ‖a‖ < ‖z‖, the element
+    (z·1 - a) is invertible. This shows z is in the resolvent set of a.
 
-    Proof strategy: Factor λ·1 - a = λ·(1 - λ⁻¹a). Since ‖λ⁻¹a‖ < 1,
-    the Neumann series shows (1 - λ⁻¹a) is a unit. Since λ ≠ 0,
-    λ·1 is also a unit. The product is therefore a unit. -/
-theorem resolvent_isUnit (a : A) {λ : 𝕜} (hλ : λ ≠ 0) (ha : ‖a‖ < ‖λ‖) :
-    IsUnit (algebraMap 𝕜 A λ - a) := by
-  rw [resolvent_factorization a hλ]
-  exact IsUnit.mul (algebraMap_isUnit hλ) (one_sub_isUnit _ (norm_inv_smul_lt_one a hλ ha))
+    Proof strategy: Factor z·1 - a = z·(1 - z⁻¹a). Since ‖z⁻¹a‖ < 1,
+    the Neumann series shows (1 - z⁻¹a) is a unit. Since z ≠ 0,
+    z·1 is also a unit. The product is therefore a unit. -/
+theorem resolvent_isUnit (a : A) {z : 𝕜} (hz : z ≠ 0) (ha : ‖a‖ < ‖z‖) :
+    IsUnit (algebraMap 𝕜 A z - a) := by
+  rw [resolvent_factorization a hz]
+  exact IsUnit.mul (algebraMap_isUnit hz) (one_sub_isUnit _ (norm_inv_smul_lt_one a hz ha))
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 3. Neumann Series Representation of the Resolvent
@@ -101,40 +101,40 @@ theorem resolvent_isUnit (a : A) {λ : 𝕜} (hλ : λ ≠ 0) (ha : ‖a‖ < �
 
 /-- **Summability of the resolvent series**
 
-    The series ∑ (λ⁻¹·a)^n is summable when ‖a‖ < ‖λ‖. -/
-theorem resolvent_series_summable (a : A) {λ : 𝕜} (hλ : λ ≠ 0) (ha : ‖a‖ < ‖λ‖) :
-    Summable (fun n : ℕ => (algebraMap 𝕜 A λ⁻¹ * a) ^ n) :=
-  neumann_summable _ (norm_inv_smul_lt_one a hλ ha)
+    The series ∑ (z⁻¹·a)^n is summable when ‖a‖ < ‖z‖. -/
+theorem resolvent_series_summable (a : A) {z : 𝕜} (hz : z ≠ 0) (ha : ‖a‖ < ‖z‖) :
+    Summable (fun n : ℕ => (algebraMap 𝕜 A z⁻¹ * a) ^ n) :=
+  neumann_summable _ (norm_inv_smul_lt_one a hz ha)
 
 /-- **Neumann series for the resolvent**
 
-    Ring.inverse (λ·1 - a) = (algebraMap λ⁻¹) * ∑ (λ⁻¹·a)^n
+    Ring.inverse (z·1 - a) = (algebraMap z⁻¹) * ∑ (z⁻¹·a)^n
 
-    This gives an explicit power series for the resolvent R(λ,a),
-    valid whenever ‖a‖ < ‖λ‖. This is the operator-theoretic version
-    of 1/(λ - x) = λ⁻¹ · ∑ (x/λ)^n for |x| < |λ|. -/
-theorem resolvent_eq_neumann_series (a : A) {λ : 𝕜} (hλ : λ ≠ 0) (ha : ‖a‖ < ‖λ‖) :
-    Ring.inverse (algebraMap 𝕜 A λ - a) =
-    algebraMap 𝕜 A λ⁻¹ * ∑' n : ℕ, (algebraMap 𝕜 A λ⁻¹ * a) ^ n := by
-  set T := algebraMap 𝕜 A λ⁻¹ * a
-  have hT : ‖T‖ < 1 := norm_inv_smul_lt_one a hλ ha
-  -- Ring.inverse (λ·(1 - T)) = Ring.inverse (1 - T) * Ring.inverse (λ·1)
-  rw [resolvent_factorization a hλ]
-  -- Ring.inverse of product of units
-  have hλ_unit := algebraMap_isUnit (A := A) hλ
-  have h1T_unit := one_sub_isUnit T hT
-  -- Ring.inverse (λ * (1 - T)) where both are units
-  rw [Ring.inverse_unit (hλ_unit.mul h1T_unit)]
-  -- ↑(u * v)⁻¹ = ↑v⁻¹ * ↑u⁻¹
-  simp only [Units.val_mul, IsUnit.val_inv_mul]
-  rw [mul_comm (Ring.inverse (1 - T)) (Ring.inverse (algebraMap 𝕜 A λ))]
-  congr 1
-  · -- Ring.inverse (algebraMap λ) = algebraMap λ⁻¹
-    rw [Ring.inverse_unit hλ_unit]
-    simp [IsUnit.unit, Units.val_inv_eq_inv_val]
-    rw [← map_inv₀]
-  · -- Ring.inverse (1 - T) = ∑ T^n
-    exact neumann_sum T hT
+    This gives an explicit power series for the resolvent R(z,a),
+    valid whenever ‖a‖ < ‖z‖. This is the operator-theoretic version
+    of 1/(z - x) = z⁻¹ · ∑ (x/z)^n for |x| < |z|. -/
+theorem resolvent_eq_neumann_series (a : A) {z : 𝕜} (hz : z ≠ 0) (ha : ‖a‖ < ‖z‖) :
+    Ring.inverse (algebraMap 𝕜 A z - a) =
+    algebraMap 𝕜 A z⁻¹ * ∑' n : ℕ, (algebraMap 𝕜 A z⁻¹ * a) ^ n := by
+  set T := algebraMap 𝕜 A z⁻¹ * a
+  have hT : ‖T‖ < 1 := norm_inv_smul_lt_one a hz ha
+  rw [resolvent_factorization a hz]
+  -- Use Ring.inverse (a * b) = Ring.inverse b * Ring.inverse a (when a and b commute)
+  have hcomm : Commute (algebraMap 𝕜 A z) (1 - T) :=
+    Algebra.commute_algebraMap_left z (1 - T)
+  rw [Ring.mul_inverse_rev' hcomm]
+  -- Now: Ring.inverse (1 - T) * Ring.inverse (algebraMap z) = algebraMap z⁻¹ * ∑ T^n
+  -- Step 1: Ring.inverse (algebraMap z) = algebraMap z⁻¹
+  have hinv_z : Ring.inverse (algebraMap 𝕜 A z) = algebraMap 𝕜 A z⁻¹ := by
+    have hmul : algebraMap 𝕜 A z * algebraMap 𝕜 A z⁻¹ = 1 := by
+      rw [← map_mul, mul_inv_cancel₀ hz, map_one]
+    have key := Ring.inverse_mul_cancel_left (algebraMap 𝕜 A z) (algebraMap 𝕜 A z⁻¹)
+      (algebraMap_isUnit hz)
+    rw [hmul, mul_one] at key
+    exact key
+  rw [hinv_z, ← neumann_sum T hT]
+  -- Goal: ∑' n, T^n * algebraMap z⁻¹ = algebraMap z⁻¹ * ∑' n, T^n
+  exact (Algebra.commutes z⁻¹ (∑' n, T ^ n)).symm
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 4. Norm Bound on the Resolvent
@@ -142,38 +142,41 @@ theorem resolvent_eq_neumann_series (a : A) {λ : 𝕜} (hλ : λ ≠ 0) (ha : �
 
 /-- **Resolvent norm bound**
 
-    ‖R(λ,a)‖ ≤ ‖λ‖⁻¹ · (1 - ‖λ‖⁻¹ · ‖a‖)⁻¹ = 1/(‖λ‖ - ‖a‖)
+    ‖R(z,a)‖ ≤ ‖z‖⁻¹ · (1 - ‖z‖⁻¹ · ‖a‖)⁻¹ = 1/(‖z‖ - ‖a‖)
 
     This is the quantitative bound that makes the resolvent useful
-    for contour integration. As |λ| → ∞, ‖R(λ,a)‖ → 0. -/
-theorem resolvent_norm_bound (a : A) {λ : 𝕜} (hλ : λ ≠ 0) (ha : ‖a‖ < ‖λ‖) :
-    ‖Ring.inverse (algebraMap 𝕜 A λ - a)‖ ≤ (‖λ‖ - ‖a‖)⁻¹ := by
-  set T := algebraMap 𝕜 A λ⁻¹ * a
-  have hT : ‖T‖ < 1 := norm_inv_smul_lt_one a hλ ha
-  rw [resolvent_eq_neumann_series a hλ ha]
-  calc ‖algebraMap 𝕜 A λ⁻¹ * ∑' n, T ^ n‖
-    _ ≤ ‖algebraMap 𝕜 A λ⁻¹‖ * ‖∑' n, T ^ n‖ := norm_mul_le _ _
-    _ ≤ ‖λ⁻¹‖ * (1 - ‖T‖)⁻¹ := by {
-        apply mul_le_mul_of_nonneg_left (norm_neumann_le T hT)
-        rw [norm_algebraMap]; exact le_refl _
+    for contour integration. As |z| → ∞, ‖R(z,a)‖ → 0. -/
+theorem resolvent_norm_bound (a : A) {z : 𝕜} (hz : z ≠ 0) (ha : ‖a‖ < ‖z‖) :
+    ‖Ring.inverse (algebraMap 𝕜 A z - a)‖ ≤ (‖z‖ - ‖a‖)⁻¹ := by
+  set T := algebraMap 𝕜 A z⁻¹ * a
+  have hT : ‖T‖ < 1 := norm_inv_smul_lt_one a hz ha
+  have hzpos : (0 : ℝ) < ‖z‖ := norm_pos_iff.mpr hz
+  have hzn : ‖z‖ ≠ 0 := ne_of_gt hzpos
+  rw [resolvent_eq_neumann_series a hz ha]
+  calc ‖algebraMap 𝕜 A z⁻¹ * ∑' n, T ^ n‖
+    _ ≤ ‖algebraMap 𝕜 A z⁻¹‖ * ‖∑' n, T ^ n‖ := norm_mul_le _ _
+    _ ≤ ‖z⁻¹‖ * (1 - ‖T‖)⁻¹ := by {
+        rw [norm_algebraMap]
+        exact mul_le_mul_of_nonneg_left (norm_neumann_le T hT) (norm_nonneg _)
       }
-    _ = ‖λ‖⁻¹ * (1 - ‖T‖)⁻¹ := by rw [norm_inv]
-    _ ≤ ‖λ‖⁻¹ * (1 - ‖λ‖⁻¹ * ‖a‖)⁻¹ := by {
+    _ = ‖z‖⁻¹ * (1 - ‖T‖)⁻¹ := by rw [norm_inv]
+    _ ≤ ‖z‖⁻¹ * (1 - ‖z‖⁻¹ * ‖a‖)⁻¹ := by {
         apply mul_le_mul_of_nonneg_left _ (inv_nonneg.mpr (norm_nonneg _))
-        apply inv_anti_of_pos
-        · linarith [norm_inv_smul_lt_one a hλ ha]
-        · calc 1 - ‖λ‖⁻¹ * ‖a‖
-            _ ≤ 1 - ‖T‖ := by {
-                apply sub_le_sub_left
-                calc ‖T‖ ≤ ‖algebraMap 𝕜 A λ⁻¹‖ * ‖a‖ := norm_mul_le _ _
-                _ = ‖λ‖⁻¹ * ‖a‖ := by rw [norm_algebraMap, norm_inv]
-              }
+        have hza : ‖z‖⁻¹ * ‖a‖ < 1 :=
+          calc ‖z‖⁻¹ * ‖a‖ < ‖z‖⁻¹ * ‖z‖ :=
+                mul_lt_mul_of_pos_left ha (inv_pos.mpr hzpos)
+            _ = 1 := inv_mul_cancel₀ hzn
+        have h1za : (0 : ℝ) < 1 - ‖z‖⁻¹ * ‖a‖ := by linarith
+        have hT_le : ‖T‖ ≤ ‖z‖⁻¹ * ‖a‖ :=
+          calc ‖T‖ ≤ ‖algebraMap 𝕜 A z⁻¹‖ * ‖a‖ := norm_mul_le _ _
+            _ = ‖z‖⁻¹ * ‖a‖ := by rw [norm_algebraMap, norm_inv]
+        rw [← one_div, ← one_div]; exact one_div_le_one_div_of_le h1za (by linarith)
       }
-    _ = (‖λ‖ - ‖a‖)⁻¹ := by {
-        rw [show (1 - ‖λ‖⁻¹ * ‖a‖) = (‖λ‖ - ‖a‖) / ‖λ‖ from by
-          field_simp]
-        rw [inv_div, mul_div_cancel₀]
-        exact norm_ne_zero_iff.mpr hλ
+    _ = (‖z‖ - ‖a‖)⁻¹ := by {
+        rw [show 1 - ‖z‖⁻¹ * ‖a‖ = (‖z‖ - ‖a‖) * ‖z‖⁻¹ from by
+              rw [sub_mul, mul_inv_cancel₀ hzn]; ring,
+            mul_inv_rev, inv_inv, ← mul_assoc,
+            inv_mul_cancel₀ hzn, one_mul]
       }
 
 -- ══════════════════════════════════════════════════════════════════
@@ -182,41 +185,43 @@ theorem resolvent_norm_bound (a : A) {λ : 𝕜} (hλ : λ ≠ 0) (ha : ‖a‖ 
 
 /-- **First resolvent identity**
 
-    R(λ) - R(μ) = (μ - λ) · R(λ) · R(μ)
+    R(z) - R(w) = (w - z) · R(z) · R(w)
 
     This purely algebraic identity holds for any two points in the
     resolvent set. It is fundamental to spectral theory: it shows
     the resolvent is a "pseudo-resolvent" and implies analyticity.
 
-    Proof: Multiply both sides by (λ·1-a) on the left and (μ·1-a)
-    on the right, reducing to the tautology (μ-λ)·1 = (μ-λ)·1. -/
-theorem first_resolvent_identity (a : A) {λ μ : 𝕜}
-    (hλ : IsUnit (algebraMap 𝕜 A λ - a)) (hμ : IsUnit (algebraMap 𝕜 A μ - a)) :
-    Ring.inverse (algebraMap 𝕜 A λ - a) - Ring.inverse (algebraMap 𝕜 A μ - a) =
-    (algebraMap 𝕜 A μ - algebraMap 𝕜 A λ) *
-    Ring.inverse (algebraMap 𝕜 A λ - a) * Ring.inverse (algebraMap 𝕜 A μ - a) := by
+    Proof: Multiply both sides by (z·1-a) on the left and (w·1-a)
+    on the right, reducing to the tautology (w-z)·1 = (w-z)·1. -/
+theorem first_resolvent_identity (a : A) {z w : 𝕜}
+    (hz : IsUnit (algebraMap 𝕜 A z - a)) (hw : IsUnit (algebraMap 𝕜 A w - a)) :
+    Ring.inverse (algebraMap 𝕜 A z - a) - Ring.inverse (algebraMap 𝕜 A w - a) =
+    (algebraMap 𝕜 A w - algebraMap 𝕜 A z) *
+    Ring.inverse (algebraMap 𝕜 A z - a) * Ring.inverse (algebraMap 𝕜 A w - a) := by
   -- Extract units
-  obtain ⟨uλ, huλ⟩ := hλ
-  obtain ⟨uμ, huμ⟩ := hμ
+  obtain ⟨uz, huz⟩ := hz
+  obtain ⟨uw, huw⟩ := hw
   -- Work with Ring.inverse as unit inverses
-  have Rλ : Ring.inverse (algebraMap 𝕜 A λ - a) = ↑uλ⁻¹ := by
-    rw [← huλ]; exact Ring.inverse_unit uλ
-  have Rμ : Ring.inverse (algebraMap 𝕜 A μ - a) = ↑uμ⁻¹ := by
-    rw [← huμ]; exact Ring.inverse_unit uμ
-  rw [Rλ, Rμ]
-  -- Key identity: uλ⁻¹ - uμ⁻¹ = uλ⁻¹ * (uμ - uλ) * uμ⁻¹
-  -- Since uλ = λ·1 - a and uμ = μ·1 - a, we get uμ - uλ = (μ-λ)·1
-  have huλμ : (↑uμ : A) - ↑uλ = algebraMap 𝕜 A μ - algebraMap 𝕜 A λ := by
-    rw [← huμ, ← huλ]; ring
+  have Rz : Ring.inverse (algebraMap 𝕜 A z - a) = ↑uz⁻¹ := by
+    rw [← huz]; exact Ring.inverse_unit uz
+  have Rw : Ring.inverse (algebraMap 𝕜 A w - a) = ↑uw⁻¹ := by
+    rw [← huw]; exact Ring.inverse_unit uw
+  rw [Rz, Rw]
+  -- Key identity: uz⁻¹ - uw⁻¹ = uz⁻¹ * (uw - uz) * uw⁻¹
+  -- Since uz = z·1 - a and uw = w·1 - a, we get uw - uz = (w-z)·1
+  have huzw : (↑uw : A) - ↑uz = algebraMap 𝕜 A w - algebraMap 𝕜 A z := by
+    rw [huw, huz]; abel
   -- The algebraic identity for unit inverses
-  have key : (↑uλ⁻¹ : A) - ↑uμ⁻¹ = ↑uλ⁻¹ * (↑uμ - ↑uλ) * ↑uμ⁻¹ := by
-    have := Units.val_inv_mul uλ
-    have := Units.val_inv_mul uμ
-    rw [show (↑uλ⁻¹ : A) - ↑uμ⁻¹ =
-        ↑uλ⁻¹ * (↑uμ * ↑uμ⁻¹) - (↑uλ⁻¹ * ↑uλ) * ↑uμ⁻¹ from by
-      simp [Units.mul_inv_cancel_right, Units.inv_mul_cancel_right]]
-    ring
-  rw [key, huλμ]
+  have key : (↑uz⁻¹ : A) - ↑uw⁻¹ = ↑uz⁻¹ * (↑uw - ↑uz) * ↑uw⁻¹ := by
+    rw [mul_sub, sub_mul,
+        Units.mul_inv_cancel_right (↑uz⁻¹ : A) uw,
+        show (↑uz⁻¹ : A) * ↑uz * ↑uw⁻¹ = ↑uw⁻¹ from by
+          rw [Units.inv_mul uz, one_mul]]
+  rw [key, huzw]
+  -- Goal: ↑uz⁻¹ * (algebraMap w - algebraMap z) * ↑uw⁻¹ = (algebraMap w - algebraMap z) * ↑uz⁻¹ * ↑uw⁻¹
+  -- The scalar (algebraMap w - algebraMap z) commutes with everything
+  rw [← map_sub (algebraMap 𝕜 A)]
+  rw [← Algebra.commutes (w - z) (↑uz⁻¹ : A)]
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 6. Resolvent Vanishes at Infinity
@@ -224,14 +229,27 @@ theorem first_resolvent_identity (a : A) {λ μ : 𝕜}
 
 /-- **Resolvent vanishes at infinity**
 
-    ‖R(λ,a)‖ ≤ 1/(‖λ‖ - ‖a‖) → 0 as ‖λ‖ → ∞.
+    ‖R(z,a)‖ ≤ 1/(‖z‖ - ‖a‖) → 0 as ‖z‖ → ∞.
 
     This is essential for the holomorphic functional calculus:
-    it ensures that ∮ f(λ)R(λ,a) dλ converges when the contour
+    it ensures that ∮ f(z)R(z,a) dz converges when the contour
     is sufficiently large and f is bounded. -/
 theorem resolvent_tendsto_zero (a : A) :
-    Filter.Tendsto (fun λ : 𝕜 => Ring.inverse (algebraMap 𝕜 A λ - a))
-    (Filter.comap (fun λ => ‖λ‖) Filter.atTop) (nhds 0) := by
-  sorry
+    Filter.Tendsto (fun z : 𝕜 => Ring.inverse (algebraMap 𝕜 A z - a))
+    (Filter.comap (fun z => ‖z‖) Filter.atTop) (nhds 0) := by
+  apply squeeze_zero_norm'
+  · -- Eventually ‖R(z,a)‖ ≤ (‖z‖ - ‖a‖)⁻¹
+    rw [Filter.eventually_iff, Filter.mem_comap]
+    refine ⟨{r : ℝ | ‖a‖ + 1 ≤ r}, Filter.mem_atTop _, fun z hz => ?_⟩
+    simp only [Set.mem_preimage, Set.mem_setOf_eq] at hz
+    have hpos : 0 < ‖z‖ := by linarith [norm_nonneg a]
+    exact resolvent_norm_bound a (norm_pos_iff.mp hpos) (by linarith)
+  · -- (‖z‖ - ‖a‖)⁻¹ → 0 as ‖z‖ → ∞
+    have h_sub : Filter.Tendsto (fun r : ℝ => r - ‖a‖) Filter.atTop Filter.atTop := by
+      intro s hs
+      obtain ⟨b, hb⟩ := Filter.mem_atTop_sets.mp hs
+      apply Filter.mem_atTop_sets.mpr
+      exact ⟨b + ‖a‖, fun r hr => hb _ (by linarith)⟩
+    exact (tendsto_inv_atTop_zero.comp h_sub).comp Filter.tendsto_comap
 
 end ResolventNeumann

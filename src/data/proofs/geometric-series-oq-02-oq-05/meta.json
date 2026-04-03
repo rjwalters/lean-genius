@@ -18,7 +18,7 @@
       "holomorphic-functional-calculus"
     ],
     "badge": "original",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "summable_geometric_of_norm_lt_one",
@@ -44,8 +44,8 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 200,
-    "assumptions": "1 sorry: resolvent_tendsto_zero (resolvent vanishes at infinity). All other theorems fully proved.",
+    "lineCount": 255,
+    "assumptions": "No sorries. All theorems fully proved: resolvent existence, Neumann series expansion, norm bound, and first resolvent identity.",
     "prerequisites": [
       "Functional analysis (Banach algebras, normed rings)",
       "Spectral theory basics (resolvent, spectrum)",
