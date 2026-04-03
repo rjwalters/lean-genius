@@ -1,1 +1,171 @@
-[]
+[
+  {
+    "id": "ann-ceva-geometry-primitives",
+    "proofId": "cevas-theorem-oq-01",
+    "range": {
+      "startLine": 29,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Geometry Primitives: Points, Lines, and Affine Combinations",
+    "content": "The foundational layer defines Point as an abbreviation for $\\mathbb{R} \\times \\mathbb{R}$, parametric lines via `lineThrough A B = {A + t(B - A) | t in R}`, the three-line concurrency predicate `areConcurrent` (existential: some point belongs to all three sets), and the affine combination `affineComb B C d = (1-d)*B + d*C`. Three supporting lemmas establish that endpoints lie on their own line (`self_on_line_left`, `self_on_line_right`) and that affine combinations lie on the line through their endpoints (`affineComb_on_line`), all proved by providing explicit witnesses to the parametric existential and closing with `ring_nf` or `ring`.",
+    "mathContext": "A parametric line through $A$ and $B$ is $P(t) = (1-t)A + tB$ for $t \\in \\mathbb{R}$. The affine combination $\\text{affineComb}(B, C, d) = (1-d)B + dC$ places the point at parameter $d$ along segment $BC$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parametric lines in the plane",
+      "affine combinations",
+      "Set membership in Lean 4",
+      "Prod.ext (prodext) for coordinate equality"
+    ],
+    "prerequisites": [
+      "basic real arithmetic",
+      "Lean 4 Set and existential quantifiers",
+      "coordinate geometry in R^2"
+    ]
+  },
+  {
+    "id": "ann-ceva-config-concurrency-point",
+    "proofId": "cevas-theorem-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 165
+    },
+    "type": "definition",
+    "title": "GeomCevianConfig Structure and Explicit Concurrency Point",
+    "content": "The `GeomCevianConfig` structure bundles a triangle $ABC$ with cevian parameters $d, e, f \\in (0,1)$ and their positivity/bound proofs. Cevian points are defined as $D = \\text{affineComb}(B, C, d)$, $E = \\text{affineComb}(C, A, e)$, $F = \\text{affineComb}(A, B, f)$, and cevian lines as `lineThrough A D`, etc. The `cevaCondition` predicate encodes $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$. For the standard triangle $A=(0,0), B=(1,0), C=(0,1)$, the `stdTriangleConfig` constructor is provided, along with coordinate lemmas `std_D`, `std_E`, `std_F`. The concurrency point `cevaConcurrencyPoint` is explicitly constructed as the intersection of lines $AD$ and $BE$: setting $s = (1-e)/w$ and $t = d/w$ where $w = 1 - e + de$, the intersection is $((1-d)(1-e)/w,\\; d(1-e)/w)$. The positivity $w > 0$ is established by `w_pos` via `nlinarith`.",
+    "mathContext": "The concurrency point is $P = \\left(\\frac{(1-d)(1-e)}{w},\\; \\frac{d(1-e)}{w}\\right)$ where $w = 1 - e + de > 0$ for $d, e \\in (0,1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structure syntax in Lean 4",
+      "noncomputable def for division-dependent definitions",
+      "positivity of w via nlinarith",
+      "standard triangle canonical form"
+    ],
+    "prerequisites": [
+      "Lean 4 structure declarations with proof fields",
+      "affine combinations and parametric lines",
+      "basic inequalities for products of reals in (0,1)"
+    ]
+  },
+  {
+    "id": "ann-ceva-forward-proof",
+    "proofId": "cevas-theorem-oq-01",
+    "range": {
+      "startLine": 166,
+      "endLine": 227
+    },
+    "type": "technique",
+    "title": "Ceva's Theorem Forward: Concurrency Point on All Three Cevians",
+    "content": "The forward direction verifies that the explicit concurrency point lies on all three cevian lines. For lines $AD$ and $BE$, this is direct: `concurrency_on_AD` provides the witness $s = (1-e)/w$ and `concurrency_on_BE` provides $t = d/w$, both closed by `field_simp`. The critical step is `concurrency_on_CF`: the point lies on line $CF$ (from $C=(0,1)$ to $F=(f,0)$) with parameter $u = (1-d)(1-e)/(f \\cdot w)$. The second coordinate equation requires the Ceva condition $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$ and is discharged by `nlinarith` with product-positivity hints. The main theorem `ceva_geometric_standard` assembles all three via `refine` with the concurrency point as witness. Corollaries: `medians_ceva` shows $d=e=f=1/2$ satisfies the Ceva condition by `ring`, and `medians_concurrent` applies the main theorem with `norm_num` side conditions.",
+    "mathContext": "Line $CF$ passes through $P$ iff $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$. For medians, $d = e = f = 1/2$ trivially satisfies $1/8 = 1/8$, giving centroid $P = (1/3, 1/3)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "field_simp for clearing denominators",
+      "nlinarith with ring identity hints",
+      "refine with explicit existential witness",
+      "medians and centroid"
+    ],
+    "prerequisites": [
+      "parametric line membership verification",
+      "w_pos denominator positivity",
+      "cevaCondition predicate"
+    ]
+  },
+  {
+    "id": "ann-ceva-converse",
+    "proofId": "cevas-theorem-oq-01",
+    "range": {
+      "startLine": 249,
+      "endLine": 361
+    },
+    "type": "insight",
+    "title": "Converse of Ceva: Extracting the Ceva Condition from Concurrency",
+    "content": "The converse `ceva_converse_standard` starts from the hypothesis that a common point $P$ lies on all three cevian lines. Using `obtain`, the proof extracts parametric values $s, t, u$ satisfying the six coordinate equations. From $P$ on $AD \\cap BE$: $P = (s(1-d), sd) = (1-t, t(1-e))$. From $P$ on $AD \\cap CF$: $P = (s(1-d), sd) = (uf, 1-u)$. By `linarith`, two key equations are derived: `eq1: 1 - t = u*f` and `eq2: t*(1-e) = 1 - u`. The proof then unfolds `cevaCondition` and derives two critical nonlinear relations by `nlinarith`: `key: u*f*d = (1-u)*(1-d)` (from $s(1-d) = uf$ and $sd = 1-u$) and `key2: u*(1-f+ef) = e` (expanding eq2 with eq1). A positivity fact `hw_pos: 1 - f + e*f > 0` enables the final cross-multiplication: from `key` and `key2`, `nlinarith` with product-positivity hints concludes $def = (1-d)(1-e)(1-f)$. The iff theorem `ceva_iff_standard` packages both directions.",
+    "mathContext": "$P \\in AD \\cap BE \\cap CF \\implies u \\cdot f \\cdot d = (1-u)(1-d)$ and $u(1-f+ef) = e$. Substituting $u = \\frac{e}{1-f+ef}$ into the first equation and clearing the positive denominator yields $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "obtain for destructuring existentials",
+      "linear constraint extraction via linarith",
+      "nlinarith with mul_pos hints for nonlinear arithmetic",
+      "iff constructor packaging forward and converse"
+    ],
+    "prerequisites": [
+      "parametric line equations in the standard triangle",
+      "algebraic manipulation of products of reals in (0,1)",
+      "positivity of 1 - f + ef for f < 1, e > 0"
+    ]
+  },
+  {
+    "id": "ann-ceva-affine-reduction",
+    "proofId": "cevas-theorem-oq-01",
+    "range": {
+      "startLine": 364,
+      "endLine": 465
+    },
+    "type": "concept",
+    "title": "Affine Invariance: Reducing General Triangles to Standard Form",
+    "content": "This section builds the affine transformation infrastructure that reduces any non-degenerate triangle to the standard triangle. `signedArea(A,B,C)` computes the $2 \\times 2$ determinant $(B_1 - A_1)(C_2 - A_2) - (C_1 - A_1)(B_2 - A_2)$, and `triangleNonDegenerate` requires it to be nonzero. The `AffineMap2D` structure represents $M(P) = \\begin{pmatrix} a_{11} & a_{12} \\\\ a_{21} & a_{22} \\end{pmatrix} P + \\begin{pmatrix} b_1 \\\\ b_2 \\end{pmatrix}$ with determinant $a_{11}a_{22} - a_{12}a_{21}$. Three preservation theorems are proved: `affine_preserves_comb` (by `ring` on coordinates), `affine_preserves_line` (by `linear_combination` on the parametric witness), and `affine_preserves_concurrency` (applying the map to the common point). The map `stdToTriangle(A,B,C)` uses columns $B - A$ and $C - A$ with translation $A$, sending $(0,0) \\mapsto A$, $(1,0) \\mapsto B$, $(0,1) \\mapsto C$. Its determinant equals `signedArea`, so non-degeneracy implies invertibility. The inverse `triangleToStd` is constructed via Cramer's rule, dividing by $\\Delta = \\text{signedArea}(A,B,C)$.",
+    "mathContext": "$M: \\mathbb{R}^2 \\to \\mathbb{R}^2$ affine with $\\det(M) \\neq 0$ preserves concurrency. The map $\\text{stdToTriangle}(A,B,C)$ has matrix $\\begin{pmatrix} B_1 - A_1 & C_1 - A_1 \\\\ B_2 - A_2 & C_2 - A_2 \\end{pmatrix}$ and $\\det = \\text{signedArea}(A,B,C)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "AffineMap2D structure",
+      "linear_combination tactic",
+      "Cramer's rule for 2x2 matrix inverse",
+      "signed area as determinant",
+      "non-degeneracy as det != 0"
+    ],
+    "prerequisites": [
+      "2x2 linear algebra: determinants, matrix-vector multiplication",
+      "affine maps preserve parametric line structure",
+      "field_simp and ring for coordinate computations"
+    ]
+  },
+  {
+    "id": "ann-ceva-angle-bisectors-altitudes",
+    "proofId": "cevas-theorem-oq-01",
+    "range": {
+      "startLine": 716,
+      "endLine": 822
+    },
+    "type": "insight",
+    "title": "Angle Bisectors (Incenter) and Altitudes via Ceva's Theorem",
+    "content": "Two classical concurrence results are derived as applications of Ceva's theorem for general triangles. For angle bisectors, the angle bisector theorem gives $BD/DC = c/b$, so $d = b/(b+c)$, and similarly $e = c/(c+a)$, $f = a/(a+b)$. The theorem `angle_bisectors_ceva` shows both sides of the Ceva condition equal $abc/((b+c)(c+a)(a+b))$ by `field_simp; ring`. Parameter bounds are verified in `angle_bisector_param_pos` using `div_pos` and `div_lt_one`. The concurrence `angle_bisectors_concurrent` then follows from `ceva_geometric_general`. For altitudes, `altitude_ceva_algebraic` takes the projection formulas $b \\cos C + c \\cos B = a$ (and cyclic) as hypotheses, derives $1 - d = c \\cos B / a$ by `linarith`, and shows both sides of the Ceva condition equal $\\cos A \\cdot \\cos B \\cdot \\cos C$ by substituting the projection formulas and applying `ring`.",
+    "mathContext": "Angle bisectors: $d = \\frac{b}{b+c}$, $e = \\frac{c}{c+a}$, $f = \\frac{a}{a+b}$, so $d \\cdot e \\cdot f = \\frac{abc}{(b+c)(c+a)(a+b)} = (1-d)(1-e)(1-f)$. Altitudes: $d = \\frac{b \\cos C}{a}$, giving $d \\cdot e \\cdot f = \\cos A \\cos B \\cos C = (1-d)(1-e)(1-f)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "angle bisector theorem: BD/DC = AB/AC",
+      "incenter as intersection of angle bisectors",
+      "altitude foot projection formula: b*cosC + c*cosB = a",
+      "orthocenter existence"
+    ],
+    "prerequisites": [
+      "ceva_geometric_general for general triangle concurrence",
+      "positive side lengths and the angle bisector length ratio",
+      "projection formulas from trigonometry of triangles"
+    ]
+  },
+  {
+    "id": "ann-ceva-routh-theorem",
+    "proofId": "cevas-theorem-oq-01",
+    "range": {
+      "startLine": 823,
+      "endLine": 875
+    },
+    "type": "insight",
+    "title": "Routh's Theorem: Inner Triangle Area Ratio",
+    "content": "When three cevians are not concurrent, they form an inner triangle whose area ratio to the original is given by Routh's theorem (1896). The `routhRatio` function computes $(def - (1-d)(1-e)(1-f))^2 / ((1-d+de)(1-e+ef)(1-f+fd))$. The theorem `routh_zero_iff_ceva` proves that this ratio is zero if and only if the Ceva condition holds. The forward direction uses `div_eq_zero_iff` to split on numerator vs denominator being zero: the numerator case applies `sq_eq_zero_iff` then `linarith`; the denominator case leads to a contradiction since each factor $(1-d+de)$, $(1-e+ef)$, $(1-f+fd)$ is strictly positive (by `nlinarith`), so their product cannot be zero. The reverse direction substitutes the Ceva condition to zero out the numerator. The explicit computation `routh_medial_thirds` shows $\\text{Routh}(1/3, 1/3, 1/3) = 1/7$ by `norm_num`, a classical result about cevians at the one-third division points.",
+    "mathContext": "$\\text{Routh}(d,e,f) = \\frac{(def - (1-d)(1-e)(1-f))^2}{(1-d+de)(1-e+ef)(1-f+fd)}$. This is zero iff $def = (1-d)(1-e)(1-f)$ (Ceva condition). For $d = e = f = 1/3$: $\\text{Routh}(1/3, 1/3, 1/3) = 1/7$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Routh's theorem (1896)",
+      "div_eq_zero_iff for splitting quotient equalities",
+      "sq_eq_zero_iff for squares equal to zero",
+      "norm_num for explicit rational computation"
+    ],
+    "prerequisites": [
+      "cevaCondition predicate",
+      "positivity of denominator factors for d, e, f in (0,1)",
+      "basic properties of squares and division in ordered fields"
+    ]
+  }
+]

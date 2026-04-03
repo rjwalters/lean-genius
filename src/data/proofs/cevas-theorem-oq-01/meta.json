@@ -2,7 +2,7 @@
   "id": "cevas-theorem-oq-01",
   "title": "Ceva's Theorem: Geometric Proof via Affine Coordinates",
   "slug": "cevas-theorem-oq-01",
-  "description": "Formalizes Ceva's theorem geometrically in ℝ² using affine coordinates, proving that cevians AD, BE, CF are concurrent iff d·e·f = (1-d)·(1-e)·(1-f). Extends to general triangles via affine invariance and proves medians and angle bisectors are concurrent. Includes Routh's theorem: the 1/3 parameter gives 1/7 area ratio. 39 theorems, 0 axioms.",
+  "description": "Formalizes Ceva's theorem geometrically in \u211d\u00b2 using affine coordinates, proving that cevians AD, BE, CF are concurrent iff d\u00b7e\u00b7f = (1-d)\u00b7(1-e)\u00b7(1-f). Extends to general triangles via affine invariance and proves medians and angle bisectors are concurrent. Includes Routh's theorem: the 1/3 parameter gives 1/7 area ratio. 39 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -25,42 +25,45 @@
     "theoremCount": 39,
     "definitionCount": 20,
     "originalContributions": [
-      "GeomCevianConfig: concrete cevian configuration in ℝ² with parametric line representation",
-      "cevaCondition: algebraic predicate d·e·f = (1-d)·(1-e)·(1-f)",
-      "ceva_geometric_standard: forward direction — Ceva condition implies concurrency (standard triangle)",
-      "ceva_converse_standard: converse — concurrency implies Ceva condition",
+      "GeomCevianConfig: concrete cevian configuration in \u211d\u00b2 with parametric line representation",
+      "cevaCondition: algebraic predicate d\u00b7e\u00b7f = (1-d)\u00b7(1-e)\u00b7(1-f)",
+      "ceva_geometric_standard: forward direction \u2014 Ceva condition implies concurrency (standard triangle)",
+      "ceva_converse_standard: converse \u2014 concurrency implies Ceva condition",
       "ceva_iff_standard / ceva_iff_general: full iff characterization for standard and general triangles",
       "AffineMap2D: affine transformation infrastructure for general triangle reduction",
       "affine_preserves_concurrency: affine maps preserve the concurrency property",
       "medians_concurrent: medians of any triangle meet at a single point (centroid)",
       "angle_bisectors_concurrent: angle bisectors meet at incenter (via Ceva condition)",
-      "routhRatio: Routh's theorem ratio formula (d·e·f − (1-d)(1-e)(1-f))² / ((1−d+de)(1−e+ef)(1−f+fd))",
+      "routhRatio: Routh's theorem ratio formula (d\u00b7e\u00b7f \u2212 (1-d)(1-e)(1-f))\u00b2 / ((1\u2212d+de)(1\u2212e+ef)(1\u2212f+fd))",
       "routh_medial_thirds: Routh's ratio for d=e=f=1/3 equals 1/7"
     ]
   },
   "overview": {
-    "historicalContext": "Ceva's theorem (Giovanni Ceva, 1678) characterizes when three cevians of a triangle are concurrent. The algebraic version (product of signed ratios = 1) is widely proved, but the full geometric interpretation — constructing the concurrency point explicitly in ℝ² — requires additional infrastructure. This formalization provides that geometric grounding using affine coordinates and parametric lines.",
-    "problemStatement": "For a triangle ABC with cevian points D on BC, E on CA, F on AB determined by parameters d, e, f ∈ (0,1), are the cevians AD, BE, CF concurrent? Prove they meet at a single point iff d·e·f = (1-d)·(1-e)·(1-f).",
-    "text": "The key idea is to explicitly construct the concurrency point as the intersection of cevians AD and BE, then verify algebraically that CF passes through this same point precisely when the Ceva condition holds. The standard triangle (A=(0,0), B=(1,0), C=(0,1)) is handled directly; general triangles are reduced via affine invariance. The concurrency point formula uses a denominator w = (1-d)·(1-e) + d·e·f · something, which is shown positive under the parameter constraints, guaranteeing well-definedness.",
-    "proofStrategy": "Part I defines points, lines, and affine combinations in ℝ². Part II introduces GeomCevianConfig for the standard triangle and computes the explicit concurrency point. Part III reduces the general case to the standard via AffineMap2D. Part IV applies these to prove medians and angle bisectors are concurrent. Part V defines Routh's ratio and proves the 1/7 formula for medians.",
+    "historicalContext": "Ceva's theorem (Giovanni Ceva, 1678) characterizes when three cevians of a triangle are concurrent. The algebraic version (product of signed ratios = 1) is widely proved, but the full geometric interpretation \u2014 constructing the concurrency point explicitly in \u211d\u00b2 \u2014 requires additional infrastructure. This formalization provides that geometric grounding using affine coordinates and parametric lines.",
+    "problemStatement": "For a triangle ABC with cevian points D on BC, E on CA, F on AB determined by parameters d, e, f \u2208 (0,1), are the cevians AD, BE, CF concurrent? Prove they meet at a single point iff d\u00b7e\u00b7f = (1-d)\u00b7(1-e)\u00b7(1-f).",
+    "text": "The key idea is to explicitly construct the concurrency point as the intersection of cevians AD and BE, then verify algebraically that CF passes through this same point precisely when the Ceva condition holds. The standard triangle (A=(0,0), B=(1,0), C=(0,1)) is handled directly; general triangles are reduced via affine invariance. The concurrency point formula uses a denominator w = (1-d)\u00b7(1-e) + d\u00b7e\u00b7f \u00b7 something, which is shown positive under the parameter constraints, guaranteeing well-definedness.",
+    "proofStrategy": "Part I defines points, lines, and affine combinations in \u211d\u00b2. Part II introduces GeomCevianConfig for the standard triangle and computes the explicit concurrency point. Part III reduces the general case to the standard via AffineMap2D. Part IV applies these to prove medians and angle bisectors are concurrent. Part V defines Routh's ratio and proves the 1/7 formula for medians.",
     "keyInsights": [
-      "The concurrency point has explicit coordinates: w·(something), where w = 1-d+d·e > 0",
-      "Affine maps preserve both line membership and concurrency — so proving standard case suffices",
+      "The concurrency point has explicit coordinates: w\u00b7(something), where w = 1-d+d\u00b7e > 0",
+      "Affine maps preserve both line membership and concurrency \u2014 so proving standard case suffices",
       "Medians correspond to d=e=f=1/2, which trivially satisfies the Ceva condition",
       "Angle bisectors satisfy the Ceva condition by the angle bisector length ratios",
-      "Routh's theorem quantifies the inner triangle area; at d=e=f=1/3 this gives exactly 1/7"
+      "Routh's theorem quantifies the inner triangle area; at d=e=f=1/3 this gives exactly 1/7",
+      "The key algebraic identity in the forward proof: the denominator $w = 1-e+de > 0$ for $d,e \\in (0,1)$ ensures the concurrency point is well-defined; this is proved by `nlinarith`. The parameter $t = d/w$ for line BE and $s = (1-e)/w$ for line AD give the unique intersection.",
+      "The converse proof extracts parametric coordinates $s, t, u$ at the common point via `obtain`, then derives two key nonlinear equations by `nlinarith`: $u \\cdot f \\cdot d = (1-u)(1-d)$ and $u(1-f+ef) = e$. Cross-multiplying (with denominators positive) yields $def = (1-d)(1-e)(1-f)$.",
+      "Routh's theorem generalizes Ceva: when cevians are not concurrent ($def \\neq (1-d)(1-e)(1-f)$), they form an inner triangle with area ratio $(def-(1-d)(1-e)(1-f))^2 / ((1-d+de)(1-e+ef)(1-f+fd))$ relative to the original. The 1/7 formula for $d=e=f=1/3$ is a classical result proved by `norm_num`."
     ],
     "prerequisites": [
-      "Affine geometry: parametric lines, affine combinations, affine maps in ℝ²",
-      "Ceva's theorem (algebraic): d·e·f = (1-d)·(1-e)·(1-f) criterion",
-      "Basic linear algebra: 2×2 determinants for non-degeneracy"
+      "Affine geometry: parametric lines, affine combinations, affine maps in \u211d\u00b2",
+      "Ceva's theorem (algebraic): d\u00b7e\u00b7f = (1-d)\u00b7(1-e)\u00b7(1-f) criterion",
+      "Basic linear algebra: 2\u00d72 determinants for non-degeneracy"
     ]
   },
   "conclusion": {
-    "summary": "Ceva's theorem is fully proved geometrically in ℝ² using affine coordinates: cevians concurrent iff Ceva condition holds. Both forward and converse directions proved for standard and general triangles. Applications to medians (centroid) and angle bisectors (incenter) verified. Routh's 1/7 formula for medial thirds proved. 39 theorems, 20 definitions, 907 lines, 0 axioms.",
+    "summary": "Ceva's theorem is fully proved geometrically in \u211d\u00b2 using affine coordinates: cevians concurrent iff Ceva condition holds. Both forward and converse directions proved for standard and general triangles. Applications to medians (centroid) and angle bisectors (incenter) verified. Routh's 1/7 formula for medial thirds proved. 39 theorems, 20 definitions, 907 lines, 0 axioms.",
     "implications": "This formalization provides the missing geometric bridge between the algebraic Ceva condition and actual point concurrency in the plane. It also demonstrates that the affine invariance approach cleanly handles all non-degenerate triangles by reduction to a canonical form.",
     "openQuestions": [
-      "Trigonometric form of Ceva: sin(∠BAD)/sin(∠DAC) · ... = 1 (see CevasTheoremSinRatio.lean)",
+      "Trigonometric form of Ceva: sin(\u2220BAD)/sin(\u2220DAC) \u00b7 ... = 1 (see CevasTheoremSinRatio.lean)",
       "Generalize to non-Euclidean geometry: spherical and hyperbolic Ceva (see CevasTheoremNonEuclidean.lean)",
       "Complete Routh's theorem formula for general parameters (not just 1/3)"
     ]
@@ -76,13 +79,75 @@
     {
       "targetId": "cevas-theorem",
       "relationship": "extends",
-      "description": "Algebraic version of Ceva's theorem; this file provides the geometric formulation in ℝ²"
+      "description": "Algebraic version of Ceva's theorem; this file provides the geometric formulation in \u211d\u00b2"
     },
     {
       "targetId": "cevas-theorem-oq-02",
       "relationship": "related",
       "description": "Further extensions of Ceva's theorem including trigonometric and projective forms"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Further extensions including trigonometric Ceva (sine form) and projective/non-Euclidean generalizations"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-geometry-primitives",
+      "title": "Geometry Primitives",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Point type (\u211d\u00d7\u211d), parametric lineThrough, areConcurrent (\u2203 common point), affineComb (convex combination); basic lemmas self_on_line_left/right and affineComb_on_line."
+    },
+    {
+      "id": "sec-cevian-config",
+      "title": "GeomCevianConfig and Cevian Point Definitions",
+      "startLine": 59,
+      "endLine": 148,
+      "summary": "GeomCevianConfig structure: triangle ABC and parameters d,e,f\u2208(0,1); cevian points D=affineComb(B,C,d), E=affineComb(C,A,e), F=affineComb(A,B,f); cevian lines cevianAD/BE/CF; cevaCondition predicate; stdTriangleConfig and standard cevian coordinates."
+    },
+    {
+      "id": "sec-ceva-standard-forward",
+      "title": "Ceva's Theorem: Standard Triangle, Forward Direction",
+      "startLine": 149,
+      "endLine": 247,
+      "summary": "Explicit concurrency point P=((1-d)(1-e)/w, d(1-e)/w) where w=1-e+de>0; verified on AD (concurrency_on_AD), BE (concurrency_on_BE), and CF (concurrency_on_CF, uses Ceva condition). ceva_geometric_standard assembles the result; medians_ceva and medians_concurrent as immediate corollaries."
+    },
+    {
+      "id": "sec-ceva-converse",
+      "title": "Converse and Iff Theorem: Standard Triangle",
+      "startLine": 248,
+      "endLine": 362,
+      "summary": "ceva_converse_standard: extracts parametric coordinates at the common point, derives key=u\u00b7f\u00b7d=(1-u)(1-d) and key2=u(1-f+ef)=e by nlinarith, concludes cevaCondition. ceva_iff_standard: biconditional combining both directions."
+    },
+    {
+      "id": "sec-affine-infrastructure",
+      "title": "Affine Transformation Infrastructure",
+      "startLine": 364,
+      "endLine": 465,
+      "summary": "signedArea, triangleNonDegenerate; AffineMap2D structure (2\u00d72 matrix + translation); affine_preserves_comb, affine_preserves_line, affine_preserves_concurrency; stdToTriangle (mapping standard triangle to ABC), stdToTriangle_det=signedArea, triangleToStd (Cramer's rule inverse)."
+    },
+    {
+      "id": "sec-ceva-general",
+      "title": "Ceva's Theorem: General Triangle",
+      "startLine": 466,
+      "endLine": 715,
+      "summary": "GeneralCevianConfig structure with non-degeneracy; ceva_geometric_general and ceva_converse_general reduce to standard case via stdToTriangle/triangleToStd; ceva_iff_general and ceva_general_iff provide the complete biconditional for arbitrary non-degenerate triangles."
+    },
+    {
+      "id": "sec-classical-applications",
+      "title": "Classical Concurrence Results",
+      "startLine": 716,
+      "endLine": 822,
+      "summary": "Angle bisectors: d=b/(b+c), e=c/(c+a), f=a/(a+b) satisfy cevaCondition by ring; angle_bisectors_concurrent proves incenter existence. Altitudes: altitude_ceva_algebraic uses projection formulas b\u00b7cosC+c\u00b7cosB=a to establish cevaCondition."
+    },
+    {
+      "id": "sec-routh-theorem",
+      "title": "Routh's Theorem (Area Ratio)",
+      "startLine": 823,
+      "endLine": 907,
+      "summary": "routhRatio(d,e,f)=(def-(1-d)(1-e)(1-f))\u00b2/((1-d+de)(1-e+ef)(1-f+fd)); routh_zero_iff_ceva: ratio=0 iff cevaCondition; routh_medial_thirds: Routh(1/3,1/3,1/3)=1/7 by norm_num."
+    }
+  ]
 }
