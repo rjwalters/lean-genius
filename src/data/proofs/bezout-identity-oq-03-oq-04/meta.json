@@ -35,5 +35,63 @@
       "description": "Efficient CRT implementation"
     }
   ],
-  "sections": []
+  "overview": {
+    "historicalContext": "The Chinese Remainder Theorem (CRT) has roots in ancient Chinese mathematics — the 3rd-century 'Sun Tzu Suanjing' gives the problem 'find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7'. The general statement was systematized by Qin Jiushao in the 13th century and rediscovered in the West by Euler and Gauss. The modern algebraic form (the CRT isomorphism ℤ/MZ ≅ ℤ/m₁Z × ... × ℤ/mₖZ for pairwise coprime mᵢ) was formalized in the 19th century.\n\nThe computational side of CRT — actually finding the solution x — typically uses the extended Euclidean algorithm to compute modular inverses. The standard textbook algorithm for two coprime moduli m, n is: (1) compute s, t with s·m + t·n = 1 via extended GCD; (2) compute the modular inverse (M/m)⁻¹ mod m, where M = m·n; (3) assemble x = a₁·(M/m)·(M/m)⁻¹ + a₂·(M/n)·(M/n)⁻¹ mod M. This requires two extended GCD calls and several modular reductions.\n\nThe key insight of this formalization is that step (2) is unnecessary: once you have the Bézout coefficients s, t with s·m + t·n = 1, the formula x = b·s·m + a·t·n already satisfies x ≡ a (mod m) and x ≡ b (mod n) without any modular reduction. This 'direct Bézout' approach is more efficient and more directly verifiable in Lean — the proofs reduce to divisibility arithmetic with `ring` and `linarith`.",
+    "problemStatement": "Given coprime integers $m, n$ with Bézout coefficients $s, t$ satisfying $sm + tn = 1$, and residues $a, b \\in \\mathbb{Z}$, define $x = b \\cdot s \\cdot m + a \\cdot t \\cdot n$. Prove: (1) $m \\mid (x - a)$ (correctness mod m); (2) $n \\mid (x - b)$ (correctness mod n); (3) if $m \\mid (x-y)$ and $n \\mid (x-y)$ with $\\gcd(m,n)=1$, then $mn \\mid (x-y)$ (uniqueness mod mn). Extend to multiple coprime moduli via $\\gcd(m_1 m_2, m_3) = 1$ when $\\gcd(m_i, m_3) = 1$ for $i=1,2$.",
+    "proofStrategy": "The four correctness proofs use `ring`-based arithmetic. For `crtDirect_mod_m`: rewrite x - a = b·s·m + a·(t·n - 1) = b·s·m - a·s·m = (b·s - a·s)·m using `t·n - 1 = -(s·m)` from the Bézout identity; this exhibits the divisibility witness. Similarly for mod n. Uniqueness (`crt_unique`) delegates to `Int.Coprime.mul_dvd_of_dvd_of_dvd` from Mathlib — when gcd(m,n) = 1 and both divide a difference, their product divides it. The extended GCD theorem uses Mathlib's `Int.gcdA`, `Int.gcdB`, and `Int.gcd_eq_gcd_ab`.",
+    "keyInsights": [
+      "The formula x = b·s·m + a·t·n avoids modular reduction entirely. The proof that x ≡ a (mod m) works by the substitution t·n = 1 - s·m: x - a = b·s·m + a·t·n - a = b·s·m + a(t·n - 1) = b·s·m - a·s·m = (b-a)·s·m. No division, no modular arithmetic needed — just ring identities.",
+      "Mathlib provides `Int.gcdA`, `Int.gcdB` (the Bézout coefficients computed by the extended GCD algorithm) and `Int.gcd_eq_gcd_ab` (the identity gcdA·m + gcdB·n = gcd(m,n)). These are used in `extended_gcd_gives_bezout` to witness the ∃ s t, s·m + t·n = gcd(m,n). For coprime m, n, we substitute gcd = 1 to get the CRT coefficients directly.",
+      "The uniqueness proof `crt_unique` is a one-liner: `Int.Coprime.mul_dvd_of_dvd_of_dvd`. This Mathlib lemma exactly captures the key property of coprime numbers: if gcd(m,n) = 1 and m | d and n | d, then mn | d. The `Int.Coprime` type in Lean is `Int.gcd m n = 1`, and the cast `by exact_mod_cast hcop` bridges between the ℕ-valued gcd and the Coprime predicate.",
+      "The `iterated_crt_product` theorem proves that coprimality is preserved under products: if gcd(m₁,m₃) = 1 and gcd(m₂,m₃) = 1, then gcd(m₁·m₂, m₃) = 1. This enables the folding approach: after solving for m₁, m₂ to get a solution mod m₁·m₂, we can combine with m₃ using the same Bézout method. The proof uses `Int.Coprime.mul_left` from Mathlib.",
+      "The file uses `/-!` docstring syntax for sections (e.g., `/-! ## Part 1`). Unlike `/-` comments, `/-! ... -/` are Lean doc comments that associate documentation with the next declaration. This syntax is used throughout as a structuring device, creating a readable narrative alongside the formal proofs."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-doc",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports Int.GCD (Bézout coefficients), ZMod.Basic (modular arithmetic types), and Tactic. Documentation explains CRT problem, standard approach, and the direct Bézout insight."
+    },
+    {
+      "id": "crt-direct",
+      "title": "Part 1: Direct Bézout CRT",
+      "startLine": 39,
+      "endLine": 68,
+      "summary": "Defines crtDirect (b·s·m + a·t·n). Proves crtDirect_mod_m (m | x-a) and crtDirect_mod_n (n | x-b) using the Bézout identity s·m + t·n = 1 via ring arithmetic."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Part 2: Uniqueness",
+      "startLine": 69,
+      "endLine": 77,
+      "summary": "crt_unique: if m|d and n|d with gcd(m,n)=1, then mn|d. Proved in one line via Int.Coprime.mul_dvd_of_dvd_of_dvd from Mathlib."
+    },
+    {
+      "id": "efficiency",
+      "title": "Part 3: Efficiency and Extended GCD",
+      "startLine": 78,
+      "endLine": 102,
+      "summary": "Doc comment analyzes efficiency (1 extended GCD + 4 muls + 1 add vs standard 2 GCDs). extended_gcd_gives_bezout uses Int.gcdA/gcdB/gcd_eq_gcd_ab. bezout_solves_crt specializes to coprime case."
+    },
+    {
+      "id": "iterated",
+      "title": "Part 4: Iterated CRT and Summary",
+      "startLine": 103,
+      "endLine": 142,
+      "summary": "iterated_crt_product: gcd(m₁m₂, m₃)=1 when gcd(m₁,m₃)=gcd(m₂,m₃)=1, enabling folding. Summary confirms YES answer to the open question. API checks for Int.gcdA/gcdB/gcd_eq_gcd_ab."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a fully verified (0 sorries, 0 axioms) efficient CRT computation in Lean 4. The direct Bézout approach avoids modular inverses: given s·m + t·n = 1, the formula x = b·s·m + a·t·n satisfies x ≡ a (mod m) and x ≡ b (mod n). All 8 theorems are proved from first principles using Mathlib's integer GCD library.",
+    "implications": "The formalization answers the original open question affirmatively: YES, there is an efficient verified CRT without modular reduction. The direct approach is both simpler to verify (ring arithmetic suffices) and more efficient (fewer operations). The folding theorem enables extension to k coprime moduli with O(k) overhead. This provides a verified building block for modular arithmetic algorithms in Lean.",
+    "openQuestions": [
+      "Can crtDirect be generalized to arbitrary commutative rings (beyond ℤ) where Bézout's identity holds? Lean's type class system should support this via `IsBezout` or `GCDMonoid`.",
+      "Can the efficiency analysis (O(k·log²M) complexity) be formally verified in Lean using a computational complexity framework?",
+      "Is there a cleaner way to phrase the uniqueness theorem using ZMod.val or ZMod.intCast rather than divisibility arithmetic?",
+      "Can the folding approach be generalized to a recursive definition `crtFold : List (ℤ × ℤ) → ℤ` with a verified correctness theorem?"
+    ]
+  }
 }
