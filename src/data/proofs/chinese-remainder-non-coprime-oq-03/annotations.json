@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-crt-nc03-strategy",
+    "proofId": "chinese-remainder-non-coprime-oq-03",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Three-Moduli CRT: The Two-Step Reduction Strategy",
+    "content": "The module docstring explains the core strategy for extending the non-coprime CRT from 2 to 3 moduli. The direct approach (generalizing necessity and sufficiency simultaneously for 3 moduli) would require complex combinatorics. Instead, the proof uses iterated reduction: (1) Solve the first pair (m₁,m₂) to get x₀; (2) Show that gcd(lcm(m₁,m₂), m₃) divides x₀-a₃ using the GCD-LCM distributive law; (3) Apply the 2-moduli CRT again to (lcm(m₁,m₂), m₃). The GCD-LCM distributive law is the key: gcd(lcm(a,b), c) ∣ lcm(gcd(a,c), gcd(b,c)), proved by a 200-line Bézout-based argument. The file self-contains the 2-moduli CRT (private copies) so it imports cleanly.",
+    "mathContext": "Compatibility condition for 3 moduli: $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ for all pairs. The iterated 2-moduli reduction works because $\\gcd(\\mathrm{lcm}(m_1,m_2), m_3) \\mid (x_0 - a_3)$ follows from $\\gcd(m_1,m_3) \\mid (x_0-a_3)$ and $\\gcd(m_2,m_3) \\mid (x_0-a_3)$, hence $\\mathrm{lcm}(\\gcd(m_1,m_3), \\gcd(m_2,m_3)) \\mid (x_0-a_3)$, and then the distributive law gives the required divisibility.",
+    "significance": "context",
+    "relatedConcepts": ["iterated 2-moduli reduction", "GCD-LCM distributive law", "EuclideanDomain", "Bézout identity"],
+    "prerequisites": ["Non-coprime CRT for 2 moduli (OQ02)", "EuclideanDomain.lcm_dvd", "dvd_trans"]
+  },
+  {
+    "id": "ann-crt-nc03-lemmas",
+    "proofId": "chinese-remainder-non-coprime-oq-03",
+    "range": { "startLine": 67, "endLine": 84 },
+    "type": "context",
+    "title": "Intermediate Lemmas: GCD Divisibility and Congruence Transfer",
+    "content": "Part I provides two helper lemmas. gcd_dvd_of_dvd_sub proves that m ∣ (x-a) implies gcd(m,p) ∣ (x-a), using the fact that gcd(m,p) divides m (EuclideanDomain.gcd_dvd_left) composed with the hypothesis. gcd_dvd_sub_of_congr proves: given m ∣ (x₀-a₁) and gcd(m,m₃) ∣ (a₁-a₃), conclude gcd(m,m₃) ∣ (x₀-a₃). This is a transitivity of congruence: x₀-a₃ = (x₀-a₁) + (a₁-a₃), and gcd(m,m₃) divides both summands. These two lemmas are the bridge that transfers pairwise GCD conditions from the original remainders to the intermediate solution x₀.",
+    "mathContext": "$m \\mid (x_0 - a_1)$ and $\\gcd(m,m_3) \\mid (a_1 - a_3)$ $\\Rightarrow$ $\\gcd(m,m_3) \\mid (x_0 - a_3)$. This follows by congruence transitivity: $x_0 \\equiv a_1 \\pmod{m}$ and $a_1 \\equiv a_3 \\pmod{\\gcd(m,m_3)}$, so $x_0 \\equiv a_3 \\pmod{\\gcd(m,m_3)}$ (since $\\gcd(m,m_3) \\mid m$).",
+    "significance": "supporting",
+    "relatedConcepts": ["gcd_dvd_of_dvd_sub", "gcd_dvd_sub_of_congr", "congruence transitivity"],
+    "prerequisites": ["EuclideanDomain.gcd_dvd_left", "dvd_trans", "dvd_add"]
+  },
+  {
+    "id": "ann-crt-nc03-dist-easy",
+    "proofId": "chinese-remainder-non-coprime-oq-03",
+    "range": { "startLine": 86, "endLine": 111 },
+    "type": "insight",
+    "title": "GCD-LCM Distributive Law: Easy Direction via Divisibility Chains",
+    "content": "The easy direction of the distributive law (lcm_gcd_dvd_gcd_lcm) proves: lcm(gcd(a,c), gcd(b,c)) ∣ gcd(lcm(a,b), c). This direction follows purely from the lattice structure of divisibility. To show lcm(gcd(a,c), gcd(b,c)) ∣ gcd(lcm(a,b), c), it suffices to show both gcd(a,c) and gcd(b,c) divide gcd(lcm(a,b), c). For gcd(a,c): it divides lcm(a,b) (since gcd(a,c)∣a∣lcm(a,b)) and it divides c, so it divides their gcd. The helper gcd_lcm_dvd_mul proves gcd(lcm(a,b),c) ∣ a·b by composing with lcm(a,b) ∣ a·b. This is used in the hard direction to anchor the Bézout expansion.",
+    "mathContext": "$\\gcd(a,c) \\mid a \\mid \\mathrm{lcm}(a,b)$ and $\\gcd(a,c) \\mid c$, so $\\gcd(a,c) \\mid \\gcd(\\mathrm{lcm}(a,b), c)$. Similarly for $\\gcd(b,c)$. Then $\\mathrm{lcm}(\\gcd(a,c),\\gcd(b,c)) \\mid \\gcd(\\mathrm{lcm}(a,b),c)$ by the LCM universal property (lcm_dvd).",
+    "significance": "supporting",
+    "relatedConcepts": ["lcm_gcd_dvd_gcd_lcm", "EuclideanDomain.dvd_gcd", "EuclideanDomain.lcm_dvd", "lattice of divisors"],
+    "prerequisites": ["EuclideanDomain.dvd_gcd", "EuclideanDomain.dvd_lcm_left/right", "dvd_trans"]
+  },
+  {
+    "id": "ann-crt-nc03-dist-hard",
+    "proofId": "chinese-remainder-non-coprime-oq-03",
+    "range": { "startLine": 136, "endLine": 321 },
+    "type": "insight",
+    "title": "GCD-LCM Hard Direction: A 185-Line Bézout Decomposition",
+    "content": "The hard direction gcd_lcm_dvd_lcm_gcd (proving gcd(lcm(a,b),c) ∣ lcm(gcd(a,c), gcd(b,c))) is a 185-line argument. The proof strategy: set g = gcd(a,b), factor a = g·α and b = g·β with IsCoprime α β (proved by Bézout cancellation). Set d' = gcd(g,c), factor g = d'·g' and c = d'·c' with IsCoprime g' c'. Write M = lcm(gcd(a,c), gcd(b,c)) as a linear combination of a and c (via M = gcd(a,c)·k₁ and Bézout: M = r₁·a + s₁·c). Similarly M = r₂·b + s₂·c. Subtract: r₁·a - r₂·b = (s₂-s₁)·c. Substitute a = g·α, b = g·β: g·(r₁·α - r₂·β) = (s₂-s₁)·c. Cancel d': g'·(r₁·α - r₂·β) = (s₂-s₁)·c'. Use IsCoprime g' c' to conclude c' ∣ (r₁·α - r₂·β). Then use IsCoprime α β to conclude β ∣ (r₁ - p_b·c'·w). Decompose M = m·(g·α·β) + T·c. Since gcd(lcm(a,b),c) divides both g·α·β (because lcm(a,b) ∣ g·α·β) and c, it divides M.",
+    "mathContext": "The core algebraic identity: $M = m \\cdot (g \\cdot \\alpha \\cdot \\beta) + T \\cdot c$. Since $\\mathrm{lcm}(a,b) \\mid g \\cdot \\alpha \\cdot \\beta$ (both $a = g\\alpha$ and $b = g\\beta$ divide it) and $\\gcd(\\mathrm{lcm}(a,b),c) \\mid \\mathrm{lcm}(a,b)$, we get $\\gcd(\\mathrm{lcm}(a,b),c) \\mid g\\alpha\\beta$. Combined with $\\gcd(\\mathrm{lcm}(a,b),c) \\mid c$, it divides $M$. The key CRT-within-a-proof structure: two coprimality arguments (IsCoprime α β and IsCoprime g' c') enable the divisibility cascade.",
+    "significance": "key",
+    "relatedConcepts": ["gcd_lcm_dvd_lcm_gcd", "Bézout decomposition", "IsCoprime cancellation", "coprime factoring"],
+    "prerequisites": ["IsCoprime α β via Bézout cancellation", "mul_left_cancel₀", "EuclideanDomain.gcd_eq_gcd_ab"]
+  },
+  {
+    "id": "ann-crt-nc03-sufficiency",
+    "proofId": "chinese-remainder-non-coprime-oq-03",
+    "range": { "startLine": 322, "endLine": 391 },
+    "type": "insight",
+    "title": "Three-Moduli Sufficiency, Iff, Uniqueness, and Proof History",
+    "content": "ed_crt_three_sufficient applies the strategy: (1) ed_crt_sufficient h12 gives x₀ satisfying m₁ and m₂; (2) gcd_dvd_sub_of_congr transfers h13 and h23 to get gcd(m₁,m₃) ∣ (x₀-a₃) and gcd(m₂,m₃) ∣ (x₀-a₃); (3) EuclideanDomain.lcm_dvd combines these; (4) gcd_lcm_dvd_lcm_gcd gives gcd(lcm(m₁,m₂),m₃) ∣ (x₀-a₃); (5) ed_crt_sufficient constructs x; (6) x satisfies all three via m₁ ∣ lcm(m₁,m₂) and m₂ ∣ lcm(m₁,m₂). ed_crt_three_iff combines with necessity. ed_crt_three_unique proves solutions agree mod lcm(m₁,lcm(m₂,m₃)) by EuclideanDomain.lcm_dvd. The summary records the proof history: originally proved using an axiom gcd_lcm_distrib, then via sorry, then fully verified with the direct Bézout proof.",
+    "mathContext": "$\\gcd(\\mathrm{lcm}(m_1,m_2), m_3) \\mid (x_0 - a_3)$ follows from $\\gcd(\\mathrm{lcm}(m_1,m_2), m_3) \\mid \\mathrm{lcm}(\\gcd(m_1,m_3), \\gcd(m_2,m_3))$ (hard distributive law) and $\\mathrm{lcm}(\\gcd(m_1,m_3), \\gcd(m_2,m_3)) \\mid (x_0 - a_3)$ (from individual gcd conditions). Uniqueness: $m_i \\mid (x-y)$ for $i=1,2,3$, so $\\mathrm{lcm}(m_1, \\mathrm{lcm}(m_2,m_3)) \\mid (x-y)$ by nested application of lcm_dvd.",
+    "significance": "key",
+    "relatedConcepts": ["ed_crt_three_sufficient", "ed_crt_three_iff", "ed_crt_three_unique", "EuclideanDomain.lcm_dvd"],
+    "prerequisites": ["gcd_lcm_dvd_lcm_gcd", "gcd_dvd_sub_of_congr", "ed_crt_sufficient", "EuclideanDomain.dvd_lcm_left/right"]
+  }
+]
