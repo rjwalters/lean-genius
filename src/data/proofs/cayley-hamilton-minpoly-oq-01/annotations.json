@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-jcf-minpoly-overview",
+    "proofId": "cayley-hamilton-minpoly-oq-01",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "Jordan-Minpoly: From Blocks to Polynomials",
+    "content": "The module docstring establishes the central relationship: for f : Module.End K V over an algebraically closed field, the minimal polynomial encodes the entire Jordan block structure via minpoly K f = ∏_{μ eigenvalue} (X - μ)^{e_μ}, where e_μ = maxGenEigenspaceIndex f μ is the size of the LARGEST Jordan block associated to μ. The file proceeds in six parts: (I) eigenvalue ↔ root of minpoly, plus minpoly | charpoly; (II) generalized eigenspace structure (span = top over alg. closed, disjointness, stabilization); (III) nilpotent characterization: IsNilpotent f ↔ ∃ k, minpoly = X^k, proved via a UFD argument; (IV) semisimple characterization: IsSemisimple f ↔ Squarefree (minpoly); (V) three JCF axioms for results requiring full Jordan block matrix theory (not yet in Mathlib 4.26.0); (VI) corollaries. The distinction between proved and axiomatized results reflects the gap between Mathlib's triangularizability/Jordan-Chevalley theory (complete) and its Jordan Normal Form as an explicit block-matrix decomposition (not yet formalized).",
+    "mathContext": "The Jordan canonical form theorem (Jordan, 1870) says every endomorphism over $\\overline{K}$ is similar to a block-diagonal matrix with Jordan blocks $J_{\\mu,k}$ (eigenvalue $\\mu$ on diagonal, 1s on superdiagonal). The minimal polynomial extracts the coarsest information: $e_\\mu = $ size of the largest Jordan block for $\\mu$. In contrast, charpoly records all block sizes: $\\mathrm{charpoly}(f) = \\prod_\\mu (X-\\mu)^{d_\\mu}$ where $d_\\mu = \\dim(\\mathrm{genEigenspace}\\ \\mu)$ is the total algebraic multiplicity.",
+    "significance": "context",
+    "relatedConcepts": ["Jordan canonical form", "minimal polynomial", "maxGenEigenspaceIndex", "generalized eigenspace", "semisimple", "nilpotent"],
+    "prerequisites": ["Module.End", "minpoly K f", "genEigenspace", "IsAlgClosed", "FiniteDimensional"]
+  },
+  {
+    "id": "ann-jcf-minpoly-eigenvalue-bridge",
+    "proofId": "cayley-hamilton-minpoly-oq-01",
+    "range": { "startLine": 57, "endLine": 91 },
+    "type": "insight",
+    "title": "Eigenvalues as Roots: The Polynomial-Linear Algebra Bridge",
+    "content": "Part I establishes the fundamental bridge between linear and polynomial algebra. eigenvalue_iff_root_minpoly directly wraps Mathlib's hasEigenvalue_iff_isRoot: f.HasEigenvalue μ ↔ (minpoly K f).IsRoot μ. eigenvalue_linear_factor_dvd_minpoly immediately strengthens this via dvd_iff_isRoot: if μ is an eigenvalue then (X - C μ) divides minpoly K f. minpoly_dvd_charpoly wraps Matrix.minpoly_dvd_charpoly: minpoly K A ∣ A.charpoly — so every root of minpoly is a root of charpoly. The two foundational properties minpoly_annihilates (aeval f (minpoly K f) = 0) and minpoly_monic (minpoly K f).Monic are included. The annihilation property is what makes polynomial methods useful: we can substitute the endomorphism f for X in polynomial identities. A technical note in lines 87-91 explains why the degree bound natDegree (minpoly K f) ≤ finrank K V is not proved here: computing finrank K (End K V) triggers a deterministic whnf timeout in Lean 4.26.0.",
+    "mathContext": "The chain of implications: $f.\\mathrm{HasEigenvalue}\\ \\mu \\Leftrightarrow (\\mathrm{minpoly}_K f).\\mathrm{IsRoot}\\ \\mu \\Leftrightarrow (X - \\mu) \\mid \\mathrm{minpoly}_K f$. Combined with minpoly $\\mid$ charpoly: the eigenvalues of $f$ are exactly the roots of $\\mathrm{minpoly}_K f$, a subset of the roots of charpoly. Over an algebraically closed field they coincide (every root of charpoly is an eigenvalue).",
+    "significance": "key",
+    "relatedConcepts": ["HasEigenvalue", "Polynomial.IsRoot", "dvd_iff_isRoot", "hasEigenvalue_iff_isRoot", "minpoly_dvd_charpoly"],
+    "prerequisites": ["minpoly.aeval", "FiniteDimensional K V", "Polynomial.aeval"]
+  },
+  {
+    "id": "ann-jcf-minpoly-nilpotent",
+    "proofId": "cayley-hamilton-minpoly-oq-01",
+    "range": { "startLine": 131, "endLine": 194 },
+    "type": "insight",
+    "title": "Nilpotent Characterization: minpoly = X^k via UFD",
+    "content": "Part III gives the nilpotent-minpoly equivalence using a UFD argument. The key theorem minpoly_pow_X_of_nilpotent proves: IsNilpotent f → ∃ j, minpoly K f = X^j. Given f^n = 0, minpoly_dvd_pow_of_nilpotent uses minpoly.dvd to get minpoly K f ∣ X^n (since aeval f (X^n) = f^n = 0). Then, since X is prime in K[X] (dvd_prime_pow hX_prime), any divisor of X^n is associated to X^j for some j ≤ n. Both minpoly K f and X^j are monic; in an integral domain, associated monic polynomials are equal (Monic.eq_one_of_isUnit). The converse nilpotent_of_minpoly_pow_X: if minpoly = X^k, then aeval f (X^k) = f^k = 0 (direct from annihilation). eigenvalue_zero_of_nilpotent provides a complementary proof: eigenvalue μ of nilpotent f satisfies μ^k•v = f^k(v) = 0 with v ≠ 0 (eigenvector), so μ^k = 0 in K, and since K is a field μ = 0. This gives a concrete witnesses that nilpotent ↔ all eigenvalues are 0 ↔ minpoly is a pure power of X.",
+    "mathContext": "The UFD structure of $K[X]$: $X$ is irreducible (and hence prime since $K[X]$ is a PID), so $\\mathrm{minpoly} \\mid X^n$ implies $\\mathrm{minpoly} \\sim X^j$ (associated). Since both are monic and $K[X]^\\times = K^\\times$, the unit in the association must be 1. This is the polynomial analogue of: a natural number dividing a prime power $p^n$ must itself be a prime power $p^j$.",
+    "significance": "key",
+    "relatedConcepts": ["IsNilpotent", "Polynomial.prime_X", "dvd_prime_pow", "Monic.eq_one_of_isUnit", "minpoly.dvd"],
+    "prerequisites": ["UFD K[X]", "Polynomial.dvd_iff_isRoot", "IsNilpotent.eq_zero", "smul_eq_zero"]
+  },
+  {
+    "id": "ann-jcf-minpoly-semisimple",
+    "proofId": "cayley-hamilton-minpoly-oq-01",
+    "range": { "startLine": 206, "endLine": 216 },
+    "type": "insight",
+    "title": "Semisimple ↔ Squarefree Minpoly: Diagonalizability in Polynomial Form",
+    "content": "Part IV establishes the central diagonalizability criterion. isSemisimple_iff_squarefree_minpoly proves f.IsSemisimple ↔ Squarefree (minpoly K f). The forward direction wraps IsSemisimple.minpoly_squarefree from Mathlib's semisimple theory. The backward direction uses isSemisimple_of_squarefree_aeval_eq_zero: if p is squarefree and aeval f p = 0, then f is semisimple. semisimple_nilpotent_eq_zero proves the foundational uniqueness lemma: an endomorphism that is both semisimple and nilpotent must be zero (eq_zero_of_isNilpotent_isSemisimple). This is the key lemma in the Jordan-Chevalley uniqueness argument — if f = s + n = s' + n' are two decompositions with s,s' semisimple and n,n' nilpotent commuting, then s-s' = n'-n is both semisimple and nilpotent, hence zero. From a polynomial perspective: semisimple ↔ all Jordan blocks are 1×1 ↔ e_μ = 1 for all μ ↔ minpoly has distinct roots ↔ squarefree.",
+    "mathContext": "Squarefree means: no repeated irreducible factor. For $\\mathrm{minpoly}_K(f) = \\prod_\\mu (X-\\mu)^{e_\\mu}$, squarefree means $e_\\mu \\leq 1$ for all $\\mu$. This is precisely the condition for all Jordan blocks to be $1 \\times 1$ (diagonal blocks), i.e., $f$ is diagonalizable. Over non-algebraically-closed $K$, semisimple is the correct generalization: the minimal polynomial factors into distinct irreducible polynomials (not necessarily linear).",
+    "significance": "key",
+    "relatedConcepts": ["IsSemisimple", "Squarefree", "isSemisimple_of_squarefree_aeval_eq_zero", "Jordan-Chevalley decomposition", "eq_zero_of_isNilpotent_isSemisimple"],
+    "prerequisites": ["Module.IsSemisimple", "Polynomial.Squarefree", "IsSemisimple.minpoly_squarefree"]
+  },
+  {
+    "id": "ann-jcf-minpoly-axioms",
+    "proofId": "cayley-hamilton-minpoly-oq-01",
+    "range": { "startLine": 222, "endLine": 257 },
+    "type": "context",
+    "title": "The Three JCF Axioms: Mathlib's Current Frontier in Linear Algebra",
+    "content": "Part V axiomatizes three results that require the full Jordan block matrix decomposition — the explicit Jordan basis with eigenvalues on the diagonal and 1s on the superdiagonal — which is not yet in Mathlib 4.26.0. jordan_normal_form_basis states the existence of a Jordan basis: a sigma-indexed family e : (Σ i : Fin m, Fin (sizes i)) → V where f(e_{i,j}) = eigenvalues_i • e_{i,j} + e_{i,j+1} (with zero for the last position). The placeholder condition LinearMap.ker (LinearMap.id - f) ≤ ⊤ acknowledges that encoding linear independence of this sigma-indexed family requires additional infrastructure. minpoly_product_formula is the key JCF-minpoly formula: minpoly K f = ∏_{μ ∈ s} (X - C μ)^(maxGenEigenspaceIndex f μ), axiomatizing the precise exponents. maxGenEigenspaceIndex_exact is the tightness axiom: the exponent is not merely an upper bound — there exists a vector in maxGenEigenspace μ on which (f - μ)^{e-1} is nonzero. This exactness is what makes the product formula a sharp description rather than just a divisibility statement.",
+    "mathContext": "Mathlib 4.26.0 status: (1) triangularizability — exists a basis in which the matrix is upper-triangular (proved via iSup_maxGenEigenspace_eq_top + choice); (2) Jordan-Chevalley decomposition — $f = s + n$ with $s$ semisimple, $n$ nilpotent, $[s,n]=0$, both polynomials in $f$; (3) generalized eigenspaces and maxGenEigenspaceIndex. What is missing: the explicit Jordan block indexing that identifies which generalized eigenvectors form which Jordan chain, needed to prove the exponent formula $e_\\mu = \\max_i (\\text{block size}_i)$.",
+    "significance": "context",
+    "relatedConcepts": ["jordan_normal_form_basis", "minpoly_product_formula", "maxGenEigenspaceIndex_exact", "maxGenEigenspace", "IsAlgClosed"],
+    "prerequisites": ["Mathlib.LinearAlgebra.Eigenspace.Triangularizable", "Mathlib.LinearAlgebra.JordanChevalley", "Module.End.maxGenEigenspaceIndex"]
+  },
+  {
+    "id": "ann-jcf-minpoly-summary",
+    "proofId": "cayley-hamilton-minpoly-oq-01",
+    "range": { "startLine": 280, "endLine": 307 },
+    "type": "context",
+    "title": "The Minimal Polynomial as a Complete Jordan Block Invariant",
+    "content": "The closing summary frames the file's contribution. The minimal polynomial is a complete invariant of the Jordan block structure: it determines, for each eigenvalue μ, the size e_μ of the largest Jordan block, via minpoly = ∏ (X-μ)^{e_μ}. The four key equivalences form a complete algebraic characterization: eigenvalue ↔ root of minpoly; nilpotent ↔ minpoly = X^k; semisimple ↔ squarefree minpoly; semisimple + nilpotent = 0 (uniqueness for Jordan-Chevalley). The 20 theorems split into two groups. Parts I-IV (theorems 1-19) are fully verified: they rely on Mathlib's generalized eigenspace and semisimple theories, which are complete. Part V (3 axioms) requires the JNF block matrix, Mathlib's active development frontier. The summary notes the proof-of-axiom-to-verified trajectory is expected to complete when Mathlib formalizes the explicit Jordan block decomposition with a labeled basis.",
+    "mathContext": "The relation between minpoly and charpoly is: $\\mathrm{minpoly}_K(f) \\mid \\mathrm{charpoly}_K(f)$ (proved) and they have the same roots (both record the eigenvalues). The difference: charpoly records $d_\\mu = \\sum_i (\\text{block size}_i$ for eigenvalue $\\mu)$ (total multiplicity), while minpoly records $e_\\mu = \\max_i (\\text{block size}_i)$ (largest block). The ratio $d_\\mu - e_\\mu \\geq 0$ measures the presence of multiple Jordan blocks for each eigenvalue.",
+    "significance": "context",
+    "relatedConcepts": ["minpoly product formula", "Jordan-Chevalley uniqueness", "Mathlib JNF roadmap", "charpoly vs minpoly"],
+    "prerequisites": ["All of Parts I-IV", "jordan_normal_form_basis (axiom)", "minpoly_product_formula (axiom)"]
+  }
+]
