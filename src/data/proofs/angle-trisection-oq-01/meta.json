@@ -36,7 +36,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The impossibility of trisecting an arbitrary angle with compass and straightedge was proved by Pierre Wantzel in 1837. The key insight is that constructible lengths form a field closed under square roots, so constructible degrees are exactly the powers of 2 (tower of degree-2 extensions). Gauss (1796) proved that the regular 17-gon is constructible — the first Fermat prime beyond 3 and 5. The general theorem: a regular n-gon is constructible iff φ(n) is a power of 2, which happens iff n = 2^a · p₁·...·pₖ where each pᵢ is a distinct Fermat prime.",
+    "historicalContext": "Pierre Wantzel (1837) proved the three classical impossibilities — angle trisection, cube doubling, and the full regular heptagon — by showing that constructible numbers are roots of polynomials of degree a power of 2. The proof has two layers: (1) algebraic: constructible extensions are iterated quadratic extensions, so minimal polynomial degrees must divide some 2^n; (2) arithmetic: d | 2^n iff d is a power of 2, which is the number-theoretic fact formalized in OQ01.\n\nThe regular polygon story begins with Gauss (1796), who at age 19 discovered the regular 17-gon is constructible — the first advance beyond the Euclidean pentagon since antiquity. His Disquisitiones Arithmeticae (1801) gave the criterion: an n-gon is constructible iff φ(n) is a power of 2. Wantzel (1837) completed this with the proof of necessity. The theorem now bears both names: the Gauss-Wantzel theorem.\n\nFermat primes Fₖ = 2^{2^k}+1 are the primes of this form. Fermat conjectured (1640) all are prime; Euler (1732) showed F₅ = 4294967297 = 641 × 6700417 is composite. Only F₀=3, F₁=5, F₂=17, F₃=257, F₄=65537 are known to be prime. Whether infinitely many or finitely many Fermat primes exist is a major open problem in number theory.\n\nThe Lean 4 formalization in OQ01 proves the number-theoretic layer (d | 2^n ↔ d = 2^k) without the geometric machinery (Wantzel's theorem, irreducibility of the minimal polynomial). This separation of concerns mirrors Galois theory: the question 'which degrees are constructible?' is purely arithmetic, independent of which specific polynomials arise from geometry.",
     "problemStatement": "For which degrees d does d | [K:ℚ] imply K is not constructible? The answer: exactly when d has an odd prime factor (equivalently, d is not a power of 2). Prove this and derive the regular polygon constructibility classification.",
     "text": "A real number α is constructible iff [ℚ(α):ℚ] is a power of 2. So if a minimal polynomial has degree d with an odd prime factor p, then d does not divide any power of 2, meaning the field extension has odd-prime-power degree — contradicting constructibility. The converse: power-of-2 degree extensions are iterated quadratic extensions, hence constructible. For regular polygons: the n-gon's constructibility is equivalent to the constructibility of cos(2π/n), whose minimal polynomial over ℚ has degree φ(n)/2.",
     "proofStrategy": "Part I: prove that prime factors of a power of 2 must equal 2 (divisibility argument). Part II: powers of 2 are exactly the natural numbers with no odd prime factor (induction + prime factorization). Part III: classify regular polygons n=3..20 by computing φ(n) via native_decide and checking power-of-2. Part IV: verify the 5 known Fermat primes via native_decide.",
@@ -45,7 +45,10 @@
       "Non-constructibility criterion: odd prime factor in degree → impossible with compass and straightedge",
       "Fermat primes Fₖ = 2^{2^k}+1: only 5 are known prime (F₀=3, F₁=5, F₂=17, F₃=257, F₄=65537)",
       "n-gon constructibility ↔ φ(n) is a power of 2: proved for n=3..20 by computation",
-      "The angle trisection impossibility: 60° has cubic minimal polynomial (degree 3, has odd prime factor 3)"
+      "The angle trisection impossibility: 60° has cubic minimal polynomial (degree 3, has odd prime factor 3)",
+      "Proof architecture: OQ01 separates the NUMBER-THEORETIC layer (d | 2^n ↔ d = 2^k) from the GEOMETRIC layer (Wantzel: constructible → d | 2^n). The parent AngleTrisection.lean axiomatizes the geometric facts; OQ01 proves the arithmetic facts needed to deduce non-constructibility",
+      "The contradiction method for non-constructible n-gons: assume φ(n) = 2^k, compute φ(n) by native_decide to get the actual (odd-factored) value, then apply three_not_dvd_pow_two or five_not_dvd_pow_two — turning geometric impossibility into an arithmetic absurdity",
+      "n=15 is constructible despite being odd and composite: 15 = 3·5, both Fermat primes, φ(15) = 8 = 2^3. The product of distinct Fermat primes is constructible — the criterion φ(n) = 2^k is more refined than just 'n is a power of 2'"
     ],
     "prerequisites": [
       "Galois theory: field extensions, degree, constructibility",
@@ -55,11 +58,12 @@
   },
   "conclusion": {
     "summary": "The minimal polynomial degree criterion for non-constructibility is fully formalized: d has an odd prime factor ↔ d is not constructible. Regular polygon constructibility is classified for n=3..20 and all 5 known Fermat primes are verified. 40 theorems, 0 axioms, 0 sorries.",
-    "implications": "This formalization provides the theoretical foundation for understanding compass-and-straightedge impossibility beyond angle trisection: cube root doubling (degree 3), regular heptagon (degree 6 = 2·3), etc. The Fermat prime criterion is the gateway to understanding which classical problems are impossible.",
+    "implications": "This formalization provides the theoretical foundation for understanding compass-and-straightedge impossibility beyond angle trisection: cube root doubling (degree 3), regular heptagon (degree 6 = 2·3), etc. The Fermat prime criterion is the gateway to understanding which classical problems are impossible. The proof technique — converting a geometric impossibility claim into an arithmetic divisibility contradiction — is widely reusable: any problem reducible to a field extension of degree with an odd prime factor is immediately non-constructible.",
     "openQuestions": [
       "Prove there are infinitely many (or finitely many) Fermat primes — a major open problem",
-      "Formalize the full Gauss-Wantzel theorem connecting regular polygon constructibility to Galois theory",
-      "Prove the angle trisection impossibility from this degree criterion"
+      "Formalize the full Gauss-Wantzel theorem: connect regular polygon constructibility to Galois theory over ℚ with fully machine-verified geometric axioms",
+      "Prove the angle trisection impossibility end-to-end: eliminate the 3 axioms in AngleTrisection.lean (Wantzel, irreducibility, Lindemann)",
+      "Extend the polygon classification to all n ≤ 100 (or prove the general Gauss-Wantzel characterization n = 2^a·p₁·...·pₖ)"
     ]
   },
   "leanFile": {
@@ -76,10 +80,91 @@
       "description": "Base angle trisection impossibility; OQ-01 characterizes which degrees force non-constructibility"
     },
     {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "sibling",
+      "description": "OQ-02 formalizes the Galois group of the trisection polynomial; OQ-01 proves the number-theoretic criterion that any degree-3 extension is non-constructible"
+    },
+    {
       "targetId": "inverse-galois-oq-06",
       "relationship": "related",
       "description": "Both use Galois theory over ℚ; angle trisection uses degree-2 extensions, A₅ realization uses degree-60 extensions"
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "related",
+      "description": "Abel-Ruffini uses solvability of Galois groups; constructibility uses a different criterion (degree is power of 2). Both are applications of Galois theory to classical impossibility theorems"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "powers-of-2",
+      "title": "Part I: Powers of 2 Characterization",
+      "startLine": 41,
+      "endLine": 110,
+      "summary": "Proves that primes dividing 2^n must equal 2 (squeeze argument), that odd primes in d prevent d from dividing any 2^n (contradiction), and that positive divisors of 2^n are exactly powers of 2 (strong induction with prime factorization).",
+      "mathContext": "Squeeze: $p \\mid 2^n \\Rightarrow p \\mid 2 \\Rightarrow p \\leq 2$, combined with $p \\geq 2$, gives $p = 2$. Strong induction: $d > 1$ has prime factor $p = 2$, write $d = 2m$, get $m \\mid 2^{n-1}$, apply IH."
+    },
+    {
+      "id": "constructibility",
+      "title": "Part II: Constructibility Criterion",
+      "startLine": 112,
+      "endLine": 154,
+      "summary": "Defines IsConstructible α d (degree d divides some 2^n). Proves constructible degrees are powers of 2; odd prime factor implies non-constructibility. Concrete instances for degrees 3, 5, 6, 7, 9, 10.",
+      "mathContext": "$\\text{IsConstructible}(\\alpha, d) \\iff d > 0 \\land \\exists n, d \\mid 2^n \\iff d = 2^k$. Odd prime $p \\mid d \\Rightarrow \\neg\\text{IsConstructible}$."
+    },
+    {
+      "id": "fermat-primes",
+      "title": "Part III: Fermat Prime Verification",
+      "startLine": 156,
+      "endLine": 186,
+      "summary": "Defines IsFermatPrime p as 'p is prime and p = 2^(2^k)+1 for some k'. Verifies all 5 known Fermat primes: F₀=3, F₁=5, F₂=17 by decide; F₃=257, F₄=65537 by native_decide.",
+      "mathContext": "$F_k = 2^{2^k} + 1$. Primality of $F_3 = 257$ and $F_4 = 65537$ requires `native_decide` (compiled evaluation of trial division up to $\\sqrt{F_k}$)."
+    },
+    {
+      "id": "polygon-classification",
+      "title": "Part IV: Regular Polygon Constructibility (n = 3..20)",
+      "startLine": 188,
+      "endLine": 317,
+      "summary": "Defines RegularNgonConstructible n (φ(n) is a power of 2). Classifies all n=3..20: constructible={3,4,5,6,8,10,12,15,16,17,20}, non-constructible={7,9,11,13,14,18,19}. Complete classification theorem assembles all 18 cases.",
+      "mathContext": "$n$-gon constructible $\\iff \\phi(n) = 2^k$. Constructible iff $n = 2^a p_1 \\cdots p_k$ with distinct Fermat primes $p_i$. Notable: $n=15=3\\cdot 5$ is constructible ($\\phi(15)=8$); $n=7$ is not ($\\phi(7)=6=2\\cdot 3$)."
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Complete Criterion and Summary",
+      "startLine": 319,
+      "endLine": 366,
+      "summary": "non_constructible_complete_criterion: ¬IsConstructible α d ↔ ¬(∃ k, d = 2^k). Summary section inventories all results and connects to parent AngleTrisection.lean (which axiomatizes Wantzel, irreducibility, and Lindemann).",
+      "mathContext": "$\\neg\\text{IsConstructible}(\\alpha,d) \\iff \\neg(\\exists k, d=2^k)$. The parent proof uses 3 axioms (Wantzel geometric, irreducibility algebraic, Lindemann transcendence); OQ01 proves the number-theoretic layer completing the non-constructibility deduction."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Wantzel, Pierre Laurent"],
+      "title": "Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
+      "note": "Original proof of the three classical impossibilities via minimal polynomial degrees"
+    },
+    {
+      "authors": ["Gauss, Carl Friedrich"],
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Fleischer, Leipzig",
+      "note": "Section VII: proves the regular 17-gon and generally n-gons with φ(n) a power of 2 are constructible"
+    },
+    {
+      "authors": ["Stewart, Ian"],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC, 4th edition",
+      "note": "Chapter 17: ruler-and-compass constructions, the Gauss-Wantzel theorem, and Fermat primes"
+    },
+    {
+      "authors": ["Cox, David A."],
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "Wiley, 2nd edition",
+      "note": "Chapter 10: detailed treatment of constructibility, Fermat primes, and regular polygons with modern algebraic proofs"
+    }
+  ]
 }
