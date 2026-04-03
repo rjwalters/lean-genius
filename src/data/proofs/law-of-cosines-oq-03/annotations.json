@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "annotation-structure-axiom-pattern",
+    "lineStart": 77,
+    "lineEnd": 94,
+    "type": "insight",
+    "mathContext": "`HyperbolicTriangle` is a Lean 4 structure where the law $\\cosh c = \\cosh a \\cosh b - \\sinh a \\sinh b \\cos C$ is a *structure field* (a proposition stored as data), not a proved theorem. The field `law : Real.cosh c = Real.cosh a * Real.cosh b - Real.sinh a * Real.sinh b * Real.cos C` is a hypothesis that any `HyperbolicTriangle` must supply. The theorem `hyperbolic_law_of_cosines (t : HyperbolicTriangle)` then just extracts `t.law`. This is mathematically equivalent to `axiom hyperbolic_law_of_cosines : ...` but scoped to objects satisfying the structure constraints ($a,b,c > 0$, $C \\in (0,\\pi)$).",
+    "significance": "Structure-encoded axioms are a common pattern in Lean 4 for axiomatizing geometric theories without committing to a specific model. The alternative — proving the law from the Poincaré disk — requires formalizing the hyperbolic metric, geodesics, and triangle congruence. The structure-field approach allows the mathematical content (Pythagorean theorem, angle defect) to be formalized while deferring the model-theoretic grounding. The CLAUDE.md axiom integrity policy requires this pattern to be reflected in axiomCount (3 structure-encoded assumptions in this file).",
+    "relatedConcepts": [
+      "structure-encoded axioms",
+      "axiom integrity policy",
+      "Lean 4 structures as bundled hypotheses",
+      "geometric axiomatization"
+    ],
+    "prerequisites": [
+      "Lean 4 structure: a record type bundling data and propositions",
+      "Structure field as proposition: storing a proof as a field value",
+      "Axiom integrity: structure-encoded axioms count toward axiomCount"
+    ]
+  },
+  {
+    "id": "annotation-hyperbolic-pythagorean",
+    "lineStart": 120,
+    "lineEnd": 131,
+    "type": "key-theorem",
+    "mathContext": "The hyperbolic Pythagorean theorem: when $C = \\pi/2$, $\\cosh c = \\cosh a \\cosh b$. The proof: `rw [hC, Real.cos_pi_div_two] at h` transforms $t.\\text{law}$ to $\\cosh c = \\cosh a \\cosh b - \\sinh a \\sinh b \\cdot 0$, then `linarith`. The Euclidean analogue is $c^2 = a^2 + b^2$. The substitution $x^2 \\to \\cosh x$ is an approximation: $\\cosh x \\approx 1 + x^2/2$ for small $x$ gives $(1+c^2/2) \\approx (1+a^2/2)(1+b^2/2) \\approx 1 + (a^2+b^2)/2$, recovering $c^2 \\approx a^2+b^2$.",
+    "significance": "The hyperbolic Pythagorean theorem is simpler than the general law (no cos C correction) but differs fundamentally from the Euclidean version. Since cosh is superadditive and cosh(a)·cosh(b) > cosh(a+b) only for large values, the relationship between c and a,b is nontrivial. Geometrically: in hyperbolic geometry, right triangles are 'more spread out' than Euclidean right triangles of the same leg lengths.",
+    "relatedConcepts": [
+      "Real.cos_pi_div_two = 0",
+      "Euclidean Pythagorean theorem",
+      "cosh multiplicativity",
+      "right hyperbolic triangles"
+    ],
+    "prerequisites": [
+      "Real.cos_pi_div_two: cos(π/2) = 0 in Mathlib",
+      "Hyperbolic law as starting point (extracted from structure)",
+      "linarith after rewrite"
+    ]
+  },
+  {
+    "id": "annotation-second-law-no-euclidean-analogue",
+    "lineStart": 136,
+    "lineEnd": 167,
+    "type": "insight",
+    "mathContext": "The second law $\\cos C = -\\cos A \\cos B + \\sin A \\sin B \\cosh c$ expresses an angle $C$ in terms of the other angles $A, B$ and side $c$. In Euclidean geometry, knowing all three angles only determines the shape (not size) of a triangle (AAA similarity). In hyperbolic geometry, $(\\cos C + \\cos A \\cos B)/(\\sin A \\sin B) = \\cosh c$ uniquely determines $c$ from $A, B, C$. This is because the Euclidean scaling symmetry $\\lambda \\cdot \\triangle$ does not exist in hyperbolic geometry — curvature $K = -1$ breaks scale invariance.",
+    "significance": "The non-existence of similar (non-congruent) triangles is one of the most striking features of hyperbolic geometry. It means that AAA is a congruence criterion in hyperbolic geometry (unlike in Euclidean geometry where it only gives similarity). The second law formalizes this rigidity: given three angles summing to less than π, the triangle is uniquely determined up to congruence. This has no Euclidean analogue precisely because Euclidean geometry admits scale transformations.",
+    "relatedConcepts": [
+      "AAA congruence in hyperbolic geometry",
+      "scale invariance broken by curvature",
+      "no hyperbolic similarity",
+      "HyperbolicTriangleAngles structure"
+    ],
+    "prerequisites": [
+      "AAA similarity in Euclidean geometry (not congruence)",
+      "Curvature K = -1: breaks scale invariance",
+      "Second law as structure field law2"
+    ]
+  },
+  {
+    "id": "annotation-angular-defect",
+    "lineStart": 168,
+    "lineEnd": 178,
+    "type": "insight",
+    "mathContext": "The angular defect $\\delta = \\pi - (A+B+C) > 0$ equals the hyperbolic area by Gauss-Bonnet: $\\text{Area}(T) = |K|^{-1}(\\pi - (A+B+C)) = \\pi - (A+B+C)$ for $K=-1$. `angle_sum_lt_pi` extracts `t.defect_pos` from the structure. `area_positive` follows by `linarith`. The maximum area is $\\pi$ (ideal triangles with all vertices at infinity, $A=B=C=0$). Degenerately small triangles approach Euclidean triangles with $\\delta \\to 0$.",
+    "significance": "The area-angle identity is a profound consequence of hyperbolic geometry. It means there is a natural upper bound on triangle areas, and that 'large' hyperbolic triangles are characterized by their angles approaching 0. For the sphere (K=+1), the spherical excess A+B+C-π equals the area — both positive and negative curvature encode geometry in the angle sum.",
+    "relatedConcepts": [
+      "Gauss-Bonnet theorem",
+      "angular defect = area",
+      "ideal triangles (area π)",
+      "defect_pos structure field"
+    ],
+    "prerequisites": [
+      "Gauss-Bonnet for constant curvature: Area = (angle sum deviation from π)/|K|",
+      "Ideal triangles: vertices at ∂H², A=B=C=0, Area=π",
+      "linarith from defect_pos > 0"
+    ]
+  },
+  {
+    "id": "annotation-cosh-sinh-identities",
+    "lineStart": 46,
+    "lineEnd": 72,
+    "type": "technique",
+    "mathContext": "Six hyperbolic function identities are proved as wrappers around Mathlib: `cosh_sq_sub_sinh_sq` uses `have := Real.cosh_sq_sub_sinh_sq x; linarith` (Mathlib's version gives the same identity, so one `linarith` suffices). `cosh_ge_one` uses `nlinarith [cosh_sq_sub_sinh_sq x, sq_nonneg (Real.sinh x), Real.cosh_pos x]` — from $\\cosh^2 x - \\sinh^2 x = 1$ and $\\sinh^2 x \\geq 0$, we get $\\cosh^2 x \\geq 1$, and $\\cosh x > 0$, so $\\cosh x \\geq 1$ by `nlinarith`. The remaining four are direct equalities from Mathlib: `Real.sinh_neg`, `Real.cosh_neg`, `Real.sinh_zero`, `Real.cosh_zero`.",
+    "significance": "These identities form the algebraic backbone for all computations in the file. cosh²x - sinh²x = 1 is the hyperbolic analogue of cos²x + sin²x = 1. cosh ≥ 1 reflects that cosh x is a distance function (always at least the minimum value 1, attained at x=0). The parity theorems (sinh odd, cosh even) are analogues of sin odd, cos even. Setting up these identities as named local theorems (rather than inline Mathlib calls) documents the mathematical structure clearly.",
+    "relatedConcepts": [
+      "Real.cosh_sq_sub_sinh_sq",
+      "Real.cosh_pos",
+      "hyperbolic function parities",
+      "nlinarith for nonlinear inequalities"
+    ],
+    "prerequisites": [
+      "Real.cosh_sq_sub_sinh_sq: Mathlib's Pythagorean identity for cosh/sinh",
+      "sq_nonneg: x^2 ≥ 0 for any real x",
+      "nlinarith: nonlinear arithmetic tactic for polynomial inequalities"
+    ]
+  }
+]
