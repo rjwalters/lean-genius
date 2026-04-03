@@ -1,1 +1,86 @@
-{"annotations": []}
+[
+  {
+    "id": "ann-eval-structure",
+    "proofId": "cantor-diagonalization-oq-03-oq-01",
+    "range": { "startLine": 41, "endLine": 60 },
+    "type": "definition",
+    "title": "EvalStructure: Minimal Abstract Framework for Lawvere",
+    "content": "EvalStructure bundles three components: Ob (type of 'codes' or 'objects'), Val (type of 'values' or 'outputs'), and eval : Ob → Ob → Val (the evaluation map, analogous to ev ∘ ⟨e, id⟩ : A → B in a CCC). EvalStructure.Endo E = E.Val → E.Val is the type of endomorphisms — the 'fixed-point-free functions' like Not, Bool.not, Nat.succ. IsPointSurjective: eval is point-surjective if every function g : Ob → Val is 'represented' by some code a₀: ∀ x, eval a₀ x = g x. This is the abstract counterpart of 'e : A → A → B is surjective' from the type-theoretic version. The structure requires no category theory imports — it captures only what the proof actually needs.",
+    "mathContext": "$(\\text{Ob}, \\text{Val}, \\text{eval})$ with $\\text{eval}$ point-surjective means: $\\forall g : \\text{Ob} \\to \\text{Val}, \\exists a_0 \\in \\text{Ob}, \\forall x, \\text{eval}(a_0, x) = g(x)$.",
+    "significance": "key",
+    "relatedConcepts": ["cartesian closed category", "evaluation map", "point-surjective", "global element", "abstract algebra in Lean 4"],
+    "prerequisites": ["structure keyword in Lean 4", "Type* (universe polymorphism)", "Prop vs Type"]
+  },
+  {
+    "id": "ann-lawvere-abstract",
+    "proofId": "cantor-diagonalization-oq-03-oq-01",
+    "range": { "startLine": 64, "endLine": 85 },
+    "type": "insight",
+    "title": "lawvere_abstract: The 2-Line Proof via Diagonal Construction",
+    "content": "lawvere_abstract proves: if E.IsPointSurjective, then every f : Val → Val has a fixed point. The proof is remarkably short. Define the diagonal g(a) = f(eval(a,a)) — this is the key construction, composing f with the 'self-evaluation' eval(a,a). By point-surjectivity, ∃ a₀ such that eval(a₀,x) = g(x) = f(eval(x,x)) for all x. Specializing at x = a₀: eval(a₀,a₀) = f(eval(a₀,a₀)), so eval(a₀,a₀) is a fixed point of f. The Lean proof is obtain ⟨a₀, ha₀⟩ := hE (fun a => f (E.eval a a)); exact ⟨E.eval a₀ a₀, (ha₀ a₀).symm⟩. This two-line proof is Lawvere's central insight: the diagonal construction, combined with point-surjectivity, forces a fixed point. The contrapositive no_surjection_abstract: if f has no fixed point, then evaluation cannot be point-surjective — this is the 'no surjection' form of Cantor/Halting.",
+    "mathContext": "Diagonal: $g(a) = f(\\text{eval}(a,a))$. By surjectivity: $\\exists a_0, \\text{eval}(a_0, x) = f(\\text{eval}(x,x))$. At $x=a_0$: $\\text{eval}(a_0,a_0) = f(\\text{eval}(a_0,a_0))$.",
+    "significance": "key",
+    "relatedConcepts": ["diagonal construction", "self-application", "fixed-point combinator", "Cantor's diagonal argument", "Gödel's diagonalization lemma"],
+    "prerequisites": ["point-surjectivity (IsPointSurjective)", "self-application pattern eval(a,a)", "obtain + exact for ∃ statements"]
+  },
+  {
+    "id": "ann-diagonal-lemma",
+    "proofId": "cantor-diagonalization-oq-03-oq-01",
+    "range": { "startLine": 87, "endLine": 95 },
+    "type": "theorem",
+    "title": "diagonal_not_representable: The Diagonal is Never in Range",
+    "content": "diagonal_not_representable states: if f has no fixed point, then the diagonal function (fun a => f(eval(a,a))) is not representable — there is no a₀ such that eval(a₀,x) = f(eval(x,x)) for all x. This is the explicit 'diagonal argument': the diagonal function always escapes the range of the evaluation. Proof: if such a₀ existed, specializing at x=a₀ gives eval(a₀,a₀) = f(eval(a₀,a₀)), contradicting hf. This theorem makes the 'escape' explicit: Cantor's diagonal sequence, Gödel's unprovable sentence, and the halting problem are all instances of this non-representability.",
+    "mathContext": "If $f(v) \\neq v$ for all $v$, then $\\nexists a_0: \\forall x, \\text{eval}(a_0, x) = f(\\text{eval}(x, x))$.",
+    "significance": "key",
+    "relatedConcepts": ["diagonal argument", "non-representability", "Gödel's diagonalization", "halting problem non-computability", "Russell's paradox"],
+    "prerequisites": ["no fixed point hypothesis", "self-application at a₀", "rintro + exact for negation goals"]
+  },
+  {
+    "id": "ann-type-recovery",
+    "proofId": "cantor-diagonalization-oq-03-oq-01",
+    "range": { "startLine": 97, "endLine": 134 },
+    "type": "theorem",
+    "title": "typeEval_surjective_iff and lawvere_type_recovery: The Bridge to Type Theory",
+    "content": "typeEvalStructure A B e constructs an EvalStructure from a function e : A → A → B by setting Ob=A, Val=B, eval=e. The key equivalence typeEval_surjective_iff proves: (typeEvalStructure A B e).IsPointSurjective ↔ Function.Surjective e. The forward direction: IsPointSurjective says ∃ a₀, eval a₀ = g (as a function), which via funext becomes Function.Surjective e. The backward direction: Function.Surjective e gives ∃ a₀, e a₀ = g (as a function), which via congr_fun gives point-surjectivity. lawvere_type_recovery applies lawvere_abstract to typeEvalStructure, recovering the type-theoretic Lawvere FPT. cantor_recovery applies lawvere_type_recovery with f=Not: the fixed point b satisfying ¬b = b leads to a contradiction via the standard self-referential reasoning.",
+    "mathContext": "$(\\text{typeEvalStructure}(A,B,e))\\text{.IsPointSurjective} \\iff \\text{Function.Surjective}(e : A \\to A \\to B)$.",
+    "significance": "key",
+    "relatedConcepts": ["Function.Surjective in Mathlib", "funext (function extensionality)", "congr_fun (applying equality of functions)", "Cantor's theorem", "Not as fixed-point-free endomorphism"],
+    "prerequisites": ["typeEvalStructure construction", "funext/congr_fun for Prop=Prop", "Function.Surjective: ∀ g, ∃ a, f a = g"]
+  },
+  {
+    "id": "ann-instances",
+    "proofId": "cantor-diagonalization-oq-03-oq-01",
+    "range": { "startLine": 136, "endLine": 165 },
+    "type": "insight",
+    "title": "Three Instances: Prop, Bool, ℕ — Different Fixed-Point-Free Endomorphisms",
+    "content": "Three concrete instances apply lawvere_abstract with specific Val types and fixed-point-free endomorphisms. cantor_instance: Val=Prop, f=Not. A Prop fixed point satisfies ¬v=v (as propositions), from which v→¬v and ¬v→v lead to contradiction via classical reasoning. The proof pattern: obtain ⟨v,hv⟩, then cast hv and hv.symm to get mutual implications, then derive v and ¬v simultaneously. bool_instance: Val=Bool, f=(!·) (boolean not). Fixed point would satisfy !v=v; cases v <;> simp at hv closes both cases (true≠false). nat_succ_instance: Val=ℕ, f=Nat.succ. Fixed point would satisfy n+1=n; Nat.succ_ne_self provides the contradiction directly. The three instances illustrate how a single abstract theorem encompasses fundamentally different mathematical phenomena: propositional self-reference (Cantor/Russell), boolean self-negation, and the non-zero-sum-free nature of successor.",
+    "mathContext": "Prop: $\\neg v = v$ is contradictory; Bool: $!v = v$ is contradictory; $\\mathbb{N}$: $n+1 = n$ is contradictory.",
+    "significance": "key",
+    "relatedConcepts": ["Bool.not fixed-point-free", "Nat.succ_ne_self", "cast tactic for Prop coercion", "cases on Bool", "instances of abstract theorems"],
+    "prerequisites": ["Nat.succ_ne_self in Mathlib", "cases on Bool (true/false)", "cast for Prop = Prop implications", "simp at hv for Bool contradictions"]
+  },
+  {
+    "id": "ann-categorical-eval",
+    "proofId": "cantor-diagonalization-oq-03-oq-01",
+    "range": { "startLine": 167, "endLine": 219 },
+    "type": "concept",
+    "title": "CategoricalEval: Abstract CCC Structure with Two Sorries",
+    "content": "CategoricalEval axiomatizes a cartesian closed category (CCC) at the level of global elements: Obj (objects), Hom (morphisms), exp A B (exponential object B^A), Pt B (global elements of B, i.e., morphisms 1 → B), apply (the evaluation on global elements: ev : B^A × A → B restricted to global elements), and ptSurj (point-surjectivity of a morphism Hom A (exp A B)). lawvere_categorical states the Lawvere FPT in this setting but has 2 sorries. The first sorry is a hole for providing a global element of exp A B from the surjectivity hypothesis — this requires defining the EvalStructure that the CategoricalEval induces, connecting the categorical apply to the abstract eval. The second sorry is the main theorem body, which should reduce to lawvere_abstract applied to the induced EvalStructure. The sorries are localized to this bridge between the categorical and computational frameworks; all other theorems are fully proved. In a genuine topos, Pt B = Hom(1,B) (global sections functor) and point-surjectivity is epimorphicity plus the existence of enough points.",
+    "mathContext": "$\\text{CCC with global elements: } \\text{ptSurj}(e : A \\to B^A) \\implies \\forall f : \\text{Pt}(B) \\to \\text{Pt}(B), \\exists b \\in \\text{Pt}(B): f(b) = b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cartesian closed category", "exponential object", "global element", "evaluation map", "topos and subobject classifier"],
+    "prerequisites": ["CCC structure (Obj, Hom, exp, terminal object)", "global elements = morphisms from terminal 1", "sorry as placeholder for unfinished proof steps"]
+  },
+  {
+    "id": "ann-topos-proxy",
+    "proofId": "cantor-diagonalization-oq-03-oq-01",
+    "range": { "startLine": 221, "endLine": 245 },
+    "type": "context",
+    "title": "Topos Connection: Prop as Subobject Classifier Ω",
+    "content": "topos_proxy_cantor proves: there is no surjective e : A → A → Prop. This is Cantor's theorem phrased as a topos-level statement: in the topos of sets (or the internal type theory of Lean), Prop acts as a proxy for the subobject classifier Ω. The power object P(A) = Ω^A = A → Prop corresponds to the type A → Prop in Lean, and Cantor's theorem says A cannot surject onto A → Prop. The proof reduces to cantor_recovery (which in turn reduces to lawvere_abstract). The longer prose comment explains the topos-theoretic setting: in a genuine topos, Cantor follows from Lawvere with B=Ω and f=¬ (the internal negation on Ω), since internal negation is always fixed-point-free (in a Boolean topos) or the Heyting negation. Johnstone's Elephant (A1.6.1) and MacLane-Moerdijk Sheaves IV.7 give the full categorical proof.",
+    "mathContext": "In a topos: $\\neg \\exists e: A \\twoheadrightarrow \\Omega^A$ (Cantor). Type-theoretically: $\\neg \\exists e: A \\to A \\to \\text{Prop}, \\text{Function.Surjective}(e)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["subobject classifier Ω", "power object P(A) = Ω^A", "topos Cantor theorem", "Johnstone Elephant", "MacLane-Moerdijk Sheaves in Geometry and Logic"],
+    "prerequisites": ["topos = CCC + subobject classifier", "P(A) = Ω^A = A → Prop in Set", "Function.Surjective for Prop-valued functions"]
+  }
+]
