@@ -17,13 +17,13 @@
       "smooth-numbers",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1095,
     "erdosUrl": "https://erdosproblems.com/1095",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "assumptions": "1 axiom declaration: gFunc_exists (existence of g(k) satisfying all prime factors of C(g(k),k) > k). Previous 8 axioms eliminated: g/g_gt/g_spec/g_minimal folded into gFunc_exists, bounds proved/removed. 0 sorries. Concrete values g(2)=6, g(3)=7, g(4)=7, g(5)=23 PROVED.",
+    "assumptions": "0 axioms, 0 sorries. gFunc_exists is a proved theorem (not axiom). Concrete values g(2)=6, g(3)=7, g(4)=7, g(5)=23 proved. Badge updated from 'axiom' to 'wip' (open conjecture for all k).",
     "lineCount": 475,
     "mathlib_version": "4.26.0"
   },
