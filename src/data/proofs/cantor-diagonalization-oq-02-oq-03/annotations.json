@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-header-imports",
+    "proofId": "cantor-diagonalization-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Setup: Generalizing Cantor's Diagonal to Regular Cardinals",
+    "content": "The file header states the generalisation precisely: for any regular uncountable cardinal $\\kappa$, ordinals below $\\kappa.\\text{ord}$ cannot be exhausted by fewer than $\\kappa$ many elements. The key condition is *regularity*, not mere uncountability.\n\n**Three Mathlib imports drive the proof**:\n- `Cardinal.Ordinal`: Basic interplay between cardinals and ordinals, defining `κ.ord` (the initial ordinal of a cardinal)\n- `Cardinal.Cofinality`: The cofinality function `cof(α)` and `IsRegular κ` (meaning `cof(κ.ord) = κ`)\n- `Ordinal.Arithmetic`: Ordinal addition, successor, `iSup`, and `BddAbove`\n\n**Why regular cardinals?** A cardinal $\\kappa$ is regular iff it cannot be written as a union of fewer than $\\kappa$ sets each of size $< \\kappa$. This is exactly the property that makes the diagonal argument work: no small family can `cover' all of $\\kappa$. Examples: $\\aleph_0, \\aleph_1, \\aleph_2, \\ldots, \\aleph_{\\omega+1}$ are all regular; $\\aleph_\\omega$ (the first singular cardinal) is not — it is a countable union of $\\aleph_n$'s.\n\n**The `open Cardinal Ordinal`** line makes `IsRegular`, `iSup`, `ord`, and `aleph` available without namespace prefixes throughout the file.",
+    "mathContext": "$\\kappa$ is regular iff $\\text{cof}(\\kappa.\\text{ord}) = \\kappa$; regular cardinals: $\\aleph_0, \\aleph_1, \\aleph_2, \\ldots$; first singular: $\\aleph_\\omega = \\sup_n \\aleph_n$ with $\\text{cof}(\\aleph_\\omega) = \\aleph_0 < \\aleph_\\omega$",
+    "significance": "context",
+    "relatedConcepts": ["regular cardinal", "singular cardinal", "cofinality", "initial ordinal", "IsRegular in Mathlib"],
+    "prerequisites": ["cardinal arithmetic", "ordinal arithmetic", "cofinality definition", "Lean 4 imports"]
+  },
+  {
+    "id": "ann-regular-sup-bounded",
+    "proofId": "cantor-diagonalization-oq-02-oq-03",
+    "range": { "startLine": 34, "endLine": 47 },
+    "type": "technique",
+    "title": "Regular Sup Bounded: The Abstract Diagonal Engine",
+    "content": "The theorem `regular_sup_bounded` is the core of everything: for regular $\\kappa$, the supremum of any $< \\kappa$-indexed family of ordinals below $\\kappa.\\text{ord}$ is still below $\\kappa.\\text{ord}$.\n\n**The one-line proof**:\n```lean\nOrdinal.iSup_lt_ord (hκ.cof_eq ▸ hι) hf\n```\nThis applies `Ordinal.iSup_lt_ord`, which states: `iSup f < o` if `cof(o) > #ι` and all `f i < o`. The cofinality hypothesis is satisfied by `hκ.cof_eq ▸ hι`:\n- `hκ.cof_eq : cof(κ.ord) = κ` (regularity of κ)\n- `hι : #ι < κ`\n- After rewriting: `cof(κ.ord) > #ι` ✓\n\n**Mathematical content**: Cofinality of $\\kappa.\\text{ord}$ equals $\\kappa$ for regular $\\kappa$. Any cofinal sequence in $\\kappa.\\text{ord}$ must have length $\\geq \\kappa$. So a family of length $< \\kappa$ cannot be cofinal — its supremum is strictly bounded below $\\kappa.\\text{ord}$.\n\n**This is the abstract diagonal**: the classical Cantor diagonal for $\\kappa = \\aleph_1$ says a countable sequence of countable ordinals has countable sup. This theorem says the same for all regular cardinals at once.",
+    "mathContext": "$\\kappa$ regular $\\Rightarrow$ $\\#\\iota < \\kappa$ $\\Rightarrow$ $\\sup_{i: \\iota} f(i) < \\kappa.\\text{ord}$; equivalently: $\\text{cof}(\\kappa.\\text{ord}) = \\kappa > \\#\\iota$ means no $\\iota$-indexed family is cofinal",
+    "significance": "key",
+    "relatedConcepts": ["cofinality", "iSup_lt_ord", "cofinal sequence", "IsRegular.cof_eq"],
+    "prerequisites": ["cofinality in Mathlib", "ordinal supremum (iSup)", "IsRegular definition", "▸ rewrite tactic"]
+  },
+  {
+    "id": "ann-succ-cardinals",
+    "proofId": "cantor-diagonalization-oq-02-oq-03",
+    "range": { "startLine": 48, "endLine": 67 },
+    "type": "technique",
+    "title": "Successor Bounds: κ.ord is a Limit Ordinal",
+    "content": "Two lemmas establish that $\\kappa.\\text{ord}$ is a limit ordinal (no predecessor) when $\\kappa$ is infinite.\n\n**`card_succ_lt_of_lt_infinite`**: If $\\mu < \\kappa$ and $\\kappa \\geq \\aleph_0$, then $\\mu + 1 < \\kappa$. Proof by cases on whether $\\mu$ is infinite:\n- If $\\mu \\geq \\aleph_0$: `add_one_of_aleph0_le` gives $\\mu + 1 = \\mu$ (infinite cardinals absorb +1), so $\\mu + 1 = \\mu < \\kappa$\n- If $\\mu < \\aleph_0$ (finite): `add_lt_aleph0` gives $\\mu + 1 < \\aleph_0 \\leq \\kappa$\n\n**`ord_succ_lt`**: If $\\alpha < \\kappa.\\text{ord}$, then $\\alpha + 1 < \\kappa.\\text{ord}$. The proof reduces to the cardinal version via `lt_ord` and `card_succ`.\n\n**Why this is needed**: The diagonal argument produces $\\sup f + 1$ as the ordinal exceeding all family members. We need $\\sup f + 1 < \\kappa.\\text{ord}$ to stay in range — this lemma provides exactly that, given that $\\sup f < \\kappa.\\text{ord}$ by `regular_sup_bounded`.\n\n**An important subtlety**: Cardinal addition is not the same as ordinal addition. `add_one_of_aleph0_le` is a *cardinal* identity; the ordinal version requires `Ordinal.add_one_eq_succ` and `Ordinal.card_succ`.",
+    "mathContext": "For infinite $\\kappa$: $\\mu < \\kappa \\Rightarrow \\mu + 1 < \\kappa$ (cardinals); $\\alpha < \\kappa.\\text{ord} \\Rightarrow \\alpha + 1 < \\kappa.\\text{ord}$ (ordinals); both because infinite cardinal addition absorbs finite increments",
+    "significance": "supporting",
+    "relatedConcepts": ["limit ordinal", "cardinal vs ordinal addition", "add_one_of_aleph0_le", "ord_succ_lt", "infinite cardinals"],
+    "prerequisites": ["cardinal arithmetic", "ordinal arithmetic", "aleph_0", "by_cases tactic", "push_neg"]
+  },
+  {
+    "id": "ann-diagonal-argument",
+    "proofId": "cantor-diagonalization-oq-02-oq-03",
+    "range": { "startLine": 68, "endLine": 99 },
+    "type": "insight",
+    "title": "The Generalized Diagonal: ∃ β < κ.ord exceeding the whole family",
+    "content": "The two key theorems of the file.\n\n**`regular_diagonal`**: Given a $< \\kappa$-indexed family $(f_i)$ of ordinals below $\\kappa.\\text{ord}$, there exists $\\beta < \\kappa.\\text{ord}$ with $f_i < \\beta$ for all $i$.\n\nProof assembly:\n1. `hsup`: $\\sup_i f_i < \\kappa.\\text{ord}$ (by `regular_sup_bounded`)\n2. `hsucc`: $\\sup_i f_i + 1 < \\kappa.\\text{ord}$ (by `ord_succ_lt`)\n3. `hbdd`: The range of $f$ is bounded above by $\\kappa.\\text{ord}$\n4. Witness: $\\beta = \\sup_i f_i + 1$; it satisfies $f_i \\leq \\sup_i f_i < \\sup_i f_i + 1$\n\nStep 4 uses `le_ciSup` (each $f_i \\leq \\sup_i f_i$, needing `BddAbove`) and `lt_add_of_pos_right` (+1 is strictly larger).\n\n**`regular_no_surjection`**: No $< \\kappa$-indexed family can surject onto ordinals below $\\kappa.\\text{ord}$.\n\nProof by contradiction: assume surjection $\\forall \\alpha < \\kappa.\\text{ord}, \\exists i, f_i = \\alpha$. Apply `regular_diagonal` to get $\\beta < \\kappa.\\text{ord}$ with $\\beta > f_i$ for all $i$. By surjectivity, $\\exists i, f_i = \\beta$. But then $f_i = \\beta > f_i$ — contradiction (`lt_irrefl`).\n\n**Classical Cantor in disguise**: For $\\kappa = \\aleph_1$, $f : \\mathbb{N} \\to \\omega_1$ (a sequence of countable ordinals), `regular_diagonal` gives a countable ordinal above all of them — the abstract form of 'the diagonal ordinal'.",
+    "mathContext": "$\\exists \\beta < \\kappa.\\text{ord}$ such that $\\forall i, f_i < \\beta$; equivalently, $\\kappa.\\text{ord}$ is not a supremum of any $< \\kappa$-indexed subset, which is exactly what $\\text{cof}(\\kappa.\\text{ord}) = \\kappa$ means",
+    "significance": "key",
+    "relatedConcepts": ["diagonal argument", "le_ciSup", "BddAbove", "lt_irrefl", "proof by contradiction", "cofinality"],
+    "prerequisites": ["regular_sup_bounded", "ord_succ_lt", "ordinal iSup", "BddAbove in Mathlib", "obtain pattern"]
+  },
+  {
+    "id": "ann-aleph1-recovery",
+    "proofId": "cantor-diagonalization-oq-02-oq-03",
+    "range": { "startLine": 100, "endLine": 142 },
+    "type": "insight",
+    "title": "The ℵ₁ Case: Recovering the Classical Diagonal for Countable Ordinals",
+    "content": "The final section instantiates the general theorem at $\\kappa = \\aleph_1$ to recover the classically stated diagonal argument.\n\n**`aleph0_lt_aleph1`** (private): $\\aleph_0 < \\aleph_1$. Proved by `aleph_lt_aleph.mpr` with `norm_num : 0 < 1`.\n\n**`aleph1_diagonal`**: For any sequence $f : \\mathbb{N} \\to \\text{Ord}$ with all $f(n) < \\aleph_1.\\text{ord}$, there exists $\\beta < \\aleph_1.\\text{ord}$ with $f(n) < \\beta$ for all $n$.\n\nInstantiation arguments:\n- `κ = aleph 1`, `hκ = isRegular_aleph_one` (Mathlib: $\\aleph_1$ is regular)\n- Infiniteness: `le_of_lt aleph0_lt_aleph1`\n- Index bound: `mk_nat ▸ aleph0_lt_aleph1` — the cardinality of $\\mathbb{N}$ is $\\aleph_0 < \\aleph_1$\n\n**Why singular cardinals fail**: The summary comment highlights the crucial point: $\\aleph_\\omega$ (first singular cardinal) has countable cofinality — there IS a countable cofinal sequence $\\aleph_0 < \\aleph_1 < \\aleph_2 < \\ldots$ converging to $\\aleph_\\omega$. So the diagonal argument fails at singular cardinals: a countably-indexed family CAN exhaust ordinals below $\\aleph_\\omega.\\text{ord}$. Regularity is not just sufficient but necessary for the conclusion.",
+    "mathContext": "$\\aleph_1.\\text{ord} = \\omega_1$ (first uncountable ordinal); $f: \\mathbb{N} \\to \\omega_1$ countable sequence of countable ordinals $\\Rightarrow \\exists \\beta < \\omega_1$ above all; fails for $\\aleph_\\omega$ since $\\text{cof}(\\aleph_\\omega) = \\aleph_0$",
+    "significance": "key",
+    "relatedConcepts": ["aleph numbers", "isRegular_aleph_one", "ω₁ (first uncountable ordinal)", "singular cardinals", "GCH"],
+    "prerequisites": ["aleph_lt_aleph in Mathlib", "mk_nat", "aleph1_diagonal", "regular vs singular cardinals"]
+  }
+]
