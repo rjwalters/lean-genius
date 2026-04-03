@@ -35,7 +35,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Stirling's formula n! ~ √(2πn)·(n/e)^n (Stirling 1730, de Moivre 1721) is one of the most important asymptotic formulas in mathematics. Wiedijk's list #90 refers to the factorial version. The Gamma function Γ, which satisfies Γ(n+1)=n! for natural numbers, is the natural extension of factorial to non-integer arguments. This file extends the Stirling formula from natural numbers to the continuous Gamma function.",
+    "historicalContext": "Stirling's formula n! ~ \u221a(2\u03c0n)\u00b7(n/e)^n has a layered history. Abraham de Moivre (1721) first established n! ~ C\u00b7\u221an\u00b7(n/e)^n for an unspecified constant C. James Stirling (1730) identified C = \u221a(2\u03c0) using an infinite product formula, giving the sharp constant. Laplace (1812) provided the first analytic proof via the integral representation. The Gamma function \u0393(s) = \u222b\u2080^\u221e t^{s-1}e^{-t}dt was introduced by Euler (1729) as the natural extension of factorial to complex arguments. Legendre (1809) established the duplication formula \u0393(x)\u0393(x+1/2) = \u221a\u03c0\u00b72^{1-2x}\u0393(2x), revealing deep symmetry. The formula Wallis (1656) showed \u03c0/2 = \u220f (4k\u00b2/(4k\u00b2-1)) appears as a shadow of Stirling's formula: the Wallis product is equivalent to the statement that stirlingSeq \u2192 \u221a\u03c0. Wiedijk's list of 100 theorems (#90) refers to the factorial version; OQ-02 extends the Stirling formula to \u0393(x+1) ~ \u221a(2\u03c0x)\u00b7(x/e)^x for all positive reals.",
     "problemStatement": "Does Γ(x+1) ~ √(2πx)·(x/e)^x as x→∞? Prove the asymptotic equivalence and derive bounds for the Gamma function using Mathlib's Stirling.factorial_isEquivalent_stirling.",
     "text": "The key bridge is Γ(n+1) = n! for natural numbers (Mathlib's Real.Gamma_nat_eq_factorial). Using this, the Stirling equivalence for factorials immediately gives the Stirling equivalence for Gamma at integer points. The bounds on Gamma follow from bounds on factorials. The half-integer formula Γ(1/2) = √π follows from the Beta function integral, and the general half-integer formula Γ(n+1/2) uses the Gamma recurrence.",
     "proofStrategy": "Direct application of Mathlib's Stirling library (Stirling.factorial_isEquivalent_stirling, Stirling.tendsto_stirlingSeq_sqrt_pi) via the Gamma-factorial bridge. Log-Gamma bounds follow from log monotonicity. The duplication formula is proved using the Beta function connection Real.Gamma_mul_Gamma_add_one.",
@@ -79,7 +79,69 @@
       "targetId": "area-of-circle-oq-02",
       "relationship": "related",
       "description": "n-ball volume uses Gamma function; Stirling bounds give asymptotic ball volumes"
+    },
+    {
+      "targetId": "wallis-product",
+      "relationship": "related",
+      "description": "Wallis product \u03c0/2 = \u220f 4k\u00b2/(4k\u00b2-1) is equivalent to stirlingSeq \u2192 \u221a\u03c0, the key limit underlying the Stirling constant"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "gamma-factorial-bridge",
+      "title": "Part I: The Gamma-Factorial Bridge",
+      "startLine": 52,
+      "endLine": 77,
+      "summary": "gamma_eq_factorial (\u0393(n+1)=n!), gamma_one (\u0393(1)=1), gamma_nat_pos, gamma_pos_of_pos. The fundamental connection allowing all Stirling facts to transfer from n! to \u0393.",
+      "mathContext": "\\Gamma(n+1) = n! \\quad (\\text{Real.Gamma\\_nat\\_eq\\_factorial})\\\\ \\Gamma(s) > 0 \\text{ for } s > 0"
+    },
+    {
+      "id": "stirling-equivalence",
+      "title": "Parts II\u2013III: Stirling Equivalence and Bounds",
+      "startLine": 80,
+      "endLine": 204,
+      "summary": "gammaStirlingApprox definition, gamma_isEquivalent_stirling (\u0393(n+1)~\u221a(2\u03c0n)\u00b7(n/e)^n), gamma_div_stirling_tendsto_one. Then gamma_stirling_seq_eq (=stirlingSeq), gamma_stirling_ratio_tendsto_sqrt_pi, gamma_lower_bound (\u221a(2\u03c0n)\u00b7(n/e)^n \u2264 \u0393(n+1) via stirlingSeq antitonicity).",
+      "mathContext": "\\Gamma(n+1) \\sim \\sqrt{2\\pi n}(n/e)^n, \\quad \\frac{\\Gamma(n+1)}{\\sqrt{2\\pi n}(n/e)^n} \\to 1\\\\ \\text{stirlingSeq}(n) \\searrow \\sqrt{\\pi} \\Rightarrow n! \\geq \\sqrt{2\\pi n}(n/e)^n"
+    },
+    {
+      "id": "log-gamma",
+      "title": "Part IV: Log-Gamma Approximation",
+      "startLine": 206,
+      "endLine": 257,
+      "summary": "log_gamma_lower_bound: log\u221a(2\u03c0n) + n\u00b7log(n/e) \u2264 log\u0393(n+1). log_gamma_stirling: expresses log\u0393(n+1) = log(stirlingSeq n) + log\u221a(2n) + n\u00b7log n - n.",
+      "mathContext": "\\log\\Gamma(n+1) \\approx n\\log n - n + \\tfrac{1}{2}\\log(2\\pi n)\\\\ \\text{From: } n! = \\text{stirlingSeq}(n) \\cdot \\sqrt{2n} \\cdot (n/e)^n"
+    },
+    {
+      "id": "recurrence-ratios",
+      "title": "Parts V\u2013VI: Gamma Recurrence and Ratios",
+      "startLine": 260,
+      "endLine": 318,
+      "summary": "gamma_succ_nat (\u0393(n+2) = (n+1)\u00b7\u0393(n+1)), gamma_nat_le_pow_self (\u0393(n+1) \u2264 n^n), gamma_ratio_succ (\u0393(n+1)/\u0393(n)), gamma_ratio_exact (exact ratio formula).",
+      "mathContext": "\\Gamma(n+2) = (n+1)\\cdot\\Gamma(n+1)\\\\ \\Gamma(n+1)/\\Gamma(n) = n, \\quad \\Gamma(n+1) \\leq n^n"
+    },
+    {
+      "id": "gamma-half-integer",
+      "title": "Parts VII\u2013VIII: \u0393(1/2) = \u221a\u03c0 and Legendre Duplication",
+      "startLine": 320,
+      "endLine": 385,
+      "summary": "gamma_one_half (\u0393(1/2)=\u221a\u03c0 from reflection formula). duplication_at_nat: \u0393(n)\u00b7\u0393(n+1/2) = \u221a\u03c0\u00b7\u0393(2n)/4^{n-1} (Legendre duplication formula at integer points, via Real.Gamma_mul_Gamma_add_one).",
+      "mathContext": "\\Gamma(1/2) = \\sqrt{\\pi}\\\\ \\Gamma(n)\\Gamma(n+1/2) = \\frac{\\sqrt{\\pi}}{4^{n-1}}\\Gamma(2n)"
+    },
+    {
+      "id": "half-int-general",
+      "title": "Parts X\u2013XI: Stirling Error and Half-Integer Formula",
+      "startLine": 402,
+      "endLine": 486,
+      "summary": "gamma_stirling_relative_error_tendsto (\u0393(n+1)/approx - 1 \u2192 0). gamma_three_halves (\u0393(3/2)=\u221a\u03c0/2), gamma_five_halves (\u0393(5/2)=3\u221a\u03c0/4). doubleFactorial definition. gamma_half_int_formula (\u0393(n+1/2) = (2n-1)!!\u00b7\u221a\u03c0/2^n by induction).",
+      "mathContext": "\\Gamma(n+\\tfrac{1}{2}) = \\frac{(2n-1)!!\\sqrt{\\pi}}{2^n}\\\\ \\Gamma(3/2)=\\frac{\\sqrt{\\pi}}{2}, \\quad \\Gamma(5/2)=\\frac{3\\sqrt{\\pi}}{4}"
+    },
+    {
+      "id": "central-binom",
+      "title": "Part XII: Central Binomial Coefficient via Gamma",
+      "startLine": 488,
+      "endLine": 598,
+      "summary": "centralBinom_via_gamma (C(2n,n)=\u0393(2n+1)/\u0393(n+1)\u00b2), factorial_double_mul ((2n)!=2^n\u00b7(2n-1)!!\u00b7n! by induction), centralBinom_gamma_half_int (C(2n,n)=4^n\u0393(n+1/2)/(\u221a\u03c0\u0393(n+1))). Summary and #check exports.",
+      "mathContext": "\\binom{2n}{n} = \\frac{\\Gamma(2n+1)}{\\Gamma(n+1)^2} = \\frac{4^n\\,\\Gamma(n+\\frac{1}{2})}{\\sqrt{\\pi}\\,\\Gamma(n+1)} \\sim \\frac{4^n}{\\sqrt{\\pi n}}"
+    }
+  ]
 }
