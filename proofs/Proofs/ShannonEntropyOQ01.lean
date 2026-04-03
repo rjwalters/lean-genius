@@ -272,7 +272,9 @@ private lemma gaussianPDF_integral_eq_one (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
 
 private lemma gaussianPDF_integrable (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
     Integrable (gaussianPDF μ σ) := by
-  simp_rw [gaussianPDF_eq_gaussianPDFReal μ hσ]
+  have heq : gaussianPDF μ σ = ProbabilityTheory.gaussianPDFReal μ ⟨σ ^ 2, sq_nonneg σ⟩ :=
+    funext (gaussianPDF_eq_gaussianPDFReal μ hσ)
+  rw [heq]
   exact ProbabilityTheory.integrable_gaussianPDFReal μ _
 
 private lemma gaussianPDF_log (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) (x : ℝ) :
@@ -284,13 +286,198 @@ private lemma gaussianPDF_log (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) (x : ℝ) :
       Real.log_inv, Real.log_sqrt (by positivity), Real.log_exp]
   ring
 
+-- Helper: x * exp(-b*x^2) tends to 0 at +∞ (needed for IBP)
+private lemma mul_exp_tendsto_zero {b : ℝ} (hb : 0 < b) :
+    Filter.Tendsto (fun x : ℝ => x * Real.exp (-b * x ^ 2)) Filter.atTop (nhds 0) := by
+  -- Prove exp(-(b/2)*x^2) → 0 by showing -(b/2)*x^2 → -∞ elementarily
+  have hg : Filter.Tendsto (fun x : ℝ => Real.exp (-(b / 2) * x ^ 2)) Filter.atTop (nhds 0) := by
+    apply Real.tendsto_exp_atBot.comp
+    simp only [Filter.tendsto_atBot, Filter.eventually_atTop]
+    intro M
+    refine ⟨max 0 (Real.sqrt (max 0 (2 * (-M) / b))), fun x hx => ?_⟩
+    have hxr : Real.sqrt (max 0 (2 * (-M) / b)) ≤ x := le_trans (le_max_right 0 _) hx
+    have hc : (0 : ℝ) ≤ max 0 (2 * (-M) / b) := le_max_left 0 _
+    -- sqrt(c)^2 ≤ x^2 from sqrt(c) ≤ x
+    have hmm : Real.sqrt (max 0 (2 * (-M) / b)) * Real.sqrt (max 0 (2 * (-M) / b)) ≤ x * x :=
+      mul_le_mul hxr hxr (Real.sqrt_nonneg _) (le_trans (Real.sqrt_nonneg _) hxr)
+    -- max 0 (2*(-M)/b) = sqrt(c)^2 ≤ x^2
+    have hxsq : max 0 (2 * (-M) / b) ≤ x ^ 2 := by
+      nlinarith [Real.sq_sqrt hc, sq_nonneg x, sq_nonneg (Real.sqrt (max 0 (2 * (-M) / b)))]
+    -- Conclude -(b/2)*x^2 ≤ M
+    have hMx : 2 * (-M) / b ≤ x ^ 2 := le_trans (le_max_right 0 _) hxsq
+    have h2 : 2 * (-M) ≤ x ^ 2 * b := by
+      have := mul_le_mul_of_nonneg_right hMx hb.le
+      calc 2 * (-M) = 2 * (-M) / b * b := by field_simp [hb.ne']
+        _ ≤ x ^ 2 * b := this
+    nlinarith [mul_comm (x ^ 2) b]
+  -- Squeeze: 0 ≤ x*exp(-bx²) ≤ exp(-(b/2)x²) for large x
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hg
+  · filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with x hx
+    exact mul_nonneg hx (Real.exp_nonneg _)
+  · filter_upwards [Filter.eventually_ge_atTop (max 0 (2 / b))] with x hx
+    have hx0 : 0 ≤ x := le_trans (le_max_left 0 (2/b)) hx
+    have hxb : 2 / b ≤ x := le_trans (le_max_right 0 (2/b)) hx
+    have h_bound : x ≤ b / 2 * x ^ 2 := by
+      have hbx : 1 ≤ b / 2 * x := by
+        have h2 : 2 ≤ b * x := by
+          calc 2 = b * (2 / b) := by field_simp [hb.ne']
+            _ ≤ b * x := mul_le_mul_of_nonneg_left hxb hb.le
+        linarith
+      nlinarith [mul_le_mul_of_nonneg_right hbx hx0]
+    have h_exp_le : b / 2 * x ^ 2 ≤ Real.exp (b / 2 * x ^ 2) := by
+      linarith [Real.add_one_le_exp (b / 2 * x ^ 2)]
+    calc x * Real.exp (-b * x ^ 2)
+        ≤ Real.exp (b / 2 * x ^ 2) * Real.exp (-b * x ^ 2) :=
+          mul_le_mul_of_nonneg_right (le_trans h_bound h_exp_le) (Real.exp_nonneg _)
+      _ = Real.exp (b / 2 * x ^ 2 + (-b * x ^ 2)) := (Real.exp_add _ _).symm
+      _ = Real.exp (-(b / 2) * x ^ 2) := by congr 1; ring
+
 private lemma gaussian_second_moment (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
     ∫ x : ℝ, (x - μ) ^ 2 * gaussianPDF μ σ x = σ ^ 2 := by
-  sorry  -- Submitted to Aristotle
+  have hb : (0 : ℝ) < 1 / (2 * σ ^ 2) := by positivity
+  set b := (1 : ℝ) / (2 * σ ^ 2) with hb_def
+  -- Step 1: Rewrite in terms of b
+  have h_rw : ∫ x : ℝ, (x - μ) ^ 2 * gaussianPDF μ σ x =
+      (Real.sqrt (2 * Real.pi * σ ^ 2))⁻¹ * ∫ x : ℝ, x ^ 2 * Real.exp (-b * x ^ 2) := by
+    conv_lhs =>
+      arg 2; ext x
+      rw [show (x - μ) ^ 2 * gaussianPDF μ σ x =
+          (Real.sqrt (2 * Real.pi * σ ^ 2))⁻¹ *
+          ((x - μ) ^ 2 * Real.exp (-b * (x - μ) ^ 2)) by
+        unfold gaussianPDF
+        rw [show -(x - μ) ^ 2 / (2 * σ ^ 2) = -b * (x - μ) ^ 2 from by rw [hb_def]; ring]
+        ring]
+    rw [integral_const_mul]
+    congr 1
+    -- Translation invariance: ∫ f(x-μ) = ∫ f(x)
+    have key : ∀ x : ℝ, (fun y => y ^ 2 * Real.exp (-b * y ^ 2)) (x + (-μ)) =
+        (x - μ) ^ 2 * Real.exp (-b * (x - μ) ^ 2) := fun x => by ring_nf
+    rw [show (fun x : ℝ => (x - μ) ^ 2 * Real.exp (-b * (x - μ) ^ 2)) =
+            fun x => (fun y => y ^ 2 * Real.exp (-b * y ^ 2)) (x + (-μ)) from funext (fun x => (key x).symm)]
+    exact integral_add_right_eq_self (fun y => y ^ 2 * Real.exp (-b * y ^ 2)) (-μ)
+  -- Step 2: Compute ∫ x^2 * exp(-b*x^2) using IBP
+  -- G(x) = -x/(2b) * exp(-b*x^2) is the antiderivative of x^2*exp(-b*x^2) - (1/(2b))*exp(-b*x^2)
+  let G : ℝ → ℝ := fun x => -x / (2 * b) * Real.exp (-b * x ^ 2)
+  have hG_val_zero : G 0 = 0 := by simp [G]
+  have hG_deriv : ∀ x : ℝ, HasDerivAt G
+      (x ^ 2 * Real.exp (-b * x ^ 2) - (1 / (2 * b)) * Real.exp (-b * x ^ 2)) x := by
+    intro x
+    have h1 : HasDerivAt (fun x : ℝ => -x / (2 * b)) (-1 / (2 * b)) x :=
+      (hasDerivAt_id x).neg.div_const (2 * b)
+    have h2 : HasDerivAt (fun x : ℝ => Real.exp (-b * x ^ 2))
+        ((-2 * b * x) * Real.exp (-b * x ^ 2)) x := by
+      have h := ((hasDerivAt_pow 2 x).const_mul (-b)).exp
+      simp only [Nat.cast_ofNat] at h
+      convert h using 1; ring
+    have h3 := h1.mul h2
+    convert h3 using 1; field_simp [hb.ne']; ring
+  have hG_int : MeasureTheory.IntegrableOn
+      (fun x => x ^ 2 * Real.exp (-b * x ^ 2) - (1 / (2 * b)) * Real.exp (-b * x ^ 2))
+      (Set.Ioi 0) := by
+    have hint1 : MeasureTheory.IntegrableOn (fun x : ℝ => x ^ 2 * Real.exp (-b * x ^ 2)) (Set.Ioi 0) := by
+      have h := integrableOn_rpow_mul_exp_neg_mul_sq hb (s := 2) (by norm_num : (-1 : ℝ) < 2)
+      simp_rw [rpow_two] at h; exact h
+    have hint2 : MeasureTheory.IntegrableOn (fun x : ℝ => (1 / (2 * b)) * Real.exp (-b * x ^ 2)) (Set.Ioi 0) :=
+      ((integrable_exp_neg_mul_sq hb).const_mul _).integrableOn
+    exact hint1.sub hint2
+  have hG_int_Iic : MeasureTheory.IntegrableOn
+      (fun x => x ^ 2 * Real.exp (-b * x ^ 2) - (1 / (2 * b)) * Real.exp (-b * x ^ 2))
+      (Set.Iic 0) := by
+    have hint1 : MeasureTheory.IntegrableOn (fun x : ℝ => x ^ 2 * Real.exp (-b * x ^ 2)) (Set.Iic 0) := by
+      have h := integrable_rpow_mul_exp_neg_mul_sq hb (s := 2) (by norm_num : (-1 : ℝ) < 2)
+      simp_rw [rpow_two] at h; exact h.integrableOn
+    have hint2 : MeasureTheory.IntegrableOn (fun x : ℝ => (1 / (2 * b)) * Real.exp (-b * x ^ 2)) (Set.Iic 0) :=
+      ((integrable_exp_neg_mul_sq hb).const_mul _).integrableOn
+    exact hint1.sub hint2
+  -- G(x) → 0 at +∞
+  have hG_top : Filter.Tendsto G Filter.atTop (nhds 0) := by
+    simp only [G]
+    -- Use: -(x * exp(-b*x^2)) / (2*b) → 0, which equals -x/(2*b)*exp(-b*x^2)
+    have h : Filter.Tendsto (fun x : ℝ => -(x * Real.exp (-b * x ^ 2)) / (2 * b))
+        Filter.atTop (nhds 0) := by
+      have := ((mul_exp_tendsto_zero hb).neg).div_const (2 * b)
+      simp only [neg_zero, zero_div] at this
+      exact this
+    exact h.congr (fun x => by ring)
+  -- G(x) → 0 at -∞: G(-y) = y/(2b)*exp(-b*y^2) → 0 as y → +∞
+  have hG_bot : Filter.Tendsto G Filter.atBot (nhds 0) := by
+    have step1 : Filter.Tendsto (fun y : ℝ => G (-y)) Filter.atTop (nhds 0) := by
+      simp only [G, neg_neg, neg_sq]
+      -- Goal: Tendsto (fun y => y/(2*b) * exp(-b*y^2)) atTop (nhds 0)
+      have h : Filter.Tendsto (fun x : ℝ => x * Real.exp (-b * x ^ 2) / (2 * b))
+          Filter.atTop (nhds 0) := by
+        have := (mul_exp_tendsto_zero hb).div_const (2 * b)
+        simp only [zero_div] at this
+        exact this
+      exact h.congr (fun x => by ring)
+    exact (step1.comp Filter.tendsto_neg_atBot_atTop).congr (fun x => by simp [G, neg_neg])
+  -- Apply FTC on Ioi 0: ∫_{Ioi 0} G' = G(+∞) - G(0) = 0 - 0 = 0
+  have h_Ioi : ∫ x in Set.Ioi (0 : ℝ),
+      (x ^ 2 * Real.exp (-b * x ^ 2) - (1 / (2 * b)) * Real.exp (-b * x ^ 2)) =
+      0 - G 0 := by
+    apply integral_Ioi_of_hasDerivAt_of_tendsto'
+    · intro x _; exact hG_deriv x
+    · exact hG_int
+    · exact hG_top
+  -- Apply FTC on Iic 0: ∫_{Iic 0} G' = G(0) - G(-∞) = 0 - 0 = 0
+  have h_Iic : ∫ x in Set.Iic (0 : ℝ),
+      (x ^ 2 * Real.exp (-b * x ^ 2) - (1 / (2 * b)) * Real.exp (-b * x ^ 2)) =
+      G 0 - 0 := by
+    apply integral_Iic_of_hasDerivAt_of_tendsto'
+    · intro x _; exact hG_deriv x
+    · exact hG_int_Iic
+    · exact hG_bot
+  -- Combine: ∫_ℝ G' = 0
+  have hG'_int : MeasureTheory.Integrable
+      (fun x : ℝ => x ^ 2 * Real.exp (-b * x ^ 2) - (1 / (2 * b)) * Real.exp (-b * x ^ 2)) := by
+    apply MeasureTheory.Integrable.sub
+    · have h := integrable_rpow_mul_exp_neg_mul_sq hb (s := 2) (by norm_num : (-1 : ℝ) < 2)
+      simp_rw [rpow_two] at h; exact h
+    · exact (integrable_exp_neg_mul_sq hb).const_mul _
+  have h_full_zero : ∫ x : ℝ, (x ^ 2 * Real.exp (-b * x ^ 2) - (1 / (2 * b)) * Real.exp (-b * x ^ 2)) = 0 := by
+    rw [← MeasureTheory.integral_add_compl (measurableSet_Ioi) hG'_int]
+    simp only [Set.compl_Ioi]
+    rw [h_Iic, h_Ioi, hG_val_zero]
+    ring
+  -- Extract the second moment integral
+  have h_key : ∫ x : ℝ, x ^ 2 * Real.exp (-b * x ^ 2) =
+      (1 / (2 * b)) * ∫ x : ℝ, Real.exp (-b * x ^ 2) := by
+    have hint1 : Integrable (fun x : ℝ => x ^ 2 * Real.exp (-b * x ^ 2)) := by
+      have h := integrable_rpow_mul_exp_neg_mul_sq hb (s := 2) (by norm_num : (-1 : ℝ) < 2)
+      simp_rw [rpow_two] at h; exact h
+    have hint2 : Integrable (fun x : ℝ => (1 / (2 * b)) * Real.exp (-b * x ^ 2)) :=
+      (integrable_exp_neg_mul_sq hb).const_mul _
+    -- Rewrite h_full_zero in place to avoid alpha-equivalence issues with Eq.trans
+    rw [MeasureTheory.integral_sub hint1 hint2] at h_full_zero
+    rw [MeasureTheory.integral_const_mul] at h_full_zero
+    linarith
+  -- Step 3: Apply integral_gaussian and simplify
+  -- After h_rw and h_key: goal is (√(2πσ²))⁻¹ * (1/(2b) * ∫ exp(-b*x²)) = σ²
+  rw [h_rw, h_key, integral_gaussian b]
+  -- Now: (√(2πσ²))⁻¹ * (1/(2b) * √(π/b)) = σ²
+  have h_2b : (1 : ℝ) / (2 * b) = σ ^ 2 := by rw [hb_def]; field_simp [hσ.ne']
+  have h_sqrt_pb : Real.sqrt (Real.pi / b) = Real.sqrt (2 * Real.pi * σ ^ 2) := by
+    congr 1; rw [hb_def]; field_simp
+  rw [h_2b, h_sqrt_pb]
+  -- Now: (√(2πσ²))⁻¹ * (σ² * √(2πσ²)) = σ²
+  have hsqrt_pos : (0 : ℝ) < Real.sqrt (2 * Real.pi * σ ^ 2) :=
+    Real.sqrt_pos.mpr (by positivity)
+  rw [mul_comm (σ ^ 2), ← mul_assoc, inv_mul_cancel₀ hsqrt_pos.ne', one_mul]
 
 private lemma gaussian_quad_integrable (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
     Integrable (fun x : ℝ => (x - μ) ^ 2 * gaussianPDF μ σ x) := by
-  sorry  -- Submitted to Aristotle
+  have hb : (0 : ℝ) < 1 / (2 * σ ^ 2) := by positivity
+  have hcore : Integrable (fun x : ℝ => x ^ 2 * Real.exp (-(1 / (2 * σ ^ 2)) * x ^ 2)) := by
+    have h := integrable_rpow_mul_exp_neg_mul_sq hb (s := 2) (by norm_num : (-1 : ℝ) < 2)
+    simp_rw [rpow_two] at h; exact h
+  have h_eq : (fun x : ℝ => (x - μ) ^ 2 * gaussianPDF μ σ x) =
+      fun x => (Real.sqrt (2 * Real.pi * σ ^ 2))⁻¹ *
+               ((x - μ) ^ 2 * Real.exp (-(1 / (2 * σ ^ 2)) * (x - μ) ^ 2)) := by
+    funext x; unfold gaussianPDF
+    rw [show -(x - μ) ^ 2 / (2 * σ ^ 2) = -(1 / (2 * σ ^ 2)) * (x - μ) ^ 2 from by ring]
+    ring
+  rw [h_eq]
+  exact (hcore.comp_sub_right μ).const_mul _
 
 /-- Differential entropy of the Gaussian N(μ, σ²) is ½ ln(2πeσ²).
 
