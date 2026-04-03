@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-ch-defs",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "range": { "startLine": 38, "endLine": 42 },
+    "type": "definition",
+    "title": "Cyclic Vector and Nonderogatory Matrix Definitions",
+    "content": "IsCyclicVector defines v as a cyclic vector for M if no polynomial p of degree < n annihilates the pair (M, v): if p(M)·v = 0 and deg(p) < n, then p = 0. This means the orbit {v, Mv, M²v, …, M^(n-1)v} spans Kⁿ, making M act as 'as freely as possible' on v. IsNonderogatory characterizes matrices whose minimal polynomial equals the characteristic polynomial — these have the simplest possible module structure: a single cyclic summand.",
+    "mathContext": "$v$ is cyclic for $M$ iff $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is a basis, equivalently $K[X]/(\\mu_M) \\xrightarrow{\\sim} K^n$ via $p \\mapsto p(M)v$. $M$ is nonderogatory iff $\\mu_M = \\chi_M$, i.e., the Jordan form has a single Jordan block for each eigenvalue.",
+    "significance": "key",
+    "relatedConcepts": ["cyclic module", "nonderogatory matrix", "minimal polynomial", "characteristic polynomial", "cyclic vector", "Jordan form"],
+    "prerequisites": ["polynomial ring", "matrix algebra", "Cayley-Hamilton theorem", "minimal polynomial definition"]
+  },
+  {
+    "id": "ann-ch-ua-signature",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "range": { "startLine": 58, "endLine": 62 },
+    "type": "insight",
+    "title": "Union Avoidance: The Precise Finite Field Statement",
+    "content": "The theorem `not_union_proper_subspaces_fin` is a finite-field refinement of the classical result. The classical version requires K infinite; this version only requires |K| > k where k = s.card is the number of subspaces. The hypotheses encode 'each S i is a proper subspace' (S i ≠ ⊤) and 'the field is large enough' (s.card < |K|). The conclusion gives a single vector outside all k subspaces simultaneously.",
+    "mathContext": "Classical: $V/K$ infinite $\\Rightarrow$ $V \\neq \\bigcup_{i=1}^k W_i$ for proper $W_i$. Finite version: $|K| > k$ suffices. The bound is sharp — for $|K| = k$, cover $K^1$ by $k$ subspaces $\\{0\\}$ using one per element. In the nonderogatory application: $k \\le n$ (number of irreducible factors of degree-$n$ $\\mu_M$) and $|K| > n$.",
+    "significance": "key",
+    "relatedConcepts": ["union avoidance lemma", "vector space over finite field", "Chevalley-Warning theorem", "covering number", "subspace covering"],
+    "prerequisites": ["submodule theory", "Fintype.card", "Finset.induction_on"]
+  },
+  {
+    "id": "ann-ch-line-argument",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "range": { "startLine": 86, "endLine": 159 },
+    "type": "technique",
+    "title": "The Line Argument: Each Subspace Forbids At Most One Scalar",
+    "content": "When the induction gives a vector w outside S₁,…,S_{k-1} but inside Sₖ, the proof constructs good candidates as v + tw for t ∈ K, where v ∉ Sₖ. The key insight (h_bad_subsingleton): for each S i, the set of 'bad' t values {t : v + tw ∈ S i} has at most one element. Why: if v + t₁w and v + t₂w are both in S i, then (t₁-t₂)w ∈ S i; since w ∉ S i, we must have t₁ = t₂. So there are at most s'.card bad scalars total, and since |K| > s'.card, a good t exists.",
+    "mathContext": "For $v \\notin W_k$, $w \\in W_k$: $v + tw \\notin W_k$ for all $t$ (since $tw \\in W_k$ and $v \\notin W_k$). For $i \\in s'$: if $v+t_1 w, v+t_2 w \\in W_i$ then $(t_1-t_2)w \\in W_i$; since $w \\notin W_i$, $t_1 = t_2$. Total bad scalars: $\\le |s'| < |K|$, so a good $t$ exists.",
+    "significance": "key",
+    "relatedConcepts": ["affine line argument", "subsingleton bad set", "Finset.card_biUnion_le", "Set.Finite.biUnion", "counting argument"],
+    "prerequisites": ["submodule membership", "scalar multiplication", "finite set cardinality bounds"]
+  },
+  {
+    "id": "ann-ch-helpers",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "range": { "startLine": 165, "endLine": 208 },
+    "type": "technique",
+    "title": "Three Helper Lemmas: Minimality, Bézout, and Nontrivial Kernel",
+    "content": "Three helper lemmas prepare the main proof. `aeval_ne_zero_of_ne_zero`: if p has degree less than μ = minpoly(M), then p(M) ≠ 0, by the minimality of the minimal polynomial. `gcd_aeval_mulVec_eq_zero`: if p(M)·v = 0, then gcd(p,μ)(M)·v = 0, proved by the Bézout identity gcd = A·p + B·μ (Euclidean algorithm). `ker_mulVecLin_ne_top`: if A ≠ 0 as a matrix, then ker(A·(·)) ≠ ⊤, proved by exhibiting a standard basis vector e_j that A doesn't send to 0.",
+    "mathContext": "Bézout: $\\gcd(p,\\mu) = A\\cdot p + B\\cdot \\mu$ (EuclideanDomain.gcd_eq_gcd_ab). If $p(M)v = 0$ and $\\mu(M) = 0$ (Cayley-Hamilton), then $\\gcd(p,\\mu)(M)v = (Ap+B\\mu)(M)v = A(M)(p(M)v) + B(M)(\\mu(M)v) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimal polynomial minimality", "Bézout identity", "EuclideanDomain.gcd_eq_gcd_ab", "Cayley-Hamilton", "kernel of linear map"],
+    "prerequisites": ["minpoly.dvd", "EuclideanDomain", "Matrix.mulVec_mulVec", "mulVecLin_apply"]
+  },
+  {
+    "id": "ann-ch-phases1-3",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "range": { "startLine": 223, "endLine": 311 },
+    "type": "technique",
+    "title": "Main Theorem Phases 1–3: Factor Enumeration and Union Avoidance",
+    "content": "Phase 1 collects the irreducible factors of μ into a Finset nf using normalizedFactors. Phase 1.5 bounds |nf| ≤ n: each irreducible has degree ≥ 1, and the sum of degrees equals n = deg(μ). This is the key counting step that connects |K| > n to the union avoidance requirement |K| > |nf|. Phase 2 defines the proper subspaces S(q) = ker((μ/q)(M)) and proves S(q) ≠ ⊤ by showing (μ/q)(M) ≠ 0 (since deg(μ/q) < n). Phase 3 applies the union avoidance lemma.",
+    "mathContext": "For nonderogatory $M$: $\\mu_M = \\chi_M$ has degree $n$. The normalized factors $q_1,\\ldots,q_k$ satisfy $\\sum \\deg q_i = n$ and $\\deg q_i \\ge 1$, so $k \\le n < |K|$. Each $S(q_i) = \\ker((\\mu/q_i)(M))$ is proper since $\\deg(\\mu/q_i) < n$ implies $(\\mu/q_i)(M) \\ne 0$ by minimality.",
+    "significance": "key",
+    "relatedConcepts": ["normalizedFactors", "UniqueFactorizationMonoid", "irreducible polynomial", "degree bounds", "proper subspace"],
+    "prerequisites": ["normalizedFactors multiset", "natDegree_mul", "Multiset.card vs sum of degrees", "EuclideanDomain.div_add_mod"]
+  },
+  {
+    "id": "ann-ch-phase4",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "range": { "startLine": 312, "endLine": 358 },
+    "type": "insight",
+    "title": "Phase 4: Proving the Union-Avoiding Vector Is Cyclic",
+    "content": "Given v outside all S(q), the proof shows IsCyclicVector M v by contradiction. If p(M)·v = 0 with p ≠ 0 and deg(p) < n, let d = gcd(p, μ). By the gcd lemma, d(M)·v = 0. Since d | μ, write μ = d·s; then s has a normalized factor q₀ dividing some q' ∈ normalizedFactors(μ). The cofactor μ/q' divides d·t (via divisibility chain), making v ∈ ker((μ/q')(M)) = S(q'). But v ∉ S(q') by construction — contradiction.",
+    "mathContext": "Key divisibility chain: $d \\mid \\mu$, so $\\mu = d \\cdot s$. Find $q' \\mid s$ (irreducible, normalized). Then $\\mu = q' \\cdot (d \\cdot t)$ for some $t$, so $\\mu / q' = d \\cdot t$. Then $(\\mu/q')(M) v = (dt)(M) v = t(M) \\cdot d(M) v = 0$, placing $v \\in S(q')$ — contradicting $v \\notin S(q')$.",
+    "significance": "key",
+    "relatedConcepts": ["gcd divisibility", "normalizedFactors chain", "dvd_trans", "exists_mem_normalizedFactors_of_dvd", "contradiction by membership"],
+    "prerequisites": ["EuclideanDomain.gcd_dvd_right", "dvd_of_mem_normalizedFactors", "EuclideanDomain.div_add_mod", "Matrix.mulVec_mulVec"]
+  }
+]
