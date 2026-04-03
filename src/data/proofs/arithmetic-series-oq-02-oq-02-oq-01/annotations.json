@@ -1,1 +1,57 @@
-[]
+[
+  {
+    "id": "multi-hockey-sum-def",
+    "line": 44,
+    "endLine": 49,
+    "type": "definition",
+    "label": "multiHockeySum (recursive definition over k-simplex)",
+    "mathContext": "$$\\text{multiHockeySum}([], n) = 1$$\n$$\\text{multiHockeySum}(a :: as, n) = \\sum_{j=0}^{n} \\binom{j+a}{a} \\cdot \\text{multiHockeySum}(as, n-j)$$\nThis slices the $k$-simplex $\\{\\mathbf{i} : \\sum i_j \\leq n\\}$ along the first coordinate: the slice at $i_1 = j$ is the $(k-1)$-simplex $\\{\\mathbf{i}' : \\sum i'_j \\leq n-j\\}$, weighted by $\\binom{j+a_1}{a_1}$. The `range (n+1)` gives $j \\in \\{0,1,\\ldots,n\\}$.",
+    "significance": "By encoding the $k$-dimensional sum as a list recursion (peeling off one variable at a time), the proof of `multi_hockey_stick` becomes a standard list induction. No special handling of multi-index sets is needed. Each recursive call reduces the dimension by 1 and the bound by $j$, matching the simplex slicing exactly.",
+    "relatedConcepts": ["k-simplex", "simplicial numbers", "stars-and-bars", "recursive definition"],
+    "prerequisites": ["simplicial (from ArithmeticSeriesOQ02OQ02)", "Finset.range", "Finset.sum"]
+  },
+  {
+    "id": "multi-hockey-stick-proof",
+    "line": 56,
+    "endLine": 86,
+    "type": "theorem",
+    "label": "multi_hockey_stick (main k-dimensional identity)",
+    "mathContext": "$$\\text{multiHockeySum}(as, n) = \\binom{n + \\sum a_j + k}{\\sum a_j + k}$$\nThe calc block has four steps:\n1. Unfold definition (definitional equality)\n2. Apply IH pointwise via `Finset.sum_congr rfl`\n3. Apply `parallel_vandermonde a (as'.sum + as'.length) n` — the key step\n4. `congr 1; simp [List.sum_cons, List.length_cons]; omega` — verify $a + (\\text{as'.sum} + \\text{as'.length}) + 1 = (a::as').\\text{sum} + (a::as').\\text{length}$",
+    "significance": "The `parallel_vandermonde` identity ($\\sum_j C(j+a,a) C(n-j+b,b) = C(n+a+b+1,a+b+1)$) is used at every induction step as the folding operation. Each application reduces a $k$-dimensional sum to a $(k-1)$-dimensional one. The `omega` handles the arithmetic $a + b + 1 = (a::as').\\text{sum} + (a::as').\\text{length}$ — trivial but required for definiteness.",
+    "relatedConcepts": ["parallel_vandermonde", "list induction", "Finset.sum_congr", "simplicial numbers", "dimension reduction"],
+    "prerequisites": ["parallel_vandermonde (ArithmeticSeriesOQ02OQ02)", "Finset.sum_congr", "List.sum_cons", "List.length_cons"]
+  },
+  {
+    "id": "special-cases",
+    "line": 90,
+    "endLine": 110,
+    "type": "theorem",
+    "label": "multi_hockey_1d/2d/3d (dimension-specific instances)",
+    "mathContext": "All three proved by `rw [multi_hockey_stick]; simp [List.sum_cons, List.length_cons]`:\n- `multi_hockey_1d (a n)`: $= \\binom{n+a+1}{a+1}$ — classical hockey stick with offset $a$\n- `multi_hockey_2d (a b n)`: $= \\binom{n+a+b+2}{a+b+2}$ — double sum identity\n- `multi_hockey_3d (a b c n)`: $= \\binom{n+a+b+c+3}{a+b+c+3}$ — triple sum identity\n\nFor `multi_hockey_1d` with $a=k-1$: recovers $\\sum_{j=0}^n \\binom{j+k}{k} = \\binom{n+k+1}{k+1}$ (classical Pascal hockey stick).",
+    "significance": "These provide human-readable, citable instances of the general theorem. The 1D case recovers the classical identity from Pascal's *Traité* (1654). The 2D case is useful in double-sum combinatorics. All three are immediate corollaries of `multi_hockey_stick` — they demonstrate that the general list induction subsumes the specific dimensional cases.",
+    "relatedConcepts": ["classical hockey stick", "Pascal's triangle", "double sum", "triple sum", "Graham-Knuth-Patashnik"],
+    "prerequisites": ["multi_hockey_stick", "List.sum_cons", "List.length_cons"]
+  },
+  {
+    "id": "concrete-checks",
+    "line": 112,
+    "endLine": 125,
+    "type": "theorem",
+    "label": "check_3d_zeros / check_2d_a1b0 (native_decide verification)",
+    "mathContext": "`check_3d_zeros`: `multiHockeySum [0, 0, 0] 2 = 10` by `native_decide`. The 3-simplex $\\{i+j+k \\leq 2\\}$ has $\\binom{5}{3} = 10$ lattice points. Explicitly: $(0,0,0),(1,0,0),(0,1,0),(0,0,1),(2,0,0),(1,1,0),(1,0,1),(0,2,0),(0,1,1),(0,0,2)$.\n\n`check_2d_a1b0`: `multiHockeySum [1, 0] 3 = 20`. Verifies $\\sum_{i+j \\leq 3} (i+1) = \\binom{6}{3} = 20$. Computed as $\\sum_{j=0}^3 \\sum_{i=0}^{3-j}(i+1) = 10 + 6 + 3 + 1 = 20$.",
+    "significance": "The `native_decide` tactic evaluates the recursive definition by computation, providing a sanity check independent of the abstract induction proof. If the definition had a bug (wrong base case, off-by-one in `range`), these checks would catch it. The 3D case is particularly illuminating: it confirms that 10 lattice points in the tetrahedron equals $C(5,3)$, consistent with stars-and-bars (placing 2 objects into 4 bins).",
+    "relatedConcepts": ["native_decide", "lattice point counting", "stars-and-bars", "concrete verification", "3-simplex"],
+    "prerequisites": ["native_decide", "multiHockeySum definition"]
+  },
+  {
+    "id": "monotonicity-positivity",
+    "line": 133,
+    "endLine": 150,
+    "type": "theorem",
+    "label": "multiHockeySum_mono / multiHockeySum_pos",
+    "mathContext": "`multiHockeySum_mono`: after `rw [multi_hockey_stick, multi_hockey_stick]`, reduces to `C(m+k, k) ≤ C(n+k, k)` where $k = \\text{as.sum} + \\text{as.length}$. Proved by `Nat.choose_le_choose` with `omega`.\n\n`multiHockeySum_pos`: after `rw [multi_hockey_stick]`, reduces to `0 < C(n+k, k)`. Proved by `Nat.choose_pos` with `omega` (since $n+k \\geq k$ trivially for naturals).",
+    "significance": "Both proofs are one-liners after the `multi_hockey_stick` rewrite — demonstrating the leverage of the main identity. Properties about the complex recursive sum reduce immediately to simple facts about binomial coefficients. This 'reduce via the main theorem' pattern is the standard way to derive structural properties in this file.",
+    "relatedConcepts": ["Nat.choose_le_choose", "Nat.choose_pos", "monotonicity", "binomial coefficient properties"],
+    "prerequisites": ["multi_hockey_stick", "Nat.choose_le_choose", "Nat.choose_pos", "omega"]
+  }
+]
