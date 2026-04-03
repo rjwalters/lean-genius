@@ -1,4 +1,5 @@
 import Mathlib
+import Proofs.KummerTheoremOQ01Aristotle
 
 /-
 # Multinomial Analogs of Kummer's Theorem
@@ -43,7 +44,10 @@ theorem multinomial_eq_prod_choose : ∀ (ks : List ℕ),
     multinomial ks =
       (((ks.scanl (· + ·) (0 : ℕ)).zip ks).tail.map
         (fun ⟨acc, k⟩ => Nat.choose (acc + k) k)).prod := by
-  sorry
+  intro ks
+  have h := KummerMultinomialAristotle.multinomial_eq_prod_choose ks
+  simp only [KummerMultinomialAristotle.multinomial] at h
+  exact h
 
 /-- For two elements, the multinomial reduces to a binomial. -/
 theorem multinomial_pair (a b : ℕ) :

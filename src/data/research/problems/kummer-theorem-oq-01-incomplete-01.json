@@ -1,7 +1,7 @@
 {
   "slug": "kummer-theorem-oq-01-incomplete-01",
   "title": "Multinomial Analogs of Kummer Theorem",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: multinomial_eq_prod_choose proved via zip_scanl_append_singleton_gen induction. 0 sorries, 0 axioms in both main and companion files.",
+    "builtItems": [
+      "zip_scanl_append_singleton_gen: private induction on ks (generalizing acc) in KummerTheoremOQ01Aristotle.lean:129-139",
+      "zip_scanl_append_singleton: specializes gen version at acc=0 in KummerTheoremOQ01Aristotle.lean:144-147",
+      "rhs_append_singleton: uses tail_append_of_ne_nil + map/prod simplification in KummerTheoremOQ01Aristotle.lean:152-170",
+      "multinomial_eq_prod_choose: proved by reverseRecOn induction in KummerTheoremOQ01Aristotle.lean:172-184"
+    ],
+    "insights": [
+      "Key: generalizing acc in zip_scanl_append_singleton from 0 to arbitrary acc enables clean induction. Without generalization, the cons case shifts accumulator and IH cannot be applied.",
+      "Fix: omega cannot close prod.mk equality directly after congr; use rw [show a = b from by omega] instead of congr+omega."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
