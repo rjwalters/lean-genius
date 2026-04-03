@@ -1623,8 +1623,8 @@ axiom regulator_pos (E : EllipticCurveQ) (hr : algebraicRank E > 0) :
     R = ĥ(P) where P generates E(ℚ)/torsion. -/
 theorem regulator_rank_one_is_height (_E : EllipticCurveQ)
     (_hr : algebraicRank _E = 1) :
-    True := -- Placeholder: R = ĥ(generator)
-  trivial
+    ∃ (h : CanonicalHeight _E) (g : ℝ), regulatorValue _E = h.height g := by
+  sorry -- Placeholder: R = ĥ(generator) for rank-1 curves
 
 /- **Explicit regulator computation for y² = x³ - 25x (n=5 curve)**
 
