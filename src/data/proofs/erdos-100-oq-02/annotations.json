@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": "ann-strong-implies-linear",
+    "proofId": "erdos-100-oq-02",
+    "range": { "startLine": 32, "endLine": 40 },
+    "type": "technique",
+    "title": "strong_implies_half_linear: Arithmetic Sufficiency of the Strong Conjecture",
+    "content": "The proof has four steps: (1) extract `hstrong : diam S ≥ S.card - 1` from the conjecture applied to S, hint, hcard; (2) cast hcard (S.card ≥ 2 : ℕ) to (S.card : ℝ) ≥ 2 via exact_mod_cast; (3) close by linarith, which sees diam ≥ n-1 and n ≥ 2 and derives diam ≥ n/2. The mathematical content: n-1 ≥ n/2 iff n ≥ 2, which holds by hypothesis. The proof reveals that the implication from the strong conjecture to the half-linear bound is purely arithmetic — it contains no geometry at all.",
+    "mathContext": "The strong conjecture: $\\text{diam}(S) \\ge |S| - 1$ for any $n$-point integer distance set $S$. Consequence: $\\text{diam}(S) \\ge n - 1 \\ge n/2$ for $n \\ge 2$. The constant $1/2$ is not tight — if the strong conjecture holds, one can do better by taking $c = 1 - 1/n \\to 1$. But $1/2$ suffices to show linear growth. The exact constant in the conjectured linear bound is unknown.",
+    "significance": "key",
+    "relatedConcepts": ["Erdos100StrongConjecture", "exact_mod_cast for ℕ to ℝ", "linarith for linear arithmetic", "diam function from parent file"],
+    "prerequisites": ["Erdos100StrongConjecture type from parent file", "exact_mod_cast tactic", "hasIntegerDistances from parent file"]
+  },
+  {
+    "id": "ann-gk-sublinear",
+    "proofId": "erdos-100-oq-02",
+    "range": { "startLine": 51, "endLine": 57 },
+    "type": "technique",
+    "title": "gk_bound_strictly_sublinear: Filters and Asymptotic Comparison",
+    "content": "The proof uses Mathlib's filter library: `filter_upwards [n_over_log_sublinear 1 (by norm_num)] with n hn` instantiates the parent file's lemma `n_over_log_sublinear 1 : ∀ᶠ n in atTop, n/log n < n*1 = n`, extracting `hn : n/log n < n` for a specific n satisfying the eventual property. Then `rw [mul_one] at hn` simplifies n*1 = n, `rw [mul_div_assoc]` rewrites c*(n/log n), and `exact mul_lt_mul_of_pos_left hn hc` scales both sides by c > 0. The `filter_upwards` pattern is a key idiom for eventual properties.",
+    "mathContext": "For $c > 0$: $cn/\\log n < cn \\iff n/\\log n < n \\iff 1/\\log n < 1 \\iff \\log n > 1 \\iff n > e$. So the inequality holds for all $n \\ge 3$ (since $\\log 3 \\approx 1.099 > 1$). The `atTop` filter represents 'for all sufficiently large n'. `filter_upwards` converts an eventual property into a for-all-sufficiently-large-n hypothesis. `mul_lt_mul_of_pos_left : a < b → 0 < c → c*a < c*b` is the standard positive-scaling monotonicity lemma.",
+    "significance": "key",
+    "relatedConcepts": ["∀ᶠ n in atTop", "filter_upwards tactic", "n_over_log_sublinear from parent", "mul_lt_mul_of_pos_left", "Real.log"],
+    "prerequisites": ["Mathlib.Order.Filter.AtTopBot", "filter_upwards idiom", "n_over_log_sublinear from Erdos100Problem", "mul_lt_mul_of_pos_left lemma"]
+  }
+]

@@ -33,25 +33,50 @@
     "lineCount": 60,
     "assumptions": "Inherits axioms from Erdos100Problem.lean (guthKatz_distinct_distances, piepmeyer_construction) via import."
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Context",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Imports Proofs.Erdos100Problem (which axiomatizes guthKatz_distinct_distances and piepmeyer_construction) and opens the Erdos100, Filter, and Set namespaces. The namespace gives access to diam, hasIntegerDistances, Erdos100StrongConjecture, and n_over_log_sublinear."
+    },
+    {
+      "id": "strong-implies-linear",
+      "title": "strong_implies_half_linear: Conjecture → Linear Bound",
+      "startLine": 24,
+      "endLine": 40,
+      "summary": "Proves that the strong conjecture (diam S ≥ card S - 1) implies a linear lower bound: diam S ≥ (card S)/2 for sets of ≥ 2 points. The proof extracts diam S ≥ n-1 from Erdos100StrongConjecture, casts n ≥ 2 to a real inequality, and closes by linarith."
+    },
+    {
+      "id": "gk-strictly-sublinear",
+      "title": "gk_bound_strictly_sublinear: Quantifying the log-gap",
+      "startLine": 42,
+      "endLine": 58,
+      "summary": "Proves that for any c > 0, cn/log n < cn eventually (∀ᶠ n in atTop). Uses n_over_log_sublinear 1 from the parent file (which gives n/log n < n eventually), then scales by c via mul_lt_mul_of_pos_left. The filter_upwards tactic converts the eventually statement to a direct inequality."
+    }
+  ],
   "overview": {
-    "historicalContext": "Erdős and Anning (1945) proved that infinitely many collinear points cannot all have integer pairwise distances unless they are collinear. The question of how the minimum diameter of n-point integer distance sets grows with n remains open, with the best known bound of cn/log n following from Guth-Katz (2015).",
-    "problemStatement": "Is the minimum diameter of n-point integer distance sets Θ(n) (linear growth) or Θ(n/log n) (matching the current best bound from Guth-Katz)?",
+    "historicalContext": "Integer distance sets — finite sets of points in the plane with all pairwise distances integers — were studied by Erdős and Anning (1945), who proved that any infinite integer distance set in ℝ² must be collinear. The question of how the minimum diameter of non-collinear n-point integer distance sets grows with n has remained open since the 1950s. Piepmeyer's construction (1996) shows that integer distance sets with n points can have diameter Θ(n), suggesting linear growth is achievable. The best known lower bound on the minimum diameter follows from Guth-Katz techniques (2015) and gives Ω(n/log n). The gap between the achieved Θ(n) upper bound and the best known lower bound Ω(n/log n) is exactly a factor of log n — whether the true growth rate is linear or sub-linear is the open question formalized here.",
+    "problemStatement": "Is the minimum diameter of n-point integer distance sets $\\Theta(n)$ (linear growth) or $\\Theta(n/\\log n)$ (matching the current best lower bound from Guth-Katz techniques)?",
     "text": "The gap between the conjectured linear bound and the proven n/log n bound is exactly a factor of log n.",
-    "proofStrategy": "Two results are formalized: (1) the strong conjecture (diam ≥ n-1) implies a linear lower bound with c = 1/2, via simple arithmetic; (2) the Guth-Katz bound cn/log n is eventually strictly less than cn, quantifying the gap.",
+    "proofStrategy": "Two results are formalized: (1) the strong conjecture (diam ≥ n-1) implies a linear lower bound with c = 1/2, via simple arithmetic; (2) the Guth-Katz bound cn/log n is eventually strictly less than cn, quantifying the gap. Both proofs are short (≤5 lines each) once the parent file's axioms and lemmas are in scope.",
     "keyInsights": [
-      "The strong conjecture (diam ≥ n-1) immediately implies a linear bound via n-1 ≥ n/2",
-      "The current best bound cn/log n differs from the conjectured cn by exactly one log factor",
-      "The kanold_bound axiom in the parent file is logically redundant — it follows from the proved diam_ge_n_over_log_n"
+      "The strong conjecture (diam $\\ge n-1$) is a conjectured tight form of the lower bound. If true, the linear diameter growth $n/2 \\le \\text{diam} \\le Cn$ would be established from both sides — but the $n-1$ bound is not yet proved.",
+      "The proof of `strong_implies_half_linear` uses only `linarith` after extracting the conjecture: from $n-1 \\ge n/2$ (which holds for $n \\ge 2$), one gets $\\text{diam} \\ge n-1 \\ge n/2$. This shows the implication is purely arithmetic, not geometric.",
+      "The `∀ᶠ n in atTop` formalization uses Mathlib's filter library: `filter_upwards [n_over_log_sublinear 1 ...]` instantiates a pre-proved asymptotic result from the parent file with the specific parameter 1, then `with n hn` extracts the hypothesis for a specific n.",
+      "The gap factor log n is made explicit: `gk_bound_strictly_sublinear` shows $cn/\\log n < cn$ for all sufficiently large n and all $c > 0$. This is the quantitative statement that Guth-Katz provably loses a log factor versus the linear conjecture.",
+      "The `kanold_bound` axiom in the parent file is logically redundant: it states diam $\\ge cn/\\log n$, which is exactly the content of `diam_ge_n_over_log_n` proved from the Guth-Katz axiom. This suggests a cleanup opportunity in the parent file's axiom system."
     ]
   },
   "conclusion": {
-    "summary": "Formalizes two results about the gap between known (n/log n) and conjectured (n) diameter bounds for integer distance sets.",
+    "summary": "Formalizes two results about the gap between the known Ω(n/log n) lower bound and the conjectured Θ(n) linear diameter growth for integer distance sets. Both proofs are short corollaries of the parent file's axioms, demonstrating how derived results build on a single layer of axiomatized foundations.",
+    "implications": "If the linear conjecture is proved (closing the log gap), it would provide a tight characterization of integer distance sets' extremal behavior. The formalization infrastructure (hasIntegerDistances, diam, Erdos100StrongConjecture) provides a reusable framework for formalizing further results in combinatorial geometry. The explicit asymptotic formalization via Mathlib's filter library (`atTop`, `∀ᶠ`) demonstrates how to state and prove growth-rate results rigorously.",
     "openQuestions": [
-      "Can the log n factor be removed from the Guth-Katz bound to achieve linear growth?",
-      "Is kanold_bound provable from the existing theorems (eliminating a redundant axiom)?"
-    ],
-    "implications": ""
+      "Can the log n gap be removed from the Guth-Katz lower bound to achieve linear diameter growth? This would settle the main open question, but requires new combinatorial geometry ideas beyond the current algebraic-geometric approach.",
+      "Is `kanold_bound` in the parent file provable from the other axioms? The claim is that it follows from `diam_ge_n_over_log_n` — formalizing this would eliminate a redundant axiom and tighten the formalization.",
+      "Piepmeyer's construction achieves diameter Θ(n) — can this be fully formalized in Lean 4, giving a complete picture of the upper bound side?"
+    ]
   },
   "crossReferences": [
     {
