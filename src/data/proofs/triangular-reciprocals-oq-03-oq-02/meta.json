@@ -43,7 +43,8 @@
         "lineCount": 196,
         "theoremCount": 10,
         "definitionCount": 1,
-        "mathlib_version": "4.26.0"
+        "mathlib_version": "4.26.0",
+        "additionalFiles": ["Proofs/TriangularReciprocalAlternatingOQ03.lean"]
     },
     "overview": {
         "historicalContext": "The alternating harmonic series ∑(-1)^{n+1}/n = log(2) was first published by Mercator (1668) and is a special case of the Mercator series for log(1+x). Euler studied many variants involving products n(n+k) in the denominators. The generalization to arbitrary k reveals a beautiful structure: for even k the logarithmic terms cancel giving a rational answer, while for odd k the result involves log(2).",
