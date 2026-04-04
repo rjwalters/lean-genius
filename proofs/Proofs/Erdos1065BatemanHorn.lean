@@ -1,6 +1,7 @@
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Data.Nat.Basic
+import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Mathlib.Tactic
 
 /-
@@ -81,13 +82,22 @@ theorem formA_decomposition_unique {p k₁ k₂ q₁ q₂ : ℕ}
   -- q₁ and q₂ are odd (primes ≠ 2)
   have hq1_odd : ¬ 2 ∣ q₁ := by
     intro h
-    exact hq1_ne2 (hq1.eq_one_or_self_of_dvd 2 h |>.resolve_left (by norm_num))
+    exact hq1_ne2 (hq1.eq_one_or_self_of_dvd 2 h |>.resolve_left (by norm_num) |>.symm)
   have hq2_odd : ¬ 2 ∣ q₂ := by
     intro h
-    exact hq2_ne2 (hq2.eq_one_or_self_of_dvd 2 h |>.resolve_left (by norm_num))
-  sorry -- Requires 2-adic valuation argument: v₂(2^k·q) = k when q is odd,
-        -- so k₁ = k₂ from heq, then q₁ = q₂ by cancellation.
-        -- Aristotle candidate for companion file.
+    exact hq2_ne2 (hq2.eq_one_or_self_of_dvd 2 h |>.resolve_left (by norm_num) |>.symm)
+  -- Use 2-adic valuation: v₂(2^k · q) = k when q is odd
+  haveI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
+  have hv1 : padicValNat 2 (2 ^ k₁ * q₁) = k₁ := by
+    rw [padicValNat.mul (pow_ne_zero k₁ two_ne_zero) hq1.ne_zero,
+        padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hq1_odd, add_zero]
+  have hv2 : padicValNat 2 (2 ^ k₂ * q₂) = k₂ := by
+    rw [padicValNat.mul (pow_ne_zero k₂ two_ne_zero) hq2.ne_zero,
+        padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hq2_odd, add_zero]
+  have hk : k₁ = k₂ := by
+    have hpv := congr_arg (padicValNat 2) heq
+    rw [hv1, hv2] at hpv; exact hpv
+  exact ⟨hk, Nat.eq_of_mul_eq_mul_left (pow_pos (by norm_num : 0 < 2) k₂) (hk ▸ heq)⟩
 
 -- ## Verified Examples: Form A with specific k values
 
@@ -245,14 +255,8 @@ theorem batemanHorn_k1_iff_safePrimes :
     Set.Infinite {p : ℕ | IsFormAWithK 1 p} ↔
     Set.Infinite {p : ℕ | IsSafePrime p} := by
   constructor
-  · intro h
-    convert h using 1
-    ext p
-    exact (safePrime_iff_formAK1 p).symm
-  · intro h
-    convert h using 1
-    ext p
-    exact safePrime_iff_formAK1 p
+  · intro h; exact h.mono (fun p hp => (safePrime_iff_formAK1 p).mpr hp)
+  · intro h; exact h.mono (fun p hp => (safePrime_iff_formAK1 p).mp hp)
 
 /-- BH for any single k implies infinitely many Form A primes overall. -/
 theorem batemanHorn_implies_formA_infinite (k : ℕ) :
