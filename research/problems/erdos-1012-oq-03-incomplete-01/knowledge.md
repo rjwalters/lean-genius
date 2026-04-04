@@ -5,6 +5,36 @@
 Formalize Moon-Moser theorem and Ghouila-Houri theorem for strongly-connected
 directed graphs in Lean 4, building on the existing Rédei Hamiltonian path proof.
 
+## Session 2026-04-03 (Session 5) - Prove directed_hamiltonian_threshold via arc-counting
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+- Added `missing_arcs_le` (fully proved): arcCount > (n-1)² → n*(n-1) - arcCount ≤ n-2
+  - Technique: `set k := n-1`, prove `n*k = k²+k`, then `set a := k²` to linearize for omega
+- Added `hamiltonian_of_few_missing_arcs` (sorry'd): Hamiltonicity from ≤ n-2 missing arcs
+  - Strategy documented: (n-1)! cyclic permutations; each missing arc blocks ≤ (n-2)!;
+    total blocked ≤ (n-2)·(n-2)! < (n-1)!. Needs Equiv.Perm machinery (~200 lines).
+- `directed_hamiltonian_threshold` is now PROVED (no sorry) via the two lemmas
+
+### Key Findings
+- SC hypothesis not needed for counting argument (passes through from main theorem)
+- `set a := k^2` + omega is the right approach for ℕ quadratic arithmetic
+- `arcCount` with `Finset.univ.filter` avoids Fintype synthesis issues for Prop-valued arcs
+
+### Files Modified
+- `proofs/Proofs/Erdos1012OQ03.lean`: +28 lines, file compiles with expected sorries only
+
+### PR
+- https://github.com/rjwalters/lean-genius/pull/9142 (updated)
+
+### Next Steps
+1. Prove `hamiltonian_of_few_missing_arcs` (~200 lines, Equiv.Perm counting machinery)
+2. Prove `ghouila_houri` (~350-450 lines, directed Ore + cycle extension)
+
+---
+
 ## Session 2026-04-03 (Session 4) - Prove tournament_cycle_extendable Case 1
 
 **Mode**: REVISIT

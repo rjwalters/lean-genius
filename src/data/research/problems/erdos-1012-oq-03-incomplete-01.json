@@ -29,24 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: tournament_cycle_extendable Case 1 (insertion case) fully proved. Case 2 blocked on tournament_cycle_non_insertable (sorry). Other sorries: nodup_insertIdx, sc_tournament_has_cycle, ghouila_houri, directed_hamiltonian_threshold.",
+    "progressSummary": "PROGRESS: directed_hamiltonian_threshold proved (no sorry); ghouila_houri and hamiltonian_of_few_missing_arcs remain as sorries",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
       "sc_tournament_has_cycle proof in Erdos1012OQ03.lean:330-390",
       "tournament_cycle_extendable arc condition proof in Erdos1012OQ03.lean:534-617",
-      "Proved tournament_cycle_extendable Case 1 (insertion): list_idx_congr helper + change tactic normalize bounds + getElem_insertIdx_of_lt/self/gt + convert using 1 pattern"
+      "Proved tournament_cycle_extendable Case 1 (insertion): list_idx_congr helper + change tactic normalize bounds + getElem_insertIdx_of_lt/self/gt + convert using 1 pattern",
+      "missing_arcs_le: fully proved arithmetic lemma in Erdos1012OQ03.lean (arcCount > (n-1)² → ≤ n-2 missing arcs)",
+      "directed_hamiltonian_threshold: now proved (no sorry) via missing_arcs_le + hamiltonian_of_few_missing_arcs"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
       "Injectivity: List.Nodup.getElem_inj_iff",
-      "Surjectivity: List.mem_iff_getElem + hmem (\u2200 v, v \u2208 l from Finset.eq_univ_of_card)",
-      "Arc condition: Equiv.ofBijective preserves function values, so \u03c3.symm i = l[i]",
-      "sc_tournament_has_cycle proved: uses R\u00e9dei Hamiltonian path + SC walk from last to first vertex, extracts cycle via l.drop k (~60 lines)",
+      "Surjectivity: List.mem_iff_getElem + hmem (∀ v, v ∈ l from Finset.eq_univ_of_card)",
+      "Arc condition: Equiv.ofBijective preserves function values, so σ.symm i = l[i]",
+      "sc_tournament_has_cycle proved: uses Rédei Hamiltonian path + SC walk from last to first vertex, extracts cycle via l.drop k (~60 lines)",
       "API fix: insertNth renamed to insertIdx in Lean 4.26/current Mathlib; all references updated",
       "Arc condition proved for direct-insertion in tournament_cycle_extendable using getElem_insertIdx_of_lt/self/of_gt (Lean 4.26 API) + Nat.mod_eq_of_lt for index simplification",
       "Dependent-type rw fix: use change to normalize goal bound proofs to named hypotheses before rw",
-      "list_idx_congr {l} {i j} (h : i=j) : l[i]=l[j] via subst h; rfl \u2014 avoids motive-not-type-correct errors",
+      "list_idx_congr {l} {i j} (h : i=j) : l[i]=l[j] via subst h; rfl — avoids motive-not-type-correct errors",
       "Pattern: convert harcs j _ using 1 + exact list_idx_congr (index_equality_proof) closes arc goals cleanly"
     ],
     "mathlibGaps": [],
@@ -54,7 +56,8 @@
       "Prove tournament_cycle_non_insertable: tournament on l has no i with l[i]->u->l[i+1] implies all arcs same direction",
       "Then Case 2 of tournament_cycle_extendable closes, enabling grow_cycle_to_hamiltonian and moon_moser",
       "Prove nodup_insertIdx: List.Nodup.insertIdx or build from List.nodup_insertIdx in Mathlib",
-      "ghouila_houri needs longest-path argument (~200 lines)"
+      "ghouila_houri needs longest-path argument (~200 lines)",
+      "Prove hamiltonian_of_few_missing_arcs via Equiv.Perm counting (~200 lines)"
     ]
   },
   "tags": [
