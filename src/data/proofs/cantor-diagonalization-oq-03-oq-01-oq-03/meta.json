@@ -16,11 +16,11 @@
       "provability-logic",
       "abstract-logic"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 7,
-    "assumptions": "GodelModel axiomatizes the essentials of a Peano-strength formal system as structure fields: point-surjective evaluation (diagonal lemma), formal negation, consistency, reflection principle, and D1 axiom of provability logic. StrongGodelModel additionally axiomatizes double-negation elimination for the strong incompleteness result. These are mathematical hypotheses, not global Lean axioms.",
+    "axiomCount": 5,
+    "assumptions": "GodelModel axiomatizes the essentials of a Peano-strength formal system as structure fields: point-surjective evaluation (diagonal lemma / h_diag), consistency (h_consistent), reflection principle (h_reflection), and D1 axiom of provability logic (h_D1) — 4 Prop-typed assumptions. StrongGodelModel additionally axiomatizes double-negation elimination (h_dne) — 1 more. Total: 5 structure-encoded mathematical assumptions. These are hypotheses, not global Lean axioms.",
     "lineCount": 256,
     "theoremCount": 6,
     "definitionCount": 5,
@@ -62,7 +62,7 @@
   "leanFile": {
     "namespace": "CantorDiagonalizationOQ03OQ01OQ03",
     "lineCount": 256,
-    "axiomCount": 7,
+    "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 5
   }
