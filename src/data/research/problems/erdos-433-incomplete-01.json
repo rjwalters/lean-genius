@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All sorries proved. g_two theorem proved for n≥3. Both Lean files compile cleanly.",
+    "progressSummary": "COMPLETE: all 5 sorries proved — 4 Aristotle companion lemmas + g_two main theorem. Both files compile with 0 sorries. PR #9185.",
     "builtItems": [
       "Fixed Erdos433Problem.lean: notation, IsCoprime→SetGCDOne, g definition, AsymptoticFormula, schur_bound proof",
       "Created Erdos433Aristotle.lean: dixmier_k2_arith, frobenius_pair_max, g_two_nonneg, coprime_pred_self (sorry), frobenius_ub_pair (sorry), frobenius_bound_int (sorry), pair_subset_range, pair_card, finset_gcd_pred_self (sorry)",
