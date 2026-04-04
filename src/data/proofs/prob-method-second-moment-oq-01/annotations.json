@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ann-pz-cauchy-schwarz",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": { "startLine": 37, "endLine": 52 },
+    "type": "insight",
+    "title": "Private Cauchy-Schwarz: (∑f)² ≤ |s|·∑f²",
+    "content": "The private lemma `sq_sum_le` proves $(\\sum_{a \\in s} f(a))^2 \\leq |s| \\cdot \\sum_{a \\in s} f(a)^2$ by induction on the Finset. The inductive step on `insert a s` uses the non-negativity of $\\sum_b (f(a) - f(b))^2$, expanded via `sub_sq` and `Finset.mul_sum`, closing with `nlinarith` after `push_cast`. This is the 'sum of squares' proof: $(n+1)\\sum f_i^2 - (\\sum f_i)^2 = \\sum_{i < j}(f_i - f_j)^2 \\geq 0$. The `private` qualifier keeps the namespace clean — the parent already exports a similar lemma.",
+    "mathContext": "$(\\sum_{i=1}^n a_i)^2 \\leq n \\cdot \\sum_{i=1}^n a_i^2$ — Cauchy-Schwarz with constant second vector: $\\langle f, \\mathbf{1} \\rangle^2 \\leq \\|f\\|^2 \\cdot \\|\\mathbf{1}\\|^2 = (\\sum f_i^2) \\cdot n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cauchy-Schwarz", "Finset.induction_on", "sq_nonneg", "nlinarith", "sub_sq"],
+    "prerequisites": ["Finset.sum_insert", "Finset.sum_nonneg", "Nat.cast"]
+  },
+  {
+    "id": "ann-pz-main-theorem",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": { "startLine": 62, "endLine": 119 },
+    "type": "theorem",
+    "title": "Paley-Zygmund Quantitative: (1-θ)²·(∑f)² ≤ |above|·∑f²",
+    "content": "The main theorem proves $(1-\\theta)^2 (\\sum f)^2 \\leq |\\text{above}| \\cdot \\sum f^2$ where `above = {a ∈ s : f(a) > θ·μ}`. The 6-step proof: (1) decompose $\\sum_s f = \\sum_{\\text{above}} f + \\sum_{\\text{below}} f$ via `Finset.sum_filter_add_sum_filter_not`; (2) bound $\\sum_{\\text{below}} f \\leq \\theta \\cdot \\sum_s f$ since each below element has $f(a) \\leq \\theta\\mu$; (3) derive $\\sum_{\\text{above}} f \\geq (1-\\theta)\\sum_s f$ by subtraction; (4) apply `sq_sum_le` to `above`: $(\\sum_{\\text{above}} f)^2 \\leq |\\text{above}| \\cdot \\sum_{\\text{above}} f^2$; (5) extend to full set by filter-subset monotonicity; (6) combine with `sq_le_sq'` to close.",
+    "mathContext": "$(1-\\theta)^2 (\\sum f)^2 \\leq (\\sum_{\\text{above}} f)^2 \\leq |\\text{above}| \\cdot \\sum_{\\text{above}} f^2 \\leq |\\text{above}| \\cdot \\sum_s f^2$. Classically: $P[X > \\theta E[X]] \\geq (1-\\theta)^2 E[X]^2/E[X^2]$.",
+    "significance": "key",
+    "relatedConcepts": ["Paley-Zygmund inequality", "second moment method", "sq_sum_le", "Finset.sum_filter_add_sum_filter_not", "sq_le_sq'"],
+    "prerequisites": ["sq_sum_le", "Finset.sum_le_sum", "mul_le_mul_of_nonneg_left"]
+  },
+  {
+    "id": "ann-pz-probability-form",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": { "startLine": 124, "endLine": 131 },
+    "type": "theorem",
+    "title": "Probability Form: |above|/|s| ≥ (1-θ)²·(mean)²/E[f²]",
+    "content": "`paley_zygmund_probability` divides the counting form by $\\sum f^2$: $(1-\\theta)^2 (\\sum f)^2 / \\sum f^2 \\leq |\\text{above}|$. The proof uses `div_le_iff hf2_pos` to convert division to multiplication, then applies `paley_zygmund_quantitative`. The hypothesis `hf2_pos : 0 < ∑f²` is needed for safe division. This is the classical 'probability form' matching $P[X > \\theta E[X]] \\geq (1-\\theta)^2 E[X]^2/E[X^2]$.",
+    "mathContext": "Dividing both sides by $\\sum f^2$: $|\\text{above}| \\geq (1-\\theta)^2 (\\sum f)^2 / \\sum f^2$. Normalizing by $|s|^2$: $|\\text{above}|/|s| \\geq (1-\\theta)^2 E[f]^2 / E[f^2]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["div_le_iff", "paley_zygmund_quantitative", "probability form", "Paley-Zygmund"],
+    "prerequisites": ["paley_zygmund_quantitative", "div_le_iff"]
+  },
+  {
+    "id": "ann-pz-at-zero",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": { "startLine": 135, "endLine": 146 },
+    "type": "insight",
+    "title": "θ=0 Special Case: Recovers Qualitative Second Moment Method",
+    "content": "`paley_zygmund_at_zero` sets $\\theta = 0$, recovering $(\\sum f)^2 \\leq |\\{f > 0\\}| \\cdot \\sum f^2$. The proof applies `paley_zygmund_quantitative` with `θ = 0`, then `simp` reduces $(1-0)^2 = 1$ and $0 \\cdot \\mu = 0$. The `convert` tactic handles the filter predicate change from `0·μ < f a` to `0 < f a`. This shows that the quantitative Paley-Zygmund subsumes the qualitative second moment: $|\\text{supp}(f)| \\geq (\\sum f)^2 / \\sum f^2$, i.e., $P[X>0] \\geq E[X]^2/E[X^2]$.",
+    "mathContext": "$P[X > 0] \\geq E[X]^2/E[X^2]$ (second moment lower bound on support). Implies $P[X > 0] > 0$ when $E[X] > 0$. Tightness: equality iff $X$ is essentially constant on its support.",
+    "significance": "key",
+    "relatedConcepts": ["second moment method", "paley_zygmund_quantitative", "convert tactic", "support lower bound"],
+    "prerequisites": ["paley_zygmund_quantitative", "qualitative second moment method"]
+  }
+]
