@@ -13,10 +13,10 @@
       "tournaments"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 3,
     "axiomCount": 0,
-    "lineCount": 1019,
-    "assumptions": "0 axioms. 2 sorries: (1) ghouila_houri (full proof needs longest-path argument ~200 lines), (2) hamiltonian_of_few_missing_arcs (counting/probabilistic argument: if ≤n-2 arcs are missing from K*_n, a Hamiltonian cycle exists). directed_hamiltonian_threshold is now proved by reducing to hamiltonian_of_few_missing_arcs via missing_arcs_le. Moon-Moser theorem and Rédei are fully proved.",
+    "lineCount": 1199,
+    "assumptions": "0 axioms. 3 sorries: (1) ghouila_houri (full proof needs longest-path argument ~200 lines), (2) hamiltonian_of_few_missing_arcs (counting/probabilistic argument: if ≤n-2 arcs are missing from K*_n, a Hamiltonian cycle exists — two definitions present, one with partial probabilistic infrastructure and one full sorry), (3) hBadFor_bound (fiber counting lemma inside the probabilistic infrastructure). directed_hamiltonian_threshold delegates to hamiltonian_of_few_missing_arcs via missing_arcs_le. Moon-Moser theorem and Rédei are fully proved.",
     "dateAdded": "2026-03-30"
   },
   "overview": {
