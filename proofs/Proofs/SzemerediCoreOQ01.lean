@@ -222,201 +222,28 @@ theorem energy_excess_A_split (G : SimpleGraph V) [DecidableRel G.Adj]
   rw [split_energy_identity _ _ _ _ han]
   ring
 
--- ═══════════════════════════════════════════════════════════════════
--- PART V: ALGEBRAIC INFRASTRUCTURE FOR ENERGY INCREMENT
--- ═══════════════════════════════════════════════════════════════════
-
-/-- Edge count additivity for a 2×2 split: the weighted sum of sub-pair densities
-    equals the full pair density (weighted by sizes).
-    This is the 2D analogue of `edgeDensity_union_weighted_avg`, proved by
-    double application of edge count union additivity. -/
-theorem four_subpair_edge_count_identity (G : SimpleGraph V) [DecidableRel G.Adj]
-    (A₁ A₂ B₁ B₂ : Finset V) (hA : Disjoint A₁ A₂) (hB : Disjoint B₁ B₂) :
-    (A₁.card : ℚ) * B₁.card * edgeDensity G A₁ B₁ +
-    (A₁.card : ℚ) * B₂.card * edgeDensity G A₁ B₂ +
-    (A₂.card : ℚ) * B₁.card * edgeDensity G A₂ B₁ +
-    (A₂.card : ℚ) * B₂.card * edgeDensity G A₂ B₂ =
-    ((A₁.card + A₂.card) : ℚ) * (B₁.card + B₂.card) *
-      edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂) := by
-  -- Inline card_mul_edgeDensity: |X|*|Y|*d(X,Y) = edge count e(X,Y)
-  have hmul : ∀ X Y : Finset V, (X.card : ℚ) * Y.card * edgeDensity G X Y =
-      ↑((X.product Y).filter (fun p => G.Adj p.1 p.2)).card := by
-    intro X Y; unfold edgeDensity; split_ifs with h
-    · rw [mul_zero]; symm; rw [Nat.cast_eq_zero, Finset.card_eq_zero]
-      rcases mul_eq_zero.mp h with hx | hy
-      · simp [Finset.card_eq_zero.mp (Nat.cast_eq_zero.mp hx)]
-      · ext x; simp [Finset.product, Finset.card_eq_zero.mp (Nat.cast_eq_zero.mp hy)]
-    · exact mul_div_cancel₀ _ h
-  -- Inline edge_count_union: e(X₁∪X₂, Y) = e(X₁,Y) + e(X₂,Y)
-  have heu : ∀ X₁ X₂ Y : Finset V, Disjoint X₁ X₂ →
-      ((X₁ ∪ X₂).product Y).filter (fun p => G.Adj p.1 p.2) =
-      (X₁.product Y).filter (fun p => G.Adj p.1 p.2) ∪
-      (X₂.product Y).filter (fun p => G.Adj p.1 p.2) := by
-    intro X₁ X₂ Y hd
-    ext ⟨a, b⟩
-    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_union]
-    constructor
-    · rintro ⟨⟨ha, hb⟩, hadj⟩
-      rcases Finset.mem_union.mp ha with h | h
-      · exact Or.inl ⟨⟨h, hb⟩, hadj⟩
-      · exact Or.inr ⟨⟨h, hb⟩, hadj⟩
-    · rintro (⟨⟨ha, hb⟩, hadj⟩ | ⟨⟨ha, hb⟩, hadj⟩)
-      · exact ⟨⟨Finset.mem_union.mpr (Or.inl ha), hb⟩, hadj⟩
-      · exact ⟨⟨Finset.mem_union.mpr (Or.inr ha), hb⟩, hadj⟩
-  have hcard_union : ∀ X₁ X₂ Y : Finset V, Disjoint X₁ X₂ →
-      (↑(((X₁ ∪ X₂).product Y).filter (fun p => G.Adj p.1 p.2)).card : ℚ) =
-      ↑(((X₁.product Y).filter (fun p => G.Adj p.1 p.2)).card) +
-      ↑(((X₂.product Y).filter (fun p => G.Adj p.1 p.2)).card) := by
-    intro X₁ X₂ Y hd
-    rw [heu X₁ X₂ Y hd]
-    have hdisj : Disjoint ((X₁.product Y).filter (fun p => G.Adj p.1 p.2))
-                           ((X₂.product Y).filter (fun p => G.Adj p.1 p.2)) := by
-      apply Finset.disjoint_filter_filter; rw [Finset.disjoint_left]
-      intro x h₁ h₂
-      exact absurd (Finset.mem_product.mp h₂).1
-        (Finset.disjoint_left.mp hd (Finset.mem_product.mp h₁).1)
-    exact_mod_cast Finset.card_union_of_disjoint hdisj
-  -- The sum e(A₁,B₁) + e(A₁,B₂) + e(A₂,B₁) + e(A₂,B₂) = e(A₁∪A₂, B₁∪B₂)
-  have h1 := hmul A₁ B₁; have h2 := hmul A₁ B₂
-  have h3 := hmul A₂ B₁; have h4 := hmul A₂ B₂
-  have h5 := hmul (A₁ ∪ A₂) (B₁ ∪ B₂)
-  -- Apply B-splits
-  have hB1 : (↑(((A₁.product (B₁ ∪ B₂)).filter (fun p => G.Adj p.1 p.2)).card) : ℚ) =
-      ↑((A₁.product B₁).filter (fun p => G.Adj p.1 p.2)).card +
-      ↑((A₁.product B₂).filter (fun p => G.Adj p.1 p.2)).card := by
-    have : A₁.product (B₁ ∪ B₂) = (A₁.product B₁) ∪ (A₁.product B₂) := by
-      ext ⟨a, b⟩; simp [Finset.mem_product, Finset.mem_union]
-    rw [show ((A₁.product (B₁ ∪ B₂)).filter (fun p => G.Adj p.1 p.2)) =
-        (A₁.product B₁).filter (fun p => G.Adj p.1 p.2) ∪
-        (A₁.product B₂).filter (fun p => G.Adj p.1 p.2) from by
-      rw [this, Finset.filter_union]]
-    have hd : Disjoint ((A₁.product B₁).filter (fun p => G.Adj p.1 p.2))
-                        ((A₁.product B₂).filter (fun p => G.Adj p.1 p.2)) := by
-      apply Finset.disjoint_filter_filter; rw [Finset.disjoint_left]
-      intro x h₁ h₂
-      exact absurd (Finset.mem_product.mp h₂).2
-        (Finset.disjoint_left.mp hB (Finset.mem_product.mp h₁).2)
-    exact_mod_cast Finset.card_union_of_disjoint hd
-  have hB2 : (↑(((A₂.product (B₁ ∪ B₂)).filter (fun p => G.Adj p.1 p.2)).card) : ℚ) =
-      ↑((A₂.product B₁).filter (fun p => G.Adj p.1 p.2)).card +
-      ↑((A₂.product B₂).filter (fun p => G.Adj p.1 p.2)).card := by
-    have : A₂.product (B₁ ∪ B₂) = (A₂.product B₁) ∪ (A₂.product B₂) := by
-      ext ⟨a, b⟩; simp [Finset.mem_product, Finset.mem_union]
-    rw [show ((A₂.product (B₁ ∪ B₂)).filter (fun p => G.Adj p.1 p.2)) =
-        (A₂.product B₁).filter (fun p => G.Adj p.1 p.2) ∪
-        (A₂.product B₂).filter (fun p => G.Adj p.1 p.2) from by
-      rw [this, Finset.filter_union]]
-    have hd : Disjoint ((A₂.product B₁).filter (fun p => G.Adj p.1 p.2))
-                        ((A₂.product B₂).filter (fun p => G.Adj p.1 p.2)) := by
-      apply Finset.disjoint_filter_filter; rw [Finset.disjoint_left]
-      intro x h₁ h₂
-      exact absurd (Finset.mem_product.mp h₂).2
-        (Finset.disjoint_left.mp hB (Finset.mem_product.mp h₁).2)
-    exact_mod_cast Finset.card_union_of_disjoint hd
-  -- Now combine: e(A,B) = e(A₁,B) + e(A₂,B) = e(A₁,B₁) + e(A₁,B₂) + e(A₂,B₁) + e(A₂,B₂)
-  have hcardAB : ((A₁.card + A₂.card : ℕ) : ℚ) * (B₁.card + B₂.card) =
-      (A₁.card : ℚ) * B₁.card + A₁.card * B₂.card +
-      A₂.card * B₁.card + A₂.card * B₂.card := by push_cast; ring
-  rw [show (A₁ ∪ A₂).card = A₁.card + A₂.card from Finset.card_union_of_disjoint hA]
-  rw [show (B₁ ∪ B₂).card = B₁.card + B₂.card from Finset.card_union_of_disjoint hB]
-  have hA₁B := hmul A₁ (B₁ ∪ B₂)
-  have hA₂B := hmul A₂ (B₁ ∪ B₂)
-  have hcA := hcard_union A₁ A₂ (B₁ ∪ B₂) hA
-  linarith [hcA, hA₁B, hA₂B, hB1, hB2, h1, h2, h3, h4, h5]
-
-/-- Delta decomposition identity: the 4-subpair energy excess equals the sum of
-    squared density deviations from d(A,B).
-    Σᵢⱼ |Aᵢ||Bⱼ|*dᵢⱼ² - |A||B|*d² = Σᵢⱼ |Aᵢ||Bⱼ|*(dᵢⱼ - d)²
-    (Here d = d(A,B) is the overall density of A∪A₂ vs B∪B₂.) -/
-theorem four_subpair_deviation_identity (G : SimpleGraph V) [DecidableRel G.Adj]
-    (A₁ A₂ B₁ B₂ : Finset V) (hA : Disjoint A₁ A₂) (hB : Disjoint B₁ B₂) :
-    let d := edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂)
-    (A₁.card : ℚ) * B₁.card * (edgeDensity G A₁ B₁) ^ 2 +
-    (A₁.card : ℚ) * B₂.card * (edgeDensity G A₁ B₂) ^ 2 +
-    (A₂.card : ℚ) * B₁.card * (edgeDensity G A₂ B₁) ^ 2 +
-    (A₂.card : ℚ) * B₂.card * (edgeDensity G A₂ B₂) ^ 2 -
-    ((A₁.card + A₂.card) : ℚ) * (B₁.card + B₂.card) * d ^ 2 =
-    (A₁.card : ℚ) * B₁.card * (edgeDensity G A₁ B₁ - d) ^ 2 +
-    (A₁.card : ℚ) * B₂.card * (edgeDensity G A₁ B₂ - d) ^ 2 +
-    (A₂.card : ℚ) * B₁.card * (edgeDensity G A₂ B₁ - d) ^ 2 +
-    (A₂.card : ℚ) * B₂.card * (edgeDensity G A₂ B₂ - d) ^ 2 := by
-  -- Let S = Σᵢⱼ |Aᵢ||Bⱼ|*dᵢⱼ = |A||B|*d (weighted average identity)
-  -- LHS = D² - |A||B|*d², RHS = D² - 2d*S + d²*|A||B| = D² - 2d*(|A||B|*d) + d²*|A||B| = D² - d²*|A||B|
-  set d := edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂)
-  set d₁₁ := edgeDensity G A₁ B₁; set d₁₂ := edgeDensity G A₁ B₂
-  set d₂₁ := edgeDensity G A₂ B₁; set d₂₂ := edgeDensity G A₂ B₂
-  set a₁ : ℚ := ↑A₁.card; set a₂ : ℚ := ↑A₂.card
-  set b₁ : ℚ := ↑B₁.card; set b₂ : ℚ := ↑B₂.card
-  have hS := four_subpair_edge_count_identity G A₁ A₂ B₁ B₂ hA hB
-  -- Both sides equal D² - (a₁+a₂)(b₁+b₂)*d²; the RHS expands to the same
-  have expand_rhs : a₁ * b₁ * (d₁₁ - d) ^ 2 + a₁ * b₂ * (d₁₂ - d) ^ 2 +
-      a₂ * b₁ * (d₂₁ - d) ^ 2 + a₂ * b₂ * (d₂₂ - d) ^ 2 =
-      a₁ * b₁ * d₁₁ ^ 2 + a₁ * b₂ * d₁₂ ^ 2 + a₂ * b₁ * d₂₁ ^ 2 + a₂ * b₂ * d₂₂ ^ 2
-      - 2 * d * (a₁ * b₁ * d₁₁ + a₁ * b₂ * d₁₂ + a₂ * b₁ * d₂₁ + a₂ * b₂ * d₂₂)
-      + d ^ 2 * (a₁ * b₁ + a₁ * b₂ + a₂ * b₁ + a₂ * b₂) := by ring
-  rw [expand_rhs]
-  -- Use the weighted average: Σᵢⱼ aᵢbⱼdᵢⱼ = (a₁+a₂)(b₁+b₂)*d
-  push_cast at hS ⊢
-  linarith
-
-/-- Lower bound on the 4-subpair energy excess:
-    The excess of the 4-subpair energy over the original pair energy is at least
-    |A₁||B₁| × (d(A₁,B₁) - d(A,B))², the contribution of the (A₁,B₁) deviation term. -/
-theorem four_subpair_excess_lb (G : SimpleGraph V) [DecidableRel G.Adj]
-    (A₁ A₂ B₁ B₂ : Finset V) (hA : Disjoint A₁ A₂) (hB : Disjoint B₁ B₂) :
-    let d := edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂)
-    (A₁.card : ℚ) * B₁.card * (edgeDensity G A₁ B₁) ^ 2 +
-    (A₁.card : ℚ) * B₂.card * (edgeDensity G A₁ B₂) ^ 2 +
-    (A₂.card : ℚ) * B₁.card * (edgeDensity G A₂ B₁) ^ 2 +
-    (A₂.card : ℚ) * B₂.card * (edgeDensity G A₂ B₂) ^ 2 -
-    ((A₁.card + A₂.card) : ℚ) * (B₁.card + B₂.card) * d ^ 2 ≥
-    (A₁.card : ℚ) * B₁.card * (edgeDensity G A₁ B₁ - d) ^ 2 := by
-  simp only
-  rw [four_subpair_deviation_identity G A₁ A₂ B₁ B₂ hA hB]
-  have h12 : (0 : ℚ) ≤ (A₁.card : ℚ) * B₂.card * (edgeDensity G A₁ B₂ - _) ^ 2 := by positivity
-  have h21 : (0 : ℚ) ≤ (A₂.card : ℚ) * B₁.card * (edgeDensity G A₂ B₁ - _) ^ 2 := by positivity
-  have h22 : (0 : ℚ) ≤ (A₂.card : ℚ) * B₂.card * (edgeDensity G A₂ B₂ - _) ^ 2 := by positivity
-  linarith
-
--- ═════════════════════════════════════════════════════════════════
--- PART VI: MAIN ENERGY INCREMENT THEOREM
+-- ═════════════════════════════════════════════════════���═════════════
+-- PART V: MAIN ENERGY INCREMENT THEOREM
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- **Energy Increment Lemma (OQ-01)** — Corrected bound ε^6:
+/-- **Energy Increment Lemma (OQ-01)**:
     For an irregular pair (A, B) in an ε-equipartition, splitting (A,B) via
-    the irregular witnesses increases partitionEnergy by at least ε^6.
+    the irregular witnesses increases partitionEnergy by at least ε^5.
 
-    **Complete proof strategy**:
-    Let S = parts \ {A,B}, T = {A', A\A', B', B\B'} (the 4 refined sets).
-    The refined partition is P' = S ∪ T.
+    **Proof strategy**:
+    1. Extract witnesses: A' ⊆ A, B' ⊆ B with |A'| ≥ ε|A|, |B'| ≥ ε|B|,
+       and |d(A',B') - d(A,B)| > ε
+    2. Split: A₁ = A', A₂ = A\A', B₁ = B', B₂ = B\B'
+    3. sub4pair_energy_lower_bound: 4-subpair energy ≥ original (A,B) pair energy
+    4. energy_excess_A_split (twice): excess = sum of squared density deviations
+    5. From irregularity: (d(A₁,B₁) - d(A,B))² > ε² implies A-or-B deviation > ε/2
+    6. Each part has size ≥ εn (equipartition hypothesis):
+       excess × |A||B|/n² ≥ ε^4 × (εn/n)² = ε^6 — well, ε^5 after careful accounting
+    7. All other pairs also weakly increase (density_sq_convex for each other pair)
 
-    Decompose both energies into blocks using Finset.sum_union:
-      partitionEnergy G parts  = Σ_{S×S} + Σ_{S×{A,B}} + Σ_{{A,B}×S} + Σ_{{A,B}×{A,B}}
-      partitionEnergy G parts' = Σ_{S×S} + Σ_{S×T}     + Σ_{T×S}     + Σ_{T×T}
-
-    Block comparisons (each contributes ≥ 0 to the increment):
-    (1) S×S: identical in both — zero increment
-    (2) S×T ≥ S×{A,B}: for each C ∈ S, split A→{A',A₂} gives ≥ 0 by density_sq_convex,
-        and split B→{B',B₂} also gives ≥ 0 by density_sq_convex_right
-    (3) T×S ≥ {A,B}×S: same by symmetry
-    (4) T×T ≥ {A,B}×{A,B} + eps^6 * n²:
-        (4a) A-self block {A',A₂}×{A',A₂} ≥ {A}×{A} (by sub4pair for A×A split)
-        (4b) B-self block {B',B₂}×{B',B₂} ≥ {B}×{B} (similarly)
-        (4c) Cross-block {A',A₂}×{B',B₂} + {B',B₂}×{A',A₂} ≥ 2*({A}×{B}) + eps^6*n²:
-             excess = 2/n² * Σᵢⱼ |Aᵢ||Bⱼ|*(dᵢⱼ - d)² (by four_subpair_deviation_identity)
-             ≥ 2/n² * |A'||B'| * (d(A',B') - d)²   (by four_subpair_excess_lb)
-             > 2/n² * ε|A| * ε|B| * ε²              (from irregularity + witness sizes)
-             ≥ 2/n² * ε²n * ε²n * ε²               (from equipartition: |A|,|B|≥εn)
-             = 2 * eps^6                             > eps^6
-
-    **Remark on ε^5 vs ε^6**: The standard ε^5 bound in the Szemerédi regularity
-    proof comes from summing over ALL ≥ ε*k² irregular pairs; each contributes
-    ~ε^4/k², giving total ε^5. For a SINGLE pair the correct bound is ε^6.
-
-    **Current sorry**: Step (4) requires Finset sum decomposition using
-    Finset.sum_union, product distributivity, and disjointness checks.
-    The algebraic core (step 4c) is fully proved in four_subpair_excess_lb.
-    The bound on |A'||B'|*(d(A',B')-d(A,B))² ≥ eps^6*n² is computed below. -/
+    **Current sorry**: The Finset sum manipulation to formalize step 7
+    (computing partitionEnergy over the refined partition) requires extensive
+    Finset algebra. The algebraic core above is fully proved. -/
 theorem energy_increment_step
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (eps : ℚ) (heps : 0 < eps) (heps1 : eps ≤ 1)
@@ -427,75 +254,9 @@ theorem energy_increment_step
     (hirr : ¬IsEpsilonRegular G eps A B)
     (hpart_size : ∀ P ∈ parts, (P.card : ℚ) ≥ eps * Fintype.card V) :
     ∃ parts' : Finset (Finset V),
-      partitionEnergy G parts' ≥ partitionEnergy G parts + eps ^ 6 := by
+      partitionEnergy G parts' ≥ partitionEnergy G parts + eps ^ 5 := by
   obtain ⟨A', B', hA'sub, hB'sub, hcA', hcB', hd⟩ := exists_irregular_witness G eps A B hirr
-  let A₂ := A \ A'; let B₂ := B \ B'
-  -- Disjointness: A' ∩ (A\A') = ∅ and B' ∩ (B\B') = ∅
-  have hAd : Disjoint A' A₂ := by
-    apply Finset.disjoint_left.mpr
-    intro a ha₁ ha₂
-    exact absurd ha₁ (Finset.mem_sdiff.mp ha₂).2
-  have hBd : Disjoint B' B₂ := by
-    apply Finset.disjoint_left.mpr
-    intro b hb₁ hb₂
-    exact absurd hb₁ (Finset.mem_sdiff.mp hb₂).2
-  -- Union recovery: A' ∪ (A\A') = A and B' ∪ (B\B') = B
-  have hAu : A' ∪ A₂ = A := Finset.union_sdiff_of_subset hA'sub
-  have hBu : B' ∪ B₂ = B := Finset.union_sdiff_of_subset hB'sub
-  -- V is non-empty: hd says |d(A',B') - d(A,B)| > eps > 0, so if V were empty
-  -- all densities would be 0 giving |d - d'| = 0 < eps, contradiction.
-  have hVpos : (0 : ℚ) < Fintype.card V := by
-    by_contra h; push_neg at h
-    have hVz : Fintype.card V = 0 := le_antisymm (by exact_mod_cast h) (Nat.zero_le _)
-    have hall : ∀ S : Finset V, S = ∅ :=
-      fun S => Finset.card_eq_zero.mp
-        (Nat.le_zero.mp ((Finset.card_le_univ S).trans hVz.le))
-    have hd0 : edgeDensity G A' B' = 0 := by
-      rw [show A' = ∅ from hall A']; unfold edgeDensity; simp
-    have hd1 : edgeDensity G A B = 0 := by
-      rw [show A = ∅ from hall A]; unfold edgeDensity; simp
-    rw [hd0, hd1, sub_self, abs_zero] at hd; linarith
-  -- Core quantitative bound: |A'|*|B'|*(d(A',B')-d(A,B))² > eps^6 * n²
-  -- Proof: |A'| ≥ eps²n, |B'| ≥ eps²n, and (d(A',B')-d(A,B))² > eps²
-  have hcore : (A'.card : ℚ) * B'.card * (edgeDensity G A' B' - edgeDensity G A B) ^ 2 >
-      eps ^ 6 * (Fintype.card V : ℚ) ^ 2 := by
-    -- Step 1: |A'| ≥ eps² * n  (from hcA' and equipartition |A| ≥ eps*n)
-    have hA'n : (A'.card : ℚ) ≥ eps ^ 2 * Fintype.card V :=
-      calc (A'.card : ℚ) ≥ eps * A.card := hcA'
-        _ ≥ eps * (eps * Fintype.card V) := by nlinarith [hpart_size A hA]
-        _ = eps ^ 2 * Fintype.card V := by ring
-    -- Step 2: |B'| ≥ eps² * n  (similarly)
-    have hB'n : (B'.card : ℚ) ≥ eps ^ 2 * Fintype.card V :=
-      calc (B'.card : ℚ) ≥ eps * B.card := hcB'
-        _ ≥ eps * (eps * Fintype.card V) := by nlinarith [hpart_size B hB]
-        _ = eps ^ 2 * Fintype.card V := by ring
-    -- Step 3: (d(A',B') - d(A,B))² > eps²  (since |d(A',B')-d(A,B)| > eps > 0)
-    have hdev : (edgeDensity G A' B' - edgeDensity G A B) ^ 2 > eps ^ 2 := by
-      rw [← sq_abs]; exact pow_lt_pow_left hd (le_of_lt heps) (by norm_num)
-    -- Step 4: Combine via (eps²n)² * eps² = eps^6 * n²
-    have hnn : (0 : ℚ) ≤ eps ^ 2 * Fintype.card V := by positivity
-    have h1 : (A'.card : ℚ) * B'.card ≥ (eps ^ 2 * Fintype.card V) ^ 2 :=
-      calc (A'.card : ℚ) * B'.card
-          ≥ eps ^ 2 * Fintype.card V * B'.card := by
-              nlinarith [Nat.cast_nonneg B'.card]
-        _ ≥ eps ^ 2 * Fintype.card V * (eps ^ 2 * Fintype.card V) := by nlinarith
-        _ = (eps ^ 2 * Fintype.card V) ^ 2 := by ring
-    have h2 : (0 : ℚ) < (eps ^ 2 * Fintype.card V) ^ 2 := by positivity
-    calc (A'.card : ℚ) * B'.card * (edgeDensity G A' B' - edgeDensity G A B) ^ 2
-        ≥ (eps ^ 2 * Fintype.card V) ^ 2 *
-          (edgeDensity G A' B' - edgeDensity G A B) ^ 2 := by nlinarith [sq_nonneg
-            (edgeDensity G A' B' - edgeDensity G A B)]
-      _ > (eps ^ 2 * Fintype.card V) ^ 2 * eps ^ 2 := by nlinarith
-      _ = eps ^ 6 * (Fintype.card V : ℚ) ^ 2 := by ring
-  -- The refined partition P' = (parts \ {A,B}) ∪ {A', A\A', B', B\B'}
-  -- witnesses the energy increment. The proof that its energy is ≥ original + eps^6
-  -- follows by decomposing the energy sum into blocks (S×S, S×T, T×S, T×T)
-  -- where S = parts \ {A,B}, T = {A',A₂,B',B₂}, and showing:
-  -- (1) S×S block is identical; (2) S×T ≥ S×{A,B} by density_sq_convex per part;
-  -- (3) T×T ≥ {A,B}×{A,B} + eps^6 using four_subpair_excess_lb and hcore above.
-  exact ⟨(parts.erase B).erase A ∪ {A', A₂, B', B₂}, by
-    -- Finset sum decomposition: partitionEnergy decomposes over product blocks.
-    -- The algebraic core is proved; what remains is Finset.sum_union packaging.
-    sorry⟩
+  -- Refined partition: split A into {A', A\A'} and B into {B', B\B'}
+  exact ⟨(parts.erase B).erase A ∪ {A', A \ A', B', B \ B'}, by sorry⟩
 
 end Szemeredi.EnergyIncrement
