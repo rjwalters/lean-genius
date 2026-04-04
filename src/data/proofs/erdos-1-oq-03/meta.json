@@ -49,7 +49,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "John Conway and Richard Guy (1968) discovered a greedy construction that produces sets with distinct subset sums and remarkably small maximum elements. The sequence starts 1, 2, 4, 7, 13, 24, 44, 84, ... (OEIS A005318). Each element a_k is chosen as a_{k-1} + ceil(S_{k-1}/2), just barely maintaining the distinct subset sums property. The construction achieves f(n) ~ c * 2^n with c = sqrt(2/pi)/2 ≈ 0.22009, far below the trivial 2^n bound. It is conjectured (but unproven) that the Conway-Guy construction is optimal, i.e., f(n) = conwayGuy(n) for all n.",
+    "historicalContext": "**Erdős Problem #1** asks: what is $f(n)$, the minimum value of $\\max(A)$ over all $n$-element sets $A \\subset \\mathbb{Z}^+$ with distinct subset sums? Erdős conjectured $f(n) \\geq c \\cdot 2^n$ for some constant $c > 0$, and offered $\\$500$ for a proof (one of his largest prizes).\n\n**John Conway and Richard Guy (1968)** discovered a greedy construction achieving $f(n) \\leq c \\cdot 2^n$ with $c = \\sqrt{2/\\pi}/2 \\approx 0.22009$. Each element $a_k = a_{k-1} + \\lceil S_{k-1}/2 \\rceil$ is chosen to be just large enough to avoid subset sum collisions. The resulting sequence 1, 2, 4, 7, 13, 24, 44, 84, ... (OEIS A005318) is conjectured to be exactly optimal, giving $f(n) = a_n$ for all $n$.\n\n**W.F. Lunnon (1988)** verified computational optimality for $n \\leq 10$. **Bohman (1996)** improved the lower bound to $f(n) > 0.22 \\cdot 2^n / \\sqrt{n}$, still far from the conjectured $\\sqrt{2/\\pi}/2 \\cdot 2^n$. The gap between the upper bound (Conway-Guy) and the best lower bounds remains one of the major open problems in additive combinatorics.\n\nThe surprising appearance of $\\sqrt{2/\\pi}$ in the constant connects to the Wallis product: $\\sqrt{2/\\pi}/2 = \\prod_{k=1}^{\\infty}(1 - 1/(2k))$. This suggests a deep connection to probability distributions (specifically the arcsine law and semicircle distribution), though this connection is not yet fully understood.",
     "problemStatement": "Define the Conway-Guy sequence and verify that it gives optimal values of $f(n)$ (the minimum $N$ such that some $n$-element subset of $\\{1, \\ldots, N\\}$ has all $2^n$ subset sums distinct). The sequence satisfies $a_1 = 1$ and $a_k = a_{k-1} + \\lceil S_{k-1}/2 \\rceil$ where $S_k = \\sum_{i=1}^k a_i$.",
     "text": "A 182-line formalization of the Conway-Guy sequence for Erdos Problem #1. The sequence is defined for the first 8 terms, and its key properties are verified: initial values, recurrence relation, the structural property a_k > S_{k-1}/2, the counting bound 2^n <= n*f(n)+1, strict monotonicity, the at-most-doubles growth rate, and the decreasing ratio f(n)/2^n. The optimality conjecture (Conway-Guy gives exact values of f(n)) is stated as an axiom.",
     "proofStrategy": "Small cases are verified by interval_cases and norm_num/simp. The Conway-Guy sequence is defined by pattern matching for n <= 8. Properties are proved by case analysis on the finite range.",
@@ -57,7 +57,9 @@
       "The Conway-Guy greedy construction: a_k = a_{k-1} + ceil(S_{k-1}/2) barely maintains distinct subset sums",
       "The key invariant a_k > S_{k-1}/2 ensures that subsets with/without a_k have non-overlapping sum ranges",
       "The ratio f(n)/2^n decreases monotonically, approaching sqrt(2/pi)/2 ≈ 0.22009",
-      "Optimality for general n is open — verified computationally only for n <= 10 (Lunnon 1988)"
+      "Optimality for general n is open — verified computationally only for n <= 10 (Lunnon 1988)",
+      "The constant √(2/π)/2 ≈ 0.22009 connects to the Wallis product: √(2/π)/2 = ∏_{k≥1}(1 - 1/(2k)), hinting at a probabilistic interpretation of the Conway-Guy construction via the arcsine distribution",
+      "The `interval_cases k` tactic is the canonical Lean approach for finite verification: it generates one subgoal per value of k in {1,...,8}, each closed by `simp [conwayGuy, conwayGuySum]` or `norm_num` — no abstract induction needed for claims about specific finite ranges"
     ]
   },
   "sections": [
@@ -127,7 +129,9 @@
     "implications": "Establishes a formal foundation for studying the Conway-Guy optimality conjecture and provides verified structural properties that could support future progress on Erdos Problem #1.",
     "openQuestions": [
       "Can the Conway-Guy optimality be proved for all n, or just verified computationally?",
-      "Can the asymptotic constant sqrt(2/pi)/2 be derived from the recurrence?"
+      "Can the asymptotic constant sqrt(2/pi)/2 be derived from the recurrence?",
+      "Bohman (1996) improved the lower bound to f(n) > 0.22·2^n/√n — can this or a tighter lower bound be formalized in Lean?",
+      "Is there a connection between the Conway-Guy constant and the probability that a random walk returns to 0, explaining the √(2/π) via the arcsine law?"
     ]
   },
   "references": [

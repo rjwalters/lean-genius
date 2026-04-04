@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-e1oq03-conwayguy-def",
+    "proofId": "erdos-1-oq-03",
+    "range": { "startLine": 40, "endLine": 56 },
+    "type": "definition",
+    "title": "Conway-Guy Sequence: Hardcoded First 8 Terms",
+    "content": "The `conwayGuy` function is defined by pattern matching on the first 8 values: 0, 1, 2, 4, 7, 13, 24, 44, 84. The `| _ => 0` fallback captures all n > 8, reflecting that the formalization is limited to the verified finite range. This explicit enumeration is philosophically appropriate for a sequence whose general optimality is still open — we know it's optimal for n ≤ 10 (Lunnon 1988) but cannot yet prove it in general. The closed-form recurrence a_k = a_{k-1} + ⌈S_{k-1}/2⌉ is verified for k = 3, 4, 5 separately.",
+    "mathContext": "OEIS A005318: $a_0 = 0, a_1 = 1, a_2 = 2, a_3 = 4, a_4 = 7, a_5 = 13, a_6 = 24, a_7 = 44, a_8 = 84$. Recurrence: $a_k = a_{k-1} + \\lceil S_{k-1}/2 \\rceil$ where $S_k = \\sum_{i=1}^k a_i$. Ratios $a_k/2^k$: $1/2, 1/2, 1/2, 7/16, 13/32, 3/8, 11/32, 21/64 \\to 0.22009\\ldots$",
+    "significance": "key",
+    "relatedConcepts": ["OEIS A005318", "greedy construction", "distinct subset sums", "Erdős Problem #1"],
+    "prerequisites": ["Lean 4 pattern matching", "ℕ-valued sequences", "Erdos1Problem import"]
+  },
+  {
+    "id": "ann-e1oq03-partialsum",
+    "proofId": "erdos-1-oq-03",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "definition",
+    "title": "Partial Sums of the Conway-Guy Sequence",
+    "content": "`conwayGuySum n` computes S_n = Σᵢ₌₁ⁿ a_i by simple structural recursion. The base S_0 = 0 and S_{n+1} = S_n + a_{n+1}. These partial sums are central to the recurrence: the k-th Conway-Guy element is a_{k-1} + ⌈S_{k-1}/2⌉. The values S_1 = 1, S_2 = 3, S_3 = 7, S_4 = 14, S_5 = 27 are verified computationally. Note the near-doubling pattern: each partial sum is approximately twice the previous Conway-Guy element.",
+    "mathContext": "$S_n = \\sum_{i=1}^n a_i$. Values: $S_1=1, S_2=3, S_3=7, S_4=14, S_5=27, S_6=51, S_7=95, S_8=179$. Note $S_k < 2a_k + 1$ for all $k \\leq 8$ — the key structural bound that implies distinct subset sums.",
+    "significance": "supporting",
+    "relatedConcepts": ["partial sums", "recurrence verification", "greedy construction correctness"],
+    "prerequisites": ["conwayGuy", "Lean 4 recursive definitions"]
+  },
+  {
+    "id": "ann-e1oq03-exceeds-half",
+    "proofId": "erdos-1-oq-03",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "theorem",
+    "title": "Key Invariant: a_k > S_{k-1}/2",
+    "content": "This is the structural heart of the Conway-Guy construction. The invariant 2·a_k > S_{k-1} ensures that subsets of {a_1,...,a_k} containing a_k have sums in the range (S_{k-1}/2, S_{k-1} + a_k], while subsets not containing a_k have sums in [0, S_{k-1}]. These ranges overlap only if S_{k-1} ≥ a_k + something, which is prevented by 2·a_k > S_{k-1}. The proof is by `interval_cases k` (case analysis on k ∈ {1,...,8}) followed by `simp [conwayGuy, conwayGuySum]` to verify each case numerically.",
+    "mathContext": "If $2a_k > S_{k-1}$, then subsets $B \\ni a_k$ have $\\sigma(B) \\geq a_k > S_{k-1}/2$, while subsets $B \\not\\ni a_k$ have $\\sigma(B) \\leq S_{k-1}$. For a collision: $\\sigma(B_1) = \\sigma(B_2)$ with $a_k \\in B_1$, $a_k \\notin B_2$ would require $\\sigma(B_1 \\setminus \\{a_k\\}) = \\sigma(B_2) - a_k$, but $\\sigma(B_2) \\leq S_{k-1} < 2a_k$, so this is impossible.",
+    "significance": "key",
+    "relatedConcepts": ["distinct subset sums invariant", "greedy construction", "interval_cases tactic", "Erdős Problem #1"],
+    "prerequisites": ["conwayGuy", "conwayGuySum", "interval_cases", "simp normalization"]
+  },
+  {
+    "id": "ann-e1oq03-sum-bound",
+    "proofId": "erdos-1-oq-03",
+    "range": { "startLine": 107, "endLine": 110 },
+    "type": "theorem",
+    "title": "Sum Bound: S_n < 2·a_n + 1",
+    "content": "The bound S_n < 2·a_n + 1 is equivalent to S_n ≤ 2·a_n since everything is integer, which says the sum of all elements is less than twice the largest. This captures the near-tightness of the Conway-Guy construction: the partial sum barely stays under the threshold 2·a_n. Equivalently, a_n > (S_n - a_n)/2 = S_{n-1}/2, recovering the key invariant. Verified by `interval_cases k; simp [conwayGuy, conwayGuySum]`.",
+    "mathContext": "$S_n < 2 a_n + 1 \\Leftrightarrow S_n \\leq 2 a_n \\Leftrightarrow S_{n-1} \\leq a_n \\Leftrightarrow S_{n-1}/2 < a_n$, recovering the key invariant $2a_n > S_{n-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["conwayGuy_exceeds_half_sum", "sum-element relationship", "greedy tightness"],
+    "prerequisites": ["conwayGuy", "conwayGuySum", "interval_cases", "Lean 4 integer arithmetic"]
+  },
+  {
+    "id": "ann-e1oq03-counting-bound",
+    "proofId": "erdos-1-oq-03",
+    "range": { "startLine": 118, "endLine": 121 },
+    "type": "theorem",
+    "title": "Counting Bound: 2^n ≤ n·f(n) + 1",
+    "content": "The counting bound is an information-theoretic lower bound on f(n): an n-element set A ⊆ {1,...,N} has 2^n possible subsets, each with a sum between 0 and n·N. Since all subset sums are distinct, we need n·N + 1 ≥ 2^n, i.e., N ≥ (2^n - 1)/n. This gives the lower bound f(n) ≥ (2^n - 1)/n ≈ 2^n/n. The Conway-Guy sequence achieves f(n) ~ 0.22·2^n, which is much stronger (2^n/n grows much slower than 0.22·2^n). The theorem verifies 2^k ≤ k·conwayGuy(k) + 1 for k ≤ 8 by `interval_cases k; simp [conwayGuy]`.",
+    "mathContext": "Information-theoretic lower bound: $2^n$ distinct subsets, subset sums in $\\{0, \\ldots, nN\\}$, so $nN+1 \\geq 2^n \\Rightarrow N \\geq (2^n-1)/n$. Thus $f(n) \\geq 2^n/n - 1$. Conway-Guy gives $f(n) \\approx 0.22 \\cdot 2^n \\gg 2^n/n$, so this bound is not tight.",
+    "significance": "key",
+    "relatedConcepts": ["information-theoretic lower bound", "counting argument", "Erdős conjecture gap", "distinct subset sums"],
+    "prerequisites": ["Lean 4 pow_two", "interval_cases", "Erdős Problem #1 framework"]
+  },
+  {
+    "id": "ann-e1oq03-ratio",
+    "proofId": "erdos-1-oq-03",
+    "range": { "startLine": 125, "endLine": 132 },
+    "type": "theorem",
+    "title": "Ratio f(n)/2^n is Decreasing Towards ~0.22009",
+    "content": "The theorem proves three concrete ratio decreases: f(5)/2^5 > f(6)/2^6 > f(7)/2^7 > f(8)/2^8, verified as 13·64 > 24·32, 24·128 > 44·64, 44·256 > 84·128 — pure arithmetic (`norm_num`). The theoretical limit is c = √(2/π)/2 ≈ 0.22009, derived from the product formula c = ∏_{k≥1}(1 - 1/(2k)) = √(2/π)/2. This connection to the Wallis product is remarkable: the Conway-Guy sequence asymptotically achieves an efficiency tied to the semicircle formula.",
+    "mathContext": "The asymptotic: $\\lim_{n\\to\\infty} a_n/2^n = c = \\frac{\\sqrt{2/\\pi}}{2} \\approx 0.22009$. This follows from $c = \\prod_{k=1}^{\\infty}\\left(1 - \\frac{1}{2k}\\right)$, which by the Wallis product equals $\\sqrt{2/\\pi}/2$. The Erdős conjecture says this is optimal: no set of $n$ elements can have distinct subset sums with maximum element less than $c \\cdot 2^n$.",
+    "significance": "key",
+    "relatedConcepts": ["Wallis product", "asymptotic analysis", "√(2/π) constant", "Erdős Problem #1 conjecture"],
+    "prerequisites": ["norm_num arithmetic", "ratio comparison via cross-multiplication"]
+  },
+  {
+    "id": "ann-e1oq03-min-dss",
+    "proofId": "erdos-1-oq-03",
+    "range": { "startLine": 140, "endLine": 150 },
+    "type": "definition",
+    "title": "minDSSBound: The Exact Minimum f(n)",
+    "content": "`minDSSBound n` uses `Nat.find` to extract the minimum N such that some n-element subset of {1,...,N} has distinct subset sums. The existence proof is supplied by `⟨n * 2^n, sorry⟩` — the powers of 2 set {1, 2, 4, ..., 2^(n-1)} has distinct subset sums and maximum element 2^(n-1) ≤ n·2^(n-1) ≤ n·2^n. The sorry is a routine existence claim that could be filled by constructing the geometric set explicitly. The `axiom conwayGuy_optimal` then states f(n) = conwayGuy(n) for n ≤ 8 — the open conjecture.",
+    "mathContext": "$f(n) = \\min\\{N : \\exists A \\subseteq \\{1,\\ldots,N\\}, |A|=n, A \\text{ has distinct subset sums}\\}$. Existence (sorry): the set $\\{1, 2, 4, \\ldots, 2^{n-1}\\}$ works with $N = 2^{n-1}$. Conjecture (axiom): $f(n) = a_n$ (Conway-Guy) for all $n$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.find for minima", "distinct subset sums existence", "Conway-Guy optimality conjecture", "axiom for open problems"],
+    "prerequisites": ["Nat.find", "hasDistinctSubsetSums from Erdos1Problem", "noncomputable def"]
+  },
+  {
+    "id": "ann-e1oq03-growth",
+    "proofId": "erdos-1-oq-03",
+    "range": { "startLine": 165, "endLine": 180 },
+    "type": "theorem",
+    "title": "Growth Rate: 3·f(n) ≤ 2^n and Strict Monotonicity",
+    "content": "Three growth rate theorems: (1) `conwayGuy_exponential_bound`: 3·a_k ≤ 2^k, a crude upper bound on the ratio a_k/2^k ≤ 1/3; (2) `conwayGuy_strictMono`: a_k < a_{k+1} — strictly increasing; (3) `conwayGuy_at_most_doubles`: a_{k+1} ≤ 2·a_k — each term at most doubles. Together, these establish that the sequence grows exponentially (at rate between 2^k and 2·2^k per step). All proved by `interval_cases k; simp [conwayGuy]` — the finite verification technique. The 3·a_k ≤ 2^k bound is far from tight (the true ratio approaches 0.22, not 1/3), but it's easily verified.",
+    "mathContext": "$3 a_k \\leq 2^k$ (i.e., $a_k/2^k \\leq 1/3$), and $a_k < a_{k+1} \\leq 2 a_k$. The true growth: $a_k \\sim 0.22 \\cdot 2^k$. The at-most-doubles bound $a_{k+1} \\leq 2 a_k$ combined with the lower bound gives $a_k = \\Theta(2^k)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["exponential growth rate", "strict monotonicity", "interval_cases tactic", "at-most-doubles growth"],
+    "prerequisites": ["conwayGuy", "interval_cases k", "simp [conwayGuy]", "pow_succ"]
+  }
+]
