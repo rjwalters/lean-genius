@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-bezout-poly-irred-prime",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 53 },
+    "type": "theorem",
+    "title": "Irreducible ↔ Prime in Polynomial UFDs",
+    "content": "`poly_irreducible_iff_prime` proves `Irreducible p ↔ Prime p` for polynomials over any UFD, with a one-line proof delegating to `UniqueFactorizationMonoid.irreducible_iff_prime`. In a UFD, every irreducible element is prime — the converse (prime → irreducible) holds in any domain. For polynomials over a field K, this gives Euclid's lemma in full generality: irreducible polynomials are exactly the prime elements of K[X]. The equivalence characterizes UFDs among domains (in a non-UFD, irreducibles need not be prime, and unique factorization can fail). The proof is trivially short because Mathlib's `UniqueFactorizationMonoid` typeclass encodes this equivalence at the typeclass level.",
+    "mathContext": "In a UFD: `Irreducible p ↔ Prime p`. Proof: prime → irreducible always (domain axiom); irreducible → prime is the UFD property. Over a PID: irreducible ↔ prime ↔ generates a maximal ideal. Over K[X]: irreducible = non-constant polynomial with no proper polynomial divisors.",
+    "significance": "key",
+    "relatedConcepts": ["UniqueFactorizationMonoid", "irreducible_iff_prime", "Prime", "Irreducible", "UFD"],
+    "prerequisites": ["UniqueFactorizationMonoid", "CommRing", "IsDomain"]
+  },
+  {
+    "id": "ann-bezout-poly-euclid",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "theorem",
+    "title": "Polynomial Euclid's Lemma: Irreducible p | f·g Implies p | f or p | g",
+    "content": "`poly_euclid_lemma` is Euclid's lemma for K[X]: if irreducible p divides f·g, then p | f or p | g. The proof is a two-step delegation: (1) `irreducible_iff_prime.mp hp` converts the irreducibility hypothesis to primeness using the UFD structure; (2) `.dvd_or_dvd hdvd` applies the defining property of prime elements. This mirrors the integer proof: p irreducible over ℤ is prime (ℤ is a UFD), so p | ab implies p | a or p | b. The `dvd_or_dvd` property is exactly what distinguishes prime elements from merely irreducible ones in non-UFDs.",
+    "mathContext": "Euclid's Lemma in K[X]: `Irreducible p ∧ p | f·g → p | f ∨ p | g`. Classical proof: p irreducible in K[X] implies gcd(p,f) ∈ {1, up-to-unit p}; if p ∤ f then gcd(p,f) = 1, so by Bézout ∃ a b, a·p + b·f = 1, multiplying by g gives p | g.",
+    "significance": "key",
+    "relatedConcepts": ["irreducible_iff_prime", "Prime.dvd_or_dvd", "poly_irreducible_iff_prime", "Euclid's lemma"],
+    "prerequisites": ["poly_irreducible_iff_prime", "Prime.dvd_or_dvd", "Field"]
+  },
+  {
+    "id": "ann-bezout-poly-bezout",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "theorem",
+    "title": "Polynomial Bézout Identity: IsCoprime is Definitionally ∃ a b, a·f + b·g = 1",
+    "content": "`poly_bezout` and `poly_isCoprime_iff` make explicit that `IsCoprime f g` is *definitionally* `∃ a b, a * f + b * g = 1`. The proof of `poly_bezout` is just `hcop` (the hypothesis itself), and `poly_isCoprime_iff` is proved by `Iff.rfl`. This definitional equality means polynomial coprimeness automatically carries Bézout coefficients — no separate proof needed. Over a field K, coprimeness holds when gcd(f,g) is a unit (a nonzero constant), and the extended Euclidean algorithm explicitly constructs a and b. The `IsCoprime` abstraction works for any commutative ring, making the Bézout identity universal.",
+    "mathContext": "In Mathlib: `IsCoprime f g := ∃ a b, a * f + b * g = 1`. The type unfolds definitionally. Over K[X]: `IsCoprime f g ↔ Polynomial.gcd f g ∼ 1 ↔ gcd(f,g) is a nonzero constant`. Comparison: over ℤ, `IsCoprime a b ↔ gcd(a,b) = 1`.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsCoprime", "EuclideanDomain.gcd_eq_gcd_ab", "Iff.rfl", "Bézout identity"],
+    "prerequisites": ["IsCoprime", "CommRing", "Field"]
+  },
+  {
+    "id": "ann-bezout-poly-concrete",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01",
+    "range": { "startLine": 104, "endLine": 114 },
+    "type": "theorem",
+    "title": "x²-1 is Reducible in ℚ[X]: Concrete Application of Irreducibility Criterion",
+    "content": "`x_sq_sub_one_reducible` proves `¬ Irreducible (X² - 1 : ℚ[X])` by producing the factorization X² - 1 = (X-1)(X+1) and showing neither factor is a unit. The proof uses `rcases hirr.isUnit_or_isUnit h` to split on which factor the assumed irreducibility forces to be a unit, then derives a contradiction using `Polynomial.irreducible_X_sub_C`: monic linear polynomials X - c are irreducible in K[X], hence non-units. The `have heq` steps normalize X ± 1 into the X - C(±1) form that `irreducible_X_sub_C` expects. This demonstrates that irreducibility is a property of the polynomial structure, not just the coefficient ring.",
+    "mathContext": "In K[X]: `Irreducible p` iff p is non-constant and cannot be written as a product of two non-units. Linear polynomials `X - c` are always irreducible (degree 1 implies one factor must be degree 0 = a unit). Degree 2+ polynomials may factor: X² - 1 = (X-1)(X+1) over any ring containing ±1 with 1 ≠ -1.",
+    "significance": "supporting",
+    "relatedConcepts": ["Polynomial.irreducible_X_sub_C", "Irreducible.isUnit_or_isUnit", "Polynomial.X", "reducibility"],
+    "prerequisites": ["Irreducible", "Polynomial.irreducible_X_sub_C", "ring tactic"]
+  },
+  {
+    "id": "ann-bezout-poly-gcd-form",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01",
+    "range": { "startLine": 146, "endLine": 151 },
+    "type": "theorem",
+    "title": "GCD Bézout Form: gcd(f,g) = a·f + b·g via Extended Euclidean Algorithm",
+    "content": "`poly_gcd_bezout_form` proves that the polynomial GCD has a Bézout representation: ∃ a b, gcd(f,g) = a·f + b·g. The Bézout coefficients are `EuclideanDomain.gcdA f g` and `EuclideanDomain.gcdB f g` — Mathlib's computable extended Euclidean algorithm output. The key equation `EuclideanDomain.gcd_eq_gcd_ab` states `gcd f g = f * gcdA f g + g * gcdB f g`, and `ring` handles the commutativity. The `[DecidableEq K]` hypothesis is needed for the computable polynomial GCD; without it, only the abstract GCDMonoid structure is available. This is the constructive polynomial analogue of Bézout's theorem for integers.",
+    "mathContext": "Bézout's theorem for K[X]: ∃ a b ∈ K[X], gcd(f,g) = a·f + b·g. Constructive proof via extended Euclidean algorithm: run polynomial long division steps, tracking linear combinations. `EuclideanDomain.gcdA/gcdB` are the Lean 4 Mathlib computations. Specializing to gcd = 1: ∃ a b, a·f + b·g = 1 (coprimeness case).",
+    "significance": "supporting",
+    "relatedConcepts": ["EuclideanDomain.gcdA", "EuclideanDomain.gcdB", "EuclideanDomain.gcd_eq_gcd_ab", "DecidableEq"],
+    "prerequisites": ["EuclideanDomain", "DecidableEq", "Field"]
+  }
+]
