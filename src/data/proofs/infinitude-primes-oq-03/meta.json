@@ -74,9 +74,11 @@
     "text": "Elementary proof that there are infinitely many primes congruent to 2 modulo 3. No L-functions or analytic number theory required.",
     "proofStrategy": "The proof follows Euclid's method with a twist for arithmetic progressions:\n\n1. **Candidate construction**: Given n, set N = 3·(n+1)! - 1\n2. **Modular arithmetic**: N ≡ -1 ≡ 2 (mod 3)\n3. **Factoring argument**: If all prime factors of N were ≡ 1 (mod 3) or equal to 3, then N ≡ 0 or 1 (mod 3), contradicting N ≡ 2 (mod 3). So N has a prime factor p ≡ 2 (mod 3).\n4. **Size argument**: p > n because p | N but p does not divide 3·(n+1)!, since p ≤ n+1 would imply p | (n+1)! and hence p | (N - (N+1)) = 1, contradiction.\n\nThe key lemma (proved by strong induction) is that the product of integers ≡ 1 (mod 3) is ≡ 1 (mod 3), so a number ≡ 2 (mod 3) must have a prime factor ≡ 2 (mod 3).",
     "keyInsights": [
-      "**Euclid-style for residue classes**: The trick N = d·M - 1 ensures N ≡ -1 (mod d), which works whenever the target residue class is -1 mod d.",
-      "**Strong induction for factoring**: The lemma that all-1-mod-3 factors imply not-2-mod-3 requires strong induction to peel off one factor at a time.",
-      "**Size via factorial**: Using (n+1)! ensures every prime ≤ n+1 divides the factorial, so the prime factor of N exceeds n."
+      "**Euclid-style for residue classes**: The trick N = d·M - 1 ensures N ≡ -1 (mod d), which works whenever the target residue class is -1 mod d. For d=3: N = 3·(n+1)! - 1 ≡ 2 (mod 3). This is precisely why the a ≡ -1 special case of Dirichlet's theorem admits elementary proofs while other cases (like a ≡ 1 mod d) require L-functions.",
+      "**Strong induction for factoring**: The lemma `factors_determine_mod_three` proves by strong induction that if all prime factors of n are 3 or ≡ 1 (mod 3), then n ≢ 2 (mod 3). The induction peels off one prime factor p ≡ 1 at a time: n = p·m implies m ≡ 2 (mod 3) by `Nat.mul_mod`, and m < n allows the IH. The closure lemma `mul_mod_three_one` captures the group property of (ℤ/3ℤ)*: {1} is closed under multiplication.",
+      "**Size via factorial**: Using (n+1)! ensures every prime p ≤ n+1 divides the factorial. Since p | N and p | 3·(n+1)!, we'd get p | 1, contradicting primality. The key Lean step is `Nat.dvd_factorial hp_prime.pos hp_le` (p prime and p ≤ n+1 implies p | (n+1)!). This is the same factorial trick as Euclid's original proof, adapted for arithmetic progressions.",
+      "**Three equivalent formulations**: The file proves infinitude in three equivalent forms: (1) `infinitely_many_primes_2_mod_3`: for every n there exists p > n prime ≡ 2 (mod 3) [constructive, used in proofs]; (2) `primes_2_mod_3_infinite`: the set {p prime : p ≡ 2 (mod 3)} is Set.Infinite [set-theoretic, via Set.infinite_of_not_bddAbove]; (3) `no_largest_prime_2_mod_3`: there is no maximum such prime [order-theoretic]. All three are immediate corollaries of (1), covering different API needs.",
+      "**Elementary vs. analytic**: This proof is strictly elementary — no complex analysis, L-functions, or characters. By contrast, primes ≡ 1 (mod 3) require at least Fermat's little theorem (to show 3 | (p-1) for relevant p). The boundary between elementary and non-elementary Dirichlet cases corresponds exactly to whether the target class contains -1 mod d."
     ],
     "prerequisites": [
       "Euclid's proof of infinitude of primes",
@@ -105,7 +107,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 125,
-      "endLine": 165,
+      "endLine": 173,
       "summary": "Proves infinitely_many_primes_2_mod_3 using N = 3·(n+1)! - 1. Shows N ≡ 2 (mod 3), extracts a prime factor p ≡ 2 (mod 3), and proves p > n via the factorial divisibility argument. Also proves the set-theoretic formulation.",
       "mathContext": "The Euclid-style construction adapted for primes in arithmetic progressions."
     },
@@ -130,7 +132,33 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "extends",
-      "description": "The base Euclid proof of infinitude of primes. OQ-03 extends it to a specific arithmetic progression."
+      "description": "The base Euclid proof of infinitude of primes. OQ-03 extends it to a specific arithmetic progression using the same factorial trick."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "special-case",
+      "description": "Dirichlet's theorem (1837) proves infinitely many primes in every arithmetic progression gcd(a,d)=1. This file proves the special case a=2, d=3 elementarily, avoiding Dirichlet's L-function machinery."
+    },
+    {
+      "targetId": "infinitude-primes-4k3",
+      "relationship": "sibling",
+      "description": "Analogous elementary proof for primes ≡ 3 (mod 4) using N = 4·n! - 1. Same Euclid-style construction for the a ≡ -1 (mod d) case."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Dirichlet, P.G.L."],
+      "title": "Beweis des Satzes, daß jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält",
+      "year": "1837",
+      "venue": "Abhandlungen der Königlich Preussischen Akademie der Wissenschaften",
+      "note": "Original proof of Dirichlet's theorem using L-functions and characters — the general result that subsumes this elementary special case"
+    },
+    {
+      "authors": ["Hardy, G.H.", "Wright, E.M."],
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1979",
+      "venue": "Oxford University Press, 5th edition",
+      "note": "§4.2: Elementary proofs for primes ≡ -1 (mod d) via Euclid-style constructions; §22.3: Dirichlet's theorem with full analytic proof"
     }
   ],
   "leanFile": {
@@ -146,7 +174,7 @@
     "namespace": "InfinitudePrimes3k2",
     "lineCount": 196,
     "axiomCount": 0,
-    "theoremCount": 3,
+    "theoremCount": 7,
     "definitionCount": 0
   }
 }
