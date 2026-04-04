@@ -16,11 +16,11 @@
       "arithmetic-series",
       "induction"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 177,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "lineCount": 197,
+    "assumptions": "0 axioms, 0 sorries. Core result relies on Mathlib's sum_Ico_pow (Faulhaber's formula) and sum_range_pow. The main theorem faulhaber_formula is a direct alias of sum_Ico_pow. Corollaries (p=1,2,3) and Bernoulli number values are derived from Mathlib.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {

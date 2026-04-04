@@ -22,6 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
+    "lineCount": 377,
     "assumptions": "Two axioms: (1) bringJerrard_reduction — the full Bring-Jerrard reduction eliminating x³ and x² terms via quadratic/cubic Tschirnhaus substitutions (requires polynomial resultant theory not in Mathlib); (2) bringRadical_not_in_radicals — the Bring radical is not expressible in radicals (follows from Abel-Ruffini but requires connecting the generic Galois group argument). The linear Tschirnhaus transform (depressed quintic) and all Bring radical properties are fully proved.",
     "dateAdded": "2026-04-03",
     "mathlibDependencies": [
