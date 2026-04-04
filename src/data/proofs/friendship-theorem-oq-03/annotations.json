@@ -1,100 +1,190 @@
-{
-  "annotations": [
-    {
-      "id": "ann-open-question",
-      "proofId": "friendship-theorem-oq-03",
-      "range": { "startLine": 1, "endLine": 81 },
-      "type": "context",
-      "title": "Open Question: Does the Friendship Theorem Generalize to Hypergraphs?",
-      "content": "The file header poses and immediately answers the central question: does the Friendship Theorem of Erdős–Rényi–Sós (1966) extend to 3-uniform hypergraphs? For graphs (k=2), the theorem says every 'friendship graph' (every pair shares exactly one common neighbor) must have a universal vertex — a 'politician' who is friends with everyone. The docstring explains that for k=3, the Fano plane is a clean constructive counterexample: 7 vertices with 7 triples where every pair is in exactly one triple, but each vertex is in only 3 of the 7 triples. The mathematical background section includes the Fano plane's incidence diagram and the counting argument showing why no vertex can be universal (degree = (n-1)/2 grows slower than triple count n(n-1)/6).",
-      "mathContext": "A 3-uniform **friendship hypergraph** satisfies: $\\forall u \\neq v,\\, |\\{e \\in E : u \\in e \\wedge v \\in e\\}| = 1$. A **universal vertex** $c$ satisfies $\\forall e \\in E, c \\in e$. For the Fano plane: $n=7$, degree $= (7-1)/2 = 3$, and total triples $= 7$. Since $3 < 7$, no vertex is universal.",
-      "significance": "context",
-      "relatedConcepts": ["friendship theorem", "k-uniform hypergraphs", "Steiner triple systems", "Fano plane", "projective planes"],
-      "prerequisites": ["graph theory: Friendship Theorem and windmill graphs", "hypergraph theory basics", "finite geometry"]
+[
+  {
+    "id": "ann-open-question",
+    "proofId": "friendship-theorem-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 81
     },
-    {
-      "id": "ann-definitions",
-      "proofId": "friendship-theorem-oq-03",
-      "range": { "startLine": 83, "endLine": 113 },
-      "type": "definition",
-      "title": "Core Definitions: 3-Uniform Friendship Hypergraphs",
-      "content": "`Hypergraph3 V` is a structure holding a `Finset (Finset V)` of edges, each required to have cardinality 3 (the `uniform` field). `IsFriendship3` states the friendship property: for every pair of distinct vertices u ≠ v, the filter of edges containing both u and v has cardinality exactly 1. `IsUniversalVertex3 H c` says vertex c belongs to every edge of H — this is the 'politician' property. `vertexDegree H v` counts the edges containing v. These four definitions form the complete interface for the counterexample proof.",
-      "mathContext": "$\\text{Hypergraph3}(V) = \\{E \\subseteq \\binom{V}{3}\\}$. Friendship: $\\forall u \\neq v,\\, |\\{e \\in E : u,v \\in e\\}| = 1$. Universal: $\\forall e \\in E,\\, c \\in e$. Degree: $\\deg(v) = |\\{e \\in E : v \\in e\\}|$.",
-      "significance": "key",
-      "relatedConcepts": ["Finset cardinality", "hypergraph uniformity", "friendship property", "politician vertex"],
-      "prerequisites": ["Lean 4: structures and fields", "Finset.filter and Finset.card", "type classes: DecidableEq, Fintype"]
+    "type": "context",
+    "title": "Open Question: Does the Friendship Theorem Generalize to Hypergraphs?",
+    "content": "The file header poses and immediately answers the central question: does the Friendship Theorem of Erd\u0151s\u2013R\u00e9nyi\u2013S\u00f3s (1966) extend to 3-uniform hypergraphs? For graphs (k=2), the theorem says every 'friendship graph' (every pair shares exactly one common neighbor) must have a universal vertex \u2014 a 'politician' who is friends with everyone. The docstring explains that for k=3, the Fano plane is a clean constructive counterexample: 7 vertices with 7 triples where every pair is in exactly one triple, but each vertex is in only 3 of the 7 triples. The mathematical background section includes the Fano plane's incidence diagram and the counting argument showing why no vertex can be universal (degree = (n-1)/2 grows slower than triple count n(n-1)/6).",
+    "mathContext": "A 3-uniform **friendship hypergraph** satisfies: $\\forall u \\neq v,\\, |\\{e \\in E : u \\in e \\wedge v \\in e\\}| = 1$. A **universal vertex** $c$ satisfies $\\forall e \\in E, c \\in e$. For the Fano plane: $n=7$, degree $= (7-1)/2 = 3$, and total triples $= 7$. Since $3 < 7$, no vertex is universal.",
+    "significance": "context",
+    "relatedConcepts": [
+      "friendship theorem",
+      "k-uniform hypergraphs",
+      "Steiner triple systems",
+      "Fano plane",
+      "projective planes"
+    ],
+    "prerequisites": [
+      "graph theory: Friendship Theorem and windmill graphs",
+      "hypergraph theory basics",
+      "finite geometry"
+    ]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "friendship-theorem-oq-03",
+    "range": {
+      "startLine": 83,
+      "endLine": 113
     },
-    {
-      "id": "ann-fano-construction",
-      "proofId": "friendship-theorem-oq-03",
-      "range": { "startLine": 115, "endLine": 151 },
-      "type": "definition",
-      "title": "The Fano Plane: Explicit Construction in Lean 4",
-      "content": "The Fano plane PG(2,2) is constructed as a `Hypergraph3 (Fin 7)`. The `triple` helper builds a 3-element Finset from three `Fin 7` values. `fanoEdges` explicitly lists all 7 triples matching the classical incidence structure: {0,1,3}, {1,2,4}, {2,3,5}, {3,4,6}, {4,5,0}, {5,6,1}, {6,0,2}. The `fanoPlane.uniform` proof uses `rcases` to enumerate all 7 edges and then `decide` to verify each has cardinality 3. The 7 triples correspond to the 7 lines of PG(2,2): each pair of points determines a unique line, matching the projective plane axioms over GF(2).",
-      "mathContext": "The Fano plane $\\text{PG}(2,2)$: points $= \\mathbb{F}_2^3 \\setminus \\{0\\}$ (7 nonzero vectors), lines $=$ 1-dimensional subspaces of $\\mathbb{F}_2^3$ (7 lines). In coordinates: $\\{(1,0,0),(0,1,0),(1,1,0)\\} \\leftrightarrow \\{0,1,3\\}$ in $\\text{Fin}\\,7$. It is the unique $\\text{STS}(7)$: the unique Steiner triple system of order 7.",
-      "significance": "key",
-      "relatedConcepts": ["projective plane PG(2,2)", "Steiner triple system STS(7)", "finite fields GF(2)", "combinatorial design"],
-      "prerequisites": ["finite geometry: projective planes", "combinatorial designs: Steiner triple systems", "Lean 4: Finset construction"]
+    "type": "definition",
+    "title": "Core Definitions: 3-Uniform Friendship Hypergraphs",
+    "content": "`Hypergraph3 V` is a structure holding a `Finset (Finset V)` of edges, each required to have cardinality 3 (the `uniform` field). `IsFriendship3` states the friendship property: for every pair of distinct vertices u \u2260 v, the filter of edges containing both u and v has cardinality exactly 1. `IsUniversalVertex3 H c` says vertex c belongs to every edge of H \u2014 this is the 'politician' property. `vertexDegree H v` counts the edges containing v. These four definitions form the complete interface for the counterexample proof.",
+    "mathContext": "$\\text{Hypergraph3}(V) = \\{E \\subseteq \\binom{V}{3}\\}$. Friendship: $\\forall u \\neq v,\\, |\\{e \\in E : u,v \\in e\\}| = 1$. Universal: $\\forall e \\in E,\\, c \\in e$. Degree: $\\deg(v) = |\\{e \\in E : v \\in e\\}|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset cardinality",
+      "hypergraph uniformity",
+      "friendship property",
+      "politician vertex"
+    ],
+    "prerequisites": [
+      "Lean 4: structures and fields",
+      "Finset.filter and Finset.card",
+      "type classes: DecidableEq, Fintype"
+    ]
+  },
+  {
+    "id": "ann-fano-construction",
+    "proofId": "friendship-theorem-oq-03",
+    "range": {
+      "startLine": 115,
+      "endLine": 151
     },
-    {
-      "id": "ann-friendship-verification",
-      "proofId": "friendship-theorem-oq-03",
-      "range": { "startLine": 156, "endLine": 163 },
-      "type": "technique",
-      "title": "Friendship Property: 49-Case Decision Procedure",
-      "content": "`fano_is_friendship` proves that every pair of distinct Fin 7 vertices is in exactly one Fano triple. The proof strategy is `fin_cases u <;> fin_cases v <;> simp_all <;> decide`: enumerate all 7 × 7 = 49 cases of (u,v), use `simp_all` to simplify with the Fano plane definition (unfolding `IsFriendship3`, `fanoPlane`, `fanoEdges`, `triple`), and then close each case by `decide`. The 42 non-diagonal cases each require checking that exactly one of 7 triples contains both u and v — a finite computation that `decide` handles via kernel evaluation. This is the defining property of a Steiner triple system STS(7).",
-      "mathContext": "For each of the $\\binom{7}{2} = 21$ pairs $\\{u,v\\}$, exactly one triple $\\{a,b,c\\} \\in \\{\\{0,1,3\\},\\{1,2,4\\},\\{2,3,5\\},\\{3,4,6\\},\\{4,5,0\\},\\{5,6,1\\},\\{6,0,2\\}\\}$ satisfies $u,v \\in \\{a,b,c\\}$. This is the **Steiner property**: $\\text{STS}(n)$ is a partition of all pairs into triples.",
-      "significance": "supporting",
-      "relatedConcepts": ["Steiner triple systems", "decidable procedures in Lean 4", "fin_cases tactic", "combinatorial design verification"],
-      "prerequisites": ["combinatorics: Steiner triple systems", "Lean 4 decision procedures: decide tactic"]
+    "type": "definition",
+    "title": "The Fano Plane: Explicit Construction in Lean 4",
+    "content": "The Fano plane PG(2,2) is constructed as a `Hypergraph3 (Fin 7)`. The `triple` helper builds a 3-element Finset from three `Fin 7` values. `fanoEdges` explicitly lists all 7 triples matching the classical incidence structure: {0,1,3}, {1,2,4}, {2,3,5}, {3,4,6}, {4,5,0}, {5,6,1}, {6,0,2}. The `fanoPlane.uniform` proof uses `rcases` to enumerate all 7 edges and then `decide` to verify each has cardinality 3. The 7 triples correspond to the 7 lines of PG(2,2): each pair of points determines a unique line, matching the projective plane axioms over GF(2).",
+    "mathContext": "The Fano plane $\\text{PG}(2,2)$: points $= \\mathbb{F}_2^3 \\setminus \\{0\\}$ (7 nonzero vectors), lines $=$ 1-dimensional subspaces of $\\mathbb{F}_2^3$ (7 lines). In coordinates: $\\{(1,0,0),(0,1,0),(1,1,0)\\} \\leftrightarrow \\{0,1,3\\}$ in $\\text{Fin}\\,7$. It is the unique $\\text{STS}(7)$: the unique Steiner triple system of order 7.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projective plane PG(2,2)",
+      "Steiner triple system STS(7)",
+      "finite fields GF(2)",
+      "combinatorial design"
+    ],
+    "prerequisites": [
+      "finite geometry: projective planes",
+      "combinatorial designs: Steiner triple systems",
+      "Lean 4: Finset construction"
+    ]
+  },
+  {
+    "id": "ann-friendship-verification",
+    "proofId": "friendship-theorem-oq-03",
+    "range": {
+      "startLine": 156,
+      "endLine": 163
     },
-    {
-      "id": "ann-no-universal",
-      "proofId": "friendship-theorem-oq-03",
-      "range": { "startLine": 169, "endLine": 178 },
-      "type": "insight",
-      "title": "No Universal Vertex: Degree 3 Rules Out All 7 Candidates",
-      "content": "`fano_no_universal` proves by contradiction: if some c : Fin 7 were in every Fano triple, we derive a contradiction by `fin_cases c` and `decide`. For each of the 7 possible universal vertex candidates, the `decide` kernel evaluation discovers that the candidate is missing from at least 4 triples (since each vertex is in exactly 3 of 7 triples). The absence of a universal vertex is the key fact that makes the Fano plane a counterexample to the hypergraph friendship conjecture. Structurally: a universal vertex would need degree 7 (in all 7 triples), but the Fano plane has degree 3 for every vertex — a factor-of-7/3 gap.",
-      "mathContext": "For all $v \\in \\{0,\\ldots,6\\}$: $\\deg(v) = |\\{e \\in \\text{fanoEdges} : v \\in e\\}| = 3 < 7 = |\\text{fanoEdges}|$. Hence $\\nexists c$ universal. Counting: $7 \\text{ vertices} \\times 3 \\text{ triples/vertex} = 21 = 7 \\text{ triples} \\times 3 \\text{ vertices/triple}$ (double counting confirms 3-regularity).",
-      "significance": "key",
-      "relatedConcepts": ["vertex degree in hypergraphs", "3-regularity of the Fano plane", "proof by contradiction", "double counting"],
-      "prerequisites": ["combinatorics: degree counting", "hypergraph regularity"]
+    "type": "technique",
+    "title": "Friendship Property: 49-Case Decision Procedure",
+    "content": "`fano_is_friendship` proves that every pair of distinct Fin 7 vertices is in exactly one Fano triple. The proof strategy is `fin_cases u <;> fin_cases v <;> simp_all <;> decide`: enumerate all 7 \u00d7 7 = 49 cases of (u,v), use `simp_all` to simplify with the Fano plane definition (unfolding `IsFriendship3`, `fanoPlane`, `fanoEdges`, `triple`), and then close each case by `decide`. The 42 non-diagonal cases each require checking that exactly one of 7 triples contains both u and v \u2014 a finite computation that `decide` handles via kernel evaluation. This is the defining property of a Steiner triple system STS(7).",
+    "mathContext": "For each of the $\\binom{7}{2} = 21$ pairs $\\{u,v\\}$, exactly one triple $\\{a,b,c\\} \\in \\{\\{0,1,3\\},\\{1,2,4\\},\\{2,3,5\\},\\{3,4,6\\},\\{4,5,0\\},\\{5,6,1\\},\\{6,0,2\\}\\}$ satisfies $u,v \\in \\{a,b,c\\}$. This is the **Steiner property**: $\\text{STS}(n)$ is a partition of all pairs into triples.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Steiner triple systems",
+      "decidable procedures in Lean 4",
+      "fin_cases tactic",
+      "combinatorial design verification"
+    ],
+    "prerequisites": [
+      "combinatorics: Steiner triple systems",
+      "Lean 4 decision procedures: decide tactic"
+    ]
+  },
+  {
+    "id": "ann-no-universal",
+    "proofId": "friendship-theorem-oq-03",
+    "range": {
+      "startLine": 169,
+      "endLine": 178
     },
-    {
-      "id": "ann-counterexample",
-      "proofId": "friendship-theorem-oq-03",
-      "range": { "startLine": 184, "endLine": 201 },
-      "type": "concept",
-      "title": "Main Theorem: Friendship Theorem Fails for Hypergraphs",
-      "content": "`friendship_theorem_fails_for_hypergraphs` asserts existence of a 3-uniform friendship hypergraph with no universal vertex. The proof is a one-liner: `exact ⟨fanoPlane, fano_is_friendship, fano_no_universal⟩`. The existential witness is the Fano plane, and the two components of the conjunction are the previously proved lemmas. The theorem's docstring is detailed, contrasting with the graph case: the Friendship Theorem (Erdős–Rényi–Sós, 1966) proved that every friendship GRAPH must have a universal vertex (the 'politician'), and moreover the graph must be a windmill. For hypergraphs, neither conclusion holds.",
-      "mathContext": "$\\exists H : \\text{Hypergraph3}(\\text{Fin}\\,7),\\, \\text{IsFriendship3}(H) \\wedge \\neg\\exists c,\\, \\text{IsUniversalVertex3}(H, c)$. Witness: $H = \\text{fanoPlane}$. This shows the friendship property does NOT force a universal vertex in 3-hypergraphs, in contrast to the graph case where the friendship property forces a windmill structure.",
-      "significance": "key",
-      "relatedConcepts": ["existential witness", "counterexample methodology", "Friendship Theorem (Erdős-Rényi-Sós)", "windmill graphs"],
-      "prerequisites": ["graph theory: windmill graphs and the Friendship Theorem", "hypergraph theory"]
+    "type": "insight",
+    "title": "No Universal Vertex: Degree 3 Rules Out All 7 Candidates",
+    "content": "`fano_no_universal` proves by contradiction: if some c : Fin 7 were in every Fano triple, we derive a contradiction by `fin_cases c` and `decide`. For each of the 7 possible universal vertex candidates, the `decide` kernel evaluation discovers that the candidate is missing from at least 4 triples (since each vertex is in exactly 3 of 7 triples). The absence of a universal vertex is the key fact that makes the Fano plane a counterexample to the hypergraph friendship conjecture. Structurally: a universal vertex would need degree 7 (in all 7 triples), but the Fano plane has degree 3 for every vertex \u2014 a factor-of-7/3 gap.",
+    "mathContext": "For all $v \\in \\{0,\\ldots,6\\}$: $\\deg(v) = |\\{e \\in \\text{fanoEdges} : v \\in e\\}| = 3 < 7 = |\\text{fanoEdges}|$. Hence $\\nexists c$ universal. Counting: $7 \\text{ vertices} \\times 3 \\text{ triples/vertex} = 21 = 7 \\text{ triples} \\times 3 \\text{ vertices/triple}$ (double counting confirms 3-regularity).",
+    "significance": "key",
+    "relatedConcepts": [
+      "vertex degree in hypergraphs",
+      "3-regularity of the Fano plane",
+      "proof by contradiction",
+      "double counting"
+    ],
+    "prerequisites": [
+      "combinatorics: degree counting",
+      "hypergraph regularity"
+    ]
+  },
+  {
+    "id": "ann-counterexample",
+    "proofId": "friendship-theorem-oq-03",
+    "range": {
+      "startLine": 184,
+      "endLine": 201
     },
-    {
-      "id": "ann-counting",
-      "proofId": "friendship-theorem-oq-03",
-      "range": { "startLine": 207, "endLine": 255 },
-      "type": "insight",
-      "title": "Counting Arguments: Degree Formula and Triple Count for Friendship 3-Hypergraphs",
-      "content": "This section proves general counting facts for friendship 3-hypergraphs and verifies them numerically for the Fano plane. `fano_edge_count`: there are exactly 7 triples (by `decide`). `fano_vertex_degree v = 3`: each vertex is in exactly 3 triples (by `fin_cases v <;> decide`). `fano_regular`: all vertices have the same degree 3. The general theorems `friendship3_degree_formula` and `friendship3_triple_count` state that for a friendship 3-hypergraph on n vertices: each vertex has degree (n-1)/2, and there are n(n-1)/6 triples. These are proved purely by arithmetic (omega). The Fano plane checks: n=7, degree=(7-1)/2=3 ✓, triples=7·6/6=7 ✓.",
-      "mathContext": "**Double counting**: Sum over vertices of degree $= 3|E|$ (each triple contributes 3 to vertex degrees). Also $= n \\cdot \\deg$ if $d$-regular. So $nd = 3|E|$. Since $\\deg = (n-1)/2$: $|E| = n(n-1)/6$. For $n=7$: $|E| = 7 \\cdot 6/6 = 7$. The divisibility conditions $2 \\mid (n-1)$ and $6 \\mid n(n-1)$ are necessary for an $\\text{STS}(n)$ to exist (equivalent to $n \\equiv 1$ or $3 \\pmod{6}$).",
-      "significance": "supporting",
-      "relatedConcepts": ["double counting", "Steiner triple system existence conditions", "regular hypergraphs", "divisibility constraints"],
-      "prerequisites": ["combinatorics: double counting", "arithmetic: divisibility and modular conditions"]
+    "type": "concept",
+    "title": "Main Theorem: Friendship Theorem Fails for Hypergraphs",
+    "content": "`friendship_theorem_fails_for_hypergraphs` asserts existence of a 3-uniform friendship hypergraph with no universal vertex. The proof is a one-liner: `exact \u27e8fanoPlane, fano_is_friendship, fano_no_universal\u27e9`. The existential witness is the Fano plane, and the two components of the conjunction are the previously proved lemmas. The theorem's docstring is detailed, contrasting with the graph case: the Friendship Theorem (Erd\u0151s\u2013R\u00e9nyi\u2013S\u00f3s, 1966) proved that every friendship GRAPH must have a universal vertex (the 'politician'), and moreover the graph must be a windmill. For hypergraphs, neither conclusion holds.",
+    "mathContext": "$\\exists H : \\text{Hypergraph3}(\\text{Fin}\\,7),\\, \\text{IsFriendship3}(H) \\wedge \\neg\\exists c,\\, \\text{IsUniversalVertex3}(H, c)$. Witness: $H = \\text{fanoPlane}$. This shows the friendship property does NOT force a universal vertex in 3-hypergraphs, in contrast to the graph case where the friendship property forces a windmill structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential witness",
+      "counterexample methodology",
+      "Friendship Theorem (Erd\u0151s-R\u00e9nyi-S\u00f3s)",
+      "windmill graphs"
+    ],
+    "prerequisites": [
+      "graph theory: windmill graphs and the Friendship Theorem",
+      "hypergraph theory"
+    ]
+  },
+  {
+    "id": "ann-counting",
+    "proofId": "friendship-theorem-oq-03",
+    "range": {
+      "startLine": 207,
+      "endLine": 255
     },
-    {
-      "id": "ann-dual-property",
-      "proofId": "friendship-theorem-oq-03",
-      "range": { "startLine": 257, "endLine": 307 },
-      "type": "concept",
-      "title": "Self-Duality: Any Two Fano Lines Meet in Exactly One Point",
-      "content": "`fano_dual_property` proves that any two distinct Fano triples intersect in exactly one vertex. The proof pattern mirrors `fano_is_friendship`: enumerate all pairs of distinct edges by `rcases he₁ ... <;> rcases he₂ ...` (7×7 = 49 cases), apply `decide` to those where the edges differ. This dual property is equivalent to the Fano plane being a projective plane: in PG(2,2), any two distinct lines meet in exactly one point (dual of 'any two distinct points determine a unique line'). The comparison table in the closing comment contrasts graphs and 3-hypergraphs systematically: windmill structure vs. STS richness, spectral forcing vs. counting failure.",
-      "mathContext": "$\\forall e_1 \\neq e_2 \\in \\text{fanoEdges},\\, |e_1 \\cap e_2| = 1$. This is the **projective plane axiom**: any two lines meet in exactly one point. Combined with the friendship property (any two points determine a unique line), the Fano plane satisfies all axioms of a finite projective plane of order 2, $\\text{PG}(2,2) \\cong \\mathbb{P}^2(\\mathbb{F}_2)$.",
-      "significance": "supporting",
-      "relatedConcepts": ["projective plane axioms", "self-duality in finite geometry", "PG(2,2) over GF(2)", "incidence geometry"],
-      "prerequisites": ["finite geometry: projective planes", "duality principle in projective geometry"]
-    }
-  ]
-}
+    "type": "insight",
+    "title": "Counting Arguments: Degree Formula and Triple Count for Friendship 3-Hypergraphs",
+    "content": "This section proves general counting facts for friendship 3-hypergraphs and verifies them numerically for the Fano plane. `fano_edge_count`: there are exactly 7 triples (by `decide`). `fano_vertex_degree v = 3`: each vertex is in exactly 3 triples (by `fin_cases v <;> decide`). `fano_regular`: all vertices have the same degree 3. The general theorems `friendship3_degree_formula` and `friendship3_triple_count` state that for a friendship 3-hypergraph on n vertices: each vertex has degree (n-1)/2, and there are n(n-1)/6 triples. These are proved purely by arithmetic (omega). The Fano plane checks: n=7, degree=(7-1)/2=3 \u2713, triples=7\u00b76/6=7 \u2713.",
+    "mathContext": "**Double counting**: Sum over vertices of degree $= 3|E|$ (each triple contributes 3 to vertex degrees). Also $= n \\cdot \\deg$ if $d$-regular. So $nd = 3|E|$. Since $\\deg = (n-1)/2$: $|E| = n(n-1)/6$. For $n=7$: $|E| = 7 \\cdot 6/6 = 7$. The divisibility conditions $2 \\mid (n-1)$ and $6 \\mid n(n-1)$ are necessary for an $\\text{STS}(n)$ to exist (equivalent to $n \\equiv 1$ or $3 \\pmod{6}$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "double counting",
+      "Steiner triple system existence conditions",
+      "regular hypergraphs",
+      "divisibility constraints"
+    ],
+    "prerequisites": [
+      "combinatorics: double counting",
+      "arithmetic: divisibility and modular conditions"
+    ]
+  },
+  {
+    "id": "ann-dual-property",
+    "proofId": "friendship-theorem-oq-03",
+    "range": {
+      "startLine": 257,
+      "endLine": 307
+    },
+    "type": "concept",
+    "title": "Self-Duality: Any Two Fano Lines Meet in Exactly One Point",
+    "content": "`fano_dual_property` proves that any two distinct Fano triples intersect in exactly one vertex. The proof pattern mirrors `fano_is_friendship`: enumerate all pairs of distinct edges by `rcases he\u2081 ... <;> rcases he\u2082 ...` (7\u00d77 = 49 cases), apply `decide` to those where the edges differ. This dual property is equivalent to the Fano plane being a projective plane: in PG(2,2), any two distinct lines meet in exactly one point (dual of 'any two distinct points determine a unique line'). The comparison table in the closing comment contrasts graphs and 3-hypergraphs systematically: windmill structure vs. STS richness, spectral forcing vs. counting failure.",
+    "mathContext": "$\\forall e_1 \\neq e_2 \\in \\text{fanoEdges},\\, |e_1 \\cap e_2| = 1$. This is the **projective plane axiom**: any two lines meet in exactly one point. Combined with the friendship property (any two points determine a unique line), the Fano plane satisfies all axioms of a finite projective plane of order 2, $\\text{PG}(2,2) \\cong \\mathbb{P}^2(\\mathbb{F}_2)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "projective plane axioms",
+      "self-duality in finite geometry",
+      "PG(2,2) over GF(2)",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "finite geometry: projective planes",
+      "duality principle in projective geometry"
+    ]
+  }
+]
