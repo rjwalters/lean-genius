@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-header-erdos10oq01",
+    "proofId": "erdos-10-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Erdős Problem #10 OQ-01: The Sufficiently Large Variant",
+    "content": "The module header frames Erdős Problem #10 OQ-01 as a weaker version of the full problem: instead of asking whether some fixed k works for ALL integers, OQ-01 asks whether some k works for all SUFFICIENTLY LARGE integers (i.e., all n ≥ N for some threshold N). This distinction matters because density arguments can in principle resolve the 'large' variant while being unable to rule out finitely many exceptions. The file is organized to prove the full logical hierarchy: which results imply OQ-01, which are provably weaker (Gallagher), and which imply ¬OQ-01 (Erdős-Graham). Crocker (1971), Gallagher (1975), and Granville-Soundararajan (1998) are the three key external results.",
+    "mathContext": "OQ-01: $\\exists k, N \\in \\mathbb{N},\\ \\forall n \\geq N,\\ n \\in S_k$ where $S_k = \\{n : n = p + \\sum_{i=1}^j 2^{a_i},\\ p \\text{ prime},\\ j \\leq k\\}$. The full Erdős #10: $\\exists k,\\ \\forall n \\geq 2,\\ n \\in S_k$. The file proves: Erdős10 $\\Rightarrow$ OQ-01 $\\Leftarrow$ G-S; Gallagher $\\not\\Rightarrow$ OQ-01; E-G $\\Rightarrow$ $\\neg$OQ-01.",
+    "significance": "context",
+    "relatedConcepts": ["Waring-Goldbach problem", "additive number theory", "prime representation", "density of integer sets", "covering congruences"],
+    "prerequisites": ["prime numbers", "additive combinatorics", "set density", "Goldbach-type conjectures"]
+  },
+  {
+    "id": "ann-core-defs",
+    "proofId": "erdos-10-oq-01",
+    "range": { "startLine": 48, "endLine": 77 },
+    "type": "definition",
+    "title": "IsPrimePlusKPowers, RepSet, OQ01, and Erdos10Main",
+    "content": "The definition `IsPrimePlusKPowers k n` encodes representability using a Multiset of exponents, allowing repeated exponents (e.g., 2^3 + 2^3 = 16 counts as 2 powers). This is more general than requiring distinct exponents. The `RepSet k` is the set of all representable integers for a given k, and `OQ01` is the existential quantification over k and a threshold N. The definition `Erdos10Main` is the universal version (no threshold N), and `main_implies_oq01` proves that the stronger assertion logically implies OQ-01 by instantiating the threshold at N=2.",
+    "mathContext": "$S_k = \\{n \\in \\mathbb{N} : \\exists p \\text{ prime},\\ \\exists a_1, \\ldots, a_j \\text{ (multiset)},\\ j \\leq k,\\ n = p + \\sum_i 2^{a_i}\\}$. Note: Multiset allows $a_i = a_j$ for $i \\neq j$, so $p + 2^a + 2^a = p + 2^{a+1}$ and $p + 2^3 + 2^3$ are both in $S_2$. The parent problem (Erdős10Main) is $S_k \\supseteq \\{n \\geq 2\\}$; OQ-01 is $S_k \\supseteq \\{n \\geq N\\}$ for some finite $N$.",
+    "significance": "key",
+    "relatedConcepts": ["Multiset in Lean 4", "prime numbers", "binary representation", "Goldbach conjecture", "Waring's problem"],
+    "prerequisites": ["Lean 4 Multiset", "Nat.Prime", "existential types in Lean"]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "erdos-10-oq-01",
+    "range": { "startLine": 79, "endLine": 107 },
+    "type": "technique",
+    "title": "Monotonicity of RepSet and the Characterization RepSet 0 = Primes",
+    "content": "The monotonicity lemmas establish that `RepSet k ⊆ RepSet (k+1)` — adding more powers of 2 only expands the representable set. The proof is trivial: a Multiset witnessing k-representability also witnesses (k+1)-representability via `Nat.le_succ_of_le`. The characterization `repSet_zero_eq_primes` shows that with zero powers, a number must equal its prime part exactly — using `Multiset.card_eq_zero` and `Multiset.sum_zero`. This verifies that the Multiset-based definition correctly captures the k=0 edge case. The monotonicity of OQ-01 (`oq01_mono`) allows promoting any k-witness to a k'-witness for k' ≥ k.",
+    "mathContext": "$S_0 = \\{p : p \\text{ prime}\\}$ since $n = p + 0 = p$ with zero powers. $S_0 \\subseteq S_1 \\subseteq S_2 \\subseteq \\cdots$ is monotone increasing. Combined with the existential structure of OQ-01, once $k$ works (with threshold $N$), any $k' \\geq k$ also works (with the same threshold $N$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Multiset.card", "monotone set families", "prime numbers as base case", "Lean 4 Finset monotonicity"],
+    "prerequisites": ["Multiset.card_eq_zero", "Nat.le_succ_of_le", "set extension lemmas"]
+  },
+  {
+    "id": "ann-crocker",
+    "proofId": "erdos-10-oq-01",
+    "range": { "startLine": 109, "endLine": 132 },
+    "type": "insight",
+    "title": "Crocker's Theorem: Infinitely Many Odd Integers Resist k=2",
+    "content": "Crocker's 1971 theorem is axiomatized: the set of odd integers not representable as a prime plus ≤2 powers of 2 is infinite. The proof of Crocker's original result used covering congruences — choosing a finite set of congruence conditions that collectively prevent any prime p from satisfying n − p = 2^a + 2^b. The key formal consequence `k_two_not_sufficient_large` extracts from the infiniteness of this set (via `Set.Infinite.exists_gt`) that for any threshold N, there exists n ≥ N not in RepSet 2. This directly shows k=2 fails OQ-01. The Crocker axiom represents a deep 1971 result that remains formally unproved in Mathlib.",
+    "mathContext": "Crocker's argument: for odd $n$, if $n = p + 2^a + 2^b$ then $p = n - 2^a - 2^b$ must be prime. Choosing $n$ from a suitable arithmetic progression forces $n - 2^a - 2^b$ to always be divisible by 3, 5, 7, or 11 for all choices of $a, b \\geq 0$. This uses that $2^a \\pmod{3}$ cycles with period 2 and $2^a \\pmod{5}$ cycles with period 4, so covering congruences can be chosen to ensure composite values. Infinitely many such odd $n$ exist.",
+    "significance": "key",
+    "relatedConcepts": ["covering congruences", "Sierpiński numbers", "odd integers and primes", "Set.Infinite.exists_gt", "Romanov's theorem"],
+    "prerequisites": ["covering congruences", "arithmetic progressions", "Nat.Prime", "Set.Infinite"]
+  },
+  {
+    "id": "ann-granville-soundararajan",
+    "proofId": "erdos-10-oq-01",
+    "range": { "startLine": 134, "endLine": 162 },
+    "type": "insight",
+    "title": "Granville-Soundararajan: k=4 Would Resolve OQ-01",
+    "content": "The Granville-Soundararajan conjecture is split by parity: k=3 is conjectured to suffice for odd integers ≥ 3, and k=4 for even integers ≥ 2. The asymmetry reflects that even n requires an extra adjustment. The combined theorem `granville_soundararajan_implies_oq01` proves OQ-01 with k=4 and N=3 by case-splitting on parity via `Nat.even_or_odd`, applying the even conjecture directly, and using `repSet_mono_le` to lift the odd (k=3) result to k=4. This is a clean example of how a conditional result about the conjecture can formally certify a specific value of k.",
+    "mathContext": "G-S Odd: $\\forall n \\geq 3$ odd, $n \\in S_3$. G-S Even: $\\forall n \\geq 2$ even, $n \\in S_4$. Since $S_3 \\subseteq S_4$, both parity cases land in $S_4$. Hence $\\{n \\geq 3\\} \\subseteq S_4$, giving OQ-01 with $k=4, N=3$. Granville-Soundararajan proved this in 1998 conditioned on the multiplicative order of 2 mod $p^2$ being large for most primes $p$ — related to the non-existence of Wieferich primes.",
+    "significance": "key",
+    "relatedConcepts": ["Granville-Soundararajan 1998", "Wieferich primes", "multiplicative order mod p²", "parity in additive number theory", "Romanov's density theorem"],
+    "prerequisites": ["Nat.even_or_odd", "repSet_mono_le", "existential instantiation"]
+  },
+  {
+    "id": "ann-gallagher-gap",
+    "proofId": "erdos-10-oq-01",
+    "range": { "startLine": 164, "endLine": 283 },
+    "type": "technique",
+    "title": "Gallagher's Density Gap: A Density-1 Set That Misses Infinitely Many Large Integers",
+    "content": "The theorem `gallagher_does_not_imply_oq01_in_principle` is the most computationally intensive result in the file. It constructs the set of non-perfect-squares as a witness: this set has density approaching 1 (since there are only ⌈√N⌉ squares up to N), yet it misses every perfect square n = m². The density bound is proved quantitatively using the threshold N₀ = ⌈4/ε²⌉ + 1. The proof shows that for N ≥ N₀, the count of non-squares is ≥ (1−ε)N. The key estimate Nat.sqrt(N) + 1 ≤ ε·N requires showing ε·√N > 2 from (ε·√N)² = ε²·N > 4, using `Real.nat_sqrt_le_real_sqrt`, `Real.mul_self_sqrt`, and `nlinarith` for the nonlinear arithmetic steps.",
+    "mathContext": "Let $S = \\mathbb{N} \\setminus \\{m^2 : m \\in \\mathbb{N}\\}$. Then $\\underline{d}(S) = 1$ since $\\#\\{m^2 \\leq N\\} = \\lfloor \\sqrt{N} \\rfloor + 1 = O(\\sqrt{N}) = o(N)$. For $N \\geq \\lceil 4/\\varepsilon^2 \\rceil + 1$: $\\varepsilon^2 N > 4$, so $\\varepsilon \\sqrt{N} > 2$ (since $(\\varepsilon \\sqrt{N})^2 = \\varepsilon^2 N > 4$), hence $\\varepsilon N = \\varepsilon \\sqrt{N} \\cdot \\sqrt{N} > 2\\sqrt{N} \\geq 2 \\lfloor \\sqrt{N} \\rfloor \\geq \\lfloor \\sqrt{N} \\rfloor + 1$. Yet $S$ misses $(N+1)^2$ for every $N$.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic density", "perfect squares", "Real.sqrt", "Nat.sqrt", "nlinarith", "Finset.filter_card_add_filter_neg_card_eq_card"],
+    "prerequisites": ["real square roots", "Finset.filter", "Nat.ceil", "density of sets of naturals"]
+  },
+  {
+    "id": "ann-erdos-graham-hierarchy",
+    "proofId": "erdos-10-oq-01",
+    "range": { "startLine": 285, "endLine": 316 },
+    "type": "insight",
+    "title": "Erdős-Graham Conjecture and the Complete Logical Hierarchy",
+    "content": "The Erdős-Graham conjecture — that for every fixed k, infinitely many large integers lie outside RepSet k — is the primary reason OQ-01 is believed to be false. Its formal consequence `oq01_false_from_conjecture` is a one-line proof: given any k and threshold N claimed by OQ-01, the conjecture produces n ≥ N not in RepSet k, giving a contradiction. The closing `#check` commands serve as a gallery of the hierarchy: `main_implies_oq01` (↘), `oq01_false_from_conjecture` (¬ from E-G), `granville_soundararajan_implies_oq01` (↗ conditional), and `k_two_not_sufficient_large` (Crocker lower bound). Together they form a complete formal picture of current mathematical knowledge about Erdős #10.",
+    "mathContext": "Erdős-Graham: $\\forall k \\in \\mathbb{N},\\ \\forall N \\in \\mathbb{N},\\ \\exists n \\geq N,\\ n \\notin S_k$. The formal hierarchy: Erdős10Main $\\Rightarrow$ OQ-01 (proved); G-S $\\Rightarrow$ OQ-01 (proved, conditional); Gallagher $\\not\\Rightarrow$ OQ-01 (proved by non-square counterexample); E-G $\\Rightarrow$ $\\neg$OQ-01 (proved, conditional); Crocker $\\Rightarrow$ $k=2$ fails OQ-01 (proved, with axiom).",
+    "significance": "key",
+    "relatedConcepts": ["Erdős-Graham conjecture", "logical hierarchy", "additive bases", "Romanov's theorem", "Fibonacci covering congruences"],
+    "prerequisites": ["classical logic", "Lean 4 intro/obtain patterns", "existential negation"]
+  }
+]
