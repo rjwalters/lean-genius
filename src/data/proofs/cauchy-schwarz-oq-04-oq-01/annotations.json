@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-quadratic-nonnegativity",
+    "proofId": "cauchy-schwarz-oq-04-oq-01",
+    "range": { "startLine": 31, "endLine": 32 },
+    "type": "technique",
+    "title": "Quadratic Nonnegativity — The Core Idea",
+    "content": "The entire proof hinges on a single observation: $Q(t) = \\sum_{i}(ta_i + b_i)^2 \\geq 0$ for every $t \\in \\mathbb{R}$, since it is a sum of squares. In Lean, `Finset.sum_nonneg` combined with `sq_nonneg` gives this immediately. This seemingly trivial fact encodes the whole inequality: it says the quadratic polynomial $Q$ (in $t$) is nonnegative everywhere, which constrains its discriminant.",
+    "mathContext": "$Q(t) = \\sum_{i=1}^{n}(ta_i + b_i)^2 \\geq 0$ for all $t \\in \\mathbb{R}$",
+    "significance": "key",
+    "relatedConcepts": ["sum of squares", "nonnegativity", "discriminant inequality", "SOS decomposition"],
+    "prerequisites": ["Finset.sum_nonneg", "sq_nonneg", "real arithmetic"]
+  },
+  {
+    "id": "ann-polynomial-expansion",
+    "proofId": "cauchy-schwarz-oq-04-oq-01",
+    "range": { "startLine": 34, "endLine": 39 },
+    "type": "technique",
+    "title": "Expanding Q(t) as a Quadratic Polynomial",
+    "content": "The auxiliary `hexpand` rewrites the sum of squares $Q(t)$ into explicit polynomial form. Distributing $(ta_i + b_i)^2 = a_i^2 t^2 + 2a_ib_i t + b_i^2$ and summing term-by-term via `Finset.sum_add_distrib`, `Finset.sum_mul`, and `Finset.mul_sum`, we get $Q(t) = A t^2 + 2S t + B$ where $A = \\sum a_i^2$, $S = \\sum a_ib_i$, $B = \\sum b_i^2$. The `simp_rw` tactic uniformly rewrites under the sum, applying the local ring lemma to each term.",
+    "mathContext": "$Q(t) = \\underbrace{\\left(\\sum_i a_i^2\\right)}_{A}\\,t^2 + 2\\underbrace{\\left(\\sum_i a_ib_i\\right)}_{S}\\,t + \\underbrace{\\sum_i b_i^2}_{B}$",
+    "significance": "supporting",
+    "relatedConcepts": ["polynomial arithmetic", "Finset.sum linearity", "ring tactic"],
+    "prerequisites": ["Finset.sum_add_distrib", "ring tactic", "simp_rw"]
+  },
+  {
+    "id": "ann-zero-case",
+    "proofId": "cauchy-schwarz-oq-04-oq-01",
+    "range": { "startLine": 41, "endLine": 50 },
+    "type": "technique",
+    "title": "Edge Case: All a_i Vanish",
+    "content": "The proof splits on whether $\\sum_i a_i^2 = 0$. If so, each term $a_i^2 \\leq \\sum_j a_j^2 = 0$ (via `Finset.single_le_sum` for the monotone sum), so $a_i = 0$ for all $i$ (using `pow_eq_zero_iff`). Then $\\sum a_ib_i = 0$, making both sides of Cauchy-Schwarz zero. This case split is essential: the main argument divides by $\\sum a_i^2$, which would be undefined (or zero in reals) if skipped. Lean's type system does not force this, but the logic requires it — informal proofs often silently assume $a \\neq 0$.",
+    "mathContext": "If $\\sum_i a_i^2 = 0$, then $a_i^2 \\leq \\sum_j a_j^2 = 0 \\Rightarrow a_i = 0$, so $(\\sum_i a_ib_i)^2 = 0 \\leq 0 \\cdot \\sum_i b_i^2$",
+    "significance": "technical",
+    "relatedConcepts": ["case analysis", "Finset.single_le_sum", "pow_eq_zero_iff", "edge case handling"],
+    "prerequisites": ["Finset.sum_nonneg", "le_antisymm", "sq_nonneg"]
+  },
+  {
+    "id": "ann-discriminant-evaluation",
+    "proofId": "cauchy-schwarz-oq-04-oq-01",
+    "range": { "startLine": 51, "endLine": 75 },
+    "type": "insight",
+    "title": "Discriminant Argument: Minimizing Q(t)",
+    "content": "When $A = \\sum a_i^2 > 0$, the quadratic $Q(t) = At^2 + 2St + B$ achieves its minimum at $t_0 = -S/A$. Substituting into $Q(t) \\geq 0$ gives $B - S^2/A \\geq 0$, i.e., $S^2 \\leq AB$. Lean performs this via `h_key` (an algebraic identity proved by `field_simp; ring`) and `sub_nonneg`. The `calc` block then multiplies through by $A > 0$ to obtain the final form $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$. The step `= ... / A * A` undoes the division using `field_simp`, leveraging positivity of $A$.",
+    "mathContext": "$Q\\!\\left(-\\tfrac{S}{A}\\right) = B - \\tfrac{S^2}{A} \\geq 0 \\implies S^2 \\leq AB$, i.e., $\\left(\\sum_i a_ib_i\\right)^2 \\leq \\left(\\sum_i a_i^2\\right)\\left(\\sum_i b_i^2\\right)$",
+    "significance": "key",
+    "relatedConcepts": ["discriminant", "nonneg quadratic", "field_simp", "mul_le_mul_of_nonneg_right"],
+    "prerequisites": ["positivity of A", "field_simp tactic", "calc chain", "sub_nonneg"]
+  },
+  {
+    "id": "ann-sqrt-substitution",
+    "proofId": "cauchy-schwarz-oq-04-oq-01",
+    "range": { "startLine": 81, "endLine": 109 },
+    "type": "technique",
+    "title": "Square-Root Substitution for Weighted Form",
+    "content": "The weighted version requires no new argument — it reduces to the unweighted case via $a_i' = \\sqrt{w_i}\\,a_i$, $b_i' = \\sqrt{w_i}\\,b_i$. The key identity $\\sqrt{w}\\cdot\\sqrt{w} = w$ (from `Real.mul_self_sqrt` using positivity) converts weighted products: $w_ia_ib_i = a_i'b_i'$, $w_ia_i^2 = (a_i')^2$, $w_ib_i^2 = (b_i')^2$. These three pointwise equalities (key_ab, key_a2, key_b2) let `Finset.sum_congr` rewrite the weighted sums as unweighted ones over $a', b'$, then `cauchy_schwarz_sum a' b'` closes the goal. This is a clean example of the 'reduce to a known case' proof pattern.",
+    "mathContext": "$a_i' := \\sqrt{w_i}\\,a_i,\\ b_i' := \\sqrt{w_i}\\,b_i \\implies w_ia_ib_i = a_i'b_i',\\ w_ia_i^2 = (a_i')^2,\\ w_ib_i^2 = (b_i')^2$",
+    "significance": "key",
+    "relatedConcepts": ["Real.sqrt", "Real.mul_self_sqrt", "variable substitution", "Finset.sum_congr"],
+    "prerequisites": ["Real.sqrt properties", "mul_pow", "Real.sq_sqrt"]
+  },
+  {
+    "id": "ann-titu-substitution",
+    "proofId": "cauchy-schwarz-oq-04-oq-01",
+    "range": { "startLine": 115, "endLine": 135 },
+    "type": "insight",
+    "title": "Titu's Lemma via the f = a/√b Substitution",
+    "content": "Titu's lemma $(\\sum a_i)^2/(\\sum b_i) \\leq \\sum a_i^2/b_i$ is equivalent (after `div_le_iff₀`) to $(\\sum a_i)^2 \\leq (\\sum a_i^2/b_i)(\\sum b_i)$. This is precisely Cauchy-Schwarz applied to $f_i = a_i/\\sqrt{b_i}$ and $g_i = \\sqrt{b_i}$: then $\\sum f_ig_i = \\sum a_i$ (via `div_mul_cancel₀`), $\\sum f_i^2 = \\sum a_i^2/b_i$ (via `div_pow` and `Real.sq_sqrt`), and $\\sum g_i^2 = \\sum b_i$ (via `Real.sq_sqrt`). Rewriting `hcs` with these three facts and applying `linarith` completes the proof. This substitution is the canonical explanation of why Titu and Cauchy-Schwarz are equivalent.",
+    "mathContext": "$f_i = \\dfrac{a_i}{\\sqrt{b_i}},\\ g_i = \\sqrt{b_i} \\implies \\sum_i f_ig_i = \\sum_i a_i,\\ \\sum_i f_i^2 = \\sum_i\\frac{a_i^2}{b_i},\\ \\sum_i g_i^2 = \\sum_i b_i$",
+    "significance": "key",
+    "relatedConcepts": ["Titu Andreescu", "Sedrakyan's inequality", "Engel form", "div_mul_cancel₀"],
+    "prerequisites": ["cauchy_schwarz_sum", "Real.sqrt_ne_zero'", "div_pow", "Real.sq_sqrt"]
+  },
+  {
+    "id": "ann-weighted-sum-nonneg",
+    "proofId": "cauchy-schwarz-oq-04-oq-01",
+    "range": { "startLine": 141, "endLine": 144 },
+    "type": "definition",
+    "title": "Utility Lemma: Weighted Sums of Squares Are Nonneg",
+    "content": "A one-line auxiliary result: $\\sum_i w_ia_i^2 \\geq 0$ whenever $w_i \\geq 0$. Each summand $w_ia_i^2$ is nonneg (product of nonneg numbers), so `Finset.sum_nonneg` applies directly with `mul_nonneg`. Despite its simplicity, this lemma encapsulates a common pattern used throughout the gallery — establishing nonnegativity of weighted quadratic forms — and serves as a reusable building block for variance and covariance bounds.",
+    "mathContext": "$\\sum_i w_i a_i^2 \\geq 0$ when $w_i \\geq 0$, since $w_i a_i^2 = w_i \\cdot a_i^2 \\geq 0$ termwise",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_nonneg", "mul_nonneg", "quadratic form nonnegativity", "positive semidefiniteness"],
+    "prerequisites": ["sq_nonneg", "mul_nonneg", "Finset.sum_nonneg"]
+  }
+]

@@ -8,7 +8,7 @@
     "date": "2026-04-04",
     "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzOQ04OQ01.lean",
-    "tags": ["inequalities", "combinatorics", "cauchy-schwarz", "weighted-sums"],
+    "tags": ["inequalities", "combinatorics", "cauchy-schwarz", "weighted-sums", "olympiad"],
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-04",
@@ -25,35 +25,88 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Cauchy-Schwarz inequality (Cauchy 1821, Schwarz 1885) is one of the most fundamental and widely used inequalities in mathematics. Titu's lemma (also known as Engel form or Sedrakyan's inequality) is a powerful variant that appears frequently in olympiad mathematics, named after Titu Andreescu. The weighted form generalizes both to positive weight sequences.",
-    "problemStatement": "For finite sequences a, b of real numbers and positive weights w, prove: (1) (∑ wᵢaᵢbᵢ)² ≤ (∑ wᵢaᵢ²)(∑ wᵢbᵢ²), and (2) Titu's lemma: (∑ aᵢ)²/(∑ bᵢ) ≤ ∑ aᵢ²/bᵢ for positive bᵢ.",
-    "proofStrategy": "The unweighted Cauchy-Schwarz is proved via the quadratic discriminant: the polynomial Q(t) = ∑(taᵢ + bᵢ)² ≥ 0 has non-positive discriminant. The weighted form reduces to unweighted by substituting a'ᵢ = √wᵢ·aᵢ, b'ᵢ = √wᵢ·bᵢ. Titu's lemma uses the substitution f = a/√b, g = √b in Cauchy-Schwarz.",
+    "historicalContext": "The Cauchy-Schwarz inequality has one of the richest histories in all of analysis. Augustin-Louis Cauchy proved the discrete sum version in his 1821 Cours d'Analyse, using essentially the algebraic argument still taught today. Viktor Bunyakovsky independently rediscovered and generalized it to integrals in 1859 — which is why in Russian and Eastern European literature it is often called the Cauchy-Bunyakovsky-Schwarz inequality. Hermann Amandus Schwarz proved the integral form rigorously in 1885 in the context of his work on minimal surfaces and complex analysis. Titu Andreescu popularized the 'Engel form' (also called the SOS form or Sedrakyan's inequality) as a competition technique; it was used by the Romanian mathematician Sedrakyan in 1936. The weighted generalization unifies these variants: by choosing uniform weights one recovers the classical inequality, while choosing wᵢ = 1/bᵢ recovers Titu's lemma directly from the weighted form.",
+    "problemStatement": "For $n \\in \\mathbb{N}$, sequences $a, b : \\text{Fin}\\, n \\to \\mathbb{R}$, and positive weights $w : \\text{Fin}\\, n \\to \\mathbb{R}_{>0}$, prove:\n(1) **Weighted Cauchy-Schwarz**: $\\left(\\sum_i w_i a_i b_i\\right)^2 \\leq \\left(\\sum_i w_i a_i^2\\right)\\left(\\sum_i w_i b_i^2\\right)$.\n(2) **Titu's Lemma**: For positive $b_i$ with $\\sum_i b_i > 0$, $\\displaystyle\\frac{\\left(\\sum_i a_i\\right)^2}{\\sum_i b_i} \\leq \\sum_i \\frac{a_i^2}{b_i}$.",
+    "proofStrategy": "The proof proceeds in four stages. First, unweighted Cauchy-Schwarz is proved via the quadratic discriminant: define $Q(t) = \\sum_i (ta_i + b_i)^2 \\geq 0$ for all $t \\in \\mathbb{R}$ (as a sum of squares). Expanding, $Q(t) = (\\sum a_i^2)t^2 + 2(\\sum a_ib_i)t + (\\sum b_i^2)$. For a nonneg quadratic $At^2 + Bt + C \\geq 0$, the discriminant satisfies $B^2 - 4AC \\leq 0$. The minimum $t_0 = -B/(2A)$ is substituted, giving $0 \\leq Q(t_0) = \\sum b_i^2 - (\\sum a_ib_i)^2 / \\sum a_i^2$. The edge case $\\sum a_i^2 = 0$ (all $a_i = 0$) is handled separately. Second, weighted Cauchy-Schwarz reduces to unweighted via the substitution $a_i' = \\sqrt{w_i}\\,a_i$, $b_i' = \\sqrt{w_i}\\,b_i$, using $\\sqrt{w}\\cdot\\sqrt{w} = w$ from `Real.mul_self_sqrt`. Third, Titu's lemma uses the substitution $f_i = a_i/\\sqrt{b_i}$, $g_i = \\sqrt{b_i}$ in the unweighted Cauchy-Schwarz. Fourth, a utility lemma establishes $\\sum w_i a_i^2 \\geq 0$ for nonneg weights.",
     "keyInsights": [
-      "The quadratic discriminant proof is self-contained and avoids inner product abstraction",
-      "Weighted Cauchy-Schwarz reduces to unweighted via a √w change of variables",
-      "Titu's lemma is exactly Cauchy-Schwarz applied to a/√b and √b",
-      "The case Σaᵢ² = 0 (all aᵢ = 0) requires separate treatment since the discriminant argument divides by Σaᵢ²"
+      "The quadratic discriminant proof is purely algebraic: $Q(t) = \\sum(ta_i + b_i)^2 \\geq 0$ for all $t$ implies its discriminant is nonpositive, giving Cauchy-Schwarz without any appeal to geometry or inner product spaces.",
+      "The edge case $\\sum a_i^2 = 0$ requires separate treatment because the discriminant argument divides by $\\sum a_i^2$. Lean enforces this case split explicitly, unlike informal proofs that silently assume $a \\neq 0$.",
+      "Weighted Cauchy-Schwarz requires no new proof technique — the substitution $a_i' = \\sqrt{w_i}\\,a_i$ transforms it exactly into the unweighted form, and `Real.mul_self_sqrt` handles the algebraic identity $\\sqrt{w}\\cdot\\sqrt{w} = w$.",
+      "Titu's lemma is Cauchy-Schwarz in disguise: setting $f_i = a_i/\\sqrt{b_i}$ and $g_i = \\sqrt{b_i}$ yields $\\sum f_ig_i = \\sum a_i$, $\\sum f_i^2 = \\sum a_i^2/b_i$, and $\\sum g_i^2 = \\sum b_i$, so $CS(f,g)$ is exactly Titu.",
+      "All four theorems avoid abstract inner product machinery (no `InnerProductSpace`, no `norm`), working entirely at the level of `Finset.sum` and `Real.sqrt`. This makes the proof accessible and self-contained, suitable as a foundation for other gallery entries."
     ],
     "prerequisites": [
       "Real number arithmetic in Lean 4",
       "Finset.sum and its properties in Mathlib",
-      "Real.sqrt and its algebraic properties"
+      "Real.sqrt and its algebraic properties (Real.mul_self_sqrt, Real.sq_sqrt, Real.sqrt_ne_zero')"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "module-preamble",
+      "title": "Module Preamble and Imports",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "File header documenting the two main results (weighted Cauchy-Schwarz and Titu's lemma), citing Cauchy (1821) and Schwarz (1885). Imports all of Mathlib and opens the Finset and BigOperators namespaces."
+    },
+    {
+      "id": "cauchy-schwarz-sum",
+      "title": "Part I: Cauchy-Schwarz via Quadratic Discriminant",
+      "startLine": 19,
+      "endLine": 75,
+      "summary": "Proves the unweighted finite-sum Cauchy-Schwarz inequality $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ by the discriminant argument. The key auxiliary facts are: (1) $Q(t) = \\sum(ta_i+b_i)^2 \\geq 0$ for all $t$ (hQ), (2) polynomial expansion of Q (hexpand), (3) zero-case handling when $\\sum a_i^2 = 0$, and (4) the discriminant evaluation at $t_0 = -(\\sum a_ib_i)/(\\sum a_i^2)$."
+    },
+    {
+      "id": "weighted-cauchy-schwarz",
+      "title": "Part II: Weighted Cauchy-Schwarz via √w Substitution",
+      "startLine": 77,
+      "endLine": 109,
+      "summary": "Reduces weighted Cauchy-Schwarz to the unweighted form by defining $a_i' = \\sqrt{w_i}\\,a_i$ and $b_i' = \\sqrt{w_i}\\,b_i$. Three key identities (key_ab, key_a2, key_b2) establish $w_ia_ib_i = a_i'b_i'$, $w_ia_i^2 = (a_i')^2$, $w_ib_i^2 = (b_i')^2$, using `Real.mul_self_sqrt` and `Real.sq_sqrt`. The main `calc` chain then applies `cauchy_schwarz_sum`."
+    },
+    {
+      "id": "titu-lemma",
+      "title": "Part III: Titu's Lemma (Engel Form)",
+      "startLine": 111,
+      "endLine": 135,
+      "summary": "Proves $(\\sum a_i)^2/(\\sum b_i) \\leq \\sum a_i^2/b_i$ for positive $b_i$. Rewrites as $(\\sum a_i)^2 \\leq (\\sum a_i^2/b_i)(\\sum b_i)$ using div_le_iff₀, then applies cauchy_schwarz_sum with $f_i = a_i/\\sqrt{b_i}$ and $g_i = \\sqrt{b_i}$. The three auxiliary facts hfg, hf2, hg2 identify the Cauchy-Schwarz terms with the Titu expressions."
+    },
+    {
+      "id": "sum-positivity",
+      "title": "Part IV: Weighted Sum Nonnegativity and Verification",
+      "startLine": 137,
+      "endLine": 150,
+      "summary": "A one-line utility lemma: $\\sum w_ia_i^2 \\geq 0$ for nonneg weights, proved directly from Finset.sum_nonneg and mul_nonneg. Followed by #check commands that confirm the types of the three main theorems."
+    }
+  ],
   "conclusion": {
-    "summary": "A self-contained Lean 4 proof of the weighted Cauchy-Schwarz inequality and Titu's lemma for finite sums, with 4 theorems and 0 axioms. All proofs use elementary algebraic manipulations and avoid importing the abstract inner product space machinery.",
-    "implications": "Provides verified foundational inequalities for use in combinatorics and analysis proofs throughout the gallery. Titu's lemma in particular is a standard tool in competition mathematics and optimization.",
+    "summary": "A self-contained Lean 4 proof of four inequalities: unweighted Cauchy-Schwarz via the quadratic discriminant, weighted Cauchy-Schwarz via square-root variable substitution, Titu's lemma (Engel form) via the f=a/√b substitution, and weighted sum nonnegativity. All proofs use elementary algebraic manipulations via `Finset.sum` and `Real.sqrt`, with 0 axioms and 0 sorries.",
+    "implications": "These four theorems serve as foundational building blocks across the gallery. Cauchy-Schwarz underlies results in probability theory (covariance bounds), information theory (KL divergence inequalities), linear algebra (the angle between vectors), and combinatorics (double-counting arguments). Titu's lemma is a standard tool in mathematical olympiad problems and optimization: it provides a clean lower bound for sums of fractions $a^2/b$, which arises in energy minimization, allocation problems, and SOS (sum-of-squares) decompositions. The weighted form connects to the theory of weighted inner product spaces, quadrature rules in numerical analysis, and probabilistic expectations ($\\sum w_i a_i b_i$ when $w_i$ are probability weights).",
     "openQuestions": [
-      "Can this be connected to Mathlib's inner_mul_le_norm_sq_mul_norm_sq for abstract inner product spaces?",
-      "Extension to infinite sums (l² spaces)?"
+      "Can this be connected to Mathlib's `inner_mul_le_norm_sq_mul_norm_sq` for abstract inner product spaces, establishing a formal equivalence between the finite-sum and abstract formulations?",
+      "Extension to infinite sums: the $\\ell^2$ form requires convergence hypotheses — can the proof technique be adapted using `tsum` and `Summable` predicates in Mathlib?",
+      "Can the same discriminant technique prove Hölder's inequality $(\\sum a_ib_i \\leq (\\sum a_i^p)^{1/p}(\\sum b_i^q)^{1/q}$ for $1/p + 1/q = 1)$, or does that require Young's inequality as an intermediate step?"
     ]
   },
   "crossReferences": [
     {
+      "slug": "cauchy-schwarz",
+      "title": "Cauchy-Schwarz Inequality",
+      "relationship": "parent — proves CS in three forms including finite sums via EuclideanSpace"
+    },
+    {
       "slug": "cauchy-schwarz-oq-04",
-      "title": "Cauchy-Schwarz OQ-04",
-      "relationship": "extends"
+      "title": "Cauchy-Schwarz Equality: Exact Proportionality Constant",
+      "relationship": "extends — characterizes equality case, dual to the inequality proved here"
+    },
+    {
+      "slug": "cauchy-schwarz-integral",
+      "title": "Cauchy-Schwarz Integral Inequality",
+      "relationship": "parallel — the continuous (integral) analogue of the discrete sum inequality proved here"
+    },
+    {
+      "slug": "amgm-inequality",
+      "title": "AM-GM Inequality",
+      "relationship": "sibling — another fundamental inequality; both CS and AM-GM are special cases of Jensen's inequality for convex functions"
     }
   ],
   "leanFile": {
