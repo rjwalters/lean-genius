@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 746,
     "erdosUrl": "https://erdosproblems.com/746",
     "erdosProblemStatus": "solved",
@@ -55,9 +55,7 @@
       "IsHamiltonianCycle, IsHamiltonian: Hamiltonicity definitions",
       "IsPerfectMatching, HasPerfectMatching: matching definitions",
       "ErdosQuestion746: formal problem statement (AlmostSurely Hamiltonian above threshold)",
-      "erdos_renyi_matching axiom: a.a.s. perfect matching above (1/2+ε)n log n",
-      "posa_theorem axiom: ∃ C, a.a.s. Hamiltonian above Cn log n",
-      "korshunov_theorem axiom: a.a.s. Hamiltonian above sharp threshold",
+      "korshunov_theorem axiom: a.a.s. Hamiltonian above (1/2+ε)n log n for any ε > 0",
       "komlos_szemeredi_theorem axiom: Pr(Ham) → e^{-e^{-2c}} via Filter.Tendsto",
       "limitingProbability, limiting_prob_at_zero: probability function",
       "IsConnected, hamiltonian_implies_connected: connectivity",
@@ -80,9 +78,9 @@
         "description": "Chromatic number problems — connected via random graph thresholds for coloring"
       }
     ],
-    "axiomCount": 1,
-    "lineCount": 252,
-    "assumptions": "1 axiom (komlos_szemeredi_theorem), 1 sorry. Probabilistic statements use opaque AlmostSurely/ProbInGnm predicates since full formalization requires a measure space on graphs."
+    "axiomCount": 2,
+    "lineCount": 271,
+    "assumptions": "2 axioms: korshunov_theorem (Hamiltonicity a.a.s. above (1/2+ε)n log n) and komlos_szemeredi_theorem (limiting probability e^{-e^{-2c}}). Probabilistic statements use opaque AlmostSurely/ProbInGnm predicates since full formalization requires a measure space on graphs."
   },
   "overview": {
     "historicalContext": "**The Erdős-Rényi Random Graph Revolution**\n\nErdős and Rényi's 1959–1966 papers on random graphs $G(n, m)$ revolutionized combinatorics by introducing probabilistic methods to study graph properties. They discovered that many graph properties exhibit **sharp thresholds**: the property jumps from almost surely absent to almost surely present as $m$ crosses a critical value.\n\n**The Matching-Hamiltonicity Connection**\n\nIn 1966, Erdős and Rényi proved that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ almost surely has a perfect matching. Since a Hamiltonian cycle decomposes into two perfect matchings, they conjectured the same threshold for Hamiltonicity — one of the most natural questions in random graph theory.\n\n**The Path to Resolution**\n\nPósa (1976) proved Hamiltonicity for $Cn \\log n$ edges using his **rotation-extension technique**, a landmark method that became central to probabilistic combinatorics. Korshunov (1977) established the sharp threshold as $(1/2) n \\log n + (1/2) n \\log \\log n + o(n)$, confirming Erdős-Rényi's conjecture. Finally, Komlós and Szemerédi (1983) determined the precise limiting distribution: with $m = (1/2) n \\log n + (1/2) n \\log \\log n + cn$ edges, $\\Pr[\\text{Hamiltonian}] \\to e^{-e^{-2c}}$ — a **Gumbel (double exponential)** distribution.\n\n**The Threshold Coincidence**\n\nRemarkably, the Hamiltonicity threshold coincides with the connectivity threshold. Both are controlled by the same bottleneck: vertices of degree 0 or 1. The factor 2 in the Gumbel exponent $e^{-2c}$ reflects the two failure modes (degree 0 and degree 1) at the critical edge count.",
@@ -227,7 +225,7 @@
     ],
     "namespace": "Erdos746",
     "lineCount": 252,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 17
   },
