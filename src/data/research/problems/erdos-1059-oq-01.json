@@ -29,11 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS: Created Erdos1059OQ01.lean with 5 witnesses (101, 211, 461, 557, 673), density concept formalized, 0 sorries, 1 axiom",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove density_one_conjecture from selberg_density_axiom (OQ-02) once PNT/Brun-Titchmarsh available in Mathlib",
+      "Find more witnesses beyond 673 in level-6 interval (720, 5040) - requires checking 7 conditions",
+      "Prove factorial_check_count_bound: #{k : k! < n} ≤ log2(n) + 2 formally"
+    ]
   },
   "tags": [
     "seeker-selected"
@@ -43,6 +47,7 @@
     "erdos-10",
     "erdos-105",
     "erdos-1059",
+    "erdos-1059-oq-01",
     "erdos-1059-oq-02",
     "erdos-1059-oq-03",
     "erdos-1059-oq-05"
@@ -57,6 +62,17 @@
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos1059OQ01.lean",
+      "filename": "Erdos1059OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ01.lean"
+    },
     {
       "path": "Proofs/Erdos1059OQ02.lean",
       "filename": "Erdos1059OQ02.lean",
