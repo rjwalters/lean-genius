@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-vandermonde-concept",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 16 },
+    "type": "context",
+    "title": "The Generating Function Proof Strategy",
+    "content": "The file opens by stating the four-step strategy behind the generating function proof of the parallel Vandermonde identity. The key insight is that the negative binomial generating function (1-x)^{-(k+1)} encodes the simplicial numbers C(n+k,k) as its n-th power series coefficient. Multiplying two such series corresponds to convolving their coefficients — and the multiplication itself is just the exponent law g^{a+1} · g^{b+1} = g^{a+b+2}. The entire combinatorial depth of the Vandermonde identity is captured by this single algebraic step.",
+    "mathContext": "The parallel Vandermonde identity: $\\sum_{i+j=n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$. In generating function language: $[x^n](1-x)^{-(a+1)} \\cdot (1-x)^{-(b+1)} = [x^n](1-x)^{-(a+b+2)}$, where $[x^n](1-x)^{-(k+1)} = \\binom{n+k}{k}$. The product is trivial: $(1-x)^{-(a+1)} \\cdot (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)}$ by exponent addition.",
+    "significance": "context",
+    "relatedConcepts": ["generating functions", "negative binomial series", "formal power series", "Vandermonde identity"],
+    "prerequisites": ["binomial coefficients", "formal power series", "coefficient extraction"]
+  },
+  {
+    "id": "ann-simplicial-def",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03",
+    "range": { "startLine": 29, "endLine": 53 },
+    "type": "definition",
+    "title": "Simplicial Numbers: S_k(n) = C(n+k, k)",
+    "content": "simplicial (k n : ℕ) = Nat.choose (n+k) k defines the simplicial numbers, also called figurate numbers or multichoose numbers. The key property proved here is the hockey_stick identity: Σ_{i=0}^n S_k(i) = S_{k+1}(n). This is proved by induction on n using simplicial_succ (Pascal's rule). These simplicial numbers are exactly the coefficients of the negative binomial series — they appear as [x^n](1-x)^{-(k+1)} — which is why they are the bridge between power series and combinatorics in this proof.",
+    "mathContext": "Simplicial numbers: $S_k(n) = \\binom{n+k}{k}$. Special cases: $S_0(n) = 1$ (all ones), $S_1(n) = n+1$ (natural numbers), $S_2(n) = \\binom{n+2}{2}$ (triangular numbers + 1). Pascal recurrence: $S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1)$. Hockey stick: $\\sum_{i=0}^n S_k(i) = S_{k+1}(n)$. In Lean: `Nat.choose (n + k) k`.",
+    "significance": "key",
+    "relatedConcepts": ["simplicial numbers", "hockey stick identity", "Pascal's rule", "figurate numbers", "multichoose"],
+    "prerequisites": ["Nat.choose", "binomial coefficients", "induction on ℕ"]
+  },
+  {
+    "id": "ann-geom-negbin-def",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "definition",
+    "title": "The Geometric Series and Negative Binomial Generating Function",
+    "content": "Two definitions build the formal power series machinery. geom : PowerSeries ℕ is the geometric series g = Σ x^n = 1/(1-x), defined as PowerSeries.mk (fun _ => 1) — every coefficient is 1. negBin (k : ℕ) : PowerSeries ℕ is the negative binomial generating function, defined as geom^(k+1). These two lines are the entire formal power series infrastructure needed — the rest follows from Mathlib's PowerSeries API and the simplicial number theory proved above.",
+    "mathContext": "Formal power series over ℕ: $g = \\sum_{n \\geq 0} x^n \\in \\mathbb{N}[[x]]$, represented as `PowerSeries.mk (fun _ => 1)`. Negative binomial: $\\text{negBin}(k) = g^{k+1} = (1-x)^{-(k+1)} = \\sum_{n \\geq 0} \\binom{n+k}{k} x^n$. The equality to $(1-x)^{-(k+1)}$ holds formally (as an identity of formal power series over ℤ or ℚ), though we work over ℕ where division doesn't exist — `pow_add` still holds in the monoid.",
+    "significance": "key",
+    "relatedConcepts": ["PowerSeries.mk", "geometric series", "negative binomial series", "formal power series over ℕ"],
+    "prerequisites": ["PowerSeries ℕ", "Monoid.pow", "PowerSeries.coeff_mk"]
+  },
+  {
+    "id": "ann-coeff-negbin",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03",
+    "range": { "startLine": 84, "endLine": 103 },
+    "type": "insight",
+    "title": "Coefficient Extraction: [x^n] negBin(k) = C(n+k, k)",
+    "content": "coeff_negBin proves the core coefficient formula: the n-th coefficient of negBin(k) = g^{k+1} equals simplicial k n = C(n+k,k). The proof is by induction on k. Base case (k=0): g^1 has all coefficients 1 = C(n,0). Inductive step: use hprod : negBin(k+1) = geom * negBin k (just pow_succ'), then apply PowerSeries.coeff_mul to unfold the Cauchy product, substitute coeff_geom (all ones) and the induction hypothesis, and apply Finset.Nat.sum_antidiagonal_eq_sum_range_succ to convert the antidiagonal sum to a range sum. The final step is exactly the hockey_stick identity from the simplicial number section.",
+    "mathContext": "Proof structure: $[x^n] g^{k+2} = [x^n](g \\cdot g^{k+1}) = \\sum_{i+j=n} [x^i]g \\cdot [x^j]g^{k+1} = \\sum_{i+j=n} 1 \\cdot \\binom{j+k}{k} = \\sum_{j=0}^n \\binom{j+k}{k} = \\binom{n+k+1}{k+1}$. The last step is the hockey stick identity. In Lean: `PowerSeries.coeff_mul` gives the Cauchy product; `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` converts the antidiagonal sum; `hockey_stick k n` closes the goal.",
+    "significance": "key",
+    "relatedConcepts": ["PowerSeries.coeff_mul", "Cauchy product", "hockey stick identity", "Finset.Nat.antidiagonal"],
+    "prerequisites": ["PowerSeries API", "coeff_geom", "simplicial_succ", "hockey_stick"]
+  },
+  {
+    "id": "ann-negbin-mul",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03",
+    "range": { "startLine": 116, "endLine": 120 },
+    "type": "insight",
+    "title": "The Core Algebraic Identity: negBin(a) · negBin(b) = negBin(a+b+1)",
+    "content": "negBin_mul is the proof that does 'all the combinatorial work' in one line: negBin a * negBin b = g^(a+1) · g^(b+1) = g^((a+1)+(b+1)) = g^(a+b+2) = negBin(a+b+1). The proof is: simp only [negBin] to unfold; rw [← pow_add] to apply the exponent law; congr 1; omega to verify (a+1)+(b+1) = a+b+2. This is the generating function proof's key insight: the combinatorial identity Σ C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1) is equivalent to the trivial algebraic identity g^{a+1} · g^{b+1} = g^{a+b+2}.",
+    "mathContext": "The identity $g^{a+1} \\cdot g^{b+1} = g^{a+b+2}$ holds in any monoid by `pow_add`. No combinatorics is needed here — only the exponent law. Compare with the parent file's inductive proof which requires nested induction on $(b, n)$ with multiple base cases. The generating function proof reduces the entire 2D induction to `pow_add` (1 line) plus coefficient extraction (30 lines).",
+    "significance": "key",
+    "relatedConcepts": ["pow_add", "monoid exponent law", "generating function proof strategy", "algebra vs combinatorics"],
+    "prerequisites": ["negBin definition", "pow_add in PowerSeries ℕ", "omega tactic"]
+  },
+  {
+    "id": "ann-vandermonde-gf",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03",
+    "range": { "startLine": 138, "endLine": 154 },
+    "type": "insight",
+    "title": "Parallel Vandermonde via Generating Functions: Three-Step Assembly",
+    "content": "parallel_vandermonde_gf assembles the proof in three steps, each appealing to a previously proved lemma. Step 1 (lhs_eq): the antidiagonal sum equals the n-th coefficient of negBin(a) · negBin(b), by unfolding with PowerSeries.coeff_mul and applying coeff_negBin to each factor. Step 2 (rhs_eq): simplicial(a+b+1, n) equals the n-th coefficient of negBin(a+b+1), by applying coeff_negBin. Step 3: rewrite both sides using lhs_eq, rhs_eq, and negBin_mul to close the goal. The proof illustrates the power of separation of concerns: the coefficient algebra (coeff_negBin), the generating function algebra (negBin_mul), and the final assembly are proved independently.",
+    "mathContext": "Proof structure: $\\sum_{i+j=n} S_a(i) \\cdot S_b(j) = [x^n](\\text{negBin}(a) \\cdot \\text{negBin}(b)) = [x^n]\\text{negBin}(a+b+1) = S_{a+b+1}(n)$. In Lean: `lhs_eq` proves the first equality via `PowerSeries.coeff_mul`; `rhs_eq` proves the last via `coeff_negBin`; `negBin_mul` connects them. The final rewrite `rw [lhs_eq, rhs_eq, negBin_mul]` closes the goal in one line.",
+    "significance": "key",
+    "relatedConcepts": ["PowerSeries.coeff_mul", "coeff_negBin", "negBin_mul", "Finset.Nat.antidiagonal"],
+    "prerequisites": ["all three preceding lemmas", "PowerSeries.coeff_mul", "sum_congr"]
+  },
+  {
+    "id": "ann-vandermonde-range",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03",
+    "range": { "startLine": 162, "endLine": 167 },
+    "type": "insight",
+    "title": "Range-Sum Form: Bridging to the Parent Proof's Statement",
+    "content": "parallel_vandermonde_range converts the antidiagonal sum Σ_{i+j=n} into a range sum Σ_{i=0}^n, matching the statement in the parent file (ArithmeticSeriesOQ02OQ02). The proof uses Finset.Nat.sum_antidiagonal_eq_sum_range_succ to rewrite the range sum as an antidiagonal sum, then applies parallel_vandermonde_gf. This single-line proof shows how the antidiagonal and range-sum formulations are equivalent — the antidiagonal form is more natural for power series (Cauchy product), while the range form is more readable.",
+    "mathContext": "The two equivalent forms: $\\sum_{i=0}^n \\binom{i+a}{a}\\binom{n-i+b}{b} = \\binom{n+a+b+1}{a+b+1}$ (range sum) vs $\\sum_{(i,j): i+j=n} \\binom{i+a}{a}\\binom{j+b}{b} = \\binom{n+a+b+1}{a+b+1}$ (antidiagonal). The `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` lemma converts between them.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.Nat.sum_antidiagonal_eq_sum_range_succ", "Finset.Nat.antidiagonal", "range sum", "parallel_vandermonde_gf"],
+    "prerequisites": ["Finset.Nat.antidiagonal API", "parallel_vandermonde_gf"]
+  },
+  {
+    "id": "ann-concrete-verification",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03",
+    "range": { "startLine": 174, "endLine": 179 },
+    "type": "insight",
+    "title": "Numerical Verification via native_decide",
+    "content": "Two concrete verifications test the Vandermonde identity with a=1, b=1, n=3. check_gf_a1b1n3 verifies S₃(3) = C(6,3) = 20 by native_decide. check_gf_convolution verifies that the antidiagonal sum (1·4)+(2·3)+(3·2)+(4·1) = 4+6+6+4 = 20 by native_decide. These are ground-truth checks: native_decide evaluates the decidable computation concretely in the Lean kernel. The case a=b=1 corresponds to the 2D identity for triangular numbers: Σ (i+1)(n-i+1) = C(n+3,3).",
+    "mathContext": "For $a=b=1, n=3$: $\\sum_{i=0}^3 \\binom{i+1}{1}\\binom{4-i}{1} = (1 \\cdot 4)+(2 \\cdot 3)+(3 \\cdot 2)+(4 \\cdot 1) = 4+6+6+4 = 20 = \\binom{6}{3}$. The formula gives $S_3(3) = \\binom{6}{3} = 20$. In general for $a=b=1$: $\\sum_{i=0}^n (i+1)(n-i+1) = \\binom{n+3}{3} = \\frac{(n+1)(n+2)(n+3)}{6}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide tactic", "Finset.Nat.antidiagonal", "concrete verification", "simplicial numbers"],
+    "prerequisites": ["native_decide", "simplicial number computation", "Lean kernel evaluation"]
+  }
+]

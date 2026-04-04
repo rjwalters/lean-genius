@@ -72,16 +72,16 @@
     "defCount": 5
   },
   "overview": {
-    "historicalContext": "The existence of the limit lim_{N→∞} S(N,A,c) was established by Kesten and Sós in 1966. A natural follow-up question is quantitative: how fast does S(N,A,c) converge to its limit f(A,c)? In the EST regime where the approximation intervals are disjoint, S(N,A,c) is exactly the sum of their measures, reducing the problem to understanding the error in the weighted totient sum ∑_{y=N}^{cN} φ(y)/y².",
+    "historicalContext": "**From Existence to Rate: A 1958-1966 Open Question**\n\nIn 1958, Erdős, Szüsz, and Turán proved the EST formula: in the 'EST regime' (0 < A < c/(1+c²)), the proportion S(N,A,c) of reals in [0,1] approximable within A/y² by some fraction x/y with y ∈ [N,cN] converges to f(A,c) = 12A log(c)/π². Their proof used the counting formula S(N,A,c) = 2A · ∑_{y} φ(y)/y² + O(A/N) combined with Euler's product formula φ(y)/y = ∑_{d|y} μ(d)/d and the Basel sum ∑ 1/n² = π²/6.\n\nKesten and Sós (1966) extended this to all valid (A,c), not just the EST regime, using more sophisticated methods. Their existence proof, however, was qualitative — it did not give the rate of convergence as an explicit function of N.\n\nThe rate question OQ-02 was natural given the EST formula: since S(N,A,c) ≈ f(A,c) + error, what is the order of the error? The answer, O(A log N/N), follows from the quantitative form of Mertens' theorem (1874): ∑_{y≤N} φ(y) = (3/π²)N² + O(N log N). Combined with Abel summation, this gives the O(log N/N) error in the totient sum, and hence the rate for S(N,A,c).\n\nThe Mathlib gap identified in the formalization: Mertens' theorem with explicit error bounds is not available in Mathlib 4.x, requiring 3 axioms to state the quantitative content. The qualitative version (S converges to f) may be provable from Mathlib's arithmetic function theory, but the quantitative rate is deeper.",
     "problemStatement": "Given that lim_{N→∞} S(N,A,c) = f(A,c) (Kesten-Sós), what is the rate? Specifically, what is the order of magnitude of |S(N,A,c) - f(A,c)| as N → ∞?",
     "text": "Rate of convergence of S(N,A,c) to f(A,c). In EST regime: |S(N,A,c) - f(A,c)| = O(A log N / N).",
     "proofStrategy": "Reduce to error in weighted totient sum. In EST regime: S(N,A,c) = 2A · ∑_{y=N}^{cN} φ(y)/y² + O(A/N). The key asymptotic (Mertens + Abel summation): ∑_{y=N}^{cN} φ(y)/y² = (6/π²)log(c) + O(log N/N). This gives the rate O(A log N/N).",
     "keyInsights": [
-      "In EST regime, S(N,A,c) = 2A · ∑_{y=N}^{cN} φ(y)/y² + O(A/N) (disjoint intervals)",
-      "The density constant 6/π² = 1/ζ(2) comes from ∑ φ(y)/y^s = ζ(s-1)/ζ(s) at s=2",
-      "Rate O(log N/N) beats the naive 1/√N from central limit heuristics",
-      "Error O(log N/N) comes from Mertens: ∑_{y≤N} φ(y) = (3/π²)N² + O(N log N)",
-      "Mathlib gap: Mertens' totient sum with quantitative error is not yet in Mathlib 4.x"
+      "In EST regime, disjoint approximation arcs reduce S(N,A,c) to 2A · ∑_{y=N}^{cN} φ(y)/y² + O(A/N) — the geometry of the approximation problem collapses to a single totient sum",
+      "The density constant 6/π² = 1/ζ(2) is not a coincidence: it arises from ∑_{n≥1} φ(n)/n² = ζ(1)/ζ(2) via the Euler product formula φ(n)/n = ∑_{d|n} μ(d)/d",
+      "Rate O(log N/N) provably beats O(1/√N): the proof uses Real.tendsto_log_div_rpow_atTop (p=1/2) and a careful norm manipulation involving sqrt × sqrt = N",
+      "The 4-step proof chain (disjointness → totient sum reduction → Mertens + Abel → O(A log N/N)) is typical of analytic number theory: each step is a different technique (combinatorics, analysis, number theory, algebra)",
+      "Three axioms (rangeTotientSum_asymptotic, rangeTotientSum_error, convergence_rate_est) isolate exactly what requires Mertens' theorem with error bounds — the two consequences (faster than √N, effective bound) are then fully proved from these axioms"
     ]
   },
   "sections": [

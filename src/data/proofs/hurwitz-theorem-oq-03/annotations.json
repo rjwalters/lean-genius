@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-ht03-concept",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": { "startLine": 10, "endLine": 52 },
+    "type": "context",
+    "title": "Hurwitz's Theorem: Statement, Strategy, and Historical Note",
+    "content": "The docstring explains the theorem's structure: an n-square identity exists only for n ∈ {1,2,4,8}, and these correspond to the four normed division algebras ℝ, ℂ, ℍ, 𝕆. The proof approach is split: existence direction (if n ∈ {1,2,4,8} then identity exists) is fully proved for n=1,2,4 with n=8 axiomatized; non-existence direction (only if) requires Clifford algebras. Hurwitz's personal note: Hamilton searched for 15 years for a 3-dimensional 'triplet' algebra — Hurwitz's theorem proves this search was futile.",
+    "mathContext": "An n-square identity: bilinear maps $B_1, \\ldots, B_n : \\mathbb{R}^n \\times \\mathbb{R}^n \\to \\mathbb{R}$ such that $(\\sum_i x_i^2)(\\sum_i y_i^2) = \\sum_i B_i(x,y)^2$. Equivalent to: a normed composition algebra of dimension $n$ over $\\mathbb{R}$. The complete list is $\\{1,2,4,8\\}$ — ℝ, ℂ, ℍ, 𝕆.",
+    "significance": "context",
+    "relatedConcepts": ["normed division algebra", "composition algebra", "Hamilton's quaternions", "Cayley's octonions"],
+    "prerequisites": ["bilinear maps", "vector spaces over ℝ", "norm multiplicativity"]
+  },
+  {
+    "id": "ann-ht03-structure",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": { "startLine": 72, "endLine": 89 },
+    "type": "definition",
+    "title": "NSquareIdentity: The Formal Structure for Bilinear Norm Identities",
+    "content": "NSquareIdentity (n : ℕ) is a Lean structure capturing the algebraic content of an n-square identity: a bilinear map `mul : (Fin n → ℝ) → (Fin n → ℝ) → (Fin n → ℝ)` satisfying left/right additivity, left/right scalar compatibility, and the key `norm_mul` property that ‖a‖²·‖b‖² = ‖mul a b‖². The four field-law-like axioms (add_left, add_right, smul_left, smul_right) make `mul` a bilinear map, while `norm_mul` is the composition identity. Each known algebra (ℝ, ℂ, ℍ, 𝕆) gives one NSquareIdentity instance.",
+    "mathContext": "Structure fields: $(1)$ `add_left`: $B(a+b, c) = B(a,c) + B(b,c)$ (left additivity). $(2)$ `add_right`: $B(a, b+c) = B(a,b) + B(a,c)$. $(3)$ `smul_left`: $B(r \\cdot a, b) = r \\cdot B(a,b)$. $(4)$ `smul_right`: $B(a, r \\cdot b) = r \\cdot B(a,b)$. $(5)$ `norm_mul`: $\\|a\\|^2 \\cdot \\|b\\|^2 = \\|B(a,b)\\|^2$. Together $(1)$-$(4)$ make $B$ bilinear, and $(5)$ makes it a composition.",
+    "significance": "key",
+    "relatedConcepts": ["bilinear map", "norm_mul", "composition algebra", "normSq"],
+    "prerequisites": ["Lean 4 structures", "Fin n → ℝ", "Pi.smul_apply"]
+  },
+  {
+    "id": "ann-ht03-two-square",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": { "startLine": 140, "endLine": 165 },
+    "type": "insight",
+    "title": "2-Square Identity: Brahmagupta-Fibonacci via Complex Multiplication",
+    "content": "twoMul (a b : Fin 2 → ℝ) defines (a₀,a₁)×(b₀,b₁) = (a₀b₀-a₁b₁, a₀b₁+a₁b₀), which is precisely complex number multiplication. two_square_identity proves ‖a‖²·‖b‖² = ‖twoMul a b‖² by ring. The twoSquareIdentity structure wraps this as an NSquareIdentity 2 — all bilinearity fields are proved by fin_cases on the two indices and ring. The identity itself is: (x₁²+x₂²)(y₁²+y₂²) = (x₁y₁-x₂y₂)²+(x₁y₂+x₂y₁)², known since Brahmagupta (628 CE) and rediscovered by Fibonacci (1202).",
+    "mathContext": "Brahmagupta-Fibonacci identity: $(x_1^2 + x_2^2)(y_1^2 + y_2^2) = (x_1y_1 - x_2y_2)^2 + (x_1y_2 + x_2y_1)^2$. Proof by ring arithmetic. This is norm multiplicativity of $\\mathbb{C}$: $|z|^2 = x_1^2 + x_2^2$ for $z = x_1 + ix_2$, and $|zw|^2 = |z|^2|w|^2$.",
+    "significance": "key",
+    "relatedConcepts": ["complex multiplication", "Brahmagupta-Fibonacci identity", "norm multiplicativity", "fin_cases tactic"],
+    "prerequisites": ["Fin 2 → ℝ vector notation", "Matrix.cons_val", "ring tactic"]
+  },
+  {
+    "id": "ann-ht03-four-square",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": { "startLine": 192, "endLine": 215 },
+    "type": "insight",
+    "title": "4-Square Identity: Euler's Identity via Quaternion Multiplication",
+    "content": "fourMul defines quaternion multiplication in coordinates: (a₀,a₁,a₂,a₃)×(b₀,b₁,b₂,b₃) gives the four Hamilton product components. four_square_identity proves ‖a‖²·‖b‖² = ‖fourMul a b‖² using simp + ring with increased maxHeartbeats (800000) for the algebraic expansion. The identity was discovered by Euler (1748) long before Hamilton discovered quaternions (1843) — Euler saw it as a number-theoretic curiosity, not knowing its algebraic source. The maxHeartbeats setting is needed because the ring tactic must expand a degree-4 polynomial identity in 8 variables.",
+    "mathContext": "Euler's 4-square identity: $(\\sum_{i=1}^4 a_i^2)(\\sum_{i=1}^4 b_i^2) = \\sum_{i=1}^4 c_i^2$ where the $c_i$ are the quaternion product components. Quaternion norm multiplicativity: $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$. In coordinates: if $q = a_0 + a_1 i + a_2 j + a_3 k$, then $|q|^2 = a_0^2 + a_1^2 + a_2^2 + a_3^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's 4-square identity", "quaternion multiplication", "Quaternion.normSq_mul", "set_option maxHeartbeats"],
+    "prerequisites": ["Fin 4 → ℝ", "quaternion algebra", "ring tactic"]
+  },
+  {
+    "id": "ann-ht03-impossibility",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": { "startLine": 854, "endLine": 1226 },
+    "type": "insight",
+    "title": "No 3-Square Identity: Overdetermined Orthonormality Contradiction",
+    "content": "no_three_square_identity_proof (nsi : NSquareIdentity 3) : False is the core impossibility. Strategy: if a 3-square identity exists, the images mᵢⱼ = nsi.mul(eᵢ, eⱼ) of standard basis pairs form unit vectors in ℝ³ by norm_mul. The orthogonality_constraint lemmas show that eᵢ ⊥ eⱼ implies nsi.mul(eᵢ,v) ⊥ nsi.mul(eⱼ,v) for all v. This forces too many mutually orthogonal unit vectors into ℝ³, which can only have 3. The Gram-Schmidt decomposition and dimensional argument yield a contradiction via the geometric lemmas in Part 7 (inner_expansion_three, unit_ortho_two_eq_pm_third, inner_bilinear_expansion).",
+    "mathContext": "Key step: if $e_1, e_2, e_3$ are orthonormal in $\\mathbb{R}^3$ and $B$ is a bilinear composition, then $B(e_1, e_1), B(e_2, e_1), B(e_3, e_1)$ must be orthonormal (column 1 orthonormality). Similarly for other columns. This gives $\\geq 9$ unit vectors in $\\mathbb{R}^3$, all pairwise orthogonal — impossible since $\\mathbb{R}^3$ has dimension 3. Formally: the linear span argument via `inner_bilinear_expansion` and `unit_ortho_two_eq_pm_third` derives a non-zero vector equal to zero, a contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["orthogonality_constraint", "Gram-Schmidt", "inner_bilinear_expansion", "unit_ortho_two_eq_pm_third"],
+    "prerequisites": ["inner product on ℝ³", "orthonormal basis", "linear independence", "dimensional argument"]
+  },
+  {
+    "id": "ann-ht03-main-theorem",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": { "startLine": 1609, "endLine": 1644 },
+    "type": "insight",
+    "title": "Hurwitz's Theorem: Assembly of Existence and Non-Existence",
+    "content": "admissibleDimensions : Set ℕ = {1,2,4,8} defines the four valid dimensions. identities_exist_for_admissible proves all four exist by case analysis: each of the four NSquareIdentity instances (oneSquareIdentity, twoSquareIdentity, fourSquareIdentity, eightSquareIdentity) is returned for the corresponding case. The axiom hurwitz_only_if captures the non-existence direction. hurwitz_theorem combines these into the biconditional: NSquareIdentity n is nonempty ↔ n ∈ admissibleDimensions. The four-line proof — constructor, then each direction by one application — demonstrates how all prior work assembles cleanly.",
+    "mathContext": "$\\exists B : \\text{NSquareIdentity}\\,n \\iff n \\in \\{1,2,4,8\\}$. The $\\Rightarrow$ direction uses `hurwitz_only_if` (the axiom). The $\\Leftarrow$ direction uses `identities_exist_for_admissible` (the constructive proof). The overall structure is `Iff.intro (fun ⟨nsi⟩ => hurwitz_only_if n hn nsi) (identities_exist_for_admissible n)`.",
+    "significance": "key",
+    "relatedConcepts": ["admissibleDimensions", "identities_exist_for_admissible", "hurwitz_only_if", "Nonempty"],
+    "prerequisites": ["all prior sections", "Iff.intro", "rcases for case analysis"]
+  },
+  {
+    "id": "ann-ht03-division-algebras",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": { "startLine": 1669, "endLine": 1731 },
+    "type": "context",
+    "title": "The Four Normed Division Algebras: Properties and Significance",
+    "content": "DivisionAlgebra is an inductive type with four constructors: reals (ℝ, dim 1), complex (ℂ, dim 2), quaternions (ℍ, dim 4), octonions (𝕆, dim 8). division_algebra_identity proves each has dimension in admissibleDimensions by cases on the constructor. The comment block explains the four algebras' properties — losing ordering (ℝ→ℂ), commutativity (ℂ→ℍ), and associativity (ℍ→𝕆) — and connections to physics (quantum mechanics, 3D rotations, string theory) and topology (parallelizable spheres S⁰, S¹, S³, S⁷).",
+    "mathContext": "Each step loses a property: $\\mathbb{R}$ (ordered, complete) $\\to$ $\\mathbb{C}$ (lose ordering) $\\to$ $\\mathbb{H}$ (lose commutativity) $\\to$ $\\mathbb{O}$ (lose associativity). Beyond $\\mathbb{O}$, the Cayley-Dickson construction gives sedenions (16-dim) which have zero divisors, destroying division. Topological equivalent: only $S^0, S^1, S^3, S^7$ are parallelizable — corresponding to $n-1$ for $n \\in \\{1,2,4,8\\}$ (Adams's theorem, 1962, using K-theory).",
+    "significance": "context",
+    "relatedConcepts": ["Cayley-Dickson construction", "sedenions", "parallelizable spheres", "Adams's theorem", "Bott periodicity"],
+    "prerequisites": ["normed division algebras", "Cayley-Dickson doubling", "K-theory (advanced)"]
+  }
+]

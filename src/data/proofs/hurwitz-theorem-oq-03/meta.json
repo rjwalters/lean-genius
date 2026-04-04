@@ -84,5 +84,54 @@
       "description": "Lagrange's four-square theorem (every positive integer is a sum of 4 squares) follows from the 4-square identity"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions: normSq and NSquareIdentity",
+      "startLine": 56,
+      "endLine": 90,
+      "summary": "Defines normSq (sum of squares of vector components) and NSquareIdentity structure (bilinear map with norm multiplicativity).",
+      "mathContext": "$\\|v\\|^2 = \\sum_i v_i^2$ and the 5 structure fields encoding bilinearity + norm composition identity."
+    },
+    {
+      "id": "small-identities",
+      "title": "Existence: 1-, 2-, 4-, and 8-Square Identities",
+      "startLine": 91,
+      "endLine": 297,
+      "summary": "Constructs NSquareIdentity instances for n=1 (trivial), n=2 (Brahmagupta-Fibonacci via complex multiplication), n=4 (Euler's 4-square via quaternion multiplication), and n=8 (octonionic identity).",
+      "mathContext": "n=2: $(x_1^2+x_2^2)(y_1^2+y_2^2) = (x_1y_1-x_2y_2)^2 + (x_1y_2+x_2y_1)^2$. n=4: Euler's 4-square identity = quaternion norm multiplicativity."
+    },
+    {
+      "id": "helpers",
+      "title": "Inner Product and Orthogonality Infrastructure",
+      "startLine": 299,
+      "endLine": 846,
+      "summary": "Builds the supporting machinery for the n=3 impossibility proof: inner product, orthonormality, 3D geometry lemmas (Gram-Schmidt, projection, expansion).",
+      "mathContext": "Key lemmas: orthogonality_constraint (bilinearity forces orthogonal images), inner_expansion_three (3D expansion in terms of basis), unit_ortho_two_eq_pm_third (unit vector orthogonal to two of three is ±third)."
+    },
+    {
+      "id": "impossibility",
+      "title": "No 3-Square Identity: Overdetermined Orthonormality",
+      "startLine": 848,
+      "endLine": 1595,
+      "summary": "Proves no_three_square_identity: any NSquareIdentity 3 leads to a contradiction via overdetermined orthonormality — the bilinearity forces more mutually orthogonal unit vectors into ℝ³ than its dimension allows.",
+      "mathContext": "Column/row orthonormality from bilinearity gives 9 orthogonal unit vectors in $\\mathbb{R}^3$, impossible since $\\dim(\\mathbb{R}^3) = 3$. Derived via `inner_bilinear_expansion` and dimensional contradiction."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Hurwitz's Complete Theorem",
+      "startLine": 1596,
+      "endLine": 1644,
+      "summary": "Assembles the biconditional: NSquareIdentity n is nonempty iff n ∈ {1,2,4,8}. Uses the constructive existence proofs and the hurwitz_only_if axiom.",
+      "mathContext": "$\\text{NSquareIdentity}(n) \\neq \\emptyset \\iff n \\in \\{1,2,4,8\\}$."
+    },
+    {
+      "id": "division-algebras",
+      "title": "The Four Normed Division Algebras",
+      "startLine": 1646,
+      "endLine": 1731,
+      "summary": "DivisionAlgebra inductive type (reals, complex, quaternions, octonions), properties table (ordering, commutativity, associativity), connections to physics and topology (parallelizable spheres).",
+      "mathContext": "Losing properties ℝ→ℂ→ℍ→𝕆: ordering, commutativity, associativity. Topological: only $S^0, S^1, S^3, S^7$ are parallelizable (Adams 1962)."
+    }
+  ]
 }
