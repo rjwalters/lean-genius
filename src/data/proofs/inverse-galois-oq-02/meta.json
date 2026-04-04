@@ -18,7 +18,7 @@
     ],
     "proofRepoPath": "Proofs/InverseGaloisOQ02.lean",
     "badge": "axiom",
-    "sorries": 7,
+    "sorries": 6,
     "axiomCount": 7,
     "prerequisites": [
       "Galois theory (Galois groups, splitting fields)",
@@ -156,5 +156,8 @@
       "id": "inverse-galois-oq-01",
       "relationship": "Sister entry proving the solvability divide (S_n solvable iff n ≤ 4) and A₅ analysis"
     }
-  ]
+  ],
+  "leanFile": {
+    "axiomCount": 3
+  }
 }
