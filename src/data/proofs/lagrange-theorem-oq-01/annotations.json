@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-lagrange-core",
+    "proofId": "lagrange-theorem-oq-01",
+    "range": { "startLine": 33, "endLine": 44 },
+    "type": "concept",
+    "title": "Lagrange's Theorem and the Index Formula",
+    "content": "The three theorems in Part I establish the foundations. `lagrange` states that the order of any subgroup H divides the order of G, proved by Mathlib's `H.card_subgroup_dvd_card`. `lagrange_index` makes the divisibility multiplicative: |G| = |H| · [G:H], where [G:H] is the index (number of cosets). `order_dvd_card` derives that the order of any element divides |G|, since ⟨g⟩ is a cyclic subgroup of order `orderOf g`. Together these are the foundational constraints from which the Sylow theorems build.",
+    "mathContext": "For $H \\leq G$ finite: $|H| \\mid |G|$ and $|G| = |H| \\cdot [G:H]$. For any $g \\in G$: $\\text{ord}(g) \\mid |G|$.",
+    "significance": "key",
+    "relatedConcepts": ["cosets", "group index", "cyclic subgroups", "element order"],
+    "prerequisites": ["finite group theory", "subgroup definition", "coset decomposition"]
+  },
+  {
+    "id": "ann-sylow-existence",
+    "proofId": "lagrange-theorem-oq-01",
+    "range": { "startLine": 55, "endLine": 67 },
+    "type": "concept",
+    "title": "First Sylow Theorem: Existence and Order of Sylow p-Subgroups",
+    "content": "The First Sylow Theorem asserts that for every prime p, a Sylow p-subgroup exists. In Mathlib, the type `Sylow p G` is a structure wrapping a p-subgroup of maximal order, and `Sylow.nonempty` provides the existence instance. The order formula `sylow_card_eq` expresses that the Sylow p-subgroup has order exactly p^{v_p(|G|)}, where `(card G).factorization p` is the p-adic valuation of |G|. This is the sharpest possible: the Sylow subgroup is the *maximal* p-power subgroup. `sylow_order_dvd` is then just Lagrange applied to the Sylow subgroup.",
+    "mathContext": "For any prime $p$ and finite group $G$: a Sylow $p$-subgroup $P$ exists with $|P| = p^{v_p(|G|)}$, where $v_p(n)$ is the largest $k$ with $p^k \\mid n$. In particular $|P| \\mid |G|$.",
+    "significance": "key",
+    "relatedConcepts": ["Sylow p-subgroup", "p-adic valuation", "maximal p-subgroup", "Cauchy's theorem"],
+    "prerequisites": ["prime factorization", "p-groups", "Lagrange's theorem"]
+  },
+  {
+    "id": "ann-sylow-conjugacy",
+    "proofId": "lagrange-theorem-oq-01",
+    "range": { "startLine": 77, "endLine": 82 },
+    "type": "insight",
+    "title": "Second Sylow Theorem: All Sylow p-Subgroups are Conjugate",
+    "content": "The Second Sylow Theorem states that any two Sylow p-subgroups P, Q are conjugate: ∃ g ∈ G, Q = gPg⁻¹. In Lean, conjugation is expressed via `MulAut.conj g` (the automorphism x ↦ gxg⁻¹) applied as a `Subgroup.map`. The proof uses `Sylow.conj_eq P Q` to get g, then rewrites the `Sylow` map into the `Subgroup.map` form using `aesop`. This theorem is deeper than existence; its proof in mathematics uses the action of G on Sylow subgroups by conjugation and Sylow's counting argument.",
+    "mathContext": "If $P, Q$ are Sylow $p$-subgroups of $G$, then $\\exists g \\in G$ with $Q = gPg^{-1}$. Equivalently, $G$ acts transitively on $\\text{Syl}_p(G)$ by conjugation.",
+    "significance": "key",
+    "relatedConcepts": ["conjugation action", "normal subgroups", "group action", "orbit-stabilizer theorem"],
+    "prerequisites": ["group actions", "conjugation in groups", "Sylow p-subgroups"]
+  },
+  {
+    "id": "ann-sylow-counting",
+    "proofId": "lagrange-theorem-oq-01",
+    "range": { "startLine": 93, "endLine": 101 },
+    "type": "insight",
+    "title": "Third Sylow Theorem: Counting Constraints on n_p",
+    "content": "The Third Sylow Theorem provides two constraints on $n_p = |\\text{Syl}_p(G)|$, the number of Sylow p-subgroups. First, $n_p \\mid [G:P]$ (which implies $n_p \\mid |G|/p^k$), proved by `Sylow.card_sylow_dvd_index`. Second, $n_p \\equiv 1 \\pmod{p}$, proved by `Sylow.card_sylow_modEq_one` which returns a `Nat.ModEq`; the `.out` call extracts the underlying `%`-equality. The congruence $n_p \\equiv 1 \\pmod{p}$ arises from the fixed-point count: when P acts on Syl_p(G) by conjugation, P itself is the only fixed point.",
+    "mathContext": "$n_p \\mid [G:P]$ and $n_p \\equiv 1 \\pmod{p}$. Together these often force $n_p = 1$ (unique, hence normal Sylow subgroup) or restrict $n_p$ sharply.",
+    "significance": "key",
+    "relatedConcepts": ["Sylow counting", "group action fixed points", "Nat.ModEq in Mathlib", "normal Sylow subgroups"],
+    "prerequisites": ["group actions", "fixed points", "modular arithmetic", "orbit-stabilizer theorem"]
+  },
+  {
+    "id": "ann-partial-converse",
+    "proofId": "lagrange-theorem-oq-01",
+    "range": { "startLine": 111, "endLine": 118 },
+    "type": "concept",
+    "title": "Partial Converse to Lagrange: Subgroups for All Prime Power Divisors",
+    "content": "The theorem `partial_converse_lagrange` synthesizes the Sylow theory as a positive answer to the Lagrange converse question, restricted to prime powers. Given p^k | |G|, Mathlib's `Sylow.exists_subgroup_card_pow_prime` produces a subgroup H ≤ G with |H| = p^k. This is the sharpest possible general result: for composite divisors (e.g., 6 | |A₄| = 12), no subgroup of that order need exist. The theorem connects the existence question (a number-theoretic divisibility condition) to the group-structural answer (an actual subgroup).",
+    "mathContext": "For every prime $p$ and $k \\geq 0$ with $p^k \\mid |G|$, there exists $H \\leq G$ with $|H| = p^k$. Contrast: $6 \\mid |A_4| = 12$ but $A_4$ has no subgroup of order 6.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange converse", "p-groups", "Hall's theorem", "solvable groups"],
+    "prerequisites": ["Lagrange's theorem", "Sylow p-subgroups", "p-adic valuation"]
+  },
+  {
+    "id": "ann-cauchy",
+    "proofId": "lagrange-theorem-oq-01",
+    "range": { "startLine": 120, "endLine": 123 },
+    "type": "technique",
+    "title": "Cauchy's Theorem as Corollary of Sylow Existence",
+    "content": "Cauchy's theorem (1845) states that if a prime p divides |G|, then G contains an element of order p. Here it is obtained directly from `exists_prime_orderOf_dvd_card`. Historically, Cauchy's theorem is a special case of Sylow I: take k=1 to get a subgroup P of order p, then any non-identity element of P has order p (since p is prime). The Mathlib proof uses a direct combinatorial argument on the fixed points of a cyclic group action. This makes Cauchy's theorem a one-liner in Lean, whereas it historically required substantial work.",
+    "mathContext": "If $p$ is prime and $p \\mid |G|$, then $\\exists g \\in G$ with $\\text{ord}(g) = p$. This is Sylow I specialized to $k = 1$: the Sylow $p$-subgroup has order $p$, so it is cyclic of order $p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cauchy's theorem", "cyclic groups", "element order", "Sylow existence"],
+    "prerequisites": ["prime numbers", "group element order", "Sylow p-subgroups"]
+  }
+]
