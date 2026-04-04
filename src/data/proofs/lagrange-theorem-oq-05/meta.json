@@ -50,15 +50,16 @@
     "lineCount": 113
   },
   "overview": {
-    "historicalContext": "Lagrange's theorem (1771) that subgroup orders divide group orders is foundational. The orbit-stabilizer theorem generalizes it to group actions. Burnside's lemma (actually due to Cauchy and Frobenius) uses orbit-stabilizer to count orbits via fixed points.",
+    "historicalContext": "Lagrange's theorem — that the order of any subgroup divides the order of a finite group — appeared in Lagrange's 1771 study of permutation groups and algebraic equations, a precursor to group theory itself. The orbit-stabilizer theorem emerged from 19th-century developments by Galois, Cauchy, and others. 'Burnside's lemma' is a mathematical misnomer: the counting formula $|X/G| = \\frac{1}{|G|}\\sum_{g \\in G}|\\operatorname{Fix}(g)|$ was proved by Cauchy (1845) and independently rediscovered by Frobenius (1887). Burnside only popularized it in his 1897 textbook 'Theory of Groups of Finite Order' — and even there attributed it to Frobenius. The misattribution became standard usage despite Burnside's own acknowledgment. The lemma became a fundamental tool in combinatorial enumeration — counting equivalence classes of objects under symmetry — and was extended by Polya in 1937 to the full enumeration theorem using cycle index polynomials.",
     "problemStatement": "Can the Burnside counting lemma be formalized as a consequence of the orbit-stabilizer theorem, which itself generalizes Lagrange?\n\n**Answer: Yes.** All three results are in Mathlib and the chain is formalized explicitly.",
     "text": "Burnside's counting lemma follows from orbit-stabilizer, which generalizes Lagrange's theorem.",
     "proofStrategy": "Wrap Mathlib's group action machinery to show the explicit chain: Lagrange -> Orbit-Stabilizer -> Burnside Counting Lemma.",
     "keyInsights": [
-      "**The Chain**: Lagrange (subgroup divisibility) -> Orbit-Stabilizer (|Orb|*|Stab|=|G|) -> Burnside (|orbits| = avg |Fix|)",
-      "**Structural Core**: The bijection Sigma_{g} Fix(g) ~ orbits x G underlies Burnside's lemma",
-      "**Orbit-Stabilizer as Lagrange**: orbit-stabilizer IS Lagrange applied to the stabilizer subgroup",
-      "**Integer Form**: Burnside says Sum |Fix(g)| = |orbits| * |G|, avoiding division entirely"
+      "The chain Lagrange → Orbit-Stabilizer → Burnside is a prototypical example of how a basic divisibility result (subgroup orders divide group order) underpins powerful combinatorial counting via a two-step generalization",
+      "Orbit-stabilizer IS Lagrange: since Stab(x) ≤ G is a subgroup and Orb(x) ≃ G/Stab(x), Lagrange's index form |G| = [G:Stab(x)] · |Stab(x)| gives |Orb(x)| · |Stab(x)| = |G| directly",
+      "Burnside's lemma follows from a double-counting argument: counting {(g,x) : g·x = x} two ways gives Σ|Fix(g)| = Σ|Stab(x)| = (orbit-stabilizer) |G| · |X/G|",
+      "The integer form Σ|Fix(g)| = |X/G|·|G| avoids division by |G|, making the statement cleaner to formalize in ℕ and verify in Lean without requiring |G| ≠ 0",
+      "Despite being called 'Burnside's lemma,' the result was proved by Cauchy (1845) and Frobenius (1887); Burnside himself attributed it to Frobenius in his 1897 textbook — a recurring pattern of mathematical misattribution"
     ],
     "prerequisites": [
       "Group theory (subgroups, cosets)",
@@ -85,16 +86,16 @@
     {
       "id": "burnside",
       "title": "Burnside's Counting Lemma",
-      "startLine": 76,
-      "endLine": 102,
+      "startLine": 71,
+      "endLine": 97,
       "summary": "Burnside's lemma in integer and divisibility forms.",
       "mathContext": "$\\sum_{g \\in G} |\\text{Fix}(g)| = |X/G| \\cdot |G|$, hence $|G| \\mid \\sum |\\text{Fix}(g)|$."
     },
     {
       "id": "chain",
       "title": "Chain of Generalizations",
-      "startLine": 104,
-      "endLine": 118,
+      "startLine": 99,
+      "endLine": 113,
       "summary": "Explicit chain connecting Lagrange -> Orbit-Stabilizer -> Burnside.",
       "mathContext": "The complete chain of generalizations is formalized as a single progression."
     }
@@ -124,8 +125,9 @@
     "summary": "The Burnside counting lemma is formalized as a direct consequence of the orbit-stabilizer theorem, which itself generalizes Lagrange's theorem. The chain Lagrange -> Orbit-Stabilizer -> Burnside is made explicit.",
     "implications": "Shows how a basic divisibility result (Lagrange) underpins powerful combinatorial counting tools (Burnside) through the intermediate structural result (orbit-stabilizer).",
     "openQuestions": [
-      "Can Polya enumeration theorem be formalized as a further generalization of Burnside's lemma?",
-      "How does the weight version of Burnside's lemma connect to representation theory?"
+      "Can Polya's enumeration theorem (1937) be formalized as a generalization of Burnside's lemma, incorporating weights via cycle index polynomials? This would require formalizing the cycle structure of permutations acting on colorings.",
+      "How does the weighted Burnside's lemma connect to representation theory? The formula |X/G| = (1/|G|) Σ_g |Fix(g)| is the inner product of the trivial character with the permutation character, suggesting a character-theoretic proof and generalization.",
+      "Can Burnside's lemma be applied directly in Lean to enumerate concrete combinatorial objects — e.g., counting distinct binary necklaces of length n or colorings of a regular polygon under rotation and reflection?"
     ]
   },
   "leanFile": {

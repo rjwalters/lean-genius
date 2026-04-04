@@ -1,1 +1,127 @@
-[]
+[
+  {
+    "id": "ann-algorithm-overview",
+    "proofId": "quadratic-reciprocity-algorithm-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "QR as a GCD-Like Algorithm",
+    "content": "Quadratic reciprocity yields a GCD-like algorithm for computing Legendre symbols $\\left(\\frac{a}{p}\\right)$:\n\n1. Remove factor of 4: $\\left(\\frac{4k}{b}\\right) = \\left(\\frac{k}{b}\\right)$ (squares contribute 1)\n2. Remove factor of 2 with sign: $\\left(\\frac{2k}{b}\\right) = \\chi_8(b) \\cdot \\left(\\frac{k}{b}\\right)$\n3. If $a = 1$: return 1\n4. If $a \\mid b$: return 0 (non-coprime)\n5. QR swap: $\\left(\\frac{a}{b}\\right) = \\pm\\left(\\frac{b \\bmod a}{a}\\right)$, recurse\n\nTermination: $a$ strictly decreases at each step, just as in the Euclidean algorithm.",
+    "mathContext": "The `flip` accumulator flag avoids intermediate $\\pm 1$ multiplications: instead of returning $(-1) \\cdot f(...)$, we pass `xor sign flip` to the recursion and apply the flip at the base case. This is the functional programming analogue of tail-call accumulation. The sign adjustment in step 5 comes from QR: $(a/b) = (-1)^{\\frac{a-1}{2} \\cdot \\frac{b-1}{2}} \\cdot (b/a)$ for odd $a, b$; the sign is $-1$ iff both $a \\equiv 3 \\pmod{4}$ and $b \\equiv 3 \\pmod{4}$. In step 2, the second supplementary law: $(2/b) = (-1)^{(b^2-1)/8} = +1$ iff $b \\equiv \\pm 1 \\pmod{8}$, $-1$ iff $b \\equiv \\pm 3 \\pmod{8}$. Mathlib dependencies: `jacobiSym.div_four_left` (step 1), `jacobiSym.even_odd` (step 2), `jacobiSym.quadratic_reciprocity_if` (step 5), `jacobiSym.mod_left` (correctness), `jacobiSym.eq_zero_iff` (step 4).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre symbol",
+      "Jacobi symbol",
+      "quadratic reciprocity",
+      "second supplementary law",
+      "Euclidean algorithm analogy"
+    ],
+    "prerequisites": [
+      "quadratic residues and Legendre symbol",
+      "Law of Quadratic Reciprocity",
+      "second supplementary law (2/p)"
+    ]
+  },
+  {
+    "id": "ann-jacobi-algo",
+    "proofId": "quadratic-reciprocity-algorithm-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "jacobiAlgo: Recursive Function with Termination Proof",
+    "content": "```lean\ndef jacobiAlgo (a b : ℕ) (flip : Bool) (ha : a > 0) : ℤ\n```\n\nFive cases using nested `if-then-else` with `split`:  \n- Case 1 (`a % 4 = 0`): recurse with `a / 4`\n- Case 2 (`a % 2 = 0`): recurse with `a / 2`, flip sign if $b \\equiv 3, 5 \\pmod{8}$\n- Case 3 (`a = 1`): return `if flip then -1 else 1`\n- Case 4 (`b % a = 0`): return `0`\n- Case 5: recurse with `b % a`, flip sign if $a \\equiv 3 \\pmod 4$ and $b \\equiv 3 \\pmod 4$\n\n`termination_by a` with `decreasing_by` providing three proofs.",
+    "mathContext": "`termination_by a` tells Lean 4's well-founded recursion checker to use `a : ℕ` as the decreasing measure. `decreasing_by` provides the three proofs: `a.div_lt_self ha (by decide) : a / 4 < a` and `a / 2 < a` (using `Nat.div_lt_self : n > 0 → k > 1 → n / k < n`); `b.mod_lt ha : b % a < a` (using `Nat.mod_lt : a > 0 → b % a < a`). Without `termination_by`, Lean would reject the definition as potentially non-terminating. The `xor` for the sign accumulator: `xor (b % 8 = 3 ∨ b % 8 = 5) flip` computes `sign ⊕ flip` where `sign = true` means the factor-of-2 contributed $-1$. `set_option linter.unusedVariables false` suppresses warnings from `ha` appearing in branches that don't use it directly. The `ha` positivity proof is threaded through all recursive calls: for case 1/2, `Nat.div_pos (Nat.le_of_dvd ha ...) (by decide)` uses divisibility to ensure the quotient is positive; for case 5, `Nat.pos_of_ne_zero hba` uses `b % a ≠ 0`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "termination_by",
+      "decreasing_by",
+      "Nat.div_lt_self",
+      "Nat.mod_lt",
+      "xor accumulator"
+    ],
+    "prerequisites": [
+      "well-founded recursion in Lean 4",
+      "termination_by and decreasing_by",
+      "Nat.div_lt_self and Nat.mod_lt"
+    ]
+  },
+  {
+    "id": "ann-correctness",
+    "proofId": "quadratic-reciprocity-algorithm-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 142
+    },
+    "type": "theorem",
+    "title": "Correctness via Strong Induction on a",
+    "content": "**`jacobiAlgo_eq_jacobiSym`**: The recursive algorithm equals Mathlib's `jacobiSym`:\n\n$$\\text{jacobiAlgo}(a, b, \\text{flip}, \\text{ha}) = \\begin{cases} J(a \\mid b) & \\text{flip} = \\text{false} \\\\ -J(a \\mid b) & \\text{flip} = \\text{true} \\end{cases}$$\n\nProof: `Nat.strongRecOn` (strong induction), `unfold jacobiAlgo`, then 5 cases via `split`, each using the corresponding Mathlib Jacobi lemma.",
+    "mathContext": "`induction a using Nat.strongRecOn generalizing b flip with | ind a IH =>` uses strong induction: `IH : ∀ m < a, ...`. `unfold jacobiAlgo` exposes the definition body for case analysis. `split <;> rename_i h4` splits on the `if h4 : a % 4 = 0` condition and names the hypothesis. Case 1 proof: `rw [IH (a / 4) ...]` applies the induction hypothesis, then `jacobiSym.div_four_left : (↑a : ℤ) % 4 = 0 → b % 2 = 1 → J(↑a / 4 | b) = J(↑a | b)` provides the key step. `conv_lhs => rw [show (↑(a / 4) : ℤ) = (↑a : ℤ) / 4 from by omega]` converts natural number division to integer division. Case 5: `jacobiSym.quadratic_reciprocity_if ha_odd hb2 : J(↑a | b) = if a % 4 = 3 ∧ b % 4 = 3 then -J(↑b | a) else J(↑b | a)` is QR in if-then-else form. `by_cases h : a % 4 = 3 ∧ b % 4 = 3 <;> simp [h]; cases flip <;> simp` exhausts the `Bool` cases. `exact_mod_cast` handles coercion between `ℕ` and `ℤ` arithmetic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.strongRecOn",
+      "jacobiSym.div_four_left",
+      "jacobiSym.even_odd",
+      "jacobiSym.quadratic_reciprocity_if",
+      "exact_mod_cast"
+    ],
+    "prerequisites": [
+      "strong induction in Lean 4",
+      "Jacobi symbol lemmas in Mathlib",
+      "split tactic for if-then-else"
+    ]
+  },
+  {
+    "id": "ann-legendre-connection",
+    "proofId": "quadratic-reciprocity-algorithm-oq-01",
+    "range": {
+      "startLine": 148,
+      "endLine": 175
+    },
+    "type": "theorem",
+    "title": "legendreCompute: Connecting to legendreSym",
+    "content": "**`legendreCompute`**: Reduces `a` mod `p` and delegates:\n```lean\ndef legendreCompute (a : ℤ) (p : ℕ) [hp : Fact p.Prime] (hp2 : p ≠ 2) : ℤ :=\n  if hab : a % ↑p = 0 then 0\n  else jacobiAlgo (a % ↑p).natAbs p false ...\n```\n\n**`legendreCompute_eq`**: Proves `legendreCompute a p = legendreSym p a` — the algorithm computes the Legendre symbol for odd primes.\n\nThe connection: `jacobiSym.legendreSym.to_jacobiSym : legendreSym p a = J(a | p)` (Legendre = Jacobi for primes).",
+    "mathContext": "`(a % ↑p).natAbs` converts the non-negative integer `a % p ∈ [0, p)` to `ℕ`. `Int.natAbs_pos.mpr hab` proves `(a % ↑p).natAbs > 0` from `a % ↑p ≠ 0`. The `noncomputable` annotation because `legendreSym` involves quotient types. Proof of `legendreCompute_eq`: `unfold legendreCompute`, then `rw [jacobiSym.legendreSym.to_jacobiSym]` converts `legendreSym p a` to `J(a | p)`. `split_ifs with hab` splits on `a % ↑p = 0`. In the non-zero case: `hpodd : p % 2 = 1` from `hp.out.eq_two_or_odd` (a prime is 2 or odd), `hp1 : p > 1` from `Nat.Prime.one_lt`. Then `jacobiAlgo_eq_jacobiSym hpodd hp1` gives the main equation, `if_neg Bool.false_ne_true` eliminates the `flip = false` branch, and `jacobiSym.mod_left a p` + `Int.natAbs_of_nonneg` handle the modular reduction. `Fact p.Prime` is a typeclass wrapper for primality, allowing instance-based access throughout the proof.",
+    "significance": "key",
+    "relatedConcepts": [
+      "legendreSym",
+      "jacobiSym.legendreSym.to_jacobiSym",
+      "Int.natAbs",
+      "Fact p.Prime",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "legendreSym vs jacobiSym in Mathlib",
+      "Fact typeclass wrapper",
+      "Int.natAbs and natAbs_pos"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "quadratic-reciprocity-algorithm-oq-01",
+    "range": {
+      "startLine": 178,
+      "endLine": 205
+    },
+    "type": "insight",
+    "title": "Verified Examples via native_decide",
+    "content": "Seven examples verified by `native_decide`:\n\n| $(a/b)$ | Value | Reason |\n|---------|-------|--------|\n| $(3/7)$ | $-1$ | 3 is a non-residue mod 7 |\n| $(2/7)$ | $+1$ | $3^2 = 9 \\equiv 2 \\pmod 7$ |\n| $(5/13)$ | $-1$ | direct computation |\n| $(7/11)$ | $-1$ | direct computation |\n| $(3/5)$ | $-1$ | squares mod 5 are $\\{0,1,4\\}$ |\n| $(2/17)$ | $+1$ | $17 \\equiv 1 \\pmod 8$, second suppl. law |\n| $(6/7)$ | $-1$ | multiplicativity: $(2/7)(3/7) = 1 \\cdot (-1)$ |\n\nAll proved by `native_decide` — Lean evaluates the function at compile time.",
+    "mathContext": "`native_decide` compiles the `Decidable` proposition to native code and evaluates it during elaboration. For `jacobiAlgo 3 7 false (by omega) = -1`, Lean runs the recursive algorithm and checks the result is $-1$. This is faster than `decide` (which uses the kernel interpreter) but less foundationally transparent. The algorithm traces for $(3/7)$: $a=3, b=7$. Step 5: $a$ odd, $a \\nmid b$, QR swap. $b \\bmod a = 7 \\bmod 3 = 1$, $a \\equiv 3 \\pmod 4$, $b \\equiv 3 \\pmod 4$, so flip sign. Now compute $(1/3)$ with flip. Step 3: $a = 1$, flip = true, return $-1$. For $(2/17)$: $a = 2$, $b = 17$. Step 2: factor of 2. $17 \\bmod 8 = 1$, not $3$ or $5$, so no sign flip. Recurse with $(1/17)$. Step 3: $a = 1$, flip = false, return $+1$. `jacobiAlgo_mod_left` (Part 5) proves the algorithm respects residue classes: $J(a | b) = J(a \\bmod b | b)$, proved by applying `jacobiAlgo_eq_jacobiSym` twice and using `jacobiSym.mod_left`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "quadratic residue computation",
+      "second supplementary law",
+      "multiplicativity of Jacobi symbol",
+      "jacobiAlgo_mod_left"
+    ],
+    "prerequisites": [
+      "native_decide vs decide in Lean 4",
+      "quadratic residues mod small primes",
+      "Jacobi symbol multiplicativity"
+    ]
+  }
+]
