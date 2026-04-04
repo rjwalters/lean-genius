@@ -69,6 +69,7 @@ import Proofs.BallotProblem
 import Proofs.BallotProblemOQ01
 import Proofs.BallotProblemOQ01OQ01
 import Proofs.BallotProblemOQ01OQ02
+import Proofs.BallotProblemOQ01OQ02OQ02
 import Proofs.BallotProblemOQ01OQ04
 import Proofs.BallotProblemOQ01OQ04OQ01
 import Proofs.BallotProblemOQ02
