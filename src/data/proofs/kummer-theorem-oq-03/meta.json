@@ -16,46 +16,143 @@
     "lineCount": 116,
     "theoremCount": 5,
     "definitionCount": 1,
-    "assumptions": "None.",
+    "assumptions": "None. 0 axioms, 0 sorries. All results derived from Mathlib's Kummer theorem.",
     "originalContributions": [
-      "Characterization of C(n,k) divisibility by p^m via carry count (Kummer's criterion for prime powers)",
-      "Complete proof that all interior entries in the p^n-th row of Pascal's triangle are divisible by p",
-      "Carry-free criterion (Lucas' theorem for coprimality)",
-      "Concrete instances for p-th and p²-th rows"
-    ]
+      "carryCount: explicit Finset-based definition of the number of base-p carries in k + (n-k)",
+      "choose_dvd_prime_pow_iff: C(n,k) divisible by p^m iff carryCount ≥ m (bridges carryCount, PartENat, and multiplicity)",
+      "pascal_row_prime_power_div: all interior entries in the p^n-th Pascal row are divisible by p",
+      "choose_prime_div, choose_prime_sq_div: concrete instances for prime and prime-squared rows",
+      "choose_coprime_of_no_carries: carry-free addition implies C(n,k) coprime to p (Lucas' criterion)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "multiplicity.pow_dvd_iff_le_multiplicity",
+        "description": "p^m divides n iff m ≤ multiplicity(p,n) as PartENat values",
+        "module": "Mathlib.RingTheory.Multiplicity"
+      },
+      {
+        "theorem": "PartENat.coe_le_coe",
+        "description": "Converts ℕ inequality m ≤ n to PartENat inequality ↑m ≤ ↑n",
+        "module": "Mathlib.Data.PartENat.Basic"
+      },
+      {
+        "theorem": "kummer (parent)",
+        "description": "v_p(C(n,k)) = carryCount — the Kummer theorem from KummerTheorem.lean",
+        "module": "Proofs.KummerTheorem"
+      },
+      {
+        "theorem": "prime_dvd_choose_prime_pow (parent)",
+        "description": "p divides C(p^n, k) for 0 < k < p^n",
+        "module": "Proofs.KummerTheorem"
+      }
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Kummer's theorem (1852) characterizes the p-adic valuation of binomial coefficients via the number of carries in base-p addition. Granville (1997) extended this to prime power moduli. The fractal structure of Pascal's triangle modulo primes (Sierpiński's triangle for p=2) is a direct consequence.",
-    "problemStatement": "Characterize when p^m divides C(n,k) using the carry count in the base-p representation of k and n-k. Also characterize the special rows p^n of Pascal's triangle and the carry-free (coprime) case.",
-    "proofStrategy": "All results follow from the parent's `kummer` theorem (from Mathlib) which identifies the p-adic valuation of C(n,k) with the number of carries. The carry count is defined explicitly as a Finset cardinality, and divisibility by p^m is equated to the carry count being ≥ m via `multiplicity.pow_dvd_iff_le_multiplicity`.",
+    "historicalContext": "Kummer's theorem (1852) identifies the $p$-adic valuation $v_p(\\binom{n}{k})$ with the number of carries when adding $k$ and $n-k$ in base $p$. This elegant combinatorial-arithmetic connection was discovered by Ernst Eduard Kummer while studying ideal factorization. Lucas' theorem (1878), independently discovered, characterizes $\\binom{n}{k} \\pmod{p}$ via base-$p$ digits: $\\binom{n}{k} \\equiv \\prod \\binom{n_i}{k_i} \\pmod{p}$, and its hypothesis (no digit of $k$ exceeds the corresponding digit of $n$) is exactly the carry-free condition. Granville (1997) extended Kummer to prime power moduli $p^m$, showing that $p^m \\mid \\binom{n}{k}$ iff there are at least $m$ carries. The fractal structure of Pascal's triangle mod $p$ (Sierpiński's triangle for $p=2$, first noted by Sierpiński in 1915) is a direct consequence: the self-similar patterns arise from the hierarchical base-$p$ structure of indices. This file formalizes these extensions using Mathlib's `multiplicity` API and the `PartENat`-valued carry count from the parent proof.",
+    "problemStatement": "Characterize when $p^m$ divides $\\binom{n}{k}$ using the carry count in the base-$p$ representation of $k$ and $n-k$. Also prove: (1) all interior entries in the $p^n$-th row are divisible by $p$; (2) the carry-free case characterizes coprimality to $p$.",
+    "text": "Formalizes divisibility patterns in Pascal's triangle modulo prime powers via Kummer's carry count characterization.",
+    "proofStrategy": "All results flow from `choose_dvd_prime_pow_iff` which bridges three representations: (1) carryCount as a Finset.card; (2) p-adic valuation as a PartENat via the parent's `kummer` theorem; (3) divisibility by p^m via `multiplicity.pow_dvd_iff_le_multiplicity`. The Pascal row result delegates to the parent's `prime_dvd_choose_prime_pow`. The carry-free result uses the main theorem with m=1 and derives a contradiction from carryCount = 0.",
     "keyInsights": [
-      "The carry count encodes all p-adic information about C(n,k)",
-      "Pure power rows p^n always produce at least one carry for any interior k, explaining their divisibility",
-      "The carry-free case (carryCount = 0) corresponds exactly to Lucas' theorem: C(n,k) ≢ 0 mod p"
+      "**carryCount as a bridge**: The Finset-based `carryCount` definition is a discrete encoding of the base-$p$ carry pattern. It bridges the combinatorial (Finset.card) and number-theoretic (PartENat, multiplicity) worlds, enabling the use of Mathlib's `multiplicity.pow_dvd_iff_le_multiplicity` for divisibility.",
+      "**PartENat conversion is the core**: The proof of `choose_dvd_prime_pow_iff` hinges on converting ℕ-valued carryCount to PartENat-valued multiplicity via `PartENat.coe_le_coe`. Kummer's theorem (from the parent) gives the carryCount = multiplicity equality; then `multiplicity.pow_dvd_iff_le_multiplicity` converts to divisibility.",
+      "**Pure power rows force carries**: When the top index is $p^n$ (a pure prime power), any interior $k$ and $p^n - k$ must produce a carry at position $n$. This is because $p^n$ has a single nonzero base-$p$ digit, forcing all carry debt to concentrate at the top position. This geometrically explains why the $p^n$-th row of Pascal's triangle is divisible by $p$ at every interior entry.",
+      "**Lucas' criterion via carry-free**: The carry-free case (carryCount = 0) is the exact condition for Lucas' theorem: $\\binom{n}{k} \\not\\equiv 0 \\pmod{p}$. Each digit $k_i$ of $k$ must be $\\leq n_i$ (the corresponding digit of $n$) for no carry to occur. This is also the condition $k_i \\leq n_i$ for all $i$ in Lucas' product formula $\\binom{n}{k} \\equiv \\prod \\binom{n_i}{k_i} \\pmod{p}$.",
+      "**Sierpiński fractal connection**: The Pascal triangle mod $p$ has the Sierpiński gasket structure because the carry-free condition (row $n$, column $k$: all digits of $k \\leq$ corresponding digits of $n$) is self-similar under base-$p$ scaling. At scale $p^j$, the pattern at the $j$-th digit level repeats the pattern at lower scales — exactly the fractal self-similarity of the Sierpiński gasket."
     ],
     "prerequisites": [
-      "Kummer's theorem on p-adic valuations of binomial coefficients",
-      "Base-p digit representations",
-      "Multiplicity in Mathlib (PartENat-valued)"
+      "Kummer's theorem on p-adic valuations of binomial coefficients (from KummerTheorem.lean parent)",
+      "Base-p digit representations and carries",
+      "PartENat (partial extended naturals) in Mathlib — the value monoid for multiplicity",
+      "multiplicity.pow_dvd_iff_le_multiplicity: connects divisibility to PartENat-valued multiplicity"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "part-i-carry-count",
+      "title": "Part I: Divisibility by p^m via Carry Count",
+      "startLine": 25,
+      "endLine": 44,
+      "summary": "Defines carryCount as a Finset.card. Proves choose_dvd_prime_pow_iff: m ≤ carryCount iff p^m | C(n,k), bridging PartENat, multiplicity, and the parent's kummer theorem.",
+      "mathContext": "$v_p(\\binom{n}{k}) = \\text{carryCount}$ (Kummer). Then: $p^m \\mid \\binom{n}{k} \\iff m \\leq v_p(\\binom{n}{k}) \\iff m \\leq \\text{carryCount}$."
+    },
+    {
+      "id": "part-ii-pascal-row",
+      "title": "Part II: Pascal's p^n-th Row",
+      "startLine": 46,
+      "endLine": 58,
+      "summary": "Proves pascal_row_prime_power_div: p | C(p^n, k) for all 0 < k < p^n. One-line proof delegating to prime_dvd_choose_prime_pow from the parent. Specializes to n=1 (prime row) and n=2 (prime-squared row).",
+      "mathContext": "Adding $k$ and $p^n - k$ in base $p$ always produces at least one carry when the top is $p^n$ — the single nonzero digit at position $n$ forces the carry. Hence carryCount $\\geq 1$ and $p \\mid \\binom{p^n}{k}$."
+    },
+    {
+      "id": "part-iii-specific-patterns",
+      "title": "Part III: Specific Row Patterns",
+      "startLine": 60,
+      "endLine": 75,
+      "summary": "choose_prime_div: p | C(p, k) for 0 < k < p (the classical primality lemma). choose_prime_sq_div: p | C(p^2, k) for 0 < k < p^2. Both are direct corollaries of pascal_row_prime_power_div at n=1 and n=2.",
+      "mathContext": "The classical $p \\mid \\binom{p}{k}$ for $0 < k < p$ is the foundation of Fermat's little theorem proof via the binomial theorem. $\\binom{p^2}{k}$ divisibility is a less-known but equally clean consequence of Kummer."
+    },
+    {
+      "id": "part-iv-carry-free",
+      "title": "Part IV: Carry-Free and Lucas' Criterion",
+      "startLine": 77,
+      "endLine": 90,
+      "summary": "choose_coprime_of_no_carries: if carryCount = 0, then p does not divide C(n,k). Proved as contrapositive of choose_dvd_prime_pow_iff at m=1, closed by omega. This is the carry-free direction of Lucas' theorem.",
+      "mathContext": "carryCount = 0 $\\Rightarrow$ $v_p(\\binom{n}{k}) = 0$ $\\Rightarrow$ $p \\nmid \\binom{n}{k}$. Carry-free means: for all $i$, $(k \\bmod p^i) + ((n-k) \\bmod p^i) < p^i$, i.e., no digit of $k$ exceeds the corresponding digit of $n$ in base $p$."
+    }
+  ],
   "conclusion": {
-    "summary": "A complete Lean 4 formalization of the divisibility structure of Pascal's triangle modulo prime powers, with 5 theorems and 0 axioms. All results derive from Mathlib's Kummer theorem via the carry count abstraction.",
-    "implications": "Provides a formal foundation for the fractal self-similarity of Pascal's triangle mod p, and connects combinatorial divisibility to p-adic arithmetic in a machine-verified setting.",
+    "summary": "A complete Lean 4 formalization of divisibility patterns in Pascal's triangle modulo prime powers. All 5 theorems and 1 definition follow from Mathlib's Kummer theorem with 0 axioms. The carry count abstraction unifies the divisibility criterion, pure-power row property, and Lucas' carry-free criterion.",
+    "implications": "Provides a formal foundation for the fractal self-similarity of Pascal's triangle mod $p$ (Sierpiński's triangle for $p=2$). The carryCount definition is a reusable bridge between combinatorial Finset arithmetic and PartENat-valued p-adic multiplicity. The framework extends naturally to generalizations: multinomial coefficients, Granville's generalization, and $q$-binomial coefficients.",
     "openQuestions": [
       "Can the full Lucas' theorem (C(n,k) ≡ ∏ C(nᵢ,kᵢ) mod p via digit decomposition) be formalized in this framework?",
-      "Extension to multinomial coefficients?"
+      "Can the fractal self-similarity of Pascal's triangle mod p be formalized as a theorem about Finset patterns?",
+      "Extension to multinomial coefficients and the Granville generalization?"
     ]
   },
   "crossReferences": [
     {
-      "slug": "kummer-theorem",
-      "title": "Kummer's Theorem",
-      "relationship": "extends"
+      "targetId": "kummer-theorem",
+      "relationship": "extends",
+      "description": "Parent proof of Kummer's theorem — provides the kummer theorem (carryCount = v_p(C(n,k))) and prime_dvd_choose_prime_pow that this file builds on."
+    },
+    {
+      "targetId": "kummer-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling OQ extending Kummer to multinomial coefficients and Granville's generalization."
+    },
+    {
+      "targetId": "kummer-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling OQ on the Sierpiński triangle fractal structure — the geometric consequence of the p^n row divisibility proved here."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Kummer, E.E."],
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik 44, pp. 93-146",
+      "note": "Original proof that v_p(C(n,k)) equals the number of carries in base-p addition"
+    },
+    {
+      "authors": ["Lucas, E."],
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics 1, pp. 197-240",
+      "note": "C(n,k) ≡ ∏ C(nᵢ,kᵢ) (mod p) — the digit product formula, closely related to the carry-free criterion"
+    },
+    {
+      "authors": ["Granville, A."],
+      "title": "Binomial coefficients modulo prime powers",
+      "year": "1997",
+      "venue": "CMS Conf. Proc. 20, pp. 253-275",
+      "note": "Extension of Kummer's theorem to prime power moduli p^m — the result formalized in choose_dvd_prime_pow_iff"
     }
   ],
   "leanFile": {
+    "imports": ["Proofs.KummerTheorem"],
+    "opens": ["Finset", "Nat"],
     "namespace": "KummerTheoremOQ03",
     "lineCount": 116,
     "axiomCount": 0,
