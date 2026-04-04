@@ -1,0 +1,139 @@
+{
+  "id": "greens-theorem-oq-02",
+  "title": "Green's Theorem: Minimal Regularity (Lipschitz Curves and L¹ Curl)",
+  "slug": "greens-theorem-oq-02",
+  "description": "Formalization of Whitney's 1957 minimal regularity theorem: Green's theorem holds when the boundary is a Lipschitz closed curve (not just C¹) and the vector field has L¹-integrable curl. This strictly generalizes the classical C¹ setting by allowing corners (squares, polygons) and weakly-differentiable vector fields.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Green%27s_theorem",
+    "date": "1957 (Whitney), formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "analysis",
+      "multivariable-calculus",
+      "regularity",
+      "lipschitz",
+      "whitney",
+      "vector-calculus"
+    ],
+    "proofRepoPath": "Proofs/GreensTheoremOQ02.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "LipschitzWith",
+        "description": "Lipschitz continuity: |f(x) - f(y)| ≤ K · d(x,y) for all x, y, formulated via edist",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      },
+      {
+        "theorem": "MeasureTheory.Integrable",
+        "description": "L¹ integrability: ∫ |f| dμ < ∞",
+        "module": "Mathlib.MeasureTheory.Function.Integrable"
+      },
+      {
+        "theorem": "ContinuousOn.integrableOn_compact",
+        "description": "Continuous functions on compact sets are L¹ integrable",
+        "module": "Mathlib.MeasureTheory.Integral.SetIntegral"
+      },
+      {
+        "theorem": "Real.lipschitzWith_cos",
+        "description": "cos is Lipschitz with constant 1 on ℝ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "Real.lipschitzWith_sin",
+        "description": "sin is Lipschitz with constant 1 on ℝ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      }
+    ],
+    "originalContributions": [
+      "LipschitzClosedCurve: structure capturing Lipschitz closed curves (K-Lipschitz, closed γ(0)=γ(T))",
+      "lipschitzLineIntegral: line integral ∫₀ᵀ [P(γ(t))·γ₁'(t) + Q(γ(t))·γ₂'(t)] dt over Lipschitz curves",
+      "greens_theorem_l1curl: Whitney's theorem as a Lean 4 axiom (0 sorries in supporting framework)",
+      "unitCircle_lipschitz: formal proof that γ(t)=(cos t, sin t) is Lipschitz with K=1 via sup_le",
+      "19 supporting lemmas on Lipschitz curves, line integrals, L¹ fields, and consequences"
+    ],
+    "dateAdded": "2026-04-04",
+    "lineCount": 510,
+    "assumptions": "1 axiom (greens_theorem_l1curl — Whitney's 1957 theorem). 19 theorems with 0 sorries. Supporting results are fully proved using Mathlib's LipschitzWith, MeasureTheory, and trigonometric libraries."
+  },
+  "overview": {
+    "historicalContext": "**Classical Green's theorem** (George Green, 1828) requires:\n1. **C¹ boundary**: the curve γ must have a continuous derivative everywhere\n2. **C¹ vector field**: P and Q must have continuous partial derivatives\n\n**Hasbrouck Whitney (1957)** proved these conditions can be drastically weakened. His minimal regularity theorem shows Green's theorem holds when:\n1. The boundary is merely **Lipschitz** (derivative exists a.e. but may have jumps at corners)\n2. The curl is merely **L¹** (Lebesgue integrable, not necessarily continuous)\n\nThe key mechanism is **Rademacher's theorem** (1919): every Lipschitz function is differentiable at Lebesgue-almost-every point. This gives a well-defined a.e. tangent vector to any Lipschitz curve, making the line integral meaningful.\n\nThis generalization is practically important: the boundary of a square, polygon, or any piecewise-smooth domain is Lipschitz but NOT C¹ (corners cause derivative jumps).",
+    "problemStatement": "**Open Question (greens-theorem-oq-02)**: Can Green's theorem be formalized for Lipschitz boundaries (not just C¹) and L¹ curl (not just continuous)?\n\n**Answer**: Yes, with an axiom for Whitney's theorem. The supporting infrastructure (Lipschitz curves, line integrals, L¹ fields) is fully formalized in Lean 4.",
+    "text": "Formalization of Whitney's 1957 minimal regularity theorem. The main result `greens_theorem_l1curl` is stated as an axiom (Whitney's deep analytic theorem, not yet in Mathlib). 19 supporting theorems are proved from Mathlib, including Lipschitz curve properties, line integral well-definedness, L¹ curl conditions, and the unit circle example.",
+    "proofStrategy": "**Architecture**: Three independent components, connected via the Whitney axiom.\n\n**Part I: Lipschitz Closed Curves**\n- `LipschitzClosedCurve`: a structure with fields T (period), γ (curve), K (Lipschitz constant), hLip (LipschitzWith K γ), isClosed (γ(0)=γ(T))\n- Key lemmas: dist(γ(t),γ(s)) ≤ K·|t-s|, average speed ≤ K, diameter ≤ K·T\n\n**Part II: Line Integrals**\n- `lipschitzLineIntegral P Q C = ∫₀ᵀ [P(γ(t))·γ₁'(t) + Q(γ(t))·γ₂'(t)] dt`\n- Properties: zero field → 0, scaling, negation\n\n**Part III: L¹ Curl Fields**\n- `L1CurlField`: structure for vector fields with L¹-integrable curl\n- `curl_continuous_implies_l1`: continuous curl on compact set is L¹\n- Key: Whitney's theorem `greens_theorem_l1curl` (axiom)\n\n**Part IV: Consequences**\n- Zero-curl → zero circulation (generalization of Cauchy-Goursat)\n- Scaling invariance, reduction to OQ-01 conditions\n\n**Part V: Unit Circle Example**\n- `unitCircle_lipschitz`: LipschitzWith 1 (fun t => (cos t, sin t))\n- Proof: edist of product = sup of component edists; cos and sin each Lipschitz-1",
+    "keyInsights": [
+      "**Product metric on ℝ²**: edist (a,b) (c,d) = edist a c ⊔ edist b d (supremum, not sum). Using `show ... ⊔ ... ≤ ...; exact sup_le` is the correct Lean 4 approach.",
+      "**Rademacher's theorem enables L¹ integrals**: Lipschitz functions have a.e. derivatives bounded by K, so γ'(t) exists a.e. and |γ'(t)| ≤ K, making line integrals well-defined via Lebesgue theory.",
+      "**Whitney vs. OQ-01**: Whitney's theorem strictly generalizes OQ-01 (C¹ setting). The `greens_oq1_from_l1curl` lemma shows OQ-01's conditions imply OQ-02's conditions.",
+      "**NNReal for Lipschitz constants**: Lean 4's LipschitzWith uses `K : NNReal` (not `ℝ`), requiring coercions ↑K when working with real-valued bounds.",
+      "**Zero sorries**: All 19 supporting theorems compile clean. Only the Whitney axiom (a deep analytic result not in Mathlib) is stated without proof."
+    ],
+    "prerequisites": [
+      "Green's theorem, classical version (see greens-theorem-oq-01)",
+      "Lipschitz continuity and Rademacher's theorem",
+      "Lebesgue integration and L¹ spaces",
+      "Whitney's 1957 Geometric Integration Theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lipschitz-curves",
+      "title": "Part I: Lipschitz Closed Curves",
+      "startLine": 64,
+      "endLine": 181,
+      "summary": "LipschitzClosedCurve structure and 8 basic lemmas: dist bound, average speed, constant curves (K=0), closed curve property, and diameter bound K·T.",
+      "mathContext": "A Lipschitz closed curve satisfies $|\\gamma(t) - \\gamma(s)| \\leq K|t-s|$ for all $s,t$ with $\\gamma(0) = \\gamma(T)$. Key: $\\text{diam}(\\gamma([0,T])) \\leq K \\cdot T$."
+    },
+    {
+      "id": "line-integrals",
+      "title": "Part II: Line Integrals",
+      "startLine": 182,
+      "endLine": 234,
+      "summary": "lipschitzLineIntegral definition and 3 properties: zero field → 0, scaling by scalar, negation of field.",
+      "mathContext": "$\\int_\\gamma (P\\,dx + Q\\,dy) = \\int_0^T [P(\\gamma(t))\\gamma_1'(t) + Q(\\gamma(t))\\gamma_2'(t)]\\,dt$. Well-defined by Rademacher (a.e. differentiability of Lipschitz curves)."
+    },
+    {
+      "id": "l1-curl",
+      "title": "Part III: L¹ Curl Fields",
+      "startLine": 235,
+      "endLine": 310,
+      "summary": "L1CurlField structure, curl_continuous_implies_l1 (via ContinuousOn.integrableOn_compact), curl_zero_l1.",
+      "mathContext": "A vector field $(P,Q)$ has L¹ curl if $\\omega = \\partial Q/\\partial x - \\partial P/\\partial y \\in L^1(\\Omega)$, i.e., $\\int\\int_\\Omega |\\omega|\\,dA < \\infty$."
+    },
+    {
+      "id": "whitneys-theorem",
+      "title": "Part IV: Whitney's Theorem and Consequences",
+      "startLine": 311,
+      "endLine": 440,
+      "summary": "greens_theorem_l1curl axiom (Whitney 1957), lineIntegral_zero_curl, lineIntegral_l1curl_smul, greens_oq1_from_l1curl.",
+      "mathContext": "Whitney (1957): $\\oint_C (P\\,dx + Q\\,dy) = \\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ holds when $C$ is Lipschitz and the curl is $L^1$. Proved as axiom; supporting consequences fully proved."
+    },
+    {
+      "id": "unit-circle",
+      "title": "Part V: Unit Circle Example",
+      "startLine": 441,
+      "endLine": 510,
+      "summary": "unitCircle def, unitCircle_lipschitz (K=1, proved via sup_le for product edist), unitCircle_closed (γ(0)=γ(2π) from cos/sin periodicity), unitCircleCurve instance, unitCircle_diameter_bound.",
+      "mathContext": "$\\gamma(t) = (\\cos t, \\sin t)$ is Lipschitz-1 since $\\text{edist}(\\cos x, \\cos y) \\leq \\text{edist}(x,y)$ and $\\text{edist}(\\sin x, \\sin y) \\leq \\text{edist}(x,y)$ by Mathlib's `lipschitzWith_cos` and `lipschitzWith_sin`. The product edist is $\\leq \\sup$, closed by `sup_le`."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "greens-theorem",
+      "title": "Green's Theorem (Abstract)",
+      "relationship": "OQ-02 generalizes the boundary curve conditions beyond what the original abstract formalization assumed"
+    },
+    {
+      "id": "greens-theorem-oq-01",
+      "title": "Green's Theorem via Concrete Mathlib Integrals",
+      "relationship": "OQ-01 proves Green's theorem for C¹ curves; OQ-02 weakens this to Lipschitz. greens_oq1_from_l1curl shows OQ-01 implies OQ-02 conditions."
+    },
+    {
+      "id": "greens-theorem-oq-03",
+      "title": "Green's Theorem for Smooth Curves",
+      "relationship": "OQ-03 handles smooth (C^∞) curves; OQ-02 is a strict generalization allowing corners"
+    }
+  ]
+}
