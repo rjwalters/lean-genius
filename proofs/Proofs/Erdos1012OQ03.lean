@@ -96,29 +96,8 @@ private lemma insertIdx_length_eq {α : Type*} {l : List α} {a : α} {i : ℕ}
 -- insertIdx preserves Nodup when element is new
 private lemma nodup_insertIdx {α : Type*} {l : List α} {a : α} {i : ℕ}
     (hi : i ≤ l.length) (ha : a ∉ l) (hnd : l.Nodup) :
-    (l.insertIdx i a).Nodup := by
-  sorry
-
--- insertIdx at position i gives a at that index
-private lemma insertIdx_getElem_at {α : Type*} (l : List α) (a : α) (i : ℕ)
-    (hi : i ≤ l.length) : (l.insertIdx i a)[i]'(by rw [insertIdx_length_eq hi]; omega) = a := by
-  sorry
-
--- insertIdx at position i gives l[j-1] for j > i
-private lemma insertIdx_getElem_gt {α : Type*} (l : List α) (a : α) (i j : ℕ)
-    (hi : i ≤ l.length) (hji : i < j) (hj : j ≤ l.length) :
-    (l.insertIdx i a)[j]'(by rw [insertIdx_length_eq hi]; omega) = l[j - 1]'(by omega) := by
-  sorry
-
--- idxOf upper bound: element in list → idxOf < length
-private lemma idxOf_lt_length {α : Type*} [DecidableEq α] {a : α} {l : List α}
-    (h : a ∈ l) : l.idxOf a < l.length := by
-  sorry
-
--- idxOf gives the correct element
-private lemma idxOf_getElem {α : Type*} [DecidableEq α] {a : α} {l : List α}
-    (h : a ∈ l) : l[l.idxOf a]'(idxOf_lt_length h) = a := by
-  sorry
+    (l.insertIdx i a).Nodup :=
+  (List.perm_insertIdx a l hi).nodup_iff.mpr (List.nodup_cons.mpr ⟨ha, hnd⟩)
 
 /-! ── Tournament path insert ─────────────────────────────────────────────── -/
 
@@ -214,7 +193,43 @@ private lemma tournament_cycle_non_insertable (D : Digraph V)
         D.arc u (l[(i + 1) % l.length]'(Nat.mod_lt _ (by omega))))) :
     (∀ (i : ℕ) (hi : i < l.length), D.arc (l[i]'hi) u) ∨
     (∀ (i : ℕ) (hi : i < l.length), D.arc u (l[i]'hi)) := by
-  sorry
+  obtain ⟨hnd, hlen2, _⟩ := hc
+  set k := l.length with hk_def
+  have hk_pos : 0 < k := by omega
+  have hstep : ∀ (m : ℕ) (hm : m < k), D.arc (l[m]'hm) u →
+      D.arc (l[(m + 1) % k]'(Nat.mod_lt _ hk_pos)) u := by
+    intro m hm harc
+    have hne : l[(m + 1) % k]'(Nat.mod_lt _ hk_pos) ≠ u :=
+      fun h => hu (h ▸ List.getElem_mem (Nat.mod_lt _ hk_pos))
+    rcases D.arc_or_arc hT hne with h | h
+    · exact h
+    · exact absurd ⟨harc, h⟩ (h_ni m hm)
+  have hprop : ∀ (b j : ℕ) (hb : b < k), D.arc (l[b]'hb) u →
+      D.arc (l[(b + j) % k]'(Nat.mod_lt _ hk_pos)) u := by
+    intro b j hb hbU
+    induction j with
+    | zero =>
+      simp only [Nat.add_zero]
+      convert hbU using 1
+      exact list_idx_congr (Nat.mod_eq_of_lt hb)
+    | succ j ih =>
+      have hmod : (b + (j + 1)) % k = ((b + j) % k + 1) % k := by
+        rw [show b + (j + 1) = (b + j) + 1 from by omega]
+        exact (Nat.mod_add_mod (b + j) k 1).symm
+      convert hstep _ (Nat.mod_lt _ hk_pos) ih using 1
+      exact list_idx_congr hmod
+  by_contra h; push_neg at h
+  obtain ⟨⟨a, ha, haU_neg⟩, ⟨b, hb, hbU_neg⟩⟩ := h
+  have hne_b : l[b]'hb ≠ u := fun h => hu (h ▸ List.getElem_mem hb)
+  have hbU : D.arc (l[b]'hb) u := D.arc_of_not_arc hT hne_b.symm hbU_neg
+  have hPa : D.arc (l[a]'ha) u := by
+    have hidx : (b + (k + a - b)) % k = a := by
+      rw [show b + (k + a - b) = a + k from by omega, Nat.add_mod_right,
+          Nat.mod_eq_of_lt ha]
+    have h2 := hprop b (k + a - b) hb hbU
+    convert h2 using 1
+    exact (list_idx_congr hidx).symm
+  exact haU_neg hPa
 
 private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
     (hsc : D.IsStronglyConnected) (l : List V) (hc : IsDirectedCycleList D l)
