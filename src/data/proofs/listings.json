@@ -3091,6 +3091,26 @@
     "annotationCount": 7
   },
   {
+    "id": "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "title": "Rice's Theorem as a Lawvere Instance",
+    "slug": "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "description": "Formalizes Rice's theorem (1953) — no non-trivial semantic property of programs is decidable — as a direct consequence of Lawvere's fixed-point theorem. The core: a Bool-valued point-surjective evaluation is impossible because Bool.not has no fixed point. Derives abstract Rice, induced obstruction, undecidable witness, semantic flip, halting problem impossibility, and classical Rice from axiomatized Kleene recursion.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "computability",
+      "lawvere-fixed-point",
+      "rice-theorem",
+      "undecidability",
+      "diagonal-argument",
+      "abstract-logic",
+      "open-question",
+      "research"
+    ],
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "cantor-diagonalization-oq-04",
     "title": "Lawvere Fixed-Point Theorem: Retraction Version",
     "slug": "cantor-diagonalization-oq-04",
