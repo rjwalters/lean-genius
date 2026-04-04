@@ -1,8 +1,8 @@
 {
   "slug": "wilsons-theorem-oq-04-oq-02",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Abstract Group-Theoretic Product Formula: Unique Involution",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-03T21:27:22-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Proof complete: 6 theorems, 0 axioms, 0 sorries",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: All 6 theorems proved, 0 axioms, 0 sorries",
+    "builtItems": [
+      "prod_eq_prod_involutions: ∏G = ∏{x | x²=1} via Finset.prod_involution (WilsonsTheoremOQ04OQ02.lean:56)",
+      "card_sq_eq_one_le_two_cyclic: |{x | x²=1}| ≤ 2 in cyclic groups via IsCyclic.card_pow_eq_one_le (WilsonsTheoremOQ04OQ02.lean:88)",
+      "prod_univ_of_unique_involution: unique involution → product = τ (WilsonsTheoremOQ04OQ02.lean:101)",
+      "IsCyclic.exists_unique_involution_of_even: half-generator g^(|G|/2) is the unique involution (WilsonsTheoremOQ04OQ02.lean:135)",
+      "prod_cyclic_even_group: combined result for even-order cyclic groups (WilsonsTheoremOQ04OQ02.lean:190)",
+      "prod_univ_odd_order: odd-order groups have product 1 (WilsonsTheoremOQ04OQ02.lean:207)"
+    ],
+    "insights": [
+      "IsCyclic.exists_generator (zpowers version) is the right lemma; IsCyclic.exists_monoid_generator gives Submonoid.powers which is incompatible with orderOf_eq_card_of_forall_mem_zpowers",
+      "Lean 4 apply with prod_involution creates goals in order hg1, hg3, hg4, g_mem (hg4 before g_mem due to dependency metavar ordering)",
+      "simp only [...] at ha ⊢ (combined) uses simplified ha as simp rule for the goal; split into separate calls to avoid unintended goal closure",
+      "For odd-order proof: use interval_cases + orderOf_dvd_card + Nat.dvd_iff_mod_eq_zero + Nat.odd_iff to avoid missing Nat.Odd.coprime_two_right",
+      "File is self-contained (no import of WilsonsTheoremOQ02/OQ02Ext) to avoid pre-existing compilation errors in those files"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Instantiate prod_cyclic_even_group for (ZMod n)× to give direct proof of Gauss-Wilson bypassing Klein-four argument",
+      "Generalize to non-abelian groups: when does ∏G = e?"
+    ],
     "markdown": "# Knowledge Base: wilsons-theorem-oq-04-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
