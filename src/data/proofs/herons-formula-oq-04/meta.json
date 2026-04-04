@@ -1,0 +1,199 @@
+{
+  "id": "herons-formula-oq-04",
+  "title": "Isoperimetric Inequality for Triangles",
+  "slug": "herons-formula-oq-04",
+  "description": "Among all triangles with a fixed perimeter, the equilateral triangle maximizes the area. Proved via three-variable AM-GM: for s-a, s-b, s-c with sum s, AM-GM gives (s-a)(s-b)(s-c) ≤ (s/3)³, so Area² = s(s-a)(s-b)(s-c) ≤ s⁴/27.",
+  "meta": {
+    "author": "Classical result, formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality#The_isoperimetric_problem_in_a_polygon",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HeronsFormulaOQ04.lean",
+    "tags": [
+      "geometry",
+      "isoperimetric",
+      "inequality",
+      "amgm",
+      "triangle",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt_le_sqrt",
+        "description": "Monotonicity of sqrt",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "sqrt(x)^2 = x for x >= 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Three-variable AM-GM: xyz ≤ ((x+y+z)/3)³ via algebraic decomposition identity",
+      "AM-GM equality characterization: xyz = ((x+y+z)/3)³ iff x = y = z (for positive reals)",
+      "Main isoperimetric inequality: heron_product a b c ≤ heron_product t t t where t = (a+b+c)/3",
+      "Equality characterization: maximum achieved iff a = b = c (equilateral)",
+      "Quantitative bound: heron_product ≤ s⁴/27 and area² ≤ s⁴/27",
+      "Isoperimetric ratio: heron_product ≤ P⁴/432 where P is the perimeter",
+      "Verification: 3-4-5 triangle bound (36 ≤ 48) and equilateral equality at side 2"
+    ],
+    "dateAdded": "2026-04-04",
+    "lineCount": 362,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "prerequisites": [
+      "Heron's formula for triangles",
+      "Three-variable AM-GM inequality",
+      "Triangle inequality",
+      "Basic algebra over the reals"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The isoperimetric problem asks: among all figures with a fixed perimeter, which has the largest area? For triangles, the answer is the equilateral triangle — a classical result known since antiquity. The proof using the AM-GM inequality is elegant: if $s = (a+b+c)/2$ is the semi-perimeter, Heron's formula gives $\\text{Area}^2 = s(s-a)(s-b)(s-c)$. Setting $x = s-a$, $y = s-b$, $z = s-c$, we have $x + y + z = s$, and by AM-GM: $xyz \\leq ((x+y+z)/3)^3 = (s/3)^3$. Therefore $\\text{Area}^2 \\leq s \\cdot (s/3)^3 = s^4/27$, with equality iff $x = y = z$ iff $a = b = c$.\n\nThis result is a special case of the more general isoperimetric inequality for polygons (equilateral polygon maximizes area for fixed perimeter), which in turn is a special case of the continuous isoperimetric inequality (circle maximizes area for fixed perimeter among all closed curves).",
+    "problemStatement": "**Isoperimetric Inequality for Triangles**:\n\nFor a triangle with sides $a, b, c$ and semi-perimeter $s = (a+b+c)/2$:\n$$\\text{Area}^2 = s(s-a)(s-b)(s-c) \\leq \\frac{s^4}{27}$$\nwith equality if and only if $a = b = c$ (equilateral triangle).\n\nEquivalently: $\\text{Area} \\leq \\frac{s^2}{3\\sqrt{3}} = \\frac{P^2\\sqrt{3}}{36}$ where $P = 2s$ is the perimeter.",
+    "text": "Proves the isoperimetric inequality for triangles: the equilateral triangle maximizes area among all triangles with fixed perimeter. The proof centers on a three-variable AM-GM inequality proved via an algebraic decomposition identity. The equality case characterizes exactly when the maximum is achieved.",
+    "proofStrategy": "The proof proceeds in two stages: (1) **Three-variable AM-GM**: We prove $xyz \\leq ((x+y+z)/3)^3$ for $x, y, z \\geq 0$ via the identity $(x+y+z)^3 - 27xyz = (x+y+z)(x^2+y^2+z^2-xy-yz-xz) + 3(x(y-z)^2 + y(x-z)^2 + z(x-y)^2)$. The first factor $(x^2+y^2+z^2-xy-yz-xz) = \\frac{1}{2}((x-y)^2+(y-z)^2+(x-z)^2) \\geq 0$ is shown by `nlinarith`. Each term in the second factor is non-negative. (2) **Isoperimetric bound**: Set $x = s-a$, $y = s-b$, $z = s-c$; note $x+y+z = s$. Then heron_product $= s \\cdot xyz \\leq s \\cdot (s/3)^3 = s^4/27$.",
+    "keyInsights": [
+      "**Substitution**: Setting $x = s-a$, $y = s-b$, $z = s-c$ transforms Heron's product into $s \\cdot xyz$ with $x+y+z = s$ — making AM-GM directly applicable",
+      "**Algebraic identity**: $(x+y+z)^3 - 27xyz$ has an explicit non-negative decomposition into two sums of squares/products, avoiding any appeal to convexity or calculus",
+      "**Equality criterion**: The decomposition shows equality in AM-GM iff $x = y = z$ (from $x(y-z)^2 = 0$ with $x > 0$), which translates directly to $a = b = c$",
+      "**Connection to Brahmagupta**: The 4-variable analog (square maximizes area among cyclic quadrilaterals) is proved in HeronsFormulaOQ01.lean using 2-variable AM-GM; the 3-variable case here is cleaner",
+      "**Quantitative form**: The bound $s^4/27$ gives the sharp constant $P^2\\sqrt{3}/36$ in the isoperimetric ratio"
+    ],
+    "prerequisites": [
+      "Heron's formula for triangles (herons-formula)",
+      "Triangle inequality",
+      "Basic algebra and ring arithmetic",
+      "AM-GM inequality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 40,
+      "endLine": 62,
+      "summary": "Defines heron_product s(s-a)(s-b)(s-c), proves non-negativity for valid triangles, defines triangle_area = sqrt(heron_product).",
+      "mathContext": "Three definitions: heron_product, heron_product_nonneg, triangle_area"
+    },
+    {
+      "id": "amgm",
+      "title": "Three-Variable AM-GM",
+      "startLine": 65,
+      "endLine": 158,
+      "summary": "Proves xyz ≤ ((x+y+z)/3)³ for non-negative reals via algebraic identity. Proves equality iff x = y = z for positive reals.",
+      "mathContext": "Key identity: (x+y+z)³ - 27xyz = (x+y+z)(x²+y²+z²-xy-yz-xz) + 3(x(y-z)² + y(x-z)² + z(x-y)²)"
+    },
+    {
+      "id": "isoperimetric",
+      "title": "Main Isoperimetric Inequality",
+      "startLine": 161,
+      "endLine": 253,
+      "summary": "Proves heron_product a b c ≤ heron_product t t t where t = (a+b+c)/3. Proves equality iff a = b = c.",
+      "mathContext": "Uses AM-GM with substitution x = s-a, y = s-b, z = s-c, x+y+z = s"
+    },
+    {
+      "id": "bounds",
+      "title": "Quantitative Bounds",
+      "startLine": 256,
+      "endLine": 300,
+      "summary": "States heron_product ≤ s⁴/27, area² ≤ s⁴/27, and isoperimetric ratio hp ≤ P⁴/432.",
+      "mathContext": "Numerical constants: s⁴/27 from (s/3)³ = s³/27 and P⁴/432 = (2s)⁴/432 = s⁴/27"
+    },
+    {
+      "id": "examples",
+      "title": "Worked Examples",
+      "startLine": 303,
+      "endLine": 345,
+      "summary": "Verifies: 3-4-5 triangle (heron_product = 36 ≤ 48), equilateral side 2 (heron_product = 3, area = √3). Shows bound is tight for equilateral.",
+      "mathContext": "norm_num computations and sqrt simplification"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "herons-formula",
+      "relationship": "extends",
+      "description": "Applies Heron's formula as the starting point for the isoperimetric inequality"
+    },
+    {
+      "targetId": "herons-formula-oq-01",
+      "relationship": "related",
+      "description": "The 4-variable analog: square maximizes area for fixed perimeter among cyclic quadrilaterals, proved via 4-variable AM-GM"
+    },
+    {
+      "targetId": "herons-formula-oq-03",
+      "relationship": "related",
+      "description": "Kahan's numerically stable Heron formula uses the same algebraic product structure"
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, axiom-free formalization of the triangle isoperimetric inequality. The three-variable AM-GM inequality is proved from first principles via an algebraic decomposition identity (ring + nlinarith), and combined with Heron's formula to give the sharp bound Area² ≤ s⁴/27 with equality characterization.",
+    "implications": "This provides the sharp constant in the triangle isoperimetric inequality and gives a machine-verified proof that the equilateral triangle is the unique optimizer. The AM-GM lemma proved here (three-variable, with equality case) is independently useful for other extremal problems.",
+    "openQuestions": [
+      "Can the isoperimetric inequality be extended to n-gons with fixed perimeter, proving the regular n-gon is the maximizer?",
+      "Is the classical continuous isoperimetric inequality (circle maximizes area for fixed perimeter) formalizable in Lean 4 using tools from Mathlib's measure theory?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Hardy, G.H., Littlewood, J.E., Pólya, G.",
+      "title": "Inequalities (2nd ed.)",
+      "year": "1952",
+      "venue": "Cambridge University Press",
+      "note": "Classical reference for AM-GM and isoperimetric inequalities"
+    },
+    {
+      "authors": "Osserman, R.",
+      "title": "The Isoperimetric Inequality",
+      "year": "1978",
+      "venue": "Bulletin of the American Mathematical Society 84(6), 1182-1238",
+      "note": "Survey of isoperimetric inequalities from classical to modern"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "IsoperimetricTriangle",
+    "lineCount": 362,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 3
+  },
+  "mainTheorems": [
+    {
+      "name": "amgm_three_nonneg",
+      "type": "supporting",
+      "description": "Three-variable AM-GM: xyz ≤ ((x+y+z)/3)³ for x,y,z ≥ 0",
+      "leanType": "x * y * z ≤ ((x + y + z) / 3) ^ 3"
+    },
+    {
+      "name": "heron_product_le_equilateral",
+      "type": "core",
+      "description": "Isoperimetric inequality: equilateral triangle maximizes Heron product",
+      "leanType": "heron_product a b c ≤ heron_product ((a+b+c)/3) ((a+b+c)/3) ((a+b+c)/3)"
+    },
+    {
+      "name": "heron_product_eq_equilateral_iff",
+      "type": "core",
+      "description": "Equality holds iff triangle is equilateral",
+      "leanType": "heron_product a b c = heron_product t t t ↔ a = b ∧ b = c"
+    },
+    {
+      "name": "heron_product_le_s4_27",
+      "type": "core",
+      "description": "Quantitative bound: heron_product ≤ s⁴/27",
+      "leanType": "heron_product a b c ≤ ((a+b+c)/2)^4 / 27"
+    }
+  ]
+}
