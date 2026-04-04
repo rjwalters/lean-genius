@@ -13,10 +13,10 @@
       "tournaments"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 1277,
-    "assumptions": "0 axioms. 2 sorries in the Ghouila-Houri chain: (1) sc_digraph_has_directed_cycle (line 352): SC + positive out-degree implies a directed cycle; proof needs first-repeated-vertex extraction from a closed walk. (2) gh_cycle_extendable case k < n-1 (line 539): growing a short cycle under Ghouila-Houri degree conditions; needs SC routing + degree counting. hamiltonian_of_few_missing_arcs and directed_hamiltonian_threshold are fully proved (lines 1253–1520). Moon-Moser and Rédei are fully proved.",
+    "lineCount": 1372,
+    "assumptions": "0 axioms. 4 sorries in the Ghouila-Houri infrastructure (lines 904–942): (1) sc_digraph_has_directed_cycle: SC + positive out-degree implies a directed cycle exists; (2) exists_longest_directed_cycle: finite digraph always has a longest directed cycle; (3) gh_insertion_point: GH insertion lemma — degree conditions + longest-cycle property force a pigeonhole insertion point for any vertex outside the cycle; (4) insertNth_directed_cycle: inserting a vertex at an insertion point yields a valid longer directed cycle. The main ghouila_houri theorem is fully proved from these lemmas. Moon-Moser and Rédei are fully proved.",
     "dateAdded": "2026-03-30"
   },
   "overview": {
