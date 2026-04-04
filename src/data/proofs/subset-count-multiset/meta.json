@@ -41,14 +41,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The multiset (or bag) is a fundamental data structure generalizing sets by allowing repeated elements. The powerset counting formula 2^n extends naturally to multisets when we count submultisets with multiplicity.",
+    "historicalContext": "The multiset (or *bag*) is a fundamental data structure generalizing sets by allowing repeated elements, formalized in computer science by Knuth (1981) and in mathematics dating back to Boole and De Morgan. The powerset counting formula $|\\mathcal{P}(S)| = 2^n$ for sets extends to multisets: Sylvester (1867) and later Cayley studied the enumeration of multiset submultisets in the context of symmetric functions and formal power series. For a multiset with $n$ total elements (counted with multiplicity), the number of submultisets is $2^n$ — not the product formula $\\prod(m_i + 1)$ for *distinct* submultisets. This distinction (counting with vs. without multiplicity) is subtle and important for generating function arguments. The multiset powerset is fundamental to the theory of formal power series: $\\sum_{k \\geq 0} |\\text{powersetCard}(k, s)| x^k = (1+x)^n$ is the generating function for submultiset counts, which specializes to the standard binomial theorem.",
     "problemStatement": "How does |P(S)| = 2^n generalize to multisets? For a multiset s with n elements (counted with multiplicity), prove that the number of submultisets is 2^n and the number of k-element submultisets is C(n,k).",
     "text": "Subset counting generalized to multisets via Mathlib's multiset powerset infrastructure.",
     "proofStrategy": "Direct application of Mathlib's Multiset.card_powerset and Multiset.card_powersetCard, with pedagogical documentation connecting to the set case.",
     "keyInsights": [
       "For multisets, each element occurrence is independently in or out of a submultiset, giving 2^n total",
       "The number of DISTINCT submultisets (without multiplicity) is prod(m_i + 1) over distinct elements, where m_i is the multiplicity",
-      "When all multiplicities are 1 (i.e., a set), this reduces to 2^n"
+      "When all multiplicities are 1 (i.e., a set), this reduces to 2^n",
+      "The Lean proofs are nearly trivial: `multiset_powerset_card` is a one-liner delegation to Mathlib's `card_powerset`, illustrating how powerful Mathlib's combinatorics library is for counting arguments",
+      "There are two distinct notions of submultiset count: (1) submultisets-with-multiplicity = $2^n$ (what this proof establishes), and (2) distinct submultisets = $\\prod(m_i + 1)$ — the proof correctly targets the first, which is what Lean's `Multiset.powerset` computes"
     ],
     "prerequisites": [
       "Basic combinatorics (powerset, binomial coefficients)",
