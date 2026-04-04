@@ -97,11 +97,56 @@ theorem threshold_sharp : (∀ n ≥ 18, ∀ G : GraphOnInterval n,
 
 /- ## Connection to Ramsey Theory -/
 
+/-- Map the 15 edges of K₆ (i < j) to pairs: edge k gives vertices (pairOf6 k).1 and .2 -/
+private def pairOf6 (k : Fin 15) : Fin 6 × Fin 6 :=
+  match k.val with
+  | 0 => (0,1) | 1 => (0,2) | 2 => (0,3) | 3 => (0,4) | 4 => (0,5)
+  | 5 => (1,2) | 6 => (1,3) | 7 => (1,4) | 8 => (1,5)
+  | 9 => (2,3) | 10 => (2,4) | 11 => (2,5)
+  | 12 => (3,4) | 13 => (3,5)
+  | _ => (4,5)  -- k.val = 14
+
+/-- Map ordered pair (i,j) with i < j to edge index -/
+private def edgeIdx6 (p : Fin 6 × Fin 6) : Fin 15 :=
+  match p.1.val, p.2.val with
+  | 0, 1 => 0 | 0, 2 => 1 | 0, 3 => 2 | 0, 4 => 3 | 0, 5 => 4
+  | 1, 2 => 5 | 1, 3 => 6 | 1, 4 => 7 | 1, 5 => 8
+  | 2, 3 => 9 | 2, 4 => 10 | 2, 5 => 11
+  | 3, 4 => 12 | 3, 5 => 13
+  | _, _ => 14  -- (4,5) and default
+
+/-- For ordered pairs, pairOf6 and edgeIdx6 are inverses -/
+private lemma pairOf6_edgeIdx6 {a b : Fin 6} (h : a.val < b.val) :
+    pairOf6 (edgeIdx6 (a, b)) = (a, b) := by
+  fin_cases a <;> fin_cases b <;>
+    simp_all [edgeIdx6, pairOf6]
+
+/-- R(3,3) = 6: for any 2-coloring of the 15 edges of K₆, there exists a
+    monochromatic triangle. Verified by native_decide (2^15 = 32768 cases). -/
+private theorem r33_via_edges :
+    ∀ col : Fin 15 → Fin 2,
+    ∃ a b d : Fin 6, a.val < b.val ∧ b.val < d.val ∧
+      col (edgeIdx6 (a, b)) = col (edgeIdx6 (a, d)) ∧
+      col (edgeIdx6 (a, d)) = col (edgeIdx6 (b, d)) := by
+  native_decide
+
 /-- The Ramsey number R(3,3) = 6: any 2-coloring of K₆ has a monochromatic triangle -/
 theorem ramsey_3_3 : ∀ c : Fin 6 → Fin 6 → Fin 2,
     (∀ i j, i ≠ j → c i j = c j i) →
     ∃ a b d : Fin 6, a ≠ b ∧ b ≠ d ∧ a ≠ d ∧ c a b = c b d ∧ c b d = c a d := by
-  sorry
+  intro c hc
+  -- Apply r33_via_edges with col k := c on the pair at edge index k
+  obtain ⟨a, b, d, hab, hbd, h1, h2⟩ :=
+    r33_via_edges (fun k => c (pairOf6 k).1 (pairOf6 k).2)
+  -- a.val < b.val < d.val gives distinctness
+  have hab' : a ≠ b := Fin.ne_of_lt (Fin.mk_lt_mk.mpr hab)
+  have hbd' : b ≠ d := Fin.ne_of_lt (Fin.mk_lt_mk.mpr hbd)
+  have had' : a ≠ d := Fin.ne_of_lt (Fin.mk_lt_mk.mpr (Nat.lt_trans hab hbd))
+  -- Rewrite h1, h2 using pairOf6_edgeIdx6 to get c equalities
+  simp only [pairOf6_edgeIdx6 hab, pairOf6_edgeIdx6 (Nat.lt_trans hab hbd),
+             pairOf6_edgeIdx6 hbd] at h1 h2
+  -- h1 : c a b = c a d,  h2 : c a d = c b d  → all equal
+  exact ⟨a, b, d, hab', hbd', had', h1.trans h2, h2.symm⟩
 
 /-- Triangle-free graphs have independence number at least √n (Ramsey bound) -/
 theorem triangleFree_independence_bound {n : ℕ} (G : GraphOnInterval n) (hG : IsTriangleFree G) :
