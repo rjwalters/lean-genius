@@ -46,8 +46,10 @@ open InverseGaloisA5 Polynomial
 
 /-- q has exactly 5 roots in ℂ. -/
 theorem q_rootSet_ℂ_card : Fintype.card (q.rootSet ℂ) = 5 :=
+  -- card_rootSet_eq_natDegree needs (q.map ℂ).Splits, not q.Splits (algebraMap ℚ ℂ)
+  -- IsAlgClosed.splits (q.map (algebraMap ℚ ℂ)) gives exactly this
   (Polynomial.card_rootSet_eq_natDegree q_separable
-    (IsAlgClosed.splits_codomain q)).trans q_natDegree
+    (IsAlgClosed.splits (q.map (algebraMap ℚ ℂ)))).trans q_natDegree
 
 -- ============================================================================
 -- § 2. Derivative Analysis
