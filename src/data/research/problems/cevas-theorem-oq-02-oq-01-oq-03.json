@@ -1,44 +1,78 @@
 {
   "slug": "cevas-theorem-oq-02-oq-01-oq-03",
   "title": "Geometric interpretation of non-equal weights in Ceva theorem",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Geometric interpretation of non-equal weights in Ceva theorem.",
-    "whyMatters": []
+    "formal": "weight_division_ratio : (D - B) / (C - D) = β / α where D = (α * B + β * C) / (α + β)",
+    "plain": "The weight parameters (α, β) in Ceva's theorem encode the division ratio of the cevian point: D = (α·B + β·C)/(α+β) divides BC in ratio BD:DC = β:α.",
+    "whyMatters": [
+      "Explains the geometric meaning of the algebraic weight parameters in Ceva's theorem",
+      "Shows equal weights give midpoints (centroid), angle-bisector weights give incenter",
+      "Establishes precise criterion for which side D is closer to"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Division ratio BD/DC = β/α for D = (α·B + β·C)/(α+β)",
+      "Midpoint iff α = β (when B ≠ C)",
+      "Incenter weight product condition (c/b)(a/c)(b/a) = 1",
+      "D closer to B iff β < α"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Fully formalized: 18 theorems, 0 sorries, 0 axioms"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-03T02:57:02.771Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-04T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Completed: CevasTheoremOQ02OQ01OQ03.lean compiles, 0 sorries, 18 theorems, 0 axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Explore further Ceva extensions: area coordinates, trigonometric form.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 0 sorries, 18 theorems, 0 axioms (weight_division_ratio and supporting lemmas)",
+    "builtItems": [
+      "weight_point_displacement: D = B + β*(C-B)/(α+β)",
+      "weight_point_distance_from_B: D - B = β*(C-B)/(α+β)",
+      "weight_point_distance_to_C: C - D = α*(C-B)/(α+β)",
+      "weight_division_ratio: (D-B)/(C-D) = β/α",
+      "weight_midpoint_iff_of_ne: D = midpoint iff α = β (when B ≠ C)",
+      "weight_fraction_from_B: β/(α+β) = 1/2 iff α = β",
+      "nonequal_weights_not_midpoint: α ≠ β → D ≠ midpoint",
+      "ceva_product_eq_weight_ratio: (βD/αD)(βE/αE)(βF/αF) = βD*βE*βF/(αD*αE*αF)",
+      "ceva_balance_iff_unit_product: weight balance ↔ Ceva product = 1",
+      "incenter_weight_product_is_one: (c/b)(a/c)(b/a) = 1",
+      "weight_scale_invariance: (cα*B + cβ*C)/(cα + cβ) = (α*B + β*C)/(α+β)",
+      "nonequal_weights_asymmetry: α ≠ β → BD ≠ DC",
+      "weight_closer_to_B_iff: D - B < C - D ↔ β < α"
+    ],
+    "insights": [
+      "Division ratio β:α not α:β — weight α controls DC (opposite side), not BD",
+      "div_eq_div_iff for backward direction of midpoint iff: reduce a/b = c/d to a*d = c*b then use ring",
+      "Cross-multiplication via div_mul_cancel₀: to prove a/c < b/c, multiply by c then cancel",
+      "mul_right_cancel₀ hCB h1 proves β = α from β*(C-B) = α*(C-B) and C-B ≠ 0",
+      "field_simp; ring works for D-B and C-D displacement lemmas with hαβ.ne'"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Explore trigonometric Ceva form: cevians concurrent iff sin ratios product = 1",
+      "Explore area-coordinate interpretation of weights"
+    ]
   },
   "tags": [
     "seeker-selected",
     "geometry",
-    "cevas-theorem"
+    "ceva",
+    "division-ratio",
+    "euclidean"
   ],
   "relatedProofs": [
     "cevas-theorem",
@@ -50,113 +84,15 @@
     "cevas-theorem-oq-04"
   ],
   "references": {
-    "papers": [],
+    "papers": ["Ceva, G. (1678). De lineis rectis."],
     "urls": [],
-    "mathlib": []
+    "mathlib": ["mul_right_cancel₀", "div_eq_div_iff", "div_mul_cancel₀", "mul_lt_mul_of_pos_right"]
   },
   "started": "2026-04-03T02:57:02.771Z",
-  "lastUpdate": "2026-04-03T02:57:02.771Z",
+  "lastUpdate": "2026-04-04T00:00:00.000Z",
   "significance": 6,
-  "tractability": 5,
+  "tractability": 9,
   "leanFiles": [
-    {
-      "path": "Proofs/CevasTheorem.lean",
-      "filename": "CevasTheorem.lean",
-      "lineCount": 264,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheorem.lean"
-    },
-    {
-      "path": "Proofs/CevasTheoremNonEuclidean.lean",
-      "filename": "CevasTheoremNonEuclidean.lean",
-      "lineCount": 528,
-      "theoremCount": 18,
-      "axiomCount": 0,
-      "defCount": 7,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclidean.lean"
-    },
-    {
-      "path": "Proofs/CevasTheoremOQ01.lean",
-      "filename": "CevasTheoremOQ01.lean",
-      "lineCount": 908,
-      "theoremCount": 39,
-      "axiomCount": 0,
-      "defCount": 22,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ01.lean"
-    },
-    {
-      "path": "Proofs/CevasTheoremOQ02.lean",
-      "filename": "CevasTheoremOQ02.lean",
-      "lineCount": 502,
-      "theoremCount": 22,
-      "axiomCount": 0,
-      "defCount": 9,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02.lean"
-    },
-    {
-      "path": "Proofs/CevasTheoremOQ02OQ01.lean",
-      "filename": "CevasTheoremOQ02OQ01.lean",
-      "lineCount": 263,
-      "theoremCount": 6,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01.lean"
-    },
-    {
-      "path": "Proofs/CevasTheoremOQ02OQ01OQ02.lean",
-      "filename": "CevasTheoremOQ02OQ01OQ02.lean",
-      "lineCount": 302,
-      "theoremCount": 13,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ02.lean"
-    },
-    {
-      "path": "Proofs/CevasTheoremOQ02OQ02.lean",
-      "filename": "CevasTheoremOQ02OQ02.lean",
-      "lineCount": 321,
-      "theoremCount": 17,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ02.lean"
-    },
-    {
-      "path": "Proofs/CevasTheoremOQ04.lean",
-      "filename": "CevasTheoremOQ04.lean",
-      "lineCount": 243,
-      "theoremCount": 22,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ04.lean"
-    },
-    {
-      "path": "Proofs/CevasTheoremSinRatio.lean",
-      "filename": "CevasTheoremSinRatio.lean",
-      "lineCount": 146,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremSinRatio.lean"
-    }
+    {"path": "Proofs/CevasTheoremOQ02OQ01OQ03.lean", "filename": "CevasTheoremOQ02OQ01OQ03.lean", "lineCount": 291, "theoremCount": 18, "axiomCount": 0, "defCount": 0, "sorryCount": 0, "isAristotle": false}
   ]
 }
