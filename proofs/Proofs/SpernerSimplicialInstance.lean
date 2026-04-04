@@ -219,9 +219,164 @@ structure AbstractSimplicialData (V : Type*) [DecidableEq V]
     face.card = n →
     (topSimplices.filter (fun s => face ⊆ s)).card ≤ 2
 
+/-
+## Face Helper Library
+
+Named helpers for working with codimension-1 faces of top
+simplices. These factor out the key operations needed to
+construct adjacency for `toTriangulation`. -/
+
+section FaceHelpers
+
+variable {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+variable (D : AbstractSimplicialData V n)
+
+/-- The ordered vertex enumeration of a top simplex. -/
+noncomputable def AbstractSimplicialData.vertexEnum
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) : V :=
+  (s.sort (· ≤ ·)).get (k.cast (by rw [Finset.length_sort]; exact (D.card_eq s hs).symm))
+
+/-- The k-th vertex is a member of the simplex. -/
+lemma AbstractSimplicialData.vertexEnum_mem
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    D.vertexEnum s hs k ∈ s := by
+  unfold vertexEnum
+  have hmem := List.get_mem (s.sort (· ≤ ·))
+    (k.cast (by rw [Finset.length_sort]; exact (D.card_eq s hs).symm))
+  exact (s.mem_sort (· ≤ ·)).mp hmem
+
+/-- The codimension-1 face obtained by deleting the k-th vertex. -/
+noncomputable def AbstractSimplicialData.faceOf
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) : Finset V :=
+  s.erase (D.vertexEnum s hs k)
+
+/-- A face has cardinality n. -/
+lemma AbstractSimplicialData.faceOf_card
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    (D.faceOf s hs k).card = n := by
+  simp only [faceOf]
+  rw [Finset.card_erase_of_mem (D.vertexEnum_mem s hs k)]
+  have := D.card_eq s hs
+  omega
+
+/-- A face is a subset of the simplex. -/
+lemma AbstractSimplicialData.faceOf_subset
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    D.faceOf s hs k ⊆ s :=
+  Finset.erase_subset _ _
+
+/-- Top simplices containing a given face. -/
+noncomputable def AbstractSimplicialData.containersOf
+    (f : Finset V) : Finset (Finset V) :=
+  D.topSimplices.filter (fun t => f ⊆ t)
+
+/-- The original simplex contains its own face. -/
+lemma AbstractSimplicialData.self_mem_containersOf
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    s ∈ D.containersOf (D.faceOf s hs k) := by
+  simp only [containersOf, Finset.mem_filter]
+  exact ⟨hs, D.faceOf_subset s hs k⟩
+
+/-- Container count is at most 2 (pseudomanifold). -/
+lemma AbstractSimplicialData.containersOf_card_le_two
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    (D.containersOf (D.faceOf s hs k)).card ≤ 2 :=
+  D.pseudomanifold _ (D.faceOf_card s hs k)
+
+/-- Container count is 1 or 2. -/
+lemma AbstractSimplicialData.containersOf_card_one_or_two
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    (D.containersOf (D.faceOf s hs k)).card = 1 ∨
+    (D.containersOf (D.faceOf s hs k)).card = 2 := by
+  have h1 : 0 < (D.containersOf (D.faceOf s hs k)).card :=
+    Finset.card_pos.mpr ⟨s, D.self_mem_containersOf s hs k⟩
+  have h2 := D.containersOf_card_le_two s hs k
+  omega
+
+/-- The difference `t \ f` is nonempty when `t` has `n+1` elements
+and `f` has `n` elements with `f ⊆ t`. -/
+lemma AbstractSimplicialData.sdiff_nonempty
+    (t : Finset V) (ht : t ∈ D.topSimplices)
+    (f : Finset V) (_hf : f ⊆ t) (hfc : f.card = n) :
+    (t \ f).Nonempty := by
+  rw [Finset.nonempty_iff_ne_empty]
+  intro h
+  have hsub := Finset.sdiff_eq_empty_iff_subset.mp h
+  have := D.card_eq t ht
+  have := Finset.card_le_card hsub
+  omega
+
+/-- Given a top simplex `t` containing face `f`, find the index
+in `t`'s sorted vertex list of the unique vertex in `t \ f`.
+Returns the position of the "opposite" vertex. -/
+noncomputable def AbstractSimplicialData.findOppositeIdx
+    (t : Finset V) (ht : t ∈ D.topSimplices)
+    (f : Finset V) (_hf : f ⊆ t) (hfc : f.card = n) :
+    Fin (n + 1) :=
+  -- There exists k such that vertexEnum t ht k is not in f.
+  -- Since t has n+1 vertices and f has n with f ⊆ t, at least one
+  -- vertex of t is not in f.
+  have hex : ∃ k : Fin (n + 1), D.vertexEnum t ht k ∉ f := by
+    by_contra hall
+    push_neg at hall
+    -- Every vertex of t is in f, so t ⊆ f
+    have hsub : t ⊆ f := by
+      intro v hv
+      -- v is in t, so v appears somewhere in t.sort
+      have hv_sort : v ∈ t.sort (· ≤ ·) := (t.mem_sort (· ≤ ·)).mpr hv
+      rw [List.mem_iff_getElem] at hv_sort
+      obtain ⟨idx, hidx_lt, hidx_eq⟩ := hv_sort
+      have hidx_lt' : idx < n + 1 := by
+        rwa [Finset.length_sort, D.card_eq t ht] at hidx_lt
+      have hmem := hall ⟨idx, hidx_lt'⟩
+      -- vertexEnum t ht ⟨idx, hidx_lt'⟩ = (t.sort (· ≤ ·)).get (cast ⟨idx, ...⟩)
+      -- which equals (t.sort (· ≤ ·))[idx] = v
+      -- Use the fact that vertexEnum_mem gives us membership
+      -- and that vertexEnum at index idx equals (t.sort ...)[idx]
+      have heq : D.vertexEnum t ht ⟨idx, hidx_lt'⟩ = v := by
+        simp only [vertexEnum, List.get_eq_getElem]
+        exact hidx_eq
+      rwa [heq] at hmem
+    have := Finset.card_le_card hsub
+    rw [D.card_eq t ht, hfc] at this
+    omega
+  hex.choose
+
+/-- The opposite vertex is not in the face. -/
+lemma AbstractSimplicialData.vertexEnum_findOppositeIdx_not_mem
+    (t : Finset V) (ht : t ∈ D.topSimplices)
+    (f : Finset V) (hf : f ⊆ t) (hfc : f.card = n) :
+    D.vertexEnum t ht (D.findOppositeIdx t ht f hf hfc) ∉ f := by
+  sorry
+
+/-- Erasing the opposite vertex from t gives back f. -/
+lemma AbstractSimplicialData.erase_opposite_eq
+    (t : Finset V) (ht : t ∈ D.topSimplices)
+    (f : Finset V) (hf : f ⊆ t) (hfc : f.card = n) :
+    t.erase (D.vertexEnum t ht (D.findOppositeIdx t ht f hf hfc)) = f := by
+  sorry
+
+end FaceHelpers
+
+/-
+## Adjacency Construction
+
+We define adjacency for `AbstractSimplicialData.toTriangulation`
+using the face helper library. For each cell `(s, hs)` and face
+index `k`:
+1. Compute face `f = D.faceOf s hs k`
+2. Compute containers `cs = D.containersOf f`
+3. If `cs.card = 1`: boundary face, return `none`
+4. If `cs.card = 2`: find the other simplex `t != s` in `cs`,
+   compute the opposite index in `t`, return `some (t, k')`
+-/
+
 /-- Construct a `Triangulation` from `AbstractSimplicialData`.
 Uses `V : Type` (universe 0) to match `CellComplex.Cell : Type`.
-The adjacency and proof fields are sorry'd for future work. -/
+
+The vertex map and vertex_injective are fully proved.
+The adjacency map is defined using the face helper library.
+Adjacency proofs (adj_symm, adj_vertex, adj_ne) remain sorry'd. -/
 noncomputable def AbstractSimplicialData.toTriangulation
     {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
     (D : AbstractSimplicialData V n) :
@@ -229,8 +384,7 @@ noncomputable def AbstractSimplicialData.toTriangulation
   Cell := { s : Finset V // s ∈ D.topSimplices }
   cellDecEq := inferInstance
   cellFintype := Finset.Subtype.fintype D.topSimplices
-  vertex := fun ⟨s, hs⟩ k => (s.sort (· ≤ ·)).get
-    (k.cast (by rw [Finset.length_sort]; exact (D.card_eq s hs).symm))
+  vertex := fun ⟨s, hs⟩ k => D.vertexEnum s hs k
   vertex_injective := by
     intro ⟨s, hs⟩ i j hij
     have hnd : (s.sort (· ≤ ·)).Nodup := s.sort_nodup (· ≤ ·)
@@ -242,7 +396,27 @@ noncomputable def AbstractSimplicialData.toTriangulation
       rw [List.nodup_iff_injective_get] at hnd
       exact Fin.val_eq_of_eq (hnd hi'j')
     exact Fin.ext key
-  adj := fun ⟨_, _⟩ _ => sorry
+  adj := fun ⟨s, hs⟩ k =>
+    let f := D.faceOf s hs k
+    let cs := D.containersOf f
+    if hc : cs.card ≤ 1 then
+      -- Boundary face: only s contains f
+      none
+    else
+      -- Interior face: exactly 2 containers (by pseudomanifold)
+      -- Find the other simplex t != s in cs
+      let cs_without_s := cs.erase s
+      if ht_exists : cs_without_s.Nonempty then
+        let t := ht_exists.choose
+        have ht_mem_erase : t ∈ cs_without_s := ht_exists.choose_spec
+        have ht_mem_cs : t ∈ cs := Finset.mem_of_mem_erase ht_mem_erase
+        have ht_top : t ∈ D.topSimplices := (Finset.mem_filter.mp ht_mem_cs).1
+        have hf_sub_t : f ⊆ t := (Finset.mem_filter.mp ht_mem_cs).2
+        let k' := D.findOppositeIdx t ht_top f hf_sub_t (D.faceOf_card s hs k)
+        some (⟨t, ht_top⟩, k')
+      else
+        -- Shouldn't happen if cs.card >= 2, but we handle gracefully
+        none
   adj_symm := by intro _ _ _ _ _; sorry
   adj_vertex := by intro _ _ _ _ _; sorry
   adj_ne := by intro _ _ _ _ _; sorry
