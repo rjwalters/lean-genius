@@ -1,7 +1,7 @@
 {
   "slug": "inverse-galois-oq-06-oq-01",
   "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-04-04T02:41:25-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Feasibility survey complete. Key finding: |Gal| ∈ {5,10,60}. Can eliminate 5 (~120 lines) and 20 (trivial). Hard case: D₅ (order 10) requires Dedekind theorem (not in Mathlib 4.26).",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
@@ -29,11 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "ORIENT: Reduced to 3 cases {5,10,60}. Cases 5 and 20 eliminable. Case 10 blocked by missing Frobenius theory in Mathlib 4.26.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "insights": [
+      "|Gal| ∈ {5,10,60} since: Gal ≤ A₅ (disc=32000²∈Q²), 5||Gal| (irreducible deg 5), F₂₀⊄A₅ (order-4 elements not in A₅)",
+      "q has exactly 1 real root: q prime = 5(x-1)⁴+20 ≥ 20 > 0 always, so q strictly monotone → exactly 1 real root",
+      "Eliminating |Gal|=5: K≠Q(α₀)⊂R since K contains non-real roots; tractable ~100 lines",
+      "Eliminating |Gal|=20: A₅ simple (Mathlib) → no subgroup of index 3 → no subgroup order 20; tractable ~40 lines",
+      "Eliminating |Gal|=10 (D₅): D₅ ≤ A₅ IS valid. Requires Dedekind theorem OR Dummit resolvent. Both blocked: missing Frobenius theory in Mathlib 4.26",
+      "Best evidence: q mod 7 = (X-5)(X-6)(cubic irreducible), q mod 11 = (X-3)(X-4)(cubic irreducible). Both give 3||Gal| via Dedekind.",
+      "Resolvent evidence: sextic resolvent R₆ has no rational root (native_decide verified). By Dummit 1991: → Gal = A₅ (if formalized)",
+      "Dead ends: q mod 2 = (x+1)⁵ (ramified), q mod 3 = irreducible over F₃ (gives 5-cycle, not 3-cycle)"
+    ],
+    "mathlibGaps": [
+      "Frobenius element order = inertia degree for number fields (not in Mathlib 4.26)",
+      "InertiaGroup and DecompositionGroup for number field extensions",
+      "Dedekind theorem: polynomial factorization mod p → Galois cycle types",
+      "Dummit resolvent theorem for quintics (1991 paper — not formalized anywhere in Lean)"
+    ],
+    "nextSteps": [
+      "Create InverseGaloisOQ06OQ01.lean: prove gal_card_ne_5 (q strictly monotone → 1 real root → |Gal|>5) and gal_card_ne_20 (A₅ simple → no order-20 subgroup)",
+      "For gal_card_ne_10: wait for Mathlib to add Frobenius elements, OR attempt KummerDedekind + residue degree argument (300-500 lines)",
+      "Consider contributing Dummit resolvent theorem to Mathlib (valuable standalone result, ~400 lines)"
+    ],
     "markdown": "# Knowledge Base: inverse-galois-oq-06-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
