@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created Erdos1059OQ01.lean with 5 witnesses (101, 211, 461, 557, 673), density concept formalized, 0 sorries, 1 axiom",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added level-6 witness 769 and proved factorialCheckCount_le_log (0 sorries, 1 axiom)",
+    "builtItems": [
+      "factorialCheckCount_le_log in Erdos1059OQ01.lean: proved factorialCheckCount n <= Nat.log 2 n + 2",
+      "two_pow_pred_le_factorial (private): 2^(k-1) <= k! for k >= 1, proved by induction",
+      "witness_769 + prime_769: first level-6 witness (p = 769 in (720, 5040))",
+      "six_prime_witnesses: packages all 6 verified witnesses (101, 211, 461, 557, 673, 769)"
+    ],
+    "insights": [
+      "769 is the first level-6 witness (p in (720, 5040)); requires 7 factorial checks vs 6 for level-5",
+      "Proved factorialCheckCount(n) <= log2(n) + 2 — elementary bound via 2^(k-1) <= k! induction",
+      "Bound is tight at n=3 (count=3, log=1) and n=7 (count=4, log=2)"
+    ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove density_one_conjecture from selberg_density_axiom (OQ-02) once PNT/Brun-Titchmarsh available in Mathlib",
