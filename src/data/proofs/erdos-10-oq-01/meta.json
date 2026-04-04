@@ -18,10 +18,10 @@
       "density"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 3,
-    "lineCount": 240,
-    "assumptions": "3 axioms: (1) crocker_theorem — infinitely many odd integers not in RepSet 2, a proven 1971 result axiomatized here; (2) gallagher_density_approach — Gallagher 1975, proven via large sieve, axiomatized; (3) erdos_graham_conjecture — the main open conjecture that no finite k covers all large integers. 1 sorry in the illustrative density-vs-universal counterexample.",
+    "lineCount": 316,
+    "assumptions": "3 axioms: (1) crocker_theorem — infinitely many odd integers not in RepSet 2, a proven 1971 result axiomatized here; (2) gallagher_density_approach — Gallagher 1975, proven via large sieve, axiomatized; (3) erdos_graham_conjecture — the main open conjecture that no finite k covers all large integers.",
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.26.0"
   },
@@ -96,7 +96,7 @@
     }
   ],
   "conclusion": {
-    "summary": "OQ-01 is formalized with a complete logical hierarchy: the parent Erdős #10 problem implies OQ-01; the G-S conjecture would resolve it with k=4; Gallagher's density result is provably insufficient; Crocker's theorem rules out k=2; and the Erdős-Graham conjecture implies OQ-01 is false. The file has 3 axioms (2 for proven but deep results, 1 for the open conjecture) and 1 sorry in an illustrative counterexample.",
+    "summary": "OQ-01 is formalized with a complete logical hierarchy: the parent Erdős #10 problem implies OQ-01; the G-S conjecture would resolve it with k=4; Gallagher's density result is provably insufficient; Crocker's theorem rules out k=2; and the Erdős-Graham conjecture implies OQ-01 is false. The file has 3 axioms (2 for proven but deep results, 1 for the open conjecture) and 0 sorries.",
     "implications": "If Granville-Soundararajan is proved, OQ-01 is resolved (k=4 works). If the Erdős-Graham conjecture is proved, OQ-01 is refuted. The density gap argument shows that the standard probabilistic heuristics (Gallagher) are genuinely insufficient for a definitive answer.",
     "openQuestions": [
       "Is OQ-01 true or false? (Expected: false, by Erdős-Graham conjecture)",
@@ -147,7 +147,7 @@
       "Mathlib.Order.Filter.AtTopBot.Basic"
     ],
     "namespace": "Erdos10OQ01",
-    "lineCount": 240,
+    "lineCount": 316,
     "axiomCount": 3,
     "theoremCount": 12
   }
