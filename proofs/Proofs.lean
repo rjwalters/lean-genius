@@ -1958,6 +1958,7 @@ import Proofs.PrimeReciprocalDivergence
 import Proofs.PrimeReciprocalDivergenceOQ03
 import Proofs.PrimitiveRoots
 import Proofs.ProbMethodAlteration
+import Proofs.ProbMethodAlterationOQ02
 import Proofs.ProbMethodApplications
 import Proofs.ProbMethodExpectation
 import Proofs.ProbMethodExpectationOQ01

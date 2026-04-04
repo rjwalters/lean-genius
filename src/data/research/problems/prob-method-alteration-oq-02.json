@@ -1,8 +1,8 @@
 {
   "slug": "prob-method-alteration-oq-02",
   "title": "Can the independent set bound $\\alpha(G) \\geq n^2/(2m+n)$ be improved for tri...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T17:32:58.851Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-04T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proved triangle-free improvement: \u03b1(G) >= 2n/(n+2) via Mantel bound",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Done",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Proved \u03b1(G) >= 2n/(n+2) for triangle-free graphs via Mantel+Caro-Wei. AKS axiomatized.",
+    "builtItems": [
+      "mantel_bound_four: 4*|E(G)| <= n^2 for CliqueFree 3 graphs (ProbMethodAlterationOQ02.lean:46)",
+      "improvement_key_ineq: 4m<=n^2 implies 2n(2m+n)<=n^2(n+2) via nlinarith (line 75)",
+      "triangle_free_alpha_improvement: \u03b1(G) >= 2n/(n+2) for triangle-free G (line 117)",
+      "aks_beats_turan_for_large_graphs: c*n*log(d)/d > 2 when c*n*log(d) > 2d (line 161)"
+    ],
+    "insights": [
+      "Key identity: n^2/(2m+n) >= 2n/(n+2) iff n^2 >= 4m = Mantel bound",
+      "Mathlib CliqueFree.card_edgeFinset_le gives Turan edge bound; need rcases+omega for n%2 cases",
+      "div_le_iff/div_le_div_iff unknown when open Real shadows them; use field_simp [h.ne] + sub_nonneg",
+      "exact_mod_cast cleanly lifts Nat arithmetic inequalities to Real",
+      "field_simp with explicit .ne hints solves equality goals fully; do not add trailing ring"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Follow-up OQ: Is AKS bound c*n*log(d)/d tight for triangle-free graphs?",
+      "Follow-up OQ: Does improvement extend to C4-free or C5-free graphs?"
+    ]
   },
   "tags": [
     "seeker-selected"
@@ -61,6 +75,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlteration.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodAlterationOQ02.lean",
+      "filename": "ProbMethodAlterationOQ02.lean",
+      "lineCount": 213,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlterationOQ02.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodAlterationOQ02.lean",
+      "filename": "ProbMethodAlterationOQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlterationOQ02.lean"
     }
   ]
 }
