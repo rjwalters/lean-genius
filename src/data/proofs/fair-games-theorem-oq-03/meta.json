@@ -49,7 +49,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "The Optional Stopping Theorem was proved by Joseph Doob in 1953 and forms the cornerstone of modern martingale theory. Its applications span gambling (Gambler's Ruin), finance (risk-neutral pricing), and statistics (sequential analysis). This file formalizes the key application results and eliminates the single axiom in the parent file.",
+    "historicalContext": "The Optional Stopping Theorem was proved by Joseph Doob in 1953 and forms the cornerstone of modern martingale theory. Doob's martingale theory unified previously disparate results in probability: the ballot problem (Bertrand 1887), the ruin probability formula (Laplace 1812), and sequential hypothesis testing (Wald 1947) all become special cases of one theorem: if you stop a martingale at a bounded stopping time, the expected value is unchanged from the start.\n\nIn Lean 4 / Mathlib 4.26.0, the stopping time API was updated to use τ : Ω → WithTop ℕ (extended naturals ℕ∞) instead of τ : Ω → ℕ. This represents a conceptually richer formalization — ⊤ represents 'never stop', which is the correct mathematical type — but breaks code written against the older API. This file navigates that API change, documenting the workarounds and the four theorems that remain as sorries pending stabilization of the stoppedValue/WithTop.untopA simp lemmas.",
     "problemStatement": "The main FairGamesTheorem.lean file contained several application theorems left as trivial placeholders (returning `(1:ℕ)+1=2` or `True`). Can these be given substantive, mathematically meaningful proofs? Additionally, can the single axiom in the main file be eliminated using Mathlib's bidirectional characterization theorem?",
     "proofStrategy": "Standalone file (no import of FairGamesTheorem). Each stub is given a proper mathematical statement and proof. The Gambler's Ruin formula is derived algebraically from the fair game condition. Martingale time-invariance uses Martingale.setIntegral_eq directly. The submartingale characterization axiom is proved using submartingale_iff_expected_stoppedValue_mono. Four theorems remain as sorry pending Mathlib 4.26.0 stoppedValue/untopA simp API resolution.",
     "keyInsights": [
@@ -158,5 +158,13 @@
       ]
     }
   ],
-  "conclusion": "This file demonstrates that the Optional Stopping Theorem's main application theorems can be formalized with 0 axioms. The algebraic Gambler's Ruin formula shows the theorem's power: a result requiring careful stochastic analysis reduces to solving a linear equation. The submartingale characterization axiom from the parent file is fully eliminated. Martingale time-invariance is proved via a direct setIntegral_eq path. Four theorems remain as honest sorries pending resolution of Mathlib 4.26.0 stoppedValue/WithTop.untopA simp API."
+  "conclusion": {
+    "summary": "This file demonstrates that the Optional Stopping Theorem's main application theorems can be formalized with 0 axioms. The algebraic Gambler's Ruin formula shows the theorem's power: a result requiring careful stochastic analysis reduces to solving a linear equation. The submartingale characterization axiom from the parent file is fully eliminated. Four theorems remain as honest sorries pending Mathlib 4.26.0 stoppedValue/WithTop.untopA simp API stabilization.",
+    "implications": "The Gambler's Ruin formalization illustrates a general pattern: once a stochastic invariant (E[f_τ] = E[f_0]) is established, the application reduces to pure algebra. This separation of concerns — stochastic argument once, algebraic consequence forever — makes formal verification tractable for complex probabilistic arguments. The martingale time-invariance proof via setIntegral_eq with s=Set.univ shows that Mathlib's measure theory API is rich enough to bypass complex stopping-time machinery when simpler paths exist.",
+    "openQuestions": [
+      "Can the 4 sorry'd theorems be proved once Mathlib stabilizes WithTop.untopD/untopA simp lemmas for stoppedValue?",
+      "Can the continuous-time version (Doob's Optional Stopping for Brownian motion) be formalized using Mathlib's continuous-time martingale infrastructure?",
+      "Can Wald's identity (E[S_τ] = E[X₁] · E[τ] for random sums stopped at τ) be derived as a corollary of martingale_time_invariance?"
+    ]
+  }
 }
