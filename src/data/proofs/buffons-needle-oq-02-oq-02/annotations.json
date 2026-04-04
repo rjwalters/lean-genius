@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-bn3d-arclength-def",
+    "proofId": "buffons-needle-oq-02-oq-02",
+    "range": { "startLine": 56, "endLine": 90 },
+    "type": "definition",
+    "title": "3D Arc Length via Component-Wise Integration",
+    "content": "Defines `arcLength3D γ a b = ∫_a^b √(x'(t)² + y'(t)² + z'(t)²) dt` for a curve γ : ℝ → ℝ × ℝ × ℝ using Lean's `intervalIntegral`. The three components are extracted via `Prod.fst ∘ γ`, `Prod.fst ∘ Prod.snd ∘ γ`, and `Prod.snd ∘ Prod.snd ∘ γ`. Nonnegativity follows from `integral_nonneg` since √(...) ≥ 0. Additivity uses `integral_add_adjacent_intervals` with a continuity hypothesis. The constant curve case is proved by `deriv_const` simplification.",
+    "mathContext": "$L(\\gamma, a, b) = \\int_a^b |\\gamma'(t)|\\,dt = \\int_a^b \\sqrt{x'(t)^2 + y'(t)^2 + z'(t)^2}\\,dt$. This is the Euclidean arc length element $ds = |\\gamma'|\\,dt$, the 3D generalization of the 2D formula. Nonnegativity: $|\\gamma'(t)| \\geq 0$ so $\\int \\geq 0$. Additivity: $L(\\gamma, a, c) = L(\\gamma, a, b) + L(\\gamma, b, c)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["arc-length element", "Euclidean speed", "integral_nonneg", "integral_add_adjacent_intervals", "Prod.fst/snd composition"],
+    "prerequisites": ["intervalIntegral in Lean", "Real.sqrt_nonneg", "Continuous.intervalIntegrable", "deriv_const"]
+  },
+  {
+    "id": "ann-bn3d-polygonal",
+    "proofId": "buffons-needle-oq-02-oq-02",
+    "range": { "startLine": 99, "endLine": 121 },
+    "type": "definition",
+    "title": "3D Polygonal Path and Expected Crossing Count",
+    "content": "Defines `Polygonal3D n` as a structure with n segment lengths (all nonneg) and `totalLength` as their sum. The `expectedCrossings d = totalLength / (2d)` formula is the 3D noodle theorem from `BuffonsNeedleOQ02.lean`. The crucial step `polygonal3D_noodle` is proved by `rfl` — the formula is definitional. This layer bridges between the fully verified polygonal theory and the smooth axiomatization: approximating C¹ curves by inscribed polygonal paths reduces the smooth problem to the polygonal one.",
+    "mathContext": "For a 3D polygonal noodle with $n$ segments of lengths $L_1, \\ldots, L_n$: $E[\\text{crossings}] = \\frac{L_1 + \\cdots + L_n}{2d}$ by linearity of expectation — each segment $L_i$ contributes $L_i/(2d)$ crossings independently. The 3D crossing factor $\\alpha_3 = 1/2$ (vs $\\alpha_2 = 2/\\pi$ in 2D) comes from $E_{S^2}[|\\cos\\theta|] = 1/2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["linearity of expectation", "crossing factor α₃ = 1/2", "BuffonsNeedleOQ02", "Finset.sum_nonneg"],
+    "prerequisites": ["Polygonal3D structure", "Finset.sum", "div def", "rfl proof"]
+  },
+  {
+    "id": "ann-bn3d-axioms",
+    "proofId": "buffons-needle-oq-02-oq-02",
+    "range": { "startLine": 134, "endLine": 158 },
+    "type": "context",
+    "title": "Buffon–Barbier Axioms: Smooth 3D Crossing Count",
+    "content": "Two axioms capture the smooth 3D theory. `smooth3DExpectedCrossings` is a noncomputable axiom asserting the existence of the crossing-count functional for smooth C¹ curves (this requires measure theory on the space of plane orientations, i.e., the Grassmannian Gr(2,3) ≅ S², not in Mathlib). `smooth3D_buffon_eq` is the main formula: for d > 0, a ≤ b, γ ∈ C¹, the expected crossings equal arcLength3D(γ,a,b)/(2d). The docstring explains the approximation argument: inscribe polygonal paths Pₖ → use polygonal theorem → pass to limit by C¹ regularity.",
+    "mathContext": "The axiom requires the kinematic formula from integral geometry (Cauchy-Crofton for ℝ³): the expected crossings of a curve with a random oriented hyperplane are proportional to arc length. Formally: $E[\\text{crossings}] = \\frac{1}{2d} \\int_a^b |\\gamma'(t)|\\,dt = \\frac{L}{2d}$, where $1/(2d)$ is the normalizing factor from the uniform measure on oriented planes.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Crofton formula", "Grassmannian Gr(2,3)", "kinematic formula", "ContDiff ℝ 1", "noncomputable axiom in Lean"],
+    "prerequisites": ["ContDiff ℝ 1 γ", "Grassmannian measure theory", "Mathlib measure theory"]
+  },
+  {
+    "id": "ann-bn3d-shape-independence",
+    "proofId": "buffons-needle-oq-02-oq-02",
+    "range": { "startLine": 166, "endLine": 187 },
+    "type": "insight",
+    "title": "Shape Independence: Only Arc Length Matters",
+    "content": "The most striking theorem: two C¹ curves in ℝ³ with equal arc lengths have identical expected crossing counts, regardless of shape. The proof is two lines: rewrite both expected crossings using `smooth3D_buffon_eq`, then use the hypothesis `hSameLen`. This is the formal statement of the 'Buffon noodle phenomenon' in 3D: a rubber band shaped into any C¹ curve still crosses parallel planes according to the universal formula L/(2d), where L is just the total length.",
+    "mathContext": "Shape independence: $\\text{arcLength3D}(\\gamma_1, a_1, b_1) = \\text{arcLength3D}(\\gamma_2, a_2, b_2) \\implies E[\\text{crossings}(\\gamma_1)] = E[\\text{crossings}(\\gamma_2)]$. Philosophically: the expected crossings operator $\\gamma \\mapsto E[\\text{crossings}]$ factors through arc length. It is a function of $L$, not of $\\gamma$ itself.",
+    "significance": "key",
+    "relatedConcepts": ["Buffon noodle", "shape independence", "integral geometry", "linearity of expectation"],
+    "prerequisites": ["smooth3D_buffon_eq", "rw tactic", "arcLength3D definition"]
+  },
+  {
+    "id": "ann-bn3d-approximation",
+    "proofId": "buffons-needle-oq-02-oq-02",
+    "range": { "startLine": 196, "endLine": 236 },
+    "type": "technique",
+    "title": "Approximation Convergence and Lipschitz Stability",
+    "content": "`approximation_limit_3D` formalizes the polygonal-to-smooth bridge: if polygonal path lengths Pₖ.totalLength → L in atTop filter, then their expected crossings → L/(2d). The proof uses continuity of the linear map x ↦ x/(2d): `continuous_id.div_const` gives continuity, then `Continuous.continuousAt.tendsto.comp` chains with the convergence hypothesis. `lipschitz_3D` bounds |E₁-E₂| ≤ (1/(2d))·|L₁-L₂| via algebraic manipulation with `abs_mul` and `abs_of_pos`.",
+    "mathContext": "The Lipschitz constant $1/(2d)$ in 3D is tighter than $2/(\\pi d)$ in 2D because $1/2 < 2/\\pi$. This reflects the smaller 3D crossing factor: a unit vector in $\\mathbb{R}^3$ has a smaller expected projection ($1/2$) than in $\\mathbb{R}^2$ ($2/\\pi$), so 3D curves cross parallel planes less often. The continuity argument: $x \\mapsto x/(2d)$ is linear, hence continuous.",
+    "significance": "supporting",
+    "relatedConcepts": ["Filter.Tendsto", "continuous_id.div_const", "Lipschitz maps", "approximation by polygonal paths"],
+    "prerequisites": ["Filter.atTop", "nhds", "Continuous.continuousAt.tendsto", "abs_mul"]
+  },
+  {
+    "id": "ann-bn3d-dimension-comparison",
+    "proofId": "buffons-needle-oq-02-oq-02",
+    "range": { "startLine": 246, "endLine": 273 },
+    "type": "insight",
+    "title": "3D < 2D: The Universal Crossing Ratio 4/π",
+    "content": "Proves L/(2d) < 2L/(πd) for L,d > 0 — the 3D formula gives fewer expected crossings than the 2D formula. The proof uses `calc` with `pi_lt_four`: since π < 4, we have 1/2 < 2/π (as 1·π < 2·2 = 4), so (1/2)·(L/d) < (2/π)·(L/d). `smooth_crossing_ratio` then gives the exact ratio (2L/(πd))/(L/(2d)) = 4/π by `field_simp` + `ring`. The geometric intuition: a random direction in 3D (uniformly on S²) has a smaller expected absolute cosine (1/2) than a random direction in 2D on S¹ (2/π).",
+    "mathContext": "The 2D expected crossings are $2L/(\\pi d)$ (Barbier 1860), the 3D are $L/(2d)$. Ratio: $\\frac{2L/(\\pi d)}{L/(2d)} = \\frac{4}{\\pi} \\approx 1.273$. This follows from the crossing factors: $\\alpha_2 = E_{S^1}[|\\cos\\theta|] = 2/\\pi$ and $\\alpha_3 = E_{S^2}[|\\cos\\theta|] = 1/2$, with ratio $\\alpha_2/\\alpha_3 = 4/\\pi$.",
+    "significance": "key",
+    "relatedConcepts": ["Barbier's theorem", "crossing factor", "pi_lt_four", "S² average projections", "dimension dependence"],
+    "prerequisites": ["pi_pos", "pi_lt_four", "pi_ne_zero", "div_pos", "field_simp"]
+  }
+]
