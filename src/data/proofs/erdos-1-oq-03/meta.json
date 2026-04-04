@@ -49,15 +49,17 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "John Conway and Richard Guy (1968) discovered a greedy construction that produces sets with distinct subset sums and remarkably small maximum elements. The sequence starts 1, 2, 4, 7, 13, 24, 44, 84, ... (OEIS A005318). Each element a_k is chosen as a_{k-1} + ceil(S_{k-1}/2), just barely maintaining the distinct subset sums property. The construction achieves f(n) ~ c * 2^n with c = sqrt(2/pi)/2 ≈ 0.22009, far below the trivial 2^n bound. It is conjectured (but unproven) that the Conway-Guy construction is optimal, i.e., f(n) = conwayGuy(n) for all n.",
+    "historicalContext": "**Erdős Problem #1** (posed 1955, $\\$500 prize): If $A = \\{a_1 < \\cdots < a_n\\} \\subset \\mathbb{N}$ has all $2^n$ subset sums distinct, is $\\max A > c \\cdot 2^n$ for some absolute constant $c > 0$? The trivial lower bound is $\\max A \\geq 2^{n-1}/n$ (from the counting bound $2^n \\leq n \\cdot N + 1$). The trivial construction $A = \\{1, 2, 4, \\ldots, 2^{n-1}\\}$ gives $\\max A = 2^{n-1}$.\n\n**John Conway and Richard Guy (1968)** discovered a greedy construction that produces sets with remarkably small maximum elements. The sequence starts $1, 2, 4, 7, 13, 24, 44, 84, \\ldots$ (OEIS A005318). Each element $a_k = a_{k-1} + \\lceil S_{k-1}/2 \\rceil$ is chosen just large enough to maintain the distinct subset sums property. The construction achieves $f(n) \\sim c \\cdot 2^n$ with $c = \\sqrt{2/\\pi}/2 \\approx 0.22009$, improving the trivial construction by a factor of $\\approx 4.5$.\n\nThe **optimality conjecture** (Conway-Guy gives exact values of $f(n)$ for all $n$) remains open. **W. F. Lunnon (1988)** verified it computationally for $n \\leq 10$; **Tom Bohman (1996)** extended verification to $n \\leq 22$. Bohman also proved that any counterexample to the Erdős lower bound must arise from a construction fundamentally different from Conway-Guy. A proof of optimality would resolve Erdős Problem #1 by establishing the exact constant in the lower bound.",
     "problemStatement": "Define the Conway-Guy sequence and verify that it gives optimal values of $f(n)$ (the minimum $N$ such that some $n$-element subset of $\\{1, \\ldots, N\\}$ has all $2^n$ subset sums distinct). The sequence satisfies $a_1 = 1$ and $a_k = a_{k-1} + \\lceil S_{k-1}/2 \\rceil$ where $S_k = \\sum_{i=1}^k a_i$.",
     "text": "A 182-line formalization of the Conway-Guy sequence for Erdos Problem #1. The sequence is defined for the first 8 terms, and its key properties are verified: initial values, recurrence relation, the structural property a_k > S_{k-1}/2, the counting bound 2^n <= n*f(n)+1, strict monotonicity, the at-most-doubles growth rate, and the decreasing ratio f(n)/2^n. The optimality conjecture (Conway-Guy gives exact values of f(n)) is stated as an axiom.",
     "proofStrategy": "Small cases are verified by interval_cases and norm_num/simp. The Conway-Guy sequence is defined by pattern matching for n <= 8. Properties are proved by case analysis on the finite range.",
     "keyInsights": [
       "The Conway-Guy greedy construction: a_k = a_{k-1} + ceil(S_{k-1}/2) barely maintains distinct subset sums",
-      "The key invariant a_k > S_{k-1}/2 ensures that subsets with/without a_k have non-overlapping sum ranges",
-      "The ratio f(n)/2^n decreases monotonically, approaching sqrt(2/pi)/2 ≈ 0.22009",
-      "Optimality for general n is open — verified computationally only for n <= 10 (Lunnon 1988)"
+      "The key invariant 2*a_k > S_{k-1} ensures that subsets with/without a_k have non-overlapping sum ranges — this is the inductive DSS argument",
+      "The ratio f(n)/2^n decreases monotonically, approaching sqrt(2/pi)/2 ≈ 0.22009 via the Wallis product",
+      "Optimality for general n is open — verified computationally for n ≤ 22 (Bohman 1996), but the $500 Erdős prize remains unclaimed",
+      "The counting bound 2^n ≤ n*N+1 is a universal lower bound — independent of the specific construction",
+      "The at-most-doubles property a_{k+1} ≤ 2*a_k follows directly from the sum bound S_n < 2*a_n+1"
     ]
   },
   "sections": [
@@ -126,8 +128,10 @@
     "summary": "The Conway-Guy sequence is formalized with all key structural properties verified for small cases. The optimality conjecture is stated as an axiom since it remains open for general n.",
     "implications": "Establishes a formal foundation for studying the Conway-Guy optimality conjecture and provides verified structural properties that could support future progress on Erdos Problem #1.",
     "openQuestions": [
-      "Can the Conway-Guy optimality be proved for all n, or just verified computationally?",
-      "Can the asymptotic constant sqrt(2/pi)/2 be derived from the recurrence?"
+      "Can the Conway-Guy optimality be proved for all n? (Erdős $500 prize, open since 1968)",
+      "Is the asymptotic constant sqrt(2/pi)/2 tight, or is there a construction with a smaller constant?",
+      "Can the formalization be extended beyond n=8 using a recursive definition of conwayGuy for all n?",
+      "Can the sorry in minDSSBound be filled using the powers-of-2 construction as the nonemptiness witness?"
     ]
   },
   "references": [
