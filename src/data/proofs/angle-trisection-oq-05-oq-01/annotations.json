@@ -1,29 +1,62 @@
-{
-  "annotations": [
-    {
-      "line": 39,
-      "type": "definition",
-      "content": "**p-smooth number**: n > 0 with all prime factors ≤ p. The 3-smooth numbers are {1, 2, 3, 4, 6, 8, 9, 12, ...} — exactly the degrees constructible with single-fold origami."
-    },
-    {
-      "line": 71,
-      "type": "definition",
-      "content": "**k-fold origami constructibility**: degree d is k-fold constructible iff d is p_{k+1}-smooth. Each fold level adds one prime to the constructible set."
-    },
-    {
-      "line": 155,
-      "type": "theorem",
-      "content": "**Strict hierarchy**: Each fold level is strictly more powerful than the previous, witnessed by the separating prime p_{k+2}."
-    },
-    {
-      "line": 161,
-      "type": "theorem",
-      "content": "**Monotonicity**: k-fold ⊆ (k+1)-fold. Uses the strict monotonicity of the prime sequence."
-    },
-    {
-      "line": 240,
-      "type": "theorem",
-      "content": "**Algebraic completeness**: Every d > 0 is k-fold constructible for some k. Uses p_n ≥ n+2 to ensure all prime factors of d fall below the prime bound."
-    }
-  ]
-}
+[
+  {
+    "id": "issmooth-definition",
+    "startLine": 36,
+    "endLine": 37,
+    "type": "definition",
+    "title": "p-Smooth Numbers: All Prime Factors ≤ p",
+    "body": "Defines a number as p-smooth if it is positive and every prime divisor is at most p. The condition `∀ q : ℕ, q.Prime → q ∣ n → q ≤ p` is stronger than specifying the set of primes: it quantifies universally over all prime divisors, which makes closure proofs immediate (smooth_mul checks each factor independently). The positivity condition `n > 0` rules out 0, which technically divides nothing but would otherwise admit vacuously.",
+    "mathContext": "$n$ is $p$-smooth $\\iff n > 0 \\land \\forall q \\text{ prime},\\, q \\mid n \\Rightarrow q \\leq p$. The 3-smooth numbers are $\\{1, 2, 3, 4, 6, 8, 9, 12, 18, \\ldots\\}$ (products of primes $\\leq 3$).",
+    "significance": "The smooth number predicate is the algebraic bridge connecting fold levels to number theory: k-fold origami ↔ p_{k+1}-smooth degrees."
+  },
+  {
+    "id": "fold-prime-bound",
+    "startLine": 68,
+    "endLine": 68,
+    "type": "definition",
+    "title": "Prime Bound via Nat.nth: Enumerating Primes",
+    "body": "Uses `Nat.nth Nat.Prime k` to select the k-th prime (0-indexed: k=1 gives 3, k=2 gives 5, k=3 gives 7). `Nat.nth P` enumerates elements of a decidable predicate P in order; here P = Nat.Prime. The `noncomputable` flag is required because nth uses classical choice. The concrete equalities (fold_1_bound: 3, fold_2_bound: 5, etc.) are proved using dedicated Mathlib lemmas `nth_prime_one_eq_three` etc.",
+    "mathContext": "$p_{k+1} = $ the $(k{+}1)$-th prime: $k{=}1 \\to 3$, $k{=}2 \\to 5$, $k{=}3 \\to 7$, $k{=}4 \\to 11$.",
+    "significance": "Nat.nth provides a uniform, index-based way to reference the prime sequence, enabling `constructible_mono` to use `nth_strictMono` for the abstract monotonicity proof."
+  },
+  {
+    "id": "kfold-constructible-def",
+    "startLine": 72,
+    "endLine": 73,
+    "type": "definition",
+    "title": "k-Fold Constructibility: Prime-Smooth Degree Criterion",
+    "body": "A degree d is k-fold origami constructible iff (1) k ≥ 1 (at least one fold) and (2) d is foldPrimeBound(k)-smooth. The k ≥ 1 condition is needed because fold_0_bound would be 2 (the 0-th prime), making 0-fold origami 2-smooth, which is not physically meaningful. The definition encodes the Alperin-Lang conjecture for all k: each fold level adds the next prime to the constructible degrees.",
+    "mathContext": "IsKFoldConstructible $d$ $k$ $\\iff k \\geq 1 \\land$ IsSmooth$(p_{k+1}, d)$. For $k=1$: 3-smooth (Alperin-Lang proved). For $k=2$: 5-smooth (Alperin-Lang proved). For $k \\geq 3$: conjectured.",
+    "significance": "The central definition of the file. All 24 theorems are proved from this definition alone — no axioms are needed since the definition itself encodes the conjecture."
+  },
+  {
+    "id": "strict-hierarchy-witnesses",
+    "startLine": 136,
+    "endLine": 138,
+    "type": "theorem",
+    "title": "Strict Hierarchy: The Separating Prime Witnesses",
+    "body": "Bundles the 1↔2 separation: degree 5 is 2-fold constructible (5 ≤ fold_2_bound = 5) but NOT 1-fold constructible (5 > fold_1_bound = 3). Each strict_hierarchy theorem takes a single prime p_{k+2} and proves it lies in the (k+1)-fold constructible set but outside the k-fold set. The proof pattern is: (1) for the positive direction, verify the degree is p_{k+2}-smooth; (2) for the negative direction, exhibit p_{k+2} as a prime factor that exceeds the smaller prime bound.",
+    "mathContext": "The separating witnesses: $5$ (2-fold \\setminus 1-fold), $7$ (3-fold \\setminus 2-fold), $11$ (4-fold \\setminus 3-fold). Each is p_{k+2}, the first prime excluded from the k-fold level.",
+    "significance": "Proves the hierarchy is strict: 1-fold ⊊ 2-fold ⊊ 3-fold ⊊ 4-fold ⊊ ···. Without witnesses, the monotonicity theorem alone would only give the non-strict inclusions."
+  },
+  {
+    "id": "constructible-mono",
+    "startLine": 151,
+    "endLine": 159,
+    "type": "theorem",
+    "title": "Monotonicity via nth_strictMono on the Prime Sequence",
+    "body": "Proves that k-fold constructible implies (k+1)-fold constructible. The key step is the calc: if q ≤ foldPrimeBound(k), then q ≤ foldPrimeBound(k+1), which follows from `Nat.nth_strictMono Nat.infinite_setOf_prime` — the enumeration of an infinite set is strictly increasing, so the (k+1)-th prime strictly exceeds the k-th prime. The infinite set condition `Nat.infinite_setOf_prime` is Euclid's theorem in Mathlib.",
+    "mathContext": "$p_{k+1} < p_{k+2}$ (strict monotonicity of the prime sequence), so $p_{k+1}$-smooth $\\Rightarrow$ $p_{k+2}$-smooth.",
+    "significance": "The abstract monotonicity theorem, valid for all k at once. Used to propagate bounds across fold levels and to establish that the hierarchy is a proper chain."
+  },
+  {
+    "id": "eventually-constructible",
+    "startLine": 249,
+    "endLine": 255,
+    "type": "theorem",
+    "title": "Algebraic Completeness: Every Degree is Eventually Constructible",
+    "body": "Proves ∀ d > 0, ∃ k ≥ 1, IsKFoldConstructible d k by taking k = d. The key bound is `Nat.add_two_le_nth_prime d`: the d-th prime is at least d+2, so foldPrimeBound(d) = p_{d+1} ≥ d+2 > d. Since all prime factors of d are ≤ d (as q ∣ d implies q ≤ d), every prime factor falls below the prime bound p_{d+1}, making d a p_{d+1}-smooth number.",
+    "mathContext": "For any $d > 0$: all prime factors of $d$ are $\\leq d < p_{d+1} \\leq \\text{foldPrimeBound}(d)$, so $d$ is $\\text{foldPrimeBound}(d)$-smooth, i.e., $d$-fold constructible. Bound used: $p_n \\geq n+2$.",
+    "significance": "Shows the hierarchy of origami fold levels 'covers' all of algebra: no finite degree stays unconstructible forever. This is the Lean analogue of 'the union of all k-fold constructible fields is algebraically closed (within the reals)'."
+  }
+]
