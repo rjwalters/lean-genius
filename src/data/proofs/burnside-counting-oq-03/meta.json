@@ -7,7 +7,7 @@
     "author": "George Pólya (1937); formalized via Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Polya_enumeration_theorem",
     "date": "1937",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BurnsideCountingOQ03.lean",
     "tags": [
       "combinatorics",
@@ -20,10 +20,10 @@
       "research",
       "open-problem"
     ],
-    "badge": "wip",
-    "sorries": 2,
+    "badge": "mathlib",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "2 sorries remain: fixed_factors_through_mod (orbit = cosets of <r>, proved by modular arithmetic via gcd structure), polya_cyclic_fixed_count (bijection between fixed colorings and Fin gcd → Fin k). All concrete n=4 computations and the Pólya sum identity are fully proved.",
+    "assumptions": "No sorries, no axioms. Uses Mathlib's ZMod.addOrderOf_coe for the orbit size formula (addOrderOf r = n / gcd(n, r.val)) and references MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (Burnside's lemma). The core theorem polya_cyclic_fixed_count is independently proved via explicit bijection; the general necklace formula is stated conditionally with Burnside as a hypothesis.",
     "dateAdded": "2026-04-04",
     "lineCount": 294,
     "theoremCount": 15,
@@ -46,12 +46,15 @@
       }
     ],
     "originalContributions": [
-      "addOrderOf_rotation: orbit size under cyclic rotation = n / gcd(n, r.val)",
       "IsFixed: computable fixed-coloring predicate for cyclic rotation",
+      "addOrderOf_rotation: orbit size under cyclic rotation = n / gcd(n, r.val) (wraps Mathlib)",
+      "fixed_factors_through_mod: positions with same residue mod gcd(r,n) get same color (proved via Bezout)",
+      "polya_cyclic_fixed_count: |Fix(r)| = k^gcd(r,n) via explicit bijection with Fin(gcd) → Fin(k)",
       "fp_count_rot{0,1,2,3}_4_2: proved by native_decide (16, 2, 4, 2 fixed colorings)",
       "fp_sum_binary4: Burnside sum = 24 proved (not axiomatized)",
       "polya_sum_Z4_binary: Σ_{r:Fin 4} 2^gcd(r,4) = 24",
       "polya_divisor_sum_Z4_binary: Σ_{d|4} φ(4/d)·2^d = 24",
+      "polya_sum_identity: general Σ_{r:Fin n} k^gcd(r,n) = Σ_{d|n} φ(n/d)·k^d (for all n,k)",
       "polya_sum_equiv_4_2: two Pólya formulations are equal",
       "polya_binary4_necklace_count: 24/4 = 6 necklaces"
     ]
