@@ -61,9 +61,9 @@
       "smooth3D_mono/strictMono: monotonicity of expected crossings in arc length"
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 376,
-    "assumptions": "1 axiom: smooth3D_buffon_eq (the expected crossing count formula for smooth 3D curves). No sorries.",
+    "assumptions": "2 axioms: smooth3DExpectedCrossings (expected crossings function for smooth 3D curves) and smooth3D_buffon_eq (the expected crossing count formula). No sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -228,7 +228,7 @@
     ],
     "namespace": "BuffonsNeedleOQ02OQ02",
     "lineCount": 376,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "theoremCount": 15,
     "definitionCount": 4
   }
