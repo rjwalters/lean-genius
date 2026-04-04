@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-derang-oq02-oq02-header",
+    "line": 1,
+    "endLine": 44,
+    "type": "context",
+    "title": "Module Overview: Two Results on Fixed-Point Counts",
+    "body": "This module formalizes two interrelated results about fixed points of permutations. The **main theorem** (`sum_fixedPoints_eq_factorial`) says the total fixed-point count ∑_σ |Fix(σ)| = n!. Probabilistically, dividing by n! gives E[#fixed] = 1 for a uniform random permutation. The **weighted identity** (`weighted_partition_identity`) says ∑_k k·C(n,k)·D(n-k) = n!, where S(n,k) = C(n,k)·D(n-k) counts permutations with exactly k fixed points (the 'partial derangements'). The module imports from `DerangementsOQ02` (parent file providing `numDerangements` and `card_perms_with_kfixed`) and Mathlib's group action library.",
+    "mathContext": "The identity E[#fixed] = 1 follows from linearity of expectation: E[∑_i 1_{σ(i)=i}] = ∑_i P(σ(i)=i) = n·(1/n) = 1. The formal version avoids probability by working with integer sums: ∑_σ |Fix(σ)| = n! where the n! normalizes to the expected value 1.",
+    "significance": "This module demonstrates how Burnside's lemma — typically used to count orbits — can instead directly sum fixed-point counts, with transitivity of the symmetric group doing the heavy lifting.",
+    "relatedConcepts": ["burnside-lemma", "orbit-stabilizer-theorem", "derangements", "linearity-of-expectation", "partial-derangements"],
+    "prerequisites": ["Perm(Fin n) as a MulAction on Fin n", "MulAction.fixedBy type", "numDerangements from DerangementsOQ02"]
+  },
+  {
+    "id": "ann-derang-oq02-oq02-concrete",
+    "line": 50,
+    "endLine": 89,
+    "type": "note",
+    "title": "Concrete Verifications for n = 1, 2, 3, 4 via native_decide",
+    "body": "Seven `native_decide` theorems serve as computational witnesses. For n=3: all 6 permutations of {0,1,2} collectively contribute 6 fixed points (identity: 3, three transpositions: 1 each, two 3-cycles: 0 each — total 3+3+0=6). The weighted sum breakdown: k=0 contributes 0·(1·D(3))=0, k=1 contributes 1·(3·D(2))=1·(3·1)=3, k=2 contributes 2·(3·D(1))=2·(3·0)=0, k=3 contributes 3·(1·D(0))=3·(1·1)=3, total 6. For n=4: all 24 permutations contribute 24 fixed points; weighted breakdown 0+8+12+0+4=24. Boundary: n=0 (empty, sum=0 by `simp`), n=1 (identity only, 1 fixed point), n=2 (identity: 2, swap: 0, total 2).",
+    "mathContext": "The weighted breakdown uses D(0)=1 (empty derangement), D(1)=0, D(2)=1 (one swap), D(3)=2 (two 3-cycles). So C(3,3)·D(0)=1 permutation with 3 fixed points, and C(3,0)·D(3)=2 derangements contribute k=0. Each computation is verified by kernel reduction via `native_decide`.",
+    "significance": "These small-case verifications provide immediate confidence before the abstract proof and serve as regression tests against incorrect general formulas.",
+    "relatedConcepts": ["native_decide", "derangement-numbers", "permutation-enumeration"],
+    "prerequisites": ["Fin n type has decidable equality", "Equiv.Perm (Fin n) is a Fintype with computable instances"]
+  },
+  {
+    "id": "ann-derang-oq02-oq02-orbit-stabilizer",
+    "line": 103,
+    "endLine": 138,
+    "type": "proof",
+    "title": "card_perm_fixing_point: Orbit-Stabilizer Gives Exactly (n-1)! Fixers",
+    "body": "The lemma proves |{σ ∈ Perm(Fin n) | σ(x) = x}| = (n-1)! in six steps:\n\n**Step 1** (`hstab_eq`): Identifies {σ | σ x = x} with `MulAction.stabilizer (Equiv.Perm (Fin n)) x` via `Equiv.subtypeEquiv`, using `σ • x = σ x` for `Equiv.Perm`.\n\n**Step 2** (`horbit_univ`): The orbit of any x is all of Fin n: for any y, `Equiv.swap x y` sends x to y, so orbit(x) = Set.univ.\n\n**Step 3** (`hcard_orbit`): |orbit(x)| = n since orbit ≃ Fin n.\n\n**Step 4** (`h_os`): Orbit-stabilizer via `orbitEquivQuotientStabilizer` and `Subgroup.card_mul_index`: n · |Stab(x)| = |G| = n!.\n\n**Steps 5-6**: Compute |G| = n! and cancel n via `Nat.eq_of_mul_eq_mul_left` and `Nat.mul_factorial_pred`.",
+    "mathContext": "The stabilizer of x in S_n is isomorphic to S_{n-1}: the n-1 permutations of the remaining elements. The orbit-stabilizer theorem |G| = |orbit| · |stabilizer| gives n · (n-1)! = n!, confirming (n-1)! fixers. This is also the number of ways to arrange the remaining n-1 elements freely.",
+    "significance": "This lemma is more elaborate than the main theorem (which uses Burnside directly) but provides the structural insight for the weighted identity: each of the n elements is fixed by exactly (n-1)! permutations, so ∑_x ∑_σ 1_{σ(x)=x} = n·(n-1)! = n!.",
+    "relatedConcepts": ["orbit-stabilizer-theorem", "symmetric-group", "stabilizer-subgroup", "Subgroup.card_mul_index"],
+    "prerequisites": ["MulAction.orbitEquivQuotientStabilizer", "Equiv.swap symmetry", "Nat.mul_factorial_pred"]
+  },
+  {
+    "id": "ann-derang-oq02-oq02-burnside",
+    "line": 158,
+    "endLine": 177,
+    "type": "proof",
+    "title": "sum_fixedPoints_eq_factorial: Burnside's Lemma + Transitivity = n!",
+    "body": "The main theorem proceeds in four steps:\n\n1. **Rewrite** via `filter_eq_fixedBy_card` (private helper): converts `(univ.filter fun x => σ x = x).card` to `Fintype.card (MulAction.fixedBy (Fin n) σ)`, the form expected by Burnside.\n\n2. **Transitivity**: `MulAction.pretransitive_iff_unique_quotient_of_nonempty` characterizes pretransitivity as `Unique (orbitRel.Quotient G α)`. Since `Equiv.Perm (Fin n)` acts pretransitively (instance inferred automatically), the quotient is `Unique` — card 1.\n\n3. **Burnside**: `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` gives ∑_σ |Fix(σ)| = |Ω| · |G|.\n\n4. **Conclude**: |Ω| = 1 (Unique.fintype + Fintype.card_unique), so 1 · n! = n!.",
+    "mathContext": "Burnside's lemma: ∑_{g ∈ G} |Fix(g)| = |X/G| · |G|. For G = S_n, X = {1,…,n}, the action is transitive (one orbit), so |X/G| = 1 and the sum = n!. The Mathlib proof works by identifying the orbit quotient type and using its cardinality.",
+    "significance": "The key insight is that Mathlib automatically knows `Equiv.Perm (Fin n)` is pretransitive on `Fin n` (via `inferInstance`), requiring no additional proof. This reduces the entire argument to: transitivity → orbit count = 1 → Burnside → n!.",
+    "relatedConcepts": ["burnside-lemma", "pretransitive-action", "orbitRel.Quotient", "Unique-type"],
+    "prerequisites": ["MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group", "IsPretransitive instance for Equiv.Perm (Fin n)"]
+  },
+  {
+    "id": "ann-derang-oq02-oq02-fiberwise",
+    "line": 200,
+    "endLine": 227,
+    "type": "proof",
+    "title": "weighted_partition_identity: Double Counting via Fiberwise Sum Swap",
+    "body": "The identity ∑_k k·C(n,k)·D(n-k) = n! is proved by double counting in two steps:\n\n**Step 1** (`step1`): For each k, rewrites k·C(n,k)·D(n-k) as ∑_{σ ∈ A_k} fp(σ), where A_k = {σ : fp(σ)=k}. Uses `card_perms_with_kfixed` (from DerangementsOQ02) to identify |A_k| = C(n,k)·D(n-k), then `Finset.sum_const_nat` to write k·|A_k| = ∑_{A_k} k = ∑_{A_k} fp(σ) (since fp = k on A_k).\n\n**Step 2** (`step2`): `Finset.sum_fiberwise_of_maps_to` swaps summation: ∑_k ∑_{A_k} fp(σ) = ∑_σ fp(σ). The fiber map σ ↦ fp(σ) lands in Finset.range(n+1) since fp(σ) ≤ n.\n\n**Chain**: step1 → step2 → `sum_fixedPoints_eq_factorial` = n!. Uses `set_option maxHeartbeats 800000` for elaboration.",
+    "mathContext": "The fiberwise identity ∑_k ∑_{f⁻¹(k)} g = ∑_x g(x) is the discrete measure-theory layer-cake formula. It requires the fiber map to be surjective onto the index set, which holds since every σ has fp(σ) ∈ {0,…,n}. The `maxHeartbeats` increase accommodates Lean's elaboration cost for the nested `Finset.sum` rewrites.",
+    "significance": "This proof shows how a combinatorial double-counting argument ('count pairs (k, σ) with fp(σ) = k in two ways') translates directly into Lean via `sum_fiberwise_of_maps_to`. The proof structure mirrors the informal argument step by step.",
+    "relatedConcepts": ["Finset.sum_fiberwise_of_maps_to", "double-counting", "fiber-decomposition", "partial-derangements"],
+    "prerequisites": ["card_perms_with_kfixed from DerangementsOQ02", "Finset.sum_const_nat", "sum_fixedPoints_eq_factorial"]
+  }
+]

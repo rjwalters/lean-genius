@@ -25,14 +25,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The expected number of fixed points of a uniformly random permutation equals 1, for any n ≥ 1. This elegant fact follows from linearity of expectation: each of the n positions is fixed with probability 1/n, giving a total expectation of 1. The weighted partition identity ∑_k k·C(n,k)·D(n-k) = n! is the algebraic version connecting partial derangement counts to this expectation.",
+    "historicalContext": "The expected number of fixed points of a uniformly random permutation equals 1, for any n ≥ 1. This follows elegantly from linearity of expectation: each of the n positions i is fixed (i.e., σ(i) = i) with probability 1/n, giving total expectation n·(1/n) = 1. The formal version — that the sum ∑_σ |Fix(σ)| = n! — was understood implicitly by combinatorialists through the 19th century. The modern group-theoretic perspective comes from Burnside's 1897 'Theory of Groups of Finite Order', where the orbit-counting lemma (Burnside's lemma, sometimes attributed to Cauchy and Frobenius) establishes ∑_g |Fix(g)| = |orbits| · |G|. For the symmetric group S_n acting on {1,…,n}, transitivity reduces this to n! immediately. The derangement connection — expressing the fixed-point distribution as S(n,k) = C(n,k)·D(n-k) — links to the 18th century 'problème des rencontres' (Montmort 1708, de Moivre 1718), and the weighted partition identity ∑_k k·S(n,k) = n! is the first-moment formula for this distribution. In modern probability, this is the canonical example showing that the number of fixed points converges in distribution to Poisson(1) as n → ∞ (Chen-Stein method), with mean and variance both equal to 1 in the limit.",
     "problemStatement": "Prove that ∑_{σ ∈ Perm(Fin n)} |Fix(σ)| = n! for n ≥ 1, and prove the weighted partition identity ∑_k k·C(n,k)·D(n-k) = n! arising from the partial derangement formula S(n,k) = C(n,k)·D(n-k).",
-    "proofStrategy": "For the main theorem: Burnside's lemma gives ∑_σ |Fix(σ)| = |orbits| · |G|. Since Perm(Fin n) acts transitively on Fin n, there is exactly one orbit, so |orbits| = 1. Then |G| = n!. For the weighted identity: double counting via Finset.sum_fiberwise_of_maps_to swaps the order of summation, converting the fiber sum ∑_k k·|A_k| to ∑_σ fp(σ) = n!.",
+    "proofStrategy": "For the main theorem (`sum_fixedPoints_eq_factorial`): Burnside's lemma in the form `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` gives ∑_σ |Fix(σ)| = |orbits| · |G|. The action of Perm(Fin n) on Fin n is pretransitive (Equiv.swap x y sends x to y for any y), so the orbit quotient type is `Unique` — it has exactly one element. Thus |orbits| = 1 and |G| = n!. For `card_perm_fixing_point`: the orbit-stabilizer theorem (`MulAction.orbitEquivQuotientStabilizer` and `Subgroup.card_mul_index`) gives n · |Stab(x)| = n!, so |Stab(x)| = (n-1)!. For the weighted identity (`weighted_partition_identity`): double counting with `Finset.sum_fiberwise_of_maps_to` swaps the summation order, converting ∑_k k·|A_k| (where A_k = {σ : fp(σ) = k}) to ∑_σ fp(σ) = n!.",
     "keyInsights": [
-      "Burnside's lemma (sum_card_fixedBy_eq_card_orbits_mul_card_group) directly gives the sum",
-      "Transitivity of Perm(Fin n) on Fin n collapses the orbit count to 1 (Unique quotient type)",
-      "The orbit-stabilizer theorem yields card_perm_fixing_point: exactly (n-1)! permutations fix any element",
-      "Finset.sum_fiberwise_of_maps_to is the key lemma for the double-counting argument"
+      "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) directly gives the sum without needing to compute individual fixed-point sets",
+      "Transitivity of Perm(Fin n) on Fin n collapses the orbit count to 1: the orbit quotient type `orbitRel.Quotient` is provably `Unique` via `pretransitive_iff_unique_quotient_of_nonempty`",
+      "The orbit-stabilizer theorem yields `card_perm_fixing_point`: exactly (n-1)! permutations fix any given element x, because the stabilizer of x in Perm(Fin n) is isomorphic to Perm(Fin (n-1))",
+      "Finset.sum_fiberwise_of_maps_to is the key double-counting lemma: it rigorously swaps ∑_k ∑_{σ ∈ A_k} f(σ) = ∑_σ f(σ) without any sorry",
+      "The `native_decide` tactic provides computational verification for small cases (n=1,2,3,4), giving checkable evidence before the general proof"
     ],
     "prerequisites": [
       "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
@@ -41,14 +42,64 @@
       "Partial derangement counts from parent DerangementsOQ02"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-derang-oq02-oq02-header",
+      "title": "Header, Imports, and Module Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "description": "Module docstring stating both main results (sum_fixedPoints_eq_factorial and weighted_partition_identity), proof strategies for each, and imports from Mathlib's group action and permutation libraries. Opens the DerangementsOQ02OQ02 namespace."
+    },
+    {
+      "id": "sec-derang-oq02-oq02-concrete",
+      "title": "Section I: Concrete Verifications",
+      "startLine": 46,
+      "endLine": 70,
+      "description": "Four `native_decide` theorems verifying both identities for n=3 and n=4. For n=3: ∑_σ |Fix(σ)| = 6 = 3! across all 6 permutations; weighted sum breakdown 0+3+0+3=6. For n=4: ∑_σ |Fix(σ)| = 24 = 4!; weighted breakdown 0+8+12+0+4=24. These serve as computational witnesses before the general proof."
+    },
+    {
+      "id": "sec-derang-oq02-oq02-boundary",
+      "title": "Section II: Boundary Values",
+      "startLine": 72,
+      "endLine": 89,
+      "description": "Three boundary theorems for n=0,1,2: the empty case (sum=0, since Fin 0 is empty), the trivial case (n=1: only the identity, 1 fixed point, total=1=1!), and n=2 (identity contributes 2, swap contributes 0, total=2=2!). All proved by `native_decide` or `simp`."
+    },
+    {
+      "id": "sec-derang-oq02-oq02-orbit-stab",
+      "title": "Section III: Key Lemma via Orbit-Stabilizer",
+      "startLine": 91,
+      "endLine": 138,
+      "description": "Proves `card_perm_fixing_point`: for n ≥ 1, exactly (n-1)! permutations of Fin n fix any given point x. The six-step proof: (1) identify {σ | σ x = x} as the stabilizer subgroup via `Equiv.subtypeEquiv`; (2) show the orbit of x is all of Fin n using `Equiv.swap x y`; (3) compute |orbit(x)| = n; (4) apply orbit-stabilizer theorem via `orbitEquivQuotientStabilizer` and `Subgroup.card_mul_index`; (5) compute |G| = n!; (6) cancel n to get |Stab| = (n-1)!."
+    },
+    {
+      "id": "sec-derang-oq02-oq02-burnside",
+      "title": "Section IV: Main Theorem via Burnside's Lemma",
+      "startLine": 140,
+      "endLine": 177,
+      "description": "Proves `sum_fixedPoints_eq_factorial` for n ≥ 1: the private helper `filter_eq_fixedBy_card` rewrites the filter card as `Fintype.card (MulAction.fixedBy (Fin n) σ)`. Then `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` applies Burnside's lemma. Transitivity is witnessed by `pretransitive_iff_unique_quotient_of_nonempty`, making the orbit quotient `Unique` (card 1). The result follows: 1 · n! = n!."
+    },
+    {
+      "id": "sec-derang-oq02-oq02-weighted",
+      "title": "Section V: Weighted Partition Identity",
+      "startLine": 179,
+      "endLine": 234,
+      "description": "Proves `weighted_partition_identity`: ∑_{k=0}^n k·C(n,k)·D(n-k) = n! and `total_fixed_eq_card_perm`. The double-counting argument in two steps: Step 1 uses `card_perms_with_kfixed` (from parent file) to convert k·C(n,k)·D(n-k) into a sum over the fiber A_k = {σ : fp(σ)=k}. Step 2 applies `Finset.sum_fiberwise_of_maps_to` to swap the summation, yielding ∑_σ fp(σ) = n!. Uses `set_option maxHeartbeats 800000` for the elaboration-heavy proof."
+    },
+    {
+      "id": "sec-derang-oq02-oq02-summary",
+      "title": "Section VI: Summary and Generating Function Interpretation",
+      "startLine": 235,
+      "endLine": 250,
+      "description": "The theorem `summary_expected_fixed_one` packages the two identities together: given ∑_k C(n,k)·D(n-k) = n! (from the parent derangements-oq-02 file), both the unweighted and weighted sums equal n!. The docstring interprets this as: the bivariate generating function G_n(t) = ∑_k S(n,k)·t^k satisfies G_n(1) = G_n'(1) = n!, meaning E[1] = E[#fixed] = 1."
+    }
+  ],
   "conclusion": {
     "summary": "This file proves 13 theorems (including concrete verifications for n=1,2,3,4) with 0 sorries and 0 axioms, establishing both the Burnside-based main theorem and the weighted partition identity by double counting.",
-    "implications": "The result confirms E[#fixed] = 1 in Lean and provides a rigorous connection between the derangement formula S(n,k) = C(n,k)·D(n-k) and moment calculations. The card_perm_fixing_point lemma (orbit-stabilizer) is a reusable result for permutation group theory.",
+    "implications": "The result confirms E[#fixed] = 1 in Lean and provides a rigorous connection between the derangement formula S(n,k) = C(n,k)·D(n-k) and moment calculations. The `card_perm_fixing_point` lemma (orbit-stabilizer) is a reusable result for permutation group theory. The proof technique — Burnside's lemma combined with transitivity of the symmetric group — is a prototype for computing fixed-point sums in any transitive group action.",
     "openQuestions": [
-      "Prove higher moment formulas: E[(#fixed)^k] for k ≥ 2",
+      "Prove higher moment formulas: E[(#fixed)^k] for k ≥ 2 (second moment E[(#fixed)^2] = 2 for n ≥ 2)",
       "Prove the generating function G_n(t) = ∑_k C(n,k)·D(n-k)·t^k satisfies G_n(1) = n! and G_n'(1) = n!",
-      "Connect to Poisson approximation: (# fixed points) → Poisson(1) as n → ∞"
+      "Connect to Poisson approximation: (# fixed points) → Poisson(1) as n → ∞ (Chen-Stein method)"
     ]
   },
   "crossReferences": [
