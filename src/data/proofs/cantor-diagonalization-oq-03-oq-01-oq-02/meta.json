@@ -51,6 +51,79 @@
       "Classical logic: Classical.arbitrary for nonemptiness"
     ]
   },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Module Overview",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Imports Mathlib.Logic.Function.Basic and Mathlib.Tactic, then provides a comprehensive docstring describing the three-layer proof architecture: Abstract Rice (Bool Lawvere), Semantic Rice (flip program), and Kleene-Rice (classical computability theorem)."
+    },
+    {
+      "id": "eval-structure-framework",
+      "title": "Evaluation Structure Framework",
+      "startLine": 50,
+      "endLine": 75,
+      "summary": "Defines EvalStructure (a triple of programs, values, and evaluation), IsPointSurjective (every function Ob → Val is represented by some code), and proves the Lawvere Fixed-Point Theorem: point-surjectivity forces every endomorphism to have a fixed point."
+    },
+    {
+      "id": "abstract-rice",
+      "title": "Abstract Rice Theorem",
+      "startLine": 77,
+      "endLine": 121,
+      "summary": "Proves abstract_rice (no Bool-evaluation can be point-surjective, since Bool.not has no fixed point), rice_induced_obstruction (composition with any d : Val → Bool inherits this obstruction), and rice_undecidable_witness (for every eval, there exists a Bool function no code can represent)."
+    },
+    {
+      "id": "semantic-properties",
+      "title": "Semantic Properties and Flip Programs",
+      "startLine": 123,
+      "endLine": 164,
+      "summary": "Defines SemanticProperty (extensional: programs with equal behavior have equal property value) and HasFlipProgram (a total transformer that inverts the property). Proves semantic_rice_flip: a semantic property with a same-semantics flip transformer is immediately contradictory — no point-surjectivity needed."
+    },
+    {
+      "id": "halting-problem",
+      "title": "The Halting Problem as Rice Instance",
+      "startLine": 166,
+      "endLine": 188,
+      "summary": "Defines HaltingModel (programs, halts predicate, evaluate, and decidable-universality axiom) and proves no_halting_model: no such model exists, because M.universal is exactly the point-surjectivity condition that abstract_rice refutes."
+    },
+    {
+      "id": "classical-rice",
+      "title": "Classical Rice Theorem (Axiomatized)",
+      "startLine": 190,
+      "endLine": 262,
+      "summary": "Defines ClassicalRiceModel axiomatizing Kleene's recursion theorem (every code transformer has a semantic fixed point). Proves classical_rice_abstract: any non-trivial semantic property leads to a flipper whose Kleene fixed point simultaneously satisfies and violates the property."
+    },
+    {
+      "id": "summary-checks",
+      "title": "Summary Type Checks",
+      "startLine": 264,
+      "endLine": 275,
+      "summary": "Six #check commands verify the types of all main theorems: abstract_rice, rice_induced_obstruction, rice_undecidable_witness, semantic_rice_flip, no_halting_model, and classical_rice_abstract."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "cantor-diagonalization-oq-03-oq-01",
+      "title": "Lawvere Fixed-Point Theorem: Categorical Generalization",
+      "relationship": "Parent proof that established EvalStructure, IsPointSurjective, and the Lawvere FPT. This file answers OQ-02 from that entry."
+    },
+    {
+      "id": "cantor-diagonalization-oq-03-oq-01-oq-03",
+      "title": "Gödel's Incompleteness Theorem as a Lawvere Instance",
+      "relationship": "Sibling proof (OQ-03) applying the same Lawvere framework to formal proof systems; Rice (Bool.not) and Gödel (negation of provability) are parallel instantiations."
+    },
+    {
+      "id": "cantor-diagonalization-oq-03",
+      "title": "Lawvere Fixed-Point Theorem and Cantor's Theorem",
+      "relationship": "Grandparent proof establishing the original Lawvere FPT used here. Cantor (Prop, negation), Rice (Bool, not), Gödel (sentences, ¬Provable) form the diagonal family."
+    },
+    {
+      "id": "cantor-diagonalization",
+      "title": "Cantor Diagonalization",
+      "relationship": "Root of the diagonal argument family. Cantor's original uncountability argument is the special case Ob = ℕ, Val = Prop, f = negation."
+    }
+  ],
   "conclusion": {
     "summary": "Proved Rice's theorem as a Lawvere instance: no Bool-valued evaluation structure is point-surjective, which is the abstract essence of Rice's undecidability theorem. Derived 5 concrete results — abstract Rice, induced obstruction, undecidable witness, semantic flip, and no halting model — plus the classical Rice theorem from axiomatized Kleene recursion. 6 theorems, 0 axioms, 275 lines.",
     "implications": "This file completes the Lawvere fixed-point theorem application chain: Cantor (Prop, negation) → Rice (Bool, not) → Gödel (sentences, negation of provability). The key insight is that undecidability results in computability theory are not independent of diagonal arguments in set theory — they all share the same Lawvere fixed-point core. The `classical_rice_abstract` theorem shows that Rice follows from Kleene's recursion theorem, which in turn follows from the same diagonal construction.",
