@@ -40,16 +40,18 @@
     ]
   },
   "overview": {
-    "historicalContext": "Feuerbach's theorem (1822) that the nine-point circle is tangent to the incircle and excircles is one of the most beautiful results in triangle geometry. The natural question of its 3D analogue was studied by Court (1934) and Murakami (1952), who showed that for orthocentric tetrahedra, the twenty-four-point sphere plays the role of the nine-point circle. Unlike the 2D case, this fails for general tetrahedra.",
+    "historicalContext": "Karl Wilhelm Feuerbach proved in 1822 that the nine-point circle of a triangle is internally tangent to the incircle and externally tangent to the three excircles — considered one of the most elegant results in classical geometry. The question of a 3D analogue proved surprisingly subtle: unlike the 2D case (where every triangle has an orthocenter and a nine-point circle), the 3D story depends critically on the tetrahedron type.\n\nNorman Court (1934) in 'Modern Pure Solid Geometry' introduced the twenty-four-point sphere as the natural 3D analogue of the nine-point circle, passing through 24 distinguished points of an orthocentric tetrahedron (vs 9 for the nine-point circle). Court showed the sphere has center at the midpoint of the circumcenter and Monge point, with radius R/3.\n\nSatoru Murakami (1952) completed the Feuerbach analogue: for orthocentric tetrahedra, the twenty-four-point sphere is tangent to the insphere and all four exspheres. The orthocentric condition — that opposite edges are perpendicular (AB ⊥ CD, AC ⊥ BD, AD ⊥ BC) — is not merely a convenience but a necessity; the result fails for general tetrahedra.\n\nThe Monge point, introduced by Gaspard Monge, is the 3D substitute for the orthocenter: for any tetrahedron, the six planes each perpendicular to an edge and passing through the midpoint of the opposite edge all meet at the Monge point M = 4G - 3O. For orthocentric tetrahedra, M coincides with the classical orthocenter.",
     "problemStatement": "What is the 3D analogue of Feuerbach's theorem for tetrahedra? Specifically: is there a natural sphere that is tangent to the insphere and all exspheres of a tetrahedron?",
     "text": "For an orthocentric tetrahedron (opposite edges perpendicular), the twenty-four-point sphere is internally tangent to the insphere and externally tangent to all four exspheres",
     "proofStrategy": "Coordinate geometry in R^3. Define tetrahedra, orthocentric condition, insphere/exspheres, and the twenty-four-point sphere (center = midpoint of circumcenter and Monge point, radius = R/3). The orthocentric condition ensures the Monge point coincides with the orthocenter.",
     "keyInsights": [
-      "The 3D Feuerbach theorem requires the orthocentric hypothesis — it fails for general tetrahedra",
-      "The twenty-four-point sphere has radius R/3 (vs R/2 for the nine-point circle in 2D)",
-      "The Monge point is the 3D analogue of the orthocenter; for orthocentric tetrahedra they coincide",
-      "Only 2 of the 3 orthogonality conditions need be imposed — the third follows algebraically",
-      "The twenty-four-point sphere passes through 6 edge midpoints, 4 face centroids, and more"
+      "The 3D Feuerbach theorem requires the orthocentric hypothesis — it fails for general tetrahedra (axiom feuerbach_3d_fails_general)",
+      "The twenty-four-point sphere has radius R/3 (vs R/2 for the nine-point circle in 2D), reflecting the dimensional scaling of homotheties",
+      "The Monge point M = 4G - 3O always exists; for orthocentric tetrahedra it coincides with the orthocenter",
+      "Only 2 of the 3 orthogonality conditions need be imposed — the third follows from the identity AB·CD + AC·BD + AD·BC = 0 (proved by nlinarith)",
+      "The circumcenter is computed via Cramer's rule as an explicit closed-form formula; equidistance follows by ring",
+      "Incenter and excenters use face-area barycentric coordinates (generalizing the 2D side-length barycentric formula)",
+      "The inradius formula r = 3V/S generalizes the 2D formula r = 2A/perimeter (volume vs area, factor 3 vs 2)"
     ],
     "prerequisites": [
       "Feuerbach's theorem (2D case)",
