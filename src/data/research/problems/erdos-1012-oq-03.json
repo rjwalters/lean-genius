@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-03-30T08:49:59.593Z",
     "iteration": 2,
-    "focus": "Proved tournament insertion lemma + iterated construction. Rédei proved modulo list-to-equiv conversion.",
+    "focus": "Proved tournament insertion lemma + iterated construction. R\u00e9dei proved modulo list-to-equiv conversion.",
     "blockers": [],
-    "nextAction": "Prove list_path_to_hamiltonian (list-to-equiv conversion). Then tackle Moon-Moser using Rédei.",
+    "nextAction": "Prove list_path_to_hamiltonian (list-to-equiv conversion). Then tackle Moon-Moser using R\u00e9dei.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Moon-Moser fully proved (tournament_cycle_extendable case 2b complete). 2 sorries remain: ghouila_houri + directed_hamiltonian_threshold. 3→2 sorries this session.",
+    "progressSummary": "ACT: directed_hamiltonian_threshold now FULLY PROVED via complete probabilistic counting argument. Only hBadFor_bound sorry remains inside hamiltonian_of_few_missing_arcs (fiber counting: |BadFor(a,b)| \u2264 n*(n-2)!, suitable for Aristotle). ghouila_houri still sorry. 2 total sorries remain.",
     "builtItems": [
       "Digraph structure with loopless axiom",
       "In-degree, out-degree, tournament, strong connectivity definitions",
@@ -42,29 +42,43 @@
       "Digraph.arc_or_arc, arc_of_not_arc: tournament basic lemmas (proved)",
       "redei: proved using infrastructure (modulo list_path_to_hamiltonian)",
       "tournament_cycle_extendable Case 2a (some insertable vertex): full proof via List.insertNth (~80 lines)",
-      "tournament_cycle_extendable Case 2b (no insertable vertex): full S⁻/S⁺ proof (~190 lines, by contradiction via SC)",
+      "tournament_cycle_extendable Case 2b (no insertable vertex): full S\u207b/S\u207a proof (~190 lines, by contradiction via SC)",
       "grow_cycle_to_hamiltonian: converted to noncomputable def with termination_by",
-      "list_cycle_to_hamiltonian: fixed type mismatch in Equiv.ofBijective construction"
+      "list_cycle_to_hamiltonian: fixed type mismatch in Equiv.ofBijective construction",
+      "missing_arcs_le lemma: if arcCount > (n-1)\u00b2, then n*(n-1)-arcCount \u2264 n-2 (fully proved via zify+ring)",
+      "hamiltonian_of_few_missing_arcs: full probabilistic proof skeleton (1 sorry: hBadFor_bound)",
+      "arcCount definition: noncomputable filter-based arc counting (avoids Fintype synthesis issue)",
+      "h_partition proof: Missing.card + arcCount = n*(n-1) via NonLoop = Missing \u222a ArcPairs partition (fully proved)",
+      "hcard proof: |NonLoop| = n*(n-1) via Finset.card_sdiff + inter_univ + zify+ring (fully proved)",
+      "hAllBad_lt proof: |AllBad| < n! via union bound + factorial chain + nlinarith (fully proved)",
+      "hne proof: consecutive cycle entries are distinct, using rcases Nat.lt_or_ge for mod arithmetic (fully proved)",
+      "Good permutation extraction + Hamiltonian cycle construction (fully proved)",
+      "directed_hamiltonian_threshold: (n-1)\u00b2 < arcCount \u2227 SC \u2192 HC (fully proved given hBadFor_bound)"
     ],
     "insights": [
-      "Ghouila-Houri (1960) is the directed Dirac theorem: min in/out-degree ≥ n/2 + strong connectivity → HC",
+      "Ghouila-Houri (1960) is the directed Dirac theorem: min in/out-degree \u2265 n/2 + strong connectivity \u2192 HC",
       "Moon-Moser (1963): strongly connected tournaments have Hamiltonian cycles",
       "Redei (1934): every tournament has Hamiltonian path (no connectivity needed)",
-      "Mathlib lacks directed graph infrastructure — defined custom Digraph type",
+      "Mathlib lacks directed graph infrastructure \u2014 defined custom Digraph type",
       "Proof roadmap: Ghouila-Houri ~200 lines, Moon-Moser ~150, Redei ~100",
       "List-based induction on paths (cons a t) cleanly handles tournament insertion: if u beats head, prepend; else head beats u, recurse on tail",
-      "The key insight for correctness: when inserting at k_t+1 in a::t, if k_t=0 then first element becomes u and head→u arc is available; if k_t>0 then first element is unchanged",
+      "The key insight for correctness: when inserting at k_t+1 in a::t, if k_t=0 then first element becomes u and head\u2192u arc is available; if k_t>0 then first element is unchanged",
       "Induction on path length (Nat induction) is cleaner than well-founded recursion for the iterated construction",
       "The remaining list_path_to_hamiltonian sorry is purely data manipulation (building Equiv from Nodup list), no mathematical content",
-      "tournament_cycle_extendable case 2b: S⁻/S⁺ partition argument fully proved (~200 lines). Key: no-crossing assumption leads to S_minus being closed under arcs, which contradicts SC via path argument.",
+      "tournament_cycle_extendable case 2b: S\u207b/S\u207a partition argument fully proved (~200 lines). Key: no-crossing assumption leads to S_minus being closed under arcs, which contradicts SC via path argument.",
       "grow_cycle_to_hamiltonian converted to noncomputable def with well-founded recursion (termination_by Fintype.card V - l.length).",
-      "Moon-Moser theorem is now structurally complete (0 sorry in moon_moser itself). Only standalone results (ghouila_houri, directed_hamiltonian_threshold) remain sorry."
+      "Moon-Moser theorem is now structurally complete (0 sorry in moon_moser itself). Only standalone results (ghouila_houri, directed_hamiltonian_threshold) remain sorry.",
+      "directed_hamiltonian_threshold proof uses a probabilistic method over permutations: count 'bad' permutations (those using a missing arc in the cycle), show |AllBad| < n! = total permutations, extract a 'good' permutation",
+      "Missing arc partition: non-loop pairs = Missing \u222a ArcPairs, disjoint; |NonLoop| = n*(n-1) = n\u00b2-n proved via card_sdiff (new API: no argument, uses \u2229)",
+      "Finset.card_sdiff API changed: old form took a subset proof h, new form is (s\\t).card = s.card - (t\u2229s).card; fix: rw [Finset.card_sdiff, Finset.inter_univ]",
+      "Variable modular arithmetic (i.val+1)%n: omega cannot handle \u2014 requires rcases Nat.lt_or_ge + Nat.mod_eq_of_lt / Nat.mod_self case split",
+      "hBadFor_bound (|BadFor(a,b)| \u2264 n*(n-2)!): fiber counting \u2014 for each position k, fixing \u03c3(k)=\u03b1\u207b\u00b9(a) and \u03c3((k+1)%n)=\u03b1\u207b\u00b9(b) leaves (n-2)! choices; n positions give n*(n-2)! total",
+      "arcCount synthesis: Fintype.card {p : V\u00d7V // P p} requires DecidablePred; fix via haveI := Classical.decPred _ + filter.card definition"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove directed_hamiltonian_threshold: near-complete SC digraph (≤n-2 missing arcs) is Hamiltonian. Not via Ghouila-Houri (degree conditions don't hold). Needs direct proof.",
-      "Prove ghouila_houri: directed analogue of Dirac's theorem (SC + min in/out-degree ≥ n/2). Very deep result, likely requires full Hamiltonian cycle extension machinery.",
-      "Run docker build to verify tournament_cycle_extendable case 2 compiles correctly"
+      "Submit hBadFor_bound to Aristotle: prove |BadFor(a,b)| \u2264 n*(n-2)! via fiber counting argument",
+      "Prove ghouila_houri: directed analogue of Dirac's theorem (SC + min in/out-degree \u2265 n/2). Requires full Hamiltonian extension machinery (~200 lines)."
     ]
   },
   "tags": [

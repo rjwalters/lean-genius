@@ -948,7 +948,187 @@ PART V: EDGE THRESHOLD FOR DIRECTED HAMILTONICITY
 
 /-- The number of arcs in a digraph. -/
 noncomputable def Digraph.arcCount (D : Digraph V) : ℕ :=
-  Fintype.card {p : V × V // D.arc p.1 p.2}
+  haveI : DecidablePred (fun p : V × V => D.arc p.1 p.2) := Classical.decPred _
+  (Finset.univ (α := V × V)).filter (fun p => D.arc p.1 p.2) |>.card
+
+/-! ── V.A: Arc Counting Infrastructure ──────────────────────────────────── -/
+
+/-- Arithmetic lemma: arcCount > (n-1)² implies n*(n-1) - arcCount ≤ n-2.
+Linearizes the quadratic via `set k := n-1`, then `set a := k^2` for omega. -/
+private lemma missing_arcs_le (n m : ℕ) (hn : 3 ≤ n) (harc : (n - 1) ^ 2 < m) :
+    n * (n - 1) - m ≤ n - 2 := by
+  set k := n - 1 with hk_def
+  have hkn : k + 1 = n := by omega
+  have hnn1 : n * k = k ^ 2 + k := by rw [show n = k + 1 from hkn.symm]; ring
+  rw [hnn1]
+  set a := k ^ 2
+  omega
+
+/-- With ≤ n-2 arcs missing from K*_n, a Hamiltonian cycle exists.
+
+**Proof** (counting/probabilistic method over permutations):
+Fix a bijection α : Fin n ≃ V. A permutation σ : Equiv.Perm (Fin n) gives the
+directed Hamiltonian sequence α(σ(0)) → α(σ(1)) → ... → α(σ(n-1)) → α(σ(0)).
+Total: n! permutations.
+
+For each missing arc (a, b) (a ≠ b, ¬D.arc a b):
+  BadFor(a,b) = {σ : ∃ i, α(σ i) = a ∧ α(σ ((i+1)%n)) = b}.
+  |BadFor(a,b)| = (n-1)!  [for each position k, (n-2)! perms place a at k and
+  b at k+1; n positions give n*(n-2)! = (n-1)! total, disjoint by injectivity].
+
+With ≤ n-2 missing arcs: |AllBad| ≤ (n-2)*(n-1)! < n*(n-1)! = n!.
+So ∃ good σ. From σ we read off the Hamiltonian cycle. □ -/
+private lemma hamiltonian_of_few_missing_arcs (D : Digraph V)
+    (hn : 3 ≤ Fintype.card V)
+    (hmissing : Fintype.card V * (Fintype.card V - 1) - D.arcCount ≤ Fintype.card V - 2) :
+    D.HasHamiltonianCycle := by
+  set n := Fintype.card V with hn_def
+  -- Fix bijection α : Fin n ≃ V
+  let α : Fin n ≃ V := (Fintype.equivFin V).symm
+  -- Missing arcs (as pairs in V, non-loop, not in D)
+  -- Use Classical so we can build Finsets without Decidable instances
+  classical
+  let Missing : Finset (V × V) :=
+    Finset.univ.filter (fun p : V × V => p.1 ≠ p.2 ∧ ¬D.arc p.1 p.2)
+  -- |Missing| ≤ n - 2
+  have hMissing_bound : Missing.card ≤ n - 2 := by
+    -- Missing + arcCount = n*(n-1) (all non-loop pairs partition into arcs/missing)
+    have h_partition : Missing.card + D.arcCount = n * (n - 1) := by
+      -- ArcPairs as a Finset parallel to D.arcCount
+      let ArcPairs : Finset (V × V) := Finset.univ.filter (fun p : V × V => D.arc p.1 p.2)
+      have harcEq : D.arcCount = ArcPairs.card := rfl
+      -- Missing and ArcPairs are disjoint subsets of univ
+      have hdisjoint : Disjoint Missing ArcPairs := by
+        rw [Finset.disjoint_left]
+        intro ⟨u, v⟩ hm ha
+        simp only [Missing, Finset.mem_filter, Finset.mem_univ, true_and] at hm
+        simp only [ArcPairs, Finset.mem_filter, Finset.mem_univ, true_and] at ha
+        exact hm.2 ha
+      -- Their union is all non-loop pairs
+      let NonLoop : Finset (V × V) := Finset.univ.filter (fun p : V × V => p.1 ≠ p.2)
+      have hunion : Missing ∪ ArcPairs = NonLoop := by
+        ext ⟨u, v⟩
+        simp only [Missing, ArcPairs, NonLoop, Finset.mem_union, Finset.mem_filter,
+                   Finset.mem_univ, true_and]
+        constructor
+        · rintro (⟨hne, -⟩ | harc)
+          · exact hne
+          · exact fun h => D.loopless v (h ▸ harc)
+        · intro hne
+          exact (em (D.arc u v)).elim Or.inr (fun hna => Or.inl ⟨hne, hna⟩)
+      -- |NonLoop| = n*(n-1): total n² pairs minus n diagonal pairs
+      have hcard : NonLoop.card = n * (n - 1) := by
+        have hDiag : (Finset.univ.filter (fun p : V × V => p.1 = p.2)).card = n := by
+          rw [show Finset.univ.filter (fun p : V × V => p.1 = p.2) =
+                   (Finset.univ : Finset V).image (fun v => (v, v)) from by
+              ext ⟨u, v⟩; simp [eq_comm]]
+          rw [Finset.card_image_of_injective _ (fun a b h => (Prod.mk.inj h).1),
+              Finset.card_univ, ← hn_def]
+        -- NonLoop = univ \ diagonal
+        have hNonLoop_sdiff : NonLoop =
+            Finset.univ \ Finset.univ.filter (fun p : V × V => p.1 = p.2) := by
+          ext ⟨u, v⟩; simp [NonLoop, ne_eq]
+        rw [hNonLoop_sdiff, Finset.card_sdiff, Finset.inter_univ,
+            Finset.card_univ, Fintype.card_prod, ← hn_def, hDiag]
+        -- Goal: n * n - n = n * (n - 1)
+        have hn1 : 1 ≤ n := by omega
+        have hnn : n ≤ n * n := by nlinarith
+        zify [hn1, hnn]
+        ring
+      calc Missing.card + D.arcCount
+          = Missing.card + ArcPairs.card := by rw [harcEq]
+        _ = (Missing ∪ ArcPairs).card := (Finset.card_union_of_disjoint hdisjoint).symm
+        _ = NonLoop.card := by rw [hunion]
+        _ = n * (n - 1) := hcard
+    omega
+  -- "Bad" permutations: those using some missing arc in the cycle
+  let BadFor : V × V → Finset (Equiv.Perm (Fin n)) := fun ab =>
+    Finset.univ.filter (fun σ : Equiv.Perm (Fin n) =>
+      ∃ i : Fin n, α (σ i) = ab.1 ∧
+        α (σ ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩) = ab.2)
+  -- |BadFor (a,b)| ≤ n*(n-2)! for any missing arc (a,b).
+  -- For each position k ∈ Fin n, the fiber {σ : σ k = α⁻¹(a) ∧ σ((k+1)%n) = α⁻¹(b)}
+  -- has size (n-2)! (two values fixed). These fibers are disjoint (σ injective).
+  -- Union bound: |BadFor(a,b)| ≤ n * (n-2)!
+  have hBadFor_bound : ∀ p ∈ Missing, (BadFor p).card ≤ n * (n - 2).factorial := by
+    intro ⟨a, b⟩ _hmem
+    sorry
+  -- AllBad = union over missing arcs of their bad permutation sets
+  let AllBad : Finset (Equiv.Perm (Fin n)) := Missing.biUnion BadFor
+  -- |AllBad| < n! by union bound.
+  -- Each |BadFor(a,b)| ≤ n*(n-2)!, |Missing| ≤ n-2, so
+  -- |AllBad| ≤ (n-2)*n*(n-2)! < n*(n-1)*(n-2)! = n!
+  have hAllBad_lt : AllBad.card < n.factorial := by
+    have h1 : AllBad.card ≤ ∑ p ∈ Missing, (BadFor p).card :=
+      Finset.card_biUnion_le
+    have h2 : ∑ p ∈ Missing, (BadFor p).card ≤ Missing.card * (n * (n - 2).factorial) :=
+      (Finset.sum_le_sum hBadFor_bound).trans_eq
+        (by simp [Finset.sum_const, smul_eq_mul])
+    have h3 : Missing.card * (n * (n - 2).factorial) ≤ (n - 2) * (n * (n - 2).factorial) :=
+      Nat.mul_le_mul_right _ hMissing_bound
+    have h4 : (n - 2) * (n * (n - 2).factorial) < n.factorial := by
+      -- n! = n * (n-1) * (n-2)!; need (n-2)*n*(n-2)! < n*(n-1)*(n-2)!
+      -- which is n-2 < n-1 (true since n ≥ 3)
+      have hn1 : n - 1 + 1 = n := by omega
+      have hn2 : n - 2 + 1 = n - 1 := by omega
+      have hfact_n : n.factorial = n * (n - 1).factorial := by
+        have h := Nat.factorial_succ (n - 1); rw [hn1] at h; exact h
+      have hfact_nm1 : (n - 1).factorial = (n - 1) * (n - 2).factorial := by
+        have h := Nat.factorial_succ (n - 2); rw [hn2] at h; exact h
+      rw [hfact_n, hfact_nm1]
+      have hfact_pos : 0 < (n - 2).factorial := Nat.factorial_pos _
+      calc (n - 2) * (n * (n - 2).factorial)
+          = n * (n - 2) * (n - 2).factorial := by ring
+        _ < n * (n - 1) * (n - 2).factorial := by
+            nlinarith [hfact_pos, show 0 < n from by omega,
+                       show n - 2 < n - 1 from by omega]
+        _ = n * ((n - 1) * (n - 2).factorial) := by ring
+    omega
+  -- Extract a good permutation (not in AllBad)
+  obtain ⟨σ, hσ_good⟩ : ∃ σ : Equiv.Perm (Fin n), σ ∉ AllBad := by
+    by_contra hall
+    push_neg at hall
+    have hle : n.factorial ≤ AllBad.card := by
+      calc n.factorial
+          = Fintype.card (Equiv.Perm (Fin n)) := by
+            simp [Fintype.card_perm, Fintype.card_fin]
+        _ = (Finset.univ : Finset (Equiv.Perm (Fin n))).card := by
+            simp [Finset.card_univ]
+        _ ≤ AllBad.card := Finset.card_le_card (fun σ _ => hall σ)
+    omega
+  -- Good σ uses no missing arcs: ∀ i, D.arc (α (σ i)) (α (σ ((i+1)%n)))
+  have hσ_arcs : ∀ i : Fin n,
+      D.arc (α (σ i)) (α (σ ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩)) := by
+    intro i
+    by_contra h_no_arc
+    -- (α (σ i), α (σ ((i+1)%n))) is a missing arc → σ ∈ AllBad
+    have hne : α (σ i) ≠ α (σ ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩) := by
+      intro heq
+      have h1 : i.val = (i.val + 1) % n :=
+        congr_arg Fin.val (σ.injective (α.injective heq))
+      have hi := i.isLt
+      rcases Nat.lt_or_ge (i.val + 1) n with hlt | hge
+      · rw [Nat.mod_eq_of_lt hlt] at h1; omega
+      · -- i.val + 1 ≥ n, and i.val < n, so i.val + 1 = n
+        have heqn : i.val + 1 = n := Nat.le_antisymm (by omega) hge
+        simp only [heqn, Nat.mod_self] at h1
+        omega
+    have hmem : (α (σ i), α (σ ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩)) ∈ Missing := by
+      simp only [Missing, Finset.mem_filter, Finset.mem_univ, true_and]
+      exact ⟨hne, h_no_arc⟩
+    exact hσ_good (Finset.mem_biUnion.mpr ⟨_, hmem,
+      Finset.mem_filter.mpr ⟨Finset.mem_univ _, i, rfl, rfl⟩⟩)
+  -- τ = α.symm ∘ σ⁻¹ : V ≃ Fin n gives the Hamiltonian cycle
+  -- τ.symm i = (σ ∘ α.symm.symm) i ... let's use τ.symm = σ.toEquiv.trans α
+  -- With τ = α.symm.trans σ.symm: τ.symm = σ.trans α, τ.symm i = α (σ i) ✓
+  refine ⟨α.symm.trans σ.symm, fun i => ?_⟩
+  -- Goal: D.arc ((α.symm.trans σ.symm).symm i) ((α.symm.trans σ.symm).symm ⟨...⟩)
+  -- (α.symm.trans σ.symm).symm = σ.symm.symm.trans α.symm.symm = σ.trans α
+  -- So (α.symm.trans σ.symm).symm i = α (σ i) ✓
+  have key : ∀ j : Fin n, (α.symm.trans σ.symm).symm j = α (σ j) := by
+    intro j; simp [Equiv.trans_apply]
+  rw [key i, key]
+  exact hσ_arcs i
 
 -- Arithmetic helper: arcCount > (n-1)² implies at most n-2 arcs are missing
 -- from the complete digraph K*_n (which has n*(n-1) arcs).
