@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "id": "ann-definitions",
+    "startLine": 34,
+    "endLine": 40,
+    "title": "semiperimeter and brahmaguptaProduct: The Foundational Definitions",
+    "mathContext": "The semiperimeter $s = (a+b+c+d)/2$ and the Brahmagupta product $(s-a)(s-b)(s-c)(s-d)$ are defined for arbitrary real side lengths. In Lean, `let s := semiperimeter a b c d` introduces a local binding within `brahmaguptaProduct`, making the definition `(s-a)*(s-b)*(s-c)*(s-d)` direct and readable. Both are `noncomputable` since they use real division.",
+    "significance": "Defining these as named functions rather than inline expressions enables the algebraic symmetry theorems to state their results cleanly (e.g., `brahmaguptaProduct a b c d = brahmaguptaProduct b c d a`). The Brahmagupta product is the key quantity: its square root gives the area of a cyclic quadrilateral, and its non-negativity ensures the area formula is well-defined.",
+    "relatedConcepts": ["Heron's formula (triangle case)", "semiperimeter in triangle geometry", "cyclically symmetric polynomials", "brahmagupta_reduces_to_heron"],
+    "prerequisites": ["noncomputable definitions over ℝ", "let bindings in def bodies", "real number division in Lean 4"]
+  },
+  {
+    "id": "ann-dihedral-symmetry",
+    "startLine": 56,
+    "endLine": 64,
+    "title": "Cyclic and Reversal Symmetry: Full Dihedral Group Action",
+    "mathContext": "The Brahmagupta product is invariant under: (1) cyclic permutation $(a,b,c,d) \\mapsto (b,c,d,a)$ and (2) reversal $(a,b,c,d) \\mapsto (d,c,b,a)$. Together these generate the dihedral group $D_4$ of symmetries of the quadrilateral. Both are proved by `unfold brahmaguptaProduct semiperimeter; ring` — the ring axioms suffice since the product is a symmetric polynomial in the differences $(s-a)$.",
+    "significance": "These symmetries reflect the geometric fact that a cyclic quadrilateral has no intrinsic 'starting vertex' or orientation: relabeling the sides cyclically or reversing the direction gives the same figure. The `ring` tactic works here because the symmetry is purely algebraic — it doesn't require geometric reasoning about the inscribed circle.",
+    "relatedConcepts": ["dihedral group D_4 symmetry", "symmetric polynomials", "brahmaguptaProduct_expand", "brahmagupta_formula axiom"],
+    "prerequisites": ["ring tactic for polynomial identities", "cyclic vs dihedral group actions", "unfold for definitional unfolding"]
+  },
+  {
+    "id": "ann-heron-reduction",
+    "startLine": 81,
+    "endLine": 84,
+    "title": "brahmagupta_reduces_to_heron: Degenerate Quadrilateral = Triangle",
+    "mathContext": "When $d = 0$, the quadrilateral degenerates to a triangle: the semiperimeter becomes $s = (a+b+c)/2$ and the fourth factor $(s-0) = s$, giving $(s-a)(s-b)(s-c) \\cdot s = s(s-a)(s-b)(s-c)$ — exactly Heron's product. The Lean proof `unfold brahmaguptaProduct heronProduct semiperimeter; ring` verifies this by algebra.",
+    "significance": "This reduction confirms that Brahmagupta's formula is a genuine generalization of Heron's formula, not merely an analogy. The zero side length case is the cleanest possible specialization: no limiting argument needed, just algebraic substitution. This is why the two formulas have the same mathematical structure — the triangle is a degenerate quadrilateral with one side collapsed.",
+    "relatedConcepts": ["Heron's formula history", "degenerate quadrilaterals", "heronProduct definition", "brahmagupta_345 example"],
+    "prerequisites": ["Heron's formula: Area = sqrt(s(s-a)(s-b)(s-c))", "ring identity d=0 substitution", "semiperimeter continuity in d"]
+  },
+  {
+    "id": "ann-nonneg",
+    "startLine": 93,
+    "endLine": 104,
+    "title": "brahmaguptaProduct_nonneg: Triangle Inequalities Ensure Positive Factors",
+    "mathContext": "Under the four generalized triangle inequalities ($b+c+d \\geq a$, $a+c+d \\geq b$, $a+b+d \\geq c$, $a+b+c \\geq d$), each factor $(s-a), (s-b), (s-c), (s-d)$ is $\\geq 0$ (since e.g. $s - a = (b+c+d-a)/2 \\geq 0$ from $b+c+d \\geq a$). The product is thus non-negative. The Lean proof rewrites via `brahmaguptaProduct_expand` to work with the explicit expanded form, then uses `mul_nonneg` and `linarith` chain.",
+    "significance": "Non-negativity is essential for the square root in Brahmagupta's formula to be well-defined (and real). The proof structure `apply mul_nonneg; apply mul_nonneg; apply mul_nonneg <;> linarith; linarith; linarith` shows how `mul_nonneg` reduces the 4-factor non-negativity to individual factor non-negativity, each of which follows from `linarith` on the side length inequalities.",
+    "relatedConcepts": ["generalized triangle inequality", "mul_nonneg for products", "brahmaguptaProduct_expand", "Real.sqrt_nonneg"],
+    "prerequisites": ["triangle inequality as side length constraint", "div_nonneg for the /16 factor", "linarith for linear arithmetic"]
+  },
+  {
+    "id": "ann-isoperimetric",
+    "startLine": 142,
+    "endLine": 181,
+    "title": "isoperimetric_quadrilateral: AM-GM in Three Applications",
+    "mathContext": "The bound $(s-a)(s-b)(s-c)(s-d) \\leq ((a+b+c+d)/4)^4$ follows from AM-GM via three applications of the 2-variable inequality $xy \\leq ((x+y)/2)^2$ (from $(x-y)^2 \\geq 0$). Step 1: $s_a s_b \\leq ((s_a+s_b)/2)^2$. Step 2: $s_c s_d \\leq ((s_c+s_d)/2)^2$. Step 3: multiply the pairs and apply AM-GM again to get $((s_a+s_b)/2)^2 \\cdot ((s_c+s_d)/2)^2 \\leq ((s_a+s_b+s_c+s_d)/4)^4$.",
+    "significance": "The `set sa := ... with hsa_def` tactic introduces abbreviations $s_a = s - a$ etc., making the calc block readable. Each `nlinarith [sq_nonneg (sa - sb)]` proves the 2-variable AM-GM by certifying `(sa-sb)^2 ≥ 0 → sasb ≤ ((sa+sb)/2)²`. The final `calc` chain assembles all three steps cleanly. The sum identity `sa + sb + sc + sd = a + b + c + d` (each $s - x_i$ sums to the perimeter) enables the final rewrite.",
+    "relatedConcepts": ["AM-GM inequality", "nlinarith with hint certificates", "set tactic for local abbreviations", "brahmaguptaProduct_square for equality case"],
+    "prerequisites": ["2-variable AM-GM: xy ≤ ((x+y)/2)² from (x-y)² ≥ 0", "mul_le_mul for monotone inequality chaining", "sq_nonneg as nlinarith hint"]
+  },
+  {
+    "id": "ann-axiom",
+    "startLine": 199,
+    "endLine": 202,
+    "title": "brahmagupta_formula: Why the Main Formula Needs an Axiom",
+    "mathContext": "The main formula $\\text{area}^2 = (s-a)(s-b)(s-c)(s-d)$ is axiomatized because its proof requires: (1) a formal definition of 'cyclic quadrilateral' (4 vertices inscribed in a circle — not yet in Mathlib), (2) the area formula via diagonals $\\text{Area} = \\frac{1}{2}|pq|\\sin\\theta$, (3) the law of cosines for opposite supplementary angles ($A + C = \\pi$). The placeholder `hcyclic : True` explicitly marks where the cyclic condition would go.",
+    "significance": "The `hcyclic : True` placeholder is an honest admission: it shows exactly which hypothesis is missing and that the formula currently holds vacuously for any quadrilateral. This design choice — making the gap visible in the type — is preferable to hiding it with a sorry. All the algebraic infrastructure (dihedral symmetry, non-negativity, Heron reduction, AM-GM) is proved correctly; only the geometric bridge between the formula and the inscribed circle definition is axiomatized.",
+    "relatedConcepts": ["Ptolemy's theorem (diagonals of cyclic quadrilateral)", "law of cosines for supplementary angles", "brahmagupta_reduces_to_heron", "brahmaguptaProduct_nonneg"],
+    "prerequisites": ["cyclic quadrilateral geometry (Ptolemy's theorem)", "axiom as explicit gap marker in Lean 4", "opposite angles of cyclic quadrilateral summing to π"]
+  },
+  {
+    "id": "ann-examples",
+    "startLine": 211,
+    "endLine": 222,
+    "title": "Concrete Examples: 3-4-5, Unit Square, 2×3 Rectangle",
+    "mathContext": "Three concrete computations verify the formula: (1) The 3-4-5 triangle via $d=0$: $s=6$, product $= 6 \\cdot 3 \\cdot 2 \\cdot 1 = 36$, area $= 6$. (2) Unit square ($a=b=c=d=1$): $s=2$, product $= 1^4 = 1$, area $= 1$. (3) $2 \\times 3$ rectangle ($a=c=2, b=d=3$): $s=5$, product $= 3 \\cdot 2 \\cdot 3 \\cdot 2 = 36$, area $= 6$. All proved by `unfold brahmaguptaProduct semiperimeter; norm_num`.",
+    "significance": "These examples serve as sanity checks that the definitions are correct. The 3-4-5 triangle (right triangle, area $= \\frac{1}{2} \\cdot 3 \\cdot 4 = 6$) and $2 \\times 3$ rectangle both give product $= 36$, while the unit square gives product $= 1$ — each independently verifiable by hand. The `norm_num` tactic handles all the arithmetic automatically once the definitions are unfolded.",
+    "relatedConcepts": ["Heron's formula for 3-4-5 triangle", "brahmaguptaProduct_rectangle theorem", "brahmaguptaProduct_square theorem", "norm_num for numerical goals"],
+    "prerequisites": ["norm_num for numerical verification", "unfold for definitional expansion", "Pythagorean triple (3,4,5) area calculation"]
+  }
+]
