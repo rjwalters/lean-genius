@@ -1,0 +1,158 @@
+[
+  {
+    "id": "ann-aoc3-context",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "context",
+    "title": "Archimedes' Exhaustion Meets the FTC: Two Millennia Connected",
+    "content": "This file answers the third open question in the area-of-circle chain: can Archimedes' **method of exhaustion** (250 BCE) be formally connected to Newton–Leibniz's **FTC** (1680s)? Both methods compute $\\pi r^2$, and this file proves they compute the same value. **Part I** (FTC): since $d/dr(\\pi r^2) = 2\\pi r$, the FTC gives $\\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$. **Part II** (Archimedes): the inscribed $n$-gon area $\\frac{n}{2}r^2\\sin(2\\pi/n) \\to \\pi r^2$. **Part III** (Connection): the Archimedes limit equals the FTC integral by Hausdorff uniqueness of limits. 10 theorems, 0 sorries, 0 axioms.",
+    "mathContext": "The key question: why do two radically different methods — one geometric/combinatorial, one analytic — agree? The formal answer is **`tendsto_nhds_unique`**: in any Hausdorff space (and $\\mathbb{R}$ is Hausdorff), a sequence has at most one limit. Both the inscribed polygon sequence and the FTC integral value are limits of the same area function, so they must agree. This formalizes Archimedes' implicit 2250-year-old assumption that the circle has a unique well-defined area.",
+    "significance": "context",
+    "relatedConcepts": [
+      "method of exhaustion (Archimedes)",
+      "Fundamental Theorem of Calculus",
+      "tendsto_nhds_unique (Hausdorff uniqueness)",
+      "inscribed n-gon area",
+      "sin(h)/h → 1 at origin"
+    ],
+    "prerequisites": [
+      "area-of-circle-oq-01-oq-02 (FTC integral)",
+      "area-of-circle (base proof)",
+      "Filter.Tendsto in Mathlib",
+      "intervalIntegral.integral_eq_sub_of_hasDerivAt"
+    ]
+  },
+  {
+    "id": "ann-aoc3-deriv",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 41, "endLine": 55 },
+    "type": "theorem",
+    "title": "hasDerivAt_circleArea: Derivative of πr² is 2πr",
+    "content": "**hasDerivAt_circleArea**: $A'(r) = 2\\pi r$ — the derivative of circle area $A(r) = \\pi r^2$ is the circumference $C(r) = 2\\pi r$. This is the geometric heart of why FTC works: the circumference is the rate of change of area. Proof uses `hasDerivAt_pow` (derivative of $r^2$) composed with `HasDerivAt.const_mul` (scaling by $\\pi$).",
+    "mathContext": "In Lean: `HasDerivAt (fun r => π * r ^ 2) (2 * π * r) r`. The derivation: $\\frac{d}{dr}(\\pi r^2) = \\pi \\cdot 2r = 2\\pi r$. The `hasDerivAt_pow` lemma gives `HasDerivAt (· ^ 2) (2 * r ^ 1) r`, and `HasDerivAt.const_mul` scales by $\\pi$. This is then used in `circumference_integral_eq` to apply the FTC. The `HasDerivAt.congr` lemma converts between equivalent forms of the derivative.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hasDerivAt_pow for polynomial derivatives",
+      "HasDerivAt.const_mul scaling",
+      "circumference as derivative of area",
+      "HasDerivAt.congr for equivalent forms"
+    ],
+    "prerequisites": [
+      "HasDerivAt definition in Mathlib",
+      "hasDerivAt_pow : HasDerivAt (·^n) (n·x^(n-1)) x",
+      "HasDerivAt.const_mul"
+    ]
+  },
+  {
+    "id": "ann-aoc3-ftc",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 56, "endLine": 70 },
+    "type": "theorem",
+    "title": "circumference_integral_eq: FTC Proof That ∫₀ʳ 2πρ dρ = πr²",
+    "content": "**circumference_integral_eq**: $\\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$ — the FTC proof of the circle area formula. Applies `intervalIntegral.integral_eq_sub_of_hasDerivAt`: since $F(r) = \\pi r^2$ is continuously differentiable with $F'(\\rho) = 2\\pi\\rho$, we get $\\int_0^r F'(\\rho)\\,d\\rho = F(r) - F(0) = \\pi r^2 - 0 = \\pi r^2$.",
+    "mathContext": "The FTC in Mathlib: `intervalIntegral.integral_eq_sub_of_hasDerivAt` requires (1) $F$ continuous on $[0,r]$, (2) $F$ differentiable with derivative $F'$ on $(0,r)$, (3) $F'$ integrable. All three hold for $F(x) = \\pi x^2$. A key Lean subtlety: `field_simp [ne_of_gt hn']` closes the algebraic goal $\\frac{n}{2} \\cdot r^2 \\cdot \\frac{2\\pi}{n} = \\pi r^2$ completely — do NOT add `; ring` after it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intervalIntegral.integral_eq_sub_of_hasDerivAt",
+      "FTC Part 2 in Mathlib",
+      "continuous differentiability on [0, r]",
+      "field_simp for algebraic simplification"
+    ],
+    "prerequisites": [
+      "hasDerivAt_circleArea",
+      "intervalIntegral from Mathlib.MeasureTheory.Integral",
+      "ContinuousOn for πx² on [0, r]"
+    ]
+  },
+  {
+    "id": "ann-aoc3-limits",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 71, "endLine": 130 },
+    "type": "theorem",
+    "title": "Limit Chain: sin(h)/h → 1 and n·sin(2π/n) → 2π",
+    "content": "Five limit lemmas build up to Archimedes' main result: (1) **tendsto_const_div_nat**: $c/n \\to 0$ using `tendsto_inv_atTop_zero ∘ tendsto_natCast_atTop_atTop` with `const_mul`; (2) **tendsto_sin_div_nhds_zero**: $\\sin(h)/h \\to 1$ via `HasDerivAt.hasDerivAt_iff_tendsto_slope` (sin'(0) = cos(0) = 1); (3) **tendsto_two_pi_div_atTop**: $2\\pi/n \\to 0$ through nonzero values; (4) **tendsto_n_sin_two_pi_div_n**: $n\\sin(2\\pi/n) \\to 2\\pi$ by composition.",
+    "mathContext": "The limit $\\sin(h)/h \\to 1$ is proved *from the derivative*: `HasDerivAt.hasDerivAt_iff_tendsto_slope` converts `HasDerivAt sin 1 0` to the limit $\\lim_{h\\to 0} (\\sin(h) - \\sin(0))/h = 1$. This is **not** circular — the derivative of sin at 0 is proved from the definition. Then $n\\sin(2\\pi/n) = 2\\pi \\cdot [\\sin(h)/h]$ with $h = 2\\pi/n \\to 0$. Note: `tendsto_const_div_atTop_nhds_0_nat` was **removed** from Mathlib 4.26 — use `tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop` with `Filter.Tendsto.const_mul` instead.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tendsto_inv_atTop_zero for 1/n → 0",
+      "HasDerivAt.hasDerivAt_iff_tendsto_slope",
+      "sin(h)/h → 1 from derivative",
+      "Filter.Tendsto.comp for composition",
+      "Mathlib 4.26 API change"
+    ],
+    "prerequisites": [
+      "tendsto_inv_atTop_zero from Mathlib.Topology.Algebra.Order",
+      "Real.hasDerivAt_sin",
+      "Filter.Tendsto.const_mul",
+      "tendsto_natCast_atTop_atTop"
+    ]
+  },
+  {
+    "id": "ann-aoc3-archimedes",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 131, "endLine": 148 },
+    "type": "theorem",
+    "title": "tendsto_inscribed_to_pi_r_sq: Archimedes' Main Convergence",
+    "content": "**tendsto_inscribed_to_pi_r_sq**: the inscribed regular $n$-gon area $A_n(r) = \\frac{n}{2}r^2\\sin(2\\pi/n) \\to \\pi r^2$ as $n \\to \\infty$. Assembled from the limit chain: $A_n(r) = \\frac{r^2}{2} \\cdot n\\sin(2\\pi/n) \\to \\frac{r^2}{2} \\cdot 2\\pi = \\pi r^2$. Uses `Filter.Tendsto.const_mul` to absorb $r^2/2$.",
+    "mathContext": "The formula $A_n = \\frac{n}{2}r^2\\sin(2\\pi/n)$: a regular $n$-gon inscribed in a circle of radius $r$ has $n$ congruent isoceles triangles, each with two sides $r$ and apex angle $2\\pi/n$. Area of each triangle = $\\frac{1}{2}r^2\\sin(2\\pi/n)$. Total: $\\frac{n}{2}r^2\\sin(2\\pi/n)$. As $n \\to \\infty$: $n\\sin(2\\pi/n) \\to 2\\pi$ (from the limit chain), so $A_n \\to \\frac{r^2}{2} \\cdot 2\\pi = \\pi r^2$. This is Archimedes' **first approximation** direction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inscribed n-gon area formula",
+      "tendsto_n_sin_two_pi_div_n",
+      "Filter.Tendsto.const_mul",
+      "regular polygon area computation",
+      "Archimedes' exhaustion method"
+    ],
+    "prerequisites": [
+      "tendsto_n_sin_two_pi_div_n",
+      "inscribedArea n r = n/2 * r^2 * sin(2π/n)",
+      "Filter.Tendsto.const_mul for scaling"
+    ]
+  },
+  {
+    "id": "ann-aoc3-connection",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 149, "endLine": 190 },
+    "type": "theorem",
+    "title": "exhaustion_equals_ftc and inscribed_area_le_pi_r_sq",
+    "content": "**exhaustion_equals_ftc**: the Archimedes sequence converges to the FTC integral value — both equal $\\pi r^2$ but proven by limit uniqueness. **inscribed_area_le_pi_r_sq**: $A_n(r) \\leq \\pi r^2$ for all $n$ — inscribed polygons underestimate. Proof uses `Real.sin_lt`: $\\sin(x) < x$ for $x > 0$, giving $\\frac{n}{2}r^2\\sin(2\\pi/n) < \\frac{n}{2}r^2 \\cdot \\frac{2\\pi}{n} = \\pi r^2$.",
+    "mathContext": "`exhaustion_equals_ftc` uses `tendsto_nhds_unique`: the Archimedes sequence tends to $\\pi r^2$ (from `tendsto_inscribed_to_pi_r_sq`) and the FTC integral also equals $\\pi r^2$ (from `circumference_integral_eq`). Since $\\mathbb{R}$ is $T_2$ (Hausdorff), limits are unique. `Filter.Eventually.mono` is needed for `EventuallyEq.symm` — `key.symm` does not work on `Filter.Eventually` predicates; use `key.mono (fun _ h => h.symm)` instead. `Real.sin_lt` from `Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds` gives the upper bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tendsto_nhds_unique (Hausdorff uniqueness)",
+      "Real.sin_lt for upper bound",
+      "Filter.Eventually.mono for EventuallyEq.symm",
+      "exhaustion_equals_ftc",
+      "inscribed_area_le_pi_r_sq"
+    ],
+    "prerequisites": [
+      "tendsto_inscribed_to_pi_r_sq",
+      "circumference_integral_eq",
+      "tendsto_nhds_unique from Mathlib.Topology.Basic",
+      "Real.sin_lt from Trigonometric.Bounds"
+    ]
+  },
+  {
+    "id": "ann-aoc3-uniqueness",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 191, "endLine": 215 },
+    "type": "theorem",
+    "title": "two_methods_one_area: Hausdorff Uniqueness Closes the Chain",
+    "content": "**two_methods_one_area**: any sequence of inscribed polygon areas that converges must converge to the FTC integral — there is only one limit. **archimedes_squeeze_approx**: $\\varepsilon$-$N$ formulation of Archimedes' exhaustion: for any $\\varepsilon > 0$, $\\exists N$ such that $|A_n(r) - \\pi r^2| < \\varepsilon$ for all $n \\geq N$. These two theorems formalize what Archimedes implicitly assumed: that the circle has a unique area that both methods compute.",
+    "mathContext": "`two_methods_one_area` is the **capstone**: it packages `tendsto_nhds_unique` into the statement that the FTC integral and the Archimedes limit are the same mathematical object. `archimedes_squeeze_approx` converts `Filter.Tendsto` (topological) into the classical $\\varepsilon$-$N$ definition via `Filter.Tendsto.eventually` and `Metric.tendsto_atTop`. Together, these 10 theorems bridge 2250 years: Archimedes' geometric intuition and Newton's analytic machinery prove the same fact by different paths, and Mathlib's Hausdorff axiom makes their agreement rigorous.",
+    "significance": "key",
+    "relatedConcepts": [
+      "two_methods_one_area",
+      "archimedes_squeeze_approx",
+      "Metric.tendsto_atTop",
+      "Filter.Tendsto.eventually",
+      "ε-N definition of convergence"
+    ],
+    "prerequisites": [
+      "exhaustion_equals_ftc",
+      "inscribed_area_le_pi_r_sq",
+      "Metric.tendsto_atTop from Mathlib",
+      "Filter.Tendsto.eventually"
+    ]
+  }
+]
