@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-kahan-context",
+    "proofId": "herons-formula-oq-03",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "Kahan's Formula: Numerical Stability vs. Algebraic Equivalence",
+    "content": "William Kahan (1986), the father of IEEE floating-point arithmetic and 1989 Turing Award winner, observed that Heron's classical formula Area = √(s(s-a)(s-b)(s-c)) suffers catastrophic cancellation for nearly degenerate triangles. When a ≈ b + c (a very flat triangle), the quantity s - a ≈ 0 requires computing the difference of two large numbers (s and a), losing many significant digits. His fix: reorganize as T = (a+(b+c))·(c-(a-b))·(c+(a-b))·(a+(b-c)) and Area = √T/4. In exact arithmetic these are identical (T = 16·s(s-a)(s-b)(s-c)), but the grouping avoids the catastrophic subtraction.",
+    "mathContext": "**Catastrophic cancellation example**: For sides $a = 100, b = 100, c = 0.0001$, we have $s = 100.00005$, $s - a = 0.00005$. In double precision (16 digits), $s$ and $a$ agree in the first 6 digits, so $s - a$ has only about 10 significant digits. Kahan's formula computes $a - b = 0$ (exact) and $c - (a-b) = 0.0001$ (exact) — no cancellation. The algebraic identity $T = 16s(s-a)(s-b)(s-c)$ holds exactly in exact arithmetic, bridging the numerical and mathematical viewpoints.",
+    "significance": "context",
+    "relatedConcepts": ["Heron's formula", "catastrophic cancellation", "IEEE floating-point", "numerical stability", "Kahan summation"],
+    "prerequisites": ["Heron's formula (herons-formula)", "floating-point arithmetic basics"]
+  },
+  {
+    "id": "ann-kahan-definitions",
+    "proofId": "herons-formula-oq-03",
+    "range": { "startLine": 47, "endLine": 69 },
+    "type": "concept",
+    "title": "Four Definitions: Heron and Kahan Products and Areas",
+    "content": "The four `noncomputable` definitions establish the mathematical objects. `heron_product` uses a `let` binding for s = (a+b+c)/2 (the semi-perimeter) to compute s(s-a)(s-b)(s-c). `kahan_product` is the explicit Kahan expression (a+(b+c))·(c-(a-b))·(c+(a-b))·(a+(b-c)) — note the grouping of b+c, a-b, and b-c as first-class sub-expressions. `kahan_area` divides sqrt by 4. `triangle_area` takes the sqrt directly. All four are `noncomputable` because they involve the real numbers (ℝ) and sqrt, which are not computably representable.",
+    "mathContext": "Semi-perimeter: $s = (a+b+c)/2$. Heron's product: $s(s-a)(s-b)(s-c)$. Kahan's product: $(a+b+c)(c-(a-b))(c+(a-b))(a+(b-c))$. The `let` binding in `heron_product` creates a local definition within the `def` body — this is syntactic sugar that unfolds during proof by `unfold heron_product`. Both products are polynomials in $a,b,c$ over $\\mathbb{R}$, so their equality is decidable by `ring`.",
+    "significance": "supporting",
+    "relatedConcepts": ["heron_product", "kahan_product", "kahan_area", "triangle_area", "noncomputable def", "semi-perimeter"],
+    "prerequisites": ["Real.sqrt in Mathlib", "noncomputable in Lean 4", "let bindings in defs"]
+  },
+  {
+    "id": "ann-kahan-ring-identity",
+    "proofId": "herons-formula-oq-03",
+    "range": { "startLine": 79, "endLine": 103 },
+    "type": "insight",
+    "title": "The Core Ring Identity and Symmetry Theorems",
+    "content": "The `kahan_eq_sixteen_heron` theorem is the mathematical heart of the formalization: `kahan_product a b c = 16 * heron_product a b c` for ANY reals a, b, c — no triangle inequality needed. The proof is a single application of `ring` after `unfold kahan_product heron_product`, which expands both sides to polynomials and verifies equality algebraically. The `kahan_product_expand` theorem proves the symmetric form (a+b+c)(b+c-a)(a+c-b)(a+b-c), which makes the permutation symmetry manifest. Three symmetry theorems follow: `kahan_product_symm_ab`, `kahan_product_symm_bc`, and `kahan_product_cyclic` — all proved by `simp only [kahan_product_expand]; ring`.",
+    "mathContext": "$(a+(b+c))(c-(a-b))(c+(a-b))(a+(b-c)) = 16 \\cdot \\frac{(a+b+c)}{2} \\cdot \\frac{(b+c-a)}{2} \\cdot \\frac{(a+c-b)}{2} \\cdot \\frac{(a+b-c)}{2} = (a+b+c)(b+c-a)(a+c-b)(a+b-c)$. The factor of 16 comes from the four halves: $(1/2)^4 \\cdot 2^4 = 1$. The symmetric expansion reveals that both expressions equal $2s(2s-2a)(2s-2b)(2s-2c)/16$ after substituting $s=(a+b+c)/2$.",
+    "significance": "key",
+    "relatedConcepts": ["ring tactic", "polynomial identity", "symmetric polynomial", "kahan_product_expand", "kahan_eq_sixteen_heron"],
+    "prerequisites": ["ring tactic in Lean 4", "unfold tactic", "simp only"]
+  },
+  {
+    "id": "ann-kahan-nonneg",
+    "proofId": "herons-formula-oq-03",
+    "range": { "startLine": 118, "endLine": 139 },
+    "type": "insight",
+    "title": "Non-negativity via the Symmetric Expansion and linarith",
+    "content": "The `kahan_product_nonneg` theorem proves 0 ≤ kahan_product a b c from the triangle inequalities (a < b+c, b < a+c, c < a+b) using the symmetric expansion. After `rw [kahan_product_expand]`, the product has four non-negative factors: (a+b+c) > 0 (positive sides), (b+c-a) ≥ 0 (from hab), (a+c-b) ≥ 0 (from hbc), (a+b-c) ≥ 0 (from hca). The `mul_nonneg` lemma is applied three times to decompose the product, and each factor's non-negativity follows from `linarith`. Note: NO ordering assumption on sides is needed — this is valid for any permutation of a valid triangle.",
+    "mathContext": "Proof structure: $0 \\leq (a+b+c) \\cdot (b+c-a) \\cdot (a+c-b) \\cdot (a+b-c)$ because each factor is $\\geq 0$: $a+b+c > 0$ (sum of positives), $b+c-a > 0$ (from $a < b+c$), $a+c-b > 0$ (from $b < a+c$), $a+b-c > 0$ (from $c < a+b$). The `heron_product_nonneg` corollary then follows: from $0 \\leq 16 \\cdot \\text{heron\\_product}$, we get $\\text{heron\\_product} \\geq 0$ by `linarith`.",
+    "significance": "key",
+    "relatedConcepts": ["kahan_product_nonneg", "heron_product_nonneg", "mul_nonneg", "linarith", "triangle inequality"],
+    "prerequisites": ["mul_nonneg in Mathlib", "linarith tactic", "triangle inequality conditions"]
+  },
+  {
+    "id": "ann-kahan-area-equiv",
+    "proofId": "herons-formula-oq-03",
+    "range": { "startLine": 145, "endLine": 164 },
+    "type": "insight",
+    "title": "Area Equivalence via sqrt_sixteen_mul",
+    "content": "The `sqrt_sixteen_mul` private lemma proves √(16·x) = 4·√x for x ≥ 0. The proof: `sqrt 16 = 4` (from sqrt(4²) = 4 via `sqrt_sq`) and then `sqrt_mul (h16) x = sqrt(16) * sqrt(x) = 4 * sqrt(x)`. The main theorem `kahan_area_eq_triangle_area` chains: kahan_area = sqrt(kahan_product)/4 = sqrt(16·heron_product)/4 = 4·sqrt(heron_product)/4 = sqrt(heron_product) = triangle_area. The proof uses `rw [kahan_eq_sixteen_heron, sqrt_sixteen_mul hH]` and closes with `ring`. The non-negativity hypothesis `hH` is needed for `sqrt_sixteen_mul`.",
+    "mathContext": "Key lemma: $\\sqrt{16x} = 4\\sqrt{x}$ for $x \\geq 0$. Proof: $\\sqrt{16} = \\sqrt{4^2} = 4$ (via `Real.sqrt_sq` applied to $4 \\geq 0$), then `Real.sqrt_mul`: $\\sqrt{16 \\cdot x} = \\sqrt{16} \\cdot \\sqrt{x} = 4\\sqrt{x}$. Main chain: $\\frac{\\sqrt{T}}{4} = \\frac{\\sqrt{16 \\cdot hp}}{4} = \\frac{4\\sqrt{hp}}{4} = \\sqrt{hp}$, proving kahan\\_area = triangle\\_area.",
+    "significance": "key",
+    "relatedConcepts": ["Real.sqrt_mul", "Real.sqrt_sq", "sqrt_sixteen_mul", "kahan_area_eq_triangle_area", "private lemma"],
+    "prerequisites": ["Real.sqrt_mul", "Real.sqrt_sq", "non-negativity of heron_product"]
+  },
+  {
+    "id": "ann-kahan-stability",
+    "proofId": "herons-formula-oq-03",
+    "range": { "startLine": 187, "endLine": 217 },
+    "type": "insight",
+    "title": "Stability Lemma: Factor-wise Non-negativity with Ordering",
+    "content": "The `kahan_factors_nonneg_ordered` theorem captures the numerical stability argument. With ordering a ≥ b ≥ c > 0 and only the triangle inequality a < b + c: the four factors of the Kahan product are individually non-negative: (1) a+(b+c) > 0 trivially; (2) c-(a-b) = b+c-a ≥ 0 from the triangle inequality; (3) c+(a-b) ≥ 0 since a ≥ b means a-b ≥ 0 and we add c > 0; (4) a+(b-c) ≥ 0 since b ≥ c means b-c ≥ 0. The `kahan_degenerate_factor` theorem proves c-(a-b) = 0 when a = b+c — the critical factor that drives the Kahan product to 0 for degenerate triangles.",
+    "mathContext": "**Stability mechanism**: The factor $c - (a-b) = b+c-a$ is the 'difficult' one near degeneracy ($a \\approx b+c$). Kahan's grouping computes $a-b$ first (which is $O(1)$ when $a \\approx b$, NOT near 0), then $c - (a-b)$. The naive approach computes $b+c-a$ directly as large-minus-large. The theorem `kahan_factors_nonneg_ordered` proves a conjunction `0 ≤ P ∧ 0 ≤ Q ∧ 0 ≤ R ∧ 0 ≤ S` via repeated `constructor` (splitting ∧) and `linarith`.",
+    "significance": "key",
+    "relatedConcepts": ["kahan_factors_nonneg_ordered", "kahan_degenerate_factor", "ordered sides a≥b≥c", "catastrophic cancellation", "constructor tactic"],
+    "prerequisites": ["And.constructor", "linarith", "triangle inequality", "floating-point stability concepts"]
+  },
+  {
+    "id": "ann-kahan-examples",
+    "proofId": "herons-formula-oq-03",
+    "range": { "startLine": 233, "endLine": 289 },
+    "type": "concept",
+    "title": "Worked Examples: Pythagorean Triples and Near-Degenerate Triangles",
+    "content": "Three numerical verifications ground the abstract algebra in concrete examples. For the 3-4-5 right triangle: kahan_product(3,4,5) = 576 (proved by `norm_num`) and kahan_area(3,4,5) = 6 (matching (1/2)·3·4). For 5-12-13: kahan_product(13,12,5) = 14400 and area = 30. Both area proofs use the same pattern: `rw [kahan_product_XXX]`, then compute √N = M via `sqrt_sq` with `norm_num`, and close with `norm_num`. For 10-10-1 (near-degenerate): kahan_product = 399 = 16·24.9375, demonstrating that the formula handles the 20:1 aspect ratio without cancellation.",
+    "mathContext": "3-4-5: $s = 6$, $s(s-3)(s-4)(s-5) = 6\\cdot 3\\cdot 2\\cdot 1 = 36$. Kahan product $= 16 \\cdot 36 = 576$. Area $= \\sqrt{576}/4 = 24/4 = 6$. For 5-12-13: $s=15$, $s(s-13)(s-12)(s-5) = 15\\cdot 2\\cdot 3\\cdot 10 = 900$. Kahan $= 16\\cdot 900 = 14400$. Area $=\\sqrt{14400}/4 = 120/4 = 30$. For 10-10-1: $s=10.5$, $s(s-10)(s-10)(s-1) = 10.5\\cdot 0.5\\cdot 0.5\\cdot 9.5 = 24.9375$. Kahan $= 16\\cdot 24.9375 = 399$.",
+    "significance": "supporting",
+    "relatedConcepts": ["norm_num", "sqrt_sq", "Pythagorean triple", "near-degenerate triangle", "numerical verification"],
+    "prerequisites": ["norm_num tactic", "Real.sqrt_sq", "Pythagorean triples (3-4-5, 5-12-13)"]
+  }
+]
