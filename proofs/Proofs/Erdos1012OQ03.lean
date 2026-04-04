@@ -83,6 +83,11 @@ def IsDirectedPathList (D : Digraph V) (l : List V) : Prop :=
 
 /-! ── List.insertIdx helper lemmas ─────────────────────────────────────────── -/
 
+-- Index equality for lists: l[i] = l[j] when i = j (works around dependent-type rw issues)
+private lemma list_idx_congr {α : Type*} {l : List α} {i j : Nat} (h : i = j)
+    {hi : i < l.length} {hj : j < l.length} : l[i]'hi = l[j]'hj := by
+  subst h; rfl
+
 -- Length of insertIdx when index is in bounds
 private lemma insertIdx_length_eq {α : Type*} {l : List α} {a : α} {i : ℕ}
     (hi : i ≤ l.length) : (l.insertIdx i a).length = l.length + 1 := by
@@ -215,101 +220,113 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
     (hsc : D.IsStronglyConnected) (l : List V) (hc : IsDirectedCycleList D l)
     (hl : l.length < Fintype.card V) :
     ∃ l' : List V, IsDirectedCycleList D l' ∧ l.length < l'.length := by
-  sorry
-  /-
   obtain ⟨hnd, hlen2, harcs⟩ := hc
-  set k := l.length
+  set k := l.length with hk_def
   have ⟨u, hu⟩ : ∃ u : V, u ∉ l := by
     by_contra hall; push_neg at hall
     exact absurd (calc Fintype.card V = Finset.univ.card := Finset.card_univ.symm
       _ ≤ l.toFinset.card := Finset.card_le_card (fun v _ => List.mem_toFinset.mpr (hall v))
       _ = k := l.toFinset_card_of_nodup hnd) (by omega)
   by_cases h_ins : ∃ (i : ℕ) (hi : i < k),
-      D.arc (l[i]'hi) u ∧ D.arc u (l[(i+1)%k]'(Nat.mod_lt _ (by omega)))
+      D.arc (l[i]'hi) u ∧ D.arc u (l[(i + 1) % k]'(Nat.mod_lt _ (by omega)))
   · obtain ⟨i, hi, harc_liu, harc_ul⟩ := h_ins
-    -- Insert u at position i+1
     have hi1 : i + 1 ≤ k := by omega
     use l.insertIdx (i + 1) u
-    have hlen_ins : (l.insertIdx (i + 1) u).length = k + 1 :=
-      insertIdx_length_eq hi1
+    have hlen_ins : (l.insertIdx (i + 1) u).length = k + 1 := insertIdx_length_eq hi1
+    set L := l.insertIdx (i + 1) u with hL_def
+    have hn : L.length = k + 1 := hlen_ins
     constructor
-    · refine ⟨nodup_insertIdx hi1 hu hnd, by simp [hlen_ins]; omega, ?_⟩
-      intro j hj
-      simp only [hlen_ins] at hj
-    -- Compute elements of the inserted list
-    set jnext := (j + 1) % (k + 1)
-    have hjnext_lt : jnext < k + 1 := Nat.mod_lt _ (by omega)
-    -- Helper to compute list elements
-    have hget : ∀ m (hm : m < k + 1),
-        (l.insertIdx (i + 1) u)[m]'hm =
-          if m < i + 1 then l[m]'(by omega)
-          else if m = i + 1 then u
-          else l[m - 1]'(by omega) := by
-      intro m hm
-      by_cases hlt : m < i + 1
-      · rw [if_pos hlt]
-        exact List.getElem_insertIdx_of_lt hlt (by rw [hlen_ins])
-      · rw [if_neg hlt]
-        by_cases heq : m = i + 1
-        · rw [if_pos heq]
-          convert insertIdx_getElem_at l u (i + 1) hi1 using 2
-          · rw [hlen_ins]
-          · exact heq
-        · rw [if_neg heq]
-          convert insertIdx_getElem_gt l u (i + 1) m hi1 (by omega) (by omega) using 2
-          rw [hlen_ins]
-    rw [hget j hj, hget jnext hjnext_lt]
-    -- Case split on j vs i+1
-    by_cases hji : j < i
-    · -- j < i: both j and j+1 are < i+1
-      have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt (by omega)
-      rw [if_pos (by omega : j < i + 1), if_pos (by omega : j + 1 < i + 1), hjnext]
-      exact harcs j (by omega)
-    · by_cases hji2 : j = i
-      · -- j = i: new[j] = l[i], new[j+1] = u
-        subst hji2
-        have hjnext : jnext = i + 1 := Nat.mod_eq_of_lt (by omega)
-        rw [if_pos (by omega : i < i + 1), if_neg (show ¬(i + 1 < i + 1) from by omega),
-            if_pos rfl, hjnext]
-        exact harc_liu
-      · by_cases hji3 : j = i + 1
-        · -- j = i+1: new[j] = u
-          subst hji3
-          rw [if_neg (by omega : ¬(i + 1 < i + 1)), if_pos rfl]
-          have hjnext : jnext = if i + 2 < k + 1 then i + 2 else 0 := by
-            simp only [jnext, Nat.mod_eq_of_lt, Nat.mod_self]
-            split_ifs with h <;> [exact Nat.mod_eq_of_lt h;
-              push_neg at h; rw [show i + 2 = k + 1 from by omega, Nat.mod_self]]
-          split_ifs at hjnext with h
-          · rw [hjnext, if_neg (by omega : ¬(i + 2 < i + 1)),
-                if_neg (by omega : ¬(i + 2 = i + 1))]
-            convert harc_ul using 2
-            exact (Nat.mod_eq_of_lt (by omega)).symm
-          · have hik : i + 1 = k := by omega
-            rw [hjnext, if_pos (by omega : (0 : ℕ) < i + 1)]
-            convert harc_ul using 2
-            simp [hik, Nat.mod_self]
-        · -- j > i+1: new[j] = l[j-1]
-          rw [if_neg (by omega : ¬(j < i + 1)), if_neg (by omega : ¬(j = i + 1))]
-          by_cases hwrap : j + 1 < k + 1
-          · have hjnext : jnext = j + 1 := Nat.mod_eq_of_lt hwrap
-            rw [hjnext, if_neg (by omega : ¬(j + 1 < i + 1)),
-                if_neg (by omega : ¬(j + 1 = i + 1))]
-            exact harcs (j - 1) (by omega)
-          · have hjk : j = k := by omega
-            have hjnext : jnext = 0 := by simp [jnext, hjk, Nat.mod_self]
-            rw [hjnext, hjk, if_pos (by omega : (0 : ℕ) < i + 1)]
-            convert harcs (k - 1) (by omega) using 2
-            · simp; omega
-            · simp [show k - 1 + 1 = k from by omega, Nat.mod_self]
-  · -- Case 2: u is not insertable anywhere
-    push_neg at h_ins
+    · refine ⟨nodup_insertIdx hi1 hu hnd, by rw [hn]; omega, fun j hj => ?_⟩
+      set jn := (j + 1) % L.length with hjn_def
+      have hjn_lt : jn < L.length := Nat.mod_lt _ (by rw [hn]; omega)
+      -- Normalize the goal so both bound proofs are our named hypotheses
+      change D.arc (L[j]'hj) (L[jn]'hjn_lt)
+      by_cases hji : j < i
+      · -- j < i: L[j] = l[j], L[jn] = l[jn] (both below insertion point i+1)
+        have hjn_val : jn = j + 1 := by
+          simp only [hjn_def, hn]; exact Nat.mod_eq_of_lt (by omega)
+        have hvsrc : L[j]'hj = l[j]'(by omega) :=
+          List.getElem_insertIdx_of_lt (by omega) hj
+        have hvtgt : L[jn]'hjn_lt = l[jn]'(by omega) :=
+          List.getElem_insertIdx_of_lt (by rw [hjn_val]; omega) hjn_lt
+        rw [hvsrc, hvtgt]
+        convert harcs j (by omega) using 1
+        exact list_idx_congr (by rw [hjn_val]; exact (Nat.mod_eq_of_lt (by omega)).symm)
+      · by_cases hji2 : j = i
+        · -- j = i: L[j] = l[i], L[jn] = u
+          have hjn_val : jn = j + 1 := by
+            simp only [hjn_def, hn]; exact Nat.mod_eq_of_lt (by omega)
+          have hvsrc : L[j]'hj = l[j]'(by omega) :=
+            List.getElem_insertIdx_of_lt (by omega) hj
+          have hi1_lt : i + 1 < L.length := hn.symm ▸ (by omega)
+          have hjn_eq : jn = i + 1 := by rw [hjn_val, hji2]
+          have hvtgt : L[jn]'hjn_lt = u :=
+            (list_idx_congr hjn_eq).trans (List.getElem_insertIdx_self hi1_lt)
+          rw [hvsrc, hvtgt]
+          convert harc_liu using 1
+          exact list_idx_congr hji2
+        · by_cases hji3 : j = i + 1
+          · -- j = i+1: L[j] = u
+            have hjn1_lt : i + 1 < L.length := hn.symm ▸ (by omega)
+            have hvsrc : L[j]'hj = u :=
+              (list_idx_congr hji3).trans (List.getElem_insertIdx_self hjn1_lt)
+            rw [hvsrc]
+            by_cases hwrap : i + 2 < k + 1
+            · -- jn = i+2, L[jn] = l[i+1]
+              have hjn_val : jn = i + 2 := by
+                simp only [hjn_def, hn, hji3]; exact Nat.mod_eq_of_lt (by omega)
+              have hvtgt : L[jn]'hjn_lt = l[jn - 1]'(by omega) :=
+                List.getElem_insertIdx_of_gt (by rw [hjn_val]; omega) hjn_lt
+              rw [hvtgt]
+              convert harc_ul using 1
+              exact list_idx_congr (show jn - 1 = (i + 1) % k by
+                rw [hjn_val, show i + 2 - 1 = i + 1 from by omega]
+                exact (Nat.mod_eq_of_lt (by omega)).symm)
+            · -- i+1 = k, jn = 0, L[jn] = l[0]
+              have hik : i + 1 = k := by omega
+              have hjn_val : jn = 0 := by
+                simp only [hjn_def, hn, hji3]
+                rw [show i + 2 = k + 1 from by omega, Nat.mod_self]
+              have h0_lt : 0 < L.length := hn.symm ▸ (by omega)
+              have hvtgt : L[jn]'hjn_lt = l[0]'(by omega) :=
+                (list_idx_congr hjn_val).trans (List.getElem_insertIdx_of_lt (by omega) h0_lt)
+              rw [hvtgt]
+              convert harc_ul using 1
+              exact list_idx_congr (show (0 : Nat) = (i + 1) % k by rw [hik, Nat.mod_self])
+          · -- j > i+1: L[j] = l[j-1]
+            have hvsrc : L[j]'hj = l[j - 1]'(by omega) :=
+              List.getElem_insertIdx_of_gt (by omega) hj
+            rw [hvsrc]
+            by_cases hwrap : j + 1 < k + 1
+            · -- jn = j+1, L[jn] = l[j]
+              have hjn_val : jn = j + 1 := by
+                simp only [hjn_def, hn]; exact Nat.mod_eq_of_lt (by omega)
+              have hvtgt : L[jn]'hjn_lt = l[jn - 1]'(by omega) :=
+                List.getElem_insertIdx_of_gt (by rw [hjn_val]; omega) hjn_lt
+              rw [hvtgt]
+              convert harcs (j - 1) (by omega) using 1
+              exact list_idx_congr (show jn - 1 = (j - 1 + 1) % k by
+                rw [hjn_val, show j + 1 - 1 = j from by omega, show j - 1 + 1 = j from by omega]
+                exact (Nat.mod_eq_of_lt (by omega)).symm)
+            · -- j = k, jn = 0, L[jn] = l[0]
+              have hjn_val : jn = 0 := by
+                simp only [hjn_def, hn]
+                rw [show j + 1 = k + 1 from by omega, Nat.mod_self]
+              have h0_lt : 0 < L.length := hn.symm ▸ (by omega)
+              have hvtgt : L[jn]'hjn_lt = l[0]'(by omega) :=
+                (list_idx_congr hjn_val).trans (List.getElem_insertIdx_of_lt (by omega) h0_lt)
+              rw [hvtgt]
+              convert harcs (k - 1) (by omega) using 1
+              · exact list_idx_congr (show j - 1 = k - 1 from by omega)
+              · exact list_idx_congr (show (0 : Nat) = (k - 1 + 1) % k by
+                    rw [show k - 1 + 1 = k from by omega, Nat.mod_self])
+    · rw [hn]; omega
+  · push_neg at h_ins
     have h_ni : (∀ (i : ℕ) (hi : i < k), D.arc (l[i]'hi) u) ∨
                 (∀ (i : ℕ) (hi : i < k), D.arc u (l[i]'hi)) :=
       tournament_cycle_non_insertable D hT l ⟨hnd, hlen2, harcs⟩ u hu
         (fun i hi h => h_ins i hi h.1 h.2)
     sorry
-  -/
 
 private lemma list_cycle_to_hamiltonian (D : Digraph V) (l : List V)
     (hc : IsDirectedCycleList D l) (hlen : l.length = Fintype.card V) :
