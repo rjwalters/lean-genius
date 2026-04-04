@@ -18,7 +18,7 @@
       "commuting-probability",
       "open"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 1098,
     "erdosUrl": "https://erdosproblems.com/1098",
@@ -27,7 +27,7 @@
     "mathlib_version": "4.26.0",
     "lineCount": 134,
     "axiomCount": 0,
-    "assumptions": "0 sorries, 0 axioms. The 5/8 theorem is stated as a Prop (open formalization goal, not an axiom). All proved theorems are fully verified.",
+    "assumptions": "0 sorries, 0 axioms. Core results (commProb G ≤ 1, equality iff abelian) obtained via Mathlib's commProb_le_one and commProb_eq_one_iff. The 5/8 theorem is stated as a Prop (open formalization goal, not an axiom). The nonCommGraph definition and nonCommDensity theorems are original infrastructure.",
     "mathlibDependencies": [
       {
         "theorem": "commProb_pos",
