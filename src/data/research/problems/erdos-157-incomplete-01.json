@@ -1,7 +1,7 @@
 {
   "slug": "erdos-157-incomplete-01",
   "title": "Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-04-03T07:56:24.931Z",
     "iteration": 1,
-    "focus": "Counting strategy for sidon_not_basis_2 identified. pilatte_existence blocked.",
+    "focus": "sidon_counting_contradiction proved. Next: prove SumsetK_A_2_card_bound to complete sidon_not_basis_2.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,10 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 2 sorries remain. pilatte_existence: BLOCKED (deep research). sidon_not_basis_2: proof strategy documented. Key insight: use Sidon distinctness + counting, not basis_counting_lower (too weak).",
+    "progressSummary": "PROGRESS: sidon_counting_contradiction proved (sorry removed). 1 sorry remains: sidon_not_basis_2 main theorem needs SumsetK_A_2_card_bound helper lemma. pilatte_existence: BLOCKED.",
     "builtItems": [
       "sidon_not_basis_2 proof strategy: counting injection from [N0,2N] into Option(A) union (A x A), bounded by M*(M+1)/2 using IsSidonAlt",
-      "Identified that basis_counting_lower is too weak (c > 0 only, not c > 1)"
+      "Identified that basis_counting_lower is too weak (c > 0 only, not c > 1)",
+      "Proved sidon_counting_contradiction in Erdos157Problem.lean:358-443 — eliminates the sorry by choosing N=8*M^4 and showing Sidon counting bound is exceeded for large M"
     ],
     "insights": [
       "pilatte_existence (BLOCKED): Requires formalizing Pilatte 2023 probabilistic method, >1000 lines. Not tractable.",
@@ -41,7 +42,8 @@
       "IsSidonAlt (proved in file): each sum s has at most 1 pair (a,b) with a<=b and a+b=s. This is the injectivity needed for the counting argument.",
       "key lemma needed: SumsetK_A_2_card_bound: |SumsetK A 2 cap [1,2N]| <= |A cap [1,2N]| * (|A cap [1,2N]| + 1) / 2",
       "basis_counting_lower is not needed for sidon_not_basis_2; the proof uses only sidon_counting_bound + direct Sidon counting",
-      "powers_of_two_sidon and example_is_sidon are already proved (0 sorries). sidon_iff_sidon_alt is proved."
+      "powers_of_two_sidon and example_is_sidon are already proved (0 sorries). sidon_iff_sidon_alt is proved.",
+      "sidon_counting_contradiction key proof technique: use explicit ((x:ℕ):ℝ) cast notation (not ↑(x)) in have type signatures to avoid HMul ℕ ℕ ℝ elaboration failure; use rw [hcast]; ring for cast-arithmetic after establishing hcast via Nat.cast_mul/Nat.cast_pow"
     ],
     "mathlibGaps": [],
     "nextSteps": [
