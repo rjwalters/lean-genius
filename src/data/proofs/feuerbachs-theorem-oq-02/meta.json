@@ -40,16 +40,18 @@
     ]
   },
   "overview": {
-    "historicalContext": "Feuerbach's theorem (1822) that the nine-point circle is tangent to the incircle and excircles is one of the most beautiful results in triangle geometry. The natural question of its 3D analogue was studied by Court (1934) and Murakami (1952), who showed that for orthocentric tetrahedra, the twenty-four-point sphere plays the role of the nine-point circle. Unlike the 2D case, this fails for general tetrahedra.",
+    "historicalContext": "Karl Wilhelm Feuerbach (1800–1834) proved in 1822 that the nine-point circle of a triangle is internally tangent to the incircle and externally tangent to the three excircles — considered one of the most elegant results in classical geometry. Feuerbach was only 22 when he published this result. The question of a 3D analogue proved surprisingly subtle: unlike the 2D case (where every triangle has an orthocenter and a nine-point circle), the 3D story depends critically on the tetrahedron type.\n\nNathan Altshiller-Court (1881–1968) in 'Modern Pure Solid Geometry' (1935) introduced the twenty-four-point sphere as the natural 3D analogue of the nine-point circle, passing through 24 distinguished points of an orthocentric tetrahedron (vs 9 for the nine-point circle). Court showed the sphere has center at the midpoint of the circumcenter and Monge point, with radius R/3.\n\nSatoru Murakami (1952) completed the Feuerbach analogue: for orthocentric tetrahedra, the twenty-four-point sphere is tangent to the insphere and all four exspheres. The orthocentric condition — that opposite edges are perpendicular (AB ⊥ CD, AC ⊥ BD, AD ⊥ BC) — is not merely a convenience but a necessity; the result fails for general tetrahedra.\n\nThe Monge point, introduced by Gaspard Monge, is the 3D substitute for the orthocenter: for any tetrahedron, the six planes each perpendicular to an edge and passing through the midpoint of the opposite edge all meet at the Monge point M = 4G - 3O. For orthocentric tetrahedra, M coincides with the classical orthocenter.",
     "problemStatement": "What is the 3D analogue of Feuerbach's theorem for tetrahedra? Specifically: is there a natural sphere that is tangent to the insphere and all exspheres of a tetrahedron?",
     "text": "For an orthocentric tetrahedron (opposite edges perpendicular), the twenty-four-point sphere is internally tangent to the insphere and externally tangent to all four exspheres",
-    "proofStrategy": "Coordinate geometry in R^3. Define tetrahedra, orthocentric condition, insphere/exspheres, and the twenty-four-point sphere (center = midpoint of circumcenter and Monge point, radius = R/3). The orthocentric condition ensures the Monge point coincides with the orthocenter.",
+    "proofStrategy": "Pure coordinate geometry in ℝ³, using Lean's product type `ℝ × ℝ × ℝ` to avoid Mathlib's inner product space complexity. The proof builds in 15 parts: (1) 3D infrastructure (dist3, dot3, cross3); (2) non-degenerate Tetrahedron structure using scalar triple product non-degeneracy; (3) face areas via cross product magnitude; (4) OrthocentricTetrahedron extending Tetrahedron with two perpendicularity fields, from which the third follows by `nlinarith`; (5) circumcenter via explicit Cramer's rule and three equidistance lemmas; (6) Monge point M = 4G - 3O; (7) incenter/excenters as face-area-weighted averages; (8) twenty-four-point sphere with center (O+M)/2 and radius R/3; (9) tangency definitions; (10) five tangency theorems (currently sorry — candidates for Aristotle); (11) Euler line identity proved by ring; (12) volume-inradius identity V = rS/3; (13) three axioms for deep geometric facts (counterexample, edge midpoints, face centroids). The key mechanized result is `orthocentric_third_perp` (the algebraic identity that the third perpendicularity follows from the first two), proved entirely by `nlinarith` after unfolding.",
     "keyInsights": [
-      "The 3D Feuerbach theorem requires the orthocentric hypothesis — it fails for general tetrahedra",
-      "The twenty-four-point sphere has radius R/3 (vs R/2 for the nine-point circle in 2D)",
-      "The Monge point is the 3D analogue of the orthocenter; for orthocentric tetrahedra they coincide",
-      "Only 2 of the 3 orthogonality conditions need be imposed — the third follows algebraically",
-      "The twenty-four-point sphere passes through 6 edge midpoints, 4 face centroids, and more"
+      "The 3D Feuerbach theorem requires the orthocentric hypothesis — it fails for general tetrahedra (axiom feuerbach_3d_fails_general); unlike in 2D where every triangle has an orthocenter, in 3D the four altitudes are NOT concurrent for general tetrahedra",
+      "The twenty-four-point sphere has radius R/3 (vs R/2 for the nine-point circle in 2D), reflecting the dimensional scaling of homotheties; the centroid splits the Euler line in ratio 3:1 in 3D vs 1:2 in 2D",
+      "The Monge point M = 4G - 3O always exists; for orthocentric tetrahedra it coincides with the orthocenter — the Euler line structure is O, G, M with G dividing OM in ratio 3:1",
+      "Only 2 of the 3 orthogonality conditions need be imposed — the third follows from the identity AB·CD + AC·BD + AD·BC = 0 (proved by nlinarith after unfolding dot products)",
+      "The circumcenter is computed via Cramer's rule as an explicit closed-form formula; equidistance follows by ring after field_simp",
+      "Incenter and excenters use face-area barycentric coordinates (generalizing the 2D side-length barycentric formula)",
+      "The inradius formula r = 3V/S generalizes the 2D formula r = 2A/perimeter; three axioms capture deep geometric facts whose coordinate proofs are left as formalization work"
     ],
     "prerequisites": [
       "Feuerbach's theorem (2D case)",
@@ -114,6 +116,46 @@
       "endLine": 410,
       "summary": "Statement of the complete 3D Feuerbach theorem: the twenty-four-point sphere is tangent to the insphere and all four exspheres.",
       "mathContext": "For an orthocentric tetrahedron, the twenty-four-point sphere is internally tangent to the insphere (dist = |R/3 - r|) and externally tangent to all four exspheres (dist = R/3 + r_i)."
+    },
+    {
+      "id": "tangency-defs",
+      "title": "Sphere Tangency Definitions",
+      "startLine": 435,
+      "endLine": 446,
+      "summary": "Definitions of internal tangency (dist = |r₁ - r₂|) and external tangency (dist = r₁ + r₂) for pairs of spheres.",
+      "mathContext": "These definitions encode the classical Euclidean characterization of tangent spheres in terms of center distances and radii."
+    },
+    {
+      "id": "feuerbach-tangency-theorems",
+      "title": "3D Feuerbach Tangency Theorems",
+      "startLine": 448,
+      "endLine": 533,
+      "summary": "Five theorems (4 sorry, 1 combined by tuple) stating the insphere and four exsphere tangencies for the twenty-four-point sphere. The combined theorem feuerbach_3d_theorem packages all five tangencies.",
+      "mathContext": "The five sorry theorems are Aristotle candidates: each requires verifying a distance formula dist(N₂₄, center) = R/3 ± r under the orthocentric hypothesis."
+    },
+    {
+      "id": "euler-line-properties",
+      "title": "Twenty-Four-Point Sphere Properties (Proved)",
+      "startLine": 534,
+      "endLine": 566,
+      "summary": "Three reflexivity results (monge_point_euler_line, twentyFourPointCenter_midpoint, twentyFourPointRadius_eq) and the Euler line theorem centroid_on_euler_line proved by ring.",
+      "mathContext": "The 3D Euler line: O, G, M are collinear with G = (3O+M)/4, i.e., G divides OM in ratio 3:1 from O. This mirrors the 2D ratio O:G:H = 1:2 on the Euler line."
+    },
+    {
+      "id": "volume-inradius",
+      "title": "Volume-Inradius Relation",
+      "startLine": 567,
+      "endLine": 578,
+      "summary": "Proves V = r·S/3 (equivalently r = 3V/S), the 3D analogue of Area = r·s in 2D, by field_simp.",
+      "mathContext": "$V = \\frac{rS}{3}$ where $S$ is the surface area — geometric proof: decompose tetrahedron into 4 sub-tetrahedra each with apex at incenter, volume $(1/3)\\cdot S_X \\cdot r$."
+    },
+    {
+      "id": "counterexample-and-midpoints",
+      "title": "Counterexample and Sphere Point Membership",
+      "startLine": 579,
+      "endLine": 627,
+      "summary": "Three axioms: feuerbach_3d_fails_general (orthocentric hypothesis is necessary), edge_midpoints_on_sphere (6 edge midpoints lie on N₂₄), face_centroids_on_sphere (4 face centroids lie on N₂₄).",
+      "mathContext": "These axioms state results analogous to the nine-point circle passing through side midpoints, altitude feet, and medial vertices. They are deep coordinate geometry facts left for future mechanization."
     }
   ],
   "crossReferences": [
@@ -129,11 +171,12 @@
     }
   ],
   "conclusion": {
-    "summary": "The 3D analogue of Feuerbach's theorem states that for orthocentric tetrahedra, the twenty-four-point sphere is tangent to the insphere and all four exspheres. This requires the orthocentric hypothesis — it fails for general tetrahedra.",
-    "implications": "The formalization reveals how the 2D-to-3D generalization introduces essential new structure: the orthocentric condition, the Monge point replacing the orthocenter, and the twenty-four-point sphere replacing the nine-point circle with radius R/3 instead of R/2.",
+    "summary": "This formalization establishes the complete structure of the 3D Feuerbach theorem for orthocentric tetrahedra: the twenty-four-point sphere (center = midpoint of circumcenter and Monge point, radius = R/3) is tangent to the insphere and all four exspheres. The key mechanized result is that the third orthogonality condition follows from the first two by `nlinarith`. The five tangency claims and three sphere-membership facts remain as axioms/sorries, but the overall architecture — definitions, Euler line, volume formula — is fully proved.",
+    "implications": "The formalization makes precise how the 2D-to-3D generalization is not straightforward: (1) the orthocentric condition is necessary (axiomatized by counterexample), not automatic as in 2D; (2) the Monge point M, not a classical orthocenter, is the correct 3D analogue; (3) the radius ratio shifts from R/2 to R/3; (4) the name 'twenty-four-point sphere' reflects the much richer set of points it passes through versus the 'nine-point circle'. The algebraic proof of third-perpendicularity from first two by a single `nlinarith` call is a striking example of computer algebra succeeding where classical geometric arguments require more careful setup.",
     "openQuestions": [
-      "Can the 3D Feuerbach theorem be extended to isogonal tetrahedra (a broader class than orthocentric)?",
-      "What is the analogue for n-dimensional simplices?"
+      "Can the 3D Feuerbach theorem be extended to isogonal tetrahedra (a broader class containing orthocentric tetrahedra)?",
+      "What is the analogue for n-dimensional simplices? Does a '(n+1)·n/2 + ... point sphere' exist with analogous tangency properties?",
+      "Can the five sorry theorems (tangency proofs) be discharged by Aristotle or by a direct Lean computation using the explicit Cramer-rule circumcenter?"
     ]
   },
   "leanFile": {
