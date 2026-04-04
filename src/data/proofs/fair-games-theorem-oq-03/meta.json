@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 280,
+    "lineCount": 290,
     "assumptions": "4 sorries: any_bounded_strategy_preserves_expectation, two_strategies_same_expectation, risk_neutral_pricing_neutrality (pending WithTop.untopA simp API in Mathlib 4.26.0), doobs_maximal_inequality (pending NNReal-to-real conversion of Mathlib maximal_ineq). Note: FairGamesTheorem.lean has pre-existing build failures in Mathlib 4.26.0 due to IsStoppingTime API change from τ:Ω→ι to τ:Ω→WithTop ι.",
     "mathlib_version": "4.26.0"
   },
