@@ -59,16 +59,6 @@
     "parentProof": "erdos-70",
     "openQuestionType": "extension",
     "openQuestionOf": "erdos-70",
-    "historicalContext": "The partition calculus — the systematic study of Ramsey-type partition properties for infinite cardinals and ordinals — was developed by Erdős and Rado in their landmark 1956 paper 'A partition calculus in set theory'. The notation α → (β, γ)_k^n means: every k-coloring of n-element subsets of a set of order type α contains a homogeneous subset of order type β in color 0 or order type γ in color 1. For the continuum 𝔠 = 2^{ℵ₀}, Erdős and Rado proved 𝔠 → (ω+n, 4)₂³ for all finite n ≥ 2. The natural question is whether the ω in 'ω+n' can be replaced by ω², giving 𝔠 → (ω², n)₂³. This 'first open case' has been highlighted by Hajnal and Larson in the Handbook of Set Theory survey. The difficulty lies in the 'stepping-up' from ω·k to ω² — each step in the ordinal hierarchy requires fundamentally new combinatorial tools.",
-    "problemStatement": "The partition arrow notation: κ → (α, m)₂³ means that every 2-coloring of 3-element subsets of a set S of cardinality κ contains either a homogeneous subset of order type ≥ α in color 0, or a homogeneous finite subset of size ≥ m in color 1.\n\n**Known**: 𝔠 → (ω+n, 4)₂³ for all n ≥ 2 (Erdős-Rado theorem, the parent entry).\n\n**Open**: Does 𝔠 → (ω², n)₂³ hold for all n ≥ 2?\n\nThis would be a strict strengthening, since ω+n ≤ ω² for all finite n. The ω² case is the first genuinely open case in the hierarchy\n$$\\omega + n < \\omega \\cdot 2 < \\omega \\cdot 3 < \\cdots < \\omega^2.$$",
-    "proofStrategy": "This file proves structural results around the open question, all machine-verified with 0 axioms. Key techniques: (1) Ordinal arithmetic via Mathlib's `Ordinal.mul_lt_mul_of_pos_left` and `card_mul`; (2) Monotonicity of the partition arrow: if α ≤ β and κ → (β, m), then κ → (α, m) — proved by threading the witness through; (3) Stepping-down the ω·k chain via `Nat.sub_le`; (4) The ω² case implies all ω·k cases by applying monotonicity to `omega_mul_k_lt_omega_squared`.",
-    "keyInsights": [
-      "ω² is countable: card(ω·ω) = ℵ₀·ℵ₀ = ℵ₀. This is why the ω² partition question is a statement about the continuum coloring countable ordinals, not about uncountable cardinalities.",
-      "The partition arrow is antimonotone in the ordinal parameter: if a coloring avoids an order-type-β homogeneous set, it also avoids a smaller order-type-α set. Proved as `partition_arrow_mono_ordinal`.",
-      "The ω² case strictly dominates the Erdős-Rado case (ω+n) because ω+n ≤ ω² for all finite n. If 𝔠 → (ω², n) then 𝔠 → (ω+n, n) — proved in `omega_squared_implies_omega_plus_n`.",
-      "ω² is a limit ordinal (`omega_squared_is_limit`): it is not a successor. This is the structural reason why the stepping-up technique for reaching ω² is fundamentally harder than reaching ω+n or ω·k for fixed k.",
-      "The full Erdős 70 conjecture (𝔠 → (β, n) for all countable β, all n ≥ 2) implies the ω² case — proved in `erdos70_implies_omega_squared`. But the converse fails: ω² < ω³ < … < ω^ω are all countable."
-    ],
     "originalContributions": [
       "Formal definitions of PartitionArrow, OmegaSquaredPartition, OmegaSquaredConjecture, OmegaMultKPartition",
       "Machine-verified hierarchy: ω+n ≤ ω² and ω·k < ω² for all finite k",
@@ -79,6 +69,30 @@
       "omega_squared_is_limit: structural reason for difficulty"
     ]
   },
+  "overview": {
+    "historicalContext": "The partition calculus — the systematic study of Ramsey-type partition properties for infinite cardinals and ordinals — was developed by Erdős and Rado in their landmark 1956 paper 'A partition calculus in set theory'. The notation $\\kappa \\to (\\alpha, m)_2^3$ means: every 2-coloring of 3-element subsets of a set of cardinality $\\kappa$ contains a homogeneous subset of order type $\\geq \\alpha$ in color 0, or a finite homogeneous subset of size $\\geq m$ in color 1. For the continuum $\\mathfrak{c} = 2^{\\aleph_0}$, Erdős and Rado proved $\\mathfrak{c} \\to (\\omega+n, 4)_2^3$ for all finite $n \\geq 2$. The natural question — whether the $\\omega$ in '$\\omega+n$' can be replaced by $\\omega^2$, giving $\\mathfrak{c} \\to (\\omega^2, n)_2^3$ — has been highlighted by Hajnal and Larson in the *Handbook of Set Theory* (2010) as the first genuinely open case. The difficulty lies in the 'stepping-up' from $\\omega \\cdot k$ to $\\omega^2$: each step in the ordinal hierarchy requires fundamentally new combinatorial tools, and $\\omega^2$ is a limit ordinal — the supremum of $\\omega, 2\\omega, 3\\omega, \\ldots$ — which makes inductive arguments fail.",
+    "problemStatement": "For a set $S$ of cardinality $\\kappa$, $\\kappa \\to (\\alpha, m)_2^3$ means every 2-coloring of 3-element subsets of $S$ contains either a color-0 homogeneous set of order type $\\geq \\alpha$, or a color-1 homogeneous set of size $\\geq m$. **Known**: $\\mathfrak{c} \\to (\\omega+n, 4)_2^3$ for all $n \\geq 2$ (Erdős-Rado, parent entry). **Open**: Does $\\mathfrak{c} \\to (\\omega^2, n)_2^3$ hold for all $n \\geq 2$? The hierarchy $\\omega+n < \\omega \\cdot 2 < \\omega \\cdot 3 < \\cdots < \\omega^2$ means this is a strict strengthening of the known result.",
+    "proofStrategy": "The file proves structural results around the open question, all machine-verified with 0 axioms. Key techniques: (1) ordinal arithmetic via `Ordinal.mul_lt_mul_of_pos_left` and `card_mul`; (2) antimonotonicity of the partition arrow: if $\\alpha \\leq \\beta$ and $\\kappa \\to (\\beta, m)$ then $\\kappa \\to (\\alpha, m)$, proved by threading the witness through; (3) stepping-down the $\\omega \\cdot k$ chain; (4) the $\\omega^2$ case implies all $\\omega \\cdot k$ cases by applying monotonicity to `omega_mul_k_lt_omega_squared`.",
+    "keyInsights": [
+      "$\\omega^2$ is countable: $|\\omega \\cdot \\omega| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$. This is why the $\\omega^2$ partition question asks the continuum to color countable ordinals, not uncountable ones — a question about a very sparse structure within $\\mathfrak{c}$.",
+      "The partition arrow is antimonotone in the ordinal parameter: if a coloring avoids an order-type-$\\beta$ homogeneous set, it also avoids a smaller order-type-$\\alpha$ set. Proved as `partition_arrow_mono_ordinal`, this single lemma drives the entire implication chain.",
+      "The $\\omega^2$ case strictly dominates the Erdős-Rado case ($\\omega+n$) because $\\omega+n \\leq \\omega^2$ for all finite $n$. If $\\mathfrak{c} \\to (\\omega^2, n)$ then $\\mathfrak{c} \\to (\\omega+n, n)$ — proved in `omega_squared_implies_omega_plus_n`.",
+      "$\\omega^2$ is a limit ordinal (`omega_squared_is_limit`, proved via `Ordinal.isLimit_mul_left`): it is not a successor. This is the structural reason why the stepping-up technique for reaching $\\omega^2$ is fundamentally harder than reaching $\\omega+n$ or $\\omega \\cdot k$ for fixed $k$ — there is no 'last step before $\\omega^2$'.",
+      "The full Erdős 70 conjecture ($\\mathfrak{c} \\to (\\beta, n)$ for ALL countable $\\beta$ and all $n \\geq 2$) implies the $\\omega^2$ case — proved in `erdos70_implies_omega_squared`. But the converse fails: $\\omega^2 < \\omega^3 < \\cdots < \\omega^\\omega$ are all countable, so the full conjecture is strictly stronger."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "erdos-70",
+      "relation": "parent",
+      "description": "The Erdős-Rado theorem: 𝔠 → (ω+n, 4)₂³ — the known case that this entry extends"
+    },
+    {
+      "id": "ramsey-theorem",
+      "relation": "ancestor",
+      "description": "Ramsey's theorem is the finite foundation of partition calculus"
+    }
+  ],
   "sections": [
     {
       "id": "partition-arrow-framework",
