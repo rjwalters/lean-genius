@@ -36,6 +36,18 @@
     "prerequisites": ["complex numbers", "mathematical induction", "Lean ring tactic", "Mathlib Complex.I_sq"]
   },
   {
+    "id": "ann-algebraic-identities",
+    "proofId": "euler-identity-oq-01",
+    "range": { "startLine": 57, "endLine": 87 },
+    "type": "technique",
+    "title": "Powers of i: Four Algebraic Identities Proved by Induction",
+    "content": "The algebraic core of the proof: four theorems establishing how powers of i simplify. I_pow_even (k : ℕ) : I^{2k} = (-1)^k — proved by induction, with base case I^0 = 1 (trivial) and inductive step using I^{2(k+1)} = I^{2k} · I^2 = (-1)^k · (-1) = (-1)^{k+1}. I_pow_odd (k : ℕ) : I^{2k+1} = I · (-1)^k — a one-liner from I_pow_even and pow_succ. expTerm_even (x k) : expTerm(ix)(2k) = evenTerm(x)(k) — rewrites (ix)^{2k}/(2k)! = i^{2k} · x^{2k}/(2k)! = (-1)^k · x^{2k}/(2k)! using I_pow_even. expTerm_odd (x k) : expTerm(ix)(2k+1) = oddTerm(x)(k) — similarly converts odd-indexed terms using I_pow_odd. These four results are the only purely algebraic (non-analytic) content of the proof: they require no topology, no limits, only ring arithmetic and induction.",
+    "mathContext": "$i^{2k} = (-1)^k$ (induction from $i^2 = -1$: $i^{2(k+1)} = i^{2k} \\cdot i^2 = (-1)^k \\cdot (-1) = (-1)^{k+1}$); $i^{2k+1} = i \\cdot (-1)^k$ (from $i^{2k+1} = i^{2k} \\cdot i$). These imply $(ix)^{2k} = i^{2k} x^{2k} = (-1)^k x^{2k}$ and $(ix)^{2k+1} = i^{2k+1} x^{2k+1} = i(-1)^k x^{2k+1}$, converting general exponential series terms into recognizable cos/sin series terms.",
+    "significance": "key",
+    "relatedConcepts": ["I_pow_even", "I_pow_odd", "expTerm_even", "expTerm_odd", "imaginary unit", "de Moivre's formula", "Complex.I_sq"],
+    "prerequisites": ["complex numbers", "mathematical induction", "Lean ring tactic", "Mathlib Complex.I_sq"]
+  },
+  {
     "id": "ann-axioms",
     "proofId": "euler-identity-oq-01",
     "range": { "startLine": 88, "endLine": 135 },
