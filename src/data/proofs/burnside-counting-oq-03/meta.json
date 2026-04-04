@@ -21,11 +21,11 @@
       "open-problem"
     ],
     "badge": "wip",
-    "sorries": 4,
+    "sorries": 2,
     "axiomCount": 0,
-    "assumptions": "4 sorries remain: fixed_factors_through_mod (orbit = cosets of <r>), polya_cyclic_fixed_count (bijection fixed-colorings ↔ Fin gcd → Fin k), polya_sum_identity (reindexing Σ_r k^gcd(r,n) = Σ_{d|n} φ(n/d)·k^d), polya_necklace_formula_statement (Burnside connection). All concrete n=4 computations are proved by native_decide.",
+    "assumptions": "2 sorries remain: fixed_factors_through_mod (orbit = cosets of <r>, proved by modular arithmetic via gcd structure), polya_cyclic_fixed_count (bijection between fixed colorings and Fin gcd → Fin k). All concrete n=4 computations and the Pólya sum identity are fully proved.",
     "dateAdded": "2026-04-04",
-    "lineCount": 224,
+    "lineCount": 294,
     "theoremCount": 15,
     "definitionCount": 2,
     "mathlibDependencies": [
