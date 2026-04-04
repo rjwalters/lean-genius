@@ -6,7 +6,7 @@
   "meta": {
     "author": "Gross (1967), Wiener",
     "date": "2026",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LebesgueMeasureOQ03.lean",
     "tags": [
       "measure-theory",
@@ -18,7 +18,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 132,
-    "assumptions": "0 axioms, 0 sorries. 2 True-stub placeholder theorems: ball_volume_vanishes (line 103) and concentration_sketch (line 112, both prove True := trivial). Orthonormal separation and framework theorems fully proved.",
+    "assumptions": "0 axioms, 0 sorries. Orthonormal separation lemmas fully proved (orthonormal_dist, orthonormal_balls_disjoint). Impossibility proof sketch, Gaussian existence, and Wiener construction remain as comments pending future formalization. Classified axiomatized per CLAUDE.md policy: main research question (infinite-dimensional Lebesgue generalization) is open.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [

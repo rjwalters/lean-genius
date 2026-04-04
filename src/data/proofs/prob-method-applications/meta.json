@@ -7,7 +7,7 @@
     "author": "Erdos and collaborators, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
     "date": "1947",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ProbMethodApplications.lean",
     "tags": [
       "probabilistic-method",
@@ -76,7 +76,7 @@
       }
     ],
     "lineCount": 51,
-    "assumptions": "high_girth_high_chromatic is a True stub (Erdos 1959 probabilistic existence not formalized). Other theorems prove trivial lower bounds rather than full probabilistic existence results.",
+    "assumptions": "0 axioms, 0 sorries. Five theorems proved with trivial or near-trivial proofs (existential witnesses, positivity). High-girth-high-chromatic existence result (Erdős 1959) remains as a comment pending probabilistic graph formalization. Classified axiomatized: main probabilistic existence results are not yet formalized.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
