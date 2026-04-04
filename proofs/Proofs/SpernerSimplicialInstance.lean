@@ -367,6 +367,53 @@ lemma AbstractSimplicialData.erase_opposite_eq
     omega
   exact (Finset.eq_of_subset_of_card_le h_sub h_card).symm
 
+/-- The faceOf operation is the same as erasing a vertex. -/
+lemma AbstractSimplicialData.faceOf_eq
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    D.faceOf s hs k = s.erase (D.vertexEnum s hs k) :=
+  rfl
+
+/-- If vertexEnum s hs j ∈ s.erase (vertexEnum s hs k), then j ≠ k. -/
+lemma AbstractSimplicialData.vertexEnum_not_mem_faceOf_iff
+    (s : Finset V) (hs : s ∈ D.topSimplices) (j k : Fin (n + 1)) :
+    D.vertexEnum s hs j ∉ D.faceOf s hs k ↔ j = k := by
+  constructor
+  · intro h
+    -- faceOf s hs k = s.erase (vertexEnum s hs k)
+    simp only [faceOf, Finset.mem_erase, not_and_or, not_not] at h
+    rcases h with h | h
+    · -- vertexEnum s hs j = vertexEnum s hs k
+      have hinj := D.card_eq s hs
+      have hnd : (s.sort (· ≤ ·)).Nodup := s.sort_nodup (· ≤ ·)
+      simp only [vertexEnum, List.get_eq_getElem] at h
+      rw [List.nodup_iff_injective_get] at hnd
+      have hcast_eq := hnd (show (s.sort (· ≤ ·)).get
+        (j.cast (by rw [Finset.length_sort]; exact hinj.symm)) =
+        (s.sort (· ≤ ·)).get
+        (k.cast (by rw [Finset.length_sort]; exact hinj.symm)) from h)
+      -- hcast_eq : Fin.cast _ j = Fin.cast _ k (as Fin L.length)
+      -- Since Fin.cast preserves .val, j.val = k.val
+      exact Fin.ext (by have := congr_arg Fin.val hcast_eq; simpa using this)
+    · -- vertexEnum s hs j ∉ s, but this contradicts vertexEnum_mem
+      exact absurd (D.vertexEnum_mem s hs j) h
+  · intro h
+    subst h
+    exact Finset.notMem_erase _ _
+
+/-- findOppositeIdx returns the unique index k such that
+vertexEnum t ht k ∉ f. -/
+lemma AbstractSimplicialData.findOppositeIdx_eq
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    D.findOppositeIdx s hs (D.faceOf s hs k)
+      (D.faceOf_subset s hs k) (D.faceOf_card s hs k) = k := by
+  -- findOppositeIdx picks some j with vertexEnum s hs j ∉ faceOf s hs k
+  -- We show this j must equal k by uniqueness
+  set j := D.findOppositeIdx s hs (D.faceOf s hs k)
+    (D.faceOf_subset s hs k) (D.faceOf_card s hs k) with hj_def
+  have hj_spec : D.vertexEnum s hs j ∉ D.faceOf s hs k :=
+    D.vertexEnum_findOppositeIdx_not_mem s hs _ _ _
+  exact (D.vertexEnum_not_mem_faceOf_iff s hs j k).mp hj_spec
+
 end FaceHelpers
 
 /-
@@ -387,7 +434,7 @@ Uses `V : Type` (universe 0) to match `CellComplex.Cell : Type`.
 
 The vertex map and vertex_injective are fully proved.
 The adjacency map is defined using the face helper library.
-Adjacency proofs (adj_symm, adj_vertex, adj_ne) remain sorry'd. -/
+adj_symm and adj_ne are fully proved. adj_vertex remains sorry'd. -/
 noncomputable def AbstractSimplicialData.toTriangulation
     {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
     (D : AbstractSimplicialData V n) :
@@ -428,7 +475,230 @@ noncomputable def AbstractSimplicialData.toTriangulation
       else
         -- Shouldn't happen if cs.card >= 2, but we handle gracefully
         none
-  adj_symm := by intro _ _ _ _ _; sorry
+  adj_symm := by
+    intro ⟨s, hs⟩ k ⟨s', hs'⟩ k' hadj
+    simp only at hadj
+    -- Case split on dite branches in hadj (forward direction)
+    split_ifs at hadj with hc ht_exists
+    -- Main case: adj returned some (both dite conditions positive)
+    · -- Extract data from hadj: s' = choose, k' = findOppositeIdx
+      have ht_mem_erase := ht_exists.choose_spec
+      have ht_mem_cs : ht_exists.choose ∈ D.containersOf (D.faceOf s hs k) :=
+        Finset.mem_of_mem_erase ht_mem_erase
+      have ht_top : ht_exists.choose ∈ D.topSimplices :=
+        (Finset.mem_filter.mp ht_mem_cs).1
+      have hf_sub_t : D.faceOf s hs k ⊆ ht_exists.choose :=
+        (Finset.mem_filter.mp ht_mem_cs).2
+      have h_pair := Option.some.inj hadj
+      have h_s'_val : ht_exists.choose = s' :=
+        congr_arg Subtype.val (congr_arg Prod.fst h_pair)
+      have h_k'_eq : D.findOppositeIdx ht_exists.choose ht_top
+        (D.faceOf s hs k) hf_sub_t (D.faceOf_card s hs k) = k' :=
+        congr_arg Prod.snd h_pair
+      -- Shared face: faceOf s' hs' k' = faceOf s hs k
+      -- faceOf s' hs' k' = s'.erase (vertexEnum s' hs' k')
+      -- Since s' = ht_exists.choose and k' = findOppositeIdx ...,
+      -- by erase_opposite_eq this equals faceOf s hs k
+      have hface_eq : D.faceOf s' hs' k' = D.faceOf s hs k := by
+        -- faceOf s' hs' k' = s'.erase (vertexEnum s' hs' k') by def
+        -- s' = ht_exists.choose (h_s'_val)
+        -- k' = findOppositeIdx ht_exists.choose ... (h_k'_eq)
+        -- erase_opposite_eq: t.erase (vertexEnum t ht (findOppositeIdx t ht f ...)) = f
+        have h1 : D.faceOf s' hs' k' = D.faceOf ht_exists.choose ht_top
+          (D.findOppositeIdx ht_exists.choose ht_top
+            (D.faceOf s hs k) hf_sub_t (D.faceOf_card s hs k)) := by
+          show s'.erase _ = ht_exists.choose.erase _
+          congr 1
+          · exact h_s'_val.symm
+          · show D.vertexEnum s' hs' k' =
+              D.vertexEnum ht_exists.choose ht_top
+                (D.findOppositeIdx ht_exists.choose ht_top
+                  (D.faceOf s hs k) hf_sub_t (D.faceOf_card s hs k))
+            congr 1
+            · exact h_s'_val.symm
+            · exact h_k'_eq.symm
+        rw [h1]
+        -- Now: faceOf t ht_top (findOppositeIdx t ht_top f hf_sub_t _) = faceOf s hs k
+        -- This is erase_opposite_eq applied to t with face = faceOf s hs k
+        exact D.erase_opposite_eq ht_exists.choose ht_top
+          (D.faceOf s hs k) hf_sub_t (D.faceOf_card s hs k)
+      -- s ≠ s'
+      have hne_ts : ht_exists.choose ≠ s := (Finset.mem_erase.mp ht_mem_erase).1
+      have hs_ne_s' : s ≠ s' := by rw [← h_s'_val]; exact hne_ts.symm
+      -- Containers are identical: containersOf (faceOf s' hs' k') = containersOf (faceOf s hs k)
+      have hcs_eq : D.containersOf (D.faceOf s' hs' k') =
+        D.containersOf (D.faceOf s hs k) := by
+        exact congrArg D.containersOf hface_eq
+      -- cs has at most 2 elements (pseudomanifold), at least 2 (from hc)
+      have hcs_card : (D.containersOf (D.faceOf s hs k)).card = 2 := by
+        have := D.containersOf_card_le_two s hs k; omega
+      -- s' ∈ containers
+      have hs'_in_cs : s' ∈ D.containersOf (D.faceOf s hs k) := by
+        rw [← h_s'_val]; exact ht_mem_cs
+      -- s ∈ containers
+      have hs_in_cs : s ∈ D.containersOf (D.faceOf s hs k) :=
+        D.self_mem_containersOf s hs k
+      -- containers.erase s' = {s}
+      have herase_s' : (D.containersOf (D.faceOf s hs k)).erase s' = {s} :=
+        Finset.eq_singleton_iff_unique_mem.mpr
+          ⟨Finset.mem_erase.mpr ⟨hs_ne_s', hs_in_cs⟩,
+           fun x hx => by
+             have h_card1 : ((D.containersOf (D.faceOf s hs k)).erase s').card = 1 := by
+               rw [Finset.card_erase_of_mem hs'_in_cs, hcs_card]
+             obtain ⟨a, ha⟩ := Finset.card_eq_one.mp h_card1
+             have : s = a := Finset.mem_singleton.mp (ha ▸ Finset.mem_erase.mpr ⟨hs_ne_s', hs_in_cs⟩)
+             have : x = a := Finset.mem_singleton.mp (ha ▸ hx)
+             rw [‹s = a›, ‹x = a›]⟩
+      -- Now show adj ⟨s', hs'⟩ k' computes to some (⟨s, hs⟩, k)
+      -- Navigate the dite branches in the goal
+      simp only
+      -- First dite: ¬ (containers of faceOf s' hs' k').card ≤ 1
+      have hc' : ¬ (D.containersOf (D.faceOf s' hs' k')).card ≤ 1 := by
+        simp only [hcs_eq, hcs_card]; omega
+      rw [dif_neg hc']
+      -- Second dite: (containers.erase s').Nonempty
+      -- We construct the Nonempty proof carefully to control the choose value
+      have hs_in_erase' : s ∈ (D.containersOf (D.faceOf s' hs' k')).erase s' := by
+        simp only [hcs_eq]; exact Finset.mem_erase.mpr ⟨hs_ne_s', hs_in_cs⟩
+      have hne' : ((D.containersOf (D.faceOf s' hs' k')).erase s').Nonempty :=
+        ⟨s, hs_in_erase'⟩
+      rw [dif_pos hne']
+      -- Goal: some (⟨choose, _⟩, findOppositeIdx choose ...) = some (⟨s, hs⟩, k)
+      -- Show choose = s: choose ∈ containers.erase s' = {s} (via hcs_eq)
+      have hchoose_mem := hne'.choose_spec
+      -- hne'.choose ∈ (D.containersOf (D.faceOf s' hs' k')).erase s'
+      -- which equals (D.containersOf (D.faceOf s hs k)).erase s' = {s}
+      -- But we can't rw hcs_eq in hchoose_mem (dependent type issue).
+      -- Instead, derive hne'.choose = s from the singleton characterization.
+      have hchoose_eq : hne'.choose = s := by
+        -- We know (containers(face s' hs' k')).erase s' ⊆ containers(face s hs k).erase s'
+        -- because containers are equal. So hne'.choose ∈ {s}.
+        have : (D.containersOf (D.faceOf s' hs' k')).erase s' =
+          (D.containersOf (D.faceOf s hs k)).erase s' :=
+          congrArg (fun x => x.erase s') hcs_eq
+        have h_mem : hne'.choose ∈ (D.containersOf (D.faceOf s hs k)).erase s' :=
+          this ▸ hchoose_mem
+        rw [herase_s'] at h_mem
+        exact Finset.mem_singleton.mp h_mem
+      -- Show the pair equality using congr
+      congr 1
+      refine Prod.ext (Subtype.ext hchoose_eq) ?_
+      -- Goal: findOppositeIdx choose _ (faceOf s' hs' k') _ _ = k
+      -- Derive facts about choose using explicit membership
+      have hchoose_mem_cs : hne'.choose ∈ D.containersOf (D.faceOf s' hs' k') :=
+        Finset.mem_of_mem_erase hchoose_mem
+      have ht_top' : hne'.choose ∈ D.topSimplices :=
+        (Finset.mem_filter.mp hchoose_mem_cs).1
+      have hf_sub' : D.faceOf s' hs' k' ⊆ hne'.choose :=
+        (Finset.mem_filter.mp hchoose_mem_cs).2
+      -- The findOppositeIdx spec: vertexEnum choose _ j ∉ faceOf s' hs' k'
+      have hj_spec := D.vertexEnum_findOppositeIdx_not_mem
+        hne'.choose ht_top' (D.faceOf s' hs' k') hf_sub' (D.faceOf_card s' hs' k')
+      -- Since choose = s, vertexEnum choose _ = vertexEnum s _
+      -- and faceOf s' hs' k' = faceOf s hs k
+      -- We can use the iff characterization after transporting
+      -- vertexEnum (choose) ht_top' j ∉ faceOf s' hs' k'
+      -- ↔ vertexEnum s hs j ∉ faceOf s hs k (because choose = s, faces equal)
+      -- ↔ j = k (by vertexEnum_not_mem_faceOf_iff)
+      suffices h : D.vertexEnum s hs _ ∉ D.faceOf s hs k by
+        exact (D.vertexEnum_not_mem_faceOf_iff s hs _ k).mp h
+      -- Transport: vertexEnum choose _ j → vertexEnum s _ j and face → face
+      -- hj_spec : vertexEnum choose _ (FOI ...) ∉ faceOf s' hs' k'
+      -- Goal: vertexEnum s hs (FOI ...) ∉ faceOf s hs k
+      --
+      -- The vertex and face both match up to choose=s and hface_eq.
+      -- We use the characterization: v ∉ A ↔ v ∉ A
+      -- after showing the vertex value and face are the same.
+      --
+      -- vertexEnum choose ht_top' j ∈ choose = s (by vertexEnum_mem + hchoose_eq)
+      -- vertexEnum s hs j ∈ s (by vertexEnum_mem)
+      -- Both are the j-th element of s.sort (· ≤ ·) (since choose = s)
+      -- So they're the same vertex value.
+      --
+      -- Instead of fighting dependent types, use the fact that both
+      -- vertexEnum applications produce elements of the same underlying set.
+      -- Use the iff form: not_mem ↔ j = k from vertexEnum_not_mem_faceOf_iff
+      -- applied to choose (= s).
+      --
+      -- Approach: show directly that the FOI result equals k using
+      -- the spec from the OTHER direction (via hj_spec and membership).
+      -- hj_spec says vertexEnum choose ht_top' (FOI ...) ∉ faceOf s' hs' k'
+      -- faceOf s' hs' k' = faceOf s hs k = s.erase (vertexEnum s hs k)
+      -- vertexEnum choose ht_top' (FOI ...) ∈ choose = s (by vertexEnum_mem)
+      -- So vertexEnum choose ht_top' (FOI ...) ∈ s but ∉ s.erase (vertexEnum s hs k)
+      -- This means vertexEnum choose ht_top' (FOI ...) = vertexEnum s hs k
+      -- (it's in s but not in s.erase(v), so it must be v)
+      --
+      -- And vertexEnum s hs (FOI ...) = vertexEnum choose ht_top' (FOI ...)
+      -- (since choose = s, the j-th sorted element is the same)
+      --
+      -- So vertexEnum s hs (FOI ...) = vertexEnum s hs k
+      -- hence vertexEnum s hs (FOI ...) ∉ s.erase (vertexEnum s hs k) = faceOf s hs k
+      --
+      -- Actually the simplest path: use that vertexEnum s hs (FOI ...) ∉ faceOf s hs k
+      -- iff FOI ... = k (by vertexEnum_not_mem_faceOf_iff).
+      -- And vertexEnum choose ht_top' (FOI ...) ∉ faceOf s' hs' k'
+      -- means vertexEnum choose ht_top' (FOI ...) ∉ faceOf s hs k (by hface_eq)
+      -- means the vertex is not in s.erase(vertexEnum s hs k)
+      -- means the vertex = vertexEnum s hs k (since it's in s)
+      --
+      -- Let v := vertexEnum choose ht_top' (FOI ...)
+      -- v ∈ choose = s (by vertexEnum_mem + hchoose_eq)
+      -- v ∉ faceOf s hs k = s.erase (vertexEnum s hs k)
+      -- So v = vertexEnum s hs k
+      -- Also v = vertexEnum s hs (FOI ...) (since choose = s)
+      -- ... this is circular. Let me just directly prove the result.
+      --
+      -- Cleaner approach: show FOI = k directly
+      -- We already have hj_spec: vertexEnum choose ht_top' (FOI ...) ∉ faceOf s' hs' k'
+      -- = ∉ faceOf s hs k (by hface_eq)
+      -- vertexEnum choose ht_top' (FOI ...) ∈ s (since ∈ choose = s)
+      -- So vertexEnum choose ht_top' (FOI ...) ∉ s.erase(vertexEnum s hs k)
+      -- But is in s. So it equals vertexEnum s hs k.
+      -- Since vertexEnum s hs is injective: the only j with vertexEnum s hs j = vertexEnum s hs k is j = k.
+      -- But vertexEnum choose ht_top' (FOI...) = vertexEnum s hs (FOI ...) (since choose = s)...
+      -- We're going in circles. The fundamental issue is showing vertexEnum choose = vertexEnum s.
+      --
+      -- Let me just use Eq.mpr with hchoose_eq for the dependent transport.
+      have key : D.vertexEnum hne'.choose ht_top'
+        (D.findOppositeIdx hne'.choose ht_top' (D.faceOf s' hs' k') hf_sub'
+          (D.faceOf_card s' hs' k'))
+        ∉ D.faceOf s hs k := by
+        rwa [← hface_eq]
+      -- key says: the SAME vertex value (from vertexEnum choose _) is ∉ faceOf s hs k
+      -- We need: vertexEnum s hs (FOI ...) ∉ faceOf s hs k
+      -- These are the same vertex because choose = s.
+      -- vertexEnum is defined as (t.sort ...).get(j.cast ...)
+      -- When t = choose = s, the sorted list is the same.
+      -- So the vertex value is the same, just with different proof terms.
+      -- faceOf s hs k is a concrete Finset, so membership is decidable
+      -- and depends only on the vertex value, not proof terms.
+      -- Therefore if v ∉ faceOf s hs k (key), and v' = v, then v' ∉ faceOf s hs k.
+      suffices heq_v : D.vertexEnum s hs
+        (D.findOppositeIdx hne'.choose ht_top' (D.faceOf s' hs' k') hf_sub'
+          (D.faceOf_card s' hs' k'))
+        = D.vertexEnum hne'.choose ht_top'
+        (D.findOppositeIdx hne'.choose ht_top' (D.faceOf s' hs' k') hf_sub'
+          (D.faceOf_card s' hs' k')) by
+        rw [heq_v]; exact key
+      -- Now prove heq_v: vertexEnum s hs j = vertexEnum choose ht_top' j
+      -- Both compute (t.sort ...).get(j.cast(...))
+      -- where t is s (resp. choose = s), and the cast proofs differ.
+      -- Since choose = s propositionally, the sorted lists are the same list.
+      -- The indices are the same nat value.
+      -- So the getElem calls return the same value.
+      -- vertexEnum s hs j and vertexEnum choose ht_top' j both compute
+      -- (t.sort ...).get (j.cast ...) where t = s = choose.
+      -- Since choose = s, the sorted lists are identical and the indices
+      -- have the same .val, so the getElem results are the same.
+      simp only [AbstractSimplicialData.vertexEnum, List.get_eq_getElem]
+      -- Goal: L[i] = L'[i'] where L = s.sort ..., L' = choose.sort ...,
+      -- i and i' are cast versions of the same FOI result.
+      -- Since choose = s, L = L' and i.val = i'.val.
+      have hsort : (s.sort (· ≤ ·)) = (hne'.choose.sort (· ≤ ·)) :=
+        congrArg (fun x => x.sort (· ≤ ·)) hchoose_eq.symm
+      simp [hsort]
+    -- The none cases are closed automatically by split_ifs
   adj_vertex := by intro _ _ _ _ _; sorry
   adj_ne := by
     intro ⟨s, hs⟩ k ⟨s', hs'⟩ k' hadj
