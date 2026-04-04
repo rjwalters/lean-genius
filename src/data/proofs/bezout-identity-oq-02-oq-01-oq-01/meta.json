@@ -26,14 +26,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "Gauss proved that polynomial rings over fields are Euclidean domains and hence UFDs. The structure mirrors the integer case: the Euclidean algorithm provides GCDs, Bézout's identity follows, and Euclid's lemma gives unique factorization. This file makes that parallel explicit and machine-verifiable.",
+    "historicalContext": "Gauss proved in his 1801 *Disquisitiones Arithmeticae* (and in earlier work on quadratic forms) that polynomial rings over fields are Euclidean domains and hence unique factorization domains. The structure mirrors the integer case: the Euclidean algorithm provides GCDs, Bézout's identity follows, and Euclid's lemma gives unique factorization. The parallel between ℤ and K[X] was systematized in the 19th century by Kronecker, and became a cornerstone of abstract algebra: both are principal ideal domains (PIDs), hence Bézout domains, hence GCD domains, hence UFDs. Modern abstract algebra (Zariski-Samuel 1958, Lang 2002) presents these as instances of the general PID theory. Mathlib encodes the full hierarchy: `Field → EuclideanDomain → PrincipalIdealDomain → UniqueFactorizationMonoid`, with `Polynomial.uniqueFactorizationMonoid` proving K[X] is a UFD via Gauss's lemma when K is itself a UFD (or field).",
     "problemStatement": "Adapt the FTA uniqueness argument (Bézout → Euclid's Lemma → UFD) from ℤ to polynomial rings K[X], verifying: K[X] is a UFD for field K, the polynomial Bézout identity holds, irreducible implies prime in K[X], and polynomial GCDs satisfy a Bézout representation.",
     "proofStrategy": "All structural results are drawn from Mathlib via inferInstance (UFD, Euclidean domain) or direct applications of Mathlib theorems. The irreducible ↔ prime equivalence uses UniqueFactorizationMonoid.irreducible_iff_prime. The GCD Bézout form uses EuclideanDomain.gcd_eq_gcd_ab with a ring-normal form.",
     "keyInsights": [
-      "The algebraic hierarchy Field → EuclideanDomain → GCDMonoid → UFD is fully developed in Mathlib",
-      "IsCoprime f g is definitionally the existential ∃ a b, a*f + b*g = 1, making poly_bezout trivial",
-      "The irreducible ↔ prime equivalence (Euclid's lemma) holds in any UFD, not just polynomial rings",
-      "The parallel with the integer case is exact: R[X] inherits UFD structure from UFD R via Gauss's lemma"
+      "**Field → EuclideanDomain → UFD hierarchy**: Mathlib's typeclass hierarchy fully automates the chain `Field K → EuclideanDomain K[X] → UniqueFactorizationMonoid K[X]`. The instances are inhabited via `inferInstance`, so structural results require zero proof — just the right typeclass context.",
+      "**IsCoprime is definitionally ∃ a b, a·f + b·g = 1**: The polynomial Bézout identity `poly_bezout` has a one-word proof (`hcop`) because `IsCoprime` unfolds definitionally to the Bézout existential. This is a key design choice in Mathlib: coprimeness *is* the Bézout property, not a derived consequence.",
+      "**Irreducible ↔ prime characterizes UFDs**: The equivalence `Irreducible p ↔ Prime p` is provable exactly in UFDs (one direction, irreducible → prime, fails in non-UFDs like ℤ[√-5]). This equivalence is encoded in `UniqueFactorizationMonoid.irreducible_iff_prime` and is the formal statement of Euclid's lemma.",
+      "**Gauss's lemma lifts UFD to polynomial ring**: `Polynomial.uniqueFactorizationMonoid` proves that R[X] is a UFD whenever R is. This is Gauss's lemma in algebraic form: content(f·g) = content(f)·content(g), which forces irreducibility to be preserved under polynomial multiplication.",
+      "**DecidableEq for computable GCD**: The GCD Bézout form theorem requires `[DecidableEq K]` because `EuclideanDomain.gcdA/gcdB` are computable via the extended Euclidean algorithm. Without decidability, only the abstract GCDMonoid structure (non-constructive) is available. This distinction between constructive and classical paths appears repeatedly in Mathlib polynomial algebra."
     ],
     "prerequisites": [
       "UniqueFactorizationMonoid and EuclideanDomain from Mathlib",
@@ -41,7 +42,48 @@
       "IsCoprime and EuclideanDomain.gcd_eq_gcd_ab"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "ufd-instances",
+      "title": "UFD and Euclidean Domain Instances for K[X]",
+      "startLine": 33,
+      "endLine": 42,
+      "summary": "Three `example` declarations showing K[X] is a UFD (via inferInstance for Field K), K[X] is an EuclideanDomain (noncomputable, via inferInstance), and R[X] is a UFD when R is a UFD (via Polynomial.uniqueFactorizationMonoid). All proofs are one-liners using Mathlib's typeclass hierarchy.",
+      "mathContext": "Field K ⟹ EuclideanDomain K[X] ⟹ UniqueFactorizationMonoid K[X]. Also: UFD R ⟹ UFD R[X] (Gauss). The EuclideanDomain instance uses polynomial long division as the Euclidean function."
+    },
+    {
+      "id": "irreducible-prime",
+      "title": "Irreducible ↔ Prime and Euclid's Lemma for Polynomials",
+      "startLine": 50,
+      "endLine": 59,
+      "summary": "poly_irreducible_iff_prime: Irreducible p ↔ Prime p in any polynomial UFD, proved by UniqueFactorizationMonoid.irreducible_iff_prime. poly_euclid_lemma: irreducible p | f·g implies p | f or p | g over K, proved via irreducible_iff_prime + Prime.dvd_or_dvd.",
+      "mathContext": "In any UFD: Irreducible ↔ Prime. The implication irreducible → prime is the UFD property. Euclid's Lemma follows: p irreducible and p | f·g ⟹ p | f ∨ p | g."
+    },
+    {
+      "id": "poly-bezout",
+      "title": "Polynomial Bézout Identity and IsCoprime",
+      "startLine": 68,
+      "endLine": 74,
+      "summary": "poly_bezout: IsCoprime f g → ∃ a b, a·f + b·g = 1, proved by the hypothesis itself (definitional equality). poly_isCoprime_iff: IsCoprime ↔ ∃ a b, a·f + b·g = 1, proved by Iff.rfl. Both are trivial because IsCoprime is definitionally the Bézout existential in Mathlib.",
+      "mathContext": "In Mathlib: `IsCoprime f g := ∃ a b, a * f + b * g = 1`. Polynomial coprimeness ↔ gcd is a unit (nonzero constant) ↔ Bézout coefficients exist."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Irreducibility Examples over ℚ[X]",
+      "startLine": 97,
+      "endLine": 114,
+      "summary": "Three ℚ[X] examples: x²-1 = (x-1)(x+1) by ring; x is irreducible (Polynomial.irreducible_X); x²-1 is reducible (¬Irreducible) by producing the factorization and showing neither factor is a unit via Polynomial.irreducible_X_sub_C.",
+      "mathContext": "Irreducibility criteria for K[X]: degree-1 polynomials are always irreducible (Polynomial.irreducible_X_sub_C). Degree-2+ may factor. Over ℚ: x²-1 = (x-1)(x+1) is the standard reducibility example."
+    },
+    {
+      "id": "gcd-bezout",
+      "title": "GCD Bézout Representation and Integer-Polynomial Parallel",
+      "startLine": 130,
+      "endLine": 151,
+      "summary": "bezout_parallel (line 130): the ℤ and K[X] proofs have identical structure — Bézout → Euclid → UFD. poly_gcd_dvd_both (line 139): gcd(f,g) divides both f and g. poly_gcd_bezout_form (line 146): ∃ a b, gcd(f,g) = a·f + b·g, proved via EuclideanDomain.gcdA/gcdB and gcd_eq_gcd_ab.",
+      "mathContext": "EuclideanDomain.gcd_eq_gcd_ab: gcd f g = f * gcdA f g + g * gcdB f g (Lean convention: f-coefficient first). DecidableEq K required for the computable extended Euclidean algorithm."
+    }
+  ],
   "conclusion": {
     "summary": "This file proves 11 theorems with 0 sorries and 0 axioms, all from Mathlib, formally establishing that K[X] satisfies the same unique factorization and Bézout structure as ℤ, and making the structural parallel explicit.",
     "implications": "The formal parallel between ℤ and K[X] confirms that unique factorization is not a special property of the integers but a general consequence of the Euclidean domain structure. This is the algebraic content of both the integer FTA and the polynomial factorization theorem.",
@@ -52,9 +94,59 @@
   },
   "crossReferences": [
     {
-      "slug": "bezout-identity-oq-02-oq-01",
+      "targetId": "bezout-identity-oq-02-oq-01",
       "relationship": "extends",
-      "description": "Parent file proving the FTA from Euclid's lemma via the integer Bézout identity"
+      "description": "Parent proof establishing the integer FTA from Euclid's lemma via Bézout identity — this file adapts the same argument to K[X]."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "related",
+      "description": "Root Bézout identity entry for integers — the ℤ counterpart whose proof structure is mirrored here for K[X]."
+    }
+  ],
+  "mathlibDependencies": [
+    {
+      "theorem": "UniqueFactorizationMonoid.irreducible_iff_prime",
+      "description": "Irreducible ↔ Prime in any UFD — the core equivalence used in poly_irreducible_iff_prime",
+      "module": "Mathlib.RingTheory.UniqueFactorizationDomain"
+    },
+    {
+      "theorem": "Polynomial.uniqueFactorizationMonoid",
+      "description": "R[X] is a UFD when R is a UFD — Gauss's lemma generalization",
+      "module": "Mathlib.RingTheory.Polynomial.Basic"
+    },
+    {
+      "theorem": "EuclideanDomain.gcd_eq_gcd_ab",
+      "description": "GCD Bézout representation: gcd f g = f * gcdA f g + g * gcdB f g",
+      "module": "Mathlib.Algebra.EuclideanDomain.Basic"
+    },
+    {
+      "theorem": "Polynomial.irreducible_X_sub_C",
+      "description": "Monic linear polynomials X - c are irreducible in K[X] — used to prove x²-1 is reducible",
+      "module": "Mathlib.RingTheory.Polynomial.Basic"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Gauss, C.F."],
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Gerh. Fleischer Jun., Leipzig",
+      "note": "Contains foundational work on factorization; the polynomial ring analogy was developed in later works"
+    },
+    {
+      "authors": ["Lang, S."],
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer, Graduate Texts in Mathematics 211, 3rd edition",
+      "note": "Chapter II: UFDs and PIDs; Chapter V: polynomial rings and Gauss's lemma"
+    },
+    {
+      "authors": ["Zariski, O.", "Samuel, P."],
+      "title": "Commutative Algebra, Vol. I",
+      "year": "1958",
+      "venue": "D. Van Nostrand, Princeton",
+      "note": "Chapter III: factorization in polynomial rings; systematic development of K[X] as a UFD"
     }
   ],
   "leanFile": {
