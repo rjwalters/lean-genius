@@ -4,7 +4,7 @@
     "slug": "erdos-152-oq-01",
     "description": "For a Sidon set A with |A| >= 7 and min(A) >= 1, the sumset A+A contains at least 2 isolated elements. Strengthens the pigeonhole bound of >= 1 isolated element.",
     "meta": {
-        "author": "Erdős",
+        "author": "Erd\u0151s",
         "sourceUrl": "https://erdosproblems.com/152",
         "status": "verified",
         "proofRepoPath": "Proofs/Erdos152OQ01.lean",
@@ -26,21 +26,21 @@
         "mathlib_version": "4.26.0"
     },
     "overview": {
-        "historicalContext": "Erdős Problem #152 asks about the structure of sumsets of Sidon sets. A Sidon set (B2 set) has the property that all pairwise sums are distinct. This implies |A+A| = n(n+1)/2 for |A|=n. The sumset A+A occupies a range of size ~n², so there must be many gaps. This open question strengthens the pigeonhole argument from >= 1 to >= 2 isolated elements.",
+        "historicalContext": "Erd\u0151s Problem #152 asks about the structure of sumsets of Sidon sets. A Sidon set (B2 set) has the property that all pairwise sums are distinct. This implies |A+A| = n(n+1)/2 for |A|=n. The sumset A+A occupies a range of size ~n\u00b2, so there must be many gaps. This open question strengthens the pigeonhole argument from >= 1 to >= 2 isolated elements.",
         "problemStatement": "For a Sidon set $A \\subseteq \\mathbb{N}$ with $|A| \\geq 7$ and $\\min(A) \\geq 1$, prove that $A+A$ contains at least 2 isolated elements (elements with neither predecessor nor successor in $A+A$).",
-        "text": "The proof analyzes four cases based on whether consecutive pairs exist in A. Sidon difference injectivity guarantees at most one consecutive pair. When no consecutive pair exists, both 2·min(A) and 2·max(A) are isolated. When exactly one consecutive pair exists, one endpoint is isolated and a second isolated element is found using the second-nearest element to the other endpoint.",
-        "proofStrategy": "Case analysis on the existence of consecutive pairs in A, exploiting Sidon difference injectivity (at most one pair). Four cases: no consecutive pair (both endpoints isolated), one pair at max (2·min and min+second-smallest isolated), one pair at min (2·max and max+second-largest isolated), both consecutive pairs (contradiction for |A| >= 7).",
+        "text": "The proof analyzes four cases based on whether consecutive pairs exist in A. Sidon difference injectivity guarantees at most one consecutive pair. When no consecutive pair exists, both 2\u00b7min(A) and 2\u00b7max(A) are isolated. When exactly one consecutive pair exists, one endpoint is isolated and a second isolated element is found using the second-nearest element to the other endpoint.",
+        "proofStrategy": "Case analysis on the existence of consecutive pairs in A, exploiting Sidon difference injectivity (at most one pair). Four cases: no consecutive pair (both endpoints isolated), one pair at max (2\u00b7min and min+second-smallest isolated), one pair at min (2\u00b7max and max+second-largest isolated), both consecutive pairs (contradiction for |A| >= 7).",
         "keyInsights": [
             "Sidon difference injectivity: at most one pair (x, x+1) can both be in A",
-            "When min+1 ∉ A and min >= 1: 2·min is isolated (below minimum sum, and min+1 not available for the +1 sum)",
-            "When max-1 ∉ A: 2·max is isolated (above maximum sum, and max-1 not available for the -1 sum)",
-            "The second-nearest element technique: if the only consecutive pair is at max, the second-smallest element s2 satisfies s2+1 ∉ A, making max+s2 isolated",
-            "The Sidon condition forces at most one consecutive pair: two such pairs would collapse A to size ≤ 2, contradicting |A| ≥ 7, and this uniqueness is the key constraint enabling the ≥ 2 bound"
+            "When min+1 \u2209 A and min >= 1: 2\u00b7min is isolated (below minimum sum, and min+1 not available for the +1 sum)",
+            "When max-1 \u2209 A: 2\u00b7max is isolated (above maximum sum, and max-1 not available for the -1 sum)",
+            "The second-nearest element technique: if the only consecutive pair is at max, the second-smallest element s2 satisfies s2+1 \u2209 A, making max+s2 isolated",
+            "The Sidon condition forces at most one consecutive pair: two such pairs would collapse A to size \u2264 2, contradicting |A| \u2265 7, and this uniqueness is the key constraint enabling the \u2265 2 bound"
         ],
         "prerequisites": [
             "Sidon set properties (unique pairwise sums)",
             "Finset combinatorics",
-            "Erdős 152 parent definitions (isolatedCount, sumsetFinset)"
+            "Erd\u0151s 152 parent definitions (isolatedCount, sumsetFinset)"
         ]
     },
     "sections": [
@@ -49,30 +49,30 @@
             "title": "Helper Lemmas: Endpoint Isolation Conditions",
             "startLine": 18,
             "endLine": 76,
-            "summary": "Four private lemmas prove when 2·min±1 and 2·max±1 are absent from A+A: min_sum_left_isolated (2·min−1 below minimum sum), min_sum_right_isolated (2·min+1 needs min+1∈A), max_sum_left_isolated (2·max−1 needs max−1∈A), max_sum_right_isolated (2·max+1 above maximum sum)."
+            "summary": "Four private lemmas prove when 2\u00b7min\u00b11 and 2\u00b7max\u00b11 are absent from A+A: min_sum_left_isolated (2\u00b7min\u22121 below minimum sum), min_sum_right_isolated (2\u00b7min+1 needs min+1\u2208A), max_sum_left_isolated (2\u00b7max\u22121 needs max\u22121\u2208A), max_sum_right_isolated (2\u00b7max+1 above maximum sum)."
         },
         {
             "id": "no-consecutive-case",
             "title": "Easy Case: No Consecutive Pair",
             "startLine": 78,
             "endLine": 131,
-            "summary": "two_isolated_no_consecutive: if min+1∉A and max−1∉A, both 2·min and 2·max are isolated, giving isolatedCount ≥ 2 via Finset.card_pair."
+            "summary": "two_isolated_no_consecutive: if min+1\u2209A and max\u22121\u2209A, both 2\u00b7min and 2\u00b7max are isolated, giving isolatedCount \u2265 2 via Finset.card_pair."
         },
         {
             "id": "main-theorem",
             "title": "Main Theorem: gap_existence_two",
             "startLine": 133,
             "endLine": 319,
-            "summary": "gap_existence_two: for Sidon A with |A| ≥ 7 and min ≥ 1, proves isolatedCount ≥ 2 by case analysis: no consecutive pair (easy case), one pair at max (uses second-smallest s₂; Sidon prevents s₂+1∈A), one pair at min (symmetric), both pairs (contradiction for |A| ≥ 7)."
+            "summary": "gap_existence_two: for Sidon A with |A| \u2265 7 and min \u2265 1, proves isolatedCount \u2265 2 by case analysis: no consecutive pair (easy case), one pair at max (uses second-smallest s\u2082; Sidon prevents s\u2082+1\u2208A), one pair at min (symmetric), both pairs (contradiction for |A| \u2265 7)."
         }
     ],
     "conclusion": {
-        "summary": "Proves isolatedCount(A) ≥ 2 for Sidon sets with |A| ≥ 7 and min(A) ≥ 1, strengthening the parent's ≥ 1 pigeonhole bound. The proof covers all four cases of consecutive-pair existence using Sidon difference injectivity and the second-nearest element technique.",
-        "implications": "This result strengthens understanding of the structure of Sidon sumsets and contributes toward Erdős 152, which asks whether |A+A| grows faster than n²/2 for large Sidon sets. Isolated elements are structural witnesses to 'gaps' in A+A. More isolated elements imply more gaps, hence a denser sumset is needed to achieve the minimum size n(n+1)/2. The technique of using s₂ = min(A\\{min}) and the Sidon argument to show s₂+1∉A is a new proof technique applicable to Sidon sum structure more broadly.",
+        "summary": "Proves isolatedCount(A) \u2265 2 for Sidon sets with |A| \u2265 7 and min(A) \u2265 1, strengthening the parent's \u2265 1 pigeonhole bound. The proof covers all four cases of consecutive-pair existence using Sidon difference injectivity and the second-nearest element technique.",
+        "implications": "This result strengthens understanding of the structure of Sidon sumsets and contributes toward Erd\u0151s 152, which asks whether |A+A| grows faster than n\u00b2/2 for large Sidon sets. Isolated elements are structural witnesses to 'gaps' in A+A. More isolated elements imply more gaps, hence a denser sumset is needed to achieve the minimum size n(n+1)/2. The technique of using s\u2082 = min(A\\{min}) and the Sidon argument to show s\u2082+1\u2209A is a new proof technique applicable to Sidon sum structure more broadly.",
         "openQuestions": [
-            "Can the lower bound be improved to ≥ k isolated elements for general k, or is ≥ 2 the maximum provable for all large Sidon sets?",
-            "Does the min ≥ 1 condition matter asymptotically? Can the result be strengthened to all Sidon sets (including those with min = 0) by a different argument?",
-            "The main Erdős 152 problem: is it true that |A+A| > n(n+1)/2 for all sufficiently large Sidon sets A with |A| = n?"
+            "Can the lower bound be improved to \u2265 k isolated elements for general k, or is \u2265 2 the maximum provable for all large Sidon sets?",
+            "Does the min \u2265 1 condition matter asymptotically? Can the result be strengthened to all Sidon sets (including those with min = 0) by a different argument?",
+            "The main Erd\u0151s 152 problem: is it true that |A+A| > n(n+1)/2 for all sufficiently large Sidon sets A with |A| = n?"
         ]
     },
     "leanFile": {
@@ -90,9 +90,9 @@
     },
     "crossReferences": [
         {
-            "targetId": "erdos-152",
-            "relationship": "extends",
-            "description": "Strengthens the pigeonhole bound from >= 1 to >= 2 isolated elements in Sidon sumsets"
+            "id": "erdos-152",
+            "title": "Erd\u0151s #152: Isolated Elements in Sidon Sumsets",
+            "relationship": "Parent: proves \u22651 isolated element for Sidon sets with |A|\u22655; this file strengthens to \u22652 isolated elements for |A|\u22657"
         }
     ]
 }
