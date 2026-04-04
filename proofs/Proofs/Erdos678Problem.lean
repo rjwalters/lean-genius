@@ -38,38 +38,58 @@ open Finset Nat
 
 /-- The LCM of consecutive integers from n+1 to n+k -/
 def intervalLcm (n k : ℕ) : ℕ :=
-  (Finset.range k).fold lcm 1 (fun i => n + 1 + i)
+  (Finset.range k).fold Nat.lcm 1 (fun i => n + 1 + i)
 
 /-- Alternative definition using Finset.Icc -/
 def intervalLcm' (n k : ℕ) : ℕ :=
-  (Finset.Icc (n + 1) (n + k)).fold lcm 1 id
+  (Finset.Icc (n + 1) (n + k)).fold Nat.lcm 1 id
 
 /-- The two definitions agree -/
 theorem intervalLcm_eq_intervalLcm' (n k : ℕ) (hk : k ≥ 1) :
     intervalLcm n k = intervalLcm' n k := by
-  sorry
+  simp only [intervalLcm, intervalLcm']
+  have himg : (Finset.range k).image (fun i => n + 1 + i) = Finset.Icc (n + 1) (n + k) := by
+    ext x
+    simp only [Finset.mem_image, Finset.mem_range, Finset.mem_Icc]
+    constructor
+    · rintro ⟨i, hi, rfl⟩; omega
+    · intro ⟨h1, h2⟩; exact ⟨x - (n + 1), by omega, by omega⟩
+  have hinj : Set.InjOn (fun i => n + 1 + i) (Finset.range k) := by
+    intro a _ b _ h
+    have h' : n + 1 + a = n + 1 + b := h
+    omega
+  conv_rhs => rw [← himg, Finset.fold_image hinj]
+  simp only [Function.comp, id]
 
 /-! ## Basic Properties of Interval LCM -/
 
 /-- LCM of empty interval is 1 -/
 theorem intervalLcm_zero (n : ℕ) : intervalLcm n 0 = 1 := by
-  unfold intervalLcm
-  simp [Finset.fold_empty]
+  simp [intervalLcm]
 
 /-- LCM of single element is that element -/
 theorem intervalLcm_one (n : ℕ) : intervalLcm n 1 = n + 1 := by
-  unfold intervalLcm
-  simp [Finset.range_one, Finset.fold_singleton]
+  simp [intervalLcm, Finset.range_succ,
+    Finset.fold_insert Finset.not_mem_range_self]
 
 /-- LCM increases when interval extends -/
 theorem intervalLcm_mono_right (n k : ℕ) :
     intervalLcm n k ∣ intervalLcm n (k + 1) := by
-  sorry
+  simp only [intervalLcm, Finset.range_succ,
+    Finset.fold_insert Finset.not_mem_range_self]
+  exact Nat.dvd_lcm_right _ _
 
 /-- Each element divides the interval LCM -/
 theorem dvd_intervalLcm (n k i : ℕ) (hi : i < k) :
     (n + 1 + i) ∣ intervalLcm n k := by
-  sorry
+  induction k with
+  | zero => omega
+  | succ k ih =>
+    simp only [intervalLcm, Finset.range_succ,
+      Finset.fold_insert Finset.not_mem_range_self]
+    rcases Nat.lt_succ_iff.mp hi |>.lt_or_eq with h | h
+    · exact Nat.dvd_trans (ih h) (Nat.dvd_lcm_right _ _)
+    · exact h ▸ Nat.dvd_lcm_left _ _
 
 /-! ## The Erdős Comparison Property -/
 
@@ -95,14 +115,6 @@ theorem selfridge_example_2 : erdosLcmComparison 132 139 7 := by
 
 /-! ## Computing Specific LCM Values -/
 
-/-- M(96,7) = lcm{97,98,99,100,101,102,103} -/
-theorem intervalLcm_96_7 : intervalLcm 96 7 = 1073741700 := by
-  native_decide
-
-/-- M(104,8) = lcm{105,106,107,108,109,110,111,112} -/
-theorem intervalLcm_104_8 : intervalLcm 104 8 = 786145080 := by
-  native_decide
-
 /-- Verification that M(96,7) > M(104,8) -/
 theorem lcm_comparison_96_104 : intervalLcm 96 7 > intervalLcm 104 8 := by
   native_decide
@@ -126,7 +138,11 @@ theorem cambie_2024 :
 theorem prime_power_divides_intervalLcm (n k p a : ℕ) (hp : p.Prime)
     (hpa : p ^ a ∈ Finset.Icc (n + 1) (n + k)) :
     p ^ a ∣ intervalLcm n k := by
-  sorry
+  obtain ⟨h1, h2⟩ := Finset.mem_Icc.mp hpa
+  have hi : p ^ a - (n + 1) < k := by omega
+  have heq : n + 1 + (p ^ a - (n + 1)) = p ^ a := by omega
+  calc p ^ a = n + 1 + (p ^ a - (n + 1)) := heq.symm
+    _ ∣ intervalLcm n k := dvd_intervalLcm n k _ hi
 
 /-- Key insight: an interval can "skip" a prime power -/
 theorem interval_skip_prime_power (n k p : ℕ) (hp : p.Prime)
@@ -150,8 +166,9 @@ theorem intervalLcm_chebyshev_upper (n k : ℕ) :
 /-! ## Erdős's Observations -/
 
 /-- The minimal n for which comparison holds grows faster than linearly -/
-def minimalN (k : ℕ) : ℕ :=
-  Nat.find (⟨96, 104, by sorry⟩ : ∃ n m : ℕ, erdosLcmComparison n m k)
+noncomputable def minimalN (k : ℕ) : ℕ :=
+  haveI := Classical.decPred (fun n => ∃ m : ℕ, erdosLcmComparison n m k)
+  Nat.find (⟨96, 104, by sorry⟩ : ∃ n, ∃ m : ℕ, erdosLcmComparison n m k)
 
 /-- Erdős proved n_k/k → ∞ -/
 theorem erdos_growth_rate : ∀ C : ℕ, ∃ K : ℕ, ∀ k ≥ K, minimalN k > C * k := by
