@@ -55,7 +55,7 @@
       "Morse theory: critical point counts constrained by Euler characteristic"
     ],
     "historicalContext": "The Gauss-Bonnet theorem is one of the deepest results connecting geometry and topology. Gauss (1827) discovered that Gaussian curvature is intrinsic (Theorema Egregium). Bonnet (1848) proved ∫K dA = 2πχ for closed surfaces. Chern (1944) generalized to 2n-manifolds using the Pfaffian of the curvature form. The theorem bridges local geometry (curvature) and global topology (Euler characteristic), and is a precursor to the Atiyah-Singer index theorem.",
-    "axiomCount": 0,
+    "axiomCount": 10,
     "lineCount": 786,
     "assumptions": "0 sorries but 10 structure-encoded assumptions: Gauss-Bonnet theorem (CompactRiemannianSurface.gauss_bonnet), chi-genus formula (OrientableClosedSurface.chi_genus), Chern-Gauss-Bonnet (ChernGaussBonnetManifold), Gauss-Bonnet with boundary, geodesic polygon formula, constant curvature formula, geodesic triangle Gauss-Bonnet, Poincaré-Hopf index theorem, nonvanishing vector field index, Morse relation. Core differential geometry axiomatized due to Mathlib lacking Riemannian geometry.",
     "mathlib_version": "4.26.0"
