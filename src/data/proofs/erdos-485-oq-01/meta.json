@@ -53,16 +53,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #485 originates from Rényi and Rédei (1947) who first studied the term count of squared polynomials. Erdős and Rényi conjectured that f(k) → ∞, which Schinzel confirmed in 1987 with the bound f(k) > (log log k)/log 2. Schinzel and Zannier improved this to f(k) ≫ log k in 2009 using height theory. Erdős himself proved f(k) < k^(1-c) in 1949, showing the term count CAN be reduced significantly by squaring.",
+    "historicalContext": "Erdős Problem #485 has roots in a 1947 paper by Rényi and Rédei studying the minimum number of terms when polynomials are squared. Erdős proved in 1949 that f(k) < k^(1-c) via the exponentially-spaced construction P_k = Σ x^(3^j) — the geometric progression of exponents ensures very few cross-terms coincide when squaring. Erdős also conjectured (with Rényi) that f(k) → ∞, which stood open for 40 years until Schinzel (1987) proved f(k) > (log log k)/log 2. The big improvement came in 2009 when Schinzel and Zannier used Weil height theory from arithmetic geometry: the height of P satisfies H(P²) ≥ H(P)², giving a lower bound on support size via the logarithmic Mahler measure. The gap between Ω(log k) and O(k^(1-c)) remains the central open problem in sparse polynomial arithmetic. Notably, the formalization includes the discovery that the naive 'lacunary lower bound' (claiming termCount(P²) ≥ 2k-1) is FALSE — a counterexample p = 1 - x² - (1/2)x⁴ shows that coefficient cancellation can reduce the term count below the sumset lower bound.",
     "problemStatement": "**Open Question (OQ-01)**: What is the exact asymptotic growth rate of f(k)?\n\nKnown: c₁ · log k ≤ f(k) ≤ k^(1-c₂) for constants c₁, c₂ > 0.\n\nThe gap between logarithmic and polynomial growth is enormous. No conjectured answer is widely accepted.",
     "text": "This formalization investigates the exact growth rate of f(k), the minimum number of terms in the square of a k-term polynomial over ℚ. While f(k) → ∞ is known (Schinzel 1987, Schinzel-Zannier 2009), the precise rate is one of the major open problems in sparse polynomial theory.\n\nThe file formalizes the known bounds as axioms, proves basic properties (f(1) = 1, positive coefficients prevent cancellation), and surveys the mathematical landscape: connections to additive combinatorics, height theory, and explicit constructions.",
     "proofStrategy": "The file takes a survey approach, formalizing the known results as axioms and proving structural observations. The deep bounds (Schinzel-Zannier, Erdős) require analytic number theory and algebraic geometry beyond current Mathlib capabilities.",
     "keyInsights": [
-      "The gap between log k and k^(1-c) is the core mystery",
-      "Cancellation in polynomial squaring is the key phenomenon — positive-coefficient polynomials have no cancellation",
-      "The problem connects to additive combinatorics: |A+A| vs |A| with coefficient cancellation",
-      "Schinzel-Zannier's proof uses height theory from arithmetic geometry",
-      "No explicit optimal constructions are known for large k"
+      "Erdős' upper bound f(k) ≤ k^(1-c) uses exponentially-spaced polynomials P_k = Σ x^(3^j): geometric progression of exponents minimizes cross-term collisions when squaring, since the sums 3^i + 3^j are highly distinct.",
+      "The Schinzel-Zannier lower bound f(k) ≥ c·log(k) uses Weil height theory: H(P²) = H(P)² and the logarithmic Mahler measure give a lower bound on support size from the arithmetic complexity of coefficients.",
+      "Coefficient cancellation is the central difficulty: the sumset supp(P) + supp(P) has ≥ 2k-1 elements (Cauchy-Davenport), but actual support of P² can be smaller due to cancellation. The counterexample p = 1 - x² - (1/2)x⁴ shows the x⁴ coefficient in p² cancels to 0.",
+      "A false lemma was discovered and removed: the 'lacunary lower bound' termCount(P²) ≥ 2k-1 was initially included but found to be incorrect via explicit counterexample — illustrating the power of formalization for detecting subtle errors.",
+      "The boundary between algebraic and analytic methods is sharp: f(1) = 1 is trivial computation, f(2) = 3 is a polynomial identity, but any bound involving log k requires deep analytic number theory unavailable in current Mathlib."
     ],
     "prerequisites": [
       "Polynomial algebra over ℚ",

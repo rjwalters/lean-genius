@@ -27,14 +27,16 @@
     "lineCount": 122
   },
   "overview": {
-    "historicalContext": "**Non-Commuting Graphs and Group Structure**\n\nThe non-commuting graph Γ(G) has all group elements as vertices, with edges between non-commuting pairs. Neumann (1976) proved the foundational result: Γ(G) has no infinite clique iff the center Z(G) has finite index. This OQ explores the finer structure: what do groups with small clique number look like?",
+    "historicalContext": "**Non-Commuting Graphs and Group Structure**\n\nThe non-commuting graph Γ(G) has all group elements as vertices, with edges between non-commuting pairs. Its complement — the **commuting graph** of G — first appeared in Brauer-Fowler (1955) in the context of classifying finite simple groups: they proved that the structure of the centralizer of an involution determines the group up to finitely many exceptions, a result that shaped the Classification of Finite Simple Groups.\n\nB.H. Neumann proved in 1976 the foundational theorem for Γ(G): the clique number ω(Γ(G)) is finite iff the center Z(G) has finite index in G, i.e., [G:Z(G)] < ∞. Moreover, the bound ω(Γ(G)) ≤ [G:Z(G)] gives a quantitative relationship.\n\nAbdollahi, Akbari, and Maimani (2006) further characterized groups by the isomorphism type of their non-commuting graph, asking when two groups with isomorphic Γ(G) must be isomorphic themselves — a non-commuting graph analogue of spectral graph theory.\n\n**Erdős Problem #1098** asks for a more refined structural understanding: given that ω = k for small k, what can be deduced about G? The known characterizations are: ω = 0 iff G is abelian; ω = 1 never occurs (any two non-commuting elements form a 2-clique); ω = 2 iff G/Z(G) ≅ ℤ/2×ℤ/2 (Klein four-group). This OQ formalizes the foundational results supporting these characterizations.",
     "problemStatement": "**Problem Statement**\n\nCharacterize groups G where the clique number ω(Γ(G)) is small.\n\n**Known**: ω = 0 iff abelian. ω = 2 iff G/Z(G) is Klein four-group. ω ≤ n implies [G:Z(G)] ≤ n.",
     "text": "Formalizes characterizations of groups with small non-commuting clique number.",
     "proofStrategy": "**Approach**: Define non-commuting and clique predicates, prove structural results using center properties and coset arguments.",
     "keyInsights": [
-      "**Coset structure**: Elements in a clique must lie in distinct cosets of Z(G), giving the injection bound",
-      "**Center exclusion**: Center elements commute with everything, so they can't participate in cliques of size ≥ 2",
-      "**Abelian characterization**: ω = 0 iff every pair commutes iff G is abelian — a clean biconditional"
+      "**Coset injection**: If g and h are in a clique, they must lie in different cosets of Z(G). Proof: if g and h are in the same coset, g⁻¹h ∈ Z(G), which means g⁻¹h commutes with g, forcing gh = hg — contradicting the clique condition.",
+      "**Center exclusion**: Center elements commute with everything, so they can't participate in cliques of size ≥ 2. This is the base case: the center is the 'commutative part' of G, and cliques live in the 'non-commutative part'.",
+      "**Abelian characterization**: ω = 0 iff every pair commutes iff G is abelian — a clean biconditional connecting graph emptiness to algebraic commutativity.",
+      "**ω = 1 is impossible**: Any single non-commuting pair {g,h} forms a 2-element clique. So if ω ≥ 1 (any non-commuting pair exists), then ω ≥ 2. The value ω = 1 cannot occur.",
+      "**Finset.one_lt_card is the key tool**: Extracting two distinct elements from a set of size ≥ 2 is done by `Finset.one_lt_card.mp`, which returns both elements with distinctness. This is the recurring proof pattern for clique arguments."
     ],
     "prerequisites": [
       "Group theory: center, cosets, quotient groups",
@@ -63,8 +65,10 @@
     "summary": "Fully verified formalization of small clique number characterizations in non-commuting graphs. All 8 theorems proved from Mathlib with 0 axioms and 0 sorries.",
     "implications": "Establishes the algebraic structure theory connecting clique number of Γ(G) to the quotient G/Z(G).",
     "openQuestions": [
-      "Can clique_size_bound (injection S → G/Z(G)) be proved?",
-      "Characterize ω = 2 (Klein four-group quotient) formally"
+      "Can clique_size_bound (the injection S → G/Z(G)) be proved in Lean, formally establishing ω(Γ(G)) ≤ [G:Z(G)]?",
+      "Can ω = 2 iff G/Z(G) ≅ ℤ/2×ℤ/2 (Klein four-group) be formalized? This requires showing that any two non-commuting elements generate a subgroup whose image in G/Z(G) is the Klein four-group.",
+      "Can Neumann's full theorem (ω finite iff [G:Z(G)] finite) be proved in Lean using Mathlib's Subgroup.index API?",
+      "Does the non-commuting graph Γ(G) appear in Mathlib's SimpleGraph library? Can the clique number be defined using SimpleGraph.clique?"
     ]
   },
   "mainTheorems": [

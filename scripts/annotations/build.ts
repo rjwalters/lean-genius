@@ -80,7 +80,7 @@ function discoverProofs(): ProofConfig[] {
       }
     }
 
-    if (!leanPath) {
+    if (!leanPath || !fs.existsSync(leanPath)) {
       console.warn(`Warning: No Lean source found for ${proofDir}`);
       continue;
     }
