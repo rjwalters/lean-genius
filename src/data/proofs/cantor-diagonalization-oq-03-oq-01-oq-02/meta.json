@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ01OQ02.lean",
     "tags": [
       "computability",
@@ -16,11 +16,11 @@
       "diagonal-argument",
       "abstract-logic"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified (ClassicalRiceModel axiomatizes Kleene's recursion theorem as a hypothesis, not a global axiom).",
+    "axiomCount": 2,
+    "assumptions": "ClassicalRiceModel axiomatizes Kleene's recursion theorem via two structure fields: h_compile (universality of semantics) and kleene_rec (semantic fixed-point theorem). These are mathematical hypotheses used in classical_rice_abstract; the other five theorems (abstract_rice through no_halting_model) are fully axiom-free.",
     "lineCount": 275,
     "theoremCount": 6,
     "definitionCount": 4,
@@ -135,7 +135,7 @@
   "leanFile": {
     "namespace": "CantorDiagonalizationOQ03OQ01OQ02",
     "lineCount": 275,
-    "axiomCount": 0,
+    "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 4
   }
