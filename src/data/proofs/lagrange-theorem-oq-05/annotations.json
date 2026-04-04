@@ -1,1 +1,126 @@
-[]
+[
+  {
+    "id": "ann-chain-overview",
+    "proofId": "lagrange-theorem-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "The Chain: Lagrange → Orbit-Stabilizer → Burnside",
+    "content": "Three fundamental results in group theory form a logical chain:\n\n$$\\text{Lagrange} \\xrightarrow{\\text{generalizes}} \\text{Orbit-Stabilizer} \\xrightarrow{\\text{derives}} \\text{Burnside}$$\n\n**Lagrange (1771)**: $|H| \\mid |G|$ for any subgroup $H \\leq G$.\n\n**Orbit-Stabilizer**: For any group action of $G$ on $X$ and $x \\in X$: $|\\text{Orb}(x)| \\cdot |\\text{Stab}(x)| = |G|$.\n\n**Burnside (Cauchy-Frobenius)**: $|X/G| = \\frac{1}{|G|} \\sum_{g \\in G} |\\text{Fix}(g)|$.\n\nAll three are in Mathlib; this file formalizes the chain explicitly.",
+    "mathContext": "Lagrange proves $|G| = [G:H] \\cdot |H|$ by showing cosets partition $G$ into $[G:H]$ equal parts of size $|H|$. Orbit-stabilizer IS Lagrange applied to $\\text{Stab}(x) \\leq G$: since $\\text{Orb}(x) \\cong G/\\text{Stab}(x)$, we get $|\\text{Orb}(x)| = [G:\\text{Stab}(x)] = |G|/|\\text{Stab}(x)|$. Burnside derives from orbit-stabilizer via double counting: $\\sum_{g \\in G} |\\text{Fix}(g)| = |\\{(g,x) : g \\cdot x = x\\}| = \\sum_{x \\in X} |\\text{Stab}(x)| = \\sum_{\\text{orbits } O} \\sum_{x \\in O} |\\text{Stab}(x)| = \\sum_{\\text{orbits}} |G| = |X/G| \\cdot |G|$, using orbit-stabilizer for $\\sum_{x \\in O} |\\text{Stab}(x)| = |G|$. In Lean: `Mathlib.GroupTheory.GroupAction.Defs` provides `MulAction`, `orbit`, `stabilizer`, `fixedBy`; `Mathlib.GroupTheory.Burnside` provides `sum_card_fixedBy_eq_card_orbits_mul_card_group`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MulAction",
+      "orbit",
+      "stabilizer",
+      "fixedBy",
+      "orbitRel.Quotient"
+    ],
+    "prerequisites": [
+      "group actions on sets",
+      "orbits and stabilizers",
+      "double counting"
+    ]
+  },
+  {
+    "id": "ann-lagrange",
+    "proofId": "lagrange-theorem-oq-05",
+    "range": {
+      "startLine": 23,
+      "endLine": 38
+    },
+    "type": "theorem",
+    "title": "Lagrange's Theorem in Lean",
+    "content": "Two forms of Lagrange's theorem:\n\n1. **Divisibility form** (`lagrange_divides`): $|H| \\mid |G|$. One-line proof delegating to `Subgroup.card_subgroup_dvd_card`.\n\n2. **Index form** (`lagrange_index`): $|G| = [G:H] \\cdot |H|$. Proof: `(Subgroup.card_eq_card_quotient_mul_card_subgroup H).symm`.\n\nBoth require `[Fintype G]`, `[Fintype H]`, and `[Fintype (G ⧸ H)]` as typeclass instances.",
+    "mathContext": "`Subgroup.card_subgroup_dvd_card : ∀ (H : Subgroup G) [Fintype H], Fintype.card H ∣ Fintype.card G` — Mathlib's Lagrange directly. `Subgroup.card_eq_card_quotient_mul_card_subgroup H : Fintype.card (G ⧸ H) * Fintype.card H = Fintype.card G`; the `.symm` reverses the equation to match `lagrange_index`'s stated form. `G ⧸ H` is the left-coset quotient type: elements are cosets `gH`, and `Fintype.card (G ⧸ H)` computes $[G:H]$. The instance `[Fintype (G ⧸ H)]` requires Lean to know how to enumerate left cosets — it's derivable when `G` and `H` are both `Fintype`. `Fintype.card H ∣ Fintype.card G` is `∃ k, Fintype.card G = Fintype.card H * k`, proved by `k = [G:H]`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Subgroup.card_subgroup_dvd_card",
+      "Subgroup.card_eq_card_quotient_mul_card_subgroup",
+      "G ⧸ H quotient",
+      "Fintype.card"
+    ],
+    "prerequisites": [
+      "Subgroup in Mathlib",
+      "Fintype typeclass",
+      "quotient type G/H"
+    ]
+  },
+  {
+    "id": "ann-orbit-stabilizer",
+    "proofId": "lagrange-theorem-oq-05",
+    "range": {
+      "startLine": 40,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "Orbit-Stabilizer: Lagrange for Group Actions",
+    "content": "Three results formalize orbit-stabilizer:\n\n1. **`orbit_stabilizer`**: $|\\text{Orb}(x)| \\cdot |\\text{Stab}(x)| = |G|$. Proof: `card_orbit_mul_card_stabilizer_eq_card_group G x`.\n\n2. **`orbit_equiv_cosets`**: $\\text{Orb}(x) \\cong G/\\text{Stab}(x)$. Witnesses the bijection via `orbitEquivQuotientStabilizer G x`.\n\n3. **`orbit_stabilizer_generalizes_lagrange`**: Applies orbit-stabilizer to the action $G \\curvearrowright G/H$ to recover Lagrange.\n\nThe `stabilizer G x : Subgroup G` is a structural subgroup guaranteed by Mathlib.",
+    "mathContext": "`MulAction.stabilizer G x : Subgroup G` is `{g : G | g • x = x}`, the isotropy group. `MulAction.orbit G x : Set X` is `{g • x | g : G}`. `card_orbit_mul_card_stabilizer_eq_card_group G x : Fintype.card (orbit G x) * Fintype.card (stabilizer G x) = Fintype.card G` — directly from Mathlib's `GroupTheory.GroupAction.Basic`. `orbitEquivQuotientStabilizer G x : orbit G x ≃ G ⧸ stabilizer G x` is the explicit bijection $g \\cdot x \\mapsto g \\cdot \\text{Stab}(x)$; it's well-defined because $g_1 x = g_2 x \\iff g_2^{-1}g_1 \\in \\text{Stab}(x) \\iff g_1\\text{Stab}(x) = g_2\\text{Stab}(x)$. `Nonempty (orbit G x ≃ ...)` packages the equivalence propositionally; `⟨orbitEquivQuotientStabilizer G x⟩` is the anonymous constructor. `orbit_stabilizer_generalizes_lagrange` applies Lagrange to the action of $G$ on $G/H$; the stabilizer of the coset $eH$ is $\\{g : g \\cdot eH = eH\\} = \\{g : gH = H\\} = H$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MulAction.stabilizer",
+      "MulAction.orbit",
+      "card_orbit_mul_card_stabilizer_eq_card_group",
+      "orbitEquivQuotientStabilizer",
+      "orbit-stabilizer theorem"
+    ],
+    "prerequisites": [
+      "MulAction typeclass in Lean 4",
+      "orbit and stabilizer in Mathlib",
+      "equivalence type ≃"
+    ]
+  },
+  {
+    "id": "ann-burnside",
+    "proofId": "lagrange-theorem-oq-05",
+    "range": {
+      "startLine": 76,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "Burnside's Counting Lemma",
+    "content": "**Burnside's lemma** (integer form): $\\sum_{g \\in G} |\\text{Fix}(g)| = |X/G| \\cdot |G|$.\n\n```lean\ntheorem burnside_lemma ... :\n    ∑ g : G, Fintype.card (fixedBy X g) =\n    Fintype.card (orbitRel.Quotient G X) * Fintype.card G\n```\n\nProof: `sum_card_fixedBy_eq_card_orbits_mul_card_group G X` (one-line Mathlib delegation).\n\nDivisibility corollary: `rw [burnside_lemma]; exact dvd_mul_left _ _`.",
+    "mathContext": "`MulAction.fixedBy X g : Set X` is `{x : X | g • x = x}`. `orbitRel.Quotient G X` is the type of orbits — the quotient of $X$ by `orbitRel G X : Setoid X` where `x ~ y ↔ ∃ g, g • x = y`. `sum_card_fixedBy_eq_card_orbits_mul_card_group : ∑ g : G, Fintype.card (fixedBy X g) = Fintype.card (orbitRel.Quotient G X) * Fintype.card G` — exactly Burnside's lemma in Mathlib. The `[∀ g : G, Fintype (fixedBy X g)]` instance requires each fixed-point set to be finite; this follows from `[Fintype X]` via `Set.fintypeSubset`. `dvd_mul_left a b : a ∣ b * a` closes the divisibility goal after `rw [burnside_lemma]` transforms to `Fintype.card G ∣ Fintype.card (orbitRel.Quotient G X) * Fintype.card G`. Applications: counting distinct necklaces under rotation (Burnside's original problem), distinct colorings of a cube under symmetry group, Polya enumeration theorem (generalization using cycle index).",
+    "significance": "key",
+    "relatedConcepts": [
+      "fixedBy",
+      "orbitRel.Quotient",
+      "sum_card_fixedBy_eq_card_orbits_mul_card_group",
+      "dvd_mul_left",
+      "Polya enumeration"
+    ],
+    "prerequisites": [
+      "MulAction.fixedBy definition",
+      "orbitRel.Quotient as orbit space",
+      "BigOperators ∑ notation"
+    ]
+  },
+  {
+    "id": "ann-chain-proof",
+    "proofId": "lagrange-theorem-oq-05",
+    "range": {
+      "startLine": 104,
+      "endLine": 118
+    },
+    "type": "insight",
+    "title": "Chain Documentation and open Declarations",
+    "content": "**`chain_lagrange_to_burnside`** packages the chain:\n\n```lean\ntheorem chain_lagrange_to_burnside :\n    ∀ (H : Subgroup G) [Fintype H] [Fintype (G ⧸ H)],\n    Fintype.card G = Fintype.card (G ⧸ H) * Fintype.card H :=\n  fun H => lagrange_index H\n```\n\nThis re-states Lagrange but serves as documentation that the chain terminates here.\n\nThe `open MulAction Finset BigOperators` at the file top enables `orbit`, `stabilizer`, `fixedBy` (from `MulAction`), `∑` and `∏` notation (from `BigOperators`), and `card`, `sum` etc. (from `Finset`).",
+    "mathContext": "`chain_lagrange_to_burnside` uses `fun H => lagrange_index H` — a lambda that applies `lagrange_index` to any subgroup. The `[Fintype H]` and `[Fintype (G ⧸ H)]` instance arguments are passed implicitly through `lagrange_index`. The actual mathematical dependency chain inside Mathlib: `burnside_lemma` → `sum_card_fixedBy_eq_card_orbits_mul_card_group` → `card_orbit_mul_card_stabilizer_eq_card_group` (orbit-stabilizer) → `Subgroup.card_eq_card_quotient_mul_card_subgroup` (Lagrange). `open BigOperators` is needed because `∑ g : G, ...` is notation from `Mathlib.Algebra.BigOperators.Basic`; without it, you'd write `Finset.sum Finset.univ (fun g => ...)`. `open MulAction` exposes `orbit`, `stabilizer`, `fixedBy`, `orbitRel` without the `MulAction.` prefix. `import Mathlib` gives the entire Mathlib library in one import — the simplest approach for a self-contained demonstration file.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open BigOperators",
+      "open MulAction",
+      "import Mathlib",
+      "fun H => ... lambda",
+      "mathematical dependency chain"
+    ],
+    "prerequisites": [
+      "Lean 4 open declarations",
+      "BigOperators notation",
+      "fun lambda terms in Lean 4"
+    ]
+  }
+]
