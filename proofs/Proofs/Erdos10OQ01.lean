@@ -38,8 +38,10 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Multiset.Basic
 import Mathlib.Order.Filter.AtTopBot.Basic
+import Mathlib.Data.Real.Sqrt
+import Mathlib.Data.Nat.Sqrt
 
-open Filter Set
+open Filter Set Classical
 
 namespace Erdos10OQ01
 
@@ -93,7 +95,7 @@ theorem repSet_zero_eq_primes : RepSet 0 = {n | n.Prime} := by
   · intro ⟨p, pows, hp, hcard, hn⟩
     simp only [Nat.le_zero, Multiset.card_eq_zero] at hcard
     simp only [hcard, Multiset.map_zero, Multiset.sum_zero, add_zero] at hn
-    rwa [← hn]
+    exact hn ▸ hp
   · intro hn
     exact ⟨n, ∅, hn, le_refl 0, by simp⟩
 
@@ -186,13 +188,96 @@ theorem gallagher_does_not_imply_oq01_in_principle :
   constructor
   · -- The non-squares have density 1 (perfect squares up to N number ≈ √N → proportion → 0)
     intro ε hε
-    sorry -- Density computation: #{m² ≤ N} / N = ⌊√N⌋/N → 0
+    -- Density of non-squares in {0,...,N-1} approaches 1 as N → ∞.
+    -- Strategy: #{squares in range N} ≤ Nat.sqrt N + 1 ≤ ε * N for N ≥ ⌈4/ε²⌉ + 1.
+    refine ⟨Nat.ceil (4 / ε ^ 2) + 1, fun N hN => ?_⟩
+    have hN_pos : 0 < N := Nat.lt_of_lt_of_le (Nat.zero_lt_succ _) hN
+    have hN_real : (0 : ℝ) < N := Nat.cast_pos.mpr hN_pos
+    have hNnn : (0 : ℝ) ≤ N := le_of_lt hN_real
+    -- Count perfect squares: they biject with their roots in range (Nat.sqrt N + 1)
+    have hsq_card : (Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card ≤
+        Nat.sqrt N + 1 := by
+      calc (Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card
+          ≤ ((Finset.range (Nat.sqrt N + 1)).image (fun m => m * m)).card := by
+            apply Finset.card_le_card
+            intro x hx
+            simp only [Finset.mem_filter, Finset.mem_range] at hx
+            simp only [Finset.mem_image, Finset.mem_range]
+            obtain ⟨hxN, m, hmx⟩ := hx
+            exact ⟨m, Nat.lt_succ_of_le (Nat.le_sqrt.mpr (le_of_lt (hmx ▸ hxN))), hmx⟩
+        _ ≤ (Finset.range (Nat.sqrt N + 1)).card := Finset.card_image_le
+        _ = Nat.sqrt N + 1 := Finset.card_range _
+    -- Square count is at most N
+    have hsq_le_N : (Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card ≤ N := by
+      have := Finset.card_filter_le (Finset.range N) (fun n => ∃ m : ℕ, m * m = n)
+      rwa [Finset.card_range] at this
+    -- Partition: non-squares + squares = N
+    have hpart : (Finset.filter (fun n => ¬∃ m : ℕ, m * m = n) (Finset.range N)).card +
+        (Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card = N := by
+      have := Finset.filter_card_add_filter_neg_card_eq_card
+          (p := fun n => ∃ m : ℕ, m * m = n) (s := Finset.range N)
+      simp only [Finset.card_range] at this
+      omega
+    -- Key bound: Nat.sqrt N + 1 ≤ ε * N (from N ≥ ⌈4/ε²⌉ + 1)
+    have hsqrt_bound : (Nat.sqrt N : ℝ) + 1 ≤ ε * N := by
+      -- From hN: N ≥ ⌈4/ε²⌉ + 1, so 4/ε² < N
+      have h4lt : (4 : ℝ) / ε ^ 2 < N := by
+        have hle : Nat.ceil (4 / ε ^ 2) < N := Nat.lt_of_succ_le hN
+        calc 4 / ε ^ 2 ≤ Nat.ceil (4 / ε ^ 2) := Nat.le_ceil _
+          _ < N := by exact_mod_cast hle
+      -- Therefore ε² * N > 4
+      have hepsN : (4 : ℝ) < ε ^ 2 * N := by
+        have hpos : (0 : ℝ) < ε ^ 2 := pow_pos hε 2
+        calc 4 = ε ^ 2 * (4 / ε ^ 2) := by field_simp
+          _ < ε ^ 2 * N := by apply mul_lt_mul_of_pos_left h4lt hpos
+      have h_sqrt_pos : (0 : ℝ) < Real.sqrt N := Real.sqrt_pos.mpr hN_real
+      have h_sqrt_le : (Nat.sqrt N : ℝ) ≤ Real.sqrt N := Real.nat_sqrt_le_real_sqrt
+      have h1 : (1 : ℝ) ≤ Nat.sqrt N := by
+        exact_mod_cast Nat.sqrt_pos.mpr hN_pos
+      have hmss : Real.sqrt N * Real.sqrt N = N := Real.mul_self_sqrt hNnn
+      -- ε * √N > 2 (from (ε * √N)² = ε²*N > 4, using contradiction)
+      have hepsSqrt : (2 : ℝ) < ε * Real.sqrt N := by
+        by_contra h; push_neg at h
+        have hnn : (0 : ℝ) ≤ ε * Real.sqrt N := mul_nonneg hε.le (Real.sqrt_nonneg N)
+        have heq : (ε * Real.sqrt N) ^ 2 = ε ^ 2 * N := by rw [mul_pow, Real.sq_sqrt hNnn]
+        nlinarith [mul_nonneg hnn (show (0:ℝ) ≤ 2 - ε * Real.sqrt N by linarith), heq]
+      -- ε * N > 2 * sqrt(N) ≥ 2 * Nat.sqrt N ≥ Nat.sqrt N + 1
+      have h2r : (2 : ℝ) * Real.sqrt N < ε * N := by
+        have hprod := mul_lt_mul_of_pos_right hepsSqrt h_sqrt_pos
+        nlinarith [hmss]
+      linarith [h_sqrt_le, h1, h2r]
+    -- Conclude: density ≥ 1 - ε
+    -- Cast non-square count to ℝ: card(non-sq) = N - card(sq)
+    have hcast : ((Finset.filter (fun n => ¬∃ m : ℕ, m * m = n) (Finset.range N)).card : ℝ) =
+        N - (Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card := by
+      have heq : (Finset.filter (fun n => ¬∃ m : ℕ, m * m = n) (Finset.range N)).card =
+          N - (Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card := by omega
+      rw [heq, Nat.cast_sub hsq_le_N]
+    have hsq_real : ((Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card : ℝ) ≤
+        Nat.sqrt N + 1 := by exact_mod_cast hsq_card
+    -- card(sq) ≤ sqrt+1 ≤ ε*N; so card(non-sq) = N - card(sq) ≥ N - ε*N = (1-ε)*N
+    have hcsq_le : ((Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card : ℝ) ≤
+        ε * N := le_trans hsq_real hsqrt_bound
+    rw [ge_iff_le, le_div_iff₀ hN_real, show (1 - ε) * (N : ℝ) = N - ε * N from by ring]
+    -- Capture the goal's filter with 'set' to bind its exact DecidablePred instance
+    set nonsq_fin := Finset.filter (· ∈ ({n | ¬∃ m : ℕ, m * m = n} : Set ℕ)) (Finset.range N)
+      with hF
+    -- Goal is now: (N : ℝ) - ε * N ≤ ↑nonsq_fin.card
+    -- Prove nonsq_fin equals the explicit-lambda filter (same elements, via finset ext)
+    have hfilt_eq : nonsq_fin = Finset.filter (fun n => ¬∃ m : ℕ, m * m = n) (Finset.range N) := by
+      rw [hF]; ext x; simp only [Finset.mem_filter, Finset.mem_range, Set.mem_setOf_eq]
+    -- Step-by-step calc to avoid linarith cast issues
+    calc (N : ℝ) - ε * ↑N
+        ≤ ↑N - ↑(Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card := by
+            linarith [hcsq_le]
+      _ = ↑(Finset.filter (fun n => ¬∃ m : ℕ, m * m = n) (Finset.range N)).card := hcast.symm
+      _ = ↑nonsq_fin.card := by
+            exact_mod_cast (congr_arg Finset.card hfilt_eq).symm
   · -- The non-squares miss all perfect squares (infinitely many large squares exist)
     intro N
     use (N + 1) * (N + 1)
-    refine ⟨Nat.le_of_succ_le_succ ?_, ?_⟩
-    · calc N < N + 1 := Nat.lt_succ_self N
-           _ ≤ (N + 1) * (N + 1) := Nat.le_mul_of_pos_right _ (Nat.succ_pos N)
+    refine ⟨?_, ?_⟩
+    · nlinarith
     · simp only [Set.mem_setOf_eq]
       push_neg
       exact ⟨N + 1, rfl⟩
@@ -208,29 +293,20 @@ axiom erdos_graham_conjecture :
   ∀ k : ℕ, ∀ N : ℕ, ∃ n ≥ N, ¬IsPrimePlusKPowers k n
 
 /-- **Formal consequence**: OQ-01 is false, assuming the Erdős-Graham conjecture. -/
-theorem oq01_false_from_conjecture : erdos_graham_conjecture → ¬OQ01 := by
-  intro heg ⟨k, N, hkN⟩
+theorem oq01_false_from_conjecture
+    (heg : ∀ k : ℕ, ∀ N : ℕ, ∃ n ≥ N, ¬IsPrimePlusKPowers k n) : ¬OQ01 := by
+  intro ⟨k, N, hkN⟩
   obtain ⟨n, hn_large, hn_bad⟩ := heg k N
   exact hn_bad (hkN n hn_large)
 
 /-! ## Part VIII: The Logical Hierarchy Summary -/
 
-/-- **The Strength Hierarchy for Erdős Problem #10**:
+/-
+  The Strength Hierarchy for Erdős Problem #10:
 
     Erdos10Main  ─→  OQ01  ←─  GranvilleSoundararajanOdd + GranvilleSoundararajanEven
-         │                               (if G-S, then k=4 suffices for n ≥ 3)
-         │
-         └─  Strictly stronger than OQ01 (requires ALL n ≥ 2, not just large n)
-
     GallagherDensity  ─╳→  OQ01  (density → 1 but NOT all large n covered)
-
     Erdős-Graham conjecture  →  ¬OQ01  (no finite k covers all large n)
-
-    Status (as of 2026):
-    - Erdős-Graham conjecture: widely believed true, unproven
-    - OQ01: widely believed FALSE (by E-G conjecture)
-    - GranvilleSoundararajan: believed true, verified computationally to ~10^9
-    - Gallagher density result: PROVEN (1975)
 -/
 #check @main_implies_oq01
 #check @oq01_false_from_conjecture
