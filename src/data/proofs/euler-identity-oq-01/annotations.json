@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-power-series-terms",
+    "proofId": "euler-identity-oq-01",
+    "range": { "startLine": 36, "endLine": 55 },
+    "type": "definition",
+    "title": "expTerm, evenTerm, oddTerm: Splitting exp(ix) into Cos/Sin Components",
+    "content": "Three series term definitions enable the Taylor series proof. expTerm z n := z^n / n! (general exponential series term). evenTerm x k := (-1)^k · x^{2k} / (2k)! (the k-th cos series term). oddTerm x k := I · (-1)^k · x^{2k+1} / (2k+1)! (the k-th i·sin series term). The key algebraic facts: expTerm_even: expTerm (x·I) (2k) = evenTerm x k — proved by I_pow_even: I^{2k} = (-1)^k. expTerm_odd: expTerm (x·I) (2k+1) = oddTerm x k — proved by I_pow_odd: I^{2k+1} = I·(-1)^k. These two rewrites convert the power series for e^{ix} into recognizable cos and sin series.",
+    "mathContext": "$e^{ix} = \\sum_{n=0}^\\infty \\frac{(ix)^n}{n!} = \\sum_{k=0}^\\infty \\frac{(ix)^{2k}}{(2k)!} + \\sum_{k=0}^\\infty \\frac{(ix)^{2k+1}}{(2k+1)!}$. Even terms: $(ix)^{2k}/(2k)! = i^{2k}x^{2k}/(2k)! = (-1)^kx^{2k}/(2k)!$ (cos series). Odd terms: $(ix)^{2k+1}/(2k+1)! = i^{2k+1}x^{2k+1}/(2k+1)! = i(-1)^kx^{2k+1}/(2k+1)!$ (i·sin series).",
+    "significance": "key",
+    "relatedConcepts": ["expTerm", "evenTerm", "oddTerm", "I_pow_even", "I_pow_odd", "Taylor series"],
+    "prerequisites": ["complex analysis", "power series", "Mathlib Complex.I", "Lean tsum"]
+  },
+  {
+    "id": "ann-axioms",
+    "proofId": "euler-identity-oq-01",
+    "range": { "startLine": 88, "endLine": 132 },
+    "type": "technique",
+    "title": "Three Axioms: Even/Odd Split and Taylor Series Identification",
+    "content": "Three axioms bridge the gap between the formal series computation and Mathlib's definitions. (1) tsum_even_add_odd: for summable a, ∑_n a_n = ∑_k a_{2k} + ∑_k a_{2k+1}. This even/odd rearrangement holds for absolutely convergent series; Mathlib has HasSum.even_add_odd but the tsum API requires some work. (2) cos_eq_tsum: cos(x) = ∑_k (-1)^k x^{2k}/(2k)! — the cosine Taylor series. (3) sin_eq_tsum: sin(x)·I = ∑_k oddTerm x k — the sine series. Both cos/sin are defined in Mathlib via exp, not Taylor series directly. Axiom elimination roadmap: (1) is LOW difficulty (~50 lines via Equiv.tsum); (2)(3) are MODERATE (~150-200 lines, expand exp(iz)+exp(-iz) and collect terms).",
+    "mathContext": "Mathlib defines $\\cos z = \\text{Re}(e^{iz})$ and $\\sin z = \\text{Im}(e^{iz})$, or equivalently $\\cos z = (e^{iz}+e^{-iz})/2$ and $\\sin z = (e^{iz}-e^{-iz})/(2i)$. The Taylor series identifications follow by expanding: $e^{ix}+e^{-ix} = 2\\sum_{k} (-1)^k x^{2k}/(2k)!$ (even terms survive) and $e^{ix}-e^{-ix} = 2i\\sum_{k} (-1)^k x^{2k+1}/(2k+1)!$ (odd terms survive).",
+    "significance": "key",
+    "relatedConcepts": ["tsum_even_add_odd", "cos_eq_tsum", "sin_eq_tsum", "axiom elimination", "Mathlib HasSum.even_add_odd"],
+    "prerequisites": ["complex analysis", "Mathlib tsum", "Mathlib HasSum", "real analysis"]
+  },
+  {
+    "id": "ann-euler-formula-taylor",
+    "proofId": "euler-identity-oq-01",
+    "range": { "startLine": 149, "endLine": 174 },
+    "type": "insight",
+    "title": "Euler's Formula from First Principles: e^{ix} = cos(x) + i·sin(x)",
+    "content": "euler_formula_taylor (x : ℝ): exp(x·I) = cos(x) + sin(x)·I. Proof in 4 steps: (1) exp(ix) = ∑_n expTerm(ix) n (from expSeries_summable + NormedSpace.exp_eq_tsum); (2) split into even/odd: ∑_k a_{2k} + ∑_k a_{2k+1} (tsum_even_add_odd); (3) rewrite terms: expTerm_even and expTerm_odd give cos/sin series components; (4) cos_eq_tsum and sin_eq_tsum identify the sums. The proof avoids Complex.exp_mul_I — it derives the formula from the power series independently. euler_identity_taylor: exp(π·I) + 1 = 0 follows by substituting x=π and using cos(π)=-1, sin(π)=0.",
+    "mathContext": "Euler's formula (1748): $e^{ix} = \\cos x + i\\sin x$. Proof via Taylor series: $e^{ix} = \\sum_n (ix)^n/n! = \\sum_k (-1)^k x^{2k}/(2k)! + i\\sum_k (-1)^k x^{2k+1}/(2k+1)! = \\cos x + i\\sin x$. Euler's identity: $e^{i\\pi} + 1 = 0$ (from $\\cos\\pi = -1$, $\\sin\\pi = 0$). This is 'the most beautiful equation in mathematics' (consistently voted #1 in mathematical surveys).",
+    "significance": "key",
+    "relatedConcepts": ["euler_formula_taylor", "euler_identity_taylor", "Euler's identity", "NormedSpace.exp_eq_tsum", "Complex.exp_mul_I"],
+    "prerequisites": ["complex analysis", "Taylor series", "Mathlib Complex", "Euler 1748"]
+  },
+  {
+    "id": "ann-independence",
+    "proofId": "euler-identity-oq-01",
+    "range": { "startLine": 175, "endLine": 213 },
+    "type": "context",
+    "title": "Axiom Elimination Roadmap: Independent Derivation vs Mathlib Definitions",
+    "content": "The file concludes with a detailed axiom elimination roadmap. Axiom 1 (tsum_even_add_odd): LOW difficulty (~50 lines), use bijection ℕ ≃ ℕ ⊕ ℕ and tsum_equiv. Axioms 2/2b (cos/sin Taylor series): MODERATE (~150-200 lines). Three approaches: (A) from Mathlib's cos = (exp(iz)+exp(-iz))/2, expand both exponentials; (B) from ODE y'' = -y with initial conditions; (C) use TaylorSinCosConvergence.lean's partial sum convergence results. Total estimate: 200-250 lines to make the proof fully axiom-free. The proof's independence from Complex.exp_mul_I is mathematically important: it shows Euler's formula follows from the series definition of exp and the algebraic properties of i, without circular reasoning through Mathlib's definition cos = Re(exp).",
+    "mathContext": "Mathlib circular structure: $\\cos$ is defined via $\\exp$ (not via Taylor series), so proving $\\cos(x) = \\sum_k (-1)^k x^{2k}/(2k)!$ requires going through $e^{ix} = \\cos(x)+i\\sin(x)$ first — which is what we're trying to prove. The resolution: (A) define $\\cos$ via Taylor series first, then prove $\\cos = \\text{Re}(\\exp(i\\cdot))$; or (B) use the power series expansion of $\\exp$ applied to $\\pm ix$ to bypass the circularity.",
+    "significance": "context",
+    "relatedConcepts": ["axiom elimination", "TaylorSinCosConvergence", "HasSum.even_add_odd", "ODE characterization", "Complex.cos"],
+    "prerequisites": ["complex analysis", "real analysis", "Mathlib exp/cos/sin", "Lean tsum API"]
+  }
+]
