@@ -65,7 +65,8 @@
       "**Conjugate pairing is necessary but not sufficient**: It gives degree parity = real root parity, but does not connect sign variations to root counts",
       "**The gap is algebraic, not analytic**: The missing lemma about sign variation changes under root extraction is purely about coefficient sign sequences, not about complex numbers",
       "**Three independent ingredients compose**: Conjugate pairing (complex analysis) + negative root handling (substitution) + sign variation parity (combinatorial algebra) together yield the full parity result",
-      "**The irreducible difficulty**: Analyzing how multiplication by (X - C r) transforms the coefficient sign sequence is the hard part — it requires understanding how sign changes propagate through polynomial multiplication"
+      "**The irreducible difficulty**: Analyzing how multiplication by (X - C r) transforms the coefficient sign sequence is the hard part — it requires understanding how sign changes propagate through polynomial multiplication",
+      "The parity_chain theorem is a modular arithmetic bookkeeping result: given sv + degree even, degree = pos + neg + nonreal, nonreal even, neg even — the omega tactic closes the goal in Lean 4. The mathematical insight is that the entire proof structure decomposes into three independent even-parity contributions (non-real, negative, sign-variation-degree), and omega assembles them automatically."
     ],
     "prerequisites": [
       "Descartes' Rule of Signs (upper bound from Mathlib)",
