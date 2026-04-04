@@ -46,5 +46,17 @@
     "significance": "supporting",
     "relatedConcepts": ["non-witness", "counterexample", "decidable negation"],
     "prerequisites": ["decAllFactorialSubtractionsComposite instance"]
+  },
+  {
+    "id": "ann-combined-witnesses",
+    "proofId": "erdos-1059-oq-05",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "technique",
+    "title": "erdos_1059_witnesses: Packaging Multiple Results",
+    "content": "`erdos_1059_witnesses` bundles four facts into a single conjunction: both 101 and 211 are prime AND satisfy AFSC. The primality proofs use `by decide` (fast kernel reduction for small numbers) while the AFSC proofs use `by native_decide` (compiled native code for the factorial computation). The distinction matters: `decide` suffices for primality since it reduces to a bounded divisibility check; `native_decide` is needed for AFSC because the computation involves iterating over Finset.range 101 or 211, evaluating factorials, checking primality of subtractions — too slow for the kernel. This pattern — mixing `decide` and `native_decide` in a single theorem — is idiomatic Lean 4 proof engineering.",
+    "mathContext": "$(101 \\text{ prime}) \\wedge \\mathrm{AFSC}(101) \\wedge (211 \\text{ prime}) \\wedge \\mathrm{AFSC}(211)$; proved by `\\langle$by decide$,$ witness\\_101$,$ by native\\_decide$,$ witness\\_211$\\rangle$`",
+    "significance": "supporting",
+    "relatedConcepts": ["decide vs native_decide", "conjunction introduction", "proof by computation", "Lean 4 tactics"],
+    "prerequisites": ["witness_101", "witness_211", "Nat.Prime decidability"]
   }
 ]
