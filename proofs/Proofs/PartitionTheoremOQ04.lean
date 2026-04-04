@@ -318,19 +318,77 @@ private lemma glaisherBwdStep_add_pow_two : ∀ (a b m : ℕ),
       rw [show 2^(a+1) * b = 2^a * (2*b) from by ring]
       exact add_left_comm _ _ _
 
-/-- The maps are inverses on distinct positive multisets.
+/-- Adding 2^a copies of b shifts the backward map by {2^a*b}. -/
+private lemma glaisherBwd_add_replicate {a b : ℕ}
+    {t : Multiset ℕ} (h_bit : (t.count b / 2^a) % 2 = 0) :
+    glaisherBwd (Multiset.replicate (2^a) b + t) = {2^a * b} + glaisherBwd t := by
+  have ha_pos : 0 < 2^a := by positivity
+  simp only [glaisherBwd]
+  have h_toFinset : (Multiset.replicate (2^a) b + t).toFinset = insert b t.toFinset := by
+    ext x
+    simp only [Multiset.mem_toFinset, Multiset.mem_add, Multiset.mem_replicate,
+               Finset.mem_insert, Multiset.mem_toFinset]
+    exact ⟨fun h => h.elim (fun ⟨_, rfl⟩ => Or.inl rfl) Or.inr,
+           fun h => h.elim (fun rfl => Or.inl ⟨ha_pos.ne', rfl⟩) Or.inr⟩
+  have h_count_b : (Multiset.replicate (2^a) b + t).count b = 2^a + t.count b := by
+    simp [Multiset.count_add, Multiset.count_replicate]
+  have h_count_ne : ∀ v, v ≠ b → (Multiset.replicate (2^a) b + t).count v = t.count v := by
+    intro v hv
+    have h_not_mem : v ∉ Multiset.replicate (2^a) b :=
+      fun h => hv ((Multiset.mem_replicate.mp h).2)
+    rw [Multiset.count_add, Multiset.count_eq_zero.mpr h_not_mem, zero_add]
+  rw [h_toFinset, Finset.insert_val]
+  by_cases hb : b ∈ t.toFinset
+  · -- b ∈ t.toFinset; decompose via cons_erase
+    have hb_val : b ∈ t.toFinset.val := hb
+    set vals := t.toFinset.val.erase b with hvals_def
+    have h_cons : t.toFinset.val = b ::ₘ vals := (Multiset.cons_erase hb_val).symm
+    have hb_not_vals : b ∉ vals := by
+      have hnd := t.toFinset.nodup; rw [h_cons] at hnd
+      exact (Multiset.nodup_cons.mp hnd).1
+    rw [Multiset.ndinsert_of_mem hb_val, h_cons,
+        Multiset.cons_bind, Multiset.cons_bind, h_count_b,
+        glaisherBwdStep_add_pow_two a b (t.count b) h_bit]
+    have h_rest_eq : vals.bind (fun v => glaisherBwdStep v ((Multiset.replicate (2^a) b + t).count v)) =
+        vals.bind (fun v => glaisherBwdStep v (t.count v)) :=
+      Multiset.bind_congr fun v hv => congrArg _ (h_count_ne v (fun h => hb_not_vals (h ▸ hv)))
+    rw [h_rest_eq]; exact add_assoc _ _ _
+  · have hb_not_val : b ∉ t.toFinset.val := hb
+    have hb_count : t.count b = 0 :=
+      Multiset.count_eq_zero.mpr (fun h => hb (Multiset.mem_toFinset.mpr h))
+    rw [Multiset.ndinsert_of_not_mem hb_not_val, Multiset.cons_bind, h_count_b,
+        glaisherBwdStep_add_pow_two a b (t.count b) h_bit, hb_count,
+        glaisherBwdStep_zero, add_zero]
+    congr 1
+    exact Multiset.bind_congr fun v hv =>
+      congrArg _ (h_count_ne v (fun h => hb_not_val (h ▸ hv)))
 
-    Proof sketch (sorry pending full formalization of glaisherBwd_glaisherFwd):
-    - Induction on s (Nodup)
-    - For s = k ::ₘ t with k ∉ t: let a = padicValNat 2 k, b = k/2^a
-    - Key: (glaisherFwd t).count b has its a-th bit = 0 (since k = 2^a*b ∉ t)
-    - glaisherBwdStep_add_pow_two: glaisherBwdStep b (2^a + ft.count b) = {k} + glaisherBwdStep b (ft.count b)
-    - Remaining terms reconstruct t by inductive hypothesis
-    - Full formalization requires splitting bind over toFinset and tracking count changes -/
+/-- Bit a of (glaisherFwd t).count b is 0 when 2^a*b ∉ t (Nodup t). -/
+private lemma glaisherFwd_count_bit_zero {k : ℕ} (hk : k ≠ 0) {t : Multiset ℕ}
+    (ht_pos : ∀ x ∈ t, x ≠ 0) (ht_nodup : t.Nodup) (hk_not_in : k ∉ t) :
+    ((glaisherFwd t).count (k / 2^(padicValNat 2 k)) / 2^(padicValNat 2 k)) % 2 = 0 := by
+  sorry
+
+/-- **Round-trip**: backward undoes forward on Nodup multisets of positive naturals. -/
 theorem glaisherBwd_glaisherFwd {s : Multiset ℕ}
     (hs_pos : ∀ k ∈ s, k ≠ 0) (hs_nodup : s.Nodup) :
     glaisherBwd (glaisherFwd s) = s := by
-  sorry
+  induction s using Multiset.induction with
+  | empty => simp [glaisherFwd, glaisherBwd]
+  | cons k t ih =>
+    rw [Multiset.nodup_cons] at hs_nodup
+    obtain ⟨hk_not_in, ht_nodup⟩ := hs_nodup
+    have ht_pos : ∀ x ∈ t, x ≠ 0 := fun x hx => hs_pos x (Multiset.mem_cons_of_mem hx)
+    have hk_pos : k ≠ 0 := hs_pos k (Multiset.mem_cons_self k t)
+    have h_fwd : glaisherFwd (k ::ₘ t) = glaisherFwdPart k + glaisherFwd t := by
+      simp [glaisherFwd, Multiset.cons_bind]
+    set a := padicValNat 2 k
+    set b := k / 2 ^ a with hb_def
+    rw [h_fwd, show glaisherFwdPart k = Multiset.replicate (2^a) b from rfl,
+        glaisherBwd_add_replicate (glaisherFwd_count_bit_zero hk_pos ht_pos ht_nodup hk_not_in),
+        show 2^a * b = k from padic_factorization, ih ht_pos ht_nodup]
+    change (k ::ₘ (0 : Multiset ℕ)) + t = k ::ₘ t
+    rw [Multiset.cons_add, zero_add]
 
 /-- **Constructive Euler Partition Theorem**: Glaisher gives an explicit bijection
     between distinct-part and odd-part partitions of any n. -/
