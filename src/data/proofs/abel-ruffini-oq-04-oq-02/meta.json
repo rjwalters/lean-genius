@@ -46,16 +46,17 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The solvability of symmetric groups is the heart of the Abel-Ruffini theorem. Lagrange (1770) studied permutation groups to understand polynomial roots. Galois (1832) proved that a polynomial is solvable by radicals iff its Galois group is solvable, and that Sₙ (n ≥ 5) is not solvable because A₅ is simple.\n\nThe complete classification: Sₙ is solvable iff n ≤ 4, with derived series lengths 0, 0, 1, 2, 3 for n = 0, 1, 2, 3, 4. For n ≥ 5, the derived series gets stuck at the simple group Aₙ.",
+    "historicalContext": "The solvability of symmetric groups is the algebraic heart of the Abel-Ruffini theorem and its converse. Lagrange (1770) studied resolvents and permutation groups to understand polynomial roots, observing that degree 2, 3, and 4 equations have explicit radical solutions — the quadratic formula (antiquity), Cardano's cubic formula (1545), and Ferrari's quartic formula (1545). Ruffini (1799) attempted the first proof that degree 5 is unsolvable but left gaps. Abel (1824) gave the first complete proof of the Abel-Ruffini theorem.\n\nGalois (1832) revolutionized the subject by establishing the correspondence between polynomial solvability and group solvability: a polynomial is solvable by radicals if and only if its Galois group is a solvable group. He identified that Sₙ (n ≥ 5) is not solvable because A₅ (order 60) is the smallest non-abelian simple group — its derived series stalls at [A₅, A₅] = A₅, never reaching {e}.\n\nFor n ≤ 4, the complete composition factor towers are: S₂ ⊵ {e} (factor ℤ/2ℤ), S₃ ⊵ A₃ ⊵ {e} (factors ℤ/2ℤ, ℤ/3ℤ), S₄ ⊵ A₄ ⊵ V₄ ⊵ {e} (factors ℤ/2ℤ, ℤ/3ℤ, ℤ/2ℤ, ℤ/2ℤ). The Klein four-group V₄ ≅ ℤ/2ℤ × ℤ/2ℤ plays a starring role for the quartic: it is the unique normal subgroup of S₄ that is not contained in A₄, enabling the extra solvability step. The Jordan-Hölder theorem (1870s) then establishes that all composition factors of a solvable group must be cyclic of prime order, perfectly matching the towers above.",
     "problemStatement": "**Open Question**: Prove S₂, S₃, S₄ are solvable to complete the degree-by-degree picture.\n\n**Answer**: All three are solvable. The complete classification is: Sₙ is solvable if and only if n ≤ 4.",
     "text": "Completes the classification of solvable symmetric groups by proving S₂, S₃, S₄ are solvable. Combined with S₅ not solvable (parent), gives the bidirectional characterization.",
     "proofStrategy": "**S₂**: Construct a CommGroup instance by verifying commutativity via `decide` (only 2 elements). Abelian groups are solvable.\n\n**S₃**: Show derivedSeries(S₃, 2) = ⊥ by `decide`. The derived series is S₃ ⊵ A₃ ⊵ {e}.\n\n**S₄**: Show derivedSeries(S₄, 3) = ⊥ by `native_decide`. The derived series is S₄ ⊵ A₄ ⊵ V₄ ⊵ {e}.\n\n**Classification**: Forward direction by contrapositive of Mathlib's not_solvable. Backward direction by interval_cases on n ∈ {0,...,4}.",
     "keyInsights": [
-      "S₂ is the only symmetric group that is abelian (besides S₀, S₁)",
-      "The derived series lengths are 0, 0, 1, 2, 3 for S₀-S₄, then ∞ for S₅+",
-      "native_decide handles S₄ (24 elements) but might be slow for larger groups",
-      "The solvable_iff_le_four theorem is a clean bidirectional classification",
-      "5 is special because A₅ (order 60) is the smallest non-abelian simple group"
+      "S₂ is the only symmetric group that is abelian (besides S₀, S₁): S₃ has the non-commuting transpositions (12)(13) ≠ (13)(12)",
+      "The derived series lengths are exactly 0, 0, 1, 2, 3 for S₀-S₄, then infinite for S₅+ (stuck at the simple group Aₙ)",
+      "native_decide handles S₄ (24 elements) but `decide` times out — the boundary is roughly 6-12 elements for kernel-level computation",
+      "The Klein four-group V₄ ◁ S₄ is what makes the quartic solvable: it provides the extra normal subgroup enabling a 3-step derived series",
+      "A₅ being simple (order 60, no normal subgroups) is the exact reason n=5 is the unsolvability threshold",
+      "interval_cases elegantly reduces the infinite backward direction (n ≤ 4 → solvable) to 5 decidable finite checks"
     ],
     "prerequisites": [
       "Group theory (solvable groups, derived series, commutator subgroups)",
