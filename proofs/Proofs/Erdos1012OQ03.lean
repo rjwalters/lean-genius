@@ -56,7 +56,9 @@ Survey + proof infrastructure. Rédei proved modulo 2 infrastructure lemmas.
 - [ ] sc_tournament_has_cycle (cycle existence in SC tournament)
 - [ ] tournament_cycle_extendable (longest-cycle extension)
 - [ ] Ghouila-Houri proof
-- [ ] Directed threshold proof
+- [x] missing_arcs_le (arcCount > (n-1)² → ≤ n-2 missing arcs) [proved]
+- [ ] hamiltonian_of_few_missing_arcs (counting/probabilistic argument) [sorry]
+- [x] directed_hamiltonian_threshold (delegates to above) [proved]
 -/
 
 namespace Erdos1012OQ03
@@ -948,6 +950,34 @@ PART V: EDGE THRESHOLD FOR DIRECTED HAMILTONICITY
 noncomputable def Digraph.arcCount (D : Digraph V) : ℕ :=
   Fintype.card {p : V × V // D.arc p.1 p.2}
 
+-- Arithmetic helper: arcCount > (n-1)² implies at most n-2 arcs are missing
+-- from the complete digraph K*_n (which has n*(n-1) arcs).
+-- Note: uses ℕ subtraction, which is 0 when m > n*(n-1) (vacuously ≤ n-2).
+private lemma missing_arcs_le (n m : ℕ) (hn : 3 ≤ n) (harc : (n - 1) ^ 2 < m) :
+    n * (n - 1) - m ≤ n - 2 := by
+  set k := n - 1
+  have hkn : k + 1 = n := by omega
+  have hnn1 : n * k = k ^ 2 + k := by rw [show n = k + 1 from hkn.symm]; ring
+  rw [hnn1]; set a := k ^ 2; omega
+
+-- Counting argument (probabilistic method): with ≤ n-2 arcs missing from K*_n,
+-- a Hamiltonian cycle exists.
+--
+-- Proof sketch: There are n! bijections e : V ≃ Fin n. Each bijection gives a
+-- directed cycle e.symm(0)→e.symm(1)→...→e.symm(n-1)→e.symm(0). For each
+-- missing arc (u,v), the bijections "using" (u,v) at some consecutive position
+-- number at most n*(n-2)! (choose the position i: n ways; then permute the
+-- remaining n-2 elements: (n-2)! ways).
+--
+-- Total bad bijections ≤ |missing| * n * (n-2)! ≤ (n-2) * n * (n-2)! < n!
+-- (since n-2 < n-1 implies (n-2)*n*(n-2)! < (n-1)*n*(n-2)! = n!).
+-- So ∃ good bijection, yielding a Hamiltonian cycle.
+private lemma hamiltonian_of_few_missing_arcs (D : Digraph V)
+    (hn : 3 ≤ Fintype.card V)
+    (hmissing : Fintype.card V * (Fintype.card V - 1) - D.arcCount ≤ Fintype.card V - 2) :
+    D.HasHamiltonianCycle := by
+  sorry
+
 /-- **Directed Hamiltonian threshold**: a digraph on n ≥ 3 vertices with more
 than (n-1)² arcs is Hamiltonian, provided it is strongly connected.
 
@@ -955,29 +985,27 @@ This is the directed analogue of the Erdős #1012 edge threshold. -/
 theorem directed_hamiltonian_threshold (D : Digraph V) (hn : 3 ≤ Fintype.card V)
     (hsc : D.IsStronglyConnected)
     (harc : (Fintype.card V - 1) ^ 2 < D.arcCount) :
-    D.HasHamiltonianCycle := by
-  sorry
+    D.HasHamiltonianCycle :=
+  hamiltonian_of_few_missing_arcs D hn
+    (missing_arcs_le (Fintype.card V) D.arcCount hn harc)
 
 /-
 ## Proof Roadmap
-
-### Moon-Moser (ARCHITECTURE COMPLETE, 2 sorries remain)
-Proved via longest-cycle extension:
-1. Get initial cycle from strong connectivity (sorry: sc_tournament_has_cycle)
-2. Non-insertable vertex dichotomy: proved (successor closure on cycle)
-3. Cycle extension: stated with full proof sketch (sorry: S⁺/S⁻ argument)
-4. List cycle → HasHamiltonianCycle conversion: proved
-5. Inductive growth to Hamiltonian: proved
-
-Remaining sorries:
-- `sc_tournament_has_cycle`: Extract simple cycle from closed walk (standard)
-- `tournament_cycle_extendable`: The S⁺/S⁻ partition + SC contradiction (~80 lines)
 
 ### Ghouila-Houri (~200 lines)
 The proof follows the same structure as Dirac's theorem for undirected graphs:
 1. Start with a longest directed path P in D
 2. Show P must be Hamiltonian (otherwise, degree conditions force extension)
 3. Close P into a cycle using the pigeonhole principle on in/out neighborhoods
+
+### Directed Hamiltonian Threshold
+Decomposed into:
+1. `missing_arcs_le` (PROVED): arcCount > (n-1)² → at most n-2 missing arcs
+2. `hamiltonian_of_few_missing_arcs` (SORRY): counting/probabilistic argument
+   - n! total bijections; each missing arc blocks ≤ n*(n-2)! of them
+   - total blocked ≤ (n-2)*n*(n-2)! < n! (since n-2 < n-1)
+   - therefore ∃ good bijection → Hamiltonian cycle exists
+3. `directed_hamiltonian_threshold` (PROVED via 1+2): delegates to above
 
 ### Rédei (DONE)
 Proved by induction via tournament insertion lemma.
