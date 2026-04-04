@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-e485oq01-header",
+    "proofId": "erdos-485-oq-01",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "Survey Approach: Formalizing an Open Problem with Known Bounds",
+    "content": "This module takes a survey approach to an open problem: formalizing what IS known (the bounds) as axioms, while carefully tracking what is NOT known (the exact growth rate). The docstring honestly states '3 axioms: deep analytic number theory results'. The module header also corrects a false lemma that was originally included (the lacunary lower bound, which fails due to coefficient cancellation). This is a rare example of a formalization that explicitly documents a mistake and its counterexample.",
+    "mathContext": "The problem: $f(k) = \\min\\{\\text{terms}(P^2) : P \\in \\mathbb{Q}[x], \\text{terms}(P) = k\\}$. Known: $c_1 \\log k \\leq f(k) \\leq k^{1-c_2}$. Unknown: the exact growth rate. The gap between logarithmic and polynomial is enormous — comparable to the gap between log(N) and N^{0.99} in prime counting.",
+    "significance": "context",
+    "relatedConcepts": ["sparse polynomial theory", "open problem formalization", "axiom budget tracking", "lacunary polynomials"],
+    "prerequisites": ["polynomial algebra over ℚ", "asymptotic analysis", "Lean 4 axioms vs theorems"]
+  },
+  {
+    "id": "ann-e485oq01-definitions",
+    "proofId": "erdos-485-oq-01",
+    "range": { "startLine": 53, "endLine": 59 },
+    "type": "definition",
+    "title": "termCount and f(k): The Core Definitions",
+    "content": "Two `noncomputable def`s define the mathematical objects. `termCount p = p.support.card` counts the nonzero monomials (support = set of indices with nonzero coefficient). `f(k) = sInf {n | ∃ p with k terms, p² has n terms}` is the minimum via `Nat.sInf`. Using `sInf` (infimum over a set of naturals) is the cleanest way to define a minimum — it's 0 if the set is empty, and equals the minimum otherwise. The `noncomputable` tag is needed because ℚ equality is not decidable in Lean 4 without classical logic.",
+    "mathContext": "$f(k) = \\min\\left\\{\\#\\text{supp}(P^2) : P \\in \\mathbb{Q}[x],\\ \\#\\text{supp}(P) = k\\right\\}$ where $\\text{supp}(P) = \\{i \\in \\mathbb{N} : [x^i]P \\neq 0\\}$. Note $f$ is well-defined since the set is non-empty for each $k \\geq 1$ (take $P = x^0 + x^1 + \\cdots + x^{k-1}$).",
+    "significance": "key",
+    "relatedConcepts": ["polynomial support", "Nat.sInf", "noncomputable definitions", "squarefree polynomials"],
+    "prerequisites": ["Polynomial.support API", "Nat.sInf semantics", "classical vs constructive logic in Lean 4"]
+  },
+  {
+    "id": "ann-e485oq01-bounds",
+    "proofId": "erdos-485-oq-01",
+    "range": { "startLine": 91, "endLine": 125 },
+    "type": "insight",
+    "title": "The Three Axioms: Known Bounds and Divergence",
+    "content": "The three axioms capture the state of the art. `schinzel_zannier_lower`: f(k) ≥ c·log(k) for large k — proved by Schinzel and Zannier (2009) using height theory from algebraic geometry. `erdos_upper`: f(k) < k^(1-c) — Erdős' explicit construction (1949) showing squares can be much sparser. `f_diverges`: f(k) → ∞ as a `Filter.Tendsto` statement — Schinzel (1987). These are stated in terms of `(f k : ℝ)` (coercing ℕ to ℝ) to use `Real.log` and `Real.rpow`. The theorems `growth_at_least_log` and `growth_at_most_sublinear` are trivial one-liners from the axioms.",
+    "mathContext": "Schinzel-Zannier (2009): $f(k) \\geq c \\log k$ using height theory — if $P = \\sum a_i x^{e_i}$, then $\\log H(P^2) \\geq 2 \\log H(P)$ where $H$ is a Weil height, giving lower bounds on support size. Erdős (1949): the polynomial $P_k(x) = \\sum_{j=0}^{k-1} x^{3^j}$ satisfies $\\text{terms}(P_k^2) \\leq 2k - 1$ — exponentially spaced monomials cause very few collision pairs.",
+    "significance": "key",
+    "relatedConcepts": ["Weil height theory", "algebraic geometry methods in combinatorics", "Filter.Tendsto", "explicit polynomial constructions"],
+    "prerequisites": ["Real.log in Lean", "Real.rpow", "Filter.Tendsto API"]
+  },
+  {
+    "id": "ann-e485oq01-positive-coeffs",
+    "proofId": "erdos-485-oq-01",
+    "range": { "startLine": 131, "endLine": 144 },
+    "type": "insight",
+    "title": "Positive Coefficients Prevent Cancellation",
+    "content": "The theorem `positive_coeffs_no_cancel` shows that if all coefficients of p are ≥ 0, then all coefficients of p² are ≥ 0 as well — no cancellation. The proof is three lines: expand coeff(p², n) using `Polynomial.coeff_mul`, then show the sum is nonneg using `Finset.sum_nonneg` with the product of nonneg coefficients. This is the simplest structural observation: the interesting behavior (cancellation, sparse squares) requires mixed-sign polynomials. For all-positive p with k terms, f(k) = k(k+1)/2 (all cross-terms are distinct).",
+    "mathContext": "$[x^n](P^2) = \\sum_{i+j=n} a_i a_j$. If all $a_i \\geq 0$, each term $a_i a_j \\geq 0$, so the sum $\\geq 0$. No cancellation means: if $a_i > 0$ and $a_j > 0$, then $[x^{i+j}](P^2) \\geq a_i a_j > 0$, so the support of $P^2$ contains all pairwise sums from supp$(P)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["coefficient cancellation", "nonnegative polynomials", "Finset.sum_nonneg", "Cauchy convolution"],
+    "prerequisites": ["Polynomial.coeff_mul", "Finset.Nat.antidiagonal", "mul_nonneg"]
+  },
+  {
+    "id": "ann-e485oq01-binomial",
+    "proofId": "erdos-485-oq-01",
+    "range": { "startLine": 146, "endLine": 184 },
+    "type": "technique",
+    "title": "Binomial Square Has 3 Terms: Verified by Support Computation",
+    "content": "The theorem `binomial_square_three_terms` proves (1 + X^d)² has exactly 3 terms for d ≥ 1. The proof strategy: (1) algebraically expand using `ring` to get 1 + C 2 * X^d + X^(2d); (2) prove the support is exactly {0, d, 2d} by a bidirectional iff; (3) compute the cardinality using `card_insert_of_not_mem` twice. The `d ≥ 1` hypothesis ensures 0, d, 2d are distinct. Note: this verifies f(2) ≤ 3 for the family 1 + x^d, but proving f(2) = 3 in general would require showing no 2-term polynomial can square to 2 terms.",
+    "mathContext": "$(1 + x^d)^2 = 1 + 2x^d + x^{2d}$, which has support $\\{0, d, 2d\\}$ for $d \\geq 1$ (three distinct elements). This shows $f(2) \\leq 3$. The equality $f(2) = 3$ requires additionally proving no polynomial with 2 terms squares to ≤ 2 terms — the binomial $(ax^m + bx^n)^2 = a^2x^{2m} + 2abx^{m+n} + b^2x^{2n}$ always has 3 nonzero terms when $ab \\neq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["polynomial support computation", "Finset.card_insert_of_not_mem", "polynomial ring lemmas"],
+    "prerequisites": ["Polynomial.support API", "Finset membership lemmas", "ring tactic"]
+  },
+  {
+    "id": "ann-e485oq01-counterexample",
+    "proofId": "erdos-485-oq-01",
+    "range": { "startLine": 185, "endLine": 247 },
+    "type": "insight",
+    "title": "Deleted False Lemma and Its Counterexample: The Cancellation Phenomenon",
+    "content": "The docstring at line 185 explicitly documents a FALSE lemma that was removed: the 'lacunary lower bound' claiming termCount(P²) ≥ 2k-1 for any k-term P. The counterexample p = 1 - x² - (1/2)x⁴ shows this fails: p has k=3 terms, but the x⁴ coefficient of p² = (coefficient of x⁴ in (1-x²-x⁴/2)²) = 1·(-1/2) + (-1)·(-1) + (-1/2)·1 = -1/2 + 1 - 1/2 = 0. The x⁴ coefficient cancels! This is a beautiful illustration of why coefficient cancellation makes the problem so hard. The corrected theorem `lacunary_positive_lower_bound` recovers 2k-1 only for all-positive-coefficient polynomials.",
+    "mathContext": "For $P = 1 - x^2 - \\frac{1}{2}x^4$ (3 terms): $[x^4](P^2) = 1 \\cdot (-\\frac{1}{2}) + (-1)^2 + (-\\frac{1}{2}) \\cdot 1 = 0$. This shows $|\\text{supp}(P^2)| < 2|\\text{supp}(P)| - 1$. The Cauchy-Davenport theorem gives $|A + A| \\geq 2|A| - 1$ for sets, but coefficient cancellation can prevent all sumset positions from being realized in the polynomial support.",
+    "significance": "key",
+    "relatedConcepts": ["coefficient cancellation", "sumset theory", "Cauchy-Davenport theorem", "Finset.disjoint_left", "Finset.min' and max'"],
+    "prerequisites": ["Polynomial.coeff_mul", "Finset.single_le_sum", "Finset.min' and max' API"]
+  }
+]
