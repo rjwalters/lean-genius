@@ -33,7 +33,7 @@
       "The multinomial theorem IS the proof — no additional work beyond algebraic manipulation",
       "Product concentration: $\\prod_{i \\in s} (\\text{if } i = i_0 \\text{ then } t \\text{ else } 1)^{k(i)} = t^{k(i_0)}$ via `Finset.prod_eq_single`",
       "Sum simplification: $\\sum_s p(i) \\cdot (\\text{if } i = i_0 \\text{ then } t \\text{ else } 1) = p(i_0) t + (1 - p(i_0))$ via linearity and `Finset.sum_ite_eq'`",
-      "The open problem remains: formally extracting polynomial coefficients from the PGF identity to get the direct PMF formula"
+      "The direct PMF formula `multinomial_marginal_pmf` is proved by a direct algebraic argument: factor out $\\binom{n}{j} p(i_0)^j$ and use a bijection between `(s.piAntidiag n).filter (k i_0 = j)` and `(s.erase i_0).piAntidiag (n-j)`, then apply the multinomial theorem on the reduced set"
     ]
   },
   "sections": [
@@ -54,8 +54,8 @@
     },
     {
       "id": "pmf-formula",
-      "title": "Direct PMF Formula (Partial)",
-      "content": "`multinomial_marginal_pmf` states the direct formula $P(X_{i_0} = j) = \\binom{n}{j} p(i_0)^j (1-p(i_0))^{n-j}$ but leaves the proof as `sorry`. The gap: extracting polynomial coefficients from the PGF identity requires showing that equal polynomial functions over $\\mathbb{R}$ have equal coefficients, via `Polynomial.funext` and coefficient ring theory."
+      "title": "Direct PMF Formula",
+      "content": "`multinomial_marginal_pmf` proves the direct formula $P(X_{i_0} = j) = \\binom{n}{j} p(i_0)^j (1-p(i_0))^{n-j}$ via a direct algebraic argument: factor out $\\binom{n}{j} p(i_0)^j$ from each term using `Nat.multinomial_insert`, then apply a bijection (via `Finset.sum_nbij'`) between `(s.piAntidiag n).filter (k i_0 = j)` and `(s.erase i_0).piAntidiag (n-j)`, and conclude using the multinomial theorem on the reduced set."
     },
     {
       "id": "examples",
@@ -64,9 +64,8 @@
     }
   ],
   "conclusion": {
-    "summary": "The main result `multinomial_marginal_pgf` proves that the PGF of each marginal of the multinomial distribution equals the Binomial PGF, establishing that marginals are binomial. The proof is elementary: it uses only the multinomial theorem (via the MGF identity) and basic finset arithmetic. One sorry remains for the direct PMF formula, which requires polynomial coefficient extraction.",
+    "summary": "All 10 theorems are fully proved with 0 sorries. The main result `multinomial_marginal_pgf` proves that the PGF of each marginal of the multinomial distribution equals the Binomial PGF. The direct PMF formula `multinomial_marginal_pmf` is proved via a direct algebraic argument using a bijection and the multinomial theorem on the reduced set, bypassing polynomial coefficient extraction.",
     "openQuestions": [
-      "Can `multinomial_marginal_pmf` be completed using Lean 4's `Polynomial` library for coefficient extraction?",
       "Can the proof be extended to show joint independence of disjoint subsets of multinomial components?"
     ]
   },
