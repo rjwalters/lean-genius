@@ -10921,11 +10921,11 @@
     },
     {
       "slug": "erdos-1036-incomplete-01",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-03T07:37:00.135Z",
       "status": "active",
-      "lastUpdate": "2026-04-03T07:37:00.135Z"
+      "lastUpdate": "2026-04-04T05:15:05.973Z"
     },
     {
       "slug": "erdos-156-incomplete-01",
@@ -10936,10 +10936,12 @@
     },
     {
       "slug": "erdos-157-incomplete-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-04-03T00:52:26-07:00",
-      "status": "active"
+      "status": "graduated",
+      "completed": "2026-04-04T05:15:05.846Z",
+      "lastUpdate": "2026-04-04T05:15:05.846Z"
     },
     {
       "slug": "erdos-138-incomplete-01",
@@ -12059,6 +12061,390 @@
       "status": "active",
       "lastUpdate": "2026-04-03T23:00:00.000Z",
       "notes": "Aristotle companion created: Erdos660Aristotle.lean (10 supporting lemmas for distinct distances lower bound)"
+    },
+    {
+      "slug": "basel-problem-oq-01-oq-01-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.862Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.980Z"
+    },
+    {
+      "slug": "cayley-hamilton-minpoly-oq-01-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.862Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.980Z"
+    },
+    {
+      "slug": "hilbert-13-oq-04-incomplete-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.864Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.981Z"
+    },
+    {
+      "slug": "shannon-source-coding-oq-06",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.865Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.981Z"
+    },
+    {
+      "slug": "basel-problem-oq-01-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.865Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.865Z"
+    },
+    {
+      "slug": "brouwer-fixed-point-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.866Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.866Z"
+    },
+    {
+      "slug": "amgm-inequality-oq-04-oq-04",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.928Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.981Z"
+    },
+    {
+      "slug": "angle-trisection-oq-01-oq-04",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.928Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.981Z"
+    },
+    {
+      "slug": "area-of-circle-oq-03-oq-02-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.928Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.982Z"
+    },
+    {
+      "slug": "ballot-problem-oq-01-oq-02-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.929Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.982Z"
+    },
+    {
+      "slug": "basel-problem-oq-04",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.929Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.982Z"
+    },
+    {
+      "slug": "borsuk-ulam-oq-02-oq-01-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.930Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.982Z"
+    },
+    {
+      "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.932Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.983Z"
+    },
+    {
+      "slug": "cube-root-2-irrational-oq-01",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-04-04T05:15:05.934Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.983Z"
+    },
+    {
+      "slug": "cube-root-3-irrational-oq-01",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-04-04T05:15:05.934Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.983Z"
+    },
+    {
+      "slug": "cube-root-3-irrational-oq-03",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.934Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.983Z"
+    },
+    {
+      "slug": "erdos-100-oq-04",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.936Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.984Z"
+    },
+    {
+      "slug": "erdos-1004-oq-04",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.937Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.984Z"
+    },
+    {
+      "slug": "erdos-1027-oq-03",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.938Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.984Z"
+    },
+    {
+      "slug": "erdos-211-incomplete-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.940Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.985Z"
+    },
+    {
+      "slug": "fermat-two-squares-oq-01-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.946Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.985Z"
+    },
+    {
+      "slug": "friendship-theorem-oq-01-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.947Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.985Z"
+    },
+    {
+      "slug": "inverse-galois-oq-01-incomplete-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.949Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.986Z"
+    },
+    {
+      "slug": "solution-of-cubic-oq-03-oq-04",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-04-04T05:15:05.954Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.986Z"
+    },
+    {
+      "slug": "vietas-formulas-oq-03-oq-05",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.954Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.986Z"
+    },
+    {
+      "slug": "wilsons-theorem-oq-02-oq-02",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-04-04T05:15:05.954Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.986Z"
+    },
+    {
+      "slug": "wilsons-theorem-oq-04-oq-02",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-04-04T05:15:05.954Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.986Z"
+    },
+    {
+      "slug": "abel-ruffini-oq-04-oq-01-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.954Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.954Z"
+    },
+    {
+      "slug": "amgm-inequality-oq-03-oq-02-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.955Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.955Z"
+    },
+    {
+      "slug": "angle-trisection-oq-02-oq-03-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.955Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.955Z"
+    },
+    {
+      "slug": "area-of-circle-oq-01-oq-02-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.955Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.955Z"
+    },
+    {
+      "slug": "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.955Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.955Z"
+    },
+    {
+      "slug": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.955Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.955Z"
+    },
+    {
+      "slug": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.955Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.955Z"
+    },
+    {
+      "slug": "ballot-problem-oq-01-oq-02-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.956Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.956Z"
+    },
+    {
+      "slug": "bertrands-postulate-oq-03-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.956Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.956Z"
+    },
+    {
+      "slug": "bezout-identity-oq-01-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-04-04T05:15:05.956Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.956Z"
+    },
+    {
+      "slug": "binary-gcd-oq-01-oq-03",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-04-04T05:15:05.956Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.956Z"
+    },
+    {
+      "slug": "binomial-theorem-oq-02-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.956Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.956Z"
+    },
+    {
+      "slug": "birthday-problem-oq-03-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.956Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.956Z"
+    },
+    {
+      "slug": "borsuk-ulam-oq-02-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.957Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.957Z"
+    },
+    {
+      "slug": "buffons-needle-oq-01-oq-01-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.957Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.957Z"
+    },
+    {
+      "slug": "cramers-rule-oq-01-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.957Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.957Z"
+    },
+    {
+      "slug": "descartes-rule-oq-01-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.957Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.957Z"
+    },
+    {
+      "slug": "erdos-606-incomplete-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.957Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.957Z"
+    },
+    {
+      "slug": "erdos-678-incomplete-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.957Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.957Z"
+    },
+    {
+      "slug": "erdos-793-incomplete-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.958Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.958Z"
+    },
+    {
+      "slug": "erdos-895-incomplete-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-04T05:15:05.958Z",
+      "status": "active",
+      "lastUpdate": "2026-04-04T05:15:05.958Z"
     }
   ],
   "config": {

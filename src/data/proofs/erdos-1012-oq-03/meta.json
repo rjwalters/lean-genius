@@ -13,10 +13,10 @@
       "tournaments"
     ],
     "badge": "formalized",
-    "sorries": 2,
+    "sorries": 4,
     "axiomCount": 0,
-    "lineCount": 991,
-    "assumptions": "0 axioms. 2 sorries: (1) ghouila_houri (full proof needs longest-path argument ~200 lines), (2) directed_hamiltonian_threshold (arc-count threshold result). Moon-Moser theorem (sc_tournament_has_cycle + tournament_cycle_extendable + grow_cycle_to_hamiltonian) is now fully proved. Rédei fully proved by induction.",
+    "lineCount": 1135,
+    "assumptions": "0 axioms. 4 sorries: (1) ghouila_houri (full proof needs longest-path argument ~200 lines), (2) arcCount_add_missing (helper lemma: arc + missing = n*(n-1)), (3) card_equiv_fixed_pair (helper lemma: counting bijections fixing two positions = (n-2)!), (4) hbad_card_le (inline step inside directed_hamiltonian_threshold: bad perm count bound). Moon-Moser theorem (sc_tournament_has_cycle + tournament_cycle_extendable + grow_cycle_to_hamiltonian) is now fully proved. Rédei fully proved by induction.",
     "dateAdded": "2026-03-30"
   },
   "overview": {
