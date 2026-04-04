@@ -36,7 +36,8 @@
       "Fractional parts satisfy {x + n} = {x} for integer n, giving the periodicity of the inner sum for rational α = p/q with period q",
       "The cyclic sum lemma — that any q-periodic function sums equally over any q consecutive integers — is proved by induction using Finset.sum_range_succ and sum_range_succ', and is reusable for any Weyl-type sum",
       "The coprimality hypothesis gcd(p,q) = 1 appears in the theorem statement but is not used in the formal proof body — the periodicity result holds for all integers p and naturals q ≥ 1",
-      "Filter composition is the key Lean technique: tendsto_mul_atTop/atBot composes with tendsto_arctan_atTop/atBot to derive the CDF limits, with convert handling the arithmetic simplification 1/π·(π/2)+1/2 = 1"
+      "Filter composition is the key Lean technique: tendsto_mul_atTop/atBot composes with tendsto_arctan_atTop/atBot to derive the CDF limits, with convert handling the arithmetic simplification 1/π·(π/2)+1/2 = 1",
+      "The Cauchy distribution is a Lévy stable distribution with stability index $\\alpha = 1$: a sum of $n$ i.i.d. Cauchy$(\\rho)$ variables has distribution Cauchy$(n\\rho)$ — identical scaling to a single Cauchy but with parameter $n\\rho$ rather than the $\\sqrt{n}$ scaling of Gaussians — which is why the correct normalization in Kesten's theorem is $1/\\log n$ rather than $1/\\sqrt{n}$"
     ],
     "prerequisites": [
       "Real analysis: monotonicity, limits at infinity",
@@ -95,9 +96,39 @@
     {
       "relationship": "Kesten's Cauchy-distribution theorem for the normalized inner sum is a law-of-large-numbers analogue for strongly dependent sequences: the Laws of Large Numbers gallery entry provides foundational context for why the Cauchy limit (rather than a Gaussian) emerges from the fractional-part sum",
       "targetId": "laws-of-large-numbers"
+    },
+    {
+      "relationship": "The Cauchy CDF proved valid here is the canonical counterexample to the Central Limit Theorem: because the Cauchy distribution has no finite mean or variance, sums of i.i.d. Cauchy random variables remain Cauchy (scaled by n rather than √n) — violating the CLT's convergence-to-Gaussian conclusion",
+      "targetId": "central-limit-theorem"
     }
   ],
-  "references": [],
+  "references": [
+    {
+      "authors": ["H. Kesten"],
+      "title": "On a conjecture of Erdős and Szüsz related to uniform distribution mod 1",
+      "venue": "Acta Arithmetica",
+      "year": "1960",
+      "volume": "5",
+      "pages": "369–380",
+      "notes": "The foundational result for Erdős #1002: proves the inner sum S(α,n)/log(n) has Cauchy limit distribution. The two axioms proved in this file are prerequisites for the companion approach toward formalizing Kesten's theorem."
+    },
+    {
+      "authors": ["H. Weyl"],
+      "title": "Über die Gleichverteilung von Zahlen mod. Eins",
+      "venue": "Mathematische Annalen",
+      "year": "1916",
+      "volume": "77",
+      "pages": "313–352",
+      "notes": "Weyl's equidistribution theorem: {kα} is uniformly distributed mod 1 for irrational α. The periodicity of the inner sum for rational α proved here is the counterpart: for rational α the sum is periodic rather than equidistributed."
+    },
+    {
+      "authors": ["J. Beck"],
+      "title": "Probabilistic Diophantine approximation: randomness in lattice point counting",
+      "venue": "Springer Monographs in Mathematics",
+      "year": "2014",
+      "notes": "Comprehensive treatment of distribution and fluctuation questions for fractional-part sums, including the Cauchy and non-Cauchy limit laws, continued fractions, and connections to the three-distance theorem — all relevant to the remaining open axioms in Erdős #1002."
+    }
+  ],
   "leanFile": {
     "imports": ["Mathlib"],
     "opens": ["Real", "Filter"],
