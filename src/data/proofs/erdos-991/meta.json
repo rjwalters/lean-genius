@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 991,
     "erdosUrl": "https://erdosproblems.com/991",
     "erdosProblemStatus": "solved",
@@ -65,8 +65,8 @@
       "improvement_factor: comparing bounds"
     ],
     "axiomCount": 1,
-    "lineCount": 324,
-    "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "lineCount": 322,
+    "assumptions": "1 axiom(s) and 0 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #991**\n\nThis problem concerns the distribution of optimal point configurations on the sphere. The setup involves logarithmic energy minimization, a classical topic in potential theory with applications to polynomial interpolation and numerical integration on spheres.\n\n**Key History:**\n- The qualitative result (discrepancy is o(n)) follows from classical potential theory, though the exact attribution is unclear\n- Brauchart (2008): First quantitative bound of O(n^{3/4})\n- Wolff (unpublished): Improved to O(n^{2/3})\n- Marzo-Mas (2021): Published proof of O(n^{2/3}) as a special case of a more general result about Riesz energy on manifolds\n\n**Mathematical Setting:**\n- Consider n points on the unit sphere S² in R³\n- Optimal configurations maximize the product of pairwise distances (equivalently, minimize logarithmic energy)\n- These are called Fekete points in approximation theory\n- The question asks: do such optimal points distribute uniformly with respect to spherical caps?",
@@ -184,6 +184,7 @@
       "Mathlib.Topology.MetricSpace.Basic",
       "Mathlib.Analysis.InnerProductSpace.Basic",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Set.Card",
@@ -195,7 +196,7 @@
       "Finset"
     ],
     "namespace": "Erdos991",
-    "lineCount": 324,
+    "lineCount": 322,
     "axiomCount": 1,
     "theoremCount": 5,
     "definitionCount": 11,
