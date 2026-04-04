@@ -2,7 +2,7 @@
   "id": "shannon-channel-coding-oq-02",
   "title": "BSC Capacity Proof and Random Coding Foundation",
   "slug": "shannon-channel-coding-oq-02",
-  "description": "Proves the binary symmetric channel capacity formula C(BSC(p)) = log 2 - h(p) from first principles, eliminating the bsc_capacity_eq axiom from the parent formalization. Establishes the random coding existence lemma (probabilistic method).",
+  "description": "Proves the binary symmetric channel capacity formula C(BSC(p)) = log 2 - h(p) from first principles, independently proving the bsc_capacity_eq axiom from the parent formalization. Establishes the random coding existence lemma (probabilistic method). Inherits 4 axioms from the parent import; introduces no new axioms or sorries.",
   "meta": {
     "author": "Claude Shannon (1948), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binary_symmetric_channel",
@@ -152,8 +152,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the binary symmetric channel capacity formula C(BSC(p)) = log 2 - h(p) entirely from Mathlib and the existing Shannon entropy infrastructure, with zero axioms and zero sorries. The proof leverages the doubly stochastic structure of BSC to show that uniform input maximizes mutual information. The random coding existence lemma establishes the probabilistic method step needed for Shannon's full achievability proof.",
-    "implications": "Eliminates one of four axioms from the parent ShannonChannelCoding.lean formalization. The BSC capacity result is the most concrete and widely-cited application of the channel coding theorem.",
+    "summary": "This formalization proves the binary symmetric channel capacity formula C(BSC(p)) = log 2 - h(p) entirely from Mathlib and the existing Shannon entropy infrastructure, without introducing any new axioms or sorries. The proof leverages the doubly stochastic structure of BSC to show that uniform input maximizes mutual information. The random coding existence lemma establishes the probabilistic method step needed for Shannon's full achievability proof. Note: 4 axioms from the parent ShannonChannelCoding.lean remain in scope via import (see axiomCount and assumptions).",
+    "implications": "Provides an independent proof of the bsc_capacity_eq axiom from the parent ShannonChannelCoding.lean formalization — reducing the proof obligations to the remaining 3 axioms if the parent is updated. The BSC capacity result is the most concrete and widely-cited application of the channel coding theorem.",
     "openQuestions": [
       "Prove Fano's inequality (another parent axiom) from the conditional entropy machinery",
       "Formalize the joint typicality lemma needed for the full achievability proof",
