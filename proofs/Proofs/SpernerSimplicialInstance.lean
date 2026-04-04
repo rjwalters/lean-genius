@@ -367,6 +367,62 @@ lemma AbstractSimplicialData.erase_opposite_eq
     omega
   exact (Finset.eq_of_subset_of_card_le h_sub h_card).symm
 
+/-- The vertex enumeration of a top simplex is injective. -/
+lemma AbstractSimplicialData.vertexEnum_injective
+    (s : Finset V) (hs : s ∈ D.topSimplices) :
+    Function.Injective (D.vertexEnum s hs) := by
+  intro i j hij
+  have hnd : (s.sort (· ≤ ·)).Nodup := s.sort_nodup (· ≤ ·)
+  set L := s.sort (· ≤ ·) with hL_def
+  set i' : Fin L.length := i.cast (by rw [hL_def, Finset.length_sort]; exact (D.card_eq s hs).symm)
+  set j' : Fin L.length := j.cast (by rw [hL_def, Finset.length_sort]; exact (D.card_eq s hs).symm)
+  have hi'j' : L.get i' = L.get j' := hij
+  have key : (i' : ℕ) = (j' : ℕ) := by
+    rw [List.nodup_iff_injective_get] at hnd
+    exact Fin.val_eq_of_eq (hnd hi'j')
+  exact Fin.ext key
+
+/-- The vertex enumeration covers all of s. -/
+lemma AbstractSimplicialData.vertexEnum_image_univ
+    (s : Finset V) (hs : s ∈ D.topSimplices) :
+    Finset.univ.image (D.vertexEnum s hs) = s := by
+  ext v
+  simp only [Finset.mem_image, Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨k, rfl⟩; exact D.vertexEnum_mem s hs k
+  · intro hv
+    have hv_sort : v ∈ s.sort (· ≤ ·) := (s.mem_sort (· ≤ ·)).mpr hv
+    rw [List.mem_iff_getElem] at hv_sort
+    obtain ⟨idx, hidx_lt, hidx_eq⟩ := hv_sort
+    have hidx_lt' : idx < n + 1 := by
+      rwa [Finset.length_sort, D.card_eq s hs] at hidx_lt
+    exact ⟨⟨idx, hidx_lt'⟩, by simp [vertexEnum, List.get_eq_getElem, hidx_eq]⟩
+
+/-- Image of `univ.erase k` under vertexEnum equals faceOf. -/
+lemma AbstractSimplicialData.vertexEnum_image_erase
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    (Finset.univ.erase k).image (D.vertexEnum s hs) = D.faceOf s hs k := by
+  have hinj := D.vertexEnum_injective s hs
+  ext v
+  simp only [Finset.mem_image, Finset.mem_erase, Finset.mem_univ, and_true,
+             faceOf, Finset.mem_erase]
+  constructor
+  · rintro ⟨j, hj_ne, rfl⟩
+    exact ⟨fun h => hj_ne (hinj h), D.vertexEnum_mem s hs j⟩
+  · rintro ⟨hne, hv⟩
+    have hv_sort : v ∈ s.sort (· ≤ ·) := (s.mem_sort (· ≤ ·)).mpr hv
+    rw [List.mem_iff_getElem] at hv_sort
+    obtain ⟨idx, hidx_lt, hidx_eq⟩ := hv_sort
+    have hidx_lt' : idx < n + 1 := by
+      rwa [Finset.length_sort, D.card_eq s hs] at hidx_lt
+    refine ⟨⟨idx, hidx_lt'⟩, ?_, ?_⟩
+    · intro heq
+      apply hne
+      have : D.vertexEnum s hs ⟨idx, hidx_lt'⟩ = v := by
+        simp [vertexEnum, List.get_eq_getElem, hidx_eq]
+      rw [← this, heq]
+    · simp [vertexEnum, List.get_eq_getElem, hidx_eq]
+
 end FaceHelpers
 
 /-
@@ -382,12 +438,97 @@ index `k`:
    compute the opposite index in `t`, return `some (t, k')`
 -/
 
+/-- The adjacency function for `toTriangulation`. Factored out to
+enable standalone reasoning about adj = some results. -/
+noncomputable def AbstractSimplicialData.adjFn
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (p : { s : Finset V // s ∈ D.topSimplices })
+    (k : Fin (n + 1)) :
+    Option ({ s : Finset V // s ∈ D.topSimplices } × Fin (n + 1)) :=
+  let f := D.faceOf p.1 p.2 k
+  let cs := D.containersOf f
+  if _hc : cs.card ≤ 1 then
+    none
+  else
+    let cs_without_s := cs.erase p.1
+    if ht_exists : cs_without_s.Nonempty then
+      let t := ht_exists.choose
+      have ht_mem_erase : t ∈ cs_without_s := ht_exists.choose_spec
+      have ht_mem_cs : t ∈ cs := Finset.mem_of_mem_erase ht_mem_erase
+      have ht_top : t ∈ D.topSimplices := (Finset.mem_filter.mp ht_mem_cs).1
+      have hf_sub_t : f ⊆ t := (Finset.mem_filter.mp ht_mem_cs).2
+      let k' := D.findOppositeIdx t ht_top f hf_sub_t (D.faceOf_card p.1 p.2 k)
+      some (⟨t, ht_top⟩, k')
+    else
+      none
+
+/-- When `adjFn` returns `some`, the shared face sets are equal. -/
+lemma AbstractSimplicialData.adjFn_vertex
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices)
+    (k : Fin (n + 1))
+    (s' : Finset V) (hs' : s' ∈ D.topSimplices)
+    (k' : Fin (n + 1))
+    (hadj : D.adjFn ⟨s, hs⟩ k = some (⟨s', hs'⟩, k')) :
+    (Finset.univ.erase k).image (D.vertexEnum s hs) =
+    (Finset.univ.erase k').image (D.vertexEnum s' hs') := by
+  -- Unfold adjFn to expose the dite structure
+  unfold adjFn at hadj
+  simp only at hadj
+  -- split_ifs produces 3 cases from the nested dite; the happy path
+  -- (hc false, hne true) comes first as `case pos`
+  split_ifs at hadj with hc hne
+  · -- Happy path: ¬(cs.card ≤ 1) and (cs.erase s).Nonempty
+    -- hadj : some (⟨t, _⟩, k_adj) = some (⟨s', hs'⟩, k')
+    -- Extract the Subtype and Fin equalities
+    simp only [Option.some.injEq, Prod.mk.injEq] at hadj
+    obtain ⟨hs'_sub_eq, hk'_eq⟩ := hadj
+    -- hs'_sub_eq : ⟨Exists.choose ..., ...⟩ = ⟨s', hs'⟩ (subtype equality)
+    -- Extract value equality from subtype equality
+    have hs'_val : s' = hne.choose := (Subtype.ext_iff.mp hs'_sub_eq).symm
+    -- Both sides equal faceOf s hs k
+    set f := D.faceOf s hs k
+    -- LHS = faceOf s hs k
+    have hLHS : (Finset.univ.erase k).image (D.vertexEnum s hs) = f :=
+      D.vertexEnum_image_erase s hs k
+    -- Extract neighbor data from hne (the Nonempty proof)
+    have ht_mem_erase := hne.choose_spec
+    have ht_mem_cs : hne.choose ∈ D.containersOf f :=
+      Finset.mem_of_mem_erase ht_mem_erase
+    have ht_top : hne.choose ∈ D.topSimplices :=
+      (Finset.mem_filter.mp ht_mem_cs).1
+    have hf_sub_t : f ⊆ hne.choose :=
+      (Finset.mem_filter.mp ht_mem_cs).2
+    -- RHS = faceOf s' hs' k' = f
+    -- We prove this by showing both sides reduce to f
+    have hRHS : (Finset.univ.erase k').image (D.vertexEnum s' hs') = f := by
+      rw [D.vertexEnum_image_erase s' hs' k']
+      -- Goal: faceOf s' hs' k' = f, i.e., s'.erase (vertexEnum s' hs' k') = f
+      simp only [faceOf]
+      subst hs'_val
+      -- After subst: s' = hne.choose
+      -- Goal: hne.choose.erase (vertexEnum hne.choose hs' k') = f
+      -- k' comes from hk'_eq: findOppositeIdx ... = k'
+      -- Rewrite k' back to findOppositeIdx
+      rw [← hk'_eq]
+      -- Goal: hne.choose.erase (vertexEnum hne.choose hs' (findOppositeIdx ...)) = f
+      -- The findOppositeIdx and vertexEnum use proof terms that may differ from ht_top
+      -- but by proof irrelevance they compute the same value
+      -- Use erase_opposite_eq: t.erase (vertexEnum t ht (findOppositeIdx t ht f hf hfc)) = f
+      -- We need to match: vertexEnum hne.choose hs' (findOppositeIdx with other proofs)
+      -- = vertexEnum hne.choose ht_top (findOppositeIdx hne.choose ht_top f hf_sub_t ...)
+      -- All proof arguments are interchangeable by proof irrelevance
+      exact D.erase_opposite_eq hne.choose ht_top f hf_sub_t (D.faceOf_card s hs k)
+    rw [hLHS, hRHS]
+
 /-- Construct a `Triangulation` from `AbstractSimplicialData`.
 Uses `V : Type` (universe 0) to match `CellComplex.Cell : Type`.
 
 The vertex map and vertex_injective are fully proved.
-The adjacency map is defined using the face helper library.
-Adjacency proofs (adj_symm, adj_vertex, adj_ne) remain sorry'd. -/
+The adjacency map uses `adjFn`. adj_vertex is proved via `adjFn_vertex`.
+adj_symm and adj_ne remain sorry'd. -/
 noncomputable def AbstractSimplicialData.toTriangulation
     {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
     (D : AbstractSimplicialData V n) :
@@ -407,29 +548,11 @@ noncomputable def AbstractSimplicialData.toTriangulation
       rw [List.nodup_iff_injective_get] at hnd
       exact Fin.val_eq_of_eq (hnd hi'j')
     exact Fin.ext key
-  adj := fun ⟨s, hs⟩ k =>
-    let f := D.faceOf s hs k
-    let cs := D.containersOf f
-    if hc : cs.card ≤ 1 then
-      -- Boundary face: only s contains f
-      none
-    else
-      -- Interior face: exactly 2 containers (by pseudomanifold)
-      -- Find the other simplex t != s in cs
-      let cs_without_s := cs.erase s
-      if ht_exists : cs_without_s.Nonempty then
-        let t := ht_exists.choose
-        have ht_mem_erase : t ∈ cs_without_s := ht_exists.choose_spec
-        have ht_mem_cs : t ∈ cs := Finset.mem_of_mem_erase ht_mem_erase
-        have ht_top : t ∈ D.topSimplices := (Finset.mem_filter.mp ht_mem_cs).1
-        have hf_sub_t : f ⊆ t := (Finset.mem_filter.mp ht_mem_cs).2
-        let k' := D.findOppositeIdx t ht_top f hf_sub_t (D.faceOf_card s hs k)
-        some (⟨t, ht_top⟩, k')
-      else
-        -- Shouldn't happen if cs.card >= 2, but we handle gracefully
-        none
+  adj := D.adjFn
   adj_symm := by intro _ _ _ _ _; sorry
-  adj_vertex := by intro _ _ _ _ _; sorry
+  adj_vertex := by
+    intro ⟨s, hs⟩ k ⟨s', hs'⟩ k' hadj
+    exact D.adjFn_vertex s hs k s' hs' k' hadj
   adj_ne := by intro _ _ _ _ _; sorry
 
 /-! ## Example: 1-Dimensional Interval Triangulation
