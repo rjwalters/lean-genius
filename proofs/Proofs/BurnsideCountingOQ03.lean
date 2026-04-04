@@ -169,6 +169,64 @@ theorem polya_sum_equiv_4_2 :
     ∑ d ∈ Nat.divisors 4, Nat.totient (4 / d) * 2 ^ d := by
   native_decide
 
+/-- Helper: gcd(r.val, n) is a divisor of n for any r : Fin n, n > 0 -/
+private lemma gcd_mem_divisors {n : ℕ} (hn : 0 < n) (r : Fin n) :
+    Nat.gcd r.val n ∈ Nat.divisors n :=
+  Nat.mem_divisors.mpr ⟨Nat.gcd_dvd_right r.val n, Nat.pos_iff_ne_zero.mp hn⟩
+
+/-- Helper: the fiber {r : Fin n | gcd(r.val, n) = d} has cardinality φ(n/d).
+    Proof: bijection r ↦ r.val/d with {s < n/d | Coprime(s, n/d)}, using:
+    - gcd(r.val, n) = d implies d | r.val and gcd(r.val/d, n/d) = 1 (by Coprime.div_gcd_coprime)
+    - Backward: s ↦ d*s with gcd(d*s, d*(n/d)) = d*gcd(s, n/d) = d*1 = d. -/
+private lemma fiber_card_eq_totient (n d : ℕ) (hn : 0 < n) (hd : d ∈ Nat.divisors n) :
+    (Finset.univ.filter (fun r : Fin n => Nat.gcd r.val n = d)).card =
+    Nat.totient (n / d) := by
+  obtain ⟨hdn, _⟩ := Nat.mem_divisors.mp hd
+  have hd_pos : 0 < d := Nat.pos_of_dvd_of_pos hdn hn
+  -- Nat.totient m = ((Finset.range m).filter m.Coprime).card by definition
+  simp only [Nat.totient]
+  refine Finset.card_bij (fun r _ => r.val / d) ?_ ?_ ?_
+  · -- r.val/d is in range(n/d) and Coprime (n/d) (r.val/d)
+    intro ⟨rv, hrv⟩ hr
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hr
+    simp only [Finset.mem_filter, Finset.mem_range]
+    refine ⟨?_, ?_⟩
+    · -- rv/d < n/d
+      rw [Nat.div_lt_iff_lt_mul hd_pos, mul_comm, Nat.mul_div_cancel' hdn]
+      exact hrv
+    · -- (n/d).Coprime (rv/d), i.e., gcd(n/d, rv/d) = 1
+      have h_cop := Nat.coprime_div_gcd_div_gcd (m := rv) (n := n) (by rw [hr]; exact hd_pos)
+      rw [hr] at h_cop
+      -- h_cop : Nat.Coprime (rv/d) (n/d); need Nat.Coprime (n/d) (rv/d)
+      -- Nat.gcd_comm (n/d) (rv/d) : gcd(n/d, rv/d) = gcd(rv/d, n/d), trans with h_cop gives goal
+      exact (Nat.gcd_comm (n / d) (rv / d)).trans h_cop
+  · -- injective
+    intro ⟨r1v, _⟩ hr1 ⟨r2v, _⟩ hr2 heq
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hr1 hr2
+    apply Fin.ext
+    have hdr1 : d ∣ r1v := hr1 ▸ Nat.gcd_dvd_left r1v n
+    have hdr2 : d ∣ r2v := hr2 ▸ Nat.gcd_dvd_left r2v n
+    have e1 := Nat.mul_div_cancel' hdr1
+    have e2 := Nat.mul_div_cancel' hdr2
+    -- omega can't handle variable multiplication; use linarith with explicit product equality
+    linarith [congr_arg (d * ·) heq]
+  · -- surjective: for s < n/d with (n/d).Coprime s, take r = d*s
+    intro s hs
+    simp only [Finset.mem_filter, Finset.mem_range] at hs
+    obtain ⟨hs_lt, hs_cop⟩ := hs
+    refine ⟨⟨d * s, ?_⟩, ?_, ?_⟩
+    · -- d*s < n
+      calc d * s < d * (n / d) := (Nat.mul_lt_mul_left hd_pos).mpr hs_lt
+        _ = n := Nat.mul_div_cancel' hdn
+    · -- gcd(d*s, n) = d
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      -- rewrite n as d*(n/d) in the LHS, then factor gcd
+      rw [show n = d * (n / d) from (Nat.mul_div_cancel' hdn).symm, Nat.gcd_mul_left,
+          show Nat.gcd s (n / d) = 1 from (Nat.gcd_comm (n / d) s).symm.trans hs_cop,
+          mul_one]
+    · -- (d*s)/d = s
+      exact Nat.mul_div_cancel_left s hd_pos
+
 /-- The general Pólya sum identity for cyclic Z_n:
     Σ_{r : Fin n} k^gcd(r, n) = Σ_{d | n} φ(n/d) · k^d
     Proof: reindex by d = gcd(r, n); for each d|n, there are φ(n/d) rotations r
@@ -176,7 +234,22 @@ theorem polya_sum_equiv_4_2 :
 theorem polya_sum_identity (n k : ℕ) (hn : 0 < n) :
     ∑ r : Fin n, k ^ Nat.gcd r.val n =
     ∑ d ∈ Nat.divisors n, Nat.totient (n / d) * k ^ d := by
-  sorry  -- General reindexing argument via Nat.sum_totient structure
+  -- sum_fiberwise_of_maps_to: fiber_sum = original_sum; use .symm to get original = fiber
+  have fiber_eq : ∑ d ∈ Nat.divisors n,
+      ∑ r ∈ (Finset.univ : Finset (Fin n)).filter (fun r => Nat.gcd r.val n = d),
+        k ^ Nat.gcd r.val n =
+      ∑ r ∈ (Finset.univ : Finset (Fin n)), k ^ Nat.gcd r.val n :=
+    Finset.sum_fiberwise_of_maps_to (s := Finset.univ) (t := Nat.divisors n)
+      (fun r _ => gcd_mem_divisors hn r) (fun r => k ^ Nat.gcd r.val n)
+  rw [← fiber_eq]
+  apply Finset.sum_congr rfl
+  intro d hd
+  -- On each fiber, k^gcd(r.val,n) = k^d (constant)
+  have h_const : ∀ r ∈ Finset.univ.filter (fun r : Fin n => Nat.gcd r.val n = d),
+      k ^ Nat.gcd r.val n = k ^ d := fun r hr => by
+    rw [(Finset.mem_filter.mp hr).2]
+  rw [Finset.sum_congr rfl h_const, Finset.sum_const, smul_eq_mul,
+      fiber_card_eq_totient n d hn hd, mul_comm]
 
 /-! ## §6: Application to Binary 4-Necklaces -/
 
@@ -198,24 +271,21 @@ theorem polya_binary4_divisor_form :
 
 /-! ## §7: General Pólya Necklace Formula (Statement) -/
 
-/-- **Pólya's Theorem for Cyclic Necklaces** (general statement):
-    For cyclic rotation of Z_n on Fin n → Fin k (k-colorings of n positions):
-
-      n · (#distinct k-necklaces) = Σ_{r : Fin n} k^gcd(r, n)
-                                   = Σ_{d | n} φ(n/d) · k^d
-
-    **Proof outline** (using Burnside + Pólya fixed-point formula):
-    1. `polya_cyclic_fixed_count`: |Fix(r)| = k^gcd(r,n) for each r
-    2. Burnside: n · #orbits = Σ_r |Fix(r)| = Σ_r k^gcd(r,n)
-    3. `polya_sum_identity`: Σ_r k^gcd(r,n) = Σ_{d|n} φ(n/d) · k^d -/
-theorem polya_necklace_formula_statement (n k : ℕ) [NeZero n] :
-    -- This is the Pólya counting formula; proof requires Burnside connection
-    ∀ (necklace_count : ℕ),
-    (∀ r : Fin n, Fintype.card {c : Fin n → Fin k // IsFixed n k r c} = k ^ Nat.gcd r.val n) →
+/-- **Pólya's Theorem for Cyclic Necklaces** (correct formulation):
+    Given:
+    1. Burnside's lemma: n · necklace_count = Σ_r |Fix(r)|
+    2. Pólya's fixed-point formula: |Fix(r)| = k^gcd(r,n)
+    Conclude: n · necklace_count = Σ_r k^gcd(r,n).
+    This is immediate substitution; the hard work is establishing (1) and (2). -/
+theorem polya_necklace_formula_statement (n k : ℕ) [NeZero n]
+    (necklace_count : ℕ)
+    (h_burnside : n * necklace_count =
+      ∑ r : Fin n, Fintype.card {c : Fin n → Fin k // IsFixed n k r c})
+    (h_fixed : ∀ r : Fin n,
+      Fintype.card {c : Fin n → Fin k // IsFixed n k r c} = k ^ Nat.gcd r.val n) :
     n * necklace_count = ∑ r : Fin n, k ^ Nat.gcd r.val n := by
-  intro necklace_count hfixed
-  -- This requires connecting IsFixed to fixedBy and applying Burnside's lemma
-  sorry
+  rw [h_burnside]
+  exact Finset.sum_congr rfl (fun r _ => h_fixed r)
 
 #check @MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group
 #check ZMod.addOrderOf_coe

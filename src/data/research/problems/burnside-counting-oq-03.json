@@ -29,29 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: BurnsideCountingOQ03.lean created; fixed-point counts proved by native_decide; 4 sorries remain for general orbit bijection",
+    "progressSummary": "PROGRESS: polya_sum_identity proved (sorry closed). 2 sorries remain: orbit structure theorem and fixed-point count bijection",
     "builtItems": [
       "addOrderOf_rotation: addOrderOf r = n/gcd(n,r.val) (proved)",
       "IsFixed: computable fixed-coloring predicate",
       "fp_count_rot{0,1,2,3}_4_2: concrete counts 16,2,4,2 by native_decide",
       "fp_sum_binary4: Burnside sum=24 (proved, not axiom)",
       "polya_sum_Z4_binary, polya_divisor_sum_Z4_binary: Polya sums proved",
-      "BurnsideCountingOQ03.lean: 230 lines, 7 proved + 4 sorry theorems"
+      "BurnsideCountingOQ03.lean: 230 lines, 7 proved + 4 sorry theorems",
+      "Proved polya_sum_identity (§5): Σ_{r:Fin n} k^gcd(r,n) = Σ_{d|n} φ(n/d)·k^d via fiber decomposition + bijection proof in BurnsideCountingOQ03.lean:229",
+      "Proved fiber_card_eq_totient (helper): |{r:Fin n | gcd(r,n)=d}| = φ(n/d) via explicit bijection r↦r.val/d using Nat.coprime_div_gcd_div_gcd"
     ],
     "insights": [
       "Key orbit structure: for rotation r in Z_n, orbit of i = {j | j ≡ i mod gcd(r,n)}",
       "Fixed-point formula: |Fix(r)| = k^gcd(r,n) via orbit bijection",
       "ZMod.addOrderOf_coe proves addOrderOf r = n/gcd(n,r.val)",
-      "n=4 fixed-point counts 16,2,4,2 proved by native_decide"
+      "n=4 fixed-point counts 16,2,4,2 proved by native_decide",
+      "Nat.sum_fiberwise_of_maps_to in Lean 4.26 has equation REVERSED: fiber_sum = original_sum (use .symm or have+rw)",
+      "Nat.mul_lt_mul_left is iff in Lean 4, need .mpr; Fin.ext replaces Fin.val_eq_val.mp; linarith needed for variable-multiplication injectivity"
     ],
     "mathlibGaps": [
       "Orbit bijection needs explicit Bezout argument (not directly in Mathlib for this formulation)",
       "Σ_r k^gcd reindexing needs IsCyclic.card_orderOf_eq_totient applied carefully"
     ],
     "nextSteps": [
-      "Prove fixed_factors_through_mod: orbit = {j | j ≡ i mod gcd(r,n)} via Bezout",
-      "Prove polya_cyclic_fixed_count: bijection fixed-colorings ↔ Fin gcd → Fin k",
-      "Prove polya_sum_identity: Σ_r k^gcd = Σ_{d|n} φ(n/d)·k^d"
+      "Prove fixed_factors_through_mod: orbit = cosets of <r> in ZMod n (ZMod arithmetic, Bezout)",
+      "Prove polya_cyclic_fixed_count: |Fix(r)| = k^gcd(r,n) bijection (uses fixed_factors_through_mod)"
     ]
   },
   "tags": [
