@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-bgcd-context",
+    "proofId": "gcd-algorithm-oq-02",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "context",
+    "title": "Stein's Binary GCD: Arithmetic Without Division",
+    "content": "**Stein's binary GCD algorithm** (1967) replaces the Euclidean division step with three operations: (1) both even: extract a factor of 2; (2) one even, one odd: drop the factor of 2; (3) both odd: subtract smaller from larger. On binary computers, division by 2 is a single bit-shift — essentially free — making this algorithm significantly faster than Euclidean GCD for large multi-precision integers.",
+    "mathContext": "The three invariants: $\\gcd(2a, 2b) = 2\\gcd(a,b)$; $\\gcd(2a, b) = \\gcd(a, b)$ for odd $b$ (since $\\gcd(2, \\text{odd}) = 1$); $\\gcd(a-b, b) = \\gcd(a, b)$. When both $a, b$ are odd, $a - b$ is even, so the next step can immediately halve — this is why the algorithm writes `(a-b)/2` directly. **GMP** and other bignum libraries use variants of this algorithm. The **step count** is $O(\\log \\max(a,b))$ — same asymptotic as Euclidean but with cheaper operations per step.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Euclidean GCD algorithm",
+      "binary arithmetic / bit shifts",
+      "GMP implementation",
+      "Lehmer's algorithm",
+      "asymptotic step count"
+    ],
+    "prerequisites": [
+      "Nat.gcd definition in Mathlib",
+      "natural number divisibility",
+      "Nat.Coprime definition"
+    ]
+  },
+  {
+    "id": "ann-bgcd-subtraction-lemma",
+    "proofId": "gcd-algorithm-oq-02",
+    "range": { "startLine": 32, "endLine": 46 },
+    "type": "theorem",
+    "title": "gcd_sub_right: Subtraction Preserves GCD",
+    "content": "**gcd_sub_right**: $\\gcd(a-b, b) = \\gcd(a, b)$ for $b \\leq a$. Proved by `Nat.dvd_antisymm` with two `Nat.dvd_gcd` subgoals. Forward direction: $\\gcd(a-b, b) \\mid a$ because $a = (a-b) + b$ and divisibility is additive. Backward direction: $\\gcd(a, b) \\mid (a-b)$ via `Nat.dvd_sub'`.",
+    "mathContext": "The proof uses **double divisibility**: to show $d_1 = d_2$, show $d_1 \\mid d_2$ and $d_2 \\mid d_1$. `Nat.dvd_antisymm` does this. The key Mathlib lemmas: `Nat.gcd_dvd_left a b : Nat.gcd a b ∣ a`, `Nat.gcd_dvd_right a b : Nat.gcd a b ∣ b`, `Nat.dvd_add`, `Nat.dvd_sub'`. The `omega` closes $a = (a-b) + b$ in natural numbers (valid since $b \\leq a$). This is the **subtraction invariant** of the Euclidean-style algorithm: replacing $a$ with $a - b$ preserves the GCD.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.dvd_antisymm",
+      "Nat.dvd_gcd",
+      "Nat.dvd_sub'",
+      "Nat.dvd_add",
+      "GCD subtraction invariant"
+    ],
+    "prerequisites": [
+      "Nat.gcd_dvd_left and gcd_dvd_right",
+      "Nat.dvd_antisymm for equality",
+      "omega for nat arithmetic"
+    ]
+  },
+  {
+    "id": "ann-bgcd-coprime-reduction",
+    "proofId": "gcd-algorithm-oq-02",
+    "range": { "startLine": 49, "endLine": 62 },
+    "type": "theorem",
+    "title": "Even-Odd Coprime Reduction and Even-Even Extraction",
+    "content": "**gcd_mul_two_left**: $\\gcd(2a, b) = \\gcd(a, b)$ for odd $b$. Proof: `Nat.coprime_two_left.mpr hb` gives coprimality of 2 and $b$, then `hcop.gcd_mul_left_cancel a` cancels the factor of 2. **gcd_mul_two_right**: symmetric version by `Nat.gcd_comm`. **gcd_two_mul**: $\\gcd(2a, 2b) = 2\\gcd(a, b)$ — one line via `Nat.gcd_mul_left`.",
+    "mathContext": "`Nat.coprime_two_left : Nat.Coprime 2 n ↔ n % 2 = 1` — coprimality with 2 iff odd. `Nat.Coprime.gcd_mul_left_cancel : Nat.Coprime k n → Nat.gcd (k*a) n = Nat.gcd a n` — when $k$ is coprime to $n$, the $k$ factor in the first argument doesn't affect the GCD. `Nat.gcd_mul_left k a b : Nat.gcd (k*a) (k*b) = k * Nat.gcd a b` — factor extraction. These three lemmas are the mathematical core of the binary GCD algorithm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.Coprime",
+      "Nat.coprime_two_left",
+      "Nat.Coprime.gcd_mul_left_cancel",
+      "Nat.gcd_mul_left",
+      "even-odd parity reduction"
+    ],
+    "prerequisites": [
+      "Nat.Coprime definition and API",
+      "Nat.gcd_mul_left from Mathlib",
+      "Nat.gcd_comm for symmetry"
+    ]
+  },
+  {
+    "id": "ann-bgcd-algorithm-def",
+    "proofId": "gcd-algorithm-oq-02",
+    "range": { "startLine": 74, "endLine": 96 },
+    "type": "definition",
+    "title": "Binary GCD Algorithm: Five Cases with Termination",
+    "content": "**binaryGcd** is defined by structural recursion with a `termination_by a + b` measure, with `decreasing_by all_goals omega`. The five cases: `(0, b) => b`; `(a+1, 0) => a+1`; both even (`% 2 = 0`): `2 * binaryGcd ((a+1)/2) ((b+1)/2)`; `a+1` even, `b+1` odd: `binaryGcd ((a+1)/2) (b+1)`; `a+1` odd, `b+1` even: `binaryGcd (a+1) ((b+1)/2)`; both odd, `a+1 > b+1`: `binaryGcd ((a+1-(b+1))/2) (b+1)`; both odd, `a+1 ≤ b+1`: symmetric.",
+    "mathContext": "**Termination argument**: halving reduces $a + b$ by at least half; subtraction-and-halve for both-odd case reduces $a + b$ since $(a+1-(b+1))/2 + (b+1) = (a-b)/2 + b+1 < a+1 + b+1$. The `omega` tactic closes all seven termination goals in one sweep. The pattern match uses `a + 1` and `b + 1` instead of `a` and `b` to distinguish the zero cases — this is idiomatic Lean 4 for well-founded recursion on ℕ. The `termination_by` / `decreasing_by` keywords are Lean 4's mechanism for custom termination measures.",
+    "significance": "key",
+    "relatedConcepts": [
+      "termination_by custom measure",
+      "decreasing_by with omega",
+      "well-founded recursion on ℕ",
+      "pattern matching on parity",
+      "binaryGcd.induct principle"
+    ],
+    "prerequisites": [
+      "Lean 4 termination_by and decreasing_by syntax",
+      "omega for termination arithmetic",
+      "Nat.mod 2 parity checking"
+    ]
+  },
+  {
+    "id": "ann-bgcd-odd-sub-half",
+    "proofId": "gcd-algorithm-oq-02",
+    "range": { "startLine": 101, "endLine": 113 },
+    "type": "theorem",
+    "title": "gcd_odd_sub_half: Odd Subtraction-and-Halve Invariant",
+    "content": "**gcd_odd_sub_half**: When $a, b$ are odd with $a > b$: $\\gcd((a-b)/2, b) = \\gcd(a, b)$. Proof by calc chain: $(a-b)/2$ has same GCD with $b$ as $2 \\cdot (a-b)/2 = a-b$ (using `gcd_mul_two_left hb`), which equals $\\gcd(a, b)$ by subtraction (using `gcd_sub_right`). **gcd_odd_sub_half_right**: symmetric version via `Nat.gcd_comm`.",
+    "mathContext": "The key insight: $a - b$ is **even** when both $a, b$ are odd (odd minus odd = even). So $a - b = 2k$ for $k = (a-b)/2$. Then $\\gcd(k, b) = \\gcd(2k, b)$ since $b$ is odd (coprime with 2). And $\\gcd(2k, b) = \\gcd(a-b, b) = \\gcd(a, b)$. The calc proof in Lean: `Nat.gcd ((a-b)/2) b = Nat.gcd (2*((a-b)/2)) b` (by `gcd_mul_two_left hb` reversed) `= Nat.gcd (a-b) b` (by rewriting $2k = a-b$) `= Nat.gcd a b` (by `gcd_sub_right`). The omega fact `(a-b) % 2 = 0` from `a % 2 = 1 ∧ b % 2 = 1` is automatic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "calc proof chains",
+      "odd minus odd is even",
+      "gcd_mul_two_left",
+      "gcd_sub_right",
+      "Lean 4 calc syntax"
+    ],
+    "prerequisites": [
+      "gcd_mul_two_left for coprime cancellation",
+      "gcd_sub_right for subtraction",
+      "omega for odd-minus-odd parity"
+    ]
+  },
+  {
+    "id": "ann-bgcd-correctness",
+    "proofId": "gcd-algorithm-oq-02",
+    "range": { "startLine": 119, "endLine": 159 },
+    "type": "theorem",
+    "title": "binaryGcd_eq_gcd: Full Correctness via Functional Induction",
+    "content": "**binaryGcd_eq_gcd**: `∀ a b, binaryGcd a b = Nat.gcd a b`. Proved by **functional induction** `induction a, b using binaryGcd.induct`, which generates 7 cases (one per recursive branch). Each case is closed by the corresponding invariant lemma. This is the central theorem of the file.",
+    "mathContext": "`binaryGcd.induct` is the **custom induction principle** generated by Lean 4's equation compiler for `binaryGcd`. It provides 7 cases matching the 7 branches of the `binaryGcd` definition, each with the appropriate hypotheses (`ha : (a+1) % 2 = 0`, `hb : (b+1) % 2 = 1`, etc.) and inductive hypothesis `ih : binaryGcd ... = Nat.gcd ...`. The proof pattern for each case: `simp only [binaryGcd, ...]` to unfold the function, then `rw [ih]` to substitute the inductive hypothesis, then apply the relevant lemma (`gcd_two_mul`, `gcd_mul_two_left`, `gcd_odd_sub_half`, etc.).",
+    "significance": "key",
+    "relatedConcepts": [
+      "functional induction binaryGcd.induct",
+      "equation compiler in Lean 4",
+      "simp only for unfolding",
+      "rw with inductive hypothesis",
+      "correctness theorem structure"
+    ],
+    "prerequisites": [
+      "binaryGcd.induct generated principle",
+      "all four invariant lemmas",
+      "simp only with reduceDIte for if-then-else"
+    ]
+  },
+  {
+    "id": "ann-bgcd-properties",
+    "proofId": "gcd-algorithm-oq-02",
+    "range": { "startLine": 163, "endLine": 177 },
+    "type": "theorem",
+    "title": "Derived Properties: Commutativity and Zero Cases",
+    "content": "**binaryGcd_comm**: `binaryGcd a b = binaryGcd b a` — proved by lifting through `Nat.gcd_comm` via the correctness theorem. **binaryGcd_zero_left**: `binaryGcd 0 b = b` — by `simp [binaryGcd]`. **binaryGcd_zero_right**: `binaryGcd a 0 = a` — by `cases a <;> simp [binaryGcd]`. These demonstrate that once the correctness theorem is established, derived properties are trivial.",
+    "mathContext": "The correctness theorem `binaryGcd_eq_gcd` acts as a **bridge**: any property of `Nat.gcd` can be lifted to `binaryGcd` by rewriting. `binaryGcd_comm`: `binaryGcd a b = Nat.gcd a b = Nat.gcd b a = binaryGcd b a`. The `cases a` in `binaryGcd_zero_right` handles `a = 0` (returns 0 by the first case of the definition) and `a = n+1` (returns `n+1` by the second case). The `#check binaryGcd_eq_gcd` at the end serves as a sanity check that the theorem was registered.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "property lifting via correctness",
+      "Nat.gcd_comm",
+      "cases for zero/nonzero split",
+      "simp for definitional unfolding",
+      "#check for verification"
+    ],
+    "prerequisites": [
+      "binaryGcd_eq_gcd correctness theorem",
+      "Nat.gcd_comm from Mathlib",
+      "Lean 4 cases tactic"
+    ]
+  }
+]
