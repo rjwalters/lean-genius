@@ -1,40 +1,86 @@
-{
-  "annotations": [
-    {
-      "id": "faulhaber-mathlib",
-      "lineStart": 51,
-      "lineEnd": 60,
-      "type": "theorem",
-      "title": "Faulhaber's Formula via sum_Ico_pow",
-      "body": "**Core fact**: Mathlib has Faulhaber's formula as `sum_Ico_pow` in `Mathlib.NumberTheory.Bernoulli`. The theorem `faulhaber_formula` is a one-line alias: `sum_Ico_pow n p`. The alternative form `faulhaber_formula_range` uses `sum_range_pow` but requires `_root_.bernoulli` to avoid ambiguity with `Polynomial.bernoulli` introduced by `open Polynomial`.",
-      "mathContext": "∑_{k=1}^n k^p = ∑_{i=0}^p B'_i C(p+1,i) n^(p+1-i)/(p+1)"
-    },
-    {
-      "id": "induction-strategy",
-      "lineStart": 80,
-      "lineEnd": 113,
-      "type": "theorem",
-      "title": "Induction + push_cast + linarith for Specific Cases",
-      "body": "**Proof pattern**: All specific cases (p=1,2,3) use the same three-step induction:\n1. `rw [Finset.sum_Ico_succ_top (by omega)]` — extends the range from Ico 1 (n+1) to Ico 1 (n+2)\n2. `push_cast` — coerces natural number `n+1` into `ℚ` uniformly\n3. `linarith` — closes the polynomial identity over ℚ by linear arithmetic\n\nThis avoids symbolic Bernoulli sum evaluation. The key insight: after induction hypothesis and `push_cast`, the goal reduces to a ℚ-linear equation provable by `linarith`. For p=3, the identity (n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)² is handled because `push_cast` distributes the cast through multiplication, making all terms linear after squaring is expanded by the induction hypothesis.",
-      "mathContext": "succ step: ∑_{k=1}^{n+1} k^p = ∑_{k=1}^n k^p + (n+1)^p"
-    },
-    {
-      "id": "bernoulli-ambiguity",
-      "lineStart": 56,
-      "lineEnd": 60,
-      "type": "insight",
-      "title": "Polynomial.bernoulli vs _root_.bernoulli Ambiguity",
-      "body": "**Gotcha**: With `open Polynomial`, the name `bernoulli` is ambiguous between `_root_.bernoulli : ℕ → ℚ` (the rational Bernoulli number) and `Polynomial.bernoulli : ℕ → ℚ[X]` (the Bernoulli polynomial). Lean reports: `Ambiguous term bernoulli`. Fix: use `_root_.bernoulli i` in `faulhaber_formula_range` to select the rational Bernoulli number. The `bernoulli'` function (B'_1 = +1/2 convention) is not affected since `Polynomial.bernoulli'` doesn't exist in Mathlib.",
-      "mathContext": "bernoulli n : ℚ vs Polynomial.bernoulli n : ℚ[X]"
-    },
-    {
-      "id": "nicomachus-theorem",
-      "lineStart": 106,
-      "lineEnd": 113,
-      "type": "theorem",
-      "title": "Nicomachus's Theorem: Sum of Cubes = Square of Gauss Sum",
-      "body": "**Striking identity**: `sum_powers_three` proves ∑_{k=1}^n k³ = (n(n+1)/2)². This is attributed to Nicomachus of Gerasa (~100 CE): the sum of the first n cubes equals the square of the n-th triangular number. The induction step requires `linarith` to verify ((n+1)(n+2)/2)² = (n(n+1)/2)² + (n+1)³, which reduces to the polynomial identity (n+1)²(n+2)²/4 - n²(n+1)²/4 = (n+1)³, i.e., (n+1)²(n+2-n)(n+2+n)/4 = (n+1)³, i.e., (n+1)²·2·(2n+2)/4 = (n+1)³. `push_cast` and `linarith` handle this automatically.",
-      "mathContext": "∑_{k=1}^n k³ = (n(n+1)/2)² = T(n)²"
-    }
-  ]
-}
+[
+  {
+    "id": "ann-faulhaber-mathlib",
+    "proofId": "arithmetic-series-oq-04",
+    "range": { "startLine": 46, "endLine": 60 },
+    "type": "technique",
+    "title": "Faulhaber's Formula as a Mathlib Alias",
+    "content": "The main theorem `faulhaber_formula` is proved in one line by applying Mathlib's `sum_Ico_pow`. This is a classic pattern in Mathlib-backed formalizations: the hard combinatorial work is already done, and the gallery theorem is a well-named alias. The alternative form `faulhaber_formula_range` uses `sum_range_pow` (shifting the index to start at 0) but requires `_root_.bernoulli` to disambiguate from `Polynomial.bernoulli` since `open Polynomial` is in scope.",
+    "mathContext": "$$\\sum_{k=1}^{n} k^p = \\sum_{i=0}^{p} B'_i \\binom{p+1}{i} \\frac{n^{p+1-i}}{p+1}$$\n\nAlternative (k=0..n-1, sign convention $B_1 = -1/2$):\n$$\\sum_{k=0}^{n-1} k^p = \\sum_{i=0}^{p} B_i \\binom{p+1}{i} \\frac{n^{p+1-i}}{p+1}$$",
+    "significance": "key",
+    "relatedConcepts": ["Bernoulli numbers", "generating functions", "binomial coefficients", "Mathlib.NumberTheory.Bernoulli"],
+    "prerequisites": ["sum_Ico_pow", "sum_range_pow", "bernoulli'", "Finset.Ico"]
+  },
+  {
+    "id": "ann-bernoulli-ambiguity",
+    "proofId": "arithmetic-series-oq-04",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "technique",
+    "title": "Resolving the bernoulli / Polynomial.bernoulli Name Clash",
+    "content": "With `open Polynomial`, the name `bernoulli` becomes ambiguous: it refers both to `_root_.bernoulli : ℕ → ℚ` (the rational Bernoulli number function) and to `Polynomial.bernoulli : ℕ → ℚ[X]` (the Bernoulli polynomial). Lean reports `Ambiguous term bernoulli`. The fix is explicit qualification: `_root_.bernoulli i` selects the rational number. The `bernoulli'` variant (B'_1 = +1/2 convention) is unambiguous since `Polynomial.bernoulli'` does not exist in Mathlib.",
+    "mathContext": "Two distinct objects with the same base name:\n- $B_n = $ `_root_.bernoulli n : ℚ` — the $n$-th Bernoulli number, $B_1 = -1/2$\n- $B_n(x) = $ `Polynomial.bernoulli n : ℚ[X]` — the $n$-th Bernoulli polynomial",
+    "significance": "technical",
+    "relatedConcepts": ["name resolution in Lean", "Polynomial.bernoulli", "bernoulli vs bernoulli'", "namespace pollution"],
+    "prerequisites": ["open Polynomial", "Mathlib.NumberTheory.Bernoulli", "Mathlib.NumberTheory.BernoulliPolynomials"]
+  },
+  {
+    "id": "ann-induction-strategy",
+    "proofId": "arithmetic-series-oq-04",
+    "range": { "startLine": 71, "endLine": 113 },
+    "type": "technique",
+    "title": "Uniform Induction Pattern for Specific Power Sum Cases",
+    "content": "All four specific cases (p=0,1,2,3) use the same proof pattern. For p=0, `simp [Nat.card_Ico]` closes the goal directly. For p=1,2,3 the pattern is: (1) induct on n; (2) base case by `simp`; (3) succ case: `rw [Finset.sum_Ico_succ_top (by omega)]` extends the sum by one term; (4) `push_cast` coerces ℕ to ℚ uniformly; (5) `linarith` closes the polynomial identity. This avoids evaluating the Bernoulli sum symbolically — the induction hypothesis makes the goal a ℚ-linear equation.",
+    "mathContext": "Successor step: $\\sum_{k=1}^{n+1} k^p = \\sum_{k=1}^n k^p + (n+1)^p$\n\nAfter induction hypothesis and `push_cast`, each goal reduces to:\n- $p=1$: $\\frac{n(n+1)}{2} + (n+1) = \\frac{(n+1)(n+2)}{2}$ (linear in $n$)\n- $p=2$: $\\frac{n(n+1)(2n+1)}{6} + (n+1)^2 = \\frac{(n+1)(n+2)(2n+3)}{6}$ (linear after expansion)\n- $p=3$: $\\left(\\frac{n(n+1)}{2}\\right)^2 + (n+1)^3 = \\left(\\frac{(n+1)(n+2)}{2}\\right)^2$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_Ico_succ_top", "push_cast", "linarith", "mathematical induction", "Gauss sum"],
+    "prerequisites": ["Finset.Ico", "push_cast tactic", "linarith over ℚ", "omega tactic"]
+  },
+  {
+    "id": "ann-nicomachus",
+    "proofId": "arithmetic-series-oq-04",
+    "range": { "startLine": 102, "endLine": 113 },
+    "type": "insight",
+    "title": "Nicomachus's Theorem: Sum of Cubes = Square of Triangular Number",
+    "content": "The p=3 case is the most elegant: ∑k³ = (n(n+1)/2)² = T(n)², the square of the n-th triangular number T(n) = ∑k. This identity, known to Nicomachus of Gerasa (~100 CE), says that the sum of the first n cubes equals the square of the sum of the first n natural numbers. In Lean, the induction step is proved by `linarith` because after `push_cast` and substituting the induction hypothesis, the goal is a polynomial identity that `linarith` handles by treating squares as already-expanded constants.",
+    "mathContext": "$$\\sum_{k=1}^n k^3 = \\left(\\frac{n(n+1)}{2}\\right)^2 = T(n)^2 = \\left(\\sum_{k=1}^n k\\right)^2$$\n\nSuccessor verification: $T(n)^2 + (n+1)^3 = T(n+1)^2$ iff $(n+1)^3 = T(n+1)^2 - T(n)^2 = (n+1)(n+2)/2 \\cdot (n+1)$, i.e., $(n+1)^2 = (n+1)(n+2)/2$... actually a degree-3 identity. `linarith` works after `push_cast` expands the IH.",
+    "significance": "key",
+    "relatedConcepts": ["triangular numbers", "Nicomachus of Gerasa", "sum of cubes", "visual proof via rearrangement"],
+    "prerequisites": ["sum_powers_one", "induction + push_cast + linarith", "ℚ arithmetic"]
+  },
+  {
+    "id": "ann-bernoulli-values",
+    "proofId": "arithmetic-series-oq-04",
+    "range": { "startLine": 124, "endLine": 140 },
+    "type": "concept",
+    "title": "Bernoulli Number Values and the Vanishing of Odd Terms",
+    "content": "This section records the first Bernoulli numbers used in Faulhaber's formula: B'_0=1, B'_1=1/2, B'_2=1/6, B'_3=0. The key structural fact is `bernoulli'_odd_zero`: all odd Bernoulli numbers B'_n vanish for n ≥ 3. This dramatically simplifies Faulhaber's formula for even p, since every other coefficient is 0. The proof is an alias of Mathlib's `bernoulli'_eq_zero_of_odd`. The vanishing follows from the Bernoulli polynomial symmetry B_n(1-x) = (-1)^n B_n(x), which for n odd forces B_n(1/2) = -B_n(1/2), hence B_n(1/2) = 0 = B_n.",
+    "mathContext": "$B'_0 = 1, \\quad B'_1 = \\tfrac{1}{2}, \\quad B'_2 = \\tfrac{1}{6}, \\quad B'_3 = 0, \\quad B'_4 = -\\tfrac{1}{30}, \\quad B'_5 = 0, \\quad B'_6 = \\tfrac{1}{42}, \\ldots$\n\nVanishing: $B'_n = 0$ for all odd $n \\geq 3$. This means in Faulhaber's formula for $\\sum k^p$, only even-indexed Bernoulli numbers appear (plus $B'_1$ from the $i=1$ term).",
+    "significance": "supporting",
+    "relatedConcepts": ["Bernoulli polynomials", "functional equation B_n(1-x)=(-1)^n B_n(x)", "Kummer congruences", "Bernoulli number generating function"],
+    "prerequisites": ["bernoulli'_zero", "bernoulli'_one", "bernoulli'_two", "bernoulli'_eq_zero_of_odd", "Mathlib.NumberTheory.Bernoulli"]
+  },
+  {
+    "id": "ann-native-decide",
+    "proofId": "arithmetic-series-oq-04",
+    "range": { "startLine": 148, "endLine": 158 },
+    "type": "technique",
+    "title": "Numerical Verification by native_decide",
+    "content": "The four verification theorems (∑k=55, ∑k²=385, ∑k³=3025, 3025=55²) are proved by `native_decide`, which compiles the decision procedure to native code and evaluates it. This works because the sums are over `ℕ` (not `ℚ`), making them decidable by computation. The numeric checks serve as a sanity test: they confirm the symbolic formulas give correct values for n=10 and make the abstract formula concrete for the reader. Note that `3025 = 55²` explicitly verifies Nicomachus's theorem for n=10.",
+    "mathContext": "For $n = 10$:\n$$\\sum_{k=1}^{10} k = 55 = \\frac{10 \\cdot 11}{2}, \\quad \\sum_{k=1}^{10} k^2 = 385 = \\frac{10 \\cdot 11 \\cdot 21}{6}$$\n$$\\sum_{k=1}^{10} k^3 = 3025 = 55^2 = \\left(\\frac{10 \\cdot 11}{2}\\right)^2$$",
+    "significance": "context",
+    "relatedConcepts": ["native_decide", "decidable computation in Lean", "numerical verification", "Finset.Ico evaluation"],
+    "prerequisites": ["native_decide tactic", "ℕ decidable equality", "Finset.sum over ℕ"]
+  },
+  {
+    "id": "ann-bernoulli-polynomial",
+    "proofId": "arithmetic-series-oq-04",
+    "range": { "startLine": 168, "endLine": 173 },
+    "type": "concept",
+    "title": "Bernoulli Polynomial Form of Faulhaber's Formula",
+    "content": "The theorem `faulhaber_bernoulli_polynomial` states the Bernoulli polynomial form: (p+1)·∑_{k<n} k^p = B_{p+1}(n) - B_{p+1}. Here B_{p+1}(x) is the (p+1)-th Bernoulli polynomial and B_{p+1} = B_{p+1}(0) is the corresponding Bernoulli number. This is equivalent to the standard form but makes the polynomial structure explicit: the power sum is (B_{p+1}(n) - B_{p+1})/(p+1), a polynomial of degree p+1 in n. This form connects directly to the umbral calculus and to Euler-Maclaurin summation.",
+    "mathContext": "$$(p+1) \\sum_{k=0}^{n-1} k^p = B_{p+1}(n) - B_{p+1}(0)$$\n\nwhere $B_m(x) = \\sum_{k=0}^{m} \\binom{m}{k} B_k x^{m-k}$ is the $m$-th Bernoulli polynomial.\n\nEquivalently: $\\sum_{k=0}^{n-1} k^p = \\int_0^n B_p(x)\\,dx$ (via integration of Bernoulli polynomials).",
+    "significance": "supporting",
+    "relatedConcepts": ["Bernoulli polynomials", "Euler-Maclaurin formula", "umbral calculus", "polynomial interpolation of power sums"],
+    "prerequisites": ["Polynomial.sum_range_pow_eq_bernoulli_sub", "Polynomial.bernoulli", "Mathlib.NumberTheory.BernoulliPolynomials"]
+  }
+]
