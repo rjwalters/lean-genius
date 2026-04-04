@@ -69,6 +69,19 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Abraham de Moivre stated his famous theorem around 1707, though a full proof appeared later in Euler's 1748 work *Introductio in analysin infinitorum*. Euler's formula e^{iθ} = cos θ + i sin θ reframes De Moivre as the elementary identity (e^{iθ})^n = e^{inθ}. The natural extension to real and complex exponents requires the complex logarithm and its branch structure — a subtlety invisible in the integer case. For irrational exponents, Hermann Weyl's 1916 equidistribution theorem revealed a deep connection to ergodic theory: the orbit {e^{2πiαn} : n ∈ ℤ} is dense in the unit circle precisely when α is irrational. This connects De Moivre's geometric insight to Fourier analysis and the mixing properties of irrational rotations.",
+    "problemStatement": "Extend De Moivre's theorem (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) from integer n to real and complex exponents via Complex.cpow. Address multi-valuedness for rational exponents and equidistribution for irrational ones.",
+    "proofStrategy": "Use Mathlib's Complex.cpow = exp(w · log z) via the principal logarithm. Part I: unfold cpow_def_of_ne_zero, apply Complex.log_exp with principal branch θ ∈ (-π,π]. Part II: construct q distinct values as Fin q → ℂ explicitly. Part III: True stub (formalization gap). Part IV: prove continuity by composing Complex.continuous_exp with constant multiplication.",
+    "keyInsights": [
+      "The principal branch restriction θ ∈ (-π, π] is essential: exp(2πi) = 1, so z = 1, but z^α = exp(2παi) ≠ 1 for generic α. Without the branch cut, De Moivre's formula is false for real exponents.",
+      "Rational exponents p/q naturally produce multi-valuedness: the q values e^{i(pθ + 2πk)/q} for k = 0, …, q-1 are exactly the q-th roots of the integer-exponent result e^{ipθ}.",
+      "For irrational α, Weyl's equidistribution theorem asserts that {e^{2πiαn} : n ∈ ℤ} is dense in S¹ — axiomatized here as it requires Fourier analysis or continued fractions beyond available Mathlib infrastructure.",
+      "Complex.cpow unifies all exponent types through the principal logarithm: integer, rational, and irrational cases all reduce to exp(α · log z), with multi-valuedness encoded by choice of branch.",
+      "The True stub for irrational_exponent_single_valued reveals a formalization gap: cpow always picks the principal branch (single-valued by construction), so the 'theorem' is trivially true but requires careful statement.",
+      "The continuous group homomorphism θ ↦ e^{iαθ} from (ℝ, +) to (S¹, ×) underlies all four parts. De Moivre's theorem is simply the statement that the n-th power map commutes with this homomorphism."
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "de-moivre",

@@ -71,7 +71,21 @@
       "startLine": 51,
       "endLine": 60,
       "summary": "Proves the powerset has cardinality 2^d (Finset.card_powerset). Axiomatizes the numOverpartitions counting function.",
-      "mathContext": "The overline choices for a partition $p$ are exactly the subsets of $\\text{supp}(p)$: there are $2^{|\\text{supp}(p)|}$ choices. \\texttt{Finset.card\\_powerset S = 2 ^ S.card} is used directly. The \\texttt{distinctToOverpartition} embedding maps distinct partitions to overpartitions with empty overline: \\texttt{\\{partition := p, overlined := ∅, overlined\\_subset := Finset.empty\\_subset \\_\\}}. The angle-bracket constructor \\texttt{⟨p, ∅, ...⟩} works for structures with exactly these fields."
+      "mathContext": "The overline choices for a partition $p$ are exactly the subsets of $\\text{supp}(p)$: there are $2^{|\\text{supp}(p)|}$ choices. Finset.card_powerset S = 2^S.card is used directly."
+    },
+    {
+      "title": "numOverpartitions Axiom and Small Values",
+      "startLine": 43,
+      "endLine": 47,
+      "summary": "axiom numOverpartitions : ℕ → ℕ axiomatizes the count of overpartitions. Small values documented in comments: p̄(0)=1, p̄(1)=2, p̄(2)=4. Computing requires enumeration of all partitions and their subsets.",
+      "mathContext": "Generating function: $\\bar{p}(n): \\prod_{k=1}^\\infty \\frac{1+x^k}{1-x^k} = 1 + 2x + 4x^2 + 8x^3 + \\ldots$. Asymptotics: $\\bar{p}(n) \\sim \\frac{1}{4n}e^{\\pi\\sqrt{n}}$ (faster growth than ordinary partitions $p(n) \\sim \\frac{1}{4n\\sqrt{3}}e^{\\pi\\sqrt{2n/3}}$)."
+    },
+    {
+      "title": "Distinct-to-Overpartition Embedding",
+      "startLine": 51,
+      "endLine": 54,
+      "summary": "distinctToOverpartition embeds partitions with distinct parts into overpartitions by choosing the empty overline set. The condition p.parts.toFinset.card = p.parts.length checks distinctness (no repeated parts).",
+      "mathContext": "Distinct partition $p \\vdash n$ (all parts appear once) maps to overpartition $(p, \\emptyset)$: zero overlined parts. This shows distinct partitions are overpartitions of 'type 0'. With overpartition_choices: each distinct partition admits $2^{|p|}$ overpartitions (one per overline-subset)."
     }
   ],
   "conclusion": {

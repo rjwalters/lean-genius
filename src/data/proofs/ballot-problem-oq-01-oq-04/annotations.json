@@ -1,57 +1,86 @@
 [
   {
-    "id": "ann-chung-feller-header",
+    "id": "ann-balanced-path-def",
     "proofId": "ballot-problem-oq-01-oq-04",
-    "range": {
-      "startLine": 1,
-      "endLine": 38
-    },
-    "type": "context",
-    "title": "Chung-Feller Theorem Overview",
-    "body": "The Chung-Feller theorem (1949) states that among the C(2n,n) balanced lattice paths from (0,0) to (2n,0), exactly Cₙ have k upsteps above the x-axis, for each k ∈ {0,...,n}. The proof strategy uses the cycle lemma: prepending +1 converts a balanced path to a positive-sum sequence with exactly 1 good rotation."
-  },
-  {
-    "id": "ann-chung-feller-balanced",
-    "proofId": "ballot-problem-oq-01-oq-04",
-    "range": {
-      "startLine": 45,
-      "endLine": 65
-    },
+    "range": { "startLine": 52, "endLine": 70 },
     "type": "definition",
-    "title": "Balanced Path Properties",
-    "body": "IsBalancedPath l n requires: l has n copies of +1, n copies of -1, and all elements are ±1. This implies length 2n and sum 0, both proved using algebraic infrastructure from BallotProblemOQ01."
+    "title": "IsBalancedPath: Balanced Lattice Paths as ±1 Lists",
+    "content": "IsBalancedPath l n requires three conditions: l.count 1 = n (n upsteps), l.count (-1) = n (n downsteps), and all elements are ±1. This implies length 2n (balanced_length) and sum 0 (balanced_sum_zero), both proved using the algebraic infrastructure from BallotProblemOQ01.lean. The three-condition definition is slightly redundant — the third condition (all ±1) combined with counts implies length — but the explicit conditions make proof steps clean.",
+    "mathContext": "$\\text{IsBalancedPath}(l, n) \\iff |\\{i : l_i = +1\\}| = n \\land |\\{i : l_i = -1\\}| = n \\land \\forall x \\in l,\\; x = \\pm 1$. Consequences: $|l| = 2n$ (from count-sum formula) and $\\sum_i l_i = 0$ (n ones cancel n negative-ones).",
+    "significance": "supporting",
+    "relatedConcepts": ["lattice paths", "Dyck paths", "List.count", "balanced sequences"],
+    "prerequisites": ["Lean 4 List.count", "length_eq_count_add_count from BallotProblemOQ01", "sum_eq_count_sub_mul_count from BallotProblemOQ01"]
   },
   {
-    "id": "ann-chung-feller-prepend",
+    "id": "ann-prepend-kcounted",
     "proofId": "ballot-problem-oq-01-oq-04",
-    "range": {
-      "startLine": 69,
-      "endLine": 95
-    },
-    "type": "proof",
-    "title": "Prepend Connection to Cycle Lemma",
-    "body": "The key bridge: prepending +1 to a balanced path gives a sequence with (n+1) ones and n negative-ones, which is an element of kCountedSequence 1 (n+1) n. The cycle lemma then applies directly, giving exactly 1 good rotation since (n+1) - 1·n = 1."
+    "range": { "startLine": 76, "endLine": 90 },
+    "type": "insight",
+    "title": "prepend_mem_kCountedSequence: The Bridge to the Cycle Lemma",
+    "content": "The key structural observation: prepending +1 to a balanced path (n ones, n negative-ones, sum 0) yields a sequence with (n+1) ones, n negative-ones, and sum 1. This is exactly an element of kCountedSequence 1 (n+1) n — the domain of the cycle lemma. The proof is a routine count update: adding one +1 to the front increments the count of 1s by 1, leaves the count of -1s unchanged, and adds 1 to the sum.",
+    "mathContext": "If $l$ is balanced with $n$ ones: $(1 :: l)$ has count$(1) = n+1$, count$(-1) = n$, all elements $\\pm 1$, so $(1::l) \\in \\text{kCountedSequence}(1, n+1, n)$. The cycle lemma with $k=1$, $a=n+1$, $b=n$ then applies since $k \\cdot b = n < n+1 = a$.",
+    "significance": "key",
+    "relatedConcepts": ["kCountedSequence", "Dvoretzky-Motzkin cycle lemma", "prepending steps", "sequence transformation"],
+    "prerequisites": ["IsBalancedPath", "kCountedSequence definition from BallotProblemOQ01", "List.count_cons"]
   },
   {
-    "id": "ann-chung-feller-counting",
+    "id": "ann-one-good-rotation",
     "proofId": "ballot-problem-oq-01-oq-04",
-    "range": {
-      "startLine": 117,
-      "endLine": 130
-    },
-    "type": "proof",
-    "title": "Counting Identity",
-    "body": "The identity C(2n,n) = Cₙ × (n+1) follows directly from catalan_formula in BallotProblemOQ03.lean. Combined with the uniform distribution (axiom), this gives Cₙ paths per type."
+    "range": { "startLine": 94, "endLine": 100 },
+    "type": "insight",
+    "title": "prepend_one_good_rotation: Exactly 1 Good Cyclic Rotation",
+    "content": "The central theorem: for any balanced path l, the prepended sequence (1 :: l) has exactly 1 good cyclic rotation. The proof is 3 lines: (1) apply prepend_mem_kCountedSequence to get membership in kCountedSequence 1 (n+1) n; (2) check the arithmetic condition 1·n < n+1 (trivially true); (3) apply cycle_lemma to get |goodRotations (1::l)| = (n+1) - 1·n = 1. The omega tactic closes the arithmetic. This is the structural heart of the Chung-Feller theorem.",
+    "mathContext": "cycle_lemma: for $l \\in \\text{kCountedSequence}(k, a, b)$ with $k \\cdot b < a$: $|\\text{goodRotations}(l)| = a - k \\cdot b$. Here $k=1, a=n+1, b=n$: $|\\text{goodRotations}(1::l)| = (n+1) - 1 \\cdot n = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["cycle_lemma", "goodRotations", "Dvoretzky-Motzkin", "cyclic rotations", "positive partial sums"],
+    "prerequisites": ["cycle_lemma from BallotProblemOQ01", "prepend_mem_kCountedSequence", "omega tactic"]
+  },
+  {
+    "id": "ann-unique-rotation",
+    "proofId": "ballot-problem-oq-01-oq-04",
+    "range": { "startLine": 115, "endLine": 118 },
+    "type": "insight",
+    "title": "prepend_unique_good_rotation: Uniqueness via Finset.card_eq_one",
+    "content": "prepend_unique_good_rotation derives the existential uniqueness form: there exists a unique rotation index i such that goodRotations (1::l) = {i}. The proof is a single line: Finset.card_eq_one.mp applied to prepend_one_good_rotation. Finset.card_eq_one states that a finset has cardinality 1 iff it is a singleton — a clean Mathlib lemma that converts the cardinality count to existence and uniqueness.",
+    "mathContext": "$|\\text{goodRotations}(1::l)| = 1 \\iff \\exists! i,\\; i \\in \\text{goodRotations}(1::l)$ (Finset.card_eq_one). The unique $i$ is the rotation index where all partial sums of the rotated sequence are positive.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_eq_one", "existential uniqueness", "goodRotations", "singleton finset"],
+    "prerequisites": ["prepend_one_good_rotation", "Finset.card_eq_one from Mathlib.Data.Finset.Card"]
+  },
+  {
+    "id": "ann-balanced-total",
+    "proofId": "ballot-problem-oq-01-oq-04",
+    "range": { "startLine": 125, "endLine": 133 },
+    "type": "insight",
+    "title": "balanced_path_total: C(2n,n) = Cₙ × (n+1)",
+    "content": "The counting identity linking balanced paths to Catalan numbers: the total number of balanced paths C(2n,n) equals the nth Catalan number Cₙ times (n+1). The proof is literally (catalan_formula n).symm — one line invoking the formula proved in BallotProblemOQ03. The examples verify Cn 0=1, Cn 1=1, Cn 2=2, Cn 3=5 (the first four Catalan numbers). Combined with chung_feller_uniform, this gives exactly Cₙ paths per type.",
+    "mathContext": "$\\binom{2n}{n} = C_n \\cdot (n+1)$, proved by applying catalan_formula in reverse. Values: $C_0=1, C_1=1, C_2=2, C_3=5$. If the $n+1$ path types are equidistributed, each has $\\binom{2n}{n}/(n+1) = C_n$ paths.",
+    "significance": "key",
+    "relatedConcepts": ["Catalan numbers", "binomial coefficients", "catalan_formula", "Cn definition"],
+    "prerequisites": ["catalan_formula from BallotProblemOQ03", "Cn definition from BallotProblemOQ03", "native_decide tactic"]
+  },
+  {
+    "id": "ann-path-type-defs",
+    "proofId": "ballot-problem-oq-01-oq-04",
+    "range": { "startLine": 138, "endLine": 165 },
+    "type": "definition",
+    "title": "Path Type Infrastructure: upstepsAboveAxis and Concrete Verification",
+    "content": "Three definitions set up the typed classification: pathHeight l i = (l.take i).sum (the running height at position i); upstepsAboveAxis counts +1 steps at non-negative height (noncomputable via Finset.filter); balancedPathsOfType n k is the set of type-k balanced paths. The computable upstepsAboveAxisC agrees with upstepsAboveAxis by rfl, enabling native_decide. The six examples exhaustively verify all 6 balanced paths of length 4 (n=2): types 2, 2, 1, 1, 0, 0 — computationally confirming uniform distribution for n=2.",
+    "mathContext": "$\\text{pathHeight}(l, i) = \\sum_{j=0}^{i-1} l_j$. $\\text{upstepsAboveAxis}(l) = |\\{i < |l| : l_i = +1 \\land \\text{pathHeight}(l,i) \\geq 0\\}|$. For $n=2$: paths $[1,1,-1,-1]$ and $[1,-1,1,-1]$ have type 2; $[1,-1,-1,1]$ and $[-1,1,1,-1]$ have type 1; $[-1,1,-1,1]$ and $[-1,-1,1,1]$ have type 0. Each type has 2 = $C_2$ paths.",
+    "significance": "supporting",
+    "relatedConcepts": ["path height", "prefix sums", "noncomputable def", "native_decide", "Finset.filter", "computational verification"],
+    "prerequisites": ["Lean 4 noncomputable defs", "Finset.range and Finset.filter", "List.take and List.get?", "native_decide for finite checking"]
   },
   {
     "id": "ann-chung-feller-axiom",
     "proofId": "ballot-problem-oq-01-oq-04",
-    "range": {
-      "startLine": 132,
-      "endLine": 160
-    },
-    "type": "context",
-    "title": "Chung-Feller Uniform Distribution (Axiomatized)",
-    "body": "The remaining axiom states that all n+1 path types have the same cardinality. The proof idea: each orbit of cyclic rotations visits exactly one path of each type, creating a uniform partition. Proving this requires explicitly tracking how cyclic shifts change the upstep-above-axis count."
+    "range": { "startLine": 184, "endLine": 185 },
+    "type": "axiom",
+    "title": "chung_feller_uniform: The Axiomatized Rotation Bijection",
+    "content": "The remaining axiom states uniform distribution: for any j, k ≤ n, the j-type and k-type balanced path sets have the same cardinality. The docstring gives the proof idea: the 2n non-good rotations of (1::l) each correspond to a balanced path of a distinct type, so the orbit of length 2n+1 covers all n+1 types. Formalizing this requires explicitly tracking how each cyclic shift changes the upstep-above-axis count — a non-trivial height-profile analysis not yet formalized in Lean. This is the one remaining gap in the full Chung-Feller formalization.",
+    "mathContext": "axiom chung_feller_uniform: $\\forall j, k \\leq n,\\; |\\text{balancedPathsOfType}(n,j)| = |\\text{balancedPathsOfType}(n,k)|$. Proof sketch: each orbit under cyclic rotation of $(1::l)$ has size $2n+1$ (aperiodicity). The map $\\text{rot}^i(1::l) \\mapsto \\text{type of (drop first element)}$ is a bijection from $\\{0,\\ldots,2n\\}$ to the $n+1$ types, each type appearing twice.",
+    "significance": "key",
+    "relatedConcepts": ["axiom in Lean 4", "uniform distribution", "cyclic rotation bijection", "orbit-stabilizer", "aperiodic sequences"],
+    "prerequisites": ["balancedPathsOfType", "cyclic rotation orbit structure", "prepend_unique_good_rotation", "height-profile tracking under rotation"]
   }
 ]

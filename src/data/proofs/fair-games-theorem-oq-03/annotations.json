@@ -98,5 +98,17 @@
       "rw tactic with iff lemmas",
       "Optional Stopping Theorem (biconditional form)"
     ]
+  },
+  {
+    "id": "withtop-sorry-barrier",
+    "proofId": "fair-games-theorem-oq-03",
+    "range": { "startLine": 145, "endLine": 190 },
+    "type": "insight",
+    "title": "stoppedValue + WithTop API: The 4-Sorry Barrier",
+    "content": "Three theorems — any_bounded_strategy_preserves_expectation, two_strategies_same_expectation, risk_neutral_pricing_neutrality — share the same obstruction: proving ∫ stoppedValue f τ ω ∂μ = ∫ f 0 ω ∂μ requires unfolding stoppedValue to its definition (f (WithTop.untopD 0 (τ ω)) ω) and then using simp lemmas about how WithTop.untopD commutes with bounded stopping time arithmetic. These lemmas weren't stabilized in Mathlib 4.26.0. The proof path would be: (1) use Martingale.stoppedValue_eq (if τ is bounded by N), (2) apply the ℕ∞-version of the Optional Stopping Theorem, (3) simplify stoppedValue via untopD lemmas. Step 3 is the blocker.",
+    "mathContext": "`stoppedValue f τ ω = f (WithTop.untopD 0 (τ ω)) ω`. For a bounded stopping time (`∀ ω, τ ω ≤ N`), `WithTop.untopD 0 (τ ω)` is just the ℕ value of `τ ω`. The Optional Stopping Theorem (Mathlib: `Martingale.stoppedValue_eq` or `expected_stoppedValue_mono`) should give `∫ stoppedValue f τ ∂μ = ∫ stoppedValue f (fun _ => 0) ∂μ = ∫ f 0 ∂μ`. The key missing lemma is a `simp` normal form for `stoppedValue f (fun _ => (n : ℕ∞)) = f n` that works with the `WithTop.untopD` API in 4.26.0.",
+    "significance": "key",
+    "relatedConcepts": ["stoppedValue", "WithTop.untopD", "IsStoppingTime", "Martingale.stoppedValue_eq", "ℕ∞ arithmetic"],
+    "prerequisites": ["Martingale definition in Mathlib", "IsStoppingTime with ℕ∞", "WithTop type and untopD/untopA API", "Doob's Optional Stopping Theorem in Lean 4"]
   }
 ]
