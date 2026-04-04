@@ -124,12 +124,13 @@ noncomputable def schurNumber (k : ℕ) : ℕ :=
 theorem schur_2 : schurNumber 2 = 4 := by
   sorry
 
-/-- Erdős 895 implies a Schur-like result for graph colorings -/
+/-- Erdős 895 implies a Schur-like result for graph colorings:
+    Every 2-coloring of {1,...,n} either has a same-colored additive pair (a,b with a+b in range)
+    or a fully same-colored Schur triple (a, b, a+b all the same color). -/
 theorem erdos895_implies_schur_variant {n : ℕ} (hn : n ≥ 18) :
     ∀ c : Fin n → Fin 2,
-    (∃ a b : Fin n, IsAdditiveTriple a b ⟨a.val + b.val, by sorry⟩ ∧ c a = c b) ∨
-    (∃ a b d : Fin n, c a = c b ∧ c b = c d ∧
-      (⟨a.val + b.val, by sorry⟩ : Fin n) = d) := by
+    (∃ a b d : Fin n, IsAdditiveTriple a b d ∧ c a = c b) ∨
+    (∃ a b d : Fin n, IsAdditiveTriple a b d ∧ c a = c b ∧ c b = c d) := by
   sorry
 
 /- ## Hajnal's Generalization (OPEN) -/
@@ -151,13 +152,40 @@ theorem hajnal_conjecture_open : hajnalConjecture ↔ hajnalConjecture := by
 
 /- ## Density Considerations -/
 
-/-- A triangle-free graph on n vertices has at most n²/4 edges (Mantel) -/
-theorem mantel_theorem {n : ℕ} (G : GraphOnInterval n) (hG : IsTriangleFree G) :
-    G.edgeFinset.card ≤ n^2 / 4 := by
-  sorry
+/-- A triangle-free graph on n vertices has at most n²/4 edges (Mantel).
+    Proof: IsTriangleFree → CliqueFree 3, then apply Turán's theorem with r=2.
+    The Turán bound for r=2 gives #edges ≤ (n²-(n%2)²)/4 ≤ n²/4. -/
+theorem mantel_theorem {n : ℕ} (G : GraphOnInterval n) [DecidableRel G.Adj]
+    (hG : IsTriangleFree G) : G.edgeFinset.card ≤ n^2 / 4 := by
+  -- Convert IsTriangleFree to CliqueFree (2+1)
+  -- isNClique_iff : G.IsNClique n s ↔ G.IsClique s ∧ #s = n  (IsClique field first)
+  have hcf : G.CliqueFree (2 + 1) := by
+    intro t ht
+    rw [SimpleGraph.isNClique_iff] at ht
+    obtain ⟨hclique_set, hcard⟩ := ht   -- hclique_set : G.IsClique ↑t, hcard : #t = 2+1
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+    -- hclique_set : (↑{a,b,c} : Set _).Pairwise G.Adj
+    exact hG a b c ⟨
+      hclique_set (by simp) (by simp) hab,   -- G.Adj a b
+      hclique_set (by simp) (by simp) hbc,   -- G.Adj b c
+      hclique_set (by simp) (by simp) hac⟩  -- G.Adj a c
+  -- Apply Turán's theorem: CliqueFree(r+1) → #edges ≤ Turán bound
+  have hbound : G.edgeFinset.card ≤
+      (n ^ 2 - (n % 2) ^ 2) * (2 - 1) / (2 * 2) + (n % 2).choose 2 := by
+    have key := CliqueFree.card_edgeFinset_le hcf
+    simp only [Fintype.card_fin] at key
+    exact key
+  -- Arithmetic: Turán bound for r=2 equals ⌊n²/4⌋
+  -- (n%2).choose 2 = 0 since n%2 < 2
+  have hchoose : (n % 2).choose 2 = 0 :=
+    Nat.choose_eq_zero_of_lt (Nat.mod_lt n (by norm_num))
+  calc G.edgeFinset.card
+      ≤ (n ^ 2 - (n % 2) ^ 2) * (2 - 1) / (2 * 2) + (n % 2).choose 2 := hbound
+    _ = (n ^ 2 - (n % 2) ^ 2) / 4 + 0 := by rw [hchoose]; norm_num
+    _ ≤ n ^ 2 / 4 := by simp only [add_zero]; exact Nat.div_le_div_right (Nat.sub_le _ _)
 
 /-- Dense triangle-free graphs force large independent sets -/
-theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n)
+theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n) [DecidableRel G.Adj]
     (hG : IsTriangleFree G) (hdense : G.edgeFinset.card ≥ n^2 / 5) :
     ∃ S : Finset (Fin n), S.card ≥ n / 3 ∧
       ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b := by
