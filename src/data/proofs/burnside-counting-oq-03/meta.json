@@ -1,0 +1,116 @@
+{
+  "id": "burnside-counting-oq-03",
+  "title": "Pólya Enumeration Theorem for Cyclic Groups",
+  "slug": "burnside-counting-oq-03",
+  "description": "The Pólya enumeration theorem (PET) generalizes Burnside's lemma by identifying the precise fixed-point count for each group element. For cyclic rotation by r on n positions with k colors, the number of fixed colorings is k^gcd(r,n), where gcd(r,n) equals the number of orbits. Combined with Burnside's lemma, this yields the Pólya necklace formula: n·(#distinct k-necklaces) = Σ_{d|n} φ(n/d)·k^d. Concretely verified for binary 4-necklaces: 2^4 + 2^1 + 2^2 + 2^1 = 24, giving 6 distinct necklaces.",
+  "meta": {
+    "author": "George Pólya (1937); formalized via Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Polya_enumeration_theorem",
+    "date": "1937",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/BurnsideCountingOQ03.lean",
+    "tags": [
+      "combinatorics",
+      "group-theory",
+      "counting",
+      "necklaces",
+      "polya-enumeration",
+      "cycle-index",
+      "burnside",
+      "research",
+      "open-problem"
+    ],
+    "badge": "wip",
+    "sorries": 4,
+    "axiomCount": 0,
+    "assumptions": "4 sorries remain: fixed_factors_through_mod (orbit = cosets of <r>), polya_cyclic_fixed_count (bijection fixed-colorings ↔ Fin gcd → Fin k), polya_sum_identity (reindexing Σ_r k^gcd(r,n) = Σ_{d|n} φ(n/d)·k^d), polya_necklace_formula_statement (Burnside connection). All concrete n=4 computations are proved by native_decide.",
+    "dateAdded": "2026-04-04",
+    "lineCount": 230,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.addOrderOf_coe",
+        "description": "Additive order of a : ZMod n is n / gcd(n, a)",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_zmod_val",
+        "description": "Cast of val back to ZMod n is identity",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+        "description": "Burnside's lemma: Σ |Fix(g)| = |orbits| × |G|",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      }
+    ],
+    "originalContributions": [
+      "addOrderOf_rotation: orbit size under cyclic rotation = n / gcd(n, r.val)",
+      "IsFixed: computable fixed-coloring predicate for cyclic rotation",
+      "fp_count_rot{0,1,2,3}_4_2: proved by native_decide (16, 2, 4, 2 fixed colorings)",
+      "fp_sum_binary4: Burnside sum = 24 proved (not axiomatized)",
+      "polya_sum_Z4_binary: Σ_{r:Fin 4} 2^gcd(r,4) = 24",
+      "polya_divisor_sum_Z4_binary: Σ_{d|4} φ(4/d)·2^d = 24",
+      "polya_sum_equiv_4_2: two Pólya formulations are equal",
+      "polya_binary4_necklace_count: 24/4 = 6 necklaces"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-definitions",
+      "title": "§1: Cyclic Rotation Definitions",
+      "startLine": 44,
+      "endLine": 56,
+      "content": "IsFixed and DecidablePred"
+    },
+    {
+      "id": "sec-addorderof",
+      "title": "§2: Connection to addOrderOf",
+      "startLine": 58,
+      "endLine": 81,
+      "content": "addOrderOf_rotation theorem and orbit size formula"
+    },
+    {
+      "id": "sec-orbit",
+      "title": "§3: Orbit Structure",
+      "startLine": 83,
+      "endLine": 117,
+      "content": "fixed_factors_through_mod and polya_cyclic_fixed_count"
+    },
+    {
+      "id": "sec-concrete",
+      "title": "§4: Concrete Verification n=4, k=2",
+      "startLine": 119,
+      "endLine": 158,
+      "content": "fp_count_rot0-3_4_2 proved by native_decide, fp_sum_binary4"
+    },
+    {
+      "id": "sec-polya",
+      "title": "§5: Pólya Sum Formula",
+      "startLine": 160,
+      "endLine": 195,
+      "content": "polya_sum_Z4_binary, polya_divisor_sum_Z4_binary, polya_sum_identity"
+    },
+    {
+      "id": "sec-necklaces",
+      "title": "§6-7: Application and General Formula",
+      "startLine": 197,
+      "endLine": 230,
+      "content": "polya_binary4_necklace_count and general statement"
+    }
+  ],
+  "overview": {
+    "what": "The Pólya enumeration theorem counts distinct colorings of n positions under cyclic rotation. The key insight is that |Fix(rotation r)| = k^gcd(r,n), because rotation by r partitions positions into gcd(r,n) orbits. Burnside's lemma then gives #necklaces = (1/n)·Σ k^gcd(r,n).",
+    "how": "Two layers: (1) prove the fixed-point formula |Fix(r)| = k^gcd(r,n) using the orbit characterization (two positions are orbit-equivalent iff they agree mod gcd(r,n)); (2) apply Burnside's lemma. For the specific case n=4, k=2, all computations are verified by native_decide.",
+    "significance": "Pólya enumeration is fundamental to combinatorial counting. The connection |Fix(r)| = k^gcd(r,n) follows from `ZMod.addOrderOf_coe`: the orbit size under rotation by r is n/gcd(n,r), so there are gcd(n,r) orbits."
+  },
+  "crossReferences": [
+    {
+      "id": "xref-burnside-parent",
+      "targetId": "burnside-counting",
+      "relationship": "extends",
+      "description": "Generalizes the axiomatized binary 4-necklace computation to the full Pólya formula; removes axioms by computing fixed-point counts directly."
+    }
+  ]
+}

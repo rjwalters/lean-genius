@@ -1,0 +1,88 @@
+{
+  "slug": "burnside-counting-oq-03",
+  "title": "Burnside Counting: Generalize to Polya Enumeration",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in group theory: Burnside Counting: Generalize to Polya Enumeration.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-03T22:29:17.627Z",
+    "iteration": 1,
+    "focus": "Complete orbit bijection proof for polya_cyclic_fixed_count",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: BurnsideCountingOQ03.lean created; fixed-point counts proved by native_decide; 4 sorries remain for general orbit bijection",
+    "builtItems": [
+      "addOrderOf_rotation: addOrderOf r = n/gcd(n,r.val) (proved)",
+      "IsFixed: computable fixed-coloring predicate",
+      "fp_count_rot{0,1,2,3}_4_2: concrete counts 16,2,4,2 by native_decide",
+      "fp_sum_binary4: Burnside sum=24 (proved, not axiom)",
+      "polya_sum_Z4_binary, polya_divisor_sum_Z4_binary: Polya sums proved",
+      "BurnsideCountingOQ03.lean: 230 lines, 7 proved + 4 sorry theorems"
+    ],
+    "insights": [
+      "Key orbit structure: for rotation r in Z_n, orbit of i = {j | j ≡ i mod gcd(r,n)}",
+      "Fixed-point formula: |Fix(r)| = k^gcd(r,n) via orbit bijection",
+      "ZMod.addOrderOf_coe proves addOrderOf r = n/gcd(n,r.val)",
+      "n=4 fixed-point counts 16,2,4,2 proved by native_decide"
+    ],
+    "mathlibGaps": [
+      "Orbit bijection needs explicit Bezout argument (not directly in Mathlib for this formulation)",
+      "Σ_r k^gcd reindexing needs IsCyclic.card_orderOf_eq_totient applied carefully"
+    ],
+    "nextSteps": [
+      "Prove fixed_factors_through_mod: orbit = {j | j ≡ i mod gcd(r,n)} via Bezout",
+      "Prove polya_cyclic_fixed_count: bijection fixed-colorings ↔ Fin gcd → Fin k",
+      "Prove polya_sum_identity: Σ_r k^gcd = Σ_{d|n} φ(n/d)·k^d"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "group-theory",
+    "combinatorics",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "burnside-counting"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T22:29:17.627Z",
+  "lastUpdate": "2026-04-03T22:29:17.627Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BurnsideCountingOQ03.lean",
+      "filename": "BurnsideCountingOQ03.lean",
+      "lineCount": 230,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03.lean"
+    }
+  ]
+}
