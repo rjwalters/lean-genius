@@ -1,0 +1,102 @@
+{
+  "id": "bezout-identity-oq-03-oq-04-oq-01",
+  "title": "CRT for Commutative Rings via Bézout Coefficients",
+  "slug": "bezout-identity-oq-03-oq-04-oq-01",
+  "description": "Generalizes the direct Bézout CRT formula from ℤ to arbitrary commutative rings. The construction crtRing works over any CommRing; correctness proofs use linear_combination instead of linarith; uniqueness uses IsCoprime.mul_dvd. The IsBezout typeclass provides Bézout coefficients in rings like k[X] or ℤ[i].",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem#Generalization_to_arbitrary_rings",
+    "date": "Classical; formalized 2026",
+    "status": "verified",
+    "tags": [
+      "ring-theory",
+      "chinese-remainder-theorem",
+      "bezout-identity",
+      "commutative-algebra",
+      "coprimality"
+    ],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ03OQ04OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCoprime.mul_dvd",
+        "description": "If k, l are coprime and both divide n, then k*l divides n",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "IsCoprime",
+        "description": "∃ s t, s * m + t * n = 1",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "crtRing: direct Bézout CRT for any CommRing",
+      "crtRing_mod_m: correctness mod m using linear_combination",
+      "crtRing_mod_n: correctness mod n using linear_combination",
+      "crtRing_unique: uniqueness using IsCoprime.mul_dvd",
+      "crtRing_exists: existence given IsCoprime",
+      "crtRing_bezout: specialization to IsBezout rings"
+    ],
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 129,
+    "assumptions": "0 axioms. 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "The Chinese Remainder Theorem (CRT) holds in any commutative ring where the moduli are coprime (IsCoprime). The integer version uses extended GCD algorithms; the ring version replaces integer-specific lemmas with ring-theoretic ones. The IsBezout typeclass (every finitely-generated ideal is principal) covers rings like polynomial rings k[X] over a field, Gaussian integers ℤ[i], and any PID.",
+    "problemStatement": "Can crtDirect (from BezoutIdentityOQ03OQ04) be generalized to arbitrary commutative rings where Bézout's identity holds? Lean's type class system should support this via IsBezout or GCDMonoid.",
+    "proofStrategy": "Replace ℤ-specific lemmas with ring-theoretic equivalents: (1) linarith becomes linear_combination for the correctness proofs; (2) Int.Coprime.mul_dvd_of_dvd_of_dvd becomes IsCoprime.mul_dvd for uniqueness; (3) Int.gcd and Int.gcdA/gcdB become IsCoprime witnesses. The construction crtRing = b·s·m + a·t·n works identically over any CommRing.",
+    "keyInsights": [
+      "The key realization: the CRT correctness proofs in BezoutIdentityOQ03OQ04.lean use only ring arithmetic (linear_combination / linarith). The integer case uses linarith only because the arithmetic is over ℤ. For a general CommRing, linear_combination handles the same algebraic identities.",
+      "IsBezout is not needed for the core theorems — IsCoprime (∃ s t, s * m + t * n = 1) suffices. IsBezout only matters when you need to compute Bézout coefficients algorithmically. For existential statements, IsCoprime is the right assumption.",
+      "The Mathlib lemma IsCoprime.mul_dvd directly replaces Int.Coprime.mul_dvd_of_dvd_of_dvd: if IsCoprime m n and m ∣ x-y and n ∣ x-y, then m*n ∣ x-y. This works in any CommRing without additional assumptions.",
+      "The proof crtRing_mod_m a b s t m n hbez = ⟨b * s - a * s, by unfold crtRing; linear_combination a * hbez⟩ is a complete one-liner. The linear_combination certificate a * hbez encodes: a * (s*m + t*n) - a*1 = 0."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-def",
+      "title": "Part 1: CRT Construction",
+      "startLine": 27,
+      "endLine": 35,
+      "summary": "crtRing over CommRing: b*s*m + a*t*n"
+    },
+    {
+      "id": "sec-correct",
+      "title": "Parts 2-3: Correctness and Uniqueness",
+      "startLine": 37,
+      "endLine": 79,
+      "summary": "crtRing_mod_m, crtRing_mod_n via linear_combination; crtRing_unique via IsCoprime.mul_dvd"
+    },
+    {
+      "id": "sec-existence",
+      "title": "Parts 4-5: Existence and IsBezout",
+      "startLine": 81,
+      "endLine": 110,
+      "summary": "crtRing_exists (IsCoprime → CRT solvable); crtRing_bezout (IsBezout specialization)"
+    },
+    {
+      "id": "sec-recovery",
+      "title": "Part 6: ℤ Recovery",
+      "startLine": 112,
+      "endLine": 125,
+      "summary": "crtInt_from_ring: the integer case is a special case of crtRing"
+    }
+  ],
+  "conclusion": {
+    "summary": "crtDirect generalizes immediately to any CommRing. The proofs are cleaner in the general setting — linear_combination is more natural than linarith for ring identities. IsCoprime is the right Lean typeclass for CRT: it provides the Bézout coefficients directly, while IsBezout additionally guarantees they can be computed algorithmically.",
+    "openQuestions": [
+      "Can the folding approach for multiple coprime moduli (iterated CRT) be generalized to commutative rings? The key lemma needed: if IsCoprime m₁ m₂ and IsCoprime (m₁*m₂) m₃, then IsCoprime m₁ (m₂*m₃) — available in Mathlib as IsCoprime.mul_right.",
+      "Can crtRing be instantiated for polynomial rings k[X] with an explicit worked example — e.g., Lagrange interpolation as CRT?",
+      "Is the efficiency analysis (O(k·log²M) complexity) formalizable in the ring setting using a computational complexity framework?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-03-oq-04",
+      "relationship": "generalizes",
+      "description": "Parent: Efficient Verified CRT via Direct Bézout for ℤ. This file generalizes to arbitrary CommRing."
+    }
+  ]
+}
