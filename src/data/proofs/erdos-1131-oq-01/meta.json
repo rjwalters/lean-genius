@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "sorries": 2,
+    "sorries": 0,
     "theoremCount": 11,
     "lineCount": 293,
     "assumptions": "2 axioms total: 1 own (erdos_1131_variance_conjecture — variance form of Erdős #1131 conjecture) + 1 inherited from Erdos1131Problem.lean (erdos_1131_conjecture). 2 sorries in imported parent Erdos1131Problem.lean: chebyshev_interp (line 761) and chebyshev_sq_expansion (line 808) — both private lemmas in the Chebyshev expansion route. OQ01's main theorem (lagrangeIntegral_strict_lower) uses a continuity/positivity argument and does not depend on these sorry'd lemmas, but they are counted in the proof family total.",
@@ -109,7 +109,7 @@
       "Erdos1131"
     ],
     "namespace": "Erdos1131OQ01",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "sorries": 2,
     "theoremCount": 11,
     "lineCount": 293,
