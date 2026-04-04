@@ -57,7 +57,7 @@ Survey + proof infrastructure. Rédei proved modulo 2 infrastructure lemmas.
 - [ ] tournament_cycle_extendable (longest-cycle extension)
 - [ ] Ghouila-Houri proof
 - [x] missing_arcs_le (arcCount > (n-1)² → ≤ n-2 missing arcs) [proved]
-- [ ] hamiltonian_of_few_missing_arcs (counting/probabilistic argument) [sorry]
+- [x] hamiltonian_of_few_missing_arcs (counting/probabilistic argument) [proved]
 - [x] directed_hamiltonian_threshold (delegates to above) [proved]
 -/
 
@@ -1051,8 +1051,114 @@ private lemma hamiltonian_of_few_missing_arcs (D : Digraph V)
   -- has size (n-2)! (two values fixed). These fibers are disjoint (σ injective).
   -- Union bound: |BadFor(a,b)| ≤ n * (n-2)!
   have hBadFor_bound : ∀ p ∈ Missing, (BadFor p).card ≤ n * (n - 2).factorial := by
-    intro ⟨a, b⟩ _hmem
-    sorry
+    intro ⟨a, b⟩ hmem
+    simp only [Missing, Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+    obtain ⟨hab, _⟩ := hmem
+    -- Preimages under α
+    set c₁ : Fin n := α.symm a
+    set c₂ : Fin n := α.symm b
+    have hc12 : c₁ ≠ c₂ := fun h => hab (by
+      have := congr_arg α h; simp only [Equiv.apply_symm_apply] at this; exact this)
+    -- Fiber at position k: perms that use the missing arc (a,b) at step k
+    let nextPos : Fin n → Fin n := fun k =>
+      ⟨(k.val + 1) % n, Nat.mod_lt _ (by omega)⟩
+    let Fiber : Fin n → Finset (Equiv.Perm (Fin n)) := fun k =>
+      Finset.univ.filter (fun σ => σ k = c₁ ∧ σ (nextPos k) = c₂)
+    -- BadFor(a,b) ⊆ biUnion of fibers
+    have hBad_sub : BadFor (a, b) ⊆ Finset.univ.biUnion Fiber := by
+      intro σ hσ
+      simp only [BadFor, Finset.mem_filter, Finset.mem_univ, true_and] at hσ
+      obtain ⟨i, hi1, hi2⟩ := hσ
+      simp only [Finset.mem_biUnion, Finset.mem_univ, true_and, Fiber, Finset.mem_filter,
+                 and_true]
+      refine ⟨i, ?_, ?_⟩
+      · exact α.injective (hi1.trans (α.apply_symm_apply a).symm)
+      · exact α.injective (hi2.trans (α.apply_symm_apply b).symm)
+    -- Each fiber has ≤ (n-2)! elements, via injection into Perm(Fin(n-2))
+    have hFiber_bound : ∀ k : Fin n, (Fiber k).card ≤ (n - 2).factorial := by
+      intro k
+      set k' := nextPos k with hk'_def
+      -- k ≠ k': (k+1)%n ≠ k since n ≥ 3
+      have hkk' : k ≠ k' := by
+        intro h
+        have h1 : k.val = (k.val + 1) % n := congr_arg Fin.val h
+        rcases Nat.lt_or_ge (k.val + 1) n with hlt | hge
+        · rw [Nat.mod_eq_of_lt hlt] at h1; omega
+        · have heqn : k.val + 1 = n := Nat.le_antisymm (by omega) hge
+          rw [heqn, Nat.mod_self] at h1; omega
+      -- R = positions other than k, k'; C = values other than c₁, c₂
+      set R := ((Finset.univ : Finset (Fin n)).erase k).erase k' with hR_def
+      set C := ((Finset.univ : Finset (Fin n)).erase c₁).erase c₂ with hC_def
+      have hR_card : R.card = n - 2 := by
+        have hk'_mem : k' ∈ (Finset.univ : Finset (Fin n)).erase k :=
+          Finset.mem_erase.mpr ⟨hkk'.symm, Finset.mem_univ _⟩
+        rw [hR_def, Finset.card_erase_of_mem hk'_mem,
+            Finset.card_erase_of_mem (Finset.mem_univ k),
+            Finset.card_univ, Fintype.card_fin]; omega
+      have hC_card : C.card = n - 2 := by
+        have hc₂_mem : c₂ ∈ (Finset.univ : Finset (Fin n)).erase c₁ :=
+          Finset.mem_erase.mpr ⟨hc12.symm, Finset.mem_univ _⟩
+        rw [hC_def, Finset.card_erase_of_mem hc₂_mem,
+            Finset.card_erase_of_mem (Finset.mem_univ c₁),
+            Finset.card_univ, Fintype.card_fin]; omega
+      -- Order isos Fin(n-2) ≃o R and Fin(n-2) ≃o C
+      let φ_R := R.orderIsoOfFin hR_card
+      let φ_C := C.orderIsoOfFin hC_card
+      -- Bound: |Fiber k| ≤ |Perm(Fin(n-2))| = (n-2)!
+      rw [show (n - 2).factorial = Fintype.card (Equiv.Perm (Fin (n - 2))) from by
+          simp [Fintype.card_perm, Fintype.card_fin],
+          ← Fintype.card_coe (Fiber k)]
+      apply Fintype.card_le_of_injective (fun ⟨σ, hσ_mem⟩ =>
+        -- For each m : Fin(n-2), σ maps position (φ_R m).val to a value in C
+        have hσf : σ k = c₁ ∧ σ k' = c₂ := (Finset.mem_filter.mp hσ_mem).2
+        have hmC : ∀ m : Fin (n - 2), σ ((φ_R m).val) ∈ C := fun m => by
+          have hm_pos : (φ_R m : Fin n) ∈ R := (φ_R m).prop
+          have hm_ne_k : (φ_R m : Fin n) ≠ k := fun h =>
+            absurd (h ▸ hm_pos) (by simp [hR_def, Finset.mem_erase])
+          have hm_ne_k' : (φ_R m : Fin n) ≠ k' := fun h =>
+            absurd (h ▸ hm_pos) (by simp [hR_def, Finset.mem_erase])
+          simp only [hC_def, Finset.mem_erase, Finset.mem_univ, and_true, ne_eq]
+          exact ⟨fun h => hm_ne_k' (σ.injective (h.trans hσf.2.symm)),
+                 fun h => hm_ne_k (σ.injective (h.trans hσf.1.symm))⟩
+        -- Build the permutation of Fin(n-2) by reindexing via φ_C
+        let g : Fin (n - 2) → Fin (n - 2) := fun m =>
+          φ_C.symm ⟨σ ((φ_R m).val), hmC m⟩
+        have hg_inj : Function.Injective g := fun m₁ m₂ h => by
+          apply φ_R.injective
+          exact Subtype.val_inj.mpr (σ.injective
+            (congr_arg Subtype.val (φ_C.symm.injective h)))
+        Equiv.ofBijective g ⟨hg_inj, hg_inj.surjective_of_fintype rfl⟩)
+      -- Injectivity of σ ↦ perm: σ₁ and σ₂ agree on all of Fin n
+      intro ⟨σ₁, hσ₁⟩ ⟨σ₂, hσ₂⟩ heq
+      simp only [Subtype.mk.injEq]
+      have hf₁ := (Finset.mem_filter.mp hσ₁).2
+      have hf₂ := (Finset.mem_filter.mp hσ₂).2
+      ext x
+      by_cases hxk : x = k
+      · simp [hxk, hf₁.1, hf₂.1]
+      by_cases hxk' : x = k'
+      · simp [hxk', hf₁.2, hf₂.2]
+      · -- x ∈ R, so x = (φ_R m).val for m = φ_R.symm ⟨x, hxR⟩
+        have hxR : x ∈ R := by simp [hR_def, Finset.mem_erase, hxk, hxk']
+        set m := φ_R.symm ⟨x, hxR⟩
+        have hxm : (φ_R m : Fin n) = x :=
+          congr_arg Subtype.val (φ_R.apply_symm_apply ⟨x, hxR⟩)
+        -- heq gives pointwise equality of the two permutations of Fin(n-2)
+        -- Extract: the two maps agree at m
+        have hgm := Equiv.ext_iff.mp heq m
+        simp only [Equiv.ofBijective_apply] at hgm
+        -- hgm: φ_C.symm ⟨σ₁ (φ_R m).val, _⟩ = φ_C.symm ⟨σ₂ (φ_R m).val, _⟩
+        have := congr_arg Subtype.val (φ_C.symm.injective hgm)
+        rw [hxm] at this
+        exact this
+    -- Union bound: |BadFor| ≤ Σ_k |Fiber k| ≤ n * (n-2)!
+    calc (BadFor (a, b)).card
+        ≤ (Finset.univ.biUnion Fiber).card := Finset.card_le_card hBad_sub
+      _ ≤ ∑ k : Fin n, (Fiber k).card := Finset.card_biUnion_le
+      _ ≤ ∑ _k : Fin n, (n - 2).factorial :=
+          Finset.sum_le_sum (fun k _ => hFiber_bound k)
+      _ = n * (n - 2).factorial := by
+          simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
   -- AllBad = union over missing arcs of their bad permutation sets
   let AllBad : Finset (Equiv.Perm (Fin n)) := Missing.biUnion BadFor
   -- |AllBad| < n! by union bound.
@@ -1130,34 +1236,6 @@ private lemma hamiltonian_of_few_missing_arcs (D : Digraph V)
   rw [key i, key]
   exact hσ_arcs i
 
--- Arithmetic helper: arcCount > (n-1)² implies at most n-2 arcs are missing
--- from the complete digraph K*_n (which has n*(n-1) arcs).
--- Note: uses ℕ subtraction, which is 0 when m > n*(n-1) (vacuously ≤ n-2).
-private lemma missing_arcs_le (n m : ℕ) (hn : 3 ≤ n) (harc : (n - 1) ^ 2 < m) :
-    n * (n - 1) - m ≤ n - 2 := by
-  set k := n - 1
-  have hkn : k + 1 = n := by omega
-  have hnn1 : n * k = k ^ 2 + k := by rw [show n = k + 1 from hkn.symm]; ring
-  rw [hnn1]; set a := k ^ 2; omega
-
--- Counting argument (probabilistic method): with ≤ n-2 arcs missing from K*_n,
--- a Hamiltonian cycle exists.
---
--- Proof sketch: There are n! bijections e : V ≃ Fin n. Each bijection gives a
--- directed cycle e.symm(0)→e.symm(1)→...→e.symm(n-1)→e.symm(0). For each
--- missing arc (u,v), the bijections "using" (u,v) at some consecutive position
--- number at most n*(n-2)! (choose the position i: n ways; then permute the
--- remaining n-2 elements: (n-2)! ways).
---
--- Total bad bijections ≤ |missing| * n * (n-2)! ≤ (n-2) * n * (n-2)! < n!
--- (since n-2 < n-1 implies (n-2)*n*(n-2)! < (n-1)*n*(n-2)! = n!).
--- So ∃ good bijection, yielding a Hamiltonian cycle.
-private lemma hamiltonian_of_few_missing_arcs (D : Digraph V)
-    (hn : 3 ≤ Fintype.card V)
-    (hmissing : Fintype.card V * (Fintype.card V - 1) - D.arcCount ≤ Fintype.card V - 2) :
-    D.HasHamiltonianCycle := by
-  sorry
-
 /-- **Directed Hamiltonian threshold**: a digraph on n ≥ 3 vertices with more
 than (n-1)² arcs is Hamiltonian, provided it is strongly connected.
 
@@ -1181,7 +1259,7 @@ The proof follows the same structure as Dirac's theorem for undirected graphs:
 ### Directed Hamiltonian Threshold
 Decomposed into:
 1. `missing_arcs_le` (PROVED): arcCount > (n-1)² → at most n-2 missing arcs
-2. `hamiltonian_of_few_missing_arcs` (SORRY): counting/probabilistic argument
+2. `hamiltonian_of_few_missing_arcs` (PROVED): counting/probabilistic argument
    - n! total bijections; each missing arc blocks ≤ n*(n-2)! of them
    - total blocked ≤ (n-2)*n*(n-2)! < n! (since n-2 < n-1)
    - therefore ∃ good bijection → Hamiltonian cycle exists
