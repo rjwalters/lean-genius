@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-header",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 67 },
+    "type": "context",
+    "title": "Making the Hölder Chain Explicit: Young → Hölder → Minkowski",
+    "content": "The file answers the open question: can Lp Minkowski be proved without the black-box `NormedAddCommGroup` instance? YES. The docstring presents the full factoring trick: ‖f+g‖ₚᵖ ≤ ∫(|f|+|g|)|f+g|^{p-1} → apply Hölder twice → combine → divide. The mathematical significance is pedagogical: Mathlib's `eLpNorm_add_le` is a single theorem that hides all three dependencies (Young, Hölder, Minkowski). This file makes each step visible, showing CS → Hölder → Minkowski → Lp is a normed space.",
+    "mathContext": "The **Young-Hölder-Minkowski chain**: Young's inequality $ab \\leq a^p/p + b^q/q$ → normalize and integrate → Hölder $\\int|fg| \\leq \\|f\\|_p \\|g\\|_q$ → factoring trick → Minkowski $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$. The factoring trick: $\\|f+g\\|_p^p \\leq (\\|f\\|_p + \\|g\\|_p)\\|f+g\\|_p^{p-1}$, divide by $\\|f+g\\|_p^{p-1}$.",
+    "significance": "context",
+    "relatedConcepts": ["Young's inequality", "Hölder's inequality", "Minkowski inequality", "Lp spaces", "NormedAddCommGroup"],
+    "prerequisites": ["Lp spaces and eLpNorm", "conjugate exponents (1/p + 1/q = 1)", "measure theory: lintegral"]
+  },
+  {
+    "id": "ann-young",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": { "startLine": 68, "endLine": 99 },
+    "type": "concept",
+    "title": "Young's Inequality: The Foundation via Convexity",
+    "content": "Young's inequality `young_ineq` wraps Mathlib's `NNReal.young_inequality`. For conjugate exponents p, q > 1 (1/p + 1/q = 1), it states ab ≤ aᵖ/p + bᵍ/q for a, b ≥ 0. The `HolderConjugate` typeclass from Mathlib provides the conjugate exponent interface. The docstring explains the convexity-of-exp proof: log(ab) = (1/p)(p·log a) + (1/q)(q·log b) ≤ (1/p)·aᵖ + (1/q)·bᵍ by Jensen's inequality applied to exp. Young's inequality is the seed from which both Hölder and Minkowski grow.",
+    "mathContext": "**Young's inequality**: for $p, q > 1$ with $1/p + 1/q = 1$ and $a, b \\geq 0$: $ab \\leq \\frac{a^p}{p} + \\frac{b^q}{q}$. Equality iff $a^p = b^q$. Special case $p = q = 2$: $ab \\leq (a^2 + b^2)/2$ (AM-GM). The proof follows from convexity of $t \\mapsto e^t$: $e^{s/p + t/q} \\leq e^s/p + e^t/q$.",
+    "significance": "key",
+    "relatedConcepts": ["AM-GM inequality", "Jensen's inequality", "convexity of exp", "conjugate exponents", "HolderConjugate typeclass"],
+    "prerequisites": ["real analysis: convexity", "logarithms and exponentials", "AM-GM inequality"]
+  },
+  {
+    "id": "ann-holder",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": { "startLine": 100, "endLine": 138 },
+    "type": "concept",
+    "title": "Hölder's Inequality: Young Applied to Each Point Then Integrated",
+    "content": "`holder_lintegral` wraps `ENNReal.lintegral_mul_le_Lp_mul_Lq` and `holder_eLpNorm` wraps `eLpNorm_mul_le`. The proof idea: normalize so ‖f‖_p = ‖g‖_q = 1, apply Young pointwise: |f(x)|·|g(x)| ≤ |f(x)|ᵖ/p + |g(x)|ᵍ/q, integrate both sides: ∫|fg| ≤ 1/p + 1/q = 1. Then rescale for general f, g. The `eLpNorm_mul_le` version states ‖fg‖_{1} ≤ ‖f‖_p · ‖g‖_q for the eLpNorm formulation.",
+    "mathContext": "**Hölder's inequality**: $\\int |f(x)g(x)| \\, d\\mu \\leq \\|f\\|_p \\|g\\|_q$ for $1/p + 1/q = 1$. Proof: WLOG $\\|f\\|_p = \\|g\\|_q = 1$. Young pointwise: $|f||g| \\leq |f|^p/p + |g|^q/q$. Integrate: $\\int|fg| \\leq 1/p + 1/q = 1$. Special case $p=q=2$: Cauchy-Schwarz $|\\langle f,g\\rangle| \\leq \\|f\\|_2 \\|g\\|_2$.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz inequality (p=q=2 case)", "normalization trick", "lintegral", "eLpNorm"],
+    "prerequisites": ["Young's inequality", "Lp norms", "ENNReal.lintegral_mul_le_Lp_mul_Lq"]
+  },
+  {
+    "id": "ann-factoring-trick",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": { "startLine": 139, "endLine": 285 },
+    "type": "insight",
+    "title": "The Factoring Trick: How Hölder Implies Minkowski",
+    "content": "The core creative step: `abs_add_pow_le_pow_add` proves |f+g|^p ≤ (|f|+|g|)|f+g|^{p-1} (pointwise triangle inequality raised to power p). `conjugate_exponent_identity` proves (p-1)q = p — the arithmetic identity that makes the simplification work. `lintegral_rpow_le_split` proves ∫(|f|+|g|)|f+g|^{p-1} ≤ ∫|f||f+g|^{p-1} + ∫|g||f+g|^{p-1}. `holder_applied_to_split` applies Hölder to each split term, yielding ‖f‖_p · ‖|f+g|^{p-1}‖_q for each. Since (p-1)q = p, we have ‖|f+g|^{p-1}‖_q = ‖f+g‖_p^{p/q}. `minkowski_from_holder_explicit` assembles: ‖f+g‖_p^p ≤ (‖f‖_p + ‖g‖_p)‖f+g‖_p^{p/q}, divide to get ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p. The ENNReal rpow arithmetic is the most delicate part of the formalization.",
+    "mathContext": "**The factoring trick** (the heart of Minkowski): $\\|f+g\\|_p^p = \\int|f+g|^p \\leq \\int(|f|+|g|)|f+g|^{p-1}$. Apply Hölder with exponents $p$ and $q = p/(p-1)$ to each term. Using $(p-1)q = p$: $\\||f+g|^{p-1}\\|_q = \\left(\\int|f+g|^{(p-1)q}\\right)^{1/q} = \\|f+g\\|_p^{p/q}$. Dividing by $\\|f+g\\|_p^{p/q}$ gives Minkowski (using $p - p/q = 1$).",
+    "significance": "key",
+    "relatedConcepts": ["triangle inequality in Lp", "conjugate exponent identity", "ENNReal rpow arithmetic", "Hölder applied twice"],
+    "prerequisites": ["Hölder's inequality", "conjugate exponents", "ENNReal extended real arithmetic"]
+  },
+  {
+    "id": "ann-chain-verification",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": { "startLine": 286, "endLine": 322 },
+    "type": "technique",
+    "title": "Chain Verification: Young ∧ Hölder ∧ Minkowski as a Single Lean Theorem",
+    "content": "`chain_verification` is a single theorem of type `Young ∧ Hölder ∧ Minkowski (all three steps)`. It witnesses that all three steps of the chain exist in Lean 4/Mathlib by constructing the conjunction. This 'existence proof' style — proving a conjunction by providing all three witnesses — is a clean Lean idiom for verifying logical dependencies. The theorem confirms that Mathlib's NormedAddCommGroup instance for Lp spaces is logically grounded in the Young-Hölder-Minkowski chain.",
+    "mathContext": "The theorem type is: $\\exists (Y: \\text{Young}) (H: \\text{Hölder}) (M: \\text{Minkowski}), \\text{True}$ (or equivalent conjunction). This is the **logical verification** that the chain is complete: Lean's kernel has checked that each step follows from the previous using the named Mathlib theorems.",
+    "significance": "supporting",
+    "relatedConcepts": ["logical dependencies in Mathlib", "conjunction introduction", "proof of existence by construction", "Lp space instance verification"],
+    "prerequisites": ["Lean 4: conjunction and existential introduction", "Mathlib: eLpNorm_add_le, lintegral_mul_le_Lp_mul_Lq"]
+  },
+  {
+    "id": "ann-special-cases",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": { "startLine": 323, "endLine": 406 },
+    "type": "concept",
+    "title": "Special Cases p = 1, 2, ∞: Three Different Proof Strategies",
+    "content": "`minkowski_l1`: For p=1, Minkowski is just the triangle inequality integrated — no Hölder needed. `minkowski_l2_from_cs`: For p=2, Minkowski follows from Cauchy-Schwarz via ‖f+g‖² = ‖f‖² + 2⟨f,g⟩ + ‖g‖² ≤ (‖f‖+‖g‖)² — using `abs_real_inner_le_norm`. `minkowski_linfty`: For p=∞, Minkowski is essSup|f+g| ≤ essSup|f| + essSup|g| via pointwise triangle plus essSup subadditivity. These three cases show that the general Hölder-based proof is needed only for 1 < p < ∞: the endpoints have simpler proofs.",
+    "mathContext": "$p=1$: $\\|f+g\\|_1 = \\int|f+g| \\leq \\int|f| + \\int|g|$ (triangle + linearity). $p=2$: $\\|f+g\\|^2 \\leq \\|f\\|^2 + 2|\\langle f,g\\rangle| + \\|g\\|^2 \\leq (\\|f\\| + \\|g\\|)^2$ (Cauchy-Schwarz). $p=\\infty$: $\\text{essSup}|f+g| \\leq \\text{essSup}(|f|+|g|) \\leq \\text{essSup}|f| + \\text{essSup}|g|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["L1 triangle inequality", "L2 Cauchy-Schwarz", "L∞ essential supremum", "endpoint cases in analysis"],
+    "prerequisites": ["Cauchy-Schwarz inequality", "essential supremum (essSup)", "triangle inequality for integrals"]
+  }
+]
