@@ -1,0 +1,124 @@
+{
+  "id": "arithmetic-series-oq-02-oq-04-oq-01",
+  "title": "Descending Factorial Identity: C(n,k)·k! = n·(n-1)·⋯·(n-k+1)",
+  "slug": "arithmetic-series-oq-02-oq-04-oq-01",
+  "description": "Formalizes the descending (falling) factorial analogue of the arithmetic series identity. Proves C(n,k)·k! = n.descFactorial(k) — the ordered selection formula counting k-permutations of n objects.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "factorial",
+      "binomial-coefficient",
+      "descending-factorial",
+      "permutations",
+      "arithmetic-series"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 169,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "assumptions": "None. Fully machine-verified. Imports ArithmeticSeriesOQ02OQ04.lean (0 axioms).",
+    "originalContributions": [
+      "choose_descFactorial: C(n,k) * k! = n.descFactorial(k) — the ordered selection identity",
+      "choose_product: explicit product form C(n,k) * k! = ∏ i in range k, (n - i)",
+      "choose_full_factorial: C(n,k) * k! * (n-k)! = n! (connects to full factorial)",
+      "factorial_dvd_descFactorial: k! | n.descFactorial(k) (binomial integrality)",
+      "ascending_descending_duality: connects rising and falling factorial forms",
+      "choose_descFactorial_one/two/three: k=1,2,3 specializations"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The binomial coefficient C(n,k) counts unordered k-element subsets of an n-element set. Multiplying by k! gives the number of ordered selections (k-permutations): C(n,k)·k! = n·(n-1)·⋯·(n-k+1) = n.descFactorial(k). This identity appears throughout combinatorics, probability, and algebra.\n\nThe parent file (ArithmeticSeriesOQ02OQ04) proved the ascending (rising) factorial analogue: C(n+k,k)·k! = (n+1)·(n+2)·⋯·(n+k) = ascFactorial(n+1, k). This file proves the complementary descending case and establishes the duality between the two forms.",
+    "problemStatement": "Prove that C(n,k)·k! = n.descFactorial(k) = n·(n-1)·⋯·(n-k+1), the descending factorial identity for binomial coefficients.",
+    "proofStrategy": "The main identity follows directly from Mathlib's `Nat.descFactorial_eq_factorial_mul_choose`. The product formula unfolds via `Nat.descFactorial_eq_prod_range`. Structural properties (full factorial identity, divisibility, self-case) follow from Mathlib lemmas. Low-dimensional cases are verified by `simp` + `ring`.",
+    "keyInsights": [
+      "Descending: C(n,k)*k! = n*(n-1)*...*(n-k+1) counts ordered k-selections from {1,...,n}",
+      "Ascending: C(n+k,k)*k! = (n+1)*...*(n+k) counts ordered k-selections with offset n",
+      "These are dual: same count, different parameterization of the starting point",
+      "The Mathlib key: Nat.descFactorial_eq_factorial_mul_choose gives the main result directly",
+      "descFactorial(n, n) = n! recovers the full factorial as a special case"
+    ],
+    "prerequisites": [
+      "Nat.descFactorial: falling factorial in Mathlib",
+      "Nat.ascFactorial: rising factorial in Mathlib",
+      "Nat.descFactorial_eq_factorial_mul_choose: main Mathlib lemma",
+      "simplicial_factorial from ArithmeticSeriesOQ02OQ04: ascending factorial identity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-identity",
+      "title": "Part I: Main Identity",
+      "summary": "choose_descFactorial: C(n,k) * k! = n.descFactorial(k). Direct from Mathlib.",
+      "startLine": 29,
+      "endLine": 44
+    },
+    {
+      "id": "product-formula",
+      "title": "Part II: Explicit Product Formula",
+      "summary": "choose_product: C(n,k) * k! = ∏ i in range k, (n - i). Unfolds the descending product.",
+      "startLine": 46,
+      "endLine": 55
+    },
+    {
+      "id": "structural",
+      "title": "Part III: Structural Properties",
+      "summary": "choose_full_factorial (binomial identity), factorial_dvd_descFactorial (integrality), descFactorial_self_eq_factorial.",
+      "startLine": 57,
+      "endLine": 78
+    },
+    {
+      "id": "duality",
+      "title": "Part IV: Ascending vs Descending Duality",
+      "summary": "ascending_descending_duality: combines both rising and falling forms in one conjunction.",
+      "startLine": 80,
+      "endLine": 96
+    },
+    {
+      "id": "specializations",
+      "title": "Part V: Low-Dimensional Specializations",
+      "summary": "Explicit k=1, 2, 3 cases and concrete numerical checks.",
+      "startLine": 98,
+      "endLine": 132
+    }
+  ],
+  "conclusion": {
+    "summary": "Proved the descending factorial identity C(n,k)·k! = n.descFactorial(k) and 10 consequences. 169 lines, 11 theorems, 0 sorries, 0 axioms. Dual to the ascending factorial identity in ArithmeticSeriesOQ02OQ04.",
+    "implications": "Together with the ascending factorial result, this completes the symmetry between rising and falling factorials in the context of arithmetic series and binomial coefficients. Both forms are useful in combinatorics: the descending form appears in falling factorial polynomials (basis for umbral calculus) and the ascending form in rising factorial polynomials (Pochhammer symbols).",
+    "openQuestions": [
+      "Generalize to multiset coefficients: C(n+k-1, k) * k! = ∏ i in range k, (n + i)?",
+      "Formalize the connection to falling factorial polynomials and the umbral calculus",
+      "Prove Vandermonde's identity in falling factorial form: ∑ C(m,j)*C(n,k-j) = C(m+n,k)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-02-oq-04",
+      "relationship": "extends",
+      "description": "Parent: ascending factorial identity C(n+k,k)*k! = ascFactorial(n+1,k)"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02",
+      "relationship": "related",
+      "description": "Grandparent: arithmetic series Σ k = n(n+1)/2"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "related",
+      "description": "C(n,k) counts unordered subsets; C(n,k)*k! counts ordered selections"
+    }
+  ],
+  "leanFile": {
+    "namespace": "ArithmeticSeriesOQ02OQ04OQ01",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
+  }
+}
