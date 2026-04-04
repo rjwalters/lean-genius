@@ -26,13 +26,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Thomae's function (also called the popcorn function or modified Dirichlet function) was introduced by Carl Johannes Thomae in 1875. It assigns f(p/q) = 1/q for rationals in lowest terms and f(x) = 0 for irrationals. Unlike the standard Dirichlet function, Thomae's function is Riemann integrable — it is continuous at every irrational and discontinuous at every rational. This formalization shows the Lebesgue integral is 0 via the measure-zero argument.",
+    "historicalContext": "Thomae's function was introduced by Carl Johannes Thomae in 1875 and later rediscovered independently many times, earning names like the 'popcorn function', 'raindrop function', and 'ruler function'. It was historically significant as an example of a function that is Riemann integrable despite having a dense set of discontinuities — challenging early intuitions about integration. Dirichlet's 1829 indicator function 1_ℚ, by contrast, is not Riemann integrable. Lebesgue's 1902 theory of integration finally unified these cases: both functions are zero a.e. (since ℚ has measure zero), so both have Lebesgue integral 0. The measure-zero argument, unavailable to Riemann, makes Lebesgue's approach dramatically simpler.",
     "problemStatement": "Prove that the modified Dirichlet function f(x) = 1/q for x = p/q in lowest terms (f(x) = 0 for irrational x) has Lebesgue integral 0 over ℝ and over [0,1].",
     "proofStrategy": "The proof uses the same strategy as the parent OQ01 (standard Dirichlet function): since Thomae's function is zero on irrationals and the rationals have Lebesgue measure zero, f = 0 almost everywhere. Then integral_eq_zero_of_ae gives ∫ f = 0.",
     "keyInsights": [
-      "**Same core argument**: Both the standard and modified Dirichlet functions are zero a.e., so both have integral 0",
-      "**Thomae ≤ Dirichlet pointwise**: The modified version is bounded above by the standard Dirichlet function",
-      "**Riemann vs Lebesgue**: Thomae's function is Riemann integrable (unlike the standard Dirichlet function), but the Lebesgue argument is simpler — no epsilon-delta needed"
+      "**Countable support → measure zero → integral zero**: The three-step pipeline applies to any function with countable support, whether Thomae or Dirichlet",
+      "**Lebesgue simpler than Riemann here**: The Lebesgue proof is a one-liner (`integral_eq_zero_of_ae`); the Riemann proof requires tracking finitely-many large denominators per ε",
+      "**Thomae ≤ Dirichlet pointwise**: f(p/q) = 1/q ≤ 1 = D(p/q), so Thomae is dominated by the indicator of ℚ — yet both integrate to 0",
+      "**Classical choice extracts the denominator**: The `.den` field of Lean's ℚ gives the reduced denominator; `h.choose.den` makes the definition noncomputable but canonical",
+      "**ae_restrict_of_ae transfers the result to [0,1]**: The global a.e. zero property restricts to any measurable subset with no additional work"
     ],
     "prerequisites": [
       "Lebesgue measure and integration",
@@ -46,35 +48,40 @@
       "title": "Part I: The Thomae Function",
       "startLine": 1,
       "endLine": 75,
-      "summary": "Defines `thomae : ℝ → ℝ` via classical choice on rational representation. Proves basic properties: zero at irrationals, nonneg, bounded by 1."
+      "summary": "Defines `thomae : ℝ → ℝ` via classical choice on rational representation. Proves basic properties: zero at irrationals, nonneg, bounded by 1.",
+      "mathContext": "$$f(x) = \\begin{cases} 1/q & x = p/q \\text{ reduced}, \\\\ 0 & x \\in \\mathbb{R} \\setminus \\mathbb{Q}. \\end{cases}$$\nBasic bounds: $0 \\leq f(x) \\leq 1$ for all $x \\in \\mathbb{R}$."
     },
     {
       "id": "ae-zero",
       "title": "Part II: Zero Almost Everywhere",
       "startLine": 76,
-      "endLine": 100,
-      "summary": "Proves support ⊆ ℚ (countable, measure zero), hence thomae = 0 a.e."
+      "endLine": 103,
+      "summary": "Proves support ⊆ ℚ (countable, measure zero), hence thomae = 0 a.e.",
+      "mathContext": "$$\\{x : f(x) \\neq 0\\} \\subseteq \\mathbb{Q}, \\quad \\lambda(\\mathbb{Q}) = 0 \\implies f = 0 \\; \\lambda\\text{-a.e.}$$\nKey Mathlib lemma: `Set.Countable.measure_zero` applied to `Set.countable_range (Rat.cast : ℚ → ℝ)`."
     },
     {
       "id": "integral",
       "title": "Part III: The Lebesgue Integral",
-      "startLine": 101,
-      "endLine": 120,
-      "summary": "Main result: ∫ thomae = 0 via integral_eq_zero_of_ae. Unit interval version proved via ae_restrict_of_ae."
+      "startLine": 104,
+      "endLine": 118,
+      "summary": "Main result: ∫ thomae = 0 via integral_eq_zero_of_ae. Unit interval version proved via ae_restrict_of_ae.",
+      "mathContext": "$$\\int_{\\mathbb{R}} f \\, d\\lambda = 0, \\qquad \\int_0^1 f \\, d\\lambda = 0.$$\nOne-line proof: `integral_eq_zero_of_ae thomae_ae_zero`. Restriction to $[0,1]$: `ae_restrict_of_ae thomae_ae_zero`."
     },
     {
       "id": "comparison",
       "title": "Part IV: Comparison with Standard Dirichlet",
-      "startLine": 121,
-      "endLine": 149,
-      "summary": "thomae ≤ dirichlet pointwise. Both have integral 0."
+      "startLine": 119,
+      "endLine": 153,
+      "summary": "thomae ≤ dirichlet pointwise. Both have integral 0.",
+      "mathContext": "Define $D(x) = \\mathbf{1}_{\\mathbb{Q}}(x)$. Then $f(x) \\leq D(x)$ pointwise: at $x = p/q$, $f(x) = 1/q \\leq 1 = D(x)$. Both satisfy $\\int f = \\int D = 0$ via the same countability argument."
     }
   ],
   "conclusion": {
     "summary": "Thomae's function has Lebesgue integral 0 because it is zero almost everywhere. The proof is a natural extension of the parent OQ01 result for the standard Dirichlet function.",
     "openQuestions": [
-      "Can we formalize the Riemann integrability of Thomae's function?",
-      "Can we prove that Thomae's function is continuous at every irrational?"
+      "Can we formalize the Riemann integrability of Thomae's function via Lebesgue's criterion (measure-zero discontinuities)?",
+      "Can we prove that Thomae's function is continuous at every irrational and discontinuous at every rational in Lean?",
+      "Can the popcorn function be used to construct an explicit example of a function that is Lebesgue but not Riemann integrable when extended to 2D?"
     ],
     "implications": "Thomae's function has Lebesgue integral 0 because it is zero almost everywhere. The proof is a natural extension of the parent OQ01 result for the standard Dirichlet function."
   },
