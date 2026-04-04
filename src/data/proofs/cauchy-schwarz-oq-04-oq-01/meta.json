@@ -1,0 +1,66 @@
+{
+  "id": "cauchy-schwarz-oq-04-oq-01",
+  "title": "Weighted Cauchy-Schwarz and Titu's Lemma",
+  "slug": "cauchy-schwarz-oq-04-oq-01",
+  "description": "Proves (∑ wᵢaᵢbᵢ)² ≤ (∑ wᵢaᵢ²)(∑ wᵢbᵢ²) for positive weights, and Titu's lemma (Engel form): (∑ aᵢ)²/(∑ bᵢ) ≤ ∑ aᵢ²/bᵢ.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ04OQ01.lean",
+    "tags": ["inequalities", "combinatorics", "cauchy-schwarz", "weighted-sums"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 150,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None.",
+    "originalContributions": [
+      "Cauchy-Schwarz for finite sums via the quadratic discriminant proof",
+      "Weighted Cauchy-Schwarz by reduction to unweighted via square-root substitution",
+      "Titu's lemma (Engel form / SOS form) via Cauchy-Schwarz with f=a/√b, g=√b",
+      "Nonnegativity of weighted sums of squares"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Cauchy-Schwarz inequality (Cauchy 1821, Schwarz 1885) is one of the most fundamental and widely used inequalities in mathematics. Titu's lemma (also known as Engel form or Sedrakyan's inequality) is a powerful variant that appears frequently in olympiad mathematics, named after Titu Andreescu. The weighted form generalizes both to positive weight sequences.",
+    "problemStatement": "For finite sequences a, b of real numbers and positive weights w, prove: (1) (∑ wᵢaᵢbᵢ)² ≤ (∑ wᵢaᵢ²)(∑ wᵢbᵢ²), and (2) Titu's lemma: (∑ aᵢ)²/(∑ bᵢ) ≤ ∑ aᵢ²/bᵢ for positive bᵢ.",
+    "proofStrategy": "The unweighted Cauchy-Schwarz is proved via the quadratic discriminant: the polynomial Q(t) = ∑(taᵢ + bᵢ)² ≥ 0 has non-positive discriminant. The weighted form reduces to unweighted by substituting a'ᵢ = √wᵢ·aᵢ, b'ᵢ = √wᵢ·bᵢ. Titu's lemma uses the substitution f = a/√b, g = √b in Cauchy-Schwarz.",
+    "keyInsights": [
+      "The quadratic discriminant proof is self-contained and avoids inner product abstraction",
+      "Weighted Cauchy-Schwarz reduces to unweighted via a √w change of variables",
+      "Titu's lemma is exactly Cauchy-Schwarz applied to a/√b and √b",
+      "The case Σaᵢ² = 0 (all aᵢ = 0) requires separate treatment since the discriminant argument divides by Σaᵢ²"
+    ],
+    "prerequisites": [
+      "Real number arithmetic in Lean 4",
+      "Finset.sum and its properties in Mathlib",
+      "Real.sqrt and its algebraic properties"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "A self-contained Lean 4 proof of the weighted Cauchy-Schwarz inequality and Titu's lemma for finite sums, with 4 theorems and 0 axioms. All proofs use elementary algebraic manipulations and avoid importing the abstract inner product space machinery.",
+    "implications": "Provides verified foundational inequalities for use in combinatorics and analysis proofs throughout the gallery. Titu's lemma in particular is a standard tool in competition mathematics and optimization.",
+    "openQuestions": [
+      "Can this be connected to Mathlib's inner_mul_le_norm_sq_mul_norm_sq for abstract inner product spaces?",
+      "Extension to infinite sums (l² spaces)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "cauchy-schwarz-oq-04",
+      "title": "Cauchy-Schwarz OQ-04",
+      "relationship": "extends"
+    }
+  ],
+  "leanFile": {
+    "namespace": "CauchySchwarzOQ04OQ01",
+    "lineCount": 150,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0
+  }
+}

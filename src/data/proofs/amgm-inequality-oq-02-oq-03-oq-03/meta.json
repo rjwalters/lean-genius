@@ -1,0 +1,63 @@
+{
+  "id": "amgm-inequality-oq-02-oq-03-oq-03",
+  "title": "Full Maclaurin Chain: M₁ ≥ M₂ ≥ ... ≥ Mₙ",
+  "slug": "amgm-inequality-oq-02-oq-03-oq-03",
+  "description": "Proves the full Maclaurin inequality chain Mⱼ ≥ Mₖ for j ≤ k by induction on the gap, using maclaurin_step from the parent. Conditionally verified (1 axiom).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ03OQ03.lean",
+    "tags": ["combinatorics", "inequalities", "maclaurin", "symmetric-functions"],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 1,
+    "lineCount": 67,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "assumptions": "Uses `maclaurin_step` axiom from AmgmInequalityOQ02. If replaced by the proved `maclaurin_step_proved` from AmgmInequalityOQ02OQ03, all results become fully verified.",
+    "originalContributions": [
+      "Full Maclaurin chain theorem by induction on the gap between indices",
+      "Corollary M₁ ≥ Mₙ: arithmetic mean dominates the n-th Maclaurin mean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Maclaurin inequalities, established by Colin Maclaurin in the 18th century, relate the elementary symmetric means of non-negative reals. They generalize the AM-GM inequality to a full chain of n-1 consecutive inequalities between consecutive symmetric means.",
+    "problemStatement": "Given the Maclaurin means Mₖ = (eₖ(x)/C(n,k))^{1/k} for non-negative reals x₁,...,xₙ, prove the full chain M₁ ≥ M₂ ≥ ... ≥ Mₙ by establishing Mⱼ ≥ Mₖ for all 0 < j ≤ k ≤ n.",
+    "proofStrategy": "The proof proceeds by induction on the gap d = k - j. The base case d = 0 is trivial. The inductive step reduces to a single adjacent inequality Mⱼ₊ₘ ≥ Mⱼ₊ₘ₊₁, which is supplied by the parent's `maclaurin_step` axiom. Transitivity closes the chain.",
+    "keyInsights": [
+      "The chain inequality reduces to n-1 adjacent steps by induction",
+      "Each adjacent step Mₖ ≥ Mₖ₊₁ is logically independent and supplied axioomatically",
+      "The special case M₁ ≥ Mₙ recovers AM ≥ geometric-power mean as a corollary"
+    ],
+    "prerequisites": [
+      "Elementary symmetric polynomials and Maclaurin means",
+      "AM-GM inequality",
+      "Newton's inequalities relating consecutive elementary symmetric polynomials"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "The full Maclaurin chain M₁ ≥ M₂ ≥ ... ≥ Mₙ is proved in Lean 4 by induction on the index gap, assuming one axiomatic step. The proof is conditionally complete: replacing the axiom with the proved Newton log-concavity step yields a fully verified chain.",
+    "implications": "This completes the Maclaurin inequality hierarchy in the gallery. Combined with the parent entries, it provides a three-tier formalization: the axiomatic step, the Newton proof of the step, and the full chain derived from either.",
+    "openQuestions": [
+      "Can `maclaurin_step` be proved from Mathlib's existing symmetric function library without the Newton log-concavity route?",
+      "Extension to complex or abstract ordered fields?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "amgm-inequality-oq-02-oq-03",
+      "title": "Maclaurin Step via Newton Log-Concavity",
+      "relationship": "extends"
+    }
+  ],
+  "leanFile": {
+    "namespace": "AmgmInequalityOQ02OQ03OQ03",
+    "lineCount": 67,
+    "axiomCount": 1,
+    "theoremCount": 2,
+    "definitionCount": 0
+  }
+}

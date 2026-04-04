@@ -241,6 +241,24 @@
     "annotationCount": 5
   },
   {
+    "id": "amgm-inequality-oq-02-oq-03-oq-03",
+    "title": "Full Maclaurin Chain: M₁ ≥ M₂ ≥ ... ≥ Mₙ",
+    "slug": "amgm-inequality-oq-02-oq-03-oq-03",
+    "description": "Proves the full Maclaurin inequality chain Mⱼ ≥ Mₖ for j ≤ k by induction on the gap, using maclaurin_step from the parent. Conditionally verified (1 axiom).",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "tags": [
+      "combinatorics",
+      "inequalities",
+      "maclaurin",
+      "symmetric-functions"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "amgm-inequality-oq-03",
     "title": "Power Mean Interpolation: How Do Weighted Power Means Relate to AM and GM?",
     "slug": "amgm-inequality-oq-03",
@@ -3539,6 +3557,24 @@
     "annotationCount": 6
   },
   {
+    "id": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+    "title": "Minkowski's Inequality: ENNReal rpow Cancellation Step",
+    "slug": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+    "description": "Proves the abstract ENNReal cancellation lemma underlying Minkowski's inequality: if X ≤ C·X^q with q < 1, then X^{1-q} ≤ C. Provides the missing rpow division step in the Hölder→Minkowski derivation.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "analysis",
+      "lp-spaces",
+      "minkowski-inequality",
+      "ennreal"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "cauchy-schwarz-integral-oq-03",
     "title": "Complex L2 Cauchy-Schwarz via Bridge Theorem",
     "slug": "cauchy-schwarz-integral-oq-03",
@@ -3779,6 +3815,24 @@
     "mathlibCount": 5,
     "sorries": 0,
     "annotationCount": 12
+  },
+  {
+    "id": "cauchy-schwarz-oq-04-oq-01",
+    "title": "Weighted Cauchy-Schwarz and Titu's Lemma",
+    "slug": "cauchy-schwarz-oq-04-oq-01",
+    "description": "Proves weighted Cauchy-Schwarz (∑wᵢaᵢbᵢ)² ≤ (∑wᵢaᵢ²)(∑wᵢbᵢ²) for positive weights, and Titu's lemma (Engel form): (∑aᵢ)²/(∑bᵢ) ≤ ∑aᵢ²/bᵢ.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "inequalities",
+      "combinatorics",
+      "cauchy-schwarz",
+      "weighted-sums"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
   },
   {
     "id": "cayley-hamilton",
@@ -34193,6 +34247,25 @@
     "annotationCount": 8
   },
   {
+    "id": "kummer-theorem-oq-03",
+    "title": "Kummer's Theorem OQ-03: Divisibility Patterns in Pascal's Triangle mod p^k",
+    "slug": "kummer-theorem-oq-03",
+    "description": "Extends Kummer's theorem with higher prime power divisibility: C(n,k) ≡ 0 (mod p^m) iff ≥ m carries, C(p^n,k) ≡ 0 (mod p) for 0 < k < p^n, and p-adic valuation bounds for specific patterns.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "kummer-theorem",
+      "p-adic",
+      "binomial-coefficient"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "lagrange-four-squares",
     "title": "Lagrange's Four Squares Theorem",
     "slug": "lagrange-four-squares",
@@ -35675,6 +35748,24 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 6
+  },
+  {
+    "id": "prob-method-second-moment-oq-01",
+    "title": "Quantitative Paley-Zygmund Inequality",
+    "slug": "prob-method-second-moment-oq-01",
+    "description": "Proves the quantitative Paley-Zygmund inequality: P[X > θ·E[X]] ≥ (1-θ)²·E[X]²/E[X²] for non-negative X and θ ∈ [0,1]. Extends the second moment method with an explicit threshold parameter.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "second-moment-method",
+      "paley-zygmund"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
   },
   {
     "id": "product-of-segments-of-chords",
