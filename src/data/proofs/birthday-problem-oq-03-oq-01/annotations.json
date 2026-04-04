@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ann-bday-context",
+    "proofId": "birthday-problem-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "k=3 Birthday Problem: Extension Counting Framework",
+    "content": "The **k=3 birthday problem** asks: how many people are needed for a 50% chance that 3+ share a birthday? (Answer: 88, vs 23 for k=2.) This file develops the **extension-counting framework**: adding one person to a valid $n$-assignment, the number of valid days is $d - \\#\\{\\text{full days}\\}$. This enables a recursion for the exact probability $P(\\text{all assignments have} < 3 \\text{ per day})$.",
+    "mathContext": "An assignment $f: \\text{Fin}(n) \\to \\text{Fin}(d)$ is **k-valid** if every day has $< k$ people: $|\\text{fiber}(j)| < k$ for all $j$. For $k=3$: max 2 per day. The probability of no triple coincidence is $|\\{f: \\text{k-valid}\\}|/d^n$. The **pigeonhole limit**: when $n \\geq (k-1)d$, every valid assignment must have some day full by the fiber-sum constraint. For $k=3$, $d=365$: the threshold is $n=88$ for $P > 0.5$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "birthday problem k=3",
+      "extension counting technique",
+      "pigeonhole principle",
+      "fiber sum identity",
+      "Diaconis-Mosteller (1989)"
+    ],
+    "prerequisites": [
+      "BirthdayProblemOQ03.lean parent formalization",
+      "Fin n → Fin d as assignment type",
+      "Finset.filter for fibers"
+    ]
+  },
+  {
+    "id": "ann-bday-fiber",
+    "proofId": "birthday-problem-oq-03-oq-01",
+    "range": { "startLine": 37, "endLine": 57 },
+    "type": "definition",
+    "title": "fiberAt and Fiber Partition Sum",
+    "content": "**fiberAt(f, j)**: the set of people assigned to day $j$ — `Finset.univ.filter (fun i => f i = j)`. **fiberAt_sum**: $\\sum_j |\\text{fiberAt}(f,j)| = n$ — people are partitioned by day. Proved via `Finset.card_eq_sum_card_fiberwise` from Mathlib, which unifies `Fintype.card_fin n = n` with the fiber decomposition.",
+    "mathContext": "`Finset.card_eq_sum_card_fiberwise` states: for $f: s \\to t$, $|s| = \\sum_{j \\in t} |f^{-1}(j) \\cap s|$. Here $s = \\text{Fin}(n)$ and $t = \\text{Fin}(d)$, with $|\\text{Fin}(n)| = n$ via `Fintype.card_fin`. The proof applies this with `simp only` to simplify the fiberwise formula, then `linarith` to close the numeric equality $n = n$. This fiber partition is the foundation for all subsequent counting arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_eq_sum_card_fiberwise",
+      "Fintype.card_fin",
+      "fiber partition",
+      "Finset.univ.filter",
+      "linarith for arithmetic"
+    ],
+    "prerequisites": [
+      "Finset.card_eq_sum_card_fiberwise from Mathlib",
+      "Fintype.card_fin n = n",
+      "Finset.univ as the universal finset"
+    ]
+  },
+  {
+    "id": "ann-bday-fulldays",
+    "proofId": "birthday-problem-oq-03-oq-01",
+    "range": { "startLine": 59, "endLine": 108 },
+    "type": "definition",
+    "title": "Full-Days Bound: Below Pigeonhole, Not All Days Full",
+    "content": "**daysWithExactly(f, m)**: days with exactly $m$ people. **fullDays(f, k)**: days with $k-1$ people (at capacity). **fullDays_card_le**: $|\\text{fullDays}| \\leq d$ trivially. **fullDays_lt_d**: if $n < (k-1)d$, then $|\\text{fullDays}| < d$. Proof by contradiction: if all $d$ days were full, $\\sum_j |\\text{fiber}(j)| = (k-1)d > n$, contradicting the fiber sum identity.",
+    "mathContext": "The contradiction in `fullDays_lt_d`: assume $|\\text{fullDays}| \\geq d$. Since $|\\text{fullDays}| \\leq d$ always (it's a subset of $\\text{Fin}(d)$), we get $|\\text{fullDays}| = d$, so `fullDays f k = Finset.univ` via `Finset.eq_univ_of_card`. Then $\\sum_j |\\text{fiber}(j)| \\geq \\sum_j (k-1) = (k-1)d$ (since each day $j$ is full, so $|\\text{fiber}(j)| \\geq k-1$). But $\\sum_j |\\text{fiber}(j)| = n < (k-1)d$ by hypothesis — contradiction via `omega`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fullDays definition",
+      "Finset.eq_univ_of_card",
+      "fiber-sum contradiction",
+      "by_contra and push_neg",
+      "Finset.sum_le_sum for aggregate bounds"
+    ],
+    "prerequisites": [
+      "fiberAt_sum for fiber partition",
+      "daysWithExactly filter definition",
+      "Finset.eq_univ_of_card uniqueness"
+    ]
+  },
+  {
+    "id": "ann-bday-extension",
+    "proofId": "birthday-problem-oq-03-oq-01",
+    "range": { "startLine": 110, "endLine": 144 },
+    "type": "definition",
+    "title": "extensionCount: Valid Days for New Person",
+    "content": "**extensionCount(f, k)** = $d - |\\text{fullDays}(f, k)|$ — the number of valid days for placing a new person. **extensionCount_le**: $\\leq d$ trivially. **extensionCount_pos**: below pigeonhole limit, at least one valid day. **fullDays_k3**: for $k=3$, full days = doubled days (days with exactly 2 people). **extension_possible_k3**: for $n < 2d$ with valid $k=3$ assignment, extension is always possible.",
+    "mathContext": "For $k=3$: a new person can go on any day with $< 2$ people — the `extensionCount` is $d - \\#\\{\\text{doubled days}\\}$. `extension_possible_k3` specializes `extensionCount_pos` to $k=3$: use $n < 2d$ and `hvalid : \\forall j, |\\text{fiber}(j)| \\leq 2$. The proof is just `apply extensionCount_pos f 3 (by omega) (by omega) hvalid` — the omega calls verify $1 \\leq 3$ and $n < (3-1) \\cdot d = 2d$. The `extensionCount` is the key to the recursive formula for counting valid assignments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extensionCount definition",
+      "fullDays_k3 = daysWithExactly f 2",
+      "extension_possible_k3",
+      "recursive assignment counting",
+      "omega for arithmetic goals"
+    ],
+    "prerequisites": [
+      "fullDays_lt_d for positivity",
+      "extensionCount = d - card(fullDays)",
+      "k=3 validity condition"
+    ]
+  },
+  {
+    "id": "ann-bday-trichotomy",
+    "proofId": "birthday-problem-oq-03-oq-01",
+    "range": { "startLine": 146, "endLine": 207 },
+    "type": "theorem",
+    "title": "Day Type Decomposition: 0/1/2 People Per Day",
+    "content": "For a valid $k=3$ assignment: **day_type_trichotomy** — each day $j$ has 0, 1, or 2 people (by `omega` from the bound $\\leq 2$). **day_types_disjoint_01/02/12** — the three sets are pairwise disjoint (by `Finset.disjoint_filter.mpr` + `omega`). **day_types_cover** — together they cover $\\text{Fin}(d)$. **day_types_sum_d** — their cardinalities sum to $d$.",
+    "mathContext": "`day_types_sum_d` chains: $(|E| + |S|) + |D| = |E \\cup S| + |D|$ (by `card_union_of_disjoint` for E∪S and D) $= |(E \\cup S) \\cup D|$ (by `card_union_of_disjoint`) $= |\\text{univ}| = d$ (using `day_types_cover`). The `Finset.card_union_of_disjoint` requires the disjointness theorems. The pairwise disjointness proofs all use `Finset.disjoint_filter.mpr` with `omega`: if $j$ has 0 people, it can't also have 1, etc.",
+    "significance": "key",
+    "relatedConcepts": [
+      "day type trichotomy",
+      "Finset.disjoint_filter.mpr",
+      "Finset.card_union_of_disjoint",
+      "day_types_cover via ext",
+      "partition into 3 types"
+    ],
+    "prerequisites": [
+      "daysWithExactly for day type sets",
+      "Finset.disjoint_filter for disjointness",
+      "Finset.card_union_of_disjoint for counting"
+    ]
+  },
+  {
+    "id": "ann-bday-restriction",
+    "proofId": "birthday-problem-oq-03-oq-01",
+    "range": { "startLine": 209, "endLine": 230 },
+    "type": "theorem",
+    "title": "Restriction: Removing Last Person Preserves Validity",
+    "content": "**fiberAt_restrict_le**: the restricted assignment $f \\circ \\text{Fin.castSucc}$ (ignoring the last person) has weakly smaller fibers: $|\\text{fiberAt}(f \\circ \\text{castSucc}, j)| \\leq |\\text{fiberAt}(f, j)|$. **restrict_valid**: if $f: \\text{Fin}(n+1) \\to \\text{Fin}(d)$ is valid, so is its restriction to $\\text{Fin}(n)$.",
+    "mathContext": "`Fin.castSucc : Fin n → Fin (n+1)` embeds the first $n$ elements. `f ∘ Fin.castSucc` is the restriction of $f$ to the first $n$ people. The fiber of the restriction is a subset of the fiber of $f$ (the last person is in the fiber of $f$ but not of the restriction). `fiberAt_restrict_le` proves this via `Finset.card_le_card` and `Finset.mem_filter` — any element of the restricted fiber is also in the full fiber. `restrict_valid` composes with `fullDays_lt_d` to enable the recursive structure: going from $n+1$ back to $n$ gives a valid assignment.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fin.castSucc embedding",
+      "function composition f ∘ castSucc",
+      "Finset.card_le_card for subset",
+      "restriction monotonicity",
+      "recursive structure"
+    ],
+    "prerequisites": [
+      "fiberAt definition",
+      "Fin.castSucc : Fin n → Fin (n+1)",
+      "Finset.card_le_card for subset inclusion"
+    ]
+  }
+]
