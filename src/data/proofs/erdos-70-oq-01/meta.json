@@ -82,28 +82,43 @@
   "sections": [
     {
       "id": "partition-arrow-framework",
-      "title": "Partition Arrow Framework",
-      "content": "The formalization defines `PartitionArrow κ α m` to mean: for every 2-coloring of 3-element subsets of a set of cardinality κ, there is either (a) a subset of cardinality ≥ α.card that is homogeneous in color 0, or (b) a finite subset of size ≥ m homogeneous in color 1. The definition uses `HasOrderTypeAtLeast S H α := α.card ≤ #H`, capturing order type via cardinal comparison."
+      "title": "Part I-II: Definitions and Open Question",
+      "content": "The formalization defines `PartitionArrow κ α m` to mean: for every 2-coloring of 3-element subsets of a set of cardinality κ, there is either (a) a subset of cardinality ≥ α.card that is homogeneous in color 0, or (b) a finite subset of size ≥ m homogeneous in color 1. The definition uses `HasOrderTypeAtLeast S H α := α.card ≤ #H`, capturing order type via cardinal comparison.",
+      "startLine": 36,
+      "endLine": 90,
+      "summary": "Coloring, IsHomogeneous, HasOrderTypeAtLeast, PartitionArrow definitions. OmegaSquaredPartition, OmegaSquaredConjecture, Erdos70Conjecture."
     },
     {
       "id": "ordinal-hierarchy",
-      "title": "Ordinal Arithmetic: The ω+n ≤ ω·k < ω² Hierarchy",
-      "content": "Three key results establish the ordinal hierarchy. (1) `omega_mul_k_lt_omega_squared`: ω·k < ω² for all finite k, proved directly from `Ordinal.mul_lt_mul_of_pos_left`. (2) `omega_plus_n_le_omega_squared`: ω+n ≤ ω², proved via the chain ω+n ≤ ω+ω = ω·2 ≤ ω·ω = ω². (3) `omega_squared_countable`: card(ω²) = ℵ₀, from `Cardinal.aleph0_mul_aleph0`. These are all machine-verified Mathlib consequences."
+      "title": "Part III: Ordinal Arithmetic and Countability",
+      "content": "Three key results establish the ordinal hierarchy. (1) `omega_mul_k_lt_omega_squared`: ω·k < ω² for all finite k, proved directly from `Ordinal.mul_lt_mul_of_pos_left`. (2) `omega_plus_n_le_omega_squared`: ω+n ≤ ω², proved via the chain ω+n ≤ ω+ω = ω·2 ≤ ω·ω = ω². (3) `omega_squared_countable`: card(ω²) = ℵ₀, from `Cardinal.aleph0_mul_aleph0`. These are all machine-verified Mathlib consequences.",
+      "startLine": 91,
+      "endLine": 121,
+      "summary": "omega_squared_countable (ℵ₀·ℵ₀ = ℵ₀); omega_mul_k_lt_omega_squared; omega_plus_n_le_omega_squared via calc chain."
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity of the Partition Arrow",
-      "content": "The partition arrow is antimonotone in the ordinal parameter: `partition_arrow_mono_ordinal` proves that if α ≤ β then κ → (β, m) ⟹ κ → (α, m). The proof is structural — given a homogeneous set H of order type ≥ β, it suffices for order type ≥ α since `Ordinal.card_le_card hαβ` gives α.card ≤ β.card ≤ #H. Monotonicity in the finite parameter (`partition_arrow_mono_size`) is similar."
+      "title": "Part IV: Monotonicity of the Partition Arrow",
+      "content": "The partition arrow is antimonotone in the ordinal parameter: `partition_arrow_mono_ordinal` proves that if α ≤ β then κ → (β, m) ⟹ κ → (α, m). The proof is structural — given a homogeneous set H of order type ≥ β, it suffices for order type ≥ α since `Ordinal.card_le_card hαβ` gives α.card ≤ β.card ≤ #H. Monotonicity in the finite parameter (`partition_arrow_mono_size`) is similar.",
+      "startLine": 122,
+      "endLine": 145,
+      "summary": "partition_arrow_mono_ordinal (antimonotone in ordinal); partition_arrow_mono_size (antimonotone in finite param)."
     },
     {
       "id": "implications-chain",
-      "title": "Implications: ω² Dominates ω·k and ω+n",
-      "content": "Two key implication theorems: (1) `omega_squared_implies_omega_plus_n`: the ω² partition property implies the Erdős-Rado result for all ω+n, via monotonicity and the ordinal inequality. (2) `omega_squared_implies_omega_mult_k`: the ω² case implies all ω·k cases for finite k. The full Erdős 70 conjecture implies the ω² case (`erdos70_implies_omega_squared`), but not vice versa."
+      "title": "Part IV-V: Implications Chain",
+      "content": "Two key implication theorems: (1) `omega_squared_implies_omega_plus_n`: the ω² partition property implies the Erdős-Rado result for all ω+n, via monotonicity and the ordinal inequality. (2) `omega_squared_implies_omega_mult_k`: the ω² case implies all ω·k cases for finite k. The full Erdős 70 conjecture implies the ω² case (`erdos70_implies_omega_squared`), but not vice versa.",
+      "startLine": 147,
+      "endLine": 195,
+      "summary": "omega_squared_implies_omega_plus_n; erdos70_implies_omega_squared; stepping_down chain; omega_squared_implies_omega_mult_k."
     },
     {
       "id": "stepping-up-challenge",
-      "title": "Why the ω² Case is Genuinely Hard",
-      "content": "The `omega_squared_is_limit` theorem — ω² is a limit ordinal — is the structural explanation for the difficulty. The Erdős-Rado proof uses a direct combinatorial argument that works for successor-like ordinals (ω+n). Reaching ω² requires 'stepping up' through the limit ω·k → ω·(k+1) → … → ω². Each step requires new techniques. The `stepping_down` theorem (ω·k partition implies ω·(k-1) partition) is the easy direction; 'stepping up' is the hard open problem."
+      "title": "Part VI: Proof Complexity and Summary",
+      "content": "The `omega_squared_is_limit` theorem — ω² is a limit ordinal — is the structural explanation for the difficulty. The Erdős-Rado proof uses a direct combinatorial argument that works for successor-like ordinals (ω+n). Reaching ω² requires 'stepping up' through the limit ω·k → ω·(k+1) → … → ω². Each step requires new techniques. The `stepping_down` theorem (ω·k partition implies ω·(k-1) partition) is the easy direction; 'stepping up' is the hard open problem.",
+      "startLine": 197,
+      "endLine": 240,
+      "summary": "hierarchy_strict_growth, omega_squared_is_limit (limit ordinal property explains stepping-up difficulty). Summary listing all 12 proved theorems."
     }
   ],
   "conclusion": {
