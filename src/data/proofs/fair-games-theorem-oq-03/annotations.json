@@ -1,40 +1,102 @@
-{
-  "annotations": [
-    {
-      "id": "martingale-time-invariance",
-      "lineStart": 50,
-      "lineEnd": 70,
-      "type": "theorem",
-      "title": "Martingale Time Invariance via setIntegral_eq",
-      "body": "**Core insight**: E[f_n] = E[f_0] is proved using `Martingale.setIntegral_eq` with `s = Set.univ`, rather than the Optional Stopping Theorem directly. This bypasses the `τ : Ω → ℕ∞` API complexity. The proof is: `hf.setIntegral_eq (Nat.zero_le n) MeasurableSet.univ`, then `simp only [Measure.restrict_univ]`.",
-      "mathContext": "∀ n, E[f_n] = E[f_0]"
+[
+  {
+    "id": "mathlib-api-discovery",
+    "proofId": "fair-games-theorem-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
     },
-    {
-      "id": "gamblers-ruin-algebra",
-      "lineStart": 86,
-      "lineEnd": 102,
-      "type": "theorem",
-      "title": "Gambler's Ruin Formula (Algebraic)",
-      "body": "The key step: from `p * (W₀ + a) = W₀` (the fair game condition), we derive `p = W₀/(W₀+a)` by dividing both sides by `W₀ + a`. This requires only `rw [eq_div_iff hWa]; linarith` — the Optional Stopping Theorem has already done the hard work by establishing E[final wealth] = E[initial wealth].",
-      "mathContext": "p = W₀/(W₀+a) when p·(W₀+a) = W₀"
+    "type": "insight",
+    "title": "Mathlib 4.26.0 Breaking Change: IsStoppingTime API",
+    "content": "During formalization, we discovered that Mathlib 4.26.0 changed `IsStoppingTime` from `τ : Ω → ι` to `τ : Ω → WithTop ι`. This means FairGamesTheorem.lean (written for an older API) has pre-existing build failures. The `stoppedValue` function now uses `WithTop.untopA` for evaluation. Four theorems in this file remain as sorries pending resolution of the `stoppedValue`/`untopA` simp API.",
+    "mathContext": "`WithTop ℕ` (also written `ℕ∞`) is `ℕ ⊕ {⊤}` — the extended naturals with a top element `⊤ = ∞` representing \"never stop\". `IsStoppingTime ℱ (τ : Ω → ℕ∞)` means `∀ n : ℕ, {ω | τ ω ≤ ↑n} ∈ ℱ n`, where `↑n : ℕ∞` is the coercion. The old API `τ : Ω → ℕ` forced stopping to be finite, making `⊤` impossible to represent. `stoppedValue f τ ω` is now defined as `f (WithTop.untopD 0 (τ ω)) ω` — `untopD d x` extracts the ℕ value from `ℕ∞` with default `d` when `x = ⊤`. The four sorry'd theorems fail because unfolding `stoppedValue` produces `WithTop.untopD 0 (τ ω)` goals that require specific `simp` lemmas about `untopD`/`untopA` commutativity with arithmetic that weren't stabilized in Mathlib 4.26.0. The martingale time-invariance proof sidesteps this entirely by using `setIntegral_eq` instead of `stoppedValue`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "WithTop ℕ",
+      "IsStoppingTime",
+      "stoppedValue",
+      "WithTop.untopD",
+      "ℕ∞"
+    ],
+    "prerequisites": [
+      "extended naturals WithTop ℕ",
+      "Lean 4 typeclass inference",
+      "Measure theory filtrations"
+    ]
+  },
+  {
+    "id": "martingale-time-invariance",
+    "proofId": "fair-games-theorem-oq-03",
+    "range": {
+      "startLine": 50,
+      "endLine": 70
     },
-    {
-      "id": "axiom-elimination",
-      "lineStart": 195,
-      "lineEnd": 225,
-      "type": "theorem",
-      "title": "Axiom Elimination via Mathlib iff",
-      "body": "The axiom `submartingale_of_stoppedValue_mono` in FairGamesTheorem.lean is the backward direction of Mathlib's `submartingale_iff_expected_stoppedValue_mono`. This theorem eliminates it: `rw [submartingale_iff_expected_stoppedValue_mono hadapt hint]` rewrites the Submartingale goal to the iff's RHS, then `exact h` closes the goal in one step. The hypothesis `h` is stated with ℕ∞ stopping times (the Mathlib 4.26.0 API), unlike the axiom which used ℕ.",
-      "mathContext": "E[f_τ] ≤ E[f_π] for all bounded τ≤π (ℕ∞) ↔ Submartingale f"
+    "type": "theorem",
+    "title": "Martingale Time Invariance via setIntegral_eq",
+    "content": "**Core insight**: E[f_n] = E[f_0] is proved using `Martingale.setIntegral_eq` with `s = Set.univ`, rather than the Optional Stopping Theorem directly. This bypasses the `τ : Ω → ℕ∞` API complexity.\n\nProof: `hf.setIntegral_eq (Nat.zero_le n) MeasurableSet.univ`, then `simp only [Measure.restrict_univ]`, then `exact h.symm`.",
+    "mathContext": "`Martingale.setIntegral_eq` has signature: `hf.setIntegral_eq (h : i ≤ j) (hs : MeasurableSet s) : ∫ ω in s, f i ω ∂μ = ∫ ω in s, f j ω ∂μ`. With `s = Set.univ`, after `hf.setIntegral_eq (Nat.zero_le n) MeasurableSet.univ`, we get `h : ∫ ω in Set.univ, f 0 ω ∂μ = ∫ ω in Set.univ, f n ω ∂μ`. Then `simp only [Measure.restrict_univ] at h` rewrites `μ.restrict Set.univ` to `μ` (restricting to the whole space is identity), giving `h : ∫ ω, f 0 ω ∂μ = ∫ ω, f n ω ∂μ`. Finally `exact h.symm`. `[IsProbabilityMeasure μ]` provides `SigmaFiniteFiltration ℱ μ` (required by `setIntegral_eq`) via `IsFiniteMeasure`. Alternative: define constant stopping time `τ(ω) = n` as a valid `ℕ∞`-stopping time and apply Optional Stopping — blocked by the 4.26.0 `stoppedValue` API change.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Martingale.setIntegral_eq",
+      "Measure.restrict_univ",
+      "IsProbabilityMeasure",
+      "SigmaFiniteFiltration",
+      "setIntegral"
+    ],
+    "prerequisites": [
+      "Lebesgue integral on measure spaces",
+      "Filtration and Adapted processes in Lean 4",
+      "Martingale definition in Mathlib"
+    ]
+  },
+  {
+    "id": "gamblers-ruin-algebra",
+    "proofId": "fair-games-theorem-oq-03",
+    "range": {
+      "startLine": 86,
+      "endLine": 118
     },
-    {
-      "id": "mathlib-api-discovery",
-      "lineStart": 1,
-      "lineEnd": 30,
-      "type": "insight",
-      "title": "Mathlib 4.26.0 Breaking Change: IsStoppingTime API",
-      "body": "During formalization, we discovered that Mathlib 4.26.0 changed `IsStoppingTime` from `τ : Ω → ι` to `τ : Ω → WithTop ι`. This means FairGamesTheorem.lean (written for an older API) has pre-existing build failures. The `stoppedValue` function now uses `WithTop.untopA` for evaluation. Four theorems in this file remain as sorries pending resolution of the `stoppedValue`/`untopA` simp API.",
-      "mathContext": "IsStoppingTime ℱ : (Ω → WithTop ℕ) → Prop in Mathlib 4.26.0"
-    }
-  ]
-}
+    "type": "theorem",
+    "title": "Gambler's Ruin Formula (Algebraic)",
+    "content": "The key step: from `p * (W₀ + a) = W₀` (the fair game condition), we derive `p = W₀/(W₀+a)` by dividing both sides by `W₀ + a`. This requires only `rw [eq_div_iff hWa]; linarith` — the Optional Stopping Theorem has already done the hard work by establishing E[final wealth] = E[initial wealth].\n\nThree theorems: `gamblers_ruin_win_prob`, `gamblers_ruin_lose_prob`, `gamblers_ruin_probs_sum_one`.",
+    "mathContext": "`eq_div_iff hWa : b / c = a ↔ b = a * c` (when `c ≠ 0`). `rw [eq_div_iff hWa]` transforms goal `p = W₀ / (W₀ + a)` to `p * (W₀ + a) = W₀`, which is `hfair`. Then `linarith` closes it. `hWa : W₀ + a ≠ 0` from `ne_of_gt (by linarith)` using `hW : 0 < W₀` and `ha : 0 < a`. `gamblers_ruin_lose_prob` chains: `hp_eq : p = W₀/(W₀+a)` from the first theorem, then `rw [hp_eq]`, `field_simp [hWa]`, `ring` simplifies `1 - W₀/(W₀+a) = a/(W₀+a)`. `gamblers_ruin_probs_sum_one` is `by ring` (algebraic identity). In classical Gambler's Ruin: player starts at $W_0 \\in \\{1, \\ldots, N-1\\}$, wins or loses £1 per step with equal probability, stops at 0 (ruin) or $N = W_0 + a$ (goal). Win probability = $W_0/N$, ruin probability = $a/N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "eq_div_iff",
+      "field_simp",
+      "Gambler's Ruin problem",
+      "Optional Stopping Theorem",
+      "ne_of_gt"
+    ],
+    "prerequisites": [
+      "real arithmetic in Lean 4",
+      "linarith tactic",
+      "Optional Stopping Theorem statement"
+    ]
+  },
+  {
+    "id": "axiom-elimination",
+    "proofId": "fair-games-theorem-oq-03",
+    "range": {
+      "startLine": 195,
+      "endLine": 225
+    },
+    "type": "theorem",
+    "title": "Axiom Elimination via Mathlib iff",
+    "content": "The axiom `submartingale_of_stoppedValue_mono` in FairGamesTheorem.lean is the backward direction of Mathlib's `submartingale_iff_expected_stoppedValue_mono`. This theorem eliminates it:\n\n```lean\nrw [submartingale_iff_expected_stoppedValue_mono hadapt hint]\nexact h\n```\n\nThe hypothesis `h` uses ℕ∞ stopping times (Mathlib 4.26.0 API). Net effect: −1 axiom from the overall development.",
+    "mathContext": "`submartingale_iff_expected_stoppedValue_mono hadapt hint : Submartingale f ℱ μ ↔ ∀ τ π : Ω → ℕ∞, IsStoppingTime ℱ τ → IsStoppingTime ℱ π → τ ≤ π → (∃ N, ∀ ω, π ω ≤ N) → ∫ ω, stoppedValue f τ ω ∂μ ≤ ∫ ω, stoppedValue f π ω ∂μ`. When goal is `Submartingale f ℱ μ`, `rw [...]` uses the iff to rewrite the goal to its RHS — Lean 4's `rw` applied to a proposition at goal position. New goal matches `h` exactly, so `exact h` closes. Type-theoretically: this is `exact (submartingale_iff_expected_stoppedValue_mono hadapt hint).mpr h`. The two arguments `hadapt : Adapted ℱ f` and `hint : ∀ n, Integrable (f n) μ` are hypotheses required by the iff for its backward direction. This proof reduces the `axiom` count in `FairGamesTheorem.lean` by 1 (the axiom becomes a theorem here).",
+    "significance": "key",
+    "relatedConcepts": [
+      "submartingale_iff_expected_stoppedValue_mono",
+      "Submartingale",
+      "stoppedValue",
+      "Iff.mpr",
+      "IsStoppingTime"
+    ],
+    "prerequisites": [
+      "Submartingale definition in Lean 4/Mathlib",
+      "rw tactic with iff lemmas",
+      "Optional Stopping Theorem (biconditional form)"
+    ]
+  }
+]
