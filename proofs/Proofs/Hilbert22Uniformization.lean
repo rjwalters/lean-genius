@@ -289,15 +289,15 @@ is: YES, in a complete and canonical way.
 - Deep connections to number theory (modular forms)
 -/
 
-/-- Summary: Hilbert's 22nd problem is completely solved.
-    The Uniformization Theorem provides a canonical parametrization
-    of all Riemann surfaces by one of three model spaces. -/
-theorem hilbert_22_status :
-    (∃ (_ : UniformizationType → True), True) ∧  -- Trichotomy exists
-    (∃ (_ : Prop), True) ∧  -- Riemann mapping theorem
-    (∃ (_ : Prop), True) ∧  -- Koebe's proof (1907)
-    (∃ (_ : Prop), True)    -- Poincaré's proof (1907)
-    := ⟨⟨fun _ => trivial, trivial⟩, ⟨True, trivial⟩, ⟨True, trivial⟩, ⟨True, trivial⟩⟩
+/-
+**Summary: Hilbert's 22nd problem is completely solved.**
+The Uniformization Theorem (Koebe 1907, Poincaré 1907) provides a canonical
+parametrization of all Riemann surfaces by one of three model spaces:
+- Trichotomy: every simply connected Riemann surface ≅ sphere, ℂ, or disk
+- Riemann mapping theorem: the disk case for proper subsets of ℂ
+- Koebe's proof (1907): via circle packing and continuity methods
+- Poincaré's proof (1907): via potential theory and harmonic functions
+-/
 
 /-- The problem is resolved: uniformization is always possible -/
 theorem uniformization_complete : (1 : ℕ) + 1 = 2 := rfl

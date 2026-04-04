@@ -147,11 +147,8 @@ def IsExtremal (L : ℝ → ℝ → ℝ → ℝ) (y : ℝ → ℝ) : Prop :=
     If y is a local minimizer of J[y] = ∫ L(x, y, y') dx, then y
     satisfies the Euler-Lagrange equation.
 
-/-- The Euler-Lagrange equation can be written in "weak form":
-    ∫ (∂L/∂y · η + ∂L/∂y' · η') dx = 0 for all test functions η -/
-theorem euler_lagrange_weak_form (L : ℝ → ℝ → ℝ → ℝ) (y : ℝ → ℝ)
-    (a b : ℝ) (_hextremal : IsExtremal L y) (_η : TestFunction a b) :
-    ∃ (integral_condition : Prop), integral_condition := ⟨True, trivial⟩
+-- The Euler-Lagrange equation in "weak form":
+-- ∫ (∂L/∂y · η + ∂L/∂y' · η') dx = 0 for all test functions η ∈ C₀^∞([a,b]).
 
 end EulerLagrange
 
@@ -284,15 +281,12 @@ The 20th century saw explosive growth in variational methods:
 
 section ModernDevelopments
 
-/-- Many important PDEs are Euler-Lagrange equations:
-    - Laplace equation: Dirichlet energy
-    - Wave equation: Action functional
-    - Heat equation: Related to Wasserstein gradient flow -/
-theorem pdes_are_variational :
-    (∃ _L : ℝ → ℝ → ℝ → ℝ, True) ∧  -- Laplace
-    (∃ _L : ℝ → ℝ → ℝ → ℝ, True) ∧  -- Wave
-    (∃ _L : ℝ → ℝ → ℝ → ℝ, True)    -- Many others
-    := ⟨⟨fun _ _ _ => 0, trivial⟩, ⟨fun _ _ _ => 0, trivial⟩, ⟨fun _ _ _ => 0, trivial⟩⟩
+/-
+**Many important PDEs are Euler-Lagrange equations**:
+- Laplace equation: minimizes Dirichlet energy ∫|∇u|²
+- Wave equation: extremizes action functional ∫(u_t² - |∇u|²)
+- Heat equation: related to Wasserstein gradient flow (Benamou-Brenier, 2000)
+-/
 
 end ModernDevelopments
 
@@ -317,15 +311,14 @@ Unlike most Hilbert problems with definitive solutions, Problem 23 is a
 **living research program** that continues to evolve.
 -/
 
-/-- Summary: Hilbert's 23rd problem called for developing calculus of variations.
-    The response includes the Euler-Lagrange equation, direct methods,
-    optimal control, and many modern extensions. -/
-theorem hilbert_23_status :
-    (∃ (_ : Prop), True) ∧  -- Euler-Lagrange: established
-    (∃ (_ : Prop), True) ∧  -- Direct methods: developed
-    (∃ (_ : Prop), True) ∧  -- Optimal control: created
-    (∃ (_ : Prop), True)    -- Continuing research program
-    := ⟨⟨True, trivial⟩, ⟨True, trivial⟩, ⟨True, trivial⟩, ⟨True, trivial⟩⟩
+/-
+**Summary: Hilbert's 23rd problem called for developing calculus of variations.**
+The 20th century response includes:
+- Euler-Lagrange equation: established as the fundamental necessary condition
+- Direct methods (Tonelli, 1920s): existence of minimizers via weak convergence
+- Optimal control (Pontryagin, 1950s): generalization to control problems
+- Continuing research: optimal transport, ML optimization, materials science
+-/
 
 /-- The research program continues: modern applications include
     optimal transport, machine learning, and materials science. -/
