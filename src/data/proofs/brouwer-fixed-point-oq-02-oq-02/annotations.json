@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-bfp2-context",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Query Complexity for Fixed Points: Banach vs Binary Search vs Newton",
+    "content": "This file formalizes the **query complexity hierarchy** for finding approximate fixed points across function classes: (1) **contraction maps** ($L < 1$): geometric convergence, $\\lceil \\log_L(\\varepsilon/D) \\rceil$ iterations; (2) **continuous self-maps of $[0,1]$**: binary search, $\\lceil \\log_2(1/\\varepsilon) \\rceil$ queries; (3) **smooth contractions**: quadratic/Newton convergence, $O(\\log \\log(1/\\varepsilon))$ queries. Tighter function class = fewer queries.",
+    "mathContext": "The **PPAD connection** (Chen-Deng 2009): finding $\\varepsilon$-approximate Brouwer fixed points is PPAD-complete. The query complexity of finding approximate fixed points is thus a fundamental question in algorithmic game theory. For 1D maps: binary search solves IVT-based fixed point computation in $O(\\log(1/\\varepsilon))$ queries. For contractions: Banach iteration gives $O(\\log(1/\\varepsilon) / \\log(1/L))$ queries. For Newton's method ($L \\sim 0$): $O(\\log \\log(1/\\varepsilon))$ queries — double-exponentially fast.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Banach fixed-point theorem",
+      "PPAD complexity",
+      "query complexity",
+      "binary search for IVT",
+      "Newton's method convergence"
+    ],
+    "prerequisites": [
+      "BrouwerFixedPointOQ02.lean parent formalization",
+      "contraction mapping (Banach 1922)",
+      "IsLipschitzOn01 and IsContractionOn01 definitions"
+    ]
+  },
+  {
+    "id": "ann-bfp2-contraction-defs",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 37, "endLine": 52 },
+    "type": "definition",
+    "title": "IsLipschitzOn01 and IsContractionOn01",
+    "content": "**IsLipschitzOn01(f, L)**: $|f(x) - f(y)| \\leq L|x-y|$ for all $x, y \\in [0,1]$. **IsContractionOn01(f, L)**: `IsLipschitzOn01 f L ∧ L < 1 ∧ ∀ x ∈ Icc 0 1, f x ∈ Icc 0 1` — maps $[0,1]$ to itself with Lipschitz constant $< 1$. **contraction_is_lipschitz**: every contraction is Lipschitz (trivially, by projection of the conjunction).",
+    "mathContext": "These are **domain-restricted** definitions on $[0,1]$ — deliberately not using Mathlib's `ContractingWith` (which works on general metric spaces with completeness). The restriction to $[0,1]$ allows simpler interval arithmetic and direct connection to the binary search bound. `Icc 0 1 : Set ℝ` is the closed interval $[0,1]$. The separate self-map condition `f x ∈ Icc 0 1` (for all $x \\in [0,1]$) is needed for iterates to remain in the domain.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lipschitz continuity",
+      "contraction mapping",
+      "Banach fixed-point theorem",
+      "Set.Icc for intervals",
+      "ContractingWith typeclass in Mathlib"
+    ],
+    "prerequisites": [
+      "Lipschitz condition definition",
+      "Set.Icc 0 1 as the unit interval",
+      "Mathlib's Metric.lipschitzWith for comparison"
+    ]
+  },
+  {
+    "id": "ann-bfp2-contraction-theorems",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 54, "endLine": 122 },
+    "type": "theorem",
+    "title": "Banach Iteration: Uniqueness, Error Bound, and Finite Approximation",
+    "content": "**contraction_unique_fixed_point**: If $f$ is a contraction with $L < 1$, it has at most one fixed point. **contraction_error_bound**: $|f^n(x_0) - x^*| \\leq L^n |x_0 - x^*|$ — geometric decay. **contraction_epsilon_approximation**: for large enough $n$, $|f^n(x_0) - x^*| < \\varepsilon$. **contraction_finite_iterations**: with $D = $ diameter and $\\varepsilon > 0$: the iteration converges in $\\lceil \\log(\\varepsilon/D) / \\log L \\rceil$ steps.",
+    "mathContext": "**Uniqueness proof**: if $f(x^*) = x^*$ and $f(y^*) = y^*$, then $|x^* - y^*| = |f(x^*) - f(y^*)| \\leq L|x^* - y^*|$. Since $L < 1$, this forces $|x^* - y^*| = 0$. **Error bound**: by induction, $|f^n(x_0) - x^*| = |f^{n-1}(f(x_0)) - f^{n-1}(f(x^*))| \\leq L^{n-1} |f(x_0) - x^*| \\leq L^n |x_0 - x^*|$. **Convergence**: `tendsto_pow_atTop_nhds_zero_of_lt_one` gives $L^n \\to 0$, so $L^n D < \\varepsilon$ for large $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "contraction_unique_fixed_point",
+      "contraction_error_bound",
+      "geometric convergence L^n",
+      "tendsto_pow_atTop_nhds_zero_of_lt_one",
+      "Banach fixed-point theorem"
+    ],
+    "prerequisites": [
+      "IsContractionOn01 definition",
+      "geometric series L^n → 0 for L < 1",
+      "Mathlib's tendsto_pow_atTop_nhds_zero_of_lt_one"
+    ]
+  },
+  {
+    "id": "ann-bfp2-binary-search",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 125, "endLine": 183 },
+    "type": "theorem",
+    "title": "Binary Search: O(log(1/ε)) Queries and Information-Theoretic Lower Bound",
+    "content": "**binary_search_query_count**: After $n$ bisection steps on $[0,1]$, the interval has length $1/2^n$. **binary_search_halving**: $|[a,b]|/2^n \\leq (b-a)/2^n$. **info_theoretic_bound**: need $2^n \\geq 1/\\varepsilon$ for $\\varepsilon$-accuracy. **queries_needed**: $n \\geq \\lceil \\log_2(1/\\varepsilon) \\rceil$ queries suffice. **contraction_faster_than_bisection**: when $L \\leq 1/2$, contraction converges as fast as binary search.",
+    "mathContext": "Binary search for a fixed point of a continuous $f: [0,1] \\to [0,1]$: let $g(x) = f(x) - x$; by IVT ($g(0) \\geq 0$, $g(1) \\leq 0$), $g$ has a zero. Binary search on $g$ halves the interval each step, giving $1/2^n$ accuracy after $n$ steps. The **information-theoretic lower bound** says $n$ bits of information can only distinguish $2^n$ intervals, so $2^n \\geq 1/\\varepsilon$ is necessary. `info_theoretic_bound` proves this via `pow_le_pow_left` and interval containment. This lower bound is **tight** — binary search achieves it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary search fixed-point algorithm",
+      "information-theoretic lower bounds",
+      "IVT-based fixed point existence",
+      "pow_le_pow_left",
+      "interval halving"
+    ],
+    "prerequisites": [
+      "binary_search_query_count",
+      "info_theoretic_bound",
+      "exists_mem_Icc_isFixedPt_of_mapsTo for IVT fixed point"
+    ]
+  },
+  {
+    "id": "ann-bfp2-quadratic",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 187, "endLine": 242 },
+    "type": "definition",
+    "title": "Quadratic Convergence: Double-Exponential Rate and O(log log 1/ε)",
+    "content": "**HasQuadraticConvergence(x, x*, C)**: $|e_{n+1}| \\leq C |e_n|^2$ where $e_n = x_n - x^*$. **quadratic_convergence_rate**: if quadratic convergence holds and $C|e_0| < 1$, then $|e_n| \\leq (C|e_0|)^{2^n}/C$ — a **double-exponential** rate. **quadratic_to_epsilon**: quadratic iteration achieves $|e_n| < \\varepsilon$ in $O(\\log_2 \\log(1/\\varepsilon))$ steps. **quadratic_iteration_count**: explicit step count $\\lceil \\log_2 \\log(1/(C\\varepsilon)) \\rceil$.",
+    "mathContext": "**Double-exponential convergence** proof: let $\\delta = C|e_0| < 1$. Then $C|e_n| \\leq \\delta^{2^n}$ by induction — the key step $C|e_{n+1}| \\leq C \\cdot C|e_n|^2 = (C|e_n|)^2 \\leq \\delta^{2 \\cdot 2^n} = \\delta^{2^{n+1}}$. So $|e_n| \\leq \\delta^{2^n}/C$. For $\\varepsilon$-accuracy: need $\\delta^{2^n} \\leq C\\varepsilon$, i.e., $2^n \\geq \\log(1/(C\\varepsilon))/\\log(1/\\delta)$, i.e., $n \\geq \\log_2 \\log_{1/\\delta}(1/(C\\varepsilon))$. This is $O(\\log \\log(1/\\varepsilon))$ — astronomically faster than binary search's $O(\\log(1/\\varepsilon))$ for large precision.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasQuadraticConvergence definition",
+      "double-exponential convergence",
+      "Newton's method quadratic rate",
+      "pow_le_pow_left for induction",
+      "log log complexity"
+    ],
+    "prerequisites": [
+      "HasQuadraticConvergence predicate",
+      "pow_le_pow_left for iterated squaring",
+      "quadratic convergence proof by induction"
+    ]
+  },
+  {
+    "id": "ann-bfp2-landscape",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 244, "endLine": 255 },
+    "type": "theorem",
+    "title": "Query Complexity Landscape: Summary Theorem",
+    "content": "**query_complexity_landscape**: A summary theorem asserting three facts: (1) binary search intervals are always positive ($1/2^n > 0$ for all $n$); (2) contractions converge ($L^n \\to 0$ for $0 \\leq L < 1$); (3) $2^n \\geq 1$ for all $n$. Proves each via `positivity`, `tendsto_pow_atTop_nhds_zero_of_lt_one`, and `Nat.one_le_pow`.",
+    "mathContext": "This theorem acts as a **capstone** bundling the key facts. `tendsto_pow_atTop_nhds_zero_of_lt_one` from `Mathlib.Topology.Algebra.Order.LiminfLimsup` is the core convergence fact. `Nat.one_le_pow n 2 : 2^n ≥ 1` via `exact_mod_cast Nat.one_le_pow n 2 (by norm_num)` — the Nat version is cast to ℝ. The `refine ⟨..., ..., ...⟩` destructs the conjunction into three separate goals. This is a **summary of the hierarchy**: binary search ($2^n \\geq 1/\\varepsilon$) beats brute force, contraction ($L^n \\to 0$) beats binary search when $L < 1/2$, quadratic ($O(\\log \\log)$) beats contraction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tendsto_pow_atTop_nhds_zero_of_lt_one",
+      "Nat.one_le_pow",
+      "refine for conjunction goals",
+      "positivity tactic",
+      "exact_mod_cast for Nat to ℝ"
+    ],
+    "prerequisites": [
+      "tendsto_pow_atTop_nhds_zero_of_lt_one from Mathlib",
+      "Nat.one_le_pow",
+      "positivity tactic for non-negativity"
+    ]
+  }
+]
