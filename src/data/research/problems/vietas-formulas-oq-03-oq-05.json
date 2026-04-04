@@ -1,7 +1,7 @@
 {
   "slug": "vietas-formulas-oq-03-oq-05",
   "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-03T21:27:22-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Proof complete: 11 theorems, 0 sorries, 0 axioms.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -29,9 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Proved quartic discriminant (16 terms), depressed quartic (6 terms), Ferrari identity, resolvent condition, and \u0394_res = 64\u00b7\u0394\u2084. All by ring or linear_combination.",
+    "builtItems": [
+      "VietasFormulasOQ03OQ05.lean: vieta_quartic (ring proof)",
+      "VietasFormulasOQ03OQ05.lean: discriminant_quartic \u2014 16-term formula (ring, degree 12)",
+      "VietasFormulasOQ03OQ05.lean: discriminant_depressed \u2014 6-term formula for e\u2081=0 (ring)",
+      "VietasFormulasOQ03OQ05.lean: depressedDiscriminant def + neg_q symmetry",
+      "VietasFormulasOQ03OQ05.lean: ferrari_identity \u2014 (x\u00b2+y)\u00b2 - inner = quartic (ring)",
+      "VietasFormulasOQ03OQ05.lean: resolvent_cubic_condition \u2014 from a\u00b2,2ab,b\u00b2 to resolvent vanishing (linear_combination)",
+      "VietasFormulasOQ03OQ05.lean: cubicDiscriminant def + resolvent_discriminant_eq: 64\u00d7 connection (ring)",
+      "Gallery: src/data/proofs/vietas-formulas-oq-03-oq-05/ (meta.json, annotations.json, index.ts)"
+    ],
+    "insights": [
+      "The quartic discriminant has exactly 16 terms in e\u2081,e\u2082,e\u2083,e\u2084 (degree 12 polynomial identity, proved by ring in Lean 4)",
+      "Setting e\u2081=0 (depressed quartic) reduces 16 terms to 6 terms \u2014 exactly the formula \u0394 = 256r\u00b3 - 128p\u00b2r\u00b2 + 144pq\u00b2r - 27q\u2074 + 16p\u2074r - 4p\u00b3q\u00b2",
+      "Ferrari decomposition: x\u2074+px\u00b2+qx+r = (x\u00b2+y)\u00b2 - ((2y-p)x\u00b2-qx+(y\u00b2-r)), proved by ring",
+      "The resolvent cubic arises from requiring (2y-p)x\u00b2-qx+(y\u00b2-r) to be a perfect square: conditions a\u00b2=2y-p, 2ab=q, b\u00b2=y\u00b2-r force 8y\u00b3-4py\u00b2-8ry+(4pr-q\u00b2)=0, proved via linear_combination",
+      "Key result: \u0394(resolvent cubic) = 64\u00b7\u0394(depressed quartic), a pure ring identity. Both vanish iff quartic has repeated root.",
+      "The factor 64 comes from the leading coefficient 8 of the resolvent cubic (8\u00b3=512 and 8\u00b2=64 interact in the cubic discriminant formula)"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: vietas-formulas-oq-03-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
