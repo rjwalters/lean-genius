@@ -106,25 +106,21 @@ lemma integrand_zero_eq_one (θ : ℝ) : ellipticIntegrand 0 θ = 1 := by
 /-- **K(0) = π/2**: the degenerate elliptic integral is exactly π/2. -/
 theorem ellipticK_zero : ellipticK 0 = π / 2 := by
   unfold ellipticK
-  simp_rw [integrand_zero_eq_one]
+  have : (fun θ => ellipticIntegrand 0 θ) = (fun _ => (1 : ℝ)) := by
+    ext θ; exact integrand_zero_eq_one θ
+  rw [show ∫ θ in (0:ℝ)..π/2, ellipticIntegrand 0 θ =
+       ∫ θ in (0:ℝ)..π/2, (1:ℝ) from by congr 1; exact this]
   rw [intervalIntegral.integral_const, smul_eq_mul, mul_one, sub_zero]
 
-/-- **K(k) > 0** for |k| < 1: integrand ≥ 1 everywhere, so K(k) ≥ K(0) = π/2 > 0. -/
+/-- **K(k) > 0** for |k| < 1: the integral is strictly positive. -/
 theorem ellipticK_pos (hk : k ^ 2 < 1) : 0 < ellipticK k := by
-  calc 0 < π / 2 := by linarith [Real.pi_pos]
-    _ = ellipticK 0 := ellipticK_zero.symm
-    _ ≤ ellipticK k := by
-        unfold ellipticK
-        refine intervalIntegral.integral_mono
-          (ellipticK_integrable (by norm_num : (0:ℝ)^2 < 1))
-          (ellipticK_integrable hk) ?_
-        intro θ
-        rw [integrand_zero_eq_one]
-        rw [one_le_div (sqrt_denom_pos hk θ)]
-        calc Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
-            ≤ Real.sqrt 1 := Real.sqrt_le_sqrt
-                (by nlinarith [sq_nonneg k, sq_nonneg (Real.sin θ)])
-          _ = 1 := Real.sqrt_one
+  unfold ellipticK
+  apply intervalIntegral.integral_pos (by linarith [Real.pi_pos]) _
+    (ellipticK_integrable hk)
+  · intro θ _
+    exact integrand_nonneg hk θ
+  · exact ⟨π / 4, by constructor <;> [linarith [Real.pi_pos]; linarith [Real.pi_pos]],
+      by unfold ellipticIntegrand; positivity⟩
 
 -- ============================================================================
 -- § 5. Monotonicity in k
@@ -136,9 +132,11 @@ lemma integrand_mono_k_sq (θ : ℝ) (hk1 : k1 ^ 2 ≤ k2 ^ 2)
     (hk2 : k2 ^ 2 < 1) :
     ellipticIntegrand k1 θ ≤ ellipticIntegrand k2 θ := by
   unfold ellipticIntegrand
-  apply one_div_le_one_div_of_le (sqrt_denom_pos hk2 θ)
-  apply Real.sqrt_le_sqrt
-  nlinarith [sq_nonneg (Real.sin θ), Real.sin_sq_le_one θ]
+  apply div_le_div_of_nonneg_left one_pos _ _
+  · exact sqrt_denom_pos (lt_of_le_of_lt hk1 hk2) θ
+  · exact sqrt_denom_pos hk2 θ
+  · apply Real.sqrt_le_sqrt
+    nlinarith [sq_nonneg (Real.sin θ), Real.sin_sq_le_one θ]
 
 -- ============================================================================
 -- § 6. Connection to AGM (Axiomatized — Deep Mathematics)
@@ -177,8 +175,7 @@ theorem gauss_1799_special :
   have h2 : (0 : ℝ) < 1 / Real.sqrt 2 := by positivity
   have h3 : 1 / Real.sqrt 2 ≤ 1 := by
     rw [div_le_one (Real.sqrt_pos_of_pos (by norm_num : (0:ℝ) < 2))]
-    calc (1:ℝ) = Real.sqrt 1 := Real.sqrt_one.symm
-      _ ≤ Real.sqrt 2 := Real.sqrt_le_sqrt (by norm_num)
+    exact Real.sqrt_le_sqrt (by norm_num)
   have := agm_ellipticK_connection 1 (1 / Real.sqrt 2) h1 h2 h3
   simpa using this
 
