@@ -54,8 +54,8 @@
     ],
     "historicalContext": "Erdős asked about F_k(p₁,...,pᵤ), the minimum number of integers divisible by at least one given prime in any interval of k consecutive integers. Erdős and Selfridge reportedly found the exact formula for 2 < α < 3 (where k = αpᵤ), but the paper has not been located. For α > 3, very little is known.",
     "axiomCount": 2,
-    "lineCount": 297,
-    "assumptions": "2 axiom(s), 0 sorry(s). 1 True-stub placeholder (covering_complement_relation). The 2 axioms are: covering_asymptotic (density main term) and covering_upper_bound (F_k ≤ k·density + |primes|). Previously 3 axioms: erdos_selfridge_exact was proved trivially (∃ x, f = x), alpha_gt_3_open lower bound proved (density < 1 makes LHS ≤ 0)."
+    "lineCount": 299,
+    "assumptions": "2 axiom(s), 0 sorry(s). The 2 axioms are: covering_asymptotic (density main term) and covering_upper_bound (F_k ≤ k·density + |primes|). Previously 3 axioms: erdos_selfridge_exact was proved trivially (∃ x, f = x), alpha_gt_3_open lower bound proved (density < 1 makes LHS ≤ 0)."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1143 belongs to the rich tradition of **sieve-theoretic covering problems** dating back to Eratosthenes. The question of how many integers in a short interval are divisible by given primes connects to the **Selberg sieve**, the **large sieve**, and the distribution of prime gaps. Erdős formulated this problem as a quantitative version of the Chinese Remainder Theorem: while CRT tells us the *average* density of covered integers is $1 - \\prod(1 - 1/p_i)$, the problem asks about the *worst-case* covering over all starting positions. The parameter $\\alpha = k/p_u$ measures how many complete periods of the largest prime fit in the interval. Erdős and Selfridge reportedly solved the $2 < \\alpha < 3$ case exactly, but their paper has never been located — one of the tantalizing 'lost results' in combinatorial number theory. The dual problem (Erdős #970, Jacobsthal's function) asks about coprime elements instead; Iwaniec (1978) proved the best known bounds $h(k) = O(k^{0.735})$.",
@@ -120,12 +120,12 @@
       "title": "Jacobsthal Connection and Summary",
       "startLine": 241,
       "endLine": 273,
-      "summary": "Defines the complement relation between covering count and Jacobsthal's function: uncovered $= k - F_k$. `covering_complement_relation` is a True-stub placeholder. Closing summary documents the known results and open status.",
+      "summary": "Documents the complement relation between covering count and Jacobsthal's function: uncovered $= k - F_k$. The relationship is described in a comment (formally stating it requires defining Jacobsthal's function). Closing summary documents the known results and open status.",
       "mathContext": "Jacobsthal's function $h(u)$ is the minimal $m$ such that any $m$ consecutive integers contain one coprime to $p_1 \\cdots p_u$. The dual: $F_{h(u)-1} = h(u) - 1$ (all covered). See Erdős #970."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős #1143, an open problem about covering intervals with multiples of primes. All theorems are fully proved (0 sorries). 2 axioms remain: covering_asymptotic (density main term) and covering_upper_bound (F_k upper bound). Previously 3 axioms: erdos_selfridge_exact was proved trivially, alpha_gt_3_open lower bound was proved. 1 True-stub placeholder for Jacobsthal connection.",
+    "summary": "This formalization captures Erdős #1143, an open problem about covering intervals with multiples of primes. All theorems are fully proved (0 sorries). 2 axioms remain: covering_asymptotic (density main term) and covering_upper_bound (F_k upper bound). Previously 3 axioms: erdos_selfridge_exact was proved trivially, alpha_gt_3_open lower bound was proved.",
     "implications": "**Theoretical Significance**: Understanding $F_k$ connects to several important areas: **sieve theory** (the covering function is closely related to sieve weights), **Jacobsthal's function** (the dual coprimality question), and the **distribution of smooth numbers** in short intervals.\n\nSharp estimates for $F_k$ in the $\\alpha > 3$ regime would have consequences for prime gap bounds and the structure of residue classes modulo products of small primes. The lost Erdős-Selfridge result, if reconstructed, could provide a template for the general case.",
     "openQuestions": [
       "What is the exact formula for $F_k$ when $k = \\alpha p_u$ with $\\alpha > 3$? Can the density approximation error be made uniform in the prime set?",
@@ -163,9 +163,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos1143",
-    "lineCount": 297,
+    "lineCount": 299,
     "axiomCount": 2,
-    "theoremCount": 12,
+    "theoremCount": 11,
     "definitionCount": 3
   },
   "references": [
