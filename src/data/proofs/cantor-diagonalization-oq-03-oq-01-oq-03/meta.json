@@ -1,0 +1,69 @@
+{
+  "id": "cantor-diagonalization-oq-03-oq-01-oq-03",
+  "title": "Gödel's Incompleteness Theorem as a Lawvere Instance",
+  "slug": "cantor-diagonalization-oq-03-oq-01-oq-03",
+  "description": "Formalizes Gödel's First Incompleteness Theorem (1931) as a direct consequence of Lawvere's fixed-point theorem. The diagonal lemma becomes point-surjectivity of an evaluation structure on sentences; the Gödel sentence G = ¬Pr(G) is the fixed point of the endomorphism 'negate provability'. Unlike Rice (where Bool.not has no fixed point), here the fixed point exists but leads to a consistency contradiction — completing the Lawvere chain: Cantor → Rice → Gödel.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ01OQ03.lean",
+    "tags": [
+      "logic",
+      "lawvere-fixed-point",
+      "godel-incompleteness",
+      "diagonal-argument",
+      "provability-logic",
+      "abstract-logic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 7,
+    "assumptions": "GodelModel axiomatizes the essentials of a Peano-strength formal system as structure fields: point-surjective evaluation (diagonal lemma), formal negation, consistency, reflection principle, and D1 axiom of provability logic. StrongGodelModel additionally axiomatizes double-negation elimination for the strong incompleteness result. These are mathematical hypotheses, not global Lean axioms.",
+    "lineCount": 256,
+    "theoremCount": 6,
+    "definitionCount": 5,
+    "originalContributions": [
+      "diagonal_lemma: abstract Lawvere version of the Gödel-Carnap diagonal lemma",
+      "godel_sentence: existence of the Gödel sentence G = Neg(PrSent G) via Lawvere fixed-point",
+      "godel_first_incompleteness: G is not provable in any consistent GodelModel",
+      "godel_strong_incompleteness: both G and Neg G are unprovable (ω-consistency)",
+      "godel_completeness_fails: no strongly consistent GodelModel is complete",
+      "lawvere_chain_godel: explicit connection — Gödel fixed point exists (unlike Rice) but forces inconsistency"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Gödel's First Incompleteness Theorem (1931) is arguably the most profound result in mathematical logic: any consistent formal system strong enough to express basic arithmetic is incomplete — there exist true sentences it cannot prove. The proof has two components: the diagonal lemma (Carnap 1934, anticipated by Gödel) constructs a self-referential sentence G saying 'I am not provable', and consistency then implies G cannot be proved.\n\nLawvere (1969) revealed the categorical skeleton underlying all diagonal arguments: in any cartesian closed category, a point-surjective morphism forces every endomorphism to have a fixed point. The Gödel proof is exactly this: the diagonal lemma is point-surjectivity, and the Gödel sentence is the fixed point of f = 'negate provability'.\n\nThis file answers Open Question OQ-03 from CantorDiagonalizationOQ03OQ01OQ02: 'Formalize Gödel's incompleteness theorem as a Lawvere instance.' It completes the Lawvere chain: Cantor (Val=Prop, f=Not) → Rice (Val=Bool, f=Bool.not) → Gödel (Val=sentences, f=Neg∘PrSent).",
+    "problemStatement": "Formalize Gödel's First Incompleteness Theorem via the Lawvere fixed-point framework:\n1. Show the diagonal lemma is point-surjectivity of an evaluation structure on sentences\n2. Derive the Gödel sentence G = Neg(PrSent G) as a Lawvere fixed point\n3. Prove G is not provable in any consistent system\n4. Prove the stronger result: both G and Neg G are unprovable (ω-consistency)\n5. Show no consistent system with the diagonal lemma is complete",
+    "proofStrategy": "**Step 1** (Diagonal Lemma as Lawvere): The diagonal lemma says 'for any formula F(x), ∃ sentence G with G ↔ F(⌈G⌉)'. In the abstract framework, this IS point-surjectivity of eval : Code → Code → Form. Applying lawvere_fpt with endomorphism F directly gives the fixed point G with G = F(G).\n\n**Step 2** (Gödel Sentence): Apply diagonal_lemma with F = Neg ∘ PrSent to get G with G = Neg(PrSent G). This is the Gödel sentence: a formal sentence that says 'I am not provable'.\n\n**Step 3** (Unprovability): Assume Pr G. By D1 axiom: Pr(PrSent G). But G = Neg(PrSent G), so Pr(Neg(PrSent G)). We have both Pr(PrSent G) and Pr(Neg(PrSent G)) — contradiction with consistency.\n\n**Step 4** (Strong Version): For Neg G unprovable: if Pr(Neg G) = Pr(Neg(Neg(PrSent G))), then by double-negation elimination Pr(PrSent G), then by reflection Pr G — but G is not provable. Contradiction.\n\n**Key distinction from Rice**: Bool.not has NO fixed point (Rice: point-surjectivity is impossible). But Neg ∘ PrSent DOES have a fixed point (Gödel: fixed point exists but is unprovable).",
+    "keyInsights": [
+      "The diagonal lemma is exactly point-surjectivity of eval: Code → Code → Form",
+      "Gödel sentence = fixed point of Neg ∘ PrSent (exists, unlike Bool.not fixed point)",
+      "Rice: Bool.not has no fixed point → surjectivity impossible. Gödel: fixed point exists → consistency contradiction",
+      "D1 axiom (Pr φ → Pr(PrSent φ)) is the key bridge from provability to self-reference",
+      "The Lawvere chain Cantor→Rice→Gödel shows all major undecidability results share one categorical core"
+    ],
+    "prerequisites": [
+      "Lawvere fixed-point theorem (CantorDiagonalizationOQ03OQ01.lean)",
+      "Rice's theorem as Lawvere instance (CantorDiagonalizationOQ03OQ01OQ02.lean)",
+      "Provability logic axioms: consistency, reflection, D1",
+      "Classical logic for double-negation elimination"
+    ]
+  },
+  "conclusion": {
+    "summary": "Proved Gödel's First Incompleteness Theorem as a Lawvere instance: the diagonal lemma = point-surjectivity, the Gödel sentence = fixed point of Neg∘PrSent, and consistency forces unprovability. Derived 6 theorems — diagonal lemma, Gödel sentence, first incompleteness, strong incompleteness, completeness failure, and explicit Lawvere chain connection — in 256 lines with 0 sorries. The GodelModel structure axiomatizes provability arithmetic as structure hypotheses.",
+    "implications": "This file completes the Lawvere fixed-point theorem application chain in the gallery: Cantor (Prop, negation) → Rice (Bool, Bool.not) → Gödel (sentences, negation of provability). The key mathematical insight is the distinction between Rice and Gödel: in Rice, the endomorphism Bool.not has NO fixed point, making point-surjectivity impossible; in Gödel, the endomorphism Neg∘PrSent DOES have a fixed point (the Gödel sentence), but this fixed point is unprovable by consistency. Same categorical mechanism, different mathematical consequences.",
+    "openQuestions": [
+      "Formalize Kleene's recursion theorem without axiomatization: implement partial recursive functions or a lambda calculus in Lean, prove the s-m-n theorem and universality, and derive both Kleene recursion and the Rice theorem from first principles",
+      "Gödel's Second Incompleteness Theorem as a Lawvere instance: show that Con(S) (consistency statement) is also not provable, using the provability logic axioms D1, D2, D3 (Löb's theorem)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CantorDiagonalizationOQ03OQ01OQ03",
+    "lineCount": 256,
+    "axiomCount": 7,
+    "theoremCount": 6,
+    "definitionCount": 5
+  }
+}

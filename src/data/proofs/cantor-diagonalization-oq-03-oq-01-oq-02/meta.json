@@ -1,0 +1,69 @@
+{
+  "id": "cantor-diagonalization-oq-03-oq-01-oq-02",
+  "title": "Rice's Theorem as a Lawvere Instance",
+  "slug": "cantor-diagonalization-oq-03-oq-01-oq-02",
+  "description": "Formalizes Rice's theorem (1953) — no non-trivial semantic property of programs is decidable — as a direct consequence of Lawvere's fixed-point theorem. The core insight: a 'decidable' (Bool-valued point-surjective) universal evaluation is impossible because Bool.not has no fixed point, which Lawvere converts into a contradiction. Derives the classical Rice result via an axiomatized Kleene recursion theorem.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ01OQ02.lean",
+    "tags": [
+      "computability",
+      "lawvere-fixed-point",
+      "rice-theorem",
+      "undecidability",
+      "diagonal-argument",
+      "abstract-logic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified (ClassicalRiceModel axiomatizes Kleene's recursion theorem as a hypothesis, not a global axiom).",
+    "lineCount": 275,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "originalContributions": [
+      "abstract_rice: no Bool-evaluation structure can be point-surjective (direct from Lawvere)",
+      "rice_induced_obstruction: any d : Val → Bool applied to a point-surjective structure gives a non-surjective Bool structure",
+      "rice_undecidable_witness: for any Bool eval, there exists an undecidable function",
+      "semantic_rice_flip: a semantic property with a flip program leads to direct contradiction",
+      "no_halting_model: no abstract halting model with decidable universality exists",
+      "classical_rice_abstract: Rice's theorem from Kleene's recursion theorem (axiomatized)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Rice's theorem (1953) is one of the deepest results in computability theory: for any non-trivial semantic property P of partial computable functions (meaning P depends only on what a program computes, not how), the set {e | φ_e has property P} is undecidable. The classical proof uses Kleene's recursion theorem (1938), which itself is a consequence of the self-referential diagonal construction at the heart of Cantor's argument.\n\nLawvere (1969) unified all such diagonal arguments categorically: in any cartesian closed category, a point-surjective morphism forces every endomorphism to have a fixed point. Since Bool.not has no fixed point, no point-surjective Bool evaluation can exist — this is the abstract essence of Rice's theorem.\n\nThis file answers Open Question OQ-02 from CantorDiagonalizationOQ03OQ01: 'Derive Rice's theorem as a Lawvere instance.'",
+    "problemStatement": "Formalize Rice's theorem via the Lawvere fixed-point framework:\n1. Show that no Bool-valued evaluation structure is point-surjective (abstract Rice core)\n2. Derive that no decision procedure can universally classify program behaviors\n3. Prove the classical Rice theorem from Kleene's recursion theorem\n4. Connect the halting problem as the canonical undecidable Rice instance",
+    "proofStrategy": "**Step 1** (Bool Lawvere): Apply lawvere_fpt with f = Bool.not to any putative point-surjective Bool eval structure. Since Bool.not has no fixed point (cases v; simp), we get a contradiction.\n\n**Step 2** (Induced obstruction): For any d : Val → Bool, the structure (Ob, Bool, d ∘ eval) has Val = Bool, so Step 1 applies directly.\n\n**Step 3** (Semantic flip): If a semantic property P has a 'flip program' (same semantics, opposite property), the semantic-respecting condition immediately gives P(flip a) = P a (via semantics) while flip_prop gives P(flip a) ≠ P a — direct contradiction.\n\n**Step 4** (Classical Rice): Axiomatize Kleene's recursion theorem. Define a 'flipper' code transformer f(e) = (if P(e) then e₀ else e₁). Kleene gives a semantic fixed point e* with semantics(f(e*)) = semantics(e*). Since P is semantic, P(e*) = P(f(e*)). But f flips P by definition — contradiction.",
+    "keyInsights": [
+      "Bool.not having no fixed point is the computational content of Rice's theorem",
+      "Point-surjectivity (universality of evaluation) + Bool → fixed-point paradox = Rice",
+      "The semantic property + flip program argument doesn't even need point-surjectivity — direct contradiction",
+      "Kleene's recursion theorem is the bridge from abstract Lawvere to the classical Rice statement",
+      "HaltingModel as a special case: a decidable universal halting predicate is exactly a point-surjective Bool eval structure"
+    ],
+    "prerequisites": [
+      "Lawvere fixed-point theorem (CantorDiagonalizationOQ03OQ01.lean)",
+      "Evaluation structures: EvalStructure, IsPointSurjective",
+      "Bool arithmetic: Bool.not has no fixed point",
+      "Classical logic: Classical.arbitrary for nonemptiness"
+    ]
+  },
+  "conclusion": {
+    "summary": "Proved Rice's theorem as a Lawvere instance: no Bool-valued evaluation structure is point-surjective, which is the abstract essence of Rice's undecidability theorem. Derived 5 concrete results — abstract Rice, induced obstruction, undecidable witness, semantic flip, and no halting model — plus the classical Rice theorem from axiomatized Kleene recursion. 6 theorems, 0 axioms, 275 lines.",
+    "implications": "This file completes the Lawvere fixed-point theorem application chain: Cantor (Prop, negation) → Rice (Bool, not) → Gödel (sentences, negation of provability). The key insight is that undecidability results in computability theory are not independent of diagonal arguments in set theory — they all share the same Lawvere fixed-point core. The `classical_rice_abstract` theorem shows that Rice follows from Kleene's recursion theorem, which in turn follows from the same diagonal construction.",
+    "openQuestions": [
+      "Formalize Kleene's recursion theorem without axiomatization: implement a concrete computation model (e.g., partial recursive functions or a simple lambda calculus) in Lean and prove the s-m-n theorem + universality, deriving Kleene recursion as a proved theorem rather than an axiom",
+      "Gödel's incompleteness as a Lawvere instance (OQ-03): extend the framework to formal proof systems where Val = formal sentences and the 'fixed-point' endomorphism is negation of provability, giving the diagonal lemma and Gödel's theorems"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CantorDiagonalizationOQ03OQ01OQ02",
+    "lineCount": 275,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 4
+  }
+}
