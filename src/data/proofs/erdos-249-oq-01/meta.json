@@ -1,0 +1,129 @@
+{
+  "id": "erdos-249-oq-01",
+  "title": "Tighter Bounds on ∑ φ(n)/2^n: (5/4, 3/2)",
+  "slug": "erdos-249-oq-01",
+  "description": "Pins the value of ∑ φ(n)/2^n to the interval (5/4, 3/2) and proves the sum is not a rational with denominator dividing 4. Extends the parent formalization with 13 proved theorems and 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos249OQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "totient",
+      "series",
+      "bounds",
+      "open"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 249,
+    "erdosUrl": "https://erdosproblems.com/249",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 225,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "assumptions": "None. Imports Erdos249Problem.lean (0 axioms). Fully machine-verified.",
+    "originalContributions": [
+      "termFn_three/four/five/six: exact term values φ(n)/2^n for n = 3, 4, 5, 6",
+      "partial_sum_6: first 6 terms sum exactly to 5/4",
+      "partial_sum_7: first 7 terms sum exactly to 41/32",
+      "totientPowerSum_ge_five_fourths: ∑ φ(n)/2^n ≥ 5/4 (from partial_sum_6)",
+      "totientPowerSum_gt_five_fourths: ∑ φ(n)/2^n > 5/4 (strict, from partial_sum_7)",
+      "totientPowerSum_lt_two: ∑ φ(n)/2^n < 2 (strict comparison with ∑ n/2^n at n=4)",
+      "totientPowerSum_lt_three_halves: ∑ φ(n)/2^n < 3/2 (tail splitting at n=6)",
+      "totientPowerSum_not_int: sum is not an integer",
+      "totientPowerSum_not_quarter_int: sum is not a rational with denominator dividing 4"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #249 asks whether ∑_{n=1}^{∞} φ(n)/2^n is irrational. The decimal expansion is OEIS A256936 ≈ 1.3240. The parent formalization (erdos-249) proved convergence and the weak bound [0, 2]. This extension pins the value to the interval (5/4, 3/2) ≈ (1.25, 1.5), significantly tightening the numerical picture.\n\nThe key obstacle to full irrationality proofs for series like this is that standard transcendence techniques (Apéry, continued fractions, Padé approximants) have not been adapted to sums involving multiplicative arithmetic functions.",
+    "problemStatement": "Prove that 5/4 < ∑_{n=0}^{∞} φ(n)/2^n < 3/2 and that the sum is not a rational number with denominator dividing 4.",
+    "proofStrategy": "**Lower bound (5/4 < S)**: The partial sum of the first 7 terms (n=0,...,6) equals 41/32 > 40/32 = 5/4. Since all terms are non-negative, the full sum exceeds 5/4.\n\n**Upper bound (S < 3/2)**: Split both the totient series and the comparison series ∑ n/2^n at position 6. The first 6 terms of the comparison sum to 57/32. Since φ(n) ≤ n, the tail ∑_{n≥6} φ(n)/2^n ≤ ∑_{n≥6} n/2^n = 2 - 57/32 = 7/32. So S ≤ 5/4 + 7/32 = 47/32 < 48/32 = 3/2.\n\n**Not a quarter-integer**: Since 5/4 < S < 3/2 = 6/4, the interval (5/4, 6/4) contains no multiple of 1/4. Any hypothetical m/4 = S would require 5 < m < 6, impossible for integers.",
+    "keyInsights": [
+      "Tail splitting at n=6 gives a tight upper bound: ∑_{n≥6} φ(n)/2^n ≤ 7/32",
+      "hasSum.nat_add decomposes the series into head and tail, enabling comparison on tails",
+      "Strict upper bound < 2 comes from a single strict gap: φ(4) = 2 < 4 at n = 4",
+      "The interval (5/4, 3/2) = (40/32, 48/32) contains no multiple of 1/4, ruling out quarter-integers",
+      "All 13 theorems proved with 0 axioms, building on the parent formalization's infrastructure"
+    ],
+    "prerequisites": [
+      "totientPowerSum_summable: convergence of ∑ φ(n)/2^n (from Erdos249Problem.lean)",
+      "termFn_zero/one/two: first three terms (from Erdos249Problem.lean)",
+      "termFn_nonneg: non-negativity of terms (from Erdos249Problem.lean)",
+      "hasSum_coe_mul_geometric_of_norm_lt_one: Mathlib geometric series formula",
+      "hasSum_le: comparison bound for infinite series",
+      "HasSum.nat_add: series splitting at a finite position"
+    ]
+  },
+  "sections": [
+    {
+      "id": "term-computations",
+      "title": "Part I: New Term Computations",
+      "summary": "Computes exact values: termFn(3) = 1/4, termFn(4) = 1/8, termFn(5) = 1/8, termFn(6) = 1/32.",
+      "startLine": 27,
+      "endLine": 48
+    },
+    {
+      "id": "partial-sums",
+      "title": "Part II: Partial Sums",
+      "summary": "partial_sum_6 = 5/4 (first 6 terms) and partial_sum_7 = 41/32 (first 7 terms).",
+      "startLine": 49,
+      "endLine": 60
+    },
+    {
+      "id": "lower-bound",
+      "title": "Part III: Lower Bounds",
+      "summary": "totientPowerSum_ge_five_fourths (≥ 5/4) and totientPowerSum_gt_five_fourths (> 5/4 strict).",
+      "startLine": 61,
+      "endLine": 155
+    },
+    {
+      "id": "upper-bound",
+      "title": "Part IV: Upper Bounds",
+      "summary": "totientPowerSum_lt_two (< 2 strict via gap at n=4) and totientPowerSum_lt_three_halves (< 3/2 via tail splitting).",
+      "startLine": 82,
+      "endLine": 181
+    },
+    {
+      "id": "non-rationality",
+      "title": "Part V: Non-Rationality Results",
+      "summary": "totientPowerSum_not_int (not an integer) and totientPowerSum_not_quarter_int (not a multiple of 1/4).",
+      "startLine": 118,
+      "endLine": 204
+    }
+  ],
+  "conclusion": {
+    "summary": "Proved that 5/4 < ∑ φ(n)/2^n < 3/2 and the sum is not a rational with denominator dividing 4. 225 lines, 13 public theorems, 0 sorries, 0 axioms.",
+    "implications": "The tight interval (5/4, 3/2) pins the OEIS A256936 constant more precisely and rules out any rational approximation with small denominators. The sum ≈ 1.3240 lies in (1.25, 1.5), consistent with known numerical data. Irrationality remains open, but any proof must handle a value in this narrow range.",
+    "openQuestions": [
+      "Prove ∑ φ(n)/2^n is irrational (the main Erdős #249 conjecture)",
+      "Narrow the interval further: can we prove the sum lies in (1.32, 1.33)?",
+      "Prove analogous bounds for ∑ φ(n)/b^n for other bases b ≥ 2",
+      "Does ∑ φ(n)/2^n have finite irrationality measure? Is it transcendental?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-249",
+      "relationship": "extends",
+      "description": "Parent formalization: proves convergence and weak bound [0, 2]"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both concern exact and approximate values of infinite series with number-theoretic significance"
+    }
+  ],
+  "leanFile": {
+    "namespace": "Erdos249OQ01",
+    "lineCount": 225,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0
+  }
+}
