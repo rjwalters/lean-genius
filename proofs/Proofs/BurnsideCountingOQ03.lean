@@ -95,7 +95,80 @@ theorem addOrderOf_rotation {n : ℕ} [NeZero n] (r : ZMod n) :
 theorem fixed_factors_through_mod {n k : ℕ} [NeZero n] (r : Fin n)
     (c : Fin n → Fin k) (hc : IsFixed n k r c) (i j : Fin n)
     (hij : i.val % Nat.gcd r.val n = j.val % Nat.gcd r.val n) : c i = c j := by
-  sorry
+  set d := Nat.gcd r.val n
+  have hd_pos : 0 < d := Nat.gcd_pos_of_pos_right _ (NeZero.pos n)
+  -- STEP 1: backward step: c ⟨(x+r)%n,_⟩ = c x
+  have backward : ∀ x : Fin n,
+      c ⟨(x.val + r.val) % n, Nat.mod_lt _ (NeZero.pos n)⟩ = c x := fun x => by
+    have step := hc ⟨(x.val + r.val) % n, Nat.mod_lt _ (NeZero.pos n)⟩
+    suffices h : ((x.val + r.val) % n + n - r.val) % n = x.val by
+      exact step.trans (congrArg c (Fin.ext h))
+    have hxn := x.isLt; have hrn := r.isLt
+    rcases Nat.lt_or_ge (x.val + r.val) n with hlt | hge
+    · rw [Nat.mod_eq_of_lt hlt,
+          show x.val + r.val + n - r.val = x.val + n from by omega,
+          Nat.add_mod_right, Nat.mod_eq_of_lt hxn]
+    · have hmod : (x.val + r.val) % n = x.val + r.val - n := by
+        conv_lhs => rw [show x.val + r.val = (x.val + r.val - n) + n * 1 from by omega]
+        rw [Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (by omega)]
+      rw [hmod, show x.val + r.val - n + n - r.val = x.val from by omega,
+          Nat.mod_eq_of_lt hxn]
+  -- STEP 2: backward iteration: c ⟨(x+m*r)%n,_⟩ = c x for any m
+  have back_iter : ∀ (m : ℕ) (x : Fin n),
+      c ⟨(x.val + m * r.val) % n, Nat.mod_lt _ (NeZero.pos n)⟩ = c x := by
+    intro m; induction m with
+    | zero =>
+      intro x
+      exact congrArg c (Fin.ext (by simp [Nat.mod_eq_of_lt x.isLt]))
+    | succ m ih =>
+      intro x
+      have eq_idx : (x.val + (m + 1) * r.val) % n =
+                    ((x.val + m * r.val) % n + r.val) % n := by
+        conv_lhs => rw [show x.val + (m + 1) * r.val = x.val + m * r.val + r.val from by ring]
+        rw [Nat.add_mod, Nat.mod_eq_of_lt r.isLt]
+      exact (congrArg c (Fin.ext eq_idx)).trans
+            ((backward ⟨(x.val + m * r.val) % n, _⟩).trans (ih x))
+  -- STEP 3: find m : ℕ with (i.val + m * r.val) % n = j.val via Bezout
+  have hdij : (d : ℤ) ∣ (j.val : ℤ) - i.val := by
+    have h : (i.val : ℤ) % d = (j.val : ℤ) % d := by exact_mod_cast hij
+    exact Int.dvd_iff_emod_eq_zero.mpr
+      (by rw [Int.sub_emod, h, sub_self, Int.zero_emod])
+  obtain ⟨B, hB⟩ := hdij
+  have bezout : (d : ℤ) = r.val * Nat.gcdA r.val n + n * Nat.gcdB r.val n :=
+    Nat.gcd_eq_gcd_ab r.val n
+  set m_int := Nat.gcdA r.val n * B with m_int_def
+  have hcong : (n : ℤ) ∣ m_int * r.val - ((j.val : ℤ) - i.val) := by
+    refine ⟨-(Nat.gcdB r.val n * B), ?_⟩
+    simp only [m_int_def]; rw [hB]; linear_combination -B * bezout
+  have hn_pos : (0 : ℤ) < n := by exact_mod_cast NeZero.pos n
+  have hm_nn : 0 ≤ m_int % n := Int.emod_nonneg _ (by linarith)
+  suffices hex : ∃ m : ℕ, (i.val + m * r.val) % n = j.val by
+    obtain ⟨m, hm⟩ := hex
+    exact (back_iter m i).symm.trans (congrArg c (Fin.ext hm))
+  refine ⟨(m_int % n).toNat, ?_⟩
+  have key : ((i.val : ℤ) + (m_int % n) * r.val) % n = j.val := by
+    have hmul_eq : (m_int % (n : ℤ)) * r.val % n = m_int * r.val % n := by
+      rw [Int.mul_emod, Int.emod_emod_of_dvd m_int (dvd_refl (n : ℤ)), ← Int.mul_emod]
+    have h1 : ((i.val : ℤ) + (m_int % n) * r.val) % n =
+              ((i.val : ℤ) + m_int * r.val) % n := by
+      rw [Int.add_emod, hmul_eq, ← Int.add_emod]
+    rw [h1]
+    have h2 : (n : ℤ) ∣ (i.val : ℤ) + m_int * r.val - j.val := by
+      rw [show (i.val : ℤ) + m_int * r.val - j.val =
+            m_int * r.val - ((j.val : ℤ) - i.val) from by ring]
+      exact hcong
+    have hj_lt : (j.val : ℤ) < n := by exact_mod_cast j.isLt
+    have hj_nn : (0 : ℤ) ≤ j.val := Int.natCast_nonneg _
+    have hj_sub : (n : ℤ) ∣ (j.val : ℤ) - ((i.val : ℤ) + m_int * r.val) := by
+      rw [show (j.val : ℤ) - ((i.val : ℤ) + m_int * r.val) =
+            -((i.val : ℤ) + m_int * r.val - j.val) from by ring]
+      exact dvd_neg.mpr h2
+    have hmodeq : (i.val : ℤ) + m_int * r.val ≡ j.val [ZMOD n] :=
+      Int.modEq_iff_dvd.mpr hj_sub
+    rw [show ((i.val : ℤ) + m_int * r.val) % n = j.val % n from hmodeq]
+    exact Int.emod_eq_of_lt hj_nn hj_lt
+  have hcast : ((m_int % n).toNat : ℤ) = m_int % n := Int.toNat_of_nonneg hm_nn
+  exact_mod_cast hcast ▸ key
 
 /-- **Fixed-Point Count**: The bijection between fixed colorings and (Fin d → Fin k)
     (where d = gcd(r.val, n)) gives |Fix(r)| = k^gcd(r.val, n).
@@ -110,7 +183,44 @@ theorem fixed_factors_through_mod {n k : ℕ} [NeZero n] (r : Fin n)
     - Cardinality: |(Fin d → Fin k)| = k^d = k^gcd(r.val, n) -/
 theorem polya_cyclic_fixed_count (n k : ℕ) [NeZero n] (r : Fin n) :
     Fintype.card {c : Fin n → Fin k // IsFixed n k r c} = k ^ Nat.gcd r.val n := by
-  sorry
+  set d := Nat.gcd r.val n
+  have hdn : d ∣ n := Nat.gcd_dvd_right r.val n
+  have hdr : d ∣ r.val := Nat.gcd_dvd_left r.val n
+  have hd_pos : 0 < d := Nat.gcd_pos_of_pos_right _ (NeZero.pos n)
+  have hd_le : d ≤ n := Nat.le_of_dvd (NeZero.pos n) hdn
+  have hdnr : d ∣ n - r.val := by
+    obtain ⟨a, ha⟩ := hdn; obtain ⟨b, hb⟩ := hdr
+    have h_le : r.val ≤ n := Nat.le_of_lt r.isLt
+    have hba : b ≤ a := by nlinarith
+    exact ⟨a - b, by zify [h_le, hba]; linarith⟩
+  rw [show k ^ d = Fintype.card (Fin d → Fin k) from by
+    rw [Fintype.card_fun, Fintype.card_fin, Fintype.card_fin]]
+  apply Fintype.card_congr
+  exact {
+    toFun := fun ⟨c, _⟩ j => c ⟨j.val, Nat.lt_of_lt_of_le j.isLt hd_le⟩
+    invFun := fun f => ⟨fun i => f ⟨i.val % d, Nat.mod_lt _ hd_pos⟩,
+      fun i => by
+        have key : ((i.val + n - r.val) % n) % d = i.val % d := by
+          have h1 := Nat.mod_mod_of_dvd (i.val + n - r.val) hdn
+          have h2 : (n - r.val) % d = 0 := by
+            obtain ⟨q, hq⟩ := hdnr; rw [hq, Nat.mul_mod_right]
+          rw [h1, show i.val + n - r.val = i.val + (n - r.val) from by omega,
+              Nat.add_mod, h2, add_zero,
+              Nat.mod_eq_of_lt (Nat.mod_lt i.val hd_pos)]
+        exact congrArg f (Fin.ext key.symm)⟩
+    left_inv := fun ⟨c, hc⟩ => by
+      simp only
+      apply Subtype.ext; funext i
+      show c ⟨i.val % d, Nat.lt_of_lt_of_le (Nat.mod_lt i.val hd_pos) hd_le⟩ = c i
+      exact fixed_factors_through_mod r c hc
+        ⟨i.val % d, Nat.lt_of_lt_of_le (Nat.mod_lt i.val hd_pos) hd_le⟩ i
+        (Nat.mod_eq_of_lt (Nat.mod_lt i.val hd_pos))
+    right_inv := fun f => by
+      simp only
+      funext j
+      show f ⟨j.val % d, Nat.mod_lt j.val hd_pos⟩ = f j
+      congr 1; exact Fin.ext (Nat.mod_eq_of_lt j.isLt)
+  }
 
 /-! ## §4: Concrete Verification for n = 4, k = 2 (Proved by native_decide) -/
 
