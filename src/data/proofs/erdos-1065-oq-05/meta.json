@@ -18,7 +18,7 @@
             "bateman-horn",
             "research"
         ],
-        "sorries": 1,
+        "sorries": 0,
         "sourceUrl": "https://erdosproblems.com/1065",
         "erdosUrl": "https://erdosproblems.com/1065",
         "mathlibDependencies": [
@@ -54,8 +54,8 @@
             "Bateman-Horn conjecture background"
         ],
         "axiomCount": 1,
-        "assumptions": "1 axiom: batemanHorn_formAWithK_infinite (each k-layer of Form A primes is infinite — the BH conjecture prediction). 1 sorry: formA_decomposition_unique (uniqueness of (k,q) decomposition, provable via 2-adic valuation).",
-        "lineCount": 271,
+        "assumptions": "1 axiom: batemanHorn_formAWithK_infinite (each k-layer of Form A primes is infinite — the BH conjecture prediction). 0 sorries: formA_decomposition_unique was proved via 2-adic valuation (padicValNat 2 (2^k * q) = k when q is odd).",
+        "lineCount": 275,
         "relatedProblems": [
             {
                 "id": "erdos-1065",
@@ -86,7 +86,7 @@
             "title": "Decomposition Uniqueness",
             "startLine": 77,
             "endLine": 100,
-            "summary": "States that if p = 2^{k₁}q₁+1 = 2^{k₂}q₂+1 with q₁,q₂ odd primes, then k₁=k₂ and q₁=q₂. Currently sorry — requires 2-adic valuation argument.",
+            "summary": "Proves that if p = 2^{k₁}q₁+1 = 2^{k₂}q₂+1 with q₁,q₂ odd primes, then k₁=k₂ and q₁=q₂. Proved via padicValNat: v₂(2^k·q) = k when q is odd.",
             "mathContext": "$v_2(2^k q) = k$ when $q$ is odd, so $2^{k_1} q_1 = 2^{k_2} q_2$ with $q_i$ odd implies $k_1 = k_2$."
         },
         {
@@ -140,7 +140,7 @@
         }
     ],
     "leanFile": {
-        "lineCount": 271,
+        "lineCount": 275,
         "structureCount": 0,
         "axiomCount": 1,
         "theoremCount": 24,
@@ -152,6 +152,7 @@
             "Mathlib.Data.Nat.Prime.Basic",
             "Mathlib.Data.Set.Finite.Basic",
             "Mathlib.Data.Nat.Basic",
+            "Mathlib.NumberTheory.Padics.PadicVal.Basic",
             "Mathlib.Tactic"
         ],
         "opens": [],
@@ -178,8 +179,8 @@
         },
         {
             "name": "formA_decomposition_unique",
-            "type": "sorry",
-            "description": "Uniqueness of (k,q) decomposition when q is odd prime (1 sorry)"
+            "type": "verified",
+            "description": "Uniqueness of (k,q) decomposition when q is odd prime — proved via 2-adic valuation"
         },
         {
             "name": "batemanHorn_formAWithK_infinite",
