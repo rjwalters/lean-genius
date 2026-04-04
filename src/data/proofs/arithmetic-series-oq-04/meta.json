@@ -143,10 +143,16 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Finset", "BigOperators", "Polynomial"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Polynomial"
+    ],
     "namespace": "ArithmeticSeriesOQ04",
-    "lineCount": 177,
+    "lineCount": 197,
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 0,
