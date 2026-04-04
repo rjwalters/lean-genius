@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-polya-overview",
+    "proofId": "burnside-counting-oq-03",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "technique",
+    "title": "The Pólya Insight: Fixed-Point Count = k^(number of orbits)",
+    "content": "The key generalization from Burnside to Pólya is identifying **exactly** how many colorings each rotation fixes. For rotation by r on n positions: the orbit of position i is {j | j ≡ i mod gcd(r,n)}, giving gcd(r,n) orbits of size n/gcd(r,n) each. A coloring is fixed iff it's constant on each orbit, so there are k^gcd(r,n) fixed colorings. This follows from `ZMod.addOrderOf_coe`: the additive order of r in ZMod n is n/gcd(n,r), which is the orbit size.",
+    "mathContext": "For $r \\in \\mathbb{Z}/n\\mathbb{Z}$: the subgroup $\\langle r \\rangle = \\{kr \\bmod n \\mid k \\in \\mathbb{Z}\\}$ has order $\\text{addOrderOf}(r) = n/\\gcd(n,r)$. Two positions $i,j$ are in the same orbit iff $i - j \\in \\langle r \\rangle$ iff $\\gcd(r,n) \\mid (i-j)$ iff $i \\equiv j \\pmod{\\gcd(r,n)}$. Hence $|\\text{Fix}(r)| = k^{\\gcd(r,n)}$.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod.addOrderOf_coe", "addOrderOf", "orbit structure"],
+    "prerequisites": ["Burnside's lemma", "additive order in ZMod n", "group orbit theory"]
+  },
+  {
+    "id": "ann-addorderof-rotation",
+    "proofId": "burnside-counting-oq-03",
+    "range": { "startLine": 58, "endLine": 68 },
+    "type": "technique",
+    "title": "addOrderOf_rotation: Orbit Size via ZMod.addOrderOf_coe",
+    "content": "`addOrderOf_rotation` proves that the additive order of r in ZMod n is n/gcd(n, r.val). The proof uses `ZMod.natCast_zmod_val` to rewrite r as ↑r.val, then applies `ZMod.addOrderOf_coe` from Mathlib. This is the bridge between the orbit structure of cyclic rotation and Mathlib's number theory.",
+    "mathContext": "Mathlib's `ZMod.addOrderOf_coe (a : ℕ) {n : ℕ} (n0 : n ≠ 0) : addOrderOf (↑a : ZMod n) = n / n.gcd a` combined with `ZMod.natCast_zmod_val : (r.val : ZMod n) = r` gives `addOrderOf r = n / Nat.gcd n r.val`. For $n=4$: orders are 1, 4, 2, 4 for $r = 0, 1, 2, 3$.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod.addOrderOf_coe", "ZMod.natCast_zmod_val", "NeZero"],
+    "prerequisites": ["ZMod arithmetic", "addOrderOf definition", "Nat.gcd"]
+  },
+  {
+    "id": "ann-fixed-decidable",
+    "proofId": "burnside-counting-oq-03",
+    "range": { "startLine": 44, "endLine": 56 },
+    "type": "definition",
+    "title": "IsFixed: Computable Fixed-Coloring Predicate",
+    "content": "`IsFixed n k r c` says coloring c : Fin n → Fin k is fixed by rotation r ∈ Fin n: every position i maps to the same color as position (i + n - r.val) mod n (the backward rotation). The `DecidablePred` instance uses `Fintype.decidableForallFintype`, enabling `native_decide` proofs for concrete fixed-point counts.",
+    "mathContext": "For rotation r, the action sends position i to position i + r (mod n), so the backward rotation (undoing rotation r) sends i to i - r = (i + n - r) mod n. A coloring c is fixed iff c(i) = c(i - r) for all i.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fintype.decidableForallFintype", "DecidablePred", "native_decide"],
+    "prerequisites": ["Fintype.decidableForallFintype", "Fin.val arithmetic"]
+  },
+  {
+    "id": "ann-fp-counts-n4",
+    "proofId": "burnside-counting-oq-03",
+    "range": { "startLine": 119, "endLine": 158 },
+    "type": "technique",
+    "title": "Fixed-Point Counts for n=4 by native_decide",
+    "content": "The four rotation-specific theorems are proved by `native_decide`, computing directly that: identity (r=0) fixes all 16 colorings; rotation by 1 fixes 2 (constant); rotation by 2 fixes 4 (period-2: c(0)=c(2), c(1)=c(3)); rotation by 3 fixes 2 (constant). These match k^gcd(r,n) = 2^gcd(r,4) for r=0,1,2,3.",
+    "mathContext": "The 6 orbit classes of $\\mathbb{Z}/4\\mathbb{Z}$ acting on $\\{0,1\\}^4$: $\\{0000\\}$, $\\{1111\\}$, $\\{0101, 1010\\}$, $\\{0011, 0110, 1100, 1001\\}$, $\\{0001, 0010, 0100, 1000\\}$, $\\{0111, 1110, 1101, 1011\\}$. Burnside: $(16+2+4+2)/4 = 24/4 = 6$.",
+    "significance": "key",
+    "relatedConcepts": ["native_decide", "IsFixed", "Burnside's lemma"],
+    "prerequisites": ["IsFixed definition", "Fintype.card", "native_decide compilation"]
+  },
+  {
+    "id": "ann-polya-sums",
+    "proofId": "burnside-counting-oq-03",
+    "range": { "startLine": 160, "endLine": 195 },
+    "type": "result",
+    "title": "Pólya Sum Formula: Two Equivalent Forms (Both Proved for n=4)",
+    "content": "Two formulations of the Pólya sum are verified for n=4, k=2 by `native_decide`: (1) Σ_{r:Fin 4} 2^gcd(r,4) = 24; (2) Σ_{d|4} φ(4/d)·2^d = 24. Their equivalence is also proved. The general identity Σ_{r:Fin n} k^gcd(r,n) = Σ_{d|n} φ(n/d)·k^d holds because: for each divisor d|n, exactly φ(n/d) rotations r have gcd(r,n)=d (those with gcd(r/d, n/d)=1, i.e., r/d coprime to n/d).",
+    "mathContext": "Reindexing: group rotations $r \\in \\mathbb{Z}/n\\mathbb{Z}$ by $d = \\gcd(r,n)$. For each $d \\mid n$, the number of $r$ with $\\gcd(r,n) = d$ is $\\varphi(n/d)$ (by Euler's totient: $\\{r/d : \\gcd(r/d, n/d) = 1\\}$ has $\\varphi(n/d)$ elements). Hence $\\sum_r k^{\\gcd(r,n)} = \\sum_{d|n} \\varphi(n/d) \\cdot k^d$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.totient", "Nat.divisors", "Nat.gcd", "Finset.sum"],
+    "prerequisites": ["Euler totient function", "Nat.divisors", "BigOperators"]
+  }
+]
