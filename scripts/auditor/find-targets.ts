@@ -57,6 +57,7 @@ interface AuditTarget {
     badge: string
     claimedSorries: number
     claimedAxioms: number
+    hasAssumptions: boolean
   }
   actual: {
     sorryCount: number
@@ -137,28 +138,75 @@ function commonPrefixLength(a: string, b: string): number {
 }
 
 /**
+ * Build a set of all Lean file paths that are the primary proof file for a
+ * gallery entry. Used to distinguish "sibling files from the same proof family"
+ * (helpers, Aristotle companions) from "sibling gallery entries" (separate proofs
+ * that happen to share a name prefix, e.g. Erdos2Problem ↔ Erdos2OQ01).
+ */
+function buildGalleryOwnedPaths(galleryDir: string): Set<string> {
+  const owned = new Set<string>()
+  if (!fs.existsSync(galleryDir)) return owned
+  for (const entry of fs.readdirSync(galleryDir)) {
+    const galleryPath = path.join(galleryDir, entry)
+    if (!fs.statSync(galleryPath).isDirectory()) continue
+    const metaPath = path.join(galleryPath, 'meta.json')
+    if (!fs.existsSync(metaPath)) continue
+    try {
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'))
+      const proofMeta = meta.meta || {}
+      const leanFileRaw = proofMeta.proofRepoPath || (typeof proofMeta.leanFile === 'string' ? proofMeta.leanFile : '')
+      const leanFile = typeof leanFileRaw === 'string' ? leanFileRaw : ''
+      if (leanFile) {
+        owned.add(path.join('proofs', leanFile.replace(/^proofs\//, '')))
+      }
+    } catch {
+      // skip malformed meta
+    }
+  }
+  return owned
+}
+
+/**
  * Resolve all Lean source files for a proof, including:
  * - The main proofRepoPath file
  * - Any files listed in meta.additionalFiles
  * - Any submodule imports (import Proofs.X.Y → proofs/Proofs/X/Y.lean)
  * - Sibling imports (import Proofs.X → proofs/Proofs/X.lean) when X shares
  *   a name prefix with the main file (covers inherited-axiom cases)
+ *
+ * Returns two sets:
+ * - forSorries: main file + additionalFiles + non-gallery sibling imports
+ *   (gallery-owned sibling files are excluded to avoid sorry inflation:
+ *    parent/sibling gallery entries are audited independently and their
+ *    sorries must not be double-counted here)
+ * - forAxioms: everything in forSorries + gallery-owned sibling imports
+ *   (needed to count axioms that are declared in parent proof files and
+ *    inherited/re-exported by the current proof)
  */
-function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
-  const files: string[] = []
+function resolveAllLeanFiles(
+  mainLeanPath: string,
+  proofMeta: any,
+  galleryOwnedPaths: Set<string>
+): { forSorries: string[]; forAxioms: string[] } {
+  const baseFiles: string[] = []
+  const galleryFiles: string[] = []     // gallery-owned siblings (axioms only)
+  const nonGalleryFiles: string[] = []  // non-gallery siblings (sorries + axioms)
+
   if (mainLeanPath && fs.existsSync(mainLeanPath)) {
-    files.push(mainLeanPath)
+    baseFiles.push(mainLeanPath)
   }
 
-  // Check additionalFiles from meta
+  // Check additionalFiles from meta (always included in both lists)
   const additionalFiles: unknown[] = proofMeta.additionalFiles || []
   for (const af of additionalFiles) {
     if (typeof af !== 'string') continue
     const afPath = path.join('proofs', af.replace(/^proofs\//, ''))
-    if (fs.existsSync(afPath) && !files.includes(afPath)) {
-      files.push(afPath)
+    if (fs.existsSync(afPath) && !baseFiles.includes(afPath)) {
+      baseFiles.push(afPath)
     }
   }
+
+  const allSoFar = () => [...baseFiles, ...galleryFiles, ...nonGalleryFiles]
 
   // Detect submodule and sibling imports from main file
   // Follow imports into subdirectories that are either:
@@ -167,6 +215,10 @@ function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
   // Also follow single-level imports (import Proofs.X) when X shares a name
   //   prefix of >= 4 chars with the main file (e.g., Erdos2Problem ↔ Erdos2OQ01).
   // This avoids counting sorries in unrelated shared libraries (e.g., GraphCore).
+  //
+  // Gallery-owned siblings are placed in galleryFiles (axiom-only tracking):
+  //   - Excluded from forSorries to prevent sorry inflation from parent gallery entries
+  //   - Included in forAxioms to capture axioms inherited from parent proof files
   if (mainLeanPath && fs.existsSync(mainLeanPath)) {
     const mainBaseName = path.basename(mainLeanPath, '.lean')
     const mainParentDir = path.basename(path.dirname(mainLeanPath))
@@ -188,8 +240,11 @@ function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
         const threshold = Math.max(4, Math.floor(minLen * 0.4))
         if (commonPrefixLength(mainBaseName, subDirName) < threshold) continue
         const subPath = path.join('proofs', 'Proofs', subDirName + '.lean')
-        if (fs.existsSync(subPath) && !files.includes(subPath)) {
-          files.push(subPath)
+        if (!fs.existsSync(subPath) || allSoFar().includes(subPath)) continue
+        if (galleryOwnedPaths.has(subPath)) {
+          galleryFiles.push(subPath)
+        } else {
+          nonGalleryFiles.push(subPath)
         }
         continue
       }
@@ -201,13 +256,19 @@ function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
 
       const modulePath = moduleParts.join('/')
       const subPath = path.join('proofs', modulePath + '.lean')
-      if (fs.existsSync(subPath) && !files.includes(subPath)) {
-        files.push(subPath)
+      if (!fs.existsSync(subPath) || allSoFar().includes(subPath)) continue
+      if (galleryOwnedPaths.has(subPath)) {
+        galleryFiles.push(subPath)
+      } else {
+        nonGalleryFiles.push(subPath)
       }
     }
   }
 
-  return files
+  return {
+    forSorries: [...baseFiles, ...nonGalleryFiles],
+    forAxioms: [...baseFiles, ...nonGalleryFiles, ...galleryFiles],
+  }
 }
 
 function detectIssues(target: AuditTarget): string[] {
@@ -224,12 +285,26 @@ function detectIssues(target: AuditTarget): string[] {
   }
 
   // Axiom count mismatch -- check both directions.
-  // Note: structure-encoded assumptions should still be counted in meta.axiomCount per policy.
+  // Note: structure-encoded assumptions (e.g. NSAxioms structure fields) and axioms
+  // in companion files (e.g. PiTranscendental.lean) should still be counted in
+  // meta.axiomCount per policy, but the tool can only detect `axiom` declarations.
+  // When actualAxiomCount == 0 but claimedAxioms > 0, the proof may be using
+  // structure-encoded assumptions documented in the `assumptions` field — suppress
+  // the false positive only when status is "axiomatized" and assumptions are documented.
   if (target.meta.claimedAxioms >= 0 && target.actual.axiomCount !== target.meta.claimedAxioms) {
     if (target.actual.axiomCount > target.meta.claimedAxioms) {
       issues.push(`axiom undercount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
     } else {
-      issues.push(`axiom overcount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
+      // Overcount: claimed > actual
+      // Suppress if actualAxiomCount == 0, proof is axiomatized, and assumptions are documented.
+      // These are structure-encoded or companion-file axioms that can't be auto-detected.
+      const isStructureEncoded =
+        target.actual.axiomCount === 0 &&
+        target.meta.status === 'axiomatized' &&
+        target.meta.hasAssumptions
+      if (!isStructureEncoded) {
+        issues.push(`axiom overcount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
+      }
     }
   }
 
@@ -247,7 +322,12 @@ function detectIssues(target: AuditTarget): string[] {
   return issues
 }
 
-function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditTarget | null {
+function analyzeProof(
+  id: string,
+  galleryPath: string,
+  tracker: Tracker,
+  galleryOwnedPaths: Set<string>
+): AuditTarget | null {
   const metaPath = path.join(galleryPath, 'meta.json')
   if (!fs.existsSync(metaPath)) return null
 
@@ -270,14 +350,18 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
   let trueStubCount = 0
   let hasMajorMathlibDep = false
 
-  const allLeanFiles = leanPath ? resolveAllLeanFiles(leanPath, proofMeta) : []
-  for (const filePath of allLeanFiles) {
+  const { forSorries, forAxioms } = leanPath
+    ? resolveAllLeanFiles(leanPath, proofMeta, galleryOwnedPaths)
+    : { forSorries: [], forAxioms: [] }
+
+  // Count sorries and True stubs from non-gallery-owned files only
+  // (gallery-owned siblings are audited as their own entries)
+  for (const filePath of forSorries) {
     const rawContent = fs.readFileSync(filePath, 'utf-8')
     // Strip comments to avoid counting sorry/True in comments (Issue #6130)
     const content = stripLeanComments(rawContent)
 
     sorryCount += (content.match(/\bsorry\b/g) || []).length
-    axiomCount += (content.match(/^(?:private\s+)?axiom /gm) || []).length
 
     // True stubs: only count theorem/lemma declarations, not example (Issue #6130)
     for (const line of content.split('\n')) {
@@ -286,6 +370,15 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
         trueStubCount++
       }
     }
+  }
+
+  // Count axioms from all files including gallery-owned siblings
+  // (parent proof files may declare axioms that are inherited by this entry)
+  // Fix: include `noncomputable axiom` in addition to plain `axiom` declarations
+  for (const filePath of forAxioms) {
+    const rawContent = fs.readFileSync(filePath, 'utf-8')
+    const content = stripLeanComments(rawContent)
+    axiomCount += (content.match(/^(?:noncomputable\s+)?(?:private\s+)?axiom /gm) || []).length
   }
 
   const trackerEntry = tracker.entries[id]
@@ -305,6 +398,7 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
       badge: proofMeta.badge || 'unknown',
       claimedSorries: proofMeta.sorries ?? -1,
       claimedAxioms: proofMeta.axiomCount ?? -1,
+      hasAssumptions: typeof proofMeta.assumptions === 'string' && proofMeta.assumptions.trim().length > 0,
     },
     actual: {
       sorryCount,
@@ -348,12 +442,15 @@ function main() {
     process.exit(1)
   }
 
+  // Pre-build gallery-owned paths for sorry/axiom scope isolation
+  const galleryOwnedPaths = buildGalleryOwnedPaths(GALLERY_DIR)
+
   for (const entry of fs.readdirSync(GALLERY_DIR)) {
     const galleryPath = path.join(GALLERY_DIR, entry)
     if (!fs.statSync(galleryPath).isDirectory()) continue
     if (entry === 'node_modules') continue
 
-    const target = analyzeProof(entry, galleryPath, tracker)
+    const target = analyzeProof(entry, galleryPath, tracker, galleryOwnedPaths)
     if (target) targets.push(target)
   }
 
