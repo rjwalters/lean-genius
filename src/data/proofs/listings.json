@@ -3111,6 +3111,26 @@
     "annotationCount": 0
   },
   {
+    "id": "cantor-diagonalization-oq-03-oq-01-oq-03",
+    "title": "Gödel's Incompleteness Theorem as a Lawvere Instance",
+    "slug": "cantor-diagonalization-oq-03-oq-01-oq-03",
+    "description": "Formalizes Gödel's First Incompleteness Theorem (1931) as a direct consequence of Lawvere's fixed-point theorem. The diagonal lemma = point-surjectivity; the Gödel sentence G = ¬Pr(G) = fixed point of Neg∘PrSent; consistency forces unprovability. Completes the Lawvere chain: Cantor (Prop, negation) → Rice (Bool, Bool.not) → Gödel (sentences, negate provability). Unlike Rice where Bool.not has no fixed point, here the fixed point exists but is unprovable.",
+    "status": "axiomatized",
+    "badge": "original",
+    "tags": [
+      "logic",
+      "lawvere-fixed-point",
+      "godel-incompleteness",
+      "diagonal-argument",
+      "provability-logic",
+      "abstract-logic",
+      "open-question",
+      "research"
+    ],
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "cantor-diagonalization-oq-04",
     "title": "Lawvere Fixed-Point Theorem: Retraction Version",
     "slug": "cantor-diagonalization-oq-04",
