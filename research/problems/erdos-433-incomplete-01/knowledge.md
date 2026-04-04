@@ -2,7 +2,40 @@
 
 ## Problem Summary
 
-Erdős #433: Prove g(k,n) ~ n²/(k-1). SOLVED by Dixmier 1990. The lean file had >15 compilation errors preventing any progress; this session fixed all of them.
+Erdős #433: Prove g(k,n) ~ n²/(k-1). SOLVED by Dixmier 1990. **STATUS: COMPLETE** — all sorries proved, g_two theorem proved for n≥3, both Lean files compile cleanly. PR #9157.
+
+## Session 2026-04-03 (Session 2) - Prove all sorries, complete g_two
+
+**Mode**: FRESH (continuing)
+**Outcome**: completed — all 5 sorries eliminated, both files build
+
+### What I Did
+
+- Proved `coprime_pred_self` by lifting to ℤ, using `dvd_sub` on gcd divisibility
+- Proved `frobenius_bound_int` via `nlinarith` with 4 Positivstellensatz witnesses
+- Proved `frobenius_ub_pair` via `rcases le_or_lt` on ℕ underflow + `zify` + `linarith`
+- Proved `finset_gcd_pred_self` via `Finset.gcd_dvd` for each element + `Nat.dvd_gcd` + coprimality
+- Proved `every_mem_num_sem_01`: rewrote `Finset.univ` for `↥{0,1}` to explicit pair `{⟨0,_⟩, ⟨1,_⟩}`, then `sum_insert`/`sum_singleton` + `norm_num`
+- Proved `frobenius_zero_one`: G({0,1}) = 0 from `every_mem_num_sem_01`
+- Proved `g_two` upper bound: `csSup_le`; for each 2-element subset, apply Sylvester-Frobenius then `frobenius_ub_pair`; handle a=0 or b=0 degenerate cases via `frobenius_zero_one`
+- Proved `g_two` lower bound: `dixmier_lower_bound 2 n` + `dixmier_k2_arith` arithmetic identity
+
+### Key Findings
+
+- **`Finset.sum_coe_sort` fails with lambdas**: Both `rw` (pattern `?f ↑i` can't match lambdas) and `simp only` (goal has `a.val` not `↑a` form) fail. Workaround: rewrite `Finset.univ` for the subtype finset to an explicit element set, then use `sum_insert`/`sum_singleton`.
+- **`Finset.gcd_insert` takes no proof argument**: calling `Finset.gcd_insert (by simp)` gives "function expected". Use `Finset.gcd_dvd` instead.
+- **`GCDMonoid.gcd ≠ Nat.gcd` definitionally**: Can't use `simp [coprime_pred_self]` after `gcd_insert`/`gcd_singleton`. Use `Nat.dvd_gcd` + `Finset.gcd_dvd` approach instead.
+- **`subst h` direction**: `h : x = a` (both locals) may substitute `a := x`, making `a` unknown. Use `rw [h]` instead of `subst h` or `rcases ... with rfl`.
+- **`zify [side_conds]`**: Much more reliable than `push_cast` for ℕ subtraction with known bounds. Pass the bound proof as a side condition directly.
+
+### Files Modified
+
+- `proofs/Proofs/Erdos433Aristotle.lean` — all 4 sorries filled
+- `proofs/Proofs/Erdos433Problem.lean` — g_two sorry filled, helpers added
+
+### PR
+
+https://github.com/rjwalters/lean-genius/pull/9157
 
 ## Session 2026-04-03 (Session 1) - Fix compilation errors, create Aristotle companion
 
