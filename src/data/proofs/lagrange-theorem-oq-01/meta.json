@@ -1,0 +1,67 @@
+{
+  "id": "lagrange-theorem-oq-01",
+  "title": "Lagrange's Theorem OQ-01: The Sylow Theorems as Partial Converse",
+  "slug": "lagrange-theorem-oq-01",
+  "description": "Formal proof of all three Sylow theorems (existence, conjugacy, counting) as a partial converse to Lagrange's theorem, plus Cauchy's theorem, all from Mathlib.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ01.lean",
+    "tags": ["group-theory", "algebra", "sylow-theorems", "lagrange", "cauchy", "subgroups"],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 141,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "assumptions": "None.",
+    "originalContributions": [
+      "Unified formal presentation of all three Sylow theorems connecting to Lagrange's theorem context",
+      "Explicit statement that n_p ≡ 1 mod p using Sylow.card_sylow_modEq_one",
+      "Partial converse to Lagrange: p^k | |G| implies subgroup of order p^k via Sylow.exists_subgroup_card_pow_prime",
+      "Cauchy's theorem as corollary of Sylow existence"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Lagrange's theorem (1771) states that the order of any subgroup divides the group order. The converse — does every divisor of |G| arise as a subgroup order? — is false in general (A₄ has order 12 but no subgroup of order 6). Sylow's theorems (1872) provide the sharpest known partial converse: every prime power divisor of |G| arises.",
+    "problemStatement": "Formally state and prove all three Sylow theorems: (I) existence of Sylow p-subgroups, (II) all Sylow p-subgroups are conjugate, (III) the count n_p satisfies n_p ≡ 1 mod p and n_p | [G:P]. Also prove the partial converse to Lagrange (p^k | |G| implies a subgroup of order p^k) and Cauchy's theorem.",
+    "proofStrategy": "All results are extracted from Mathlib's group theory library. Sylow existence uses Sylow.nonempty; conjugacy uses Sylow.conj_eq; counting uses Sylow.card_sylow_dvd_index and Sylow.card_sylow_modEq_one. The partial converse uses Sylow.exists_subgroup_card_pow_prime. Cauchy's theorem uses exists_prime_orderOf_dvd_card.",
+    "keyInsights": [
+      "A₄ (order 12) has no subgroup of order 6, showing the converse to Lagrange fails for composite divisors",
+      "Sylow p-subgroups are maximal p-subgroups: |P| = p^(v_p(|G|)) where v_p is the p-adic valuation",
+      "Conjugacy of Sylow subgroups (Theorem II) implies uniqueness when n_p = 1, giving a normal Sylow subgroup",
+      "Cauchy's theorem (p prime, p | |G| implies element of order p) is a corollary of Sylow existence"
+    ],
+    "prerequisites": [
+      "Mathlib.GroupTheory.Sylow",
+      "Subgroup.card_subgroup_dvd_card (Lagrange)",
+      "Fintype.card_perm and group order calculations"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "This file proves 11 theorems with 0 sorries and 0 axioms, all sourced from Mathlib, covering Lagrange's theorem, all three Sylow theorems, and Cauchy's theorem, within the namespace LagrangeOQ01.",
+    "implications": "The Sylow theorems are among the most important results in finite group theory, enabling the classification of groups of small order and underpinning the structure theory of finite groups. Having them formally verified and contextualized relative to Lagrange's theorem completes the classical picture.",
+    "openQuestions": [
+      "Formalize the application: use Sylow theory to classify groups of order pq (p < q primes)",
+      "Prove that A₄ has no subgroup of order 6 (the standard counterexample to the converse of Lagrange)",
+      "Formalize Hall's theorem: for solvable groups, subgroups exist for all Hall numbers (gcd(d, |G|/d) = 1)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Parent file proving Lagrange's theorem on subgroup order dividing group order"
+    }
+  ],
+  "leanFile": {
+    "namespace": "LagrangeOQ01",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
+  }
+}

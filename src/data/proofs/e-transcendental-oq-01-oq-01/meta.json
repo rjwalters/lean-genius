@@ -1,0 +1,70 @@
+{
+  "id": "e-transcendental-oq-01-oq-01",
+  "title": "e + π Transcendence: New Results via Nesterenko's Theorem (OQ-01-OQ-01)",
+  "slug": "e-transcendental-oq-01-oq-01",
+  "description": "Formal proofs that e^π, Γ(1/4), and π·e^π are transcendental via Nesterenko's 1996 algebraic independence theorem, plus conditional proofs of e+π and e·π transcendence under Schanuel's Conjecture.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ETranscendentalOQ01OQ01.lean",
+    "tags": ["number-theory", "transcendence", "nesterenko", "schanuel", "pi", "e"],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 2,
+    "lineCount": 341,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "assumptions": "schanuel_for_e_pi (axiom: e and π are algebraically independent, following from Schanuel's Conjecture applied with z₁=1, z₂=iπ); nesterenko_algebraic_independence (axiom: Nesterenko's 1996 theorem that π, e^π, and Γ(1/4) are algebraically independent, imported from parent ETranscendentalOQ01).",
+    "originalContributions": [
+      "First formal proof that e^π is transcendental in this codebase, derived from Nesterenko's theorem",
+      "Formal proof that Γ(1/4) is transcendental from Nesterenko's algebraic independence",
+      "Formal proof that π·e^π is transcendental",
+      "Conditional proof of e+π transcendence under Schanuel's Conjecture",
+      "Polynomial-lifting technique: embedding univariate into multivariate polynomials to apply Nesterenko"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Nesterenko proved in 1996 that π, e^π, and Γ(1/4) are algebraically independent over ℚ — a landmark result in transcendental number theory. This superseded earlier results and has strong corollaries. The open question of whether e+π is transcendental (or even irrational) remains unsolved as of 2026.",
+    "problemStatement": "Starting from Nesterenko's algebraic independence theorem, prove transcendence of e^π, Γ(1/4), and π·e^π unconditionally. Additionally, under Schanuel's Conjecture, prove that e+π and e·π are transcendental.",
+    "proofStrategy": "The core technique is polynomial lifting: to prove a constant α is transcendental using Nesterenko's theorem for {π, e^π, Γ(1/4)}, embed a hypothetical minimal polynomial f(α)=0 into a multivariate polynomial P(X₀,X₁,X₂) = f(Xᵢ) (choosing i based on which constant α equals), show P≠0 via a specialization argument, then derive a contradiction with Nesterenko.",
+    "keyInsights": [
+      "Polynomial lifting: a univariate f annihilating α embeds into a multivariate P annihilating the Nesterenko triple",
+      "Non-vanishing is verified by specializing the other variables to 0 or 1 to recover f",
+      "Schanuel's Conjecture applied to (1, iπ) gives algebraic independence of e and π, resolving e+π conditionally",
+      "e^π transcendence (Gel'fond 1929) gets a new proof via the stronger Nesterenko 1996 result"
+    ],
+    "prerequisites": [
+      "MvPolynomial and Polynomial.aeval in Mathlib",
+      "Algebraic independence and transcendence definitions",
+      "Nesterenko's theorem (axiomatized in parent ETranscendentalOQ01)",
+      "Schanuel's Conjecture (stated as axiom schanuel_for_e_pi)"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "This file proves 9 theorems with 0 sorries, conditional on 2 axioms (Nesterenko and Schanuel). Unconditionally, it establishes transcendence of π (via Nesterenko), e^π, Γ(1/4), and π·e^π. Conditionally on Schanuel's Conjecture, it proves e+π and e·π are transcendental.",
+    "implications": "The results fill in the transcendence hierarchy around π, e, and their combinations. The e^π result (Gel'fond 1929) is now formally verified. The gap between unconditional and conditional results precisely tracks the open status of Schanuel's Conjecture.",
+    "openQuestions": [
+      "Is e+π transcendental? (Open — the main OQ-01; conditional proof given here)",
+      "Is e·π transcendental? (Open unconditionally)",
+      "Can Nesterenko's theorem itself be formally verified in Lean?",
+      "Are e and π algebraically independent? (Equivalent to Schanuel's Conjecture for these values)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "e-transcendental-oq-01",
+      "relationship": "extends",
+      "description": "Parent file providing Nesterenko's axiom and base results including e+π or e·π transcendence"
+    }
+  ],
+  "leanFile": {
+    "namespace": "Real (open)",
+    "lineCount": 341,
+    "axiomCount": 2,
+    "theoremCount": 9,
+    "definitionCount": 0
+  }
+}

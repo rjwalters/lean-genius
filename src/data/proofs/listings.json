@@ -1541,6 +1541,24 @@
     "annotationCount": 7
   },
   {
+    "id": "bezout-identity-oq-02-oq-01-oq-01",
+    "title": "Unique Factorization in Polynomial Rings",
+    "slug": "bezout-identity-oq-02-oq-01-oq-01",
+    "description": "Proves polynomial UFD structure, Bézout identity for coprime polynomials over a field, Euclid's lemma for K[X], and irreducible ↔ prime equivalence in polynomial rings.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "algebra",
+      "ring-theory",
+      "polynomial-rings",
+      "unique-factorization"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "bezout-identity-oq-02-oq-01-oq-02",
     "title": "FTA Generalization to Euclidean Domains",
     "slug": "bezout-identity-oq-02-oq-01-oq-02",
@@ -5436,6 +5454,24 @@
     "annotationCount": 7
   },
   {
+    "id": "derangements-oq-02-oq-02",
+    "title": "Derangements OQ-02-OQ-02: Fixed Point Count via Double Counting",
+    "slug": "derangements-oq-02-oq-02",
+    "description": "Proves ∑_σ |Fix(σ)| = n! (total fixed points across all permutations equals n!) and the weighted partition identity ∑k·C(n,k)·D(n-k) = n!, using double counting via derangement decomposition.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "combinatorics",
+      "permutations",
+      "derangements",
+      "fixed-points"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "derangements-oq-02-oq-01",
     "title": "Partial Derangements for Arbitrary Finite Types",
     "slug": "derangements-oq-02-oq-01",
@@ -6173,6 +6209,24 @@
     "mathlibCount": 4,
     "sorries": 0,
     "annotationCount": 7
+  },
+  {
+    "id": "e-transcendental-oq-01-oq-01",
+    "title": "e^π and Γ(1/4) Transcendence via Nesterenko's Theorem",
+    "slug": "e-transcendental-oq-01-oq-01",
+    "description": "Proves e^π is transcendental (from Nesterenko 1996) and Γ(1/4) is transcendental. Conditionally (via Schanuel's conjecture) proves e+π and e·π are transcendental.",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "transcendence",
+      "nesterenko",
+      "exponential"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
   },
   {
     "id": "e-transcendental-oq-03",
@@ -32085,6 +32139,25 @@
     "annotationCount": 7
   },
   {
+    "id": "feuerbachs-theorem-oq-05",
+    "title": "Feuerbach's Theorem OQ-05: Inversive Proof Framework",
+    "slug": "feuerbachs-theorem-oq-05",
+    "description": "Formalizes the inversive proof framework for Feuerbach's theorem: defines the Feuerbach point F, proves it lies on both the nine-point circle and incircle, and establishes the circle-to-line transformation under inversion at F.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "feuerbach",
+      "inversion",
+      "incircle"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "feuerbachs-theorem-defs",
     "title": "Feuerbach's Theorem Definitions and Nine-Point Circle",
     "slug": "feuerbachs-theorem-defs",
@@ -34325,6 +34398,24 @@
     "annotationCount": 9
   },
   {
+    "id": "lagrange-theorem-oq-01",
+    "title": "Lagrange's Theorem OQ-01: Sylow Theorems",
+    "slug": "lagrange-theorem-oq-01",
+    "description": "Proves all three Sylow theorems (existence, conjugacy, counting) as a partial converse to Lagrange's theorem. Also derives Cauchy's theorem and the p-group structure theorem.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "sylow-theorems",
+      "lagrange"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "lagrange-theorem-oq-02",
     "title": "The Orbit-Stabilizer Theorem (Generalization of Lagrange)",
     "slug": "lagrange-theorem-oq-02",
@@ -35786,6 +35877,24 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 8
+  },
+  {
+    "id": "product-of-segments-of-chords-oq-01",
+    "title": "Power of a Point in Higher Dimensions",
+    "slug": "product-of-segments-of-chords-oq-01",
+    "description": "Generalizes the intersecting chords theorem to spheres in any inner product space: PA·PB = |d²-r²| is invariant for all secant lines through P. Works in ℝ², ℝ³, and any inner product space.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "inner-product-spaces",
+      "power-of-a-point"
+    ],
+    "dateAdded": "2026-04-04",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
   },
   {
     "id": "ptolemys-complex-proof",

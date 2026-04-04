@@ -1,0 +1,68 @@
+{
+  "id": "derangements-oq-02-oq-02",
+  "title": "Expected Fixed Points of a Random Permutation (OQ-02-OQ-02)",
+  "slug": "derangements-oq-02-oq-02",
+  "description": "Formal proof that the total number of fixed points across all permutations of n elements equals n!, equivalently E[#fixed points] = 1, via Burnside's lemma. Also proves the weighted partition identity ∑_k k·C(n,k)·D(n-k) = n! by double counting.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsOQ02OQ02.lean",
+    "tags": ["combinatorics", "permutations", "derangements", "burnside", "probability", "generating-functions"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 250,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "assumptions": "None.",
+    "originalContributions": [
+      "Proof of ∑_σ |Fix(σ)| = n! via Burnside's lemma using MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+      "Proof that exactly (n-1)! permutations fix any given point via orbit-stabilizer theorem",
+      "Proof of the weighted partition identity ∑_k k·C(n,k)·D(n-k) = n! by double counting with Finset.sum_fiberwise_of_maps_to",
+      "Connection between Burnside's lemma, the orbit-stabilizer theorem, and the derangement formula S(n,k) = C(n,k)·D(n-k)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The expected number of fixed points of a uniformly random permutation equals 1, for any n ≥ 1. This elegant fact follows from linearity of expectation: each of the n positions is fixed with probability 1/n, giving a total expectation of 1. The weighted partition identity ∑_k k·C(n,k)·D(n-k) = n! is the algebraic version connecting partial derangement counts to this expectation.",
+    "problemStatement": "Prove that ∑_{σ ∈ Perm(Fin n)} |Fix(σ)| = n! for n ≥ 1, and prove the weighted partition identity ∑_k k·C(n,k)·D(n-k) = n! arising from the partial derangement formula S(n,k) = C(n,k)·D(n-k).",
+    "proofStrategy": "For the main theorem: Burnside's lemma gives ∑_σ |Fix(σ)| = |orbits| · |G|. Since Perm(Fin n) acts transitively on Fin n, there is exactly one orbit, so |orbits| = 1. Then |G| = n!. For the weighted identity: double counting via Finset.sum_fiberwise_of_maps_to swaps the order of summation, converting the fiber sum ∑_k k·|A_k| to ∑_σ fp(σ) = n!.",
+    "keyInsights": [
+      "Burnside's lemma (sum_card_fixedBy_eq_card_orbits_mul_card_group) directly gives the sum",
+      "Transitivity of Perm(Fin n) on Fin n collapses the orbit count to 1 (Unique quotient type)",
+      "The orbit-stabilizer theorem yields card_perm_fixing_point: exactly (n-1)! permutations fix any element",
+      "Finset.sum_fiberwise_of_maps_to is the key lemma for the double-counting argument"
+    ],
+    "prerequisites": [
+      "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
+      "MulAction.pretransitive_iff_unique_quotient_of_nonempty",
+      "Orbit-stabilizer theorem (MulAction.orbitEquivQuotientStabilizer, Subgroup.card_mul_index)",
+      "Partial derangement counts from parent DerangementsOQ02"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "This file proves 13 theorems (including concrete verifications for n=1,2,3,4) with 0 sorries and 0 axioms, establishing both the Burnside-based main theorem and the weighted partition identity by double counting.",
+    "implications": "The result confirms E[#fixed] = 1 in Lean and provides a rigorous connection between the derangement formula S(n,k) = C(n,k)·D(n-k) and moment calculations. The card_perm_fixing_point lemma (orbit-stabilizer) is a reusable result for permutation group theory.",
+    "openQuestions": [
+      "Prove higher moment formulas: E[(#fixed)^k] for k ≥ 2",
+      "Prove the generating function G_n(t) = ∑_k C(n,k)·D(n-k)·t^k satisfies G_n(1) = n! and G_n'(1) = n!",
+      "Connect to Poisson approximation: (# fixed points) → Poisson(1) as n → ∞"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "derangements-oq-02",
+      "relationship": "extends",
+      "description": "Parent file providing the partial derangement formula S(n,k) = C(n,k)·D(n-k) and numDerangements"
+    }
+  ],
+  "leanFile": {
+    "namespace": "DerangementsOQ02OQ02",
+    "lineCount": 250,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0
+  }
+}
