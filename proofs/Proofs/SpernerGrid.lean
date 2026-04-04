@@ -640,7 +640,7 @@ noncomputable def GridSimplex.interiorFlip
           -- new_v.coords miss = v_prev.coords miss - 1
           have h_new : new_v.coords s.miss = v_prev.coords s.miss - 1 :=
             BaryPoint.transfer_coords_dec v_prev (s.incDir k) s.miss h_ne h_miss_pos
-          rw [h_new]; sorry -- omega needs h_miss_pos: Nat.sub_add_cancel
+          rw [h_new]; omega
         · by_cases hjk : j_step = k
           · -- Case j_step = k
             have hcs_eq : (j_step.castSucc : Fin (d + 1)) = ⟨k.val, by omega⟩ := by
@@ -838,7 +838,7 @@ noncomputable def GridSimplex.boundaryFlip0
               -- where j_step.val + 1 = d, so s.verts ⟨d,_⟩ = last_v
               -- s.verts ⟨j_step.val+1,_⟩ = last_v since j_step.val+1=d
               convert BaryPoint.transfer_coords_inc last_v inc0 s.miss h_ne h_pos using 1
-              sorry -- Fin proof: j_step.val + 1 = d (from j_step.isLt and ¬(j_step.val + 1 < d))
+              congr 1; ext; simp; omega
           step_dec := by
             intro j_step
             by_cases hj_mid : j_step.val + 1 < d
@@ -863,7 +863,7 @@ noncomputable def GridSimplex.boundaryFlip0
               have h_new : new_v.coords s.miss = last_v.coords s.miss - 1 :=
                 BaryPoint.transfer_coords_dec last_v inc0 s.miss h_ne h_pos
               convert_to last_v.coords s.miss = new_v.coords s.miss + 1
-              · sorry -- Fin proof: j_step.val + 1 = d
+              · congr 1; ext; simp; omega
               · rw [h_new]; have := h_pos; omega
           step_same := by
             intro j_step j hj_inc hj_miss
@@ -942,7 +942,7 @@ noncomputable def GridSimplex.boundaryFlipLast
               have h_new : new_v.coords last_inc = v0.coords last_inc - 1 :=
                 BaryPoint.transfer_coords_dec v0 s.miss last_inc (Ne.symm h_ne) h_pos
               convert_to v0.coords last_inc = new_v.coords last_inc + 1
-              · sorry -- Fin proof: j_step.val + 1 - 1 = 0 (from hj0)
+              · congr 1; ext; simp; omega
               · rw [h_new]; have := h_pos; omega
             · -- Later step
               simp only [hj0, ite_false]
@@ -970,7 +970,7 @@ noncomputable def GridSimplex.boundaryFlipLast
               have h_new : new_v.coords s.miss = v0.coords s.miss + 1 :=
                 BaryPoint.transfer_coords_inc v0 s.miss last_inc (Ne.symm h_ne) h_pos
               convert_to new_v.coords s.miss = v0.coords s.miss + 1
-              · sorry -- Fin proof: j_step.val + 1 - 1 = 0 (from hj0)
+              · congr 1; ext; simp; omega
               · exact h_new
             · -- Later step
               have hcs_nz : ¬(j_step.castSucc.val = 0) := by simp [Fin.castSucc]; exact hj0
@@ -978,7 +978,13 @@ noncomputable def GridSimplex.boundaryFlipLast
               simp only [show (j_step.castSucc.val = 0) = False from eq_false hcs_nz,
                          show (j_step.succ.val = 0) = False from eq_false hss_nz,
                          ite_false]
-              sorry -- Later step_dec: delegate to s.step_dec with index shift
+              have hjd : j_step.val - 1 < d := by omega
+              have h := s.step_dec ⟨j_step.val - 1, hjd⟩
+              have : (⟨j_step.val - 1, hjd⟩ : Fin d).succ =
+                (⟨j_step.val, by omega⟩ : Fin (d + 1)) := by ext; simp; omega
+              have : (⟨j_step.val - 1, hjd⟩ : Fin d).castSucc =
+                (⟨j_step.val - 1, by omega⟩ : Fin (d + 1)) := by ext; simp [Fin.castSucc]
+              simp_all
           step_same := by
             intro j_step j hj_inc hj_miss
             simp only [new_incDir] at hj_inc
