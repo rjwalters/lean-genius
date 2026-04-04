@@ -220,18 +220,15 @@ Key facts:
 The question remains one of the deepest open problems in set theory.
 -/
 
-/-- Martin's Axiom is compatible with both CH and ¬CH. -/
-theorem martins_axiom_neutral_on_ch :
-    -- MA is consistent with CH
-    True ∧
-    -- MA + ¬CH is also consistent
-    True := ⟨trivial, trivial⟩
+/-
+  Martin's Axiom is compatible with both CH and ¬CH:
+  MA is consistent with CH, and MA + ¬CH is also consistent.
+-/
 
-/-- PFA (Proper Forcing Axiom) implies ¬CH: 2^ℵ₀ = ℵ₂ under PFA.
-    This is a theorem of Todorcevic and Velickovic. -/
-theorem pfa_implies_not_ch :
-    True  -- Placeholder: PFA → 2^ℵ₀ = ℵ₂
-  := trivial
+/-
+  PFA (Proper Forcing Axiom) implies ¬CH: 2^ℵ₀ = ℵ₂ under PFA.
+  This is a theorem of Todorcevic and Velickovic.
+-/
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
