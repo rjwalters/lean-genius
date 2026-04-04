@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-crt-ring-def",
+    "proofId": "bezout-identity-oq-03-oq-04-oq-01",
+    "range": { "startLine": 29, "endLine": 37 },
+    "type": "definition",
+    "title": "crtRing: Universal CRT Formula over CommRing",
+    "content": "The core construction `crtRing a b s t m n = b * s * m + a * t * n` implements the Chinese Remainder Theorem solution in any commutative ring. Given residues `a` (mod `m`) and `b` (mod `n`) with Bézout coefficients `s`, `t` satisfying `s * m + t * n = 1`, this formula produces an element satisfying both congruences simultaneously. The formula is fully explicit — no existential reasoning, no classical logic — which makes it computationally useful. The type signature `{R : Type*} [CommRing R]` means it works uniformly over any commutative ring.",
+    "mathContext": "Given $s \\cdot m + t \\cdot n = 1$ in a commutative ring $R$, the element $x = b \\cdot s \\cdot m + a \\cdot t \\cdot n$ satisfies $x \\equiv a \\pmod{m}$ and $x \\equiv b \\pmod{n}$. Verify: $x - a = b s m + a t n - a = b s m + a(t n - 1) = b s m - a s m = m(b s - a s)$, using $t n = 1 - s m$.",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "Bézout's identity", "IsCoprime in Mathlib", "commutative ring", "constructive proof"],
+    "prerequisites": ["commutative ring theory", "divisibility in rings", "Bézout coefficients"]
+  },
+  {
+    "id": "ann-correctness-mod-m",
+    "proofId": "bezout-identity-oq-03-oq-04-oq-01",
+    "range": { "startLine": 39, "endLine": 55 },
+    "type": "technique",
+    "title": "Correctness via linear_combination",
+    "content": "The two correctness theorems `crtRing_mod_m` and `crtRing_mod_n` each reduce to a single-line proof using `linear_combination`. The tactic `linear_combination a * hbez` means: reduce the goal to `0 = 0` by subtracting `a` times the hypothesis `hbez : s * m + t * n = 1` from the goal expression. This works because the divisibility witness `b * s - a * s` is explicit in the `⟨..., by ...⟩` term-mode proof. The `linear_combination` tactic is the ring-theoretic replacement for `linarith` (which is integer-specific): it proves polynomial identities by producing a certificate as a linear combination of hypotheses.",
+    "mathContext": "For $\\text{crtRing\\_mod\\_m}$: we exhibit the witness $b s - a s$ for $m \\mid (x - a)$ and check $m(b s - a s) = x - a$. Expanding: $m(bs - as) = bsm - asm = bsm + atn - a - a(tn - 1 + sm) = x - a - a(tn + sm - 1) = x - a$ since $sm + tn = 1$. The certificate `a * hbez` encodes this algebraic step: $a \\cdot (sm + tn) - a \\cdot 1 = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination tactic in Lean 4", "linarith vs linear_combination", "divisibility witnesses", "ring arithmetic in Lean 4"],
+    "prerequisites": ["Lean 4 tactics", "ring identities", "dvd in Lean 4"]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "bezout-identity-oq-03-oq-04-oq-01",
+    "range": { "startLine": 57, "endLine": 66 },
+    "type": "technique",
+    "title": "Uniqueness via IsCoprime.mul_dvd",
+    "content": "The uniqueness theorem is a one-liner: `hcop.mul_dvd hm hn`. The Mathlib lemma `IsCoprime.mul_dvd` states that if `m` and `n` are coprime in a commutative ring and both `m ∣ d` and `n ∣ d`, then `m * n ∣ d`. This directly replaces the integer-specific `Int.Coprime.mul_dvd_of_dvd_of_dvd`. The CRT uniqueness statement says two solutions to the same congruence system differ by a multiple of `m * n`—i.e., they are equal modulo `m * n`.",
+    "mathContext": "CRT uniqueness: if $x \\equiv y \\pmod{m}$ and $x \\equiv y \\pmod{n}$ with $\\gcd(m,n) = 1$ (i.e., $m$ and $n$ are coprime), then $mn \\mid (x - y)$. In ring terms: `IsCoprime m n` means $\\exists s, t,\\, sm + tn = 1$; `m ∣ (x-y)` and `n ∣ (x-y)` together with coprimality gives `mn ∣ (x-y)` by `IsCoprime.mul_dvd`.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsCoprime.mul_dvd in Mathlib", "Chinese Remainder Theorem uniqueness", "coprimality in rings", "Int.Coprime.mul_dvd_of_dvd_of_dvd"],
+    "prerequisites": ["coprime elements in rings", "divisibility in rings", "Lean 4 dot notation for typeclass methods"]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "bezout-identity-oq-03-oq-04-oq-01",
+    "range": { "startLine": 68, "endLine": 90 },
+    "type": "insight",
+    "title": "IsCoprime vs IsBezout: The Right Abstraction",
+    "content": "A crucial design insight emerges from `crtRing_exists`: the theorem needs only `IsCoprime m n` (∃ s t, s * m + t * n = 1), not the stronger `IsBezout` typeclass. `IsBezout` says every finitely-generated ideal is principal—a structural property of the whole ring. `IsCoprime` is a per-pair statement: just give me the witnesses. For existential CRT (`∃ x, ...`), `IsCoprime` is the minimal assumption. The `crtRing_bezout` theorem then shows that `IsBezout` rings satisfy `IsCoprime` (so CRT applies there too), but the core theory is lighter. The `obtain ⟨s, t, hst⟩ := hcop` line destructs `IsCoprime` into its Bézout coefficient witnesses.",
+    "mathContext": "`IsCoprime m n` in Mathlib is defined as `∃ s t : R, s * m + t * n = 1`. This is the ring-theoretic notion of Bézout's identity for a specific pair $(m, n)$. The `IsBezout` typeclass is stronger: it requires every finitely-generated ideal to be principal, which implies the GCD algorithm terminates and produces Bézout coefficients for any pair. For CRT, only the existential is needed.",
+    "significance": "key",
+    "relatedConcepts": ["IsCoprime in Mathlib", "IsBezout typeclass", "GCDMonoid", "principal ideal domain", "ring ideals"],
+    "prerequisites": ["Lean 4 typeclasses", "commutative algebra", "principal ideal domains", "Bézout domains"]
+  },
+  {
+    "id": "ann-integer-recovery",
+    "proofId": "bezout-identity-oq-03-oq-04-oq-01",
+    "range": { "startLine": 92, "endLine": 97 },
+    "type": "context",
+    "title": "ℤ Recovery: Generalization Validated by Specialization",
+    "content": "The `crtInt_from_ring` theorem shows that specializing `crtRing` to `ℤ` recovers the integer CRT from the parent file `BezoutIdentityOQ03OQ04.lean`. This is a sanity check: the generalization didn't lose anything. The proof is a trivial tuple: `⟨crtRing_mod_m ..., crtRing_mod_n ...⟩`. Note that the theorem takes explicit `s t : ℤ` with `hbez : s * m + t * n = 1`—the integer-specific `Int.gcdA`/`Int.gcdB` machinery isn't needed here because we assume the Bézout coefficients are given. This matches the design philosophy: compute coefficients externally (e.g., via extended Euclidean), pass them in.",
+    "mathContext": "The integer Chinese Remainder Theorem as a special case: for $m, n \\in \\mathbb{Z}$ with $sm + tn = 1$, the element $bsm + atn$ simultaneously satisfies $m \\mid (bsm + atn - a)$ and $n \\mid (bsm + atn - b)$. This follows from `crtRing_mod_m` and `crtRing_mod_n` instantiated at $R = \\mathbb{Z}$.",
+    "significance": "technical",
+    "relatedConcepts": ["bezout-identity-oq-03-oq-04", "Int.gcdA", "Int.gcdB", "extended Euclidean algorithm", "specialization of ring theorems"],
+    "prerequisites": ["integer arithmetic in Lean 4", "ring theory specialization"]
+  }
+]
