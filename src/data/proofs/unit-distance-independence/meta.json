@@ -80,5 +80,62 @@
       "description": "Both study colorings of combinatorial structures; Ramsey is about graph colorings, Hadwiger-Nelson is about plane colorings"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-udi-abstract-independence",
+      "title": "Abstract Graph Independence Theory",
+      "startLine": 40,
+      "endLine": 103,
+      "description": "Defines IsIndepSet (for Set V) and IsIndepFinset (for Finset V), proves basic closure properties (empty, singleton, subset), and defines the independence number α(G) as the supremum of independent set cardinalities. Establishes the universal property: every independent set has size ≤ α(G)."
+    },
+    {
+      "id": "sec-udi-coloring-independence",
+      "title": "Coloring and Independence Connection",
+      "startLine": 108,
+      "endLine": 143,
+      "description": "Defines proper colorings and proves color classes are independent sets (color_class_independent). Introduces the Plane type and axiomatizes both Hadwiger-Nelson bounds: hadwiger_nelson_lower_bound (χ(ℝ²) ≥ 5, De Grey 2018) and hadwiger_nelson_upper_bound (χ(ℝ²) ≤ 7, hexagonal tiling). Packages both as hadwiger_nelson_bounds."
+    },
+    {
+      "id": "sec-udi-structural-theorems",
+      "title": "Structural Theorems on Independent Sets",
+      "startLine": 149,
+      "endLine": 211,
+      "description": "Proves isIndepFinset_insert (extending independent sets by non-adjacent vertices), edge_leaves_indep (edges force at least one endpoint out of any independent set), exists_nonempty_indep (nonempty graphs always have a nonempty independent set), and defines the unit distance graph on finite subsets of the plane."
+    },
+    {
+      "id": "sec-udi-pigeonhole",
+      "title": "Pigeonhole Bound: α(G) ≥ |V|/χ(G)",
+      "startLine": 246,
+      "endLine": 312,
+      "description": "Proves the pigeonhole bound: any k-coloring of n vertices has some color class of size ≥ n/k (exists_large_color_class), hence there exists an independent set of size ≥ n/k (indep_from_coloring). Uses Finset.card_biUnion and omega arithmetic. Applied to the unit distance graph to give α ≥ |S|/7."
+    },
+    {
+      "id": "sec-udi-greedy-bound",
+      "title": "Greedy Bound: α(G) ≥ |V|/(Δ+1)",
+      "startLine": 314,
+      "endLine": 479,
+      "description": "Develops degree theory (degree, maxDegree, minDegree), maximal independent sets (IsMaximalIndep, exists_maximal_indep), and closed neighborhoods. Proves the covering bound (|V| ≤ |I|·(Δ+1) for maximal I) and the main greedy_bound theorem α(G) ≥ n/(Δ+1). Also contains unit_distance_independence_from_chromatic applying the 7-coloring to get α(S) ≥ |S|/7."
+    },
+    {
+      "id": "sec-udi-additional-structure",
+      "title": "Additional Independence Structure",
+      "startLine": 507,
+      "endLine": 697,
+      "description": "Proves alpha_chi_ge_card (k·α(G) ≥ |V|), independent_extend (growing independent sets), disjoint_indep_union (union with no cross-edges), indep_clique_intersection (|I ∩ K| ≤ 1), indep_neighbors_outside (neighbors are outside independent sets), and indep_degree_sum (degree sum in independent sets equals cut edges to V\\I)."
+    },
+    {
+      "id": "sec-udi-complement-duality",
+      "title": "Complement Graph and Independence-Clique Duality",
+      "startLine": 706,
+      "endLine": 757,
+      "description": "Establishes indep_iff_compl_isClique: IsIndepFinset G S ↔ Gᶜ.IsClique S, bridging the project's independence predicate with Mathlib's IsClique. Proves the converse clique_iff_compl_indep and double complement identity compl_compl_eq. Covers extremal cases: all sets are independent in ⊥, no set of size ≥ 2 is independent in ⊥ᶜ = Kₙ."
+    },
+    {
+      "id": "sec-udi-degree-edge-theory",
+      "title": "Handshaking Lemma and Degree Bounds",
+      "startLine": 763,
+      "endLine": 871,
+      "description": "Proves degree_eq_mathlib_degree (our degree agrees with SimpleGraph.degree), sum_degrees_eq_twice_edges (handshaking lemma via Mathlib's sum_degrees_eq_twice_card_edges), edge_count_le_card_mul_maxDeg (2|E| ≤ n·Δ), twice_edges_ge_card_mul_minDeg (2|E| ≥ n·δ), and alpha_bot (independence number of the empty graph equals |V|)."
+    }
+  ]
 }
