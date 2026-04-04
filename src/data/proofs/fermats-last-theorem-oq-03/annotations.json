@@ -46,5 +46,17 @@
     "significance": "key",
     "relatedConcepts": ["asymptotic result", "Nat.Prime", "existential bound", "Freitas-Hung-Siksek"],
     "prerequisites": ["AsymptoticFLT definition", "flt_over_Q axiom", "omega tactic"]
+  },
+  {
+    "id": "ann-number-fields",
+    "proofId": "fermats-last-theorem-oq-03",
+    "range": { "startLine": 76, "endLine": 120 },
+    "type": "concept",
+    "title": "Modularity Obstruction and the Number Field Landscape",
+    "content": "Lines 76-120 contain the key research commentary: Wiles's proof over ℚ proceeds via (1) Frey curve, (2) Ribet level-lowering, (3) Modularity Theorem. Step 3 — every semistable elliptic curve over ℚ is modular — is the deepest part. Over a number field K: Step 1 works (Frey curve is defined over any field), Step 2 generalizes via Fujiwara's level-lowering, but Step 3 fails in general. Over totally real fields, partial modularity results exist (Freitas, Kisin, Breuil). Over fields with complex places, the automorphic form theory required is largely undeveloped. The unit solution problem: rings with nontrivial n-th roots of unity ζ satisfy ζ^n = 1, providing a seed for solutions that the nontriviality condition (x ≠ 0, y ≠ 0, z ≠ 0) does not exclude.",
+    "mathContext": "Wiles's three-step proof: (1) $(a^p + b^p = c^p) \\Rightarrow$ Frey curve $E: y^2 = x(x-a^p)(x+b^p)$; (2) Ribet: $E$ modular $\\Rightarrow$ level-2 modular form exists (but none does); (3) Wiles: all semistable $E/\\mathbb{Q}$ are modular. Over $K$: step (3) requires $K$ totally real and much additional machinery (Hilbert modular forms, Shimura varieties).",
+    "significance": "key",
+    "relatedConcepts": ["modularity theorem", "Frey curve", "Ribet level-lowering", "totally real field", "Freitas-Hung-Siksek", "roots of unity"],
+    "prerequisites": ["elliptic curves", "modular forms", "Galois representations", "number fields"]
   }
 ]
