@@ -363,11 +363,116 @@ private lemma glaisherBwd_add_replicate {a b : ℕ}
     exact Multiset.bind_congr fun v hv =>
       congrArg _ (h_count_ne v (fun h => hb_not_val (h ▸ hv)))
 
+/-- Arithmetic helper: adding 2^v to r doesn't carry into bit a when bit v of r is 0. -/
+private lemma add_two_pow_lt_of_bit_zero {r a v : ℕ} (hva : v < a)
+    (hr : r < 2 ^ a) (hrv : r / 2 ^ v % 2 = 0) : r + 2 ^ v < 2 ^ a := by
+  have hpv : 0 < 2 ^ v := by positivity
+  have hs_lt : r % 2 ^ v < 2 ^ v := Nat.mod_lt r hpv
+  set k := r / 2 ^ v
+  have hk_even : k % 2 = 0 := hrv
+  have hrs : r = 2 ^ v * k + r % 2 ^ v := by
+    show r = 2 ^ v * (r / 2 ^ v) + r % 2 ^ v
+    linarith [Nat.div_add_mod r (2 ^ v)]
+  have hk_lt : k < 2 ^ (a - v) := by
+    have h1 : 2 ^ v * k ≤ r := by linarith [hrs, Nat.zero_le (r % 2 ^ v)]
+    have h2 : 2 ^ v * k < 2 ^ a := Nat.lt_of_le_of_lt h1 hr
+    rw [show 2 ^ a = 2 ^ v * 2 ^ (a - v) from by rw [← pow_add]; congr 1; omega] at h2
+    exact (Nat.mul_lt_mul_left hpv).mp h2
+  have h2av_even : 2 ^ (a - v) % 2 = 0 :=
+    Nat.dvd_iff_mod_eq_zero.mp (dvd_pow_self 2 (by omega : a - v ≠ 0))
+  have hk2_le : k + 2 ≤ 2 ^ (a - v) := by omega
+  have h_lt_k2 : r + 2 ^ v < 2 ^ v * (k + 2) := by
+    calc r + 2 ^ v = 2 ^ v * k + r % 2 ^ v + 2 ^ v := by linarith [hrs]
+      _ < 2 ^ v * k + 2 ^ v + 2 ^ v := by linarith [hs_lt]
+      _ = 2 ^ v * (k + 2) := by ring
+  have h_k2_le : 2 ^ v * (k + 2) ≤ 2 ^ a :=
+    calc 2 ^ v * (k + 2) ≤ 2 ^ v * 2 ^ (a - v) := Nat.mul_le_mul_left _ hk2_le
+      _ = 2 ^ a := by rw [← pow_add]; congr 1; omega
+  linarith
+
+/-- General version: bit a of (glaisherFwd t).count b is 0 whenever 2^a * b ∉ t. -/
+private lemma glaisherFwd_count_bit_zero_aux {t : Multiset ℕ}
+    (ht_pos : ∀ x ∈ t, x ≠ 0) (ht_nodup : t.Nodup) :
+    ∀ (a b : ℕ), 2 ^ a * b ∉ t → (glaisherFwd t).count b / 2 ^ a % 2 = 0 := by
+  induction t using Multiset.induction with
+  | empty => intro a b _; simp [glaisherFwd]
+  | cons j t' ih =>
+    rw [Multiset.nodup_cons] at ht_nodup
+    obtain ⟨hj_nin, ht'_nodup⟩ := ht_nodup
+    have ht'_pos : ∀ x ∈ t', x ≠ 0 := fun x hx => ht_pos x (Multiset.mem_cons_of_mem hx)
+    have ih' := ih ht'_pos ht'_nodup
+    intro a b h_nin
+    have h_nin' : 2 ^ a * b ∉ t' := fun h => h_nin (Multiset.mem_cons_of_mem h)
+    have hM_a : (glaisherFwd t').count b / 2 ^ a % 2 = 0 := ih' a b h_nin'
+    -- Contribution from j to count b
+    have hj_count : (glaisherFwd (j ::ₘ t')).count b =
+        (glaisherFwdPart j).count b + (glaisherFwd t').count b := by
+      simp [glaisherFwd, Multiset.cons_bind, Multiset.count_add]
+    rw [hj_count]
+    -- Use explicit name for padicValNat 2 j
+    by_cases hjb : j / 2 ^ padicValNat 2 j = b
+    · -- j has odd part b, contributes 2^(padicValNat 2 j) to count
+      have h_count_j : (glaisherFwdPart j).count b = 2 ^ padicValNat 2 j := by
+        rw [show glaisherFwdPart j =
+              Multiset.replicate (2 ^ padicValNat 2 j) (j / 2 ^ padicValNat 2 j) from rfl,
+            Multiset.count_replicate, if_pos hjb]
+      rw [h_count_j]
+      set v := padicValNat 2 j with hv_def
+      -- j = 2^v * b
+      have hj_eq : j = 2 ^ v * b := by
+        have h := @padic_factorization j; rw [hjb] at h; linarith
+      -- v ≠ a (otherwise j = 2^a * b ∈ t, contradiction)
+      have hv_ne_a : v ≠ a := by
+        intro hva; apply h_nin; rw [← hva, ← hj_eq]
+        exact Multiset.mem_cons_self j t'
+      -- bit v of M = 0 (since j = 2^v * b ∉ t')
+      have hj_nin_t' : 2 ^ v * b ∉ t' := by rwa [← hj_eq]
+      have hM_v : (glaisherFwd t').count b / 2 ^ v % 2 = 0 := ih' v b hj_nin_t'
+      set M := (glaisherFwd t').count b
+      rcases Nat.lt_or_gt_of_ne hv_ne_a with hv_lt | hv_gt
+      · -- v < a: adding 2^v is carry-free at position a (bit v of M is 0)
+        have h_tb_Mv : M.testBit v = false := by
+          rw [Nat.testBit_eq_decide_div_mod_eq]
+          exact decide_eq_false_iff_not.mpr (by omega)
+        have h_tb_mod : (M % 2 ^ a).testBit v = false := by
+          rw [Nat.testBit_mod_two_pow]; simp [hv_lt, h_tb_Mv]
+        have hMr_v : M % 2 ^ a / 2 ^ v % 2 = 0 := by
+          have h : decide (M % 2 ^ a / 2 ^ v % 2 = 1) = false := by
+            rw [← Nat.testBit_eq_decide_div_mod_eq]; exact h_tb_mod
+          simp [decide_eq_false_iff_not] at h; omega
+        have h_nc : M % 2 ^ a + 2 ^ v < 2 ^ a :=
+          add_two_pow_lt_of_bit_zero hv_lt (Nat.mod_lt M (by positivity)) hMr_v
+        have h_div_eq : (2 ^ v + M) / 2 ^ a = M / 2 ^ a := by
+          rw [show 2 ^ v + M = (M % 2 ^ a + 2 ^ v) + 2 ^ a * (M / 2 ^ a) from by
+            linarith [Nat.div_add_mod M (2 ^ a)],
+            Nat.add_mul_div_left _ _ (by positivity),
+            Nat.div_eq_of_lt h_nc, zero_add]
+        rw [h_div_eq]; exact hM_a
+      · -- v > a: 2^v = 2^a * 2^(v-a), contributes evenly at position a
+        set d := v - a
+        have hd_pos : d ≥ 1 := by omega
+        have h2d_even : 2 ^ d % 2 = 0 :=
+          Nat.dvd_iff_mod_eq_zero.mp (dvd_pow_self 2 (by omega : d ≠ 0))
+        have h_div : (2 ^ v + M) / 2 ^ a = M / 2 ^ a + 2 ^ d := by
+          rw [show 2 ^ v = 2 ^ a * 2 ^ d from by rw [← pow_add]; congr 1; omega,
+              Nat.add_comm, Nat.add_mul_div_left M (2 ^ d) (by positivity)]
+        rw [h_div]; omega
+    · -- j has different odd part, contributes 0
+      have h_count_j_zero : (glaisherFwdPart j).count b = 0 := by
+        rw [show glaisherFwdPart j =
+              Multiset.replicate (2 ^ padicValNat 2 j) (j / 2 ^ padicValNat 2 j) from rfl,
+            Multiset.count_replicate, if_neg hjb]
+      rw [h_count_j_zero, zero_add]; exact hM_a
+
 /-- Bit a of (glaisherFwd t).count b is 0 when 2^a*b ∉ t (Nodup t). -/
 private lemma glaisherFwd_count_bit_zero {k : ℕ} (hk : k ≠ 0) {t : Multiset ℕ}
     (ht_pos : ∀ x ∈ t, x ≠ 0) (ht_nodup : t.Nodup) (hk_not_in : k ∉ t) :
     ((glaisherFwd t).count (k / 2^(padicValNat 2 k)) / 2^(padicValNat 2 k)) % 2 = 0 := by
-  sorry
+  apply glaisherFwd_count_bit_zero_aux ht_pos ht_nodup
+  intro h
+  apply hk_not_in
+  have : 2 ^ padicValNat 2 k * (k / 2 ^ padicValNat 2 k) = k := padic_factorization
+  rw [this] at h; exact h
 
 /-- **Round-trip**: backward undoes forward on Nodup multisets of positive naturals. -/
 theorem glaisherBwd_glaisherFwd {s : Multiset ℕ}
