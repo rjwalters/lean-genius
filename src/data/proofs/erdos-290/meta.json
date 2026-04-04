@@ -2,7 +2,7 @@
   "id": "erdos-290",
   "title": "Erdős Problem #290: Denominator Non-Monotonicity in Harmonic Sums",
   "slug": "erdos-290",
-  "description": "Must there exist b > a such that adding 1/(b+1) to ∑_{a≤n≤b} 1/n decreases the reduced denominator? SOLVED: YES (van Doorn 2024) with b(a) < 4.374a.",
+  "description": "Must there exist b > a such that adding 1/(b+1) to ∑_{a≤n≤b} 1/n decreases the reduced denominator? SOLVED: YES (van Doorn 2024) with b(a) < 4.374a. 0 sorries, 2 axioms (van_doorn_main and van_doorn_upper_bound).",
   "meta": {
     "author": "van Doorn (2024 solution)",
     "sourceUrl": "https://erdosproblems.com/290",
@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 290,
     "erdosUrl": "https://erdosproblems.com/290",
     "erdosProblemStatus": "solved",
@@ -186,10 +186,10 @@
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Rat.Defs",
       "Mathlib.Data.Rat.Defs",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic"
     ],
     "opens": [
