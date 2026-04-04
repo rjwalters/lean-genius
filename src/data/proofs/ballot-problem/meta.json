@@ -135,7 +135,7 @@
       "id": "reflection-principle",
       "title": "The Reflection Principle",
       "startLine": 216,
-      "endLine": 255,
+      "endLine": 251,
       "summary": "Detailed explanation of the bijective proof technique.",
       "mathContext": "André's reflection bijection: for any 'bad' path (first touching $y=0$ at step $k$), reflect all votes before step $k$ ($+1 \\leftrightarrow -1$). This maps bad paths ending at $(p+q, p-q)$ bijectively to ALL paths ending at $(p+q, q-p)$. Count: $\\binom{p+q}{q}$ bad paths, so good paths $= \\binom{p+q}{p} - \\binom{p+q}{q}$."
     }

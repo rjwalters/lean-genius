@@ -146,17 +146,9 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 181,
-      "endLine": 198,
-      "summary": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`.",
+      "endLine": 197,
+      "summary": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`. The final theorems (`erdos_933`, `erdos_933_main`, `erdos_933_solved`) complete the file.",
       "mathContext": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 199,
-      "endLine": 230,
-      "summary": "Three equivalent main results: `erdos_933 := steinerberger_proof` (one-line), `erdos_933_main` (explicit ∀M∃n unfolding), `erdos_933_solved` (synonym). Docstring summarizes: YES, Steinerberger's proof via n=2^{3^r}, k=3^r, l=r+1, Mahler upper bound.",
-      "mathContext": "Three equivalent main results: `erdos_933 := steinerberger_proof` (one-line), `erdos_933_main` (explicit ∀M∃n unfolding), `erdos_933_solved` (synonym). Docstring summarizes: YES, Steinerberger's proof via n=2^{3^r}, k=3^r, l=r+1, Mahler upper bound."
     }
   ],
   "conclusion": {

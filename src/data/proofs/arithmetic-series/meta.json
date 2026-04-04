@@ -118,7 +118,7 @@
       "id": "triangular-numbers",
       "title": "Triangular Numbers",
       "startLine": 141,
-      "endLine": 187,
+      "endLine": 180,
       "summary": "Definition and properties of triangular numbers.",
       "mathContext": "$T_n = \\frac{n(n+1)}{2} = \\binom{n+1}{2}$. The $n$-th triangular number counts pairs from $n+1$ objects. Properties: $T_n + T_{n-1} = n^2$ (two consecutive triangulars make a square), $8T_n + 1 = (2n+1)^2$ (a square), and $T_n = \\sum_{k=1}^{n} k$ (definition as partial sum)."
     }
