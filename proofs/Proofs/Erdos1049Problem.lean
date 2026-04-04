@@ -264,9 +264,10 @@ theorem S_as_lambert (t : ℝ) (ht : t > 1) :
   sorry
 
 /-- Lambert series preserve arithmetic structure. -/
-theorem lambert_arithmetic_property :
-    -- Lambert series of arithmetic functions have special properties
-    True := trivial
+/-
+  Lambert series of arithmetic functions have special properties
+  (e.g. Dirichlet series convolution structure at the level of coefficients).
+-/
 
 /-
 ## Part IX: Partial Results
@@ -275,14 +276,15 @@ What is known towards Chowla's conjecture.
 -/
 
 /-- S(p/q) is irrational for certain p/q (partial results). -/
-theorem partial_rational_results :
-    -- Some specific rational values have been verified
-    True := trivial
+/-
+  S(p/q) is irrational for certain p/q (partial results toward Chowla's conjecture).
+  Some specific rational values have been verified.
+-/
 
-/-- Linear independence results. -/
-theorem linear_independence_partial :
-    -- Partial results on linear independence of S values
-    True := trivial
+/-
+  Partial results on linear independence of S values over ℚ:
+  certain finite sets {S(r₁), ..., S(rₖ)} are known to be linearly independent.
+-/
 
 /-- Approximation bounds for S(t). -/
 theorem S_bounds (t : ℝ) (ht : t > 1) :
