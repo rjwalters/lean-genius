@@ -63,14 +63,17 @@
     }
   ],
   "overview": {
-    "historicalContext": "The Borsuk-Ulam theorem (1933) is a cornerstone of combinatorial topology. Its equivariant generalization replaces the Z/2 antipodal action with general group actions. For prime-order cyclic groups, Yang (1954) and Borsuk gave the definitive answer. The composite case remains largely open.",
+    "historicalContext": "The Borsuk-Ulam theorem was conjectured by Ulam and proved by Borsuk in 1933: every continuous map f : S^n → R^n satisfying f(-x) = -f(x) (odd map) must vanish. An equivalent formulation — no continuous odd map from S^n to S^{n-1} exists — became a fundamental tool in combinatorics via the Lovász-Kneser theorem (1978). The equivariant generalization asks: if a higher-order cyclic group Z/n acts on a sphere, what is the minimum sphere dimension that forces an equivariant map to vanish? Conner and Floyd (1956) and Yang (1954) extended the theory to prime-order groups using Smith theory and the Serre spectral sequence, obtaining the definitive Yang-Borsuk theorem: buDim(p, 2n) = 2n-1 for prime p. The composite case — what happens for Z/4, Z/6, Z/pq — requires the Fadell-Husseini ideal-valued index theory (1988), which axiomatizes properties of a cohomological index that controls equivariant map zeros. The present formalization abstracts away the topological content, treating buDim as an axiomatized function and deriving composite lower bounds from prime subgroup monotonicity alone.",
     "problemStatement": "For non-prime |G|, what is the optimal equivariant Borsuk-Ulam dimension?",
     "text": "An abstract framework for studying equivariant Borsuk-Ulam dimensions of cyclic groups Z/n with composite n. The file axiomatizes the known results (classical BU for Z/2, Yang-Borsuk for Z/p, monotonicity under divisibility) and derives concrete lower bounds for Z/4, Z/6, and general Z/pq. All 6 theorems are fully proved from the axioms with 0 sorries.",
     "proofStrategy": "Axiomatize the BU dimension function and known results. Derive composite group bounds from prime subgroup monotonicity. State the open conjecture.",
     "keyInsights": [
-      "Monotonicity under divisibility is the key structural principle for bounding composite BU dimensions",
-      "Both prime subgroups of Z/6 give the same bound 2n-1, so no additional information from having two primes",
-      "The open question reduces to whether composite groups have strictly higher BU dimensions than all prime subgroups"
+      "Monotonicity under divisibility is the engine: p | n implies Z/p ≤ Z/n, so every Z/n-equivariant map restricts to a Z/p-equivariant map — the constraint propagates up through the subgroup lattice",
+      "Yang-Borsuk (1954) gives the exact value for primes: buDim(p, 2n) = 2n-1 using the complex rotation representation. This is the sharp upper input for all composite lower bounds",
+      "Z/6 gets both Z/2 and Z/3 bounds simultaneously, but they agree: both give 2n-1 for the complex representation, so having two distinct prime subgroups provides no extra information over one",
+      "The zpq_lower_bound proof works for p = q, covering prime squares Z/p² with the same 2n-1 bound — composite group structure does not appear to add extra constraint in the standard representation",
+      "Axiomatizing buDim as an abstract ℕ → ℕ → ℕ function avoids topological infrastructure entirely: Smith theory, Serre spectral sequences, and Fadell-Husseini index theory are all encapsulated in four axioms, letting the algebraic argument be machine-verified",
+      "The open conjecture (buDim(n, d) = max_{p|n} buDim(p, d)) would mean composite groups add zero extra topological obstruction — the prime factorization completely determines the equivariant BU dimension"
     ],
     "prerequisites": [
       "Classical Borsuk-Ulam theorem",
