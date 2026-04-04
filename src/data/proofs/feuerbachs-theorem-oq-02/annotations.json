@@ -8,7 +8,7 @@
     },
     "type": "context",
     "title": "3D Feuerbach: The Orthocentric Hypothesis and Why It's Essential",
-    "content": "The doc-comment frames the core contrast: in 2D, Feuerbach's theorem holds for ALL triangles (every triangle has an orthocenter). In 3D, the analogue fails for general tetrahedra and requires the **orthocentric hypothesis** — that opposite edges are perpendicular. The comment lists four key facts: (1) the orthocentric condition AB ⊥ CD, AC ⊥ BD, AD ⊥ BC; (2) the 24-point sphere passes through 24 distinguished points (6 edge midpoints, 4 face centroids, 4 altitude feet, 4 midpoints from vertices to orthocenter, 6 Monge-point-related points); (3) radius is R/3 (vs R/2 in 2D); (4) the center is the midpoint of circumcenter and Monge point. References: Murakami (1952), Court (1934), Altshiller-Court 'Modern Pure Solid Geometry'.",
+    "content": "The doc-comment frames the core contrast: in 2D, Feuerbach's theorem holds for ALL triangles (every triangle has an orthocenter). In 3D, the analogue fails for general tetrahedra and requires the **orthocentric hypothesis** \u2014 that opposite edges are perpendicular. The comment lists four key facts: (1) the orthocentric condition AB \u22a5 CD, AC \u22a5 BD, AD \u22a5 BC; (2) the 24-point sphere passes through 24 distinguished points (6 edge midpoints, 4 face centroids, 4 altitude feet, 4 midpoints from vertices to orthocenter, 6 Monge-point-related points); (3) radius is R/3 (vs R/2 in 2D); (4) the center is the midpoint of circumcenter and Monge point. References: Murakami (1952), Court (1934), Altshiller-Court 'Modern Pure Solid Geometry'.",
     "mathContext": "The 2D-to-3D dimensional shift introduces essential new structure. In 2D: every triangle has a unique orthocenter H (altitudes concurrent), nine-point circle radius = R/2, nine-point center = midpoint(O, H). In 3D: altitudes of a general tetrahedron are NOT concurrent, so no orthocenter exists. The Monge point M = 4G - 3O always exists as a canonical substitute. For orthocentric tetrahedra (where altitudes ARE concurrent), M coincides with the orthocenter H. The radius scaling R/3 vs R/2 reflects the dimensional geometry: in $\\mathbb{R}^n$, the analogous sphere has radius $R/(n-1+1) = R/n$, so $R/2$ in 2D and $R/3$ in 3D.",
     "significance": "context",
     "relatedConcepts": [
@@ -34,8 +34,8 @@
     },
     "type": "definition",
     "title": "3D Coordinate Geometry: dist3, dot3, vec3, cross3",
-    "content": "`Point3 := ℝ × ℝ × ℝ` (abbrev, not a structure, for direct component access). `dist3` uses `Real.sqrt` on the sum of squared coordinate differences; `dist3_sq` avoids sqrt for algebraic computations. `dist3_sq_eq` proves `dist3² = dist3_sq` via `Real.sq_sqrt`. `dot3` is the standard bilinear inner product $u_1v_1 + u_2v_2 + u_3v_3$. `cross3` is the determinant-formula cross product. `dot3_cross3_self_left` and `dot3_cross3_self_right` are private lemmas proving $u \\cdot (u \\times v) = 0$ and $u \\cdot (v \\times u) = 0$ by `ring` — these are used in the circumcenter Cramer's rule computation.",
-    "mathContext": "The choice of `ℝ × ℝ × ℝ` as `abbrev` (not `structure`) is critical: abbrevs unfold transparently during `simp` and `ring`, while structure fields require explicit destructuring. This makes the algebra lemmas (circumcenter equidistance, orthocentric third-perp) provable by `ring` and `nlinarith` without manual unfolding. The scalar triple product property $\\mathbf{u} \\cdot (\\mathbf{u} \\times \\mathbf{v}) = 0$ is the algebraic backbone of Cramer's rule: when the circumcenter displacement $P$ is expressed as a linear combination of $\\mathbf{v} \\times \\mathbf{w}$, $\\mathbf{w} \\times \\mathbf{u}$, $\\mathbf{u} \\times \\mathbf{v}$, the cross-terms vanish by this property.",
+    "content": "`Point3 := \u211d \u00d7 \u211d \u00d7 \u211d` (abbrev, not a structure, for direct component access). `dist3` uses `Real.sqrt` on the sum of squared coordinate differences; `dist3_sq` avoids sqrt for algebraic computations. `dist3_sq_eq` proves `dist3\u00b2 = dist3_sq` via `Real.sq_sqrt`. `dot3` is the standard bilinear inner product $u_1v_1 + u_2v_2 + u_3v_3$. `cross3` is the determinant-formula cross product. `dot3_cross3_self_left` and `dot3_cross3_self_right` are private lemmas proving $u \\cdot (u \\times v) = 0$ and $u \\cdot (v \\times u) = 0$ by `ring` \u2014 these are used in the circumcenter Cramer's rule computation.",
+    "mathContext": "The choice of `\u211d \u00d7 \u211d \u00d7 \u211d` as `abbrev` (not `structure`) is critical: abbrevs unfold transparently during `simp` and `ring`, while structure fields require explicit destructuring. This makes the algebra lemmas (circumcenter equidistance, orthocentric third-perp) provable by `ring` and `nlinarith` without manual unfolding. The scalar triple product property $\\mathbf{u} \\cdot (\\mathbf{u} \\times \\mathbf{v}) = 0$ is the algebraic backbone of Cramer's rule: when the circumcenter displacement $P$ is expressed as a linear combination of $\\mathbf{v} \\times \\mathbf{w}$, $\\mathbf{w} \\times \\mathbf{u}$, $\\mathbf{u} \\times \\mathbf{v}$, the cross-terms vanish by this property.",
     "significance": "technical",
     "relatedConcepts": [
       "Real.sqrt",
@@ -46,19 +46,19 @@
     "prerequisites": [
       "Real.sq_sqrt",
       "ring tactic",
-      "ℝ × ℝ × ℝ product type"
+      "\u211d \u00d7 \u211d \u00d7 \u211d product type"
     ]
   },
   {
     "id": "ann-tetrahedron",
     "proofId": "feuerbachs-theorem-oq-02",
     "range": {
-      "startLine": 102,
+      "startLine": 109,
       "endLine": 177
     },
     "type": "definition",
     "title": "Tetrahedron: Non-Degeneracy via Scalar Triple Product, Face Areas via Cross Product",
-    "content": "`Tetrahedron` is a structure with four `Point3` vertices and a `nondegenerate` field requiring `dot3 u (cross3 v w) ≠ 0` where $u = B-A$, $v = C-A$, $w = D-A$. This is the scalar triple product condition: it is nonzero iff the four vertices are non-coplanar. `signedVolume6` is the scalar triple product (= $6 \\times$ signed volume); `volume = |signedVolume6| / 6`. The six edge lengths are `dist3` applications. Face areas use the cross product formula: `faceArea_A = |BC × BD| / 2` — the cross product of two edges of face BCD gives a normal vector, and its magnitude divided by 2 gives the area.",
+    "content": "`Tetrahedron` is a structure with four `Point3` vertices and a `nondegenerate` field requiring `dot3 u (cross3 v w) \u2260 0` where $u = B-A$, $v = C-A$, $w = D-A$. This is the scalar triple product condition: it is nonzero iff the four vertices are non-coplanar. `signedVolume6` is the scalar triple product (= $6 \\times$ signed volume); `volume = |signedVolume6| / 6`. The six edge lengths are `dist3` applications. Face areas use the cross product formula: `faceArea_A = |BC \u00d7 BD| / 2` \u2014 the cross product of two edges of face BCD gives a normal vector, and its magnitude divided by 2 gives the area.",
     "mathContext": "The face-area formula $\\text{Area}(\\triangle PQR) = |\\overrightarrow{PQ} \\times \\overrightarrow{PR}| / 2$ is standard. In coordinates: $|\\mathbf{n}| = \\sqrt{\\mathbf{n} \\cdot \\mathbf{n}}$ where $\\mathbf{n} = \\mathbf{u} \\times \\mathbf{v}$. Using `Real.sqrt (dot3 n n) / 2` avoids introducing cross-product magnitude as a separate definition. The scalar triple product condition $\\det[B-A, C-A, D-A] = 6V \\neq 0$ is equivalent to: the matrix of edge vectors from $A$ is invertible, i.e., the four points span a 3D affine subspace. This is exactly the condition needed for Cramer's rule to be applicable.",
     "significance": "technical",
     "relatedConcepts": [
@@ -78,12 +78,12 @@
     "id": "ann-orthocentric",
     "proofId": "feuerbachs-theorem-oq-02",
     "range": {
-      "startLine": 179,
+      "startLine": 187,
       "endLine": 200
     },
     "type": "insight",
     "title": "The Orthocentric Condition: Only 2 of 3 Hypotheses Are Independent",
-    "content": "`OrthocentricTetrahedron` extends `Tetrahedron` with two fields: `AB_perp_CD : dot3 (vec3 A B) (vec3 C D) = 0` and `AC_perp_BD : dot3 (vec3 A C) (vec3 B D) = 0`. `orthocentric_third_perp` proves the third condition `AD ⊥ BC` follows algebraically from the first two, via `nlinarith` after unfolding `vec3` and `dot3`. The proof is a one-liner! This means imposing only 2 orthogonality conditions on opposite edges suffices — the structure automatically has the third.",
+    "content": "`OrthocentricTetrahedron` extends `Tetrahedron` with two fields: `AB_perp_CD : dot3 (vec3 A B) (vec3 C D) = 0` and `AC_perp_BD : dot3 (vec3 A C) (vec3 B D) = 0`. `orthocentric_third_perp` proves the third condition `AD \u22a5 BC` follows algebraically from the first two, via `nlinarith` after unfolding `vec3` and `dot3`. The proof is a one-liner! This means imposing only 2 orthogonality conditions on opposite edges suffices \u2014 the structure automatically has the third.",
     "mathContext": "The algebraic identity: for any four points $A, B, C, D \\in \\mathbb{R}^3$, $\\overrightarrow{AB} \\cdot \\overrightarrow{CD} + \\overrightarrow{AC} \\cdot \\overrightarrow{BD} + \\overrightarrow{AD} \\cdot \\overrightarrow{BC} = 0$. This is a purely algebraic identity (provable by expansion). Therefore if two of these dot products are zero, the third must also be zero. The identity can be verified: $\\overrightarrow{AB} = B - A$, $\\overrightarrow{CD} = D - C$, etc.; the sum of the three dot products telescopes to zero by expansion. `nlinarith` handles this after unfolding to coordinate arithmetic.",
     "significance": "key",
     "relatedConcepts": [
@@ -102,10 +102,10 @@
     "id": "ann-circumcenter",
     "proofId": "feuerbachs-theorem-oq-02",
     "range": {
-      "startLine": 241,
+      "startLine": 249,
       "endLine": 341
     },
-    "type": "technique",
+    "type": "definition",
     "title": "Circumcenter via Cramer's Rule, Equidistance by ring, Monge Point = 4G - 3O",
     "content": "`Tetrahedron.circumcenter` uses the Cramer's rule formula: with edge vectors $u = B-A$, $v = C-A$, $w = D-A$ and $\\det = u \\cdot (v \\times w)$, the circumcenter offset $P = O - A$ is $P = \\frac{1}{2\\det}(|u|^2(v \\times w) + |v|^2(w \\times u) + |w|^2(u \\times v))$. Three private helper lemmas (`circumcenter_dot_eq`, `_v`, `_w`) prove $2u \\cdot P = |u|^2$, etc. by `ring` after `field_simp`. `circumcenter_equidist` proves all four distances equal by reducing each to the helper lemmas and `ring`. `Tetrahedron.mongePoint` is defined as $M = 4G - 3O$ by explicit coordinate formula.",
     "mathContext": "The Cramer's rule derivation: the circumcenter $O$ satisfies $|O - A|^2 = |O - B|^2 = |O - C|^2 = |O - D|^2$. Writing $O = A + P$, this becomes $|P|^2 = |P - u|^2$ for each edge vector $u \\in \\{B-A, C-A, D-A\\}$, which simplifies to $2P \\cdot u = |u|^2$. The system $(2u \\cdot P, 2v \\cdot P, 2w \\cdot P) = (|u|^2, |v|^2, |w|^2)$ is solved by Cramer's rule since $\\det = u \\cdot (v \\times w) \\neq 0$. The Monge point formula $M = 4G - 3O$ is equivalent to the characterization that $M$ is the intersection of Monge planes (each orthogonal to an edge and passing through the midpoint of the opposite edge).",
@@ -128,7 +128,7 @@
     "id": "ann-insphere-exspheres",
     "proofId": "feuerbachs-theorem-oq-02",
     "range": {
-      "startLine": 343,
+      "startLine": 350,
       "endLine": 417
     },
     "type": "definition",
@@ -152,13 +152,13 @@
     "id": "ann-twentyfour-sphere",
     "proofId": "feuerbachs-theorem-oq-02",
     "range": {
-      "startLine": 419,
+      "startLine": 426,
       "endLine": 446
     },
     "type": "concept",
-    "title": "The Twenty-Four-Point Sphere: N₂₄ = midpoint(O, M), Radius R/3",
-    "content": "`Tetrahedron.twentyFourPointCenter` is `midpoint3 T.circumcenter T.mongePoint`. `Tetrahedron.twentyFourPointRadius = T.circumradius / 3`. `spheresInternallyTangent (c₁ c₂ : Point3) (r₁ r₂ : ℝ) : Prop := dist3 c₁ c₂ = |r₁ - r₂|`. `spheresExternallyTangent : Prop := dist3 c₁ c₂ = r₁ + r₂`. These are direct generalizations of the 2D tangency conditions to 3D.",
-    "mathContext": "The twenty-four-point sphere is the 3D analogue of the nine-point circle. In 2D: nine-point center = midpoint(O, H), nine-point radius = R/2. In 3D: N₂₄ center = midpoint(O, M), N₂₄ radius = R/3. The 24 points it passes through (for orthocentric tetrahedra) are: 6 edge midpoints + 4 face centroids + 4 altitude feet + 4 midpoints from vertex to orthocenter + 6 points related to the Monge point. The factor R/3 (vs R/2 in 2D) can be understood via the homothety: the midpoint of O and M maps O to the nine-point center by a homothety of ratio -1/2 in 2D (center G, ratio -1/2 maps O → nine-point center). In 3D, the analogous homothety has ratio -1/3.",
+    "title": "The Twenty-Four-Point Sphere: N\u2082\u2084 = midpoint(O, M), Radius R/3",
+    "content": "`Tetrahedron.twentyFourPointCenter` is `midpoint3 T.circumcenter T.mongePoint`. `Tetrahedron.twentyFourPointRadius = T.circumradius / 3`. `spheresInternallyTangent (c\u2081 c\u2082 : Point3) (r\u2081 r\u2082 : \u211d) : Prop := dist3 c\u2081 c\u2082 = |r\u2081 - r\u2082|`. `spheresExternallyTangent : Prop := dist3 c\u2081 c\u2082 = r\u2081 + r\u2082`. These are direct generalizations of the 2D tangency conditions to 3D.",
+    "mathContext": "The twenty-four-point sphere is the 3D analogue of the nine-point circle. In 2D: nine-point center = midpoint(O, H), nine-point radius = R/2. In 3D: N\u2082\u2084 center = midpoint(O, M), N\u2082\u2084 radius = R/3. The 24 points it passes through (for orthocentric tetrahedra) are: 6 edge midpoints + 4 face centroids + 4 altitude feet + 4 midpoints from vertex to orthocenter + 6 points related to the Monge point. The factor R/3 (vs R/2 in 2D) can be understood via the homothety: the midpoint of O and M maps O to the nine-point center by a homothety of ratio -1/2 in 2D (center G, ratio -1/2 maps O \u2192 nine-point center). In 3D, the analogous homothety has ratio -1/3.",
     "significance": "key",
     "relatedConcepts": [
       "nine-point circle analogue",
@@ -178,12 +178,12 @@
     "id": "ann-main-theorem",
     "proofId": "feuerbachs-theorem-oq-02",
     "range": {
-      "startLine": 448,
+      "startLine": 464,
       "endLine": 532
     },
     "type": "theorem",
     "title": "The 3D Feuerbach Theorem: 5 Sorries + Bundle + Orthocentric Necessity",
-    "content": "Five theorems are stated but proved by `sorry`: `feuerbach_3d_insphere` (N₂₄ internally tangent to insphere), `feuerbach_3d_exsphere_A/B/C/D` (externally tangent to each exsphere). `feuerbach_3d_theorem` bundles all five via an `And.intro` tuple — this compiles since it only uses the individual sorry-proofs. The docstring explicitly states this is the 3D analogue of Feuerbach 1822 and that the orthocentric hypothesis is essential.",
+    "content": "Five theorems are stated but proved by `sorry`: `feuerbach_3d_insphere` (N\u2082\u2084 internally tangent to insphere), `feuerbach_3d_exsphere_A/B/C/D` (externally tangent to each exsphere). `feuerbach_3d_theorem` bundles all five via an `And.intro` tuple \u2014 this compiles since it only uses the individual sorry-proofs. The docstring explicitly states this is the 3D analogue of Feuerbach 1822 and that the orthocentric hypothesis is essential.",
     "mathContext": "The tangency conditions reduce to distance formulas: internal tangency $|N_{24} - I| = |R/3 - r|$ and external tangency $|N_{24} - E_X| = R/3 + r_X$. These require a coordinate computation expressing $N_{24}$, $I$, $E_X$ in terms of vertex coordinates, then proving the distance identity. The computation is deep: it requires: (a) the Cramer-rule circumcenter coordinates, (b) the Monge point formula, (c) the face-area-weighted incenter/excenter formulas, (d) the inradius $r = 3V/S$, and (e) the orthocentric condition to collapse cross-terms. The five sorries represent genuine open formalization work.",
     "significance": "key",
     "relatedConcepts": [
@@ -204,12 +204,12 @@
     "id": "ann-proved-theorems",
     "proofId": "feuerbachs-theorem-oq-02",
     "range": {
-      "startLine": 534,
+      "startLine": 540,
       "endLine": 663
     },
     "type": "insight",
     "title": "What IS Proved: Euler Line, Volume-Inradius, and the Structural Axioms",
-    "content": "Four theorems are fully proved: `monge_point_euler_line` (M = 4G - 3O, by `rfl` since it unfolds by definition), `twentyFourPointCenter_midpoint` (`rfl`), `twentyFourPointRadius_eq` (`rfl`), `centroid_on_euler_line` (G = (3O + M)/4, by `constructor; ring; constructor; ring`), and `volume_eq_inradius_surfaceArea` (V = rS/3, by `field_simp`). Three `axiom` declarations state deep geometric facts: `feuerbach_3d_fails_general` (existence of non-orthocentric counterexample), `edge_midpoints_on_sphere` (6 edge midpoints lie on N₂₄), `face_centroids_on_sphere` (4 face centroids lie on N₂₄). The axioms are marked as such because proving them requires the same depth of coordinate computation as the 5 sorry theorems.",
+    "content": "Four theorems are fully proved: `monge_point_euler_line` (M = 4G - 3O, by `rfl` since it unfolds by definition), `twentyFourPointCenter_midpoint` (`rfl`), `twentyFourPointRadius_eq` (`rfl`), `centroid_on_euler_line` (G = (3O + M)/4, by `constructor; ring; constructor; ring`), and `volume_eq_inradius_surfaceArea` (V = rS/3, by `field_simp`). Three `axiom` declarations state deep geometric facts: `feuerbach_3d_fails_general` (existence of non-orthocentric counterexample), `edge_midpoints_on_sphere` (6 edge midpoints lie on N\u2082\u2084), `face_centroids_on_sphere` (4 face centroids lie on N\u2082\u2084). The axioms are marked as such because proving them requires the same depth of coordinate computation as the 5 sorry theorems.",
     "mathContext": "The `rfl` proofs reflect a design choice: definitions are arranged so that the key identities hold by definition-unfolding. `M = 4G - 3O` is literally the definition of `mongePoint`. `centroid_on_euler_line` requires `ring` after unfolding because it's a consequence of the definition ($(3O + M)/4 = (3O + 4G - 3O)/4 = G$), not a literal unfolding. The three axioms encode known classical results (Court 1934, Murakami 1952) whose formal proofs would require the same coordinate machinery as the tangency proofs. The distinction between `sorry` (for theorems we expect to prove later) and `axiom` (for facts we're taking on mathematical authority) reflects the CLAUDE.md axiom integrity policy.",
     "significance": "supporting",
     "relatedConcepts": [
