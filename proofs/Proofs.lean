@@ -1921,6 +1921,7 @@ import Proofs.NavierStokes
 import Proofs.NewtonIndStep2
 import Proofs.NewtonInductiveStep
 import Proofs.NewtonInductiveStepOQ01
+import Proofs.NewtonInductiveStepOQ01Aristotle
 import Proofs.NewtonLogConcavity
 import Proofs.NthRootIrrational
 import Proofs.NthRootIrrationalOQ01
