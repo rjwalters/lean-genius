@@ -1686,6 +1686,7 @@ import Proofs.FactorRemainderTheoremOQ03
 import Proofs.FairGamesTheorem
 import Proofs.FairGamesTheoremOQ01
 import Proofs.FairGamesTheoremOQ02
+import Proofs.FairGamesTheoremOQ03
 import Proofs.FermatTwoSquares
 import Proofs.FermatTwoSquaresOQ01
 import Proofs.FermatsLastTheorem
