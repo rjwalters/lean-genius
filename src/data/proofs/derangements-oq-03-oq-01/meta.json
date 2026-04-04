@@ -68,7 +68,8 @@
       "**One more term of the alternating series**: The second-order bound follows by splitting off one additional term from the tail. The existing alternating_tail_bound at the shifted index provides the residual estimate. This is the general pattern: each additional term gives one more order of accuracy.",
       "**Tightness via reverse triangle inequality**: The lower bound 1/(n+1)! - 1/(n+2)! shows the first-order error bound 1/(n+1)! is essentially tight — the actual error is within a factor of (1 - 1/(n+2)) of the bound.",
       "**Geometric decay**: The error ratio 1/(n+2) shows super-exponential convergence — each additional permutation element reduces the approximation error by a factor of roughly 1/n. This is much faster than geometric convergence.",
-      "**Sign alternation captured**: The correction term (-1)^n/(n+1)! precisely captures the alternating overshoot/undershoot pattern: even n gives D(n)/n! > 1/e, odd n gives D(n)/n! < 1/e, with the signed magnitude ≈ 1/(n+1)!."
+      "**Sign alternation captured**: The correction term (-1)^n/(n+1)! precisely captures the alternating overshoot/undershoot pattern: even n gives D(n)/n! > 1/e, odd n gives D(n)/n! < 1/e, with the signed magnitude ≈ 1/(n+1)!.",
+      "**General pattern for asymptotic expansions**: The tail splitting technique applied here is the formal backbone for a general theorem: splitting off k terms from the tail of any alternating series gives a k-term asymptotic expansion with residual bounded by the (k+1)-th term. The Lean implementation uses `tsum_eq_zero_add` with shifted indexing to peel off one term at a time. This gives an algorithmic procedure: to get k-th order accuracy, apply `tsum_tail_split` k times, each time recording the leading term and passing the shifted tail to the existing bound."
     ],
     "prerequisites": [
       "DerangementsOQ03 convergence rate results",

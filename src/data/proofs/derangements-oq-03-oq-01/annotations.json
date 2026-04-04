@@ -46,5 +46,17 @@
     "significance": "supporting",
     "relatedConcepts": ["factorial decay", "super-exponential convergence"],
     "prerequisites": ["factorial recurrence"]
+  },
+  {
+    "id": "ann-sign-characterization",
+    "proofId": "derangements-oq-03-oq-01",
+    "range": { "startLine": 175, "endLine": 243 },
+    "type": "insight",
+    "title": "Sign Alternation and Concrete Bounds",
+    "content": "The correction term (-1)^n/(n+1)! alternates sign: for even n (n = 2m), (-1)^{2m} = 1 so the term is positive and D(n)/n! > 1/e (overshoot); for odd n (n = 2m+1), (-1)^{2m+1} = -1 so the term is negative and D(n)/n! < 1/e (undershoot). Lean proves this via two theorems: `correction_term_sign_even` ((-1)^{2m}/(2m+1)! ≥ 0) and `correction_term_sign_odd` ((-1)^{2m+1}/(2m+2)! ≤ 0), both using `pow_nonneg` and parity arithmetic. The concrete bounds for n=0,1,2 demonstrate the rapid decay: n=0 → error ≤ 1/2, n=1 → error ≤ 1/6, n=2 → error ≤ 1/24, with each step improving by factor ~1/n.",
+    "mathContext": "Even $n = 2m$: $\\frac{(-1)^{2m}}{(2m+1)!} = \\frac{1}{(2m+1)!} > 0$, so $D(2m)/(2m)! > 1/e$. Odd $n = 2m+1$: $\\frac{(-1)^{2m+1}}{(2m+2)!} = \\frac{-1}{(2m+2)!} < 0$, so $D(2m+1)/(2m+1)! < 1/e$. Concrete: $n=0$ gives error $\\le 1/2! = 1/2$; $n=1$ gives $\\le 1/3! = 1/6$; $n=2$ gives $\\le 1/4! = 1/24$.",
+    "significance": "supporting",
+    "relatedConcepts": ["alternating signs", "parity arithmetic", "pow_nonneg", "overshoot/undershoot pattern", "concrete numerical bounds"],
+    "prerequisites": ["correction_term formula", "even/odd case split in Lean 4", "norm_num for factorial values"]
   }
 ]
