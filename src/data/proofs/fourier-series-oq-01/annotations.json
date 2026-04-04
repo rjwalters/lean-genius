@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-carleson-header",
+    "proofId": "fourier-series-oq-01",
+    "range": { "startLine": 10, "endLine": 75 },
+    "type": "context",
+    "title": "Carleson's Theorem: 150 Years of Fourier Convergence History",
+    "content": "The module header frames Carleson's 1966 result in its historical arc: Fourier's 1807 conjecture, Dirichlet's 1829 convergence for piecewise smooth functions, du Bois-Reymond's 1876 counterexample (a continuous function diverging at a point), Kolmogorov's 1923 L¹ everywhere-divergent function, and finally Carleson's 1966 proof for L². The proof architecture is split: Part A axiomatizes the Carleson-Hunt maximal inequality (the deep analytic content requiring ~50 pages of time-frequency analysis), while Part B proves the density-to-a.e.-convergence reduction from Mathlib primitives. The namespace `CarlesonTheorem` works over `AddCircle T` (the circle of period T) with the normalized Haar measure.",
+    "mathContext": "The timeline of pointwise convergence: (1) Dirichlet (1829): converges for piecewise smooth $f$ with bounded variation; (2) Kolmogorov (1923): $\\exists f \\in L^1$ diverging a.e.; (3) Carleson (1966): $\\forall f \\in L^2$, $S_N f \\to f$ a.e.; (4) Hunt (1968): extends to $L^p$, $p > 1$. The critical threshold is $L^p$ with $p > 1$: Carleson's theorem fails for $p = 1$.",
+    "significance": "context",
+    "relatedConcepts": ["Fourier series", "Carleson's theorem", "pointwise convergence", "harmonic analysis", "time-frequency analysis"],
+    "prerequisites": ["Fourier series L² convergence", "measure theory", "AddCircle in Mathlib", "Haar measure"]
+  },
+  {
+    "id": "ann-fourier-partial-sum",
+    "proofId": "fourier-series-oq-01",
+    "range": { "startLine": 84, "endLine": 102 },
+    "type": "definition",
+    "title": "Fourier Partial Sum S_N f(x): Orthogonal Projection",
+    "content": "`fourierPartialSum f N x = ∑ n ∈ Icc (-(N:ℤ)) N, fourierCoeff f n * fourier n x` is the N-th partial sum of the Fourier series of f at x. The sum runs over n from −N to N (2N+1 terms). Two basic theorems follow: `fourierPartialSum_zero` reduces the N=0 case to a single coefficient times the 0-th monomial, and `fourierPartialSum_continuous` proves S_N f is always continuous — since it is a finite sum of continuous functions (each `fourier n` is continuous). The continuity is key: S_N f is always a trigonometric polynomial, even if f is merely L².",
+    "mathContext": "Geometrically, $S_N f$ is the orthogonal projection of $f$ (viewed as an element of $L^2(\\mathbb{T})$) onto the closed subspace $\\overline{\\text{span}}\\{e_n : |n| \\leq N\\}$. Parseval's theorem gives $\\|f - S_N f\\|_{L^2}^2 = \\sum_{|n|>N} |\\hat{f}(n)|^2 \\to 0$, proving $L^2$ convergence. Carleson's theorem upgrades this to pointwise a.e. convergence.",
+    "significance": "key",
+    "relatedConcepts": ["Fourier coefficients", "Fourier monomials", "orthogonal projection", "L² convergence", "Parseval's theorem"],
+    "prerequisites": ["Mathlib fourierCoeff", "Mathlib fourier monomials", "Finset.Icc over ℤ", "hasSum_fourier_series_L2"]
+  },
+  {
+    "id": "ann-carleson-maximal",
+    "proofId": "fourier-series-oq-01",
+    "range": { "startLine": 108, "endLine": 132 },
+    "type": "technique",
+    "title": "Carleson Maximal Operator S*f: The Key to a.e. Convergence",
+    "content": "`carlesonMaximal f x = ⨆ N : ℕ, ‖fourierPartialSum f N x‖₊` is the pointwise supremum of absolute partial sum values, valued in ℝ≥0∞ (allowing infinity). The theorem `le_carlesonMaximal` asserts each individual partial sum |S_N f(x)| ≤ S*f(x). The ℝ≥0∞-valued supremum (rather than ℝ-valued) is the correct formulation because S*f(x) might be infinite at some points — the maximal inequality shows the set of such points has measure zero. Carleson's key insight was that controlling S* is the right approach: if ‖S*f‖_{L²} ≤ C‖f‖_{L²}, then by standard harmonic analysis arguments, S_N f converges a.e.",
+    "mathContext": "The Carleson maximal operator $S^*f(x) = \\sup_N |S_N f(x)|$ satisfies: if $S^*f \\in L^{2,\\infty}$ (weak $L^2$), then $S_N f(x) \\to f(x)$ a.e. The proof uses the weak-type bound: $\\mu(\\{S^*f > \\lambda\\}) \\leq C^2 \\lambda^{-2} \\|f\\|_{L^2}^2$. Combined with the density of trigonometric polynomials (where $S^*g = \\sup_N |S_N g| = |g|$ for large $N$), this gives a.e. convergence for all $L^2$ functions.",
+    "significance": "key",
+    "relatedConcepts": ["maximal operator", "weak-type inequality", "iSup in Lean", "ℝ≥0∞-valued supremum", "Chebyshev's inequality"],
+    "prerequisites": ["fourierPartialSum definition", "ENNReal.iSup", "NNNorm in Lean", "harmonic analysis maximal theory"]
+  },
+  {
+    "id": "ann-carleson-hunt-axiom",
+    "proofId": "fourier-series-oq-01",
+    "range": { "startLine": 151, "endLine": 175 },
+    "type": "concept",
+    "title": "Carleson-Hunt Maximal Inequality: Axiomatized Deep Analysis",
+    "content": "The axiom `carleson_hunt_maximal` states the weak-type (2,2) bound: for f ∈ L², μ({S*f(x) > λ}) ≤ (C/λ)² · ∫|f|² dμ. The `carlesonConstant` is declared as an axiom (its existence is asserted without specifying the value). The actual proof of this inequality — Carleson's original work — requires ~50 pages of intricate time-frequency analysis: bitemporal decomposition, John-Nirenberg inequality, and sophisticated dyadic decomposition of the time-frequency plane. The Carleson4 project (Floris van Doorn et al.) is currently working on a full Lean formalization. The Lean statement uses `ENNReal.ofReal` to convert real-valued bounds to the ENNReal measure framework.",
+    "mathContext": "The Carleson-Hunt inequality (weak type): $\\mu(\\{x : S^*f(x) > \\lambda\\}) \\leq \\frac{C^2}{\\lambda^2}\\|f\\|_{L^2}^2$. The strong type $\\|S^*f\\|_{L^2} \\leq C\\|f\\|_{L^2}$ follows from Marcinkiewicz interpolation. The best known constant $C$ comes from recent refinements; Grafakos (2014) gives $C = 50$. The Lean axiom uses `haarAddCircle` (normalized Haar measure on AddCircle T) as the measure.",
+    "significance": "key",
+    "relatedConcepts": ["Carleson-Hunt theorem", "weak-type (2,2) inequality", "time-frequency analysis", "Carleson4 project", "Marcinkiewicz interpolation"],
+    "prerequisites": ["carlesonConstant axiom", "Memℒp f 2 haarAddCircle", "ENNReal.ofReal", "haarAddCircle measure"]
+  },
+  {
+    "id": "ann-trig-poly-exact",
+    "proofId": "fourier-series-oq-01",
+    "range": { "startLine": 181, "endLine": 229 },
+    "type": "technique",
+    "title": "Trigonometric Polynomials: Exact Convergence and L² Density",
+    "content": "`IsTrigPoly g` asserts that g is a trigonometric polynomial: all but finitely many Fourier coefficients vanish (∃ M, ∀ n with |n| > M, fourierCoeff g n = 0). For such g, S_N g = g for all N ≥ M — the partial sum exactly reproduces g once N captures all nonzero coefficients. This gives 'trivial' convergence for trig polys. The density axiom (axiomatized) says every L² function can be approximated arbitrarily well by trig polys in the L² norm. This corresponds to Mathlib's `span_fourier_closure_eq_top` (trigonometric polynomials are norm-dense in L²). The density + exact-convergence combination is the key to the density argument in Carleson's proof.",
+    "mathContext": "For a trig poly $g(x) = \\sum_{|n| \\leq M} c_n e_n(x)$, we have $\\hat{g}(n) = c_n$ for $|n| \\leq M$ and $\\hat{g}(n) = 0$ for $|n| > M$. So $S_N g = \\sum_{|n| \\leq N} \\hat{g}(n) e_n = g$ for $N \\geq M$. Density: the closed span of $\\{e_n : n \\in \\mathbb{Z}\\}$ in $L^2(\\mathbb{T})$ equals $L^2(\\mathbb{T})$ — a consequence of the Stone-Weierstrass theorem and completeness.",
+    "significance": "supporting",
+    "relatedConcepts": ["trigonometric polynomials", "IsTrigPoly", "Stone-Weierstrass theorem", "L² density", "Fourier basis"],
+    "prerequisites": ["fourierCoeff definition", "Mathlib span_fourier_closure_eq_top", "Memℒp predicate"]
+  },
+  {
+    "id": "ann-density-reduction",
+    "proofId": "fourier-series-oq-01",
+    "range": { "startLine": 236, "endLine": 310 },
+    "type": "insight",
+    "title": "The Density Reduction: From Maximal Inequality to a.e. Convergence",
+    "content": "This is the genuinely proved core of the formalization. The divergence set `divergenceSet f δ = {x : limsup_N |S_N f(x) - f(x)| > δ}` is shown to have measure zero for each δ > 0. The proof: (1) approximate f by a trig poly g with ‖f−g‖_{L²} < ε, (2) since S_N g = g for large N, the divergence set for g is empty, (3) |S_N f − f| ≤ |S_N(f−g)| + |g−f|, so the divergence set for f is contained in {S*(f−g) > δ/2} ∪ {|f−g| > δ/2}, (4) the Carleson-Hunt inequality gives μ({S*(f−g) > δ/2}) ≤ (2C/δ)² ε², which is < δ for small ε, (5) letting ε→0, the measure is 0. The full divergence set is a countable union of such null sets.",
+    "mathContext": "The argument is a version of the **Banach principle** or **Cotlar's lemma**: if a sequence of operators $T_n$ is equicontinuous (here: $S_n^*$ is bounded in $L^2$) and converges on a dense subclass (trig polys), then it converges a.e. everywhere. Formally:\n$$\\mu(\\{\\limsup_N |S_N f - f| > \\delta\\}) \\leq \\mu(\\{S^*(f-g) > \\delta/2\\}) \\leq \\left(\\frac{2C}{\\delta}\\right)^2 \\varepsilon^2$$\nfor any trig poly $g$ with $\\|f-g\\|_{L^2} < \\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": ["Banach principle", "Cotlar's lemma", "divergence set", "Chebyshev inequality", "density argument"],
+    "prerequisites": ["carleson_hunt_maximal axiom", "trigPoly_dense_L2 axiom", "Filter.limsup", "MeasureTheory.measure_iUnion"]
+  },
+  {
+    "id": "ann-carleson-main-theorem",
+    "proofId": "fourier-series-oq-01",
+    "range": { "startLine": 316, "endLine": 360 },
+    "type": "insight",
+    "title": "Carleson's Theorem and Continuous Function Corollary",
+    "content": "`carleson_ae_convergence` is the main theorem: for f ∈ L²(AddCircle T), the Fourier partial sums converge to f for almost every x. The Lean statement uses `Filter.atTop` for the limit over N and `nhds (f x)` for the neighborhood filter at f(x). `carleson_continuous` specializes to continuous f: continuous functions on the compact circle are automatically in L², so Carleson applies. `carleson_and_parseval` combines both convergence modes: L² convergence (from Parseval's theorem / Hilbert basis theory, already in Mathlib) and pointwise a.e. convergence (from Carleson). Together they give the complete picture of Fourier series convergence for L² functions.",
+    "mathContext": "Formally: $\\forall f \\in L^2(\\mathbb{T}),\\; \\mu(\\{x : \\lim_{N \\to \\infty} S_N f(x) \\neq f(x)\\}) = 0$. The Lean formulation is `∀ᵐ x ∂haarAddCircle, Filter.Tendsto (fun N => fourierPartialSum f N x) Filter.atTop (nhds (f x))`. Note: the a.e. limit is the precise $L^2$ representative $f$, not just some measurable function equal to $f$ a.e.",
+    "significance": "key",
+    "relatedConcepts": ["carleson_ae_convergence", "Filter.Tendsto", "a.e. convergence", "continuous function corollary", "Parseval's theorem"],
+    "prerequisites": ["divergenceSet_measure_bound", "Filter.atTop", "nhds filter", "Memℒp 2 for continuous functions"]
+  },
+  {
+    "id": "ann-linearity-structural",
+    "proofId": "fourier-series-oq-01",
+    "range": { "startLine": 367, "endLine": 419 },
+    "type": "technique",
+    "title": "Linearity of Fourier Partial Sums: Structural Lemmas",
+    "content": "The structural section proves linearity of S_N: `fourierPartialSum_add` (S_N(f+g) = S_N f + S_N g) and `fourierPartialSum_smul` (S_N(c·f) = c · S_N f). These follow from linearity of Fourier coefficients: fourierCoeff (f+g) n = fourierCoeff f n + fourierCoeff g n, and similar for scalar multiplication. The zero case `fourierPartialSum_zero_fn` is S_N(0) = 0. These lemmas are essential for the density reduction proof: the decomposition f = g + (f−g) requires S_N f = S_N g + S_N(f−g), which requires linearity. Without these structural facts, the density argument cannot be applied.",
+    "mathContext": "Linearity of $S_N$ follows from the linearity of the inner product: $\\widehat{f+g}(n) = \\langle f+g, e_n \\rangle = \\langle f, e_n \\rangle + \\langle g, e_n \\rangle = \\hat{f}(n) + \\hat{g}(n)$, and $\\widehat{cf}(n) = c \\hat{f}(n)$. Together these make $f \\mapsto S_N f$ a bounded linear operator on $L^2$ (in fact, the orthogonal projection operator onto the $(2N+1)$-dimensional subspace).",
+    "significance": "supporting",
+    "relatedConcepts": ["linearity of Fourier coefficients", "orthogonal projection", "bounded linear operators", "Hilbert space projections"],
+    "prerequisites": ["fourierPartialSum definition", "fourierCoeff linearity", "Mathlib Finset.sum_add_distrib"]
+  }
+]
