@@ -1,38 +1,62 @@
 [
   {
+    "id": "ann-pigeonhole-bounds",
+    "proofId": "birthday-problem-oq-03-oq-03",
+    "range": { "startLine": 43, "endLine": 55 },
+    "type": "insight",
+    "title": "Pigeonhole Bound: Linear Upper Threshold",
+    "content": "The pigeonhole bound for k-way coincidences is (k-1)·d + 1: with this many people, at least k must share a birthday. This is the worst-case guarantee from the pigeonhole principle. The three theorems prove the bound value equals itself (tautological but documents the formula), and that it grows linearly in both d and k. The key contrast with the probabilistic threshold n_k ~ d^{(k-1)/k}: the pigeonhole bound is linear (exponent 1 in d), while the 50%-probability threshold has exponent (k-1)/k < 1.",
+    "mathContext": "Pigeonhole bound: $(k-1) \\cdot d + 1$ people guarantee $k$-way coincidence. Contrast: probabilistic threshold $n_k \\sim (k! \\cdot d^{k-1})^{1/k}$ grows as $d^{(k-1)/k}$. Ratio: pigeonhole/threshold $\\approx d^{1/(k-1)}/k!^{1/k}$, diverges as $d \\to \\infty$ for fixed $k \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["pigeonhole principle", "linear scaling", "worst-case vs expected threshold", "combinatorics"],
+    "prerequisites": ["Nat arithmetic", "omega tactic", "pigeonhole principle statement"]
+  },
+  {
     "id": "ann-scaling-exponent",
     "proofId": "birthday-problem-oq-03-oq-03",
-    "range": { "startLine": 62, "endLine": 75 },
+    "range": { "startLine": 62, "endLine": 101 },
     "type": "definition",
-    "title": "Scaling Exponent (k-1)/k",
-    "content": "The growth exponent $\\alpha_k = (k-1)/k$ determines how the k-way birthday threshold scales with the number of days $d$: the threshold grows as $d^{\\alpha_k}$. For $k=2$: $\\alpha = 1/2$ (square root), $k=3$: $\\alpha = 2/3$, approaching 1 as $k \\to \\infty$.",
-    "mathContext": "$\\alpha_k = \\frac{k-1}{k},\\quad n_k \\sim d^{\\alpha_k}$",
+    "title": "Scaling Exponent (k-1)/k and Concrete Values",
+    "content": "scalingExponent k = (k-1)/k is the growth exponent for the k-way birthday threshold. The file proves: non-negativity (always ≥ 0), strict sublinearity (< 1 for k ≥ 1), monotone increasing in k, and three concrete values: scalingExponent 2 = 1/2 (square root law), scalingExponent 3 = 2/3, scalingExponent 4 = 3/4. The exponent increases toward 1 as k→∞, interpolating between the trivial case (k=1, exponent 0, threshold = constant 1) and the pigeonhole case (k→∞, exponent 1, threshold linear in d).",
+    "mathContext": "$\\alpha_k = \\frac{k-1}{k}$, so $n_k \\sim d^{\\alpha_k}$. Monotone: $k_1 \\leq k_2 \\Rightarrow \\alpha_{k_1} \\leq \\alpha_{k_2}$. Values: $\\alpha_2 = 1/2$, $\\alpha_3 = 2/3$, $\\alpha_4 = 3/4$, $\\alpha_k \\to 1$ as $k \\to \\infty$.",
     "significance": "key",
-    "relatedConcepts": ["growth rate", "sub-linear scaling", "pigeonhole principle"],
-    "prerequisites": ["real division"]
+    "relatedConcepts": ["growth rate", "sub-linear scaling", "birthday problem square-root law", "monotone sequences"],
+    "prerequisites": ["real division in Lean 4", "Nat.cast", "linarith and field_simp tactics"]
   },
   {
     "id": "ann-threshold-formula",
     "proofId": "birthday-problem-oq-03-oq-03",
-    "range": { "startLine": 118, "endLine": 128 },
+    "range": { "startLine": 111, "endLine": 151 },
     "type": "definition",
-    "title": "Threshold Power Formula",
-    "content": "Working with the k-th power $n_k^k = k! \\cdot d^{k-1}$ avoids fractional exponents. This formulation makes monotonicity and comparison proofs algebraically clean. The factorial factor $k!$ captures the combinatorial growth of coincidence patterns.",
-    "mathContext": "$n_k^k = k! \\cdot d^{k-1}$",
+    "title": "Threshold Power Formula: k! · d^{k-1}",
+    "content": "thresholdPower k d = (k! · d^{k-1} : ℝ) works with the k-th power n_k^k to avoid fractional exponents. This makes monotonicity and comparison proofs algebraically clean: thresholdPower_pos, thresholdPower_mono_d, and thresholdPower_mono_k are all proved via positivity/monotonicity of multiplication and rpow. The factorial factor k! captures the combinatorial growth of coincidence patterns: among k people, there are k! orderings of their birthdays, and all k! of them must be distinct.",
+    "mathContext": "$n_k^k = k! \\cdot d^{k-1}$. Taking $k$-th roots: $n_k = (k! \\cdot d^{k-1})^{1/k} = (k!)^{1/k} \\cdot d^{(k-1)/k}$. By Stirling: $(k!)^{1/k} \\approx k/e$, so the prefactor grows as $k/e$ for large $k$.",
     "significance": "key",
-    "relatedConcepts": ["factorial", "polynomial growth", "threshold formula"],
-    "prerequisites": ["factorial", "exponentiation"]
+    "relatedConcepts": ["factorial", "polynomial growth", "threshold formula", "rpow monotonicity"],
+    "prerequisites": ["Nat.factorial", "Real.rpow", "positivity tactic"]
+  },
+  {
+    "id": "ann-classical-recovery",
+    "proofId": "birthday-problem-oq-03-oq-03",
+    "range": { "startLine": 160, "endLine": 211 },
+    "type": "insight",
+    "title": "Classical Recovery: k=2,3,4 Formulas and 365-Day Examples",
+    "content": "threshold_k2/k3/k4 compute the threshold power for the first three non-trivial cases: n₂² = 2d (square-root birthday), n₃³ = 6d², n₄⁴ = 24d³. These are proved by unfolding thresholdPower and simplifying Nat.factorial. The comparison theorems show that for d ≥ 2 (k=2) or d ≥ 1 (k=3), the probabilistic threshold is strictly smaller than the pigeonhole bound — confirming the birthday problem effect. Concrete 365-day examples: thresholdPower 2 365 = 730 (so n₂ ≈ √730 ≈ 27 people), thresholdPower 3 365 = 6·365² = 798,150.",
+    "mathContext": "For $d=365$: $n_2 = \\sqrt{730} \\approx 27$, $n_3 = (6 \\cdot 365^2)^{1/3} \\approx 92$. Comparison: $n_2 \\approx 27 \\ll (2-1) \\cdot 365 + 1 = 366$ (pigeonhole). Birthday problem: exact $P(\\text{no shared birthday}) = \\prod_{i=0}^{n-1}(1 - i/365)$, threshold when $< 1/2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["birthday paradox", "square root law", "365 days", "pigeonhole vs probabilistic bounds"],
+    "prerequisites": ["threshold_k2/k3/k4 theorems", "Nat.factorial computation", "native_decide or norm_num"]
   },
   {
     "id": "ann-exponent-limit",
     "proofId": "birthday-problem-oq-03-oq-03",
     "range": { "startLine": 226, "endLine": 241 },
-    "type": "theorem",
-    "title": "Exponent Approaches 1",
-    "content": "As $k \\to \\infty$, the scaling exponent $(k-1)/k \\to 1$, meaning the threshold approaches linear growth in $d$ (the pigeonhole bound). The proof gives an explicit convergence rate: for $(k-1)/k > 1 - \\varepsilon$, it suffices to take $k > 1/\\varepsilon$.",
-    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists K,\\; \\forall k \\ge K:\\; \\frac{k-1}{k} > 1 - \\varepsilon$",
+    "type": "insight",
+    "title": "Exponent Approaches 1: Convergence to the Pigeonhole Bound",
+    "content": "As k → ∞, the scaling exponent (k-1)/k → 1, meaning the threshold approaches linear growth in d (the pigeonhole bound). The proof gives an explicit convergence rate: for (k-1)/k > 1 - ε, it suffices to take k > 1/ε. This is the Archimedean property applied to show that for any ε > 0, eventually all k-way coincidences behave like the worst-case pigeonhole scenario. The theorem bridges the probabilistic and combinatorial regimes.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists K,\\; \\forall k \\geq K:\\; \\frac{k-1}{k} > 1 - \\varepsilon$. Proof: $k > 1/\\varepsilon \\Rightarrow \\varepsilon > 1/k \\Rightarrow 1 - \\varepsilon < (k-1)/k$. Rate: $K = \\lceil 1/\\varepsilon \\rceil + 1$.",
     "significance": "key",
-    "relatedConcepts": ["convergence", "epsilon-delta", "asymptotic analysis"],
-    "prerequisites": ["limits", "Archimedean property"]
+    "relatedConcepts": ["convergence to 1", "Archimedean property", "asymptotic analysis", "pigeonhole limit"],
+    "prerequisites": ["linarith and omega tactics", "Archimedean property of ℝ", "floor/ceiling in Lean 4"]
   }
 ]
