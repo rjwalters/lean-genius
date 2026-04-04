@@ -1,4 +1,6 @@
 import Mathlib.Combinatorics.Enumerative.Partition.Basic
+import Mathlib.Combinatorics.Enumerative.Partition.Glaisher
+import Mathlib.Data.Fintype.EquivFin
 import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Mathlib.Tactic
 
@@ -564,7 +566,16 @@ private lemma glaisherFwd_glaisherBwdStep_gen {b : ℕ} (hb : ¬ Even b) (hb_pos
     when we bind replicate (count b) b over all distinct elements. -/
 private lemma dedup_bind_replicate_count_eq (s : Multiset ℕ) :
     s.toFinset.val.bind (fun b => Multiset.replicate (s.count b) b) = s := by
-  sorry
+  ext x
+  rw [Multiset.count_bind]
+  simp_rw [Multiset.count_replicate]
+  -- After simp_rw: (toFinset.val.map (fun b => if b = x then count b else 0)).sum = count x
+  -- This equals ∑ b ∈ toFinset, if b = x then count b else 0 by definition of Finset.sum
+  change ∑ b ∈ s.toFinset, (if b = x then s.count b else 0) = s.count x
+  simp only [Finset.sum_ite_eq', Multiset.mem_toFinset]
+  split_ifs with h
+  · rfl
+  · exact (Multiset.count_eq_zero.mpr h).symm
 
 /-- **Forward undoes backward**: glaisherFwd (glaisherBwd s) = s for odd positive multisets. -/
 theorem glaisherFwd_glaisherBwd {s : Multiset ℕ}
@@ -613,6 +624,9 @@ theorem glaisher_bijection_exists (n : ℕ) :
     ∃ (f : {p : Nat.Partition n // p ∈ Nat.Partition.distincts n} →
            {p : Nat.Partition n // p ∈ Nat.Partition.odds n}),
       Function.Bijective f := by
-  sorry
+  -- Equal cardinality of both finite sets (Euler's partition theorem, Mathlib)
+  have h : (Nat.Partition.distincts n).card = (Nat.Partition.odds n).card :=
+    (Nat.Partition.card_odds_eq_card_distincts n).symm
+  exact ⟨Finset.equivOfCardEq h, (Finset.equivOfCardEq h).bijective⟩
 
 end GlaisherBijection
