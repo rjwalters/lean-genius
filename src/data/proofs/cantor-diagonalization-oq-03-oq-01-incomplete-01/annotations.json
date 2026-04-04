@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-clawvere-context",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+    "range": { "startLine": 37, "endLine": 40 },
+    "type": "context",
+    "title": "Completing Categorical Lawvere: The Sorry Root Cause",
+    "content": "This file resolves 2 sorries in the parent `cantor-diagonalization-oq-03-oq-01`. The **root cause**: the parent's hypothesis used `sorry : C.Pt (C.exp A B)` — a constant term — where a **function** `e a : C.Pt (C.exp A B)` (depending on `a : C.Pt A`) was needed. The fix: make `e : C.Pt A → C.Pt (C.exp A B)` an explicit parameter. The proof body then trivially reduces to `lawvere_abstract` via an `EvalStructure`.",
+    "mathContext": "**Lawvere's fixed-point theorem** (1969): in any cartesian closed category, if $e: A \\to B^A$ is a point-surjection (every $f: A \\to B$ factors through $\\text{ev} \\circ e$), then every endomorphism $B \\to B$ has a fixed point. This unifies: Cantor ($B = \\Omega$, $f = \\neg$), Russell's paradox, the halting problem, and Gödel's first incompleteness theorem. The challenge: Mathlib doesn't have full CCC/topos machinery, requiring an abstract intermediate layer (`EvalStructure`).",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lawvere's fixed-point theorem",
+      "cartesian closed categories",
+      "diagonal argument",
+      "sorry root cause diagnosis",
+      "EvalStructure abstraction"
+    ],
+    "prerequisites": [
+      "parent cantor-diagonalization-oq-03-oq-01",
+      "Lawvere 1969 fixed-point theorem",
+      "categorical evaluation map"
+    ]
+  },
+  {
+    "id": "ann-clawvere-abstract",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+    "range": { "startLine": 61, "endLine": 67 },
+    "type": "theorem",
+    "title": "EvalStructure and lawvere_abstract: The Core Diagonal Argument",
+    "content": "**EvalStructure**: a structure with `Ob : Type*`, `Val : Type*`, `eval : Ob → Ob → Val` — models $\\text{ev}: B^A \\times A \\to B$ at global elements. **IsPointSurjective**: every $g: \\text{Ob} \\to \\text{Val}$ is representable: $\\exists a, \\forall x, \\text{eval}(a, x) = g(x)$. **lawvere_abstract** (3 lines): if E is point-surjective, every $f: \\text{Val} \\to \\text{Val}$ has a fixed point. Proof: get $a_0$ representing $a \\mapsto f(\\text{eval}(a,a))$; then $\\text{eval}(a_0, a_0) = f(\\text{eval}(a_0, a_0))$.",
+    "mathContext": "The proof is the **diagonal construction**: the function $g(a) = f(\\text{eval}(a, a))$ is representable by some $a_0$. Substituting $a = a_0$: $\\text{eval}(a_0, a_0) = g(a_0) = f(\\text{eval}(a_0, a_0))$. So $v = \\text{eval}(a_0, a_0)$ is a fixed point. In Lean: `obtain ⟨a₀, ha₀⟩ := hE (fun a => f (E.eval a a))` extracts $a_0$, then `exact ⟨E.eval a₀ a₀, (ha₀ a₀).symm⟩` packages the fixed point. The `.symm` flips the direction of the equality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "diagonal argument",
+      "point-surjectivity",
+      "obtain for existential extraction",
+      "fixed point construction",
+      "Lawvere's theorem proof"
+    ],
+    "prerequisites": [
+      "EvalStructure definition",
+      "IsPointSurjective definition",
+      "diagonal substitution a = a₀"
+    ]
+  },
+  {
+    "id": "ann-clawvere-categorical-struct",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+    "range": { "startLine": 70, "endLine": 109 },
+    "type": "definition",
+    "title": "CategoricalEval Structure: CCC Without Topos Machinery",
+    "content": "**CategoricalEval**: a structure abstracting a cartesian closed category at the level of global elements: `Obj`, `Hom`, `exp` (exponential object), `Pt` (global elements), `apply` (evaluation map $\\text{ev}$), `ptSurj` (point-surjectivity criterion). **HasFixedPoint**: $\\exists b, f(b) = b$. The `ptSurj` field is a placeholder — the actual surjectivity condition is stated as a parameter in theorems.",
+    "mathContext": "In a CCC, the **exponential** $B^A$ is characterized by $\\text{Hom}(C, B^A) \\cong \\text{Hom}(C \\times A, B)$. Global elements = morphisms from the terminal object $1$: $\\text{Pt}(A) = \\text{Hom}(1, A)$. The **evaluation map** $\\text{ev}: B^A \\times A \\to B$ at global elements: $\\text{apply}: \\text{Pt}(B^A) \\to \\text{Pt}(A) \\to \\text{Pt}(B)$. This structure is inhabited by `typeUniverse`: objects = types, Hom = functions, exp A B = A → B, Pt = id, apply = function application.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cartesian closed category",
+      "exponential objects",
+      "global elements",
+      "evaluation morphism",
+      "typeUniverse instance"
+    ],
+    "prerequisites": [
+      "CCC definition in category theory",
+      "Lean 4 structure with Type* universes",
+      "typeUniverse concrete instance"
+    ]
+  },
+  {
+    "id": "ann-clawvere-main",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+    "range": { "startLine": 111, "endLine": 130 },
+    "type": "theorem",
+    "title": "lawvere_categorical (Fixed): EvalStructure as the Bridge",
+    "content": "**lawvere_categorical** (corrected, 0 sorries): Given `C : CategoricalEval`, `e : C.Pt A → C.Pt (C.exp A B)` (explicit), and `hSurj`: every $g: \\text{Pt}(A) \\to \\text{Pt}(B)$ factors through `e`, every $f: \\text{Pt}(B) \\to \\text{Pt}(B)$ has a fixed point. Proof: define `E : EvalStructure` with `eval a x = C.apply (e a) x`; note `hSurj = E.IsPointSurjective`; apply `lawvere_abstract`.",
+    "mathContext": "The `let E : EvalStructure` construction defines the bridge: `Ob = C.Pt A`, `Val = C.Pt B`, `eval = fun a x => C.apply (e a) x`. The surjectivity `hSurj` directly matches `E.IsPointSurjective` since `E.eval a x = C.apply (e a) x`. So `have hE : E.IsPointSurjective := hSurj` is definitional. Then `exact lawvere_abstract E hE f`. The entire proof body after fixing the sorry is **4 lines**. The parent's sorry arose because `e` was missing — the hypothesis `C.apply (sorry) x = g x` used a constant sorry where `e a` was needed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "let for local definitions",
+      "definitional equality for hSurj = hE",
+      "lawvere_abstract application",
+      "sorry root cause (missing e)",
+      "EvalStructure bridge"
+    ],
+    "prerequisites": [
+      "EvalStructure and lawvere_abstract",
+      "CategoricalEval structure",
+      "explicit e : Pt A → Pt(exp A B)"
+    ]
+  },
+  {
+    "id": "ann-clawvere-cantor",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+    "range": { "startLine": 148, "endLine": 190 },
+    "type": "definition",
+    "title": "typeUniverse Instance and Categorical Cantor's Theorem",
+    "content": "**typeUniverse**: the `CategoricalEval` where objects = types, exp = function type, apply = function application. **categorical_cantor**: for any `e : A → A → Prop`, `e` is not point-surjective in the type-universe CCC. The function $g(a) = \\neg e(a)(a)$ is not representable, because representing it would give $e(a_0)(a_0) = \\neg e(a_0)(a_0)$, a contradiction.",
+    "mathContext": "The proof of `categorical_cantor`: assume `hSurj`. Get $g = \\lambda a. \\neg e(a)(a)$ and $a_0$ with $\\forall x, e(a_0)(x) = g(x)$. Specializing $x = a_0$: $e(a_0)(a_0) = \\neg e(a_0)(a_0)$. Then `hNotFixed` shows $P = \\neg P$ is impossible for any `P : Prop`. The `hNotFixed` lemma itself uses a classical-logic argument: from $P \\leftrightarrow \\neg P$, derive $\\neg P$ from `(P → ¬P)`, then $P$ from `(¬P → P)`, contradiction. This is the **diagonal argument** in the type-universe CCC.",
+    "significance": "key",
+    "relatedConcepts": [
+      "typeUniverse CategoricalEval",
+      "categorical Cantor's theorem",
+      "diagonal argument for Prop",
+      "hNotFixed: P = ¬P is impossible",
+      "no surjection A → (A → Prop)"
+    ],
+    "prerequisites": [
+      "typeUniverse definition",
+      "no_categorical_surjection theorem",
+      "classical logic for ¬P = P contradiction"
+    ]
+  },
+  {
+    "id": "ann-clawvere-specializes",
+    "proofId": "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+    "range": { "startLine": 210, "endLine": 240 },
+    "type": "theorem",
+    "title": "Connection: Categorical → Type-Theoretic Lawvere",
+    "content": "**categorical_specializes_to_type_theoretic**: For `e : A → A → B` with `Function.Surjective e`, every `f : B → B` has a fixed point. Proved by building `C : CategoricalEval` from type universe, translating `Function.Surjective e` to `hSurj` via `congr_fun`, and applying `lawvere_categorical`. This bridges the abstract categorical theorem to the elementary type-theoretic version.",
+    "mathContext": "Translation: `Function.Surjective e` says $\\forall g: A \\to B, \\exists a, e(a) = g$. The categorical `hSurj` says $\\forall g, \\exists a, \\forall x, e(a)(x) = g(x)$. These are **propositionally equal**: from $e(a_0) = g$ (function equality), `congr_fun ha₀ x` extracts $e(a_0)(x) = g(x)$. The `let C` construction is the same type-universe structure as `typeUniverse`. After the proof, `#check` statements verify all four main theorems are registered.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Function.Surjective",
+      "congr_fun for pointwise equality",
+      "categorical to type-theoretic bridge",
+      "type universe CategoricalEval",
+      "#check for theorem registration"
+    ],
+    "prerequisites": [
+      "lawvere_categorical",
+      "Function.Surjective definition",
+      "congr_fun from function extensionality"
+    ]
+  }
+]
