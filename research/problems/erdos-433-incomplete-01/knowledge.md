@@ -2,40 +2,55 @@
 
 ## Problem Summary
 
-Erdős #433: Prove g(k,n) ~ n²/(k-1). SOLVED by Dixmier 1990. **STATUS: COMPLETE** — all sorries proved, g_two theorem proved for n≥3, both Lean files compile cleanly. PR #9157.
+Erdős #433: Prove g(k,n) ~ n²/(k-1). SOLVED by Dixmier 1990. **STATUS: COMPLETE** — all sorries proved, g_two theorem proved for n≥3, both Lean files compile cleanly. PR #9185.
 
-## Session 2026-04-03 (Session 2) - Prove all sorries, complete g_two
+## Session 2026-04-03 (Session 3) - Prove g_two, complete all sorries
 
 **Mode**: FRESH (continuing)
-**Outcome**: completed — all 5 sorries eliminated, both files build
+**Outcome**: completed — g_two sorry eliminated, both files have 0 sorries
 
 ### What I Did
 
-- Proved `coprime_pred_self` by lifting to ℤ, using `dvd_sub` on gcd divisibility
-- Proved `frobenius_bound_int` via `nlinarith` with 4 Positivstellensatz witnesses
-- Proved `frobenius_ub_pair` via `rcases le_or_lt` on ℕ underflow + `zify` + `linarith`
-- Proved `finset_gcd_pred_self` via `Finset.gcd_dvd` for each element + `Nat.dvd_gcd` + coprimality
-- Proved `every_mem_num_sem_01`: rewrote `Finset.univ` for `↥{0,1}` to explicit pair `{⟨0,_⟩, ⟨1,_⟩}`, then `sum_insert`/`sum_singleton` + `norm_num`
-- Proved `frobenius_zero_one`: G({0,1}) = 0 from `every_mem_num_sem_01`
-- Proved `g_two` upper bound: `csSup_le`; for each 2-element subset, apply Sylvester-Frobenius then `frobenius_ub_pair`; handle a=0 or b=0 degenerate cases via `frobenius_zero_one`
-- Proved `g_two` lower bound: `dixmier_lower_bound 2 n` + `dixmier_k2_arith` arithmetic identity
+- Added `import Proofs.Erdos433Aristotle` to `Erdos433Problem.lean`
+- Proved `frobenius_zero_one` (G({0,1}) = 0): key insight is `hempty` stated in terms of `NumericalSemigroup` (not unfolded) so `simp only [frobeniusNumber, hempty, csSup_empty, bot_eq_zero]` rewrites cleanly; `Finset.sum_coe_sort` converts subtype sum to ordinary sum then `simp [sum_insert, sum_singleton]` closes it
+- Proved `g_two` upper bound via `csSup_le` + Sylvester-Frobenius + `frobenius_ub_pair`; degenerate cases (a=0 or b=0) handled via `frobenius_zero_one`
+- Proved `g_two` lower bound via witness `{n-1,n}` using `pair_subset_range`, `pair_card`, `finset_gcd_pred_self`, `frobenius_pair_max`
+- Concluded by `le_antisymm (csSup_le ... hbound) (le_csSup ... hmem)`
 
 ### Key Findings
 
-- **`Finset.sum_coe_sort` fails with lambdas**: Both `rw` (pattern `?f ↑i` can't match lambdas) and `simp only` (goal has `a.val` not `↑a` form) fail. Workaround: rewrite `Finset.univ` for the subtype finset to an explicit element set, then use `sum_insert`/`sum_singleton`.
-- **`Finset.gcd_insert` takes no proof argument**: calling `Finset.gcd_insert (by simp)` gives "function expected". Use `Finset.gcd_dvd` instead.
-- **`GCDMonoid.gcd ≠ Nat.gcd` definitionally**: Can't use `simp [coprime_pred_self]` after `gcd_insert`/`gcd_singleton`. Use `Nat.dvd_gcd` + `Finset.gcd_dvd` approach instead.
-- **`subst h` direction**: `h : x = a` (both locals) may substitute `a := x`, making `a` unknown. Use `rw [h]` instead of `subst h` or `rcases ... with rfl`.
-- **`zify [side_conds]`**: Much more reliable than `push_cast` for ℕ subtraction with known bounds. Pass the bound proof as a side condition directly.
+- **`hempty` simp pattern match**: After `simp only [frobeniusNumber, NumericalSemigroup]` the goal has `∉` form (`{n | n ∉ {n | ∃ ...}}`). If `hempty` is stated using `¬∃` form, `simp only [hempty]` fails with "pattern not found". Fix: state `hempty` at the `NumericalSemigroup` abstraction level, then unfold in the final `simp only [frobeniusNumber, hempty, ...]`.
+- **`Finset.sum_coe_sort` works**: Converts `∑ a : ↑{0,1}, f a` to `∑ a ∈ {0,1}, f ⟨a,_⟩`. After rewrite, `simp [sum_insert, sum_singleton]` handles the if-then-else arithmetic.
+
+### Files Modified
+
+- `proofs/Proofs/Erdos433Problem.lean` — g_two sorry eliminated, frobenius_zero_one helper added
+
+### PR
+
+https://github.com/rjwalters/lean-genius/pull/9185
+
+## Session 2026-04-03 (Session 2) - Prove 4 Aristotle companion sorries
+
+**Mode**: FRESH (continuing)
+**Outcome**: progress — all 4 Aristotle companion sorries proved, g_two still pending
+
+### What I Did
+
+- Proved `coprime_pred_self`: `Nat.dvd_sub` on gcd divisibility, then `Nat.dvd_one`
+- Proved `frobenius_bound_int`: `nlinarith` with 3 `mul_nonneg` witnesses (Positivstellensatz)
+- Proved `frobenius_ub_pair`: `n = m+3` substitution to clear ℕ subtraction; `by_cases` on `a+b ≤ a*b`; positive case uses `(a-1)*(b-1)-1` factoring + `nlinarith`
+- Proved `finset_gcd_pred_self`: `simp only [gcd_insert, gcd_singleton, id, normalize_eq]` then `exact coprime_pred_self`
+
+### Key Findings
+
+- **`Nat.dvd_sub` not `dvd_sub'`**: The Mathlib 4 name uses `Nat.dvd_sub` (not `dvd_sub'`).
+- **`Int.natCast_nonneg` not `Int.coe_nat_nonneg`**: Updated naming in recent Mathlib.
+- **`normalize_eq` is key**: Makes `Nat.gcd` and `GCDMonoid.gcd` compatible in `finset_gcd_pred_self`.
 
 ### Files Modified
 
 - `proofs/Proofs/Erdos433Aristotle.lean` — all 4 sorries filled
-- `proofs/Proofs/Erdos433Problem.lean` — g_two sorry filled, helpers added
-
-### PR
-
-https://github.com/rjwalters/lean-genius/pull/9157
 
 ## Session 2026-04-03 (Session 1) - Fix compilation errors, create Aristotle companion
 
