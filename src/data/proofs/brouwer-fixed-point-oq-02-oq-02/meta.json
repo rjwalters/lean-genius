@@ -62,7 +62,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The study of query complexity for fixed point problems lies at the intersection of computational complexity theory, numerical analysis, and optimization. Different function classes — Lipschitz, contractive, smooth — admit fundamentally different convergence rates. Banach (1922) showed that contractions converge geometrically, while Newton's method (1669, refined by Kantorovich 1948) achieves quadratic convergence for smooth functions near simple roots. The information-theoretic lower bound shows that even with adaptive queries, binary search is optimal for the general continuous case.",
+    "historicalContext": "The study of query complexity for fixed point problems lies at the intersection of computational complexity theory, numerical analysis, and optimization. **Banach (1922)** proved his contraction mapping theorem in his doctoral thesis at the University of Lwów, showing that contractions on complete metric spaces converge geometrically with rate L^n — a result he used to prove existence and uniqueness for certain integral equations. **Newton (1669)** described his iterative method for root-finding in *De Analysi*; **Kantorovich (1948)** gave the first rigorous convergence analysis, proving quadratic convergence under explicit smoothness conditions now called the Kantorovich conditions.\n\nThe **query complexity** perspective emerged from theoretical computer science: rather than asking how many arithmetic operations are needed, we ask how many function evaluations (oracle queries) are required. **Chen and Deng (2009)** studied query complexity for Brouwer fixed-point computation, showing that the general 2D problem is PPAD-complete even for very short programs. For 1D problems, the picture is clean: the information-theoretic lower bound shows Ω(log(1/ε)) queries are always necessary, and binary search achieves this exactly.\n\nThe hierarchy Contraction ⊊ Lipschitz ⊊ Continuous corresponds to progressively richer oracle information: contractions provide **rate information** (L < 1 means each query narrows the search geometrically), while smooth contractions provide **curvature information** (enabling Newton's O(log log(1/ε)) quadratic convergence).",
     "problemStatement": "OQ-02/OQ-02: What is the optimal query complexity for finding ε-approximate fixed points of specific function classes?\n\n- Continuous: Θ(log(1/ε)) queries (binary search optimal)\n- L-Lipschitz: Θ(log(1/ε)) queries (same as continuous)\n- L-Contraction (L < 1): O(log(D/ε)/|log L|) queries (faster when L ≪ 1)\n- Smooth contraction (Newton): O(log log(1/ε)) queries (quadratic convergence)",
     "text": "Formalization of query complexity bounds for finding approximate fixed points across function class hierarchy: contractions (geometric convergence), Lipschitz maps (binary search), and smooth contractions (quadratic/Newton-type convergence). Proves tight bounds, information-theoretic lower bounds, and double-exponential convergence for quadratic iteration.",
     "proofStrategy": "The formalization builds the query complexity picture:\n\n1. **Function classes**: Define IsLipschitzOn01, IsContractionOn01 with class hierarchy\n2. **Contraction bounds**: Error bound |f^[n](x₀) - x*| ≤ L^n · D₀, plus existence of finite N\n3. **Binary search**: n queries achieve 1/2^n accuracy for any continuous function\n4. **Lower bound**: Information-theoretic argument — 2^n < 1/ε implies n queries insufficient\n5. **Class comparison**: Contraction beats bisection when L ≤ 1/2 (L^n ≤ (1/2)^n)\n6. **Quadratic convergence**: Newton-type C·|eₙ| ≤ (1/2)^(2^n) gives O(log log(1/ε))\n7. **Summary**: Unified landscape theorem combining all rates",
@@ -70,7 +70,9 @@
       "Binary search is universally optimal for continuous 1D functions: Θ(log(1/ε)) queries",
       "Contractions improve on bisection when L < 1/2, with the gap widening as L → 0",
       "Quadratic convergence (Newton-type) gives dramatic O(log log(1/ε)) improvement for smooth contractive maps",
-      "The information-theoretic lower bound Ω(log(1/ε)) applies to all function classes — even additional smoothness cannot break the barrier without contractivity"
+      "The information-theoretic lower bound Ω(log(1/ε)) applies to all function classes — even additional smoothness cannot break the barrier without contractivity",
+      "**Quadratic convergence is proved by a self-similar induction**: C|e_{n+1}| ≤ (C|e_n|)² ≤ ((1/2)^(2^n))² = (1/2)^(2^(n+1)). The exponent 2^n doubles — the Lean proof captures this via `pow_add` and `ring_nf` to verify 2^k + 2^k = 2^(k+1).",
+      "**The IVT-based binary search proof is non-constructive but still gives the right query count**: Lean's `exists_mem_Icc_isFixedPt_of_mapsTo` finds an exact fixed point (not just an approximate one), so the 1/2^n bound is trivially satisfied. A constructive proof would actually run binary search, but for complexity purposes the existence argument suffices."
     ],
     "prerequisites": [
       "Real analysis (continuity, contraction mappings)",
@@ -150,7 +152,8 @@
     "openQuestions": [
       "Can the adversary lower bound be fully formalized with explicit function constructions?",
       "What is the query complexity for Hölder continuous functions (between Lipschitz and continuous)?",
-      "Can superlinear convergence rates (order p > 1) be unified in a single framework?"
+      "Can superlinear convergence rates (order p > 1) be unified in a single framework?",
+      "Does the O(log log(1/ε)) bound for quadratic convergence have a matching lower bound — is there a function class that provably needs Ω(log log(1/ε)) queries?"
     ]
   },
   "crossReferences": [

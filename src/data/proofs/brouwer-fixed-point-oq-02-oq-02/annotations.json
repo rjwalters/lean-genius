@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-bfp2-lipschitz-defs",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 37, "endLine": 47 },
+    "type": "definition",
+    "title": "Function Class Hierarchy: Lipschitz and Contraction",
+    "content": "`IsLipschitzOn01 f L` encodes the standard Lipschitz condition on [0,1]: |f(x) - f(y)| ≤ L|x - y| for all x, y ∈ [0,1]. `IsContractionOn01 f L` strengthens this with L < 1, forming a proper sub-class. The theorem `contraction_is_lipschitz` immediately extracts the Lipschitz property from the conjunction, establishing the class inclusion: Contraction ⊊ Lipschitz ⊊ Continuous. This hierarchy is the backbone of the query complexity analysis — different levels of the hierarchy admit fundamentally different convergence rates.",
+    "mathContext": "$\\text{IsLipschitz}(f, L) \\Leftrightarrow \\forall x, y \\in [0,1],\\; |f(x) - f(y)| \\leq L|x-y|$. $\\text{IsContraction}(f, L) \\Leftrightarrow L \\geq 0 \\land L < 1 \\land \\text{IsLipschitz}(f, L)$. Inclusion: $\\{\\text{contractions}\\} \\subsetneq \\{\\text{Lipschitz}\\} \\subsetneq \\{\\text{continuous}\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Lipschitz continuity", "Banach fixed-point theorem", "contraction mapping", "function class hierarchy"],
+    "prerequisites": ["real-valued functions on [0,1]", "absolute value in ℝ", "Lean 4 structure conjunction"]
+  },
+  {
+    "id": "ann-bfp2-unique-fixed",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 54, "endLine": 66 },
+    "type": "theorem",
+    "title": "Contraction Has At Most One Fixed Point",
+    "content": "This is the uniqueness half of Banach's contraction theorem: an L-contraction (L < 1) cannot have two distinct fixed points. The proof is elegant — suppose x₁ ≠ x₂ are both fixed. Then |x₁ - x₂| = |f(x₁) - f(x₂)| ≤ L|x₁ - x₂|, which gives 1 ≤ L, contradicting L < 1. The Lean proof uses `by_contra` and `positivity` to establish |x₁ - x₂| > 0, then derives the contradiction via `linarith`. Note: this proof doesn't require f to be a self-map of [0,1] — it works globally.",
+    "mathContext": "If $f(x_1) = x_1$ and $f(x_2) = x_2$ and $x_1 \\neq x_2$: $|x_1 - x_2| = |f(x_1) - f(x_2)| \\leq L|x_1 - x_2|$, so $1 \\leq L$, contradicting $L < 1$. This is purely algebraic — no topology needed.",
+    "significance": "key",
+    "relatedConcepts": ["Banach fixed-point theorem", "contraction mapping uniqueness", "proof by contradiction in Lean"],
+    "prerequisites": ["IsLipschitzOn01", "by_contra tactic", "positivity", "linarith"]
+  },
+  {
+    "id": "ann-bfp2-error-bound",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 74, "endLine": 98 },
+    "type": "theorem",
+    "title": "Contraction Error Bound: |f^n(x₀) - x*| ≤ Lⁿ·D₀",
+    "content": "This is the quantitative heart of Banach's theorem. By induction: |f^(n+1)(x₀) - x*| = |f(f^n(x₀)) - f(x*)| ≤ L·|f^n(x₀) - x*| ≤ L·Lⁿ·D₀ = L^(n+1)·D₀. The `calc` block in Lean makes each step explicit: first use that x* is a fixed point (|f(y) - x*| = |f(y) - f(x*)|), then apply Lipschitz, then the induction hypothesis. `contraction_epsilon_approximation` wraps this into a direct ε-bound by transitivity.",
+    "mathContext": "By induction: $|f^n(x_0) - x^*| \\leq L^n \\cdot |x_0 - x^*| = L^n D_0$. Since $L < 1$, we have $L^n \\to 0$, so for any $\\varepsilon > 0$, choosing $n \\geq \\log_L(\\varepsilon/D_0) = \\log(\\varepsilon/D_0)/\\log L$ suffices. This gives $O(\\log(D_0/\\varepsilon)/|\\log L|)$ iterations.",
+    "significance": "key",
+    "relatedConcepts": ["contraction iteration", "geometric convergence", "induction in Lean", "fixed point distance bound"],
+    "prerequisites": ["Function.iterate", "mul_le_mul_of_nonneg_left", "Lean 4 calc tactic", "pow_succ"]
+  },
+  {
+    "id": "ann-bfp2-finite-iters",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 102, "endLine": 116 },
+    "type": "theorem",
+    "title": "Contraction Converges in Finite Iterations via Lⁿ → 0",
+    "content": "This theorem proves existence of a stopping criterion: for L < 1, there always exists N with L^N · D ≤ ε. The key move is using `tendsto_pow_atTop_nhds_zero_of_lt_one` (Mathlib's L^n → 0 theorem) converted via `Metric.tendsto_atTop` to get an explicit N with |L^N - 0| < ε/D. The `nlinarith` closes L^N · D ≤ ε from L^N < ε/D. The D = 0 case is handled separately (trivially N = 0 works). This is the constructive counterpart to the existence proof — it extracts a concrete iteration count from the abstract convergence.",
+    "mathContext": "$L^n \\to 0$ as $n \\to \\infty$ (for $0 \\leq L < 1$). Given $\\varepsilon > 0$ and $D > 0$, choose $N$ with $L^N < \\varepsilon/D$, then $L^N \\cdot D < \\varepsilon$. Query complexity: $O(\\log(D/\\varepsilon) / |\\log L|)$ iterations.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto_pow_atTop_nhds_zero_of_lt_one", "Metric.tendsto_atTop", "geometric sequence convergence", "query complexity bound"],
+    "prerequisites": ["Filter.Tendsto", "Metric.tendsto_atTop", "tendsto_pow_atTop_nhds_zero_of_lt_one", "nlinarith"]
+  },
+  {
+    "id": "ann-bfp2-binary-search",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 125, "endLine": 136 },
+    "type": "theorem",
+    "title": "Binary Search via IVT: ε-Fixed Point in n Queries",
+    "content": "A surprisingly short proof: for any continuous self-map f : [0,1] → [0,1], after n binary search steps there exists x with |f(x) - x| ≤ 1/2^n. The proof uses `exists_mem_Icc_isFixedPt_of_mapsTo` — Mathlib's formulation of the Intermediate Value Theorem as a fixed-point existence result. Since an actual fixed point f(x*) = x* exists, |f(x*) - x*| = 0 ≤ 1/2^n. The proof finds the exact fixed point, which is stronger than the 1/2^n bound suggests — the bound is achievable by binary search but the proof takes a shortcut through exact fixed point existence.",
+    "mathContext": "IVT fixed-point theorem: any continuous $f: [0,1] \\to [0,1]$ has a fixed point $f(x^*) = x^*$ (Brouwer 1D). Binary search achieves accuracy $1/2^n$ in $n$ steps, so $\\Theta(\\log(1/\\varepsilon))$ queries. This is optimal: the lower bound shows $\\Omega(\\log(1/\\varepsilon))$ queries are necessary.",
+    "significance": "key",
+    "relatedConcepts": ["Intermediate Value Theorem", "exists_mem_Icc_isFixedPt_of_mapsTo", "Brouwer fixed-point theorem 1D", "binary search optimality"],
+    "prerequisites": ["ContinuousOn", "exists_mem_Icc_isFixedPt_of_mapsTo", "Icc in ℝ", "positivity for 1/2^n > 0"]
+  },
+  {
+    "id": "ann-bfp2-lower-bound",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 148, "endLine": 162 },
+    "type": "theorem",
+    "title": "Information-Theoretic Lower Bound: Ω(log(1/ε)) Queries",
+    "content": "The lower bound `info_theoretic_bound` proves: if 2^n < 1/ε, then 1/2^n > ε, meaning n queries achieve only 1/2^n accuracy which exceeds ε. This is the information-theoretic argument: n binary queries distinguish at most 2^n scenarios; if the fixed point could be anywhere in 1/2^n-spaced intervals, 2^n < 1/ε means we haven't localized it to within ε. The `queries_needed` contrapositive states: achieving 1/2^n ≤ ε requires 2^n ≥ 1/ε, i.e., n ≥ log₂(1/ε). Together with `binary_search_query_count`, this establishes Θ(log(1/ε)) for continuous functions.",
+    "mathContext": "Lower bound: $n$ binary queries → $2^n$ possible outcomes → resolution $\\geq 1/2^n > \\varepsilon$ when $2^n < 1/\\varepsilon$. Upper bound: binary search achieves $1/2^n$ accuracy. Together: $\\Theta(\\log(1/\\varepsilon))$ is tight for continuous self-maps of $[0,1]$.",
+    "significance": "key",
+    "relatedConcepts": ["information theory lower bound", "query complexity", "binary outcomes", "linarith in Lean"],
+    "prerequisites": ["div_lt_iff", "gt_iff_lt", "linarith for arithmetic", "div_le_iff"]
+  },
+  {
+    "id": "ann-bfp2-contraction-faster",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 170, "endLine": 180 },
+    "type": "theorem",
+    "title": "Contractions Beat Bisection When L ≤ 1/2",
+    "content": "For L ≤ 1/2, the contraction rate L^n ≤ (1/2)^n — so contractions with small L converge strictly faster than binary search. The proof applies `pow_le_pow_left` (L ≤ 1/2 → L^n ≤ (1/2)^n) with `mul_le_mul_of_nonneg_right` to extend to L^n·D ≤ (1/2)^n·D. The boundary case L = 1/2 makes them equal; for L < 1/2, contractions require fewer iterations than binary search for the same accuracy. This captures the key practical insight: strong contractivity (L ≪ 1) can give dramatic speedups.",
+    "mathContext": "For $L \\leq 1/2$: $L^n D \\leq (1/2)^n D$. Iteration count ratio: $\\log(D/\\varepsilon)/|\\log L|$ vs $\\log(D/\\varepsilon)/|\\log(1/2)| = \\log(D/\\varepsilon)$. Speedup factor: $|\\log(1/2)|/|\\log L| = \\log 2 / |\\log L| < 1$ when $L < 1/2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["pow_le_pow_left", "convergence rate comparison", "Banach vs bisection", "multiplicative monotonicity"],
+    "prerequisites": ["pow_le_pow_left", "mul_le_mul_of_nonneg_right", "Lean 4 norm_num"]
+  },
+  {
+    "id": "ann-bfp2-quadratic-def",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 187, "endLine": 195 },
+    "type": "definition",
+    "title": "HasQuadraticConvergence: Formalizing Newton-Type Convergence",
+    "content": "`HasQuadraticConvergence x x_star C` encodes the condition |e_{n+1}| ≤ C|e_n|² where eₙ = x(n) - x*, the error at step n. This is the canonical definition of quadratic (second-order) convergence, as analyzed by Kantorovich (1948) for Newton's method. The constant C typically depends on the second derivative of the function near the fixed point. The condition C|e₀| ≤ 1/2 (used in the subsequent theorem) is the Kantorovich condition: the initial error must be small enough for the quadratic decay to dominate.",
+    "mathContext": "$\\text{HasQuadraticConvergence}(x, x^*, C) \\Leftrightarrow \\forall n,\\; |x_{n+1} - x^*| \\leq C |x_n - x^*|^2$. Newton's method for $g(x) = 0$ near a simple root: $x_{n+1} = x_n - g(x_n)/g'(x_n)$, giving $|e_{n+1}| \\leq \\frac{|g''(\\xi)|}{2|g'(x_n)|} |e_n|^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Newton's method", "quadratic convergence", "Kantorovich theorem", "order of convergence"],
+    "prerequisites": ["Function sequence in ℕ → ℝ", "absolute value", "Lean 4 Prop definition"]
+  },
+  {
+    "id": "ann-bfp2-quadratic-rate",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 196, "endLine": 212 },
+    "type": "theorem",
+    "title": "Quadratic Convergence: Double-Exponential Decay (1/2)^(2^n)",
+    "content": "This is the key quadratic convergence theorem: under HasQuadraticConvergence with C|e₀| ≤ 1/2, we get C|eₙ| ≤ (1/2)^(2^n). The inductive step is: C|e_{n+1}| ≤ C · C|eₙ|² = (C|eₙ|)² ≤ ((1/2)^(2^n))² = (1/2)^(2·2^n) = (1/2)^(2^(n+1)). The exponent doubles each step: 1, 2, 4, 8, 16... — the number of correct decimal digits doubles. To achieve accuracy ε, need (1/2)^(2^n) ≤ Cε, i.e., 2^n ≥ log₂(1/(Cε)), so n ≥ log₂(log₂(1/(Cε))) = O(log log(1/ε)) steps.",
+    "mathContext": "$C|e_n| \\leq (1/2)^{2^n}$. Proof: $C|e_{n+1}| \\leq (C|e_n|)^2 \\leq ((1/2)^{2^n})^2 = (1/2)^{2^{n+1}}$. The exponent sequence $2^n$ grows double-exponentially, so $\\log \\log$ iterations suffice: e.g., to get 10 correct digits, $2^n \\geq 10^{10}$ means $n \\geq \\lceil\\log_2(10^{10})\\rceil \\approx 34$ steps.",
+    "significance": "key",
+    "relatedConcepts": ["double-exponential decay", "Newton's method convergence", "induction on natural numbers", "pow_add in Lean"],
+    "prerequisites": ["HasQuadraticConvergence", "mul_le_mul induction", "pow_add → pow_succ arithmetic", "ring_nf for 2^(k+1)"]
+  },
+  {
+    "id": "ann-bfp2-landscape",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02",
+    "range": { "startLine": 244, "endLine": 255 },
+    "type": "theorem",
+    "title": "Query Complexity Landscape: The Full Picture",
+    "content": "The summary theorem packages three orthogonal facts: (1) binary search is always applicable (1/2^n > 0), (2) contractions always converge (L^n → 0), (3) queries have finite resolution (2^n ≥ 1). Together with `info_theoretic_bound`, `binary_search_query_count`, and `quadratic_convergence_rate`, this establishes the complete complexity hierarchy: Θ(log(1/ε)) for continuous/Lipschitz, O(log(D₀/ε)/|log L|) for contractions, O(log log(1/ε)) for smooth contractions (Newton). The Lean proof uses `refine ⟨..., ..., ...⟩` to split the conjunction, then `tendsto_pow_atTop_nhds_zero_of_lt_one` for the contraction part.",
+    "mathContext": "Query complexity summary: $\\bullet$ Continuous: $\\Theta(\\log(1/\\varepsilon))$ (binary search optimal) $\\bullet$ $L$-contraction: $O(\\log(D_0/\\varepsilon)/|\\log L|)$ (faster when $L \\ll 1$) $\\bullet$ Quadratic: $O(\\log\\log(1/\\varepsilon))$ (Newton-type, optimal for smooth contractive maps)",
+    "significance": "key",
+    "relatedConcepts": ["query complexity hierarchy", "information complexity", "PPAD complexity", "algorithm design for fixed points"],
+    "prerequisites": ["tendsto_pow_atTop_nhds_zero_of_lt_one", "Nat.one_le_pow", "exact_mod_cast", "refine with conjunction split"]
+  }
+]
