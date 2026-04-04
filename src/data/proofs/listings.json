@@ -2478,6 +2478,24 @@
     "annotationCount": 7
   },
   {
+    "id": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "title": "Minimum Admissible Diameter D(4) = 8",
+    "slug": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "description": "Proves D(4)=8: the minimum diameter of an admissible 4-tuple is exactly 8. Every admissible 4-tuple has the same parity (mod 2 constraint), and diameter ≤ 6 would force H={a,a+2,a+4,a+6}, which is not admissible (contains non-admissible triple {a,a+2,a+4}). Upper bound witnessed by {0,2,6,8}. Extends D(2)=2, D(3)=6 from BoundedPrimeGapsOQ03OQ01. Also fixes Mathlib API regressions in the parent file.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "prime-gaps",
+      "admissible-tuples",
+      "combinatorics",
+      "open-question",
+      "research"
+    ],
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
     "id": "bounded-prime-gaps-oq-04",
     "title": "Bombieri-Vinogradov Theorem: Formalizability Assessment",
     "slug": "bounded-prime-gaps-oq-04",
