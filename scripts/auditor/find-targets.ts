@@ -304,7 +304,12 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
       status: proofMeta.status || 'unknown',
       badge: proofMeta.badge || 'unknown',
       claimedSorries: proofMeta.sorries ?? -1,
-      claimedAxioms: proofMeta.axiomCount ?? -1,
+      // Use leanFile.axiomCount (raw declarations) for comparison when present.
+      // meta.axiomCount counts ALL assumptions including structure-encoded ones.
+      // leanFile.axiomCount counts only ^axiom declarations, matching what we detect.
+      claimedAxioms: (typeof meta.leanFile === 'object' && meta.leanFile !== null && meta.leanFile.axiomCount !== undefined)
+        ? meta.leanFile.axiomCount
+        : (proofMeta.axiomCount ?? -1),
     },
     actual: {
       sorryCount,
