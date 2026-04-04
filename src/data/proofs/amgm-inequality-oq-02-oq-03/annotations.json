@@ -2,7 +2,7 @@
   {
     "id": "ann-maclaurin-norm-esp",
     "proofId": "amgm-inequality-oq-02-oq-03",
-    "range": { "startLine": 35, "endLine": 47 },
+    "range": { "startLine": 35, "endLine": 46 },
     "type": "definition",
     "title": "Normalized Elementary Symmetric Polynomials",
     "content": "Defines `normElemSymm k x = elemSymm k x / C(n,k)` — the $k$-th elementary symmetric polynomial divided by the binomial coefficient. This normalization is crucial: it converts $e_k/\\binom{n}{k}$ into the $k$-th Maclaurin mean $M_k = (e_k/\\binom{n}{k})^{1/k}$. The two supporting lemmas prove: (1) `normElemSymm_zero = 1` (since $e_0 = 1$ and $\\binom{n}{0} = 1$), and (2) `normElemSymm_nonneg` (non-negative for non-negative inputs, since $e_k \\geq 0$ when all $x_i \\geq 0$ and $\\binom{n}{k} \\geq 0$). The `noncomputable` annotation is required since real division is not computably decidable.",
@@ -14,58 +14,61 @@
   {
     "id": "ann-maclaurin-zero-prop",
     "proofId": "amgm-inequality-oq-02-oq-03",
-    "range": { "startLine": 48, "endLine": 65 },
+    "range": { "startLine": 48, "endLine": 79 },
     "type": "technique",
     "title": "Zero Propagation: If a_m = 0 Then a_{m+1} = 0",
-    "content": "A critical boundary lemma: for non-negative inputs, if the $m$-th normalized ESP vanishes ($a_m = 0$), then so does $a_{m+1} = 0$. This is needed in the power inequality proof to handle the base cases where some $a_k = 0$. The proof: extract `elemSymm m x = 0` from `normElemSymm m x = 0` (the denominator $\\binom{n}{m} \\neq 0$ since $m \\leq n$). Then show `elemSymm (m+1) x = 0` by showing every $(m+1)$-subset product vanishes — each $(m+1)$-subset contains an $m$-subset whose product is 0 (by the hypothesis that all $m$-subset products vanish). This is marked `private` since it is only used internally in the power inequality proof.",
-    "mathContext": "If $e_m(x_1,\\ldots,x_n) = 0$ for non-negative $x_i$, then $e_{m+1}(x_1,\\ldots,x_n) = 0$. Proof: $e_m = 0$ means every $m$-element product is 0; each $(m+1)$-element product is a sum of $m$-element products (by expanding), hence also 0.",
+    "content": "A critical boundary lemma: for non-negative inputs, if the $m$-th normalized ESP vanishes ($a_m = 0$), then so does $a_{m+1} = 0$. This is needed in the power inequality proof to handle the case where $a_{k+1} = 0$ in the inductive step. The proof: extract `elemSymm m x = 0` from `normElemSymm m x = 0` (the denominator $\\binom{n}{m} \\neq 0$ since $m \\leq n$). Then show `elemSymm (m+1) x = 0` by showing every $(m+1)$-subset product vanishes — each $(m+1)$-subset contains an $m$-subset whose product is 0, so each $(m+1)$-subset product is also 0. The key tactic is `Finset.single_le_sum` to extract individual term bounds from a non-negative sum equaling 0. This lemma is `private` since it is only used internally in the power inequality.",
+    "mathContext": "If $e_m(x_1,\\ldots,x_n) = 0$ for non-negative $x_i$, then $e_{m+1}(x_1,\\ldots,x_n) = 0$. Proof: $e_m = 0$ means every $m$-element product $\\prod_{i \\in s} x_i = 0$; each $(m+1)$-element product contains an $m$-subset, inheriting the zero. `Finset.single_le_sum` extracts this: if a non-negative sum is 0, each term is 0.",
     "significance": "supporting",
-    "relatedConcepts": ["elementary symmetric polynomial", "zero divisors", "Finset.powersetCard", "div_eq_zero_iff"],
+    "relatedConcepts": ["elementary symmetric polynomial", "zero divisors", "Finset.powersetCard", "Finset.single_le_sum"],
     "prerequisites": ["elemSymm definition", "Finset.powersetCard", "Nat.choose_pos"]
+  },
+  {
+    "id": "ann-newton-lc",
+    "proofId": "amgm-inequality-oq-02-oq-03",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "definition",
+    "title": "newton_lc: Log-Concavity Bridge to Axiom",
+    "content": "`newton_lc` is a one-line wrapper that restates `newton_log_concavity` from the parent file in terms of `normElemSymm`: $a_k^2 \\geq a_{k-1} \\cdot a_{k+1}$. This indirection serves two purposes: (1) it translates the parent axiom's statement from raw `elemSymm`/`choose` notation into the local `normElemSymm` notation; (2) it clearly marks the single point of dependence on the parent axiom within this file — every use of log-concavity in the proof flows through this bridge. The theorem is called at line 110 inside the inductive step of `power_inequality`.",
+    "mathContext": "$a_k^2 \\geq a_{k-1} \\cdot a_{k+1}$ for $1 \\leq k$ and $k+1 \\leq n$ and non-negative inputs. This is Newton's inequality in normalized form. Equivalent to: $\\left(\\frac{e_k}{\\binom{n}{k}}\\right)^2 \\geq \\frac{e_{k-1}}{\\binom{n}{k-1}} \\cdot \\frac{e_{k+1}}{\\binom{n}{k+1}}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["newton_log_concavity", "log-concavity", "axiom bridge", "normElemSymm"],
+    "prerequisites": ["newton_log_concavity (axiom)", "normElemSymm definition"]
   },
   {
     "id": "ann-maclaurin-power-ineq",
     "proofId": "amgm-inequality-oq-02-oq-03",
-    "range": {
-      "startLine": 60,
-      "endLine": 120
-    },
+    "range": { "startLine": 92, "endLine": 175 },
     "type": "technique",
-    "title": "Power Inequality by Induction",
-    "content": "The key lemma $a_k^{k+1} \\geq a_{k+1}^k$ is proved by induction on $k$. The inductive step raises Newton's log-concavity $a_k^2 \\geq a_{k-1} a_{k+1}$ to the $k$-th power, combines with the inductive hypothesis, and cancels common factors. The zero case requires separate treatment via elementary symmetric polynomial properties.",
-    "mathContext": "$a_k^{k+1} \\geq a_{k+1}^k$ where $a_k = e_k / \\binom{n}{k}$",
+    "title": "Power Inequality by Induction: aₖ^{k+1} ≥ aₖ₊₁^k",
+    "content": "The key lemma $a_k^{k+1} \\geq a_{k+1}^k$ is proved by induction on $k$. **Base** ($k=0$): trivial since $a_0 = 1$ and $a_1^0 = 1$. **Inductive step** ($k \\to k+1$): The proof splits on whether $a_{k+1} = 0$. Zero case: log-concavity gives $0 = a_{k+1}^2 \\geq a_k \\cdot a_{k+2}$, so $a_k \\cdot a_{k+2} = 0$. If $a_{k+2} = 0$ directly, done. If $a_k = 0$ (but $a_{k+1} = 0$ too), apply `normElemSymm_zero_succ` to deduce $a_{k+2} = 0$. Positive case: raise log-concavity to the $(k+1)$-th power to get $a_{k+1}^{2(k+1)} \\geq a_k^{k+1} \\cdot a_{k+2}^{k+1}$; apply IH $a_k^{k+1} \\geq a_{k+1}^k$ to get $a_{k+1}^{2(k+1)} \\geq a_{k+1}^k \\cdot a_{k+2}^{k+1}$; rewrite $2(k+1) = k + (k+2)$ and factor to cancel $a_{k+1}^k$ (valid since $a_{k+1} > 0$) via `le_of_mul_le_mul_left`.",
+    "mathContext": "$a_k^{k+1} \\geq a_{k+1}^k$ where $a_k = e_k/\\binom{n}{k}$. Inductive step: $a_{k+1}^{2(k+1)} = a_{k+1}^k \\cdot a_{k+1}^{k+2} \\geq a_{k+1}^k \\cdot a_{k+2}^{k+1}$ gives $a_{k+1}^{k+2} \\geq a_{k+2}^{k+1}$ after dividing by $a_{k+1}^k > 0$. Key Lean: `le_of_mul_le_mul_left : a * b ≥ a * c → 0 < a → b ≥ c`.",
     "significance": "key",
-    "relatedConcepts": [
-      "log-concavity",
-      "elementary symmetric polynomial",
-      "power inequality"
-    ],
-    "prerequisites": [
-      "Newton's log-concavity"
-    ]
+    "relatedConcepts": ["log-concavity", "elementary symmetric polynomial", "power inequality", "le_of_mul_le_mul_left", "pow_mul"],
+    "prerequisites": ["newton_lc", "normElemSymm_zero_succ", "normElemSymm_nonneg"]
   },
   {
     "id": "ann-maclaurin-rpow-step",
     "proofId": "amgm-inequality-oq-02-oq-03",
-    "range": { "startLine": 122, "endLine": 160 },
-    "type": "technique",
-    "title": "Maclaurin Step via Root Extraction",
-    "content": "From $a_k^{k+1} \\geq a_{k+1}^k$, taking the $1/(k(k+1))$-th power gives $a_k^{1/k} \\geq a_{k+1}^{1/(k+1)}$, i.e., $M_k \\geq M_{k+1}$. The proof uses `rpow_le_rpow` for monotonicity of the real power function on non-negative reals. The exponent arithmetic is handled by `field_simp` for the two equations $1/k = (k+1)/(k(k+1))$ and $1/(k+1) = k/(k(k+1))$, then `rpow_natCast_mul` rewrites $(a^n)^r = a^{nr}$.",
-    "mathContext": "$a_k^{1/k} = (a_k^{k+1})^{1/(k(k+1))} \\geq (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{1/(k+1)}$. The key Lean lemma: `rpow_le_rpow` — for $a \\leq b$ and $0 \\leq r$: $a^r \\leq b^r$.",
+    "range": { "startLine": 186, "endLine": 213 },
+    "type": "insight",
+    "title": "Maclaurin Step via Root Extraction: rpow Monotonicity",
+    "content": "From $a_k^{k+1} \\geq a_{k+1}^k$, taking the $1/(k(k+1))$-th power gives $a_k^{1/k} \\geq a_{k+1}^{1/(k+1)}$, i.e., $M_k \\geq M_{k+1}$. The proof uses `rpow_natCast_mul` to rewrite $(a^n)^r = a^{nr}$ in `Real.rpow`, converting the goal from powers of Maclaurin means to powers of `normElemSymm`. The exponent identities $1/k = (k+1)/(k(k+1))$ and $1/(k+1) = k/(k(k+1))$ are discharged by `field_simp`. Finally `rpow_le_rpow` applies monotonicity: $0 \\leq b \\leq a$ and $0 \\leq r$ implies $b^r \\leq a^r$. The positivity conditions $k > 0$ and $k(k+1) > 0$ come from the `0 < k` hypothesis.",
+    "mathContext": "$a_k^{1/k} = (a_k^{k+1})^{1/(k(k+1))} \\geq (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{1/(k+1)}$. Key Lean lemmas: `rpow_natCast_mul hak` — $(a^n)^r = a^{n \\cdot r}$ for $0 \\leq a$; `rpow_le_rpow` — $b \\leq a \\Rightarrow b^r \\leq a^r$ for $0 \\leq b$ and $r \\geq 0$.",
     "significance": "key",
     "relatedConcepts": ["Maclaurin mean", "rpow_le_rpow", "rpow_natCast_mul", "Real.rpow", "field_simp"],
-    "prerequisites": ["power inequality", "Real.rpow", "rpow monotonicity"]
+    "prerequisites": ["power_inequality", "Real.rpow", "rpow monotonicity", "normElemSymm_nonneg"]
   },
   {
     "id": "ann-maclaurin-step-proved",
     "proofId": "amgm-inequality-oq-02-oq-03",
-    "range": { "startLine": 215, "endLine": 224 },
+    "range": { "startLine": 221, "endLine": 224 },
     "type": "insight",
     "title": "Axiom Eliminated: maclaurin_step Now a Theorem",
-    "content": "The final theorem `maclaurin_step_proved` is a one-line wrapper around `maclaurin_step_from_newton`, making explicit that the axiom `maclaurin_step` from `AmgmInequalityOQ02.lean` is now a proved theorem. The statement is identical to the original axiom: for $0 < k$, $k+1 \\leq n$, and non-negative inputs $x$, $M_k(x) \\geq M_{k+1}(x)$. The elimination of this axiom completes the proof of the Maclaurin step from Newton's log-concavity: the remaining dependency is the `newton_log_concavity` axiom in the parent file, which is the deeper result requiring polarization arguments.",
+    "content": "The final theorem `maclaurin_step_proved` is a one-line wrapper around `maclaurin_step_from_newton`, making explicit that the axiom `maclaurin_step` from `AmgmInequalityOQ02.lean` is now a proved theorem. The statement is identical to the original axiom: for $0 < k$, $k+1 \\leq n$, and non-negative inputs $x$, $M_k(x) \\geq M_{k+1}(x)$. The elimination of this axiom means the full Maclaurin chain depends only on `newton_log_concavity` — the deeper result requiring polarization and induction on $n$ to prove from first principles. This file achieves a measurable reduction in the proof's axiom footprint.",
     "mathContext": "$M_k \\geq M_{k+1}$ for $k \\geq 1$ and non-negative inputs — the individual step in the Maclaurin chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$. The full chain $M_1 \\geq M_n$ specializes to AM-GM: $M_1 = \\frac{1}{n}\\sum x_i$ (arithmetic mean) and $M_n = (\\prod x_i)^{1/n}$ (geometric mean).",
     "significance": "key",
     "relatedConcepts": ["axiom elimination", "maclaurin_step", "Maclaurin chain", "AM-GM connection", "newton_log_concavity"],
-    "prerequisites": ["maclaurin_step_from_newton", "maclaurinMean", "IsPGroup"]
+    "prerequisites": ["maclaurin_step_from_newton", "maclaurinMean"]
   }
 ]
