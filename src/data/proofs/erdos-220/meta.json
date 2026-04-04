@@ -17,7 +17,7 @@
       "gaps",
       "solved"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 2,
     "erdosNumber": 220,
     "erdosUrl": "https://erdosproblems.com/220",
@@ -60,7 +60,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 241,
-    "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "4 axioms (montgomery_vaughan_squared — squared gaps sum O(n²/φ(n)); montgomery_vaughan_general — γ-th power generalization; maximum_gap_bound — max gap ≤ C·n/φ(n)·(log n)²; gap_concentration — gap distribution measure estimate) and 2 sorries (sum_gaps_bound derivation; reduced_residues_count). 0 True-stub theorems."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #220**\n\nThis problem concerns the gaps between consecutive reduced residues modulo n. The reduced residues are integers 1 ≤ m < n with gcd(m,n) = 1, and there are φ(n) of them.\n\n**Background:**\n- Average gap is n/φ(n)\n- Large gaps can occur (related to Jacobsthal's function)\n- Erdős asked if squared gaps sum to O(n²/φ(n))\n\n**History:**\n- Erdős posed the problem; $500 prize\n- The general γ ≥ 1 version was posed in [Er73]\n- Montgomery and Vaughan proved it in 1986 (Ann. of Math.)\n- Discussed in Guy's \"Unsolved Problems in Number Theory\" (B40)\n\n**Context:** The bound n²/φ(n) is what you'd get if all gaps were equal to the average. The theorem says even with gap variance, the squared sum doesn't exceed this by more than a constant factor.",

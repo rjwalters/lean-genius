@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added level-6 witness 769 and proved factorialCheckCount_le_log (0 sorries, 1 axiom)",
+    "builtItems": [
+      "factorialCheckCount_le_log in Erdos1059OQ01.lean: proved factorialCheckCount n <= Nat.log 2 n + 2",
+      "two_pow_pred_le_factorial (private): 2^(k-1) <= k! for k >= 1, proved by induction",
+      "witness_769 + prime_769: first level-6 witness (p = 769 in (720, 5040))",
+      "six_prime_witnesses: packages all 6 verified witnesses (101, 211, 461, 557, 673, 769)"
+    ],
+    "insights": [
+      "769 is the first level-6 witness (p in (720, 5040)); requires 7 factorial checks vs 6 for level-5",
+      "Proved factorialCheckCount(n) <= log2(n) + 2 — elementary bound via 2^(k-1) <= k! induction",
+      "Bound is tight at n=3 (count=3, log=1) and n=7 (count=4, log=2)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove density_one_conjecture from selberg_density_axiom (OQ-02) once PNT/Brun-Titchmarsh available in Mathlib",
+      "Find more witnesses beyond 673 in level-6 interval (720, 5040) - requires checking 7 conditions",
+      "Prove factorial_check_count_bound: #{k : k! < n} ≤ log2(n) + 2 formally"
+    ]
   },
   "tags": [
     "seeker-selected"
@@ -43,6 +56,7 @@
     "erdos-10",
     "erdos-105",
     "erdos-1059",
+    "erdos-1059-oq-01",
     "erdos-1059-oq-02",
     "erdos-1059-oq-03",
     "erdos-1059-oq-05"
@@ -57,6 +71,17 @@
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos1059OQ01.lean",
+      "filename": "Erdos1059OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ01.lean"
+    },
     {
       "path": "Proofs/Erdos1059OQ02.lean",
       "filename": "Erdos1059OQ02.lean",

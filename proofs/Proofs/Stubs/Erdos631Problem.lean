@@ -225,15 +225,14 @@ axiom thomassen_induction :
 
 /- ## Historical Context -/
 
-/-- Timeline:
-    1979: Erdős-Rubin-Taylor posed the problem
-    1993: Voigt constructed non-4-choosable planar graph
-    1994: Thomassen proved 5-choosability
-    1996: Gutner simplified Voigt's construction
-    2000s: Continued search for smaller examples -/
-theorem historical_timeline :
-  True -- Documented above
-  := trivial
+/-
+  Timeline:
+  1979: Erdős-Rubin-Taylor posed the problem
+  1993: Voigt constructed non-4-choosable planar graph
+  1994: Thomassen proved 5-choosability
+  1996: Gutner simplified Voigt's construction
+  2000s: Continued search for smaller examples
+-/
 
 /- ## Main Problem Status -/
 

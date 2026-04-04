@@ -143,40 +143,27 @@ theorem sum_gaps_bound (n : ℕ) (hn : n ≥ 2) :
     (gapList n).sum ≤ n := by
   sorry
 
-/-- If all gaps were equal to the average, the squared sum would be exactly n²/φ(n). -/
-theorem equal_gaps_would_give_bound (n : ℕ) (hn : n ≥ 1) :
-    -- If all gaps = n/φ(n), then ∑(gap)² = φ(n) · (n/φ(n))² = n²/φ(n)
-    True := trivial
+/-
+**Observation**: If all gaps were equal to the average n/φ(n), the squared sum would be
+exactly n²/φ(n): φ(n) · (n/φ(n))² = n²/φ(n). This motivates the conjecture's bound.
 
-/-- Large gaps must be rare by the pigeonhole principle. -/
-theorem large_gaps_are_rare (n : ℕ) (hn : n ≥ 1) :
-    -- Gaps of size g > n/φ(n) can occur at most φ(n)/g times
-    -- This limits how much large gaps contribute to the sum
-    True := trivial
+**Observation**: Large gaps must be rare by the pigeonhole principle.
+Gaps of size g > n/φ(n) can occur at most φ(n)/g times, limiting large-gap contributions.
+-/
 
 /-!
 ## Part VII: Special Cases
 -/
 
-/-- For n prime, the reduced residues are 1, 2, ..., n-1 with all gaps = 1. -/
-theorem prime_case (p : ℕ) (hp : Nat.Prime p) :
-    -- reducedResidues p = {1, 2, ..., p-1}
-    -- All gaps are 1, so ∑(gap)² = p - 2
-    -- And n²/φ(n) = p²/(p-1) ≈ p, so the bound holds easily
-    True := trivial
-
-/-- For n = 2^k, the only odd residue class matters. -/
-theorem power_of_two_case (k : ℕ) (hk : k ≥ 1) :
-    -- reducedResidues (2^k) = {1, 3, 5, ..., 2^k - 1}
-    -- All gaps are 2, so ∑(gap)² = 2^{k-1} · 4 = 2^{k+1}
-    -- And n²/φ(n) = 2^{2k}/2^{k-1} = 2^{k+1}, so bound is tight
-    True := trivial
-
-/-- For primorials (n = p₁ · p₂ · ... · p_k), gaps can be large. -/
-theorem primorial_case :
-    -- For n = ∏_{p ≤ x} p, the gaps can be as large as the prime gap after x
-    -- Montgomery-Vaughan's bound shows these large gaps are rare enough
-    True := trivial
+/-
+**Special cases**:
+- n prime: reducedResidues p = {1, 2, ..., p-1}, all gaps = 1, so ∑(gap)² = p - 2.
+  And n²/φ(n) = p²/(p-1) ≈ p, so the bound holds easily.
+- n = 2^k: reducedResidues = {1, 3, 5, ..., 2^k - 1}, all gaps = 2, so ∑(gap)² = 2^{k+1}.
+  And n²/φ(n) = 2^{2k}/2^{k-1} = 2^{k+1}, so bound is tight.
+- n primorial (n = ∏_{p ≤ x} p): gaps can be as large as the prime gap after x,
+  but Montgomery-Vaughan's bound shows these large gaps are rare enough.
+-/
 
 /-!
 ## Part VIII: Relation to Prime Gaps
@@ -190,11 +177,10 @@ noncomputable def jacobsthal (n : ℕ) : ℕ :=
 axiom maximum_gap_bound (n : ℕ) (hn : n ≥ 2) :
     ∃ C : ℝ, C > 0 ∧ (jacobsthal n : ℝ) ≤ C * averageGap n * (Real.log n)^2
 
-/-- The sum of squared gaps is dominated by the number of "large" gaps. -/
-theorem squared_sum_dominated_by_distribution :
-    -- Key insight: ∑ g² depends on how many gaps of each size
-    -- Few large gaps + many small gaps = manageable sum
-    True := trivial
+/-
+**Key insight**: ∑ g² depends on how many gaps of each size exist.
+Few large gaps + many small gaps = manageable sum, bounded by n²/φ(n).
+-/
 
 /-!
 ## Part IX: The Distribution of Gaps
@@ -235,7 +221,6 @@ theorem erdos_220_summary :
     ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (sumSquaredGaps n : ℝ) ≤ C * boundedSquaredGaps n :=
   montgomery_vaughan_squared
 
-/-- The problem was resolved affirmatively. -/
-theorem erdos_220_solved : True := trivial
+-- The problem was resolved affirmatively (Montgomery-Vaughan 1986).
 
 end Erdos220

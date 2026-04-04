@@ -1,0 +1,340 @@
+/-
+Erdős Problem #1059, Open Question 01:
+Natural Density of Factorial-Avoiding Primes
+
+**The Question**: What is the natural density of primes p satisfying
+AllFactorialSubtractionsComposite(p) among all primes?
+
+The probabilistic heuristic predicts density 1: for a prime p ∈ (l!, (l+1)!],
+there are exactly l+1 factorial conditions to check (k = 0, ..., l), and each
+p - k! is independently prime with probability ~1/ln(p). The expected number of
+"failures" is ~(l+1)/ln(p), which → 0 as p → ∞ (since l = O(log p / log log p)).
+So almost all large primes satisfy the property.
+
+**Proved in this file** (0 sorries):
+1. `decAllFact`: Decidable instance for AllFactorialSubtractionsComposite
+2. Four new witnesses: 461, 557, 673 (level 5) and 769 (level 6), extending 101, 211
+3. `six_prime_witnesses`: 6 verified prime witnesses
+4. `checkCount_*`: factorial check counts (5 for p=101; 6 for p=211,461,557,673; 7 for p=769)
+5. `qualifyingCount_le_primeCount`: C(x) ≤ π(x) always
+6. `qualifyingPrimeCount_mono`: C(x) is monotone
+7. `factorialCheckCount_mono`: check count is monotone
+8. `factorialCheckCount_le_log`: factorialCheckCount n ≤ ⌊log₂ n⌋ + 2 (formalizes density heuristic)
+
+**Axiom** (1): `density_one_conjecture` — density equals 1
+
+References:
+- Erdős, P. https://erdosproblems.com/1059
+- Main proof: Erdos1059Problem.lean (witnesses 101, 211)
+- OQ-02: Selberg sieve framework for this problem
+- OQ-05: Alternative decidability proof
+- OEIS A064152: Primes p such that p - k! is composite for all k with 1 ≤ k! < p
+-/
+
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.Data.Nat.Log
+import Mathlib.Data.Finset.Basic
+import Mathlib.Tactic
+
+namespace Erdos1059OQ01
+
+/-
+## Core Definition and Decidability
+-/
+
+/-- For each k with k! < n, n - k! is not prime and is ≥ 2 (composite). -/
+def AllFactorialSubtractionsComposite (n : ℕ) : Prop :=
+  ∀ k : ℕ, Nat.factorial k < n → ¬(n - Nat.factorial k).Prime ∧ n - Nat.factorial k ≥ 2
+
+/-- k! < n implies k < n, since k ≤ k! for all k ∈ ℕ (Nat.self_le_factorial). -/
+theorem factorial_lt_implies_lt {k n : ℕ} (h : Nat.factorial k < n) : k < n :=
+  lt_of_le_of_lt (Nat.self_le_factorial k) h
+
+/-- AllFactorialSubtractionsComposite is decidable via a bounded quantifier over range n. -/
+instance decAllFact (n : ℕ) : Decidable (AllFactorialSubtractionsComposite n) :=
+  decidable_of_iff
+    (∀ k ∈ Finset.range n, Nat.factorial k < n →
+        ¬(n - Nat.factorial k).Prime ∧ n - Nat.factorial k ≥ 2)
+    ⟨fun h k hk => h k (Finset.mem_range.mpr (factorial_lt_implies_lt hk)) hk,
+     fun h k _ hk => h k hk⟩
+
+/-
+## Witnesses: Level 5 (p ∈ (120, 720))
+
+The main file verifies p = 101 (level 4) and p = 211 (level 5). For p in (5!, 6!] = (120, 720],
+we need to check k = 0, 1, 2, 3, 4, 5 (i.e., p - 1, p - 1, p - 2, p - 6, p - 24, p - 120).
+Note: p - 1 is always even > 2 for odd prime p > 3, so the binding conditions
+are p - 2, p - 6, p - 24, p - 120.
+
+p = 461: 460, 459 = 3·153, 455 = 5·7·13, 437 = 19·23, 341 = 11·31. All composite.
+p = 557: 556, 555 = 3·5·37, 551 = 19·29, 533 = 13·41, 437 = 19·23. All composite.
+p = 673: 672, 671 = 11·61, 667 = 23·29, 649 = 11·59, 553 = 7·79. All composite.
+-/
+
+/-- p = 461 is prime and satisfies AllFactorialSubtractionsComposite. -/
+theorem prime_461 : Nat.Prime 461 := by native_decide
+theorem witness_461 : AllFactorialSubtractionsComposite 461 := by native_decide
+
+/-- p = 557 is prime and satisfies AllFactorialSubtractionsComposite. -/
+theorem prime_557 : Nat.Prime 557 := by native_decide
+theorem witness_557 : AllFactorialSubtractionsComposite 557 := by native_decide
+
+/-- p = 673 is prime and satisfies AllFactorialSubtractionsComposite. -/
+theorem prime_673 : Nat.Prime 673 := by native_decide
+theorem witness_673 : AllFactorialSubtractionsComposite 673 := by native_decide
+
+/-
+## Witnesses: Level 6 (p ∈ (720, 5040))
+
+For p in (6!, 7!] = (720, 5040], we need to check k = 0, 1, 2, 3, 4, 5, 6
+(i.e., k! = 1, 1, 2, 6, 24, 120, 720). The binding conditions are
+p - 2, p - 6, p - 24, p - 120, p - 720 (since p - 1 is always even).
+
+p = 769: 767 = 13·59, 763 = 7·109, 745 = 5·149, 649 = 11·59, 49 = 7². All composite.
+-/
+
+/-- p = 769 is prime and satisfies AllFactorialSubtractionsComposite (first level-6 witness). -/
+theorem prime_769 : Nat.Prime 769 := by native_decide
+theorem witness_769 : AllFactorialSubtractionsComposite 769 := by native_decide
+
+/-- Six prime witnesses for Erdős Problem #1059: 101, 211, 461, 557, 673, 769. -/
+theorem six_prime_witnesses :
+    Nat.Prime 101 ∧ AllFactorialSubtractionsComposite 101 ∧
+    Nat.Prime 211 ∧ AllFactorialSubtractionsComposite 211 ∧
+    Nat.Prime 461 ∧ AllFactorialSubtractionsComposite 461 ∧
+    Nat.Prime 557 ∧ AllFactorialSubtractionsComposite 557 ∧
+    Nat.Prime 673 ∧ AllFactorialSubtractionsComposite 673 ∧
+    Nat.Prime 769 ∧ AllFactorialSubtractionsComposite 769 :=
+  ⟨by decide, by native_decide,
+   by native_decide, by native_decide,
+   prime_461, witness_461,
+   prime_557, witness_557,
+   prime_673, witness_673,
+   prime_769, witness_769⟩
+
+/-
+## Factorial Check Structure
+
+For p ∈ (l!, (l+1)!], exactly l+1 values of k satisfy k! < p (namely k = 0, ..., l).
+So AllFactorialSubtractionsComposite(p) requires l+1 compositeness checks.
+The key density insight: l+1 = O(log p / log log p), much smaller than ln(p).
+-/
+
+/-- The set of k-values (factorial indices) that must be checked for n. -/
+def factorialCheckSet (n : ℕ) : Finset ℕ :=
+  (Finset.range n).filter (fun k => Nat.factorial k < n)
+
+/-- Number of factorial checks needed for AllFactorialSubtractionsComposite(n). -/
+def factorialCheckCount (n : ℕ) : ℕ := (factorialCheckSet n).card
+
+-- Concrete check counts at our six witness values
+theorem checkCount_101 : factorialCheckCount 101 = 5 := by native_decide
+theorem checkCount_211 : factorialCheckCount 211 = 6 := by native_decide
+theorem checkCount_461 : factorialCheckCount 461 = 6 := by native_decide
+theorem checkCount_557 : factorialCheckCount 557 = 6 := by native_decide
+theorem checkCount_673 : factorialCheckCount 673 = 6 := by native_decide
+theorem checkCount_769 : factorialCheckCount 769 = 7 := by native_decide
+
+/-- The factorial check count is monotone: larger n may require more checks. -/
+theorem factorialCheckCount_mono {m n : ℕ} (h : m ≤ n) :
+    factorialCheckCount m ≤ factorialCheckCount n := by
+  apply Finset.card_le_card
+  intro k hk
+  simp only [factorialCheckSet, Finset.mem_filter, Finset.mem_range] at *
+  exact ⟨by omega, by omega⟩
+
+/-
+## Factorial Check Count Bound
+
+The number of factorial-index checks grows at most logarithmically in n.
+This is the formal version of the density heuristic's key asymptotic claim.
+
+The proof uses the elementary inequality 2^(k-1) ≤ k! for k ≥ 1:
+if k! < n then 2^(k-1) < n, bounding k by ⌊log₂ n⌋ + 1.
+-/
+
+/-- For k ≥ 1, 2^(k-1) ≤ k!. Proved by induction: base 1! = 1 = 2^0,
+    inductive step uses (k+1)! = (k+1) · k! ≥ 2 · 2^(k-1) = 2^k. -/
+private lemma two_pow_pred_le_factorial {k : ℕ} (hk : 1 ≤ k) : 2^(k-1) ≤ k.factorial := by
+  cases k with
+  | zero => omega
+  | succ n =>
+    simp only [Nat.succ_sub_one]
+    clear hk
+    induction n with
+    | zero => norm_num [Nat.factorial]
+    | succ m ih =>
+      have hpos : 0 < (m + 1).factorial := Nat.factorial_pos _
+      calc 2^(m+1) = 2 * 2^m := by ring
+        _ ≤ 2 * (m+1).factorial := by linarith
+        _ ≤ (m+2) * (m+1).factorial := by nlinarith
+        _ = (m+1+1).factorial := (Nat.factorial_succ (m+1)).symm
+
+/-- If 2^m < n (and n ≥ 2), then m ≤ Nat.log 2 n.
+    Proof: if m > log₂ n then 2^m ≥ 2^(log₂ n + 1) > n by Nat.lt_pow_succ_log_self. -/
+private lemma le_log_of_pow_lt {m n : ℕ} (hn : 2 ≤ n) (h : 2^m < n) : m ≤ Nat.log 2 n := by
+  by_contra hlt
+  push_neg at hlt
+  have hlt' : Nat.log 2 n + 1 ≤ m := hlt
+  have h1 : n < 2^(Nat.log 2 n + 1) := Nat.lt_pow_succ_log_self (by omega) n
+  have h2 : 2^(Nat.log 2 n + 1) ≤ 2^m := Nat.pow_le_pow_right (by omega) hlt'
+  linarith
+
+/-- **Factorial Check Count Bound**: For n ≥ 2, factorialCheckCount n ≤ ⌊log₂ n⌋ + 2.
+
+    This formalizes the density heuristic's key asymptotic claim: for a prime
+    p ∈ (l!, (l+1)!], only l+1 ≤ ⌊log₂ p⌋ + 2 conditions must be checked,
+    while each condition fails independently with probability ~1/ln(p) → 0.
+
+    Proof: Show factorialCheckSet n ⊆ Finset.range (⌊log₂ n⌋ + 2):
+    · k = 0: trivial (0 < ⌊log₂ n⌋ + 2)
+    · k ≥ 1: 2^(k-1) ≤ k! < n, so 2^(k-1) < n, so k-1 ≤ ⌊log₂ n⌋ by log definition. -/
+theorem factorialCheckCount_le_log (n : ℕ) (hn : 2 ≤ n) :
+    factorialCheckCount n ≤ Nat.log 2 n + 2 := by
+  have hsubset : factorialCheckSet n ⊆ Finset.range (Nat.log 2 n + 2) := by
+    intro k hk
+    simp only [factorialCheckSet, Finset.mem_filter, Finset.mem_range] at hk
+    simp only [Finset.mem_range]
+    rcases Nat.eq_zero_or_pos k with rfl | hkpos
+    · omega
+    · have h1 : 2^(k-1) ≤ k.factorial := two_pow_pred_le_factorial hkpos
+      have h2 : 2^(k-1) < n := lt_of_le_of_lt h1 hk.2
+      have h3 : k-1 ≤ Nat.log 2 n := le_log_of_pow_lt hn h2
+      omega
+  calc factorialCheckCount n
+      = (factorialCheckSet n).card := rfl
+    _ ≤ (Finset.range (Nat.log 2 n + 2)).card := Finset.card_le_card hsubset
+    _ = Nat.log 2 n + 2 := Finset.card_range _
+
+-- Numerical verification: 769 uses 7 checks, log₂(769) = 9, so 7 ≤ 11
+theorem checkCount_bound_769 : factorialCheckCount 769 ≤ Nat.log 2 769 + 2 := by
+  have hc : factorialCheckCount 769 = 7 := checkCount_769
+  have hlog : Nat.log 2 769 = 9 := by native_decide
+  omega
+
+/-
+## Natural Density
+
+The natural density of qualifying primes among all primes is:
+  lim_{x→∞} C(x) / π(x)
+where C(x) = #{p ≤ x : p prime, AllFact(p)} and π(x) = #{p ≤ x : p prime}.
+
+The density conjecture (from the probabilistic heuristic) asserts this limit = 1.
+-/
+
+/-- Number of qualifying primes at most x. -/
+def qualifyingPrimeCount (x : ℕ) : ℕ :=
+  ((Finset.range (x + 1)).filter
+    (fun n => n.Prime ∧ AllFactorialSubtractionsComposite n)).card
+
+/-- Number of primes at most x (the prime counting function π(x)). -/
+def primeCount (x : ℕ) : ℕ :=
+  ((Finset.range (x + 1)).filter (fun n => n.Prime)).card
+
+/-- C(x) ≤ π(x): qualifying primes are a subset of all primes. -/
+theorem qualifyingCount_le_primeCount (x : ℕ) :
+    qualifyingPrimeCount x ≤ primeCount x := by
+  apply Finset.card_le_card
+  intro n hn
+  simp only [Finset.mem_filter] at *
+  exact ⟨hn.1, hn.2.1⟩
+
+/-- C(x) is monotone: more primes are available at larger x. -/
+theorem qualifyingPrimeCount_mono {x y : ℕ} (h : x ≤ y) :
+    qualifyingPrimeCount x ≤ qualifyingPrimeCount y := by
+  apply Finset.card_le_card
+  intro n hn
+  simp only [Finset.mem_filter, Finset.mem_range] at *
+  exact ⟨by omega, hn.2⟩
+
+/-- C(769) ≥ 6: we have at least six qualifying primes up to 769. -/
+theorem qualifyingPrimeCount_ge_six : qualifyingPrimeCount 769 ≥ 6 := by
+  have h101 : 101 ∈ (Finset.range 770).filter
+      (fun n => n.Prime ∧ AllFactorialSubtractionsComposite n) := by
+    simp [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by decide, by native_decide⟩
+  have h211 : 211 ∈ (Finset.range 770).filter
+      (fun n => n.Prime ∧ AllFactorialSubtractionsComposite n) := by
+    simp [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by native_decide, by native_decide⟩
+  have h461 : 461 ∈ (Finset.range 770).filter
+      (fun n => n.Prime ∧ AllFactorialSubtractionsComposite n) := by
+    simp [Finset.mem_filter, Finset.mem_range]
+    exact ⟨prime_461, witness_461⟩
+  have h557 : 557 ∈ (Finset.range 770).filter
+      (fun n => n.Prime ∧ AllFactorialSubtractionsComposite n) := by
+    simp [Finset.mem_filter, Finset.mem_range]
+    exact ⟨prime_557, witness_557⟩
+  have h673 : 673 ∈ (Finset.range 770).filter
+      (fun n => n.Prime ∧ AllFactorialSubtractionsComposite n) := by
+    simp [Finset.mem_filter, Finset.mem_range]
+    exact ⟨prime_673, witness_673⟩
+  have h769 : 769 ∈ (Finset.range 770).filter
+      (fun n => n.Prime ∧ AllFactorialSubtractionsComposite n) := by
+    simp [Finset.mem_filter, Finset.mem_range]
+    exact ⟨prime_769, witness_769⟩
+  have hdisj : ({101, 211, 461, 557, 673, 769} : Finset ℕ).card = 6 := by decide
+  calc 6 = ({101, 211, 461, 557, 673, 769} : Finset ℕ).card := hdisj.symm
+    _ ≤ qualifyingPrimeCount 769 := by
+        apply Finset.card_le_card
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl | rfl | rfl | rfl
+        · exact h101
+        · exact h211
+        · exact h461
+        · exact h557
+        · exact h673
+        · exact h769
+
+/-
+## The Density Conjecture
+
+The full proof of density = 1 would require:
+  1. The Prime Number Theorem: π(x) ~ x/ln(x)
+  2. Brun-Titchmarsh inequality: #{p ≤ x : p+k prime} ≲ 2x/(φ(k)ln(x))
+  3. Selberg's sieve to bound #{p ≤ x : ∃ k ≤ l, p-k! prime} ≤ (l+1)·2x/(ln x)
+
+Since l+1 ≤ ⌊log₂ p⌋ + 2 (proved above) and π(x) ~ x/ln(x), the failing primes satisfy
+#{failing p ≤ x} ≲ (log x) · π(x) / log x = O(π(x) / log log x) = o(π(x)).
+
+None of PNT, Brun-Titchmarsh, or Selberg's sieve are yet in Mathlib, so we axiomatize.
+-/
+
+/-- **Density Conjecture (OPEN)**: The natural density of qualifying primes equals 1.
+    Equivalently: for every k, eventually C(x) ≥ k/(k+1) · π(x).
+    The probabilistic heuristic predicts this from:
+      - Each p fails with expected probability ~(l+1)/ln(p) ≤ (log p)/ln(p) → 0
+      - The Lovász local lemma or Borel-Cantelli then implies density 1 -/
+axiom density_one_conjecture :
+    ∀ k : ℕ, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
+      qualifyingPrimeCount x * (k + 1) ≥ primeCount x * k
+
+/-
+## Summary
+
+This file provides four new computational witnesses for Erdős Problem #1059,
+extending the gallery from 2 verified witnesses to 6:
+  - Level-5 witnesses (p ∈ (120, 720)): 461, 557, 673 (requiring 6 checks each)
+  - Level-6 witness (p ∈ (720, 5040)): 769 (requiring 7 checks)
+
+The key new mathematical contribution is `factorialCheckCount_le_log`, which
+formally proves that factorialCheckCount(n) ≤ ⌊log₂ n⌋ + 2 for n ≥ 2. This is
+the rigorous version of the density heuristic's key observation: each prime
+requires only O(log n) conditions to check — logarithmically many, not linearly many.
+The proof uses the elementary bound 2^(k-1) ≤ k! for k ≥ 1, which itself follows
+by induction from the factorial recurrence.
+
+Key counts at the six witnesses:
+  p = 101: 5 factorial checks (k = 0–4; 4! = 24 < 101 ≤ 120 = 5!)
+  p = 211: 6 factorial checks (k = 0–5; 5! = 120 < 211 ≤ 720 = 6!)
+  p = 461: 6 factorial checks (k = 0–5; level 5)
+  p = 557: 6 factorial checks (k = 0–5; level 5)
+  p = 673: 6 factorial checks (k = 0–5; level 5)
+  p = 769: 7 factorial checks (k = 0–6; 6! = 720 < 769 ≤ 5040 = 7!)
+
+Numerical verification: checkCount(769) = 7 ≤ log₂(769) + 2 = 9 + 2 = 11 ✓.
+-/
+
+end Erdos1059OQ01

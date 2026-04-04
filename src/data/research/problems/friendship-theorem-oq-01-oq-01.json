@@ -1,0 +1,102 @@
+{
+  "slug": "friendship-theorem-oq-01-oq-01",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-03T21:27:22-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: friendship-theorem-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "friendship-theorem",
+    "friendship-theorem-oq-01",
+    "friendship-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T04:39:45.988Z",
+  "lastUpdate": "2026-04-04T04:39:46.012Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/FriendshipTheorem.lean",
+      "filename": "FriendshipTheorem.lean",
+      "lineCount": 374,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheorem.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ01.lean",
+      "filename": "FriendshipTheoremOQ01.lean",
+      "lineCount": 2277,
+      "theoremCount": 74,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ02.lean",
+      "filename": "FriendshipTheoremOQ02.lean",
+      "lineCount": 378,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ03.lean",
+      "filename": "FriendshipTheoremOQ03.lean",
+      "lineCount": 308,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ03.lean"
+    }
+  ]
+}

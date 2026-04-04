@@ -1,0 +1,91 @@
+{
+  "slug": "combinations-formula-oq-02",
+  "title": "Combinations Formula: Connections to Catalan Numbers and Combinatorial Sequences",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Combinations Formula: Connections to Catalan Numbers and Combinatorial Sequences.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T22:29:17.628Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "catalan-numbers"
+  ],
+  "relatedProofs": [
+    "combinations-formula",
+    "combinations-formula-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T22:29:17.628Z",
+  "lastUpdate": "2026-04-03T22:29:17.628Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CombinationsFormula.lean",
+      "filename": "CombinationsFormula.lean",
+      "lineCount": 401,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormula.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ01.lean",
+      "filename": "CombinationsFormulaOQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ03.lean",
+      "filename": "CombinationsFormulaOQ03.lean",
+      "lineCount": 751,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03.lean"
+    }
+  ]
+}

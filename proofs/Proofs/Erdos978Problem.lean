@@ -210,10 +210,10 @@ def squarefree_conjecture_n4_plus_2 : Prop :=
 **Status: OPEN**
 The conjecture is not proven or disproven.
 -/
-theorem n4_plus_2_open :
-  -- The squarefree conjecture for n⁴ + 2 is open
-  -- Neither proved nor disproved
-  True := trivial
+/-
+  Status: the squarefree conjecture for n⁴ + 2 is OPEN.
+  Neither proved nor disproved as of 2024.
+-/
 
 /--
 **What IS known about n⁴ + 2:**
@@ -233,9 +233,11 @@ axiom n4_plus_2_cubefree :
 
 Erdős called these "intractable at present."
 -/
-theorem related_intractable_problems :
-  -- 2^n ± 1 and n! ± 1 power-free questions are open
-  True := trivial
+/-
+  Related open problems (Erdős called these "intractable at present"):
+  - Does 2ⁿ ± 1 represent infinitely many k-th power-free integers?
+  - Does n! ± 1 represent infinitely many k-th power-free integers?
+-/
 
 /-
 ## Part IX: Summary

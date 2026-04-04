@@ -1,0 +1,68 @@
+{
+  "slug": "erdos-ko-rado-oq-03",
+  "title": "Erdős-Ko-Rado: Complete EKR Uniqueness (Star Characterization for n > 2k)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Erdős-Ko-Rado: Complete EKR Uniqueness (Star Characterization for n > 2k).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T22:29:17.629Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "extremal-combinatorics"
+  ],
+  "relatedProofs": [
+    "erdos-ko-rado"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T22:29:17.629Z",
+  "lastUpdate": "2026-04-03T22:29:17.629Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/ErdosKoRado.lean",
+      "filename": "ErdosKoRado.lean",
+      "lineCount": 659,
+      "theoremCount": 12,
+      "axiomCount": 12,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ErdosKoRado.lean"
+    }
+  ]
+}

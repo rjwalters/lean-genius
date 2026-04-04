@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-erdos100-oq02-context",
+    "proofId": "erdos-100-oq-02",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "The log n Gap: Known Ω(n/log n) vs Conjectured Θ(n) for Integer Distance Diameters",
+    "content": "Erdős Problem #100 asks: must n points in the plane with all pairwise integer distances have diameter Ω(n)? The best proved lower bound (via Guth-Katz 2015) is Ω(n/log n). The strong conjecture (diam ≥ n−1) would give Ω(n). The gap is exactly a factor of log n. This OQ-02 file formalizes two consequences: (1) if the strong conjecture holds, then diam ≥ n/2; (2) the Guth-Katz bound cn/log n is strictly sublinear. Both proofs are one-line corollaries of machinery in Erdos100Problem.lean (parent file), which contains the Guth-Katz axiom, the diam definition, and n_over_log_sublinear.",
+    "mathContext": "$\\text{Known: } \\text{diam}(S) \\geq c \\cdot \\frac{n}{\\log n}$ (Guth–Katz 2015). Conjectured: $\\text{diam}(S) \\geq c \\cdot n$. Gap: factor $\\log n$. Piepmeyer (1996): constructions achieving $\\text{diam} = \\Theta(n)$ exist.",
+    "significance": "context",
+    "relatedConcepts": ["integer distance sets", "Guth-Katz 2015", "Erdős #100", "Piepmeyer construction", "diameter growth"],
+    "prerequisites": ["integer distance sets", "Guth-Katz distinct distances theorem", "Erdos100Problem.lean parent file"]
+  },
+  {
+    "id": "ann-erdos100-strong-conjecture",
+    "proofId": "erdos-100-oq-02",
+    "range": { "startLine": 26, "endLine": 41 },
+    "type": "insight",
+    "title": "Erdos100StrongConjecture: Encoding an Open Problem as a Lean Hypothesis Type",
+    "content": "`Erdos100StrongConjecture` (defined in the parent file) is a Prop: for all S with integer distances and S.card ≥ 2, diam S ≥ S.card − 1. The theorem `strong_implies_half_linear` takes this Prop as a function argument — not as an assumption that it's true, but as a conditional dependency. This is how Lean handles unproved conjectures: the conjecture becomes a hypothesis type, and its consequences become proved theorems conditional on that hypothesis. The consequence n/2 linear bound is formally verified even though the premise remains open. Geometrically, the bound n−1 would mean consecutive integer distances 1,2,...,n−1 all appear.",
+    "mathContext": "$\\texttt{Erdos100StrongConjecture} \\triangleq \\forall S:\\ \\text{intDist}(S) \\to |S| \\geq 2 \\to \\text{diam}(S) \\geq |S| - 1$. Implication: $n-1 \\geq n/2 \\iff n \\geq 2$ (arithmetic only).",
+    "significance": "key",
+    "relatedConcepts": ["open conjecture as hypothesis type", "conditional formalization in Lean 4", "Erdos100StrongConjecture", "diam lower bound"],
+    "prerequisites": ["Prop-valued function arguments in Lean 4", "Erdos100Problem.lean definitions"]
+  },
+  {
     "id": "ann-strong-implies-linear",
     "proofId": "erdos-100-oq-02",
     "range": { "startLine": 32, "endLine": 40 },
@@ -22,5 +46,17 @@
     "significance": "key",
     "relatedConcepts": ["∀ᶠ n in atTop", "filter_upwards tactic", "n_over_log_sublinear from parent", "mul_lt_mul_of_pos_left", "Real.log"],
     "prerequisites": ["Mathlib.Order.Filter.AtTopBot", "filter_upwards idiom", "n_over_log_sublinear from Erdos100Problem", "mul_lt_mul_of_pos_left lemma"]
+  },
+  {
+    "id": "ann-erdos100-gap-summary",
+    "proofId": "erdos-100-oq-02",
+    "range": { "startLine": 42, "endLine": 60 },
+    "type": "insight",
+    "title": "The log n Gap: Two Proved Regimes Quantify the Unknown Territory",
+    "content": "The two theorems together bracket the unknown. `strong_implies_half_linear`: IF strong conjecture (diam ≥ n−1) THEN diam ≥ n/2 (linear regime). `gk_bound_strictly_sublinear`: the proved Guth-Katz bound cn/log n < cn (strictly sublinear regime). Between these two proved results lies the open question: is the actual growth Θ(n) or Θ(n/log n)? The formalization makes the log n gap explicit and machine-verified. All mathematical depth is in the parent file's axioms — both OQ-02 theorems are purely logical consequences proved in ≤ 5 lines each.",
+    "mathContext": "Proved: $cn/\\log n < cn$ eventually. Conditional: $\\text{diam} \\geq n-1 \\Rightarrow \\text{diam} \\geq n/2$. Open: Is $\\text{diam}(S) = \\Theta(n)$ or $\\Theta(n/\\log n)$ for $n$-point integer distance sets? The gap ratio is $\\log n \\to \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": ["log n gap", "Guth-Katz lower bound", "strong conjecture", "open questions in extremal geometry"],
+    "prerequisites": ["Guth-Katz theorem (axiom in parent file)", "n_over_log_sublinear (proved in parent file)"]
   }
 ]

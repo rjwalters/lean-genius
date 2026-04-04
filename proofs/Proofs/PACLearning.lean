@@ -98,7 +98,11 @@ theorem pac_sample_complexity (d : ℕ) (ε δ : ℝ) (hd : 0 < d)
     A hypothesis class is PAC learnable iff it has finite VC dimension.
     Placeholder: requires formalizing the PAC learning model, uniform
     convergence, and the full equivalence chain. -/
-theorem fundamental_theorem_stat_learning {α : Type*} (H : Set (Set α)) :
-    True := trivial
+/-
+  Fundamental Theorem of Statistical Learning (placeholder):
+  A hypothesis class H is PAC learnable iff it has finite VC dimension.
+  Full proof requires formalizing: PAC learning model, uniform convergence,
+  and the equivalence chain (VC → PAC → uniform convergence → VC).
+-/
 
 end LearningTheory

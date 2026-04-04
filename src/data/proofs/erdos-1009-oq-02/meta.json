@@ -62,7 +62,77 @@
       "description": "The parent problem: edge-disjoint triangles (K₃) beyond Turán threshold ⌊n²/4⌋, SOLVED by Györi 1988. This OQ asks for the K₄ analog."
     }
   ],
-  "overview": "## Motivation\n\n**Erdős Problem #1009** (SOLVED, Györi 1988) asks: if a graph has $\\lfloor n^2/4 \\rfloor + k$ edges, does it contain $\\geq k - f(c)$ edge-disjoint triangles (for $k < cn$)? The answer is yes, with $f(c) \\ll c^2$.\n\nThis **open question** asks for the analogous result with $K_4$ instead of $K_3$:\n- The Turán threshold for $K_4$-free graphs is $\\lfloor n^2/3 \\rfloor$ (the balanced tripartite graph $T(n,3)$)\n- If $G$ has $\\lfloor n^2/3 \\rfloor + k$ edges, how many edge-disjoint $K_4$ copies does it contain?\n\n## Formalization\n\nThis file establishes:\n1. **$K_4$ structure**: four mutually adjacent vertices with their 6 edges\n2. **Turán threshold** $\\lfloor n^2/3 \\rfloor$ for $K_4$-free graphs\n3. **Turán's theorem for $K_4$**: $K_4$-free $\\Rightarrow$ edges $\\leq \\lfloor n^2/3 \\rfloor$\n4. **Open question**: formal statement of the $K_4$ analog of Györi's theorem\n\n## Key Comparison\n\n| Problem | Clique | Threshold | Status |\n|---------|--------|-----------|--------|\n| Erdős 1009 | $K_3$ | $\\lfloor n^2/4 \\rfloor$ | Solved (Györi 1988) |\n| This OQ | $K_4$ | $\\lfloor n^2/3 \\rfloor$ | Open |",
+  "overview": {
+    "historicalContext": "**From Turán to Györi to the Open K₄ Question**\n\nPál Turán (1910–1976) proved in 1941 that the maximum number of edges in a K_{r+1}-free graph on n vertices is the Turán number t_r(n), realized by the balanced complete r-partite graph T(n,r). For K₄-free graphs (r=3), this gives ex(n, K₄) = ⌊n²/3⌋, realized by T(n,3) — three balanced parts with all cross-edges and no same-part edges.\n\nPaul Erdős, in a 1971 paper on unsolved graph theory problems, asked what happens quantitatively when a graph *exceeds* the Turán threshold. For K₃ (Problem #1009), he conjectured that exceeding ⌊n²/4⌋ by k edges guarantees at least k - f(c) edge-disjoint triangles (for k < cn). This was proved by Ervin Györi in 1988, requiring deep combinatorial arguments about how triangles can be packed without sharing edges.\n\nThe K₄ analog asks the identical question with threshold ⌊n²/3⌋ and K₄ copies instead of triangles: if |E(G)| ≥ ⌊n²/3⌋ + k with k < cn, must G contain ≥ k - g(c) edge-disjoint K₄ copies? As of 2026, this remains open. The K₄ case is expected to be significantly harder: K₄ copies have 6 edges (vs 3 for K₃) and overlap in more complex patterns, making edge-disjoint packing analysis more intricate.",
+    "problemStatement": "**Open Question (K₄ Analog of Györi's Theorem)**\n\nFor all $c > 0$, does there exist $g \\in \\mathbb{N}$ such that: for every graph $G$ on $n$ vertices with $|E(G)| \\geq \\lfloor n^2/3 \\rfloor + k$ and $0 \\leq k < cn$, the maximum edge-disjoint $K_4$ packing satisfies $\\nu_4(G) \\geq k - g$?\n\nThe parent problem (Erdős #1009, $K_3$ case) was solved by Györi (1988) with $f(c) \\ll c^2$. The $K_4$ case is open.",
+    "proofStrategy": "**Formalization Approach**\n\n1. Define `turanThresholdK4 n = n²/3` and verify small cases (n=1..6) with `norm_num`.\n2. Define `Clique4` structure with 4 named vertices and all 6 explicit adjacency fields.\n3. Define edge-disjointness via `Clique4.edges` (6-element finset) and intersection.\n4. Define `maxEdgeDisjointK4` as `sSup` over pairwise edge-disjoint families.\n5. Prove `turanK4_extremal` by applying Mathlib's `CliqueFree.card_edgeFinset_le`, bridging the abstract Mathlib formula to `⌊n²/3⌋` via a 3-way mod-3 case split (`turanK4_arith`).\n6. State `edgeDisjointK4_question` as an unproved Lean Prop (the open question).\n7. Prove the easier variant: exceeding Turán by ≥1 guarantees ≥1 K₄ copy.",
+    "keyInsights": [
+      "**The Turán threshold marks a phase transition**: Below ⌊n²/3⌋ edges a graph can be K₄-free (realized by T(n,3), which partitions n vertices into 3 balanced groups with all cross-edges). Exceeding the threshold forces K₄ copies. The open question asks how many *edge-disjoint* copies are forced by k excess edges.",
+      "**Györi's K₃ proof is surprisingly deep**: The triangle packing argument required showing that greedy triangle removal terminates with only O(c²n) unpackable excess edges. The K₄ analog inherits this difficulty, amplified by larger overlap structure — 6-edge K₄ copies can share triangular faces, making the local geometry of packing much harder.",
+      "**turanK4_arith bridges an abstraction gap**: Mathlib's Turán bound gives edges ≤ (n²-(n%3)²)·2/6 + (n%3).choose(2), a non-obvious formula. The helper lemma does the arithmetic with a 3-way case split (n≡0,1,2 mod 3), using `omega` for all three cases — the key insight is that these three cases exhaust all residues and in each case the Mathlib expression simplifies to ≤ ⌊n²/3⌋.",
+      "**Clique4 structure vs Mathlib's abstract CliqueFree**: Mathlib represents K₄ copies abstractly as finsets satisfying `IsClique`. This proof defines an explicit `Clique4` structure with named vertices (a,b,c,d) and named edge fields (hab, hac, ..., hcd). The explicit structure enables clean downstream extraction: `clique4_has_triangle` simply reads off three vertex fields. The bridge `exceeds_turanK4_has_clique4` converts between the two representations via `Finset.card_eq_four`.",
+      "**maxEdgeDisjointK4 as a supremum is non-constructive but clean**: Rather than defining the maximum packing algorithmically, the definition uses `sSup` over cardinalities of valid pairwise-edge-disjoint families. This works because the cardinality is bounded by |E(G)|/6 (each K₄ uses 6 edges), so the supremum is finite. The non-constructive definition separates the EXISTENCE question from the VALUE question — appropriate for an open problem."
+    ]
+  },
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Graph Basics and Turán Threshold",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module documentation, imports, variable declarations. Defines numVertices4, numEdges4, and turanThresholdK4 n = n²/3.",
+      "mathContext": "$ex(n, K_4) = t_3(n) = \\lfloor n^2/3 \\rfloor$, realized by the balanced tripartite Turán graph $T(n,3)$."
+    },
+    {
+      "id": "clique4",
+      "title": "K₄ Structure and Edge-Disjointness",
+      "startLine": 51,
+      "endLine": 91,
+      "summary": "Defines Clique4 (4 named vertices + 6 adjacency fields), Clique4.edges (6-element finset), edgeDisjoint4, pairwiseEdgeDisjoint4, and maxEdgeDisjointK4 via sSup.",
+      "mathContext": "$K_4$ has $\\binom{4}{2} = 6$ edges. Edge-disjointness: $E(K_1) \\cap E(K_2) = \\emptyset$. $\\nu_4(G) = \\sup\\{|\\mathcal{F}| : \\mathcal{F}$ is pairwise edge-disjoint$\\}$."
+    },
+    {
+      "id": "threshold-props",
+      "title": "Turán Threshold Properties",
+      "startLine": 92,
+      "endLine": 131,
+      "summary": "Simp lemmas for turanThresholdK4 at n=0,1,2,3,4,6. Proves positivity for n≥4 and monotonicity.",
+      "mathContext": "$\\lfloor n^2/3 \\rfloor = 0, 0, 1, 3, 5, \\ldots, 12$ for $n = 0, 1, 2, 3, 4, \\ldots, 6$."
+    },
+    {
+      "id": "turan-theorem",
+      "title": "Turán's Theorem for K₄",
+      "startLine": 133,
+      "endLine": 188,
+      "summary": "Proves turanK4_extremal via Mathlib's CliqueFree.card_edgeFinset_le + turanK4_arith (mod-3 case split). Proves exceeds_turanK4_has_clique4 (contrapositive: K₄-free → edges ≤ threshold).",
+      "mathContext": "$K_4$-free $\\Rightarrow |E(G)| \\leq \\lfloor n^2/3 \\rfloor$. Bridge: Mathlib gives $(n^2-(n\\%3)^2) \\cdot 2/6 + \\binom{n\\%3}{2} \\leq n^2/3$ by case split on $n \\equiv 0,1,2 \\pmod{3}$."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 190,
+      "endLine": 225,
+      "summary": "Defines excessEdgesK4 = |E(G)| - threshold. States edgeDisjointK4_question as a Lean Prop. Proves the easier variant: excess ≥ 1 → at least one K₄ copy exists.",
+      "mathContext": "Open: $\\forall c > 0, \\exists g: k \\geq 0, k < cn \\Rightarrow \\nu_4(G) \\geq k - g$. Proved easy case: $k \\geq 1 \\Rightarrow \\nu_4(G) \\geq 1$."
+    },
+    {
+      "id": "comparison",
+      "title": "K₃ vs K₄ Comparison",
+      "startLine": 226,
+      "endLine": 241,
+      "summary": "turanK3_le_turanK4: K₄ threshold ≥ K₃ threshold. clique4_has_triangle: every K₄ contains a K₃ (take any 3 vertices).",
+      "mathContext": "$\\lfloor n^2/4 \\rfloor \\leq \\lfloor n^2/3 \\rfloor$ since $1/4 < 1/3$. And $K_4 \\supset K_3$: any 3 vertices of a $K_4$ form a triangle."
+    }
+  ],
+  "conclusion": {
+    "summary": "Establishes the complete structural framework for the K₄ Györi analog: Clique4 definition, edge-disjointness, maxEdgeDisjointK4, Turán threshold, and the formal statement of the open question. The 0-sorry, 0-axiom proof of Turán's theorem for K₄ (via Mathlib's CliqueFree.card_edgeFinset_le) is the main verified result.",
+    "implications": "The formalization cleanly separates what is known (Turán's theorem for K₄: K₄-free ⟹ edges ≤ ⌊n²/3⌋) from what is open (the quantitative packing bound). The easier variant — exceeding Turán by any amount forces ≥1 K₄ copy — is proved as a corollary. If the open question is ever resolved, it would connect extremal graph theory to packing theory analogously to how Györi's theorem connects Turán theory to triangle packing.",
+    "openQuestions": [
+      "Can the K₄ analog of Györi's theorem be proved? Specifically: does |E(G)| ≥ ⌊n²/3⌋ + k with k < cn imply ν₄(G) ≥ k - g(c)?",
+      "Is the bound ν₄(G) ≥ k - g(c) tight? What is the correct dependence of g on c (linear? quadratic as in the triangle case)?",
+      "Does the result generalize to K_r for all r ≥ 3? Is there a unified theorem: |E(G)| ≥ t_{r-1}(n) + k implies ν_r(G) ≥ k - g_r(c)?"
+    ]
+  },
   "references": [
     {
       "type": "paper",

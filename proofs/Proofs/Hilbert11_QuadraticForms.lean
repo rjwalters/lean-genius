@@ -372,12 +372,10 @@ def BrauerManinObstruction (X : Type*) : Prop :=
   -- There exists a Brauer class that obstructs rational points
   True -- Full definition requires algebraic geometry
 
-/-- For quadratic forms, the Brauer-Manin obstruction is the only obstruction. -/
-theorem quadratic_forms_brauer_manin_only :
-    -- For quadratic forms, the Brauer-Manin obstruction vanishes,
-    -- so Hasse-Minkowski holds
-    True := by
-  trivial
+/-
+  For quadratic forms, the Brauer-Manin obstruction is the only obstruction.
+  The Brauer-Manin obstruction vanishes, so Hasse-Minkowski holds.
+-/
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VIII: EXTENSIONS TO NUMBER FIELDS

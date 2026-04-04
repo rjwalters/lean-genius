@@ -261,11 +261,11 @@ Both are necessary; neither alone suffices.
 /-- **The answer**: Both components are needed. This encodes the structural
     fact that the parity proof decomposes into conjugate pairing (complex
     analysis) plus sign variation arithmetic (combinatorial algebra). -/
-theorem infrastructure_assessment :
-    -- The parity proof needs two independent ingredients:
-    -- 1. Non-real roots pair up (from complex conjugation)
-    -- 2. Sign variations change by correct parity under root extraction
-    -- Neither alone is sufficient.
-    True := trivial
+/-
+  Infrastructure assessment: the parity proof requires two independent ingredients:
+  1. Non-real roots pair up (from complex conjugation, so they contribute even count)
+  2. Sign variations change by the correct parity under root extraction
+  Neither ingredient alone is sufficient; both are needed.
+-/
 
 end DescartesRuleOfSignsOQ01OQ02

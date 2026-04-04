@@ -39,7 +39,7 @@ axiom no_retraction_axiom (n : ℕ) (hn : n ≥ 1) : ¬∃ r : Retraction n, Tru
 This file derives no-retraction from **more primitive** axioms that precisely
 identify what singular homology contributes. The pure algebraic argument is fully proved.
 
-## Summary: 11 theorems, 0 sorries, 2 axioms
+## Summary: 11 theorems, 0 sorries, 1 axiom
 -/
 
 set_option linter.unusedVariables false

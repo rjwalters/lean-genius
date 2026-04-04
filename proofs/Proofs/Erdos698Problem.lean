@@ -241,17 +241,21 @@ The GCD of binomial coefficients relates to:
 The largest power of prime p dividing C(m+n, m) equals
 the number of carries in adding m and n in base p.
 -/
-theorem kummer_theorem (p m n : ℕ) (hp : p.Prime) :
-  -- The p-adic valuation relates to carry count (placeholder)
-  True := trivial
+/-
+  Kummer's Theorem: the p-adic valuation of C(m+n, m) equals
+  the number of carries when adding m and n in base p.
+  (Placeholder — full Lean proof requires digit-carry formalization.)
+-/
 
 /--
 **Lucas' Theorem:**
 C(m, n) mod p can be computed from base-p digits of m and n.
 -/
-theorem lucas_theorem (p m n : ℕ) (hp : p.Prime) :
-  -- Modular reduction of binomial coefficients (placeholder)
-  True := trivial
+/-
+  Lucas' Theorem: C(m, n) mod p can be computed digit-by-digit
+  from the base-p representations of m and n.
+  (Placeholder — Mathlib has Nat.choose_symm_diff for related results.)
+-/
 
 /-
 ## Part IX: Summary

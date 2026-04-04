@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-igp-m23-header",
+    "proofId": "inverse-galois-oq-02",
+    "range": { "startLine": 1, "endLine": 61 },
+    "type": "context",
+    "title": "M₂₃: The Last Unresolved Sporadic Simple Group",
+    "content": "As of 2024, M₂₃ is the ONLY sporadic simple group not known to be a Galois group over ℚ. All other 25 sporadic groups — including the Monster (the largest), all other Mathieu groups, and the Baby Monster — have been realized. The five Mathieu groups M₁₁, M₁₂, M₂₂, M₂₄ were all realized by Matzat (1984/1987). M₂₃ resists: it has no 'rigid rational triples', the essential ingredient for Thompson's standard rigidity method. Dettweiler-Reiter (1999) showed M₂₃ IS realizable over ℚ(t) (the rational function field), but specializing to ℚ requires additional number-theoretic steps that remain incomplete. This file formalizes the group theory of M₂₃ and encodes the open question as a `sorry`.",
+    "mathContext": "The **Inverse Galois Problem** (IGP): Is every finite group $G$ realizable as $\\text{Gal}(K/\\mathbb{Q})$ for some Galois extension $K/\\mathbb{Q}$? Hilbert's irreducibility theorem reduces it to: does $G$ occur as a regular Galois group over $\\mathbb{Q}(t)$? Shafarevich (1954) resolved all solvable groups via class field theory and Schur multipliers. The remaining challenge is non-solvable groups. For sporadic groups, 25/26 are resolved; M₂₃ is the sole exception. $|M_{23}| = 10200960 = 2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23$.",
+    "significance": "context",
+    "relatedConcepts": ["Inverse Galois Problem", "sporadic simple groups", "Thompson rigidity criterion", "Mathieu groups", "Dettweiler-Reiter 1999"],
+    "prerequisites": ["Galois theory", "classification of finite simple groups (CFSG)", "Shafarevich's theorem"]
+  },
+  {
+    "id": "ann-igp-m23-axioms",
+    "proofId": "inverse-galois-oq-02",
+    "range": { "startLine": 62, "endLine": 92 },
+    "type": "concept",
+    "title": "Three Axioms for M₂₃: Existence, Order, and Simplicity",
+    "content": "M₂₃ is axiomatized via three declarations: `M23 : Subgroup (Equiv.Perm (Fin 23))` (the group as a subgroup of S₂₃, reflecting its original definition by Mathieu as a 4-transitive permutation group on 23 points), `M23_card : Fintype.card M23 = 10200960` (from Mathieu's 1873 computation), and `M23_isSimple : IsSimpleGroup M23` (no proper normal subgroups, first verified by Mathieu and confirmed by Witt 1938). All three are well-established theorems, not conjectures; they are axiomatized because the Lean/Mathlib formalization of sporadic groups is not yet complete.",
+    "mathContext": "M₂₃ as a **permutation group**: it acts faithfully and 4-transitively on 23 points (i.e., any ordered 4-tuple can be mapped to any other by some element of M₂₃). The 4-transitivity distinguishes M₂₃ from generic permutation groups: $|\\text{Stab}_{M_{23}}(4 \\text{ points})| = |M_{23}|/(23 \\cdot 22 \\cdot 21 \\cdot 20) = 10200960/95040 = 48$. M₂₃ is also the automorphism group of the **binary Golay code** of length 23 (a perfect binary code with minimum Hamming distance 7).",
+    "significance": "key",
+    "relatedConcepts": ["M23 axiom", "M23_card axiom", "M23_isSimple axiom", "IsSimpleGroup in Mathlib", "4-transitive permutation group"],
+    "prerequisites": ["Subgroup in Mathlib", "Equiv.Perm (Fin 23)", "IsSimpleGroup typeclass", "Fintype.card"]
+  },
+  {
+    "id": "ann-igp-m23-nonsolvable",
+    "proofId": "inverse-galois-oq-02",
+    "range": { "startLine": 148, "endLine": 219 },
+    "type": "theorem",
+    "title": "M₂₃ is Perfect and Not Solvable: The Non-Abelian Chain",
+    "content": "Part III establishes that M₂₃ is not solvable via a three-step chain: (1) `M23_not_commutative` (sorry): M₂₃ is not abelian — an abelian simple group must have prime order, but |M₂₃| = 10200960 is not prime. (2) `M23_commutator_eq_top` (partial sorry): M₂₃ is perfect, i.e., [M₂₃, M₂₃] = M₂₃ — the commutator subgroup is normal, so by simplicity it is ⊥ or ⊤; it cannot be ⊥ (that would make M₂₃ abelian), so it is ⊤. (3) `M23_not_solvable` (sorry): perfect + nontrivial → derived series is constant at ⊤ → never reaches ⊥ → not solvable. All three sorries are Aristotle candidates: the mathematical arguments are clear, only the Lean API details need filling in.",
+    "mathContext": "The **solvability obstruction**: a group $G$ is solvable iff its derived series $G^{(0)} = G \\supset G^{(1)} = [G,G] \\supset G^{(2)} = [[G,G],[G,G]] \\supset \\cdots$ reaches $\\{e\\}$. For perfect groups ($G^{(1)} = G$), the series is constant at $G$, never reaching $\\{e\\}$ unless $G = \\{e\\}$. The perfection of M₂₃ follows from: $[M_{23}, M_{23}] \\trianglelefteq M_{23}$; by simplicity $[M_{23},M_{23}] \\in \\{\\bot, \\top\\}$; $[M_{23},M_{23}] = \\bot$ iff M₂₃ abelian iff M₂₃ cyclic of prime order (abelian simple) iff $|M_{23}|$ prime — contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["M23_not_commutative", "M23_commutator_eq_top", "M23_not_solvable", "commutator subgroup", "IsSolvable in Mathlib", "derived series"],
+    "prerequisites": ["IsSimpleGroup.eq_bot_or_eq_top_of_normal", "commutator in Mathlib", "IsSolvable API", "M23_card_not_prime"]
+  },
+  {
+    "id": "ann-igp-m23-rigidity",
+    "proofId": "inverse-galois-oq-02",
+    "range": { "startLine": 272, "endLine": 314 },
+    "type": "insight",
+    "title": "Thompson's Rigidity Obstruction: Why M₂₃ Resists Standard Methods",
+    "content": "Part VI explains the fundamental difficulty with M₂₃. Thompson's rigidity criterion (1984) realizes a finite group G as Gal(K/ℚ) if there exist conjugacy classes C₁,C₂,C₃ in G such that: (a) compatible (some g₁g₂g₃=1, gᵢ∈Cᵢ), (b) generating (⟨g₁,g₂⟩=G), (c) rigid (unique solution up to simultaneous conjugation), (d) rational (classes fixed by Aut(G)). For M₂₃ with 17 conjugacy classes, all 4913 triples fail condition (c). This is the rigid rational triple obstruction. Dettweiler-Reiter (1999) worked around this using middle convolution to prove M₂₃ occurs over ℚ(t), but the specialization to ℚ requires the existence of a good rational specialization, which remains unproved.",
+    "mathContext": "**Thompson's rigidity criterion**: If $G$ has a rational rigid triple $(C_1, C_2, C_3)$ with $\\sum 1/|C_i| > 1$ (Hurwitz-type condition), then $G$ occurs as $\\text{Gal}(\\mathbb{Q}(x)/\\mathbb{Q}(t))$ via Belyi's theorem. For M₂₃: $|\\text{Aut}(M_{23})| = |M_{23}|$ (M₂₃ is complete — its automorphism group is M₂₃ itself, i.e., all automorphisms are inner). With 17 conjugacy classes, a computer search through all triples shows no rational rigid triple exists. This is a finite but computationally verified negative result — not a theoretical obstruction.",
+    "significance": "key",
+    "relatedConcepts": ["Thompson rigidity criterion", "rigid rational triples", "Dettweiler-Reiter 1999", "middle convolution", "Belyi's theorem", "M₂₃ conjugacy classes"],
+    "prerequisites": ["Galois theory of function fields", "rigidity method for IGP", "Aut(M₂₃) = M₂₃ (complete group)"]
+  },
+  {
+    "id": "ann-igp-m23-sporadic-comparison",
+    "proofId": "inverse-galois-oq-02",
+    "range": { "startLine": 316, "endLine": 362 },
+    "type": "concept",
+    "title": "The Mathieu Group Web: M₂₃'s Asymmetry with M₂₄",
+    "content": "Part VII contrasts M₂₃ with the other Mathieu groups: M₁₁, M₁₂, M₂₂, M₂₄ were all realized over ℚ by Matzat (1984/1987). The striking asymmetry is M₂₄ (the largest Mathieu group) IS realizable while M₂₃ (a subgroup of M₂₄, the stabilizer of one point in M₂₄'s action on 24 points) is NOT known to be. M₂₄ acts on the extended Steiner system S(5,8,24) (the extended binary Golay code); M₂₃ is the stabilizer of one point in S(5,8,24), acting on S(4,7,23). The asymmetry in IGP realizability despite the containment M₂₃ ≤ M₂₄ reflects subtle differences in their conjugacy class structures: M₂₄ has rigid rational triples while M₂₃ does not.",
+    "mathContext": "The **Mathieu chain**: $M_{11} \\subset M_{12}$ and $M_{22} \\subset M_{23} \\subset M_{24}$. The Steiner system hierarchy: $S(4,5,11) \\subset S(5,6,12)$ and $S(3,6,22) \\subset S(4,7,23) \\subset S(5,8,24)$. Each Mathieu group $M_{k+1}$ is the automorphism group of the Steiner system obtained by extending $M_k$'s system. The containment $M_{23} \\subset M_{24}$ does NOT automatically give a Galois extension for M₂₃ from one for M₂₄: subgroup realizations require specific descent arguments that depend on the structure of the particular extension.",
+    "significance": "key",
+    "relatedConcepts": ["Steiner systems S(k,l,n)", "M₂₄ is realized", "M₂₃ subgroup of M₂₄", "sporadic_census theorem", "binary Golay code"],
+    "prerequisites": ["Mathieu group hierarchy", "Steiner systems", "Galois descent for subgroups"]
+  },
+  {
+    "id": "ann-igp-m23-open-question",
+    "proofId": "inverse-galois-oq-02",
+    "range": { "startLine": 247, "endLine": 270 },
+    "type": "insight",
+    "title": "M23_realizable_over_Q: The Open Question as a Formal Sorry",
+    "content": "`M23_realizable_over_Q` is the central open question formalized as a Lean statement with `sorry`: does there exist a Galois extension K/ℚ with Gal(K/ℚ) ≅ M₂₃? This is the only `sorry` in the file that represents genuine mathematical uncertainty (as opposed to Aristotle-provable group theory sorries). The formulation uses `Nonempty (M23 ≃* (K ≃ₐ[ℚ] K))` to express group isomorphism between M₂₃ and the Galois automorphism group. The file also establishes the non-solvability barrier: Shafarevich's theorem (covering all solvable groups) does NOT apply to M₂₃ (`M23_not_solvable_barrier`), so any proof must use post-Shafarevich methods.",
+    "mathContext": "The precise statement: $\\exists K$ a field, $K/\\mathbb{Q}$ a Galois extension with $\\text{Gal}(K/\\mathbb{Q}) \\cong M_{23}$. In Lean 4: `∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K) (_ : IsGalois ℚ K), Nonempty (M23 ≃* (K ≃ₐ[ℚ] K))`. The `IsGalois ℚ K` typeclass asserts separability + normality. The Nonempty wrapper sidesteps the non-constructive nature: we only need existence, not an explicit isomorphism. The degree $[K:\\mathbb{Q}] = |M_{23}| = 10200960$ would make K a degree-10 million extension.",
+    "significance": "key",
+    "relatedConcepts": ["M23_realizable_over_Q", "IsGalois in Mathlib", "AlgEquiv in Lean 4", "Shafarevich's theorem", "M23_not_solvable_barrier"],
+    "prerequisites": ["IsGalois typeclass in Mathlib", "FiniteDimensional ℚ K", "AlgEquiv (K ≃ₐ[ℚ] K)", "MulEquiv (≃*)"]
+  },
+  {
+    "id": "ann-igp-m23-approaches",
+    "proofId": "inverse-galois-oq-02",
+    "range": { "startLine": 364, "endLine": 388 },
+    "type": "insight",
+    "title": "Possible Approaches: Middle Convolution, Patching, and Golay Code Methods",
+    "content": "Part IX surveys four possible approaches to resolving M₂₃'s realizability: (1) Middle convolution specialization (building on Dettweiler-Reiter): find a rational point t₀∈ℚ where the ℚ(t)-extension specializes to a Galois extension over ℚ. This requires showing the fiber over t₀ has the right Galois group, using Hilbert irreducibility. (2) Modular representation theory: study M₂₃ over finite fields to obtain congruence information. (3) Direct polynomial search: find f(x)∈ℚ[x] with discriminant structure forcing Gal(f)≅M₂₃. (4) Patching methods (Harbater-Hartmann): local-global principles for Galois groups. The `sporadic_census : 25 + 1 = 26` theorem humorously encodes the current state of knowledge.",
+    "mathContext": "**Hilbert's irreducibility theorem** (Hilbert 1892): For a polynomial $F(t,x) \\in \\mathbb{Q}[t,x]$ irreducible over $\\mathbb{Q}(t)$, there exist infinitely many $t_0 \\in \\mathbb{Q}$ such that $F(t_0,x)$ is irreducible over $\\mathbb{Q}$ with the same Galois group. Dettweiler-Reiter's result gives $F(t,x)$ with $\\text{Gal}(F/\\mathbb{Q}(t)) \\cong M_{23}$. Hilbert irreducibility guarantees the existence of good specializations, but identifying one explicitly with the right Galois group requires additional local computations at bad primes.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hilbert's irreducibility theorem", "middle convolution", "Harbater-Hartmann patching", "sporadic_census", "Dettweiler-Reiter over ℚ(t)"],
+    "prerequisites": ["Hilbert irreducibility theorem", "local-global principles for Galois groups", "ramification theory"]
+  }
+]

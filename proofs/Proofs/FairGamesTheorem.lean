@@ -105,13 +105,12 @@ def isFairGame {Ω : Type*} {m : MeasurableSpace Ω}
     (μ : MeasureTheory.Measure Ω) : Prop :=
   MeasureTheory.Martingale f ℱ μ
 
-/-- Example: A sequence of fair coin flips accumulated into cumulative sum
-    forms a martingale. If each flip has E[flip] = 0, then E[cumulative sum] = 0
-    regardless of when we stop. -/
-theorem fair_coin_flip_martingale_property :
-    -- For any fair game (martingale), the expected value at any time n
-    -- equals the expected initial value
-    True := by trivial
+/-
+  Example: A sequence of fair coin flips accumulated into cumulative sum
+  forms a martingale. If each flip has E[flip] = 0, then E[cumulative sum] = 0
+  regardless of when we stop. For any fair game (martingale), the expected value
+  at any time n equals the expected initial value.
+-/
 
 end MartingaleDefinitions
 
