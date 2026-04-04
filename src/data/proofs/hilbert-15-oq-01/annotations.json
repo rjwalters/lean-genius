@@ -1,1 +1,187 @@
-[]
+[
+  {
+    "id": "ann-h15oq01-chow-ring-def",
+    "proofId": "hilbert-15-oq-01",
+    "range": { "startLine": 64, "endLine": 101 },
+    "type": "definition",
+    "title": "ChowGr24: Explicit ℤ-Module for A*(Gr(2,4))",
+    "content": "Defines `ChowGr24` as a Lean structure with six integer fields (c0, c1, c2, c11, c21, c22), one for each Schubert basis class. Instances: `Zero`, `One`, `Add`, `Neg`, `SMul ℤ`. Each operation is componentwise on the 6-tuple. The `deriving DecidableEq, Repr` allows `native_decide` and `decide` to check equalities computationally. This concrete representation avoids abstract algebraic framework overhead — the ring is just a 6-dimensional ℤ-module with an explicit multiplication.",
+    "mathContext": "The **Chow ring** $A^*(\\mathrm{Gr}(2,4)) = \\bigoplus_{i=0}^4 A^i$ is a graded commutative ring with $A^0 = \\mathbb{Z}\\sigma_\\emptyset$, $A^1 = \\mathbb{Z}\\sigma_1$, $A^2 = \\mathbb{Z}\\sigma_2 \\oplus \\mathbb{Z}\\sigma_{11}$, $A^3 = \\mathbb{Z}\\sigma_{21}$, $A^4 = \\mathbb{Z}\\sigma_{22}$. As a $\\mathbb{Z}$-module it has rank 6, matching the number of partitions fitting in a $2 \\times 2$ box: $\\emptyset, (1), (2), (1,1), (2,1), (2,2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chow ring",
+      "graded ring",
+      "Schubert basis",
+      "A*(Gr(k,n))",
+      "intersection theory"
+    ],
+    "prerequisites": [
+      "algebraic cycles modulo rational equivalence",
+      "graded ℤ-modules",
+      "Lean 4 structure syntax",
+      "Fin 6 indexing"
+    ]
+  },
+  {
+    "id": "ann-h15oq01-schubert-basis",
+    "proofId": "hilbert-15-oq-01",
+    "range": { "startLine": 102, "endLine": 120 },
+    "type": "definition",
+    "title": "Schubert Classes: Geometric Meaning of Each Basis Element",
+    "content": "Defines the 6 Schubert basis elements as explicit ChowGr24 values: σ₀ = ⟨1,0,0,0,0,0⟩ (identity, all lines), σ₁ = ⟨0,1,0,0,0,0⟩ (lines meeting a fixed line), σ₂ = ⟨0,0,1,0,0,0⟩ (lines in a fixed plane), σ₁₁ = ⟨0,0,0,1,0,0⟩ (lines through a fixed point), σ₂₁ = ⟨0,0,0,0,1,0⟩ (lines in a plane through a point), σ₂₂ = ⟨0,0,0,0,0,1⟩ (point class — a specific line). Each σ_λ is the cycle class of a Schubert variety X_λ indexed by the partition λ.",
+    "mathContext": "For $\\mathrm{Gr}(2,4)$ (lines in $\\mathbb{P}^3$), Schubert varieties are defined by incidence conditions with a complete flag $0 \\subset F_1 \\subset F_2 \\subset F_3 \\subset F_4 = k^4$:\n$$X_{\\lambda} = \\{V \\in \\mathrm{Gr}(2,4) : \\dim(V \\cap F_{4-2+i-\\lambda_i}) \\geq i \\text{ for } i=1,2\\}$$\nGeometrically: $\\sigma_1$ is the class of lines meeting a codimension-1 Schubert variety (a line), and $\\sigma_{22}$ is the class of a single point of $\\mathrm{Gr}(2,4)$ — the fundamental class of a line in $\\mathbb{P}^3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schubert variety",
+      "Young diagrams and partitions",
+      "flag variety",
+      "cycle class map",
+      "lines in projective 3-space"
+    ],
+    "prerequisites": [
+      "complete flags in k^4",
+      "Schubert conditions",
+      "degree of a Schubert variety",
+      "geometric interpretation of Gr(2,4)"
+    ]
+  },
+  {
+    "id": "ann-h15oq01-lr-table",
+    "proofId": "hilbert-15-oq-01",
+    "range": { "startLine": 122, "endLine": 202 },
+    "type": "definition",
+    "title": "Littlewood–Richardson Multiplication Table: The Ring Structure",
+    "content": "Defines `basisMul : Fin 6 → Fin 6 → ChowGr24` by pattern matching on 36 basis pairs, encoding the complete Littlewood–Richardson multiplication table. Key entries: σ₁·σ₁ = σ₂ + σ₁₁ (Pieri: add 1 box to (1)); σ₂·σ₁₁ = 0 (LR lattice word condition fails); σ₂·σ₂ = σ₂₂; σ₁₁·σ₁₁ = σ₂₂. The `Mul` instance bilinearly extends this table: a·b = ΣᵢΣⱼ aᵢbⱼ·(σᵢ·σⱼ), computing 36 products and summing 6 coefficient vectors.",
+    "mathContext": "The **Littlewood–Richardson rule** gives the structure constants $c^\\rho_{\\mu\\nu}$ in $\\sigma_\\mu \\cdot \\sigma_\\nu = \\sum_\\rho c^\\rho_{\\mu\\nu} \\sigma_\\rho$. For $\\mathrm{Gr}(2,4)$, $c^\\rho_{\\mu\\nu}$ counts **LR tableaux**: fillings of $\\rho/\\mu$ by $\\nu$'s content where the reading word is a ballot sequence. The vanishing $\\sigma_2 \\cdot \\sigma_{11} = 0$ reflects that no partition $\\rho$ with $(\\rho/2)$ of shape $(1,1)$ satisfies the ballot word condition — a purely combinatorial fact with deep geometric meaning (the corresponding Schubert varieties don't intersect in Gr(2,4)).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Littlewood–Richardson rule",
+      "Pieri formula",
+      "ballot sequences",
+      "LR tableaux",
+      "structure constants of Chow ring"
+    ],
+    "prerequisites": [
+      "Young tableaux",
+      "ballot sequences and lattice words",
+      "Schubert calculus",
+      "bilinear extension of ring multiplication"
+    ]
+  },
+  {
+    "id": "ann-h15oq01-key-products",
+    "proofId": "hilbert-15-oq-01",
+    "range": { "startLine": 204, "endLine": 229 },
+    "type": "theorem",
+    "title": "Key Intersection Products: Native_decide Verification",
+    "content": "Verifies all key basis products by `native_decide`: σ₁² = σ₂ + σ₁₁, σ₁·σ₂ = σ₂₁, σ₁·σ₁₁ = σ₂₁, σ₁·σ₂₁ = σ₂₂, σ₂² = σ₂₂, σ₁₁² = σ₂₂, σ₂·σ₁₁ = 0. The `native_decide` tactic compiles the DecidableEq instance to native code and runs it at elaboration time, providing kernel-trusted proofs of these finite computations. Each proof is a single tactic call — the computation is entirely mechanical once the ring axioms are encoded in basisMul.",
+    "mathContext": "**Pieri's rule** (special case of LR): $\\sigma_1 \\cdot \\sigma_\\lambda = \\sum_{\\mu} \\sigma_\\mu$ where the sum runs over partitions $\\mu$ obtained by adding 1 box to $\\lambda$ with no two boxes in the same column. For $(1)$: add 1 box to get $(2)$ or $(1,1)$, so $\\sigma_1^2 = \\sigma_2 + \\sigma_{11}$. For $(2)$: add 1 box to get $(2,1)$ only, so $\\sigma_1 \\cdot \\sigma_2 = \\sigma_{21}$. The vanishing $\\sigma_2 \\cdot \\sigma_{11} = 0$ is the only non-trivial zero in the table.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pieri's rule",
+      "native_decide tactic",
+      "DecidableEq",
+      "LR coefficient computation",
+      "kernel-level verification"
+    ],
+    "prerequisites": [
+      "basisMul definition",
+      "ChowGr24 multiplication instance",
+      "Pieri's rule for Gr(k,n)",
+      "Lean native_decide"
+    ]
+  },
+  {
+    "id": "ann-h15oq01-four-lines",
+    "proofId": "hilbert-15-oq-01",
+    "range": { "startLine": 231, "endLine": 255 },
+    "type": "theorem",
+    "title": "The Four Lines Theorem: σ₁⁴ = 2 by Computation",
+    "content": "Proves `sigma1_fourth`: σ₁ * σ₁ * σ₁ * σ₁ = ⟨0,0,0,0,0,2⟩ (the element 2σ₂₂), and `four_lines_number`: the c22 coefficient is exactly 2. Both by `native_decide`. The computation follows the chain: σ₁² = σ₂ + σ₁₁ → σ₁³ = σ₁(σ₂+σ₁₁) = σ₂₁ + σ₂₁ = 2σ₂₁ → σ₁⁴ = 2σ₁·σ₂₁ = 2σ₂₂. This is the most celebrated result of Schubert calculus: given 4 general lines in P³, exactly 2 lines meet all four.",
+    "mathContext": "The **four lines theorem** is the prototypical Schubert calculus result. In the Chow ring, $\\sigma_1$ is the class of lines meeting a fixed line. The intersection number $\\int_{\\mathrm{Gr}(2,4)} \\sigma_1^4 = 2$ counts, with multiplicity, the lines in $\\mathrm{Gr}(2,4)$ that meet 4 general lines — exactly 2 such lines exist by Kleiman's transversality theorem. Schubert computed this in 1879 using his symbolic calculus; the rigorous foundation is exactly Hilbert's 15th problem (1900), which asks for a precise definition of the intersection ring and a proof that the count is correct.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert's 15th problem",
+      "Schubert calculus",
+      "intersection numbers",
+      "Kleiman's transversality theorem",
+      "four lines in P³"
+    ],
+    "prerequisites": [
+      "sigma1_sq",
+      "sigma1_sigma21",
+      "degree map",
+      "Schubert's original 1879 computation",
+      "general position"
+    ]
+  },
+  {
+    "id": "ann-h15oq01-poincare-duality",
+    "proofId": "hilbert-15-oq-01",
+    "range": { "startLine": 257, "endLine": 279 },
+    "type": "theorem",
+    "title": "Poincaré Duality: Perfect Pairing on A*(Gr(2,4))",
+    "content": "Proves Poincaré duality for all 5 dual pairs: deg(σ₀·σ₂₂) = 1, deg(σ₁·σ₂₁) = 1, deg(σ₂·σ₂) = 1 (self-dual!), deg(σ₁₁·σ₁₁) = 1 (self-dual!), and the non-pairing deg(σ₂·σ₁₁) = 0. The dual partition λ* in a 2×2 box: (0,0)*=(2,2), (1)*=(2,1), (2)*=(2,0)=(2), (1,1)*=(1,1). The self-duality of σ₂ and σ₁₁ reflects the symmetry of the 2×2 box.",
+    "mathContext": "**Poincaré duality** on $A^*(\\mathrm{Gr}(2,4))$ is the perfect bilinear pairing $A^i \\times A^{4-i} \\to A^4 \\cong \\mathbb{Z}$ given by $(\\alpha, \\beta) \\mapsto \\int \\alpha \\cdot \\beta$. For Schubert classes: $\\int \\sigma_\\lambda \\cdot \\sigma_\\mu = \\delta_{\\lambda^*, \\mu}$ where $\\lambda^* = (2-\\lambda_2, 2-\\lambda_1)$ is the **complementary partition** in the $(k \\times (n-k))$-box (here $2 \\times 2$). Geometrically, $\\sigma_{\\lambda^*}$ is the class of the 'opposite' Schubert variety in a different flag.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Poincaré duality",
+      "complementary partition",
+      "degree map",
+      "perfect pairing",
+      "hard Lefschetz theorem"
+    ],
+    "prerequisites": [
+      "degree function",
+      "complementary partition in 2×2 box",
+      "Schubert class intersection",
+      "graded ring duality"
+    ]
+  },
+  {
+    "id": "ann-h15oq01-giambelli",
+    "proofId": "hilbert-15-oq-01",
+    "range": { "startLine": 281, "endLine": 301 },
+    "type": "theorem",
+    "title": "Giambelli's Formula: Expressing σ₁₁ as a Determinant",
+    "content": "Proves `giambelli_11`: σ₁² - σ₂ = σ₁₁, i.e., σ₁₁ = σ₁² - σ₂. Stated as: ⟨0,0,-1,0,0,0⟩ + σ₁² = σ₁₁ (using the convention σ₁² = σ₂ + σ₁₁ from sigma1_sq). Giambelli's formula for partition (1,1): σ₁₁ = det[σ₁ σ₂; σ₀ σ₁] = σ₁² - σ₂·1 = σ₁² - σ₂. Also proves `giambelli_21`: σ₁·σ₂ = σ₂₁ (since σ₃ = 0 in the 2×2 box).",
+    "mathContext": "**Giambelli's formula** expresses any Schubert class as a determinant of special Schubert classes (single-row partitions): $\\sigma_{(\\lambda_1,\\lambda_2)} = \\det\\begin{pmatrix} \\sigma_{\\lambda_1} & \\sigma_{\\lambda_1+1} \\\\ \\sigma_{\\lambda_2-1} & \\sigma_{\\lambda_2} \\end{pmatrix}$ where $\\sigma_k = 0$ for $k > n-k$ (here $> 2$). This formula, combined with Pieri's rule for multiplying by $\\sigma_1$, generates the entire ring. It is the algebraic manifestation of the matrix structure of Schubert varieties under the Plücker embedding.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Giambelli's formula",
+      "determinantal formula",
+      "Plücker embedding",
+      "special Schubert classes",
+      "Pieri's rule"
+    ],
+    "prerequisites": [
+      "sigma1_sq",
+      "Giambelli's determinantal formula",
+      "single-row Schubert classes",
+      "Plücker embedding of Gr(k,n)"
+    ]
+  },
+  {
+    "id": "ann-h15oq01-enumerative",
+    "proofId": "hilbert-15-oq-01",
+    "range": { "startLine": 303, "endLine": 335 },
+    "type": "insight",
+    "title": "Enumerative Applications: Classical Counting via Intersection Theory",
+    "content": "Proves three classical enumerative results: (1) deg(σ₁²·σ₁₁) = 1 — exactly one line passes through a fixed point and meets 2 general lines; (2) deg(σ₁²·σ₂) = 1 — exactly one line lies in a fixed plane and meets 2 general lines; (3) deg(σ₁³·σ₁₁) = 0 — the system 'meets 3 lines and passes through a point' is overdetermined (dimension count: 3 codim-1 + 1 codim-2 > 4). Also verifies commutativity of basisMul via `decide` (checks all 36 pairs).",
+    "mathContext": "These enumerative results exemplify Schubert's original philosophy: **intersection theory replaces geometric construction**. Instead of finding lines explicitly, we compute $\\int \\sigma_1^a \\cdot \\sigma_{\\mu_1} \\cdots \\sigma_{\\mu_k} = $ number of lines satisfying all conditions. The condition 'meets a line' contributes $\\sigma_1$; 'through a point' contributes $\\sigma_{11}$; 'in a plane' contributes $\\sigma_2$. The product then counts solutions (when the expected dimension is 0) or shows no solution generically (when negative expected dimension makes the product 0).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "enumerative geometry",
+      "intersection numbers",
+      "expected dimension",
+      "overdetermined systems",
+      "Schubert's symbolic method"
+    ],
+    "prerequisites": [
+      "Chow ring multiplication",
+      "degree map",
+      "geometric interpretation of Schubert conditions",
+      "expected dimension formula"
+    ]
+  }
+]
