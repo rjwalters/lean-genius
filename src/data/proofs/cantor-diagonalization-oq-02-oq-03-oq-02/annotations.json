@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ann-01",
+    "line": 55,
+    "type": "definition",
+    "title": "IsUnboundedBelow: Cofinal Condition",
+    "body": "A set S is unbounded below κ.ord if it is cofinal: for any ordinal α < κ.ord, S contains some element strictly between α and κ.ord. This is the 'U' in 'cUb' (closed unbounded).",
+    "mathContext": "In ordinal topology, a set S ⊆ κ.ord is unbounded if ∀ α < κ.ord, ∃ β ∈ S, α < β. Equivalently, S is cofinal in the ordinal κ.ord.",
+    "leanSnippet": "def IsUnboundedBelow (κ : Cardinal.{u}) (S : Set Ordinal.{u}) : Prop :=\n  ∀ α, α < κ.ord → ∃ β ∈ S, α < β ∧ β < κ.ord"
+  },
+  {
+    "id": "ann-02",
+    "line": 65,
+    "type": "definition",
+    "title": "IsClosedBelow: Limit Point Condition",
+    "body": "A set S is closed below κ.ord if every limit ordinal γ < κ.ord that is a 'limit point' of S (S is cofinal in γ) belongs to S. This is the 'C' in 'Cub' (Closed unbounded). The closed condition is what distinguishes clubs from merely unbounded sets.",
+    "mathContext": "In the order topology on ordinals, a set is closed iff it is closed under suprema of bounded increasing sequences. For ordinals below κ.ord, this means: if (α_i) is an increasing sequence in S with sup γ < κ.ord, then γ ∈ S.",
+    "leanSnippet": "def IsClosedBelow (κ : Cardinal.{u}) (S : Set Ordinal.{u}) : Prop :=\n  ∀ γ, γ < κ.ord → γ.IsLimit →\n  (∀ α, α < γ → ∃ δ ∈ S, α < δ ∧ δ < γ) → γ ∈ S"
+  },
+  {
+    "id": "ann-03",
+    "line": 121,
+    "type": "definition",
+    "title": "diagInter: The Diagonal Intersection",
+    "body": "The diagonal intersection of a family f is the set of ordinals α that belong to f(β) for every β < α. Unlike the ordinary intersection (which requires membership in every f(β) for ALL β), the diagonal intersection only requires membership in f(β) for β BELOW α. This asymmetry is what makes the diagonal intersection of κ clubs a club — a remarkable fact given that the ordinary intersection of κ clubs may not be one.",
+    "mathContext": "If (C_β)_{β < κ} is a family of clubs in κ.ord, then:\n• Ordinary intersection ∩_β C_β may not be a club (too small)\n• Diagonal intersection {α | ∀ β < α, α ∈ C_β} IS a club\n\nThe diagonal intersection was introduced by Fodor (1956) precisely to prove his pressing-down lemma.",
+    "leanSnippet": "def diagInter (f : Ordinal.{u} → Set Ordinal.{u}) : Set Ordinal.{u} :=\n  {α | ∀ β, β < α → α ∈ f β}"
+  },
+  {
+    "id": "ann-04",
+    "line": 145,
+    "type": "theorem",
+    "title": "diagInter_isClosedBelow: The Closed Part (PROVED)",
+    "body": "The diagonal intersection of clubs is closed. This is the easier half of the main lemma and is fully proved in this file.\n\nThe proof is elegant: given a limit ordinal γ < κ.ord with diagInter f cofinal in γ, fix any β < γ. For any α < γ, we can find δ ∈ diagInter f with max(α,β) < δ < γ. Since δ ∈ diagInter f and β < δ, we have δ ∈ f(β). So f(β) is cofinal in γ. Since f(β) is a club (hence closed), γ ∈ f(β). As β was arbitrary, γ ∈ diagInter f.",
+    "mathContext": "The proof requires no regularity of κ! The closed part of the diagonal intersection theorem holds for any family of clubs, regardless of the size of the index set. Only the unbounded part requires regularity.",
+    "leanSnippet": "theorem diagInter_isClosedBelow {κ : Cardinal.{u}} {f : Ordinal.{u} → Set Ordinal.{u}}\n    (hf : ∀ β, β < κ.ord → IsClub κ (f β)) :\n    IsClosedBelow κ (diagInter f)"
+  },
+  {
+    "id": "ann-05",
+    "line": 195,
+    "type": "theorem",
+    "title": "diagInter_isUnbounded: The Unbounded Part (SORRY)",
+    "body": "This is the one sorry in the file. The proof sketch is given in full in the docstring:\n\n1. Build an ω-sequence α₀ < α₁ < α₂ < ... where α_{n+1} ∈ ∩_{β ≤ α_n} C_β (this requires that finite intersections of clubs are clubs).\n2. Let α_ω = iSup(n, α_n). By regularity of κ and `Ordinal.iSup_lt_ord`, α_ω < κ.ord.\n3. For any β < α_ω, find n with β ≤ α_n. Then (α_m)_{m > n} is a sequence in C_β (since each α_{m+1} ∈ C_β as β ≤ α_n ≤ α_m) converging to α_ω. Since C_β is closed, α_ω ∈ C_β.\n\nThe missing sub-lemma is: intersection of two clubs is a club (the 'ping-pong' argument).",
+    "mathContext": "The unbounded part is where regularity of κ is essential. For singular κ (like ℵ_ω), the diagonal intersection need not be unbounded — there exist regressive functions on all of κ.ord that are not constant on any stationary set. Regularity ensures ω-sequences stay below κ.ord.",
+    "leanSnippet": "-- SORRY with proof sketch:\ntheorem diagInter_isUnbounded {κ : Cardinal.{u}} (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)\n    {f : Ordinal.{u} → Set Ordinal.{u}} (hf : ∀ β, β < κ.ord → IsClub κ (f β)) :\n    IsUnboundedBelow κ (diagInter f)"
+  },
+  {
+    "id": "ann-06",
+    "line": 242,
+    "type": "theorem",
+    "title": "fodors_pressing_down: The Main Theorem (PROVED)",
+    "body": "Fodor's pressing-down lemma, fully proved modulo the one sorry (diagInter_isUnbounded).\n\nThe proof:\n1. Assume for contradiction: no fiber f⁻¹(β) ∩ S is stationary.\n2. For each β < κ.ord, choose a club C_β disjoint from f⁻¹(β) ∩ S.\n3. Form D = diagInter C (a club by diagInter_isClub).\n4. Since S is stationary: ∃ α ∈ S ∩ D.\n5. f is regressive: β₀ := f(α) < α.\n6. α ∈ D and β₀ < α → α ∈ C_{β₀}.\n7. But C_{β₀} is disjoint from f⁻¹(β₀) ∩ S, and α ∈ f⁻¹(β₀) ∩ S. Contradiction.",
+    "mathContext": "Note that the regressive condition f(α) < α for all α ∈ S automatically forces 0 ∉ S (since no ordinal is < 0). This means S consists entirely of positive ordinals, which is needed for step 5.",
+    "leanSnippet": "theorem fodors_pressing_down\n    {κ : Cardinal.{u}} (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)\n    {S : Set Ordinal.{u}} (hS : IsStationary κ S)\n    (hS_sub : ∀ α ∈ S, α < κ.ord)\n    {f : Ordinal.{u} → Ordinal.{u}} (hf_reg : ∀ α ∈ S, f α < α) :\n    ∃ β, β < κ.ord ∧ IsStationary κ {α ∈ S | f α = β}"
+  }
+]
