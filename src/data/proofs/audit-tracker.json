@@ -97,7 +97,7 @@
     "angle-trisection": {
       "auditCount": 9,
       "issues": [],
-      "lastAudited": "2026-04-04T04:37:28Z",
+      "lastAudited": "2026-04-04T05:07:16Z",
       "result": "clean"
     },
     "angle-trisection-oq-01": {
@@ -2081,10 +2081,10 @@
       "result": "clean"
     },
     "erdos-1040": {
-      "auditCount": 5,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-04-04T04:40:13Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-03T21:54:44Z",
+      "result": "clean"
     },
     "erdos-1041": {
       "auditCount": 3,
@@ -2785,7 +2785,7 @@
     "erdos-1131-oq-01": {
       "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-04T04:35:31Z",
+      "lastAudited": "2026-04-04T05:07:16Z",
       "result": "clean"
     },
     "erdos-1132": {
@@ -3403,11 +3403,11 @@
       "result": "clean"
     },
     "erdos-157": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [
         "sorry mismatch corrected in meta.json"
       ],
-      "lastAudited": "2026-04-04T01:13:06Z",
+      "lastAudited": "2026-04-04T05:06:54Z",
       "result": "issues-fixed"
     },
     "erdos-158": {
@@ -10104,13 +10104,13 @@
     "navier-stokes": {
       "auditCount": 10,
       "issues": [],
-      "lastAudited": "2026-04-04T04:37:28Z",
+      "lastAudited": "2026-04-04T05:07:16Z",
       "result": "clean"
     },
     "navier-stokes-existence": {
       "auditCount": 8,
       "issues": [],
-      "lastAudited": "2026-04-04T04:37:28Z",
+      "lastAudited": "2026-04-04T05:07:16Z",
       "result": "clean"
     },
     "navier-stokes-oq-01": {
@@ -11265,9 +11265,9 @@
       "issues": []
     },
     "erdos-1098-oq-04": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-04T04:32:23Z",
-      "result": "issues-fixed",
+      "auditCount": 1,
+      "lastAudited": "2026-04-03T09:33:04Z",
+      "result": "clean",
       "issues": []
     },
     "erdos-659-oq-01": {
@@ -11349,21 +11349,21 @@
       "issues": []
     },
     "abel-ruffini-oq-04-oq-07": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-04T04:43:28Z",
+      "auditCount": 1,
+      "lastAudited": "2026-04-04T05:07:17Z",
       "result": "clean",
-      "issues": []
-    },
-    "fair-games-theorem-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-04-04T04:43:28Z",
-      "result": "issues-fixed",
       "issues": []
     },
     "arithmetic-series-oq-04": {
       "auditCount": 1,
-      "lastAudited": "2026-04-04T04:43:28Z",
+      "lastAudited": "2026-04-04T05:07:17Z",
       "result": "clean",
+      "issues": []
+    },
+    "fair-games-theorem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-04T05:07:17Z",
+      "result": "issues-fixed",
       "issues": []
     }
   },
