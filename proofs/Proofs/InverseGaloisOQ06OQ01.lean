@@ -65,7 +65,10 @@ theorem q_deriv_pos (x : ℝ) : 0 < aeval x (Polynomial.derivative q) := by
       derivative_X, derivative_C, derivative_one, Nat.cast_ofNat,
       aeval_sub, aeval_add, aeval_mul, map_pow, aeval_X, aeval_C, aeval_one, map_zero,
       mul_one, nsmul_eq_mul, zero_mul, mul_zero, zero_add, add_zero]
-    norm_cast; ring
+    -- algebraMap ℚ ℝ = Rat.cast definitionally; Rat.cast_ofNat reduces numerals
+    simp only [show (algebraMap ℚ ℝ) = ((↑) : ℚ → ℝ) from rfl,
+      Rat.cast_ofNat, Rat.cast_neg, Rat.cast_one]
+    ring
   linarith [show (0 : ℝ) ≤ (x - 1) ^ 4 from by positivity, this.symm.le]
 
 -- ============================================================================
@@ -83,13 +86,17 @@ theorem q_strictMono : StrictMono (fun x : ℝ => aeval x q) := by
 /-- q(0) = -5. -/
 private theorem q_aeval_zero : aeval (0 : ℝ) q = -5 := by
   simp only [q, aeval_sub, aeval_add, aeval_mul, map_pow, aeval_X, aeval_C, aeval_one]
-  norm_cast; norm_num
+  simp only [show (algebraMap ℚ ℝ) = ((↑) : ℚ → ℝ) from rfl,
+    Rat.cast_ofNat, Rat.cast_neg, Rat.cast_one]
+  norm_num
 
 /-- q(6) > 0. -/
 private theorem q_aeval_six_pos : 0 < aeval (6 : ℝ) q := by
   have : aeval (6 : ℝ) q = 3241 := by
     simp only [q, aeval_sub, aeval_add, aeval_mul, map_pow, aeval_X, aeval_C, aeval_one]
-    norm_cast; norm_num
+    simp only [show (algebraMap ℚ ℝ) = ((↑) : ℚ → ℝ) from rfl,
+      Rat.cast_ofNat, Rat.cast_neg, Rat.cast_one]
+    norm_num
   linarith
 
 /-- q has at least one real root (IVT: q(0) = -5 < 0, q(6) > 0). -/
