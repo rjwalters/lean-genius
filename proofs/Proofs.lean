@@ -143,6 +143,7 @@ import Proofs.BoundedPrimeGapsOQ03
 import Proofs.BoundedPrimeGapsOQ03OQ01
 import Proofs.BoundedPrimeGapsOQ04
 import Proofs.BoundedPrimeGapsOQ04OQ01
+import Proofs.BoundedPrimeGapsOQ04OQ01Aristotle
 import Proofs.BoundedPrimeGapsOQ04OQ02
 import Proofs.BoundedPrimeGapsSieve
 import Proofs.BoundedPrimeGapsTPC
@@ -200,6 +201,7 @@ import Proofs.CauchySchwarzOQ01OQ02
 import Proofs.CauchySchwarzOQ01OQ03
 import Proofs.CauchySchwarzOQ01OQ04
 import Proofs.CauchySchwarzOQ02
+import Proofs.CauchySchwarzOQ02OQ01
 import Proofs.CauchySchwarzOQ03
 import Proofs.CauchySchwarzOQ03OQ01
 import Proofs.CauchySchwarzOQ03OQ02
@@ -409,6 +411,7 @@ import Proofs.Erdos101Problem
 import Proofs.Erdos1020Problem
 import Proofs.Erdos1021Aristotle
 import Proofs.Erdos1021OQ01
+import Proofs.Erdos1021OQ01Aristotle
 import Proofs.Erdos1021Problem
 import Proofs.Erdos1022OQ01
 import Proofs.Erdos1022OQ03
@@ -472,6 +475,7 @@ import Proofs.Erdos1056OQ01
 import Proofs.Erdos1056Problem
 import Proofs.Erdos1057Problem
 import Proofs.Erdos1058Problem
+import Proofs.Erdos1059OQ02
 import Proofs.Erdos1059OQ03
 import Proofs.Erdos1059OQ05
 import Proofs.Erdos1059Problem
@@ -811,6 +815,7 @@ import Proofs.Erdos259Problem
 import Proofs.Erdos25Abel
 import Proofs.Erdos25LogDensity
 import Proofs.Erdos25Problem
+import Proofs.Erdos260Aristotle
 import Proofs.Erdos260Problem
 import Proofs.Erdos261Problem
 import Proofs.Erdos262Problem
@@ -883,6 +888,7 @@ import Proofs.Erdos314Problem
 import Proofs.Erdos315Problem
 import Proofs.Erdos316Problem
 import Proofs.Erdos317Problem
+import Proofs.Erdos318Aristotle
 import Proofs.Erdos318Problem
 import Proofs.Erdos319Problem
 import Proofs.Erdos31PrimesDensity
@@ -904,6 +910,7 @@ import Proofs.Erdos330Problem
 import Proofs.Erdos331Problem
 import Proofs.Erdos332Problem
 import Proofs.Erdos333Problem
+import Proofs.Erdos334Aristotle
 import Proofs.Erdos334Problem
 import Proofs.Erdos335Problem
 import Proofs.Erdos336Problem
@@ -954,6 +961,7 @@ import Proofs.Erdos375Aristotle
 import Proofs.Erdos375Problem
 import Proofs.Erdos376Problem
 import Proofs.Erdos377Problem
+import Proofs.Erdos378Aristotle
 import Proofs.Erdos378Problem
 import Proofs.Erdos379Problem
 import Proofs.Erdos37Problem
@@ -1015,6 +1023,7 @@ import Proofs.Erdos42Problem
 import Proofs.Erdos430Problem
 import Proofs.Erdos431Problem
 import Proofs.Erdos432Problem
+import Proofs.Erdos433Aristotle
 import Proofs.Erdos433Problem
 import Proofs.Erdos434Aristotle
 import Proofs.Erdos434Problem
@@ -1068,6 +1077,7 @@ import Proofs.Erdos472Problem
 import Proofs.Erdos473Problem
 import Proofs.Erdos474Problem
 import Proofs.Erdos475Problem
+import Proofs.Erdos476Aristotle
 import Proofs.Erdos476Problem
 import Proofs.Erdos477Problem
 import Proofs.Erdos478Problem
@@ -1091,6 +1101,7 @@ import Proofs.Erdos490Aristotle
 import Proofs.Erdos490OQ01
 import Proofs.Erdos490Problem
 import Proofs.Erdos491Problem
+import Proofs.Erdos492Aristotle
 import Proofs.Erdos492Problem
 import Proofs.Erdos493Problem
 import Proofs.Erdos494Problem
@@ -1138,6 +1149,7 @@ import Proofs.Erdos528Problem
 import Proofs.Erdos529Problem
 import Proofs.Erdos52Problem
 import Proofs.Erdos530Problem
+import Proofs.Erdos531Aristotle
 import Proofs.Erdos531Problem
 import Proofs.Erdos532Problem
 import Proofs.Erdos533Problem
@@ -1187,6 +1199,7 @@ import Proofs.Erdos576Problem
 import Proofs.Erdos577Problem
 import Proofs.Erdos578Problem
 import Proofs.Erdos579Problem
+import Proofs.Erdos57Aristotle
 import Proofs.Erdos57Problem
 import Proofs.Erdos580Problem
 import Proofs.Erdos581Problem
@@ -1231,9 +1244,11 @@ import Proofs.Erdos617Problem
 import Proofs.Erdos618Problem
 import Proofs.Erdos619Problem
 import Proofs.Erdos61Problem
+import Proofs.Erdos620Aristotle
 import Proofs.Erdos620Problem
 import Proofs.Erdos621Problem
 import Proofs.Erdos622Problem
+import Proofs.Erdos623Aristotle
 import Proofs.Erdos623Problem
 import Proofs.Erdos624Problem
 import Proofs.Erdos625Problem
@@ -1242,8 +1257,10 @@ import Proofs.Erdos62Problem
 import Proofs.Erdos632Aristotle
 import Proofs.Erdos632Problem
 import Proofs.Erdos633Problem
+import Proofs.Erdos634Aristotle
 import Proofs.Erdos634Problem
 import Proofs.Erdos635Problem
+import Proofs.Erdos636Aristotle
 import Proofs.Erdos636Problem
 import Proofs.Erdos637Aristotle
 import Proofs.Erdos637Problem
@@ -1252,6 +1269,7 @@ import Proofs.Erdos639Problem
 import Proofs.Erdos63Problem
 import Proofs.Erdos640Problem
 import Proofs.Erdos641Problem
+import Proofs.Erdos642Aristotle
 import Proofs.Erdos642Problem
 import Proofs.Erdos643Problem
 import Proofs.Erdos644Problem
@@ -1357,6 +1375,7 @@ import Proofs.Erdos727Problem
 import Proofs.Erdos728FactorialDivisibility
 import Proofs.Erdos728Problem
 import Proofs.Erdos729Problem
+import Proofs.Erdos72Aristotle
 import Proofs.Erdos72Problem
 import Proofs.Erdos730Problem
 import Proofs.Erdos731Problem
@@ -1368,6 +1387,7 @@ import Proofs.Erdos736Problem
 import Proofs.Erdos737Problem
 import Proofs.Erdos738Problem
 import Proofs.Erdos739Problem
+import Proofs.Erdos73Aristotle
 import Proofs.Erdos73Problem
 import Proofs.Erdos740Problem
 import Proofs.Erdos740ProblemProvable
@@ -1405,6 +1425,7 @@ import Proofs.Erdos769Problem
 import Proofs.Erdos770Problem
 import Proofs.Erdos771Aristotle
 import Proofs.Erdos771Problem
+import Proofs.Erdos771ProblemAristotle
 import Proofs.Erdos772Problem
 import Proofs.Erdos773Problem
 import Proofs.Erdos774Problem
@@ -1435,6 +1456,7 @@ import Proofs.Erdos797Problem
 import Proofs.Erdos798Aristotle
 import Proofs.Erdos798Problem
 import Proofs.Erdos799Problem
+import Proofs.Erdos79Aristotle
 import Proofs.Erdos79Problem
 import Proofs.Erdos7Problem
 import Proofs.Erdos800Problem
@@ -1455,6 +1477,7 @@ import Proofs.Erdos813Problem
 import Proofs.Erdos814Problem
 import Proofs.Erdos815Problem
 import Proofs.Erdos816Problem
+import Proofs.Erdos817Aristotle
 import Proofs.Erdos817Problem
 import Proofs.Erdos818Problem
 import Proofs.Erdos819Problem
@@ -1515,6 +1538,7 @@ import Proofs.Erdos867Problem
 import Proofs.Erdos868Problem
 import Proofs.Erdos869Problem
 import Proofs.Erdos86Problem
+import Proofs.Erdos870Aristotle
 import Proofs.Erdos870Problem
 import Proofs.Erdos871Problem
 import Proofs.Erdos872Problem
@@ -1523,6 +1547,7 @@ import Proofs.Erdos873ProblemProvable
 import Proofs.Erdos874Problem
 import Proofs.Erdos875Problem
 import Proofs.Erdos876Problem
+import Proofs.Erdos877Aristotle
 import Proofs.Erdos877Problem
 import Proofs.Erdos878Problem
 import Proofs.Erdos879Problem
@@ -1546,6 +1571,7 @@ import Proofs.Erdos893Problem
 import Proofs.Erdos894Problem
 import Proofs.Erdos895Aristotle
 import Proofs.Erdos895Problem
+import Proofs.Erdos895ProblemAristotle
 import Proofs.Erdos896Problem
 import Proofs.Erdos897Problem
 import Proofs.Erdos899Problem
@@ -1576,6 +1602,7 @@ import Proofs.Erdos919Problem
 import Proofs.Erdos91Problem
 import Proofs.Erdos920Problem
 import Proofs.Erdos921Problem
+import Proofs.Erdos922Aristotle
 import Proofs.Erdos922Problem
 import Proofs.Erdos923Problem
 import Proofs.Erdos924Problem
@@ -1588,6 +1615,7 @@ import Proofs.Erdos92Problem
 import Proofs.Erdos930Problem
 import Proofs.Erdos931Problem
 import Proofs.Erdos932Problem
+import Proofs.Erdos933Aristotle
 import Proofs.Erdos933Problem
 import Proofs.Erdos934Problem
 import Proofs.Erdos934ProblemAristotle
@@ -1620,6 +1648,7 @@ import Proofs.Erdos958Problem
 import Proofs.Erdos959Problem
 import Proofs.Erdos95Problem
 import Proofs.Erdos960Problem
+import Proofs.Erdos961Aristotle
 import Proofs.Erdos961Problem
 import Proofs.Erdos962Problem
 import Proofs.Erdos963Problem
@@ -1644,6 +1673,7 @@ import Proofs.Erdos978Problem
 import Proofs.Erdos979Problem
 import Proofs.Erdos980Problem
 import Proofs.Erdos981Problem
+import Proofs.Erdos982Aristotle
 import Proofs.Erdos982Problem
 import Proofs.Erdos983Problem
 import Proofs.Erdos984Problem
@@ -1695,6 +1725,7 @@ import Proofs.FeuerbachsTheoremDefs
 import Proofs.FeuerbachsTheoremOQ01
 import Proofs.FeuerbachsTheoremOQ01Aristotle
 import Proofs.FeuerbachsTheoremOQ02
+import Proofs.FeuerbachsTheoremOQ02Aristotle
 import Proofs.FeuerbachsTheoremOQ05
 import Proofs.FiveColorTheorem
 import Proofs.FourColorTheorem
@@ -1814,6 +1845,7 @@ import Proofs.InverseGaloisD4
 import Proofs.InverseGaloisF20
 import Proofs.InverseGaloisOQ01
 import Proofs.InverseGaloisOQ02
+import Proofs.InverseGaloisOQ02Aristotle
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoperimetricTheoremOQ01
 import Proofs.IsoscelesTriangle
@@ -1828,10 +1860,12 @@ import Proofs.KonigsbergOQ03
 import Proofs.KroneckersJugendtraum
 import Proofs.KummerTheorem
 import Proofs.KummerTheoremOQ01
+import Proofs.KummerTheoremOQ01Aristotle
 import Proofs.KummerTheoremOQ02
 import Proofs.KummerTheoremOQ03
 import Proofs.LHopital
 import Proofs.LHopitalOQ02
+import Proofs.LHopitalOQ02Aristotle
 import Proofs.LHopitalOQ03
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeFourSquaresOQ01
@@ -1895,6 +1929,7 @@ import Proofs.ParallelPostulateIndependenceOQ02
 import Proofs.PartitionTheorem
 import Proofs.PartitionTheoremOQ01
 import Proofs.PartitionTheoremOQ03
+import Proofs.PartitionTheoremOQ04
 import Proofs.PascalsHexagon
 import Proofs.PellEquation
 import Proofs.PellEquationOQ01
@@ -1951,6 +1986,7 @@ import Proofs.RothTheorem
 import Proofs.RothTheoremAristotle
 import Proofs.RothTheoremOQ03
 import Proofs.RothTheoremQuantitative
+import Proofs.RothTheoremQuantitativeAristotle
 import Proofs.RothTriangleRemoval
 import Proofs.SchauderFixedPoint
 import Proofs.SchauderFixedPointOQ01
@@ -1965,6 +2001,8 @@ import Proofs.ShannonChannelCodingOQ02
 import Proofs.ShannonChannelCodingOQ04
 import Proofs.ShannonEntropy
 import Proofs.ShannonEntropyAristotle
+import Proofs.ShannonEntropyOQ01
+import Proofs.ShannonEntropyOQ01Aristotle
 import Proofs.ShannonEntropyOQ02
 import Proofs.ShannonEntropySSA
 import Proofs.ShannonEntropySSAAristotle
@@ -2004,6 +2042,7 @@ import Proofs.SubsetCount
 import Proofs.SubsetCountOQ02
 import Proofs.SumOfDivisors
 import Proofs.SumOfKthPowers
+import Proofs.SumOfKthPowersOQ01
 import Proofs.SumOfKthPowersOQ02
 import Proofs.SumOfKthPowersOQ04
 import Proofs.SylowTheorem
