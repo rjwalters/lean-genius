@@ -1,0 +1,230 @@
+{
+  "id": "arithmetic-series-oq-04",
+  "title": "Faulhaber's Formula: Power Sums via Bernoulli Numbers",
+  "slug": "arithmetic-series-oq-04",
+  "description": "Faulhaber's formula expresses the sum of p-th powers ∑_{k=1}^n k^p as a polynomial in n via Bernoulli numbers. Mathlib has the full proof as sum_Ico_pow and sum_range_pow. This file states the formula, derives the classical cases p=1,2,3 by induction, records Bernoulli number values, and proves the Bernoulli polynomial form.",
+  "meta": {
+    "author": "Johann Faulhaber (1580–1635); Jacob Bernoulli (1713); formalized in Lean 4",
+    "date": "1713",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ04.lean",
+    "tags": [
+      "number-theory",
+      "bernoulli",
+      "power-sums",
+      "combinatorics",
+      "arithmetic-series",
+      "induction"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 177,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "sum_Ico_pow",
+        "description": "Faulhaber's formula: ∑_{k∈Ico 1 (n+1)} k^p = ∑_{i≤p} B'_i * C(p+1,i) * n^(p+1-i) / (p+1)",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "sum_range_pow",
+        "description": "Alternative form: ∑_{k∈range n} k^p = ∑_{i≤p} B_i * C(p+1,i) * n^(p+1-i) / (p+1)",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "Polynomial.sum_range_pow_eq_bernoulli_sub",
+        "description": "(p+1) * ∑_{k<n} k^p = B_{p+1}(n) - B_{p+1}",
+        "module": "Mathlib.NumberTheory.BernoulliPolynomials"
+      },
+      {
+        "theorem": "bernoulli'_zero",
+        "description": "B'_0 = 1",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "bernoulli'_one",
+        "description": "B'_1 = 1/2",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "bernoulli'_eq_zero_of_odd",
+        "description": "B'_n = 0 for odd n ≥ 3",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      }
+    ],
+    "dateAdded": "2026-04-03"
+  },
+  "overview": {
+    "historicalContext": "Johann Faulhaber (1580–1635), a German mathematician, published remarkably general formulas for sums of powers in his 1631 work *Academia Algebrae*. He gave explicit formulas for ∑_{k=1}^n k^p up to p=17, working in terms of what we now call Bernoulli numbers (though he did not identify them as such). He observed that the formula for even powers could be expressed in terms of the triangular number T(n) = n(n+1)/2.\n\nJacob Bernoulli recognized the general pattern in his posthumous *Ars Conjectandi* (1713), introducing the numbers B_0, B_1, B_2, ... and writing a unified formula:\n$$\\sum_{k=1}^{n} k^p = \\frac{1}{p+1} \\sum_{i=0}^{p} \\binom{p+1}{i} B'_i \\cdot n^{p+1-i}$$\nThis formula connects power sums to combinatorics (binomial coefficients) and number theory (Bernoulli numbers), making it one of the most beautiful formulas in classical mathematics.\n\nBernoulli numbers arise ubiquitously in mathematics: in the Taylor series of trigonometric functions (tan x = ∑ B_{2n} x^{2n-1}), in the Riemann zeta function (ζ(-n) = -B_{n+1}/(n+1)), in Euler-Maclaurin summation formulas, and in algebraic topology (Hirzebruch's signature theorem). The 2n-th Bernoulli number appears in the formula for the number of exotic spheres in dimension 4n-1.",
+    "problemStatement": "**Open Question (arithmetic-series-oq-04)**: Can we formalize Faulhaber's formula, which gives a closed-form expression for the sum of p-th powers in terms of Bernoulli numbers?\n\n$$\\sum_{k=1}^{n} k^p = \\sum_{i=0}^{p} B'_i \\binom{p+1}{i} \\frac{n^{p+1-i}}{p+1}$$\n\nwhere $B'_i$ are the Bernoulli numbers (with $B'_1 = +1/2$).\n\n**Answer: YES**, via Mathlib's `sum_Ico_pow` theorem.",
+    "text": "A 177-line formalization of Faulhaber's formula for sums of powers. The main theorem `faulhaber_formula` is a direct alias of Mathlib's `sum_Ico_pow`. Specific cases (p=0,1,2,3) are derived by induction with `push_cast; linarith`. Bernoulli number values B'_0=1, B'_1=1/2, B'_2=1/6, B'_3=0 are recorded as aliases of Mathlib theorems, along with the vanishing of odd Bernoulli numbers. Concrete values (∑k=55, ∑k²=385, ∑k³=3025=55² for k=1..10) are verified by `native_decide`. The Bernoulli polynomial form is proved via `Polynomial.sum_range_pow_eq_bernoulli_sub`. Fully verified: 0 sorries, 0 axioms.",
+    "proofStrategy": "The main theorem `faulhaber_formula` is proved in one line by applying Mathlib's `sum_Ico_pow`. The specific cases use mathematical induction:\n\n**Sum of first powers (p=1)**: By induction on n. Base: empty sum = 0 = 0*1/2. Step: apply `Finset.sum_Ico_succ_top` to extend the range, then `push_cast` (cast ℕ to ℚ), then `linarith` (linear arithmetic over ℚ closes the goal since (n+1)(n+2)/2 = n(n+1)/2 + (n+1)).\n\n**Sum of squares (p=2)** and **sum of cubes (p=3)**: Same structure — induction, `sum_Ico_succ_top`, `push_cast`, `linarith`. For p=3, `linarith` succeeds because (n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)² expands to a polynomial identity provable by linear arithmetic after `push_cast` makes the coercions explicit.\n\n**Bernoulli polynomial form**: `faulhaber_bernoulli_polynomial` is a one-line application of `Polynomial.sum_range_pow_eq_bernoulli_sub`.",
+    "keyInsights": [
+      "Mathlib has `sum_Ico_pow` as a theorem in `NumberTheory.Bernoulli`, making `faulhaber_formula` a one-line alias.",
+      "With `open Polynomial`, the name `bernoulli` becomes ambiguous (between `_root_.bernoulli : ℕ → ℚ` and `Polynomial.bernoulli : ℕ → ℚ[X]`). Use `_root_.bernoulli` to disambiguate in `faulhaber_formula_range`.",
+      "Specific cases (p=1,2,3) are cleanest via induction + `push_cast; linarith`, avoiding symbolic evaluation of the Bernoulli sum. Direct application of `faulhaber_formula` with `norm_num` or `simp` would require evaluating the finite sum symbolically.",
+      "The identity ∑k³ = (∑k)² = (n(n+1)/2)² for k=1..n (the sum of cubes equals the square of the triangular number) is a striking corollary, verified both symbolically and for n=10 by `native_decide`.",
+      "The two Bernoulli number conventions (B_1 = -1/2 in `bernoulli`, B'_1 = +1/2 in `bernoulli'`) correspond to summing over k∈{0,...,n-1} vs k∈{1,...,n} respectively. Both are in Mathlib."
+    ],
+    "prerequisites": [
+      "Rational arithmetic and polynomial rings",
+      "Bernoulli numbers (basic knowledge)",
+      "Finset sum manipulation in Lean 4/Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "faulhaber-formula",
+      "title": "Part I: Faulhaber's Formula",
+      "startLine": 51,
+      "endLine": 60,
+      "summary": "faulhaber_formula: direct alias of sum_Ico_pow. faulhaber_formula_range: alias of sum_range_pow (uses _root_.bernoulli to avoid Polynomial.bernoulli ambiguity).",
+      "mathContext": "$$\\sum_{k=1}^{n} k^p = \\sum_{i=0}^{p} B'_i \\binom{p+1}{i} \\frac{n^{p+1-i}}{p+1}$$\nThe formula involves the Bernoulli numbers with the $+1/2$ convention ($B'_1 = +1/2$). Mathlib's `sum_Ico_pow` proves this identity over $\\mathbb{Q}$. The alternative form `faulhaber_formula_range` sums from 0 to n-1 and uses the other convention $B_1 = -1/2$."
+    },
+    {
+      "id": "specific-cases",
+      "title": "Part II: Specific Cases (Corollaries)",
+      "startLine": 71,
+      "endLine": 113,
+      "summary": "sum_powers_zero: ∑1=n via simp. sum_powers_one: ∑k=n(n+1)/2 by induction+linarith. sum_powers_two: ∑k²=n(n+1)(2n+1)/6 by induction+linarith. sum_powers_three: ∑k³=(n(n+1)/2)² by induction+linarith.",
+      "mathContext": "The four classical power sum formulas:\n- $\\sum_{k=1}^{n} 1 = n$ (trivial)\n- $\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}$ (Gauss, c. 1790)\n- $\\sum_{k=1}^{n} k^2 = \\frac{n(n+1)(2n+1)}{6}$ (classical)\n- $\\sum_{k=1}^{n} k^3 = \\left(\\frac{n(n+1)}{2}\\right)^2$ (Nicomachus's theorem, c. 100 CE)\nThe p=3 identity $\\sum k^3 = (\\sum k)^2$ is particularly elegant: the sum of cubes equals the square of the triangular number."
+    },
+    {
+      "id": "bernoulli-values",
+      "title": "Part III: Bernoulli Number Values",
+      "startLine": 124,
+      "endLine": 140,
+      "summary": "bernoulli'_zero_val: B'_0=1. bernoulli'_one_val: B'_1=1/2. bernoulli'_two_val: B'_2=1/6. bernoulli'_three_val: B'_3=0. bernoulli'_odd_zero: B'_n=0 for odd n≥3.",
+      "mathContext": "The Bernoulli numbers $B'_n$ (with $B'_1 = +1/2$): $B'_0=1$, $B'_1=1/2$, $B'_2=1/6$, $B'_3=0$, $B'_4=-1/30$, $B'_5=0$, $B'_6=1/42$, ... Odd Bernoulli numbers $B'_n = 0$ for $n \\geq 3$ is the key symmetry (they satisfy $B_n(-x) = (-1)^n B_n(x)$ for the Bernoulli polynomials). The values $B'_2 = 1/6$ and $B'_4 = -1/30$ appear directly in the sum-of-squares and sum-of-4th-powers formulas."
+    },
+    {
+      "id": "verification",
+      "title": "Part IV: Verification of Specific Values",
+      "startLine": 148,
+      "endLine": 158,
+      "summary": "∑k=55, ∑k²=385, ∑k³=3025=55² for k=1..10, all verified by native_decide.",
+      "mathContext": "Numerical verification for n=10: $\\sum_{k=1}^{10} k = 55 = \\frac{10 \\cdot 11}{2}$, $\\sum k^2 = 385 = \\frac{10 \\cdot 11 \\cdot 21}{6}$, $\\sum k^3 = 3025 = 55^2 = \\left(\\frac{10 \\cdot 11}{2}\\right)^2$. These are computed in $\\mathbb{N}$ (not $\\mathbb{Q}$) by `native_decide`."
+    },
+    {
+      "id": "bernoulli-polynomial",
+      "title": "Part V: Bernoulli Polynomial Form",
+      "startLine": 170,
+      "endLine": 173,
+      "summary": "faulhaber_bernoulli_polynomial: (p+1)*∑_{k<n} k^p = B_{p+1}(n) - B_{p+1}. One-line alias of Polynomial.sum_range_pow_eq_bernoulli_sub.",
+      "mathContext": "The Bernoulli polynomial form: $(p+1) \\cdot \\sum_{k=0}^{n-1} k^p = B_{p+1}(n) - B_{p+1}$, where $B_{p+1}(x)$ is the $(p+1)$-th Bernoulli polynomial and $B_{p+1} = B_{p+1}(0)$ is the Bernoulli number. This is the original formulation connecting power sums to Bernoulli polynomials and is equivalent to Faulhaber's formula."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers arithmetic-series-oq-04 affirmatively: Faulhaber's formula is fully available in Mathlib as `sum_Ico_pow`. The specific cases p=1,2,3 are cleanest by induction. The striking identity ∑k³=(∑k)² is proved symbolically and verified numerically.",
+    "implications": "Faulhaber's formula connects three areas of mathematics: (1) **combinatorics** (binomial coefficients C(p+1,i)), (2) **number theory** (Bernoulli numbers), and (3) **polynomial algebra** (each power sum is a polynomial of degree p+1 in n). The Bernoulli numbers also appear in: the Euler-Maclaurin formula, the Taylor series for tan and cot, the Riemann zeta function at negative integers ζ(-n) = -B_{n+1}/(n+1), and the Todd class in algebraic geometry.",
+    "openQuestions": [
+      "Can we prove Faulhaber's formula by computing the Bernoulli sum symbolically (without induction), using `decide` or `norm_num`?",
+      "Can we formalize the generating function identity ∑ B_n x^n/n! = x/(e^x - 1) in Lean 4?",
+      "Can we derive ζ(-n) = -B_{n+1}/(n+1) from the power sum formula via analytic continuation?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "extends",
+      "description": "Parent: proves ∑k=n(n+1)/2 (the p=1 case of Faulhaber's formula)"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02",
+      "relationship": "related",
+      "description": "Simplicial numbers: the hockey stick identity relates to Faulhaber via the Stirling transform between power sums and binomial coefficient sums"
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "Bernoulli numbers appear in ζ(-n) = -B_{n+1}/(n+1), connecting Faulhaber's formula to the Riemann zeta function"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset", "BigOperators", "Polynomial"],
+    "namespace": "ArithmeticSeriesOQ04",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "faulhaber_formula",
+        "type": "core",
+        "description": "Faulhaber's formula: ∑_{k=1}^n k^p = ∑_{i≤p} B'_i C(p+1,i) n^(p+1-i)/(p+1)",
+        "leanType": "(n p : ℕ) → ∑ k ∈ Ico 1 (n+1), (k:ℚ)^p = ∑ i ∈ range (p+1), bernoulli' i * (p+1).choose i * (n:ℚ)^(p+1-i) / (p+1)"
+      },
+      {
+        "name": "sum_powers_three",
+        "type": "key",
+        "description": "Sum of cubes equals square of triangular number",
+        "leanType": "(n : ℕ) → ∑ k ∈ Ico 1 (n+1), (k:ℚ)^3 = (n*(n+1)/2)^2"
+      },
+      {
+        "name": "faulhaber_bernoulli_polynomial",
+        "type": "supporting",
+        "description": "Bernoulli polynomial form of Faulhaber's formula",
+        "leanType": "(n p : ℕ) → (p+1 : ℚ) * ∑ k ∈ range n, (k:ℚ)^p = (Polynomial.bernoulli p.succ).eval (n:ℚ) - bernoulli p.succ"
+      }
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "faulhaber_formula",
+      "type": "core",
+      "description": "Faulhaber's formula for sums of p-th powers, alias of Mathlib's sum_Ico_pow",
+      "leanType": "(n p : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^p) = ∑ i ∈ range (p+1), bernoulli' i * (p+1).choose i * (n:ℚ)^(p+1-i) / (p+1)"
+    },
+    {
+      "name": "sum_powers_one",
+      "type": "key",
+      "description": "Gauss sum: ∑_{k=1}^n k = n(n+1)/2",
+      "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)) = n*(n+1)/2"
+    },
+    {
+      "name": "sum_powers_two",
+      "type": "key",
+      "description": "Sum of squares: ∑_{k=1}^n k² = n(n+1)(2n+1)/6",
+      "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^2) = n*(n+1)*(2*n+1)/6"
+    },
+    {
+      "name": "sum_powers_three",
+      "type": "key",
+      "description": "Sum of cubes: ∑_{k=1}^n k³ = (n(n+1)/2)² — Nicomachus's theorem",
+      "leanType": "(n : ℕ) → (∑ k ∈ Ico 1 (n+1), (k:ℚ)^3) = (n*(n+1)/2)^2"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Faulhaber, Johann",
+      "title": "Academia Algebrae, darinnen die miraculosische Inventiones zu den höchsten Cossen weiters continuirt und profitiert werden",
+      "year": "1631",
+      "venue": "Ulm",
+      "note": "Contains formulas for ∑k^p up to p=17, computed via what Faulhaber called 'cossic numbers' — effectively the Bernoulli numbers, though he did not identify the pattern"
+    },
+    {
+      "authors": "Bernoulli, Jacob",
+      "title": "Ars Conjectandi",
+      "year": "1713",
+      "venue": "Basel (posthumous)",
+      "note": "Part II introduces the Bernoulli numbers B_0, B_1, B_2, ... and the general power sum formula ∑k^p = (1/(p+1)) ∑ C(p+1,i) B_i n^(p+1-i). This is the source of the Faulhaber-Bernoulli formula as it appears in Mathlib"
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "Johann Faulhaber and sums of powers",
+      "year": "1993",
+      "venue": "Mathematics of Computation, 61(203), 277-294",
+      "note": "Definitive modern account of Faulhaber's original work, clarifying what Faulhaber actually proved (in terms of ∑k^p as a polynomial in T=n(n+1)/2) vs. the Bernoulli formula. Essential reading for understanding the history"
+    },
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer GTM 84, 2nd edition",
+      "note": "Chapter 15 develops Bernoulli numbers systematically, proving the power sum formula, the relation to ζ(-n), and the Kummer congruences. The algebraic approach taken here is closest to the Mathlib formalization"
+    }
+  ]
+}

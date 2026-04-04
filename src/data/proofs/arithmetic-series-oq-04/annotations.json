@@ -1,0 +1,40 @@
+{
+  "annotations": [
+    {
+      "id": "faulhaber-mathlib",
+      "lineStart": 51,
+      "lineEnd": 60,
+      "type": "theorem",
+      "title": "Faulhaber's Formula via sum_Ico_pow",
+      "body": "**Core fact**: Mathlib has Faulhaber's formula as `sum_Ico_pow` in `Mathlib.NumberTheory.Bernoulli`. The theorem `faulhaber_formula` is a one-line alias: `sum_Ico_pow n p`. The alternative form `faulhaber_formula_range` uses `sum_range_pow` but requires `_root_.bernoulli` to avoid ambiguity with `Polynomial.bernoulli` introduced by `open Polynomial`.",
+      "mathContext": "∑_{k=1}^n k^p = ∑_{i=0}^p B'_i C(p+1,i) n^(p+1-i)/(p+1)"
+    },
+    {
+      "id": "induction-strategy",
+      "lineStart": 80,
+      "lineEnd": 113,
+      "type": "theorem",
+      "title": "Induction + push_cast + linarith for Specific Cases",
+      "body": "**Proof pattern**: All specific cases (p=1,2,3) use the same three-step induction:\n1. `rw [Finset.sum_Ico_succ_top (by omega)]` — extends the range from Ico 1 (n+1) to Ico 1 (n+2)\n2. `push_cast` — coerces natural number `n+1` into `ℚ` uniformly\n3. `linarith` — closes the polynomial identity over ℚ by linear arithmetic\n\nThis avoids symbolic Bernoulli sum evaluation. The key insight: after induction hypothesis and `push_cast`, the goal reduces to a ℚ-linear equation provable by `linarith`. For p=3, the identity (n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)² is handled because `push_cast` distributes the cast through multiplication, making all terms linear after squaring is expanded by the induction hypothesis.",
+      "mathContext": "succ step: ∑_{k=1}^{n+1} k^p = ∑_{k=1}^n k^p + (n+1)^p"
+    },
+    {
+      "id": "bernoulli-ambiguity",
+      "lineStart": 56,
+      "lineEnd": 60,
+      "type": "insight",
+      "title": "Polynomial.bernoulli vs _root_.bernoulli Ambiguity",
+      "body": "**Gotcha**: With `open Polynomial`, the name `bernoulli` is ambiguous between `_root_.bernoulli : ℕ → ℚ` (the rational Bernoulli number) and `Polynomial.bernoulli : ℕ → ℚ[X]` (the Bernoulli polynomial). Lean reports: `Ambiguous term bernoulli`. Fix: use `_root_.bernoulli i` in `faulhaber_formula_range` to select the rational Bernoulli number. The `bernoulli'` function (B'_1 = +1/2 convention) is not affected since `Polynomial.bernoulli'` doesn't exist in Mathlib.",
+      "mathContext": "bernoulli n : ℚ vs Polynomial.bernoulli n : ℚ[X]"
+    },
+    {
+      "id": "nicomachus-theorem",
+      "lineStart": 106,
+      "lineEnd": 113,
+      "type": "theorem",
+      "title": "Nicomachus's Theorem: Sum of Cubes = Square of Gauss Sum",
+      "body": "**Striking identity**: `sum_powers_three` proves ∑_{k=1}^n k³ = (n(n+1)/2)². This is attributed to Nicomachus of Gerasa (~100 CE): the sum of the first n cubes equals the square of the n-th triangular number. The induction step requires `linarith` to verify ((n+1)(n+2)/2)² = (n(n+1)/2)² + (n+1)³, which reduces to the polynomial identity (n+1)²(n+2)²/4 - n²(n+1)²/4 = (n+1)³, i.e., (n+1)²(n+2-n)(n+2+n)/4 = (n+1)³, i.e., (n+1)²·2·(2n+2)/4 = (n+1)³. `push_cast` and `linarith` handle this automatically.",
+      "mathContext": "∑_{k=1}^n k³ = (n(n+1)/2)² = T(n)²"
+    }
+  ]
+}

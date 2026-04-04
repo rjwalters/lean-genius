@@ -63,6 +63,7 @@ import Proofs.ArithmeticSeriesOQ02OQ02OQ01
 import Proofs.ArithmeticSeriesOQ02OQ02OQ03
 import Proofs.ArithmeticSeriesOQ02OQ04
 import Proofs.ArithmeticSeriesOQ02OQ04OQ01
+import Proofs.ArithmeticSeriesOQ04
 import Proofs.BallotProblem
 import Proofs.BallotProblemOQ01
 import Proofs.BallotProblemOQ01OQ01
