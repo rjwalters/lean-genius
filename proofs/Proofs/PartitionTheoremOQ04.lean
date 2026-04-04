@@ -227,6 +227,124 @@ theorem glaisherBwdStep_pow_two (a b : ℕ) :
     rw [ih (2 * b)]
     congr 1; ring
 
+/-! ## Carry-Free Sums of Powers of Two -/
+
+/-- Sum of first n powers of 2 equals 2^n - 1. -/
+private lemma sum_range_two_pow (n : ℕ) : (Finset.range n).sum (2 ^ ·) = 2 ^ n - 1 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih, pow_succ]
+    have : 1 ≤ 2 ^ n := Nat.one_le_two_pow
+    omega
+
+/-- For a Finset A of naturals all < n, the sum of 2^a for a ∈ A is < 2^n. -/
+private lemma sum_two_pow_lt {A : Finset ℕ} {n : ℕ} (hA : ∀ a ∈ A, a < n) :
+    A.sum (2 ^ ·) < 2 ^ n := by
+  calc A.sum (2 ^ ·)
+      ≤ (Finset.range n).sum (2 ^ ·) := by
+        apply Finset.sum_le_sum_of_subset_of_nonneg
+        · intro x hx; simp [Finset.mem_range, hA x hx]
+        · intros; exact Nat.zero_le _
+    _ = 2 ^ n - 1 := sum_range_two_pow n
+    _ < 2 ^ n := Nat.sub_lt (Nat.two_pow_pos n) one_pos
+
+/-- When S < 2^i, adding 2^i equals bitwise OR with 2^i (no carry). -/
+private lemma two_pow_add_eq_lor {S i : ℕ} (hS : S < 2 ^ i) : 2 ^ i + S = 2 ^ i ||| S := by
+  have h := Nat.two_pow_add_eq_or_of_lt (i := i) (b_lt := hS) (a := 1)
+  simpa [mul_one] using h
+
+/-- For a Finset A of distinct naturals, (∑ 2^a).testBit j = decide (j ∈ A). -/
+private lemma testBit_sum_distinct_pow (A : Finset ℕ) (j : ℕ) :
+    (A.sum (2 ^ ·)).testBit j = decide (j ∈ A) := by
+  -- Prove by induction on the cardinality of A
+  have key : ∀ (n : ℕ) (B : Finset ℕ), B.card = n →
+      (B.sum (2 ^ ·)).testBit j = decide (j ∈ B) := by
+    intro n
+    induction n with
+    | zero =>
+      intro B hB
+      simp [Finset.card_eq_zero.mp hB]
+    | succ n ih =>
+      intro B hB
+      have hne : B.Nonempty := Finset.card_pos.mp (hB ▸ Nat.succ_pos n)
+      let m := B.max' hne
+      have hm_in : m ∈ B := Finset.max'_mem B hne
+      let B' := B.erase m
+      have hm_not : m ∉ B' := Finset.not_mem_erase m B
+      have hB'_card : B'.card = n := by
+        rw [Finset.card_erase_of_mem hm_in, hB]; simp
+      have hB'_lt : ∀ a ∈ B', a < m := by
+        intro a ha
+        have hmem := Finset.mem_erase.mp ha
+        exact Nat.lt_of_le_of_ne (Finset.le_max' B a hmem.2) hmem.1
+      have hlt : B'.sum (2 ^ ·) < 2 ^ m := sum_two_pow_lt hB'_lt
+      have hsum : B.sum (2 ^ ·) = 2 ^ m + B'.sum (2 ^ ·) := by
+        rw [show B = insert m B' from (Finset.insert_erase hm_in).symm,
+            Finset.sum_insert hm_not]
+      rw [hsum, two_pow_add_eq_lor hlt, Nat.testBit_or, Nat.testBit_two_pow, ih B' hB'_card]
+      -- Goal: decide (m = j) || decide (j ∈ B') = decide (j ∈ B)
+      simp only [show B = insert m B' from (Finset.insert_erase hm_in).symm, Finset.mem_insert]
+      -- Goal: decide (m = j) || decide (j ∈ B') = decide (j = m ∨ j ∈ B')
+      rcases eq_or_ne j m with rfl | hj
+      · simp
+      · simp [hj, ne_comm.mp hj]
+  exact key A.card A rfl
+
+/-! ## Count Characterization of glaisherBwdStep -/
+
+/-- All elements of glaisherBwdStep b M are ≥ b when b > 0. -/
+private lemma glaisherBwdStep_ge_base {b : ℕ} (hb : 0 < b) (M : ℕ) :
+    ∀ x ∈ glaisherBwdStep b M, b ≤ x := by
+  induction M using Nat.strong_induction_on generalizing b with
+  | _ M ih =>
+  intro x hx
+  match M with
+  | 0 => simp at hx
+  | M + 1 =>
+    rw [glaisherBwdStep_eq b (Nat.succ_ne_zero M)] at hx
+    simp only [Multiset.mem_add] at hx
+    rcases hx with hx | hx
+    · split_ifs at hx with h
+      · simp only [Multiset.mem_singleton] at hx; exact hx ▸ le_refl b
+      · simp at hx
+    · have h2b : 0 < 2 * b := Nat.mul_pos (by norm_num) hb
+      linarith [ih ((M + 1) / 2) (Nat.div_lt_self (Nat.succ_pos M) (by norm_num)) h2b x hx]
+
+/-- count (2^a * b) (glaisherBwdStep b M) = 1 if M.testBit a = true, else 0. -/
+private lemma glaisherBwdStep_count_pow {b : ℕ} (hb : 0 < b) (a M : ℕ) :
+    (glaisherBwdStep b M).count (2 ^ a * b) = if M.testBit a then 1 else 0 := by
+  induction M using Nat.strong_induction_on generalizing b a with
+  | _ M ih =>
+  match M with
+  | 0 => simp
+  | M + 1 =>
+    rw [glaisherBwdStep_eq b (Nat.succ_ne_zero M), Multiset.count_add]
+    match a with
+    | 0 =>
+      simp only [pow_zero, one_mul]
+      have h0 : (glaisherBwdStep (2 * b) ((M + 1) / 2)).count b = 0 := by
+        apply Multiset.count_eq_zero.mpr
+        intro hb_in
+        have := glaisherBwdStep_ge_base (Nat.mul_pos (by norm_num) hb) ((M + 1) / 2) b hb_in
+        linarith
+      rw [h0, add_zero, Nat.testBit_zero]
+      by_cases h : (M + 1) % 2 = 1 <;> simp [h]
+    | a + 1 =>
+      have h2b : 0 < 2 * b := Nat.mul_pos (by norm_num) hb
+      have hrw : 2 ^ (a + 1) * b = 2 ^ a * (2 * b) := by ring
+      rw [hrw]
+      have h_ne : 2 ^ a * (2 * b) ≠ b := by
+        have hge : 2 ^ a * (2 * b) ≥ 2 * b := by
+          nlinarith [Nat.one_le_two_pow (n := a)]
+        linarith
+      have h_ite_zero : ((if (M + 1) % 2 = 1 then ({b} : Multiset ℕ) else 0)).count
+          (2 ^ a * (2 * b)) = 0 := by
+        split_ifs with h <;> simp [h_ne]
+      rw [h_ite_zero, zero_add,
+          ih ((M + 1) / 2) (Nat.div_lt_self (Nat.succ_pos M) (by norm_num)) h2b a]
+      simp [Nat.testBit_succ]
+
 /-! ## Bijectivity -/
 
 /-- Backward undoes forward for a single distinct part k.
@@ -258,25 +376,40 @@ theorem glaisherBwd_glaisherFwdPart {k : ℕ} (hk : k ≠ 0) :
 
 /-- The maps are inverses on distinct positive multisets.
 
-    Key sub-lemma needed (marked sorry for future work):
-    glaisherBwdStep b (m1 + m2) = glaisherBwdStep b m1 + glaisherBwdStep b m2
-    when m1 and m2 have disjoint binary representations (m1 &&& m2 = 0).
-    This holds because carry-free binary addition preserves bit patterns.
+    Proof via count characterization: for each k ≠ 0 with oddPart b = k/2^a, a = padicValNat 2 k:
 
-    Proof sketch for the main theorem:
-    - Group elements of s by their odd part b = k / 2^padicValNat(k)
-    - For each odd b, count b in glaisherFwd s = Σ_{k in s, oddPart k = b} 2^padicValNat(k)
-    - The 2^padicValNat values for distinct k with same odd part are distinct powers of 2
-       (since different k's with same odd part have different 2-adic valuations, and s is Nodup)
-    - glaisherBwdStep b over that sum of distinct powers = union of {2^a * b} by additive decomp
-    - Summing over all odd b recovers exactly s. -/
+    count k (glaisherBwd (glaisherFwd s))
+    = (glaisherBwdStep b ((glaisherFwd s).count b)).count k
+      [only b' = b contributes since 2^a*b = k uniquely determines b from k's 2-adic factorization]
+    = if ((glaisherFwd s).count b).testBit a then 1 else 0
+      [by glaisherBwdStep_count_pow]
+
+    (glaisherFwd s).count b = Σ_{k' ∈ s, oddPart k' = b} 2^(padicValNat 2 k')
+      [by Multiset.count_bind and glaisherFwdPart definition]
+
+    For nodup s: these are distinct powers of 2 (different k' with same b have different valuations).
+    By testBit_sum_distinct_pow: testBit of that sum at a = decide(2^a ∈ the set) = decide(k ∈ s).
+
+    Infrastructure proved: glaisherBwdStep_count_pow, testBit_sum_distinct_pow.
+    Remaining step: connect (glaisherFwd s).count b to a sum of distinct powers of 2. -/
 theorem glaisherBwd_glaisherFwd {s : Multiset ℕ}
     (hs_pos : ∀ k ∈ s, k ≠ 0) (hs_nodup : s.Nodup) :
     glaisherBwd (glaisherFwd s) = s := by
   sorry
 
 /-- **Constructive Euler Partition Theorem**: Glaisher gives an explicit bijection
-    between distinct-part and odd-part partitions of any n. -/
+    between distinct-part and odd-part partitions of any n.
+
+    This follows from `glaisherBwd_glaisherFwd` (injection) plus the surjectivity direction
+    `glaisherFwd_glaisherBwd` (not yet proved). The multiset-level inverse pair
+    (glaisherBwd ∘ glaisherFwd = id on distinct multisets, and the converse on odd multisets)
+    lifts to a bijection on Nat.Partition types via the parts Multiset representation.
+
+    Note: `Archive.Wiedijk100Theorems.Partition` (which provides `Theorems100.partition_theorem`)
+    is not available in the cached Mathlib v4.26.0 build. The equal-cardinality proof path
+    requires that import, so we leave this theorem as a sorry pending either:
+    (a) building Archive locally, or (b) completing the constructive proof via the two-sided
+    inverse pair. -/
 theorem glaisher_bijection_exists (n : ℕ) :
     ∃ (f : {p : Nat.Partition n // p ∈ Nat.Partition.distincts n} →
            {p : Nat.Partition n // p ∈ Nat.Partition.odds n}),
