@@ -1,0 +1,63 @@
+{
+  "id": "cantor-diagonalization-oq-03-oq-01-oq-01",
+  "title": "Categorical Lawvere FPT: Closing the Bridge via Global-Element Action",
+  "slug": "cantor-diagonalization-oq-03-oq-01-oq-01",
+  "description": "Completes the categorical formalization of Lawvere's fixed-point theorem by adding the missing parameter e_pt : Pt A → Pt (exp A B) (the morphism's action on global elements) and reducing the proof to lawvere_abstract via EvalStructure. Eliminates all sorries from the CategoricalEval section.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
+    "date": "1969 (Lawvere; formalized 2026)",
+    "status": "verified",
+    "tags": [
+      "category-theory",
+      "fixed-point-theorems",
+      "diagonal-argument",
+      "lawvere",
+      "cartesian-closed-categories"
+    ],
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.Surjective",
+        "description": "Surjectivity predicate for functions",
+        "module": "Mathlib.Logic.Function.Basic"
+      }
+    ],
+    "originalContributions": [
+      "lawvere_categorical: fully proved categorical Lawvere FPT with e_pt : Pt A → Pt (exp A B) parameter",
+      "EvalStructure construction from CategoricalEval: Ob = Pt A, Val = Pt B, eval a x = apply (e_pt a) x",
+      "Identifies the missing categorical data: e_pt is the Yoneda-level action of e : A → B^A on global elements"
+    ],
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 303,
+    "assumptions": "0 axioms. 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "Lawvere's 1969 paper formulated the fixed-point theorem in cartesian closed categories (CCCs). The key categorical data for the proof is a morphism e : A → B^A that is 'point-surjective' — every global element 1 → B^A factors through e. The diagonal argument then constructs a fixed point of any f : B → B. Formalizing this in Lean requires representing the morphism's action on global elements (Yoneda embedding level) as a function e_pt : Pt A → Pt (B^A).",
+    "problemStatement": "Close the 2 sorries in lawvere_categorical by explicitly constructing the EvalStructure induced by a CategoricalEval, connecting CategoricalEval.apply to EvalStructure.eval.",
+    "proofStrategy": "The CategoricalEval structure has `apply : Pt (exp A B) → Pt A → Pt B` but was missing the morphism's action on points. Adding `e_pt : Pt A → Pt (exp A B)` as a parameter gives exactly the data needed to build EvalStructure with `eval a x = apply (e_pt a) x`. The categorical Lawvere FPT then reduces to lawvere_abstract in one line.",
+    "keyInsights": [
+      "The missing categorical data is e_pt : Pt A → Pt (exp A B), which is the Yoneda-level action of the morphism e : A → B^A on global elements. In a CCC, composing e with any global element a : 1 → A gives a global element e_pt(a) = e ∘ a : 1 → B^A. This is exactly the data that CategoricalEval lacked.",
+      "With e_pt, the EvalStructure is: Ob = Pt A (global elements of the domain), Val = Pt B (global elements of the codomain), eval a x = apply (e_pt a) x (evaluate the element e_pt(a) : Pt (exp A B) at x : Pt A to get apply (e_pt a) x : Pt B). Point-surjectivity of this EvalStructure is exactly the categorical point-surjectivity of e.",
+      "The proof body is a single term: `lawvere_abstract { Ob := C.Pt A, Val := C.Pt B, eval := fun a x => C.apply (e_pt a) x } hSurj f`. This is the minimal categorical proof — the EvalStructure captures exactly the CCC data needed for the diagonal argument."
+    ]
+  },
+  "conclusion": {
+    "summary": "lawvere_categorical is now fully proved with 0 sorries. The fix required adding one parameter (e_pt : Pt A → Pt (exp A B)) that was always needed but had been replaced by a sorry placeholder. The entire categorical Lawvere FPT reduces to the abstract version in one line.",
+    "openQuestions": [
+      "Derive Rice's theorem as a Lawvere instance: Val = {halting behavior}, f = complement, yielding that no non-trivial semantic property of programs is decidable",
+      "Formalize Gödel's incompleteness theorem as a Lawvere instance in Lean",
+      "Formalize topos-level Cantor once Mathlib has a topos typeclass with subobject classifier Ω"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Parent: Lawvere FPT categorical generalization. This entry closes the 2 categorical sorries."
+    }
+  ]
+}

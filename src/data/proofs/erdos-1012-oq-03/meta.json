@@ -13,10 +13,10 @@
       "tournaments"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1199,
-    "assumptions": "0 axioms. 3 sorries: (1) ghouila_houri (full proof needs longest-path argument ~200 lines), (2) hamiltonian_of_few_missing_arcs (counting/probabilistic argument: if ≤n-2 arcs are missing from K*_n, a Hamiltonian cycle exists — two definitions present, one with partial probabilistic infrastructure and one full sorry), (3) hBadFor_bound (fiber counting lemma inside the probabilistic infrastructure). directed_hamiltonian_threshold delegates to hamiltonian_of_few_missing_arcs via missing_arcs_le. Moon-Moser theorem and Rédei are fully proved.",
+    "lineCount": 1277,
+    "assumptions": "0 axioms. 1 sorry: ghouila_houri (full proof needs longest-path argument ~200 lines tracking both in- and out-degrees). hamiltonian_of_few_missing_arcs and directed_hamiltonian_threshold are now fully proved: the fiber counting lemma hBadFor_bound (∀ p ∈ Missing, |BadFor p| ≤ n*(n-2)!) was proved via fiber decomposition + injection into Perm(Fin(n-2)) using Finset.orderIsoOfFin. Moon-Moser theorem and Rédei are also fully proved.",
     "dateAdded": "2026-03-30"
   },
   "overview": {
@@ -83,10 +83,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Rédei's theorem (every tournament has a Hamiltonian path) is fully proved by induction via the tournament insertion lemma. Moon-Moser's theorem (every strongly connected tournament has a Hamiltonian cycle) is now fully proved: sc_tournament_has_cycle, tournament_cycle_extendable, and grow_cycle_to_hamiltonian are all complete with no sorries. Ghouila-Houri and the arc threshold remain stated but unproved (2 sorries). The 991-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
+    "summary": "Rédei's theorem (every tournament has a Hamiltonian path) is fully proved by induction via the tournament insertion lemma. Moon-Moser's theorem (every strongly connected tournament has a Hamiltonian cycle) is fully proved. directed_hamiltonian_threshold (arc count (n-1)² forces Hamiltonicity) is now fully proved via hamiltonian_of_few_missing_arcs, which was completed by proving the fiber counting lemma hBadFor_bound using Finset.orderIsoOfFin injections into Perm(Fin(n-2)). Only ghouila_houri remains as a sorry (1 sorry). The 1277-line file is the most substantial directed Hamiltonicity formalization in this gallery.",
     "implications": "Directed Hamiltonicity thresholds have applications beyond pure graph theory: tournament Hamiltonian paths correspond to linear extensions of partial orders, with applications to voting theory (ranking candidates) and scheduling. Rédei's theorem has a direct combinatorial interpretation: in any round-robin tournament, there exists a ranking of all players consistent with the match results (as a directed path). Moon-Moser's result shows that strongly connected tournaments (those where outcomes don't create a dominant clique) have circular Hamiltonian cycles — a stronger consistency property.",
     "openQuestions": [
-      "Can the two remaining sorries be eliminated? `ghouila_houri` requires a longest-path argument tracking both in- and out-degrees (~200 lines). `directed_hamiltonian_threshold` requires identifying the extremal structure and reducing to Moon-Moser or Ghouila-Houri.",
+      "Can `ghouila_houri` be fully proved? It requires a longest-path argument tracking both in- and out-degrees (~200 lines), analogous to the undirected Dirac theorem. This is the only remaining sorry.",
       "Can Ghouila-Houri's theorem be fully formalized? The proof follows the Dirac argument for undirected graphs but requires tracking both in- and out-degrees. Is the analogous undirected Dirac theorem in Mathlib, and can the directed version be derived?",
       "Meyniel's condition (weaker than Ghouila-Houri: $\\delta^+(u) + \\delta^-(u) + \\delta^+(v) + \\delta^-(v) \\geq 2n-1$ for non-adjacent pairs) implies Hamiltonicity. Can this stronger result be formalized, or would it require substantially more tournament infrastructure?",
       "The arc threshold $(n-1)^2$ in `directed_hamiltonian_threshold` — is this the tight bound? What is the densest non-Hamiltonian strongly connected tournament on $n$ vertices, and can a tight threshold be proved in Lean?"
