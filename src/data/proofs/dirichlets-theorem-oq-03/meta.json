@@ -79,6 +79,24 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Dirichlet proved in 1837 that there are infinitely many primes p ≡ a (mod q) for any coprime pair (a, q). The *quantitative* question — how large is the *first* such prime p(a, q)? — was answered by Linnik in 1944: p(a, q) ≤ c · q^L for absolute constants c and L. This L is the 'Linnik constant'. The history of bounding L spans decades: Pan Cheng-tung (1957) gave L ≤ 10000, Elliott-Halberstam (1966) reduced it to L ≤ 40, then Jutila (L ≤ 20), Chen (L ≤ 13.5), Wang (L ≤ 8), Heath-Brown (L ≤ 5.5, 1992), and finally Xylouris (L ≤ 5, 2011). Under the Generalized Riemann Hypothesis, L ≤ 2 + ε for any ε > 0. The unconditional conjecture is L = 1 + ε, or equivalently, linnikConstant = 1.",
+    "problemStatement": "For coprime integers a, q with q ≥ 1, let p(a, q) denote the least prime p ≡ a (mod q).\n\n**Linnik's theorem** (1944): There exist absolute constants c > 0 and L > 0 such that $p(a,q) \\leq c \\cdot q^L$ for all coprime pairs (a, q).\n\nThe **Linnik constant** is $L^* = \\inf\\{ L > 0 : \\text{Linnik's theorem holds with exponent } L \\}$.\n\n**Currently known**: 1 ≤ L* ≤ 5. Best unconditional bound: L* ≤ 5 (Xylouris 2011). Under GRH: L* ≤ 2 + ε. **Conjectured**: L* = 1.",
+    "proofStrategy": "The formalization defines `leastPrimeInAP` via `Nat.find` (with sorry for the existence of a prime in each AP — this follows from Dirichlet's theorem, the parent entry). The `admissibleExponents` set collects all valid exponents, and `linnikConstant` is their infimum. Key proofs: (1) `heathBrown_bound` derives L ≤ 5.5 from Xylouris's L ≤ 5 by monotonicity of the bound in L; (2) `linnikConstant_le_5` follows from csInf_le applied to xylouris_bound; (3) `optimal_implies_le_one` uses a contradiction argument with δ = (L*-1)/2.",
+    "keyInsights": [
+      "The `leastPrimeInAP` definition has two sorry holes for the existence of a prime p ≡ a (mod q) — this is precisely Dirichlet's theorem. Filling these sorries requires the parent proof (infinitely many primes in AP with gcd(a,q)=1).",
+      "Admissible exponents form a ray: if L is admissible (p(a,q) ≤ c·q^L), then any L' > L is also admissible with the same c (since q^L ≤ q^{L'} for q ≥ 1). The Lean proof of `heathBrown_bound` exploits this via `Real.rpow_le_rpow`.",
+      "The `optimal_implies_le_one` proof is the highlight: assuming optimalLinnikConjecture (every 1+ε is admissible) and L* > 1, choose δ = (L*-1)/2. Then 1+δ ∈ admissibleExponents and csInf_le gives L* ≤ 1+δ < L*, a contradiction.",
+      "GRH would give L ≤ 2+ε via the conditional bound p(a,q) ≤ c·(φ(q)·log q)². The formalization defines `GRHImpliesSmallLinnik` as a Prop but does not prove it, acknowledging the conditional nature.",
+      "The linnikConstant_pos sorry asks for a lower bound argument: p(1,q) ≥ q+1 for large q shows L* ≥ 1. This would follow from Bertrand's postulate — the least prime > q has order roughly q."
+    ],
+    "prerequisites": [
+      "Dirichlet characters and L-functions",
+      "Primes in arithmetic progressions (Dirichlet's theorem)",
+      "csInf and ConditionallyCompleteLinearOrder in Mathlib",
+      "Real.rpow monotonicity"
+    ]
+  },
   "sections": [
     {
       "id": "least-prime-definition",
