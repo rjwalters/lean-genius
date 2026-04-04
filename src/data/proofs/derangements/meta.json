@@ -2,7 +2,7 @@
   "id": "derangements",
   "title": "The Derangements Formula",
   "slug": "derangements",
-  "description": "The number of permutations with no fixed points: D(n) = n! Σ(-1)^k/k!. The 'hat-check problem'.",
+  "description": "Pedagogical presentation of Mathlib's derangement theory (Wiedijk #88): named wrappers for the recurrence $D(n+2)=(n+1)(D(n)+D(n+1))$ and closed-form $D(n) = n! \\sum (-1)^k/k!$, concrete `native_decide` computations of $D(2)$ through $D(6)$, and two original proofs that the identity is never a derangement and that derangements do not form a subgroup of $S_n$.",
   "meta": {
     "author": "Montmort, Euler (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Derangement",
@@ -69,11 +69,11 @@
     "text": "A 227-line formalization of the derangement counting formula (Wiedijk #88) with 10 named theorems and 5 computed examples, 0 sorries, 0 axioms. Uses Mathlib's `Combinatorics.Derangements` module: `derangements` defines the set $\\{\\sigma \\in S_n : \\forall i,\\, \\sigma(i) \\neq i\\}$, and `numDerangements` gives $D_n = n! \\sum_{k=0}^n (-1)^k/k!$. The closed form is via `numDerangements_sum` (ascending factorials) and the recurrence $D_n = (n-1)(D_{n-1} + D_{n-2})$ via `numDerangements_add_two`. Includes concrete examples ($D_5 = 44$ via `native_decide`) and a proof that derangements do not form a subgroup (composition of derangements can have fixed points).",
     "proofStrategy": "The formalization uses Mathlib's `Combinatorics.Derangements` module, which defines the derangement set and the counting function `numDerangements`. The closed-form formula is provided by `numDerangements_sum` using ascending factorials. The recurrence `numDerangements_add_two` gives the efficient computational form. We add pedagogical wrappers, concrete examples verified by `native_decide`, and algebraic properties showing derangements do not form a subgroup.",
     "keyInsights": [
-      "The formula $D_n = n! \\sum (-1)^k/k!$ is the truncation of $e^{-1} = \\sum (-1)^k/k!$, so $D_n/n! \\to 1/e$ as $n \\to \\infty$",
-      "The recurrence $D_{n+2} = (n+1)(D_n + D_{n+1})$ has a natural combinatorial proof via element 1's image in a derangement",
-      "Derangements are derived via inclusion-exclusion on fixed-point sets $A_i$, where $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$ depends only on $k$",
-      "The derangement set is not closed under composition (transposition squared is identity), so derangements do not form a subgroup of $S_n$",
-      "$D_n$ equals the nearest integer to $n!/e$ for $n \\ge 1$, providing a simple exact formula"
+      "**Truncated Taylor Series**: The formula $D_n/n! = \\sum_{k=0}^n (-1)^k/k!$ is the $(n+1)$-st partial sum of the Taylor series for $e^{-1}$. By the alternating series bound, $|D_n/n! - 1/e| < 1/(n+1)!$, so $D_n$ is the nearest integer to $n!/e$ for all $n \\geq 1$.",
+      "**Two-Case Recurrence**: The recurrence $D_{n+2} = (n+1)(D_n + D_{n+1})$ has a natural combinatorial proof: element 1 maps to some $k \\neq 1$ ($n+1$ choices). If $k$ maps back to 1 (transposition), the remaining $n$ elements form a derangement ($D_n$); otherwise it's a derangement of $n+1$ elements with $k$ in role of 1 ($D_{n+1}$).",
+      "**Inclusion-Exclusion Template**: The formula follows from $|S_n \\setminus \\bigcup A_i| = \\sum_{k=0}^n (-1)^k \\binom{n}{k}(n-k)!$ where $A_i = \\{\\sigma : \\sigma(i)=i\\}$. The key simplification is that $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$ depends only on $k$, collapsing the Bonferroni sum.",
+      "**Not a Subgroup**: The derangement set $\\mathcal{D}_n$ is conjugacy-closed ($\\tau\\sigma\\tau^{-1}$ is a derangement if $\\sigma$ is) but not a subgroup: $(01)^2 = \\text{id} \\notin \\mathcal{D}_2$. This is the only genuinely new proof in the formalization (7 lines using `Equiv.swap` and `fin_cases`).",
+      "**Poisson Limit**: The convergence $D_n/n! \\to 1/e$ has a deep explanation: the number of fixed points of a random permutation converges in distribution to $\\text{Poisson}(1)$, and $P(\\text{Poisson}(1) = 0) = e^{-1}$. The indicators $\\mathbf{1}_{\\sigma(i)=i}$ are nearly independent for large $n$, so the Poisson approximation applies. This limit is stated as a goal in `mainTheorems` but not yet formalized in Lean."
     ],
     "prerequisites": [
       "Combinatorics (permutations, counting, inclusion-exclusion)",
@@ -254,14 +254,14 @@
     {
       "name": "derangements_recurrence",
       "type": "core",
-      "description": "Derangement recurrence: D(n+2) = (n+1)(D(n) + D(n+1))",
+      "description": "Derangement recurrence: D(n+2) = (n+1)(D(n) + D(n+1)) — one-line wrapper of Mathlib's numDerangements_add_two",
       "leanType": "(n : ℕ) → numDerangements (n + 2) = (n + 1) * (numDerangements n + numDerangements (n + 1))"
     },
     {
-      "name": "derangement_probability",
-      "type": "key",
-      "description": "Probability of a derangement approaches 1/e as n → ∞",
-      "leanType": "Filter.Tendsto (fun n => (numDerangements n : ℝ) / n.factorial) Filter.atTop (nhds (1 / Real.exp 1))"
+      "name": "derangement_mul_self_not_always_derangement",
+      "type": "original",
+      "description": "Original proof: Equiv.swap 0 1 on Fin 2 is a derangement but its square is the identity, so derangements are not closed under composition (not a subgroup)",
+      "leanType": "¬ (∀ (σ τ : Equiv.Perm (Fin 2)), σ ∈ derangements (Fin 2) → τ ∈ derangements (Fin 2) → σ * τ ∈ derangements (Fin 2))"
     }
   ]
 }
