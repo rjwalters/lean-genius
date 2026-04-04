@@ -61,15 +61,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős and Ulam posed this problem in 1978 [Er78, p.39] as a Ramsey-type question about the powerset lattice. Given a 2-coloring of all subsets of {1,...,n}, how large a monochromatic sublattice (closed under unions and intersections) must exist? They defined two variants: f(n) for full sublattices and F(n) for union-closed families only.",
+    "historicalContext": "Erdős and Ulam posed this problem in their 1978 survey [Er78, p.39] as a Ramsey-type question about the powerset lattice. The powerset 2^{[n]} has a natural lattice structure under ∪ and ∩, and any 2-coloring raises the question: how large a monochromatic sublattice must always exist? The trivial lower bound ⌈(n+1)/2⌉ comes from the nested chain ∅ ⊂ {1} ⊂ {1,2} ⊂ ... ⊂ {1,...,n}: by pigeonhole, one color class forms a monochromatic chain of this size, and any chain is a sublattice. Erdős and Ulam reported having 'no plausible conjecture' for the true order of magnitude. Howorka subsequently proved that F(n) > n^{ω(n)} under the special restriction that all same-size subsets receive the same color, but the general case remains open. The problem connects to Frankl's union-closed conjecture (1979, proved by Gilmer 2022 and strengthened by Sawin 2023) and to Dilworth's theorem on chain decompositions in partially ordered sets. For the Lean formalization, a key architectural correction was needed: the initial attempt defined f(n) via sInf (yielding 0, the infimum of a downward-closed set) rather than sSup (the supremum of achievable lower bounds).",
     "problemStatement": "Let f(n) be maximal such that in any 2-coloring of the subsets of {1,...,n} there is always a monochromatic family of at least f(n) sets which is closed under taking unions and intersections. Estimate f(n). Similarly define F(n) requiring only union-closure.",
     "text": "We formalize the Erdős-Ulam problem on monochromatic sublattice families and prove the trivial lower bound f(n) ≥ ⌈(n+1)/2⌉ via the standard chain argument.",
     "proofStrategy": "Construct the standard chain ∅ ⊂ {0} ⊂ {0,1} ⊂ ... ⊂ {0,...,n-1} (n+1 elements). Show any chain is a sublattice. Apply pigeonhole to get a monochromatic subchain of size ≥ ⌈(n+1)/2⌉.",
     "keyInsights": [
-      "In a chain, the union of two comparable sets equals the larger one, so chains are automatically union-closed",
-      "Similarly, the intersection equals the smaller one, so chains are intersection-closed",
-      "The standard chain has exactly n+1 elements (proved via injectivity of initial segments)",
-      "Pigeonhole on 2-colorings guarantees a color class of size ≥ ⌈(n+1)/2⌉"
+      "**Chain = sublattice**: In a chain, A ∪ B equals the larger of A, B (Finset.union_eq_right/left.mpr), and A ∩ B equals the smaller. This makes every chain automatically a sublattice with a 2-line proof per operation.",
+      "**Injectivity via wlog**: The proof that distinct k give distinct initialSeg n k uses 'wlog h : j < k' to reduce to one direction, then exhibits j.val as a witness in initialSeg k but not in initialSeg j, closing with omega.",
+      "**sSup vs sInf**: The correct definition of f(n) uses sSup { k | every coloring admits a mono sublattice of size ≥ k }. Using sInf on this downward-closed set would give 0. The le_csSup approach requires proving BddAbove (the set is bounded by 2^n) and membership (the chain bound puts (n+2)/2 in the set).",
+      "**Prop definitions for open conjectures**: The two open conjectures (f_growth_conjecture: f(n) = O(n), F_superpolynomial_conjecture: F(n) ≥ n^{ω(n)}) are stated as Prop-valued definitions rather than axioms, making them formally present without being assumed true.",
+      "**F(n) ≥ f(n) via inclusion**: achievableSublattice ⊆ achievableUnionClosed because every sublattice is in particular union-closed. csSup_le_csSup then gives F(n) ≥ f(n) with a single line."
     ],
     "prerequisites": [
       "Finite set theory",
@@ -161,9 +162,10 @@
       "Improving the bound beyond ⌈(n+1)/2⌉ likely requires non-chain families"
     ],
     "openQuestions": [
-      "What is the true order of magnitude of f(n)?",
-      "Is F(n) superpolynomial but subexponential?",
-      "Does Howorka's result for same-size colorings extend to general colorings?"
+      "What is the true order of magnitude of f(n)? Is it linear, polynomial, or exponential in n?",
+      "Is F(n) superpolynomial (≥ n^{ω(n)}) for general 2-colorings, not just same-size ones?",
+      "Does Howorka's result for same-size colorings extend to arbitrary 2-colorings?",
+      "Can the sSup definition of f(n) be computed or bounded more tightly than ⌈(n+1)/2⌉ ≤ f(n) ≤ 2^n?"
     ]
   },
   "crossReferences": [
@@ -174,9 +176,32 @@
   ],
   "references": [
     {
-      "key": "Er78",
-      "citation": "P. Erdős, Problems and results in combinatorial analysis and combinatorial number theory, Proc. Ninth Southeastern Conf. on Combinatorics, Graph Theory, and Computing, 1978, pp. 39.",
-      "url": "https://erdosproblems.com/1183"
+      "authors": "Erdős, P.",
+      "title": "Problems and results in combinatorial analysis and combinatorial number theory",
+      "year": "1978",
+      "venue": "Proc. Ninth Southeastern Conf. on Combinatorics, Graph Theory, and Computing",
+      "note": "Original problem statement [Er78, p.39]: f(n) and F(n) definitions; no plausible conjecture for growth rate"
+    },
+    {
+      "authors": "Frankl, P.",
+      "title": "On the trace of finite sets",
+      "year": "1983",
+      "venue": "Journal of Combinatorial Theory, Series A 34(1), pp. 41-45",
+      "note": "Union-closed conjecture (1979): every union-closed family has an element in ≥ half the sets; proved by Gilmer (2022)"
+    },
+    {
+      "authors": "Dilworth, R. P.",
+      "title": "A decomposition theorem for partially ordered sets",
+      "year": "1950",
+      "venue": "Annals of Mathematics 51(1), pp. 161-166",
+      "note": "Dilworth's theorem: minimum chain cover = maximum antichain; relevant to the chain-pigeonhole approach"
+    },
+    {
+      "authors": "Gilmer, J.",
+      "title": "A constant bound for the union-closed sets conjecture",
+      "year": "2022",
+      "venue": "arXiv:2211.09055",
+      "note": "Proved the union-closed conjecture with constant 0.01 (later improved by Sawin and others); F(n) connects to this via union-closed families"
     }
   ],
   "leanFile": {
