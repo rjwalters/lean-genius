@@ -65,6 +65,56 @@
       "Prove that γ ∉ ℚ by assuming the contrary and deriving a contradiction via Diophantine approximation"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-euler-mascheroni-header",
+      "title": "Header, Imports, and Namespace Setup",
+      "startLine": 1,
+      "endLine": 31,
+      "description": "Module header listing 9 topic areas (convergence, log bounds, Theisinger, Gamma function, Zeta function, rational exclusion, sandwich gap, conditional irrationality, approximation). Notes that Gamma and Zeta results require >32GB memory imports and are documented but not compiled. Imports from Mathlib's Harmonic and EulerMascheroni libraries. Opens `EulerMascheroniConstant` namespace with definitions of γ, γ_seq (lower, increasing), γ_seq' (upper, decreasing)."
+    },
+    {
+      "id": "sec-euler-mascheroni-basics",
+      "title": "Definitions, Convergence, Monotonicity, Bounds, and Harmonic Divergence",
+      "startLine": 33,
+      "endLine": 101,
+      "description": "Defines γ, γ_seq, γ_seq' as wrappers of Mathlib's `Real.eulerMascheroniConstant/Seq/Seq'`. Proves convergence of both sequences to γ, strict monotonicity (γ_seq increasing, γ_seq' decreasing), the sandwich inequality γ_seq(m) < γ_seq'(n), and the precise bounds 1/2 < γ < 2/3. Derives basic consequences: γ > 0, γ ≠ 0, γ ≠ 1, γ ∈ (0,1). Includes boundary values γ_seq(0)=0, γ_seq'(1)=1. Also proves harmonic divergence wrappers, exp(γ) bounds, γ ≠ any integer, and harmonic recurrence."
+    },
+    {
+      "id": "sec-euler-mascheroni-log-bounds",
+      "title": "Log Bounds on Harmonic Numbers",
+      "startLine": 103,
+      "endLine": 125,
+      "description": "Four log-harmonic inequalities: (1) log(n+1) ≤ H_n (lower log bound); (2) H_n ≤ 1 + log(n) (upper log bound, the classical comparison with the integral ∫₁ⁿ 1/x dx); (3) Alternate formula H_n = Σ_{i=1}^n 1/i as a sum over Finset.Icc; (4) Real extensions: for y ≥ 0, log(y) ≤ H_{⌊y⌋}, and for y ≥ 1, H_{⌊y⌋} ≤ 1 + log(y). All delegate to Mathlib's `Mathlib.NumberTheory.Harmonic.Bounds`."
+    },
+    {
+      "id": "sec-euler-mascheroni-theisinger",
+      "title": "Theisinger's Theorem: Harmonic Numbers Are Never Integers (2-adic Valuation)",
+      "startLine": 127,
+      "endLine": 138,
+      "description": "Proves `harmonic_padic_val`: v₂(H_n) = −⌊log₂(n)⌋ (the 2-adic valuation of H_n is negative for n ≥ 2). Immediately derives `harmonic_non_integer`: H_n is not an integer for n ≥ 2 (Theisinger 1915). Both delegate to Mathlib's `padicValRat_two_harmonic` and `harmonic_not_int`. The 2-adic argument: among {1/1, 1/2, …, 1/n}, only the term with the highest power of 2 in the denominator contributes an odd numerator in the LCD, making H_n non-integer."
+    },
+    {
+      "id": "sec-euler-mascheroni-sandwich",
+      "title": "Sandwich Gap and Explicit Convergence Rate",
+      "startLine": 140,
+      "endLine": 175,
+      "description": "Proves `sandwich_gap`: for n ≥ 1, γ_seq'(n) − γ_seq(n) = log(n+1) − log(n) (the gap between upper and lower sequences equals the log increment). Uses this to prove `γ_approx_error`: the approximation error γ − γ_seq(n) < log(n+1) − log(n) ≈ 1/n (by 0 < γ − γ_seq(n) ≤ gap). Finally `sandwich_gap_tendsto`: the gap → 0 as n → ∞, giving an explicit convergence rate for the sandwich sequences. The proof uses `Tendsto.sub` to subtract the two convergences to γ."
+    },
+    {
+      "id": "sec-euler-mascheroni-rational",
+      "title": "Extended Rational Exclusion: All Fractions with Denominator ≤ 6",
+      "startLine": 177,
+      "endLine": 227,
+      "description": "Systematically excludes rational values of γ using 1/2 < γ < 2/3: proves γ ≠ 1/4, 3/4, 1/5, 2/5, 4/5, 1/6, 5/6 (all strictly outside the interval by linarith). Notes that 3/5 = 0.6 ∈ (1/2, 2/3) cannot be excluded by these bounds alone. Packages denominator ≤ 4 results in `γ_avoids_denom_le_4`. Includes `irrational_γ_ne_rat`: if γ is irrational (open), then γ ≠ any rational number. Duplicates Theisinger's theorem as `harmonic_never_integer`."
+    },
+    {
+      "id": "sec-euler-mascheroni-documented",
+      "title": "Documented Connections to Gamma Function and Riemann Zeta (>32GB imports)",
+      "startLine": 229,
+      "endLine": 253,
+      "description": "Comment-only documentation (no compiled code) of the Gamma function and Riemann Zeta function connections: γ = −Γ'(1), Γ'(n+1) = n!(−γ + H_n), Γ'(1/2) = −√π(γ + 2 ln 2), and lim_{s→1}(ζ(s) − 1/(s−1)) = γ. These import from `GammaDeriv` and `ZetaAsymp` which consume >32GB during `lake build` and are excluded from production builds. Their signatures are documented here to connect γ to its deepest mathematical context."
+    }
+  ],
   "crossReferences": []
 }
