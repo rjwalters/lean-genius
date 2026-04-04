@@ -1847,10 +1847,10 @@
       "result": "clean"
     },
     "erdos-1012-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-03T17:41:40Z",
-      "result": "clean"
+      "lastAudited": "2026-04-04T06:09:00Z",
+      "result": "issues-fixed"
     },
     "erdos-1013": {
       "agentId": "auditor-cycle-20-batch",
@@ -2783,9 +2783,9 @@
       "result": "clean"
     },
     "erdos-1131-oq-01": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-04-04T03:13:06Z",
+      "lastAudited": "2026-04-04T06:09:00Z",
       "result": "issues-fixed"
     },
     "erdos-1132": {
@@ -3403,11 +3403,11 @@
       "result": "clean"
     },
     "erdos-157": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [
         "sorry mismatch corrected in meta.json"
       ],
-      "lastAudited": "2026-04-04T01:13:06Z",
+      "lastAudited": "2026-04-04T06:09:00Z",
       "result": "issues-fixed"
     },
     "erdos-158": {
@@ -11346,6 +11346,24 @@
       "auditCount": 1,
       "lastAudited": "2026-04-03T23:36:27Z",
       "result": "clean",
+      "issues": []
+    },
+    "fair-games-theorem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-04T06:09:21Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "arithmetic-series-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-04T06:09:21Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "abel-ruffini-oq-04-oq-07": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-04T06:09:21Z",
+      "result": "issues-found",
       "issues": []
     }
   },
