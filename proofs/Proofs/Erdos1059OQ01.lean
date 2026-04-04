@@ -20,6 +20,8 @@ So almost all large primes satisfy the property.
 6. `qualifyingPrimeCount_mono`: C(x) is monotone
 7. `factorialCheckCount_mono`: check count is monotone
 8. `factorialCheckCount_le_log`: factorialCheckCount n ≤ ⌊log₂ n⌋ + 2 (formalizes density heuristic)
+9. `factorialCheckCount_eq_of_interval`: exact count = l+1 when l! < n ≤ (l+1)!
+10. `factorialCheckCount_const_on_interval`: count is constant within each factorial level
 
 **Axiom** (1): `density_one_conjecture` — density equals 1
 
@@ -173,7 +175,7 @@ private lemma two_pow_pred_le_factorial {k : ℕ} (hk : 1 ≤ k) : 2^(k-1) ≤ k
 
 /-- If 2^m < n (and n ≥ 2), then m ≤ Nat.log 2 n.
     Proof: if m > log₂ n then 2^m ≥ 2^(log₂ n + 1) > n by Nat.lt_pow_succ_log_self. -/
-private lemma le_log_of_pow_lt {m n : ℕ} (hn : 2 ≤ n) (h : 2^m < n) : m ≤ Nat.log 2 n := by
+private lemma le_log_of_pow_lt {m n : ℕ} (h : 2^m < n) : m ≤ Nat.log 2 n := by
   by_contra hlt
   push_neg at hlt
   have hlt' : Nat.log 2 n + 1 ≤ m := hlt
@@ -181,7 +183,7 @@ private lemma le_log_of_pow_lt {m n : ℕ} (hn : 2 ≤ n) (h : 2^m < n) : m ≤ 
   have h2 : 2^(Nat.log 2 n + 1) ≤ 2^m := Nat.pow_le_pow_right (by omega) hlt'
   linarith
 
-/-- **Factorial Check Count Bound**: For n ≥ 2, factorialCheckCount n ≤ ⌊log₂ n⌋ + 2.
+/-- **Factorial Check Count Bound**: factorialCheckCount n ≤ ⌊log₂ n⌋ + 2.
 
     This formalizes the density heuristic's key asymptotic claim: for a prime
     p ∈ (l!, (l+1)!], only l+1 ≤ ⌊log₂ p⌋ + 2 conditions must be checked,
@@ -190,7 +192,7 @@ private lemma le_log_of_pow_lt {m n : ℕ} (hn : 2 ≤ n) (h : 2^m < n) : m ≤ 
     Proof: Show factorialCheckSet n ⊆ Finset.range (⌊log₂ n⌋ + 2):
     · k = 0: trivial (0 < ⌊log₂ n⌋ + 2)
     · k ≥ 1: 2^(k-1) ≤ k! < n, so 2^(k-1) < n, so k-1 ≤ ⌊log₂ n⌋ by log definition. -/
-theorem factorialCheckCount_le_log (n : ℕ) (hn : 2 ≤ n) :
+theorem factorialCheckCount_le_log (n : ℕ) :
     factorialCheckCount n ≤ Nat.log 2 n + 2 := by
   have hsubset : factorialCheckSet n ⊆ Finset.range (Nat.log 2 n + 2) := by
     intro k hk
@@ -200,7 +202,7 @@ theorem factorialCheckCount_le_log (n : ℕ) (hn : 2 ≤ n) :
     · omega
     · have h1 : 2^(k-1) ≤ k.factorial := two_pow_pred_le_factorial hkpos
       have h2 : 2^(k-1) < n := lt_of_le_of_lt h1 hk.2
-      have h3 : k-1 ≤ Nat.log 2 n := le_log_of_pow_lt hn h2
+      have h3 : k-1 ≤ Nat.log 2 n := le_log_of_pow_lt h2
       omega
   calc factorialCheckCount n
       = (factorialCheckSet n).card := rfl
@@ -212,6 +214,51 @@ theorem checkCount_bound_769 : factorialCheckCount 769 ≤ Nat.log 2 769 + 2 := 
   have hc : factorialCheckCount 769 = 7 := checkCount_769
   have hlog : Nat.log 2 769 = 9 := by native_decide
   omega
+
+/-
+## Exact Factorial Check Count
+
+When the "level" l of n is known — i.e., l! < n ≤ (l+1)! — the factorial check
+count equals exactly l+1, not merely is bounded by ⌊log₂ n⌋ + 2.
+
+The proof identifies factorialCheckSet n = Finset.range (l+1):
+· k ≤ l → k! ≤ l! < n (k ∈ set) and k ≤ l ≤ l! < n (k < n)
+· k ≥ l+1 → k! ≥ (l+1)! ≥ n (k! < n fails, k ∉ set)
+-/
+
+/-- **Exact Count Formula**: For n in the factorial interval (l!, (l+1)!],
+    factorialCheckCount n = l + 1.
+
+    This upgrades the logarithmic upper bound to a precise closed form:
+    the check count depends only on which factorial interval contains n. -/
+theorem factorialCheckCount_eq_of_interval {n l : ℕ} (hl : l.factorial < n)
+    (hn : n ≤ (l + 1).factorial) : factorialCheckCount n = l + 1 := by
+  have hfcs : factorialCheckSet n = Finset.range (l + 1) := by
+    ext k
+    simp only [factorialCheckSet, Finset.mem_filter, Finset.mem_range]
+    constructor
+    · -- k ∈ factorialCheckSet n → k < l+1
+      intro ⟨_, hkfact⟩
+      by_contra hk
+      push_neg at hk
+      -- k ≥ l+1 implies k! ≥ (l+1)! ≥ n, contradicting k! < n
+      have hge : (l + 1).factorial ≤ k.factorial := Nat.factorial_le hk
+      linarith
+    · -- k < l+1 → k ∈ factorialCheckSet n
+      intro hk
+      have hkl : k ≤ l := Nat.lt_succ_iff.mp hk
+      refine ⟨?_, Nat.lt_of_le_of_lt (Nat.factorial_le hkl) hl⟩
+      -- k < n: k ≤ l ≤ l! < n
+      exact Nat.lt_of_le_of_lt (Nat.le_trans hkl (Nat.self_le_factorial l)) hl
+  simp [factorialCheckCount, hfcs, Finset.card_range]
+
+/-- The factorial check count is constant on each factorial interval: if m and n
+    both lie in (l!, (l+1)!], then factorialCheckCount m = factorialCheckCount n. -/
+theorem factorialCheckCount_const_on_interval {m n l : ℕ}
+    (hm : l.factorial < m) (hm2 : m ≤ (l + 1).factorial)
+    (hn : l.factorial < n) (hn2 : n ≤ (l + 1).factorial) :
+    factorialCheckCount m = factorialCheckCount n := by
+  rw [factorialCheckCount_eq_of_interval hm hm2, factorialCheckCount_eq_of_interval hn hn2]
 
 /-
 ## Natural Density
@@ -319,22 +366,31 @@ extending the gallery from 2 verified witnesses to 6:
   - Level-5 witnesses (p ∈ (120, 720)): 461, 557, 673 (requiring 6 checks each)
   - Level-6 witness (p ∈ (720, 5040)): 769 (requiring 7 checks)
 
-The key new mathematical contribution is `factorialCheckCount_le_log`, which
-formally proves that factorialCheckCount(n) ≤ ⌊log₂ n⌋ + 2 for n ≥ 2. This is
-the rigorous version of the density heuristic's key observation: each prime
-requires only O(log n) conditions to check — logarithmically many, not linearly many.
-The proof uses the elementary bound 2^(k-1) ≤ k! for k ≥ 1, which itself follows
-by induction from the factorial recurrence.
+Key mathematical contributions:
+
+1. `factorialCheckCount_le_log`: factorialCheckCount(n) ≤ ⌊log₂ n⌋ + 2 for all n.
+   This is the rigorous version of the density heuristic's key observation: each prime
+   requires only O(log n) conditions — logarithmically many, not linearly many.
+   Proof: elementary bound 2^(k-1) ≤ k! for k ≥ 1 (induction on factorial recurrence).
+
+2. `factorialCheckCount_eq_of_interval`: when l! < n ≤ (l+1)!, factorialCheckCount n = l+1.
+   This exact formula identifies the check count with the "factorial level" of n:
+   the count jumps by exactly 1 at each factorial boundary and is constant within levels.
+   Proof: factorialCheckSet n = Finset.range (l+1) via double inclusion using Nat.factorial_le.
+
+3. `factorialCheckCount_const_on_interval`: check count is constant within each level.
+   This confirms the level structure is well-defined.
 
 Key counts at the six witnesses:
-  p = 101: 5 factorial checks (k = 0–4; 4! = 24 < 101 ≤ 120 = 5!)
-  p = 211: 6 factorial checks (k = 0–5; 5! = 120 < 211 ≤ 720 = 6!)
-  p = 461: 6 factorial checks (k = 0–5; level 5)
-  p = 557: 6 factorial checks (k = 0–5; level 5)
-  p = 673: 6 factorial checks (k = 0–5; level 5)
-  p = 769: 7 factorial checks (k = 0–6; 6! = 720 < 769 ≤ 5040 = 7!)
+  p = 101: 5 checks (level 4: 4! < 101 ≤ 5! = 120)
+  p = 211: 6 checks (level 5: 5! < 211 ≤ 6! = 720)
+  p = 461: 6 checks (level 5: 5! < 461 ≤ 6!)
+  p = 557: 6 checks (level 5: 5! < 557 ≤ 6!)
+  p = 673: 6 checks (level 5: 5! < 673 ≤ 6!)
+  p = 769: 7 checks (level 6: 6! < 769 ≤ 7! = 5040)
 
-Numerical verification: checkCount(769) = 7 ≤ log₂(769) + 2 = 9 + 2 = 11 ✓.
+Numerical verifications: checkCount(769) = 7 ≤ log₂(769) + 2 = 11 ✓;
+exact formula: 6! = 720 < 769 ≤ 5040 = 7!, count = 6+1 = 7 ✓.
 -/
 
 end Erdos1059OQ01

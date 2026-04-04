@@ -29,17 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added level-6 witness 769 and proved factorialCheckCount_le_log (0 sorries, 1 axiom)",
+    "progressSummary": "PROGRESS: 0 sorries, 1 axiom (density_one_conjecture); proved exact count formula + bound holds for all n",
     "builtItems": [
       "factorialCheckCount_le_log in Erdos1059OQ01.lean: proved factorialCheckCount n <= Nat.log 2 n + 2",
       "two_pow_pred_le_factorial (private): 2^(k-1) <= k! for k >= 1, proved by induction",
       "witness_769 + prime_769: first level-6 witness (p = 769 in (720, 5040))",
-      "six_prime_witnesses: packages all 6 verified witnesses (101, 211, 461, 557, 673, 769)"
+      "six_prime_witnesses: packages all 6 verified witnesses (101, 211, 461, 557, 673, 769)",
+      "factorialCheckCount_eq_of_interval: exact count equals l+1 when l-factorial < n <= (l+1)-factorial",
+      "factorialCheckCount_const_on_interval: count is constant within each factorial level"
     ],
     "insights": [
       "769 is the first level-6 witness (p in (720, 5040)); requires 7 factorial checks vs 6 for level-5",
       "Proved factorialCheckCount(n) <= log2(n) + 2 — elementary bound via 2^(k-1) <= k! induction",
-      "Bound is tight at n=3 (count=3, log=1) and n=7 (count=4, log=2)"
+      "Bound is tight at n=3 (count=3, log=1) and n=7 (count=4, log=2)",
+      "Exact formula: factorialCheckCount(n) = l+1 iff l-factorial < n <= (l+1)-factorial; count is uniquely determined by the factorial level of n",
+      "factorialCheckCount_le_log holds for ALL n (not just n>=2): vacuously true when n<=1 since factorialCheckSet is empty"
     ],
     "mathlibGaps": [],
     "nextSteps": [
