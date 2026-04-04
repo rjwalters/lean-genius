@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 9 lemmas proved. New this session: glaisherBwdStep_add_pow_two (carry-free binary addition sub-lemma). 2 main sorries remain: glaisherBwd_glaisherFwd, glaisher_bijection_exists.",
+    "progressSummary": "PROGRESS: glaisherBwd_glaisherFwd proved (main round-trip). Only glaisher_bijection_exists sorry remains.",
     "builtItems": [
       "glaisherFwdPart_sum: forward step preserves weight (PartitionTheoremOQ04.lean:96)",
       "glaisherFwd_sum: forward map preserves total weight (PartitionTheoremOQ04.lean:102)",
@@ -40,7 +40,11 @@
       "oddPart_odd: k/2^(padicValNat 2 k) is odd for k!=0 (PartitionTheoremOQ04.lean:150)",
       "padicValNat_two_pow: padicValNat 2 (2^n) = n by induction (PartitionTheoremOQ04.lean:138)",
       "glaisherBwd_glaisherFwdPart: backward undoes forward for single distinct part (PartitionTheoremOQ04.lean:236)",
-      "glaisherBwdStep_add_pow_two: if bit a of m is 0, glaisherBwdStep b (2^a + m) = {2^a*b} + glaisherBwdStep b m (PartitionTheoremOQ04.lean:261)"
+      "glaisherBwdStep_add_pow_two: if bit a of m is 0, glaisherBwdStep b (2^a + m) = {2^a*b} + glaisherBwdStep b m (PartitionTheoremOQ04.lean:261)",
+      "add_two_pow_lt_of_bit_zero: arithmetic helper — adding 2^v is carry-free when bit v of r is 0 (PartitionTheoremOQ04.lean:367)",
+      "glaisherFwd_count_bit_zero_aux: multiset induction with universal IH over a,b (PartitionTheoremOQ04.lean:393)",
+      "glaisherFwd_count_bit_zero: bit a of count b is 0 when 2^a*b not in t (PartitionTheoremOQ04.lean:462)",
+      "glaisherBwd_glaisherFwd: full round-trip theorem, 0 sorry (PartitionTheoremOQ04.lean:473)"
     ],
     "insights": [
       "Well-founded recursion on m/2 is opaque: simp [f] fails; need cases m with | succ n => simp [f]",
@@ -54,17 +58,16 @@
       "Even m from Nat.even_or_odd gives m = k+k (not 2*k); need omega to convert before subst",
       "pow_succ direction: use show 2*2^a = 2^(a+1) from by ring instead of <- pow_succ",
       "glaisherBwdStep b (2*k) = glaisherBwdStep (2*b) k: needs k=0 case separately (glaisherBwdStep_zero)",
-      "Multiset commutativity: ring fails; use add_left_comm for {a}+({b}+X) = {b}+({a}+X)"
+      "Multiset commutativity: ring fails; use add_left_comm for {a}+({b}+X) = {b}+({a}+X)",
+      "glaisherFwd_count_bit_zero proved: bit a of count b is 0 when 2^a*b ∉ t — key lemma for round-trip",
+      "glaisherBwd_glaisherFwd proved: backward map is left-inverse of forward map on Nodup multisets — main round-trip theorem"
     ],
     "mathlibGaps": [
       "Multiset.toFinset_replicate: toFinset (replicate n b) = {b} for n>=1 (needed for bijectivity)",
       "Multiset.count_replicate: count b (replicate n b) = n (check if in Mathlib)"
     ],
     "nextSteps": [
-      "glaisherBwd_glaisherFwd: needs glaisherFwd_count_formula (how many copies of odd b in glaisherFwd s), then use glaisherBwdStep_add_pow_two iteratively for distinct powers of 2",
-      "Key insight: for Nodup s, (glaisherFwd s).count b = sum_{a | 2^a*b in s} 2^a (distinct powers)",
-      "glaisherBwdStep with distinct-power-sum count recovers {2^a*b | 2^a*b in s} via repeated glaisherBwdStep_add_pow_two",
-      "Consider Aristotle for glaisherBwd_glaisherFwd if it looks like routine Mathlib-based proof"
+      "Prove glaisher_bijection_exists using round-trip + cardinality argument"
     ],
     "markdown": "# Knowledge Base: partition-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
