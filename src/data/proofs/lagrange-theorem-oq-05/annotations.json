@@ -28,10 +28,10 @@
     "id": "ann-lagrange",
     "proofId": "lagrange-theorem-oq-05",
     "range": {
-      "startLine": 23,
-      "endLine": 38
+      "startLine": 27,
+      "endLine": 41
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Lagrange's Theorem in Lean",
     "content": "Two forms of Lagrange's theorem:\n\n1. **Divisibility form** (`lagrange_divides`): $|H| \\mid |G|$. One-line proof delegating to `Subgroup.card_subgroup_dvd_card`.\n\n2. **Index form** (`lagrange_index`): $|G| = [G:H] \\cdot |H|$. Proof: `(Subgroup.card_eq_card_quotient_mul_card_subgroup H).symm`.\n\nBoth require `[Fintype G]`, `[Fintype H]`, and `[Fintype (G ⧸ H)]` as typeclass instances.",
     "mathContext": "`Subgroup.card_subgroup_dvd_card : ∀ (H : Subgroup G) [Fintype H], Fintype.card H ∣ Fintype.card G` — Mathlib's Lagrange directly. `Subgroup.card_eq_card_quotient_mul_card_subgroup H : Fintype.card (G ⧸ H) * Fintype.card H = Fintype.card G`; the `.symm` reverses the equation to match `lagrange_index`'s stated form. `G ⧸ H` is the left-coset quotient type: elements are cosets `gH`, and `Fintype.card (G ⧸ H)` computes $[G:H]$. The instance `[Fintype (G ⧸ H)]` requires Lean to know how to enumerate left cosets — it's derivable when `G` and `H` are both `Fintype`. `Fintype.card H ∣ Fintype.card G` is `∃ k, Fintype.card G = Fintype.card H * k`, proved by `k = [G:H]`.",
@@ -52,10 +52,10 @@
     "id": "ann-orbit-stabilizer",
     "proofId": "lagrange-theorem-oq-05",
     "range": {
-      "startLine": 40,
-      "endLine": 74
+      "startLine": 43,
+      "endLine": 69
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Orbit-Stabilizer: Lagrange for Group Actions",
     "content": "Three results formalize orbit-stabilizer:\n\n1. **`orbit_stabilizer`**: $|\\text{Orb}(x)| \\cdot |\\text{Stab}(x)| = |G|$. Proof: `card_orbit_mul_card_stabilizer_eq_card_group G x`.\n\n2. **`orbit_equiv_cosets`**: $\\text{Orb}(x) \\cong G/\\text{Stab}(x)$. Witnesses the bijection via `orbitEquivQuotientStabilizer G x`.\n\n3. **`orbit_stabilizer_generalizes_lagrange`**: Applies orbit-stabilizer to the action $G \\curvearrowright G/H$ to recover Lagrange.\n\nThe `stabilizer G x : Subgroup G` is a structural subgroup guaranteed by Mathlib.",
     "mathContext": "`MulAction.stabilizer G x : Subgroup G` is `{g : G | g • x = x}`, the isotropy group. `MulAction.orbit G x : Set X` is `{g • x | g : G}`. `card_orbit_mul_card_stabilizer_eq_card_group G x : Fintype.card (orbit G x) * Fintype.card (stabilizer G x) = Fintype.card G` — directly from Mathlib's `GroupTheory.GroupAction.Basic`. `orbitEquivQuotientStabilizer G x : orbit G x ≃ G ⧸ stabilizer G x` is the explicit bijection $g \\cdot x \\mapsto g \\cdot \\text{Stab}(x)$; it's well-defined because $g_1 x = g_2 x \\iff g_2^{-1}g_1 \\in \\text{Stab}(x) \\iff g_1\\text{Stab}(x) = g_2\\text{Stab}(x)$. `Nonempty (orbit G x ≃ ...)` packages the equivalence propositionally; `⟨orbitEquivQuotientStabilizer G x⟩` is the anonymous constructor. `orbit_stabilizer_generalizes_lagrange` applies Lagrange to the action of $G$ on $G/H$; the stabilizer of the coset $eH$ is $\\{g : g \\cdot eH = eH\\} = \\{g : gH = H\\} = H$.",
@@ -77,10 +77,10 @@
     "id": "ann-burnside",
     "proofId": "lagrange-theorem-oq-05",
     "range": {
-      "startLine": 76,
-      "endLine": 102
+      "startLine": 71,
+      "endLine": 97
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Burnside's Counting Lemma",
     "content": "**Burnside's lemma** (integer form): $\\sum_{g \\in G} |\\text{Fix}(g)| = |X/G| \\cdot |G|$.\n\n```lean\ntheorem burnside_lemma ... :\n    ∑ g : G, Fintype.card (fixedBy X g) =\n    Fintype.card (orbitRel.Quotient G X) * Fintype.card G\n```\n\nProof: `sum_card_fixedBy_eq_card_orbits_mul_card_group G X` (one-line Mathlib delegation).\n\nDivisibility corollary: `rw [burnside_lemma]; exact dvd_mul_left _ _`.",
     "mathContext": "`MulAction.fixedBy X g : Set X` is `{x : X | g • x = x}`. `orbitRel.Quotient G X` is the type of orbits — the quotient of $X$ by `orbitRel G X : Setoid X` where `x ~ y ↔ ∃ g, g • x = y`. `sum_card_fixedBy_eq_card_orbits_mul_card_group : ∑ g : G, Fintype.card (fixedBy X g) = Fintype.card (orbitRel.Quotient G X) * Fintype.card G` — exactly Burnside's lemma in Mathlib. The `[∀ g : G, Fintype (fixedBy X g)]` instance requires each fixed-point set to be finite; this follows from `[Fintype X]` via `Set.fintypeSubset`. `dvd_mul_left a b : a ∣ b * a` closes the divisibility goal after `rw [burnside_lemma]` transforms to `Fintype.card G ∣ Fintype.card (orbitRel.Quotient G X) * Fintype.card G`. Applications: counting distinct necklaces under rotation (Burnside's original problem), distinct colorings of a cube under symmetry group, Polya enumeration theorem (generalization using cycle index).",
@@ -102,8 +102,8 @@
     "id": "ann-chain-proof",
     "proofId": "lagrange-theorem-oq-05",
     "range": {
-      "startLine": 104,
-      "endLine": 118
+      "startLine": 99,
+      "endLine": 113
     },
     "type": "insight",
     "title": "Chain Documentation and open Declarations",
