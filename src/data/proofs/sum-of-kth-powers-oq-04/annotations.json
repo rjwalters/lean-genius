@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-emac-bernoulli-leading",
+    "proofId": "sum-of-kth-powers-oq-04",
+    "range": { "startLine": 46, "endLine": 58 },
+    "type": "theorem",
+    "title": "Bernoulli Polynomial is Monic of Degree k+1",
+    "content": "bernoulli_poly_leading proves two properties of the Bernoulli polynomial B_{k+1}: its leading coefficient is 1 (monic) and its degree is exactly k+1. The proof works in two steps: the private bernoulli_coeff_top lemma first establishes that the (k+1)-th coefficient is 1 via coeff_bernoulli (which gives coeff(B_n, i) = bernoulli(n-i) * C(n,i) for i ≤ n; at i = n this is bernoulli(0) * 1 = 1). Then natDegree is pinned by an antisymmetry argument: coeff_above shows coefficients at positions > k+1 are zero (via coeff_bernoulli returning 0 for out-of-range indices), and le_natDegree_of_ne_zero shows the degree is at least k+1.",
+    "mathContext": "$$\\text{leadingCoeff}(B_{k+1}) = 1,\\quad \\deg(B_{k+1}) = k+1$$ where $B_{k+1}(x) = \\sum_{j=0}^{k+1} \\binom{k+1}{j} b_{k+1-j} x^j$ and $b_0 = 1$. The leading term $\\binom{k+1}{k+1} b_0 x^{k+1} = x^{k+1}$ gives monicity.",
+    "significance": "Previously axiomatized — now fully proved from Mathlib's coeff_bernoulli API. This eliminated one of the two original axioms, leaving only monic_poly_ratio_tendsto as the remaining assumption.",
+    "relatedConcepts": ["Polynomial.bernoulli", "coeff_bernoulli", "Polynomial.leadingCoeff", "natDegree_le_iff_coeff_eq_zero"],
+    "prerequisites": ["Bernoulli polynomials in Mathlib", "Polynomial degree and leading coefficient"]
+  },
+  {
+    "id": "ann-emac-ratio-def",
+    "proofId": "sum-of-kth-powers-oq-04",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "powerSumRatio: The Normalized Power Sum",
+    "content": "powerSumRatio k n is the ratio (∑_{i=0}^{n-1} i^k) / n^{k+1}, defined over ℚ with the convention that the value is 0 when n = 0 (to make it a total function). The denominator n^{k+1} normalizes the sum to the scale of 1/(k+1): by the Riemann sum interpretation, this ratio approximates ∫₀¹ x^k dx = 1/(k+1) for large n. The definition uses noncomputable because it involves rational division.",
+    "mathContext": "$$R_k(n) = \\begin{cases} 0 & n = 0 \\\\ \\dfrac{\\displaystyle\\sum_{i=0}^{n-1} i^k}{n^{k+1}} & n > 0 \\end{cases}$$ which is a discrete approximation to $\\int_0^1 x^k\\,dx = \\frac{1}{k+1}$.",
+    "significance": "The central quantity studied. All four theorems (k=0, k=1, general tendsto, and the Faulhaber rewriting) are statements about this ratio.",
+    "relatedConcepts": ["Riemann sums", "Faulhaber's formula", "Finset.sum", "noncomputable definition"],
+    "prerequisites": ["Finset.range in Mathlib", "Rational number arithmetic", "Sum of powers definitions"]
+  },
+  {
+    "id": "ann-emac-monic-axiom",
+    "proofId": "sum-of-kth-powers-oq-04",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "axiom",
+    "title": "Monic Polynomial Ratio Tends to 1",
+    "content": "monic_poly_ratio_tendsto is the single remaining axiom: for any monic polynomial p of degree d ≥ 1 over ℚ, the ratio p(n)/n^d converges to 1 as n → ∞. The comment describes the proof strategy: write p = X^d + q with deg(q) < d, so p(n)/n^d = 1 + q(n)/n^d. Each term of q(n)/n^d has the form c/n^m with m ≥ 1, which tends to 0. The obstacle to proving this in Lean is the need to manipulate polynomial evaluation of lower-degree terms in the filter limit API — a nontrivial analytic argument not currently automated in Mathlib.",
+    "mathContext": "$$\\frac{p(n)}{n^d} \\xrightarrow{n\\to\\infty} 1 \\quad \\text{for monic } p \\text{ of degree } d \\geq 1$$ since $p(n) = n^d + a_{d-1}n^{d-1} + \\cdots + a_0 = n^d\\left(1 + \\frac{a_{d-1}}{n} + \\cdots + \\frac{a_0}{n^d}\\right) \\to n^d \\cdot 1$.",
+    "significance": "The key analytic gap: once this is proved, powerSumRatio_tendsto follows from bernoulli_poly_leading + Faulhaber's formula with no additional axioms. The proof strategy is clear but requires careful Mathlib filter API manipulation.",
+    "relatedConcepts": ["Polynomial.eval", "Filter.Tendsto", "Filter.atTop", "polynomial leading term decomposition"],
+    "prerequisites": ["Filter limits in Mathlib topology", "Polynomial evaluation over ℚ", "atTop filter"]
+  },
+  {
+    "id": "ann-emac-main-tendsto",
+    "proofId": "sum-of-kth-powers-oq-04",
+    "range": { "startLine": 105, "endLine": 138 },
+    "type": "theorem",
+    "title": "Main Theorem: Power Sum Ratio Converges to 1/(k+1)",
+    "content": "powerSumRatio_tendsto is the main result: Tendsto (powerSumRatio k) atTop (nhds (1/(k+1))). The four-step proof is a masterclass in filter manipulation: Step 1 uses filter_upwards to rewrite powerSumRatio for large n using Faulhaber's formula (sum_range_pow_eq_bernoulli_sub), expressing the ratio as (B_{k+1}(n) - c) / ((k+1) · n^{k+1}) where c = B_{k+1}(0). Step 2 targets this rewritten limit. Step 3 splits via sub_div and applies Filter.Tendsto.sub. Step 4 handles the two terms: B_{k+1}(n)/((k+1)·n^{k+1}) → 1/(k+1) using monic_poly_ratio_tendsto divided by the constant (k+1); and c/((k+1)·n^{k+1}) → 0 using const_div_pow_tendsto_zero.",
+    "mathContext": "$$R_k(n) = \\frac{B_{k+1}(n) - B_{k+1}(0)}{(k+1) n^{k+1}} \\xrightarrow{n\\to\\infty} \\frac{1}{k+1} - 0 = \\frac{1}{k+1}$$ since $B_{k+1}(n)/n^{k+1} \\to 1$ (monic axiom) and $B_{k+1}(0)/n^{k+1} \\to 0$.",
+    "significance": "The central theorem of the file. It transforms a discrete-to-continuous convergence statement into a clean chain of filter limit computations, leveraging Faulhaber's formula and the monic axiom.",
+    "relatedConcepts": ["filter_upwards", "sum_range_pow_eq_bernoulli_sub", "Filter.Tendsto.sub", "Filter.Tendsto.div_const"],
+    "prerequisites": ["Faulhaber's formula in Mathlib", "Filter.Tendsto API", "monic_poly_ratio_tendsto axiom", "bernoulli_poly_leading"]
+  },
+  {
+    "id": "ann-emac-k0-case",
+    "proofId": "sum-of-kth-powers-oq-04",
+    "range": { "startLine": 141, "endLine": 146 },
+    "type": "theorem",
+    "title": "Exact Formula k=0: Power Sum Ratio Equals 1",
+    "content": "powerSumRatio_k0 proves: for n ≠ 0, powerSumRatio 0 n = 1. The proof uses simp to compute ∑_{i<n} i⁰ = n (each term is 1, and there are n terms), then the denominator n^1 = n, so the ratio n/n = 1 by div_self. This is the degenerate case confirming that the constant function 1 has a power sum ratio identically 1, consistent with 1/(0+1) = 1.",
+    "mathContext": "$$R_0(n) = \\frac{\\sum_{i=0}^{n-1} 1}{n^1} = \\frac{n}{n} = 1 = \\frac{1}{0+1}$$ exactly, for all $n \\geq 1$.",
+    "significance": "The simplest verification: the k=0 case is exact, not just asymptotic. This grounds the abstract convergence theorem in a concrete equality.",
+    "relatedConcepts": ["Finset.sum_const", "div_self", "pow_zero"],
+    "prerequisites": ["Finset.card_range", "Rational division"]
+  },
+  {
+    "id": "ann-emac-k1-case",
+    "proofId": "sum-of-kth-powers-oq-04",
+    "range": { "startLine": 159, "endLine": 167 },
+    "type": "theorem",
+    "title": "Exact Formula k=1: Gauss Sum Ratio Is (n-1)/(2n)",
+    "content": "powerSumRatio_k1 proves: for n > 0, powerSumRatio 1 n = (n-1)/(2n). The proof uses the private gauss_sum_rat lemma: 2 · ∑_{i<n} i = n·(n-1) (proved by induction). From this, ∑ i = n(n-1)/2, and dividing by n² gives (n-1)/(2n). As n → ∞, this converges to 1/2 = 1/(1+1), confirming the main theorem in this special case. The proof uses field_simp + nlinarith to close the algebraic identity.",
+    "mathContext": "$$R_1(n) = \\frac{\\sum_{i=0}^{n-1} i}{n^2} = \\frac{n(n-1)/2}{n^2} = \\frac{n-1}{2n} \\xrightarrow{n\\to\\infty} \\frac{1}{2} = \\frac{1}{1+1}$$ using the Gauss sum $\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2}$.",
+    "significance": "The most famous instance of the power sum formula: the Gauss summation n(n-1)/2 is verified over ℚ by induction, then used to prove the exact ratio. This case fully confirms the asymptotic theorem with an exact equality.",
+    "relatedConcepts": ["gauss_sum_rat (private lemma)", "Gauss summation formula", "field_simp", "nlinarith"],
+    "prerequisites": ["Gauss sum 1+2+...+(n-1) = n(n-1)/2", "Inductive proof of sum formulas", "field_simp tactic"]
+  }
+]
