@@ -39,15 +39,17 @@
     ]
   },
   "overview": {
-    "historicalContext": "Kostochka and Pyber (1988) resolved Erdős Problem #1018: graphs with n^(1+ε) edges contain K₅ subdivisions on O_ε(1) vertices. The natural question is how this extends to higher uniformity. For r-uniform hypergraphs, viewed as (r-1)-dimensional simplicial complexes, the analogue of planarity is embeddability in R^(2(r-1)). The van Kampen-Flores theorem (1933) provides the topological obstruction: the complete r-uniform hypergraph on 2r+1 vertices is not embeddable in R^(2(r-1)), generalizing the non-planarity of K₅.",
+    "historicalContext": "Erdős Problem #1018 asked whether every dense graph (with n^{1+ε} edges) must contain a non-planar subgraph on only O_ε(1) vertices. Kostochka and Pyber (1988) answered affirmatively: n^{1+ε} edges force a K₅ topological minor on a bounded number of vertices. The key insight was that K₅ non-planarity is the topological obstruction for graphs: by Kuratowski, every non-planar graph contains K₅ or K_{3,3} as a minor. For r-uniform hypergraphs viewed as (r-1)-dimensional simplicial complexes, the natural analogue of planarity is embeddability in R^{2(r-1)}: a generic (r-1)-dimensional complex embeds in R^{2(r-1)+1} by general position, so R^{2(r-1)} is the first dimension where non-embeddability can occur. The van Kampen-Flores theorem, proved independently by van Kampen and Flores in 1933 using the newly proved Borsuk-Ulam theorem, establishes the minimal obstruction: K_{2r+1}^{(r)} is not embeddable in R^{2(r-1)}. The proof uses deleted products and Z/2-equivariant topology — the same framework used by Lovász in his proof of the Kneser conjecture (1978). For r=2 this gives K₅ non-planarity; for r=3 it gives K₇^{(3)} non-embeddability in R⁴. The Turán density of K₄^{(3)} — asking for the maximum edges in a K₄^{(3)}-free 3-uniform hypergraph — is one of the most famous open problems in extremal combinatorics (Turán 1941, still unsolved). The super-linear density threshold n^{r-1+ε} exceeds these Turán numbers for large n, making the conjecture well-motivated.",
     "problemStatement": "For r ≥ 2 and ε > 0, does every r-uniform hypergraph on n vertices with at least n^(r-1+ε) edges contain a sub-hypergraph on O_{r,ε}(1) vertices that is not embeddable in R^(2(r-1))? This is OPEN for r ≥ 3.",
     "text": "Formalizes the hypergraph extension of Erdős 1018. Defines r-uniform hypergraphs, the density threshold n^(r-1+ε), and the topological obstruction via the van Kampen-Flores theorem. States the generalized Kostochka-Pyber conjecture and proves recovery of the graph case (r=2). Explicit treatment of the 3-uniform case (K₇³, R⁴).",
     "proofStrategy": "The framework parallels the graph case: (1) density threshold n^(r-1+ε) generalizes n^(1+ε), (2) topological obstruction via van Kampen-Flores generalizes K₅ non-planarity, (3) the conjecture asks for bounded-size non-embeddable sub-hypergraphs. The 3-uniform case (density n^(2+ε), obstruction in R⁴) is the first non-trivial instance.",
     "keyInsights": [
-      "The van Kampen-Flores theorem provides the correct higher-dimensional obstruction: K_{2r+1}^(r) is not embeddable in R^(2(r-1)), generalizing K₅ non-planarity",
-      "The density threshold n^(r-1+ε) is the natural generalization: for r=2 it gives n^(1+ε), and it exceeds hypergraph Turán numbers for large n",
-      "The critical dimension 2(r-1) is determined by the topology: an (r-1)-dimensional complex generically embeds in R^(2(r-1)+1) but not always in R^(2(r-1))",
-      "The 3-uniform case (density n^(2+ε), obstruction K₇³ in R⁴, 35 edges) is the simplest open instance"
+      "The van Kampen-Flores theorem is the higher-dimensional K₅: K_{2r+1}^{(r)} is not embeddable in R^{2(r-1)}, proved using Borsuk-Ulam + deleted products. For r=2: K₅ non-planar. For r=3: K₇^{(3)} not in R⁴",
+      "The critical dimension 2(r-1) is determined by general position: a generic (r-1)-simplex lives in R^{r-1}, and a generic (r-1)-dimensional simplicial complex embeds in R^{2(r-1)+1} but can obstruct embedding in R^{2(r-1)}",
+      "The density threshold n^{r-1+ε} is the super-Turán regime: Turán numbers for r-uniform complete subhypergraphs are polynomially smaller than n^{r-1+ε} for large n, so dense hypergraphs force complete sub-hypergraphs as candidates for non-embeddable pieces",
+      "The Hypergraph structure uses a Finset-of-Finsets model with a proof-valued uniformity field, allowing the uniformity constraint to be inherited automatically by sub-hypergraphs via the induced definition",
+      "The isEmbeddable definition has a sorry: formalizing it requires geometric realization of simplicial complexes in R^d as a topological space — infrastructure not yet in Mathlib, making the isNonEmbeddable and vanKampen_Flores axiom necessary",
+      "K₇^{(3)} has C(7,3) = 35 edges — proved by decide. The analogous K₅ has C(5,2) = 10 edges. The ratio 35/10 shows how much richer 3-uniform hypergraph theory is compared to graphs"
     ],
     "prerequisites": [
       "Graph theory and hypergraph basics",
@@ -116,7 +118,13 @@
   "conclusion": {
     "summary": "The hypergraph extension of Erdős 1018 asks whether n^(r-1+ε) edge density in r-uniform hypergraphs forces non-embeddable (in R^(2(r-1))) sub-hypergraphs of bounded size. The van Kampen-Flores theorem provides the topological obstruction, generalizing K₅ non-planarity. The conjecture is OPEN for r ≥ 3.",
     "implications": "If true, establishes a topological Ramsey-type principle for hypergraphs: sufficiently dense r-uniform hypergraphs must contain topologically complex sub-structures of bounded size, connecting extremal combinatorics to topological combinatorics in higher dimensions.",
-    "openQuestions": []
+    "openQuestions": [
+      "Prove the generalized Kostochka-Pyber conjecture for r=3: does n^{2+ε} edge density in 3-uniform hypergraphs force a K₇^{(3)}-subdivision on O_ε(1) vertices?",
+      "Formalize isEmbeddable: define geometric realization of simplicial complexes in R^d and almost-embeddings (maps where disjoint simplices have disjoint images) in Mathlib",
+      "Prove the van Kampen-Flores theorem from Borsuk-Ulam in Lean: requires deleted product construction, Z/2-equivariant maps, and Smith theory for Z/2",
+      "Determine the Turán density of K₄^{(3)}: the maximum asymptotic edge density of a K₄^{(3)}-free 3-uniform hypergraph. Turán conjectured 2/9 in 1941; still unsolved",
+      "Does the Erdős-Ko-Rado theorem (1961) for intersecting families connect to the BU dimension of the hypergraph Kneser complex?"
+    ]
   },
   "crossReferences": [
     {
