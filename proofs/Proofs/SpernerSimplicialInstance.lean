@@ -232,7 +232,16 @@ noncomputable def AbstractSimplicialData.toTriangulation
   vertex := fun ⟨s, hs⟩ k => (s.sort (· ≤ ·)).get
     (k.cast (by rw [Finset.length_sort]; exact (D.card_eq s hs).symm))
   vertex_injective := by
-    intro ⟨s, hs⟩ i j hij; sorry
+    intro ⟨s, hs⟩ i j hij
+    have hnd : (s.sort (· ≤ ·)).Nodup := s.sort_nodup (· ≤ ·)
+    set L := s.sort (· ≤ ·) with hL_def
+    set i' : Fin L.length := i.cast (by rw [hL_def, Finset.length_sort]; exact (D.card_eq s hs).symm)
+    set j' : Fin L.length := j.cast (by rw [hL_def, Finset.length_sort]; exact (D.card_eq s hs).symm)
+    have hi'j' : L.get i' = L.get j' := hij
+    have key : (i' : ℕ) = (j' : ℕ) := by
+      rw [List.nodup_iff_injective_get] at hnd
+      exact Fin.val_eq_of_eq (hnd hi'j')
+    exact Fin.ext key
   adj := fun ⟨_, _⟩ _ => sorry
   adj_symm := by intro _ _ _ _ _; sorry
   adj_vertex := by intro _ _ _ _ _; sorry
