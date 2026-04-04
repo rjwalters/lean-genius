@@ -14,8 +14,8 @@
   {
     "id": "ann-addorderof-rotation",
     "proofId": "burnside-counting-oq-03",
-    "range": { "startLine": 58, "endLine": 68 },
-    "type": "technique",
+    "range": { "startLine": 66, "endLine": 76 },
+    "type": "insight",
     "title": "addOrderOf_rotation: Orbit Size via ZMod.addOrderOf_coe",
     "content": "`addOrderOf_rotation` proves that the additive order of r in ZMod n is n/gcd(n, r.val). The proof uses `ZMod.natCast_zmod_val` to rewrite r as ↑r.val, then applies `ZMod.addOrderOf_coe` from Mathlib. This is the bridge between the orbit structure of cyclic rotation and Mathlib's number theory.",
     "mathContext": "Mathlib's `ZMod.addOrderOf_coe (a : ℕ) {n : ℕ} (n0 : n ≠ 0) : addOrderOf (↑a : ZMod n) = n / n.gcd a` combined with `ZMod.natCast_zmod_val : (r.val : ZMod n) = r` gives `addOrderOf r = n / Nat.gcd n r.val`. For $n=4$: orders are 1, 4, 2, 4 for $r = 0, 1, 2, 3$.",
@@ -36,10 +36,34 @@
     "prerequisites": ["Fintype.decidableForallFintype", "Fin.val arithmetic"]
   },
   {
+    "id": "ann-fixed-factors-mod",
+    "proofId": "burnside-counting-oq-03",
+    "range": { "startLine": 80, "endLine": 171 },
+    "type": "technique",
+    "title": "fixed_factors_through_mod: Orbit Equality via Bezout",
+    "content": "The key structural lemma: if A is fixed by rotation r, then positions i and j with i.val ≡ j.val (mod gcd(r,n)) satisfy c(i) = c(j). The proof has three steps: (1) show the backward step c(x+r) = c(x); (2) iterate to c(x + m*r) = c(x) for any m; (3) use Bezout's identity (Nat.gcd_eq_gcd_ab) to find m with (i + m*r) % n = j. The Bezout step converts 'same mod gcd' to 'reachable by rotation', which is the algebraic heart of the orbit characterization.",
+    "mathContext": "Bezout: $\\gcd(r,n) = r \\cdot A + n \\cdot B$ for integers $A, B$. If $\\gcd(r,n) \\mid (j-i)$, write $j - i = \\gcd(r,n) \\cdot C$, so $j - i = (r \\cdot A + n \\cdot B) \\cdot C = r \\cdot (AC) + n \\cdot (BC)$. Thus $j \\equiv i + r \\cdot (AC) \\pmod{n}$, i.e., $m = AC$ rotations carry $i$ to $j$.",
+    "significance": "key",
+    "relatedConcepts": ["Bezout's lemma", "Nat.gcd_eq_gcd_ab", "orbit equivalence", "Int.emod_nonneg"],
+    "prerequisites": ["IsFixed definition", "Nat.gcd", "integer arithmetic", "Int.modEq"]
+  },
+  {
+    "id": "ann-polya-fixed-count",
+    "proofId": "burnside-counting-oq-03",
+    "range": { "startLine": 173, "endLine": 223 },
+    "type": "result",
+    "title": "polya_cyclic_fixed_count: Bijection |Fix(r)| = k^gcd(r,n)",
+    "content": "Constructs the explicit bijection between {c : Fin n → Fin k // IsFixed n k r c} and (Fin d → Fin k) where d = gcd(r.val, n). The forward map sends a fixed coloring c to its restriction to the first d positions (Fin d representative). The backward map sends f to (i ↦ f ⟨i.val % d, ...⟩) — coloring by orbit representative. Right_inv is immediate (mod preserves Fin d values). Left_inv uses fixed_factors_through_mod to show that evaluating at orbit representatives agrees with the original coloring.",
+    "mathContext": "Bijection: $c \\mapsto (j \\mapsto c(j))$ for $j < d$; inverse $f \\mapsto (i \\mapsto f(i \\bmod d))$. Well-defined since $i \\equiv i \\bmod d \\pmod{\\gcd(r,n)}$, so $c(i) = c(i \\bmod d)$ by fixed_factors_through_mod. Cardinality: $|\\text{Fin}\\,d \\to \\text{Fin}\\,k| = k^d = k^{\\gcd(r,n)}$.",
+    "significance": "key",
+    "relatedConcepts": ["Fintype.card_congr", "Fintype.card_fun", "fixed_factors_through_mod", "orbit representative"],
+    "prerequisites": ["fixed_factors_through_mod", "Fintype.card_congr", "Nat.gcd divisibility"]
+  },
+  {
     "id": "ann-fp-counts-n4",
     "proofId": "burnside-counting-oq-03",
-    "range": { "startLine": 119, "endLine": 158 },
-    "type": "technique",
+    "range": { "startLine": 229, "endLine": 258 },
+    "type": "insight",
     "title": "Fixed-Point Counts for n=4 by native_decide",
     "content": "The four rotation-specific theorems are proved by `native_decide`, computing directly that: identity (r=0) fixes all 16 colorings; rotation by 1 fixes 2 (constant); rotation by 2 fixes 4 (period-2: c(0)=c(2), c(1)=c(3)); rotation by 3 fixes 2 (constant). These match k^gcd(r,n) = 2^gcd(r,4) for r=0,1,2,3.",
     "mathContext": "The 6 orbit classes of $\\mathbb{Z}/4\\mathbb{Z}$ acting on $\\{0,1\\}^4$: $\\{0000\\}$, $\\{1111\\}$, $\\{0101, 1010\\}$, $\\{0011, 0110, 1100, 1001\\}$, $\\{0001, 0010, 0100, 1000\\}$, $\\{0111, 1110, 1101, 1011\\}$. Burnside: $(16+2+4+2)/4 = 24/4 = 6$.",
@@ -50,13 +74,37 @@
   {
     "id": "ann-polya-sums",
     "proofId": "burnside-counting-oq-03",
-    "range": { "startLine": 160, "endLine": 195 },
-    "type": "result",
+    "range": { "startLine": 265, "endLine": 280 },
+    "type": "insight",
     "title": "Pólya Sum Formula: Two Equivalent Forms (Both Proved for n=4)",
     "content": "Two formulations of the Pólya sum are verified for n=4, k=2 by `native_decide`: (1) Σ_{r:Fin 4} 2^gcd(r,4) = 24; (2) Σ_{d|4} φ(4/d)·2^d = 24. Their equivalence is also proved. The general identity Σ_{r:Fin n} k^gcd(r,n) = Σ_{d|n} φ(n/d)·k^d holds because: for each divisor d|n, exactly φ(n/d) rotations r have gcd(r,n)=d (those with gcd(r/d, n/d)=1, i.e., r/d coprime to n/d).",
     "mathContext": "Reindexing: group rotations $r \\in \\mathbb{Z}/n\\mathbb{Z}$ by $d = \\gcd(r,n)$. For each $d \\mid n$, the number of $r$ with $\\gcd(r,n) = d$ is $\\varphi(n/d)$ (by Euler's totient: $\\{r/d : \\gcd(r/d, n/d) = 1\\}$ has $\\varphi(n/d)$ elements). Hence $\\sum_r k^{\\gcd(r,n)} = \\sum_{d|n} \\varphi(n/d) \\cdot k^d$.",
     "significance": "key",
     "relatedConcepts": ["Nat.totient", "Nat.divisors", "Nat.gcd", "Finset.sum"],
     "prerequisites": ["Euler totient function", "Nat.divisors", "BigOperators"]
+  },
+  {
+    "id": "ann-fiber-totient",
+    "proofId": "burnside-counting-oq-03",
+    "range": { "startLine": 282, "endLine": 362 },
+    "type": "technique",
+    "title": "Fiber-Totient Bijection and Pólya Sum Identity",
+    "content": "fiber_card_eq_totient proves that the fiber {r : Fin n | gcd(r.val, n) = d} has exactly φ(n/d) elements. The proof constructs a bijection r ↦ r.val/d with {s < n/d | Coprime(n/d, s)}: forward map divides by d (valid since d | r.val), injectivity uses linarith on d*(r1.val/d) = d*(r2.val/d), surjectivity sends s ↦ d*s. polya_sum_identity then uses Finset.sum_fiberwise_of_maps_to to reindex the rotation sum by divisors.",
+    "mathContext": "$|\\{r < n : \\gcd(r,n) = d\\}| = \\varphi(n/d)$, via $r \\mapsto r/d$ with $\\{s < n/d : \\gcd(s, n/d) = 1\\}$. Hence $\\sum_{r < n} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_fiberwise_of_maps_to", "Nat.totient", "Nat.coprime_div_gcd_div_gcd", "fiber bijection"],
+    "prerequisites": ["Euler totient function", "Nat.divisors", "Nat.Coprime", "Finset.card_bij"]
+  },
+  {
+    "id": "ann-necklace-formula",
+    "proofId": "burnside-counting-oq-03",
+    "range": { "startLine": 364, "endLine": 402 },
+    "type": "result",
+    "title": "Necklace Count and General Pólya Statement",
+    "content": "polya_binary4_necklace_count derives 24/4 = 6 distinct binary necklaces of length 4 by combining polya_sum_Z4_binary with arithmetic. polya_necklace_formula_statement gives the general formula conditioned on Burnside's lemma and the fixed-point formula as hypotheses — a clean conditional statement of what PET achieves. The 6 necklace classes are: {0000}, {0001,0010,0100,1000}, {0011,0110,1100,1001}, {0101,1010}, {0111,1110,1101,1011}, {1111}.",
+    "mathContext": "$\\#\\text{binary 4-necklaces} = \\frac{1}{4}\\sum_{r=0}^{3} 2^{\\gcd(r,4)} = \\frac{24}{4} = 6$. General: $n \\cdot N_k(n) = \\sum_{r < n} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$.",
+    "significance": "key",
+    "relatedConcepts": ["Burnside's lemma", "Pólya enumeration theorem", "necklace", "polya_sum_Z4_binary"],
+    "prerequisites": ["fp_sum_binary4", "polya_sum_Z4_binary", "Burnside's lemma (MulAction)"]
   }
 ]

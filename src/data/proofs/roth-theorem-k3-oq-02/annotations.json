@@ -1,56 +1,132 @@
 [
   {
+    "id": "rs-vertex-type",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "definition",
+    "startLine": 33,
+    "endLine": 49,
+    "title": "Vertex Type: Three Copies of Z/NZ",
+    "content": "RSVertex N is defined as Fin 3 × ZMod N — three labeled copies of the cyclic group Z/NZ, called parts X (0), Y (1), and Z (2). The helper abbreviations xVert, yVert, zVert construct vertices in each part, forming the tripartite structure that will encode arithmetic progressions as triangles.",
+    "mathContext": "$\\text{RSVertex}(N) = \\{0,1,2\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, partitioned into $X = \\{0\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, $Y = \\{1\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, $Z = \\{2\\} \\times \\mathbb{Z}/N\\mathbb{Z}$, each of size $N$, total $3N$ vertices.",
+    "significance": "context",
+    "relatedConcepts": ["tripartite graph", "ZMod", "cyclic group", "Fin 3"],
+    "prerequisites": ["finite groups", "Lean 4 type aliases"]
+  },
+  {
     "id": "rs-graph-def",
+    "proofId": "roth-theorem-k3-oq-02",
     "type": "definition",
     "startLine": 50,
     "endLine": 61,
     "title": "Ruzsa-Szemerédi Adjacency",
-    "content": "The adjacency relation for the RS graph: edges between parts X-Y and Y-Z test membership in A, while X-Z edges test the doubling condition z - x = 2a for some a ∈ A. The definition uses the 'forward difference' convention for symmetry.",
-    "difficulty": "intermediate"
+    "content": "The adjacency relation for the RS graph: edges between parts X-Y and Y-Z test membership of the forward difference in A, while X-Z edges test the doubling condition z - x = 2a for some a ∈ A. The definition covers both orientations of each edge type (since Lean's Prop is not directed), encoding symmetry explicitly in six disjuncts.",
+    "mathContext": "$(0,x) \\sim (1,y) \\iff y - x \\in A$; \\quad $(1,y) \\sim (2,z) \\iff z - y \\in A$; \\quad $(0,x) \\sim (2,z) \\iff \\exists\\, a \\in A,\\; z - x = 2a$.",
+    "significance": "key",
+    "relatedConcepts": ["bipartite graph", "forward difference", "arithmetic progression", "difference sets"],
+    "prerequisites": ["ZMod arithmetic", "Lean 4 inductive propositions", "Finset membership"]
+  },
+  {
+    "id": "rs-graph-props",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "technique",
+    "startLine": 62,
+    "endLine": 91,
+    "title": "Graph Properties: Symmetry, Looplessness, SimpleGraph Construction",
+    "content": "rsAdj_symm proves symmetry by case analysis on the six disjuncts — swapping the two orientations. rsAdj_loopless proves irreflexivity by showing a self-loop would require two distinct Fin 3 values to be equal (decided by `decide`). Together these discharge the SimpleGraph instance obligations, bundling rsAdj as a valid undirected graph.",
+    "mathContext": "$G(A)$ is a well-defined undirected simple graph: $|V| = 3N$, adjacency $\\sim$ is symmetric and irreflexive. The tripartite structure guarantees no self-loops since $\\{0,1\\}, \\{1,2\\}, \\{0,2\\}$ are all distinct pairs in $\\text{Fin}\\, 3$.",
+    "significance": "technical",
+    "relatedConcepts": ["SimpleGraph", "symmetric relation", "irreflexive relation", "decide tactic"],
+    "prerequisites": ["graph theory", "Lean 4 structure instances", "Fin arithmetic"]
   },
   {
     "id": "ap-triple-struct",
+    "proofId": "roth-theorem-k3-oq-02",
     "type": "definition",
     "startLine": 129,
     "endLine": 138,
     "title": "Generalized 3-AP Triple",
-    "content": "A triple (a, b, c) with a, b, c ∈ A and a + b = 2c. This is equivalent to saying (a, c, b) is a 3-term arithmetic progression with common difference c - a.",
-    "difficulty": "basic"
+    "content": "APTriple A packages a triple (a, b, c) with membership proofs ha : a ∈ A, hb : b ∈ A, hc : c ∈ A, and the arithmetic constraint sum_eq : a + b = 2c. This is equivalent to saying a, c, b is a 3-term AP with common difference d = c - a: the sequence is a, a+d, a+2d. Note that the 'generalized' triple allows a ≠ b; proper 3-APs are the special case a = b = c forced by AP-freeness.",
+    "mathContext": "$\\text{APTriple}(A) = \\{(a,b,c) \\in A^3 \\mid a + b = 2c\\}$. Equivalently: $a, c, b$ is a 3-AP with $d = c - a$. The degenerate case $a = b = c$ ($d = 0$) is trivially an AP (constant sequence).",
+    "significance": "key",
+    "relatedConcepts": ["3-AP", "arithmetic progression", "degenerate AP", "Roth's theorem"],
+    "prerequisites": ["ZMod arithmetic", "Lean 4 structures with fields"]
   },
   {
     "id": "triangle-forward",
+    "proofId": "roth-theorem-k3-oq-02",
     "type": "insight",
     "startLine": 143,
     "endLine": 160,
     "title": "Triangle → AP Triple (Forward Direction)",
-    "content": "A triangle (0,x), (1,y), (2,z) in the RS graph yields a generalized 3-AP: a = y-x from the XY edge, b = z-y from the YZ edge, and c from the XZ edge witness, satisfying a + b = (y-x) + (z-y) = z-x = 2c.",
-    "difficulty": "intermediate"
+    "content": "Given a triangle {(0,x), (1,y), (2,z)} in G(A), the XY edge gives a = y-x ∈ A, the YZ edge gives b = z-y ∈ A, and the XZ edge supplies a witness c ∈ A with z-x = 2c. Since a + b = (y-x) + (z-y) = z-x = 2c, the triple (a, b, c) is an APTriple. The proof extracts these pieces via the private helper lemmas rsAdj_xy_mem, rsAdj_yz_mem, rsAdj_xz_exists.",
+    "mathContext": "Triangle $\\{(0,x),(1,y),(2,z)\\}$ in $G(A)$ $\\Rightarrow$ $(a,b,c) \\in \\text{APTriple}(A)$ where $a = y-x$, $b = z-y$, $a+b = z-x = 2c$.",
+    "significance": "key",
+    "relatedConcepts": ["triangle in graph", "APTriple", "rsAdj helper lemmas"],
+    "prerequisites": ["RS graph adjacency", "rsAdj_xy_mem", "rsAdj_yz_mem", "rsAdj_xz_exists"]
+  },
+  {
+    "id": "triangle-reverse",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 162,
+    "endLine": 185,
+    "title": "AP Triple → Triangle (Reverse Direction)",
+    "content": "For any AP triple t = (a,b,c) and base x, the three vertices (0,x), (1,x+a), (2,x+a+b) form a triangle in G(A). The XY and YZ edges use a ∈ A and b ∈ A respectively (with 'convert' to handle ZMod ring arithmetic). The XZ edge uses witness c since (x+a+b)-x = a+b = 2c, closed by `linear_combination t.sum_eq`. This reverse direction completes the triangle ↔ AP bijection.",
+    "mathContext": "For any $x \\in \\mathbb{Z}/N\\mathbb{Z}$: $(0,x) \\sim (1,x+a)$, $(1,x+a) \\sim (2,x+a+b)$, $(0,x) \\sim (2,x+a+b)$. The bijection sends $(a,b,c,x) \\mapsto \\{(0,x),(1,x+a),(2,x+a+b)\\}$, with $N$ triangles per AP triple.",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination tactic", "AP-triangle bijection", "base point", "convert tactic"],
+    "prerequisites": ["APTriple structure", "RS graph adjacency", "Lean 4 ring tactics"]
   },
   {
     "id": "ap-free-key",
+    "proofId": "roth-theorem-k3-oq-02",
     "type": "insight",
     "startLine": 194,
     "endLine": 225,
     "title": "AP-Free Forces Trivial Triples (Core Lemma)",
-    "content": "The heart of the construction: if A is AP-free, any triple (a,b,c) with a+b = 2c must have a = b = c. Set d = c - a; then APFree gives d ≠ 0 → a ∈ A → (a+d) ∈ A → (a+2d) ∉ A. Since all three are in A, d = 0.",
-    "difficulty": "advanced"
+    "content": "The heart of the construction: if A is AP-free, any AP triple (a,b,c) with a+b = 2c must satisfy a = b = c. The proof sets d = c - a, then rewrites c = a+d and b = a+2d (using linear_combination). If d ≠ 0, then a, a+d = c, a+2d = b form a genuine 3-AP in A, contradicting AP-freeness. So d = 0, giving a = b = c.",
+    "mathContext": "Let $d = c - a$. Then $c = a+d$, $b = a+2d$ (from $a+b=2c$). $A$ AP-free: $d \\neq 0 \\Rightarrow \\{a, a+d, a+2d\\}$ is a 3-AP in $A$ — contradiction. Hence $d=0$, so $a = b = c$.",
+    "significance": "key",
+    "relatedConcepts": ["AP-free set", "proof by contradiction", "by_contra", "linear_combination"],
+    "prerequisites": ["APFree definition", "ZMod arithmetic", "Lean 4 proof by contradiction"]
   },
   {
     "id": "edge-disjoint",
+    "proofId": "roth-theorem-k3-oq-02",
     "type": "insight",
     "startLine": 226,
     "endLine": 249,
     "title": "Edge Uniqueness from AP-Freeness",
-    "content": "Each XY-edge (0,x)-(1,y) determines a unique triangle: AP-freeness forces the third vertex z to satisfy z - y = y - x (the common difference). So z = 2y - x is uniquely determined.",
-    "difficulty": "advanced"
+    "content": "Each XY-edge (0,x)-(1,y) determines a unique triangle when A is AP-free. Any triangle on this edge gives an AP triple with a = y-x; AP-freeness forces b = a, so the third vertex z satisfies z-y = b = a = y-x, giving z = 2y-x uniquely. Two distinct triangles z₁ ≠ z₂ sharing the same XY-edge are therefore impossible: the proof applies ap_free_forces_equal to both, deriving z₁ = 2y-x = z₂.",
+    "mathContext": "AP-free $A$ $\\Rightarrow$ for each XY-edge $(0,x)$-$(1,y)$, the unique completing vertex is $z = 2y - x$. Triangles are edge-disjoint: no two triangles in $G(A)$ share an edge.",
+    "significance": "key",
+    "relatedConcepts": ["edge-disjoint triangles", "ap_free_forces_equal", "triangle uniqueness", "linear_combination"],
+    "prerequisites": ["ap_free_forces_equal", "triangle_yields_ap_triple", "ZMod arithmetic"]
   },
   {
     "id": "min-removal",
+    "proofId": "roth-theorem-k3-oq-02",
     "type": "insight",
     "startLine": 278,
     "endLine": 310,
     "title": "Edge Removal Lower Bound",
-    "content": "To make the RS graph triangle-free, every triangle must lose at least one edge. Since triangles are edge-disjoint (AP-free), each removed edge destroys at most one triangle. So at least |A|·N edges must be removed.",
-    "difficulty": "advanced"
+    "content": "When A is AP-free, for each pair (a ∈ A, x ∈ Z/NZ) there is a triangle {(0,x),(1,x+a),(2,x+2a)}. Since these |A|·N triangles are edge-disjoint, any edge removal set R that makes G triangle-free must hit each triangle: at least one of the triangle's six directed edge pairs must be in R. The proof is by contradiction: if R misses all six pairs for some (a,x), the triangle survives in removeEdges G R, contradicting the triangle-free hypothesis.",
+    "mathContext": "Edge-disjoint triangles $\\{(0,x),(1,x+a),(2,x+2a)\\}$ for $(a,x) \\in A \\times \\mathbb{Z}/N\\mathbb{Z}$: making $G(A)$ triangle-free requires $|R| \\geq |A| \\cdot N$ removed (directed) edge pairs.",
+    "significance": "key",
+    "relatedConcepts": ["triangle removal", "edge-disjoint triangles", "removeEdges", "lower bound"],
+    "prerequisites": ["ap_free_triangle_exists", "removeEdges definition", "proof by contradiction"]
+  },
+  {
+    "id": "roth-trl-statement",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "insight",
+    "startLine": 311,
+    "endLine": 356,
+    "title": "Roth's Theorem Statement and Proof Equivalence",
+    "content": "roth_via_triangle_removal states the full Roth theorem restricted to odd N (1 sorry connecting |R| ≥ δN² to the quantitative TRL bound |R| ≤ δ'·9N²). roth_proofs_agree proves the Fourier proof (RothTheorem.lean) implies the TRL version by restricting the universal N statement to odd N and handling the delta ≤ 1 side condition via min. This theorem shows the two proof strategies are consistent within the same formal system.",
+    "mathContext": "TRL proof sketch: $|A| \\geq \\delta N$ (AP-free) $\\Rightarrow$ $|R| \\geq \\delta N^2$. TRL: $|R| \\leq \\delta' \\cdot 9N^2$ for appropriate $\\delta' = \\delta/18$. Contradiction for large $N$. The Fourier proof gives $r_3(N) = O(N/\\log\\log N)$; the TRL approach yields only tower-type bounds but is conceptually cleaner.",
+    "significance": "key",
+    "relatedConcepts": ["triangle removal lemma", "Roth's theorem", "Fourier proof", "quantitative bounds", "roth_proofs_agree"],
+    "prerequisites": ["triangle_removal_quantitative", "APFree", "RothTheorem.lean", "Szemerédi regularity"]
   }
 ]
