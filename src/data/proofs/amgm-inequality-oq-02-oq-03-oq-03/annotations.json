@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-overview",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "Three-Tier Maclaurin Hierarchy: Step → Newton Proof → Full Chain",
+    "content": "This file is the third tier in a three-part formalization hierarchy. The parent `AmgmInequalityOQ02.lean` axiomatizes `maclaurin_step` (adjacent inequality Mₖ ≥ Mₖ₊₁). The sibling `AmgmInequalityOQ02OQ03.lean` proves `maclaurin_step_proved` from Newton's log-concavity (e_k² ≥ e_{k-1}·e_{k+1}). This file assembles the full chain M₁ ≥ M₂ ≥ ... ≥ Mₙ from adjacent steps by induction. The design is modular: the chain proof works regardless of which source supplies the step — axiomatic or Newton-derived.",
+    "mathContext": "The full chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ decomposes into $n-1$ adjacent inequalities. The induction strategy: to prove $M_j \\geq M_{j+d}$, build the chain $M_j \\geq M_{j+1} \\geq \\cdots \\geq M_{j+d}$ via $d$ applications of `maclaurin_step`. This reduces the $O(n^2)$ pairwise comparisons to $O(n)$ adjacent steps.",
+    "significance": "context",
+    "relatedConcepts": ["Maclaurin inequalities", "AM-GM inequality", "elementary symmetric polynomials", "induction"],
+    "prerequisites": ["Maclaurin means definition", "maclaurin_step axiom", "adjacent inequality"]
+  },
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-setup",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03",
+    "range": { "startLine": 30, "endLine": 38 },
+    "type": "context",
+    "title": "Imports and Setup: Inheriting from AmgmInequalityOQ02",
+    "content": "The file imports `Proofs.AmgmInequalityOQ02`, which provides `maclaurinMean` (the definition of $M_k$) and `maclaurin_step` (the axiomatic adjacent inequality). By opening the parent namespace, the chain proof can directly invoke `maclaurin_step` without re-axiomatizing. The variable `{n : ℕ}` is implicit throughout — the chain is proved for arbitrary n.",
+    "mathContext": "The variable `{n : ℕ}` declared at line 37 is implicit in all theorems. `maclaurinMean k x` is the k-th Maclaurin mean of the vector `x : Fin n → ℝ`. The import chain is: AmgmInequalityOQ02 → AmgmInequalityOQ02OQ03OQ03 (this file does NOT import OQ03, so the proved step is not used here — only the axiomatic step from OQ02 is available).",
+    "significance": "supporting",
+    "relatedConcepts": ["Lean 4 imports", "namespace inheritance", "implicit variables", "maclaurinMean"],
+    "prerequisites": ["AmgmInequalityOQ02 definitions", "Lean 4 module system"]
+  },
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-aux-lemma",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03",
+    "range": { "startLine": 39, "endLine": 52 },
+    "type": "technique",
+    "title": "Inductive Auxiliary Lemma: Mⱼ ≥ Mⱼ₊ₐ by Gap Induction",
+    "content": "`maclaurin_chain_aux` is the technical core: it proves Mⱼ ≥ Mⱼ₊ₐ for arbitrary gap d by induction on d. Base case (d=0): `simp` since Mⱼ ≥ Mⱼ is reflexivity. Inductive case: assume Mⱼ ≥ Mⱼ₊ₘ (inductive hypothesis), then apply `maclaurin_step` to get Mⱼ₊ₘ ≥ Mⱼ₊ₘ₊₁, and close by `calc` transitivity. The auxiliary omega goals (j+m ≤ n, j+m+1 ≤ n, 0 < j+m) are discharged by `omega` from the hypotheses.",
+    "mathContext": "The `calc` block at lines 49-52 chains: $M_j \\geq M_{j+m}$ (ih) followed by $M_{j+m} \\geq M_{j+m+1}$ (maclaurin_step). The `private` qualifier keeps this lemma internal — only the public `maclaurin_full_chain` and `maclaurin_m1_ge_mn` are exported. The omega arithmetic: `hjm_le : j + m ≤ n` follows from `hjn : j + (m+1) ≤ n` since `m+1 ≤ m+1+1`.",
+    "significance": "key",
+    "relatedConcepts": ["induction on natural numbers", "calc transitivity", "omega tactic", "Nat.succ induction"],
+    "prerequisites": ["maclaurin_step axiom", "induction tactic", "calc blocks in Lean 4"]
+  },
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-main-theorem",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03",
+    "range": { "startLine": 54, "endLine": 59 },
+    "type": "technique",
+    "title": "Full Maclaurin Chain: Nat.exists_eq_add_of_le Bridges Gap to Auxiliary",
+    "content": "`maclaurin_full_chain` is the main exported theorem: for 0 < j ≤ k ≤ n, the j-th Maclaurin mean dominates the k-th. The proof uses `Nat.exists_eq_add_of_le hjk` to extract d such that k = j + d (converting the ≤ relation into an explicit gap), then applies `maclaurin_chain_aux` with that gap. This is the standard Lean pattern for converting between `j ≤ k` and `∃ d, k = j + d`.",
+    "mathContext": "`obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hjk` rewrites k as j+d in-place (using `rfl` to substitute). After this, the goal becomes `maclaurinMean j x ≥ maclaurinMean (j + d) x`, exactly the conclusion of `maclaurin_chain_aux`. The `by omega` closes `j + d ≤ n` from `hkn : j + d ≤ n`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.exists_eq_add_of_le", "obtain pattern", "gap induction", "Maclaurin chain"],
+    "prerequisites": ["maclaurin_chain_aux", "Nat.exists_eq_add_of_le", "obtain tactic"]
+  },
+  {
+    "id": "ann-amgm-oq02-oq03-oq03-corollary",
+    "proofId": "amgm-inequality-oq-02-oq-03-oq-03",
+    "range": { "startLine": 61, "endLine": 64 },
+    "type": "concept",
+    "title": "M₁ ≥ Mₙ: Arithmetic Mean Dominates the n-th Maclaurin Mean",
+    "content": "`maclaurin_m1_ge_mn` specializes the full chain to its extreme cases: j=1 and k=n. The proof is a one-liner delegating to `maclaurin_full_chain` with `Nat.one_pos` (1 > 0), `hn : 1 ≤ n`, and `le_refl n`. This corollary is important because M₁ = arithmetic mean and Mₙ = (e_n/1)^{1/n} = (x₁·x₂·...·xₙ)^{1/n} = geometric mean (when normalized). So M₁ ≥ Mₙ is precisely AM ≥ GM for non-negative reals.",
+    "mathContext": "$M_1 = \\frac{e_1(x)}{\\binom{n}{1}} = \\frac{x_1 + \\cdots + x_n}{n}$ is the arithmetic mean. $M_n = \\left(\\frac{e_n(x)}{\\binom{n}{n}}\\right)^{1/n} = (x_1 \\cdots x_n)^{1/n}$ is the geometric mean. The chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ strictly strengthens AM ≥ GM by providing $n-1$ intermediate means that interpolate between AM and GM.",
+    "significance": "key",
+    "relatedConcepts": ["AM-GM inequality", "arithmetic mean", "geometric mean", "Maclaurin means", "interpolation"],
+    "prerequisites": ["maclaurin_full_chain", "Nat.one_pos", "le_refl"]
+  }
+]
