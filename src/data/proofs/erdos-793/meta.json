@@ -18,20 +18,20 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 793,
     "erdosUrl": "https://erdosproblems.com/793",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
-    "lineCount": 191,
-    "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "lineCount": 199,
+    "assumptions": "5 axiom(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's 1938 paper 'On sequences of integers no one of which divides the product of two others', one of his earliest contributions to multiplicative number theory and extremal combinatorics. The concept of primitive sets — where no element divides another — goes back to Besicovitch (1934) and Behrend (1935), who studied their density properties. Erdős strengthened the condition: instead of just pairwise non-divisibility, he required that no element $a$ divides the product $bc$ of any two other distinct elements. In his 1969 paper 'Some applications of graph theory to number theory', Erdős introduced an elegant bipartite graph construction to prove the upper bound, pioneering the use of extremal graph theory in number-theoretic problems. The graph has small integers and large primes as vertices, with edges encoding products in the set; the divisibility condition forces this graph to be $P_3$-free (no path of length 3), hence a forest. This technique — reducing a number theory problem to a forbidden subgraph problem — became a template for many later results in combinatorial number theory, including work by Pomerance and Alon on primitive sets and their generalizations. The exact constant $C$ in the secondary term remains open, connecting to deep questions about the distribution of smooth numbers and the multiplicative structure of integers.",
     "problemStatement": "Let $F(n)$ be the maximum cardinality of $A \\subseteq \\{1,\\ldots,n\\}$ such that $a \\nmid bc$ for all distinct $a, b, c \\in A$. Does there exist a constant $C$ such that $F(n) = \\pi(n) + (C + o(1)) \\cdot n^{2/3} \\cdot (\\log n)^{-2}$?",
     "text": "Let F(n) = max size of A ⊆ {1,...,n} where a ∤ bc for distinct a,b,c ∈ A. Is F(n) = π(n) + (C+o(1))·n^{2/3}·(log n)^{-2} for some constant C? Known: bounds with different constants c₁, c₂. OPEN.",
-    "proofStrategy": "The formalization captures: (1) The divisibility condition `satisfiesCondition` requiring $a \\nmid bc$ for distinct triples. (2) The extremal function $F(n)$ as a supremum over valid sets. (3) The prime counting function $\\pi(n)$ as the dominant term. (4) A proof sketch that primes $p > n^{2/3}$ automatically satisfy the condition. (5) Erdős's bounds $\\pi(n) + c_1 n^{2/3}(\\log n)^{-2} \\leq F(n) \\leq \\pi(n) + c_2 n^{2/3}(\\log n)^{-2}$. (6) The conjecture formalized via `Filter.Tendsto` for the normalized secondary term. (7) The bipartite graph construction (`ErdosGraph`) with the $P_3$-free property. (8) Generalization to $r$-products with exponent $2/(r+1)$.",
+    "proofStrategy": "The formalization captures: (1) The divisibility condition `satisfiesCondition` requiring $a \\nmid bc$ for distinct triples. (2) The extremal function $F(n)$ as a supremum over valid sets. (3) The prime counting function $\\pi(n)$ as the dominant term. (4) A machine-checked proof that primes $p > n^{2/3}$ satisfy the condition: if $a$ is prime and $a \\mid bc$ with $b, c$ also prime and $a \\neq b$, $a \\neq c$, then by Euclid's lemma $a \\mid b$ or $a \\mid c$, forcing $a = b$ or $a = c$ — a contradiction. (5) Erdős's bounds $\\pi(n) + c_1 n^{2/3}(\\log n)^{-2} \\leq F(n) \\leq \\pi(n) + c_2 n^{2/3}(\\log n)^{-2}$. (6) The conjecture formalized via `Filter.Tendsto` for the normalized secondary term. (7) The bipartite graph construction (`ErdosGraph`) with the $P_3$-free property. (8) Generalization to $r$-products with exponent $2/(r+1)$.",
     "keyInsights": [
       "**Large primes are free**: All primes $p > n^{2/3}$ satisfy the condition automatically. If $p \\mid bc$ with $b, c \\leq n$, then $p \\mid b$ or $p \\mid c$ (primality), but $b, c < p^{3/2}$ and $b, c \\neq p$ force $bc < p \\cdot n < p^2$, contradicting $p^2 \\mid bc$.",
       "**Graph theory meets number theory**: Erdős's 1969 bipartite graph — small integers $[1, n^{2/3}]$ on one side, large primes on the other, edges encoding products in $A$ — reduces the upper bound to a graph-theoretic statement: $P_3$-free graphs are forests with $|E| < |V|$.",
