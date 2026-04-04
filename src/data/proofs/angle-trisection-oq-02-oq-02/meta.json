@@ -35,15 +35,16 @@
     "defCount": 3
   },
   "overview": {
-    "historicalContext": "Gauss (1796, age 19) discovered the 17-gon is constructible, his first major mathematical result. He showed φ(17) = 16 = 2^4. Wantzel (1837) proved the converse: if the n-gon is constructible, then φ(n) must be a power of 2. Together, they characterize all constructible regular polygons in terms of Fermat primes: the known constructible n-gons beyond powers of 2 use subsets of {3, 5, 17, 257, 65537}.",
+    "historicalContext": "On 30 March 1796, the 19-year-old Carl Friedrich Gauss woke up and, before getting out of bed, discovered that the regular 17-gon is constructible by compass and straightedge — a result that had eluded geometers for two millennia. This was his first major mathematical discovery, and he was so delighted that he decided to become a mathematician rather than a philologist. Gauss proved the sufficiency direction: if φ(n) is a power of 2, then the n-gon is constructible. The necessity (if constructible then φ(n) = 2^k) was proved by Pierre Wantzel in 1837 using his algebraic characterization of constructibility. Fermat had conjectured in 1640 that all numbers of the form 2^(2^n) + 1 are prime, but Euler disproved this in 1732 by factoring F₅ = 4294967297 = 641 × 6700417. No Fermat primes beyond F₄ = 65537 have been found in nearly 300 years, though it remains unknown whether there are finitely or infinitely many. The complete list of known constructible prime-sided polygons is {3, 5, 17, 257, 65537}.",
     "problemStatement": "Characterize all n ≥ 3 for which the regular n-gon is constructible by compass and straightedge in terms of the arithmetic of n.",
     "text": "The Gauss-Wantzel theorem gives a complete answer: a regular n-gon is constructible iff φ(n) is a power of 2, iff n = 2^a · p₁ · … · pₘ where p₁, …, pₘ are distinct Fermat primes (primes of the form 2^(2^k) + 1). The known Fermat primes are F₀=3, F₁=5, F₂=17, F₃=257, F₄=65537; it is unknown whether more exist.",
     "proofStrategy": "The key chain: n-gon constructible ↔ cos(2π/n) constructible over ℚ ↔ [ℚ(cos(2π/n)):ℚ] is a power of 2 ↔ φ(n)/2 is a power of 2 ↔ φ(n) is a power of 2. The last equivalence uses the multiplicativity of φ and the formula φ(p^k) = p^(k-1)(p-1).",
     "keyInsights": [
-      "Fermat primes p = 2^(2^k) + 1 satisfy φ(p) = p - 1 = 2^(2^k), a power of 2",
-      "If p is an odd prime with p ≢ 1 mod 4, then p appears squared in n, giving φ(p²) = p(p-1) which is not a power of 2",
-      "The product of distinct Fermat primes has totient equal to a product of powers of 2",
-      "For non-constructible cases: 6, 10, 12 don't divide any power of 2 (e.g. φ(7)=6=2·3)"
+      "Fermat primes p = 2^(2^k) + 1 satisfy φ(p) = p - 1 = 2^(2^k), a power of 2 — this is precisely why they yield constructible polygons",
+      "If an odd prime q appears squared in n (q² | n), then φ(q²) = q(q-1) contains the odd factor q, making φ(n) not a power of 2 and the n-gon non-constructible",
+      "Products of distinct Fermat primes have totient equal to a product of powers of 2 (hence a power of 2), so products like 15=3·5, 51=3·17, 85=5·17 yield constructible polygons",
+      "The non-constructibility proofs use bounded exhaustion: compute φ(n) = m by native_decide, bound k ≤ e via pow_two_bound, then use interval_cases to check all candidates",
+      "The gauss_wantzel_theorem is the single axiom: it captures the cyclotomic field degree formula [ℚ(cos(2π/n)):ℚ] = φ(n)/2, which requires ~200 lines of Mathlib glue to prove from first principles"
     ]
   },
   "sections": [
