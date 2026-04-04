@@ -36,14 +36,21 @@
       "witness_769 + prime_769: first level-6 witness (p = 769 in (720, 5040))",
       "six_prime_witnesses: packages all 6 verified witnesses (101, 211, 461, 557, 673, 769)",
       "factorialCheckCount_eq_of_interval: exact count equals l+1 when l-factorial < n <= (l+1)-factorial",
-      "factorialCheckCount_const_on_interval: count is constant within each factorial level"
+      "factorialCheckCount_const_on_interval: count is constant within each factorial level",
+      "three_not_qualifying in Erdos1059OQ01.lean: PROVED ¬AFSC(3) via native_decide",
+      "qualifyingPrimeCount_lt_primeCount in Erdos1059OQ01.lean: PROVED C(x) < π(x) for all x ≥ 3",
+      "qualifyingPrimeCount_pos in Erdos1059OQ01.lean: PROVED 0 < C(x) for all x ≥ 101",
+      "density_strictly_between in Erdos1059OQ01.lean: PROVED 0 < C(x) < π(x) for all x ≥ 101"
     ],
     "insights": [
       "769 is the first level-6 witness (p in (720, 5040)); requires 7 factorial checks vs 6 for level-5",
       "Proved factorialCheckCount(n) <= log2(n) + 2 — elementary bound via 2^(k-1) <= k! induction",
       "Bound is tight at n=3 (count=3, log=1) and n=7 (count=4, log=2)",
       "Exact formula: factorialCheckCount(n) = l+1 iff l-factorial < n <= (l+1)-factorial; count is uniquely determined by the factorial level of n",
-      "factorialCheckCount_le_log holds for ALL n (not just n>=2): vacuously true when n<=1 since factorialCheckSet is empty"
+      "factorialCheckCount_le_log holds for ALL n (not just n>=2): vacuously true when n<=1 since factorialCheckSet is empty",
+      "3 is the canonical non-qualifying prime: 3 - 0! = 2 is prime — provides gap witness for all x ≥ 3",
+      "density_one_conjecture and selberg_density_axiom (OQ-02) are independent without PNT/Brun-Titchmarsh",
+      "48 level-6 witnesses in (720, 5040): 769, 937, 967, 1009, 1201, ... (Python-computed)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
