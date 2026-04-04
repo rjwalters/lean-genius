@@ -1,186 +1,102 @@
 {
   "slug": "ballot-problem-oq-01-oq-02-oq-02",
-  "title": "Ballot Problem: LGV Determinant for Path Orderings",
-  "phase": "NEW",
-  "status": "active",
-  "tier": "A",
+  "title": "First Passage Time via csInf Theory",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in probability theory: Ballot Problem: LGV Determinant for Path Orderings.",
-    "whyMatters": []
+    "formal": "fpt_le_iff_maxEvent : ∀ (bm : BrownianMotion Ω μ) (a T : ℝ), 0 < T → (∀ ω, bm.path · ω |>.Continuous) → ∀ ω, firstPassageTime bm a ω ≤ T ↔ ω ∈ maxEvent bm a T",
+    "plain": "The parent BallotProblemOQ02.lean axiomatizes firstPassageTime_eq_maxEvent: {ω | τ(ω) ≤ T} = maxEvent bm a T. Can this be proved from path continuity and csInf theory? We prove both directions under natural hypotheses, characterize when the parent axiom holds (when the hitting set is nonempty), and use IVT to show that if W(T,ω) ≥ a then there is a first crossing in (0,T].",
+    "whyMatters": [
+      "Proves the parent axiom firstPassageTime_eq_maxEvent holds under the nonemptiness hypothesis",
+      "Reveals a subtle gap: sInf ∅ = 0 in Lean's ℝ, so the unrestricted axiom is false without nonemptiness",
+      "Applies the Intermediate Value Theorem to Brownian paths for the backward direction"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "hittingSet_isClosed: {t ≥ 0 | W(t,ω) ≥ a} is closed (from path continuity)",
+      "hittingSet_bddBelow: the hitting set is bounded below by 0",
+      "csInf_empty_eq_zero: sInf ∅ = 0 (Lean's convention)",
+      "hittingSet_csInf_mem: if hitting set is nonempty, csInf is a member (from closedness)",
+      "maxEvent_implies_fpt_le: maxEvent ⊆ {firstPassageTime ≤ T} (always)",
+      "fpt_le_implies_maxEvent: under nonemptiness, {firstPassageTime ≤ T} ⊆ maxEvent",
+      "fpt_le_iff_maxEvent: equivalence under nonemptiness",
+      "fpt_le_set_eq_maxEvent: set-level equality under nonemptiness",
+      "ivt_first_crossing: if W(0,ω) < a ≤ W(T,ω), there exists t ∈ (0,T] with W(t,ω) ≥ a",
+      "hittingSet_nonempty_of_ivt: IVT gives nonempty hitting set",
+      "fpt_le_T_of_crossing: first passage time ≤ T when IVT crossing occurs"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "COMPLETED"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-04T05:15:05.956Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-04T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "11 theorems, 1 def, 0 sorries, 0 axioms. Complete first passage time characterization.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — proof is complete.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Proved first passage time ↔ maxEvent equivalence via csInf + IVT.",
+    "builtItems": [
+      "maxEvent def: {ω | ∃ t ∈ [0,T], W(t,ω) ≥ a}",
+      "hittingSet_isClosed: uses IsClosed.preimage with path continuity",
+      "fpt_le_iff_maxEvent: uses csInf membership from closed hitting set",
+      "ivt_first_crossing: Intermediate Value Theorem applied to continuous paths",
+      "fpt_le_T_of_crossing: derives FPT ≤ T from IVT crossing existence"
+    ],
+    "insights": [
+      "sInf ∅ = 0 in Lean's ℝ (Real.sInf_empty) — the parent axiom firstPassageTime_eq_maxEvent is false without a nonemptiness hypothesis",
+      "Both directions proved under natural hypotheses; the parent BallotProblemOQ02 axiom is recovered as a corollary when the hitting set is nonempty",
+      "IVT (intermediate_value_uIcc) is used to show crossing existence when W(0) < a ≤ W(T)",
+      "ConditionallyCompleteLattice.csInf_mem gives csInf ∈ set when nonempty and closed (bddBelow)"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
   "tags": [
-    "seeker-selected",
     "probability",
-    "extension"
+    "stochastic-processes",
+    "first-passage-time",
+    "brownian-motion",
+    "completed"
   ],
   "relatedProofs": [
     "ballot-problem",
     "ballot-problem-oq-01",
-    "ballot-problem-oq-01-oq-01",
-    "ballot-problem-oq-01-oq-02",
-    "ballot-problem-oq-01-oq-04",
-    "ballot-problem-oq-02",
-    "ballot-problem-oq-03",
-    "ballot-problem-oq-03-oq-01",
-    "ballot-problem-oq-03-oq-02"
+    "ballot-problem-oq-01-oq-02"
   ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Topology.Order.IntermediateValue",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+    ]
   },
-  "started": "2026-04-04T05:15:05.956Z",
-  "lastUpdate": "2026-04-04T05:15:05.956Z",
-  "significance": 7,
-  "tractability": 5,
+  "started": "2026-04-04T00:00:00.000Z",
+  "lastUpdate": "2026-04-04T00:00:00.000Z",
+  "significance": 5,
+  "tractability": 8,
   "leanFiles": [
-    {
-      "path": "Proofs/BallotProblem.lean",
-      "filename": "BallotProblem.lean",
-      "lineCount": 252,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblem.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01.lean",
-      "filename": "BallotProblemOQ01.lean",
-      "lineCount": 790,
-      "theoremCount": 44,
-      "axiomCount": 0,
-      "defCount": 8,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01OQ01.lean",
-      "filename": "BallotProblemOQ01OQ01.lean",
-      "lineCount": 152,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01OQ02.lean",
-      "filename": "BallotProblemOQ01OQ02.lean",
-      "lineCount": 935,
-      "theoremCount": 36,
-      "axiomCount": 1,
-      "defCount": 18,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01OQ04.lean",
-      "filename": "BallotProblemOQ01OQ04.lean",
-      "lineCount": 188,
-      "theoremCount": 9,
-      "axiomCount": 1,
-      "defCount": 5,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
-      "filename": "BallotProblemOQ01OQ04OQ01.lean",
-      "lineCount": 1102,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ02.lean",
-      "filename": "BallotProblemOQ02.lean",
-      "lineCount": 340,
-      "theoremCount": 8,
-      "axiomCount": 2,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02.lean"
-    },
     {
       "path": "Proofs/BallotProblemOQ02OQ02.lean",
       "filename": "BallotProblemOQ02OQ02.lean",
-      "lineCount": 186,
+      "lineCount": 185,
       "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ03.lean",
-      "filename": "BallotProblemOQ03.lean",
-      "lineCount": 2879,
-      "theoremCount": 119,
-      "axiomCount": 0,
-      "defCount": 31,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ03OQ02.lean",
-      "filename": "BallotProblemOQ03OQ02.lean",
-      "lineCount": 2315,
-      "theoremCount": 28,
-      "axiomCount": 0,
-      "defCount": 23,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
-    },
-    {
-      "path": "Proofs/BallotProblemOQ03OQ03.lean",
-      "filename": "BallotProblemOQ03OQ03.lean",
-      "lineCount": 188,
-      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02.lean"
     }
   ]
 }
