@@ -52,3 +52,40 @@ The density-1 conjecture says lim C(x)/π(x) = 1. Proof requires PNT + Brun-Titc
 - Prove density_one_conjecture from selberg_density_axiom (OQ-02) once PNT/Brun-Titchmarsh available
 - Find more level-6 witnesses in (720, 5040) — next candidates: check primes after 769
 - The tighter asymptotic factorialCheckCount(n) = O(log n / log log n) would require Stirling
+
+---
+
+## Session 2026-04-04 (Session 2) - Exact Count Formula + Lint Cleanup
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+1. **Proved `factorialCheckCount_eq_of_interval`**: When l! < n ≤ (l+1)!, factorialCheckCount n = l+1.
+   This is the exact formula (not just a bound). Proof: show factorialCheckSet n = Finset.range(l+1)
+   by double inclusion using Nat.factorial_le and Nat.self_le_factorial.
+
+2. **Proved `factorialCheckCount_const_on_interval`**: The check count is constant within each
+   factorial level — if m and n both lie in (l!, (l+1)!], then factorialCheckCount m = factorialCheckCount n.
+
+3. **Removed unused hypothesis `hn : 2 ≤ n`** from `le_log_of_pow_lt` and
+   `factorialCheckCount_le_log`. The bound holds for all n (vacuously correct for n ≤ 1 since
+   factorialCheckSet is empty). This eliminates a lint warning and strengthens the theorem.
+
+4. Build: 0 sorries, 0 warnings, 1 axiom (density_one_conjecture).
+
+### Key Findings
+- The exact formula `factorialCheckCount n = l+1` (where l is the level of n) makes the
+  "level structure" of the problem explicit in Lean
+- The bound theorem `factorialCheckCount_le_log` holds for ALL n, not just n ≥ 2
+- `factorialCheckCount_const_on_interval` confirms checks are level-uniform — different primes
+  at the same level have identical check counts (e.g., 461, 557, 673 all = 6)
+
+### Files Modified
+- `proofs/Proofs/Erdos1059OQ01.lean`: 340 → 396 lines, 2 new theorems, strengthened 2 existing
+
+### Next Steps
+- Prove density_one_conjecture from selberg_density_axiom (OQ-02) once PNT/Brun-Titchmarsh available
+- The tighter asymptotic factorialCheckCount(n) = Θ(log n / log log n) would require Stirling
+- Cross-namespace: connect OQ-01 density conjecture to OQ-02 Selberg axiom via quantitative sieve
