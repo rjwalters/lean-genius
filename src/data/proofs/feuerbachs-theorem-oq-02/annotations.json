@@ -1,0 +1,142 @@
+[
+  {
+    "id": "ann-ftoq02-3d-infra",
+    "proofId": "feuerbachs-theorem-oq-02",
+    "range": { "startLine": 55, "endLine": 100 },
+    "type": "definition",
+    "title": "3D Coordinate Geometry Infrastructure",
+    "content": "Defines the basic building blocks for 3D geometry: `Point3 := ℝ × ℝ × ℝ` (via abbrev), `dist3` using `Real.sqrt`, `dist3_sq` (squared distance, avoids sqrt), `midpoint3`, `dot3` (inner product), `vec3` (displacement vector), and `cross3` (vector cross product). Two key algebraic lemmas are proved: `dot3_cross3_self_left/right` — u·(u × v) = 0 — by `ring`, reflecting the fact that the cross product is perpendicular to both factors.",
+    "mathContext": "The choice of `ℝ × ℝ × ℝ` over `EuclideanSpace ℝ (Fin 3)` gives more explicit coordinate access but requires manual proofs of geometric facts. The `dist3_sq` variant is crucial for avoiding real square root reasoning; the key lemma `dist3_sq_eq` connects them via $\\sqrt{x}^2 = x$ for $x \\geq 0$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Euclidean distance in ℝ³",
+      "dot product",
+      "cross product",
+      "Real.sqrt",
+      "positivity tactic"
+    ],
+    "prerequisites": [
+      "Lean 4 structures",
+      "Real.sqrt and sq_sqrt",
+      "ring tactic for algebraic identities",
+      "positivity for nonnegativity"
+    ]
+  },
+  {
+    "id": "ann-ftoq02-tetrahedron",
+    "proofId": "feuerbachs-theorem-oq-02",
+    "range": { "startLine": 106, "endLine": 177 },
+    "type": "definition",
+    "title": "Tetrahedron: Non-Degeneracy and Face Areas",
+    "content": "Defines `Tetrahedron` as a structure with vertices A, B, C, D and non-degeneracy condition `volume_pos`: the scalar triple product (B-A, C-A, D-A) ≠ 0, ensuring non-coplanarity. Derives 6 edge lengths, 4 face areas (via `|BC × BD|/2`), total surface area, and volume `= |det|/6`. The `noncomputable section` is required because `Real.sqrt` is noncomputable.",
+    "mathContext": "The **volume formula** $V = \\frac{1}{6}|\\det[\\vec{AB}, \\vec{AC}, \\vec{AD}]|$ follows from the scalar triple product; the **face area formula** $S_{BCD} = \\frac{1}{2}|\\vec{BC} \\times \\vec{BD}|$ follows from the cross product magnitude. The non-degeneracy condition $\\det \\neq 0$ is equivalent to the four vertices not being coplanar.",
+    "significance": "context",
+    "relatedConcepts": [
+      "scalar triple product",
+      "non-degenerate tetrahedron",
+      "face area via cross product",
+      "volume of tetrahedron",
+      "noncomputable definitions in Lean 4"
+    ],
+    "prerequisites": [
+      "cross3",
+      "dot3",
+      "dist3",
+      "Lean 4 noncomputable section"
+    ]
+  },
+  {
+    "id": "ann-ftoq02-orthocentric",
+    "proofId": "feuerbachs-theorem-oq-02",
+    "range": { "startLine": 182, "endLine": 200 },
+    "type": "theorem",
+    "title": "Orthocentric Condition: Third Perp Follows from First Two",
+    "content": "Defines `OrthocentricTetrahedron` as a structure extending `Tetrahedron` with two dot product conditions: AB ⊥ CD and AC ⊥ BD. Proves `orthocentric_third_perp`: the third condition AD ⊥ BC is automatic. The proof expands `vec3` and `dot3` into coordinate expressions and applies `nlinarith` to handle the resulting linear arithmetic identity. This is a beautiful structural fact: only 2 of the 3 opposite-edge perpendicularity conditions need be imposed.",
+    "mathContext": "The proof of $\\vec{AD} \\cdot \\vec{BC} = 0$ from $\\vec{AB} \\cdot \\vec{CD} = 0$ and $\\vec{AC} \\cdot \\vec{BD} = 0$ follows from the identity:\n$$\\vec{AD} \\cdot \\vec{BC} = (\\vec{AB} + \\vec{BD}) \\cdot (\\vec{AC} + \\vec{CD})$$\n$$= \\underbrace{\\vec{AB} \\cdot \\vec{CD}}_{=0} + \\vec{AB} \\cdot \\vec{AC} + \\vec{BD} \\cdot \\vec{AC} + \\vec{BD} \\cdot \\vec{CD}$$\nExpanding further using $\\vec{BD} \\cdot \\vec{AC} = -\\vec{AC} \\cdot \\vec{BD} + 2\\vec{AC}\\cdot\\vec{BD}$ and the second condition yields the result. The `nlinarith` tactic automates this algebraic manipulation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orthocentric tetrahedron",
+      "opposite edges",
+      "nlinarith tactic",
+      "linear algebra identity",
+      "3D analogue of orthocenter"
+    ],
+    "prerequisites": [
+      "dot3",
+      "vec3",
+      "OrthocentricTetrahedron structure",
+      "nlinarith for linear arithmetic"
+    ]
+  },
+  {
+    "id": "ann-ftoq02-special-points",
+    "proofId": "feuerbachs-theorem-oq-02",
+    "range": { "startLine": 206, "endLine": 345 },
+    "type": "definition",
+    "title": "Special Points: Centroid, Euler Line, Monge Point",
+    "content": "Defines the centroid G = (A+B+C+D)/4, the 6 edge midpoints, 4 face centroids, circumcenter (via Cramer's rule, previously axiomatized), and the **Monge point** M = 4G - 3O. Proves `centroid_on_euler_line`: G lies between O and M with ratio 3:1 — the 3D Euler line. For orthocentric tetrahedra, M coincides with the orthocenter (where all four altitudes meet).",
+    "mathContext": "The **Monge point** (named after Gaspard Monge) is the unique point where all six planes through an edge midpoint and perpendicular to the opposite edge meet. Unlike the 2D orthocenter (where altitudes always concur), the 3D altitudes from vertices to opposite faces are generally non-concurrent; the Monge point is their concurrence proxy. For orthocentric tetrahedra: $M = H$ (the actual orthocenter). The **3D Euler line** relation $G = (O + 3M)/4$ generalizes the 2D relation $G = (O + 2H)/3$ (with ratio 2:1 in 2D, 3:1 in 3D).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Monge point",
+      "3D Euler line",
+      "centroid",
+      "circumcenter",
+      "orthocenter vs Monge point",
+      "Euler line in 2D vs 3D"
+    ],
+    "prerequisites": [
+      "Point3",
+      "Tetrahedron",
+      "midpoint3",
+      "2D Euler line for comparison",
+      "Monge's theorem"
+    ]
+  },
+  {
+    "id": "ann-ftoq02-insphere-exspheres",
+    "proofId": "feuerbachs-theorem-oq-02",
+    "range": { "startLine": 350, "endLine": 440 },
+    "type": "definition",
+    "title": "Insphere and Exspheres: Volume-to-Surface Formula",
+    "content": "Defines the incenter I (face-area-weighted average of vertices: I = (S_A·A + S_B·B + S_C·C + S_D·D)/S), inradius r = 3V/S, and four excenters/exradii via negative weights. Proves `volume_eq_inradius_surfaceArea`: V = r·S/3, the 3D generalization of V = r·s (area = inradius × semiperimeter in 2D). Defines the twenty-four-point sphere with center N = midpoint(O, M) and radius ρ = R/3.",
+    "mathContext": "The **insphere radius** formula $r = 3V/S$ follows by decomposing the tetrahedron into 4 sub-tetrahedra from the incenter: each has volume $\\frac{1}{3} \\cdot S_{\\text{face}} \\cdot r$. The **incenter** as face-area-weighted barycenter $I = \\frac{S_A A + S_B B + S_C C + S_D D}{S_A + S_B + S_C + S_D}$ is the 3D generalization of the 2D incenter as side-length-weighted vertex average. The **exsphere** opposite vertex A is internally tangent to the face opposite A and externally tangent to the extensions of the other three faces.",
+    "significance": "key",
+    "relatedConcepts": [
+      "insphere radius formula 3V/S",
+      "face-area-weighted incenter",
+      "exspheres of tetrahedra",
+      "twenty-four-point sphere",
+      "2D analog: inradius = area/semiperimeter"
+    ],
+    "prerequisites": [
+      "faceArea_A through faceArea_D",
+      "surfaceArea",
+      "volume of tetrahedron",
+      "barycentric coordinates in 3D"
+    ]
+  },
+  {
+    "id": "ann-ftoq02-feuerbach-3d",
+    "proofId": "feuerbachs-theorem-oq-02",
+    "range": { "startLine": 464, "endLine": 530 },
+    "type": "theorem",
+    "title": "3D Feuerbach Theorem: Twenty-Four-Point Sphere Tangency",
+    "content": "States (with 5 sorries and 3 axioms) the complete 3D Feuerbach theorem: for an orthocentric tetrahedron, the twenty-four-point sphere (center N = midpoint(O,M), radius ρ = R/3) is (1) internally tangent to the insphere: dist(N,I) = |ρ - r|, and (2) externally tangent to all four exspheres: dist(N,Eᵢ) = ρ + rᵢ. The axioms encode: `edge_midpoints_on_sphere` and `face_centroids_on_sphere` (deep geometric facts requiring Euclidean geometry), and `feuerbach_3d_fails_general` (structural: the theorem requires orthocentric hypothesis).",
+    "mathContext": "The **tangency conditions** in terms of center-distance:\n- Internal tangency: $d(N, I) = \\rho - r$ (the sphere encloses the insphere)\n- External tangency: $d(N, E_i) = \\rho + r_i$ (the sphere is outside each exsphere)\nwhere $\\rho = R/3$ is the twenty-four-point sphere radius. Compare with 2D: the nine-point circle (radius $R/2$) is internally tangent to the incircle ($d = R/2 - r$ by Feuerbach 1822) and externally tangent to excircles ($d = R/2 + r_i$). The radius ratio R/2 → R/3 reflects the dimensional change.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Feuerbach's theorem (2D)",
+      "internal vs external tangency",
+      "nine-point circle (2D) vs twenty-four-point sphere (3D)",
+      "radius R/2 vs R/3",
+      "orthocentric hypothesis necessity"
+    ],
+    "prerequisites": [
+      "OrthocentricTetrahedron",
+      "twenty-four-point sphere center and radius",
+      "insphere and exsphere geometry",
+      "Feuerbach 1822 original theorem"
+    ]
+  }
+]
