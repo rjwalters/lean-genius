@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-ssa-context",
+    "proofId": "shannon-entropy-oq-03",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "context",
+    "title": "Strong Subadditivity: The Deepest Classical Information Inequality",
+    "content": "**Strong subadditivity (SSA)** of Shannon entropy (Lieb–Ruskai 1973): for any joint distribution $p(x,y,z)$, $H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$. Equivalently: (1) conditional MI is nonneg: $I(X;Z|Y) \\geq 0$; (2) more conditioning reduces entropy: $H(X|Y,Z) \\leq H(X|Y)$. **Proof strategy**: the deficit $H(X,Y)+H(Y,Z)-H(X,Y,Z)-H(Y) = I(X;Z|Y) = \\sum_y p(y) \\cdot D(p(x,z|y) \\| p(x|y)p(z|y)) \\geq 0$ since KL divergence $D \\geq 0$ for each $y$. 12 theorems, 5 defs, 0 axioms, 1 sorry.",
+    "mathContext": "SSA was **conjectured** by Lanford and Robinson in 1968 and **proved** by Lieb and Ruskai in 1973, first for the quantum (von Neumann entropy) case using the deep Lieb concavity theorem. The classical Shannon case is simpler — it follows from $D(p \\| q) \\geq 0$. SSA implies subadditivity ($k=2$ case) and is strictly stronger. In quantum information theory, SSA is fundamental for quantum error correction, quantum channel capacities, and the monogamy of entanglement.",
+    "significance": "context",
+    "relatedConcepts": [
+      "strong subadditivity (Lieb-Ruskai 1973)",
+      "conditional mutual information I(X;Z|Y) ≥ 0",
+      "KL divergence non-negativity",
+      "conditioning reduces entropy H(X|Y,Z) ≤ H(X|Y)",
+      "quantum SSA vs classical SSA"
+    ],
+    "prerequisites": [
+      "ShannonEntropy.lean (shannonEntropy, condEntropy, mutual_info_nonneg)",
+      "KL divergence D(p||q) ≥ 0",
+      "conditioning_reduces_entropy from parent file"
+    ]
+  },
+  {
+    "id": "ann-ssa-marginals",
+    "proofId": "shannon-entropy-oq-03",
+    "range": { "startLine": 51, "endLine": 71 },
+    "type": "definition",
+    "title": "Three-Variable Marginal Distributions: marginalXY, marginalYZ, marginalY_3",
+    "content": "Three marginals from a joint $p: \\alpha \\times \\beta \\times \\gamma \\to \\mathbb{R}$: **marginalXY**: $p_{XY}(x,y) = \\sum_z p(x,y,z)$; **marginalYZ**: $p_{YZ}(y,z) = \\sum_x p(x,y,z)$; **marginalY_3**: $p_Y(y) = \\sum_x \\sum_z p(x,y,z)$. Also: **shannonEntropy'** — a local copy of `shannonEntropy` from the parent file, needed for self-containment (same definition: $H = -\\sum_x [p(x)=0 ? 0 : p(x)\\log p(x)]$).",
+    "mathContext": "In Lean, the 3-variable joint type is `α × β × γ` (right-associated). Marginals are computed by `∑ z : γ, pXYZ (x, y, z)` etc. The `shannonEntropy'` copy avoids naming conflicts with `InformationTheory.shannonEntropy` while having the same definition. The `if p x = 0 then 0 else p x * Real.log (p x)` convention handles the $0 \\log 0 = 0$ limit correctly without classical reasoning about log(0).",
+    "significance": "key",
+    "relatedConcepts": [
+      "marginalXY : α×β×γ → α×β",
+      "marginalYZ : α×β×γ → β×γ",
+      "marginalY_3 : α×β×γ → β",
+      "0*log(0) = 0 convention",
+      "right-associativity of α×β×γ"
+    ],
+    "prerequisites": [
+      "Fintype for finitely-typed variables",
+      "Real.log for natural logarithm",
+      "ShannonEntropy.lean infrastructure"
+    ]
+  },
+  {
+    "id": "ann-ssa-marginal-props",
+    "proofId": "shannon-entropy-oq-03",
+    "range": { "startLine": 78, "endLine": 138 },
+    "type": "theorem",
+    "title": "Marginal Properties: Nonnegativity and Sum-to-One",
+    "content": "Six lemmas: **marginalXY_nonneg**, **marginalYZ_nonneg**, **marginalY_3_nonneg** — marginalization preserves nonnegativity via `Finset.sum_nonneg`. **marginalXY_sum**, **marginalYZ_sum**, **marginalY_3_sum** — each marginal sums to 1. The sum-to-1 proofs use `Fintype.sum_prod_type` to convert between a sum over a product type and an iterated sum, plus `Finset.sum_comm` to reorder summation.",
+    "mathContext": "`marginalXY_sum` proof: rewrite $\\sum_{x,y} \\sum_z p(x,y,z) = \\sum_{x,y,z} p(x,y,z)$ via `Fintype.sum_prod_type`. `marginalYZ_sum` additionally needs `Finset.sum_comm` to move the $x$-sum inside. `marginalY_3_sum` combines both: swap $y,x$ and then collapse $z$. The key pattern: `rw [Fintype.sum_prod_type, Fintype.sum_prod_type]` then `rw [Finset.sum_comm]` then `congr 1; ext x` to reduce to single variables.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum_nonneg for nonnegativity",
+      "Fintype.sum_prod_type for product decomposition",
+      "Finset.sum_comm for reordering",
+      "marginal distributions sum to 1",
+      "probability simplex constraints"
+    ],
+    "prerequisites": [
+      "Finset.sum_nonneg from Mathlib.Algebra.BigOperators.Order",
+      "Fintype.sum_prod_type from Mathlib.Algebra.BigOperators",
+      "Finset.sum_comm for double sums"
+    ]
+  },
+  {
+    "id": "ann-ssa-chain-rule",
+    "proofId": "shannon-entropy-oq-03",
+    "range": { "startLine": 172, "endLine": 243 },
+    "type": "theorem",
+    "title": "entropy_chain_rule: H(X,Y) = H(Y) + H(X|Y)",
+    "content": "**entropy_chain_rule**: $H(X,Y) = H(Y) + H(X|Y)$ — the foundational decomposition of joint entropy. Proof in 3 steps: (1) **term identity**: $p(x,y)\\log p(x,y) = p(x,y)\\log(p(x,y)/p_Y(y)) + p(x,y)\\log p_Y(y)$ via `Real.log_div`; (2) **marginal telescoping**: $\\sum_x [p(x,y) \\log p_Y(y)] = p_Y(y) \\log p_Y(y)$ (factor out constant); (3) **assembly** via `Finset.sum_comm` and `ring`.",
+    "mathContext": "The key identity: $\\log(p/q) = \\log p - \\log q$ gives $p \\log p = p \\log(p/q) + p \\log q$. The `hterm` lemma encodes this pointwise; `hmarg` handles the marginal telescoping. The Lean proof uses `by_cases hpxy : pXY (x,y) = 0` to handle the $0 \\log 0 = 0$ case separately. `Finset.single_le_sum` shows $p(x,y) \\leq p_Y(y)$ to establish $p_Y(y) > 0$ when $p(x,y) > 0$. The final `ring` closes the arithmetic after all rewriting.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.log_div for log quotient splitting",
+      "Finset.single_le_sum for marginal bound",
+      "entropy chain rule H(X,Y) = H(X|Y) + H(Y)",
+      "hmarg: marginal telescoping lemma",
+      "Fintype.sum_prod_type for product-type sum"
+    ],
+    "prerequisites": [
+      "marginalSnd and condEntropy definitions",
+      "Real.log_div from Mathlib.Analysis.SpecialFunctions",
+      "Finset.single_le_sum for bounding individual terms"
+    ]
+  },
+  {
+    "id": "ann-ssa-subadditivity",
+    "proofId": "shannon-entropy-oq-03",
+    "range": { "startLine": 252, "endLine": 270 },
+    "type": "theorem",
+    "title": "subadditivity: H(X,Y) ≤ H(X) + H(Y) from Chain Rule",
+    "content": "**subadditivity**: $H(X,Y) \\leq H(X) + H(Y)$ — proved in 2 lines using the chain rule. By `entropy_chain_rule`: $H(X,Y) = H(Y) + H(X|Y)$. By `conditioning_reduces_entropy` (from `ShannonEntropy.lean`): $H(X|Y) \\leq H(X)$. Adding: $H(X,Y) \\leq H(Y) + H(X)$. The goal follows by `linarith`.",
+    "mathContext": "Subadditivity is the **Gibbs inequality** in disguise: $H(X,Y) = H(Y) + H(X|Y)$ and $H(X|Y) \\leq H(X)$ (conditioning can only help). The proof avoids any direct computation: it's purely chain-rule + conditioning inequality. The dependency `conditioning_reduces_entropy hp hsum` from `ShannonEntropy.lean` is the black box — it proves $H(X|Y) \\leq H(X)$ from KL divergence non-negativity for 2-variable distributions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "entropy_chain_rule application",
+      "conditioning_reduces_entropy from ShannonEntropy.lean",
+      "Gibbs inequality H(X|Y) ≤ H(X)",
+      "linarith for linear arithmetic conclusion",
+      "2-step proof from chain rule"
+    ],
+    "prerequisites": [
+      "entropy_chain_rule",
+      "conditioning_reduces_entropy from ShannonEntropy.lean",
+      "marginalSnd definition"
+    ]
+  },
+  {
+    "id": "ann-ssa-ssa",
+    "proofId": "shannon-entropy-oq-03",
+    "range": { "startLine": 292, "endLine": 303 },
+    "type": "theorem",
+    "title": "strong_subadditivity: The Main Result (1 sorry)",
+    "content": "**strong_subadditivity**: $H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$ — stated with its proof strategy but with `sorry` for the final KL divergence step. The proof structure is outlined: (1) express the deficit as $I(X;Z|Y) = \\sum_y p(y) D(p(x,z|y) \\| p(x|y)p(z|y))$; (2) each term $D \\geq 0$ by KL non-negativity; (3) weighted average of nonneg terms is nonneg. The `sorry` fills in the Lean formalization of steps 1–3.",
+    "mathContext": "The proof requires: (1) define the conditional distribution $p(x,z|y) = p(x,y,z)/p_Y(y)$ for each $y$ with $p_Y(y) > 0$; (2) show it's a valid distribution; (3) compute its KL divergence from $p(x|y) \\cdot p(z|y)$ and show it equals the conditional MI term; (4) apply `mutual_info_nonneg` from `ShannonEntropy.lean`. The technical challenge: handling the conditional distribution for $y$ with $p_Y(y) = 0$ requires a case split, and the telescoping identity requires careful use of `Finset.sum_comm` and `Real.log_div`. This is the **Aristotle candidate** for this file.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conditional mutual information I(X;Z|Y)",
+      "KL divergence D(p||q) ≥ 0",
+      "conditional distribution p(x,z|y)",
+      "sorry for weighted KL argument",
+      "mutual_info_nonneg from ShannonEntropy.lean"
+    ],
+    "prerequisites": [
+      "marginalXY, marginalYZ, marginalY_3 definitions",
+      "mutual_info_nonneg from ShannonEntropy.lean",
+      "Finset.sum_nonneg for weighted average"
+    ]
+  },
+  {
+    "id": "ann-ssa-consequences",
+    "proofId": "shannon-entropy-oq-03",
+    "range": { "startLine": 314, "endLine": 341 },
+    "type": "theorem",
+    "title": "SSA Consequences: Conditioning Reduces Entropy and I(X;Z|Y) ≥ 0",
+    "content": "**conditioning_reduces_entropy_general**: $H(X|Y,Z) \\leq H(X|Y)$ — proved by rearranging SSA: $H(XYZ)+H(Y) \\leq H(XY)+H(YZ)$ iff $H(XYZ)-H(YZ) \\leq H(XY)-H(Y)$, i.e., $H(X|YZ) \\leq H(X|Y)$. **conditional_mi_nonneg**: $I(X;Z|Y) = H(XY)+H(YZ)-H(XYZ)-H(Y) \\geq 0$ — a direct algebraic consequence of SSA. Both proved by `linarith [strong_subadditivity hp hsum]`.",
+    "mathContext": "These consequences demonstrate that `strong_subadditivity` is a single inequality that implies both the operational (`H(X|Y,Z) ≤ H(X|Y)`) and information-theoretic (`I(X;Z|Y) ≥ 0`) forms. The proofs are trivial given SSA: `conditioning_reduces_entropy_general` subtracts $H(YZ)$ from both sides; `conditional_mi_nonneg` rearranges $H(XY)+H(YZ) \\geq H(XYZ)+H(Y)$. The `linarith` tactic closes both goals by linear arithmetic from the SSA hypothesis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "H(X|Y,Z) = H(X,Y,Z) - H(Y,Z) as subtraction",
+      "I(X;Z|Y) = H(X,Y)+H(Y,Z)-H(X,Y,Z)-H(Y)",
+      "linarith from SSA hypothesis",
+      "monogamy of information (quantum analogue)",
+      "data processing inequality"
+    ],
+    "prerequisites": [
+      "strong_subadditivity",
+      "linarith from Mathlib.Tactic",
+      "marginalXY, marginalYZ, marginalY_3 for entropy computation"
+    ]
+  }
+]
