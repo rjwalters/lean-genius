@@ -1,1 +1,197 @@
-[]
+[
+  {
+    "id": "ann-overview",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "context",
+    "title": "Two-Part Proof Architecture: Algebra vs. Homology",
+    "content": "The file header explains the key architectural insight: the No-Retraction proof cleanly separates into (1) a pure algebraic fact about group homomorphisms (0 axioms, fully proved), and (2) singular homology computations (1 axiom, not yet in Mathlib 4.26). This contrasts with the parent file `BrouwerFixedPoint.lean` which treats the entire statement as one opaque axiom. The comparison in lines 33-40 is pedagogically important: by replacing a black-box axiom with more primitive facts, we identify exactly what singular homology contributes — and prove everything else rigorously.",
+    "mathContext": "The proof structure mirrors the classical argument: $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ and $H_{n-1}(B^n) = 0$, so a retraction $r$ with $r \\circ i = \\mathrm{id}$ induces a split $\\mathrm{id}: \\mathbb{Z} \\to 0 \\to \\mathbb{Z}$, which is impossible. The Lean model uses `Unit` for the trivial group $0$ and `ℤ` for $\\mathbb{Z}$, with `AddMonoidHom` for the morphisms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "No-Retraction Theorem",
+      "singular homology",
+      "Brouwer Fixed Point Theorem",
+      "proof architecture"
+    ],
+    "prerequisites": [
+      "BrouwerFixedPoint.lean",
+      "singular homology (conceptually)",
+      "AddMonoidHom"
+    ]
+  },
+  {
+    "id": "ann-topological-setup",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02",
+    "range": {
+      "startLine": 51,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Topological Setup: Ball, Sphere, and Retraction",
+    "content": "`ClosedBall n` and `UnitSphere n` are defined using `Metric.closedBall 0 1` and `Metric.sphere 0 1` in `EuclideanSpace ℝ (Fin n)`. The `Retraction` structure packages four data: the underlying function `toFun`, continuity (`continuous'`), `maps_to_sphere` (the image lies in $S^{n-1}$), and `fixes_sphere` (the map restricts to the identity on $S^{n-1}$). The comment notes these definitions match `BrouwerFixedPoint.lean` for interoperability — a design choice ensuring results compose across files.",
+    "mathContext": "A **retraction** from $B^n$ to $S^{n-1}$ is a continuous map $r: B^n \\to S^{n-1}$ such that $r|_{S^{n-1}} = \\mathrm{id}$. Equivalently, if $i: S^{n-1} \\hookrightarrow B^n$ is the inclusion, then $r \\circ i = \\mathrm{id}_{S^{n-1}}$. The No-Retraction Theorem asserts no such $r$ exists for $n \\geq 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Metric.closedBall",
+      "EuclideanSpace",
+      "retraction",
+      "deformation retract"
+    ],
+    "prerequisites": [
+      "Metric.closedBall and Metric.sphere",
+      "EuclideanSpace ℝ (Fin n)",
+      "Continuous"
+    ]
+  },
+  {
+    "id": "ann-unit-hom",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02",
+    "range": {
+      "startLine": 86,
+      "endLine": 98
+    },
+    "type": "technique",
+    "title": "Unit Group Triviality: map_zero and Subsingleton",
+    "content": "`unit_hom_sends_zero_to_zero` (line 88) is a one-liner: `ψ.map_zero` directly proves `ψ () = 0` because `()` IS the identity element of `Unit`. `comp_through_unit_is_zero` is more subtle: for any $x : \\mathbb{Z}$, we need `ψ(φ(x)) = 0`. The proof uses `Subsingleton.elim _ _` to show `φ x = ()` (since `Unit` is a subsingleton — it has at most one element), then applies `unit_hom_sends_zero_to_zero`. The `apply AddMonoidHom.ext; intro x` pattern reduces the homomorphism equality to pointwise equality.",
+    "mathContext": "In Lean 4, `Unit` is the type with one element `()`. It is an `AddCommGroup` where `() + () = ()` and `-() = ()`. The subsingleton property means `Subsingleton.elim a b : a = b` holds for any `a b : Unit`. Any group homomorphism $\\psi: 0 \\to \\mathbb{Z}$ (where $0$ is the trivial group) must send the identity to the identity: $\\psi(0) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "trivial group",
+      "subsingleton",
+      "AddMonoidHom.map_zero",
+      "AddMonoidHom.ext"
+    ],
+    "prerequisites": [
+      "AddMonoidHom",
+      "Subsingleton typeclass",
+      "Unit as trivial group"
+    ]
+  },
+  {
+    "id": "ann-algebraic-core",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02",
+    "range": {
+      "startLine": 100,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "Algebraic Core: Identity Cannot Factor Through the Trivial Group",
+    "content": "`id_Z_ne_zero` proves `AddMonoidHom.id ℤ ≠ 0` by evaluating at 1: `id(1) = 1 ≠ 0`. The proof applies `AddMonoidHom.ext_iff` to extract the pointwise statement, then simp with `id_apply`. `id_Z_not_factored_through_unit` is the algebraic heart: if `ψ ∘ φ = id`, then combining with `comp_through_unit_is_zero` gives `0 = id`, contradicting `id_Z_ne_zero`. The proof is three lines and requires no topology, no geometry, and no axioms — pure abstract algebra about groups.",
+    "mathContext": "The key fact: for any groups $G$ and trivial group $\\{0\\}$, the composition $G \\xrightarrow{\\phi} \\{0\\} \\xrightarrow{\\psi} G$ is always the zero map (since $\\phi(g) = 0$ for all $g$, and $\\psi(0) = 0$). But the identity $\\mathrm{id}_G$ is not zero (when $G \\neq 0$). Therefore $\\mathrm{id}_G$ cannot factor through $\\{0\\}$. This is the categorical statement that $G$ is not a retract of the trivial group — which is precisely the homological obstruction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "zero morphism",
+      "identity morphism",
+      "factorization through zero",
+      "algebraic obstruction",
+      "retract in category theory"
+    ],
+    "prerequisites": [
+      "comp_through_unit_is_zero",
+      "id_Z_ne_zero",
+      "AddMonoidHom.id"
+    ]
+  },
+  {
+    "id": "ann-explicit-contradiction",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02",
+    "range": {
+      "startLine": 115,
+      "endLine": 126
+    },
+    "type": "technique",
+    "title": "Explicit Contradiction: ψ(()) = 1 and ψ(()) = 2",
+    "content": "`id_Z_not_factored_explicit` gives a more concrete version of the algebraic contradiction. From `ψ ∘ φ = id`: evaluating at 1 gives `ψ(φ(1)) = 1`, and evaluating at 2 gives `ψ(φ(2)) = 2`. But `φ(1) = φ(2) = ()` by `Subsingleton.elim`, so both become `ψ(()) = 1` and `ψ(()) = 2`. Since `ψ(())` is a fixed integer, `1 = 2`, which `linarith` dispatches. This explicit version is pedagogically valuable — it makes the contradiction fully concrete without relying on abstract composition reasoning.",
+    "mathContext": "The argument: $\\psi(\\phi(1)) = \\mathrm{id}(1) = 1$ and $\\psi(\\phi(2)) = \\mathrm{id}(2) = 2$. But $\\phi(1) = \\phi(2) = ()$ (the unique element of Unit), so $\\psi(()) = 1$ and $\\psi(()) = 2$, giving $1 = 2 \\in \\mathbb{Z}$. The `linarith` tactic sees `h1 : ψ(()) = 1`, `h2 : ψ(()) = 2` and derives `False` via $1 \\neq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "linarith tactic",
+      "Subsingleton.elim",
+      "explicit witnesses"
+    ],
+    "prerequisites": [
+      "id_Z_not_factored_through_unit",
+      "Subsingleton.elim",
+      "linarith"
+    ]
+  },
+  {
+    "id": "ann-homology-axiom",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02",
+    "range": {
+      "startLine": 128,
+      "endLine": 171
+    },
+    "type": "axiom",
+    "title": "Singular Homology Axiom: The Topological Content",
+    "content": "`singular_homology_retraction_split` is the single axiom encoding all of singular homology. Given a retraction `r : Retraction n` (with `n ≥ 1`), it produces `φ : ℤ →+ Unit` and `ψ : Unit →+ ℤ` with `ψ ∘ φ = id`. This concisely packages: (1) $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ (sphere homology, computed via Mayer-Vietoris and excision), (2) $H_{n-1}(B^n) = 0$ (ball contractibility), and (3) functoriality ($r \\circ i = \\mathrm{id}$ implies $r_* \\circ i_* = \\mathrm{id}_*$). The doc-comment enumerates the four Mathlib gaps blocking a constructive proof.",
+    "mathContext": "The Lean model uses $\\mathbb{Z}$ for $H_{n-1}(S^{n-1})$ and `Unit` for $H_{n-1}(B^n) = 0$. Functoriality of $H_{n-1}$ means: if $r \\circ i = \\mathrm{id}_{S^{n-1}}$, then $(r_*)_* \\circ (i_*)_* = \\mathrm{id}_{H_{n-1}(S^{n-1})}$, giving the split $\\psi \\circ \\phi = \\mathrm{id}: \\mathbb{Z} \\to \\mathrm{Unit} \\to \\mathbb{Z}$. This is precisely the axiom's conclusion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "singular homology",
+      "Mayer-Vietoris sequence",
+      "excision theorem",
+      "contractibility",
+      "functoriality"
+    ],
+    "prerequisites": [
+      "singular chains (not in Mathlib 4.26)",
+      "Brouwer Fixed Point Theorem",
+      "homological algebra"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02",
+    "range": {
+      "startLine": 173,
+      "endLine": 201
+    },
+    "type": "theorem",
+    "title": "No-Retraction Theorem and Its Algebraic Equivalence",
+    "content": "`no_retraction_singular_homology` is a clean 3-line proof: assume retraction → apply axiom → get algebraic split → algebraic contradiction. The `rintro ⟨r, -⟩` pattern destructs the existential and discards the trivial proof. `obtain ⟨φ, ψ, h⟩ := singular_homology_retraction_split n hn r` extracts the maps, and `exact id_Z_not_factored_through_unit φ ψ h` closes the goal. `no_retraction_iff_algebraic_impossibility` formalizes the logical equivalence between the topological and algebraic statements, modulo the homology axiom.",
+    "mathContext": "The proof is a textbook example of the homological method: translate a topological problem ($\\neg \\exists$ retraction) into an algebraic problem ($\\mathrm{id}_\\mathbb{Z}$ doesn't factor through Unit) via a functor (singular homology $H_{n-1}$), then solve the algebra. The `iff` version makes explicit that the topological content is entirely encoded in the axiom — the rest is pure logic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "No-Retraction Theorem",
+      "Brouwer Fixed Point Theorem",
+      "homological method",
+      "functor",
+      "algebraic topology"
+    ],
+    "prerequisites": [
+      "singular_homology_retraction_split",
+      "id_Z_not_factored_through_unit",
+      "rintro pattern"
+    ]
+  },
+  {
+    "id": "ann-structural-lemmas",
+    "proofId": "brouwer-fixed-point-oq-01-oq-02",
+    "range": {
+      "startLine": 203,
+      "endLine": 231
+    },
+    "type": "concept",
+    "title": "Structural Lemmas: Uniqueness and Zero Maps",
+    "content": "`unique_hom_to_unit` proves that any two group homs $G \\to \\mathrm{Unit}$ are equal — there is only one, since the codomain has a single element. `unique_hom_from_unit_is_zero` proves any group hom `Unit → ℤ` is zero: it reduces to `unit_hom_sends_zero_to_zero` after `Subsingleton.elim _ _` forces the input to be `()`. `zero_comp_is_id_implies_trivial` combines these: if $0 \\circ \\phi = \\mathrm{id}: \\mathbb{Z} \\to \\mathbb{Z}$, then $0 = \\mathrm{id}$ contradicts `id_Z_ne_zero`. These lemmas systematically explore the consequences of the trivial group structure.",
+    "mathContext": "These lemmas establish that `Unit →+ ℤ` is contractible (there's essentially just the zero map), and that the only consistent assignment to the homology of $B^n$ is 0. They serve as cross-checks: if the axiom were false and some non-zero $\\psi: \\mathrm{Unit} \\to \\mathbb{Z}$ existed with $\\psi \\circ \\phi = \\mathrm{id}$, then `unique_hom_from_unit_is_zero` would force $\\psi = 0$, immediately giving $0 = \\mathrm{id}$, another path to the contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "zero morphism",
+      "uniqueness of maps from trivial group",
+      "subsingleton",
+      "structural analysis"
+    ],
+    "prerequisites": [
+      "unit_hom_sends_zero_to_zero",
+      "comp_through_unit_is_zero",
+      "AddMonoidHom.ext"
+    ]
+  }
+]
