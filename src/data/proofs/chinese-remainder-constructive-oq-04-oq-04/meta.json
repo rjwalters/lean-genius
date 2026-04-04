@@ -60,7 +60,64 @@
       "description": "Builds on the 2/3/4-moduli constructive CRT, extended to arbitrary-length lists in OQ-04."
     }
   ],
-  "overview": "## The Minimal Non-Negative Solution\n\nThe **Chinese Remainder Theorem** says that for pairwise coprime moduli $m_1, \\ldots, m_k$ and remainders $a_1, \\ldots, a_k$, there exists $x$ with $x \\equiv a_i \\pmod{m_i}$ for all $i$, unique modulo $M = \\prod m_i$.\n\nThis file pins down the **canonical representative**: the unique solution in $\\{0, 1, \\ldots, M-1\\}$.\n\n## Key Results\n\n1. **`satisfies_mod`**: If $x$ satisfies the system, so does $x \\bmod M$. This uses $m_i \\mid M$ and the identity $(x \\bmod M) \\bmod m_i = x \\bmod m_i$.\n\n2. **`crt_list_min`**: $\\exists! x < M,\\ x \\text{ satisfies the system}$. The existence comes from `crt_list` (any solution reduced mod $M$); uniqueness from `crt_list_unique` (any two solutions are congruent mod $M$, hence equal since both are $< M$).\n\n3. **Sunzi verification**: The classic problem $x \\equiv 2 \\pmod 3$, $x \\equiv 3 \\pmod 5$, $x \\equiv 2 \\pmod 7$ has unique minimal solution $x = 23$.",
+  "overview": {
+    "historicalContext": "The Chinese Remainder Theorem was known to the 3rd-century Chinese mathematician Sun Tzu (Sunzi), who posed the classic problem: find a number that gives remainders 2, 3, 2 when divided by 3, 5, 7. The answer is 23. The general theorem was fully stated by Qin Jiushao in his *Mathematical Treatise in Nine Sections* (1247 CE). In the Western tradition, Gauss included it in *Disquisitiones Arithmeticae* (1801). In modern algebra, the CRT is equivalent to the ring isomorphism $\\mathbb{Z}/M\\mathbb{Z} \\cong \\mathbb{Z}/m_1\\mathbb{Z} \\times \\cdots \\times \\mathbb{Z}/m_k\\mathbb{Z}$ for pairwise coprime moduli. This file proves the final refinement: not just existence and uniqueness modulo $M$, but the existence of a unique *canonical representative* in $\\{0, 1, \\ldots, M-1\\}$, exactly as `ZMod.val` extracts the canonical element from $\\mathbb{Z}/M$.",
+    "problemStatement": "For pairwise coprime positive moduli $m_1, \\ldots, m_k$ and remainders $a_1, \\ldots, a_k$, let $M = m_1 \\cdots m_k$. Then $\\exists! x \\in [0, M)$ such that $x \\equiv a_i \\pmod{m_i}$ for all $i$. This canonical $x$ is obtained by reducing any solution modulo $M$.",
+    "proofStrategy": "Three-step reduction: (1) **`satisfies_mod`** — if $x$ satisfies the system then $x \\bmod M$ does too, via $m_i \\mid M$ and `Nat.mod_mod_of_dvd`. (2) **`crt_list_minimal_exists`** — apply `crt_list` (from OQ04) to get any solution $y$, then $y \\bmod M < M$ by `Nat.mod_lt` and satisfies the system by `satisfies_mod`. (3) **`crt_list_minimal_unique`** — two solutions $x, y$ in $[0,M)$ satisfy $x \\equiv y \\pmod M$ (from `crt_list_unique`), so $x \\bmod M = x$ and $y \\bmod M = y$ (both $< M$), giving $x = y$. The ∃! theorem `crt_list_min` packages these.",
+    "keyInsights": [
+      "The reduction step `satisfies_mod` relies on divisibility: since each $m_i$ divides $M = \\prod m_j$, the identity $(x \\bmod M) \\bmod m_i = x \\bmod m_i$ holds via `Nat.mod_mod_of_dvd`. This is a 1-line lemma that does all the work.",
+      "Existence is nearly free: `crt_list` gives any solution $y$; the minimal solution is just $y \\bmod M$. The positivity hypothesis `0 < M` is essential for `Nat.mod_lt` to guarantee $y \\bmod M < M$.",
+      "Uniqueness reduces to: modular congruence + both sides in $[0,M)$ implies equality. The Lean proof applies `Nat.mod_eq_of_lt` to simplify $x \\bmod M = x$ and $y \\bmod M = y$, then concludes $x = y$ from `crt_list_unique`.",
+      "The `∃!` combinator in Lean 4 requires a specific proof pattern: provide the witness, then show any other solution equals it. This appears in `crt_list_min` as `⟨c, ⟨hclt, hcs⟩, fun y ⟨hyt, hys⟩ => ...⟩`.",
+      "The canonical minimal solution mirrors `ZMod.val`: both map a solution to its unique representative in $\\{0, \\ldots, M-1\\}$. This establishes the CRT isomorphism $\\mathbb{Z}/M \\cong \\prod \\mathbb{Z}/m_i$ at the element level (not just ring level)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "reduction-lemma",
+      "title": "Reduction Lemma",
+      "startLine": 25,
+      "endLine": 39,
+      "summary": "`satisfies_mod`: if $x$ satisfies the CRT system, so does $x \\bmod M$. Proved via `Nat.mod_mod_of_dvd` using $m_i \\mid M$. This is the foundational lemma enabling the canonical representative."
+    },
+    {
+      "id": "existence",
+      "title": "Existence of Minimal Solution",
+      "startLine": 41,
+      "endLine": 49,
+      "summary": "`crt_list_minimal_exists`: ∃ x < M satisfying the system. Obtains any solution y from `crt_list`, then takes x = y % M (bounded by `Nat.mod_lt`, valid by `satisfies_mod`). A 1-line proof."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness of Minimal Solution",
+      "startLine": 51,
+      "endLine": 63,
+      "summary": "`crt_list_minimal_unique`: two solutions both in [0,M) must be equal. Uses `crt_list_unique` to get $x \\equiv y \\pmod M$, then `Nat.mod_eq_of_lt` to simplify $x \\bmod M = x$ and $y \\bmod M = y$."
+    },
+    {
+      "id": "exists-unique",
+      "title": "The ∃! Theorem",
+      "startLine": 65,
+      "endLine": 76,
+      "summary": "`crt_list_min`: ∃! x, x < M ∧ Satisfies x sys. Packages existence and uniqueness into the Lean 4 `∃!` form, establishing the canonical minimal CRT representative theorem."
+    },
+    {
+      "id": "sunzi-verification",
+      "title": "Concrete Verification: The Sunzi Problem",
+      "startLine": 78,
+      "endLine": 105,
+      "summary": "Three theorems verify the classic Sunzi problem ($x \\equiv 2 \\pmod 3$, $x \\equiv 3 \\pmod 5$, $x \\equiv 2 \\pmod 7$). `sunzi_solution_is_23` proves 23 satisfies the system. `sunzi_unique` shows any minimal solution equals 23 via `crt_list_minimal_unique`. `native_decide` handles all modular arithmetic."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization proves the canonical CRT theorem: for any system of congruences with pairwise coprime positive moduli, there exists a unique solution in $[0, M)$, obtained by reducing any solution modulo $M$. All 5 theorems are fully proved with 0 sorries and 0 axioms. The Sunzi problem (x = 23) is verified as a concrete example.",
+    "implications": "The `crt_list_min` theorem provides the foundation for practical CRT applications: cryptographic operations (RSA Chinese remainder exponentiation), hash function design, and modular arithmetic in computational number theory all rely on extracting the canonical representative. The formalization shows that `ZMod.val` is the type-theoretic analogue: both give the unique $x \\in [0, M)$ representing a tuple of residues. The connection `ℤ/M ≅ ∏ ℤ/mᵢ` is now proved at the element level in Lean.",
+    "openQuestions": [
+      "Can `crt_list_min` be connected to Mathlib's `ZMod` and the ring isomorphism `ZMod.chineseRemainder`? This would lift the element-level theorem to the ring isomorphism level.",
+      "Can the constructive witness (the actual value of the minimal solution, computed via Bézout coefficients) be extracted from this proof, enabling a computable `Nat.find`-free version?",
+      "Does the minimal representative theorem extend to non-pairwise-coprime moduli (using $\\text{lcm}$ instead of $\\prod$)? The GCD-based CRT over general ideals gives existence but uniqueness modulo $\\text{lcm}$."
+    ]
+  },
   "references": [
     {
       "type": "book",
