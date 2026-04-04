@@ -130,19 +130,16 @@ function countInFile(filePath: string, pattern: RegExp): number {
   return matches ? matches.length : 0
 }
 
-function commonPrefixLength(a: string, b: string): number {
-  let i = 0
-  while (i < a.length && i < b.length && a[i] === b[i]) i++
-  return i
-}
-
 /**
  * Resolve all Lean source files for a proof, including:
  * - The main proofRepoPath file
  * - Any files listed in meta.additionalFiles
  * - Any submodule imports (import Proofs.X.Y → proofs/Proofs/X/Y.lean)
- * - Sibling imports (import Proofs.X → proofs/Proofs/X.lean) when X shares
- *   a name prefix with the main file (covers inherited-axiom cases)
+ * - Aristotle companion files (import Proofs.XAristotle → proofs/Proofs/XAristotle.lean)
+ *
+ * Single-level sibling imports are only followed for *Aristotle.lean companion files.
+ * Other sibling imports (independent gallery entries) are excluded to prevent
+ * false-positive axiom/sorry counts. Use meta.additionalFiles for explicit dependencies.
  */
 function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
   const files: string[] = []
@@ -179,14 +176,10 @@ function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
 
       if (moduleParts.length === 2) {
         // Single-level import: import Proofs.X → proofs/Proofs/X.lean
-        // Follow only when X shares a meaningful name prefix with the main file
-        // (indicating they belong to the same proof family).
-        // Threshold: prefix must be >= 40% of the shorter name (min 4 chars).
-        // This allows Erdos2OQ01 ↔ Erdos2Problem ("Erdos2", 60% of 10)
-        // while blocking Erdos28AdditiveBases ↔ Erdos340GreedySidon ("Erdos", 26% of 19).
-        const minLen = Math.min(mainBaseName.length, subDirName.length)
-        const threshold = Math.max(4, Math.floor(minLen * 0.4))
-        if (commonPrefixLength(mainBaseName, subDirName) < threshold) continue
+        // Only follow companion files (ending with "Aristotle") to avoid
+        // counting axioms/sorries from independent sibling gallery entries.
+        // Explicit cross-file dependencies should be declared via meta.additionalFiles.
+        if (!subDirName.endsWith('Aristotle')) continue
         const subPath = path.join('proofs', 'Proofs', subDirName + '.lean')
         if (fs.existsSync(subPath) && !files.includes(subPath)) {
           files.push(subPath)
