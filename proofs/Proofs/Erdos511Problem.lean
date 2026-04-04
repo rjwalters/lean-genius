@@ -44,6 +44,7 @@ import Mathlib.Topology.Connected.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Degree.Definitions
+import Mathlib.Algebra.Polynomial.Eval.Defs
 
 open Complex Polynomial Metric Set
 
@@ -61,14 +62,14 @@ For a polynomial f : ℂ → ℂ and r > 0, the sublevel set is {z : |f(z)| < r}
 This is the interior of the lemniscate {z : |f(z)| = r}.
 -/
 def sublevelSet (f : ℂ → ℂ) (r : ℝ) : Set ℂ :=
-  {z : ℂ | Complex.abs (f z) < r}
+  {z : ℂ | ‖f z‖ < r}
 
 /--
 **Closed Sublevel Set:**
 For a polynomial f : ℂ → ℂ and r > 0, this is {z : |f(z)| ≤ r}.
 -/
 def closedSublevelSet (f : ℂ → ℂ) (r : ℝ) : Set ℂ :=
-  {z : ℂ | Complex.abs (f z) ≤ r}
+  {z : ℂ | ‖f z‖ ≤ r}
 
 /--
 **Monic Polynomial:**
@@ -95,7 +96,7 @@ axiom polya_diameter_bound :
     ∀ (C : Set ℂ), C ⊆ closedSublevelSet (fun z => f.eval z) 1 →
       IsConnected C → Metric.diam C ≤ 4
 
-/--
+/-
 **Diameter is Bounded Below 4:**
 For any d < 4 and k ≥ 1, there exist monic polynomials with k components
 of diameter at least d.
@@ -141,8 +142,12 @@ theorem erdos_511 :
                              IsConnected C ∧
                              Metric.diam C > c) := by
   intro c hc1 hc4 bound
-  have hc_pos : 0 < c := by linarith
-  obtain ⟨f, hf_monic, components, hcard, hprops⟩ := pommerenke_theorem c hc_pos hc4 (bound + 1) (by omega)
+  -- Use d = (c + 4) / 2, strictly between c and 4, to get strict inequality diam > c
+  set d := (c + 4) / 2 with hd_def
+  have hd_pos : 0 < d := by linarith
+  have hd_lt4 : d < 4 := by linarith
+  have hcd : c < d := by linarith
+  obtain ⟨f, hf_monic, components, hcard, hprops⟩ := pommerenke_theorem d hd_pos hd_lt4 (bound + 1) (by omega)
   use f, hf_monic, components
   constructor
   · omega
@@ -160,14 +165,13 @@ The polynomial f(z) = z^n - 1 demonstrates important properties.
 **Roots of Unity Polynomial:**
 The polynomial z^n - 1 has exactly n roots, the n-th roots of unity.
 -/
-def rootsOfUnityPoly (n : ℕ) : Polynomial ℂ :=
+noncomputable def rootsOfUnityPoly (n : ℕ) : Polynomial ℂ :=
   Polynomial.X ^ n - 1
 
-/--
+/-
 **z^n - 1 is Monic:**
 The polynomial z^n - 1 has leading coefficient 1.
--/
-/--
+
 **Sum of Diameters for z^n - 1:**
 For f(z) = z^n - 1, the sum of diameters of connected components
 satisfies Σ_C diam(C) = (1 + o(1)) · n · 2^(1/n).
@@ -180,12 +184,11 @@ This shows the Erdős-Herzog-Piranian bound n·2^(1/n) is essentially tight.
 The set {z : |z^n - 1| ≤ 1} has n "petals" meeting at the origin.
 -/
 
-/--
+/-
 **Petal Description:**
 For z^n - 1, the sublevel set consists of n petal-shaped regions,
 one centered at each n-th root of unity, all meeting at z = 0.
--/
-/--
+
 **Perturbing Creates Disconnections:**
 By moving roots slightly, we can disconnect petals at the origin,
 creating arbitrarily many separate components.
@@ -196,7 +199,7 @@ creating arbitrarily many separate components.
 In 2025, Huang independently proved Pommerenke's result.
 -/
 
-/--
+/-
 **Huang's Theorem (2025):**
 For any 0 < d < 4 and k ≥ 1, there exist monic polynomials
 with at least k components of diameter ≥ d.
@@ -209,7 +212,7 @@ This was discovered independently of Pommerenke's 1961 work.
 Pólya's bound of 4 is optimal.
 -/
 
-/--
+/-
 **Optimality of 4:**
 The bound 4 in Pólya's theorem is sharp: there exist polynomials with
 components approaching diameter 4.
@@ -224,8 +227,7 @@ theorem no_component_reaches_4 :
         IsConnected C → Metric.diam C < 4 ∨ Metric.diam C = 4 := by
   intro f hmon hdeg C hsub hconn
   have h := polya_diameter_bound f hmon hdeg C hsub hconn
-  left
-  sorry  -- The strict inequality < 4 requires more detailed analysis
+  exact h.lt_or_eq
 
 /-
 ## Part VIII: Summary of Results
