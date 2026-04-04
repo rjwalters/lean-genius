@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "d-Dimensional EST: Jordan's Totient and the Zeta Function at d+1",
+    "content": "The file extends Erdős #1001 from 1D to d dimensions. The parent problem (EST 1958): measure of α ∈ (0,1) approximable by p/q in [N,cN] converges to 12A·log(c)/π². OQ-03 asks: for α ∈ [0,1]^d, what is the measure of vectors simultaneously approximable? The answer: f_d(A,c) = (2A)^d·log(c)/ζ(d+1). The derivation has three ingredients: (1) each primitive vector contributes (2A/q^{1+1/d})^d = (2A)^d/q^{d+1} of d-volume, (2) counting primitive vectors uses Jordan's d-th totient J_d(q), (3) summing over denominators uses the Jordan-Mertens theorem Σ J_d(q)/q^{d+1} → log(c)/ζ(d+1). The file has 9 axioms and 0 sorries.",
+    "mathContext": "**d-dimensional simultaneous approximation**: $\\alpha \\in [0,1]^d$ is $(A,d,q)$-approximable if $\\exists$ primitive $p \\in \\mathbb{Z}^d$ with $\\max_i |\\alpha_i - p_i/q| < A/q^{1+1/d}$. The exponent $1+1/d$ is the critical exponent from Dirichlet's theorem in $d$ dimensions. The EST formula $f_1 = 12A\\log(c)/\\pi^2 = 2A\\log(c)/\\zeta(2)$ is the $d=1$ special case with $\\zeta(2) = \\pi^2/6$.",
+    "significance": "context",
+    "relatedConcepts": ["Erdős #1001 parent problem", "Dirichlet's theorem on simultaneous approximation", "Jordan's totient function", "Riemann zeta function", "EST regime"],
+    "prerequisites": ["Diophantine approximation basics", "Erdős #1001 parent problem", "Euler's totient function"]
+  },
+  {
+    "id": "ann-zeta",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 50, "endLine": 76 },
+    "type": "concept",
+    "title": "zetaAtSucc: Four Axioms for ζ(d+1) as a Real-Valued Function",
+    "content": "`zetaAtSucc d = (riemannZeta ((d : ℂ) + 1)).re` extracts the real part of ζ(d+1). Four axioms capture the needed properties: `zetaAtSucc_pos` (ζ(d+1) > 0 for all d ≥ 0), `zetaAtSucc_one` (ζ(2) = π²/6 — the Basel problem), `zetaAtSucc_ge_one` (ζ(s) ≥ 1 for real s > 1), and `zetaAtSucc_tendsto_one` (ζ(d+1) → 1 as d → ∞, since ζ(s) → 1 as s → ∞). These four axioms are sufficient to prove all the purely algebraic results; only the main theorem and Jordan-Mertens need the full analytic number theory.",
+    "mathContext": "**Riemann zeta function**: $\\zeta(s) = \\sum_{n=1}^\\infty n^{-s}$ for $\\text{Re}(s) > 1$. Key values: $\\zeta(2) = \\pi^2/6$ (Basel problem, Euler 1735), $\\zeta(3) \\approx 1.202$ (Apéry's constant), $\\zeta(4) = \\pi^4/90$. For $s > 1$: $\\zeta(s) = \\prod_p (1-p^{-s})^{-1} \\geq 1$ (Euler product). As $s \\to \\infty$: $\\zeta(s) \\to 1$ (only the $n=1$ term survives).",
+    "significance": "supporting",
+    "relatedConcepts": ["Riemann zeta function", "Basel problem (ζ(2) = π²/6)", "Euler product formula", "riemannZeta in Mathlib", "Apéry's constant ζ(3)"],
+    "prerequisites": ["Riemann zeta function definition", "Basel problem", "Mathlib Complex.riemannZeta"]
+  },
+  {
+    "id": "ann-jordan",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 77, "endLine": 95 },
+    "type": "concept",
+    "title": "Jordan's Totient J_d: Counting Primitive Vectors in ℤ^d_q",
+    "content": "`jordanTotient d q = #{p ∈ (ℤ/qℤ)^d : gcd(p₁,...,p_d, q) = 1}` counts primitive vectors. `jordan_one` axiomatizes J_1 = φ (Euler's totient). `jordan_le_pow` gives the upper bound J_d(q) ≤ q^d (trivially, since (ℤ/qℤ)^d has q^d elements). The multiplicative formula J_d(q) = q^d · ∏_{p|q}(1-p^{-d}) (an Euler-product analog) is implicitly encoded via the axioms. The Dirichlet series identity Σ J_d(q)/q^s = ζ(s)/ζ(s+d) is the analytic bridge — it gives Σ J_d(q)/q^{d+1} = ζ(d+1)/ζ(2d+1) · (Mertens-type partial sum), leading to the Jordan-Mertens theorem.",
+    "mathContext": "**Jordan's totient**: $J_d(q) = q^d \\prod_{p \\mid q}(1 - p^{-d})$. Properties: $J_1 = \\phi$ (Euler), $J_d$ is multiplicative, $J_d(q) \\leq q^d$. **Dirichlet series**: $\\sum_{q=1}^\\infty J_d(q) q^{-s} = \\zeta(s-d)/\\zeta(s)$ for $\\text{Re}(s) > d+1$. At $s = d+1$: the partial sums $\\sum_{q \\leq N} J_d(q)/q^{d+1} \\sim N/\\zeta(d+1)$ via partial summation.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's totient φ", "multiplicative arithmetic functions", "Dirichlet series for Jordan's totient", "primitive lattice vectors", "zeta function Dirichlet series"],
+    "prerequisites": ["Euler's totient function φ", "coprimality and primitive vectors", "multiplicative number theory", "Dirichlet series"]
+  },
+  {
+    "id": "ann-approximation",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 97, "endLine": 115 },
+    "type": "concept",
+    "title": "d-Dimensional Approximation Set: Simultaneous Diophantine Conditions",
+    "content": "`isApproximable_d d A q α` requires ∃p : Fin d → ℤ such that (1) max_i|α_i - p_i/q| < A/q^{1+1/d} and (2) ∃i, Nat.Coprime (p i).natAbs q (primitivity: at least one p_i is coprime to q). Note: the primitivity condition here is one-coordinate coprimality, not the full gcd(p₁,...,p_d,q) = 1 — this is a simplification in the formalization. `approximationSet_d` collects α ∈ (0,1)^d approximable by some primitive q ∈ [N,cN]. `S_d` measures this set using the product of d copies of the Lebesgue measure (Pi measure).",
+    "mathContext": "The **approximation box** for primitive $(p, q)$ is $\\{\\alpha : \\max_i |\\alpha_i - p_i/q| < A/q^{1+1/d}\\}$ — a $d$-dimensional cube of side $2A/q^{1+1/d}$ and volume $(2A/q^{1+1/d})^d = (2A)^d/q^{d+1}$. In the **EST regime** ($A < 1/(2(d+1))$), these boxes are disjoint for different $(p,q)$ pairs, enabling the volume sum $S_d \\approx \\sum_q J_d(q) \\cdot (2A)^d/q^{d+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["Diophantine approximation boxes", "primitive lattice vectors", "Lebesgue measure on [0,1]^d", "MeasureTheory.Measure.pi", "EST regime (disjoint boxes)"],
+    "prerequisites": ["Simultaneous Diophantine approximation", "Lebesgue measure theory", "primitive vectors and coprimality", "Mathlib MeasureTheory.Measure.pi"]
+  },
+  {
+    "id": "ann-formula",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 117, "endLine": 165 },
+    "type": "insight",
+    "title": "f_d = (2A)^d·log(c)/ζ(d+1): Structure and Algebraic Properties",
+    "content": "`f_d d A c = (2*A)^d * Real.log c / zetaAtSucc d`. All algebraic properties are proved without axioms: `f_d_one_is_est` verifies d=1 → 12A·log(c)/π² via `zetaAtSucc_one` (Basel) + `field_simp; ring`. `f_d_pos` uses `div_pos`, `mul_pos`, `pow_pos`, `Real.log_pos`. `f_d_scale_A` (scaling A → rA gives r^d factor) and `f_d_mono_c` (monotone in c via `Real.log_le_log`) are proved by `ring` or `mul_le_mul` tactics. `f_d_dimension_ratio`: f_{d+1}·ζ(d+2) = 2A·f_d·ζ(d+1) is the recurrence — proved by `field_simp; ring`, connecting consecutive dimensions.",
+    "mathContext": "**Formula structure**: $f_d(A,c) = \\underbrace{(2A)^d}_{\\text{box volume}} \\cdot \\underbrace{\\log c}_{\\text{denominator range}} / \\underbrace{\\zeta(d+1)}_{\\text{density of primitives}}$. The three factors have clean interpretations: $(2A)^d$ is the volume of each approximation box, $\\log c$ is the log-measure of the denominator interval $[N, cN]$, and $1/\\zeta(d+1)$ is the density of primitive vectors among all lattice points (since $\\#\\{q \\leq N : \\gcd = 1\\}/N \\to 1/\\zeta(d+1)$).",
+    "significance": "key",
+    "relatedConcepts": ["volume of approximation boxes", "density of primitive vectors = 1/ζ(d+1)", "Real.log_le_log monotonicity", "field_simp and ring tactics", "dimension recurrence"],
+    "prerequisites": ["zetaAtSucc axioms", "Real.log_pos and monotonicity", "Lean 4: ring tactic for algebraic identities"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 167, "endLine": 195 },
+    "type": "insight",
+    "title": "Jordan-Mertens and the Main Theorem: The Two Deepest Axioms",
+    "content": "`jordan_mertens d c`: Tendsto (ζ(d+1) · Σ_{q=N}^{cN} J_d(q)/q^{d+1}) atTop (nhds (log c)) — the d-dimensional Mertens-type theorem. The normalization by ζ(d+1) makes the limit log(c). For d=1: ζ(2) · Σ φ(q)/q² → log(c) (classical Mertens in disguise). The proof requires: (1) Dirichlet series identity Σ J_d(q)/q^s = ζ(s-d)/ζ(s), (2) partial summation to extract the log factor, (3) hyperbola method for the sum. `main_theorem_d` (hest : A < 1/(2(d+1))): Tendsto S_d(N,A,c) atTop (nhds (f_d A c)) — the full limit. Follows from jordan_mertens via volume counting in the EST regime.",
+    "mathContext": "**Jordan-Mertens theorem**: $\\zeta(d+1) \\cdot \\sum_{q=N}^{\\lfloor cN \\rfloor} J_d(q)/q^{d+1} \\to \\log c$ as $N \\to \\infty$. Analytic proof: $\\sum_{q \\leq N} J_d(q)/q^{d+1} \\sim N^0 \\cdot \\log N / \\zeta(d+1)$ by Abel summation on the Dirichlet series $\\sum_q J_d(q)/q^{d+1}$. The telescoping $\\sum_{N}^{cN} \\sim \\log c$ comes from the Mertens-type prime number theorem for arithmetic progressions.",
+    "significance": "key",
+    "relatedConcepts": ["Mertens' theorem", "Dirichlet series partial summation", "Abel summation formula", "Jordan-Mertens theorem", "EST regime disjointness"],
+    "prerequisites": ["Mertens' theorem in analytic number theory", "Dirichlet series for Jordan's totient", "partial summation technique", "Filter.Tendsto in Lean 4"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 196, "endLine": 227 },
+    "type": "concept",
+    "title": "Apéry's Constant, the Dimension Curse, and Numerical Verification",
+    "content": "Three corollaries complete the picture. `d2_formula`: f_2(A,c) = 4A²·log(c)/ζ(3) — for d=2, the approximability measure involves ζ(3) ≈ 1.202 (Apéry's constant, known to be irrational but not known to be transcendental). `f_d_dimension_decay`: for A < 1/2, f_d → 0 as d → ∞ — the 'dimension curse': (2A)^d → 0 exponentially since 2A < 1. `f_one_half_two`: f_1(1/2, 2) = 6·log(2)/π² ≈ 0.412 — a specific numerical value. `f_d_ratio_consecutive` restates the recurrence f_{d+1}·ζ(d+2) = 2A·f_d·ζ(d+1).",
+    "mathContext": "**Dimension curse**: $f_d(A,c) = (2A)^d \\cdot \\log c / \\zeta(d+1) \\to 0$ as $d \\to \\infty$ when $A < 1/2$, since $(2A)^d \\to 0$ and $\\zeta(d+1) \\to 1$. For $A > 1/2$: $(2A)^d \\to \\infty$, but the EST regime requires $A < 1/(2(d+1)) \\to 0$, so the formula only applies in a shrinking range. **Apéry's constant** $\\zeta(3) \\approx 1.20205...$: irrational (Apéry 1979), appears naturally in 2D approximation theory.",
+    "significance": "supporting",
+    "relatedConcepts": ["Apéry's constant ζ(3)", "dimension curse in approximation theory", "f_1(1/2,2) numerical example", "recurrence between consecutive dimensions", "irrationality of ζ(3)"],
+    "prerequisites": ["Apéry's constant and its properties", "exponential dimension decay", "Lean 4: norm_num for numerical computation"]
+  }
+]
