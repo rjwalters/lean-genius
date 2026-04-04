@@ -45,15 +45,16 @@
     "lineCount": 123
   },
   "overview": {
-    "historicalContext": "Mathlib's `Polynomial.Gal.prime_degree_dvd_card` (in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`) proves that for an irreducible polynomial of **prime** degree over a `CharZero` field, the degree divides the cardinality of its Galois group. However, inspecting the proof reveals that the primality hypothesis is only used to deduce `p.degree ≠ 0`, which also follows from `Irreducible.natDegree_pos`. This means the theorem holds for all irreducible polynomials, not just those of prime degree.",
+    "historicalContext": "The connection between polynomial degree and Galois group order is classical: for an irreducible polynomial p over F, the splitting field has degree [E:F] = |Gal(p)| (when the extension is Galois), and the tower law forces deg(p) | [E:F]. The special case for prime-degree polynomials is most relevant to constructibility: a real number is constructible iff its minimal polynomial over ℚ has degree a power of 2, which combines with the Galois divisibility result to rule out constructions like trisecting angles (minpoly has degree 3, not a power of 2). Mathlib's `prime_degree_dvd_card` was tailored to this use case. However, the proof works for any irreducible polynomial: primality is used only to establish p.degree ≠ 0, which follows directly from `Irreducible.natDegree_pos`. The generalization `natDegree_dvd_card_gal` drops the Prime hypothesis, making the theorem applicable to Galois theory beyond constructibility — including solvability by radicals (where degree-4 irreducibles appear), Frobenius elements in number fields, and density theorems (Chebotarev) about splitting behavior.",
     "problemStatement": "**Generalization:** For any irreducible polynomial $p$ over a `CharZero` field $F$, $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$.\n\n**Proof:** By the tower law $[E:F] = [E:F(\\alpha)] \\cdot [F(\\alpha):F]$ where $E$ is the splitting field and $\\alpha$ is any root. Since $[F(\\alpha):F] = \\deg(\\text{minpoly}(F, \\alpha)) = \\deg(p)$ (by irreducibility), the result follows.\n\n**Impact:** The existing `prime_degree_dvd_card` becomes a trivial corollary.",
     "text": "Generalizes Mathlib's prime_degree_dvd_card to all irreducible polynomials by observing the prime hypothesis is unused beyond deducing nonzero degree.",
     "proofStrategy": "The proof is identical to Mathlib's existing proof of prime_degree_dvd_card, except that we replace the use of Nat.Prime.ne_zero with Irreducible.natDegree_pos to establish p.degree ≠ 0. This single change drops the unnecessary hypothesis.",
     "keyInsights": [
-      "The Prime hypothesis in prime_degree_dvd_card is used only to establish p.degree ≠ 0, which follows directly from irreducibility",
-      "The generalization is essentially a one-line change to the existing Mathlib proof",
-      "Tower law gives natDegree(p) | [SplittingField : F] = |Gal(p)| for ALL irreducible polynomials",
-      "This is a common pattern in Mathlib: hypotheses that are stronger than needed due to the original proof strategy"
+      "**One substitution suffices**: Replacing `Nat.Prime.ne_zero` with `Irreducible.natDegree_pos.ne'` in the proof of `prime_degree_dvd_card` drops the Prime hypothesis with no other changes — the rest of the proof is identical.",
+      "**Fintype.card vs Nat.card bridge**: The gallery proof uses Nat.card p.Gal; Mathlib uses Fintype.card p.Gal. The two are equal via Fintype.card_eq_nat_card, making the corollary a one-line rw + exact.",
+      "**minpoly degree via dvd_symm**: The key step proving deg(minpoly(F,α)) = deg(p) uses Irreducible.dvd_symm: two irreducible polynomials that mutually divide each other must be associates (equal up to units), so equal degree. This avoids any prime-degree reasoning.",
+      "**Gallery as Mathlib staging**: This entry models the pattern of using the gallery to prototype Mathlib contributions — prove the generalization, show the original as a corollary, document the exact PR code and deprecation strategy.",
+      "**Application scope**: With the prime condition dropped, natDegree_dvd_card applies to: degree-4 irreducibles for solvability-by-radicals arguments; composite-degree extensions in Chebotarev density; any Galois correspondence theorem needing deg ∣ |Gal|."
     ],
     "prerequisites": [
       "Galois theory: splitting fields, Galois groups of polynomials, the fundamental theorem connecting |Gal| to the degree of the splitting field extension",
@@ -108,9 +109,10 @@
     "summary": "The generalized theorem natDegree_dvd_card is proved and ready for Mathlib contribution. It strictly generalizes the existing prime_degree_dvd_card by dropping the unnecessary Prime hypothesis. The contribution plan includes exact code changes and deprecation strategy.",
     "implications": "This contribution would simplify downstream proofs in Mathlib that currently need to establish primality just to use the divisibility result. Any application where natDegree divides |Gal| is needed (constructibility, solvability, Galois representations) benefits from the weaker hypothesis.",
     "openQuestions": [
-      "Does the theorem extend beyond CharZero? The separability hypothesis is key — in positive characteristic, inseparable polynomials may not satisfy this.",
-      "Can the Fintype.card be replaced with Nat.card throughout the Gal API in Mathlib?",
-      "Are there other theorems in Mathlib with similarly unnecessary hypotheses that could be generalized?"
+      "Does the theorem extend beyond CharZero? Separability is the key hypothesis — inseparable irreducibles in characteristic p have Gal group of smaller order than expected.",
+      "Can Fintype.card be replaced with Nat.card throughout the Gal API in Mathlib? Nat.card is more general (works for non-Fintype groups).",
+      "Are there other Mathlib theorems with unnecessarily strong prime-degree hypotheses? A systematic search through PolynomialGaloisGroup.lean and FieldTheory/ would be valuable.",
+      "Has this Mathlib PR been submitted? The contribution plan is complete; the gap is just aligning with the latest Mathlib API and running the CI pipeline."
     ]
   },
   "references": [
@@ -120,6 +122,20 @@
       "year": "2023",
       "venue": "Mathlib4, Mathlib/FieldTheory/PolynomialGaloisGroup.lean",
       "note": "The existing Mathlib theorem requiring prime degree, which this contribution generalizes"
+    },
+    {
+      "authors": "Lang, S.",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer Graduate Texts in Mathematics 211",
+      "note": "Chapter V covers field extensions and the tower law; Chapter VI covers Galois theory"
+    },
+    {
+      "authors": "Neukirch, J.",
+      "title": "Algebraic Number Theory",
+      "year": "1999",
+      "venue": "Springer Grundlehren 322",
+      "note": "Frobenius elements and Chebotarev density use the Galois group cardinality divisibility in the number field setting"
     }
   ]
 }
