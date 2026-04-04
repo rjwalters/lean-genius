@@ -36,7 +36,7 @@
     "assumptions": "0 axioms. 0 sorries."
   },
   "overview": {
-    "historicalContext": "Lawvere's 1969 paper formulated the fixed-point theorem in cartesian closed categories (CCCs). The key categorical data for the proof is a morphism e : A → B^A that is 'point-surjective' — every global element 1 → B^A factors through e. The diagonal argument then constructs a fixed point of any f : B → B. Formalizing this in Lean requires representing the morphism's action on global elements (Yoneda embedding level) as a function e_pt : Pt A → Pt (B^A).",
+    "historicalContext": "Lawvere's 1969 paper \"Diagonal arguments and cartesian closed categories\" formulated the fixed-point theorem in cartesian closed categories (CCCs), providing a single categorical framework that unifies Cantor's uncountability argument (1891), Gödel's incompleteness theorem (1931), Turing's halting problem (1936), and Russell's paradox. The key categorical data for the proof is a morphism e : A → B^A that is 'point-surjective' — every global element 1 → B^A factors through e. The diagonal argument then constructs a fixed point of any f : B → B. Formalizing this in Lean requires representing the morphism's action on global elements (Yoneda embedding level) as a function e_pt : Pt A → Pt (B^A), the missing parameter that had caused the categorical sorries in the parent formalization.",
     "problemStatement": "Close the 2 sorries in lawvere_categorical by explicitly constructing the EvalStructure induced by a CategoricalEval, connecting CategoricalEval.apply to EvalStructure.eval.",
     "proofStrategy": "The CategoricalEval structure has `apply : Pt (exp A B) → Pt A → Pt B` but was missing the morphism's action on points. Adding `e_pt : Pt A → Pt (exp A B)` as a parameter gives exactly the data needed to build EvalStructure with `eval a x = apply (e_pt a) x`. The categorical Lawvere FPT then reduces to lawvere_abstract in one line.",
     "keyInsights": [
@@ -59,7 +59,8 @@
       "Derive Rice's theorem as a Lawvere instance: Val = {halting behavior}, f = complement, yielding that no non-trivial semantic property of programs is decidable",
       "Formalize Gödel's incompleteness theorem as a Lawvere instance in Lean",
       "Formalize topos-level Cantor once Mathlib has a topos typeclass with subobject classifier Ω"
-    ]
+    ],
+    "implications": "The `EvalStructure` abstraction introduced here is a reusable Lean infrastructure component: any new diagonal impossibility result (e.g., Rice's theorem, Kleene's recursion theorem, or a computational version of Löb's theorem) can be formalized as an instance of `no_surjection_abstract` by choosing the appropriate `Val` type and fixed-point-free `f`. The parameter `e_pt : Pt A → Pt (exp A B)` pattern generalizes cleanly: in Lean's mathlib, `CategoryTheory.Functor.map` applied to a morphism gives exactly this action on morphisms from the terminal object, providing a bridge to a full categorical formalization once Mathlib's topos infrastructure (GrothendieckTopology, Subobject) is sufficiently mature."
   },
   "sections": [
     {

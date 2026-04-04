@@ -36,7 +36,7 @@
     "defCount": 3
   },
   "overview": {
-    "historicalContext": "Abdollahi, Akbari, and Maimani (2006) studied the non-commuting graph Γ(G) systematically. They classified groups with ω(Γ(G)) = 0 (abelian), ω = 1 (impossible), and ω = 2 (G/Z(G) ≅ ℤ/2 × ℤ/2). The case ω = 3 is more complex: it includes S₃, A₄, D₈, and various extensions. Neumann's 1976 theorem (finite index ↔ finite clique number) provides the backdrop.",
+    "historicalContext": "Abdollahi, Akbari, and Maimani (2006) studied the non-commuting graph $\\Gamma(G)$ systematically, classifying groups by clique number: $\\omega = 0$ iff $G$ abelian; $\\omega = 1$ is impossible (a single vertex has no edges); $\\omega = 2$ iff $G/Z(G) \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ (the 'AC-groups'). The case $\\omega = 3$ is more complex: it includes $S_3$, $A_4$, $D_8$ (dihedral order 8), and products $Z \\times S_3$ for abelian $Z$. The classification requires both establishing when a 3-clique is possible (index $\\geq 4$ is necessary) and showing that no 4-clique exists.\n\nNeumann's 1976 theorem provides the backdrop: $\\omega(\\Gamma(G)) < \\infty$ iff $[G:Z(G)] < \\infty$. This means finite clique number is exactly the condition for $G$ to be 'bounded' — the center has finite index. For the $\\omega = 3$ classification, the sharp result is: $\\omega = 3$ iff $[G:Z(G)] \\in \\{4, 5, 6\\}$ and $G/Z(G)$ is isomorphic to $\\mathbb{Z}/2 \\times \\mathbb{Z}/2 \\times \\mathbb{Z}/2$, $S_3$, $\\mathbb{Z}/5$, or $D_{10}$ (in appropriate cases).",
     "problemStatement": "Which groups G have ω(Γ(G)) = 3? That is, which groups have a maximum pairwise non-commuting set of size exactly 3?",
     "text": "Groups with ω(Γ(G)) = 3 are characterized by having 3 pairwise non-commuting elements but no 4 pairwise non-commuting elements. Necessary conditions include: [G:Z(G)] ≥ 4 (since 3 clique elements occupy distinct non-central cosets, plus the central coset itself), and G/Z(G) is non-abelian. S₃ is the prototypical example: its 3 transpositions form a 3-clique.",
     "proofStrategy": "For necessary conditions: (1) center elements cannot non-commute with anything, so they're excluded from cliques; (2) if two elements are in the same Z(G)-coset (g = h*z for z ∈ Z(G)), they commute (since g*h = h*z*h = h*h*z = h*g using centrality of z); (3) 3 elements in 3 distinct non-central cosets plus Z(G) itself gives ≥ 4 cosets.",
@@ -44,10 +44,19 @@
       "Coset separation: g and h non-commute → g ≠ h*z for any z ∈ Z(G) (they're in different cosets)",
       "The center coset Z(G) is distinct from the 3 non-central cosets, giving index ≥ 4",
       "S₃ achieves the minimum index: [S₃:Z(S₃)] = 6 > 4, with ω = 3",
-      "The classification extends: G = Z × S₃ (Z abelian) gives ω = 3 with larger index"
+      "The classification extends: G = Z × S₃ (Z abelian) gives ω = 3 with larger index",
+      "The coset separation argument is the algebraic core: $gh \\neq hg$ implies $g$ and $h$ lie in different $Z(G)$-cosets, because any $g = hz$ with $z \\in Z(G)$ would give $gh = hzh = h(hz) = h^2 z = hg$. In Lean, this is formalized as `nonCommuting_distinct_cosets` using `mul_assoc` and `Subgroup.mem_center_iff.mp`. The full proof of index $\\geq 4$ then follows by combining: (1) clique elements are non-central, (2) they're pairwise in distinct non-central cosets, (3) the central coset $Z(G)$ is a 4th distinct coset."
     ]
   },
   "sections": [
+    {
+      "id": "module-intro",
+      "title": "Module: ω = 3 Classification Framework",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring and definitions setup. Documents Abdollahi-Akbari-Maimani classification, nonCommuting/commuting/IsClique predicates, center-commutativity axiom.",
+      "mathContext": "Sets up the group-theoretic framework: G a group with Subgroup.center G, Finset G for finite sets, IsClique S = ∀ g h ∈ S, g ≠ h → nonCommuting g h."
+    },
     {
       "id": "definitions",
       "title": "Definitions",

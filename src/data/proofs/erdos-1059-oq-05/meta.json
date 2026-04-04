@@ -28,7 +28,7 @@
         "mathlib_version": "4.26.0"
     },
     "overview": {
-        "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes p satisfy p - k! being composite for every k with k! < p. The parent proof verified examples (101, 211) using manual factorial bound helpers and interval_cases. This open question generalizes that approach.",
+        "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes p satisfy the property that p − k! is composite for every k with k! < p. The problem reflects Erdős's lifelong interest in the distribution of primes and their gaps relative to factorials. Factorials grow extremely fast (n! ≥ 2^(n-1)), so the condition k! < p is satisfied by very few k: for p = 101, only k ≤ 4 (since 5! = 120 > 101). This sparsity makes the property non-trivial: out of these few subtractions, none should yield a prime.\n\nThe computational verification challenge is inherent to all such unbounded-quantifier properties: Lean's kernel cannot check 'for all k : ℕ' by inspection. The parent proof (Erdos1059Problem.lean) worked around this using hand-crafted `factorial_lt_bound` helpers and `interval_cases`, requiring ~10 lines per prime. OQ-05 eliminates this boilerplate by constructing a `Decidable` instance: once the quantifier is shown equivalent to a bounded form (using k ≤ k! from Mathlib), `native_decide` handles any specific prime in a single line.",
         "problemStatement": "Provide a general decision procedure for verifying AllFactorialSubtractionsComposite on any concrete natural number, eliminating per-prime boilerplate.",
         "text": "The key insight is that k ≤ k! for all k (Nat.self_le_factorial), so k! < n implies k < n. This bounds the universal quantifier to Finset.range n, making the proposition decidable. With the Decidable instance, verification of any concrete prime reduces to a single `by native_decide`.",
         "proofStrategy": "Prove AllFactorialSubtractionsComposite n is equivalent to a bounded quantifier over Finset.range n via factorial_lt_implies_lt, then derive a Decidable instance using decidable_of_iff. The bounded quantifier inherits decidability from Finset.decidableBAll and the decidability of Nat.Prime, Nat.lt, and Nat.le.",
@@ -36,7 +36,8 @@
             "k ≤ k! for all k (Nat.self_le_factorial), so k! < n forces k < n, bounding the quantifier",
             "The bounded quantifier over Finset.range n is automatically decidable since all components (factorial, primality, comparison) are decidable",
             "A single Decidable instance replaces all per-prime factorial_lt_bound helper lemmas",
-            "Both witnesses (101, 211) and non-witnesses (89, 223) are verified uniformly by native_decide"
+            "Both witnesses (101, 211) and non-witnesses (89, 223) are verified uniformly by native_decide",
+            "The `decidable_of_iff` pattern is the canonical Lean 4 technique for deriving decidability of non-obviously-decidable propositions: prove the proposition is logically equivalent to a decidable one, then use `decidable_of_iff`. Here the non-obvious proposition is the unbounded ∀ k : ℕ; the decidable equivalent is ∀ k ∈ Finset.range n. The equivalence proof is the mathematical work; `decidable_of_iff` does the rest mechanically."
         ],
         "prerequisites": [
             "Decidability in Lean 4 (Decidable typeclass, decidable_of_iff)",
@@ -45,6 +46,14 @@
         ]
     },
     "sections": [
+        {
+            "id": "module-header",
+            "title": "Module Docstring: Motivation and Approach",
+            "startLine": 1,
+            "endLine": 23,
+            "summary": "Explains the OQ: the parent proof needed per-prime helper lemmas; this file provides a Decidable instance so any prime is verified by native_decide. Key insight stated: k ≤ k! bounds the quantifier.",
+            "mathContext": "Sets up the problem: k! < n implies k < n (since k ≤ k!), making AllFactorialSubtractionsComposite n equivalent to a bounded ∀ k < n, decidable by kernel computation."
+        },
         {
             "id": "definition",
             "title": "Core Definition",

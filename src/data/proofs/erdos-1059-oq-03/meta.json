@@ -44,6 +44,14 @@
     },
     "sections": [
         {
+            "id": "module-header",
+            "title": "Module: Finding the Smallest Failing Prime after 211",
+            "startLine": 1,
+            "endLine": 18,
+            "summary": "Module docstring states the OQ: smallest prime > 211 failing AFSC is 223, via 223 - 4! = 199 prime. Imports Mathlib.Data.Nat.Prime.Basic and Factorial.Basic for decidable primality.",
+            "mathContext": "The proof strategy is stated in the header: since 223 is the next prime after 211, finding one counterexample (k=4) suffices to establish minimality without checking any intermediate primes individually."
+        },
+        {
             "id": "definition",
             "title": "AllFactorialSubtractionsComposite Definition",
             "startLine": 19,

@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "erdos-1059-oq-03",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "context",
+    "title": "Module Setup: OQ Statement and Proof Approach",
+    "content": "The module docstring encodes the complete proof strategy in three lines: (1) the answer is 223; (2) the witness is k=4 giving 223 - 24 = 199 prime; (3) minimality follows because 223 is the next prime after 211. This 'state the answer first' style is characteristic of computational proof files — when verification is by `decide`, the discovery of the answer happens outside Lean (by inspecting primes), and the Lean file just verifies it. The imports `Mathlib.Data.Nat.Prime.Basic` and `Mathlib.Data.Nat.Factorial.Basic` provide `Nat.Prime`, `Nat.factorial`, and their `Decidable` instances, enabling the `decide` tactic to verify primality by kernel computation.",
+    "mathContext": "The module states: $223 = $ next prime after $211$; $4! = 24$; $223 - 24 = 199 \\in \\mathbb{P}$. These three facts, taken together, prove $\\neg\\mathrm{AFSC}(223)$ and minimality simultaneously. The import structure: `Nat.Prime.Basic` provides `Nat.Prime.decidable` (used by `decide`); `Nat.Factorial.Basic` provides `Nat.factorial` and its value computations.",
+    "significance": "supporting",
+    "relatedConcepts": ["module docstring", "decide tactic setup", "Nat.Prime.decidable", "Nat.factorial", "proof strategy in header"],
+    "prerequisites": ["Lean 4 module structure", "Mathlib imports", "Nat.Prime.Basic module"]
+  },
+  {
     "id": "ann-afsc-definition",
     "proofId": "erdos-1059-oq-03",
     "range": { "startLine": 21, "endLine": 22 },

@@ -36,10 +36,19 @@
       "**FermatEquation over CommRing**: Defining `FermatEquation` over an arbitrary `CommRing K` captures the algebraic structure correctly — the equation makes sense over any ring. This generality also admits 'trivial' solutions involving zero-divisors or nilpotents, which is why the `x ≠ 0 ∧ y ≠ 0 ∧ z ≠ 0` nontriviality condition is essential.",
       "**The modularity obstruction**: Wiles's proof over ℚ relies on the Modularity Theorem (elliptic curves over ℚ are modular). Over a general number field K, 'modularity' requires K to be totally real (or have specific properties) and the Shimura variety theory to extend. Over fields with complex places, the analogous statement (automorphic forms on GL(2)/K) is not yet tractable with current techniques.",
       "**Asymptotic FLT as a Lean concept**: `AsymptoticFLT K` packages the 'eventual' failure of solutions in a clean ∃ B, ∀ p > B structure. This is the natural statement for number fields where small exponents may have solutions (e.g., n=1 always has solutions). The proof over ℚ uses B=2, the smallest possible (since n=2 has Pythagorean triples).",
-      "**Units and roots of unity**: In rings with nontrivial n-th roots of unity ζ_n, the equation has 'unit solutions' like ζ_n^n = 1. The standard FLT statement excludes z = 0 but allows solutions where xyz ≠ 0. Over number rings like ℤ[ζ_n] or rings of integers with many units, excluding unit solutions requires an additional hypothesis."
+      "**Units and roots of unity**: In rings with nontrivial n-th roots of unity ζ_n, the equation has 'unit solutions' like ζ_n^n = 1. The standard FLT statement excludes z = 0 but allows solutions where xyz ≠ 0. Over number rings like ℤ[ζ_n] or rings of integers with many units, excluding unit solutions requires an additional hypothesis.",
+      "**CommRing generalization reveals field dependence**: Defining `FermatEquation` over an arbitrary `CommRing K` makes the field-dependence explicit in Lean's type system. Over ℤ/6ℤ there are solutions for any n (zero divisors allow it); over ℚ Wiles rules them out; over ℚ(√d) the answer depends on the arithmetic of d. The single definition captures all cases, letting the type `K` carry the arithmetic content."
     ]
   },
   "sections": [
+    {
+      "id": "module-header",
+      "title": "Module: FLT over Number Fields — Setup",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring explaining the OQ: what happens to x^n+y^n=z^n over number fields beyond ℚ? References Jarvis-Meekin (2004) and Freitas-Hung-Siksek (2015). Opens FermatsLastTheoremOQ03 namespace.",
+      "mathContext": "Sets the research context: over ℚ Wiles (1995) rules out solutions for n≥3; over ℚ(√d) the answer depends on modularity of elliptic curves, which is open for most number fields."
+    },
     {
       "id": "sec-definition",
       "title": "FermatEquation over CommRing",
