@@ -23,15 +23,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Pierre Wantzel proved in 1837 that a geometric construction problem is solvable by compass and straightedge if and only if it reduces to solving polynomial equations whose Galois groups are 2-groups. This gives a precise algebraic characterization of constructibility that refines the older degree criterion (where the degree must be a power of 2) into an exact 'if and only if' condition.",
+    "historicalContext": "The impossibility of trisecting an arbitrary angle by compass and straightedge was suspected since antiquity but not proved until Pierre Wantzel's 1837 paper 'Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la Règle et le Compas.' Wantzel showed that constructible numbers are exactly those reachable from $\\mathbb{Q}$ by a tower of quadratic extensions, immediately proving that trisecting a 60° angle is impossible (the solution requires degree 3) and duplicating the cube is impossible (the cube root of 2 has degree 3). The precise Galois-theoretic characterization — constructibility is equivalent to having a 2-group Galois group — emerged from the fusion of Wantzel's work with Galois theory. Galois died in 1832; his group-theoretic manuscripts were published posthumously in 1846, providing the language needed to state the criterion exactly. The three-level hierarchy (degree criterion necessary, Galois 2-group criterion necessary and sufficient, tower criterion equivalent to Galois) represents the complete algebraic understanding of classical geometric constructibility.",
     "problemStatement": "Can the hierarchy of constructibility criteria — degree criterion, Galois 2-group criterion, and tower criterion — be formalized end-to-end in Lean 4?",
     "text": "Defines the three-level hierarchy and proves implications between them. The degree criterion is necessary but not sufficient, the Galois 2-group criterion is both necessary and sufficient, and the tower criterion is equivalent to the Galois criterion.",
     "proofStrategy": "Define all three criteria as Lean propositions, prove the implication chain using Mathlib's group theory (IsPGroup.isSolvable, IsPGroup.to_subgroup), and show degree tower multiplicativity.",
     "keyInsights": [
-      "The three criteria form a strict hierarchy: Tower ↔ Galois → Degree",
-      "2-groups are solvable (IsPGroup.isSolvable), which is the key to Tower ↔ Galois",
-      "The degree criterion is strictly weaker: S₄ Galois group gives degree 4 = 2² but S₄ is not a 2-group",
-      "Subgroup preservation ensures the hierarchy is stable under passing to subfields"
+      "The three criteria form a strict hierarchy: Tower ↔ Galois → Degree, where the last arrow is strict (degree criterion does not imply Galois criterion)",
+      "2-groups are solvable (IsPGroup.isSolvable), which is the key lemma connecting the Galois criterion to the tower criterion via the Galois correspondence",
+      "The degree criterion is strictly weaker: a root of an irreducible quartic with Galois group S₄ has degree 4 = 2² (satisfying the degree criterion) but S₄ is not a 2-group (|S₄| = 24 = 2³·3, failing the Galois criterion)",
+      "Subgroup preservation (IsPGroup.to_subgroup) ensures the 2-group property is inherited by subgroups, making the hierarchy stable when passing to subfields",
+      "The TowerCriterion is defined here as definitionally equal to DegreeCriterion — a deliberate simplification that makes implications trivial but defers the deep content (each tower step is quadratic) to a fuller formalization requiring ~500 lines of Galois correspondence glue"
     ],
     "prerequisites": [
       "Group theory (p-groups, solvability)",
@@ -64,18 +65,25 @@
     {
       "id": "degree-properties",
       "title": "Degree Properties",
-      "startLine": 117,
-      "endLine": 140,
-      "summary": "Tower degree multiplicativity and base cases for the tower construction."
+      "startLine": 113,
+      "endLine": 128,
+      "summary": "Tower degree multiplicativity (2^n · 2^m = 2^(n+m) via pow_add) and base cases: trivial extension (2^0 = 1), single quadratic step (2^1 = 2), and k-step tower (2^k = 2^k)."
+    },
+    {
+      "id": "hierarchy-diagram",
+      "title": "Hierarchy Diagram and Formalization Status",
+      "startLine": 130,
+      "endLine": 163,
+      "summary": "ASCII diagram of the constructibility hierarchy, honest accounting of what has been formalized vs. what requires Galois correspondence infrastructure, and #check lines verifying that the required Mathlib API points are available."
     }
   ],
   "conclusion": {
     "summary": "The hierarchy of constructibility criteria CAN be formalized in Lean 4. The definitions, basic implications, and supporting group theory are all in place. The main gap is the Tower ↔ Galois equivalence, which requires connecting Mathlib's Galois correspondence to the constructibility definitions.",
     "implications": "A complete end-to-end formalization would provide a fully machine-checked proof of Wantzel's theorem, one of the most elegant applications of Galois theory to classical geometry.",
     "openQuestions": [
-      "RESOLVED: Tower ↔ Galois equivalence formalized in AngleTrisectionOQ02OQ04OQ01.lean with proper inductive QuadraticTower definition; feasibility analysis shows ~500-800 lines of API glue needed for full proof",
-      "Can the S₄ counterexample (degree criterion but not Galois criterion) be made explicit?",
-      "Can origami and neusis constructions (Level 4+) be added to the hierarchy?"
+      "Can the Tower ↔ Galois equivalence be fully formalized with a proper inductive QuadraticTower definition (requiring each step to have degree exactly 2)? The companion file AngleTrisectionOQ02OQ04OQ01.lean attempts this, but the full proof requires ~500-800 lines of Galois correspondence glue.",
+      "Can the S₄ counterexample (a root of an irreducible quartic satisfying the degree criterion but not the Galois criterion) be made explicit with a Lean-verified computation of the Galois group?",
+      "Can origami constructions (marked ruler/neusis), which allow angle trisection and solving cubics, be added to the hierarchy as a Level 4 criterion corresponding to solvable but non-2-power Galois groups?"
     ]
   },
   "leanFile": {
