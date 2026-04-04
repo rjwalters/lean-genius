@@ -63,15 +63,17 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Johann Faulhaber (1580–1635) discovered closed-form formulas for sums of powers up to k=17 without knowing the general pattern. Jacob Bernoulli (1654–1705) later identified the sequence of rational numbers now bearing his name, which provide the coefficients in the general formula. The unified formula ∑_{i=0}^{n-1} i^k = (1/(k+1)) ∑_{j=0}^{k} C(k+1,j) B_j n^{k+1-j} subsumes all specific cases.",
+    "historicalContext": "Johann Faulhaber (1580–1635) was a German mathematician who computed closed-form formulas for sums of powers up to k=17 through laborious computation, publishing them in 'Academia Algebrae' (1631). He observed that ∑ i^k is always a polynomial in n of degree k+1, but did not know the general pattern. Jacob Bernoulli (1654–1705) identified the rational sequence B₀, B₁, B₂, ... (now called Bernoulli numbers) while studying sums of powers in 'Ars Conjectandi' (published posthumously 1713). Bernoulli wrote of summing the first 1000 tenth powers in 'less than half a quarter of an hour' using his formula. The unified formula ∑_{i<n} i^k = (1/(k+1)) ∑_{j=0}^{k} C(k+1,j) B_j n^{k+1-j} subsumes all specific cases. Nicomachus of Gerasa (c. 100 CE) had already observed the case k=3: the sum of cubes equals the square of the sum of first powers (∑ i³ = (∑ i)²). The Bernoulli numbers arise naturally as the coefficients in the Taylor expansion of t/(e^t-1) = ∑ B_k t^k/k!, connecting power sums to generating functions and the Riemann zeta function (ζ(-k) = -B_{k+1}/(k+1)). In Mathlib, the unified formula appears as Finset.sum_range_pow, proved via Bernoulli polynomial theory.",
     "problemStatement": "$$\\sum_{i=0}^{n-1} i^k = \\frac{1}{k+1} \\sum_{j=0}^{k} \\binom{k+1}{j} B_j \\cdot n^{k+1-j}$$",
     "text": "A 183-line formalization demonstrating that Mathlib's sum_range_pow theorem provides the unified Faulhaber formula, from which all specific power sum formulas (k=1..5) follow by pure computation: substitute Bernoulli values, reduce binomial coefficients, and close with ring.",
     "proofStrategy": "For each k, apply sum_range_pow to get a hypothesis h expressing the sum as a Bernoulli sum. Unfold the finite j-sum via simp, substitute known Bernoulli values (B₀=1, B₁=-1/2, B₂=1/6, B₃=0, B₄=-1/30, B₅=0), reduce binomial coefficients explicitly, normalize with norm_num, then close with rw [h]; ring.",
     "keyInsights": [
-      "sum_range_pow is Mathlib's built-in unified Faulhaber formula — no need to reprove it",
-      "B₃ = B₅ = 0 (odd Bernoulli numbers vanish for index > 1), simplifying the k=3,4,5 cases",
-      "Explicit binomial coefficient reduction is needed before norm_num for k ≥ 3",
-      "The five specific formulas are pure ring computations from the unified identity"
+      "Finset.sum_range_pow is the entire file in one line: the unified Faulhaber formula is already in Mathlib as a theorem, so every specific formula (k=1..5) is just `sum_range_pow n k` plus computation",
+      "B₃ = B₅ = 0 (odd Bernoulli numbers vanish for index > 1, by bernoulli_eq_zero_of_odd) — these zero terms make k=3,4,5 significantly simpler than they would be otherwise",
+      "The proof pattern is fixed for all k: apply unified formula, simp unfold range sum, substitute Bernoulli values via hB2/hB3/hB4/hB5, binomial coefficients via show rfl, norm_num, ring",
+      "Explicit binomial coefficient reduction (show Nat.choose m j = c from rfl) is needed for k ≥ 3 because Mathlib's simp does not automatically reduce these numerical choose expressions before norm_num",
+      "Nicomachus' theorem (k=3: ∑ i³ = (∑ i)²) emerges naturally: n²(n-1)²/4 = (n(n-1)/2)²",
+      "Numerical verification examples (k=2,3,4,5 at n=4) provide ground-truth checks independent of the symbolic formula, using sum_range_succ + norm_num to unfold and evaluate concretely"
     ]
   },
   "sections": [
