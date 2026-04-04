@@ -360,7 +360,89 @@ private lemma sidon_counting_contradiction (C : ℝ) (N₀ : ℕ) :
     (Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4)) *
     ((Real.sqrt (2 * N) + C * (2 * ↑N : ℝ) ^ ((1 : ℝ) / 4)) + 1) / 2 <
     2 * (N : ℝ) - N₀ := by
-  sorry
+  -- Step 1: Choose M > 8|C| + 2C² + |C| + N₀ + 2 and M ≥ 2
+  obtain ⟨M₀, hM₀⟩ := exists_nat_gt (8 * |C| + 2 * C ^ 2 + |C| + (N₀ : ℝ) + 2)
+  -- Use free variable M (not set/let) so that push_cast works on ↑(8*M^4)
+  obtain ⟨M, hM_ge_M₀, hM_ge2⟩ : ∃ M : ℕ, M₀ ≤ M ∧ 2 ≤ M :=
+    ⟨max M₀ 2, le_max_left _ _, le_max_right _ _⟩
+  have hM_pos : (0 : ℝ) < (M : ℝ) := by exact_mod_cast (show 0 < M by omega)
+  have hM_arch : 8 * |C| + 2 * C ^ 2 + |C| + (N₀ : ℝ) + 2 < (M : ℝ) :=
+    calc 8 * |C| + 2 * C ^ 2 + |C| + (N₀ : ℝ) + 2 < (M₀ : ℝ) := hM₀
+      _ ≤ (M : ℝ) := by exact_mod_cast hM_ge_M₀
+  have h8C : 8 * |C| < (M : ℝ) := by linarith [abs_nonneg C, sq_nonneg C]
+  have h2C2 : 2 * C ^ 2 < (M : ℝ) := by linarith [abs_nonneg C]
+  have h_absC : |C| < (M : ℝ) := by linarith [abs_nonneg C, sq_nonneg C]
+  have hN₀R : (N₀ : ℝ) < (M : ℝ) := by linarith [abs_nonneg C, sq_nonneg C]
+  -- Step 2: Use N = 8*M^4. Then √(2N) = 4M² and (2N)^(1/4) = 2M.
+  use 8 * M ^ 4
+  refine ⟨?_, ?_⟩
+  · -- 8*M^4 ≥ N₀: N₀ < M ≤ M^4 ≤ 8*M^4
+    have hN₀_nat : N₀ < M := by exact_mod_cast hN₀R
+    have hM_le_M4 : M ≤ M ^ 4 :=
+      calc M = M ^ 1 := (pow_one M).symm
+        _ ≤ M ^ 4 := Nat.pow_le_pow_right (by omega) (by norm_num)
+    omega
+  · -- Prove the counting inequality using polynomial bounds
+    have hM3_pos : (0 : ℝ) < (M : ℝ) ^ 3 := by positivity
+    have hM2_pos : (0 : ℝ) < (M : ℝ) ^ 2 := by positivity
+    have hM4_pos : (0 : ℝ) < (M : ℝ) ^ 4 := by positivity
+    -- Cast: ((8*M^4:ℕ):ℝ) = 8*(M:ℝ)^4.
+    -- Use ((x:ℕ):ℝ) notation (not ↑(x:ℝ)) to avoid type elaboration issues.
+    have hcast : ((8 * M ^ 4 : ℕ) : ℝ) = 8 * (M : ℝ) ^ 4 :=
+      calc ((8 * M ^ 4 : ℕ) : ℝ)
+          = (8 : ℝ) * ((M ^ 4 : ℕ) : ℝ) := Nat.cast_mul 8 (M ^ 4)
+        _ = 8 * (M : ℝ) ^ 4 := by rw [Nat.cast_pow]
+    -- √(2N) = 4M²: since (4M²)² = 16M⁴ = 2·8M⁴
+    have h_sqrt : Real.sqrt (2 * ((8 * M ^ 4 : ℕ) : ℝ)) = 4 * (M : ℝ) ^ 2 := by
+      have heq : (2 : ℝ) * ((8 * M ^ 4 : ℕ) : ℝ) = (4 * (M : ℝ) ^ 2) ^ 2 := by
+        rw [hcast]; ring
+      rw [heq]; exact Real.sqrt_sq (by positivity)
+    -- (2N)^(1/4) = 2M: since (2M)⁴ = 16M⁴ = 2·8M⁴
+    have h_rpow : ((2 : ℝ) * ((8 * M ^ 4 : ℕ) : ℝ)) ^ ((1 : ℝ) / 4) = 2 * (M : ℝ) := by
+      have hform : (2 : ℝ) * ((8 * M ^ 4 : ℕ) : ℝ) = (2 * (M : ℝ)) ^ 4 := by
+        rw [hcast]; ring
+      rw [hform, ← Real.rpow_natCast (2 * (M : ℝ)) 4,
+          ← Real.rpow_mul (by positivity : (0 : ℝ) ≤ 2 * (M : ℝ))]
+      have h4 : ((4 : ℕ) : ℝ) * (1 / 4 : ℝ) = 1 := by norm_num
+      rw [h4, Real.rpow_one]
+    simp only [h_sqrt, h_rpow]
+    -- Convert RHS: 2·↑(8·M^4) = 16·M^4
+    have hrhs : (2 : ℝ) * ((8 * M ^ 4 : ℕ) : ℝ) = 16 * (M : ℝ) ^ 4 := by
+      rw [hcast]; ring
+    -- Bound 1: 16·|C|·M³ < 2·M⁴ (from 8|C| < M, multiply by 2M³)
+    have hb1 : 16 * |C| * (M : ℝ) ^ 3 < 2 * (M : ℝ) ^ 4 := by
+      nlinarith [mul_lt_mul_of_pos_right h8C hM3_pos]
+    -- Bound 2: 4·C²·M² < 2·M⁴ (from 2C² < M, M ≥ 1 → M ≤ M², then M^3 ≤ M^4)
+    have hb2 : 4 * C ^ 2 * (M : ℝ) ^ 2 < 2 * (M : ℝ) ^ 4 := by
+      have hM1 : (1 : ℝ) ≤ (M : ℝ) := by exact_mod_cast (show 1 ≤ M by omega)
+      have hMle : (M : ℝ) ≤ (M : ℝ) ^ 2 :=
+        by nlinarith [mul_nonneg hM_pos.le (show (0 : ℝ) ≤ (M : ℝ) - 1 from by linarith)]
+      nlinarith [mul_lt_mul_of_pos_right h2C2 hM2_pos,
+                 mul_le_mul_of_nonneg_right hMle hM2_pos.le]
+    -- Bound 3: 4·M² < 2·M⁴ (from M ≥ 2)
+    have hb3 : 4 * (M : ℝ) ^ 2 < 2 * (M : ℝ) ^ 4 := by
+      have h : (2 : ℝ) ≤ (M : ℝ) := by exact_mod_cast hM_ge2
+      nlinarith [sq_nonneg (M : ℝ)]
+    -- Bound 4: 2·|C|·M < 2·M⁴ (from |C| < M)
+    have hb4 : 2 * |C| * (M : ℝ) < 2 * (M : ℝ) ^ 4 := by
+      nlinarith [mul_lt_mul_of_pos_right h_absC hM_pos]
+    -- Bound 5: N₀ < 2·M⁴
+    have hb5 : (N₀ : ℝ) < 2 * (M : ℝ) ^ 4 := by nlinarith
+    -- The key inequality (with |C| in place of C)
+    have h_ineq : 16 * (M : ℝ) ^ 4 - 16 * |C| * (M : ℝ) ^ 3 - 4 * C ^ 2 * (M : ℝ) ^ 2 -
+                  4 * (M : ℝ) ^ 2 - 2 * |C| * (M : ℝ) - 2 * (N₀ : ℝ) > 0 := by linarith
+    -- Transfer: C ≤ |C| implies C·M^3 ≤ |C|·M^3
+    have hCM3 : 16 * C * (M : ℝ) ^ 3 ≤ 16 * |C| * (M : ℝ) ^ 3 :=
+      mul_le_mul_of_nonneg_right (by linarith [le_abs_self C]) (by positivity)
+    have hCM : 2 * C * (M : ℝ) ≤ 2 * |C| * (M : ℝ) :=
+      mul_le_mul_of_nonneg_right (by linarith [le_abs_self C]) hM_pos.le
+    -- Expand the product and conclude
+    have expand : (4 * (M : ℝ) ^ 2 + C * (2 * (M : ℝ))) *
+                  (4 * (M : ℝ) ^ 2 + C * (2 * (M : ℝ)) + 1) / 2 =
+                  8 * (M : ℝ) ^ 4 + 8 * C * (M : ℝ) ^ 3 + 2 * C ^ 2 * (M : ℝ) ^ 2 +
+                  2 * (M : ℝ) ^ 2 + C * (M : ℝ) := by ring
+    rw [expand]
+    linarith
 
 /-- No Sidon set can be an asymptotic basis of order 2.
 
