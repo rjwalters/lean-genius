@@ -1,0 +1,155 @@
+[
+  {
+    "id": "ann-mink-context",
+    "proofId": "cauchy-schwarz-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Minkowski's Inequality: Triangle Inequality for Lp Norms",
+    "content": "This file answers the open question from `CauchySchwarzOQ03.lean`: **can Minkowski's inequality be derived from Hölder?** YES — the proof applies Hölder twice: write $\\sum(f+g)^p = \\sum(f+g)^{p-1} \\cdot f + \\sum(f+g)^{p-1} \\cdot g$, apply Hölder to each sum with $h_i = (f+g)^{p-1}$, factor out $(\\sum(f+g)^p)^{1/q}$, then divide.",
+    "mathContext": "The **proof chain** in these files: Young ($ab \\leq a^p/p + b^q/q$) → Hölder ($\\sum fg \\leq \\|f\\|_p \\|g\\|_q$) → Cauchy-Schwarz ($p=q=2$) → Minkowski ($\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$) → $L^p$ is Banach. **Minkowski** (1896): proved while developing the geometry of numbers. **Riesz** (1910): systematized the Hölder-Minkowski duality — Hölder bounds pairings, Minkowski bounds norms; together they make $L^p$ a normed space whose dual is $L^q$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Minkowski's inequality",
+      "Hölder's inequality",
+      "Lp spaces",
+      "triangle inequality",
+      "Young's inequality chain"
+    ],
+    "prerequisites": [
+      "CauchySchwarzOQ03.lean Hölder formalization",
+      "NNReal arithmetic and rpow",
+      "Lp norm definition"
+    ]
+  },
+  {
+    "id": "ann-mink-p1",
+    "proofId": "cauchy-schwarz-oq-03-oq-02",
+    "range": { "startLine": 49, "endLine": 60 },
+    "type": "theorem",
+    "title": "Minkowski at p = 1: Linearity and Triangle Inequality",
+    "content": "**minkowski_p1_nnreal**: For NNReal, $\\sum_i (f_i + g_i) = \\sum_i f_i + \\sum_i g_i$ — one line: `Finset.sum_add_distrib`. **minkowski_p1_real**: For signed reals, $\\sum_i |f_i + g_i| \\leq \\sum_i |f_i| + \\sum_i |g_i|$ — by pointwise `abs_add` summed via `Finset.sum_le_sum`, then `sum_add_distrib`.",
+    "mathContext": "The $p=1$ Minkowski inequality is the **classical triangle inequality for sums**. For NNReal it holds with equality (there are no negative values, so $|f+g| = f+g$). For signed reals, the triangle inequality $|a+b| \\leq |a| + |b|$ is applied pointwise. The `calc` proof: $\\sum |f_i + g_i| \\leq \\sum (|f_i| + |g_i|) = \\sum |f_i| + \\sum |g_i|$. `Finset.sum_le_sum` lifts pointwise inequalities to sum inequalities; `Finset.sum_add_distrib` splits sums over additions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum_add_distrib",
+      "Finset.sum_le_sum",
+      "abs_add triangle inequality",
+      "NNReal equality vs real inequality"
+    ],
+    "prerequisites": [
+      "Finset.sum_add_distrib from Mathlib",
+      "abs_add : |a + b| ≤ |a| + |b|",
+      "Finset.sum_le_sum for pointwise lifting"
+    ]
+  },
+  {
+    "id": "ann-mink-nnreal-general",
+    "proofId": "cauchy-schwarz-oq-03-oq-02",
+    "range": { "startLine": 80, "endLine": 84 },
+    "type": "theorem",
+    "title": "minkowski_nnreal: General Minkowski via Mathlib",
+    "content": "**minkowski_nnreal**: For $p \\geq 1$ and NNReal $f, g$: $(\\sum_i (f_i+g_i)^p)^{1/p} \\leq (\\sum_i f_i^p)^{1/p} + (\\sum_i g_i^p)^{1/p}$. One-line proof: `NNReal.Lp_add_le hp f g s`. This is the core Minkowski inequality — the entire file's purpose is to derive this and its corollaries.",
+    "mathContext": "`NNReal.Lp_add_le` is Mathlib's Minkowski inequality for finite sums of NNReal values. Internally it proves Minkowski from Hölder: (1) expand $(f+g)^p = (f+g)^{p-1} \\cdot (f+g)$; (2) bound by $(f+g)^{p-1} \\cdot f + (f+g)^{p-1} \\cdot g$; (3) apply Hölder to each with exponents $p, q = p/(p-1)$; (4) note $(p-1) \\cdot q = p$ and cancel $(\\sum(f+g)^p)^{1/q}$. The exponent $1/q = (p-1)/p$, so $1 - 1/q = 1/p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "NNReal.Lp_add_le",
+      "Hölder-to-Minkowski classical proof",
+      "conjugate exponents 1/p + 1/q = 1",
+      "NNReal.inner_le_Lp_mul_Lq (Hölder)",
+      "NNReal.rpow for power functions"
+    ],
+    "prerequisites": [
+      "NNReal.Lp_add_le from Mathlib.Analysis.MeanInequalities",
+      "conjugate exponents hp : 1 ≤ p",
+      "NNReal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-mink-real",
+    "proofId": "cauchy-schwarz-oq-03-oq-02",
+    "range": { "startLine": 98, "endLine": 119 },
+    "type": "theorem",
+    "title": "Minkowski for Signed Reals via NNReal Lift",
+    "content": "**lp_sum_mono**: Monotonicity of Lp sums: if $h_i \\leq k_i$ pointwise then $(\\sum h_i^p)^{1/p} \\leq (\\sum k_i^p)^{1/p}$ for $p > 0$. Proved via `NNReal.rpow_le_rpow` and `Finset.sum_le_sum`. **minkowski_real**: For signed reals, $(\\sum \\|f_i+g_i\\|_{\\text{nn}}^p)^{1/p} \\leq (\\sum \\|f_i\\|_{\\text{nn}}^p)^{1/p} + (\\sum \\|g_i\\|_{\\text{nn}}^p)^{1/p}$. Proof via `calc`: use `lp_sum_mono` with `nnnorm_add_le` to bound $\\|f+g\\|_{\\text{nn}} \\leq \\|f\\|_{\\text{nn}} + \\|g\\|_{\\text{nn}}$, then apply NNReal Minkowski.",
+    "mathContext": "The **NNReal lift technique**: for signed reals, use `‖·‖₊` (nnnorm = non-negative norm) instead of `|·|`. The pointwise triangle inequality `nnnorm_add_le f g : ‖f + g‖₊ ≤ ‖f‖₊ + ‖g‖₊` reduces to the NNReal case. The `calc` chain: $(\\sum \\|f+g\\|^p)^{1/p} \\leq (\\sum (\\|f\\|+\\|g\\|)^p)^{1/p}$ (by monotonicity + nnnorm triangle) $\\leq (\\sum \\|f\\|^p)^{1/p} + (\\sum \\|g\\|^p)^{1/p}$ (by NNReal Minkowski).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nnnorm and ‖·‖₊ (NNReal norm)",
+      "nnnorm_add_le triangle inequality",
+      "NNReal.rpow_le_rpow monotonicity",
+      "calc chain proof structure",
+      "NNReal lift from ℝ"
+    ],
+    "prerequisites": [
+      "minkowski_nnreal for NNReal case",
+      "nnnorm_add_le from Mathlib",
+      "NNReal.rpow_le_rpow for monotonicity"
+    ]
+  },
+  {
+    "id": "ann-mink-inner-product",
+    "proofId": "cauchy-schwarz-oq-03-oq-02",
+    "range": { "startLine": 156, "endLine": 169 },
+    "type": "theorem",
+    "title": "Inner Product Space Triangle Inequality and Norm-Squared Bound",
+    "content": "**minkowski_inner_product**: In any normed add comm group with inner product, $\\|u+v\\| \\leq \\|u\\| + \\|v\\|$ — one line: `norm_add_le u v`. **norm_add_sq_le**: $\\|u+v\\|^2 \\leq (\\|u\\|+\\|v\\|)^2$. Proof: just `nlinarith` from `minkowski_inner_product` and nonnegativity.",
+    "mathContext": "In **inner product spaces**, the triangle inequality is an immediate consequence of Cauchy-Schwarz: expand $\\|u+v\\|^2 = \\langle u+v, u+v \\rangle = \\|u\\|^2 + 2\\langle u,v \\rangle + \\|v\\|^2 \\leq \\|u\\|^2 + 2\\|u\\|\\|v\\| + \\|v\\|^2 = (\\|u\\|+\\|v\\|)^2$ (using CS). Mathlib bundles this into `norm_add_le`, so the proof is a one-liner. `norm_add_sq_le` is then obtained via `nlinarith` from the linear bound and nonnegativity — squaring both sides. The class requirements `[NormedAddCommGroup E] [InnerProductSpace ℝ E]` provide the abstract algebraic framework.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_add_le in NormedAddCommGroup",
+      "InnerProductSpace ℝ E",
+      "nlinarith for polynomial arithmetic",
+      "norm_nonneg",
+      "Cauchy-Schwarz → triangle inequality"
+    ],
+    "prerequisites": [
+      "NormedAddCommGroup and InnerProductSpace typeclasses",
+      "norm_add_le from Mathlib",
+      "nlinarith for nonlinear arithmetic"
+    ]
+  },
+  {
+    "id": "ann-mink-lp-integral",
+    "proofId": "cauchy-schwarz-oq-03-oq-02",
+    "range": { "startLine": 186, "endLine": 194 },
+    "type": "theorem",
+    "title": "Integral Minkowski: Lp and L2 Triangle Inequalities",
+    "content": "**minkowski_lp**: For Lp spaces ($p \\geq 1$), $\\|f+g\\|_{L^p} \\leq \\|f\\|_{L^p} + \\|g\\|_{L^p}$ — one line: `norm_add_le f g`. This holds because Mathlib's `Lp` type is a `NormedAddCommGroup`, so the triangle inequality is built in. **minkowski_l2**: Special case for $L^2(\\mu)$ — same proof.",
+    "mathContext": "Mathlib constructs `Lp ℝ p μ` as a `NormedAddCommGroup` for $p \\geq 1$ (this requires the `[Fact (1 ≤ p)]` instance). The `norm_add_le` triangle inequality is then inherited from the group structure — Minkowski is **absorbed into the typeclass hierarchy**. This is a key design choice in Mathlib: rather than proving Minkowski as a separate theorem for integrals, it's a consequence of building `Lp` as a proper normed space. The `MeasureTheory.Lp` type uses `MeasureTheory.snorm` internally to define the norm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lp ℝ p μ as NormedAddCommGroup",
+      "Fact (1 ≤ p) typeclass instance",
+      "MeasureTheory.snorm for Lp norm",
+      "Riesz-Fischer theorem for completeness",
+      "Mathlib typeclass design"
+    ],
+    "prerequisites": [
+      "MeasureTheory.Lp type from Mathlib",
+      "Fact (1 ≤ p) for p ≥ 1 hypothesis",
+      "norm_add_le for NormedAddCommGroup"
+    ]
+  },
+  {
+    "id": "ann-mink-duality",
+    "proofId": "cauchy-schwarz-oq-03-oq-02",
+    "range": { "startLine": 215, "endLine": 224 },
+    "type": "theorem",
+    "title": "Hölder-Minkowski Duality: Combined Statement",
+    "content": "**holder_minkowski_chain**: For $p \\geq 1$ with conjugate $q$ (so $1/p + 1/q = 1$): simultaneously (1) Hölder: $\\sum f_i g_i \\leq (\\sum f_i^p)^{1/p} (\\sum g_i^q)^{1/q}$ (via `NNReal.inner_le_Lp_mul_Lq`), and (2) Minkowski: $(\\sum(f_i+g_i)^p)^{1/p} \\leq (\\sum f_i^p)^{1/p} + (\\sum g_i^p)^{1/p}$ (via `NNReal.Lp_add_le`). Both in one `⟨..., ...⟩` pair.",
+    "mathContext": "**Hölder-Minkowski duality**: Hölder says the $L^q$ norm bounds the $L^p$ functional ($\\langle \\cdot, g \\rangle_{L^p}$), while Minkowski says $L^p$ is closed under addition (triangle inequality). Together: $L^p$ is a normed space with dual $L^q$. `Real.HolderConjugate q p` is the Mathlib predicate encoding $1/p + 1/q = 1$. The combined statement serves as a pedagogical summary: the entire Young-Hölder-Minkowski chain in a single theorem asserting the two fundamental inequalities for conjugate exponents.",
+    "significance": "key",
+    "relatedConcepts": [
+      "NNReal.inner_le_Lp_mul_Lq (Hölder)",
+      "NNReal.Lp_add_le (Minkowski)",
+      "Real.HolderConjugate",
+      "Lp-Lq duality",
+      "Young-Hölder-Minkowski chain"
+    ],
+    "prerequisites": [
+      "NNReal.inner_le_Lp_mul_Lq for Hölder",
+      "NNReal.Lp_add_le for Minkowski",
+      "Real.HolderConjugate predicate"
+    ]
+  }
+]
