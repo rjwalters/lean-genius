@@ -25,36 +25,91 @@
     ]
   },
   "overview": {
-    "historicalContext": "Lagrange's theorem (1771) states that the order of any subgroup divides the group order. The converse — does every divisor of |G| arise as a subgroup order? — is false in general (A₄ has order 12 but no subgroup of order 6). Sylow's theorems (1872) provide the sharpest known partial converse: every prime power divisor of |G| arises.",
+    "historicalContext": "Joseph-Louis Lagrange (1736–1813) stated the result now bearing his name in his 1771 work on permutation groups, though a fully rigorous proof in modern terms required the formal development of group theory in the 19th century. Lagrange did not have the concept of a group — he worked with permutations and noticed that the number of values a rational function can take under permutation always divides n!. The modern group-theoretic statement was formalized by Galois, Cayley, and others.\n\nAugustin-Louis Cauchy (1789–1857) proved in 1845 that if a prime p divides |G|, then G contains an element of order p. This was one of the earliest results showing that the group order constrains subgroup structure. The proof is elementary but clever: consider ordered p-tuples (g₁, ..., gₚ) with g₁·...·gₚ = 1, and count orbits under cyclic rotation.\n\nPeter Ludwig Mejdell Sylow (1832–1918), a Norwegian high-school teacher who was denied a university position despite being one of the most important algebraists of his era, proved his three theorems in 1872 in a landmark paper in Mathematische Annalen. Sylow's theorems are often considered the deepest and most useful results in finite group theory — they completely determine the p-structure of any finite group and are the starting point for the classification of finite groups.\n\nThe gap between Lagrange (any divisor → subgroup?) and Sylow (prime power divisor → subgroup!) is illustrated by the alternating group A₄ of order 12: it has no subgroup of order 6 (= 12/2), even though 6 divides 12. This was the canonical counterexample that motivated the search for a partial converse.\n\nThe Sylow theorems played a central role in the 20th-century classification of finite simple groups (the 'Enormous Theorem'), completed in the 1980s after decades of work by hundreds of mathematicians. The Feit-Thompson theorem (1963), proved in a 255-page paper, used Sylow theory to show that every group of odd order is solvable — a crucial step in the classification.",
     "problemStatement": "Formally state and prove all three Sylow theorems: (I) existence of Sylow p-subgroups, (II) all Sylow p-subgroups are conjugate, (III) the count n_p satisfies n_p ≡ 1 mod p and n_p | [G:P]. Also prove the partial converse to Lagrange (p^k | |G| implies a subgroup of order p^k) and Cauchy's theorem.",
     "proofStrategy": "All results are extracted from Mathlib's group theory library. Sylow existence uses Sylow.nonempty; conjugacy uses Sylow.conj_eq; counting uses Sylow.card_sylow_dvd_index and Sylow.card_sylow_modEq_one. The partial converse uses Sylow.exists_subgroup_card_pow_prime. Cauchy's theorem uses exists_prime_orderOf_dvd_card.",
     "keyInsights": [
-      "A₄ (order 12) has no subgroup of order 6, showing the converse to Lagrange fails for composite divisors",
-      "Sylow p-subgroups are maximal p-subgroups: |P| = p^(v_p(|G|)) where v_p is the p-adic valuation",
-      "Conjugacy of Sylow subgroups (Theorem II) implies uniqueness when n_p = 1, giving a normal Sylow subgroup",
-      "Cauchy's theorem (p prime, p | |G| implies element of order p) is a corollary of Sylow existence"
+      "A₄ (order 12) has no subgroup of order 6, showing the converse to Lagrange fails for composite divisors — subgroups of prime power order always exist (Sylow I), but subgroups of composite order can fail to exist",
+      "Sylow p-subgroups are maximal p-subgroups: |P| = p^k where p^k is the exact p-power in |G| (so |P| = p^(vₚ(|G|))). The `sylow_card_eq` theorem formalizes this via Sylow.card_eq_multiplicity and the p-adic valuation `Nat.factorization`",
+      "Conjugacy of Sylow subgroups (Theorem II) implies uniqueness when n_p = 1: if there is only one Sylow p-subgroup P, then P is normal (every conjugate of P is P itself). Conversely, n_p = 1 iff the unique Sylow p-subgroup is normal",
+      "Cauchy's theorem (p prime, p | |G| implies element of order p) is a corollary of Sylow existence: take any Sylow p-subgroup P, which has order p^k ≥ p; pick any generator g of the cyclic subgroup of order p within P",
+      "The counting theorem n_p ≡ 1 (mod p) tightly constrains n_p when combined with n_p | [G:P]: for example, in a group of order pq (p < q primes), n_p ≡ 1 (mod p) and n_p | q forces n_p = 1 (if p ∤ q-1) or n_p = q. This is the core of the classification of groups of order pq"
     ],
     "prerequisites": [
       "Mathlib.GroupTheory.Sylow",
       "Subgroup.card_subgroup_dvd_card (Lagrange)",
-      "Fintype.card_perm and group order calculations"
+      "Fintype.card_perm and group order calculations",
+      "Sylow typeclass in Mathlib (Sylow p G is the type of Sylow p-subgroups)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports, Namespace, and Variables",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Imports all of Mathlib. Opens Subgroup and Fintype for concise notation. Namespace LagrangeOQ01. Variable declarations: G is a finite group (uses the Fintype instance). File header explains the structure: Lagrange's theorem, three Sylow theorems, partial converse, and Cauchy"
+    },
+    {
+      "id": "lagrange-core",
+      "title": "Part I: Lagrange's Theorem and Index Formula",
+      "startLine": 33,
+      "endLine": 44,
+      "summary": "Proves three results from Mathlib: lagrange (|H| | |G| via H.card_subgroup_dvd_card), lagrange_index (|G| = |H| · [G:H] via Subgroup.card_mul_index), and order_dvd_card (|g| | |G| via orderOf_dvd_card). Each proof is a one-line delegation to Mathlib"
+    },
+    {
+      "id": "sylow-existence",
+      "title": "Part II: First Sylow Theorem (Existence)",
+      "startLine": 55,
+      "endLine": 67,
+      "summary": "Proves sylow_exists (Nonempty (Sylow p G) from Sylow.nonempty), sylow_card_eq (|P| = p^vₚ(|G|) via Sylow.card_eq_multiplicity and Nat.factorization), and sylow_order_dvd (|P| | |G| as special case of Lagrange). The Sylow type in Mathlib encodes p-maximality"
+    },
+    {
+      "id": "sylow-conjugacy",
+      "title": "Part III: Second Sylow Theorem (Conjugacy)",
+      "startLine": 77,
+      "endLine": 82,
+      "summary": "Proves sylow_conjugate: for any two Sylow p-subgroups P and Q, ∃ g ∈ G such that gPg⁻¹ = Q. Uses Sylow.conj_eq to get g, then unfolds the conjugation action via MulAut.conj_apply and aesop for the membership argument. The proof requires an ext step since subgroup equality is extensional"
+    },
+    {
+      "id": "sylow-counting",
+      "title": "Part IV: Third Sylow Theorem (Counting)",
+      "startLine": 93,
+      "endLine": 101,
+      "summary": "Proves sylow_count_dvd_index: n_p = card(Sylow p G) divides [G:P] via Sylow.card_sylow_dvd_index. Proves sylow_count_mod_p: n_p % p = 1 via Sylow.card_sylow_modEq_one. The Nat.ModEq.out extraction from the modular arithmetic type is the only nontrivial step"
+    },
+    {
+      "id": "sylow-applications",
+      "title": "Part V: Partial Converse to Lagrange and Cauchy's Theorem",
+      "startLine": 111,
+      "endLine": 125,
+      "summary": "Proves partial_converse_lagrange: p^k | |G| implies ∃ H : Subgroup G with |H| = p^k, via Sylow.exists_subgroup_card_pow_prime. Proves cauchy_theorem: p prime, p | |G| implies ∃ g with orderOf g = p, via exists_prime_orderOf_dvd_card. Both are one-line delegations to Mathlib"
+    }
+  ],
   "conclusion": {
     "summary": "This file proves 11 theorems with 0 sorries and 0 axioms, all sourced from Mathlib, covering Lagrange's theorem, all three Sylow theorems, and Cauchy's theorem, within the namespace LagrangeOQ01.",
-    "implications": "The Sylow theorems are among the most important results in finite group theory, enabling the classification of groups of small order and underpinning the structure theory of finite groups. Having them formally verified and contextualized relative to Lagrange's theorem completes the classical picture.",
+    "implications": "The Sylow theorems are among the most important results in finite group theory, enabling the classification of groups of small order and underpinning the structure theory of finite groups. Having them formally verified and contextualized relative to Lagrange's theorem completes the classical picture. Mathlib's implementation represents decades of development: the proof of the third Sylow theorem (n_p ≡ 1 mod p) uses the orbit-counting lemma (Burnside's lemma) applied to the action of P on the set of Sylow p-subgroups by conjugation — all formalized in `Mathlib.GroupTheory.Sylow`.",
     "openQuestions": [
-      "Formalize the application: use Sylow theory to classify groups of order pq (p < q primes)",
-      "Prove that A₄ has no subgroup of order 6 (the standard counterexample to the converse of Lagrange)",
-      "Formalize Hall's theorem: for solvable groups, subgroups exist for all Hall numbers (gcd(d, |G|/d) = 1)"
+      "Formalize the application: use Sylow theory to classify groups of order pq (p < q primes) — the argument shows n_p = 1 or n_p = q, and n_q = 1 always, giving a semidirect product structure",
+      "Prove that A₄ has no subgroup of order 6 (the standard counterexample to the converse of Lagrange) — the proof uses the fact that any subgroup of index 2 is normal and A₄ is simple within its quotient structure",
+      "Formalize Hall's theorem: for solvable groups G, for every d dividing |G| with gcd(d, |G|/d) = 1, G has a subgroup of order d (a Hall subgroup) — this is the sharpest known generalization of Lagrange's partial converse"
     ]
   },
   "crossReferences": [
     {
       "slug": "lagrange-theorem",
       "relationship": "extends",
-      "description": "Parent file proving Lagrange's theorem on subgroup order dividing group order"
+      "description": "Parent file proving Lagrange's theorem on subgroup order dividing group order; this entry proves the Sylow partial converse"
+    },
+    {
+      "slug": "burnside-lemma",
+      "relationship": "related",
+      "description": "Burnside's lemma (orbit-counting) is used in the proof of the Third Sylow Theorem: the action of a Sylow p-subgroup on the set of Sylow p-subgroups by conjugation has exactly one fixed point, giving n_p ≡ 1 mod p"
+    },
+    {
+      "slug": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Both Cauchy's theorem (in group theory) and Cauchy-Schwarz (in analysis) are named for Augustin-Louis Cauchy; the group theory Cauchy theorem here follows from Sylow existence"
     }
   ],
   "leanFile": {
