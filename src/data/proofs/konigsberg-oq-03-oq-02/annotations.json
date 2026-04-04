@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-infinite-graph",
+    "proofId": "konigsberg-oq-03-oq-02",
+    "range": { "startLine": 36, "endLine": 43 },
+    "type": "definition",
+    "title": "InfiniteGraph Structure",
+    "content": "Defines an abstract infinite graph as a triple: a binary adjacency predicate `adj`, a symmetry proof, and a looplessness proof. This is deliberately self-contained—it reproduces rather than imports `KonigsbergOQ03.InfiniteGraph` to avoid a transitive dependency that has pre-existing compilation issues. The parametric `V : Type*` allows the vertex type to be any Lean type, making this applicable to both countable and uncountable graphs.",
+    "mathContext": "An infinite graph $G = (V, \\sim)$ where $\\sim$ is an irreflexive symmetric relation. Unlike finite graphs, no finiteness hypothesis is imposed on $V$. The looplessness condition $\\neg(v \\sim v)$ together with symmetry $u \\sim v \\Rightarrow v \\sim u$ gives a simple graph.",
+    "significance": "key",
+    "relatedConcepts": ["simple graph", "undirected graph", "SimpleGraph in Mathlib"],
+    "prerequisites": ["graph theory basics", "Lean 4 structures", "Prop-valued relations"]
+  },
+  {
+    "id": "ann-infinite-walk",
+    "proofId": "konigsberg-oq-03-oq-02",
+    "range": { "startLine": 47, "endLine": 55 },
+    "type": "definition",
+    "title": "InfiniteWalk: ℕ-Indexed Formalization",
+    "content": "The central design choice: represent an infinite walk as a dependent pair `(vertex : ℕ → V, step_adj : ∀ n, G.adj (vertex n) (vertex (n+1)))`. The field `step_adj` is a universally quantified proof—not a Prop but a function producing proofs—ensuring that for every natural number `n`, the consecutive pair is adjacent. This is the key to avoiding codata: `ℕ → V` is a total function type, not a lazy stream.",
+    "mathContext": "A one-way infinite walk $w = (v_0, v_1, v_2, \\ldots)$ in graph $G$ satisfies $v_n \\sim v_{n+1}$ for all $n \\in \\mathbb{N}$. In Lean 4, this is encoded as a structure with `vertex : ℕ → V` and `step_adj : ∀ n, G.adj (vertex n) (vertex (n+1))`.",
+    "significance": "key",
+    "relatedConcepts": ["coinductive types", "Stream' in Lean 4", "SimpleGraph.Walk", "infinite sequences"],
+    "prerequisites": ["dependent types", "Lean 4 structures", "graph walks"]
+  },
+  {
+    "id": "ann-same-edge",
+    "proofId": "konigsberg-oq-03-oq-02",
+    "range": { "startLine": 64, "endLine": 68 },
+    "type": "definition",
+    "title": "sameEdge: Undirected Edge Equality Without Sym2",
+    "content": "Since the graph is undirected, step `m` and step `n` traverse the same edge if they share the same two endpoints—in either orientation. This is a logical disjunction: forward traversal match OR reverse traversal match. Notably, this avoids `Sym2` (Mathlib's symmetric product type for unordered pairs), which would require `DecidableEq` or more typeclass machinery. The direct boolean disjunction on vertex equalities is clean and computable.",
+    "mathContext": "Steps $m$ and $n$ traverse the same undirected edge $\\{u,v\\}$ iff $(v_m = v_n \\wedge v_{m+1} = v_{n+1}) \\vee (v_m = v_{n+1} \\wedge v_{m+1} = v_n)$. This captures both orientations of the same undirected edge without using $\\text{Sym}^2(V)$.",
+    "significance": "key",
+    "relatedConcepts": ["Sym2 in Mathlib", "unordered pairs", "edge traversal direction", "SimpleGraph.edgeSet"],
+    "prerequisites": ["undirected graphs", "propositional logic in Lean 4"]
+  },
+  {
+    "id": "ann-euler-conditions",
+    "proofId": "konigsberg-oq-03-oq-02",
+    "range": { "startLine": 72, "endLine": 97 },
+    "type": "definition",
+    "title": "Euler Walk: Covers × Injective Decomposition",
+    "content": "The Euler walk condition is split into two independent predicates. `IsEdgeInjective` says no two distinct steps share an edge (at most once). `CoversEdge` says every adjacent pair is traversed at least once. `IsEulerWalk` is their conjunction. This decomposition is mathematically elegant: `∃! n, ...` (unique existence) would require decidability of vertex equality in many contexts, while the conjunction of `∀ u v, adj u v → CoversEdge` and `IsEdgeInjective` is purely classical. `HasOneWayInfiniteEulerPath` packages this as a single existential over walks.",
+    "mathContext": "A walk $w$ is an Euler walk iff: (1) $\\forall u,v.\\, u \\sim v \\Rightarrow w.\\text{CoversEdge}(u,v)$ (surjective on edges) and (2) $\\forall m \\neq n.\\, \\neg w.\\text{sameEdge}(m,n)$ (injective on edges). This avoids the awkward $\\exists!$ encoding: $\\text{Euler} = \\text{surjective} \\wedge \\text{injective}$.",
+    "significance": "key",
+    "relatedConcepts": ["Eulerian path", "Erdős-Grünwald-Weiszfeld theorem", "bijection onto edge set", "unique existence in type theory"],
+    "prerequisites": ["Euler paths in graph theory", "injectivity and surjectivity", "existential quantifiers in Lean 4"]
+  },
+  {
+    "id": "ann-bi-infinite",
+    "proofId": "konigsberg-oq-03-oq-02",
+    "range": { "startLine": 101, "endLine": 119 },
+    "type": "definition",
+    "title": "BiInfiniteWalk: ℤ-Indexed for Two-Ended Paths",
+    "content": "Mirrors `InfiniteWalk` but indexes by `ℤ` instead of `ℕ`. A bi-infinite walk extends infinitely in both directions: `vertex : ℤ → V` with `step_adj : ∀ n : ℤ, G.adj (vertex n) (vertex (n+1))`. Some formulations of the Erdős-Grünwald-Weiszfeld theorem apply to graphs with 0 odd-degree vertices, where the Euler path must extend in both directions. `IsBiInfiniteEulerWalk` inlines the injectivity condition rather than calling `IsEdgeInjective`, since the latter was defined for `InfiniteWalk` over `ℕ`.",
+    "mathContext": "A bi-infinite walk is a sequence $\\ldots, v_{-2}, v_{-1}, v_0, v_1, v_2, \\ldots$ indexed by $\\mathbb{Z}$ with $v_n \\sim v_{n+1}$ for all $n \\in \\mathbb{Z}$. The Erdős-Grünwald-Weiszfeld theorem characterizes: a connected locally finite countable graph has a bi-infinite Euler path iff every vertex has even degree.",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdős-Grünwald-Weiszfeld theorem", "two-way infinite paths", "ℤ-indexed sequences in Lean 4"],
+    "prerequisites": ["integer indexing in Lean 4", "bi-infinite sequences", "Euler path characterization"]
+  },
+  {
+    "id": "ann-basic-properties",
+    "proofId": "konigsberg-oq-03-oq-02",
+    "range": { "startLine": 123, "endLine": 142 },
+    "type": "technique",
+    "title": "Basic Walk Properties and Projection Lemmas",
+    "content": "Four small theorems establish foundational properties. `step_is_adj` is a definitional unfolding tautology—it exists to provide a named lemma for downstream use. `step_ne` is more interesting: it proves endpoints of each step are distinct using `G.loopless` and function composition (`h ▸ w.step_adj n`). The `covers` and `injective` projections extract components of an `IsEulerWalk` hypothesis, giving clean named accessors for proof automation.",
+    "mathContext": "From looplessness: if $v_n \\sim v_{n+1}$, then $v_n \\neq v_{n+1}$ (since $\\neg(v \\sim v)$). In Lean 4: `fun h => G.loopless (w.vertex n) (h ▸ w.step_adj n)` substitutes `h : vertex n = vertex (n+1)` into `step_adj n : G.adj (vertex n) (vertex (n+1))` to derive `G.adj (vertex n) (vertex n)`, contradicting looplessness.",
+    "significance": "technical",
+    "relatedConcepts": ["loopless graphs", "rewriting in Lean 4", "projection functions"],
+    "prerequisites": ["Lean 4 term-mode proofs", "▸ rewrite tactic", "structure field access"]
+  },
+  {
+    "id": "ann-of-stream",
+    "proofId": "konigsberg-oq-03-oq-02",
+    "range": { "startLine": 144, "endLine": 149 },
+    "type": "insight",
+    "title": "ofStream: Equivalence with Coinductive Formulation",
+    "content": "The `ofStream` constructor proves that the codata (stream-based) approach and the ℕ-indexed approach are definitionally equivalent. Given a `Stream' V` (Lean 4's coinductive stream type) and an adjacency hypothesis `h : ∀ n, G.adj (s n) (s (n+1))`, we construct an `InfiniteWalk G` by using `s` directly as the `vertex` field (since `Stream' V = ℕ → V` definitionally in Lean 4). This is a one-line construction because `Stream'` is *defined* as `ℕ → V`—no coercion needed.",
+    "mathContext": "In Lean 4, `Stream' V` is defined as `def Stream' (α : Type u) := ℕ → α`. Therefore `s : Stream' V` and `s : ℕ → V` are definitionally equal, and `ofStream` is the identity at the type level. The `vertex := s` assignment requires no coercion. This confirms: the ℕ-indexed formulation is not an approximation of streams but literally the same definition.",
+    "significance": "key",
+    "relatedConcepts": ["Stream' in Mathlib", "coinduction vs. ordinary induction", "definitional equality in Lean 4", "codata"],
+    "prerequisites": ["Lean 4 coinductive types", "Stream' definition", "definitional equality"]
+  }
+]
