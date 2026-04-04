@@ -132,6 +132,60 @@
       "Gödel's incompleteness as a Lawvere instance (OQ-03): extend the framework to formal proof systems where Val = formal sentences and the 'fixed-point' endomorphism is negation of provability, giving the diagonal lemma and Gödel's theorems"
     ]
   },
+  "sections": [
+    {
+      "id": "eval-structure-framework",
+      "title": "Part I: Evaluation Structure and Lawvere Fixed-Point Theorem",
+      "startLine": 52,
+      "endLine": 75,
+      "summary": "Defines EvalStructure (programs, values, eval), IsPointSurjective (universal representation property), and proves lawvere_fpt: point-surjectivity forces every endomorphism to have a fixed point.",
+      "mathContext": "An evaluation structure $E = (A, V, \\text{eval})$ is point-surjective if $\\forall g: A \\to V, \\exists a_0, \\forall x, \\text{eval}(a_0, x) = g(x)$. The Lawvere fixed-point theorem: if $E$ is point-surjective, every $f: V \\to V$ has a fixed point. Proof: choose $a_0$ representing $x \\mapsto f(\\text{eval}(x,x))$; then $f(\\text{eval}(a_0, a_0)) = \\text{eval}(a_0, a_0)$."
+    },
+    {
+      "id": "abstract-rice",
+      "title": "Part II: Abstract Rice Theorem — Bool Lawvere",
+      "startLine": 76,
+      "endLine": 121,
+      "summary": "abstract_rice: no Bool eval is point-surjective (Bool.not has no fixed point). rice_induced_obstruction: any decision function d applied to a point-surjective structure is still not point-surjective over Bool. rice_undecidable_witness: for any decision procedure, an undecidable Bool function exists.",
+      "mathContext": "Since $\\lnot : \\text{Bool} \\to \\text{Bool}$ has no fixed point ($\\lnot \\text{false} \\neq \\text{false}$, $\\lnot \\text{true} \\neq \\text{true}$), no Bool eval structure can be point-surjective by Lawvere. Any $d: V \\to \\text{Bool}$ converts a $V$-structure to a Bool-structure, which is also non-point-surjective: always $\\exists f: A \\to \\text{Bool}$ that no code can decide."
+    },
+    {
+      "id": "semantic-properties",
+      "title": "Part III: Semantic Properties and Flip Programs",
+      "startLine": 122,
+      "endLine": 165,
+      "summary": "Defines SemanticProperty (P respects extensional equality) and HasFlipProgram (program transformer that inverts P). semantic_rice_flip proves: if P is semantic and has a flip program with same semantics but opposite property value, contradiction follows directly without needing Lawvere.",
+      "mathContext": "$P$ is semantic if $\\forall a, b: \\text{eval}(a,x) = \\text{eval}(b,x)$ for all $x$ implies $P(a) = P(b)$. A flip $f$ satisfies $\\text{eval}(f(a),x) = \\text{eval}(a,x)$ (same semantics) and $P(f(a)) \\neq P(a)$ (opposite property). Semantic-respecting gives $P(f(a)) = P(a)$ by the extensionality condition, contradicting the flip property."
+    },
+    {
+      "id": "halting-problem",
+      "title": "Part IV: The Halting Problem as a Rice Instance",
+      "startLine": 166,
+      "endLine": 189,
+      "summary": "HaltingModel structure packages programs, halts predicate, evaluate function, and a universal field asserting every Bool function of programs is computable. no_halting_model proves this structure cannot exist — its universal field is exactly point-surjectivity of the halting eval structure.",
+      "mathContext": "A `HaltingModel` with a `universal` field asserts: $\\forall f: \\text{Prog} \\to \\text{Bool}, \\exists e, \\forall x, \\text{halts}(e,x) = f(x)$. This is point-surjectivity of $(\\text{Prog}, \\text{Bool}, \\text{halts})$. By `abstract_rice`, this is impossible. The proof is one line: `abstract_rice M.Prog M.halts M.universal`."
+    },
+    {
+      "id": "classical-rice",
+      "title": "Part V: Classical Rice Theorem via Kleene Recursion",
+      "startLine": 190,
+      "endLine": 262,
+      "summary": "ClassicalRiceModel axiomatizes programs, behaviors, semantics, compile (behavior → code), and Kleene's recursion theorem. classical_rice_abstract proves: any semantic, non-trivial P : Code → Bool leads to contradiction via the flipper function and Kleene's fixed point.",
+      "mathContext": "Define flipper $f(e) = e_0$ if $P(e) = \\text{true}$, else $e_1$. Kleene gives $e^*$ with $\\text{semantics}(f(e^*)) = \\text{semantics}(e^*)$. Semantic-respecting: $P(e^*) = P(f(e^*))$. But by definition $f$ always flips $P$: $P(f(e^*)) \\neq P(e^*)$. Contradiction. The flipper is the Lawvere endomorphism in disguise: it maps $\\text{true} \\mapsto \\text{false}$ and $\\text{false} \\mapsto \\text{true}$ via $e_0, e_1$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Directly extends OQ-01 (Lawvere fixed-point theorem) by applying Bool.not as the endomorphism to derive Rice's theorem. The EvalStructure and lawvere_fpt definitions are re-used from the parent."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03",
+      "relationship": "extends",
+      "description": "Ancestor: the diagonal argument chain Cantor (Prop, negation) → Rice (Bool, not) → Gödel (sentences, provability negation). This file is the second link in the chain."
+    }
+  ],
   "leanFile": {
     "namespace": "CantorDiagonalizationOQ03OQ01OQ02",
     "lineCount": 275,
