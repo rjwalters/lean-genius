@@ -83,7 +83,6 @@
     {
       "id": "least-prime-definition",
       "title": "Part I: The Least Prime in an AP",
-      "content": "The function `leastPrimeInAP a q` is defined via `Nat.find` applied to the existence of a prime p ≡ a (mod q). The two sorry holes supply the existence witness, which requires Dirichlet's theorem (the parent entry). Once proved, `leastPrimeInAP a q` is noncomputable but well-defined: it returns the smallest natural number that is prime and congruent to a modulo q.",
       "startLine": 28,
       "endLine": 40,
       "summary": "leastPrimeInAP via Nat.find (2 sorries requiring Dirichlet theorem); linnik_theorem axiom giving p(a,q) ≤ c·q^L."
@@ -91,34 +90,52 @@
     {
       "id": "linnik-constant-definition",
       "title": "Part II: The Linnik Constant as sInf",
-      "content": "The `admissibleExponents` set collects all L > 0 for which some c > 0 makes Linnik's bound hold. The `linnikConstant` is defined as `sInf admissibleExponents`. By `linnik_theorem` (axiom), this set is nonempty, so the infimum is the genuine best possible exponent. The range 1 ≤ L* ≤ 5 is established: the upper bound from `xylouris_bound`, the lower bound via a sorry.",
       "startLine": 42,
       "endLine": 64,
-      "summary": "admissibleExponents set, linnikConstant = sInf, admissible_nonempty (from linnik_theorem), linnikConstant_pos (sorry)."
+      "summary": "admissibleExponents set, linnikConstant = sInf, admissible_nonempty (from linnik_theorem), linnikConstant_pos (sorry for lower bound ≥ 1)."
     },
     {
       "id": "monotonicity-derivation",
       "title": "Part III: Historical Bounds and Monotonicity",
-      "content": "The proof of `heathBrown_bound` (L ≤ 5.5) shows: if L = 5 is admissible then L = 5.5 is too, since q^5 ≤ q^{5.5} for q ≥ 1. This uses `Real.rpow_le_rpow` and `mul_le_mul_of_nonneg_left`. More generally, admissible exponents form a right-closed ray [L*, ∞) — the infimum L* is the only interesting value.",
       "startLine": 66,
       "endLine": 87,
-      "summary": "xylouris_bound axiom (5 ∈ admissibleExponents); heathBrown_bound by rpow monotonicity; linnikConstant_le_5 via csInf_le."
+      "summary": "xylouris_bound axiom (5 ∈ admissibleExponents); heathBrown_bound by rpow monotonicity (q^5 ≤ q^{5.5}); linnikConstant_le_5 via csInf_le."
     },
     {
       "id": "optimal-conjecture-proof",
       "title": "Part IV: GRH Conditional and Optimal Conjecture",
-      "content": "The most interesting proved theorem is `optimal_implies_le_one`. Assume `optimalLinnikConjecture`: every 1+ε is admissible. If L* > 1, set δ = (L*-1)/2 > 0. Then 1+δ = (L*+1)/2 < L* is admissible by hypothesis. But `csInf_le` applied to xylouris_bound (which gives a lower bound on the set) yields L* ≤ 1+δ < L*, a contradiction. This is a clean example of using the infimum characterization in Lean.",
       "startLine": 89,
       "endLine": 123,
-      "summary": "GRHImpliesSmallLinnik, optimalLinnikConjecture as Prop definitions; optimal_implies_le_one proved by csInf contradiction."
+      "summary": "GRHImpliesSmallLinnik, optimalLinnikConjecture as Prop definitions; optimal_implies_le_one proved by csInf contradiction (δ = (L*-1)/2)."
     },
     {
       "id": "open-question",
       "title": "Part V: The Open Question L* = 1",
-      "content": "The `openQuestion` is defined as `linnikConstant = 1`. This is equivalent to: for every ε > 0, there exist p(a,q) ≤ c·q^{1+ε} for all coprime (a,q). The current unconditional best is L* ≤ 5 (Xylouris 2011). Under GRH, L* ≤ 2+ε. The full conjecture L* = 1 is believed to follow from a suitable form of the Generalized Riemann Hypothesis combined with zero-free region estimates for Dirichlet L-functions.",
       "startLine": 125,
       "endLine": 139,
-      "summary": "openQuestion : Prop := linnikConstant = 1. Followed by #check verification of all main definitions."
+      "summary": "openQuestion : Prop := linnikConstant = 1. #check verification of all main definitions."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "extends",
+      "description": "Parent: Dirichlet's theorem (infinitely many primes in AP) — the existence result this file extends to the quantitative Linnik bound"
+    },
+    {
+      "targetId": "dirichlets-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "OQ-02 of Dirichlet's theorem; this OQ-03 explores the Linnik constant quantifying the least prime in an AP"
+    },
+    {
+      "targetId": "dirichlets-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "OQ-02-OQ-01: quantitative aspects of primes in AP; complements this file's Linnik constant formalization"
+    },
+    {
+      "targetId": "dirichlets-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01: another open question branch of Dirichlet's theorem in the gallery"
     }
   ],
   "conclusion": {

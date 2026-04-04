@@ -38,33 +38,50 @@
   },
   "sections": [
     {
+      "id": "module-docstring",
+      "title": "Module Overview and Proof Strategy",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Explains the open question (marginals of multinomial are binomial?), the PGF proof strategy (choose g(i) = t if i=i₀ else 1), and the Mathlib dependencies (Finset.sum_pow_eq_sum_piAntidiag, Finset.prod_eq_single, Finset.sum_ite_eq'). Also includes imports."
+    },
+    {
       "id": "setup",
-      "title": "Setup: Multinomial Distribution",
-      "content": "Redefines `multinomialProb` (the multinomial PMF) and reproves the normalization and MGF theorems. The key tool is `multinomial_mgf_real`: $(\\sum p(i) g(i))^n = \\sum_{k} P(X=k) \\cdot \\prod g(i)^{k(i)}$, which follows directly from Mathlib's `Finset.sum_pow_eq_sum_piAntidiag`."
+      "title": "Setup: Multinomial PMF and MGF Identity",
+      "startLine": 50,
+      "endLine": 84,
+      "summary": "Defines multinomialProb (the multinomial PMF: multinomial coefficient × product of p(i)^k(i)) and proves multinomial_mgf_real (the algebraic MGF identity: (∑ p(i)g(i))^n = ∑_k P(X=k) · ∏ g(i)^k(i)) and multinomialProb_sum_one (normalization: ∑ P(X=k) = 1 when ∑ p(i) = 1)."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem: Marginal PGF",
-      "content": "`multinomial_marginal_pgf` is the central result: $\\sum_k P(X=k) \\cdot t^{k(i_0)} = (p(i_0) t + (1 - p(i_0)))^n$. The proof has two key lemmas: (1) `prod_simp` shows the product of indicator weights concentrates at $i_0$, proved via `Finset.prod_eq_single`; (2) `sum_simp` simplifies the weighted sum using `Finset.sum_ite_eq'` and the normalization $\\sum p(i) = 1$."
+      "title": "Main Theorem: Marginal PGF Formula",
+      "startLine": 86,
+      "endLine": 124,
+      "summary": "Proves multinomial_marginal_pgf: the PGF of marginal X_{i₀} equals (p(i₀)·t + (1−p(i₀)))^n. Uses the MGF identity with indicator weight g(i) = t if i=i₀ else 1. Two key inline lemmas: prod_simp (product collapses to t^k(i₀)) and sum_simp (weighted sum simplifies using normalization)."
     },
     {
       "id": "corollaries",
-      "title": "Corollaries: PGF Identification and Normalization",
-      "content": "`multinomial_marginal_pgf_eq_binomial` rewrites the PGF as the binomial theorem expansion $\\sum_{j=0}^n \\binom{n}{j} p^j (1-p)^{n-j} t^j$, confirming it equals the Binomial$(n, p_{i_0})$ PGF. `multinomialProb_sum_one` proves normalization: $\\sum_k P(X=k) = 1$."
+      "title": "Corollaries: Binomial Identification and Normalization",
+      "startLine": 126,
+      "endLine": 147,
+      "summary": "multinomial_marginal_pgf_eq_binomial rewrites the marginal PGF as the binomial expansion ∑ C(n,j)·p^j·(1−p)^(n−j)·t^j, confirming marginals are Binomial(n, p(i₀)). multinomial_marginal_sum_one derives normalization from multinomialProb_sum_one."
     },
     {
       "id": "pmf-formula",
-      "title": "Direct PMF Formula (Partial)",
-      "content": "`multinomial_marginal_pmf` states the direct formula $P(X_{i_0} = j) = \\binom{n}{j} p(i_0)^j (1-p(i_0))^{n-j}$ but leaves the proof as `sorry`. The gap: extracting polynomial coefficients from the PGF identity requires showing that equal polynomial functions over $\\mathbb{R}$ have equal coefficients, via `Polynomial.funext` and coefficient ring theory."
+      "title": "Direct PMF Formula via Bijection",
+      "startLine": 149,
+      "endLine": 280,
+      "summary": "Directly proves P(X_{i₀}=j) = C(n,j)·p(i₀)^j·(1−p(i₀))^(n−j) via an explicit bijection between filtered piAntidiag elements and (s.erase i₀).piAntidiag (n−j). Uses Finset.sum_nbij', Nat.multinomial_insert to factor the multinomial coefficient, and the multinomial theorem on the erased subset."
     },
     {
       "id": "examples",
-      "title": "Concrete Examples: Bool Case",
-      "content": "`bernoulli_marginal_pgf` instantiates the theorem to the 2-outcome Bool case: for $s = \\{\\text{false}, \\text{true}\\}$ with $p(\\text{true}) = p$, the 'true' component has PGF $(pt + (1-p))^n = \\text{Binomial}(n,p)$ PGF. `bernoulli_false_marginal_pgf` proves the symmetric result for the 'false' component."
+      "title": "Bool Case: Bernoulli Marginals",
+      "startLine": 282,
+      "endLine": 337,
+      "summary": "Instantiates the main theorem to s = {false, true} with p(true) = p, p(false) = 1−p. Proves bernoulli_marginal_pgf (true component PGF = (pt+(1−p))^n), binomial_2_pgf (n=2 special case), and bernoulli_false_marginal_pgf (false component PGF = ((1−p)t+p)^n)."
     }
   ],
   "conclusion": {
-    "summary": "The main result `multinomial_marginal_pgf` proves that the PGF of each marginal of the multinomial distribution equals the Binomial PGF, establishing that marginals are binomial. The proof is elementary: it uses only the multinomial theorem (via the MGF identity) and basic finset arithmetic. One sorry remains for the direct PMF formula, which requires polynomial coefficient extraction.",
+    "summary": "The main result `multinomial_marginal_pgf` proves that the PGF of each marginal of the multinomial distribution equals the Binomial PGF. Additionally, `multinomial_marginal_pmf` directly proves the PMF formula P(X_{i₀}=j) = C(n,j)·p(i₀)^j·(1−p(i₀))^(n−j) via an explicit bijection and Nat.multinomial_insert. All 10 theorems fully machine-verified, 0 sorries.",
     "openQuestions": [
       "Can `multinomial_marginal_pmf` be completed using Lean 4's `Polynomial` library for coefficient extraction?",
       "Can the proof be extended to show joint independence of disjoint subsets of multinomial components?"

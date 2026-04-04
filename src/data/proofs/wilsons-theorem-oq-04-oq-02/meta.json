@@ -50,6 +50,74 @@
       "Order theory: orderOf, pow_orderOf_eq_one, orderOf_dvd_card"
     ]
   },
+  "sections": [
+    {
+      "id": "imports-and-overview",
+      "title": "Imports and Overview",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Imports Mathlib.GroupTheory.SpecificGroups.Cyclic and Mathlib.Tactic. The docstring describes the main theorem (∏G = τ for unique involution τ), the cyclic corollary, and the three-step proof strategy: involution pairing, cardinality bound, generator argument."
+    },
+    {
+      "id": "involution-pairing",
+      "title": "Part 1: Involution Pairing Lemma",
+      "startLine": 43,
+      "endLine": 81,
+      "summary": "Proves prod_eq_prod_involutions: in any finite abelian group, ∏G = ∏{x | x²=1}. Uses Finset.prod_involution with σ(x) = x⁻¹ to show non-self-inverse elements pair up and contribute product 1."
+    },
+    {
+      "id": "cardinality-bound",
+      "title": "Part 2: Cardinality Bound for Cyclic Groups",
+      "startLine": 83,
+      "endLine": 91,
+      "summary": "Proves card_sq_eq_one_le_two_cyclic: in any finite cyclic group, |{x | x²=1}| ≤ 2. Single-line proof via IsCyclic.card_pow_eq_one_le applied with n=2 (the polynomial degree bound for cyclic groups)."
+    },
+    {
+      "id": "abstract-product-formula",
+      "title": "Part 3: Abstract Product Formula",
+      "startLine": 93,
+      "endLine": 121,
+      "summary": "Proves prod_univ_of_unique_involution: if τ is the unique non-trivial involution, then ∏G = τ. Combines involution pairing with the identification {x | x²=1} = {1, τ}, then uses Finset.prod_pair to compute 1·τ = τ."
+    },
+    {
+      "id": "unique-involution-exists",
+      "title": "Part 4: Unique Involution in Even Cyclic Groups",
+      "startLine": 123,
+      "endLine": 176,
+      "summary": "Proves IsCyclic.exists_unique_involution_of_even: every even-order cyclic group has a unique non-trivial involution g^(|G|/2). Constructs it explicitly via a generator argument and applies a cardinality squeeze to establish uniqueness."
+    },
+    {
+      "id": "combined-formula",
+      "title": "Part 5: Combined Cyclic Group Product Formula",
+      "startLine": 178,
+      "endLine": 197,
+      "summary": "Proves prod_cyclic_even_group: in any even-order cyclic group, ∃τ with τ≠1, τ²=1, and ∏G=τ. Composes Parts 3 and 4 in three lines. This is the abstract group-theoretic form of the Gauss–Wilson theorem."
+    },
+    {
+      "id": "odd-order-case",
+      "title": "Part 6: Odd-Order Case",
+      "startLine": 199,
+      "endLine": 234,
+      "summary": "Proves prod_univ_odd_order: in a finite group of odd order, ∏G = 1. Shows x²=1 forces x=1 (since orderOf(x) ∣ gcd(2,|G|) = 1), so {x | x²=1} = {1} and the product is trivial."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "wilsons-theorem-oq-04",
+      "title": "Gauss's Generalization of Wilson's Theorem",
+      "relationship": "Parent proof that posed this open question. This file provides the abstract group-theoretic lemma (∏G = τ) that OQ-04 sought."
+    },
+    {
+      "id": "wilsons-theorem-oq-02",
+      "title": "Gauss-Wilson Theorem: Product of Units and Cyclic Groups",
+      "relationship": "Sibling proof instantiating the abstract result for (ℤ/nℤ)×: the product of all units equals -1 iff (ℤ/nℤ)× is cyclic (equivalently, n is 1, 2, 4, p^k, or 2p^k for odd prime p)."
+    },
+    {
+      "id": "wilsons-theorem",
+      "title": "Wilson's Theorem",
+      "relationship": "Classical root: (p-1)! ≡ -1 (mod p) iff p is prime. The unique involution in (ℤ/pℤ)× is -1, and Wilson's theorem is the special case where (ℤ/pℤ)× = ℤ/(p-1)ℤ is cyclic of even order p-1."
+    }
+  ],
   "conclusion": {
     "summary": "Proved the abstract group-theoretic product formula: in a finite abelian group, the product of all elements equals the unique non-trivial involution (when one exists uniquely). Even-order cyclic groups always have such a unique involution. Odd-order groups have trivial product. 6 theorems, 0 axioms, 235 lines, fully machine-verified.",
     "implications": "This provides a self-contained abstract foundation for the Gauss–Wilson theorem. The concrete version (product of (ℤ/nℤ)× equals −1 iff (ℤ/nℤ)× is cyclic) follows by instantiating this abstract result. The key insight is that cyclicity (and only cyclicity among even-order finite abelian groups) guarantees uniqueness of the involution. For non-cyclic groups, multiple involutions force the product to be 1.",

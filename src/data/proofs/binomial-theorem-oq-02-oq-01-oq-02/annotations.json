@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-binomial-marginal-def-mgf",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 52, "endLine": 75 },
+    "type": "definition",
+    "title": "Multinomial PMF and MGF Identity",
+    "content": "multinomialProb packages the multinomial probability mass function: multinomial(s, k) × ∏ p(i)^k(i). multinomial_mgf_real proves the key algebraic identity (∑ p(i)·g(i))^n = ∑_k P(X=k) · ∏ g(i)^k(i) for any weight function g. The proof unfolds multinomialProb, applies Finset.sum_pow_eq_sum_piAntidiag (the multinomial theorem), then splits ∏(p(i)·g(i))^k(i) into ∏ p(i)^k(i) × ∏ g(i)^k(i) via Finset.prod_mul_distrib and mul_pow.",
+    "mathContext": "$\\text{multinomialProb}(s, p, n, k) = \\binom{n}{k_1, k_2, \\ldots, k_r} \\prod_{i \\in s} p_i^{k_i}$. The MGF identity (multinomial theorem): $\\left(\\sum_{i \\in s} p_i g_i\\right)^n = \\sum_{k \\in \\text{piAntidiag}(s, n)} \\text{multinomialProb}(s, p, n, k) \\cdot \\prod_{i \\in s} g_i^{k_i}$.",
+    "significance": "key",
+    "relatedConcepts": ["multinomial theorem", "probability generating function", "Finset.sum_pow_eq_sum_piAntidiag", "piAntidiag"],
+    "prerequisites": ["finite sets in Lean 4", "Finset.prod_mul_distrib", "Nat.multinomial", "multinomial coefficients"]
+  },
+  {
+    "id": "ann-binomial-marginal-normalization",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 77, "endLine": 84 },
+    "type": "technique",
+    "title": "Multinomial Normalization: ∑ P(X=k) = 1",
+    "content": "multinomialProb_sum_one proves that the multinomial PMF sums to 1 when ∑ p(i) = 1. It uses the MGF theorem with g(i) = 1: then ∑ p(i)·g(i) = ∑ p(i) = 1, and 1^n = 1. The RHS collapses to ∑_k P(X=k) · ∏ 1^k(i) = ∑_k P(X=k). A clever one-step proof: apply Finset.sum_pow_eq_sum_piAntidiag with g = p, substitute hp, and take the resulting identity.",
+    "mathContext": "With $\\sum_i p_i = 1$: $\\sum_{k \\in \\text{piAntidiag}(s,n)} \\text{multinomialProb}(s,p,n,k) = \\left(\\sum_i p_i \\cdot 1\\right)^n = 1^n = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["probability normalization", "multinomial theorem special case", "Finset.sum_pow_eq_sum_piAntidiag"],
+    "prerequisites": ["multinomialProb definition", "Finset.sum_pow_eq_sum_piAntidiag", "hp: ∑ p(i) = 1"]
+  },
+  {
+    "id": "ann-binomial-marginal-pgf-main",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 88, "endLine": 124 },
+    "type": "insight",
+    "title": "Main Result: Marginal PGF Equals Binomial PGF",
+    "content": "multinomial_marginal_pgf is the central theorem. Strategy: apply the MGF theorem with the indicator weight g(i) = t if i=i₀, else 1. Two key lemmas are proved inline: (1) prod_simp: ∏ g(i)^k(i) = t^k(i₀) — proved via Finset.prod_eq_single which selects the i₀ factor and collapses all others (1^k(i) = 1); (2) sum_simp: ∑ p(i)·g(i) = p(i₀)·t + (1−p(i₀)) — proved by rewriting as ∑ p(i) + (t−1)·[i=i₀]·p(i₀) using Finset.sum_ite_eq' and hp. Combining via multinomial_mgf_real gives the Binomial PGF.",
+    "mathContext": "With $g(i) = \\mathbb{1}[i = i_0] \\cdot t + \\mathbb{1}[i \\neq i_0] \\cdot 1$: $\\prod_{i \\in s} g(i)^{k_i} = t^{k_{i_0}}$ (all non-$i_0$ factors are $1$). $\\sum_{i \\in s} p_i g_i = p_{i_0} t + (1 - p_{i_0})$ (using $\\sum p_i = 1$). Therefore: $E[t^{X_{i_0}}] = \\sum_k P(X=k) t^{k_{i_0}} = (p_{i_0} t + (1-p_{i_0}))^n$.",
+    "significance": "key",
+    "relatedConcepts": ["probability generating function", "indicator function", "Finset.prod_eq_single", "Finset.sum_ite_eq'"],
+    "prerequisites": ["multinomial_mgf_real", "prod_simp and sum_simp lemmas", "Finset.sum_add_distrib", "Finset.mul_sum"]
+  },
+  {
+    "id": "ann-binomial-marginal-corollaries",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 128, "endLine": 147 },
+    "type": "insight",
+    "title": "Corollaries: Binomial Expansion Identity and Normalization",
+    "content": "multinomial_marginal_pgf_eq_binomial rewrites the marginal PGF as the explicit binomial theorem expansion ∑_j C(n,j)·p^j·(1−p)^(n−j)·t^j. The proof is just two lines: apply multinomial_marginal_pgf then add_pow. This confirms the marginal X_{i₀} has the same PGF as Binomial(n, p(i₀)), identifying the distributions. multinomial_marginal_sum_one deduces normalization as an immediate corollary of multinomialProb_sum_one.",
+    "mathContext": "$(p_{i_0} t + (1-p_{i_0}))^n = \\sum_{j=0}^n \\binom{n}{j} p_{i_0}^j (1-p_{i_0})^{n-j} t^j$ by the binomial theorem. Since two distributions on $\\{0,\\ldots,n\\}$ with the same PGF are identical, $X_{i_0} \\sim \\text{Binomial}(n, p_{i_0})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial theorem", "add_pow", "PGF uniqueness", "distribution identification"],
+    "prerequisites": ["multinomial_marginal_pgf", "add_pow in Lean 4", "ring tactic"]
+  },
+  {
+    "id": "ann-binomial-marginal-pmf-direct",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 151, "endLine": 280 },
+    "type": "technique",
+    "title": "Direct PMF Formula via Bijection and Multinomial Theorem",
+    "content": "multinomial_marginal_pmf directly computes P(X_{i₀}=j) = C(n,j)·p(i₀)^j·(1−p(i₀))^(n−j) without using PGFs. The proof constructs an explicit bijection between: (a) k with ∑k=n, k(i₀)=j (the filter) and (b) f with ∑_{i≠i₀} f(i)=n−j (piAntidiag on s.erase i₀). Forward: σ(k)(i) = 0 if i=i₀ else k(i). Backward: τ(f)(i) = j if i=i₀ else f(i). The multinomial factoring Nat.multinomial_insert splits C(n,k) into C(n,j)·C(n−j, rest). Then multinomialProb on s.erase i₀ sums to (1−p(i₀))^(n−j) by the multinomial theorem.",
+    "mathContext": "$\\sum_{\\substack{k: \\sum k=n \\\\ k_{i_0}=j}} \\binom{n}{k_1,\\ldots,k_r} \\prod p_i^{k_i} = \\binom{n}{j} p_{i_0}^j \\sum_{\\substack{f: \\sum_{i\\neq i_0} f=n-j}} \\binom{n-j}{f} \\prod_{i\\neq i_0} p_i^{f_i} = \\binom{n}{j} p_{i_0}^j (1-p_{i_0})^{n-j}$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_nbij'", "Nat.multinomial_insert", "piAntidiag bijection", "direct probability computation"],
+    "prerequisites": ["Finset.sum_nbij' (bijection sum rewrite)", "Nat.multinomial_insert", "herase_sum and hbij lemmas", "hpcomp: ∑_{i≠i₀} p(i) = 1−p(i₀)"]
+  },
+  {
+    "id": "ann-binomial-marginal-bool-examples",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-02",
+    "range": { "startLine": 284, "endLine": 316 },
+    "type": "context",
+    "title": "Bool Case: Bernoulli Marginals",
+    "content": "bernoulli_marginal_pgf instantiates the main theorem to s = {false, true} with p(true) = p, p(false) = 1−p. The 'true' component has PGF (pt + (1−p))^n = Binomial(n,p) PGF. Proved by directly applying multinomial_marginal_pgf with normalization simp [Finset.sum_pair Bool.false_ne_true]. binomial_2_pgf is a one-line special case for n=2. bernoulli_false_marginal_pgf proves the symmetric result for the 'false' component via simpa.",
+    "mathContext": "For $s = \\{0,1\\}$ with $p_1 = p$, $p_0 = 1-p$: the marginal $X_1 \\sim \\text{Binomial}(n, p)$ has PGF $E[t^{X_1}] = (pt + (1-p))^n$. The symmetric result $X_0 \\sim \\text{Binomial}(n, 1-p)$ has PGF $((1-p)t + p)^n$. Together these cover all 2-outcome multinomials (the classical Bernoulli case).",
+    "significance": "context",
+    "relatedConcepts": ["Bernoulli distribution", "binomial distribution", "Bool as index set", "symmetry in probability"],
+    "prerequisites": ["bernoulli_marginal_pgf", "Finset.sum_pair", "Bool.false_ne_true", "simpa tactic"]
+  }
+]

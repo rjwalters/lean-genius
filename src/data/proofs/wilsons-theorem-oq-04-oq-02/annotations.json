@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-wilson-oq04oq02-involution-pairing",
+    "proofId": "wilsons-theorem-oq-04-oq-02",
+    "range": { "startLine": 51, "endLine": 81 },
+    "type": "technique",
+    "title": "Involution Pairing: ∏G Reduces to ∏{Involutions}",
+    "content": "prod_eq_prod_involutions is the key structural reduction. It first splits the product via prod_filter_mul_prod_filter_not into ∏{x | x²=1} and ∏{x | x²≠1}. For the second factor, Finset.prod_involution is applied with σ(x) = x⁻¹: (1) x · x⁻¹ = 1 (cancellation), (2) x ≠ x⁻¹ when x² ≠ 1 (the flip distinguishes them), (3) (x⁻¹)⁻¹ = x (involution property), (4) x⁻¹ stays in the non-involution filter. The non-involution elements pair up and their product is 1.",
+    "mathContext": "For a finite abelian group $G$: $\\prod_{x \\in G} x = \\prod_{x \\in G,\\, x^2=1} x$. The key step: define $\\sigma : G \\to G$ by $\\sigma(x) = x^{-1}$. For $x$ with $x^2 \\neq 1$, we have $x \\neq x^{-1}$, so $x$ and $x^{-1}$ form a 2-element orbit with product $x \\cdot x^{-1} = 1$. Summing over all such orbits, $\\prod_{x^2 \\neq 1} x = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_involution", "involution pairing", "group product", "self-inverse elements"],
+    "prerequisites": ["finite commutative groups", "Finset.prod_filter_mul_prod_filter_not", "mul_inv_cancel"]
+  },
+  {
+    "id": "ann-wilson-oq04oq02-card-bound",
+    "proofId": "wilsons-theorem-oq-04-oq-02",
+    "range": { "startLine": 86, "endLine": 91 },
+    "type": "technique",
+    "title": "Cardinality Bound: At Most 2 Involutions in Cyclic Groups",
+    "content": "card_sq_eq_one_le_two_cyclic is a single-line proof applying IsCyclic.card_pow_eq_one_le with n=2. The key insight: in a cyclic group ⟨g⟩, the equation x² = 1 is equivalent to g^(k·2) = 1, i.e., the order of g divides 2k. This is a polynomial equation of degree 2 over a cyclic group, which has at most 2 solutions. Mathlib's IsCyclic.card_pow_eq_one_le captures exactly this: |{x | xⁿ=1}| ≤ n for any cyclic group.",
+    "mathContext": "In a cyclic group $G = \\langle g \\rangle$ of order $N$: $\\{x \\in G \\mid x^2 = 1\\} = \\{g^k \\mid 2k \\equiv 0 \\pmod{N}\\}$. The solutions are $k \\equiv 0$ and $k \\equiv N/2$ (if $2 \\mid N$), giving $|\\{x \\mid x^2 = 1\\}| \\leq 2$. Over $\\mathbb{Z}/N\\mathbb{Z}$, the polynomial $t^2 - 1$ has at most $\\gcd(2, N) \\leq 2$ roots.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsCyclic.card_pow_eq_one_le", "polynomial degree bound", "cyclic group structure"],
+    "prerequisites": ["IsCyclic typeclass", "Mathlib cyclic group API", "cardinality of filter"]
+  },
+  {
+    "id": "ann-wilson-oq04oq02-unique-involution-product",
+    "proofId": "wilsons-theorem-oq-04-oq-02",
+    "range": { "startLine": 102, "endLine": 121 },
+    "type": "insight",
+    "title": "Abstract Product Formula: ∏G = τ When τ Is Unique Involution",
+    "content": "prod_univ_of_unique_involution is the abstract core of the Gauss–Wilson theorem. Starting from prod_eq_prod_involutions, the proof shows {x | x²=1} = {1, τ} by extensionality: every involution is either 1 or τ by huniq, and both 1 and τ are involutions. Then Finset.prod_pair (which requires 1 ≠ τ, i.e., hτ1.symm) gives ∏{1,τ} = 1 · τ = τ. The elegance is that all the pairing work happened in Part 1 — this theorem just identifies which involutions remain.",
+    "mathContext": "Given $\\tau \\in G$ with $\\tau^2 = 1$, $\\tau \\neq 1$, and $\\{x \\in G \\mid x^2 = 1\\} = \\{1, \\tau\\}$: $\\prod_{x \\in G} x = \\prod_{x^2=1} x = \\prod_{x \\in \\{1, \\tau\\}} x = 1 \\cdot \\tau = \\tau$. The condition that $\\tau$ is the *unique* non-trivial involution is essential — if $G$ has multiple involutions (e.g., $\\mathbb{Z}/2 \\times \\mathbb{Z}/2$), the product is $1$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_pair", "involution uniqueness", "Gauss-Wilson theorem", "abstract group product"],
+    "prerequisites": ["prod_eq_prod_involutions", "Finset.prod_pair", "huniq hypothesis"]
+  },
+  {
+    "id": "ann-wilson-oq04oq02-generator-argument",
+    "proofId": "wilsons-theorem-oq-04-oq-02",
+    "range": { "startLine": 136, "endLine": 176 },
+    "type": "concept",
+    "title": "Generator Argument: g^(|G|/2) Is the Unique Involution",
+    "content": "IsCyclic.exists_unique_involution_of_even constructs the unique involution in an even-order cyclic group. Writing |G| = 2k (h_even), it picks a generator g (IsCyclic.exists_generator) with orderOf(g) = |G|, then sets τ = g^k. Non-triviality: if g^k = 1, then |G| = orderOf(g) ∣ k ≤ k, but k < 2k = |G| — contradiction (omega). Involution: (g^k)^2 = g^(2k) = g^|G| = 1. Uniqueness: the cardinality squeeze {1, g^k} ⊆ {x | x²=1} with |{x | x²=1}| ≤ 2 forces equality.",
+    "mathContext": "For $G = \\langle g \\rangle$ with $|G| = 2k$: set $\\tau = g^k$. Then $\\tau^2 = g^{2k} = g^{|G|} = 1$ (since $\\text{ord}(g) = |G|$). If $\\tau = 1$, then $\\text{ord}(g) \\mid k$, so $|G| = \\text{ord}(g) \\leq k < 2k = |G|$ — contradiction. Uniqueness via squeeze: $\\{1, \\tau\\} \\subseteq \\{x \\mid x^2 = 1\\}$ and $|\\{x \\mid x^2=1\\}| \\leq 2$, so $\\{x \\mid x^2=1\\} = \\{1, \\tau\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsCyclic.exists_generator", "orderOf_eq_card_of_forall_mem_zpowers", "pow_orderOf_eq_one", "Finset.eq_of_subset_of_card_le"],
+    "prerequisites": ["cyclic group generators", "order of elements", "Nat.card vs Fintype.card", "Finset cardinality squeeze"]
+  },
+  {
+    "id": "ann-wilson-oq04oq02-combined",
+    "proofId": "wilsons-theorem-oq-04-oq-02",
+    "range": { "startLine": 191, "endLine": 197 },
+    "type": "insight",
+    "title": "Combined Result: Even Cyclic Group Product Equals Unique Involution",
+    "content": "prod_cyclic_even_group is a clean composition of Parts 3 and 4: apply IsCyclic.exists_unique_involution_of_even to get τ, then prod_univ_of_unique_involution to get ∏G = τ. This is the abstract group-theoretic statement that, when instantiated for (ℤ/nℤ)×, gives the Gauss–Wilson theorem: the product of all units equals -1 (the unique involution) exactly when (ℤ/nℤ)× is cyclic and even-order. The proof is just 3 lines of pattern matching and exact application.",
+    "mathContext": "For any even-order cyclic group $G$: $\\exists \\tau \\in G$ with $\\tau \\neq 1$, $\\tau^2 = 1$, and $\\prod_{x \\in G} x = \\tau$. Specializing to $G = (\\mathbb{Z}/n\\mathbb{Z})^\\times$: the unique involution is $-1 \\pmod{n}$, and the product of all invertible residues equals $-1$. This is exactly the Gauss–Wilson theorem for prime powers and related moduli.",
+    "significance": "key",
+    "relatedConcepts": ["Gauss-Wilson theorem", "multiplicative group of integers", "Wilson's theorem", "(Z/nZ)×"],
+    "prerequisites": ["IsCyclic.exists_unique_involution_of_even", "prod_univ_of_unique_involution", "Even Fintype.card G"]
+  },
+  {
+    "id": "ann-wilson-oq04oq02-odd-order",
+    "proofId": "wilsons-theorem-oq-04-oq-02",
+    "range": { "startLine": 208, "endLine": 233 },
+    "type": "insight",
+    "title": "Odd-Order Case: ∏G = 1",
+    "content": "prod_univ_odd_order handles the complementary case. The key step: if x² = 1 then orderOf(x) ∣ 2 (orderOf_dvd_of_pow_eq_one). Since |G| is odd, orderOf(x) ∣ gcd(2, |G|) = 1, so orderOf(x) = 1 and x = 1. The proof uses omega to derive the contradiction: if orderOf(x) = 2, then 2 ∣ |G| (orderOf_dvd_card), but |G| is odd — contradiction. With only x=1 satisfying x²=1, the filter {x | x²=1} = {1}, and ∏{1} = 1.",
+    "mathContext": "For odd-order $G$: if $x^2 = 1$ then $\\text{ord}(x) \\mid 2$. Since $|G|$ is odd, $\\text{ord}(x) \\mid \\gcd(2, |G|) = 1$, so $\\text{ord}(x) = 1$ and $x = 1$. Thus $\\{x \\mid x^2 = 1\\} = \\{1\\}$ and $\\prod_{x \\in G} x = \\prod_{x^2=1} x = \\prod_{\\{1\\}} x = 1$. This matches the classical result: for odd prime $p$, the product $(p-1)! \\equiv 1 \\pmod{p}$... wait, no. Actually for odd $p$, Wilson's theorem still gives $(p-1)! \\equiv -1$. But $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ has even order $p-1$ for odd prime $p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["odd-order groups", "orderOf_dvd_card", "Nat.odd_iff", "gcd and divisibility"],
+    "prerequisites": ["orderOf_dvd_of_pow_eq_one", "Nat.odd_iff", "orderOf_dvd_card", "omega tactic"]
+  }
+]
