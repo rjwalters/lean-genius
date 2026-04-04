@@ -125,10 +125,9 @@ The 5/8 theorem says more: the DENSITY of non-commuting pairs is bounded.
 These are complementary perspectives on the same non-abelian structure.
 -/
 
-/-- Summary remark: both Neumann's theorem and the 5/8 theorem characterize
-    the same "non-abelian distance" of G, through different lenses:
-    - Neumann: clique size in Γ(G) ↔ index of center
-    - Gustafson: global density in Γ(G) ≤ 5/8 -/
-theorem perspectives_summary : True := trivial
+/- Summary remark: both Neumann's theorem and the 5/8 theorem characterize
+   the same "non-abelian distance" of G, through different lenses:
+   - Neumann: clique size in Γ(G) ↔ index of center
+   - Gustafson: global density in Γ(G) ≤ 5/8 -/
 
 end Erdos1098OQ04
