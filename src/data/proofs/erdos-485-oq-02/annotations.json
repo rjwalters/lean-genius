@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "line": 1,
+    "type": "concept",
+    "content": "**Combinatorial Approach to Erdős #485**: The known proofs of f(k) → ∞ (Schinzel 1987, Schinzel-Zannier 2009) use algebraic height theory — non-constructive analytic machinery. This file asks: is there a purely combinatorial proof via sumset bounds? The approach: support(P²) ⊆ support(P) + support(P), and sumsets satisfy |A+A| ≥ 2|A|-1. If no cancellation occurs, this immediately gives f(k) ≥ 2k-1 → ∞.",
+    "mathContext": "The **Cauchy-Davenport theorem** (for ℤ/pℤ) and its ℤ variant: for nonempty finite $A \\subseteq \\mathbb{Z}$, $|A + A| \\geq \\min(p, 2|A|-1)$. For $A \\subseteq \\mathbb{N}$ (no modular wraparound), $|A + A| \\geq 2|A| - 1$. The extremal case is arithmetic progressions: $A = \\{a, a+d, \\ldots, a+(k-1)d\\}$ gives $A + A = \\{2a, 2a+d, \\ldots, 2a+2(k-1)d\\}$ with $|A+A| = 2k-1$.",
+    "significance": "The combinatorial approach would give an effective lower bound f(k) ≥ 2k-1 for positive-coefficient polynomials — much stronger than Schinzel-Zannier's f(k) ≫ log k. If cancellation could be controlled for general polynomials, this would simultaneously improve the known bound and provide an elementary proof.",
+    "relatedConcepts": ["Cauchy-Davenport theorem", "sumset bounds", "additive combinatorics", "height theory", "cancellation"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 50,
+    "type": "definition",
+    "content": "**termCount**: The number of nonzero monomials in a polynomial, defined as support(p).card. The `noncomputable` keyword is needed because Polynomial.support is a Finset computed via a decidability instance. Works for any Semiring R, not just ℚ.",
+    "mathContext": "For $P = a_0 + a_1 x + \\cdots + a_n x^n \\in R[x]$, `P.support` is the Finset of indices $i$ where $a_i \\neq 0$. Thus `termCount P = |\\text{supp}(P)|$ counts the sparse representation. For $P = 1 - x^2 - \\frac{1}{2}x^4$: `termCount P = 3`. The definition `f(k) = sInf {...}` uses `Nat.sInf` — the infimum of a set of naturals, which equals 0 for empty sets.",
+    "significance": "Using Polynomial.support.card rather than degree+1 gives the sparse term count — the natural measure for the sparse polynomial problem. The noncomputable tag is standard for Polynomial operations in Lean since they use classical decidability.",
+    "relatedConcepts": ["Polynomial.support", "Finset.card", "noncomputable", "sInf"],
+    "difficulty": "introductory"
+  },
+  {
+    "line": 71,
+    "type": "theorem",
+    "content": "**coeff_sq_convolution**: The coefficient of P² at n equals the Cauchy convolution: Σ_{a+b=n} c_a · c_b over Finset.antidiagonal n. Proved in one line: `rw [sq, Polynomial.coeff_mul]` — the fundamental algebraic identity.",
+    "mathContext": "Lean's `Polynomial.coeff_mul` states `(p * q).coeff n = ∑ i in antidiagonal n, p.coeff i.1 * q.coeff i.2`. For $P^2 = P \\cdot P$, this gives the **Cauchy product formula**: $(P^2)_n = \\sum_{a+b=n} P_a P_b$. The set `Finset.antidiagonal n = {(a,b) : a + b = n}$ has cardinality $n+1$. The cancellation barrier: opposite-sign terms can make the sum zero even when individual terms are nonzero.",
+    "significance": "This is the algebraic engine connecting polynomial multiplication (algebraic) to sumset structure (combinatorial). The convolution sum is nonzero iff some term c_a · c_b ≠ 0, iff some (a,b) with a+b=n has both a,b ∈ support(P). The open question is controlling when cancellation kills these nonzero terms.",
+    "relatedConcepts": ["Polynomial.coeff_mul", "Cauchy convolution", "antidiagonal", "Finset.antidiagonal"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 97,
+    "type": "theorem",
+    "content": "**support_sq_subset_sumset**: supp(P²) ⊆ supp(P) + supp(P). If n ∈ supp(P²), the convolution sum at n is nonzero, so some term c_a · c_b ≠ 0 (with a+b=n), giving a, b ∈ supp(P), so n ∈ supp(P)+supp(P). Proof by contradiction using Finset.sum_eq_zero.",
+    "mathContext": "The proof structure: assume $n \\in \\text{supp}(P^2)$ but $n \\notin A + A$. Then for every $(a,b) \\in \\text{antidiagonal}(n)$, either $a \\notin A$ or $b \\notin A$ (since $a + b = n \\notin A + A$). So each term $c_a \\cdot c_b = 0$, making the convolution sum 0 — contradicting $n \\in \\text{supp}(P^2)$. Key Lean step: `Finset.sum_eq_zero` shows a sum vanishes when all terms vanish.",
+    "significance": "This containment is the crucial link between polynomial and combinatorial worlds. It says P² can only have support within the sumset, bounding termCount(P²) ≤ |A+A|. The reverse inclusion requires the nonneg assumption.",
+    "relatedConcepts": ["Finset.sum_eq_zero", "Finset.mem_add", "Finset.mem_antidiagonal", "support inclusion"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 155,
+    "type": "theorem",
+    "content": "**support_sq_eq_sumset_of_nonneg**: For nonneg-coefficient P, supp(P²) = supp(P)+supp(P). The '⊆' direction is support_sq_subset_sumset. The '⊇' direction: for each a+b ∈ A+A, the convolution sum at a+b contains the positive term c_a·c_b > 0 (from sumset_elem_in_sq_support_of_nonneg), so a+b ∈ supp(P²).",
+    "mathContext": "The positive step uses `Finset.single_le_sum`: if all summands are ≥ 0 and one summand is > 0, then the sum is > 0. Here the summand at $(a,b)$ is $c_a \\cdot c_b > 0$ (since $a,b \\in \\text{supp}(P)$ and all coefficients are nonneg, so they're positive). The `Finset.mem_antidiagonal.mpr rfl` places $(a,b)$ at position $a+b$ in the antidiagonal.",
+    "significance": "This equality is the core result enabling the combinatorial proof: for nonneg polynomials, there is no cancellation, so termCount(P²) = |A+A| exactly. Combined with the sumset lower bound, this proves f_+(k) ≥ 2k-1.",
+    "relatedConcepts": ["support_sq_subset_sumset", "sumset_elem_in_sq_support_of_nonneg", "Finset.single_le_sum", "no cancellation"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 188,
+    "type": "theorem",
+    "content": "**sumset_card_lower_bound**: For nonempty A ⊆ ℕ, |A+A| ≥ 2|A|-1. Constructs two injections A → A+A: left injection (a ↦ min(A)+a) and right injection (a ↦ a+max(A)). Their images overlap in ≤ 1 element. By inclusion-exclusion, the union has ≥ 2|A|-1 elements, all in A+A.",
+    "mathContext": "The injection `a ↦ A.min' hA + a` has `card = A.card` by `Finset.card_image_of_injective` (injectivity via omega). Intersection bound: if `min(A) + a₁ = a₂ + max(A)`, then from `a₁ ≤ max(A)` and `min(A) ≤ a₂`, the omega tactic derives `a₁ = max(A)` and `a₂ = min(A)`, so the intersection has ≤ 1 element. Final omega closes the cardinality arithmetic from `card_union_add_card_inter`.",
+    "significance": "This is the min/max chain proof of the ℕ sumset lower bound — elementary and constructive. The bound is tight: arithmetic progressions achieve |A+A| = 2|A|-1. This is the ℕ analogue of Cauchy-Davenport (no Fourier analysis needed).",
+    "relatedConcepts": ["Finset.min'", "Finset.max'", "Finset.card_image_of_injective", "card_union_add_card_inter", "Cauchy-Davenport"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 238,
+    "type": "theorem",
+    "content": "**termCount_sq_nonneg_lower**: For nonneg-coefficient P with k ≥ 1 terms, termCount(P²) ≥ 2k-1. Proof chain: termCount(P²) = |supp(P²)| = |A+A| (from support_sq_eq_sumset_of_nonneg) ≥ 2k-1 (from sumset_card_lower_bound). This is the complete combinatorial proof for the nonneg case.",
+    "mathContext": "The formal chain: `unfold termCount; rw [support_sq_eq_sumset_of_nonneg P hP, ← htc]; apply sumset_card_lower_bound; exact Finset.card_pos.mp (by omega)`. The `Finset.card_pos.mp` converts $k \\geq 1$ to `P.support.Nonempty` (since `P.support.card ≥ 1 → P.support ≠ ∅`). The entire proof fits in 3 lines.",
+    "significance": "This is the main positive result: a complete elementary proof that nonneg-coefficient polynomials satisfy f_+(k) ≥ 2k-1 → ∞. The bound is stronger than Schinzel-Zannier's log k for this restricted class. The proof is entirely combinatorial — no height theory, no algebraic geometry.",
+    "relatedConcepts": ["support_sq_eq_sumset_of_nonneg", "sumset_card_lower_bound", "Finset.card_pos", "combinatorial proof"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 276,
+    "type": "theorem",
+    "content": "**cancellation_positions_bound**: |supp(P)+supp(P)| ≤ k². The sumset has at most k² elements (since it's the image of k×k pairs under addition). Combined with termCount_sq_le_sumset, gives the trivial upper bound termCount(P²) ≤ k². The cancellation barrier: mixed-sign polynomials can have termCount(P²) anywhere in [0, k²].",
+    "mathContext": "Proof: `rw [sq]; exact Finset.card_image₂_le _ _ _`. The `Finset.card_image₂_le` states $|\\text{image}_2(f, A, B)| \\leq |A| \\cdot |B|$, giving $|A+A| \\leq |A|^2 = k^2$. The cancellation example: $P = 1 - x^2 - \\frac{1}{2}x^4$ has $A = \\{0,2,4\\}$, $A+A = \\{0,2,4,6,8\\}$ ($|A+A| = 5 = 2k-1$), but $(P^2)_4 = c_0 c_4 + c_2^2 + c_4 c_0 = -\\frac{1}{2} + 1 - \\frac{1}{2} = 0$, so $|\\text{supp}(P^2)| < 5$.",
+    "significance": "The cancellation barrier is formally documented: coefficient cancellation can reduce |supp(P²)| below |A+A|. The open question is whether cancellation can eliminate *all* of A+A-{minimum count} — current bounds don't preclude this. Answering this would resolve the combinatorial approach to Erdős #485.",
+    "relatedConcepts": ["Finset.card_image₂_le", "Finset.image₂", "cancellation barrier", "trivial upper bound"],
+    "difficulty": "intermediate"
+  }
+]
