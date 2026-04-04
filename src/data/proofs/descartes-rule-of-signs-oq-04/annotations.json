@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-overview",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 52
+    },
+    "type": "context",
+    "title": "Grabiner's Algebraic Method: Replacing Rolle with Factoring",
+    "content": "The file header explains the architectural contrast: the classical proof uses Rolle's theorem (roots of $p$ between consecutive roots imply a root of $p'$, enabling induction on degree via differentiation), while Grabiner's method uses polynomial factoring (factor out a positive root via $p = (x-r)q$, track sign variation change, enabling induction on root count). The doc-comment gives the complete proof sketch in 4 lines, establishing the logical framework before any Lean code appears.",
+    "mathContext": "Grabiner's method rests on the key inequality: if $r > 0$ is a root of $p$, then $V(p) \\geq V(q) + 1$ where $p = (x-r)q$. This replaces Rolle's theorem with a direct algebraic observation about coefficient sequences. The IVT is used once, for the base case: if $s$ has no positive roots, then $p(0)$ and $a_n$ have the same sign, giving $V(s) \\equiv 0 \\pmod{2}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Descartes' Rule of Signs",
+      "Grabiner 1999",
+      "Rolle's theorem alternative",
+      "polynomial factoring"
+    ],
+    "prerequisites": [
+      "descartes-rule-of-signs",
+      "Polynomial.signVariations",
+      "Polynomial.roots.countP"
+    ]
+  },
+  {
+    "id": "ann-coefficient-recurrence",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": {
+      "startLine": 58,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Coefficient Recurrence: The Algebra of (X - r) Multiplication",
+    "content": "`coeff_zero_X_sub_C_mul` proves the crucial fact: the constant term of $(X - C\\,r) \\cdot q$ is $-r \\cdot q_0$. The proof uses `Polynomial.coeff_mul` (convolution formula), `Finset.Nat.antidiagonal_zero` (only term at degree 0 is $(0,0)$), and `simp` with coeff lemmas. `leadingCoeff_X_sub_C_mul'` shows the leading coefficient is preserved (since $(X - C\\,r)$ is monic). `natDegree_X_sub_C_mul'` confirms the degree increases by 1. These three lemmas together characterize how multiplication by $(X - C\\,r)$ transforms a polynomial.",
+    "mathContext": "The convolution formula: $[q_1 \\cdot q_2]_k = \\sum_{i+j=k} (q_1)_i (q_2)_j$. For $k=0$: $[q_1 \\cdot q_2]_0 = (q_1)_0 \\cdot (q_2)_0$. Since $(X - C\\,r)_0 = -r$ and $(X - C\\,r)_1 = 1$ (the only nonzero coefficients), we get $[(X-Cr) \\cdot q]_0 = -r \\cdot q_0$. This sign flip of $q_0$ is the **algebraic key**: for $r > 0$, $\\text{sign}(-r \\cdot q_0) = -\\text{sign}(q_0)$, forcing a new sign variation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.coeff_mul",
+      "Finset.Nat.antidiagonal_zero",
+      "monic polynomial",
+      "constant term sign flip"
+    ],
+    "prerequisites": [
+      "Polynomial.coeff_mul",
+      "Polynomial.natDegree_mul",
+      "Polynomial.monic_X_sub_C"
+    ]
+  },
+  {
+    "id": "ann-grabiner-lemma",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": {
+      "startLine": 92,
+      "endLine": 119
+    },
+    "type": "insight",
+    "title": "Grabiner's Lemma: The Algebraic Substitute for Rolle",
+    "content": "`grabiner_multiplication_lemma` states $V(q) + 1 \\leq V((X-Cr)\\cdot q)$ for $r > 0$, $q \\neq 0$. It is a one-liner delegating to Mathlib's `Polynomial.succ_signVariations_le_X_sub_C_mul`. `roots_countP_factor` proves that factoring out a root $r > 0$ increases the positive root count by exactly 1: it uses `Polynomial.roots_mul` (roots of a product), `Polynomial.roots_X_sub_C` (singleton $\\{r\\}$), and simp with the positivity of $r$. Together these two lemmas establish the fundamental coupling: factoring one positive root out of $p$ simultaneously increases $V$ by $\\geq 1$ and countP by exactly $1$.",
+    "mathContext": "The Grabiner inequality $V((X-r)q) \\geq V(q) + 1$ follows from the sign flip at position 0: since $[(X-r)q]_0 = -r q_0$ has opposite sign to $q_0$ (for $r > 0$), there is at least one additional sign variation at the boundary between the constant term and the rest of the coefficient sequence. The proof in Mathlib is a careful case analysis on the sign structure of the leading coefficients.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.succ_signVariations_le_X_sub_C_mul",
+      "Polynomial.roots_mul",
+      "signVariations vs countP coupling",
+      "Rolle's theorem analogy"
+    ],
+    "prerequisites": [
+      "Polynomial.succ_signVariations_le_X_sub_C_mul",
+      "Polynomial.roots_X_sub_C",
+      "Multiset.countP_add"
+    ]
+  },
+  {
+    "id": "ann-sv-parity",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": {
+      "startLine": 153,
+      "endLine": 195
+    },
+    "type": "technique",
+    "title": "Sign Variation Parity: Strong Induction via eraseLead",
+    "content": "`sv_parity_from_signs` proves that for $p \\neq 0$ with $p_0 \\neq 0$: $V(p) \\equiv 0 \\pmod{2}$ iff $\\text{sign}(p_0) = \\text{sign}(a_n)$. The proof uses strong induction on `p.support.card` (not degree), with the base case being the empty support case (which is contradictory), and the inductive step splitting on degree 0 vs. positive. For degree $\\geq 1$, the recursive formula `signVariations_eq_eraseLead_add_ite` decomposes $V(p) = V(p.\\text{eraseLead}) + (\\text{if sign differs then } 1 \\text{ else } 0)$. The key case analysis on `a`, `b`, `c` (signs of $p_0$, $\\text{eraseLead}$ leading coeff, $p$ leading coeff) is handled by `simp_all` after setting up the three sign variables.",
+    "mathContext": "The inductive structure mirrors the recursive definition of sign variations: $V(p) = V(p_{1:n}) + [\\text{sign}(a_0) \\neq \\text{sign}(a_{k_1})]$ where $k_1$ is the index of the next nonzero coefficient after 0. The parity of $V(p)$ depends only on the signs of the outermost coefficients ($p_0$ and $a_n$), with the intermediate signs canceling in pairs through the recursion. `eraseLead` removes the leading term, providing the inductive subproblem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "signVariations_eq_eraseLead_add_ite",
+      "eraseLead",
+      "strong induction on support",
+      "parity argument",
+      "SignType"
+    ],
+    "prerequisites": [
+      "Polynomial.eraseLead",
+      "Polynomial.signVariations_eq_eraseLead_add_ite",
+      "eraseLead_support_card_lt"
+    ]
+  },
+  {
+    "id": "ann-ivt-stage",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": {
+      "startLine": 197,
+      "endLine": 296
+    },
+    "type": "technique",
+    "title": "The IVT Stage: No Positive Roots → Even Sign Variations",
+    "content": "This is the proof's sole analytic component. The key theorem (stated in the meta.json as `no_pos_roots_same_sign`) shows: if $p$ has no positive roots, then $\\text{sign}(p_0) = \\text{sign}(a_n)$. The proof strategy (visible in `exists_eval_same_sign`) is: for large enough $R$, $p(R)$ has the same sign as $a_n$ (dominant term wins). If $\\text{sign}(p_0) \\neq \\text{sign}(a_n)$, then $p(0)$ and $p(R)$ have opposite signs, so IVT gives a root in $(0, R)$ — contradiction. The supporting lemma `lower_bound_sum` bounds the contribution of lower-degree terms by $R^{d-1} \\cdot \\text{(coeff sum)}$, establishing that for large $R$ the leading term dominates.",
+    "mathContext": "The bound: $|p(R) - a_n R^n| = |\\sum_{i<n} a_i R^i| \\leq R^{n-1} \\sum_{i<n} |a_i|$. For $R > \\max(1, \\sum |a_i| / |a_n|)$, we get $|p(R) - a_n R^n| < |a_n| R^{n-1} \\leq |a_n R^n|$, so $\\text{sign}(p(R)) = \\text{sign}(a_n)$. Combined with $\\text{sign}(p(0)) = \\text{sign}(p_0) \\neq \\text{sign}(a_n)$, the IVT (via `intermediate_value_Icc`) gives a root in $(0, R)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Intermediate Value Theorem",
+      "intermediate_value_Icc",
+      "polynomial dominance",
+      "Finset.abs_sum_le_sum_abs"
+    ],
+    "prerequisites": [
+      "intermediate_value_Icc",
+      "Polynomial.eval",
+      "pow_le_pow_right"
+    ]
+  },
+  {
+    "id": "ann-grabiner-induction",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": {
+      "startLine": 298,
+      "endLine": 430
+    },
+    "type": "insight",
+    "title": "Grabiner's Induction: Assembling the Complete Parity Proof",
+    "content": "The main theorem `descartes_full_algebraic` proves: for $p \\neq 0$, $\\exists k, \\text{countP}(p) + 2k = V(p)$. The proof uses strong induction on degree. Base: no positive roots, $\\text{countP} = 0$, and Parts III+IV give $V(p)$ is even, so $k = V(p)/2$ works. Inductive: $p$ has a positive root $r$, write $p = (X - Cr)\\cdot q$. By IH, $\\exists k', \\text{countP}(q) + 2k' = V(q)$. By Grabiner's lemma: $V(p) \\geq V(q) + 1$. By `roots_countP_factor`: $\\text{countP}(p) = \\text{countP}(q) + 1$. The sign parity analysis shows $V(p)$ and $V(q)$ have opposite parities (the constant term sign flip forces it), so $V(p) - V(q)$ is odd, say $V(p) = V(q) + 2k'' + 1$. Then $\\text{countP}(p) + 2(k' + k'') = \\text{countP}(q) + 1 + 2k' + 2k'' = V(q) + 2k'' + 1 = V(p)$.",
+    "mathContext": "The parity argument is the crux: $V((X-r)q)$ and $V(q)$ have different parities because (1) the leading coefficients agree (same sign), but (2) the constant terms have opposite signs (sign flip). By the parity lemma, one of $V(p)$, $V(q)$ is even and the other odd, meaning $V(p) \\geq V(q) + 1$ and $V(p) - V(q)$ is odd. Since $\\text{countP}(p) = \\text{countP}(q) + 1$, the parity of $V - \\text{countP}$ is preserved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong induction on degree",
+      "Grabiner's algebraic strategy",
+      "parity preservation",
+      "descartes_upper_bound"
+    ],
+    "prerequisites": [
+      "grabiner_multiplication_lemma",
+      "roots_countP_factor",
+      "sv_parity_from_signs",
+      "no_pos_roots_same_sign (IVT)"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "descartes-rule-of-signs-oq-04",
+    "range": {
+      "startLine": 432,
+      "endLine": 495
+    },
+    "type": "concept",
+    "title": "Applications: Exact Count, Certificates, Proof Architecture Comparison",
+    "content": "The final section derives consequences and draws the proof architecture comparison. The exact count corollary: $V(p) - \\text{countP}(p)$ is always even (directly from `descartes_full_algebraic`). The root-free certificate: if $V(p) = 0$ (no sign changes), then $p$ has no positive real roots. The comparison section formalizes the structural difference: the analytic proof uses Rolle's theorem (differentiates, loses a root of $p'$, gains information about $p$), while the algebraic proof uses polynomial division (factors out a root, gains information via sign change tracking). Both reach the same bound, but via dual induction strategies: on degree (analytic) vs. on root count (algebraic).",
+    "mathContext": "The algebraic proof is in some sense more direct: it never looks at $p'$ and makes no use of the order structure of $\\mathbb{R}$ beyond the IVT (needed only once). This raises the question: is there a purely algebraic proof (without IVT) valid over any ordered field? Grabiner's proof as stated does require IVT (and hence completeness of $\\mathbb{R}$). Over $\\mathbb{Q}$, Descartes' Rule still holds, suggesting a purely algebraic proof might exist.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exact root count",
+      "root-free certificate",
+      "analytic vs algebraic proof",
+      "Rolle's theorem vs factoring",
+      "ordered fields"
+    ],
+    "prerequisites": [
+      "descartes_full_algebraic",
+      "descartes_upper_bound",
+      "polynomial root certificates"
+    ]
+  }
+]
