@@ -1,1 +1,167 @@
-[]
+[
+  {
+    "id": "ann-context",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 57
+    },
+    "type": "context",
+    "title": "Open Question: Geometric Meaning of Weight Parameters in Ceva's Theorem",
+    "content": "The header poses and answers OQ-02-OQ-01-OQ-03: what is the geometric meaning of the weight pair (\u03b1, \u03b2) encoding a cevian point D on side BC? The answer \u2014 that BD/DC = \u03b2/\u03b1 \u2014 is the central result. The docstring also catalogs the special cases: \u03b1 = \u03b2 gives the midpoint (centroid case); the angle bisector theorem corresponds to weights \u03b1_D = |AC|, \u03b2_D = |AB| (incenter case); the symmedian uses square side-length weights. All 18 theorems are proved without axioms or sorries, from pure arithmetic using Mathlib field lemmas.",
+    "mathContext": "For $D = (\\alpha B + \\beta C)/(\\alpha + \\beta)$ on segment $BC$: $BD = \\beta|CB|/(\\alpha+\\beta)$, $DC = \\alpha|CB|/(\\alpha+\\beta)$, so $BD : DC = \\beta : \\alpha$. The Ceva balance condition $\\alpha_D\\alpha_E\\alpha_F = \\beta_D\\beta_E\\beta_F$ is equivalent to $(BD/DC)(CE/EA)(AF/FB) = 1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "barycentric coordinates",
+      "Ceva's theorem",
+      "division ratio",
+      "cevian triangle"
+    ],
+    "prerequisites": [
+      "Ceva's theorem: concurrent cevians",
+      "barycentric coordinates: affine combinations",
+      "triangle geometry: cevians and transversals"
+    ]
+  },
+  {
+    "id": "ann-displacement-lemmas",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 59,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "Displacement Decomposition: D Splits BC as Fractions \u03b2/(\u03b1+\u03b2) and \u03b1/(\u03b1+\u03b2)",
+    "content": "Three lemmas establish the coordinate geometry of D on BC. `weight_point_displacement` rewrites D = (\u03b1B + \u03b2C)/(\u03b1+\u03b2) as B + \u03b2(C-B)/(\u03b1+\u03b2), making clear that D lies on the ray from B toward C at fractional distance \u03b2/(\u03b1+\u03b2). `weight_point_distance_from_B` and `weight_point_distance_to_C` compute D-B = \u03b2(C-B)/(\u03b1+\u03b2) and C-D = \u03b1(C-B)/(\u03b1+\u03b2) explicitly. All three proofs use `field_simp [h\u03b1\u03b2]; ring` after establishing \u03b1+\u03b2 \u2260 0 by `linarith`. These decompositions are the building blocks for the division ratio theorem.",
+    "mathContext": "$D - B = \\frac{\\beta(C-B)}{\\alpha+\\beta}$ and $C - D = \\frac{\\alpha(C-B)}{\\alpha+\\beta}$ so $\\frac{D-B}{C-D} = \\frac{\\beta}{ \\alpha}$. The fraction $\\beta/(\\alpha+\\beta)$ is the **barycentric coordinate** of $D$ with respect to vertex $C$ in the $BC$ edge.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "barycentric coordinates on a segment",
+      "affine combination",
+      "field_simp tactic"
+    ],
+    "prerequisites": [
+      "real analysis: linear interpolation",
+      "Lean 4: field_simp and ring tactics",
+      "basic algebra: fraction manipulation"
+    ]
+  },
+  {
+    "id": "ann-division-ratio",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 86,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "Main Theorem: BD/DC = \u03b2/\u03b1 \u2014 The Swapped Division Ratio",
+    "content": "`weight_division_ratio` is the core result: for D = (\u03b1B + \u03b2C)/(\u03b1+\u03b2) with B \u2260 C, we have (D-B)/(C-D) = \u03b2/\u03b1. The proof substitutes the displacement lemmas (hDB and hCD), then uses `field_simp` with several non-zero conditions to simplify \u03b2(C-B)/(\u03b1+\u03b2) \u00f7 \u03b1(C-B)/(\u03b1+\u03b2) = \u03b2/\u03b1. A key subtlety: the ratio is \u03b2/\u03b1, NOT \u03b1/\u03b2. The weight \u03b1 governs how far D is from C (the 'pull' toward B), while \u03b2 governs how far D is from B (the 'pull' toward C). This inversion is a common source of confusion when applying Ceva's theorem.",
+    "mathContext": "$\\frac{D-B}{C-D} = \\frac{\\beta(C-B)/(\\alpha+\\beta)}{\\alpha(C-B)/(\\alpha+\\beta)} = \\frac{\\beta}{\\alpha}$. Note the **swap**: large $\\alpha$ pulls $D$ toward $B$ (making $C-D = \\alpha(C-B)/(\\alpha+\\beta)$ large), but the $\\alpha$ weight controls $DC$, not $BD$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "division ratio",
+      "mass point geometry",
+      "Menelaus' theorem",
+      "harmonic division"
+    ],
+    "prerequisites": [
+      "Ceva's theorem",
+      "division ratio in geometry",
+      "field arithmetic"
+    ]
+  },
+  {
+    "id": "ann-midpoint",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 115,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Midpoint Characterization: \u03b1 = \u03b2 iff D is the Midpoint",
+    "content": "`weight_midpoint_iff_of_ne` proves D = (B+C)/2 iff \u03b1 = \u03b2. The forward direction uses cross-multiplication to get (\u03b1-\u03b2)(B-C) = 0, then `mul_eq_zero` splits into \u03b1 = \u03b2 (desired) or B = C (contradicted by hBC). `weight_fraction_from_B` proves the equivalent \u03b2/(\u03b1+\u03b2) = 1/2 iff \u03b1 = \u03b2. `nonequal_weights_not_midpoint` collects the negation. Together these show that the centroid (which uses equal weights \u03b1 = \u03b2 = 1 for all three cevians) is the unique point where weight equality forces midpoints. Any asymmetry \u03b1 \u2260 \u03b2 produces a cevian point off the midpoint.",
+    "mathContext": "$(\\alpha B + \\beta C)/(\\alpha+\\beta) = (B+C)/2 \\iff \\alpha = \\beta$. Proof: cross-multiply to get $(\\alpha - \\beta)(B-C) = 0$; since $B \\neq C$ we get $\\alpha = \\beta$. When $\\alpha = \\beta$: all three midpoints are cevian points, and the medians are concurrent at the **centroid** $G = (A+B+C)/3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "centroid",
+      "midpoint theorem",
+      "barycentric coordinates",
+      "medians of a triangle"
+    ],
+    "prerequisites": [
+      "Euclidean geometry: midpoints and medians",
+      "algebra: cross-multiplication and zero product property"
+    ]
+  },
+  {
+    "id": "ann-ceva-product",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 154,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Ceva Product Connection: Weight Balance \u2194 Classical Ceva Product = 1",
+    "content": "`ceva_product_eq_weight_ratio` shows (\u03b2D/\u03b1D)(\u03b2E/\u03b1E)(\u03b2F/\u03b1F) = (\u03b2D\u03b2E\u03b2F)/(\u03b1D\u03b1E\u03b1F) by `field_simp`. `ceva_balance_iff_unit_product` then proves that the weight balance condition \u03b1D\u03b1E\u03b1F = \u03b2D\u03b2E\u03b2F is equivalent to the classical Ceva product equaling 1. The proof uses `div_eq_one_iff_eq` to reduce 'fraction = 1' to 'numerator = denominator'. `reversed_division_ratio` shows (\u03b2/\u03b1)(\u03b1/\u03b2) = 1, reflecting that reversing all cevians (swapping \u03b1\u2194\u03b2 for each) preserves the balance condition. `ceva_balance_symmetric` is just `eq_comm`.",
+    "mathContext": "$\\alpha_D\\alpha_E\\alpha_F = \\beta_D\\beta_E\\beta_F \\iff \\frac{BD}{DC} \\cdot \\frac{CE}{EA} \\cdot \\frac{AF}{FB} = 1$. The weight balance condition is **exactly** the classical Ceva concurrence criterion, translated from signed ratios to positive weight products. This is the Euclidean analog of the OQ-02 spherical Ceva condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ceva's theorem (classical)",
+      "concurrent cevians",
+      "signed vs. unsigned ratios",
+      "barycentric coordinates"
+    ],
+    "prerequisites": [
+      "Ceva's theorem",
+      "fraction arithmetic in Lean 4",
+      "div_eq_one_iff_eq"
+    ]
+  },
+  {
+    "id": "ann-special-configs",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 202,
+      "endLine": 250
+    },
+    "type": "concept",
+    "title": "Special Configurations: Centroid, Incenter, and Scale Invariance",
+    "content": "`centroid_equal_weights` and `centroid_weight_balance` confirm that equal weights (\u03b1 = \u03b2 = 1) give Ceva product 1 \u2014 the medians are concurrent at the centroid. `weight_scale_invariance` proves (c\u03b1\u00b7B + c\u03b2\u00b7C)/(c\u03b1+c\u03b2) = (\u03b1B+\u03b2C)/(\u03b1+\u03b2): scaling both weights by c > 0 leaves the cevian point unchanged, so only the ratio \u03b1:\u03b2 matters. `incenter_weight_product_is_one` verifies the angle bisector weights: if the cevian from A to BC has \u03b1_D = |AC| = b and \u03b2_D = |AB| = c, from B to CA has weights c and a, and from C to AB has weights a and b, then the Ceva product (c/b)(a/c)(b/a) = 1. The proof closes by `field_simp` since it reduces to 1 = 1 after cancellation.",
+    "mathContext": "**Incenter**: the angle bisector from $A$ divides $BC$ in ratio $AB:AC = c:b$ (angle bisector theorem). So $\\alpha_D = b = |AC|$, $\\beta_D = c = |AB|$. Then $\\frac{\\beta_D}{\\alpha_D}\\cdot\\frac{\\beta_E}{\\alpha_E}\\cdot\\frac{\\beta_F}{\\alpha_F} = \\frac{c}{b}\\cdot\\frac{a}{c}\\cdot\\frac{b}{a} = 1$. **Symmedian**: weights $\\alpha_D = c^2$, $\\beta_D = b^2$ (squared sides) give another concurrent point.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "incenter",
+      "angle bisector theorem",
+      "centroid",
+      "symmedian point",
+      "triangle centers"
+    ],
+    "prerequisites": [
+      "Euclidean geometry: triangle centers",
+      "angle bisector theorem",
+      "scale invariance in geometry"
+    ]
+  },
+  {
+    "id": "ann-asymmetry",
+    "proofId": "cevas-theorem-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 252,
+      "endLine": 295
+    },
+    "type": "insight",
+    "title": "Asymmetry and Ordering: Which Side of the Midpoint is D?",
+    "content": "`nonequal_weights_asymmetry` proves \u03b1 \u2260 \u03b2 implies BD \u2260 DC: the two segments \u03b2(C-B)/(\u03b1+\u03b2) and \u03b1(C-B)/(\u03b1+\u03b2) differ when \u03b1 \u2260 \u03b2. The proof uses `div_mul_cancel\u2080` to recover \u03b2(C-B) = \u03b1(C-B), then `mul_right_cancel\u2080 hCB` to get \u03b2 = \u03b1 \u2014 contradicting h\u03b1\u03b2. `weight_closer_to_B_iff` proves the richer result: D is strictly closer to B (BD < DC) iff \u03b2 < \u03b1. The proof rewrites BD and DC as fractions, then cross-multiplies: BD < DC iff \u03b2(C-B) < \u03b1(C-B) iff \u03b2 < \u03b1 (since C-B > 0). Both cases use `mul_lt_mul_of_pos_right` and `div_mul_cancel\u2080`.",
+    "mathContext": "$BD < DC \\iff \\frac{\\beta(C-B)}{\\alpha+\\beta} < \\frac{\\alpha(C-B)}{\\alpha+\\beta} \\iff \\beta < \\alpha$ (since $C - B > 0$). Interpretation: the weight $\\alpha$ 'pulls' $D$ toward $B$ (large $\\alpha$ \u2192 small $BD$, so $D$ is close to $B$). This is the counterintuitive direction: **more $\\alpha$ weight \u2192 closer to $B$** (not closer to $C$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "order on a line segment",
+      "strict inequality in geometry",
+      "mass point geometry"
+    ],
+    "prerequisites": [
+      "real analysis: strict inequalities",
+      "geometry: ordered points on a line"
+    ]
+  }
+]
