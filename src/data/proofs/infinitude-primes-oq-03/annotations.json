@@ -6,8 +6,8 @@
     "type": "context",
     "title": "Minimal Mathlib Imports for Elementary Proof",
     "content": "The proof uses only Nat.Prime, Nat.factorial, ZMod, and Tactic — a remarkably small import footprint for a theorem about prime distributions. No analytic number theory (complex analysis, L-functions, sieve methods) is needed.",
-    "mathContext": "Nat.exists_prime_and_dvd: $\\forall n \\geq 2, \\exists p$ prime with $p \\mid n$. Nat.dvd_factorial: $p$ prime, $p \\leq n \\Rightarrow p \\mid n!$. These two elementary facts are the only number-theoretic tools beyond basic arithmetic.",
-    "significance": "The small import set underscores the elementary nature of this Dirichlet-class result. The primes ≡ 2 (mod 3) case is one of a handful where Euclid's method (applied with a twist for residue classes) succeeds without analytic machinery.",
+    "mathContext": "Key Mathlib facts: $\\text{Nat.exists\\_prime\\_and\\_dvd}: n \\geq 2 \\Rightarrow \\exists p$ prime with $p \\mid n$. $\\text{Nat.dvd\\_factorial}: p$ prime, $p \\leq n \\Rightarrow p \\mid n!$. These two elementary facts are the only number-theoretic tools beyond basic arithmetic.",
+    "significance": "supporting",
     "relatedConcepts": ["Nat.exists_prime_and_dvd", "Nat.dvd_factorial", "Nat.Prime", "Nat.factorial"],
     "prerequisites": ["Lean 4 import syntax", "Mathlib module structure"]
   },
@@ -18,22 +18,34 @@
     "type": "insight",
     "title": "Multiplicativity of Residue 1 (mod 3)",
     "content": "mul_mod_three_one: the product of two integers ≡ 1 (mod 3) is ≡ 1 (mod 3). Proved directly from Nat.mul_mod and computation. This is the group property of (ℤ/3ℤ)* — the multiplicative group of a field — applied to the identity element 1.",
-    "mathContext": "$(a \\cdot b) \\bmod 3 = ((a \\bmod 3) \\cdot (b \\bmod 3)) \\bmod 3 = (1 \\cdot 1) \\bmod 3 = 1$. More generally, the product of elements in any congruence class modulo a prime is determined by the classes. Here $(\\mathbb{Z}/3\\mathbb{Z})^* = \\{1, 2\\}$ is isomorphic to $\\mathbb{Z}/2\\mathbb{Z}$.",
-    "significance": "This lemma is the closure property needed for the factoring argument: if all prime factors are ≡ 1 (mod 3), the product is ≡ 1 (mod 3) by induction using this lemma. Without it, the strong induction in factors_determine_mod_three would need to unfold the full multiplicative structure.",
+    "mathContext": "$(a \\cdot b) \\bmod 3 = ((a \\bmod 3) \\cdot (b \\bmod 3)) \\bmod 3 = (1 \\cdot 1) \\bmod 3 = 1$. More generally, $(\\mathbb{Z}/3\\mathbb{Z})^* = \\{1, 2\\}$ is isomorphic to $\\mathbb{Z}/2\\mathbb{Z}$; this is the closure property under multiplication by 1.",
+    "significance": "key",
     "relatedConcepts": ["Nat.mul_mod", "modular arithmetic", "(ℤ/3ℤ)* group", "closure under multiplication"],
-    "prerequisites": ["Nat.mul_mod (Lean 4 mod distribution over multiplication)", "norm_num tactic"]
+    "prerequisites": ["Nat.mul_mod", "norm_num tactic"]
+  },
+  {
+    "id": "ann-prime-mod",
+    "proofId": "infinitude-primes-oq-03",
+    "range": {"startLine": 55, "endLine": 63},
+    "type": "insight",
+    "title": "Primes Other Than 3 Are ≡ 1 or 2 (mod 3)",
+    "content": "Every prime p ≠ 3 satisfies p % 3 ∈ {1, 2}. The proof rules out p % 3 = 0 by noting that 3 | p implies p = 3 (since p is prime), contradicting p ≠ 3. The remaining cases 1 and 2 follow by omega. This is the starting point for the classification of prime factors.",
+    "mathContext": "Primes $p \\neq 3$ in $\\mathbb{Z}/3\\mathbb{Z}$: $p \\not\\equiv 0$ (else $3 \\mid p$, forcing $p = 3$). So $p \\equiv 1$ or $p \\equiv 2 \\pmod{3}$. Combined with mul_mod_three_one: the only way a product can be $\\equiv 2 \\pmod{3}$ is if at least one factor is $\\equiv 2$.",
+    "significance": "key",
+    "relatedConcepts": ["prime classification mod 3", "Nat.Prime.eq_one_or_self_of_dvd", "omega tactic"],
+    "prerequisites": ["prime definition", "Nat.dvd_of_mod_eq_zero"]
   },
   {
     "id": "ann-factors",
     "proofId": "infinitude-primes-oq-03",
     "range": {"startLine": 69, "endLine": 123},
     "type": "insight",
-    "title": "factors_determine_mod_three: Strong Induction on Composite Structure",
-    "content": "The key lemma: if all prime factors of n are either 3 or ≡ 1 (mod 3), then n ≢ 2 (mod 3). Proved by strong induction. The base cases handle n = 1 and prime n. The inductive step extracts a factor p ≡ 1 (mod 3), divides n = p·m, uses mul_mod to show m ≡ 2 (mod 3) if n ≡ 2 (mod 3) and p ≡ 1 (mod 3), then applies the inductive hypothesis to m < n.",
-    "mathContext": "Induction: $n = p \\cdot m$ with $p$ prime, $p \\mid n$, $m < n$. If $p \\equiv 1 \\pmod{3}$, then $n \\equiv p \\cdot m \\equiv m \\pmod{3}$, so $m \\equiv 2 \\pmod{3}$ and we recurse to $m$. The strong induction (on $n$) terminates since $m = n/p < n$ for $p \\geq 2$.",
-    "significance": "This is the most technically involved lemma in the file. The use of strong induction (not simple induction) is essential: when n is composite n = p·m, we apply the inductive hypothesis to m < n. This requires knowing the result holds for ALL smaller values, not just the predecessor.",
-    "relatedConcepts": ["Nat.strong_induction_on", "Nat.exists_prime_and_dvd", "mul_mod_three_one", "strong induction"],
-    "prerequisites": ["Nat.strong_induction_on", "ann-mul-mod (mul_mod_three_one)", "Nat.mul_mod"]
+    "title": "factors_determine_mod_three and has_prime_factor_2_mod_3",
+    "content": "factors_determine_mod_three: if all prime factors of n are either 3 or ≡ 1 (mod 3), then n ≢ 2 (mod 3). Proved by strong induction. The inductive step extracts a prime factor p ≡ 1 (mod 3), divides n = p·m, uses mul_mod to show m ≡ 2 (mod 3), then applies the inductive hypothesis to m < n. has_prime_factor_2_mod_3 is the contrapositive: n ≡ 2 and n ≥ 2 implies a prime factor ≡ 2 exists.",
+    "mathContext": "Strong induction: $n = p \\cdot m$ with $p \\equiv 1 \\pmod{3}$, $m < n$. Then $n \\equiv p \\cdot m \\equiv m \\pmod{3}$, so $m \\equiv 2$ and we recurse to $m$. Contrapositive: $n \\equiv 2 \\Rightarrow \\exists p \\mid n$ prime with $p \\equiv 2 \\pmod{3}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.strong_induction_on", "Nat.exists_prime_and_dvd", "mul_mod_three_one", "strong induction", "contrapositive"],
+    "prerequisites": ["Nat.strong_induction_on", "mul_mod_three_one", "prime_mod_three"]
   },
   {
     "id": "ann-main",
@@ -41,10 +53,34 @@
     "range": {"startLine": 129, "endLine": 156},
     "type": "insight",
     "title": "The Euclid-Style Construction N = 3·(n+1)! - 1",
-    "content": "Given any n, construct N = 3·(n+1)! - 1. Then: (1) N ≡ 2 (mod 3) since 3 | 3·(n+1)!, so N ≡ -1 ≡ 2 (mod 3). (2) N has a prime factor p ≡ 2 (mod 3) by factors_determine_mod_three. (3) p > n: if p ≤ n+1, then p | (n+1)! (by Nat.dvd_factorial), so p | 3·(n+1)!, but also p | N, giving p | 1, contradiction. Therefore p > n is a prime ≡ 2 (mod 3) larger than n.",
-    "mathContext": "$N = 3 \\cdot (n+1)! - 1 \\equiv -1 \\equiv 2 \\pmod{3}$. Size argument: $p \\leq n+1 \\Rightarrow p \\mid (n+1)! \\Rightarrow p \\mid 3(n+1)! \\Rightarrow p \\mid (3(n+1)! - N) = 1$, contradicting $p$ prime. So $p > n+1 > n$.",
-    "significance": "The N = d·M - 1 trick (here d = 3) works for any d and produces N ≡ -1 ≡ d-1 (mod d). When d-1 is a residue that forces a specific prime factor (like 2 mod 3), this gives an elementary Dirichlet-type proof. The key insight is that -1 mod d is always a 'hard' residue — it can't be achieved by products of 1-residues alone.",
+    "content": "Given any n, construct N = 3·(n+1)! - 1. Then: (1) N ≡ 2 (mod 3) since 3 | 3·(n+1)!, so N ≡ -1 ≡ 2 (mod 3). (2) N has a prime factor p ≡ 2 (mod 3) by has_prime_factor_2_mod_3. (3) p > n: if p ≤ n+1, then p | (n+1)! (by Nat.dvd_factorial), so p | 3·(n+1)!, but also p | N, giving p | 1, contradiction. Therefore p > n is a prime ≡ 2 (mod 3) larger than n.",
+    "mathContext": "$N = 3 \\cdot (n+1)! - 1 \\equiv -1 \\equiv 2 \\pmod{3}$. Size argument: $p \\leq n+1 \\Rightarrow p \\mid (n+1)! \\Rightarrow p \\mid 3(n+1)! \\Rightarrow p \\mid (3(n+1)! - N) = 1$, contradicting $p$ prime. So $p > n$.",
+    "significance": "key",
     "relatedConcepts": ["Nat.dvd_factorial", "Nat.factorial_pos", "has_prime_factor_2_mod_3", "Euclid-style construction"],
-    "prerequisites": ["ann-factors (has_prime_factor_2_mod_3)", "Nat.dvd_factorial", "Nat.not_dvd_one via Prime.not_dvd_one"]
+    "prerequisites": ["has_prime_factor_2_mod_3", "Nat.dvd_factorial", "Nat.Prime.not_dvd_one"]
+  },
+  {
+    "id": "ann-set-formulations",
+    "proofId": "infinitude-primes-oq-03",
+    "range": {"startLine": 158, "endLine": 173},
+    "type": "context",
+    "title": "Set-Theoretic and Order-Theoretic Reformulations",
+    "content": "primes_2_mod_3_infinite packages the result as Set.Infinite for {p prime | p % 3 = 2}, using Set.infinite_of_not_bddAbove. no_largest_prime_2_mod_3 gives the order-theoretic version: there is no maximum element. Both are immediate corollaries of infinitely_many_primes_2_mod_3.",
+    "mathContext": "Equivalences: $\\{p \\text{ prime} : p \\equiv 2\\}$ is infinite $\\iff$ unbounded $\\iff$ no maximum. The three formulations cover set-theoretic, order-theoretic, and combinatorial uses of the result.",
+    "significance": "supporting",
+    "prerequisites": ["ann-main"],
+    "relatedConcepts": ["Set.Infinite", "Set.infinite_of_not_bddAbove", "bddAbove", "order theory"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "infinitude-primes-oq-03",
+    "range": {"startLine": 177, "endLine": 190},
+    "type": "context",
+    "title": "Concrete Examples: 2, 5, 11, 17, 23",
+    "content": "Five concrete witnesses: 2, 5, 11, 17, 23 are all primes congruent to 2 mod 3. Verified by decide or rfl. The sequence continues: 29, 41, 47, 53, ... These are OEIS A003627 (primes of the form 3n-1).",
+    "mathContext": "First primes $\\equiv 2 \\pmod{3}$: $2, 5, 11, 17, 23, 29, 41, 47, \\ldots$ By Dirichlet's density theorem, they comprise exactly $1/\\phi(3) = 1/2$ of all primes (asymptotically).",
+    "significance": "supporting",
+    "prerequisites": [],
+    "relatedConcepts": ["decide tactic", "Nat.prime_two", "Dirichlet density", "OEIS A003627"]
   }
 ]
