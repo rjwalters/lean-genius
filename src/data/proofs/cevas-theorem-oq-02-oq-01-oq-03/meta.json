@@ -103,19 +103,45 @@
   ],
   "crossReferences": [
     {
-      "id": "cevas-theorem",
-      "title": "Ceva's Theorem",
-      "relationship": "OQ-02-OQ-01-OQ-03 explains the geometric meaning of the weight parameters used in the Ceva formulation"
+      "targetId": "cevas-theorem",
+      "relationship": "This proof provides the geometric interpretation of the weight parameters used in the weighted Ceva formulation — answering why BD/DC = β/α and showing how the classical Ceva concurrence condition α_D·α_E·α_F = β_D·β_E·β_F arises from the division ratio formula"
     },
     {
-      "id": "cevas-theorem-oq-02",
-      "title": "Ceva's Theorem: Spherical/Non-Euclidean",
-      "relationship": "The weight parameters here are the Euclidean version of the weights in the OQ-02 spherical formulation"
+      "targetId": "cevas-theorem-oq-02",
+      "relationship": "OQ-02 extends Ceva's theorem to spherical/non-Euclidean geometry using similar weight parameters; the Euclidean weight geometry proved here is the ground case whose spherical analog OQ-02 investigates"
     },
     {
-      "id": "cevas-theorem-oq-02-oq-01",
-      "title": "Ceva's Theorem OQ-02 OQ-01",
-      "relationship": "Prior work on the OQ-02 open questions; OQ-02-OQ-01-OQ-03 provides geometric interpretation"
+      "targetId": "cevas-theorem-oq-02-oq-01",
+      "relationship": "OQ-02-OQ-01 is the immediate predecessor in the open question chain; OQ-02-OQ-01-OQ-03 resolves the sub-question about the geometric meaning of (α, β) left open after OQ-02-OQ-01"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02-oq-01-oq-02",
+      "relationship": "A sibling OQ in the same chain, studying a related aspect of weight parameters; together OQ-02-OQ-01-OQ-02 and OQ-02-OQ-01-OQ-03 provide a complete geometric picture of the weighted Ceva framework"
+    }
+  ],
+  "conclusion": {
+    "summary": "The weight parameters (α, β) in Ceva's theorem have a precise geometric meaning: the point D = (αB + βC)/(α+β) on side BC satisfies BD/DC = β/α. Equal weights give the midpoint (centroid case); angle bisector weights give the incenter. The Ceva balance condition αDαEαF = βDβEβF is exactly equivalent to the classical Ceva product (BD/DC)(CE/EA)(AF/FB) = 1. All 18 theorems are proved axiom-free from Mathlib arithmetic.",
+    "implications": "The weight formulation of Ceva's theorem is more than syntactic convenience — it encodes division ratios directly. This gives a unified framework for all triangle centers expressible as concurrent cevians: the centroid (equal weights), incenter (side-length weights), symmedian point (squared side-length weights), and many others. Scale invariance of weights (c·α, c·β give the same point as α, β) means only the ratio α:β matters, connecting weight parameters to projective coordinates on the side BC.",
+    "openQuestions": [
+      "Can the same weight-parameter framework extend to non-Euclidean (spherical or hyperbolic) Ceva's theorem, and does the geometric interpretation BD/DC = β/α hold in those settings?",
+      "What is the complete characterization of triangle centers expressible as concurrent cevians with positive weights (α, β) satisfying polynomial relations between α and the triangle's side lengths?",
+      "Is there a clean formalization of mass point geometry — the 'dual' picture where α and β are literal masses placed at B and C, and D is the center of mass — in Lean 4 using Mathlib?"
+    ]
+  },
+  "references": [
+    {
+      "authors": ["Giovanni Ceva"],
+      "title": "De lineis rectis se invicem secantibus statica constructio",
+      "year": "1678",
+      "venue": "Milan",
+      "notes": "Original publication of Ceva's theorem, stating the concurrence condition for cevians in terms of division ratios — the precursor to the weight-parameter formulation proved here"
+    },
+    {
+      "authors": ["H. S. M. Coxeter", "S. L. Greitzer"],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "notes": "Chapter 4 covers Ceva's theorem and its applications to triangle centers; the division ratio interpretation BD/DC = β/α is presented as the natural barycentric coordinate reading"
     }
   ]
 }
