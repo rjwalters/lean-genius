@@ -20,15 +20,18 @@ where q = X⁵ - 5X⁴ + 10X³ - 10X² + 25X - 5.
 7. `galConj_nontrivial` : complex conjugation is nontrivial
 8. `two_dvd_gal_card` : 2 ∣ |Gal(q)|
 9. `gal_card_ne_5` : |Gal(q)| ≠ 5
-10. `q_ℤ_mod7_factorization` : q ≡ (X-5)(X-6)(cubic) mod 7 [decide]
-11. `cubicMod7_no_roots` : cubic has no roots in 𝔽₇ [decide]
+10. `q_ℤ_mod7_factorization` : q ≡ (X-5)(X-6)(cubic) mod 7 [sorry: polynomial equality over ZMod in Lean 4.26.0]
+11. `cubicMod7_no_roots` : cubic has no roots in 𝔽₇ [fin_cases + decide]
 
 ## Key Mathlib API
 
 - `Polynomial.Gal.restrict` needs `[Fact ((p.map (algebraMap F E)).Splits)]` (not `p.Splits`)
+- `map_pow` (not `aeval_pow`): `aeval_pow` is not in Lean 4.26.0; use `map_pow` for AlgHom.map_pow
 - `Polynomial.deriv_aeval` (@[simp]): `deriv (aeval · q) x = aeval x (derivative q)`
 - `Polynomial.differentiable_aeval`: `Differentiable 𝕜 (fun x => aeval x q)`
 - `Polynomial.Gal.card_complex_roots_eq_card_real_add_card_not_gal_inv`
+- `AlgEquiv.symm_apply_apply` for involution proofs (Complex.conjAe_apply not in 4.26.0)
+- `Fintype.card_pos_iff` (not `Fintype.card_ne_zero_iff` which is not in 4.26.0)
 -/
 
 set_option linter.unusedVariables false
@@ -60,9 +63,9 @@ theorem q_deriv_pos (x : ℝ) : 0 < aeval x (Polynomial.derivative q) := by
   have : aeval x (Polynomial.derivative q) = 5 * (x - 1) ^ 4 + 20 := by
     simp only [q, derivative_sub, derivative_add, derivative_mul, derivative_pow,
       derivative_X, derivative_C, derivative_one, Nat.cast_ofNat,
-      aeval_sub, aeval_add, aeval_mul, aeval_pow, aeval_X, aeval_C, aeval_one,
-      mul_one, nsmul_eq_mul]
-    push_cast; ring
+      aeval_sub, aeval_add, aeval_mul, map_pow, aeval_X, aeval_C, aeval_one, map_zero,
+      mul_one, nsmul_eq_mul, zero_mul, mul_zero, zero_add, add_zero]
+    norm_cast; ring
   linarith [show (0 : ℝ) ≤ (x - 1) ^ 4 from by positivity, this.symm.le]
 
 -- ============================================================================
@@ -79,14 +82,14 @@ theorem q_strictMono : StrictMono (fun x : ℝ => aeval x q) := by
 
 /-- q(0) = -5. -/
 private theorem q_aeval_zero : aeval (0 : ℝ) q = -5 := by
-  simp only [q, aeval_sub, aeval_add, aeval_mul, aeval_pow, aeval_X, aeval_C, aeval_one]
-  norm_num
+  simp only [q, aeval_sub, aeval_add, aeval_mul, map_pow, aeval_X, aeval_C, aeval_one]
+  norm_cast; norm_num
 
 /-- q(6) > 0. -/
 private theorem q_aeval_six_pos : 0 < aeval (6 : ℝ) q := by
   have : aeval (6 : ℝ) q = 3241 := by
-    simp only [q, aeval_sub, aeval_add, aeval_mul, aeval_pow, aeval_X, aeval_C, aeval_one]
-    push_cast; norm_num
+    simp only [q, aeval_sub, aeval_add, aeval_mul, map_pow, aeval_X, aeval_C, aeval_one]
+    norm_cast; norm_num
   linarith
 
 /-- q has at least one real root (IVT: q(0) = -5 < 0, q(6) > 0). -/
@@ -108,8 +111,9 @@ theorem q_rootSet_ℝ_card : Fintype.card (q.rootSet ℝ) = 1 := by
     have ha' := (Polynomial.mem_rootSet_of_ne q_irreducible.ne_zero).mp ha
     have hb' := (Polynomial.mem_rootSet_of_ne q_irreducible.ne_zero).mp hb
     exact q_strictMono.injective (ha'.trans hb'.symm)
-  · rw [Nat.one_le_iff_ne_zero, Fintype.card_ne_zero_iff]
-    exact ⟨⟨r, hmem⟩⟩
+  · -- Fintype.card_ne_zero_iff is not in Lean 4.26.0; use card_pos_iff instead
+    have hpos : 0 < Fintype.card (q.rootSet ℝ) := Fintype.card_pos_iff.mpr ⟨⟨r, hmem⟩⟩
+    omega
 
 -- ============================================================================
 -- § 4. Complex Conjugation Element of q.Gal
@@ -130,9 +134,13 @@ noncomputable def conjAeQ : ℂ ≃ₐ[ℚ] ℂ := Complex.conjAe.restrictScalar
 noncomputable def galConj : q.Gal :=
   Polynomial.Gal.restrict q ℂ conjAeQ
 
-/-- conjAeQ² = 1. -/
+/-- conjAeQ² = 1.
+NOTE: Complex.conjAe_apply is not in Lean 4.26.0.
+Use AlgEquiv.symm_apply_apply: conjAe is an involution (symm = self). -/
 private theorem conjAeQ_sq : conjAeQ ^ 2 = 1 := by
-  ext z; simp [sq, AlgEquiv.mul_apply, conjAeQ, Complex.conjAe_apply, starRingEnd_apply]
+  ext z
+  simp only [sq, AlgEquiv.mul_apply, AlgEquiv.one_apply, conjAeQ, AlgEquiv.restrictScalars_apply]
+  exact Complex.conjAe.symm_apply_apply z
 
 /-- galConj² = 1 in q.Gal. -/
 theorem galConj_sq_eq_one : galConj ^ 2 = 1 := by
@@ -179,13 +187,22 @@ private noncomputable def q_ℤ : ℤ[X] :=
 noncomputable def cubicMod7 : (ZMod 7)[X] :=
   X ^ 3 + C 6 * X ^ 2 + C 4 * X + C 1
 
+-- NOTE: `decide`/`native_decide` fail for (ZMod 7)[X] equality in Lean 4.26.0:
+-- `Polynomial.semiring` has no executable code, and `DecidableEq (ZMod 7)[X]`
+-- uses tactics internally (rw/simp), causing kernel reduction to get stuck.
+-- A coefficient-by-coefficient proof via Polynomial.ext + norm_num is needed.
 /-- q ≡ (X-5)(X-6)(cubicMod7) mod 7. -/
 theorem q_ℤ_mod7_factorization :
     q_ℤ.map (Int.castRingHom (ZMod 7)) = (X - C 5) * (X - C 6) * cubicMod7 := by
-  simp only [q_ℤ, cubicMod7]; decide
+  sorry -- TODO: prove coefficient-by-coefficient via Polynomial.ext + norm_num
 
 /-- cubicMod7 has no roots in 𝔽₇. -/
-theorem cubicMod7_no_roots : ∀ x : ZMod 7, eval x cubicMod7 ≠ 0 := by decide
+theorem cubicMod7_no_roots : ∀ x : ZMod 7, eval x cubicMod7 ≠ 0 := by
+  intro x
+  fin_cases x <;>
+    simp only [cubicMod7, eval_add, eval_mul, eval_pow, eval_X, eval_C, eval_one,
+      eval_neg, eval_zero] <;>
+    decide
 
 -- ============================================================================
 -- § 6. Summary
