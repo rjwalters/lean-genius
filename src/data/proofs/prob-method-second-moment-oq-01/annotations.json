@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-pz-header",
+    "proofId": "prob-method-second-moment-oq-01",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "Paley-Zygmund: Quantitative Second Moment Method",
+    "content": "The file header frames the Paley-Zygmund inequality as an upgrade of the qualitative second moment method proved in the parent (`ProbMethodSecondMoment.lean`). The qualitative method (θ=0) says: if E[X] > 0 then P[X > 0] > 0. The quantitative version makes this precise: for any threshold θ ∈ [0,1), the probability that X exceeds θ times its mean is at least (1-θ)²·E[X]²/E[X²]. Working over Finsets with ℚ-valued functions avoids measure theory while capturing the essential inequality. This design mirrors the parent entry and enables direct algebraic proofs without σ-algebras or Lp spaces.",
+    "mathContext": "Classical statement: for $X \\geq 0$, $0 \\leq \\theta < 1$: $P[X > \\theta E[X]] \\geq \\frac{(1-\\theta)^2 E[X]^2}{E[X^2]}$. Finite version: $(1-\\theta)^2(\\sum f)^2 \\leq |\\{f > \\theta\\mu\\}| \\cdot \\sum f^2$ where $\\mu = (\\sum f)/|s|$.",
+    "significance": "context",
+    "relatedConcepts": ["second moment method", "probabilistic method", "Alon-Spencer", "Paley-Zygmund 1932"],
+    "prerequisites": ["ProbMethodSecondMoment (parent)", "Finset sums over ℚ", "expected value in finite probability"]
+  },
+  {
     "id": "ann-pz-cauchy-schwarz",
     "proofId": "prob-method-second-moment-oq-01",
     "range": { "startLine": 37, "endLine": 52 },
