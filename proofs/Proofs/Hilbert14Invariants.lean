@@ -345,20 +345,20 @@ Hilbert's 14th problem highlighted the importance of:
 - The interplay between algebra and geometry in invariant theory
 -/
 
-/-- Summary of Hilbert's 14th Problem:
+/-
+  Summary of Hilbert's 14th Problem:
 
-    The answer is **conditionally positive**:
-    - YES for reductive groups (the important classical case)
-    - NO in general (Nagata's counterexample)
+  The answer is **conditionally positive**:
+  - YES for reductive groups (the important classical case) — proved by Hilbert (1890)
+    for SL_n/GL_n and generalized by Mumford–Haboush to all reductive groups.
+  - NO in general — Nagata's 1959 counterexample gives a non-reductive group G
+    acting on k[x₁,...,x₃₂] with non-finitely-generated invariant ring.
 
-    This represents a typical resolution pattern for Hilbert's problems:
-    the "obvious" conjecture fails, but a refined version holds. -/
-theorem hilbert_14_summary :
-    -- Reductive case: Yes
-    (∀ (k : Type*) [Field k] (n : ℕ) (G : Type*) [Group G] [Fintype G],
-      True) ∧ -- Finite groups have finitely generated invariants
-    -- General case: No
-    (∃ (counterexample : Prop), True) -- Nagata's counterexample exists
-    := ⟨fun _ _ _ _ _ => trivial, ⟨True, trivial⟩⟩
+  This represents a typical resolution pattern for Hilbert's problems:
+  the "obvious" conjecture fails, but a refined version holds.
+
+  (The formal proof of the reductive case requires deep algebraic geometry not yet
+  in Mathlib; the Nagata counterexample requires explicit construction of the group.)
+-/
 
 end Hilbert14Invariants
