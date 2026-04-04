@@ -4,7 +4,7 @@
   "config": {
     "enricher": 2,
     "aristotle": 1,
-    "researcher": 5,
+    "researcher": 10,
     "auditor": 1,
     "seeker": 1,
     "deployer": 1,
@@ -21,14 +21,14 @@
     "gallery_total": 1195,
     "gallery_quality_pct": 95.9,
     "stubs_remaining": 49,
-    "entries_enriched": 104,
+    "entries_enriched": 106,
     "problems_selected": 21,
     "research_completed": 11
   },
   "previous_stopped_at": "2026-01-26T19:15:00Z",
-  "schedule_window": "peak",
-  "schedule_time": "05:40",
-  "daemon_cycles": 219,
-  "daemon_respawns": 211,
-  "last_daemon_cycle": "2026-04-03T12:40:30Z"
+  "schedule_window": "offpeak",
+  "schedule_time": "18:57",
+  "daemon_cycles": 731,
+  "daemon_respawns": 1000,
+  "last_daemon_cycle": "2026-04-04T01:57:24Z"
 }
