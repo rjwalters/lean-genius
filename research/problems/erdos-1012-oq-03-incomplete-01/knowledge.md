@@ -5,6 +5,46 @@
 Prove `directed_hamiltonian_threshold` and `ghouila_houri` in `Proofs/Erdos1012OQ03.lean`.
 `directed_hamiltonian_threshold`: a strongly connected digraph with arcCount > (n-1)² has a Hamiltonian cycle.
 
+## Session 2026-04-04 (Session 2) — hmissing_count proof
+
+**Mode**: REVISIT
+**Outcome**: progress — `hmissing_count` proved, `perm_arc_bad_card_le` submitted to Aristotle
+
+### What I Did
+
+1. Proved `hmissing_count : missingArcs.card ≤ n - 2` (was sorry)
+   - Added `arcCount_eq_filter_bij` helper lemma (outside main proof to avoid instance clashes)
+   - Used `Finset.offDiag_card` + `simp [mul_tsub, mul_one]` for the counting argument
+2. Created `Erdos1012OQ03Aristotle.lean` companion file with `perm_arc_bad_card_le`
+3. Submitted to Aristotle: project `73cf466b-e55c-4b03-a282-0ef698c26775`
+
+### Key Findings
+
+- `arcCount`'s internal `letI := Classical.decPred _` creates DecidablePred instances that
+  clash with any explicit `haveI` in scope. Fix: extract bijection proof to separate lemma
+  with `[DecidableRel D.arc]` parameter, use `classical` tactic in body for uniform instances.
+- `simp only [Digraph.arcCount, Fintype.card_subtype]` unfolds `arcCount` AND converts
+  `Fintype.card {p // P p}` to `(Finset.univ.filter P).card` in one step.
+- `Finset.offDiag_card` gives `n^2 - n` (not `n*(n-1)`). To prove `n^2 - n = n*(n-1)`:
+  `omega` fails (nonlinear), `zify + ring` fails (can't expand `↑(n^2-n)` cast).
+  Fix: `simp only [mul_tsub, mul_one]` — `mul_tsub` rewrites `n*(n-1)` → `n*n - n*1`.
+- `Finset.disjoint_filter.2` takes `fun ⟨a,b⟩ _ ⟨_, hnot⟩ harc => hnot harc` to prove
+  missingArcs and presentArcs are disjoint.
+
+### Files Modified
+
+- `proofs/Proofs/Erdos1012OQ03.lean` (arcCount_eq_filter_bij ~line 989, hmissing_count ~line 1064)
+- `proofs/Proofs/Erdos1012OQ03Aristotle.lean` (new companion file)
+- `src/data/research/problems/erdos-1012-oq-03.json` (knowledge updated)
+
+### Next Steps
+
+- Await Aristotle result for `perm_arc_bad_card_le` (project `73cf466b-e55c-4b03-a282-0ef698c26775`)
+- After integration: `directed_hamiltonian_threshold` fully proved (0 sorries in Part V)
+- `ghouila_houri` (directed Dirac theorem, ~200 lines) remains as separate work item
+
+---
+
 ## Session 2026-04-04 (Session 1) — Main proof infrastructure
 
 **Mode**: FRESH
@@ -37,40 +77,3 @@ Prove `directed_hamiltonian_threshold` and `ghouila_houri` in `Proofs/Erdos1012O
 
 - Submit `hBadFor_bound` to Aristotle: prove `|BadFor(a,b)| ≤ n*(n-2)!` by fixing σ(k) and σ((k+1)%n), enumerating n positions, counting (n-2)! completions each
 - Prove `ghouila_houri`: directed Dirac theorem (~200 lines, needs longest-path argument)
-
-## Session 2026-04-04 (Session N) - Fix ghouila_houri ceiling condition + GH infrastructure
-
-**Mode**: REVISIT
-**Outcome**: progress — corrected critical mathematical error, added proof infrastructure
-
-### What I Did
-
-1. **Fixed critical mathematical bug**: `ghouila_houri` used floor division `Fintype.card V / 2` which makes the theorem FALSE for n=5 (counterexample: SC digraph with δ⁺=δ⁻=2=⌊5/2⌋ has no Hamiltonian cycle). Changed to ceiling `(Fintype.card V + 1) / 2`.
-
-2. **Added PART VI: Ghouila-Houri Infrastructure** with three sorry-based but mathematically sound lemmas:
-   - `gh_initial_cycle`: SC + δ⁺ ≥ ⌈n/2⌉ → initial directed cycle exists
-   - `gh_cycle_extendable`: key counting argument for k=n-1 case documented:
-     * A = {i ∈ [k] : arc(l[i], u)}, |A| = inDegree(u) ≥ ⌈n/2⌉
-     * B = {i ∈ [k] : arc(u, l[(i+1)%k])}, |B| = outDegree(u) ≥ ⌈n/2⌉
-     * |A|+|B| ≥ 2⌈n/2⌉ ≥ n > k → pigeonhole → insertion point exists
-   - `gh_grow_cycle`: induction on gap n-|l| to grow to Hamiltonian
-
-3. **Identified pre-existing compilation errors**: The file has 57+ errors from API changes (List.insertNth → List.insertIdx, List.indexOf, etc.) that pre-date our work. These need separate fixing.
-
-### Key Findings
-
-- Floor vs ceiling is a critical distinction: theorem with ⌊n/2⌋ is FALSE but with ⌈n/2⌉ is TRUE
-- The k=n-1 counting argument is the key lemma: A∩B ≠ ∅ because |A|+|B| ≥ n > k=n-1
-- Edit tool in this environment doesn't persist writes; Python file I/O works reliably
-- Pre-existing API issue: Lean4/Mathlib4 v4.26.0 renamed List.insertNth → List.insertIdx
-
-### Files Modified
-
-- `proofs/Proofs/Erdos1012OQ03.lean` (PART III ghouila_houri + new PART VI)
-
-### Next Steps
-
-- Fix pre-existing compilation errors: List.insertNth → List.insertIdx, indexOf, etc.
-- Prove `gh_initial_cycle`: use SC + high out-degree to find closed walk → extract cycle
-- Prove `gh_cycle_extendable` k=n-1 case: formalize the A∩B ≠ ∅ argument (needs [DecidableRel D.arc])
-- Prove `gh_cycle_extendable` k<n-1 case: SC-based detour argument
