@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "distinct-distances-def",
+    "startLine": 61,
+    "endLine": 62,
+    "type": "definition",
+    "title": "Distinct Distances via Finset Image",
+    "body": "Counts distinct positive pairwise distances in a finite plane point set. `S.product S` forms all ordered pairs, `.image (fun ⟨p, q⟩ => dist p q)` maps each to its Euclidean distance (collapses duplicates since it is a Finset), and `.filter (· > 0)` removes the zero self-distance. The `noncomputable` flag is required because `dist` in a metric space is not computable in Lean's kernel.",
+    "mathContext": "$f(S) = |\\{\\text{dist}(p,q) : p,q \\in S,\\, p \\neq q\\}|$. Self-distances are excluded by the positivity filter.",
+    "significance": "Provides the formal notion of 'number of distinct distances' used in all subsequent axioms and theorems — the central quantity in Erdős distance problems."
+  },
+  {
+    "id": "achieves-improved-bound",
+    "startLine": 78,
+    "endLine": 80,
+    "type": "definition",
+    "title": "Little-o Formulation of an Improved Bound",
+    "body": "Encodes the condition 'distinctDistances(A n) = o(n/√(log n)) as n → ∞' using Mathlib's `=o[atTop]` notation. This is `Asymptotics.IsLittleO`: `f =o[l] g` means `‖f n‖ / ‖g n‖ → 0` along the filter `l`. Here the filter is `atTop` (n → ∞), so the condition is that the ratio of distances to n/√(log n) tends to zero — a strictly sublinear-in-log improvement.",
+    "mathContext": "$A$ achieves an improved bound $\\iff$ $\\frac{\\text{distinctDistances}(A_n)}{n/\\sqrt{\\log n}} \\to 0$.",
+    "significance": "The OQ-01 question is precisely 'does any family satisfy achievesImprovedBound?' — the main theorem answers No."
+  },
+  {
+    "id": "uniform-landau-axiom",
+    "startLine": 100,
+    "endLine": 103,
+    "type": "axiom",
+    "title": "Uniform Landau Lower Bound Axiom",
+    "body": "Axiomatizes the key quantitative result: there exists a universal constant c > 0 such that for any n-point set S with the 4-point property, distinctDistances(S) ≥ c·n/√(log n). The uniformity (c independent of S) is crucial — it follows because the 4-point property restricts squared distances to a quadratic form with bounded discriminant, and Landau's theorem gives a c_f depending only on the discriminant. The comment documents that the full Landau theorem with quantitative lower bounds for binary quadratic form value sets is missing from Mathlib.",
+    "mathContext": "$\\exists c > 0,\\, \\forall n \\geq 4,\\, \\forall S \\subseteq \\mathbb{R}^2,\\, |S|=n,\\, \\text{FPP}(S) \\Rightarrow c \\cdot \\frac{n}{\\sqrt{\\log n}} \\leq f(S)$. Landau (1908): $|\\{d \\leq N : d = x^2 + 2y^2\\}| \\sim c_L \\cdot N/\\sqrt{\\log N}$.",
+    "significance": "The load-bearing axiom of the entire argument. All three main theorems derive their lower bound from this single existential claim."
+  },
+  {
+    "id": "moreeosburn-axiom",
+    "startLine": 111,
+    "endLine": 115,
+    "type": "axiom",
+    "title": "Moree-Osburn Upper Bound Axiom",
+    "body": "Axiomatizes the constructive existence result from the parent problem Erdős #659: the lattice {(a, b√2) : a,b ∈ ℤ} achieves O(n/√(log n)) distinct distances while satisfying the 4-point property. The constant C bounds the ratio from above: distinctDistances(A n) ≤ C·n/√(log n). This is the 'upper half' of the tight Θ result — combined with the Landau lower bound, it establishes that O(n/√(log n)) is the exact optimal rate.",
+    "mathContext": "$\\exists C > 0,\\, \\exists (A_n)_{n \\geq 1}$ with $|A_n|=n$, FPP for $n \\geq 4$, and $f(A_n) \\leq C \\cdot n/\\sqrt{\\log n}$. The Moree-Osburn lattice achieves this via the Landau upper bound for $x^2+2y^2$.",
+    "significance": "Together with uniform_landau_lower_bound, establishes the tight Θ(n/√(log n)) rate. Without the upper bound axiom, the answer to OQ-01 would only rule out strict improvement — not identify the optimal rate."
+  },
+  {
+    "id": "no-improvement-proof",
+    "startLine": 135,
+    "endLine": 177,
+    "type": "theorem",
+    "title": "Main Contradiction: No Improvement Possible",
+    "body": "Proves by contradiction that no family with the 4-point property achieves o(n/√(log n)). The proof unpacks `achievesImprovedBound` via `isLittleO_iff`, instantiates with the constant c/2 (half the Landau constant), extracts an N₀ beyond which the small-o bound holds, then picks n₀ = max(N₀, 4) to simultaneously satisfy both bounds. The key arithmetic lemma `hlogpos` proves √(log n) > 0 for n ≥ 3 (since log n > 0 for n > 1), allowing `div_pos` to establish the denominator is positive. The contradiction is then pure linear arithmetic: c·d ≤ distances ≤ (c/2)·d implies c ≤ c/2.",
+    "mathContext": "Core contradiction: if $f(A_{n_0}) \\geq c \\cdot n_0/\\sqrt{\\log n_0}$ (Landau) and $f(A_{n_0}) \\leq (c/2) \\cdot n_0/\\sqrt{\\log n_0}$ (little-o at $n_0$), then $c \\leq c/2$ — contradiction since $c > 0$.",
+    "significance": "The main theorem. The proof structure — extract Landau constant, apply isLittleO_iff, pick large enough n, derive contradiction — is a template for similar optimality arguments."
+  },
+  {
+    "id": "bound-is-tight",
+    "startLine": 189,
+    "endLine": 205,
+    "type": "theorem",
+    "title": "Θ(n/√(log n)) Tightness: Combined Upper and Lower Bound",
+    "body": "Combines both axioms into a single Θ-result. The conjunction has two parts: the upper half (`moreeosburn_upper_bound`, discharged by `exact moreeosburn_upper_bound`) and the lower half (extracted from `uniform_landau_lower_bound` via `obtain ⟨c, hc, hlandau⟩` and repackaged as a `Filter.eventually_atTop` statement). The lower half uses `Filter.eventually_atTop.mpr` to produce 'for all n ≥ 4, distinctDistances(A n) ≥ c·n/√(log n)', which is exactly the eventually-true lower bound needed for a Θ statement.",
+    "mathContext": "$f(A_n) = \\Theta(n/\\sqrt{\\log n})$: $\\exists C,c > 0$ s.t. $c \\cdot n/\\sqrt{\\log n} \\leq f(A_n) \\leq C \\cdot n/\\sqrt{\\log n}$ for all large $n$ (upper bound for specific Moree-Osburn family; lower bound uniform over all 4-PP families).",
+    "significance": "Upgrades the negative result (no improvement) to a positive optimality statement: the Moree-Osburn construction is not just a good upper bound but an asymptotically optimal one."
+  }
+]
