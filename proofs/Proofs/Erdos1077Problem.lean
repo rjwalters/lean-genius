@@ -125,10 +125,11 @@ The correct answer is m ≈ n^α vertices:
 
     Lower bound: Jiang-Longbrake show 6-balanced subgraphs exist.
     Upper bound: Complete bipartite graphs show this is tight. -/
-theorem erdos_1077_resolution :
-    -- The original conjecture is false (answer is False, not True)
-    True := by
-  trivial
+/-
+  Erdős #1077 Resolution: The original conjecture is false.
+  The optimal number of vertices in a guaranteed D-balanced subgraph
+  of a graph with n^{1+α} edges is Θ(n^α) (Jiang-Longbrake 2025).
+-/
 
 /- ## Notes on the Problem Statement
 

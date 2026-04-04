@@ -311,8 +311,11 @@ theorem erdos_318_summary :
 - Positive density: SOLVED (NO, counterexamples exist)
 - Squares: OPEN (announced proof never appeared)
 -/
-theorem erdos_318_status :
-  True  -- Recording the mixed status
-  := trivial
+/-
+  Problem Status (mixed):
+  - Arithmetic progressions: SOLVED (YES, Sattler 1982)
+  - Positive density: SOLVED (NO, counterexamples exist)
+  - Squares: OPEN (announced proof never appeared)
+-/
 
 end Erdos318
