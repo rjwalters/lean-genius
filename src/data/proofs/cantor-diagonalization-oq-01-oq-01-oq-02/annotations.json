@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-konig-core",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02",
+    "range": { "startLine": 59, "endLine": 75 },
+    "type": "insight",
+    "title": "König's Constraint: One Line from Mathlib",
+    "content": "The core theorem `konig_cofinality` proves cf(2^ℵ₀) > ℵ₀ in a single tactic: `exact Cardinal.lt_cof_power le_rfl (by norm_num)`. The Mathlib lemma `Cardinal.lt_cof_power` encodes König's 1905 inequality: for infinite λ and κ > 1, cf(κ^λ) > λ. Setting κ=2 (proved > 1 by norm_num) and λ=ℵ₀ with le_rfl (ℵ₀ ≤ ℵ₀) yields the result. The general form `konig_general` works for any κ > 1. This eliminates the axiom in the parent file — what was assumed is now a one-line theorem.",
+    "mathContext": "König's theorem (1905): for infinite $\\lambda$ and $\\kappa > 1$: $\\text{cf}(\\kappa^\\lambda) > \\lambda$. Setting $\\kappa = 2$, $\\lambda = \\aleph_0$: $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$, i.e., the continuum has uncountable cofinality.",
+    "significance": "key",
+    "relatedConcepts": ["Cardinal.lt_cof_power", "cofinality", "König's inequality", "cardinal exponentiation"],
+    "prerequisites": ["cardinal cofinality definition", "König's theorem statement", "Mathlib's cofinality API"]
+  },
+  {
+    "id": "ann-konig-cof-computations",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02",
+    "range": { "startLine": 82, "endLine": 117 },
+    "type": "technique",
+    "title": "Cofinality Computations: Regular and Singular Alephs",
+    "content": "Four theorems compute cofinalities of specific alephs. The theorems `aleph_one_regular` and `aleph_two_regular` follow immediately from Mathlib's `Cardinal.isRegular_aleph_one` and `Cardinal.isRegular_aleph_succ`. `aleph_succ_regular` generalizes to all successor alephs via the same theorem. The key computation is `cof_aleph_omega_eq_aleph0`: cf(ℵ_ω) = ℵ₀, proved by `Cardinal.cof_aleph` (which gives cf(ℵ_α) = cf(α) for limit ordinals) and `Ordinal.card_omega0` (the cardinality of ω is ℵ₀). The subsequent `aleph_omega_not_regular` derives the non-regularity from this cofinality computation.",
+    "mathContext": "General rule: $\\text{cf}(\\aleph_\\alpha) = \\text{cf}(\\alpha)$ for limit ordinals. So $\\text{cf}(\\aleph_\\omega) = \\text{cf}(\\omega) = \\omega = \\aleph_0$. Successor ordinals are regular: $\\text{cf}(\\aleph_{\\alpha+1}) = \\aleph_{\\alpha+1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cardinal.cof_aleph", "Cardinal.isRegular_aleph_succ", "regular cardinal", "singular cardinal", "limit ordinal"],
+    "prerequisites": ["ordinal vs cardinal cofinality", "Cardinal.isRegular definition", "regular vs singular cardinals"]
+  },
+  {
+    "id": "ann-konig-excluded",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02",
+    "range": { "startLine": 124, "endLine": 147 },
+    "type": "insight",
+    "title": "Excluded Values: Proof by Contradiction via König",
+    "content": "Both exclusion theorems use the same proof pattern: assume 2^ℵ₀ = κ, substitute into König (cf(2^ℵ₀) > ℵ₀), use the cofinality computation for κ to get cf(κ) ≤ ℵ₀, then derive lt_irrefl (ℵ₀ < ℵ₀). For `continuum_ne_aleph_omega`: substitute the computed cf(ℵ_ω) = ℵ₀ to get ℵ₀ < ℵ₀. For `continuum_ne_singular`: the hypothesis hcof gives cf(κ) ≤ ℵ₀ directly. The `exact absurd (lt_of_lt_of_le hk hcof) (lt_irrefl _)` combines transitivity and irreflexivity. These theorems implement the set-theoretic fact that singular cardinals of countable cofinality cannot be the continuum.",
+    "mathContext": "Proof: If $2^{\\aleph_0} = \\kappa$ and $\\text{cf}(\\kappa) \\leq \\aleph_0$, then $\\text{cf}(2^{\\aleph_0}) \\leq \\aleph_0$, contradicting König ($\\text{cf}(2^{\\aleph_0}) > \\aleph_0$). Hence $2^{\\aleph_0} \\neq \\kappa$.",
+    "significance": "key",
+    "relatedConcepts": ["lt_irrefl", "lt_of_lt_of_le", "proof by contradiction", "singular cardinals"],
+    "prerequisites": ["cofinality is invariant under equality", "contradiction via lt_irrefl", "absurd tactic"]
+  },
+  {
+    "id": "ann-konig-permitted",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02",
+    "range": { "startLine": 154, "endLine": 188 },
+    "type": "concept",
+    "title": "Permitted Values: Regular Cardinals via Easton's Theorem",
+    "content": "The `regular_satisfies_konig` theorem shows that regular uncountable cardinals κ satisfy cf(κ) = κ > ℵ₀ — exactly what König requires. The proof is one tactic: `rw [hreg.cof_eq]; exact hge`. The three instantiations (ℵ₁, ℵ₂, and the general aleph successor) verify specific permitted values. The `aleph_succ_satisfies_konig` theorem handles all ℵ_{α+1} by combining `aleph_succ_regular` with `regular_satisfies_konig`. The docstring explicitly references Easton's 1970 theorem (not formalized here, as it requires forcing): for any regular κ ≥ ℵ₁, there is a model of ZFC with 2^ℵ₀ = κ.",
+    "mathContext": "Easton (1970): $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + 2^{\\aleph_0} = \\kappa)$ for any regular $\\kappa \\geq \\aleph_1$. Combined with König, this means: $2^{\\aleph_0}$ can be exactly any regular uncountable cardinal.",
+    "significance": "key",
+    "relatedConcepts": ["IsRegular.cof_eq", "Easton's theorem", "forcing", "consistency results"],
+    "prerequisites": ["regularity of cardinals", "Easton's theorem (informal)", "Order.succ_ne_bot"]
+  },
+  {
+    "id": "ann-konig-complete-picture",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02",
+    "range": { "startLine": 195, "endLine": 240 },
+    "type": "insight",
+    "title": "zfc_constraints_on_continuum: The Complete Set of ZFC Constraints",
+    "content": "The summary theorem packages both ZFC constraints as a conjunction. For ℵ₁ ≤ 2^ℵ₀: first shows ℵ₁ = succ(ℵ₀) by rewriting with `Cardinal.aleph_succ` and `Cardinal.aleph_zero`, then applies `Order.succ_le_of_lt (Cardinal.cantor ℵ₀)`. For cf(2^ℵ₀) > ℵ₀: delegates to `konig_cofinality`. The `smallest_excluded_is_aleph_omega` theorem gives the first gap: all finite ℵ_n (n ≥ 1) are permitted, but ℵ_ω is excluded. The n≥1 case uses a clever ordinal rewrite: n = succ(n-1) as ordinals, enabling `isRegular_aleph_succ`.",
+    "mathContext": "Complete ZFC answer: $2^{\\aleph_0} \\in \\{\\aleph_\\alpha : \\text{cf}(\\aleph_\\alpha) > \\aleph_0\\} = \\{\\aleph_\\alpha : \\alpha \\text{ is a successor ordinal or } \\text{cf}(\\alpha) > \\omega\\}$. First excluded value: $\\aleph_\\omega$ (the first limit aleph).",
+    "significance": "key",
+    "relatedConcepts": ["Cardinal.cantor", "Order.succ_le_of_lt", "Cardinal.aleph_succ", "complete ZFC characterization"],
+    "prerequisites": ["Cantor's theorem formalization", "successor cardinal in Mathlib", "König + Easton combination"]
+  }
+]
