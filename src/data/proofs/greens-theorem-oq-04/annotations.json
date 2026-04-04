@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-mcr-structure",
+    "proofId": "greens-theorem-oq-04",
+    "range": { "startLine": 52, "endLine": 109 },
+    "type": "definition",
+    "title": "MultiplyConnectedRegion: Outer Region Minus Holes",
+    "content": "`MultiplyConnectedRegion` has three fields: `outer : TypeIRegion` (the enclosing simply-connected region from OQ-03), `holes : List TypeIRegion` (finitely many simply-connected holes), and `holes_contained : ∀ H ∈ holes, H.toSet ⊆ outer.toSet` (containment proof). The actual point set `R.toSet = R.outer.toSet \\ R.holeSet` is the set difference. `R.holeSet` is the union `⋃ (i : Fin R.holes.length), (R.holes.get i).toSet` using a `Fin`-indexed union. `R.numHoles = R.holes.length` is the first Betti number β₁. `simplyConnectedOf R` embeds a TypeIRegion as a multiply-connected region with empty holes list, and the theorems `simplyConnected_holeSet` (uses `Set.iUnion_of_empty`) and `simplyConnected_toSet` (uses `Set.diff_empty`) confirm the reduction.",
+    "mathContext": "A multiply-connected region: $D = D_{\\text{outer}} \\setminus (H_1 \\cup \\cdots \\cup H_n)$\n\nFirst Betti number: $\\beta_1(D) = n$ = number of holes = `R.numHoles`\n\nFundamental group: $\\pi_1(D) \\cong F_n$ (free group on $n$ generators) for $n$ holes.\n\nThe `Fin`-indexed union $\\bigcup_{i < n} H_i$ is the Lean formalization of the finite union. `holes_contained` ensures the region is well-defined.",
+    "significance": "supporting",
+    "relatedConcepts": ["TypeIRegion from OQ-03", "first Betti number", "fundamental group", "Fin-indexed union", "Set.diff"],
+    "prerequisites": ["TypeIRegion definition from GreensTheoremOQ03", "List in Lean 4", "Set.iUnion_of_empty", "Fin-indexed iUnion"]
+  },
+  {
+    "id": "ann-area-annular",
+    "proofId": "greens-theorem-oq-04",
+    "range": { "startLine": 110, "endLine": 181 },
+    "type": "technique",
+    "title": "Area = Outer Minus Holes, Annular Region π(R²-r²)",
+    "content": "`R.holeArea = R.holes.map (fun H => H.area) |>.sum` and `R.area = R.outer.area - R.holeArea`. `simplyConnected_holeArea` and `simplyConnected_area` are one-liner `simp` proofs using `List.sum_nil`. The annular region `annularRegion r R hr hR hrR` is constructed from `diskTypeI R hR` (outer) minus `diskTypeI r hr` (inner). The containment proof uses `disk_mem_iff` and `nlinarith`: a point with x²+y² ≤ r² satisfies x²+y² ≤ R² since r < R. `annular_area` computes π(R²-r²) from `disk_area_eq_pi` (axiom from OQ-03) via `ring`. The annular area formula is genuine: it uses only algebraic manipulation after the area axiom.",
+    "mathContext": "Area formula:\n$$\\text{Area}(D_{\\text{outer}} \\setminus (H_1 \\cup \\cdots \\cup H_n)) = \\text{Area}(D_{\\text{outer}}) - \\sum_i \\text{Area}(H_i)$$\n(when holes are pairwise disjoint)\n\nAnnular area: $\\text{Area}(\\{r \\leq |x| \\leq R\\}) = \\pi R^2 - \\pi r^2 = \\pi(R^2 - r^2)$\n\nContainment proof: $x^2 + y^2 \\leq r^2 < R^2$ so the inner disk is inside the outer disk.",
+    "significance": "supporting",
+    "relatedConcepts": ["disk_area_eq_pi axiom from OQ-03", "List.map and List.sum", "annular region", "disk_mem_iff", "nlinarith"],
+    "prerequisites": ["MultiplyConnectedRegion.area", "diskTypeI from OQ-03", "disk_area_eq_pi axiom", "ring tactic"]
+  },
+  {
+    "id": "ann-integrals",
+    "proofId": "greens-theorem-oq-04",
+    "range": { "startLine": 182, "endLine": 248 },
+    "type": "definition",
+    "title": "typeILineIntegral: Four-Piece Boundary Integral and Corrected Extensions",
+    "content": "`typeILineIntegral P Q R` assembles the four boundary pieces of a TypeI region into a single real number: (1) Q on curved boundaries via `deriv R.f` and `deriv R.g`; (2) right vertical: `∫_{f(b)}^{g(b)} Q(b,y) dy`; (3) left vertical: `-∫_{f(a)}^{g(a)} Q(a,y) dy`; (4) horizontal P contribution: `∫_a^b [P(x,f(x)) - P(x,g(x))] dx`. Using `deriv` (which returns 0 for non-differentiable functions) ensures the definition is total. `multiplyConnectedLineIntegral P Q R = typeILineIntegral P Q R.outer - sum(map holes)` and `multiplyConnectedCurlIntegral F R = R.outer.iteratedIntegral F - sum(map holes)`. The reduction theorems for `simplyConnectedOf` are `simp` lemmas: `List.map_nil` and `List.sum_nil` give `sub_zero`.",
+    "mathContext": "The four-piece boundary integral:\n$$\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\int_a^b [Q(x,f(x)) f'(x) - Q(x,g(x)) g'(x)]\\,dx + \\int_{f(b)}^{g(b)} Q(b,y)\\,dy - \\int_{f(a)}^{g(a)} Q(a,y)\\,dy + \\int_a^b [P(x,f(x)) - P(x,g(x))]\\,dx$$\n\nCorrected integral for multiply-connected D:\n$$\\oint_{\\partial D} = \\oint_{\\partial D_{\\text{outer}}} - \\sum_i \\oint_{\\partial H_i}$$\n\nThis sign convention ensures the region always lies to the left of the traversal direction.",
+    "significance": "key",
+    "relatedConcepts": ["TypeIRegion.iteratedIntegral from OQ-03", "deriv as total function", "List.map/sum", "boundary orientation", "line integral decomposition"],
+    "prerequisites": ["TypeIRegion from OQ-03", "intervalIntegral in Mathlib", "deriv in Lean 4", "multiplyConnectedLineIntegral definition"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "greens-theorem-oq-04",
+    "range": { "startLine": 249, "endLine": 308 },
+    "type": "technique",
+    "title": "Green's Theorem for Multiply-Connected Regions: Proved by Reduction",
+    "content": "`greens_theorem_multiply_connected` is a genuine theorem (not axiom): the corrected line integral equals the curl integral. The proof is a 3-step reduction: (1) `greens_sc S hS`: for any TypeI subregion S ⊆ R.outer, apply `greens_theorem_typeI` (from OQ-03) with smoothness propagated via `hS`; (2) apply `greens_sc` to the outer region (`Set.Subset.rfl`) and to each hole via `List.map_congr_left` with `R.holes_contained`; (3) unfold `multiplyConnectedLineIntegral` and `multiplyConnectedCurlIntegral`, then rewrite with the two congruence facts. The key algebraic insight: since both `multiplyConnectedLineIntegral` and `multiplyConnectedCurlIntegral` are defined as `outer - sum(holes)`, once the outer and each hole agree, the wholes agree by congruence.",
+    "mathContext": "Main theorem:\n$$\\oint_{\\partial D_{\\text{outer}}} (P\\,dx+Q\\,dy) - \\sum_i \\oint_{\\partial H_i} (P\\,dx+Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA$$\n\nProof strategy:\n1. For each TypeI region $S$: line integral $=$ curl integral (from OQ-03 axiom)\n2. Linearity: outer contributes positively, holes negatively\n3. The definitions of `multiplyConnectedLineIntegral` and `multiplyConnectedCurlIntegral` are structured to make step 3 a definitional equality.\n\nSmoothness propagation: if $(x,y) \\in S \\subseteq R_{\\text{outer}}$, the smoothness hypothesis on $R_{\\text{outer}}$ restricts to $S$.",
+    "significance": "key",
+    "relatedConcepts": ["greens_theorem_typeI from OQ-03", "List.map_congr_left", "Set.Subset.rfl", "holes_contained", "congruence on sum"],
+    "prerequisites": ["greens_theorem_typeI axiom from OQ-03", "multiplyConnectedLineIntegral definition", "multiplyConnectedCurlIntegral definition", "HasDerivAt in Mathlib"]
+  },
+  {
+    "id": "ann-zero-curl",
+    "proofId": "greens-theorem-oq-04",
+    "range": { "startLine": 309, "endLine": 422 },
+    "type": "insight",
+    "title": "Topological Obstruction: Zero-Curl Circulation Transfer and Deformation Invariance",
+    "content": "`zero_curl_circulation_transfer` is the topological obstruction theorem: when curl(F) = 0 everywhere on R.outer, the outer circulation equals the sum of hole circulations. The proof applies `greens_theorem_multiply_connected` with `dPdy = dQdx = 0`, then shows the double integral of `0 - 0 = 0` vanishes (using `iteratedIntegral_zero` and `List.sum_eq_zero`). `single_hole_deformation_invariance` is the one-hole corollary: for curl-free F, `typeILineIntegral P Q outer = typeILineIntegral P Q inner`. This is the foundation of Cauchy's integral formula: for a holomorphic f with isolated singularity, the integral around any curve encircling the singularity is the same (= 2πi × residue). Both theorems are proved from the main theorem — not axioms.",
+    "mathContext": "Topological obstruction: for curl$(F) = 0$ on $D$:\n$$\\oint_{C_{\\text{outer}}} F \\cdot dr = \\sum_i \\oint_{C_i} F \\cdot dr$$\n\nThis fails for simply-connected regions by Green's theorem: $\\oint F\\cdot dr = \\iint 0\\, dA = 0$. The non-contractible loops around holes prevent $F$ from being a gradient.\n\nDe Rham interpretation: closed 1-forms modulo exact 1-forms give $H^1_{\\text{dR}}(D) \\cong \\mathbb{R}^n$ ($n$ holes), with each hole contributing one independent period $\\oint_{C_i} F \\cdot dr$.\n\nAharonov-Bohm effect: a magnetic field confined inside a solenoid creates a non-zero circulation for a curl-free vector potential in the surrounding punctured plane.",
+    "significance": "key",
+    "relatedConcepts": ["de Rham cohomology H¹", "Cauchy's integral formula", "Aharonov-Bohm effect", "curl-free fields", "deformation invariance", "iteratedIntegral_zero"],
+    "prerequisites": ["greens_theorem_multiply_connected", "zero_curl_circulation_transfer", "single_hole_deformation_invariance", "List.sum_eq_zero"]
+  },
+  {
+    "id": "ann-periods-stokes",
+    "proofId": "greens-theorem-oq-04",
+    "range": { "startLine": 423, "endLine": 552 },
+    "type": "concept",
+    "title": "Period Vector, Additivity of Holes, and Stokes' Theorem Form",
+    "content": "The annular decompositions (Parts VIII-IX) verify that curl and line integrals over the annulus decompose as outer disk minus inner disk — straightforward from the definitions and `greens_theorem_multiply_connected`. `add_hole_line_integral` (Part X) proves that adding a hole to a region subtracts the new hole's boundary integral: `multiplyConnectedLineIntegral P Q R_with_extra = multiplyConnectedLineIntegral P Q R - typeILineIntegral P Q newHole`. This uses `List.map_append` and `List.sum_append`. The period vector `periodVector P Q R = R.holes.map (typeILineIntegral P Q)` collects the n circulation integrals. `period_sum_eq_outer_circulation` proves that when curl = 0, the sum of periods equals the outer circulation — formalizing `H¹(D) = ℝⁿ`. The Stokes form packages everything into `orientedBoundaryIntegral = double integral of exterior derivative`.",
+    "mathContext": "Period vector: $\\vec{\\gamma}(F) = (\\oint_{C_1} F, \\ldots, \\oint_{C_n} F) \\in \\mathbb{R}^n$\n\nWhen curl$(F) = 0$: the outer circulation is the sum of periods:\n$$\\oint_{C_{\\text{outer}}} F = \\sum_i \\gamma_i(F) = \\langle (1,\\ldots,1), \\vec{\\gamma}(F) \\rangle$$\n\nDe Rham's theorem: $H^1_{\\text{dR}}(D_n) \\cong \\mathbb{R}^n$, generated by the $n$ closed forms $\\omega_i$ with $\\oint_{C_j} \\omega_i = \\delta_{ij}$.\n\nStokes' form: $\\int_{\\partial M} \\omega = \\int_M d\\omega$ with the oriented boundary incorporating the hole orientation corrections.",
+    "significance": "supporting",
+    "relatedConcepts": ["de Rham cohomology", "period vector", "List.map_append", "List.sum_append", "Stokes' theorem", "exterior derivative"],
+    "prerequisites": ["zero_curl_circulation_transfer", "multiplyConnectedLineIntegral", "add_hole_line_integral", "orientedBoundaryIntegral"]
+  }
+]
