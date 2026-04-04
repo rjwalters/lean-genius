@@ -8,10 +8,16 @@
   "problemStatement": {
     "formal": "greens_theorem_l1curl : lipschitzLineIntegral P Q C = ∫ p in Ioo a b ×ˢ Ioo c d, curlF p",
     "plain": "Green's theorem holds when the boundary is Lipschitz (not necessarily C¹) and the curl is L¹-integrable (Whitney 1957).",
-    "whyMatters": ["Enables Green's theorem for domains with corners (squares, polygons)", "Weakens regularity requirements from C¹ to L¹ curl"]
+    "whyMatters": [
+      "Enables Green's theorem for domains with corners (squares, polygons)",
+      "Weakens regularity requirements from C¹ to L¹ curl"
+    ]
   },
   "knownResults": {
-    "proven": ["Lipschitz curves have a.e. derivatives (Rademacher)", "Whitney 1957: Green holds for Lipschitz + L¹ curl"],
+    "proven": [
+      "Lipschitz curves have a.e. derivatives (Rademacher)",
+      "Whitney 1957: Green holds for Lipschitz + L¹ curl"
+    ],
     "open": [],
     "goal": "Formalized Whitney's theorem as axiom with 19 supporting theorems (0 sorries)"
   },
@@ -22,7 +28,11 @@
     "focus": "Completed: GreensTheoremOQ02.lean compiles, 0 sorries, 19 theorems, 1 axiom.",
     "blockers": [],
     "nextAction": "Explore BV (bounded variation) regularity as next weakening.",
-    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "COMPLETE: 0 sorries, 19 theorems, 1 axiom (greens_theorem_l1curl = Whitney 1957)",
@@ -49,19 +59,105 @@
       "Consider bidirectional greens_oq1_from_l1curl"
     ]
   },
-  "tags": ["seeker-selected", "analysis", "vector-calculus", "regularity", "whitney", "lipschitz"],
-  "relatedProofs": ["greens-theorem", "greens-theorem-oq-01", "greens-theorem-oq-01-oq-01", "greens-theorem-oq-03", "greens-theorem-oq-04"],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "vector-calculus",
+    "regularity",
+    "whitney",
+    "lipschitz"
+  ],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-04"
+  ],
   "references": {
-    "papers": ["Whitney, H. (1957). Geometric Integration Theory.", "Melas, A.D. (1993). On Green's Theorem. AMS 337(1):253-271."],
+    "papers": [
+      "Whitney, H. (1957). Geometric Integration Theory.",
+      "Melas, A.D. (1993). On Green's Theorem. AMS 337(1):253-271."
+    ],
     "urls": [],
-    "mathlib": ["LipschitzWith", "MeasureTheory.Integrable", "ContinuousOn.integrableOn_compact", "Real.lipschitzWith_cos", "Real.lipschitzWith_sin"]
+    "mathlib": [
+      "LipschitzWith",
+      "MeasureTheory.Integrable",
+      "ContinuousOn.integrableOn_compact",
+      "Real.lipschitzWith_cos",
+      "Real.lipschitzWith_sin"
+    ]
   },
   "started": "2026-03-30T21:46:38.106Z",
   "lastUpdate": "2026-04-04T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
-    {"path": "Proofs/GreensTheoremOQ01.lean", "filename": "GreensTheoremOQ01.lean", "lineCount": 339, "theoremCount": 9, "axiomCount": 0, "defCount": 2, "sorryCount": 0, "isAristotle": false},
-    {"path": "Proofs/GreensTheoremOQ02.lean", "filename": "GreensTheoremOQ02.lean", "lineCount": 510, "theoremCount": 19, "axiomCount": 1, "defCount": 4, "sorryCount": 0, "isAristotle": false}
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 359,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
   ]
 }

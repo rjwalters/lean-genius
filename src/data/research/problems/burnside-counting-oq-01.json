@@ -42,7 +42,8 @@
     "sieve-methods"
   ],
   "relatedProofs": [
-    "burnside-counting"
+    "burnside-counting",
+    "burnside-counting-oq-03"
   ],
   "references": {
     "papers": [],
@@ -61,6 +62,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCounting.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ03.lean",
+      "filename": "BurnsideCountingOQ03.lean",
+      "lineCount": 225,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ03Aristotle.lean",
+      "filename": "BurnsideCountingOQ03Aristotle.lean",
+      "lineCount": 78,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03Aristotle.lean"
     }
   ]
 }
