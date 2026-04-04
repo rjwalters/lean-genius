@@ -7,7 +7,7 @@
     "proofRepoPath": "Proofs/Hilbert23CalculusVariations.lean",
     "author": "Euler, Lagrange, Hilbert, Tonelli, Pontryagin, et al.",
     "date": "1744-present",
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "analysis",
       "optimization",
@@ -46,7 +46,7 @@
     "hilbertNumber": 23,
     "axiomCount": 0,
     "lineCount": 328,
-    "assumptions": "Main theorems are True stubs (e.g., euler_lagrange_weak_form and hilbert_23_status prove vacuous existential True propositions, not actual variational results). The Euler-Lagrange equation is not genuinely formalized. Variational infrastructure (Lagrangian structures, action functionals) is defined but the core mathematical content is not machine-verified.",
+    "assumptions": "Structure-encoded assumption: smooth : True in Lagrangian structure (smoothness condition). euler_lagrange_weak_form and hilbert_23_status were converted to block comments. The calculus_of_variations_active theorem proves only (1:ℕ)+1=2. The Euler-Lagrange equation and Pontryagin maximum principle remain as comment documentation. Classified axiomatized: main variational results are not formalized.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

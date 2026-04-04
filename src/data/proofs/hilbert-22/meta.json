@@ -7,7 +7,7 @@
     "proofRepoPath": "Proofs/Hilbert22Uniformization.lean",
     "author": "Koebe, Poincare",
     "date": "1907",
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "complex-analysis",
       "riemann-surfaces",
@@ -46,7 +46,7 @@
     "hilbertNumber": 22,
     "axiomCount": 0,
     "lineCount": 305,
-    "assumptions": "Main theorems are True stubs (e.g., hilbert_22_status proves existential True propositions, not real uniformization). Real uniformization infrastructure is partially formalized but the core mathematical content is not machine-verified.",
+    "assumptions": "Structure-encoded assumptions: isDiscrete : True in FuchsianGroup and HyperbolicDomain structures (proper discontinuity condition); def RiemannSurface.IsSimplyConnected : Prop := True (topological connectivity placeholder). The uniformization theorem itself remains in comments. Per CLAUDE.md: structure fields with True are counted as structure-encoded assumptions.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
