@@ -1,0 +1,150 @@
+{
+  "id": "area-of-circle-oq-01-oq-02-oq-03",
+  "title": "Archimedes' Exhaustion Meets the FTC",
+  "slug": "area-of-circle-oq-01-oq-02-oq-03",
+  "description": "Formally connects Archimedes' classical method of exhaustion (inscribed n-gon areas converging to πr²) with the modern FTC-based proof (∫₀ʳ 2πρ dρ = πr²). Both limiting processes converge to the same value; by limit uniqueness in ℝ, they are equal. 10 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Area_of_a_circle#Classical_proofs",
+    "date": "formalized 2026",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "geometry",
+      "calculus",
+      "integration",
+      "ftc",
+      "limits",
+      "archimedes",
+      "exhaustion",
+      "extension"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ02OQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 216,
+    "mathlibDependencies": [
+      {
+        "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt",
+        "description": "FTC Part 2: ∫ₐᵇ F'(x) dx = F(b) - F(a) when F is differentiable",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus"
+      },
+      {
+        "theorem": "HasDerivAt.congr",
+        "description": "Convert HasDerivAt proof between equivalent forms",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Basic"
+      },
+      {
+        "theorem": "tendsto_inv_atTop_zero",
+        "description": "1/x → 0 as x → +∞ in a linearly ordered field",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "Filter.Tendsto.comp",
+        "description": "Composition of convergent sequences: if f → a and g → f(a) then g ∘ f → a",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "tendsto_natCast_atTop_atTop",
+        "description": "Natural number cast to ℝ diverges to +∞",
+        "module": "Mathlib.Topology.Algebra.Order.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto.const_mul",
+        "description": "Constant multiplication preserves limits",
+        "module": "Mathlib.Topology.Algebra.MulAction"
+      },
+      {
+        "theorem": "Real.sin_lt",
+        "description": "sin(x) < x for x > 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Filter.tendsto_nhds_unique",
+        "description": "Hausdorff uniqueness: limits in ℝ are unique",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "hasDerivAt_circleArea: A'(r) = 2πr = C(r) is the derivative of circle area",
+      "circumference_integral_eq: FTC proof ∫₀ʳ 2πρ dρ = πr² (Part I)",
+      "tendsto_inscribed_to_pi_r_sq: inscribed n-gon area → πr² (Part II, Archimedes)",
+      "exhaustion_equals_ftc: Archimedes limit = FTC integral (Part III connection)",
+      "inscribed_area_le_pi_r_sq: inscribed n-gon ≤ πr² for all n (upper bound)",
+      "archimedes_squeeze_from_below: inscribed areas form lower Riemann sums",
+      "archimedes_squeeze_approx: ε-N formulation of Archimedes' exhaustion",
+      "two_methods_one_area: uniqueness — any limit of inscribed areas equals the FTC integral",
+      "10 total theorems, 0 sorries, 0 axioms connecting two millennia of mathematics"
+    ],
+    "dateAdded": "2026-04-04",
+    "assumptions": "None. This is fully verified with 0 sorries and 0 axioms.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Archimedes (~250 BCE) computed the area of a circle using the **method of exhaustion**: inscribe a regular $n$-gon in a circle of radius $r$, compute its area as $\\frac{n}{2}r^2 \\sin(2\\pi/n)$, and let $n \\to \\infty$. As $n$ grows, the $n$-gon fills up the disk, and the area converges to $\\pi r^2$.\n\nTwenty-two centuries later, Newton and Leibniz developed the Fundamental Theorem of Calculus (FTC), which yields the same result through integration: since $A'(r) = 2\\pi r = C(r)$ (the circumference), we get $A(r) = \\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$.\n\nThis file answers **OQ-01-OQ-02-OQ-03**: can these two methods be formally connected? Yes — both converge to $\\pi r^2$, and by Hausdorff uniqueness of limits in $\\mathbb{R}$, there is only one such value. The exhaustion sequence and the FTC integral are not just numerically equal but provably represent the same mathematical object.",
+    "problemStatement": "**Open Question (area-of-circle-oq-01-oq-02-oq-03)**: Can Archimedes' classical exhaustion method be formally connected to the modern FTC-based proof that A = ∫₀ʳ C(ρ) dρ?\n\n**Answer**: Yes. Both methods compute πr² via different limiting processes. By Hausdorff uniqueness of limits in ℝ, both converge to the same value. This file formally proves the connection: the Archimedes sequence converges to the FTC integral.",
+    "text": "This file gives a complete formalization connecting two ancient and modern proofs of the circle area formula. **Part I** proves the FTC approach: since d/dr(πr²) = 2πr, the FTC gives ∫₀ʳ 2πρ dρ = πr². **Part II** proves the Archimedes approach: the inscribed n-gon area n/2 · r² · sin(2π/n) converges to πr² by the classical limit sin(h)/h → 1. **Part III** connects both: the Archimedes sequence converges to the same value as the FTC integral, justified by limit uniqueness.",
+    "proofStrategy": "**Part I: FTC Proof**\n- `hasDerivAt_circleArea`: differentiate πr² to get 2πr using `hasDerivAt_pow` and `const_mul`\n- `circumference_integral_eq`: apply FTC (`integral_eq_sub_of_hasDerivAt`) to conclude ∫₀ʳ 2πρ dρ = πr²\n\n**Part II: Archimedes' Exhaustion**\n- `tendsto_const_div_nat`: c/n → 0 (proved using `tendsto_inv_atTop_zero`)\n- `tendsto_sin_div_nhds_zero`: sin(h)/h → 1 (from `HasDerivAt.hasDerivAt_iff_tendsto_slope`)\n- `tendsto_two_pi_div_atTop`: 2π/n → 0 through nonzero values\n- `tendsto_n_sin_two_pi_div_n`: n·sin(2π/n) → 2π (composing the limit lemmas)\n- `tendsto_inscribed_to_pi_r_sq`: inscribedArea n r → πr²\n\n**Part III: Connection Theorems**\n- `exhaustion_equals_ftc`: Archimedes sequence → FTC integral value\n- `inscribed_area_le_pi_r_sq`: inscribed n-gon ≤ πr² (using sin(x) < x)\n- `archimedes_squeeze_approx`: ε-N characterization\n- `two_methods_one_area`: limit uniqueness in ℝ",
+    "keyInsights": [
+      "**sin(h)/h → 1 via HasDerivAt**: The limit sin(h)/h → 1 as h → 0 follows from the derivative of sin at 0 being cos(0) = 1, converted via `hasDerivAt_iff_tendsto_slope`. No circular reasoning — this is the rigorous derivation.",
+      "**tendsto_inv_atTop_zero replaces removed lemma**: `tendsto_const_div_atTop_nhds_0_nat` was removed from Mathlib 4.26. The equivalent proof uses `tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop` with `const_mul`.",
+      "**Filter.Eventually.mono for EventuallyEq.symm**: `key.symm` doesn't work on `Filter.Eventually` (wrong dot notation). Use `key.mono (fun _ h => h.symm)` instead.",
+      "**field_simp closes algebraic goals**: `field_simp [ne_of_gt hn']` closes `n / 2 * r² * (2π/n) = π * r²` completely — do NOT add `; ring` after it.",
+      "**Archimedes' connection is Hausdorff uniqueness**: The two methods agree because ℝ is Hausdorff — limits are unique. `tendsto_nhds_unique` formalizes Archimedes' implicit assumption that the area has a unique value."
+    ],
+    "prerequisites": [
+      "FTC (integral_eq_sub_of_hasDerivAt)",
+      "HasDerivAt for polynomials",
+      "Filter.Tendsto composition and manipulation",
+      "Real.sin_lt (sin(x) < x for x > 0)",
+      "nhdsWithin and EventuallyEq"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ftc-proof",
+      "title": "Part I: Circle Area via FTC",
+      "startLine": 41,
+      "endLine": 70,
+      "summary": "Proves ∫₀ʳ 2πρ dρ = πr² using the Fundamental Theorem of Calculus.",
+      "mathContext": "Since d/dr(πr²) = 2πr = circumference(r), the FTC gives the integral formula directly. Uses hasDerivAt_pow with const_mul, then integral_eq_sub_of_hasDerivAt."
+    },
+    {
+      "id": "archimedes-exhaustion",
+      "title": "Part II: Archimedes Inscribed Polygon",
+      "startLine": 71,
+      "endLine": 148,
+      "summary": "Proves inscribed n-gon area n/2·r²·sin(2π/n) → πr² as n → ∞.",
+      "mathContext": "Key limit: n·sin(2π/n) → 2π as n → ∞, proved by writing it as 2π·[sin(h)/h] with h = 2π/n → 0, and using sin(h)/h → 1."
+    },
+    {
+      "id": "connection",
+      "title": "Part III: Exhaustion–FTC Connection",
+      "startLine": 149,
+      "endLine": 215,
+      "summary": "Proves both methods agree: the Archimedes limit equals the FTC integral, and both equal πr².",
+      "mathContext": "exhaustion_equals_ftc: Archimedes sequence converges to FTC integral (limit uniqueness). inscribed_area_le_pi_r_sq: sin(x) < x gives upper bound. two_methods_one_area: Hausdorff uniqueness formalizes Archimedes' implicit assumption."
+    }
+  ],
+  "conclusion": {
+    "summary": "Both Archimedes' exhaustion method and the FTC integration proof converge to πr², and this file formally proves they compute the same value. The connection is `tendsto_nhds_unique` — Hausdorff uniqueness of limits — which formalizes the 2250-year-old implicit assumption that the circle has a unique well-defined area. 10 theorems, 0 sorries, 0 axioms.",
+    "implications": "This formalization shows that Archimedes was implicitly using the Hausdorff property of ℝ. His exhaustion argument shows that the area is simultaneously ≤ πr² (by inscribed polygons) and ≥ πr² (by circumscribed polygons), concluding that it equals πr² by completeness. The modern proof via FTC is more direct but makes the same fundamental use of the limit structure of ℝ. Formally, both are special cases of the general principle that limits in Hausdorff spaces are unique.",
+    "openQuestions": [
+      "Can the connection be extended to circumscribed polygon approximations, giving a two-sided squeeze theorem that matches Archimedes' original double exhaustion?",
+      "Does the convergence rate of inscribed n-gons (error ~ π²r²/n²) match what one gets from numerical integration error bounds on the FTC integral?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "area-of-circle-oq-01-oq-02",
+      "title": "Area from Circumference Integration",
+      "relationship": "OQ-01-OQ-02 proves the FTC integral formula; this file adds the Archimedes exhaustion connection"
+    },
+    {
+      "id": "area-of-circle",
+      "title": "Area of a Circle",
+      "relationship": "Base proof; this file extends the OQ chain connecting classical and modern methods"
+    }
+  ]
+}

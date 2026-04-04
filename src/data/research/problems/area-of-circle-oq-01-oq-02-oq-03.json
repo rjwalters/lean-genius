@@ -1,0 +1,117 @@
+{
+  "slug": "area-of-circle-oq-01-oq-02-oq-03",
+  "title": "Area of Circle: Archimedes Exhaustion Method",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "exhaustion_equals_ftc (r : ℝ) : Filter.Tendsto (fun n : ℕ => inscribedArea n r) Filter.atTop (nhds (∫ ρ in (0 : ℝ)..r, circumference ρ))",
+    "plain": "Can Archimedes' classical exhaustion method be formally connected to the modern FTC-based proof that A = ∫₀ʳ C(ρ) dρ? Both methods compute πr² via different limiting processes; by Hausdorff uniqueness they must agree.",
+    "whyMatters": [
+      "Connects two millennia of mathematical development: Archimedes (250 BCE) and Newton/Leibniz (17th century)",
+      "Formalizes the implicit Hausdorff assumption in Archimedes' double exhaustion argument",
+      "Proves sin(h)/h → 1 rigorously from the derivative definition, completing the Archimedes → FTC bridge"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "circumference_integral_eq: FTC proof ∫₀ʳ 2πρ dρ = πr²",
+      "tendsto_inscribed_to_pi_r_sq: inscribed n-gon → πr²",
+      "exhaustion_equals_ftc: both methods converge to the same value",
+      "inscribed_area_le_pi_r_sq: inscribed areas ≤ πr² (via sin(x) < x)",
+      "two_methods_one_area: limit uniqueness theorem"
+    ],
+    "open": [],
+    "goal": "Fully formalized: 10 theorems, 0 sorries, 0 axioms"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-04T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Completed: AreaOfCircleOQ01OQ02OQ03.lean compiles, 0 sorries, 10 theorems, 0 axioms.",
+    "blockers": [],
+    "nextAction": "Explore circumscribed polygon approximation (two-sided squeeze theorem matching full Archimedes argument).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries, 10 theorems, 0 axioms (exhaustion_equals_ftc and supporting lemmas)",
+    "builtItems": [
+      "hasDerivAt_circleArea: A'(r) = 2πr via hasDerivAt_pow + const_mul",
+      "circumference_integral_eq: FTC proof via integral_eq_sub_of_hasDerivAt",
+      "tendsto_const_div_nat: c/n → 0 via tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop",
+      "tendsto_sin_div_nhds_zero: sin(h)/h → 1 via HasDerivAt + hasDerivAt_iff_tendsto_slope",
+      "tendsto_two_pi_div_atTop: 2π/n → 0 in nhdsWithin 0 {0}ᶜ",
+      "tendsto_n_sin_two_pi_div_n: n·sin(2π/n) → 2π via composition",
+      "tendsto_inscribed_to_pi_r_sq: inscribed n-gon → πr²",
+      "exhaustion_equals_ftc: Archimedes sequence → FTC integral",
+      "inscribed_area_le_pi_r_sq: inscribed ≤ πr² via Real.sin_lt",
+      "archimedes_squeeze_approx: ε-N formulation",
+      "two_methods_one_area: uniqueness via tendsto_nhds_unique"
+    ],
+    "insights": [
+      "tendsto_const_div_atTop_nhds_0_nat was removed from Mathlib 4.26 — use tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop with const_mul instead",
+      "Filter.eventually_of_forall was renamed to Filter.Eventually.of_forall in current Lean 4 Mathlib",
+      "key.symm fails on Filter.Eventually type — use key.mono (fun _ h => h.symm) for EventuallyEq symmetry",
+      "field_simp [ne_of_gt hn'] closes n/2 * r² * (2π/n) = π*r² completely — do not add ; ring after it",
+      "div_lt_iff₀ is the current name in Lean 4.26 but div_lt_iff also works in some contexts; avoid both by using direct calc proofs",
+      "mul_le_mul_of_nonneg_left + calc for inscribed_area_le_pi_r_sq works cleanly: multiply upper bound by nonneg coefficient"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Explore circumscribed polygon approximation for two-sided squeeze theorem",
+      "Compare convergence rates: Archimedes' error ~ π²r²/n² vs. FTC numerical integration"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "technique",
+    "archimedes",
+    "ftc",
+    "exhaustion"
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "area-of-circle-oq-01",
+    "area-of-circle-oq-01-oq-02",
+    "area-of-circle-oq-01-oq-02-oq-03",
+    "area-of-circle-oq-01-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Archimedes, Measurement of a Circle (~250 BCE)"
+    ],
+    "urls": [],
+    "mathlib": [
+      "tendsto_inv_atTop_zero",
+      "tendsto_natCast_atTop_atTop",
+      "Filter.Tendsto.const_mul",
+      "Real.sin_lt",
+      "hasDerivAt_iff_tendsto_slope",
+      "integral_eq_sub_of_hasDerivAt",
+      "tendsto_nhds_unique"
+    ]
+  },
+  "started": "2026-04-04T05:15:05.955Z",
+  "lastUpdate": "2026-04-04T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ03.lean",
+      "lineCount": 216,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ03.lean"
+    }
+  ]
+}
