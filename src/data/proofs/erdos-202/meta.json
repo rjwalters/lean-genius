@@ -54,7 +54,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 860,
-    "assumptions": "4 sorry(s). No axioms."
+    "assumptions": "3 sorry(s). No axioms."
   },
   "overview": {
     "historicalContext": "**From Covering Systems to Smooth Number Bounds**\n\n**Erdős** and **Stein** conjectured in the 1960s that $f(N) = o(N)$, where $f(N)$ is the maximum number of pairwise disjoint congruence classes with moduli $\\leq N$. **Erdős** and **Szemerédi** proved this conjecture in 1968 using sieve methods, showing $f(N) < N/(\\log N)^c$ for some $c > 0$.\n\nThe precise asymptotics involve the **subexponential function** $L(N) = \\exp(\\sqrt{\\log N \\cdot \\log\\log N})$, which arises naturally from smooth number theory. **Croot** (2003) established bounds $N/L(N)^{\\sqrt{2}+o(1)} < f(N) < N/L(N)^{1/6-o(1)}$, introducing character sum techniques. **Chen** (2005) and **de la Bretèche–Ford–Vandehey** (2013) tightened these to:\n$$\\frac{N}{L(N)^{1+o(1)}} < f(N) < \\frac{N}{L(N)^{\\sqrt{3}/2+o(1)}}$$\n\nThe lower bound is conjectured to be tight. The problem connects to the **Erdős covering system conjecture** (disproved by Hough 2015), **smooth number distribution** (Dickman's function), and **sieve theory**. This is one of 798 lines of Lean formalization, with 7 theorems proved by the Aristotle proof search system.",
