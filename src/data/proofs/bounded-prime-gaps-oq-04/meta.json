@@ -81,36 +81,41 @@
       "id": "chebyshev-functions",
       "title": "Chebyshev ψ Functions",
       "summary": "Definitions of ψ(x), ψ(x;q,a), and π(x;q,a) using Mathlib's von Mangoldt function",
-      "startLine": 56,
-      "endLine": 100
-    },
-    {
-      "id": "basic-properties",
-      "title": "Basic Properties",
-      "summary": "ψ(0) = 0, nonnegativity, ψ(x;1,0) = ψ(x), counting bounds",
-      "startLine": 101,
-      "endLine": 130
+      "startLine": 67,
+      "endLine": 126,
+      "mathContext": "$\\psi(x) = \\sum_{n \\leq x} \\Lambda(n)$, $\\psi(x;q,a) = \\sum_{n \\leq x,\\, n \\equiv a(q)} \\Lambda(n)$, expected main term $x/\\varphi(q)$."
     },
     {
       "id": "bv-statement",
       "title": "The Bombieri-Vinogradov Theorem",
-      "summary": "Formal axiom statement of BV and immediate consequences",
-      "startLine": 131,
-      "endLine": 190
+      "summary": "Formal axiom statement of BV and immediate consequences (A=2 case)",
+      "startLine": 128,
+      "endLine": 191,
+      "mathContext": "BV: $\\sum_{q \\leq \\sqrt{x}/(\\log x)^B} \\max_{\\gcd(a,q)=1} |\\psi(x;q,a) - x/\\varphi(q)| \\leq Cx/(\\log x)^A$ for all $A > 0$. Achieves RH-quality equidistribution unconditionally."
     },
     {
       "id": "maynard-tao-connection",
       "title": "Connection to Maynard-Tao Sieve",
-      "summary": "Level of distribution, BV gives θ=1/2, Elliott-Halberstam conjecture",
-      "startLine": 191,
-      "endLine": 230
+      "summary": "Level of distribution θ=1/2, Elliott-Halberstam conjecture (θ→1 gives gap bound 12)",
+      "startLine": 193,
+      "endLine": 231,
+      "mathContext": "Level of distribution $\\theta$: BV gives $\\theta = 1/2$ unconditionally. EH conjecture: $\\theta \\to 1$. Under EH, Maynard-Tao gives gap bound 12 (vs 246 under BV)."
     },
     {
       "id": "prerequisite-roadmap",
       "title": "Prerequisite Roadmap",
-      "summary": "4-layer analysis: character sums, analytic core, sieve methods, assembly (~12000 lines)",
-      "startLine": 231,
-      "endLine": 290
+      "summary": "4-layer roadmap: character sums (2000), analytic core (5000), sieves (3000), assembly (2000) = 12000 lines",
+      "startLine": 233,
+      "endLine": 298,
+      "mathContext": "Critical path: Pólya-Vinogradov ($|\\sum \\chi(n)| \\leq \\sqrt{q}\\log q$) → Siegel-Walfisz → large sieve → Vaughan's identity → BV. Layer 1 alone enables ~30 other Mathlib PRs."
+    },
+    {
+      "id": "polya-vinogradov",
+      "title": "Pólya-Vinogradov Inequality",
+      "summary": "Statement of the key missing Mathlib lemma and its role in the BV proof",
+      "startLine": 300,
+      "endLine": 337,
+      "mathContext": "Pólya-Vinogradov (1918): $|\\sum_{n=M+1}^{M+N} \\chi(n)| \\leq \\sqrt{q} \\log q$ for non-principal $\\chi \\pmod{q}$, any $M, N$. The $\\sqrt{q}\\log q$ bound is independent of the interval length."
     }
   ],
   "conclusion": {
