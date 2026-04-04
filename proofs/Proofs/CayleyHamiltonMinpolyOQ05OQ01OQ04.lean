@@ -52,25 +52,24 @@ def IsNonderogatory (M : Matrix (Fin n) (Fin n) K) : Prop :=
 -- SECTION II: Similarity Preserves Cyclic Vectors
 -- ============================================================
 
-/-- Conjugation by an invertible matrix commutes with polynomial evaluation. -/
+/-- Conjugation by an invertible matrix commutes with polynomial evaluation.
+    Uses P.inv and P.val (Units structure fields) to avoid coercion elaboration issues. -/
 theorem aeval_conj (M : Matrix (Fin n) (Fin n) K) (P : (Matrix (Fin n) (Fin n) K)ˣ)
     (p : K[X]) :
-    aeval (↑P⁻¹ * M * ↑P) p = ↑P⁻¹ * aeval M p * ↑P := by
-  -- Key: (P⁻¹MP)^k = P⁻¹M^kP by induction
-  have conj_pow : ∀ k : ℕ, (↑P⁻¹ * M * (↑P : Matrix (Fin n) (Fin n) K)) ^ k =
-      ↑P⁻¹ * M ^ k * ↑P := by
+    aeval (P.inv * M * P.val) p = P.inv * aeval M p * P.val := by
+  -- Key: (P.inv * M * P.val)^k = P.inv * M^k * P.val by induction
+  have conj_pow : ∀ k : ℕ, (P.inv * M * P.val) ^ k = P.inv * M ^ k * P.val := by
     intro k
     induction k with
     | zero =>
       simp only [pow_zero, mul_one]
-      exact (Units.inv_mul P).symm
+      exact P.inv_val.symm
     | succ k ih =>
       rw [pow_succ, ih, pow_succ]
-      have hmul : (↑P : Matrix (Fin n) (Fin n) K) * ↑P⁻¹ = 1 := Units.mul_inv P
-      calc ↑P⁻¹ * M ^ k * ↑P * (↑P⁻¹ * M * ↑P)
-          = ↑P⁻¹ * M ^ k * ((↑P : Matrix (Fin n) (Fin n) K) * ↑P⁻¹) * M * ↑P := by ring
-        _ = ↑P⁻¹ * M ^ k * 1 * M * ↑P := by rw [hmul]
-        _ = ↑P⁻¹ * M ^ (k + 1) * ↑P := by ring
+      calc P.inv * M ^ k * P.val * (P.inv * M * P.val)
+          = P.inv * M ^ k * (P.val * P.inv) * M * P.val := by ring
+        _ = P.inv * M ^ k * 1 * M * P.val := by rw [P.val_inv]
+        _ = P.inv * M ^ (k + 1) * P.val := by ring
   -- Induct on p
   induction p using Polynomial.induction_on' with
   | h_add p q hp hq =>
@@ -79,29 +78,35 @@ theorem aeval_conj (M : Matrix (Fin n) (Fin n) K) (P : (Matrix (Fin n) (Fin n) K
     simp only [Polynomial.aeval_monomial, conj_pow]
     rw [← smul_mul_assoc, ← mul_smul_comm]
 
-/-- If N has a cyclic vector w, and M = P⁻¹NP, then M has a cyclic vector. -/
+/-- If N has a cyclic vector w, and M = P.inv * N * P.val, then M has a cyclic vector. -/
 theorem cyclic_vector_of_similar
     (M N : Matrix (Fin n) (Fin n) K)
     (P : (Matrix (Fin n) (Fin n) K)ˣ)
-    (hMN : M = ↑P⁻¹ * N * ↑P)
+    (hMN : M = P.inv * N * P.val)
     (w : Fin n → K) (hw : IsCyclicVector N w) :
     ∃ v, IsCyclicVector M v := by
-  -- v = P⁻¹ · w is cyclic for M
-  refine ⟨(↑P⁻¹ : Matrix (Fin n) (Fin n) K).mulVec w, fun p hp hann => ?_⟩
+  -- v = P.inv · w is cyclic for M
+  refine ⟨P.inv.mulVec w, fun p hp hann => ?_⟩
   apply hw p hp
-  -- Substitute M = P⁻¹NP and apply aeval_conj
-  rw [hMN] at hann
-  have hac : aeval (↑P⁻¹ * N * ↑P) p = ↑P⁻¹ * aeval N p * ↑P :=
-    CyclicVectorArbitrary.aeval_conj N P p
-  rw [hac] at hann
-  -- Simplify: (P⁻¹ · aeval(N)(p) · P) · (P⁻¹ · w) = P⁻¹ · (aeval(N)(p) · w) via PP⁻¹ = 1
-  rw [Matrix.mulVec_mulVec,
-      ← Matrix.mulVec_mulVec (↑P : Matrix (Fin n) (Fin n) K) ↑P⁻¹,
-      Units.mul_inv, Matrix.one_mulVec, Matrix.mulVec_mulVec] at hann
-  -- P⁻¹ · (aeval(N)(p) · w) = 0 ⟹ aeval(N)(p) · w = 0 (multiply by P)
-  have := congr_arg ((↑P : Matrix (Fin n) (Fin n) K).mulVec) hann
-  rwa [← Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec,
-       Matrix.mulVec_zero] at this
+  -- Substitute M = P.inv * N * P.val and apply aeval_conj
+  rw [hMN, aeval_conj N P p] at hann
+  -- hann : (P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w) = 0
+  -- Rearrange to: P.inv *ᵥ (aeval N p *ᵥ w) = 0
+  have hrearrange : (P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w) =
+      P.inv *ᵥ ((aeval N p) *ᵥ w) := by
+    rw [← Matrix.mulVec_mulVec (P.inv * aeval N p * P.val) P.inv w]
+    rw [show (P.inv * aeval N p * P.val) * P.inv = P.inv * aeval N p from by
+          have h : P.inv * aeval N p * P.val * P.inv =
+              P.inv * aeval N p * (P.val * P.inv) := by ring
+          rw [h, P.val_inv, mul_one]]
+    rw [Matrix.mulVec_mulVec P.inv (aeval N p) w]
+  rw [hrearrange] at hann
+  -- hann : P.inv *ᵥ (aeval N p *ᵥ w) = 0
+  -- Multiply by P.val on left: P.val * P.inv = 1, so aeval N p *ᵥ w = 0
+  have key := congr_arg P.val.mulVec hann
+  rw [Matrix.mulVec_zero, ← Matrix.mulVec_mulVec P.val P.inv ((aeval N p) *ᵥ w),
+      P.val_inv] at key
+  simpa using key
 
 -- ============================================================
 -- SECTION III: Annihilator Characterization
