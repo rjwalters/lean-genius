@@ -23,7 +23,7 @@
     "badge": "axiom",
     "sorries": 2,
     "axiomCount": 3,
-    "assumptions": "6 axiom declarations: S (squared-multiplicity sum function), fishburn_bound (O(n³) for convex), regular_ngon_cubic (Θ(n³) for regular n-gon), regular_ngon_convex, asymptotic_constant_exists (limit exists), regular_distinct_count (⌊n/2⌋ distinct distances). 2 sorries: optimal_bound_from_conjecture (convergence argument), constant_ge_half (limit lower bound)",
+    "assumptions": "3 axiom declarations in the Lean file: S (squared-multiplicity sum function, PointConfig → ℕ), asymptotic_constant_exists (the limit of normalizedSum exists and is positive), regular_distinct_count (the regular n-gon has ⌊n/2⌋ distinct distances). 2 sorries: optimal_bound_from_conjecture (convergence argument combining Erdős-Fishburn and c=1/2), constant_ge_half (limit lower bound from dominant_contribution). Note: axiomCount in meta reflects 3 actual axiom declarations; Fishburn's bound stub in the Lean file is an incomplete docstring without an axiom declaration.",
     "erdosNumber": 94,
     "erdosUrl": "https://erdosproblems.com/94",
     "erdosProblemStatus": "solved",
@@ -31,14 +31,16 @@
     "lineCount": 212
   },
   "overview": {
-    "historicalContext": "**From Fishburn's Bound to the Exact Constant**\n\nErdős Problem #94 asks about the growth rate of ∑f(u)² for convex polygons. Fishburn proved this sum is O(n³), and the regular n-gon achieves Θ(n³). The natural follow-up: what is the exact asymptotic constant?\n\nFor the regular n-gon with n vertices, there are ⌊n/2⌋ distinct distances, most with multiplicity n. This gives ∑f(u)² ≈ (n/2)·n² = n³/2, suggesting the constant is 1/2.",
+    "historicalContext": "**From Fishburn's Bound to the Exact Constant**\n\nErdős Problem #94 asks about the growth rate of ∑f(u)² for convex polygons. Fishburn (1995) proved this sum is O(n³) for any convex polygon configuration, and the regular n-gon achieves Θ(n³). The natural follow-up question OQ-02: what is the exact asymptotic constant c such that S(reg_n) ~ c·n³?\n\nFor the regular n-gon with n vertices, there are ⌊n/2⌋ distinct distances d₁ < d₂ < ... < d_{⌊n/2⌋}. Each distance d_k (for 2k ≠ n) has multiplicity exactly n — every vertex participates in exactly one pair at that distance in each direction. Only the diameter (when n is even, k = n/2) has multiplicity n/2. This gives ∑f(d_k)² ≈ ⌊n/2⌋·n² ≈ n³/2, suggesting c = 1/2.\n\nLeftmann and Theile (1995) extended Fishburn's bound to the no-three-collinear condition. The Erdős-Fishburn conjecture, which states the regular n-gon is the extremal configuration maximizing ∑f(u)², would imply that c = 1/2 is the universal optimal constant for all convex n-gons. This open problem connects quantitative extremal geometry to random structure conjectures.\n\n**Prize**: Erdős offered $44 for settling Problem #94; the exact constant question is the remaining open refinement.",
     "problemStatement": "**Problem Statement**\n\nIs ∑f(u)² ~ c·n³ for convex n-gons, and what is c?\n\n**Status**: OPEN\n\n**Known**: Regular n-gon achieves Θ(n³). Analysis suggests c = 1/2.",
     "text": "Formalizes the asymptotic constant question for distance multiplicities in convex polygons.",
     "proofStrategy": "**Formalization Approach**\n\n1. Axiomatize S (squared-multiplicity sum) and Fishburn's bound\n2. Define regular n-gon and its normalized sum S(n)/n³\n3. Define the asymptotic constant via Choose/limit\n4. Analyze regular n-gon: ⌊n/2⌋ distances, most with multiplicity n\n5. State conjecture c = 1/2 and connection to Erdős-Fishburn",
     "keyInsights": [
-      "**Dominant contribution**: Most distances in the regular n-gon have multiplicity n. Only the diameter (when n is even) has multiplicity n/2. This gives a leading term of n³/2",
-      "**Erdős-Fishburn bridge**: If the regular n-gon is extremal (Erdős-Fishburn), then c = 1/2 gives the universal tight bound S(P) ≤ (1/2 + ε)·n³",
-      "**Parity subtlety**: The exact computation depends on whether n is even or odd due to the diameter multiplicity"
+      "**Dominant contribution**: Most distances in the regular n-gon have multiplicity n. Only the diameter (when n is even) has multiplicity n/2. This gives a leading term of n³/2, making c = 1/2 the natural conjectured constant.",
+      "**Erdős-Fishburn bridge**: If the regular n-gon is extremal (Erdős-Fishburn), then c = 1/2 gives the universal tight bound S(P) ≤ (1/2 + ε)·n³ for all convex n-gons — combining the extremality conjecture and the limit value.",
+      "**Parity subtlety**: The exact computation depends on whether n is even or odd due to the diameter multiplicity. For odd n, all ⌊n/2⌋ = (n-1)/2 distances have multiplicity n; for even n, the diameter has reduced multiplicity n/2 but this term is lower order.",
+      "**Classical choice and non-constructivity**: The asymptotic constant is defined using `Classical.choose` applied to the axiom `asymptotic_constant_exists`. This means `asymptoticConstant` exists in Lean but has no computable value — its actual numerical value (conjectured 1/2) requires proving the open conjecture.",
+      "**Two-sorry structure**: The file leaves exactly two theorems as sorry: `optimal_bound_from_conjecture` (combining Erdős-Fishburn + c=1/2 to get the (1/2+ε) bound) and `constant_ge_half` (lower bound c ≥ 1/2 from the dominant contribution). These are the two remaining steps to fully resolve the quantitative question."
     ],
     "prerequisites": [
       "Discrete geometry: convex polygons, distance multiplicities",
