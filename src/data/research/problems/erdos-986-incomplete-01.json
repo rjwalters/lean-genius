@@ -1,0 +1,66 @@
+{
+  "slug": "erdos-986-incomplete-01",
+  "title": "Erdős #986: Ramsey Number Lower Bounds (1 sorry)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Erdős #986: Ramsey Number Lower Bounds (1 sorry).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T22:29:17.629Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Eliminated sole sorry by identifying false statement and replacing with proven symmetric Ramsey theorem; file builds cleanly with 0 sorries 0 warnings",
+    "builtItems": [
+      "Fixed RamseyNumber definition: replaced false sorry with RamseysTheorem.ramsey_theorem.choose in proofs/Proofs/Erdos986Problem.lean:54-57",
+      "Removed 3 pre-existing floating docstrings that caused parse errors",
+      "Added noncomputable to exponent_gap definition"
+    ],
+    "insights": [
+      "The original RamseyExists sorry was for a FALSE statement: asymmetric colorings Fin N → Fin N → Bool can avoid monochromatic cliques by making all pairs mixed (one direction true, one false), so no N satisfies the property",
+      "The correct Ramsey theorem requires symmetric (undirected) edge colorings — RamseysTheorem.lean already has a complete proof of this (ramsey_theorem)",
+      "Floating docstrings /-- ... -/ not attached to declarations cause Lean 4 parse errors; exponent_gap requires noncomputable due to real division"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "completion",
+    "erdos",
+    "ramsey-theory"
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-98",
+    "erdos-986"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T22:29:17.628Z",
+  "lastUpdate": "2026-04-03T22:29:17.628Z",
+  "significance": 7,
+  "tractability": 5
+}
