@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-01",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "Unnecessary Hypothesis Detection: Dropping Prime from prime_degree_dvd_card",
+    "content": "Mathlib's Polynomial.Gal.prime_degree_dvd_card requires p.natDegree.Prime but uses that hypothesis only to deduce p.degree ≠ 0. This deduction also follows from Irreducible.natDegree_pos (positive degree for any irreducible polynomial). The generalized natDegree_dvd_card_gal (proved in the parent file AngleTrisectionOQ02OQ01.lean) replaces Nat.Prime.ne_zero with Irreducible.natDegree_pos.ne', dropping the Prime hypothesis entirely. The parent theorem uses Nat.card p.Gal (vs Fintype.card p.Gal in Mathlib's original), bridged by Fintype.card_eq_nat_card in the corollary.",
+    "mathContext": "Mathlib: $\\text{natDegree}(p)$ prime $\\implies \\text{natDegree}(p) \\mid |\\text{Gal}(p)|$. Generalization: irreducible $\\implies \\text{natDegree}(p) \\mid |\\text{Gal}(p)|$. Key: $\\text{natDegree}(p) > 0$ for irreducible $p$ (no primality needed).",
+    "significance": "key",
+    "relatedConcepts": ["unnecessary hypothesis pattern", "Irreducible.natDegree_pos", "Nat.Prime.ne_zero"],
+    "prerequisites": ["Polynomial.Gal in Mathlib", "splitting fields", "CharZero fields"]
+  },
+  {
+    "id": "ann-02",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 56 },
+    "type": "technique",
+    "title": "One-Line Corollary: Fintype.card_eq_nat_card Bridge",
+    "content": "prime_degree_dvd_card_from_general demonstrates that the Mathlib theorem is a trivial corollary of the generalized one. The proof is exactly two steps: (1) rw [Fintype.card_eq_nat_card] converts Fintype.card p.Gal to Nat.card p.Gal, matching the parent theorem's conclusion; (2) exact AngleTrisectionOQ02OQ01.natDegree_dvd_card_gal p_irr applies the parent theorem (ignoring the unused p_deg hypothesis). This is the canonical pattern for demonstrating that an existing theorem is an instance of a more general result.",
+    "mathContext": "$|\\text{Gal}(p)|_{\\text{Fintype}} = |\\text{Gal}(p)|_{\\text{Nat.card}}$ (Fintype.card_eq_nat_card). The Lean 4 Gal group inherits Fintype from the finite splitting field.",
+    "significance": "key",
+    "relatedConcepts": ["Fintype.card_eq_nat_card", "Nat.card vs Fintype.card", "corollary proof"],
+    "prerequisites": ["Fintype.card_eq_nat_card", "exact + apply bridging API differences"]
+  },
+  {
+    "id": "ann-03",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 90 },
+    "type": "technique",
+    "title": "Tower Law Proof Structure for Galois Divisibility",
+    "content": "The contribution-ready Mathlib code reveals the full proof structure. Gal.card_of_separable converts |Gal(p)| to [SplittingField(p) : F]. A root α ∈ SplittingField(p) is constructed via rootOfSplits (requiring p.degree ≠ 0, which follows from Irreducible.natDegree_pos). Then: [SplittingField(p) : F] = [SplittingField(p) : F(α)] · [F(α) : F] by finrank_mul_finrank (tower law). Since [F(α) : F] = natDegree(minpoly F α) = natDegree(p) (by irreducibility: minpoly ∣ p and p ∣ minpoly via dvd_symm), the divisibility follows.",
+    "mathContext": "$|\\text{Gal}(p)| = [\\text{SplittingField}(p):F] = [\\text{SplittingField}(p):F(\\alpha)] \\cdot \\underbrace{[F(\\alpha):F]}_{= \\deg(p)}$. Hence $\\deg(p) \\mid |\\text{Gal}(p)|$.",
+    "significance": "key",
+    "relatedConcepts": ["tower law", "Gal.card_of_separable", "rootOfSplits", "finrank_mul_finrank"],
+    "prerequisites": ["IntermediateField.adjoin.finrank", "minpoly irreducibility", "Module.finrank tower law"]
+  },
+  {
+    "id": "ann-04",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01",
+    "range": { "startLine": 76, "endLine": 90 },
+    "type": "insight",
+    "title": "minpoly Degree Equals p Degree via Irreducible dvd_symm",
+    "content": "The key step showing natDegree(minpoly F α) = natDegree(p) uses a symmetric irreducibility argument: (1) minpoly F α ∣ p (since α is a root: aeval_def + map_rootOfSplits); (2) p ∣ minpoly F α via minpoly.irreducible.dvd_symm + p_irr (if two irreducible polynomials divide each other, they are associates up to a unit, so same degree). Then natDegree_le_of_dvd gives ≤ in both directions, closing with le_antisymm. This avoids needing primality: associateness of irreducibles works for any irreducible polynomial over a field.",
+    "mathContext": "$\\text{minpoly}_F(\\alpha) \\mid p$ and $p \\mid \\text{minpoly}_F(\\alpha)$ (both irreducible) $\\implies \\deg(\\text{minpoly}) = \\deg(p)$. Key: `Irreducible.dvd_symm` in `CommMonoidWithZero`.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimal polynomial", "Irreducible.dvd_symm", "natDegree_le_of_dvd"],
+    "prerequisites": ["minpoly.dvd", "aeval_def", "map_rootOfSplits"]
+  },
+  {
+    "id": "ann-05",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01",
+    "range": { "startLine": 92, "endLine": 121 },
+    "type": "context",
+    "title": "Mathlib Contribution Plan: Deprecation Strategy and API Alignment",
+    "content": "The contribution plan documents the exact changes to Mathlib/FieldTheory/PolynomialGaloisGroup.lean. The strategy: add natDegree_dvd_card as the primary theorem; deprecate prime_degree_dvd_card with @[deprecated natDegree_dvd_card (since := \"YYYY-MM-DD\")] so it becomes a one-line corollary. Key API differences: the gallery proof uses Nat.card (bridged by Fintype.card_eq_nat_card), while Mathlib's version uses Fintype.card throughout. Module.finrank = FiniteDimensional.finrank in modern Mathlib. The PR checklist includes checking downstream uses of prime_degree_dvd_card to ensure no breakage.",
+    "mathContext": "Mathlib deprecation pattern: `@[deprecated theorem (since := \"date\")]`. The generalized theorem has strictly fewer hypotheses, so all existing callers remain valid without change.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib contribution workflow", "deprecated attribute", "API alignment"],
+    "prerequisites": ["Mathlib PR process", "@[deprecated] attribute syntax"]
+  },
+  {
+    "id": "ann-06",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "insight",
+    "title": "Gallery as Mathlib Pre-Contribution: Hypothesis Minimization Pattern",
+    "content": "This entry exemplifies the gallery as a staging ground for Mathlib contributions. The pattern: (1) prove a Mathlib theorem directly from the library; (2) inspect the proof to find unnecessary hypotheses; (3) prove the generalization; (4) show the original as a corollary; (5) draft the exact contribution code. The unnecessary hypothesis pattern is common in Mathlib — theorems proved first for prime degree (the relevant case for constructibility and Galois extensions of number fields) may later be seen to hold generally. Similar patterns appear in results about groups of prime order, ideals of prime index, etc.",
+    "mathContext": "Context for angle trisection: the degree-3 irreducible $X^3 - 2$ has prime degree 3. The original `prime_degree_dvd_card` was proved for this case. But 3 is prime and irreducible — the prime condition was never needed.",
+    "significance": "context",
+    "relatedConcepts": ["hypothesis minimization", "Mathlib contribution", "constructibility theory"],
+    "prerequisites": ["angle trisection impossibility", "degree-3 Galois groups", "Mathlib gallery connection"]
+  }
+]
