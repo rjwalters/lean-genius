@@ -42,25 +42,42 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module: Descartes Parity via Complex Root Theory",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring explaining the OQ: can Descartes' parity be proved via complex conjugate root pairs? Outlines the 5-step complex root theory approach and lists what is and isn't proved in this file.",
+      "mathContext": "Contrasts two approaches: (1) complex root theory — non-real roots pair up, making their count even; (2) factoring approach — more direct in Lean. The file implements (1) and assesses where the gap lies."
+    },
+    {
       "id": "conjugate-evaluation",
       "title": "Part 1: Complex Conjugate Pairs",
       "startLine": 41,
-      "endLine": 64,
+      "endLine": 63,
       "summary": "eval_conj_eq_conj_eval: p(z̄) = p̄(z) for real polynomials, proved by Polynomial.induction_on' (h_add + h_monomial). isRoot_conj_of_isRoot: if z is a root, so is z̄ — one line from eval_conj_eq_conj_eval + map_zero."
     },
     {
       "id": "non-real-pairing",
       "title": "Part 2: Non-Real Roots Come in Pairs",
-      "startLine": 66,
-      "endLine": 90,
+      "startLine": 65,
+      "endLine": 91,
       "summary": "isReal_iff_eq_conj: z = z̄ iff z.im = 0, proved by forward/backward directions. ne_conj_of_nonreal: z ≠ z̄ when z.im ≠ 0. nonreal_roots_paired: bundles both results — the conjugate is also a root and is distinct."
     },
     {
-      "id": "parity-results",
-      "title": "Parts 3-4: Parity and Degree Examples",
+      "id": "parity-arithmetic",
+      "title": "Part 3: Parity of Real Root Count",
       "startLine": 92,
+      "endLine": 115,
+      "summary": "parity_of_real_roots: if n = r + c and c is even, then n and r have the same parity. parity_diff: n - r is even iff c is even. Both proved by omega after obtaining the Even witness.",
+      "mathContext": "Pure arithmetic backbone: degree = real_roots + non_real_roots with non_real count even (conjugate pairs) implies degree ≡ real_root_count (mod 2)."
+    },
+    {
+      "id": "degree-examples",
+      "title": "Part 4: Cubic and Quartic Examples",
+      "startLine": 116,
       "endLine": 154,
-      "summary": "parity_of_real_roots and parity_diff: pure arithmetic results about even counts via omega. cubic_real_root_parity (1 or 3 real roots) and quartic_real_root_parity (0, 2, or 4 real roots): concrete applications of the parity framework."
+      "summary": "Discussion of the 5-step approach and its gaps vs the factoring proof. cubic_real_root_parity (r ∈ {1,3}) and quartic_real_root_parity (r ∈ {0,2,4}): both proved by omega from Even c = 2k.",
+      "mathContext": "Cubic (3 = r + 2k): r ∈ {1,3}. Quartic (4 = r + 2k): r ∈ {0,2,4}. Assessment: complex approach is pedagogically valuable (explains WHY) but factoring approach is more direct in Lean."
     }
   ],
   "conclusion": {
@@ -90,6 +107,5 @@
       "relationship": "extends",
       "description": "Alternative proof approach for the parity result"
     }
-  ],
-  "sections": []
+  ]
 }
