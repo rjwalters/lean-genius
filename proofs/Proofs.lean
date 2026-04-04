@@ -150,6 +150,7 @@ import Proofs.BoundedPrimeGapsSieve
 import Proofs.BoundedPrimeGapsTPC
 import Proofs.BrouwerFixedPoint
 import Proofs.BrouwerFixedPointOQ01
+import Proofs.BrouwerFixedPointOQ01OQ02
 import Proofs.BrouwerFixedPointOQ02
 import Proofs.BrouwerFixedPointOQ02Ext
 import Proofs.BrouwerFixedPointOQ02OQ01
