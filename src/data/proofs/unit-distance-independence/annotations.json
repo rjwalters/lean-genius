@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-udi-independence-definition",
+    "startLine": 40,
+    "endLine": 76,
+    "type": "definition",
+    "title": "Independence Set Definitions",
+    "body": "Two complementary independence predicates are defined: `IsIndepSet` for arbitrary (possibly infinite) `Set V`, and `IsIndepFinset` for `Finset V`. Both require that no two distinct members are adjacent in the graph. The finset variant is more computationally tractable and is used throughout the file. Basic closure properties follow immediately: the empty set is independent (`isIndepFinset_empty`), singletons are independent (`isIndepFinset_singleton`), and subsets of independent sets are independent (`isIndepFinset_subset`). These three properties make `IsIndepFinset` a hereditary set system — the family of all independent sets is closed under subsets.",
+    "mathContext": "An independent set (also called a stable set) in a graph G = (V, E) is a set S ⊆ V such that no edge of E has both endpoints in S. Equivalently, the induced subgraph G[S] has no edges. The collection of all independent sets forms a simplicial complex (closed under subsets) called the independence complex of G. Independence sets are dual to cliques: S is independent in G iff S is a clique in the complement Gᶜ.",
+    "significance": "The split into Set and Finset variants reflects Lean's type-theoretic distinction between computable and classical mathematics. Finset predicates enable decidable computations and fit naturally with Mathlib's combinatorics infrastructure. The three basic lemmas (empty, singleton, subset) are the axioms of a hereditary independence system — a foundation for matroid theory.",
+    "relatedConcepts": ["clique", "complement-graph", "hereditary-set-system", "simplicial-complex", "matroid"],
+    "prerequisites": ["SimpleGraph", "Finset membership", "adjacency relation"]
+  },
+  {
+    "id": "ann-udi-independence-number",
+    "startLine": 83,
+    "endLine": 103,
+    "type": "definition",
+    "title": "Independence Number as a Supremum",
+    "body": "The independence number `α(G) = independenceNumber G` is defined as the supremum of cardinalities over all independent finsets. Formally: `Finset.sup (powerset(univ).filter isIndep) Finset.card`. This noncomputable definition uses `Finset.sup` over the powerset — filtering to keep only independent sets, then taking the maximum cardinality. The key bound `indep_card_le_alpha` says every independent set S has |S| ≤ α(G), giving the universal property of the maximum.",
+    "mathContext": "The independence number α(G) is one of the most studied graph parameters. It is NP-hard to compute in general (the maximum independent set problem). Key bounds: α(G) ≥ n/(Δ+1) (greedy bound, proved in Part X), α(G) ≥ n/χ(G) (chromatic bound, proved in Part IX), and the trivial α(G) ≤ n. For unit distance graphs on the plane, the chromatic bound with χ ≤ 7 gives α(S) ≥ |S|/7 for any finite point set S.",
+    "significance": "The sup-over-powerset definition is logically clean but computationally expensive — it must inspect all 2^n subsets. For algorithmic purposes, α(G) is typically computed via branch-and-bound or semidefinite programming. The `noncomputable` keyword in Lean reflects this: the definition exists but cannot be reduced to a finite algorithm in general.",
+    "relatedConcepts": ["independence-number", "chromatic-number", "NP-hardness", "Lovász-theta-function"],
+    "prerequisites": ["Finset.sup", "Finset.powerset", "Finset.filter", "noncomputable definitions"]
+  },
+  {
+    "id": "ann-udi-de-grey-axiom",
+    "startLine": 129,
+    "endLine": 133,
+    "type": "historical",
+    "title": "De Grey's 2018 Lower Bound Axiom",
+    "body": "The axiom `hadwiger_nelson_lower_bound` states: for every 4-coloring c : Plane → Fin 4 of the plane, there exist points p, q at distance 1 with the same color. Equivalently, the unit distance graph on ℝ² cannot be properly 4-colored, so χ(ℝ²) ≥ 5. This was proved in 2018 by Aubrey de Grey, an amateur mathematician (professionally a biogerontologist), by constructing an explicit graph of 1581 vertices embeddable in ℝ² that requires 5 colors. The result shocked the mathematical community: the Hadwiger-Nelson problem had been open for 68 years with the lower bound stuck at 4.",
+    "mathContext": "The lower bound progression: χ(ℝ²) ≥ 4 was known since 1950 (Moser spindle, a 7-vertex graph, is 4-chromatic and embeds in ℝ²). De Grey's 2018 paper 'The chromatic number of the plane is at least 5' found a 1581-vertex graph (later reduced to 553 vertices by others using computer search) with χ = 5 that embeds in ℝ². The upper bound χ(ℝ²) ≤ 7 has been known since 1950 via hexagonal tiling. Thus 5 ≤ χ(ℝ²) ≤ 7, with the exact value still unknown.",
+    "significance": "De Grey's result is a landmark in combinatorial geometry. It demonstrated that computer-assisted construction can settle long-standing open problems. The axiom captures the mathematical content without formalizing the 1581-vertex graph — doing so would require verifying thousands of distance constraints computationally, a substantial Lean formalization effort.",
+    "relatedConcepts": ["chromatic-number-of-plane", "Hadwiger-Nelson-problem", "Moser-spindle", "de-Grey-2018", "4-chromatic-graph"],
+    "prerequisites": ["EuclideanSpace", "dist function in ℝ²", "proper graph coloring"]
+  },
+  {
+    "id": "ann-udi-hn-upper-bound",
+    "startLine": 134,
+    "endLine": 143,
+    "type": "technique",
+    "title": "Hexagonal 7-Coloring Upper Bound",
+    "body": "The axiom `hadwiger_nelson_upper_bound` asserts a proper 7-coloring of ℝ² exists where no two unit-distance points share a color. The `hadwiger_nelson_bounds` theorem immediately packages both bounds together. The 7-coloring construction uses a hexagonal tiling: tile ℝ² with regular hexagons of diameter slightly less than 1 (say, diameter ≈ 0.9). Seven hexagon types arranged in a repeating pattern can be colored 1–7 such that no two hexagons of the same color are within distance 1. The diameter condition ensures no two points in the same color class are at distance exactly 1.",
+    "mathContext": "The 7-coloring is achieved by partitioning ℝ² into congruent hexagons arranged in the standard honeycomb lattice, scaled so that hexagon diameter is slightly below 1. The 7 colors tile periodically with one center type and six surrounding types. This was known to Hadwiger and Nelson in 1950. The number 7 is not known to be tight — it is an open question whether 5 or 6 colors suffice.",
+    "significance": "Axiomatizing the 7-coloring reflects the gap between the mathematical content (a standard construction) and the Lean formalization effort (constructing an explicit measurable coloring function c : Plane → Fin 7 and verifying the distance condition). The axiom connects immediately via `unit_distance_independence_from_chromatic` to give α(S) ≥ |S|/7 for any finite point set S ⊆ ℝ².",
+    "relatedConcepts": ["hexagonal-tiling", "chromatic-number-upper-bound", "7-coloring-of-plane", "Hadwiger-Nelson-1950"],
+    "prerequisites": ["EuclideanSpace ℝ (Fin 2)", "Fin 7", "proper coloring definition"]
+  },
+  {
+    "id": "ann-udi-pigeonhole-bound",
+    "startLine": 271,
+    "endLine": 312,
+    "type": "technique",
+    "title": "Pigeonhole Bound on Independence Number",
+    "body": "The theorem `exists_large_color_class` applies the pigeonhole principle: in any k-coloring of n vertices, some color class has size ≥ n/k. The proof is by contradiction: if all k color classes have size < n/k, then the total vertex count is strictly less than k · (n/k) ≤ n — contradiction. The key computation uses `Nat.mul_div_le` (k · (n/k) ≤ n) and `omega`. From this, `indep_from_coloring` derives the independence bound: since each color class is independent (from Part III), there exists an independent set of size ≥ n/k.",
+    "mathContext": "The chromatic-independence inequality α(G) ≥ n/χ(G) is a fundamental bound in graph theory. It follows by pigeonhole: a k-coloring partitions V into k independent color classes whose sizes sum to n, so the largest class has size ≥ n/k. Combined with α(G) ≥ |largest class|, we get α(G) ≥ n/k for any valid k-coloring. In the Hadwiger-Nelson context: χ(ℝ²) ≤ 7 implies α(S) ≥ |S|/7.",
+    "significance": "The pigeonhole bound is elementary but powerful. It makes the connection between graph colorability and independent set size precise. The proof structure in Lean — sum the color class sizes, bound each below n/k, derive contradiction via omega — is an excellent example of how arithmetic arguments interact with combinatorial definitions in Mathlib.",
+    "relatedConcepts": ["pigeonhole-principle", "chromatic-number", "color-class", "independence-number-bound"],
+    "prerequisites": ["IsProperColoring", "Finset.sum", "Finset.filter", "Nat.div_le_div", "omega tactic"]
+  },
+  {
+    "id": "ann-udi-greedy-bound",
+    "startLine": 460,
+    "endLine": 479,
+    "type": "technique",
+    "title": "Greedy Independence Bound via Maximal Sets",
+    "body": "The `greedy_bound` theorem proves α(G) ≥ n/(Δ+1) where Δ = maxDegree G. The proof strategy: (1) `exists_maximal_indep`: Every finite graph has a maximal independent set I, proved by taking a maximum-cardinality independent set — if it were non-maximal, one could add a non-adjacent vertex, contradicting maximality of cardinality. (2) `maximal_indep_covering_bound`: For maximal I, n ≤ |I|·(Δ+1) — each vertex in I covers at most Δ+1 vertices via its closed neighborhood, and maximality ensures every vertex is covered. (3) Dividing: n/(Δ+1) ≤ |I| ≤ α(G).",
+    "mathContext": "The greedy bound α(G) ≥ n/(Δ+1) is tight for regular graphs: for the complete graph Kₙ where Δ = n-1, α(G) = 1 and n/(Δ+1) = n/n = 1. The bound is achieved by the greedy algorithm: iterate over vertices, add each to the independent set if non-adjacent to all previously added vertices. Each added vertex blocks at most Δ others from being added later.",
+    "significance": "The proof of `exists_maximal_indep` is notable: it uses `Finset.exists_max_image` to extract a maximum-cardinality independent set, then shows this set must be maximal (otherwise we could add a non-adjacent vertex, contradicting maximality of cardinality). This 'take max cardinality = maximal' argument is a clean Lean proof pattern for finiteness-based existence results.",
+    "relatedConcepts": ["greedy-algorithm", "maximal-independent-set", "maximum-degree", "covering-argument"],
+    "prerequisites": ["maxDegree", "closedNeighborhoodIn", "Finset.exists_max_image", "Nat.mul_div_le"]
+  },
+  {
+    "id": "ann-udi-unit-chromatic-application",
+    "startLine": 484,
+    "endLine": 503,
+    "type": "technique",
+    "title": "Applying Hadwiger-Nelson to Unit Distance Independence",
+    "body": "The theorem `unit_distance_independence_from_chromatic` ties together the whole development: for any finite nonempty point set S ⊆ ℝ², there exists an independent set in the unit distance graph on S of size ≥ |S|/7. The proof uses the 7-coloring axiom `hadwiger_nelson_upper_bound` to obtain c : ℝ² → Fin 7, restricts to c' : S → Fin 7, verifies c' is proper for the unit distance graph (because c avoids monochromatic unit distance pairs), then applies `indep_from_coloring` with k=7. The `Nonempty S` instance is obtained from `hne.coe_sort`.",
+    "mathContext": "This theorem instantiates the abstract framework (Part IX pigeonhole bound) to the concrete geometric setting (unit distance graphs in ℝ²). It says: in any configuration of n points in the plane, one can always find n/7 points with no two at distance exactly 1. Equivalently, the independence number of any n-point unit distance graph is at least n/7. This is the key quantitative consequence of the Hadwiger-Nelson upper bound.",
+    "significance": "The proof demonstrates Lean's strength at instantiating abstract theory to concrete applications. The abstract pigeonhole theorem (working over any graph with a k-coloring) applies immediately once we supply the 7-coloring of ℝ². The `Fintype.card_coe` rewrite handles the coercion between the cardinality of `S : Finset Plane` and `Fintype.card S` — a common bookkeeping step in Mathlib combinatorics proofs.",
+    "relatedConcepts": ["unit-distance-graph", "independence-number", "Hadwiger-Nelson", "chromatic-bound"],
+    "prerequisites": ["unitDistGraph", "hadwiger_nelson_upper_bound", "indep_from_coloring", "Fintype.card_coe"]
+  },
+  {
+    "id": "ann-udi-clique-duality",
+    "startLine": 706,
+    "endLine": 757,
+    "type": "technique",
+    "title": "Independence-Clique Duality via Complement Graph",
+    "body": "Part XIV establishes the fundamental duality: an independent set in G is exactly a clique in the complement Gᶜ. The theorem `indep_iff_compl_isClique` proves: `IsIndepFinset G S ↔ Gᶜ.IsClique (S : Set V)`. The bridge uses `SimpleGraph.compl_adj`: `Gᶜ.Adj u v ↔ u ≠ v ∧ ¬G.Adj u v`. An independent set has ¬G.Adj for all pairs, which is exactly the second component of `compl_adj`. The converse `clique_iff_compl_indep` completes the duality. Supporting theorems include `compl_compl_eq` (double complement identity) and extremal cases for ⊥ (empty graph) and ⊤ (complete graph).",
+    "mathContext": "The independence-clique duality is the cornerstone of the probabilistic method and semidefinite programming bounds. The Lovász theta function ϑ(G) satisfies ϑ(G) ≥ α(G) and ϑ(Gᶜ) ≥ ω(G) (clique number), bridging both sides of the duality. The Ramsey numbers R(s,t) are defined in terms of this duality: every 2-coloring of Kₙ has either an s-clique in one color or a t-independent-set when n ≥ R(s,t).",
+    "significance": "Connecting `IsIndepFinset` to Mathlib's `SimpleGraph.IsClique` is important for interoperability: it allows using Mathlib's clique library to prove results about independence, and vice versa. The `rw [SimpleGraph.isClique_iff]` step bridges the two definitions, then the proof unpacks `compl_adj` to match the logical forms.",
+    "relatedConcepts": ["complement-graph", "clique", "independence-clique-duality", "Lovász-theta", "Ramsey-theory"],
+    "prerequisites": ["SimpleGraph.compl_adj", "SimpleGraph.IsClique", "isClique_iff", "compl_compl"]
+  }
+]
