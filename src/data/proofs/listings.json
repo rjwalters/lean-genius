@@ -67,7 +67,7 @@
     "slug": "abel-ruffini-oq-04-oq-01",
     "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved axiom-free via Vandermonde discriminant (Gal⊄A₅), complex conjugation (transposition exists), and Sylow theory to rule out orders 5, 10, 15, 20, 30, 40, 60. Realizes S₅ as a Galois group over ℚ.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "group-theory",
@@ -89,7 +89,7 @@
     "slug": "abel-ruffini-oq-04-oq-02",
     "description": "Proves that the symmetric groups S₂, S₃, S₄ are solvable, completing the degree-by-degree picture alongside S₅ not solvable from the parent. The highlight is the bidirectional theorem: Sₙ is solvable if and only if n ≤ 4.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "group-theory",
@@ -227,7 +227,7 @@
     "slug": "amgm-inequality-oq-02-oq-03",
     "description": "Derives the Maclaurin mean chain Mₖ ≥ Mₖ₊₁ from Newton's log-concavity of normalized elementary symmetric polynomials, eliminating the maclaurin_step axiom.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "combinatorics",
       "inequalities",
@@ -404,7 +404,7 @@
     "slug": "angle-trisection-oq-02-oq-01",
     "description": "Connects the Galois-theoretic constructibility criterion to Mathlib's Polynomial.Gal infrastructure. Proves natDegree divides |Gal| for all irreducible polynomials (generalizing Mathlib's prime-degree-only result), then derives that 2-group Galois groups force degree to be a power of 2 — eliminating 1 of 6 axioms from the parent OQ-02 formalization.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "galois-theory",
@@ -487,7 +487,7 @@
     "slug": "angle-trisection-oq-02-oq-03-oq-01",
     "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Proves ζₙ = exp(2πi/n) properties, Chebyshev polynomial connections, complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod, and derives cos(2π/n) algebraicity from cyclotomic theory. 740 lines, 0 axioms, 0 sorries — all former axioms eliminated.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "number-theory",
@@ -507,7 +507,7 @@
     "slug": "angle-trisection-oq-02-oq-04",
     "description": "Formalizes the three-level hierarchy of constructibility criteria: degree criterion (necessary), Galois 2-group criterion (iff), and tower criterion (equivalent). Proves key properties and implications.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "Galois theory",
@@ -565,7 +565,7 @@
     "slug": "angle-trisection-oq-05",
     "description": "Formalizes the seven Huzita-Hatori axioms of origami as a Lean 4 structure, proves that origami CAN solve cubic and quartic equations via the Beloch fold (HH-6), and establishes that angle trisection and cube doubling ARE possible with paper folding. Proves the Alperin-Lang algebraic equivalence between origami and neusis constructibility, classifies origami-constructible degrees up to 12, and distinguishes single-fold from multi-fold origami power. 695 lines, 0 axioms, 0 sorries.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "constructibility",
@@ -577,7 +577,7 @@
     "dateAdded": "2026-03-27",
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "angle-trisection-oq-05-oq-01",
@@ -684,7 +684,7 @@
     "slug": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
     "description": "Proves the recurrence ω_{n+2} = (2π/(n+2))·ω_n for computing unit n-ball volumes from base cases ω_0 = 1 and ω_1 = 2, using the Gamma function identity Γ(z+1) = z·Γ(z).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "gamma-function",
@@ -744,9 +744,9 @@
     "id": "area-of-circle-oq-01-oq-02-oq-03",
     "title": "Archimedes' Exhaustion Meets the FTC",
     "slug": "area-of-circle-oq-01-oq-02-oq-03",
-    "description": "Formally connects Archimedes' classical method of exhaustion (inscribed n-gon areas converging to πr²) with the modern FTC-based proof (∫₀ʳ 2πρ dρ = πr²). Both limiting processes converge to the same value; by Hausdorff uniqueness of limits in ℝ, they are equal. 10 theorems, 0 sorries, 0 axioms.",
+    "description": "Formally connects Archimedes' classical method of exhaustion (inscribed n-gon areas converging to πr²) with the modern FTC-based proof (∫₀ʳ 2πρ dρ = πr²). Both limiting processes converge to the same value; by limit uniqueness in ℝ, they are equal. 10 theorems, 0 sorries, 0 axioms.",
     "status": "verified",
-    "badge": "original",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "geometry",
@@ -761,15 +761,15 @@
     "dateAdded": "2026-04-04",
     "mathlibCount": 8,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "area-of-circle-oq-01-oq-03",
     "title": "Isoperimetric Inequality: C² ≥ 4πA",
     "slug": "area-of-circle-oq-01-oq-03",
     "description": "For any regular closed curve with circumference C enclosing area A, the isoperimetric inequality C² ≥ 4πA holds, with equality iff the curve is a circle. Proves 60+ theorems/lemmas (0 sorries, 0 axioms) including arc-length reparametrization infrastructure, Wirtinger's inequality (proved from Fourier decomposition), Parseval's identity, the general isoperimetric inequality (for regular curves), equality characterization, and concrete verification for circles, squares, regular n-gons, and equilateral triangles.",
-    "status": "formalized",
-    "badge": "formalized",
+    "status": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "geometry",
@@ -805,7 +805,7 @@
       "research"
     ],
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "area-of-circle-oq-02",
@@ -912,7 +912,7 @@
     "slug": "area-of-circle-oq-03-oq-03",
     "description": "Generalizes Archimedes' method of exhaustion to ellipses (via affine scaling from circles) and parabolic segments (via geometric series 1 + 1/4 + 1/16 + ... = 4/3). Proves convergence rates and the general exhaustion principle.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "geometry",
@@ -1099,7 +1099,7 @@
     "dateAdded": "2026-04-03",
     "mathlibCount": 6,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 7
   },
   {
     "id": "ballot-problem",
@@ -1127,7 +1127,7 @@
     "slug": "ballot-problem-oq-01",
     "description": "The generalized ballot problem: in an election where candidate A must maintain more than k times the votes of candidate B throughout counting, the probability is (a - kb)/(a + b). Formalized using lattice paths and cyclic rotations.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "probability",
@@ -1146,8 +1146,8 @@
     "title": "Discrete IVT for the Dvoretzky-Motzkin Cycle Lemma",
     "slug": "ballot-problem-oq-01-oq-01",
     "description": "A formal proof of the discrete intermediate value theorem for ballot-type sequences, establishing that prefix sums of {+1, -k}-lists hit every integer value in a range. This is the key analytic lemma used to prove the lower bound in the Dvoretzky-Motzkin Cycle Lemma.",
-    "status": "formalized",
-    "badge": "wip",
+    "status": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "ballot-problem",
@@ -1228,7 +1228,7 @@
     "slug": "ballot-problem-oq-03",
     "description": "Higher-dimensional lattice path problems via the 2D reflection principle. Proves the Crossing Lemma (2D version of ballot's reflection argument), the path count formula C(m+n,m), Catalan numbers, ballot formula, and Vandermonde's identity. Develops infrastructure toward the full Lindström-Gessel-Viennot lemma.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "lattice-paths",
@@ -1267,7 +1267,7 @@
     "slug": "ballot-problem-oq-03-oq-02",
     "description": "Generalizes the 2×2 LGV lemma to the full r×r case: the number of r-tuples of pairwise non-intersecting lattice paths equals det[e(Aᵢ,Bⱼ)], the determinant of the path count matrix. Formalizes LGVConfig, PathTuple, permutation path tuples, and the Gessel-Viennot sign-reversing involution infrastructure.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "lattice-paths",
@@ -1330,7 +1330,7 @@
     "slug": "basel-problem-oq-01-oq-01",
     "description": "Computational bounds and framework for the open question of ζ(5) irrationality. Proves partial sum lower bounds, tail estimates, defines irrationality measure, and documents the difficulty gap between known results and what's needed.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "analysis",
@@ -1379,7 +1379,7 @@
     "dateAdded": "2026-03-28",
     "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 6
   },
   {
     "id": "bertrands-postulate",
@@ -1683,7 +1683,7 @@
     "slug": "bezout-identity-oq-03-oq-04",
     "description": "Efficient CRT computation using direct Bézout coefficients without modular reduction. Proves correctness and uniqueness. 8 theorems, 0 axioms.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number theory",
       "CRT",
@@ -1854,7 +1854,7 @@
     "slug": "binomial-theorem-oq-02-oq-01",
     "description": "Formalizes the multinomial distribution PMF and shows its moment-generating function follows directly from the multinomial theorem. Proves normalization, MGF formula, and connection to binomial distribution.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "multinomial distribution",
@@ -1891,7 +1891,7 @@
     "slug": "binomial-theorem-oq-02-oq-03",
     "description": "Formalizes q-multinomial coefficients as iterated q-binomial products, proving they reduce to classical multinomials at q=1, satisfy the product identity qMultinom * ∏qFactorial(kᵢ) = qFactorial(∑kᵢ), and provide the quantum generalization of the multinomial theorem.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "q-analog",
@@ -1912,7 +1912,7 @@
     "slug": "binomial-theorem-oq-03",
     "description": "Can we derive the binomial distribution and its key properties directly from the binomial theorem? YES. The identity (p + (1-p))^n = 1 gives normalization, algebraic manipulation yields mean = np and variance = np(1-p), Vandermonde's identity gives convolution, and the Poisson limit theorem follows from the derivative of log at 1.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "binomial-distribution",
@@ -1936,7 +1936,7 @@
     "slug": "binomial-theorem-oq-03-oq-02",
     "description": "The fundamental limit characterization of the exponential function, proved from first principles: log'(1) = 1, so n·log(1+x/n) → x, and continuity of exp gives (1+x/n)^n → exp(x). Includes Euler's number as (1+1/n)^n → e, the reciprocal limit, and the compounding inequality.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "exponential",
@@ -1957,7 +1957,7 @@
     "slug": "binomial-theorem-oq-04",
     "description": "Vandermonde's convolution identity states that C(m+n, r) = Σ_{k=0}^{r} C(m,k)·C(n,r-k). Combinatorially, this counts r-element subsets of an (m+n)-element set by how many come from the first m elements. The classic sum-of-squares corollary C(2n,n) = Σ C(n,k)² follows by setting m=n=r and using symmetry.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "binomial-coefficients",
@@ -2013,7 +2013,7 @@
     "slug": "binomial-theorem-oq-04-oq-03",
     "description": "The q-analog of Vandermonde's identity: ∑ q^{(k-j)(m-j)} · [m,j]_q · [n,k-j]_q = [m+n,k]_q. Generalizes the classical convolution to Gaussian binomial coefficients, counting subspaces of finite vector spaces by intersection dimension.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "q-analogs",
@@ -2073,7 +2073,7 @@
     "slug": "birthday-problem-oq-02",
     "description": "Proves the asymptotic upper bound for the birthday collision probability: ∏(1-i/n) ≤ exp(-k(k-1)/(2n)). Fully proved from Mathlib with 0 axioms and 0 sorries, using the fundamental inequality 1-x ≤ exp(-x) and Gauss's summation formula.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "probability",
@@ -2091,7 +2091,7 @@
     "slug": "birthday-problem-oq-03",
     "description": "Generalizes the Birthday Problem from pairwise collisions to k-way coincidences. Proves the generalized pigeonhole bound, classical recovery (k=2 equals non-injectivity), monotonicity, and probability formulas. Fully proved with 0 axioms and 0 sorries.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "probability",
@@ -2109,7 +2109,7 @@
     "slug": "birthday-problem-oq-03-oq-01",
     "description": "Extension-counting framework for the k=3 birthday coincidence threshold. Proves fiber partition, full-days bound, day type decomposition (empty/single/double sum to d), and restriction validity. Enables recursive computation of the exact probability that 3+ people share a birthday.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "combinatorics",
@@ -2121,7 +2121,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 6
   },
   {
     "id": "birthday-problem-oq-03-oq-01-oq-01",
@@ -2142,7 +2142,7 @@
       "research"
     ],
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 7
   },
   {
     "id": "birthday-problem-oq-03-oq-03",
@@ -2150,7 +2150,7 @@
     "slug": "birthday-problem-oq-03-oq-03",
     "description": "Proves the asymptotic scaling of k-way birthday thresholds: n_k ~ (k! · d^{k-1})^{1/k} with growth exponent (k-1)/k. Establishes exponent properties (non-negative, strictly increasing, approaches 1), classical recovery (k=2 gives √(2d)), monotonicity, concrete values for d=365, and the limit (k-1)/k → 1.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "probability",
@@ -2227,7 +2227,7 @@
     "slug": "borsuk-ulam-oq-02-oq-01-oq-04",
     "description": "Formalizes the Fadell-Husseini ideal-valued cohomological index theory for computing equivariant Borsuk-Ulam dimensions. The FH index assigns to each G-space X a homogeneous ideal in H*(BG), enabling algebraic computation of BU dimensions for cyclic groups.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "topology",
       "algebraic-topology",
@@ -2238,7 +2238,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 1,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "borsuk-ulam-oq-02-oq-02",
@@ -2379,7 +2379,7 @@
     "slug": "borsuk-ulam-oq-04",
     "description": "Explores the covering space argument in the Borsuk-Ulam proof through the lens of higher category theory. Formalizes Z/2 involutions, real projective spaces, descent of odd maps, and covering type abstractions for higher categorical generalizations.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "topology",
       "algebraic-topology",
@@ -2496,7 +2496,7 @@
     "dateAdded": "2026-03-27",
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 6
   },
   {
     "id": "bounded-prime-gaps-oq-04-oq-01",
@@ -2504,7 +2504,7 @@
     "slug": "bounded-prime-gaps-oq-04-oq-01",
     "description": "The Pólya-Vinogradov inequality: character sums over intervals are bounded by √q·log(q). Foundation for equidistribution of primes in arithmetic progressions.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "analytic-number-theory",
       "character-sums",
@@ -2616,7 +2616,7 @@
     "dateAdded": "2026-03-28",
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "brouwer-fixed-point-oq-04",
@@ -2681,7 +2681,7 @@
     "slug": "buffons-needle-oq-01",
     "description": "Proves the Buffon-Barbier theorem for C¹ smooth planar curves: any curve γ : ℝ → ℝ × ℝ of arc length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(πd). This file fills the gap from BuffonsNeedleOQ01OQ01.lean by proving that C¹ smoothness automatically gives the required integrability, requiring no additional hypotheses beyond `ContDiff ℝ 1 γ`.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "geometric-probability",
@@ -2750,7 +2750,7 @@
     "slug": "buffons-needle-oq-01-oq-02",
     "description": "Generalizes Buffon's needle to n-dimensional Euclidean space with parallel hyperplane arrangements. Defines the dimensional constant c_n via the Gamma function, proves c₂=2/π (classical), c₃=1 (3D), c₄=4/π (4D), and establishes structural properties: linearity, positivity, monotonicity, and the Cauchy-Crofton mean width connection.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "geometric-probability",
@@ -2773,7 +2773,7 @@
     "slug": "buffons-needle-oq-02",
     "description": "Proves the 3D Buffon formula: a polygonal curve of total length L dropped on a family of parallel planes (spacing d) has expected crossing count E[crossings] = L/(2d). The key is the sphere average E_{S²}[|cos φ|] = 1/2, proved by computing ∫₀^π sin θ |cos θ| dθ = 1 via the substitution |cos θ| = cos θ on [0,π/2] and |cos θ| = -cos θ on [π/2,π]. Compares with the 2D Buffon formula 2L/(πd), proving the 3D crossing factor α₃ = 1/2 is strictly less than the 2D factor α₂ = 2/π.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "geometric-probability",
@@ -2798,7 +2798,7 @@
     "slug": "buffons-needle-oq-02-oq-01",
     "description": "Formalizes the general n-dimensional Buffon noodle formula E[crossings] = αₙ · L/d, where the crossing factor αₙ = E_{S^{n-1}}[|u₁|] = Γ(n/2)/(√π·Γ((n+1)/2)) satisfies the recurrence α_{n+2} = (n/(n+1))·αₙ. Verifies α₂ = 2/π, α₃ = 1/2, α₄ = 4/(3π), α₅ = 3/8. Proves the crossing factor strictly decreases with dimension (each 2-step reduces by factor n/(n+1) < 1) and establishes the general noodle theorem (additivity, scaling, monotonicity) in arbitrary dimension.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "geometric-probability",
@@ -2839,7 +2839,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "burnside-counting",
@@ -2881,7 +2881,7 @@
     ],
     "dateAdded": "2026-04-04",
     "mathlibCount": 3,
-    "sorries": 4,
+    "sorries": 2,
     "annotationCount": 5
   },
   {
@@ -2933,7 +2933,7 @@
     "slug": "cantor-diagonalization-oq-01-oq-01",
     "description": "Formalizes the Continuum Hypothesis: whether an intermediate cardinal exists between ℵ₀ and 2^ℵ₀ is independent of ZFC. Proves CH ↔ no intermediate, constructs explicit intermediates under ¬CH, and states König's constraint and Easton's theorem.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "set-theory",
       "cardinal-arithmetic",
@@ -3033,7 +3033,7 @@
     "slug": "cantor-diagonalization-oq-03",
     "description": "The Lawvere fixed-point theorem: if there exists a surjection e : A -> (A -> B), then every endomorphism f : B -> B has a fixed point. Cantor's theorem follows as a corollary by noting that negation (Not) has no fixed point in Prop, so no surjection A -> (A -> Prop) can exist. This unifies Cantor's diagonal argument and Russell's paradox as instances of a single principle, and the Bool variant captures the algebraic pattern underlying the halting problem (though a full formalization of Turing's undecidability result would require additional computational machinery).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "set-theory",
       "logic",
@@ -3055,7 +3055,7 @@
     "slug": "cantor-diagonalization-oq-03-oq-01",
     "description": "Generalizes the Lawvere fixed-point theorem from type theory to an abstract evaluation structure, recovering the original categorical generality. Proves the abstract fixed-point theorem, diagonal lemma, type-theoretic recovery, and three concrete instances (Cantor/Prop, Bool, Nat). Includes a categorical framework sketch for the topos-theoretic setting.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "set-theory",
       "category-theory",
@@ -3088,7 +3088,7 @@
       "research"
     ],
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 7
   },
   {
     "id": "cantor-diagonalization-oq-04",
@@ -3096,7 +3096,7 @@
     "slug": "cantor-diagonalization-oq-04",
     "description": "The retraction formulation of Lawvere's fixed-point theorem: if a type Y codes its own endomorphisms via an encode/decode pair with decode . encode = id, then every endomorphism f : Y -> Y has a fixed point. This complements the surjection version (OQ03) by making the section-retraction structure explicit. Derives impossibility results for Nat, Bool, Prop, Cantor's theorem for arbitrary codomains, and extracts the Y combinator constructively.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "set-theory",
       "logic",
@@ -3178,7 +3178,7 @@
     "slug": "cantors-theorem-oq-02",
     "description": "Lawvere's Fixed-Point Theorem (1969) reveals that Cantor's theorem, Russell's paradox, Gödel's incompleteness, and Girard's paradox are all instances of a single categorical diagonal argument: if f : α → (α → β) is surjective, then every g : β → β has a fixed point. Paradoxes arise because certain functions (like ¬ : Prop → Prop) have no fixed points, making surjection impossible.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "set-theory",
       "category-theory",
@@ -3303,7 +3303,7 @@
     "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
     "description": "Concrete applications of Cauchy-Schwarz and AM-GM in finite dimensions. Proves CS for ℝ² and ℝ³ via Lagrange identity, Young's inequality (including ε-form), AM-GM via square root, QM-AM, Titu's lemma (Engel form), Nesbitt's inequality, and Schur's inequality. All 13 theorems fully verified from first principles using nlinarith and sum-of-squares decompositions.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "inequality",
       "cauchy-schwarz",
@@ -3406,7 +3406,7 @@
     "slug": "cauchy-schwarz-integral-oq-02-oq-01",
     "description": "Equality in the triangle inequality ‖f+g‖ = ‖f‖+‖g‖ holds in a real inner product space if and only if the vectors are non-negatively proportional: ‖f‖•g = ‖g‖•f. The proof reduces to Cauchy-Schwarz equality via squaring, then characterizes proportionality through ‖‖f‖•g - ‖g‖•f‖² = 0.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "inequalities",
@@ -3426,7 +3426,7 @@
     "slug": "cauchy-schwarz-integral-oq-02-oq-02",
     "description": "Unwraps the NormedAddCommGroup instance for Lp spaces to expose the full dependency chain: Young's inequality → Hölder's inequality → Minkowski's inequality. Proves each step explicitly with Mathlib primitives.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "functional-analysis",
@@ -3510,7 +3510,7 @@
     "slug": "cauchy-schwarz-oq-01-oq-02",
     "description": "The Gram-Schmidt orthogonalization process uses orthogonal projection at each step. The projection coefficient is bounded by Cauchy-Schwarz: the norm of the projection never exceeds the norm of the input. This formalization builds Gram-Schmidt from scratch using the Cauchy-Schwarz inequality as the quantitative backbone.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "linear-algebra",
       "inner-product-spaces",
@@ -3663,7 +3663,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "cauchy-schwarz-oq-04",
@@ -3856,7 +3856,7 @@
     "slug": "cayley-hamilton-minpoly-oq-03",
     "description": "Formalizes the Krylov method for computing the minimal polynomial of a matrix: the sequence v, Mv, M²v, ... becomes linearly dependent within deg(μ_M) ≤ n steps, giving an O(n³) algorithm. Proves the Krylov recurrence, annihilation theorem, and dimension bounds.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "linear-algebra",
       "matrices",
@@ -3895,7 +3895,7 @@
     "slug": "cayley-hamilton-minpoly-oq-05",
     "description": "Formalizes modular reduction via the minimal polynomial in general K-algebras: evaluating f at x equals evaluating f mod minpoly(x). Also proves base change behavior in algebra towers K ⊂ L ⊂ A, showing degree can only decrease when extending the base field.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "linear-algebra",
       "abstract-algebra",
@@ -3953,7 +3953,7 @@
     "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
     "description": "For a nonderogatory matrix M over the reals, the set of non-cyclic vectors has Lebesgue measure zero. The non-cyclic vectors lie in a finite union of proper subspaces (cofactor kernels), each of which is null by Mathlib's addHaar_submodule. Thus almost every vector is cyclic.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "linear-algebra",
       "measure-theory",
@@ -3974,7 +3974,7 @@
     "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-03",
     "description": "Extends the nonderogatory/cyclic vector theory from finite-dimensional matrices to arbitrary K-modules. A linear endomorphism T on V makes V into a K[X]-module; T is nonderogatory exactly when V is cyclic as K[X]-module. Includes a complete infinite-dimensional example: multiplication by X on K[X].",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "linear-algebra",
       "abstract-algebra",
@@ -3987,7 +3987,7 @@
     "dateAdded": "2026-03-28",
     "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
@@ -3995,7 +3995,7 @@
     "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
     "description": "The nonderogatory → cyclic vector theorem holds for ALL fields, including finite fields F_q with q ≤ n where union avoidance fails. Demonstrates F_2 counterexample to union avoidance and develops the module-theoretic approach via annihilator polynomials and GCD Bezout.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "linear-algebra",
       "abstract-algebra",
@@ -4131,7 +4131,7 @@
     "slug": "cayley-hamilton-reduction-oq-02-oq-01",
     "description": "Companion matrix definition and properties — the building block of rational canonical form (Frobenius normal form).",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "linear-algebra",
       "matrices",
@@ -4170,7 +4170,7 @@
     "slug": "central-limit-theorem-oq-01",
     "description": "When a distribution has infinite variance, the classical Central Limit Theorem fails—but a generalized version holds. This proof formalizes α-stable characteristic functions and proves the key stability property: exp(-|t|^α) satisfies [φ(t/n^(1/α))]^n = φ(t), showing that Cauchy (α=1), Lévy (α=1/2), and all α-stable distributions remain stable under the correct normalization.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "stable-distributions",
@@ -4236,7 +4236,7 @@
     "slug": "central-limit-theorem-oq-01-oq-03",
     "description": "Formalizes the algebraic framework for free probability theory: NCProbSpace structure, variance, free independence (simplified), and stability index classification. Documents the Bercovici-Pata bijection between classical and free stable distributions and provides a rigorous gap analysis showing ~3900 lines of new Mathlib infrastructure (R-transform, free convolution, free cumulants) are needed for the full theory.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "free probability",
@@ -4443,7 +4443,7 @@
     "slug": "cevas-theorem-oq-02-oq-02",
     "description": "Generalization of the spherical Ceva theorem from triangles to convex n-gons. For a spherical polygon P₁...Pₙ with cevian points Qᵢ on arc PᵢPᵢ₊₁ defined by weight parameters (αᵢ, βᵢ), the concurrency condition is ∏ αᵢ = ∏ βᵢ. Includes triangle/quadrilateral specializations, equal-weight (medial) case, Ceva-Menelaus duality for polygons, and scaling invariance.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "spherical",
@@ -4464,7 +4464,7 @@
     "slug": "cevas-theorem-oq-04",
     "description": "Mass point geometry provides a constructive algebraic certificate for concurrent cevians: assign positive masses mA, mB, mC to vertices, and the induced ratios automatically satisfy d·e·f = (1-d)·(1-e)·(1-f). The converse is constructive: any Ceva configuration admits an explicit mass assignment.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "triangle",
@@ -4502,7 +4502,7 @@
     "slug": "chinese-remainder-constructive-oq-03",
     "description": "Formalizes Residue Number Systems (RNS) for parallel arithmetic: definitions, concrete bases (primes, Mersenne numbers), dynamic range bounds, and correctness of RNS addition/multiplication.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "modular-arithmetic",
@@ -4557,7 +4557,7 @@
     "slug": "chinese-remainder-constructive-oq-04-oq-04",
     "description": "For any system of congruences with pairwise coprime positive moduli, there exists a unique solution in [0, M) where M is the product of all moduli. This canonical minimal representative is obtained by reducing any solution modulo M.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "chinese-remainder-theorem",
@@ -4653,7 +4653,7 @@
     "slug": "chinese-remainder-non-coprime-oq-04",
     "description": "Dirichlet's approximation theorem (1842): for any real α and N ≥ 1, there exist p, q with 1 ≤ q ≤ N and |qα - p| < 1/N. Proved via pigeonhole principle on fractional part binning. Includes mediant/Stern-Brocot property, lattice point theorem, golden ratio identities, and CRT non-coprime solvability examples connecting Diophantine approximation to lattice geometry.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "diophantine-approximation",
@@ -4721,7 +4721,7 @@
     ],
     "dateAdded": "2026-04-03",
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "collatz-structured-oq-03",
@@ -4738,7 +4738,7 @@
     ],
     "dateAdded": "2026-03-30",
     "sorries": 0,
-    "annotationCount": 6
+    "annotationCount": 7
   },
   {
     "id": "combinations-formula",
@@ -4844,7 +4844,7 @@
     "dateAdded": "2026-03-27",
     "mathlibCount": 6,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "cramers-rule",
@@ -4890,12 +4890,30 @@
     "annotationCount": 7
   },
   {
+    "id": "cramers-rule-oq-01-oq-01",
+    "title": "Cramer's Rule: Connection to LU Decomposition",
+    "slug": "cramers-rule-oq-01-oq-01",
+    "description": "Formalizes the algebraic connection between Cramer's Rule and LU decomposition. Proves the LU determinant formula det(LU) = (∏ L_ii) × (∏ U_ii), the inverse formula (LU)⁻¹ = U⁻¹L⁻¹, and the solution equivalence between forward/back substitution and Cramer's cofactor formula.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "determinants",
+      "LU-decomposition",
+      "Cramer's rule",
+      "triangular matrices"
+    ],
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
     "id": "cramers-rule-oq-01-oq-02",
     "title": "Quasideterminant Theory: Non-Commutative Analogue of Determinants",
     "slug": "cramers-rule-oq-01-oq-02",
     "description": "Complete quasideterminant theory for 2×2 matrices over division rings. Defines all four quasideterminants (Gelfand-Retakh), proves commutative reduction to classical determinants, alternate pivoting for non-commutative Cramer's rule, Schur complement matrix inversion, row/column scaling identities, and special cases for triangular matrices.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "linear-algebra",
       "matrices",
@@ -4947,7 +4965,7 @@
       "research"
     ],
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "cramers-rule-oq-02",
@@ -4955,7 +4973,7 @@
     "slug": "cramers-rule-oq-02",
     "description": "A formal proof that Gaussian elimination (O(n³) multiplications) is strictly more efficient than Cramer's rule ((n+1)·n·n! multiplications) for solving n×n linear systems, with the gap growing super-polynomially: for any constant K, Gaussian is eventually K-times faster.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "computational-complexity",
       "linear-algebra",
@@ -4977,7 +4995,7 @@
     "slug": "cramers-rule-oq-03",
     "description": "Extends Cramer's Rule to division rings using the Gelfand-Retakh quasideterminant. For 2×2 systems Ax = b, the solution x₀ = |A|₀₀⁻¹·(b₀ - a₀₁·a₁₁⁻¹·b₁) is proved correct, unique, and shown to reduce to classical Cramer's Rule when D is commutative.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "linear-algebra",
       "matrices",
@@ -5191,7 +5209,7 @@
     "slug": "denumerability-rationals-oq-03",
     "description": "Formalizes the Stern-Brocot tree as a state machine and proves coprimality, positivity, ordering, and injectivity — all driven by a single determinant invariant. Known to list every positive rational exactly once in lowest terms (surjectivity is future work; injectivity and coprimality proved here).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "set-theory",
       "number-theory",
@@ -5317,7 +5335,7 @@
     "slug": "derangements-oq-03-oq-01",
     "description": "Refines the derangement convergence rate to a two-term asymptotic: D(n)/n! = 1/e + (-1)^n/(n+1)! + O(1/(n+2)!). Proves the second-order bound, a matching lower bound showing tightness, the error ratio formula, and sign characterization of the correction term.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "analysis",
@@ -5357,7 +5375,7 @@
     "slug": "desargues-theorem-oq-01",
     "description": "Can the full algebraic proof of Desargues's theorem be completed without sorries using Mathlib's linear algebra? YES — and it generalizes to any commutative ring K. This formalization defines a custom cross product (since Mathlib.LinearAlgebra.CrossProduct was deprecated in v4.26.0), proves the Lagrange cross product identity over K, and establishes Desargues's theorem in full generality: the forward direction over any CommRing K, the converse over any IntegralDomain K, and corollaries for ℚ, ℤ, 𝔽_p, and polynomial rings.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "projective-geometry",
       "triangles",
@@ -5380,7 +5398,7 @@
     "slug": "desargues-theorem-oq-02",
     "description": "How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails? YES — by constructing the Moulton plane, an affine plane where lines with negative slope bend at the y-axis, and exhibiting a concrete 6-point counterexample. Two triangles are perspective from a point O but their three side-intersection points are NOT Moulton-collinear, proving Desargues fails.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "projective-geometry",
       "non-desarguesian",
@@ -5401,7 +5419,7 @@
     "slug": "desargues-theorem-oq-04",
     "description": "Formalizes the self-duality of Desargues's theorem in projective geometry over arbitrary commutative rings. Shows that collinearity and concurrence are the same predicate in homogeneous coordinates (rfl), that the dual configuration's perspective-from-a-point equals the original's perspective-from-a-line (rfl), and that the Desargues identity is symmetric in the two triangles. Includes algebraic converse over integral domains.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "desargues",
       "projective-geometry",
@@ -5466,7 +5484,7 @@
     "slug": "descartes-rule-of-signs-oq-01-oq-01",
     "description": "Explores proving Descartes' parity result using complex conjugate root pairs. Proves the conjugate root theorem, non-real root pairing, and parity of real root counts. Shows the factoring approach is more direct for Lean.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "polynomials",
@@ -5560,7 +5578,7 @@
     "slug": "descartes-rule-of-signs-oq-04",
     "description": "A purely algebraic proof of Descartes' Rule of Signs following Grabiner (1999), using polynomial factoring and induction on positive root count instead of Rolle's theorem. The key insight: multiplying by (x - r) with r > 0 adds at least one sign variation to the coefficient sequence, enabling a clean induction without calculus.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "polynomials",
@@ -5712,7 +5730,7 @@
     "slug": "dissection-of-cubes-oq-01",
     "description": "Every cube dissection must have ≥ 2 cubes sharing the same size (strengthening Wiedijk #82). This formalization proves the quantitative lower bound: the set of 'colliding cubes' in any nonempty dissection has cardinality ≥ 2. The open question is whether exactly 2 is achievable — whether a cube can be dissected with only one repeated size, all others distinct.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "geometry",
       "impossibility",
@@ -5732,7 +5750,7 @@
     "slug": "dissection-of-cubes-oq-01-oq-01",
     "description": "Proves that HasMinimalCollision is achievable: there exists a CubeDissection with exactly 2 colliding cubes. This shows the lower bound of 2 (from OQ-01) is tight within the formalization. Three axis-aligned cubes — two of size 1/4 and one of size 1/3 — form the explicit witness, with the two equal-size cubes as the unique collision pair.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "geometry",
       "impossibility",
@@ -5752,7 +5770,7 @@
     "slug": "dissection-of-cubes-oq-02",
     "description": "Formalizes the Dehn invariant approach to Hilbert's Third Problem: proves the cube has zero Dehn invariant (rational angles) while the tetrahedron has nonzero invariant (irrational angle), showing they cannot be scissors congruent.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "scissors-congruence",
@@ -5872,7 +5890,7 @@
     "slug": "divisibility-by-3-oq-03",
     "description": "Formalizes the O(1) digital root formula: digitalRoot(n) = 1 + ((n-1) mod 9) for n > 0. Proves idempotency, divisibility characterizations by 3 and 9, congruence with mod 9, and concrete examples. The closed-form formula avoids iterative digit summation.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "divisibility",
@@ -5922,7 +5940,7 @@
     "dateAdded": "2026-03-29",
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 7
   },
   {
     "id": "divisibility-truncation-general",
@@ -6129,7 +6147,7 @@
     "slug": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
     "description": "Formalizes the Kronecker symbol χ(a,n) extending the Jacobi symbol to all integer moduli, including n=0, n=-1, n=2, and composite even n.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "quadratic-reciprocity",
@@ -6166,7 +6184,7 @@
     "slug": "elementary-quadratic-reciprocity-oq-03-oq-02",
     "description": "Defines the Kronecker symbol extending the Jacobi symbol to even moduli, negative integers, and zero. Proves values at special arguments, agreement with Jacobi for odd positive moduli, and states multiplicativity and generalized quadratic reciprocity.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "number-theory",
       "quadratic-reciprocity",
@@ -6184,7 +6202,7 @@
     "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01",
     "description": "Proves that the Kronecker symbol is completely multiplicative in both arguments: (ab/n) = (a/n)(b/n) for ab != 0, and (a/mn) = (a/m)(a/n) for mn != 0. Uses case analysis with kronecker0 and kroneckerNeg1 multiplicativity for special moduli, and Jacobi symbol multiplicativity (jacobiSym.mul_left and jacobiSym.mul_right) for the general case.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "quadratic-reciprocity",
@@ -6226,7 +6244,7 @@
     "slug": "erdos-1",
     "description": "If A is a subset of {1,...,N} with n elements and all 2^n subset sums are distinct, then N >> 2^n. Erdős's 'first serious problem' (1931). OPEN with $500 prize.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -6274,7 +6292,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 1,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "erdos-10",
@@ -6282,7 +6300,7 @@
     "slug": "erdos-10",
     "description": "Is there some k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Erdős and Graham conjectured no such k exists. Gallagher showed the representable set has density arbitrarily close to 1.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -6311,8 +6329,8 @@
       "density"
     ],
     "dateAdded": "2026-04-03",
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 7
   },
   {
     "id": "erdos-100",
@@ -6339,7 +6357,7 @@
     "slug": "erdos-100-oq-01",
     "description": "Analyzes the gap between the known diameter bound Ω(n/log n) from Guth–Katz and the conjectured linear bound Ω(n) for integer distance sets. Proves the gap factor log n grows without bound, n/log n = o(n), and the linear conjecture implies the known bound. States the Anning–Erdős finiteness constraint.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "discrete-geometry",
       "erdos",
@@ -6475,7 +6493,7 @@
     "slug": "erdos-1002-oq-01",
     "description": "Eliminates two axioms from the Erdős #1002 formalization: proves the Cauchy CDF is a valid distribution function (monotone, correct limits) and proves periodicity of the inner sum for rational arguments.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "diophantine-approximation",
@@ -6493,7 +6511,7 @@
     "slug": "erdos-1003",
     "description": "Are there infinitely many solutions to φ(n) = φ(n+1), where φ is the Euler totient function? Erdős conjectured yes, and made the stronger claim that φ(n) = φ(n+1) = ... = φ(n+k) has infinitely many solutions for every k ≥ 1.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -6651,7 +6669,7 @@
     "slug": "erdos-1007-oq-01",
     "description": "Studies the function minEdges(d) giving the minimum number of edges in a graph of dimension exactly d. Formalizes known values (d=0..5), proves structural results including a constructive simplex embedding of K_n in ℝⁿ, shows the complete graph optimality conjecture implies monotonicity, analyzes growth rates, and introduces the deficiency function.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "graph-dimension",
@@ -6671,7 +6689,7 @@
     "slug": "erdos-1007-oq-01-oq-01",
     "description": "Investigates whether the function minEdges(d) — the minimum number of edges in a graph of dimension exactly d — is monotone (non-decreasing). Proves monotonicity for known values (d ≤ 5), establishes that the full conjecture reduces to consecutive monotonicity for d ≥ 5, and proves the key structural result that a deficiency bound δ(d) ≤ d implies monotonicity.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "graph-dimension",
@@ -6794,7 +6812,7 @@
     "slug": "erdos-101",
     "description": "Given n points in ℝ² with no five collinear, is the number of lines containing exactly four points o(n²)? Grünbaum: ≫ n^{3/2}. Solymosi–Stojaković: n^{2−O(1/√log n)}. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -6928,7 +6946,7 @@
     "slug": "erdos-1012-oq-03",
     "description": "Directed analogues of Hamiltonian cycle conditions: Ghouila-Houri, Moon-Moser, and Rédei theorems for digraphs and tournaments.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "graph-theory",
       "directed-graphs",
@@ -6936,7 +6954,7 @@
       "tournaments"
     ],
     "dateAdded": "2026-03-30",
-    "sorries": 2,
+    "sorries": 3,
     "annotationCount": 5
   },
   {
@@ -7004,7 +7022,7 @@
     "slug": "erdos-1014-oq-02",
     "description": "Answers the open question: what is the rate of convergence of R(k,l+1)/R(k,l) to 1? For k=3, the rate is O(log l / l), which is strictly faster than O(1/log l). The proof combines the Ramsey recurrence bound R(3,l+1) - R(3,l) ≤ l+1 with the Kim lower bound R(3,l) ≥ c·l²/log l. Also proves that log l/l < 1/log l for large l. For general k, the ratio converges to 1 under conjectured asymptotics (proved via ratio_from_asymptotics).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -7100,7 +7118,7 @@
     "slug": "erdos-1017",
     "description": "Let f(n,k) be the min cliques to partition any graph with n vertices, k edges. Erdős-Goodman-Pósa proved f(n,k) ≤ n²/4. Can this be improved for k > n²/4? The K₄-free case is solved (Győri-Keszegh 2017).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "graph-theory",
       "extremal-combinatorics",
@@ -7187,7 +7205,7 @@
       "erdos"
     ],
     "dateAdded": "2026-04-03",
-    "sorries": 7,
+    "sorries": 5,
     "annotationCount": 9
   },
   {
@@ -7280,8 +7298,8 @@
       "zarankiewicz"
     ],
     "dateAdded": "2026-04-03",
-    "sorries": 6,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 7
   },
   {
     "id": "erdos-1022",
@@ -7472,7 +7490,7 @@
     "slug": "erdos-103",
     "description": "Let h(n) count the number of incongruent sets of n points in ℝ² that minimize diameter with d(x,y) ≥ 1 for all distinct x,y. Is h(n) → ∞?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "geometry",
@@ -7608,7 +7626,7 @@
     "slug": "erdos-1035",
     "description": "Is there c > 0 such that every graph on 2^n vertices with min degree > (1-c)·2^n contains the hypercube Q_n? Related to extremal graph theory for hypercube embeddings.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "graph-theory",
@@ -7663,7 +7681,7 @@
     "slug": "erdos-1038",
     "description": "Determine the infimum and supremum of the measure of {x : |f(x)| < 1} for monic polynomials with roots in [-1,1]. Supremum = 2√2 (Tao, 2025); infimum bounds: 1.519 ≤ inf ≤ 1.835.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "measure-theory",
@@ -7700,7 +7718,7 @@
     "slug": "erdos-104",
     "description": "Given n points in ℝ², how many unit circles contain at least 3 points? Known: Ω(n^{3/2}) ≤ answer ≤ O(n²). Conjecture: O(n^{3/2}). OPEN ($100 prize).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "discrete-geometry",
@@ -7736,7 +7754,7 @@
     "slug": "erdos-1041",
     "description": "For a monic polynomial with all roots in the unit disk, must there exist a path of length less than 2 in the sublevel set {z : |f(z)| < 1} connecting two roots?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "complex-analysis",
@@ -8101,7 +8119,7 @@
     "slug": "erdos-1056",
     "description": "For k ≥ 2, does there exist a prime p and k consecutive intervals whose products are all ≡ 1 (mod p)? Known for k=2 (p=11, Erdős 1979) and k=3 (p=17, Makowski 1983). Guy's Problem A15. Status: OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -8202,7 +8220,7 @@
     "slug": "erdos-1059-oq-03",
     "description": "The smallest prime p > 211 failing the Erdős 1059 property (all p - k! composite) is p = 223. Since 223 - 4! = 199 is prime, 223 does not satisfy the property. Fully verified by decision procedure with 0 sorries and 0 axioms.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number theory",
@@ -8220,7 +8238,7 @@
     "slug": "erdos-1059-oq-05",
     "description": "A Decidable instance for AllFactorialSubtractionsComposite eliminates the need for manual per-prime factorial bound helpers. Any concrete prime can now be verified with a single native_decide.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number theory",
@@ -8280,7 +8298,7 @@
     "slug": "erdos-1060",
     "description": "Let f(n) count solutions to k·σ(k) = n. Is f(n) ≤ n^{o(1/log log n)}? Perhaps even f(n) ≤ (log n)^{O(1)}? This problem remains OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -8299,7 +8317,7 @@
     "slug": "erdos-1061",
     "description": "How many ordered pairs (a,b) satisfy sigma(a)+sigma(b)=sigma(a+b) with a+b<=x? Is this count asymptotic to cx for some c>0?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -8320,7 +8338,7 @@
     "slug": "erdos-1062",
     "description": "Let f(n) = max |A| for A ⊆ {1,…,n} with no element dividing two distinct others. Lebensold: 0.6725n ≤ f(n) ≤ 0.6736n. Is lim f(n)/n irrational? OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -8480,7 +8498,7 @@
     "slug": "erdos-1068",
     "description": "Does every graph with chromatic number ℵ₁ contain a countable infinitely vertex-connected subgraph? Soukup (2015): uncountable sets can fail. Version of Erdős–Hajnal problem. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -8557,7 +8575,7 @@
     "slug": "erdos-1071",
     "description": "Can finitely many non-intersecting unit segments in [0,1]² be maximal? Yes (Danzer). Can a countably infinite maximal packing exist in some region? Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "geometry",
@@ -8596,7 +8614,7 @@
     "slug": "erdos-1073",
     "description": "Let A(x) count composites u < x with u | n!+1 for some n. Is A(x) ≤ x^{o(1)}? Wilson's theorem covers primes. Known composites: 25, 121, 169, 437, ...",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -8615,7 +8633,7 @@
     "slug": "erdos-1074",
     "description": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erdős-Hardy-Subbarao), but density questions remain OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -8679,7 +8697,7 @@
     "slug": "erdos-1077",
     "description": "Must dense graphs contain large balanced subgraphs? Jiang-Longbrake (2025) showed the optimal size is Θ(n^α) vertices, resolving ambiguities in the original problem.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -8874,7 +8892,7 @@
     ],
     "erdosNumber": 1084,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 7
   },
   {
     "id": "erdos-1085",
@@ -9084,7 +9102,7 @@
     "slug": "erdos-1094",
     "description": "For n ≥ 2k, the least prime factor of C(n,k) should be ≤ max(n/k, k) with only finitely many exceptions. OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -9101,7 +9119,7 @@
     "slug": "erdos-1095",
     "description": "Let g(k) be the smallest n > k+1 such that all prime factors of C(n,k) exceed k. Estimate g(k). Known: exp(c·(log k)²) ≪ g(k) ≤ exp((1+o(1))k). Conjectured: log g(k) ~ k/log k. OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -9120,7 +9138,7 @@
     "slug": "erdos-1095-oq-01",
     "description": "Is log g(k) ~ c·k/log k, where g(k) is the smallest n > k+1 with all prime factors of C(n,k) exceeding k?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -9216,7 +9234,7 @@
     "slug": "erdos-1098-oq-01",
     "description": "Characterizes groups with small clique number ω in the non-commuting graph Γ(G). Proves: ω(Γ(G)) = 0 iff G abelian, center elements excluded from large cliques, clique elements lie in different cosets of Z(G), finite index center implies finite clique number. All theorems fully proved (0 sorries, 0 axioms).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "group-theory",
@@ -9277,7 +9295,7 @@
     "slug": "erdos-1099",
     "description": "For α > 1, is liminf h_α(n) bounded, where h_α(n) = Σ((d_{i+1}/dᵢ) - 1)^α over consecutive divisors? YES, proved by Vose (1984).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -9298,7 +9316,7 @@
     "slug": "erdos-11",
     "description": "Is every odd n > 1 the sum of a squarefree number and a power of 2? OPEN problem with deep connections to Wieferich primes. Verified up to 2^50.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -9378,7 +9396,7 @@
     "slug": "erdos-1101",
     "description": "Given a pairwise coprime sequence u with convergent reciprocal series, when do the integers not divisible by any uᵢ have gaps bounded by the product formula?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -9514,7 +9532,7 @@
     "slug": "erdos-1108",
     "description": "Does the set of finite sums of distinct factorials contain only finitely many k-th powers (for k >= 2)? Does it contain only finitely many powerful numbers?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -9725,7 +9743,7 @@
     "slug": "erdos-1117",
     "description": "For a non-monomial entire f, let ν(r) count maximum modulus points on |z|=r. Can lim sup ν(r) = ∞? YES (Herzog–Piranian 1968). Can lim inf ν(r) = ∞? OPEN. Approximate answer by Glücksam–Pardo-Simón (2024).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "complex-analysis",
@@ -9805,7 +9823,7 @@
     "slug": "erdos-112",
     "description": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) ≤ k(n,m) ≤ R(n,m,m). Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -10143,7 +10161,7 @@
       "open"
     ],
     "erdosNumber": 1131,
-    "sorries": 2,
+    "sorries": 0,
     "annotationCount": 9
   },
   {
@@ -10214,7 +10232,7 @@
     "slug": "erdos-1135",
     "description": "Does every positive integer eventually reach 1 under f(n) = n/2 (even) or (3n+1)/2 (odd)? Verified up to 2^68. Tao: almost all orbits attain small values. Open. $500.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -10273,7 +10291,7 @@
     "slug": "erdos-1138",
     "description": "For x/2 < y < x and C > 1, if d is the maximal prime gap below x, is π(y + Cd) - π(y) ~ Cd / log y?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -10333,7 +10351,7 @@
     "slug": "erdos-114",
     "description": "For monic degree-n polynomials p(z), is the arc length of {|p(z)|=1} maximized by z^n-1? Tao (2025) proved this for large n. Solved for n=2 (Eremenko-Hayman 1999). $250 bounty. Status: OPEN (all n).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "complex-analysis",
@@ -10432,7 +10450,7 @@
     "slug": "erdos-1142",
     "description": "Are there infinitely many n (or any n > 105) such that n − 2^k is prime for all 1 < 2^k < n?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -10707,7 +10725,7 @@
     "slug": "erdos-1155-oq-01",
     "description": "Formalizes the gap between the Bohman-Frieze-Lubetzky $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$ for the triangle removal process on $K_n$. The triangle removal process repeatedly deletes edges of a uniformly random triangle from $K_n$ until no triangles remain; $f(n)$ counts the surviving edges. This 489-line formalization proves 20 theorems from 5 axioms (0 sorries): structural decomposition of the conjecture into independent $O$ and $\\Omega$ bounds, characterization of $3/2$ as the exact critical exponent, the strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable, and sufficient conditions (ratio convergence) for the full conjecture.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "triangle-removal",
@@ -10729,7 +10747,7 @@
     "slug": "erdos-1155-oq-01-oq-01",
     "description": "Formalizes the open question of whether the ratio $f(n)/n^{3/2}$ converges to a specific positive constant $L$ in the triangle removal process. The triangle removal process repeatedly deletes edges of a uniformly random triangle from $K_n$ until no triangles remain; $f(n)$ counts the surviving edges. BFL (2015) established $f(n) = n^{3/2+o(1)}$ a.s., and the Erdős conjecture (parent OQ-01) asks for $\\Theta(n^{3/2})$ with bounded ratio. This formalization addresses the strictly stronger convergence question: does $f(n)/n^{3/2} \\to L$ for some $L > 0$? Thirteen theorems establish the hierarchy (convergence $\\Rightarrow$ Erdős $\\Rightarrow$ BFL), limit uniqueness, sharp asymptotics $f(n) \\sim L \\cdot n^{3/2}$ under convergence, ε-neighborhood and limsup/liminf characterizations, and a metric Cauchy criterion for the convergence conjecture. The limit $L$ (if it exists) would be determined by the differential equations governing the BFL analysis.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "triangle-removal",
@@ -10829,7 +10847,7 @@
     "slug": "erdos-116",
     "description": "For a monic polynomial p with all roots in the unit disk, is |{|p(z)|<1}| ≥ n^{-O(1)}? PROVED: Krishnapur-Lundberg-Ramachandran showed |{|p(z)|<1}| ≥ c/log n, and this is tight up to log log factors.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "complex analysis",
@@ -10867,7 +10885,7 @@
     "slug": "erdos-1161",
     "description": "For permutations of [n], which cyclic orders k maximize the count of permutations having order k? SOLVED by Beker: max_k f_k(n) ~ (n-1)! and the maximizer is characterized by lcm divisibility.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -11005,7 +11023,7 @@
     "slug": "erdos-117",
     "description": "Estimate h(n): minimum Abelian subgroups to cover a group where every (n+1)-element subset has a commuting pair. Pyber: c₁^n < h(n) < c₂^n. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "group-theory",
@@ -11104,7 +11122,7 @@
     "slug": "erdos-1173",
     "description": "Does there exist a free set of cardinality ℵ_{ω+1}?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorics",
@@ -11122,7 +11140,7 @@
     "slug": "erdos-1174",
     "description": "Does there exist a K₄-free graph such that every countable edge coloring contains a monochromatic triangle, and does the analogous infinite generalization hold?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorics",
@@ -11240,7 +11258,7 @@
     "slug": "erdos-1179-oq-01",
     "description": "What is the precise second-order term in g_ε(N)? Formalizes the correction term hierarchy (O(1) vs Θ(log log N) vs o(log N)) and proves foundational properties of representation counts in ℤ/Nℤ, including the partition identity ∑_g F_A(g) = 2^|A|, monotonicity under set growth, and coverage monotonicity. Proves erdos_renyi_decay (exponential decay of Fourier error) from the corrected fourier_error_bound axiom via geometric series arguments.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "combinatorics",
@@ -11321,7 +11339,7 @@
     "slug": "erdos-119",
     "description": "For points z_i on the unit circle, define M_n = max_{|z|=1} |∏(z - z_i)|. Parts 1-2 (limsup M_n = ∞, M_n > n^c i.o.) are solved. Part 3 (∑M_k > n^{1+c}) remains open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "complex-analysis",
@@ -11339,7 +11357,7 @@
     "slug": "erdos-12",
     "description": "How large can a set A be if no element a divides the sum b+c of two larger elements? Three OPEN questions about density, sparseness, and reciprocal sums.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -11376,7 +11394,7 @@
     "slug": "erdos-121",
     "description": "Let F_k(N) be the max size of A ⊆ {1,…,N} with no k-element product a perfect square. Conjecture F_{2k+1}(N) = (1-o(1))N. DISPROVED by Tao (2024): F_k(N) ≤ (1-c_k)N for k ≥ 4.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -11433,7 +11451,7 @@
     "slug": "erdos-124",
     "description": "For bases 3 ≤ d₁ < ... < dᵣ with Σ1/(dᵢ-1) ≥ 1, can all large integers be written as Σcᵢaᵢ with cᵢ ∈ {0,1} and aᵢ having only digits {0,1} in base dᵢ? Q1 PROVED. Q2 open (proved for {3,4,7}).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -11452,7 +11470,7 @@
     "slug": "erdos-124-complete-sequences",
     "description": "The first open mathematical conjecture solved autonomously by AI: every natural number is representable using 0/1 digits across multiple bases when the reciprocal condition is met.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "combinatorics",
@@ -11472,7 +11490,7 @@
     "slug": "erdos-125",
     "description": "Let A = {digits 0,1 in base 3}, B = {digits 0,1 in base 4}. Does A + B have positive density? Known: |A+B ∩ [1,x]| ≫ x^{0.9777}, upper density ≤ 0.696. OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -11527,7 +11545,7 @@
     "slug": "erdos-128",
     "description": "If every induced subgraph on ≥ ⌊n/2⌋ vertices has > n²/50 edges, must G contain a triangle? 1/50 is best possible (C₅ blow-up). Partial: EFRS (1/16), Krivelevich (3n/5, 1/25), Razborov (27/1024). Open ($250).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -11545,7 +11563,7 @@
     "slug": "erdos-129",
     "description": "R(n;k,r) is the smallest N such that every r-coloring of K_N has n vertices with no monochromatic K_k. Erdős–Gyárfás conjecture: C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}}.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -11584,7 +11602,7 @@
     "slug": "erdos-130",
     "description": "Given an infinite set A ⊆ ℝ² with no 3 collinear and no 4 cocircular points, form the integer distance graph G(A). Can χ(G(A)) be infinite? Anning–Erdős shows the clique number must be finite. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -11801,7 +11819,7 @@
     "slug": "erdos-14",
     "description": "For A ⊆ ℕ, let B be integers with exactly one representation as a+b (a≤b, a,b∈A). (a) Is |{1,...,N}\\B| ≫ N^{1/2−ε}? (b) Can |{1,...,N}\\B| = o(√N)? ESS: ≪ N^{1/2+ε} achievable, ≫ N^{1/3−ε} infinitely often.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -11855,7 +11873,7 @@
     "slug": "erdos-141",
     "description": "Are there k consecutive primes in arithmetic progression for every k >= 3?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "primes",
@@ -11875,7 +11893,7 @@
     "slug": "erdos-142",
     "description": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley–Meka's upper bound remains enormous even for k=3. Open ($10,000).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -12100,7 +12118,7 @@
     "slug": "erdos-152",
     "description": "For large finite Sidon sets A, are there arbitrarily many isolated elements a ∈ A+A with a±1 ∉ A+A? Conjectured ≫ |A|² such elements. OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -12117,7 +12135,7 @@
     "slug": "erdos-152-oq-01",
     "description": "For a Sidon set A with |A| >= 7 and min(A) >= 1, the sumset A+A contains at least 2 isolated elements. Strengthens the pigeonhole bound of >= 1 isolated element.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "additive combinatorics",
@@ -12253,7 +12271,7 @@
     "slug": "erdos-159",
     "description": "Does there exist c > 0 such that R(C₄, Kₙ) ≪ n^{2-c}? Known bounds: n^{3/2}/(log n)^{3/2} ≪ R(C₄, Kₙ) ≪ n²/(log n)².",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -12273,7 +12291,7 @@
     "slug": "erdos-16",
     "description": "Is the set of odd integers not of the form 2^k + p the union of an arithmetic progression and a density-0 set? DISPROVED by Chen (2023).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -12728,7 +12746,7 @@
     "slug": "erdos-18",
     "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m. Prize: $250.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -12787,7 +12805,7 @@
     "slug": "erdos-182",
     "description": "For k >= 3, what is the maximum number of edges a graph on n vertices can have if it contains no k-regular subgraph? Resolved by Janzer-Sudakov (2023): the answer is Θ(n log log n).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "graph-theory",
@@ -13104,7 +13122,7 @@
     "slug": "erdos-196",
     "description": "Must every permutation of ℕ contain a monotone 4-term arithmetic progression? k=3: YES (DEGS 1977). k=4: OPEN. k=5: NO (DEGS 1977). LeSaulnier–Vijay (2011) showed odd-CD 4-APs are avoidable.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorics",
@@ -13298,7 +13316,7 @@
     "slug": "erdos-203",
     "description": "Is there an integer m >= 1 with (m, 6) = 1 such that none of 2^k * 3^l * m + 1 are prime, for any k, l >= 0?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -13400,7 +13418,7 @@
     "slug": "erdos-208",
     "description": "Let s₁ < s₂ < ... be the squarefree numbers. Is it true that for any ε > 0, the gap s_{n+1} - sₙ ≪ sₙ^ε?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -14028,7 +14046,7 @@
     "slug": "erdos-236",
     "description": "Is it true that f(n) = o(log n), where f(n) counts solutions to n = p + 2^k with p prime? Erdős proved infinitely many n have f(n) ≫ log log n, showing the conjecture is tight if true.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -14149,7 +14167,7 @@
     "slug": "erdos-241",
     "description": "Let f(N) be the maximum size of A ⊆ {1,...,N} with all three-element sums distinct. Is f(N) ~ N^{1/3}? Bose–Chowla achieved N^{1/3}; Green's upper bound is ~1.519·N^{1/3}. OPEN ($100 prize).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -14323,7 +14341,7 @@
     "slug": "erdos-249",
     "description": "Is the sum ∑ φ(n)/2^n irrational, where φ is Euler's totient function? Status: OPEN. Formalization proves convergence, positivity, and upper bound (0 axioms).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -14344,7 +14362,7 @@
     "slug": "erdos-25",
     "description": "Let n₁ < n₂ < ⋯ be a strictly increasing sequence of positive integers with associated residue classes aᵢ (mod nᵢ). Let A be the set of integers m such that for every i, either m < nᵢ or m ≢ aᵢ (mod nᵢ). Must the logarithmic density of A exist? OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -14381,7 +14399,7 @@
     "slug": "erdos-251",
     "description": "Is the sum Σ pₙ/2ⁿ irrational, where pₙ is the nth prime? This OPEN problem asks about the arithmetic nature of a beautiful constant involving primes and powers of 2.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -14522,7 +14540,7 @@
     "slug": "erdos-258",
     "description": "Is the sum of τ(n)/(a₁·...·aₙ) irrational for sequences with aₙ → ∞? Solved for monotone sequences by Erdős-Straus (1971).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -14603,7 +14621,7 @@
     "slug": "erdos-261",
     "description": "Can every positive integer n be represented as n/2^n = Σ k/2^k over a set of distinct positive integers? Cusick proved infinitely many n work; the full conjecture remains open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -14719,7 +14737,7 @@
     "slug": "erdos-267",
     "description": "If n₁ < n₂ < ... is a sequence with n_{k+1}/n_k ≥ c > 1, must Σ 1/F_{n_k} be irrational? PARTIALLY SOLVED: Special cases proved, general conjecture OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -14865,7 +14883,7 @@
     "slug": "erdos-273",
     "description": "Is there a covering system all of whose moduli are of the form $p - 1$ for primes $p \\geq 5$? Selfridge found one when $p \\geq 3$ is allowed (using divisors of 360). The case $p \\geq 5$ remains OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -14924,7 +14942,7 @@
     "slug": "erdos-276",
     "description": "Does there exist a Lucas sequence (a_{n+2} = a_{n+1} + a_n) with all terms composite yet no integer dividing every term? Graham (1964) gave a construction via covering congruences. The deeper question of necessity remains open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -15229,7 +15247,7 @@
     "slug": "erdos-289",
     "description": "For all sufficiently large k, do there exist k disjoint non-adjacent intervals I₁,...,Iₖ ⊂ ℕ (each of size ≥ 2) with ∑ᵢ ∑_{n ∈ Iᵢ} 1/n = 1? Hickerson–Montgomery found 5 intervals summing to 2.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -15504,7 +15522,7 @@
     "slug": "erdos-30",
     "description": "Is h(N) = N^{1/2} + O_ε(N^ε) where h(N) is the maximum Sidon set size in {1,...,N}? OPEN with $1,000 prize. Best upper bound has N^{1/4} error term.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -15544,7 +15562,7 @@
     "slug": "erdos-301",
     "description": "Maximum subset of {1,...,N} with no 1/a = 1/b₁+...+1/bₖ using distinct elements. Lower: N/2 (half-interval). Upper: (25/28)N (van Doorn). Conjecture: f(N) = (1/2+o(1))N.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -15680,7 +15698,7 @@
     "slug": "erdos-307-oq-02",
     "description": "Eliminates sorries and axioms from Erdős 307 formalization: proves product_rigidity (was axiom), one_helps_balance, and no_two_three_solution. Documents remaining work: p-adic disjointness and computational size bound.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "primes",
@@ -15781,7 +15799,7 @@
     "slug": "erdos-311",
     "description": "Is δ(N) = e^{-(c+o(1))N} for c ∈ (0,1), where δ(N) is the minimal nonzero |1 - Σ 1/n| over A ⊆ {1,...,N}? Lower: e^{-(1+o(1))N}. Upper: exp(-cN/(log N log log N)³) (Tang). Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -15822,7 +15840,7 @@
     "slug": "erdos-313",
     "description": "Are there infinitely many m such that ∑ 1/p = 1 − 1/m for some set of distinct primes P? These m are called primary pseudoperfect numbers. Only 8 are known (OEIS A054377). Each m equals the product of its primes.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -15906,7 +15924,7 @@
     "slug": "erdos-317",
     "description": "Is there c > 0 such that for every n, we can find δ_k ∈ {-1,0,1} with 0 < |∑δ_k/k| < c/2^n? Also: for large n, must nonzero such sums exceed 1/lcm(1,...,n)? OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -16009,7 +16027,7 @@
     "slug": "erdos-321",
     "description": "Let R(N) be the max size of A ⊆ {1,...,N} with all reciprocal subset sums distinct. Bleicher–Erdős: R(N) = Θ(N/log N) up to iterated log factors. The precise correction is open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -16088,7 +16106,7 @@
     "slug": "erdos-325",
     "description": "Let f_{k,3}(x) count integers ≤ x that are sums of three k-th powers. Is it true that f_{k,3}(x) ≫ x^{3/k} for k ≥ 3?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -16108,7 +16126,7 @@
     "slug": "erdos-326",
     "description": "Let A be an additive basis of order 2. Must there exist a subset B which is also a basis such that the growth ratio of B has no limit?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -16446,7 +16464,7 @@
     "slug": "erdos-340",
     "description": "The Mian-Chowla sequence {1,2,4,8,13,21,...} is the greedy Sidon set. Is |A ∩ [1,N]| >> N^{1/2-ε}? Known lower bound: Ω(N^{1/3}). Also: does A-A have positive density? Status: OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -16585,7 +16603,7 @@
     "slug": "erdos-346",
     "description": "If a lacunary sequence is strongly complete but fragile (removing any infinite subset destroys completeness), must a_{n+1}/a_n → φ?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -16640,7 +16658,7 @@
     "slug": "erdos-349",
     "description": "For what (t,α) is ⌊tα^n⌋ a complete sequence? Conjectured for all t > 0 and 1 < α < (1+√5)/2. Whether ⌊(3/2)^n⌋ is odd/even infinitely often is unknown. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -16678,7 +16696,7 @@
     "slug": "erdos-350",
     "description": "If A is a finite dissociated set (all subset sums distinct) of positive integers, prove that the sum of reciprocals is less than 2. Proved by Ryavec.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -16698,7 +16716,7 @@
     "slug": "erdos-351",
     "description": "Is {p(n) + 1/n : n in N} strongly complete for all polynomials p(x)? General case open; solved for p(x) = x and p(x) = x².",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -16718,7 +16736,7 @@
     "slug": "erdos-352",
     "description": "Is there c > 0 such that every measurable set A in R^2 with measure >= c contains a triangle of area 1? Conjectured c = 4pi/sqrt(27). Open problem.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "geometric-measure-theory",
@@ -16858,7 +16876,7 @@
     "slug": "erdos-359",
     "description": "What is the density of MacMahon's sequence where each term is the smallest integer not expressible as a sum of consecutive earlier terms? Conjectured: a_k ~ (k log k) / (log log k).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -16922,7 +16940,7 @@
     "slug": "erdos-361",
     "description": "For c > 0, what is the maximum size of A ⊆ {1,...,⌊cn⌋} such that n is not a subset sum from A? Does this depend on n irregularly? Possibly Θ(√n).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -16982,7 +17000,7 @@
     "slug": "erdos-364",
     "description": "A positive integer n is powerful if p | n implies p² | n. Are there three consecutive powerful numbers? The quadruple case is impossible (proved), but the triple case remains OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -17020,7 +17038,7 @@
     "slug": "erdos-366",
     "description": "Are there any 2-full (powerful) n such that n+1 is 3-full (cubeful)? A number is k-full if every prime factor appears with multiplicity at least k. Known: (8,9) and (12167,12168) are 3-full/2-full pairs, but no 2-full/3-full pairs are known.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -17082,7 +17100,7 @@
     "slug": "erdos-369",
     "description": "For ε > 0 and k ≥ 2, does {1,…,n} contain k consecutive n^ε-smooth integers for all large n? Open even for k=2. Balog-Wooley: infinitely many exist. OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -17183,7 +17201,7 @@
     "slug": "erdos-373",
     "description": "Show that n! = a_1! * a_2! * ... * a_k! with n-1 > a_1 >= ... >= a_k >= 2 has only finitely many solutions. Conditionally solved under ABC conjecture (Luca 2007).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -17203,7 +17221,7 @@
     "slug": "erdos-374",
     "description": "For F(m) = min k with a₁!···aₖ! a square (a₁<···<aₖ=m), study |Dₖ∩{1,...,n}| for Dₖ = {m: F(m)=k}. D₂ = squares. Dₖ = ∅ for k>6. Min D₆ = 527. Open for 3≤k≤6.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -17264,7 +17282,7 @@
     "slug": "erdos-377",
     "description": "Is there an absolute constant C such that ∑_{p≤n, p∤C(2n,n)} 1/p ≤ C for all n? The main conjecture is OPEN, but EGRS75 proved f(n) averages to γ₀ = ∑log(k)/2^k and is ≤ c·log(log(n)) for c < 1.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -17325,7 +17343,7 @@
     "slug": "erdos-38",
     "description": "Does there exist a set B that is NOT an additive basis but still has the density-boosting property: for any set A with Schnirelmann density α, some translate A ∪ (A+b) achieves density ≥ α + f(α)?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -17404,7 +17422,7 @@
     "slug": "erdos-383",
     "description": "For every k, are there infinitely many primes p such that p is the largest prime divisor of ∏_{i=0}^k (p² + i)?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -17443,7 +17461,7 @@
     "slug": "erdos-385",
     "description": "Is F(n) = max{m + p(m) : m < n, m composite} greater than n for all large n, and does F(n) - n tend to infinity?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -17503,7 +17521,7 @@
     "slug": "erdos-388",
     "description": "Can one classify all solutions of ∏(m₁+i) = ∏(m₂+j) where k₁, k₂ > 3 and the blocks are disjoint? Erdős conjectured only finitely many solutions exist. Generalizes to proportional products a·∏(m₁+i) = b·∏(m₂+j).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -17522,7 +17540,7 @@
     "slug": "erdos-389",
     "description": "Is it true that for every n ≥ 1 there exists k such that n(n+1)···(n+k−1) divides (n+k)···(n+2k−1)? The minimal k for n = 4 is 207 (Mehta). OEIS A375071 catalogs minimal k values.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number theory",
@@ -17757,7 +17775,7 @@
     "slug": "erdos-399",
     "description": "Is it true that there are no solutions to n! = x^k ± y^k with xy > 1 and k > 2? Disproved by Barfield: 10! = 48^4 - 36^4.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -17798,7 +17816,7 @@
     "slug": "erdos-40",
     "description": "For which g(N) → ∞ does |A ∩ {1,...,N}| >> N^{1/2}/g(N) imply limsup r_A(n) = ∞? Solving for any g → ∞ implies the Erdős–Turán conjecture (Problem #28). $500 bounty. Status: OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -17817,7 +17835,7 @@
     "slug": "erdos-400",
     "description": "For k ≥ 2, let g_k(n) = max{(a₁+⋯+aₖ)-n : a₁!⋯aₖ! | n!}. Is Σ g_k(n) ~ cₖ·x·log x? Is g_k(n) concentrated around cₖ·log x?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -18002,7 +18020,7 @@
     "slug": "erdos-409",
     "description": "How many iterations of n mapsto phi(n) + 1 are needed before reaching a prime? F(n) = o(n) trivially; can infinitely many n reach the same prime? What is the density of n reaching a fixed prime? A problem of Finucane.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -18081,7 +18099,7 @@
     "slug": "erdos-412",
     "description": "Do all iterated sum-of-divisors sequences eventually meet? For every m,n ≥ 2, is there i,j such that σᵢ(m) = σⱼ(n)? Open. Selfridge provided evidence suggesting NO.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -18205,7 +18223,7 @@
     "slug": "erdos-418",
     "description": "Are there infinitely many positive integers not of the form n - phi(n)? Yes - integers 2^k * 509203 are non-cototients.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -18248,7 +18266,7 @@
     "slug": "erdos-42",
     "description": "For every maximal Sidon set A ⊆ {1,...,N}, does there exist a Sidon set B of size M with (A−A) ∩ (B−B) = {0}? Proved for M ≤ 3 (Sedov). Open in general.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -18308,7 +18326,7 @@
     "slug": "erdos-422",
     "description": "f(1)=f(2)=1, f(n) = f(n-f(n-1))+f(n-f(n-2)). Not even known if well-defined for all n. Does f miss infinitely many integers? OEIS A005185. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -18347,7 +18365,7 @@
     "slug": "erdos-424",
     "description": "Start with {2,3}, iteratively append a_i · a_j − 1. Does the resulting set have positive density? No element ≡ 1 (mod 3) appears, so density ≤ 2/3. OEIS A005244.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -18528,7 +18546,7 @@
     "slug": "erdos-432",
     "description": "Let A, B ⊆ ℕ be infinite. How dense can A + B be if all elements are pairwise coprime? Asked by Straus (Erdős–Graham 1980, p.85). OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -19080,7 +19098,7 @@
     "slug": "erdos-456",
     "description": "Compare pₙ (smallest prime ≡ 1 mod n) with mₙ (smallest m with n | φ(m)). Is mₙ < pₙ for almost all n? Does pₙ/mₙ → ∞? Three open questions about their relationship.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -19124,7 +19142,7 @@
     "slug": "erdos-458",
     "description": "Let lcm(1,...,n) denote the least common multiple of {1,...,n}. Is it true that for all k ≥ 1, lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k)? Erdős and Graham call this 'almost certainly' true, but proving it requires something close to Legendre's conjecture.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -19163,7 +19181,7 @@
     "slug": "erdos-46",
     "description": "Does every finite colouring of ℕ have a monochromatic solution to 1 = Σ 1/nᵢ? Proved by Croot. Erdős–Graham generalization to arbitrary rationals also holds.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -19247,7 +19265,7 @@
     "slug": "erdos-463",
     "description": "Is there f(n) → ∞ such that for all large n, some composite m satisfies n + f(n) < m < n + p(m), where p(m) is the least prime factor of m? Erdős also asks whether n − F(n) ~ c√n.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -19310,7 +19328,7 @@
     "slug": "erdos-466",
     "description": "Is there δ > 0 such that arbitrarily many points fit in a large disk with all pairwise distances bounded away from integers by ≥ δ? PROVED: Graham showed N(X,1/10) ≥ (log X)/10; Sárközy (1976) proved N(X,δ) > X^{1/2−δ^{1/7}}, nearly matching Konyagin's upper bound X^{1/2}.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -19354,7 +19372,7 @@
     "slug": "erdos-468",
     "description": "Let D_n = partial sums of divisors of n (excluding 1). How large is D_n \\ ⋃_{m<n} D_m? If f(N) = min{n : N ∈ D_n}, is f(N) = o(N)? Status: OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -19373,7 +19391,7 @@
     "slug": "erdos-469",
     "description": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does Σ_{n ∈ A} 1/n converge? OEIS A006036. Open.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -19559,7 +19577,7 @@
     "slug": "erdos-477",
     "description": "Is there a polynomial f: ℤ → ℤ of degree ≥ 2 and a set A ⊆ ℤ such that every integer has a unique representation a + f(n)? Sekanina (1959) showed no for f(x) = x². Erdős–Graham conjecture: no for all such f. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -19577,7 +19595,7 @@
     "slug": "erdos-478",
     "description": "Let p be a prime and A_p = { k! mod p : 1 ≤ k < p }. Is it true that |A_p| ~ (1 - 1/e) · p? The factorial residue set is conjectured to cover a density (1 - 1/e) fraction of residues, motivated by the birthday-type heuristic for multiplicative random walks. Status: OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -19784,7 +19802,7 @@
     "slug": "erdos-485-oq-02",
     "description": "Open question: can f(k) -> infinity be proved combinatorially via sumset bounds, rather than algebraically? Formalizes the sumset framework connecting polynomial squaring to additive combinatorics. Proves the positive-coefficient case completely and identifies the cancellation barrier for general polynomials.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "algebra",
@@ -19798,7 +19816,7 @@
     "dateAdded": "2026-03-29",
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 8
+    "annotationCount": 7
   },
   {
     "id": "erdos-486",
@@ -19806,7 +19824,7 @@
     "slug": "erdos-486",
     "description": "For any choice of forbidden residue classes modulo each n, must the set of integers avoiding all forbidden classes have a logarithmic density?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -19844,7 +19862,7 @@
     "slug": "erdos-488",
     "description": "Let A be a finite set and B = {n ≥ 1 : a | n for some a ∈ A}. Is |B ∩ [1,m]|/m < 2·|B ∩ [1,n]|/n for all m > n ≥ max(A)? The constant 2 is optimal.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number theory",
@@ -19884,7 +19902,7 @@
     "slug": "erdos-49",
     "description": "Let A ⊆ {1,…,N} with φ(a₁) < ⋯ < φ(aₜ). The primes form such a set. Tao (2023) proved |A| ≤ (1+o(1))π(N), confirming primes are asymptotically largest.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -19982,7 +20000,7 @@
     "slug": "erdos-493",
     "description": "Does there exist k such that every sufficiently large integer n = prod(ai) - sum(ai) for ai >= 2? Yes, k=2 works: n = 2(n+2) - (2+(n+2)). SOLVED. Fully verified (0 axioms, 0 sorries).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -20043,7 +20061,7 @@
     "slug": "erdos-496",
     "description": "For irrational α > 0 and any ε > 0, there exist positive integers x, y, z with |x² + y² − αz²| < ε. Proved by Margulis (1987) using unipotent dynamics on homogeneous spaces.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -20061,7 +20079,7 @@
     "slug": "erdos-497",
     "description": "How many antichains exist in P([n])? Kleitman (1969) proved the answer is 2^{(1+o(1))·C(n, ⌊n/2⌋)}, determining the logarithmic order of the Dedekind numbers.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "combinatorics",
@@ -20081,7 +20099,7 @@
     "slug": "erdos-498",
     "description": "For complex z₁,...,zₙ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums Σεᵢzᵢ fall in any unit disc. Solved by Kleitman (1965), generalized to Hilbert spaces (1970).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorics",
@@ -20159,7 +20177,7 @@
     "slug": "erdos-50",
     "description": "Schoenberg proved the density f(c) = d({n : φ(n)/n < c}) exists for all c. Erdős showed f is purely singular. $250 prize: is it true that f'(x) > 0 for no x?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -20180,7 +20198,7 @@
     "slug": "erdos-500",
     "description": "Determine ex₃(n, K₄³): the maximum number of 3-edges on n vertices avoiding K₄³. Turán (1941) conjectured π(K₄³) = 5/9. Best bounds: 5/9 ≤ π ≤ 0.5612 (Razborov 2010). Status: OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "extremal-combinatorics",
@@ -20293,7 +20311,7 @@
     "slug": "erdos-506",
     "description": "What is the minimum number of distinct circles determined by n points in ℝ², not all concyclic? Elliott (1967): ≥ C(n-1,2) for n > 393. Segre: fails for n = 8. Open for small n.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "geometry",
@@ -20311,7 +20329,7 @@
     "slug": "erdos-507",
     "description": "Estimate α(n), the smallest area such that every n-point set in the unit disk contains a triangle of area ≤ α(n). Best bounds: (log n)/n² ≪ α(n) ≪ 1/n^{7/6+o(1)}. Status: OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "geometry",
@@ -20373,7 +20391,7 @@
     "slug": "erdos-51",
     "description": "Is there an infinite set A ⊂ ℕ of totient values such that the smallest preimage n_a of each a ∈ A satisfies n_a/a → ∞? That is, can the minimal solution to φ(n) = a grow much faster than a? OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -20394,7 +20412,7 @@
     "slug": "erdos-510",
     "description": "For finite A ⊂ ℕ of size N, must there exist θ with ∑ cos(nθ) < −c√N for absolute c > 0? Best known: −cN^{1/7} (Bedert 2025). Sidon sets show √N is optimal. OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "harmonic-analysis",
@@ -20599,7 +20617,7 @@
     "slug": "erdos-52",
     "description": "For a finite set A of integers, is max(|A+A|, |A·A|) ≫ |A|^{2-ε} for every ε > 0? Erdős–Szemerédi proved a super-linear bound; Bloom (2025) achieved |A|^{1.335}. OPEN ($250 prize).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -20616,7 +20634,7 @@
     "slug": "erdos-520",
     "description": "For a Rademacher multiplicative function f, does there exist a constant c > 0 such that almost surely limsup (∑_{m≤N} f(m)) / √(N log log N) = c?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "probability",
@@ -20677,7 +20695,7 @@
     "slug": "erdos-523",
     "description": "For random ±1 polynomials, max_{|z|=1} |f(z)| = (C+o(1))√(n log n)? SOLVED: YES with C = 1 (Halász 1973).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "analysis",
@@ -20699,7 +20717,7 @@
     "slug": "erdos-524",
     "description": "Determine the correct order of magnitude of M_n(t) = max_{x∈[-1,1]} |Σ_{k≤n} (±1)·x^k| for a.e. t ∈ (0,1), where signs come from binary digits of t. Known: n^{1/2-ε} ≪ M_n ≪ √(n/log log n) i.o. OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "analysis",
@@ -20846,7 +20864,7 @@
     "slug": "erdos-53",
     "description": "For every k, if |A| is sufficiently large, are there at least |A|^k integers representable as sums or products of distinct elements of A? PROVED by Chang (2003). Erdős–Szemerédi upper bound: exp(c(log|A|)² log log|A|).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -21041,7 +21059,7 @@
     "slug": "erdos-539",
     "description": "For A ⊆ ℕ of size n, what is the minimum size of { a/gcd(a,b) : a,b ∈ A }? Bounds: n^{1/2} ≪ h(n) ≪ n^{2/3}. Exact behavior unknown.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -21062,7 +21080,7 @@
     "slug": "erdos-54",
     "description": "A set A is Ramsey 2-complete if every 2-colouring yields monochromatic sums covering all large integers. Conlon–Fox–Pham (2021) showed the minimum growth rate is Θ((log N)²).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -21123,7 +21141,7 @@
     "slug": "erdos-542",
     "description": "If A ⊆ {1,...,n} with lcm(a,b) > n for distinct a,b ∈ A, must ∑ 1/a ≤ 31/30? Solved by Schinzel-Szekeres (1959).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -21381,7 +21399,7 @@
     "slug": "erdos-555",
     "description": "Determine R(C₂ₙ; k), the multicolor Ramsey number of even cycles. Erdős showed k^{1+1/(2n)} ≪ R(C₂ₙ; k) ≪ k^{1+1/(n-1)}. For C₄, Chung-Graham gave k²-k+1 < R(C₄;k) ≤ k²+k+1. The exact growth rate is open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "Ramsey theory",
@@ -21555,7 +21573,7 @@
     "slug": "erdos-563",
     "description": "F(n,alpha) = smallest m with a 2-coloring of K_n where every m-subset has > alpha fraction in each color. Conjecture: F(n,alpha) ~ c_alpha log n for alpha < 1/2. Known: Theta(log n) by probabilistic method.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "graph theory",
@@ -21613,7 +21631,7 @@
     "slug": "erdos-566",
     "description": "If every k-vertex subgraph of G has at most 2k−3 edges, is G Ramsey size linear? True for ≤ n+1 edges (EFRS 1993), false for 2n−2 edges. Implies Problem #567. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -21788,7 +21806,7 @@
     "slug": "erdos-574",
     "description": "Is ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k} for k ≥ 2? Conjectured that forbidding C_{2k−1} in addition to C_{2k} does not change the extremal number asymptotically. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -21807,7 +21825,7 @@
     "slug": "erdos-575",
     "description": "For a finite family F of graphs containing a bipartite member, does some bipartite G ∈ F satisfy ex(n;G) ≪ ex(n;F)? That is, does a single bipartite graph control the extremal function? Erdős–Simonovits (1982).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "extremal graph theory",
@@ -21884,7 +21902,7 @@
     "slug": "erdos-579",
     "description": "For δ > 0 and n large, must every K₂,₂,₂-free graph on n vertices with ≥ δn² edges contain an independent set of size ≫_δ n? Proved for δ > 1/8 by EHSS. Open for general δ.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -22024,7 +22042,7 @@
     "slug": "erdos-585",
     "description": "What is the maximum number of edges in an n-vertex graph with no two edge-disjoint cycles on the same vertex set? Known: Ω(n log log n) ≤ f(n) ≤ O(n(log n)^C). The gap remains open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph theory",
@@ -22202,7 +22220,7 @@
     "slug": "erdos-593",
     "description": "Characterize finite 3-uniform hypergraphs appearing in every 3-uniform hypergraph of chromatic number > ℵ₀. For graphs, the answer is bipartite graphs. The 3-uniform case remains OPEN ($500 prize).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "set-theory",
@@ -22303,7 +22321,7 @@
     "slug": "erdos-598",
     "description": "Can one color countable subsets of an infinite set m with κ = (2^ℵ₀)⁺ colors so that every κ-sized subset contains all colors? OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "set-theory",
@@ -22421,7 +22439,7 @@
     "slug": "erdos-602",
     "description": "Given a family of countably infinite sets with pairwise intersections that are finite but ≠ 1, does there exist a 2-coloring of the union such that no member is monochromatic?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "combinatorics",
@@ -22599,7 +22617,7 @@
     "slug": "erdos-61",
     "description": "For any graph H, does there exist c > 0 such that every H-free graph on n vertices has a clique or independent set of size at least n^c?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -23201,7 +23219,7 @@
     "slug": "erdos-637",
     "description": "If G on n vertices has no clique/independent set on ≫ log n vertices, then G contains an induced subgraph with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to ≫ n^{2/3} degrees.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -23218,7 +23236,7 @@
     "slug": "erdos-638",
     "description": "Let S be a family of finite graphs such that for every n, some member forces a monochromatic triangle under n-colourings. For infinite cardinals, does a graph exist with all finite subgraphs in S and the same Ramsey property?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "graph theory",
@@ -23256,7 +23274,7 @@
     "slug": "erdos-64",
     "description": "Does every finite graph with minimum degree ≥ 3 contain a cycle of length 2^k for some k ≥ 2? OPEN ($1000 prize).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "extremal-graph-theory",
@@ -23475,7 +23493,7 @@
     "slug": "erdos-65",
     "description": "Let G be a graph with n vertices and kn edges. Is the sum of reciprocals of cycle lengths Σ 1/aᵢ ≫ log k? Is this sum minimized when G is complete bipartite?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "graph-theory",
@@ -23572,7 +23590,7 @@
     "slug": "erdos-654",
     "description": "Given n points in the plane with no four on a circle, must some point determine (1-o(1))n distinct distances? Known: each point has ≥ (n-1)/3 distinct distances. Status: OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "geometry",
@@ -23591,7 +23609,7 @@
     "slug": "erdos-655",
     "description": "With no circle centered at any point containing 3+ others, do n points in ℝ² determine ≥ (1+c)n/2 distinct distances? FALSE as stated (Hunter). Likely intended with no 4 concyclic. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -23712,7 +23730,7 @@
     "slug": "erdos-66",
     "description": "Is there a set A ⊆ ℕ such that the representation function r_A(n) = |{(a,b) ∈ A² : a+b=n}| satisfies lim r_A(n)/log(n) = c ≠ 0?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -23753,7 +23771,7 @@
     "slug": "erdos-661",
     "description": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² with o(n/√log n) distinct bipartite distances? Is F(2n) = o(f(2n))? In ℝ⁴ all distances can be equal (Lenz). $50 reward. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -23790,7 +23808,7 @@
     "slug": "erdos-663",
     "description": "For positive integers n and k, let q(n,k) be the least prime not dividing (n+1)(n+2)···(n+k). Erdős conjectured q(n,k) < (1+o(1)) log n.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -24188,7 +24206,7 @@
     "slug": "erdos-681",
     "description": "For all large n, does there exist k > 0 such that n+k is composite and p(n+k) > k², where p(m) is the least prime factor? Generalises to p(n+k) > k^d.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -24270,7 +24288,7 @@
     "slug": "erdos-685",
     "description": "For n^ε < k ≤ n^{1-ε}, is ω(C(n,k)) = (1+o(1))·k·Σ_{k<p<n} 1/p? Trivial lower bound: log C(n,k)/log n, tight when k > n^{1-o(1)}.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -24329,7 +24347,7 @@
     "slug": "erdos-688",
     "description": "Define εₙ as the max ε such that choosing one residue class per prime in (n^ε, n] covers [1,n]. Estimate εₙ; is εₙ = o(1)? Erdős showed εₙ ≫ (log log log n)/(log log n).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -24404,7 +24422,7 @@
     "slug": "erdos-691",
     "description": "Find a necessary and sufficient condition for a set A ⊆ ℕ to be a Behrend sequence (its multiples have density 1). Known for coprime sets: Σ 1/a = ∞. General criterion remains open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -24605,7 +24623,7 @@
     "slug": "erdos-70",
     "description": "Let 𝔠 be the cardinality of the continuum, β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "partition-calculus",
@@ -24645,7 +24663,7 @@
     "slug": "erdos-700",
     "description": "Study f(n) = min_{1<k≤n/2} gcd(n, C(n,k)). When does f(n) = n/P(n)? Are there ∞ many n with f(n) > √n? Is f(n) ≪ n/(log n)^A? Known: f(pq) = p, f(p²) ≥ p. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -24663,7 +24681,7 @@
     "slug": "erdos-701",
     "description": "Let F be a hereditary family. There exists x such that every intersecting subfamily F' has |F'| ≤ |{A ∈ F : x ∈ A}|. Status: OPEN with partial results.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "combinatorics",
@@ -25273,7 +25291,7 @@
     "slug": "erdos-728-factorial-divisibility",
     "description": "A milestone in AI mathematics: GPT-5.2 and Aristotle autonomously solved this factorial divisibility problem, producing genuinely novel mathematics not found in existing literature.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "combinatorics",
@@ -25533,7 +25551,7 @@
     "slug": "erdos-74",
     "description": "For f(n) → ∞, is there a graph with infinite chromatic number where every n-vertex subgraph can be made bipartite by deleting ≤ f(n) edges?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -25762,7 +25780,7 @@
     "slug": "erdos-75",
     "description": "Is there a graph of chromatic number ℵ₁ such that every sufficiently large finite subgraph on n vertices has an independent set of size > n^{1−ε}? A $1000 Erdős prize problem.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -25781,7 +25799,7 @@
     "slug": "erdos-750",
     "description": "For f(m) → ∞, does there exist an infinite-chromatic graph where every m-vertex subgraph has an independent set of size ≥ m/2 - f(m)? Solved for f(m) = εm (EHS82). Open for sublinear f.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -26177,7 +26195,7 @@
     "slug": "erdos-768",
     "description": "Determine the exact asymptotic density of integers n where every prime divisor p has a witness divisor d > 1 with d ≡ 1 (mod p).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -26237,7 +26255,7 @@
     "slug": "erdos-770",
     "description": "Let h(n) be the minimal k such that gcd(2^n−1, 3^n−1, ..., k^n−1) = 1. Does lim inf h(n) = ∞? Does the density of h(n) = p exist? h(n) = n+1 iff n+1 prime. Open.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -26522,7 +26540,7 @@
     "slug": "erdos-783",
     "description": "Given budget C on reciprocal sums, which pairwise coprime A ⊆ {2,...,n} minimizes unsieved integers? Conjectured: first k primes with Σ 1/p_i ≤ C. Status: OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -27482,7 +27500,7 @@
     "slug": "erdos-825",
     "description": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -27539,7 +27557,7 @@
     "slug": "erdos-828",
     "description": "For any integer a, are there infinitely many n such that φ(n) divides n + a? Generalizes Lehmer's conjecture (a = -1) and the characterized case a = 0 (n = 2^a · 3^b). OPEN.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -27604,7 +27622,7 @@
     "slug": "erdos-830",
     "description": "Are there infinitely many amicable pairs? Two numbers are amicable if each is the sum of the other's proper divisors, like 220 and 284.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -27748,7 +27766,7 @@
     "slug": "erdos-837",
     "description": "Define A_k as the density jump values for k-uniform hypergraphs. For graphs, A_2 = {1−1/m : m ≥ 1} by Erdős–Stone. What is A_3? Connected to hypergraph Turán problem. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -27924,7 +27942,7 @@
     "slug": "erdos-845",
     "description": "For C > 0, does the set of integers expressible as sums of 3-smooth numbers b₁ < ... < bₜ with bₜ ≤ Cb₁ have density 0? Disproved: all integers have such representations with C = 6.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -27984,7 +28002,7 @@
     "slug": "erdos-848",
     "description": "Max |A| with A ⊆ {1,...,N} and ab+1 never squarefree for a,b ∈ A. Extremal sets: {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}, giving N/25. Solved by Sawhney for large N.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -28024,7 +28042,7 @@
     "slug": "erdos-85",
     "description": "Is the minimum degree threshold f(n) for forcing a 4-cycle monotone? That is, is f(n+1) ≥ f(n) for all large n?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "graph-theory",
@@ -28123,7 +28141,7 @@
     "slug": "erdos-854",
     "description": "Study the gaps between consecutive integers coprime to primorials. Erdős asked to estimate the smallest missing gap and whether the number of distinct gaps is proportional to the maximal gap.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -28165,7 +28183,7 @@
     "slug": "erdos-856",
     "description": "Estimate f_k(N), the maximum harmonic sum of subsets of {1,...,N} with no k elements having uniform pairwise LCM. Status: OPEN. Bounds relate to sunflower conjecture.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "combinatorial-number-theory",
@@ -28324,7 +28342,7 @@
     "slug": "erdos-863",
     "description": "For B₂[r] sets in {1,...,N}, do the asymptotic constants cᵣ (sums) and c'ᵣ (differences) differ when r ≥ 2? For r = 1 (Sidon sets), c₁ = c'₁ = 1. Erdős conjectured c'ᵣ < cᵣ. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -28381,7 +28399,7 @@
     "slug": "erdos-866",
     "description": "For k ≥ 3, define g_k(N) as the minimal threshold such that A ⊆ {1,...,2N} with |A| ≥ N + g_k(N) contains all pairwise sums of some b₁,...,b_k. Known: g₃=2, g₄≤2032, g₅≍log N, g₆≍√N. General bounds have gaps.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "additive-combinatorics",
       "sumsets",
@@ -28540,7 +28558,7 @@
     "slug": "erdos-873",
     "description": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erdős and Szemerédi on multiplicative structure of sequences.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -28581,7 +28599,7 @@
     "slug": "erdos-875",
     "description": "Let A = {a₁ < a₂ < ...} with r-fold sumsets Sᵣ pairwise disjoint for all r. How fast must A grow? For which c is a_{n+1} − aₙ ≤ n^c possible? Can a_{n+1}/aₙ → 1? Erdős noted the ratio-1 case is 'not completely trivial.'",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -28804,7 +28822,7 @@
     "slug": "erdos-885",
     "description": "For n ≥ 1, define D(n) = {|a - b| : n = ab}. For every k ≥ 1, do there exist integers N₁ < ... < Nₖ with |∩ᵢ D(Nᵢ)| ≥ k? Solved for k ≤ 4; OPEN for k ≥ 5.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -28906,7 +28924,7 @@
     "slug": "erdos-89",
     "description": "Does every set of n distinct points in ℝ² determine ≫ n/√(log n) many distinct distances?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -28944,7 +28962,7 @@
     "slug": "erdos-891",
     "description": "For k ≥ 2 and large n, must every interval [n, n + p₁···pₖ) contain an integer with more than k prime factors? OPEN, even for k = 2 (intervals of length 6).",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -29066,7 +29084,7 @@
     "slug": "erdos-897",
     "description": "For an additive function f with unbounded growth on prime powers, must consecutive differences f(n+1) - f(n) also be unbounded when normalized by log(n)?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -29145,7 +29163,7 @@
     "slug": "erdos-90",
     "description": "What is the maximum number u(n) of unit-distance pairs among n points in ℝ²? Erdős conjectured u(n) = n^{1+O(1/log log n)}. Best upper bound is O(n^{4/3}) by Spencer–Szemerédi–Trotter. $500 prize.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -29582,7 +29600,7 @@
     "slug": "erdos-919",
     "description": "Is there a graph G on vertex set ω₂² with chromatic number ℵ₂ such that every subgraph of smaller order type has chromatic number at most ℵ₀?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "graph-theory",
@@ -29742,7 +29760,7 @@
     "slug": "erdos-926",
     "description": "For k ≥ 4, is it true that ex(n; H_k) ≪_k n^(3/2), where H_k is the graph with central vertex x adjacent to k vertices y_1,...,y_k, and (k choose 2) vertices z_ij each adjacent to a unique pair y_i, y_j? Answer: YES. Proved by Füredi (1991) with bound (kn)^(3/2), improved by Alon-Krivelevich-Sudakov (2003) to k·n^(3/2).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "extremal-graph-theory",
@@ -29800,7 +29818,7 @@
     "slug": "erdos-929",
     "description": "Let S(k) be the minimal x such that a positive density of n have n+1,...,n+k all x-smooth. Is S(k) ≥ k^{1−o(1)}? Known: k^{1/2−o(1)} ≤ S(k) ≤ k·(log³ k)/(log² k · log⁴ k) by Ford–Green–Konyagin–Maynard–Tao.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number theory",
@@ -29937,7 +29955,7 @@
     "slug": "erdos-935",
     "description": "Three questions about Q₂(n(n+1)···(n+ℓ)), the powerful part of consecutive products: upper bound n^{2+ε}, divergent lim sup, and vanishing ratio.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -30162,7 +30180,7 @@
     "slug": "erdos-944",
     "description": "For k ≥ 4 and r ≥ 1, does there exist a k-vertex-critical graph where every critical edge set has size > r? The case k = 4 remains OPEN; all k ≥ 5 are solved.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "graph-theory",
@@ -30182,7 +30200,7 @@
     "slug": "erdos-945",
     "description": "How long can a run of consecutive integers be where all have distinct numbers of divisors? Is the maximum length bounded by a polynomial in log x?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -30321,7 +30339,7 @@
     "slug": "erdos-951",
     "description": "Is it true that #{aᵢ ≤ x} ≤ π(x) for any Beurling prime sequence? Are the primes the densest well-separated sequence?",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "erdos",
       "number-theory",
@@ -30384,7 +30402,7 @@
     "slug": "erdos-954",
     "description": "Define a greedy sequence 0 = a₀ < a₁ < ⋯ where a_{k+1} is minimal with representation count < a_{k+1}. Is R(x) = x + O(x^{1/4+o(1)})? Even R(x) ≤ (1+o(1))x is open. Status: OPEN.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -30763,7 +30781,7 @@
     "slug": "erdos-971",
     "description": "For p(a,d) the least prime congruent to a mod d, does there exist c > 0 such that p(a,d) > (1+c)φ(d)log d for many residue classes a, for all large d?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -30844,7 +30862,7 @@
     "slug": "erdos-975",
     "description": "Does the sum of divisor counts over polynomial values have an asymptotic formula with a specific constant?",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -30944,7 +30962,7 @@
     "slug": "erdos-98",
     "description": "Let h(n) = min distinct distances for n points with no 3 collinear and no 4 concyclic. Does h(n)/n → ∞? Known: h(n) < n·exp(c√(log n)). Even h(n) ≥ n is unknown. Open.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -31492,7 +31510,7 @@
     "slug": "euler-polyhedral-formula-oq-01",
     "description": "Extends Euler's polyhedral formula V-E+F=2 to planar graph theory: spanning tree approach, graph degeneracy (5-degenerate), and the Six Color Theorem via degeneracy coloring.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "graph-theory",
       "topology",
@@ -31531,7 +31549,7 @@
     "slug": "euler-polyhedral-formula-oq-01-oq-02",
     "description": "Survey of re-formalizing Gonthier's Coq proof of the Four Color Theorem in Lean 4. Proves small cases (≤4 vertices, bipartite), assesses feasibility (~43K lines needed), and identifies starting points.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "graph theory",
       "four color theorem",
@@ -31569,7 +31587,7 @@
     "slug": "euler-polyhedral-formula-oq-02-oq-01",
     "description": "Formalizes the smooth Gauss-Bonnet theorem ∫_M K dA = 2πχ(M) and its consequences for compact Riemannian surfaces. The core theorem is axiomatized (Mathlib lacks Riemannian geometry infrastructure), with 20+ consequence theorems fully proved: genus determination from curvature sign, curvature-topology constraints, average curvature formulas, and connections to the discrete case.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "gauss-bonnet",
       "riemannian-geometry",
@@ -31629,7 +31647,7 @@
     "slug": "euler-totient-oq-02",
     "description": "The multiplicative property of Euler's totient: φ(mn) = φ(m)·φ(n) when gcd(m,n) = 1. Proves multiplicativity via CRT, the prime power formula φ(p^k) = p^(k-1)(p-1), three-factor products, φ(2m)=φ(m) for odd m, and native_decide verifications including non-coprime counterexamples. 0 sorries, 0 axioms.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "multiplicative-functions",
@@ -31743,7 +31761,7 @@
     "slug": "fair-games-theorem-oq-01",
     "description": "Complete analysis of ruin probabilities, expected ruin times, and exponential decay of ruin time distribution via the Optional Stopping Theorem, with extension to biased random walks.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "random-walk",
@@ -31763,7 +31781,7 @@
     "slug": "fair-games-theorem-oq-02",
     "description": "Concrete applications of the Optional Stopping Theorem: Gambler's Ruin with specific parameters and the doubling (martingale betting) strategy showing E[gain] = 0.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "random-walk",
@@ -31879,7 +31897,7 @@
     "slug": "feuerbachs-theorem",
     "description": "The nine-point circle of a triangle is tangent to its incircle and all three excircles. A beautiful result in triangle geometry.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "triangle",
@@ -31924,7 +31942,7 @@
     "slug": "feuerbachs-theorem-oq-01",
     "description": "Fully proves all 8 axioms from the main Feuerbach formalization by coordinate computation: altitude feet on the nine-point circle, equilateral R = 2r, and all four Feuerbach distance relations (incircle tangency and three excircle tangencies) for general triangles. Also develops Heron's formula, the extended law of sines, triangle inequalities, and the NI bilinear expansion as supporting machinery.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "triangle",
@@ -31962,7 +31980,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 1,
     "sorries": 5,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "four-color-theorem",
@@ -31990,7 +32008,7 @@
     "slug": "four-color-theorem-oq-01",
     "description": "Investigation of whether the Four Color Theorem can be proved without computer-assisted case analysis. Formalizes the Kempe chain obstruction: why the human-readable proof technique works for 5 colors but fails for 4.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "graph-theory",
       "combinatorics",
@@ -32026,7 +32044,7 @@
     "slug": "fourier-series",
     "description": "Every periodic function can be represented as an infinite sum of sines and cosines (Fourier series). A cornerstone of analysis with applications throughout science.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "harmonic-analysis",
@@ -32060,7 +32078,7 @@
     "dateAdded": "2026-03-28",
     "mathlibCount": 6,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "fourier-series-oq-02",
@@ -32088,7 +32106,7 @@
     "slug": "fourier-series-oq-02-oq-03",
     "description": "Investigates the sharpness of the constant 1/2 in the Fourier coefficient decay bound for Hölder functions: ‖ĉ_n(f)‖ ≤ (1/2)·C·(T/(2|n|))^α. Proves structural properties and states sharpness via extremal sawtooth functions.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "harmonic-analysis",
       "fourier-series",
@@ -32166,7 +32184,7 @@
     "slug": "friendship-theorem",
     "description": "The Friendship Theorem (Erdős–Rényi–Sós, 1966): In any finite graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "graph-theory",
       "combinatorics",
@@ -32206,7 +32224,7 @@
     "slug": "friendship-theorem-oq-03",
     "description": "The Friendship Theorem (Erdos-Renyi-Sos, 1966) states that every graph where every pair of vertices has exactly one common neighbor must have a universal vertex. Does this generalize to 3-uniform hypergraphs? We prove the answer is NO by constructing the Fano plane as a friendship 3-hypergraph with no universal vertex.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "graph-theory",
       "combinatorics",
@@ -32266,7 +32284,7 @@
     "slug": "fundamental-arithmetic-oq-02",
     "description": "Formalizes the classic counterexample to unique factorization: 6 = 2·3 = (1+√(-5))·(1-√(-5)) in ℤ[√(-5)], with both factorizations into irreducibles. Uses the norm function N(a+b√(-5)) = a²+5b² and its multiplicativity.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "ring-theory",
@@ -32367,7 +32385,7 @@
     "slug": "fundamental-theorem-calculus-oq-02",
     "description": "Formalizes the generalized Stokes theorem framework, showing that FTC (1D) and Green's theorem (2D) are special cases of the single identity: the integral of the exterior derivative of a differential form over a manifold equals the integral of the form over the boundary.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "analysis",
       "calculus",
@@ -32379,7 +32397,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 4,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "furstenberg-correspondence",
@@ -32398,7 +32416,7 @@
     "dateAdded": "2026-03-29",
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 7
   },
   {
     "id": "furstenberg-correspondence-oq-01",
@@ -32406,7 +32424,7 @@
     "slug": "furstenberg-correspondence-oq-01",
     "description": "Builds the shift dynamical system on Cantor space {0,1}^ℕ — the infrastructure needed to formalize the Furstenberg correspondence principle. Proves the shift is continuous and measurable, cylinder sets are clopen and measurable, and the k-fold return property connecting dynamical intersections to combinatorial patterns. All theorems proved from Mathlib with 0 axioms and 0 sorries.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "ergodic-theory",
       "dynamics",
@@ -32426,8 +32444,8 @@
     "title": "Ergodic Decomposition Feasibility (Furstenberg OQ-02)",
     "slug": "furstenberg-correspondence-oq-02",
     "description": "Feasibility survey for formalizing the ergodic decomposition theorem in Lean 4 using Mathlib, as a stepping stone toward the Furstenberg multiple recurrence theorem.",
-    "status": "formalized",
-    "badge": "formalized",
+    "status": "verified",
+    "badge": "mathlib",
     "tags": [
       "ergodic-theory",
       "measure-theory",
@@ -32505,7 +32523,7 @@
     "slug": "gcd-algorithm-oq-02",
     "description": "Formalizes Stein's binary GCD algorithm (1967) which computes GCD using only subtraction and division by 2. Defines the recursive algorithm, proves all three key invariants (even-even, even-odd, odd-odd), and proves full correctness: binaryGcd = Nat.gcd.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "algorithms",
@@ -32516,7 +32534,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 6
   },
   {
     "id": "gelfond-schneider",
@@ -32627,7 +32645,7 @@
     "slug": "geometric-series-oq-02-oq-03",
     "description": "The unit group of a complete normed ring is open and inversion is locally bounded, proved as corollaries of the Neumann series perturbation theorem. Includes quantitative bounds via explicit series representations.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "functional-analysis",
       "operator-theory",
@@ -32800,7 +32818,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 6
   },
   {
     "id": "halting-problem",
@@ -32808,7 +32826,7 @@
     "slug": "halting-problem",
     "description": "Turing's 1936 proof that no algorithm can determine whether an arbitrary program halts, establishing fundamental limits on computation using the diagonal argument.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "from-axioms",
     "tags": [
       "computability",
       "undecidability",
@@ -32847,7 +32865,7 @@
     "slug": "harmonic-divergence-oq-02",
     "description": "The series Σ 1/(n·log n) diverges, proved via the Cauchy condensation test. The condensed series 2^k/(2^k·k·log 2) = Σ 1/(k·log 2) is a rescaled harmonic series.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "series",
@@ -32864,7 +32882,7 @@
     "slug": "harmonic-divergence-oq-04",
     "description": "The Cauchy condensation test completely characterizes convergence/divergence for monotone decreasing nonneg sequences, generalizing Oresme's 14th-century grouping argument for the harmonic series.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "series",
@@ -33103,7 +33121,7 @@
     "slug": "hilbert-15-oq-01",
     "description": "Formalizes the Chow ring (intersection ring) of the Grassmannian Gr(2,4) with an explicit Littlewood–Richardson multiplication table on 6 Schubert basis classes. Proves σ₁⁴ = 2 (the four lines number) by direct computation with 0 axioms and 0 sorries. Verifies Poincaré duality, Giambelli's formula, and several classical enumerative results.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebraic-geometry",
       "schubert-calculus",
@@ -33118,7 +33136,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 1,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 7
   },
   {
     "id": "hilbert-16",
@@ -33307,7 +33325,7 @@
     "slug": "hilbert-22-oq-01",
     "description": "Explores how the uniformization theorem generalizes to higher dimensions via Kodaira dimension, Yau's theorem, and Kobayashi hyperbolicity.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "complex-geometry",
       "uniformization",
@@ -33596,7 +33614,7 @@
     "slug": "infinitude-primes-oq-03",
     "description": "Elementary proof that there are infinitely many primes p with p ≡ 2 (mod 3), using a Euclid-style argument with no analytic number theory.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "primes",
@@ -33638,7 +33656,7 @@
     "slug": "intermediate-value-theorem-oq-01",
     "description": "Formalizes the bisection method for constructive root finding. Defines the bisection step, iterated bisection sequence, and proves the fundamental width decay property (each step halves the interval). Includes constructive proof that √2 exists in [1,2] and convergence rate bounds (1/2^n after n steps).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "ivt",
@@ -33746,7 +33764,7 @@
       "open-problem",
       "mathieu-groups"
     ],
-    "sorries": 7,
+    "sorries": 6,
     "annotationCount": 0
   },
   {
@@ -33893,7 +33911,7 @@
     "slug": "knights-tour-oblique-oq-01",
     "description": "Every closed knight's tour on any n×n board (n ≥ 5) has at least 4 oblique turns. Generalizes Knuth's 8×8 result: each corner has exactly 2 knight-adjacent squares, and the entry/exit dot product is always −4 < 0, forcing an oblique turn. Proof is purely algebraic — no native_decide or board enumeration.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "graph-theory",
@@ -33985,7 +34003,7 @@
     "slug": "kroneckers-jugendtraum",
     "description": "Hilbert's 12th Problem asks to extend the Kronecker-Weber theorem: find explicit generators for all abelian extensions of number fields.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "class-field-theory",
@@ -34022,8 +34040,8 @@
     "title": "Multinomial Analogs of Kummer's Theorem",
     "slug": "kummer-theorem-oq-01",
     "description": "Extends Kummer's theorem from binomial to multinomial coefficients via iterated binomial decomposition. The p-adic valuation of a multinomial coefficient equals the total carries when adding the parts in base p.",
-    "status": "formalized",
-    "badge": "formalized",
+    "status": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "number-theory",
@@ -34054,7 +34072,7 @@
     "dateAdded": "2026-03-29",
     "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "lagrange-four-squares",
@@ -34161,7 +34179,7 @@
     "slug": "lagrange-theorem-oq-05",
     "description": "The Burnside counting lemma (Cauchy-Frobenius) follows from the orbit-stabilizer theorem, which generalizes Lagrange's theorem. The chain: Lagrange -> Orbit-Stabilizer -> Burnside.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "group-theory",
       "algebra",
@@ -34202,7 +34220,7 @@
     "slug": "law-of-cosines-oq-01",
     "description": "The spherical analogue of the planar law of cosines: cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C), for a spherical triangle on the unit sphere S² with arc-length sides a, b, c and dihedral angle C opposite side c. Proved using inner product decomposition of unit vectors in ℝ³.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "trigonometry",
@@ -34222,7 +34240,7 @@
     "slug": "law-of-cosines-oq-03",
     "description": "Axiomatizes the hyperbolic law of cosines cosh(c) = cosh(a)·cosh(b) - sinh(a)·sinh(b)·cos(C) and its dual (second law of cosines relating angles). The laws are encoded as structure fields (assumptions), not proved from a hyperbolic metric model. Proves the hyperbolic Pythagorean theorem (C=π/2 gives cosh(c) = cosh(a)·cosh(b)), the angle defect (A+B+C < π), and key hyperbolic function identities from Mathlib. 13 theorems, 2 structures, 3 structure-encoded axioms.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "hyperbolic-geometry",
       "law-of-cosines",
@@ -34240,7 +34258,7 @@
     "slug": "law-of-cosines-oq-04",
     "description": "Derives Stewart's theorem b²m + c²n = a(d² + mn) from the law of cosines applied to sub-triangles with supplementary angles. Includes median length formula as special case.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "stewarts-theorem",
@@ -34342,7 +34360,7 @@
     "slug": "lebesgue-measure-oq-01-oq-01",
     "description": "The modified Dirichlet function f(p/q) = 1/q (Thomae's function) has Lebesgue integral 0, because it equals 0 almost everywhere on the irrationals.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "measure-theory",
       "lebesgue-integral",
@@ -34501,7 +34519,7 @@
     "slug": "lhopital-oq-02",
     "description": "The ∞/∞ form of L'Hôpital's rule: if g(x) → ∞ and f'(x)/g'(x) → c, then f(x)/g(x) → c. Complements Mathlib's 0/0 form.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "calculus",
       "limits",
@@ -34541,7 +34559,7 @@
     "slug": "mathematical-induction",
     "description": "For any predicate P on natural numbers, if P(0) holds and P(n) implies P(n+1) for all n, then P(n) holds for all n. Peano's fifth axiom and the foundation of recursive proofs.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "set-theory",
       "logic",
@@ -34563,7 +34581,7 @@
     "slug": "mathematical-induction-oq-01",
     "description": "Connects Lean's WellFounded recursion to transfinite induction over ordinals. Proves transfinite induction via Ordinal.induction, the zero/successor/limit trichotomy, course-of-values induction, and the equivalence with the well-ordering principle.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "foundations",
       "set-theory",
@@ -34641,7 +34659,7 @@
     "slug": "minkowski-theorem",
     "description": "A convex, centrally symmetric body with volume greater than 2^n times the covolume of a lattice contains a non-zero lattice point. The founding result of the geometry of numbers.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "geometry",
@@ -34681,7 +34699,7 @@
     "slug": "morleys-theorem",
     "description": "The three angle trisectors of any triangle, taken in pairs, meet to form an equilateral triangle. A surprising result discovered in 1899.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "triangle",
@@ -34757,7 +34775,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "napoleons-theorem",
@@ -34765,7 +34783,7 @@
     "slug": "napoleons-theorem",
     "description": "If equilateral triangles are constructed externally on the sides of any triangle, their centroids form an equilateral triangle. A classical result of elementary geometry.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "triangle",
@@ -34826,7 +34844,7 @@
     "slug": "navier-stokes-oq-01",
     "description": "For 2D incompressible Navier-Stokes with Poincaré inequality, can we formalize quantitative enstrophy decay and the exact integrated energy identity? We prove: (1) E(t) ≤ E(s)·exp(-2νμ₁(t-s)) for all 0 ≤ s ≤ t (uniform decay), (2) ∫₀ᵀ -2νP(t) dt = E(T) - E(0) (FTC applied to the enstrophy ODE), and (3) ∫₀ᵀ 2νP dt ≤ E(0) (total dissipation bounded by initial enstrophy).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "pde",
       "fluid-dynamics",
@@ -34849,7 +34867,7 @@
     "slug": "navier-stokes-oq-02",
     "description": "For 2D incompressible Navier-Stokes, can we formalize L² stability, uniqueness, and continuous dependence on initial data using the Gronwall inequality? We prove: (1) W(t) ≤ W(0)·exp(C·E(0)·t) (Gronwall stability bound), (2) W(0) = 0 implies W(t) = 0 (uniqueness), (3) for any ε > 0, there exists δ > 0 such that W(0) ≤ δ implies W(t) ≤ ε on [0,T] (continuous dependence). Together these establish Hadamard well-posedness for 2D Navier-Stokes.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "pde",
       "fluid-dynamics",
@@ -34893,7 +34911,7 @@
     "slug": "newton-inductive-step-oq-01",
     "description": "Formalizes Newton's inequality for elementary symmetric polynomials of nonnegative reals: the sequence of elementary symmetric means ē_k = e_k / C(n,k) is log-concave. Proves log-concavity of binomial coefficients, explicit small cases (n=2,3), and consequences including the first Maclaurin inequality.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "algebra",
       "symmetric-polynomials",
@@ -34906,7 +34924,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 2,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 7
   },
   {
     "id": "nth-root-irrational",
@@ -35134,7 +35152,7 @@
     "slug": "pell-equation-oq-01",
     "description": "Investigation of the Pell regulator R(D) = log(x₁ + y₁√D) for the fundamental solution to x² - Dy² = 1. States the heuristic conjecture R(D) = O(√D log D), proves basic bounds, and formalizes connections to class numbers and computational complexity.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "diophantine-equations",
@@ -35217,7 +35235,7 @@
     "slug": "picks-theorem-oq-01",
     "description": "Constructive proof strategy for Pick's theorem via triangulation into primitive lattice triangles. Proves the base case (primitive triangles), the shoelace formula, Pick's formula for rectangles, and the additivity lemma when merging polygons. 0 sorries, 0 axioms.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "combinatorics",
@@ -35275,7 +35293,7 @@
     "slug": "platonic-solids-oq-01",
     "description": "Extends the Platonic solids classification to 4D and higher dimensions using the Coxeter-Schlaefli determinant. Proves there are exactly 6 regular 4-polytopes, 3 regular 5-polytopes, and verifies the high-dimensional stabilization pattern.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "polytopes",
@@ -35398,7 +35416,7 @@
     "slug": "prime-reciprocal-divergence-oq-03",
     "description": "Erdős's elementary proof that there are infinitely many primes via smooth number counting, without analytic infrastructure.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "primes",
@@ -35473,7 +35491,7 @@
     "slug": "prob-method-expectation",
     "description": "If E[X] > t, then some outcome exceeds t. Foundation of the probabilistic method, with Erdos's 1947 proof that R(k,k) >= 2^(k/2).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probabilistic-method",
       "combinatorics",
@@ -35492,7 +35510,7 @@
     "slug": "prob-method-expectation-oq-01",
     "description": "Bridges the gallery's Finset-based probabilistic method to Mathlib's MeasureTheory. Shows finite probability is a special case of measure-theoretic probability, with linearity of expectation proved from integral_add.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probability",
       "probabilistic-method",
@@ -35509,7 +35527,7 @@
     "slug": "prob-method-lovasz-local",
     "description": "If bad events are each unlikely and mostly independent, they can all be avoided. Crown jewel of the probabilistic method.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probabilistic-method",
       "combinatorics",
@@ -35527,7 +35545,7 @@
     "slug": "prob-method-second-moment",
     "description": "Chebyshev and Paley-Zygmund inequalities for concentration and existence proofs in combinatorics.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "probabilistic-method",
       "combinatorics",
@@ -35646,7 +35664,7 @@
     "slug": "pythagorean-theorem-oq-03",
     "description": "The Pythagorean theorem across four geometries: cosh(c) = cosh(a)cosh(b) in hyperbolic space, cos(c) = cos(a)cos(b) on the sphere, a² + b² = c² in Euclidean space, and τ² = t² − x² in Minkowski spacetime. Includes Lorentz boost invariance, rapidity composition, and the twin paradox.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "non-euclidean",
@@ -35961,7 +35979,7 @@
     "slug": "roth-theorem-k3",
     "description": "Every subset of [N] with no 3-term arithmetic progression has size o(N). The k=3 case of Szemeredi's theorem, proved by Roth via Fourier analysis.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "szemeredi",
       "combinatorics",
@@ -35980,7 +35998,7 @@
     "slug": "roth-theorem-k3-oq-01",
     "description": "Formalizes the Roth number r₃(N) — the maximum size of a 3-AP-free subset of [N] — and states the major quantitative bounds from Roth (1953) through Kelley-Meka (2023).",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "additive-combinatorics",
       "szemeredi",
@@ -35999,7 +36017,7 @@
     "slug": "roth-theorem-k3-oq-02",
     "description": "The Ruzsa-Szemerédi (1978) construction encoding 3-term arithmetic progressions as triangles in a tripartite graph, providing an alternative proof of Roth's theorem via the triangle removal lemma.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "additive-combinatorics",
       "szemeredi",
@@ -36036,7 +36054,7 @@
     "slug": "russell-1-plus-1",
     "description": "The legendary proof that 1+1=2, which famously took 362 pages in Principia Mathematica but is trivial in modern type theory.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "from-axioms",
     "tags": [
       "foundations",
       "peano-arithmetic",
@@ -36188,7 +36206,7 @@
     "id": "shannon-channel-coding-oq-02",
     "title": "BSC Capacity Proof and Random Coding Foundation",
     "slug": "shannon-channel-coding-oq-02",
-    "description": "Proves the binary symmetric channel capacity formula C(BSC(p)) = log 2 - h(p) from first principles, eliminating the bsc_capacity_eq axiom from the parent formalization. Establishes the random coding existence lemma (probabilistic method).",
+    "description": "Proves the binary symmetric channel capacity formula C(BSC(p)) = log 2 - h(p) from first principles, independently proving the bsc_capacity_eq axiom from the parent formalization. Establishes the random coding existence lemma (probabilistic method). Inherits 4 axioms from the parent import; introduces no new axioms or sorries.",
     "status": "axiomatized",
     "badge": "axiom",
     "tags": [
@@ -36268,7 +36286,7 @@
     "slug": "shannon-entropy-oq-03",
     "description": "Strong subadditivity H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z): the deepest inequality in classical information theory. Defines 3-variable marginal distributions, proves their properties, states the entropy chain rule, subadditivity, and SSA with clear proof strategies.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "information-theory",
       "analysis",
@@ -36280,7 +36298,7 @@
     "dateAdded": "2026-03-30",
     "mathlibCount": 3,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 7
   },
   {
     "id": "shannon-source-coding",
@@ -36345,7 +36363,7 @@
     "slug": "shapley-folkman",
     "description": "Every point in the convex hull of a Minkowski sum of N sets in d-dimensional space can be decomposed so that at most d summands come from convex hulls rather than the original sets. A fundamental result connecting convex analysis and mathematical economics.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "convex-analysis",
       "economics",
@@ -36363,7 +36381,7 @@
     "slug": "solution-of-cubic",
     "description": "Cardano's formula provides explicit radical solutions to cubic equations x³ + px + q = 0 via cube roots of the discriminant. Wiedijk #37. Fully proved in Lean 4 with all three roots via cube roots of unity.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "polynomial",
@@ -36385,7 +36403,7 @@
     "slug": "solution-of-cubic-oq-03",
     "description": "Proves that the three Cardano roots of x³ + px + q = 0 satisfy Vieta's formulas (sum = 0, pairwise products = p, triple product = -q) and derives the complete factorization into linear factors.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "polynomials",
@@ -36406,7 +36424,7 @@
     "slug": "solution-of-cubic-oq-03-oq-01",
     "description": "Δ = -4p³ - 27q² = (x₁-x₂)²(x₁-x₃)²(x₂-x₃)² for the depressed cubic x³+px+q=0. Includes root nature from discriminant sign.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "polynomials",
@@ -36424,7 +36442,7 @@
     "slug": "solution-of-cubic-oq-03-oq-02",
     "description": "Formalizes the casus irreducibilis: when the depressed cubic x³+px+q=0 has three distinct real roots (Δ>0), Cardano's formula necessarily involves non-real complex cube roots. Proves D<0 implies non-real arguments, verifies a concrete example (x³-7x+6=0), and states Wantzel's impossibility theorem.",
     "status": "axiomatized",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "algebra",
       "cubic-equations",
@@ -36515,7 +36533,7 @@
     ],
     "dateAdded": "2026-03-29",
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "sperner-ndim-oq-01",
@@ -36543,7 +36561,7 @@
     "slug": "sperner-ndim-oq-03",
     "description": "Connects the n-dimensional Sperner's lemma to the Brouwer fixed point theorem via the displacement coloring construction. Defines barycentric displacement, proves the displacement coloring satisfies the Sperner boundary condition in arbitrary dimension, and proves the approximate fixed point and Brouwer FPT theorems.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "topology",
@@ -36563,7 +36581,7 @@
     "slug": "sqrt2-examples",
     "description": "A collection of simple example proofs demonstrating basic Lean tactics including non-negativity of squares and implication transitivity.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "pedagogical",
       "basics",
@@ -36603,7 +36621,7 @@
     "slug": "sqrt2-from-axioms",
     "description": "A complete proof that sqrt(2) is irrational built from first principles, demonstrating the classical proof by contradiction with even/odd analysis.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "irrationality",
@@ -36622,7 +36640,7 @@
     "slug": "sqrt2-from-axioms-oq-01",
     "description": "Generalizes the √2 irrationality proof to all primes: for any prime p, there are no coprime a, b with a² = p·b². Built from scratch using Euclid's criterion for primality.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "irrationality",
@@ -36699,7 +36717,7 @@
     "slug": "stirling-formula-oq-01",
     "description": "Formalizes the first correction term in Stirling's asymptotic expansion: n! ~ √(2πn)(n/e)^n(1 + 1/(12n) + O(1/n²)). Shows this eliminates an axiom.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "analysis",
       "asymptotics",
@@ -36776,7 +36794,7 @@
     "slug": "subset-count-oq-02",
     "description": "Generalizes |P(S)| = 2^n to multisets: a multiset with n elements has 2^n submultisets. Proves the multiset powerset theorem, the multiset choose theorem (C(n,k) submultisets of size k), and the connection between set and multiset cases.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "combinatorics",
       "multiset",
@@ -36833,7 +36851,7 @@
     "slug": "sum-of-kth-powers-oq-01",
     "description": "The general Faulhaber formula for sums of k-th powers is formalized in Lean 4 using Mathlib's Bernoulli infrastructure. All five specific formulas (k=1 through k=5) are derived as special cases of the single unified identity via pure computation — no induction needed.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "combinatorics",
@@ -36912,7 +36930,7 @@
     "slug": "sylow-theorems-oq-01",
     "description": "For distinct primes p < q: if p does not divide (q-1), the only group of order pq is cyclic. If p divides (q-1), there are exactly two groups (cyclic + non-abelian semidirect product). Proves the Sylow counting arguments (n_q = 1, n_p ∈ {1,q}), normality of unique Sylow subgroups, and states the classification theorem with concrete examples (orders 6, 15, 21, 35).",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "group-theory",
       "finite-groups",
@@ -36949,7 +36967,7 @@
     "slug": "sylow-theorems-oq-04",
     "description": "Formalizes the Sylow counting argument for the simplicity of A₅. Proves |A₅| = 60 = 2²·3·5, computes the exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6, shows no Sylow subgroup is normal, and verifies the conjugacy class arithmetic {1,12,12,15,20} prevents intermediate normal subgroups.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "group-theory",
       "finite-groups",
@@ -36986,7 +37004,7 @@
     "slug": "szemeredi-counting",
     "description": "The triangle removal lemma and graph counting lemma. Regular pairs behave like random graphs for subgraph counting, and graphs with few triangles can be made triangle-free cheaply.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "szemeredi",
       "combinatorics",
@@ -37100,7 +37118,7 @@
     "slug": "taylor-sincos-convergence-oq-03",
     "description": "Sharpens the Taylor series remainder bounds for sin and cos using the alternating series estimation theorem, providing tighter error bounds than the standard Lagrange remainder.",
     "status": "formalized",
-    "badge": "formalized",
+    "badge": "wip",
     "tags": [
       "analysis",
       "calculus",
@@ -37181,7 +37199,7 @@
     "slug": "three-place-identity-oq-02",
     "description": "Formalizes Etter's Stereo Equality Theorem: two equivalence relations suffice to encode three-place relative identity. Proves the forward and reverse constructions, round-trip properties, and shows why a single equivalence relation is insufficient. 0 sorries, 0 axioms.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "foundations",
       "set-theory",
@@ -37241,7 +37259,7 @@
     "slug": "triangle-inequality-oq-03",
     "description": "In non-Archimedean (ultrametric) spaces, the triangle inequality strengthens to d(x,z) ≤ max(d(x,y), d(y,z)). This forces every triangle to be isosceles, every ball to be clopen, and distinct balls to be disjoint — properties realized by p-adic norms.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "geometry",
       "analysis",
@@ -37284,7 +37302,7 @@
     "slug": "triangular-reciprocals-oq-01",
     "description": "Defines k-gonal (figurate) numbers and proves telescoping partial fractions for triangular reciprocals, with convergence of square reciprocals by p-series comparison. Includes the elegant identity that every hexagonal number is triangular.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "analysis",
       "series",
@@ -37395,7 +37413,7 @@
     "slug": "vietas-formulas-oq-03",
     "description": "Newton's identities express power sums pₖ = Σxᵢᵏ in terms of elementary symmetric polynomials eⱼ. Proved for 2, 3, and 4 variables: the recursive form pₖ = Σ(-1)^{i-1} eᵢ pₖ₋ᵢ + (-1)^{k-1} k eₖ, plus the inversion formulas recovering eₖ from power sums. Applications to discriminants, matrix traces, and the sum-of-cubes factorization.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "algebra",
       "symmetric-functions",
@@ -37514,7 +37532,7 @@
     "slug": "wilsons-theorem-oq-04",
     "description": "For n ≥ 3, the product of all integers coprime to n (mod n) equals -1 if and only if n is 4, an odd prime power p^k, or twice an odd prime power 2p^k. This characterizes exactly when the multiplicative group (ℤ/nℤ)× is cyclic.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "number-theory",
       "wilsons-theorem",
@@ -37639,7 +37657,7 @@
     "slug": "yang-mills-2d-oq-01",
     "description": "Proves that 2D Yang-Mills heat kernel terms decay exponentially with area, Wilson loops satisfy an exact area law, and the SU(2) string tension is explicitly computable (sigma = 3g^2/16). The partition function decays monotonically from Z(0) = 14 to trivial representation dominance. These exact 2D results contrast with 3D (topological/Chern-Simons) and 4D (Millennium Prize) where no closed-form solutions exist.",
     "status": "verified",
-    "badge": "verified",
+    "badge": "mathlib",
     "tags": [
       "mathematical-physics",
       "yang-mills",

@@ -1,0 +1,104 @@
+{
+  "slug": "desargues-theorem-oq-03",
+  "title": "Desargues: Relationship to Fundamental Theorem of Projective Geometry",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Desargues: Relationship to Fundamental Theorem of Projective Geometry.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T22:29:17.628Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "projective-geometry",
+    "foundations"
+  ],
+  "relatedProofs": [
+    "desargues-theorem",
+    "desargues-theorem-oq-01",
+    "desargues-theorem-oq-02",
+    "desargues-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T22:29:17.628Z",
+  "lastUpdate": "2026-04-03T22:29:17.628Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/DesarguesTheorem.lean",
+      "filename": "DesarguesTheorem.lean",
+      "lineCount": 448,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheorem.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ01.lean",
+      "filename": "DesarguesTheoremOQ01.lean",
+      "lineCount": 286,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ02.lean",
+      "filename": "DesarguesTheoremOQ02.lean",
+      "lineCount": 333,
+      "theoremCount": 35,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ04.lean",
+      "filename": "DesarguesTheoremOQ04.lean",
+      "lineCount": 416,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ04.lean"
+    }
+  ]
+}

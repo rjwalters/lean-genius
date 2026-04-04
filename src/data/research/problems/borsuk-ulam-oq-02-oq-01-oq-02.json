@@ -1,0 +1,199 @@
+{
+  "slug": "borsuk-ulam-oq-02-oq-01-oq-02",
+  "title": "Borsuk-Ulam: Exotic Representations for Composite Groups",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in topology: Borsuk-Ulam: Exotic Representations for Composite Groups.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-04T05:15:05.957Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "topology",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "borsuk-ulam",
+    "borsuk-ulam-oq-02",
+    "borsuk-ulam-oq-02-oq-01",
+    "borsuk-ulam-oq-02-oq-01-oq-04",
+    "borsuk-ulam-oq-02-oq-02",
+    "borsuk-ulam-oq-02-oq-03",
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-01",
+    "borsuk-ulam-oq-03-oq-01-oq-01",
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T05:15:05.957Z",
+  "lastUpdate": "2026-04-04T05:15:05.957Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BorsukUlam.lean",
+      "filename": "BorsukUlam.lean",
+      "lineCount": 266,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlam.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ01.lean",
+      "filename": "BorsukUlamOQ01.lean",
+      "lineCount": 329,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02.lean",
+      "filename": "BorsukUlamOQ02.lean",
+      "lineCount": 390,
+      "theoremCount": 18,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01.lean",
+      "lineCount": 147,
+      "theoremCount": 6,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ04.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ04.lean",
+      "lineCount": 252,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ02.lean",
+      "filename": "BorsukUlamOQ02OQ02.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ03.lean",
+      "filename": "BorsukUlamOQ02OQ03.lean",
+      "lineCount": 252,
+      "theoremCount": 12,
+      "axiomCount": 5,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03.lean",
+      "filename": "BorsukUlamOQ03.lean",
+      "lineCount": 5140,
+      "theoremCount": 211,
+      "axiomCount": 2,
+      "defCount": 35,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01.lean",
+      "lineCount": 1164,
+      "theoremCount": 41,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01OQ01.lean",
+      "lineCount": 435,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ03.lean",
+      "filename": "BorsukUlamOQ03OQ03.lean",
+      "lineCount": 2634,
+      "theoremCount": 123,
+      "axiomCount": 1,
+      "defCount": 30,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ04.lean",
+      "filename": "BorsukUlamOQ04.lean",
+      "lineCount": 301,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "slug": "fair-games-theorem-oq-03",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-03T15:47:16-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Substantive application proofs for Optional Stopping Theorem. Standalone file (no import of FairGamesTheorem). 5 proved + 4 sorry, 0 axioms. Axiom in parent file eliminated via submartingale_iff_expected_stoppedValue_mono iff.",
+    "builtItems": [
+      "martingale_time_invariance: E[f_n]=E[f_0] via Martingale.setIntegral_eq with s=Set.univ",
+      "gamblers_ruin_win_prob/lose_prob/probs_sum_one: P(win)=W0/(W0+a) algebraically from fair game condition",
+      "submartingale_of_stoppedValue_mono_proved: eliminates axiom in parent file via rw [submartingale_iff_expected_stoppedValue_mono] + exact h",
+      "4 honest sorries: any_bounded_strategy, two_strategies, risk_neutral_pricing, doobs_inequality — pending WithTop.untopA simp API",
+      "Gallery data: src/data/proofs/fair-games-theorem-oq-03/meta.json + annotations.json + index.ts"
+    ],
+    "insights": [
+      "Mathlib 4.26.0 breaking change: IsStoppingTime uses t:Omega->WithTop iota, not t:Omega->iota. FairGamesTheorem.lean has pre-existing build failures.",
+      "martingale_time_invariance: use Martingale.setIntegral_eq with s=Set.univ + simp Measure.restrict_univ — avoids stopping time machinery",
+      "submartingale axiom elimination: one-line rw [submartingale_iff_expected_stoppedValue_mono hadapt hint]; exact h"
+    ],
+    "mathlibGaps": [
+      "WithTop.untopA simp lemmas not yet stable in Mathlib 4.26.0 — blocks stoppedValue evaluation for tau:Omega->NNat"
+    ],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: fair-games-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "fair-games-theorem",
+    "fair-games-theorem-oq-01",
+    "fair-games-theorem-oq-02",
+    "fair-games-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T15:47:16-07:00",
+  "significance": 6,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/FairGamesTheorem.lean",
+      "filename": "FairGamesTheorem.lean",
+      "lineCount": 477,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheorem.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ01.lean",
+      "filename": "FairGamesTheoremOQ01.lean",
+      "lineCount": 633,
+      "theoremCount": 48,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02.lean",
+      "filename": "FairGamesTheoremOQ02.lean",
+      "lineCount": 160,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ03.lean",
+      "filename": "FairGamesTheoremOQ03.lean",
+      "lineCount": 291,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ03Aristotle.lean",
+      "filename": "FairGamesTheoremOQ03Aristotle.lean",
+      "lineCount": 122,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 11,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03Aristotle.lean"
+    }
+  ]
+}

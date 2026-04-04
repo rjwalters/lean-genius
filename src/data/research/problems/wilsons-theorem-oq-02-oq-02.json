@@ -1,0 +1,114 @@
+{
+  "slug": "wilsons-theorem-oq-02-oq-02",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-03T21:27:22-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: wilsons-theorem-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "wilsons-theorem",
+    "wilsons-theorem-oq-01",
+    "wilsons-theorem-oq-02",
+    "wilsons-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T04:39:45.988Z",
+  "lastUpdate": "2026-04-04T04:39:46.013Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/WilsonsTheorem.lean",
+      "filename": "WilsonsTheorem.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheorem.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ01.lean",
+      "filename": "WilsonsTheoremOQ01.lean",
+      "lineCount": 689,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ02.lean",
+      "filename": "WilsonsTheoremOQ02.lean",
+      "lineCount": 463,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ02Ext.lean",
+      "filename": "WilsonsTheoremOQ02Ext.lean",
+      "lineCount": 540,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ04.lean",
+      "filename": "WilsonsTheoremOQ04.lean",
+      "lineCount": 68,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ04.lean"
+    }
+  ]
+}
