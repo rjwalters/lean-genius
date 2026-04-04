@@ -51,14 +51,17 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Euler-Maclaurin formula, discovered independently by Euler (1738) and Maclaurin (1742), connects discrete sums to integrals with correction terms involving Bernoulli numbers. The simplest consequence is the asymptotic formula: for power sums, the ratio sum_{i<n} i^k / n^{k+1} converges to 1/(k+1) as n -> infinity, matching the integral of x^k from 0 to 1.",
+    "historicalContext": "The Euler-Maclaurin formula was discovered independently by Euler (1738) in 'Methodus generalis summandi progressiones' and by Maclaurin (1742) in 'Treatise of Fluxions'. It provides an asymptotic expansion connecting a discrete sum ∑_{j=a}^{b} f(j) to the integral ∫_a^b f(x) dx plus correction terms involving Bernoulli numbers B_{2k} and derivatives of f. The simplest consequence, requiring no correction terms, is: ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1), which matches the Riemann sum approximation to ∫₀¹ x^k dx = 1/(k+1). Faulhaber's formula (1631), which gives the exact closed form (k+1)·∑ i^k = B_{k+1}(n) - B_{k+1}(0) using Bernoulli polynomials, provides the algebraic route to this asymptotic. Johann Faulhaber computed power sums up to k=17 by hand; the Bernoulli polynomial formulation was clarified by Jakob Bernoulli in 'Ars Conjectandi' (1713). The formalization here shows that the asymptotic is a purely algebraic consequence of Faulhaber's formula and the monicity of B_{k+1}, requiring only one non-trivial analytical axiom.",
     "problemStatement": "$$\\frac{\\sum_{i=0}^{n-1} i^k}{n^{k+1}} \\to \\frac{1}{k+1} \\quad \\text{as } n \\to \\infty$$",
     "text": "A 101-line formalization of asymptotic power sum behavior. Defines the normalized power sum ratio, axiomatizes Bernoulli polynomial leading behavior, and proves exact formulas for k=0 (trivial) and k=1 (via Gauss sum). The general asymptotic theorem is stated with proof strategy documented.",
     "proofStrategy": "The proof uses Faulhaber's formula: (k+1) * sum i^k = B_{k+1}(n) - B_{k+1}(0), where B_{k+1} is the Bernoulli polynomial. Since B_{k+1} is monic of degree k+1, the ratio B_{k+1}(n)/n^{k+1} -> 1, giving sum i^k / n^{k+1} -> 1/(k+1).",
     "keyInsights": [
-      "The asymptotic 1/(k+1) matches the integral of x^k from 0 to 1 — this is the Riemann sum interpretation",
-      "Faulhaber's formula provides the exact algebraic connection between power sums and Bernoulli polynomials",
-      "The k=1 case (n-1)/(2n) -> 1/2 is proved from the Gauss sum formula"
+      "The asymptotic 1/(k+1) is the Riemann sum interpretation: ∑_{i<n} (i/n)^k · (1/n) → ∫₀¹ x^k dx = 1/(k+1), where each term i^k/n^{k+1} = (i/n)^k/n is a rectangle of width 1/n at height (i/n)^k",
+      "Faulhaber's formula bridges the algebraic and analytic: (k+1)·∑ i^k = B_{k+1}(n) - B_{k+1}(0) lets the limit reduce to the fact that B_{k+1}(n)/n^{k+1} → 1 (monicity of B_{k+1})",
+      "bernoulli_poly_leading was previously an axiom but is now proved from Mathlib's coeff_bernoulli API: coeff(B_n, n) = bernoulli(0) · C(n,n) = 1, and coefficients above degree n vanish — a clean proof of monicity without algebraic manipulation",
+      "The main proof is a three-step filter computation: rewrite using Faulhaber (filter_upwards), split numerator (sub_div + Tendsto.sub), apply the monic limit axiom and const_div_pow_tendsto_zero independently",
+      "The k=1 case gives the exact formula (n-1)/(2n) for all n > 0, not just asymptotically — confirmed by the Gauss induction gauss_sum_rat proving 2·∑ i = n(n-1) in ℚ",
+      "The one remaining axiom (monic_poly_ratio_tendsto) has a clear proof strategy but requires decomposing a polynomial into its leading term plus lower-degree terms in the Mathlib filter API — an achievable but technically involved formalization target"
     ]
   },
   "sections": [
@@ -106,8 +109,10 @@
     "summary": "The asymptotic formula sum i^k / n^{k+1} -> 1/(k+1) is stated and the k=0 and k=1 cases are proved. The general case remains as a sorry requiring filter limit manipulation with Faulhaber's formula.",
     "implications": "Connects discrete power sums to continuous integration via the Riemann sum interpretation, laying groundwork for a full Euler-Maclaurin formalization in Lean 4.",
     "openQuestions": [
-      "Can the full Euler-Maclaurin formula with Bernoulli correction terms be formalized?",
-      "Can the error term in the Euler-Maclaurin approximation be bounded?"
+      "Prove monic_poly_ratio_tendsto: decompose p = X^d + q with deg(q) < d, show q(n)/n^d → 0 term by term using const_div_pow_tendsto_zero for each monomial",
+      "Can the full Euler-Maclaurin formula with Bernoulli correction terms be formalized? The formula ∑_{j=a}^{b} f(j) = ∫_a^b f + (f(a)+f(b))/2 + ∑ B_{2k}/(2k)! · (f^{(2k-1)}(b) - f^{(2k-1)}(a)) requires differentiation and big-O error term infrastructure",
+      "Extend to the error term: ∑ i^k = n^{k+1}/(k+1) + n^k/2 + O(n^{k-1}), proving the sub-leading Bernoulli correction",
+      "Can the Riemann sum interpretation be formalized directly using Mathlib's MeasureTheory.intervalIntegral, proving ∑ f(i/n)/n → ∫₀¹ f for smooth f?"
     ]
   },
   "references": [
