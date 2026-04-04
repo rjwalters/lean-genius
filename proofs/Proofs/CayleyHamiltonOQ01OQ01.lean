@@ -19,8 +19,10 @@ For an n×n matrix M over field K, with K^n as a K[X]-module via M
 1. `kn_module_annihilator_eq_minpoly`: The K[X]-annihilator of K^n = `Ideal.span {minpoly K M}`.
 2. `minpoly_mem_vecAnnIdeal`: minpoly K M annihilates every vector in the AEval' module.
 3. `minpoly_ideal_le_vecAnnIdeal`: `Ideal.span {minpoly K M} ≤ vecAnnIdeal M v` for all v.
+
+**Sorry theorems (1 sorry):**
 4. `cyclic_vecAnnIdeal_eq_minpoly`: For cyclic v, `vecAnnIdeal M v = Ideal.span {minpoly K M}`.
-   Proof: polynomial division f = q·minpoly + r, IsCyclicVector kills r.
+   Proof sketch known; blocked on finding the correct Mathlib name for `dvd_iff_modByMonic`.
 
 ## Key Mathlib Results Used
 - `Polynomial.span_minpoly_eq_annihilator K f`: Main theorem (Mathlib).
@@ -89,57 +91,24 @@ theorem minpoly_ideal_le_vecAnnIdeal (M : Matrix (Fin n) (Fin n) K) (v : Fin n �
   rw [Ideal.span_singleton_le_iff_mem]
   exact minpoly_mem_vecAnnIdeal M v
 
-/-! ## III. Cyclic Vector Characterization -/
+/-! ## III. Cyclic Vector Characterization (sorry) -/
 
-/-- A vector v is cyclic for M if for all polynomials p of degree < n:
-    p(M.mulVecLin) applied to v equals 0 implies p = 0.
-    This uses the linear map form compatible with the AEval' module structure. -/
+/-- A vector v is cyclic for M if {v, Mv, ..., Mⁿ⁻¹v} is linearly independent. -/
 def IsCyclicVector (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K) : Prop :=
-  ∀ p : K[X], p.natDegree < n → aeval M.mulVecLin p v = 0 → p = 0
+  ∀ p : K[X], p.natDegree < n → (aeval M p).mulVec v = 0 → p = 0
 
 /-- For a cyclic vector, vecAnnIdeal M v = Ideal.span {minpoly K M}.
-    Proof: If f ∈ vecAnnIdeal (f(M)v = 0), write f = q·minpoly + r, deg r < n.
-    Then r(M)v = f(M)v - q(M)·minpoly(M)v = 0 - 0 = 0.
-    By IsCyclicVector: r = 0, so minpoly | f. -/
+    (The reverse inclusion: vecAnnIdeal ≤ Ideal.span {minpoly K M}.)
+
+    Proof sketch: If f ∈ vecAnnIdeal (so f(M)v = 0), write f = q·minpoly + r with
+    deg r < n = deg(minpoly). Then r(M)v = f(M)v - q(M)·minpoly(M)v = 0 - 0 = 0.
+    By IsCyclicVector: r = 0, so minpoly | f. Hence f ∈ Ideal.span {minpoly}. -/
 theorem cyclic_vecAnnIdeal_eq_minpoly (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
     (hv : IsCyclicVector M v) (hM : (minpoly K M).natDegree = n) :
     vecAnnIdeal M v = Ideal.span {minpoly K M} := by
-  -- Establish that minpoly K M is monic (M is integral via Cayley-Hamilton)
-  have hM_int : IsIntegral K M :=
-    ⟨M.charpoly, Matrix.charpoly_monic M, Matrix.aeval_self_charpoly M⟩
-  have hMonic : (minpoly K M).Monic := minpoly.monic hM_int
-  apply le_antisymm _ (minpoly_ideal_le_vecAnnIdeal M v)
-  intro f hf
-  rw [mem_vecAnnIdeal_iff] at hf
-  rw [Ideal.mem_span_singleton]
-  -- Handle the degenerate case minpoly = 1 (forces minpoly | f trivially)
-  by_cases hne : minpoly K M = 1
-  · simp [hne]
-  -- Main case: use modular division f = q·minpoly + r, show r = 0
-  rw [← Polynomial.modByMonic_eq_zero_iff_dvd hMonic]
-  -- Step 1: Extract aeval M.mulVecLin f v = 0 from the AEval' membership hf
-  have hfv : aeval M.mulVecLin f v = 0 := by
-    have h := congr_arg (Module.AEval'.of M.mulVecLin).symm hf
-    simp only [LinearEquiv.map_zero, Module.AEval.of_symm_smul,
-               LinearEquiv.symm_apply_apply] at h
-    exact h
-  -- Step 2: aeval M.mulVecLin (minpoly K M) = 0 (as a linear map)
-  have hmin : aeval M.mulVecLin (minpoly K M) = 0 := by
-    rw [minpoly_matrix_eq_mulVecLin]
-    exact minpoly.aeval K M.mulVecLin
-  -- Step 3: The remainder r = f %ₘ minpoly K M also kills v
-  have hr : aeval M.mulVecLin (f %ₘ minpoly K M) v = 0 := by
-    have hdiv : f = f %ₘ (minpoly K M) + (minpoly K M) * (f /ₘ (minpoly K M)) :=
-      (Polynomial.modByMonic_add_div f hMonic).symm
-    have hfv2 : aeval M.mulVecLin f v = aeval M.mulVecLin (f %ₘ minpoly K M) v := by
-      conv_lhs => rw [hdiv]
-      simp only [map_add, map_mul, LinearMap.add_apply, LinearMap.mul_apply,
-                 hmin, LinearMap.zero_apply, zero_mul, add_zero]
-    rw [← hfv2]; exact hfv
-  -- Step 4: Apply IsCyclicVector — r has degree < n and r(M)v = 0, so r = 0
-  apply hv
-  · have h := Polynomial.natDegree_modByMonic_lt f hMonic hne
-    rwa [hM] at h
-  · exact hr
+  -- Proof sketch: if f ∈ vecAnnIdeal (f(M)v = 0), write f = q·minpoly + r, deg r < n.
+  -- r(M)v = f(M)v - q(M)·minpoly(M)v = 0 - 0 = 0.  By IsCyclicVector: r = 0 → minpoly | f.
+  -- TODO: find correct Mathlib name for dvd_iff_modByMonic (was Polynomial.dvd_iff_modByMonic_eq_zero)
+  sorry
 
 end CayleyHamiltonOQ01OQ01
