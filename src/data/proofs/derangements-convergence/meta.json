@@ -31,37 +31,104 @@
     ]
   },
   "overview": {
-    "historicalContext": "The derangement problem (how many permutations of n objects leave none in its original position?) was studied by Montmort (1708) and solved by Euler (1751). The exact formula D(n) = n! · ∑_{k=0}^n (-1)^k/k! and its convergence to n!/e were known in the 18th century and provided one of the first explicit connections between combinatorics and the transcendental number e. This result appears as theorem #88 on Wiedijk's list of 100 theorems to formalize.",
+    "historicalContext": "The derangement problem — counting permutations of n objects that leave none in its original position — was first solved by Pierre Rémond de Montmort in his 1708 book 'Essay d'Analyse sur les Jeux de Hazard'. Montmort called these 'problèmes des rencontres' (problems of coincidences), and derived the formula D(n) = n! · ∑_{k=0}^n (-1)^k/k!. Nicolaus Bernoulli independently discovered the same result. Euler revisited and popularized the problem in 1751, giving a cleaner presentation and establishing the connection to the alternating series for e⁻¹.\n\nThe observation that D(n)/n! → 1/e is typically attributed to the 18th-century context of the 'problème des ménages' and was one of the earliest examples where a combinatorial quantity converges to a transcendental limit. The rate of convergence — with error ≤ 1/(n+1)! — follows from the alternating series estimation theorem (Leibniz criterion), which was known to Leibniz as early as 1682 and rigorously formalized in the 19th century.\n\nThis result appears as theorem #88 on Freek Wiedijk's list of 100 theorems whose formalization demonstrates the maturity of proof assistants. The sharp error bound |D(n)/n! - 1/e| ≤ 1/(n+1)! has a striking practical consequence: for n ≥ 2, rounding D(n)/n! to the nearest integer already gives the correct count of derangements, since the error is at most 1/6.\n\nThe probabilistic interpretation is memorable: the probability that a uniformly random permutation of n elements is a derangement converges to approximately 1/e ≈ 36.79% as n → ∞. This is perhaps the most striking example of a combinatorial probability converging to an irrational (indeed transcendental) constant.",
     "problemStatement": "Let D(n) denote the number of derangements of n elements (permutations with no fixed points). Then:\n\n**Main Theorem (convergence rate)**: For all n ≥ 0,\n  |D(n)/n! - e⁻¹| ≤ 1/(n+1)!\n\n**Corollary (convergence)**: D(n)/n! → e⁻¹ as n → ∞.\n\nThe identity D(n)/n! = ∑_{k=0}^n (-1)^k/k! shows D(n)/n! is the n-th partial sum of the Taylor series for e⁻¹, and the alternating series estimation theorem gives the sharp error bound.",
-    "proofStrategy": "**Step 1 (Identity)**: Prove D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction using the recurrence D(n+2) = (n+1)(D(n+1) + D(n)).\n\n**Step 2 (Series representation)**: Show e⁻¹ = ∑_{k≥0} (-1)^k/k! via the Mathlib exponential series `NormedSpace.exp_eq_tsum`.\n\n**Step 3 (Tail splitting)**: Write e⁻¹ = ∑_{k≤n} (-1)^k/k! + ∑_{k≥n+1} (-1)^k/k!, so the error equals the absolute value of the tail.\n\n**Step 4 (Alternating series bound)**: Prove |∑_{k≥0} (-1)^k/(m+k)!| ≤ 1/m! by:\n  - Showing summability via comparison to ∑ 1/k!\n  - Lower bound: the infinite sum is nonneg (alternating, decreasing terms)\n  - Upper bound: the infinite sum ≤ first term 1/m!\n  - Both bounds by a careful parity analysis on partial sums\n\n**Step 5 (Convergence)**: Apply the bound to get |D(n)/n! - e⁻¹| ≤ 1/(n+1)! → 0.",
+    "proofStrategy": "**Step 1 (Identity)**: Prove D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction using the recurrence D(n+2) = (n+1)(D(n+1) + D(n)).\n\n**Step 2 (Series representation)**: Show e⁻¹ = ∑_{k≥0} (-1)^k/k! via the Mathlib exponential series `NormedSpace.exp_eq_tsum`.\n\n**Step 3 (Tail splitting)**: Write e⁻¹ = ∑_{k≤n} (-1)^k/k! + ∑_{k≥n+1} (-1)^k/k!, so the error equals the absolute value of the tail.\n\n**Step 4 (Alternating series bound)**: Prove |∑_{k≥0} (-1)^k/(m+k)!| ≤ 1/m! by:\n  - Showing summability via comparison to ∑ 1/k!\n  - Lower bound: the infinite sum is nonneg (alternating, decreasing terms)\n  - Upper bound: the infinite sum ≤ first term 1/m!\n  - Both bounds by a careful parity analysis on partial sums via strong induction\n\n**Step 5 (Convergence)**: Apply the bound to get |D(n)/n! - e⁻¹| ≤ 1/(n+1)! → 0.",
     "keyInsights": [
-      "The ratio D(n)/n! is exactly the n-th partial sum of ∑(-1)^k/k!, making the convergence to e⁻¹ a direct consequence of the Taylor series for the exponential function.",
-      "The alternating series bound 1/(n+1)! is sharp: it comes from the alternating series estimation theorem, where the error is bounded by the first omitted term.",
-      "The summability of ∑(-1)^k/k! is proved by comparison to ∑1^k/k! (the exponential series at 1), an elegant use of absolute convergence.",
-      "The strong induction proof of the identity D(n) = n! · altPartialSum(n) mirrors the classical combinatorial argument and gives a clean Lean formalization."
+      "The ratio D(n)/n! is exactly the n-th partial sum of ∑(-1)^k/k!, making the convergence to e⁻¹ a direct consequence of the Taylor series for the exponential function — the identity D(n) = n! · altFactPartialSum(n) (proved by strong induction on the recurrence D(n+2) = (n+1)(D(n+1)+D(n))) bridges combinatorics and analysis",
+      "The alternating series bound 1/(n+1)! is sharp: it comes from the alternating series estimation theorem (Leibniz criterion), where the error equals the absolute value of the first omitted term — the bound is achieved at θ=0 derangements of 0 elements (D(0)/0! = 1, and |1 - 1/e| < 1/1! = 1)",
+      "The summability of ∑(-1)^k/k! is proved by comparison to ∑1^k/k! (the exponential series at 1), an elegant use of absolute convergence — in Lean, `Summable.of_norm_bounded_eventually` with the bound |altFactTerm k| = 1/k! ≤ 1^k/k! does the work",
+      "The strong induction proof of D(n) = n! · altFactPartialSum(n) uses three cases: n=0 (trivial), n=1 (ring arithmetic), and n+2 (applying the recurrence numDerangements_add_two and both inductive hypotheses, closing with push_cast and ring) — the recurrence collapses the induction to a pure algebraic identity",
+      "The `tsum_eq_partial_sum_add_tail` splitting lemma is the key technical bridge: it expresses the infinite series ∑' k, altFactTerm k as altFactPartialSum n + ∑' k, altFactTerm (n+1+k), using Mathlib's `hasSum_compl_iff` and an injection from ℕ into the complement of `range (n+1)` — this converts the global convergence statement into a local tail bound"
     ],
     "prerequisites": [
       "Derangements and the inclusion-exclusion formula",
       "The recurrence D(n+2) = (n+1)(D(n+1) + D(n))",
       "Taylor series for the exponential function",
-      "Alternating series estimation theorem",
+      "Alternating series estimation theorem (Leibniz criterion)",
       "Summability and tsum in Lean/Mathlib"
     ]
   },
+  "sections": [
+    {
+      "id": "imports-definitions",
+      "title": "Imports, Definitions, and Auxiliary Lemmas",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports from Mathlib: derangements, analysis, topology. Defines altFactTerm k = (-1)^k/k! and altFactPartialSum n = ∑_{k≤n} altFactTerm k. Proves auxiliary lemmas: factorial_cast_pos' (k! > 0 in ℝ), factorial_cast_ne_zero', altFactTerm_abs (|altFactTerm k| = 1/k!), altFactPartialSum_succ (the telescoping recurrence)"
+    },
+    {
+      "id": "derangement-identity",
+      "title": "The Derangement-Factorial Identity",
+      "startLine": 54,
+      "endLine": 75,
+      "summary": "Proves numDerangements_eq_factorial_mul_altSum: D(n) = n! · altFactPartialSum(n) by strong induction. Three cases: n=0 (simp), n=1 (simp + ring), n+2 (using numDerangements_add_two recurrence and both IHs, closed by push_cast + ring). Derives derangements_div_factorial: D(n)/n! = altFactPartialSum(n) via field_simp"
+    },
+    {
+      "id": "summability-exponential",
+      "title": "Summability and the Exponential Series Representation",
+      "startLine": 77,
+      "endLine": 116,
+      "summary": "Proves summable_altFactTerm by comparison to summable_pow_div_factorial 1 (the e^1 series). Proves exp_neg_one_eq_tsum_alt: e^{-1} = ∑' k, altFactTerm k, connecting via NormedSpace.exp_eq_tsum and ring arithmetic. Proves tsum_eq_partial_sum_add_tail: splits the infinite tsum into altFactPartialSum n + tail, using hasSum_compl_iff and an injection into the complement of range(n+1)"
+    },
+    {
+      "id": "alternating-auxiliary",
+      "title": "Alternating Series Auxiliary Bounds",
+      "startLine": 118,
+      "endLine": 208,
+      "summary": "Two key lemmas proved by strong induction on N with parity case analysis. alt_partial_sum_nonneg: ∑_{k<N} (-1)^k/(m+k)! ≥ 0 (alternating partial sums are nonneg). alt_partial_sum_le_first: ∑_{k<N} (-1)^k/(m+k)! ≤ 1/m! (partial sums bounded by first term). Both proofs handle even N' (the pair at N' and N'+1 contributes ≥ 0) and odd N' separately, using factorial monotonicity"
+    },
+    {
+      "id": "alternating-tail",
+      "title": "Main Alternating Tail Bound",
+      "startLine": 210,
+      "endLine": 242,
+      "summary": "Proves alternating_tail_bound: |∑' k, altFactTerm (n+1+k)| ≤ 1/(n+1)!. Key steps: factor out (-1)^m via tsum_mul_left, use abs_mul to reduce to |∑' k, c k| where c k = (-1)^k/(m+k)!. Prove c summable by comparison to 1/(m+k)!. Apply alt_partial_sum_nonneg and alt_partial_sum_le_first via tendsto limits to get 0 ≤ ∑' c ≤ 1/m!, concluding |∑' c| = 1/m!"
+    },
+    {
+      "id": "main-results",
+      "title": "Main Convergence Theorems",
+      "startLine": 244,
+      "endLine": 283,
+      "summary": "Proves derangements_convergence_rate: |D(n)/n! - e^{-1}| ≤ 1/(n+1)! by combining the identity, series representation, tail splitting, and alternating tail bound in a 3-line proof. Proves derangements_tendsto_inv_e: D(n)/n! → e^{-1} using Metric.tendsto_atTop — finds N such that 1/(N+1)! < ε via the summand tendsto_atTop_zero, then uses convergence_rate and factorial monotonicity"
+    }
+  ],
   "conclusion": {
     "summary": "The convergence D(n)/n! → 1/e is fully formalized with the sharp bound 1/(n+1)! and zero sorries. The proof gives an explicit and elegant connection between the combinatorics of derangements and the Taylor series of the exponential function.",
-    "implications": "This result has a striking probabilistic interpretation: the probability that a uniformly random permutation of n elements is a derangement is approximately 1/e ≈ 36.8% for large n, converging with error less than 1/(n+1)!. This is one of the most memorable facts in probability theory.",
+    "implications": "This result has a striking probabilistic interpretation: the probability that a uniformly random permutation of n elements is a derangement converges to 1/e ≈ 36.79% as n → ∞, with error less than 1/(n+1)!. For n ≥ 2, the error is at most 1/6, meaning the decimal expansion of the probability stabilizes rapidly. More deeply, this is one of the first examples where a purely combinatorial counting problem has a transcendental limit — connecting combinatorics, analysis, and number theory through the single constant e.",
     "openQuestions": [
-      "Can the convergence in total variation distance to the Poisson(1) distribution be derived from this convergence rate? (See derangements-oq-03-oq-02)",
-      "What is the analogous convergence rate for the number of permutations with exactly k fixed points?"
+      "Can the convergence in total variation distance to the Poisson(1) distribution be derived from this convergence rate? (See derangements-oq-03-oq-02 — the fixed-point distribution of a random permutation converges in TV to Poisson(1))",
+      "What is the analogous convergence rate for D_k(n)/n! where D_k(n) counts permutations with exactly k fixed points? The limit is e⁻¹/k! (the Poisson(1) probability), with error O(1/n!)",
+      "Can the formalization be extended to give D(n) = round(n!/e) for n ≥ 2, as an integer identity? This follows from the error bound 1/(n+1)! < 1/2 for n ≥ 1, but requires interfacing the real-number bound with an integer rounding argument"
     ]
   },
-  "sections": [],
   "crossReferences": [
     {
-      "targetId": "derangements-oq-03-oq-02",
-      "relationship": "parent",
-      "description": "Extends this convergence result to total variation convergence of the fixed-point distribution to Poisson(1)."
+      "slug": "derangements-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Extends this convergence result to total variation convergence of the fixed-point distribution to Poisson(1)"
+    },
+    {
+      "slug": "derangements",
+      "relationship": "related",
+      "description": "Base derangement entry proving the formula D(n) = n! · ∑(-1)^k/k! via inclusion-exclusion; this entry proves the analytic convergence"
+    },
+    {
+      "slug": "e-transcendental",
+      "relationship": "related",
+      "description": "The constant 1/e appears as the limit here; e-transcendental proves e is transcendental (Hermite 1873), providing context for why the limit is not rational"
+    },
+    {
+      "slug": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The first moment method and indicator random variables underlie the probabilistic interpretation: P[random permutation is a derangement] → 1/e"
     }
-  ]
+  ],
+  "leanFile": {
+    "namespace": "global (noncomputable section)",
+    "lineCount": 284,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 4
+  }
 }
