@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "id": "ann-lawvere-overview",
+    "title": "Completing Categorical Lawvere: The Sorry Fix",
+    "type": "overview",
+    "startLine": 40,
+    "endLine": 49,
+    "mathContext": "The parent file CantorDiagonalizationOQ03OQ01.lean had 2 sorries in lawvere_categorical: the hypothesis used `(sorry : C.Pt (C.exp A B))` as a constant placeholder, never constructed from the quantified variable `a`. The fix: make the evaluation morphism e : C.Pt A → C.Pt (C.exp A B) an explicit parameter. This transforms the sorry into a well-typed proof: `e a` is a global element of B^A, and `C.apply (e a) x : C.Pt B` is well-formed. Proof reduces to lawvere_abstract via an EvalStructure.",
+    "significance": "This file is a case study in categorical proof formalization. The sorry in the parent was not a mathematical gap but a type-theoretic error: the evaluation morphism e must be universally quantified over global elements of A, not be a fixed constant. Making the abstract structure (EvalStructure) and the concrete instantiation (CategoricalEval) explicit separates the logical kernel from the categorical machinery.",
+    "relatedConcepts": ["Lawvere fixed-point theorem", "evaluation morphism", "cartesian closed category", "global elements", "sorry diagnosis"]
+  },
+  {
+    "id": "ann-eval-structure",
+    "title": "EvalStructure: Abstract Lawvere Kernel in 3 Lines",
+    "type": "structure",
+    "startLine": 50,
+    "endLine": 64,
+    "mathContext": "EvalStructure: Ob (codes), Val (values), eval : Ob → Ob → Val (applies code to input). IsPointSurjective: ∀ g : Ob → Val, ∃ a : Ob, ∀ x, eval a x = g x — every function is represented by a code. lawvere_abstract: if E is point-surjective then every f : Val → Val has a fixed point. Proof: obtain a₀ representing `a ↦ f (eval a a)`, then eval a₀ a₀ is a fixed point of f since f(eval a₀ a₀) = eval a₀ a₀.",
+    "significance": "The core of Lawvere's fixed-point theorem in its purest form. The diagonal argument `a ↦ f(eval a a)` is point-surjected to some code a₀, giving `eval a₀ a₀ = f(eval a₀ a₀)` — a fixed point. The two-line proof (obtain + exact) captures the entire argument. All subsequent theorems — categorical, type-theoretic, Cantor — reduce to this abstract kernel.",
+    "relatedConcepts": ["diagonal argument", "point-surjectivity", "fixed-point theorem", "self-application", "Lawvere 1969"]
+  },
+  {
+    "id": "ann-categorical-eval",
+    "title": "CategoricalEval: Cartesian Closed Categories at the Global-Element Level",
+    "type": "structure",
+    "startLine": 77,
+    "endLine": 88,
+    "mathContext": "CategoricalEval: Obj (objects), Hom : Obj → Obj → Type* (morphisms), exp : Obj → Obj → Obj (exponential), Pt : Obj → Type* (global elements = Hom(1, ·)), apply : Pt(exp A B) → Pt A → Pt B (evaluation at global elements), ptSurj : Hom A (exp A B) → Prop. HasFixedPoint C f := ∃ b : C.Pt B, f b = b. This abstracts a CCC by focusing on what matters for Lawvere: how global elements compose via evaluation.",
+    "significance": "The CategoricalEval structure axiomatizes exactly the CCC data needed for Lawvere's theorem at the global-element level, avoiding full category theory (functors, naturality, coherence). Working with Pt A = Hom(1, A) and apply = ev ∘ (id × pt) is sufficient for the diagonal argument. This is the 'point-set' model of a CCC.",
+    "relatedConcepts": ["cartesian closed category", "global elements", "evaluation morphism", "terminal object", "internal hom"]
+  },
+  {
+    "id": "ann-lawvere-categorical",
+    "title": "Lawvere's Theorem (Categorical, Corrected): 5-Line Proof",
+    "type": "theorem",
+    "startLine": 111,
+    "endLine": 127,
+    "mathContext": "lawvere_categorical: given C : CategoricalEval, A B : C.Obj, e : C.Pt A → C.Pt (C.exp A B), hSurj (∀ g : C.Pt A → C.Pt B, ∃ a, ∀ x, C.apply (e a) x = g x), and f : C.Pt B → C.Pt B, then C.HasFixedPoint f. Proof: let E := {Ob := C.Pt A, Val := C.Pt B, eval := fun a x => C.apply (e a) x}; have hE : E.IsPointSurjective := hSurj (definitional); exact lawvere_abstract E hE f.",
+    "significance": "The proof is 5 lines total. The 'let E' bundles categorical morphisms into an EvalStructure, making the reduction explicit. hSurj directly IS E.IsPointSurjective (definitional equality, no rewriting needed). The categorical theorem is not more general than the abstract one — it is the abstract one with different vocabulary. This transparency is the value of the EvalStructure abstraction.",
+    "relatedConcepts": ["EvalStructure reduction", "definitional equality", "let binding", "lawvere_abstract", "categorical fixed-point"]
+  },
+  {
+    "id": "ann-type-universe-cantor",
+    "title": "Type Universe as CCC and Categorical Cantor's Theorem",
+    "type": "definition",
+    "startLine": 148,
+    "endLine": 176,
+    "mathContext": "typeUniverse : CategoricalEval encodes types as objects, functions as morphisms, function-types as exponentials, terms as global elements (Pt = id), function application as apply. categorical_cantor: for any A : Type* and e : A → (A → Prop), e is not point-surjective. Proof: hNotFixed (∀ v : Prop, ¬v = v) derived from v = ¬v giving both v → ¬v and ¬v → v; then obtain a₀ from hSurj (fun a => ¬ e a a), get e a₀ a₀ = ¬ e a₀ a₀, apply hNotFixed.",
+    "significance": "hNotFixed uses classical logic on Prop: v = ¬v gives a proof of both v and ¬v simultaneously (lines 166-170). This explicit construction avoids omega/decide and works purely from the logical structure of Prop. categorical_cantor is the standard Cantor diagonal argument as a corollary of the categorical Lawvere framework, showing that 2^A surjects onto A is impossible in any reasonable setting.",
+    "relatedConcepts": ["Cantor's theorem", "diagonal function", "Prop negation", "function surjectivity", "type universe CCC"]
+  },
+  {
+    "id": "ann-no-surjection",
+    "title": "No Point-Surjective Evaluation When Fixed Points Fail",
+    "type": "theorem",
+    "startLine": 131,
+    "endLine": 138,
+    "mathContext": "no_categorical_surjection: if f : Pt B → Pt B has no fixed point (∀ v, f v ≠ v), then ¬ ∃ point-surjective evaluation e : Pt A → Pt(B^A). Proof by contradiction: assume hSurj, apply lawvere_categorical to get v with f v = v, contradict hf v hv. This is the contrapositive: point-surjectivity → fixed points; fixed-point-free f → no point-surjective e.",
+    "significance": "This is the form used in applications: to prove no surjection A → (A → B) exists, exhibit a fixed-point-free endomorphism of B (negation on Prop, successor on ℕ). no_categorical_surjection makes this chain explicit as a reusable theorem, separating the abstract impossibility from its concrete instantiation in categorical_cantor.",
+    "relatedConcepts": ["contrapositive", "fixed-point-free endomorphism", "no surjection", "Cantor's diagonal", "reusable theorem"]
+  },
+  {
+    "id": "ann-specialization",
+    "title": "Specialization to Type Theory and Sorry Diagnosis",
+    "type": "theorem",
+    "startLine": 210,
+    "endLine": 229,
+    "mathContext": "categorical_specializes_to_type_theoretic: for A B : Type* and e : A → (A → B) with Function.Surjective e, every f : B → B has a fixed point. Proof: build C := typeUniverse, apply lawvere_categorical C e, translate hSurj using congr_fun (pointwise equality: e a = g ↔ ∀ x, e a x = g x). sorry_diagnosis_resolved (line 192): identical to lawvere_categorical — the sorry in the parent was just a type error, not a mathematical gap.",
+    "significance": "congr_fun is the bridge: Function.Surjective e says ∃ a, e a = g (function equality), while lawvere_categorical needs ∀ x, e a x = g x (pointwise equality). congr_fun converts one to the other. categorical_specializes_to_type_theoretic closes the circle, confirming that the type-theoretic Lawvere is a special case of the categorical one, not an independent theorem.",
+    "relatedConcepts": ["Function.Surjective", "congr_fun", "pointwise equality", "type-theoretic Lawvere", "sorry diagnosis"]
+  }
+]

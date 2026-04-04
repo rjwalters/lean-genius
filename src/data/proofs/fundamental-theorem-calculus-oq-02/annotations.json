@@ -1,0 +1,206 @@
+[
+  {
+    "id": "ann-ftc-stokes-overview",
+    "proofId": "fundamental-theorem-calculus-oq-02",
+    "range": {
+      "startLine": 4,
+      "endLine": 43
+    },
+    "type": "context",
+    "title": "Generalized Stokes: One Theorem to Rule Them All",
+    "content": "The opening module comment frames the unifying vision: FTC (1D), Green's theorem (2D), the classical Stokes theorem (3D surface), and the divergence theorem (3D volume) are all special cases of a single identity \u2014 \u222b_M d\u03c9 = \u222b_{\u2202M} \u03c9. The formalization concentrates on the 1D and 2D cases where all the machinery can be made concrete with Mathlib. The 3D cases are documented but left to future work, pending Mathlib's development of integration theory on manifolds. This choice of scope reflects a mathematically honest balance: prove what is fully verified rather than axiomatizing the general statement.",
+    "mathContext": "$\\int_M d\\omega = \\int_{\\partial M} \\omega$ unifies: FTC ($n=1$), Green's theorem ($n=2$, planar), classical Stokes ($n=2$, surface), Gauss's divergence theorem ($n=3$)",
+    "significance": "context",
+    "relatedConcepts": [
+      "exterior derivative",
+      "boundary operator",
+      "oriented manifold",
+      "differential form",
+      "de Rham complex"
+    ],
+    "prerequisites": [
+      "FTC (1D)",
+      "Green's theorem",
+      "differential forms (conceptual)"
+    ]
+  },
+  {
+    "id": "ann-1d-forms",
+    "proofId": "fundamental-theorem-calculus-oq-02",
+    "range": {
+      "startLine": 59,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "1D Differential Forms: extDeriv1D, intForm1D, bdryEval",
+    "content": "`extDeriv1D F = deriv F` is the exterior derivative taking a 0-form (function) to a 1-form (its derivative, thought of as the coefficient of dx). `intForm1D f a b = \u222b x in a..b, f x` integrates a 1-form f(x)dx over the oriented interval [a,b]. `bdryEval F a b = F b - F a` integrates a 0-form over the boundary \u2202[a,b] = {b} \u222a {a} with induced orientations (+1 at b, -1 at a). The Stokes theorem then says intForm1D (extDeriv1D F) a b = bdryEval F a b, i.e., \u222b_a^b F'(x)dx = F(b) - F(a).",
+    "mathContext": "The 1D de Rham complex: $\\Omega^0(\\mathbb{R}) \\xrightarrow{d} \\Omega^1(\\mathbb{R})$ where $d(F) = F' \\, dx$, $\\int_{[a,b]} d(F) = \\int_a^b F'(x)\\,dx$, $\\int_{\\partial[a,b]} F = F(b) - F(a)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "exterior derivative",
+      "integration of forms",
+      "boundary evaluation",
+      "FTC Part 2"
+    ],
+    "prerequisites": [
+      "interval integrals (Mathlib)",
+      "deriv",
+      "HasDerivAt"
+    ]
+  },
+  {
+    "id": "ann-stokes-1d",
+    "proofId": "fundamental-theorem-calculus-oq-02",
+    "range": {
+      "startLine": 76,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "Stokes in 1D = FTC Part 2 (Three Variants)",
+    "content": "Three versions of the 1D Stokes theorem are proved. `stokes_1d` is the most general, assuming only ContinuousOn F and HasDerivAt pointwise; it calls `integral_eq_sub_of_hasDerivAt_of_le` from Mathlib. `stokes_1d_differentiable` is the cleanest version matching classical FTC: F differentiable, F' continuous. `stokes_1d_orientation` proves orientation-reversal (reversing [a,b] to [b,a] negates the integral) using `intervalIntegral.integral_symm` \u2014 this holds unconditionally since both sides are 0 for non-integrable functions. Together these show the Mathlib FTC API is exactly the 1D Stokes theorem.",
+    "mathContext": "$\\int_a^b F'(x)\\,dx = F(b) - F(a)$ (Stokes 1D); $\\int_b^a F'(x)\\,dx = -(\\int_a^b F'(x)\\,dx)$ (orientation-reversal)",
+    "significance": "key",
+    "relatedConcepts": [
+      "FTC Part 2",
+      "orientation reversal",
+      "Mathlib integral API",
+      "HasDerivAt",
+      "IntervalIntegrable"
+    ],
+    "prerequisites": [
+      "integral_eq_sub_of_hasDerivAt_of_le",
+      "intervalIntegral.integral_symm",
+      "ContinuousOn"
+    ]
+  },
+  {
+    "id": "ann-poincare-1d",
+    "proofId": "fundamental-theorem-calculus-oq-02",
+    "range": {
+      "startLine": 125,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "Poincar\u00e9 Lemma in 1D: Closed Forms are Exact",
+    "content": "`poincare_1d` proves the 1D Poincar\u00e9 lemma: every continuous function f (thought of as a 1-form f(x)dx) is exact \u2014 has an antiderivative. The canonical antiderivative is F(x) = \u222b_a^x f(t) dt, proved by `integral_hasDerivAt_right` from Mathlib (FTC Part 1). `exact_unique` then proves antiderivatives are unique up to a constant: if F' = G' = f, then F - G is constant, proved using `is_const_of_deriv_eq_zero` (a consequence of the mean value theorem). Together these establish the algebraic structure of the 1D de Rham complex.",
+    "mathContext": "The 1D Poincar\u00e9 lemma: $H^1_{\\text{dR}}(\\mathbb{R}) = 0$ (every closed 1-form is exact). Proof: $F(x) = \\int_a^x f(t)\\,dt$ satisfies $F' = f$ by FTC Part 1. Uniqueness: $F - G$ constant when $F' = G'$ by MVT.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Poincar\u00e9 lemma",
+      "antiderivative",
+      "de Rham cohomology",
+      "FTC Part 1",
+      "mean value theorem"
+    ],
+    "prerequisites": [
+      "integral_hasDerivAt_right",
+      "is_const_of_deriv_eq_zero",
+      "HasDerivAt"
+    ]
+  },
+  {
+    "id": "ann-2d-forms",
+    "proofId": "fundamental-theorem-calculus-oq-02",
+    "range": {
+      "startLine": 172,
+      "endLine": 189
+    },
+    "type": "definition",
+    "title": "2D Differential Forms: OneForm2D and Exterior Derivatives",
+    "content": "`OneForm2D` is a structure representing \u03c9 = P(x,y)dx + Q(x,y)dy as a pair of functions (P, Q). `extDeriv0_2D f` computes the gradient: d\u2080(f) = (\u2202f/\u2202x, \u2202f/\u2202y) using Lean's `deriv` for partial derivatives by fixing one coordinate. `extDeriv1_2D \u03c9` computes the curl: d\u2081(Pdx + Qdy) = (\u2202Q/\u2202x - \u2202P/\u2202y)dx\u2227dy. The curl is computed as a function returning a scalar (the coefficient of dx\u2227dy). These definitions directly encode the classical calculus operations in a Lean-native way, avoiding abstract sheaf theory.",
+    "mathContext": "$d_0(f) = \\nabla f = (\\partial_x f, \\partial_y f)$; $d_1(P\\,dx + Q\\,dy) = (\\partial_x Q - \\partial_y P)\\,dx\\wedge dy$ (the curl/rotation)",
+    "significance": "key",
+    "relatedConcepts": [
+      "gradient",
+      "curl",
+      "exterior derivative",
+      "1-form",
+      "2-form",
+      "de Rham complex"
+    ],
+    "prerequisites": [
+      "1D forms",
+      "partial derivatives via deriv",
+      "OneForm2D structure"
+    ]
+  },
+  {
+    "id": "ann-d-squared-zero",
+    "proofId": "fundamental-theorem-calculus-oq-02",
+    "range": {
+      "startLine": 195,
+      "endLine": 213
+    },
+    "type": "insight",
+    "title": "d\u00b2=0 and the Sorry: Clairaut's Theorem as a Formalization Challenge",
+    "content": "`dd_eq_zero_2D` states that for C\u00b2 functions f, the composition d\u2081\u2218d\u2080(f) = 0 \u2014 i.e., \u2202\u00b2f/\u2202x\u2202y = \u2202\u00b2f/\u2202y\u2202x (Clairaut/Schwarz theorem on equality of mixed partials). The proof is a sorry. The comment explains why: Mathlib proves this via `ContDiff.isSymmetric_iteratedFDeriv` which works at the level of Fr\u00e9chet derivatives (as symmetric bilinear forms on \u211d\u00b2), but bridging to the concrete partial derivative expressions used here requires unfolding the Mathlib API in a non-trivial way. This d\u00b2=0 property is the algebraic foundation enabling de Rham cohomology to be well-defined.",
+    "mathContext": "$d^2 = 0$: $d_1 \\circ d_0(f) = \\partial^2_x\\partial_y f - \\partial^2_y\\partial_x f = 0$ for $f \\in C^2$ by Clairaut's theorem. Equivalent to symmetry of the Hessian.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Clairaut's theorem",
+      "mixed partial derivatives",
+      "Hessian symmetry",
+      "de Rham cohomology",
+      "ContDiff"
+    ],
+    "prerequisites": [
+      "ContDiff.isSymmetric_iteratedFDeriv",
+      "Fr\u00e9chet derivative",
+      "partial derivatives"
+    ]
+  },
+  {
+    "id": "ann-greens-stokes",
+    "proofId": "fundamental-theorem-calculus-oq-02",
+    "range": {
+      "startLine": 241,
+      "endLine": 276
+    },
+    "type": "theorem",
+    "title": "Green's Theorem as 2D Stokes: Proof via GreensTheoremOQ01",
+    "content": "`lineIntegralRect \u03c9 a b c d` computes \u222e_{\u2202R} \u03c9 for the rectangle [a,b]\u00d7[c,d] counterclockwise as four FTC integrals along the four edges. `areaIntegralRect h a b c d` computes \u222c_R h as an iterated integral via Fubini. `stokes_2d_rectangle` proves lineIntegralRect = areaIntegralRect \u2218 extDeriv1_2D \u2014 Green's theorem in Stokes form \u2014 by delegating to `GreensTheoremOQ01.greens_theorem_concrete`. The proof is clean but requires many integrability hypotheses (\u2200 y, IntervalIntegrable for each cross-section) plus Fubini commutativity as a hypothesis. This honestly represents the technical content that Green's theorem requires.",
+    "mathContext": "$\\oint_{\\partial R} P\\,dx + Q\\,dy = \\iint_R \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)\\,dA$ where $R = [a,b]\\times[c,d]$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Green's theorem",
+      "Fubini's theorem",
+      "iterated integrals",
+      "line integral",
+      "double integral"
+    ],
+    "prerequisites": [
+      "greens-theorem-oq-01",
+      "intervalIntegral",
+      "IntervalIntegrable",
+      "Fubini"
+    ]
+  },
+  {
+    "id": "ann-derham-cohomology",
+    "proofId": "fundamental-theorem-calculus-oq-02",
+    "range": {
+      "startLine": 341,
+      "endLine": 364
+    },
+    "type": "insight",
+    "title": "De Rham Cohomology of \u211d: H\u2070 = \u211d and H\u00b9 = 0",
+    "content": "`h1_trivial` proves H\u00b9_dR(\u211d) = 0: every continuous 1-form on \u211d is exact, by calling `poincare_1d` and extracting the antiderivative via `funext`. `h0_eq_constants` proves H\u2070_dR(\u211d) = \u211d: if d(F) = 0 (F is closed of degree 0), then F is constant, using `is_const_of_deriv_eq_zero`. Together: H\u2070(\u211d) = \u211d (constants, since \u211d is connected) and H\u00b9(\u211d) = 0 (contractible, so no topological obstructions). In contrast, H\u00b9(S\u00b9) = \u211d, showing the cohomology detects topology. The Stokes hierarchy is documented in the Part VII comment: n=1 (FTC), n=2 (Green), n=2 surface (Stokes), n=3 (Gauss).",
+    "mathContext": "$H^0_{\\text{dR}}(\\mathbb{R}) = \\mathbb{R}$ (connected), $H^1_{\\text{dR}}(\\mathbb{R}) = 0$ (contractible); contrast with $H^1_{\\text{dR}}(S^1) = \\mathbb{R}$ (angle form $d\\theta$ is closed but not exact)",
+    "significance": "key",
+    "relatedConcepts": [
+      "de Rham cohomology",
+      "H^0",
+      "H^1",
+      "Poincar\u00e9 lemma",
+      "connectedness",
+      "contractibility",
+      "S^1"
+    ],
+    "prerequisites": [
+      "poincare_1d",
+      "is_const_of_deriv_eq_zero",
+      "Poincar\u00e9 lemma",
+      "differential forms"
+    ]
+  }
+]
