@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-feuer05-aux-lemmas",
+    "proofId": "feuerbachs-theorem-oq-05",
+    "range": { "startLine": 40, "endLine": 66 },
+    "type": "technique",
+    "title": "Auxiliary Lemmas: Bridging dist2 and dist2_sq Representations",
+    "content": "The proof uses two representations of distance: `dist2 P Q = sqrt(dist2_sq P Q)` (the actual Euclidean distance) and `dist2_sq P Q = (P.1-Q.1)^2 + (P.2-Q.2)^2` (the squared distance, avoiding sqrt for algebraic manipulations). Three private lemmas provide bridges: `dist2_sq_comm` (symmetry), `dist2_sqrt_eq` (unfolds the definition), and `dist2_sq_of_dist2_eq` (converts a `dist2` equality to a `dist2_sq` equality via `Real.sq_sqrt`). The helper `feuerbach_NI_sqrt` extracts the NI distance in raw sqrt form from the parent's Feuerbach distance theorem, needed for the algebraic form used in the Feuerbach point proofs.",
+    "mathContext": "The key algebraic bridge: if $\\mathrm{dist2}(P,Q) = r$ (a non-negative real), then $\\mathrm{dist2\\_sq}(P,Q) = r^2$. This uses $\\mathrm{dist2\\_sq}(P,Q) = (\\sqrt{\\mathrm{dist2\\_sq}(P,Q)})^2 = \\mathrm{dist2}(P,Q)^2 = r^2$ via `Real.sq_sqrt` (which requires $\\mathrm{dist2\\_sq} \\geq 0$, guaranteed by `positivity`).",
+    "significance": "technical",
+    "relatedConcepts": ["Real.sq_sqrt", "positivity tactic", "squared distance", "Euclidean distance"],
+    "prerequisites": ["Real.sqrt properties", "dist2/dist2_sq definitions from FeuerbachsTheorem"]
+  },
+  {
+    "id": "ann-feuer05-point-def",
+    "proofId": "feuerbachs-theorem-oq-05",
+    "range": { "startLine": 79, "endLine": 82 },
+    "type": "definition",
+    "title": "The Feuerbach Point: Coordinate Definition on Ray N→I",
+    "content": "The Feuerbach point F is defined as the unique point on the ray from nine-point center N through incenter I at distance R_9 (ninePointRadius) from N. In coordinates: F = N + (R_9/d) * (I-N) where d = R_9 - r (the NI distance, which is positive by hypothesis r < R_9). The scaling factor R_9/d ensures |F-N| = R_9: since |I-N| = d, scaling (I-N) by R_9/d gives a vector of length R_9. The definition is `noncomputable` (in a noncomputable section) because real arithmetic is noncomputable in Lean.",
+    "mathContext": "Geometrically, $F$ divides the segment $NI$ externally in the ratio $R_9 : r$ from $N$: $F = N + \\frac{R_9}{R_9 - r}(I - N)$. Since $R_9/(R_9-r) > 1$, $F$ lies beyond $I$ on the ray $N \\to I$. The distances are: $|NF| = R_9$ (on nine-point circle), $|IF| = |F - I| = |(R_9/d - 1)(I-N)| = (r/d)|I-N| = r$ (on incircle). So $F$ is the internal tangency point.",
+    "significance": "key",
+    "relatedConcepts": ["Feuerbach point", "nine-point circle", "incircle", "internal tangency", "triangle centers X(11)"],
+    "prerequisites": ["ninePointRadius definition", "inradius definition", "coordinate geometry in ℝ²"]
+  },
+  {
+    "id": "ann-feuer05-circle-membership",
+    "proofId": "feuerbachs-theorem-oq-05",
+    "range": { "startLine": 85, "endLine": 119 },
+    "type": "insight",
+    "title": "F Lies on Both Circles: Scaling the NI Vector",
+    "content": "Both membership theorems use the same algebraic template. For `feuerbachPoint_on_ninePointCircle`: F-N = (R_9/d)*(I-N), so |F-N|² = (R_9/d)² * |I-N|². With |I-N| = d (from feuerbach_NI_sqrt), |F-N|² = R_9² and |F-N| = R_9. For `feuerbachPoint_on_incircle`: F-I = (R_9/d - 1)*(I-N) = (r/d)*(I-N), so |F-I|² = (r/d)² * d² = r². Both proofs use `Real.sqrt_mul` and `Real.sqrt_sq` to handle the sqrt, followed by `field_simp` and `feuerbach_NI_sqrt` to substitute the NI distance.",
+    "mathContext": "For the nine-point circle: $|F - N|^2 = \\left(\\frac{R_9}{d}\\right)^2 |I-N|^2 = \\frac{R_9^2}{d^2} \\cdot d^2 = R_9^2$. For the incircle: $F - I = \\frac{R_9}{d}(I-N) - (I-N) = \\frac{R_9 - d}{d}(I-N) = \\frac{r}{d}(I-N)$ (since $R_9 - d = R_9 - (R_9-r) = r$), giving $|F - I|^2 = \\frac{r^2}{d^2} \\cdot d^2 = r^2$.",
+    "significance": "key",
+    "relatedConcepts": ["internal tangency point", "nine-point circle", "incircle", "distance ratios"],
+    "prerequisites": ["feuerbach_NI_sqrt", "Real.sqrt_mul", "Real.sqrt_sq", "field_simp"]
+  },
+  {
+    "id": "ann-feuer05-inversion",
+    "proofId": "feuerbachs-theorem-oq-05",
+    "range": { "startLine": 128, "endLine": 130 },
+    "type": "definition",
+    "title": "Planar Inversion: The Conformal Reflection in a Circle",
+    "content": "The `invertPoint O k P` definition formalizes planar inversion centered at O with radius k: P maps to Q = O + k²/|OP|² · (P-O). Geometrically, Q lies on the ray OP at distance k²/|OP| from O, so |OQ| · |OP| = k². When P is on the circle of radius k, |OP| = k so Q = P (fixed points on the inversion circle). When P → O, Q → ∞ (inversion at the center is undefined). The formula uses `dist2_sq O P = |OP|²` in the denominator; when P = O this is zero, making the result degenerate. The hypothesis `dist2_sq P O ≠ 0` in subsequent theorems excludes this case.",
+    "mathContext": "Planar inversion with center $O$ and radius $k$ is the map $\\iota: \\mathbb{R}^2 \\setminus \\{O\\} \\to \\mathbb{R}^2 \\setminus \\{O\\}$ defined by $\\iota(P) = O + \\frac{k^2}{|P-O|^2}(P-O)$. Key properties: (1) $\\iota \\circ \\iota = \\mathrm{id}$ (involution); (2) circles/lines through $O$ map to lines; (3) circles/lines not through $O$ map to circles not through $O$; (4) inversion is conformal (angle-preserving). These properties make it the key tool for reducing tangency to parallelism.",
+    "significance": "key",
+    "relatedConcepts": ["Möbius transformation", "circle inversion", "conformal map", "inversive geometry", "inversion center"],
+    "prerequisites": ["coordinate geometry", "dist2_sq definition", "real division in Lean"]
+  },
+  {
+    "id": "ann-feuer05-circle-to-line",
+    "proofId": "feuerbachs-theorem-oq-05",
+    "range": { "startLine": 136, "endLine": 167 },
+    "type": "insight",
+    "title": "Circle-to-Line Theorem: The Core Algebraic Identity",
+    "content": "The private lemma `dot_identity_of_circle` is the algebraic heart of the theorem: if O and P both lie on a circle centered at C with radius ρ, then |P-O|² = 2·(P-O)·(C-O). This is proved by `linear_combination hPC - hOC`, a one-line proof subtracting the two circle equations. The main `circle_to_line` theorem then computes: image Q = O + k²/|OP|² · (P-O), so 2·(Q-O)·(C-O) = (k²/|OP|²)·2·(P-O)·(C-O) = (k²/|OP|²)·|P-O|² = k². The crucial simplification uses `hkey'` to replace the dot product with |OP|², then `field_simp [hOP_ne]` to cancel.",
+    "mathContext": "The algebraic identity: $|P-C|^2 = \\rho^2$ and $|O-C|^2 = \\rho^2$ gives $|P-C|^2 - |O-C|^2 = 0$. Expanding: $|P|^2 - 2P\\cdot C + |C|^2 - |O|^2 + 2O\\cdot C - |C|^2 = 0$, which rearranges to $|P-O|^2 - 2(P-O)\\cdot(C-O) = 0$. The image line equation $2(Q-O)\\cdot(C-O) = k^2$ means $Q$ lies on a line perpendicular to $OC$ (the line through $O$ in direction $C-O$, at signed distance $k^2/(2\\rho)$ from $O$).",
+    "significance": "key",
+    "relatedConcepts": ["circle inversion", "line equation", "dot product", "linear_combination tactic", "conformal geometry"],
+    "prerequisites": ["dot_identity_of_circle", "invertPoint definition", "field_simp with nonzero denominators"]
+  },
+  {
+    "id": "ann-feuer05-parallel-lines",
+    "proofId": "feuerbachs-theorem-oq-05",
+    "range": { "startLine": 215, "endLine": 234 },
+    "type": "insight",
+    "title": "Parallel Image Lines: Collinearity Implies Proportional Normals",
+    "content": "The theorem `feuerbach_normals_proportional` proves N-F = -(R_9/r)·(I-F) componentwise. This follows directly from the definition: F = N + (R_9/d)·(I-N). Then N-F = -(R_9/d)·(I-N) and I-F = I - N - (R_9/d)·(I-N) = (1 - R_9/d)·(I-N) = (-r/d)·(I-N). So (N-F)/(I-F) = (-(R_9/d))/((-r/d)) = -(R_9/r). The proof is `constructor <;> (field_simp; ring)` — pure algebraic simplification. The packaging theorem `feuerbach_inversive_parallel_lines` witnesses the proportionality with λ = -(R_9/r), showing the two perpendicular lines are parallel.",
+    "mathContext": "The two image lines after inversion at $F$: (Line 1) $2(Q-F)\\cdot(I-F) = k^2$ (from incircle) and (Line 2) $2(Q-F)\\cdot(N-F) = k^2$ (from nine-point circle). Line 1 is perpendicular to $\\vec{FI} = I-F$; Line 2 is perpendicular to $\\vec{FN} = N-F$. Since $N-F = \\lambda(I-F)$ for $\\lambda \\neq 0$, both normals are parallel, so the two lines are parallel. The ratio $\\lambda = -(R_9/r) < 0$ is negative because $F$ lies between $N$ and $I$ extended (beyond $I$), so $N-F$ and $I-F$ point in opposite directions.",
+    "significance": "key",
+    "relatedConcepts": ["parallel lines", "normal directions", "collinearity", "inversive proof of Feuerbach", "Feuerbach point geometry"],
+    "prerequisites": ["feuerbach_normals_proportional", "incircle_maps_to_line", "ninePointCircle_maps_to_line", "field_simp; ring"]
+  }
+]
