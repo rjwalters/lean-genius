@@ -82,7 +82,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Archimedes (~250 BCE) computed the area of a circle using the **method of exhaustion**: inscribe a regular $n$-gon in a circle of radius $r$, compute its area as $\\frac{n}{2}r^2 \\sin(2\\pi/n)$, and let $n \\to \\infty$. As $n$ grows, the $n$-gon fills up the disk, and the area converges to $\\pi r^2$.\n\nTwenty-two centuries later, Newton and Leibniz developed the Fundamental Theorem of Calculus (FTC), which yields the same result through integration: since $A'(r) = 2\\pi r = C(r)$ (the circumference), we get $A(r) = \\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$.\n\nThis file answers **OQ-01-OQ-02-OQ-03**: can these two methods be formally connected? Yes — both converge to $\\pi r^2$, and by Hausdorff uniqueness of limits in $\\mathbb{R}$, there is only one such value. The exhaustion sequence and the FTC integral are not just numerically equal but provably represent the same mathematical object.",
+    "historicalContext": "Archimedes (~250 BCE) computed the area of a circle using the **method of exhaustion** — a technique systematized by Eudoxus of Cnidus (~370 BCE). Inscribe a regular $n$-gon in a circle of radius $r$, compute its area as $\\frac{n}{2}r^2 \\sin(2\\pi/n)$, and let $n \\to \\infty$. As $n$ grows, the $n$-gon fills up the disk, and the area converges to $\\pi r^2$. Archimedes used $n = 96$ to establish $3\\frac{10}{71} < \\pi < 3\\frac{1}{7}$ in his *Measurement of a Circle*.\n\nThe method of exhaustion implicitly relies on what we now call the Archimedean property and completeness of $\\mathbb{R}$: the area cannot simultaneously be too large and too small, so it must equal $\\pi r^2$ exactly. Archimedes used both inscribed and circumscribed polygons in a double squeeze — a two-sided argument whose modern form is the squeeze theorem.\n\nTwenty-two centuries later, Newton and Leibniz developed the **Fundamental Theorem of Calculus** (FTC), yielding the same result through integration: since $A'(r) = 2\\pi r = C(r)$ (the circumference is the derivative of the enclosed area), we get $A(r) = \\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$. Cavalieri's earlier *indivisibles* (1635) and Wallis's infinite products (1656) were stepping stones between Archimedes and the FTC.\n\nThis file answers **OQ-01-OQ-02-OQ-03**: can these two methods be formally connected? Yes — both converge to $\\pi r^2$, and by Hausdorff uniqueness of limits in $\\mathbb{R}$, there is only one such value. The exhaustion sequence and the FTC integral are not just numerically equal but provably represent the same mathematical object.",
     "problemStatement": "**Open Question (area-of-circle-oq-01-oq-02-oq-03)**: Can Archimedes' classical exhaustion method be formally connected to the modern FTC-based proof that A = ∫₀ʳ C(ρ) dρ?\n\n**Answer**: Yes. Both methods compute πr² via different limiting processes. By Hausdorff uniqueness of limits in ℝ, both converge to the same value. This file formally proves the connection: the Archimedes sequence converges to the FTC integral.",
     "text": "This file gives a complete formalization connecting two ancient and modern proofs of the circle area formula. **Part I** proves the FTC approach: since d/dr(πr²) = 2πr, the FTC gives ∫₀ʳ 2πρ dρ = πr². **Part II** proves the Archimedes approach: the inscribed n-gon area n/2 · r² · sin(2π/n) converges to πr² by the classical limit sin(h)/h → 1. **Part III** connects both: the Archimedes sequence converges to the same value as the FTC integral, justified by limit uniqueness.",
     "proofStrategy": "**Part I: FTC Proof**\n- `hasDerivAt_circleArea`: differentiate πr² to get 2πr using `hasDerivAt_pow` and `const_mul`\n- `circumference_integral_eq`: apply FTC (`integral_eq_sub_of_hasDerivAt`) to conclude ∫₀ʳ 2πρ dρ = πr²\n\n**Part II: Archimedes' Exhaustion**\n- `tendsto_const_div_nat`: c/n → 0 (proved using `tendsto_inv_atTop_zero`)\n- `tendsto_sin_div_nhds_zero`: sin(h)/h → 1 (from `HasDerivAt.hasDerivAt_iff_tendsto_slope`)\n- `tendsto_two_pi_div_atTop`: 2π/n → 0 through nonzero values\n- `tendsto_n_sin_two_pi_div_n`: n·sin(2π/n) → 2π (composing the limit lemmas)\n- `tendsto_inscribed_to_pi_r_sq`: inscribedArea n r → πr²\n\n**Part III: Connection Theorems**\n- `exhaustion_equals_ftc`: Archimedes sequence → FTC integral value\n- `inscribed_area_le_pi_r_sq`: inscribed n-gon ≤ πr² (using sin(x) < x)\n- `archimedes_squeeze_approx`: ε-N characterization\n- `two_methods_one_area`: limit uniqueness in ℝ",
@@ -91,7 +91,9 @@
       "**tendsto_inv_atTop_zero replaces removed lemma**: `tendsto_const_div_atTop_nhds_0_nat` was removed from Mathlib 4.26. The equivalent proof uses `tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop` with `const_mul`.",
       "**Filter.Eventually.mono for EventuallyEq.symm**: `key.symm` doesn't work on `Filter.Eventually` (wrong dot notation). Use `key.mono (fun _ h => h.symm)` instead.",
       "**field_simp closes algebraic goals**: `field_simp [ne_of_gt hn']` closes `n / 2 * r² * (2π/n) = π * r²` completely — do NOT add `; ring` after it.",
-      "**Archimedes' connection is Hausdorff uniqueness**: The two methods agree because ℝ is Hausdorff — limits are unique. `tendsto_nhds_unique` formalizes Archimedes' implicit assumption that the area has a unique value."
+      "**Archimedes' connection is Hausdorff uniqueness**: The two methods agree because ℝ is Hausdorff — limits are unique. `tendsto_nhds_unique` formalizes Archimedes' implicit assumption that the area has a unique value.",
+      "**nhdsWithin is the right filter for sin(h)/h**: The limit sin(h)/h → 1 must be stated in `nhdsWithin 0 {0}ᶜ` (punctured neighborhood) because sin(0)/0 = 0/0 is undefined. Lean's `nhdsWithin` filter encodes 'approach 0 from nonzero values', exactly matching the classical one-sided limit used in analysis.",
+      "**Geometric differentiation: A'(r) = C(r) in full generality**: The relation A'(r) = C(r) (area's derivative is circumference) holds for any convex body by Steiner's formula: the derivative of volume with respect to radius equals the surface area. The circle is the simplest case, but the same principle extends to spheres ($V'(r) = S(r) = 4\\pi r^2$) and general convex sets."
     ],
     "prerequisites": [
       "FTC (integral_eq_sub_of_hasDerivAt)",
@@ -132,7 +134,8 @@
     "implications": "This formalization shows that Archimedes was implicitly using the Hausdorff property of ℝ. His exhaustion argument shows that the area is simultaneously ≤ πr² (by inscribed polygons) and ≥ πr² (by circumscribed polygons), concluding that it equals πr² by completeness. The modern proof via FTC is more direct but makes the same fundamental use of the limit structure of ℝ. Formally, both are special cases of the general principle that limits in Hausdorff spaces are unique.",
     "openQuestions": [
       "Can the connection be extended to circumscribed polygon approximations, giving a two-sided squeeze theorem that matches Archimedes' original double exhaustion?",
-      "Does the convergence rate of inscribed n-gons (error ~ π²r²/n²) match what one gets from numerical integration error bounds on the FTC integral?"
+      "Does the convergence rate of inscribed n-gons (error ~ π²r²/n²) match what one gets from numerical integration error bounds on the FTC integral?",
+      "Can Steiner's formula — $\\frac{d}{dr}\\text{Vol}(B_r) = \\text{Area}(\\partial B_r)$ — be formalized in Lean for balls in ℝⁿ, unifying the circle result with sphere and hypersphere cases?"
     ]
   },
   "crossReferences": [
@@ -145,6 +148,11 @@
       "id": "area-of-circle",
       "title": "Area of a Circle",
       "relationship": "Base proof; this file extends the OQ chain connecting classical and modern methods"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "title": "Fundamental Theorem of Calculus",
+      "relationship": "The FTC is the core tool in Part I; this proof is a concrete application of FTC to a geometric antiderivative"
     }
   ]
 }
