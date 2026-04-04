@@ -1091,6 +1091,11 @@ example : upstepsAboveAxisC [1,1,-1,-1] = 2 := by native_decide  -- Dyck (type 2
     - Prove rotation_types_all_distinct via the prefix sum formula:
       type(lᵢ) = #{k>i: h_k>h_i} + #{k<i: h_k≥h_i} where h_j = PS_S(q_j).
       Sum over i = #{(i,k): i<k} = n*(n+1)/2. -/
-theorem summary_progress : True := trivial
+/-
+  Summary: the rotation type bijection is established. Remaining work:
+  prove rotation_types_all_distinct via the prefix sum formula
+  type(lᵢ) = #{k>i: h_k>h_i} + #{k<i: h_k≥h_i}, where h_j = PS_S(q_j),
+  and sum over i = #{(i,k): i<k} = n*(n+1)/2.
+-/
 
 end ChungFellerBijection
