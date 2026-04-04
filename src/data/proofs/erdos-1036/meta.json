@@ -1,10 +1,10 @@
 {
   "id": "erdos-1036",
-  "title": "Erd\u0151s Problem #1036: Distinct Induced Subgraphs in Non-Ramsey Graphs",
+  "title": "Erdős Problem #1036: Distinct Induced Subgraphs in Non-Ramsey Graphs",
   "slug": "erdos-1036",
-  "description": "Let G be non-Ramsey (no trivial subgraph on > c log n vertices). Must G contain \u2265 2^{\u03a9_c(n)} non-isomorphic induced subgraphs? YES (Shelah 1998). Prior: Alon-Hajnal (1991) proved exp(n(log n)^{-O(log log n)}).",
+  "description": "Let G be non-Ramsey (no trivial subgraph on > c log n vertices). Must G contain ≥ 2^{Ω_c(n)} non-isomorphic induced subgraphs? YES (Shelah 1998). Prior: Alon-Hajnal (1991) proved exp(n(log n)^{-O(log log n)}).",
   "meta": {
-    "author": "Erd\u0151s-R\u00e9nyi (question), Shelah (1998, solution)",
+    "author": "Erdős-Rényi (question), Shelah (1998, solution)",
     "sourceUrl": "https://erdosproblems.com/1036",
     "date": "1998",
     "status": "axiomatized",
@@ -30,16 +30,16 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "This problem originates from a question of Erd\u0151s and R\u00e9nyi about the structural complexity of graphs that avoid large homogeneous (trivial) subgraphs. By Ramsey's theorem (1930), every n-vertex graph contains a clique or independent set of size at least (1/2) log\u2082 n. Erd\u0151s (1947) showed via the probabilistic method that random graphs G(n,1/2) achieve the opposite extreme: their largest clique and independent set are both O(log n). Such 'non-Ramsey' graphs exist in abundance but must be structurally complex. Erd\u0151s and Hajnal (1989) proved the first result in this direction: graphs avoiding K_{k,k} in both G and its complement have 2^{\u03a9(n)} distinct induced subgraphs. Alon and Hajnal (1991) extended this to all non-Ramsey graphs, proving a sub-exponential bound of exp(n\u00b7(log n)^{-O(log log n)}) using Szemer\u00e9di's regularity lemma. The full exponential bound 2^{\u03a9(n)} remained open until Shelah (1998) proved it using a deep partition argument connected to the Hales-Jewett theorem. Independently, Pr\u00f6mel and R\u00f6dl (1999) proved the related result that non-Ramsey graphs are c\u00b7log(n)-universal (Problem 1031), which gives a weaker but conceptually elegant approach to induced subgraph diversity.",
-    "problemStatement": "Let G be a graph on n vertices with no trivial (empty or complete) subgraph on more than c log n vertices. Must G contain at least 2^{\u03a9_c(n)} non-isomorphic induced subgraphs? Answered YES by Shelah (1998).",
-    "text": "Let G be non-Ramsey (no trivial subgraph on > c log n vertices). Must G contain \u2265 2^{\u03a9_c(n)} non-isomorphic induced subgraphs? YES (Shelah 1998). Prior: Alon-Hajnal (1991) proved exp(n(log n)^{-O(log log n)}).",
-    "proofStrategy": "The formalization defines non-Ramsey graphs via the noLargeTrivial predicate, builds the isomorphism equivalence relation on induced subgraphs (with reflexivity, symmetry, transitivity), defines the counting function i(G), and axiomatizes three key results: Erd\u0151s-Hajnal 1989 (bipartite avoidance case), Alon-Hajnal 1991 (sub-exponential bound), and Shelah 1998 (full exponential bound). An alternative proof path via Pr\u00f6mel-R\u00f6dl universality (Problem 1031) is also formalized.",
+    "historicalContext": "This problem originates from a question of Erdős and Rényi about the structural complexity of graphs that avoid large homogeneous (trivial) subgraphs. By Ramsey's theorem (1930), every n-vertex graph contains a clique or independent set of size at least (1/2) log₂ n. Erdős (1947) showed via the probabilistic method that random graphs G(n,1/2) achieve the opposite extreme: their largest clique and independent set are both O(log n). Such 'non-Ramsey' graphs exist in abundance but must be structurally complex. Erdős and Hajnal (1989) proved the first result in this direction: graphs avoiding K_{k,k} in both G and its complement have 2^{Ω(n)} distinct induced subgraphs. Alon and Hajnal (1991) extended this to all non-Ramsey graphs, proving a sub-exponential bound of exp(n·(log n)^{-O(log log n)}) using Szemerédi's regularity lemma. The full exponential bound 2^{Ω(n)} remained open until Shelah (1998) proved it using a deep partition argument connected to the Hales-Jewett theorem. Independently, Prömel and Rödl (1999) proved the related result that non-Ramsey graphs are c·log(n)-universal (Problem 1031), which gives a weaker but conceptually elegant approach to induced subgraph diversity.",
+    "problemStatement": "Let G be a graph on n vertices with no trivial (empty or complete) subgraph on more than c log n vertices. Must G contain at least 2^{Ω_c(n)} non-isomorphic induced subgraphs? Answered YES by Shelah (1998).",
+    "text": "Let G be non-Ramsey (no trivial subgraph on > c log n vertices). Must G contain ≥ 2^{Ω_c(n)} non-isomorphic induced subgraphs? YES (Shelah 1998). Prior: Alon-Hajnal (1991) proved exp(n(log n)^{-O(log log n)}).",
+    "proofStrategy": "The formalization defines non-Ramsey graphs via the noLargeTrivial predicate, builds the isomorphism equivalence relation on induced subgraphs (with reflexivity, symmetry, transitivity), defines the counting function i(G), and axiomatizes three key results: Erdős-Hajnal 1989 (bipartite avoidance case), Alon-Hajnal 1991 (sub-exponential bound), and Shelah 1998 (full exponential bound). An alternative proof path via Prömel-Rödl universality (Problem 1031) is also formalized.",
     "keyInsights": [
-      "**Non-Ramsey Complexity:** Graphs with max(\u03c9(G), \u03b1(G)) \u2264 c log n are forced to have exponentially many non-isomorphic induced subgraphs \u2014 structural homogeneity avoidance implies diversity",
-      "**Three Eras of Progress:** Erd\u0151s-Hajnal 1989 (bipartite case, 2^{\u03a9(n)}), Alon-Hajnal 1991 (general case, sub-exponential via regularity), Shelah 1998 (general case, full 2^{\u03a9(n)})",
-      "**Complement Symmetry:** If G is non-Ramsey then so is its complement, and i(G) = i(\u1e20), since complementation permutes isomorphism classes",
-      "**Universality Connection:** Pr\u00f6mel-R\u00f6dl (Problem 1031) shows non-Ramsey graphs are c\u00b7log(n)-universal, giving a weaker 2^{\u03a9((log n)\u00b2)} bound via a cleaner argument",
-      "**Random-Like Behavior:** Non-Ramsey graphs satisfy i(G) = 2^{\u0398(n)}, qualitatively matching random graphs G(n,1/2) which have i(G) = (1-o(1))\u00b72^n",
+      "**Non-Ramsey Complexity:** Graphs with max(ω(G), α(G)) ≤ c log n are forced to have exponentially many non-isomorphic induced subgraphs — structural homogeneity avoidance implies diversity",
+      "**Three Eras of Progress:** Erdős-Hajnal 1989 (bipartite case, 2^{Ω(n)}), Alon-Hajnal 1991 (general case, sub-exponential via regularity), Shelah 1998 (general case, full 2^{Ω(n)})",
+      "**Complement Symmetry:** If G is non-Ramsey then so is its complement, and i(G) = i(Ḡ), since complementation permutes isomorphism classes",
+      "**Universality Connection:** Prömel-Rödl (Problem 1031) shows non-Ramsey graphs are c·log(n)-universal, giving a weaker 2^{Ω((log n)²)} bound via a cleaner argument",
+      "**Random-Like Behavior:** Non-Ramsey graphs satisfy i(G) = 2^{Θ(n)}, qualitatively matching random graphs G(n,1/2) which have i(G) = (1-o(1))·2^n",
       "**Shelah's Technique:** The proof uses a sophisticated partition argument and the Hales-Jewett theorem to extract exponentially many distinct induced patterns"
     ],
     "prerequisites": [
@@ -65,7 +65,7 @@
       "summary": "vertexCount definition: cardinality of the finite vertex set",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "$n = |V(G)| = \\text{Fintype.card}\\;V$ \u2014 the order of the graph, used throughout as the parameter in asymptotic bounds like $2^{\\Omega(n)}$."
+      "mathContext": "$n = |V(G)| = \\text{Fintype.card}\\;V$ — the order of the graph, used throughout as the parameter in asymptotic bounds like $2^{\\Omega(n)}$."
     },
     {
       "id": "trivial",
@@ -81,7 +81,7 @@
       "summary": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c log n), and axiomatized existence of non-Ramsey graphs via the probabilistic method",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "$G$ is non-Ramsey with parameter $c$ if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log_2 n$. By Erd\u0151s (1947), $G(n, 1/2)$ satisfies this with high probability for $c = 2 + \\varepsilon$."
+      "mathContext": "$G$ is non-Ramsey with parameter $c$ if $\\max(\\omega(G), \\alpha(G)) \\leq c \\log_2 n$. By Erdős (1947), $G(n, 1/2)$ satisfies this with high probability for $c = 2 + \\varepsilon$."
     },
     {
       "id": "induced",
@@ -105,12 +105,12 @@
       "summary": "allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "$i(G) = |\\mathcal{P}(V) / {\\cong}|$ \u2014 the number of isomorphism classes of induced subgraphs. Defined via the quotient of $\\mathcal{P}(V(G))$ by the `sameIsoClass` equivalence relation."
+      "mathContext": "$i(G) = |\\mathcal{P}(V) / {\\cong}|$ — the number of isomorphism classes of induced subgraphs. Defined via the quotient of $\\mathcal{P}(V(G))$ by the `sameIsoClass` equivalence relation."
     },
     {
       "id": "conjecture",
-      "title": "The Erd\u0151s-R\u00e9nyi Conjecture",
-      "summary": "erdos_renyi_conjecture: for every c > 0, there exists c' > 0 such that non-Ramsey graphs with parameter c have \u2265 2^{c'n} distinct induced subgraphs",
+      "title": "The Erdős-Rényi Conjecture",
+      "summary": "erdos_renyi_conjecture: for every c > 0, there exists c' > 0 such that non-Ramsey graphs with parameter c have ≥ 2^{c'n} distinct induced subgraphs",
       "startLine": 1,
       "endLine": 1,
       "mathContext": "Conjecture: if $G$ has no trivial induced subgraph on $> c \\log n$ vertices, then $G$ has $\\geq 2^{c' n}$ distinct induced subgraphs."
@@ -118,18 +118,18 @@
     {
       "id": "alon-hajnal",
       "title": "Alon-Hajnal Bound (1991)",
-      "summary": "alonHajnalExponent (n\u00b7(log n)^{-O(log log n)}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound",
+      "summary": "alonHajnalExponent (n·(log n)^{-O(log log n)}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Alon-Hajnal (1991): $i(G) \\geq \\exp\\bigl(n \\cdot (\\log n)^{-O(\\log \\log n)}\\bigr)$ for non-Ramsey $G$. Sub-exponential \u2014 proved via Szemer\u00e9di's regularity lemma. Strictly weaker than Shelah's $2^{\\Omega(n)}$."
+      "mathContext": "Alon-Hajnal (1991): $i(G) \\geq \\exp\\bigl(n \\cdot (\\log n)^{-O(\\log \\log n)}\\bigr)$ for non-Ramsey $G$. Sub-exponential — proved via Szemerédi's regularity lemma. Strictly weaker than Shelah's $2^{\\Omega(n)}$."
     },
     {
       "id": "erdos-hajnal",
-      "title": "Erd\u0151s-Hajnal Bipartite Result (1989)",
-      "summary": "hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erd\u0151s-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance",
+      "title": "Erdős-Hajnal Bipartite Result (1989)",
+      "summary": "hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Erd\u0151s-Hajnal (1989): if $G$ avoids $K_{k,k}$ in both $G$ and $\\bar{G}$, then $i(G) \\geq 2^{\\Omega(n)}$. Non-Ramsey graphs satisfy this avoidance condition, giving the first exponential bound in a special case."
+      "mathContext": "Erdős-Hajnal (1989): if $G$ avoids $K_{k,k}$ in both $G$ and $\\bar{G}$, then $i(G) \\geq 2^{\\Omega(n)}$. Non-Ramsey graphs satisfy this avoidance condition, giving the first exponential bound in a special case."
     },
     {
       "id": "shelah",
@@ -137,7 +137,7 @@
       "summary": "Axiomatized Shelah's theorem (2^{c'n} bound) and erdos_1036_solved establishing the conjecture is true",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "Shelah (1998): proved the Erd\u0151s-R\u00e9nyi conjecture. Non-Ramsey graphs have $\\geq 2^{c'n}$ distinct induced subgraphs. Status: SOLVED."
+      "mathContext": "Shelah (1998): proved the Erdős-Rényi conjecture. Non-Ramsey graphs have $\\geq 2^{c'n}$ distinct induced subgraphs. Status: SOLVED."
     },
     {
       "id": "comparison",
@@ -150,7 +150,7 @@
     {
       "id": "counting-args",
       "title": "Counting Arguments",
-      "summary": "distinct_upper (trivial 2^n upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey \u2248 random in diversity)",
+      "summary": "distinct_upper (trivial 2^n upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)",
       "startLine": 1,
       "endLine": 1,
       "mathContext": "Upper bound: $i(G) \\leq 2^n$ trivially. Random graphs: $i(G(n,1/2)) = (1 - o(1)) \\cdot 2^n$. Non-Ramsey graphs satisfy $i(G) = 2^{\\Theta(n)}$, qualitatively matching random graph behavior."
@@ -166,7 +166,7 @@
     {
       "id": "complement",
       "title": "Complement Symmetry",
-      "summary": "complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(\u1e20))",
+      "summary": "complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))",
       "startLine": 1,
       "endLine": 1,
       "mathContext": "If $\\max(\\omega(G), \\alpha(G)) \\leq k$ then $\\max(\\omega(\\bar{G}), \\alpha(\\bar{G})) \\leq k$ (since $\\omega(\\bar{G}) = \\alpha(G)$). Also $i(G) = i(\\bar{G})$ because complementation is a bijection on isomorphism classes."
@@ -174,37 +174,37 @@
     {
       "id": "problem-1031",
       "title": "Connection to Problem 1031",
-      "summary": "isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Pr\u00f6mel-R\u00f6dl universality",
+      "summary": "isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality",
       "startLine": 1,
       "endLine": 1,
-      "mathContext": "$G$ is $k$-universal if every $k$-vertex graph is an induced subgraph of $G$. Pr\u00f6mel-R\u00f6dl: non-Ramsey $\\Rightarrow$ $c\\log n$-universal $\\Rightarrow$ $i(G) \\geq 2^{\\Omega((\\log n)^2)}$. Weaker than Shelah but gives an alternative proof path."
+      "mathContext": "$G$ is $k$-universal if every $k$-vertex graph is an induced subgraph of $G$. Prömel-Rödl: non-Ramsey $\\Rightarrow$ $c\\log n$-universal $\\Rightarrow$ $i(G) \\geq 2^{\\Omega((\\log n)^2)}$. Weaker than Shelah but gives an alternative proof path."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1036 asks whether non-Ramsey graphs must contain exponentially many non-isomorphic induced subgraphs. Shelah (1998) proved YES: i(G) \u2265 2^{c'n}. The formalization captures the full history from Erd\u0151s-Hajnal 1989 through Alon-Hajnal 1991 to Shelah 1998, includes complement symmetry arguments, and connects to Pr\u00f6mel-R\u00f6dl universality (Problem 1031) for an alternative proof path.",
-    "implications": "**Theoretical Significance**: Shelah's theorem reveals a deep connection between Ramsey-theoretic structure avoidance and combinatorial complexity.\n\nGraphs that lack homogeneous structure must compensate with exponential diversity in their induced subgraph patterns. This connects to quasi-randomness (non-Ramsey graphs share properties with random graphs), the Erd\u0151s-Hajnal conjecture (on induced subgraphs in H-free graphs), and computational complexity (graph isomorphism testing in structured graph classes).",
+    "summary": "Erdős Problem #1036 asks whether non-Ramsey graphs must contain exponentially many non-isomorphic induced subgraphs. Shelah (1998) proved YES: i(G) ≥ 2^{c'n}. The formalization captures the full history from Erdős-Hajnal 1989 through Alon-Hajnal 1991 to Shelah 1998, includes complement symmetry arguments, and connects to Prömel-Rödl universality (Problem 1031) for an alternative proof path.",
+    "implications": "**Theoretical Significance**: Shelah's theorem reveals a deep connection between Ramsey-theoretic structure avoidance and combinatorial complexity.\n\nGraphs that lack homogeneous structure must compensate with exponential diversity in their induced subgraph patterns. This connects to quasi-randomness (non-Ramsey graphs share properties with random graphs), the Erdős-Hajnal conjecture (on induced subgraphs in H-free graphs), and computational complexity (graph isomorphism testing in structured graph classes).",
     "openQuestions": [
       "What is the optimal constant c' = c'(c) in Shelah's theorem 2^{c'n}? Current methods do not give explicit bounds.",
       "Can non-Ramsey graphs be efficiently constructed, and can their distinct induced subgraphs be efficiently enumerated?",
       "Does an analogous result hold for hypergraphs: must non-Ramsey r-uniform hypergraphs have exponentially many distinct induced sub-hypergraphs?",
-      "How does the result connect to the Erd\u0151s-Hajnal conjecture on induced subgraphs in graphs avoiding a fixed pattern?",
+      "How does the result connect to the Erdős-Hajnal conjecture on induced subgraphs in graphs avoiding a fixed pattern?",
       "Can Shelah's proof be simplified, perhaps using the container method or regularity-based approaches?"
     ]
   },
   "crossReferences": [
     {
       "relationship": "related",
-      "description": "Erd\u0151s #1031 (induced regular subgraphs in non-Ramsey graphs) proves Pr\u00f6mel-R\u00f6dl universality, which provides an alternative proof path for the induced subgraph diversity of Problem 1036.",
+      "description": "Erdős #1031 (induced regular subgraphs in non-Ramsey graphs) proves Prömel-Rödl universality, which provides an alternative proof path for the induced subgraph diversity of Problem 1036.",
       "targetId": "erdos-1031"
     },
     {
       "relationship": "related",
-      "description": "The Erd\u0151s-Szekeres theorem is a foundational result in Ramsey theory (monotone subsequences), sharing the theme that avoiding simple structure forces complex patterns.",
+      "description": "The Erdős-Szekeres theorem is a foundational result in Ramsey theory (monotone subsequences), sharing the theme that avoiding simple structure forces complex patterns.",
       "targetId": "erdos-szekeres"
     },
     {
       "relationship": "related",
-      "description": "Erd\u0151s #88 studies Ramsey-theoretic questions about graph colorings, connecting to the non-Ramsey graph framework underlying Problem 1036.",
+      "description": "Erdős #88 studies Ramsey-theoretic questions about graph colorings, connecting to the non-Ramsey graph framework underlying Problem 1036.",
       "targetId": "erdos-88"
     }
   ],
@@ -212,7 +212,7 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 202,
+    "lineCount": 201,
     "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 0
