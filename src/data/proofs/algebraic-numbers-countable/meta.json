@@ -1,0 +1,64 @@
+{
+  "id": "algebraic-numbers-countable",
+  "title": "Countability of Algebraic Numbers",
+  "slug": "algebraic-numbers-countable",
+  "description": "A formalization of Cantor's 1874 theorem that the algebraic numbers are countable. Proves countability and cardinality ℵ₀ for algebraic reals and complex numbers, stratification by minimal polynomial degree, the countable union decomposition, and cardinality equality between algebraic numbers and ℚ.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicNumbersCountable.lean",
+    "tags": [
+      "set-theory",
+      "countability",
+      "algebraic-numbers",
+      "cardinality",
+      "field-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 254,
+    "theoremCount": 18,
+    "definitionCount": 4,
+    "originalContributions": [
+      "algebraicRealsOfBoundedDegree and algebraicComplexOfBoundedDegree: sets of algebraic numbers with minimal polynomial degree ≤ d",
+      "algebraicRealsOfDegree and algebraicComplexOfDegree: stratification by exact minimal polynomial degree",
+      "Countability of each degree stratum: algebraicRealsOfBoundedDegree_countable and algebraicRealsOfDegree_countable",
+      "Degree stratification decomposition: algebraic_reals_eq_iUnion_degree — algebraic reals as countable union of degree strata",
+      "Alternative countability proof via degree stratification: algebraic_reals_countable_via_strata",
+      "Cardinality equality: card_algebraic_eq_card_rat shows algebraic numbers and ℚ have the same cardinality ℵ₀",
+      "Monotone chain: bounded_degree_monotone — the degree-bounded sets form an increasing filtration",
+      "Exhaustive filtration: algebraic_reals_eq_iUnion_bounded"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Georg Cantor proved the countability of algebraic numbers in 1874, in the same paper where he famously proved that the real numbers are uncountable. This pair of results — algebraic numbers are countable, but ℝ is not — established that 'most' real numbers are transcendental, even though transcendental numbers (like π and e) are harder to construct explicitly.\n\nThe proof is elegantly simple: there are only countably many polynomials of degree d over ℚ (since ℚ^{d+1} is countable), each polynomial has at most d roots, and the algebraic numbers of degree exactly d form a countable set. The full set of algebraic numbers is then a countable union of countable sets, hence countable.\n\nThis result helped establish set theory as a mathematical discipline and is considered one of Cantor's most beautiful contributions.",
+    "problemStatement": "An **algebraic number** (over ℚ) is a complex number that is a root of some nonzero polynomial with rational coefficients. The **degree** of an algebraic number is the degree of its minimal polynomial over ℚ.\n\n**Theorem** (Cantor, 1874): The set of algebraic real numbers {x ∈ ℝ | IsAlgebraic ℚ x} is countable and has cardinality ℵ₀.",
+    "proofStrategy": "The formalization proceeds in two ways:\n\n1. **Direct**: Apply Mathlib's `Algebraic.countable` (which proves that algebraic elements over a countable commutative ring form a countable set) and `Algebraic.cardinalMk_of_countable_of_charZero`.\n\n2. **Via degree stratification** (original): Define algebraicRealsOfDegree d = {x | IsAlgebraic ℚ x ∧ natDegree(minpoly ℚ x) = d}. Each stratum is a subset of all algebraic numbers, hence countable. The algebraic numbers decompose as ⋃ d, algebraicRealsOfDegree d, and Set.countable_iUnion gives the result.",
+    "keyInsights": [
+      "The degree stratification reveals the internal structure: algebraic numbers are a countable union of countable layers, each determined by minimal polynomial degree",
+      "Despite algebraic numbers forming a proper superset of ℚ (they include √2, ∛3, and all algebraic irrationals), both sets have the same cardinality ℵ₀",
+      "The bounded-degree sets form a monotone chain ⊆ exhausting all algebraic numbers, making the filtration perspective useful for approximation arguments",
+      "The complement — transcendental reals — is uncountable (being a subset of ℝ not covered by the countable algebraic numbers)"
+    ],
+    "prerequisites": [
+      "Set theory (countability, cardinality, ℵ₀)",
+      "Algebra (minimal polynomials, field extensions)",
+      "Cardinal arithmetic in Lean 4 / Mathlib"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization verifies Cantor's 1874 theorem that algebraic numbers form a countable set with cardinality ℵ₀, matching that of ℚ. The degree stratification provides additional structural insight: the algebraic numbers decompose as a countable union of countable strata, each indexed by minimal polynomial degree.",
+    "implications": "The countability of algebraic numbers directly implies that almost all real numbers (in the sense of cardinality) are transcendental. This is Cantor's original motivation: transcendental numbers exist and are, in a precise sense, the 'typical' real number. The result also underpins the theory of transcendence: to show a number is transcendental, it suffices to show it is not algebraic.",
+    "openQuestions": [
+      "Formalize the Lindemann-Weierstrass theorem: if α₁,...,αₙ are distinct algebraic numbers, then e^{α₁},...,e^{αₙ} are linearly independent over ℚ (implying π and e are transcendental)",
+      "Prove in Lean 4 that ℝ is uncountable (Cantor's diagonal argument, completing the 1874 paper)",
+      "Formalize the Gelfond-Schneider theorem: if α is algebraic and β is irrational algebraic, then α^β is transcendental"
+    ]
+  },
+  "sections": [],
+  "crossReferences": []
+}

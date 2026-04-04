@@ -1,0 +1,71 @@
+{
+  "id": "divisibility-rules-oq-01",
+  "title": "Divisibility Rules OQ-01: Extensions with Truncation, Grouping, and Casting Out Nines",
+  "slug": "divisibility-rules-oq-01",
+  "description": "A self-contained extension of the divisibility rules gallery adding: the divisibility-by-11 alternating digit sum rule (fully proved), the divisibility-by-13 truncation method (add 4 times the last digit), multi-digit grouping rules for 37, 27, 99, 101, and 999 (sum of consecutive k-digit blocks), a general last-k-digit framework unifying all power-of-2 and power-of-5 rules, divisibility by 16 and 32 via last 4 and 5 decimal digits, casting out nines for both addition and multiplication, and an error-detection theorem. All results are fully machine-verified.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityRulesOQ01.lean",
+    "tags": ["number-theory", "divisibility", "modular-arithmetic", "elementary-number-theory", "extensions"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 412,
+    "theoremCount": 41,
+    "definitionCount": 2,
+    "originalContributions": [
+      "Self-contained alternating digit sum framework with simplified modEq proof (no case split on b < 2 needed)",
+      "Divisibility by 11 as an iff form: 11 | (n - altDigitSum 10 n)",
+      "Divisibility by 13 via truncation: 13 | n ↔ 13 | (n/10 + 4·(n%10))",
+      "General dvd_iff_dvd_mod theorem unifying all last-k-digit rules as a single theorem",
+      "Multi-digit grouping rules: 37, 27, 999 (base 1000), 99 (base 100), 101 (base 10000)",
+      "Divisibility by 16 (last 4 digits) and 32 (last 5 digits)",
+      "Casting out nines: addition, multiplication, and error detection theorem",
+      "Cross-base digit sum rules: 3, 5, 15 in hexadecimal; 3, 5 in other bases"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Casting out nines is a classical arithmetic technique used since at least the 9th century to detect errors in computations. The divisibility rule for 11 (alternating digit sum) was known in the Middle Ages. The truncation method for 13 is less commonly taught but follows from the same coprimality argument as the 7-truncation rule. The grouping rules for 37, 27, and 99 exploit the fact that powers of 10 are congruent to 1 modulo these divisors, making them amenable to the standard digit-sum framework applied to blocks rather than individual digits.",
+    "problemStatement": "Extend the base divisibility rules collection with: (1) divisibility by 11 proved as an iff theorem via alternating digit sums; (2) divisibility by 13 via the truncation method; (3) divisibility by 37, 27, 99, 101, and 999 via digit-group sums; (4) a unified general framework dvd_iff_dvd_mod for all last-k-digit rules; (5) casting out nines with error detection.",
+    "proofStrategy": "The alternating digit sum proof uses induction on the digit list, exploiting that b ≡ -1 (mod d) implies each power of b alternates sign mod d. The general dvd_iff_dvd_mod is proved via Euclidean division: if d | m, then n = m·(n/m) + (n mod m) and d | m·(n/m), so d | n iff d | (n mod m). The truncation rules for 7 and 13 use the identity 10·(q ± c·r) = n ± k·r where k is divisible by the target, then cancel 10 using IsCoprime. Casting out nines follows from the standard Nat.add_mod and Nat.mul_mod identities.",
+    "keyInsights": [
+      "The general dvd_iff_dvd_mod theorem subsumes all specific last-k-digit rules (2, 4, 5, 8, 16, 25, 32, 125) as corollaries with a single uniform proof",
+      "The 13-truncation rule (add 4× last digit) is the additive counterpart of the 7-truncation rule (subtract 2× last digit): both arise from choosing c such that 10c ≡ ±1 (mod d)",
+      "The 37-rule via base-1000 digit sums follows from 10^3 = 1000 ≡ 1 (mod 37), so 37-digit sums 'telescope' through three-digit groups",
+      "Casting out nines error detection: if a·b ≢ c (mod 9), then a·b ≠ c — the converse is not guaranteed (false positives exist), but it detects most arithmetic mistakes",
+      "The grouping rules for 7, 11, 13, and 1001 via alternating three-digit blocks all arise from 1000 ≡ -1 (mod d) for d ∈ {7, 11, 13, 1001}"
+    ],
+    "prerequisites": [
+      "Modular arithmetic and Int.ModEq",
+      "Nat.digits and Nat.ofDigits",
+      "IsCoprime for integer divisibility arguments",
+      "Nat.Coprime for natural number coprimality"
+    ]
+  },
+  "conclusion": {
+    "summary": "This OQ-01 extension proves 41 theorems extending the base divisibility rules collection. The general dvd_iff_dvd_mod theorem provides a unified foundation for all last-k-digit rules, while the alternating sum and truncation methods cover divisibility by 7, 11, and 13. The casting out nines module provides both the arithmetic preservation theorems and a practical error-detection theorem.",
+    "implications": "The generalization of last-k-digit rules to a single theorem demonstrates the power of modular arithmetic abstraction. The simultaneous coverage of divisibility by 7, 11, and 13 through the truncation/alternating-sum methods reflects the algebraic unity behind these seemingly disparate rules — all exploiting coprimality of 10 with the target divisor.",
+    "openQuestions": [
+      "Formalize the divisibility rule for 7 via alternating three-digit blocks (using 1000 ≡ -1 mod 7), unifying with the DivisibilityByThreeOQ02 approach",
+      "Prove that for every d coprime to 10, there exists a base B (a power of 10) such that either d | (sum of B-ary digits of n) or d | (alternating sum of B-ary digits of n)",
+      "Extend the error-detection theorem to a probabilistic version: a random arithmetic mistake is detected by casting out nines with probability 8/9"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "extends",
+      "description": "OQ-01 extends the base DivisibilityRules collection with additional rules and a general framework"
+    },
+    {
+      "targetId": "divisibility-by-three-oq-02",
+      "relationship": "related",
+      "description": "DivisibilityByThreeOQ02 provides the alternating three-digit block framework that naturally extends OQ-01's alternating digit sum approach"
+    }
+  ]
+}

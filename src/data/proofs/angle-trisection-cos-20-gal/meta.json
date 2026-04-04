@@ -1,0 +1,76 @@
+{
+  "id": "angle-trisection-cos-20-gal",
+  "title": "Galois Group of the cos(20°) Minimal Polynomial has Order 3",
+  "slug": "angle-trisection-cos-20-gal",
+  "description": "Proves that the Galois group of 8X³ − 6X − 1 over ℚ has cardinality 3. The polynomial 8X³ − 6X − 1 is the minimal polynomial of cos(20°), and its irreducibility over ℚ is established via Eisenstein's criterion applied to the shifted polynomial X³ − 6X² + 9X − 3. Since all three roots (cos(20°), cos(100°), cos(220°)) are polynomial expressions in any single root, the splitting field equals ℚ(α) with [ℚ(α):ℚ] = 3, giving |Gal| = 3. This eliminates the cos20_gal_order axiom used in AngleTrisectionOQ02.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionCos20Gal.lean",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "cos-20-degrees",
+      "field-extensions",
+      "constructibility"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 474,
+    "theoremCount": 33,
+    "definitionCount": 0,
+    "originalContributions": [
+      "root_image_beta and root_image_gamma: algebraic identities showing all three roots lie in ℚ(α)",
+      "Irreducibility of 8X³-6X-1 via Eisenstein at 3 on the shifted polynomial X³-6X²+9X-3",
+      "p_irreducible: transfer of irreducibility through invertible linear substitution Y=2X+2",
+      "splitting_finrank: [SplittingField(p):ℚ] = 3 proved from the root containment",
+      "cos20_gal_card: |Gal(8X³-6X-1/ℚ)| = 3, the main theorem",
+      "factored_eval_eq: explicit factored form 8a³-6a-1 = 8(a-α)(a-β)(a-γ)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The polynomial 8X³ − 6X − 1 arises from the triple-angle formula cos(3θ) = 4cos³θ − 3cosθ with θ = 20°, giving 4cos³(20°) − 3cos(20°) = cos(60°) = 1/2. Clearing denominators yields 8x³ − 6x − 1. The three roots are cos(20°), cos(100°), and cos(220°), corresponding to the three angles satisfying 3θ ≡ 60° (mod 360°). Since these three roots are the conjugates of a degree-3 irreducible over ℚ, the Galois group is a transitive subgroup of S₃ of order divisible by 3, hence it is the cyclic group ℤ/3ℤ of order 3. Wantzel (1837) used the irreducibility of this polynomial to prove that 60° cannot be trisected by compass and straightedge.",
+    "problemStatement": "Determine |Gal(8X³ − 6X − 1 / ℚ)|. The key steps are: (1) prove 8X³ − 6X − 1 is irreducible over ℚ; (2) show all three roots lie in ℚ(α) for any root α, so the splitting field equals ℚ(α); (3) conclude [SplittingField : ℚ] = [ℚ(α) : ℚ] = 3 and hence |Gal| = 3.",
+    "proofStrategy": "Irreducibility is proved by shifting: the substitution Y = 2X + 2 transforms 8X³ − 6X − 1 into X³ − 6X² + 9X − 3, which is Eisenstein at p = 3 (coefficients −6, 9, −3 divisible by 3; constant term −3 not divisible by 9; leading coefficient 1 not divisible by 3). Irreducibility transfers back via the invertible linear change of variables. For the Galois group: the key algebraic identities show that if α is a root then β = 2α² − α − 1 and γ = 1 − 2α² are also roots (verified by ring). Since all roots are polynomial expressions in α, adjoin(α) splits p, giving [SplittingField : ℚ] = 3. From this, |Gal| = 3 follows from Mathlib's Polynomial.Gal.card_of_separable.",
+    "keyInsights": [
+      "The Eisenstein criterion on X³ − 6X² + 9X − 3 at p = 3 gives irreducibility over ℤ; Gauss's lemma lifts to ℚ",
+      "Irreducibility transfers through the invertible substitution X ↦ (Y−2)/2 via composition with the inverse linear map",
+      "The factored form 8a³−6a−1 = 8(a−α)(a−β)(a−γ) is a pure ring identity, holding in any commutative ring",
+      "Since all roots of p lie in ℚ(α), the splitting field has degree exactly 3 over ℚ",
+      "From degree 3 splitting: |Gal| divides 3! = 6 (from permutation action on roots) and is divisible by 3 (since p is irreducible of prime degree), so |Gal| = 3"
+    ],
+    "prerequisites": [
+      "Eisenstein's irreducibility criterion and Gauss's lemma",
+      "Galois theory: splitting fields, Galois group cardinality formula",
+      "Minimal polynomial and degree of field extensions",
+      "Triple-angle formula: cos(3θ) = 4cos³θ − 3cosθ",
+      "Polynomial ring operations in Lean 4 / Mathlib"
+    ]
+  },
+  "conclusion": {
+    "summary": "This file provides a complete machine-verified proof that |Gal(8X³−6X−1/ℚ)| = 3. The proof proceeds entirely by algebra: Eisenstein criterion, linear substitution irreducibility transfer, explicit root expressions, and Mathlib's splitting field theory. No geometric or transcendental reasoning is used. The result eliminates the cos20_gal_order axiom from AngleTrisectionOQ02.",
+    "implications": "The cyclic Galois group of order 3 confirms that the splitting field of the cos(20°) polynomial is a degree-3 extension of ℚ with Galois group ℤ/3ℤ. This is consistent with the impossibility of trisecting 60° by compass and straightedge (degree not a power of 2) and with the possibility using a marked ruler (degree divides 2⁰ · 3¹). The proof technique — Eisenstein on a shifted polynomial, then transfer via invertible linear change of variables — is a useful pattern applicable to other cubics.",
+    "openQuestions": [
+      "Can the same approach compute Galois groups of other trigonometric minimal polynomials, e.g., for cos(π/7) or cos(π/9)?",
+      "Can the splitting field degree formula be used to automatically verify the Galois groups of all degree-3 polynomials arising in angle-trisection problems?",
+      "How does the Galois group structure change for the generalizations to other classical construction problems?"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry eliminates an axiom used there"
+    },
+    {
+      "targetId": "angle-trisection-oq-04",
+      "relationship": "sibling",
+      "description": "Explores the tool hierarchy question for angle trisection with marked rulers and origami"
+    }
+  ]
+}

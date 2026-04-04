@@ -1,0 +1,68 @@
+{
+  "id": "derangements-oq-03-oq-02",
+  "title": "Fixed-Point Distribution Converges to Poisson(1) in Total Variation",
+  "slug": "derangements-oq-03-oq-02",
+  "description": "A complete formalization proving that the number of fixed points of a uniformly random permutation of [n] converges in total variation distance to the Poisson(1) distribution: ∑_k |P(X_n = k) - e⁻¹/k!| → 0 as n → ∞. The proof uses the sharp alternating series bound |D(m)/m! - e⁻¹| ≤ 1/(m+1)!, a binomial coefficient identity to sum the pointwise errors, and the factorial decay of 2^(n+1)/(n+1)!.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsOQ03OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "derangements",
+      "fixed-points",
+      "inclusion-exclusion",
+      "permutations"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 383,
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "originalContributions": [
+      "fixedPt_tv_tendsto: total variation convergence of fixed-point distribution to Poisson(1)",
+      "tvSum_le: sharp upper bound on ∑_k |P(X_n=k) - e⁻¹/k!| using binomial sum identity",
+      "finite_sum_bound: identity ∑_{k=0}^n 1/((n+1-k)!·k!) ≤ 2^(n+1)/(n+1)! via binomial theorem",
+      "poisson1_tail_tendsto: ∑_{k>n} e⁻¹/k! → 0 proved from summability of Poisson(1)",
+      "inv_fact_eq_choose: algebraic identity 1/((n+1-k)!·k!) = C(n+1,k)/(n+1)!"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Poisson approximation theorem for the number of fixed points of a random permutation is a classical result in probability theory. It follows from the general Poisson approximation for sums of dependent indicator random variables (Chen-Stein method, 1975), but the special case of fixed points has a purely combinatorial proof using the exact derangement formula. The total variation distance is a natural measure of distributional closeness: TV(X_n, Poisson(1)) → 0 means the distributions become indistinguishable in the strongest sense.",
+    "problemStatement": "Let X_n = #{i : σ(i) = i} for a uniformly random permutation σ of [n] = {1,...,n}.\n\nLet Z ~ Poisson(1) with P(Z = k) = e⁻¹/k!.\n\n**Main Theorem**: The total variation distance converges to 0:\n  TV(X_n, Z) = (1/2) · ∑_k |P(X_n = k) - e⁻¹/k!| → 0 as n → ∞.\n\n**Key formula**: P(X_n = k) = D(n-k) / ((n-k)! · k!) for k ≤ n, and 0 for k > n.\n\n**Quantitative bound**: ∑_k |P(X_n = k) - e⁻¹/k!| ≤ 2^(n+1)/(n+1)! + ∑_{k>n} e⁻¹/k!",
+    "proofStrategy": "**Step 1 (PMF formula)**: P(X_n = k) = D(n-k)/((n-k)!·k!) comes from choosing which k positions are fixed and counting derangements of the rest.\n\n**Step 2 (Pointwise bound)**: For k ≤ n, |P(X_n=k) - e⁻¹/k!| = |D(n-k)/(n-k)! - e⁻¹| / k! ≤ 1/((n-k+1)!·k!) using the sharp bound from derangements-convergence.\n\n**Step 3 (Binomial identity)**: ∑_{k=0}^n 1/((n+1-k)!·k!) = ∑_{k=0}^n C(n+1,k)/(n+1)! ≤ 2^(n+1)/(n+1)! using ∑_{k=0}^n C(n+1,k) ≤ 2^(n+1).\n\n**Step 4 (Tail bound)**: ∑_{k>n} e⁻¹/k! is the tail of a convergent series, tending to 0.\n\n**Step 5 (Squeeze)**: The total variation sum is bounded by the sum of Steps 3 and 4, both tending to 0.",
+    "keyInsights": [
+      "The exact formula P(X_n = k) = D(n-k)/((n-k)!·k!) reduces total variation convergence to the pointwise convergence of D(m)/m! to e⁻¹, a purely analytic question.",
+      "The binomial coefficient identity ∑_{k=0}^n C(n+1,k)/(n+1)! ≤ 2^(n+1)/(n+1)! beautifully packages the sum of pointwise errors into a single factorial-decay bound.",
+      "The proof avoids the Chen-Stein method entirely, relying instead on the classical alternating series bound from the derangement formula — a purely combinatorial approach to a probabilistic theorem.",
+      "Summability of the Poisson(1) PMF is equivalent to the convergence of ∑ e⁻¹/k! = e⁻¹ · e = 1, a normalization that is itself a consequence of the exponential series."
+    ],
+    "prerequisites": [
+      "Derangements and the convergence D(n)/n! → 1/e (see derangements-convergence)",
+      "Total variation distance for probability distributions",
+      "The Poisson distribution and its PMF",
+      "Summability and tsum in Mathlib",
+      "Binomial theorem and choose identities"
+    ]
+  },
+  "conclusion": {
+    "summary": "Total variation convergence of the fixed-point distribution to Poisson(1) is fully formalized with an explicit upper bound 2^(n+1)/(n+1)! + tail, all machine-verified with 0 sorries and 0 axioms. The proof is a clean analytical argument combining the alternating series bound for derangements with the binomial theorem.",
+    "implications": "This result is a formal statement of the classical 'hat-check problem' convergence: the probability distribution of the number of correctly-returned hats in a random permutation converges (in the strongest measure) to the Poisson(1) distribution. It is a canonical example of the Poisson approximation phenomenon that appears throughout probability theory.",
+    "openQuestions": [
+      "Can the quantitative bound TV(X_n, Poisson(1)) ≤ 1/n be established formally? This follows from the Chen-Stein method and is sharper than the 2^(n+1)/(n+1)! bound here.",
+      "Can the total variation convergence be extended to the joint distribution of fixed points of powers of the permutation?"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "derangements-convergence",
+      "relationship": "uses",
+      "description": "The sharp bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)! is the key analytic input to the pointwise error estimate."
+    }
+  ]
+}
