@@ -65,19 +65,20 @@ theorem aeval_conj (M : Matrix (Fin n) (Fin n) K) (P : (Matrix (Fin n) (Fin n) K
       simp only [pow_zero, mul_one]
       exact P.inv_val.symm
     | succ k ih =>
-      -- Only rewrite LHS exponent and ih; handle RHS via ← pow_succ in calc
       rw [pow_succ, ih]
       calc P.inv * M ^ k * P.val * (P.inv * M * P.val)
-          = P.inv * M ^ k * (P.val * P.inv) * M * P.val := by ring
+          = P.inv * M ^ k * (P.val * P.inv) * M * P.val := by simp only [mul_assoc]
         _ = P.inv * M ^ k * 1 * M * P.val := by rw [P.val_inv]
         _ = P.inv * M ^ k * M * P.val := by rw [mul_one]
-        _ = P.inv * M ^ (k + 1) * P.val := by rw [← pow_succ]
+        _ = P.inv * M ^ (k + 1) * P.val := by rw [mul_assoc P.inv (M ^ k) M, ← pow_succ M k]
   -- Induct on p
   induction p using Polynomial.induction_on' with
   | add p q hp hq =>
     simp only [map_add, hp, hq, mul_add, add_mul]
   | monomial k a =>
     simp only [Polynomial.aeval_monomial, conj_pow]
+    -- aeval_monomial gives algebraMap K _ a * M^k; convert to a • M^k via ← Algebra.smul_def
+    simp only [← Algebra.smul_def]
     rw [← smul_mul_assoc, ← mul_smul_comm]
 
 /-- If N has a cyclic vector w, and M = P.inv * N * P.val, then M has a cyclic vector. -/
@@ -97,10 +98,10 @@ theorem cyclic_vector_of_similar
   -- and use P.val * P.inv = 1 to obtain (aeval N p) *ᵥ w = 0
   have h0 : P.val *ᵥ ((P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w)) = 0 :=
     (congr_arg P.val.mulVec hann).trans (Matrix.mulVec_zero _)
-  -- ← mulVec_mulVec: A *ᵥ (B *ᵥ v) = (A * B) *ᵥ v
-  rw [← Matrix.mulVec_mulVec] at h0
+  -- Use explicit args to avoid mulVec_mulVec firing at wrong position
+  rw [← Matrix.mulVec_mulVec P.val (P.inv * aeval N p * P.val) (P.inv *ᵥ w)] at h0
   -- h0 : (P.val * (P.inv * aeval N p * P.val)) *ᵥ (P.inv *ᵥ w) = 0
-  rw [← Matrix.mulVec_mulVec] at h0
+  rw [← Matrix.mulVec_mulVec (P.val * (P.inv * aeval N p * P.val)) P.inv w] at h0
   -- h0 : (P.val * (P.inv * aeval N p * P.val) * P.inv) *ᵥ w = 0
   rw [show P.val * (P.inv * aeval N p * P.val) * P.inv = aeval N p from by
         calc P.val * (P.inv * aeval N p * P.val) * P.inv
