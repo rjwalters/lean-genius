@@ -185,24 +185,16 @@ theorem covering_crt_connection :
 ## Part VII: Why Haight's Result Works
 -/
 
-/-- The key insight: large σ(n)/n comes from many small prime powers,
-    but covering systems with small moduli are constrained. -/
-def haightConstruction : Prop :=
-  -- For each c, construct n using highly composite numbers
-  -- but avoiding the "covering feasibility" condition
-  True
+/-
+  Haight's construction: for each c, construct n using highly composite numbers
+  (large σ(n)/n comes from many small prime powers), but avoiding the
+  "covering feasibility" condition. Primorial-like numbers (2 × 3 × 5 × 7 × ...)
+  have large σ(n)/n but their divisor structure prevents certain coverings.
 
-/-- Haight's construction uses primorial-like numbers. -/
-def primorialApproach : Prop :=
-  -- Numbers like 2 × 3 × 5 × 7 × ... have large σ(n)/n
-  -- but the divisor structure prevents certain coverings
-  True
-
-/-- The tension: σ(n)/n large ↔ many small divisors ↔ easier to cover? -/
-theorem haight_tension :
-  -- Actually NO: the structure of divisors matters, not just the count
-  -- Haight showed some n with many divisors still block coverings
-  True := trivial
+  The key tension: σ(n)/n large ↔ many small divisors ↔ easier to cover?
+  Actually NO — Haight showed the structure of divisors matters, not just
+  the count. Some n with many divisors still block coverings.
+-/
 
 /-
 ## Part VIII: Related Concepts
@@ -231,21 +223,21 @@ def IsSuperabundant (n : ℕ) : Prop :=
 ## Part IX: Connections to Other Problems
 -/
 
-/-- Problem #276: Existence of distinct moduli covering systems. -/
-def RelatedProblem276 : Prop :=
-  -- Do covering systems with all distinct moduli exist?
-  -- Answer: YES (the classic example uses moduli 2, 3, 4, 6, 12)
-  True
+/-
+  Problem #276: Existence of distinct moduli covering systems.
+  Answer: YES — the classic example uses moduli {2, 3, 4, 6, 12}.
+-/
 
-/-- Problem #278: More questions about covering system moduli. -/
-def RelatedProblem278 : Prop :=
-  True
+/-
+  Problem #278: More questions about covering system moduli.
+  (See Erdős #278 for the specific questions about moduli structure.)
+-/
 
-/-- The Egyptian fraction connection. -/
-def egyptianFractionConnection : Prop :=
-  -- The reciprocal sum ∑ 1/m_i relates to Egyptian fractions
-  -- Covering systems provide "fractional coverings" of ℤ
-  True
+/-
+  Egyptian fraction connection: the reciprocal sum ∑ 1/mᵢ for a covering system
+  relates to Egyptian fractions. Covering systems provide "fractional coverings"
+  of ℤ, and the constraint ∑ 1/mᵢ ≥ 1 is necessary (each residue class has density 1/mᵢ).
+-/
 
 /-
 ## Part X: Summary
