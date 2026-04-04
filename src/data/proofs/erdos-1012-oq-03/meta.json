@@ -13,7 +13,7 @@
       "tournaments"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
     "lineCount": 1277,
     "assumptions": "0 axioms. 1 sorry: ghouila_houri (full proof needs longest-path argument ~200 lines tracking both in- and out-degrees). hamiltonian_of_few_missing_arcs and directed_hamiltonian_threshold are now fully proved: the fiber counting lemma hBadFor_bound (∀ p ∈ Missing, |BadFor p| ≤ n*(n-2)!) was proved via fiber decomposition + injection into Perm(Fin(n-2)) using Finset.orderIsoOfFin. Moon-Moser theorem and Rédei are also fully proved.",
@@ -98,23 +98,5 @@
       "relationship": "analogue",
       "description": "Erdős 1012 asks about long cycles in dense undirected graphs. This OQ explores the directed analogues: Ghouila-Houri (directed Dirac), Moon-Moser, Rédei."
     }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.Combinatorics.SimpleGraph.Basic",
-      "Mathlib.Data.Fintype.Basic",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Finset"
-    ],
-    "namespace": "Erdos1012OQ03",
-    "lineCount": 1170,
-    "axiomCount": 0,
-    "sorries": 2,
-    "path": "Proofs/Erdos1012OQ03.lean",
-    "theoremCount": 20,
-    "definitionCount": 10
-  }
+  ]
 }
