@@ -54,20 +54,39 @@ For cyclic rotation of Z_n on Fin n → Fin k (k-colorings of n positions):
 
 ◐ `fixed_factors_through_mod`: orbit = cosets of <r>
 ◐ `polya_cyclic_fixed_count`: |Fix(r)| = k^gcd(r,n) general case
-◐ `polya_sum_identity`: Σ_r k^gcd(r,n) = Σ_{d|n} φ(n/d)·k^d general identity
-◐ `polya_necklace_formula_statement`: Burnside connection general case
+✓ `polya_sum_identity`: proved via fiber decomposition + bijection (Session 2)
+✓ `polya_necklace_formula_statement`: Burnside connection (Session 1)
+
+### Session 2026-04-04 (Session 2) - Proved polya_sum_identity
+
+**Mode**: REVISIT
+**Outcome**: progress (1 sorry closed)
+
+#### What I Did
+1. Proved `polya_sum_identity`: Σ_{r:Fin n} k^gcd(r,n) = Σ_{d|n} φ(n/d)·k^d
+   - Used `Finset.sum_fiberwise_of_maps_to` to decompose by fiber d = gcd(r,n)
+   - Proved helper `fiber_card_eq_totient`: |{r:Fin n | gcd(r,n)=d}| = φ(n/d)
+   - Bijection r ↦ r.val/d with {s < n/d | Coprime(n/d, s)}, using `Nat.coprime_div_gcd_div_gcd`
+
+#### Key Lean 4.26 API Findings
+- `Finset.sum_fiberwise_of_maps_to` has equation REVERSED: `fiber_sum = original_sum`. Need `.symm` or `have ... ; rw [← ...]` to use it for `original_sum = fiber_sum`
+- `Nat.mul_lt_mul_left` is an IFF (use `.mpr`), not a direct implication
+- `Fin.ext` replaces missing `Fin.val_eq_val.mp`
+- `omega` cannot handle variable multiplication (`d * x = r, d * x = r'` when `d` is a variable); use `linarith [congr_arg (d * ·) heq]`
+- `Nat.coprime_div_gcd_div_gcd` gives `Coprime (m/gcd m n) (n/gcd m n)` when `0 < gcd m n`
+
+#### Remaining Sorries
+- `fixed_factors_through_mod`: orbit = cosets of <r> in ZMod n (hard, ZMod arithmetic)
+- `polya_cyclic_fixed_count`: |Fix(r)| = k^gcd(r,n) bijection (depends on above)
 
 ### Next Steps
 
 1. **Prove `fixed_factors_through_mod`**: Use Bezout's theorem to show orbit membership
    - Need: `Nat.gcd_dvd_left`, `Nat.dvd_sub'`, Bezout coefficients
-   - Approach: show that i.val - j.val ∈ <r.val, n> iff gcd(r.val,n) | (i.val - j.val) in ZMod n
+   - Approach: show i.val - j.val ∈ <r.val, n> iff gcd(r.val,n) | (i.val - j.val) in ZMod n
 2. **Prove `polya_cyclic_fixed_count`**: Construct explicit bijection fixed-colorings ↔ Fin d → Fin k
    - Forward: c ↦ (j ↦ c ⟨j.val, ...⟩) for j : Fin d (orbit representatives {0,...,d-1})
    - Backward: f ↦ (i ↦ f ⟨i.val % d, ...⟩) (assign color by orbit representative)
-   - Show this is well-defined and bijective using fixed_factors_through_mod
-3. **Prove `polya_sum_identity`**: Use `IsCyclic.card_orderOf_eq_totient` for counting
-   - #{r : Fin n | gcd(r,n) = d} = φ(n/d) for each d | n
 
 ## Mathematical Background
 
