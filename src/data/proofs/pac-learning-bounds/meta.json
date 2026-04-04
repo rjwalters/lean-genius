@@ -7,7 +7,7 @@
     "author": "Vapnik-Chervonenkis (1971), Valiant (1984), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension",
     "date": "1984",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PACLearning.lean",
     "tags": [
       "learning-theory",
@@ -40,7 +40,7 @@
       "sauer_shelah_bound: \u2211 C(n,i) \u2264 (n+1)^d via binomial theorem",
       "pac_sample_complexity: sample size bound statement (trivial existence witness)",
       "NOTE: growthFunction is a placeholder (returns 0), making sauer_shelah trivially true",
-      "NOTE: fundamental_theorem_stat_learning is a True stub placeholder"
+      "NOTE: fundamental_theorem_stat_learning is a block comment placeholder (removed as True stub)"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -52,7 +52,7 @@
       "Concentration inequalities (Hoeffding, Chernoff)",
       "Uniform convergence and generalization bounds"
     ],
-    "assumptions": "growthFunction defined as constant 0 (stub). fundamental_theorem_stat_learning is an explicit True placeholder. sauer_shelah_bound and pac_sample_complexity contain real proofs.",
+    "assumptions": "0 axioms, 0 sorries. growthFunction defined as placeholder (constant 0); sauer_shelah proves trivially. sauer_shelah_bound and pac_sample_complexity fully proved. Fundamental theorem of statistical learning (PAC learnable ↔ finite VC dimension) remains in a block comment pending full formalization. Classified axiomatized: main equivalence not yet formalized.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

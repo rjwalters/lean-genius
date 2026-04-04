@@ -44,7 +44,8 @@
     ],
     "originalContributions": [
       "ballot_discrete_ivt: for {+1,-k}-lists, if prefix sum v is achieved and the final sum exceeds v, then some strict prefix also achieves v (proved via Finset.max' of the set of positions with prefix sum ≤ v)",
-      "Detailed proof sketches in docstrings for the cycle lemma lower bound and rightmost-is-good arguments (not yet formalized — the corresponding theorem declarations are trivial placeholders)"
+      "cycle_lemma_lower_bound_via_ivt: lower bound |goodRotations| ≥ a - k*b proved via goodRotations_card_ge",
+      "rightmost_is_good_rotation: rightmost position at each prefix sum level is a good rotation, proved via rightmostAtLevel_good"
     ],
     "dateAdded": "2026-02-23",
     "prerequisites": [
@@ -66,7 +67,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 151,
-    "assumptions": "0 axioms, 0 sorries. 2 trivial placeholder theorems (1+1=2) remain for cycle_lemma_lower_bound_via_ivt and rightmost_is_good_sketch.",
+    "assumptions": "0 axioms, 0 sorries. All theorems fully proved: ballot_discrete_ivt (via Finset.max' argument), cycle_lemma_lower_bound_via_ivt (via goodRotations_card_ge), and rightmost_is_good_rotation (via rightmostAtLevel_good). No placeholders remain.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
