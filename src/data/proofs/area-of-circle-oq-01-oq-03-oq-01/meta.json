@@ -39,7 +39,7 @@
     "defCount": 3
   },
   "overview": {
-    "historicalContext": "The arc-length reparametrization is a fundamental tool in differential geometry, used since the 19th century to simplify proofs about curves. For smooth regular curves, the arc-length parameter allows one to 'go at unit speed', making calculations (especially those involving curvature) dramatically simpler. Hurwitz's 1901 proof of the isoperimetric inequality uses arc-length reparametrization as a key preprocessing step: by normalizing to constant speed, the Wirtinger inequality can be applied cleanly. The existence of this reparametrization relies on the inverse function theorem applied to the arc-length function.",
+    "historicalContext": "The arc-length reparametrization is a fundamental tool in differential geometry, in use since the 19th century. For smooth regular curves, the arc-length parameter ('unit speed') makes curvature calculations and variational arguments dramatically simpler. Adolf Hurwitz's 1901 proof of the isoperimetric inequality — that among all closed curves of given length L, the circle encloses maximum area A with $L^2 \\ge 4\\pi A$ — uses arc-length reparametrization as its first step: by normalizing to constant speed $c = L/(2\\pi)$, the Fourier coefficients of the curve become orthogonal, and Parseval's equality directly yields the Wirtinger inequality $\\|f'\\|^2 \\ge \\|f\\|^2$, which is equivalent to the isoperimetric inequality. The existence of the reparametrization relies on the inverse function theorem: since $s'(t) = \\text{speed}(t) > 0$ for regular curves, the arc-length function $s : \\mathbb{R} \\to \\mathbb{R}$ is a $C^1$ diffeomorphism with a $C^1$ inverse $\\sigma = s^{-1}$. The classical treatment appears in do Carmo's *Differential Geometry of Curves and Surfaces* (1976), §1-7. The periodic integral shift lemma $\\int_t^{t+T} f = \\int_0^T f$ — proved here from Mathlib primitives rather than axiomatized — is the same identity underlying the Poisson summation formula and the periodization technique in harmonic analysis.",
     "problemStatement": "**Arc-Length Reparametrization**:\n\nGiven a regular smooth closed curve γ : [0,2π] → ℝ² (where 'regular' means |γ'(t)| > 0 everywhere), show there exists a smooth closed curve γ' : [0,2π] → ℝ² with:\n1. γ'.circumference = γ.circumference  (same total length L)\n2. γ'.area = γ.area  (same enclosed area A)\n3. |γ'(t)|² = (L/2π)² for all t  (constant speed L/(2π))\n\n**Key sub-problems**:\n- Prove ∫_t^{t+2π} f = ∫_0^{2π} f for 2π-periodic f (periodic integral shift)\n- Prove s(t+2π) = s(t) + L (quasi-periodicity of arc-length)\n- Prove s : ℝ → ℝ is surjective (IVT from growth bounds)\n- Apply IFT to get C¹ inverse σ with σ'(y) = 1/speed(σ(y))",
     "text": "This file proves the arc-length reparametrization theorem for smooth regular closed curves. The construction is: set c = L/(2π), let s = ∫_0^t |γ'(u)| du be the arc-length function, σ = s⁻¹ its C¹ inverse (IFT), and τ(t) = σ(c·t) the reparametrization. Then γ'(t) = γ(τ(t)) is 2π-periodic, smooth, and has constant speed c = L/(2π). The proof of quasi-periodicity (the key sorry from the parent) uses the periodic integral shift lemma: for 2π-periodic f, ∫_t^{t+2π} f = ∫_t^{2π} f + ∫_0^t f(·+2π) = ∫_0^{2π} f. Surjectivity uses IVT from the growth bounds s(2nπ) = nL → ±∞. The IFT and change-of-variables axioms capture the analytically hard parts.",
     "proofStrategy": "**Construction**: Let L = γ.circumference, c = L/(2π).\n1. Define s(t) = ∫_0^t speed(u) du (arc-length function)\n2. Prove s is C¹, strictly increasing (speed > 0), quasi-periodic: s(t+2π) = s(t)+L\n3. Prove s is surjective (IVT: s(2nπ) = nL → ∞, s(-2nπ) → -∞)\n4. Define σ = s⁻¹ (C¹ by IFT, with σ'(y) = 1/speed(σ(y)))\n5. Define τ(t) = σ(c·t). Then τ(t+2π) = σ(c·t+L) = σ(c·t)+2π (quasi-periodicity of σ)\n6. γ'(t) = γ(τ(t)) is smooth, 2π-periodic, with speed c (by chain rule + IFT derivative)\n7. Circumference and area preserved by change of variables",
@@ -94,11 +94,19 @@
     },
     {
       "id": "main",
-      "title": "Main Theorem and Corollaries",
-      "startLine": 360,
-      "endLine": 340,
-      "summary": "exists_arclength_reparam' (PROVED): constructs γ' with same L, A, and constant speed c = L/(2π). Corollaries: reparam_circumference_eq, reparam_speed_is_L_over_2pi, arcLength_grows_by_L, arcLength_bijection.",
+      "title": "Main Theorem: Constant-Speed Reparametrization",
+      "startLine": 378,
+      "endLine": 477,
+      "summary": "exists_arclength_reparam' (PROVED from 4 axioms): constructs γ'(t) = γ(τ(t)) with τ = σ∘(c·), proving same circumference, same area, and constant speed c = L/(2π). Uses ContDiff.comp for smoothness, arcLengthInv_quasi_periodic for periodicity, and IFT derivative for speed computation.",
       "mathContext": "The reparametrized curve $\\gamma'(t) = \\gamma(\\tau(t))$ has speed $c$ because the chain rule + IFT derivative give $|\\gamma'(\\tau(t))| \\cdot |\\tau'(t)| = \\text{speed}(\\tau(t)) \\cdot c/\\text{speed}(\\tau(t)) = c$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries: Interface for the Isoperimetric Proof",
+      "startLine": 478,
+      "endLine": 517,
+      "summary": "reparam_circumference_eq (circumference preserved), reparam_speed_is_L_over_2pi (|γ'(t)| = L/(2π) as sqrt form), arcLength_grows_by_L (s(t+2π)-s(t) = L), arcLength_bijection (bijectivity + continuity packaged together).",
+      "mathContext": "With constant speed $c = L/(2\\pi)$, the Fourier series of $\\gamma'$ satisfies Parseval's equality in a form equivalent to the Wirtinger inequality $\\|f'\\|^2 \\ge \\|f\\|^2$, yielding the isoperimetric inequality $L^2 \\ge 4\\pi A$."
     }
   ],
   "conclusion": {
