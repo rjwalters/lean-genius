@@ -56,15 +56,17 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The quantitative study of r₃(N) — the maximum size of a 3-AP-free subset of [N] — has been one of the most active areas in combinatorics for 80 years. Roth (1953) proved r₃(N) = O(N/log log N). Behrend (1946) constructed AP-free sets showing r₃(N) ≥ N·exp(-c√(log N)). After decades of incremental improvements (Bourgain, Sanders), Bloom-Sisask (2020) broke the logarithmic barrier, and Kelley-Meka (2023) achieved r₃(N) ≤ N·exp(-c(log N)^{1/12}), nearly matching Behrend.",
+    "historicalContext": "The quantitative study of $r_3(N)$ — the maximum size of a 3-AP-free subset of $\\{1, \\ldots, N\\}$ — has been one of the most celebrated and active problems in combinatorics for nearly 80 years.\n\nThe story begins with **Felix Behrend** in 1946, who constructed large AP-free sets by exploiting the geometry of high-dimensional spheres: lattice points on a sphere of dimension $d \\approx \\sqrt{\\log N}$ project injectively into $[N]$ while remaining AP-free (since $\\|a\\|^2 + \\|c\\|^2 = 2\\|b\\|^2$ and equal norms force $a = b = c$ in any AP). This gives $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$, a bound that remained essentially optimal for 80 years.\n\n**Klaus Roth** (1953) then proved the first non-trivial upper bound $r_3(N) = O(N/\\log\\log N)$ via the density increment method: any AP-free set of density $\\delta$ contains a substructure with density $\\delta + \\delta^2/100$; iterating and using exponential sum estimates to control the modulus decay yields the bound. This was the first proof that sets with positive density must contain a 3-AP — later generalized by Szemerédi (1975) to $k$-term APs for all $k$.\n\nFor 50 years, improvements were incremental: Bourgain (1999, 2008) used Bohr sets to sharpen the logarithm, Sanders (2011) reached $N \\log\\log N / \\log N$. Then in 2020, **Bloom and Sisask** broke the 'logarithmic barrier', achieving $N/(\\log N)^{1+c}$ — the first time any power greater than 1 appeared. Their key innovation was a quantitative Bogolyubov lemma on structured Bohr sets.\n\nThe current best upper bound comes from **Kelley and Meka** (2023): $r_3(N) \\leq N \\cdot \\exp(-c(\\log N)^{1/12})$, a dramatic improvement that nearly matches Behrend's lower bound. The gap between exponents $1/12$ (upper) and $1/2$ (lower) remains one of the most tantalizing open problems in additive combinatorics.",
     "problemStatement": "Define the Roth number r₃(N) = max{|A| : A ⊆ [N], A contains no 3-term AP} and formalize the known quantitative bounds.",
     "text": "Formalizes the Roth number and states the progression of quantitative bounds from Roth (1953) to Kelley-Meka (2023).",
     "proofStrategy": "1. Define r₃(N) as the maximum cardinality of AP-free subsets of ZMod N using Finset.sup.\n2. Prove basic properties: r₃(N) ≤ N (trivial), r₃(N) ≥ 1 (singleton witness).\n3. State the density increment iteration bound: at most ⌊100/δ²⌋ increments before density exceeds 1.\n4. State five quantitative bounds with precise mathematical formulations.",
     "keyInsights": [
-      "**Roth Number Definition**: r₃(N) = Finset.sup over the powerset of ZMod N filtered by APFree, applied to card. This is noncomputable but logically clean.",
-      "**Iteration Bound**: The density increment δ → δ + δ²/100 allows at most ⌊100/δ²⌋ steps. Combined with modulus decay analysis, this yields the quantitative bound.",
-      "**Behrend vs Kelley-Meka Gap**: The lower bound exp(-c√(log N)) vs upper bound exp(-c(log N)^{1/12}) leaves a significant gap. Closing this is a major open problem.",
-      "**Modulus Decay is the Key**: All upper bounds differ in how they analyze the modulus decay through density increment iterations. Roth gets √N per step, Kelley-Meka gets much better decay via Bohr sets."
+      "**Roth Number as a Supremum**: The definition $r_3(N) = \\texttt{Finset.sup}(\\{A \\subseteq \\mathbb{Z}/N\\mathbb{Z} : \\text{APFree}\\,A\\}, |\\cdot|)$ is `noncomputable` in Lean — it is logically definable but not algorithmically extractable. The proof that the supremum is achieved (rothNumber_achieved) uses `Finset.exists_max_image`, a finite analogue of the extreme value theorem.",
+      "**Modulus Decay Is the Key Obstacle**: All quantitative upper bounds fundamentally differ in how fast they can guarantee the modulus $N$ decreases across density increment iterations. Roth's original analysis gives $M \\geq N^{2/3}$ at each step, yielding $O(\\log\\log N)$ iterations. The sorry in `density_upper_bound_from_iteration` identifies exactly where this modulus decay bound is missing from the formalization.",
+      "**Behrend's Geometric Miracle**: That the lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$ has remained essentially optimal for 80 years is remarkable. It comes from sphere geometry in high dimensions — a completely different world from the Fourier-analytic upper bounds. The two methods speak different mathematical languages, making the gap between them hard to close.",
+      "**Kelley-Meka's Polynomial Exponent**: The jump from Bloom-Sisask's $1/(\\log N)^{1+c}$ to Kelley-Meka's $\\exp(-(\\log N)^{1/12})$ represents a qualitative change — exponential improvement rather than polynomial. Their proof introduces polynomial methods and higher-order Fourier analysis into the density increment framework, inspired by the cap set problem techniques of Croot-Lev-Pach and Ellenberg-Gijswijt (2016).",
+      "**ZMod N vs Integer Intervals**: Working in $\\mathbb{Z}/N\\mathbb{Z}$ (cyclic group) rather than $\\{1, \\ldots, N\\}$ (integers) simplifies the algebra at the cost of wraparound effects. All major results transfer between the two settings, but the cyclic group formulation integrates cleanly with Lean's Mathlib ZMod API and enables direct use of Fourier/spectral tools on finite abelian groups.",
+      "**Singleton Witness and Tightness**: The proof that $r_3(2) = 1$ and $r_3(3) = 2$ by exhaustive `fin_cases` illustrates that the formal definition matches the intended mathematical concept. For small $N$, the exact values can be computed; for large $N$, only asymptotic bounds are known."
     ]
   },
   "sections": [
@@ -97,16 +99,27 @@
     {
       "targetId": "roth-theorem-k3",
       "relationship": "extends",
-      "description": "Extends the qualitative Roth's theorem (r₃(N) = o(N)) with quantitative bounds"
+      "description": "Extends the qualitative Roth's theorem (r₃(N) = o(N)) with precise quantitative bounds"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Szemerédi regularity is the key tool for extending Roth's qualitative theorem to k-APs (Szemerédi's theorem)"
+    },
+    {
+      "targetId": "cap-set-problem",
+      "relationship": "related",
+      "description": "The cap set problem is the analogous question for 3-AP-free sets in (ℤ/3ℤ)ⁿ, solved by Ellenberg-Gijswijt (2016) using polynomial methods that later influenced Kelley-Meka"
     }
   ],
   "conclusion": {
-    "summary": "Defines the Roth number r₃(N) and states the major quantitative bounds from Roth (1953) through Kelley-Meka (2023). Proves basic properties and the iteration bound from the density increment.",
-    "implications": "This formalization provides:\n\n1. **Formal definition of r₃(N)** for use in future quantitative additive combinatorics work.\n2. **Precise statements** of the five key quantitative bounds, ready for future proof efforts.\n3. **Iteration bound framework** connecting the density increment to quantitative results.",
+    "summary": "This formalization defines the Roth number $r_3(N)$, proves its basic properties (bounds, achievability, small cases), formalizes the density increment iteration framework, and states the four landmark quantitative bounds — Roth (1953), Behrend (1946), Bloom-Sisask (2020), and Kelley-Meka (2023). The density iteration bound (max_iterations_bound) is proved completely; the main quantitative bounds remain as precise mathematical statements awaiting proof infrastructure.",
+    "implications": "This formalization provides:\n\n1. **Canonical formal definition of $r_3(N)$** using ZMod N and Finset.sup — a reusable foundation for all future quantitative additive combinatorics in Lean.\n2. **Precise Lean statements of the four key bounds**, giving future researchers a clear target for formalization efforts and ensuring the mathematical content is correctly transcribed.\n3. **Isolation of the core obstacle**: the sorry in `density_upper_bound_from_iteration` precisely identifies that modulus decay (M ≥ N^c) is the missing ingredient for completing Roth's proof — guiding where future formalization effort should focus.\n4. **Infrastructure for comparison**: by placing Roth, Behrend, Bloom-Sisask, and Kelley-Meka side by side with matching types, the formalization enables machine-checkable comparisons between bounds and their hypotheses.",
     "openQuestions": [
-      "Can Roth's original O(N/log log N) bound be formally proved from the density increment?",
-      "Can Behrend's construction be formalized to prove the lower bound?",
-      "What infrastructure is needed for the Kelley-Meka proof?"
+      "Can the modulus decay bound $M \\geq N^{2/3}$ in Roth's density increment be formalized in Mathlib, completing the proof of `density_upper_bound_from_iteration`?",
+      "Can Behrend's sphere-projection construction be formalized in Lean 4 to prove the lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$?",
+      "What is the true asymptotic for $r_3(N)$: does the correct exponent lie closer to $\\sqrt{\\log N}$ (Behrend) or $(\\log N)^{1/12}$ (Kelley-Meka), or is there a completely different barrier?",
+      "Can the Kelley-Meka proof strategy (polynomial methods + Bohr set density increment) be formalized, and does the formalization reveal any hidden gaps in the argument?"
     ]
   },
   "references": [

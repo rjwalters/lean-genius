@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz",
   "title": "Cauchy-Schwarz Inequality",
   "slug": "cauchy-schwarz",
-  "description": "|⟨u,v⟩| ≤ ‖u‖·‖v‖. Fundamental to functional analysis and quantum mechanics.",
+  "description": "Fully verified formalization of the Cauchy-Schwarz inequality in three forms: abstract inner product (via Mathlib), two-variable algebraic (via Lagrange identity), and finite sums (via EuclideanSpace embedding). Includes equality characterization (linear dependence) and applications to the triangle inequality and correlation bound.",
   "meta": {
     "author": "Cauchy, Schwarz (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
@@ -239,10 +239,9 @@
     "summary": "The formalization presents the Cauchy-Schwarz inequality in three forms: abstract inner product ($|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$), elementary two-variable (via the Lagrange identity), and finite sum (via EuclideanSpace embedding). It includes complete equality characterization (linear dependence) and two applications: the triangle inequality and the correlation coefficient bound. All proofs are complete with zero sorries.",
     "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Foundation for Normed Spaces:** The triangle inequality, derived here as a corollary, is the key axiom for normed vector spaces and metric spaces.\n\n2. **Quantum Mechanics:** The Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is a consequence of Cauchy-Schwarz applied to wave functions in $L^2$.\n\n**3. Statistics:** The bound $|\\rho| \\leq 1$ on the Pearson correlation coefficient, proved here, is fundamental to regression analysis and hypothesis testing.\n\n4. **Functional Analysis:** Cauchy-Schwarz ensures that inner product spaces are normed spaces, enabling the Hilbert space theory underlying modern analysis.\n\n5. **Machine Learning:** Cosine similarity $\\cos\\theta = \\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ is well-defined precisely because Cauchy-Schwarz guarantees $|\\cos\\theta| \\leq 1$.",
     "openQuestions": [
-      "Can the formalization be extended to complex inner product spaces using `inner_mul_le_norm_mul_norm`?",
-      "[RESOLVED] The integral form (Bunyakovsky-Schwarz) has been formalized - see `cauchy-schwarz-integral` proof.",
-      "Can Hölder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for $p=q=2$?",
-      "[RESOLVED] The equality condition has been strengthened to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ - see `cauchy-schwarz-oq-04` proof."
+      "Can Hölder's inequality $|\\sum a_ib_i| \\leq (\\sum |a_i|^p)^{1/p}(\\sum |b_i|^q)^{1/q}$ (for $1/p+1/q=1$) be formalized as a generalization, recovering Cauchy-Schwarz as the $p=q=2$ case? See `cauchy-schwarz-oq-03`.",
+      "Can the Cauchy-Schwarz inequality be extended to operator norms? For bounded operators $A, B$ on a Hilbert space, $|\\langle Au, Bv\\rangle| \\leq \\|A\\|\\|B\\|\\|u\\|\\|v\\|$ is a natural generalization.",
+      "Does the finite sum form have a Lean proof that avoids the EuclideanSpace embedding, working directly with Finset.sum? Such a proof would be more elementary but likely more verbose."
     ]
   },
   "references": [
