@@ -15,7 +15,7 @@
       "counting"
     ],
     "proofRepoPath": "Proofs/SubsetCountOQ02.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -30,15 +30,14 @@
       }
     ],
     "originalContributions": [
-      "Multiset powerset cardinality with pedagogical documentation",
-      "Fixed-size submultiset counting via binomial coefficients",
-      "Connection between Finset and Multiset powerset formulas",
+      "Pedagogical documentation connecting multiset and set powerset formulas",
+      "Bridge theorems connecting Finset and Multiset powerset perspectives",
       "Concrete examples including multisets with repeated elements"
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 120,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Core results derived from Mathlib's Multiset.card_powerset and Multiset.card_powersetCard (0 axioms, 0 sorries)."
   },
   "overview": {
     "historicalContext": "The multiset (or *bag*) is a fundamental data structure generalizing sets by allowing repeated elements, formalized in computer science by Knuth (1981) and in mathematics dating back to Boole and De Morgan. The powerset counting formula $|\\mathcal{P}(S)| = 2^n$ for sets extends to multisets: Sylvester (1867) and later Cayley studied the enumeration of multiset submultisets in the context of symmetric functions and formal power series. For a multiset with $n$ total elements (counted with multiplicity), the number of submultisets is $2^n$ — not the product formula $\\prod(m_i + 1)$ for *distinct* submultisets. This distinction (counting with vs. without multiplicity) is subtle and important for generating function arguments. The multiset powerset is fundamental to the theory of formal power series: $\\sum_{k \\geq 0} |\\text{powersetCard}(k, s)| x^k = (1+x)^n$ is the generating function for submultiset counts, which specializes to the standard binomial theorem.",
@@ -99,7 +98,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A clean generalization of the subset counting theorem to multisets. 5 theorems, 0 sorries, 0 axioms, with concrete examples.",
+    "summary": "A clean generalization of the subset counting theorem to multisets, derived from Mathlib. 7 theorems, 0 sorries, 0 axioms, with concrete examples.",
     "implications": "The multiset powerset formula is the foundation for generating function arguments in combinatorics.",
     "openQuestions": [
       "Can we formalize the DISTINCT submultiset count prod(m_i + 1)?",
