@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "ann-condensation-test",
+    "proofId": "harmonic-divergence-oq-04",
+    "range": { "startLine": 33, "endLine": 48 },
+    "type": "technique",
+    "title": "The Cauchy Condensation Test (Complete Biconditional)",
+    "content": "The main theorem wraps Mathlib's summable_condensed_iff_of_nonneg: for f ≥ 0 and antitone on positives (m ≤ n → f(n) ≤ f(m)), the series Σ f(n) converges iff the condensed series Σ 2^k·f(2^k) converges. This is a biconditional (iff), not merely a sufficient condition. The contrapositive form (diverges iff condensed diverges) follows by negation. The hypotheses are exactly those needed: nonnegativity and antitonicity on positives (not requiring f to be defined for n=0).",
+    "mathContext": "Cauchy (1821): for $f: \\mathbb{N} \\to \\mathbb{R}$ with $f \\geq 0$ and $f$ antitone on $\\mathbb{N}_{>0}$: $\\sum_{n=1}^\\infty f(n) < \\infty \\Leftrightarrow \\sum_{k=0}^\\infty 2^k f(2^k) < \\infty$. Proof (⇐): group terms as $\\sum_{n=2^k}^{2^{k+1}-1} f(n) \\leq 2^k f(2^k)$ (since $f$ decreases). Proof (⇒): $\\sum_{n=2^{k-1}+1}^{2^k} f(n) \\geq 2^{k-1} f(2^k)$.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy condensation test", "summable_condensed_iff_of_nonneg", "antitone sequences", "series convergence"],
+    "prerequisites": ["real analysis", "series convergence", "Mathlib Summable", "Mathlib PSeries"]
+  },
+  {
+    "id": "ann-one-div-antitone",
+    "proofId": "harmonic-divergence-oq-04",
+    "range": { "startLine": 54, "endLine": 75 },
+    "type": "technique",
+    "title": "Oresme's Proof as Condensation: 1/n is Antitone, Condensed = Σ 1",
+    "content": "Three lemmas set up the harmonic case. one_div_nonneg_nat: 1/n ≥ 0 for all n (by positivity). one_div_antitone: m ≤ n → 1/n ≤ 1/m for positive m (proved by div_le_div_iff, then Nat.cast_le). condensed_harmonic_diverges: the condensed series Σ 2^k·(1/2^k) = Σ 1 diverges (by field_simp and not_summable_const_of_ne_zero). The key computation: 2^k·(1/2^k) = 1 for all k, so the condensed series is exactly the constant series, which diverges.",
+    "mathContext": "For $f(n) = 1/n$: the condensed series is $\\sum_{k=0}^\\infty 2^k \\cdot \\frac{1}{2^k} = \\sum_{k=0}^\\infty 1 = \\infty$. This is Oresme's grouping in disguise: the $k$-th 'group' contains $2^k$ terms, each $\\geq 1/2^{k+1}$, summing to $\\geq 1/2$. Infinitely many groups each contributing $\\geq 1/2$ gives $\\sum 1/n = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["Oresme's argument", "antitone", "harmonic series", "not_summable_const_of_ne_zero"],
+    "prerequisites": ["real analysis", "harmonic series", "series tests", "Mathlib div_le_div_iff"]
+  },
+  {
+    "id": "ann-oresme-via-condensation",
+    "proofId": "harmonic-divergence-oq-04",
+    "range": { "startLine": 76, "endLine": 86 },
+    "type": "insight",
+    "title": "Oresme's Divergence: Historical Result via Modern Framework",
+    "content": "oresme_via_condensation proves the harmonic series Σ 1/n diverges by applying the condensation test to f(n) = 1/n. The proof chain: (1) 1/n ≥ 0 and antitone (one_div_antitone), (2) condensed series = Σ 1 (condensed_harmonic_diverges), (3) Σ 1 diverges (not_summable_const_of_ne_zero), (4) therefore Σ 1/n diverges (contrapositive of condensation test). harmonic_diverges_mathlib verifies concordance with Mathlib's independent proof (not_summable_one_div_natCast), confirming consistency of the two approaches.",
+    "mathContext": "Oresme (~1350): $\\sum_{n=1}^\\infty \\frac{1}{n} = \\infty$. First proof of divergence via grouping: $\\sum_{n=2^k+1}^{2^{k+1}} \\frac{1}{n} \\geq 2^k \\cdot \\frac{1}{2^{k+1}} = \\frac{1}{2}$. Infinitely many such groups give $\\sum 1/n \\geq \\sum_{k=0}^\\infty \\frac{1}{2} = \\infty$. The condensation test formalizes this as: $\\sum 2^k/2^k = \\sum 1 = \\infty \\Rightarrow \\sum 1/n = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["harmonic divergence", "Oresme's grouping", "not_summable_one_div_natCast", "historical mathematics"],
+    "prerequisites": ["real analysis", "harmonic series", "14th-century mathematics"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "harmonic-divergence-oq-04",
+    "range": { "startLine": 87, "endLine": 106 },
+    "type": "context",
+    "title": "Applications: p-Series, Log-Harmonic, Iterated Logarithms",
+    "content": "The condensation test applies to all nonneg antitone series, reducing them to geometric-type series. For f(n) = 1/n^p: condensed = Σ 2^k·1/2^{kp} = Σ 2^{k(1-p)}, which converges iff 2^{1-p} < 1 iff p > 1. This recovers the p-series test. For f(n) = 1/(n log n): condensed = Σ 2^k/(2^k·k·log 2) = Σ 1/(k log 2) (harmonic, diverges). For f(n) = 1/(n log n (log log n)^p): condensed gives a p-series in log n, converging iff p > 1. The test thus builds a hierarchy of borderline convergence rates.",
+    "mathContext": "p-series test: $\\sum n^{-p}$ converges $\\Leftrightarrow p > 1$ (condensed: $\\sum 2^{k(1-p)}$, geometric with ratio $2^{1-p}$). Log-harmonic: $\\sum \\frac{1}{n \\log n}$ diverges (condensed: $\\sum \\frac{1}{k}$). Iterated log: $\\sum \\frac{1}{n \\log n \\cdots (\\log^{(r-1)} n)(\\log^{(r)} n)^p}$ converges iff $p > 1$. This gives a complete 'convergence boundary' hierarchy for monotone series.",
+    "significance": "context",
+    "relatedConcepts": ["p-series", "log-harmonic series", "iterated logarithm", "convergence hierarchy", "comparison test"],
+    "prerequisites": ["real analysis", "geometric series", "logarithm asymptotics"]
+  }
+]
