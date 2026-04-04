@@ -46,70 +46,73 @@
     },
     {
       "relationship": "extends",
-      "description": "Builds on OQ-01's proof that R(3,l+1)/R(3,l) → 1 by quantifying the rate.",
+      "description": "Builds on OQ-01's proof that R(3,l+1)/R(3,l) → 1 by quantifying the rate as O(log l / l).",
       "targetId": "erdos-1014-oq-01"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #5 asks for the maximum number of edges in a triangle-free graph — this directly relates to R(3,l) via Turán-type extremal graph theory, and Kim's lower bound for R(3,l) uses triangle-free constructions.",
+      "targetId": "erdos-5-prime-gaps"
+    },
+    {
+      "relationship": "related",
+      "description": "Bounded prime gaps (Zhang, Maynard) uses sieve methods similar to those in the probabilistic arguments behind Kim's R(3,l) lower bound — both quantify 'gaps' in combinatorial sequences.",
+      "targetId": "bounded-prime-gaps"
     }
   ],
   "sections": [
     {
-      "id": "axioms",
-      "title": "Axioms",
-      "startLine": 27,
-      "endLine": 50,
-      "summary": "Axiomatizes the Ramsey number with monotonicity, recurrence, R(2,l)=l, symmetry, and the Kim lower bound.",
-      "mathContext": "Standard Ramsey number properties shared with the parent formalization."
-    },
-    {
-      "id": "positivity",
-      "title": "Positivity and Increment Bound",
-      "startLine": 55,
-      "endLine": 90,
-      "summary": "Proves $R(k,l) \\geq 1$ from $R(2,l) = l$ and left-monotonicity, and $R(3,l+1) \\leq R(3,l) + (l+1)$ from the recurrence.",
-      "mathContext": "The increment bound is the key structural lemma: consecutive $R(3,l)$ values differ by at most $l+1$."
+      "id": "imports-and-setup",
+      "title": "Imports and Namespace Setup",
+      "startLine": 23,
+      "endLine": 33,
+      "summary": "Imports Mathlib and Proofs.Erdos1014Problem (which provides all 12 axioms: ramseyNumber, ramsey_symm, ramsey_upper_erdos_szekeres, ramsey_monotone_right, ramsey_recurrence, ramsey_k2, R3_lower, R3_upper, erdos_1014_conjecture, R33, R34, R35) and helper theorems (ramsey_pos, increment_bound_k3, ratio_from_asymptotics). Opens Real, Filter, Topology namespaces.",
+      "mathContext": "All axioms are inherited from `Proofs.Erdos1014Problem`. This file adds 0 axioms and 0 sorries of its own — it proves new theorems from the existing axiom base."
     },
     {
       "id": "rate-k3",
       "title": "Explicit Rate Bound for k=3",
-      "startLine": 95,
-      "endLine": 158,
-      "summary": "**Main theorem**: $|R(3,l+1)/R(3,l) - 1| \\leq C \\cdot \\log l / l$ for an explicit constant $C = 2/c$ where $c$ is the Kim lower bound constant.",
-      "mathContext": "The rate $O(\\log l / l)$ arises from dividing the linear increment bound by the quadratic-over-log lower bound: $(l+1)/(c \\cdot l^2/\\log l) = O(\\log l / l)$."
+      "startLine": 34,
+      "endLine": 101,
+      "summary": "Main theorem `rate_of_convergence_k3`: $|R(3,l+1)/R(3,l) - 1| \\leq (2/c) \\cdot \\log l / l$. Proof uses `calc` chaining the increment bound $R(3,l+1) - R(3,l) \\leq l+1$, the Kim lower bound $R(3,l) \\geq c \\cdot l^2/\\log l$, and $l+1 \\leq 2l$ for $l \\geq 1$.",
+      "mathContext": "The rate $O(\\log l / l)$ arises from dividing the linear increment bound $l+1$ by the quadratic-over-log lower bound $c \\cdot l^2/\\log l$: the quotient is $(l+1) \\cdot \\log l / (cl^2) \\leq 2\\log l / (cl) = (2/c) \\cdot \\log l / l$."
     },
     {
       "id": "comparison",
-      "title": "Rate Comparison: O(log l/l) vs O(1/log l)",
-      "startLine": 163,
-      "endLine": 200,
-      "summary": "Proves $\\log l / l < 1/\\log l$ for large $l$, confirming the rate is strictly faster than $O(1/\\log l)$. Uses Mathlib's $\\log = o(x^{1/2})$.",
-      "mathContext": "Equivalent to $(\\log l)^2 < l$, which holds since $\\log x = o(x^{1/2})$ from Mathlib."
+      "title": "Rate Comparison: O(log l/l) is Faster than O(1/log l)",
+      "startLine": 102,
+      "endLine": 141,
+      "summary": "Theorem `log_over_l_faster_than_inv_log`: for large $l$, $\\log l / l < 1/\\log l$. Equivalent to $(\\log l)^2 < l$. Proved from Mathlib's `isLittleO_log_rpow_atTop` with exponent $1/2$, extracting an explicit threshold using `Filter.eventually_atTop`.",
+      "mathContext": "Equivalent to $(\\log l)^2 < l$, which holds since $\\log x = o(x^{1/2})$: for large $x$, $\\log x \\leq x^{1/2}$, so $(\\log x)^2 \\leq x$. Mathlib's little-o API is filter-based; the proof bridges to an explicit threshold $L_0$."
     },
     {
       "id": "general-k",
       "title": "Conditional Convergence for General k",
       "startLine": 143,
       "endLine": 162,
-      "summary": "Under the conjectured asymptotics $R(k,l) \\sim c \\cdot l^{k-1}/(\\log l)^{k-2}$, the ratio $R(k,l+1)/R(k,l) \\to 1$, proved by delegating to `ratio_from_asymptotics` from the main file. Note: the O(1/l) rate does not follow from the given hypothesis — the overall rate depends on how fast $R(k,l)/g(l) \\to 1$, which is unspecified.",
-      "mathContext": "The growth ratio $((l+1)/l)^{k-1} \\cdot (\\log l/\\log(l+1))^{k-2}$ converges to 1 at rate $O(k/l)$, but the asymptotic error contributes an unquantified $o(1)$ term."
+      "summary": "Theorem `conditional_convergence_general_k`: under the conjectured asymptotics $R(k,l) \\sim c \\cdot l^{k-1}/(\\log l)^{k-2}$, the ratio $R(k,l+1)/R(k,l) \\to 1$. Proved by delegating to `ratio_from_asymptotics` from Erdos1014Problem. Note: the rate depends on the speed of $R(k,l)/g(l) \\to 1$, which the asymptotic hypothesis does not quantify.",
+      "mathContext": "The growth ratio $g(l+1)/g(l) = ((l+1)/l)^{k-1} \\cdot (\\log l/\\log(l+1))^{k-2}$ converges to 1 at rate $O(k/l)$, but the outer sandwich factors $(R/g - 1)$ contribute unquantified $o(1)$ from the asymptotic hypothesis."
     },
     {
       "id": "answer",
-      "title": "Summary Corollary",
+      "title": "Summary Corollary: Answering OQ-02",
       "startLine": 164,
       "endLine": 186,
-      "summary": "Combines rate_of_convergence_k3 and log_over_l_faster_than_inv_log into a single statement answering OQ-02.",
-      "mathContext": "The rate is $O(\\log l / l)$ for $k=3$, strictly faster than $O(1/\\log l)$."
+      "summary": "Corollary `rate_is_O_log_over_l_not_inv_log` bundles both results into a conjunction: (rate_of_convergence_k3) AND (log_over_l_faster_than_inv_log). Proof is a trivial pair constructor. Directly answers OQ-02: the rate is $O(\\log l / l)$, strictly faster than the conjectured $O(1/\\log l)$.",
+      "mathContext": "The combined answer: $\\exists C > 0,\\, \\exists L_0,\\, \\forall l > L_0:\\; |R(3,l+1)/R(3,l) - 1| \\leq C \\cdot \\log l / l$ AND $\\exists L_1,\\, \\forall l > L_1:\\; \\log l / l < 1/\\log l$. Together: $|R(3,l+1)/R(3,l) - 1| < C/\\log l$ for large $l$."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős Problem #1014 asks whether R(k,l+1)/R(k,l) → 1 as l → ∞. OQ-01 proved this for k=3. This follow-up quantifies the convergence rate, answering: how fast does the ratio approach 1?",
+    "historicalContext": "Erdős Problem #1014 asks whether consecutive Ramsey numbers $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$. OQ-01 proved this for $k=3$, establishing that $R(3,l)$ grows smoothly enough that consecutive values are asymptotically equal. This OQ-02 sharpens the question: *how fast* does the ratio converge? Erdős conjectured the rate might be $O(1/\\log l)$. This formalization proves the actual rate for $k=3$ is $O(\\log l / l)$, which is *faster* than conjectured, by combining Jeong Han Kim's 1995 lower bound $R(3,l) \\geq c \\cdot l^2/\\log l$ (the matching upper bound was proved by Ajtai, Komlós, and Szemerédi in 1980) with the Ramsey recurrence $R(3,l+1) \\leq R(3,l) + (l+1)$. Kim's result resolved a 1947 Erdős-Szekeres conjecture and was a breakthrough in probabilistic combinatorics, using the 'semi-random' (Rödl nibble) method. In 2024, Mattheus and Verstraëte further improved the constant in the lower bound using algebraic constructions (Cayley graphs over finite fields), but the rate $O(\\log l / l)$ established here remains the best known.",
     "problemStatement": "What is the rate of convergence of R(k,l+1)/R(k,l) to 1? Is it O(1/log l)?",
     "text": "For k=3, the rate of convergence is O(log l / l), which is strictly faster than O(1/log l). Under conjectured asymptotics for general k, the ratio converges to 1 (the rate depends on the speed of asymptotic convergence).",
     "proofStrategy": "Combine the Ramsey recurrence (giving linear increment bounds) with the Kim lower bound (giving quadratic-over-log growth) to obtain explicit rate bounds. Then prove log l / l < 1/log l for large l using Mathlib's little-o results.",
     "keyInsights": [
-      "The rate O(log l / l) for k=3 is FASTER than the conjectured O(1/log l), answering the open question in the affirmative direction",
-      "The Ramsey recurrence is the key: it constrains increments to be linear while values grow super-linearly",
-      "The constant C = 2/c in the rate bound is explicit, where c is from Kim's R(3,l) ≥ c·l²/log l",
-      "For general k with power-law asymptotics, the ratio R(k,l+1)/R(k,l) → 1 (the growth ratio contributes O(k/l), but the overall rate depends on the speed of asymptotic convergence)"
+      "The rate $O(\\log l / l)$ for $k=3$ is *faster* than the conjectured $O(1/\\log l)$ — the bound $\\log l/l < 1/\\log l$ (proved from $(\\log l)^2 < l$) confirms this strictly",
+      "The key structural tension: the Ramsey recurrence bounds increments *linearly* ($R(3,l+1) - R(3,l) \\leq l+1$) while the Kim lower bound shows values grow *super-linearly* ($R(3,l) \\geq c \\cdot l^2/\\log l$) — dividing gives the $O(\\log l / l)$ rate",
+      "The constant $C = 2/c$ is explicit and computable: Mattheus-Verstraëte (2024) improved $c$ (via algebraic graph constructions), giving a better constant in the rate bound",
+      "For general $k$ under conjectured asymptotics, convergence follows from the 3-factor decomposition $R'/R = (R'/g') \\cdot (g'/g) \\cdot (g/R)$, but the *rate* cannot be extracted without knowing how fast $R(k,l)/g(l) \\to 1$",
+      "The Lean proof reuses `increment_bound_k3` and `R3_lower` from the parent Erdos1014Problem file — modular proof design that avoids redeveloping the foundational Ramsey bounds"
     ],
     "prerequisites": [
       "Ramsey theory",
@@ -118,12 +121,13 @@
     ]
   },
   "conclusion": {
-    "summary": "The rate of convergence of R(3,l+1)/R(3,l) to 1 is O(log l / l), strictly faster than O(1/log l). This is proved from the Ramsey recurrence and Kim lower bound. For general k, the ratio converges to 1 under conjectured asymptotics.",
-    "implications": "The fast convergence rate suggests that Ramsey numbers grow very smoothly for k=3, with consecutive values differing by a negligible fraction of their magnitude.",
+    "summary": "The rate of convergence of $R(3,l+1)/R(3,l)$ to 1 is $O(\\log l / l)$, strictly faster than the conjectured $O(1/\\log l)$. This is proved by combining the Ramsey recurrence (linear increment bound) with Kim's lower bound (quadratic-over-log growth), giving the ratio $(l+1)/(c \\cdot l^2/\\log l) = O(\\log l / l)$. For general $k$, the ratio converges to 1 conditionally on the conjectured asymptotics.",
+    "implications": "The $O(\\log l / l)$ rate reveals that for $k=3$, consecutive Ramsey numbers are asymptotically indistinguishable: their ratio approaches 1 faster than any $O(1/\\log l)$ bound would suggest. This 'smooth growth' property means the Ramsey sequence $R(3,3), R(3,4), R(3,5), \\ldots$ has no anomalous jumps relative to its size. The explicit constant $C = 2/c$ can be tracked through improvements to Kim's theorem — the Mattheus-Verstraëte (2024) improvement to $c$ gives a smaller $C$.",
     "openQuestions": [
-      "Can the constant C = 2/c be improved, perhaps to 1/c?",
-      "Can the rate bound for general k be proved unconditionally from the recurrence?",
-      "Is the O(log l / l) rate tight, or could it be O(1/l) even for k=3?"
+      "Is the $O(\\log l / l)$ rate tight for $k=3$? Equivalently, is there a lower bound $|R(3,l+1)/R(3,l) - 1| \\geq c' \\cdot \\log l / l$ for infinitely many $l$?",
+      "Can the constant $C = 2/c$ be improved to $1/c$ by using a sharper version of the increment bound?",
+      "Can the rate bound $O(\\log l / l)$ for $k=3$ be extended unconditionally to general $k$ from the recurrence $R(k,l+1) - R(k,l) \\leq \\binom{R(k-1,l+1)+R(k,l)}{k-2}$?",
+      "Does the rate $O(\\log l / l)$ improve to $O(1/l)$ if the Ramsey conjecture $R(3,l) = \\Theta(l^2/\\log l)$ is sharpened to an exact asymptotic?"
     ]
   },
   "leanFile": {

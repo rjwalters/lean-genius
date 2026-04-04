@@ -2,49 +2,61 @@
   {
     "id": "ann-header",
     "proofId": "erdos-1014-oq-02",
-    "range": { "startLine": 1, "endLine": 22 },
+    "range": { "startLine": 1, "endLine": 27 },
     "type": "context",
-    "title": "Problem: Rate of Convergence",
-    "content": "The parent problem (Erdős #1014) asks: does $R(k,l+1)/R(k,l) \\to 1$? OQ-01 proved this for $k=3$. This file addresses the natural follow-up: *how fast* does the ratio converge? The open question conjectured the rate might be $O(1/\\log l)$. We prove it is actually $O(\\log l / l)$, which is asymptotically faster.",
-    "mathContext": "The rate $O(\\log l / l)$ means $|R(3,l+1)/R(3,l) - 1| \\leq C \\cdot \\log l / l$ for an explicit constant $C$. Since $\\log l / l < 1/\\log l$ for large $l$ (because $(\\log l)^2 < l$), this rate is *faster* than $O(1/\\log l)$.",
+    "title": "OQ-02: Quantifying the Rate of Convergence of R(k,l+1)/R(k,l)",
+    "content": "The parent problem (Erdős #1014) asks: does R(k,l+1)/R(k,l) → 1? OQ-01 proved this for k=3. This file addresses the natural follow-up: *how fast* does the ratio converge? The conjectured rate was O(1/log l); this file proves the actual rate for k=3 is O(log l / l), which is *asymptotically faster*. The imports from `Proofs.Erdos1014Problem` bring in 12 axioms (including the Kim lower bound R(3,l) ≥ c·l²/log l and the Ramsey recurrence) plus helper theorems like `increment_bound_k3` and `ramsey_pos` that are reused directly.",
+    "mathContext": "The rate $O(\\log l / l)$ means $|R(3,l+1)/R(3,l) - 1| \\leq C \\cdot (\\log l)/l$ for an explicit constant $C = 2/c$. Since $\\log l / l \\ll 1/\\log l$ (equivalently $(\\log l)^2 \\ll l$), this rate is *faster* than the originally conjectured $O(1/\\log l)$. The constant $c$ comes from Kim's 1995 theorem: $R(3,l) \\geq c \\cdot l^2/\\log l$.",
     "significance": "key",
-    "relatedConcepts": ["convergence rates", "Ramsey numbers", "asymptotic comparison"],
-    "prerequisites": ["Ramsey theory", "asymptotic analysis"]
+    "relatedConcepts": ["convergence rates", "Ramsey numbers", "asymptotic comparison", "Kim lower bound"],
+    "prerequisites": ["Ramsey theory basics", "asymptotic analysis", "erdos-1014-oq-01"]
   },
   {
     "id": "ann-rate-k3",
     "proofId": "erdos-1014-oq-02",
-    "range": { "startLine": 95, "endLine": 158 },
-    "type": "proof",
-    "title": "Main Theorem: Rate is O(log l / l)",
-    "content": "The explicit rate bound $|R(3,l+1)/R(3,l) - 1| \\leq (2/c) \\cdot \\log l / l$ follows from three ingredients: (1) the increment bound $R(3,l+1) - R(3,l) \\leq l+1$ from the Ramsey recurrence, (2) the Kim lower bound $R(3,l) \\geq c \\cdot l^2/\\log l$, and (3) monotonicity $R(3,l+1) \\geq R(3,l)$. The chain of inequalities is: $\\frac{R'-R}{R} \\leq \\frac{l+1}{c \\cdot l^2/\\log l} \\leq \\frac{2l \\cdot \\log l}{c \\cdot l^2} = \\frac{2}{c} \\cdot \\frac{\\log l}{l}$.",
-    "mathContext": "The constant $C = 2/c$ is explicit, where $c$ is the Kim lower bound constant. Mattheus-Verstraëte (2024) improved $c$ to approximately $1/4$, giving $C \\approx 8$.",
+    "range": { "startLine": 34, "endLine": 101 },
+    "type": "insight",
+    "title": "Main Theorem: Rate of Convergence is O(log l / l) for k=3",
+    "content": "The explicit rate bound `|R(3,l+1)/R(3,l) - 1| ≤ (2/c) · log l / l` follows from a chain of three ingredients: (1) the increment bound `R(3,l+1) - R(3,l) ≤ l+1` from the Ramsey recurrence (imported as `increment_bound_k3`), (2) the Kim lower bound `R(3,l) ≥ c·l²/log l` (imported as `R3_lower`), and (3) `R' ≥ R` (monotonicity). The `calc` proof chains: `(R'-R)/R ≤ (l+1)/R ≤ (l+1)/(c·l²/log l) = (l+1)·log l/(c·l²) ≤ 2·log l/(c·l)`. The final step uses `l+1 ≤ 2l` for `l ≥ 1`.",
+    "mathContext": "The key inequality chain: $\\frac{R(3,l+1)-R(3,l)}{R(3,l)} \\leq \\frac{l+1}{c \\cdot l^2/\\log l} = \\frac{(l+1)\\log l}{cl^2} \\leq \\frac{2\\log l}{cl}$. Here $c$ is the Kim constant; Mattheus-Verstraëte (2024) improved the best known value of $c$ (using an algebraic construction of triangle-free graphs), giving $C \\approx 8$ with their bound.",
     "significance": "key",
-    "relatedConcepts": ["Kim lower bound", "Ramsey recurrence", "explicit constants"],
-    "prerequisites": ["increment bound", "Kim-Shearer lower bound"]
+    "relatedConcepts": ["Kim lower bound", "Ramsey recurrence", "explicit constants", "calc proof tactic"],
+    "prerequisites": ["increment_bound_k3 (imported)", "R3_lower (Kim bound)", "ramsey_monotone_right", "ramsey_pos"]
   },
   {
     "id": "ann-comparison",
     "proofId": "erdos-1014-oq-02",
-    "range": { "startLine": 163, "endLine": 200 },
-    "type": "proof",
-    "title": "Rate Comparison: log l/l beats 1/log l",
-    "content": "Proves $\\log l / l < 1/\\log l$ for sufficiently large $l$. This is equivalent to $(\\log l)^2 < l$. The proof uses Mathlib's `isLittleO_log_rpow_atTop` with exponent $1/2$: since $\\log x = o(x^{1/2})$, eventually $\\log l \\leq l^{1/2}$, so $(\\log l)^2 \\leq l$.",
-    "mathContext": "From $\\log x = o(x^{1/2})$ we get $\\log l \\leq l^{1/2}$ eventually, hence $(\\log l)^2 \\leq (l^{1/2})^2 = l$. This strict comparison $(\\log l)^2 < l$ holds for $l \\geq 1$ numerically and is confirmed asymptotically.",
+    "range": { "startLine": 102, "endLine": 141 },
+    "type": "insight",
+    "title": "Rate Comparison: log l/l is Faster than 1/log l",
+    "content": "Proves `∃ L₀, ∀ l > L₀, log l / l < 1 / log l`. Equivalent to `(log l)² < l`. The Lean proof extracts this from Mathlib's `isLittleO_log_rpow_atTop`: since `log x = o(x^{1/2})`, for large enough `l` we have `log l ≤ l^{1/2}`, so `(log l)² ≤ l`. The actual `calc` proof uses `log l · log l ≤ l^(1/2) · l^(1/2) = l^1 = l`. The big technical step is using `Filter.eventually_atTop` to extract the explicit threshold `L₀` from the filter-based little-o statement.",
+    "mathContext": "The inequality $\\log l / l < 1/\\log l$ is equivalent to $(\\log l)^2 < l$. This follows from $\\log x = o(x^{1/2})$, which in turn follows from $\\lim_{x \\to \\infty} (\\log x)/x^{1/2} = 0$ (L'Hôpital or Mathlib's `Real.isLittleO_log_rpow_atTop`). The result shows the $O(\\log l / l)$ rate is asymptotically better than $O(1/\\log l)$: the ratio $\\log l/l$ divided by $1/\\log l$ equals $(\\log l)^2/l \\to 0$.",
     "significance": "key",
-    "relatedConcepts": ["little-o notation", "log growth rate", "rpow_add"],
-    "prerequisites": ["Mathlib filter/asymptotics", "real analysis"]
+    "relatedConcepts": ["little-o notation", "isLittleO_log_rpow_atTop", "Filter.eventually_atTop", "rpow_add"],
+    "prerequisites": ["Mathlib Filter/Asymptotics API", "Real.log and rpow in Lean", "little-o characterization"]
   },
   {
     "id": "ann-general-k",
     "proofId": "erdos-1014-oq-02",
-    "range": { "startLine": 205, "endLine": 285 },
-    "type": "proof",
-    "title": "Conditional Rate O(1/l) for General k",
-    "content": "Under the conjectured asymptotics $R(k,l) \\sim c \\cdot l^{k-1}/(\\log l)^{k-2}$, the ratio $R(k,l+1)/R(k,l)$ decomposes via the 3-factor method into $(R'/g') \\cdot (g'/g) \\cdot (g/R)$, where the growth factor $g'/g = ((l+1)/l)^{k-1} \\cdot (\\log l/\\log(l+1))^{k-2}$ differs from 1 by $O(1/l)$. The sandwich factors contribute $O(\\delta)$ each, giving total rate $O(1/l)$.",
-    "mathContext": "The growth ratio satisfies $((l+1)/l)^{k-1} = 1 + (k-1)/l + O(1/l^2)$ and $(\\log l/\\log(l+1))^{k-2} = 1 - O(1/(l \\log l))$. Their product is $1 + O(1/l)$.",
+    "range": { "startLine": 143, "endLine": 162 },
+    "type": "insight",
+    "title": "Conditional Convergence for General k via ratio_from_asymptotics",
+    "content": "Under the conjectured asymptotics R(k,l) ~ c·l^{k-1}/(log l)^{k-2}, the ratio R(k,l+1)/R(k,l) → 1. This is proved by delegating to `ratio_from_asymptotics` from the main Erdos1014Problem file, which uses a 3-factor decomposition: R'/R = (R'/g') · (g'/g) · (g/R), where g(l) = c·l^{k-1}/(log l)^{k-2}. The growth factor g'/g = ((l+1)/l)^{k-1} · (log l/log(l+1))^{k-2} → 1 at rate O(k/l). The sandwich factors (R'/g'-1) and (g/R-1) each contribute o(1) from the asymptotic hypothesis.",
+    "mathContext": "The conditional convergence: if $R(k,l)/g(l) \\to 1$ (asymptotic assumption), then $R(k,l+1)/R(k,l) = [R(k,l+1)/g(k,l+1)] \\cdot [g(k,l+1)/g(k,l)] \\cdot [g(k,l)/R(k,l)]$. The middle factor $g(k,l+1)/g(k,l) = [(l+1)/l]^{k-1} \\cdot [\\log l/\\log(l+1)]^{k-2} \\to 1$ as $l \\to \\infty$. The outer factors each $\\to 1$ by the asymptotic hypothesis.",
     "significance": "supporting",
-    "relatedConcepts": ["power-law asymptotics", "3-factor decomposition", "Bernoulli inequality"],
-    "prerequisites": ["asymptotic analysis", "binomial approximation"]
+    "relatedConcepts": ["power-law asymptotics", "3-factor decomposition", "ratio_from_asymptotics", "conditional results"],
+    "prerequisites": ["Erdos1014Problem.ratio_from_asymptotics", "asymptotic analysis", "Lean filter API"]
+  },
+  {
+    "id": "ann-answer",
+    "proofId": "erdos-1014-oq-02",
+    "range": { "startLine": 164, "endLine": 186 },
+    "type": "insight",
+    "title": "Summary Corollary: O(log l/l) Rate, Faster than O(1/log l)",
+    "content": "`rate_is_O_log_over_l_not_inv_log` bundles both main results into a single conjunction: (1) the O(log l/l) rate bound from `rate_of_convergence_k3` and (2) the comparison `log l/l < 1/log l` from `log_over_l_faster_than_inv_log`. The proof is a trivial `⟨rate_of_convergence_k3, log_over_l_faster_than_inv_log⟩` product. This structure reflects a common Lean pattern: prove the two components separately with their own existential witnesses, then bundle for the final statement. The corollary directly answers OQ-02: the rate is not merely O(1/log l) but the strictly faster O(log l/l).",
+    "mathContext": "The combined answer to OQ-02: $\\exists C > 0,\\, \\exists L_0,\\, \\forall l > L_0:\\; |R(3,l+1)/R(3,l) - 1| \\leq C \\cdot \\log l / l$, AND $\\exists L_1,\\, \\forall l > L_1:\\; \\log l / l < 1/\\log l$. Together these imply $|R(3,l+1)/R(3,l) - 1| < C/\\log l$ for large $l$, confirming the rate is strictly faster than the originally conjectured $O(1/\\log l)$.",
+    "significance": "key",
+    "relatedConcepts": ["conjunction proof pattern", "rate comparison", "explicit quantification", "answering open questions"],
+    "prerequisites": ["rate_of_convergence_k3", "log_over_l_faster_than_inv_log", "Lean conjunction (And.intro)"]
   }
 ]
