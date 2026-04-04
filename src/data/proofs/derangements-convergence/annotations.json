@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-derang-conv-identity",
+    "proofId": "derangements-convergence",
+    "range": { "startLine": 56, "endLine": 75 },
+    "type": "insight",
+    "title": "The Bridge Theorem: D(n) = n! · altFactPartialSum(n) via Strong Induction",
+    "content": "The theorem `numDerangements_eq_factorial_mul_altSum` is the crucial algebraic bridge connecting combinatorics and analysis. It proves D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction, matching the recurrence `numDerangements_add_two : D(n+2) = (n+1)(D(n+1) + D(n))` to the telescoping recurrence `altFactPartialSum_succ`.\n\nThe three-case structure in the induction: base cases n=0 (D(0)=1=0!·1, proved by simp) and n=1 (D(1)=0=1!·(1-1), proved by simp + ring) are trivial. The inductive step n+2 applies both IHs at n and n+1, uses `numDerangements_add_two` and `altFactPartialSum_succ` twice, then closes with `push_cast` (to lift ℕ casts to ℝ) followed by `ring` — the recurrence identity is purely algebraic once the IHs are substituted.\n\nThe companion theorem `derangements_div_factorial` divides by n! via `field_simp` to give D(n)/n! = altFactPartialSum(n), the form directly used in the convergence proof.",
+    "mathContext": "The recurrence $D(n+2) = (n+1)(D(n+1) + D(n))$ is classical: a derangement of $n+2$ elements either maps element $n+2$ to some position $i$ (n+1 choices) and then either element $i$ maps to $n+2$ (leaving a derangement of the remaining n) or does not (leaving a derangement of $n+1$ elements minus the restriction). The alternating sum $\\sum_{k=0}^n (-1)^k/k!$ is the partial sum of the Taylor series for $e^{-1}$, so the identity $D(n)/n! = \\sum_{k=0}^n (-1)^k/k!$ says the probability of a random permutation being a derangement is the $n$-th partial sum of the series for $e^{-1}$, converging to $e^{-1} \\approx 0.3679$.",
+    "significance": "key",
+    "relatedConcepts": ["numDerangements_add_two", "strong induction", "altFactPartialSum", "push_cast", "ring tactic"],
+    "prerequisites": ["Mathlib.Combinatorics.Derangements.Finite", "Nat.strong_induction_on", "altFactPartialSum_succ"]
+  },
+  {
+    "id": "ann-derang-conv-tsum",
+    "proofId": "derangements-convergence",
+    "range": { "startLine": 86, "endLine": 116 },
+    "type": "insight",
+    "title": "Linking e⁻¹ to the Alternating Series via NormedSpace.exp_eq_tsum",
+    "content": "The theorem `exp_neg_one_eq_tsum_alt` proves that e⁻¹ (represented as `rexp (-1)` in Mathlib) equals the infinite alternating series ∑' k, altFactTerm k. The proof uses two steps: (1) identify `rexp (-1)` with `NormedSpace.exp ℝ (-1 : ℝ)` via `Real.exp_eq_exp_ℝ`, then (2) apply `NormedSpace.exp_eq_tsum` which states exp x = ∑' k, x^k/k!. At x = -1, this gives ∑' k, (-1)^k/k! = ∑' k, altFactTerm k (after a `ring` normalization).\n\nThe companion `tsum_eq_partial_sum_add_tail` is the key technical infrastructure for the error bound. It splits the infinite series into the partial sum plus a tail: ∑' k, altFactTerm k = altFactPartialSum n + ∑' k, altFactTerm (n+1+k). The proof uses `hasSum_compl_iff` (which expresses the sum over the complement of `range(n+1)`) combined with an injection from ℕ into that complement via k ↦ n+1+k. The injection is surjective onto the complement by the omega tactic.",
+    "mathContext": "The Taylor series $e^x = \\sum_{k=0}^\\infty x^k/k!$ at $x = -1$ gives $e^{-1} = \\sum_{k=0}^\\infty (-1)^k/k!$. In Lean, `rexp` is the real exponential from `Real.exp`, while `NormedSpace.exp` is the abstract exponential in a Banach algebra — they agree on ℝ. The series convergence is proved by `summable_pow_div_factorial 1` (the series for $e^1$), since $|(-1)^k/k!| = 1/k!$. Mathlib's `tsum` is the unconditional sum for Hausdorff groups, which for conditionally convergent series agrees with the limit of partial sums by `Summable.hasSum`.",
+    "significance": "key",
+    "relatedConcepts": ["NormedSpace.exp_eq_tsum", "Real.exp_eq_exp_ℝ", "tsum", "hasSum_compl_iff", "summable_pow_div_factorial"],
+    "prerequisites": ["Mathlib.Analysis.SpecificLimits.Normed", "Mathlib.Analysis.SpecialFunctions.ExpDeriv", "tsum and Summable"]
+  },
+  {
+    "id": "ann-derang-conv-nonneg",
+    "proofId": "derangements-convergence",
+    "range": { "startLine": 120, "endLine": 208 },
+    "type": "insight",
+    "title": "Parity-Splitting Strong Induction: The Alternating Series Auxiliary Lemmas",
+    "content": "The two auxiliary lemmas `alt_partial_sum_nonneg` and `alt_partial_sum_le_first` prove that finite alternating sums ∑_{k<N} (-1)^k/(m+k)! are bounded: 0 ≤ ∑ ≤ 1/m!. Both use strong induction with three cases: N=0, N=1, N'+2.\n\nThe N'+2 case requires parity analysis on N'. When N' is even (N'=2k): the pair of terms at positions 2k and 2k+1 contributes non-negatively (since 1/(m+2k)! ≥ 1/(m+2k+1)!), so the sum is ≥ 0 by the inductive hypothesis for N'. When N' is odd (N'=2k+1): the pair at 2k and 2k+1 is still non-negative, and there's an additional non-negative term at 2k+2, giving non-negativity.\n\nFor `alt_partial_sum_le_first`, the structure is similar but mirrored: when N' is even, the N'+1 term (which is negative) pushes the sum below the inductive bound; when N' is odd, the pair at 2k+1 and 2k+2 is non-positive, so the sum is ≤ the bound from the IH at 2k+1.\n\nThe factorial monotonicity `Nat.factorial_le (by omega)` is the key arithmetic lemma used in both inductive steps to compare adjacent terms.",
+    "mathContext": "The alternating series estimation theorem (Leibniz criterion) states: if $a_k \\geq 0$ is decreasing and $a_k \\to 0$, then the partial sums of $\\sum (-1)^k a_k$ satisfy $S_0 \\geq S_2 \\geq S_4 \\geq \\cdots \\geq S \\geq \\cdots \\geq S_3 \\geq S_1$ (alternating above and below the limit). Lean's proof avoids invoking this theorem directly — instead it proves both bounds by direct induction on the partial sums, with the parity structure making the proof explicit. The bound $0 \\leq \\sum_{k=0}^{N-1} (-1)^k/(m+k)! \\leq 1/m!$ applied at $m = n+1$ gives the tail bound $|\\text{tail}| \\leq 1/(n+1)!$ via the $\\lim$ version of these bounds.",
+    "significance": "key",
+    "relatedConcepts": ["alt_partial_sum_nonneg", "alt_partial_sum_le_first", "Nat.factorial_le", "parity analysis", "Nat.not_even_iff_odd"],
+    "prerequisites": ["Nat.strong_induction_on", "Even/Odd case split", "Finset.sum_range_succ", "div_le_div_of_nonneg_left"]
+  },
+  {
+    "id": "ann-derang-conv-tail",
+    "proofId": "derangements-convergence",
+    "range": { "startLine": 210, "endLine": 242 },
+    "type": "insight",
+    "title": "Alternating Tail Bound: Passing from Finite Partial Sums to the Infinite Series",
+    "content": "The theorem `alternating_tail_bound` proves |∑' k, altFactTerm (n+1+k)| ≤ 1/(n+1)! by passing the finite partial sum bounds through the limit.\n\nKey steps: (1) Set m = n+1, factor out (-1)^m via `tsum_mul_left`: ∑' k, altFactTerm(m+k) = (-1)^m · ∑' k, c k where c k = (-1)^k/(m+k)!. (2) Simplify |(-1)^m| = 1 via `abs_pow, abs_neg, abs_one`. (3) Prove c summable by comparison to 1/(m+k)! using `Summable.comp_injective`. (4) The lower bound 0 ≤ ∑' k, c k follows by `le_of_tendsto_of_tendsto`: the partial sums of c are ≥ 0 (by `alt_partial_sum_nonneg`), and the partial sums converge to ∑' c by `Summable.hasSum.tendsto_sum_nat`. (5) The upper bound ∑' k, c k ≤ 1/m! follows by `le_of_tendsto`: partial sums are ≤ 1/m! (by `alt_partial_sum_le_first`), and again the partial sums converge to ∑' c. (6) Combine: 0 ≤ ∑' c ≤ 1/m!, so |∑' c| = ∑' c ≤ 1/m!.",
+    "mathContext": "The key analytic fact is: if the partial sums $S_N$ of a series all satisfy $0 \\leq S_N \\leq C$, and $S_N \\to S$ (converges), then $0 \\leq S \\leq C$. In Lean, this is `le_of_tendsto_of_tendsto` (for the lower bound) and `le_of_tendsto` (for the upper bound) — both express that limits preserve non-strict inequalities. The factor of $(-1)^m$ in the factoring is because $\\text{altFactTerm}(m+k) = (-1)^{m+k}/((m+k)!) = (-1)^m \\cdot (-1)^k/(m+k)!$, so pulling out $(-1)^m$ reduces the sum to the standard form $\\sum (-1)^k/(m+k)!$ to which the auxiliary lemmas apply.",
+    "significance": "key",
+    "relatedConcepts": ["tsum_mul_left", "le_of_tendsto_of_tendsto", "Summable.hasSum.tendsto_sum_nat", "abs_of_nonneg", "Summable.comp_injective"],
+    "prerequisites": ["alt_partial_sum_nonneg", "alt_partial_sum_le_first", "tsum convergence", "Summable.of_norm_bounded_eventually"]
+  },
+  {
+    "id": "ann-derang-conv-main",
+    "proofId": "derangements-convergence",
+    "range": { "startLine": 246, "endLine": 283 },
+    "type": "insight",
+    "title": "Convergence Rate and Tendency: Composing the Full Proof Chain",
+    "content": "The theorem `derangements_convergence_rate` is proved in 4 lines by composing all preceding results: rw [derangements_div_factorial] (replace D(n)/n! by altFactPartialSum), rw [exp_neg_one_eq_tsum_alt] (replace e⁻¹ by ∑' altFactTerm), rw [tsum_eq_partial_sum_add_tail] (split into partial sum + tail), then algebraic simplification (the difference is exactly the tail) and abs_neg closes with alternating_tail_bound.\n\nThe theorem `derangements_tendsto_inv_e` proves convergence via `Metric.tendsto_atTop`: given ε > 0, find N such that 1/(N+1)! < ε. This uses the fact that |altFactTerm(n+1)| = 1/(n+1)! → 0 (as a term of the convergent series altFactTerm), and `summable_altFactTerm.tendsto_atTop_zero.comp (tendsto_add_atTop_nat 1)` extracts this convergence. The existential N is then used: for n ≥ N, the bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)! ≤ 1/(N+1)! < ε via factorial monotonicity.\n\nThe calc block in derangements_tendsto_inv_e is the cleanest expression of the full argument: bound by convergence_rate, bound by factorial monotonicity, bound by the ε-neighborhood.",
+    "mathContext": "The convergence rate $|D(n)/n! - e^{-1}| \\leq 1/(n+1)!$ is much stronger than mere convergence: for $n=10$, the error is less than $1/11! \\approx 2.5 \\times 10^{-8}$. The proof assembles four building blocks, each handling a different aspect: the combinatorial-analytic identity (numDerangements_eq_factorial_mul_altSum), the analytic representation of $e^{-1}$ (exp_neg_one_eq_tsum_alt), the series splitting (tsum_eq_partial_sum_add_tail), and the tail bound (alternating_tail_bound). This modular structure is an example of good proof engineering: each lemma has a clean statement that can be combined in a single rewrite chain.",
+    "significance": "key",
+    "relatedConcepts": ["derangements_convergence_rate", "Metric.tendsto_atTop", "tendsto_atTop_zero", "Nat.factorial_le", "dist_eq in ℝ"],
+    "prerequisites": ["derangements_div_factorial", "exp_neg_one_eq_tsum_alt", "tsum_eq_partial_sum_add_tail", "alternating_tail_bound"]
+  }
+]
