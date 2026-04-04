@@ -41,7 +41,7 @@
     "range": { "startLine": 139, "endLine": 169 },
     "type": "insight",
     "title": "Turán's Theorem for K₄ — With Sorry Bridge",
-    "content": "Turán's theorem is invoked via Mathlib's `CliqueFree.card_edgeFinset_le`. The main sorry arises because Mathlib's bound expression (involving $n \\bmod 3$ and binomial coefficients) does not simplify directly to $\\lfloor n^2/3 \\rfloor$ — bridging the two requires a case split on $n \\equiv 0, 1, 2 \\pmod{3}$. The second sorry (extracting `Clique4` from Mathlib's abstract `CliqueFree 4` predicate) requires unpacking 4 vertices from a finset. Both are routine but tedious arithmetic tasks.",
+    "content": "Turán's theorem is invoked via Mathlib's `CliqueFree.card_edgeFinset_le`. The arithmetic bridge `turanK4_arith` handles the key gap: Mathlib's formula $(n^2-(n\\%3)^2) \\cdot 2/6 + (n\\%3).\\text{choose}(2)$ doesn't immediately simplify to $\\lfloor n^2/3 \\rfloor$. The private lemma does a 3-way mod-3 case split using `omega` for all three cases. The `exceeds_turanK4_has_clique4` proof uses `by_contra` + contrapositive: if no Clique4 exists, then `CliqueFree 4` holds (proved by extracting 4 vertices via `Finset.card_eq_four`), giving the Turán bound that contradicts the hypothesis.",
     "mathContext": "Mathlib's bound: $|E(G)| \\leq \\frac{(n^2 - (n \\bmod 3)^2) \\cdot 2}{6} + \\binom{n \\bmod 3}{2}$. For $n \\equiv 0$: $= n^2/3$. For $n \\equiv 1$: $= (n^2-1)/3$. For $n \\equiv 2$: $= (n^2-1)/3$. In all cases $\\leq \\lfloor n^2/3 \\rfloor$.",
     "significance": "key",
     "relatedConcepts": ["Turán's theorem", "CliqueFree", "CliqueFree.card_edgeFinset_le", "Mathlib extremal combinatorics"],
