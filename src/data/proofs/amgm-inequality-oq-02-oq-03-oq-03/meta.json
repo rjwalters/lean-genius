@@ -23,34 +23,90 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Maclaurin inequalities, established by Colin Maclaurin in the 18th century, relate the elementary symmetric means of non-negative reals. They generalize the AM-GM inequality to a full chain of n-1 consecutive inequalities between consecutive symmetric means.",
+    "historicalContext": "Colin Maclaurin (1698–1746) stated the inequality chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ in his 1729 'Treatise of Algebra', building on Newton's 1707 observation (Arithmetica Universalis) that the elementary symmetric polynomials satisfy $e_k^2 \\geq e_{k-1} e_{k+1}$ (log-concavity). The chain interpolates between the arithmetic mean ($M_1$) and geometric mean ($M_n$), giving an n-1 step strengthening of AM ≥ GM. Hardy, Littlewood, and Pólya systematized the Maclaurin inequalities in their landmark book 'Inequalities' (1934), §2.22, establishing the modern proof via the power inequality $a_k^{k+1} \\geq a_{k+1}^k$ where $a_k = e_k/\\binom{n}{k}$. The Lean formalization uses a modular three-tier architecture: the axiomatic step (AmgmInequalityOQ02), the Newton proof of the step (AmgmInequalityOQ02OQ03), and this file assembling the full chain from adjacent steps by induction on the index gap. The induction reduces $O(n^2)$ pairwise comparisons to $O(n)$ adjacent applications of maclaurin_step, matching the classical proof structure.",
     "problemStatement": "Given the Maclaurin means Mₖ = (eₖ(x)/C(n,k))^{1/k} for non-negative reals x₁,...,xₙ, prove the full chain M₁ ≥ M₂ ≥ ... ≥ Mₙ by establishing Mⱼ ≥ Mₖ for all 0 < j ≤ k ≤ n.",
-    "proofStrategy": "The proof proceeds by induction on the gap d = k - j. The base case d = 0 is trivial. The inductive step reduces to a single adjacent inequality Mⱼ₊ₘ ≥ Mⱼ₊ₘ₊₁, which is supplied by the parent's `maclaurin_step` axiom. Transitivity closes the chain.",
+    "proofStrategy": "The proof proceeds by induction on the gap d = k - j. The base case d = 0 is trivial (reflexivity). The inductive step: assume Mⱼ ≥ Mⱼ₊ₘ (IH) and apply maclaurin_step to get Mⱼ₊ₘ ≥ Mⱼ₊ₘ₊₁; transitivity via `calc` closes the goal. The main theorem `maclaurin_full_chain` converts j ≤ k to an explicit gap using `Nat.exists_eq_add_of_le`, then invokes the auxiliary. The AM ≥ GM corollary is a direct specialization to j=1, k=n.",
     "keyInsights": [
-      "The chain inequality reduces to n-1 adjacent steps by induction",
-      "Each adjacent step Mₖ ≥ Mₖ₊₁ is logically independent and supplied axioomatically",
-      "The special case M₁ ≥ Mₙ recovers AM ≥ geometric-power mean as a corollary"
+      "Induction on the gap d = k - j reduces n² pairwise Maclaurin comparisons to n-1 adjacent steps — each step is used exactly once per application of the chain theorem",
+      "`Nat.exists_eq_add_of_le hjk` is the key bridging lemma: it converts `j ≤ k` into `∃ d, k = j + d`, enabling the `obtain ⟨d, rfl⟩` pattern that substitutes k = j+d throughout the goal",
+      "The private/public split is deliberate: `maclaurin_chain_aux` is `private` (an implementation detail) while `maclaurin_full_chain` is the public interface — this is the standard Lean modularity pattern for inductive helpers",
+      "The corollary `maclaurin_m1_ge_mn` recovers AM ≥ GM: $M_1 = \\text{arithmetic mean}$, $M_n = \\text{geometric mean}$, so $M_1 \\geq M_n$ is precisely AM ≥ GM for n non-negative reals",
+      "The file works conditionally on the `maclaurin_step` axiom from AmgmInequalityOQ02 — but the chain proof itself is unconditional given the step; substituting `maclaurin_step_proved` from AmgmInequalityOQ02OQ03 would make the entire chain axiom-free"
     ],
     "prerequisites": [
       "Elementary symmetric polynomials and Maclaurin means",
       "AM-GM inequality",
-      "Newton's inequalities relating consecutive elementary symmetric polynomials"
+      "Newton's inequalities relating consecutive elementary symmetric polynomials",
+      "Lean 4 induction tactics and calc blocks"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: Three-Tier Architecture",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Documents the three-tier Maclaurin formalization hierarchy: AmgmInequalityOQ02 (axiomatic step), AmgmInequalityOQ02OQ03 (Newton-proved step), and this file (full chain from steps). Lists the three main results: `maclaurin_chain_aux`, `maclaurin_full_chain`, `maclaurin_m1_ge_mn`.",
+      "mathContext": "The chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ is built from $n-1$ applications of the step $M_k \\geq M_{k+1}$. The modular design allows the chain to be verified regardless of how the step is proved."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Namespace Setup",
+      "startLine": 30,
+      "endLine": 38,
+      "summary": "Imports AmgmInequalityOQ02 (providing `maclaurinMean` and `maclaurin_step`). Opens Finset and Real. Declares implicit variable `{n : ℕ}` for all theorems.",
+      "mathContext": "The import makes `maclaurinMean : ℕ → (Fin n → ℝ) → ℝ` and `maclaurin_step` available. Note: AmgmInequalityOQ02OQ03 is NOT imported — the proved step is not used here, only the axiomatic one."
+    },
+    {
+      "id": "aux-lemma",
+      "title": "maclaurin_chain_aux: Induction on Gap",
+      "startLine": 39,
+      "endLine": 52,
+      "summary": "Private lemma: Mⱼ ≥ Mⱼ₊ₐ for arbitrary gap d, proved by induction on d. Base case: reflexivity. Inductive case: apply IH then maclaurin_step, close by calc transitivity.",
+      "mathContext": "$M_j \\geq M_{j+d}$ by induction: base $M_j \\geq M_j$ trivial; step uses IH $M_j \\geq M_{j+m}$ and maclaurin_step $M_{j+m} \\geq M_{j+m+1}$, combined by transitivity."
+    },
+    {
+      "id": "main-theorem",
+      "title": "maclaurin_full_chain: Full Chain Theorem",
+      "startLine": 54,
+      "endLine": 59,
+      "summary": "Main exported theorem: for 0 < j ≤ k ≤ n, Mⱼ ≥ Mₖ. Uses Nat.exists_eq_add_of_le to extract the gap d from j ≤ k, then delegates to maclaurin_chain_aux.",
+      "mathContext": "`Nat.exists_eq_add_of_le hjk` gives `d` with `k = j + d`. The `obtain ⟨d, rfl⟩` pattern rewrites k everywhere. The omega call closes `j + d ≤ n` from `hkn`."
+    },
+    {
+      "id": "corollary",
+      "title": "maclaurin_m1_ge_mn: AM ≥ GM Corollary",
+      "startLine": 61,
+      "endLine": 64,
+      "summary": "Specializes maclaurin_full_chain to j=1, k=n. One-liner proof: three library lemmas (Nat.one_pos, hn, le_refl). This recovers AM ≥ GM for non-negative reals.",
+      "mathContext": "$M_1 = \\frac{1}{n}\\sum x_i$ (arithmetic mean), $M_n = (\\prod x_i)^{1/n}$ (geometric mean). So $M_1 \\geq M_n$ is AM ≥ GM. The Maclaurin chain gives $n-1$ intermediate means between them."
+    }
+  ],
   "conclusion": {
-    "summary": "The full Maclaurin chain M₁ ≥ M₂ ≥ ... ≥ Mₙ is proved in Lean 4 by induction on the index gap, assuming one axiomatic step. The proof is conditionally complete: replacing the axiom with the proved Newton log-concavity step yields a fully verified chain.",
-    "implications": "This completes the Maclaurin inequality hierarchy in the gallery. Combined with the parent entries, it provides a three-tier formalization: the axiomatic step, the Newton proof of the step, and the full chain derived from either.",
+    "summary": "The full Maclaurin chain M₁ ≥ M₂ ≥ ... ≥ Mₙ is proved in Lean 4 by induction on the index gap, using the axiomatic `maclaurin_step` from AmgmInequalityOQ02. The proof is conditionally complete: replacing the axiom with `maclaurin_step_proved` from AmgmInequalityOQ02OQ03 yields a fully verified chain with 0 axioms.",
+    "implications": "This completes the Maclaurin inequality hierarchy in the gallery. The three-tier design (axiomatic step → Newton proof of step → full chain) demonstrates a modular proof architecture: each tier is independently useful, and the chain works with either source of the step. The corollary M₁ ≥ Mₙ gives AM ≥ GM as a special case, showing that the Maclaurin inequalities strictly subsume the classical AM-GM inequality.",
     "openQuestions": [
-      "Can `maclaurin_step` be proved from Mathlib's existing symmetric function library without the Newton log-concavity route?",
-      "Extension to complex or abstract ordered fields?"
+      "Can `maclaurin_step` be proved from Mathlib's existing symmetric function library (e.g., `Mathlib.RingTheory.MvPolynomial.NewtonIdentities`) without the Newton log-concavity route?",
+      "The chain theorem `maclaurin_full_chain` is stated for non-negative reals. Does it extend to `NNReal` or `ENNReal` with suitable Maclaurin mean definitions?",
+      "Can the Maclaurin chain be generalized to power means (L^p norms), giving the power mean inequality M_p ≥ M_q for p ≤ q?",
+      "Is there a proof using convexity/Schur-convexity that would be shorter than the Newton log-concavity induction?"
     ]
   },
   "crossReferences": [
     {
-      "slug": "amgm-inequality-oq-02-oq-03",
-      "title": "Maclaurin Step via Newton Log-Concavity",
-      "relationship": "extends"
+      "targetId": "amgm-inequality-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Parent formalization providing maclaurin_step_proved via Newton log-concavity; substituting it for the axiom makes this chain fully verified"
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "derives-from",
+      "description": "Grandparent formalization providing the axiomatic maclaurin_step and maclaurinMean definition used by this chain proof"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "Base AM-GM inequality; the corollary maclaurin_m1_ge_mn recovers AM ≥ GM as the special case j=1, k=n of the Maclaurin chain"
     }
   ],
   "leanFile": {
