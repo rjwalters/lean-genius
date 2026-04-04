@@ -18,7 +18,7 @@
       "density"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 157,
     "erdosUrl": "https://erdosproblems.com/157",
     "erdosProblemStatus": "solved",
@@ -58,9 +58,9 @@
       "Basis density lower bound",
       "Verified theorem: powers_of_two_sidon"
     ],
-    "axiomCount": 2,
-    "lineCount": 258,
-    "assumptions": "2 axiom(s) and 1 sorry. See the Lean source for details."
+    "axiomCount": 3,
+    "lineCount": 535,
+    "assumptions": "3 axioms: (1) pilatte_existence — the Pilatte 2023 existence result (infinite Sidon set that is an asymptotic basis of order 3); (2) sidon_counting_bound — counting bound for Sidon sets; (3) basis_counting_lower — lower bound for basis counting. 0 sorries (previously 1 sorry for pilatte_existence was axiomatized; sidon_counting_contradiction proved by Aristotle)."
   },
   "overview": {
     "historicalContext": "Sidon sets (B$_2$ sequences) — sets where all pairwise sums are distinct — were introduced by Simon Sidon in correspondence with Erdős in the 1930s. Erdős and Pál Turán proved in 1941 that a Sidon subset of $\\{1, \\ldots, N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, establishing their fundamental sparsity.\n\nAsymptotic bases of order $k$ — sets $A$ where every sufficiently large integer is a sum of at most $k$ elements of $A$ — require density at least $N^{1/k}$ by a counting argument. The tension between Sidon sparsity ($\\leq N^{1/2}$) and basis density ($\\geq N^{1/k}$) creates a natural threshold: coexistence requires $1/k \\leq 1/2$, i.e., $k \\geq 2$. But $k = 2$ is exactly the boundary and fails for subtle arithmetic reasons.\n\nErdős conjectured that order 3 should work, and this was open for decades despite partial results by Deshouillers and Plagne (2003) on finite Sidon sets. Cédric Pilatte (Oxford) settled the conjecture affirmatively in 2023 using a probabilistic construction, applying the Lovász Local Lemma and a careful densification argument. His proof is non-explicit: it shows such sets exist without constructing one.\n\nThis formalization includes two fully verified theorems: the equivalence of two Sidon set definitions, and the proof that $\\{2^k : k \\in \\mathbb{N}\\}$ forms a Sidon set (since binary representations are unique).",
@@ -159,8 +159,8 @@
       "BigOperators"
     ],
     "namespace": "Erdos157",
-    "lineCount": 192,
-    "axiomCount": 2,
+    "lineCount": 535,
+    "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 7
   },
