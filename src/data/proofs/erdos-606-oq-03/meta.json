@@ -7,7 +7,7 @@
     "author": "Sylvester, Green-Tao, Motzkin",
     "sourceUrl": "https://erdosproblems.com/606",
     "date": "2026",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos606OQ03.lean",
     "tags": [
       "combinatorial-geometry",
@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 98,
-    "assumptions": "0 axioms, 0 sorries. 1 True-stub placeholder theorem: general_position_count (line 42, proves True := trivial). Sylvester-Gallai, Green-Tao, and Motzkin are mentioned in docstring comments but not axiomatized — they do not contribute to axiomCount.",
+    "assumptions": "0 axioms, 0 sorries. general_position_count True stub was converted to a block comment. 3 remaining theorems (max_hyperplanes, line_count_range, hyperplane_extremes) are fully proved. Sylvester-Gallai, Green-Tao, and Motzkin are referenced in comments only. Classified axiomatized: main research question (achievable hyperplane counts) is open.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
