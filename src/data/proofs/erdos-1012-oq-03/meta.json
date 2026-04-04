@@ -13,9 +13,9 @@
       "tournaments"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1549,
+    "lineCount": 1277,
     "assumptions": "0 axioms. 2 sorries in the Ghouila-Houri chain: (1) sc_digraph_has_directed_cycle (line 352): SC + positive out-degree implies a directed cycle; proof needs first-repeated-vertex extraction from a closed walk. (2) gh_cycle_extendable case k < n-1 (line 539): growing a short cycle under Ghouila-Houri degree conditions; needs SC routing + degree counting. hamiltonian_of_few_missing_arcs and directed_hamiltonian_threshold are fully proved (lines 1253–1520). Moon-Moser and Rédei are fully proved.",
     "dateAdded": "2026-03-30"
   },
