@@ -23,10 +23,10 @@
     "erdosUrl": "https://erdosproblems.com/1131",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "sorries": 0,
+    "sorries": 2,
     "theoremCount": 11,
     "lineCount": 293,
-    "assumptions": "2 axioms total: 1 own (erdos_1131_variance_conjecture — variance form of Erdős #1131 conjecture) + 1 inherited from Erdos1131Problem.lean (erdos_1131_conjecture). 0 sorries in this file (axioms captured in axiomCount).",
+    "assumptions": "2 axioms total: 1 own (erdos_1131_variance_conjecture — variance form of Erdős #1131 conjecture) + 1 inherited from Erdos1131Problem.lean (erdos_1131_conjecture). 2 sorries in parent Erdos1131Problem.lean (private lemmas: chebyshev_interp, chebyshev_sq_expansion) — these are private and do not affect OQ01's public interface.",
     "parentProof": "erdos-1131",
     "prerequisites": [
       "Lagrange interpolation and basis polynomials",
