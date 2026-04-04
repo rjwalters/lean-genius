@@ -1,6 +1,18 @@
 {
   "annotations": [
     {
+      "id": "ann-preamble",
+      "proofId": "erdos-1002-oq-01",
+      "range": { "startLine": 1, "endLine": 17 },
+      "type": "context",
+      "title": "File Setup: Axiom Elimination Companion for Erdős #1002",
+      "content": "This file proves two theorems that were stated as axioms in the parent Erdős #1002 formalization (Erdos1002Problem.lean). The `import Mathlib` gives access to Real.arctan, Int.fract, Finset.sum_range_add, and all the filter theory needed. `set_option maxHeartbeats 800000` grants extra elaboration time — filter composition proofs involving nested Tendsto calls can be heartbeat-intensive. `open Real Filter` brings arctan, π, tendsto_arctan_atTop/atBot, and Tendsto into scope without qualification, keeping proof terms concise.",
+      "mathContext": "Companion file pattern: replace $N$ axiom declarations with $N$ proved theorems, reducing the assumption count of the parent formalization from $k$ to $k - N$.",
+      "significance": "context",
+      "relatedConcepts": ["companion files", "axiom elimination", "Lean 4 namespace", "Mathlib imports"],
+      "prerequisites": ["Lean 4 basics: import, open, namespace", "Mathlib library structure"]
+    },
+    {
       "id": "ann-definitions",
       "proofId": "erdos-1002-oq-01",
       "range": { "startLine": 19, "endLine": 35 },
