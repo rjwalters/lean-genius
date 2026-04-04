@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "fourier-decomp-structure",
+    "startLine": 74,
+    "endLine": 86,
+    "type": "definition",
+    "title": "FourierDecomp Structure: Parseval Bundle for Periodic Functions",
+    "body": "Packages the key analytical facts about a function's Fourier expansion as structure fields: `c : ℤ → ℝ` is the coefficient sequence, `summable_sq` and `summable_n2_sq` establish the ℓ² conditions needed for Parseval and Wirtinger, `parseval_f` encodes ∫f² = Σcₙ², `parseval_df` encodes ∫(f')² = Σn²cₙ² (the IBP step), and `c_zero` ties the zeroth coefficient to the function's mean. The structure pattern avoids axiom proliferation: the axiom `fourier_decomp_exists` asserts `Nonempty (FourierDecomp f)`, giving a single access point for all five properties via `obtain`.",
+    "mathContext": "Parseval: $\\int_0^{2\\pi} f^2 = \\sum_n c_n^2$. IBP for Fourier: $\\widehat{f'}_n = in \\cdot \\widehat{f}_n$ implies $\\int (f')^2 = \\sum n^2 c_n^2$. Mean: $c_0 = \\frac{1}{\\sqrt{2\\pi}} \\int f$.",
+    "significance": "Encapsulates the analytical core of Hurwitz's proof. Once this structure is assumed to exist (via the axiom), the Wirtinger proof becomes pure algebra — no further analysis is needed."
+  },
+  {
+    "id": "wirtinger-inequality",
+    "startLine": 113,
+    "endLine": 133,
+    "type": "theorem",
+    "title": "Wirtinger's Inequality: Proved from Parseval + IBP",
+    "body": "Proves ∫f² ≤ ∫(f')² for mean-zero periodic C¹ functions. The proof is three steps: (1) c₀ = 0 from `F.c_zero` + `hmean`; (2) pointwise bound cₙ² ≤ n²cₙ² by cases — if n=0, both sides are zero (since c₀=0); if n≠0, use `Int.one_le_abs hn` to get 1 ≤ |n|, hence n² ≥ 1, then `mul_le_mul_of_nonneg_right`; (3) apply `hasSum_le` to transfer the pointwise bound to the sum, using the `Summable.hasSum` from the structure fields. The tactic `by_cases hn : n = 0` is the key case split.",
+    "mathContext": "Wirtinger (1904): $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi} (f')^2$ when $\\int_0^{2\\pi} f = 0$. Proof: mean-zero $\\Rightarrow c_0 = 0$; for $n \\neq 0$, $n^2 \\geq 1$, so $\\sum n^2 c_n^2 \\geq \\sum c_n^2$.",
+    "significance": "The only fully proved theorem in the Fourier analysis layer. This is Layer 1 of the three-layer architecture — the analytical engine that powers the isoperimetric inequality."
+  },
+  {
+    "id": "arithmetic-kernel",
+    "startLine": 162,
+    "endLine": 189,
+    "type": "theorem",
+    "title": "Arithmetic Kernel: Pure Algebra After Fourier Analysis",
+    "body": "Proves 4πA ≤ L² from five purely algebraic hypotheses about the curve integrals, with no analysis. The proof is a four-step calc chain: (1) S² ≤ (2πc)² from hCS + hWirt; (2) S ≤ 2πc via `sqrt_le_sqrt` (extracting square roots from the bound); (3) 2A ≤ 2πc² from harea + the S bound; (4) 4πA ≤ L² = (2πc)² = 4π²c² by algebra. The `sqrt_le_sqrt` step requires knowing S ≥ 0 and 2πc > 0 to strip the absolute values from `sqrt_sq`. This separation of algebra from analysis is Hurwitz's key insight.",
+    "mathContext": "Given: $L = 2\\pi c$, $2A \\leq cS$, $S^2 \\leq 2\\pi S_{xy}$, $S_{xy} \\leq 2\\pi c^2$. Chain: $S^2 \\leq 4\\pi^2 c^2$ so $S \\leq 2\\pi c$, hence $2A \\leq 2\\pi c^2$, giving $4\\pi A \\leq (2\\pi c)^2 = L^2$.",
+    "significance": "Layer 2: once the analytical bounds are established, the inequality is pure arithmetic. The clean separation makes the proof verifiable by inspection — this layer needs no axioms or Mathlib analysis lemmas."
+  },
+  {
+    "id": "smooth-closed-curve",
+    "startLine": 198,
+    "endLine": 216,
+    "type": "definition",
+    "title": "SmoothClosedCurve: Coordinate Functions + Circumference + Area",
+    "body": "Defines a smooth closed curve as a pair (x, y) of C¹ 2π-periodic functions, encoding both smoothness (`ContDiff ℝ 1`) and periodicity. The circumference is the arc-length integral `∫√(x'² + y'²)` and the area uses Green's formula: (1/2)|∫(x·y' - y·x')|. The absolute value in the area definition handles both orientations of the curve. The `noncomputable` sections are needed because integrals and derivatives are classical. Note: these definitions specify the geometric quantities independently of any axioms — what is axiomatized later is the reparametrization needed to apply Wirtinger.",
+    "mathContext": "Circumference: $L = \\int_0^{2\\pi} \\sqrt{\\dot{x}^2 + \\dot{y}^2}\\, dt$. Area (Green): $A = \\frac{1}{2}|\\int_0^{2\\pi} (x\\dot{y} - y\\dot{x})\\, dt|$.",
+    "significance": "The geometric layer (Layer 3). By encoding x and y as separate C¹ functions (rather than a pair), Wirtinger can be applied to each coordinate independently — the critical technical choice enabling the Hurwitz proof."
+  },
+  {
+    "id": "reparam-axiom",
+    "startLine": 315,
+    "endLine": 322,
+    "type": "axiom",
+    "title": "Reparametrization Axiom: Constant Speed + Zero Mean",
+    "body": "Axiomatizes the existence of a constant-speed zero-mean reparametrization: for any smooth closed curve with L > 0, there exists an equivalent curve (same L and A) where |γ'|² = (L/(2π))² everywhere and ∫x = ∫y = 0. The constant-speed condition replaces the variable |γ'| with the constant c = L/(2π), converting the speed into a simple algebraic quantity. The zero-mean condition is needed for Wirtinger (which requires ∫f = 0). This axiom requires the inverse function theorem for arc-length reparametrization, which is not yet in Mathlib.",
+    "mathContext": "Arc-length reparametrization: $\\gamma \\mapsto \\gamma(s(t))$ where $s(t) = \\int_0^t |\\gamma'|$ normalized to $[0, 2\\pi]$, giving $|\\gamma'| = L/(2\\pi)$ constant.",
+    "significance": "The remaining gap in the proof. Of the 5 axioms, this and area_cauchy_schwarz_bound are the analytically deepest — they require the inverse function theorem and Green's theorem respectively. All others are reachable via Mathlib."
+  },
+  {
+    "id": "isoperimetric-main",
+    "startLine": 368,
+    "endLine": 393,
+    "type": "theorem",
+    "title": "Isoperimetric Inequality: Three-Layer Assembly",
+    "body": "Assembles all layers into the final 4πA ≤ L² bound. The proof proceeds: (1) `exists_nice_reparam` gives γ' with constant speed c = L/(2π) and zero mean; (2) `wirtinger_sum_bound` gives ∫(x²+y²) ≤ 2πc²; (3) `area_cauchy_schwarz_bound` gives 2A ≤ c·S; (4) `integral_cauchy_schwarz_sq` gives S² ≤ 2π·Sxy; (5) `isoperimetric_arithmetic_kernel` combines (2)-(4) into 4πA ≤ L². The `set` tactic is used to give names to the integral quantities S and Sxy, making the arithmetic kernel invocation readable.",
+    "mathContext": "Hurwitz (1901): $C^2 \\geq 4\\pi A$ for smooth closed curves, with equality iff the curve is a circle. The proof uses 4 axioms (reparametrization, Wirtinger sum bound, area Cauchy–Schwarz, integral Cauchy–Schwarz) and the fully proved arithmetic kernel.",
+    "significance": "The main theorem of the file. The three-layer architecture (Fourier analysis → arithmetic kernel → geometric assembly) separates the analytical complexity and makes the proof readable at each level."
+  }
+]
