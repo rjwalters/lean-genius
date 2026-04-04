@@ -32,7 +32,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Maclaurin inequalities M₁ ≥ M₂ ≥ ... ≥ Mₙ, where Mₖ = (eₖ/C(n,k))^{1/k} is the k-th Maclaurin mean, generalize AM-GM. Newton's inequalities on log-concavity of normalized elementary symmetric polynomials — (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)) — were proved by Newton and refined by Maclaurin (1729). The derivation of the Maclaurin chain from log-concavity is classical, appearing in Hardy-Littlewood-Pólya (1934).",
+    "historicalContext": "Newton's inequalities on log-concavity of elementary symmetric polynomials appear in Newton's Arithmetica Universalis (1707): if $e_k$ are elementary symmetric polynomials then $e_k^2 \\geq e_{k-1} e_{k+1}$ (with suitable normalization). Colin Maclaurin (1729) used these inequalities to establish the chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$, where $M_k = (e_k/\\binom{n}{k})^{1/k}$ is the $k$-th Maclaurin mean. This chain interpolates between the arithmetic mean ($M_1$) and geometric mean ($M_n$), giving a strengthening of AM-GM. The derivation via the power inequality $a_k^{k+1} \\geq a_{k+1}^k$ is standard, appearing in Hardy-Littlewood-Pólya 'Inequalities' (1934), §2.22. The key step — reducing the Maclaurin chain to log-concavity by induction — is the main content of this formalization. Newton's own proof was non-rigorous by modern standards; rigorous proofs using symmetric function theory became standard after the 19th century. The Lean formalization eliminates the `maclaurin_step` axiom from the parent file by carrying out this classical inductive derivation formally.",
     "problemStatement": "**Maclaurin Step**: For non-negative reals $x_1, \\ldots, x_n$ and $1 \\leq k < n$:\n$$M_k = \\left(\\frac{e_k}{\\binom{n}{k}}\\right)^{1/k} \\geq \\left(\\frac{e_{k+1}}{\\binom{n}{k+1}}\\right)^{1/(k+1)} = M_{k+1}$$\nDerived from Newton's log-concavity of the normalized elementary symmetric polynomials.",
     "text": "Proves the Maclaurin step inequality from Newton's log-concavity via the power inequality.",
     "proofStrategy": "The key lemma is the **power inequality** $a_k^{k+1} \\geq a_{k+1}^k$ (where $a_k = e_k/\\binom{n}{k}$), proved by induction on $k$. The base case is trivial ($a_0 = 1$). The inductive step raises log-concavity to the $k$-th power and combines with the IH: $a_{k+1}^{2(k+1)} \\geq a_k^{k+1} \\cdot a_{k+2}^{k+1} \\geq a_{k+1}^k \\cdot a_{k+2}^{k+1}$, then cancels $a_{k+1}^k$. The Maclaurin step $M_k \\geq M_{k+1}$ follows by taking the $1/(k(k+1))$-th power.",
@@ -51,20 +51,36 @@
   },
   "sections": [
     {
+      "id": "definitions",
+      "title": "Normalized ESP Definitions and Helpers",
+      "summary": "Defines normElemSymm k x = eₖ/C(n,k), proves normElemSymm_zero = 1, normElemSymm_nonneg ≥ 0, zero propagation (private), and newton_lc (restates newton_log_concavity for normalized inputs).",
+      "startLine": 35,
+      "endLine": 86,
+      "mathContext": "$a_k := e_k/\\binom{n}{k}$; $a_0 = 1$; $a_k \\geq 0$ for non-negative inputs. Zero propagation: $a_m = 0 \\Rightarrow a_{m+1} = 0$ (used as boundary case in the induction). Newton log-concavity: $a_k^2 \\geq a_{k-1} a_{k+1}$."
+    },
+    {
       "id": "power-inequality",
-      "title": "Power Inequality",
-      "summary": "The key lemma aₖ^{k+1} ≥ aₖ₊₁^k, proved by induction from Newton's log-concavity.",
-      "startLine": 60,
-      "endLine": 120,
-      "mathContext": "If $a_k^2 \\geq a_{k-1} a_{k+1}$ for all $k$, then $a_k^{k+1} \\geq a_{k+1}^k$ by induction."
+      "title": "Power Inequality: aₖ^{k+1} ≥ aₖ₊₁^k",
+      "summary": "Proves aₖ^{k+1} ≥ aₖ₊₁^k by induction on k. Base: trivial (a₀ = 1). Inductive step: raise Newton's log-concavity to (k+1)-th power, combine with IH to get a_{k+1}^{2(k+1)} ≥ a_{k+1}^k · a_{k+2}^{k+1}, then divide by a_{k+1}^k (or handle zero case via normElemSymm_zero_succ).",
+      "startLine": 88,
+      "endLine": 175,
+      "mathContext": "$a_k^{k+1} \\geq a_{k+1}^k$ where $a_k = e_k/\\binom{n}{k}$. The induction: raise $a_k^2 \\geq a_{k-1} a_{k+1}$ to the $k$-th power, use IH $a_{k-1}^k \\geq a_k^{k-1}$, and cancel. Zero case: if $a_{k+1} = 0$, then $a_{k+2} = 0$ by zero propagation, making the goal trivial."
     },
     {
       "id": "maclaurin-step",
-      "title": "Maclaurin Step from Power Inequality",
-      "summary": "Derives Mₖ ≥ Mₖ₊₁ from the power inequality via rpow monotonicity.",
-      "startLine": 122,
-      "endLine": 160,
-      "mathContext": "$a_k^{k+1} \\geq a_{k+1}^k$ implies $a_k^{1/k} \\geq a_{k+1}^{1/(k+1)}$ by taking the $1/(k(k+1))$-th root."
+      "title": "Maclaurin Step via rpow Monotonicity",
+      "summary": "Derives Mₖ ≥ Mₖ₊₁ from the power inequality by taking the 1/(k(k+1))-th root. Uses rpow_natCast_mul and rpow_le_rpow. Exponent algebra via field_simp: 1/k = (k+1)/(k(k+1)) and 1/(k+1) = k/(k(k+1)).",
+      "startLine": 177,
+      "endLine": 213,
+      "mathContext": "$M_k = a_k^{1/k} = (a_k^{k+1})^{1/(k(k+1))} \\geq (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{1/(k+1)} = M_{k+1}$. Lean: `rpow_natCast_mul` rewrites $(a^n)^r = a^{nr}$; `rpow_le_rpow` applies the monotonicity $a \\leq b \\Rightarrow a^r \\leq b^r$ for non-negative reals."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: maclaurin_step Now a Theorem",
+      "summary": "maclaurin_step_proved is a one-line wrapper around maclaurin_step_from_newton, explicitly marking the axiom elimination. The remaining dependency is newton_log_concavity (axiomatized in the parent file).",
+      "startLine": 215,
+      "endLine": 226,
+      "mathContext": "$M_k \\geq M_{k+1}$ for $k \\geq 1$ and non-negative inputs — proved, not assumed. The only remaining axiom is `newton_log_concavity`: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$."
     }
   ],
   "conclusion": {
