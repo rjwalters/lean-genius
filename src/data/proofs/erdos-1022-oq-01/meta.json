@@ -33,14 +33,15 @@
   },
   "overview": {
     "text": "A formalization generalizing Property B (hypergraph 2-colorability) to Property B_k (k-colorability). Defines HasPropertyBK: there exists a k-coloring such that no set in the family is monochromatic. Proves 10 theorems: monotonicity in k (B_k → B_{k+1}), equivalence with the original Property B when k=2, singleton/empty family base cases, and the k-color hierarchy. States the generalized first-moment threshold as an open question.",
-    "historicalContext": "Property B was introduced by Bernstein (1908) for 2-colorings and studied extensively by Erdős and Hajnal. The k-color generalization relates to hypergraph chromatic number, connecting to list coloring and the Erdős-Faber-Lovász conjecture. The probabilistic threshold k^{t-1}/(k-1) generalizes Erdős's 2^{t-1} bound.",
+    "historicalContext": "Property B (2-colorability of set families without monochromatic members) was introduced by Felix Bernstein in 1908. Erdős and Hajnal (1961) made the fundamental contribution: using the probabilistic method, they proved that any family of sets, each of size ≥ t, with fewer than 2^{t-1} members has Property B. This was one of the first applications of the probabilistic method in combinatorics, predating Lovász's Local Lemma. The k-color generalization asks: if we allow k ≥ 2 colors, what is the threshold family size below which Property B_k is guaranteed? The probabilistic bound generalizes to k^{t-1}/(k-1). The problem also connects to the Erdős-Faber-Lovász (EFL) conjecture on edge-coloring of linear hypergraphs, finally proved by Kang, Kelly, Kühn, Methuku, and Osthus in 2021-2023.",
     "problemStatement": "Define Property $B_k$ for set families: does there exist a $k$-coloring of the ground set with no monochromatic member? Determine the threshold family size below which Property $B_k$ is guaranteed.",
     "proofStrategy": "Property B_k is defined using colorings χ : α → Fin k. Monotonicity is proved by embedding Fin k → Fin (k+1) via castSucc. The equivalence B ↔ B_2 uses the bijection between 2-colorings and subsets S = χ⁻¹(0).",
     "keyInsights": [
       "Property B_k is monotone in k: embedding k colors into k+1 colors preserves non-monochromaticity",
       "Property B (Erdős #1022) is exactly Property B_2: the equivalence is proved via the correspondence between 2-colorings and set membership",
       "The generalized first-moment threshold is k^{t-1}/(k-1), recovering 2^{t-1} when k=2",
-      "All theorems are axiom-free — the generalization adds no new assumptions beyond the parent formalization"
+      "All theorems are axiom-free — the generalization adds no new assumptions beyond the parent formalization",
+      "The B ↔ B_2 proof uses fin_cases on Fin 2 for exhaustive case analysis: the 4 color combinations (χa,χb) ∈ {0,1}² are checked computationally, demonstrating Lean's strength for small finite type exhaustion"
     ],
     "prerequisites": [
       "Combinatorics (hypergraph coloring, set families)",
