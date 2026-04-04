@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-imports-setup",
+    "proofId": "erdos-1018-oq-04-incomplete-01",
+    "range": { "startLine": 32, "endLine": 40 },
+    "type": "context",
+    "title": "Imports and Namespace Setup",
+    "content": "This file imports the parent formalization `Proofs.Erdos1018OQ04`, which contains the sorry-based `isEmbeddable` definition and the van Kampen-Flores axioms. Mathlib's convex hull library and Euclidean distance theory are needed for the concrete topological definition. The `Erdos1018OQ04Completion` namespace scopes all new definitions so they don't conflict with the parent file.",
+    "mathContext": "The convex hull of a set $S \\subseteq \\mathbb{R}^d$ is $\\operatorname{conv}(S) = \\{\\sum_i \\lambda_i s_i : s_i \\in S, \\lambda_i \\geq 0, \\sum_i \\lambda_i = 1\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["convex hull", "Lean 4 namespaces", "Mathlib imports"],
+    "prerequisites": ["Lean 4 module system", "convex geometry"]
+  },
+  {
+    "id": "ann-isembeddable-def",
+    "proofId": "erdos-1018-oq-04-incomplete-01",
+    "range": { "startLine": 44, "endLine": 57 },
+    "type": "definition",
+    "title": "Concrete Topological Embeddability Definition",
+    "content": "This is the core definition: an r-uniform hypergraph H on vertex set V is embeddable in ℝ^d if there exists an injective vertex map φ : V → ℝ^d such that for any two distinct edges e₁ ≠ e₂, the convex hulls of their images intersect only within the convex hull of the shared vertices φ(e₁ ∩ e₂). This captures the topological notion that the geometric realization of H (each edge as a simplex) can be embedded in ℝ^d without unwanted intersections. In the graph case (r=2), edges become line segments, and the condition says distinct edges share only their common endpoints — exactly planarity.",
+    "mathContext": "$H$ is embeddable in $\\mathbb{R}^d$ iff $\\exists$ injective $\\varphi : V \\to \\mathbb{R}^d$ such that $\\forall e_1 \\neq e_2 \\in H.\\text{edges}$: $\\operatorname{conv}(\\varphi(e_1)) \\cap \\operatorname{conv}(\\varphi(e_2)) \\subseteq \\operatorname{conv}(\\varphi(e_1 \\cap e_2))$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric realization", "simplicial complex", "topological embedding", "planarity"],
+    "prerequisites": ["convex hull", "injective functions", "hypergraph theory", "set intersection"]
+  },
+  {
+    "id": "ann-properties",
+    "proofId": "erdos-1018-oq-04-incomplete-01",
+    "range": { "startLine": 63, "endLine": 86 },
+    "type": "technique",
+    "title": "Monotonicity Under Dimension Increase",
+    "content": "Two basic properties of the concrete definition are established. `embeddable_injective` extracts the injectivity witness from an embedding — trivially, since it is part of the definition. The more interesting `embeddable_mono` shows that if H embeds in ℝ^d, it also embeds in ℝ^{d'} for d' ≥ d: just extend the vertex map by padding with zeros in the extra dimensions. Injectivity is preserved since the original coordinates still distinguish vertices. The separation condition (sorry'd) requires showing the convex hull of padded images lies in the d-dimensional hyperplane, preserving the intersection condition.",
+    "mathContext": "Given $\\varphi : V \\to \\mathbb{R}^d$, define $\\varphi' : V \\to \\mathbb{R}^{d'}$ by $\\varphi'(v)_i = \\varphi(v)_i$ for $i < d$ and $0$ otherwise. Then $\\varphi'$ is injective iff $\\varphi$ is.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "dimension", "zero-padding", "injectivity"],
+    "prerequisites": ["function injectivity", "Fin type in Lean 4", "linear maps"]
+  },
+  {
+    "id": "ann-k3-planar",
+    "proofId": "erdos-1018-oq-04-incomplete-01",
+    "range": { "startLine": 90, "endLine": 109 },
+    "type": "technique",
+    "title": "Explicit Planar Embedding of K₃",
+    "content": "The triangle K₃ (3 vertices, all pairs connected) is embedded in ℝ² by mapping vertex 0 → (0,0), vertex 1 → (1,0), vertex 2 → (0,1). These are the vertices of a right isosceles triangle. Injectivity is proved by case analysis using `fin_cases` and `omega`. The remaining sorry covers the geometric non-crossing condition: the three edges (line segments) of the triangle meet only at their endpoints. This is visually obvious but requires formal convex hull intersection theory — specifically that two line segments in general position share at most one point, which must be a shared endpoint.",
+    "mathContext": "For $K_3$: $\\varphi(0) = (0,0)$, $\\varphi(1) = (1,0)$, $\\varphi(2) = (0,1)$. The edges are segments $\\overline{01}$, $\\overline{02}$, $\\overline{12}$, forming a triangle with pairwise intersection only at vertices.",
+    "significance": "key",
+    "relatedConcepts": ["complete graph", "planar graph", "geometric realization", "fin_cases tactic"],
+    "prerequisites": ["K₃ as a graph", "convex hull of two points = line segment", "ℝ² geometry"]
+  },
+  {
+    "id": "ann-k4-planar",
+    "proofId": "erdos-1018-oq-04-incomplete-01",
+    "range": { "startLine": 112, "endLine": 131 },
+    "type": "technique",
+    "title": "Explicit Planar Embedding of K₄",
+    "content": "K₄ (4 vertices, 6 edges) is planar — this is non-trivial because it requires arranging 6 edges without crossings. The coordinates (0,0), (3,0), (1,2), (2,2) give a valid planar embedding: three outer vertices form a triangle, one inner vertex is connected to all three. Euler's formula confirms K₄ planarity: V - E + F = 4 - 6 + 4 = 2. Injectivity is again proved by exhaustive `fin_cases` with `decide`. The sorry covers verifying that all 6 edges (line segments) avoid improper crossings under these specific coordinates — the hardest part of formalizing planarity directly.",
+    "mathContext": "Euler's formula: $V - E + F = 2$ for connected planar graphs. For $K_4$: $4 - 6 + F = 2 \\Rightarrow F = 4$ faces (3 triangular + 1 outer), confirming planarity. The critical bound for planarity: $|E| \\leq 3|V| - 6$, i.e., $6 \\leq 6$, so $K_4$ is just barely planar.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's formula", "planar graph", "complete graph K4", "decide tactic"],
+    "prerequisites": ["Euler's formula V-E+F=2", "planar graph definition", "K₄ has 6 edges"]
+  },
+  {
+    "id": "ann-edge-counts",
+    "proofId": "erdos-1018-oq-04-incomplete-01",
+    "range": { "startLine": 134, "endLine": 151 },
+    "type": "technique",
+    "title": "Complete Graph Edge Count Computations",
+    "content": "These lemmas compute the number of edges in complete graphs. For the complete r-uniform hypergraph K_n^(r), the edge count is C(n,r) = n!/(r!(n-r)!). In the graph case r=2: K_n has C(n,2) = n(n-1)/2 edges. The specific values K₃ = 3, K₄ = 6, K₅ = 10 are computed using `decide`. The formula is delegated to `completeHypergraph_edgeCount` in the parent file. These counts are needed to verify the density condition: n^(1+ε) edges forces non-planarity since 10 > 3·5 - 6 = 9 for K₅.",
+    "mathContext": "$|E(K_n^{(r)})| = \\binom{n}{r}$. For $r=2$: $|E(K_n)| = \\binom{n}{2} = \\frac{n(n-1)}{2}$. Specifically: $|E(K_3)| = 3$, $|E(K_4)| = 6$, $|E(K_5)| = 10$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial coefficient", "complete graph", "edge count", "decide tactic"],
+    "prerequisites": ["binomial coefficients", "complete hypergraph definition"]
+  },
+  {
+    "id": "ann-density-threshold",
+    "proofId": "erdos-1018-oq-04-incomplete-01",
+    "range": { "startLine": 153, "endLine": 188 },
+    "type": "insight",
+    "title": "Density Forces Non-Planarity: Euler Bound vs Power Growth",
+    "content": "This is the key asymptotic argument. Euler's formula gives an upper bound for planar graphs: |E| ≤ 3n - 6 (a linear bound). The Erdős conjecture concerns graphs with n^(1+ε) edges — a superlinear bound. Since n^(1+ε) = n · n^ε grows faster than 3n (as n^ε → ∞ for ε > 0), eventually n^(1+ε) > 3n, so such dense graphs are necessarily non-planar. The formal proof uses `Real.tendsto_rpow_atTop` to show n^ε → ∞ as n → ∞, extracts an N where n^ε ≥ 4, and computes n^(1+ε) = n·n^ε ≥ 4n > 3n. The planar edge bound theorem (sorry'd) requires Euler's formula in Mathlib.",
+    "mathContext": "For $\\varepsilon > 0$: $n^{1+\\varepsilon} = n \\cdot n^\\varepsilon \\to \\infty$ faster than $3n$ because $n^\\varepsilon \\to \\infty$. Formally: $\\exists N, \\forall n \\geq N: n^{1+\\varepsilon} > 3n$. Meanwhile planar graphs satisfy $|E| \\leq 3n - 6 < 3n$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's formula for planar graphs", "real power functions", "filter tendsto", "asymptotic analysis"],
+    "prerequisites": ["Euler's formula |E| ≤ 3|V| - 6", "real analysis: tendsto_rpow_atTop", "Lean 4 filter library"]
+  },
+  {
+    "id": "ann-kostochka-pyber",
+    "proofId": "erdos-1018-oq-04-incomplete-01",
+    "range": { "startLine": 196, "endLine": 221 },
+    "type": "concept",
+    "title": "Kostochka-Pyber Theorem (r=2) and Connection to Main Conjecture",
+    "content": "The Kostochka-Pyber theorem (1988) is the proven graph-case (r=2) specialization of Erdős's conjecture: dense graphs contain non-planar subgraphs of bounded size. It is axiomatized here because it is a proven theorem but its formal Mathlib proof would require substantial infrastructure. The subsequent `r2_implies_main_r2` theorem shows that Kostochka-Pyber r=2 implies the r=2 case of the main conjecture — modulo the connection between `isEmbeddableConc` (our concrete definition) and `isEmbeddable` (the sorry in the parent file). This sorry captures a genuine proof gap: without a formal equivalence between the two definitions, we cannot transfer the result.",
+    "mathContext": "Kostochka-Pyber (1988): $\\forall \\varepsilon > 0$, $\\exists C, N$ such that any graph on $n \\geq N$ vertices with $\\geq n^{1+\\varepsilon}$ edges contains a non-planar subgraph on $\\leq C$ vertices. This is the $r=2$ case of Erdős Problem 1018.",
+    "significance": "key",
+    "relatedConcepts": ["Kostochka-Pyber theorem", "non-planar subgraph", "induced subgraph", "axiom in Lean 4"],
+    "prerequisites": ["Erdős Problem 1018 statement", "induced subgraph definition", "graph density"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "erdos-1018-oq-04-incomplete-01",
+    "range": { "startLine": 222, "endLine": 246 },
+    "type": "context",
+    "title": "Progress Summary and Remaining Work",
+    "content": "The summary documents what this completion pass achieves and what remains. The central contribution is replacing the sorry `isEmbeddable` definition with `isEmbeddableConc` — transforming a vacuously-true formalization into a substantive one. K₃ and K₄ planarity are reduced from axioms to theorems (pending geometric sorries). The 5 remaining sorries split into geometric verification sorries (4, covering convex hull intersections) and the definition-equivalence sorry (1, connecting old and new definitions). The Turán number definition remains open. This is a typical pattern in formalization: resolving the key conceptual sorry exposes finer technical sorries that require specialized Mathlib infrastructure.",
+    "mathContext": "After this pass: 1 new axiom ($\\texttt{kostochka\\_pyber\\_r2}$), 5 sorries, 11 theorems. The 4 geometric sorries require $\\operatorname{conv}(\\varphi(e_1)) \\cap \\operatorname{conv}(\\varphi(e_2)) = \\operatorname{conv}(\\varphi(e_1 \\cap e_2))$ for specific embeddings.",
+    "significance": "context",
+    "relatedConcepts": ["sorry resolution strategy", "geometric verification", "Turán number", "convex hull intersection"],
+    "prerequisites": ["Lean 4 sorry keyword", "formalization methodology"]
+  }
+]
