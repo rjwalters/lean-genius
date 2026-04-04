@@ -25,35 +25,96 @@
     ]
   },
   "overview": {
-    "historicalContext": "Feuerbach's theorem (1822) states that the nine-point circle of a triangle is internally tangent to the incircle and externally tangent to each of the three excircles. The classical inversive proof, using inversion centered at the tangency point (Feuerbach point), elegantly transforms circles to lines and reduces the tangency question to parallelism.",
-    "problemStatement": "Develop the inversive geometry framework for Feuerbach's theorem: define the Feuerbach point, prove it lies on both circles, define planar inversion, prove the Circle-to-Line theorem, and show the two image lines are parallel.",
-    "proofStrategy": "The Feuerbach point F is defined as the point on the ray N→I (nine-point center to incenter) at distance R/2 from N, where R/2 is the nine-point radius. Feuerbach's incircle distance theorem (dist(N,I) = R/2 - r) guarantees F lies on both circles. Inversion at F sends each circle (passing through F) to a line. The proportionality N-F = -(R/2/r)·(I-F) follows from the collinearity F, N, I, making the image lines parallel.",
+    "historicalContext": "Karl Wilhelm Feuerbach (1800–1834) published his theorem in 1822 at the age of 22, in a short paper that was initially ignored and only later recognized as a profound result in triangle geometry. His original proof was purely algebraic and computational; the elegant inversive geometry proof came later.\n\nThe nine-point circle itself was discovered independently by multiple mathematicians around 1820: Brianchon and Poncelet (1820) proved it passes through the midpoints of the sides, the feet of the altitudes, and the midpoints of the segments from vertex to orthocenter. Feuerbach's additional discovery — that this circle is tangent to all four tritangent circles — elevated the nine-point circle to a central place in classical Euclidean geometry.\n\nThe inversive geometry approach used here was developed in the 19th century as the theory of circle inversion matured (Möbius, Kelvin, Poincaré). The key insight: if two circles are tangent, they share a common point, and an inversion centered at that point maps both tangent circles to parallel lines. This reduces the tangency question to a parallelism question, which is much easier to verify computationally. This is exactly the framework formalized here.\n\nFeuerbach's theorem was generalized by many 19th-century geometers, and it continues to be a source of elegant results in modern triangle geometry (see Kimberling's Encyclopedia of Triangle Centers, where the Feuerbach point is triangle center X(11)).",
+    "problemStatement": "Develop the inversive geometry framework for Feuerbach's theorem. Specifically: (1) define the Feuerbach point $F$ as the point on the ray from nine-point center $N$ through incenter $I$ at distance $R_9$ from $N$ (where $R_9 = R/2$ is the nine-point radius); (2) prove $F$ lies on both circles; (3) define planar inversion $P \\mapsto O + k^2/|OP|^2 \\cdot (P-O)$; (4) prove the Circle-to-Line theorem; (5) prove the image lines of both circles under inversion at $F$ are parallel.",
+    "proofStrategy": "The Feuerbach point $F$ is defined explicitly in coordinates as the point on ray $N \\to I$ at distance $R_9$ from $N$: $F = N + (R_9/d) \\cdot (I-N)$ where $d = R_9 - r$ is the NI distance (Feuerbach's distance theorem gives $|NI| = R_9 - r$ for the incircle). This guarantees $|NF| = R_9$ (on nine-point circle) and $|IF| = r$ (on incircle) by the same ratio.\n\nThe Circle-to-Line theorem uses a key algebraic identity: if $O$ and $P$ both lie on a circle centered at $C$ with radius $\\rho$, then $|OP|^2 = 2(P-O)\\cdot(C-O)$ (proved by subtracting the circle equations $|P-C|^2 = |O-C|^2 = \\rho^2$). After inversion, $Q = O + k^2/|OP|^2 \\cdot (P-O)$, the inner product $2(Q-O)\\cdot(C-O) = k^2$ is a linear equation in $Q$ — a line perpendicular to $OC$.\n\nThe parallel-lines result follows algebraically: since $F = N + (R_9/d)(I-N)$, the vectors $N-F$ and $I-F$ are proportional with ratio $-(R_9/r)$, so the perpendicular lines (perpendicular to $N-F$ and $I-F$ respectively) are parallel.",
     "keyInsights": [
-      "The Feuerbach point exists only for non-equilateral triangles (inradius < ninePointRadius)",
-      "Circle-to-Line theorem: the image of a circle through the inversion center is always a line",
-      "Key identity: |P-O|² = 2(P-O)·(C-O) for P, O on a circle centered at C — eliminates the center from the inversion computation",
-      "The collinearity F, N, I directly implies the image normals are proportional, hence the lines are parallel"
+      "The Feuerbach point $F$ exists only for non-equilateral triangles: the condition $r < R_9$ (inradius strictly less than nine-point radius) fails only for equilateral triangles where $r = R_9$ and the two circles coincide",
+      "The Circle-to-Line theorem reduces to a single algebraic identity $|PO|^2 = 2(P-O)\\cdot(C-O)$ (obtained by subtracting $|P-C|^2 = |O-C|^2$), which then makes the inversion computation trivially linear",
+      "The collinearity of $F$, $N$, $I$ (by definition: $F$ is on ray $N \\to I$) directly implies that the image normals $N-F$ and $I-F$ are proportional with explicit ratio $-(R_9/r)$, making parallelism a pure algebraic computation",
+      "Inversion is not defined at the center $O$ itself, so the hypothesis $\\mathrm{dist2\\_sq}(P, F) \\neq 0$ (i.e., $P \\neq F$) is required in each theorem — a careful treatment of this edge case in the formal proof",
+      "This file establishes the geometric framework (two parallel lines after inversion) but does not yet complete the excircle tangency — the final step would show each excircle maps to a circle between the two parallel lines, establishing external tangency"
     ],
     "prerequisites": [
-      "Feuerbach's incircle distance theorem from parent FeuerbachsTheorem",
-      "Coordinate geometry and dist2/dist2_sq definitions",
-      "Real.sqrt and norm calculations in ℝ²"
+      "Feuerbach's incircle distance theorem from parent FeuerbachsTheorem (|NI| = R_9 - r)",
+      "Coordinate geometry: dist2, dist2_sq definitions for ℝ²",
+      "Real.sqrt properties and field_simp for algebraic simplification",
+      "Planar inversion basics (Möbius geometry)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports, Namespace, and Auxiliary Lemmas",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "File header explaining the inversive proof strategy. Imports from FeuerbachsTheorem (parent). Three private auxiliary lemmas: dist2_sq_comm (symmetry), dist2_sqrt_eq (definition unfolding), dist2_sq_of_dist2_eq (bridge between dist2 and dist2_sq), and feuerbach_NI_sqrt (the NI distance in sqrt form, derived from the parent's incircle distance theorem)"
+    },
+    {
+      "id": "feuerbach-point",
+      "title": "Part II: The Feuerbach Point — Definition and Circle Membership",
+      "startLine": 68,
+      "endLine": 119,
+      "summary": "Defines Triangle.feuerbachPoint as the point on ray N→I at distance R_9 from N: F = N + (R_9/d)·(I-N) where d = R_9 - r. Proves feuerbachPoint_on_ninePointCircle (dist2(N,F) = R_9) and feuerbachPoint_on_incircle (dist2(I,F) = r). Both proofs use feuerbach_NI_sqrt and field_simp/ring for the algebraic calculations"
+    },
+    {
+      "id": "inversion-definition",
+      "title": "Part III: Planar Inversion and the Circle-to-Line Theorem",
+      "startLine": 121,
+      "endLine": 167,
+      "summary": "Defines invertPoint O k P = O + k²/dist2_sq(O,P) · (P-O). Private lemma dot_identity_of_circle proves the key algebraic identity |PO|² = 2(P-O)·(C-O) for P, O on a common circle. The main theorem circle_to_line applies this to show the inversion image Q of any P≠O satisfies the linear equation 2(Q-O)·(C-O) = k² — the equation of a line"
+    },
+    {
+      "id": "image-lines",
+      "title": "Part IV: Both Circles Map to Lines under Inversion at F",
+      "startLine": 169,
+      "endLine": 205,
+      "summary": "Two theorems apply circle_to_line specifically to the Feuerbach point context. incircle_maps_to_line: for P on the incircle (P≠F), the image Q satisfies 2(Q-F)·(I-F) = k² (line perpendicular to FI). ninePointCircle_maps_to_line: for P on the nine-point circle (P≠F), image Q satisfies 2(Q-F)·(N-F) = k² (line perpendicular to FN)"
+    },
+    {
+      "id": "parallel-lines",
+      "title": "Part V: The Image Lines are Parallel",
+      "startLine": 207,
+      "endLine": 234,
+      "summary": "feuerbach_normals_proportional proves N-F = -(R_9/r)·(I-F) componentwise, using field_simp and ring on the feuerbachPoint definition. feuerbach_inversive_parallel_lines packages this as ∃ λ ≠ 0, N-F = λ·(I-F) — the existence witness being λ = -(R_9/r)"
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Proof Map",
+      "startLine": 236,
+      "endLine": 266,
+      "summary": "Closing comment cataloging the 10 theorems proved in this file with their geometric meaning, and explaining the overall inversive proof strategy connecting to the excircle tangency (the next step not formalized here)"
+    }
+  ],
   "conclusion": {
-    "summary": "This file proves 10 theorems (plus 2 private lemmas) with 0 sorries and 0 axioms, building the complete inversive framework: Feuerbach point definition and membership in both circles, Circle-to-Line theorem, and parallel image lines.",
-    "implications": "The inversive framework established here is the foundation for the full proof that excircles are also tangent to the nine-point circle. The parallel line result encodes the essential geometric content: after inversion, the problem reduces to showing that parallel-translated circles (between two parallel lines) are tangent to the original circles.",
+    "summary": "This file proves 10 theorems plus 2 auxiliary lemmas (12 total) with 0 sorries and 0 axioms, formalizing the inversive geometry framework. The Feuerbach point is defined and shown to lie on both circles; the Circle-to-Line theorem is proved; and the parallel-image-lines result establishes the core geometric content of the inversive proof strategy.",
+    "implications": "The inversive framework established here is the foundation for the full proof that excircles are also tangent to the nine-point circle. The parallel line result — that inversion at F maps both circles to parallel lines — means any circle tangent to both original circles maps to a circle between the two parallel lines, automatically tangent to both lines and hence to both original circles. This reduces the excircle tangency to the simpler problem of finding circles between two parallel lines. The `circle_to_line` theorem and `invertPoint` definition are reusable for other inversive geometry arguments.",
     "openQuestions": [
-      "Complete the proof that each excircle is tangent to the nine-point circle using this inversive framework",
-      "Formalize the full Feuerbach theorem including all three excircles"
+      "Complete the inversive proof by showing each excircle maps under inversion at $F$ to a circle between the two parallel lines, establishing external tangency of each excircle to the nine-point circle",
+      "Formalize Feuerbach's theorem using Mathlib's projective geometry or complex plane approach (where inversion is Möbius transformation and the computation is more algebraically streamlined via complex multiplication)",
+      "Extend the framework to other tangency results in triangle geometry: the Soddy circles, mixtilinear incircles, or the Apollonius circle — all of which use inversive methods"
     ]
   },
   "crossReferences": [
     {
       "slug": "feuerbachs-theorem",
       "relationship": "extends",
-      "description": "Parent file providing the Feuerbach incircle distance theorem and triangle geometry definitions"
+      "description": "Parent file providing the Feuerbach incircle distance theorem (|NI| = R_9 - r), triangle geometry definitions, and inradius/nine-point-radius calculations"
+    },
+    {
+      "slug": "feuerbachs-theorem-oq-01",
+      "relationship": "related",
+      "description": "Sibling open question on Feuerbach's theorem, developing another aspect of the theory"
+    },
+    {
+      "slug": "feuerbachs-theorem-oq-02",
+      "relationship": "related",
+      "description": "Sibling open question on Feuerbach's theorem"
+    },
+    {
+      "slug": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Ptolemy's theorem is proved via inversive geometry — inversion maps circles to lines in both theorems; the technique is the same"
     }
   ],
   "leanFile": {
