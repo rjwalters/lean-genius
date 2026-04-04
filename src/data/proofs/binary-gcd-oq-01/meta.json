@@ -50,15 +50,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Binary GCD algorithm was published by Josef Stein in 1967, though it was known earlier. On binary computers, it replaces the expensive division operations of the Euclidean algorithm with bit shifts and subtraction. Lamé proved in 1844 that the Euclidean algorithm takes at most 5d steps where d is the number of decimal digits of the smaller input — this was one of the first complexity analyses in computer science.",
+    "historicalContext": "**Two Algorithms for the Same Problem**\n\nThe Euclidean algorithm — described in Book VII of Euclid's *Elements* (~300 BCE) — computes gcd(a,b) via repeated division: (a,b) → (b, a mod b). It is one of the oldest known algorithms. Gabriel Lamé's 1844 analysis in *Comptes Rendus* proved that the algorithm takes at most 5d steps where d is the number of decimal digits of the smaller input — one of the first formal complexity analyses in history, predating computer science by a century. Lamé's proof used the key insight that Fibonacci pairs (F_n, F_{n-1}) are the worst case: the quotient is always 1, forcing the maximum number of steps.\n\nBinary GCD (Stein's algorithm) was published by Josef Stein in 1967, though the core idea was known to programmers working on early binary computers. The algorithm replaces expensive division with bit shifts (halving by 2) and subtraction — operations that are far cheaper on binary hardware. On multi-precision integers (as used in cryptography), the savings are dramatic since division is O(n²) in the number of limbs while shifting is O(n).\n\nThe formal comparison formalized here reveals the asymmetry: Binary GCD uses *more* steps but cheaper ones; the total operation count (weighted by hardware cost) often favors Binary GCD for large inputs. This is a recurring theme in algorithm analysis: step count alone doesn't determine practical efficiency.",
     "problemStatement": "Compare the formal step counts of the Binary GCD algorithm and the Euclidean algorithm:\n1. Define step counting functions for both algorithms\n2. Compute concrete step counts for specific inputs\n3. Prove logarithmic upper bounds on both step counts\n4. Characterize the worst-case inputs (Fibonacci numbers for Euclidean)",
     "text": "Formal step count comparison between Binary GCD and the Euclidean algorithm.",
     "proofStrategy": "1. Define recursive step counters matching the algorithm structure\n2. Prove basic properties (symmetry, zero cases)\n3. Use native_decide for concrete examples\n4. State logarithmic bounds (Lamé for Euclidean, bit-length for Binary GCD)",
     "keyInsights": [
-      "Binary GCD uses more steps than Euclidean (roughly 2x) but each step is cheaper on binary hardware (bit shifts vs division)",
-      "Fibonacci consecutive pairs are worst-case for Euclidean: gcd(F_{n+1}, F_n) takes n steps",
-      "Binary GCD worst case is when both inputs are odd primes of similar size",
-      "The total cost model (steps × cost per step) favors Binary GCD for large multi-precision integers"
+      "Binary GCD uses more steps than Euclidean (5 vs 2 for gcd(12,8), 10 vs 6 for gcd(100,37)) but each step is O(1) bit operations vs O(n) for division in multi-precision",
+      "Fibonacci consecutive pairs are worst-case for Euclidean: gcd(F_{n+1}, F_n) takes exactly n steps since each quotient F_{n+1}/F_n ≈ φ; the concrete example gcd(89,55) takes 9 Euclidean vs 8 Binary steps",
+      "The Binary GCD bound proof uses the potential function Φ = log₂a + log₂b: each of the four parity cases decreases Φ by ≥1, giving total steps ≤ 2Φ + 2",
+      "The modular proof design is exemplary: the hard Lamé bound lives in GCDAlgorithmOQ01, and this file bridges via euclidSteps_eq_ordered (private) to reuse it in 2 lines",
+      "Formal termination proofs for both recursive definitions use Lean 4's termination_by a+b mechanism — the Euclidean case needs Nat.mod_lt while Binary GCD's `all_goals omega` handles all four cases"
     ],
     "prerequisites": [
       "GCD algorithms and their correctness",
@@ -112,9 +113,10 @@
     "summary": "Fully verified step count analysis for Binary GCD vs Euclidean algorithm. Both logarithmic bounds proved: Lamé's theorem via bridge to GCDAlgorithmOQ01, Binary GCD bound via strong induction with log-decrease potential. 0 axioms, 0 sorries.",
     "implications": "The step counting infrastructure enables formal comparison of GCD algorithm variants. The concrete examples verify the expected behavior: Fibonacci inputs maximize Euclidean steps, while Binary GCD has more uniform behavior across input types.",
     "openQuestions": [
-      "Formalize the total cost model (steps × bit-operation cost)",
-      "Compare with Lehmer's GCD algorithm",
-      "Prove tight bounds: Euclidean ≤ 5·digits(min(a,b)) via Fibonacci"
+      "Total cost model: formalize the weighted complexity W(a,b) = Σ cost(step_i) where each Euclidean step costs O(log a) bit operations and each Binary GCD step costs O(1); prove W_binary ≤ W_euclid asymptotically for multi-precision integers",
+      "Lehmer's GCD algorithm: Lehmer (1938) improved Euclidean by estimating quotients from leading digits only; can this be formalized with a formal bound showing fewer multi-precision division operations?",
+      "Tight Fibonacci bound: prove the tight form of Lamé's theorem — euclidSteps(F_{n+1}, F_n) = n — and hence that the bound is asymptotically tight, not just an upper bound",
+      "Binary GCD tight bound: characterize the worst-case inputs for Binary GCD (inputs where the odd-subtraction case triggers maximally) and prove the lower bound steps ≥ Ω(log a + log b) for some infinite family"
     ]
   },
   "crossReferences": [
