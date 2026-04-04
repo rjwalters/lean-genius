@@ -6,7 +6,7 @@
     "type": "theorem",
     "title": "Euler's Partition Identity: Odd = Distinct (Mathlib Wrapper)",
     "content": "euler_partition_identity wraps Mathlib's Theorems100.partition with a .symm flip. The Theorems100 module is Mathlib's collection of the '100 famous theorems' in formalized mathematics, and Euler's partition identity is #44 in the Freek Wiedijk list. The .symm call reverses the equality direction: Mathlib states IsDistinct.card n = IsOdd.card n, while this theorem wants IsOdd.card n = IsDistinct.card n. This is a common pattern — the same mathematical fact can be stated in two directions and the 'canonical' direction in Mathlib may not match what's convenient for a particular proof.",
-    "mathContext": "The identity: $|\\{\\lambda \\vdash n : \\text{all parts odd}\\}| = |\\{\\lambda \\vdash n : \\text{all parts distinct}\\}|$. The bijective proof: write each part $k$ with multiplicity $m_k$ in binary: $m_k = \\sum_j b_{k,j} 2^j$. Replace each occurrence of $k$ with multiplicity $2^j$ by the single part $k 2^j$. This gives a partition into distinct parts. The inverse map recovers the odd-part partition. Generating function proof: $\\prod_{k \\text{ odd}} \\frac{1}{1-x^k} = \\prod_{k=1}^\\infty (1+x^k)$ (multiply both sides by $\\prod_{k \\text{ even}} (1-x^k)$).",
+    "mathContext": "The identity: $|\\{\\lambda \\vdash n : \\text{all parts odd}\\}| = |\\{\\lambda \\vdash n : \\text{all parts distinct}\\}|$. The bijective proof: write each part $k$ with multiplicity $m_k$ in binary: $m_k = \\sum_j b_{k,j} 2^j$. Replace each occurrence of $k$ with multiplicity $2^j$ by the single part $k 2^j$. Generating function proof: $\\prod_{k \\text{ odd}} \\frac{1}{1-x^k} = \\prod_{k=1}^\\infty (1+x^k)$.",
     "significance": "key",
     "relatedConcepts": ["Theorems100 in Mathlib", "Freek Wiedijk list", "generating functions for partitions", "bijective proofs"],
     "prerequisites": ["Nat.Partition.IsOdd and IsDistinct", "Theorems100.partition", "Eq.symm"]
@@ -17,11 +17,35 @@
     "range": { "startLine": 33, "endLine": 39 },
     "type": "definition",
     "title": "Overpartition as Dependent Record with Proof Field",
-    "content": "The Overpartition structure is a dependent record type — its third field `overlined_subset` is a proof that depends on the values of fields 1 and 2. This is a key Lean 4 pattern for bundling data with its invariants. The toFinset conversion (Multiset.toFinset) is needed because Nat.Partition.parts is a Multiset (which can have repeated elements), while the overlined set must be a Finset (no repetitions). The subset constraint ensures that you can only overline part sizes that actually appear in the partition.",
-    "mathContext": "Formally: \\texttt{Overpartition n} is a structure with \\texttt{partition : Nat.Partition n}, \\texttt{overlined : Finset ℕ}, and \\texttt{overlined\\_subset : overlined ⊆ partition.parts.toFinset}. The \\texttt{parts.toFinset} is the support of the multiset: $\\text{supp}(\\lambda) = \\{k \\in \\mathbb{N} : v_k(\\lambda) > 0\\}$ where $v_k(\\lambda)$ is the multiplicity of $k$ in $\\lambda$. The constraint: only values in the support can be overlined. For the 3 overpartitions of 2: \\{2\\} with overlined $\\in \\{\\emptyset, \\{2\\}\\}$ gives 2 choices; \\{1,1\\} has support \\{1\\}, so overlined $\\in \\{\\emptyset, \\{1\\}\\}$ gives 2 choices; total: $p̄(2) = 4$.",
+    "content": "The Overpartition structure is a dependent record type — its third field overlined_subset is a proof that depends on the values of fields 1 and 2. This is a key Lean 4 pattern for bundling data with its invariants. The toFinset conversion (Multiset.toFinset) is needed because Nat.Partition.parts is a Multiset (which can have repeated elements), while the overlined set must be a Finset (no repetitions). The subset constraint ensures that you can only overline part sizes that actually appear in the partition.",
+    "mathContext": "Formally: Overpartition n has partition : Nat.Partition n, overlined : Finset ℕ, overlined_subset : overlined ⊆ partition.parts.toFinset. The parts.toFinset is the support: $\\text{supp}(\\lambda) = \\{k \\in \\mathbb{N} : v_k(\\lambda) > 0\\}$. For $n=2$: partition \\{2\\} has support \\{2\\}, giving 2 overline choices; partition \\{1,1\\} has support \\{1\\}, giving 2 choices; total $p̄(2)=4$.",
     "significance": "key",
     "relatedConcepts": ["dependent record types in Lean 4", "Multiset.toFinset (support)", "proof fields in structures", "invariant encoding"],
     "prerequisites": ["structure syntax in Lean 4", "Nat.Partition structure", "Multiset.toFinset", "Finset.subset"]
+  },
+  {
+    "id": "ann-num-overpartitions-axiom",
+    "proofId": "partition-theorem-oq-03",
+    "range": { "startLine": 43, "endLine": 47 },
+    "type": "axiom",
+    "title": "numOverpartitions: Axiomatized Counting Function",
+    "content": "numOverpartitions : ℕ → ℕ is declared as an axiom because computing it requires enumerating all partitions and their overline subsets — a decidable but computationally expensive operation not easily extracted from Nat.Partition. Small values are documented in comments: p̄(0) = 1 (empty partition), p̄(1) = 2 (partition {1}, two overline choices ∅ or {1}), p̄(2) = 4. The generating function for overpartitions is ∏_{k≥1} (1+x^k)/(1-x^k), which grows rapidly: p̄(n) ~ (1/4n)·e^{π√n}.",
+    "mathContext": "Generating function: $\\bar{p}(n) = \\prod_{k=1}^\\infty \\frac{1+x^k}{1-x^k} = 1 + 2x + 4x^2 + 8x^3 + 14x^4 + \\ldots$. Asymptotics: $\\bar{p}(n) \\sim \\frac{1}{4n} e^{\\pi\\sqrt{n}}$ (Lovejoy 2004). Compare: $p(n) \\sim \\frac{1}{4n\\sqrt{3}} e^{\\pi\\sqrt{2n/3}}$ (Hardy-Ramanujan). So overpartitions grow by a factor of roughly $e^{\\pi(\\sqrt{n} - \\sqrt{2n/3})}$ over ordinary partitions.",
+    "significance": "supporting",
+    "relatedConcepts": ["overpartition generating function", "axiom in Lean 4", "Hardy-Ramanujan asymptotics", "Lovejoy overpartitions"],
+    "prerequisites": ["axiom keyword in Lean 4", "Nat.Partition enumeration", "generating function theory"]
+  },
+  {
+    "id": "ann-distinct-embedding",
+    "proofId": "partition-theorem-oq-03",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "distinctToOverpartition: Embedding Distinct Partitions into Overpartitions",
+    "content": "distinctToOverpartition shows that every partition with distinct parts (no repeated part sizes) is an overpartition — specifically, the one with no overlined parts (overlined = ∅). The hypothesis _h : p.parts.toFinset.card = p.parts.length checks that the partition has no repeated parts (support size = total length). The proof is the anonymous constructor ⟨p, ∅, Finset.empty_subset _⟩ — a 3-field struct where the proof field is trivially satisfied by Finset.empty_subset (the empty set is a subset of anything).",
+    "mathContext": "A partition $p \\vdash n$ is distinct iff $|\\text{supp}(p)| = \\text{length}(p)$ (all multiplicities are 1). The embedding sends $p$ to $(p, \\emptyset)$: an overpartition with no overlined parts. This shows distinct partitions $\\hookrightarrow$ overpartitions of type 0 (no overlines). Combined with overpartition_choices: each distinct partition contributes $2^{|\\text{supp}|} = 2^{|p|}$ overpartitions when all overline subsets are allowed.",
+    "significance": "supporting",
+    "relatedConcepts": ["distinct partitions", "Finset.empty_subset", "anonymous constructor", "partition embedding"],
+    "prerequisites": ["Nat.Partition", "Multiset.toFinset.card", "Finset.empty_subset", "anonymous constructor ⟨...⟩"]
   },
   {
     "id": "ann-powerset-counting",
@@ -30,7 +54,7 @@
     "type": "theorem",
     "title": "2^d Overpartition Choices via Finset.card_powerset",
     "content": "overpartition_choices is a one-line theorem using Finset.card_powerset. The mathematical content: the number of valid overline choices for a partition p is exactly 2^|supp(p)|, since any subset of the support can be chosen as the overlined set. The proof is `Finset.card_powerset _` — direct application of the cardinality formula for power sets. This is a clean example of how counting arguments in combinatorics reduce to Finset lemmas in Lean.",
-    "mathContext": "$|\\mathcal{P}(\\text{supp}(p))| = 2^{|\\text{supp}(p)|}$ (\\texttt{Finset.card\\_powerset}). For the total overpartition count: $p̄(n) = \\sum_{\\lambda \\vdash n} 2^{|\\text{supp}(\\lambda)|}$. This sum is not computed in this file (it's axiomatized as \\texttt{numOverpartitions}), but the per-partition formula is proved. Note that \\texttt{Finset.powerset S} enumerates all subsets of $S$ (as a Finset of Finsets), and \\texttt{Finset.card\\_powerset S} gives its cardinality $= 2^{|S|}$.",
+    "mathContext": "$|\\mathcal{P}(\\text{supp}(p))| = 2^{|\\text{supp}(p)|}$ (Finset.card_powerset). For total overpartition count: $\\bar{p}(n) = \\sum_{\\lambda \\vdash n} 2^{|\\text{supp}(\\lambda)|}$. This sum is not computed (it's axiomatized as numOverpartitions), but the per-partition formula is proved. Finset.powerset S enumerates all subsets of S as a Finset of Finsets, with |Finset.powerset S| = 2^|S|.",
     "significance": "supporting",
     "relatedConcepts": ["Finset.card_powerset", "powerset enumeration", "combinatorial counting", "2^n subsets"],
     "prerequisites": ["Finset.powerset", "Finset.card_powerset", "Multiset.toFinset.card"]
