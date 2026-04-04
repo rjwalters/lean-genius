@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-periodic-shift",
+    "proofId": "area-of-circle-oq-01-oq-03-oq-01",
+    "range": { "startLine": 56, "endLine": 87 },
+    "type": "technique",
+    "title": "Periodic Integral Shift Lemma",
+    "content": "The foundational lemma for the entire file: for any 2π-periodic continuous function f, the integral over any interval [t, t+2π] equals the integral over [0, 2π]. The proof splits the integral at 2π, then uses Mathlib's `integral_comp_add_left` to substitute u = x + 2π in the piece ∫_{2π}^{t+2π}, converting it via periodicity to ∫_0^t f. The two pieces then recombine via additivity of integrals. This avoids having to axiomatize the shift — it is fully proved from Mathlib primitives.",
+    "mathContext": "$\\int_t^{t+2\\pi} f(x)\\,dx = \\int_t^{2\\pi} f(x)\\,dx + \\int_0^t f(x)\\,dx = \\int_0^{2\\pi} f(x)\\,dx$\n\nThe middle step uses $\\int_{2\\pi}^{t+2\\pi} f(u)\\,du = \\int_0^t f(x+2\\pi)\\,dx = \\int_0^t f(x)\\,dx$ by periodicity.",
+    "significance": "key",
+    "relatedConcepts": ["periodic functions", "change of variables in integrals", "Parseval's theorem", "Poisson summation formula", "Fourier analysis"],
+    "prerequisites": ["Mathlib interval integrals", "integral_comp_add_left", "integral_add_adjacent_intervals"]
+  },
+  {
+    "id": "ann-curvespeed",
+    "proofId": "area-of-circle-oq-01-oq-03-oq-01",
+    "range": { "startLine": 92, "endLine": 137 },
+    "type": "definition",
+    "title": "Curve Speed: Definition, Continuity, and Periodicity",
+    "content": "The speed function `curveSpeed γ t = √(x'(t)² + y'(t)²)` measures the instantaneous traversal speed of the curve. Continuity follows from the smoothness of γ via `contDiff_succ_iff_deriv`. The proof that speed is 2π-periodic is non-trivial: it requires showing x'(t+2π) = x'(t), accomplished using `HasDerivAt.comp` with the shift map t ↦ t+2π, combined with the uniqueness of derivatives and γ's periodic_x hypothesis. For regular curves, speed > 0 everywhere — this regularity hypothesis is what makes arc-length reparametrization possible.",
+    "mathContext": "$\\text{speed}(t) = |\\gamma'(t)| = \\sqrt{(x'(t))^2 + (y'(t))^2}$\n\nRegularity condition: $\\text{speed}(t) > 0 \\iff (x'(t))^2 + (y'(t))^2 > 0 \\iff \\gamma'(t) \\ne 0$\n\nThis is the immersion condition in differential geometry.",
+    "significance": "supporting",
+    "relatedConcepts": ["regular curve", "immersion", "differential geometry", "Frenet–Serret formulas", "unit-speed parametrization"],
+    "prerequisites": ["SmoothClosedCurve", "contDiff_succ_iff_deriv", "HasDerivAt.comp", "Real.sqrt"]
+  },
+  {
+    "id": "ann-arclength-def",
+    "proofId": "area-of-circle-oq-01-oq-03-oq-01",
+    "range": { "startLine": 139, "endLine": 208 },
+    "type": "concept",
+    "title": "Arc-Length Function: FTC, Quasi-Periodicity, and Integer Multiples",
+    "content": "The arc-length function s(t) = ∫_0^t speed(u) du is defined as an interval integral. Its FTC derivative s'(t) = speed(t) follows directly from `integral_hasDerivAt_right`. The central result of this section — quasi-periodicity s(t+2π) = s(t) + L — uses the periodic integral shift lemma: split ∫_0^{t+2π} = ∫_0^t + ∫_t^{t+2π}, then the shift lemma gives ∫_t^{t+2π} speed = L. The induction proofs for s(n·2π) = nL (nat multiple) and s(-n·2π) = -nL (neg multiple) follow. These grow without bound, which is what IVT needs for surjectivity.",
+    "mathContext": "$s(t) = \\int_0^t |\\gamma'(u)|\\,du, \\quad s'(t) = |\\gamma'(t)|$\n\n$s(t + 2\\pi) = s(t) + L \\quad \\text{(quasi-periodicity)}$\n\n$s(2n\\pi) = nL, \\quad s(-2n\\pi) = -nL \\quad \\text{(growth bounds for IVT)}$\n\nwhere $L = \\int_0^{2\\pi} |\\gamma'(t)|\\,dt$ is the total circumference.",
+    "significance": "key",
+    "relatedConcepts": ["arc-length parameter", "natural parameter", "unit-speed curve", "quasi-periodic function", "FTC for interval integrals"],
+    "prerequisites": ["periodic_integral_shift", "integral_hasDerivAt_right", "integral_add_adjacent_intervals"]
+  },
+  {
+    "id": "ann-surjectivity",
+    "proofId": "area-of-circle-oq-01-oq-03-oq-01",
+    "range": { "startLine": 213, "endLine": 246 },
+    "type": "technique",
+    "title": "Surjectivity of Arc-Length via the Intermediate Value Theorem",
+    "content": "Surjectivity of s : ℝ → ℝ is proved using the IVT. For any target y, `exists_nat_gt` gives n with n·L > |y|. Then s(n·2π) = nL > y and s(-n·2π) = -nL < y by the nat/neg-nat multiple lemmas. Since s is continuous on [-n·2π, n·2π] and y lies between s at the two endpoints, `intermediate_value_uIcc` yields a preimage. This completes the proof that s : ℝ → ℝ is surjective — which together with strict monotonicity gives bijectivity.",
+    "mathContext": "For any $y \\in \\mathbb{R}$, choose $n \\in \\mathbb{N}$ with $nL > |y|$ (Archimedes). Then:\n$$s(-2n\\pi) = -nL < -|y| \\le y \\le |y| < nL = s(2n\\pi)$$\nBy IVT (s continuous): $\\exists t \\in [-2n\\pi, 2n\\pi]$ with $s(t) = y$.",
+    "significance": "key",
+    "relatedConcepts": ["intermediate value theorem", "Archimedean property", "surjectivity", "unbounded monotone functions", "intermediate_value_uIcc"],
+    "prerequisites": ["arcLength_nat_multiple", "arcLength_neg_nat_multiple", "arcLength_continuous", "exists_nat_gt"]
+  },
+  {
+    "id": "ann-bijective-inverse",
+    "proofId": "area-of-circle-oq-01-oq-03-oq-01",
+    "range": { "startLine": 252, "endLine": 317 },
+    "type": "concept",
+    "title": "Bijectivity, Arc-Length Inverse, and σ Quasi-Periodicity",
+    "content": "Strict monotonicity of s (hence injectivity) is proved by the mean value theorem: `exists_hasDerivAt_eq_slope` gives c ∈ (a,b) with s(b)-s(a) = s'(c)·(b-a) = speed(c)·(b-a) > 0. Bijectivity then combines injectivity with surjectivity. The inverse σ = s⁻¹ is defined set-theoretically via `Equiv.ofBijective`. The key σ quasi-periodicity σ(y+L) = σ(y)+2π is proved purely from s's quasi-periodicity and injectivity: s(σ(y)+2π) = s(σ(y))+L = y+L, and s is injective, so σ(y+L) = σ(y)+2π.",
+    "mathContext": "Strict monotonicity via MVT: $\\exists c \\in (a,b)$ s.t.\n$$s(b) - s(a) = s'(c)\\cdot(b-a) = \\text{speed}(c)\\cdot(b-a) > 0$$\n\n$\\sigma$ quasi-periodicity: $s(\\sigma(y)+2\\pi) = s(\\sigma(y))+L = y+L \\Rightarrow \\sigma(y+L) = \\sigma(y)+2\\pi$ (by injectivity of $s$).",
+    "significance": "key",
+    "relatedConcepts": ["mean value theorem", "bijection", "inverse function", "quasi-periodicity", "Equiv.ofBijective"],
+    "prerequisites": ["arcLength_surjective", "exists_hasDerivAt_eq_slope", "arcLength_quasi_periodic"]
+  },
+  {
+    "id": "ann-ift-axioms",
+    "proofId": "area-of-circle-oq-01-oq-03-oq-01",
+    "range": { "startLine": 319, "endLine": 339 },
+    "type": "context",
+    "title": "IFT Axioms: C¹ Smoothness and the Derivative Formula for σ",
+    "content": "Two axioms capture the inverse function theorem for the global bijection s: (1) `arcLengthInv_contDiff` states σ = s⁻¹ is C¹ — this requires the IFT applied globally to ℝ → ℝ, not just locally; (2) `arcLengthInv_hasDerivAt` gives σ'(y) = 1/speed(σ(y)), the classical IFT derivative reciprocal formula. Both follow from speed(t) > 0 everywhere. Mathlib has local IFT (`ContDiff.hasStrictFDerivAt_of_hasStrictFDerivAt`) but globalizing it requires additional infrastructure that was not yet available at the time of formalization.",
+    "mathContext": "Inverse function theorem: if $s' = \\text{speed} > 0$ everywhere, then $\\sigma = s^{-1}$ is $C^1$ with\n$$\\sigma'(y) = \\frac{1}{s'(\\sigma(y))} = \\frac{1}{\\text{speed}(\\sigma(y))}$$\nThis is the key formula used in the main theorem's speed computation.",
+    "significance": "technical",
+    "relatedConcepts": ["inverse function theorem", "global diffeomorphism", "ContDiff", "HasDerivAt", "open question: remove axiom"],
+    "prerequisites": ["arcLength_bijective", "ContDiff ℝ 1", "HasDerivAt"]
+  },
+  {
+    "id": "ann-changevar-axioms",
+    "proofId": "area-of-circle-oq-01-oq-03-oq-01",
+    "range": { "startLine": 344, "endLine": 377 },
+    "type": "context",
+    "title": "Change-of-Variables Axioms: Circumference and Area Preservation",
+    "content": "Two axioms state that the reparametrization τ = σ∘(c·) preserves both circumference and area. For circumference: the chain rule gives |γ'(τ(t))|·|τ'(t)| = speed(τ(t))·c/speed(τ(t)) = c, so the circumference of the reparametrized curve is ∫_0^{2π} c dt = 2πc = L. For area: τ is an orientation-preserving diffeomorphism [0,2π]→[0,2π], so it preserves the signed area integral ∫(x dy - y dx). Both axioms could in principle be discharged using `MeasureTheory.integral_image_eq_integral_abs_deriv_smul`, but require careful composition setup.",
+    "mathContext": "With $\\tau(t) = \\sigma(ct)$, $\\tau'(t) = c/\\text{speed}(\\tau(t))$:\n$$|\\gamma'(\\tau(t))| \\cdot |\\tau'(t)| = \\text{speed}(\\tau(t)) \\cdot \\frac{c}{\\text{speed}(\\tau(t))} = c$$\n$$\\int_0^{2\\pi} |(\\gamma\\circ\\tau)'(t)|\\,dt = 2\\pi c = L$$\n\nArea: $\\tau$ is orientation-preserving, so $\\int_0^{2\\pi} (x\\circ\\tau)\\,d(y\\circ\\tau) = \\int_0^{2\\pi} x\\,dy$.",
+    "significance": "technical",
+    "relatedConcepts": ["change of variables", "orientation-preserving diffeomorphism", "Green's theorem", "signed area integral", "MeasureTheory.integral_image_eq_integral_abs_deriv_smul"],
+    "prerequisites": ["arcLengthInv_hasDerivAt", "SmoothClosedCurve.circumference", "SmoothClosedCurve.area"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "area-of-circle-oq-01-oq-03-oq-01",
+    "range": { "startLine": 382, "endLine": 477 },
+    "type": "insight",
+    "title": "Main Theorem: Constructing the Constant-Speed Reparametrization",
+    "content": "The main theorem assembles all prior results to construct γ'(t) = γ(τ(t)) with τ(t) = σ(ct), c = L/(2π). The proof checks: (1) τ is C¹ (composition of C¹ maps via ContDiff.comp); (2) γ' is 2π-periodic because τ(t+2π) = σ(c(t+2π)) = σ(ct+L) = σ(ct)+2π = τ(t)+2π using σ's quasi-periodicity, so γ'(t+2π) = γ(τ(t)+2π) = γ(τ(t)); (3) constant speed: the chain rule + IFT derivative give (x'∘τ·τ')² + (y'∘τ·τ')² = speed(τ)²·(c/speed(τ))² = c²; (4) circumference and area goals are the two change-of-variables axioms.",
+    "mathContext": "Speed computation: let $\\text{sp} = \\text{speed}(\\tau(t))$, $\\tau'(t) = c/\\text{sp}$. Then:\n$$(x'(\\tau) \\cdot \\tau')^2 + (y'(\\tau) \\cdot \\tau')^2 = (x'^2+y'^2)(\\tau) \\cdot (c/\\text{sp})^2 = \\text{sp}^2 \\cdot c^2/\\text{sp}^2 = c^2$$\n\nPeriodicity: $\\tau(t+2\\pi) = \\sigma(ct+L) = \\sigma(ct)+2\\pi = \\tau(t)+2\\pi$.",
+    "significance": "key",
+    "relatedConcepts": ["arc-length reparametrization", "constant-speed curve", "isoperimetric inequality", "Wirtinger inequality", "Hurwitz 1901"],
+    "prerequisites": ["arcLengthInv_quasi_periodic", "arcLengthInv_contDiff", "arcLengthInv_hasDerivAt", "circumference_reparam_preserved", "area_reparam_preserved"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "area-of-circle-oq-01-oq-03-oq-01",
+    "range": { "startLine": 482, "endLine": 517 },
+    "type": "insight",
+    "title": "Corollaries: Interface for the Parent Isoperimetric Proof",
+    "content": "The corollaries package the main theorem's components for use by the parent isoperimetric inequality proof (AreaOfCircleOQ01OQ03). `reparam_circumference_eq` extracts circumference preservation. `reparam_speed_is_L_over_2pi` converts the squared speed form c² to |γ'| = c using `Real.sqrt_sq` with c > 0 — this unit-speed form is what Hurwitz's Fourier argument needs. `arcLength_grows_by_L` compactly expresses s(t+2π) - s(t) = L. `arcLength_bijection` bundles bijectivity and continuity together for callers. With constant speed c = L/(2π), the Fourier coefficients of γ' are orthogonal and Parseval's identity becomes the Wirtinger inequality.",
+    "mathContext": "With constant speed $c = L/(2\\pi)$, the Fourier series of $\\gamma'$ satisfies Parseval:\n$$\\sum_{n=-\\infty}^\\infty |\\hat{\\gamma}'_n|^2 = \\frac{1}{2\\pi}\\int_0^{2\\pi} |\\gamma'(t)|^2\\,dt = c^2$$\nThis is Wirtinger's inequality in disguise, which gives $L^2 \\ge 4\\pi A$ (isoperimetric inequality).",
+    "significance": "supporting",
+    "relatedConcepts": ["Wirtinger inequality", "Fourier series", "Parseval's theorem", "Hurwitz isoperimetric proof", "isoperimetric inequality"],
+    "prerequisites": ["exists_arclength_reparam'", "Real.sqrt_sq", "arcLength_bijective", "arcLength_continuous"]
+  }
+]
