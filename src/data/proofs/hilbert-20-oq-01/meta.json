@@ -53,7 +53,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The question of which PDEs have local solutions was dramatically transformed by Lewy's 1957 example of a smooth linear PDE with no local solutions. Hörmander (1960) found a necessary condition via the principal symbol. Nirenberg and Treves (1963) conjectured that condition (Ψ) — a sign condition on the imaginary part of the principal symbol along bicharacteristic curves — gives the full characterization. This was proved by Dencker in 2006.",
+    "historicalContext": "Until 1957, it was widely assumed that smooth linear PDEs always have local solutions. Hans Lewy's startling counterexample — a simple first-order operator in ℝ³ with no local solutions — shattered this intuition and launched the modern theory of local solvability. Hörmander (1960) identified the principal symbol as the key invariant and gave a necessary condition: a sign condition involving the Poisson bracket of the real and imaginary parts of the symbol. Nirenberg and Treves (1963) sharpened this to condition (Ψ) — a one-sided sign condition on Im(p_m) along oriented bicharacteristic curves of Re(p_m) — and conjectured it to be both necessary and sufficient for operators of principal type. The necessity half (Hörmander 1960, strengthened by Nirenberg-Treves 1963) was established relatively quickly. The sufficiency direction resisted all attempts for 43 years: partial results by Beals-Fefferman (1973, condition (P), a stronger condition), and Lerner (1988-2000, partial cases) fell short of condition (Ψ). Dencker's 2006 proof of sufficiency — using sophisticated second microlocalization and energy estimates — completed the conjecture and earned the Bôcher Memorial Prize.",
     "problemStatement": "What is the precise characterization of locally solvable operators? That is, given a linear partial differential operator P, when does the equation Pu = f have a distribution solution u near a point x₀ for every smooth f?",
     "text": "We formalize the answer: for operators of principal type, local solvability is equivalent to condition (Ψ) on the principal symbol.",
     "proofStrategy": "Define linear PDOs, principal symbols, local solvability, principal type, and condition (Ψ). State the Hörmander necessity and Dencker sufficiency as axioms, then derive the characterization. Show elliptic operators as a key special case.",
@@ -61,7 +61,8 @@
       "The principal symbol p_m(x, ξ) encodes the leading-order behavior of the operator",
       "Condition (Ψ): Im(p_m) cannot change sign from − to + along bicharacteristics of Re(p_m)",
       "Elliptic operators satisfy (Ψ) vacuously since p_m never vanishes for nonzero ξ",
-      "The Nirenberg-Treves conjecture took 43 years to prove (1963-2006)"
+      "The Nirenberg-Treves conjecture took 43 years to prove (1963-2006)",
+      "Encoding BicharacteristicCurve as a concrete structure (not an axiom) enables proved theorems like elliptic_satisfies_psi — the omission of Hamilton flow strengthens (Ψ) conservatively, preserving soundness of the axioms"
     ],
     "prerequisites": [
       "PDEs and differential operators",
