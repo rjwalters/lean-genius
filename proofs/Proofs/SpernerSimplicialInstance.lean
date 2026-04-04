@@ -423,6 +423,37 @@ lemma AbstractSimplicialData.vertexEnum_image_erase
       rw [← this, heq]
     · simp [vertexEnum, List.get_eq_getElem, hidx_eq]
 
+/-- Unfold faceOf. -/
+lemma AbstractSimplicialData.faceOf_eq
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n+1)) :
+    D.faceOf s hs k = s.erase (D.vertexEnum s hs k) := rfl
+
+/-- Vertex j is not in face k iff j = k.
+The forward direction: if vertexEnum j is not in s.erase(vertexEnum k),
+then vertexEnum j = vertexEnum k (since vertexEnum j ∈ s), hence j = k by injectivity.
+The backward direction: vertexEnum k ∉ s.erase(vertexEnum k) by Finset.not_mem_erase. -/
+lemma AbstractSimplicialData.vertexEnum_not_mem_faceOf_iff
+    (s : Finset V) (hs : s ∈ D.topSimplices) (j k : Fin (n+1)) :
+    D.vertexEnum s hs j ∉ D.faceOf s hs k ↔ j = k := by
+  simp only [faceOf, Finset.mem_erase, not_and_or, not_not, not_ne_iff]
+  constructor
+  · intro h
+    cases h with
+    | inl h => exact D.vertexEnum_injective s hs h
+    | inr h => exact absurd (D.vertexEnum_mem s hs j) h
+  · intro h; left; congr 1
+
+/-- findOppositeIdx of the face obtained by removing vertex k gives back k.
+Since the only vertex not in faceOf s hs k is vertexEnum s hs k (at index k),
+and findOppositeIdx picks such an index, it must pick k. -/
+lemma AbstractSimplicialData.findOppositeIdx_eq
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n+1)) :
+    D.findOppositeIdx s hs (D.faceOf s hs k) (D.faceOf_subset s hs k) (D.faceOf_card s hs k) = k := by
+  set idx := D.findOppositeIdx s hs (D.faceOf s hs k) (D.faceOf_subset s hs k) (D.faceOf_card s hs k)
+  have h_not_mem : D.vertexEnum s hs idx ∉ D.faceOf s hs k :=
+    D.vertexEnum_findOppositeIdx_not_mem s hs (D.faceOf s hs k) (D.faceOf_subset s hs k) (D.faceOf_card s hs k)
+  exact (D.vertexEnum_not_mem_faceOf_iff s hs idx k).mp h_not_mem
+
 end FaceHelpers
 
 /-
@@ -523,12 +554,178 @@ lemma AbstractSimplicialData.adjFn_vertex
       exact D.erase_opposite_eq hne.choose ht_top f hf_sub_t (D.faceOf_card s hs k)
     rw [hLHS, hRHS]
 
+/-- When adjFn returns some, the containers of the face have exactly 2 elements. -/
+lemma AbstractSimplicialData.containersOf_card_eq_two_of_adjFn
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices)
+    (k : Fin (n + 1))
+    (s' : Finset V) (hs' : s' ∈ D.topSimplices)
+    (k' : Fin (n + 1))
+    (hadj : D.adjFn ⟨s, hs⟩ k = some (⟨s', hs'⟩, k')) :
+    (D.containersOf (D.faceOf s hs k)).card = 2 := by
+  unfold adjFn at hadj
+  simp only at hadj
+  split_ifs at hadj with hc hne
+  · have hcard := D.containersOf_card_one_or_two s hs k
+    omega
+  all_goals simp at hadj
+
+/-- When adjFn returns some, the neighbor s' is in containersOf f. -/
+lemma AbstractSimplicialData.adjFn_s'_mem_containers
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices)
+    (k : Fin (n + 1))
+    (s' : Finset V) (hs' : s' ∈ D.topSimplices)
+    (k' : Fin (n + 1))
+    (hadj : D.adjFn ⟨s, hs⟩ k = some (⟨s', hs'⟩, k')) :
+    s' ∈ D.containersOf (D.faceOf s hs k) := by
+  simp only [containersOf, Finset.mem_filter]
+  refine ⟨hs', ?_⟩
+  unfold adjFn at hadj
+  simp only at hadj
+  split_ifs at hadj with hc hne
+  · simp only [Option.some.injEq, Prod.mk.injEq] at hadj
+    obtain ⟨hs'_sub_eq, _⟩ := hadj
+    have hs'_val : s' = hne.choose := (Subtype.ext_iff.mp hs'_sub_eq).symm
+    have ht_mem_erase := hne.choose_spec
+    have ht_mem_cs : hne.choose ∈ D.containersOf (D.faceOf s hs k) :=
+      Finset.mem_of_mem_erase ht_mem_erase
+    rw [hs'_val]
+    exact (Finset.mem_filter.mp ht_mem_cs).2
+  all_goals simp at hadj
+
+/-- When adjFn returns some, s' != s (as Finset values). -/
+lemma AbstractSimplicialData.adjFn_ne
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices)
+    (k : Fin (n + 1))
+    (s' : Finset V) (hs' : s' ∈ D.topSimplices)
+    (k' : Fin (n + 1))
+    (hadj : D.adjFn ⟨s, hs⟩ k = some (⟨s', hs'⟩, k')) :
+    s' ≠ s := by
+  unfold adjFn at hadj
+  simp only at hadj
+  split_ifs at hadj with hc hne
+  · simp only [Option.some.injEq, Prod.mk.injEq] at hadj
+    obtain ⟨hs'_sub_eq, _⟩ := hadj
+    have hs'_val : s' = hne.choose := (Subtype.ext_iff.mp hs'_sub_eq).symm
+    have ht_mem_erase := hne.choose_spec
+    have ht_ne_s : hne.choose ≠ s := (Finset.mem_erase.mp ht_mem_erase).1
+    rw [hs'_val]
+    exact ht_ne_s
+  all_goals simp at hadj
+
+/-- When adjFn returns some, faceOf s' hs' k' = faceOf s hs k. -/
+lemma AbstractSimplicialData.adjFn_face_eq
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices)
+    (k : Fin (n + 1))
+    (s' : Finset V) (hs' : s' ∈ D.topSimplices)
+    (k' : Fin (n + 1))
+    (hadj : D.adjFn ⟨s, hs⟩ k = some (⟨s', hs'⟩, k')) :
+    D.faceOf s' hs' k' = D.faceOf s hs k := by
+  have himg := D.adjFn_vertex s hs k s' hs' k' hadj
+  rw [D.vertexEnum_image_erase s hs k, D.vertexEnum_image_erase s' hs' k'] at himg
+  exact himg.symm
+
+/-- When adjFn returns some from s, adjFn from s' returns s. -/
+lemma AbstractSimplicialData.adjFn_symm
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices)
+    (k : Fin (n + 1))
+    (s' : Finset V) (hs' : s' ∈ D.topSimplices)
+    (k' : Fin (n + 1))
+    (hadj : D.adjFn ⟨s, hs⟩ k = some (⟨s', hs'⟩, k')) :
+    D.adjFn ⟨s', hs'⟩ k' = some (⟨s, hs⟩, k) := by
+  -- Key facts
+  set f := D.faceOf s hs k with hf_def
+  have hne : s' ≠ s := D.adjFn_ne s hs k s' hs' k' hadj
+  have hface_eq : D.faceOf s' hs' k' = f := D.adjFn_face_eq s hs k s' hs' k' hadj
+  have hs_cont : s ∈ D.containersOf f := D.self_mem_containersOf s hs k
+  have hs'_cont : s' ∈ D.containersOf f := D.adjFn_s'_mem_containers s hs k s' hs' k' hadj
+  have hcard2 : (D.containersOf f).card = 2 :=
+    D.containersOf_card_eq_two_of_adjFn s hs k s' hs' k' hadj
+  -- Step through the dite chain of adjFn ⟨s', hs'⟩ k'
+  unfold adjFn
+  simp only
+  -- First branch: containers not small (card = 2 > 1)
+  have hcs_not_le_1 : ¬((D.containersOf (D.faceOf s' hs' k')).card ≤ 1) := by
+    rw [hface_eq]; omega
+  rw [dif_neg hcs_not_le_1]
+  -- Second branch: erase s' is nonempty (s is in there)
+  have hne_erase : ((D.containersOf (D.faceOf s' hs' k')).erase s').Nonempty := by
+    rw [hface_eq]
+    exact ⟨s, Finset.mem_erase.mpr ⟨hne.symm, hs_cont⟩⟩
+  rw [dif_pos hne_erase]
+  -- Show hne_erase.choose = s (singleton argument)
+  -- hne_erase.choose is in (containersOf (faceOf s' hs' k')).erase s'
+  -- which equals (containersOf f).erase s' since faceOf s' hs' k' = f
+  have ht_mem_f : hne_erase.choose ∈ (D.containersOf f).erase s' := by
+    have h := hne_erase.choose_spec
+    have hset_eq : (D.containersOf (D.faceOf s' hs' k')).erase s' =
+        (D.containersOf f).erase s' := by rw [hface_eq]
+    rw [← hset_eq]; exact h
+  have ht_in_cs : hne_erase.choose ∈ D.containersOf f :=
+    Finset.mem_of_mem_erase ht_mem_f
+  have h_erase_card : ((D.containersOf f).erase s').card = 1 := by
+    rw [Finset.card_erase_of_mem hs'_cont, hcard2]
+  have hs_in_erase : s ∈ (D.containersOf f).erase s' :=
+    Finset.mem_erase.mpr ⟨hne.symm, hs_cont⟩
+  have ht_eq_s : hne_erase.choose = s := by
+    obtain ⟨a, ha⟩ := Finset.card_eq_one.mp h_erase_card
+    have hs_a : s = a := Finset.mem_singleton.mp (ha ▸ hs_in_erase)
+    have ht_a : hne_erase.choose = a := Finset.mem_singleton.mp (ha ▸ ht_mem_f)
+    exact ht_a.trans hs_a.symm
+  -- Prove the full equality via Option/Prod injectivity
+  simp only [Option.some.injEq, Prod.mk.injEq]
+  refine ⟨Subtype.ext ht_eq_s, ?_⟩
+  -- Fin component: findOppositeIdx hne_erase.choose _ face _ _ = k
+  -- Strategy: the vertex at the chosen index is not in the face.
+  -- Since hne_erase.choose = s and face = faceOf s hs k, use List-level
+  -- reasoning to show the index must be k.
+  have h_idx_eq : ∀ (ht' : hne_erase.choose ∈ D.topSimplices)
+      (hf' : D.faceOf s' hs' k' ⊆ hne_erase.choose)
+      (hfc' : (D.faceOf s' hs' k').card = n),
+      D.findOppositeIdx hne_erase.choose ht' (D.faceOf s' hs' k') hf' hfc' = k := by
+    intro ht' hf' hfc'
+    set idx := D.findOppositeIdx hne_erase.choose ht' (D.faceOf s' hs' k') hf' hfc'
+    -- The vertex at idx is not in the face
+    have h_nmem := D.vertexEnum_findOppositeIdx_not_mem hne_erase.choose ht'
+      (D.faceOf s' hs' k') hf' hfc'
+    -- Transport: face = faceOf s' hs' k' = faceOf s hs k = s.erase (vertexEnum s hs k)
+    have h_nmem_f : D.vertexEnum hne_erase.choose ht' idx ∉ f := hface_eq ▸ h_nmem
+    -- The vertex IS in hne_erase.choose = s
+    have h_mem_s : D.vertexEnum hne_erase.choose ht' idx ∈ s :=
+      ht_eq_s ▸ D.vertexEnum_mem hne_erase.choose ht' idx
+    -- f = faceOf s hs k = s.erase (vertexEnum s hs k), so vertex = vertexEnum s hs k
+    have h_eq_vk : D.vertexEnum hne_erase.choose ht' idx = D.vertexEnum s hs k := by
+      -- Unfold f to s.erase (vertexEnum s hs k)
+      rw [show f = s.erase (D.vertexEnum s hs k) from rfl] at h_nmem_f
+      rw [Finset.mem_erase, not_and_or] at h_nmem_f
+      cases h_nmem_f with
+      | inl h => exact not_not.mp h
+      | inr h => exact absurd h_mem_s h
+    -- Show vertexEnum hne_erase.choose ht' k = vertexEnum s hs k
+    -- Both sort the same Finset (since hne_erase.choose = s) and pick the same index k
+    have h_veq : D.vertexEnum hne_erase.choose ht' k = D.vertexEnum s hs k := by
+      unfold AbstractSimplicialData.vertexEnum
+      simp only [List.get_eq_getElem, ht_eq_s]
+      rfl
+    -- Now: vertexEnum hne_erase.choose ht' idx = vertexEnum hne_erase.choose ht' k
+    rw [← h_veq] at h_eq_vk
+    exact D.vertexEnum_injective hne_erase.choose ht' h_eq_vk
+  exact h_idx_eq _ _ _
+
 /-- Construct a `Triangulation` from `AbstractSimplicialData`.
 Uses `V : Type` (universe 0) to match `CellComplex.Cell : Type`.
 
-The vertex map and vertex_injective are fully proved.
-The adjacency map uses `adjFn`. adj_vertex is proved via `adjFn_vertex`.
-adj_symm and adj_ne remain sorry'd. -/
+All axioms fully proved: vertex_injective, adj_symm (via adjFn_symm),
+adj_vertex (via adjFn_vertex), adj_ne (via adjFn_ne). -/
 noncomputable def AbstractSimplicialData.toTriangulation
     {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
     (D : AbstractSimplicialData V n) :
@@ -549,11 +746,16 @@ noncomputable def AbstractSimplicialData.toTriangulation
       exact Fin.val_eq_of_eq (hnd hi'j')
     exact Fin.ext key
   adj := D.adjFn
-  adj_symm := by intro _ _ _ _ _; sorry
+  adj_symm := by
+    intro ⟨s, hs⟩ k ⟨s', hs'⟩ k' hadj
+    exact D.adjFn_symm s hs k s' hs' k' hadj
   adj_vertex := by
     intro ⟨s, hs⟩ k ⟨s', hs'⟩ k' hadj
     exact D.adjFn_vertex s hs k s' hs' k' hadj
-  adj_ne := by intro _ _ _ _ _; sorry
+  adj_ne := by
+    intro ⟨s, hs⟩ k ⟨s', hs'⟩ k' hadj heq
+    have hval : s = s' := congr_arg Subtype.val heq
+    exact (D.adjFn_ne s hs k s' hs' k' hadj) hval.symm
 
 /-! ## Example: 1-Dimensional Interval Triangulation
 
