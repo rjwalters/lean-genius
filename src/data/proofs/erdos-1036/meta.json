@@ -17,16 +17,16 @@
       "isomorphism"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 1036,
     "erdosUrl": "https://erdosproblems.com/1036",
     "erdosProblemStatus": "solved",
     "relatedProblems": [
       1031
     ],
-    "axiomCount": 1,
-    "lineCount": 159,
-    "assumptions": "1 axiom (Shelah 1998) and 2 sorry(s). Alon-Hajnal derived from Shelah. Ramsey lower bound removed (unused).",
+    "axiomCount": 2,
+    "lineCount": 202,
+    "assumptions": "2 axioms: shelah_1998 (Shelah 1998, main exponential bound) and nonRamseyExists (Erdős 1947, probabilistic method). All theorems fully proved from these axioms.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -212,9 +212,9 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 159,
-    "axiomCount": 1,
-    "theoremCount": 8,
+    "lineCount": 202,
+    "axiomCount": 2,
+    "theoremCount": 9,
     "definitionCount": 0
   }
 }
