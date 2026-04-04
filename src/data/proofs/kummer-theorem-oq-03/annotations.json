@@ -36,6 +36,18 @@
     "prerequisites": ["KummerTheorem (parent)", "choose_dvd_prime_pow_iff"]
   },
   {
+    "id": "ann-kummer-oq03-specific-rows",
+    "proofId": "kummer-theorem-oq-03",
+    "range": { "startLine": 64, "endLine": 75 },
+    "type": "technique",
+    "title": "Classical Instances: Prime Row and Prime-Square Row",
+    "content": "`choose_prime_div` proves the classical result $p \\mid \\binom{p}{k}$ for $0 < k < p$. This is obtained as the $n=1$ special case of `pascal_row_prime_power_div`, with a short `simp; omega` step to verify $k \\neq p^1$. `choose_prime_sq_div` handles the $n=2$ case $p \\mid \\binom{p^2}{k}$ for $0 < k < p^2$, again a one-line delegation with `omega`-closed side conditions. The classical $p \\mid \\binom{p}{k}$ result is the foundation of the most common proof of Fermat's little theorem via the binomial theorem: $(a+1)^p \\equiv a^p + 1 \\pmod{p}$ follows by induction, since all intermediate binomial coefficients $\\binom{p}{k}$ vanish mod $p$. The $p^2$ generalization appears in more refined number-theoretic arguments, for instance in the study of Wieferich primes.",
+    "mathContext": "$p \\mid \\binom{p}{k}$ for $0 < k < p$: the classical 'primality lemma'. $p \\mid \\binom{p^2}{k}$ for $0 < k < p^2$: the $n=2$ generalization. Both follow from carryCount $\\geq 1$ when the top index is a pure prime power.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fermat's little theorem", "primality via binomial theorem", "Wieferich primes", "pascal_row_prime_power_div"],
+    "prerequisites": ["pascal_row_prime_power_div", "omega tactic for arithmetic goals"]
+  },
+  {
     "id": "ann-kummer-oq03-carry-free",
     "proofId": "kummer-theorem-oq-03",
     "range": { "startLine": 83, "endLine": 90 },

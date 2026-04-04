@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-chord-quadratic",
+    "proofId": "product-of-segments-of-chords-oq-01",
+    "range": { "startLine": 44, "endLine": 67 },
+    "type": "concept",
+    "title": "Chord Quadratic: Inner Product Expansion of Sphere Intersection",
+    "content": "`chord_quadratic_sphere` expands the sphere equation $\\|P + t \\cdot \\text{dir}\\| = r$ into a scalar quadratic in $t$. The proof first squares both sides to get $\\langle P + t \\cdot \\text{dir}, P + t \\cdot \\text{dir}\\rangle = r^2$, then expands the inner product using `inner_add_left`, `inner_add_right`, `inner_smul_left`, `inner_smul_right`, and symmetry `real_inner_comm`. The `‖dir‖ = 1` hypothesis is used as `⟨dir, dir⟩ = 1` via `real_inner_self_eq_norm_mul_norm`. This expansion step is the same in any inner product space, making the rest of the proof dimension-free.",
+    "mathContext": "$\\|P + t\\,\\text{dir}\\|^2 = \\langle P,P\\rangle + 2t\\langle P,\\text{dir}\\rangle + t^2\\langle\\text{dir},\\text{dir}\\rangle = \\|P\\|^2 + 2t\\langle P,\\text{dir}\\rangle + t^2$. Setting equal to $r^2$: $t^2 + 2t\\langle P,\\text{dir}\\rangle + (\\|P\\|^2 - r^2) = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["inner_add_left", "inner_smul_right", "real_inner_self_eq_norm_mul_norm", "InnerProductSpace"],
+    "prerequisites": ["inner product space axioms", "norm from inner product", "Cauchy-Schwarz"]
+  },
+  {
+    "id": "ann-vieta-product",
+    "proofId": "product-of-segments-of-chords-oq-01",
+    "range": { "startLine": 75, "endLine": 97 },
+    "type": "technique",
+    "title": "Vieta's Product Formula Without Explicit Roots",
+    "content": "`chord_roots_product_sphere` derives $t_1 \\cdot t_2 = \\|P\\|^2 - r^2$ without computing the roots explicitly. The proof applies `chord_quadratic_sphere` to both $t_1$ and $t_2$, then subtracts: $(t_1^2 - t_2^2) + 2(t_1 - t_2)\\langle P, \\text{dir}\\rangle = 0$, factoring as $(t_1 - t_2)(t_1 + t_2 + 2\\langle P, \\text{dir}\\rangle) = 0$. Since $t_1 \\neq t_2$, we get $t_1 + t_2 = -2\\langle P, \\text{dir}\\rangle$. Adding the two quadratics and combining gives $t_1^2 + t_2^2 = 4\\langle P, \\text{dir}\\rangle^2 - 2t_1t_2$; together with $(t_1+t_2)^2 = t_1^2 + 2t_1t_2 + t_2^2$, a `linarith` closes with $t_1 t_2 = \\|P\\|^2 - r^2$.",
+    "mathContext": "Vieta's formulas for $t^2 + bt + c = 0$: $t_1 + t_2 = -b$ and $t_1 t_2 = c$. Here $b = 2\\langle P,\\text{dir}\\rangle$ and $c = \\|P\\|^2 - r^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Vieta's formulas", "chord_quadratic_sphere", "monic quadratic", "mul_eq_zero"],
+    "prerequisites": ["chord_quadratic_sphere", "polynomial root relations", "linarith"]
+  },
+  {
+    "id": "ann-opposite-signs",
+    "proofId": "product-of-segments-of-chords-oq-01",
+    "range": { "startLine": 100, "endLine": 107 },
+    "type": "technique",
+    "title": "Interior Point Forces Opposite Signs: t₁·t₂ < 0",
+    "content": "The private lemma `chord_roots_opp_signs_sphere` establishes that for an interior point ($\\|P\\| < r$), the chord parameters $t_1, t_2$ have opposite signs. The proof applies `chord_roots_product_sphere` to get $t_1 t_2 = \\|P\\|^2 - r^2$, then uses `nlinarith [norm_nonneg P]` to derive $\\|P\\|^2 < r^2$ from $\\|P\\| < r$, giving $t_1 t_2 < 0$. This sign fact is crucial: it transforms $|t_1| \\cdot |t_2| = |t_1 t_2| = -(t_1 t_2)$ from signed to unsigned product.",
+    "mathContext": "$\\|P\\| < r \\Rightarrow \\|P\\|^2 < r^2 \\Rightarrow t_1 t_2 = \\|P\\|^2 - r^2 < 0$. Geometrically: an interior point is between the two chord endpoints, so one parameter is positive and one negative along any direction.",
+    "significance": "supporting",
+    "relatedConcepts": ["chord_roots_product_sphere", "norm_nonneg", "abs_of_neg", "sign of chord parameters"],
+    "prerequisites": ["chord_roots_product_sphere", "interior point geometry", "norm squaring"]
+  },
+  {
+    "id": "ann-power-invariant",
+    "proofId": "product-of-segments-of-chords-oq-01",
+    "range": { "startLine": 111, "endLine": 149 },
+    "type": "insight",
+    "title": "Power of a Point: Invariance Across All Secant Lines",
+    "content": "`sphere_power_invariant` combines the Vieta product and sign analysis to prove $|t_1| \\cdot |t_2| = r^2 - \\|P-O\\|^2$. The proof translates to $Q = P - O$ (centering at origin), applies `chord_roots_product_sphere` and `chord_roots_opp_signs_sphere`, then uses `abs_mul`, `abs_of_neg`, and `ring` to convert the signed product to unsigned. `sphere_chord_products_equal` then proves the chord product is independent of direction: two calls to `sphere_power_invariant` with different directions both give $r^2 - \\|P-O\\|^2$, completing the equality.",
+    "mathContext": "$|t_1| \\cdot |t_2| = |t_1 t_2| = -(t_1 t_2) = -(\\|P-O\\|^2 - r^2) = r^2 - \\|P-O\\|^2$. This is Steiner's *power of a point*: a real number depending only on $P$, $O$, and $r$, invariant under rotation of the secant.",
+    "significance": "key",
+    "relatedConcepts": ["sphere_power_invariant", "sphere_chord_products_equal", "power of a point", "Steiner 1826", "abs_of_neg"],
+    "prerequisites": ["chord_roots_product_sphere", "chord_roots_opp_signs_sphere", "absolute value in ℝ"]
+  },
+  {
+    "id": "ann-3d-corollary",
+    "proofId": "product-of-segments-of-chords-oq-01",
+    "range": { "startLine": 153, "endLine": 205 },
+    "type": "concept",
+    "title": "Sphere3D: Explicit 3D Corollary",
+    "content": "`Sphere3D` bundles center, radius, and positivity into a structure for `EuclideanSpace ℝ (Fin 3)`. `sphere3d_chord_products_equal` states the result in terms of actual geometric distances: $\\|A_1 - P\\| \\cdot \\|A_2 - P\\| = \\|B_1 - P\\| \\cdot \\|B_2 - P\\|$. The proof converts: $\\|A_i - P\\| = \\|s_i \\cdot d\\| = |s_i|$ using `norm_smul`, `Real.norm_eq_abs`, and `hd₁, mul_one`. Then the `onSphere` conditions are converted to parametric form using `abel`. Finally, `sphere_chord_products_equal` closes the goal. This demonstrates that `EuclideanSpace ℝ (Fin 3)` is an `InnerProductSpace ℝ` instance, so the general theorem specializes.",
+    "mathContext": "$\\|A_i - P\\| = \\|(P + s_i d) - P\\| = \\|s_i d\\| = |s_i|\\|d\\| = |s_i|$ (for unit $d$). So $\\|A_1 - P\\| \\cdot \\|A_2 - P\\| = |s_1||s_2| = r^2 - \\|P - O\\|^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["EuclideanSpace ℝ (Fin 3)", "InnerProductSpace instance", "Sphere3D", "onSphere", "norm_smul"],
+    "prerequisites": ["sphere_chord_products_equal", "EuclideanSpace type in Mathlib", "norm of scaled vector"]
+  }
+]

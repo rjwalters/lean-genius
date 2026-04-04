@@ -69,6 +69,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Research Question and Overview",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "File header describing the three main results: (1) C(n,k) ≡ 0 mod p^m iff ≥ m carries; (2) C(p^n,k) ≡ 0 mod p for 0 < k < p^n; (3) p-adic valuation for specific patterns. References Kummer (1852) and Granville (1997)."
+    },
+    {
       "id": "part-i-carry-count",
       "title": "Part I: Divisibility by p^m via Carry Count",
       "startLine": 25,
@@ -99,6 +106,13 @@
       "endLine": 90,
       "summary": "choose_coprime_of_no_carries: if carryCount = 0, then p does not divide C(n,k). Proved as contrapositive of choose_dvd_prime_pow_iff at m=1, closed by omega. This is the carry-free direction of Lucas' theorem.",
       "mathContext": "carryCount = 0 $\\Rightarrow$ $v_p(\\binom{n}{k}) = 0$ $\\Rightarrow$ $p \\nmid \\binom{n}{k}$. Carry-free means: for all $i$, $(k \\bmod p^i) + ((n-k) \\bmod p^i) < p^i$, i.e., no digit of $k$ exceeds the corresponding digit of $n$ in base $p$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Fractal Structure of Pascal's Triangle",
+      "startLine": 92,
+      "endLine": 116,
+      "summary": "Closing comment summarizing the carry-based picture: p^m | C(n,k) iff ≥ m carries; special rows at p^n have all interior entries divisible by p; the fractal Sierpiński structure arises from base-p digit self-similarity. Ends the namespace KummerTheoremOQ03."
     }
   ],
   "conclusion": {

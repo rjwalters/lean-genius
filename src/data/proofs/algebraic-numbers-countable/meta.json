@@ -35,14 +35,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "Georg Cantor proved the countability of algebraic numbers in 1874, in the same paper where he famously proved that the real numbers are uncountable. This pair of results — algebraic numbers are countable, but ℝ is not — established that 'most' real numbers are transcendental, even though transcendental numbers (like π and e) are harder to construct explicitly.\n\nThe proof is elegantly simple: there are only countably many polynomials of degree d over ℚ (since ℚ^{d+1} is countable), each polynomial has at most d roots, and the algebraic numbers of degree exactly d form a countable set. The full set of algebraic numbers is then a countable union of countable sets, hence countable.\n\nThis result helped establish set theory as a mathematical discipline and is considered one of Cantor's most beautiful contributions.",
-    "problemStatement": "An **algebraic number** (over ℚ) is a complex number that is a root of some nonzero polynomial with rational coefficients. The **degree** of an algebraic number is the degree of its minimal polynomial over ℚ.\n\n**Theorem** (Cantor, 1874): The set of algebraic real numbers {x ∈ ℝ | IsAlgebraic ℚ x} is countable and has cardinality ℵ₀.",
-    "proofStrategy": "The formalization proceeds in two ways:\n\n1. **Direct**: Apply Mathlib's `Algebraic.countable` (which proves that algebraic elements over a countable commutative ring form a countable set) and `Algebraic.cardinalMk_of_countable_of_charZero`.\n\n2. **Via degree stratification** (original): Define algebraicRealsOfDegree d = {x | IsAlgebraic ℚ x ∧ natDegree(minpoly ℚ x) = d}. Each stratum is a subset of all algebraic numbers, hence countable. The algebraic numbers decompose as ⋃ d, algebraicRealsOfDegree d, and Set.countable_iUnion gives the result.",
+    "historicalContext": "Georg Cantor proved the countability of algebraic numbers in 1874, in his landmark paper 'Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (On a Property of the Collection of All Real Algebraic Numbers). This is the very same paper where he proved that the real numbers are uncountable — the first result of its kind, establishing that there are different 'sizes' of infinity.\n\nThe pair of results — algebraic numbers are countable (ℵ₀), real numbers are uncountable (2^ℵ₀) — had a profound philosophical consequence: almost all real numbers (in the sense of cardinality) are transcendental. Yet at the time Cantor wrote, only e (Hermite, 1873) was known to be transcendental. The existence of 'most' real numbers being transcendental was established before any systematic method for identifying them.\n\nCantor's original proof used an elegant 'height' function for polynomials: h(a₀ + a₁x + ... + aₙxⁿ) = n + |a₀| + |a₁| + ... + |aₙ| (total of degree and absolute values of coefficients). For each height H, there are finitely many polynomials, each with finitely many roots. Ordering by height and enumerating roots within each height gives a bijection to ℕ.\n\nThe modern proof uses the equivalent degree stratification: for each degree d, there are countably many polynomials over ℚ of degree d (since ℚ^{d+1} is countable), each with at most d roots. The union over all d ∈ ℕ is countable by the countable union of countable sets theorem.",
+    "problemStatement": "An **algebraic number** (over ℚ) is a complex number that is a root of some nonzero polynomial with rational coefficients. The **degree** of an algebraic number is the degree of its minimal polynomial over ℚ.\n\n**Theorem** (Cantor, 1874): The set of algebraic real numbers {x ∈ ℝ | IsAlgebraic ℚ x} is countable and has cardinality ℵ₀.\n\nThe formalization also proves: (1) countability of algebraic complex numbers, (2) countability of each degree stratum separately, (3) cardinality equality |algebraic reals| = |ℚ| = ℵ₀ despite algebraic ⊋ ℚ.",
+    "proofStrategy": "The formalization proceeds in two ways:\n\n1. **Direct (Mathlib delegation)**: Apply `Algebraic.countable ℚ ℝ` — Mathlib proves that algebraic elements over any countable commutative ring form a countable set. Since ℚ is countable (it is `Denumerable`, meaning it has a bijection with ℕ), this gives algebraic_reals_countable in one line. The cardinality ℵ₀ follows from `Algebraic.cardinalMk_of_countable_of_charZero ℚ ℝ`.\n\n2. **Via degree stratification (original)**: Define `algebraicRealsOfDegree d = {x | IsAlgebraic ℚ x ∧ natDegree(minpoly ℚ x) = d}`. Each stratum is a subset of all algebraic numbers (which are countable), so it is countable. Use `algebraic_reals_eq_iUnion_degree` to write the algebraic numbers as ⋃ d, algebraicRealsOfDegree d, and `Set.countable_iUnion algebraicRealsOfDegree_countable` (countable union of countable sets) to conclude.\n\nThe stratification also provides two nested structures: `algebraicRealsOfBoundedDegree d = {x | IsAlgebraic ℚ x ∧ natDegree ≤ d}` (inclusive up to d) and `algebraicRealsOfDegree d` (exactly d). These form a filtration: algebraicRealsOfBoundedDegree d ⊆ algebraicRealsOfBoundedDegree (d+1) and ⋃ algebraicRealsOfBoundedDegree d = all algebraic numbers.",
     "keyInsights": [
-      "The degree stratification reveals the internal structure: algebraic numbers are a countable union of countable layers, each determined by minimal polynomial degree",
-      "Despite algebraic numbers forming a proper superset of ℚ (they include √2, ∛3, and all algebraic irrationals), both sets have the same cardinality ℵ₀",
-      "The bounded-degree sets form a monotone chain ⊆ exhausting all algebraic numbers, making the filtration perspective useful for approximation arguments",
-      "The complement — transcendental reals — is uncountable (being a subset of ℝ not covered by the countable algebraic numbers)"
+      "The degree stratification reveals the internal structure: algebraic numbers are a countable union of countable layers, each determined by minimal polynomial degree. The full set decomposes as ⋃_{d∈ℕ} {x | IsAlgebraic ℚ x ∧ natDegree(minpoly ℚ x) = d}, and Set.countable_iUnion applies since each layer is a subset of all algebraic numbers.",
+      "Despite algebraic numbers forming a proper superset of ℚ (they include √2, ∛3, (1+√5)/2, and uncountably many algebraic irrationals), both sets have the same cardinality ℵ₀. This is formalized as: Cardinal.mk {x : ℝ // IsAlgebraic ℚ x} = Cardinal.mk ℚ, proved by both equaling aleph0 via Mathlib's cardinalMk_of_countable_of_charZero and mk_denumerable.",
+      "The bounded-degree sets form a monotone filtration: algebraicRealsOfBoundedDegree d ⊆ algebraicRealsOfBoundedDegree (d+1) (by Nat.le_succ_of_le), and their union equals all algebraic numbers. This is the Lean analogue of Cantor's 'height' ordering — controlling complexity by bounding the degree.",
+      "The complement — transcendental reals — is uncountable: ℝ is uncountable (Cantor's 1874 diagonal argument) while algebraic reals are countable, so the set difference is uncountable. 'Almost all' real numbers (in the sense of cardinality) are transcendental, even though constructing specific transcendentals is hard.",
+      "Degree 1 = ℚ via algebraMap: rationals embed as algebraic reals of degree 1 by `isAlgebraic_algebraMap`. The minimal polynomial of q ∈ ℚ over ℚ is X − q (linear), so natDegree = 1. This proves the bottom stratum algebraicRealsOfDegree 1 ⊇ image(ℚ → ℝ), connecting the stratification to the well-known denumerability of ℚ."
     ],
     "prerequisites": [
       "Set theory (countability, cardinality, ℵ₀)",
@@ -59,6 +60,56 @@
       "Formalize the Gelfond-Schneider theorem: if α is algebraic and β is irrational algebraic, then α^β is transcendental"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-algebraic-header",
+      "title": "Header: Module Documentation, Degree Examples, and Historical Context",
+      "startLine": 1,
+      "endLine": 68,
+      "description": "Module header explaining the 6 key results (algebraic reals/complex countable, bounded degree countable, cardinality ℵ₀, exact degree countable, degree stratification). Three proof approach sections: Foundation (Mathlib's Algebraic.countable and cardinalMk), Original Contributions (degree stratification), Proof Techniques. Mathematical background defining algebraic numbers and degree, with examples by degree (degree 1: rationals; degree 2: √2, (1+√5)/2; degree 3: ∛2; degree n: roots of irreducible n-polys). Historical note on Cantor 1874. Connection to denumerability of ℚ: all these sets (ℚ, degree ≤ d, all algebraic) have cardinality ℵ₀. Opens namespace AlgebraicNumbersCountable."
+    },
+    {
+      "id": "sec-algebraic-core",
+      "title": "§1. Core Countability and Cardinality Results",
+      "startLine": 72,
+      "endLine": 101,
+      "description": "Four one-line theorems delegating to Mathlib: `algebraic_reals_countable` (Algebraic.countable ℚ ℝ), `algebraic_complex_countable` (Algebraic.countable ℚ ℂ), `card_algebraic_reals_eq_aleph0` (cardinalMk_of_countable_of_charZero ℚ ℝ), `card_algebraic_complex_eq_aleph0` (cardinalMk_of_countable_of_charZero ℚ ℂ). The cardinality results are strictly stronger than countability: they prove |algebraic reals| = ℵ₀ (countably infinite), ruling out finite algebraic number sets. The char_zero condition on ℝ and ℂ ensures the field is of characteristic 0, needed for Mathlib's API."
+    },
+    {
+      "id": "sec-algebraic-bounded",
+      "title": "§2. Algebraic Numbers of Bounded Degree",
+      "startLine": 103,
+      "endLine": 135,
+      "description": "Defines `algebraicRealsOfBoundedDegree d` = {x : ℝ | IsAlgebraic ℚ x ∧ (minpoly ℚ x).natDegree ≤ d} and `algebraicComplexOfBoundedDegree d` (analogous for ℂ). Both are noncomputable (because minpoly is noncomputable). Proves `bounded_degree_subset_algebraic_reals`: the bounded-degree set ⊆ all algebraic numbers (fun _ hx => hx.1 extracts the IsAlgebraic component from the conjunction). Proves countability of both sets via Set.Countable.mono — subsets of countable sets are countable."
+    },
+    {
+      "id": "sec-algebraic-exact",
+      "title": "§3. Algebraic Numbers of Exact Degree",
+      "startLine": 137,
+      "endLine": 165,
+      "description": "Defines `algebraicRealsOfDegree d` = {x : ℝ | IsAlgebraic ℚ x ∧ (minpoly ℚ x).natDegree = d} and `algebraicComplexOfDegree d`. Proves `exact_degree_subset_bounded`: exact-degree d ⊆ bounded-degree d (le_of_eq converts equality to ≤). Proves `algebraicRealsOfDegree_countable`: via two-step subset chain exact → bounded → all algebraic. For complex: uses apply Set.Countable.mono with explicit lambda to convert the exact-degree condition to bounded-degree. This establishes that each horizontal slice of the degree stratification is individually countable."
+    },
+    {
+      "id": "sec-algebraic-stratification",
+      "title": "§4. Degree Stratification and Alternative Countability Proof",
+      "startLine": 167,
+      "endLine": 201,
+      "description": "Proves `algebraic_reals_eq_iUnion_degree`: {x : ℝ | IsAlgebraic ℚ x} = ⋃ d : ℕ, algebraicRealsOfDegree d. Proof by ext x, simp, constructor: (→) given IsAlgebraic x, use d = natDegree(minpoly ℚ x) and rfl; (←) extract IsAlgebraic from the existential. Analogous for complex numbers. `algebraic_reals_countable_via_strata`: alternative proof by rewriting via the union and applying Set.countable_iUnion algebraicRealsOfDegree_countable (countable union of countable sets). This demonstrates the stratification is not just a structural description but a valid proof technique."
+    },
+    {
+      "id": "sec-algebraic-degree1",
+      "title": "§5. Degree 1 = Rationals and Monotone Filtration",
+      "startLine": 203,
+      "endLine": 217,
+      "description": "Two theorems: `rat_algebraic_degree_one`: every q ∈ ℚ is algebraic (isAlgebraic_algebraMap q — elements mapped from the base field are algebraic, with minimal polynomial X − q of degree 1). `bounded_degree_monotone`: algebraicRealsOfBoundedDegree d ⊆ algebraicRealsOfBoundedDegree (d+1), proved by Nat.le_succ_of_le on the degree bound. These establish the filtration structure: ℚ ⊆ deg≤1 ⊆ deg≤2 ⊆ ... ⊆ all algebraic, each inclusion strict (e.g., √2 ∈ deg≤2 but √2 ∉ ℚ)."
+    },
+    {
+      "id": "sec-algebraic-cardinality",
+      "title": "§6–7. Cardinality Comparisons and Exhaustive Filtration",
+      "startLine": 219,
+      "endLine": 254,
+      "description": "Section 6: `card_algebraic_eq_card_rat` proves |{x : ℝ // IsAlgebraic ℚ x}| = |ℚ| by rewriting both via aleph0 (card_algebraic_reals_eq_aleph0 and Cardinal.mk_denumerable). `card_algebraic_eq_card_nat` proves the same equals |ℕ|. Both illustrate the 'paradox' that a proper superset has the same cardinality. Section 7: `algebraic_reals_eq_iUnion_bounded` proves {x : ℝ | IsAlgebraic ℚ x} = ⋃ d, algebraicRealsOfBoundedDegree d, using d = natDegree(minpoly x) and le_refl. This is the bounded-degree version of the exact-degree stratification. Ends with end AlgebraicNumbersCountable."
+    }
+  ],
   "crossReferences": []
 }

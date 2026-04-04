@@ -38,10 +38,11 @@
     "problemStatement": "Bound the prime counting function π(n) = #{p prime : p ≤ n} and the first Chebyshev function θ(n) = Σ_{p ≤ n} log p:\n\n**Upper bounds**: θ(n) ≤ n·log(4) and n^{π(2n)-π(n)} ≤ 4^n\n\n**Lower bounds**: π(n) ≥ log₂(n) for n ≥ 2, and θ(2n) - θ(n) ≥ log(n+1) for n ≥ 1",
     "proofStrategy": "The upper bound on θ(n) uses Mathlib's `primorial_le_4_pow`: the product of all primes ≤ n (the primorial n#) satisfies n# ≤ 4^n. Taking logarithms gives θ(n) ≤ n·log(4).\n\nFor the power bound n^{π(2n)-π(n)} ≤ 4^n: primes p in (n, 2n] each exceed n and divide C(2n, n), so their product ≥ n^k where k = #{primes in (n, 2n]}. But their product divides C(2n, n) ≤ 4^n.\n\nThe lower bounds follow from Bertrand's postulate via Mathlib's `Nat.exists_prime_lt_and_le_two_mul`: each interval (n, 2n] contains at least one prime, giving π(2n) - π(n) ≥ 1, which telescopes to π(2^k) ≥ k and π(n) ≥ log₂(n).",
     "keyInsights": [
-      "The central binomial coefficient C(2n,n) acts as an 'oracle' for primes in (n, 2n]: each such prime divides C(2n,n) exactly once",
-      "Chebyshev's method gives θ(n) within a factor of log(4) ≈ 1.386 of the true asymptotic n — a constant factor from the PNT",
-      "The logarithmic lower bound π(n) ≥ log₂(n) is a direct consequence of Bertrand's postulate by telescoping",
-      "The primorial n# = ∏_{p ≤ n} p satisfies n# ≤ 4^n (from Mathlib), which directly encodes the upper bound on θ"
+      "The central binomial coefficient C(2n,n) acts as an 'oracle' for primes in (n, 2n]: each such prime p satisfies n < p ≤ 2n, so the multiplicity of p in C(2n,n) = ⌊2n/p⌋ − 2⌊n/p⌋ = 1 − 0 = 1 (proved via `hp.dvd_choose_add`)",
+      "Chebyshev's method gives θ(n) within a factor of log(4) ≈ 1.386 of the true asymptotic n — a constant factor from the PNT; the upper bound follows from the primorial inequality n# ≤ 4^n by taking logarithms",
+      "The logarithmic lower bound π(n) ≥ log₂(n) is a direct consequence of Bertrand's postulate by telescoping: π(2^{k+1}) ≥ π(2^k) + 1 by Bertrand, and π(2^k) ≥ k ≥ ⌊log₂(n)⌋ for 2^k ≤ n",
+      "The primorial n# = ∏_{p ≤ n} p satisfies n# ≤ 4^n (from Mathlib's `primorial_le_4_pow`), which directly encodes the upper bound on θ: log(n#) = θ(n) ≤ log(4^n) = n·log(4)",
+      "The central binomial sandwich 4^n/(2n+1) ≤ C(2n,n) ≤ 4^n is proved by: upper from C(2n,n) ≤ sum of all C(2n,k) = 4^n; lower from C(2n,n) being the maximum term in a (2n+1)-term sum equaling 4^n, proved via `Nat.choose_le_middle`"
     ],
     "prerequisites": [
       "Number theory (primes, divisibility, prime counting function)",
@@ -58,7 +59,50 @@
       "Formalize the connection between ψ(x) and π(x): ψ(x) = Σ_p Σ_k [p^k ≤ x] log p ≈ x"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sec-chebyshev-header",
+      "title": "Header, Imports, and Mathlib Dependencies",
+      "startLine": 1,
+      "endLine": 44,
+      "description": "Module header listing upper bounds (θ(n) ≤ n·log(4), n^{π(2n)-π(n)} ≤ 4^n, prime product divides C(2n,n)) and lower bounds (π(2n)-π(n) ≥ 1, π(2^k) ≥ k, π(n) ≥ log₂(n), θ(2n)-θ(n) ≥ log(n+1)). Historical context for Chebyshev 1852. Imports from Mathlib: `Primorial`, `PrimeCounting`, `Bertrand`, `Choose.Central`, `Choose.Factorization`, `Log.Basic`. Defines `chebyshevTheta`, `prodPrimesInInterval`, `numPrimesInInterval`."
+    },
+    {
+      "id": "sec-chebyshev-theta-upper",
+      "title": "Chebyshev θ Function and Upper Bound θ(n) ≤ n·log(4)",
+      "startLine": 46,
+      "endLine": 108,
+      "description": "Defines `chebyshevTheta n` = Σ_{p ≤ n, p prime} log p (the first Chebyshev function). Proves `chebyshevTheta_nonneg` (each log p ≥ 0 for prime p ≥ 2). Proves the main upper bound `chebyshevTheta_le`: θ(n) ≤ n·log(4) by: (1) applying `primorial_le_4_pow` for n ≠ 0; (2) casting to ℝ; (3) applying `Real.log_le_log` to get log(n#) ≤ log(4^n); (4) using `Real.log_prod` to convert log of product to sum of logs; (5) concluding θ(n) ≤ n·log(4). The n=0 case is handled separately since the filter is empty."
+    },
+    {
+      "id": "sec-chebyshev-central-binom",
+      "title": "Central Binomial Bounds and Prime Divisibility",
+      "startLine": 110,
+      "endLine": 166,
+      "description": "Two sections: Upper bound `centralBinom_le_four_pow`: C(2n,n) ≤ 4^n, proved by calc chain: C(2n,n) ≤ Σ_k C(2n,k) = 2^{2n} = 4^n (via `single_le_sum`, `sum_range_choose`). Key lemma `prime_in_interval_dvd_centralBinom`: if n < p ≤ 2n and p prime, then p | C(2n,n). Proved by `hp.dvd_choose_add hlo hlo hle` — the multiplicity argument specializes to: both 'halves' n are less than p, and p ≤ 2n = n+n. `prodPrimesInInterval_dvd_centralBinom`: product of all primes in (n,2n] divides C(2n,n), using `Finset.prod_primes_dvd`."
+    },
+    {
+      "id": "sec-chebyshev-power-bound",
+      "title": "Power Bound: n^{π(2n)−π(n)} ≤ 4^n and π Connection",
+      "startLine": 168,
+      "endLine": 237,
+      "description": "The main upper bound on prime density. `pow_le_of_prod_primes_dvd`: if ∏_p ∈ S p divides M and each p > n, then n^|S| ≤ M (proved by n^|S| ≤ ∏ p ≤ M). `pow_numPrimesInInterval_le`: n^{numPrimesInInterval(n)} ≤ 4^n by calc chain through the product divisibility and C(2n,n) ≤ 4^n. `numPrimesInInterval_eq`: this count equals π(2n) − π(n), proved by decomposing range(2n+1) into range(n+1) ∪ Ico(n+1, 2n+1) and using `card_union_of_disjoint`. Final corollary: n^{π(2n)−π(n)} ≤ 4^n."
+    },
+    {
+      "id": "sec-chebyshev-lower-bounds",
+      "title": "Lower Bounds via Bertrand's Postulate",
+      "startLine": 238,
+      "endLine": 362,
+      "description": "Four lower bound theorems: `primeCounting_doubling_ge_one`: π(2n) − π(n) ≥ 1, proved by getting Bertrand's prime p ∈ (n,2n] via `Nat.exists_prime_lt_and_le_two_mul`, then showing π increases by 1 at p using `Nat.count_succ`. `primeCounting_pow_two_ge`: π(2^k) ≥ k by induction, with base case `decide` (π(2)=1). `primeCounting_ge_log`: π(n) ≥ log₂(n) for n ≥ 2, using `Nat.pow_log_le_self 2`. `chebyshevTheta_doubling_ge`: θ(2n) − θ(n) ≥ log(n+1), proved by finding Bertrand's prime p and using `single_le_sum` to bound the contribution."
+    },
+    {
+      "id": "sec-chebyshev-binom-lower",
+      "title": "Central Binomial Lower Bound and Log Corollary",
+      "startLine": 372,
+      "endLine": 445,
+      "description": "Two lower bound results: `centralBinom_ge_four_pow_div`: 4^n ≤ (2n+1)·C(2n,n), proved by: 4^n = Σ_k C(2n,k) ≤ Σ_k C(2n,n) = (2n+1)·C(2n,n), using `Nat.choose_le_middle` (C(2n,n) is the maximum term). `log_centralBinom_ge`: n·log(4) − log(2n+1) ≤ log(C(2n,n)), proved by casting to ℝ, dividing, and applying `Real.log_le_log`. Summary section (lines 421-440) catalogs 8 results in two categories (upper vs. lower bounds and central binomial bounds)."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "bertrands-postulate",

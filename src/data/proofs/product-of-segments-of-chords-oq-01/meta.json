@@ -25,28 +25,73 @@
     ]
   },
   "overview": {
-    "historicalContext": "The intersecting chords theorem (Wiedijk #55) states that for two chords AB and CD intersecting at P inside a circle, PA·PB = PC·PD. This is the 2D power of a point theorem. The natural generalization asks whether the same invariance holds for spheres in ℝ³ or higher-dimensional spheres.",
-    "problemStatement": "Prove that for a sphere with center O and radius r in any real inner product space, if P is an interior point (‖P−O‖ < r), then for any unit direction dir, the two intersection parameters t₁, t₂ of the line P+t·dir with the sphere satisfy |t₁|·|t₂| = r² − ‖P−O‖². In particular, this product is independent of dir.",
-    "proofStrategy": "The chord intersection equation ‖(P−O) + t·dir‖ = r expands via the inner product to t² + 2t⟨P−O,dir⟩ + (‖P−O‖² − r²) = 0. This is a monic quadratic in t, so Vieta's formulas give t₁·t₂ = ‖P−O‖² − r². Since P is interior, t₁ and t₂ have opposite signs, so |t₁|·|t₂| = r² − ‖P−O‖². The proof uses only inner product axioms, making it dimension-independent.",
+    "historicalContext": "The power of a point theorem has roots in ancient Greek geometry: Euclid's Elements Book III, Propositions 35–37 state equivalent results about chords and secants in circles. The modern algebraic statement — that for two chords intersecting at P inside a circle, $PA \\cdot PB = PC \\cdot PD$ — was systematized by Jakob Steiner (1796–1863), who introduced the term 'power of a point' (*Potenz eines Punktes*) in 1826. Steiner defined the power as $d^2 - r^2$ for exterior points and $r^2 - d^2$ for interior points, valid for all secants. The theorem appears as Wiedijk theorem #55 for the 2D circle case. The natural open question — does it generalize to spheres in $\\mathbb{R}^3$ or higher dimensions? — is answered affirmatively here. The key insight is that the proof requires only inner product structure: the expansion $\\|P + t\\,\\text{dir}\\|^2 = \\|P\\|^2 + 2t\\langle P, \\text{dir}\\rangle + t^2$ and Vieta's formula work identically in any real inner product space, making the theorem dimension-free.",
+    "problemStatement": "Prove that for a sphere with center $O$ and radius $r$ in any real inner product space, if $P$ is an interior point ($\\|P-O\\| < r$), then for any unit direction $\\text{dir}$, the two intersection parameters $t_1, t_2$ of the line $P + t \\cdot \\text{dir}$ with the sphere satisfy $|t_1| \\cdot |t_2| = r^2 - \\|P-O\\|^2$. In particular, this product is independent of $\\text{dir}$.",
+    "proofStrategy": "The chord intersection equation $\\|P - O + t \\cdot \\text{dir}\\| = r$ expands via the inner product to $t^2 + 2t\\langle Q, \\text{dir}\\rangle + (\\|Q\\|^2 - r^2) = 0$ where $Q = P - O$. This is a monic quadratic in $t$ with Vieta product $t_1 \\cdot t_2 = \\|Q\\|^2 - r^2$. Since $P$ is interior, $\\|Q\\| < r$, so $t_1 \\cdot t_2 < 0$ (opposite signs). Therefore $|t_1| \\cdot |t_2| = -(t_1 \\cdot t_2) = r^2 - \\|Q\\|^2$. The dimension-independence is automatic since the proof uses only `InnerProductSpace ℝ E` axioms.",
     "keyInsights": [
-      "The chord equation depends only on inner products and norms, which are available in any inner product space",
-      "Vieta's product formula for the monic quadratic directly gives t₁·t₂",
-      "Interior point condition (‖P−O‖ < r) ensures t₁·t₂ < 0, giving |t₁·t₂| = −(t₁·t₂) = r² − ‖P−O‖²",
-      "The 3D explicit corollary reduces to the general theorem via coordinate translation"
+      "The chord intersection equation in any inner product space reduces to the same monic quadratic $t^2 + 2t\\langle Q, \\text{dir}\\rangle + (\\|Q\\|^2 - r^2) = 0$, by expanding $\\|Q + t \\cdot \\text{dir}\\|^2$ using `inner_add_left`, `inner_smul_right`, and $\\|\\text{dir}\\| = 1$.",
+      "Vieta's formula is applied without explicitly computing $t_1$ or $t_2$: subtracting the two quadratic equations gives $(t_1 - t_2)(t_1 + t_2 + 2\\langle Q, \\text{dir}\\rangle) = 0$, and since $t_1 \\neq t_2$, we get the sum $t_1 + t_2 = -2\\langle Q, \\text{dir}\\rangle$, which combined with the sum-of-squares from adding the equations gives $t_1 t_2 = \\|Q\\|^2 - r^2$.",
+      "The interior point condition $\\|P - O\\| < r$ is exactly the condition that $t_1 \\cdot t_2 < 0$ (the roots have opposite signs), enabling $|t_1| \\cdot |t_2| = -(t_1 t_2) = r^2 - \\|P-O\\|^2$ via `abs_of_neg`.",
+      "The 3D corollary (`sphere3d_chord_products_equal`) converts from geometric distances $\\|A_i - P\\|$ to absolute parameter values $|s_i|$ using $\\|P + s \\cdot d - P\\| = |s|\\|d\\| = |s|$ (for unit $d$), then delegates to the general theorem.",
+      "The theorem holds in any real inner product space, including infinite-dimensional Hilbert spaces — the proof is purely algebraic over the `InnerProductSpace ℝ E` type class with no dimension hypothesis."
     ],
     "prerequisites": [
       "InnerProductSpace ℝ E from Mathlib",
       "NormedAddCommGroup and inner product lemmas (inner_add_left, inner_smul_right, etc.)",
-      "EuclideanSpace ℝ (Fin 3) for the 3D corollary"
+      "EuclideanSpace ℝ (Fin 3) for the 3D corollary",
+      "Vieta's formulas for monic quadratics"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Research Question and Main Results",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Imports and docstring stating the open question (does the intersecting chords theorem extend to 3D spheres?) and answering YES — the proof works in any real inner product space. Lists 4 main theorems: chord quadratic, roots product, sphere power invariant, chord product equality."
+    },
+    {
+      "id": "chord-quadratic",
+      "title": "Part 1: Chord Quadratic Equation",
+      "startLine": 43,
+      "endLine": 68,
+      "summary": "chord_quadratic_sphere: if P + t·dir lies on the sphere of radius r (centered at origin), then t² + 2t⟨P,dir⟩ + (‖P‖² - r²) = 0. Proved by expanding ‖P + t·dir‖² via inner_add_left, inner_smul_right, and ‖dir‖ = 1."
+    },
+    {
+      "id": "vieta-product",
+      "title": "Part 2: Vieta's Product Formula and Opposite Signs",
+      "startLine": 69,
+      "endLine": 108,
+      "summary": "chord_roots_product_sphere: two distinct chord parameters t₁ ≠ t₂ satisfy t₁·t₂ = ‖P‖² - r². Derived by subtracting quadratic equations to get t₁+t₂ = -2⟨P,dir⟩, then combining with sum-of-squares. Private chord_roots_opp_signs_sphere: interior point forces t₁·t₂ < 0 (opposite signs)."
+    },
+    {
+      "id": "power-of-point",
+      "title": "Part 3: Power of a Point in Any Inner Product Space",
+      "startLine": 109,
+      "endLine": 149,
+      "summary": "sphere_power_invariant: the main theorem, |t₁|·|t₂| = r² - ‖P-O‖² for any unit direction. Uses chord_roots_product_sphere + chord_roots_opp_signs_sphere, closed by abs_of_neg and ring. sphere_chord_products_equal: any two chords through P give equal products — immediate from sphere_power_invariant."
+    },
+    {
+      "id": "3d-corollary",
+      "title": "Part 4: Explicit 3D Corollary",
+      "startLine": 151,
+      "endLine": 206,
+      "summary": "Sphere3D structure (center, radius, radius_pos) and onSphere predicate. sphere3d_chord_products_equal: for chords A₁A₂ and B₁B₂ through interior P of a 3D sphere, ‖A₁-P‖·‖A₂-P‖ = ‖B₁-P‖·‖B₂-P‖. Proof: convert geometric distances to |parameters| via norm_smul + unit direction, then delegates to sphere_chord_products_equal."
+    },
+    {
+      "id": "conclusion",
+      "title": "Conclusion and Summary",
+      "startLine": 207,
+      "endLine": 227,
+      "summary": "Closing docstring summarizing the proof: PA·PB = r² - d² for any secant through interior point P. Dimension-independent via inner product axioms. #check statements for sphere_power_invariant and sphere_chord_products_equal."
+    }
+  ],
   "conclusion": {
     "summary": "This file proves 6 theorems (plus 1 private lemma) with 0 sorries and 0 axioms, establishing the power of a point theorem in full generality for any real inner product space, with an explicit 3D corollary.",
-    "implications": "The theorem confirms that the power of a point is a purely inner-product-space phenomenon, valid in any dimension. The proof technique (chord quadratic + Vieta) applies uniformly from ℝ² to infinite-dimensional Hilbert spaces.",
+    "implications": "The theorem confirms that the power of a point is a purely inner-product-space phenomenon, valid in any dimension. The proof technique (chord quadratic + Vieta) applies uniformly from $\\mathbb{R}^2$ to infinite-dimensional Hilbert spaces. This is a model example of how type-class polymorphism in Lean 4 enables dimension-free mathematics: the same proof term witnesses the 2D circle case, the 3D sphere case, and the infinite-dimensional Hilbert sphere case simultaneously.",
     "openQuestions": [
-      "Generalize to complex inner product spaces or Hilbert spaces over other fields",
-      "Prove the analogous result for the external case (P outside the sphere): PA·PB = d² − r²"
+      "Generalize to complex inner product spaces: does $|t_1| \\cdot |t_2| = r^2 - \\|P-O\\|^2$ hold for complex Hilbert spheres (where inner products are sesquilinear)?",
+      "Prove the external case ($P$ outside the sphere): for a secant line, $PA \\cdot PB = d^2 - r^2$ where $d = \\|P - O\\|$ and the product has opposite sign convention."
     ]
   },
   "crossReferences": [

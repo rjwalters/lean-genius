@@ -31,31 +31,91 @@
     ]
   },
   "overview": {
-    "historicalContext": "Peter Ludwig Mejdell Sylow (1832–1918) proved these theorems in 1872, published in Mathematische Annalen. They generalize Cauchy's 1845 theorem (which guarantees an element of order p when p divides |G|) and provide deep structural information about finite groups. The Sylow theorems are among the most important tools in finite group theory, appearing in virtually every proof that classifies groups of a given order. They appear as theorem #72 on Wiedijk's list of 100 theorems to formalize.",
-    "problemStatement": "Let G be a finite group of order n = p^k · m where p is prime and p does not divide m.\n\n**First Sylow Theorem (Existence)**: G has at least one subgroup of order p^k, called a Sylow p-subgroup.\n\n**Second Sylow Theorem (Conjugacy)**: Any two Sylow p-subgroups P and Q are conjugate: there exists g ∈ G with g·P·g⁻¹ = Q.\n\n**Third Sylow Theorem (Counting)**: The number n_p of Sylow p-subgroups satisfies n_p ≡ 1 (mod p) and n_p divides m = |G|/p^k.",
-    "proofStrategy": "The formalization leverages Mathlib's `Mathlib.GroupTheory.Sylow` which provides the `Sylow p G` type and key results. Original wrapper theorems expose these in classical mathematical notation:\n\n- **Existence**: `Sylow.nonempty` gives the `Nonempty (Sylow p G)` instance.\n- **Conjugacy**: The group G acts on `Sylow p G` by conjugation; `MulAction.exists_smul_eq` provides transitivity.\n- **Counting**: `card_sylow_modEq_one` and `card_sylow_dvd_index` give the two parts of Sylow III.\n- **Normality**: A Sylow subgroup fixed by all conjugations is normal; with `Subsingleton (Sylow p G)` this follows immediately.",
+    "historicalContext": "Peter Ludwig Mejdell Sylow (1832–1918), a Norwegian mathematician, proved these theorems in a landmark 1872 paper 'Théorèmes sur les groupes de substitutions' published in Mathematische Annalen. Sylow worked in the era when groups were conceived primarily as permutation groups on finite sets; his theorems were stated in that language and only later translated to abstract group theory by Frobenius, Burnside (whose 1897 'Theory of Groups of Finite Order' systematized finite group theory), and Wielandt (whose 1959 elementary proof via counting $p$-element subsets is now standard). The Sylow theorems generalize Augustin-Louis Cauchy's 1845 result—that a prime $p$ dividing $|G|$ implies an element of order $p$—to prime powers: a prime power $p^k$ dividing $|G|$ implies a subgroup of order $p^k$. They appear as theorem #72 on Wiedijk's list of 100 theorems to formalize. The Sylow theorems are among the most powerful tools in finite group theory: they reduce the complex question of group structure to the case of prime-power-order subgroups, and their counting and conjugacy constraints severely limit the possible isomorphism types of finite groups of any given order.",
+    "problemStatement": "Let $G$ be a finite group of order $n = p^k \\cdot m$ where $p$ is prime and $p \\nmid m$.\n\n**First Sylow Theorem (Existence)**: $G$ has at least one subgroup of order $p^k$, called a Sylow $p$-subgroup.\n\n**Second Sylow Theorem (Conjugacy)**: Any two Sylow $p$-subgroups $P$ and $Q$ are conjugate: there exists $g \\in G$ with $gPg^{-1} = Q$.\n\n**Third Sylow Theorem (Counting)**: The number $n_p$ of Sylow $p$-subgroups satisfies $n_p \\equiv 1 \\pmod{p}$ and $n_p$ divides $m = |G|/p^k$.",
+    "proofStrategy": "The formalization leverages Mathlib's `Mathlib.GroupTheory.Sylow` which provides the `Sylow p G` type and key results. Original wrapper theorems expose these in classical mathematical notation: Existence uses `Sylow.nonempty`; conjugacy uses the transitive $G$-action on `Sylow p G` via `MulAction.exists_smul_eq`; counting uses `card_sylow_modEq_one` and `card_sylow_dvd_index`. Normality of a unique Sylow subgroup is proved by showing every conjugate equals the original, using `Sylow.smul_eq_iff_mem_normalizer` to connect the group action to the normalizer membership.",
     "keyInsights": [
-      "The Sylow theorems reduce group structure questions to prime-power subgroups, making classification tractable.",
-      "Conjugacy (Sylow II) means all Sylow p-subgroups are isomorphic; normality is equivalent to uniqueness.",
-      "The counting constraint n_p ≡ 1 (mod p) is proved by letting a Sylow p-subgroup act on the set of all Sylow p-subgroups by conjugation and counting fixed points.",
-      "Cauchy's theorem follows immediately: a Sylow p-subgroup has order p^k ≥ p, so it contains an element of order p."
+      "The Sylow theorems reduce group structure questions to prime-power subgroups, making classification tractable: every group structure question decomposes into questions about $p$-groups for each prime $p$ dividing the order.",
+      "Conjugacy (Sylow II) means all Sylow $p$-subgroups are isomorphic as groups (they are all `MulEquiv`-equivalent via `Sylow.equiv`); normality is equivalent to uniqueness ($n_p = 1$).",
+      "The counting constraint $n_p \\equiv 1 \\pmod{p}$ arises from the fixed-point count: when a Sylow $p$-subgroup $P$ acts on all Sylow $p$-subgroups by conjugation, $P$ itself is the unique fixed point, giving $n_p \\equiv \\text{fixed points} \\equiv 1 \\pmod{p}$.",
+      "Cauchy's theorem follows immediately: a Sylow $p$-subgroup has order $p^k \\geq p$, so it contains a non-identity element of order dividing $p^k$; raising to the appropriate power gives order exactly $p$.",
+      "In Lean 4 / Mathlib, a Sylow $p$-subgroup is not just a subgroup but a `Sylow p G` structure (a bundled term) — the type `Sylow p G` itself carries the maximality witness, enabling type-class-based reasoning about uniqueness (`Subsingleton (Sylow p G)`) and normal subgroup properties."
     ],
     "prerequisites": [
       "Finite group theory: Lagrange's theorem, subgroups, cosets",
       "Group actions, orbit-stabilizer theorem",
       "p-groups and prime factorization of group order",
-      "Normal subgroups and conjugation"
+      "Normal subgroups, normalizer, and conjugation",
+      "Mathlib.GroupTheory.Sylow and the Sylow structure"
     ]
   },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Historical Documentation",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports Mathlib's Sylow theory modules and provides an extensive docstring covering the three Sylow theorems, their historical context (Sylow 1872, Cauchy 1845), the Wiedijk #72 classification, and a worked example: classifying groups of order 15 as cyclic using Sylow counting."
+    },
+    {
+      "id": "sylow-structure",
+      "title": "Sylow Structure Background",
+      "startLine": 67,
+      "endLine": 78,
+      "summary": "Opens the SylowTheorems namespace and explains Mathlib's Sylow p G type: an element P : Sylow p G represents a Sylow p-subgroup, with the underlying Subgroup G accessed via coercion ↑P."
+    },
+    {
+      "id": "sylow-i",
+      "title": "First Sylow Theorem: Existence and Order",
+      "startLine": 80,
+      "endLine": 103,
+      "summary": "Two theorems: sylow_existence (Nonempty (Sylow p G) for any prime p) and sylow_card (the Sylow p-subgroup order equals p^{v_p(|G|)}, the maximal p-power divisor of |G|). Both delegate to Mathlib."
+    },
+    {
+      "id": "sylow-ii",
+      "title": "Second Sylow Theorem: Conjugacy and Isomorphism",
+      "startLine": 105,
+      "endLine": 128,
+      "summary": "sylow_conjugacy: any two Sylow p-subgroups P, Q satisfy ∃ g, g • P = Q (transitive group action). sylow_isomorphic: they are MulEquiv-isomorphic via Sylow.equiv. Together these show all Sylow p-subgroups are structurally identical."
+    },
+    {
+      "id": "sylow-iii",
+      "title": "Third Sylow Theorem: Counting Constraints",
+      "startLine": 130,
+      "endLine": 148,
+      "summary": "sylow_count_mod_p: Nat.card (Sylow p G) ≡ 1 [MOD p], proved via card_sylow_modEq_one. sylow_count_dvd_index: the count divides the index of any Sylow subgroup, proved via card_sylow_dvd_index."
+    },
+    {
+      "id": "normality",
+      "title": "Uniqueness, Normality, and the Equivalence",
+      "startLine": 150,
+      "endLine": 180,
+      "summary": "Three results: sylow_normal_of_eq (if all conjugates of P equal P, P is normal — proved via normalizer_eq_top and Sylow.smul_eq_iff_mem_normalizer); sylow_normal_of_unique (Subsingleton implies normal, since all conjugates are equal by subsingleton); sylow_unique_of_normal (normal implies Unique, via Sylow.unique_of_normal)."
+    },
+    {
+      "id": "cauchy-applications",
+      "title": "Cauchy's Theorem and Prime Order Groups",
+      "startLine": 182,
+      "endLine": 203,
+      "summary": "cauchy_from_sylow: p | |G| implies an element of order p (via exists_prime_orderOf_dvd_card). group_of_prime_order_cyclic: groups of prime order are cyclic (via isCyclic_of_prime_card). Both are one-liners using Mathlib."
+    },
+    {
+      "id": "summary-applications",
+      "title": "Summary Table and Classification Applications",
+      "startLine": 205,
+      "endLine": 246,
+      "summary": "Summary table of all 10 results. Classification examples: groups of order pq (n_q = 1 since n_q ≡ 1 mod q and n_q | p), groups of order p² (abelian), simple group tests. Ends with #check verification of all theorems."
+    }
+  ],
   "conclusion": {
     "summary": "All three Sylow theorems are formalized as verified Lean 4 theorems with zero sorries and zero axioms, alongside normality criteria, a uniqueness-normality equivalence, and Cauchy's theorem as a corollary. The proof delegates the hard combinatorial work to Mathlib while contributing original pedagogical wrappers.",
-    "implications": "The Sylow theorems are the foundation for classifying finite groups: they rule out simplicity for groups of many orders, show groups of order pq (p < q, p ∤ q-1) are cyclic, and underlie the full classification of groups of small order. Every finite group theory textbook builds on these results.",
+    "implications": "The Sylow theorems are the foundation for classifying finite groups: they rule out simplicity for groups of many orders, show groups of order $pq$ (with $p < q$, $p \\nmid q-1$) are cyclic, prove groups of order $p^2$ are abelian, and underlie the full classification of groups of small order up to isomorphism. Every finite group theory textbook builds on these results. Having them in a formal gallery enables downstream formalizations: group classifications, the Burnside lemma, Schur-Zassenhaus theorem, and ultimately the classification of finite simple groups.",
     "openQuestions": [
-      "Can the full classification of groups of order up to 100 be formalized using these Sylow results as building blocks?",
-      "What is the computational complexity of finding all Sylow p-subgroups of a given finite group presented by generators and relations?"
+      "Can the full classification of groups of order up to 100 be formalized using these Sylow results as building blocks? (Groups of most orders up to 100 are determined up to isomorphism by Sylow theory.)",
+      "What is the computational complexity of finding all Sylow $p$-subgroups of a finite group presented by generators and relations?",
+      "Can the Schur-Zassenhaus theorem (if $\\gcd(|H|, [G:H]) = 1$ then $H$ is complemented in $G$) be formalized as an extension of Sylow theory in this gallery?"
     ]
   },
-  "sections": [],
   "crossReferences": [
     {
       "targetId": "sylow-theorem-oq-01",
@@ -66,6 +126,11 @@
       "targetId": "sylow-theorem-oq-04",
       "relationship": "parent",
       "description": "Applies Sylow's theorems to prove simplicity of A5 and the Abel-Ruffini theorem."
+    },
+    {
+      "slug": "lagrange-theorem-oq-01",
+      "relationship": "related",
+      "description": "Companion proof presenting the Sylow theorems as partial converse to Lagrange's theorem, with explicit carryCount and exponent formulas."
     }
   ]
 }

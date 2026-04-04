@@ -61,6 +61,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Research Question and Imports",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "File header stating the Paley-Zygmund inequality: P[X > θ·E[X]] ≥ (1-θ)²·E[X]²/E[X²]. Explains the context: this is the quantitative extension of the qualitative second moment method (θ=0) proved in the parent file. Imports Mathlib and ProbMethodSecondMoment."
+    },
+    {
       "id": "cauchy-schwarz",
       "title": "Private Cauchy-Schwarz Lemma",
       "startLine": 36,

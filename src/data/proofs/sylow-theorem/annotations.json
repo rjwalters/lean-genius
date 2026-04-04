@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-sylow-i-existence",
+    "proofId": "sylow-theorem",
+    "range": { "startLine": 87, "endLine": 103 },
+    "type": "concept",
+    "title": "First Sylow Theorem: Existence and Maximal Order",
+    "content": "`sylow_existence` proves `Nonempty (Sylow p G)` — that a Sylow p-subgroup exists for every prime p. The proof is `Sylow.nonempty`, Mathlib's one-line instance. `sylow_card` gives the order formula: `Nat.card P = p ^ (Nat.card G).factorization p`, meaning the Sylow p-subgroup has order exactly $p^{v_p(|G|)}$ (the maximal power of $p$ dividing $|G|$). This is the sharpest possible: the Sylow subgroup is not just *any* p-power subgroup but the *maximal* one. The underlying Mathlib proof of existence proceeds by induction on $|G|$, using the class equation $|G| = |Z(G)| + \\sum [G : C_G(g)]$ to reduce to smaller groups.",
+    "mathContext": "If $|G| = p^k m$ with $p \\nmid m$, then $\\exists P \\leq G$ with $|P| = p^k$. The order formula uses $(\\text{Nat.card } G)\\text{.factorization } p = v_p(|G|) = k$.",
+    "significance": "key",
+    "relatedConcepts": ["Sylow.nonempty", "Nat.factorization", "p-adic valuation", "maximal p-subgroup", "class equation"],
+    "prerequisites": ["finite group theory", "prime factorization", "p-groups", "Lagrange's theorem"]
+  },
+  {
+    "id": "ann-sylow-ii-conjugacy",
+    "proofId": "sylow-theorem",
+    "range": { "startLine": 112, "endLine": 128 },
+    "type": "insight",
+    "title": "Second Sylow Theorem: Conjugacy and Isomorphism",
+    "content": "`sylow_conjugacy` proves transitivity: for any two Sylow p-subgroups P, Q, there exists g ∈ G with `g • P = Q`. In Mathlib, G acts on `Sylow p G` by conjugation (the smul action), and `MulAction.exists_smul_eq` provides transitivity of this action — a one-line proof. `sylow_isomorphic` strengthens this to a group isomorphism: `Sylow.equiv P Q` produces a `MulEquiv` between the underlying subgroups. Together these show all Sylow p-subgroups are not merely conjugate but structurally identical (isomorphic as groups). The conjugacy proof in mathematics uses the action of P on G/Q by left multiplication and applies the fixed-point theorem for p-groups.",
+    "mathContext": "$P, Q \\in \\text{Syl}_p(G) \\Rightarrow \\exists g \\in G, Q = gPg^{-1}$. Equivalently: $G$ acts transitively on $\\text{Syl}_p(G)$ by conjugation. The stabilizer of $P$ is the normalizer $N_G(P)$, so $n_p = [G : N_G(P)]$.",
+    "significance": "key",
+    "relatedConcepts": ["MulAction.exists_smul_eq", "Sylow.equiv", "MulEquiv", "conjugation action", "normalizer"],
+    "prerequisites": ["group actions", "transitive actions", "orbit-stabilizer theorem", "normalizer subgroup"]
+  },
+  {
+    "id": "ann-sylow-iii-counting",
+    "proofId": "sylow-theorem",
+    "range": { "startLine": 136, "endLine": 148 },
+    "type": "insight",
+    "title": "Third Sylow Theorem: n_p ≡ 1 (mod p) and Divisibility",
+    "content": "`sylow_count_mod_p` proves `Nat.card (Sylow p G) ≡ 1 [MOD p]` using Mathlib's `card_sylow_modEq_one`. `sylow_count_dvd_index` proves $n_p \\mid [G:P]$ via `card_sylow_dvd_index`. Together these give `n_p ≡ 1 (mod p)` and `n_p | |G|/p^k`. The congruence $n_p \\equiv 1 \\pmod{p}$ is the most subtle: the proof considers the action of any fixed Sylow p-subgroup P on the set Syl_p(G) by conjugation. Fixed points of this action are subgroups Q with P ≤ N_G(Q); by maximality, P and Q are both Sylow p-subgroups of N_G(Q), and by uniqueness in N_G(Q) (since P is normal in N_G(P)), Q = P. So P is the only fixed point, giving $n_p \\equiv 1 \\pmod{p}$.",
+    "mathContext": "$n_p = |\\text{Syl}_p(G)|$ satisfies $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid [G:P] = m$. Together: $n_p \\in \\{1, p+1, 2p+1, \\ldots\\} \\cap \\{\\text{divisors of } m\\}$, strongly constraining group structure.",
+    "significance": "key",
+    "relatedConcepts": ["card_sylow_modEq_one", "card_sylow_dvd_index", "Nat.ModEq", "fixed-point theorem for p-groups"],
+    "prerequisites": ["group actions on cosets", "fixed-point counting mod p", "p-group action fixed points"]
+  },
+  {
+    "id": "ann-normality",
+    "proofId": "sylow-theorem",
+    "range": { "startLine": 156, "endLine": 180 },
+    "type": "technique",
+    "title": "Normality, Uniqueness, and the Sylow Normality Equivalence",
+    "content": "Three theorems establish the normality-uniqueness equivalence. `sylow_normal_of_eq` (the hard direction): if every conjugate of P is P itself (∀ g, g • P = P), then ↑P is normal. The proof uses `normalizer_eq_top` (normality iff normalizer is the whole group) and `Sylow.smul_eq_iff_mem_normalizer` to convert the conjugation action condition to normalizer membership. `sylow_normal_of_unique` applies when `Subsingleton (Sylow p G)` holds: all Sylow subgroups are equal by subsingleton, so `Subsingleton.elim` gives ∀ g, g • P = P. `sylow_unique_of_normal` is the converse: normal implies Unique, via `Sylow.unique_of_normal`. The practical consequence: if $n_p = 1$, P is normal (and vice versa).",
+    "mathContext": "$n_p = 1 \\iff P \\trianglelefteq G$ (the unique Sylow subgroup is normal). Proof via `normalizer_eq_top`: $P \\trianglelefteq G \\iff N_G(P) = G$. The action condition $\\forall g, gPg^{-1} = P$ is exactly $G \\subseteq N_G(P)$.",
+    "significance": "key",
+    "relatedConcepts": ["normalizer_eq_top", "Sylow.smul_eq_iff_mem_normalizer", "Subsingleton", "normal subgroup", "Sylow.unique_of_normal"],
+    "prerequisites": ["normalizer subgroup", "normal subgroup definition", "Mathlib type class Subsingleton"]
+  },
+  {
+    "id": "ann-cauchy-prime-order",
+    "proofId": "sylow-theorem",
+    "range": { "startLine": 188, "endLine": 203 },
+    "type": "concept",
+    "title": "Cauchy's Theorem and Cyclic Prime-Order Groups",
+    "content": "`cauchy_from_sylow` proves Cauchy's theorem: if p is prime and p | |G|, then G has an element of order p. The proof uses Mathlib's `exists_prime_orderOf_dvd_card` — a one-liner. Historically, Cauchy proved this in 1845 using a direct combinatorial argument (the necklace/cycle counting proof). The Sylow-based proof: take a Sylow p-subgroup P (exists by Sylow I); P has order $p^k \\geq p$; any non-identity element of P has order a power of p; raising to the right power gives order p. `group_of_prime_order_cyclic` then shows groups of prime order are cyclic, via `isCyclic_of_prime_card`: by Cauchy, there is an element of order p = |G|, generating the whole group.",
+    "mathContext": "Cauchy (1845): $p \\mid |G| \\Rightarrow \\exists g \\in G, \\text{ord}(g) = p$. For a group of prime order $p$: every non-identity element generates $G$ (since $\\text{ord}(g) \\mid p$ and $\\text{ord}(g) \\neq 1$, so $\\text{ord}(g) = p$), so $G \\cong \\mathbb{Z}_p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["exists_prime_orderOf_dvd_card", "isCyclic_of_prime_card", "Cauchy's theorem", "cyclic groups"],
+    "prerequisites": ["element order in groups", "cyclic groups", "Lagrange's theorem"]
+  },
+  {
+    "id": "ann-classification-example",
+    "proofId": "sylow-theorem",
+    "range": { "startLine": 205, "endLine": 232 },
+    "type": "context",
+    "title": "Applications: Classifying Groups of Small Order",
+    "content": "The summary section illustrates Sylow theory in action. For groups of order 15 = 3·5: $n_3 \\mid 5$ and $n_3 \\equiv 1 \\pmod{3}$ force $n_3 = 1$; $n_5 \\mid 3$ and $n_5 \\equiv 1 \\pmod{5}$ force $n_5 = 1$. Both Sylow subgroups are unique hence normal; their intersection is trivial (orders 3 and 5 are coprime), so $G \\cong \\mathbb{Z}_3 \\times \\mathbb{Z}_5 \\cong \\mathbb{Z}_{15}$. For order $p^2$: the counting forces the group to be abelian ($G \\cong \\mathbb{Z}_{p^2}$ or $\\mathbb{Z}_p \\times \\mathbb{Z}_p$). For simple groups: if $n_p < |G|$ for some prime $p$ (so the Sylow subgroup is a proper normal subgroup), the group is not simple.",
+    "mathContext": "Groups of order 15: $n_3 \\in \\{1\\}$ and $n_5 \\in \\{1\\}$ (by Sylow III), so $G \\cong \\mathbb{Z}_{15}$. Groups of order $pq$ with $p < q$ and $p \\nmid q-1$: $n_q = 1$ (the Sylow $q$-subgroup is normal) and $n_p = 1$ (similarly), giving $G \\cong \\mathbb{Z}_{pq}$.",
+    "significance": "context",
+    "relatedConcepts": ["classification of finite groups", "groups of order pq", "simple groups", "direct product decomposition"],
+    "prerequisites": ["Sylow I, II, III", "normal subgroups", "direct product of groups"]
+  }
+]

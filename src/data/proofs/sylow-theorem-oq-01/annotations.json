@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-pq-ispqgroup",
+    "proofId": "sylow-theorem-oq-01",
+    "range": { "startLine": 39, "endLine": 116 },
+    "type": "definition",
+    "title": "IsPQGroup: Bundled pq-Group Hypothesis",
+    "content": "`IsPQGroup G` is a structure bundling all hypotheses about a group of order pq: the two primes `p` and `q`, their primality proofs `hp`, `hq`, distinctness `hpq`, and the cardinality `hcard : Fintype.card G = p * q`. By packaging these as a structure, every theorem in the file can take a single `h : IsPQGroup G` argument rather than six separate hypotheses, keeping theorem statements clean and focused. The private helper lemmas (`factorization_pq_at_q`, `sylow_q_card`, `sylow_q_index`, etc.) use this structure to derive that Sylow subgroups have orders exactly $p$ and $q$ and indices $q$ and $p$ respectively — the key facts for the counting arguments.",
+    "mathContext": "For $G$ with $|G| = p \\cdot q$ (distinct primes), the p-adic valuation $(p \\cdot q)_{(p)} = 1$, so the Sylow $p$-subgroup has order $p^1 = p$ and the Sylow $q$-subgroup has order $q^1 = q$. Their indices are $q$ and $p$ respectively by Lagrange.",
+    "significance": "context",
+    "relatedConcepts": ["IsPQGroup", "Nat.factorization", "Sylow.card_eq_multiplicity", "Subgroup.card_mul_index"],
+    "prerequisites": ["Sylow's theorems", "Nat.factorization in Mathlib", "Finsupp.single_apply"]
+  },
+  {
+    "id": "ann-pq-sylow-q-unique",
+    "proofId": "sylow-theorem-oq-01",
+    "range": { "startLine": 125, "endLine": 159 },
+    "type": "insight",
+    "title": "Unique Sylow q-Subgroup: n_q = 1 for All pq-Groups",
+    "content": "`sylow_q_count_constraint` extracts the two Sylow III constraints on $n_q$: it divides $p$ (the index of any Sylow q-subgroup, derived from `sylow_q_index`) and $n_q \\equiv 1 \\pmod{q}$ (from `card_sylow_modEq_one`). `unique_sylow_q` then closes the argument: if $n_q \\geq 2$, by primality of $n_q \\mid p$, either $n_q = 1$ (done) or $n_q = p$; but $n_q = p$ implies $p \\equiv 1 \\pmod{q}$, i.e., $p \\% q = 1$; since $p < q$, $p \\% q = p$, so $p = 1$, contradicting $p$ prime. The key arithmetic step is `Nat.mod_eq_of_lt hpq : p % q = p`. `sylow_q_normal` wraps the result.",
+    "mathContext": "$n_q \\mid p$ and $n_q \\equiv 1 \\pmod{q}$, with $p < q$: if $n_q = p$, then $p \\equiv 1 \\pmod{q}$, so $p = 1 + kq \\geq q + 1 > p$ for $k \\geq 1$, impossible. Hence $n_q = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["sylow_q_count_constraint", "card_sylow_modEq_one", "card_sylow_dvd_index", "Nat.mod_eq_of_lt"],
+    "prerequisites": ["Third Sylow theorem", "divisibility of Sylow count", "Nat.ModEq in Mathlib"]
+  },
+  {
+    "id": "ann-pq-sylow-p-analysis",
+    "proofId": "sylow-theorem-oq-01",
+    "range": { "startLine": 168, "endLine": 206 },
+    "type": "insight",
+    "title": "Sylow p-Subgroup Analysis: n_p ∈ {1, q} and the Coprimality Criterion",
+    "content": "`sylow_p_count` uses that $n_p \\mid q$ (prime) so by primality $n_p \\in \\{1, q\\}$. `unique_sylow_p_when_coprime` shows that if $p \\nmid q-1$, then $n_p \\neq q$: if $n_p = q$, then `card_sylow_modEq_one` gives $q \\equiv 1 \\pmod{p}$, i.e., $p \\mid q-1$, contradicting the hypothesis. The key Mathlib bridge is `Nat.modEq_iff_dvd'`: $q \\equiv 1 \\pmod{p}$ iff $p \\mid q - 1$ (valid since $1 \\leq q$). `both_normal_when_coprime` packages both results to give two normal Sylow subgroups when $p \\nmid q-1$.",
+    "mathContext": "$n_p \\mid q$ (prime) so $n_p \\in \\{1, q\\}$. $n_p = q \\Rightarrow q \\equiv 1 \\pmod{p} \\Rightarrow p \\mid q-1$. Contrapositive: $p \\nmid q-1 \\Rightarrow n_p = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["sylow_p_count", "unique_sylow_p_when_coprime", "Nat.modEq_iff_dvd'", "both_normal_when_coprime"],
+    "prerequisites": ["Third Sylow theorem", "Nat.Prime.eq_one_or_self_of_dvd", "modular arithmetic"]
+  },
+  {
+    "id": "ann-pq-cyclic-proof",
+    "proofId": "sylow-theorem-oq-01",
+    "range": { "startLine": 208, "endLine": 297 },
+    "type": "technique",
+    "title": "Core Cyclicity Proof: Commutator Argument and Order Product Formula",
+    "content": "`cyclic_of_both_sylow_normal` is the 80-line original proof. Step 1 (disjointness): the commutator argument relies on $P \\cap Q = \\{1\\}$, proved by showing any $x$ in both has order dividing both $p$ and $q$; by coprimality of $p$ and $q$, `Nat.eq_one_of_dvd_coprimes` gives $\\text{ord}(x) = 1$. Step 2 (commutativity): for $g \\in P$, $k \\in Q$, the commutator $[g,k] = g^{-1}k^{-1}gk$ is simultaneously in $P$ (by normality of $P$: $k^{-1}gk \\in P$, and $g^{-1} \\in P$) and in $Q$ (by normality of $Q$: $g^{-1}k^{-1}g \\in Q$, and $k \\in Q$). Since $[g,k] \\in P \\cap Q = \\{1\\}$, we get $g$ and $k$ commute. Step 3: generators of cyclic-prime-order groups P and Q commute, so `Commute.orderOf_mul_eq_mul_orderOf_of_coprime` gives $\\text{ord}(gk) = p \\cdot q = |G|$. Step 4: `Subgroup.zpowers(gk) = ⊤` via `Subgroup.eq_top_of_card_eq`.",
+    "mathContext": "$P \\cap Q = \\{1\\}$ (coprime orders). $[g,k] \\in P \\cap Q = \\{1\\} \\Rightarrow g, k$ commute. Then $\\text{ord}(gk) = \\text{ord}(g) \\cdot \\text{ord}(k) = p \\cdot q = |G|$, so $G = \\langle gk \\rangle \\cong \\mathbb{Z}/pq$.",
+    "significance": "key",
+    "relatedConcepts": ["Commute.orderOf_mul_eq_mul_orderOf_of_coprime", "Subgroup.disjoint_def", "Subgroup.eq_top_of_card_eq", "IsCyclic.exists_generator"],
+    "prerequisites": ["normal subgroups", "commutator subgroups", "cyclic groups", "Nat.Coprime"]
+  },
+  {
+    "id": "ann-pq-classification",
+    "proofId": "sylow-theorem-oq-01",
+    "range": { "startLine": 319, "endLine": 381 },
+    "type": "concept",
+    "title": "Classification Theorem and Concrete Examples",
+    "content": "`nonabelian_sylow_p_count` characterizes non-cyclic pq-groups: if $p \\mid q-1$ and $G$ is not cyclic, then $n_p = q$ (by contradiction: $n_p = 1$ would force both Sylow subgroups normal, then `cyclic_of_both_sylow_normal` gives $G$ cyclic). `pq_cyclic_classification` is the main exported theorem: for any group of order $pq$ with $p \\nmid q-1$, $G$ is cyclic. The four concrete `omega`-proved examples confirm the arithmetic: order 15 ($3 \\nmid 4$, only $\\mathbb{Z}/15$), order 35 ($5 \\nmid 6$, only $\\mathbb{Z}/35$), order 6 ($2 \\mid 2$, also $S_3$), order 21 ($3 \\mid 6$, also non-abelian).",
+    "mathContext": "The complete classification: $|\\text{Groups}(pq)| = 1$ if $p \\nmid q-1$ (only $\\mathbb{Z}/pq$), $|\\text{Groups}(pq)| = 2$ if $p \\mid q-1$ ($\\mathbb{Z}/pq$ and $\\mathbb{Z}/q \\rtimes \\mathbb{Z}/p$). Orders 6, 10, 14, 15, 21, 22, 26, 33, 34, 35, 38, ... are covered by this theorem.",
+    "significance": "key",
+    "relatedConcepts": ["pq_cyclic_classification", "nonabelian_sylow_p_count", "semidirect product", "group classification"],
+    "prerequisites": ["Sylow theorems", "cyclic groups", "semidirect products"]
+  }
+]
