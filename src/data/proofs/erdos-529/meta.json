@@ -106,9 +106,9 @@
       "erdos_529_summary theorem: combines established results",
       "erdos_529 theorem: combines Hara-Slade + sub-ballistic + Question 2"
     ],
-    "axiomCount": 7,
+    "axiomCount": 5,
     "lineCount": 306,
-    "assumptions": "7 axioms: endToEndDistance (end-to-end distance function for self-avoiding walks), expectedEndDistance (expected end-to-end distance d_k(n)), tendsTo (convergence predicate for sequences), haraSlade_five_dim (Hara-Slade 1992 mean-field theory for d≥5), duminilCopin_subBallistic (Duminil-Copin 2012 subballisticity), conjecture_implies_question1 (conjecture implies answer to Q1), question2_high_dim (answer to Q2 in high dimensions). 0 sorries."
+    "assumptions": "5 axiom(s) and 0 sorry(s): tendsTo (convergence predicate), haraSlade_five_dim (5D self-avoiding walk result), duminilCopin_subBallistic (sub-ballistic diffusivity), conjecture_implies_question1, question2_high_dim. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #529: Self-Avoiding Walks**\n\nSelf-avoiding walks (SAWs) were first studied systematically by the chemist Paul Flory in 1949 as models for linear polymers in good solvents. Flory's mean-field prediction $\\nu = 3/(d+2)$ for the end-to-end distance exponent was remarkably accurate, setting the stage for decades of rigorous mathematical work.\n\nThe first rigorous high-dimensional result came from **Gordon Slade** (1987), who used the **lace expansion** — a perturbative technique introduced by Brydges and Spencer (1985) — to prove $d_k(n) \\sim D\\sqrt{n}$ for sufficiently large $k$. **Takashi Hara** and Slade (1991-92) refined this to all $k \\ge 5$, using computer-assisted bounds on the lace expansion coefficients. Their work established that mean-field behavior ($\\nu = 1/2$) holds above the upper critical dimension $d_c = 4$.\n\nThe low-dimensional case proved far more resistant. **Bernard Nienhuis** (1982) predicted $\\nu = 3/4$ in 2D using the exact solution of an O(n) loop model on the honeycomb lattice, and conformal field theory arguments connect 2D SAW to the SLE$_{8/3}$ process (Lawler, Schramm, Werner). The landmark result of **Hugo Duminil-Copin** and **Alan Hammond** (2013) proved $d_2(n) = o(n)$ (sub-ballistic growth) using a bridge decomposition argument, but the full Question 1 ($d_2(n)/\\sqrt{n} \\to \\infty$) remains open.\n\nThe definitive reference is the monograph *The Self-Avoiding Walk* by Madras and Slade (1993, 2nd ed. 2013). **Nathan Clisby** (2010) provided the most precise numerical estimates: $\\nu_3 \\approx 0.5876 \\pm 0.0002$.",
@@ -225,7 +225,7 @@
     ],
     "namespace": "Erdos529",
     "lineCount": 306,
-    "axiomCount": 7,
+    "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 5
   },

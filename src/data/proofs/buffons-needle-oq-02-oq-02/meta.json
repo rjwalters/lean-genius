@@ -61,9 +61,9 @@
       "smooth3D_mono/strictMono: monotonicity of expected crossings in arc length"
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 376,
-    "assumptions": "Two axioms: smooth3DExpectedCrossings (defines the expected crossing count for smooth curves) and smooth3D_buffon_eq (the Buffon–Barbier formula E = L/(2d)). These require measure theory on the Grassmannian Gr(2,3) and the Cauchy–Crofton integral formula, which are beyond current Mathlib.",
+    "assumptions": "1 axiom: smooth3D_buffon_eq (the expected crossing count formula for smooth 3D curves). No sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -228,7 +228,7 @@
     ],
     "namespace": "BuffonsNeedleOQ02OQ02",
     "lineCount": 376,
-    "axiomCount": 2,
+    "axiomCount": 1,
     "theoremCount": 15,
     "definitionCount": 4
   }
