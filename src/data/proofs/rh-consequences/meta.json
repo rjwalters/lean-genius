@@ -92,5 +92,76 @@
       "description": "Dirichlet L-functions extend the zeta function framework used here"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "mathlib-rh-definition",
+      "title": "Mathlib's RiemannHypothesis Definition",
+      "startLine": 38,
+      "endLine": 61,
+      "summary": "Documents that RiemannHypothesis is already in Mathlib (NumberTheory.LSeries.RiemannZeta) as: ∀ non-trivial zero s of ζ, Re(s) = 1/2."
+    },
+    {
+      "id": "mertens-function",
+      "title": "Mertens Function and Möbius Properties",
+      "startLine": 62,
+      "endLine": 149,
+      "summary": "Defines M(n) = Σ_{k≤n} μ(k) via ArithmeticFunction.moebius. Computes M(0) through M(30) by native_decide. Proves Möbius properties: μ(1)=1, μ(p)=-1, μ(squarefree)=±1, μ(non-squarefree)=0."
+    },
+    {
+      "id": "main-rh-axioms",
+      "title": "Main RH Consequences (Axioms)",
+      "startLine": 150,
+      "endLine": 203,
+      "summary": "States rh_implies_mertens_bound as an axiom. Proves trivial consequences: zeros on critical line (directly from definition), trivial zeros off critical line (real part = -2n < 0)."
+    },
+    {
+      "id": "chebyshev-functions",
+      "title": "Chebyshev Theta and Psi Functions",
+      "startLine": 114,
+      "endLine": 230,
+      "summary": "Defines θ(n) = Σ_{p≤n prime} log p and ψ(n) = Σ_{pᵏ≤n} log p (von Mangoldt). Proves θ ≤ ψ, both computable."
+    },
+    {
+      "id": "lis-criterion",
+      "title": "Li's Criterion: RH ⟺ λₙ ≥ 0",
+      "startLine": 531,
+      "endLine": 551,
+      "summary": "States Li's criterion (1997, Bombieri-Lagarias 1999): RH iff all Li constants λₙ ≥ 0. The liConstant function is opaque since it requires the zero set of ζ(s)."
+    },
+    {
+      "id": "zero-counting",
+      "title": "Zero Counting and Riemann-von Mangoldt Formula",
+      "startLine": 565,
+      "endLine": 603,
+      "summary": "States the Riemann-von Mangoldt formula: N(T) = (T/2π)log(T/2πe) + O(log T). Notes computational verifications: 10^13 zeros verified on critical line by Gourdon (2004)."
+    },
+    {
+      "id": "cross-equivalences",
+      "title": "RH Triple Equivalence",
+      "startLine": 1020,
+      "endLine": 1027,
+      "summary": "Packages RH ⟹ Mertens bound, RH ⟺ Li's criterion, and RH ⟹ Density Hypothesis into a single theorem."
+    },
+    {
+      "id": "chebyshev-bounds",
+      "title": "Chebyshev Bounds: von Koch's ψ(x) = x + O(√x log²x)",
+      "startLine": 1053,
+      "endLine": 1132,
+      "summary": "States von Koch's (1901) bound ψ(x) = x + O(√x log²x) conditional on RH. Derives θ upper bound from ψ≥θ. Proves various RH-conditional Chebyshev inequalities."
+    },
+    {
+      "id": "redheffer-matrix",
+      "title": "Redheffer Matrix and Mertens Connection",
+      "startLine": 1174,
+      "endLine": 1200,
+      "summary": "Defines Redheffer matrix R(i,j) = 1 if j=1 or j|i. Notes the remarkable connection: det(R_n) = M(n), so RH ⟺ |det(R_n)| = O(n^{1/2+ε})."
+    },
+    {
+      "id": "hadamard-product",
+      "title": "Hadamard Product Theory",
+      "startLine": 1463,
+      "endLine": 1533,
+      "summary": "States the Hadamard product representation of ξ(s) over non-trivial zeros. Connects to prime counting through explicit formula. All statements axiomatized due to missing complex analysis infrastructure."
+    }
+  ]
 }
