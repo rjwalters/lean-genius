@@ -1,8 +1,8 @@
 {
   "id": "bezout-identity-oq-03-oq-04-oq-01",
-  "title": "CRT for Commutative Rings via B\u00e9zout Coefficients",
+  "title": "CRT for Commutative Rings via Bézout Coefficients",
   "slug": "bezout-identity-oq-03-oq-04-oq-01",
-  "description": "Generalizes the direct B\u00e9zout CRT formula from \u2124 to arbitrary commutative rings. The construction crtRing works over any CommRing; correctness proofs use linear_combination instead of linarith; uniqueness uses IsCoprime.mul_dvd. The IsBezout typeclass provides B\u00e9zout coefficients in rings like k[X] or \u2124[i].",
+  "description": "Generalizes the direct Bézout CRT formula from ℤ to arbitrary commutative rings. The construction crtRing works over any CommRing; correctness proofs use linear_combination instead of linarith; uniqueness uses IsCoprime.mul_dvd. The IsBezout typeclass provides Bézout coefficients in rings like k[X] or ℤ[i].",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem#Generalization_to_arbitrary_rings",
@@ -26,12 +26,12 @@
       },
       {
         "theorem": "IsCoprime",
-        "description": "\u2203 s t, s * m + t * n = 1",
+        "description": "∃ s t, s * m + t * n = 1",
         "module": "Mathlib.RingTheory.Coprime.Basic"
       }
     ],
     "originalContributions": [
-      "crtRing: direct B\u00e9zout CRT for any CommRing",
+      "crtRing: direct Bézout CRT for any CommRing",
       "crtRing_mod_m: correctness mod m using linear_combination",
       "crtRing_mod_n: correctness mod n using linear_combination",
       "crtRing_unique: uniqueness using IsCoprime.mul_dvd",
@@ -44,74 +44,59 @@
     "assumptions": "0 axioms. 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Chinese Remainder Theorem was known to the Chinese mathematician Sun Tzu (\u5b6b\u5b50) by the 3rd century CE and later generalized by Qin Jiushao (1247). The modern algebraic statement\u2014that the ring \u2124/mn\u2124 is isomorphic to \u2124/m\u2124 \u00d7 \u2124/n\u2124 when gcd(m,n) = 1\u2014was formulated in the language of abstract algebra in the 20th century. Emmy Noether's ring theory framework (1920s) clarified that CRT is fundamentally a statement about ideals: in any commutative ring, if ideals I and J are comaximal (I + J = R), then R/(I \u2229 J) \u2245 R/I \u00d7 R/J. The B\u00e9zout formulation (explicit formula via B\u00e9zout coefficients) is the constructive version: rather than proving existence abstractly, it gives an explicit element satisfying both congruences. This constructive approach is particularly valuable in formal verification: it avoids classical reasoning and provides a computable witness. The `IsBezout` typeclass in Lean 4's Mathlib formalizes the class of rings where B\u00e9zout's identity holds computably (PIDs, polynomial rings over fields, Gaussian integers).",
-    "problemStatement": "Can crtDirect (from BezoutIdentityOQ03OQ04) be generalized to arbitrary commutative rings where B\u00e9zout's identity holds? Lean's type class system should support this via IsBezout or GCDMonoid.",
-    "proofStrategy": "Replace \u2124-specific lemmas with ring-theoretic equivalents: (1) linarith becomes linear_combination for the correctness proofs; (2) Int.Coprime.mul_dvd_of_dvd_of_dvd becomes IsCoprime.mul_dvd for uniqueness; (3) Int.gcd and Int.gcdA/gcdB become IsCoprime witnesses. The construction crtRing = b\u00b7s\u00b7m + a\u00b7t\u00b7n works identically over any CommRing.",
+    "historicalContext": "The Chinese Remainder Theorem (CRT) holds in any commutative ring where the moduli are coprime (IsCoprime). The integer version uses extended GCD algorithms; the ring version replaces integer-specific lemmas with ring-theoretic ones. The IsBezout typeclass (every finitely-generated ideal is principal) covers rings like polynomial rings k[X] over a field, Gaussian integers ℤ[i], and any PID.",
+    "problemStatement": "Can crtDirect (from BezoutIdentityOQ03OQ04) be generalized to arbitrary commutative rings where Bézout's identity holds? Lean's type class system should support this via IsBezout or GCDMonoid.",
+    "proofStrategy": "Replace ℤ-specific lemmas with ring-theoretic equivalents: (1) linarith becomes linear_combination for the correctness proofs; (2) Int.Coprime.mul_dvd_of_dvd_of_dvd becomes IsCoprime.mul_dvd for uniqueness; (3) Int.gcd and Int.gcdA/gcdB become IsCoprime witnesses. The construction crtRing = b·s·m + a·t·n works identically over any CommRing.",
     "keyInsights": [
-      "The key realization: the CRT correctness proofs in BezoutIdentityOQ03OQ04.lean use only ring arithmetic (linear_combination / linarith). The integer case uses linarith only because the arithmetic is over \u2124. For a general CommRing, linear_combination handles the same algebraic identities.",
-      "IsBezout is not needed for the core theorems \u2014 IsCoprime (\u2203 s t, s * m + t * n = 1) suffices. IsBezout only matters when you need to compute B\u00e9zout coefficients algorithmically. For existential statements, IsCoprime is the right assumption.",
-      "The Mathlib lemma IsCoprime.mul_dvd directly replaces Int.Coprime.mul_dvd_of_dvd_of_dvd: if IsCoprime m n and m \u2223 x-y and n \u2223 x-y, then m*n \u2223 x-y. This works in any CommRing without additional assumptions.",
-      "The proof crtRing_mod_m a b s t m n hbez = \u27e8b * s - a * s, by unfold crtRing; linear_combination a * hbez\u27e9 is a complete one-liner. The linear_combination certificate a * hbez encodes: a * (s*m + t*n) - a*1 = 0.",
-      "The generalization reveals a hierarchy of abstractions: CommRing (just ring operations) < IsCoprime (per-pair B\u00e9zout witnesses) < IsBezout (B\u00e9zout coefficients computable for any pair) < PID (every ideal principal). The CRT formula needs only CommRing structure; correctness proofs need only IsCoprime; the full IsBezout or PID structure is overkill for existential CRT. Lean's typeclass system makes this hierarchy explicit."
+      "The key realization: the CRT correctness proofs in BezoutIdentityOQ03OQ04.lean use only ring arithmetic (linear_combination / linarith). The integer case uses linarith only because the arithmetic is over ℤ. For a general CommRing, linear_combination handles the same algebraic identities.",
+      "IsBezout is not needed for the core theorems — IsCoprime (∃ s t, s * m + t * n = 1) suffices. IsBezout only matters when you need to compute Bézout coefficients algorithmically. For existential statements, IsCoprime is the right assumption.",
+      "The Mathlib lemma IsCoprime.mul_dvd directly replaces Int.Coprime.mul_dvd_of_dvd_of_dvd: if IsCoprime m n and m ∣ x-y and n ∣ x-y, then m*n ∣ x-y. This works in any CommRing without additional assumptions.",
+      "The proof crtRing_mod_m a b s t m n hbez = ⟨b * s - a * s, by unfold crtRing; linear_combination a * hbez⟩ is a complete one-liner. The linear_combination certificate a * hbez encodes: a * (s*m + t*n) - a*1 = 0."
     ]
   },
   "sections": [
     {
       "id": "sec-def",
       "title": "Part 1: CRT Construction",
-      "startLine": 29,
-      "endLine": 37,
-      "summary": "crtRing over any CommRing: explicit formula b*s*m + a*t*n from B\u00e9zout coefficients s, t."
+      "startLine": 27,
+      "endLine": 35,
+      "summary": "crtRing over CommRing: b*s*m + a*t*n"
     },
     {
       "id": "sec-correct",
       "title": "Parts 2-3: Correctness and Uniqueness",
-      "startLine": 39,
-      "endLine": 66,
-      "summary": "crtRing_mod_m and crtRing_mod_n via linear_combination certificates; crtRing_unique via IsCoprime.mul_dvd (one-liner)."
+      "startLine": 37,
+      "endLine": 79,
+      "summary": "crtRing_mod_m, crtRing_mod_n via linear_combination; crtRing_unique via IsCoprime.mul_dvd"
     },
     {
       "id": "sec-existence",
-      "title": "Parts 4-5: Existence and IsBezout Connection",
-      "startLine": 68,
-      "endLine": 90,
-      "summary": "crtRing_exists destructs IsCoprime witnesses (obtain \u27e8s,t,hst\u27e9) to apply crtRing; crtRing_bezout shows IsBezout rings satisfy IsCoprime, so CRT applies there too."
+      "title": "Parts 4-5: Existence and IsBezout",
+      "startLine": 81,
+      "endLine": 110,
+      "summary": "crtRing_exists (IsCoprime → CRT solvable); crtRing_bezout (IsBezout specialization)"
     },
     {
       "id": "sec-recovery",
-      "title": "Part 6: \u2124 Recovery",
-      "startLine": 92,
-      "endLine": 97,
-      "summary": "crtInt_from_ring: validates the generalization by recovering the integer CRT as a special case of crtRing."
-    },
-    {
-      "id": "sec-summary",
-      "title": "Summary and Type Checks",
-      "startLine": 99,
-      "endLine": 129,
-      "summary": "Narrative summary listing rings where crtRing applies (\u2124, k[X], \u2124[i], fields, PIDs). #check verification of all main definitions."
+      "title": "Part 6: ℤ Recovery",
+      "startLine": 112,
+      "endLine": 125,
+      "summary": "crtInt_from_ring: the integer case is a special case of crtRing"
     }
   ],
   "conclusion": {
-    "summary": "crtDirect generalizes immediately to any CommRing. The proofs are cleaner in the general setting \u2014 linear_combination is more natural than linarith for ring identities. IsCoprime is the right Lean typeclass for CRT: it provides the B\u00e9zout coefficients directly, while IsBezout additionally guarantees they can be computed algorithmically.",
-    "implications": "This formalization demonstrates that CRT is not fundamentally about integers\u2014it is a theorem of abstract commutative algebra. The `linear_combination` tactic proves that ring-theoretic reasoning is often simpler than integer-specific reasoning: the proof certificates are purely algebraic and apply uniformly across all commutative rings. Practically, this means the formalization can be instantiated immediately for polynomial interpolation (k[X]: Lagrange interpolation is CRT), number fields (\u2124[i]: Gaussian integer congruences), and any PID. The distinction between `IsCoprime` and `IsBezout` is a case study in choosing the minimal typeclass assumption: over-constraining (requiring `IsBezout` when `IsCoprime` suffices) makes theorems less reusable; under-constraining (only `CommRing`) means the proof can't go through. The right level of abstraction here is `IsCoprime`.",
+    "summary": "crtDirect generalizes immediately to any CommRing. The proofs are cleaner in the general setting — linear_combination is more natural than linarith for ring identities. IsCoprime is the right Lean typeclass for CRT: it provides the Bézout coefficients directly, while IsBezout additionally guarantees they can be computed algorithmically.",
     "openQuestions": [
-      "Can the folding approach for multiple coprime moduli (iterated CRT) be generalized to commutative rings? The key lemma needed: if IsCoprime m\u2081 m\u2082 and IsCoprime (m\u2081*m\u2082) m\u2083, then IsCoprime m\u2081 (m\u2082*m\u2083) \u2014 available in Mathlib as IsCoprime.mul_right.",
-      "Can crtRing be instantiated for polynomial rings k[X] with an explicit worked example \u2014 e.g., Lagrange interpolation as CRT?",
-      "Is the efficiency analysis (O(k\u00b7log\u00b2M) complexity) formalizable in the ring setting using a computational complexity framework?"
+      "Can the folding approach for multiple coprime moduli (iterated CRT) be generalized to commutative rings? The key lemma needed: if IsCoprime m₁ m₂ and IsCoprime (m₁*m₂) m₃, then IsCoprime m₁ (m₂*m₃) — available in Mathlib as IsCoprime.mul_right.",
+      "Can crtRing be instantiated for polynomial rings k[X] with an explicit worked example — e.g., Lagrange interpolation as CRT?",
+      "Is the efficiency analysis (O(k·log²M) complexity) formalizable in the ring setting using a computational complexity framework?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "bezout-identity-oq-03-oq-04",
       "relationship": "generalizes",
-      "description": "Parent: Efficient Verified CRT via Direct B\u00e9zout for \u2124. This file generalizes to arbitrary CommRing."
+      "description": "Parent: Efficient Verified CRT via Direct Bézout for ℤ. This file generalizes to arbitrary CommRing."
     }
-  ],
-  "leanFile": {
-    "lineCount": 129,
-    "path": "Proofs/BezoutIdentityOQ03OQ04OQ01.lean",
-    "axiomCount": 0,
-    "sorries": 0
-  }
+  ]
 }
