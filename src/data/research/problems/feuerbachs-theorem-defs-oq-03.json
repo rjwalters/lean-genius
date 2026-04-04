@@ -1,44 +1,68 @@
 {
   "slug": "feuerbachs-theorem-defs-oq-03",
-  "title": "Feuerbach Point as Nine-Point Circle Tangency",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Uniqueness of the Feuerbach Point",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Feuerbach Point as Nine-Point Circle Tangency.",
-    "whyMatters": []
+    "formal": "feuerbachPoint_unique : ∀ (T : Triangle) (h : T.inradius < T.ninePointRadius) (P : Point), dist2 T.ninePointCenter P = T.ninePointRadius → dist2 T.incenter P = T.inradius → P = feuerbachPoint T h",
+    "plain": "The Feuerbach point is the unique common point of the nine-point circle and the incircle of a non-equilateral triangle.",
+    "whyMatters": [
+      "Establishes that the nine-point circle and incircle are internally tangent at exactly one point",
+      "The uniqueness follows from a clean sum-of-squares argument using Feuerbach's distance theorem",
+      "Complements the main Feuerbach theorem with a uniqueness characterization"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "feuerbachPoint_unique: unique common point of nine-point circle and incircle",
+      "feuerbachPoint_on_ninePointCircle: F lies on the nine-point circle",
+      "feuerbachPoint_on_incircle: F lies on the incircle",
+      "triangle_345_feuerbachPoint: for 3-4-5 triangle, F = (2, 1)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "COMPLETED"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T22:19:31.122Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-04T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proof complete: 7 theorems, 0 sorries, 0 axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — proof is complete.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Proved uniqueness of the Feuerbach point via sum-of-squares argument. 7 theorems, 0 sorries, 0 axioms.",
+    "builtItems": [
+      "feuerbachPoint def: point on ray from N through I at distance R₂ from N",
+      "feuerbachPoint_on_ninePointCircle: dist2 N F = R₂",
+      "feuerbachPoint_on_incircle: dist2 I F = r",
+      "feuerbachPoint_unique: unique common point (sum-of-squares proof)",
+      "triangle_345_not_equilateral: inradius < ninePointRadius for 3-4-5",
+      "triangle_345_feuerbachPoint: F = (2, 1) for 3-4-5 triangle",
+      "dist2_to_sq and feuerbach_NI_sqrt private helper lemmas"
+    ],
+    "insights": [
+      "Sum-of-squares proof: define v₁=e₁d-R₂Δ₁, v₂=e₂d-R₂Δ₂; show v₁²+v₂²=0 using linear_combination",
+      "linear_combination tactic handles the dot-product identity and the quadratic vanishing cleanly",
+      "set_option maxHeartbeats must appear BEFORE the doc comment, not after",
+      "Docker build must run from the worktree directory, not the main repo root",
+      "feuerbachPoint defined standalone (not as Triangle method) to avoid namespace issues"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
   "tags": [
     "seeker-selected",
     "geometry",
-    "nine-point-circle"
+    "nine-point-circle",
+    "completed"
   ],
   "relatedProofs": [
     "feuerbachs-theorem",
@@ -50,20 +74,20 @@
     "mathlib": []
   },
   "started": "2026-03-30T22:19:31.121Z",
-  "lastUpdate": "2026-03-30T22:19:31.121Z",
+  "lastUpdate": "2026-04-04T00:00:00.000Z",
   "significance": 6,
-  "tractability": 6,
+  "tractability": 9,
   "leanFiles": [
     {
-      "path": "Proofs/FeuerbachsTheoremDefs.lean",
-      "filename": "FeuerbachsTheoremDefs.lean",
-      "lineCount": 688,
-      "theoremCount": 33,
+      "path": "Proofs/FeuerbachsTheoremDefsOQ03.lean",
+      "filename": "FeuerbachsTheoremDefsOQ03.lean",
+      "lineCount": 250,
+      "theoremCount": 7,
       "axiomCount": 0,
-      "defCount": 34,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefs.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefsOQ03.lean"
     }
   ]
 }
