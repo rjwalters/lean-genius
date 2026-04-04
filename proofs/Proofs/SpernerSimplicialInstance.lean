@@ -347,14 +347,25 @@ lemma AbstractSimplicialData.vertexEnum_findOppositeIdx_not_mem
     (t : Finset V) (ht : t ∈ D.topSimplices)
     (f : Finset V) (hf : f ⊆ t) (hfc : f.card = n) :
     D.vertexEnum t ht (D.findOppositeIdx t ht f hf hfc) ∉ f := by
-  sorry
+  unfold findOppositeIdx
+  generalize_proofs hex
+  exact hex.choose_spec
 
 /-- Erasing the opposite vertex from t gives back f. -/
 lemma AbstractSimplicialData.erase_opposite_eq
     (t : Finset V) (ht : t ∈ D.topSimplices)
     (f : Finset V) (hf : f ⊆ t) (hfc : f.card = n) :
     t.erase (D.vertexEnum t ht (D.findOppositeIdx t ht f hf hfc)) = f := by
-  sorry
+  set v := D.vertexEnum t ht (D.findOppositeIdx t ht f hf hfc) with hv_def
+  have hv_not_f : v ∉ f := D.vertexEnum_findOppositeIdx_not_mem t ht f hf hfc
+  have hv_mem_t : v ∈ t := D.vertexEnum_mem t ht (D.findOppositeIdx t ht f hf hfc)
+  have h_sub : f ⊆ t.erase v := by
+    intro x hx
+    exact Finset.mem_erase.mpr ⟨fun h => hv_not_f (h ▸ hx), hf hx⟩
+  have h_card : (t.erase v).card ≤ f.card := by
+    rw [Finset.card_erase_of_mem hv_mem_t, D.card_eq t ht, hfc]
+    omega
+  exact (Finset.eq_of_subset_of_card_le h_sub h_card).symm
 
 end FaceHelpers
 
