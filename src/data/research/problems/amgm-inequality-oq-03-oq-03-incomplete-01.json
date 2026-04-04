@@ -1,0 +1,104 @@
+{
+  "slug": "amgm-inequality-oq-03-oq-03-incomplete-01",
+  "title": "Power Mean Limit Theorems: lim_{r→±∞} M_r(x)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "powerMean_tendsto_max : ∀ (hx : ∀ i, 0 < x i), Tendsto (fun r => ((∑ i, x i ^ r) / Fintype.card ι) ^ (1/r)) atTop (nhds (Finset.univ.sup' univ_nonempty x))",
+    "plain": "For a finite collection of positive reals x₁,...,xₙ, the power mean M_r = ((∑ xᵢʳ)/n)^(1/r) converges to max(xᵢ) as r → +∞ and to min(xᵢ) as r → -∞. The +∞ direction uses a squeeze: max·n^(-1/r) ≤ M_r ≤ max with n^(-1/r) → 1. The -∞ direction uses duality: M_{-r}(x) = (M_r(1/x))⁻¹.",
+    "whyMatters": [
+      "Completes the picture of power means: M_r interpolates between min, harmonic, geometric, arithmetic, and max",
+      "The squeeze theorem argument is the canonical proof of the max-limit",
+      "The duality M_{-r}(x) = (M_r(1/x))⁻¹ reduces the -∞ case to the +∞ case cleanly"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "M_le_maxX: M_r ≤ max(xᵢ) for r > 0",
+      "maxX_mul_rpow_le_M: max·n^(-1/r) ≤ M_r for r > 0",
+      "tendsto_M_atTop: M_r → max(xᵢ) as r → +∞ (squeeze theorem)",
+      "M_neg_eq_inv_M_inv: M_{-r}(x) = (M_r(1/x))⁻¹ for r ≠ 0 (duality)",
+      "minX_eq_inv_maxX_inv: min(x) = (max(1/x))⁻¹ for positive xᵢ",
+      "tendsto_M_atBot: M_r → min(xᵢ) as r → -∞ (via duality + composition with negation)",
+      "powerMean_tendsto_max: summary theorem for the +∞ limit",
+      "powerMean_tendsto_min: summary theorem for the -∞ limit"
+    ],
+    "open": [],
+    "goal": "COMPLETED"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-04T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "12 public theorems, 7 private helpers, 3 defs, 0 sorries, 0 axioms. Complete proof of both power mean limit theorems.",
+    "blockers": [],
+    "nextAction": "None — proof is complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved lim_{r→+∞} M_r = max and lim_{r→-∞} M_r = min via squeeze theorem and duality.",
+    "builtItems": [
+      "tendsto_rpow_inv_atTop: c^(r⁻¹) → 1 via Tendsto.comp with continuous_exp",
+      "aux_inv_le_inv: b⁻¹ ≤ a⁻¹ for 0 < a ≤ b (custom calc proof, no inv_le_inv_of_le)",
+      "M_le_maxX + maxX_mul_rpow_le_M: squeeze bounds for the atTop limit",
+      "M_neg_eq_inv_M_inv: duality lemma via inv_rpow + rpow_neg",
+      "minX_eq_inv_maxX_inv: min(x) = (max(1/x))⁻¹ via aux_inv_le_inv",
+      "tendsto_M_atBot: composed with tendsto_neg_atBot_atTop + congr neg_neg"
+    ],
+    "insights": [
+      "ContinuousAt.comp requires ContinuousAt args; use Tendsto.comp directly (ContinuousAt unfolds to Tendsto)",
+      "continuous_exp.continuousAt with (x := 0) fails type resolution; annotate with explicit Tendsto type and let Lean unify",
+      "tendsto_rpow_inv_atTop uses exp(log c · r⁻¹) = c^(r⁻¹) via rpow_def_of_pos; Tendsto.comp with continuous_exp",
+      "hN_pos (private lemma with [Nonempty ι]) can cause Nonempty ?m metavariable when called inside nested have; fix by naming intermediate `key` with explicit type",
+      "div_le_iff is 'Unknown identifier' in this Lean4 version; replace with div_le_div_of_nonneg_right + mul_div_cancel_right₀",
+      "one_nonneg is 'Unknown identifier'; use zero_le_one instead",
+      "single_le_sum takes 2 explicit args (hf, hi); extra _ causes 'Function expected' error",
+      "tendsto_neg_atBot_atTop composition gives M x (--r); add .congr (congr_arg (M x) (neg_neg r)) to get M x r"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analysis",
+    "power-means",
+    "limits",
+    "amgm",
+    "completed"
+  ],
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+    ]
+  },
+  "started": "2026-04-03T00:00:00.000Z",
+  "lastUpdate": "2026-04-04T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityPowerMeanLimits.lean",
+      "filename": "AmgmInequalityPowerMeanLimits.lean",
+      "lineCount": 272,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityPowerMeanLimits.lean"
+    }
+  ]
+}
