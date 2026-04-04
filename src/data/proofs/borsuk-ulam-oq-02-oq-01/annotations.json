@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-bu-budim-function",
+    "proofId": "borsuk-ulam-oq-02-oq-01",
+    "range": { "startLine": 52, "endLine": 52 },
+    "type": "axiom",
+    "title": "buDim: Equivariant BU Dimension Function",
+    "content": "The axiom buDim (n d : ℕ) : ℕ introduces the equivariant Borsuk-Ulam dimension for the cyclic group Z/n acting on a d-dimensional representation space. This integer-valued invariant captures the minimum sphere dimension where any Z/n-equivariant continuous map to the representation must have a zero. By axiomatizing buDim as an abstract function rather than defining it topologically, the file can study its algebraic properties (monotonicity, prime-factor behavior) purely in terms of group order and representation dimension, without requiring Lean's topological infrastructure.",
+    "mathContext": "$$\\text{buDim}(n, d) = \\min\\{k \\mid \\forall f: S^k \\to V_d \\text{ Z/n-equivariant continuous}, \\exists x, f(x) = 0\\}$$ where $V_d$ is a $d$-dimensional real representation of $\\mathbb{Z}/n\\mathbb{Z}$.",
+    "significance": "The central object of study: a numerical invariant encoding how large a sphere must be before equivariance forces a zero. All six proved theorems are statements about this single function.",
+    "relatedConcepts": ["equivariant topology", "Borsuk-Ulam theorem", "representation theory", "cohomological index theory"],
+    "prerequisites": ["Cyclic groups and their actions", "Equivariant continuous maps", "Sphere topology"]
+  },
+  {
+    "id": "ann-bu-classical-z2",
+    "proofId": "borsuk-ulam-oq-02-oq-01",
+    "range": { "startLine": 61, "endLine": 61 },
+    "type": "axiom",
+    "title": "Classical Borsuk-Ulam: Z/2 Base Case",
+    "content": "buDim_two axiomatizes the classical Borsuk-Ulam theorem in terms of buDim: every Z/2-equivariant (odd) continuous map f : S^n → R^{n+1} must vanish somewhere, giving buDim(2, n+1) = n. This is Borsuk's 1933 result, equivalently stated by Lyusternik and Schnirelmann as: there is no odd map S^n → S^{n-1}. In the buDim framework, it says the n-sphere is the minimal domain that forces a zero in an (n+1)-dimensional target under the antipodal action. This axiom is the Z/2 anchor from which z4_lower_bound and z6_lower_bound_z2 are derived via monotonicity.",
+    "mathContext": "$$\\text{buDim}(2, n+1) = n$$ encoding: every odd map $f : S^n \\to \\mathbb{R}^{n+1}$ satisfies $f(x_0) = 0$ for some $x_0 \\in S^n$, or equivalently $f(-x) = -f(x) \\implies \\exists x, f(x) = 0$.",
+    "significance": "The Z/2 base case is the foundation — composite group lower bounds for Z/4 and Z/6 are derived by applying monotonicity to reduce to this axiom.",
+    "relatedConcepts": ["Borsuk-Ulam theorem", "antipodal maps", "odd continuous functions", "Lyusternik-Schnirelmann theorem"],
+    "prerequisites": ["Classical Borsuk-Ulam theorem (1933)", "Antipodal Z/2 action on spheres"]
+  },
+  {
+    "id": "ann-bu-yang-borsuk",
+    "proofId": "borsuk-ulam-oq-02-oq-01",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "axiom",
+    "title": "Yang-Borsuk Theorem for Prime-Order Groups",
+    "content": "buDim_prime axiomatizes Yang's 1954 generalization: for any prime p, the equivariant BU dimension for the standard complex representation of Z/p of complex dimension n equals 2n-1. The Z/p action rotates each complex coordinate by e^{2πi/p}. This is the definitive result for prime-order groups, proved by Yang using Smith theory and the Serre spectral sequence. The axiom provides the prime-case baseline for all derived composite group bounds: zpq_lower_bound uses this to get buDim(pq, 2n) ≥ 2n-1.",
+    "mathContext": "$$\\text{buDim}(p, 2n) = 2n - 1 \\quad \\text{for prime } p,\\; n \\geq 1$$ where the representation is $\\mathbb{C}^n$ with $g \\cdot (z_1, \\ldots, z_n) = (e^{2\\pi i/p} z_1, \\ldots, e^{2\\pi i/p} z_n)$ for a generator $g \\in \\mathbb{Z}/p$.",
+    "significance": "Yang's theorem (1954) completes the prime case and is the input to zpq_lower_bound. The buDim value 2n-1 ties the abstract invariant to the geometry of odd-dimensional spheres.",
+    "relatedConcepts": ["Yang-Borsuk theorem", "Smith theory", "Serre spectral sequence", "complex representations of Z/p"],
+    "prerequisites": ["Yang (1954) equivariant BU theorem", "Complex representations of prime cyclic groups", "Primitive roots of unity"]
+  },
+  {
+    "id": "ann-bu-monotonicity",
+    "proofId": "borsuk-ulam-oq-02-oq-01",
+    "range": { "startLine": 71, "endLine": 71 },
+    "type": "axiom",
+    "title": "Monotonicity: Divisibility Implies Stronger Equivariant Constraint",
+    "content": "buDim_mono axiomatizes the restriction principle: if p divides n, then Z/p embeds in Z/n as a subgroup, and every Z/n-equivariant map restricts to a Z/p-equivariant map. A map that must vanish for Z/p-equivariant reasons must also vanish when viewed as Z/n-equivariant, so the constraint from p propagates to n: buDim(p, d) ≤ buDim(n, d). This monotonicity axiom is the engine driving every composite group lower bound: z4_lower_bound uses p=2, n=4; z6_lower_bound_z2 uses p=2, n=6; z6_lower_bound_z3 uses p=3, n=6; zpq_lower_bound uses the prime factor of pq.",
+    "mathContext": "$$p \\mid n \\implies \\text{buDim}(p, d) \\leq \\text{buDim}(n, d)$$ reflecting the inclusion $\\mathbb{Z}/p \\hookrightarrow \\mathbb{Z}/n$ and the restriction functor on equivariant maps: $f$ is $\\mathbb{Z}/n$-equivariant $\\implies$ $f$ is $\\mathbb{Z}/p$-equivariant.",
+    "significance": "The single most-used axiom in the file. Every composite bound is a chain: buDim(p, d) ≤ buDim(n, d) from monotonicity combined with the known value of buDim(p, d) from buDim_two or buDim_prime.",
+    "relatedConcepts": ["subgroup restriction", "equivariant map restriction", "index theory monotonicity", "subgroup inclusion"],
+    "prerequisites": ["Subgroups of cyclic groups: Z/p ≤ Z/n when p | n", "Restriction of group actions to subgroups"]
+  },
+  {
+    "id": "ann-bu-composite-prime-bound",
+    "proofId": "borsuk-ulam-oq-02-oq-01",
+    "range": { "startLine": 79, "endLine": 82 },
+    "type": "theorem",
+    "title": "Every Composite Group Has a Prime-Derived Lower Bound",
+    "content": "buDim_composite_has_prime_bound proves: for any n ≥ 2, there exists a prime p with p | n and buDim(p, d) ≤ buDim(n, d). The proof is two lines: first apply Nat.exists_prime_and_dvd (since n ≥ 2 implies n ≠ 1, so n has a prime factor), then apply buDim_mono with the extracted prime divisor. This existential theorem establishes that no composite group can be 'easier' than all its prime subgroups simultaneously — there is always a prime subgroup whose constraint propagates upward.",
+    "mathContext": "$$\\forall n \\geq 2,\\; \\forall d:\\; \\exists p \\text{ prime},\\; p \\mid n \\text{ and } \\text{buDim}(p, d) \\leq \\text{buDim}(n, d)$$ proved using \\texttt{Nat.exists\\_prime\\_and\\_dvd}: $n \\geq 2 \\iff n \\neq 1 \\implies \\exists p \\text{ prime}, p \\mid n$.",
+    "significance": "The abstract justification for studying prime subgroups: every composite group's BU behavior is bounded below by at least one prime subgroup. The specific composite bounds for Z/4, Z/6, Z/pq are instances of this general principle.",
+    "relatedConcepts": ["Nat.exists_prime_and_dvd", "prime factorization", "BU dimension lower bounds", "prime subgroups"],
+    "prerequisites": ["Every integer ≥ 2 has a prime factor", "buDim_mono axiom"]
+  },
+  {
+    "id": "ann-bu-zpq-bound",
+    "proofId": "borsuk-ulam-oq-02-oq-01",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "theorem",
+    "title": "Z/pq Lower Bound: Yang-Borsuk Meets Monotonicity",
+    "content": "zpq_lower_bound proves: for primes p, q and any n ≥ 1, buDim(pq, 2n) ≥ 2n-1. The proof chains two steps: buDim_mono with p | pq gives buDim(p, 2n) ≤ buDim(pq, 2n), and buDim_prime gives buDim(p, 2n) = 2n-1, so by transitivity the bound 2n-1 ≤ buDim(pq, 2n) follows. Note that p and q need not be distinct — the proof works for p = q, covering Z/p² as well as semiprimes. This generalizes z6_lower_bound_z3 and covers Z/15, Z/21, Z/35, Z/p² for any prime p.",
+    "mathContext": "$$\\text{buDim}(pq, 2n) \\geq 2n - 1 \\quad \\text{for primes } p, q,\\; n \\geq 1$$ via the chain: $\\text{buDim}(pq, 2n) \\stackrel{\\text{mono}}{\\geq} \\text{buDim}(p, 2n) \\stackrel{\\text{Yang}}{=} 2n - 1$.",
+    "significance": "Unifies Z/6, Z/10, Z/15, Z/p² under a single bound. Together with the open conjecture that equality holds, this would completely determine buDim for semiprimes in the standard complex representation.",
+    "relatedConcepts": ["semiprimes", "Yang-Borsuk theorem", "prime squares Z/p²", "monotonicity chain"],
+    "prerequisites": ["Yang-Borsuk theorem (buDim_prime)", "buDim_mono axiom", "Divisibility p | pq"]
+  }
+]
