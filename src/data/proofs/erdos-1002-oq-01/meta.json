@@ -27,7 +27,7 @@
     "assumptions": "No axioms. All results proved from Mathlib: Cauchy CDF validity via arctan monotonicity and limits, inner sum periodicity via fractional part invariance under integer shifts."
   },
   "overview": {
-    "historicalContext": "The Cauchy distribution was introduced by Augustin-Louis Cauchy (1789–1857) as a deliberate counterexample to Poisson's claim that the law of large numbers holds universally. Its density $f(x) = \\rho/(\\pi(\\rho^2+x^2))$ has tails so heavy that neither mean nor variance is finite, making it the canonical distribution to which the central limit theorem does not apply.\n\nThe inner sum $S(\\alpha, n) = \\sum_{k=1}^n (1/2 - \\{\\alpha k\\})$ appears in discrepancy theory and three-distance theorem research. For rational $\\alpha = p/q$, the fractional parts $\\{(p/q)k\\}$ cycle with period $q$, giving the relation $S(\\alpha, n+q) = S(\\alpha, n) + S(\\alpha, q)$. This is a direct consequence of the fundamental identity $\\{x + n\\} = \\{x\\}$ for integer $n$.\n\nBoth results were originally stated as axioms in the parent Erdős #1002 formalization. This companion file proves them from Mathlib, contributing to the long-term goal of reducing the axiom count from 7 toward 0. The remaining 5 axioms include deep ergodic and analytic results such as Kesten's theorem and Weyl equidistribution.",
+    "historicalContext": "The Cauchy distribution was introduced by Augustin-Louis Cauchy (1789–1857) as a deliberate counterexample to Poisson's claim that the law of large numbers holds universally. Its density $f(x) = \\rho/(\\pi(\\rho^2+x^2))$ has tails so heavy that neither mean nor variance is finite, making it the canonical distribution to which the central limit theorem does not apply. Cauchy's work in the 1850s on characteristic functions (Fourier transforms of probability distributions) gave the first systematic framework for understanding why some sums of independent random variables converge to non-Gaussian limits.\n\nThe inner sum $S(\\alpha, n) = \\sum_{k=1}^n (1/2 - \\{\\alpha k\\})$ appears in discrepancy theory and three-distance theorem research. For rational $\\alpha = p/q$, the fractional parts $\\{(p/q)k\\}$ cycle with period $q$, giving the relation $S(\\alpha, n+q) = S(\\alpha, n) + S(\\alpha, q)$. This is a direct consequence of the fundamental identity $\\{x + n\\} = \\{x\\}$ for integer $n$. For irrational $\\alpha$, Kesten proved in 1960 that $(1/\\log n) S(\\alpha, n)$ converges in distribution to the standard Cauchy distribution — a striking emergence of Cauchy's own distribution from number-theoretic sums.\n\nBoth results proved here were originally stated as axioms in the parent Erdős #1002 formalization. This companion file eliminates them from Mathlib, contributing to the long-term goal of reducing the axiom count from 7 toward 0. The remaining 5 axioms include deep analytic and ergodic results: Weyl equidistribution, Kesten's Cauchy limit theorem, and the bounds on $S(\\alpha, n)$ for irrational $\\alpha$.",
     "problemStatement": "**Axiom Elimination**\n\nTwo axioms in Erdos1002Problem.lean are proved from Mathlib:\n\n1. `cauchy_is_distribution`: The Cauchy CDF g(c) = (1/π)arctan(ρc) + 1/2 is monotone with correct limits at ±∞.\n\n2. `innerSum_periodic_rational`: For rational α = p/q with gcd(p,q) = 1, S(p/q, n+q) = S(p/q, n) + S(p/q, q).",
     "text": "Proves the Cauchy CDF is a valid distribution function and the inner sum is periodic for rational arguments, eliminating 2 of 7 axioms from the Erdős #1002 formalization.",
     "proofStrategy": "**Cauchy CDF**: Monotonicity follows from arctan being strictly monotone (arctan_strictMono) composed with multiplication by ρ > 0. The limits use Real.tendsto_arctan_atTop/atBot composed with scaling, then algebraic simplification (1/π · π/2 + 1/2 = 1).\n\n**Periodic Sum**: The key insight is that deviation(p/q · k) has period q as a function of k, because p/q · (k+q) = p/q · k + p and fract(x + integer) = fract(x). A cyclic sum lemma then shows Σ g(n+k) = Σ g(k) for any periodic g, proved by induction using sum_range_succ and sum_range_succ'.",
@@ -46,25 +46,33 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Imports and Definitions",
+      "summary": "File header, Mathlib import, namespace setup, and four mirrored definitions from the parent formalization",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "Defines $\\text{IsDistributionFunction}$, the Cauchy CDF $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$, deviation $d(x) = \\frac{1}{2} - \\{x\\}$, and inner sum $S(\\alpha, n) = \\sum_{k=1}^n d(\\alpha k)$."
+    },
+    {
       "id": "cauchy-distribution",
       "title": "Cauchy Distribution is a Valid CDF",
       "summary": "Proves monotonicity and correct limits at ±∞ for g(c) = (1/π)arctan(ρc) + 1/2",
-      "startLine": 1,
-      "endLine": 85,
+      "startLine": 37,
+      "endLine": 90,
       "mathContext": "The Cauchy CDF $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$ is monotone (since arctan is strictly monotone and $\\rho > 0$), tends to 0 as $c \\to -\\infty$ (since $\\arctan \\to -\\pi/2$), and tends to 1 as $c \\to +\\infty$ (since $\\arctan \\to \\pi/2$)."
     },
     {
       "id": "periodic-sum",
       "title": "Periodicity of Inner Sum for Rational α",
-      "summary": "Proves S(p/q, n+q) = S(p/q, n) + S(p/q, q) via fractional part periodicity",
-      "startLine": 87,
-      "endLine": 130,
+      "summary": "Proves S(p/q, n+q) = S(p/q, n) + S(p/q, q) via fractional part periodicity and the cyclic sum lemma",
+      "startLine": 92,
+      "endLine": 140,
       "mathContext": "For rational $\\alpha = p/q$, the deviation function $d(k) = 1/2 - \\{(p/q)k\\}$ satisfies $d(k+q) = d(k)$ since $(p/q)(k+q) = (p/q)k + p$ and $\\{x + n\\} = \\{x\\}$ for integer $n$. The cyclic sum invariance $\\sum_{k=0}^{q-1} d(n+k) = \\sum_{k=0}^{q-1} d(k)$ follows by induction."
     }
   ],
   "conclusion": {
     "summary": "Two axioms from the Erdős #1002 formalization are proved from Mathlib, reducing the axiom count from 7 to 5. The Cauchy CDF validity follows from standard arctan properties, and the inner sum periodicity follows from the invariance of fractional parts under integer shifts.",
-    "implications": "Reduces the assumption count in the Erdős #1002 formalization. The remaining 5 axioms include the open main conjecture, Kesten's deep ergodic result, Weyl equidistribution, and bounds for irrational α.",
+    "implications": "Reduces the assumption count in the Erdős #1002 formalization from 7 to 5. The companion file pattern — proving structural axioms from Mathlib while leaving the mathematically deep ones as axioms — provides a clean audit trail showing exactly which results remain unformalized. The cyclic sum lemma (∑_{k=0}^{q-1} g(n+k) = ∑_{k=0}^{q-1} g(k) for q-periodic g) is a reusable component applicable to any Weyl-type sum over a periodic function, and belongs in Mathlib as a standalone lemma.",
     "openQuestions": [
       "Can the remaining axioms in Erdős #1002 — Weyl equidistribution and the inner sum log bound for irrational α — be proved from Mathlib?",
       "Can Kesten's deep ergodic theorem on the behavior of S(α, n) for Liouville numbers α be formalized in Lean 4?",
@@ -73,8 +81,20 @@
   },
   "crossReferences": [
     {
-      "relationship": "Proves two axioms from the parent formalization of Erdős Problem #1002",
+      "relationship": "Proves two of the seven axioms from the parent formalization of Erdős Problem #1002, reducing its assumption count from 7 to 5",
       "targetId": "erdos-1002"
+    },
+    {
+      "relationship": "Kesten and Sós's diophantine approximation density result (Problem #1001) is central to the parent Erdős #1002 formalization: the Cauchy distribution limit theorem proved by Kesten (1960) is the deep result that the remaining axioms approach",
+      "targetId": "erdos-1001"
+    },
+    {
+      "relationship": "Khintchine's equidistribution conjecture (Problem #994) concerns the same tension between pointwise and averaged equidistribution as Problem #1002 — the inner sum S(α,n) interpolates between the Weyl equidistribution (averaged) and the Cauchy-distribution limit (fluctuation scale)",
+      "targetId": "erdos-994"
+    },
+    {
+      "relationship": "Kesten's Cauchy-distribution theorem for the normalized inner sum is a law-of-large-numbers analogue for strongly dependent sequences: the Laws of Large Numbers gallery entry provides foundational context for why the Cauchy limit (rather than a Gaussian) emerges from the fractional-part sum",
+      "targetId": "laws-of-large-numbers"
     }
   ],
   "references": [],
