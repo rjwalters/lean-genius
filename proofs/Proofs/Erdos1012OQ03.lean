@@ -288,18 +288,16 @@ lemma list_path_to_hamiltonian (D : Digraph V) (l : List V)
 PART III: GHOUILA-HOURI'S THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Ghouila-Houri's Theorem (1960)**
+/- Ghouila-Houri (1960): a strongly connected digraph on n ≥ 3 vertices where
+every vertex has in-degree and out-degree at least ⌈n/2⌉ has a directed
+Hamiltonian cycle. This is the directed analogue of Dirac's theorem (1952).
 
-A strongly connected digraph on n ≥ 3 vertices where every vertex has
-in-degree and out-degree at least n/2 has a directed Hamiltonian cycle.
+Declared and proved in Part IV.F (after the cycle list infrastructure it needs).
 
-This is the directed analogue of Dirac's theorem (1952) for undirected graphs. -/
-theorem ghouila_houri (D : Digraph V) (hn : 3 ≤ Fintype.card V)
-    (hsc : D.IsStronglyConnected)
-    (hout : ∀ v : V, Fintype.card V / 2 ≤ D.outDegree v)
-    (hin : ∀ v : V, Fintype.card V / 2 ≤ D.inDegree v) :
-    D.HasHamiltonianCycle := by
-  sorry
+**Correctness note**: Use `Fintype.card V ≤ 2 * D.outDegree v` not floor division.
+`Fintype.card V / 2 ≤ D.outDegree v` is wrong for odd n: the SC digraph on 3
+vertices with arcs {c₀→c₁, c₁→c₀, c₀→u, u→c₀} satisfies the floor condition
+(d⁺=d⁻=1≥1) but has no Hamiltonian cycle. -/
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IV: MOON-MOSER THEOREM FOR TOURNAMENTS
@@ -896,7 +894,104 @@ private lemma list_cycle_to_hamiltonian (D : Digraph V) (l : List V)
     simp only [f, ← hlen]
     exact harcs i.val (by omega)⟩
 
-/-! ── IV.E: Growing Cycles to Hamiltonian ────────────────────────────────── -/
+/-! ── IV.E: Ghouila-Houri Infrastructure ──────────────────────────────────── -/
+
+/-- In a strongly connected digraph where every vertex has positive out-degree,
+there exists a directed cycle (as a nodup list with consecutive arcs). -/
+private lemma sc_digraph_has_directed_cycle (D : Digraph V)
+    (hsc : D.IsStronglyConnected) (hout : ∀ v : V, 0 < D.outDegree v) :
+    ∃ (l : List V), IsDirectedCycleList D l := by
+  sorry
+
+/-- A nonempty finite digraph always has a longest directed cycle
+(maximising list length over all directed cycle lists). -/
+private lemma exists_longest_directed_cycle (D : Digraph V)
+    (hcycle : ∃ l : List V, IsDirectedCycleList D l) :
+    ∃ (lmax : List V), IsDirectedCycleList D lmax ∧
+      ∀ (l' : List V), IsDirectedCycleList D l' → l'.length ≤ lmax.length := by
+  sorry
+
+/-- **GH insertion lemma**: If C is the longest directed cycle in a SC digraph
+satisfying Ghouila-Houri's degree condition and |C| < n, then every u ∉ C has
+adjacent insertion positions: ∃ i with C[i]→u and u→C[(i+1) mod |C|].
+
+Proof outline: By SC + longest-cycle property, all neighbors of u lie in C.
+With d⁺(u), d⁻(u) ≥ n/2 > |C|/2, the in- and out-neighbor position sets in C
+overlap by pigeonhole, giving the required consecutive pair. -/
+private lemma gh_insertion_point (D : Digraph V)
+    (hsc : D.IsStronglyConnected)
+    (hout : ∀ v : V, Fintype.card V ≤ 2 * D.outDegree v)
+    (hin : ∀ v : V, Fintype.card V ≤ 2 * D.inDegree v)
+    (lmax : List V) (hcmax : IsDirectedCycleList D lmax)
+    (hmax_len : ∀ l' : List V, IsDirectedCycleList D l' → l'.length ≤ lmax.length)
+    (hlt : lmax.length < Fintype.card V) (u : V) (hu : u ∉ lmax) :
+    ∃ (i : ℕ) (_ : i < lmax.length),
+      D.arc (lmax[i]'(by omega)) u ∧
+      D.arc u (lmax[(i + 1) % lmax.length]'
+        (Nat.mod_lt _ (by have := hcmax.2.1; omega))) := by
+  sorry
+
+/-- Inserting a vertex u at position i+1 in a directed cycle list, given arcs
+C[i]→u and u→C[i+1 mod |C|], yields a valid directed cycle list one longer. -/
+private lemma insertNth_directed_cycle (D : Digraph V) (l : List V) (u : V)
+    (hc : IsDirectedCycleList D l) (hu : u ∉ l) (i : ℕ) (hi : i < l.length)
+    (harc_in : D.arc (l[i]'hi) u)
+    (harc_out : D.arc u (l[(i + 1) % l.length]'
+      (Nat.mod_lt _ (by have := hc.2.1; omega)))) :
+    IsDirectedCycleList D (l.insertNth (i + 1) u) := by
+  sorry
+
+/-! ── IV.F: Ghouila-Houri's Theorem ────────────────────────────────────────── -/
+
+/-- **Ghouila-Houri's Theorem (1960)**
+
+A strongly connected digraph on n ≥ 3 vertices where every vertex has
+in-degree and out-degree ≥ ⌈n/2⌉ has a directed Hamiltonian cycle.
+This is the directed analogue of Dirac's theorem (1952) for undirected graphs.
+
+**Proof**: Take a longest directed cycle C. If |C| = n, done. Otherwise pick
+u ∉ C. The degree condition (δ⁺, δ⁻ ≥ n/2) combined with the longest-cycle
+property forces all neighbors of u into C. Pigeonhole on C[i]→u and u→C[i+1]
+positions gives an insertion point, contradicting maximality of C. -/
+theorem ghouila_houri (D : Digraph V) (hn : 3 ≤ Fintype.card V)
+    (hsc : D.IsStronglyConnected)
+    (hout : ∀ v : V, Fintype.card V ≤ 2 * D.outDegree v)
+    (hin : ∀ v : V, Fintype.card V ≤ 2 * D.inDegree v) :
+    D.HasHamiltonianCycle := by
+  -- Degree condition implies positive out-degree
+  have hout_pos : ∀ v : V, 0 < D.outDegree v := fun v => by
+    have h1 := hout v; have h2 := hn; omega
+  -- Get an initial cycle from strong connectivity + positive degrees
+  obtain ⟨l₀, hc₀⟩ := sc_digraph_has_directed_cycle D hsc hout_pos
+  -- Choose the longest directed cycle
+  obtain ⟨lmax, hcmax, hmax_len⟩ := exists_longest_directed_cycle D ⟨l₀, hc₀⟩
+  -- If the longest cycle is Hamiltonian, done
+  by_cases hlen : lmax.length = Fintype.card V
+  · exact list_cycle_to_hamiltonian D lmax hcmax hlen
+  -- The longest cycle is not Hamiltonian: derive contradiction
+  · have hlt : lmax.length < Fintype.card V :=
+      Nat.lt_of_le_of_ne (nodup_length_le_card lmax hcmax.1) hlen
+    -- There exists a vertex not covered by the longest cycle
+    obtain ⟨u, hu⟩ : ∃ u : V, u ∉ lmax := by
+      by_contra hall; push_neg at hall
+      have hge : Fintype.card V ≤ lmax.length := by
+        rw [← lmax.toFinset_card_of_nodup hcmax.1, ← Finset.card_univ (α := V)]
+        exact Finset.card_le_card (fun v _ => List.mem_toFinset.mpr (hall v))
+      omega
+    -- Get adjacent insertion positions for u in lmax
+    obtain ⟨i, hi_lt, harc_in, harc_out⟩ :=
+      gh_insertion_point D hsc hout hin lmax hcmax hmax_len hlt u hu
+    -- Insert u to get a longer valid cycle
+    have hcins : IsDirectedCycleList D (lmax.insertNth (i + 1) u) :=
+      insertNth_directed_cycle D lmax u hcmax hu i hi_lt harc_in harc_out
+    -- Contradiction: inserted cycle is longer than the supposedly maximal one
+    have hlen_ins : lmax.length < (lmax.insertNth (i + 1) u).length := by
+      have h : (lmax.insertNth (i + 1) u).length = lmax.length + 1 := by
+        apply List.length_insertNth; omega
+      omega
+    exact absurd (hmax_len _ hcins) (by omega)
+
+/-! ── IV.G: Growing Cycles to Hamiltonian ────────────────────────────────── -/
 
 /-- Given any directed cycle in a SC tournament, repeatedly extend it
 until it reaches length n (Hamiltonian). Well-founded recursion on
