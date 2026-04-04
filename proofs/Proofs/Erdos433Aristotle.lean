@@ -56,7 +56,19 @@ theorem g_two_nonneg (n : ℕ) (hn : n ≥ 3) : n ^ 2 ≥ 3 * n - 1 := by
 
 /-- Consecutive integers n-1 and n are coprime. -/
 theorem coprime_pred_self (n : ℕ) (hn : n ≥ 1) : Nat.Coprime (n - 1) n := by
-  sorry
+  -- Work in ℤ where subtraction is not truncated
+  rw [Nat.Coprime]
+  apply Nat.dvd_one.mp
+  have h1 : (Nat.gcd (n - 1) n : ℤ) ∣ ↑(n - 1 : ℕ) := by
+    exact_mod_cast Nat.gcd_dvd_left _ _
+  have h2 : (Nat.gcd (n - 1) n : ℤ) ∣ (n : ℤ) := by
+    exact_mod_cast Nat.gcd_dvd_right _ _
+  have h3 : (Nat.gcd (n - 1) n : ℤ) ∣ 1 := by
+    have hsub := dvd_sub h2 h1
+    have heq : (n : ℤ) - ↑(n - 1 : ℕ) = 1 := by
+      push_cast [show 1 ≤ n from hn]; omega
+    rwa [heq] at hsub
+  exact_mod_cast h3
 
 /-- gcd(n-1, n) = 1 for n ≥ 1. -/
 theorem gcd_pred_self (n : ℕ) (hn : n ≥ 1) : Nat.gcd (n - 1) n = 1 :=
@@ -71,14 +83,37 @@ theorem gcd_pred_self (n : ℕ) (hn : n ≥ 1) : Nat.gcd (n - 1) n = 1 :=
 theorem frobenius_bound_int (a b n : ℕ) (hn : n ≥ 3)
     (han : a ≤ n - 1) (hbn : b ≤ n) :
     (a : ℤ) * b - a - b ≤ n ^ 2 - 3 * n + 1 := by
-  sorry
+  have hn' : (n : ℤ) ≥ 3 := by exact_mod_cast hn
+  have ha' : (a : ℤ) ≥ 0 := by positivity
+  have hb' : (b : ℤ) ≥ 0 := by positivity
+  -- Convert han : a ≤ n - 1 (ℕ) to (a : ℤ) ≤ n - 1 (ℤ)
+  have han' : (a : ℤ) ≤ (n : ℤ) - 1 := by
+    zify [show 1 ≤ n from by omega] at han; linarith
+  have hbn' : (b : ℤ) ≤ n := by exact_mod_cast hbn
+  -- Witnesses: the products (n-1-a)*(n-b) ≥ 0, a*(n-b) ≥ 0, (n-1-a)*b ≥ 0, a*b ≥ 0
+  -- These four quadratic hints suffice for the degree-2 Positivstellensatz certificate.
+  have h1 : (n : ℤ) - 1 - a ≥ 0 := by linarith
+  have h2 : (n : ℤ) - b ≥ 0 := by linarith
+  nlinarith [mul_nonneg h1 h2, mul_nonneg ha' h2, mul_nonneg h1 hb', mul_nonneg ha' hb']
 
 /-- For 1 ≤ a, b with a ≤ n-1 and b ≤ n, a*b - a - b ≤ n²-3n+1 in ℕ. -/
 theorem frobenius_ub_pair (a b n : ℕ) (hn : n ≥ 3)
     (ha1 : a ≥ 1) (hb1 : b ≥ 1)
     (han : a ≤ n - 1) (hbn : b ≤ n) :
     a * b - a - b ≤ n ^ 2 - 3 * n + 1 := by
-  sorry
+  -- Lift the ℤ bound and convert back to ℕ
+  have hZ := frobenius_bound_int a b n hn han hbn
+  have hnn : n ^ 2 ≥ 3 * n - 1 := g_two_nonneg n hn
+  have hn3 : 3 * n ≤ n ^ 2 := by nlinarith
+  -- Case split: does ℕ subtraction a*b - a - b underflow?
+  rcases le_or_lt (a + b) (a * b) with h | h
+  · -- No underflow: use zify with side conditions to convert to ℤ
+    have ha_le : a ≤ a * b := by omega
+    have hb_le : b ≤ a * b - a := by omega
+    zify [ha_le, hb_le, hn3]
+    linarith
+  · -- Underflow: a*b < a+b, so a*b - a - b = 0 ≤ anything
+    simp [show a * b - a - b = 0 from by omega]
 
 /-- Special case: if a = 0, then a*b - a - b = 0 ≤ n²-3n+1. -/
 theorem frobenius_ub_zero_left (b n : ℕ) (hn : n ≥ 3) :
@@ -106,6 +141,17 @@ theorem pair_card (n : ℕ) (hn : n ≥ 1) :
 /-- The GCD of the set {n-1, n} equals 1 for n ≥ 1. -/
 theorem finset_gcd_pred_self (n : ℕ) (hn : n ≥ 1) :
     ({n - 1, n} : Finset ℕ).gcd id = 1 := by
-  sorry
+  -- Show ({n-1,n}).gcd id divides 1 via Nat.dvd_gcd + coprimality
+  apply Nat.dvd_one.mp
+  have hd1 : ({n - 1, n} : Finset ℕ).gcd id ∣ (n - 1) := by
+    have := Finset.gcd_dvd (f := id) (Finset.mem_insert_self (n - 1) {n})
+    simpa using this
+  have hd2 : ({n - 1, n} : Finset ℕ).gcd id ∣ n := by
+    have := Finset.gcd_dvd (f := id) (s := {n - 1, n})
+      (Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self n)))
+    simpa using this
+  have hcop := coprime_pred_self n hn  -- Nat.gcd (n-1) n = 1
+  have := Nat.dvd_gcd hd1 hd2         -- ... ∣ Nat.gcd (n-1) n
+  rwa [hcop] at this
 
 end Erdos433Aristotle

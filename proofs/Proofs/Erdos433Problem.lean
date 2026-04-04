@@ -32,6 +32,7 @@ References:
 -/
 
 import Mathlib
+import Proofs.Erdos433Aristotle
 
 open Nat Finset BigOperators
 
@@ -191,8 +192,101 @@ g(2, n) = G({n-1, n}) = (n-1)·n - (n-1) - n = n² - 3n + 1
 
 Using Sylvester-Frobenius when gcd(n-1, n) = 1.
 -/
+-- Helper: Every natural number is in NumericalSemigroup {0, 1}.
+-- Proof: take coefficient m for element 1, coefficient 0 for element 0.
+private lemma every_mem_num_sem_01 (m : ℕ) :
+    m ∈ NumericalSemigroup ({0, 1} : Finset ℕ) := by
+  simp only [NumericalSemigroup, Set.mem_setOf_eq]
+  refine ⟨fun a => if a.val = 1 then m else 0, ?_⟩
+  -- Rewrite Finset.univ for ↥{0,1} to the explicit pair {⟨0,_⟩, ⟨1,_⟩}, then compute
+  have huniv : (Finset.univ : Finset ↥({0, 1} : Finset ℕ)) =
+      {⟨0, by simp⟩, ⟨1, by simp⟩} := by
+    ext ⟨x, hx⟩
+    simp only [Finset.mem_univ, true_iff, Finset.mem_insert, Finset.mem_singleton,
+               Subtype.mk.injEq]
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx; exact hx
+  rw [huniv, Finset.sum_insert
+      (show (⟨0, by simp⟩ : ↥({0, 1} : Finset ℕ)) ∉
+             ({⟨1, by simp⟩} : Finset ↥({0, 1} : Finset ℕ)) from by
+        simp [Finset.mem_singleton, Subtype.mk.injEq]),
+      Finset.sum_singleton]
+  norm_num
+
+-- G({0, 1}) = 0: every natural is representable using {0, 1}.
+private lemma frobenius_zero_one : G(({0, 1} : Finset ℕ)) = 0 := by
+  simp only [frobeniusNumber]
+  suffices h : {n : ℕ | n ∉ NumericalSemigroup ({0, 1} : Finset ℕ)} = ∅ by
+    rw [h]; simp
+  ext m
+  simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]
+  exact every_mem_num_sem_01 m
+
 theorem g_two (n : ℕ) (hn : n ≥ 3) : g 2 n = n ^ 2 - 3 * n + 1 := by
-  sorry -- Follows from Sylvester-Frobenius applied to {n-1, n}
+  apply Nat.le_antisymm
+  · -- Upper bound: g 2 n ≤ n² - 3n + 1
+    -- Every G(A) for valid 2-element A is ≤ n²-3n+1; achieved by A = {n-1,n}.
+    unfold g
+    apply csSup_le
+    · -- Nonemptiness: {n-1, n} witnesses that G({n-1,n}) is in the set
+      exact ⟨G(({n - 1, n} : Finset ℕ)), {n - 1, n},
+             Erdos433Aristotle.pair_subset_range n (by omega),
+             Erdos433Aristotle.pair_card n (by omega),
+             Erdos433Aristotle.finset_gcd_pred_self n (by omega),
+             rfl⟩
+    · -- Upper bound: for any valid set A with G(A) in the set, G(A) ≤ n²-3n+1
+      intro v ⟨A, hA_sub, hA_card, hA_gcd, hvA⟩
+      rw [hvA]
+      -- Extract the two elements a, b from the 2-element finset A
+      rw [Finset.card_eq_two] at hA_card
+      obtain ⟨a, b, hab, rfl⟩ := hA_card
+      -- Get bounds from A ⊆ range(n+1)
+      have ha_le : a ≤ n := by
+        have : a ∈ Finset.range (n + 1) := hA_sub (Finset.mem_insert_self a _)
+        simpa using Nat.lt_succ_iff.mp (Finset.mem_range.mp this)
+      have hb_le : b ≤ n := by
+        have : b ∈ Finset.range (n + 1) := hA_sub (by simp)
+        simpa using Nat.lt_succ_iff.mp (Finset.mem_range.mp this)
+      -- Extract gcd = 1 from SetGCDOne {a, b}
+      have hgcd : Nat.gcd a b = 1 := by
+        have hag := hA_gcd
+        unfold SetGCDOne at hag  -- hag : ({a,b} : Finset ℕ).gcd id = 1
+        apply Nat.dvd_one.mp
+        -- Nat.gcd a b divides each element, hence divides Finset.gcd
+        have hfin : Nat.gcd a b ∣ ({a, b} : Finset ℕ).gcd id :=
+          Finset.dvd_gcd (fun x hx => by
+            simp only [Finset.mem_insert, Finset.mem_singleton, id_eq] at hx ⊢
+            cases hx with
+            | inl h => rw [h]; exact Nat.gcd_dvd_left a b
+            | inr h => rw [h]; exact Nat.gcd_dvd_right a b)
+        rwa [hag] at hfin
+      -- Case on whether a or b is zero (degenerate case: G = 0)
+      rcases Nat.eq_zero_or_pos a with rfl | ha_pos
+      · -- a = 0: gcd(0, b) = b = 1, so b = 1, G({0,1}) = 0
+        simp only [Nat.gcd_zero_left] at hgcd; subst hgcd
+        simp [frobenius_zero_one]
+      · rcases Nat.eq_zero_or_pos b with rfl | hb_pos
+        · -- b = 0: gcd(a, 0) = a = 1, so a = 1, G({1,0}) = G({0,1}) = 0
+          simp only [Nat.gcd_zero_right] at hgcd; subst hgcd
+          rw [show ({1, 0} : Finset ℕ) = {0, 1} from by ext; simp [or_comm]]
+          simp [frobenius_zero_one]
+        · -- a ≥ 1, b ≥ 1: apply Sylvester-Frobenius then arithmetic bound
+          rw [sylvester_frobenius a b ha_pos hb_pos hgcd]
+          -- G({a, b}) = a*b - a - b ≤ n²-3n+1
+          -- Need a ≤ n-1 or b ≤ n-1 (since a ≠ b and both ≤ n)
+          rcases le_or_lt a b with hab2 | hab2
+          · -- a ≤ b, a < b (since a ≠ b), so a ≤ n-1
+            exact Erdos433Aristotle.frobenius_ub_pair a b n hn ha_pos hb_pos
+              (by omega : a ≤ n - 1) hb_le
+          · -- b < a ≤ n, so b ≤ n-1; use symmetry a*b - a - b = b*a - b - a
+            have heq : a * b - a - b = b * a - b - a := by rw [Nat.mul_comm]; omega
+            rw [heq]
+            exact Erdos433Aristotle.frobenius_ub_pair b a n hn hb_pos ha_pos
+              (by omega : b ≤ n - 1) ha_le
+  · -- Lower bound: n² - 3n + 1 ≤ g 2 n, from Dixmier's lower bound
+    have h := dixmier_lower_bound 2 n (by omega) (by omega)
+    -- Simplify: (2-1) = 1, so (n-2)/1 = n-2, and (n-2)*(n-1) - 1 = n²-3n+1
+    simp only [show (2 : ℕ) - 1 = 1 from rfl, Nat.div_one] at h
+    linarith [Erdos433Aristotle.dixmier_k2_arith n hn]
 
 /-
 ## Part VII: Extremal Sets
