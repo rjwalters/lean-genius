@@ -1,0 +1,68 @@
+{
+  "id": "wilsons-theorem-oq-04-oq-02",
+  "title": "Abstract Group-Theoretic Product Formula: Unique Involution",
+  "slug": "wilsons-theorem-oq-04-oq-02",
+  "description": "In any finite commutative group with a unique non-trivial involution τ (τ² = 1, τ ≠ 1), the product of all elements equals τ. Every even-order cyclic group has exactly one such involution (the half-generator g^(|G|/2)), and odd-order groups have product 1. This provides the abstract group-theoretic core of the Gauss–Wilson theorem.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ04OQ02.lean",
+    "tags": [
+      "group-theory",
+      "number-theory",
+      "cyclic-groups",
+      "involutions",
+      "gauss-wilson",
+      "abstract-algebra"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 235,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "prod_eq_prod_involutions: ∏G = ∏{x | x²=1} for any finite abelian group (involution pairing)",
+      "card_sq_eq_one_le_two_cyclic: |{x | x²=1}| ≤ 2 in any finite cyclic group",
+      "prod_univ_of_unique_involution: if τ is the unique non-trivial involution then ∏G = τ",
+      "IsCyclic.exists_unique_involution_of_even: even-order cyclic groups have a unique involution g^(|G|/2)",
+      "prod_cyclic_even_group: combined result — even-order cyclic group product equals its unique involution",
+      "prod_univ_odd_order: odd-order group product equals 1"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical argument behind Wilson's theorem and Gauss's generalization is an elegant group-theoretic observation: in a finite abelian group, elements pair with their inverses, and the product reduces to the self-inverse elements (those with x² = 1). The *abstract* form of this argument — that if there is a *unique* non-trivial involution τ, then ∏G = τ — distills the essence of the Gauss–Wilson theorem at the group-theoretic level, independent of modular arithmetic.\n\nThis perspective was implicit in Gauss's *Disquisitiones Arithmeticae* (1801) and made explicit in later treatments of group theory. For cyclic groups of even order, the unique involution is the half-generator g^(|G|/2), which corresponds to −1 in the concrete case (ℤ/nℤ)×.",
+    "problemStatement": "For a finite commutative group G:\n1. If τ ≠ 1 is the *unique* element satisfying τ² = 1, then ∏G = τ.\n2. Every finite cyclic group of even order has exactly one such τ (namely g^(|G|/2) for any generator g).\n3. Odd-order groups satisfy ∏G = 1.",
+    "proofStrategy": "**Step 1** (Involution pairing): Apply `Finset.prod_involution` with σ = x⁻¹ to show ∏G = ∏{x | x²=1}. Elements not equal to their inverse pair up and cancel.\n\n**Step 2** (Cardinality bound): In a cyclic group, `IsCyclic.card_pow_eq_one_le` gives |{x | x²=1}| ≤ 2.\n\n**Step 3** (Unique involution → product): If {x | x²=1} = {1, τ}, then ∏{x | x²=1} = 1 · τ = τ via `Finset.prod_pair`.\n\n**Step 4** (Even cyclic → unique involution): Generator g with orderOf(g) = |G|. Set τ = g^(|G|/2). Then τ² = g^|G| = 1 and τ ≠ 1 (else orderOf(g) | |G|/2, contradicting |G| = 2k). The cardinality squeeze {1,τ} ⊆ {x | x²=1} with |{x | x²=1}| ≤ 2 gives equality.\n\n**Step 5** (Odd order → trivial): orderOf(x) | gcd(2, |G|) = 1, so x = 1 for all x with x² = 1. Thus {x | x²=1} = {1} and ∏G = 1.",
+    "keyInsights": [
+      "The involution pairing ∏G = ∏{x | x²=1} is the universal reduction, valid for any finite abelian group",
+      "The cyclic group's polynomial degree bound (|solutions to x²=1| ≤ 2) provides the key constraint",
+      "A generator argument with g^(|G|/2) explicitly constructs the unique involution in even-order cyclic groups",
+      "The odd-order case follows from gcd(orderOf(x), 2) dividing gcd(|G|, 2) = 1",
+      "This file provides the abstract foundation that WilsonsTheoremOQ02 instantiates for (ℤ/nℤ)×"
+    ],
+    "prerequisites": [
+      "Finite abelian groups: Finset.prod_involution, product over filter",
+      "Cyclic groups: IsCyclic, IsCyclic.card_pow_eq_one_le, IsCyclic.exists_generator",
+      "Order theory: orderOf, pow_orderOf_eq_one, orderOf_dvd_card"
+    ]
+  },
+  "conclusion": {
+    "summary": "Proved the abstract group-theoretic product formula: in a finite abelian group, the product of all elements equals the unique non-trivial involution (when one exists uniquely). Even-order cyclic groups always have such a unique involution. Odd-order groups have trivial product. 6 theorems, 0 axioms, 235 lines, fully machine-verified.",
+    "implications": "This provides a self-contained abstract foundation for the Gauss–Wilson theorem. The concrete version (product of (ℤ/nℤ)× equals −1 iff (ℤ/nℤ)× is cyclic) follows by instantiating this abstract result. The key insight is that cyclicity (and only cyclicity among even-order finite abelian groups) guarantees uniqueness of the involution. For non-cyclic groups, multiple involutions force the product to be 1.",
+    "openQuestions": [
+      "Generalize to non-abelian groups: when does ∏G = e for a finite group G?",
+      "Direct instantiation: apply prod_cyclic_even_group to (ZMod n)ˣ to give an alternative proof of Gauss–Wilson bypassing the Klein-four argument"
+    ]
+  },
+  "leanFile": {
+    "namespace": "WilsonsTheoremOQ04OQ02",
+    "lineCount": 235,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0
+  }
+}
