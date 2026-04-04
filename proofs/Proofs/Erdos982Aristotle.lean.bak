@@ -21,11 +21,11 @@ namespace Erdos982Aristotle
 abbrev Plane : Type := EuclideanSpace ℝ (Fin 2)
 
 /-- Distinct distances from a point to a finite set. -/
-noncomputable def distinctDistancesFrom (p : Plane) (S : Finset Plane) : ℕ :=
+def distinctDistancesFrom (p : Plane) (S : Finset Plane) : ℕ :=
   (S.image (fun q => dist p q)).card
 
 /-- Maximum distinct distances achieved by any point in the set. -/
-noncomputable def maxDistinctDistances (S : Finset Plane) : ℕ :=
+def maxDistinctDistances (S : Finset Plane) : ℕ :=
   S.sup (fun p => distinctDistancesFrom p (S.erase p))
 
 /-- A set of points is in convex position if no point lies in the convex hull of the others. -/
@@ -47,8 +47,8 @@ theorem dist_pos_of_ne (p q : Plane) (hpq : p ≠ q) : dist p q > 0 :=
 -- Routine: maxDistinctDistances S ≥ distinctDistancesFrom p (S.erase p) for any p ∈ S.
 -- Follows from Finset.le_sup applied to the membership hypothesis.
 theorem le_maxDistinctDistances_of_mem (S : Finset Plane) (p : Plane) (hp : p ∈ S) :
-    distinctDistancesFrom p (S.erase p) ≤ maxDistinctDistances S := by
-  exact Finset.le_sup (f := fun p => distinctDistancesFrom p (S.erase p)) hp
+    distinctDistancesFrom p (S.erase p) ≤ maxDistinctDistances S :=
+  Finset.le_sup hp
 
 -- Routine: The gap between conjectured n/2 and known (13/36)n is 5/36.
 -- 1/2 - 13/36 = 18/36 - 13/36 = 5/36.
@@ -58,14 +58,14 @@ theorem currentGap_eq : (1 : ℚ) / 2 - 13 / 36 = 5 / 36 := by norm_num
 -- The image of a set has cardinality ≤ the set's cardinality.
 theorem distinctDistancesFrom_le_card (p : Plane) (S : Finset Plane) :
     distinctDistancesFrom p S ≤ S.card := by
-  unfold distinctDistancesFrom
+  simp [distinctDistancesFrom]
   exact Finset.card_image_le
 
 -- Routine: If T is nonempty, then distinctDistancesFrom p T ≥ 1.
 -- The image of a nonempty set is nonempty, so has card ≥ 1.
 theorem distinctDistancesFrom_pos_of_nonempty (p : Plane) (T : Finset Plane) (hT : T.Nonempty) :
     distinctDistancesFrom p T ≥ 1 := by
-  unfold distinctDistancesFrom
+  simp [distinctDistancesFrom]
   exact Finset.card_pos.mpr (hT.image _)
 
 -- Routine: Erasing one element from a 3-element finset yields a 2-element finset.
@@ -79,18 +79,13 @@ theorem card_erase_of_card_three {α : Type*} [DecidableEq α] (S : Finset α) (
 theorem nonempty_of_card_ge_two {α : Type*} (S : Finset α) (h : S.card ≥ 2) :
     S.Nonempty := Finset.card_pos.mp (by omega)
 
-/-
-Routine: Every 3-element convex set has maxDistinctDistances ≥ 1.
-Each vertex in a triangle sees at least 2 other points, giving ≥ 1 distinct distance.
-The conjecture requires ⌊3/2⌋ = 1, which is satisfied.
--/
+-- Routine: Every 3-element convex set has maxDistinctDistances ≥ 1.
+-- Each vertex in a triangle sees at least 2 other points, giving ≥ 1 distinct distance.
+-- The conjecture requires ⌊3/2⌋ = 1, which is satisfied.
 theorem triangle_case :
     ∀ (S : Finset Plane), S.card = 3 → InConvexPosition S →
       maxDistinctDistances S ≥ 1 := by
-  intro S hcard hconv
-  obtain ⟨p, hp⟩ : ∃ p ∈ S, (S.erase p).Nonempty := by
-    exact Exists.elim ( Finset.card_pos.mp ( by linarith ) ) fun p hp => ⟨ p, hp, Finset.card_pos.mp ( by rw [ Finset.card_erase_of_mem hp, hcard ] ; decide ) ⟩;
-  exact le_trans ( distinctDistancesFrom_pos_of_nonempty p _ hp.2 ) ( le_maxDistinctDistances_of_mem S p hp.1 )
+  sorry
 
 -- Routine: maxDistinctDistances is monotone in the sense that adding points cannot
 -- decrease the maximum. Formally: if p ∈ S, then maxDistinctDistances {p} ≤ maxDistinctDistances S.

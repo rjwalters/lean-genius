@@ -7,8 +7,8 @@
       "endLine": 17
     },
     "type": "context",
-    "title": "File Setup: Axiom Elimination Companion for Erdős #1002",
-    "content": "This file proves two theorems that were stated as axioms in the parent Erdős #1002 formalization (Erdos1002Problem.lean). The `import Mathlib` gives access to Real.arctan, Int.fract, Finset.sum_range_add, and all the filter theory needed. `set_option maxHeartbeats 800000` grants extra elaboration time — filter composition proofs involving nested Tendsto calls can be heartbeat-intensive. `open Real Filter` brings arctan, π, tendsto_arctan_atTop/atBot, and Tendsto into scope without qualification, keeping proof terms concise.",
+    "title": "File Setup: Axiom Elimination Companion for Erd\u0151s #1002",
+    "content": "This file proves two theorems that were stated as axioms in the parent Erd\u0151s #1002 formalization (Erdos1002Problem.lean). The `import Mathlib` gives access to Real.arctan, Int.fract, Finset.sum_range_add, and all the filter theory needed. `set_option maxHeartbeats 800000` grants extra elaboration time \u2014 filter composition proofs involving nested Tendsto calls can be heartbeat-intensive. `open Real Filter` brings arctan, \u03c0, tendsto_arctan_atTop/atBot, and Tendsto into scope without qualification, keeping proof terms concise.",
     "mathContext": "Companion file pattern: replace $N$ axiom declarations with $N$ proved theorems, reducing the assumption count of the parent formalization from $k$ to $k - N$.",
     "significance": "context",
     "relatedConcepts": [
@@ -30,8 +30,8 @@
       "endLine": 35
     },
     "type": "definition",
-    "title": "Core Definitions for Erdős #1002",
-    "content": "Four definitions mirror the parent Erdos1002Problem.lean formalization. `IsDistributionFunction` captures the three properties a CDF must satisfy: monotonicity, limit 0 at −∞, and limit 1 at +∞. `cauchyDistribution ρ c` is the Cauchy CDF scaled by ρ. `deviation x` measures how far the fractional part {x} deviates from 1/2. `innerSum α n` is the cumulative deviation sum S(α, n) = Σₖ₌₁ⁿ (1/2 − {αk}), central to Erdős Problem #1002.",
+    "title": "Core Definitions for Erd\u0151s #1002",
+    "content": "Four definitions mirror the parent Erdos1002Problem.lean formalization. `IsDistributionFunction` captures the three properties a CDF must satisfy: monotonicity, limit 0 at \u2212\u221e, and limit 1 at +\u221e. `cauchyDistribution \u03c1 c` is the Cauchy CDF scaled by \u03c1. `deviation x` measures how far the fractional part {x} deviates from 1/2. `innerSum \u03b1 n` is the cumulative deviation sum S(\u03b1, n) = \u03a3\u2096\u208c\u2081\u207f (1/2 \u2212 {\u03b1k}), central to Erd\u0151s Problem #1002.",
     "mathContext": "$\\text{IsDistributionFunction}(g) \\iff g \\text{ monotone},\\ \\lim_{c\\to-\\infty} g(c)=0,\\ \\lim_{c\\to+\\infty} g(c)=1$",
     "significance": "context",
     "relatedConcepts": [
@@ -55,7 +55,7 @@
     },
     "type": "technique",
     "title": "Monotonicity via arctan Composition",
-    "content": "The Cauchy CDF g(c) = (1/π)arctan(ρc) + 1/2 is monotone because arctan is strictly monotone and ρ > 0. The `gcongr` tactic handles monotone inequalities compositionally: a ≤ b implies ρa ≤ ρb (scaling with nonneg ρ), which implies arctan(ρa) ≤ arctan(ρb) (by arctan_strictMono). The constant shift and positive scaling 1/π preserve the inequality.",
+    "content": "The Cauchy CDF g(c) = (1/\u03c0)arctan(\u03c1c) + 1/2 is monotone because arctan is strictly monotone and \u03c1 > 0. The `gcongr` tactic handles monotone inequalities compositionally: a \u2264 b implies \u03c1a \u2264 \u03c1b (scaling with nonneg \u03c1), which implies arctan(\u03c1a) \u2264 arctan(\u03c1b) (by arctan_strictMono). The constant shift and positive scaling 1/\u03c0 preserve the inequality.",
     "mathContext": "$a \\leq b \\Rightarrow \\rho a \\leq \\rho b\\ (\\rho > 0) \\Rightarrow \\arctan(\\rho a) \\leq \\arctan(\\rho b) \\Rightarrow g(a) \\leq g(b)$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -76,8 +76,8 @@
       "endLine": 62
     },
     "type": "technique",
-    "title": "Linear Scaling Preserves Filter Limits at ±∞",
-    "content": "Two helper lemmas establish that c ↦ ρc (with ρ > 0) sends atTop to atTop and atBot to atBot. These are needed to compose with arctan's limit theorems. Given bound b, take c ≥ b/ρ, then ρc ≥ b. The positive denominator ρ makes the division well-defined, and `field_simp` closes the algebraic goal ρ·(b/ρ) = b.",
+    "title": "Linear Scaling Preserves Filter Limits at \u00b1\u221e",
+    "content": "Two helper lemmas establish that c \u21a6 \u03c1c (with \u03c1 > 0) sends atTop to atTop and atBot to atBot. These are needed to compose with arctan's limit theorems. Given bound b, take c \u2265 b/\u03c1, then \u03c1c \u2265 b. The positive denominator \u03c1 makes the division well-defined, and `field_simp` closes the algebraic goal \u03c1\u00b7(b/\u03c1) = b.",
     "mathContext": "$\\rho > 0 \\Rightarrow (c \\to +\\infty \\Rightarrow \\rho c \\to +\\infty)$ and $(c \\to -\\infty \\Rightarrow \\rho c \\to -\\infty)$",
     "significance": "technical",
     "relatedConcepts": [
@@ -99,7 +99,7 @@
     },
     "type": "insight",
     "title": "CDF Upper Limit: arctan Composition Reaches 1",
-    "content": "The Cauchy CDF's limit as c → +∞ is 1. The proof chains filter composition: ρc → +∞ (tendsto_mul_atTop), then arctan(ρc) → π/2 (Real.tendsto_arctan_atTop composed with scaling). The constant-function continuity lemma closes the arithmetic: (1/π)(π/2) + 1/2 = 1 by field_simp. The `convert` tactic bridges the computed limit at 1/π·π/2+1/2 to the target 1.",
+    "content": "The Cauchy CDF's limit as c \u2192 +\u221e is 1. The proof chains filter composition: \u03c1c \u2192 +\u221e (tendsto_mul_atTop), then arctan(\u03c1c) \u2192 \u03c0/2 (Real.tendsto_arctan_atTop composed with scaling). The constant-function continuity lemma closes the arithmetic: (1/\u03c0)(\u03c0/2) + 1/2 = 1 by field_simp. The `convert` tactic bridges the computed limit at 1/\u03c0\u00b7\u03c0/2+1/2 to the target 1.",
     "mathContext": "$\\lim_{c \\to +\\infty} \\left(\\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}\\right) = \\frac{1}{\\pi} \\cdot \\frac{\\pi}{2} + \\frac{1}{2} = 1$",
     "significance": "key",
     "relatedConcepts": [
@@ -121,7 +121,7 @@
     },
     "type": "insight",
     "title": "CDF Lower Limit: arctan Symmetry Gives Zero",
-    "content": "The lower limit follows by symmetry: ρc → −∞ sends arctan(ρc) → −π/2, so (1/π)(−π/2) + 1/2 = 0. Together with the upper limit, this confirms total probability mass 1. The Cauchy distribution's CDF symmetry about 0 — g(−c) = 1 − g(c) — is visible in the mirror structure of the two limit proofs.",
+    "content": "The lower limit follows by symmetry: \u03c1c \u2192 \u2212\u221e sends arctan(\u03c1c) \u2192 \u2212\u03c0/2, so (1/\u03c0)(\u2212\u03c0/2) + 1/2 = 0. Together with the upper limit, this confirms total probability mass 1. The Cauchy distribution's CDF symmetry about 0 \u2014 g(\u2212c) = 1 \u2212 g(c) \u2014 is visible in the mirror structure of the two limit proofs.",
     "mathContext": "$\\lim_{c \\to -\\infty} \\left(\\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}\\right) = \\frac{1}{\\pi} \\cdot \\left(-\\frac{\\pi}{2}\\right) + \\frac{1}{2} = 0$",
     "significance": "key",
     "relatedConcepts": [
@@ -131,7 +131,7 @@
     ],
     "prerequisites": [
       "real analysis: limits",
-      "trigonometry: arctan at −∞"
+      "trigonometry: arctan at \u2212\u221e"
     ]
   },
   {
@@ -143,7 +143,7 @@
     },
     "type": "concept",
     "title": "Cauchy CDF is a Proper Distribution Function",
-    "content": "The main theorem assembles the three sub-proofs into a single constructor. The Cauchy distribution, named after Augustin-Louis Cauchy (1789–1857), has density f(x) = ρ/(π(ρ²+x²)) and heavier-than-Gaussian tails — so heavy it has no finite mean or variance. Cauchy introduced it as a counterexample showing the law of large numbers can fail. Here, any scale parameter ρ > 0 yields a valid CDF.",
+    "content": "The main theorem assembles the three sub-proofs into a single constructor. The Cauchy distribution, named after Augustin-Louis Cauchy (1789\u20131857), has density f(x) = \u03c1/(\u03c0(\u03c1\u00b2+x\u00b2)) and heavier-than-Gaussian tails \u2014 so heavy it has no finite mean or variance. Cauchy introduced it as a counterexample showing the law of large numbers can fail. Here, any scale parameter \u03c1 > 0 yields a valid CDF.",
     "mathContext": "$g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$ is monotone with $g(-\\infty)=0$ and $g(+\\infty)=1$",
     "significance": "key",
     "relatedConcepts": [
@@ -165,7 +165,7 @@
     },
     "type": "technique",
     "title": "Fractional Part Invariance Under Integer Shifts",
-    "content": "The key number-theoretic lemma: deviation(x + n) = deviation(x) for any integer n. This follows from {x + n} = {x} — fractional parts are invariant under integer shifts, since ⌊x + n⌋ = ⌊x⌋ + n. In Lean, the proof unfolds `Int.fract` and uses `Int.floor_add_intCast`, then `ring` for arithmetic. The `push_cast` handles integer-to-real coercions.",
+    "content": "The key number-theoretic lemma: deviation(x + n) = deviation(x) for any integer n. This follows from {x + n} = {x} \u2014 fractional parts are invariant under integer shifts, since \u230ax + n\u230b = \u230ax\u230b + n. In Lean, the proof unfolds `Int.fract` and uses `Int.floor_add_intCast`, then `ring` for arithmetic. The `push_cast` handles integer-to-real coercions.",
     "mathContext": "$\\{x + n\\} = x + n - \\lfloor x + n \\rfloor = x + n - (\\lfloor x \\rfloor + n) = \\{x\\}$ for $n \\in \\mathbb{Z}$",
     "significance": "key",
     "relatedConcepts": [
@@ -187,7 +187,7 @@
     },
     "type": "technique",
     "title": "Deviation Periodicity for Rational Multiples",
-    "content": "For rational α = p/q, the map k ↦ deviation(α(k+1)) has period q. The algebraic identity (p/q)((k+q)+1) = (p/q)(k+1) + p shows that evaluating at k+q adds the integer p to the argument, and deviation_add_int then gives equality. Lean's `push_cast` manages ℤ/ℕ/ℝ coercions, while `field_simp` proves (p/q)·q = p when q ≠ 0.",
+    "content": "For rational \u03b1 = p/q, the map k \u21a6 deviation(\u03b1(k+1)) has period q. The algebraic identity (p/q)((k+q)+1) = (p/q)(k+1) + p shows that evaluating at k+q adds the integer p to the argument, and deviation_add_int then gives equality. Lean's `push_cast` manages \u2124/\u2115/\u211d coercions, while `field_simp` proves (p/q)\u00b7q = p when q \u2260 0.",
     "mathContext": "$\\frac{p}{q}((k+q)+1) = \\frac{p}{q}(k+1) + p \\Rightarrow \\text{deviation}\\!\\left(\\tfrac{p}{q}(k+q+1)\\right) = \\text{deviation}\\!\\left(\\tfrac{p}{q}(k+1)\\right)$",
     "significance": "key",
     "relatedConcepts": [
@@ -230,15 +230,15 @@
       "endLine": 138
     },
     "type": "concept",
-    "title": "Inner Sum Periodicity: S(α, n+q) = S(α, n) + S(α, q)",
-    "content": "The main periodicity theorem: for rational α = p/q with gcd(p,q)=1, the inner sum satisfies S(α, n+q) = S(α, n) + S(α, q). The proof splits the sum using `Finset.sum_range_add`, then applies `cyclic_sum_periodic` to equate the shifted partial sum with S(α, q). The coprimality hypothesis gcd(p,q)=1 appears in the statement but is not used in the proof body — the periodicity holds for any p/q, suggesting the hypothesis is stronger than necessary.",
+    "title": "Inner Sum Periodicity: S(\u03b1, n+q) = S(\u03b1, n) + S(\u03b1, q)",
+    "content": "The main periodicity theorem: for rational \u03b1 = p/q with gcd(p,q)=1, the inner sum satisfies S(\u03b1, n+q) = S(\u03b1, n) + S(\u03b1, q). The proof splits the sum using `Finset.sum_range_add`, then applies `cyclic_sum_periodic` to equate the shifted partial sum with S(\u03b1, q). The coprimality hypothesis gcd(p,q)=1 appears in the statement but is not used in the proof body \u2014 the periodicity holds for any p/q, suggesting the hypothesis is stronger than necessary.",
     "mathContext": "$S(\\alpha, n+q) = \\sum_{k=0}^{n-1} d(k) + \\sum_{k=0}^{q-1} d(n+k) = S(\\alpha, n) + S(\\alpha, q)$, $d(k) = \\tfrac{1}{2} - \\{\\tfrac{p}{q}(k+1)\\}$",
     "significance": "key",
     "relatedConcepts": [
       "Weyl equidistribution theorem",
       "three-distance theorem",
       "discrepancy theory",
-      "Erdős #1002"
+      "Erd\u0151s #1002"
     ],
     "prerequisites": [
       "number theory: fractional parts",

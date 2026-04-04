@@ -6968,9 +6968,9 @@
     },
     "erdos-678": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-04-04T01:32:38Z",
-      "result": "issues-found"
+      "auditCount": 4,
+      "lastAudited": "2026-04-04T09:27:51Z",
+      "result": "issues-fixed"
     },
     "erdos-679": {
       "auditCount": 2,
@@ -7754,8 +7754,8 @@
     },
     "erdos-793": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 2,
-      "lastAudited": "2026-04-03T17:21:44Z",
+      "auditCount": 3,
+      "lastAudited": "2026-04-04T09:27:51Z",
       "result": "clean"
     },
     "erdos-794": {
@@ -9988,9 +9988,9 @@
       "result": "clean"
     },
     "lebesgue-measure-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-04T08:56:36Z",
       "result": "clean"
     },
     "legendre-partial": {
@@ -11364,6 +11364,24 @@
       "auditCount": 1,
       "lastAudited": "2026-04-04T06:09:21Z",
       "result": "issues-found",
+      "issues": []
+    },
+    "greens-theorem-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-04T08:59:51Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "burnside-counting-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-04T09:29:49Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cevas-theorem-oq-02-oq-01-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-04T09:29:49Z",
+      "result": "clean",
       "issues": []
     }
   },

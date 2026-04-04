@@ -99,74 +99,100 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "File Header and Mathematical Background",
+      "description": "Detailed docstring posing the open question, presenting the Fano plane incidence structure, and explaining why the friendship theorem fails for hypergraphs via the degree formula.",
+      "summary": "Open question setup: does the Friendship Theorem generalize to 3-uniform hypergraphs? Answer: NO. The Fano plane is the counterexample.",
+      "startLine": 1,
+      "endLine": 81
+    },
+    {
       "id": "definitions",
       "title": "3-Uniform Hypergraph Definitions",
+      "description": "Definitions of 3-uniform hypergraphs, the friendship property, universal vertices, and vertex degree.",
+      "summary": "Hypergraph3, IsFriendship3, IsUniversalVertex3, vertexDegree — the complete interface for the counterexample.",
       "startLine": 83,
-      "endLine": 113,
-      "description": "Definitions of 3-uniform hypergraphs, the friendship property, and universal vertices.",
-      "summary": "Defines `Hypergraph3` (a finite set of 3-element subsets), `IsFriendship3` (every pair in exactly one edge), `IsUniversalVertex3` (member of every edge), and `vertexDegree`."
+      "endLine": 113
     },
     {
       "id": "fano-plane",
       "title": "The Fano Plane",
-      "startLine": 115,
-      "endLine": 151,
       "description": "Construction of the Fano plane PG(2,2) as a 3-uniform hypergraph on 7 vertices with 7 triples.",
-      "summary": "Explicitly lists the 7 lines of PG(2,2) as Finsets of Fin 7 and packages them into a `Hypergraph3` with a uniformity proof by finite case analysis."
+      "summary": "Explicit construction: fanoEdges lists all 7 triples; fanoPlane verifies 3-uniformity by decide.",
+      "startLine": 115,
+      "endLine": 151
     },
     {
       "id": "friendship-verification",
       "title": "Friendship Property Verification",
-      "startLine": 152,
-      "endLine": 163,
       "description": "Proof that every pair of Fano plane vertices is in exactly one triple.",
-      "summary": "Proves `fano_is_friendship` by exhaustive case analysis: `fin_cases u <;> fin_cases v` generates 49 cases (7×7), each closed by `decide`."
+      "summary": "fano_is_friendship: 49-case decision procedure — fin_cases u <;> fin_cases v <;> decide.",
+      "startLine": 152,
+      "endLine": 163
     },
     {
       "id": "no-universal",
       "title": "No Universal Vertex",
-      "startLine": 165,
-      "endLine": 178,
       "description": "Proof that no vertex belongs to all 7 Fano triples.",
-      "summary": "Proves `fano_no_universal` by contradiction: assume a universal vertex c, then `fin_cases c` checks all 7 vertices and `decide` shows each is in only 3 of 7 triples."
+      "summary": "fano_no_universal: contradiction by fin_cases c <;> decide — each vertex is in exactly 3 of 7 triples.",
+      "startLine": 165,
+      "endLine": 178
     },
     {
       "id": "counterexample",
       "title": "The Main Counterexample",
-      "startLine": 180,
-      "endLine": 201,
       "description": "The friendship theorem does NOT generalize to 3-uniform hypergraphs.",
-      "summary": "Combines `fano_is_friendship` and `fano_no_universal` into the main theorem: ∃ a friendship 3-hypergraph with no universal vertex. Proof is a one-liner using the Fano plane as witness."
+      "summary": "friendship_theorem_fails_for_hypergraphs: one-line assembly of the two sub-proofs.",
+      "startLine": 180,
+      "endLine": 201
     },
     {
       "id": "properties",
       "title": "Fano Plane Properties",
+      "description": "Edge count (7), vertex degree (3), 3-regularity.",
+      "summary": "fano_edge_count = 7, fano_vertex_degree v = 3 for all v, fano_regular.",
       "startLine": 203,
-      "endLine": 255,
-      "description": "Edge count (7), vertex degree (3), 3-regularity, dual property, and general counting formulas.",
-      "summary": "Verifies that the Fano plane has 7 edges, each vertex has degree 3, all vertices have equal degree (3-regular), and any two distinct triples share exactly 1 point. Also proves general formulas: degree = (n-1)/2, triples = n(n-1)/6."
+      "endLine": 219
     },
     {
-      "id": "comparison",
-      "title": "Graph vs. Hypergraph Comparison",
+      "id": "counting",
+      "title": "General Counting Arguments",
+      "description": "Vertex degree formula (n-1)/2 and triple count formula n(n-1)/6 for general friendship 3-hypergraphs.",
+      "summary": "friendship3_degree_formula and friendship3_triple_count proved by omega; verified for the Fano plane.",
+      "startLine": 221,
+      "endLine": 255
+    },
+    {
+      "id": "dual-property",
+      "title": "Dual Property and Graph/Hypergraph Comparison",
+      "description": "Fano plane self-duality: any two distinct triples share exactly one vertex. Comparison table: graphs (windmill forced) vs. 3-hypergraphs (STS structures).",
+      "summary": "fano_dual_property: projective plane self-duality; closing comparison of friendship theorem for k=2 vs. k=3.",
       "startLine": 257,
-      "endLine": 307,
-      "description": "The dual property and a summary table comparing the graph case (k=2) with the hypergraph case (k=3).",
-      "summary": "Proves `fano_dual_property` (any two distinct Fano lines share exactly 1 point, the self-dual property of PG(2,2)) and presents a comparison table showing exactly why the friendship theorem fails to generalize."
+      "endLine": 307
+    }
+  ],
+  "crossReferences": [
+    {
+      "relationship": "The original Friendship Theorem (Erdős–Rényi–Sós, 1966) proves that every friendship graph must have a universal 'politician' vertex and be a windmill — this formalization shows the analogous result fails completely for 3-uniform hypergraphs, where the Fano plane satisfies the friendship property with no universal vertex",
+      "targetId": "friendship-theorem"
+    },
+    {
+      "relationship": "The spectral proof that every k-regular friendship graph has k=2 uses algebraic constraints (eigenvalue analysis of the adjacency matrix) that force windmill structure — for 3-hypergraphs, these spectral constraints have no analog, which is why Steiner triple systems can satisfy the friendship property without being 'windmill hypergraphs'",
+      "targetId": "friendship-theorem-oq-01"
     }
   ],
   "overview": {
-    "historicalContext": "The Friendship Theorem was proved by Erdős, Rényi, and Sós in their 1966 paper 'On a problem of graph theory' (Studia Sci. Math. Hungarica). The original proof used spectral graph theory: the friendship property constrains the eigenvalues of the adjacency matrix, and the characteristic polynomial argument forces the graph to be a windmill (fan of triangles sharing a hub). The result is also sometimes proved via counting arguments or polynomial methods over finite fields. The hypergraph generalization was posed by Vera T. Sós (1976) in a survey connecting graph theory, finite geometry, and block designs. Gerd Baron and Reinhard Pöschel proved early partial results for the hypergraph case. Li and van Rees (2002) definitively answered the question for 3-uniform hypergraphs by showing that Steiner triple systems serve as counterexamples whenever STS(n) exists with n ≥ 7. The Fano plane — constructed by Gino Fano in 1892 as the first example of a finite projective geometry — is the unique STS(7) and therefore the smallest counterexample. The Fano plane also appears throughout combinatorics and coding theory: the [7,4,3] Hamming code has the Fano plane as its combinatorial dual, and Fano's original motivation was to show that finite geometry is a legitimate mathematical object.",
+    "historicalContext": "The Friendship Theorem was proved by Erdős, Rényi, and Sós in 1966 in their paper 'On a problem of graph theory' (Studia Sci. Math. Hungarica). It states that every finite graph in which every pair of vertices has exactly one common neighbor must contain a 'universal vertex' — a politician who is friends with everyone — and the graph must be a windmill (triangles sharing a common vertex). The proof used both combinatorial and algebraic (spectral) arguments. Véra T. Sós (1976) posed the natural generalization to hypergraphs: does a k-uniform hypergraph where every (k-1)-subset of vertices is in exactly one edge necessarily have a universal vertex?\n\nLi and van Rees (2002) studied 'friendship 3-hypergraphs' and showed that Steiner triple systems are counterexamples. A Steiner triple system STS(n) exists if and only if n ≡ 1 or 3 (mod 6); the smallest is STS(7), the Fano plane, discovered by Gino Fano in 1892 as the projective plane PG(2,2) — the projective plane over GF(2). The Fano plane has been a central object in finite geometry and combinatorics for over a century: it is the smallest non-Desarguesian configuration, the automorphism group is GL(3,2) ≅ PSL(2,7) of order 168, and it appears in the construction of the exceptional Lie algebra g₂ and in the octonion multiplication table.",
     "problemStatement": "**Question**: Does the Friendship Theorem generalize to k-uniform hypergraphs? That is, if every (k-1)-subset of vertices is in exactly one hyperedge, must there be a vertex in every hyperedge?\n\n**Answer**: NO. The Fano plane is a 3-uniform hypergraph where every pair is in exactly one triple, yet no vertex belongs to all triples.",
     "text": "We construct the Fano plane as an explicit counterexample showing the friendship theorem fails for 3-uniform hypergraphs. Every pair of the 7 vertices is in exactly one of 7 triples, but each vertex is in only 3 triples.",
     "proofStrategy": "1. Define the Fano plane as a 3-uniform hypergraph on Fin 7 with 7 explicitly listed triples.\n2. Verify the friendship property by finite case analysis: for each of the 21 pairs of vertices, check that exactly one triple contains both.\n3. Prove no universal vertex exists by checking all 7 vertices: each is in only 3 of 7 triples.\n4. Combine to get the counterexample theorem.",
     "keyInsights": [
-      "The friendship theorem is a graph-specific phenomenon: for graphs, counting and spectral arguments force the graph to be a windmill, but the analogous constraints for hypergraphs are too weak to enforce universality.",
-      "The Fano plane (projective plane PG(2,2)) is the simplest and most symmetric counterexample: it is the unique STS(7) and the unique projective plane of order 2.",
-      "The counting argument kills the generalization: in any friendship 3-hypergraph on n vertices, vertex degree = (n-1)/2 and total triples = n(n-1)/6. For a universal vertex to exist, we would need degree = total triples, i.e., (n-1)/2 = n(n-1)/6, which gives n = 3. Only the trivial single-triple hypergraph (n=3) can have a universal vertex.",
-      "The self-duality of the Fano plane — any two distinct lines meet in exactly one point — mirrors the friendship property itself (any two distinct points determine exactly one line), making PG(2,2) a self-dual combinatorial object.",
-      "Steiner triple systems (STS(n)) exist precisely when n ≡ 1 or 3 (mod 6); since each is a friendship 3-hypergraph without a universal vertex (for n ≥ 7), they form an infinite family of counterexamples: STS(7), STS(9), STS(13), ...",
-      "The Lean proof strategy separates into: (a) explicit finite construction (fanoEdges + uniformity), (b) exhaustive finite verification (fin_cases + decide), and (c) logical packaging (existential witness). Each component is essentially trivial — the insight is in setting up the right definitions."
+      "The friendship theorem is a graph-specific phenomenon that does not extend to hypergraphs",
+      "The Fano plane (projective plane PG(2,2)) is the simplest counterexample",
+      "In a friendship 3-hypergraph on n vertices, each vertex has degree (n-1)/2, which grows linearly while the total number of triples n(n-1)/6 grows quadratically — so for n >= 7, no vertex can be universal",
+      "The self-duality of the Fano plane (any two lines meet in exactly 1 point) is a bonus property verified here",
+      "Steiner triple systems provide a rich family of counterexamples for all admissible n >= 7",
+      "The Fano plane's automorphism group GL(3,2) ≅ PSL(2,7) (order 168) is the second smallest non-abelian simple group and appears in the octonion multiplication table — the Lean proof's decidability approach gives a verified construction of this rich mathematical object"
     ],
     "prerequisites": [
       "Graph theory (friendship property, universal vertex)",
@@ -175,14 +201,18 @@
     ]
   },
   "conclusion": {
-    "summary": "The Friendship Theorem does not generalize to 3-uniform hypergraphs. The Fano plane — the unique STS(7) and smallest finite projective plane — serves as a clean, constructive counterexample: it satisfies the friendship property (every pair in exactly one triple) but has no universal vertex (each vertex is in only 3 of 7 triples). The proof is fully verified in Lean 4 with 0 sorries and 0 axioms.",
+    "summary": "The Friendship Theorem does not generalize to 3-uniform hypergraphs. The Fano plane serves as a clean, constructive counterexample: it satisfies the friendship property (every pair in exactly one triple) but has no universal vertex (each vertex is in only 3 of 7 triples). This is fully verified in Lean 4 with 0 sorries and 0 axioms.",
     "mainResult": "friendship_theorem_fails_for_hypergraphs: there exists a friendship 3-hypergraph with no universal vertex",
-    "implications": "The result shows that the Friendship Theorem is a fundamentally graph-theoretic phenomenon, not a combinatorial universality principle. The spectral/eigenvalue methods that drive the graph proof do not have clean analogs for hypergraphs, and the counting constraints that force windmill structure for graphs are far weaker in the hypergraph setting. The Fano plane's appearance here connects graph theory to finite geometry and coding theory: PG(2,2) is also the dual of the Hamming [7,4,3] code, and similar self-dual combinatorial objects appear throughout extremal combinatorics.",
+    "openDirections": [
+      "Characterize all friendship 3-hypergraphs (Steiner triple systems)",
+      "Study friendship k-hypergraphs for k >= 4",
+      "Determine which structural properties of friendship graphs DO generalize"
+    ],
     "openQuestions": [
-      "For which k ≥ 4 do friendship k-hypergraphs (every (k-1)-subset in exactly one edge) without a universal vertex exist? Is the pattern similar — universal vertex exists only for the trivial single-edge case?",
-      "Can the graph Friendship Theorem proof be adapted for hypergraphs by replacing eigenvalue methods with a hypergraph spectral theory, or does the failure mode here indicate that spectral methods are fundamentally limited to k=2?",
-      "Li and van Rees (2002) showed friendship 3-hypergraphs are exactly Steiner triple systems plus possibly extra structure. Is there a complete characterization of friendship k-hypergraphs for general k analogous to the windmill characterization for k=2?",
-      "The Fano plane formalizes as STS(7). Can the full theory of Steiner systems and combinatorial designs be formalized in Lean/Mathlib to the point of proving existence and uniqueness results for STS(n)?"
-    ]
+      "Do friendship k-hypergraphs for k ≥ 4 also fail to have universal vertices? What is the smallest counterexample for each k, and is there a pattern?",
+      "Can all friendship 3-hypergraphs be characterized precisely as Steiner triple systems, or does the friendship property permit hypergraphs that are not STS (e.g., with repeated edges or non-uniform vertex degrees)?",
+      "Is there a non-computational proof of friendship theorem failure for 3-hypergraphs — one that gives structural insight rather than case-by-case verification — perhaps via a spectral or algebraic argument showing why the spectral method fails for hypergraphs?"
+    ],
+    "implications": "The Friendship Theorem does not generalize to 3-uniform hypergraphs. The Fano plane serves as a clean, constructive counterexample: it satisfies the friendship property (every pair in exactly one triple) but has no universal vertex (each vertex is in only 3 of 7 triples). This is fully verified in Lean 4 with 0 sorries and 0 axioms."
   }
 }

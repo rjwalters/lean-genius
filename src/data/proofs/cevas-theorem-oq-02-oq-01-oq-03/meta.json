@@ -1,0 +1,147 @@
+{
+  "id": "cevas-theorem-oq-02-oq-01-oq-03",
+  "title": "Ceva's Theorem: Geometric Interpretation of Weight Parameters",
+  "slug": "cevas-theorem-oq-02-oq-01-oq-03",
+  "description": "Formal proof of the geometric meaning of weight parameters in Ceva's theorem: the weight pair (α, β) encoding where a cevian point D divides side BC, with ratio BD/DC = β/α. Proves 18 theorems (0 sorries, 0 axioms) covering division ratios, midpoint characterization, centroid/incenter weight conditions, and the closer-to-B criterion.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ceva%27s_theorem",
+    "date": "formalized 2026",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "ceva",
+      "triangle",
+      "division-ratio",
+      "weights",
+      "euclidean"
+    ],
+    "proofRepoPath": "Proofs/CevasTheoremOQ02OQ01OQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "mul_right_cancel₀",
+        "description": "Cancellation: c ≠ 0 → a * c = b * c → a = b",
+        "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "div_eq_div_iff",
+        "description": "Equality of fractions: a/b = c/d ↔ a*d = c*b (for nonzero denominators)",
+        "module": "Mathlib.Algebra.Field.Basic"
+      },
+      {
+        "theorem": "div_mul_cancel₀",
+        "description": "Division-multiplication cancellation: a / b * b = a (for b ≠ 0)",
+        "module": "Mathlib.Algebra.Field.Basic"
+      },
+      {
+        "theorem": "mul_lt_mul_of_pos_right",
+        "description": "Strict monotonicity of multiplication on the right by positive factor",
+        "module": "Mathlib.Algebra.Order.Ring.Defs"
+      }
+    ],
+    "originalContributions": [
+      "weight_division_ratio: proves BD/DC = β/α for D = (α·B + β·C)/(α+β)",
+      "weight_midpoint_iff_of_ne: D is midpoint of BC iff α = β (when B ≠ C)",
+      "weight_fraction_from_B: fraction β/(α+β) = 1/2 iff α = β",
+      "nonequal_weights_not_midpoint: α ≠ β implies D is not at midpoint",
+      "ceva_balance_iff_unit_product: weight balance ↔ classical Ceva product = 1",
+      "incenter_weight_product_is_one: angle bisector weights satisfy Ceva condition",
+      "nonequal_weights_asymmetry: α ≠ β implies BD ≠ DC",
+      "weight_closer_to_B_iff: D closer to B iff β < α",
+      "18 total theorems characterizing weight geometry"
+    ],
+    "dateAdded": "2026-04-04",
+    "lineCount": 291,
+    "assumptions": "0 axioms, 0 sorries. All 18 theorems fully proved from Mathlib arithmetic lemmas."
+  },
+  "overview": {
+    "historicalContext": "**Ceva's theorem** (Giovanni Ceva, 1678) provides a necessary and sufficient condition for three cevians of a triangle to be concurrent. The theorem is naturally stated using weight parameters (α, β) that encode where cevian points lie on triangle sides.\n\nA **cevian** is a line segment from a vertex of a triangle to the opposite side. If D lies on BC, E on CA, and F on AB, then cevians AD, BE, CF are concurrent iff:\n$$\\frac{BD}{DC} \\cdot \\frac{CE}{EA} \\cdot \\frac{AF}{FB} = 1$$\n\nIn the weighted formulation, D = (α·B + β·C)/(α+β) lies on BC with ratio BD:DC = β:α. The **open question** asks: what is the geometric interpretation of these weight parameters?",
+    "problemStatement": "**Open Question (cevas-theorem-oq-02-oq-01-oq-03)**: What is the geometric interpretation of the weight parameters (α, β) in the weighted Ceva theorem? When α ≠ β, what cevian points arise?\n\n**Answer**: The weight pair (α, β) directly encodes the division ratio of the cevian point along the triangle side. Specifically, D = (α·B + β·C)/(α+β) satisfies BD/DC = β/α.",
+    "text": "This proof formalizes the complete geometric interpretation of weight parameters in Ceva's theorem. The main result `weight_division_ratio` proves BD/DC = β/α. The file also characterizes special configurations: equal weights give the centroid, angle-bisector weights give the incenter, and the weight comparison β < α determines which half of the side the cevian point lies in.",
+    "proofStrategy": "**Part I: Division Ratio Formula**\n- `weight_point_displacement`: D = B + β·(C-B)/(α+β) — shows D is fraction β/(α+β) along BC\n- `weight_division_ratio`: (D-B)/(C-D) = β/α via algebraic manipulation: show D-B = β·(C-B)/(α+β) and C-D = α·(C-B)/(α+β), then divide\n- `weight_midpoint_iff_of_ne`: midpoint iff α = β, proved via `div_eq_div_iff` + `ring`\n\n**Part II: Ceva Product Connection**\n- `ceva_product_eq_weight_ratio`: (β_D/α_D)·(β_E/α_E)·(β_F/α_F) = product of β's / product of α's\n- `ceva_balance_iff_unit_product`: weight balance α_D·α_E·α_F = β_D·β_E·β_F ↔ Ceva product = 1\n\n**Part III: Special Configurations**\n- `incenter_weight_product_is_one`: with angle bisector weights (α_D = b, β_D = c, etc.), Ceva product = (c/b)·(a/c)·(b/a) = 1\n- `weight_closer_to_B_iff`: D is closer to B iff β < α, proved by cross-multiplication via `div_mul_cancel₀`",
+    "keyInsights": [
+      "**Division ratio β:α not α:β**: D = (α·B + β·C)/(α+β) satisfies BD/DC = β/α. The weight α is the 'opposite' weight — it controls DC, not BD. This is a common source of confusion.",
+      "**Cross-multiplication via div_mul_cancel₀**: To prove a/c < b/c, multiply both sides by c > 0 using `mul_lt_mul_of_pos_right`, then apply `div_mul_cancel₀` to simplify.",
+      "**div_eq_div_iff for equality**: For showing a/b = c/d, use `div_eq_div_iff` to reduce to a·d = c·b (cross-multiplication), then close with `ring`.",
+      "**mul_right_cancel₀ for unique weights**: From β·(C-B) = α·(C-B) and C-B ≠ 0, cancel (C-B) to get β = α using `mul_right_cancel₀`.",
+      "**field_simp for displacement lemmas**: The decompositions D-B = β·(C-B)/(α+β) and C-D = α·(C-B)/(α+β) are cleanly proved by `field_simp [hαβ.ne']; ring`."
+    ],
+    "prerequisites": [
+      "Ceva's theorem (see cevas-theorem)",
+      "Weighted Ceva formulation (see cevas-theorem-oq-02)",
+      "Division ratio and barycentric coordinates"
+    ]
+  },
+  "sections": [
+    {
+      "id": "division-ratio",
+      "title": "Part I: Division Ratio Formula",
+      "startLine": 59,
+      "endLine": 149,
+      "summary": "Core geometric interpretation: weight pair (α,β) encodes division ratio β:α. Includes weight_point_displacement, weight_division_ratio, weight_midpoint_iff_of_ne, weight_fraction_from_B, nonequal_weights_not_midpoint.",
+      "mathContext": "For $D = (\\alpha B + \\beta C)/(\\alpha+\\beta)$, we have $D - B = \\beta(C-B)/(\\alpha+\\beta)$ and $C - D = \\alpha(C-B)/(\\alpha+\\beta)$, giving $BD/DC = \\beta/\\alpha$."
+    },
+    {
+      "id": "ceva-product",
+      "title": "Part II: Ceva's Theorem via Division Ratios",
+      "startLine": 150,
+      "endLine": 200,
+      "summary": "Connects weight parameters to classical Ceva product. Includes ceva_product_eq_weight_ratio, ceva_balance_iff_unit_product, ceva_balance_symmetric, reversed_division_ratio.",
+      "mathContext": "The Ceva balance condition $\\alpha_D\\alpha_E\\alpha_F = \\beta_D\\beta_E\\beta_F$ is equivalent to $(\\beta_D/\\alpha_D)(\\beta_E/\\alpha_E)(\\beta_F/\\alpha_F) = 1$."
+    },
+    {
+      "id": "special-configurations",
+      "title": "Part III: Special Configurations from Non-Equal Weights",
+      "startLine": 200,
+      "endLine": 291,
+      "summary": "Centroid (equal weights), scale invariance, incenter (angle bisector weights), asymmetry, closer-to-B condition.",
+      "mathContext": "Equal weights $\\alpha = \\beta$ give midpoints (centroid). Angle bisector weights $\\alpha_D = |AC|$, $\\beta_D = |AB|$ satisfy the Ceva product = 1 (incenter). For $\\beta < \\alpha$: $D$ is closer to $B$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "This proof provides the geometric interpretation of the weight parameters used in the weighted Ceva formulation — answering why BD/DC = β/α and showing how the classical Ceva concurrence condition α_D·α_E·α_F = β_D·β_E·β_F arises from the division ratio formula"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02",
+      "relationship": "OQ-02 extends Ceva's theorem to spherical/non-Euclidean geometry using similar weight parameters; the Euclidean weight geometry proved here is the ground case whose spherical analog OQ-02 investigates"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02-oq-01",
+      "relationship": "OQ-02-OQ-01 is the immediate predecessor in the open question chain; OQ-02-OQ-01-OQ-03 resolves the sub-question about the geometric meaning of (α, β) left open after OQ-02-OQ-01"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02-oq-01-oq-02",
+      "relationship": "A sibling OQ in the same chain, studying a related aspect of weight parameters; together OQ-02-OQ-01-OQ-02 and OQ-02-OQ-01-OQ-03 provide a complete geometric picture of the weighted Ceva framework"
+    }
+  ],
+  "conclusion": {
+    "summary": "The weight parameters (α, β) in Ceva's theorem have a precise geometric meaning: the point D = (αB + βC)/(α+β) on side BC satisfies BD/DC = β/α. Equal weights give the midpoint (centroid case); angle bisector weights give the incenter. The Ceva balance condition αDαEαF = βDβEβF is exactly equivalent to the classical Ceva product (BD/DC)(CE/EA)(AF/FB) = 1. All 18 theorems are proved axiom-free from Mathlib arithmetic.",
+    "implications": "The weight formulation of Ceva's theorem is more than syntactic convenience — it encodes division ratios directly. This gives a unified framework for all triangle centers expressible as concurrent cevians: the centroid (equal weights), incenter (side-length weights), symmedian point (squared side-length weights), and many others. Scale invariance of weights (c·α, c·β give the same point as α, β) means only the ratio α:β matters, connecting weight parameters to projective coordinates on the side BC.",
+    "openQuestions": [
+      "Can the same weight-parameter framework extend to non-Euclidean (spherical or hyperbolic) Ceva's theorem, and does the geometric interpretation BD/DC = β/α hold in those settings?",
+      "What is the complete characterization of triangle centers expressible as concurrent cevians with positive weights (α, β) satisfying polynomial relations between α and the triangle's side lengths?",
+      "Is there a clean formalization of mass point geometry — the 'dual' picture where α and β are literal masses placed at B and C, and D is the center of mass — in Lean 4 using Mathlib?"
+    ]
+  },
+  "references": [
+    {
+      "authors": ["Giovanni Ceva"],
+      "title": "De lineis rectis se invicem secantibus statica constructio",
+      "year": "1678",
+      "venue": "Milan",
+      "notes": "Original publication of Ceva's theorem, stating the concurrence condition for cevians in terms of division ratios — the precursor to the weight-parameter formulation proved here"
+    },
+    {
+      "authors": ["H. S. M. Coxeter", "S. L. Greitzer"],
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America",
+      "notes": "Chapter 4 covers Ceva's theorem and its applications to triangle centers; the division ratio interpretation BD/DC = β/α is presented as the natural barycentric coordinate reading"
+    }
+  ]
+}
