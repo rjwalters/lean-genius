@@ -2,7 +2,7 @@
   "id": "stirling-formula-oq-02",
   "title": "Stirling Approximation for the Gamma Function",
   "slug": "stirling-formula-oq-02",
-  "description": "Extends Stirling's formula from n! to the Gamma function: Γ(x+1) ~ √(2πx)·(x/e)^x as x→∞. Connects Mathlib's Gamma function to the factorial Stirling formula via Γ(n+1)=n!, derives bounds, proves Γ(1/2)=√π, half-integer formulas, and the duplication formula. 0 axioms, 0 sorries.",
+  "description": "Extends Stirling's formula from n! to the Gamma function at integer points: Γ(n+1) ~ √(2πn)·(n/e)^n for n : ℕ. Bridges Mathlib's Stirling.factorial_isEquivalent_stirling to the Gamma function via Γ(n+1)=n!, derives bounds, proves Γ(1/2)=√π, half-integer formulas, and the duplication formula. 0 axioms, 0 sorries. Note: the continuous formula for real x is stated as an open question.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
@@ -15,7 +15,24 @@
       "asymptotics",
       "special-functions"
     ],
-    "badge": "original",
+    "badge": "mathlib",
+    "mathlibDependencies": [
+      {
+        "theorem": "Stirling.factorial_isEquivalent_stirling",
+        "description": "n! ~ √(2πn)·(n/e)^n as n → ∞ (the primary result this file bridges to Gamma)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
+      },
+      {
+        "theorem": "Real.Gamma_nat_eq_factorial",
+        "description": "Γ(n+1) = n! for all n : ℕ (the bridge lemma)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Stirling.tendsto_stirlingSeq_sqrt_pi",
+        "description": "stirlingSeq → √π (used for Stirling bounds)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
+      }
+    ],
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
@@ -24,18 +41,17 @@
     "theoremCount": 26,
     "definitionCount": 4,
     "originalContributions": [
-      "gamma_stirling_equiv: Γ(n+1) ~ √(2πn)·(n/e)^n as n→∞ (via Γ(n+1)=n! + factorial Stirling)",
-      "gamma_lower_bound: Γ(x+1) ≥ C·√x·(x/e)^x for a computable constant C",
-      "log_gamma_approx: log Γ(x+1) ~ x·log x - x + (1/2)·log(2πx)",
-      "gamma_half: Γ(1/2) = √π (from Beta function integral)",
-      "gamma_half_nat: Γ(n+1/2) = (2n)!·√π / (4^n·n!) (half-integer formula)",
-      "gamma_duplication: Γ(n)·Γ(n+1/2) = √π·Γ(2n)/4^{n-1} (Legendre duplication)",
-      "central_binomial_gamma: C(2n,n) = 4^n/√(πn) asymptotically via Gamma",
-      "Bridge from Mathlib's Stirling.factorial_isEquivalent_stirling to Gamma function"
+      "Mathlib bridge: gamma_isEquivalent_stirling delegates directly to Stirling.factorial_isEquivalent_stirling via Γ(n+1)=n!; the primary asymptotic result is Mathlib's",
+      "gamma_lower_bound: Γ(n+1) ≥ √(2πn)·(n/e)^n for n ≥ 1 (from stirlingSeq antitonicity, original packaging)",
+      "log_gamma_stirling: log Γ(n+1) = log(stirlingSeq n) + log√(2n) + n·log n - n (original log-form)",
+      "gamma_one_half: Γ(1/2) = √π (from reflection formula via Mathlib)",
+      "gamma_half_int_formula: Γ(n+1/2) = (2n-1)!!·√π/2^n by induction (original proof)",
+      "duplication_at_nat: Γ(n)·Γ(n+1/2) = √π·Γ(2n)/4^{n-1} (original packaging of Legendre duplication)",
+      "centralBinom_gamma_half_int: C(2n,n) = 4^n·Γ(n+1/2)/(√π·Γ(n+1)) (original Gamma-binomial connection)"
     ]
   },
   "overview": {
-    "historicalContext": "Stirling's formula n! ~ \u221a(2\u03c0n)\u00b7(n/e)^n has a layered history. Abraham de Moivre (1721) first established n! ~ C\u00b7\u221an\u00b7(n/e)^n for an unspecified constant C. James Stirling (1730) identified C = \u221a(2\u03c0) using an infinite product formula, giving the sharp constant. Laplace (1812) provided the first analytic proof via the integral representation. The Gamma function \u0393(s) = \u222b\u2080^\u221e t^{s-1}e^{-t}dt was introduced by Euler (1729) as the natural extension of factorial to complex arguments. Legendre (1809) established the duplication formula \u0393(x)\u0393(x+1/2) = \u221a\u03c0\u00b72^{1-2x}\u0393(2x), revealing deep symmetry. The formula Wallis (1656) showed \u03c0/2 = \u220f (4k\u00b2/(4k\u00b2-1)) appears as a shadow of Stirling's formula: the Wallis product is equivalent to the statement that stirlingSeq \u2192 \u221a\u03c0. Wiedijk's list of 100 theorems (#90) refers to the factorial version; OQ-02 extends the Stirling formula to \u0393(x+1) ~ \u221a(2\u03c0x)\u00b7(x/e)^x for all positive reals.",
+    "historicalContext": "Stirling's formula n! ~ \u221a(2\u03c0n)\u00b7(n/e)^n has a layered history. Abraham de Moivre (1721) first established n! ~ C\u00b7\u221an\u00b7(n/e)^n for an unspecified constant C. James Stirling (1730) identified C = \u221a(2\u03c0) using an infinite product formula, giving the sharp constant. Laplace (1812) provided the first analytic proof via the integral representation. The Gamma function \u0393(s) = \u222b\u2080^\u221e t^{s-1}e^{-t}dt was introduced by Euler (1729) as the natural extension of factorial to complex arguments. Legendre (1809) established the duplication formula \u0393(x)\u0393(x+1/2) = \u221a\u03c0\u00b72^{1-2x}\u0393(2x), revealing deep symmetry. The formula Wallis (1656) showed \u03c0/2 = \u220f (4k\u00b2/(4k\u00b2-1)) appears as a shadow of Stirling's formula: the Wallis product is equivalent to the statement that stirlingSeq \u2192 \u221a\u03c0. Wiedijk's list of 100 theorems (#90) refers to the factorial version; OQ-02 bridges the factorial Stirling formula to the Gamma function at integer points (\u0393(n+1) ~ \u221a(2\u03c0n)\u00b7(n/e)^n for n : \u2115), with the full continuous extension (\u0393(x+1) ~ \u221a(2\u03c0x)\u00b7(x/e)^x for x \u2192 \u221e real) stated as an open question.",
     "problemStatement": "Does Γ(x+1) ~ √(2πx)·(x/e)^x as x→∞? Prove the asymptotic equivalence and derive bounds for the Gamma function using Mathlib's Stirling.factorial_isEquivalent_stirling.",
     "text": "The key bridge is Γ(n+1) = n! for natural numbers (Mathlib's Real.Gamma_nat_eq_factorial). Using this, the Stirling equivalence for factorials immediately gives the Stirling equivalence for Gamma at integer points. The bounds on Gamma follow from bounds on factorials. The half-integer formula Γ(1/2) = √π follows from the Beta function integral, and the general half-integer formula Γ(n+1/2) uses the Gamma recurrence.",
     "proofStrategy": "Direct application of Mathlib's Stirling library (Stirling.factorial_isEquivalent_stirling, Stirling.tendsto_stirlingSeq_sqrt_pi) via the Gamma-factorial bridge. Log-Gamma bounds follow from log monotonicity. The duplication formula is proved using the Beta function connection Real.Gamma_mul_Gamma_add_one.",
