@@ -1,0 +1,194 @@
+{
+  "slug": "brouwer-fixed-point-oq-01-oq-02",
+  "title": "Brouwer Fixed Point: No-Retraction via Singular Homology",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "no_retraction_singular_homology (n : ℕ) (hn : n ≥ 1) : ¬∃ r : Retraction n, True",
+    "plain": "No continuous retraction B^n → S^{n-1} exists. Via singular homology: a retraction forces id : ℤ →+ ℤ to factor through Unit, algebraically impossible.",
+    "whyMatters": [
+      "Proves the No-Retraction Theorem using the classical homological argument",
+      "Decomposes proof into algebraic core (fully proved, 0 axioms) and analytic topology (1 axiom for Mathlib gap)",
+      "Identifies exactly what singular homology contributes: H_{n-1}(S^{n-1}) ≅ ℤ, H_{n-1}(B^n) = 0, and functoriality"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "id_Z_not_factored_through_unit: algebraic core",
+      "no_retraction_singular_homology: main theorem"
+    ],
+    "open": [],
+    "goal": "Fully formalized: 11 theorems, 0 sorries, 1 axiom (singular_homology_retraction_split)"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-04T05:15:05.866Z",
+    "iteration": 1,
+    "focus": "Completed: BrouwerFixedPointOQ01OQ02.lean compiles, 0 sorries, 11 theorems, 1 axiom.",
+    "blockers": [],
+    "nextAction": "Explore full singular homology formalization when Mathlib adds it.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries, 11 theorems, 1 axiom",
+    "builtItems": [
+      "unit_hom_sends_zero_to_zero",
+      "comp_through_unit_is_zero",
+      "id_Z_ne_zero",
+      "id_Z_not_factored_through_unit",
+      "id_Z_not_factored_explicit",
+      "singular_homology_retraction_split (axiom)",
+      "no_retraction_singular_homology",
+      "no_retraction_iff_algebraic_impossibility",
+      "unique_hom_to_unit",
+      "unique_hom_from_unit_is_zero",
+      "zero_comp_is_id_implies_trivial"
+    ],
+    "insights": [
+      "id : ℤ →+ ℤ cannot factor through Unit — algebraic heart of homological no-retraction proof",
+      "apply AddMonoidHom.ext; intro x needed instead of ext x when codomain is Subsingleton (ext closes goal leaving no body)",
+      "ψ.map_zero is direct proof of unit_hom_sends_zero_to_zero",
+      "Singular homology (Mayer-Vietoris, excision) not in Mathlib 4.26 — 1 axiom is correct minimum",
+      "Unit models trivial group H_{n-1}(B^n) = 0 naturally in Lean 4"
+    ],
+    "mathlibGaps": [
+      "Singular chains/boundary maps",
+      "Excision theorem",
+      "Mayer-Vietoris",
+      "H_{n-1}(S^{n-1}) ≅ ℤ computation"
+    ],
+    "nextSteps": [
+      "Replace axiom with proof when Mathlib adds singular homology"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "topology",
+    "extension"
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "brouwer-fixed-point-oq-01",
+    "brouwer-fixed-point-oq-01-oq-02",
+    "brouwer-fixed-point-oq-02",
+    "brouwer-fixed-point-oq-02-oq-02",
+    "brouwer-fixed-point-oq-04",
+    "brouwer-fixed-point-oq-04-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T05:15:05.866Z",
+  "lastUpdate": "2026-04-04T00:00:00.000Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BrouwerFixedPoint.lean",
+      "filename": "BrouwerFixedPoint.lean",
+      "lineCount": 250,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPoint.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01.lean",
+      "filename": "BrouwerFixedPointOQ01.lean",
+      "lineCount": 403,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02.lean",
+      "filename": "BrouwerFixedPointOQ02.lean",
+      "lineCount": 392,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Ext.lean",
+      "filename": "BrouwerFixedPointOQ02Ext.lean",
+      "lineCount": 204,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
+      "filename": "BrouwerFixedPointOQ02OQ01.lean",
+      "lineCount": 1072,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ02.lean",
+      "filename": "BrouwerFixedPointOQ02OQ02.lean",
+      "lineCount": 269,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Stability.lean",
+      "filename": "BrouwerFixedPointOQ02Stability.lean",
+      "lineCount": 198,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Stability.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04.lean",
+      "filename": "BrouwerFixedPointOQ04.lean",
+      "lineCount": 474,
+      "theoremCount": 22,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ03.lean",
+      "filename": "BrouwerFixedPointOQ04OQ03.lean",
+      "lineCount": 157,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ03.lean"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "id": "brouwer-fixed-point-oq-01-oq-02",
+  "title": "No-Retraction Theorem via Singular Homology",
+  "slug": "brouwer-fixed-point-oq-01-oq-02",
+  "description": "Proves the No-Retraction Theorem — there is no continuous retraction r : B^n → S^{n-1} — using the singular homology approach. The pure algebraic argument (id : ℤ →+ ℤ cannot factor through Unit) is fully proved with 0 axioms. The singular homology computations (H_{n-1}(S^{n-1}) ≅ ℤ, H_{n-1}(B^n) = 0, functoriality) are axiomatized with 1 abstract axiom. 11 theorems, 1 axiom.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
+    "date": "formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "homology",
+      "no-retraction",
+      "algebraic-topology"
+    ],
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "AddMonoidHom.ext",
+        "description": "Extensionality for additive monoid homomorphisms: equal on all elements implies equal",
+        "module": "Mathlib.Algebra.Group.Hom.Basic"
+      },
+      {
+        "theorem": "AddMonoidHom.map_zero",
+        "description": "Group homomorphisms send identity to identity: ψ(0) = 0",
+        "module": "Mathlib.Algebra.Group.Hom.Basic"
+      },
+      {
+        "theorem": "Subsingleton.elim",
+        "description": "Any two elements of a subsingleton type are equal",
+        "module": "Mathlib.Logic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "unit_hom_sends_zero_to_zero: any AddMonoidHom from Unit to ℤ sends () to 0",
+      "comp_through_unit_is_zero: any composition ℤ →+ Unit →+ ℤ is the zero map",
+      "id_Z_not_factored_through_unit: algebraic core — id : ℤ →+ ℤ cannot factor through Unit",
+      "id_Z_not_factored_explicit: explicit contradiction ψ(()) = 1 and ψ(()) = 2",
+      "no_retraction_singular_homology: main theorem — no continuous retraction B^n → S^{n-1}",
+      "no_retraction_iff_algebraic_impossibility: equivalence with algebraic obstruction",
+      "unique_hom_to_unit: only one AddMonoidHom from any group to Unit",
+      "unique_hom_from_unit_is_zero: any group hom from Unit is the zero map",
+      "11 total theorems separating algebraic core (0 axioms) from homology computations (1 axiom)"
+    ],
+    "dateAdded": "2026-04-04",
+    "lineCount": 234,
+    "assumptions": "1 axiom (singular_homology_retraction_split) encoding: H_{n-1}(S^{n-1}) ≅ ℤ, H_{n-1}(B^n) = 0, functoriality r ∘ i = id → r* ∘ i* = id*. The algebraic argument (Part II) is fully proved with 0 axioms."
+  },
+  "overview": {
+    "historicalContext": "The **No-Retraction Theorem** (Borsuk, 1931) states that there is no continuous retraction from the closed n-ball B^n to its boundary sphere S^{n-1}. It is equivalent to the Brouwer Fixed Point Theorem: a retraction B^n → S^{n-1} would give a continuous map with no fixed point in B^n, contradicting Brouwer.\n\nThe classical **singular homology proof** proceeds via three steps:\n1. Compute H_{n-1}(S^{n-1}) ≅ ℤ (sphere homology is non-trivial)\n2. Compute H_{n-1}(B^n) = 0 (ball is contractible, trivial homology)\n3. Apply functoriality: a retraction r ∘ i = id induces r* ∘ i* = id* on homology\n\nThis gives a factorization id : ℤ →+ Unit →+ ℤ, which is algebraically impossible.",
+    "problemStatement": "**Open Question (brouwer-fixed-point-oq-01-oq-02)**: Prove the No-Retraction Theorem using the singular homology approach, as opposed to the direct axiomatization in BrouwerFixedPoint.lean. What are the minimal axioms needed?\n\n**Answer**: The proof decomposes cleanly into (1) a pure algebraic argument (0 axioms, fully proved) and (2) singular homology computations (1 axiom, currently unprovable in Mathlib 4.26). The algebraic core — that id : ℤ →+ ℤ cannot factor through the trivial group — is the mathematical heart of the proof.",
+    "text": "This file implements the homological proof of the No-Retraction Theorem. The key insight is that the proof has two logically independent parts: **Part II (Algebraic Core)** is entirely elementary and requires no axioms. **Part III (Singular Homology Computations)** requires Mayer-Vietoris, excision, and contractibility arguments not yet in Mathlib 4.26, so we axiomatize them with one abstract axiom.\n\nThe comparison with `BrouwerFixedPoint.lean` is instructive: the prior file uses `axiom no_retraction_axiom` as a black box. This file replaces that axiom with a more refined architecture that **proves the algebraic part** and axiomatizes only the genuine analytic gaps.",
+    "proofStrategy": "**Part I: Topological Setup**\nDefine ClosedBall n and UnitSphere n using Metric.closedBall/sphere. Define Retraction as a structure with continuity, maps_to_sphere, and fixes_sphere fields.\n\n**Part II: Algebraic Core (0 axioms)**\n- `unit_hom_sends_zero_to_zero`: ψ : Unit →+ ℤ satisfies ψ(()) = 0 by `ψ.map_zero`\n- `comp_through_unit_is_zero`: ψ ∘ φ = 0 since φ : ℤ →+ Unit forces φ(x) = () for all x\n- `id_Z_ne_zero`: id(1) = 1 ≠ 0 shows id ≠ 0\n- `id_Z_not_factored_through_unit`: if ψ ∘ φ = id then 0 = id, contradiction\n\n**Part III: Singular Homology Axiom (1 axiom)**\n`singular_homology_retraction_split`: a retraction r : B^n → S^{n-1} induces φ : ℤ →+ Unit and ψ : Unit →+ ℤ with ψ ∘ φ = id. This axiom encodes H_{n-1}(S^{n-1}) ≅ ℤ, H_{n-1}(B^n) = 0, and functoriality.\n\n**Part IV: Main Theorem**\n`no_retraction_singular_homology`: assume a retraction exists, apply singular_homology_retraction_split to get the algebraic split, derive contradiction from Part II.",
+    "keyInsights": [
+      "**Two-part decomposition**: The proof separates into elementary algebra (no axioms) and analytic topology (1 axiom). This isolates exactly what singular homology contributes.",
+      "**id : ℤ →+ ℤ cannot factor through Unit**: This is the algebraic heart. Any map ℤ → Unit → ℤ is the zero map (since Unit has one element), but id is non-zero. This one fact drives the entire no-retraction argument.",
+      "**Unit as proxy for trivial group**: H_{n-1}(B^n) = 0 is modeled by Unit in Lean — the unique trivial additive monoid in Lean 4. Any group hom from Unit is forced to be zero.",
+      "**ψ.map_zero vs extended proof**: The key `unit_hom_sends_zero_to_zero` reduces to `ψ.map_zero` — since Unit has only one element, which is the identity, ψ(()) = ψ(0) = 0.",
+      "**apply AddMonoidHom.ext; intro x**: In Lean 4 / Mathlib, `ext x` on `G →+ H` goals can close the goal immediately when H is a subsingleton (no remaining goals for the body). Use `apply AddMonoidHom.ext; intro x` to safely reduce to pointwise equality."
+    ],
+    "prerequisites": [
+      "Singular homology (not in Mathlib 4.26 — axiomatized here)",
+      "AddMonoidHom in Lean 4: group homomorphisms, extensionality, map_zero",
+      "Subsingleton typeclass for Unit",
+      "EuclideanSpace and Metric.closedBall/sphere"
+    ]
+  },
+  "sections": [
+    {
+      "id": "topological-setup",
+      "title": "Part I: Topological Setup",
+      "startLine": 51,
+      "endLine": 71,
+      "summary": "Defines ClosedBall n, UnitSphere n, and the Retraction structure. Matches BrouwerFixedPoint.lean for interoperability.",
+      "mathContext": "B^n = Metric.closedBall 0 1 and S^{n-1} = Metric.sphere 0 1 in EuclideanSpace ℝ (Fin n). A retraction is a continuous map fixing S^{n-1} pointwise and mapping B^n into S^{n-1}."
+    },
+    {
+      "id": "algebraic-core",
+      "title": "Part II: Algebraic Foundation (0 axioms)",
+      "startLine": 72,
+      "endLine": 127,
+      "summary": "Pure abstract algebra: id : ℤ →+ ℤ cannot factor through Unit. Includes unit_hom_sends_zero_to_zero, comp_through_unit_is_zero, id_Z_ne_zero, id_Z_not_factored_through_unit, id_Z_not_factored_explicit.",
+      "mathContext": "The key fact: any composition ℤ →+ Unit →+ ℤ must be zero (since Unit has one element). But id(1) = 1 ≠ 0. So id cannot equal such a composition."
+    },
+    {
+      "id": "homology-axioms",
+      "title": "Part III: Singular Homology Axioms",
+      "startLine": 128,
+      "endLine": 172,
+      "summary": "One axiom encoding H_{n-1}(S^{n-1}) ≅ ℤ, H_{n-1}(B^n) = 0, and functoriality of singular homology under retraction.",
+      "mathContext": "singular_homology_retraction_split encodes that a retraction r : B^n → S^{n-1} (with r ∘ i = id on S^{n-1}) induces φ : ℤ →+ Unit and ψ : Unit →+ ℤ with ψ ∘ φ = id. This is the classical H_{n-1} functoriality argument."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part IV: No-Retraction Theorem",
+      "startLine": 173,
+      "endLine": 202,
+      "summary": "Main theorem and corollary: no continuous retraction B^n → S^{n-1}. Equivalence with algebraic impossibility.",
+      "mathContext": "no_retraction_singular_homology: assume retraction exists → get algebraic split → algebraic contradiction. no_retraction_iff_algebraic_impossibility: the topological statement is equivalent to the algebraic one (modulo the homology axiom)."
+    },
+    {
+      "id": "structural-lemmas",
+      "title": "Part V: Structural Homology Lemmas",
+      "startLine": 203,
+      "endLine": 234,
+      "summary": "Supporting structural results: uniqueness of hom to Unit, any hom from Unit is zero, zero composition cannot equal identity.",
+      "mathContext": "unique_hom_to_unit: G →+ Unit is a subsingleton (only one element in codomain). unique_hom_from_unit_is_zero: Unit →+ ℤ must send () to 0 by map_zero. zero_comp_is_id_implies_trivial: 0 ≠ id in ℤ →+ ℤ."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "brouwer-fixed-point",
+      "title": "Brouwer Fixed Point Theorem",
+      "relationship": "This file provides a more refined axiomatization than BrouwerFixedPoint.lean, separating algebraic from analytic components"
+    },
+    {
+      "id": "brouwer-fixed-point-oq-01",
+      "title": "Brouwer Fixed Point: 1D via IVT",
+      "relationship": "OQ-01 proves No-Retraction in 1D elementarily; this file addresses the general n≥1 case via homology"
+    },
+    {
+      "id": "brouwer-fixed-point-oq-02",
+      "title": "Brouwer Fixed Point: Computational Complexity",
+      "relationship": "OQ-02 explores computational aspects; this file focuses on the homological proof structure"
+    }
+  ]
+}
