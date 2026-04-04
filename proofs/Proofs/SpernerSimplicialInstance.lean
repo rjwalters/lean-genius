@@ -430,7 +430,23 @@ noncomputable def AbstractSimplicialData.toTriangulation
         none
   adj_symm := by intro _ _ _ _ _; sorry
   adj_vertex := by intro _ _ _ _ _; sorry
-  adj_ne := by intro _ _ _ _ _; sorry
+  adj_ne := by
+    intro ⟨s, hs⟩ k ⟨s', hs'⟩ k' hadj
+    simp only at hadj
+    split_ifs at hadj with hc ht_exists
+    -- Case: adj returned some -- ht_exists gives t ∈ cs.erase s
+    · have ht_mem_erase := ht_exists.choose_spec
+      have ht_ne_s : ht_exists.choose ≠ s := (Finset.mem_erase.mp ht_mem_erase).1
+      -- Extract: ht_exists.choose = s' from the injection chain
+      have h_pair := Option.some.inj hadj
+      have h_fst := congr_arg Prod.fst h_pair
+      -- h_fst : ⟨ht_exists.choose, _⟩ = ⟨s', hs'⟩
+      have h_val : ht_exists.choose = s' := congr_arg Subtype.val h_fst
+      intro heq
+      have hs_eq : s = s' := congr_arg Subtype.val heq
+      exact ht_ne_s (h_val ▸ hs_eq |>.symm)
+    -- The none cases are closed automatically by split_ifs
+    -- (none = some (...) is contradictory)
 
 /-! ## Example: 1-Dimensional Interval Triangulation
 
