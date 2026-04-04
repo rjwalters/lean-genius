@@ -25,8 +25,11 @@ So almost all large primes satisfy the property.
 11. `three_not_qualifying`: p = 3 is prime but does not satisfy AllFactorialSubtractionsComposite
 12. `qualifyingPrimeCount_lt_primeCount`: C(x) < π(x) for all x ≥ 3 (density < 1 always)
 13. `density_strictly_between`: 0 < C(x) < π(x) for all x ≥ 101
+14. `qualifyingPrimes_infinite`: {p | AFSC(p)} is infinite — from Selberg density axiom (OQ-02)
+15. `qualifyingPrimeCount_ge`: C((N+3)!) ≥ N for all N — Selberg lower bound
 
 **Axiom** (1): `density_one_conjecture` — density equals 1
+(Items 14–15 additionally depend on `Erdos1059OQ02.selberg_density_axiom`)
 
 References:
 - Erdős, P. https://erdosproblems.com/1059
@@ -40,7 +43,9 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Nat.Log
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
+import Proofs.Erdos1059OQ02
 
 namespace Erdos1059OQ01
 
@@ -412,6 +417,102 @@ theorem density_strictly_between {x : ℕ} (hx : x ≥ 101) :
   ⟨qualifyingPrimeCount_pos hx, qualifyingPrimeCount_lt_primeCount (by omega)⟩
 
 /-
+## Cross-Problem Synthesis: Qualifying Primes Are Infinite
+
+OQ-02 proves (via `selberg_implies_erdos`) that the set of qualifying primes is infinite,
+using the Selberg density axiom. We import that result here. The two files use identical
+definitions of AllFactorialSubtractionsComposite (same body, different namespaces),
+so the transfer is definitional.
+
+This gives a formal lower bound: C((N+3)!) ≥ N for all N. The proof constructs one
+qualifying prime per factorial level ≥ 3 (from `selberg_density_axiom`), uses disjointness
+of primorial intervals to ensure distinctness, and bounds all primes by (N+3)!.
+
+Note: `qualifyingPrimes_infinite` and `qualifyingPrimeCount_ge` depend on
+`Erdos1059OQ02.selberg_density_axiom`, which is an axiom in OQ-02 (not in this file).
+-/
+
+/-- **Qualifying Primes Are Infinite** (conditional on Selberg density axiom):
+    The set of primes satisfying AllFactorialSubtractionsComposite is infinite.
+
+    Proof: Import `selberg_implies_erdos` from OQ-02 via definitional equality of AFSC.
+    This is weaker than `density_one_conjecture` (density = 1): infinite-many primes
+    qualify, but the limiting ratio is not determined here. -/
+theorem qualifyingPrimes_infinite :
+    Set.Infinite {p : ℕ | p.Prime ∧ AllFactorialSubtractionsComposite p} := by
+  have h := Erdos1059OQ02.selberg_implies_erdos
+  -- Unfold ErdosProblem1059; the two AFSC defs are definitionally equal (same body)
+  unfold Erdos1059OQ02.ErdosProblem1059 at h
+  exact h
+
+/-- Canonical qualifying prime at level l (for l ≥ 3), chosen via Classical.choice
+    from the Selberg density axiom. -/
+private noncomputable def levelCandidate (l : ℕ) : ℕ :=
+  if h : l ≥ 3 then Classical.choose (Erdos1059OQ02.selberg_density_axiom l h) else 0
+
+private lemma levelCandidate_spec (l : ℕ) (hl : l ≥ 3) :
+    levelCandidate l ∈ Erdos1059OQ02.PrimorialInterval l ∧
+    (levelCandidate l).Prime ∧
+    AllFactorialSubtractionsComposite (levelCandidate l) := by
+  have heq : levelCandidate l = Classical.choose (Erdos1059OQ02.selberg_density_axiom l hl) := by
+    simp only [levelCandidate, dif_pos hl]
+  obtain ⟨hmem, hprime, hcomp⟩ := Classical.choose_spec (Erdos1059OQ02.selberg_density_axiom l hl)
+  rw [heq]
+  refine ⟨hmem, hprime, ?_⟩
+  -- Both AFSC definitions have the same body; Lean uses definitional equality
+  exact hcomp
+
+/-- `levelCandidate l` lies in the l-th primorial interval, so it is ≤ (l+1)!. -/
+private lemma levelCandidate_le (l : ℕ) (hl : l ≥ 3) :
+    levelCandidate l ≤ Nat.factorial (l + 1) := by
+  obtain ⟨hmem, _, _⟩ := levelCandidate_spec l hl
+  simp only [Erdos1059OQ02.PrimorialInterval, Finset.mem_Ioc] at hmem
+  exact hmem.2
+
+/-- Qualifying primes at different levels are distinct (primorial intervals are disjoint). -/
+private lemma levelCandidate_injective {l l' : ℕ} (hl : l ≥ 3) (hl' : l' ≥ 3)
+    (heq : levelCandidate l = levelCandidate l') : l = l' := by
+  by_contra hne
+  obtain ⟨hmem, _, _⟩ := levelCandidate_spec l hl
+  obtain ⟨hmem', _, _⟩ := levelCandidate_spec l' hl'
+  rw [heq] at hmem
+  exact (Finset.disjoint_left.mp (Erdos1059OQ02.primorial_intervals_disjoint hne)) hmem hmem'
+
+/-- **Selberg Lower Bound**: For any N, C((N+3)!) ≥ N.
+
+    This gives a formal quantitative lower bound on the qualifying prime count.
+    Proof: For l ∈ {3, ..., N+2}, `selberg_density_axiom` gives a qualifying prime
+    p_l ∈ I(l) ⊆ (0, (N+3)!]. The N primes are distinct (intervals disjoint)
+    and all counted by C((N+3)!). -/
+theorem qualifyingPrimeCount_ge (N : ℕ) :
+    qualifyingPrimeCount (Nat.factorial (N + 3)) ≥ N := by
+  -- S = image of levels {3, ..., N+2} under levelCandidate
+  let S := (Finset.Ico 3 (N + 3)).image levelCandidate
+  -- S ⊆ qualifying primes up to (N+3)!
+  have hS_sub : S ⊆ (Finset.range (Nat.factorial (N + 3) + 1)).filter
+      (fun n => n.Prime ∧ AllFactorialSubtractionsComposite n) := by
+    intro p hp
+    simp only [S, Finset.mem_image, Finset.mem_Ico] at hp
+    obtain ⟨l, ⟨hl3, hlN⟩, rfl⟩ := hp
+    simp only [Finset.mem_filter, Finset.mem_range]
+    obtain ⟨_, hprime, hcomp⟩ := levelCandidate_spec l (by omega)
+    exact ⟨Nat.lt_succ_of_le (le_trans (levelCandidate_le l (by omega))
+                               (Nat.factorial_le (by omega))), hprime, hcomp⟩
+  -- S.card = N (by injectivity of levelCandidate on levels ≥ 3)
+  have hS_card : S.card = N := by
+    rw [Finset.card_image_of_injOn]
+    · have h := Nat.card_Ico 3 (N + 3)
+      omega
+    · intro l hl l' hl' heq
+      simp only [Finset.coe_Ico, Set.mem_Ico] at hl hl'
+      exact levelCandidate_injective (by omega) (by omega) heq
+  -- Conclude: N = S.card ≤ qualifyingPrimeCount
+  calc N = S.card := hS_card.symm
+    _ ≤ qualifyingPrimeCount (Nat.factorial (N + 3)) := by
+        unfold qualifyingPrimeCount
+        exact Finset.card_le_card hS_sub
+
+/-
 ## Summary
 
 This file provides four new computational witnesses for Erdős Problem #1059,
@@ -440,6 +541,15 @@ Key mathematical contributions:
 
 5. `density_strictly_between`: 0 < C(x) < π(x) for all x ≥ 101.
    Combined with density_one_conjecture, this shows: density starts below 1 and → 1.
+
+6. `qualifyingPrimes_infinite`: The set {p | AFSC(p)} is infinite.
+   Imports `selberg_implies_erdos` from OQ-02 via definitional equality of AFSC.
+   This is weaker than density_one_conjecture but follows from the Selberg axiom alone.
+
+7. `qualifyingPrimeCount_ge`: C((N+3)!) ≥ N for all N ∈ ℕ.
+   A formal quantitative lower bound: the qualifying prime count at (N+3)! is at least N.
+   Proof: levelCandidate picks one qualifying prime per level l ∈ {3..N+2}; these are
+   distinct (primorial intervals disjoint) and all ≤ (N+3)!.
 
 Key counts at the six witnesses:
   p = 101: 5 checks (level 4: 4! < 101 ≤ 5! = 120)
