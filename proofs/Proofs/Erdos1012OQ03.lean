@@ -390,11 +390,37 @@ PART V: EDGE THRESHOLD
 noncomputable def Digraph.arcCount (D : Digraph V) : ℕ :=
   (Finset.univ.filter (fun p : V × V => D.arc p.1 p.2)).card
 
+/-! ── V.A: Arc Counting Infrastructure ──────────────────────────────────── -/
+
+-- Arithmetic lemma: arcCount > (n-1)² implies ≤ n-2 arcs are missing
+-- from the complete digraph K*_n (which has n*(n-1) arcs).
+-- Proof: n*(n-1) - arcCount ≤ n*(n-1) - (n-1)² - 1 = (n-1) - 1 = n-2.
+-- (ℕ subtraction truncates to 0 if arcCount > n*(n-1), so 0 ≤ n-2 holds trivially.)
+private lemma missing_arcs_le (n m : ℕ) (hn : 3 ≤ n) (harc : (n - 1) ^ 2 < m) :
+    n * (n - 1) - m ≤ n - 2 := by
+  set k := n - 1 with hk_def
+  have hkn : k + 1 = n := by omega
+  have hnn1 : n * k = k ^ 2 + k := by rw [show n = k + 1 from hkn.symm]; ring
+  rw [hnn1]
+  set a := k ^ 2
+  omega
+
+-- Counting argument: with ≤ n-2 arcs missing from K*_n, a Hamiltonian
+-- cycle avoiding all missing arcs exists.
+-- Strategy: (n-1)! cyclic permutations; each missing arc blocks ≤ (n-2)!
+-- of them; total blocked ≤ (n-2)*(n-2)! < (n-1)! since n-2 < n-1. □
+private lemma hamiltonian_of_few_missing_arcs (D : Digraph V)
+    (hn : 3 ≤ Fintype.card V)
+    (hmissing : Fintype.card V * (Fintype.card V - 1) - D.arcCount ≤ Fintype.card V - 2) :
+    D.HasHamiltonianCycle := by
+  sorry
+
 theorem directed_hamiltonian_threshold (D : Digraph V) (hn : 3 ≤ Fintype.card V)
     (hsc : D.IsStronglyConnected)
     (harc : (Fintype.card V - 1) ^ 2 < D.arcCount) :
-    D.HasHamiltonianCycle := by
-  sorry
+    D.HasHamiltonianCycle :=
+  hamiltonian_of_few_missing_arcs D hn
+    (missing_arcs_le (Fintype.card V) D.arcCount hn harc)
 
 #check @ghouila_houri
 #check @moon_moser
