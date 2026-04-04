@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Fon-Der-Flaass, Kostochka, Tuza",
     "sourceUrl": "https://erdosproblems.com/644",
     "date": "1992",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos644Problem.lean",
     "tags": [
       "erdos",
@@ -19,7 +19,7 @@
       "open"
     ],
     "badge": "wip",
-    "sorries": 0,
+    "sorries": 18,
     "erdosNumber": 644,
     "erdosUrl": "https://erdosproblems.com/644",
     "erdosProblemStatus": "open",
@@ -64,9 +64,9 @@
       "Monotonicity: f non-increasing in r, non-decreasing in k",
       "Sunflower connection: relationship to Erdős-Rado sunflower lemma"
     ],
-    "axiomCount": 0,
+    "axiomCount": 3,
     "lineCount": 0,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "assumptions": "3 axiom(s) and 18 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

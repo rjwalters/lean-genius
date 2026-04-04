@@ -7,7 +7,7 @@
     "author": "Montgomery-Vaughan (1986 resolution)",
     "sourceUrl": "https://erdosproblems.com/220",
     "date": "1986",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos220Problem.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "wip",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 220,
     "erdosUrl": "https://erdosproblems.com/220",
     "erdosProblemStatus": "solved",
@@ -58,9 +58,9 @@
       "montgomery_vaughan_general axiom: generalization",
       "jacobsthal n: maximum gap function"
     ],
-    "axiomCount": 0,
+    "axiomCount": 4,
     "lineCount": 0,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"axiomatized\"."
+    "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #220**\n\nThis problem concerns the gaps between consecutive reduced residues modulo n. The reduced residues are integers 1 ≤ m < n with gcd(m,n) = 1, and there are φ(n) of them.\n\n**Background:**\n- Average gap is n/φ(n)\n- Large gaps can occur (related to Jacobsthal's function)\n- Erdős asked if squared gaps sum to O(n²/φ(n))\n\n**History:**\n- Erdős posed the problem; $500 prize\n- The general γ ≥ 1 version was posed in [Er73]\n- Montgomery and Vaughan proved it in 1986 (Ann. of Math.)\n- Discussed in Guy's \"Unsolved Problems in Number Theory\" (B40)\n\n**Context:** The bound n²/φ(n) is what you'd get if all gaps were equal to the average. The theorem says even with gap variance, the squared sum doesn't exceed this by more than a constant factor.",
