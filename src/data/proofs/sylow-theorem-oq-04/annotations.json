@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-sylow-oq04-header",
+    "line": 1,
+    "endLine": 31,
+    "type": "context",
+    "title": "A₅ Simplicity: Two Proof Strategies and Historical Significance",
+    "body": "This module proves simplicity of A₅ (order 60 = 2²·3·5) using two independent strategies: **Sylow counting** (showing n₂=5, n₃=10, n₅=6, all > 1, so no Sylow subgroup is normal) and **conjugacy class analysis** (showing no union of conjugacy class sizes {1,12,12,15,20} sums to a proper divisor of 60 other than 1). The module also derives the group-theoretically fundamental corollary that A₅ is not solvable — the algebraic core of the Abel-Ruffini theorem. References cite Sylow's 1872 paper, Rotman's graduate text, and Dummit & Foote's standard reference.",
+    "mathContext": "A₅ ≅ PSL(2,5) ≅ I (the icosahedral rotation group). It is the smallest non-abelian simple group: all groups of order < 60 are solvable, while A₅ is not. This makes A₅ the critical obstruction in the composition series of any non-solvable group — by the Jordan-Hölder theorem, A₅ appears as a composition factor of any finite group with a non-solvable quotient.",
+    "significance": "The simplicity of A₅ is the single most important fact connecting group theory to classical algebra: it is why the quintic is unsolvable, why A₅ (equivalently, the icosahedron) has no 'algebraic formula' for its symmetries, and why Galois theory is more than just computational tool.",
+    "relatedConcepts": ["alternating-group", "simple-group", "galois-theory", "abel-ruffini-theorem", "PSL(2,5)"],
+    "prerequisites": ["Sylow's theorems", "conjugacy classes and the class equation", "solvable groups"]
+  },
+  {
+    "id": "ann-sylow-oq04-exact-numbers",
+    "line": 99,
+    "endLine": 124,
+    "type": "proof",
+    "title": "Exact Sylow Numbers n₂=5, n₃=10, n₅=6 via native_decide",
+    "body": "Three `native_decide` theorems compute the exact Sylow numbers for A₅ by exhaustive enumeration over all 60 elements:\n- `n2_eq`: n₂ = 5 — the five Sylow 2-subgroups are the five Klein 4-groups V₄ ≅ {e, (12)(34), (13)(24), (14)(23)} and its four conjugates\n- `n3_eq`: n₃ = 10 — the ten Sylow 3-subgroups are the cyclic groups ⟨(ijk)⟩ for all C(5,3)=10 choices of {i,j,k}\n- `n5_eq`: n₅ = 6 — the six Sylow 5-subgroups are ⟨(12345)⟩ and its five conjugates\n\nThe theorem `all_sylow_numbers_gt_one` packages these into a single conjunction using omega after substituting the exact values.",
+    "mathContext": "These values are consistent with the Sylow III constraints computed in Part III: n₂ | 15 and n₂ ≡ 1 (mod 2) gives n₂ ∈ {1,3,5,15}; the exact value 5 is selected. n₃ | 20 and n₃ ≡ 1 (mod 3) gives n₃ ∈ {1,4,10}; the exact value 10 is selected. n₅ | 12 and n₅ ≡ 1 (mod 5) gives n₅ ∈ {1,6}; the exact value 6 is selected. Since all n_p ≠ 1, no Sylow subgroup is normal.",
+    "significance": "The use of `native_decide` for group-theoretic computations on a 60-element group is a compelling demonstration of verified computation: the kernel checks the enumeration rather than the user. This is more reliable than human-checked case analysis.",
+    "relatedConcepts": ["Klein-four-group", "Sylow-III-constraints", "native_decide", "exhaustive-verification"],
+    "prerequisites": ["card_sylow_modEq_one and card_sylow_dvd_index from SylowTheorem", "Fintype.card for Sylow p G"]
+  },
+  {
+    "id": "ann-sylow-oq04-nonnormal-pattern",
+    "line": 133,
+    "endLine": 153,
+    "type": "proof",
+    "title": "Non-Normality Pattern: Sylow.unique_of_normal → Contradiction with Exact Count",
+    "body": "The three non-normality theorems (`sylow2_not_normal`, `sylow3_not_normal`, `sylow5_not_normal`) all use the same pattern:\n\n1. Assume for contradiction that some P : Sylow p A5 is normal\n2. Apply `Sylow.unique_of_normal P hPN` to get `Subsingleton (Sylow p A5)` as a typeclass instance\n3. `Fintype.card_unique` then gives `Fintype.card (Sylow p A5) = 1`\n4. Rewrite with the exact count (n2_eq: 5, n3_eq: 10, n5_eq: 6) and derive `False` by omega\n\nThis two-step `haveI`/`have`/`rw`/`omega` pattern is a reusable idiom for ruling out normal Sylow subgroups whenever the exact count n_p > 1 is known.",
+    "mathContext": "The key lemma `Sylow.unique_of_normal` encodes the theorem: a Sylow p-subgroup P is normal in G if and only if it is the unique Sylow p-subgroup (i.e., all Sylow p-subgroups are conjugate, and normality means conjugation fixes P). `Subsingleton (Sylow p G)` is Lean's way of saying 'at most one Sylow p-subgroup', from which `Fintype.card_unique` gives card = 1.",
+    "significance": "This pattern generalizes beyond A₅: for any finite group G where an exact Sylow count n_p > 1 is known, the same three-line proof shows the Sylow p-subgroup is not normal. It is a fundamental technique in finite group theory proofs.",
+    "relatedConcepts": ["Sylow.unique_of_normal", "Subsingleton", "Fintype.card_unique", "normality-characterization"],
+    "prerequisites": ["n2_eq/n3_eq/n5_eq exact values", "Sylow.unique_of_normal from Mathlib.GroupTheory.Sylow"]
+  },
+  {
+    "id": "ann-sylow-oq04-conjugacy",
+    "line": 182,
+    "endLine": 191,
+    "type": "proof",
+    "title": "Conjugacy Class Decision Procedure: No Valid Intermediate Order",
+    "body": "The theorem `no_intermediate_conjugacy_sum` encodes the conjugacy class argument as a universal Boolean statement. A₅ has five conjugacy classes of sizes {1, 12, 12, 15, 20} (two distinct 12-element classes: the 5-cycles (12345) and (13245)). A normal subgroup must be a union of full conjugacy classes containing the identity, so its order equals 1 plus some subset sum of {12, 12, 15, 20}.\n\nThe theorem: for all Boolean flags (a,b,c,d), the sum s = 1 + 12a + 12b + 15c + 20d divides 60 implies s = 1 or s = 60. Proved by `decide` — Lean's kernel evaluates all 2⁴ = 16 cases.\n\nThe enumerated sums (from the code comment) verify: no proper intermediate divisor exists, since every possible sum ∈ {13, 13, 16, 21, 25, 28, 28, 33, 33, 36, 40, 45, 48, 48} fails to divide 60.",
+    "mathContext": "The class equation for A₅: 60 = 1 + 12 + 12 + 15 + 20. The five conjugacy classes correspond to: identity (1), 3-cycles (20 = C(5,3)·2), products of two 2-cycles (15 = C(5,2)·C(3,2)/2), and two classes of 5-cycles (12 each). The two 12-element classes are distinguished by whether the 5-cycle is an even or odd power of a generator.",
+    "significance": "The `decide` tactic proves a finitely enumerable universal statement by kernel reduction, providing a completely verified exhaustive check. This is particularly elegant for the conjugacy class argument, which in pen-and-paper proofs requires checking 15 cases by hand.",
+    "relatedConcepts": ["conjugacy-class", "class-equation", "normal-subgroup-union-of-classes", "decide-tactic"],
+    "prerequisites": ["Conjugacy class sizes of A₅: {1, 12, 12, 15, 20}", "Normal subgroup criterion: closed under conjugation"]
+  },
+  {
+    "id": "ann-sylow-oq04-not-solvable",
+    "line": 217,
+    "endLine": 235,
+    "type": "proof",
+    "title": "A₅ Not Solvable: Short Exact Sequence Gives the Abel-Ruffini Connection",
+    "body": "The theorem `A5_not_solvable` derives non-solvability from simplicity using the short exact sequence A₅ →ⁱ S₅ →ˢⁱᵍⁿ ℤ/2:\n\n1. Assume for contradiction that A₅ is solvable\n2. Construct: if A₅ = ker(sign) is solvable and ℤ/2 is solvable, then S₅ is solvable by `solvable_of_ker_le_range` applied to the subtype embedding A₅ → S₅ and the sign map S₅ → ℤ/2 (with membership condition checked via `Equiv.Perm.mem_alternatingGroup`)\n3. But `Equiv.Perm.not_solvable (Fin 5) (by simp)` proves S₅ is not solvable for n ≥ 5\n4. Contradiction.\n\nThe companion theorem `A5_normal_subgroups` derives that the only normal subgroups of A₅ are ⊥ (trivial) and ⊤ (whole group) via `IsSimpleGroup.eq_bot_or_eq_top_of_normal`.",
+    "mathContext": "Solvability is closed under extensions: if 1 → N → G → G/N → 1 is exact and both N and G/N are solvable, then G is solvable. Here N = A₅ (solvable by assumption), G = S₅, G/N = ℤ/2 (solvable since abelian). The lemma `solvable_of_ker_le_range` provides this extension in Mathlib. Contrapositive: S₅ is known to be not solvable (for n ≥ 5), so A₅ cannot be solvable. This is the group-theoretic content of Abel-Ruffini: the Galois group of a general quintic is S₅, which contains A₅ as an unsolvable composition factor.",
+    "significance": "This formally verifies the algebraic core of one of mathematics' most celebrated theorems. While a full formal proof of Abel-Ruffini would need to connect polynomial Galois groups to abstract group theory, this result provides the essential group-theoretic ingredient.",
+    "relatedConcepts": ["solvable-group", "short-exact-sequence", "abel-ruffini-theorem", "Equiv.Perm.not_solvable", "galois-theory"],
+    "prerequisites": ["A5_isSimple", "solvable_of_ker_le_range from Mathlib", "Equiv.Perm.not_solvable"]
+  }
+]
