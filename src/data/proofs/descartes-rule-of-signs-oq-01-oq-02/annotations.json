@@ -2,37 +2,115 @@
   {
     "id": "ann-parity-chain",
     "proofId": "descartes-rule-of-signs-oq-01-oq-02",
-    "range": { "startLine": 127, "endLine": 148 },
-    "type": "theorem",
+    "range": {
+      "startLine": 127,
+      "endLine": 148
+    },
+    "type": "insight",
     "title": "Parity Chain Theorem",
     "content": "Composes all three ingredients of the Descartes parity proof: (1) non-real roots pair up ($\\text{nonreal}$ even), (2) negative roots pair up ($\\text{neg}$ even), (3) sign variations relate to degree. Given all three, $\\text{sv} + \\text{pos}$ is even, which is the Descartes parity result.",
     "mathContext": "$\\text{sv} + \\text{pos}$ is even given: $\\text{sv} + \\text{deg}$ even, $\\text{deg} = \\text{pos} + \\text{neg} + \\text{nonreal}$, $\\text{neg}$ and $\\text{nonreal}$ even",
     "significance": "key",
-    "relatedConcepts": ["modular arithmetic", "parity composition", "proof architecture"],
-    "prerequisites": ["parity arithmetic", "root decomposition"]
+    "relatedConcepts": [
+      "modular arithmetic",
+      "parity composition",
+      "proof architecture"
+    ],
+    "prerequisites": [
+      "parity arithmetic",
+      "root decomposition"
+    ]
   },
   {
     "id": "ann-gap-analysis",
     "proofId": "descartes-rule-of-signs-oq-01-oq-02",
-    "range": { "startLine": 106, "endLine": 125 },
+    "range": {
+      "startLine": 119,
+      "endLine": 148
+    },
     "type": "insight",
     "title": "The Gap: Why Conjugate Pairing is Insufficient",
     "content": "Conjugate pairing gives degree $\\equiv$ real roots (mod 2), but Descartes parity needs sign variations $\\equiv$ positive roots (mod 2). These are different statements! The bridge requires knowing that sign variations $\\equiv$ degree (mod 2), which is a combinatorial fact about coefficient sign sequences, not a consequence of complex analysis.",
     "mathContext": "Need: $\\text{sv}(p) \\equiv |\\text{pos roots}| \\pmod{2}$, have: $\\deg(p) \\equiv |\\text{real roots}| \\pmod{2}$",
     "significance": "key",
-    "relatedConcepts": ["conjugate root theorem", "sign variation", "proof architecture"],
-    "prerequisites": ["complex conjugate pairing", "sign variation definition"]
+    "relatedConcepts": [
+      "conjugate root theorem",
+      "sign variation",
+      "proof architecture"
+    ],
+    "prerequisites": [
+      "complex conjugate pairing",
+      "sign variation definition"
+    ]
   },
   {
     "id": "ann-hard-axiom",
     "proofId": "descartes-rule-of-signs-oq-01-oq-02",
-    "range": { "startLine": 163, "endLine": 175 },
-    "type": "axiom",
+    "range": {
+      "startLine": 163,
+      "endLine": 175
+    },
+    "type": "insight",
     "title": "Sign Variation Parity Under Positive Root (Axiomatized)",
     "content": "The irreducible hard lemma: when $p = (x-r) \\cdot q$ with $r > 0$, the sign variations of $p$ and $q$ have different parity. This captures the combinatorial fact that extracting a positive root changes the sign variation count by an odd number. Proving this requires analyzing how multiplication by $(X - C\\, r)$ transforms the coefficient sign sequence.",
     "mathContext": "$p = (x-r) \\cdot q,\\; r > 0 \\Rightarrow \\text{sv}(p) + \\text{sv}(q) \\text{ is odd}$",
     "significance": "key",
-    "relatedConcepts": ["polynomial multiplication", "coefficient sign sequences", "Budan-Fourier"],
-    "prerequisites": ["sign variation definition", "polynomial factoring"]
+    "relatedConcepts": [
+      "polynomial multiplication",
+      "coefficient sign sequences",
+      "Budan-Fourier"
+    ],
+    "prerequisites": [
+      "sign variation definition",
+      "polynomial factoring"
+    ]
+  },
+  {
+    "id": "ann-parity-arithmetic",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 61,
+      "endLine": 86
+    },
+    "type": "technique",
+    "title": "Parity Arithmetic Scaffolding",
+    "content": "Part I establishes elementary lemmas about even/odd arithmetic that serve as the inductive backbone. The key lemma is : a + b is even iff a and b have the same parity. This allows the Descartes parity result (sv ≡ pos, i.e., sv + pos is even) to be proved by assembling parities piece by piece via addition. The  lemma handles the case where two counts differ by an even amount (e.g., sv and degree differ by 2 * something after induction).",
+    "mathContext": "Parity arithmetic:  + b equiv 0 pmod{2} iff a equiv b pmod{2}$. In Lean 4,  means $exists k, n = 2k$, and  is odd. The modular arithmetic is done by omega or direct Even/Odd lemmas, not by  — staying in  avoids coercions.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Even in Mathlib",
+      "Nat.odd_iff_not_even",
+      "omega tactic for Nat arithmetic",
+      "parity composition lemmas"
+    ],
+    "prerequisites": [
+      "Basic Nat parity in Mathlib",
+      "Even and Odd definitions in Lean 4",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-root-decomposition",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 100,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "Root Count Decomposition with Conjugate Pair Parity",
+    "content": "The two theorems  and  formalize the role of complex conjugate pairing in the parity proof.  says: if total = pos + neg_zero + nonreal with nonreal even, then total is even iff pos + neg_zero is even. This is the formal statement of \"non-real roots do not affect parity\". The proof is two lines of modular arithmetic.  is the specialization to degree ≡ real roots (mod 2), which is the direct consequence of conjugate pairing (all non-real roots paired).",
+    "mathContext": "The Fundamental Theorem of Algebra (via ) gives all roots of  in mathbb{R}[x]$ as complex numbers. Complex conjugate root theorem: if $ is a root, so is $\bar{z}$. Thus $|{\text{non-real roots}}|$ is even. Therefore $deg(p) = |\text{pos}| + |\text{neg}| + |\text{nonreal}|$ where $|\text{nonreal}|$ is even, giving $deg(p) equiv |\text{pos}| + |\text{neg}| pmod 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsAlgClosed",
+      "complex conjugate root theorem",
+      "Polynomial.roots",
+      "degree-root count relation"
+    ],
+    "prerequisites": [
+      "Fundamental Theorem of Algebra in Mathlib",
+      "Complex.conj_root_of_real_coeff",
+      "Nat parity arithmetic"
+    ]
   }
 ]
