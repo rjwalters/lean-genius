@@ -32,6 +32,7 @@ References:
 -/
 
 import Mathlib
+import Proofs.Erdos433Aristotle
 
 open Nat Finset BigOperators
 
@@ -191,8 +192,68 @@ g(2, n) = G({n-1, n}) = (n-1)·n - (n-1) - n = n² - 3n + 1
 
 Using Sylvester-Frobenius when gcd(n-1, n) = 1.
 -/
+private lemma frobenius_zero_one : G(({0, 1} : Finset ℕ)) = 0 := by
+  have hempty : {n : ℕ | n ∉ NumericalSemigroup ({0, 1} : Finset ℕ)} = ∅ := by
+    ext m
+    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not,
+               NumericalSemigroup, Set.mem_setOf_eq]
+    refine ⟨fun a => if a.val = 1 then m else 0, ?_⟩
+    symm
+    rw [Finset.sum_coe_sort]
+    simp [Finset.sum_insert (show (0 : ℕ) ∉ ({1} : Finset ℕ) from by simp),
+          Finset.sum_singleton]
+  simp only [frobeniusNumber, hempty, csSup_empty, bot_eq_zero]
+
 theorem g_two (n : ℕ) (hn : n ≥ 3) : g 2 n = n ^ 2 - 3 * n + 1 := by
-  sorry -- Follows from Sylvester-Frobenius applied to {n-1, n}
+  -- Upper bound: every 2-element coprime subset has Frobenius number ≤ n²-3n+1
+  have hbound : ∀ v ∈ {v : ℕ | ∃ A : Finset ℕ,
+      A ⊆ Finset.range (n + 1) ∧ A.card = 2 ∧ SetGCDOne A ∧ v = G(A)},
+      v ≤ n ^ 2 - 3 * n + 1 := by
+    rintro v ⟨A, hAsub, hAcard, hAgcd, rfl⟩
+    rw [Finset.card_eq_two] at hAcard
+    obtain ⟨a, b, hab, rfl⟩ := hAcard
+    have ha_le : a ≤ n := by
+      have := hAsub (Finset.mem_insert_self a {b})
+      simp [Finset.mem_range] at this; omega
+    have hb_le : b ≤ n := by
+      have := hAsub (Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton.mpr rfl)))
+      simp [Finset.mem_range] at this; omega
+    have hcop : Nat.Coprime a b := by
+      simp only [SetGCDOne, Finset.gcd_insert, Finset.gcd_singleton, id, normalize_eq] at hAgcd
+      exact hAgcd
+    rcases Nat.eq_zero_or_pos a with rfl | ha_pos
+    · -- a = 0: coprime forces b = 1, G({0,1}) = 0
+      simp [Nat.Coprime, Nat.gcd_zero_left] at hcop
+      subst hcop; rw [frobenius_zero_one]; exact Nat.zero_le _
+    rcases Nat.eq_zero_or_pos b with rfl | hb_pos
+    · -- b = 0: coprime forces a = 1, G({1,0}) = G({0,1}) = 0
+      simp [Nat.Coprime, Nat.gcd_zero_right] at hcop
+      subst hcop
+      have : ({1, 0} : Finset ℕ) = {0, 1} := by ext; simp [or_comm]
+      rw [this, frobenius_zero_one]; exact Nat.zero_le _
+    -- a, b ≥ 1: apply Sylvester-Frobenius then the arithmetic bound
+    rw [sylvester_frobenius a b ha_pos hb_pos hcop]
+    rcases Nat.lt_or_gt_of_ne hab with hab_lt | hab_gt
+    · exact Erdos433Aristotle.frobenius_ub_pair a b n hn ha_pos hb_pos (by omega) hb_le
+    · -- swap a, b
+      have hcomm : a * b - a - b = b * a - b - a := by rw [Nat.mul_comm]; omega
+      rw [hcomm]
+      exact Erdos433Aristotle.frobenius_ub_pair b a n hn hb_pos ha_pos (by omega) ha_le
+  -- Witness: {n-1, n} is a valid 2-element set achieving g(2,n)
+  have hmem : n ^ 2 - 3 * n + 1 ∈ {v : ℕ | ∃ A : Finset ℕ,
+      A ⊆ Finset.range (n + 1) ∧ A.card = 2 ∧ SetGCDOne A ∧ v = G(A)} :=
+    ⟨{n - 1, n},
+     Erdos433Aristotle.pair_subset_range n (by omega),
+     Erdos433Aristotle.pair_card n (by omega),
+     show SetGCDOne {n - 1, n} from Erdos433Aristotle.finset_gcd_pred_self n (by omega),
+     by rw [sylvester_frobenius (n - 1) n (by omega) (by omega)
+                (Erdos433Aristotle.coprime_pred_self n (by omega))];
+        exact (Erdos433Aristotle.frobenius_pair_max n hn).symm⟩
+  -- Conclude by antisymmetry of sSup
+  unfold g
+  exact le_antisymm
+    (csSup_le ⟨_, hmem⟩ hbound)
+    (le_csSup ⟨n ^ 2 - 3 * n + 1, hbound⟩ hmem)
 
 /-
 ## Part VII: Extremal Sets
