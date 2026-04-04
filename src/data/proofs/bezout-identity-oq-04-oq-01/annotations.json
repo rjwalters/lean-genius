@@ -1,34 +1,101 @@
-{
-  "annotations": [
-    {
-      "line": 52,
-      "type": "definition",
-      "content": "**Unimodular matrix**: det(M) = ±1, the precise condition for M to be invertible over ℤ. By Cramer's rule, M⁻¹ = adj(M)/det(M), which has integer entries iff |det(M)| = 1."
-    },
-    {
-      "line": 80,
-      "type": "definition",
-      "content": "**Smith Normal Form structure**: the triple (U, D, V) where A = UDV, with U, V unimodular and D diagonal with the invariant factor divisibility chain d₁|d₂|...|dₖ."
-    },
-    {
-      "line": 130,
-      "type": "axiom",
-      "content": "**SNF existence** (axiomatized): every integer matrix has a Smith Normal Form. The constructive proof uses iterated Euclidean reduction on matrix entries — find smallest |entry|, clear row/column, recurse."
-    },
-    {
-      "line": 160,
-      "type": "axiom",
-      "content": "**SNF solvability** (axiomatized): Ax = b over ℤ has solutions iff each invariant factor dᵢ divides the corresponding entry (Ub)ᵢ. This reduces the matrix system to a diagonal system Dy = Ub."
-    },
-    {
-      "line": 183,
-      "type": "theorem",
-      "content": "**Classical Bézout recovery**: ∃x y, ax+by=c ↔ gcd(a,b)|c. Proved directly from Int.gcd properties without using SNF — this IS the 1×2 special case."
-    },
-    {
-      "line": 248,
-      "type": "theorem",
-      "content": "**Affine lattice structure**: Ax = b ↔ (x-x₀) ∈ ker(A). Solutions form a coset x₀ + ker(A), generalizing the 1D parameterization from BezoutIdentityOQ04."
-    }
-  ]
-}
+[
+  {
+    "line": 10,
+    "type": "concept",
+    "content": "**Smith Normal Form for Linear Diophantine Systems**: This file answers the question of whether the parametric solution to single Bézout equations extends to matrix systems Ax = b over ℤ. The answer is yes, via Smith Normal Form: every integer matrix decomposes as A = UDV where U, V are unimodular (invertible over ℤ), D is diagonal with divisibility chain d₁|d₂|...|dₖ (the invariant factors), and solvability reduces to divisibility conditions on the transformed RHS.",
+    "mathContext": "The Smith Normal Form theorem states: for any $A \\in M_{m \\times n}(\\mathbb{Z})$, there exist $U \\in \\mathrm{GL}_m(\\mathbb{Z})$, $V \\in \\mathrm{GL}_n(\\mathbb{Z})$, and diagonal $D$ with $d_1 \\mid d_2 \\mid \\cdots \\mid d_k > 0$ such that $A = UDV$. The entries $d_1, \\ldots, d_k$ are unique (they are the **invariant factors** of $A$) and completely determine the isomorphism class of the $\\mathbb{Z}$-module $\\mathrm{coker}(A) = \\mathbb{Z}^m / \\mathrm{im}(A)$.",
+    "significance": "SNF is the definitive generalization of GCD to matrices: it reduces any integer linear system to an equivalent diagonal system, making solvability transparent. Applications span algebraic topology (homology computation), cryptography (LWE lattice problems), integer linear programming, and the classification of finitely generated abelian groups.",
+    "relatedConcepts": ["Smith Normal Form", "invariant factors", "Hermite Normal Form", "unimodular matrices", "finitely generated abelian groups"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 49,
+    "type": "definition",
+    "content": "**IsUnimodular**: A square integer matrix M is unimodular iff det(M) = ±1. This is precisely the condition for M to be invertible over ℤ — by Cramer's rule, M⁻¹ = adj(M)/det(M), and since adj(M) has integer entries, M⁻¹ ∈ M_n(ℤ) iff det(M) = ±1.",
+    "mathContext": "The **general linear group** $\\mathrm{GL}_n(\\mathbb{Z}) = \\{M \\in M_n(\\mathbb{Z}) : \\det(M) = \\pm 1\\}$ is the group of invertible integer matrices. Equivalently, $M \\in \\mathrm{GL}_n(\\mathbb{Z})$ iff $M$ can be expressed as a product of **elementary integer matrices**: row/column swaps, sign changes, and integer additions of rows/columns. The definition `IsUnimodular M ↔ M.det = 1 ∨ M.det = -1` captures both orientations.",
+    "significance": "Unimodular matrices are the coordinate changes that preserve the integer lattice ℤⁿ. They are the key tool in lattice reduction algorithms (LLL, HKZ) used in cryptanalysis and in computing invariant factors via elementary row/column operations.",
+    "relatedConcepts": ["determinant", "unimodular group GL_n(Z)", "elementary matrices", "Cramer's rule", "lattice reduction"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 53,
+    "type": "theorem",
+    "content": "**isUnimodular_iff_abs_det**: M is unimodular iff |det(M)| = 1 (as a natural number). This provides a computationally friendly characterization: check Int.natAbs(det) = 1 rather than matching on det = 1 or det = -1.",
+    "mathContext": "The equivalence `IsUnimodular M ↔ Int.natAbs M.det = 1` uses the case split `Int.natAbs_eq`: for any integer $n$, $|n| = n$ or $|n| = -n$. Combined with `omega`, this reduces the ±1 matching to a single natural number equality. The proof direction `|det| = 1 → det = ±1` uses `omega` after the case split.",
+    "significance": "In Lean's integer library, `Int.natAbs` provides a clean bridge between ℤ and ℕ for absolute value computations. The equivalence enables rewriting lemmas to use whichever characterization is more convenient in subsequent proofs.",
+    "relatedConcepts": ["Int.natAbs", "absolute value", "integer case split", "omega tactic"],
+    "difficulty": "introductory"
+  },
+  {
+    "line": 69,
+    "type": "theorem",
+    "content": "**IsUnimodular.mul**: The product of two unimodular matrices is unimodular. Proof: |det(MN)| = |det(M)| · |det(N)| = 1 · 1 = 1 via the multiplicativity of determinants.",
+    "mathContext": "The proof uses `det_mul` (multiplicativity: $\\det(MN) = \\det(M)\\det(N)$) and `Int.natAbs_mul` ($|mn| = |m| \\cdot |n|$) to reduce to `|1| \\cdot |1| = 1$. This establishes that unimodular matrices form a **group** under multiplication — the integer general linear group $\\mathrm{GL}_n(\\mathbb{Z})$.",
+    "significance": "Product closure is essential for the SNF construction: the transformations U, V are built by composing sequences of elementary unimodular operations (row swaps, sign changes, row additions). Closure guarantees the composition remains unimodular.",
+    "relatedConcepts": ["det_mul", "multiplicativity", "group closure", "elementary operations"],
+    "difficulty": "introductory"
+  },
+  {
+    "line": 87,
+    "type": "definition",
+    "content": "**SmithNormalForm structure**: The SNF of an m×n integer matrix is a triple (U, D, V) where U ∈ GL_m(ℤ), V ∈ GL_n(ℤ), D is diagonal (off-diagonal entries are 0), and the diagonal entries satisfy d_k | d_{k+1} for consecutive pairs. The relation A = U * D * V is encoded in `isDecompOf`.",
+    "mathContext": "The structure enforces three conditions: (1) `hD_diag`: $D_{ij} = 0$ for $i \\neq j$ — diagonality; (2) `hD_div`: $D_{kk} \\mid D_{(k+1)(k+1)}$ for $k < \\min(m,n) - 1$ — the **divisibility chain** property; (3) `hU`, `hV`: $U, V$ are unimodular. The diagonal entries are the **invariant factors** $d_1 \\mid d_2 \\mid \\cdots \\mid d_k$, unique up to sign. They determine $\\mathbb{Z}^m / A\\mathbb{Z}^n \\cong \\mathbb{Z}/d_1\\mathbb{Z} \\oplus \\cdots \\oplus \\mathbb{Z}/d_k\\mathbb{Z} \\oplus \\mathbb{Z}^{m-k}$.",
+    "significance": "The divisibility chain condition is what makes SNF canonical — it uniquely characterizes the isomorphism class of the cokernel module. Without it, we'd have only Hermite Normal Form (upper triangular, not diagonal), which doesn't give a canonical form.",
+    "relatedConcepts": ["invariant factors", "diagonal matrix", "divisibility chain", "finitely generated modules", "structure theorem"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 130,
+    "type": "axiom",
+    "content": "**snf_exists** (axiom): Every integer matrix has a Smith Normal Form. The constructive proof proceeds by: (1) find smallest |entry|, move to (0,0); (2) clear row 0 and column 0 using Euclidean division; (3) if any remaining entry is not divisible by d₁₁, add its row to row 0 and repeat (strictly decreasing |d₁₁|); (4) recurse on the (m-1)×(n-1) submatrix. Axiomatized here as the constructive proof requires ~500 lines.",
+    "mathContext": "The termination argument uses well-ordering on $|d_{11}|$: each time step 3 is needed, $|d_{11}|$ strictly decreases, so the inner loop terminates. The outer recursion terminates by decreasing matrix dimension. The key Euclidean step: if $b = qd_{11} + r$ with $0 < r < |d_{11}|$, adding row $i$ (containing $b$) to row 0 reduces the $(0,0)$ entry from $d_{11}$ to $r$.",
+    "significance": "SNF existence is the foundational theorem of integer matrix theory. The constructive proof is essentially the GCD algorithm lifted to matrices: the same Euclidean reduction that computes gcd(a,b) for scalars computes the invariant factors for matrices via iterated row/column reduction.",
+    "relatedConcepts": ["Euclidean algorithm", "well-ordering", "row reduction", "elementary operations", "PID structure"],
+    "difficulty": "advanced"
+  },
+  {
+    "line": 160,
+    "type": "axiom",
+    "content": "**snf_solvability_criterion** (axiom): Ax = b has integer solutions iff for each nonzero invariant factor dᵢ, dᵢ | (Ub)ᵢ, and for each zero invariant factor, (Ub)ᵢ = 0. Proof sketch: writing y = Vx reduces Ax = b to DV⁻¹·Vx = Ub, i.e., Dy = Ub — a diagonal system where each equation is dᵢyᵢ = (Ub)ᵢ.",
+    "mathContext": "The reduction is: $Ax = b \\Leftrightarrow UDVx = Ub \\Leftrightarrow D(Vx) = Ub$. Setting $y = Vx$ (which ranges over all of $\\mathbb{Z}^n$ as $x$ does, since $V$ is unimodular), the system becomes the diagonal system $Dy = Ub$: the $i$-th equation is $d_i y_i = (Ub)_i$, solvable in $\\mathbb{Z}$ iff $d_i \\mid (Ub)_i$ (or $d_i = 0$ and $(Ub)_i = 0$).",
+    "significance": "This is the matrix analogue of the Bézout solvability criterion gcd(a,b)|c. It reduces an arbitrary integer linear system to n independent divisibility conditions — each equation in the diagonal system is independent of the others.",
+    "relatedConcepts": ["diagonal system", "coordinate change", "divisibility", "Bézout criterion", "reduced form"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 184,
+    "type": "theorem",
+    "content": "**bezout_from_snf**: The system ax + by = c has integer solutions iff gcd(a,b) | c. Proved directly using Int.gcd_eq_gcd_ab (the Lean name for Bézout's identity: gcd(a,b) = a·gcdA(a,b) + b·gcdB(a,b)) without using SNF machinery.",
+    "mathContext": "Forward direction: $\\gcd(a,b) \\mid a$ and $\\gcd(a,b) \\mid b$, so $\\gcd(a,b) \\mid ax + by = c$. Backward direction: let $u = \\text{gcdA}(a,b)$, $v = \\text{gcdB}(a,b)$ satisfy $au + bv = \\gcd(a,b)$. If $c = k \\cdot \\gcd(a,b)$, then $x = ku$, $y = kv$ gives $ax + by = k(au+bv) = k \\cdot \\gcd(a,b) = c$.",
+    "significance": "This theorem recovers `diophantine_solvable` from BezoutIdentity.lean, closing the circle: the SNF framework subsumes classical Bézout as the 1×2 special case. The standalone proof without SNF demonstrates that Bézout is elementary enough to not need the full machinery.",
+    "relatedConcepts": ["Bézout's identity", "Int.gcd_eq_gcd_ab", "Bézout coefficients", "diophantine solvability"],
+    "difficulty": "introductory"
+  },
+  {
+    "line": 211,
+    "type": "definition",
+    "content": "**intNullSpace**: The integer null space of A is the set {x ∈ ℤⁿ | Ax = 0}. Proved to be a ℤ-submodule: contains 0 (zero_mem_intNullSpace), closed under addition (intNullSpace_add via mulVec_add), and closed under scalar multiplication (intNullSpace_smul via mulVec_smul).",
+    "mathContext": "The null space $\\ker(A) = \\{x \\in \\mathbb{Z}^n : Ax = 0\\}$ is a free $\\mathbb{Z}$-module of rank $n - r$ where $r$ is the number of nonzero invariant factors (the SNF rank). By the structure theorem, $\\mathbb{Z}^n \\cong \\mathrm{im}(A^T) \\oplus \\ker(A)$ when $A$ has full column rank. The three closure proofs use `mulVec_add` ($A(x+y) = Ax + Ay$) and `mulVec_smul` ($A(kx) = k(Ax)$).",
+    "significance": "The null space structure is the homogeneous part of the solution set. Over ℤ it's a free ℤ-module (unlike over ℝ where it's a vector subspace), which means the solutions form a lattice rather than a continuous set — a key feature for cryptographic applications.",
+    "relatedConcepts": ["null space", "free module", "ℤ-submodule", "mulVec_add", "lattice structure"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 241,
+    "type": "theorem",
+    "content": "**solution_iff_particular_plus_null**: If x₀ is any particular solution to Ax = b, then x is a solution iff (x - x₀) ∈ ker(A). The solution set is the affine lattice x₀ + ker(A). Proof uses mulVec_sub: A(x - x₀) = Ax - Ax₀.",
+    "mathContext": "The key computation: $Ax = b \\Leftrightarrow Ax - Ax_0 = 0 \\Leftrightarrow A(x - x_0) = 0$ (using $Ax_0 = b$). This is the **affine structure** of solution sets: the particular solution $x_0$ translates the null space to all solutions. In 1D (Bézout): particular solution $(x_0, y_0)$ plus null space $\\{(bt/d, -at/d) : t \\in \\mathbb{Z}\\}$ gives the full parametric family.",
+    "significance": "This is the fundamental theorem of linear algebra over ℤ: solutions = particular + homogeneous, valid for any PID. The proof is simpler than the real-valued case (no dimension theory needed) because the algebraic characterization is purely ring-theoretic.",
+    "relatedConcepts": ["affine lattice", "particular solution", "homogeneous solution", "mulVec_sub", "PID modules"],
+    "difficulty": "intermediate"
+  },
+  {
+    "line": 264,
+    "type": "example",
+    "content": "**Concrete examples**: (1) 6x + 10y + 15z = 1 is solvable — witness (1, 1, -1): 6+10-15=1. (2) 6x + 10y + 15z = 7 is solvable — witness (7, 7, -7). (3) 6x + 10y = 3 has no solution: gcd(6,10) = 2 | (6x+10y) but 2 ∤ 3, contradiction via omega.",
+    "mathContext": "For (3): $6x + 10y = 2(3x + 5y)$, so $2 \\mid 6x + 10y$ for all $x, y \\in \\mathbb{Z}$. But $2 \\nmid 3$, so the equation has no solutions. The `omega` tactic handles this arithmetic automatically. For (1)-(2): by direct witness construction — `norm_num` verifies the arithmetic.",
+    "significance": "These examples ground the abstract theory: (1) illustrates solvability when gcd divides the target; (3) illustrates the canonical obstruction. The gcd of three numbers gcd(gcd(6,10),15) = gcd(2,15) = 1 divides everything, explaining why RHS ∈ {1, 7} are both solvable.",
+    "relatedConcepts": ["norm_num", "omega tactic", "explicit witness", "divisibility obstruction"],
+    "difficulty": "introductory"
+  }
+]
