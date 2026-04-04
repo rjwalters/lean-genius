@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-e1001oq03-header",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "Module Overview: d-Dimensional EST Diophantine Approximation",
+    "content": "This module opens with the derivation sketch for the d-dimensional Erdős–Szüsz–Turán formula. The key steps: (1) in the EST regime, approximation boxes for different denominators are disjoint; (2) each primitive vector p with denominator q contributes (2A/q^{1+1/d})^d volume; (3) summing over q ∈ [N,cN] gives S_d ≈ (2A)^d · Σ J_d(q)/q^{d+1}; (4) the Jordan-Mertens theorem evaluates this sum as log(c)/ζ(d+1). The docstring explicitly records 0 sorries and 9 axioms, and notes the EST regime condition A < 1/(2(d+1)).",
+    "mathContext": "The d-dimensional approximation set: $S_d(N,A,c) \\approx (2A)^d \\sum_{q=N}^{cN} \\frac{J_d(q)}{q^{d+1}}$ where $J_d(q) = \\#\\{p \\in \\mathbb{Z}^d_q : \\gcd(p,q)=1\\}$ is Jordan's $d$-th totient. By Jordan-Mertens: $\\sum_{q=N}^{cN} J_d(q)/q^{d+1} \\to \\log(c)/\\zeta(d+1)$, giving $\\lim S_d = (2A)^d \\log(c)/\\zeta(d+1)$.",
+    "significance": "context",
+    "relatedConcepts": ["Erdős #1001", "Diophantine approximation", "Jarník-Besicovitch theorem", "Khintchine's theorem", "metric number theory"],
+    "prerequisites": ["Diophantine approximation theory", "Riemann zeta function", "Euler's totient function", "measure theory"]
+  },
+  {
+    "id": "ann-e1001oq03-zeta",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 49, "endLine": 69 },
+    "type": "definition",
+    "title": "zetaAtSucc: Riemann Zeta Values at Positive Integers",
+    "content": "The `zetaAtSucc d` definition extracts the real part of ζ(d+1) from Lean's complex Riemann zeta function (`riemannZeta`). Four axioms capture the key analytic properties: positivity, the Basel problem ζ(2)=π²/6, the trivial lower bound ζ(d+1)≥1, and the limit ζ(d+1)→1 as d→∞. These axioms are all provable in principle using Mathlib's analytic number theory, but require more advanced tools than are conveniently available. The Basel problem axiom is the critical one: it ties the d=1 formula to the classical EST result 12A·log(c)/π².",
+    "mathContext": "The Riemann zeta function $\\zeta(s) = \\sum_{n=1}^\\infty n^{-s}$ for $\\text{Re}(s) > 1$. Key values: $\\zeta(2) = \\pi^2/6$ (Basel problem, Euler 1734), $\\zeta(3) \\approx 1.202$ (Apéry's constant, irrational by Apéry 1979), $\\zeta(4) = \\pi^4/90$, $\\zeta(2k) = (2\\pi)^{2k}|B_{2k}|/(2(2k)!)$ (Bernoulli numbers). $\\zeta(s) \\to 1$ as $s \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["Basel problem", "Riemann zeta function", "Apéry's constant", "Euler product formula", "Bernoulli numbers"],
+    "prerequisites": ["complex analysis", "Riemann zeta function in Mathlib", "riemannZeta API"]
+  },
+  {
+    "id": "ann-e1001oq03-jordan",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 71, "endLine": 83 },
+    "type": "definition",
+    "title": "jordanTotient: d-Dimensional Generalization of Euler's φ",
+    "content": "Jordan's totient J_d(q) counts the number of d-tuples of integers in {0,...,q-1}^d that are 'primitive' modulo q (i.e., coprime to q in some coordinate). The Lean definition uses `Nat.card` of a subtype, though the condition in the subtype is slightly informal (the `primeFactors.prod` expression). Two axioms state: J_1 = Euler's φ (the d=1 case), and J_d(q) ≤ q^d (the trivial upper bound). The multiplicative formula J_d(q) = q^d ∏_{p|q}(1-p^{-d}) is implicit but not stated as an axiom here.",
+    "mathContext": "Jordan's $d$-th totient: $J_d(q) = q^d \\prod_{p \\text{ prime}, p|q}\\left(1 - p^{-d}\\right)$. Special cases: $J_1(q) = \\varphi(q)$ (Euler's totient), $J_2(q) = q^2 \\prod_{p|q}(1-p^{-2})$. The Dirichlet series: $\\sum_{q=1}^\\infty J_d(q)/q^s = \\zeta(s)/\\zeta(s+d)$ for $\\text{Re}(s) > d+1$. Crucial: at $s = d+1$, this gives $\\sum J_d(q)/q^{d+1} = \\zeta(d+1)/\\zeta(2d+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's totient function", "Möbius function", "Dirichlet series", "multiplicative arithmetic functions", "inclusion-exclusion"],
+    "prerequisites": ["number theory basics", "multiplicative functions", "Dirichlet series convergence"]
+  },
+  {
+    "id": "ann-e1001oq03-approxset",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 85, "endLine": 106 },
+    "type": "definition",
+    "title": "isApproximable_d and approximationSet_d: The d-Dimensional Approximation Condition",
+    "content": "The `isApproximable_d` predicate captures simultaneous Diophantine approximation: α ∈ [0,1]^d is (A,d,q)-approximable if there exists a primitive integer vector p such that each coordinate |α_i - p_i/q| < A/q^{1+1/d}. The Chebyshev distance (max norm) is used, consistent with the original EST framework. The `approximationSet_d` collects all such α with denominators in [N,cN]. The `S_d` measure is then the Lebesgue measure of this set in [0,1]^d (using the product measure pi). The choice of exponent 1+1/d in the approximation bound is precisely what gives the denominator-power q^{d+1} in the counting sum.",
+    "mathContext": "For $\\alpha \\in [0,1]^d$, the approximation condition: $\\exists$ primitive $p \\in \\mathbb{Z}^d$ s.t. $\\max_i |\\alpha_i - p_i/q| < A/q^{1+1/d}$. The box volume is $(2A/q^{1+1/d})^d = (2A)^d/q^{d+1}$. Summing over primitive $p$ with denominator $q$ gives contribution $J_d(q) \\cdot (2A)^d/q^{d+1}$ to the measure. The exponent $1+1/d$ is the natural 'threshold' exponent from the Jarník–Besicovitch theorem in $d$ dimensions.",
+    "significance": "key",
+    "relatedConcepts": ["simultaneous Diophantine approximation", "Jarník-Besicovitch theorem", "Khintchine-Groshev theorem", "Chebyshev norm", "product measure"],
+    "prerequisites": ["measure theory in Lean", "MeasureTheory.Measure.pi", "Diophantine approximation definitions"]
+  },
+  {
+    "id": "ann-e1001oq03-formula",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 108, "endLine": 159 },
+    "type": "insight",
+    "title": "f_d Formula: Properties and Consistency Lemmas",
+    "content": "The limit formula f_d(A,c) = (2A)^d·log(c)/ζ(d+1) is defined as a Lean `noncomputable def`. Several algebraic properties are proved: positivity (for A,c > 0,1), vanishing (at A=0 or c=1), A^d-scaling, monotonicity in c, and the dimension recurrence f_{d+1}·ζ(d+2) = 2A·(f_d·ζ(d+1)). The consistency check `f_d_one_is_est` is particularly important: it verifies that f_1(A,c) = 2A·log(c)/ζ(2) = 2A·log(c)/(π²/6) = 12A·log(c)/π², matching the classical EST formula. This uses `zetaAtSucc_one` (Basel problem axiom) and `field_simp; ring`.",
+    "mathContext": "The formula $f_d(A,c) = (2A)^d \\cdot \\frac{\\log c}{\\zeta(d+1)}$ encodes: $(2A)^d$ = volume of approximation box per lattice point, $\\log c$ = logarithmic measure of the denominator interval $[N, cN]$ as $N \\to \\infty$, $1/\\zeta(d+1)$ = density of primitive $d$-tuples (from Jordan-Mertens). Consistency: $f_1 = 12A\\log c/\\pi^2$ ✓, $f_2 = 4A^2\\log c/\\zeta(3)$ ✓ (Apéry's constant).",
+    "significance": "key",
+    "relatedConcepts": ["Riemann zeta function", "logarithmic integral", "dimension curse", "Apéry's constant", "scaling laws"],
+    "prerequisites": ["Real.log in Mathlib", "field_simp ring tactics", "pow_pos lemmas"]
+  },
+  {
+    "id": "ann-e1001oq03-main-theorem",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 161, "endLine": 189 },
+    "type": "insight",
+    "title": "Jordan-Mertens and Main Theorem: The Two Core Axioms",
+    "content": "The two central results are both axioms, reflecting deep analytic number theory not yet in Mathlib. The Jordan-Mertens axiom states that ζ(d+1)·Σ_{q=N}^{cN} J_d(q)/q^{d+1} → log(c) as N→∞. This is the d-dimensional analog of the classical Mertens' third theorem (Σ_{p≤N} 1/p ~ log log N). The formulation uses `Filter.Tendsto` with `Filter.atTop`, the standard Lean/Mathlib way to express N→∞ limits. The main theorem axiom directly asserts the measure convergence S_d(N,A,c) → f_d(A,c) under the EST regime condition A < 1/(2(d+1)). The docstring includes a careful note about the Dirichlet series identity Σ J_d(q)/q^s = ζ(s)/ζ(s+d), and the subtle distinction between the Dirichlet series at s and the partial sum estimate.",
+    "mathContext": "Jordan-Mertens (d-dim): $\\zeta(d+1) \\sum_{q=N}^{\\lceil cN \\rceil} \\frac{J_d(q)}{q^{d+1}} \\to \\log c$ as $N \\to \\infty$. This uses: (1) $\\sum_{q=1}^N J_d(q) \\sim N^{d+1}/(d+1)\\cdot 1/\\zeta(d+1)$ (partial sums of Jordan totient), (2) summation-by-parts (Abel summation). Compare with classical Mertens: $\\sum_{q \\leq N} \\varphi(q)/q \\sim 6N/\\pi^2$, giving $\\sum_{q=N}^{cN} \\varphi(q)/q^2 \\sim 6\\log(c)/\\pi^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Mertens' theorem", "Abel summation", "Dirichlet series", "partial summation", "Tauberian theorems", "Filter.Tendsto"],
+    "prerequisites": ["analytic number theory", "Lean 4 Filter API", "nhds topology", "summation-by-parts"]
+  },
+  {
+    "id": "ann-e1001oq03-corollaries",
+    "proofId": "erdos-1001-oq-03",
+    "range": { "startLine": 191, "endLine": 227 },
+    "type": "insight",
+    "title": "Corollaries: EST Consistency, Apéry, Dimension Curse, Recurrence",
+    "content": "Six corollaries verify the formula's structure. (1) `d1_is_est`: d=1 gives exactly the EST formula 12A·log(c)/π². (2) `d2_formula`: d=2 gives f_2 = 4A²·log(c)/ζ(3), involving Apéry's constant ζ(3) ≈ 1.202 — proved by irrationality by Apéry in 1979. (3) `f_d_dimension_decay` (axiom): for A < 1/2, f_d → 0 as d → ∞, reflecting the 'dimension curse'. (4) `est_regime_d1_matches`: the d=1 EST condition A < 1/4 implies A < 1/2. (5) Numerical example: f_1(1/2, 2) = 6·log(2)/π². (6) Recurrence f_{d+1}·ζ(d+2) = 2A·f_d·ζ(d+1). All proved algebraically except the dimension decay axiom.",
+    "mathContext": "Dimension curse: $(2A)^d \\to 0$ as $d \\to \\infty$ when $A < 1/2$, since $2A < 1$. This means simultaneous approximation of $d$ irrationals becomes exponentially rare in high dimensions — a fundamental obstruction to multidimensional equidistribution. Apéry's constant $\\zeta(3) = \\sum_{n=1}^\\infty 1/n^3 \\approx 1.202$, proved irrational by Roger Apéry (1979) using rapidly converging integer sequences.",
+    "significance": "supporting",
+    "relatedConcepts": ["Apéry's constant", "dimension curse in approximation theory", "curse of dimensionality", "Apéry's theorem", "irrationality proofs"],
+    "prerequisites": ["norm_num tactic", "Real.log_pos", "zetaAtSucc_one (Basel)", "f_d_dimension_ratio"]
+  }
+]
