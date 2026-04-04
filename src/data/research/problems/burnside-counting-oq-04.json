@@ -1,0 +1,91 @@
+{
+  "slug": "burnside-counting-oq-04",
+  "title": "Burnside Counting: Extend to Dihedral Group D_n",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in group theory: Burnside Counting: Extend to Dihedral Group D_n.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T22:29:17.628Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "group-theory",
+    "dihedral"
+  ],
+  "relatedProofs": [
+    "burnside-counting",
+    "burnside-counting-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T22:29:17.627Z",
+  "lastUpdate": "2026-04-03T22:29:17.627Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BurnsideCounting.lean",
+      "filename": "BurnsideCounting.lean",
+      "lineCount": 256,
+      "theoremCount": 6,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCounting.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ03.lean",
+      "filename": "BurnsideCountingOQ03.lean",
+      "lineCount": 295,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ03Aristotle.lean",
+      "filename": "BurnsideCountingOQ03Aristotle.lean",
+      "lineCount": 78,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03Aristotle.lean"
+    }
+  ]
+}

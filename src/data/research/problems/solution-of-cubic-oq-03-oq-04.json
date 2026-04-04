@@ -1,0 +1,127 @@
+{
+  "slug": "solution-of-cubic-oq-03-oq-04",
+  "title": "[Problem Title]",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-03T21:27:22-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: solution-of-cubic-oq-03-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "solution-of-cubic",
+    "solution-of-cubic-oq-03",
+    "solution-of-cubic-oq-03-oq-01",
+    "solution-of-cubic-oq-03-oq-02",
+    "solution-of-cubic-oq-03-oq-03",
+    "solution-of-cubic-oq-03-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T04:39:45.988Z",
+  "lastUpdate": "2026-04-04T04:39:46.013Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/SolutionOfCubic.lean",
+      "filename": "SolutionOfCubic.lean",
+      "lineCount": 298,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubic.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03.lean",
+      "filename": "SolutionOfCubicOQ03.lean",
+      "lineCount": 188,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03OQ01.lean",
+      "filename": "SolutionOfCubicOQ03OQ01.lean",
+      "lineCount": 90,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03OQ02.lean",
+      "filename": "SolutionOfCubicOQ03OQ02.lean",
+      "lineCount": 179,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03OQ03.lean",
+      "filename": "SolutionOfCubicOQ03OQ03.lean",
+      "lineCount": 263,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03OQ05.lean",
+      "filename": "SolutionOfCubicOQ03OQ05.lean",
+      "lineCount": 113,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ05.lean"
+    }
+  ]
+}

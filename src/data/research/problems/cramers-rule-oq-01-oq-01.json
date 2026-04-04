@@ -1,0 +1,178 @@
+{
+  "slug": "cramers-rule-oq-01-oq-01",
+  "title": "Cramer's Rule: Connection to LU Decomposition",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Cramer's Rule: Connection to LU Decomposition.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-04T05:15:05.957Z",
+    "iteration": 1,
+    "focus": "Proof completed with 0 sorries.",
+    "blockers": [],
+    "nextAction": "Done",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Formalized LU-Cramer connection. 14 theorems, 0 sorries, 0 axioms.",
+    "builtItems": [
+      "LUDecomp structure with L_lower, U_upper, factorization fields",
+      "det_of_lu: A.det = (∏ L i i) * (∏ U i i)",
+      "inv_of_lu: A⁻¹ = U⁻¹ * L⁻¹",
+      "luSolve: U⁻¹ *ᵥ (L⁻¹ *ᵥ b)",
+      "luSolve_eq_inv_mulVec: luSolve = A⁻¹ *ᵥ b",
+      "cramer_eq_det_smul_luSolve: cramer(A,b) = det(A) • luSolve",
+      "isUnit_det_of_lu: IsUnit A.det ↔ all diagonal entries of L,U are units"
+    ],
+    "insights": [
+      "LU determinant formula: det(LU) = (∏ L_ii)(∏ U_ii) via BlockTriangular and congrArg technique",
+      "Inverse formula: (LU)⁻¹ = U⁻¹L⁻¹ unconditionally (Matrix.mul_inv_rev)",
+      "Solution equivalence: U⁻¹(L⁻¹b) = A⁻¹b via mulVec_mulVec",
+      "Cramer-LU bridge: cramer(A,b) = det(A) • U⁻¹(L⁻¹b) when det(A) is a unit",
+      "Key technique: use congrArg instead of rw to avoid dependency issues with lu : LUDecomp A"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "linear-algebra",
+    "extension"
+  ],
+  "relatedProofs": [
+    "cramers-rule",
+    "cramers-rule-oq-01",
+    "cramers-rule-oq-01-oq-01",
+    "cramers-rule-oq-01-oq-02",
+    "cramers-rule-oq-01-oq-03",
+    "cramers-rule-oq-01-oq-04",
+    "cramers-rule-oq-02",
+    "cramers-rule-oq-03",
+    "cramers-rule-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T05:15:05.957Z",
+  "lastUpdate": "2026-04-04T05:15:05.957Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CramersRule.lean",
+      "filename": "CramersRule.lean",
+      "lineCount": 162,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRule.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01.lean",
+      "filename": "CramersRuleOQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ01.lean",
+      "filename": "CramersRuleOQ01OQ01.lean",
+      "lineCount": 266,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02.lean",
+      "filename": "CramersRuleOQ01OQ02.lean",
+      "lineCount": 463,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ03.lean",
+      "filename": "CramersRuleOQ01OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ04.lean",
+      "filename": "CramersRuleOQ01OQ04.lean",
+      "lineCount": 328,
+      "theoremCount": 17,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ02.lean",
+      "filename": "CramersRuleOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ03.lean",
+      "filename": "CramersRuleOQ03.lean",
+      "lineCount": 176,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ04.lean",
+      "filename": "CramersRuleOQ04.lean",
+      "lineCount": 176,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04.lean"
+    }
+  ]
+}
