@@ -2,7 +2,7 @@
   "id": "erdos-1059-oq-01",
   "title": "Density of Factorial-Avoiding Primes (Erdős 1059, OQ-01)",
   "slug": "erdos-1059-oq-01",
-  "description": "Formalizes the natural density question for Erdős Problem #1059: What fraction of all primes p satisfy AllFactorialSubtractionsComposite(p)? Provides a decidable instance, four new witnesses (461, 557, 673, 769), a proved logarithmic bound on check counts, counting functions for C(x) and π(x), and axiomatizes the density-1 conjecture. 0 sorries, 1 axiom.",
+  "description": "Formalizes the natural density question for Erdős Problem #1059: What fraction of all primes p satisfy AllFactorialSubtractionsComposite(p)? Provides a decidable instance, four new witnesses (461, 557, 673, 769), a proved logarithmic bound on check counts, counting functions for C(x) and π(x), proves the density gap theorem (C(x) < π(x) for all x ≥ 3) and density sandwich (0 < C(x) < π(x) for x ≥ 101), and axiomatizes the density-1 conjecture. 0 sorries, 1 axiom.",
   "meta": {
     "author": "lean-genius researcher",
     "sourceUrl": "https://erdosproblems.com/1059",
@@ -66,7 +66,11 @@
       "qualifyingPrimeCount, primeCount: formal counting functions C(x) and π(x)",
       "qualifyingCount_le_primeCount: C(x) ≤ π(x) always",
       "qualifyingPrimeCount_ge_six: C(769) ≥ 6 (six verified witnesses up to 769)",
-      "density_one_conjecture: density = 1 axiomatized (heuristic predicts all large primes qualify)"
+      "density_one_conjecture: density = 1 axiomatized (heuristic predicts all large primes qualify)",
+      "three_not_qualifying: PROVED p = 3 is prime but fails AFSC (3 - 0! = 2 is prime)",
+      "qualifyingPrimeCount_lt_primeCount: PROVED C(x) < π(x) for all x ≥ 3 — density < 1 at every finite stage",
+      "qualifyingPrimeCount_pos: PROVED 0 < C(x) for all x ≥ 101 — density > 0 for large x",
+      "density_strictly_between: PROVED 0 < C(x) < π(x) for x ≥ 101 — density sandwich theorem"
     ],
     "axiomCount": 1,
     "prerequisites": [
@@ -75,7 +79,7 @@
       "Finset operations for counting",
       "Floor binary logarithm (Nat.log) and its monotonicity properties"
     ],
-    "lineCount": 396,
+    "lineCount": 456,
     "relatedProblems": [
       {
         "id": "erdos-1059",
@@ -175,13 +179,13 @@
     }
   ],
   "leanFile": {
-    "lineCount": 340,
+    "lineCount": 456,
     "namespace": "Erdos1059OQ01",
     "opens": [],
     "structureCount": 0,
     "axiomCount": 1,
-    "theoremCount": 24,
-    "substantiveTheoremCount": 7,
+    "theoremCount": 28,
+    "substantiveTheoremCount": 11,
     "computationalVerifications": 14,
     "lemmaCount": 3,
     "defCount": 5,

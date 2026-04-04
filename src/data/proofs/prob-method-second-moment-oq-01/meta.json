@@ -1,0 +1,64 @@
+{
+  "id": "prob-method-second-moment-oq-01",
+  "title": "Quantitative Paley-Zygmund Inequality",
+  "slug": "prob-method-second-moment-oq-01",
+  "description": "Proves the quantitative Paley-Zygmund inequality: P[X > θ·E[X]] ≥ (1-θ)²·E[X]²/E[X²] for non-negative random variables and threshold θ ∈ [0,1]. Extends the second moment method with an explicit threshold.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ProbMethodSecondMomentOQ01.lean",
+    "tags": ["probability", "combinatorics", "second-moment-method", "paley-zygmund"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 147,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "None.",
+    "originalContributions": [
+      "Quantitative Paley-Zygmund inequality over finite sets (counting form)",
+      "Probability form: explicit lower bound on fraction of elements exceeding θ·mean",
+      "Recovery of qualitative second moment method as the θ=0 special case"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Paley-Zygmund inequality (1932) provides a quantitative lower bound on the probability that a non-negative random variable exceeds a fraction θ of its mean. It strengthens the qualitative second moment method (which only says P[X > 0] > 0) by giving an explicit probability bound involving the ratio E[X]²/E[X²]. This is a fundamental tool in probabilistic combinatorics (see Alon-Spencer, 'The Probabilistic Method', Chapter 4).",
+    "problemStatement": "For non-negative f on a finite set s with positive sum, and threshold 0 ≤ θ < 1, prove: (1-θ)²·(∑f)² ≤ |{a ∈ s : f(a) > θ·mean}| · ∑f². This is the finite/discrete version of P[X > θ·E[X]] ≥ (1-θ)²·E[X]²/E[X²].",
+    "proofStrategy": "Decompose s into 'above' (elements exceeding θ·mean) and 'below'. Bound the below-sum by θ·(∑f), giving above-sum ≥ (1-θ)·(∑f). Apply Cauchy-Schwarz to the above set: (∑_{above} f)² ≤ |above|·∑_{above} f². Extend to ∑_s f² by monotonicity. Combine the above-sum lower bound with Cauchy-Schwarz.",
+    "keyInsights": [
+      "The above/below decomposition reduces the problem to bounding the below-sum by θ times the total",
+      "Cauchy-Schwarz on the above set provides the bridge between the first and second moments",
+      "The θ=0 case recovers the standard qualitative second moment: P[X>0]·E[X²] ≥ E[X]²"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz inequality for finite sums",
+      "Basic combinatorics of Finset in Mathlib",
+      "Second moment method (parent entry)"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "A complete Lean 4 formalization of the quantitative Paley-Zygmund inequality over finite sets, with 3 theorems and 0 axioms. The proof is fully elementary, using only Cauchy-Schwarz and sum decomposition.",
+    "implications": "Provides the quantitative backbone for the second moment method in the gallery. Applications include proving lower bounds on clique numbers, independent sets, and other combinatorial quantities where the second moment method applies.",
+    "openQuestions": [
+      "Can this be generalized to a measure-theoretic setting (MeasureTheory.Lp)?",
+      "What is the tight threshold θ for specific combinatorial applications like Ramsey or random graph cliques?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "prob-method-second-moment",
+      "title": "Probabilistic Method: Second Moment",
+      "relationship": "extends"
+    }
+  ],
+  "leanFile": {
+    "namespace": "ProbMethod.SecondMoment",
+    "lineCount": 147,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "id": "shannon-entropy-oq-01",
+  "title": "Differential Entropy: Gibbs Inequality and Gaussian Maximum Entropy",
+  "slug": "shannon-entropy-oq-01",
+  "description": "Formalizes differential entropy h(f) = -∫ f(x)ln f(x)dx for continuous distributions using Mathlib's Bochner integral. Proves the continuous Gibbs inequality, translation invariance, scale equivariance, Gaussian entropy, and the Gaussian maximum entropy theorem.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ShannonEntropyOQ01.lean",
+    "tags": [
+      "information-theory",
+      "differential-entropy",
+      "measure-theory",
+      "probability",
+      "gaussian",
+      "gibbs-inequality"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 623,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "assumptions": "None. Fully machine-verified from Mathlib. Uses Bochner integral and Gaussian integration.",
+    "originalContributions": [
+      "kl_divergence_continuous_nonneg: D(f||g) ≥ 0 (continuous KL divergence is non-negative)",
+      "gibbs_inequality_continuous: h(f) ≤ -∫ f·ln g for any reference density g",
+      "differentialEntropy_translation_invariant: h(f(·-c)) = h(f) (Lebesgue measure invariance)",
+      "differentialEntropy_scale_equivariant: h(g) = h(f) + ln|a| when g(x) = (1/|a|)f(x/a)",
+      "gaussianDifferentialEntropy: h(N(μ,σ²)) = ½ ln(2πeσ²)",
+      "gaussian_max_entropy: among densities with variance ≤ σ², the Gaussian maximizes differential entropy"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Differential entropy h(X) = -∫ f(x)ln f(x)dx was introduced by Shannon (1948) as the continuous analogue of discrete entropy H(X) = -∑ p(x)log p(x). Unlike discrete entropy, differential entropy can be negative (e.g., Uniform[0,a] has h = ln a < 0 for a < 1) and is not truly a measure of information in the same sense.\n\nThe Gaussian maximum entropy theorem — that among all distributions with a given variance, the Gaussian has the highest differential entropy — is a cornerstone of information theory. It underpins maximum entropy inference, channel capacity results, and statistical mechanics.\n\nThis formalization answers the OQ from the Shannon Entropy gallery: 'Can differential entropy h(X) = -∫ f(x)ln f(x)dx be formalized in Lean using Mathlib's measure theory?' Answer: YES, using Mathlib's Bochner integral.",
+    "problemStatement": "Formalize differential entropy for continuous distributions using Lean/Mathlib's measure theory, including: (1) the continuous Gibbs inequality D(f||g) ≥ 0, (2) translation and scale invariance, (3) Gaussian entropy h(N(μ,σ²)) = ½ ln(2πeσ²), and (4) the Gaussian maximum entropy theorem.",
+    "proofStrategy": "**KL divergence / Gibbs inequality**: Uses the real-analysis inequality t - 1 ≥ ln t (equivalently, ln(f/g) ≤ f/g - 1) applied to the ratio f/g pointwise, then integrates.\n\n**Translation invariance**: Lebesgue measure is translation-invariant, so ∫ f(x-c)·ln(f(x-c)) dx = ∫ f(y)·ln(f(y)) dy by `integral_add_right_eq_self`.\n\n**Scale equivariance**: Change of variables x → x/a using `Measure.integral_comp_div`.\n\n**Gaussian entropy**: Compute directly using the explicit Gaussian PDF, its normalization, second moment ∫ x²·N(μ,σ²)dx = σ², and the log structure of the Gaussian.\n\n**Maximum entropy**: Apply the Gibbs inequality with g = Gaussian: h(f) ≤ -∫ f·ln(Gaussian) = ½ ln(2πeσ²).",
+    "keyInsights": [
+      "Real.log 0 = 0 in Mathlib makes the 0·ln(0) = 0 convention automatic — no special casing needed",
+      "The continuous Gibbs inequality reduces to the pointwise inequality ln(p/q) ≤ p/q - 1 (analogous to lnx ≤ x-1)",
+      "Translation invariance uses integral_add_right_eq_self from Mathlib (Lebesgue measure is shift-invariant)",
+      "Gaussian second moment ∫ x²·exp(-bx²) dx = ½√(π/b³) is proved via integration by parts using G(x)=-x/(2b)·exp(-bx²)",
+      "The maximum entropy proof is elegant: apply Gibbs with the Gaussian as reference density"
+    ],
+    "prerequisites": [
+      "Bochner integral (MeasureTheory.integral) in Mathlib",
+      "Real.log convexity and the inequality ln(t) ≤ t-1",
+      "integral_gaussian: ∫ exp(-bx²) dx = √(π/b) (Gaussian integral in Mathlib)",
+      "Measure.integral_comp_div: change of variables by division",
+      "integrable_rpow_mul_exp_neg_mul_sq: polynomial-times-Gaussian integrability"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "summary": "differentialEntropy(f) = -∫ f·ln f, klDivergenceCts(f,g) = ∫ f·ln(f/g).",
+      "startLine": 40,
+      "endLine": 49
+    },
+    {
+      "id": "gibbs-inequality",
+      "title": "Gibbs Inequality",
+      "summary": "kl_divergence_continuous_nonneg: D(f||g) ≥ 0. gibbs_inequality_continuous: h(f) ≤ -∫ f·ln g.",
+      "startLine": 50,
+      "endLine": 130
+    },
+    {
+      "id": "invariance",
+      "title": "Translation and Scale Invariance",
+      "summary": "differentialEntropy_translation_invariant: h(f(·-c)) = h(f). differentialEntropy_scale_equivariant: h((1/|a|)f(·/a)) = h(f) + ln|a|.",
+      "startLine": 131,
+      "endLine": 260
+    },
+    {
+      "id": "gaussian",
+      "title": "Gaussian Entropy",
+      "summary": "gaussianDifferentialEntropy: h(N(μ,σ²)) = ½ ln(2πeσ²). Proved using Gaussian PDF, normalization, and second moment.",
+      "startLine": 261,
+      "endLine": 500
+    },
+    {
+      "id": "max-entropy",
+      "title": "Gaussian Maximum Entropy Theorem",
+      "summary": "gaussian_max_entropy: among densities with ∫ x²f ≤ σ², h(f) ≤ ½ ln(2πeσ²). Proved via Gibbs inequality with Gaussian reference.",
+      "startLine": 501,
+      "endLine": 622
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes differential entropy for continuous distributions: continuous Gibbs inequality, translation and scale invariance, Gaussian entropy h(N(μ,σ²)) = ½ ln(2πeσ²), and Gaussian maximum entropy theorem. 623 lines, 6 public theorems, 3 definitions, 0 sorries, 0 axioms.",
+    "implications": "This formalization confirms that Mathlib's Bochner integral is sufficient to handle differential entropy rigorously. The 0·ln(0) = 0 convention is automatic. The Gaussian maximum entropy theorem gives a formal foundation for maximum entropy methods in Bayesian inference and statistical physics.",
+    "openQuestions": [
+      "Formalize the differential entropy of the Uniform[a,b] distribution: h = ln(b-a)",
+      "Prove the continuous data processing inequality: h(φ(X)) ≤ h(X) + ln|φ'| for diffeomorphisms",
+      "Formalize the relationship between differential entropy and channel capacity (Shannon's noisy channel theorem)",
+      "Prove strong subadditivity h(X,Y,Z) + h(Y) ≤ h(X,Y) + h(Y,Z) for joint continuous distributions"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "shannon-entropy",
+      "relationship": "extends",
+      "description": "Parent: discrete entropy H(X) = -∑ p(x)log p(x)"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Both use Bochner integrals and functional inequalities in measure theory"
+    }
+  ],
+  "leanFile": {
+    "namespace": "DifferentialEntropy",
+    "lineCount": 623,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 3
+  }
+}

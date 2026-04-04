@@ -1,0 +1,79 @@
+{
+  "id": "minkowski-fundamental-theorem",
+  "title": "Minkowski's Fundamental Theorem (Geometry of Numbers)",
+  "slug": "minkowski-fundamental-theorem",
+  "description": "Formalizes Minkowski's Fundamental Theorem (Wiedijk #40): a centrally symmetric convex body in ℝⁿ with volume strictly greater than 2ⁿ times the covolume of a lattice must contain a non-zero lattice point. The proof bridges a custom Lattice/ConvexBody/HasVolume API to Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure via a Lattice.toModuleBasis construction. A separate MinkowskiProved namespace provides direct Mathlib-style proofs for both the integer lattice ℤⁿ and arbitrary lattices, eliminating all axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MinkowskiFundamentalTheorem.lean",
+    "tags": [
+      "number-theory",
+      "geometry-of-numbers",
+      "minkowski-theorem",
+      "lattices",
+      "convex-bodies"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 662,
+    "theoremCount": 19,
+    "definitionCount": 14,
+    "originalContributions": [
+      "Custom Lattice structure with basis matrix and invertibility condition",
+      "CentrallySymmetric and ConvexBody types with origin membership theorem",
+      "Lattice.toModuleBasis: bridges custom Lattice to Mathlib Module.Basis",
+      "latticePoints_eq_span: identifies custom lattice points with ℤ-span of basis vectors",
+      "minkowski_fundamental: proved from Mathlib's geometry of numbers via the bridging lemmas",
+      "MinkowskiProved.minkowski_integer_lattice_proved: direct proof for ℤⁿ using Mathlib types",
+      "MinkowskiProved.minkowski_general_lattice_proved: general lattice proof using Module.Basis",
+      "fermat_from_minkowski: Fermat's two squares theorem derived (via Mathlib's Nat.Prime.sq_add_sq)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Hermann Minkowski proved his fundamental theorem in 1889, founding the field of Geometry of Numbers. The theorem gives a geometric bridge between the shapes of convex bodies and the arithmetic of lattices. It has far-reaching consequences: Fermat's two-squares theorem, Lagrange's four-squares theorem, the finiteness of the class number in algebraic number theory, Dirichlet's theorem on simultaneous Diophantine approximation, and the theory of optimal sphere packing. The theorem appears as #40 on Freek Wiedijk's list of 100 theorems whose formalization marks milestones in mathematical software.",
+    "problemStatement": "Minkowski's Fundamental Theorem: Let L be a lattice in ℝⁿ with covolume V (= |det(basis matrix)|). If S ⊆ ℝⁿ is convex, centrally symmetric (x ∈ S ⟹ −x ∈ S), and has volume(S) > 2ⁿ · V, then S contains a non-zero point of L.",
+    "proofStrategy": "The classical proof uses the pigeonhole principle: scale S to S/2 (volume 2⁻ⁿ · vol(S) > V), translate by all lattice points. Two translates must overlap, and the overlap point yields a non-zero lattice point by convexity and central symmetry. The Lean formalization uses Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure, which implements this argument with full measure-theoretic rigor. The main technical work is bridging the custom Lattice type to Mathlib's Module.Basis by interpreting the basis matrix rows as basis vectors via a LinearEquiv.",
+    "keyInsights": [
+      "Lattice.toLinearEquiv constructs a LinearEquiv from the transpose matrix action, and Lattice.toModuleBasis maps the standard basis through this equivalence",
+      "The key bridge lemma toModuleBasis_matrix_eq shows Matrix.of(toModuleBasis) = L.basis, connecting the abstract basis to the original matrix",
+      "latticePoints_eq_span uses Submodule.mem_span_range_iff_exists_fun and zsmul_eq_smul_cast to identify integer linear combinations",
+      "The ENNReal arithmetic bridge converts the ℝ-valued volume inequality to the ENNReal measure comparison required by Mathlib",
+      "fermat_from_minkowski is proved by delegating to Mathlib's Nat.Prime.sq_add_sq, which itself uses geometry of numbers internally"
+    ],
+    "prerequisites": [
+      "Measure theory: Lebesgue measure on ℝⁿ, ENNReal arithmetic",
+      "Linear algebra: lattices, bases, determinants, covolumes",
+      "Convex analysis: convex sets, central symmetry",
+      "Mathlib ZSpan and ZLattice modules",
+      "Pigeonhole principle for measures"
+    ]
+  },
+  "conclusion": {
+    "summary": "Minkowski's Fundamental Theorem (Wiedijk #40) is fully formalized with 0 sorries and 0 axioms. The proof uses a two-layer architecture: a custom API for lattices and convex bodies that is user-friendly for applications, bridged to Mathlib's low-level geometry-of-numbers machinery. Both the custom API version (minkowski_fundamental) and direct Mathlib-style versions (MinkowskiProved namespace) are included.",
+    "implications": "Geometry of numbers connects convex analysis, lattice theory, and arithmetic in a deep way. The formalized theorem immediately yields Fermat's two-squares theorem. Applications to Lagrange's four-squares theorem, the Minkowski class number bound in algebraic number theory, and Dirichlet's approximation theorem are outlined. Modern lattice-based cryptography (LWE, NTRU) depends on the hardness of related lattice problems.",
+    "openQuestions": [
+      "Can Minkowski's second theorem (on successive minima) be formalized with the same infrastructure?",
+      "Can the Minkowski class number bound for algebraic number fields be derived from this formalization?",
+      "Can Blichfeldt's generalization (k+1 lattice points when volume > k · 2ⁿ · covolume) be proved?",
+      "How does the custom Lattice API compare to Mathlib's ZLattice for practical applications in number theory?"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "minkowski-theorem",
+      "relationship": "extends",
+      "description": "Earlier gallery entry on Minkowski's theorem; this entry provides a full Lean proof"
+    },
+    {
+      "targetId": "lagrange-four-squares-oq-01",
+      "relationship": "related",
+      "description": "Computational aspects of Lagrange's four-squares theorem, which is an application of Minkowski's theorem"
+    }
+  ]
+}

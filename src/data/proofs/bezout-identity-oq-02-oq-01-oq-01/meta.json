@@ -1,0 +1,67 @@
+{
+  "id": "bezout-identity-oq-02-oq-01-oq-01",
+  "title": "Unique Factorization in Polynomial Rings (OQ-02-OQ-01-OQ-01)",
+  "slug": "bezout-identity-oq-02-oq-01-oq-01",
+  "description": "Formal verification that polynomial rings over fields and UFDs satisfy unique factorization, the polynomial Bézout identity, and Euclid's lemma for polynomials — the exact parallel of the integer FTA argument adapted to K[X].",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ01.lean",
+    "tags": ["algebra", "polynomial-rings", "unique-factorization", "bezout", "euclids-lemma", "number-theory"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 152,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "assumptions": "None.",
+    "originalContributions": [
+      "Formal statement that polynomial rings over fields are Euclidean domains (inferInstance)",
+      "Explicit polynomial Euclid's lemma: irreducible p | f*g implies p | f or p | g in K[X]",
+      "Polynomial Bézout identity: IsCoprime f g ↔ ∃ a b, a*f + b*g = 1",
+      "Parallel structure diagram: same Bézout→Euclid→UFD argument works for both ℤ and K[X]",
+      "Polynomial GCD Bézout form via EuclideanDomain.gcdA and gcdB"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Gauss proved that polynomial rings over fields are Euclidean domains and hence UFDs. The structure mirrors the integer case: the Euclidean algorithm provides GCDs, Bézout's identity follows, and Euclid's lemma gives unique factorization. This file makes that parallel explicit and machine-verifiable.",
+    "problemStatement": "Adapt the FTA uniqueness argument (Bézout → Euclid's Lemma → UFD) from ℤ to polynomial rings K[X], verifying: K[X] is a UFD for field K, the polynomial Bézout identity holds, irreducible implies prime in K[X], and polynomial GCDs satisfy a Bézout representation.",
+    "proofStrategy": "All structural results are drawn from Mathlib via inferInstance (UFD, Euclidean domain) or direct applications of Mathlib theorems. The irreducible ↔ prime equivalence uses UniqueFactorizationMonoid.irreducible_iff_prime. The GCD Bézout form uses EuclideanDomain.gcd_eq_gcd_ab with a ring-normal form.",
+    "keyInsights": [
+      "The algebraic hierarchy Field → EuclideanDomain → GCDMonoid → UFD is fully developed in Mathlib",
+      "IsCoprime f g is definitionally the existential ∃ a b, a*f + b*g = 1, making poly_bezout trivial",
+      "The irreducible ↔ prime equivalence (Euclid's lemma) holds in any UFD, not just polynomial rings",
+      "The parallel with the integer case is exact: R[X] inherits UFD structure from UFD R via Gauss's lemma"
+    ],
+    "prerequisites": [
+      "UniqueFactorizationMonoid and EuclideanDomain from Mathlib",
+      "Polynomial.uniqueFactorizationMonoid (Gauss's lemma generalization)",
+      "IsCoprime and EuclideanDomain.gcd_eq_gcd_ab"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "This file proves 11 theorems with 0 sorries and 0 axioms, all from Mathlib, formally establishing that K[X] satisfies the same unique factorization and Bézout structure as ℤ, and making the structural parallel explicit.",
+    "implications": "The formal parallel between ℤ and K[X] confirms that unique factorization is not a special property of the integers but a general consequence of the Euclidean domain structure. This is the algebraic content of both the integer FTA and the polynomial factorization theorem.",
+    "openQuestions": [
+      "Extend to multivariate polynomial rings: is ℤ[X,Y] a UFD?",
+      "Formalize explicit factorization algorithms over concrete fields like ℚ or 𝔽_p"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "bezout-identity-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent file proving the FTA from Euclid's lemma via the integer Bézout identity"
+    }
+  ],
+  "leanFile": {
+    "namespace": "BezoutIdentityPolyUFD",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0
+  }
+}

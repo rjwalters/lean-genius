@@ -1,0 +1,66 @@
+{
+  "id": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+  "title": "Minimum Admissible Diameter D(4) = 8",
+  "slug": "bounded-prime-gaps-oq-03-oq-01-oq-04",
+  "description": "Proves that the minimum diameter of an admissible 4-tuple is exactly 8, extending the D(2)=2 and D(3)=6 results. The proof shows every admissible 4-tuple has the same parity (mod 2 constraint), and if diameter ≤ 6 the only possibility is {a,a+2,a+4,a+6}, which is not admissible since it contains the non-admissible triple {a,a+2,a+4}. The upper bound is witnessed by {0,2,6,8}. Also fixes pre-existing Mathlib API issues in BoundedPrimeGapsOQ03OQ01.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
+    "tags": [
+      "number-theory",
+      "prime-gaps",
+      "admissible-tuples",
+      "combinatorics",
+      "prime-constellations"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified. Uses only Mathlib and the admissible_quadruple_0_2_6_8 witness from BoundedPrimeGaps.lean.",
+    "lineCount": 187,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "not_admissible_even_ap4: no even AP {a,a+2,a+4,a+6} is admissible (via subset of non-admissible triple)",
+      "admissible_quad_diam_ge_8: every admissible 4-tuple has diameter ≥ 8 (parity + diameter ≤ 6 forces AP structure)",
+      "minAdmissibleDiameter_4: D(4) = 8, completing D(2)=2, D(3)=6, D(4)=8 in OEIS A008407",
+      "D2_lt_D3_lt_D4: strictly increasing chain of minimum admissible diameters",
+      "prime_quadruple_span_ge_8: any admissible prime quadruple configuration spans ≥ 8"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The minimum admissible diameter function D(k) (OEIS A008407) gives the tightest possible prime k-tuple configuration: D(2)=2 (twin primes {n, n+2}), D(3)=6 (prime triples {n, n+2, n+6}), D(4)=8 (prime quadruples {n, n+2, n+6, n+8}), D(5)=12, .... These values characterize the densest possible prime constellations under the Hardy-Littlewood conjectures.\n\nBoundedPrimeGapsOQ03OQ01 proved D(2)=2 and D(3)=6 using Maynard-Tao sieve theory context. This file answers Open Question OQ-04: extend the pattern to D(4)=8.",
+    "problemStatement": "Prove that the minimum diameter of an admissible 4-tuple is exactly 8:\n1. (Upper bound) {0,2,6,8} is an admissible 4-tuple of diameter 8\n2. (Lower bound) No admissible 4-tuple has diameter < 8",
+    "proofStrategy": "**Upper bound**: {0,2,6,8} is admissible (verified in BoundedPrimeGaps.lean) with diameter 8 (verified by native_decide).\n\n**Lower bound**: Suppose H is an admissible 4-tuple with diameter < 8.\n1. *Parity*: H must have all elements with the same parity, otherwise the image mod 2 covers {0,1} (card = 2 = p), violating admissibility.\n2. *Even diameter*: same parity means all differences are even, so diameter is even, hence ≤ 6.\n3. *Forced structure*: with same parity and 4 elements in a span of ≤ 6, H must be exactly {a, a+2, a+4, a+6}.\n4. *Contradiction*: {a,a+2,a+4,a+6} contains {a,a+2,a+4} as a subset. By `admissible_subset`, {a,a+2,a+4} would be admissible. But `not_admissible_ap_diff2` shows it's not (covers all residues mod 3).",
+    "keyInsights": [
+      "The subset argument is key: {a,a+2,a+4,a+6} is not admissible because it contains the non-admissible triple {a,a+2,a+4}",
+      "Parity constraint forces all elements to have the same parity, making the diameter even",
+      "D(4)=8 gap from D(3)=6 is 2, following the OEIS A008407 pattern",
+      "Finset.card_eq_four.mpr avoids Mathlib API changes in card_insert_of_notMem"
+    ],
+    "prerequisites": [
+      "admissible_quadruple_0_2_6_8: the witness {0,2,6,8} is admissible (BoundedPrimeGaps.lean)",
+      "not_admissible_ap_diff2: even 3-term AP is not admissible (BoundedPrimeGapsOQ03OQ01.lean)",
+      "admissible_subset: subsets of admissible sets are admissible (BoundedPrimeGaps.lean)",
+      "D(2)=2, D(3)=6: prior results (BoundedPrimeGapsOQ03OQ01.lean)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Proved D(4)=8: every admissible 4-tuple has diameter ≥ 8, witnessed by {0,2,6,8}. The proof uses the parity constraint + forced AP structure argument, reducing to the non-admissible triple result. 187 lines, 5 theorems, 0 sorries, 0 axioms. Also repaired pre-existing Mathlib API issues in BoundedPrimeGapsOQ03OQ01.",
+    "implications": "With D(2)=2, D(3)=6, D(4)=8 now all proved, the pattern D(k) for small k is formalized. The OEIS A008407 sequence begins 0,2,6,8,12,16,20,26,30,32,... and these results characterize the smallest possible prime constellations. Under Elliott-Halberstam, the Maynard-Tao bound could improve to D(k) for small k.",
+    "openQuestions": [
+      "Prove D(5)=12 following the same pattern: {0,2,6,8,12} is admissible (proved), show every admissible quintuple has diameter ≥ 12",
+      "Automate the D(k) proofs via a general decidability argument: for fixed k, D(k) is computable, so the proof could be by native_decide with a suitably axiomatized minimality theorem"
+    ]
+  },
+  "leanFile": {
+    "namespace": "BoundedPrimeGapsOQ03OQ01OQ04",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0
+  }
+}

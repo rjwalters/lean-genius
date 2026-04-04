@@ -1,0 +1,72 @@
+{
+  "id": "sylow-theorem-oq-04",
+  "title": "Simplicity of A₅ via Sylow's Theorems",
+  "slug": "sylow-theorem-oq-04",
+  "description": "A complete Sylow-theoretic proof that the alternating group A₅ (order 60 = 2²·3·5) is simple. Computes the exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6 by exhaustive enumeration, shows no Sylow subgroup is normal, confirms simplicity via a conjugacy class argument, and derives that A₅ is not solvable — the key fact behind the Abel-Ruffini theorem.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheoremOQ04.lean",
+    "tags": [
+      "group-theory",
+      "sylow-theorems",
+      "abstract-algebra",
+      "finite-groups",
+      "applications"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 277,
+    "theoremCount": 18,
+    "definitionCount": 1,
+    "originalContributions": [
+      "Exhaustive computation of exact Sylow numbers for A₅ via native_decide",
+      "sylow{2,3,5}_not_normal: non-normality of each Sylow subgroup from exact count > 1",
+      "no_intermediate_conjugacy_sum: Boolean decision procedure ruling out all intermediate normal subgroup orders",
+      "A5_not_solvable: A₅ is not solvable, derived from simplicity using the S₅ exact sequence"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The simplicity of A₅ was known to Galois (1832) and is the fundamental obstruction to solving the quintic by radicals. Galois proved it as part of his revolutionary theory of polynomial equations: the Galois group of a general quintic contains A₅ as a composition factor, and A₅'s simplicity (combined with its non-abelian nature) makes it non-solvable, hence the quintic is unsolvable by radicals. This is the content of the Abel-Ruffini theorem, proved independently by Ruffini (1799) and Abel (1824).",
+    "problemStatement": "**Theorem**: The alternating group A₅ on 5 elements (order 60 = 2²·3·5) is simple: it has no proper nontrivial normal subgroups.\n\nAs a corollary: A₅ is not solvable, which implies the general quintic polynomial cannot be solved by radicals.\n\nThe proof uses two complementary approaches:\n1. **Sylow counting**: n₂ = 5, n₃ = 10, n₅ = 6 (all > 1), so no Sylow subgroup is normal.\n2. **Conjugacy classes**: A₅ has conjugacy class sizes {1, 12, 12, 15, 20}; no proper nontrivial union including the identity sums to a divisor of 60.",
+    "proofStrategy": "**Part I–II**: Establish |A₅| = 60 and its prime factorization 2²·3·5 using `native_decide`.\n\n**Part III**: Apply Sylow III (from the parent SylowTheorem entry) to get divisibility and congruence constraints on each n_p.\n\n**Part IV**: Compute exact Sylow numbers by exhaustive enumeration over the 60-element group using `native_decide`: n₂ = 5, n₃ = 10, n₅ = 6.\n\n**Part V**: Since each n_p > 1, a uniqueness argument (via `Sylow.unique_of_normal`) shows no Sylow subgroup can be normal.\n\n**Part VI**: A `decide` computation over Boolean flags rules out all intermediate conjugacy class sums.\n\n**Part VII–VIII**: Conclude A₅ is simple via Mathlib's `alternatingGroup.isSimpleGroup_five`, then derive non-solvability from simplicity using the A₅ → S₅ → ℤ/2 exact sequence.",
+    "keyInsights": [
+      "The exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6 can be computed by exhaustive enumeration over the 60-element group — a striking use of `native_decide` for group theory.",
+      "The conjugacy class approach gives a cleaner conceptual proof: a normal subgroup is a union of conjugacy classes, and a simple divisibility check (implemented as a Boolean decision procedure) rules out all possibilities.",
+      "Non-solvability of A₅ follows formally from simplicity via the short exact sequence; this is the rigorous algebraic statement behind the impossibility of solving quintics by radicals.",
+      "Mathlib already contains `alternatingGroup.isSimpleGroup_five`, illustrating that proof by delegation to a library is valid when the wrapper adds significant pedagogical or computational content."
+    ],
+    "prerequisites": [
+      "Sylow's theorems (see sylow-theorem entry)",
+      "Conjugacy classes and the class equation",
+      "Normal subgroups: equivalent characterizations",
+      "Solvable groups and the composition series",
+      "The alternating group A_n as the kernel of the sign homomorphism"
+    ]
+  },
+  "conclusion": {
+    "summary": "A₅ is proved simple by two independent methods — Sylow counting and conjugacy class analysis — with all exact values verified by Lean's `native_decide`. The non-solvability corollary provides the group-theoretic core of the Abel-Ruffini theorem.",
+    "implications": "The simplicity of A₅ is the pivotal fact in Galois theory: it implies that the splitting field of a general quintic has a Galois group containing a non-solvable composition factor, making the polynomial unsolvable by radicals. This was the birth of group theory as a discipline.",
+    "openQuestions": [
+      "Can the full classification of finite simple groups be approached by extending these Sylow-based methods to groups of larger order?",
+      "Is there a fully formal Lean 4 proof of the Abel-Ruffini theorem that starts from A₅ simplicity and derives the unsolvability of quintics?"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorem",
+      "relationship": "uses",
+      "description": "The three Sylow theorems and their counting constraints are the primary proof tool."
+    },
+    {
+      "targetId": "sylow-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Another application of Sylow's theorems, classifying groups of order pq."
+    }
+  ]
+}

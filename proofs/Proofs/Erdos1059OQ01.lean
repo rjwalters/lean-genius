@@ -22,6 +22,9 @@ So almost all large primes satisfy the property.
 8. `factorialCheckCount_le_log`: factorialCheckCount n ≤ ⌊log₂ n⌋ + 2 (formalizes density heuristic)
 9. `factorialCheckCount_eq_of_interval`: exact count = l+1 when l! < n ≤ (l+1)!
 10. `factorialCheckCount_const_on_interval`: count is constant within each factorial level
+11. `three_not_qualifying`: p = 3 is prime but does not satisfy AllFactorialSubtractionsComposite
+12. `qualifyingPrimeCount_lt_primeCount`: C(x) < π(x) for all x ≥ 3 (density < 1 always)
+13. `density_strictly_between`: 0 < C(x) < π(x) for all x ≥ 101
 
 **Axiom** (1): `density_one_conjecture` — density equals 1
 
@@ -359,6 +362,56 @@ axiom density_one_conjecture :
       qualifyingPrimeCount x * (k + 1) ≥ primeCount x * k
 
 /-
+## Non-Qualifying Primes: The Density Gap
+
+While density_one_conjecture predicts lim C(x)/π(x) = 1, the density is strictly < 1
+at every finite stage. The prime p = 3 witnesses this: 3 is prime but fails
+AllFactorialSubtractionsComposite since 3 - 0! = 2 is prime.
+-/
+
+/-- p = 3 is prime but does NOT satisfy AllFactorialSubtractionsComposite:
+    For k = 0: 0! = 1 < 3, but 3 - 1 = 2 is prime (violating compositeness). -/
+theorem three_not_qualifying : ¬AllFactorialSubtractionsComposite 3 := by native_decide
+
+/-- **Density Gap Theorem**: For all x ≥ 3, C(x) < π(x).
+    The density is strictly less than 1 at every finite stage.
+
+    Proof: p = 3 lies in π(x) (prime, ≤ x) but NOT in C(x), since 3 - 0! = 2 is prime.
+    So the qualifying-prime finset is a strict subset of the prime finset. -/
+theorem qualifyingPrimeCount_lt_primeCount {x : ℕ} (hx : x ≥ 3) :
+    qualifyingPrimeCount x < primeCount x := by
+  unfold qualifyingPrimeCount primeCount
+  apply Finset.card_lt_card
+  rw [Finset.ssubset_def]
+  refine ⟨?_, ?_⟩
+  · -- C(x) ⊆ π(x): every qualifying prime is a prime
+    intro n hn
+    simp only [Finset.mem_filter] at *
+    exact ⟨hn.1, hn.2.1⟩
+  · -- ¬(π(x) ⊆ C(x)): p = 3 is in π(x) but not C(x)
+    intro h_rev
+    have h3_in_P : 3 ∈ (Finset.range (x + 1)).filter (fun n => Nat.Prime n) :=
+      Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), by decide⟩
+    have h3_in_Q := h_rev h3_in_P
+    simp only [Finset.mem_filter] at h3_in_Q
+    exact three_not_qualifying h3_in_Q.2.2
+
+/-- For x ≥ 101, C(x) ≥ 1: the qualifying prime count is positive.
+    (p = 101 is the smallest qualifying prime.) -/
+theorem qualifyingPrimeCount_pos {x : ℕ} (hx : x ≥ 101) :
+    0 < qualifyingPrimeCount x := by
+  have h101 : 0 < qualifyingPrimeCount 101 := by native_decide
+  exact Nat.lt_of_lt_of_le h101 (qualifyingPrimeCount_mono (by omega))
+
+/-- **Density Sandwich Theorem**: For 101 ≤ x, we have 0 < C(x) < π(x).
+    The density C(x)/π(x) is strictly between 0 and 1 at every finite stage ≥ 101.
+    Combined with density_one_conjecture (lim = 1), this fully characterises the
+    asymptotic regime: the density starts below 1 and approaches 1 from below. -/
+theorem density_strictly_between {x : ℕ} (hx : x ≥ 101) :
+    0 < qualifyingPrimeCount x ∧ qualifyingPrimeCount x < primeCount x :=
+  ⟨qualifyingPrimeCount_pos hx, qualifyingPrimeCount_lt_primeCount (by omega)⟩
+
+/-
 ## Summary
 
 This file provides four new computational witnesses for Erdős Problem #1059,
@@ -380,6 +433,13 @@ Key mathematical contributions:
 
 3. `factorialCheckCount_const_on_interval`: check count is constant within each level.
    This confirms the level structure is well-defined.
+
+4. `qualifyingPrimeCount_lt_primeCount`: C(x) < π(x) for all x ≥ 3.
+   The density is strictly less than 1 at every finite stage. Witness: p = 3 is prime
+   but fails the property (3 - 0! = 2 is prime). Proof: Finset strict-subset argument.
+
+5. `density_strictly_between`: 0 < C(x) < π(x) for all x ≥ 101.
+   Combined with density_one_conjecture, this shows: density starts below 1 and → 1.
 
 Key counts at the six witnesses:
   p = 101: 5 checks (level 4: 4! < 101 ≤ 5! = 120)

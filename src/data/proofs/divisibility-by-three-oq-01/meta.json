@@ -1,0 +1,71 @@
+{
+  "id": "divisibility-by-three-oq-01",
+  "title": "Divisibility By Three OQ-01: General Last-k-Digits, Powers of 2 and 5, and Digital Root Theory",
+  "slug": "divisibility-by-three-oq-01",
+  "description": "A comprehensive extension of divisibility-by-three covering: a general last-k-digit theorem unifying all power-of-2 and power-of-5 divisibility rules; general theorems that 2^k | 10^k and 5^k | 10^k with corollaries 2^k | n ↔ 2^k | (n mod 10^k) and 5^k | n ↔ 5^k | (n mod 10^k); divisibility by 13 via the truncation method; digit sum rules for 37, 99, 999, and 27 via multi-digit groupings; casting out nines and threes theory with addition and multiplication preservation; digital root theory with a full characterization; and coprime factorization rules for 6, 12, 15, 18, 36, 45, 60, and 90.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityByThreeOQ01.lean",
+    "tags": ["number-theory", "divisibility", "digit-sum", "modular-arithmetic", "three"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 550,
+    "theoremCount": 56,
+    "definitionCount": 1,
+    "originalContributions": [
+      "General dvd_iff_dvd_mod theorem with clean proof via Euclidean division and Nat.dvd_add",
+      "pow2_dvd_pow10 and pow5_dvd_pow10 with the general pow2_dvd_last_k and pow5_dvd_last_k corollaries",
+      "Divisibility by 13 via truncation (add 4× last digit) proved as an iff theorem",
+      "Multi-digit grouping rules: 37, 99, 999, 27 via digitSum_dvd_iff helper",
+      "Casting out nines and threes: modEq preservation under addition and multiplication",
+      "General digit_sum_add_modEq and digit_sum_mul_modEq for arbitrary (b, d) pairs",
+      "Digital root definition with full properties: le_9, zero, pos, eq_9_iff characterization",
+      "Coprime factorization rules for 6, 12, 15, 18, 36, 45, 60, 90 as iff theorems"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The divisibility-by-three rule (digit sum divisible by 3) is one of the most ancient arithmetic shortcuts, exploiting the congruence 10 ≡ 1 (mod 3). This extension systematically develops the underlying theory: the general principle that d | 10^k enables 'last k digits' tests, and the Mathlib modEq_digits_sum framework handles all digit-sum rules uniformly. Casting out nines is a practical arithmetic verification technique known since medieval times. The digital root function encapsulates the iterative digit-summing process and has applications in recreational mathematics.",
+    "problemStatement": "Provide a comprehensive formal treatment of divisibility in the natural numbers, covering: (1) a unified general theorem for all last-k-digit rules; (2) infinite families of rules 2^k | n and 5^k | n; (3) the 13-truncation rule; (4) digit-group sum rules for 37, 99, 999, 27; (5) casting out nines and threes with arithmetic preservation; (6) digital root theory; (7) coprime factorization rules for all products of {2, 3, 4, 5, 9} up to 90.",
+    "proofStrategy": "The dvd_iff_dvd_mod master theorem is proved by Euclidean division: n = M·(n/M) + (n mod M), so if d | M then d | M·(n/M), making d | n equivalent to d | (n mod M). Powers of 2 and 5 divide corresponding powers of 10 by factoring 10 = 2×5. Digit-sum rules use Mathlib's Nat.modEq_digits_sum. The 13-truncation uses IsCoprime (13, 10) to cancel 10 from a linear combination. Digital root characterization uses a case split on whether n mod 9 is 0.",
+    "keyInsights": [
+      "The theorem dvd_iff_dvd_mod subsumes all specific last-k-digit rules: 2 (M=10), 4 (M=100), 8 (M=1000), 5 (M=10), 25 (M=100), 125 (M=1000), 16 (M=10000), 32 (M=100000), and more",
+      "The general theorems pow2_dvd_last_k and pow5_dvd_last_k capture infinite families of divisibility rules in single universally quantified statements",
+      "Casting out nines for multiplication (casting_out_nines_mul) is the theoretical basis for the schoolroom error-detection technique: digit sums multiply mod 9",
+      "The digital root is completely characterized by: digitalRoot n = 9 iff 9 | n (for n > 0); otherwise digitalRoot n = n mod 9",
+      "The coprime factorization theorems generalize to composite rules: 6 = 2×3, 12 = 4×3, 15 = 3×5, 18 = 2×9, 36 = 4×9, 45 = 5×9, 60 = 4×3×5, 90 = 2×9×5"
+    ],
+    "prerequisites": [
+      "Nat.digits and Nat.modEq_digits_sum from Mathlib",
+      "Nat.Coprime and IsCoprime",
+      "Euclidean division (Nat.div_add_mod)",
+      "Modular arithmetic congruences"
+    ]
+  },
+  "conclusion": {
+    "summary": "This 550-line, 56-theorem formalization provides the most comprehensive treatment of elementary divisibility rules in the gallery. It establishes the theoretical foundations (general last-k-digit theorem, power families, digit-sum framework) and applies them to a wide range of specific divisors, including all commonly tested divisors up to 125 and coprime products up to 90.",
+    "implications": "The unified dvd_iff_dvd_mod theorem shows that an infinite family of divisibility rules (one for each pair (d, M) with d | M) are all corollaries of a single modular arithmetic fact. The casting out nines module demonstrates that digit-sum residues are preserved under ring operations, explaining why the technique correctly detects arithmetic errors.",
+    "openQuestions": [
+      "Extend to an automated tactic that generates and verifies divisibility rules for arbitrary input divisors d coprime to a given base b",
+      "Formalize the convergence of the digital root iteration: starting from any n, repeated digit-summing always terminates at digitalRoot n in finitely many steps",
+      "Generalize casting out nines to arbitrary moduli: digit-sum mod d is preserved under addition and multiplication whenever b ≡ 1 (mod d)"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "related",
+      "description": "DivisibilityRules provides the alternating digit sum framework and digital root; DivisibilityByThreeOQ01 provides the general last-k-digit framework and power families"
+    },
+    {
+      "targetId": "divisibility-by-three-oq-02",
+      "relationship": "extended-by",
+      "description": "OQ-02 further extends with alternating block sums, repunit divisibility, and palindrome divisibility by 11"
+    }
+  ]
+}

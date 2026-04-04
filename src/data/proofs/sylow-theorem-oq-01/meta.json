@@ -1,0 +1,72 @@
+{
+  "id": "sylow-theorem-oq-01",
+  "title": "Classification of Groups of Order pq via Sylow's Theorems",
+  "slug": "sylow-theorem-oq-01",
+  "description": "A complete Lean 4 proof of the pq-group classification theorem: for distinct primes p < q, every group of order pq is cyclic when p does not divide q-1. The proof uses Sylow's third theorem to show the Sylow q-subgroup is always unique (hence normal), and the Sylow p-subgroup is unique when p ∤ q-1. When both are normal, a commutator argument shows they commute, and the product of generators has order pq.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheoremOQ01.lean",
+    "tags": [
+      "group-theory",
+      "sylow-theorems",
+      "abstract-algebra",
+      "finite-groups",
+      "p-groups"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 388,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "originalContributions": [
+      "cyclic_of_both_sylow_normal: full original proof that normal Sylow subgroups of coprime order make G cyclic",
+      "sylow_q_count_constraint: explicit derivation of n_q | p and n_q ≡ 1 (mod q) for pq-groups",
+      "unique_sylow_q: proof that p < q forces n_q = 1 for any pq-group",
+      "pq_cyclic_classification: final theorem packaging the full p ∤ (q-1) → cyclic classification"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classification of groups of order pq for distinct primes p < q was completed by Burnside in 1911 using Sylow's theorems. The result shows: if p does not divide q-1, there is exactly one group of order pq up to isomorphism (the cyclic group ℤ/pq); if p divides q-1, there are exactly two — the cyclic group and a non-abelian semidirect product ℤ/q ⋊ ℤ/p. This is among the most elegant applications of the Sylow theorems and is a standard exercise in abstract algebra courses.",
+    "problemStatement": "Let p < q be distinct primes and G a finite group of order pq.\n\n**Main Theorem**: If p does not divide q-1, then G is cyclic (isomorphic to ℤ/pq).\n\n**Converse direction**: If p divides q-1, there exists a non-cyclic group of order pq (the semidirect product ℤ/q ⋊ ℤ/p), and any non-cyclic group of order pq has exactly q Sylow p-subgroups.\n\n**Concrete examples**:\n- Order 15 = 3·5: 3 ∤ 4, so only ℤ/15\n- Order 21 = 3·7: 3 | 6, so ℤ/21 and a non-abelian group of order 21\n- Order 35 = 5·7: 5 ∤ 6, so only ℤ/35\n- Order 6 = 2·3: 2 | 2, so ℤ/6 and S₃",
+    "proofStrategy": "**Step 1 (Unique Sylow q-subgroup)**: n_q divides p (the index of any Sylow q-subgroup) and n_q ≡ 1 (mod q). Since p < q, if n_q = p then p ≡ 1 (mod q), impossible since p < q. So n_q = 1.\n\n**Step 2 (Sylow p-subgroup analysis)**: n_p divides q (prime) so n_p ∈ {1, q}. If n_p = q then q ≡ 1 (mod p), i.e., p | q-1. Contrapositive: if p ∤ q-1 then n_p = 1.\n\n**Step 3 (Cyclicity from two normal subgroups)**: When both Sylow subgroups P (order p) and Q (order q) are normal:\n  - P ∩ Q = {1}: elements in both have order dividing gcd(p,q) = 1\n  - Elements of P and Q commute: the commutator g⁻¹k⁻¹gk lies in both P and Q, hence is 1\n  - Generators g ∈ P, k ∈ Q have orders p, q and commute, so gk has order pq = |G|\n  - G = ⟨gk⟩ is cyclic",
+    "keyInsights": [
+      "The key constraint p < q forces n_q = 1 unconditionally: n_q | p and n_q ≡ 1 (mod q), but n_q ≥ 2 would require n_q ≥ q+1 > p, contradicting n_q | p.",
+      "The commutator argument for cyclicity is a general technique: two normal subgroups of coprime order generate their direct product.",
+      "The order-of-product formula `Commute.orderOf_mul_eq_mul_orderOf_of_coprime` is the key Mathlib lemma connecting commutativity of generators to the order of their product.",
+      "The non-abelian case when p | q-1 is witnessed by the unique non-trivial homomorphism ℤ/p → Aut(ℤ/q) ≅ ℤ/(q-1), which constructs the semidirect product ℤ/q ⋊ ℤ/p."
+    ],
+    "prerequisites": [
+      "Sylow's theorems (see sylow-theorem entry)",
+      "Subgroup index and Lagrange's theorem",
+      "Normal subgroups and commutators",
+      "Cyclic groups and orders of elements",
+      "Direct products of groups of coprime order"
+    ]
+  },
+  "conclusion": {
+    "summary": "The pq-group classification is fully verified: the uniqueness of the Sylow q-subgroup, the cyclicity criterion, and the concrete examples are all machine-checked with 0 sorries and 0 axioms. The core cyclicity proof from two normal Sylow subgroups is an original 80-line Lean 4 construction.",
+    "implications": "This result is the prototypical example of how Sylow's theorems constrain group structure. The same technique — bounding Sylow numbers to force normality, then using commutator arguments — extends to classify groups of many other orders and underlies large portions of finite group theory.",
+    "openQuestions": [
+      "Can the non-abelian case (when p | q-1, there is exactly one non-abelian group of order pq) be fully formalized, including the uniqueness up to isomorphism?",
+      "What is the complete classification of groups of order p²q for primes p, q — can the Sylow methods be systematized into a decision procedure?"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorem",
+      "relationship": "uses",
+      "description": "The three Sylow theorems are the primary tools for bounding Sylow numbers."
+    },
+    {
+      "targetId": "sylow-theorem-oq-04",
+      "relationship": "sibling",
+      "description": "Another application of Sylow counting, proving simplicity of A₅."
+    }
+  ]
+}

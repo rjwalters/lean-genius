@@ -1,0 +1,65 @@
+{
+  "id": "kummer-theorem-oq-03",
+  "title": "Kummer's Theorem OQ-03: Divisibility Patterns in Pascal's Triangle mod p^k",
+  "slug": "kummer-theorem-oq-03",
+  "description": "Extends Kummer's theorem with divisibility characterizations: C(n,k) ≡ 0 (mod p^m) iff there are ≥ m carries, C(p^n, k) ≡ 0 (mod p) for 0 < k < p^n, and p-adic valuations for specific patterns.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KummerTheoremOQ03.lean",
+    "tags": ["number-theory", "combinatorics", "kummer-theorem", "p-adic", "binomial-coefficient"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 116,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "assumptions": "None.",
+    "originalContributions": [
+      "Characterization of C(n,k) divisibility by p^m via carry count (Kummer's criterion for prime powers)",
+      "Complete proof that all interior entries in the p^n-th row of Pascal's triangle are divisible by p",
+      "Carry-free criterion (Lucas' theorem for coprimality)",
+      "Concrete instances for p-th and p²-th rows"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Kummer's theorem (1852) characterizes the p-adic valuation of binomial coefficients via the number of carries in base-p addition. Granville (1997) extended this to prime power moduli. The fractal structure of Pascal's triangle modulo primes (Sierpiński's triangle for p=2) is a direct consequence.",
+    "problemStatement": "Characterize when p^m divides C(n,k) using the carry count in the base-p representation of k and n-k. Also characterize the special rows p^n of Pascal's triangle and the carry-free (coprime) case.",
+    "proofStrategy": "All results follow from the parent's `kummer` theorem (from Mathlib) which identifies the p-adic valuation of C(n,k) with the number of carries. The carry count is defined explicitly as a Finset cardinality, and divisibility by p^m is equated to the carry count being ≥ m via `multiplicity.pow_dvd_iff_le_multiplicity`.",
+    "keyInsights": [
+      "The carry count encodes all p-adic information about C(n,k)",
+      "Pure power rows p^n always produce at least one carry for any interior k, explaining their divisibility",
+      "The carry-free case (carryCount = 0) corresponds exactly to Lucas' theorem: C(n,k) ≢ 0 mod p"
+    ],
+    "prerequisites": [
+      "Kummer's theorem on p-adic valuations of binomial coefficients",
+      "Base-p digit representations",
+      "Multiplicity in Mathlib (PartENat-valued)"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "A complete Lean 4 formalization of the divisibility structure of Pascal's triangle modulo prime powers, with 5 theorems and 0 axioms. All results derive from Mathlib's Kummer theorem via the carry count abstraction.",
+    "implications": "Provides a formal foundation for the fractal self-similarity of Pascal's triangle mod p, and connects combinatorial divisibility to p-adic arithmetic in a machine-verified setting.",
+    "openQuestions": [
+      "Can the full Lucas' theorem (C(n,k) ≡ ∏ C(nᵢ,kᵢ) mod p via digit decomposition) be formalized in this framework?",
+      "Extension to multinomial coefficients?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "kummer-theorem",
+      "title": "Kummer's Theorem",
+      "relationship": "extends"
+    }
+  ],
+  "leanFile": {
+    "namespace": "KummerTheoremOQ03",
+    "lineCount": 116,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1
+  }
+}

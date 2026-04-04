@@ -1,0 +1,111 @@
+{
+  "id": "birthday-problem-oq-02-oq-01",
+  "title": "Birthday Problem: Matching Lower Bound via ln(1-x) ≥ -x-x²",
+  "slug": "birthday-problem-oq-02-oq-01",
+  "description": "Proves the matching lower bound for the birthday collision probability: ∏(1-i/d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²)). Combined with the OQ-02 upper bound, this gives a two-sided exponential approximation.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ02OQ01.lean",
+    "tags": [
+      "probability",
+      "birthday-problem",
+      "real-analysis",
+      "exponential-bounds",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 229,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "assumptions": "None. Fully machine-verified from Mathlib.",
+    "originalContributions": [
+      "exp_neg_sub_sq_le_one_sub: 1-x ≥ exp(-x-x²) for x ∈ [0, 1/2] — core inequality",
+      "sum_sq_formula: ∑_{i<k} i² = k(k-1)(2k-1)/6 (by induction)",
+      "sum_sq_le_quartic: ∑_{i<k} i² ≤ k²(k-1)²/4 (bounds the error term)",
+      "birthdayProduct_lower_bound: ∏(1-i/d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²))",
+      "birthdayProduct_two_sided: two-sided bound combining upper and lower exponentials"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The birthday problem asks: what is the probability that k people all have distinct birthdays among d equally likely days? The exact formula is P(k,d) = ∏_{i=0}^{k-1}(1 - i/d). The parent formalization (OQ-02) proved the upper bound P(k,d) ≤ exp(-k(k-1)/(2d)) using 1-x ≤ exp(-x).\n\nThe matching lower bound P(k,d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²)) uses the tighter inequality ln(1-x) ≥ -x-x² for x ≤ 1/2. Together, these give the asymptotic P(k,d) ≈ exp(-k(k-1)/(2d)) that is central to the birthday paradox's quantitative analysis.",
+    "problemStatement": "Prove the lower bound: ∏_{i=0}^{k-1}(1-i/d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²)), under the constraint 2(k-1) ≤ d.",
+    "proofStrategy": "**Core inequality**: For x ∈ [0, 1/2], prove 1-x ≥ exp(-x-x²). This follows from exp(x+x²) ≥ 1 + (x+x²) + (x+x²)²/2 (Taylor) and the algebraic identity (1-x)(1 + (x+x²) + (x+x²)²/2) ≥ 1 for x ≤ 1/2.\n\n**Error term**: The discrepancy between the upper bound exp(-k(k-1)/(2d)) and lower bound is k²(k-1)²/(4d²). This comes from bounding ∑_{i<k} i²/d² ≤ k²(k-1)²/(4d²), proved via sum_sq_le_quartic.\n\n**Main bound**: Apply the core inequality term by term: each factor (1-i/d) ≥ exp(-i/d-(i/d)²). Take the product: ∏ ≥ exp(∑(-i/d-(i/d)²)). Bound the sum using the error term.",
+    "keyInsights": [
+      "The key is the Taylor remainder: exp(y) ≥ 1 + y + y²/2, used with y = x+x²",
+      "The algebraic inequality (1-x)(1+(x+x²)+(x+x²)²/2) ≥ 1 for x ≤ 1/2 is verified by nlinarith",
+      "The constraint 2(k-1) ≤ d ensures each ratio i/d ≤ 1/2 — the required hypothesis",
+      "The error k²(k-1)²/(4d²) ≈ k⁴/(4d²) is negligible when k ~ √d, giving the classic regime",
+      "Combined upper+lower: P(k,d) is within a multiplicative factor exp(k²(k-1)²/(4d²)) of exp(-k(k-1)/(2d))"
+    ],
+    "prerequisites": [
+      "birthdayProduct definition: ∏_{i<k}(1-i/d)",
+      "Real.exp_sum: exp(∑aᵢ) = ∏exp(aᵢ)",
+      "Finset.prod_le_prod: pointwise inequality implies product inequality",
+      "Real.sum_le_exp_of_nonneg: Taylor lower bound for exp",
+      "Birthday problem OQ-02 upper bound"
+    ]
+  },
+  "sections": [
+    {
+      "id": "core-inequality",
+      "title": "Core Inequality",
+      "summary": "exp_neg_sub_sq_le_one_sub: 1-x ≥ exp(-x-x²) for 0 ≤ x ≤ 1/2. Proved via Taylor's exp(y) ≥ 1+y+y²/2.",
+      "startLine": 30,
+      "endLine": 74
+    },
+    {
+      "id": "birthday-product",
+      "title": "Birthday Product Definition and Properties",
+      "summary": "birthdayProduct(k,d) = ∏(1-i/d), with nonnegativity and ≤ 1 for each factor.",
+      "startLine": 76,
+      "endLine": 100
+    },
+    {
+      "id": "sum-sq-bounds",
+      "title": "Sum of Squares Bounds",
+      "summary": "sum_sq_formula: ∑i² = k(k-1)(2k-1)/6. sum_sq_le_quartic: ∑i² ≤ k²(k-1)²/4.",
+      "startLine": 102,
+      "endLine": 127
+    },
+    {
+      "id": "main-bound",
+      "title": "Main Lower Bound",
+      "summary": "birthdayProduct_lower_bound: P(k,d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²)). birthdayProduct_two_sided: combined two-sided bound.",
+      "startLine": 129,
+      "endLine": 229
+    }
+  ],
+  "conclusion": {
+    "summary": "Proved ∏(1-i/d) ≥ exp(-k(k-1)/(2d) - k²(k-1)²/(4d²)) under 2(k-1) ≤ d. Combined with OQ-02's upper bound, this gives a two-sided exponential approximation for the birthday probability. 229 lines, 8 theorems, 0 sorries, 0 axioms.",
+    "implications": "The two-sided bound exp(-k(k-1)/(2d) - k²(k-1)²/(4d²)) ≤ P(k,d) ≤ exp(-k(k-1)/(2d)) shows that the birthday probability is asymptotically exp(-k(k-1)/(2d)) in the standard regime k ~ √d. The error term k²(k-1)²/(4d²) is O(k⁴/d²) = O(1) when k = O(d^{1/2}), confirming the classical approximation.",
+    "openQuestions": [
+      "Prove a sharper lower bound using more terms of the Taylor expansion of ln(1-x)",
+      "Extend to non-uniform distributions: does the product formula still give tight bounds?",
+      "Formalize the threshold n ≈ √(2d·ln(1/(1-p))) for birthday collision probability p"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-02",
+      "relationship": "extends",
+      "description": "Parent: upper bound ∏(1-i/d) ≤ exp(-k(k-1)/(2d))"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Base birthday problem formalization"
+    }
+  ],
+  "leanFile": {
+    "namespace": "(global)",
+    "lineCount": 229,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1
+  }
+}

@@ -89,3 +89,42 @@ The density-1 conjecture says lim C(x)/π(x) = 1. Proof requires PNT + Brun-Titc
 - Prove density_one_conjecture from selberg_density_axiom (OQ-02) once PNT/Brun-Titchmarsh available
 - The tighter asymptotic factorialCheckCount(n) = Θ(log n / log log n) would require Stirling
 - Cross-namespace: connect OQ-01 density conjecture to OQ-02 Selberg axiom via quantitative sieve
+
+---
+
+## Session 2026-04-04 (Session 3) - Density Gap and Sandwich Theorems
+
+**Mode**: REVISIT
+**Outcome**: progress
+
+### What I Did
+
+1. **Proved `three_not_qualifying`** (native_decide): p = 3 fails AllFactorialSubtractionsComposite.
+   Witness: 3 - 0! = 2 is prime. Simplest non-qualifying prime.
+
+2. **Proved `qualifyingPrimeCount_lt_primeCount`**: For all x ≥ 3, C(x) < π(x).
+   Uses `Finset.ssubset_def`: qualifying-prime finset ⊊ prime finset, as 3 ∈ π(x) \ C(x).
+   **Significance**: Density is strictly < 1 at every finite stage.
+
+3. **Proved `qualifyingPrimeCount_pos`**: For x ≥ 101, 0 < C(x).
+   native_decide for C(101) = 1 > 0; monotonicity for x ≥ 101.
+
+4. **Proved `density_strictly_between`**: For x ≥ 101, 0 < C(x) < π(x).
+   Combined density sandwich: density strictly between 0 and 1 at every finite stage ≥ 101.
+
+5. Build: 0 sorries, 0 warnings, 1 axiom. 396 → 456 lines.
+
+### Key Findings
+- Gap theorem uses only that 3 is prime and 3 - 0! = 2 is prime — completely elementary
+- 48 level-6 witnesses in (720, 5040): 769, 937, 967, 1009, 1201, ... (Python-computed)
+- density_one_conjecture and selberg_density_axiom are genuinely independent without PNT
+
+### Files Modified
+- `proofs/Proofs/Erdos1059OQ01.lean`: 396 → 456 lines, 4 new theorems
+- `src/data/proofs/erdos-1059-oq-01/meta.json`: updated description, counts, contributions
+- `research/problems/erdos-1059-oq-01/knowledge.md`: this session
+
+### Next Steps
+- Brun-Titchmarsh + PNT (both missing from Mathlib) needed to eliminate density_one_conjecture
+- Tighter check count: factorialCheckCount(n) ≤ log n / log log n (Stirling-free approach feasible)
+- Add more level-6 witnesses only if concrete density bounds are needed

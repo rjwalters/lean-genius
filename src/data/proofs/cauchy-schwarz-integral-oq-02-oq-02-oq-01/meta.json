@@ -1,0 +1,64 @@
+{
+  "id": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+  "title": "Minkowski's Inequality: ENNReal rpow Cancellation Step",
+  "slug": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+  "description": "Proves the abstract ENNReal cancellation lemma underlying the Minkowski inequality derivation: if X ≤ C·X^q with q < 1, then X^{1-q} ≤ C. Also proves the Minkowski exponent identity 1/p + 1/q = 1.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ02OQ02OQ01.lean",
+    "tags": ["analysis", "lp-spaces", "minkowski-inequality", "ennreal"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 117,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "None.",
+    "originalContributions": [
+      "Abstract ENNReal rpow cancellation lemma: X ≤ C·X^q implies X^{1-q} ≤ C for q < 1",
+      "Minkowski division step: explicit instantiation at q = (p-1)/p for Lp norm cancellation",
+      "Exponent identity 1 - (p-1)/p = 1/p for all p ≠ 0"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Minkowski's inequality (1910) states that the Lp norm satisfies the triangle inequality for p ≥ 1. The standard proof via Hölder's inequality produces an intermediate bound of the form ‖f+g‖_p^p ≤ (‖f‖_p + ‖g‖_p)·‖f+g‖_p^{p-1}, which requires an 'rpow division' step to conclude ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p. This step involves cancelling an extended non-negative real power.",
+    "problemStatement": "In the ENNReal setting (extended non-negative reals used in measure theory), prove the abstract cancellation: if X ≤ C·X^q with 0 ≤ q < 1 and X finite, then X^{1-q} ≤ C. Apply this at q = (p-1)/p to complete the Minkowski inequality derivation.",
+    "proofStrategy": "Factor X = X^{1-q}·X^q using rpow_add, then cancel X^q (which is nonzero and finite for 0 < X < ⊤). The case X = 0 is handled separately since 0^{1-q} = 0. The abstract lemma is then instantiated with the specific Minkowski exponents.",
+    "keyInsights": [
+      "The ENNReal setting requires careful handling of 0 and ⊤ cases separately",
+      "rpow_add provides the factoring identity X = X^{1-q} · X^q when X is finite and nonzero",
+      "The exponent arithmetic 1 - (p-1)/p = 1/p is the key identity linking the Hölder and Minkowski exponents"
+    ],
+    "prerequisites": [
+      "Extended non-negative reals (ENNReal) in Mathlib",
+      "ENNReal.rpow and its properties",
+      "Hölder's inequality and Minkowski's inequality for Lp spaces"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "A clean Lean 4 proof of the ENNReal rpow cancellation lemma and its application to the Minkowski division step, with 3 theorems and 0 axioms. The abstract form separates the algebraic cancellation from the analytic measure theory.",
+    "implications": "Fills a gap in the Lp space hierarchy in the gallery: the parent entry used `ENNReal.lintegral_Lp_add_le` as a black box; this entry exposes the division step explicitly, making the Minkowski derivation fully transparent.",
+    "openQuestions": [
+      "Can the abstract cancellation lemma be generalized to arbitrary ordered semifields with rpow?",
+      "Is there a version that avoids the X ≠ ⊤ hypothesis by working in NNReal?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "cauchy-schwarz-integral-oq-02-oq-02",
+      "title": "Cauchy-Schwarz Integral OQ-02-OQ-02",
+      "relationship": "extends"
+    }
+  ],
+  "leanFile": {
+    "namespace": "CancellationStep",
+    "lineCount": 117,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0
+  }
+}

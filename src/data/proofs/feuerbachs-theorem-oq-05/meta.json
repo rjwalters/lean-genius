@@ -1,0 +1,66 @@
+{
+  "id": "feuerbachs-theorem-oq-05",
+  "title": "Feuerbach's Theorem OQ-05: Inversive Geometry Proof Framework",
+  "slug": "feuerbachs-theorem-oq-05",
+  "description": "Formal development of the inversive geometry framework for Feuerbach's theorem: the Feuerbach point is defined, proved to lie on both circles, and inversion at the Feuerbach point sends both circles to parallel lines — the foundation of the classical inversive proof.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremOQ05.lean",
+    "tags": ["geometry", "euclidean-geometry", "feuerbach", "inversion", "nine-point-circle", "incircle"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 266,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "assumptions": "None.",
+    "originalContributions": [
+      "Explicit coordinate definition of the Feuerbach point on the ray from nine-point center through incenter",
+      "Formal proof that the Feuerbach point lies on both the nine-point circle and the incircle",
+      "Planar inversion definition and the Circle-to-Line theorem (inversion at a point on a circle maps the circle to a line)",
+      "Proof that the image lines of both circles under inversion at the Feuerbach point are parallel (proportional normal directions)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Feuerbach's theorem (1822) states that the nine-point circle of a triangle is internally tangent to the incircle and externally tangent to each of the three excircles. The classical inversive proof, using inversion centered at the tangency point (Feuerbach point), elegantly transforms circles to lines and reduces the tangency question to parallelism.",
+    "problemStatement": "Develop the inversive geometry framework for Feuerbach's theorem: define the Feuerbach point, prove it lies on both circles, define planar inversion, prove the Circle-to-Line theorem, and show the two image lines are parallel.",
+    "proofStrategy": "The Feuerbach point F is defined as the point on the ray N→I (nine-point center to incenter) at distance R/2 from N, where R/2 is the nine-point radius. Feuerbach's incircle distance theorem (dist(N,I) = R/2 - r) guarantees F lies on both circles. Inversion at F sends each circle (passing through F) to a line. The proportionality N-F = -(R/2/r)·(I-F) follows from the collinearity F, N, I, making the image lines parallel.",
+    "keyInsights": [
+      "The Feuerbach point exists only for non-equilateral triangles (inradius < ninePointRadius)",
+      "Circle-to-Line theorem: the image of a circle through the inversion center is always a line",
+      "Key identity: |P-O|² = 2(P-O)·(C-O) for P, O on a circle centered at C — eliminates the center from the inversion computation",
+      "The collinearity F, N, I directly implies the image normals are proportional, hence the lines are parallel"
+    ],
+    "prerequisites": [
+      "Feuerbach's incircle distance theorem from parent FeuerbachsTheorem",
+      "Coordinate geometry and dist2/dist2_sq definitions",
+      "Real.sqrt and norm calculations in ℝ²"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "This file proves 10 theorems (plus 2 private lemmas) with 0 sorries and 0 axioms, building the complete inversive framework: Feuerbach point definition and membership in both circles, Circle-to-Line theorem, and parallel image lines.",
+    "implications": "The inversive framework established here is the foundation for the full proof that excircles are also tangent to the nine-point circle. The parallel line result encodes the essential geometric content: after inversion, the problem reduces to showing that parallel-translated circles (between two parallel lines) are tangent to the original circles.",
+    "openQuestions": [
+      "Complete the proof that each excircle is tangent to the nine-point circle using this inversive framework",
+      "Formalize the full Feuerbach theorem including all three excircles"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "feuerbachs-theorem",
+      "relationship": "extends",
+      "description": "Parent file providing the Feuerbach incircle distance theorem and triangle geometry definitions"
+    }
+  ],
+  "leanFile": {
+    "namespace": "FeuerbachsTheoremOQ05",
+    "lineCount": 266,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2
+  }
+}

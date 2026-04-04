@@ -1,0 +1,67 @@
+{
+  "id": "derangements-convergence",
+  "title": "Derangements Converge to 1/e",
+  "slug": "derangements-convergence",
+  "description": "A complete formalization proving that D(n)/n! converges to e⁻¹ as n → ∞, with the sharp error bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)!. The proof identifies D(n)/n! as the n-th partial sum of the alternating Taylor series for e⁻¹ = ∑(-1)^k/k!, then applies the alternating series estimation theorem. Covers Wiedijk's theorem #88.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsConvergence.lean",
+    "tags": [
+      "combinatorics",
+      "derangements",
+      "probability",
+      "e-constant",
+      "convergence"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 284,
+    "theoremCount": 8,
+    "definitionCount": 4,
+    "originalContributions": [
+      "numDerangements_eq_factorial_mul_altSum: identity D(n) = n! · ∑_{k≤n} (-1)^k/k! proved by strong induction",
+      "alternating_tail_bound: sharp bound |∑_{k≥n+1} (-1)^k/k!| ≤ 1/(n+1)! via alternating series analysis",
+      "derangements_convergence_rate: the main sharp error bound |D(n)/n! - e⁻¹| ≤ 1/(n+1)!",
+      "alt_partial_sum_nonneg and alt_partial_sum_le_first: two auxiliary lemmas establishing the alternating series bounds"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The derangement problem (how many permutations of n objects leave none in its original position?) was studied by Montmort (1708) and solved by Euler (1751). The exact formula D(n) = n! · ∑_{k=0}^n (-1)^k/k! and its convergence to n!/e were known in the 18th century and provided one of the first explicit connections between combinatorics and the transcendental number e. This result appears as theorem #88 on Wiedijk's list of 100 theorems to formalize.",
+    "problemStatement": "Let D(n) denote the number of derangements of n elements (permutations with no fixed points). Then:\n\n**Main Theorem (convergence rate)**: For all n ≥ 0,\n  |D(n)/n! - e⁻¹| ≤ 1/(n+1)!\n\n**Corollary (convergence)**: D(n)/n! → e⁻¹ as n → ∞.\n\nThe identity D(n)/n! = ∑_{k=0}^n (-1)^k/k! shows D(n)/n! is the n-th partial sum of the Taylor series for e⁻¹, and the alternating series estimation theorem gives the sharp error bound.",
+    "proofStrategy": "**Step 1 (Identity)**: Prove D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction using the recurrence D(n+2) = (n+1)(D(n+1) + D(n)).\n\n**Step 2 (Series representation)**: Show e⁻¹ = ∑_{k≥0} (-1)^k/k! via the Mathlib exponential series `NormedSpace.exp_eq_tsum`.\n\n**Step 3 (Tail splitting)**: Write e⁻¹ = ∑_{k≤n} (-1)^k/k! + ∑_{k≥n+1} (-1)^k/k!, so the error equals the absolute value of the tail.\n\n**Step 4 (Alternating series bound)**: Prove |∑_{k≥0} (-1)^k/(m+k)!| ≤ 1/m! by:\n  - Showing summability via comparison to ∑ 1/k!\n  - Lower bound: the infinite sum is nonneg (alternating, decreasing terms)\n  - Upper bound: the infinite sum ≤ first term 1/m!\n  - Both bounds by a careful parity analysis on partial sums\n\n**Step 5 (Convergence)**: Apply the bound to get |D(n)/n! - e⁻¹| ≤ 1/(n+1)! → 0.",
+    "keyInsights": [
+      "The ratio D(n)/n! is exactly the n-th partial sum of ∑(-1)^k/k!, making the convergence to e⁻¹ a direct consequence of the Taylor series for the exponential function.",
+      "The alternating series bound 1/(n+1)! is sharp: it comes from the alternating series estimation theorem, where the error is bounded by the first omitted term.",
+      "The summability of ∑(-1)^k/k! is proved by comparison to ∑1^k/k! (the exponential series at 1), an elegant use of absolute convergence.",
+      "The strong induction proof of the identity D(n) = n! · altPartialSum(n) mirrors the classical combinatorial argument and gives a clean Lean formalization."
+    ],
+    "prerequisites": [
+      "Derangements and the inclusion-exclusion formula",
+      "The recurrence D(n+2) = (n+1)(D(n+1) + D(n))",
+      "Taylor series for the exponential function",
+      "Alternating series estimation theorem",
+      "Summability and tsum in Lean/Mathlib"
+    ]
+  },
+  "conclusion": {
+    "summary": "The convergence D(n)/n! → 1/e is fully formalized with the sharp bound 1/(n+1)! and zero sorries. The proof gives an explicit and elegant connection between the combinatorics of derangements and the Taylor series of the exponential function.",
+    "implications": "This result has a striking probabilistic interpretation: the probability that a uniformly random permutation of n elements is a derangement is approximately 1/e ≈ 36.8% for large n, converging with error less than 1/(n+1)!. This is one of the most memorable facts in probability theory.",
+    "openQuestions": [
+      "Can the convergence in total variation distance to the Poisson(1) distribution be derived from this convergence rate? (See derangements-oq-03-oq-02)",
+      "What is the analogous convergence rate for the number of permutations with exactly k fixed points?"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "derangements-oq-03-oq-02",
+      "relationship": "parent",
+      "description": "Extends this convergence result to total variation convergence of the fixed-point distribution to Poisson(1)."
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "divisibility-rules",
+  "title": "Divisibility Rules: A Comprehensive Formal Collection",
+  "slug": "divisibility-rules",
+  "description": "A comprehensive Lean 4 formalization of classical divisibility rules in number theory. Covers alternating digit sum rules (including divisibility by 11), last-digit rules (2, 5, 10), last-two-digit rules (4, 25), last-three-digit rules (8, 125), combined coprime factorization rules (6, 12, 15, 18, 30), digit sum rules via Mathlib's modEq_digits_sum framework (3, 9 in base 10, and in hexadecimal and other bases), the 7-truncation method, and the digital root function. All rules are proved as biconditionals with concrete verification examples.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityRules.lean",
+    "tags": ["number-theory", "divisibility", "modular-arithmetic", "elementary-number-theory", "digit-sum"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 392,
+    "theoremCount": 38,
+    "definitionCount": 3,
+    "originalContributions": [
+      "Alternating digit sum framework: alternatingDigitSum and altDigitSum definitions with inductive proof that when b ≡ -1 (mod d), n ≡ alternating digit sum (mod d)",
+      "Complete proofs of last-k-digit rules for 2, 4, 5, 8, 10, 25, 125 as iff biconditionals",
+      "Combined coprime factorization rules for 6, 12, 15, 18, 30 with the general coprime_mul_dvd_iff theorem",
+      "Digit sum rules in multiple bases: base 10 (3, 9), base 8 (7), base 16 (3, 5, 15), base 7 (2, 3, 6)",
+      "Divisibility by 7 via the truncation method (subtract 2× last digit)",
+      "Digital root definition and properties including concrete value computations"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Divisibility rules are among the oldest tools in elementary number theory, tracing back to antiquity. The rule that a number is divisible by 9 if and only if its digit sum is divisible by 9 follows from the fact that 10 ≡ 1 (mod 9), and appears in medieval arithmetic texts. The alternating digit sum rule for 11 exploits 10 ≡ -1 (mod 11). The truncation method for 7 is a less well-known but fully rigorous rule exploiting coprimality of 7 and 10. This formalization unifies all these classical rules under a common modular arithmetic framework.",
+    "problemStatement": "For each divisor d ∈ {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 18, 25, 30, 125}, provide a machine-verified biconditional: d | n if and only if a simple digit-based test holds. The tests include: last digit (for 2, 5, 10), last two digits (4, 25), last three digits (8, 125), digit sum (3, 9, and cross-base variants), alternating digit sum (11), truncation (7), and coprime factorization (6, 12, 15, 18, 30).",
+    "proofStrategy": "The proof strategy unifies around two key modular arithmetic facts: (1) when b ≡ 1 (mod d), the digit sum of n in base b is congruent to n mod d (Mathlib's modEq_digits_sum); (2) when b ≡ -1 (mod d), the alternating digit sum is congruent to n mod d (proved by induction on digit lists via ofDigits). Last-k-digit rules follow from the fact that d | 10^k implies d | n ↔ d | (n mod 10^k). Combined rules use Nat.Coprime.mul_dvd_of_dvd_of_dvd.",
+    "keyInsights": [
+      "The two fundamental congruences b ≡ 1 (mod d) and b ≡ -1 (mod d) generate all classical divisibility rules: the former gives digit sum rules, the latter gives alternating sum rules",
+      "The last-k-digit rules for powers of 2 and powers of 5 both follow from 2^k | 10^k and 5^k | 10^k respectively",
+      "The 7-truncation rule uses the identity 10(q - 2r) = n - 21r, so gcd(7,10)=1 allows cancellation of 10 from both sides of the divisibility relation",
+      "Coprime factorization rules (6 = 2×3, 12 = 4×3, etc.) follow directly from Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+      "The digital root function is simply n mod 9 with special handling for 0 and multiples of 9, provably always ≤ 9"
+    ],
+    "prerequisites": [
+      "Modular arithmetic (Nat.ModEq, Int.ModEq)",
+      "Nat.digits and Nat.ofDigits from Mathlib",
+      "Nat.Coprime and divisibility in Lean 4 / Mathlib"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization provides machine-verified proofs of 38 theorems covering the complete range of classical elementary divisibility rules. Every rule is stated as a biconditional and verified with concrete examples, making this a reference-quality formalization of a core topic in elementary number theory.",
+    "implications": "The unification of divisibility rules under the alternating/non-alternating digit sum framework demonstrates that all classical rules are instances of a single modular arithmetic principle. The formal proofs confirm that these rules, often taught informally, have rigorous foundations. The cross-base digit sum rules (e.g., 7 in octal, 3 in hex) show that divisibility rules are basis-dependent and can be discovered systematically.",
+    "openQuestions": [
+      "Formalize a general algorithm that, given any divisor d coprime to 10, automatically derives and proves a divisibility rule for d in some base",
+      "Extend the alternating digit sum framework to k-digit block alternating sums (e.g., divisibility by 7 via alternating 3-digit groups, since 1000 ≡ -1 mod 7)",
+      "Formalize divisibility rules for non-decimal bases in full generality"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 extends with 13-truncation, multi-digit grouping rules (37, 27, 99, 101), casting out nines, and a general last-k-digit framework"
+    },
+    {
+      "targetId": "divisibility-by-three-oq-01",
+      "relationship": "extended-by",
+      "description": "DivisibilityByThreeOQ01 extends with power-of-2/5 general theorems, digital root theory, and coprime factorization for many more divisors"
+    }
+  ]
+}
