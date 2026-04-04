@@ -94,21 +94,17 @@ theorem cyclic_vector_of_similar
   -- Substitute M = P.inv * N * P.val and apply aeval_conj
   rw [hMN, aeval_conj N P p] at hann
   -- hann : (P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w) = 0
-  -- Apply P.val *ᵥ · to hann, then fold using ← mulVec_mulVec twice
-  -- and use P.val * P.inv = 1 to obtain (aeval N p) *ᵥ w = 0
-  have h0 : P.val *ᵥ ((P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w)) = 0 :=
-    (congr_arg P.val.mulVec hann).trans (Matrix.mulVec_zero _)
-  -- Use explicit args to avoid mulVec_mulVec firing at wrong position
-  rw [← Matrix.mulVec_mulVec P.val (P.inv * aeval N p * P.val) (P.inv *ᵥ w)] at h0
-  -- h0 : (P.val * (P.inv * aeval N p * P.val)) *ᵥ (P.inv *ᵥ w) = 0
-  rw [← Matrix.mulVec_mulVec (P.val * (P.inv * aeval N p * P.val)) P.inv w] at h0
-  -- h0 : (P.val * (P.inv * aeval N p * P.val) * P.inv) *ᵥ w = 0
-  rw [show P.val * (P.inv * aeval N p * P.val) * P.inv = aeval N p from by
-        calc P.val * (P.inv * aeval N p * P.val) * P.inv
-            = (P.val * P.inv) * aeval N p * (P.val * P.inv) := by ring
-          _ = 1 * aeval N p * 1 := by rw [P.val_inv]
-          _ = aeval N p := by ring] at h0
-  exact h0
+  -- Key matrix identity: P.val * (P.inv * aeval N p * P.val) * P.inv = aeval N p
+  have heq : P.val * (P.inv * aeval N p * P.val) * P.inv = aeval N p := by
+    calc P.val * (P.inv * aeval N p * P.val) * P.inv
+        = (P.val * P.inv) * aeval N p * (P.val * P.inv) := by simp only [mul_assoc]
+      _ = aeval N p := by simp only [P.val_inv, one_mul, mul_one]
+  -- Use mulVec_mulVec (forward) to unfold (P.val * A * P.inv) *ᵥ w
+  -- = P.val *ᵥ (A *ᵥ (P.inv *ᵥ w)) for A = P.inv * aeval N p * P.val
+  have key : (P.val * (P.inv * aeval N p * P.val) * P.inv) *ᵥ w =
+             P.val *ᵥ ((P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w)) := by
+    rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
+  rw [← heq, key, hann, Matrix.mulVec_zero]
 
 -- ============================================================
 -- SECTION III: Annihilator Characterization
