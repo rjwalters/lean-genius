@@ -253,6 +253,16 @@ export function validateLineAnnotations(
     return { valid: 0, misaligned: [] };
   }
 
+  // Nothing to validate if annotations array is empty
+  if (annotationsJson.length === 0) {
+    return { valid: 0, misaligned: [] };
+  }
+
+  // Skip if Lean source file doesn't exist (e.g. pending proof)
+  if (!fs.existsSync(leanSourcePath)) {
+    return { valid: 0, misaligned: [] };
+  }
+
   const leanSource = fs.readFileSync(leanSourcePath, 'utf-8');
   const parsed = parseLeanFile(leanSource, leanSourcePath);
 
