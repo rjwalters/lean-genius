@@ -1,8 +1,8 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01",
   "title": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-03T21:34:23-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Fixed broken proofs in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean — all sorries except the intentional structure-theorem sorry are now eliminated",
+    "builtItems": [
+      "aeval_conj: conjugation by invertible matrix commutes with polynomial evaluation",
+      "cyclic_vector_of_similar: cyclic vectors transfer under matrix similarity",
+      "annihilator_dvd_minpoly: Bezout identity for GCD annihilation",
+      "cyclic_iff_ann_eq_minpoly: characterization of cyclic vectors via annihilators",
+      "F2_union_covers: counterexample showing union avoidance fails over F₂"
+    ],
+    "insights": [
+      "Lean 4.26: Units coercion ↑P fails to elaborate as matrix — use P.val and P.inv directly",
+      "Lean 4.26: Polynomial.induction_on alternatives named add/monomial not h_add/h_monomial",
+      "Lean 4.26: ← pow_succ fails when M^k*M is surrounded by other matrix factors — reassociate first with mul_assoc then use ← pow_succ",
+      "Lean 4.26: aeval_monomial gives algebraMap K _ a * M^k (not a • M^k) — use simp only [← Algebra.smul_def] before smul_mul_assoc",
+      "Lean 4.26: explicit args to ← Matrix.mulVec_mulVec are unreliable — use forward direction instead",
+      "Non-commutative matrix algebra: use simp only [mul_assoc] instead of ring for associativity steps"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Structure theorem for f.g. modules over PID needed to complete nonderogatory_has_cyclic_vector_any_field"
+    ],
     "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
