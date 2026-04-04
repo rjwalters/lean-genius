@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-chain-overview",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": {"startLine": 1, "endLine": 67},
+    "type": "definition",
+    "title": "The Young→Hölder→Minkowski Chain: Setup and Architecture",
+    "content": "The file opens with six targeted Mathlib imports covering measure theory, Lp spaces, inner products, and mean inequalities. The namespace `ExplicitMinkowski` and the variable `(α : Type*) [MeasurableSpace α] (μ : Measure α)` fix a general measure space throughout. The docstring sketches the full five-step dependency graph: AM-GM/convexity → Young → Hölder → Minkowski → Lp is a normed space. The central thesis is that Lean's `NormedAddCommGroup` instance for `Lp` is a black box hiding this chain — the file makes each link explicit.",
+    "mathContext": "The chain is: $ab \\leq a^p/p + b^q/q$ (Young) $\\implies$ $\\int|fg| \\leq \\|f\\|_p\\|g\\|_q$ (Hölder) $\\implies$ $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ (Minkowski). All three steps exist in Mathlib; the file rewires them into an explicit proof of Minkowski without invoking `norm_add_le` directly.",
+    "significance": "context",
+    "relatedConcepts": ["NormedAddCommGroup for Lp", "ENNReal and ℝ≥0∞ arithmetic", "AEMeasurable and AEStronglyMeasurable", "HolderConjugate predicate"],
+    "prerequisites": ["Measure theory (sigma-algebras, Lebesgue integral)", "Lp spaces as Banach spaces", "Conjugate exponents 1/p + 1/q = 1"]
+  },
+  {
+    "id": "ann-young-ineq",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": {"startLine": 68, "endLine": 88},
+    "type": "theorem",
+    "title": "Young's Inequality: Foundation of the Chain",
+    "content": "`young_ineq` wraps Mathlib's `NNReal.young_inequality`: for nonneg reals a, b and conjugate exponents p, q (i.e., 1/p + 1/q = 1), we have a·b ≤ a^p/p + b^q/q. The proof is a one-liner delegating to Mathlib. This is the pointwise cornerstone: it bounds a *product* by a *sum of powers*, making it integrable over a measure space. The `HolderConjugate` predicate in Mathlib packs the conditions p > 1, q > 1, and 1/p + 1/q = 1 into a single hypothesis.",
+    "mathContext": "Young's inequality: $a \\cdot b \\leq \\frac{a^p}{p} + \\frac{b^q}{q}$ for $a, b \\geq 0$, $p, q > 1$, $\\frac{1}{p} + \\frac{1}{q} = 1$. The $p = q = 2$ case is AM-GM: $ab \\leq \\frac{a^2 + b^2}{2}$. The general proof uses convexity of $t \\mapsto e^t$: by Jensen's inequality with weights $1/p$ and $1/q$, $e^{(\\ln a)/p + (\\ln b)/q} \\leq e^{\\ln a}/p + e^{\\ln b}/q$, i.e., $a^{1/p} b^{1/q} \\leq a/p + b/q$. Substituting $a \\to a^p$, $b \\to b^q$ gives the standard form.",
+    "significance": "key",
+    "relatedConcepts": ["NNReal.young_inequality", "HolderConjugate", "AM-GM inequality", "Jensen's inequality"],
+    "prerequisites": ["Convexity of exp", "NNReal as nonneg reals", "HolderConjugate predicate structure"]
+  },
+  {
+    "id": "ann-holder-two-forms",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": {"startLine": 106, "endLine": 121},
+    "type": "theorem",
+    "title": "Hölder's Inequality in Two Forms: lintegral and eLpNorm",
+    "content": "Two equivalent formulations are provided. `holder_lintegral` wraps `ENNReal.lintegral_mul_le_Lp_mul_Lq`: for f, g : α → ℝ≥0∞ (nonneg extended reals), the integral of the product satisfies the bound. `holder_eLpNorm` wraps `eLpNorm_mul_le`: stated as ‖fg‖₁ ≤ ‖f‖_p · ‖g‖_q using the `eLpNorm` seminorm for real-valued functions. Both are one-liners. The Mathlib proof derives Hölder from Young by normalizing (‖f‖_p = ‖g‖_q = 1), applying Young pointwise, and integrating. The two forms differ in their function types: `lintegral` works with ℝ≥0∞-valued functions (simpler ENNReal arithmetic), while `eLpNorm` handles real-valued functions via absolute values.",
+    "mathContext": "Hölder: $\\int |f(x)g(x)| \\, d\\mu \\leq \\left(\\int |f|^p \\, d\\mu\\right)^{1/p} \\left(\\int |g|^q \\, d\\mu\\right)^{1/q}$. Proof: WLOG $\\|f\\|_p = \\|g\\|_q = 1$. Young gives $|f(x)||g(x)| \\leq |f(x)|^p/p + |g(x)|^q/q$ pointwise. Integrate: $\\int|fg| \\leq 1/p + 1/q = 1$. Rescale: $\\int|fg| \\leq \\|f\\|_p \\|g\\|_q$.",
+    "significance": "key",
+    "relatedConcepts": ["ENNReal.lintegral_mul_le_Lp_mul_Lq", "eLpNorm_mul_le", "young_ineq", "AEMeasurable vs AEStronglyMeasurable"],
+    "prerequisites": ["Young's inequality (pointwise)", "Monotone convergence theorem", "ENNReal vs ℝ≥0∞ rpow arithmetic"]
+  },
+  {
+    "id": "ann-conjugate-identity",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": {"startLine": 160, "endLine": 172},
+    "type": "theorem",
+    "title": "Conjugate Exponent Identity: (p-1)·q = p",
+    "content": "`conjugate_exponent_identity` proves that for conjugate exponents p, q (with p > 1), we have (p-1) · q = p. This is the algebraic key to the factoring trick: when Hölder is applied to the split term ∫f·(f+g)^{p-1} with exponents p and q, the second integral factor becomes (∫(f+g)^{(p-1)q})^{1/q} = (∫(f+g)^p)^{1/q} = ‖f+g‖_p^{p/q}. Dividing the final bound by ‖f+g‖_p^{p/q} gives ‖f+g‖_p^{p-p/q} = ‖f+g‖_p^1. The proof derives q = p/(p-1) from 1/p + 1/q = 1 via `field_simp` and `ring`.",
+    "mathContext": "From $\\frac{1}{p} + \\frac{1}{q} = 1$: $q = \\frac{p}{p-1}$. Therefore $(p-1) \\cdot q = (p-1) \\cdot \\frac{p}{p-1} = p$. Consequence: $\\|h^{p-1}\\|_q = \\left(\\int h^{(p-1)q}\\right)^{1/q} = \\left(\\int h^p\\right)^{1/q} = \\|h\\|_p^{p/q} = \\|h\\|_p^{p-1}$ (using $p/q = p(1-1/p) = p-1$). This makes the factoring trick algebraically self-consistent.",
+    "significance": "supporting",
+    "relatedConcepts": ["HolderConjugate predicate", "Real.HolderConjugate", "factoring trick in Minkowski proof", "holder_applied_to_split"],
+    "prerequisites": ["Conjugate exponent relation 1/p + 1/q = 1", "field_simp and ring tactics", "p > 1 so p-1 > 0"]
+  },
+  {
+    "id": "ann-integral-split",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": {"startLine": 203, "endLine": 235},
+    "type": "theorem",
+    "title": "Integral Splitting: The Factoring Trick Step 1",
+    "content": "`lintegral_rpow_le_split` formalizes Step 1 of the factoring trick: the bound ∫(f+g)^p ≤ ∫f·(f+g)^{p-1} + ∫g·(f+g)^{p-1}. The key identity a^p = a·a^{p-1} is proved via `ENNReal.rpow_add` + `ENNReal.rpow_one` with careful case splits for a = 0 and a = ⊤ (since ENNReal arithmetic requires explicit case analysis for the boundary values). Then (f+g)·(f+g)^{p-1} distributes as f·(f+g)^{p-1} + g·(f+g)^{p-1}, and the integral splits via `lintegral_add_left`. The `calc` chain makes the argument explicit: a^p = a·a^{p-1} ≤ (rewrites) = split integral.",
+    "mathContext": "$\\int (f+g)^p \\, d\\mu = \\int (f+g)(f+g)^{p-1} \\, d\\mu = \\int \\bigl(f(f+g)^{p-1} + g(f+g)^{p-1}\\bigr) \\, d\\mu = \\int f(f+g)^{p-1} + \\int g(f+g)^{p-1}$. The rpow identity $a^p = a \\cdot a^{p-1}$ (i.e., $a^{1+(p-1)} = a^1 \\cdot a^{p-1}$) must handle $a = 0$ (both sides 0) and $a = \\top$ (both sides $\\top$ for $p > 0$) separately in ENNReal.",
+    "significance": "key",
+    "relatedConcepts": ["ENNReal.rpow_add", "lintegral_add_left", "AEMeasurable.pow_const", "abs_add_pow_le_pow_add"],
+    "prerequisites": ["ENNReal rpow arithmetic (0 and top cases)", "Measurability of sums and powers", "Linearity of lintegral for nonneg functions"]
+  },
+  {
+    "id": "ann-holder-to-split",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": {"startLine": 237, "endLine": 268},
+    "type": "theorem",
+    "title": "Applying Hölder to Each Split Term: Step 2",
+    "content": "`holder_applied_to_split` formalizes Step 2: bounding ∫f·h^{p-1} via Hölder with exponents p and q = p/(p-1). Hölder gives (∫f^p)^{1/p} · (∫(h^{p-1})^q)^{1/q}. The key rewrite uses `conjugate_exponent_identity` and `ENNReal.rpow_mul` to simplify (h^{p-1})^q = h^{(p-1)q} = h^p, giving (∫h^p)^{1/q} = (∫h^p)^{(p-1)/p}. The exponent simplification (p-1)/p is extracted via q = p/(p-1) and `field_simp`. Setting h = f+g in each split term and adding the two Hölder bounds yields the combined inequality that leads to Minkowski.",
+    "mathContext": "$\\int f \\cdot h^{p-1} \\, d\\mu \\leq \\left(\\int f^p\\right)^{1/p} \\cdot \\left(\\int (h^{p-1})^q\\right)^{1/q} = \\left(\\int f^p\\right)^{1/p} \\cdot \\left(\\int h^p\\right)^{(p-1)/p}$. Adding the bounds for $f$ and $g$ with $h = f+g$: $\\int (f+g)^p \\leq \\left[(\\int f^p)^{1/p} + (\\int g^p)^{1/p}\\right] \\cdot \\left(\\int (f+g)^p\\right)^{(p-1)/p}$. Dividing by $(\\int(f+g)^p)^{(p-1)/p}$ gives Minkowski.",
+    "significance": "key",
+    "relatedConcepts": ["holder_lintegral", "conjugate_exponent_identity", "ENNReal.rpow_mul", "Real.HolderConjugate"],
+    "prerequisites": ["Hölder's inequality (lintegral form)", "(p-1)q = p identity", "ENNReal rpow chain rule: (a^r)^s = a^{rs}"]
+  },
+  {
+    "id": "ann-minkowski-chain",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": {"startLine": 269, "endLine": 352},
+    "type": "theorem",
+    "title": "Minkowski Explicit + Complete Chain Verification",
+    "content": "`minkowski_from_holder_explicit` combines Steps 1–2 into the final Minkowski inequality. The mathematical step (dividing by ‖f+g‖_p^{p-1}) requires careful ENNReal case analysis for ‖f+g‖_p = 0 and ‖f+g‖_p = ∞ — this is handled internally by Mathlib's `ENNReal.lintegral_Lp_add_le`. `chain_verification` then gives the definitive answer: a single conjunction theorem asserting that all three steps (`NNReal.young_inequality`, `ENNReal.lintegral_mul_le_Lp_mul_Lq`, `eLpNorm_add_le`) exist in Mathlib, witnessing the complete chain Young → Hölder → Minkowski. The proof is a direct `exact ⟨..., ..., ...⟩` with three function applications.",
+    "mathContext": "Combined: $\\|f+g\\|_p^p \\leq (\\|f\\|_p + \\|g\\|_p) \\cdot \\|f+g\\|_p^{p-1}$. Dividing: $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ (if $\\|f+g\\|_p \\in (0, \\infty)$). Edge cases: if $\\|f+g\\|_p = 0$ then LHS = 0 ≤ RHS trivially; if $\\|f+g\\|_p = \\infty$, the finiteness hypotheses $\\int f^p < \\infty$ and $\\int g^p < \\infty$ prevent $\\|f\\|_p + \\|g\\|_p < \\infty$ from contradicting $\\|f+g\\|_p = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["ENNReal.lintegral_Lp_add_le", "eLpNorm_add_le", "minkowski_explicit", "chain_verification"],
+    "prerequisites": ["ENNReal division and cancellation", "rpow splitting: a^p / a^{p-1} = a", "Finiteness hypothesis for Lp membership"]
+  },
+  {
+    "id": "ann-special-cases",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02",
+    "range": {"startLine": 359, "endLine": 384},
+    "type": "theorem",
+    "title": "Special Cases: p=1 (Triangle), p=2 (Cauchy-Schwarz), p=∞ (essSup)",
+    "content": "Three special cases illuminate the p-parametric family. `minkowski_l1`: Minkowski for p = 1 reduces to ∫|f+g| ≤ ∫|f| + ∫|g|, which is just the triangle inequality integrated — no Hölder needed, proved via `eLpNorm_add_le hf hg le_rfl`. `minkowski_l2_from_cs`: for p = 2, an inner-product proof via Cauchy-Schwarz — `abs_real_inner_le_norm` gives |⟪f,g⟫| ≤ ‖f‖‖g‖, which via `norm_add_sq_real` and `nlinarith` gives ‖f+g‖² ≤ (‖f‖+‖g‖)². Taking square roots via `Real.sqrt_le_sqrt` completes the proof. `minkowski_linfty`: Minkowski for p = ∞ from `eLpNorm_add_le hf hg le_top` — the essSup bound ‖f+g‖_∞ ≤ ‖f‖_∞ + ‖g‖_∞ is the L∞ norm triangle inequality.",
+    "mathContext": "$p=1$: $\\|f+g\\|_1 \\leq \\|f\\|_1 + \\|g\\|_1$ from $|f+g| \\leq |f|+|g|$ integrated. $p=2$: $\\|f+g\\|_2^2 = \\|f\\|_2^2 + 2\\langle f,g\\rangle + \\|g\\|_2^2 \\leq (\\|f\\|_2+\\|g\\|_2)^2$ by $\\langle f,g\\rangle \\leq |\\langle f,g\\rangle| \\leq \\|f\\|_2\\|g\\|_2$ (Cauchy-Schwarz). $p=\\infty$: $\\|f+g\\|_\\infty = \\mathrm{essSup}|f+g| \\leq \\mathrm{essSup}(|f|+|g|) \\leq \\mathrm{essSup}|f| + \\mathrm{essSup}|g| = \\|f\\|_\\infty + \\|g\\|_\\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": ["abs_real_inner_le_norm (Cauchy-Schwarz)", "norm_add_sq_real", "eLpNorm for p=1,2 and top", "essSup subadditivity"],
+    "prerequisites": ["Inner product space structure for L2", "Real.sqrt_le_sqrt monotonicity", "eLpNorm_add_le with le_rfl (p=1) and le_top (p=inf)"]
+  }
+]
