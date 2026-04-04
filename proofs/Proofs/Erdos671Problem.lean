@@ -89,11 +89,10 @@ theorem lebesgueFunction_ge_one (pts : InterpolationPoints n) (x : ℝ)
 noncomputable def lebesgueConstant (pts : InterpolationPoints n) : ℝ :=
   ⨆ x ∈ Set.Icc (-1 : ℝ) 1, lebesgueFunction pts x
 
-/-- Error bound: |L^n f(x) - f(x)| ≤ (1 + Λ_n) · best_approx. -/
-theorem interpolation_error (pts : InterpolationPoints n) (f : C(Set.Icc (-1 : ℝ) 1, ℝ))
-    (x : ℝ) (hx : x ∈ Set.Icc (-1 : ℝ) 1) :
-    True := by  -- Error bound formula
-  trivial
+/-
+**Error bound**: |L^n f(x) - f(x)| ≤ (1 + Λ_n) · best_approx_n(f).
+This shows Lebesgue constant controls interpolation quality.
+-/
 
 /- ## Part IV: Bernstein's Theorem -/
 
@@ -108,10 +107,7 @@ theorem lebesgueConstant_growth (pts : InterpolationPoints n) (hn : n ≥ 2) :
     lebesgueConstant pts ≥ (2 / Real.pi) * Real.log n - 1 := by
   sorry
 
-/-- For Chebyshev nodes, Λ_n ~ (2/π) log n. -/
-theorem chebyshev_lebesgue :
-    True := by  -- Optimal growth rate
-  trivial
+-- For Chebyshev nodes, Λ_n ~ (2/π) log n (optimal growth rate among all point sequences).
 
 /- ## Part V: Erdős-Vértesi Theorem -/
 
@@ -122,10 +118,7 @@ theorem erdos_vertesi (seq : PointSequence) :
         Filter.limsup (fun n => |lagrangeInterp (seq n) f x|) Filter.atTop = ⊤ := by
   sorry
 
-/-- Divergence is generic: Most continuous functions diverge a.e. -/
-theorem divergence_generic (seq : PointSequence) :
-    True := by  -- Baire category argument
-  trivial
+-- Divergence is generic: Most continuous functions diverge a.e. (Baire category argument).
 
 /- ## Part VI: Question 1 -/
 
@@ -178,22 +171,12 @@ theorem equidistant_diverges (n : ℕ) (hn : n ≥ 2) :
 
 /- ## Part IX: Convergence Conditions -/
 
-/-- Uniform convergence: L^n f → f uniformly iff Λ_n · ω(f, 1/n) → 0. -/
-theorem uniform_convergence_iff (seq : PointSequence) (f : C(Set.Icc (-1 : ℝ) 1, ℝ)) :
-    True := by  -- Characterization of uniform convergence
-  trivial
-
-/-- Lipschitz functions converge under moderate Λ_n growth. -/
-theorem lipschitz_convergence (seq : PointSequence) (f : C(Set.Icc (-1 : ℝ) 1, ℝ))
-    (hLip : True) (hΛ : True) :  -- Λ_n = O(log n)
-    True := by
-  trivial
-
-/-- Analytic functions converge for any point sequence. -/
-theorem analytic_convergence (seq : PointSequence) (f : C(Set.Icc (-1 : ℝ) 1, ℝ))
-    (hAnal : True) :  -- f extends analytically
-    True := by
-  trivial
+/-
+**Convergence conditions**:
+- Uniform: L^n f → f uniformly iff Λ_n · ω(f, 1/n) → 0.
+- Lipschitz functions converge under moderate Λ_n growth (Λ_n = O(log n) suffices).
+- Analytic functions converge for any point sequence.
+-/
 
 /- ## Part X: Pointwise vs Uniform Convergence -/
 
@@ -204,10 +187,7 @@ theorem faber :
         Filter.Tendsto (fun n => lagrangeInterp (seq n) f x) Filter.atTop (nhds (f ⟨x, by sorry⟩)) := by
   sorry
 
-/-- Pointwise convergence is more delicate than uniform. -/
-theorem pointwise_delicate :
-    True := by  -- Pointwise can succeed where uniform fails
-  trivial
+-- Pointwise convergence is more delicate than uniform (can succeed where uniform fails).
 
 /- ## Part XI: Measure-Theoretic Aspects -/
 
