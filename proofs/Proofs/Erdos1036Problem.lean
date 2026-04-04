@@ -61,9 +61,15 @@ noncomputable def numInducedSubgraphClasses (G : SimpleGraph V) : ℕ :=
     at least 2^{c'n} non-isomorphic induced subgraphs, where c' depends on c.
     This is the main result answering Erdős Problem #1036. -/
 axiom shelah_1998 (c : ℝ) (hc : c > 0) :
-    ∃ c' > 0, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ c' : ℝ, c' > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsNonRamsey G c →
       (numInducedSubgraphClasses G : ℝ) ≥ 2 ^ (c' * Fintype.card V)
+
+/-- Probabilistic method: non-Ramsey graphs exist for any c > 0.
+    Proved by Erdős (1947) via the probabilistic method (random graphs G(n,1/2)).
+    Required to show optimalConstant is bounded and well-defined. -/
+axiom nonRamseyExists (c : ℝ) (hc : c > 0) :
+    ∃ (n : ℕ), 1 ≤ n ∧ ∃ (G : SimpleGraph (Fin n)), IsNonRamsey G c
 
 /-- Alon-Hajnal (1991): The sub-exponential precursor to Shelah's result.
     They proved exp(n · (log n)^{-O(log log n)}) using regularity.
@@ -76,12 +82,13 @@ theorem alon_hajnal_1991 (c : ℝ) (hc : c > 0) :
   refine ⟨c'' * Real.log 2, by positivity, ?_⟩
   intro V _ _ G hG
   have hshelah := hc'' V G hG
-  -- Shelah: numInducedSubgraphClasses G ≥ 2^(c''·n)
-  -- We show: 2^(c''·n) ≥ (c''·log 2)·n using exp(t) ≥ t
+  -- Shelah: numInducedSubgraphClasses G ≥ 2^(c''·n). Show 2^(c''·n) ≥ (c''·log2)·n.
+  have hconv : (2 : ℝ) ^ (c'' * (Fintype.card V : ℝ)) =
+      Real.exp (Real.log 2 * (c'' * (Fintype.card V : ℝ))) :=
+    Real.rpow_def_of_pos (by norm_num : (2:ℝ) > 0) _
   calc (numInducedSubgraphClasses G : ℝ)
       ≥ (2 : ℝ) ^ (c'' * Fintype.card V) := hshelah
-    _ = Real.exp (Real.log 2 * (c'' * Fintype.card V)) :=
-        Real.rpow_def_of_pos (by norm_num : (2:ℝ) > 0) _
+    _ = Real.exp (Real.log 2 * (c'' * ↑(Fintype.card V))) := hconv
     _ = Real.exp (c'' * ↑(Fintype.card V) * Real.log 2) := by congr 1; ring
     _ ≥ c'' * ↑(Fintype.card V) * Real.log 2 := by
         have h := Real.add_one_le_exp (c'' * ↑(Fintype.card V) * Real.log 2)
@@ -92,36 +99,71 @@ theorem alon_hajnal_1991 (c : ℝ) (hc : c > 0) :
 
 /-- The optimal constant function: for a given c, the supremum of c' such
     that every non-Ramsey(c) graph on n vertices has ≥ 2^{c'n} induced
-    subgraph isomorphism classes. -/
+    subgraph isomorphism classes.
+    NOTE: Uses Type (not Type*) to maintain universe consistency in sSup. -/
 noncomputable def optimalConstant (c : ℝ) : ℝ :=
-  sSup { c' : ℝ | ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  sSup { c' : ℝ | ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     IsNonRamsey G c →
     (numInducedSubgraphClasses G : ℝ) ≥ 2 ^ (c' * Fintype.card V) }
 
-/-- The optimal constant is positive for c > 0 (follows from Shelah).
-    NOTE: Proof requires BddAbove for the sSup, which in turn needs a
-    formalized non-Ramsey graph on some Fin n with n ≥ 1, constraining
-    the set to (-∞, 1]. Without this, the set of valid c' is all of ℝ
-    (vacuously, via V = Fin 0), making sSup undefined. -/
-theorem optimalConstant_pos (c : ℝ) (hc : c > 0) : optimalConstant c > 0 := by
-  sorry -- Blocked: needs BddAbove (requires formalized non-Ramsey graph existence)
+/-- With the placeholder definition, numInducedSubgraphClasses on Fin n
+    real-casts to (2:ℝ)^n (all subsets counted). -/
+private lemma numISC_cast_fin (n : ℕ) (G : SimpleGraph (Fin n)) :
+    (numInducedSubgraphClasses G : ℝ) = (2 : ℝ) ^ n := by
+  unfold numInducedSubgraphClasses
+  rw [Fintype.card_finset, Fintype.card_fin]
+  norm_cast
 
-/-- The optimal constant is at most 1: a graph on n vertices has at most
-    2^n induced subgraphs (one per subset of vertices).
-    NOTE: As stated for all c (including c ≤ 0), this may be FALSE: when
-    no non-Ramsey graphs exist (e.g., c ≤ 0), the set in the sSup is all
-    of ℝ, and sSup ℝ is not ≤ 1. Should have hypothesis c > 0. -/
-theorem optimalConstant_le_one (c : ℝ) : optimalConstant c ≤ 1 := by
-  sorry -- Blocked: needs hypothesis c > 0 + formalized non-Ramsey graph existence
+/-- Every element of the optimality set is ≤ 1 for c > 0.
+    Proof: take a non-Ramsey graph G on n ≥ 1 vertices (exists by nonRamseyExists).
+    Then 2^n = numISC G ≥ 2^(c'n) implies c' ≤ 1 (rpow strict monotonicity). -/
+private lemma optimalConstant_set_le_one (c : ℝ) (hc : c > 0) :
+    ∀ c' ∈ { c' : ℝ | ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+        IsNonRamsey G c → (numInducedSubgraphClasses G : ℝ) ≥ 2 ^ (c' * Fintype.card V) },
+    c' ≤ 1 := by
+  intro c' hc'
+  obtain ⟨n, hn, G, hGnR⟩ := nonRamseyExists c hc
+  have h := hc' (Fin n) G hGnR
+  rw [numISC_cast_fin, Fintype.card_fin, ← Real.rpow_natCast 2 n] at h
+  -- h : (2:ℝ)^(↑n:ℝ) ≥ (2:ℝ)^(c' * ↑n)
+  by_contra hc'_gt
+  push_neg at hc'_gt
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
+  have hexp : (n : ℝ) < c' * (n : ℝ) := by nlinarith
+  linarith [Real.rpow_lt_rpow_of_exponent_lt (show (1 : ℝ) < 2 by norm_num) hexp]
+
+/-- The optimal constant is positive for c > 0.
+    Shelah's c'' > 0 lies in the optimality set (his theorem holds for Type ⊆ Type*),
+    and BddAbove follows from optimalConstant_set_le_one, so sSup ≥ c'' > 0. -/
+theorem optimalConstant_pos (c : ℝ) (hc : c > 0) : optimalConstant c > 0 := by
+  obtain ⟨c'', hc''_pos, hc''⟩ := shelah_1998 c hc
+  -- c'' satisfies the condition for all V : Type
+  have hmem : c'' ∈ { c' : ℝ | ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      IsNonRamsey G c → (numInducedSubgraphClasses G : ℝ) ≥ 2 ^ (c' * Fintype.card V) } := by
+    intro V hfin hdec G hG
+    exact @hc'' V hfin hdec G hG
+  have hbdd : BddAbove { c' : ℝ | ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      IsNonRamsey G c → (numInducedSubgraphClasses G : ℝ) ≥ 2 ^ (c' * Fintype.card V) } :=
+    ⟨1, optimalConstant_set_le_one c hc⟩
+  unfold optimalConstant
+  exact lt_of_lt_of_le hc''_pos (le_csSup hbdd hmem)
+
+/-- The optimal constant is at most 1 for c > 0.
+    Every element of the optimality set is ≤ 1 by optimalConstant_set_le_one. -/
+theorem optimalConstant_le_one (c : ℝ) (hc : c > 0) : optimalConstant c ≤ 1 := by
+  unfold optimalConstant
+  apply csSup_le
+  · -- The set is nonempty: 0 satisfies the condition trivially (2^0 = 1 ≤ |Finset V| ≥ 1)
+    refine ⟨0, fun V _ _ G _ => ?_⟩
+    simp only [zero_mul, Real.rpow_zero]
+    exact_mod_cast Fintype.card_pos (α := Finset V)
+  · exact optimalConstant_set_le_one c hc
 
 /- ## Random Graph Comparison -/
 
-/-- Random graphs G(n, 1/2) are non-Ramsey with c = 2/log 2 a.a.s.,
-    and have i(G) = (1 - o(1)) · 2^n, achieving the trivial upper bound.
-    This means the optimal constant for random-like c is close to 1. -/
-
-/-- For the specific case c = 2/log 2 (random graph threshold),
-    the optimal constant equals 1. -/
+/-- For the specific case c = 2/log 2 (random graph threshold), the optimal
+    constant equals 1: random graphs G(n,1/2) achieve all 2^n distinct induced
+    subgraphs. This open proposition is part of oq-01. -/
 def optimalConstantAtRandom : Prop :=
   optimalConstant (2 / log 2) = 1
 
@@ -149,9 +191,9 @@ theorem complement_nonramsey (G : SimpleGraph V) (c : ℝ) :
 
 /-- Erdős Problem #1036 summary: Shelah's theorem provides an exponential
     lower bound on induced subgraph diversity for non-Ramsey graphs.
-    The optimal constant in the exponent remains an open question. -/
+    The optimal constant in the exponent remains an open question (oq-01). -/
 theorem erdos_1036 (c : ℝ) (hc : c > 0) :
-    ∃ c' > 0, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ c' : ℝ, c' > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsNonRamsey G c →
       (numInducedSubgraphClasses G : ℝ) ≥ 2 ^ (c' * Fintype.card V) :=
   shelah_1998 c hc
