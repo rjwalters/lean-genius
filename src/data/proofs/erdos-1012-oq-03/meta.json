@@ -15,8 +15,8 @@
     "badge": "wip",
     "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 991,
-    "assumptions": "0 axioms. 2 sorries: (1) ghouila_houri (full proof needs longest-path argument ~200 lines), (2) directed_hamiltonian_threshold (arc-count threshold result — single top-level sorry). Moon-Moser theorem (sc_tournament_has_cycle + tournament_cycle_extendable + grow_cycle_to_hamiltonian) is now fully proved. Rédei fully proved by induction.",
+    "lineCount": 1019,
+    "assumptions": "0 axioms. 2 sorries: (1) ghouila_houri (full proof needs longest-path argument ~200 lines), (2) hamiltonian_of_few_missing_arcs (counting/probabilistic argument: if ≤n-2 arcs are missing from K*_n, a Hamiltonian cycle exists). directed_hamiltonian_threshold is now proved by reducing to hamiltonian_of_few_missing_arcs via missing_arcs_le. Moon-Moser theorem and Rédei are fully proved.",
     "dateAdded": "2026-03-30"
   },
   "overview": {
