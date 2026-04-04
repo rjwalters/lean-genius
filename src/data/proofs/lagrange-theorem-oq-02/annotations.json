@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-ost-bijection",
+    "proofId": "lagrange-theorem-oq-02",
+    "range": { "startLine": 71, "endLine": 82 },
+    "type": "definition",
+    "title": "The Orbit-Stabilizer Bijection: Core Structural Fact",
+    "content": "The definition `orbit_equiv_quotient_stabilizer` wraps Mathlib's `MulAction.orbitEquivQuotientStabilizer`, which establishes the bijection Orb(x) ≃ G/Stab(x). This is the structural heart of the entire theorem. The bijection sends g·x to the coset g·Stab(x). It is well-defined: if g₁·x = g₂·x then g₁⁻¹g₂·x = x so g₁⁻¹g₂ ∈ Stab(x) so g₁·Stab(x) = g₂·Stab(x). Injectivity follows from the same argument. Surjectivity: every coset g·Stab(x) is the image of g·x. The entire proof of the cardinality theorem follows in one line by combining this bijection with `Subgroup.card_mul_index`.",
+    "mathContext": "The bijection $\\varphi : \\text{Orb}_G(x) \\xrightarrow{\\sim} G/\\text{Stab}_G(x)$ is defined by $\\varphi(g \\cdot x) = g\\text{Stab}(x)$. Well-definedness: $g_1 \\cdot x = g_2 \\cdot x \\Leftrightarrow g_1^{-1}g_2 \\in \\text{Stab}(x) \\Leftrightarrow g_1\\text{Stab}(x) = g_2\\text{Stab}(x)$. Then $|\\text{Orb}(x)| = |G/\\text{Stab}(x)| = [G:\\text{Stab}(x)]$.",
+    "significance": "key",
+    "relatedConcepts": ["coset space", "quotient group", "first isomorphism theorem", "bijection of finite sets"],
+    "prerequisites": ["group actions: orbit and stabilizer definitions", "coset spaces G/H", "bijection of finite sets"]
+  },
+  {
+    "id": "ann-ost-main-theorem",
+    "proofId": "lagrange-theorem-oq-02",
+    "range": { "startLine": 84, "endLine": 112 },
+    "type": "theorem",
+    "title": "Orbit-Stabilizer Theorem: |Orb(x)| × |Stab(x)| = |G|",
+    "content": "The main cardinality theorem, proved in just two lines: rewrite `Nat.card (orbit)` using the bijection to get `Nat.card (G/Stab(x))`, then apply `Subgroup.card_mul_index` (Lagrange's index formula |H|·[G:H] = |G|). Two immediate corollaries follow: `card_orbit_dvd` (|Orb(x)| | |G|) and `card_stabilizer_dvd` (|Stab(x)| | |G|), both proved by providing the complementary factor from the product formula. The elegance: once the bijection is established, the cardinality theorem is just Lagrange's theorem for the stabilizer subgroup.",
+    "mathContext": "$|\\text{Orb}_G(x)| \\cdot |\\text{Stab}_G(x)| = |G/\\text{Stab}(x)| \\cdot |\\text{Stab}(x)| = [G:\\text{Stab}(x)] \\cdot |\\text{Stab}(x)| = |G|$. This is Lagrange's theorem $|H| \\cdot [G:H] = |G|$ applied to $H = \\text{Stab}(x)$.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange's theorem", "index of a subgroup", "divisibility in finite groups", "Nat.card vs Fintype.card"],
+    "prerequisites": ["group theory: Lagrange's theorem", "subgroup index formula", "finite group cardinality"]
+  },
+  {
+    "id": "ann-ost-lagrange-recovery",
+    "proofId": "lagrange-theorem-oq-02",
+    "range": { "startLine": 114, "endLine": 140 },
+    "type": "theorem",
+    "title": "Lagrange Recovered: The Action on G/H",
+    "content": "Lagrange's theorem is recovered directly from Mathlib's `Subgroup.card_subgroup_dvd_card`. The conceptual explanation: let G act on G/H by left multiplication. The action is transitive (any coset g₁H can be reached from eH by g₁), so Orb(eH) = G/H. The stabilizer of eH is {g : g·H = H} = H. By orbit-stabilizer: |G| = |G/H| × |H|. The element order theorem `order_dvd_card` (ord(g) | |G|) and `g^|G| = 1` follow as corollaries: ord(g) | |G| since ord(g) = |⟨g⟩| and ⟨g⟩ is a subgroup, then g^|G| = g^(ord(g)·k) = 1. The identity `g^|G| = 1` is the group-theoretic analog of Fermat's little theorem (a^p ≡ a mod p for prime p and group G = (ℤ/pℤ)*).",
+    "mathContext": "Lagrange: $G$ acts on $G/H$ by $g \\cdot (xH) = (gx)H$. $\\text{Stab}(eH) = H$. Orbit-stabilizer: $|G| = |G/H| \\cdot |H|$. Corollary: $\\text{ord}(g) = |\\langle g \\rangle| \\mid |G|$. Fermat-Euler: $g^{|G|} = g^{\\text{ord}(g) \\cdot k} = (g^{\\text{ord}(g)})^k = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange's theorem", "cyclic subgroups", "element order", "coset action", "Fermat's little theorem", "Euler's theorem"],
+    "prerequisites": ["Lagrange's theorem statement", "left multiplication action", "cyclic group as subgroup", "subgroup index"]
+  },
+  {
+    "id": "ann-ost-pgroup-fixed-points",
+    "proofId": "lagrange-theorem-oq-02",
+    "range": { "startLine": 167, "endLine": 198 },
+    "type": "theorem",
+    "title": "p-Group Fixed Point Theorem and Center Nontriviality",
+    "content": "When a p-group G (with |G| = p^k) acts on a set X, the number of fixed points satisfies |X| ≡ |Fix(G)| (mod p). The proof idea: partition X into orbits. Fixed points are singleton orbits (size 1). Non-fixed orbits have size > 1 dividing |G| = p^k, hence size divisible by p. Summing: |X| = |Fix(G)| + Σ|non-fixed orbits|, with each non-fixed term divisible by p. The center nontriviality theorem applies this to conjugation: G acts on itself by g·x = gxg⁻¹, and fixed points are exactly Z(G). So |G| ≡ |Z(G)| (mod p). Since p | |G| and 1 ∈ Z(G), we get |Z(G)| ≥ p > 1. This is used in the classification of p-groups (e.g., groups of order p² are abelian).",
+    "mathContext": "p-group: $|G| = p^k$, $k \\geq 1$. For non-fixed $x$: $|\\text{Orb}(x)| > 1$ and $|\\text{Orb}(x)| \\mid p^k$, so $p \\mid |\\text{Orb}(x)|$. Therefore $|X| \\equiv |\\text{Fix}(G)| \\pmod{p}$. Conjugation: $\\text{Fix} = Z(G)$, so $|G| \\equiv |Z(G)| \\pmod{p}$. Since $p \\mid |G|$ and $1 \\in Z(G)$: $|Z(G)| \\geq p > 1$.",
+    "significance": "key",
+    "relatedConcepts": ["p-groups", "fixed points of group actions", "conjugation action", "center of a group", "class equation", "p-group classification"],
+    "prerequisites": ["prime powers", "group actions: orbits partition the set", "center of a group definition", "modular arithmetic"]
+  },
+  {
+    "id": "ann-ost-generalization-hierarchy",
+    "proofId": "lagrange-theorem-oq-02",
+    "range": { "startLine": 199, "endLine": 207 },
+    "type": "theorem",
+    "title": "Orbit-Stabilizer as Unifying Principle for Finite Group Theory",
+    "content": "The summary theorem `orbit_stabilizer_and_lagrange` packages both results together. The docstring documents the full generalization hierarchy: orbit-stabilizer ⟹ Lagrange ⟹ Burnside's lemma ⟹ class equation ⟹ p-group center nontriviality. Each implication is classical but non-obvious. The `mathlib` badge on this entry reflects that all 16 theorems here are thin wrappers over Mathlib's well-developed group action theory, demonstrating how Lean 4 + Mathlib makes classical group theory concise and verifiable. The file's 207 lines would expand to hundreds of pages in a traditional formal proof, but Mathlib's work is leveraged throughout.",
+    "mathContext": "Hierarchy: $|G| = |\\text{Orb}| \\cdot |\\text{Stab}|$ $\\Rightarrow$ $|H| \\mid |G|$ (Lagrange) $\\Rightarrow$ $\\sum_{g \\in G} |\\text{Fix}(g)| = |G| \\cdot |X/G|$ (Burnside) $\\Rightarrow$ $|G| = |Z(G)| + \\sum_i [G:C_G(x_i)]$ (class equation) $\\Rightarrow$ $Z(G) \\neq \\{1\\}$ for nontrivial $p$-groups. All from one master formula.",
+    "significance": "context",
+    "relatedConcepts": ["Burnside's lemma", "class equation", "Sylow theorems", "group action hierarchy", "Mathlib group theory"],
+    "prerequisites": ["orbit-stabilizer theorem", "Burnside's counting lemma", "class equation", "p-group center theorem"]
+  }
+]
