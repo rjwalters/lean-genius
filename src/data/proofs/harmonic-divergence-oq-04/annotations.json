@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-imports-structure",
+    "proofId": "harmonic-divergence-oq-04",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Minimal Imports: Two Modules for the Entire Proof",
+    "content": "The file imports only Mathlib.Analysis.PSeries and Mathlib.Topology.Algebra.InfiniteSum.Basic — exactly two modules. This minimal footprint is intentional: the condensation-test approach reduces the entire proof to just three Mathlib lemmas. The namespace HarmonicDivergenceOQ04 isolates auxiliary lemmas from the global namespace. The key opens — Finset (sum notation), Filter and Topology (Summable predicate), BigOperators (Σ notation), Real (ℝ type) — provide the syntactic infrastructure. The file structure follows a docstring-then-lemmas pattern: a file-level docstring explains the mathematical goal before any definitions.",
+    "mathContext": "The three Mathlib dependencies: (1) `summable_condensed_iff_of_nonneg : (∀ n > 0, f n ≥ 0) → Antitone f → (Summable f ↔ Summable (fun k => 2^k * f (2^k)))` from PSeries; (2) `not_summable_const_of_ne_zero : c ≠ 0 → ¬Summable (fun _ => c)` from InfiniteSum.Basic; (3) `not_summable_one_div_natCast : ¬Summable (fun n : ℕ => 1 / ↑n)` from PSeries. These three suffice for the complete proof chain.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib.Analysis.PSeries", "summable_condensed_iff_of_nonneg", "BigOperators", "Summable", "namespace isolation"],
+    "prerequisites": ["Lean 4 import system", "Mathlib module layout", "namespace/open mechanics"]
+  },
+  {
     "id": "ann-condensation-test",
     "proofId": "harmonic-divergence-oq-04",
     "range": { "startLine": 33, "endLine": 48 },
