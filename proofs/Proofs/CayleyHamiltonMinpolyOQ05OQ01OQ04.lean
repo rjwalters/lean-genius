@@ -65,16 +65,18 @@ theorem aeval_conj (M : Matrix (Fin n) (Fin n) K) (P : (Matrix (Fin n) (Fin n) K
       simp only [pow_zero, mul_one]
       exact P.inv_val.symm
     | succ k ih =>
-      rw [pow_succ, ih, pow_succ]
+      -- Only rewrite LHS exponent and ih; handle RHS via ← pow_succ in calc
+      rw [pow_succ, ih]
       calc P.inv * M ^ k * P.val * (P.inv * M * P.val)
           = P.inv * M ^ k * (P.val * P.inv) * M * P.val := by ring
         _ = P.inv * M ^ k * 1 * M * P.val := by rw [P.val_inv]
-        _ = P.inv * M ^ (k + 1) * P.val := by ring
+        _ = P.inv * M ^ k * M * P.val := by rw [mul_one]
+        _ = P.inv * M ^ (k + 1) * P.val := by rw [← pow_succ]
   -- Induct on p
   induction p using Polynomial.induction_on' with
-  | h_add p q hp hq =>
+  | add p q hp hq =>
     simp only [map_add, hp, hq, mul_add, add_mul]
-  | h_monomial k a =>
+  | monomial k a =>
     simp only [Polynomial.aeval_monomial, conj_pow]
     rw [← smul_mul_assoc, ← mul_smul_comm]
 
@@ -91,22 +93,21 @@ theorem cyclic_vector_of_similar
   -- Substitute M = P.inv * N * P.val and apply aeval_conj
   rw [hMN, aeval_conj N P p] at hann
   -- hann : (P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w) = 0
-  -- Rearrange to: P.inv *ᵥ (aeval N p *ᵥ w) = 0
-  have hrearrange : (P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w) =
-      P.inv *ᵥ ((aeval N p) *ᵥ w) := by
-    rw [← Matrix.mulVec_mulVec (P.inv * aeval N p * P.val) P.inv w]
-    rw [show (P.inv * aeval N p * P.val) * P.inv = P.inv * aeval N p from by
-          have h : P.inv * aeval N p * P.val * P.inv =
-              P.inv * aeval N p * (P.val * P.inv) := by ring
-          rw [h, P.val_inv, mul_one]]
-    rw [Matrix.mulVec_mulVec P.inv (aeval N p) w]
-  rw [hrearrange] at hann
-  -- hann : P.inv *ᵥ (aeval N p *ᵥ w) = 0
-  -- Multiply by P.val on left: P.val * P.inv = 1, so aeval N p *ᵥ w = 0
-  have key := congr_arg P.val.mulVec hann
-  rw [Matrix.mulVec_zero, ← Matrix.mulVec_mulVec P.val P.inv ((aeval N p) *ᵥ w),
-      P.val_inv] at key
-  simpa using key
+  -- Apply P.val *ᵥ · to hann, then fold using ← mulVec_mulVec twice
+  -- and use P.val * P.inv = 1 to obtain (aeval N p) *ᵥ w = 0
+  have h0 : P.val *ᵥ ((P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w)) = 0 :=
+    (congr_arg P.val.mulVec hann).trans (Matrix.mulVec_zero _)
+  -- ← mulVec_mulVec: A *ᵥ (B *ᵥ v) = (A * B) *ᵥ v
+  rw [← Matrix.mulVec_mulVec] at h0
+  -- h0 : (P.val * (P.inv * aeval N p * P.val)) *ᵥ (P.inv *ᵥ w) = 0
+  rw [← Matrix.mulVec_mulVec] at h0
+  -- h0 : (P.val * (P.inv * aeval N p * P.val) * P.inv) *ᵥ w = 0
+  rw [show P.val * (P.inv * aeval N p * P.val) * P.inv = aeval N p from by
+        calc P.val * (P.inv * aeval N p * P.val) * P.inv
+            = (P.val * P.inv) * aeval N p * (P.val * P.inv) := by ring
+          _ = 1 * aeval N p * 1 := by rw [P.val_inv]
+          _ = aeval N p := by ring] at h0
+  exact h0
 
 -- ============================================================
 -- SECTION III: Annihilator Characterization
