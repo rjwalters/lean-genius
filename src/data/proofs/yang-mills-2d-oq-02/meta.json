@@ -38,8 +38,58 @@
       "casimir_scaling_2d_exact_4d_approximate (proved): summary theorem"
     ]
   },
+  "sections": [
+    {
+      "id": "header-and-definitions",
+      "title": "Part I Setup: Migdal Tension and Linear Potential",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Module header explaining the 2D/4D comparison. Defines linearPotential (area law potential) and migdalTension (σ_R = g²C₂(R)/(2·dim R) from the Migdal formula). Proves migdalTension_pos: σ_R > 0 from g² > 0, C₂(R) > 0, dim ≥ 1.",
+      "mathContext": "$\\sigma_R = g^2 C_2(R) / (2 \\dim R)$ (Migdal 1975): the heat kernel on the gauge group gives this exact formula for all representations in 2D. The linear potential $V_R(r) = \\sigma_R \\cdot r$ holds for ALL $r$ in 2D (no string breaking)."
+    },
+    {
+      "id": "exact-2d-scaling",
+      "title": "Part I: 2D Exact Casimir Scaling Proved",
+      "startLine": 64,
+      "endLine": 98,
+      "summary": "Three theorems prove 2D exact Casimir scaling. (1) twoD_potential_ratio_exact: V_R(r)/V_fund(r) = σ_R/σ_fund for any r > 0 (r cancels). (2) migdalTension_ratio_eq_casimir_ratio: σ_R/σ_fund = C₂(R)/C₂(fund) for same-dimension reps. (3) twoD_exact_casimir_scaling: combines both — the 2D potential ratio equals the Casimir ratio exactly for all r > 0.",
+      "mathContext": "$V_R(r)/V_{\\text{fund}}(r) = (\\sigma_R r)/(\\sigma_{\\text{fund}} r) = \\sigma_R/\\sigma_{\\text{fund}} = C_2(R)/C_2(\\text{fund})$. The key: the $r$ factors cancel, giving a distance-independent ratio. In 4D this cancellation breaks when one side saturates."
+    },
+    {
+      "id": "string-breaking-setup",
+      "title": "Part II Setup: String Breaking Definitions",
+      "startLine": 99,
+      "endLine": 132,
+      "summary": "Defines saturationPotential (V_R = 2·m_gluelump after breaking) and breakDistance (r_break = 2m/σ_R). Proves breakDistance_pos and the key identity potential_at_break: σ_R · r_break = 2·m_gluelump.",
+      "mathContext": "$r_{\\text{break}} = 2m_{\\text{gluelump}}/\\sigma_R$: at this distance the energy to stretch the flux tube equals the energy to create two gluelumps. For $r > r_{\\text{break}}$: $V_R(r) = 2m$ (constant), $V_{\\text{fund}}(r) = \\sigma_{\\text{fund}} \\cdot r$ (still linear, N-ality $\\neq 0$)."
+    },
+    {
+      "id": "exact-failure-4d",
+      "title": "Part II: 4D Exact Casimir Scaling Fails (Proved)",
+      "startLine": 133,
+      "endLine": 182,
+      "summary": "Key inequality: for r > r_break, saturation_lt_linear_post_break proves 2m < σ_R·r (private lemma). post_break_ratio_lt_tension_ratio converts to 2m/(σ_fund·r) < σ_R/σ_fund via div_lt_div_iff + nlinarith. exact_casimir_scaling_fails_4d: the pre-break ratio = σ_R/σ_fund but post-break ratio < σ_R/σ_fund — non-constant, disproving exactness.",
+      "mathContext": "For $r > r_{\\text{break}}$: $\\sigma_R r > 2m$ (multiply $r > r_{\\text{break}}$ by $\\sigma_R > 0$). Then $2m/(\\sigma_{\\text{fund}} r) < \\sigma_R/\\sigma_{\\text{fund}}$ by cross-multiplication. The ratio is strictly smaller than the Casimir ratio, so it cannot equal it for all $r$ — exact Casimir scaling is disproved."
+    },
+    {
+      "id": "approx-conjecture",
+      "title": "Part III: 4D Approximate Casimir Scaling (Axiomatized)",
+      "startLine": 184,
+      "endLine": 214,
+      "summary": "Defines ApproximateCasimirScaling4D: |σ_R/σ_fund - C₂(R)/C₂(fund)| < ε. Axiom casimir_scaling_4d_approximate: approximate scaling holds at intermediate distances (open conjecture, supported by lattice QCD but not analytically proved). Includes lattice data: SU(2) measured ≈ 2.5 vs Casimir 8/3 ≈ 2.67; SU(3) measured ≈ 2.2 vs Casimir 9/4 = 2.25.",
+      "mathContext": "$|\\sigma_R/\\sigma_{\\text{fund}} - C_2(R)/C_2(\\text{fund})| < \\varepsilon$ for $r < r_{\\text{break}}$. The deviation $\\varepsilon$ arises from non-perturbative effects: string tension receives corrections from gluon self-energy, renormalon divergences, and higher-order operators in the effective string theory."
+    },
+    {
+      "id": "summary-theorem",
+      "title": "Summary: Complete Answer to OQ-02",
+      "startLine": 216,
+      "endLine": 244,
+      "summary": "casimir_scaling_2d_exact_4d_approximate packages both parts: (1) 2D exact scaling holds for all r > 0 (proved), and (2) 4D post-break ratio < σ_R/σ_fund (proved). Together they answer OQ-02: Casimir scaling holds exactly in 2D, approximately in 4D, and the failure of exactness in 4D is a proved consequence of string breaking.",
+      "mathContext": "The summary theorem is a conjunction: $\\forall r > 0: V_R(r)/V_{\\text{fund}}(r) = C_2(R)/C_2(\\text{fund})$ (2D, proved) AND $\\forall r > r_{\\text{break}}: V_R^{\\text{sat}}/V_{\\text{fund}}(r) < \\sigma_R/\\sigma_{\\text{fund}}$ (4D failure, proved). Together with the axiom, the full picture is formalized."
+    }
+  ],
   "overview": {
-    "historicalContext": "Casimir scaling in Yang-Mills theory refers to the hypothesis that the string tension ratio between two representations equals the ratio of their quadratic Casimir eigenvalues. In 2D Yang-Mills, this is an exact consequence of the Migdal formula (1975): the partition function decomposes by representation, giving string tension σ_R = g²·C₂(R)/(2·dim R), so the ratio is exactly C₂(R)/C₂(fund). In 4D, Casimir scaling was observed in lattice simulations by Bali et al. (2000) at intermediate distances with high precision for SU(2) and SU(3), but the theoretical status is unclear. String breaking—the physical mechanism by which a flux tube snaps to create a particle pair—provides a rigorous reason why exact Casimir scaling cannot hold in 4D: after string breaking, the potential saturates rather than growing linearly.",
+    "historicalContext": "Casimir scaling in Yang-Mills theory refers to the hypothesis that the string tension ratio $\\sigma_R/\\sigma_{\\text{fund}}$ equals the ratio of quadratic Casimir eigenvalues $C_2(R)/C_2(\\text{fund})$. In 2D Yang-Mills, this is an exact consequence of the Migdal formula (1975): the partition function decomposes by representation via the heat kernel on the gauge group, giving $\\sigma_R = g^2 C_2(R)/(2 \\dim R)$, so the ratio is exactly $C_2(R)/C_2(\\text{fund})$ for representations of equal dimension. In 4D, Casimir scaling was observed in lattice simulations by Bali et al. (2000) with high precision for SU(2) and SU(3) at intermediate distances — the adjoint/fundamental ratio was measured within ~7% of the Casimir prediction. However, the theoretical status is subtle: string breaking, the physical mechanism by which a high-energy flux tube snaps to create a particle-antiparticle pair, provides a rigorous reason why exact Casimir scaling cannot hold in 4D for screened (N-ality 0) representations. After string breaking at $r = r_{\\text{break}} = 2m_{\\text{gluelump}}/\\sigma_R$, the adjoint potential saturates rather than growing linearly, causing the ratio to decrease — a proved mathematical fact.",
     "problemStatement": "Does Casimir scaling σ_R/σ_fund = C₂(R)/C₂(fund) persist exactly or only approximately in the 4D continuum limit?",
     "text": "In 2D Yang-Mills, Casimir scaling holds exactly from the Migdal formula. In 4D, string breaking at r = r_break = 2m_gluelump/σ_R causes the potential to saturate, violating the constant-ratio requirement of exact Casimir scaling. The 4D conjecture that σ_R/σ_fund ≈ C₂(R)/C₂(fund) at intermediate distances is supported by lattice QCD but remains open analytically.",
     "proofStrategy": "Part I uses the Migdal formula to show the 2D potential ratio is exactly σ_R/σ_fund = C₂(R)/C₂(fund) for all r > 0. Part II formalizes string breaking: at r > r_break, the adjoint potential is V_R(r) = 2·m_gluelump (constant) while V_fund(r) = σ_fund·r (linear). The key inequality 2·m_gluelump < σ_R·r follows from r > r_break = 2m/σ_R, and div_lt_div_iff converts this to the ratio comparison. The 4D approximate conjecture is axiomatized.",
@@ -77,12 +127,17 @@
     {
       "targetId": "yang-mills-2d",
       "relationship": "derives-from",
-      "description": "This open question is derived from the 2D Yang-Mills exact solution"
+      "description": "This open question derives from the 2D Yang-Mills exact solution — the Migdal formula is the key ingredient for the exact 2D Casimir scaling result"
     },
     {
       "targetId": "yang-mills-2d-oq-01",
       "relationship": "related",
-      "description": "Related OQ on heat kernel techniques for 3D/4D extension"
+      "description": "Related OQ on heat kernel techniques for 3D/4D extension of Yang-Mills results"
+    },
+    {
+      "targetId": "yang-mills-lattice",
+      "relationship": "context",
+      "description": "Lattice Yang-Mills formulation underlying the Bali et al. (2000) lattice QCD measurements of approximate Casimir scaling that motivate the axiomatized 4D conjecture"
     }
   ]
 }
