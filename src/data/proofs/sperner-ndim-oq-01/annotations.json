@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-fat-prefix-def",
+    "proofId": "sperner-ndim-oq-01",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "prefixSet: Simplex Vertices as Prefix Finsets",
+    "content": "prefixSet l k computes the first k elements of list l as a Finset, representing the k-th vertex of the Freudenthal simplex corresponding to permutation l. The Freudenthal triangulation assigns to each permutation l : List (Fin n) a simplex whose vertices are the sets {l[0]}, {l[0],l[1]}, ..., {l[0],...,l[n-1]} — precisely the prefix sets at positions 1, 2, ..., n. This Finset representation converts the adjacency question from a geometric problem (two simplices share a face) into a combinatorial one: how many k-element sets lie between two consecutive prefix sets?",
+    "mathContext": "$$\\text{prefixSet}(l, k) = \\{l[0], l[1], \\ldots, l[k-1]\\}$$ defined as $(l.\\text{take}\\; k).\\text{toFinset}$. For a permutation $l$ of $\\{0,\\ldots,n-1\\}$, these are the vertices of the Freudenthal simplex: vertex $k$ is $\\{l[i] : i < k\\}$.",
+    "significance": "The key data structure enabling the reduction from geometric adjacency to Finset combinatorics. All results follow from properties of List.take and List.toFinset.",
+    "relatedConcepts": ["List.take", "List.toFinset", "Freudenthal triangulation", "simplex vertices as subsets"],
+    "prerequisites": ["List API in Mathlib", "Finset.toFinset", "Permutations as lists"]
+  },
+  {
+    "id": "ann-fat-succ-sdiff",
+    "proofId": "sperner-ndim-oq-01",
+    "range": { "startLine": 62, "endLine": 88 },
+    "type": "theorem",
+    "title": "Consecutive Prefix Sets Differ by a Singleton",
+    "content": "prefixSet_succ_sdiff proves: for a nodup list l and index k < l.length, the difference prefixSet l (k+1) \\ prefixSet l k is exactly the singleton {l[k]}. The proof works by set extensionality: x is in the difference iff it is in l.take(k+1) but not in l.take(k). Using List.take_succ, l.take(k+1) = l.take(k) ++ [l[k]], so x ∈ l.take(k+1) means x ∈ l.take(k) (contradicting 'not in prefixSet l k') or x = l[k]. The nodup hypothesis ensures l[k] ∉ l.take(k) (otherwise l would have a repeated element at positions < k and = k).",
+    "mathContext": "$$\\text{prefixSet}(l, k+1) \\setminus \\text{prefixSet}(l, k) = \\{l[k]\\}$$ since $l.\\text{take}(k+1) = l.\\text{take}(k) \\mathbin{++} [l[k]]$ and $l[k] \\notin l.\\text{take}(k)$ by \\texttt{l.Nodup}.",
+    "significance": "The foundational property: each step of the prefix chain adds exactly one new element. This implies prefixSet_skip_sdiff_card (the 2-element gap) and is the root of the adjacency count.",
+    "relatedConcepts": ["List.take_succ", "List.Nodup.get_inj_iff", "List.mem_iff_get", "nodup implies distinct elements"],
+    "prerequisites": ["List.Nodup", "List.take_succ decomposition", "Finset extensionality"]
+  },
+  {
+    "id": "ann-fat-skip-card",
+    "proofId": "sperner-ndim-oq-01",
+    "range": { "startLine": 91, "endLine": 101 },
+    "type": "theorem",
+    "title": "Two-Step Gap Has Exactly 2 Elements",
+    "content": "prefixSet_skip_sdiff_card proves: for a nodup list l with k < l.length and k > 0, the difference prefixSet l (k+1) \\ prefixSet l (k-1) has cardinality 2. The proof uses Finset.card_sdiff (which gives card(B\\ A) = card(B) - card(A) when A ⊆ B), plus the cardinality calculations: card(prefixSet l (k-1)) = k-1 and card(prefixSet l (k+1)) = k+1. Then (k+1) - (k-1) = 2 by omega. The gap {l[k-1], l[k]} has exactly these 2 elements — they are the two elements added in two consecutive steps.",
+    "mathContext": "$$|\\text{prefixSet}(l, k+1) \\setminus \\text{prefixSet}(l, k-1)| = (k+1) - (k-1) = 2$$ using \\texttt{Finset.card\\_sdiff} and the cardinality formulas for prefix sets.",
+    "significance": "The direct input to intermediate_sets_card_eq_two. Together with the chain condition (prefixSet l (k-1) ⊆ prefixSet l (k+1)), this identifies the 2-element 'gap' that gives exactly 2 intermediate sets.",
+    "relatedConcepts": ["Finset.card_sdiff", "prefixSet_card_eq", "omega tactic", "chain of prefix sets"],
+    "prerequisites": ["Finset.card_sdiff", "prefixSet_mono (chain condition)", "Arithmetic on natural numbers"]
+  },
+  {
+    "id": "ann-fat-counting-lemma",
+    "proofId": "sperner-ndim-oq-01",
+    "range": { "startLine": 109, "endLine": 163 },
+    "type": "theorem",
+    "title": "Key Counting Lemma: Exactly 2 Intermediate Sets When Gap = 2",
+    "content": "intermediate_sets_card_eq_two is the combinatorial core: if A ⊆ B and |B \\ A| = 2, then there are exactly 2 sets S satisfying A ⊆ S ⊆ B and |S| = |A| + 1. The proof proceeds: (1) Use Finset.card_eq_two to extract a, b with B \\ A = {a, b}. (2) Show the filter equals {A ∪ {a}, A ∪ {b}} via convert_to and Finset.card_pair. (3) For any S satisfying the conditions, extract the unique element e = S \\ A (which is a singleton since |S \\ A| = 1), show e ∈ B \\ A = {a,b}, and reconstruct S = A ∪ {e}.",
+    "mathContext": "$$|B \\setminus A| = 2 \\implies |\\{S \\mid A \\subseteq S \\subseteq B,\\; |S| = |A|+1\\}| = 2$$ The two sets are $A \\cup \\{a\\}$ and $A \\cup \\{b\\}$ where $B \\setminus A = \\{a, b\\}$.",
+    "significance": "The abstract combinatorial lemma that makes the adjacency theorem a one-liner: once we have the 2-element gap, the adjacency count is exactly 2. The proof is the longest in the file (~55 lines) but is purely Finset manipulation.",
+    "relatedConcepts": ["Finset.card_eq_two", "Finset.card_pair", "convert_to tactic", "Finset.card_sdiff"],
+    "prerequisites": ["Finset.card_eq_two decomposition", "Finset.card_union_of_disjoint", "convert_to tactic"]
+  },
+  {
+    "id": "ann-fat-main-theorem",
+    "proofId": "sperner-ndim-oq-01",
+    "range": { "startLine": 181, "endLine": 197 },
+    "type": "theorem",
+    "title": "Freudenthal Adjacency Theorem: Exactly 2 Simplices per Interior Facet",
+    "content": "freudenthal_adjacency_theorem is the main result: for a Freudenthal simplex l (nodup list of length n) and interior position 0 < k < n, the filter counting k-element sets S between prefixSet l (k-1) and prefixSet l (k+1) has cardinality exactly 2. The proof is elegant: after rewriting k = (prefixSet l (k-1)).card + 1 (since card = k-1 for interior positions), it reduces to intermediate_sets_card_eq_two by providing the 2-element gap from prefixSet_skip_sdiff_card. The full geometric argument — that these 2 sets are the vertex sets (at level k) of exactly 2 adjacent simplices — is contained in the freudenthal_two_intermediate_sets corollary.",
+    "mathContext": "$$\\left|\\left\\{S \\mid \\text{prefixSet}(l,k-1) \\subseteq S \\subseteq \\text{prefixSet}(l,k+1),\\; |S| = k\\right\\}\\right| = 2$$ proved by: $|\\text{prefixSet}(l,k+1) \\setminus \\text{prefixSet}(l,k-1)| = 2$ (prefixSet\\_skip\\_sdiff\\_card) $\\implies$ exactly 2 intermediate sets (intermediate\\_sets\\_card\\_eq\\_two).",
+    "significance": "The culminating theorem. The Freudenthal adjacency theorem is a fundamental result in triangulation theory, underlying applications to Sperner's lemma (coloring argument needs exactly 2 simplices per interior edge) and Brouwer's fixed point theorem.",
+    "relatedConcepts": ["intermediate_sets_card_eq_two", "prefixSet_skip_sdiff_card", "Sperner's lemma", "Brouwer fixed point theorem"],
+    "prerequisites": ["prefixSet_skip_sdiff_card", "intermediate_sets_card_eq_two", "Freudenthal triangulation"]
+  },
+  {
+    "id": "ann-fat-existence-corollary",
+    "proofId": "sperner-ndim-oq-01",
+    "range": { "startLine": 202, "endLine": 218 },
+    "type": "theorem",
+    "title": "Existence Corollary: The Two Adjacent Simplices Exist Explicitly",
+    "content": "freudenthal_two_intermediate_sets is the existential corollary: there exist two distinct Finsets S₁ ≠ S₂, both lying between prefixSet l (k-1) and prefixSet l (k+1) with cardinality k. The proof applies Finset.card_eq_two to the count from freudenthal_adjacency_theorem to extract the two elements, then retrieves their membership properties from the filter. This gives the user two explicit Finsets — the vertex sets (at level k) of the two Freudenthal simplices sharing the interior facet — without requiring them to work through the counting argument.",
+    "mathContext": "$$\\exists S_1 \\neq S_2,\\; \\text{prefixSet}(l,k-1) \\subseteq S_i \\subseteq \\text{prefixSet}(l,k+1) \\text{ and } |S_i| = k$$ for $i = 1, 2$, extracted from \\texttt{freudenthal\\_adjacency\\_theorem} via \\texttt{Finset.card\\_eq\\_two}.",
+    "significance": "The user-facing version of the adjacency theorem: provides two distinct explicit witness sets. For applications to Sperner's lemma, one needs to exhibit the two adjacent simplices, not just count them.",
+    "relatedConcepts": ["Finset.card_eq_two", "freudenthal_adjacency_theorem", "Finset.mem_filter", "Finset.mem_powerset"],
+    "prerequisites": ["freudenthal_adjacency_theorem", "Finset.card_eq_two extraction"]
+  }
+]
