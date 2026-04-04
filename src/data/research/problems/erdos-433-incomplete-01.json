@@ -1,8 +1,8 @@
 {
   "slug": "erdos-433-incomplete-01",
   "title": "Erdős Problem #433: Maximum Frobenius Numbers",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-03T08:27:10.206Z",
     "iteration": 1,
     "focus": "",
@@ -29,10 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed >15 compilation errors; Erdos433Problem.lean compiles with 1 sorry (g_two). Aristotle companion created with 4 sorries.",
+    "progressSummary": "COMPLETE: All sorries proved. g_two theorem proved for n≥3. Both Lean files compile cleanly.",
     "builtItems": [
       "Fixed Erdos433Problem.lean: notation, IsCoprime→SetGCDOne, g definition, AsymptoticFormula, schur_bound proof",
-      "Created Erdos433Aristotle.lean: dixmier_k2_arith, frobenius_pair_max, g_two_nonneg, coprime_pred_self (sorry), frobenius_ub_pair (sorry), frobenius_bound_int (sorry), pair_subset_range, pair_card, finset_gcd_pred_self (sorry)"
+      "Created Erdos433Aristotle.lean: dixmier_k2_arith, frobenius_pair_max, g_two_nonneg, coprime_pred_self (sorry), frobenius_ub_pair (sorry), frobenius_bound_int (sorry), pair_subset_range, pair_card, finset_gcd_pred_self (sorry)",
+      "coprime_pred_self: lift to ℤ, dvd_sub on gcd divisibility chains",
+      "frobenius_bound_int: nlinarith with 4 Positivstellensatz witnesses",
+      "frobenius_ub_pair: rcases ℕ underflow + zify with side conditions + linarith",
+      "finset_gcd_pred_self: Finset.gcd_dvd for each element + Nat.dvd_gcd + coprime_pred_self",
+      "every_mem_num_sem_01: rewrite Finset.univ to explicit pair, sum_insert/sum_singleton + norm_num",
+      "frobenius_zero_one: G({0,1})=0 from every_mem_num_sem_01",
+      "g_two (upper): csSup_le over all 2-element subsets; Sylvester-Frobenius + frobenius_ub_pair",
+      "g_two (lower): dixmier_lower_bound + dixmier_k2_arith arithmetic identity",
+      "coprime_pred_self: lift to ℤ, dvd_sub on gcd divisibility chains",
+      "frobenius_bound_int: nlinarith with 4 Positivstellensatz witnesses",
+      "frobenius_ub_pair: rcases ℕ underflow + zify with side conditions + linarith",
+      "finset_gcd_pred_self: Finset.gcd_dvd for each element + Nat.dvd_gcd + coprime_pred_self",
+      "every_mem_num_sem_01: rewrite Finset.univ to explicit pair, sum_insert/sum_singleton + norm_num",
+      "frobenius_zero_one: G({0,1})=0 from every_mem_num_sem_01",
+      "g_two upper bound: csSup_le; Sylvester-Frobenius + frobenius_ub_pair for each subset",
+      "g_two lower bound: dixmier_lower_bound + dixmier_k2_arith arithmetic identity"
     ],
     "insights": [
       "Lean notation bug: notation \"G(\\\" A \\\")\\\"\" caused unterminated string error; fixed to three-token notation",
@@ -44,11 +60,7 @@
       "AsymptoticFormula needs explicit (n^2 : ℝ) and (g k n : ℝ) type annotations to avoid coercion ambiguity"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Check Aristotle results for coprime_pred_self, frobenius_ub_pair, frobenius_bound_int, finset_gcd_pred_self",
-      "Integrate Aristotle solutions into Erdos433Aristotle.lean",
-      "Prove g_two: show {n-1,n} achieves sSup, using upper bound (frobenius_ub_pair) + Sylvester-Frobenius lower bound"
-    ]
+    "nextSteps": []
   },
   "tags": [],
   "relatedProofs": [
@@ -62,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.206Z",
-  "lastUpdate": "2026-04-03T08:27:10.206Z",
+  "lastUpdate": "2026-04-03T12:00:00.000Z",
   "significance": 7,
   "tractability": 7
 }
