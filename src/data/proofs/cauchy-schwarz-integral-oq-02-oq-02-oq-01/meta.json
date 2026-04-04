@@ -16,45 +16,137 @@
     "lineCount": 117,
     "theoremCount": 3,
     "definitionCount": 0,
-    "assumptions": "None.",
+    "assumptions": "None. 0 axioms, 0 sorries. Fully verified in Lean 4 with Mathlib.",
     "originalContributions": [
-      "Abstract ENNReal rpow cancellation lemma: X ≤ C·X^q implies X^{1-q} ≤ C for q < 1",
-      "Minkowski division step: explicit instantiation at q = (p-1)/p for Lp norm cancellation",
-      "Exponent identity 1 - (p-1)/p = 1/p for all p ≠ 0"
-    ]
+      "ennreal_rpow_cancel: abstract ENNReal rpow cancellation — X ≤ C·X^q implies X^{1-q} ≤ C for q < 1 (with case split on X = 0)",
+      "minkowski_cancellation_step: Minkowski division step at q = (p-1)/p — X ≤ (A+B)·X^{(p-1)/p} implies X^{1/p} ≤ A+B",
+      "minkowski_exponent_identity: 1 - (p-1)/p = 1/p for p ≠ 0 (key arithmetic fact)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "ENNReal.rpow_add",
+        "description": "X^a * X^b = X^{a+b} for X in ENNReal (requires X ≠ 0 and X ≠ ⊤)",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "ENNReal.mul_le_mul_iff_left",
+        "description": "a * b ≤ a * c ↔ b ≤ c when 0 < a < ⊤",
+        "module": "Mathlib.Data.ENNReal.Basic"
+      },
+      {
+        "theorem": "ENNReal.rpow_pos",
+        "description": "0 < X and X ≠ ⊤ imply 0 < X^p",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.ENNReal"
+      },
+      {
+        "theorem": "ENNReal.zero_rpow_of_pos",
+        "description": "0^p = 0 for p > 0 in ENNReal",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.ENNReal"
+      }
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Minkowski's inequality (1910) states that the Lp norm satisfies the triangle inequality for p ≥ 1. The standard proof via Hölder's inequality produces an intermediate bound of the form ‖f+g‖_p^p ≤ (‖f‖_p + ‖g‖_p)·‖f+g‖_p^{p-1}, which requires an 'rpow division' step to conclude ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p. This step involves cancelling an extended non-negative real power.",
-    "problemStatement": "In the ENNReal setting (extended non-negative reals used in measure theory), prove the abstract cancellation: if X ≤ C·X^q with 0 ≤ q < 1 and X finite, then X^{1-q} ≤ C. Apply this at q = (p-1)/p to complete the Minkowski inequality derivation.",
-    "proofStrategy": "Factor X = X^{1-q}·X^q using rpow_add, then cancel X^q (which is nonzero and finite for 0 < X < ⊤). The case X = 0 is handled separately since 0^{1-q} = 0. The abstract lemma is then instantiated with the specific Minkowski exponents.",
+    "historicalContext": "Minkowski's inequality $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $L^p$ spaces was proved by Hermann Minkowski (1910) as a consequence of Hölder's inequality. The standard proof by Otto Hölder (1889) produces an intermediate bound $\\|f+g\\|_p^p \\leq (\\|f\\|_p + \\|g\\|_p) \\cdot \\|f+g\\|_p^{p-1}$ via Hölder's inequality applied to $f+g = f \\cdot 1 + g \\cdot 1$. To conclude $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$, one must divide both sides by $\\|f+g\\|_p^{p-1}$, which is an 'rpow cancellation' step. In Mathlib's formalization using ENNReal (extended non-negative reals), this division is non-trivial because 0 and ⊤ require special treatment. This file isolates and proves the abstract cancellation lemma, making the Minkowski derivation fully transparent without relying on the `ENNReal.lintegral_Lp_add_le` black box.",
+    "problemStatement": "In the ENNReal setting, prove the abstract cancellation: if $X \\leq C \\cdot X^q$ with $0 \\leq q < 1$ and $X \\neq \\top$, then $X^{1-q} \\leq C$. Apply at $q = (p-1)/p$ to complete the Minkowski inequality derivation from Hölder's bound.",
+    "text": "Proves the ENNReal rpow cancellation lemma and its application to the Minkowski division step. The abstract form separates algebraic cancellation from analytic measure theory.",
+    "proofStrategy": "Factor $X = X^{1-q} \\cdot X^q$ using `ENNReal.rpow_add` (requires $X \\neq 0, \\top$). Substitute the factoring into $X \\leq C \\cdot X^q$ to get $X^{1-q} \\cdot X^q \\leq C \\cdot X^q$. Cancel $X^q$ using `ENNReal.mul_le_mul_iff_left` (requires $0 < X^q < \\top$). The case $X = 0$ is handled separately: $0^{1-q} = 0 \\leq C$. Instantiate at $q = (p-1)/p$ for the Minkowski step after proving the identity $1 - (p-1)/p = 1/p$.",
     "keyInsights": [
-      "The ENNReal setting requires careful handling of 0 and ⊤ cases separately",
-      "rpow_add provides the factoring identity X = X^{1-q} · X^q when X is finite and nonzero",
-      "The exponent arithmetic 1 - (p-1)/p = 1/p is the key identity linking the Hölder and Minkowski exponents"
+      "**Abstract vs concrete**: Isolating the cancellation as an abstract lemma (X ≤ C·X^q → X^{1-q} ≤ C) separates the algebraic rpow arithmetic from the analytic Lp space machinery. The abstract form is reusable for any Minkowski-type inequality in ENNReal.",
+      "**ENNReal case split**: ENNReal requires two cases (X = 0 and X > 0) because `rpow_add` only holds for nonzero, finite inputs. The zero case uses `zero_rpow_of_pos` (0^r = 0 for r > 0), while the positive case uses `mul_le_mul_iff_left` for cancellation.",
+      "**rpow_add is the key**: The factoring $X = X^{1-q} \\cdot X^q$ follows from `ENNReal.rpow_add` plus the ring identity $(1-q)+q=1$. This converts the multiplicative inequality into a form where `mul_le_mul_iff_left` applies directly.",
+      "**Exponent arithmetic**: The identity $1 - (p-1)/p = 1/p$ is the bridge between the Hölder step (producing the exponent $(p-1)/p$) and the final Minkowski statement (with exponent $1/p$). Isolating this as `minkowski_exponent_identity` makes the connection explicit.",
+      "**Finiteness is essential**: The cancellation requires $X^q \\neq \\top$ (handled by `rpow_eq_top_iff` negation). Without $X \\neq \\top$, $X^q$ could be $\\top$ and cancellation would fail. This is why the hypothesis $X \\neq \\top$ cannot be dropped."
     ],
     "prerequisites": [
-      "Extended non-negative reals (ENNReal) in Mathlib",
-      "ENNReal.rpow and its properties",
-      "Hölder's inequality and Minkowski's inequality for Lp spaces"
+      "Extended non-negative reals (ENNReal) in Mathlib — including 0, ⊤, and the arithmetic of rpow",
+      "ENNReal.rpow and properties: rpow_add, rpow_pos, zero_rpow_of_pos, rpow_eq_top_iff",
+      "Hölder's inequality and the standard Lp Minkowski derivation",
+      "ENNReal cancellation lemma: mul_le_mul_iff_left"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Namespace",
+      "startLine": 26,
+      "endLine": 41,
+      "summary": "Imports Mathlib measure theory and analysis modules. Opens MeasureTheory and ENNReal namespaces. Sets maxHeartbeats 400000 for the rpow computations.",
+      "mathContext": "The ENNReal type (extended non-negative reals, $[0, \\infty]$) is used throughout Mathlib's measure theory for integrals and $L^p$ norms. The `noncomputable section` is needed because ENNReal real-number operations are not computably decidable."
+    },
+    {
+      "id": "core-cancellation",
+      "title": "Core ENNReal rpow Cancellation Lemma",
+      "startLine": 43,
+      "endLine": 75,
+      "summary": "Proves ennreal_rpow_cancel: X ≤ C·X^q implies X^{1-q} ≤ C for 0 ≤ q < 1 and X ≠ ⊤. Case split on X = 0 vs X > 0. Uses rpow_add to factor X = X^{1-q}·X^q, then cancels X^q via mul_le_mul_iff_left.",
+      "mathContext": "$X^{1-q} \\cdot X^q = X^{(1-q)+q} = X^1 = X \\leq C \\cdot X^q \\Rightarrow X^{1-q} \\leq C$. Requires $X^q > 0$ and $X^q < \\top$ for cancellation."
+    },
+    {
+      "id": "minkowski-application",
+      "title": "Application: Minkowski Division Step",
+      "startLine": 77,
+      "endLine": 99,
+      "summary": "Instantiates the abstract cancellation at q = (p-1)/p for p > 1. Proves minkowski_cancellation_step: X ≤ (A+B)·X^{(p-1)/p} implies X^{1/p} ≤ A+B. The key step is rewriting 1 - (p-1)/p = 1/p via field_simp; ring.",
+      "mathContext": "At $q = (p-1)/p$: $1 - q = 1/p$. So `ennreal_rpow_cancel` gives $X^{1/p} \\leq A + B$, which is $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ when $X = \\int|f+g|^p$."
+    },
+    {
+      "id": "exponent-identity",
+      "title": "Exponent Identity and Verification Examples",
+      "startLine": 101,
+      "endLine": 113,
+      "summary": "Proves minkowski_exponent_identity: 1 - (p-1)/p = 1/p for p ≠ 0. Includes two concrete norm_num checks (p=2 and p=3) as sanity verification.",
+      "mathContext": "$1 - \\frac{p-1}{p} = \\frac{1}{p}$. Equivalently: the Hölder conjugate identity $\\frac{1}{p} + \\frac{1}{q} = 1$ with $q = \\frac{p}{p-1}$ gives $\\frac{1}{q} = 1 - \\frac{1}{p} = \\frac{p-1}{p}$."
+    }
+  ],
   "conclusion": {
-    "summary": "A clean Lean 4 proof of the ENNReal rpow cancellation lemma and its application to the Minkowski division step, with 3 theorems and 0 axioms. The abstract form separates the algebraic cancellation from the analytic measure theory.",
-    "implications": "Fills a gap in the Lp space hierarchy in the gallery: the parent entry used `ENNReal.lintegral_Lp_add_le` as a black box; this entry exposes the division step explicitly, making the Minkowski derivation fully transparent.",
+    "summary": "A clean Lean 4 proof of the ENNReal rpow cancellation lemma and its application to the Minkowski division step, with 3 theorems, 0 axioms, and 0 sorries. The abstract form separates the algebraic rpow cancellation from the analytic measure theory.",
+    "implications": "Fills a transparency gap in the Lp space hierarchy in the gallery: the parent entry used `ENNReal.lintegral_Lp_add_le` as a black box. This entry exposes the division step explicitly, making the Hölder → Minkowski derivation fully transparent. The abstract cancellation lemma is also applicable to other ENNReal power inequalities.",
     "openQuestions": [
       "Can the abstract cancellation lemma be generalized to arbitrary ordered semifields with rpow?",
-      "Is there a version that avoids the X ≠ ⊤ hypothesis by working in NNReal?"
+      "Is there a version that avoids the X ≠ ⊤ hypothesis by working in NNReal (no infinity)?",
+      "Can the ENNReal rpow cancellation be submitted to Mathlib as a standalone lemma?"
     ]
   },
   "crossReferences": [
     {
-      "slug": "cauchy-schwarz-integral-oq-02-oq-02",
-      "title": "Cauchy-Schwarz Integral OQ-02-OQ-02",
-      "relationship": "extends"
+      "targetId": "cauchy-schwarz-integral-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent Minkowski inequality proof that used ENNReal.lintegral_Lp_add_le as a black box for the final division step — this file proves that step explicitly."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Root Cauchy-Schwarz inequality (p=2 special case of Hölder). The Minkowski inequality for p=2 recovers the triangle inequality for the L2 inner product norm."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Minkowski, H."],
+      "title": "Geometrie der Zahlen",
+      "year": "1910",
+      "venue": "Teubner, Leipzig",
+      "note": "Original statement and proof of the Lp triangle inequality via Hölder's inequality"
+    },
+    {
+      "authors": ["Lieb, E.H.", "Loss, M."],
+      "title": "Analysis",
+      "year": "2001",
+      "venue": "American Mathematical Society, Graduate Studies in Mathematics vol. 14",
+      "note": "§2.3: Minkowski and Hölder inequalities with the standard 'divide by ‖f+g‖_p^{p-1}' argument made explicit"
     }
   ],
   "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.MeanInequalities",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["MeasureTheory", "ENNReal"],
     "namespace": "CancellationStep",
     "lineCount": 117,
     "axiomCount": 0,

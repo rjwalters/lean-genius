@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": "ann-cs-oq02-oq02-oq01-cancel",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+    "range": { "startLine": 52, "endLine": 75 },
+    "type": "theorem",
+    "title": "ENNReal rpow Cancellation: X ≤ C·X^q Implies X^{1-q} ≤ C",
+    "content": "The core lemma proves that if $X \\leq C \\cdot X^q$ with $0 \\leq q < 1$ and $X \\neq \\top$, then $X^{1-q} \\leq C$. The proof handles two cases: (1) $X = 0$: $0^{1-q} = 0 \\leq C$ since $1-q > 0$, discharged by `ENNReal.zero_rpow_of_pos`. (2) $0 < X < \\top$: factor $X = X^{1-q} \\cdot X^q$ using `ENNReal.rpow_add` with the ring identity $(1-q)+q = 1$; substitute into the hypothesis to get $X^{1-q} \\cdot X^q \\leq C \\cdot X^q$; cancel $X^q$ using `ENNReal.mul_le_mul_iff_left`, which requires $X^q$ to be both nonzero (`rpow_pos`) and finite (`rpow_eq_top_iff` negation). The positivity and finiteness of $X^q$ follow from the hypotheses $0 < X$ and $X \\neq \\top$.",
+    "mathContext": "$X^{1-q} \\cdot X^q = X^{(1-q)+q} = X^1 = X \\leq C \\cdot X^q$. Divide by $X^q > 0$: $X^{1-q} \\leq C$. Key ENNReal lemma: `mul_le_mul_iff_left` — for $0 < a < \\top$: $a \\cdot b \\leq a \\cdot c \\iff b \\leq c$.",
+    "significance": "key",
+    "relatedConcepts": ["ENNReal.rpow_add", "ENNReal.mul_le_mul_iff_left", "ENNReal.rpow_pos", "ENNReal.rpow_eq_top_iff", "zero_rpow_of_pos"],
+    "prerequisites": ["ENNReal.rpow properties", "Lean 4 case splitting with rcases", "ENNReal finiteness conditions"]
+  },
+  {
+    "id": "ann-cs-oq02-oq02-oq01-minkowski",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+    "range": { "startLine": 87, "endLine": 99 },
+    "type": "theorem",
+    "title": "Minkowski Division Step: From ‖f+g‖_p^p ≤ (A+B)·‖f+g‖_p^{p-1} to ‖f+g‖_p ≤ A+B",
+    "content": "`minkowski_cancellation_step` instantiates the abstract cancellation at $q = (p-1)/p$. Given $X \\leq (A+B) \\cdot X^{(p-1)/p}$ (the Hölder bound on the $L^p$ norm), the theorem concludes $X^{1/p} \\leq A + B$. The proof has three steps: (1) verify $0 \\leq (p-1)/p$ from $p > 1$; (2) verify $(p-1)/p < 1$ via `div_lt_one`; (3) apply `ennreal_rpow_cancel` after rewriting the exponent $1 - (p-1)/p = 1/p$ using `field_simp; ring`. The exponent rewriting is the key arithmetic step: it converts the abstract $X^{1-q}$ into the concrete $X^{1/p} = \\|f+g\\|_p$.",
+    "mathContext": "$q = \\frac{p-1}{p}$, so $1 - q = 1 - \\frac{p-1}{p} = \\frac{p - (p-1)}{p} = \\frac{1}{p}$. The theorem converts: from $\\int(f+g)^p \\leq (\\|f\\|_p + \\|g\\|_p) \\cdot (\\int(f+g)^p)^{(p-1)/p}$ conclude $(\\int(f+g)^p)^{1/p} \\leq \\|f\\|_p + \\|g\\|_p$.",
+    "significance": "key",
+    "relatedConcepts": ["Minkowski inequality", "Hölder inequality", "Lp spaces", "div_lt_one", "field_simp"],
+    "prerequisites": ["ennreal_rpow_cancel", "ENNReal norm as rpow of integral"]
+  },
+  {
+    "id": "ann-cs-oq02-oq02-oq01-expid",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+    "range": { "startLine": 105, "endLine": 107 },
+    "type": "insight",
+    "title": "Exponent Identity: 1 - (p-1)/p = 1/p",
+    "content": "`minkowski_exponent_identity` isolates the key exponent arithmetic as a named lemma: for $p \\neq 0$, $1 - (p-1)/p = 1/p$. This is proved by `field_simp [hp]; ring`. The separating out of this identity as a standalone theorem is pedagogically important: it is the single arithmetic fact that connects the Hölder exponent $(p-1)/p$ (dual exponent $1/q$ for conjugate $q = p/(p-1)$) to the final Minkowski exponent $1/p$. Two concrete examples ($p=2$: $1 - 1/2 = 1/2$, $p=3$: $1 - 2/3 = 1/3$) serve as sanity checks.",
+    "mathContext": "$1 - \\frac{p-1}{p} = \\frac{p}{p} - \\frac{p-1}{p} = \\frac{p-(p-1)}{p} = \\frac{1}{p}$. The identity connects: Hölder conjugate $1/q = 1 - 1/p$ for the exponent $q = p/(p-1)$; the division step uses $X^{1/p}$ which appears as $X^{1 - (p-1)/p}$ in the abstract cancellation.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hölder conjugate", "Lp exponent arithmetic", "field_simp", "ring tactic"],
+    "prerequisites": ["real field arithmetic", "Lp space exponent conventions"]
+  }
+]
