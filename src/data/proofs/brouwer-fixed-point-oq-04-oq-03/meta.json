@@ -60,6 +60,19 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "L.E.J. Brouwer proved in 1911 that every continuous self-map of a compact convex subset of ℝⁿ has a fixed point. Jules Schauder extended this to infinite-dimensional locally convex spaces in 1930. Shizuo Kakutani's 1941 generalization replaced single-valued maps with set-valued (multi-valued) maps, requiring upper hemicontinuity with nonempty, closed, convex values — the precise conditions that make the proof work via degree theory. John Nash applied Kakutani's theorem in 1950 to prove that every finite strategic-form game has a Nash equilibrium in mixed strategies, establishing a cornerstone of game theory. Ky Fan (1952) and Irving Glicksberg (1952) independently extended Kakutani's theorem to locally convex topological vector spaces (Fan-Glicksberg theorem), providing the foundation for Arrow-Debreu general equilibrium theory (1954).",
+    "problemStatement": "Given a nonempty compact convex set K and a set-valued map F : K → 2^K, when does F have a fixed point x ∈ F(x)? Kakutani (1941): if K ⊂ ℝⁿ and F is upper hemicontinuous with nonempty closed convex values, then a fixed point exists. Fan-Glicksberg: same when K is compact convex in a locally convex TVS.",
+    "proofStrategy": "The two main theorems are axiomatized. The genuine derivation is brouwer_from_kakutani_finite: given continuous f : K → K, define F(x) = {f(x)}. Singletons are nonempty, closed, and convex, and x ↦ {f(x)} is UHC iff f is continuous. Kakutani gives x* ∈ F(x*) = {f(x*)}, i.e., f(x*) = x*.",
+    "keyInsights": [
+      "Upper hemicontinuity (UHC) is the right continuity notion for set-valued maps: the preimage of any open superset of F(x) must be a neighborhood of x. For singleton maps F(x) = {f(x)}, UHC reduces to ordinary continuity.",
+      "The singleton reduction brouwer_from_kakutani_finite is proved, showing Kakutani strictly generalizes Brouwer: single-valued continuous maps are special cases of UHC set-valued maps.",
+      "IsNashEquilibrium is defined as True — a placeholder. The real definition requires computing expected payoffs under mixed strategy profiles, with each player's best-response correspondence as the fixed-point target.",
+      "The proof uses isClosed_singleton and convex_singleton from Mathlib, confirming singletons satisfy both Kakutani closure and convexity conditions — the key properties enabling the reduction.",
+      "Fan-Glicksberg requires local convexity: without it, compact convex sets in L^p(0,1) for 0 < p < 1 can have continuous self-maps without fixed points. The LocallyConvexSpace typeclass in Lean captures this exactly.",
+      "The hierarchy Brouwer → Kakutani → Fan-Glicksberg shows two independent generalizations (single→set-valued, finite-dim→infinite-dim) that converge at the same result — a consequence of Schauder's theorem in between."
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "brouwer-fixed-point",
