@@ -979,6 +979,28 @@ private lemma counting_factorial_lt {n : ℕ} (hn : 3 ≤ n) :
     simp [Nat.factorial_succ, mul_comm, mul_assoc, mul_left_comm]
   nlinarith [hfact]
 
+-- Helper: arc count equals filter cardinality on Fin n × Fin n via bijection φ.
+-- Kept separate from hamiltonian_of_few_missing_arcs to avoid DecidableRel instance clashes
+-- (arcCount's internal `letI := Classical.decPred _` must be the only DecidablePred for V × V).
+-- The `[DecidableRel D.arc]` parameter allows the filter in the return type to be elaborated.
+-- The body uses `classical` + `simp [Digraph.arcCount, Fintype.card_subtype]` to handle all
+-- instance synthesis uniformly, reducing the letI and converting Fintype.card to filter.card.
+omit [DecidableEq V] in
+private lemma arcCount_eq_filter_bij {n : ℕ} (D : Digraph V) (φ : V ≃ Fin n)
+    [DecidableRel D.arc] :
+    (Finset.univ.filter (fun p : Fin n × Fin n => D.arc (φ.symm p.1) (φ.symm p.2))).card = D.arcCount := by
+  classical
+  simp only [Digraph.arcCount, Fintype.card_subtype]
+  apply Finset.card_bij' (fun p _ => (φ.symm p.1, φ.symm p.2)) (fun p _ => (φ p.1, φ p.2))
+  · intro ⟨a, b⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+    exact hp
+  · intro ⟨u, v⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+    rwa [Equiv.symm_apply_apply, Equiv.symm_apply_apply]
+  · intro ⟨a, b⟩ _; simp [Equiv.apply_symm_apply]
+  · intro ⟨u, v⟩ _; simp [Equiv.symm_apply_apply]
+
 -- Counting argument (probabilistic method): with ≤ n-2 arcs missing from K*_n,
 -- a Hamiltonian cycle exists (no strong connectivity needed).
 -- Proof: n! permutations; each missing arc (a→b) contributes ≤ n*(n-2)! "bad" ones;
@@ -1041,9 +1063,37 @@ private lemma hamiltonian_of_few_missing_arcs (D : Digraph V)
       Finset.mem_filter.mpr ⟨Finset.mem_univ _, i, rfl, rfl⟩⟩
   -- |missingArcs| ≤ n - 2 (complement counting: n*(n-1) total non-loop pairs minus present).
   have hmissing_count : missingArcs.card ≤ n - 2 := by
-    -- missingArcs.card = n*(n-1) - D.arcCount by bijection with D's complement.
-    -- hmissing gives the bound directly (in ℕ subtraction).
-    sorry
+    -- Present arcs: arcs of D indexed by Fin n via φ
+    let presentArcs : Finset (Fin n × Fin n) :=
+      Finset.univ.filter (fun p => D.arc (φ.symm p.1) (φ.symm p.2))
+    -- presentArcs.card = D.arcCount (bijection via φ, using helper outside this lemma)
+    have hpresent_card : presentArcs.card = D.arcCount :=
+      arcCount_eq_filter_bij D φ
+    -- missingArcs and presentArcs are disjoint (no arc can be both missing and present)
+    have hdisj : Disjoint missingArcs presentArcs :=
+      Finset.disjoint_filter.2 fun ⟨a, b⟩ _ ⟨_, hnot⟩ harc => hnot harc
+    -- missingArcs ∪ presentArcs = all off-diagonal pairs of Fin n
+    have hunion : (missingArcs ∪ presentArcs).card = n * (n - 1) := by
+      have heq : missingArcs ∪ presentArcs = (Finset.univ : Finset (Fin n)).offDiag := by
+        ext ⟨a, b⟩
+        simp only [Finset.mem_union, Finset.mem_offDiag, Finset.mem_univ, true_and]
+        constructor
+        · rintro (hm | hp)
+          · exact (Finset.mem_filter.mp hm).2.1
+          · intro heq; subst heq
+            exact D.loopless (φ.symm a) (Finset.mem_filter.mp hp).2
+        · intro hab
+          by_cases h : D.arc (φ.symm a) (φ.symm b)
+          · right; exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩
+          · left; exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hab, h⟩
+      -- offDiag_card gives n^2 - n; mul_tsub + mul_one expands RHS n*(n-1) to n*n-n
+      rw [heq, Finset.offDiag_card, Finset.card_univ, Fintype.card_fin]
+      simp only [mul_tsub, mul_one]
+    -- Partition: missingArcs.card + D.arcCount = n * (n - 1)
+    have hpart : missingArcs.card + D.arcCount = n * (n - 1) := by
+      rw [← hpresent_card, ← Finset.card_union_of_disjoint hdisj]
+      exact hunion
+    omega
   -- Union bound: |biUnion| ≤ Σ |badSetFor p| ≤ |missing| * n*(n-2)!
   have hbad_union_card : (Finset.biUnion missingArcs badSetFor).card ≤
       (n - 2) * n * (n - 2).factorial := by
