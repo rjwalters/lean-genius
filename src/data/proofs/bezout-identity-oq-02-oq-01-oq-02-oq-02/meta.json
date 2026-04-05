@@ -60,14 +60,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Gauss introduced the Gaussian integers ℤ[i] = {a+bi : a,b ∈ ℤ} in 1832 to give an elegant proof of Fermat's theorem on sums of two squares: a prime p is expressible as p = a² + b² iff p = 2 or p ≡ 1 (mod 4). The key insight was that ℤ[i] admits a Euclidean algorithm (using the norm N(a+bi) = a²+b²) and hence unique factorization. Gaussian primes fall into three types: (1) 1+i above 2 (the ramified prime); (2) a+bi with N(a+bi) = p ≡ 1 mod 4 (the split primes); (3) ordinary primes p ≡ 3 mod 4, which remain prime in ℤ[i] (the inert primes). This classification is equivalent to Fermat's two-square theorem.",
+    "historicalContext": "Gauss introduced the Gaussian integers ℤ[i] = {a+bi : a,b ∈ ℤ} in 1832 to give an elegant proof of Fermat's theorem on sums of two squares: a prime p is expressible as p = a² + b² iff p = 2 or p ≡ 1 (mod 4). Fermat stated this result in 1640 but never published a proof; Euler gave the first proof in 1747 using descent, but Gauss's approach via ℤ[i] was far cleaner. The key insight was that ℤ[i] admits a Euclidean algorithm (using the norm N(a+bi) = a²+b²) and hence unique factorization. Gaussian primes fall into three types: (1) 1+i above 2 (the ramified prime); (2) a+bi with N(a+bi) = p ≡ 1 mod 4 (the split primes); (3) ordinary primes p ≡ 3 mod 4, which remain prime in ℤ[i] (the inert primes). This classification is equivalent to Fermat's two-square theorem and became the prototype for Dedekind and Kummer's later work on ideal theory in algebraic number fields.",
     "problemStatement": "Is there a gallery proof formalizing unique factorization in ℤ[i], including the characterization of Gaussian primes? Specifically: (1) Show ℤ[i] is a Euclidean domain and hence a UFD. (2) Classify which elements of ℤ[i] are prime (the backward direction of the three-way classification). (3) Give concrete examples.",
     "proofStrategy": "Part 1 uses Mathlib's instance chain: EuclideanDomain GaussianInt → UniqueFactorizationMonoid GaussianInt via inferInstance. Part 2 (prime classification, backward direction) has two cases. For norm-p primes (p rational prime): if norm(z) is prime and z = a*b, then norm(a)*norm(b) = norm(z) is prime, so one factor is 1 (a unit). For inert primes (p ≡ 3 mod 4): if ↑p = a*b, then norm(a)*norm(b) = p². The only divisors of p² are 1, p, p². The key obstruction: norm(a) = p would mean a.re² + a.im² = p, but p ≡ 3 mod 4 while squares mod 4 are 0 or 1, so their sum is at most 2 — contradiction, verified by `decide` in ZMod 4.",
     "keyInsights": [
       "The norm N(a+bi) = a²+b² is multiplicative: N(zw) = N(z)N(w). This is immediate from the identity (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)² (Brahmagupta-Fibonacci identity). In Lean, it follows from Zsqrtd.norm_mul.",
       "The sum-of-squares obstruction for inert primes: squares mod 4 are 0 or 1, so x² + y² can only be ≡ 0, 1, or 2 mod 4, never 3. This means any prime p ≡ 3 (mod 4) cannot be written as a sum of two integer squares, so it cannot be the norm of a non-unit Gaussian integer. Proved cleanly by `decide : ∀ x y : ZMod 4, x^2 + y^2 ≠ 3`.",
       "The three-way prime classification in ℤ[i] mirrors the splitting behavior of the rational prime p in the extension ℤ[i]/ℤ: p ramifies (p=2), splits (p ≡ 1 mod 4), or remains inert (p ≡ 3 mod 4). This is the beginning of class field theory for ℚ(i).",
-      "The proof of `prime_of_prime_natAbs_norm` requires careful nat/int casting: Zsqrtd.norm is an integer, so we work with norm.natAbs throughout. The cancellation step uses Nat.eq_of_mul_eq_mul_left with the positivity of the norm transported via term-mode rewriting."
+      "The proof of `prime_of_prime_natAbs_norm` requires careful nat/int casting: Zsqrtd.norm is an integer, so we work with norm.natAbs throughout. The cancellation step uses Nat.eq_of_mul_eq_mul_left with the positivity of the norm transported via term-mode rewriting.",
+      "The splitting behavior of rational primes in ℤ[i] is the simplest case of the Dedekind-Kummer theorem for splitting primes in ring-of-integers extensions. The minimal polynomial of i over ℤ is X²+1, and the splitting of p in ℤ[i] is determined by the factorization of X²+1 mod p: it has two roots mod p iff −1 is a square mod p iff p ≡ 1 (mod 4) (by quadratic reciprocity). This connects Gaussian integer arithmetic to quadratic residues."
     ]
   },
   "sections": [
@@ -102,9 +103,11 @@
   ],
   "conclusion": {
     "summary": "ℤ[i] is formalized as a Euclidean domain and UFD via Mathlib's instance chain. The backward direction of Gaussian prime classification is proved: elements with rational prime norms are prime (covers norm-2 and split cases), and rational primes p ≡ 3 (mod 4) are inert. The sum-of-squares obstruction mod 4 is mechanically verified by `decide` in ZMod 4. Concrete examples demonstrate all three ramification types.",
+    "implications": "This proof demonstrates a clean Lean 4 pattern for working with algebraic number rings: leveraging Mathlib's typeclass hierarchy (Euclidean domain → UFD → irreducible ↔ prime) and combining norm arguments with modular arithmetic. The inert prime proof is a blueprint for analogous results in other imaginary quadratic fields ℤ[√d] where d < 0. The `decide` verification in ZMod 4 is a powerful technique for eliminating modular arithmetic cases that would require tedious manual case splits in a paper proof.",
     "openQuestions": [
       "The forward direction of Gaussian prime classification: if z is prime in ℤ[i], then norm(z) is a rational prime power (either p or p²). Completing both directions gives the full equivalence. Does Mathlib have this forward direction, or does it need a short proof?",
-      "Fermat's two-square theorem follows directly: p is a sum of two squares iff p = 2 or p ≡ 1 (mod 4). The Gaussian integer proof is: p = N(a+bi) for some Gaussian prime a+bi above p. Can this be formalized as a short corollary of the prime classification?"
+      "Fermat's two-square theorem follows directly: p is a sum of two squares iff p = 2 or p ≡ 1 (mod 4). The Gaussian integer proof is: p = N(a+bi) for some Gaussian prime a+bi above p. Can this be formalized as a short corollary of the prime classification?",
+      "Can the inert_prime technique be generalized to other Euclidean imaginary quadratic rings (ℤ[√−2], ℤ[ω] for ω a cube root of unity) to classify primes by residue conditions?"
     ]
   },
   "crossReferences": [
@@ -112,6 +115,16 @@
       "targetId": "bezout-identity-oq-02-oq-01-oq-02",
       "relationship": "extends",
       "description": "Parent: FTA generalization to Euclidean domains. This file applies it concretely to ℤ[i]."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's sum of two squares theorem — the Gaussian prime classification gives an alternative proof route"
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Fundamental theorem of arithmetic from Euclid's lemma — the ℤ case that ℤ[i] generalizes"
     }
   ]
 }
