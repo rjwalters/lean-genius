@@ -29,14 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: All algebraic lemmas proved; partitionEnergy_mono proved; block decomposition strategy documented; one sorry remains (Finset sum packaging)",
+    "progressSummary": "PROGRESS: Restored eps^6 bound after regression; proved four_subpair_edge_count_identity, four_subpair_deviation_identity, four_subpair_excess_lb; partitionEnergy_mono proved; build clean with 1 sorry (Finset sum packaging for energy_increment_step)",
     "builtItems": [
       "edgeDensity_symm: d(A,B)=d(B,A) via swap bijection (SzemerediCoreOQ01.lean:49)",
       "density_sq_convex_right: convexity for second argument via edgeDensity_symm (SzemerediCoreOQ01.lean:63)",
       "sub4pair_energy_lower_bound: 4-subpair energy ≥ original pair (SzemerediCoreOQ01.lean:80)",
       "edgeDensity_union_weighted_avg: weighted average identity proved (SzemerediCoreOQ01.lean:139)",
       "energy_excess_A_split: exact excess = |A₁|·|A₂|/|A|·(d₁-d₂)² (SzemerediCoreOQ01.lean:209)",
-      "partitionEnergy_mono in SzemerediCoreOQ01Aristotle.lean: proved via Finset.sum_le_sum_of_subset_of_nonneg"
+      "partitionEnergy_mono in SzemerediCoreOQ01Aristotle.lean: proved via Finset.sum_le_sum_of_subset_of_nonneg",
+      "four_subpair_edge_count_identity: PROVED (SzemerediCoreOQ01.lean:~250) — distributes union over filter",
+      "four_subpair_deviation_identity: PROVED (SzemerediCoreOQ01.lean:~330) — variance decomposition via linear_combination",
+      "four_subpair_excess_lb: PROVED (SzemerediCoreOQ01.lean:~400) — variance lower bound via mul_lt_mul_of_pos_left"
     ],
     "insights": [
       "partitionEnergy uses n² normalization (n=total vertices), not k² (k=parts count)",
@@ -46,7 +49,10 @@
       "After set a₁ : ℚ := (A₁.card : ℚ), no further simp [show ...] needed as cast already done",
       "Correct energy increment bound for single irregular pair is eps^6 (not eps^5); eps^5 is for total over all irregular pairs",
       "Block decomposition strategy: S×S equal, S×T≥S×{A,B} by density_sq_convex, T×T≥{A,B}×{A,B}+eps^6 by four_subpair_excess_lb",
-      "Key Lean challenge: S∩T disjointness requires A-prime not in S, follows from hdisjoint + A-prime ⊂ A"
+      "Key Lean challenge: S∩T disjointness requires A-prime not in S, follows from hdisjoint + A-prime ⊂ A",
+      "Lean 4.26.0 API: after simp only [Finset.mem_union], rintro/rcases can fail with Quot.lift; fix with explicit Finset.mem_filter.mp / Finset.mem_product.mp / Finset.mem_union.mp",
+      "four_subpair_deviation_identity: linear_combination (2 * d) * hS closes variance decomposition directly without rw",
+      "hcore nlinarith failure: use mul_lt_mul_of_pos_left + ring normalization + linarith for cross-terms"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -84,8 +90,8 @@
     {
       "path": "Proofs/SzemerediCoreOQ01.lean",
       "filename": "SzemerediCoreOQ01.lean",
-      "lineCount": 263,
-      "theoremCount": 10,
+      "lineCount": 494,
+      "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 1,
