@@ -21,7 +21,10 @@
     "theoremCount": 3,
     "definitionCount": 0,
     "mathlib_version": "4.26.0",
-    "dateAdded": "2026-03-30"
+    "dateAdded": "2026-03-30",
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic#Generalizations",
+    "date": "Classical (Euclid, Gauss); formalized 2026"
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Arithmetic — that every positive integer has a unique factorization into primes — was known to the ancient Greeks (Euclid's Elements, Book IX, Proposition 14, ca. 300 BCE) and formalized by Gauss in 1801. The 19th century saw rapid generalization: Gauss (1832) proved unique factorization in $\\mathbb{Z}[i]$ (Gaussian integers), Eisenstein (1844) in $\\mathbb{Z}[\\sqrt{-2}]$, and Kummer (1844) discovered that $\\mathbb{Z}[\\zeta_p]$ (cyclotomic integers) can fail unique factorization — his fix was the theory of 'ideal numbers', later developed by Dedekind into ideal theory. The abstract framework of Euclidean domains (rings with a division algorithm) was developed by Hasse and Schmidt (1927-1930), providing the clean algebraic setting in which unique factorization holds in full generality. Today, Mathlib encodes the complete instance hierarchy: `EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid`, making the generalization fully automatic in Lean.",
