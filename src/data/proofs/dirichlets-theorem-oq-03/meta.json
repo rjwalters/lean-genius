@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 3,
     "axiomCount": 2,
     "lineCount": 139,
     "theoremCount": 8,
@@ -79,7 +79,7 @@
       }
     ],
     "path": "Proofs/DirichletsTheoremOQ03.lean",
-    "sorries": 2
+    "sorries": 3
   },
   "overview": {
     "historicalContext": "Dirichlet proved in 1837 that there are infinitely many primes p ≡ a (mod q) for any coprime pair (a, q). The *quantitative* question — how large is the *first* such prime p(a, q)? — was answered by Linnik in 1944: p(a, q) ≤ c · q^L for absolute constants c and L. This L is the 'Linnik constant'. The history of bounding L spans decades: Pan Cheng-tung (1957) gave L ≤ 10000, Elliott-Halberstam (1966) reduced it to L ≤ 40, then Jutila (L ≤ 20), Chen (L ≤ 13.5), Wang (L ≤ 8), Heath-Brown (L ≤ 5.5, 1992), and finally Xylouris (L ≤ 5, 2011). Under the Generalized Riemann Hypothesis, L ≤ 2 + ε for any ε > 0. The unconditional conjecture is L = 1 + ε, or equivalently, linnikConstant = 1.",
