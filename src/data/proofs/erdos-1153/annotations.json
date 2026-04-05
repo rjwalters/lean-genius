@@ -2,7 +2,7 @@
   {
     "id": "ann-1153-module-header",
     "proofId": "erdos-1153",
-    "range": { "startLine": 1, "endLine": 42 },
+    "range": { "startLine": 1, "endLine": 51 },
     "type": "context",
     "title": "Erdős #1153: Lebesgue Constants and the 2/π Lower Bound",
     "content": "The module header explains Erdős Problem #1153: for any fixed subinterval $[a,b] \\subseteq [-1,1]$ and any $n$ interpolation nodes in $[-1,1]$, the Lebesgue function $\\lambda(x) = \\sum_k |l_k(x)|$ must somewhere on $[a,b]$ exceed $(2/\\pi - o(1)) \\log n$. This is established by combining Bernstein (1931), who proved logarithmic growth for the full interval, and Erdős (1961), who sharpened the constant to $2/\\pi$. The status is PROVED. The file formalizes the definitions (Lagrange basis, Lebesgue function), basic properties (Kronecker delta, node evaluations), and states the main theorem as an `axiom` (since the analytic proof requires complex analysis not yet in scope). The matching Chebyshev upper bound is also axiomatized.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-lagrange-basis-def",
     "proofId": "erdos-1153",
-    "range": { "startLine": 54, "endLine": 56 },
+    "range": { "startLine": 52, "endLine": 56 },
     "type": "definition",
     "title": "Lagrange Basis Polynomial",
     "content": "Defines the $k$-th Lagrange basis polynomial $l_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$, the unique polynomial of degree $\\le n-1$ satisfying $l_k(x_j) = \\delta_{kj}$. The `Finset.univ.erase k` expression computes the product over all indices except $k$. This is the fundamental building block of Lagrange interpolation: the interpolating polynomial for data $(x_i, y_i)$ is $p(x) = \\sum_k y_k l_k(x)$.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-lebesgue-function-def",
     "proofId": "erdos-1153",
-    "range": { "startLine": 60, "endLine": 62 },
+    "range": { "startLine": 58, "endLine": 63 },
     "type": "definition",
     "title": "Lebesgue Function",
     "content": "The Lebesgue function $\\lambda(x) = \\sum_k |l_k(x)|$ measures the worst-case error amplification of Lagrange interpolation at the point $x$. If $p$ is the interpolant of $f$ and $p^*$ is the best polynomial approximation, then $|f(x) - p(x)| \\le (1 + \\lambda(x)) \\cdot \\|f - p^*\\|_\\infty$. The maximum of $\\lambda$ over the interval is the Lebesgue constant $\\Lambda_n$, which governs the overall quality of the interpolation scheme.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-kronecker-delta",
     "proofId": "erdos-1153",
-    "range": { "startLine": 80, "endLine": 96 },
+    "range": { "startLine": 78, "endLine": 102 },
     "type": "insight",
     "title": "Kronecker Delta Property of Lagrange Basis",
     "content": "Proves the two halves of the Kronecker delta property: (1) `lagrangeBasis_other`: $l_k(x_j) = 0$ for $j \\neq k$ because the product contains the factor $(x_j - x_j)/(x_k - x_j) = 0$, proved via `Finset.prod_eq_zero`. (2) `lagrangeBasis_self`: $l_k(x_k) = 1$ because each factor equals $(x_k - x_i)/(x_k - x_i) = 1$ for distinct nodes, proved via `Finset.prod_eq_one` and `div_self`. These are the only fully machine-checked theorems about Lagrange interpolation in the file.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "erdos-1153",
-    "range": { "startLine": 149, "endLine": 164 },
+    "range": { "startLine": 135, "endLine": 164 },
     "type": "insight",
     "title": "Erdős #1153: Universal Logarithmic Lower Bound",
     "content": "The main result (axiomatized): for any $\\varepsilon > 0$ and any subinterval $[a,b] \\subseteq [-1,1]$, for all sufficiently large $n$, every choice of $n$ distinct nodes in $[-1,1]$ produces a Lebesgue function exceeding $(2/\\pi - \\varepsilon) \\log n$ somewhere on $[a,b]$. The asymptotic formulation with $\\varepsilon$ avoids stating the exact lower-order terms. The full-interval corollary follows by setting $a = -1$, $b = 1$. The proof (Bernstein 1931, Erdős 1961) uses properties of Chebyshev polynomials and equioscillation theory.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-chebyshev-tightness",
     "proofId": "erdos-1153",
-    "range": { "startLine": 168, "endLine": 173 },
+    "range": { "startLine": 165, "endLine": 175 },
     "type": "insight",
     "title": "Chebyshev Optimality (Matching Upper Bound)",
     "content": "The matching upper bound (axiomatized): there exist node configurations (Chebyshev polynomial roots $x_k = \\cos\\left(\\frac{2k-1}{2n}\\pi\\right)$) for which the Lebesgue constant is at most $(2/\\pi + \\varepsilon) \\log n$. Together with the lower bound, this establishes $2/\\pi$ as the sharp constant for the growth rate of the optimal Lebesgue constant. The Chebyshev roots are the unique nodes achieving this minimum, making them the provably best interpolation nodes on $[-1,1]$.",
