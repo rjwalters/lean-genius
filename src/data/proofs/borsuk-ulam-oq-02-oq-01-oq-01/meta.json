@@ -1,0 +1,129 @@
+{
+  "id": "borsuk-ulam-oq-02-oq-01-oq-01",
+  "title": "Borsuk-Ulam Dimension Formula for Composite n",
+  "slug": "borsuk-ulam-oq-02-oq-01-oq-01",
+  "description": "The central open question from equivariant Borsuk-Ulam theory: for composite n ≥ 2, is buDim(n, d) = max_{p|n, p prime} buDim(p, d)? This file proves the lower bound direction (from subgroup monotonicity) and axiomatizes the upper bound (the open conjecture), then derives specific cases: buDim(4, d) = buDim(2, d), buDim(6, d) = max(buDim(2,d), buDim(3,d)), and buDim(9, d) = buDim(3, d).",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BorsukUlamOQ02OQ01OQ01.lean",
+    "tags": [
+      "topology",
+      "borsuk-ulam",
+      "equivariant",
+      "group-actions",
+      "open-conjecture",
+      "cyclic-groups"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 139,
+    "theoremCount": 9,
+    "defCount": 1,
+    "assumptions": "1 axiom: buDim_le_formula (the open conjecture: buDim(n,d) ≤ max_{p|n} buDim(p,d)). Lower bound direction proved from buDim_mono in parent file. Specific cases n=4,6,9 proved. buDim function and known results axiomatized in parent file BorsukUlamOQ02OQ01.lean.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The equivariant Borsuk-Ulam theorem for Z/n-actions asks: what is the minimum sphere dimension before Z/n-equivariant maps to d-dimensional spaces must vanish? For prime p, Yang (1954) gave the exact answer: buDim(p, 2n) = 2n-1. For composite n, the answer is controlled by the prime factorization, but the precise formula is open. The conjecture that buDim(n, d) = max_{p|n} buDim(p, d) — that composite groups add no extra topological constraint beyond their prime subgroups — is supported by Smith theory (for prime powers) and Yang-Borsuk lifting (for standard representations), but remains unproved in full generality. The Fadell-Husseini index theory (1988) provides the main tool for attacking this problem.",
+    "problemStatement": "For composite n ≥ 2, is buDim(n, d) = max_{p|n, p prime} buDim(p, d)?",
+    "text": "The BU dimension formula for composite cyclic groups: does the maximum over prime divisors exactly determine the equivariant dimension?",
+    "proofStrategy": "The lower bound buDimFormula(n,d) ≤ buDim(n,d) is proved: each prime p|n gives buDim(p,d) ≤ buDim(n,d) by restriction monotonicity (buDim_mono from parent file), so the supremum over primes is also ≤ buDim(n,d). The upper bound buDim(n,d) ≤ buDimFormula(n,d) is axiomatized as the open conjecture. Specific consequences for n=4,6,9 are derived using native_decide to compute Nat.primeFactors.",
+    "keyInsights": [
+      "The lower bound (formula ≤ buDim) is immediate from restriction monotonicity: any Z/n-equivariant map restricts to a Z/p-equivariant map for p|n",
+      "The upper bound (buDim ≤ formula) is the substantive open direction: it requires showing composite group structure never exceeds prime subgroup structure",
+      "For prime powers p^k, Smith theory implies buDim(p^k, d) = buDim(p, d), confirming the formula. This gives buDim(4,d) = buDim(2,d) and buDim(9,d) = buDim(3,d)",
+      "For Z/6 = Z/2 × Z/3: both Z/2 and Z/3 give the same bound (2n-1 for even d), so the maximum over prime factors equals each individual prime factor bound",
+      "Nat.primeFactors is computable in Mathlib 4, so specific values (primeFactors 4 = {2}, primeFactors 6 = {2,3}, primeFactors 9 = {3}) can be verified by native_decide"
+    ],
+    "prerequisites": [
+      "Classical Borsuk-Ulam theorem (Z/2 case)",
+      "Yang-Borsuk theorem for prime cyclic groups",
+      "Basic group theory (subgroups, divisibility)",
+      "Smith theory (for prime power case)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "formula",
+      "title": "The Dimension Formula Definition",
+      "startLine": 34,
+      "endLine": 35,
+      "summary": "Defines buDimFormula(n,d) = Nat.primeFactors(n).sup (fun p => buDim p d), the maximum BU dimension over all prime divisors of n.",
+      "mathContext": "Uses Finset.sup on the prime factorization: the supremum over {buDim p d | p prime, p | n}. Empty for n=1 giving 0."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound (Proved)",
+      "startLine": 42,
+      "endLine": 46,
+      "summary": "Proves buDimFormula(n,d) ≤ buDim(n,d) via Finset.sup_le + Nat.mem_primeFactors + buDim_mono.",
+      "mathContext": "For each p ∈ primeFactors(n): buDim(p,d) ≤ buDim(n,d) by restriction. Finset.sup_le packages this into the formula bound."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 60,
+      "endLine": 60,
+      "summary": "AXIOM: buDim(n,d) ≤ buDimFormula(n,d) for n ≥ 2. The hard direction: no composite group exceeds its prime factor bounds.",
+      "mathContext": "Equivalent to: the Fadell-Husseini index of a Z/n-space is bounded by the maximum FH index over prime subgroups."
+    },
+    {
+      "id": "consequences",
+      "title": "Concrete Cases and Applications",
+      "startLine": 66,
+      "endLine": 136,
+      "summary": "Derives: buDim(4,d) = buDim(2,d), buDim(6,d) = max(buDim(2,d), buDim(3,d)), buDim(9,d) = buDim(3,d), buDim(4,n+1) = n, buDim(6,2n) = 2n-1.",
+      "mathContext": "Uses native_decide to compute Nat.primeFactors for concrete n, then applies the formula theorem. buDim(6,2n)=2n-1 follows because both prime factor bounds equal 2n-1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the BU dimension formula conjecture for composite n: buDim(n,d) = max_{p|n} buDim(p,d). Lower bound proved from subgroup monotonicity. Upper bound axiomatized. Specific cases n=4,6,9 derived with 0 sorries.",
+    "implications": "If the conjecture is true, the equivariant BU dimension of any cyclic group is completely determined by its prime factors — a remarkable reduction from composite group theory to prime group theory. This would mean the Fadell-Husseini ideal-valued index satisfies a prime factorization property analogous to the multiplicativity of cohomology.",
+    "openQuestions": [
+      "Can the upper bound buDim(n,d) ≤ buDimFormula(n,d) be proved in Lean using the Fadell-Husseini index from the sister file BorsukUlamOQ02OQ01OQ04.lean?",
+      "Are there exotic G-representations where composite groups give strictly higher BU dimensions than any prime subgroup?",
+      "What is the relationship between buDim(p^k, d) and buDim(p, d) for all k, not just via the conjecture?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Extends the parent file's abstract BU dimension framework with the conjectured formula and its consequences"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01-oq-04",
+      "relationship": "related",
+      "description": "The Fadell-Husseini index theory provides the main theoretical tool for proving the open conjecture axiomatized here"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Yang, C.-T."],
+      "title": "On theorems of Borsuk-Ulam, Kakutani-Yamabe-Yujobo and Dyson",
+      "venue": "Annals of Mathematics",
+      "volume": 60,
+      "year": "1954",
+      "pages": "262-282",
+      "note": "Yang-Borsuk theorem: buDim(p, 2n) = 2n-1 for prime p"
+    },
+    {
+      "authors": ["Fadell, E.", "Husseini, S."],
+      "title": "An ideal-valued cohomological index theory with applications to Borsuk-Ulam and Bourgin-Yang theorems",
+      "venue": "Ergodic Theory and Dynamical Systems",
+      "volume": 8,
+      "year": "1988",
+      "pages": "73-85",
+      "note": "The Fadell-Husseini index is the main tool for the open conjecture"
+    },
+    {
+      "authors": ["Matousek, J."],
+      "title": "Using the Borsuk-Ulam Theorem",
+      "venue": "Springer Universitext",
+      "year": "2003",
+      "note": "Comprehensive reference for equivariant Borsuk-Ulam theory"
+    }
+  ],
+  "leanFile": "Proofs/BorsukUlamOQ02OQ01OQ01.lean"
+}
