@@ -163,5 +163,8 @@
       "statement": "concreteSmoothExpectedCrossings (fun t => (t, 0)) a b d = 2 * (b - a) / (π * d)",
       "description": "Consistency with original Buffon's Needle formula"
     }
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 223
+  }
 }

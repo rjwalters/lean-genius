@@ -143,5 +143,8 @@
       "Is the ω² case independent of ZFC? It is consistent with ZFC that 𝔠 > ℵ₁, and the partition relation 𝔠 → (ω², 3) is known to fail under certain cardinal arithmetic assumptions. Whether the ω² case can be proved in ZFC alone remains open.",
       "Can the `HasOrderTypeAtLeast` cardinality approximation be strengthened to actual order-type isomorphisms? This would require Lean infrastructure for ordinal order embeddings (`Ordinal.type_le_iff`), making the formalization more faithful to the original partition calculus definition."
     ]
+  },
+  "leanFile": {
+    "lineCount": 240
   }
 }

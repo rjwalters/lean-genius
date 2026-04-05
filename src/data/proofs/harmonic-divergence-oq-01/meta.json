@@ -116,5 +116,8 @@
       "description": "Comment-only documentation (no compiled code) of the Gamma function and Riemann Zeta function connections: γ = −Γ'(1), Γ'(n+1) = n!(−γ + H_n), Γ'(1/2) = −√π(γ + 2 ln 2), and lim_{s→1}(ζ(s) − 1/(s−1)) = γ. These import from `GammaDeriv` and `ZetaAsymp` which consume >32GB during `lake build` and are excluded from production builds. Their signatures are documented here to connect γ to its deepest mathematical context."
     }
   ],
-  "crossReferences": []
+  "crossReferences": [],
+  "leanFile": {
+    "lineCount": 253
+  }
 }

@@ -111,5 +111,8 @@
       "description": "Section 6: `card_algebraic_eq_card_rat` proves |{x : ℝ // IsAlgebraic ℚ x}| = |ℚ| by rewriting both via aleph0 (card_algebraic_reals_eq_aleph0 and Cardinal.mk_denumerable). `card_algebraic_eq_card_nat` proves the same equals |ℕ|. Both illustrate the 'paradox' that a proper superset has the same cardinality. Section 7: `algebraic_reals_eq_iUnion_bounded` proves {x : ℝ | IsAlgebraic ℚ x} = ⋃ d, algebraicRealsOfBoundedDegree d, using d = natDegree(minpoly x) and le_refl. This is the bounded-degree version of the exact-degree stratification. Ends with end AlgebraicNumbersCountable."
     }
   ],
-  "crossReferences": []
+  "crossReferences": [],
+  "leanFile": {
+    "lineCount": 254
+  }
 }
