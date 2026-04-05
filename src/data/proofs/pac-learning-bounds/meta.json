@@ -36,15 +36,15 @@
       }
     ],
     "originalContributions": [
-      "choose_le_pow: C(n,k) \u2264 n^k via descFactorial",
-      "sauer_shelah_bound: \u2211 C(n,i) \u2264 (n+1)^d via binomial theorem",
+      "choose_le_pow: C(n,k) ≤ n^k via descFactorial",
+      "sauer_shelah_bound: ∑ C(n,i) ≤ (n+1)^d via binomial theorem",
       "pac_sample_complexity: sample size bound statement (trivial existence witness)",
       "NOTE: growthFunction is a placeholder (returns 0), making sauer_shelah trivially true",
       "NOTE: fundamental_theorem_stat_learning is a block comment placeholder (removed as True stub)"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "lineCount": 104,
+    "lineCount": 108,
     "prerequisites": [
       "PAC learning framework (Valiant 1984)",
       "VC dimension and shattering of hypothesis classes",
@@ -89,7 +89,7 @@
       "title": "Traces and Shattering Definitions",
       "startLine": 28,
       "endLine": 49,
-      "summary": "Core definitions: traceSet (distinct patterns {h \u2229 S : h \u2208 H}), Shatters (every subset of S appears as a trace), VCDimLE (no set of size > d is shattered).",
+      "summary": "Core definitions: traceSet (distinct patterns {h ∩ S : h ∈ H}), Shatters (every subset of S appears as a trace), VCDimLE (no set of size > d is shattered).",
       "mathContext": "$H$ shatters $S$ if $|\\{h \\cap S : h \\in H\\}| = 2^{|S|}$. VCDim$(H) = \\max\\{|S| : H \\text{ shatters } S\\}$."
     },
     {
@@ -97,7 +97,7 @@
       "title": "Trace Set Properties",
       "startLine": 50,
       "endLine": 87,
-      "summary": "Six theorems on trace sets: subset of powerset, card \u2264 |H|, card \u2264 2^|S|, empty family, monotonicity, empty sample gives {\u2205}.",
+      "summary": "Six theorems on trace sets: subset of powerset, card ≤ |H|, card ≤ 2^|S|, empty family, monotonicity, empty sample gives {∅}.",
       "mathContext": "$|\\{h \\cap S : h \\in H\\}| \\leq \\min(|H|, 2^{|S|})$"
     },
     {
@@ -105,7 +105,7 @@
       "title": "Shattering Properties",
       "startLine": 88,
       "endLine": 104,
-      "summary": "Eight theorems: empty set shattering, monotonicity in family, anti-monotonicity in set, exponential lower bound 2^|S| \u2264 |H|, small family impossibility, powerset characterization.",
+      "summary": "Eight theorems: empty set shattering, monotonicity in family, anti-monotonicity in set, exponential lower bound 2^|S| ≤ |H|, small family impossibility, powerset characterization.",
       "mathContext": "If $H$ shatters $S$, then $|H| \\geq 2^{|S|}$ and for every $T \\subseteq S$, $H$ shatters $T$."
     },
     {
@@ -121,7 +121,7 @@
       "title": "Sauer-Shelah Lemma",
       "startLine": 104,
       "endLine": 104,
-      "summary": "The central result: if VCDim(F) \u2264 d, then |F| \u2264 \u03a3 C(n,i). Both family and trace versions stated. Polynomial corollary (n+1)^d. Three sorries remain (the induction proof).",
+      "summary": "The central result: if VCDim(F) ≤ d, then |F| ≤ Σ C(n,i). Both family and trace versions stated. Polynomial corollary (n+1)^d. Three sorries remain (the induction proof).",
       "mathContext": "$|F| \\leq \\sum_{i=0}^d \\binom{n}{i} \\leq (n+1)^d$ when $\\operatorname{VCdim}(F) \\leq d$ and $F \\subseteq \\mathcal{P}([n])$."
     },
     {
@@ -129,7 +129,7 @@
       "title": "PAC Sample Complexity",
       "startLine": 104,
       "endLine": 104,
-      "summary": "States the PAC sample complexity bound as an axiom: m \u2264 (8d + 4 ln(2/\u03b4)) / \u03b5\u00b2 samples suffice. Requires measure-theoretic probability for full proof.",
+      "summary": "States the PAC sample complexity bound as an axiom: m ≤ (8d + 4 ln(2/δ)) / ε² samples suffice. Requires measure-theoretic probability for full proof.",
       "mathContext": "$m(\\varepsilon, \\delta) = O\\left(\\frac{d + \\log(1/\\delta)}{\\varepsilon^2}\\right)$"
     },
     {
@@ -137,7 +137,7 @@
       "title": "VC Dimension Examples",
       "startLine": 104,
       "endLine": 104,
-      "summary": "Concrete VC computations: powerset \ud835\udcab(S) shatters S, singleton can't shatter nonempty set, VCDim(\ud835\udcab(\u03a9)) \u2264 |\u03a9|, growth function definition and trivial bound.",
+      "summary": "Concrete VC computations: powerset 𝒫(S) shatters S, singleton can't shatter nonempty set, VCDim(𝒫(Ω)) ≤ |Ω|, growth function definition and trivial bound.",
       "mathContext": "$\\operatorname{VCdim}(\\mathcal{P}(\\Omega)) = |\\Omega|$ and $\\Pi_H(n) \\leq 2^n$."
     }
   ],
@@ -189,8 +189,8 @@
     "openQuestions": [
       "Can the VC dimension of specific hypothesis classes (linear classifiers, neural networks) be computed in Lean?",
       "What is the connection to Rademacher complexity, and can the Rademacher-based generalization bound be formalized?",
-      "Formalize the full equivalence (not just the placeholder True) \u2014 requires defining PAC learnability, ERM, and uniform convergence as proper Lean types",
-      "Can the epsilon-net theorem be formalized in Lean to get the tighter sample complexity bound without the log(1/\u03b5) factor?"
+      "Formalize the full equivalence (not just the placeholder True) — requires defining PAC learnability, ERM, and uniform convergence as proper Lean types",
+      "Can the epsilon-net theorem be formalized in Lean to get the tighter sample complexity bound without the log(1/ε) factor?"
     ]
   },
   "leanFile": {
@@ -212,7 +212,7 @@
       "authors": "Valiant, Leslie G.",
       "title": "A theory of the learnable",
       "year": "1984",
-      "venue": "Communications of the ACM 27(11), 1134\u20131142",
+      "venue": "Communications of the ACM 27(11), 1134–1142",
       "note": "Introduced the PAC (Probably Approximately Correct) learning framework"
     },
     {
