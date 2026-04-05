@@ -170,7 +170,7 @@
       "id": "summary",
       "title": "Part X: Summary",
       "startLine": 625,
-      "endLine": 665,
+      "endLine": 661,
       "summary": "erdos_382_summary (PROVED): a conjunction of Ramachandra's bound, Cramér implies Q1, and True (both questions stated), assembled from the three axioms. ramachandra_consistent_with_questions (PROVED): identity function showing the bound is consistent with both questions. Closes the Erdos382 namespace.",
       "mathContext": "Theorem `erdos_382_summary`: $\\left(\\forall \\varepsilon > 0,\\; \\exists V,\\; \\ldots v-u \\le v^{1/2+\\varepsilon}\\right) \\wedge \\left(\\text{Cram\\'er} \\Rightarrow \\text{Q1}\\right) \\wedge \\top$, proved by $\\langle\\texttt{ramachandra\\_bound},\\, \\texttt{cramer\\_implies\\_q1},\\, \\texttt{trivial}\\rangle$. Theorem `ramachandra_consistent_with_questions`: the identity function, witnessing that Ramachandra's bound $v - u \\le v^{1/2+o(1)}$ is logically compatible with both subpolynomial growth (Q1) and unbounded length (Q2), since $v^{1/2+o(1)} \\to \\infty$ yet $v^{1/2+o(1)} = v^{o(1)} \\cdot v^{1/2}$."
     }

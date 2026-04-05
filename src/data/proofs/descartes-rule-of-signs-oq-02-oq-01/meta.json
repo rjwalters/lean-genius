@@ -89,29 +89,56 @@
       "startLine": 58,
       "endLine": 95,
       "description": "Two foundational theorems. constant_no_roots shows degree-0 polynomials have no roots (proved via eq_C_of_natDegree_eq_zero and simp). linear_at_most_one_root proves degree-1 polynomials have at most 1 root in any interval (a,b], using a card counting argument: if x ≠ y are both roots, {x,y} ⊂ roots(p) gives card ≥ 2 > 1 = natDegree, contradicting card_roots_le_degree.",
-      "theorems": ["constant_no_roots", "linear_at_most_one_root"],
-      "tactics": ["rw", "simp", "apply", "intro", "calc", "omega", "by_contra"]
+      "theorems": [
+        "constant_no_roots",
+        "linear_at_most_one_root"
+      ],
+      "tactics": [
+        "rw",
+        "simp",
+        "apply",
+        "intro",
+        "calc",
+        "omega",
+        "by_contra"
+      ]
     },
     {
       "title": "§ 2. Sign Change Properties",
       "startLine": 109,
       "endLine": 142,
       "description": "rolle_polynomial (proved) applies Mathlib's exists_deriv_eq_zero to polynomials: if p(r₁) = p(r₂) = 0 with r₁ < r₂, then p' has a root in (r₁,r₂). Uses p.continuous.continuousOn and Polynomial.deriv to translate between Mathlib's calculus deriv and the algebraic polynomial derivative. sign_changes_factor is a placeholder proving True — it identifies where the sign-change accounting lemma needs to go.",
-      "theorems": ["rolle_polynomial", "root_of_sign_change", "sign_changes_factor"],
-      "tactics": ["obtain", "exact", "simp", "intro", "linarith", "constructor", "rcases"]
+      "theorems": [
+        "rolle_polynomial",
+        "root_of_sign_change",
+        "sign_changes_factor"
+      ],
+      "tactics": [
+        "obtain",
+        "exact",
+        "simp",
+        "intro",
+        "linarith",
+        "constructor",
+        "rcases"
+      ]
     },
     {
       "title": "§ 3. The Induction Framework",
       "startLine": 144,
       "endLine": 164,
       "description": "inductive_step_derivative documents the induction structure for the main Budan bound. It takes the inductive hypothesis (IH: bound holds for all polynomials of degree ≤ n) and outlines how to apply it to p' on sub-intervals. Currently proves True — it is a scaffold identifying the types and dependencies needed for the real inductive step.",
-      "theorems": ["inductive_step_derivative"],
-      "tactics": ["exact"]
+      "theorems": [
+        "inductive_step_derivative"
+      ],
+      "tactics": [
+        "exact"
+      ]
     },
     {
       "title": "§ 4. Proof Completion Roadmap",
       "startLine": 166,
-      "endLine": 204,
+      "endLine": 191,
       "description": "A detailed comment documenting the remaining 240-410 lines needed: (1) formalize sign-change counting connecting budanCount from OQ-02 with the derivative sequence (80-120 lines), (2) complete base cases (40-60 lines), (3) inductive step via Rolle with sign-change accounting (100-200 lines), (4) assembly (20-30 lines). Lists key Mathlib dependencies: exists_deriv_eq_zero, natDegree_derivative_le, IVT."
     }
   ],

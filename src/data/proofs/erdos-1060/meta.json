@@ -164,7 +164,7 @@
       "title": "The Square Root Bound",
       "summary": "Proved f(n) ≤ √n for n > 0",
       "startLine": 362,
-      "endLine": 394,
+      "endLine": 387,
       "mathContext": "Since $\\sigma(k) \\geq k$ for $k > 0$ (as $k | k$), we have $g(k) = k \\cdot \\sigma(k) \\geq k^2$. Hence any solution $k$ to $g(k) = n$ satisfies $k \\leq \\sqrt{n}$, giving the bound $f(n) \\leq \\sqrt{n}$. This is a concrete proved bound, intermediate between the trivial $f(n) \\leq n$ and the open conjectures $f(n) \\leq n^{o(1/\\log\\log n)}$ and $f(n) \\leq (\\log n)^{O(1)}$."
     }
   ],

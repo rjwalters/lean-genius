@@ -138,7 +138,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 159,
-      "endLine": 191,
+      "endLine": 182,
       "summary": "Two proved theorems: `erdos_322_summary` bundles Mahler's $k=3$ result with the Erdős-Chowla bound for all $k \\geq 3$ as a conjunction; `erdos_322` states `hypothesisK_fails 3` directly.",
       "mathContext": "`erdos_322_summary : hypothesisK_fails 3 ∧ (∀ k ≥ 3, ∃ c > 0, r_k(n) ≥ n^{c/\\log\\log n}$ i.o.$)$. The proof is `⟨hypothesisK_fails_for_3, fun k hk => erdos_chowla_bound k hk⟩` — a direct pairing of the two axiomatized results. These are the only two non-axiom theorems in the file."
     }

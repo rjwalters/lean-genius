@@ -129,7 +129,7 @@
       "id": "summary",
       "title": "Summary Theorems",
       "startLine": 158,
-      "endLine": 194,
+      "endLine": 183,
       "summary": "`erdos_284_summary` combines both bounds into a single theorem: $(1-\\varepsilon)k/(e-1) \\leq f(k) \\leq (1+\\varepsilon)k/(e-1)$ for large $k$. `erdos_284` wraps this as the definitive resolution of the problem.",
       "mathContext": "The final result: $\\lim_{k \\to \\infty} f(k) \\cdot (e-1)/k = 1$. Formalized as: $\\forall \\varepsilon > 0$, $\\exists K$, $\\forall k \\geq K$: $(1-\\varepsilon)k/(e-1) \\leq f(k) \\leq (1+\\varepsilon)k/(e-1)$."
     }

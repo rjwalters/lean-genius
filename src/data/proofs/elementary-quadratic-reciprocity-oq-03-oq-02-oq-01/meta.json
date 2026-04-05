@@ -91,7 +91,7 @@
       "id": "main-theorem-right",
       "title": "Multiplicativity in the Second Argument",
       "startLine": 194,
-      "endLine": 268,
+      "endLine": 267,
       "summary": "Main theorem kronecker_mul_right_proved: kronecker a (m*n) = kronecker a m * kronecker a n for mn ≠ 0. Harder than left multiplicativity: requires handling signs of m and n separately, using kronecker_neg_modulus to introduce sign factors, then jacobiSym.mul_right for the Jacobi part."
     }
   ],

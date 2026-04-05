@@ -175,7 +175,7 @@
       "id": "pigeonhole",
       "title": "Density Implies Infinitely Many",
       "startLine": 249,
-      "endLine": 288,
+      "endLine": 275,
       "summary": "Proves `almostAll_infinitely_often`: if $P$ holds for almost all $n$, then for every $N$ there exists $n \\ge N$ with $P(n)$. Proof by contradiction via pigeonhole: take $\\varepsilon = 1/2$, $M = \\max(N_0, 2N+1)$; if no witness in $[N, M)$, exceptions $\\ge M - N > M/2$, contradicting the density bound."
     }
   ],

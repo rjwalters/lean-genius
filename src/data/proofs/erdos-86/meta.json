@@ -79,7 +79,7 @@
       "id": "conjecture",
       "title": "Erdős's Conjecture (OPEN, $\\$100$)",
       "startLine": 152,
-      "endLine": 191,
+      "endLine": 186,
       "summary": "Formalizes the conjecture $f(n)/(n \\cdot 2^{n-1}) \\to 1/2$ via `Filter.Tendsto` and the $\\varepsilon$-$N$ alternative. Proves `conjecture_implies_limit` from `Metric.tendsto_atTop`. Includes resolution strategies."
     }
   ],

@@ -168,7 +168,7 @@
       "title": "Problem Status and Main Statements",
       "summary": "Declares `erdos_1105_status := \"OPEN\"`. Proves `erdos_1105_cycle_statement` and `erdos_1105_path_statement` (both `rfl`), confirming the Lean definitions faithfully capture the conjectures. Closing summary comment and `end Erdos1105`.",
       "startLine": 358,
-      "endLine": 397,
+      "endLine": 378,
       "mathContext": "The cycle conjecture remains OPEN for general $k$. The path conjecture is conditionally resolved by Yuan (2021) for $n \\geq k \\geq 5$. The main formal statements `erdos_1105_cycle_statement` and `erdos_1105_path_statement` confirm that `CycleConjecture` and `PathConjecture` faithfully capture the mathematical conjectures (both reduce to `rfl`). The summary enumerates: $\\text{AR}(n, C_3) = n - 1$ known, general cycle formula open, path formula for $n \\geq ck^2$ proved by Simonovits-Sos, full path formula announced by Yuan."
     }
   ],

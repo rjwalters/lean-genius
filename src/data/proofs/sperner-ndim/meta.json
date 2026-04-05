@@ -124,7 +124,7 @@
       "id": "parity-theorem",
       "title": "Parity Theorem and Main Result",
       "startLine": 512,
-      "endLine": 669,
+      "endLine": 663,
       "summary": "Proves the Sperner Parity Theorem (sperner_parity): FC count ≡ boundary doors on face d (mod 2). Combines per-simplex door parity, product counting, interior door pairing, and boundary analysis. The main theorem (sperner_ndim) concludes: if boundary doors on face d are odd, a fully-colored simplex exists.",
       "mathContext": "The chain: |FC| % 2 = ∑ door_count(s) % 2 = |all doors| % 2 = (|interior| + |boundary|) % 2 = |boundary on face d| % 2. The boundary-odd hypothesis is dischargeable by induction for concrete triangulations."
     }

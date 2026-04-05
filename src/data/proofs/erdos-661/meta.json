@@ -77,7 +77,7 @@
       "id": "lenz-construction",
       "title": "Part VII: Lenz Construction in ℝ⁴ (Verified)",
       "startLine": 122,
-      "endLine": 167,
+      "endLine": 164,
       "summary": "Formalizes and verifies Lenz's construction in $\\mathbb{R}^4$. Defines $\\text{Point4} = (\\mathbb{R}^2) \\times (\\mathbb{R}^2)$, squared distance $d_4^2$, and two orthogonal unit circles $C_1(\\theta) = (\\cos\\theta, \\sin\\theta, 0, 0)$, $C_2(\\phi) = (0, 0, \\cos\\phi, \\sin\\phi)$. Proves $d_4^2(C_1(\\theta), C_2(\\phi)) = 2$ for all $\\theta, \\phi$ (so all bipartite distances equal $\\sqrt{2}$, giving $F_4(2n) = 1$). Also proves both circles have unit norm. All 3 theorems fully verified (0 sorries).",
       "mathContext": "Verified: Lenz's theorem that two orthogonal unit circles in $\\mathbb{R}^4$ produce constant bipartite distance $\\sqrt{2}$. Proof uses the Pythagorean identity $\\sin^2\\theta + \\cos^2\\theta = 1$."
     },

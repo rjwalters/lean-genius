@@ -156,7 +156,7 @@
       "title": "Main Results: erdos_403 and Powers of Three",
       "summary": "The capstone `erdos_403` theorem: IsPowerOfTwoFactorialSum(7) ∧ ∀m, IsPowerOfTwoFactorialSum(m) → m≤7, proved by `⟨check_m7, lin_theorem_finiteness⟩`. Then `related_powers_of_three` verifies all 5 power-of-3 solutions using `fin_cases` on threeExponentSolutions with the `first` tactic dispatcher.",
       "startLine": 311,
-      "endLine": 356,
+      "endLine": 339,
       "mathContext": "$\\mathrm{erdos\\_403}: \\mathrm{IsPowerOfTwoFactorialSum}(7) \\wedge (\\forall m,\\; \\mathrm{IsPowerOfTwoFactorialSum}(m) \\implies m \\leq 7)$. For powers of 3: $\\forall m \\in \\{0,1,2,3,6\\},\\; \\mathrm{IsPrimePowerFactorialSum}(3, m)$."
     }
   ],

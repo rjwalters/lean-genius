@@ -125,7 +125,7 @@
       "id": "proved-properties",
       "title": "Proved Properties",
       "startLine": 102,
-      "endLine": 146,
+      "endLine": 140,
       "summary": "Two fully proved results (no sorry): `maxNonRepr_full_of_sum_lt` shows that when the total sum of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ is less than $n$, the maximum non-representing set is the full range. `maxNonRepr_ge_one` proves $\\mathrm{maxNonReprSize}(c,n) \\geq 1$ for $c \\geq 1$, $n \\geq 2$ using $\\{1\\}$ as a witness via `Finset.le\\_sup`.",
       "mathContext": "$\\sum_{i=1}^{\\lfloor cn \\rfloor} i < n \\implies \\text{maxNonReprSize}(c,n) = \\lfloor cn \\rfloor$ (full range is optimal). Lower bound: $\\text{maxNonReprSize}(c,n) \\geq 1$ for $c \\geq 1, n \\geq 2$ (witness: $\\{1\\}$)."
     }

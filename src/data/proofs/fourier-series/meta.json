@@ -191,7 +191,7 @@
       "id": "verification",
       "title": "Type Verification",
       "startLine": 450,
-      "endLine": 452,
+      "endLine": 451,
       "summary": "Uses `#check` to verify all main theorems are well-typed: orthonormality, $L^2$ convergence, Parseval, Bessel, uniform convergence, uniqueness, Riemann-Lebesgue.",
       "mathContext": "Type verification confirms the formalization typechecks: `orthonormal_fourier`, `hasSum_fourier_series_L2`, `parseval_fourier`, `bessel_fourier`, `hasSum_fourier_series_of_summable`, `fourier_uniqueness`, `fourierCoeff_tendsto_zero`. All 7 main results are well-typed with 0 sorries."
     }

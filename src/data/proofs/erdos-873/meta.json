@@ -123,7 +123,7 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 118,
-      "endLine": 155,
+      "endLine": 148,
       "summary": "Verified LCM computations: $[6,7]=42$ (coprime consecutive naturals) and $[2^3,2^4]=2^4$ (geometric progression where each term divides the next).",
       "mathContext": "Consecutive naturals: $\\gcd(n,n+1) = 1$, so $[n,n+1] = n(n+1)$. Powers of 2: $2^a \\mid 2^b$ for $a \\leq b$, so $[2^a, 2^b] = 2^b$."
     }
