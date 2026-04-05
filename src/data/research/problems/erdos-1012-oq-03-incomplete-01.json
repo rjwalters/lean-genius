@@ -29,14 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ghouila_houri assembled from 2 sorry stubs; gh_grow_cycle proved; 10 sorries remain",
+    "progressSummary": "PROGRESS: directed_hamiltonian_threshold fully proved (0 sorries). Only ghouila_houri remains as sorry.",
     "builtItems": [
       "Proved list_path_to_hamiltonian via Equiv.ofBijective in Erdos1012OQ03.lean:246-277",
       "Key insight: nodup list of full length gives bijection, arc condition transfers directly",
       "sc_tournament_has_cycle proof in Erdos1012OQ03.lean:330-390",
       "tournament_cycle_extendable arc condition proof in Erdos1012OQ03.lean:534-617",
       "gh_grow_cycle: well-founded recursive def (termination_by Fintype.card V - l.length), commit d6f9e9f931",
-      "ghouila_houri: fully assembled proof structure (reduces to gh_initial_cycle + gh_cycle_extendable sorries)"
+      "ghouila_houri: fully assembled proof structure (reduces to gh_initial_cycle + gh_cycle_extendable sorries)",
+      "perm_arc_bad_card_le proof integrated into Erdos1012OQ03.lean:970"
     ],
     "insights": [
       "list_path_to_hamiltonian: build equivalence from l.getElem, prove bijective via Nodup + full coverage",
@@ -46,16 +47,12 @@
       "sc_tournament_has_cycle proved: uses Rédei Hamiltonian path + SC walk from last to first vertex, extracts cycle via l.drop k (~60 lines)",
       "API fix: insertNth renamed to insertIdx in Lean 4.26/current Mathlib; all references updated",
       "Arc condition proved for direct-insertion in tournament_cycle_extendable using getElem_insertIdx_of_lt/self/of_gt (Lean 4.26 API) + Nat.mod_eq_of_lt for index simplification",
-      "File restructuring required: Lean4 defs must appear before their uses; moved cycle infrastructure to PART II.D"
+      "File restructuring required: Lean4 defs must appear before their uses; moved cycle infrastructure to PART II.D",
+      "perm_arc_bad_card_le (counting bound ≤ n*(n-2)! perms per arc) now fully proved via Aristotle integration"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove walk_min_to_set_is_simple: shortest walk in antisymmetric digraph is nodup (proof: shortcutting repeated vertex gives shorter walk, contradiction). ~15 lines of induction.",
-      "Then Case A: get SC walk from u to any l vertex, take minimum-length prefix ending at l vertex, use its simplicity to build longer cycle: l[j]→...→l[j-1]→u→path→l[j].",
-      "Case B: symmetric argument with SC walk from l[0] to u.",
-      "ghouila_houri needs longest-path approach like Dirac theorem (~200 lines).",
-      "Prove gh_initial_cycle: SC + high outDegree → pick u0→u1, SC path u1→*u0, closed walk contains simple cycle",
-      "Prove gh_cycle_extendable k=n-1: |A|+|B| >= n > k=n-1 by pigeonhole; needs DecidableRel D.arc for Finset.filter"
+      "Fix List.insertNth → List.insertIdx API renames in ghouila_houri infrastructure (lines 85-704) to potentially unlock full ghouila_houri proof"
     ]
   },
   "tags": [
