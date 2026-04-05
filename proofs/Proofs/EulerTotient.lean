@@ -29,7 +29,6 @@ This is a generalization of Fermat's Little Theorem, which is the special case w
 - `ZMod.pow_totient` : Main Euler's theorem for units in ZMod
 - `Nat.totient` : Definition of Euler's totient function
 - `Nat.totient_prime` : φ(p) = p - 1 for prime p
-- `ZMod.unitOfCoprime` : Construct a unit from coprimality
 
 ## Historical Note
 Euler published this generalization in 1763. It extends Fermat's Little Theorem (1640)
