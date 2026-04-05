@@ -1,10 +1,10 @@
 {
   "id": "erdos-773",
-  "title": "Erdős Problem #773: Sidon Subsets of Perfect Squares",
+  "title": "Erd\u0151s Problem #773: Sidon Subsets of Perfect Squares",
   "slug": "erdos-773",
-  "description": "What is the max size of a Sidon subset of {1², 2², ..., N²}? OPEN: Lower bound N^{2/3} (Lefmann-Thiele), upper bound N/(log N)^{1/4} (Alon-Erdős). Is it N^{1-o(1)}?",
+  "description": "What is the max size of a Sidon subset of {1\u00b2, 2\u00b2, ..., N\u00b2}? OPEN: Lower bound N^{2/3} (Lefmann-Thiele), upper bound N/(log N)^{1/4} (Alon-Erd\u0151s). Is it N^{1-o(1)}?",
   "meta": {
-    "author": "Alon-Erdős (1985), Lefmann-Thiele (1995)",
+    "author": "Alon-Erd\u0151s (1985), Lefmann-Thiele (1995)",
     "sourceUrl": "https://erdosproblems.com/773",
     "date": "1985",
     "status": "axiomatized",
@@ -34,15 +34,15 @@
     ],
     "axiomCount": 2,
     "lineCount": 236,
-    "assumptions": "6 axiom(s) and 0 sorry(s). See the Lean source for details."
+    "assumptions": "2 axioms: lower_bound, upper_bound. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #773 (Sidon Subsets of Squares)**\n\nSimon Sidon, a Hungarian mathematician and friend of Erdős, introduced B₂ sequences in 1932 while studying Fourier series: a set $A$ is *Sidon* if all pairwise sums $a + b$ ($a \\le b$, $a, b \\in A$) are distinct. Erdős and Turán (1941) proved the foundational result that the maximum Sidon subset of $\\{1, \\ldots, N\\}$ has size $\\sim \\sqrt{N}$, establishing a bridge between additive combinatorics and extremal set theory.\n\nProblem #773, posed by Alon and Erdős in 1985, restricts the Sidon question to perfect squares: how large can a Sidon subset of $\\{1^2, 2^2, \\ldots, N^2\\}$ be? The restriction to squares introduces number-theoretic constraints absent in the general setting — specifically, the sums $a^2 + b^2$ are governed by Fermat's theorem on sums of two squares and Landau's 1908 asymptotic for their counting function.\n\n**Key Results:**\n- **Alon–Erdős (1985):** Lower bound $N^{2/3 - o(1)}$ via probabilistic random selection; upper bound $N/(\\log N)^{1/4}$ using Landau's theorem\n- **Lefmann–Thiele (1995):** Refined the probabilistic argument to achieve $N^{2/3}$ without the $o(1)$ loss\n- **Landau (1908):** The count of integers $\\le N$ representable as sums of two squares is $\\sim c \\cdot N/\\sqrt{\\log N}$, where $c \\approx 0.7642$ is the Landau–Ramanujan constant\n\n**Status:** OPEN — the gap between $N^{2/3}$ and $N/(\\log N)^{1/4}$ remains one of the central open problems connecting additive combinatorics with analytic number theory.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nWhat is the size of the largest Sidon subset A ⊆ {1², 2², ..., N²}? Is it N^{1-o(1)}?\n\n**Known Bounds:**\n- Lower: |A| ≥ c·N^{2/3} (Lefmann-Thiele 1995)\n- Upper: |A| ≤ C·N/(log N)^{1/4} (Alon-Erdős 1985)\n\n**Key Question:** Is the true answer closer to N^{1-o(1)} or N^{2/3}?",
-    "text": "What is the max size of a Sidon subset of {1², 2², ..., N²}? OPEN: Lower bound N^{2/3} (Lefmann-Thiele), upper bound N/(log N)^{1/4} (Alon-Erdős). Is it N^{1-o(1)}?",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean file formalizes Erdős Problem #773 in nine parts, progressing from definitions through known results to open questions:\n\n1. **Sidon Sets (Parts I–II):** Defines `IsSidon` via the distinct-sums characterization and `IsSidonAlt` via the representation function. Introduces `squaresUpTo N` as the image of the squaring map on `Fin (N+1)`.\n\n2. **Extremal Function (Part III):** Defines $f(N)$ as the supremum of $|A|$ over all Sidon subsets $A \\subseteq \\{1^2, \\ldots, N^2\\}$, and states the main question: is $f(N) = N^{1-o(1)}$?\n\n3. **Axiomatized Bounds (Part IV):** States the Lefmann–Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon–Erdős upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$ as axioms, reflecting the deep analytic and probabilistic arguments behind them.\n\n4. **Landau's Theorem (Part V):** Formalizes the asymptotic $S(N) \\sim c \\cdot N/\\sqrt{\\log N}$ for the count of sums of two squares, which is the key number-theoretic input for the upper bound.\n\n5. **Proof Sketches (Parts VI–VII):** Axiomatizes the probabilistic construction (random subset with density $N^{-1/3}$) and the upper bound argument (Sidon constraint + Landau sparsity forces $|A|^2 \\le N^2/(\\log N)^{1/2}$).\n\n6. **Open Questions (Parts VIII–IX):** Formalizes `trueOrder` as the existence of a sharp exponent $\\alpha \\in [2/3, 1)$ and summarizes the problem status.",
+    "historicalContext": "**Erd\u0151s Problem #773 (Sidon Subsets of Squares)**\n\nSimon Sidon, a Hungarian mathematician and friend of Erd\u0151s, introduced B\u2082 sequences in 1932 while studying Fourier series: a set $A$ is *Sidon* if all pairwise sums $a + b$ ($a \\le b$, $a, b \\in A$) are distinct. Erd\u0151s and Tur\u00e1n (1941) proved the foundational result that the maximum Sidon subset of $\\{1, \\ldots, N\\}$ has size $\\sim \\sqrt{N}$, establishing a bridge between additive combinatorics and extremal set theory.\n\nProblem #773, posed by Alon and Erd\u0151s in 1985, restricts the Sidon question to perfect squares: how large can a Sidon subset of $\\{1^2, 2^2, \\ldots, N^2\\}$ be? The restriction to squares introduces number-theoretic constraints absent in the general setting \u2014 specifically, the sums $a^2 + b^2$ are governed by Fermat's theorem on sums of two squares and Landau's 1908 asymptotic for their counting function.\n\n**Key Results:**\n- **Alon\u2013Erd\u0151s (1985):** Lower bound $N^{2/3 - o(1)}$ via probabilistic random selection; upper bound $N/(\\log N)^{1/4}$ using Landau's theorem\n- **Lefmann\u2013Thiele (1995):** Refined the probabilistic argument to achieve $N^{2/3}$ without the $o(1)$ loss\n- **Landau (1908):** The count of integers $\\le N$ representable as sums of two squares is $\\sim c \\cdot N/\\sqrt{\\log N}$, where $c \\approx 0.7642$ is the Landau\u2013Ramanujan constant\n\n**Status:** OPEN \u2014 the gap between $N^{2/3}$ and $N/(\\log N)^{1/4}$ remains one of the central open problems connecting additive combinatorics with analytic number theory.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nWhat is the size of the largest Sidon subset A \u2286 {1\u00b2, 2\u00b2, ..., N\u00b2}? Is it N^{1-o(1)}?\n\n**Known Bounds:**\n- Lower: |A| \u2265 c\u00b7N^{2/3} (Lefmann-Thiele 1995)\n- Upper: |A| \u2264 C\u00b7N/(log N)^{1/4} (Alon-Erd\u0151s 1985)\n\n**Key Question:** Is the true answer closer to N^{1-o(1)} or N^{2/3}?",
+    "text": "What is the max size of a Sidon subset of {1\u00b2, 2\u00b2, ..., N\u00b2}? OPEN: Lower bound N^{2/3} (Lefmann-Thiele), upper bound N/(log N)^{1/4} (Alon-Erd\u0151s). Is it N^{1-o(1)}?",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean file formalizes Erd\u0151s Problem #773 in nine parts, progressing from definitions through known results to open questions:\n\n1. **Sidon Sets (Parts I\u2013II):** Defines `IsSidon` via the distinct-sums characterization and `IsSidonAlt` via the representation function. Introduces `squaresUpTo N` as the image of the squaring map on `Fin (N+1)`.\n\n2. **Extremal Function (Part III):** Defines $f(N)$ as the supremum of $|A|$ over all Sidon subsets $A \\subseteq \\{1^2, \\ldots, N^2\\}$, and states the main question: is $f(N) = N^{1-o(1)}$?\n\n3. **Axiomatized Bounds (Part IV):** States the Lefmann\u2013Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon\u2013Erd\u0151s upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$ as axioms, reflecting the deep analytic and probabilistic arguments behind them.\n\n4. **Landau's Theorem (Part V):** Formalizes the asymptotic $S(N) \\sim c \\cdot N/\\sqrt{\\log N}$ for the count of sums of two squares, which is the key number-theoretic input for the upper bound.\n\n5. **Proof Sketches (Parts VI\u2013VII):** Axiomatizes the probabilistic construction (random subset with density $N^{-1/3}$) and the upper bound argument (Sidon constraint + Landau sparsity forces $|A|^2 \\le N^2/(\\log N)^{1/2}$).\n\n6. **Open Questions (Parts VIII\u2013IX):** Formalizes `trueOrder` as the existence of a sharp exponent $\\alpha \\in [2/3, 1)$ and summarizes the problem status.",
     "keyInsights": [
-      "**Squares vs. general integers:** For general Sidon subsets of $\\{1, \\ldots, N\\}$, the maximum size is $\\sim \\sqrt{N}$ (Erdős–Turán 1941). Restricting to squares dramatically changes the landscape — the answer lies between $N^{2/3}$ and $N/(\\log N)^{1/4}$, far above $\\sqrt{N}$, suggesting that squares' additive structure is favorable for the Sidon condition.",
+      "**Squares vs. general integers:** For general Sidon subsets of $\\{1, \\ldots, N\\}$, the maximum size is $\\sim \\sqrt{N}$ (Erd\u0151s\u2013Tur\u00e1n 1941). Restricting to squares dramatically changes the landscape \u2014 the answer lies between $N^{2/3}$ and $N/(\\log N)^{1/4}$, far above $\\sqrt{N}$, suggesting that squares' additive structure is favorable for the Sidon condition.",
       "**Landau's theorem as the bottleneck:** The upper bound hinges on the fact that sums of two squares are sparse: only $\\sim N/\\sqrt{\\log N}$ integers up to $N$ are representable as $a^2 + b^2$. A Sidon set of $m$ squares produces $\\binom{m}{2}$ distinct sums, all of which must be sums of two squares, forcing $m^2 \\lesssim N^2/\\sqrt{\\log N}$.",
       "**Probabilistic method for the lower bound:** The $N^{2/3}$ lower bound uses a random subset: include each square independently with probability $p \\sim N^{-1/3}$. The expected number of Sidon-violating collisions is manageable, and a deletion argument yields a Sidon subset of size $\\sim N^{2/3}$.",
       "**Fermat's characterization underlies Landau:** Landau's theorem ultimately rests on Fermat's result that $n$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ appears to an even power in the factorization of $n$. This arithmetic constraint is what makes sums of two squares sparse.",
@@ -68,8 +68,8 @@
       "title": "Sidon Set Definitions",
       "startLine": 33,
       "endLine": 53,
-      "summary": "Defines `IsSidon` (distinct ordered pairwise sums) and `IsSidonAlt` (representation function ≤ 1). These capture the B₂ sequence property.",
-      "mathContext": "Defines `IsSidon` (distinct ordered pairwise sums) and `IsSidonAlt` (representation function $\\leq$ 1). These capture the B₂ sequence property."
+      "summary": "Defines `IsSidon` (distinct ordered pairwise sums) and `IsSidonAlt` (representation function \u2264 1). These capture the B\u2082 sequence property.",
+      "mathContext": "Defines `IsSidon` (distinct ordered pairwise sums) and `IsSidonAlt` (representation function $\\leq$ 1). These capture the B\u2082 sequence property."
     },
     {
       "id": "squares-and-f",
@@ -84,8 +84,8 @@
       "title": "Known Bounds",
       "startLine": 91,
       "endLine": 120,
-      "summary": "Axiomatizes the Lefmann–Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon–Erdős upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$. Combines them into `current_knowledge`.",
-      "mathContext": "Axiomatized: Axiomatizes the Lefmann–Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon–Erdős upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$. Combines them into `current_knowledge`."
+      "summary": "Axiomatizes the Lefmann\u2013Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon\u2013Erd\u0151s upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$. Combines them into `current_knowledge`.",
+      "mathContext": "Axiomatized: Axiomatizes the Lefmann\u2013Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon\u2013Erd\u0151s upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$. Combines them into `current_knowledge`."
     },
     {
       "id": "landau",
@@ -121,13 +121,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #773 in full: definitions of Sidon sets and the extremal function $f(N)$, axiomatized bounds $N^{2/3} \\le f(N) \\le N/(\\log N)^{1/4}$, Landau's theorem connecting the problem to analytic number theory, and sketches of both the probabilistic lower bound and the counting upper bound. The single sorry is on `squaresUpTo_card`, a routine injectivity lemma.",
-    "implications": "This problem sits at a remarkable crossroads of three mathematical areas: (1) **additive combinatorics** — the Sidon/B₂ condition is a fundamental object of study since Erdős–Turán 1941; (2) **analytic number theory** — Landau's 1908 theorem on sums of two squares provides the key counting constraint; and (3) **the probabilistic method** — the best lower bound comes from random selection, a technique pioneered by Erdős himself. Resolving the gap would likely require new ideas combining all three perspectives.",
+    "summary": "This formalization captures Erd\u0151s Problem #773 in full: definitions of Sidon sets and the extremal function $f(N)$, axiomatized bounds $N^{2/3} \\le f(N) \\le N/(\\log N)^{1/4}$, Landau's theorem connecting the problem to analytic number theory, and sketches of both the probabilistic lower bound and the counting upper bound. The single sorry is on `squaresUpTo_card`, a routine injectivity lemma.",
+    "implications": "This problem sits at a remarkable crossroads of three mathematical areas: (1) **additive combinatorics** \u2014 the Sidon/B\u2082 condition is a fundamental object of study since Erd\u0151s\u2013Tur\u00e1n 1941; (2) **analytic number theory** \u2014 Landau's 1908 theorem on sums of two squares provides the key counting constraint; and (3) **the probabilistic method** \u2014 the best lower bound comes from random selection, a technique pioneered by Erd\u0151s himself. Resolving the gap would likely require new ideas combining all three perspectives.",
     "openQuestions": [
       "Is $f(N) = N^{1-o(1)}$, or is the true exponent strictly less than 1? The answer determines whether the Sidon constraint on squares is 'essentially free.'",
-      "Can the $N^{2/3}$ lower bound be improved? The current proof uses no structure of squares beyond their count — exploiting the arithmetic of squares (e.g., quadratic residue structure) might yield better constructions.",
+      "Can the $N^{2/3}$ lower bound be improved? The current proof uses no structure of squares beyond their count \u2014 exploiting the arithmetic of squares (e.g., quadratic residue structure) might yield better constructions.",
       "Does an explicit (deterministic) Sidon subset of squares of size $\\gg N^{2/3}$ exist? All current constructions are probabilistic.",
-      "What is the role of the Landau–Ramanujan constant $c \\approx 0.7642$ in the precise asymptotics? Can the $(\\log N)^{1/4}$ factor in the upper bound be improved?"
+      "What is the role of the Landau\u2013Ramanujan constant $c \\approx 0.7642$ in the precise asymptotics? Can the $(\\log N)^{1/4}$ factor in the upper bound be improved?"
     ]
   },
   "leanFile": {
@@ -153,17 +153,17 @@
     {
       "targetId": "erdos-340",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open, sidon-sets"
+      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, number-theory, open, sidon-sets"
     },
     {
       "targetId": "erdos-782",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open, squares"
+      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, number-theory, open, squares"
     },
     {
       "targetId": "erdos-1148",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open"
+      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, number-theory, open"
     }
   ]
 }
