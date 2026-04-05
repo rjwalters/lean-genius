@@ -53,46 +53,83 @@
       "Key proof technique: use Eq.trans to avoid binder-name mismatch in Burnside sum"
     ]
   },
+  "overview": {
+    "historicalContext": "Pólya's enumeration theorem was published by George Pólya in 1937 ('Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen', Acta Mathematica 68). It gave a systematic method for counting combinatorial objects up to symmetry, with applications ranging from necklace counting to chemical isomer enumeration. The theorem generalizes Burnside's lemma (1897, also called the Cauchy-Frobenius lemma) from counting orbits to counting orbits weighted by color frequencies. Pólya's insight was the 'cycle index' of a group action: Z(G; x₁,...,xₖ) = (1/|G|) Σ_{g∈G} ∏_j xⱼ^{cⱼ(g)}, where cⱼ(g) counts j-cycles in the permutation g. Setting all variables to k gives the number of distinct k-colorings.",
+    "problemStatement": "**Open Question (OQ-01):** Can the generating function approach from the parallel Vandermonde entry be extended to prove Pólya's enumeration theorem?\n\nSpecifically, formalize that for the cyclic group Cₙ acting on n-bead necklaces:\n$$n \\cdot |\\text{Necklaces}(n, k)| = \\sum_{d|n} \\varphi(d) \\cdot k^{n/d}$$",
+    "proofStrategy": "**Step 1 — Group action** (§1): Define ZColoring n k = ZMod n → Fin k and the rotation action r +ᵥ c = fun i => c(i−r). The action law follows from `sub_sub` in ZMod n, requiring no axioms.\n\n**Step 2 — Fixed-point counts** (§2): For ZMod 4 acting on binary 4-colorings, compute |Fix(r)| for each r ∈ {0,1,2,3} by `native_decide`: Fix(0)=16, Fix(1)=2, Fix(2)=4, Fix(3)=2. Sum = 24.\n\n**Step 3 — Burnside** (§3): Apply `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` to get |Orbits|·4 = 24, so |Orbits| = 6. The orbit quotient is exactly the necklace count.\n\n**Step 4 — Pólya formula** (§4): Verify n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d} for n=2,3,4,6 by `norm_num` after computing totient values.\n\n**Step 5 — General theorem** (§5): The general Pólya theorem (1 sorry) requires the cycle structure theorem: rotation by r has gcd(r.val, n) cycles.",
+    "keyInsights": [
+      "ZMod n → Fin k colorings (instead of Fin n → Fin k) give a clean axiom-free group action: the law (r+s)+ᵥc = r+ᵥ(s+ᵥc) reduces to `sub_sub` in ZMod, a single one-line algebraic identity.",
+      "Burnside's lemma is applied through the chain: fixed-point sum 24 = |Orbits|×4, so |Orbits| = 6. The key technique `hb.symm.trans h1` avoids a binder-name mismatch that would prevent `rw` from working directly.",
+      "The Pólya formula Σ_{d|n} φ(d)·k^{n/d} arises from grouping the Burnside sum Σ_{r∈ZMod n} k^{gcd(r,n)} by gcd value: the number of r ∈ [0,n) with gcd(r,n) = n/d is exactly φ(d).",
+      "Rotation by r on an n-bead necklace acts as a permutation with gcd(r.val,n) cycles each of length n/gcd(r.val,n). This cycle structure theorem (left as 1 sorry) is the key missing piece for the general Pólya theorem.",
+      "The necklace sequence [2,3,4,6,8,14] for n=1,...,6 with 2 colors appears in OEIS A000029 (necklaces of n beads of 2 colors). The values grow approximately as 2^n/(2n) for large n by the Burnside-Pólya formula."
+    ],
+    "prerequisites": [
+      "ZMod n arithmetic and subtraction in Lean 4",
+      "Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
+      "Euler's totient function φ(n)",
+      "orbitRel.Quotient for orbit counting in Mathlib"
+    ]
+  },
   "sections": [
     {
       "id": "cyclic-action",
-      "title": "Clean Group Action via ZMod Subtraction",
-      "summary": "Defines ZColoring n k = ZMod n → Fin k and the rotation action r +ᵥ c = fun i => c (i - r). The action laws follow immediately from ZMod algebra (sub_sub), requiring no axioms.",
+      "title": "§1: Clean Group Action via ZMod Subtraction",
+      "startLine": 62,
+      "endLine": 103,
+      "summary": "Defines ZColoring n k = ZMod n → Fin k and the rotation action r +ᵥ c = fun i => c(i−r). The action laws (zero_vadd, add_vadd) follow immediately from ZMod algebra (`sub_sub`), requiring no axioms.",
+      "mathContext": "The rotation action: $(r +_v c)(i) = c(i - r)$. Action law: $(r + s) +_v c = r +_v (s +_v c)$ because $c(i - (r+s)) = c((i-s)-r)$ by `sub_sub` in $\\mathbb{Z}/n\\mathbb{Z}$.",
       "theorems": ["cyclicAction"]
     },
     {
       "id": "fixed-point-counts",
-      "title": "Fixed-Point Counts for ZMod 4 on Binary Colorings",
-      "summary": "Computes |Fix(r)| for each r ∈ ZMod 4 acting on ZMod 4 → Fin 2: Fix(0)=16 (all), Fix(1)=2 (constant), Fix(2)=4 (period-2), Fix(3)=2 (constant). Sum = 24.",
+      "title": "§2: Fixed-Point Counts for ZMod 4 on Binary Colorings",
+      "startLine": 105,
+      "endLine": 157,
+      "summary": "Computes |Fix(r)| for each r ∈ ZMod 4 acting on ZMod 4 → Fin 2: Fix(0)=16 (all), Fix(1)=2 (constant), Fix(2)=4 (period-2), Fix(3)=2 (constant). Sum = 24. Fixed-point counts use native_decide.",
+      "mathContext": "$|\\text{Fix}(0)| = 2^4 = 16$; $|\\text{Fix}(1)| = 2$ (only constant colorings survive 90° rotation); $|\\text{Fix}(2)| = 4$ (period divides 2: $c_0=c_2, c_1=c_3$); $|\\text{Fix}(3)| = 2$. Total $= 24$.",
       "theorems": ["zcoloring_4_2_card", "fix_0_card", "fix_1_card", "fix_2_card", "fix_3_card", "fixed_point_sum_4_2"]
     },
     {
       "id": "burnside-application",
-      "title": "Burnside's Lemma: 6 Binary Necklaces of Length 4",
-      "summary": "Applies Burnside's lemma from Mathlib to conclude |Necklaces(4,2)| = 24/4 = 6. The orbit quotient orbitRel.Quotient (Multiplicative (ZMod 4)) (ZColoring 4 2) has cardinality 6.",
+      "title": "§3: Burnside's Lemma — 6 Distinct Binary 4-Necklaces",
+      "startLine": 159,
+      "endLine": 197,
+      "summary": "Applies Burnside's lemma to conclude |Necklaces(4,2)| = 24/4 = 6. Uses MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group. The Eq.trans technique avoids a binder-name mismatch with the Burnside sum.",
+      "mathContext": "|\\text{Necklaces}(4,2)| = \\frac{1}{4}(16+2+4+2) = \\frac{24}{4} = 6$. Formally: $|\\text{Orbits}| \\times |G| = \\sum_g |\\text{Fix}(g)|$, so $|\\text{Orbits}| \\times 4 = 24$.",
       "theorems": ["binary_4_necklace_count"]
     },
     {
       "id": "polya-formula",
-      "title": "Pólya Formula Verification for 2-Colorings",
-      "summary": "Verifies n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d} for n=2,3,4,6 using computed totient values. Also computes necklaceCount n 2 for n=1,...,6 via Burnside's helper.",
+      "title": "§4: Pólya Formula Verification for 2-Colorings",
+      "startLine": 199,
+      "endLine": 279,
+      "summary": "Verifies n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d} for n=2,3,4,6 by norm_num after native_decide totient values. Defines necklaceCount and proves values [2,3,4,6,8,14] for n=1,...,6.",
+      "mathContext": "Sample: $4 \\cdot 6 = \\varphi(1) \\cdot 2^4 + \\varphi(2) \\cdot 2^2 + \\varphi(4) \\cdot 2^1 = 1\\cdot 16 + 1\\cdot 4 + 2\\cdot 2 = 24$. Verified by norm_num.",
       "theorems": ["polya_C2_2colors", "polya_C3_2colors", "polya_C4_2colors", "polya_C6_2colors", "necklaces_2_2", "necklaces_3_2", "necklaces_4_2", "necklaces_5_2", "necklaces_6_2"]
     },
     {
       "id": "general-statement",
-      "title": "General Pólya Theorem (1 sorry)",
-      "summary": "States the general Pólya enumeration theorem: n · necklaceCount n k = Σ_{d|n} φ(d) · k^{n/d}. Proof requires the cycle structure theorem (|Fix(r)| = k^{gcd(r.val,n)}) connecting Burnside to the divisor sum. Left as 1 sorry.",
+      "title": "§5: General Pólya Theorem (1 sorry)",
+      "startLine": 281,
+      "endLine": 324,
+      "summary": "States polya_enumeration_theorem_CN: n · necklaceCount n k = Σ_{d|n} φ(d) · k^{n/d}. The proof outline is given (Burnside + cycle structure + totient grouping) but requires the cycle structure theorem |Fix(r)| = k^{gcd(r.val,n)}, left as 1 sorry.",
+      "mathContext": "$n \\cdot |\\text{Necklaces}(n,k)| = \\sum_{d|n} \\varphi(d) \\cdot k^{n/d}$. Proof gap: need $|\\text{Fix}(r)| = k^{\\gcd(r,n)}$ for all $r \\in \\mathbb{Z}/n\\mathbb{Z}$.",
       "theorems": ["polya_enumeration_theorem_CN"]
+    },
+    {
+      "id": "generating-function-connection",
+      "title": "§6: Connection to Generating Functions",
+      "startLine": 326,
+      "endLine": 365,
+      "summary": "Defines necklaceSeq = [2,3,4,6,8,14] and proves it matches necklaceCount 1..6 2. Discusses the open question of connecting Pólya enumeration to generating functions and cyclotomic polynomials.",
+      "mathContext": "The generating function $P(x) = \\sum_{n \\geq 1} |\\text{Necklaces}(n,2)| \\cdot x^n = 2x + 3x^2 + 4x^3 + 6x^4 + \\cdots$ (OEIS A000029). Connection to cyclotomic polynomials: the cycle index of $C_n$ has product formula $Z(C_n) = \\frac{1}{n}\\sum_{d|n} \\varphi(d) \\cdot x_d^{n/d}$.",
+      "theorems": ["necklaceSeq_matches"]
     }
   ],
-  "overview": {
-    "background": "The parallel Vandermonde entry (ArithmeticSeriesOQ02OQ02OQ03) asked whether generating functions could be extended to Pólya's enumeration theorem. This entry answers the question by formalizing the cyclic group case of Pólya's theorem.",
-    "mainResult": "Burnside's lemma from Mathlib gives 6 distinct binary 4-necklaces. The Pólya formula n·|Necklaces(n,2)| = Σ_{d|n} φ(d)·2^{n/d} is verified for n=2,3,4,6. Necklace counts [2,3,4,6,8,14] for n=1,...,6 are proved.",
-    "significance": "The key architectural insight is using ZMod n → Fin k (ZMod-indexed colorings) instead of Fin n → Fin k. This makes the rotation action r +ᵥ c = fun i => c(i-r) trivially an action (the law follows from sub_sub in ZMod), requiring no modular arithmetic lemmas. The proof connects Burnside's abstract orbit-counting theorem to concrete necklace combinatorics.",
-    "openQuestion": "The remaining sorry is the general Pólya theorem: n · necklaceCount n k = Σ_{d|n} φ(d) · k^{n/d}. This requires proving |Fix(r)| = k^{gcd(r.val,n)} for all r, which is the cycle structure theorem for cyclic group actions."
-  },
   "conclusion": {
     "summary": "365-line formalization proving 23 theorems (1 sorry) from 0 axioms. Burnside's lemma is used to count necklaces; the Pólya divisor-sum formula is verified for small n. The general Pólya theorem remains as 1 sorry pending the cycle structure theorem.",
+    "implications": "Pólya's enumeration theorem is the foundational tool for counting combinatorial objects up to symmetry. The formalization demonstrates that Burnside's lemma from Mathlib is powerful enough to count necklaces concretely, and that ZMod-indexed colorings provide a particularly clean Lean 4 approach. The cycle structure theorem (each rotation by r has gcd(r,n) orbits on n positions) is the key missing ingredient for the general theorem — it connects the abstract Burnside sum to the totient-weighted divisor sum. The sequence [2,3,4,6,8,14] (binary necklaces for n=1–6) appears in OEIS A000029 and has applications in chemistry (molecular isomers), music theory (necklace rhythms), and coding theory (cyclic codes).",
     "openQuestions": [
       "Prove the cycle structure theorem: for rotation by r in ZMod n acting on ZMod n → Fin k, the number of fixed-point colorings is k^{gcd(r.val, n)}. This would close the 1 sorry and complete the general Pólya theorem.",
       "Extend to arbitrary finite groups: Pólya's theorem for non-cyclic groups (e.g., dihedral groups D_n for unoriented necklaces) requires the full cycle index formalism.",
@@ -102,14 +139,14 @@
   },
   "crossReferences": [
     {
-      "id": "arithmetic-series-oq-02-oq-02-oq-03",
-      "title": "Parallel Vandermonde via Generating Functions",
-      "relationship": "parent"
+      "targetId": "arithmetic-series-oq-02-oq-02-oq-03",
+      "relationship": "parent",
+      "description": "Parent: parallel Vandermonde via generating functions — OQ-01 from that entry motivated this Pólya formalization"
     },
     {
-      "id": "arithmetic-series-oq-02-oq-02",
-      "title": "2D Hockey Stick Identity",
-      "relationship": "grandparent"
+      "targetId": "arithmetic-series-oq-02-oq-02",
+      "relationship": "grandparent",
+      "description": "Grandparent: 2D Hockey Stick Identity in the arithmetic series hierarchy"
     }
   ]
 }
