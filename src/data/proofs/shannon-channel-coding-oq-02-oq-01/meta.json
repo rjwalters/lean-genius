@@ -1,0 +1,131 @@
+{
+  "id": "shannon-channel-coding-oq-02-oq-01",
+  "title": "Fano's Inequality via Conditional Entropy Bridge",
+  "slug": "shannon-channel-coding-oq-02-oq-01",
+  "description": "Bridges the self-contained Fano inequality proof (OQ-03) to the project's standard InformationTheory.conditionalEntropy definition. Proves definition compatibility by reflexivity, derives Fano's bound H(X|Y) ≤ h(P_e) + P_e·log(|X|-1) as a direct corollary of OQ-03, and documents the ShannonEntropy.lean compilation blocker (strong_subadditivity linarith failure) that prevents full axiom elimination.",
+  "meta": {
+    "author": "Robert Fano (1952), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fano%27s_inequality",
+    "date": "1952",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
+    "tags": [
+      "information-theory",
+      "entropy",
+      "channel-coding",
+      "fano",
+      "research",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "FanoInequality.fano_theorem",
+        "description": "Fano's inequality proved in OQ-03: H(X|Y) ≤ h(P_e) + P_e·log(|X|-1)",
+        "module": "Proofs.ShannonChannelCodingOQ03"
+      },
+      {
+        "theorem": "InformationTheory.BinaryEntropy.h_nonneg",
+        "description": "Binary entropy is non-negative on [0,1], from OQ-04",
+        "module": "Proofs.ShannonChannelCodingOQ04"
+      }
+    ],
+    "originalContributions": [
+      "conditional_entropy_defs_agree: FanoInequality.conditionalEntropy = InformationTheory.conditionalEntropy (definitionally equal, proved by rfl)",
+      "fano_from_oq03: Fano inequality as direct corollary of OQ-03's fano_theorem",
+      "Root cause analysis of ShannonEntropy.lean line 811 failure (sum order mismatch in strong_subadditivity)",
+      "Proposed fix: normalize ∑ y ∑ z ∑ x sum order before linarith using Finset.sum_comm"
+    ],
+    "assumptions": "1 axiom: import_shannon_entropy_blocked (placeholder for ShannonEntropy.lean compilation blocker). 1 sorry: fano_trivial_singleton (Unit-type edge case, conceptually clear). The axiom will be eliminatable once ShannonEntropy.lean's strong_subadditivity proof is fixed.",
+    "dateAdded": "2026-04-04",
+    "axiomCount": 1,
+    "lineCount": 142,
+    "prerequisites": [
+      "Fano's inequality (OQ-03): H(X|Y) ≤ h(P_e) + P_e·log(|X|-1)",
+      "Binary entropy function and concavity (OQ-04)",
+      "Conditional entropy definition from ShannonEntropy.lean"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Fano's inequality, proved by Robert Fano in 1952, is the fundamental tool for establishing converse (impossibility) results in information theory. It bounds the conditional entropy H(X|Y) in terms of the error probability P_e of estimating X from Y: H(X|Y) ≤ h(P_e) + P_e·log(|X|-1). If reliable communication requires H(X|Y) → 0, this forces P_e → 0; conversely, if H(X|Y) is large relative to log(|X|-1), then P_e is bounded away from zero.\n\nThis formalization bridges two independently developed components: the self-contained Fano proof in OQ-03 (which uses a private conditional entropy definition to avoid ShannonEntropy.lean's compilation issue) and the project's standard conditional entropy. The bridge confirms that the two definitions agree, making OQ-03's result applicable in the broader channel coding context.",
+    "problemStatement": "Prove that the conditional entropy definition in OQ-03 ($\\texttt{FanoInequality.conditionalEntropy}$) agrees with the project's standard definition ($\\texttt{InformationTheory.conditionalEntropy}$), and derive Fano's inequality:\n$$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}| - 1)$$\nfrom OQ-03's $\\texttt{fano\\_theorem}$, where $P_e = 1 - \\sum_y \\sum_x P(x,y)^2/P(Y=y)$.",
+    "proofStrategy": "The proof has three layers:\n\n1. **Definition compatibility** (by `rfl`): Both `FanoInequality.conditionalEntropy` and `InformationTheory.conditionalEntropy` expand to the same formula: $-\\sum_x\\sum_y [\\text{if } p(x,y)=0 \\text{ then } 0 \\text{ else } p(x,y)\\cdot\\log(p(x,y)/p(y))]$. Lean's `rfl` tactic confirms they are definitionally equal.\n\n2. **Direct delegation** (`fano_from_oq03`): With definition compatibility established, `fano_theorem` from OQ-03 directly proves the Fano inequality for the project's standard conditional entropy — no rewriting needed.\n\n3. **Axiom reduction** (documented, blocked): To eliminate the `fano_inequality` axiom in ShannonChannelCoding.lean, we need to import `InformationTheory.conditionalEntropy` from ShannonEntropy.lean. This is blocked by a pre-existing bug in `strong_subadditivity` (line 811: `linarith [h_cmi]` fails due to sum order mismatch). The fix is identified: add a `Finset.sum_comm` rewrite before `linarith`.",
+    "keyInsights": [
+      "Definition compatibility is trivial (rfl) because both conditional entropy formulas are syntactically identical — the same convention 0·log 0 = 0 handled via Real.log 0 = 0",
+      "The root cause of ShannonEntropy.lean line 811 failure: after simp_rw rewrites, the YZ marginal sum has order ∑ y ∑ z ∑ x but the corresponding hterm expansion has order ∑ x ∑ y ∑ z — definitionally equal but syntactically different, so linarith cannot cancel them",
+      "Fix: add `simp_rw [Finset.sum_comm (s := Finset.univ)]` before `linarith [h_cmi]` to normalize sum order",
+      "OQ-03 was deliberately made self-contained (imports only Mathlib + OQ-04) to avoid this blocker, enabling the Fano proof to proceed independently",
+      "The 'formula P_e' used in this gallery differs from MAP P_e: formula P_e = 1 - ∑_y ∑_x P(x,y)²/P(Y=y) ≥ MAP P_e; monotonicity of h(p)+p·log(c) bridges this gap in OQ-03"
+    ],
+    "prerequisites": [
+      "Information theory (conditional entropy, error probability)",
+      "Shannon's channel coding theorem converse direction",
+      "Lean definitional equality vs propositional equality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition-compatibility",
+      "title": "Definition Compatibility",
+      "startLine": 35,
+      "endLine": 50,
+      "summary": "Proves FanoInequality.conditionalEntropy = InformationTheory.conditionalEntropy by rfl. Both expand to the same formula with 0·log(0)=0 convention.",
+      "mathContext": "$H_{\\text{OQ03}}(X|Y) = H_{\\text{std}}(X|Y)$ definitionally"
+    },
+    {
+      "id": "fano-corollary",
+      "title": "Fano's Inequality (from OQ-03)",
+      "startLine": 56,
+      "endLine": 69,
+      "summary": "Derives Fano's inequality as a direct corollary of OQ-03's fano_theorem, using definition compatibility.",
+      "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}|-1)$ for formula $P_e$"
+    },
+    {
+      "id": "axiom-reduction",
+      "title": "Axiom Reduction (Blocked)",
+      "startLine": 73,
+      "endLine": 120,
+      "summary": "Documents the strategy to eliminate fano_inequality axiom from ShannonChannelCoding.lean. Blocked by ShannonEntropy.lean line 811 bug. Root cause and fix identified.",
+      "mathContext": "Axiom $\\texttt{fano\\_inequality}$ in ShannonChannelCoding.lean follows from fano\\_from\\_oq03 by definitional equality"
+    },
+    {
+      "id": "trivial-case",
+      "title": "Trivial Case |X|=1",
+      "startLine": 126,
+      "endLine": 141,
+      "summary": "States Fano bound for |X|=1 (Unit type). In this case (|X|-1)=0 and H(X|Y)=0, so both sides are trivially 0. Sorry pending cleanup of Unit-sum simp tactics.",
+      "mathContext": "For $|\\mathcal{X}|=1$: $H(X|Y) = 0 = h(P_e)$ since $P_e \\cdot \\log(0) = 0$"
+    }
+  ],
+  "conclusion": {
+    "significance": "This bridge proof confirms that OQ-03's machine-verified Fano inequality applies directly to the project's standard conditional entropy. The key mathematical content (the actual Fano proof) lives in OQ-03 — this file serves as glue code and documents an identified bug in ShannonEntropy.lean. Once that bug is fixed, the remaining axiom can be eliminated, completing the full chain from Shannon entropy axioms to the Fano converse.",
+    "openQuestions": [
+      "Fix ShannonEntropy.lean line 811: add Finset.sum_comm rewrite before linarith [h_cmi] to normalize sum order in strong_subadditivity",
+      "Complete fano_trivial_singleton: prove ∑ x : Unit, f x = f () via Fintype.sum_unique in the conditional entropy context"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "shannon-channel-coding-oq-03",
+      "relationship": "uses",
+      "description": "Imports fano_theorem from OQ-03 as the core Fano proof"
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-04",
+      "relationship": "uses",
+      "description": "Uses binary entropy function h and h_nonneg from OQ-04"
+    },
+    {
+      "targetId": "shannon-channel-coding",
+      "relationship": "reduces",
+      "description": "Eliminates the fano_inequality axiom from the parent ShannonChannelCoding.lean (pending ShannonEntropy.lean fix)"
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-02",
+      "relationship": "extends",
+      "description": "Complements OQ-02 (BSC capacity) in proving the channel coding converse direction"
+    }
+  ]
+}
