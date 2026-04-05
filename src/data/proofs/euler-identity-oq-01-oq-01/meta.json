@@ -90,7 +90,7 @@
       "startLine": 43,
       "endLine": 83,
       "summary": "Reuses the expTerm/evenTerm/oddTerm definitions and algebraic identities for powers of i from the parent proof. Adds expSeries_summable using NormedSpace.expSeries_summable.",
-      "mathContext": "exp(z) = sum z^n/n!, even/odd term splitting via i^{2k}=(-1)^k and i^{2k+1}=i*(-1)^k"
+      "mathContext": "$e^z = \\sum_{n=0}^\\infty \\frac{z^n}{n!}$. Parity split: $i^{2k} = (-1)^k$ and $i^{2k+1} = i(-1)^k$. So $(ix)^{2k}/(2k)! = (-1)^k x^{2k}/(2k)! = \\text{evenTerm}(x,k)$ and $(ix)^{2k+1}/(2k+1)! = i(-1)^k x^{2k+1}/(2k+1)! = \\text{oddTerm}(x,k)$. `expSeries_summable` from `NormedSpace.expSeries_summable`."
     },
     {
       "id": "axiom-elimination",
@@ -98,7 +98,7 @@
       "startLine": 85,
       "endLine": 124,
       "summary": "Proves the three former axioms as theorems: tsum_even_add_odd_of_summable (via Summable.comp_injective), cos_eq_tsum_thm (via Complex.cos_eq_tsum + ofReal_cos), sin_eq_tsum_thm (via Complex.sin_eq_tsum + ofReal_sin).",
-      "mathContext": "All three analytic facts needed for Euler's Taylor series proof are present in Mathlib; this section connects them."
+      "mathContext": "(1) $\\sum_n f(n) = \\sum_k f(2k) + \\sum_k f(2k+1)$ via `Summable.comp_injective` + `tsum_even_add_odd`. (2) $\\cos x = \\sum_k \\frac{(-1)^k x^{2k}}{(2k)!}$: lift from `Complex.cos_eq_tsum` via `ofReal_cos`. (3) $i\\sin x = \\sum_k \\frac{i(-1)^k x^{2k+1}}{(2k+1)!}$: factor $i$ via `tsum_mul_right`."
     },
     {
       "id": "main-theorems",
@@ -106,7 +106,7 @@
       "startLine": 126,
       "endLine": 142,
       "summary": "euler_formula: e^(ix) = cos(x) + i*sin(x) via Complex.exp_mul_I. euler_identity: e^(iπ)+1=0 via cos(π)=-1, sin(π)=0.",
-      "mathContext": "Final results with 0 axioms and 0 sorries."
+      "mathContext": "$e^{ix} = \\cos x + i\\sin x$ via `Complex.exp_mul_I`. $e^{i\\pi} + 1 = 0$: substitute $x=\\pi$, use $\\cos(\\pi)=-1$ and $\\sin(\\pi)=0$. Both proofs: 0 axioms, 0 sorries. Note: `Complex.exp_mul_I` bridges `NormedSpace.exp` and `Complex.exp`, the subtle gap in the fully-from-scratch Taylor proof."
     }
   ],
   "conclusion": {

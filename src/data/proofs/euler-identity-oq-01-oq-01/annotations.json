@@ -7,7 +7,7 @@
     "title": "Imports and Namespace: Analytic Infrastructure",
     "content": "Seven focused imports bring in the specific Mathlib modules needed to prove the three former axioms. Unlike `import Mathlib` (global), these targeted imports document which analytic facts are actually used. The namespace `EulerIdentityOQ01OQ01` isolates these theorems from the parent proof.",
     "mathContext": "The key new imports vs the parent file: `Trigonometric.Series` provides `Complex.cos_eq_tsum` and `Complex.sin_eq_tsum` (Taylor series characterizations). `InfiniteSum.NatInt` provides `tsum_even_add_odd`. `InfiniteSum.Ring` provides `tsum_mul_right`. Together these three Mathlib modules supply everything needed to eliminate the parent's 3 axioms.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Complex.cos_eq_tsum", "Complex.sin_eq_tsum", "tsum_even_add_odd", "Summable.comp_injective"],
     "prerequisites": ["Lean 4 import system", "Mathlib analysis hierarchy"]
   },
