@@ -7,7 +7,7 @@
     "title": "Setup: Module Header and Multinomial Coefficient Definition",
     "content": "The file imports both `Mathlib` and `Proofs.KummerTheoremOQ01Aristotle` — the Aristotle-generated companion file containing the general proof of `multinomial_eq_prod_choose`. The header docstring (lines 4-27) explains the mathematical context: the iterated binomial decomposition `C(n; k₁,...,kₘ) = C(k₁+k₂,k₁) · C(k₁+k₂+k₃,k₁+k₂) · ... · C(n,n-kₘ)` and how applying Kummer's theorem to each factor gives the carry-count formula. Lines 33-36 define `multinomial (ks : List ℕ) : ℕ` as `(ks.sum).factorial / (ks.map Nat.factorial).prod`, marked `noncomputable` since Lean's kernel does not evaluate natural number division with classical logic.",
     "mathContext": "The multinomial coefficient $\\binom{n}{k_1,\\ldots,k_m} = \\frac{n!}{k_1! \\cdots k_m!}$ where $n = k_1 + \\cdots + k_m$. The iterated decomposition: $\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m} \\binom{\\sum_{j \\leq i} k_j}{k_i}$. Applying Kummer's theorem to each factor gives $v_p(\\binom{n}{k_1,\\ldots,k_m}) = \\sum_{i} c(k_i, \\sum_{j < i} k_j; p)$ = total carries when adding $k_1, \\ldots, k_m$ in base $p$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["multinomial theorem", "Kummer's theorem", "p-adic valuation", "Aristotle companion file"],
     "prerequisites": ["factorials", "natural number division", "Lean noncomputable definitions", "KummerTheoremOQ01Aristotle"]
   },
