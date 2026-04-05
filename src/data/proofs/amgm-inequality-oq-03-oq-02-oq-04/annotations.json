@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-amgm-oq04-squeeze",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04",
+    "range": { "startLine": 132, "endLine": 151 },
+    "type": "technique",
+    "title": "Squeeze Theorem for Max Limit: M·n^{-1/r} ≤ M_r ≤ M",
+    "content": "The max limit uses tendsto_of_tendsto_of_tendsto_of_le_of_le' with a lower bound M*n^{-1/r} (proved via sup_mul_pow_le_powerMean) and constant upper bound M (from powerMean_le_sup). The lower bound converges to M since n^{-1/r} → 1 (tendsto_const_rpow_neg_inv_atTop), so M*n^{-1/r} → M*1 = M. Both bounds are only valid for r > 0, so filter_upwards with eventually_gt_atTop 0 is used. The composition tendsto_const_nhds.mul h1 with simpa [mul_one] handles the limit M * 1 = M.",
+    "mathContext": "$M \\cdot n^{-1/r} \\leq M_r(x) \\leq M$ for $r > 0$, with $n^{-1/r} \\to 1$ as $r \\to +\\infty$. By squeeze: $M_r \\to M$.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto_of_tendsto_of_tendsto_of_le_of_le'", "tendsto_const_rpow_neg_inv_atTop", "sup_mul_pow_le_powerMean", "powerMean_le_sup", "filter_upwards"],
+    "prerequisites": ["squeeze theorem in Filter/Tendsto form", "tendsto_const_rpow_neg_inv_atTop lemma in this file"]
+  },
+  {
+    "id": "ann-amgm-oq04-duality",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04",
+    "range": { "startLine": 153, "endLine": 218 },
+    "type": "technique",
+    "title": "Duality Identity: M_r(x) = (M_{-r}(1/x))⁻¹ for r ≠ 0",
+    "content": "The min limit proof uses the algebraic identity M_r(x) = (M_{-r}(1/x))⁻¹ for r ≠ 0. This is proved in h_ident for r < 0 (eventually at atBot): simp unfolds powerMean at r and -r, then the sum identity Σ (xᵢ⁻¹)^{-r} = Σ xᵢ^r follows from Real.inv_rpow + Real.rpow_neg + inv_inv, and the outer inversion ((S/n)^{1/(-r)})⁻¹ = (S/n)^{1/r} follows from Real.rpow_neg with congr 1; rw [div_neg, neg_neg]. The filter composition h_inv.comp Filter.tendsto_neg_atBot_atTop converts the +∞ limit to a -∞ limit, and congr' h_ident applies the identity.",
+    "mathContext": "$(x_i^{-1})^{-r} = ((x_i^{-r})^{-1})^{-1} = x_i^r$ via $a^{-1})^b = (a^b)^{-1}$ and $a^{-b} = (a^b)^{-1}$. Then $((S/n)^{1/(-r)})^{-1} = (S/n)^{-(1/(-r))} = (S/n)^{1/r}$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.inv_rpow", "Real.rpow_neg", "inv_inv", "Filter.tendsto_neg_atBot_atTop", "Tendsto.comp", "Tendsto.congr'"],
+    "prerequisites": ["Real.inv_rpow: (x⁻¹)^y = (x^y)⁻¹ for x ≥ 0", "Real.rpow_neg: x^(-y) = (x^y)⁻¹ for x ≥ 0", "Filter.tendsto_neg_atBot_atTop: negation maps atBot to atTop"]
+  },
+  {
+    "id": "ann-amgm-oq04-antitone-inv",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04",
+    "range": { "startLine": 170, "endLine": 188 },
+    "type": "insight",
+    "title": "Antitone Inversion: sup'(1/x) = 1/inf'(x) via Inline Proof",
+    "content": "The key auxiliary fact is h_sup_g: sup'(1/x) = (inf'(x))⁻¹. Since Mathlib4 lacks a direct lemma for this, it is proved inline via le_antisymm. The upper bound (∀ i, (xᵢ)⁻¹ ≤ m⁻¹) uses the antitone inverse calculation: xᵢ⁻¹ = xᵢ⁻¹ * (m * m⁻¹) ≤ xᵢ⁻¹ * (xᵢ * m⁻¹) = m⁻¹ via mul_le_mul_of_nonneg_left. The lower bound finds i₀ with x(i₀) = min via Finset.exists_min_image, then g(i₀) = m⁻¹ ≤ sup'(g).",
+    "mathContext": "$\\sup_i (x_i^{-1}) = (\\inf_i x_i)^{-1}$ — taking reciprocals reverses the order for positive sequences.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.exists_min_image", "Finset.le_inf'", "Finset.inf'_le", "mul_le_mul_of_nonneg_left", "inv_pos"],
+    "prerequisites": ["Finset.exists_min_image: finds the minimizer", "Antitone inverse for positive reals"]
+  }
+]
