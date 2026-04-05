@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-overview",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "Galois Group of cos(π/7): Proof Overview",
+    "content": "This proof computes the Galois group of the polynomial 8X³−4X²−4X+1 over ℚ — the minimal polynomial of cos(π/7). The three roots, cos(π/7), cos(3π/7), and cos(5π/7), form a single Galois orbit under an explicit algebraic automorphism. The strategy exactly parallels AngleTrisectionCos20Gal (which handled cos(20°) = cos(π/9)), but with Eisenstein prime 7 instead of 3. The proof is organized into six parts: algebraic identities showing all roots are polynomial functions of one root, irreducibility via Eisenstein, splitting field degree computation, and the final Galois group cardinality.",
+    "mathContext": "The minimal polynomial: $p(X) = 8X^3 - 4X^2 - 4X + 1$, roots $\\alpha = \\cos(\\pi/7)$, $\\beta = \\cos(3\\pi/7)$, $\\gamma = \\cos(5\\pi/7)$. Main result: $|\\mathrm{Gal}(p/\\mathbb{Q})| = 3$.",
+    "significance": "context",
+    "relatedConcepts": ["Galois theory", "cyclotomic fields", "angle trisection", "minimal polynomial", "splitting field"],
+    "prerequisites": ["field extensions", "Galois groups", "polynomial irreducibility", "Eisenstein's criterion"]
+  },
+  {
+    "id": "ann-root-gamma",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 34, "endLine": 41 },
+    "type": "technique",
+    "title": "Root Image Gamma: γ = 1 − 2α² Is a Root",
+    "content": "If α satisfies p(α) = 0 in any commutative ring, then γ = 1 − 2α² also satisfies p(γ) = 0. The proof is purely algebraic: expand p(1 − 2a²) and factor it as (−8a³ − 4a² + 4a + 1) · p(a). When p(a) = 0, this product vanishes. The `ring` tactic verifies the polynomial identity automatically. Working over a general CommRing (not just fields) makes this lemma maximally reusable. The formula γ = 1 − 2α² is the double-angle formula: cos(2θ) = 1 − 2sin²(θ) = 2cos²(θ) − 1, so 1 − 2cos²(π/7) = −cos(2π/7) = cos(5π/7).",
+    "mathContext": "$p(1 - 2a^2) = (-8a^3 - 4a^2 + 4a + 1) \\cdot p(a)$. When $p(\\alpha) = 0$: $\\cos(5\\pi/7) = -\\cos(2\\pi/7) = -(2\\cos^2(\\pi/7) - 1) = 1 - 2\\alpha^2$.",
+    "significance": "key",
+    "relatedConcepts": ["double-angle formula", "polynomial factor identity", "commutative ring", "Galois automorphism"],
+    "prerequisites": ["polynomial arithmetic", "trigonometric identities", "ring theory"]
+  },
+  {
+    "id": "ann-root-beta",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 42, "endLine": 53 },
+    "type": "technique",
+    "title": "Root Image Beta: β = 2α² − α − ½ Is a Root (Requires CharZero)",
+    "content": "If α satisfies p(α) = 0 in a characteristic-zero field, then β = 2α² − α − 1/2 also satisfies p(β) = 0. The factor identity is p(2a² − a − 1/2) = (8a³ − 8a² − 2a + 1) · p(a). The `field_simp; ring` tactic handles the rational coefficient 1/2. Crucially, this requires characteristic ≠ 2 because the formula for cos(3π/7) involves 1/2 explicitly: the reduction 4cos³(π/7) − 3cos(π/7) = 4α³ − 3α reduces modulo p to 2α² − α − 1/2 (using 8α³ = 4α² + 4α − 1). The CharZero hypothesis is what distinguishes this from the γ formula, which works in any CommRing.",
+    "mathContext": "$p(2a^2 - a - \\tfrac{1}{2}) = (8a^3 - 8a^2 - 2a + 1) \\cdot p(a)$. Connection: $\\cos(3\\pi/7) = 4\\cos^3(\\pi/7) - 3\\cos(\\pi/7) \\equiv 2\\alpha^2 - \\alpha - \\tfrac{1}{2} \\pmod{p}$.",
+    "significance": "key",
+    "relatedConcepts": ["triple-angle formula", "CharZero fields", "field_simp tactic", "characteristic of a field"],
+    "prerequisites": ["polynomial arithmetic", "trigonometric identities", "characteristic zero fields"]
+  },
+  {
+    "id": "ann-pcos7-defn",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 58, "endLine": 75 },
+    "type": "definition",
+    "title": "The Polynomial pCos7 = 8X³ − 4X² − 4X + 1",
+    "content": "The polynomial pCos7 is defined as the element 8X³ − 4X² − 4X + 1 in ℚ[X]. Three technical lemmas are immediately established: non-zeroness (by evaluating at 0 to get 1), natDegree equals 3, and degree is not 0. These helper lemmas are needed throughout the proof for Eisenstein's criterion, Galois group cardinality formulas, and splitting field degree bounds. The `compute_degree!` tactic is used for degree computations, while `norm_num` handles explicit numerical evaluations.",
+    "mathContext": "$p_{\\cos 7}(X) = 8X^3 - 4X^2 - 4X + 1 \\in \\mathbb{Q}[X]$. $p_{\\cos 7}(0) = 1 \\neq 0$, $\\deg p_{\\cos 7} = 3$.",
+    "significance": "technical",
+    "relatedConcepts": ["polynomial ring", "natDegree", "Lean polynomial API", "noncomputable definition"],
+    "prerequisites": ["polynomial ring ℚ[X]", "Lean 4 Mathlib polynomial API"]
+  },
+  {
+    "id": "ann-eisenstein",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 84, "endLine": 118 },
+    "type": "technique",
+    "title": "Eisenstein's Criterion at p = 7 for r = Y³ − 7Y² + 14Y − 7",
+    "content": "The auxiliary polynomial r = Y³ − 7Y² + 14Y − 7 over ℤ is irreducible by Eisenstein's criterion at the prime ideal (7). The Eisenstein conditions are: (1) leading coefficient 1 is not divisible by 7; (2) all non-leading coefficients (−7, 14, −7) are divisible by 7; (3) the constant term −7 is not divisible by 49. These conditions are checked via `interval_cases k` over the three lower-degree coefficients followed by `norm_num`. Eisenstein's criterion is formalized as `Polynomial.irreducible_of_eisenstein_criterion` in Mathlib, and the primitive polynomial hypothesis is handled by `r_eis_int_monic.isPrimitive`. The prime ideal (7) is represented as `Ideal.span {7}` in Lean.",
+    "mathContext": "Eisenstein at $\\mathfrak{p} = (7) \\subset \\mathbb{Z}$: $r = Y^3 - 7Y^2 + 14Y - 7$. Check: $1 \\notin (7)$; $-7, 14, -7 \\in (7)$; $-7 \\notin (49)$. Conclusion: $r$ is irreducible over $\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["Eisenstein's criterion", "prime ideal", "primitive polynomial", "irreducibility over ℤ"],
+    "prerequisites": ["Eisenstein's irreducibility criterion", "polynomial rings over ℤ", "prime ideals", "Mathlib.RingTheory.Eisenstein.Basic"]
+  },
+  {
+    "id": "ann-gauss-lemma",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 120, "endLine": 133 },
+    "type": "technique",
+    "title": "Gauss's Lemma: Lifting Irreducibility from ℤ to ℚ",
+    "content": "Once r is proved irreducible over ℤ, Gauss's lemma lifts this to irreducibility over ℚ. In Mathlib this is encoded as `IsPrimitive.Int.irreducible_iff_irreducible_map_cast`: a primitive polynomial over ℤ is irreducible over ℤ if and only if its image under the canonical embedding ℤ → ℚ is irreducible over ℚ. Since r is monic (and hence primitive), we apply this to obtain irreducibility of r_eis_rat = r over ℚ. The lemma `r_comp_eq_pCos7` then establishes the key substitution identity: r(2X+2) = pCos7, which allows us to transfer irreducibility.",
+    "mathContext": "Gauss's lemma: If $r \\in \\mathbb{Z}[X]$ is primitive and irreducible over $\\mathbb{Z}$, then $r$ is irreducible over $\\mathbb{Q}$. The substitution: $r(2X+2) = 8X^3 - 4X^2 - 4X + 1 = p_{\\cos 7}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gauss's lemma", "primitive polynomial", "ring homomorphism", "integral domain"],
+    "prerequisites": ["Gauss's lemma", "irreducibility over ℤ vs ℚ", "Mathlib.RingTheory.Polynomial.Gauss"]
+  },
+  {
+    "id": "ann-substitution-irred",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 145, "endLine": 202 },
+    "type": "technique",
+    "title": "Irreducibility Preserved Under Linear Substitution Y = 2X + 2",
+    "content": "Since r is irreducible over ℚ and r(2X+2) = pCos7, pCos7 is also irreducible over ℚ. The formal proof works at the level of polynomial factorizations: if pCos7 = a·b, then r = a(ℓ⁻¹)·b(ℓ⁻¹) where ℓ = 2X+2 and ℓ⁻¹ = X/2 − 1 is the compositional inverse. Since r is irreducible, one of a(ℓ⁻¹) or b(ℓ⁻¹) must be a unit (a nonzero constant). Then a = a(ℓ⁻¹)(ℓ) is also a unit. This `irreducible_iff` based approach carefully tracks the composition algebra, using `comp_assoc` and the fact that ℓ∘ℓ⁻¹ = X and ℓ⁻¹∘ℓ = X. Separability follows for free from irreducibility over a field of characteristic zero.",
+    "mathContext": "Linear change of variables: $\\ell = 2X+2$, $\\ell^{-1} = \\frac{1}{2}X - 1$. If $p_{\\cos 7} = a \\cdot b$, then $r = a(\\ell^{-1}) \\cdot b(\\ell^{-1})$. Irreducibility of $r$ forces $a$ or $b$ to be a unit, proving irreducibility of $p_{\\cos 7}$.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial composition", "invertible linear substitution", "irreducible polynomial", "separable polynomial"],
+    "prerequisites": ["polynomial composition algebra", "irreducibility criteria", "Mathlib.FieldTheory.Galois.Basic"]
+  },
+  {
+    "id": "ann-splitting-roots",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 208, "endLine": 243 },
+    "type": "technique",
+    "title": "Constructing Roots in the Splitting Field",
+    "content": "The splitting field of pCos7 over ℚ, denoted pCos7.SplittingField, is obtained abstractly by Mathlib's `SplittingField` construction. A concrete root α in this field is obtained via `rootOfSplits`, which applies `SplittingField.splits` and the non-zero-degree condition. The root satisfies p(α) = 0 by `eval_rootOfSplits`. The algebraic map from ℚ to the splitting field is used to convert `Polynomial.aeval α pCos7 = 0` to the arithmetic form `8α³ − 4α² − 4α + 1 = 0`. From this root α, the theorems `root_image_gamma` and `root_image_beta` are applied to confirm β and γ are also roots in the same splitting field.",
+    "mathContext": "$\\alpha = \\texttt{rootOfSplits}(p_{\\cos 7}) \\in p_{\\cos 7}.\\texttt{SplittingField}$. By construction: $p_{\\cos 7}(\\alpha) = 0$. Then $\\beta = 2\\alpha^2 - \\alpha - \\frac{1}{2}$ and $\\gamma = 1 - 2\\alpha^2$ are also roots.",
+    "significance": "supporting",
+    "relatedConcepts": ["splitting field", "rootOfSplits", "aeval", "algebraMap"],
+    "prerequisites": ["Mathlib splitting field construction", "rootOfSplits API", "polynomial evaluation in field extensions"]
+  },
+  {
+    "id": "ann-divisibility-bounds",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 249, "endLine": 269 },
+    "type": "insight",
+    "title": "Divisibility Sandwich: 3 | |Gal| and |Gal| | 6, So |Gal| = 3",
+    "content": "Two divisibility results are established to constrain the Galois group order. First, since pCos7 is irreducible of prime degree 3, `Polynomial.Gal.prime_degree_dvd_card` gives 3 | |Gal|. Second, since Gal embeds into Sym(roots) = S₃ via `Polynomial.Gal.galActionHom_injective`, the order divides |S₃| = 3! = 6. Combined: |Gal| ∈ {3, 6}. The final proof dispatches this via the `splitting_finrank` result (|Gal| = [SF:ℚ] = 3) rather than by ruling out 6 directly, but these bounds provide the necessary divisibility structure.",
+    "mathContext": "$3 \\mid |\\mathrm{Gal}(p/\\mathbb{Q})|$ (prime degree irreducible) and $|\\mathrm{Gal}(p/\\mathbb{Q})| \\mid 6$ (embeds into $S_3$). So $|\\mathrm{Gal}| \\in \\{3, 6\\}$. The splitting field degree pins it to $3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["symmetric group S₃", "Galois action on roots", "prime degree irreducible", "group embedding"],
+    "prerequisites": ["Galois group action on roots", "prime degree divisibility", "Mathlib.FieldTheory.Galois.Basic"]
+  },
+  {
+    "id": "ann-all-roots-in-adjoin",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 299, "endLine": 366 },
+    "type": "insight",
+    "title": "All Roots Lie in ℚ(α): The Splitting Field is Generated by One Root",
+    "content": "The key insight for computing the splitting field degree is that all three roots of pCos7 lie in the simple extension ℚ(α), where α is any one root. Two sub-lemmas establish that β = 2α² − α − 1/2 and γ = 1 − 2α² both belong to the intermediate field adjoin(ℚ, {α}): they are polynomial expressions in α with rational coefficients, so membership follows by closure of intermediate fields under field operations. The master lemma `rootSet_subset_adjoin` then handles all cases: given any root r ∈ rootSet, the factored form identity 8a³−4a²−4a+1 = 8(a−α)(a−β)(a−γ) forces r = α, r = β, or r = γ, each of which lies in adjoin(ℚ, {α}).",
+    "mathContext": "$\\beta = 2\\alpha^2 - \\alpha - \\frac{1}{2} \\in \\mathbb{Q}(\\alpha)$, $\\gamma = 1 - 2\\alpha^2 \\in \\mathbb{Q}(\\alpha)$. Factored form: $8a^3 - 4a^2 - 4a + 1 = 8(a - \\alpha)(a - \\beta)(a - \\gamma)$ when $p(\\alpha) = 0$. So all roots $\\subseteq \\mathbb{Q}(\\alpha)$.",
+    "significance": "key",
+    "relatedConcepts": ["simple extension", "intermediate field membership", "polynomial root factorization", "splitting field minimality"],
+    "prerequisites": ["intermediate fields in Lean", "IntermediateField.adjoin API", "field closure properties"]
+  },
+  {
+    "id": "ann-splitting-finrank",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 368, "endLine": 394 },
+    "type": "insight",
+    "title": "Splitting Field Degree: [SplittingField(p) : ℚ] = 3",
+    "content": "Since all roots of pCos7 lie in adjoin(ℚ, {α}), the splitting field equals adjoin(ℚ, {α}) = ℚ(α). The degree [ℚ(α) : ℚ] equals the degree of the minimal polynomial of α over ℚ. Since pCos7 is irreducible and α is a root, minpoly(ℚ, α) = pCos7, so [ℚ(α) : ℚ] = deg(pCos7) = 3. Formally: `adjoin_root_eq_top` proves adjoin(ℚ, {α}) = ⊤ (the full splitting field), then `adjoin_finrank` gives finrank = 3, and `splitting_finrank` transfers this to finrank(ℚ, SplittingField) = 3 via `IntermediateField.topEquiv`.",
+    "mathContext": "$[\\mathbb{Q}(\\alpha) : \\mathbb{Q}] = \\deg(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha)) = \\deg(p_{\\cos 7}) = 3$. Since $\\text{SplittingField}(p_{\\cos 7}) = \\mathbb{Q}(\\alpha)$: $[\\text{SplittingField} : \\mathbb{Q}] = 3$.",
+    "significance": "key",
+    "relatedConcepts": ["degree of field extension", "minimal polynomial", "adjoin top", "IntermediateField.topEquiv"],
+    "prerequisites": ["degree formula for simple extensions", "minimal polynomial degree", "IntermediateField.adjoin.finrank"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 400, "endLine": 416 },
+    "type": "insight",
+    "title": "Main Theorem: |Gal(8X³−4X²−4X+1 / ℚ)| = 3",
+    "content": "The main theorem assembles all prior work: `Polynomial.Gal.card_of_separable` states that for a separable polynomial, |Gal| = [SplittingField : ℚ] as cardinalities. Since pCos7 is separable (being irreducible over a characteristic-zero field) and [SplittingField : ℚ] = 3, we conclude |Gal| = 3. The Galois group is thus isomorphic to ℤ/3ℤ — the unique group of order 3. This means there is exactly one non-trivial automorphism class, corresponding to the cyclic permutation α ↦ β ↦ γ ↦ α of the three roots. A companion theorem `cos_pi_7_poly_irreducible` packages the irreducibility result as a public interface.",
+    "mathContext": "$|\\mathrm{Gal}(p_{\\cos 7}/\\mathbb{Q})| = [\\text{SplittingField}(p_{\\cos 7}) : \\mathbb{Q}] = 3$. The Galois group $\\cong \\mathbb{Z}/3\\mathbb{Z}$, generated by the automorphism $\\alpha \\mapsto \\gamma = 1 - 2\\alpha^2$ (which cycles $\\alpha \\to \\gamma \\to \\beta \\to \\alpha$).",
+    "significance": "key",
+    "relatedConcepts": ["Galois group order", "separable polynomial", "cyclic group ℤ/3ℤ", "automorphism group", "angle trisection impossibility"],
+    "prerequisites": ["Polynomial.Gal.card_of_separable", "separable polynomial theory", "group isomorphism classification"]
+  }
+]
