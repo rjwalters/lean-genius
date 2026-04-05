@@ -1,8 +1,20 @@
 [
   {
+    "id": "ann-carmichael-header",
+    "proofId": "euler-totient-oq-01",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "Module Header: Carmichael's Function and the Minimal Universal Exponent",
+    "content": "The file opens with `import Mathlib` (line 1) followed by a module docstring (lines 3-24) describing Carmichael's function λ(n). The docstring introduces four key facts: (1) λ(n) is defined as the exponent of (ℤ/nℤ)*; (2) a^λ(n) ≡ 1 (mod n) for all coprime a (Carmichael's theorem); (3) λ(n) | φ(n); and (4) λ(n) is minimal among all universal exponents. Lines 26-28 set up the namespace `CarmichaelFunction` and open `ZMod`, making `ZMod.card_units_eq_totient` and related lemmas accessible without the `ZMod.` prefix.",
+    "mathContext": "The Carmichael function $\\lambda(n)$ (1910) is the exponent of the multiplicative group $(\\mathbb{Z}/n\\mathbb{Z})^*$: the smallest positive $e$ with $a^e \\equiv 1 \\pmod{n}$ for all $\\gcd(a,n) = 1$. It satisfies $\\lambda(n) \\mid \\varphi(n)$, with equality iff $(\\mathbb{Z}/n\\mathbb{Z})^*$ is cyclic — i.e., $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ for odd prime $p$.",
+    "significance": "context",
+    "relatedConcepts": ["Carmichael's function", "Euler's totient", "ZMod", "Monoid.exponent", "CarmichaelFunction namespace"],
+    "prerequisites": ["Mathlib import", "ZMod API", "group exponent concept"]
+  },
+  {
     "id": "carmichael-def",
     "proofId": "euler-totient-oq-01",
-    "range": { "startLine": 32, "endLine": 33 },
+    "range": { "startLine": 30, "endLine": 33 },
     "type": "definition",
     "title": "Carmichael's Function via Monoid.exponent",
     "content": "`carmichael n` is defined as `Monoid.exponent (ZMod n)ˣ` — the exponent of the multiplicative group (ℤ/nℤ)*. The group exponent is the LCM of the orders of all elements, equivalently the smallest positive e with g^e = 1 for all g. By defining λ(n) this way, all its properties follow immediately from Mathlib's abstract group theory library without any number-theoretic computation.\n\nThe definition is `noncomputable` because `Monoid.exponent` involves classical Finset operations that are not computable in Lean's kernel. The `ZMod n` type is Lean's formalization of ℤ/nℤ, and `(ZMod n)ˣ` is its group of units — the invertible elements, which correspond exactly to the integers coprime to n.",
@@ -14,7 +26,7 @@
   {
     "id": "carmichael-pow-eq-one",
     "proofId": "euler-totient-oq-01",
-    "range": { "startLine": 37, "endLine": 39 },
+    "range": { "startLine": 35, "endLine": 39 },
     "type": "insight",
     "title": "Carmichael's Theorem: a^λ(n) ≡ 1 (mod n)",
     "content": "For any unit a in (ℤ/nℤ)*, we have a^(carmichael n) = 1. This is the defining property of λ(n): every element raised to the group exponent gives the identity. The proof is a single application of `Monoid.pow_exponent_eq_one`, which states that in any monoid, every element raised to the exponent equals one.\n\nCarmichael's theorem generalizes both Euler's theorem (a^φ(n) ≡ 1) and Fermat's little theorem (a^(p-1) ≡ 1 for prime p). The exponent λ(n) is strictly smaller than φ(n) whenever (ℤ/nℤ)* is non-cyclic — for example, λ(8) = 2 but φ(8) = 4.",
@@ -26,7 +38,7 @@
   {
     "id": "carmichael-dvd-totient",
     "proofId": "euler-totient-oq-01",
-    "range": { "startLine": 44, "endLine": 49 },
+    "range": { "startLine": 41, "endLine": 49 },
     "type": "insight",
     "title": "λ(n) | φ(n): Carmichael Divides Euler's Totient",
     "content": "Carmichael's function λ(n) divides Euler's totient φ(n). The proof uses two steps: (1) `Monoid.exponent_dvd_card` says the exponent of any finite group divides its cardinality; (2) `ZMod.card_units_eq_totient n` identifies |(ℤ/nℤ)*| = φ(n). These combine to give λ(n) | |(ℤ/nℤ)*| = φ(n).\n\nThis is an instance of Lagrange's theorem: in any finite group, the order of any subgroup (and hence the exponent) divides the group order. The quotient φ(n)/λ(n) measures how 'non-cyclic' (ℤ/nℤ)* is — it equals 1 iff the group is cyclic.",
@@ -38,7 +50,7 @@
   {
     "id": "carmichael-minimal",
     "proofId": "euler-totient-oq-01",
-    "range": { "startLine": 53, "endLine": 57 },
+    "range": { "startLine": 51, "endLine": 57 },
     "type": "insight",
     "title": "Minimality: λ(n) Divides Every Universal Exponent",
     "content": "If e is any exponent with a^e = 1 for all units a in (ℤ/nℤ)*, then λ(n) | e. This establishes that λ(n) is the order-theoretic infimum of all universal exponents — equivalently, λ(n) = gcd of all e with a^e = 1 for all coprime a. The proof applies `Monoid.exponent_dvd_of_forall_pow_eq_one`, which in any monoid says: if every element satisfies x^e = 1, then the exponent divides e.\n\nCombined with `carmichael_pow_eq_one`, this shows λ(n) is the unique minimal universal exponent. In cryptography, minimality means RSA decryption works if and only if λ(n) | (ed - 1).",
@@ -50,7 +62,7 @@
   {
     "id": "carmichael-prime",
     "proofId": "euler-totient-oq-01",
-    "range": { "startLine": 61, "endLine": 67 },
+    "range": { "startLine": 59, "endLine": 68 },
     "type": "insight",
     "title": "λ(p) = p − 1 for Prime p via Cyclic Group Structure",
     "content": "For a prime p, carmichael p = p − 1. The proof uses `IsCyclic.exponent_eq_card`: (ℤ/pℤ)* is cyclic (Gauss's primitive root theorem, available via the `IsCyclic` instance for `ZMod p`ˣ). For a cyclic group of order m, the exponent equals m (since a generator has order m = lcm of all orders). Thus exponent = |(ℤ/pℤ)*| = φ(p) = p−1.\n\nThe Lean proof chains: `IsCyclic.exponent_eq_card` → `ZMod.card_units_eq_totient` → `Nat.totient_prime`. This is a three-lemma chain, all available in Mathlib.",
@@ -58,5 +70,17 @@
     "significance": "supporting",
     "relatedConcepts": ["primitive root theorem", "cyclic group", "IsCyclic", "Gauss Disquisitiones"],
     "prerequisites": ["IsCyclic instance for ZMod p units", "IsCyclic.exponent_eq_card", "ZMod.card_units_eq_totient", "Nat.totient_prime"]
+  },
+  {
+    "id": "ann-carmichael-special-values",
+    "proofId": "euler-totient-oq-01",
+    "range": { "startLine": 69, "endLine": 83 },
+    "type": "technique",
+    "title": "Special Values: λ(1) = 1 and λ(2) = 1",
+    "content": "`carmichael_one` (lines 69-73) proves λ(1) = 1: the group (ℤ/1ℤ)* is trivial (contains only the identity), so its exponent is 1. The proof uses `Monoid.exponent_eq_one` for the trivial group or `Fintype.card_eq_one_iff` to establish triviality.\n\n`carmichael_two` (lines 74-82) proves λ(2) = 1: the group (ℤ/2ℤ)* also has order 1 (only 1 is coprime to 2 and reduced mod 2, so the multiplicative group is the trivial group {1}). Both results confirm that λ(n) = 1 iff (ℤ/nℤ)* is trivial — which happens for n ∈ {1, 2}.\n\nLine 83 closes the namespace with `end CarmichaelFunction`.",
+    "mathContext": "$(\\mathbb{Z}/1\\mathbb{Z})^* = \\{0\\}$ (the only element of $\\mathbb{Z}/1\\mathbb{Z}$ is 0 = 1), so $\\lambda(1) = \\text{exp}(\\{0\\}) = 1$. $(\\mathbb{Z}/2\\mathbb{Z})^* = \\{1\\}$ (only 1 is invertible mod 2), so $\\lambda(2) = 1$. In general, $\\lambda(n) = 1$ iff $(\\mathbb{Z}/n\\mathbb{Z})^*$ is the trivial group, iff $\\varphi(n) = 1$, iff $n \\in \\{1, 2\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["trivial group", "Monoid.exponent", "ZMod units", "special values"],
+    "prerequisites": ["carmichael definition", "ZMod.units_eq_one (for n=1,2)", "Monoid.exponent trivial group"]
   }
 ]
