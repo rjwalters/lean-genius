@@ -4,9 +4,11 @@
   "slug": "cauchy-schwarz-oq-01-oq-04",
   "description": "Formalizes Bessel's inequality ∑ᵢ |⟨vᵢ,x⟩|² ≤ ‖x‖² for orthonormal families in Hilbert spaces, and Parseval's identity for Hilbert bases, as consequences of Cauchy-Schwarz and the Pythagorean theorem.",
   "meta": {
-    "author": "Lean Genius",
-    "date": "2026-04-02",
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bessel%27s_inequality",
+    "date": "Classical (Bessel 1828, Parseval 1799); formalized 2026",
     "status": "verified",
+    "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/CauchySchwarzOQ01OQ04.lean",
     "tags": [
       "functional-analysis",
@@ -60,7 +62,7 @@
   },
   "conclusion": {
     "summary": "Bessel's inequality is fully formalized in Lean 4 via Mathlib. The proof uses the projection identity (a consequence of orthonormality and the Pythagorean theorem) to give both the finite and infinite cases. Parseval's identity follows from the HilbertBasis linear isometry to ℓ². This answers OQ-04 affirmatively: YES, Bessel's inequality can be formalized as a consequence of iterated Cauchy-Schwarz and Pythagoras.",
-    "implications": "The formalization demonstrates that Mathlib's Orthonormal API already contains Bessel's inequality as a first-class result, making the proof trivial to state formally. The more interesting part is the Parseval direction, which requires connecting the abstract isometry b.repr to the concrete ℓ² norm formula.",
+    "implications": "**Mathlib readiness**: The formalization demonstrates that Mathlib's Orthonormal API already contains Bessel's inequality as a first-class result (`sum_inner_products_le`, `tsum_inner_products_le`), making the proof trivially statable. The deeper contribution is the Parseval direction, which connects the abstract HilbertBasis isometry to the concrete $\\ell^2$ norm formula.\n\n**Fourier analysis foundation**: Bessel's inequality is the gateway to all of Fourier analysis. It guarantees that Fourier coefficients $c_i = \\langle v_i, x \\rangle$ are square-summable for any $x$, which is the prerequisite for defining the Fourier series $\\sum_i c_i v_i$ as an $\\ell^2$-convergent sum. Parseval's identity then says this series converges to $x$ itself when the orthonormal system is complete.\n\n**Spectral theory connection**: In the spectral theory of self-adjoint operators, Bessel's inequality appears as the energy bound for spectral projections. If $\\{E_\\lambda\\}$ is the spectral family of a self-adjoint operator $A$ and $\\{e_i\\}$ are eigenvectors, then $\\sum_i |\\langle e_i, x \\rangle|^2 \\leq \\|x\\|^2$ bounds the energy in the discrete spectrum.\n\n**Signal processing**: In applied mathematics, Bessel's inequality bounds the energy captured by any finite set of basis functions. Parseval's identity says a complete basis captures all the energy — this is the theoretical foundation of signal compression (keep the largest Fourier coefficients, discard the rest).",
     "openQuestions": [
       "Can the decay rate of Fourier coefficients be bounded for specific function classes? For f ∈ Cᵏ([0,2π]), the classical Fourier coefficients cₙ = O(1/nᵏ) — can this be formalized in Lean?",
       "Extend Parseval to measurable settings: the Plancherel theorem ∑' n, |f̂(n)|² = ‖f‖²_{L²} for square-integrable functions — is this in Mathlib?",
@@ -87,9 +89,27 @@
       "targetId": "cauchy-schwarz-oq-04",
       "relationship": "answers",
       "description": "Answers OQ-04 by formalizing Bessel's inequality as a consequence of Cauchy-Schwarz"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "Root Cauchy-Schwarz proof. Bessel generalizes CS from a single vector to orthonormal families, and the singleton case recovers CS."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Explicit Hölder chain for Lp. Bessel's inequality is the Hilbert space (p=2) analogue; the L² Minkowski case connects through Cauchy-Schwarz."
     }
   ],
   "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports Mathlib's EuclideanSpace, Orthonormal, HilbertBasis, and InnerProductSpace modules. Docstring frames OQ-04: can Bessel's inequality be formalized as a consequence of iterated Cauchy-Schwarz and Pythagoras? Declares variables for the inner product space E over field 𝕜, the orthonormal family v, and the HilbertBasis b.",
+      "mathContext": "Setup: $E$ is a complete inner product space over $\\mathbb{k}$ ($\\mathbb{R}$ or $\\mathbb{C}$), $v : \\iota \\to E$ is orthonormal ($\\langle v_i, v_j\\rangle = \\delta_{ij}$), and $b$ is a HilbertBasis (complete orthonormal system, $E \\cong_{\\text{li}} \\ell^2(\\iota, \\mathbb{k})$)."
+    },
     {
       "id": "finite-bessel",
       "title": "Part I: Finite Bessel Inequality",
