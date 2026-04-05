@@ -5,6 +5,7 @@
   "description": "Proves Vandermonde's identity in falling factorial form: descFactorial(m+n, r) = ∑_{j=0}^{r} C(r,j) · descFactorial(m,j) · descFactorial(n,r-j). Derived from the standard Vandermonde convolution by multiplying by r! and using C(n,k)·k! = descFactorial(n,k). 2 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
     "date": "2026-04-05",
     "status": "verified",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
@@ -51,7 +52,8 @@
     "implications": "**Generating Functions**: The falling factorial Vandermonde is the coefficient of $x^r/r!$ in the exponential generating function (EGF) product $(e^x)^m (e^x)^n = e^{(m+n)x}$. More precisely, the EGF of $n^{\\underline{r}}$ in $r$ is $(1+x)^n$ (using the EGF convention $\\sum_r n^{\\underline{r}} x^r/r! = e^{nx}$). The identity then says: [coefficient of $x^r/r!$] in $e^{mx} \\cdot e^{nx} = e^{(m+n)x}$ is $\\sum_j \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$, matching the LHS $(m+n)^{\\underline{r}}$. This is the generating function proof, complementing the algebraic proof here.\n\n**Umbral Calculus and Finite Differences**: In the umbral calculus (Rota-Roman school, 1970s), falling factorials $x^{\\underline{n}} = x(x-1)\\cdots(x-n+1)$ are the basic polynomial sequences associated with the forward difference operator $\\Delta f(x) = f(x+1) - f(x)$. The Vandermonde identity in falling factorial form is the binomial theorem for the shift operator: $(E^m E^n)^r = E^{(m+n)r}$ where $E$ is the shift. Every polynomial can be expanded in the falling factorial basis $\\{x^{\\underline{0}}, x^{\\underline{1}}, \\ldots\\}$ (analogous to the Taylor basis), and the falling factorial Vandermonde is exactly the product rule for this expansion.\n\n**Hypergeometric Distributions**: The identity underlies the hypergeometric distribution $P(X=k) = \\binom{m}{k}\\binom{n}{r-k}/\\binom{m+n}{r}$ (sampling without replacement from $m$ defective and $n$ good items). The Vandermonde identity in either form gives $\\sum_k P(X=k) = 1$ (the probabilities sum to 1). The falling factorial form converts this to a moment identity: $\\mathbb{E}[X^{\\underline{j}}] = m^{\\underline{j}} r^{\\underline{j}} / (m+n)^{\\underline{j}}$ (factorial moments of the hypergeometric distribution).\n\n**Analysis of Algorithms**: In the analysis of random binary search trees and randomized algorithms, the identity controls the count of distinct orderings of keys. In particular, descFactorial(n,r)/n! = (number of ways to choose r items with ordering from n) / (total orderings) = $\\binom{n}{r}$ gives the correct probability weight.",
     "openQuestions": [
       "Generalize to the polynomial identity (x+y)^{(r)} = ∑_j C(r,j)*x^{(j)}*y^{(r-j)} over any commutative ring",
-      "Prove the multiset Vandermonde: C^{ms}(m+n,r) = ∑_j C^{ms}(m,j)*C^{ms}(n,r-j) using ascending factorials"
+      "Prove the multiset Vandermonde: C^{ms}(m+n,r) = ∑_j C^{ms}(m,j)*C^{ms}(n,r-j) using ascending factorials",
+      "Prove the identity using exponential generating functions: EGF of descFactorial(n,r) is x^r/(1-x)^{n+1}, and the product formula for EGFs recovers the convolution directly"
     ]
   },
   "leanFile": {
