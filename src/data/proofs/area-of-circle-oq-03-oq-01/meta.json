@@ -52,25 +52,41 @@
       "id": "inscribed-area-def",
       "title": "Inscribed Area Definition",
       "startLine": 50,
-      "endLine": 57,
+      "endLine": 60,
       "summary": "Defines inscribedArea n r = n * r² / 2 * sin(2π/n) — the area of a regular n-gon inscribed in a circle of radius r, obtained by splitting into n isoceles triangles each with vertex angle 2π/n.",
-      "mathContext": "$A_n(r) = n \\cdot \\frac{r^2}{2} \\cdot \\sin\\frac{2\\pi}{n}$. For $n=4$: $A_4 = 4r^2/2 \\cdot \\sin(\\pi/2) = 2r^2$ (square inscribed in circle). For $n=6$: $A_6 = 6r^2/2 \\cdot \\sin(\\pi/3) = 3\\sqrt{3}r^2/2 \\approx 2.598r^2$, vs $\\pi r^2 \\approx 3.14159r^2$."
+      "mathContext": "$A_n(r) = n \\cdot \\frac{r^2}{2} \\cdot \\sin\\frac{2\\pi}{n}$. For $n=4$: $A_4 = 2r^2$ (square). For $n=6$: $A_6 = 3\\sqrt{3}r^2/2 \\approx 2.598r^2$, vs $\\pi r^2 \\approx 3.14159r^2$. As $n \\to \\infty$: $A_n \\to \\pi r^2$ since $n\\sin(2\\pi/n) \\to 2\\pi$."
     },
     {
-      "id": "trig-chain",
-      "title": "Trigonometric Bounds Chain",
-      "startLine": 59,
-      "endLine": 137,
-      "summary": "Four-step chain: (1) sin²(x) ≤ x² (via sin_lt + factoring); (2) cos(x) ≥ 1 - x²/2 (via half-angle identity cos(x) = 1 - 2sin²(x/2)); (3) HasDerivAt for g(x) = sin(x) - x + x³/6; (4) sin(x) ≥ x - x³/6 (via MVT on g with g'≥0 from step 2).",
-      "mathContext": "The chain: $\\sin x \\leq x \\Rightarrow \\sin^2(x/2) \\leq x^2/4 \\Rightarrow \\cos x = 1-2\\sin^2(x/2) \\geq 1-x^2/2 \\Rightarrow g'(x) = \\cos x - 1 + x^2/2 \\geq 0 \\Rightarrow g(x) = \\sin x - x + x^3/6 \\geq g(0) = 0$."
+      "id": "sin-sq-cos-bounds",
+      "title": "Quadratic Trig Bounds: sin²(x) ≤ x² and cos(x) ≥ 1 - x²/2",
+      "startLine": 62,
+      "endLine": 98,
+      "summary": "Two foundational bounds: sin_sq_le_sq (sin²(x) ≤ x² for x≥0, proved by factoring x²-sin²(x) and using sin_lt + abs_sin_le_one) and cos_ge_one_sub_sq_div_two (cos(x) ≥ 1-x²/2, proved via half-angle identity cos(x) = 1-2sin²(x/2) and the sin² bound).",
+      "mathContext": "$x^2 - \\sin^2 x = (x-\\sin x)(x+\\sin x) \\geq 0$ since $x \\geq \\sin x$ (from `sin_lt`) and $x+\\sin x \\geq 0$. Then $\\cos x = 1-2\\sin^2(x/2) \\geq 1-2(x/2)^2 = 1-x^2/2$. The half-angle identity bridges quadratic sin bound to quadratic cos bound."
     },
     {
-      "id": "convergence-rate",
-      "title": "Convergence Rate Theorems",
-      "startLine": 139,
-      "endLine": 228,
-      "summary": "inscribed_area_upper (Aₙ ≤ πr² via sin_lt); sub_sin_le_cube_div_six (u - sin(u) ≤ u³/6); inscribed_area_rate_bound (πr² - Aₙ ≤ 2π³r²/(3n²)); inscribed_area_convergence_rate (absolute value form); inscribed_area_error_positive (strict positivity for n≥3).",
-      "mathContext": "$\\pi r^2 - A_n = r^2 \\cdot \\pi \\cdot (1 - \\sin(u)/u) \\leq r^2 \\cdot \\pi \\cdot u^2/6 = 2\\pi^3 r^2/(3n^2)$ where $u = 2\\pi/n$. The algebra: $nr^2/2 \\cdot u^3/6 = nr^2/2 \\cdot (2\\pi/n)^3/6 = 4\\pi^3r^2/(3n^2)/n \\cdot n = 2\\pi^3r^2/(3n^2)$."
+      "id": "sin-lower-bound-mvt",
+      "title": "Sin Lower Bound via MVT: sin(x) ≥ x - x³/6",
+      "startLine": 99,
+      "endLine": 141,
+      "summary": "hasDerivAt_sin_sub_cube establishes HasDerivAt for g(x) = sin(x) - x + x³/6 using composition of hasDerivAt_sin, hasDerivAt_id, and hasDerivAt_pow. sin_ge_sub_cube_div_six then uses the MVT (exists_hasDerivAt_eq_slope): g'(x) = cos(x)-1+x²/2 ≥ 0 from the cos bound, so g is non-decreasing from g(0)=0.",
+      "mathContext": "Let $g(x) = \\sin x - x + x^3/6$. Then $g'(x) = \\cos x - 1 + x^2/2 \\geq 0$ (from `cos_ge_one_sub_sq_div_two`). By MVT: $g(x) = g(x) - g(0) = g'(c) \\cdot x \\geq 0$. So $\\sin x \\geq x - x^3/6$. The MVT-as-bootstrapping pattern: derivative bound → function bound without explicit Taylor remainder."
+    },
+    {
+      "id": "error-bound",
+      "title": "O(1/n²) Convergence Rate: πr² - Aₙ ≤ 2π³r²/(3n²)",
+      "startLine": 143,
+      "endLine": 202,
+      "summary": "inscribed_area_upper (Aₙ ≤ πr² via Real.sin_lt); sub_sin_le_cube_div_six (u-sin(u) ≤ u³/6 by negating the sin lower bound); inscribed_area_rate_bound and inscribed_area_convergence_rate (both forms of the explicit O(1/n²) bound using u=2π/n substitution).",
+      "mathContext": "Setting $u = 2\\pi/n$: $A_n = nr^2/2 \\cdot \\sin u \\geq nr^2/2 \\cdot (u - u^3/6)$. Rearranging: $\\pi r^2 - A_n \\leq nr^2/2 \\cdot u^3/6 = nr^2/2 \\cdot (2\\pi/n)^3/6 = 2\\pi^3r^2/(3n^2)$. The cubic $u^3 = (2\\pi/n)^3$ cancels one factor of $n$, leaving the $1/n^2$ rate. `field_simp; ring` closes the algebra."
+    },
+    {
+      "id": "error-positivity",
+      "title": "Strict Error Positivity: πr² - Aₙ > 0 for n≥3",
+      "startLine": 204,
+      "endLine": 232,
+      "summary": "inscribed_area_error_positive proves πr² - Aₙ > 0 strictly for n≥3 and r>0, using Real.sin_lt (sin(2π/n) < 2π/n for 2π/n > 0). The n≥3 condition ensures 2π/n is in a valid range; n=1,2 give degenerate polygons with zero area.",
+      "mathContext": "For $n \\geq 3$: $2\\pi/n > 0$, so $\\sin(2\\pi/n) < 2\\pi/n$ by `Real.sin_lt`. Then $A_n = nr^2/2 \\cdot \\sin(2\\pi/n) < nr^2/2 \\cdot 2\\pi/n = \\pi r^2$. Combined with the lower bound: $0 < \\pi r^2 - A_n \\leq 2\\pi^3 r^2/(3n^2)$ — the inscribed polygon is always below but within $O(1/n^2)$ of the circle area."
     }
   ],
   "conclusion": {
@@ -95,6 +111,26 @@
       "targetId": "area-of-circle",
       "relationship": "extends",
       "description": "Core area-of-circle formalization; this file proves the quantitative convergence rate for inscribed polygons"
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "parent",
+      "description": "Parent question: Archimedes' method of exhaustion with both inscribed and circumscribed n-gon sandwiches; this file quantifies the one-sided convergence rate"
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling: Archimedes' concrete 96-gon bounds 223/71 < π < 22/7 — the historical instance of the convergence rate proved here with n=96"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Archimedes-FTC connection: proves inscribedArea n r → πr² and connects to the FTC integral; the convergence rate here quantifies how fast that limit is approached"
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-03",
+      "relationship": "related",
+      "description": "OQ-03-OQ-03 proves parabolic exhaustion has geometric convergence (ratio 1/4) — exponentially faster than this file's O(1/n²) polynomial rate for circle inscribed polygons"
     }
   ]
 }

@@ -80,28 +80,44 @@
   },
   "sections": [
     {
-      "id": "euler",
-      "title": "Euler's Theorem Application",
+      "id": "unit-construction",
+      "title": "ZMod Unit Construction and Euler's Theorem",
       "startLine": 34,
-      "endLine": 61,
-      "summary": "Proves 10^φ(d) % d = 1 using ZMod.pow_totient and ZMod.unitOfCoprime.",
-      "mathContext": "ten_pow_totient_mod_eq_one: for d > 1 coprime to 10, 10^φ(d) ≡ 1 (mod d)."
+      "endLine": 50,
+      "summary": "Constructs the NeZero instance, builds u = ZMod.unitOfCoprime 10 hcop.symm, applies ZMod.pow_totient to get u^φ(d) = 1, and coerces through Units.val to get (10 : ZMod d)^φ(d) = 1.",
+      "mathContext": "The group (ZMod d)ˣ has order φ(d) by Euler's theorem. `ZMod.unitOfCoprime 10 hcop.symm` constructs 10 as a unit when gcd(10, d) = 1. `ZMod.pow_totient u` gives u^φ(d) = 1 in (ZMod d)ˣ. `congr_arg Units.val` extracts the underlying ZMod d element: (u : ZMod d)^φ(d) = 1."
     },
     {
-      "id": "main",
-      "title": "Main Existence Theorem",
+      "id": "nat-cast-congruence",
+      "title": "Casting Back to ℕ Arithmetic",
+      "startLine": 51,
+      "endLine": 59,
+      "summary": "Casts (10 : ZMod d)^φ(d) = 1 back to a ℕ congruence using ZMod.natCast_eq_natCast_iff, then simplifies 1 % d = 1 via Nat.mod_eq_of_lt hd to conclude 10^φ(d) % d = 1.",
+      "mathContext": "`ZMod.natCast_eq_natCast_iff` bridges ZMod equality and ℕ modular congruence: (a : ZMod d) = (b : ZMod d) ↔ a ≡ b [MOD d]. With a = 10^φ(d), b = 1: the ZMod identity rewrites to Nat.ModEq, then `Nat.mod_eq_of_lt hd` gives 1 % d = 1 (since 1 < d), yielding 10^φ(d) % d = 1."
+    },
+    {
+      "id": "existence-theorem",
+      "title": "Main Existence Theorem via φ(d) Witness",
       "startLine": 63,
-      "endLine": 71,
-      "summary": "Existential theorem using φ(d) as the witness k.",
-      "mathContext": "general_divisibility_rule_exists: uses Nat.modEq_digits_sum + Nat.ModEq.dvd_iff."
+      "endLine": 72,
+      "summary": "Proves general_divisibility_rule_exists: refine provides witness k = φ(d) with 0 < φ(d) from Nat.totient_pos. The inner goal d ∣ n ↔ d ∣ (digits(10^k,n)).sum is closed by Nat.ModEq.dvd_iff applied to Nat.modEq_digits_sum.",
+      "mathContext": "`Nat.modEq_digits_sum d b hb n` states: if b ≡ 1 (mod d), then n ≡ (Nat.digits b n).sum (mod d). With b = 10^φ(d) and hb = ten_pow_totient_mod_eq_one, this gives n ≡ digit-sum (mod d). `Nat.ModEq.dvd_iff` converts: n ≡ m [MOD d] → (d ∣ n ↔ d ∣ m)."
     },
     {
-      "id": "examples",
-      "title": "Concrete Witnesses",
-      "startLine": 73,
-      "endLine": 108,
-      "summary": "Six concrete examples (d = 3, 7, 11, 13, 37, 41) with optimal or near-optimal k.",
-      "mathContext": "Each verified via native_decide."
+      "id": "standard-small-divisors",
+      "title": "Concrete Witnesses: d = 3, 7, 11",
+      "startLine": 76,
+      "endLine": 89,
+      "summary": "Three well-known divisibility rules: d=3 with k=1 (digit sum rule: 3∣n ↔ 3∣digit-sum), d=7 with k=6 (six-digit block sum: 7∣n ↔ 7∣(block sum in base 10^6)), d=11 with k=2 (two-digit block sum: 11∣n ↔ 11∣(two-digit block sum)).",
+      "mathContext": "For d=3: 10 ≡ 1 (mod 3), so k=1 = ord_3(10) = φ(3) = 2? No — φ(3)=2 but ord_3(10)=1; k=1 is optimal. For d=7: 10^6 ≡ 1 (mod 7) and ord_7(10)=6 = φ(7), so k=6 is both optimal and equal to φ(7). For d=11: 100 ≡ 1 (mod 11) and ord_11(10)=2 < φ(11)=10; k=2 is optimal. Each checked via `native_decide`."
+    },
+    {
+      "id": "optimal-witnesses",
+      "title": "Concrete Witnesses: d = 13, 37, 41",
+      "startLine": 91,
+      "endLine": 104,
+      "summary": "Three cases where the optimal k is much smaller than φ(d): d=13 with k=6 (ord_13(10)=6 vs φ(13)=12), d=37 with k=3 (ord_37(10)=3 vs φ(37)=36), d=41 with k=5 (ord_41(10)=5 vs φ(41)=40).",
+      "mathContext": "The multiplicative order ord_d(10) divides φ(d) by Lagrange's theorem. For d=37: 10^3 = 1000 ≡ 1 (mod 37) (since 1000 = 27·37 + 1). This gives the three-digit block rule: 37∣n ↔ 37∣(three-digit blocks sum). For d=41: 10^5 = 100000 ≡ 1 (mod 41) (since 100000 = 2439·41 + 1). These show the witness k=φ(d) in the existence theorem is sufficient but not minimal — ord_d(10) is the true optimal."
     }
   ],
   "crossReferences": [

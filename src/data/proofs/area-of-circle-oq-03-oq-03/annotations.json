@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-file-header",
+    "proofId": "area-of-circle-oq-03-oq-03",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "context",
+    "title": "Archimedes' Two Methods: Conic Sections and the Limits of Ancient Analysis",
+    "content": "This file addresses three conic sections: the circle (Archimedes' main result, ~250 BCE), the ellipse (via scaling from the circle), and the parabola (Archimedes' *Quadrature of the Parabola*, ~250 BCE). All three have elementary closed-form areas discoverable by exhaustion. The hyperbola's area ∫₁ᵗ (1/x)dx = ln(t) requires the logarithm — a transcendental function beyond exhaustion methods. The file formalizes two key contributions: (1) the algebraic structure of Archimedes' geometric series 1 + 1/4 + 1/16 + ... = 4/3 (the parabola result, the oldest infinite series in history); (2) the general exponential convergence principle C·rⁿ → 0 for 0 < r < 1. The noncomputable section is required because Real.pi appears in the ellipse formulas and is not computable in Lean.",
+    "mathContext": "Three bounded conics: circle (area $\\pi r^2$), ellipse (area $\\pi ab$), parabolic segment (area $\\frac{4}{3}T$). All three Archimedes computed via exhaustion. Fourth conic: hyperbola (area $\\ln t$) — transcendental, beyond elementary methods. Key contrast: parabola exhaustion converges geometrically (ratio $1/4$); circle exhaustion converges polynomially ($O(1/n^2)$).",
+    "significance": "context",
+    "relatedConcepts": ["conic sections", "method of exhaustion", "Archimedes Quadrature of the Parabola", "hyperbola and logarithm", "noncomputable in Lean"],
+    "prerequisites": ["Real.pi", "noncomputable section", "Archimedes classical methods"]
+  },
+  {
     "id": "ellipse-scaling-gap",
     "line": 47,
     "endLine": 57,
@@ -42,6 +54,18 @@
     "significance": "These three theorems (area, error, positivity) exactly mirror the structure of the circle convergence theorems in OQ03-OQ01 (`inscribed_area_rate_bound`, `inscribed_area_convergence_rate`, `inscribed_area_error_positive`). The parabola has exponential convergence ($r=1/4$), the circle has polynomial convergence ($O(1/n^2)$). This side-by-side comparison shows that Archimedes' parabola method is asymptotically far more efficient than his polygon method for the circle.",
     "relatedConcepts": ["exponential convergence", "parabolic segment", "positivity tactic", "comparison with circle"],
     "prerequisites": ["archimedes_partial_sum", "positivity"]
+  },
+  {
+    "id": "exhaustion-convergence-positivity",
+    "proofId": "area-of-circle-oq-03-oq-03",
+    "range": { "startLine": 144, "endLine": 146 },
+    "type": "theorem",
+    "title": "exhaustion_convergence: Error Is Always Positive",
+    "content": "`exhaustion_convergence` proves that C·rⁿ > 0 for any C > 0, 0 < r < 1, and n : ℕ, by `positivity`. This is the Lean 4 `positivity` tactic's domain: it automatically proves strict positivity from the hypotheses (C > 0 and r > 0 imply C·rⁿ > 0 by repeated multiplication). While mathematically trivial, this lemma is needed as a named theorem to support the statement 'the approximation error is always strictly positive' — i.e., exhaustion approaches the limit from below, never overshooting. The dual result (exhaustion_error_small) then shows this positive error can be made arbitrarily small.",
+    "mathContext": "For $C > 0$, $r > 0$: $C \\cdot r^n > 0$ for all $n \\in \\mathbb{N}$ (product of positives is positive, induction on $n$ via `pow_pos`). The `positivity` tactic handles this automatically. Combined with the upper bound $C \\cdot r^n < \\varepsilon$ (for large $n$), this gives a two-sided squeeze: $0 < C \\cdot r^n < \\varepsilon$.",
+    "significance": "technical",
+    "relatedConcepts": ["positivity tactic", "pow_pos", "strict positivity", "exhaustion from below", "two-sided error bound"],
+    "prerequisites": ["positivity tactic in Lean 4", "pow_pos", "mul_pos"]
   },
   {
     "id": "exhaustion-error-small",

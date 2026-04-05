@@ -75,8 +75,8 @@
       "id": "general-exhaustion",
       "title": "General Exhaustion Convergence Principle",
       "startLine": 132,
-      "endLine": 175,
-      "summary": "Two theorems: exhaustion_convergence (positivity: C·r^n > 0 for C,r > 0) and exhaustion_error_small (for any ε > 0 there exists N with C·r^N < ε, using tendsto_pow_atTop_nhds_zero_of_lt_one from Mathlib).",
+      "endLine": 190,
+      "summary": "Two theorems: exhaustion_convergence (positivity: C·r^n > 0 for C,r > 0) and exhaustion_error_small (for any ε > 0 there exists N with C·r^N < ε, using tendsto_pow_atTop_nhds_zero_of_lt_one from Mathlib). Followed by summary docstring connecting all three parts.",
       "mathContext": "The theorem `exhaustion_error_small` states: $\\forall \\varepsilon > 0, \\exists N, C \\cdot r^N < \\varepsilon$. Proof: apply `tendsto_pow_atTop_nhds_zero_of_lt_one` at $\\varepsilon/C$ to get $N$ with $r^N < \\varepsilon/C$, then multiply by $C$. This is the $\\varepsilon$-$N$ formulation of geometric convergence, abstracting away from the specific base $r = 1/4$ (parabola) or the polynomial case for circles."
     }
   ],
@@ -127,6 +127,11 @@
       "targetId": "area-of-circle-oq-02",
       "relationship": "related",
       "description": "n-ball volume via Gamma function; ellipse area is the 2D affine scaling case"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Archimedes-FTC connection: proves inscribed polygons converge to πr²; the parabola's geometric convergence (ratio 1/4) contrasts with the polygon's polynomial convergence O(1/n²)"
     }
   ]
 }
