@@ -56,28 +56,44 @@
   },
   "sections": [
     {
+      "id": "file-header",
+      "title": "File Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Imports (Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic, Integrals, IntervalIntegral, Tactic). Docblock (lines 6-31) explains the open question: can the method of exhaustion be generalized to ellipses and parabolas? Lists the three-part structure. Lines 33-39 set up the namespace AreaOfCircleOQ03OQ03, open Real MeasureTheory, and begin the noncomputable section. Line 39 is the Part 1 section header.",
+      "mathContext": "The `noncomputable section` is required because `Real.pi` is a noncomputable constant in Lean 4. The `open Real MeasureTheory` makes π and measure-theoretic notions available unqualified. The three conic sections in scope: circle, ellipse, parabola; the hyperbola is excluded because its area $\\int_1^t (1/x)\\,dx = \\ln t$ requires the transcendental logarithm, beyond the reach of exhaustion methods."
+    },
+    {
       "id": "ellipse-area",
       "title": "Ellipse Area from Circle Scaling",
       "startLine": 41,
-      "endLine": 65,
+      "endLine": 63,
       "summary": "Four theorems: circle_area (rfl), ellipse_area_from_circle (ring: a·b·π = π·a·b), ellipse_area (positivity: π·a·b ≥ 0), circle_is_ellipse (ring: π·r·r = π·r²). These state the scaling principle algebraically but do not prove the Jacobian argument in Lean.",
       "mathContext": "The ellipse $x^2/a^2 + y^2/b^2 \\leq 1$ is the image of the unit disk under $(u,v) \\mapsto (au, bv)$. By change of variables with Jacobian $|\\partial(au,bv)/\\partial(u,v)| = ab$: $\\text{Area}(\\text{ellipse}) = ab \\cdot \\text{Area}(\\text{disk}) = ab\\pi$. The Lean proofs are `ring` (algebraic identity), not a genuine measure-theoretic argument."
     },
     {
-      "id": "parabolic-exhaustion",
-      "title": "Archimedes' Parabolic Exhaustion",
-      "startLine": 67,
-      "endLine": 130,
-      "summary": "Eight theorems formalizing Archimedes' geometric series: geom_sum_formula (by induction), archimedes_partial_sum, archimedes_remainder (ring), archimedes_remainder_pos (positivity), archimedes_remainder_bound (rfl), parabolic_segment_area, parabolic_area_error (ring), parabolic_area_error_pos (positivity).",
-      "mathContext": "The key identity: $\\sum_{k=0}^{n-1} (1/4)^k = \\frac{4}{3}\\left(1 - (1/4)^n\\right)$. Error: $\\frac{4}{3} - S_n = \\frac{4}{3} \\cdot (1/4)^n$. For $n=4$: error $= 4/(3 \\cdot 256) \\approx 0.52\\%$. For $n=8$: error $= 4/(3 \\cdot 65536) \\approx 0.002\\%$. Compare: the formula $\\sum_{k=0}^\\infty (1/4)^k = 1/(1-1/4) = 4/3$ is the geometric series formula with $r=1/4$."
+      "id": "geometric-series",
+      "title": "Geometric Series Formula (Foundation for Parabolic Exhaustion)",
+      "startLine": 64,
+      "endLine": 86,
+      "summary": "Line 64 is the Part 2 section header. Lines 66-75 are the parabolic segment docblock explaining Archimedes' method. `geom_sum_formula` (lines 78-85) proves ∑_{k=0}^{n-1} r^k = (1 - r^n)/(1 - r) by induction: base case n=0 via simp, inductive step via Finset.sum_range_succ then field_simp; ring. This is Euclid Elements IX.35 for real r.",
+      "mathContext": "The geometric series $\\sum_{k=0}^{n-1} r^k = (1-r^n)/(1-r)$ for $r \\ne 1$: the inductive step telescopes $S_{n+1} = S_n + r^n = (1-r^n)/(1-r) + r^n = (1-r^{n+1})/(1-r)$ by algebra. Mathlib also provides `Finset.geom_sum_eq`; the file proves it independently to keep the argument self-contained and pedagogically explicit."
+    },
+    {
+      "id": "archimedes-parabola",
+      "title": "Archimedes' Parabola Application: Partial Sums and Error Bounds",
+      "startLine": 87,
+      "endLine": 135,
+      "summary": "Seven theorems specializing geom_sum_formula to r=1/4: archimedes_partial_sum (S_n = (4/3)(1-(1/4)^n)), archimedes_remainder (ring: 4/3 - S_n = (4/3)(1/4)^n), archimedes_remainder_pos (positivity), archimedes_remainder_bound (rfl). Then: parabolic_segment_area, parabolic_area_error (ring), parabolic_area_error_pos (positivity). The 4/3 = 1/(1-1/4) factor arises from the geometric series limit.",
+      "mathContext": "Specializing $r = 1/4$: $S_n = (4/3)(1-(1/4)^n)$, error $= (4/3)(1/4)^n$. For $n=4$: error $\\approx 0.52\\%$; for $n=8$: error $\\approx 0.002\\%$. Parabola versions multiply by $T > 0$: area after $n$ steps $= T \\cdot S_n$, error $= T \\cdot (4/3)(1/4)^n$. Error strictly positive (by `positivity`) confirms approximation from below — exhaustion never overshoots."
     },
     {
       "id": "general-exhaustion",
       "title": "General Exhaustion Convergence Principle",
-      "startLine": 132,
+      "startLine": 136,
       "endLine": 190,
-      "summary": "Two theorems: exhaustion_convergence (positivity: C·r^n > 0 for C,r > 0) and exhaustion_error_small (for any ε > 0 there exists N with C·r^N < ε, using tendsto_pow_atTop_nhds_zero_of_lt_one from Mathlib). Followed by summary docstring connecting all three parts.",
-      "mathContext": "The theorem `exhaustion_error_small` states: $\\forall \\varepsilon > 0, \\exists N, C \\cdot r^N < \\varepsilon$. Proof: apply `tendsto_pow_atTop_nhds_zero_of_lt_one` at $\\varepsilon/C$ to get $N$ with $r^N < \\varepsilon/C$, then multiply by $C$. This is the $\\varepsilon$-$N$ formulation of geometric convergence, abstracting away from the specific base $r = 1/4$ (parabola) or the polynomial case for circles."
+      "summary": "Line 136 is the Part 3 section header. `exhaustion_convergence` (positivity: C·r^n > 0 for C,r > 0). `exhaustion_error_small` (lines 150-164): for any ε > 0 there exists N with C·r^N < ε, using tendsto_pow_atTop_nhds_zero_of_lt_one via Metric.tendsto_atTop. Lines 166-190 are the closing summary docstring connecting all three parts.",
+      "mathContext": "The theorem `exhaustion_error_small` states: $\\forall \\varepsilon > 0, \\exists N, C \\cdot r^N < \\varepsilon$. Proof pipeline: `tendsto_pow_atTop_nhds_zero_of_lt_one` → `Filter.Tendsto` → `Metric.tendsto_atTop` → extract $N$ with $|r^N - 0| < \\varepsilon/C$ → multiply by $C$ via `mul_lt_mul_of_pos_left`. This is the $\\varepsilon$-$N$ formulation of geometric convergence, abstracting the specific base $r = 1/4$ (parabola) or polynomial $O(1/n^2)$ (circles)."
     }
   ],
   "conclusion": {
