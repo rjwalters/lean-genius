@@ -42,5 +42,102 @@
       "abel-ruffini-oq-04",
       "abel-ruffini-oq-04-oq-03"
     ]
+  },
+  "overview": {
+    "historicalContext": "Erland Samuel Bring (1786, *Meletemata quaedam mathematica*) showed that any quintic can be reduced to the normal form $y^5 + py + q = 0$. George Jerrard (1834, *An Essay on the Resolution of Equations*) gave an independent treatment. Together, Bring-Jerrard showed that the general quintic has a 'simplest' form — but this does not suffice to solve it by radicals, as Abel (1824) had proved. The **Bring radical** BR$(t)$ — the unique real root of $x^5 + x + t = 0$ — was studied by Charles Hermite (1858) and Felix Klein (1884) in the context of icosahedron symmetry. Klein showed the quintic is solvable via Bring radicals combined with hypergeometric functions, providing an analogue of the cubic formula using a transcendental 'radical'. The function BR is provably not an algebraic radical by Abel-Ruffini.",
+    "problemStatement": "Formalize the linear Tschirnhaus substitution $y = x + a_4/5$ that eliminates the $x^4$ term from any monic quintic $x^5 + a_4 x^4 + \\cdots = 0$. Define and characterize the Bring radical BR$(t)$ — the unique real root of $x^5 + x + t = 0$ — proving existence via the intermediate value theorem and uniqueness via strict monotonicity of $x \\mapsto x^5 + x$.",
+    "proofStrategy": "Part 1 (proved): The linear substitution y = x + a₄/5 eliminates the x⁴ coefficient via a polynomial identity (linear_combination). Part 2 (axiomatized): The full Bring-Jerrard reduction eliminating x³ and x² terms requires polynomial resultant theory not in Mathlib. Part 3 (proved): Strict monotonicity of x↦x⁵+x uses Odd.strictMono_pow. Part 4 (proved): Existence of real roots via IVT (intermediate_value_Icc) with explicit sign-changing bounds ±(|t|+1). Part 5 (proved): Properties of the Bring radical (uniqueness, anti-monotonicity, BR(0)=0, BR(-t)=-BR(t)) follow from strict monotonicity and the defining equation.",
+    "keyInsights": [
+      "The linear substitution y = x + a₄/5 eliminates the x⁴ term because the degree-4 coefficient in the shifted polynomial is -5·(a₄/5) + a₄ = 0; the proof is a polynomial identity proved by linear_combination",
+      "Strict monotonicity of x↦x⁵+x (via Odd.strictMono_pow) simultaneously gives both uniqueness of the Bring radical and its anti-monotonicity in t",
+      "The IVT bound ±(|t|+1) works for all t because (|t|+1)⁵ ≥ 0 dominates the |t| needed to ensure a sign change, regardless of whether t is positive or negative",
+      "The Bring radical is an odd function (BR(-t) = -BR(t)) reflecting the odd symmetry of f(x) = x⁵+x; this follows from the uniqueness theorem applied to -BR(t) as a root of x⁵+x+(-t)=0",
+      "The second axiom bringRadical_not_in_radicals contains a degenerate True conjunct — the intent is correct (Bring radical is not a radical expression) but the formalization is a placeholder"
+    ]
+  },
+  "sections": [
+    {
+      "id": "poly-defs",
+      "title": "Polynomial Type Definitions",
+      "startLine": 85,
+      "endLine": 102,
+      "summary": "Defines quinticPoly (5 free parameters), depressedQuintic (4 free parameters, no x⁴ term), and bringJerrardPoly (2 free parameters, Bring-Jerrard normal form x⁵+px+q).",
+      "mathContext": "Three polynomial types over $\\mathbb{C}$ representing the three normal forms in the reduction chain: quintic → depressed quintic → Bring-Jerrard form.",
+      "theorems": []
+    },
+    {
+      "id": "tschirnhaus",
+      "title": "Linear Tschirnhaus Transform (Proved)",
+      "startLine": 104,
+      "endLine": 170,
+      "summary": "Proves the forward (depressed_quintic_forward), backward (depressed_quintic_backward), and biconditional (depressed_quintic_iff) forms of the linear Tschirnhaus transform y = x + a₄/5 that eliminates the x⁴ term. All proved by linear_combination.",
+      "mathContext": "The substitution $y = x + a_4/5$ gives $b_4 = -5(a_4/5) + a_4 = 0$, with explicit formulas for $b_3, b_2, b_1, b_0$. Proved by `linear_combination h`.",
+      "theorems": ["depressed_quintic_forward", "depressed_quintic_backward", "depressed_quintic_iff"]
+    },
+    {
+      "id": "bring-jerrard",
+      "title": "Full Bring-Jerrard Reduction (Axiomatized)",
+      "startLine": 172,
+      "endLine": 222,
+      "summary": "Axiomatizes the full Bring-Jerrard reduction (quadratic and cubic Tschirnhaus steps). Proves quintic_to_bringJerrard by chaining the linear transform with the axiom.",
+      "mathContext": "The axiom $\\exists\\, p, q, \\varphi,\\ \\forall y.\\ y^5 + b_3 y^3 + \\cdots = 0 \\Rightarrow (\\varphi(y))^5 + p(\\varphi(y)) + q = 0$ requires polynomial resultant theory not in Mathlib.",
+      "theorems": ["bringJerrard_reduction", "quintic_to_bringJerrard"]
+    },
+    {
+      "id": "strict-mono",
+      "title": "Strict Monotonicity and IVT Existence",
+      "startLine": 224,
+      "endLine": 294,
+      "summary": "Proves bringRad_strictMono (x↦x⁵+x is strictly increasing) and bringRad_exists (x⁵+x+t=0 has a real root for every t) via IVT with bounds ±(|t|+1).",
+      "mathContext": "$f(x) = x^5 + x$ is strictly monotone (Odd.strictMono_pow + linarith) and continuous, with $f(-(|t|+1)) < 0 < f(|t|+1)$ for all $t$.",
+      "theorems": ["bringRad_strictMono", "bringRad_exists"]
+    },
+    {
+      "id": "bring-radical",
+      "title": "Bring Radical: Definition and Properties",
+      "startLine": 296,
+      "endLine": 377,
+      "summary": "Defines bringRadical t = the unique real root of x⁵+x+t=0. Proves: bringRadical_spec (satisfies equation), bringRadical_unique, bringRadical_anti_mono, bringRadical_zero, bringRadical_neg (odd function). Axiomatizes bringRadical_not_in_radicals. Summary theorem packages the main results.",
+      "mathContext": "BR$(t)$ satisfies BR$(t)^5 + \\mathrm{BR}(t) + t = 0$, is strictly anti-monotone, odd, and BR$(0) = 0$. Not expressible by nested radicals (axiom).",
+      "theorems": ["bringRadical_spec", "bringRadical_unique", "bringRadical_anti_mono", "bringRadical_zero", "bringRadical_neg", "bringJerrard_summary"]
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the linear Tschirnhaus transform and the Bring radical with 0 sorries. The full Bring-Jerrard reduction (Steps 2-3) and the non-expressibility-in-radicals claim are axiomatized (2 axioms). The Bring radical is shown to be well-defined, strictly anti-monotone, odd, and satisfying BR(0)=0.",
+    "implications": "The Bring radical provides a 'formula' for the general quintic analogous to the quadratic formula — but using a transcendental function rather than algebraic radicals. This positions the Abel-Ruffini gallery family: Galois theory shows radicals are insufficient, while the Bring radical shows a different kind of 'formula' exists. The missing Mathlib infrastructure (polynomial resultants, Kummer extensions) to close the 2 axioms would be a significant contribution to Mathlib's polynomial theory.",
+    "openQuestions": [
+      "Prove the full Bring-Jerrard reduction in Lean: formalize the quadratic and cubic Tschirnhaus substitutions using polynomial resultants and Mathlib's algebraic extensions.",
+      "Replace the degenerate bringRadical_not_in_radicals axiom with a proper formalization of 'expressible in radicals' and prove the Bring radical is not of that form.",
+      "Connect to Klein's icosahedron theory: BR(t) can be expressed via the hypergeometric function ₂F₁ or elliptic modular functions — formalize at least one such representation.",
+      "Extend bringJerrard_summary to a complete solution procedure: given any monic quintic, describe the algorithm to express all 5 roots in terms of Bring radicals."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "Parent entry: Abel-Ruffini theorem via A5 simplicity. This file formalizes the constructive side — the Bring-Jerrard reduction that transforms any quintic into the form where Abel-Ruffini applies."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04",
+      "relationship": "related",
+      "description": "S5 non-solvability and A5 simplicity — the Galois-theoretic foundation that explains why the Bring radical is not expressible in radicals."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Galois solvability criterion (iff): a polynomial is solvable by radicals iff its Galois group is solvable — directly implies the Bring radical is transcendental."
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib.Algebra.Polynomial.Basic", "Mathlib.Algebra.Order.Ring.Basic", "Mathlib.Topology.Order.IntermediateValue", "Mathlib.Tactic"],
+    "opens": ["Polynomial"],
+    "namespace": "BringJerrardReduction",
+    "lineCount": 377,
+    "axiomCount": 2,
+    "theoremCount": 13,
+    "definitionCount": 4,
+    "path": "Proofs/AbelRuffiniOQ04OQ07.lean",
+    "sorries": 0
   }
 }
