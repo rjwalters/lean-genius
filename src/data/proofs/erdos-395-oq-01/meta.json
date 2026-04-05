@@ -22,14 +22,14 @@
     "erdosUrl": "https://erdosproblems.com/395",
     "erdosProblemStatus": "open-question",
     "dateAdded": "2026-03-29",
-    "axiomCount": 0,
+    "axiomCount": 2,
     "lineCount": 161,
     "prerequisites": [
       "Erdős Problem #395 parent formalization",
       "Complex analysis and norms",
       "Probability on finite sets"
     ],
-    "assumptions": "2 axioms inherited from Erdos395Problem.lean: erdos_original_is_false (Erdős original conjecture is false), hjns_2024 (HJNS 2024 result). 0 own axioms. 0 sorries.",
+    "assumptions": "2 axioms inherited from Erdos395Problem.lean: erdos_original_is_false (Erdős original conjecture is false), hjns_2024 (HJNS 2024 result). 0 own axioms. 2 sorries.",
     "mathlib_version": "4.29.0",
     "originalContributions": [
       "Optimal constant c* defined via sSup",
