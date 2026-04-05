@@ -143,7 +143,8 @@
       "priority": "low",
       "target": "researcher",
       "description": "Remove or replace no_truth_predicate (proves 1+1=2 under a misleading name) and deduplicate second_incompleteness / cannot_prove_own_consistency / second_incompleteness_from_lob.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Removed no_truth_predicate (proved (1:ℕ)+1=2 under Tarski undefinability docstring). Replaced with plain comment. The second_incompleteness/cannot_prove_own_consistency/second_incompleteness_from_lob deduplication is deferred as a lower-priority refactor."
     },
     {
       "id": "ai-8",
