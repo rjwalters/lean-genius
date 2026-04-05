@@ -1847,9 +1847,9 @@
       "result": "clean"
     },
     "erdos-1012-oq-03": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-04-04T19:24:10Z",
+      "lastAudited": "2026-04-05T12:29:11Z",
       "result": "issues-fixed"
     },
     "erdos-1013": {
@@ -3736,8 +3736,8 @@
     },
     "erdos-204": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-04-05T05:16:26Z",
+      "auditCount": 5,
+      "lastAudited": "2026-04-05T12:29:12Z",
       "result": "issues-fixed",
       "issues": [
         "sorries field was 0 but file has 1 sorry (MaxCoverableDensity def); proofStrategy said 253-line but file is 189 lines; examples section listed non-existent n6_fails/n12_fails axioms"
