@@ -1,0 +1,123 @@
+{
+  "id": "amgm-inequality-oq-03-oq-02-oq-04",
+  "title": "Extreme Power Mean Limits: M_r → max and min",
+  "slug": "amgm-inequality-oq-03-oq-02-oq-04",
+  "description": "Proves the two extreme power mean limits: lim_{r→+∞} M_r(x) = max(x) and lim_{r→-∞} M_r(x) = min(x). The max case uses a squeeze between M·n^{-1/r} and M, with n^{-1/r} → 1. The min case reduces to the max case via the duality identity M_r(x) = (M_{-r}(1/x))⁻¹. 2 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ03OQ02OQ04.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "power-means",
+      "limits",
+      "amgm"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-05",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified.",
+    "lineCount": 220,
+    "theoremCount": 2,
+    "definitionCount": 1,
+    "originalContributions": [
+      "powerMean_tendsto_max: M_r(x) → max(x) as r → +∞, proved by squeezing between max·n^{-1/r} and max",
+      "powerMean_tendsto_min: M_r(x) → min(x) as r → -∞, proved by duality with the max case via M_r(x) = (M_{-r}(1/x))⁻¹"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The power mean M_r(x) = (Σ xᵢ^r / n)^{1/r} interpolates between the minimum (r → -∞) and maximum (r → +∞) of the data. These limits were known to Hardy, Littlewood, and Pólya (1934) and formalize the intuition that raising to large positive powers selects the largest element, while large negative powers select the smallest. The proof technique — squeezing via n^{-1/r} → 1 — is elementary and constructive. The min case uses the elegant duality M_r(x) = (M_{-r}(x⁻¹))⁻¹, which converts the -∞ limit to a +∞ limit of the inverted function.",
+    "problemStatement": "For x : ι → ℝ with all xᵢ > 0, prove: (1) M_r(x) → max(x) as r → +∞; (2) M_r(x) → min(x) as r → -∞.",
+    "text": "The max case (powerMean_tendsto_max) uses a squeeze: for r > 0, M * n^{-1/r} ≤ M_r(x) ≤ M where M = max(x). The upper bound holds because each xᵢ^r ≤ M^r. The lower bound uses the single-element contribution from the maximizer. Since n^{-1/r} → 1 as r → +∞, both bounds converge to M. The min case (powerMean_tendsto_min) sets g = 1/x, observes sup'(g) = (inf'(x))⁻¹, applies the max case to g, then inverts using M_r(x) = (M_{-r}(g))⁻¹ and the filter composition atBot → atTop via negation.",
+    "proofStrategy": "Max case: tendsto_of_tendsto_of_tendsto_of_le_of_le' with lower bound M*n^{-1/r} (via sup_mul_pow_le_powerMean) and constant upper bound M (via powerMean_le_sup). Min case: duality M_r(x) = (M_{-r}(g))⁻¹ for r ≠ 0 (eventually near atBot), composed with Filter.tendsto_neg_atBot_atTop.",
+    "keyInsights": [
+      "c^{-1/r} → 1 as r → +∞: proved as tendsto_const_rpow_neg_inv_atTop via -r⁻¹ → 0 and continuity of c^·",
+      "Squeeze between M*n^{-1/r} and M gives the max limit; the factor n^{-1/r} accounts for the count of terms in the mean",
+      "Duality identity: (xᵢ⁻¹)^{-r} = ((xᵢ)^r)⁻¹)⁻¹ = xᵢ^r via Real.inv_rpow + Real.rpow_neg + inv_inv",
+      "Filter composition: atBot →(negation)→ atTop converts the min limit to the max limit of the inverted function",
+      "Antitone inversion: sup'(1/x) = 1/inf'(x) — taking reciprocals reverses the order for positive values"
+    ],
+    "prerequisites": [
+      "powerMean definition: M_r(x) = (Σ xᵢ^r / n)^{1/r} (r ≠ 0)",
+      "tendsto_const_rpow_neg_inv_atTop: c^{-1/r} → 1 as r → +∞ (proved in this file)",
+      "Real.inv_rpow, Real.rpow_neg: algebraic identities for inverse and negation in rpow",
+      "Filter.tendsto_neg_atBot_atTop: the negation map sends atBot to atTop"
+    ]
+  },
+  "conclusion": {
+    "summary": "Both extreme power mean limits proved: max at +∞ and min at -∞. 2 theorems, 0 sorries, 0 axioms, 220 lines.",
+    "implications": "Completes the extreme cases of power mean theory. Together with the monotonicity results (OQ-03-OQ-02-OQ-01 through OQ-03), this establishes the full interpolation picture: M_{-∞} = min ≤ M_r ≤ max = M_{+∞}. The squeeze argument and duality identity are reusable techniques for other mean limit problems.",
+    "openQuestions": [
+      "Prove the weighted power mean limits: lim_{r→±∞} M_r(x, w) = max/min(x) for any positive weight vector w with Σwᵢ = 1",
+      "Formalize the full Pythagorean means interpolation: HM ≤ GM ≤ AM as special cases of the power mean monotonicity chain"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Real", "Filter", "Finset"],
+    "namespace": "AmgmOQ03OQ02OQ04",
+    "lineCount": 220,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AmgmInequalityOQ03OQ02OQ04.lean",
+    "theoremCount": 2,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "id": "amgm-inequality-oq-03-oq-02",
+      "title": "Power Mean Monotonicity (General)",
+      "relationship": "parent"
+    },
+    {
+      "id": "amgm-inequality-oq-03",
+      "title": "AM-GM Inequality: Power Mean Monotonicity",
+      "relationship": "foundational"
+    },
+    {
+      "id": "amgm-inequality-oq-03-oq-02-oq-01",
+      "title": "Power Mean Crossing Zero",
+      "relationship": "sibling"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Documents the extreme power mean limits and the squeeze + duality proof strategy."
+    },
+    {
+      "id": "sec-key-lemma",
+      "title": "Key Limit: c^{-1/r} → 1",
+      "startLine": 36,
+      "endLine": 49,
+      "summary": "tendsto_const_rpow_neg_inv_atTop: for any c > 0, c^{-1/r} → 1 as r → +∞, proved via -r⁻¹ → 0 and continuity."
+    },
+    {
+      "id": "sec-bounds",
+      "title": "Squeeze Bounds for Max Case",
+      "startLine": 58,
+      "endLine": 127,
+      "summary": "powerMean_le_sup (upper bound: M_r ≤ max) and sup_mul_pow_le_powerMean (lower bound: max·n^{-1/r} ≤ M_r) for r > 0."
+    },
+    {
+      "id": "sec-max-theorem",
+      "title": "Max Limit Theorem",
+      "startLine": 132,
+      "endLine": 151,
+      "summary": "powerMean_tendsto_max: M_r → max(x) as r → +∞ via squeeze between the two bounds."
+    },
+    {
+      "id": "sec-min-theorem",
+      "title": "Min Limit Theorem",
+      "startLine": 153,
+      "endLine": 218,
+      "summary": "powerMean_tendsto_min: M_r → min(x) as r → -∞ via duality with max case applied to g = 1/x, using M_r(x) = (M_{-r}(g))⁻¹."
+    }
+  ]
+}

@@ -155,6 +155,65 @@ theorem powerMean_tendsto_max (x : ι → ℝ) (hx : ∀ i, 0 < x i) :
 theorem powerMean_tendsto_min (x : ι → ℝ) (hx : ∀ i, 0 < x i) :
     Filter.Tendsto (fun r => powerMean x r) Filter.atBot
       (nhds (Finset.univ.inf' Finset.univ_nonempty x)) := by
-  sorry
+  -- Strategy: apply the max case to g = 1/x, then use the identity
+  -- powerMean x r = (powerMean g (-r))⁻¹ for r ≠ 0
+  set g := fun i => (x i)⁻¹ with hg_def
+  have hg : ∀ i, 0 < g i := fun i => inv_pos.mpr (hx i)
+  -- Find i₀ achieving the minimum of x
+  obtain ⟨i₀, _, hi₀⟩ := Finset.exists_min_image Finset.univ x
+    ⟨Classical.arbitrary ι, Finset.mem_univ _⟩
+  set m := Finset.univ.inf' Finset.univ_nonempty x
+  have hm_eq : m = x i₀ := le_antisymm
+    (Finset.inf'_le x (Finset.mem_univ i₀))
+    (Finset.le_inf' Finset.univ_nonempty x (fun j _ => hi₀ j (Finset.mem_univ j)))
+  have hm_pos : 0 < m := by rw [hm_eq]; exact hx i₀
+  -- sup'(g) = m⁻¹: taking inverses reverses the order
+  have h_sup_g : Finset.univ.sup' Finset.univ_nonempty g = m⁻¹ := by
+    apply le_antisymm
+    · apply Finset.sup'_le
+      intro i _
+      simp only [hg_def]
+      -- (x i)⁻¹ ≤ m⁻¹ because m ≤ x i (inline proof of antitone inv)
+      have hxi := hx i
+      have hle : m ≤ x i := Finset.inf'_le x (Finset.mem_univ i)
+      calc (x i)⁻¹
+          = (x i)⁻¹ * (m * m⁻¹) := by rw [mul_inv_cancel₀ hm_pos.ne', mul_one]
+        _ ≤ (x i)⁻¹ * (x i * m⁻¹) :=
+              mul_le_mul_of_nonneg_left
+                (mul_le_mul_of_nonneg_right hle (inv_pos.mpr hm_pos).le)
+                (inv_pos.mpr hxi).le
+        _ = m⁻¹ := by rw [← mul_assoc, inv_mul_cancel₀ hxi.ne', one_mul]
+    · calc m⁻¹ = g i₀ := by simp [hg_def, hm_eq]
+        _ ≤ Finset.univ.sup' Finset.univ_nonempty g :=
+            Finset.le_sup' g (Finset.mem_univ i₀)
+  -- Apply max theorem to g: powerMean g r → sup'(g) = m⁻¹ as r → +∞
+  have h_max : Filter.Tendsto (fun r => powerMean g r) Filter.atTop (nhds m⁻¹) := by
+    have := powerMean_tendsto_max g hg
+    rwa [h_sup_g] at this
+  -- Invert: (powerMean g r)⁻¹ → m as r → +∞
+  have h_inv : Filter.Tendsto (fun r => (powerMean g r)⁻¹) Filter.atTop (nhds m) := by
+    have h := h_max.inv₀ (inv_ne_zero hm_pos.ne')
+    rwa [inv_inv] at h
+  -- Algebraic identity: for r < 0, (powerMean g (-r))⁻¹ = powerMean x r
+  -- Uses: (xᵢ⁻¹)^(-r) = xᵢ^r  via  inv_rpow + rpow_neg + inv_inv
+  have h_ident : ∀ᶠ r in Filter.atBot, (powerMean g (-r))⁻¹ = powerMean x r := by
+    filter_upwards [Filter.eventually_lt_atBot 0] with r hr
+    have hrne : r ≠ 0 := ne_of_lt hr
+    have hnrne : -r ≠ 0 := neg_ne_zero.mpr hrne
+    simp only [powerMean, if_neg hrne, if_neg hnrne, hg_def]
+    -- Σ (x i)⁻¹ ^ (-r) = Σ (x i) ^ r
+    have hsum : ∑ i : ι, ((x i)⁻¹) ^ (-r) = ∑ i : ι, (x i) ^ r := by
+      congr 1; ext i
+      rw [Real.inv_rpow (le_of_lt (hx i)), Real.rpow_neg (le_of_lt (hx i)), inv_inv]
+    rw [hsum]
+    -- ((S/n)^(1/(-r)))⁻¹ = (S/n)^(1/r)
+    have hS_nonneg : 0 ≤ (∑ i : ι, (x i) ^ r) / Fintype.card ι :=
+      div_nonneg (Finset.sum_nonneg fun i _ => Real.rpow_nonneg (le_of_lt (hx i)) r)
+        (le_of_lt card_pos)
+    rw [← Real.rpow_neg hS_nonneg (1 / (-r))]
+    congr 1
+    rw [div_neg, neg_neg]
+  -- Compose: atBot →(negation)→ atTop, then apply h_inv, then congr with identity
+  exact (h_inv.comp Filter.tendsto_neg_atBot_atTop).congr' h_ident
 
 end AmgmOQ03OQ02OQ04
