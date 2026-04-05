@@ -85,6 +85,21 @@
       "id": "wilsons-theorem",
       "title": "Wilson's Theorem",
       "relationship": "both concern properties of integers modulo primes; Wilson's theorem characterizes primes via factorial, IE characterizes them via totient"
+    },
+    {
+      "id": "derangements",
+      "title": "Derangements",
+      "relationship": "the derangement formula D(n)=Σ(-1)^k C(n,k)(n-k)! derived here is a key application of IE to fixed-point-free permutations"
+    },
+    {
+      "id": "euler-totient",
+      "title": "Euler's Totient Function",
+      "relationship": "the totient sieve φ(n)=n·∏(1-1/p) is the prime IE application; multiplicativity and Σφ(d)=n are proved in Part II"
+    },
+    {
+      "id": "euler-totient-oq-02",
+      "title": "Multiplicativity of Totient",
+      "relationship": "complements the IE sieve proof of φ(pq)=(p-1)(q-1) with a group-theoretic proof of multiplicativity"
     }
   ],
   "sections": [
