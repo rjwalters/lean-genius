@@ -122,10 +122,41 @@ lemma sum_split_pascal {R : Type*} [CommRing R] (q : R) (m n r : ℕ) :
       q ^ (k * (m + k - r) + (r + 1 - k)) * qBinom q m (r + 1 - k) * qBinom q n k +
     ∑ k ∈ Finset.range (r + 1),
       q ^ (k * (m + k - r)) * qBinom q m (r - k) * qBinom q n k := by
-  -- Pascal on qBinom q (m+1) (r+1-k): [m+1 choose r+1-k] = q^(r+1-k)*[m choose r+1-k]+[m choose r-k]
-  -- Part A: the q^(r+1-k) terms assemble via partA_eq
-  -- Part B: the [m choose r-k] terms give back the S(m,n,r) sum
-  sorry
+  -- For each k, expand qBinom q (m+1) (r+1-k) via Pascal's rule:
+  -- k ≤ r: qBinom q (m+1) (r+1-k) = q^(r+1-k) * qBinom q m (r+1-k) + qBinom q m (r-k)
+  -- k = r+1: qBinom q (m+1) 0 = 1, no Part B term
+  have expand : ∀ k ∈ Finset.range (r + 2),
+      q ^ (k * (m + k - r)) * qBinom q (m + 1) (r + 1 - k) * qBinom q n k =
+      q ^ (k * (m + k - r) + (r + 1 - k)) * qBinom q m (r + 1 - k) * qBinom q n k +
+      if k ≤ r then q ^ (k * (m + k - r)) * qBinom q m (r - k) * qBinom q n k else 0 := by
+    intro k hk
+    simp only [Finset.mem_range] at hk
+    by_cases hkr : k ≤ r
+    · simp only [hkr, ite_true]
+      have hpascal : qBinom q (m + 1) (r + 1 - k) =
+          q ^ (r + 1 - k) * qBinom q m (r + 1 - k) + qBinom q m (r - k) := by
+        rw [show r + 1 - k = (r - k) + 1 from by omega]
+        exact qBinom_succ_succ q m (r - k)
+      rw [hpascal, pow_add]; ring
+    · push_neg at hkr
+      have hkeq : k = r + 1 := by omega
+      subst hkeq
+      have hnotleq : ¬(r + 1 ≤ r) := by omega
+      simp only [hnotleq, ite_false, add_zero]
+      have h0 : r + 1 - (r + 1) = 0 := by omega
+      rw [h0, qBinom_zero_right, qBinom_zero_right]
+      ring
+  rw [Finset.sum_congr rfl expand, Finset.sum_add_distrib]
+  congr 1
+  -- Simplify indicator sum over range(r+2) to a plain sum over range(r+1)
+  rw [Finset.sum_range_succ]
+  have hnotleq : ¬(r + 1 ≤ r) := by omega
+  simp only [hnotleq, ite_false, add_zero]
+  apply Finset.sum_congr rfl
+  intro k hk
+  simp only [Finset.mem_range] at hk
+  have hkr : k ≤ r := by omega
+  simp only [hkr, ite_true]
 
 -- ============================================================
 -- Section 6: Main Theorem
@@ -181,10 +212,6 @@ theorem qVandermonde {R : Type*} [CommRing R] (q : R) (m n r : ℕ) :
             q ^ (k * (m + k - (r + 1))) * qBinom q m (r + 1 - k) * qBinom q n k +
           ∑ k ∈ Finset.range (r + 1),
             q ^ (k * (m + k - r)) * qBinom q m (r - k) * qBinom q n k from by
-        -- This uses sum_split_pascal (for the Pascal split) + partA_eq (for Part A)
-        -- We prove it by showing:
-        -- (A) q^(k*(m+k-r)+r+1-k) * qBinom q m (r+1-k) contributes q^(r+1)*q^(k*(m+k-(r+1)))*qBinom...
-        -- (B) q^(k*(m+k-r)) * qBinom q m (r-k) contributes to the second sum
-        sorry]
+        rw [sum_split_pascal, partA_eq]]
 
 end qVandermondeProof
