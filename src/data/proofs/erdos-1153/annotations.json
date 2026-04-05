@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-1153-module-header",
+    "proofId": "erdos-1153",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "context",
+    "title": "Erdős #1153: Lebesgue Constants and the 2/π Lower Bound",
+    "content": "The module header explains Erdős Problem #1153: for any fixed subinterval $[a,b] \\subseteq [-1,1]$ and any $n$ interpolation nodes in $[-1,1]$, the Lebesgue function $\\lambda(x) = \\sum_k |l_k(x)|$ must somewhere on $[a,b]$ exceed $(2/\\pi - o(1)) \\log n$. This is established by combining Bernstein (1931), who proved logarithmic growth for the full interval, and Erdős (1961), who sharpened the constant to $2/\\pi$. The status is PROVED. The file formalizes the definitions (Lagrange basis, Lebesgue function), basic properties (Kronecker delta, node evaluations), and states the main theorem as an `axiom` (since the analytic proof requires complex analysis not yet in scope). The matching Chebyshev upper bound is also axiomatized.",
+    "mathContext": "The Lebesgue constant $\\Lambda_n = \\max_x \\lambda(x)$ governs interpolation error: $\\|f - p\\|_\\infty \\le (1 + \\Lambda_n) \\cdot \\inf_{\\deg q \\le n-1} \\|f - q\\|_\\infty$. The asymptotic $\\Lambda_n \\sim (2/\\pi) \\log n$ (Erdős-Bernstein) means: the optimal Chebyshev nodes achieve $\\Lambda_n \\approx (2/\\pi) \\log n$, while bad nodes (e.g., equally spaced) give $\\Lambda_n \\sim 2^n/n$ (Runge phenomenon). This logarithmic vs. exponential dichotomy motivates the choice of interpolation nodes in numerical analysis.",
+    "significance": "context",
+    "relatedConcepts": ["Lebesgue constant", "Lagrange interpolation", "Chebyshev nodes", "Bernstein", "Erdős", "Runge phenomenon"],
+    "prerequisites": ["polynomial interpolation", "approximation theory", "Chebyshev polynomials"]
+  },
+  {
+    "id": "ann-node-definitions",
+    "proofId": "erdos-1153",
+    "range": { "startLine": 65, "endLine": 79 },
+    "type": "definition",
+    "title": "Node Predicates and Section 1 Setup",
+    "content": "`NodesInInterval n nodes` requires all nodes to lie in $[-1,1]$ (`Set.Icc (-1 : ℝ) 1`). `DistinctNodes n nodes` requires the node map to be injective — distinct points are mandatory for Lagrange interpolation to be well-defined (if $x_k = x_j$, then the denominator $x_k - x_j = 0$ makes $l_k(x_j)$ undefined). Section 1 then proves the Kronecker delta property: $l_k(x_j) = \\delta_{kj}$ (zero for $j \\neq k$, one for $j = k$). These are the two defining properties of the Lagrange basis and are proved fully without sorry.",
+    "mathContext": "Injectivity of nodes (`DistinctNodes = Function.Injective`) is exactly the condition needed for `div_self` in `lagrangeBasis_self`: $x_k \\neq x_i$ ensures $x_k - x_i \\neq 0$. The interval condition `NodesInInterval` is needed for the main theorem (the problem is stated for nodes in $[-1,1]$) but not for the purely algebraic Kronecker delta property.",
+    "significance": "supporting",
+    "relatedConcepts": ["NodesInInterval", "DistinctNodes", "Function.Injective", "Set.Icc", "interpolation well-definedness"],
+    "prerequisites": ["lagrangeBasis definition", "Set.Icc", "Function.Injective"]
+  },
+  {
     "id": "ann-lagrange-basis-def",
     "proofId": "erdos-1153",
     "range": { "startLine": 54, "endLine": 56 },
