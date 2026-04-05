@@ -76,72 +76,7 @@
       "Perfect squares and number-theoretic constraints"
     ]
   },
-  "sections": [
-    {
-      "id": "triangle-rep",
-      "title": "Triangle Representation",
-      "summary": "Defines Triangle (by sides with triangle inequality), TriangleByAngles (by angles with sum π), and heronArea via Heron's formula.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Triangle with sides $a, b, c$ satisfying $a + b > c$ (and cyclic). Area via Heron: $A = \\sqrt{s(s-a)(s-b)(s-c)}$ where $s = (a+b+c)/2$. Dual representation by angles $\\alpha + \\beta + \\gamma = \\pi$."
-    },
-    {
-      "id": "dissection-defs",
-      "title": "Dissection Definitions",
-      "summary": "Defines CongruentDissection (area compatibility + tiling), CanDissectInto, and DissectionCounts (set of valid dissection numbers).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "A congruent dissection of $\\Delta$ into $n$ pieces: partition $\\Delta = T_1 \\cup \\cdots \\cup T_n$ where all $T_i \\cong T$ for some triangle $T$ with $\\text{area}(T) = \\text{area}(\\Delta)/n$. $D(\\Delta) = \\{n : \\Delta \\text{ admits an } n\\text{-dissection}\\}$."
-    },
-    {
-      "id": "square-property",
-      "title": "Square Number Property",
-      "summary": "Defines IsSquare (n = k²) and HasSquareOnlyProperty (all dissection counts are perfect squares).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "$\\Delta$ has the \\emph{square-only property} if $D(\\Delta) \\subseteq \\{k^2 : k \\in \\mathbb{N}\\}$. Problem 633 asks: classify all such triangles."
-    },
-    {
-      "id": "universal",
-      "title": "Universal Square Dissections",
-      "summary": "States universal_square_dissection: every triangle admits n² dissections via grid subdivision.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Every triangle admits a $k^2$-dissection for all $k \\geq 1$: subdivide each side into $k$ equal parts, creating a $k \\times k$ grid of $k^2$ congruent sub-triangles. So $\\{k^2\\} \\subseteq D(\\Delta)$ always."
-    },
-    {
-      "id": "soifer",
-      "title": "Soifer's Example",
-      "summary": "Constructs soiferTriangle (√2, √3, √4) with verified triangle inequalities, and states soifer_square_only.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Soifer's triangle with sides $(\\sqrt{2}, \\sqrt{3}, \\sqrt{4})$: verified to satisfy triangle inequality and shown to have $D(\\Delta) = \\{k^2 : k \\geq 1\\}$. The irrational side ratios prevent non-square dissections."
-    },
-    {
-      "id": "integral",
-      "title": "Integral Independence",
-      "summary": "Defines IntegrallyIndependent for angle triples, connecting algebraic constraints on angles to dissection rigidity.",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Angles $(\\alpha, \\beta, \\gamma)$ are \\emph{integrally independent} if $a\\alpha + b\\beta + c\\gamma = 0$ with $a,b,c \\in \\mathbb{Z}$ implies $a = b = c = 0$ (mod the relation $\\alpha + \\beta + \\gamma = \\pi$). This algebraic rigidity forces $D(\\Delta) \\subseteq \\{k^2\\}$."
-    },
-    {
-      "id": "similar",
-      "title": "Similar Dissections and Counterexamples",
-      "summary": "Counterexamples (equilateral: 3 pieces, right isosceles: 2 pieces) and similar_dissection_complete (n ≠ 2,3,5 always works for similar).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "Equilateral: $3 \\in D$ (not a perfect square). Right isosceles: $2 \\in D$. These violate square-only because their angle relations permit non-grid dissections. For \\emph{similar} (not congruent) dissections, $n \\notin \\{2,3,5\\}$ always works."
-    },
-    {
-      "id": "classification",
-      "title": "The Open Classification Problem",
-      "summary": "States erdos_633_classification (find the predicate), defines SoiferFamily (√p, √q, √r), and erdos_633_exists (square-only triangles exist).",
-      "startLine": 1,
-      "endLine": 1,
-      "mathContext": "OPEN: find a predicate $P$ on triangles such that $P(\\Delta) \\iff D(\\Delta) \\subseteq \\{k^2\\}$. Soifer's family $(\\sqrt{p}, \\sqrt{q}, \\sqrt{r})$ with distinct primes $p,q,r$ are known examples. Is integral independence necessary and sufficient? Prize: \\$25."
-    }
-  ],
+  "sections": [],
   "conclusion": {
     "summary": "Erdős Problem #633 asks for a classification of triangles that can only be dissected into perfect square numbers of congruent triangles. Soifer showed the triangle (√2, √3, √4) has this property, connected to the concept of integrally independent angles. Counterexamples include equilateral (3 pieces) and right isosceles (2 pieces) triangles, whose angle dependence enables non-square dissections. The complete classification remains OPEN with a $25 prize.",
     "implications": "**Theoretical Significance**: This problem sits at the intersection of combinatorial geometry, tiling theory, and algebraic number theory.\n\nThe constraint that dissection counts must be perfect squares arises from algebraic relationships between triangle side lengths and angles, connecting to linear independence over the rationals. The contrast between the solved similar case (n ≠ 2,3,5) and the open congruent case highlights how congruence constraints add significant complexity to tiling problems.",

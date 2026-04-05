@@ -79,50 +79,7 @@
       "Discrete geometry (point-line incidences, arrangements)"
     ]
   },
-  "sections": [
-    {
-      "id": "definitions",
-      "title": "Geometric Definitions",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Defines Point3D via EuclideanSpace $\\mathbb{R}$ (Fin 3), Euclidean distance using Mathlib's metric API, ConvexPolyhedronVertices as extreme points of convex hull, and the distinct distances counting function"
-    },
-    {
-      "id": "altman-2d",
-      "title": "Altman's 2D Result (1963)",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Formalizes the solved 2D analogue: convex polygon vertices in $\\mathbb{R}^2$ determine $\\geq \\lfloor n/2 \\rfloor$ distinct distances (Altman 1963), using the cyclic structure of convex polygons"
-    },
-    {
-      "id": "main-conjecture",
-      "title": "The Open Conjecture",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "States Erdős Problem #660 formally: $\\exists \\varepsilon(n) \\to 0$ such that convex polyhedron vertices determine $\\geq (1 - \\varepsilon(n)) \\cdot n/2$ distinct distances, using little-o notation"
-    },
-    {
-      "id": "partial-results",
-      "title": "Weaker Bounds",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Trivial lower bound ($\\geq 1$ distance for $n \\geq 2$) and the weaker linear conjecture (some constant $c > 0$ with $|\\Delta^+| \\geq cn$)"
-    },
-    {
-      "id": "special-cases",
-      "title": "Platonic Solids",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "Concrete examples: regular tetrahedron ($n=4$, 1 distance), cube ($n=8$, distances $\\{a, a\\sqrt{2}, a\\sqrt{3}\\}$), octahedron ($n=6$, distances $\\{a\\sqrt{2}, 2a\\}$)"
-    },
-    {
-      "id": "guth-katz",
-      "title": "General Distinct Distances",
-      "startLine": 1,
-      "endLine": 1,
-      "summary": "The Guth-Katz theorem (2015): $\\Omega(n/\\log n)$ distinct distances for arbitrary planar point sets, contextualizing why convex position should yield $\\Theta(n)$ without the log factor"
-    }
-  ],
+  "sections": [],
   "conclusion": {
     "summary": "Erdős Problem #660 remains open. The conjecture that convex polyhedron vertices in $\\mathbb{R}^3$ determine at least $(1-o(1)) \\cdot n/2$ distinct distances extends Altman's solved 2D result ($\\geq \\lfloor n/2 \\rfloor$ for convex polygons) to three dimensions. The formalization captures the conjecture using extreme points of convex hulls and little-o asymptotics, with Platonic solids as concrete test cases and the Guth-Katz theorem providing context from the general distinct distances problem.",
     "implications": "**Theoretical Significance**: Resolution would establish that the convexity constraint forces a clean linear distance count in 3D, without the logarithmic loss present in the general Guth-Katz bound. This would illuminate the fundamental question of how geometric structure (convex position vs.\n\narbitrary position) affects distance distributions. The 2D → 3D transition is a key test case for understanding how dimension affects combinatorial geometry problems, and progress here could inform analogous questions in higher dimensions.",

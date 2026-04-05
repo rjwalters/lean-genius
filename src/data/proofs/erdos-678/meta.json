@@ -89,50 +89,7 @@
       "Native decision procedures in Lean 4"
     ]
   },
-  "sections": [
-    {
-      "id": "definitions",
-      "title": "Interval LCM Definition",
-      "summary": "Two equivalent definitions of LCM over consecutive integers",
-      "startLine": 1,
-      "endLine": 1
-    },
-    {
-      "id": "basic-properties",
-      "title": "Basic Properties",
-      "summary": "Foundational lemmas about interval LCM behavior",
-      "startLine": 1,
-      "endLine": 1
-    },
-    {
-      "id": "erdos-comparison",
-      "title": "Erdős Comparison Property",
-      "summary": "The core comparison predicate and Selfridge's examples",
-      "startLine": 1,
-      "endLine": 1
-    },
-    {
-      "id": "computations",
-      "title": "Verified Computations",
-      "summary": "Native computation of specific LCM values",
-      "startLine": 1,
-      "endLine": 1
-    },
-    {
-      "id": "main-theorem",
-      "title": "Cambie's Theorem",
-      "summary": "The infinitude result proved in 2024",
-      "startLine": 1,
-      "endLine": 1
-    },
-    {
-      "id": "prime-analysis",
-      "title": "Prime Power Analysis",
-      "summary": "Why the phenomenon occurs: prime power avoidance",
-      "startLine": 1,
-      "endLine": 1
-    }
-  ],
+  "sections": [],
   "conclusion": {
     "summary": "Erdős Problem #678 asks whether a shorter interval can have larger LCM than a longer one starting later. The answer is YES: Selfridge found concrete examples in 1979, and Cambie proved infinitely many exist in 2024. Our formalization verifies specific examples computationally and states the main theoretical results.",
     "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Prime distribution:** Intervals containing prime powers have structured LCMs\n**2. Smooth numbers:** Intervals avoiding large primes have smaller LCMs\n3. **Computational number theory:** LCM computations are tractable for moderate intervals\n4. **Chebyshev bounds:** The growth rate log M(n,k) ≈ k uses prime-counting estimates.",
