@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-cos20-root-images",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 40, "endLine": 62 },
+    "type": "theorem",
+    "title": "Algebraic Root Images: All Three Roots Expressible in α",
+    "content": "The three theorems root_image_beta, root_image_gamma, and quadratic_cofactor_root are pure ring identities verifiable by `ring`. They establish the key algebraic fact: if α satisfies 8α³ − 6α − 1 = 0, then β = 2α² − α − 1 and γ = 1 − 2α² are also roots of the same polynomial. The proofs have a uniform structure: expand the target expression algebraically to show it factors as (some polynomial) × (8a³ − 6a − 1), then substitute the hypothesis ha to get 0. This technique — expressing one polynomial relation as a multiple of another using `ring` — is the backbone of the entire splitting field argument.",
+    "mathContext": "Identities: $8(2\\alpha^2 - \\alpha - 1)^3 - 6(2\\alpha^2 - \\alpha - 1) - 1 = (8\\alpha^3 - 12\\alpha^2 + 3)(8\\alpha^3 - 6\\alpha - 1)$ and $8(1 - 2\\alpha^2)^3 - 6(1 - 2\\alpha^2) - 1 = (-8\\alpha^3 + 6\\alpha - 1)(8\\alpha^3 - 6\\alpha - 1)$. Both vanish when $8\\alpha^3 - 6\\alpha - 1 = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["triple-angle formula", "polynomial factorization", "ring tactic", "root conjugates"],
+    "prerequisites": ["CommRing", "ring tactic in Lean 4", "cos(20°), cos(100°), cos(220°) as roots"]
+  },
+  {
+    "id": "ann-cos20-eisenstein",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 111, "endLine": 149 },
+    "type": "theorem",
+    "title": "Eisenstein Criterion and Gauss's Lemma for Irreducibility",
+    "content": "The irreducibility proof proceeds in two steps. First, q_eis_int_irreducible applies the Eisenstein criterion to q = X³ − 6X² + 9X − 3 ∈ ℤ[X] at the prime p = 3: the lower coefficients (−6, 9, −3) are divisible by 3, the constant term (−3) is not divisible by 9, and the leading coefficient (1) is not divisible by 3. Mathlib's `Polynomial.irreducible_of_eisenstein_criterion` packages these conditions into a single application. Then q_eis_rat_irreducible lifts to ℚ[X] via `IsPrimitive.Int.irreducible_iff_irreducible_map_cast` — a formalization of Gauss's lemma: a primitive polynomial irreducible over ℤ is irreducible over ℚ.",
+    "mathContext": "Eisenstein at $p=3$: $q = X^3 - 6X^2 + 9X - 3$ satisfies $3 \\mid -6, 3 \\mid 9, 3 \\mid -3$; $9 \\nmid -3$; $3 \\nmid 1$. Hence $q$ is irreducible over $\\mathbb{Z}$. Gauss's lemma: $q$ is primitive (monic) so irreducibility transfers to $\\mathbb{Q}[X]$.",
+    "significance": "key",
+    "relatedConcepts": ["Eisenstein criterion", "Gauss's lemma", "Polynomial.irreducible_of_eisenstein_criterion", "IsPrimitive"],
+    "prerequisites": ["Ideal.span", "Polynomial.Irreducible", "Int.prime_iff_natAbs_prime"]
+  },
+  {
+    "id": "ann-cos20-irreducibility-transfer",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 170, "endLine": 237 },
+    "type": "theorem",
+    "title": "Irreducibility Transfers Through Invertible Linear Substitution",
+    "content": "p_irreducible proves p = 8X³ − 6X − 1 is irreducible by reducing to irreducibility of q via the substitution ℓ: X ↦ 2X+2 (with inverse ℓ⁻¹: X ↦ X/2−1). The proof uses the definition of irreducibility directly (not a Mathlib lemma for substitution invariance): if p = a*b, then q = q.comp(ℓ.comp(ℓ⁻¹)) = q.comp(id) = q, and composing the factoring hab with ℓ⁻¹ gives q = (a.comp(ℓ⁻¹)) * (b.comp(ℓ⁻¹)), a factoring of q. Since q is irreducible, one factor is a unit, and the same unit lifts back to a or b via the inverse substitution. Both the ℓ.comp(ℓ⁻¹) = X and ℓ⁻¹.comp(ℓ) = X identities are checked by interval_cases on the coefficient index.",
+    "mathContext": "If $\\ell = 2X+2$ and $\\ell^{-1} = \\frac{X-2}{2}$, then $p = q \\circ \\ell$. Any factoring $p = ab$ gives $q = q \\circ (\\ell \\circ \\ell^{-1}) = (a \\circ \\ell^{-1}) \\cdot (b \\circ \\ell^{-1})$. Since $q$ is irreducible, one of $a \\circ \\ell^{-1}$, $b \\circ \\ell^{-1}$ is a unit constant $C(c)$, and composing back with $\\ell$ gives $a = C(c)$ or $b = C(c)$, hence a unit.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial.comp", "Polynomial.comp_assoc", "Polynomial.mul_comp", "invertible substitution"],
+    "prerequisites": ["q_eis_rat_irreducible", "q_comp_eq_p", "Polynomial.isUnit_iff"]
+  },
+  {
+    "id": "ann-cos20-gal-bounds",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 290, "endLine": 311 },
+    "type": "theorem",
+    "title": "Divisibility Bounds: 3 ∣ |Gal| and |Gal| ∣ 6",
+    "content": "Two divisibility bounds pin |Gal| = 3 from above and below. The lower bound three_dvd_gal_card uses Polynomial.Gal.prime_degree_dvd_card: since p is irreducible of prime degree 3, the Galois group has order divisible by 3 (the degree equals the size of a Gal-orbit on roots, and the orbit size divides |Gal|). The upper bound gal_card_dvd_six uses the injective Galois action on roots: the rootSet has 3 elements (by card_rootSet_eq_natDegree applied to the separable degree-3 polynomial), so Gal embeds into Sym₃ = S₃ with |S₃| = 6. Together: 3 ∣ |Gal| and |Gal| ∣ 6, which with the degree-3 splitting field (proved separately) gives |Gal| = 3.",
+    "mathContext": "By Galois theory: $|\\text{Gal}(p/\\mathbb{Q})| = [\\text{SplittingField}(p) : \\mathbb{Q}]$ for separable $p$. Also $|\\text{Gal}| \\mid n! = 6$ (permutations of 3 roots) and $3 \\mid |\\text{Gal}|$ (irreducible of prime degree 3). Once $[\\text{SplittingField}:\\mathbb{Q}] = 3$ is established, $|\\text{Gal}| = 3$ follows directly.",
+    "significance": "supporting",
+    "relatedConcepts": ["Polynomial.Gal.prime_degree_dvd_card", "Polynomial.Gal.galActionHom_injective", "rootSet cardinality", "Sym₃"],
+    "prerequisites": ["p_irreducible", "p_separable", "Polynomial.card_rootSet_eq_natDegree", "Subgroup.card_dvd_of_injective"]
+  },
+  {
+    "id": "ann-cos20-splitting-field",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 396, "endLine": 444 },
+    "type": "theorem",
+    "title": "Splitting Field Equals ℚ(α): Root Containment and Degree 3",
+    "content": "rootSet_subset_adjoin proves every root of p in the splitting field lies in ℚ(α). Given a root r, the factored form 8r³−6r−1 = 8(r−α)(r−β)(r−γ) (from factored_eval_eq) combined with r being a root gives 8(r−α)(r−β)(r−γ) = 0. Since the splitting field is a domain and 8 ≠ 0, one factor r−α, r−β, r−γ must be zero, so r ∈ {α, β, γ} ⊆ ℚ(α). Then adjoin_root_eq_top shows ℚ(α) = ⊤ (the whole splitting field) using Polynomial.SplittingField.adjoin_rootSet: the splitting field is generated by all roots, each of which is in ℚ(α). Combining with adjoin_finrank gives [SplittingField : ℚ] = 3.",
+    "mathContext": "The key fact: $\\{\\text{roots of } p\\} \\subseteq \\mathbb{Q}(\\alpha)$, so $\\mathbb{Q}(\\alpha) \\supseteq \\text{SplittingField}(p)$. But $\\mathbb{Q}(\\alpha) \\subseteq \\text{SplittingField}(p)$ always, so $\\mathbb{Q}(\\alpha) = \\text{SplittingField}(p)$ and $[\\text{SplittingField}:\\mathbb{Q}] = [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg(\\text{minpoly}(\\alpha)) = 3$.",
+    "significance": "key",
+    "relatedConcepts": ["IntermediateField.adjoin", "SplittingField.adjoin_rootSet", "factored_eval_eq", "module finrank"],
+    "prerequisites": ["beta_in_adjoin", "gamma_in_adjoin", "factored_eval_eq", "minpoly_natDegree", "Polynomial.SplittingField"]
+  },
+  {
+    "id": "ann-cos20-main-theorem",
+    "proofId": "angle-trisection-cos-20-gal",
+    "range": { "startLine": 462, "endLine": 474 },
+    "type": "theorem",
+    "title": "Main Theorem: |Gal(8X³-6X-1/ℚ)| = 3",
+    "content": "The main theorem cos20_gal_card assembles all prior results. It invokes Polynomial.Gal.card_of_separable, which says |Gal(p/K)| = [SplittingField : K] for separable p. After converting Nat.card to Fintype.card, it rewrites with splitting_finrank to conclude |Gal| = 3. The companion theorem trisection_poly_irreducible exposes p_irreducible as a public interface. Together these eliminate the `cos20_gal_order` axiom that had been assumed in AngleTrisectionOQ02.lean, upgrading that result from axiomatized to verified.",
+    "mathContext": "For separable $p$: $|\\text{Gal}(p/\\mathbb{Q})| = [\\text{SplittingField}(p) : \\mathbb{Q}] = 3$. Since $\\text{Gal}(\\mathbb{Q}(\\cos 20°)/\\mathbb{Q}) \\cong \\mathbb{Z}/3\\mathbb{Z}$ has prime order, it is cyclic — there are no proper subgroups and no proper intermediate fields, confirming the extension $\\mathbb{Q} \\subset \\mathbb{Q}(\\cos 20°)$ is minimal.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial.Gal.card_of_separable", "cos20_gal_order axiom elimination", "AngleTrisectionOQ02", "ℤ/3ℤ Galois group"],
+    "prerequisites": ["splitting_finrank", "p_separable", "Nat.card_eq_fintype_card", "Polynomial.Gal.card_of_separable"]
+  }
+]

@@ -33,7 +33,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The polynomial 8X³ − 6X − 1 arises from the triple-angle formula cos(3θ) = 4cos³θ − 3cosθ with θ = 20°, giving 4cos³(20°) − 3cos(20°) = cos(60°) = 1/2. Clearing denominators yields 8x³ − 6x − 1. The three roots are cos(20°), cos(100°), and cos(220°), corresponding to the three angles satisfying 3θ ≡ 60° (mod 360°). Since these three roots are the conjugates of a degree-3 irreducible over ℚ, the Galois group is a transitive subgroup of S₃ of order divisible by 3, hence it is the cyclic group ℤ/3ℤ of order 3. Wantzel (1837) used the irreducibility of this polynomial to prove that 60° cannot be trisected by compass and straightedge.",
+    "historicalContext": "The polynomial 8X³ − 6X − 1 arises from the triple-angle formula cos(3θ) = 4cos³θ − 3cosθ with θ = 20°: setting θ = 20° gives 4cos³(20°) − 3cos(20°) = cos(60°) = 1/2, and clearing denominators yields 8x³ − 6x − 1. The three roots cos(20°), cos(100°), cos(220°) correspond to the three angles 3θ ≡ 60° (mod 360°).\n\nPierre Wantzel (1837) was the first to prove rigorously that trisecting a 60° angle is impossible with compass and straightedge. His argument: a real number is constructible iff its minimal polynomial over ℚ has degree a power of 2. Since 8x³ − 6x − 1 is irreducible over ℚ (degree 3, not a power of 2), cos(20°) is not constructible, and 20° cannot be obtained from 60° by ruler-and-compass construction.\n\nÉvariste Galois (1832, published posthumously 1846) developed the theory connecting polynomial irreducibility to symmetry groups. The Galois group of 8x³ − 6x − 1 over ℚ is ℤ/3ℤ: cyclic of order 3, confirming the three roots are all conjugate and the extension ℚ ⊂ ℚ(cos 20°) has no proper intermediate fields. This file provides a complete Lean 4 machine-checked proof, eliminating the cos20_gal_order axiom previously assumed in AngleTrisectionOQ02.lean.",
     "problemStatement": "Determine |Gal(8X³ − 6X − 1 / ℚ)|. The key steps are: (1) prove 8X³ − 6X − 1 is irreducible over ℚ; (2) show all three roots lie in ℚ(α) for any root α, so the splitting field equals ℚ(α); (3) conclude [SplittingField : ℚ] = [ℚ(α) : ℚ] = 3 and hence |Gal| = 3.",
     "proofStrategy": "Irreducibility is proved by shifting: the substitution Y = 2X + 2 transforms 8X³ − 6X − 1 into X³ − 6X² + 9X − 3, which is Eisenstein at p = 3 (coefficients −6, 9, −3 divisible by 3; constant term −3 not divisible by 9; leading coefficient 1 not divisible by 3). Irreducibility transfers back via the invertible linear change of variables. For the Galois group: the key algebraic identities show that if α is a root then β = 2α² − α − 1 and γ = 1 − 2α² are also roots (verified by ring). Since all roots are polynomial expressions in α, adjoin(α) splits p, giving [SplittingField : ℚ] = 3. From this, |Gal| = 3 follows from Mathlib's Polynomial.Gal.card_of_separable.",
     "keyInsights": [
@@ -60,7 +60,43 @@
       "How does the Galois group structure change for the generalizations to other classical construction problems?"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Background: Triple-Angle Formula and Proof Strategy",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module-level comment explaining that p = 8X³−6X−1 is the minimal polynomial of cos(20°), arising from cos(3×20°) = 1/2. States the two key algebraic identities showing β = 2α²−α−1 and γ = 1−2α² are the other roots. Cites Wantzel (1837) and describes how once all roots are in ℚ(α), the Galois group has order 3."
+    },
+    {
+      "id": "root-images",
+      "title": "Part I: Algebraic Identities — Root Images of α",
+      "startLine": 39,
+      "endLine": 62,
+      "summary": "Proves three ring identities (root_image_beta, root_image_gamma, quadratic_cofactor_root) establishing that if α is a root of 8x³−6x−1, then β = 2α²−α−1 and γ = 1−2α² are also roots. All proofs use the ring tactic to factor the identity as a product involving 8a³−6a−1, then substitute the root hypothesis."
+    },
+    {
+      "id": "polynomial-irred",
+      "title": "Parts II and II-B: Polynomial Properties and Irreducibility",
+      "startLine": 64,
+      "endLine": 237,
+      "summary": "Defines p = 8X³−6X−1 and proves its basic properties (degree, non-zero). The Eisenstein shift q = X³−6X²+9X−3 is introduced and proved irreducible over ℤ by Eisenstein's criterion at p=3, then over ℚ by Gauss's lemma. The substitution q(2X+2) = p is verified, and irreducibility transfers to p via the invertible linear change of variables (with explicit inverse X ↦ X/2−1 composed through comp_assoc)."
+    },
+    {
+      "id": "splitting-field",
+      "title": "Parts III–V: Splitting Field Analysis",
+      "startLine": 239,
+      "endLine": 455,
+      "summary": "Constructs root_in_sf (a root of p in the splitting field), verifies β and γ lie in ℚ(α) (as polynomial expressions), and proves the factored form 8a³−6a−1 = 8(a−α)(a−β)(a−γ). Uses this to show all roots of p are in ℚ(α) (rootSet_subset_adjoin), hence ℚ(α) = SplittingField (adjoin_root_eq_top). The finrank equals 3 because the minpoly of α has degree 3 (since p is irreducible and p(α) = 0). Also establishes the divisibility bounds 3 ∣ |Gal| ∣ 6."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part VI: Main Result — |Gal| = 3",
+      "startLine": 457,
+      "endLine": 474,
+      "summary": "cos20_gal_card: applies Polynomial.Gal.card_of_separable to conclude |Gal(8X³−6X−1/ℚ)| = [SplittingField:ℚ] = 3. Also exposes trisection_poly_irreducible as a public interface for the irreducibility of p. These results eliminate the cos20_gal_order axiom from AngleTrisectionOQ02.lean."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "angle-trisection",
