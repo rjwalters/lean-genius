@@ -248,5 +248,27 @@
       "citation": "Kato, T., Perturbation Theory for Linear Operators, Springer Classics in Mathematics (1995, reprint of 1980 2nd ed.).",
       "type": "book"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "tsum_geometric_of_norm_lt_one",
+      "type": "core",
+      "description": "Neumann series sum formula: ∑ T^n = Ring.inverse (1-T) for ‖T‖ < 1"
+    },
+    {
+      "name": "isUnit_of_norm_lt_one_sub",
+      "type": "core",
+      "description": "Perturbation of identity: ‖a - 1‖ < 1 implies a is invertible"
+    },
+    {
+      "name": "neumann_series_norm_bound",
+      "type": "supporting",
+      "description": "Norm bound: ‖∑ T^n‖ ≤ 1/(1-‖T‖)"
+    },
+    {
+      "name": "commutes_tsum_geometric",
+      "type": "key",
+      "description": "Commutativity: T commutes with ∑ T^n without assuming ring is commutative"
+    }
   ]
 }
