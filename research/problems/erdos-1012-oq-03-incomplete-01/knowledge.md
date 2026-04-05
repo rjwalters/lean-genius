@@ -5,6 +5,43 @@
 Prove `directed_hamiltonian_threshold` and `ghouila_houri` in `Proofs/Erdos1012OQ03.lean`.
 `directed_hamiltonian_threshold`: a strongly connected digraph with arcCount > (n-1)² has a Hamiltonian cycle.
 
+## Session 2026-04-05 (Session 3) — perm_arc_bad_card_le integration
+
+**Mode**: REVISIT
+**Outcome**: progress — perm_arc_bad_card_le integrated from Aristotle companion file; directed_hamiltonian_threshold now fully proved with 0 sorries
+
+### What I Did
+
+1. Verified Aristotle job `73cf466b-e55c-4b03-a282-0ef698c26775` had status "integrated" in aristotle-jobs.json but sorry was still in main file
+2. Integrated proof from `Erdos1012OQ03Aristotle.lean` into `Erdos1012OQ03.lean` line 970
+3. Verified `directed_hamiltonian_threshold` support chain: all sorries resolved
+   - `missing_arcs_le`: proved
+   - `perm_arc_bad_card_le`: now proved (40 lines from Aristotle)
+   - `counting_factorial_lt`: proved
+   - `hmissing_count`: proved (Session 2)
+   - `directed_hamiltonian_threshold`: 0 sorries
+4. Updated meta.json: sorries 2→1
+5. All errors in file are pre-existing in ghouila_houri infrastructure (lines 85-704), not in our proof
+
+### Key Findings
+
+- Aristotle "integrated" status in JSON ≠ actual integration into .lean file; always verify with grep
+- `directed_hamiltonian_threshold` (Part V, lines 1047-1209) compiles completely error-free
+- Pre-existing errors are confined to ghouila_houri helpers (lines 85-704) using `List.insertNth` (renamed to `List.insertIdx` in Mathlib4)
+
+### Files Modified
+
+- `proofs/Proofs/Erdos1012OQ03.lean` (line 970: sorry→proof, comment update)
+- `src/data/proofs/erdos-1012-oq-03/meta.json` (sorries 2→1)
+
+### Next Steps
+
+- `ghouila_houri` infrastructure fix: rename `List.insertNth` → `List.insertIdx` and fix related API (~50 API calls, non-trivial)
+- After API fix: the infrastructure for ghouila_houri may be substantially complete (longest-path argument)
+- Current blocker: `List.insertNth` does not exist; `List.indexOf` also renamed
+
+---
+
 ## Session 2026-04-04 (Session 2) — hmissing_count proof
 
 **Mode**: REVISIT
