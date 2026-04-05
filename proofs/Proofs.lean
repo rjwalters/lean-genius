@@ -177,6 +177,7 @@ import Proofs.BuffonsNeedleOQ02OQ01
 import Proofs.BuffonsNeedleOQ02OQ02
 import Proofs.BuffonsNoodle
 import Proofs.BurnsideCounting
+import Proofs.BurnsideCountingOQ03OQ03
 import Proofs.CantorDiagonalization
 import Proofs.CantorDiagonalizationOQ01
 import Proofs.CantorDiagonalizationOQ01OQ01
@@ -856,6 +857,7 @@ import Proofs.Erdos276Problem
 import Proofs.Erdos277Problem
 import Proofs.Erdos278Problem
 import Proofs.Erdos279Problem
+import Proofs.Erdos279OQ04
 import Proofs.Erdos280Problem
 import Proofs.Erdos281Problem
 import Proofs.Erdos282Problem
