@@ -58,7 +58,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 211,
-    "assumptions": "19 axioms: tree_edge_count, ramsey_exists, ramseyNumber_achieves, and 16 more. See Lean source for complete statements."
+    "assumptions": "5 axioms: ramsey_exists, chvatal, erdos_conjecture_open, bipartite_case, burr_conjecture. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Chvátal's Breakthrough (1977)**\\n\\nVáclav Chvátal proved one of the most elegant exact results in Ramsey theory: R(T, Kₘ) = (m-1)(n-1) + 1 for ANY tree T on n vertices. Unlike most Ramsey numbers which have only asymptotic bounds, this gives an exact closed formula. The proof uses a beautiful induction on tree structure.\\n\\n**Erdős's Generalization**\\n\\nErdős asked (Problem #550, circa 1985): can Chvátal's result extend to complete multipartite graphs? If G = K_{m₁,...,mₖ}, he conjectured R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1) + m₁. This bound is recursive—it uses the bipartite Ramsey number as a building block.\\n\\n**The Problem's Status**\\n\\nDespite partial progress on special cases (bounded-degree trees, paths, stars), the general conjecture remains OPEN. The difficulty lies in handling arbitrary multipartite structures beyond the bipartite case.\\n\\n**Related Results**\\n\\nBurr's conjecture (now proved) established linear bounds R(T, K₃) ≤ C·n for bounded-degree trees. The Gerencsér-Gyárfás theorem gives exact path-vs-path Ramsey numbers. These special cases inform but don't resolve the general problem.",
