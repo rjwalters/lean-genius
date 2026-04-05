@@ -1,42 +1,74 @@
 [
   {
-    "id": "ann-overview",
-    "type": "explanation",
-    "title": "Falling Factorial Vandermonde Identity",
-    "body": "The falling factorial descFactorial(n,r) = n*(n-1)*...*(n-r+1) counts ordered r-selections from n items. This identity says: (m+n choose r, ordered) = ∑_j (choose j from m, ordered) * (choose r-j from n, ordered) * C(r,j), where C(r,j) accounts for which j positions in the r-tuple come from the first m items.",
-    "lineStart": 1,
-    "lineEnd": 25
+    "id": "ann-vandermonde-header",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "context",
+    "title": "The Falling Factorial Vandermonde Identity",
+    "content": "The falling factorial (descending factorial) $n^{\\underline{r}} = n(n-1)\\cdots(n-r+1)$ counts ordered $r$-selections from $n$ items. The standard Vandermonde convolution $\\binom{m+n}{r} = \\sum_j \\binom{m}{j}\\binom{n}{r-j}$ lifts to the falling factorial form by multiplying by $r!$: each term $r! \\cdot \\binom{m}{j}\\binom{n}{r-j}$ becomes $\\binom{r}{j} \\cdot (m)^{\\underline{j}} \\cdot (n)^{\\underline{r-j}}$, the number of ordered $r$-tuples from $m+n$ items choosing $j$ from the first $m$ with $\\binom{r}{j}$ ways to place those positions. The proof imports `BinomialTheoremOQ03` for the standard Vandermonde and avoids broken parent files.",
+    "mathContext": "$(m+n)^{\\underline{r}} = \\sum_{j=0}^{r} \\binom{r}{j} \\cdot m^{\\underline{j}} \\cdot n^{\\underline{r-j}}$, where $n^{\\underline{k}} = n(n-1)\\cdots(n-k+1) = k! \\binom{n}{k}$",
+    "significance": "key",
+    "relatedConcepts": ["falling factorial", "Vandermonde convolution", "ordered selections", "binomial coefficients"],
+    "prerequisites": ["combinatorics", "binomial coefficients", "factorial notation"]
   },
   {
-    "id": "ann-key-conversion",
-    "type": "insight",
-    "title": "descFactorial = factorial * choose",
-    "body": "The key Mathlib identity Nat.descFactorial_eq_factorial_mul_choose states: descFactorial(n,k) = k! * C(n,k). This converts between ordered selections (descFactorial) and unordered selections (choose) by accounting for the k! orderings. It enables direct derivation from the standard Vandermonde by substituting descFactorial → k!*C(n,k) throughout.",
-    "lineStart": 40,
-    "lineEnd": 50
+    "id": "ann-desc-factorial-conversion",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "concept",
+    "title": "The Key Conversion: descFactorial = factorial × choose",
+    "content": "The conversion identity `Nat.descFactorial_eq_factorial_mul_choose` states $n^{\\underline{k}} = k! \\cdot \\binom{n}{k}$. This is the bridge between ordered and unordered counting: $n^{\\underline{k}}$ counts ordered $k$-selections (permutations) and $\\binom{n}{k}$ counts unordered ones, with $k!$ being the factor for orderings. This identity enables the proof strategy: convert everything to the binomial coefficient form, apply the known standard Vandermonde, then convert back. The proof uses `simp_rw` (rather than `rw`) to rewrite under binders (inside the sum).",
+    "mathContext": "$n^{\\underline{k}} = k! \\cdot \\binom{n}{k}$; equivalently $\\binom{n}{k} = \\frac{n^{\\underline{k}}}{k!} = \\frac{n!}{k!(n-k)!}$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.descFactorial_eq_factorial_mul_choose", "permutations vs combinations", "simp_rw tactic"],
+    "prerequisites": ["combinatorics", "factorial identities", "Lean 4 simp_rw"]
   },
   {
-    "id": "ann-term-eq",
+    "id": "ann-term-eq-lemma",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 37, "endLine": 46 },
     "type": "technique",
-    "title": "Term Equality via ring + key identity",
-    "body": "The term_eq lemma proves C(r,j)*(j!*C(m,j))*((r-j)!*C(n,r-j)) = r!*(C(m,j)*C(n,r-j)) in two steps: (1) ring to regroup as (C(r,j)*j!*(r-j)!) * (C(m,j)*C(n,r-j)), (2) rw [Nat.choose_mul_factorial_mul_factorial] to replace C(r,j)*j!*(r-j)! by r!. The ring step works because ℕ is a CommSemiring.",
-    "lineStart": 43,
-    "lineEnd": 50
+    "title": "term_eq: The Algebraic Core via ring + factorial identity",
+    "content": "The `term_eq` lemma proves the key term-by-term equality needed to match the two forms of the sum. After converting descFactorials, the $j$-th term on the RHS is $\\binom{r}{j}(j! \\cdot \\binom{m}{j})((r-j)! \\cdot \\binom{n}{r-j})$, which must equal $r! \\cdot \\binom{m}{j}\\binom{n}{r-j}$. The proof first uses `ring` to regroup as $(\\binom{r}{j} \\cdot j! \\cdot (r-j)!) \\cdot (\\binom{m}{j}\\binom{n}{r-j})$, then applies `Nat.choose_mul_factorial_mul_factorial hj` (which states $\\binom{r}{j} \\cdot j! \\cdot (r-j)! = r!$ for $j \\leq r$) to close the goal. The `calc` block makes the two-step algebraic reasoning explicit.",
+    "mathContext": "$\\binom{r}{j} \\cdot j! \\cdot (r-j)! = r!$ (for $j \\leq r$) — this is the key identity, equivalent to $\\binom{r}{j} = \\frac{r!}{j!(r-j)!}$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.choose_mul_factorial_mul_factorial", "ring tactic", "calc block", "factorial identity"],
+    "prerequisites": ["factorial identities", "Lean 4 ring tactic", "calc proofs", "Nat.choose"]
   },
   {
-    "id": "ann-proof-structure",
+    "id": "ann-proof-convert-step",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 59, "endLine": 68 },
     "type": "technique",
-    "title": "simp_rw + rw + sum_congr Pattern",
-    "body": "The main proof uses a clean 4-step pattern: (1) simp_rw [Nat.descFactorial_eq_factorial_mul_choose] to convert all descFactorials globally, (2) rw [vandermonde_range m n r] to expand C(m+n,r) as a sum, (3) rw [Finset.mul_sum] to distribute r! over the sum, (4) Finset.sum_congr + term_eq to verify each summand. This pattern extends to other factorial identities.",
-    "lineStart": 55,
-    "lineEnd": 75
+    "title": "Main Theorem: Convert, Apply Vandermonde, Distribute",
+    "content": "The main proof follows a three-step pattern. First, `simp_rw [Nat.descFactorial_eq_factorial_mul_choose]` rewrites all falling factorials to `k! * C(n,k)` form — using `simp_rw` (not `rw`) because the rewriting must happen under binders (inside the `∑` on the RHS). Second, `rw [BinomialTheoremOQ03.vandermonde_range m n r]` rewrites $\\binom{m+n}{r}$ as $\\sum_j \\binom{m}{j}\\binom{n}{r-j}$, converting the LHS to a sum. Third, `rw [Finset.mul_sum]` distributes $r!$ over the sum, giving $\\sum_j r! \\cdot \\binom{m}{j}\\binom{n}{r-j}$ on the LHS, matching the form needed for `term_eq`.",
+    "mathContext": "After the three rewrites: LHS $= \\sum_j r! \\cdot \\binom{m}{j}\\binom{n}{r-j}$, RHS $= \\sum_j \\binom{r}{j} \\cdot j! \\cdot \\binom{m}{j} \\cdot (r-j)! \\cdot \\binom{n}{r-j}$; `term_eq` closes each summand",
+    "significance": "key",
+    "relatedConcepts": ["simp_rw vs rw", "vandermonde_range", "Finset.mul_sum", "BinomialTheoremOQ03"],
+    "prerequisites": ["Lean 4 simp_rw", "Finset.sum", "Finset.mul_sum", "rewriting under binders"]
   },
   {
-    "id": "ann-no-broken-imports",
+    "id": "ann-sum-congr-close",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "technique",
+    "title": "sum_congr: Pointwise Term Verification",
+    "content": "`Finset.sum_congr rfl` reduces proving equality of two sums to proving each pair of terms equal (given the same indexing set). The `intro j hj` unpacks membership in `Finset.range (r+1)`, and `simp only [Finset.mem_range, Nat.lt_succ_iff] at hj` converts this to `j ≤ r` (the hypothesis needed by `term_eq`). The final `exact (term_eq m n r j hj).symm` applies the lemma with the `.symm` flip since `term_eq` proves RHS = LHS and the goal is LHS = RHS. This `sum_congr` pattern is standard for proving sum identities when terms match individually.",
+    "mathContext": "`Finset.sum_congr : s = t → (∀ x ∈ t, f x = g x) → ∑ x ∈ s, f x = ∑ x ∈ t, g x`; here $s = t = \\{0,\\ldots,r\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_congr", "Finset.mem_range", "pointwise sum equality", "Lean 4 proof patterns"],
+    "prerequisites": ["Finset.sum in Lean", "Finset.range", "sum_congr API"]
+  },
+  {
+    "id": "ann-combinatorial-interpretation",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 52, "endLine": 58 },
     "type": "insight",
-    "title": "Avoiding Broken Parent Dependencies",
-    "body": "ArithmeticSeriesOQ02OQ04.lean has a pre-existing Lean version compatibility bug (decimal notation 1.factorial and `in` vs `∈` syntax). This proof avoids importing that file entirely, using only Mathlib's Nat.descFactorial lemmas directly. This makes the proof robust to changes in the parent file.",
-    "lineStart": 22,
-    "lineEnd": 23
+    "title": "Combinatorial Interpretation of the Falling Factorial Identity",
+    "content": "The falling factorial Vandermonde has a natural bijective proof: $(m+n)^{\\underline{r}}$ counts ordered $r$-tuples from $\\{1,\\ldots,m+n\\}$. To choose such a tuple, first decide which $j \\in \\{0,\\ldots,r\\}$ of the $r$ positions will use items from the first $m$: there are $\\binom{r}{j}$ ways. Then fill those $j$ positions with an ordered selection from $\\{1,\\ldots,m\\}$ (giving $m^{\\underline{j}}$) and the remaining $r-j$ positions with an ordered selection from $\\{m+1,\\ldots,m+n\\}$ (giving $n^{\\underline{r-j}}$). The algebraic proof here derives this by passing through the binomial form, which is less direct but immediately verifiable in Lean.",
+    "mathContext": "Bijection: ordered $r$-tuple from $[m+n]$ = (subset $S \\subseteq [r]$ of size $j$) × (ordered $j$-tuple from $[m]$) × (ordered $(r-j)$-tuple from $[n]$)",
+    "significance": "supporting",
+    "relatedConcepts": ["bijective proof", "double counting", "ordered vs unordered selections", "combinatorial identity"],
+    "prerequisites": ["combinatorics", "counting principles", "bijection proof technique"]
   }
 ]

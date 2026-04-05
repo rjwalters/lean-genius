@@ -62,17 +62,17 @@
   },
   "crossReferences": [
     {
-      "id": "arithmetic-series-oq-02-oq-04-oq-01",
+      "targetId": "arithmetic-series-oq-02-oq-04-oq-01",
       "relationship": "parent",
       "description": "C(n,k)*k! = descFactorial(n,k) — the key conversion identity"
     },
     {
-      "id": "binomial-theorem-oq-03",
-      "relationship": "dependency",
+      "targetId": "binomial-theorem-oq-03",
+      "relationship": "related",
       "description": "vandermonde_range — standard Vandermonde convolution used in the proof"
     },
     {
-      "id": "arithmetic-series-oq-02-oq-01-oq-01",
+      "targetId": "arithmetic-series-oq-02-oq-01-oq-01",
       "relationship": "related",
       "description": "q-Vandermonde identity — q-deformation of this result"
     }
@@ -80,24 +80,27 @@
   "sections": [
     {
       "id": "sec-header",
-      "title": "Module Header",
+      "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 30,
-      "summary": "Documents the falling factorial Vandermonde identity, proof strategy, and references to parent proofs and Mathlib lemmas."
+      "endLine": 31,
+      "summary": "Documents the falling factorial Vandermonde identity and proof strategy. Imports BinomialTheoremOQ03 for vandermonde_range and opens Finset and BigOperators for sum notation.",
+      "mathContext": "$(m+n)^{\\underline{r}} = \\sum_{j=0}^{r} \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$, derived from $\\binom{m+n}{r} = \\sum_j \\binom{m}{j}\\binom{n}{r-j}$ by multiplying by $r!$"
     },
     {
       "id": "sec-term-eq",
       "title": "Key Term Equality Lemma",
-      "startLine": 38,
-      "endLine": 50,
-      "summary": "Proves C(r,j)*(j!*C(m,j))*((r-j)!*C(n,r-j)) = r!*(C(m,j)*C(n,r-j)) using ring + Nat.choose_mul_factorial_mul_factorial. This is the algebraic core enabling term-by-term matching."
+      "startLine": 33,
+      "endLine": 46,
+      "summary": "Proves term_eq: C(r,j)*(j!*C(m,j))*((r-j)!*C(n,r-j)) = r!*(C(m,j)*C(n,r-j)). Uses a calc block: first ring to regroup, then Nat.choose_mul_factorial_mul_factorial to replace C(r,j)*j!*(r-j)! with r!. This is the algebraic core enabling term-by-term matching.",
+      "mathContext": "$\\binom{r}{j} \\cdot j! \\cdot (r-j)! = r!$ (for $j \\leq r$) — the key factorial identity"
     },
     {
       "id": "sec-main-theorem",
       "title": "Main Theorem: Vandermonde in Falling Factorial Form",
-      "startLine": 52,
+      "startLine": 48,
       "endLine": 78,
-      "summary": "Proves descFactorial(m+n,r) = ∑_j C(r,j)*descFactorial(m,j)*descFactorial(n,r-j). Uses simp_rw to convert descFactorials, vandermonde_range to get the standard sum, Finset.mul_sum to distribute r!, then term_eq for each summand."
+      "summary": "Proves vandermonde_descFactorial. Steps: (1) simp_rw converts all descFactorials to k!*C(n,k); (2) vandermonde_range rewrites C(m+n,r) as a sum; (3) Finset.mul_sum distributes r! over the sum; (4) Finset.sum_congr + term_eq matches each summand.",
+      "mathContext": "Strategy: $(m+n)^{\\underline{r}} = r! \\cdot \\binom{m+n}{r} = r! \\sum_j \\binom{m}{j}\\binom{n}{r-j} = \\sum_j \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$"
     }
   ]
 }
