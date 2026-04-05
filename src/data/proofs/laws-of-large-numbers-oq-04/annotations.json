@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-gc-definitions",
+    "proofId": "laws-of-large-numbers-oq-04",
+    "range": { "startLine": 46, "endLine": 56 },
+    "type": "definition",
+    "title": "Three Core Definitions: empiricalCDF, trueCDF, thresholdIndicator",
+    "content": "The formalization rests on three noncomputable definitions. `empiricalCDF X n x ω` = (1/n) * Σᵢ₌₀ⁿ⁻¹ 1_{Xᵢ(ω) ≤ x} — the fraction of the first n samples falling at or below threshold x. `trueCDF X μ x` = (μ{ω | X 0 ω ≤ x}).toReal — the true probability mass below x. `thresholdIndicator X x i ω` = 1_{Xᵢ(ω) ≤ x} — the individual indicator for sample i at threshold x.\n\nThe key design choice: thresholdIndicator is defined as Set.indicator (Set.Iic x) (fun _ => 1) ∘ X i, making it a composition. This composition form is exactly what iIndepFun.comp and IdentDistrib.comp require to transfer i.i.d. structure from X to the indicators — it lets SLLN be applied directly.",
+    "mathContext": "$\\hat{F}_n(x, \\omega) = \\frac{1}{n}\\sum_{i=0}^{n-1} \\mathbf{1}_{X_i(\\omega) \\leq x}$; $F(x) = \\mu\\{\\omega : X_0(\\omega) \\leq x\\}$; $\\phi_x(v) = \\mathbf{1}_{v \\leq x}$ so $\\hat{F}_n(x) = \\frac{1}{n}\\sum_i \\phi_x \\circ X_i$",
+    "significance": "key",
+    "relatedConcepts": ["empirical distribution function", "indicator function", "Set.Iic", "thresholdIndicator composition"],
+    "prerequisites": ["measure theory", "probability spaces in Lean 4", "Set.indicator", "noncomputable definitions"]
+  },
+  {
+    "id": "ann-gc-basic-identities",
+    "proofId": "laws-of-large-numbers-oq-04",
+    "range": { "startLine": 60, "endLine": 68 },
+    "type": "technique",
+    "title": "Bridge Theorems: empiricalCDF as Sample Mean, thresholdIndicator as Composition",
+    "content": "`empiricalCDF_eq_mean` proves that empiricalCDF X n x ω equals the sum-over-range form divided by n. This bridges the definition (which uses a multiplicative (1/n) factor) to the standard form that strong_law_ae_real expects (sum divided by n). The `ring` tactic closes it in one step.\n\n`thresholdIndicator_eq_comp` proves that thresholdIndicator X x i equals the pointwise composition Set.indicator(Iic x) ∘ X i. This 'unwrapping' is essential for applying iIndepFun.comp and IdentDistrib.comp — those Mathlib lemmas require the composition form explicitly.",
+    "mathContext": "$\\text{empiricalCDF}(X, n, x, \\omega) = \\frac{\\sum_{i < n} \\text{thresholdIndicator}(X, x, i, \\omega)}{n}$; $\\text{thresholdIndicator}(X, x, i) = (\\mathbf{1}_{\\cdot \\leq x}) \\circ X_i$",
+    "significance": "supporting",
+    "relatedConcepts": ["ring tactic", "function composition", "strong_law_ae_real API", "iIndepFun.comp precondition"],
+    "prerequisites": ["Lean 4 ring tactic", "function extensionality", "Set.indicator"]
+  },
+  {
+    "id": "ann-gc-iid-structure",
+    "proofId": "laws-of-large-numbers-oq-04",
+    "range": { "startLine": 79, "endLine": 96 },
+    "type": "insight",
+    "title": "I.I.D. Transfer via Composition: From X to Threshold Indicators",
+    "content": "This is the conceptual core of the pointwise convergence proof. To apply SLLN to the threshold indicators 1_{Xᵢ ≤ x}, we need them to be (a) identically distributed and (b) pairwise independent.\n\n`thresholdIndicator_identDistrib` deduces (a) from IdentDistrib of the X i: since X i and X 0 have the same law, any measurable function of them does too. The proof is (hident i).comp (measurable_iic_indicator x) — a single term.\n\n`thresholdIndicator_pairwise_indep` deduces (b) from iIndepFun X μ: first apply hX_iid.comp to get iIndepFun for the indicators (using measurability of 1_{· ≤ x}), then extract pairwise independence via indepFun. The Lean 4 version of this is: first get the full mutual independence of the indicators, then project to pairwise independence.\n\nThis composition pattern — g_x ∘ X_i inherits i.i.d. from X_i for any measurable g_x — is the fundamental transfer lemma for empirical process theory.",
+    "mathContext": "$\\text{IdentDistrib}(X_i, X_0) \\Rightarrow \\text{IdentDistrib}(\\phi_x \\circ X_i, \\phi_x \\circ X_0)$ (via `.comp`); $\\text{iIndepFun}(X) \\Rightarrow \\text{iIndepFun}(\\phi_x \\circ X)$ (via `.comp`) $\\Rightarrow$ pairwise independence",
+    "significance": "key",
+    "relatedConcepts": ["IdentDistrib.comp", "iIndepFun.comp", "iIndepFun.indepFun", "composition of i.i.d. random variables"],
+    "prerequisites": ["probability theory — i.i.d.", "Mathlib.Probability.Independence.Basic", "Mathlib.Probability.IdentDistrib"]
+  },
+  {
+    "id": "ann-gc-axioms",
+    "proofId": "laws-of-large-numbers-oq-04",
+    "range": { "startLine": 100, "endLine": 111 },
+    "type": "concept",
+    "title": "Integration Axioms: Integrability and E[1_{X₀ ≤ x}] = F(x)",
+    "content": "`thresholdIndicator_integrable` states that 1_{X₀ ≤ x} is integrable on a probability space. This is a standard fact: a bounded measurable function on a finite-measure space is integrable. The proof would use that |1_{X₀ ≤ x}| ≤ 1 (bounded) and the space has finite measure (IsProbabilityMeasure). Axiomatized because navigating Mathlib's MeasureTheory.Integrable API for indicator functions requires significant boilerplate.\n\n`integral_thresholdIndicator_eq_cdf` is the key identity: ∫ 1_{X₀ ≤ x} dμ = μ{X₀ ≤ x} = F(x). This follows from integral_indicator_const and measurability of {ω | X₀ ω ≤ x}. It connects the SLLN output (which gives the integral as the limit) to the trueCDF definition. Together these two axioms bridge measure-theoretic integration and probabilistic CDF notation.",
+    "mathContext": "$\\int_\\Omega \\mathbf{1}_{X_0(\\omega) \\leq x}\\,d\\mu(\\omega) = \\mu\\{\\omega : X_0(\\omega) \\leq x\\} = F(x)$ (via integral_indicator_const and measurability of the preimage set)",
+    "significance": "supporting",
+    "relatedConcepts": ["integral_indicator_const", "MeasureTheory.Integrable", "IsProbabilityMeasure", "preimage measurability"],
+    "prerequisites": ["measure theory — Lebesgue integration", "Mathlib.MeasureTheory.Integral.Bochner", "bounded functions on finite-measure spaces"]
+  },
+  {
+    "id": "ann-gc-slln-application",
+    "proofId": "laws-of-large-numbers-oq-04",
+    "range": { "startLine": 115, "endLine": 136 },
+    "type": "technique",
+    "title": "Pointwise Convergence: Orchestrating SLLN for Threshold Indicators",
+    "content": "This is the fully proved centerpiece. The proof orchestrates four ingredients:\n1. `thresholdIndicator_integrable` → the Y_i = 1_{Xᵢ ≤ x} are integrable\n2. `thresholdIndicator_pairwise_indep` → the Y_i are pairwise independent\n3. `thresholdIndicator_identDistrib` → the Y_i are identically distributed\n4. `strong_law_ae_real` → (Σᵢ Y_i)/n → E[Y_0] a.s.\n\nThen `integral_thresholdIndicator_eq_cdf` identifies E[Y_0] = F(x), so the limit is trueCDF X μ x. The final steps use `filter_upwards` + `convert` to match the form of the SLLN output to empiricalCDF_eq_mean.\n\nThe `rw [integral_thresholdIndicator_eq_cdf hX_meas x] at hslln` is the critical rewrite — it transforms the abstract 'converges to its expectation' statement into 'converges to trueCDF X μ x'.",
+    "mathContext": "`strong_law_ae_real` gives: $\\frac{1}{n}\\sum_{i=0}^{n-1} \\mathbf{1}_{X_i \\leq x} \\xrightarrow{a.s.} \\mathbb{E}[\\mathbf{1}_{X_0 \\leq x}] = F(x)$. Rewrites via `integral_thresholdIndicator_eq_cdf` then `filter_upwards` + `convert`.",
+    "significance": "key",
+    "relatedConcepts": ["strong_law_ae_real", "filter_upwards", "Filter.Tendsto", "almost sure convergence", "Mathlib.Probability.StrongLaw"],
+    "prerequisites": ["Mathlib.Probability.StrongLaw", "filter_upwards tactic", "Filter.Tendsto in Lean 4"]
+  },
+  {
+    "id": "ann-gc-uniform",
+    "proofId": "laws-of-large-numbers-oq-04",
+    "range": { "startLine": 140, "endLine": 157 },
+    "type": "insight",
+    "title": "Glivenko-Cantelli Axiom: The Bracketing Argument for Uniform Convergence",
+    "content": "The uniform convergence step — sup_x |Fₙ(x) - F(x)| → 0 a.s. — is axiomatized because the finite bracketing argument requires infrastructure not available in Mathlib 4.26.\n\nThe classical proof: for ε > 0, choose continuity points q₁ < ... < qₖ of F that form an ε-dense partition (F(qⱼ₊₁) - F(qⱼ) < ε). Each continuity point satisfies |Fₙ(qⱼ) - F(qⱼ)| → 0 a.s. by pointwise convergence. The finite intersection of these a.s. events is still a.s., so for large enough n, all grid errors are < ε. For any x ∈ [qⱼ, qⱼ₊₁), monotonicity of both Fₙ and F gives |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε.\n\nThe Lean gap: formalizing the finite covering argument requires Mathlib lemmas about continuity points of monotone functions and their density, which are not yet in Mathlib 4.26.",
+    "mathContext": "For $j \\leq x < q_{j+1}$: $F_n(x) - F(x) \\leq F_n(q_{j+1}) - F(q_j) \\leq (F_n(q_{j+1}) - F(q_{j+1})) + \\varepsilon$; similarly $F(x) - F_n(x) \\leq (F(q_j) - F_n(q_j)) + \\varepsilon$. So $\\sup_x|F_n - F| \\leq \\max_j|F_n(q_j) - F(q_j)| + \\varepsilon \\to \\varepsilon$ a.s.",
+    "significance": "key",
+    "relatedConcepts": ["bracketing number", "epsilon-net argument", "uniformly consistent estimator", "sup norm convergence", "VC theory"],
+    "prerequisites": ["uniform convergence", "monotone function continuity points", "finite intersection of a.s. events"]
+  },
+  {
+    "id": "ann-gc-monotonicity",
+    "proofId": "laws-of-large-numbers-oq-04",
+    "range": { "startLine": 161, "endLine": 207 },
+    "type": "concept",
+    "title": "Structural Properties: Monotonicity, Non-negativity, and Pointwise Error Decay",
+    "content": "Four structural theorems establish properties needed for the bracketing argument. `empiricalCDF_mono` and `trueCDF_mono` prove that both CDFs are non-decreasing in x — this is exactly the monotonicity used in the uniform convergence bracketing. For empiricalCDF, the proof applies Finset.sum_le_sum + Set.indicator_le_indicator_of_subset with Iic_subset_Iic.mpr hxy. For trueCDF, it uses ENNReal.toReal_mono + measure_mono.\n\n`empiricalCDF_nonneg` and `trueCDF_nonneg` establish that CDF values lie in [0,1). The nonneg bounds are needed to ensure |Fₙ(x) - F(x)| is a well-formed absolute value.\n\n`empiricalCDF_error_vanishes` packages the pointwise convergence result into the form 'Fₙ(x) - F(x) → 0 a.s.', which is useful for the bracketing step: once the centered error vanishes, taking sup over a finite grid is straightforward.",
+    "mathContext": "$0 \\leq F_n(x) \\leq 1$, $0 \\leq F(x) \\leq 1$; $x \\leq y \\Rightarrow F_n(x) \\leq F_n(y)$ and $F(x) \\leq F(y)$. `empiricalCDF_error_vanishes`: $F_n(x, \\omega) - F(x) \\to 0$ a.s., derived from `empiricalCDF_pointwise_convergence` via `.sub_const`.",
+    "significance": "supporting",
+    "relatedConcepts": ["ENNReal.toReal_mono", "measure_mono", "Set.Iic_subset_Iic", "Finset.sum_le_sum", "indicator_le_indicator_of_subset"],
+    "prerequisites": ["monotone functions", "ENNReal in Lean 4", "Finset.sum_le_sum API"]
+  }
+]

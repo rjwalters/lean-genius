@@ -45,7 +45,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Glivenko-Cantelli theorem, proved independently by Valery Glivenko and Francesco Cantelli in 1933, establishes the fundamental statistical fact that the empirical distribution function is a uniformly consistent estimator of the true distribution function. This result is foundational for nonparametric statistics, as it guarantees that the empirical CDF—the most natural nonparametric estimator—converges to the true CDF not just at each individual point, but uniformly over all thresholds simultaneously. The theorem is often called the 'fundamental theorem of statistics'. It was later substantially generalized by Vapnik and Chervonenkis (1971) to classes of sets beyond half-lines, leading to VC theory and statistical learning theory.",
+    "historicalContext": "The Glivenko-Cantelli theorem was proved independently by Valery Glivenko ('Sulla determinazione empirica delle leggi di probabilita', 1933) and Francesco Cantelli (same journal, same year) — a remarkable simultaneous discovery. It establishes that the empirical distribution function is a uniformly consistent estimator: for any i.i.d. sequence, the empirical CDF converges to the true CDF not pointwise but uniformly over all thresholds simultaneously. The theorem is often called the 'fundamental theorem of statistics'. The pointwise version (for each fixed x) follows immediately from the Strong Law of Large Numbers applied to Bernoulli indicators; the uniform step requires the additional argument that a monotone function converging pointwise on a dense grid converges uniformly everywhere — a finite bracketing argument using continuity points of F.\n\nThe theorem was substantially generalized by Vapnik and Chervonenkis (1971) to arbitrary classes of measurable sets with finite VC dimension, founding statistical learning theory and PAC learning. The Donsker (1952) invariance principle gives the quantitative refinement: √n(Fₙ - F) converges weakly to a Brownian bridge process, providing rates of convergence and underpinning the Kolmogorov-Smirnov test. The Glivenko-Cantelli theorem is thus the gateway to empirical process theory.",
     "problemStatement": "For i.i.d. real-valued random variables X₁, X₂, ... from distribution F, define the empirical CDF Fₙ(x) = (1/n)|{i ≤ n : Xᵢ ≤ x}|. Then sup_{x∈ℝ} |Fₙ(x) - F(x)| → 0 almost surely as n → ∞.",
     "text": "The empirical CDF converges uniformly to the true CDF almost surely for any i.i.d. sequence.",
     "proofStrategy": "The formalization proceeds in two stages. Stage 1 (proved): For each fixed threshold x, the indicators 1_{Xᵢ ≤ x} are i.i.d. Bernoulli(F(x)) random variables. Applying Mathlib's `strong_law_ae_real` gives Fₙ(x) → F(x) a.s. for each x. Stage 2 (axiomatized): For ε > 0, choose finitely many continuity points q₁,...,qₖ of F partitioning ℝ with F-mass < ε per interval. Pointwise convergence holds simultaneously on the finite grid a.s. (finite intersection). For any x between grid points, monotonicity gives |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε, establishing uniform convergence. The bracketing argument is axiomatized as `glivenko_cantelli_uniform` since the finite covering infrastructure is not available in Mathlib 4.26.",
@@ -65,43 +65,59 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Empirical and True CDF Definitions",
+      "title": "Definitions: empiricalCDF, trueCDF, thresholdIndicator",
       "startLine": 44,
       "endLine": 56,
-      "summary": "Defines empiricalCDF as the sample mean of threshold indicators, trueCDF as μ{ω | X₀(ω) ≤ x}.toReal, and thresholdIndicator as the composition of X_i with the Iic indicator function.",
-      "mathContext": "empiricalCDF X n x ω = (1/n) * Σᵢ 1_{Xᵢ(ω) ≤ x}; trueCDF X μ x = (μ{ω | X₀(ω) ≤ x}).toReal"
+      "summary": "Defines empiricalCDF as the sample mean of threshold indicators, trueCDF as μ{ω | X₀(ω) ≤ x}.toReal, and thresholdIndicator as Set.indicator(Iic x) ∘ X i.",
+      "mathContext": "$\\hat{F}_n(x, \\omega) = \\frac{1}{n}\\sum_{i<n}\\mathbf{1}_{X_i(\\omega)\\leq x}$; $F(x) = \\mu\\{X_0 \\leq x\\}$; composition form enables iIndepFun.comp."
     },
     {
-      "id": "measurability",
-      "title": "Measurability of Indicator Functions",
+      "id": "basic-identities",
+      "title": "Bridge Identities: empiricalCDF as Mean, Indicator as Composition",
+      "startLine": 58,
+      "endLine": 68,
+      "summary": "empiricalCDF_eq_mean links the definition form to the sum/n form needed by SLLN. thresholdIndicator_eq_comp exposes the composition structure for iIndepFun.comp.",
+      "mathContext": "$\\hat{F}_n(x,\\omega) = \\frac{1}{n}\\sum_{i<n}\\phi_x(X_i(\\omega))$ where $\\phi_x = \\mathbf{1}_{\\cdot\\leq x}$; both proved by ring/ext + simp."
+    },
+    {
+      "id": "measurability-and-iid",
+      "title": "Measurability, I.D., and Independence of Threshold Indicators",
       "startLine": 70,
-      "endLine": 75,
-      "summary": "Proves measurability of x ↦ 1_{v ≤ x} as a real-valued Borel function, using measurable_const.indicator measurableSet_Iic.",
-      "mathContext": "The composition structure thresholdIndicator X x i = (1_{· ≤ x}) ∘ X i is key for applying iIndepFun.comp."
+      "endLine": 96,
+      "summary": "Three lemmas: measurable_iic_indicator (Borel measurability of v ↦ 1_{v ≤ x}), thresholdIndicator_identDistrib (IdentDistrib.comp transfers equal laws), thresholdIndicator_pairwise_indep (iIndepFun.comp + indepFun gives pairwise independence).",
+      "mathContext": "$\\phi_x: \\mathbb{R}\\to\\mathbb{R}$ measurable; $X_i \\sim X_0 \\Rightarrow \\phi_x\\circ X_i \\sim \\phi_x\\circ X_0$; $\\text{iIndepFun}(X) \\Rightarrow \\text{iIndepFun}(\\phi_x\\circ X) \\Rightarrow$ pairwise indep."
     },
     {
-      "id": "iid-structure",
-      "title": "I.I.D. Structure of Threshold Indicators",
-      "startLine": 77,
-      "endLine": 96,
-      "summary": "Proves identical distribution via IdentDistrib.comp, and pairwise independence via iIndepFun.comp + iIndepFun.indepFun. These are the two key hypotheses for SLLN.",
-      "mathContext": "If X_i ~ X₀ (IdentDistrib) and X_i are iIndepFun, then 1_{Xᵢ ≤ x} ~ 1_{X₀ ≤ x} and are pairwise independent."
+      "id": "axioms",
+      "title": "Integration Axioms: Integrability and E[1_{X₀ ≤ x}] = F(x)",
+      "startLine": 98,
+      "endLine": 111,
+      "summary": "thresholdIndicator_integrable: bounded measurable function on probability space is integrable. integral_thresholdIndicator_eq_cdf: E[1_{X₀ ≤ x}] = μ{X₀ ≤ x} = F(x). Both axiomatized due to Mathlib 4.26 API gaps.",
+      "mathContext": "$\\int_\\Omega \\mathbf{1}_{X_0(\\omega)\\leq x}\\,d\\mu = \\mu\\{X_0 \\leq x\\} = F(x)$; both follow from integral_indicator_const + measurability."
     },
     {
       "id": "pointwise-convergence",
-      "title": "Pointwise Convergence via SLLN",
+      "title": "Pointwise Convergence: SLLN Applied to Threshold Indicators",
       "startLine": 113,
       "endLine": 136,
-      "summary": "PROVED: For each fixed x, Fₙ(x) → F(x) a.s. Applies strong_law_ae_real to threshold indicators, then uses integral_thresholdIndicator_eq_cdf to identify the limit as trueCDF.",
-      "mathContext": "strong_law_ae_real gives (Σᵢ 1_{Xᵢ ≤ x})/n → E[1_{X₀ ≤ x}] = F(x) a.s. Requires pairwise independence and identical distribution."
+      "summary": "PROVED: For each fixed x, Fₙ(x) → F(x) a.s. Orchestrates the three i.i.d. lemmas + strong_law_ae_real + integral_thresholdIndicator_eq_cdf to identify the limit as trueCDF.",
+      "mathContext": "$(\\sum_{i<n}\\phi_x(X_i))/n \\xrightarrow{a.s.} \\mathbb{E}[\\phi_x(X_0)] = F(x)$ via `strong_law_ae_real` + `rw [integral_thresholdIndicator_eq_cdf]`."
     },
     {
       "id": "uniform-convergence",
-      "title": "Uniform Convergence (Glivenko-Cantelli)",
+      "title": "Glivenko-Cantelli Axiom: Uniform Convergence",
       "startLine": 138,
       "endLine": 157,
-      "summary": "AXIOM: sup_x |Fₙ(x) - F(x)| → 0 a.s. The bracketing argument for uniform convergence is axiomatized as glivenko_cantelli_uniform since finite covering infrastructure is absent from Mathlib 4.26.",
-      "mathContext": "The bracketing uses: (1) continuity points of F are dense; (2) finite grid gives simultaneous a.s. convergence; (3) monotonicity of Fₙ and F control off-grid error."
+      "summary": "AXIOM: sup_x |Fₙ(x) - F(x)| → 0 a.s. The bracketing argument using continuity points of F and monotonicity of both CDFs is axiomatized as glivenko_cantelli_uniform.",
+      "mathContext": "$\\sup_{x\\in\\mathbb{R}}|\\hat{F}_n(x,\\omega) - F(x)| \\to 0$ a.s.; formalized as `Filter.Tendsto (fun n => ⨆ x, |...|) atTop (nhds 0)`."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties: Monotonicity, Non-negativity, Error Decay",
+      "startLine": 159,
+      "endLine": 207,
+      "summary": "Proves empiricalCDF_mono and trueCDF_mono (both CDFs non-decreasing in x — key for the bracketing step), empiricalCDF_nonneg and trueCDF_nonneg, and empiricalCDF_error_vanishes (Fₙ(x) - F(x) → 0 a.s.).",
+      "mathContext": "$x \\leq y \\Rightarrow \\hat{F}_n(x) \\leq \\hat{F}_n(y)$ (via Finset.sum_le_sum + indicator_le_indicator_of_subset); $F_n(x) - F(x) \\to 0$ a.s. (via `.sub_const`)."
     }
   ],
   "conclusion": {
@@ -115,12 +131,14 @@
   },
   "crossReferences": [
     {
-      "relationship": "laws-of-large-numbers is the parent problem; Glivenko-Cantelli is the uniform version of SLLN",
-      "targetId": "laws-of-large-numbers"
+      "targetId": "laws-of-large-numbers",
+      "relationship": "parent",
+      "description": "Parent entry covers the Strong Law of Large Numbers; Glivenko-Cantelli is the uniform version — pointwise SLLN for each fixed x lifts to uniform convergence over all x."
     },
     {
-      "relationship": "laws-of-large-numbers-oq-01 covers SLLN for heavy-tailed distributions; both rely on strong_law_ae_real",
-      "targetId": "laws-of-large-numbers-oq-01"
+      "targetId": "laws-of-large-numbers-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 covers SLLN for heavy-tailed distributions (without finite variance); both rely on strong_law_ae_real from Mathlib.Probability.StrongLaw."
     }
   ],
   "references": [
