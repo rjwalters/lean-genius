@@ -1,0 +1,168 @@
+{
+  "id": "triangle-inequality-oq-04",
+  "title": "Triangle Inequality for Geodesic/Path Metrics",
+  "slug": "triangle-inequality-oq-04",
+  "description": "On a Riemannian manifold, the geodesic distance d(p,q) = inf{length(γ) | γ path from p to q} satisfies the triangle inequality d(p,r) ≤ d(p,q) + d(q,r) because paths can be concatenated and arc lengths add. We formalize this for the intrinsic (path) metric in any metric space.",
+  "meta": {
+    "author": "Riemann / classical differential geometry (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/BoundedVariation.html",
+    "date": "1854",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "analysis",
+      "metric-spaces",
+      "riemannian-geometry",
+      "geodesics",
+      "path-metrics",
+      "topology"
+    ],
+    "proofRepoPath": "Proofs/TriangleInequalityOQ04.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 284,
+    "mathlibDependencies": [
+      {
+        "theorem": "eVariationOn.Icc_add_Icc",
+        "description": "Total variation splits at an intermediate point: var[a,b] + var[b,c] = var[a,c]",
+        "module": "Mathlib.Analysis.BoundedVariation"
+      },
+      {
+        "theorem": "eVariationOn.comp_eq_of_monotoneOn",
+        "description": "Reparameterization invariance: arc length is unchanged by monotone reparameterization",
+        "module": "Mathlib.Analysis.BoundedVariation"
+      },
+      {
+        "theorem": "ENNReal.iInf_add",
+        "description": "Move constant out of infimum: (⨅ x, f x) + c = ⨅ x, (f x + c)",
+        "module": "Mathlib.Data.ENNReal.Basic"
+      },
+      {
+        "theorem": "Path.trans",
+        "description": "Concatenation of two continuous paths",
+        "module": "Mathlib.Topology.Connected.PathConnected"
+      }
+    ],
+    "originalContributions": [
+      "pathLength_trans: arc length is additive under path concatenation (length(γ₁ ∗ γ₂) = length(γ₁) + length(γ₂))",
+      "intrinsicDist_triangle: triangle inequality for the path/intrinsic metric",
+      "Complete proof using reparameterization invariance of eVariationOn",
+      "Application to unit sphere as concrete Riemannian manifold instance"
+    ],
+    "dateAdded": "2026-04-05",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Bernhard Riemann's 1854 Habilitation lecture 'Über die Hypothesen, welche der Geometrie zu Grunde liegen' introduced the concept of a manifold with an infinitesimally defined length element ds² = g_{ij} dx^i dx^j, and defined the distance between two points as the infimum of arc lengths of smooth curves connecting them. This geodesic distance — the intrinsic metric — satisfies the axioms of a metric space, with the triangle inequality following immediately from the concatenability of paths.\n\nThe mathematical abstraction of this idea — defining distance via infimum of path lengths on any connected metric space — became the foundation of metric geometry. The intrinsic metric is now the key ingredient in the theory of geodesic spaces (Alexandrov, Gromov, Busemann) and plays a central role in Riemannian geometry, sub-Riemannian geometry, optimal transport, and geometric group theory.\n\nThe formalization challenge: Lean 4's Mathlib (v4.26.0) has strong support for general metric spaces and total variation of curves, but lacks full Riemannian manifold formalization. Our approach captures the essential argument — path concatenation + length additivity → triangle inequality — in the general metric space setting using `eVariationOn` (total variation, the coordinate-free analogue of ∫‖γ'‖ dt).",
+    "problemStatement": "**Triangle Inequality for Geodesic/Path Metrics**: On a connected metric space X, define the intrinsic (path) metric by:\n\n$$d_{\\text{path}}(x, y) = \\inf\\{\\text{length}(\\gamma) \\mid \\gamma : [0,1] \\to X \\text{ continuous path from } x \\text{ to } y\\}$$\n\nwhere $\\text{length}(\\gamma) = \\text{eVariationOn}(\\gamma, [0,1])$ is the total variation (arc length).\n\nThen for any $x, y, z \\in X$:\n$$d_{\\text{path}}(x, z) \\leq d_{\\text{path}}(x, y) + d_{\\text{path}}(y, z)$$",
+    "proofStrategy": "The triangle inequality follows from two key facts:\n\n**Fact 1: Length Additivity Under Concatenation**\nFor any paths γ₁ : x → y and γ₂ : y → z, their concatenation γ₁ ∗ γ₂ : x → z satisfies:\n  length(γ₁ ∗ γ₂) = length(γ₁) + length(γ₂)\n\nProof: By `eVariationOn.Icc_add_Icc`, the total variation splits at 1/2. The first half [0,1/2] and second half [1/2,1] are reparameterized versions of γ₁ and γ₂ (via t ↦ 2t and t ↦ 2t-1 respectively). By `eVariationOn.comp_eq_of_monotoneOn` (reparameterization invariance), each half equals the full length of the respective path.\n\n**Fact 2: Infimum Exchange**\nFor any γ₁, γ₂: d_path(x,z) ≤ length(γ₁.trans γ₂) = length(γ₁) + length(γ₂).\nTaking infimum over γ₁ and γ₂ independently:\n  d_path(x,z) ≤ d_path(x,y) + d_path(y,z)\n\nThis last step uses `ENNReal.iInf_add` and `ENNReal.add_iInf` to exchange infimums over ℝ≥0∞.",
+    "keyInsights": [
+      "The triangle inequality for geodesic distance is a direct consequence of path concatenation — paths from x to y and y to z compose to a path from x to z",
+      "Arc length additivity (length(γ₁ ∗ γ₂) = length(γ₁) + length(γ₂)) captures the intuition that concatenated paths travel exactly the sum of their distances",
+      "Reparameterization invariance of total variation (`eVariationOn.comp_eq_of_monotoneOn`) is the key technical lemma enabling the split-and-reindex argument",
+      "The infimum exchange uses the independence of minimization over γ₁ and γ₂ — equivalent to `ENNReal.iInf_add` and `ENNReal.add_iInf`",
+      "The same proof works verbatim for Riemannian manifolds once the Riemannian arc length is identified with total variation for smooth curves"
+    ],
+    "prerequisites": [
+      "Metric spaces and the standard triangle inequality",
+      "Continuous paths in topological spaces (Path type in Mathlib)",
+      "Total variation of real-valued functions and curves (eVariationOn)",
+      "Extended nonnegative reals ℝ≥0∞ and properties of infimums"
+    ]
+  },
+  "conclusion": {
+    "summary": "We proved the triangle inequality for the path (intrinsic/geodesic) metric in any metric space. The main technical result is arc length additivity under path concatenation (pathLength_trans), which uses total variation splitting and reparameterization invariance. The triangle inequality then follows by a clean infimum exchange argument. The proof applies to Riemannian manifolds as a special case, capturing the essential geometry of geodesic distances.",
+    "implications": "This formalization demonstrates the power of abstract metric space arguments: the geodesic triangle inequality holds universally, not just for Riemannian manifolds. It provides the foundation for formalizing Riemannian geometry once Mathlib's support for manifolds with Riemannian metrics matures. The proof pattern (concatenate, apply additivity, exchange infima) generalizes to sub-Riemannian spaces, Finsler manifolds, and other geodesic metric spaces.",
+    "openQuestions": [
+      "Extend to Riemannian manifolds once Mathlib has smooth manifolds with Riemannian metrics",
+      "Formalize the Hopf-Rinow theorem: completeness + local path-connectedness implies geodesic completeness",
+      "Prove that the intrinsic metric equals the original metric for Riemannian manifolds (completeness of length-minimizing geodesics)",
+      "Formalize comparison geometry: Alexandrov spaces where d_path satisfies curvature bounds"
+    ]
+  },
+  "sections": [
+    {
+      "id": "path-length",
+      "title": "Part I: Path Length via Total Variation",
+      "startLine": 68,
+      "endLine": 80,
+      "summary": "Define arc length of a continuous path γ : x → y as its total variation eVariationOn γ.extend [0,1]. The constant path (Path.refl) has zero arc length.",
+      "mathContext": "$\\text{length}(\\gamma) = \\text{eVariationOn}(\\gamma, [0,1]) \\in [0, +\\infty]$"
+    },
+    {
+      "id": "length-additivity",
+      "title": "Part II: Length Additivity Under Concatenation",
+      "startLine": 82,
+      "endLine": 189,
+      "summary": "The key theorem: length(γ₁ ∗ γ₂) = length(γ₁) + length(γ₂). Proof: split [0,1] at 1/2, apply reparameterization invariance to identify each half with the original paths, combine.",
+      "mathContext": "$\\text{length}(\\gamma_1 * \\gamma_2) = \\text{length}(\\gamma_1) + \\text{length}(\\gamma_2)$"
+    },
+    {
+      "id": "intrinsic-metric",
+      "title": "Part III: The Path (Intrinsic) Metric",
+      "startLine": 191,
+      "endLine": 232,
+      "summary": "Define intrinsicDist x y = inf{length(γ) | γ : Path x y}. Prove it is zero for x = x (using the constant path) and satisfies the triangle inequality via concatenation.",
+      "mathContext": "$d_{\\text{path}}(x,y) = \\inf_{\\gamma : x \\to y} \\text{length}(\\gamma)$"
+    },
+    {
+      "id": "sphere-example",
+      "title": "Part IV: Application to the Sphere",
+      "startLine": 233,
+      "endLine": 284,
+      "summary": "The path metric on the unit sphere in any inner product space satisfies the triangle inequality — a direct instance of intrinsicDist_triangle. Discussion of what additional Mathlib infrastructure is needed to connect to the full Riemannian picture.",
+      "mathContext": "$d_{\\text{path}}(p,r) \\leq d_{\\text{path}}(p,q) + d_{\\text{path}}(q,r)$ for $p,q,r \\in S^{n-1}$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "extends",
+      "description": "Extends the abstract triangle inequality to the geodesic/path metric setting, where distances are defined via path length infima"
+    },
+    {
+      "targetId": "triangle-inequality-oq-03",
+      "relationship": "related",
+      "description": "The ultrametric (non-Archimedean) triangle inequality d(x,z) ≤ max(d(x,y), d(y,z)) is a strict strengthening. By contrast, geodesic distances in Riemannian geometry are Archimedean and satisfy only the standard triangle inequality."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Pythagorean theorem gives the Euclidean distance formula, which is the geodesic distance in flat Riemannian space ℝⁿ. Our theorem applies to curved spaces where no such closed-form formula exists."
+    }
+  ],
+  "references": [
+    {
+      "text": "Riemann, B. (1854). Über die Hypothesen, welche der Geometrie zu Grunde liegen. Abhandlungen der Königlichen Gesellschaft der Wissenschaften zu Göttingen, 13.",
+      "url": "https://en.wikipedia.org/wiki/Riemannian_manifold"
+    },
+    {
+      "text": "Busemann, H. (1955). The Geometry of Geodesics. Academic Press.",
+      "url": "https://en.wikipedia.org/wiki/Geodesic"
+    },
+    {
+      "text": "Bridson, M., Haefliger, A. (1999). Metric Spaces of Non-Positive Curvature. Grundlehren der Mathematischen Wissenschaften 319, Springer.",
+      "url": "https://en.wikipedia.org/wiki/CAT(k)_space"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 284,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "lemmaCount": 6,
+    "defCount": 2,
+    "imports": [
+      "Mathlib.Topology.Connected.PathConnected",
+      "Mathlib.Analysis.BoundedVariation",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.ENNReal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "ENNReal"
+    ]
+  }
+}
