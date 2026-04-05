@@ -277,7 +277,7 @@ Proved by Mertens (1874). The proof uses partial summation and PNT-type
 estimates on the prime counting function. -/
 axiom mertens_sum_primes_axiom :
     ∃ c : ℝ, Tendsto (fun x : ℝ =>
-      (∑ p in Finset.filter (fun p => Nat.Prime p ∧ p ≤ ⌊x⌋₊) (Finset.range (⌊x⌋₊ + 1)),
+      (∑ p ∈ Finset.filter (fun p => Nat.Prime p ∧ p ≤ ⌊x⌋₊) (Finset.range (⌊x⌋₊ + 1)),
         (1 : ℝ) / p) - log (log x)) atTop (𝓝 c)
 
 /-- **Sum of reciprocals of primes diverges logarithmically**
@@ -287,7 +287,7 @@ axiom mertens_sum_primes_axiom :
 Proved by Mertens (1874) as a consequence of PNT-type estimates. -/
 theorem mertens_sum_primes :
     ∃ c : ℝ, Tendsto (fun x : ℝ =>
-      (∑ p in Finset.filter (fun p => Nat.Prime p ∧ p ≤ ⌊x⌋₊) (Finset.range (⌊x⌋₊ + 1)),
+      (∑ p ∈ Finset.filter (fun p => Nat.Prime p ∧ p ≤ ⌊x⌋₊) (Finset.range (⌊x⌋₊ + 1)),
         (1 : ℝ) / p) - log (log x)) atTop (𝓝 c) :=
   mertens_sum_primes_axiom
 
