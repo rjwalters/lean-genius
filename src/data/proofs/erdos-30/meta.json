@@ -49,7 +49,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 194,
-    "assumptions": "12 axioms: erdos_turan_upper_bound, lindstrom_upper_bound, balogh_furedi_roy_bound, and 9 more. See Lean source for complete statements."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "Simon Sidon originally studied sets with distinct pairwise sums in the context of lacunary Fourier series in the 1930s, seeking sets of integers whose exponential sums have good analytic properties. In 1938, James Singer constructed near-optimal Sidon sets using perfect difference sets from finite projective geometry PG(2,q), establishing the lower bound h(N) ≥ (1-o(1))√N. Erdős and Turán proved their foundational upper bound h(N) ≤ √N + N^{1/4} + 1 in 1941 using a simple but powerful counting argument: a Sidon set of size s contributes s(s-1)/2 distinct pairwise sums in {2,...,2N}, giving a quadratic inequality. This bound stood essentially unchanged for 80 years — Lindström (1969) shaved the constant to +1/2 but left the N^{1/4} exponent untouched. The breakthrough came in 2021 when Balogh, Füredi, and Roy reduced the coefficient of N^{1/4} from 1 to 0.998, and Carter, Hunter, and O'Bryant (2025) further improved it to 0.98183. Erdős offered $1,000 for proving or disproving the conjecture that h(N) = N^{1/2} + O_ε(N^ε).",
