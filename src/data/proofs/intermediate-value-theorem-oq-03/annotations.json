@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "intermediate-value-theorem-oq-03",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Preamble: IVT-Brouwer Connection Overview",
+    "content": "The module docstring (lines 3-20) frames the research question: how does the 1D Intermediate Value Theorem relate to Brouwer's fixed point theorem in higher dimensions? In 1D, IVT and Brouwer are equivalent: every continuous f: [0,1] → [0,1] has a fixed point by applying IVT to g(x) = f(x) - x. In higher dimensions, Brouwer's theorem requires topological machinery (degree theory, homology, or simplicial approximation) — it is a vast generalization of the 1D equivalence. The namespace IVTBrouwer scopes all definitions.",
+    "mathContext": "In 1D: IVT $\\Leftrightarrow$ Brouwer. The equivalence is elementary: $(\\Rightarrow)$ Apply IVT to $g(x) = f(x) - x$ with $g(0) \\geq 0 \\geq g(1)$. $(\\Leftarrow)$ IVT follows from Brouwer: given $f: [a,b] \\to \\mathbb{R}$ with $f(a) < 0 < f(b)$, define the retraction to $\\{0\\}$ via Brouwer. In $n$D: Brouwer requires the non-triviality of $\\pi_{n-1}(S^{n-1})$ (the $(n-1)$-sphere is not contractible), which is deep algebraic topology.",
+    "significance": "supporting",
+    "relatedConcepts": ["IVT (Intermediate Value Theorem)", "Brouwer fixed point theorem", "degree theory", "simplicial approximation"],
+    "prerequisites": ["IsConnected for intervals", "Continuous functions on [0,1]", "Set.Icc and Set.Icc.closure"]
+  },
+  {
     "id": "ann-ivt-brouwer-1d",
     "proofId": "intermediate-value-theorem-oq-03",
     "range": { "startLine": 30, "endLine": 48 },

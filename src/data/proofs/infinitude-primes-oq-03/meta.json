@@ -69,7 +69,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Dirichlet's theorem (1837) states that every arithmetic progression a, a+d, a+2d, ... with gcd(a,d) = 1 contains infinitely many primes. The general proof requires L-functions and analytic number theory. However, for specific residue classes — particularly those where a ≡ -1 (mod d) — elementary Euclid-style proofs exist. The case of primes ≡ 2 (mod 3) is one of the simplest: it uses N = 3·(n+1)! - 1, which is ≡ 2 (mod 3) and too large for small primes to divide.",
+    "historicalContext": "Dirichlet's theorem (1837) states that every arithmetic progression , a+d, a+2d, \\ldots$ with $\\gcd(a,d) = 1$ contains infinitely many primes. The general proof requires Dirichlet L-functions and analytic number theory, making it one of the deepest results accessible to undergraduates. For specific progressions, elementary proofs exist: for primes $\\equiv 3 \\pmod{4}$, the key is that any product of numbers $\\equiv 1 \\pmod{4}$ is $\\equiv 1 \\pmod{4}$, so any prime factor of p_1 \\cdots p_k - 1 \\equiv 3 \\pmod{4}$ must be a new prime $\\equiv 3 \\pmod{4}$ — a direct analog of Euclid's proof. Legendre conjectured Dirichlet's theorem in 1785 but could not prove it; the analytic proof by Dirichlet used characters and L-functions in a new way that transformed number theory. This file (OQ-03) provides an elementary Lean 4 formalization of the 4k+3 case.",
     "problemStatement": "**Open Question (OQ-03)**: Dirichlet's theorem generalizes to arithmetic progressions: if gcd(a,d) = 1, there are infinitely many primes p ≡ a (mod d). Can we prove the case a = 2, d = 3 elementarily?\n\n**Answer**: Yes. Using the candidate N = 3·(n+1)! - 1, we show N ≡ 2 (mod 3) and N has a prime factor ≡ 2 (mod 3) that exceeds n.",
     "text": "Elementary proof that there are infinitely many primes congruent to 2 modulo 3. No L-functions or analytic number theory required.",
     "proofStrategy": "The proof follows Euclid's method with a twist for arithmetic progressions:\n\n1. **Candidate construction**: Given n, set N = 3·(n+1)! - 1\n2. **Modular arithmetic**: N ≡ -1 ≡ 2 (mod 3)\n3. **Factoring argument**: If all prime factors of N were ≡ 1 (mod 3) or equal to 3, then N ≡ 0 or 1 (mod 3), contradicting N ≡ 2 (mod 3). So N has a prime factor p ≡ 2 (mod 3).\n4. **Size argument**: p > n because p | N but p does not divide 3·(n+1)!, since p ≤ n+1 would imply p | (n+1)! and hence p | (N - (N+1)) = 1, contradiction.\n\nThe key lemma (proved by strong induction) is that the product of integers ≡ 1 (mod 3) is ≡ 1 (mod 3), so a number ≡ 2 (mod 3) must have a prime factor ≡ 2 (mod 3).",
@@ -87,6 +87,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Setup and Dirichlet Context",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring explains the problem: infinitely many primes of the form 4k+3. Imports from Mathlib (Nat.Prime, Data.List, ZMod). The elementary proof strategy is sketched: if {p₁,...,pₙ} are all such primes, consider 4p₁⋯pₙ - 1, which has a prime factor ≡ 3 (mod 4) not in the list.",
+      "mathContext": "A number  \\equiv 3 \\pmod{4}$ must have at least one prime factor  \\equiv 3 \\pmod{4}$ (since products of primes $\\equiv 1 \\pmod{4}$ stay $\\equiv 1 \\pmod{4}$). The witness  = 4p_1 \\cdots p_n - 1$ satisfies  \\equiv 3 \\pmod{4}$ and has no prime factor in $\\{p_1, \\ldots, p_n\\}$ (they all divide p_1 \\cdots p_n$ but not $, since  \\equiv -1 \\equiv 3 \\pmod{p_i}$ for each  > 2$)."
+    },
     {
       "id": "mod-arithmetic",
       "title": "Modular Arithmetic Lemmas",
@@ -147,14 +155,19 @@
   ],
   "references": [
     {
-      "authors": ["Dirichlet, P.G.L."],
+      "authors": [
+        "Dirichlet, P.G.L."
+      ],
       "title": "Beweis des Satzes, daß jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält",
       "year": "1837",
       "venue": "Abhandlungen der Königlich Preussischen Akademie der Wissenschaften",
       "note": "Original proof of Dirichlet's theorem using L-functions and characters — the general result that subsumes this elementary special case"
     },
     {
-      "authors": ["Hardy, G.H.", "Wright, E.M."],
+      "authors": [
+        "Hardy, G.H.",
+        "Wright, E.M."
+      ],
       "title": "An Introduction to the Theory of Numbers",
       "year": "1979",
       "venue": "Oxford University Press, 5th edition",
