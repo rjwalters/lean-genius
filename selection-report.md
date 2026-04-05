@@ -2,59 +2,59 @@
 
 **Date**: 2026-04-05
 **Mode**: SELECT
-**Pool Status**: 12 available, 406 in-progress, 1222 completed
+**Pool Status**: 4 available, 1094 in-progress, 1225 completed
 
 ## Selected Problem
 
-- **ID**: erdos-1008
-- **Name**: Erdős Problem #1008: C₄-Free Subgraphs
-- **Tier**: B
-- **Significance**: 6/10
+- **ID**: binary-gcd-oq-01-oq-04-oq-01
+- **Name**: Exact worst-case analysis of Binary GCD algorithm
+- **Tier**: C
+- **Significance**: 5/10
 - **Tractability**: 6/10
 - **Knowledge Score**: 0 (EMPTY)
 - **Status**: available
 
 ## Selection Rationale
 
-1. **Concrete sorry target**: `exponent_optimal` at line 594 has a single sorry — "Real arithmetic: 2n² < (n³)^{2/3+ε} for n^{3ε} > 3" — that is pure rpow arithmetic, not a deep mathematical result. This is the most tractable single-step improvement available.
-2. **Single deep axiom**: `erdos_1008` (Conlon-Fox-Sudakov main theorem) is the only remaining `axiom` declaration. All other components are proved: Kővári-Sós-Turán via cherry counting, K₂₂↔C₄ equivalence, structural lemmas, Folkman ratio, bipartite KST.
-3. **All EMPTY knowledge tier**: All 12 available candidates score 0 knowledge items. Tiebreaker is composite score: tractability × 10 + significance. erdos-1008 scores 66 (tract 6, sig 6), tied with erdos-1026 and erdos-1027 but with a more concrete next step.
-4. **Domain diversity**: Graph theory / extremal combinatorics (C₄-free subgraphs, Zarankiewicz problem) — different domain from the immediately preceding selections (erdos-1069: Szemerédi-Trotter geometry, dissection-of-cubes: geometry).
-5. **No active claim or branch**: No `.lock` file and no `research/erdos-1008*` branch found.
+1. **Concrete foundation**: Parent `binary-gcd-oq-01-oq-04` proved `binaryGcdSteps 1 (2^n - 1) = n` with 0 axioms, 0 sorries — a tight lower bound family. The OQ01 child asks for the *complete* characterization of all worst-case input families, a natural next step with a clear starting point.
+2. **Rich theoretical structure**: Connection to Stern-Brocot / Calkin-Wilf tree is mathematically deep — worst-case paths in the Binary GCD DAG likely correspond to Fibonacci-like trajectories, with theory-level implications for algorithm analysis.
+3. **Highest composite score among eligible candidates**: Composite 65 (tract 6 × 10 + sig 5) vs cayley-hamilton-minpoly-oq-02-oq-02-oq-01 (58), borsuk-ulam-oq-02-oq-01-oq-03 (56). All candidates had knowledge tier EMPTY, so tiebreaker is composite.
+4. **Domain diversity**: Algorithms / discrete mathematics — different from the three most recent selections (erdos-1008: graph theory, erdos-1069: combinatorial geometry, dissection-of-cubes: geometry).
+5. **Fresh workspace**: Initialized today (2026-04-05), OBSERVE phase, 0 attempts. No active claim.
 
 ## Rejection Summary
 
-- **Candidates considered**: 12 available (from candidate pool)
-- **Skipped — recently selected**: `erdos-1069` (b7b931e7ec, this session), `dissection-of-cubes` (0e0793f23a, this session)
-- **Skipped — recently selected**: `binary-gcd-oq-01-oq-04-oq-01` (bdba7fbe78), `hilbert-10-oq-03` (e17ecb8422)
-- **Rejected — active research branch**: `erdos-1131` (branches: erdos-1131-oq-01, erdos-1131-oq-01-axiom-reduction, erdos-1131-oq-01-session3)
-- **Rejected — lower composite**: `borsuk-ulam-oq-02-oq-01-oq-03` (56), `erdos-1131` (56), `borsuk-ulam` (48), `erdos-1085` (48)
-- **Rejected — tied but weaker target**: `erdos-1026` (66, 2 axioms both deep), `erdos-1027` (66, 1 axiom, no sorry to close)
-- **Confidence**: medium (three-way tie at composite 66; erdos-1008 wins on concrete sorry availability)
+- **Candidates considered**: 18 in pool JSON, but 13/18 were "in-progress" in database (pool JSON was stale). Effective available candidates: 5 per DB.
+- **Rejected — proof already complete**: `angle-trisection` — `AngleTrisection.lean` has 0 sorries, 0 axioms; nothing for researcher to do.
+- **Skipped — recently selected (cooldown)**: `dissection-of-cubes` (3rd most recent seeker commit), `hilbert-10-oq-03` (5th most recent).
+- **Lower composite**: `cayley-hamilton-minpoly-oq-02-oq-02-oq-01` (58 — A-tier but no Lean file yet for this OQ, tract 5), `borsuk-ulam-oq-02-oq-01-oq-03` (56 — 9 axioms requiring equivariant topology not in Mathlib).
+- **Confidence**: medium (binary-gcd wins cleanly on composite score; cayley-hamilton is stronger mathematically but lower tractability)
 
 ## Related Gallery Proofs
 
-- **erdos-1069** (just completed): Szemerédi-Trotter k-rich lines — shares extremal combinatorics context
-- **erdos-157**: C₄-free and bipartite subgraph results — related Zarankiewicz machinery
-- **szemeredi-core**: Regularity lemma infrastructure — potentially useful for probabilistic method arguments
+- **binary-gcd-oq-01**: Upper bound O(log b) — the bound this problem aims to tightly characterize
+- **binary-gcd-oq-01-oq-04**: Direct parent — proves (1, 2^n-1) achieves exactly n steps (complete, 0 axioms, 0 sorries)
+- **binary-gcd-oq-01-oq-03**: Worst-case verification results — survey for existing step-count machinery
 
 ## Suggested First Steps
 
-1. **OBSERVE**: Read `proofs/Proofs/Erdos1008Problem.lean` in full. Locate `exponent_optimal` at line 560. Understand the chain: `|E(H)| < 2n²` (from `bip_edge_bound`) → `2n² < n^{2+3ε}` (from `n^{3ε} > 3`) → `n^{2+3ε} ≤ (n³)^{2/3+ε}` (rpow associativity) → `(n³)^{2/3+ε} ≤ |E(G)|^{2/3+ε}` (monotone rpow).
-2. **ORIENT**: Identify which rpow lemmas are needed. Key Mathlib lemmas: `Real.rpow_natCast`, `Real.mul_rpow`, `Real.rpow_add`, `Real.rpow_le_rpow`. The step "2n² < n^{2+3ε}" requires `n^{3ε} > 3` which is established via `hn` from Archimedean.
-3. **DECIDE**: Try `norm_num`, `nlinarith`, or `field_simp` + `rpow` lemmas to close the sorry. If those fail, establish the bound via `calc` chain with explicit intermediate steps.
+1. **OBSERVE**: Read `proofs/Proofs/BinaryGcdOQ01OQ04.lean` in full. Understand the (1, 2^n-1) tight family proof via one-step lemma induction. Inventory all step-count lemmas across `BinaryGcdOQ01*.lean` files.
+2. **ORIENT**: Map the Binary GCD recursion onto a path in the Calkin-Wilf tree. Identify whether (1, 2^n-1) is the *unique* worst-case family or whether Fibonacci-like pairs (Fib(n), Fib(n+1)) also achieve tight bounds.
+3. **DECIDE**: Attempt to prove `binaryGcdSteps a b ≤ binaryGcdSteps 1 (2^(⌊log₂ b⌋) - 1)` for all a ≤ b — establishing (1, 2^n-1) as the extremal family. Check if Mathlib has Fibonacci-step-count lemmas for Euclidean-style algorithms.
 
 ## Pool Summary After Selection
 
 | Status | Count |
 |--------|-------|
-| Available | 12 |
-| In Progress | 406 |
-| Completed | 1222 |
-| **Total** | **1640** |
+| Available | 4 |
+| In Progress | 1094 |
+| Completed | 1225 |
+| **Total** | **1646** |
 
 ## Candidate Pool Health
 
-- **Pool depth**: adequate (12 available, well above the 5-problem threshold)
-- **Recommendation**: Pool healthy. No replenishment needed this cycle.
-- **Next refresh recommended**: when available count drops below 5
+- **Pool depth**: LOW (4 available, below the 5-problem threshold)
+- **Note**: Pool JSON was stale before this run — 13 problems listed as "available" in pool JSON were "in-progress" in database. Pool has been synced to DB state.
+- **Recommendation**: Replenishment needed. Next cycle should run `npx tsx .lean/scripts/extract-problems.ts --json` to surface new candidates from gallery.
+- **Priority candidates for replenishment**: `erdos-1027` (1 axiom, unclaimed in-progress), `erdos-1026` (2 axioms, unclaimed), `cayley-hamilton-minpoly-oq-02-oq-02-oq-01` (A-tier, available).
+- **Next refresh recommended**: immediately (pool depth critical)
