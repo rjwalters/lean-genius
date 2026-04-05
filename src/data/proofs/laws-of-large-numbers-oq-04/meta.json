@@ -72,6 +72,14 @@
       "mathContext": "empiricalCDF X n x ω = (1/n) * Σᵢ 1_{Xᵢ(ω) ≤ x}; trueCDF X μ x = (μ{ω | X₀(ω) ≤ x}).toReal"
     },
     {
+      "id": "basic-identities",
+      "title": "Basic Identities and Composition Structure",
+      "startLine": 58,
+      "endLine": 68,
+      "summary": "Proves empiricalCDF equals the sample mean of thresholdIndicators (the form expected by strong_law_ae_real), and that thresholdIndicator is function composition with the Iic indicator — the form required by iIndepFun.comp and IdentDistrib.comp.",
+      "mathContext": "empiricalCDF X n x ω = (Σᵢ thresholdIndicator X x i ω) / n; thresholdIndicator X x i = (1_{·≤x}) ∘ X i"
+    },
+    {
       "id": "measurability",
       "title": "Measurability of Indicator Functions",
       "startLine": 70,
@@ -99,9 +107,17 @@
       "id": "uniform-convergence",
       "title": "Uniform Convergence (Glivenko-Cantelli)",
       "startLine": 138,
-      "endLine": 157,
+      "endLine": 158,
       "summary": "AXIOM: sup_x |Fₙ(x) - F(x)| → 0 a.s. The bracketing argument for uniform convergence is axiomatized as glivenko_cantelli_uniform since finite covering infrastructure is absent from Mathlib 4.26.",
       "mathContext": "The bracketing uses: (1) continuity points of F are dense; (2) finite grid gives simultaneous a.s. convergence; (3) monotonicity of Fₙ and F control off-grid error."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties: Monotonicity and Non-negativity",
+      "startLine": 159,
+      "endLine": 208,
+      "summary": "Proves empiricalCDF and trueCDF are both non-decreasing in x and non-negative. These properties are prerequisites for the bracketing argument, as monotonicity bounds |Fₙ(x) - F(x)| between grid points. Ends with empiricalCDF_error_vanishes: a corollary deducing pointwise error → 0 from pointwise convergence.",
+      "mathContext": "x ≤ y → empiricalCDF X n x ω ≤ empiricalCDF X n y ω (via Iic_subset_Iic); trueCDF X μ x ≤ trueCDF X μ y (via measure_mono)"
     }
   ],
   "conclusion": {
