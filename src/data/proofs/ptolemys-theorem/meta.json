@@ -85,16 +85,16 @@
       "title": "Alternative Formulations",
       "startLine": 88,
       "endLine": 116,
-      "summary": "Three formulations: `ptolemys_theorem_diagonals` (exact duplicate of main theorem), `ptolemys_theorem_symmetric` (sides swapped to LHS via `rw`), and `ptolemys_theorem_rearranged` (via `mul_comm`). Note: `ptolemys_theorem_diagonals` is character-for-character identical to `ptolemys_theorem` and should be removed.",
-      "mathContext": "Only two unique reformulations beyond the main theorem: symmetric ($AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$, sides on LHS) and rearranged (commutativity variant). The 'diagonals' form is an exact duplicate."
+      "summary": "Two alternative formulations: `ptolemys_theorem_symmetric` (diagonal product on LHS via `rw`) and `ptolemys_theorem_rearranged` (commutativity variant via `mul_comm`).",
+      "mathContext": "Two unique reformulations beyond the main theorem: symmetric ($AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$, sides on LHS) and rearranged (commutativity variant)."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Special Cases",
       "startLine": 117,
       "endLine": 129,
-      "summary": "Diagonal product corollary: `diagonal_product_from_sides` is a duplicate of `ptolemys_theorem_symmetric` (same statement and hypotheses). Despite the name, the Cospherical and angle conditions are not eliminated.",
-      "mathContext": "The statement $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ is identical to the symmetric form. The file contains 5 theorem declarations but only 3 unique statements (2 are exact duplicates)."
+      "summary": "Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture.",
+      "mathContext": "Mathematical content: Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture."
     },
     {
       "id": "connections",
@@ -125,8 +125,8 @@
       "title": "Historical Context: The Almagest",
       "startLine": 233,
       "endLine": 267,
-      "summary": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy's legacy in astronomy (al-Khwarizmi, al-Biruni), and `#check` verification of all five exported theorems.",
-      "mathContext": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy's legacy in astronomy (al-Khwarizmi, al-Biruni), and `#check` verification of all five exported theorems."
+      "summary": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy's legacy in astronomy (al-Khwarizmi, al-Biruni), and `#check` verification of all three exported theorems.",
+      "mathContext": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy's legacy in astronomy (al-Khwarizmi, al-Biruni), and `#check` verification of all three exported theorems."
     }
   ],
   "crossReferences": [
@@ -171,11 +171,9 @@
       "EuclideanGeometry"
     ],
     "namespace": null,
-    "lineCount": 267,
+    "lineCount": 242,
     "axiomCount": 0,
-    "theoremCount": 5,
-    "substantiveTheoremCount": 3,
-    "duplicateTheorems": 2,
+    "theoremCount": 3,
     "definitionCount": 0,
     "path": "Proofs/PtolemysTheorem.lean",
     "sorries": 0
