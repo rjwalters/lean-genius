@@ -53,14 +53,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The power mean inequality — that M_r(z,w) is monotone increasing in r — is a classical result in analysis, appearing in Hardy–Littlewood–Pólya (1934). The limiting case M_0 = GM requires L'Hôpital (proved in OQ-02). The monotonicity proof splits into three regions: r > 0 (via Jensen), r < 0 (via duality with inverse values), and the crossing-zero case r < 0 < s. This file closes the crossing-zero gap using a direct AM-GM argument.",
+    "historicalContext": "The power mean inequality — that $M_r(z,w)$ is monotone increasing in $r$ — was systematically treated by Hardy, Littlewood, and Pólya in their landmark 1934 monograph *Inequalities*, where it appears as Theorem 16. The weighted version traces back further to Schur (1923) and the theory of Schur-convex functions: the map $(z_1, \\ldots, z_n) \\mapsto M_r(z,w)$ is Schur-convex for each $r$, and monotonicity in $r$ follows from the log-convexity of $x \\mapsto x^r$ via Jensen's inequality. The crossing-zero case ($r < 0 < s$) is often the most delicate because the geometric mean $M_0 = \\text{GM}$ sits at the transition between concavity (for $r < 0$) and convexity (for $r > 0$). Classical proofs use the continuity of $r \\mapsto M_r$ at $r = 0$ (via L'Hôpital), but this formalization takes a more elegant direct route: a single AM-GM application yields the core inequality $\\text{GM}^r \\le \\sum w_i z_i^r$ for all $r$, from which both sides of the crossing follow by monotone exponentiation. The power mean family includes all classical means as special cases: $M_{-1} = \\text{HM}$, $M_0 = \\text{GM}$, $M_1 = \\text{AM}$, $M_2 = \\text{QM}$, $M_{\\pm\\infty} = \\min/\\max$.",
     "problemStatement": "**Open Question (OQ-03-OQ-02-OQ-01):** Prove that M_r ≤ M_s whenever r < 0 < s, where M_r(z,w) = (∑ wᵢ zᵢ^r)^(1/r) is the weighted power mean of order r.\n\nThis is the crossing-zero case of the full power mean monotonicity theorem.",
     "proofStrategy": "**Core inequality** (§2): For any r ∈ ℝ, GM(z,w)^r ≤ ∑ wᵢ zᵢ^r. Proof: Apply AM-GM (Real.geom_mean_le_arith_mean_weighted) to the values zᵢ^r with weights wᵢ. The LHS equals GM^r via the algebraic identity (∏ zᵢ^wᵢ)^r = ∏ (zᵢ^r)^wᵢ.\n\n**GM ≤ M_s for s > 0** (§3): From GM^s ≤ ∑ wᵢ zᵢ^s (the core inequality), raise both sides to 1/s > 0: GM = (GM^s)^(1/s) ≤ (∑ wᵢ zᵢ^s)^(1/s) = M_s.\n\n**M_r ≤ GM for r < 0** (§4): From GM^r ≤ ∑ wᵢ zᵢ^r, write M_r = (∑)^(1/r) = ((∑)^(-(1/r)))⁻¹. Since -(1/r) > 0, raise GM^r ≤ ∑ to the positive power -(1/r): (GM^r)^(-(1/r)) ≤ (∑)^(-(1/r)). Invert (reverses inequality): ((∑)^(-(1/r)))⁻¹ ≤ ((GM^r)^(-(1/r)))⁻¹ = GM.\n\n**Crossing-zero** (§5): M_r ≤ GM ≤ M_s by transitivity.",
     "keyInsights": [
       "The core inequality GM^r ≤ ∑ wᵢ zᵢ^r is a single AM-GM application that handles ALL values of r simultaneously — positive, negative, and zero.",
       "The crossing-zero case reduces to inverting a monotone inequality: A ≤ B → B⁻¹ ≤ A⁻¹ (for positive A, B). This is proved algebraically without invoking inv_le_inv_of_le directly.",
       "The algebraic identity (∏ zᵢ^wᵢ)^r = ∏ (zᵢ^r)^wᵢ (proved by Finset induction via mul_rpow) is the key structural bridge connecting GM^r to the AM-GM form.",
-      "Combined with power_mean_monotone_pos and power_mean_monotone_neg from AmgmInequalityOQ03, this completes the full monotonicity theorem: M_r ≤ M_s for all r ≤ s (excluding 0)."
+      "Combined with power_mean_monotone_pos and power_mean_monotone_neg from AmgmInequalityOQ03, this completes the full monotonicity theorem: M_r ≤ M_s for all r ≤ s (excluding 0).",
+      "The negative-order proof (§4) is the longest section (54 lines) because Lean's rpow lemmas are oriented toward positive exponents. The proof must explicitly construct the inversion argument: A ≤ B → 1 ≤ A⁻¹B → B⁻¹ ≤ A⁻¹, avoiding the direct inv_le_inv_of_le for better control over the positivity hypotheses. This reveals how much of the 'hard work' in mean inequality proofs is bookkeeping rather than deep mathematics."
     ],
     "prerequisites": [
       "AmgmInequalityOQ03 (Proofs/AmgmInequalityOQ03.lean): weightedPowerMean, weightedGeomMean definitions and same-sign monotonicity",
@@ -77,50 +78,50 @@
     {
       "id": "helpers",
       "title": "§1: Helper Lemmas",
-      "startLine": 43,
-      "endLine": 84,
-      "summary": "Three private lemmas: weightedSum_rpow_pos (∑ wᵢ zᵢ^r > 0), weightedGeomMean_pos (GM > 0), finset_prod_rpow ((∏ fᵢ)^r = ∏ fᵢ^r), prod_rpow_comm ((∏ zᵢ^wᵢ)^r = ∏ (zᵢ^r)^wᵢ).",
-      "mathContext": "The prod_rpow_comm identity uses finset_prod_rpow (induction on Finset using Real.mul_rpow) and Real.rpow_mul to show (∏ zᵢ^wᵢ)^r = ∏ (zᵢ^(r·wᵢ)) = ∏ (zᵢ^r)^wᵢ."
+      "startLine": 39,
+      "endLine": 86,
+      "summary": "Four private lemmas: weightedSum_rpow_pos (∑ wᵢ zᵢ^r > 0 via Finset.single_le_sum), weightedGeomMean_pos (GM > 0), finset_prod_rpow ((∏ fᵢ)^r = ∏ fᵢ^r by Finset induction), prod_rpow_comm ((∏ zᵢ^wᵢ)^r = ∏ (zᵢ^r)^wᵢ via rpow_mul).",
+      "mathContext": "The prod_rpow_comm identity: $(\\prod_i z_i^{w_i})^r = \\prod_i z_i^{r w_i} = \\prod_i (z_i^r)^{w_i}$. Proved via finset_prod_rpow (by Finset.induction_on with Real.mul_rpow) and Real.rpow_mul."
     },
     {
       "id": "core-ineq",
       "title": "§2: Core Inequality GM^r ≤ ∑ wᵢ zᵢ^r",
-      "startLine": 86,
-      "endLine": 105,
-      "summary": "geomMean_rpow_le_weightedSum_rpow: for any r, (∏ zᵢ^wᵢ)^r ≤ ∑ wᵢ zᵢ^r. Proved by AM-GM applied to zᵢ^r values.",
-      "mathContext": "Real.geom_mean_le_arith_mean_weighted gives ∏ (zᵢ^r)^wᵢ ≤ ∑ wᵢ zᵢ^r. The LHS equals GM^r via prod_rpow_comm."
+      "startLine": 88,
+      "endLine": 107,
+      "summary": "geomMean_rpow_le_weightedSum_rpow: for any r ∈ ℝ, (∏ zᵢ^wᵢ)^r ≤ ∑ wᵢ zᵢ^r. Proved by AM-GM applied to zᵢ^r values with original weights.",
+      "mathContext": "$\\prod_i (z_i^r)^{w_i} \\le \\sum_i w_i z_i^r$ (AM-GM). LHS $= (\\prod_i z_i^{w_i})^r = \\text{GM}^r$ via prod_rpow_comm."
     },
     {
       "id": "gm-le-pos",
       "title": "§3: GM ≤ M_r for r > 0",
-      "startLine": 107,
-      "endLine": 131,
-      "summary": "geom_mean_le_power_mean_pos: for r > 0, GM ≤ M_r. Extends the r ≥ 1 case from OQ03 to all r > 0.",
-      "mathContext": "From GM^r ≤ ∑ wᵢ zᵢ^r: raise to 1/r > 0: GM = (GM^r)^(1/r) ≤ (∑ wᵢ zᵢ^r)^(1/r) = M_r."
+      "startLine": 109,
+      "endLine": 133,
+      "summary": "geom_mean_le_power_mean_pos: for r > 0, GM ≤ M_r. Extends AmgmInequalityOQ03's r ≥ 1 case to all r > 0 by raising GM^r ≤ ∑ to the positive power 1/r.",
+      "mathContext": "From $\\text{GM}^r \\le \\sum w_i z_i^r$ and $1/r > 0$: $\\text{GM} = (\\text{GM}^r)^{1/r} \\le (\\sum w_i z_i^r)^{1/r} = M_r$."
     },
     {
       "id": "neg-le-gm",
       "title": "§4: M_r ≤ GM for r < 0",
-      "startLine": 133,
-      "endLine": 194,
-      "summary": "power_mean_le_geom_mean_neg: for r < 0, M_r ≤ GM. Proved via inversion: ((∑)^(-(1/r)))⁻¹ ≤ ((GM^r)^(-(1/r)))⁻¹.",
-      "mathContext": "Since -(1/r) > 0 for r < 0 and GM^r ≤ ∑, we get (GM^r)^(-(1/r)) ≤ (∑)^(-(1/r)). Inversion (A ≤ B → B⁻¹ ≤ A⁻¹, proved algebraically) gives M_r ≤ GM."
+      "startLine": 135,
+      "endLine": 188,
+      "summary": "power_mean_le_geom_mean_neg: for r < 0, M_r ≤ GM. The longest section (54 lines). Converts both sides to ((·)^(-(1/r)))⁻¹ form, applies rpow_le_rpow with positive exponent -(1/r), then inverts algebraically.",
+      "mathContext": "Since $-(1/r) > 0$ and $\\text{GM}^r \\le \\sum$: $(\\text{GM}^r)^{-(1/r)} \\le (\\sum)^{-(1/r)}$. Setting $A, B$ for these, the algebraic chain $1 = A \\cdot A^{-1} \\le B \\cdot A^{-1} = A^{-1} B$ yields $B^{-1} \\le A^{-1}$, giving $M_r \\le \\text{GM}$."
     },
     {
       "id": "crossing-zero",
       "title": "§5: Main Theorem — Crossing-Zero Monotonicity",
-      "startLine": 196,
-      "endLine": 210,
-      "summary": "power_mean_monotone_crossing_zero: M_r ≤ M_s for r < 0 < s. Direct combination of §3 and §4.",
-      "mathContext": "M_r ≤ GM (§4) and GM ≤ M_s (§3), so M_r ≤ M_s by transitivity (le_trans)."
+      "startLine": 190,
+      "endLine": 211,
+      "summary": "power_mean_monotone_crossing_zero: M_r ≤ M_s for r < 0 < s. A 3-line proof combining §3 and §4 via le_trans.",
+      "mathContext": "$M_r \\le \\text{GM}$ (§4) and $\\text{GM} \\le M_s$ (§3), so $M_r \\le M_s$ by transitivity."
     },
     {
       "id": "hm-gm-am",
       "title": "§6: HM ≤ GM ≤ AM as Special Case",
-      "startLine": 212,
-      "endLine": 222,
-      "summary": "hm_le_gm_le_am_via_power_means: M_{-1} ≤ GM ≤ M_1, i.e., HM ≤ GM ≤ AM. Special case r=-1, s=1.",
-      "mathContext": "Direct application of §4 (r=-1) and §3 (s=1). The HM-GM-AM chain is a classical consequence."
+      "startLine": 213,
+      "endLine": 225,
+      "summary": "hm_le_gm_le_am_via_power_means: M_{-1} ≤ GM ≤ M_1, i.e., HM ≤ GM ≤ AM. Immediate from §3 (s=1) and §4 (r=-1) with norm_num discharging the sign hypotheses.",
+      "mathContext": "$\\text{HM} = M_{-1} \\le \\text{GM} \\le M_1 = \\text{AM}$. The classical HM-GM-AM chain as a formal corollary of the crossing-zero theorem."
     }
   ],
   "crossReferences": [
