@@ -35,25 +35,44 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Context",
+      "id": "problem-context",
+      "title": "Problem Context and Technical Setup",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Imports Proofs.Erdos100Problem (which axiomatizes guthKatz_distinct_distances and piepmeyer_construction) and opens the Erdos100, Filter, and Set namespaces. The namespace gives access to diam, hasIntegerDistances, Erdos100StrongConjecture, and n_over_log_sublinear."
+      "summary": "File header frames the open question: is the minimum diameter of n-point integer distance sets Θ(n) or Θ(n/log n)? Imports Erdos100Problem (which axiomatizes guthKatz_distinct_distances and piepmeyer_construction). Opens Erdos100, Filter, Set namespaces, giving access to diam, hasIntegerDistances, Erdos100StrongConjecture, n_over_log_sublinear.",
+      "mathContext": "The Erdős-Anning theorem (1945) shows infinite integer distance sets in ℝ² are collinear. For finite n-point sets, the minimum diameter question asks: how small can max_{x,y∈S} |x-y| be? Piepmeyer's construction (1996) achieves diameter Θ(n). Guth-Katz (2015) gives the lower bound Ω(n/log n) via polynomial method applied to distinct distances. The strong conjecture diam ≥ n-1 would close the gap — establishing Θ(n) precisely."
     },
     {
-      "id": "strong-implies-linear",
-      "title": "strong_implies_half_linear: Conjecture → Linear Bound",
-      "startLine": 24,
+      "id": "conjecture-statement",
+      "title": "Strong Conjecture: Theorem Statement and Hypotheses",
+      "startLine": 26,
+      "endLine": 36,
+      "summary": "strong_implies_half_linear: Erdos100StrongConjecture → ∀ S with integer distances and |S|≥2, |S|/2 ≤ diam S. The hypothesis Erdos100StrongConjecture is ∀ S with integer distances and |S|≥2, diam S ≥ |S|-1. The conclusion weakens this to n/2 (a provably valid weakening for n≥2).",
+      "mathContext": "Erdos100StrongConjecture asserts diam(S) ≥ n-1 for any n-point integer distance set with n≥2. The implication to n/2 uses only n-1 ≥ n/2 for n≥2 (equivalently n ≥ 2). The proof is purely arithmetic — the conjecture provides the geometric content, and the rest is just linarith."
+    },
+    {
+      "id": "conjecture-proof",
+      "title": "Linear Bound Proof: Cast and linarith",
+      "startLine": 37,
       "endLine": 40,
-      "summary": "Proves that the strong conjecture (diam S ≥ card S - 1) implies a linear lower bound: diam S ≥ (card S)/2 for sets of ≥ 2 points. The proof extracts diam S ≥ n-1 from Erdos100StrongConjecture, casts n ≥ 2 to a real inequality, and closes by linarith."
+      "summary": "3-line proof: (1) hstrong := h S hint hcard applies the conjecture to get diam S ≥ S.card-1; (2) exact_mod_cast casts hcard : S.card ≥ 2 from ℕ to ℝ; (3) linarith closes from hstrong (diam ≥ n-1) and hge2 (n ≥ 2).",
+      "mathContext": "The `exact_mod_cast` tactic bridges the ℕ hypothesis `hcard : S.card ≥ 2` to the real inequality `(S.card : ℝ) ≥ 2`. The `linarith` call then combines: diam ≥ n-1 (real) and n ≥ 2 (real) to get n-1 ≥ n/2, hence diam ≥ n/2. The arithmetic n-1 ≥ n/2 ↔ n ≥ 2 is why the hypothesis S.card ≥ 2 is needed."
     },
     {
-      "id": "gk-strictly-sublinear",
-      "title": "gk_bound_strictly_sublinear: Quantifying the log-gap",
-      "startLine": 42,
-      "endLine": 58,
-      "summary": "Proves that for any c > 0, cn/log n < cn eventually (∀ᶠ n in atTop). Uses n_over_log_sublinear 1 from the parent file (which gives n/log n < n eventually), then scales by c via mul_lt_mul_of_pos_left. The filter_upwards tactic converts the eventually statement to a direct inequality."
+      "id": "log-gap-statement",
+      "title": "Log Gap Theorem: Quantifying cn/log n < cn",
+      "startLine": 44,
+      "endLine": 53,
+      "summary": "gk_bound_strictly_sublinear (c : ℝ) (hc : c > 0) : ∀ᶠ n : ℕ in atTop, c * n / Real.log n < c * n. Universally quantified over c > 0, this says the Guth-Katz bound cn/log n is eventually strictly less than any linear bound cn — precisely quantifying the log n gap between the known lower bound and the linear conjecture.",
+      "mathContext": "The Mathlib `∀ᶠ n in atTop` (Filter.Eventually) formalism means: ∃ N, ∀ n ≥ N, property holds. For the log-gap, N depends on c only logarithmically. The theorem uses n_over_log_sublinear from the parent file: ∀ c > 0, ∀ᶠ n, n/log n < n. Instantiating at c=1 gives the unit case, which is then scaled."
+    },
+    {
+      "id": "log-gap-proof",
+      "title": "Log Gap Proof: filter_upwards and Scaling",
+      "startLine": 54,
+      "endLine": 57,
+      "summary": "filter_upwards [n_over_log_sublinear 1 (by norm_num)] instantiates the parent lemma at parameter 1 to get ∀ᶠ n, 1 * n / log n < 1 * n. After rw [mul_one] and rw [mul_div_assoc], mul_lt_mul_of_pos_left scales by c > 0 to conclude c * n / log n < c * n.",
+      "mathContext": "`filter_upwards` is the key filter manipulation tactic: it converts ∀ᶠ h ∈ F, P h into ∀ n, H n → P n for a given hypothesis H. The `mul_div_assoc : a * b / c = a * (b / c)` rewrite exposes the structure c * (n / log n), enabling `mul_lt_mul_of_pos_left` (if 0 < c and a < b then c*a < c*b) to scale from n/log n < n to c*(n/log n) < c*n."
     }
   ],
   "overview": {
