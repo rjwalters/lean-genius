@@ -26,7 +26,7 @@
       "Generalization to Bₕ sets for arbitrary h ≥ 2 with the Bose-Chowla conjecture",
       "Separation of lower bound (Bose-Chowla, known) from upper bound (Green, best known) as distinct axioms"
     ],
-    "assumptions": "6 axioms: bose_chowla_lower_bound (f(N) ≥ (1-ε)N^{1/3}), green_upper_bound (f(N) ≤ (7/2)^{1/3}+ε)N^{1/3}), bose_chowla_h2_resolved (Sidon case), bose_chowla_general_lower (lower bound for all h), example_b3_set ({1,5,14,30} is B₃), b3_trivial_upper (counting bound).",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

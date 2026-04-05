@@ -59,7 +59,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 146,
-    "assumptions": "4 axioms: EHSNumbers_infinite, PillaiPrimes_infinite, EHSNumbers_density_conjecture, and 1 more. See Lean source for complete statements."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1074**\n\nThis problem concerns special relationships between factorials and prime divisors.\n\n**Key History:**\n- Pillai (1930): First asked whether any primes p exist with p | m! + 1 and p ≢ 1 (mod m)\n- Chowla: Answered Pillai by showing 23 | 14! + 1 and 23 ≢ 1 (mod 14)\n- Erdős, Hardy, Subbarao: Named these sets 'EHS numbers' and 'Pillai primes', proved both infinite\n- Hardy-Subbarao: Computed EHS numbers up to 2^10, conjectured density is 1\n\n**Mathematical Setting:**\n- m! + 1 has prime factors that satisfy Wilson's theorem conditions\n- The condition p ≢ 1 (mod m) excludes the 'trivial' case where p - 1 | m\n- EHS numbers tend to occur in long consecutive runs",

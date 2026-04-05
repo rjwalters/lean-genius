@@ -48,7 +48,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 108,
-    "assumptions": "2 axioms: erdos_258_monotone, erdos_258_power. See Lean source for complete statements."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "Erdős Problem #258 asks about the irrationality of certain infinite series involving the divisor function τ(n). The problem has a rich history spanning several decades of number theory research.\n\nThe general question (arbitrary sequences with aₙ → ∞) remains OPEN. However, two important special cases have been solved:\n\n1. **Monotone sequences** (Erdős-Straus, 1971): If the sequence (aₙ) is monotone increasing, then the sum is always irrational.\n\n2. **Constant/power case** (Erdős, 1948): The series Σ τ(n)/tⁿ is irrational for any integer t ≥ 2. This connects to Lambert series, which have applications throughout analytic number theory.\n\nThe problem was formalized in Lean as part of Google DeepMind's Formal Conjectures project.",

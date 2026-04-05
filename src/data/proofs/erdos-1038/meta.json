@@ -46,7 +46,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 93,
-    "assumptions": "5 axioms: erdos_1038_supremum, erdos_1038_inf_lowerBound, erdos_1038_inf_upperBound, and 2 more. See Lean source for complete statements."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős, Herzog, and Piranian in their 1958 paper 'Metric properties of polynomials.' They studied the sublevel set {x ∈ ℝ : |f(x)| < 1} for monic polynomials with real roots restricted to [-1, 1].\n\nThe 1958 paper proved the upper bound sup ≤ 2√2 when roots are in {-1, 1}, and conjectured this is optimal for roots in [-1, 1]. They also showed the infimum is less than 2 using polynomials like (x+1)(x-1)³.\n\nTerence Tao resolved the supremum question in December 2025, confirming that sup = 2√2 for the full class of polynomials with roots in [-1, 1]. The exact infimum remains an open problem, with current best bounds 2^(4/3) - 1 ≈ 1.519 ≤ inf ≤ 1.835.",

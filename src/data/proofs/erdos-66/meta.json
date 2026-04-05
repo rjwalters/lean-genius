@@ -55,7 +55,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 187,
-    "assumptions": "2 axioms: erdosSarkozy, horvath2007. See Lean source for complete statements."
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean."
   },
   "overview": {
     "historicalContext": "The representation function r_A(n) counts how many ways we can write n as a sum of two elements from a set A. This is a fundamental object in additive combinatorics, connected to problems like Goldbach's conjecture (where A is the primes).\n\nFor many natural sets, r_A(n) grows roughly like log(n). Erdős asked whether this growth can be EXACTLY logarithmic—whether r_A(n)/log(n) can converge to a nonzero limit.\n\nRandom constructions suggest the answer might be yes: if you choose A with probability c/√n for each n, then E[r_A(n)] ~ c²log(n). However, these constructions always have an exceptional set of density zero where the limit fails.\n\nThe challenge is eliminating this exceptional set. Erdős believed it cannot be done, conjecturing the answer is NO. The problem carries a $500 prize.",
