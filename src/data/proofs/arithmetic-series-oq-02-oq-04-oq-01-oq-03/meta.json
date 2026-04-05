@@ -20,9 +20,15 @@
     "dateAdded": "2026-04-05",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified.",
+    "mathlib_version": "4.26.0",
     "lineCount": 78,
     "theoremCount": 2,
     "definitionCount": 0,
+    "prerequisites": [
+      "BinomialTheoremOQ03: standard Vandermonde convolution (vandermonde_range)",
+      "Nat.descFactorial_eq_factorial_mul_choose: falling factorial ↔ binomial coefficient conversion",
+      "Nat.choose_mul_factorial_mul_factorial: the key factorial identity C(r,j)*j!*(r-j)! = r!"
+    ],
     "originalContributions": [
       "vandermonde_descFactorial: descFactorial(m+n,r) = ∑_j C(r,j)*descFactorial(m,j)*descFactorial(n,r-j)",
       "term_eq: key algebraic lemma C(r,j)*j!*(r-j)! = r! gives term equality",
