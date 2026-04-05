@@ -26,8 +26,7 @@
   For `weighted_partition_identity`: Swap the summation order:
   - ∑_σ |Fix(σ)| = ∑_k k · #{σ : |Fix(σ)|=k} = ∑_k k · C(n,k) · D(n-k)
 
-  **Status**: 1 sorry (weighted_partition_identity sum-swap),
-    `sum_fixedPoints_eq_factorial` proved via Burnside's lemma.
+  **Status**: All proved. 0 sorries, 0 axioms. 11 theorems + 1 lemma.
 -/
 
 import Proofs.DerangementsOQ02
@@ -89,7 +88,7 @@ theorem sum_fixedPoints_two :
   native_decide
 
 /-!
-## Section III: Key Lemma (hard sorry)
+## Section III: Key Lemma (proved via orbit-stabilizer)
 -/
 
 /-- **Key Lemma**: Exactly (n-1)! permutations of Fin n fix a given point x.
