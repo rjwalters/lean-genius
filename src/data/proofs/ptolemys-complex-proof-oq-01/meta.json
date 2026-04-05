@@ -1,0 +1,163 @@
+{
+  "id": "ptolemys-complex-proof-oq-01",
+  "title": "Ptolemy's Equality: Complete Characterization via Same Ray",
+  "slug": "ptolemys-complex-proof-oq-01",
+  "description": "Ptolemy's equality holds for four complex numbers if and only if the two opposite-side products lie on the same ray in ℂ (as ℝ-module): they are zero or positively proportional. This completes the biconditional characterization begun in PtolemysComplexProof.lean.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem",
+    "date": "2026-04-04",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "complex-analysis",
+      "ptolemy",
+      "strictly-convex-spaces",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/PtolemysComplexProofOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "sameRay_iff_norm_add",
+        "description": "In a strictly convex space: SameRay ℝ x y ↔ ‖x + y‖ = ‖x‖ + ‖y‖",
+        "module": "Mathlib.Analysis.Convex.StrictConvexSpace"
+      },
+      {
+        "theorem": "InnerProductSpace.toUniformConvexSpace",
+        "description": "Any real inner product space is uniformly convex",
+        "module": "Mathlib.Analysis.InnerProductSpace.Convex"
+      },
+      {
+        "theorem": "UniformConvexSpace.toStrictConvexSpace",
+        "description": "Any uniformly convex space is strictly convex",
+        "module": "Mathlib.Analysis.Convex.Uniform"
+      }
+    ],
+    "originalContributions": [
+      "Complete biconditional: Ptolemy equality ↔ SameRay ℝ ((z₁-z₂)(z₃-z₄)) ((z₂-z₃)(z₁-z₄))",
+      "Converse direction: Ptolemy equality → same ray (using equality case of triangle inequality in strictly convex ℂ)",
+      "Explicit proportionality form: when factors nonzero, yields a positive real t with t·a = b",
+      "Unit square numerical verification showing both opposite-side products equal -1"
+    ],
+    "dateAdded": "2026-04-04",
+    "axiomCount": 0,
+    "lineCount": 136,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+  },
+  "overview": {
+    "historicalContext": "Ptolemy's theorem (c. 150 AD) characterizes cyclic quadrilaterals: the product of diagonals equals the sum of opposite-side products. `PtolemysComplexProof.lean` proved this inequality for all four-point configurations and gave a sufficient condition for equality (positively proportional opposite-side products). This file answers the natural follow-up: is that condition also necessary?",
+    "problemStatement": "**Open Question from PtolemysComplexProof.lean**:\n\nThe sufficient condition for Ptolemy equality is: if $(z_2-z_3)(z_1-z_4) = t \\cdot (z_1-z_2)(z_3-z_4)$ for some $t \\geq 0$, then equality holds. Is the converse true? If Ptolemy's equality holds, must the products be positively proportional?",
+    "text": "Ptolemy's equality holds ↔ the opposite-side products are on the same ray in ℂ (as ℝ-module), i.e., zero or positively real-proportional.",
+    "proofStrategy": "**Key reduction**: Setting $a = (z_1-z_2)(z_3-z_4)$ and $b = (z_2-z_3)(z_1-z_4)$, the algebraic identity $(z_1-z_3)(z_2-z_4) = a + b$ transforms Ptolemy's equality into:\n$$\\|a+b\\| = \\|a\\| + \\|b\\|$$\nThis is the equality case of the triangle inequality. In a strictly convex normed space, this holds iff `SameRay ℝ a b` (Mathlib: `sameRay_iff_norm_add`).\n\n**Why ℂ is strictly convex**: The chain `InnerProductSpace ℝ ℂ → UniformConvexSpace ℂ → StrictConvexSpace ℝ ℂ` is automatic from Mathlib instances.\n\nBoth directions follow immediately from `sameRay_iff_norm_add` and `norm_mul`.",
+    "keyInsights": [
+      "Ptolemy's equality is exactly the equality case of the triangle inequality for the algebraic identity decomposition a + b = (z₁-z₃)(z₂-z₄).",
+      "The strictly convex characterization of triangle equality (`sameRay_iff_norm_add`) completes the biconditional in one unified theorem.",
+      "ℂ is strictly convex as a real inner product space. The instance chain InnerProductSpace ℝ ℂ → UniformConvexSpace → StrictConvexSpace is entirely automatic in Lean.",
+      "The explicit form: when factors are nonzero, there's a unique positive real ratio t = ‖a‖/‖b‖ relating the two products."
+    ],
+    "prerequisites": [
+      "Complex number arithmetic (from PtolemysComplexProof.lean)",
+      "Strictly convex normed spaces",
+      "The SameRay concept (non-negative proportionality in a module)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "biconditional",
+      "title": "The Biconditional: Ptolemy Equality ↔ SameRay",
+      "startLine": 55,
+      "endLine": 84,
+      "summary": "Main theorem: ptolemy_equality_iff_sameRay. Both directions via calc chains using the algebraic identity (by ring), norm_mul, and sameRay_iff_norm_add.",
+      "mathContext": "The forward direction (→) and backward direction (←) are symmetric calc chains. Both reduce to the equality case of the triangle inequality ‖a+b‖ = ‖a‖ + ‖b‖."
+    },
+    {
+      "id": "explicit-form",
+      "title": "Explicit Proportionality Constant",
+      "startLine": 87,
+      "endLine": 103,
+      "summary": "When both factors are nonzero, SameRay.exists_pos_left extracts a positive real t with t • a = b.",
+      "mathContext": "SameRay ℝ a b with a,b ≠ 0 gives ∃ t : ℝ, 0 < t ∧ t • a = b by SameRay.exists_pos_left."
+    },
+    {
+      "id": "converse-standalone",
+      "title": "The Converse Direction (Standalone)",
+      "startLine": 106,
+      "endLine": 113,
+      "summary": "ptolemy_equality_implies_sameRay: the new direction, stated as a standalone theorem for easy reference.",
+      "mathContext": "This is the direction proved for the first time in this file, completing what PtolemysComplexProof.lean left as an open question."
+    },
+    {
+      "id": "numerical-example",
+      "title": "Numerical Verification: Unit Square",
+      "startLine": 115,
+      "endLine": 130,
+      "summary": "Verification that the unit square {0, 1, 1+i, i} satisfies the SameRay condition: both products equal -1.",
+      "mathContext": "a = (0-1)·((1+i)-i) = (-1)·1 = -1 and b = (1-(1+i))·(0-i) = (-i)·(-i) = i² = -1. SameRay ℝ (-1) (-1) holds trivially."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-complex-proof",
+      "relationship": "extends",
+      "description": "PtolemysComplexProof.lean proved the sufficient condition (proportional → equality). This file proves the converse (equality → SameRay), completing the biconditional."
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "PtolemysTheorem.lean proves Ptolemy equality for cospherical points using Euclidean geometry. The SameRay condition here is the algebraic characterization of concyclicity."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete characterization: Ptolemy's equality holds iff the opposite-side products are on the same ray (SameRay ℝ a b). The proof reduces to the equality case of the triangle inequality in the strictly convex space ℂ. Three theorems, 0 sorries, 0 axioms.",
+    "implications": "**Theoretical Significance**: This closes the question left open by PtolemysComplexProof.lean. The biconditional `ptolemy_equality_iff_sameRay` shows that the equality condition is not just sufficient but characterizing: the equality case of Ptolemy's inequality is exactly when the two opposite-side products point in the same direction in ℂ.\n\nThis also provides a bridge to the geometric concyclicity interpretation: the SameRay condition (both products are positive real multiples of each other) is equivalent to the cross-ratio being a positive real, which characterizes the four points being concyclic in the standard cyclic order.",
+    "openQuestions": [
+      "Can this SameRay condition be connected formally to Mathlib's cospherical/concyclic predicate, completing the chain: Ptolemy equality ↔ SameRay ↔ concyclic?",
+      "Does the same characterization extend to Ptolemy-type inequalities in other metric spaces with an algebraic structure?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Convex",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 136,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "substantiveTheoremCount": 3,
+    "duplicateTheorems": 0,
+    "definitionCount": 0
+  },
+  "references": [
+    {
+      "authors": "Claudius Ptolemy",
+      "title": "Almagest (Μαθηματικὴ Σύνταξις)",
+      "year": "c. 150 AD",
+      "note": "Book I, Ch. 10: original geometric proof of Ptolemy's theorem"
+    },
+    {
+      "authors": "Yaël Dillies, Yury Kudryashov",
+      "title": "Strictly Convex Spaces in Mathlib",
+      "year": "2022",
+      "note": "sameRay_iff_norm_add and related results in Mathlib.Analysis.Convex.StrictConvexSpace"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ptolemy_equality_iff_sameRay",
+      "type": "core",
+      "description": "Ptolemy equality ↔ SameRay ℝ ((z₁-z₂)(z₃-z₄)) ((z₂-z₃)(z₁-z₄))",
+      "leanType": "(z₁ z₂ z₃ z₄ : ℂ) → ‖z₁-z₃‖*‖z₂-z₄‖ = ‖z₁-z₂‖*‖z₃-z₄‖ + ‖z₂-z₃‖*‖z₁-z₄‖ ↔ SameRay ℝ ((z₁-z₂)*(z₃-z₄)) ((z₂-z₃)*(z₁-z₄))"
+    },
+    {
+      "name": "ptolemy_equality_implies_proportional",
+      "type": "corollary",
+      "description": "When factors are nonzero, Ptolemy equality yields an explicit positive real t with t•a = b",
+      "leanType": "(z₁ z₂ z₃ z₄ : ℂ) → Ptolemy equality → a ≠ 0 → b ≠ 0 → ∃ t : ℝ, 0 < t ∧ t • a = b"
+    }
+  ]
+}
