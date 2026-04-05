@@ -112,6 +112,21 @@
       "targetId": "euler-totient-oq-04",
       "relationship": "complements",
       "description": "The divisor sum identity n = \u2211_{d|n} \u03c6(d) uses multiplicativity implicitly; together these two properties characterize \u03c6 among arithmetic functions"
+    },
+    {
+      "targetId": "euler-totient-oq-01",
+      "relationship": "related",
+      "description": "Sibling open question on totient function properties; explores different aspects of \u03c6(n)"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem underlies multiplicativity of \u03c6: for coprime m,n, (\u2124/mn\u2124)* \u2245 (\u2124/m\u2124)* \u00d7 (\u2124/n\u2124)* gives \u03c6(mn) = \u03c6(m)\u03c6(n)"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem ((p-1)! \u2261 -1 mod p) connects to the totient via the group (\u2124/p\u2124)* of order \u03c6(p) = p-1"
     }
   ],
   "references": [
