@@ -53,15 +53,56 @@
       "Connect the height pairing matrix values to actual Néron-Tate heights computed from the Weierstrass model"
     ]
   },
-  "leanFile": {
-    "namespace": "BirchSwinnertonDyer.BSD389a",
-    "theoremCount": 27,
-    "axiomCount": 3,
-    "defCount": 2,
-    "sorryCount": 0,
-    "lineCount": 273,
-    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerOQ06.lean"
-  },
+  "sections": [
+    {
+      "id": "bsd-rank-consequences",
+      "title": "§I: BSD Rank Consequences for Curve 389a",
+      "startLine": 37,
+      "endLine": 72,
+      "summary": "Under BSD: analyticRank = 2 (from algebraicRank = 2 + BSD_Weak). Unconditionally: L(389a,1) = 0 (from Kolyvagin: L(E,1)≠0 → rank=0, contradicting rank=2). curve389a_rank_beyond_kolyvagin: rank ≥ 2 lies beyond Kolyvagin's proven rank ≤ 1.",
+      "mathContext": "BSD_Weak: $\\text{algRank}(E) = \\text{anRank}(E)$. Kolyvagin (1990): $L(E,1) \\neq 0 \\Rightarrow \\text{algRank}(E) = 0$. Since algRank(389a) = 2, $L(389a, 1) = 0$ unconditionally."
+    },
+    {
+      "id": "height-matrix",
+      "title": "§II: Height Pairing Matrix Analysis",
+      "startLine": 74,
+      "endLine": 120,
+      "summary": "curve389a_height_matrix_pos_def: R = det(H) > 0 (generators are ℤ-linearly independent). curve389a_generators_not_orthogonal: h₁₂² > 0 (norm_num after unfolding -1323/10000). curve389a_regulator_strict_cauchy_schwarz: R < ĥ(P₁)·ĥ(P₂) via linarith from h₁₂² > 0.",
+      "mathContext": "Height matrix: $H = \\begin{pmatrix} h_{11} & h_{12} \\\\ h_{12} & h_{22} \\end{pmatrix}$ with $h_{11} \\approx 0.7622$, $h_{12} \\approx -0.1323$, $h_{22} \\approx 0.2720$. $R = \\det H = h_{11}h_{22} - h_{12}^2 > 0$ iff generators $P_1, P_2$ are $\\mathbb{Z}$-linearly independent."
+    },
+    {
+      "id": "bsd-constant-bounds",
+      "title": "§III: Numerical Bounds on the BSD Constant",
+      "startLine": 122,
+      "endLine": 153,
+      "summary": "BSD constant C = 4959/1000 × 1524/10000 = 7557516/10000000 ≈ 0.7558. Proved: 0.75 < C < 0.76 (norm_num). Tighter: 7557/10000 < C < 7558/10000. curve389a_BSD_constant_eq_omega_times_reg: C = Ω·R (since |Ш|=1, tors=1, tam=1).",
+      "mathContext": "$C = \\Omega \\cdot R \\cdot |\\Sha| \\cdot \\prod c_p / |\\text{tors}|^2 = 4.959 \\times 0.1524 \\times 1 \\times 1 / 1 \\approx 0.7558$. All bounds verified by `norm_num` unfolding BSDData.constant."
+    },
+    {
+      "id": "rank2-bsd-formula",
+      "title": "§IV: Rank-2 BSD Formula and BGZ Verification",
+      "startLine": 155,
+      "endLine": 195,
+      "summary": "Axioms: BSD_rank2_Lderiv2 (strong BSD rank-2 formula L''(E,1)/2 = C), curve389a_second_L_derivative (BGZ value), curve389a_BGZ_computation (0.7557 < L''(389a,1)/2 < 0.7558). Theorem: |L''(389a,1)/2 - C| < 1/1000 (abs_lt + linarith from both bounds).",
+      "mathContext": "BGZ (1985): $L''(389a, 1)/2 \\approx 0.7558 \\approx C(389a)$. The formal statement: $|L''(389a,1)/2 - C| < 10^{-3}$ verified by combining BGZ bounds and C bounds via `linarith`."
+    },
+    {
+      "id": "regulator-structure",
+      "title": "§V: Regulator and BSD Structure",
+      "startLine": 196,
+      "endLine": 226,
+      "summary": "curve389a_BSD_structure: |Ш|=1, tors=1, tam=1 (all by rfl). Regulator bounds: 0.15 < R < 0.16. Real period: Ω > 4.9. All by norm_num after unfolding curve389a_BSD.",
+      "mathContext": "Regulator $R = \\det H \\approx 0.1524$; real period $\\Omega \\approx 4.959$. Trivial arithmetic data: $|\\Sha| = 1$, $|\\text{tors}| = 1$, $c_{389} = 1$ (Tamagawa, Kodaira type $I_1$)."
+    },
+    {
+      "id": "conductor-verification",
+      "title": "§VI–VII: Conductor Verification and BSD_Rank2 Structure",
+      "startLine": 227,
+      "endLine": 272,
+      "summary": "N = 389 is prime (norm_num). BSD_Rank2_Verification structure: bundles BSDData, hcurve, hrank, hpos. curve389a_BSD_verification: noncomputable def instantiating the structure for 389a. BSD_rank2_constant_pos: v.data.constant > 0 from v.hpos.",
+      "mathContext": "389 is prime (checked by `norm_num`). BSD_Rank2_Verification packages the verification evidence: data (periods, R, Ша, Tamagawa, torsion), curve identity, rank=2, constant > 0."
+    }
+  ],
   "crossReferences": [
     {
       "id": "birch-swinnerton-dyer",
