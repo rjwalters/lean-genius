@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-ch-file-context",
+    "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Finite Field Generalization: Weakening [Infinite K] to |K| > n",
+    "content": "This file proves the nonderogatory → cyclic vector theorem for finite fields. The parent proof (OQ-05-OQ-01) requires the field K to be infinite (`[Infinite K]`). This file weakens that to `|K| > n` (more precisely `Fintype.card K > n`), making the result applicable to all finite fields GF(q) with q > n. The key idea from the file header: the union avoidance lemma needs only |K| > k for k proper subspaces. Since k ≤ n (at most n normalized irreducible factors of a degree-n polynomial), the bound |K| > n suffices. The `[Fintype K]` instance (not `[Infinite K]`) is used throughout; `DecidableEq K` is needed for Fintype operations. The `Classical.propDecidable` attribute enables classical reasoning throughout.",
+    "mathContext": "Hypothesis chain: $[K|\\text{nonderogatory}|K| > n] \\Rightarrow$ cyclic vector. Strictly weaker than $[K\\text{ infinite}]$ since infinite fields have $|K| > n$ for all $n$ (they have cardinality $\\geq \\aleph_0$). Finite fields: $\\text{GF}(q)$ with $q = p^k > n$ satisfies the hypothesis. The tightest bound is $|K| > k$ where $k$ is the number of distinct irreducible factors of $\\mu_M$.",
+    "significance": "context",
+    "relatedConcepts": ["[Infinite K] hypothesis", "[Fintype K] instance", "Classical.propDecidable", "GF(q) finite field", "hypothesis weakening"],
+    "prerequisites": ["Lean 4 typeclass instances", "Fintype.card", "Classical.propDecidable", "Matrix.mulVecLin"]
+  },
+  {
     "id": "ann-ch-defs",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
     "range": { "startLine": 38, "endLine": 42 },
