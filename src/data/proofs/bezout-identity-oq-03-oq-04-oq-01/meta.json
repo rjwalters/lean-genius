@@ -86,6 +86,7 @@
   ],
   "conclusion": {
     "summary": "crtDirect generalizes immediately to any CommRing. The proofs are cleaner in the general setting — linear_combination is more natural than linarith for ring identities. IsCoprime is the right Lean typeclass for CRT: it provides the Bézout coefficients directly, while IsBezout additionally guarantees they can be computed algorithmically.",
+    "implications": "This formalization demonstrates that the constructive Bézout-based CRT is not an integer-specific result — it holds in the full generality of commutative rings with the IsCoprime predicate. Key consequences: (1) Lagrange interpolation over k[X] is a CRT instance (crtRing over polynomial rings), giving a verified construction for polynomial interpolation; (2) Gaussian integers ℤ[i] satisfy IsBezout (Euclidean domain), giving CRT for Gaussian integer congruences; (3) The theorem provides a foundation for algebraic number theory algorithms (CRT-based factorization, NTRU lattice-based cryptography) in future Lean formalizations.",
     "openQuestions": [
       "Can the folding approach for multiple coprime moduli (iterated CRT) be generalized to commutative rings? The key lemma needed: if IsCoprime m₁ m₂ and IsCoprime (m₁*m₂) m₃, then IsCoprime m₁ (m₂*m₃) — available in Mathlib as IsCoprime.mul_right.",
       "Can crtRing be instantiated for polynomial rings k[X] with an explicit worked example — e.g., Lagrange interpolation as CRT?",
@@ -97,6 +98,16 @@
       "targetId": "bezout-identity-oq-03-oq-04",
       "relationship": "generalizes",
       "description": "Parent: Efficient Verified CRT via Direct Bézout for ℤ. This file generalizes to arbitrary CommRing."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "grandparent",
+      "description": "Root Bézout identity entry: sm + tn = gcd(m,n). This entry uses IsCoprime (sm+tn=1 case) as the ring-theoretic generalization."
+    },
+    {
+      "targetId": "bezout-identity-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling: multiple-moduli CRT via folding. This entry handles the two-moduli case over CommRing."
     }
   ]
 }

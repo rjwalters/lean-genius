@@ -115,12 +115,19 @@
   },
   "crossReferences": [
     {
-      "relationship": "laws-of-large-numbers is the parent problem; Glivenko-Cantelli is the uniform version of SLLN",
-      "targetId": "laws-of-large-numbers"
+      "targetId": "laws-of-large-numbers",
+      "relationship": "parent",
+      "description": "Parent problem: Glivenko-Cantelli is the uniform version of the Strong Law of Large Numbers"
     },
     {
-      "relationship": "laws-of-large-numbers-oq-01 covers SLLN for heavy-tailed distributions; both rely on strong_law_ae_real",
-      "targetId": "laws-of-large-numbers-oq-01"
+      "targetId": "laws-of-large-numbers-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 covers SLLN for heavy-tailed distributions; both use strong_law_ae_real as the core Mathlib dependency"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "CLT gives quantitative rates; Donsker's theorem (√n(Fₙ−F) → Brownian bridge) is the quantitative Glivenko-Cantelli"
     }
   ],
   "references": [
