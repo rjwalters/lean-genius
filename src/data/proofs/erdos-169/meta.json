@@ -46,7 +46,7 @@
     "originalContributions": [],
     "axiomCount": 2,
     "lineCount": 279,
-    "assumptions": "15 axioms: van_der_waerden_finite, berlekamp_lower_bound, berlekamp_construction, and 12 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: berlekamp_lower_bound (Berlekamp lower bound for van der Waerden numbers), trivial_ratio_bound (trivial upper bound on W(k)/k ratio). 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #169 connects two fundamental areas of combinatorics: the study of arithmetic-progression-free sets and the analysis of harmonic sums. The problem asks: how large can the sum of reciprocals be for a set of integers that avoids k-term arithmetic progressions?\n\nThe study of AP-free sets began with van der Waerden's theorem (1927), which guarantees that any finite coloring of integers contains arbitrarily long monochromatic APs. This led to the definition of van der Waerden numbers W(k), which grow extremely fast. Erdős's problem asks whether the harmonic sum function f(k) can grow faster than log W(k).\n\nBerlekamp (1968) gave the first lower bound f(k) ≥ (log 2 / 2)k using digit-based constructions. Gerver (1977) improved this to f(k) ≥ (1-o(1))k log k, showing superlinear growth. Recent work by Walker (2025) connected optimal AP-free sets to Kempner sets—integers defined by digit restrictions.",
