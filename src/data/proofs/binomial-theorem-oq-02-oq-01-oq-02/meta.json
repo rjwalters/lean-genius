@@ -33,7 +33,7 @@
       "The multinomial theorem IS the proof — no additional work beyond algebraic manipulation",
       "Product concentration: $\\prod_{i \\in s} (\\text{if } i = i_0 \\text{ then } t \\text{ else } 1)^{k(i)} = t^{k(i_0)}$ via `Finset.prod_eq_single`",
       "Sum simplification: $\\sum_s p(i) \\cdot (\\text{if } i = i_0 \\text{ then } t \\text{ else } 1) = p(i_0) t + (1 - p(i_0))$ via linearity and `Finset.sum_ite_eq'`",
-      "The open problem remains: formally extracting polynomial coefficients from the PGF identity to get the direct PMF formula"
+      "The direct PMF formula `multinomial_marginal_pmf` is proved via an explicit bijection between filtered piAntidiag elements and `(s.erase i₀).piAntidiag (n−j)`, bypassing polynomial coefficient extraction entirely"
     ]
   },
   "sections": [
@@ -83,7 +83,6 @@
   "conclusion": {
     "summary": "The main result `multinomial_marginal_pgf` proves that the PGF of each marginal of the multinomial distribution equals the Binomial PGF. Additionally, `multinomial_marginal_pmf` directly proves the PMF formula P(X_{i₀}=j) = C(n,j)·p(i₀)^j·(1−p(i₀))^(n−j) via an explicit bijection and Nat.multinomial_insert. All 10 theorems fully machine-verified, 0 sorries.",
     "openQuestions": [
-      "Can `multinomial_marginal_pmf` be completed using Lean 4's `Polynomial` library for coefficient extraction?",
       "Can the proof be extended to show joint independence of disjoint subsets of multinomial components?"
     ]
   },
