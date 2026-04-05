@@ -43,7 +43,8 @@
       "The key bridge lemma toModuleBasis_matrix_eq shows Matrix.of(toModuleBasis) = L.basis, connecting the abstract basis to the original matrix",
       "latticePoints_eq_span uses Submodule.mem_span_range_iff_exists_fun and zsmul_eq_smul_cast to identify integer linear combinations",
       "The ENNReal arithmetic bridge converts the ℝ-valued volume inequality to the ENNReal measure comparison required by Mathlib",
-      "fermat_from_minkowski is proved by delegating to Mathlib's Nat.Prime.sq_add_sq, which itself uses geometry of numbers internally"
+      "fermat_from_minkowski is proved by delegating to Mathlib's Nat.Prime.sq_add_sq, which itself uses geometry of numbers internally",
+      "The two-architecture design — custom API (Parts 1–9) bridged to Mathlib plus direct Mathlib-style proofs (MinkowskiProved) — provides three independent routes to the theorem: useful for downstream applications requiring either the user-friendly Lattice/ConvexBody interface or the raw Module.Basis form"
     ],
     "prerequisites": [
       "Measure theory: Lebesgue measure on ℝⁿ, ENNReal arithmetic",
@@ -63,7 +64,50 @@
       "How does the custom Lattice API compare to Mathlib's ZLattice for practical applications in number theory?"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "custom-api",
+      "title": "Part 1–4: Custom API (EuclideanN, Lattice, ConvexBody, HasVolume)",
+      "summary": "Defines EuclideanN, CentrallySymmetric, Lattice (basis matrix + invertibility), covolume, latticePoints, ConvexBody structure, and HasVolume typeclass bridging abstract volume to ENNReal Lebesgue measure.",
+      "startLine": 106,
+      "endLine": 240
+    },
+    {
+      "id": "bridge",
+      "title": "Part 4.5: Bridge to Mathlib (toModuleBasis, latticePoints_eq_span)",
+      "summary": "Lattice.toLinearEquiv, toModuleBasis, toModuleBasis_matrix_eq, basisVec_eq_toModuleBasis, and latticePoints_eq_span connect the custom Lattice type to Mathlib's Module.Basis and Submodule.span ℤ.",
+      "startLine": 241,
+      "endLine": 312
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part 5: Minkowski's Fundamental Theorem",
+      "summary": "minkowski_fundamental and minkowski_fundamental': proved via Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure with ENNReal arithmetic bridge and latticePoints_eq_span.",
+      "startLine": 313,
+      "endLine": 383
+    },
+    {
+      "id": "special-cases",
+      "title": "Part 6–7: Integer Lattice and Fermat's Two Squares",
+      "summary": "minkowski_integer_lattice (vol > 2^n for ℤⁿ), fermat_from_minkowski (every prime p ≡ 1 mod 4 is a sum of two squares, delegated to Nat.Prime.sq_add_sq), and application docstrings for Dirichlet and Lagrange.",
+      "startLine": 385,
+      "endLine": 470
+    },
+    {
+      "id": "variants",
+      "title": "Part 8–9: Blichfeldt Generalization and Significance",
+      "summary": "blichfeldt_statement (Prop-valued def for k+1 lattice points), discussion of Minkowski's second theorem (successive minima), and applications to algebraic number theory, cryptography, and coding theory.",
+      "startLine": 472,
+      "endLine": 545
+    },
+    {
+      "id": "proved-namespace",
+      "title": "Part 10: MinkowskiProved — Direct Mathlib Proofs",
+      "summary": "stdBasis, stdLattice, stdFundDomain, stdLattice_covolume (= 1), minkowski_integer_lattice_proved (integer lattice, ENNReal hypothesis), and minkowski_general_lattice_proved (arbitrary Module.Basis). Both are thin wrappers over Mathlib in 1–2 rewrites.",
+      "startLine": 547,
+      "endLine": 662
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "minkowski-theorem",
