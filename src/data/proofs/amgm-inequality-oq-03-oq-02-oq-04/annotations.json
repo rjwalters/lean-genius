@@ -1,5 +1,53 @@
 [
   {
+    "id": "ann-amgm-oq04-definition",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04",
+    "range": { "startLine": 27, "endLine": 30 },
+    "type": "definition",
+    "title": "Power Mean Definition: M_r(x) for r ≠ 0 and r = 0",
+    "content": "The unweighted power mean is defined as a piecewise function: for r ≠ 0, M_r(x) = (Σ xᵢ^r / n)^{1/r}, and for r = 0 it falls back to the geometric mean (∏ xᵢ)^{1/n}. The r = 0 case is needed because the general formula has a singularity there — this is the content of the sibling proof amgm-inequality-oq-03-oq-02, which shows lim_{r→0} M_r = GM. The definition is marked noncomputable since it relies on Real.rpow, which is noncomputable in Mathlib.",
+    "mathContext": "$M_r(x) = \\begin{cases} \\left(\\frac{1}{n}\\sum_{i=1}^n x_i^r\\right)^{1/r} & r \\neq 0 \\\\ \\left(\\prod_{i=1}^n x_i\\right)^{1/n} & r = 0 \\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": ["Real.rpow", "Fintype.card", "noncomputable", "geometric mean"],
+    "prerequisites": ["Real.rpow: real-valued exponentiation x^r for x ≥ 0", "Fintype.card: cardinality of a finite type"]
+  },
+  {
+    "id": "ann-amgm-oq04-key-limit",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04",
+    "range": { "startLine": 36, "endLine": 49 },
+    "type": "technique",
+    "title": "Key Limit Lemma: c^{-1/r} → 1 as r → +∞",
+    "content": "This lemma establishes that c^{-1/r} → 1 as r → +∞ for any c > 0. The proof factors through two steps: (1) -r⁻¹ → 0 as r → +∞, obtained by composing tendsto_inv_atTop_zero with negation; (2) continuity of the map t ↦ c^t at t = 0, using tendsto_const_nhds.rpow with the fact that c ≠ 0 (from c > 0). This is the engine behind the squeeze argument — it shows the factor n^{-1/r} in the lower bound converges to 1, closing the gap between both bounds.",
+    "mathContext": "$\\lim_{r \\to +\\infty} c^{-1/r} = c^0 = 1$ for $c > 0$. Factored as $-r^{-1} \\to 0$ and $c^t \\to c^0$ by continuity.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto_inv_atTop_zero", "Tendsto.rpow", "continuity of rpow", "Filter.Tendsto"],
+    "prerequisites": ["tendsto_inv_atTop_zero: r⁻¹ → 0 as r → +∞", "Tendsto.rpow: composition with rpow preserves limits"]
+  },
+  {
+    "id": "ann-amgm-oq04-upper-bound",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04",
+    "range": { "startLine": 58, "endLine": 90 },
+    "type": "technique",
+    "title": "Upper Bound: M_r(x) ≤ max(x) for r > 0",
+    "content": "Proves powerMean_le_sup: the power mean never exceeds the maximum. The argument chains three inequalities: (1) each xᵢ^r ≤ M^r by rpow_le_rpow since xᵢ ≤ M and r > 0; (2) summing gives Σ xᵢ^r ≤ n · M^r; (3) dividing by n and taking the r-th root yields (Σ xᵢ^r / n)^{1/r} ≤ (M^r)^{1/r} = M, using rpow_le_rpow for monotonicity of the root and rpow_mul + mul_inv_cancel to simplify (M^r)^{1/r} = M. The division step uses a multiply-both-sides argument via mul_div_cancel₀ to avoid division inequalities.",
+    "mathContext": "$M_r(x) = \\left(\\frac{\\sum x_i^r}{n}\\right)^{1/r} \\leq \\left(\\frac{n \\cdot M^r}{n}\\right)^{1/r} = (M^r)^{1/r} = M$",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.rpow_le_rpow", "Finset.sum_le_sum", "Real.rpow_mul", "mul_inv_cancel₀", "mul_div_cancel₀"],
+    "prerequisites": ["Real.rpow_le_rpow: monotonicity of rpow in the base", "Real.rpow_mul: (x^a)^b = x^{ab} for x ≥ 0"]
+  },
+  {
+    "id": "ann-amgm-oq04-lower-bound",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04",
+    "range": { "startLine": 91, "endLine": 127 },
+    "type": "technique",
+    "title": "Lower Bound: max(x) · n^{-1/r} ≤ M_r(x) for r > 0",
+    "content": "Proves sup_mul_pow_le_powerMean: the power mean is bounded below by M · n^{-1/r}. The key insight is that the sum Σ xᵢ^r ≥ M^r because it contains at least the single term from the maximizer i₀ (found via Finset.exists_max_image). The proof rewrites M · n^{-1/r} = (M^r / n)^{1/r} using div_rpow and rpow_mul, then shows (M^r / n)^{1/r} ≤ (Σ xᵢ^r / n)^{1/r} by monotonicity of the r-th root (rpow_le_rpow). The single-element lower bound Finset.single_le_sum is the combinatorial heart of the argument.",
+    "mathContext": "$M \\cdot n^{-1/r} = \\left(\\frac{M^r}{n}\\right)^{1/r} \\leq \\left(\\frac{\\sum x_i^r}{n}\\right)^{1/r} = M_r(x)$ since $\\sum x_i^r \\geq x_{i_0}^r = M^r$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.exists_max_image", "Finset.single_le_sum", "Real.div_rpow", "Real.rpow_neg", "le_antisymm for max characterization"],
+    "prerequisites": ["Finset.exists_max_image: finds the element achieving the max", "Finset.single_le_sum: a single nonneg term ≤ the sum"]
+  },
+  {
     "id": "ann-amgm-oq04-squeeze",
     "proofId": "amgm-inequality-oq-03-oq-02-oq-04",
     "range": { "startLine": 132, "endLine": 151 },

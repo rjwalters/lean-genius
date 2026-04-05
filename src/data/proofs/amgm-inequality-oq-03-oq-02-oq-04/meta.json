@@ -29,7 +29,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The power mean M_r(x) = (Σ xᵢ^r / n)^{1/r} interpolates between the minimum (r → -∞) and maximum (r → +∞) of the data. These limits were known to Hardy, Littlewood, and Pólya (1934) and formalize the intuition that raising to large positive powers selects the largest element, while large negative powers select the smallest. The proof technique — squeezing via n^{-1/r} → 1 — is elementary and constructive. The min case uses the elegant duality M_r(x) = (M_{-r}(x⁻¹))⁻¹, which converts the -∞ limit to a +∞ limit of the inverted function.",
+    "historicalContext": "The power mean M_r(x) = (Σ xᵢ^r / n)^{1/r} was studied systematically by Andrey Kolmogorov (1930) and independently by Mark Nagumo (1930), who characterized the class of quasi-arithmetic means. The extreme limits — M_r → max as r → +∞ and M_r → min as r → -∞ — appear as Theorem 4 in Hardy, Littlewood, and Pólya's 'Inequalities' (1934, Cambridge University Press), where they note these limits complete the interpolation picture: min = M_{-∞} ≤ ⋯ ≤ HM = M_{-1} ≤ GM = M_0 ≤ AM = M_1 ≤ ⋯ ≤ max = M_{+∞}. The intuition is that raising to a large positive power r amplifies the largest component exponentially relative to smaller ones, so the r-th root of the average converges to the maximum. The squeeze argument used here — bounding between M·n^{-1/r} and M, with n^{-1/r} → 1 — is essentially the approach in HLP §2.9. The duality identity M_r(x) = (M_{-r}(1/x))⁻¹, used for the min case, reflects the order-reversing nature of inversion on positive reals and was already implicit in Schur's 1923 work on convex functions.",
     "problemStatement": "For x : ι → ℝ with all xᵢ > 0, prove: (1) M_r(x) → max(x) as r → +∞; (2) M_r(x) → min(x) as r → -∞.",
     "text": "The max case (powerMean_tendsto_max) uses a squeeze: for r > 0, M * n^{-1/r} ≤ M_r(x) ≤ M where M = max(x). The upper bound holds because each xᵢ^r ≤ M^r. The lower bound uses the single-element contribution from the maximizer. Since n^{-1/r} → 1 as r → +∞, both bounds converge to M. The min case (powerMean_tendsto_min) sets g = 1/x, observes sup'(g) = (inf'(x))⁻¹, applies the max case to g, then inverts using M_r(x) = (M_{-r}(g))⁻¹ and the filter composition atBot → atTop via negation.",
     "proofStrategy": "Max case: tendsto_of_tendsto_of_tendsto_of_le_of_le' with lower bound M*n^{-1/r} (via sup_mul_pow_le_powerMean) and constant upper bound M (via powerMean_le_sup). Min case: duality M_r(x) = (M_{-r}(g))⁻¹ for r ≠ 0 (eventually near atBot), composed with Filter.tendsto_neg_atBot_atTop.",
@@ -69,55 +69,72 @@
   "crossReferences": [
     {
       "id": "amgm-inequality-oq-03-oq-02",
-      "title": "Power Mean Monotonicity (General)",
+      "title": "Power Mean Limit: lim_{r→0} M_r = GM",
       "relationship": "parent"
     },
     {
       "id": "amgm-inequality-oq-03",
-      "title": "AM-GM Inequality: Power Mean Monotonicity",
+      "title": "Power Mean Interpolation: Weighted Power Means",
       "relationship": "foundational"
     },
     {
       "id": "amgm-inequality-oq-03-oq-02-oq-01",
-      "title": "Power Mean Crossing Zero",
+      "title": "Power Mean Crossing Zero: M_r ≤ GM ≤ M_s",
       "relationship": "sibling"
+    },
+    {
+      "id": "amgm-inequality",
+      "title": "Arithmetic Mean - Geometric Mean Inequality",
+      "relationship": "foundational"
+    },
+    {
+      "id": "amgm-inequality-oq-04",
+      "title": "Gauss AGM Iteration and Elliptic Integrals",
+      "relationship": "related"
     }
   ],
   "sections": [
     {
       "id": "sec-header",
-      "title": "Module Header",
+      "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 20,
-      "summary": "Documents the extreme power mean limits and the squeeze + duality proof strategy."
+      "endLine": 21,
+      "summary": "Docstring documenting the extreme power mean limits and proof strategy, Mathlib import, namespace/open declarations, and universe variables for the finite nonempty index type ι."
+    },
+    {
+      "id": "sec-definition",
+      "title": "Power Mean Definition",
+      "startLine": 23,
+      "endLine": 30,
+      "summary": "Defines the unweighted power mean M_r(x) as a piecewise function: (Σ xᵢ^r / n)^{1/r} for r ≠ 0, and (∏ xᵢ)^{1/n} for r = 0 (geometric mean)."
     },
     {
       "id": "sec-key-lemma",
       "title": "Key Limit: c^{-1/r} → 1",
-      "startLine": 36,
+      "startLine": 32,
       "endLine": 49,
-      "summary": "tendsto_const_rpow_neg_inv_atTop: for any c > 0, c^{-1/r} → 1 as r → +∞, proved via -r⁻¹ → 0 and continuity."
+      "summary": "tendsto_const_rpow_neg_inv_atTop: for any c > 0, c^{-1/r} → 1 as r → +∞, proved via -r⁻¹ → 0 and continuity of c^(·) at 0."
     },
     {
       "id": "sec-bounds",
       "title": "Squeeze Bounds for Max Case",
-      "startLine": 58,
+      "startLine": 51,
       "endLine": 127,
-      "summary": "powerMean_le_sup (upper bound: M_r ≤ max) and sup_mul_pow_le_powerMean (lower bound: max·n^{-1/r} ≤ M_r) for r > 0."
+      "summary": "Auxiliary card_pos lemma, then the two bound lemmas: powerMean_le_sup (upper bound: M_r ≤ max, via each xᵢ^r ≤ M^r) and sup_mul_pow_le_powerMean (lower bound: max·n^{-1/r} ≤ M_r, via single-term contribution from the maximizer)."
     },
     {
       "id": "sec-max-theorem",
       "title": "Max Limit Theorem",
-      "startLine": 132,
+      "startLine": 128,
       "endLine": 151,
-      "summary": "powerMean_tendsto_max: M_r → max(x) as r → +∞ via squeeze between the two bounds."
+      "summary": "powerMean_tendsto_max: M_r → max(x) as r → +∞ via tendsto_of_tendsto_of_tendsto_of_le_of_le' (squeeze) between the two bounds, with filter_upwards restricting to r > 0."
     },
     {
       "id": "sec-min-theorem",
       "title": "Min Limit Theorem",
       "startLine": 153,
-      "endLine": 218,
-      "summary": "powerMean_tendsto_min: M_r → min(x) as r → -∞ via duality with max case applied to g = 1/x, using M_r(x) = (M_{-r}(g))⁻¹."
+      "endLine": 220,
+      "summary": "powerMean_tendsto_min: M_r → min(x) as r → -∞. Constructs g = 1/x, proves sup'(g) = (inf'(x))⁻¹ via le_antisymm (antitone inversion), applies the max theorem to g, inverts via Tendsto.inv₀, establishes the duality identity M_r(x) = (M_{-r}(g))⁻¹, and composes with Filter.tendsto_neg_atBot_atTop."
     }
   ]
 }
