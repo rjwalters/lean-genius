@@ -17,14 +17,16 @@
 
   Proof structure:
   1. [PROVED]  sum_sq_le_max         — ∑q(x)² ≤ max q(x) for any prob. dist.
-  2. [PROVED]  formula_pe_ge_map_pe  — P_e^{MAP} ≤ P_e^{formula}
-  3. [SORRY]   fano_per_element      — per-y Fano via Gibbs inequality
-  4. [SORRY]   fano_map_bound        — H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1)
-  5. [SORRY]   fano_func_mono        — monotonicity of h(p) + p·log(c)
-  6. Main:     fano_theorem
+  2. [PROVED]  slice_sq_le_max       — per-slice ∑pXY²/P(y) ≤ max pXY
+  3. [PROVED]  formula_pe_ge_map_pe  — P_e^{MAP} ≤ P_e^{formula}
+  4. [PROVED]  gibbs_inequality      — H(p) ≤ -∑ p·log q (KL divergence ≥ 0)
+  5. [SORRY]   fano_per_element      — per-y Fano via Gibbs inequality
+  6. [SORRY]   fano_map_bound        — H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1)
+  7. [SORRY]   fano_func_mono        — monotonicity of h(p) + p·log(c)
+  8. Main:     fano_theorem
 
   Claude Shannon (1948) — Fano (1952)
-  Sorries: 5
+  Sorries: 4
 -/
 import Mathlib
 import Proofs.ShannonChannelCodingOQ04
@@ -52,16 +54,75 @@ noncomputable def conditionalEntropy {α β : Type*} [Fintype α] [Fintype β]
     if pXY (x, y) = 0 then 0
     else pXY (x, y) * Real.log (pXY (x, y) / (∑ x' : α, pXY (x', y))))
 
-/-- Gibbs inequality: H(p) ≤ -∑ p(x)·log q(x) for any distribution q.
-    [SORRY: follows from KL divergence non-negativity via the bound log x ≤ x - 1] -/
+-- ============================================================
+-- Section 1b: KL Divergence Helper (inline from OQ04)
+-- ============================================================
+
+/-- KL divergence term: p·log(p/q) ≥ p - q for p > 0, q > 0.
+    Inline copy of kl_term_bound from OQ04 (private there). -/
+private lemma kl_term_bound' {p q : ℝ} (hp : 0 < p) (hq : 0 < q) :
+    p - q ≤ p * Real.log (p / q) := by
+  have h1 : Real.log (q / p) ≤ q / p - 1 :=
+    Real.log_le_sub_one_of_pos (div_pos hq hp)
+  have h2 : p * Real.log (q / p) ≤ q - p :=
+    calc p * Real.log (q / p)
+        ≤ p * (q / p - 1) := mul_le_mul_of_nonneg_left h1 (le_of_lt hp)
+      _ = q - p := by field_simp
+  have h3 : Real.log (p / q) = -Real.log (q / p) := by
+    rw [Real.log_div (ne_of_gt hp) (ne_of_gt hq),
+        Real.log_div (ne_of_gt hq) (ne_of_gt hp)]
+    ring
+  linarith [show p * Real.log (p / q) = -(p * Real.log (q / p)) by rw [h3]; ring]
+
+-- ============================================================
+-- Section 2: Gibbs Inequality (PROVED)
+-- ============================================================
+
+/-- **[PROVED] Gibbs inequality**: H(p) ≤ -∑ p(x)·log q(x) for any distributions p, q.
+    Equivalently, KL divergence D(p||q) = ∑ p·log(p/q) ≥ 0.
+
+    Proof: For each x with p(x) > 0: p(x)·log(p(x)/q(x)) ≥ p(x) - q(x).
+    Summing: ∑ p·log(p/q) ≥ ∑(p-q) = 1-1 = 0. -/
 lemma gibbs_inequality {α : Type*} [Fintype α] [DecidableEq α]
     {p q : α → ℝ} (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 < q x)
     (hpsum : ∑ x, p x = 1) (hqsum : ∑ x, q x = 1) :
     shannonEntropy p ≤ -∑ x, p x * Real.log (q x) := by
-  sorry
+  simp only [shannonEntropy]
+  -- The if-guard is redundant: when p x = 0, p x * log(p x) = 0
+  have h_if : ∀ x : α,
+      (if p x = 0 then (0:ℝ) else p x * Real.log (p x)) = p x * Real.log (p x) := by
+    intro x
+    split_ifs with h
+    · simp [h]
+    · rfl
+  simp_rw [h_if]
+  -- Goal: -∑ p*log p ≤ -∑ p*log q, i.e., ∑ p*log q ≤ ∑ p*log p
+  rw [neg_le_neg_iff]
+  -- Key: 0 ≤ KL divergence = ∑ p * log(p/q)
+  have h_kl_nn : 0 ≤ ∑ x : α, p x * Real.log (p x / q x) := by
+    have hkl : ∀ x : α, p x - q x ≤ p x * Real.log (p x / q x) := by
+      intro x
+      rcases eq_or_lt_of_le (hp x) with h0 | hpx
+      · simp [show p x = 0 from h0.symm]; linarith [hq x]
+      · exact kl_term_bound' hpx (hq x)
+    have h1 : ∑ x : α, (p x - q x) ≤ ∑ x : α, p x * Real.log (p x / q x) :=
+      Finset.sum_le_sum (fun x _ => hkl x)
+    have h2 : ∑ x : α, (p x - q x) = 0 := by
+      simp [Finset.sum_sub_distrib, hpsum, hqsum]
+    linarith
+  -- Expand: ∑ p*log(p/q) = ∑ p*log p - ∑ p*log q
+  have h_expand : ∑ x : α, p x * Real.log (p x / q x) =
+      ∑ x : α, p x * Real.log (p x) - ∑ x : α, p x * Real.log (q x) := by
+    rw [← Finset.sum_sub_distrib]
+    congr 1; ext x
+    rcases eq_or_lt_of_le (hp x) with h0 | hpx
+    · simp [← h0]
+    · rw [Real.log_div (ne_of_gt hpx) (ne_of_gt (hq x)), mul_sub]
+  rw [h_expand] at h_kl_nn
+  linarith
 
 -- ============================================================
--- Section 2: MAP Error Probability
+-- Section 3: MAP Error Probability
 -- ============================================================
 
 /-- The maximum probability in a distribution on a finite nonempty type. -/
@@ -75,14 +136,11 @@ noncomputable def mapErrorProb {α β : Type*} [Fintype α] [Fintype β] [Nonemp
   1 - ∑ y : β, maxProb (fun x => pXY (x, y))
 
 -- ============================================================
--- Section 3: Core Algebraic Lemma (PROVED)
+-- Section 4: Core Algebraic Lemma (PROVED)
 -- ============================================================
 
 /-- **[PROVED] Core inequality**: For any probability distribution q on a
-    nonempty finite type, ∑_x q(x)² ≤ max_x q(x).
-
-    Proof: q(x) ≤ max q for all x, so q(x)² ≤ max(q)·q(x).
-    Summing: ∑q² ≤ max(q)·∑q = max(q)·1 = max(q). -/
+    nonempty finite type, ∑_x q(x)² ≤ max_x q(x). -/
 theorem sum_sq_le_max {α : Type*} [Fintype α] [Nonempty α]
     {q : α → ℝ} (hq : ∀ x, 0 ≤ q x) (hqsum : ∑ x, q x = 1) :
     ∑ x, q x ^ 2 ≤ maxProb q := by
@@ -101,35 +159,62 @@ theorem sum_sq_le_max {α : Type*} [Fintype α] [Nonempty α]
         rw [hqsum, mul_one]
 
 -- ============================================================
--- Section 4: Slice-wise Bound (SORRY)
+-- Section 5: Slice-wise Bound (PROVED)
 -- ============================================================
 
-/-- **[SORRY] Per-slice inequality**: For each y,
+/-- **[PROVED] Per-slice inequality**: For each y,
     ∑_x pXY(x,y)² / P(Y=y) ≤ max_x pXY(x,y)
 
-    Proof sketch:
-    - When P(Y=y) = 0: all pXY(x,y) = 0 (by non-negativity), both sides are 0.
-    - When P(Y=y) > 0: let q_y(x) = pXY(x,y)/P(Y=y). By sum_sq_le_max:
-        ∑_x q_y(x)² ≤ max_x q_y(x).
-      Equivalently: ∑_x pXY(x,y)²/P(Y=y)² ≤ max_x pXY(x,y)/P(Y=y).
-      Multiply by P(Y=y) > 0: ∑_x pXY(x,y)²/P(Y=y) ≤ max_x pXY(x,y). -/
+    Proof:
+    - When P(Y=y) = 0: all pXY(x,y) = 0, both sides are 0.
+    - When P(Y=y) > 0: factor out P, bound each pXY²≤maxProb·pXY, sum. -/
 lemma slice_sq_le_max {α β : Type*} [Fintype α] [Fintype β] [Nonempty α]
     {pXY : α × β → ℝ} (hp : ∀ x, 0 ≤ pXY x) (y : β) :
     ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y)) ≤
       maxProb (fun x => pXY (x, y)) := by
-  sorry
+  set P := ∑ x' : α, pXY (x', y)
+  set M := maxProb (fun x => pXY (x, y))
+  -- M ≥ each element
+  have hM_le : ∀ x : α, pXY (x, y) ≤ M := by
+    intro x; show pXY (x, y) ≤ maxProb (fun x => pXY (x, y))
+    unfold maxProb
+    exact Finset.le_sup' (fun x => pXY (x, y)) (Finset.mem_univ x)
+  -- M ≥ 0
+  obtain ⟨x0⟩ := (inferInstance : Nonempty α)
+  have hM_nn : 0 ≤ M := le_trans (hp (x0, y)) (hM_le x0)
+  by_cases hP : P = 0
+  · -- P = 0: all pXY(x,y) = 0
+    have hall : ∀ x : α, pXY (x, y) = 0 := by
+      intro x
+      have hge := hp (x, y)
+      have hle : pXY (x, y) ≤ P := by
+        apply Finset.single_le_sum (f := fun x' => pXY (x', y))
+        · intro x' _; exact hp (x', y)
+        · exact Finset.mem_univ x
+      linarith [hP ▸ hle]
+    -- LHS = ∑ 0²/0 = 0
+    have : ∑ x : α, pXY (x, y) ^ 2 / P = 0 := by
+      apply Finset.sum_eq_zero
+      intro x _; simp [hall x, hP]
+    rw [this]; exact hM_nn
+  · -- P > 0
+    have hP_pos : 0 < P :=
+      lt_of_le_of_ne (Finset.sum_nonneg fun x _ => hp (x, y)) (Ne.symm hP)
+    have hle : ∑ x : α, pXY (x, y) ^ 2 ≤ M * P :=
+      calc ∑ x : α, pXY (x, y) ^ 2
+          ≤ ∑ x : α, M * pXY (x, y) :=
+            Finset.sum_le_sum fun x _ => by rw [sq]; exact mul_le_mul_of_nonneg_right (hM_le x) (hp (x, y))
+        _ = M * P := by rw [← Finset.mul_sum]
+    calc ∑ x : α, pXY (x, y) ^ 2 / P
+        = (∑ x : α, pXY (x, y) ^ 2) / P := by rw [← Finset.sum_div]
+      _ ≤ M * P / P := by gcongr
+      _ = M := by field_simp [ne_of_gt hP_pos]
 
 -- ============================================================
--- Section 5: Formula P_e ≥ MAP P_e (PROVED)
+-- Section 6: Formula P_e ≥ MAP P_e (PROVED)
 -- ============================================================
 
-/-- **[PROVED] The formula P_e upper-bounds the MAP P_e.**
-
-    mapErrorProb pXY ≤ 1 - ∑_y ∑_x pXY(x,y)² / P(Y=y)
-
-    Proof: For each y, max_x pXY(x,y) ≥ ∑_x pXY(x,y)²/P(Y=y) (slice_sq_le_max).
-    Summing over y: ∑_y max_x pXY ≥ ∑_y ∑_x pXY²/P(Y).
-    Taking 1 minus both sides flips the inequality. -/
+/-- **[PROVED] The formula P_e upper-bounds the MAP P_e.** -/
 theorem formula_pe_ge_map_pe {α β : Type*} [Fintype α] [Fintype β] [Nonempty α]
     {pXY : α × β → ℝ} (hp : ∀ x, 0 ≤ pXY x) :
     mapErrorProb pXY ≤
@@ -138,26 +223,17 @@ theorem formula_pe_ge_map_pe {α β : Type*} [Fintype α] [Fintype β] [Nonempty
   linarith [Finset.sum_le_sum (fun y (_ : y ∈ Finset.univ) => slice_sq_le_max hp y)]
 
 -- ============================================================
--- Section 6: Per-Element Fano Bound (SORRY)
+-- Section 7: Per-Element Fano Bound (SORRY)
 -- ============================================================
 
 /-- **[SORRY] Per-element Fano bound**: For any probability distribution q on α
     with |α| ≥ 2:
       H(q) ≤ h(1 - max q) + (1 - max q) · log(|α| - 1)
 
-    Proof sketch (Gibbs inequality):
-    Let p* = maxProb q, let x* be any argmax element. Define reference Q by:
-      Q(x*) = p*
-      Q(x) = (1-p*)/(|α|-1)  for x ≠ x*
-    This is a valid distribution (|α|-1 ≥ 1, (1-p*)/(|α|-1) > 0 when p* < 1).
-
-    By gibbs_inequality: H(q) ≤ -∑_x q(x)·log Q(x).
-    Computing:
-      -∑_x q(x)·log Q(x) = -q(x*)·log(p*) - ∑_{x≠x*} q(x)·log((1-p*)/(|α|-1))
-                          = -p*·log(p*) - (1-p*)·[log(1-p*) - log(|α|-1)]
-                          = h(p*) + (1-p*)·log(|α|-1)
-                          = h(1-p*) + (1-p*)·log(|α|-1)   [by h symmetry]
-    QED. -/
+    Proof sketch: Apply gibbs_inequality with bimodal reference Q:
+      Q(x*) = maxProb q, Q(x) = (1-maxProb q)/(|α|-1) for x ≠ x*.
+    Then compute -∑ q·log Q = h(maxProb q) + (1-maxProb q)·log(|α|-1)
+                             = h(1-maxProb q) + (1-maxProb q)·log(|α|-1). -/
 lemma fano_per_element {α : Type*} [Fintype α] [DecidableEq α] [Nonempty α]
     (hn : 1 < Fintype.card α)
     {q : α → ℝ} (hq : ∀ x, 0 ≤ q x) (hqsum : ∑ x, q x = 1) :
@@ -166,21 +242,14 @@ lemma fano_per_element {α : Type*} [Fintype α] [DecidableEq α] [Nonempty α]
   sorry
 
 -- ============================================================
--- Section 7: Conditional Entropy Fano Bound — MAP Version (SORRY)
+-- Section 8: Conditional Entropy Fano Bound — MAP Version (SORRY)
 -- ============================================================
 
 /-- **[SORRY] Fano's inequality for the MAP decoder**:
       H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP} · log(|X| - 1)
 
-    Proof sketch:
-    1. Decompose: H(X|Y) = ∑_y P(Y=y) · H(X|Y=y).
-    2. Apply fano_per_element to each slice:
-         H(X|Y=y) ≤ h(P_e^y) + P_e^y · log(n-1)
-       where P_e^y = 1 - max_x P(X=x|Y=y) = mapErrorProb's per-y contribution.
-    3. Sum: H(X|Y) ≤ ∑_y P(Y=y)·h(P_e^y) + P_e^{MAP}·log(n-1)
-    4. Jensen for concave h (h_concaveOn from BinaryEntropy):
-         ∑_y P(Y=y)·h(P_e^y) ≤ h(∑_y P(Y=y)·P_e^y) = h(P_e^{MAP})
-    5. Conclude: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1). -/
+    Proof: Decompose H(X|Y) = ∑_y P(Y=y)·H(X|Y=y), apply fano_per_element
+    per slice, use Jensen (h_concaveOn from OQ04) to aggregate. -/
 lemma fano_map_bound {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β] [Nonempty α]
     (hn : 1 < Fintype.card α)
@@ -191,42 +260,52 @@ lemma fano_map_bound {α β : Type*} [Fintype α] [Fintype β]
   sorry
 
 -- ============================================================
--- Section 8: Monotonicity of h(p) + p·log(c) (SORRY)
+-- Section 9: Monotonicity of h(p) + p·log(c) (SORRY)
 -- ============================================================
 
 /-- **[SORRY] Fano bound function is monotone on [0, c/(1+c)]**:
     For c ≥ 1, f(p) = h(p) + p·log c is non-decreasing on [0, c/(1+c)].
 
-    Proof sketch (calculus):
-      f'(p) = log((1-p)·c/p)
-    f'(p) ≥ 0 iff p ≤ c/(1+c). For c = n-1 this is p ≤ (n-1)/n.
-
-    Application: P_e^{MAP} ≤ P_e^{formula} ≤ (n-1)/n, so:
-      f(P_e^{MAP}) ≤ f(P_e^{formula}). -/
+    Proof: f'(p) = log(c(1-p)/p) ≥ 0 for p ≤ c/(1+c). -/
 lemma fano_func_mono {c : ℝ} (hc : 1 ≤ c) {p₁ p₂ : ℝ}
     (hp₁ : 0 ≤ p₁) (hp₂ : p₂ ≤ c / (1 + c)) (hpp : p₁ ≤ p₂) :
     h p₁ + p₁ * Real.log c ≤ h p₂ + p₂ * Real.log c := by
   sorry
 
 -- ============================================================
--- Section 9: Main Theorem
+-- Section 10: Main Theorem
 -- ============================================================
+
+/-- **[PROVED] MAP error probability is non-negative**.
+    Follows from max_x pXY(x,y) ≤ ∑_x pXY(x,y), summed over y. -/
+private lemma mapErrorProb_nonneg {α β : Type*} [Fintype α] [Fintype β] [Nonempty α]
+    {pXY : α × β → ℝ} (hp : ∀ x, 0 ≤ pXY x) (hsum : ∑ x, pXY x = 1) :
+    0 ≤ mapErrorProb pXY := by
+  unfold mapErrorProb
+  linarith [show ∑ y : β, maxProb (fun x => pXY (x, y)) ≤ 1 from by
+    -- Each max ≤ column sum; sum of column sums = 1
+    have hmax_le : ∀ y : β, maxProb (fun x => pXY (x, y)) ≤ ∑ x : α, pXY (x, y) := by
+      intro y
+      show Finset.sup' Finset.univ Finset.univ_nonempty (fun x => pXY (x, y)) ≤
+           ∑ x : α, pXY (x, y)
+      apply Finset.sup'_le
+      intro x _
+      show pXY (x, y) ≤ ∑ x' : α, pXY (x', y)
+      apply Finset.single_le_sum (f := fun x' => pXY (x', y))
+      · intro x' _; exact hp (x', y)
+      · exact Finset.mem_univ x
+    calc ∑ y : β, maxProb (fun x => pXY (x, y))
+        ≤ ∑ y : β, ∑ x : α, pXY (x, y) :=
+          Finset.sum_le_sum (fun y _ => hmax_le y)
+      _ = ∑ p : α × β, pXY p := by
+          rw [Finset.sum_comm]
+          rw [← Fintype.sum_prod_type]
+      _ = 1 := hsum]
 
 /-- **Fano's Inequality** (main theorem):
     For a joint distribution pXY on finite α × β with |α| ≥ 2:
-
       H(X|Y) ≤ h(P_e) + P_e · log(|X| - 1)
-
-    where P_e = 1 - ∑_y ∑_x P(X=x,Y=y)² / P(Y=y)
-
-    This REPLACES the axiom `fano_inequality` in `ShannonChannelCoding.lean`
-    (for the case |X| ≥ 2; the axiom doesn't specify |X| ≥ 2 but the inequality
-    is trivially true for |X| = 1 since H(X|Y) = 0).
-
-    The proof chains:
-    • fano_map_bound: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1)
-    • formula_pe_ge_map_pe: P_e^{MAP} ≤ P_e^{formula}
-    • fano_func_mono: monotonicity extends to larger P_e -/
+    where P_e = 1 - ∑_y ∑_x P(X=x,Y=y)² / P(Y=y). -/
 theorem fano_theorem {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β] [Nonempty α]
     (hn : 1 < Fintype.card α)
@@ -239,16 +318,16 @@ theorem fano_theorem {α β : Type*} [Fintype α] [Fintype β]
   have hc : (1 : ℝ) ≤ (Fintype.card α : ℝ) - 1 := by
     have : (2 : ℝ) ≤ (Fintype.card α : ℝ) := by exact_mod_cast hn
     linarith
-  -- MAP P_e is non-negative (sorry: needs ∑_y max_x pXY ≤ 1)
-  have hmap_nn : 0 ≤ mapErrorProb pXY := by sorry
+  -- MAP P_e ≥ 0
+  have hmap_nn : 0 ≤ mapErrorProb pXY := mapErrorProb_nonneg hp hsum
   -- MAP P_e ≤ formula P_e
   have hpe_ineq : mapErrorProb pXY ≤ P_e := formula_pe_ge_map_pe hp
-  -- Formula P_e ≤ (n-1)/n, so monotonicity applies (sorry)
+  -- Formula P_e ≤ (n-1)/n (sorry: Cauchy-Schwarz bound)
   have hpe_bound : P_e ≤ ((Fintype.card α : ℝ) - 1) / (1 + ((Fintype.card α : ℝ) - 1)) := by
     sorry
   -- Fano bound with MAP P_e
   have hmap_fano := fano_map_bound hn pXY hp hsum
-  -- Apply monotonicity to go from MAP P_e to formula P_e
+  -- Monotonicity extends to formula P_e
   have hmono := fano_func_mono hc hmap_nn hpe_bound hpe_ineq
   linarith
 
