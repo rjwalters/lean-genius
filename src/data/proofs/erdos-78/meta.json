@@ -26,25 +26,44 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Header and Imports",
+      "id": "sec-docstring",
+      "title": "Module Docstring: Problem, History, and Prize",
       "startLine": 1,
+      "endLine": 16,
+      "summary": "Module docstring for Erdős Problem #78: asks for a constructive proof that R(k) > C^k, equivalently an explicit n-vertex graph with no clique or independent set of size ≥ c·log n. Lists best constructive results — Cohen (2015) achieving 2^{(log log n)^C} and Li (2023) achieving (log n)^C — and states the $100 Erdős prize.",
+      "mathContext": "The diagonal Ramsey number R(k) is the minimum n such that every 2-coloring of K_n edges contains a monochromatic K_k. The probabilistic existence proof (Erdős 1947) gives R(k) ≥ k·2^{k/2}/e but is non-constructive. The constructive problem asks for graphs G_n on n vertices with both α(G_n) and ω(G_n) at most c·log n."
+    },
+    {
+      "id": "sec-imports",
+      "title": "Imports",
+      "startLine": 17,
       "endLine": 22,
-      "summary": "Documentation header with problem statement, historical results (Erdős 1947, Cohen 2015, Li 2023), $100 prize, and imports for Mathlib's Tactic, Nat.Basic, Finset.Basic, and SimpleGraph.Basic."
+      "summary": "Lean 4 imports: Mathlib.Tactic, Mathlib.Data.Nat.Basic, Mathlib.Data.Finset.Basic, Mathlib.Combinatorics.SimpleGraph.Basic. These provide tactic infrastructure, natural number lemmas, finite sets, and the base SimpleGraph typeclass.",
+      "mathContext": "SimpleGraph.Basic provides the standard Mathlib simple graph with irreflexivity and symmetry; this file re-implements as a custom SimpleG structure to keep the formalization self-contained."
     },
     {
-      "id": "definitions",
-      "title": "Graph Definitions",
+      "id": "graph-structure",
+      "title": "Graph Structure: SimpleG",
       "startLine": 23,
-      "endLine": 49,
-      "summary": "Custom SimpleG structure with adjacency, symmetry, irreflexivity. Defines hasClique and hasIndepSet via Finset subsets. Axiomatizes ramseyNumber and its specification."
+      "endLine": 30,
+      "summary": "Defines the custom SimpleG n structure with adjacency relation adj : Fin n → Fin n → Prop, symmetry proof symm, and irreflexivity proof irrefl. A dependent record type encoding the three axioms of a simple graph.",
+      "mathContext": "SimpleG n packages adj together with proof obligations symm (∀ u v, adj u v → adj v u) and irrefl (∀ v, ¬adj v v). This avoids the Mathlib SimpleGraph typeclass to keep the file independent and directly verify the graph axioms."
     },
     {
-      "id": "probabilistic",
-      "title": "Probabilistic Lower Bound",
-      "startLine": 50,
+      "id": "clique-defs",
+      "title": "Clique, Independent Set, and Ramsey Axiom",
+      "startLine": 31,
+      "endLine": 43,
+      "summary": "Defines hasClique k (∃ k-element Finset with all pairs adjacent) and hasIndepSet k (∃ k-element Finset with no adjacent pairs). Axiomatizes ramseyNumber : ℕ → ℕ as the diagonal Ramsey function R(k).",
+      "mathContext": "hasClique and hasIndepSet use existential quantifiers over Finset (Fin n). ramseyNumber k is axiomatized as the minimum n such that every 2-coloring of K_n contains a monochromatic K_k. Axiomatization is appropriate: R(k) is well-defined by Ramsey's theorem but computing it requires exponential search. Known: R(3)=6, R(4)=18, R(5) unknown (43 ≤ R(5) ≤ 48)."
+    },
+    {
+      "id": "constructive-stubs",
+      "title": "Constructive Results, IsExplicit, and Open Problem Stubs",
+      "startLine": 44,
       "endLine": 56,
-      "summary": "Erdős 1947 probabilistic bound: R(k) ≥ C^k for some C > 1 (axiomatized). Asymptotic √2 bound axiomatized separately with ε-approximation."
+      "summary": "Section headers for the Erdős probabilistic bound, constructive results (Cohen 2015, Li 2023), main open problem, and upper bound (CGMS 2023). Defines IsExplicit as True — polynomial-time computability is a meta-property not capturable in Lean's type system. All substantive content is axiomatized rather than proved.",
+      "mathContext": "IsExplicit := True is a standard Lean pattern for meta-properties. The real content is intended algorithmically: IsExplicit G should mean G is polynomial-time computable. The probabilistic lower bound (Erdős 1947) and upper bound R(k) ≤ (4-ε)^k (CGMS 2023, breaking the 88-year 4^k barrier) are both axiomatized here as they require substantial analysis beyond the scope of this formalization."
     }
   ],
   "overview": {
