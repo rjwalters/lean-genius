@@ -39,7 +39,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The classical Central Limit Theorem (Lindeberg 1922, Feller 1935) applies to independent sequences. The question of whether CLT extends to dependent variables was a major 20th century problem. Key results: Martingale CLT (McLeish 1974, building on Brown 1971) handles martingale difference arrays; Mixing CLT (Ibragimov 1962, building on Rosenblatt 1956) handles strongly mixing sequences. Both cover a vast class of stochastic processes including ARMA models, Markov chains, and ergodic processes.",
+    "historicalContext": "The classical CLT was first rigorously stated by Lindeberg (1922) for independent, non-identically distributed variables; Feller (1935) proved the converse. Extending to dependent variables was a major 20th century problem in probability. Bernstein (1927) gave early results for weakly dependent sequences. Rosenblatt (1956) introduced the α-mixing coefficient as a quantitative measure of dependence decay. Ibragimov (1962) proved the mixing CLT: stationary sequences with $\\alpha(n) = O(n^{-5})$ satisfy the CLT, published in Теория вероятностей и её применения. Brown (1971, JRSS B) proved CLT for martingale differences under L² conditions. McLeish (1974, Annals of Probability) gave the definitive Martingale CLT with the Lindeberg condition, subsuming all previous results for MDAs. This formalization axiomatizes McLeish's theorem and proves the classical i.i.d. CLT as a corollary, establishing a hierarchy: i.i.d. ⊂ Lindeberg-Feller ⊂ MDA ⊂ α-mixing.",
     "problemStatement": "Does the CLT hold for dependent random variables? Formalize the Martingale CLT and α-mixing CLT, and show that the classical i.i.d. CLT is a special case of both.",
     "text": "A martingale difference array (MDA) {X_{n,k}} satisfies E[X_{n,k} | ℱ_{n,k-1}] = 0 — each term has conditional mean zero. The Martingale CLT says: if (1) the Lindeberg condition holds (truncated second moments vanish), and (2) the conditional variance sum converges to σ², then the row sum S_n = ∑_k X_{n,k} converges in distribution to N(0, σ²). The α-mixing CLT handles stationary sequences where α-mixing coefficients decay at a polynomial rate. Both reduce to the classical CLT when the sequence is i.i.d.: independence implies the MDA property, and i.i.d. sequences trivially satisfy any mixing condition.",
     "proofStrategy": "Part I defines the MDA structure with integrability and variance properties. Part II defines the Lindeberg and Lyapunov conditions. Part III axiomatizes the Martingale CLT. Part IV constructs the i.i.d. MDA and proves variance convergence. Part V proves classical CLT as corollary (modulo 2 sorries for Lindeberg/Lyapunov for i.i.d.). Part VI defines α-mixing coefficients. Parts VII-XI prove supporting theorems: Lyapunov implies Lindeberg (fully proved), variance bounds, characteristic function properties.",
@@ -91,6 +91,16 @@
       "targetId": "prime-number-theorem",
       "relationship": "related",
       "description": "Both use characteristic function / analytic methods to prove asymptotic results; the Fourier/char fn technique bridges analysis and probability"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-04",
+      "relationship": "related",
+      "description": "Free CLT in non-commutative probability: Voiculescu's theorem parallels the classical CLT but with the semicircle law replacing the Gaussian. The MDA framework here is the commutative analogue."
+    },
+    {
+      "targetId": "central-limit-theorem-oq-03",
+      "relationship": "related",
+      "description": "Categorical structure of distributions under convolution: the CLT as a fixed-point theorem. Provides an algebraic perspective complementing this analytic approach."
     }
   ],
   "sections": [
