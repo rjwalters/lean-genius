@@ -1,46 +1,62 @@
 [
   {
     "id": "ramsey-number-def",
-    "line": 48,
+    "proofId": "erdos-1015-oq-05",
+    "range": { "startLine": 48, "endLine": 62 },
     "type": "definition",
-    "title": "ramseyNumber via Nat.find",
-    "body": "`ramseyNumber r s` is defined as `Nat.find (ramsey_exists r s ...)` — the minimum $n$ such that `HasRamseyProperty (Fin n) r s`. The `if h : r ≥ 1 ∧ s ≥ 1` guard returns 0 for degenerate cases ($r = 0$ or $s = 0$). This replaces the axiom `axiom ramseyNumber : ℕ → ℕ → ℕ` from the parent proof, converting an assumed existence into a constructive `Nat.find` definition. The `noncomputable` tag is required because `Nat.find` requires a classical existence proof.",
-    "mathContext": "The Ramsey number $R(r, s)$ is the minimum $n$ such that every 2-coloring of $K_n$ contains a monochromatic $r$-clique (red) or $s$-clique (blue). The existence of such $n$ was proved by Ramsey (1930) and made explicit by Erdős-Szekeres (1935). `HasRamseyProperty (Fin n) r s` in Lean asserts: for every 2-coloring of $K_n$, there exists a monochromatic clique of the required size.",
-    "significance": "The primary contribution of this file: converting the axiom `ramseyNumber` into a legitimate definition. This eliminates one of the 8 axioms from the parent proof and grounds the Ramsey number in the constructive content of the Ramsey existence theorem.",
-    "relatedConcepts": ["Nat.find", "HasRamseyProperty", "ramsey_exists", "RamseysTheorem"],
-    "prerequisites": ["RamseysTheorem.lean", "Nat.find API", "HasRamseyProperty definition"]
+    "title": "ramseyNumber: Axiom Replaced by Nat.find Definition",
+    "content": "`ramseyNumber r s` is defined as `Nat.find (ramsey_exists r s ...)` — the minimum $n$ such that `HasRamseyProperty (Fin n) r s`. The `if h : r ≥ 1 ∧ s ≥ 1` guard returns 0 for degenerate cases ($r = 0$ or $s = 0$). This replaces the axiom `axiom ramseyNumber : ℕ → ℕ → ℕ` from the parent proof, converting an assumed existence into a constructive `Nat.find` definition. The `noncomputable` tag is required because `Nat.find` requires a classical existence proof. `ramseyNumber_spec` proves the Ramsey property holds; `ramseyNumber_le_of` proves minimality.",
+    "mathContext": "The Ramsey number $R(r, s)$ is the minimum $n$ such that every 2-coloring of $K_n$ contains a monochromatic $r$-clique (red) or $s$-clique (blue). `Nat.find (h : ∃ n, P n) : ℕ` returns the least such $n$ (classical, requires `Decidable (P n)` for each $n$). `ramseyNumber_spec` uses `Nat.find_spec`; `ramseyNumber_le_of` uses `Nat.find_min'`. These are the two key API lemmas for `Nat.find`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.find", "HasRamseyProperty", "ramsey_exists", "RamseysTheorem", "ramseyNumber_spec", "ramseyNumber_le_of"],
+    "prerequisites": ["RamseysTheorem.lean (provides ramsey_theorem)", "Nat.find and Nat.find_spec API", "HasRamseyProperty definition"]
   },
   {
     "id": "ramsey-property-mono",
-    "line": 69,
+    "proofId": "erdos-1015-oq-05",
+    "range": { "startLine": 69, "endLine": 101 },
     "type": "theorem",
-    "title": "HasRamseyProperty Monotonicity",
-    "body": "`HasRamseyProperty_mono` proves that if $n$ has the Ramsey property for $(r, s)$, so does any $m \\geq n$. This is needed to chain `HasRamseyProperty (Fin ramseyBound) r s` (which gives $m = $ ramseyBound) to `ramseyNumber r s ≤ ramseyBound r s` (which needs to show the Ramsey property holds at the bound). The proof uses a `Finset.card_le_card`-based embedding to inject colorings on $K_m$ into $K_n$.",
-    "mathContext": "Monotonicity of the Ramsey property is geometrically obvious: $K_n$ embeds in $K_m$ for $n \\leq m$ (take a subgraph on the first $n$ vertices). A monochromatic clique in $K_n$ is also a clique in $K_m$. The Lean proof must make this explicit via a Finset embedding that preserves the graph structure.",
-    "significance": "Technical bridge lemma needed to convert `HasRamseyProperty` results on specific bounds into `ramseyNumber ≤` inequalities. Without monotonicity, the Nat.find minimality condition would require proving the Ramsey property at exactly one value rather than a sufficient bound.",
-    "relatedConcepts": ["Finset.card_le_card", "ramseyNumber_le_of", "HasRamseyProperty"],
-    "prerequisites": ["HasRamseyProperty definition", "Finset embeddings", "Nat.find minimality"]
+    "title": "HasRamseyProperty_mono: Ramsey Property Propagates to Larger Graphs",
+    "content": "`HasRamseyProperty_mono` proves that if $n$ has the Ramsey property for $(r, s)$, so does any $m \\geq n$. The proof introduces a coloring `c` on `Fin m`, uses `exists_embedding_of_card_ge` to get an injection `embed : Fin n → Fin m`, restricts the coloring to `Fin n` via `embed`, applies the hypothesis to get a monochromatic clique, then maps the clique back via `embed`. The `map embed` step uses `card_map` and the injectivity of `embed` to transfer clique properties.",
+    "mathContext": "Monotonicity of the Ramsey property: $K_n$ embeds in $K_m$ for $n \\leq m$. A monochromatic clique in $K_n$ (viewed as a subgraph of $K_m$) is also a monochromatic clique in $K_m$. In Lean, `Finset.map embed` applies the injection, and `card_map` preserves cardinality. The clique property transfers because `embed` preserves edge colors: `c.color (embed i) (embed j) = c'.color i j` by definition of `c'`.",
+    "significance": "important",
+    "relatedConcepts": ["exists_embedding_of_card_ge", "Finset.map", "card_map", "ramseyNumber_le_of", "EdgeColoring"],
+    "prerequisites": ["HasRamseyProperty definition from RamseysTheorem.lean", "exists_embedding_of_card_ge from RamseysTheorem.lean", "Finset.map and card_map in Mathlib"]
   },
   {
     "id": "ramsey-of-add",
-    "line": 110,
+    "proofId": "erdos-1015-oq-05",
+    "range": { "startLine": 110, "endLine": 216 },
     "type": "theorem",
-    "title": "HasRamseyProperty_of_add: Pigeonhole Inductive Step",
-    "body": "`HasRamseyProperty_of_add` proves that if both $n_1$ has property $(r-1, s)$ and $n_2$ has property $(r, s-1)$, then $n_1 + n_2$ has property $(r, s)$. This is the core inductive step of the Erdős-Szekeres theorem. Given any vertex $v$ in $K_{n_1+n_2}$: either $v$ has at least $n_1$ red neighbors (use hypothesis 1 to find a red $(r-1)$-clique + $v$ gives a red $r$-clique) or at least $n_2$ blue neighbors (use hypothesis 2 to find a blue $s$-clique). The proof implements this pigeonhole argument via `Finset.card_add_card_le` and case analysis.",
-    "mathContext": "This is the Ramsey theorem in its recursive form: $R(r, s) \\leq R(r-1, s) + R(r, s-1)$. Combined with Pascal's rule $\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$, it gives the Erdős-Szekeres bound by induction on $r + s$. Base cases: $R(1, s) = 1$ and $R(r, 1) = 1$ (trivially, every graph contains a 1-clique).",
-    "significance": "The mathematical heart of the Erdős-Szekeres proof. This lemma encapsulates the entire recursive structure, making `ramseyBound_HasRamseyProperty` a simple induction that invokes `HasRamseyProperty_of_add` at each step.",
-    "relatedConcepts": ["ramseyBound_HasRamseyProperty", "Finset.card_add_card_le", "Pascal-rule", "pigeonhole-principle"],
-    "prerequisites": ["HasRamseyProperty definition", "Finset card operations", "induction on r+s"]
+    "title": "HasRamseyProperty_of_add: The Erdős-Szekeres Pigeonhole Step",
+    "content": "`HasRamseyProperty_of_add` proves the key inductive step: if $n_1$ has property $(r-1, s)$ and $n_2$ has property $(r, s-1)$, then $n_1 + n_2$ has property $(r, s)$. Pick vertex $v = 0$ in $K_{n_1+n_2}$; the red and blue neighborhoods partition the remaining $n_1+n_2-1$ vertices. By `neighborhood_card_sum`, |Nred| + |Nblue| = n_1+n_2-1. By pigeonhole: either |Nred| ≥ n₁ (case 1: find (r-1)-red clique in Nred, extend by v) or |Nblue| ≥ n₂ (case 2: find (s-1)-blue clique in Nblue, extend by v). `extend_red_clique` and `extend_blue_clique` handle the extension.",
+    "mathContext": "The Ramsey recurrence: $R(r, s) \\leq R(r-1, s) + R(r, s-1)$. Combined with Pascal's rule $\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$, this gives the Erdős-Szekeres bound $R(r,s) \\leq \\binom{r+s-2}{r-1}$ by induction on $r+s$. Base cases: $R(1,s) = R(r,1) = 1$. This is the core mathematical content of the 1935 Erdős-Szekeres paper.",
+    "significance": "key",
+    "relatedConcepts": ["ramseyBound_HasRamseyProperty", "neighborhood_card_sum", "extend_red_clique", "extend_blue_clique", "Pascal's rule"],
+    "prerequisites": ["HasRamseyProperty from RamseysTheorem.lean", "redNeighborhood and blueNeighborhood definitions", "extend_red_clique lemma (from RamseysTheorem.lean)"]
+  },
+  {
+    "id": "ramsey-bound-induction",
+    "proofId": "erdos-1015-oq-05",
+    "range": { "startLine": 235, "endLine": 281 },
+    "type": "theorem",
+    "title": "ramseyBound_HasRamseyProperty: Inductive Proof of the Binomial Bound",
+    "content": "`ramseyBound_HasRamseyProperty` proves `HasRamseyProperty (Fin (C(r+s-2, r-1))) r s` by strong induction on $r+s$. The proof matches on $(r, s)$ with four cases: (0,_), (_,0) (vacuously, by omega), (1, s+1) (base: C(s,0)=1, use `ramsey_one_left`), (r+2, 1) (base: C(r+1,r+1)=1, use `ramsey_one_right`), and (r+2, s+2) (inductive: apply `ramseyBound_pascal` for the Pascal recurrence, then `HasRamseyProperty_of_add` with the two inductive hypotheses). The pattern matching on r+2, s+2 is needed to ensure the Nat subtraction `r-1, s-1` is safe.",
+    "mathContext": "The Erdős-Szekeres bound: `ramseyBound r s = C(r+s-2, r-1)`. `ramseyBound_pascal` gives `C(r+s, r) = C(r+s-1, r-1) + C(r+s-1, r)` (Pascal's rule). The strong induction (`Nat.strong_induction_on`) on `r+s` is used because the two recursive calls (r+1,s+2) and (r+2,s+1) both have strictly smaller $r+s$. The `generalizing r s` annotation is critical: it allows the induction hypothesis to generalize over different values of $r$ and $s$.",
+    "significance": "key",
+    "relatedConcepts": ["ramseyBound", "ramseyBound_pascal", "HasRamseyProperty_of_add", "Nat.strong_induction_on", "ramsey_one_left", "ramsey_one_right"],
+    "prerequisites": ["Nat.strong_induction_on with generalizing", "HasRamseyProperty_of_add (proved above)", "ramseyBound_pascal (proved at line 219)"]
   },
   {
     "id": "ramsey-upper-bound",
-    "line": 312,
+    "proofId": "erdos-1015-oq-05",
+    "range": { "startLine": 298, "endLine": 313 },
     "type": "theorem",
-    "title": "R(t,t) ≤ 4^t: The Erdős-Szekeres Upper Bound",
-    "body": "`ramsey_upper_bound` proves `ramseyNumber t t ≤ 4^t` for `t ≥ 1`. The proof chains: `ramseyNumber t t ≤ ramseyBound t t` (from `ramseyNumber_le_ramseyBound`) and `ramseyBound t t ≤ 4^t` (from `ramseyBound_le_four_pow`). The second inequality uses $\\binom{2t-2}{t-1} \\leq 2^{2t-2} = 4^{t-1} \\leq 4^t$. This eliminates the second axiom from the parent proof, which had assumed this bound without proof.",
-    "mathContext": "The Erdős-Szekeres bound: $R(t, t) \\leq \\binom{2t-2}{t-1} \\leq 4^{t-1}$. The central binomial coefficient $\\binom{2t-2}{t-1}$ is the largest in row $2t-2$ of Pascal's triangle and satisfies $\\binom{2t-2}{t-1} \\leq 2^{2t-2}$ (since the total row sum is $2^{2t-2}$). Numerically: $R(3,3) \\leq 6$, $R(4,4) \\leq 20$, $R(5,5) \\leq 70$. The true values are $R(3,3) = 6$, $R(4,4) = 18$, $R(5,5) \\in [43, 48]$.",
-    "significance": "The main theorem of the file. Eliminates the second axiom from Erdős #1015. The $4^t$ bound is suboptimal (better bounds exist: $R(t,t) \\leq \\binom{2t}{t}/\\sqrt{t}$) but the cleanest to formalize.",
-    "relatedConcepts": ["ramseyBound", "ramseyBound_le_four_pow", "ramseyNumber_le_ramseyBound", "axiom-elimination"],
-    "prerequisites": ["ramseyNumber definition", "ramseyBound definition", "Nat.choose_le_pow"]
+    "title": "ramsey_upper_bound: R(t,t) ≤ 4^t via Binomial Bound",
+    "content": "`ramsey_upper_bound` proves `ramseyNumber t t ≤ 4^t` for `t ≥ 1` by chaining: `ramseyNumber t t ≤ ramseyBound t t` (from `ramseyNumber_le_ramseyBound`) and `ramseyBound t t ≤ 4^t` (from `ramseyBound_le_four_pow`). The `ramseyBound_le_four_pow` proof uses `choose_le_two_pow : C(n,k) ≤ 2^n` (proved via `Finset.single_le_sum` and `Nat.sum_range_choose`) to give `C(2t-2, t-1) ≤ 2^(2t-2) = 4^(t-1) ≤ 4^t`. This eliminates the `ramsey_upper_bound` axiom from Erdős #1015.",
+    "mathContext": "The chain: $R(t,t) \\leq \\binom{2t-2}{t-1} \\leq 2^{2t-2} = (2^2)^{t-1} = 4^{t-1} \\leq 4^t$. The first inequality is `ramseyNumber_le_ramseyBound`. The second uses $\\binom{n}{k} \\leq \\sum_{i=0}^{n} \\binom{n}{i} = 2^n$ (sum of all binomial coefficients). Numerically: $R(3,3) \\leq 4^3 = 64$ (true value: 6); $R(4,4) \\leq 256$ (true value: 18). The $4^t$ bound is suboptimal; better bounds use entropy or Lovász local lemma.",
+    "significance": "key",
+    "relatedConcepts": ["ramseyBound_le_four_pow", "ramseyNumber_le_ramseyBound", "choose_le_two_pow", "Nat.sum_range_choose", "axiom-elimination"],
+    "prerequisites": ["ramseyNumber_le_ramseyBound (line 279)", "ramseyBound_le_four_pow (line 298)", "Nat.sum_range_choose : ∑ i in range(n+1), C(n,i) = 2^n"]
   }
 ]
