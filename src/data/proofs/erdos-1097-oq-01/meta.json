@@ -41,7 +41,8 @@
             "The optimal growth exponent α(k) is non-increasing in k, with α(3) ∈ [1.778, 11/6] from Erdős #1097",
             "For k > n, D_k(A) = {0} since only trivial APs fit, giving α(k) → 0 as k → ∞ for fixed n",
             "The connection to k=3 is exact: IsKAP with k=3 is equivalent to the IsThreeAP predicate from the parent formalization",
-            "All 17 theorems are axiom-free, including the monotonicity of the growth question across k values"
+            "All 17 theorems are axiom-free, including the monotonicity of the growth question across k values",
+            "The negation symmetry d ∈ D_k(A) → -d ∈ D_k(A) uses a reversed AP base b = a+(k-1)d — requiring only omega+ring to verify the index algebra over ℤ, showcasing how cast-free formulations simplify proofs"
         ],
         "prerequisites": [
             "Combinatorics (counting, extremal problems)",

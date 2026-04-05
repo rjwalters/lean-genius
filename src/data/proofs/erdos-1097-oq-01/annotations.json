@@ -1,72 +1,93 @@
 [
   {
     "id": "iskap-definition",
+    "proofId": "erdos-1097-oq-01",
     "startLine": 34,
     "endLine": 35,
     "type": "definition",
     "title": "IsKAP: Universal Quantifier Formulation of k-Term APs",
-    "body": "Defines a k-term arithmetic progression by universally quantifying over all positions i < k: the sequence a, a+d, a+2d, ..., a+(k-1)d all belong to A. The `∀ i : ℕ, i < k →` pattern is the cleanest formulation for proving structural properties by weakening (reducing k) or strengthening (increasing k). Compared to an explicit Finset-image definition, this avoids cardinality arguments and admits direct `intro`/`apply` proofs.",
-    "mathContext": "$\\text{IsKAP}(A, k, a, d) \\iff \\{a + id : 0 \\leq i < k\\} \\subseteq A$.",
-    "significance": "The universal-quantifier formulation is what makes `isKAP_of_succ` and all anti-monotonicity proofs one-liners: weakening `i < k+1` to `i < k` is exactly `Nat.lt_succ_of_lt`."
+    "content": "Defines a k-term arithmetic progression by universally quantifying over all positions i < k: the sequence a, a+d, a+2d, ..., a+(k-1)d all belong to A. The `∀ i : ℕ, i < k →` pattern is the cleanest formulation for proving structural properties by weakening (reducing k) or strengthening (increasing k). Compared to an explicit Finset-image definition, this avoids cardinality arguments and admits direct `intro`/`apply` proofs.",
+    "mathContext": "$\\text{IsKAP}(A, k, a, d) \\iff \\forall i < k,\\; a + id \\in A$. Equivalently, $\\{a, a+d, a+2d, \\ldots, a+(k-1)d\\} \\subseteq A$.",
+    "significance": "essential",
+    "relatedConcepts": ["arithmetic progressions", "universal quantifier formulation", "IsThreeAP", "interval_cases"],
+    "prerequisites": ["Finset.mem_filter", "Set.mem_image", "Nat.lt_succ_of_lt"]
   },
   {
     "id": "commondiffk-anti",
+    "proofId": "erdos-1097-oq-01",
     "startLine": 76,
     "endLine": 79,
     "type": "theorem",
     "title": "Anti-Monotonicity: D_{k+1}(A) ⊆ D_k(A)",
-    "body": "Proves that demanding one more term in the AP can only reduce the set of valid common differences. The proof is two lines: intro d ⟨a, ha⟩ destructs d ∈ D_{k+1}(A), then `isKAP_of_succ ha` converts the (k+1)-AP into a k-AP with the same base and difference. The elegance comes from the `∀ i < k` definition: a (k+1)-AP automatically contains k-APs at every sub-length.",
+    "content": "Proves that demanding one more term in the AP can only reduce the set of valid common differences. The proof is two lines: intro d ⟨a, ha⟩ destructs d ∈ D_{k+1}(A), then `isKAP_of_succ ha` converts the (k+1)-AP into a k-AP with the same base and difference. The elegance comes from the `∀ i < k` definition: a (k+1)-AP automatically contains k-APs at every sub-length.",
     "mathContext": "$D_{k+1}(A) \\subseteq D_k(A)$ because every $(k{+}1)$-AP contains a $k$-AP (using the same base $a$ and difference $d$).",
-    "significance": "The central structural result: bounds for k=3 (Katz-Tao O(n^{11/6})) automatically apply for all k ≥ 3 via repeated application of this containment."
+    "significance": "essential",
+    "relatedConcepts": ["isKAP_of_succ", "commonDiffK_subset_diff3", "Nat.lt_succ_of_lt", "anti-monotonicity"],
+    "prerequisites": ["isKAP_of_succ", "Finset.mem_filter", "Set.mem_sep_iff"]
   },
   {
     "id": "neg-mem-symmetry",
+    "proofId": "erdos-1097-oq-01",
     "startLine": 99,
     "endLine": 107,
     "type": "theorem",
     "title": "Negation Symmetry via Reversed AP Base",
-    "body": "Proves d ∈ D_k(A) → -d ∈ D_k(A) by constructing the reversed AP. If a, a+d, ..., a+(k-1)d ∈ A, then starting from a + (k-1)d and using step -d reverses the same points: a+(k-1)d, a+(k-2)d, ..., a ∈ A. The key algebraic identity `a + (k-1)d + i·(-d) = a + (k-1-i)·d` is proved via `omega` + `ring`. The `k-1-i` expression in ℤ requires a cast: `hcast : (↑(k-1-i) : ℤ) = k-1-i`.",
+    "content": "Proves d ∈ D_k(A) → -d ∈ D_k(A) by constructing the reversed AP. If a, a+d, ..., a+(k-1)d ∈ A, then starting from a + (k-1)d and using step -d reverses the same points: a+(k-1)d, a+(k-2)d, ..., a ∈ A. The key algebraic identity `a + (k-1)d + i·(-d) = a + (k-1-i)·d` is proved via `omega` + `ring`. The `k-1-i` expression in ℤ requires a cast: `hcast : (↑(k-1-i) : ℤ) = k-1-i`.",
     "mathContext": "Base of the reversed AP: $b = a + (k-1)d$. Then $b + i \\cdot (-d) = a + (k-1-i)d \\in A$ for $0 \\leq i < k$.",
-    "significance": "Establishes that D_k(A) is symmetric: d ∈ D_k(A) ↔ -d ∈ D_k(A). This mirrors the symmetry of A - A and is used when analyzing the distribution of common differences."
+    "significance": "key",
+    "relatedConcepts": ["reversed AP", "negation symmetry", "D_k symmetry", "omega", "Int.coe_nat_sub"],
+    "prerequisites": ["omega", "Int.coe_nat_sub", "IsKAP", "neg_mul"]
   },
   {
     "id": "quadratic-upper-bound",
+    "proofId": "erdos-1097-oq-01",
     "startLine": 131,
     "endLine": 138,
     "type": "theorem",
     "title": "Quadratic Upper Bound: |D_k(A)| ≤ |A|²",
-    "body": "Proves |D_k(A)| ≤ |A|² via the chain: |commonDiffKFinset A k| ≤ |A - A| ≤ |A × A| = |A|². The first step uses `card_filter_le` (filtering can only reduce). The second uses `sub_def` to write A - A = image fst (A × A) (set differences as Minkowski differences), then `card_image_le` (image cannot increase cardinality) and `card_product`. This is an O(n²) bound — far from tight for small k, where the actual maximum is O(n^{11/6}) for k=3.",
+    "content": "Proves |D_k(A)| ≤ |A|² via the chain: |commonDiffKFinset A k| ≤ |A - A| ≤ |A × A| = |A|². The first step uses `card_filter_le` (filtering can only reduce). The second uses `sub_def` to write A - A = image fst (A × A) (set differences as Minkowski differences), then `card_image_le` (image cannot increase cardinality) and `card_product`. This is an O(n²) bound — far from tight for small k, where the actual maximum is O(n^{11/6}) for k=3.",
     "mathContext": "$|D_k(A)| \\leq |A - A| \\leq |A \\times A| = |A|^2$, where $A - A = \\{a - b : a, b \\in A\\}$ (Minkowski difference).",
-    "significance": "Establishes the trivial baseline bound. It confirms that the growth question α(k) ≤ 2 for all k, and that the nontrivial work is proving tighter bounds for each k ≥ 3."
+    "significance": "key",
+    "relatedConcepts": ["Minkowski difference", "Finset.card_filter_le", "card_image_le", "Finset.card_product"],
+    "prerequisites": ["Finset.card_filter_le", "Finset.card_image_le", "Finset.card_product", "commonDiffK_subset_diff"]
   },
   {
     "id": "iskap-three-iff",
+    "proofId": "erdos-1097-oq-01",
     "startLine": 160,
     "endLine": 169,
     "type": "theorem",
     "title": "Equivalence with Explicit 3-AP Predicate",
-    "body": "Proves that IsKAP with k=3 is equivalent to the explicit triple condition a ∈ A ∧ a+d ∈ A ∧ a+2d ∈ A. The forward direction destructs the universal quantifier at i=0, 1, 2; the reverse direction cases on i (only 0, 1, 2 are possible for i < 3) and dispatches each via `simpa`. The tactic `interval_cases i` enumerates all possibilities for a bounded natural number, making the proof fully automated.",
-    "mathContext": "$\\text{IsKAP}(A, 3, a, d) \\iff a \\in A \\land a+d \\in A \\land a+2d \\in A$.",
-    "significance": "The bridge between the k-parametric formulation in this file and the IsThreeAP predicate used in the parent Erdős #1097 formalization. Ensures the generalizations are definitionally consistent with the base case."
+    "content": "Proves that IsKAP with k=3 is equivalent to the explicit triple condition a ∈ A ∧ a+d ∈ A ∧ a+2d ∈ A. The forward direction destructs the universal quantifier at i=0, 1, 2; the reverse direction cases on i (only 0, 1, 2 are possible for i < 3) and dispatches each via `simpa`. The tactic `interval_cases i` enumerates all possibilities for a bounded natural number, making the proof fully automated.",
+    "mathContext": "$\\text{IsKAP}(A, 3, a, d) \\iff a \\in A \\land (a+d) \\in A \\land (a+2d) \\in A$.",
+    "significance": "key",
+    "relatedConcepts": ["IsThreeAP", "interval_cases", "k=3 base case", "three-AP"],
+    "prerequisites": ["interval_cases", "IsKAP", "Nat.lt_succ_of_lt"]
   },
   {
     "id": "kap-growth-question",
+    "proofId": "erdos-1097-oq-01",
     "startLine": 180,
     "endLine": 183,
     "type": "definition",
-    "title": "Growth Question: Power-Law Bound for D_k",
-    "body": "Formalizes the open question as a Prop: 'there exists an exponent α and constant C such that for every n-element set A ⊆ ℤ, |D_k(A)| ≤ C · n^α'. Using `∃ α : ℝ, ∃ C : ℝ, ...` rather than an axiom keeps the question honest — it is not claimed to be true, just stated as a Prop to prove or disprove. The parameter `k : ℕ` makes this a family of conjectures, one per AP length.",
+    "title": "Growth Question: Power-Law Bound for D_k as a Definition",
+    "content": "Formalizes the open question as a Prop: 'there exists an exponent α and constant C such that for every n-element set A ⊆ ℤ, |D_k(A)| ≤ C · n^α'. Using `∃ α : ℝ, ∃ C : ℝ, ...` rather than an axiom keeps the question honest — it is not claimed to be true, just stated as a Prop to prove or disprove. The parameter `k : ℕ` makes this a family of conjectures, one per AP length.",
     "mathContext": "Open: for which $\\alpha(k)$ does $\\max_{|A|=n} |D_k(A)| = O(n^{\\alpha(k)})$? Known: $\\alpha(3) \\leq 11/6$ (Katz-Tao); conjectured $\\alpha(k) < \\alpha(3)$ for $k \\geq 4$.",
-    "significance": "Encoding the open question as a definition (not an axiom) is the correct Lean idiom: the statement can be reasoned about and instantiated without asserting its truth."
+    "significance": "key",
+    "relatedConcepts": ["growth exponent", "Erdős problem", "open question formalization", "power law"],
+    "prerequisites": ["numCommonDiffK", "Finset.card", "Real.rpow"]
   },
   {
     "id": "kap-growth-mono",
+    "proofId": "erdos-1097-oq-01",
     "startLine": 191,
     "endLine": 199,
     "type": "theorem",
     "title": "Monotone Transfer of Growth Bounds Across AP Lengths",
-    "body": "Proves that a power-law bound for D_k automatically gives the same bound for D_{k+1}. The proof uses the `calc` chain: |D_{k+1}(A)| ≤ |D_k(A)| (by `numCommonDiffK_anti`, itself from `card_le_card commonDiffKFinset_anti`) ≤ C·n^α (by hypothesis). This is the formal statement that the optimal exponent α(k) is non-increasing in k — if α(k) works, then α(k+1) ≤ α(k). The `exact_mod_cast` coerces the natural number inequality to ℝ.",
-    "mathContext": "$|D_{k+1}(A)| \\leq |D_k(A)| \\leq C \\cdot n^\\alpha$ — so any growth exponent valid for $k$ also bounds $k+1$.",
-    "significance": "The formal analogue of the monotonicity principle: improvements in the 3-AP case propagate to all longer AP lengths. This also implies that the optimal exponent sequence α(3) ≥ α(4) ≥ α(5) ≥ ... is non-increasing."
+    "content": "Proves that a power-law bound for D_k automatically gives the same bound for D_{k+1}. The proof uses the `calc` chain: |D_{k+1}(A)| ≤ |D_k(A)| (by `numCommonDiffK_anti`, itself from `card_le_card commonDiffKFinset_anti`) ≤ C·n^α (by hypothesis). This is the formal statement that the optimal exponent α(k) is non-increasing in k — if α(k) works, then α(k+1) ≤ α(k). The `exact_mod_cast` coerces the natural number inequality to ℝ.",
+    "mathContext": "$|D_{k+1}(A)| \\leq |D_k(A)| \\leq C \\cdot n^\\alpha$ — so any growth exponent valid for $k$ also bounds $k+1$. The sequence $\\alpha(3) \\geq \\alpha(4) \\geq \\cdots$ is non-increasing.",
+    "significance": "key",
+    "relatedConcepts": ["numCommonDiffK_anti", "calc chain", "growth exponent monotonicity", "exact_mod_cast"],
+    "prerequisites": ["numCommonDiffK_anti", "Finset.card_le_card", "commonDiffKFinset_anti"]
   }
 ]
