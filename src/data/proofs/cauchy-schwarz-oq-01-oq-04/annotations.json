@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-cs04-header",
+    "proofId": "cauchy-schwarz-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 69 },
+    "type": "context",
+    "title": "Module Header: Bessel's Inequality from the Projection Identity",
+    "content": "Imports four Mathlib modules: InnerProductSpace.Basic (inner products and orthogonality), InnerProductSpace.l2Space (HilbertBasis and the $\\ell^2$ isometry), Normed.Lp.lpSpace ($\\ell^p$ norm formula via lp.norm_rpow_eq_tsum), and Tactic (automation). The docstring (lines 6-60) frames the open question and outlines the proof structure: the projection identity $\\|u - \\text{proj}_s u\\|^2 = \\|u\\|^2 - \\sum_{i \\in s} |\\langle v_i, u \\rangle|^2 \\geq 0$ gives Bessel's inequality immediately. For Parseval, the HilbertBasis isometry $E \\cong_{\\text{li}} \\ell^2(\\iota, \\mathbb{k})$ converts the equality to an $\\ell^2$ norm computation. Variables declare the inner product space $E$ over $\\mathbb{k}$, the orthonormal family $v$, and the HilbertBasis $b$.",
+    "mathContext": "The projection identity: $\\|x - \\text{proj}_s x\\|^2 = \\|x\\|^2 - \\sum_{i \\in s} |\\langle v_i, x\\rangle|^2$. Since $\\|\\cdot\\|^2 \\geq 0$, Bessel follows: $\\sum_{i \\in s} |\\langle v_i, x\\rangle|^2 \\leq \\|x\\|^2$.",
+    "significance": "context",
+    "relatedConcepts": ["orthogonal projection", "projection identity", "HilbertBasis", "InnerProductSpace", "l2Space"],
+    "prerequisites": ["inner product spaces", "orthonormality", "Hilbert space completeness", "Mathlib l2Space API"]
+  },
+  {
     "id": "ann-cs04-01",
     "proofId": "cauchy-schwarz-oq-01-oq-04",
     "range": { "startLine": 70, "endLine": 79 },
