@@ -2,10 +2,23 @@
   "id": "erdos-416",
   "title": "Counting Totient Values",
   "slug": "erdos-416",
-  "description": "Let V(x) count the number of n ≤ x such that φ(m) = n is solvable. Does V(2x)/V(x) → 2? Is there an asymptotic formula for V(x)? Despite remarkable progress by Pillai, Erdős, Maier-Pomerance, and Ford, both questions remain open.",
-  "leanFile": "Proofs/Erdos416Problem.lean",
+  "description": "Let V(x) count the number of n \u2264 x such that \u03c6(m) = n is solvable. Does V(2x)/V(x) \u2192 2? Is there an asymptotic formula for V(x)? Despite remarkable progress by Pillai, Erd\u0151s, Maier-Pomerance, and Ford, both questions remain open.",
+  "leanFile": {
+    "path": "Proofs/Erdos416Problem.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "scoped"
+    ],
+    "namespace": "Erdos416",
+    "lineCount": 148,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/416",
     "date": "",
     "status": "axiomatized",
@@ -28,15 +41,15 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "This problem concerns the **range of Euler's totient function** $\\varphi$. Not every positive integer is a totient value — for instance, $\\varphi(m)$ is even for all $m > 2$, so 3, 5, 7, ... are never totient values (the only odd totient value is 1).\n\n**Pillai (1929)** first proved that totient values have density 0: $V(x) = o(x)$, meaning most integers are not in the image of $\\varphi$. **Erdős (1935)** refined this to $V(x) = x \\cdot (\\log x)^{-1+o(1)}$, showing the density decays like $1/\\log x$ up to sub-polynomial corrections.\n\n**Maier and Pomerance (1988)** achieved a more precise formula: $V(x) = \\frac{x}{\\log x} \\cdot e^{(C+o(1))(\\log\\log\\log x)^2}$ for an explicit constant $C > 0$, revealing that the correction factor involves the triple logarithm. **Kevin Ford (1998)** obtained the tightest known bounds in his paper \"The distribution of totients\" (Ramanujan Journal), determining $V(x)$ up to constant factors with a formula involving $\\log\\log\\log x$ and $\\log\\log\\log\\log x$.\n\nDespite these remarkable results, the two specific questions Erdős asked remain open: whether $V(2x)/V(x) \\to 2$ (the doubling ratio) and whether an asymptotic formula $V(x) \\sim f(x)$ exists. Ford's $\\Theta$-bounds are not precise enough to answer either.",
+    "historicalContext": "This problem concerns the **range of Euler's totient function** $\\varphi$. Not every positive integer is a totient value \u2014 for instance, $\\varphi(m)$ is even for all $m > 2$, so 3, 5, 7, ... are never totient values (the only odd totient value is 1).\n\n**Pillai (1929)** first proved that totient values have density 0: $V(x) = o(x)$, meaning most integers are not in the image of $\\varphi$. **Erd\u0151s (1935)** refined this to $V(x) = x \\cdot (\\log x)^{-1+o(1)}$, showing the density decays like $1/\\log x$ up to sub-polynomial corrections.\n\n**Maier and Pomerance (1988)** achieved a more precise formula: $V(x) = \\frac{x}{\\log x} \\cdot e^{(C+o(1))(\\log\\log\\log x)^2}$ for an explicit constant $C > 0$, revealing that the correction factor involves the triple logarithm. **Kevin Ford (1998)** obtained the tightest known bounds in his paper \"The distribution of totients\" (Ramanujan Journal), determining $V(x)$ up to constant factors with a formula involving $\\log\\log\\log x$ and $\\log\\log\\log\\log x$.\n\nDespite these remarkable results, the two specific questions Erd\u0151s asked remain open: whether $V(2x)/V(x) \\to 2$ (the doubling ratio) and whether an asymptotic formula $V(x) \\sim f(x)$ exists. Ford's $\\Theta$-bounds are not precise enough to answer either.",
     "problemStatement": "Let $V(x)$ count the number of $n \\le x$ such that $\\varphi(m) = n$ has a solution (i.e., $n$ is in the range of the totient function). (i) Does $V(2x)/V(x) \\to 2$ as $x \\to \\infty$? (ii) Is there an asymptotic formula for $V(x)$?",
-    "text": "Let V(x) count the number of n ≤ x such that φ(m) = n is solvable. Does V(2x)/V(x) → 2? Is there an asymptotic formula for V(x)? Despite remarkable progress by Pillai, Erdős, Maier-Pomerance, and Ford, both questions remain open.",
-    "proofStrategy": "The formalization defines $V(x)$ as the cardinality of $\\{n \\in [1, \\lfloor x \\rfloor] : \\exists\\, m,\\, \\varphi(m) = n\\}$ using `Finset.Icc` and `Finset.filter`. Basic properties (nonnegativity, monotonicity, small totient witnesses) are proved. The four historical bounds — Pillai's $o(x)$, Erdős's $(\\log x)^{-1+o(1)}$, Maier–Pomerance's triple-log formula, and Ford's tight $\\Theta$-bounds — are axiomatized using Lean's `Asymptotics` library (`=o`, `=Θ`). The open questions are expressed as `Prop` definitions using `Tendsto` for limits.",
+    "text": "Let V(x) count the number of n \u2264 x such that \u03c6(m) = n is solvable. Does V(2x)/V(x) \u2192 2? Is there an asymptotic formula for V(x)? Despite remarkable progress by Pillai, Erd\u0151s, Maier-Pomerance, and Ford, both questions remain open.",
+    "proofStrategy": "The formalization defines $V(x)$ as the cardinality of $\\{n \\in [1, \\lfloor x \\rfloor] : \\exists\\, m,\\, \\varphi(m) = n\\}$ using `Finset.Icc` and `Finset.filter`. Basic properties (nonnegativity, monotonicity, small totient witnesses) are proved. The four historical bounds \u2014 Pillai's $o(x)$, Erd\u0151s's $(\\log x)^{-1+o(1)}$, Maier\u2013Pomerance's triple-log formula, and Ford's tight $\\Theta$-bounds \u2014 are axiomatized using Lean's `Asymptotics` library (`=o`, `=\u0398`). The open questions are expressed as `Prop` definitions using `Tendsto` for limits.",
     "keyInsights": [
-      "**Totient values have density zero**: $V(x) = o(x)$ (Pillai 1929) — most integers are NOT in the image of $\\varphi$, since $\\varphi(m)$ is even for $m > 2$ and has additional multiplicative constraints",
-      "**The density decays logarithmically**: $V(x) \\approx x/\\log x$ up to iterated-logarithm corrections — the totient image is sparse but not extremely so, comparable to the density of primes",
+      "**Totient values have density zero**: $V(x) = o(x)$ (Pillai 1929) \u2014 most integers are NOT in the image of $\\varphi$, since $\\varphi(m)$ is even for $m > 2$ and has additional multiplicative constraints",
+      "**The density decays logarithmically**: $V(x) \\approx x/\\log x$ up to iterated-logarithm corrections \u2014 the totient image is sparse but not extremely so, comparable to the density of primes",
       "**Ford's bounds involve quadruply iterated logarithms**: The correction factor $e^{C_1(\\log\\log\\log x - \\log\\log\\log\\log x)^2 + \\ldots}$ shows the fine structure of the totient range is governed by very slowly varying functions",
-      "**Doubling ratio would follow from simple asymptotics**: If $V(x) \\sim c \\cdot x/\\log x$, then $V(2x)/V(x) \\to 2$ would be immediate — but Ford's complicated formula makes this unclear",
+      "**Doubling ratio would follow from simple asymptotics**: If $V(x) \\sim c \\cdot x/\\log x$, then $V(2x)/V(x) \\to 2$ would be immediate \u2014 but Ford's complicated formula makes this unclear",
       "**Only odd totient value is 1**: Since $\\varphi(m)$ is even for $m > 2$ (as $m$ has a primitive root or $m = 2^k$), this immediately eliminates half of all integers from the totient range"
     ],
     "prerequisites": [
@@ -48,12 +61,12 @@
     {
       "targetId": "erdos-419",
       "relationship": "related",
-      "description": "Totient function properties — related number theory on the structure and distribution of Euler's totient"
+      "description": "Totient function properties \u2014 related number theory on the structure and distribution of Euler's totient"
     },
     {
       "targetId": "erdos-462",
       "relationship": "related",
-      "description": "Multiplicative function asymptotics — shares techniques from analytic number theory on counting function images"
+      "description": "Multiplicative function asymptotics \u2014 shares techniques from analytic number theory on counting function images"
     }
   ],
   "sections": [
@@ -76,7 +89,7 @@
       "title": "Known Bounds",
       "startLine": 75,
       "endLine": 118,
-      "summary": "Four historical bounds axiomatized: Pillai $V = o(\\mathrm{id})$ (1929), Erdős $V(x) = x(\\log x)^{-1+o(1)}$ (1935), Maier–Pomerance with triple-log correction (1988), and Ford's tight $\\Theta$-bounds with quadruple logarithms (1998)."
+      "summary": "Four historical bounds axiomatized: Pillai $V = o(\\mathrm{id})$ (1929), Erd\u0151s $V(x) = x(\\log x)^{-1+o(1)}$ (1935), Maier\u2013Pomerance with triple-log correction (1988), and Ford's tight $\\Theta$-bounds with quadruple logarithms (1998)."
     },
     {
       "id": "open-questions",
@@ -87,12 +100,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #416 on counting totient values. The function $V(x)$, counting integers $n \\le x$ in the image of Euler's totient, satisfies $V(x) = \\Theta\\bigl(\\frac{x}{\\log x} \\cdot e^{C_1(\\log\\log\\log x)^2 + \\ldots}\\bigr)$ by Ford (1998), but neither the doubling ratio $V(2x)/V(x) \\to 2$ nor an asymptotic formula $V(x) \\sim f(x)$ is known.",
+    "summary": "This formalization captures Erd\u0151s Problem #416 on counting totient values. The function $V(x)$, counting integers $n \\le x$ in the image of Euler's totient, satisfies $V(x) = \\Theta\\bigl(\\frac{x}{\\log x} \\cdot e^{C_1(\\log\\log\\log x)^2 + \\ldots}\\bigr)$ by Ford (1998), but neither the doubling ratio $V(2x)/V(x) \\to 2$ nor an asymptotic formula $V(x) \\sim f(x)$ is known.",
     "implications": "This connects to fundamental questions about the distribution of multiplicative functions: what does the image of $\\varphi$ look like? The quadruple-logarithm structure in Ford's bounds reflects deep properties of the multiplicative structure of totient values and the distribution of smooth numbers. Understanding $V(x)$ has implications for the study of other multiplicative function images (e.g., the sum-of-divisors function $\\sigma$).",
     "openQuestions": [
       "Does $V(2x)/V(x) \\to 2$? Even proving this ratio is bounded would be progress.",
       "Can Ford's $\\Theta$-bounds be refined to an asymptotic formula $V(x) \\sim f(x)$?",
-      "What is the exact value of the leading constant in the Maier–Pomerance formula?",
+      "What is the exact value of the leading constant in the Maier\u2013Pomerance formula?",
       "Does the analogous counting function for the sum-of-divisors function $\\sigma$ have similar asymptotic behavior?"
     ]
   }

@@ -2,8 +2,28 @@
   "id": "fourier-series-oq-01",
   "title": "Carleson's Theorem: Pointwise a.e. Convergence of Fourier Series",
   "slug": "fourier-series-oq-01",
-  "description": "Carleson's theorem (1966): Fourier partial sums of L² functions converge pointwise almost everywhere. Formalizes the maximal operator approach and proves the reduction from the Carleson-Hunt maximal inequality to a.e. convergence via density arguments.",
-  "leanFile": "Proofs/FourierSeriesOQ01.lean",
+  "description": "Carleson's theorem (1966): Fourier partial sums of L\u00b2 functions converge pointwise almost everywhere. Formalizes the maximal operator approach and proves the reduction from the Carleson-Hunt maximal inequality to a.e. convergence via density arguments.",
+  "leanFile": {
+    "path": "Proofs/FourierSeriesOQ01.lean",
+    "imports": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.Fourier.FourierTransform",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.l2Space",
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Measure.MeasureSpace",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "scoped"
+    ],
+    "namespace": "CarlesonTheorem",
+    "lineCount": 642,
+    "axiomCount": 6,
+    "sorries": 0
+  },
   "meta": {
     "author": "Lennart Carleson (1966)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Carleson%27s_theorem",
@@ -31,12 +51,12 @@
       },
       {
         "theorem": "fourier",
-        "description": "Fourier monomials e_n(x) = exp(2πinx/T)",
+        "description": "Fourier monomials e_n(x) = exp(2\u03c0inx/T)",
         "module": "Mathlib.Analysis.Fourier.AddCircle"
       },
       {
         "theorem": "hasSum_fourier_series_L2",
-        "description": "L² convergence of Fourier series",
+        "description": "L\u00b2 convergence of Fourier series",
         "module": "Mathlib.Analysis.Fourier.AddCircle"
       },
       {
@@ -50,7 +70,7 @@
         "module": "Mathlib.Analysis.Fourier.AddCircle"
       },
       {
-        "theorem": "Memℒp",
+        "theorem": "Mem\u2112p",
         "description": "Membership in Lp spaces",
         "module": "Mathlib.MeasureTheory.Function.L2Space"
       }
@@ -65,30 +85,30 @@
       "divergenceSet_measure_bound: measure bound on divergence set",
       "carleson_ae_convergence: Carleson's theorem (main statement)",
       "carleson_continuous: corollary for continuous functions",
-      "carleson_and_parseval: joint L² + pointwise convergence",
+      "carleson_and_parseval: joint L\u00b2 + pointwise convergence",
       "fourierPartialSum_add: linearity of partial sums",
       "fourierPartialSum_smul: scalar linearity of partial sums",
       "fourierPartialSum_zero_fn: partial sums of zero"
     ],
     "axiomCount": 6,
     "lineCount": 642,
-    "assumptions": "6 axioms: carlesonConstant (existence of universal Carleson constant C > 0), carleson_hunt_maximal (the Carleson-Hunt maximal inequality ‖S*f‖ ≤ C·‖f‖), trigPoly_exact_convergence (trig polys converge exactly), IsTrigPoly.memℒp_two (trig polys are in L²), trigPoly_L2_approx (trig poly L² approximation), carlesonConstant_nonneg (C ≥ 0). 0 sorries (divergenceSet_measure_bound and carleson_ae_convergence proved in #8596, additional framework proved in #8611)."
+    "assumptions": "6 axioms: carlesonConstant (existence of universal Carleson constant C > 0), carleson_hunt_maximal (the Carleson-Hunt maximal inequality \u2016S*f\u2016 \u2264 C\u00b7\u2016f\u2016), trigPoly_exact_convergence (trig polys converge exactly), IsTrigPoly.mem\u2112p_two (trig polys are in L\u00b2), trigPoly_L2_approx (trig poly L\u00b2 approximation), carlesonConstant_nonneg (C \u2265 0). 0 sorries (divergenceSet_measure_bound and carleson_ae_convergence proved in #8596, additional framework proved in #8611)."
   },
   "overview": {
-    "historicalContext": "**Carleson's Theorem (1966)**\n\nOne of the great achievements of 20th-century harmonic analysis. The question of whether Fourier series converge pointwise goes back to Fourier himself (1807) and was a central problem for over 150 years.\n\n**Timeline:**\n- **1807**: Fourier conjectured that every periodic function equals its Fourier series\n- **1829**: Dirichlet proved convergence for piecewise smooth functions\n- **1876**: du Bois-Reymond gave a continuous function whose Fourier series diverges at a point\n- **1923**: Kolmogorov constructed an L¹ function whose Fourier series diverges everywhere\n- **1926**: Kolmogorov asked: does Carleson's theorem hold for L²?\n- **1966**: **Carleson proved it**: L² Fourier series converge pointwise a.e.\n- **1968**: Hunt extended to Lp for all p > 1\n\nCarleson's proof introduced time-frequency analysis techniques that became foundational in modern harmonic analysis. The formal verification project (Carleson4) is ongoing work by Floris van Doorn et al.",
+    "historicalContext": "**Carleson's Theorem (1966)**\n\nOne of the great achievements of 20th-century harmonic analysis. The question of whether Fourier series converge pointwise goes back to Fourier himself (1807) and was a central problem for over 150 years.\n\n**Timeline:**\n- **1807**: Fourier conjectured that every periodic function equals its Fourier series\n- **1829**: Dirichlet proved convergence for piecewise smooth functions\n- **1876**: du Bois-Reymond gave a continuous function whose Fourier series diverges at a point\n- **1923**: Kolmogorov constructed an L\u00b9 function whose Fourier series diverges everywhere\n- **1926**: Kolmogorov asked: does Carleson's theorem hold for L\u00b2?\n- **1966**: **Carleson proved it**: L\u00b2 Fourier series converge pointwise a.e.\n- **1968**: Hunt extended to Lp for all p > 1\n\nCarleson's proof introduced time-frequency analysis techniques that became foundational in modern harmonic analysis. The formal verification project (Carleson4) is ongoing work by Floris van Doorn et al.",
     "problemStatement": "**Carleson's Theorem**: For any $f \\in L^2(\\mathbb{T})$, the Fourier partial sums\n\n$$S_N f(x) = \\sum_{n=-N}^{N} \\hat{f}(n) e^{2\\pi i n x / T}$$\n\nconverge to $f(x)$ for almost every $x \\in \\mathbb{T}$.\n\nEquivalently, the set $\\{x : \\lim_{N \\to \\infty} S_N f(x) \\neq f(x)\\}$ has Haar measure zero.",
-    "text": "Carleson's theorem (1966) states that Fourier series of L² functions converge pointwise almost everywhere. This formalizes the maximal operator approach, reducing a.e. convergence to the Carleson-Hunt maximal inequality via density of trigonometric polynomials.",
-    "proofStrategy": "The proof has two layers:\n\n**Layer 1 — The Carleson-Hunt Maximal Inequality (Axiomatized)**\nThe Carleson maximal operator $S^*f(x) = \\sup_N |S_N f(x)|$ satisfies a weak-type (2,2) bound:\n$$\\mu(\\{S^*f > \\lambda\\}) \\leq \\frac{C^2}{\\lambda^2} \\|f\\|_{L^2}^2$$\nThis is the deep part (time-frequency analysis) and is axiomatized.\n\n**Layer 2 — Density Reduction (Proved)**\nGiven the maximal inequality, a.e. convergence follows by:\n1. Trigonometric polynomials $g$ satisfy $S_N g = g$ for large $N$ (exact convergence)\n2. Trig polys are dense in $L^2$: for any $\\varepsilon > 0$, find $g$ with $\\|f - g\\|_{L^2} < \\varepsilon$\n3. Decompose: $|S_N f - f| \\leq |S_N g - g| + |S_N(f-g)| + |f - g|$\n4. Maximal inequality + Chebyshev: $\\mu(\\{S^*(f-g) > \\delta\\}) \\leq C^2 \\varepsilon^2 / \\delta^2$\n5. Since $\\varepsilon$ is arbitrary, the divergence set has measure 0",
+    "text": "Carleson's theorem (1966) states that Fourier series of L\u00b2 functions converge pointwise almost everywhere. This formalizes the maximal operator approach, reducing a.e. convergence to the Carleson-Hunt maximal inequality via density of trigonometric polynomials.",
+    "proofStrategy": "The proof has two layers:\n\n**Layer 1 \u2014 The Carleson-Hunt Maximal Inequality (Axiomatized)**\nThe Carleson maximal operator $S^*f(x) = \\sup_N |S_N f(x)|$ satisfies a weak-type (2,2) bound:\n$$\\mu(\\{S^*f > \\lambda\\}) \\leq \\frac{C^2}{\\lambda^2} \\|f\\|_{L^2}^2$$\nThis is the deep part (time-frequency analysis) and is axiomatized.\n\n**Layer 2 \u2014 Density Reduction (Proved)**\nGiven the maximal inequality, a.e. convergence follows by:\n1. Trigonometric polynomials $g$ satisfy $S_N g = g$ for large $N$ (exact convergence)\n2. Trig polys are dense in $L^2$: for any $\\varepsilon > 0$, find $g$ with $\\|f - g\\|_{L^2} < \\varepsilon$\n3. Decompose: $|S_N f - f| \\leq |S_N g - g| + |S_N(f-g)| + |f - g|$\n4. Maximal inequality + Chebyshev: $\\mu(\\{S^*(f-g) > \\delta\\}) \\leq C^2 \\varepsilon^2 / \\delta^2$\n5. Since $\\varepsilon$ is arbitrary, the divergence set has measure 0",
     "keyInsights": [
       "**The maximal operator is the key**: Carleson's insight was that a.e. convergence reduces to an $L^2$ bound on $S^*f(x) = \\sup_N |S_N f(x)|$. This transforms a pointwise question into an operator-theoretic one.",
       "**Density + maximal inequality = a.e. convergence**: This is a recurring pattern in harmonic analysis (Cotlar's lemma, maximal function theory). Dense convergence + controlled maximal function implies full a.e. convergence.",
-      "**L² convergence does NOT imply pointwise**: The base Fourier file proves $\\|f - S_N f\\|_{L^2} \\to 0$, but this only gives a subsequence converging a.e. Carleson's theorem gives full sequence convergence.",
+      "**L\u00b2 convergence does NOT imply pointwise**: The base Fourier file proves $\\|f - S_N f\\|_{L^2} \\to 0$, but this only gives a subsequence converging a.e. Carleson's theorem gives full sequence convergence.",
       "**The Carleson constant matters for quantitative estimates**: While we only need existence of $C$, the actual value matters for applications in signal processing and numerical analysis.",
-      "**Carleson's theorem fails for L¹**: Kolmogorov (1923) constructed an $L^1$ function whose Fourier series diverges everywhere. The threshold is exactly $L^p$ with $p > 1$ (Hunt's extension)."
+      "**Carleson's theorem fails for L\u00b9**: Kolmogorov (1923) constructed an $L^1$ function whose Fourier series diverges everywhere. The threshold is exactly $L^p$ with $p > 1$ (Hunt's extension)."
     ],
     "prerequisites": [
       "Fourier series fundamentals (base file: FourierSeries.lean)",
-      "L² spaces and Hilbert basis theory",
+      "L\u00b2 spaces and Hilbert basis theory",
       "Measure theory (null sets, Chebyshev inequality)",
       "Basic operator theory (maximal operators)"
     ]
@@ -155,22 +175,22 @@
     {
       "targetId": "fourier-series",
       "relationship": "extends",
-      "description": "Extends the base Fourier series formalization from L² convergence to pointwise a.e. convergence via Carleson's theorem"
+      "description": "Extends the base Fourier series formalization from L\u00b2 convergence to pointwise a.e. convergence via Carleson's theorem"
     },
     {
       "targetId": "fourier-series-oq-02",
       "relationship": "related",
-      "description": "OQ-02 studies Hölder decay of Fourier coefficients. Better coefficient decay (from smoothness) gives stronger convergence, but Carleson works for all L² — no smoothness needed"
+      "description": "OQ-02 studies H\u00f6lder decay of Fourier coefficients. Better coefficient decay (from smoothness) gives stronger convergence, but Carleson works for all L\u00b2 \u2014 no smoothness needed"
     },
     {
       "targetId": "fourier-series-oq-03",
       "relationship": "related",
-      "description": "OQ-03 formalizes Dirichlet conditions (pointwise convergence for BV functions). Carleson's theorem is strictly stronger: it gives a.e. convergence for all L², while Dirichlet needs bounded variation"
+      "description": "OQ-03 formalizes Dirichlet conditions (pointwise convergence for BV functions). Carleson's theorem is strictly stronger: it gives a.e. convergence for all L\u00b2, while Dirichlet needs bounded variation"
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Carleson's theorem (1966) — the pointwise a.e. convergence of Fourier partial sums for L² functions. The deep Carleson-Hunt maximal inequality is axiomatized, while the reduction from maximal bounds to a.e. convergence is proved via the standard density argument.",
-    "implications": "Carleson's theorem bridges the gap between L² convergence (easy, from Hilbert space theory) and pointwise convergence (hard, requires time-frequency analysis). It shows that Fourier series are not just norm-approximations but actual pointwise representations for a.e. point. The failure for L¹ (Kolmogorov) shows the L² threshold is sharp.",
+    "summary": "Formalizes Carleson's theorem (1966) \u2014 the pointwise a.e. convergence of Fourier partial sums for L\u00b2 functions. The deep Carleson-Hunt maximal inequality is axiomatized, while the reduction from maximal bounds to a.e. convergence is proved via the standard density argument.",
+    "implications": "Carleson's theorem bridges the gap between L\u00b2 convergence (easy, from Hilbert space theory) and pointwise convergence (hard, requires time-frequency analysis). It shows that Fourier series are not just norm-approximations but actual pointwise representations for a.e. point. The failure for L\u00b9 (Kolmogorov) shows the L\u00b2 threshold is sharp.",
     "openQuestions": [
       "Can the Carleson-Hunt maximal inequality itself be proved in Lean? (The Carleson4 project is working on this.)",
       "Can the axiom trigPoly_dense_L2 be replaced with a proof from Mathlib's span_fourier_closure_eq_top?",
@@ -183,7 +203,7 @@
       "title": "On convergence and growth of partial sums of Fourier series",
       "year": "1966",
       "venue": "Acta Mathematica 116, pp. 135-157",
-      "note": "Original proof of a.e. convergence for L² Fourier series"
+      "note": "Original proof of a.e. convergence for L\u00b2 Fourier series"
     },
     {
       "authors": "Hunt, Richard A.",
@@ -204,14 +224,14 @@
     {
       "name": "carleson_ae_convergence",
       "type": "core",
-      "description": "Carleson's theorem: Fourier partial sums converge pointwise a.e. for L² functions",
-      "leanType": "f ∈ L² → ∀ᵐ x, Tendsto (fun N => S_N f x) atTop (𝓝 (f x))"
+      "description": "Carleson's theorem: Fourier partial sums converge pointwise a.e. for L\u00b2 functions",
+      "leanType": "f \u2208 L\u00b2 \u2192 \u2200\u1d50 x, Tendsto (fun N => S_N f x) atTop (\ud835\udcdd (f x))"
     },
     {
       "name": "carleson_hunt_weak_type",
       "type": "axiom",
       "description": "Carleson-Hunt weak-type (2,2) maximal inequality",
-      "leanType": "μ({S*f > λ}) ≤ (C/λ)² · ‖f‖²_{L²}"
+      "leanType": "\u03bc({S*f > \u03bb}) \u2264 (C/\u03bb)\u00b2 \u00b7 \u2016f\u2016\u00b2_{L\u00b2}"
     }
   ]
 }

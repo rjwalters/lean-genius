@@ -1,10 +1,10 @@
 {
   "id": "erdos-563",
-  "title": "Erdős Problem #563: Balanced 2-Colorings and Subset Edge Density",
+  "title": "Erd\u0151s Problem #563: Balanced 2-Colorings and Subset Edge Density",
   "slug": "erdos-563",
   "description": "F(n,alpha) = smallest m with a 2-coloring of K_n where every m-subset has > alpha fraction in each color. Conjecture: F(n,alpha) ~ c_alpha log n for alpha < 1/2. Known: Theta(log n) by probabilistic method.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/563",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos563Problem.lean",
@@ -26,13 +26,13 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in [Er90b, p. 21], asking for the precise asymptotic constant in $F(n, \\alpha) \\sim c_\\alpha \\log n$. Given a 2-coloring of $K_n$ (edges colored red or blue), define $F(n, \\alpha)$ as the smallest $m$ such that some coloring ensures every subset of $\\geq m$ vertices has $> \\alpha$ fraction of its edges in each color. The probabilistic method shows $F(n, \\alpha) = \\Theta(\\log n)$ for $0 < \\alpha < 1/2$: a random coloring concentrates the edge proportions near $1/2$ in large subsets, and Chernoff bounds give the $O(\\log n)$ upper bound. The lower bound follows from the impossibility of balancing all subsets below logarithmic size. The boundary cases are illuminating: $\\alpha = 0$ reduces to the diagonal Ramsey number problem (avoid monochromatic cliques), connecting $F(n, 0) \\sim (1/2) \\log_2 n$ to Erdős's 1947 probabilistic bound on $R(m, m)$. At $\\alpha = 1/2$, balance is impossible — by pigeonhole, one color has $\\leq$ half the edges. The problem generalizes to hypergraphs (Problem #161). The precise constant $c_\\alpha$ as a function of $\\alpha \\in [0, 1/2)$ remains undetermined for any $\\alpha > 0$, making this a problem about refining the probabilistic method from order-of-magnitude bounds to exact asymptotics.",
+    "historicalContext": "Erd\u0151s posed this problem in [Er90b, p. 21], asking for the precise asymptotic constant in $F(n, \\alpha) \\sim c_\\alpha \\log n$. Given a 2-coloring of $K_n$ (edges colored red or blue), define $F(n, \\alpha)$ as the smallest $m$ such that some coloring ensures every subset of $\\geq m$ vertices has $> \\alpha$ fraction of its edges in each color. The probabilistic method shows $F(n, \\alpha) = \\Theta(\\log n)$ for $0 < \\alpha < 1/2$: a random coloring concentrates the edge proportions near $1/2$ in large subsets, and Chernoff bounds give the $O(\\log n)$ upper bound. The lower bound follows from the impossibility of balancing all subsets below logarithmic size. The boundary cases are illuminating: $\\alpha = 0$ reduces to the diagonal Ramsey number problem (avoid monochromatic cliques), connecting $F(n, 0) \\sim (1/2) \\log_2 n$ to Erd\u0151s's 1947 probabilistic bound on $R(m, m)$. At $\\alpha = 1/2$, balance is impossible \u2014 by pigeonhole, one color has $\\leq$ half the edges. The problem generalizes to hypergraphs (Problem #161). The precise constant $c_\\alpha$ as a function of $\\alpha \\in [0, 1/2)$ remains undetermined for any $\\alpha > 0$, making this a problem about refining the probabilistic method from order-of-magnitude bounds to exact asymptotics.",
     "problemStatement": "For $0 \\leq \\alpha < 1/2$, does $F(n, \\alpha) \\sim c_\\alpha \\cdot \\log n$ for some constant $c_\\alpha > 0$? If so, determine $c_\\alpha$.",
     "text": "F(n,alpha) = smallest m with a 2-coloring of K_n where every m-subset has > alpha fraction in each color. Conjecture: F(n,alpha) ~ c_alpha log n for alpha < 1/2. Known: Theta(log n) by probabilistic method.",
-    "proofStrategy": "The formalization defines edge 2-colorings of $K_n$, red/blue edge counts via Finset filtering, the $(m, \\alpha)$-balanced property, and the threshold function $F(n, \\alpha)$ via Nat.find. The main conjecture, upper/lower bounds, special cases ($\\alpha = 0$ Ramsey, $\\alpha = 1/2$ impossible), the color partition identity, and monotonicity in both $\\alpha$ and $n$ are all stated as axioms. The file has 0 sorries — all statements are axiomatized.",
+    "proofStrategy": "The formalization defines edge 2-colorings of $K_n$, red/blue edge counts via Finset filtering, the $(m, \\alpha)$-balanced property, and the threshold function $F(n, \\alpha)$ via Nat.find. The main conjecture, upper/lower bounds, special cases ($\\alpha = 0$ Ramsey, $\\alpha = 1/2$ impossible), the color partition identity, and monotonicity in both $\\alpha$ and $n$ are all stated as axioms. The file has 0 sorries \u2014 all statements are axiomatized.",
     "keyInsights": [
       "The probabilistic method gives $F(n, \\alpha) = O(\\log n)$ via Chernoff bounds on random 2-colorings: large subsets concentrate near 50-50 edge distribution",
-      "The $\\alpha = 0$ case connects to diagonal Ramsey numbers $R(m, m)$: $F(n, 0) \\sim (1/2) \\log_2 n$ by Erdős's 1947 lower bound",
+      "The $\\alpha = 0$ case connects to diagonal Ramsey numbers $R(m, m)$: $F(n, 0) \\sim (1/2) \\log_2 n$ by Erd\u0151s's 1947 lower bound",
       "The $\\alpha = 1/2$ boundary is impossible by pigeonhole: the color partition identity forces one color to have $\\leq$ half the edges",
       "The precise constant $c_\\alpha$ is unknown for all $\\alpha > 0$, making this a problem about exactifying the probabilistic method",
       "$F(n, \\alpha)$ is monotone in both arguments: stricter balance ($\\alpha \\uparrow$) and more vertices ($n \\uparrow$) both increase the threshold"
@@ -66,7 +66,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem #563 on the precise asymptotics of $F(n, \\alpha)$, the balanced 2-coloring threshold. The order of growth $\\Theta(\\log n)$ is established by probabilistic arguments; the exact constant $c_\\alpha$ remains the central open question. All statements are axiomatized (0 sorries).",
+    "summary": "The formalization captures Erd\u0151s Problem #563 on the precise asymptotics of $F(n, \\alpha)$, the balanced 2-coloring threshold. The order of growth $\\Theta(\\log n)$ is established by probabilistic arguments; the exact constant $c_\\alpha$ remains the central open question. All statements are axiomatized (0 sorries).",
     "implications": "Determining $c_\\alpha$ would refine the probabilistic method for Ramsey-type problems, establishing exact thresholds rather than order-of-magnitude bounds. The connection to discrepancy theory (balanced edge distributions) and to the diagonal Ramsey problem ($\\alpha = 0$ case) places this problem at the interface of probabilistic combinatorics and extremal graph theory.",
     "openQuestions": [
       "Does $F(n, \\alpha) / \\log n$ converge as $n \\to \\infty$ for each $\\alpha \\in (0, 1/2)$?",
@@ -75,22 +75,36 @@
       "What is the relationship between $c_\\alpha$ and the diagonal Ramsey constant as $\\alpha \\to 0$?"
     ]
   },
-  "leanFile": "Proofs/Erdos563Problem.lean",
+  "leanFile": {
+    "path": "Proofs/Erdos563Problem.lean",
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 65,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "crossReferences": [
     {
       "targetId": "erdos-1013",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
+      "description": "Related Erd\u0151s problem sharing themes: Ramsey theory, graph theory"
     },
     {
       "targetId": "erdos-1177",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
+      "description": "Related Erd\u0151s problem sharing themes: Ramsey theory, graph theory"
     },
     {
       "targetId": "erdos-151",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
+      "description": "Related Erd\u0151s problem sharing themes: Ramsey theory, graph theory"
     }
   ]
 }

@@ -3,7 +3,26 @@
   "title": "Dirichlet Conditions for Fourier Pointwise Convergence",
   "slug": "fourier-series-oq-03",
   "description": "If a periodic function has bounded variation, its Fourier series converges pointwise to the average of the left and right limits at every point. Formalizes the Dirichlet convergence theorem on AddCircle using Mathlib's BV and Fourier infrastructure.",
-  "leanFile": "Proofs/FourierSeriesOQ03.lean",
+  "leanFile": {
+    "path": "Proofs/FourierSeriesOQ03.lean",
+    "imports": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.Fourier.FourierTransform",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.l2Space",
+      "Mathlib.Analysis.BoundedVariation",
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "scoped"
+    ],
+    "namespace": "FourierDirichlet",
+    "lineCount": 808,
+    "axiomCount": 3,
+    "sorries": 0
+  },
   "meta": {
     "author": "Peter Gustav Lejeune Dirichlet (1829)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_Fourier_series",
@@ -30,7 +49,7 @@
       },
       {
         "theorem": "fourier",
-        "description": "Fourier monomials e^{2πinx/T}",
+        "description": "Fourier monomials e^{2\u03c0inx/T}",
         "module": "Mathlib.Analysis.Fourier.AddCircle"
       },
       {
@@ -135,12 +154,12 @@
     {
       "targetId": "fourier-series-oq-02",
       "relationship": "related",
-      "description": "Sibling OQ analyzing Fourier coefficient decay rates under Hölder continuity. Both study regularity-decay relationships: OQ-02 focuses on coefficient decay, OQ-03 on pointwise convergence."
+      "description": "Sibling OQ analyzing Fourier coefficient decay rates under H\u00f6lder continuity. Both study regularity-decay relationships: OQ-02 focuses on coefficient decay, OQ-03 on pointwise convergence."
     },
     {
       "targetId": "taylor-sincos-convergence",
       "relationship": "related",
-      "description": "Both formalize convergence of function expansions: Taylor series converge uniformly on compact sets for analytic functions, while Fourier series converge pointwise for BV functions — different regularity assumptions yield different convergence modes."
+      "description": "Both formalize convergence of function expansions: Taylor series converge uniformly on compact sets for analytic functions, while Fourier series converge pointwise for BV functions \u2014 different regularity assumptions yield different convergence modes."
     }
   ],
   "conclusion": {
@@ -156,12 +175,12 @@
   "references": [
     {
       "key": "Di29",
-      "citation": "Dirichlet, P.G.L., Sur la convergence des séries trigonométriques qui servent à représenter une fonction arbitraire, Journal für die reine und angewandte Mathematik 4 (1829), 157–169.",
+      "citation": "Dirichlet, P.G.L., Sur la convergence des s\u00e9ries trigonom\u00e9triques qui servent \u00e0 repr\u00e9senter une fonction arbitraire, Journal f\u00fcr die reine und angewandte Mathematik 4 (1829), 157\u2013169.",
       "type": "paper"
     },
     {
       "key": "Zy59",
-      "citation": "Zygmund, A., Trigonometric Series, 2nd ed., Cambridge University Press (1959), Chapters II–III.",
+      "citation": "Zygmund, A., Trigonometric Series, 2nd ed., Cambridge University Press (1959), Chapters II\u2013III.",
       "type": "book"
     },
     {

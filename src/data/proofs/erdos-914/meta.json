@@ -1,11 +1,28 @@
 {
   "id": "erdos-914",
-  "title": "Erdős Problem #914: Hajnal-Szemerédi Theorem (Vertex-Disjoint Cliques)",
+  "title": "Erd\u0151s Problem #914: Hajnal-Szemer\u00e9di Theorem (Vertex-Disjoint Cliques)",
   "slug": "erdos-914",
-  "description": "Every graph on rm vertices with minimum degree ≥ m(r-1) contains m vertex-disjoint copies of K_r. SOLVED by Hajnal-Szemerédi (1970).",
-  "leanFile": "Proofs/Erdos914Problem.lean",
+  "description": "Every graph on rm vertices with minimum degree \u2265 m(r-1) contains m vertex-disjoint copies of K_r. SOLVED by Hajnal-Szemer\u00e9di (1970).",
+  "leanFile": {
+    "path": "Proofs/Erdos914Problem.lean",
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Degree",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos914",
+    "lineCount": 193,
+    "axiomCount": 2,
+    "sorries": 0
+  },
   "meta": {
-    "author": "Erdős (conjecture), Hajnal-Szemerédi (proof 1970)",
+    "author": "Erd\u0151s (conjecture), Hajnal-Szemer\u00e9di (proof 1970)",
     "sourceUrl": "https://erdosproblems.com/914",
     "date": "1970",
     "status": "axiomatized",
@@ -49,8 +66,8 @@
       "HasMDisjointRCliques definition (m vertex-disjoint K_r's)",
       "HasPerfectKrFactor definition",
       "Dirac's theorem axiom (r=2 case)",
-      "Corrádi-Hajnal theorem axiom (r=3 case)",
-      "Hajnal-Szemerédi main theorem axiomatization",
+      "Corr\u00e1di-Hajnal theorem axiom (r=3 case)",
+      "Hajnal-Szemer\u00e9di main theorem axiomatization",
       "Tightness of degree condition",
       "Kierstead-Kostochka proof approach",
       "Alon-Yuster and KSS generalizations"
@@ -71,15 +88,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "This problem asks when a graph must contain many vertex-disjoint cliques, and is one of the most important results in extremal graph theory about spanning substructures.\n\nThe story begins with **Dirac's theorem (1952)**: every graph on $n \\ge 3$ vertices with $\\delta(G) \\ge n/2$ has a Hamiltonian cycle, which implies the $r = 2$ case (perfect matchings). **Corrádi and Hajnal (1963)** proved the triangle case: every graph on $3m$ vertices with $\\delta(G) \\ge 2m$ contains $m$ vertex-disjoint triangles, in their paper \"On the maximal number of independent circuits in a graph\" (Acta Mathematica Hungarica).\n\nErdős conjectured the general statement for all $r \\ge 2$: every graph on $rm$ vertices with $\\delta(G) \\ge m(r-1)$ contains $m$ vertex-disjoint copies of $K_r$. **Hajnal and Szemerédi (1970)** proved this conjecture in their landmark paper \"Proof of a conjecture of P. Erdős\" (Combinatorial Theory and its Applications), though the original proof was notoriously long and complex.\n\n**Kierstead and Kostochka (2008)** gave a significantly shorter proof via **equitable colorings**: a proper $r$-coloring of the complement $\\overline{G}$ with color classes of equal size $m$ yields the desired $K_r$-factor. **Kierstead, Kostochka, Molla, and Yeager (2010)** found a polynomial-time $O(n^5)$ algorithm. The theorem has been generalized by **Alon and Yuster (1996)** and by **Komlós, Sárközy, and Szemerédi (2001)** to arbitrary $H$-factors.",
+    "historicalContext": "This problem asks when a graph must contain many vertex-disjoint cliques, and is one of the most important results in extremal graph theory about spanning substructures.\n\nThe story begins with **Dirac's theorem (1952)**: every graph on $n \\ge 3$ vertices with $\\delta(G) \\ge n/2$ has a Hamiltonian cycle, which implies the $r = 2$ case (perfect matchings). **Corr\u00e1di and Hajnal (1963)** proved the triangle case: every graph on $3m$ vertices with $\\delta(G) \\ge 2m$ contains $m$ vertex-disjoint triangles, in their paper \"On the maximal number of independent circuits in a graph\" (Acta Mathematica Hungarica).\n\nErd\u0151s conjectured the general statement for all $r \\ge 2$: every graph on $rm$ vertices with $\\delta(G) \\ge m(r-1)$ contains $m$ vertex-disjoint copies of $K_r$. **Hajnal and Szemer\u00e9di (1970)** proved this conjecture in their landmark paper \"Proof of a conjecture of P. Erd\u0151s\" (Combinatorial Theory and its Applications), though the original proof was notoriously long and complex.\n\n**Kierstead and Kostochka (2008)** gave a significantly shorter proof via **equitable colorings**: a proper $r$-coloring of the complement $\\overline{G}$ with color classes of equal size $m$ yields the desired $K_r$-factor. **Kierstead, Kostochka, Molla, and Yeager (2010)** found a polynomial-time $O(n^5)$ algorithm. The theorem has been generalized by **Alon and Yuster (1996)** and by **Koml\u00f3s, S\u00e1rk\u00f6zy, and Szemer\u00e9di (2001)** to arbitrary $H$-factors.",
     "problemStatement": "Let $r \\ge 2$ and $m \\ge 1$. Every graph on $rm$ vertices with minimum degree $\\delta(G) \\ge m(r-1)$ contains $m$ vertex-disjoint copies of $K_r$. Equivalently, if $r | n$ and $\\delta(G) \\ge (1 - 1/r)n$, then $G$ has a perfect $K_r$-factor.",
     "text": "The Hajnal-Szemeredi theorem (1970) establishes the exact minimum degree threshold for forcing vertex-disjoint clique factors in graphs. For $r \\ge 2$ and $m \\ge 1$, any graph on $n = rm$ vertices with $\\delta(G) \\ge (1 - 1/r)n$ must contain $m$ vertex-disjoint copies of $K_r$, partitioning the entire vertex set into $r$-cliques. This threshold $(1 - 1/r)n$ is precisely the Turan density, revealing that the same parameter governing subgraph existence (Turan's theorem) also governs the much stronger property of spanning clique factors. The formalization axiomatizes the theorem alongside its special cases (Dirac's matching theorem for $r = 2$, the Corradi-Hajnal triangle factor theorem for $r = 3$) and proves the degree bound is best possible via an extremal construction.",
     "proofStrategy": "The formalization is organized into six parts that build from basic graph definitions to the full characterization theorem.\n\n**Part I (Graph Basics, lines 43-61):** Introduces `completeGraphOnFin r` as the abbreviation for $K_r$ on `Fin r`, and defines `minDegree G` as the minimum over all vertex degrees using `Finset.min'` with a nonemptiness proof from `Finset.univ_nonempty`. This custom definition is needed because Mathlib does not provide a built-in minimum degree function.\n\n**Part II (Cliques and Clique Covers, lines 62-97):** Establishes the combinatorial vocabulary: `IsRClique G S r` requires $|S| = r$ and $G.\\texttt{IsClique}\\, S$; `AreVertexDisjoint` enforces pairwise disjointness; `HasMDisjointRCliques G m r` asserts existence of $m$ disjoint $r$-cliques; and `HasPerfectKrFactor G r` adds the covering condition $\\texttt{biUnion} = \\texttt{univ}$. The distinction between the last two is mathematically significant: $m$ disjoint $K_r$'s use $rm$ vertices total, but proving they cover ALL vertices requires cardinality reasoning.\n\n**Part III (Special Cases, lines 98-118):** Axiomatizes the two classical predecessors: `case_r_equals_2` (Dirac's matching theorem, $r = 2$) and `corradi_hajnal` (Corradi-Hajnal 1963, $r = 3$). These are stated separately because their proofs use fundamentally different techniques from the general case.\n\n**Part IV (Main Theorem, lines 119-147):** The core axioms: `hajnal_szemeredi` states the disjoint cliques result, and `hajnal_szemeredi_factor` states the stronger perfect factor form. Both require $r \\ge 2$, $m \\ge 1$, $|V| = rm$, and $\\delta(G) \\ge m(r-1)$.\n\n**Part V (Tightness, lines 148-163):** `degree_condition_tight` provides the optimality statement: for every $r, m$, there exists a graph with minimum degree $m(r-1) - 1$ having no $m$ disjoint $K_r$'s.\n\n**Part VI (Summary, lines 164-210):** The proved theorem `erdos_914_summary` combines the existential and tightness results into a single conjunction, fully characterizing the minimum degree threshold.",
     "keyInsights": [
-      "**Minimum degree threshold**: $\\delta(G) \\ge m(r-1) = (1-1/r)n$ is the exact threshold for $K_r$-factors — the Turán density $(1-1/r)$ governs spanning structures, not just subgraph existence",
-      "**Tightness via Turán-like construction**: Taking $m$ disjoint copies of $K_{r-1}$ plus isolated vertices gives $\\delta = r-2$ per component, one below the threshold, with no $K_r$ at all",
-      "**From subgraphs to spanning structures**: Unlike Turán's theorem (which forces a single $K_r$), Hajnal–Szemerédi forces a $K_r$-factor covering ALL vertices — a much stronger conclusion from the same minimum degree",
-      "**Equitable coloring duality**: Kierstead–Kostochka's modern proof works by equitably $r$-coloring the complement $\\overline{G}$; equal-size color classes in $\\overline{G}$ correspond to $K_r$'s in $G$",
+      "**Minimum degree threshold**: $\\delta(G) \\ge m(r-1) = (1-1/r)n$ is the exact threshold for $K_r$-factors \u2014 the Tur\u00e1n density $(1-1/r)$ governs spanning structures, not just subgraph existence",
+      "**Tightness via Tur\u00e1n-like construction**: Taking $m$ disjoint copies of $K_{r-1}$ plus isolated vertices gives $\\delta = r-2$ per component, one below the threshold, with no $K_r$ at all",
+      "**From subgraphs to spanning structures**: Unlike Tur\u00e1n's theorem (which forces a single $K_r$), Hajnal\u2013Szemer\u00e9di forces a $K_r$-factor covering ALL vertices \u2014 a much stronger conclusion from the same minimum degree",
+      "**Equitable coloring duality**: Kierstead\u2013Kostochka's modern proof works by equitably $r$-coloring the complement $\\overline{G}$; equal-size color classes in $\\overline{G}$ correspond to $K_r$'s in $G$",
       "**Perfect factor vs disjoint cliques**: `HasMDisjointRCliques` gives $m$ disjoint $K_r$'s using $rm$ vertices total, while `HasPerfectKrFactor` requires `biUnion = univ`, a covering condition that needs additional cardinality reasoning"
     ],
     "prerequisites": [
@@ -136,7 +153,7 @@
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "Axiomatizes $r = 2$ (Dirac's theorem: $2m$ vertices, $\\delta \\ge m$ implies $m$ disjoint edges) and $r = 3$ (Corrádi-Hajnal 1963: $3m$ vertices, $\\delta \\ge 2m$ implies $m$ disjoint triangles).",
+      "summary": "Axiomatizes $r = 2$ (Dirac's theorem: $2m$ vertices, $\\delta \\ge m$ implies $m$ disjoint edges) and $r = 3$ (Corr\u00e1di-Hajnal 1963: $3m$ vertices, $\\delta \\ge 2m$ implies $m$ disjoint triangles).",
       "mathContext": "The $r = 2$ case reduces to perfect matching existence: $\\delta(G) \\ge n/2$ implies a Hamiltonian cycle by Dirac's theorem (1952), and alternating edges of a Hamiltonian cycle on $2m$ vertices yield $m$ disjoint edges. The $r = 3$ case was proved by Corradi and Hajnal (1963) using a swap argument: start with a maximal collection of disjoint triangles and show that if fewer than $m$ triangles exist, uncovered vertices can be swapped in to enlarge the collection. The gap between $r = 3$ (1963) and general $r$ (1970) reflects the significant difficulty of extending the swap argument to larger cliques, where the combinatorial case analysis grows substantially.",
       "startLine": 98,
       "endLine": 118
@@ -167,13 +184,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The Hajnal–Szemerédi Theorem (1970) completely resolves Erdős Problem #914: every graph on $rm$ vertices with $\\delta(G) \\ge m(r-1)$ contains $m$ vertex-disjoint copies of $K_r$, and the minimum degree condition is tight. The formalization axiomatizes the theorem, its special cases ($r = 2, 3$), and the optimality of the degree bound.",
+    "summary": "The Hajnal\u2013Szemer\u00e9di Theorem (1970) completely resolves Erd\u0151s Problem #914: every graph on $rm$ vertices with $\\delta(G) \\ge m(r-1)$ contains $m$ vertex-disjoint copies of $K_r$, and the minimum degree condition is tight. The formalization axiomatizes the theorem, its special cases ($r = 2, 3$), and the optimality of the degree bound.",
     "implications": "**Extremal Graph Theory**: The Hajnal-Szemeredi theorem is a cornerstone of the minimum degree approach to graph decomposition. It demonstrates that the Turan density $(1 - 1/r)$ is not merely the threshold for forcing a single copy of $K_r$ (Turan's theorem, 1941), but the exact threshold for forcing a spanning $K_r$-factor covering every vertex. This reveals a remarkable rigidity: the same density parameter controls both local (one copy) and global (perfect tiling) properties.\n\n**Equitable Coloring Connection**: The Kierstead-Kostochka (2008) short proof established a deep duality between graph factorization and graph coloring. A $K_r$-factor in $G$ corresponds to an equitable $r$-coloring of the complement $\\overline{G}$, where color classes have equal size. This connection has become a standard technique in extremal combinatorics and has been extended to list coloring and online coloring settings.\n\n**Generalizations to Arbitrary Factors**: Alon and Yuster (1996) proved an approximate version for general $H$-factors: $\\delta(G) \\ge (1 - 1/\\chi(H))n + o(n)$ suffices. Komlos, Sarkozy, and Szemeredi (2001) obtained the exact result for large $n$ using the regularity-blow-up method, establishing the minimum degree threshold for arbitrary $H$-factors as $(1 - 1/\\chi_{cr}(H))n + O(1)$, where $\\chi_{cr}(H)$ is the critical chromatic number.\n\n**Algorithmic Impact**: Kierstead, Kostochka, Molla, and Yeager (2010) gave a polynomial-time $O(n^5)$ algorithm for finding $K_r$-factors when the minimum degree condition is satisfied. This resolved the computational aspect, showing that the existential guarantee is algorithmically constructive.\n\n**Formalization Significance**: The axiomatization captures the full mathematical content of the theorem (existence, perfect factor form, special cases, and tightness) while clearly delineating what is assumed versus proved. The summary theorem `erdos_914_summary` is the unique non-axiom result, demonstrating that the characterization follows formally from the axiomatized components.",
     "openQuestions": [
       "What is the exact minimum degree threshold for perfect $H$-factors for arbitrary graphs $H$? The KSS theorem gives asymptotic answers but exact thresholds are known only for special cases.",
       "Can the $O(n^5)$ algorithm for finding $K_r$-factors be improved, perhaps to near-linear time?",
       "What are the minimum degree thresholds for vertex-disjoint copies of $K_r$ in directed graphs or hypergraphs?",
-      "Can the Hajnal–Szemerédi theorem be proved constructively in Lean, or does the greedy/equitable-coloring argument require classical reasoning?"
+      "Can the Hajnal\u2013Szemer\u00e9di theorem be proved constructively in Lean, or does the greedy/equitable-coloring argument require classical reasoning?"
     ]
   },
   "references": [

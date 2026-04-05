@@ -1,8 +1,8 @@
 {
   "id": "erdos-369",
-  "title": "Erdős Problem #369: Consecutive Smooth Numbers",
+  "title": "Erd\u0151s Problem #369: Consecutive Smooth Numbers",
   "slug": "erdos-369",
-  "description": "For ε > 0 and k ≥ 2, does {1,…,n} contain k consecutive n^ε-smooth integers for all large n? Open even for k=2. Balog-Wooley: infinitely many exist. OPEN.",
+  "description": "For \u03b5 > 0 and k \u2265 2, does {1,\u2026,n} contain k consecutive n^\u03b5-smooth integers for all large n? Open even for k=2. Balog-Wooley: infinitely many exist. OPEN.",
   "meta": {
     "erdosNumber": 369,
     "status": "verified",
@@ -27,16 +27,16 @@
     "relatedProblems": [
       {
         "id": "erdos-370",
-        "relation": "Erdős #370 asks about smooth numbers in short intervals, a closely related distributional question"
+        "relation": "Erd\u0151s #370 asks about smooth numbers in short intervals, a closely related distributional question"
       },
       {
         "id": "erdos-143",
-        "relation": "Erdős #143 studies dilation-avoiding sets, another problem where prime factorization structure controls set density"
+        "relation": "Erd\u0151s #143 studies dilation-avoiding sets, another problem where prime factorization structure controls set density"
       }
     ],
     "axiomCount": 0,
     "assumptions": "None. balog_wooley_infinitely_many removed (unused). No sorries.",
-    "author": "Erdős-Graham (1980), Balog-Wooley (1998)",
+    "author": "Erd\u0151s-Graham (1980), Balog-Wooley (1998)",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -45,7 +45,7 @@
       },
       {
         "theorem": "Nat.dvd",
-        "description": "Divisibility relation used in the IsSmooth predicate (p ∣ m)",
+        "description": "Divisibility relation used in the IsSmooth predicate (p \u2223 m)",
         "module": "Mathlib.Data.Nat.Basic"
       },
       {
@@ -73,37 +73,37 @@
     {
       "targetId": "erdos-370",
       "relationship": "related",
-      "description": "Erdős #370 asks about smooth numbers in short intervals — a closely related distributional question about how smooth numbers cluster"
+      "description": "Erd\u0151s #370 asks about smooth numbers in short intervals \u2014 a closely related distributional question about how smooth numbers cluster"
     },
     {
       "targetId": "erdos-143",
       "relationship": "related",
-      "description": "Erdős #143 studies dilation-avoiding sets, another problem where prime factorization structure controls combinatorial density"
+      "description": "Erd\u0151s #143 studies dilation-avoiding sets, another problem where prime factorization structure controls combinatorial density"
     },
     {
       "targetId": "prime-number-theorem",
       "relationship": "foundational",
-      "description": "PNT gives the density of primes as π(x) ~ x/log x. The smooth number counting function Ψ(x,y) is the multiplicative analog — both concern the distribution of numbers with restricted prime factorization. The Dickman function ρ(u) governing smooth number density is derived from PNT-like analytic methods"
+      "description": "PNT gives the density of primes as \u03c0(x) ~ x/log x. The smooth number counting function \u03a8(x,y) is the multiplicative analog \u2014 both concern the distribution of numbers with restricted prime factorization. The Dickman function \u03c1(u) governing smooth number density is derived from PNT-like analytic methods"
     },
     {
       "targetId": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime in (n, 2n). Erdős #369 asks a complementary question: are there consecutive composite-like (smooth) numbers near n? Both concern the local distribution of numbers with extreme factorization properties"
+      "description": "Bertrand's postulate guarantees a prime in (n, 2n). Erd\u0151s #369 asks a complementary question: are there consecutive composite-like (smooth) numbers near n? Both concern the local distribution of numbers with extreme factorization properties"
     },
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization is the foundation of smooth number theory: P⁺(n) (the largest prime factor) is well-defined by FTA, and smoothness is defined in terms of the factorization structure that FTA guarantees"
+      "description": "Unique prime factorization is the foundation of smooth number theory: P\u207a(n) (the largest prime factor) is well-defined by FTA, and smoothness is defined in terms of the factorization structure that FTA guarantees"
     },
     {
       "targetId": "erdos-368",
       "relationship": "related",
-      "description": "Erdős #368 studies the largest prime factor of $n(n+1)$, directly related to the smoothness of consecutive integers. If $P^+(n(n+1)) \\leq n^\\varepsilon$, then both $n$ and $n+1$ are $n^\\varepsilon$-smooth — exactly the $k=2$ case of #369"
+      "description": "Erd\u0151s #368 studies the largest prime factor of $n(n+1)$, directly related to the smoothness of consecutive integers. If $P^+(n(n+1)) \\leq n^\\varepsilon$, then both $n$ and $n+1$ are $n^\\varepsilon$-smooth \u2014 exactly the $k=2$ case of #369"
     },
     {
       "targetId": "erdos-371",
       "relationship": "related",
-      "description": "Erdős #371 studies the density of integers where $P^+(n) < P^+(n+1)$ (the largest prime factor increases). Both #369 and #371 probe the multiplicative structure of consecutive integers: #369 asks for simultaneous smoothness, #371 asks for relative prime factor ordering"
+      "description": "Erd\u0151s #371 studies the density of integers where $P^+(n) < P^+(n+1)$ (the largest prime factor increases). Both #369 and #371 probe the multiplicative structure of consecutive integers: #369 asks for simultaneous smoothness, #371 asks for relative prime factor ordering"
     },
     {
       "targetId": "infinitude-primes",
@@ -118,7 +118,7 @@
     {
       "targetId": "stirling-formula",
       "relationship": "foundational",
-      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ is essential to the Dickman function analysis: the differential-delay equation $u\\rho'(u) = -\\rho(u-1)$ governing smooth number density requires precise factorial/gamma function asymptotics for its saddle-point analysis. The asymptotic $\\rho(u) \\sim u^{-u(1+o(1))}$ — which determines the density of $n^\\varepsilon$-smooth numbers — is derived via Laplace-type estimates that depend on Stirling's formula"
+      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ is essential to the Dickman function analysis: the differential-delay equation $u\\rho'(u) = -\\rho(u-1)$ governing smooth number density requires precise factorial/gamma function asymptotics for its saddle-point analysis. The asymptotic $\\rho(u) \\sim u^{-u(1+o(1))}$ \u2014 which determines the density of $n^\\varepsilon$-smooth numbers \u2014 is derived via Laplace-type estimates that depend on Stirling's formula"
     }
   ],
   "sections": [
@@ -127,7 +127,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 35,
-      "summary": "Docstring (lines 1–28) defining Erdős Problem #369: for $\\varepsilon > 0$ and $k \\geq 2$, does $\\{1,\\ldots,n\\}$ contain $k$ consecutive $n^\\varepsilon$-smooth integers for all large $n$? References Erdős-Graham (1980), Balog-Wooley (1998). Imports Mathlib for primes, divisibility, and finite sets (lines 30–33). Opens the `Erdos369` namespace at line 35.",
+      "summary": "Docstring (lines 1\u201328) defining Erd\u0151s Problem #369: for $\\varepsilon > 0$ and $k \\geq 2$, does $\\{1,\\ldots,n\\}$ contain $k$ consecutive $n^\\varepsilon$-smooth integers for all large $n$? References Erd\u0151s-Graham (1980), Balog-Wooley (1998). Imports Mathlib for primes, divisibility, and finite sets (lines 30\u201333). Opens the `Erdos369` namespace at line 35.",
       "mathContext": "$m$ is $B$-smooth if $P^+(m) \\leq B$. Question: $\\forall \\varepsilon > 0, k \\geq 2, \\exists N_0: n \\geq N_0 \\implies$ $k$ consecutive $n^\\varepsilon$-smooth integers in $[1,n]$. Two variants: (1) each $m$ is $m^\\varepsilon$-smooth; (2) each $m \\in [n/2,n]$."
     },
     {
@@ -135,23 +135,23 @@
       "title": "Part I: Smooth Numbers",
       "startLine": 36,
       "endLine": 48,
-      "summary": "Defines **IsSmooth m B** (line 42–43: $m \\geq 1$ and all prime factors $\\leq B$) and axiomatizes **largestPrimeFactor** (line 48: `noncomputable axiom`). The Dickman-de Bruijn function governs the density of $B$-smooth numbers: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$.",
-      "mathContext": "$\\text{IsSmooth}(m, B) \\iff m \\geq 1 \\wedge \\forall p \\mid m,\\, p\\text{ prime} \\implies p \\leq B$. Density: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$ where $\\rho$ satisfies $u\\rho'(u) = -\\rho(u-1)$, $\\rho(u) = 1$ for $u \\in [0,1]$. Note: `largestPrimeFactor` is a definitional axiom — `IsSmooth` does not depend on it."
+      "summary": "Defines **IsSmooth m B** (line 42\u201343: $m \\geq 1$ and all prime factors $\\leq B$) and axiomatizes **largestPrimeFactor** (line 48: `noncomputable axiom`). The Dickman-de Bruijn function governs the density of $B$-smooth numbers: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$.",
+      "mathContext": "$\\text{IsSmooth}(m, B) \\iff m \\geq 1 \\wedge \\forall p \\mid m,\\, p\\text{ prime} \\implies p \\leq B$. Density: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$ where $\\rho$ satisfies $u\\rho'(u) = -\\rho(u-1)$, $\\rho(u) = 1$ for $u \\in [0,1]$. Note: `largestPrimeFactor` is a definitional axiom \u2014 `IsSmooth` does not depend on it."
     },
     {
       "id": "consecutive-runs",
       "title": "Part II: Consecutive Smooth Runs",
       "startLine": 49,
       "endLine": 67,
-      "summary": "Defines **ConsecutiveSmoothRun m k B** (line 55–56: $k \\geq 2$ consecutive $B$-smooth integers from $m$) and **HasConsecutiveSmoothRun** (line 66–67: existence within $\\{1,\\ldots,n\\}$). Coprimality of consecutive integers makes joint smoothness a multiplicatively independent condition.",
+      "summary": "Defines **ConsecutiveSmoothRun m k B** (line 55\u201356: $k \\geq 2$ consecutive $B$-smooth integers from $m$) and **HasConsecutiveSmoothRun** (line 66\u201367: existence within $\\{1,\\ldots,n\\}$). Coprimality of consecutive integers makes joint smoothness a multiplicatively independent condition.",
       "mathContext": "$\\text{ConsecutiveSmoothRun}(m, k, B) \\iff k \\geq 2 \\wedge \\forall i < k: \\text{IsSmooth}(m+i, B)$. $\\text{HasConsecutiveSmoothRun}(n,k,B) \\iff \\exists m \\geq 1: m+k-1 \\leq n \\wedge \\text{ConsecutiveSmoothRun}(m,k,B)$. Key difficulty: $\\gcd(m, m+1) = 1$ makes their smoothness multiplicatively independent."
     },
     {
       "id": "conjecture",
-      "title": "Part III: The Erdős-Graham Conjecture",
+      "title": "Part III: The Erd\u0151s-Graham Conjecture",
       "startLine": 68,
       "endLine": 87,
-      "summary": "**ErdosConjecture369** (lines 79–87): parametrized by `smoothBound : ℕ → ℕ` (divergent, $\\leq n$), asserts $\\forall k \\geq 2, \\exists N_0, \\forall n \\geq N_0$, a $k$-run of smooth integers exists. Elegantly avoids real exponentiation. Important subtlety: as stated for $\\{1,\\ldots,n\\}$, the small integers $\\{1,\\ldots,k\\}$ would trivially form a smooth run — the non-trivial interpretation requires each $m$ to lie in $[n/2,n]$ or be $m^\\varepsilon$-smooth.",
+      "summary": "**ErdosConjecture369** (lines 79\u201387): parametrized by `smoothBound : \u2115 \u2192 \u2115` (divergent, $\\leq n$), asserts $\\forall k \\geq 2, \\exists N_0, \\forall n \\geq N_0$, a $k$-run of smooth integers exists. Elegantly avoids real exponentiation. Important subtlety: as stated for $\\{1,\\ldots,n\\}$, the small integers $\\{1,\\ldots,k\\}$ would trivially form a smooth run \u2014 the non-trivial interpretation requires each $m$ to lie in $[n/2,n]$ or be $m^\\varepsilon$-smooth.",
       "mathContext": "Parametrized: given $B : \\mathbb{N} \\to \\mathbb{N}$ with $B(n) \\to \\infty$ and $B(n) \\leq n$: $\\forall k \\geq 2, \\exists N_0, \\forall n \\geq N_0: \\text{HasConsecutiveSmoothRun}(n,k,B(n))$. The two conditions on `smoothBound` ensure it captures $n^\\varepsilon$ for any fixed $\\varepsilon > 0$ without using real arithmetic."
     },
     {
@@ -159,7 +159,7 @@
       "title": "Part IV: The k = 2 Case",
       "startLine": 88,
       "endLine": 105,
-      "summary": "**ErdosConjecture369_k2** (lines 99–105): the simplest open instance, fixing $k = 2$ in the general conjecture. Even two consecutive smooth numbers for all large $n$ is unresolved. Erdős-Graham: 'the answer should be affirmative but the problem seems very hard.' The k=2 case is equivalent to: for all large $n$, $\\{1,\\ldots,n\\}$ contains a pair $(m, m+1)$ both $B(n)$-smooth.",
+      "summary": "**ErdosConjecture369_k2** (lines 99\u2013105): the simplest open instance, fixing $k = 2$ in the general conjecture. Even two consecutive smooth numbers for all large $n$ is unresolved. Erd\u0151s-Graham: 'the answer should be affirmative but the problem seems very hard.' The k=2 case is equivalent to: for all large $n$, $\\{1,\\ldots,n\\}$ contains a pair $(m, m+1)$ both $B(n)$-smooth.",
       "mathContext": "$k = 2$: $\\exists N_0, \\forall n \\geq N_0, \\exists m \\leq n: \\text{IsSmooth}(m, B(n)) \\wedge \\text{IsSmooth}(m+1, B(n))$. Note: `ErdosConjecture369_k2` is strictly weaker than `ErdosConjecture369` (the latter implies the former by taking $k=2$), so any proof of `ErdosConjecture369` automatically proves this."
     },
     {
@@ -167,7 +167,7 @@
       "title": "Part V: Balog-Wooley Partial Result (1998)",
       "startLine": 106,
       "endLine": 120,
-      "summary": "Axiomatizes **balog_wooley_infinitely_many** (lines 116–120): for any divergent smoothness bound, infinitely many $n$ have both $n$ and $n+1$ smooth. Uses sieve methods and exponential sums. Falls short of 'all sufficiently large $n$.' This is the `axiom` that encodes a deep mathematical theorem as a Lean assumption.",
+      "summary": "Axiomatizes **balog_wooley_infinitely_many** (lines 116\u2013120): for any divergent smoothness bound, infinitely many $n$ have both $n$ and $n+1$ smooth. Uses sieve methods and exponential sums. Falls short of 'all sufficiently large $n$.' This is the `axiom` that encodes a deep mathematical theorem as a Lean assumption.",
       "mathContext": "Balog-Wooley (1998): $\\forall B: \\mathbb{N}\\to\\mathbb{N}$ diverging, $\\forall N_0, \\exists n \\geq N_0: \\text{IsSmooth}(n, B(n)) \\wedge \\text{IsSmooth}(n+1, B(n+1))$. This is the $\\exists^\\infty$ statement, not the $\\forall^\\infty$ conjecture. The proof uses Type I/II exponential sum estimates and the Selberg sieve on arithmetic progressions."
     },
     {
@@ -175,22 +175,22 @@
       "title": "Part VI: Summary",
       "startLine": 121,
       "endLine": 131,
-      "summary": "Closing comment (lines 124–129) summarizing the formalization structure: definitions of smooth numbers and consecutive runs, the parametrized conjecture statement, and the Balog-Wooley axiom as the strongest known partial result. Status: OPEN even for $k = 2$.",
-      "mathContext": "Current state: $\\exists^\\infty n: \\text{IsSmooth}(n, B(n)) \\wedge \\text{IsSmooth}(n+1, B(n+1))$ (proved, Balog-Wooley) vs. $\\forall^\\infty n: \\text{HasConsecutiveSmoothRun}(n,k,B(n))$ (open for all $k \\geq 2$). Difficulty hierarchy: infinitely many < positive density < all large $n$ — each step requires fundamentally new tools."
+      "summary": "Closing comment (lines 124\u2013129) summarizing the formalization structure: definitions of smooth numbers and consecutive runs, the parametrized conjecture statement, and the Balog-Wooley axiom as the strongest known partial result. Status: OPEN even for $k = 2$.",
+      "mathContext": "Current state: $\\exists^\\infty n: \\text{IsSmooth}(n, B(n)) \\wedge \\text{IsSmooth}(n+1, B(n+1))$ (proved, Balog-Wooley) vs. $\\forall^\\infty n: \\text{HasConsecutiveSmoothRun}(n,k,B(n))$ (open for all $k \\geq 2$). Difficulty hierarchy: infinitely many < positive density < all large $n$ \u2014 each step requires fundamentally new tools."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in 1980 (p.69 of *Old and New Problems and Results in Combinatorial Number Theory*), calling it 'very hard' even for $k = 2$. The problem sits at the intersection of smooth number theory and the study of consecutive integers.\n\n**Smooth number theory foundations:** The *Dickman-de Bruijn function* $\\rho(u)$, introduced by Dickman (1930) and refined by de Bruijn (1951), governs the density of smooth numbers: among integers near $x$, the fraction that are $x^{1/u}$-smooth is asymptotically $\\rho(u)$. The function satisfies $u\\rho'(u) = -\\rho(u-1)$ for $u > 1$ with $\\rho(u) = 1$ for $0 \\leq u \\leq 1$, and decays as $\\rho(u) \\sim u^{-u(1+o(1))}$. Hildebrand and Tenenbaum (1986) obtained precise uniform estimates for $\\Psi(x,y) = |\\{n \\leq x : P^+(n) \\leq y\\}|$, the smooth number counting function.\n\n**The consecutive smoothness challenge:** While individual smooth numbers are well understood via $\\Psi(x,y)$, *consecutive* smoothness introduces multiplicative independence constraints — $n$ and $n+1$ are coprime, so their smoothness events are nearly independent heuristically but not provably so. The major partial result is due to **Balog and Wooley (1998)**, who proved that infinitely many $n$ have both $n$ and $n+1$ simultaneously $n^\\varepsilon$-smooth, using sieve methods and exponential sum techniques. Their approach combines Type I/II estimates with bilinear form bounds.\n\nHowever, the gap between 'infinitely many' ($\\exists^\\infty$) and 'all sufficiently large' ($\\forall^\\infty$) remains wide open. Closing this gap may require breakthroughs in multiplicative number theory — possibly leveraging effective forms of the abc conjecture (which constrains the simultaneous smoothness of $a, b, a+b$) or new developments in the theory of multiplicative functions on short intervals.",
+    "historicalContext": "Erd\u0151s and Graham posed this problem in 1980 (p.69 of *Old and New Problems and Results in Combinatorial Number Theory*), calling it 'very hard' even for $k = 2$. The problem sits at the intersection of smooth number theory and the study of consecutive integers.\n\n**Smooth number theory foundations:** The *Dickman-de Bruijn function* $\\rho(u)$, introduced by Dickman (1930) and refined by de Bruijn (1951), governs the density of smooth numbers: among integers near $x$, the fraction that are $x^{1/u}$-smooth is asymptotically $\\rho(u)$. The function satisfies $u\\rho'(u) = -\\rho(u-1)$ for $u > 1$ with $\\rho(u) = 1$ for $0 \\leq u \\leq 1$, and decays as $\\rho(u) \\sim u^{-u(1+o(1))}$. Hildebrand and Tenenbaum (1986) obtained precise uniform estimates for $\\Psi(x,y) = |\\{n \\leq x : P^+(n) \\leq y\\}|$, the smooth number counting function.\n\n**The consecutive smoothness challenge:** While individual smooth numbers are well understood via $\\Psi(x,y)$, *consecutive* smoothness introduces multiplicative independence constraints \u2014 $n$ and $n+1$ are coprime, so their smoothness events are nearly independent heuristically but not provably so. The major partial result is due to **Balog and Wooley (1998)**, who proved that infinitely many $n$ have both $n$ and $n+1$ simultaneously $n^\\varepsilon$-smooth, using sieve methods and exponential sum techniques. Their approach combines Type I/II estimates with bilinear form bounds.\n\nHowever, the gap between 'infinitely many' ($\\exists^\\infty$) and 'all sufficiently large' ($\\forall^\\infty$) remains wide open. Closing this gap may require breakthroughs in multiplicative number theory \u2014 possibly leveraging effective forms of the abc conjecture (which constrains the simultaneous smoothness of $a, b, a+b$) or new developments in the theory of multiplicative functions on short intervals.",
     "problemStatement": "Let $\\varepsilon > 0$ and $k \\geq 2$. For all sufficiently large $n$, does $\\{1, \\ldots, n\\}$ contain $k$ consecutive $n^\\varepsilon$-smooth integers (integers with no prime factor exceeding $n^\\varepsilon$)?",
-    "text": "This formalization defines `IsSmooth m B` (all prime factors $\\leq B$) and `ConsecutiveSmoothRun` to capture runs of consecutive smooth integers. The conjecture is parametrized by a diverging `smoothBound` function, avoiding real exponentiation while capturing the $n^\\varepsilon$ condition. The Balog-Wooley (1998) partial result — infinitely many $n$ with $n, n+1$ simultaneously smooth — is axiomatized. The full conjecture (for all large $n$, not just infinitely many) remains open even for $k = 2$. Status: OPEN.",
-    "proofStrategy": "The formalization defines $B$-smooth numbers via the predicate `IsSmooth m B` (all prime factors $\\leq B$), consecutive smooth runs via `ConsecutiveSmoothRun`, and parametrizes the conjecture using a smoothness bound function `smoothBound : ℕ → ℕ` that diverges but stays $\\leq n$. This avoids real exponentiation while capturing the $n^\\varepsilon$ condition. The Balog-Wooley partial result is axiomatized as providing infinitely many witnesses.",
+    "text": "This formalization defines `IsSmooth m B` (all prime factors $\\leq B$) and `ConsecutiveSmoothRun` to capture runs of consecutive smooth integers. The conjecture is parametrized by a diverging `smoothBound` function, avoiding real exponentiation while capturing the $n^\\varepsilon$ condition. The Balog-Wooley (1998) partial result \u2014 infinitely many $n$ with $n, n+1$ simultaneously smooth \u2014 is axiomatized. The full conjecture (for all large $n$, not just infinitely many) remains open even for $k = 2$. Status: OPEN.",
+    "proofStrategy": "The formalization defines $B$-smooth numbers via the predicate `IsSmooth m B` (all prime factors $\\leq B$), consecutive smooth runs via `ConsecutiveSmoothRun`, and parametrizes the conjecture using a smoothness bound function `smoothBound : \u2115 \u2192 \u2115` that diverges but stays $\\leq n$. This avoids real exponentiation while capturing the $n^\\varepsilon$ condition. The Balog-Wooley partial result is axiomatized as providing infinitely many witnesses.",
     "keyInsights": [
-      "**Dickman function heuristic**: The density of $n^\\varepsilon$-smooth numbers is $\\rho(1/\\varepsilon) > 0$, so we expect $\\sim n \\cdot \\rho(1/\\varepsilon)^k$ runs of length $k$ in $[1,n]$ — but converting this to 'for all large $n$' requires gap control",
-      "**Coprimality barrier**: Consecutive integers $m, m+1$ have $\\gcd = 1$, making their smoothness conditions multiplicatively independent — the hardest case for detecting joint structure",
+      "**Dickman function heuristic**: The density of $n^\\varepsilon$-smooth numbers is $\\rho(1/\\varepsilon) > 0$, so we expect $\\sim n \\cdot \\rho(1/\\varepsilon)^k$ runs of length $k$ in $[1,n]$ \u2014 but converting this to 'for all large $n$' requires gap control",
+      "**Coprimality barrier**: Consecutive integers $m, m+1$ have $\\gcd = 1$, making their smoothness conditions multiplicatively independent \u2014 the hardest case for detecting joint structure",
       "**Three levels of difficulty**: Infinitely many (proved, Balog-Wooley 1998) < positive lower density (open) < all sufficiently large $n$ (open, the full conjecture)",
       "**Sieve method limitations**: The Balog-Wooley proof uses Selberg sieve + exponential sums; these detect infinitely many but cannot show the gaps are $o(n)$",
       "**abc connection**: Effective forms of the abc conjecture would constrain how simultaneously smooth $n$ and $n+1$ can be, potentially providing alternative approaches",
-      "**Definitional vs. mathematical axioms**: The formalization contains two `axiom` declarations with fundamentally different roles — `largestPrimeFactor` is a definitional convenience (trivially realizable, unused by conjecture statements), while `balog_wooley_infinitely_many` encodes a deep mathematical theorem. This pattern illustrates the distinction between Lean axioms that add mathematical content and those that merely abbreviate computable definitions"
+      "**Definitional vs. mathematical axioms**: The formalization contains two `axiom` declarations with fundamentally different roles \u2014 `largestPrimeFactor` is a definitional convenience (trivially realizable, unused by conjecture statements), while `balog_wooley_infinitely_many` encodes a deep mathematical theorem. This pattern illustrates the distinction between Lean axioms that add mathematical content and those that merely abbreviate computable definitions"
     ],
     "prerequisites": [
       "smooth-numbers",
@@ -202,23 +202,36 @@
     ]
   },
   "conclusion": {
-    "summary": "This 131-line formalization captures Erdős Problem #369: for any $k$, do $k$ consecutive smooth numbers always appear in $\\{1, \\ldots, n\\}$ when $n$ is large enough? The problem is open even for $k = 2$. The formalization defines $B$-smoothness via largest prime factor, introduces `ConsecutiveSmoothRun` predicates, and axiomatizes the Balog-Wooley theorem (1998) — which proves infinitely many *pairs* of consecutive smooth numbers exist but falls short of the 'all sufficiently large $n$' required by the conjecture. This gap reflects a deep limitation: the coprimality of consecutive integers ($\\gcd(m, m+1) = 1$) makes their smoothness multiplicatively independent, requiring fundamentally different sieve techniques from single-number smooth estimates governed by the Dickman $\\rho$-function.",
-    "implications": "**1. Smooth Number Theory**: A positive resolution would reveal that smooth numbers are sufficiently well-distributed among consecutive integers to guarantee local clustering — a statement with implications for factoring algorithms (which rely on finding smooth numbers), cryptographic security assumptions (smooth number density near composites), and the structure of multiplicative functions on short intervals. Understanding the distribution of consecutive smooth numbers connects to factoring algorithms (Pollard's p-1, quadratic sieve, number field sieve) which critically depend on smooth number density near specific integers.\n\n**2. Cryptographic Applications**: The density of smooth numbers directly impacts the efficiency of subexponential factoring algorithms. If consecutive smooth numbers cluster more tightly than expected, it would improve the practical running time of algorithms like the general number field sieve, the fastest known factoring algorithm.\n\n**3. Multiplicative Number Theory**: The problem connects to the Dickman function $\\rho(u)$ which governs the probability that a random integer near $x$ is $x^{1/u}$-smooth. Understanding consecutive smooth numbers requires joint distribution results beyond the single-variable Dickman analysis.\n\n**4. Computational Complexity**: Smooth number bounds appear in the analysis of algebraic algorithms (discrete logarithm computation, integer factorization), and improvements in understanding consecutive smooth numbers could have implications for the security of RSA and related cryptosystems.\n\n**5. Additive Combinatorics Connection**: The problem of finding consecutive integers that are simultaneously smooth has structural parallels with finding arithmetic patterns in multiplicatively defined sets, connecting to questions in additive combinatorics.",
+    "summary": "This 131-line formalization captures Erd\u0151s Problem #369: for any $k$, do $k$ consecutive smooth numbers always appear in $\\{1, \\ldots, n\\}$ when $n$ is large enough? The problem is open even for $k = 2$. The formalization defines $B$-smoothness via largest prime factor, introduces `ConsecutiveSmoothRun` predicates, and axiomatizes the Balog-Wooley theorem (1998) \u2014 which proves infinitely many *pairs* of consecutive smooth numbers exist but falls short of the 'all sufficiently large $n$' required by the conjecture. This gap reflects a deep limitation: the coprimality of consecutive integers ($\\gcd(m, m+1) = 1$) makes their smoothness multiplicatively independent, requiring fundamentally different sieve techniques from single-number smooth estimates governed by the Dickman $\\rho$-function.",
+    "implications": "**1. Smooth Number Theory**: A positive resolution would reveal that smooth numbers are sufficiently well-distributed among consecutive integers to guarantee local clustering \u2014 a statement with implications for factoring algorithms (which rely on finding smooth numbers), cryptographic security assumptions (smooth number density near composites), and the structure of multiplicative functions on short intervals. Understanding the distribution of consecutive smooth numbers connects to factoring algorithms (Pollard's p-1, quadratic sieve, number field sieve) which critically depend on smooth number density near specific integers.\n\n**2. Cryptographic Applications**: The density of smooth numbers directly impacts the efficiency of subexponential factoring algorithms. If consecutive smooth numbers cluster more tightly than expected, it would improve the practical running time of algorithms like the general number field sieve, the fastest known factoring algorithm.\n\n**3. Multiplicative Number Theory**: The problem connects to the Dickman function $\\rho(u)$ which governs the probability that a random integer near $x$ is $x^{1/u}$-smooth. Understanding consecutive smooth numbers requires joint distribution results beyond the single-variable Dickman analysis.\n\n**4. Computational Complexity**: Smooth number bounds appear in the analysis of algebraic algorithms (discrete logarithm computation, integer factorization), and improvements in understanding consecutive smooth numbers could have implications for the security of RSA and related cryptosystems.\n\n**5. Additive Combinatorics Connection**: The problem of finding consecutive integers that are simultaneously smooth has structural parallels with finding arithmetic patterns in multiplicatively defined sets, connecting to questions in additive combinatorics.",
     "openQuestions": [
       "Can the Balog-Wooley result be strengthened to show positive lower density for the set of n with consecutive smooth pairs?",
       "Does the abc conjecture (effective form) imply or obstruct the conjecture?",
       "What is the correct order of magnitude for gaps between n having k consecutive smooth numbers?",
-      "Is the problem easier for k = 2 with a specific ε (e.g., ε = 1/2, requiring √n-smoothness)?",
+      "Is the problem easier for k = 2 with a specific \u03b5 (e.g., \u03b5 = 1/2, requiring \u221an-smoothness)?",
       "Can the Dickman function heuristic be made rigorous via moment methods or the circle method adapted to smooth numbers?"
     ]
   },
-  "leanFile": "Proofs/Erdos369Problem.lean",
+  "leanFile": {
+    "path": "Proofs/Erdos369Problem.lean",
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos369",
+    "lineCount": 171,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "L'Enseignement Mathématique, Université de Genève, Monographie No. 28",
+      "venue": "L'Enseignement Math\u00e9matique, Universit\u00e9 de Gen\u00e8ve, Monographie No. 28",
       "note": "Problem statement on p. 69: consecutive smooth numbers in {1,...,n}"
     },
     {
@@ -226,21 +239,21 @@
       "title": "On strings of consecutive integers with no large prime factors",
       "year": "1998",
       "venue": "Journal of the Australian Mathematical Society (Series A), vol. 64, pp. 266-276",
-      "note": "Proves infinitely many consecutive smooth pairs using sieve methods and exponential sum estimates — the strongest partial result toward Problem #369"
+      "note": "Proves infinitely many consecutive smooth pairs using sieve methods and exponential sum estimates \u2014 the strongest partial result toward Problem #369"
     },
     {
-      "authors": "Hildebrand, Adolf; Tenenbaum, Gérald",
+      "authors": "Hildebrand, Adolf; Tenenbaum, G\u00e9rald",
       "title": "On integers free of large prime factors",
       "year": "1986",
       "venue": "Transactions of the American Mathematical Society, vol. 296, pp. 265-290",
-      "note": "Precise uniform estimates for Ψ(x,y), the smooth number counting function, refining the Dickman-de Bruijn asymptotic"
+      "note": "Precise uniform estimates for \u03a8(x,y), the smooth number counting function, refining the Dickman-de Bruijn asymptotic"
     },
     {
       "authors": "de Bruijn, Nicolaas G.",
-      "title": "On the number of positive integers ≤ x and free of prime factors > y",
+      "title": "On the number of positive integers \u2264 x and free of prime factors > y",
       "year": "1951",
       "venue": "Koninklijke Nederlandse Akademie van Wetenschappen, Proceedings, Series A, vol. 54",
-      "note": "Rigorous development of the Dickman function ρ(u) governing smooth number density"
+      "note": "Rigorous development of the Dickman function \u03c1(u) governing smooth number density"
     },
     {
       "authors": "Guy, Richard K.",
