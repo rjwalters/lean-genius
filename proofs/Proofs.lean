@@ -351,6 +351,7 @@ import Proofs.DivisibilityBy3OQ03
 import Proofs.DivisibilityBy3OQ04
 import Proofs.DivisibilityBy3OQ04OQ02
 import Proofs.DivisibilityByThreeOQ01
+import Proofs.DivisibilityByThreeOQ01OQ02
 import Proofs.DivisibilityByThreeOQ02
 import Proofs.DivisibilityRules
 import Proofs.DivisibilityRulesOQ01
