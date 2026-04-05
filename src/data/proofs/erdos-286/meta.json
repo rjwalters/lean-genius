@@ -136,7 +136,7 @@
       "id": "egyptian",
       "title": "Egyptian Fractions and Greedy Algorithm",
       "startLine": 198,
-      "endLine": 245,
+      "endLine": 236,
       "summary": "Defines `IsEgyptianFraction` (definitionally equal to `IsUnitFractionSum`). Axiom `greedy_algorithm_exists`: the Fibonacci–Sylvester algorithm produces an Egyptian fraction for any $0 < q \\leq 1$. Summary section recapping the result and references.",
       "mathContext": "Greedy: take $n = \\lceil 1/q \\rceil$, recurse on $q - 1/n$. Terminates since $q - 1/n < 1/(n(n-1))$."
     }

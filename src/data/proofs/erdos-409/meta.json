@@ -121,7 +121,7 @@
       "id": "small-cases",
       "title": "Small Cases and Fixed Points",
       "startLine": 313,
-      "endLine": 347,
+      "endLine": 339,
       "summary": "Concrete computations: $T(2) = 2$ (fixed point), $T(4) = 3$ (one-step example), and \\textbf{\\texttt{one\\_iteration\\_infinite}}: $F(n) = 1$ infinitely often --- proved by showing that for every odd prime $p$, $\\varphi(2p) + 1 = p$ via Euler totient multiplicativity.",
       "mathContext": "Concrete computations: $T(2) = 2$ (fixed point, proved by $\\texttt{simp}$), $T(4) = 3$ (one-step example), and $F(n) = 1$ infinitely often since $\\{n > 1 : \\varphi(n) + 1 \\text{ is prime}\\}$ is infinite."
     }

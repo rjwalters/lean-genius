@@ -109,7 +109,7 @@
       "id": "property-b",
       "title": "Property B of Hypergraphs",
       "startLine": 52,
-      "endLine": 61,
+      "endLine": 59,
       "summary": "Placeholder theorem `property_b_bound`: a $k$-uniform hypergraph with $m < 2^{k-1}$ edges is 2-colorable. Currently proves `True` because Mathlib lacks a standard hypergraph type. Closes the namespace.",
       "mathContext": "Property B: for $k$-uniform hypergraphs with $m$ edges, random 2-coloring gives $\\mathbb{E}[\\text{mono edges}] = m \\cdot 2^{1-k}$. If $m < 2^{k-1}$, alteration yields a valid 2-coloring."
     }

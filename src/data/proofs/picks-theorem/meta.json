@@ -156,7 +156,7 @@
       "id": "applications",
       "title": "Applications and Lattice Width",
       "startLine": 422,
-      "endLine": 489,
+      "endLine": 484,
       "summary": "$O(1)$ area computation via `compute_area`. Lattice width bounds: $A \\leq w_x \\cdot w_y$. Export of main results.",
       "mathContext": "Area in $O(1)$ time: $A = i + \\tfrac{b}{2} - 1$ requires only two integer counts. Lattice width bound: $A \\leq w_x \\cdot w_y$ where $w_x = \\max x - \\min x$ and $w_y = \\max y - \\min y$ are the axis-aligned widths of $P$."
     }

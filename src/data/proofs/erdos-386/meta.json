@@ -90,7 +90,7 @@
       "id": "k-equals-2",
       "title": "The k = 2 Case",
       "startLine": 130,
-      "endLine": 141,
+      "endLine": 139,
       "summary": "For k = 2, C(n,2) = n(n-1)/2 must be a primorial quotient. Known example: C(21,2) = 210.",
       "mathContext": "For $k=2$: $\\binom{n}{2} = n(n-1)/2 = \\text{cpp}(a,b)$. This asks when a triangular number $T_n = n(n-1)/2$ equals a primorial quotient. Known: $T_{21} = 210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$."
     },

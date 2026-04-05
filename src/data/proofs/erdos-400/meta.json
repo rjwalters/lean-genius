@@ -148,7 +148,7 @@
       "id": "k-equals-2",
       "title": "The $k = 2$ Case: Axioms",
       "startLine": 169,
-      "endLine": 184,
+      "endLine": 171,
       "summary": "Two axioms for the $k = 2$ special case: `g2_excess_characterization` (the supremum $g_2(n)$ is attained by some pair $(a, b)$) and `average_g2_growth` ($\\sum_{n \\leq x} g_2(n) / (x \\log x) \\to c_2$ for some $c_2 > 0$).",
       "mathContext": "$\\exists (a, b)$ with $a! \\cdot b! \\mid n!$ and $a + b - n = g_2(n)$ (supremum attained). The constant $c_2$ encodes the average excess rate for pairs."
     }

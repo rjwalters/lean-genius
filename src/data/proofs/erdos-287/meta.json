@@ -128,7 +128,7 @@
       "summary": "The theorem erdos_287 proves maxGap ≥ 2 by invoking no_consecutive_reciprocals. This is a genuine Lean theorem (not axiom), recording the strongest proved result on the problem. The file closes the Erdos287 namespace.",
       "mathContext": "Theorem: $\\text{maxGap}(ns) \\ge 2$ for all valid decompositions. Proof: direct application of $\\text{no\\_consecutive\\_reciprocals}$. The 1-line proof highlights how the formalization cleanly separates the deep number theory (axiomatized) from the logical conclusion (proved).",
       "startLine": 76,
-      "endLine": 91
+      "endLine": 85
     }
   ],
   "conclusion": {

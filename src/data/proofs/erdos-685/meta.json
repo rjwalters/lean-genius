@@ -110,7 +110,7 @@
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 57,
-      "endLine": 106,
+      "endLine": 96,
       "summary": "Six proved theorems: `omega_one` ($\\omega(1) = 0$), `omega_choose_zero` ($\\omega(\\binom{n}{0}) = 0$), `omega_choose_one` ($\\omega(\\binom{n}{1}) = \\omega(n)$), `omega_eq_zero_iff` ($\\omega(n) = 0 \\iff n \\leq 1$, proved via `Nat.primeFactors_eq_empty`), `omega_pos_of_one_lt` ($n > 1 \\Rightarrow \\omega(n) > 0$), and `omega_prime` ($\\omega(p) = 1$ for prime $p$, via `Nat.Prime.primeFactors_eq`).",
       "mathContext": "$\\omega(1) = 0$, $\\omega(\\binom{n}{0}) = \\omega(1) = 0$, $\\omega(\\binom{n}{1}) = \\omega(n)$. The characterization $\\omega(n) = 0 \\iff n \\leq 1$ uses `Nat.primeFactors_eq_empty`. For primes: $\\omega(p) = |\\{p\\}| = 1$."
     }

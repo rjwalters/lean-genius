@@ -153,7 +153,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 259,
-      "endLine": 285,
+      "endLine": 284,
       "summary": "Documents the 5-step proof strategy and the key insight that bezout_int and IsCoprime are two faces of the same coin.",
       "mathContext": "Five-step proof: (1) Bézout gives $mu + nv = 1$, (2) construct $x = anv + bmu$, (3) verify $x \\equiv a \\pmod{m}$ and $x \\equiv b \\pmod{n}$, (4) uniqueness mod $mn$ via `IsCoprime.mul_dvd`, (5) package into combined theorem."
     }

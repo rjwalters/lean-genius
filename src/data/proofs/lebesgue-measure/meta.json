@@ -153,7 +153,7 @@
       "id": "applications",
       "title": "Applications and $L^p$ Spaces",
       "startLine": 385,
-      "endLine": 425,
+      "endLine": 417,
       "summary": "Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed.",
       "mathContext": "Verified: Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed."
     }
@@ -302,50 +302,6 @@
       "year": "2008",
       "venue": "https://www.cs.ru.nl/~freek/100/",
       "note": "The definitive list of 100 well-known theorems and their formalization status. Lebesgue measure is #86"
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "lebesgue_measure_Icc",
-      "type": "wrapper",
-      "description": "The Lebesgue measure of [a,b] equals b - a",
-      "leanType": "a ≤ b → volume (Set.Icc a b) = ENNReal.ofReal (b - a)"
-    },
-    {
-      "name": "volume_add_left",
-      "type": "wrapper",
-      "description": "Lebesgue measure is translation-invariant: μ(E + c) = μ(E)",
-      "leanType": "(c : ℝ) → (s : Set ℝ) → MeasurableSet s → volume (c +ᵥ s) = volume s"
-    },
-    {
-      "name": "monotone_convergence",
-      "type": "wrapper",
-      "description": "Monotone convergence: if fₙ ↑ f then ∫fₙ → ∫f",
-      "leanType": "Monotone f → Filter.Tendsto (∫⁻ x, f n x ∂μ) atTop (nhds (∫⁻ x, ⨆ n, f n x ∂μ))"
-    },
-    {
-      "name": "dominated_convergence",
-      "type": "wrapper",
-      "description": "Dominated convergence: |fₙ| ≤ g integrable, fₙ → f a.e. implies ∫fₙ → ∫f",
-      "leanType": "Integrable bound μ → (∀ n, ‖f n x‖ ≤ bound x) → f n → g a.e. → ∫ f n → ∫ g"
-    },
-    {
-      "name": "fubini",
-      "type": "application",
-      "description": "Fubini: for integrable f, iterated integrals equal the product integral",
-      "leanType": "Integrable f (μ.prod ν) → ∫∫ f dμ dν = ∫ f d(μ.prod ν)"
-    },
-    {
-      "name": "dirichlet_integral_zero",
-      "type": "original",
-      "description": "The Dirichlet function integral: ∫₀¹ 𝟙_ℚ = 0 via measure zero of ℚ",
-      "leanType": "∫ x in Set.Icc 0 1, Set.indicator (Set.range (↑)) (fun _ => (1 : ℝ)) x = 0"
-    },
-    {
-      "name": "countable_measure_zero",
-      "type": "wrapper",
-      "description": "Countable sets have Lebesgue measure zero",
-      "leanType": "Set.Countable S → volume S = 0"
     }
   ],
   "mainTheorems": [

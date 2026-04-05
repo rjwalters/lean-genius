@@ -143,7 +143,7 @@
       "id": "second-incompleteness-and-lob",
       "title": "Second Incompleteness Theorem and Löb's Theorem",
       "startLine": 212,
-      "endLine": 467,
+      "endLine": 465,
       "summary": "Derivability conditions (axiom), Löb sentence fixed point (axiom), `second_incompleteness_theorem`: Consistent → ¬Provable Con. `lob_theorem`: if ⊢(Prov(⌜φ⌝) → φ), then ⊢ φ. Both use the Hilbert-Bernays-Löb conditions D1-D3.",
       "mathContext": "Second incompleteness: $\\text{Con}(F) \\not\\vdash \\text{Con}(F)$ where $\\text{Con}(F) = \\neg\\text{Prov}(\\ulcorner 0=1 \\urcorner)$. Derivability conditions (Hilbert-Bernays-Löb): (D1) $\\vdash \\varphi \\Rightarrow \\vdash \\text{Prov}(\\ulcorner\\varphi\\urcorner)$, (D2) $\\vdash \\text{Prov}(\\ulcorner\\varphi \\to \\psi\\urcorner) \\to (\\text{Prov}(\\ulcorner\\varphi\\urcorner) \\to \\text{Prov}(\\ulcorner\\psi\\urcorner))$, (D3) $\\vdash \\text{Prov}(\\ulcorner\\varphi\\urcorner) \\to \\text{Prov}(\\ulcorner\\text{Prov}(\\ulcorner\\varphi\\urcorner)\\urcorner)$. Löb: $\\vdash (\\text{Prov}(\\ulcorner\\varphi\\urcorner) \\to \\varphi) \\Rightarrow \\vdash \\varphi$."
     }

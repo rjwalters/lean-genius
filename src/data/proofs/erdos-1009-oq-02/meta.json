@@ -119,7 +119,7 @@
       "id": "comparison",
       "title": "K₃ vs K₄ Comparison",
       "startLine": 226,
-      "endLine": 241,
+      "endLine": 240,
       "summary": "turanK3_le_turanK4: K₄ threshold ≥ K₃ threshold. clique4_has_triangle: every K₄ contains a K₃ (take any 3 vertices).",
       "mathContext": "$\\lfloor n^2/4 \\rfloor \\leq \\lfloor n^2/3 \\rfloor$ since $1/4 < 1/3$. And $K_4 \\supset K_3$: any 3 vertices of a $K_4$ form a triangle."
     }
@@ -137,14 +137,18 @@
     {
       "type": "paper",
       "title": "On the number of edge disjoint triangles in K₄-free graphs",
-      "authors": ["E. Györi"],
+      "authors": [
+        "E. Györi"
+      ],
       "year": 1988,
       "journal": "Combinatorica"
     },
     {
       "type": "paper",
       "title": "On an extremal problem in graph theory",
-      "authors": ["P. Turán"],
+      "authors": [
+        "P. Turán"
+      ],
       "year": 1941
     }
   ],

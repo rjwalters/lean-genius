@@ -119,7 +119,7 @@
       "id": "liminf-finite",
       "title": "Deriving liminf_finite from freud_density",
       "startLine": 152,
-      "endLine": 256,
+      "endLine": 255,
       "summary": "Key axiom elimination: `liminf_finite` proved from `freud_density` via counting argument. Positive upper density forces a(n)/(n+1) < 4 infinitely often. Includes helper lemmas: `countRatio_isCoboundedUnder` (Filter coboundedness), `frequently_lt_of_lt_limsup` (contrapositive extraction), and `term_le_of_count_gt` (counting function bounds terms by contradiction on monotonicity)."
     },
     {

@@ -103,7 +103,7 @@
       "id": "structural",
       "title": "Structural Observations and S(2) = 3",
       "startLine": 269,
-      "endLine": 387,
+      "endLine": 377,
       "summary": "Proves `smoothBlockSet_antitone` and `smoothThreshold_mono` ($k_1 \\leq k_2 \\Rightarrow S(k_1) \\leq S(k_2)$). Then the substantial `smooth_threshold_2` proof ($S(2) = 3$, ~100 lines): shows $x \\leq 2$ gives density 0 (consecutive integers can't both have all prime factors $\\leq 2$ since one is odd $\\geq 3$), and $x = 3$ gives positive density (AP $n \\equiv 2 \\pmod{6}$). Includes helper proofs `smoothBlockSet_two_empty_of_le_one`, `smoothBlockSet_two_two_sub_zero`, and `upperDensity_singleton_zero`.",
       "mathContext": "$S(2) = 3$: for $x = 3$, the AP $n \\equiv 2 \\pmod{6}$ gives $3 \\mid (n+1)$ and $2 \\mid (n+2)$, so $\\overline{d} \\geq 1/6 > 0$. For $x = 2$: consecutive integers can't both be 2-smooth (one is odd $\\geq 3$ with $\\min\\text{Fac} \\geq 3 > 2$)."
     }

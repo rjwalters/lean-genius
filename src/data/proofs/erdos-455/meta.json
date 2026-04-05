@@ -126,7 +126,7 @@
       "id": "restrictiveness",
       "title": "Alternative Characterization",
       "startLine": 137,
-      "endLine": 152,
+      "endLine": 142,
       "summary": "Proves `nonDecGaps_alt`: the non-decreasing gaps condition is equivalent to $\\forall n \\geq 1,\\, q(n+1) - q(n) \\geq q(n) - q(n-1)$. The $n = 0$ case is trivial by `simp`."
     }
   ],

@@ -136,7 +136,7 @@
       "id": "deep-results",
       "title": "Deep Results (Axiomatized)",
       "startLine": 282,
-      "endLine": 303,
+      "endLine": 289,
       "summary": "vanDoorn_upper_bound (0.108N), sawhney_solution (exact N/25), sawhney_structure (uniqueness of extremal sets). These require Hensel's lemma, density counting, and real analysis beyond current formalization.",
       "mathContext": "Van Doorn: $|A|/N \\leq 2\\sum_{p \\equiv 1(4)} 1/p^2 \\approx 0.108$. Sawhney: $\\forall N \\geq N_0,\\ \\max|A| = \\lfloor N/25\\rfloor$, achieved only by $\\{n \\equiv 7\\}$ or $\\{n \\equiv 18\\} \\pmod{25}$."
     }

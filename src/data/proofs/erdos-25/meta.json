@@ -97,7 +97,7 @@
       "id": "monotonicity",
       "title": "Monotonicity Properties",
       "startLine": 155,
-      "endLine": 167,
+      "endLine": 166,
       "summary": "Proves `sieve_monotone`: removing any modulus $k$ from the sieve enlarges the sieved set, since fewer exclusion conditions means more integers pass. One-line proof: `intro m hm i hi; exact hm i`.",
       "mathContext": "Proved: $A(\\sigma) \\subseteq \\{m : \\forall i \\ne k,\\, m < n_i \\lor m \\not\\equiv a_i \\pmod{n_i}\\}$. This is set-theoretic monotonicity: dropping a universal quantifier condition weakens the constraint. The proof is immediate since if $m$ satisfies all conditions, it satisfies any subset of them."
     }

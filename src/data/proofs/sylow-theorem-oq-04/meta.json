@@ -96,7 +96,7 @@
       "id": "sec-sylow-oq04-simplicity-corollaries",
       "title": "Parts VII–VIII: Simplicity, Non-Solvability, and Summary",
       "startLine": 192,
-      "endLine": 277,
+      "endLine": 276,
       "description": "Part VII proves `A5_isSimple` by delegation to `alternatingGroup.isSimpleGroup_five` (Mathlib's verified proof for all n ≥ 5). Part VIII derives three corollaries: `A5_not_solvable` uses the short exact sequence A₅ → S₅ → ℤ/2 and `solvable_of_ker_le_range` to show S₅ solvable would follow, contradicting `Equiv.Perm.not_solvable`; `A5_normal_subgroups` shows the only normal subgroups are ⊥ and ⊤. The summary table catalogs all 18 results with their proof methods."
     }
   ],

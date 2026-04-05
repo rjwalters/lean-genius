@@ -108,7 +108,7 @@
       "id": "observations",
       "title": "LCM Structure and Related Problems",
       "startLine": 77,
-      "endLine": 88,
+      "endLine": 83,
       "summary": "Axiomatizes lcm_structure: equal pairwise LCMs L imply a|L, b|L, c|L. Notes connections to Problems #535, #537, #856, #857.",
       "mathContext": "$[a,b] = [b,c] = [a,c] = L \\Rightarrow a \\mid L \\wedge b \\mid L \\wedge c \\mid L$. Follows from $\\text{lcm}(x,y) = L \\Rightarrow x \\mid L$."
     }

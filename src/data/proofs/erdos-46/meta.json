@@ -116,7 +116,7 @@
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 68,
-      "endLine": 91,
+      "endLine": 84,
       "summary": "Proved: $\\neg\\text{IsUnitFractionRepr}(\\emptyset)$, mono for $r = 1$, **mono_subset**. Axiomatized: singleton exclusion, $|S| \\ge 2$.",
       "mathContext": "$\\neg\\text{IsUnitFractionRepr}(\\emptyset)$, $\\neg\\text{IsUnitFractionRepr}(\\{n\\})$ for $n \\ge 2$, and $\\text{IsMonochromatic}(c, S)$ for $r = 1$ colourings. Structural lemmas grounding the formalization."
     }

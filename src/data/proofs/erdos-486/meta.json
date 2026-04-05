@@ -126,7 +126,7 @@
       "id": "related-results",
       "title": "Besicovitch Counterexample and Natural Density",
       "startLine": 98,
-      "endLine": 119,
+      "endLine": 108,
       "summary": "Defines natural (asymptotic) density and states the Besicovitch counterexample: there exists a set A whose zero-avoidance set has logarithmic density but NOT natural density. This justifies the use of logarithmic density in #486.",
       "mathContext": "$\\text{HasNaturalDensity}(A, d) \\iff \\lim_{n \\to \\infty} \\frac{|A \\cap [0,n]|}{n+1} = d$. Besicovitch (1934): $\\exists A$ s.t. $\\text{zeroAvoidanceSet}(A)$ has log density but not natural density, proving logarithmic density is strictly weaker."
     }

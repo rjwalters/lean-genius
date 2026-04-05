@@ -138,7 +138,7 @@
       "id": "proved-results",
       "title": "Proved Results",
       "startLine": 190,
-      "endLine": 221,
+      "endLine": 201,
       "summary": "Five proved utility theorems: `trivial_n_coloring` (any graph on $n$ vertices is $n$-colorable via identity), `coloring_monotone` ($k$-colorable $\\Rightarrow$ $(k+1)$-colorable via `castSucc`), `empty_graph_colorable` (0-vertex graphs are $k$-colorable), `empty_graph_triangle_free` and `single_vertex_triangle_free` (0- and 1-vertex graphs are trivially $K_3$-free). These support the threshold proofs above.",
       "mathContext": "The identity function gives an $n$-coloring of any graph on $n$ vertices. Casting colors via $\\text{Fin}(k) \\hookrightarrow \\text{Fin}(k+1)$ preserves properness. Graphs on 0 or 1 vertices are trivially triangle-free."
     }

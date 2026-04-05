@@ -163,7 +163,7 @@
       "summary": "The `erdos_914_summary` theorem combining Hajnal-Szemeredi existence ($\\forall\\, r, m, G$) with tightness ($\\forall\\, r, m,\\, \\exists\\, G$) into a single proved statement.",
       "mathContext": "The summary theorem is the only non-axiom theorem in the file, proved by anonymous constructor syntax `\\langle \\ldots, \\ldots \\rangle`. The first component wraps `hajnal_szemeredi` with the appropriate quantifier instantiation, and the second is directly `degree_condition_tight`. This conjunction gives a complete characterization: the minimum degree threshold for $K_r$-factors is exactly $m(r-1)$, neither more nor less. The structure mirrors how such results are stated in the combinatorics literature: an upper bound (every graph above threshold has the property) paired with a lower bound (some graph below threshold lacks it).",
       "startLine": 164,
-      "endLine": 210
+      "endLine": 193
     }
   ],
   "conclusion": {

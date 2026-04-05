@@ -86,7 +86,7 @@
       "id": "deep-partial-results",
       "title": "Deep Partial Results and Conjecture (Axioms)",
       "startLine": 88,
-      "endLine": 110,
+      "endLine": 97,
       "summary": "Axiomatizes Tao (2019): for almost all $m$, the orbit drops below any function $g(m) \\to \\infty$. Axiomatizes Krasikov-Lagarias (2003): $|\\{m \\leq x : m \\text{ reaches 1}\\}| \\geq x^{0.84}$. States the full conjecture: $\\forall m \\geq 1, \\texttt{ReachesOne}(m)$.",
       "mathContext": "Tao's result: $\\text{dens}(\\{m \\leq x : \\min_k f^k(m) \\leq g(m)\\}) \\to 1$ for any $g(n) \\to \\infty$. This means 'almost all' orbits get arbitrarily small, but does not prove they reach 1. Krasikov-Lagarias: at least $x^{0.84}$ integers below $x$ reach 1, improving earlier $x^{0.81}$ bounds."
     }
