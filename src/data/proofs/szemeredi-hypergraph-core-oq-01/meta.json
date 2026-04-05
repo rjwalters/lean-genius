@@ -1,0 +1,171 @@
+{
+  "id": "szemeredi-hypergraph-core-oq-01",
+  "title": "Simplicial Complex Infrastructure for Gowers Hypergraph Regularity",
+  "slug": "szemeredi-hypergraph-core-oq-01",
+  "description": "Defines SimplicialComplex, CompleteKLinks, relativeDensity, and IsGowersRegular — the core structures for Gowers (2007) hypergraph regularity. Fills the infrastructure gap in SzemerediHypergraphCore.lean and opens the path to formalizing the multidimensional Szemerédi theorem.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://annals.math.princeton.edu/2007/166-3/p02",
+    "date": "2026-04-04",
+    "status": "axiomatized",
+    "tags": [
+      "combinatorics",
+      "szemeredi",
+      "hypergraph-theory",
+      "regularity",
+      "simplicial-complexes",
+      "advanced"
+    ],
+    "proofRepoPath": "Proofs/SzemerediHypergraphCoreOQ01.lean",
+    "badge": "axiom",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_filter_le",
+        "description": "Upper bound on filter size",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.subset_univ",
+        "description": "Any Finset is a subset of univ",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "SimplicialComplex structure: downward-closed family of nonempty faces with formal downward closure axiom",
+      "CompleteKLinks: the k-subsets of V fully supported by a complex (all nonempty sub-subsets are faces)",
+      "relativeDensity: fraction of complete k-links that are hypergraph edges, the key Gowers (2007) quantity",
+      "IsGowersRegular: formal definition of Gowers ε-regularity relative to a complex",
+      "CompleteKLinks_fullSimplex: complete k-links of the full simplex = all k-subsets (connects to naive density)",
+      "Basic properties: relativeDensity_nonneg, relativeDensity_le_one, isGowersRegular_empty"
+    ],
+    "dateAdded": "2026-04-04",
+    "axiomCount": 1,
+    "lineCount": 280,
+    "assumptions": "hypergraph_regularity_lemma (Gowers 2007, Rödl–Skokan 2004): the existence of a regular partition is stated as a sorry pending the full formalization."
+  },
+  "overview": {
+    "historicalContext": "Szemerédi's graph regularity lemma (1978) was extended to k-uniform hypergraphs by Rödl–Skokan (2004) and Gowers (2007) independently, with applications to the multidimensional Szemerédi theorem. The key difficulty is that naive ε-regularity for hypergraphs (as in SzemerediHypergraphCore.lean) is insufficient for the counting lemma. Gowers introduced regularity relative to a (k-1)-complex, requiring density to be stable when restricting to dense sub-complexes.",
+    "problemStatement": "**Open Question from SzemerediHypergraphCore.lean**:\n\nDefine the `SimplicialComplex` infrastructure for the full Gowers (2007) relative regularity:\n1. `SimplicialComplex`: nested family of j-graphs with downward closure\n2. `relativeDensity`: density of k-graph conditioned on the (k-1)-complex\n3. `IsGowersRegular`: ε-regularity relative to a complex\n\nThis was listed as a follow-up direction in SzemerediHypergraphCore.lean.",
+    "text": "Defines the complete infrastructure for Gowers-type hypergraph regularity.",
+    "proofStrategy": "**SimplicialComplex** is a record type with: a Finset of faces, a proof all faces are nonempty, and downward closure.\n\n**CompleteKLinks** filters k-element subsets of V by the condition that every nonempty proper subset is a face of the complex. This generalizes the notion of 'transversal' from the naive k-partite density.\n\n**relativeDensity** counts the fraction of complete k-links that are hyperedges. This is the quantity Gowers proves is stable under restriction to dense sub-complexes.\n\n**IsGowersRegular** formalizes the stability property: for any δ > 0 and δ-dense sub-complex C', |d(H|C) - d(H|C')| ≤ ε.\n\nKey theorem (with sorry): The hypergraph regularity lemma — existence of a Gowers-regular partition for any ε > 0.",
+    "keyInsights": [
+      "The downward closure axiom in SimplicialComplex is the key structure that distinguishes it from an arbitrary family of sets.",
+      "CompleteKLinks generalizes 'transversals' from the naive density: for k=2 and the complete complex, a 2-link {u,v} requires only singletons {u},{v} as faces.",
+      "CompleteKLinks_fullSimplex shows that for the full simplex on S, complete k-links = k-subsets of S (k≥2), recovering the naive k-partite density.",
+      "The sorry in hypergraph_regularity_lemma is an honest marker: the full proof is a major formalization challenge requiring tower-type bound arguments."
+    ],
+    "prerequisites": [
+      "SzemerediHypergraphCore.lean (UHypergraph, kPartiteDensity, naive regularity)",
+      "SzemerediCore.lean (graph regularity for comparison)",
+      "Gowers (2007) paper for the mathematical content"
+    ]
+  },
+  "sections": [
+    {
+      "id": "simplicial-complex",
+      "title": "Simplicial Complex Definition",
+      "startLine": 35,
+      "endLine": 90,
+      "summary": "SimplicialComplex record type with faces, nonempty_faces, and downward axiom. Constructors: complete (all subsets of V) and fullSimplex S (all subsets of S). IsSubcomplex relation.",
+      "mathContext": "A simplicial complex is a downward-closed family of nonempty sets. For Gowers (2007), the relevant complex is a truncation of this at degree k-1."
+    },
+    {
+      "id": "complete-links",
+      "title": "Complete K-Links",
+      "startLine": 93,
+      "endLine": 155,
+      "summary": "CompleteKLinks C k = k-subsets T of V where every nonempty strict subset is a face. Key theorem: CompleteKLinks(fullSimplex S, k) = k-subsets of S (for k≥2).",
+      "mathContext": "These are the k-simplices 'supported by' the complex — the candidates for hyperedges in the relative density count."
+    },
+    {
+      "id": "relative-density",
+      "title": "Relative Density",
+      "startLine": 158,
+      "endLine": 225,
+      "summary": "relativeDensity H C = |edges(H) ∩ CompleteKLinks(C,k)| / |CompleteKLinks(C,k)|. Proved: nonneg, ≤1, =0 for empty H, =1 when H contains all complete links.",
+      "mathContext": "The central quantity in Gowers hypergraph regularity. Stability of this density under dense sub-complex restriction is the regularity property."
+    },
+    {
+      "id": "gowers-regularity",
+      "title": "Gowers ε-Regularity Definition",
+      "startLine": 228,
+      "endLine": 265,
+      "summary": "IsGowersRegular H C eps: for all δ-dense sub-complexes C', |d(H|C) - d(H|C')| ≤ eps. Basic case: empty hypergraph is ε-regular for all ε ≥ 0.",
+      "mathContext": "This is the correct notion enabling the hypergraph counting lemma, replacing the insufficient naive IsHypergraphRegular."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-hypergraph-core",
+      "relationship": "extends",
+      "description": "SzemerediHypergraphCore.lean defined UHypergraph, naive kPartiteDensity, and IsHypergraphRegular. This file adds the relative versions needed for the full Gowers (2007) theory."
+    },
+    {
+      "targetId": "szemeredi-core",
+      "relationship": "generalizes",
+      "description": "The graph regularity IsEpsilonRegular in SzemerediCore.lean is the k=2 special case of IsGowersRegular when the complex is the complete bipartite structure."
+    }
+  ],
+  "conclusion": {
+    "summary": "Provides the missing infrastructure for Gowers hypergraph regularity: SimplicialComplex, CompleteKLinks, relativeDensity, and IsGowersRegular. The key theorem (hypergraph_regularity_lemma) is stated with sorry, marking an honest boundary for current formalization.",
+    "implications": "With this infrastructure in place, the multidimensional Szemerédi theorem (SzemerediFull) could in principle be connected to the hypergraph framework. The key remaining work is proving the regularity lemma itself — a tower-type existence result requiring substantial combinatorial argument.",
+    "openQuestions": [
+      "Can the hypergraph counting lemma be formalized using these definitions? (Nagle–Rödl–Schacht 2006 requires verifying density estimates for regular hypergraphs)",
+      "What is the tower-height bound in hypergraph_regularity_lemma? Is it provably necessary (Gowers 2007 shows a wowzer-type lower bound)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": ["Classical"],
+    "namespace": "Szemeredi.Hypergraph",
+    "lineCount": 280,
+    "axiomCount": 1,
+    "theoremCount": 10,
+    "substantiveTheoremCount": 7,
+    "duplicateTheorems": 0,
+    "definitionCount": 8
+  },
+  "references": [
+    {
+      "authors": "Gowers, W.T.",
+      "title": "Hypergraph regularity and the multidimensional Szemerédi theorem",
+      "year": "2007",
+      "note": "Annals of Mathematics 166(3), 897–946. Introduces the relative regularity notion formalized here."
+    },
+    {
+      "authors": "Rödl, V. and Skokan, J.",
+      "title": "Regularity lemma for k-uniform hypergraphs",
+      "year": "2004",
+      "note": "Random Structures & Algorithms 25(1), 1–42. Independent proof of hypergraph regularity."
+    },
+    {
+      "authors": "Nagle, B., Rödl, V., Schacht, M.",
+      "title": "The counting lemma for regular k-uniform hypergraphs",
+      "year": "2006",
+      "note": "Random Structures & Algorithms 28(2), 113–179. The counting lemma that requires this notion of regularity."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "CompleteKLinks_fullSimplex",
+      "type": "core",
+      "description": "For k≥2, complete k-links of fullSimplex S = k-subsets of S",
+      "leanType": "(S : Finset V) → (k : ℕ) → 2 ≤ k → CompleteKLinks (fullSimplex S) k = S.powerset.filter (T.card = k)"
+    },
+    {
+      "name": "relativeDensity_le_one",
+      "type": "supporting",
+      "description": "Relative density is at most 1",
+      "leanType": "{k : ℕ} → UHypergraph V k → SimplicialComplex V → relativeDensity H C ≤ 1"
+    },
+    {
+      "name": "IsGowersRegular",
+      "type": "definition",
+      "description": "Gowers ε-regularity relative to a complex",
+      "leanType": "UHypergraph V k → SimplicialComplex V → ℚ → Prop"
+    }
+  ]
+}
