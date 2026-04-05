@@ -1,0 +1,125 @@
+{
+  "id": "derangements-convergence-oq-01",
+  "title": "k Fixed Points: P(X_n = k) → e⁻¹/k! as n → ∞",
+  "slug": "derangements-convergence-oq-01",
+  "description": "Proves that the probability of exactly k fixed points in a uniformly random permutation of Fin n converges to the Poisson(1) mass function e⁻¹/k!. The key identity P(X_n = k) = C(n,k)·D(n-k)/n! = (1/k!)·D(n-k)/(n-k)! factors out 1/k! and applies Mathlib's numDerangements_tendsto_inv_e. Also establishes the rate bound |P(X_n = k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!) via the alternating series estimation theorem.",
+  "meta": {
+    "author": "researcher-7",
+    "date": "2026-04-04",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/DerangementsConvergenceOQ01.lean",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "derangements",
+      "poisson-distribution",
+      "convergence",
+      "fixed-points",
+      "permutations",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "axiomCount": 0,
+    "assumptions": "1 sorry: derangements_rate — |D(n)/n! - e⁻¹| ≤ 1/(n+1)!. This is the alternating series estimation theorem applied to the Taylor series for e⁻¹. The parent file DerangementsConvergence.lean proves this result but has pre-existing Mathlib API issues (∑ k in vs ∑ k ∈ syntax) preventing import. The convergence result kFixed_tendsto is fully proved without this sorry, using Mathlib's numDerangements_tendsto_inv_e directly.",
+    "dateAdded": "2026-04-04",
+    "lineCount": 151,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "originalContributions": [
+      "probKFixed: definition P(X_n = k) = C(n,k)·D(n-k)/n! as a real-valued probability",
+      "probKFixed_eq (PROVED): P(X_n = k) = (1/k!)·D(n-k)/(n-k)! via Nat.choose_mul_factorial_mul_factorial",
+      "probKFixed_succ_eq (PROVED): P(X_{n+k} = k) = (1/k!)·D(n)/n! (reparametrization)",
+      "kFixed_tendsto (PROVED): P(X_{n+k} = k) → e⁻¹/k! using numDerangements_tendsto_inv_e",
+      "kFixed_convergence_rate (PROVED modulo sorry): |P(X_n = k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!)",
+      "kFixed_zero_tendsto (PROVED): k=0 case recovers derangement convergence P(X_n = 0) → e⁻¹",
+      "kFixed_rate_tighter (PROVED): for k≥1, the k-fixed rate is tighter by factor k!"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The birthday problem in probability asks: how are fixed points of a random permutation distributed? For a uniformly random permutation of n elements, the number of fixed points X_n converges in distribution to a Poisson(1) random variable as n → ∞. Specifically, P(X_n = k) → e⁻¹/k! for each k ≥ 0.\n\nThe k=0 case P(X_n = 0) = D(n)/n! → e⁻¹ is the classical derangement result (Montmort 1708, Euler 1751), proved in the parent file derangements-convergence. This file extends to all k ≥ 0.\n\nThe convergence P(X_n = k) → Pois(1)(k) is a special case of the general Poisson approximation theorem for sums of dependent indicator random variables (Arratia-Goldstein-Gordon 1989). For fixed points, the dependence structure is particularly nice: the indicators 1[σ(i)=i] are negatively correlated, making the approximation sharp.",
+    "problemStatement": "**OQ-01 of derangements-convergence**\n\nFor a uniformly random permutation σ of Fin n, let X_n = |{i : σ(i) = i}| be the number of fixed points. Prove:\n\n1. P(X_n = k) = C(n,k)·D(n-k)/n! for all k ≤ n\n2. This equals (1/k!)·D(n-k)/(n-k)!\n3. As n → ∞ (k fixed): P(X_n = k) → e⁻¹/k!\n4. Rate bound: |P(X_n = k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!)",
+    "proofStrategy": "The proof has four steps:\n\n1. **Algebraic identity**: P(X_n = k) = C(n,k)·D(n-k)/n!. This is immediate from the parent derangements-oq-02, which proves |{σ : Perm(Fin n) | |Fix(σ)| = k}| = C(n,k)·D(n-k).\n\n2. **Factoring**: C(n,k)·D(n-k)/n! = D(n-k)/(k!·(n-k)!) = (1/k!)·D(n-k)/(n-k)!. This uses C(n,k)·k!·(n-k)! = n! (Nat.choose_mul_factorial_mul_factorial) and is proved by `field_simp; linear_combination`.\n\n3. **Convergence**: P(X_{n+k} = k) = (1/k!)·D(n)/n! → (1/k!)·e⁻¹ = e⁻¹/k!. Factor out the constant 1/k! and apply Mathlib's `numDerangements_tendsto_inv_e`.\n\n4. **Rate bound**: |P(X_n = k) - e⁻¹/k!| = (1/k!)·|D(n-k)/(n-k)! - e⁻¹| ≤ (1/k!)·1/(n-k+1)! = 1/(k!·(n-k+1)!). Uses the alternating series bound (sorry).",
+    "keyInsights": [
+      "The key algebraic identity P(X_n = k) = (1/k!)·D(n-k)/(n-k)! decouples the 1/k! factor from the derangement ratio, reducing to the k=0 case",
+      "Mathlib's numDerangements_tendsto_inv_e provides the foundational limit D(n)/n! → e⁻¹ that drives all k≥0 cases",
+      "The proof uses linear_combination to handle the algebraic manipulation involving Nat.choose_mul_factorial_mul_factorial — a clean way to bridge the ℕ identity with ℝ arithmetic",
+      "The rate bound 1/(k!·(n-k+1)!) is sharper than 1/(n-k+1)! by a factor of k! — larger k gives better approximation at any fixed n",
+      "The convergence proof avoids the parent file DerangementsConvergence.lean (which has pre-existing Mathlib syntax issues) by importing numDerangements_tendsto_inv_e directly from Mathlib"
+    ],
+    "prerequisites": [
+      "Proofs.DerangementsOQ02: card_perms_with_kfixed giving |{σ : fixed k}| = C(n,k)·D(n-k)",
+      "Mathlib.Combinatorics.Derangements.Exponential: numDerangements_tendsto_inv_e",
+      "Mathlib: Nat.choose_mul_factorial_mul_factorial",
+      "Mathlib: Filter.Tendsto.mul (product of tendsto limits)"
+    ]
+  },
+  "conclusion": {
+    "summary": "This file proves that P(X_n = k) → e⁻¹/k! as n → ∞ for uniformly random permutations, where X_n is the fixed-point count. The proof factors P(X_n = k) = (1/k!)·D(n-k)/(n-k)! and applies Mathlib's derangement convergence theorem. The rate bound 1/(k!·(n-k+1)!) holds modulo one sorry (the alternating series estimation applied to D(n)/n!).",
+    "implications": "**Connection to Poisson(1)**: This proves that X_n converges in distribution to Pois(1), in the sense that all marginal probabilities converge. The stronger total variation convergence is proved in derangements-oq-03-oq-02, which gives TV(X_n, Pois(1)) → 0.\\n\\n**Rate improvement**: The bound 1/(k!·(n-k+1)!) improves on the raw derangements rate 1/(n-k+1)! by a factor of k!. For k=2 and n=5: rate = 1/(2·4!) = 1/48 vs 1/4! = 1/24 — exactly twice as good.\\n\\n**Resolving the sorry**: The derangements_rate sorry is exactly derangements_convergence_rate from DerangementsConvergence.lean. That file proves it via the alternating series estimation theorem but has a Mathlib syntax issue (∑ k in vs ∑ k ∈). Fixing DerangementsConvergence.lean (a mechanical find-and-replace) would remove this sorry.",
+    "openQuestions": [
+      "Fix DerangementsConvergence.lean (replace ∑ k in with ∑ k ∈ throughout) to enable importing derangements_convergence_rate and removing the sorry",
+      "Prove the analogous result for k-cycles in permutations: P(σ has exactly m k-cycles) → Pois(1/k)^m",
+      "Quantify the total variation convergence rate: TV(X_n, Pois(1)) ≤ C/n for some constant C (Chen-Stein method)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "derangements-convergence",
+      "relationship": "extends",
+      "description": "Parent proves the k=0 case D(n)/n! → e⁻¹; this file generalizes to all k"
+    },
+    {
+      "targetId": "derangements-oq-02",
+      "relationship": "uses",
+      "description": "Uses card_perms_with_kfixed: |{σ : Perm(Fin n) | |Fix(σ)| = k}| = C(n,k)·D(n-k)"
+    },
+    {
+      "targetId": "derangements-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Sibling: proves total variation convergence TV(X_n, Pois(1)) → 0; this file proves pointwise convergence of marginals"
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "Root: basic derangement definitions and inclusion-exclusion formula"
+    }
+  ],
+  "sections": [
+    {
+      "id": "definition",
+      "title": "§1. Probability of Exactly k Fixed Points",
+      "startLine": 52,
+      "endLine": 58,
+      "content": "probKFixed n k = C(n,k)·D(n-k)/n!. Noncomputable definition using Real division."
+    },
+    {
+      "id": "algebraic",
+      "title": "§2. Algebraic Identities",
+      "startLine": 60,
+      "endLine": 84,
+      "content": "probKFixed_eq (PROVED): P(X_n=k) = (1/k!)·D(n-k)/(n-k)! via choose_mul_factorial_mul_factorial and linear_combination. probKFixed_succ_eq (PROVED): reparametrization P(X_{n+k}=k) = (1/k!)·D(n)/n!."
+    },
+    {
+      "id": "rate",
+      "title": "§3. Rate Bound",
+      "startLine": 86,
+      "endLine": 114,
+      "content": "derangements_rate (SORRY): |D(n)/n! - e⁻¹| ≤ 1/(n+1)! — alternating series bound. kFixed_convergence_rate (PROVED modulo sorry): |P(X_n=k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!)."
+    },
+    {
+      "id": "convergence",
+      "title": "§4. Convergence to Poisson(1) Mass",
+      "startLine": 116,
+      "endLine": 136,
+      "content": "kFixed_tendsto (PROVED): P(X_{n+k}=k) → e⁻¹/k! using numDerangements_tendsto_inv_e. kFixed_zero_tendsto (PROVED): k=0 case recovers derangement convergence."
+    },
+    {
+      "id": "comparison",
+      "title": "§5. Rate Comparison",
+      "startLine": 138,
+      "endLine": 151,
+      "content": "kFixed_rate_tighter (PROVED): for k≥1, bound 1/(k!·(n-k+1)!) ≤ 1/(n-k+1)! — k! improvement."
+    }
+  ]
+}
