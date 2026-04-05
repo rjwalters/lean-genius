@@ -42,7 +42,8 @@
       "Gödel sentence = fixed point of Neg ∘ PrSent (exists, unlike Bool.not fixed point)",
       "Rice: Bool.not has no fixed point → surjectivity impossible. Gödel: fixed point exists → consistency contradiction",
       "D1 axiom (Pr φ → Pr(PrSent φ)) is the key bridge from provability to self-reference",
-      "The Lawvere chain Cantor→Rice→Gödel shows all major undecidability results share one categorical core"
+      "The Lawvere chain Cantor→Rice→Gödel shows all major undecidability results share one categorical core",
+      "GodelModel's four structure-encoded axioms (h_diag, h_consistent, h_reflection, h_D1) are precisely the conditions needed — no more, no less — isolating the minimal logical requirements for the First Incompleteness Theorem"
     ],
     "prerequisites": [
       "Lawvere fixed-point theorem (CantorDiagonalizationOQ03OQ01.lean)",
@@ -59,6 +60,50 @@
       "Gödel's Second Incompleteness Theorem as a Lawvere instance: show that Con(S) (consistency statement) is also not provable, using the provability logic axioms D1, D2, D3 (Löb's theorem)"
     ]
   },
+  "sections": [
+    {
+      "id": "eval-framework",
+      "title": "Section I: Evaluation Structure and Lawvere Fixed-Point Theorem",
+      "startLine": 48,
+      "endLine": 70,
+      "summary": "Defines EvalStructure (the categorical computation model with objects, values, evaluation) and IsPointSurjective (every behavior is representable). Proves lawvere_fpt: in any point-surjective evaluation structure, every endomorphism has a fixed point. The proof is a 2-line Lean argument: apply point-surjectivity to the diagonal function, extract the fixed point."
+    },
+    {
+      "id": "diagonal-lemma",
+      "title": "Section II: Abstract Diagonal Lemma",
+      "startLine": 72,
+      "endLine": 90,
+      "summary": "Proves diagonal_lemma: in any point-surjective eval structure on (Code, Form), every endomorphism F : Form → Form has a fixed point G with G = F(G). Connects to Carnap's concrete diagonal lemma in PA: Code = ℕ, Form = PA-sentences, eval = Gödel's substitution function. Proof is a 3-line application of lawvere_fpt."
+    },
+    {
+      "id": "godel-model",
+      "title": "Section III: GodelModel Structure",
+      "startLine": 92,
+      "endLine": 126,
+      "summary": "Defines the GodelModel structure axiomatizing a Peano-strength formal system via four structure-encoded hypotheses: h_diag (diagonal lemma = point-surjectivity), h_consistent (syntactic consistency), h_reflection (Σ₁-soundness), h_D1 (first Hilbert-Bernays condition). These four axioms precisely capture what the First Incompleteness proof requires."
+    },
+    {
+      "id": "first-incompleteness",
+      "title": "Section IV: Gödel Sentence and First Incompleteness",
+      "startLine": 128,
+      "endLine": 164,
+      "summary": "Derives the Gödel sentence G = Neg(PrSent G) by applying diagonal_lemma to F = Neg ∘ PrSent. Proves godel_first_incompleteness: G is not provable in any GodelModel. The 5-step proof: assume Pr G → by D1: Pr(PrSent G) → rewrite via G = Neg(PrSent G): Pr(Neg(PrSent G)) → both Pr(PrSent G) and Pr(Neg(PrSent G)) → contradicts consistency."
+    },
+    {
+      "id": "strong-incompleteness",
+      "title": "Section V: StrongGodelModel and Full Undecidability",
+      "startLine": 166,
+      "endLine": 214,
+      "summary": "Extends GodelModel with h_dne (double-negation elimination in provability), modeling classical systems. Proves godel_strong_incompleteness: both G and Neg G are unprovable. The new argument for Neg G: if Pr(Neg G), then by h_dne: Pr(PrSent G), then by reflection: Pr G — contradiction. Also proves godel_completeness_fails from strong incompleteness."
+    },
+    {
+      "id": "lawvere-chain",
+      "title": "Section VI: The Lawvere Chain Cantor → Rice → Gödel",
+      "startLine": 216,
+      "endLine": 256,
+      "summary": "Proves lawvere_chain_godel summarizing the unified perspective: Cantor and Rice use Lawvere where the endomorphism has NO fixed point (making surjectivity impossible), while Gödel uses Lawvere where the endomorphism DOES have a fixed point (the Gödel sentence) — but that fixed point is unprovable by consistency. Same categorical mechanism, different logical consequence."
+    }
+  ],
   "leanFile": {
     "namespace": "CantorDiagonalizationOQ03OQ01OQ03",
     "lineCount": 256,
