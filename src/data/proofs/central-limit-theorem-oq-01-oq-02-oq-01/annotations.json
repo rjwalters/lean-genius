@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-clt-header",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "Gaussian Lévy-Khintchine Exponent: Setup and Imports",
+    "content": "The Lévy-Khintchine theorem (1934-1937) characterizes all infinitely divisible probability distributions via their characteristic function logarithm ψ(t). For the Gaussian N(μ,σ²), ψ(t) = iμt − σ²t²/2. This module derives the Complex arithmetic properties of ψ explicitly, complementing the parent entry (CentralLimitTheoremOQ01OQ02) which uses `simp` to prove ψ(0)=0. The open statement `open Complex CentralLimitTheoremOQ01OQ02` gives direct access to the Lean definition `gaussianExponent μ σ_sq t = ↑(μ*t) * I − ↑(σ_sq * t²/2)`.",
+    "mathContext": "$\\psi(t) = i\\mu t - \\frac{\\sigma^2 t^2}{2}$ in Lean: `gaussianExponent μ σ_sq t = ↑(μ*t) * I − ↑(σ_sq * t² / 2)`. Re$(\\psi(t)) = -\\sigma^2 t^2/2$ (damping), Im$(\\psi(t)) = \\mu t$ (drift).",
+    "significance": "context",
+    "relatedConcepts": ["Lévy-Khintchine representation", "characteristic function", "infinitely divisible distributions", "CentralLimitTheoremOQ01OQ02"],
+    "prerequisites": ["Complex number arithmetic in Lean 4", "gaussianExponent definition", "Complex.I, Complex.ofReal"]
+  },
+  {
+    "id": "ann-clt-re-im",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 43, "endLine": 69 },
+    "type": "technique",
+    "title": "Extracting Re and Im via Complex.simp Lemmas",
+    "content": "gaussianExponent_re and gaussianExponent_im extract the real and imaginary parts of ψ(t) using a standard `simp only` toolkit: Complex.sub_re/im (linearity of Re/Im), Complex.mul_re/im (product rule), Complex.I_re = 0, Complex.I_im = 1, Complex.ofReal_re = id, Complex.ofReal_im = 0. After simp unfolds, `ring` closes the arithmetic. This pattern — simp only [all relevant Complex lemmas] + ring — is the idiomatic way to compute Re/Im of Complex expressions in Lean 4 Mathlib.",
+    "mathContext": "Re$(a \\cdot I - b) = a \\cdot \\text{Re}(I) - b \\cdot \\text{Re}(1) = a \\cdot 0 - b = -b$ (for real $a,b$). Im$(a \\cdot I - b) = a \\cdot \\text{Im}(I) - b \\cdot \\text{Im}(1) = a \\cdot 1 - 0 = a$.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.sub_re", "Complex.mul_re", "Complex.I_re", "Complex.ofReal_re", "simp + ring pattern"],
+    "prerequisites": ["Complex.re/im field accessors", "Lean 4 simp only tactic", "Complex.I definition"]
+  },
+  {
+    "id": "ann-clt-pure-imaginary",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 71, "endLine": 84 },
+    "type": "insight",
+    "title": "Pure Imaginary Case: σ²=0 Means Pure Rotation",
+    "content": "When σ²=0, the Gaussian distribution degenerates to a point mass at μ (a Dirac delta), and its characteristic function is e^{iμt} — a pure rotation on the complex unit circle with no decay. The Lévy-Khintchine exponent becomes ψ(t) = iμt with zero real part. gaussianExponent_pure_imaginary proves ψ μ 0 t = (μ*t)·I directly by simp. gaussianExponent_zero_sigma_re then follows immediately: Re(iμt) = 0. This case is the boundary between the Dirac delta (σ=0) and the true Gaussian (σ>0) regimes.",
+    "mathContext": "$\\psi_{\\sigma=0}(t) = i\\mu t$, so $e^{\\psi(t)} = e^{i\\mu t}$ — the characteristic function of the point mass $\\delta_\\mu$. Re$(\\psi) = 0$ means the characteristic function stays on the unit circle for all $t$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Dirac delta characteristic function", "unit circle", "degenerate Gaussian", "Pure imaginary complex numbers"],
+    "prerequisites": ["gaussianExponent definition", "simp with ofReal_zero", "σ²=0 specialization"]
+  },
+  {
+    "id": "ann-clt-symmetry",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 86, "endLine": 100 },
+    "type": "insight",
+    "title": "Even/Odd Symmetry: Conjugate Symmetry of Real-Valued RVs",
+    "content": "gaussianExponent_re_even (Re(ψ(−t)) = Re(ψ(t))) and gaussianExponent_im_odd (Im(ψ(−t)) = −Im(ψ(t))) together imply ψ(−t) = conj(ψ(t)), which means exp(ψ(−t)) = conj(exp(ψ(t))). This is the conjugate symmetry property φ(−t) = conj(φ(t)) that characterizes characteristic functions of real-valued random variables. The proofs are 2-line: `simp only [gaussianExponent_re]; ring` using (−t)² = t². This symmetry is fundamental in Fourier analysis and probability theory.",
+    "mathContext": "Re$(\\psi(-t)) = -\\sigma^2(-t)^2/2 = -\\sigma^2 t^2/2 = $ Re$(\\psi(t))$ (even). Im$(\\psi(-t)) = \\mu(-t) = -\\mu t = -$Im$(\\psi(t))$ (odd). Combined: $\\psi(-t) = \\overline{\\psi(t)}$, so $\\varphi(-t) = \\overline{\\varphi(t)}$.",
+    "significance": "key",
+    "relatedConcepts": ["conjugate symmetry of characteristic functions", "real-valued random variables", "Fourier transform symmetry", "even/odd functions"],
+    "prerequisites": ["gaussianExponent_re", "gaussianExponent_im", "ring for polynomial symmetry"]
+  },
+  {
+    "id": "ann-clt-char-fn-zero",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 102, "endLine": 112 },
+    "type": "insight",
+    "title": "gaussianCharFn_at_zero: Normalization Condition",
+    "content": "Every characteristic function φ(t) = E[e^{itX}] satisfies φ(0) = E[e^0] = E[1] = 1. This normalization is proved here as exp(ψ(0)) = exp(0) = 1 via Complex.exp_zero. The proof chain: `rw [gaussianExponent_zero]` uses ψ(0) = 0 (proved in parent entry), then `exact Complex.exp_zero`. This is a fundamental sanity check for the Lévy-Khintchine formula and is needed in any CLT proof to verify the normalization condition.",
+    "mathContext": "$\\varphi(0) = \\exp(\\psi(0)) = \\exp(0) = 1$. In general: $\\varphi(t) = \\exp(\\psi(t))$ where $\\psi(0) = i\\mu \\cdot 0 - \\sigma^2 \\cdot 0^2/2 = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["characteristic function normalization", "Complex.exp_zero", "gaussianExponent_zero (parent entry)", "Lévy continuity theorem"],
+    "prerequisites": ["gaussianExponent_zero (CentralLimitTheoremOQ01OQ02)", "Complex.exp_zero", "Complex arithmetic"]
+  }
+]
