@@ -108,14 +108,6 @@
       "endLine": 32,
       "summary": "Rates above entropy are achievable: encode typical sequences with $n(H+\\varepsilon)$ bits. Placeholder.",
       "mathContext": "For $R > H(X)$: $P_e^{(n)} \\to 0$ as $n \\to \\infty$ by typical set coding."
-    },
-    {
-      "id": "converse",
-      "title": "Source Coding Converse",
-      "startLine": 36,
-      "endLine": 44,
-      "summary": "Rates below entropy are impossible: error probability bounded away from 0. Placeholder.",
-      "mathContext": "For $R < H(X)$: $P_e \\geq 1 - 2^{n(R-H+\\varepsilon)} \\to 1$."
     }
   ],
   "crossReferences": [

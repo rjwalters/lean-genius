@@ -106,13 +106,6 @@
       "startLine": 77,
       "endLine": 93,
       "summary": "Axiomatizes four open questions: `erdos_422_well_defined` ($\\forall n, \\text{IsWellDefined}(n)$), `erdos_422_misses_infinitely` ($\\{m > 0 : \\forall n, f(n) \\neq m\\}$ is infinite via `Set.Infinite`), `erdos_422_not_surjective` ($f$ restricted to $\\mathbb{N}^+$ is not surjective via $\\neg$`Function.Surjective`), and `erdos_422_growth` ($f(n) \\leq (1+\\varepsilon)n$ for large $n$)."
-    },
-    {
-      "id": "observations",
-      "title": "Observations",
-      "startLine": 97,
-      "endLine": 106,
-      "summary": "Comments (not formal declarations) on three aspects: Hofstadter's origin and communication to Erdős, the fundamental difficulty posed by self-referential indexing that defeats standard inductive techniques, and the open question of whether $f$ is eventually constant."
     }
   ],
   "conclusion": {

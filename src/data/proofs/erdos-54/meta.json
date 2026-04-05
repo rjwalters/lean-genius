@@ -119,14 +119,6 @@
       "endLine": 78,
       "summary": "**ErdosProblem54**: conjunction of both bounds, capturing $\\Theta((\\log N)^2)$ as the minimum growth rate. Solved by Conlon–Fox–Pham (2021).",
       "mathContext": "$\\Theta((\\log N)^2)$: $\\exists c_1, c_2 > 0$ such that the minimum counting function of a Ramsey 2-complete set satisfies $c_1 (\\log N)^2 \\le f(N) \\le c_2 (\\log N)^2$."
-    },
-    {
-      "id": "earlier-upper",
-      "title": "Earlier Upper Bound",
-      "startLine": 81,
-      "endLine": 94,
-      "summary": "**burr_erdos_upper**: $\\exists A$ Ramsey 2-complete with $|A \\cap [1,N]| < (2\\log_2 N)^3$. Original cubic bound, superseded by quadratic.",
-      "mathContext": "$|A \\cap [1,N]| \\le (2 \\log_2 N)^3$ (Burr-Erdős, 1985). Original cubic upper bound, improved to quadratic by Conlon-Fox-Pham."
     }
   ],
   "conclusion": {

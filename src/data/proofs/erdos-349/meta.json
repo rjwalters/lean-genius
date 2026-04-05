@@ -147,14 +147,6 @@
       "endLine": 83,
       "summary": "Notes the link to Waring's problem: the Ideal Waring formula $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ depends on the same exponential floor values that appear in Problem #349.",
       "mathContext": "$g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ when $\\{(3/2)^k\\} \\leq 1 - (3/4)^k$. This condition holds for all verified $k \\leq 471{,}600{,}000$ (Kubina-Wunderlich). If it fails for some $k$, then $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 1$."
-    },
-    {
-      "id": "fibonacci-observation",
-      "title": "Fibonacci Threshold Explanation",
-      "startLine": 85,
-      "endLine": 88,
-      "summary": "Explains why $\\varphi$ is the natural boundary: for $\\alpha > \\varphi$, eventually $a_{n+1} > 2a_n$, creating gaps too large for completeness. The Fibonacci sequence ($\\alpha = \\varphi$) is the extremal complete case.",
-      "mathContext": "For $\\alpha > \\varphi$: $a_{n+1}/a_n \\to \\alpha > \\varphi > 1 + 1/\\varphi$, so eventually $a_{n+1} > a_n(1 + 1/\\varphi) > a_n + a_{n-1} + \\cdots + a_0$. This makes it impossible to represent $a_{n+1} - 1$ as a sum of distinct earlier terms. The Fibonacci recurrence $F_{n+2} = F_{n+1} + F_n$ is exactly at the boundary where this gap condition is avoided."
     }
   ],
   "overview": {

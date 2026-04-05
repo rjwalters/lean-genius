@@ -73,20 +73,6 @@
       "startLine": 53,
       "endLine": 58,
       "summary": "Axiom: ∃ C, D₀, ∀ d ≥ D₀, f(d) ≤ C · (log₂ d + 1). Beck (1980) constructs a low-discrepancy 2-coloring limiting monochromatic AP length to O(log d)."
-    },
-    {
-      "id": "sqrt2-coloring",
-      "title": "Part IV: Erdős's √2-Coloring",
-      "startLine": 61,
-      "endLine": 67,
-      "summary": "Axiom: ∃ a Diophantine coloring achieving f(d) ≪ d. The coloring χ(n) = ⌊√2·n⌋ mod 2 uses equidistribution of {√2·nd} to limit monochromatic AP lengths."
-    },
-    {
-      "id": "open-question",
-      "title": "Part V: The Open Question",
-      "startLine": 68,
-      "endLine": 78,
-      "summary": "ErdosProblem187: is f(d) = Θ(log d)? Formalized as existence of c, C, D₀ with c·log₂ d ≤ f(d) ≤ C·log₂ d for all d ≥ D₀. Upper bound known (Beck); lower bound open."
     }
   ],
   "conclusion": {

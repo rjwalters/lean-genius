@@ -110,14 +110,6 @@
       "endLine": 94,
       "summary": "Axiomatizes `infinitely_many_exceptions_k2`: $\\{n \\text{ even}\\} \\setminus S_2$ is infinite (proved via covering congruences), and `infinitely_many_exceptions_k3`: $\\{n \\text{ even}\\} \\setminus S_3$ is infinite (conjectured).",
       "mathContext": "Erdős's covering congruence argument: infinitely many even integers are not in $S_2 = \\{p + 2^a + 2^b\\}$. Extension to $S_3$ remains open."
-    },
-    {
-      "id": "romanoff",
-      "title": "Romanoff's Theorem",
-      "startLine": 103,
-      "endLine": 109,
-      "summary": "Axiomatizes `romanoff_positive_density`: $\\underline{d}(S_1) > 0$. Romanoff (1934) showed a positive proportion of integers are $p + 2^a$, using sieve methods. One of the earliest results on prime-plus-lacunary bases.",
-      "mathContext": "Romanoff (1934): $\\underline{d}(S_1) > 0$ via sieve methods — a positive proportion of integers have the form $p + 2^a$."
     }
   ],
   "conclusion": {

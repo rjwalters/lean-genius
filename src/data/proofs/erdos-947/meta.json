@@ -116,13 +116,6 @@
       "startLine": 157,
       "endLine": 183,
       "summary": "Axiomatizes `covering_systems_exist` (ordinary coverings with distinct moduli $> 1$ exist) and `erdos_covering_example` (specific system with moduli $\\{2, 3, 4, 6, 12\\}$). *Verifies* `exactCoveringWithRepeats`: the construction $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$ with proved nonemptiness, positive moduli, and coverage via case split on $x \\bmod 2$."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 195,
-      "endLine": 208,
-      "summary": "*Proves* `erdos_947_summary`: the conjunction of (1) no exact covering with distinct moduli and (2) existence of ordinary coverings with distinct moduli. Proof extracts components from axiomatized results."
     }
   ],
   "conclusion": {

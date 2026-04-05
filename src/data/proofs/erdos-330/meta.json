@@ -48,22 +48,6 @@
       "endLine": 65,
       "summary": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist (Härtter-Stöhr).",
       "mathContext": "Known hierarchy: (1) minimal basis exists for all $h \\geq 2$ (elementary), (2) minimal basis with $\\bar{d}(A) > 0$ exists (Härtter 1956, Stöhr 1955), (3) minimal basis with quantitative criticality (Problem #330, open). Each level strengthens the notion of how 'essential' individual elements are."
-    },
-    {
-      "id": "open-question",
-      "title": "The Open Question",
-      "startLine": 74,
-      "endLine": 84,
-      "summary": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?",
-      "mathContext": "$\\exists A, h : \\text{IsMinimalBasis}(A, h) \\wedge \\bar{d}(A) > 0 \\wedge \\forall n \\in A,\\; \\bar{d}(\\{m : m \\notin h\\text{-sumset}(A \\setminus \\{n\\})\\}) > 0$. Axiomatized since the problem remains open — no construction or impossibility proof is known."
-    },
-    {
-      "id": "implications",
-      "title": "Implications and Context",
-      "startLine": 84,
-      "endLine": 84,
-      "summary": "Connection to Erdős-Nathanson theory, quantitative minimality, and broader additive combinatorics.",
-      "mathContext": "The problem connects to Schnirelmann's theorem (every set with $\\sigma(A) > 0$ is an additive basis), the Erdős-Ginzburg-Ziv theorem, and the broader theory of how density interacts with additive structure in $\\mathbb{N}$."
     }
   ],
   "overview": {

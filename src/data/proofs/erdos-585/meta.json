@@ -94,14 +94,6 @@
       "endLine": 80,
       "summary": "States both bounds together as a single axiom capturing the current state of knowledge: Ω(n log log n) ≤ f(n) ≤ O(n(log n)^C).",
       "mathContext": "$\\Omega(n \\log\\log n) \\leq f(n) \\leq O(n (\\log n)^C)$. The gap between these bounds is the central open problem."
-    },
-    {
-      "id": "k-cycles",
-      "title": "k-Cycle Generalization",
-      "startLine": 91,
-      "endLine": 99,
-      "summary": "The CJMM generalization: for any k ≥ 2, graphs exceeding the O(n(log n)^C) threshold must contain k pairwise edge-disjoint cycles on some common vertex set.",
-      "mathContext": "CJMM generalization: $\\forall k \\geq 2$, graphs with $> C_k n (\\log n)^{\\alpha_k}$ edges contain $k$ pairwise edge-disjoint cycles on a common vertex set."
     }
   ],
   "conclusion": {

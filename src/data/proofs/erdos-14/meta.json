@@ -106,14 +106,6 @@
       "endLine": 85,
       "summary": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < 2^{3/2}\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal.",
       "mathContext": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < $$2^{{3/2}$}$\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal."
-    },
-    {
-      "id": "structural",
-      "title": "Structural Observations",
-      "startLine": 90,
-      "endLine": 103,
-      "summary": "Sidon sets give $f_A(N) \\geq N/2$ (perfect uniqueness, poor coverage). Monotonicity: $M \\leq N \\implies f_A(M) \\leq f_A(N)$.",
-      "mathContext": "Mathematical content: Sidon sets give $f_A(N) \\geq N/2$ (perfect uniqueness, poor coverage). Monotonicity: $M \\leq N \\implies f_A(M) \\leq f_A(N)$."
     }
   ],
   "conclusion": {
