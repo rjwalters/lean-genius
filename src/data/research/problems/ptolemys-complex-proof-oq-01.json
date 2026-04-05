@@ -44,7 +44,8 @@
     "intermediate"
   ],
   "relatedProofs": [
-    "ptolemys-complex-proof"
+    "ptolemys-complex-proof",
+    "ptolemys-complex-proof-oq-01"
   ],
   "references": {
     "papers": [],
@@ -65,6 +66,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysComplexProof.lean"
+    },
+    {
+      "path": "Proofs/PtolemysComplexProofOQ01.lean",
+      "filename": "PtolemysComplexProofOQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysComplexProofOQ01.lean"
     }
   ]
 }
