@@ -352,78 +352,22 @@ end Characterization
 The Fair Games Theorem has profound applications in gambling, finance, and statistics.
 -/
 
-section Applications
+/-
+## Applications (future work)
 
-/-- **Gambler's Ruin Intuition**
+The Fair Games Theorem has profound implications for:
 
-    Consider a gambler with initial wealth W₀ playing fair coin flips (+1 or -1).
-    The wealth process W₀, W₁, W₂, ... is a martingale.
+- **Gambler's Ruin**: P(reach W₀+a before 0 | start at W₀) = W₀/(W₀+a). For a fair
+  game, no strategy improves odds — this follows directly from E[W_τ] = E[W₀].
+- **Betting Systems Fail**: Martingale doubling, D'Alembert, Fibonacci strategies all
+  fail within bounded time because E[final wealth] = E[initial wealth].
+- **Option Pricing**: Discounted asset prices are martingales under the risk-neutral
+  measure; fair pricing = expected discounted payoff (fundamental theorem of asset pricing).
+- **Doob's Maximal Inequality**: P(max_{n≤N} f_n ≥ λ) ≤ E[f_N]/λ for non-negative
+  submartingales — follows from optional stopping arguments.
 
-    Strategy: "Stop when I reach wealth W₀ + 10 or hit 0"
-
-    The Fair Games Theorem says E[W_τ] = E[W₀] = W₀.
-
-    If p = P(reach W₀ + 10) and q = P(hit 0), then:
-    - p · (W₀ + 10) + q · 0 = W₀
-    - p = W₀ / (W₀ + 10)
-
-    With W₀ = 10: p = 10/20 = 50% chance of doubling before ruin.
-    This is consistent with the fair game: no advantage from the strategy! -/
-theorem gamblers_ruin_fair_game :
-    -- The Fair Games Theorem explains gambler's ruin probabilities
-    -- For a fair game starting at wealth W₀, targeting W₀ + a before 0:
-    -- P(success) = W₀ / (W₀ + a)
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- **Martingale Betting Systems Don't Work**
-
-    Famous (failed) strategies:
-    1. **Martingale System**: Double your bet after each loss
-    2. **D'Alembert System**: Increase bet by 1 after loss, decrease by 1 after win
-    3. **Fibonacci System**: Follow Fibonacci sequence for bet sizes
-
-    All these strategies fail because:
-    - They require bounded stopping times (casino closing, bankroll limits)
-    - Within any bounded time, E[final wealth] = E[initial wealth]
-    - With unbounded time, expected number of bets is infinite (not implementable)
-
-    The Fair Games Theorem provides the rigorous proof. -/
-theorem betting_systems_fail :
-    -- No betting system can beat a fair game
-    -- This is a direct consequence of the Fair Games Theorem
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- **Financial Mathematics: Option Pricing**
-
-    In the Black-Scholes model, discounted asset prices form a martingale
-    under the risk-neutral measure. The Fair Games Theorem implies:
-
-    - E[discounted payoff] is independent of when we compute it
-    - This justifies pricing derivatives as expected discounted payoffs
-    - Exercise strategies in American options follow stopping time theory
-
-    The fundamental theorem of asset pricing: absence of arbitrage ↔
-    existence of a martingale measure. -/
-theorem option_pricing_martingale :
-    -- Discounted asset prices are martingales under risk-neutral measure
-    -- Fair pricing follows from the Optional Stopping Theorem
-    (1 : ℕ) + 1 = 2 := rfl
-
-/-- **Doob's Maximal Inequality**
-
-    For a non-negative submartingale f, the probability that f exceeds
-    threshold λ at some point up to time N is bounded:
-
-    P(max_{n≤N} f_n ≥ λ) ≤ E[f_N] / λ
-
-    This follows from optional stopping arguments and provides
-    concentration inequalities for martingales. -/
-theorem doobs_inequality_statement :
-    -- Doob's maximal inequality follows from optional stopping
-    -- P(max_{n≤N} f_n ≥ λ) ≤ E[f_N] / λ for non-negative submartingales
-    (1 : ℕ) + 1 = 2 := rfl
-
-end Applications
+TODO: Formalize at least one of these as a substantive Lean theorem.
+-/
 
 /-!
 ## Part VI: Why "Fair Games Theorem" (Wiedijk #62)
@@ -465,10 +409,8 @@ section Conclusion
     Mathlib provides: `MeasureTheory.submartingale_iff_expected_stoppedValue_mono`
     and related theorems in `Mathlib.Probability.Martingale.OptionalStopping`.
 -/
-theorem fair_games_summary :
-    -- The Fair Games Theorem (Wiedijk #62) is formalized in Mathlib
-    -- via the Optional Stopping Theorem for martingales
-    (1 : ℕ) + 1 = 2 := rfl
+-- Summary: The Fair Games Theorem (Wiedijk #62) is formalized in Mathlib
+-- via the Optional Stopping Theorem for martingales. See fair_games_theorem above.
 
 end Conclusion
 
