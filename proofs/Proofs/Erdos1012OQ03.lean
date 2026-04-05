@@ -53,10 +53,14 @@ Survey + proof infrastructure. Rédei proved modulo 2 infrastructure lemmas.
 - [x] list_cycle_to_hamiltonian (cycle list → equivalence)
 - [x] grow_cycle_to_hamiltonian (induction on deficit)
 - [x] Moon-Moser proved modulo 2 infrastructure sorries
-- [ ] sc_tournament_has_cycle (cycle existence in SC tournament)
-- [ ] tournament_cycle_extendable (longest-cycle extension)
-- [ ] Ghouila-Houri proof
-- [ ] Directed threshold proof
+- [x] sc_tournament_has_cycle (cycle existence in SC tournament)
+- [x] tournament_cycle_extendable (longest-cycle extension)
+- [x] Directed threshold proof (0 sorries)
+- [ ] Ghouila-Houri proof (structured: 2 helper sorries, main proved)
+  - [ ] sc_degree_has_cycle (cycle existence in SC high-degree digraph)
+  - [ ] ghouila_houri_cycle_extendable (cycle extension under GH conditions)
+  - [x] grow_cycle_gh (well-founded recursion, proved)
+  - [x] ghouila_houri (delegates to helpers, proved)
 -/
 
 namespace Erdos1012OQ03
@@ -286,18 +290,83 @@ lemma list_path_to_hamiltonian (D : Digraph V) (l : List V)
 PART III: GHOUILA-HOURI'S THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
+/-! The degree condition uses CEILING division ⌈n/2⌉ = (n+1)/2 in Lean's Nat division.
+Floor division n/2 is insufficient: for n=3, ⌊3/2⌋=1 allows SC digraphs without HC.
+Counterexample: V={a,b,c}, arcs={a→b, b→a, a→c, c→a}, min in/out-deg=1, SC but no HC. -/
+
+/-- Out-degree as a Finset cardinality (decidable version needed for counting). -/
+private noncomputable def Digraph.outNeighbors (D : Digraph V) (v : V) : Finset V :=
+  Finset.univ.filter (fun u => D.arc v u)
+
+/-- In-degree as a Finset cardinality (decidable version needed for counting). -/
+private noncomputable def Digraph.inNeighbors (D : Digraph V) (v : V) : Finset V :=
+  Finset.univ.filter (fun u => D.arc u v)
+
+/-- An SC digraph with ⌈n/2⌉ minimum degree has a directed cycle.
+Every vertex has out-degree ≥ 2 (for n ≥ 3), so a walk must revisit a vertex. -/
+private lemma sc_degree_has_cycle (D : Digraph V) (hn : 3 ≤ Fintype.card V)
+    (hsc : D.IsStronglyConnected)
+    (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v) :
+    ∃ l : List V, IsDirectedCycleList D l := by
+  -- Since (n+1)/2 ≥ 2 for n ≥ 3, every vertex has out-degree ≥ 2.
+  -- Take any two distinct vertices with an arc, use SC to close a cycle.
+  sorry
+
+/-- In an SC digraph with Ghouila-Houri conditions, any directed cycle
+shorter than n can be extended to a longer cycle.
+
+**Proof strategy for the case k = n-1** (one vertex missing):
+The unique non-cycle vertex v has ALL its neighbors on C (only v is off C).
+So |N⁺(v)∩C| + |N⁻(v)∩C| = out-deg(v) + in-deg(v) ≥ (n+1)/2 + (n+1)/2 ≥ n+1 > n-1 = k.
+By the shifted-disjointness argument, a non-insertable vertex satisfies
+|N⁺∩C| + |N⁻∩C| ≤ k. Since n+1 > n-1, v must be insertable.
+
+**For general k < n-1**: Uses SC to find arc paths through non-cycle vertices.
+When no single vertex is insertable, the S⁻/S⁺ partition argument
+(adapted from tournament_cycle_extendable) derives contradiction with SC. -/
+private lemma ghouila_houri_cycle_extendable (D : Digraph V)
+    (hn : 3 ≤ Fintype.card V) (hsc : D.IsStronglyConnected)
+    (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v)
+    (hin : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.inDegree v)
+    (l : List V) (hc : IsDirectedCycleList D l) (hl : l.length < Fintype.card V) :
+    ∃ l' : List V, IsDirectedCycleList D l' ∧ l.length < l'.length := by
+  sorry
+
+/-- Grow a cycle to Hamiltonian using GH conditions. -/
+private noncomputable def grow_cycle_gh (D : Digraph V)
+    (hn : 3 ≤ Fintype.card V) (hsc : D.IsStronglyConnected)
+    (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v)
+    (hin : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.inDegree v)
+    (l : List V) (hc : IsDirectedCycleList D l) :
+    D.HasHamiltonianCycle := by
+  by_cases hm : l.length = Fintype.card V
+  · exact list_cycle_to_hamiltonian D l hc hm
+  · have hle : l.length ≤ Fintype.card V := nodup_length_le_card l hc.1
+    obtain ⟨l', hc', hl'⟩ :=
+      ghouila_houri_cycle_extendable D hn hsc hout hin l hc (by omega)
+    have hle' : l'.length ≤ Fintype.card V := nodup_length_le_card l' hc'.1
+    exact grow_cycle_gh D hn hsc hout hin l' hc'
+termination_by Fintype.card V - l.length
+decreasing_by omega
+
 /-- **Ghouila-Houri's Theorem (1960)**
 
 A strongly connected digraph on n ≥ 3 vertices where every vertex has
-in-degree and out-degree at least n/2 has a directed Hamiltonian cycle.
+in-degree and out-degree at least ⌈n/2⌉ has a directed Hamiltonian cycle.
 
-This is the directed analogue of Dirac's theorem (1952) for undirected graphs. -/
+This is the directed analogue of Dirac's theorem (1952) for undirected graphs.
+
+**Note**: The degree bound uses CEILING division (n+1)/2, not floor n/2.
+For n=3, ⌈3/2⌉=2 requires each vertex to have degree 2 in both directions
+(i.e., the digraph is complete). Floor division ⌊3/2⌋=1 is insufficient:
+counterexample exists with SC + min-degree 1 but no HC. -/
 theorem ghouila_houri (D : Digraph V) (hn : 3 ≤ Fintype.card V)
     (hsc : D.IsStronglyConnected)
-    (hout : ∀ v : V, Fintype.card V / 2 ≤ D.outDegree v)
-    (hin : ∀ v : V, Fintype.card V / 2 ≤ D.inDegree v) :
+    (hout : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.outDegree v)
+    (hin : ∀ v : V, (Fintype.card V + 1) / 2 ≤ D.inDegree v) :
     D.HasHamiltonianCycle := by
-  sorry
+  obtain ⟨l₀, hc₀⟩ := sc_degree_has_cycle D hn hsc hout
+  exact grow_cycle_gh D hn hsc hout hin l₀ hc₀
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IV: MOON-MOSER THEOREM FOR TOURNAMENTS
@@ -1187,11 +1256,20 @@ Decomposed via counting/probabilistic method:
 
 Remaining sorries: none (directed_hamiltonian_threshold is fully proved, 0 sorries)
 
-### Ghouila-Houri (~200 lines, still open)
-The proof follows the same structure as Dirac's theorem:
-1. Start with a longest directed path P in D
-2. Show P must be Hamiltonian (degree conditions prevent extension if k < n)
-3. Close P into a cycle using degree conditions on first/last vertices
+### Ghouila-Houri (structured, 2 sorries remain in helpers)
+**Bug fixed**: degree condition changed from floor(n/2) to ceil(n/2) = (n+1)/2.
+Floor division is insufficient for n=3 (counterexample: SC digraph with min-deg 1, no HC).
+
+Proof structure (grow-cycle approach):
+1. `sc_degree_has_cycle` (sorry): SC + high degree → initial directed cycle
+2. `ghouila_houri_cycle_extendable` (sorry): cycle of length k < n → longer cycle
+   - k = n-1: degree counting forces insertion (|N⁺∩C|+|N⁻∩C| ≥ n+1 > n-1 = k)
+   - k < n-1: SC + S⁻/S⁺ partition argument (adapted from tournament case)
+3. `grow_cycle_gh` (proved): well-founded recursion using 2
+4. `ghouila_houri` (proved): delegates to 1 + 3
+
+**Note**: directed path rotation does NOT close directed paths into cycles
+(can't reverse path segments). The grow-cycle approach is correct for directed graphs.
 
 ### Rédei (DONE)
 Proved by induction via tournament insertion lemma.

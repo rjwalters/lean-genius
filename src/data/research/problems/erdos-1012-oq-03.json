@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: directed_hamiltonian_threshold now FULLY PROVED via complete probabilistic counting argument. Only hBadFor_bound sorry remains inside hamiltonian_of_few_missing_arcs (fiber counting: |BadFor(a,b)| ≤ n*(n-2)!, suitable for Aristotle). ghouila_houri still sorry. 2 total sorries remain.",
+    "progressSummary": "ACT: Fixed ghouila_houri statement (floor→ceiling division bug). Restructured proof: main theorem proved via grow-cycle, 2 helper sorries remain (sc_degree_has_cycle, ghouila_houri_cycle_extendable).",
     "builtItems": [
       "Digraph structure with loopless axiom",
       "In-degree, out-degree, tournament, strong connectivity definitions",
@@ -53,7 +53,12 @@
       "hAllBad_lt proof: |AllBad| < n! via union bound + factorial chain + nlinarith (fully proved)",
       "hne proof: consecutive cycle entries are distinct, using rcases Nat.lt_or_ge for mod arithmetic (fully proved)",
       "Good permutation extraction + Hamiltonian cycle construction (fully proved)",
-      "directed_hamiltonian_threshold: (n-1)² < arcCount ∧ SC → HC (fully proved given hBadFor_bound)"
+      "directed_hamiltonian_threshold: (n-1)² < arcCount ∧ SC → HC (fully proved given hBadFor_bound)",
+      "Fixed ghouila_houri: changed n/2 to (n+1)/2 (ceiling division) — floor is wrong for n=3",
+      "grow_cycle_gh: well-founded recursion growing cycles to Hamiltonian (proved)",
+      "ghouila_houri: main theorem proved by delegating to sc_degree_has_cycle + grow_cycle_gh",
+      "sc_degree_has_cycle: cycle existence stub (sorry, needs SC + pigeonhole)",
+      "ghouila_houri_cycle_extendable: cycle extension stub (sorry, key case k=n-1 documented)"
     ],
     "insights": [
       "Ghouila-Houri (1960) is the directed Dirac theorem: min in/out-degree ≥ n/2 + strong connectivity → HC",
@@ -73,12 +78,17 @@
       "Finset.card_sdiff API changed: old form took a subset proof h, new form is (s\\t).card = s.card - (t∩s).card; fix: rw [Finset.card_sdiff, Finset.inter_univ]",
       "Variable modular arithmetic (i.val+1)%n: omega cannot handle — requires rcases Nat.lt_or_ge + Nat.mod_eq_of_lt / Nat.mod_self case split",
       "hBadFor_bound (|BadFor(a,b)| ≤ n*(n-2)!): fiber counting — for each position k, fixing σ(k)=α⁻¹(a) and σ((k+1)%n)=α⁻¹(b) leaves (n-2)! choices; n positions give n*(n-2)! total",
-      "arcCount synthesis: Fintype.card {p : V×V // P p} requires DecidablePred; fix via haveI := Classical.decPred _ + filter.card definition"
+      "arcCount synthesis: Fintype.card {p : V×V // P p} requires DecidablePred; fix via haveI := Classical.decPred _ + filter.card definition",
+      "CRITICAL BUG: floor(n/2) is insufficient for GH theorem. Counterexample: n=3, arcs={a↔b, a↔c}, SC with min-deg 1 but no HC",
+      "Directed path rotation (Dirac-style) does NOT work for directed graphs — cannot reverse path segments",
+      "Grow-cycle approach is correct for directed GH: get initial cycle from SC, extend using degree conditions",
+      "k=n-1 case is clean: |N⁺∩C|+|N⁻∩C| ≥ n+1 > n-1 forces insertability",
+      "k<n-1 case requires SC+S⁻/S⁺ partition argument (similar to tournament_cycle_extendable Case 2b)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Submit hBadFor_bound to Aristotle: prove |BadFor(a,b)| ≤ n*(n-2)! via fiber counting argument",
-      "Prove ghouila_houri: directed analogue of Dirac's theorem (SC + min in/out-degree ≥ n/2). Requires full Hamiltonian extension machinery (~200 lines)."
+      "Prove sc_degree_has_cycle: SC + out-deg≥2 → directed cycle exists (pigeonhole on walks)",
+      "Prove ghouila_houri_cycle_extendable: key cases are k=n-1 (counting) and k<n-1 (SC partition)"
     ]
   },
   "tags": [

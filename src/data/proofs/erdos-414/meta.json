@@ -49,11 +49,9 @@
     ],
     "axiomCount": 1,
     "assumptions": [
-      "erdos_414_conjecture: ∀ m, n ≥ 1, ∃ i, j: h^i(m) = h^j(n) — all orbits eventually merge (main open question)",
-      "single_eventual_orbit: equivalent formulation — there exists a single sequence S that all orbits eventually follow",
-      "orbits_get_close: ∀ m, n ≥ 1, ∀ D, ∃ i, j: |h^i(m) - h^j(n)| < D — weaker proximity statement (also open)"
+      "erdos_414_conjecture: ∀ m, n ≥ 1, ∃ i, j: h^i(m) = h^j(n) — all orbits eventually merge (main open question)"
     ],
-    "lineCount": 301
+    "lineCount": 302
   },
   "sections": [
     {
@@ -85,7 +83,7 @@
       "title": "The Merging Conjecture (OPEN)",
       "startLine": 98,
       "endLine": 112,
-      "summary": "**erdos_414_conjecture**: ∀ m, n ≥ 1, ∃ i, j with h^i(m) = h^j(n). Equivalently, **single_eventual_orbit**: all orbits merge into one trajectory. The directed graph n → h(n) is conjectured to be a tree with a single trunk.",
+      "summary": "**erdos_414_conjecture** (sole axiom): ∀ m, n ≥ 1, ∃ i, j with h^i(m) = h^j(n). **single_eventual_orbit** and **orbits_get_close** are proved as consequences. **hOrbit_continuation**: once orbits meet, they stay merged forever (key lemma, fully proved by induction).",
       "mathContext": "$\\forall m, n \\geq 1, \\exists i, j \\in \\mathbb{N}: h^i(m) = h^j(n)$. Equivalently, the directed graph $n \\to h(n)$ has a single connected component."
     },
     {
@@ -101,7 +99,7 @@
       "title": "Growth Rate and Heuristic Analysis",
       "startLine": 127,
       "endLine": 155,
-      "summary": "**average_divisor_count**: Dirichlet's theorem gives average τ(n) ∼ log n. **orbit_linear_lower**: h^k(n) ≥ n + k. **orbits_get_close**: any two orbits eventually come within distance D (a weaker unproven statement). The heuristic: orbit spacing ∼ log V near value V, so collision probability ∼ 1/(log V)², and Σ 1/(log V)² diverges.",
+      "summary": "**divisors_card_le_two_sqrt**: τ(n) ≤ 2√n (fully proved via small/large divisor splitting). **h_upper_sqrt**: h(n) ≤ n + 2√n. **orbit_linear_lower**: h^k(n) ≥ n + k. **orbit_linear_lower_ge2**: h^k(n) ≥ n + 2k for n ≥ 2. **orbits_get_close**: proved from the conjecture — once orbits meet, distance is 0. Extended merge computations for orbits 2–10.",
       "mathContext": "Dirichlet: $\\sum_{k \\leq n} \\tau(k) \\sim n \\log n$. Hence $h^k(n) \\approx n + k \\log n$ on average. Collision probability per step $\\sim 1/(\\log V)^2$; $\\sum 1/(\\log V)^2 = \\infty$."
     }
   ],
@@ -109,14 +107,14 @@
     "historicalContext": "Erdős and Graham posed Problem #414 in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p. 82), alongside the related Problems #412 ($n + \\sigma(n)$) and #413 ($n - \\varphi(n)$). The problem belongs to **arithmetic dynamics** — iteration of number-theoretic functions as discrete dynamical systems, a field that also includes the Collatz conjecture and aliquot sequences.\n\nThe function $h(n) = n + \\tau(n)$ is strictly increasing ($\\tau(n) \\geq 1$), ruling out cycles. Orbits march strictly upward, so the question is purely about *merging*. Despite strong computational evidence (all orbits from 1 to $10^6$ merge within ~20 steps), the problem remains OPEN. The difficulty: proving exact collision $h^i(m) = h^j(n)$ requires controlling the cumulative irregularity of $\\tau$ along two trajectories. Dirichlet gives $\\sum_{k \\leq n} \\tau(k) \\sim n \\log n$ on average, but $\\tau$ fluctuates wildly: from 2 at primes to $\\tau(n) \\gg n^\\varepsilon$ at highly composite numbers.",
     "problemStatement": "Let h(n) = n + τ(n) where τ(n) counts the divisors of n. For any m, n ≥ 1, do there exist i, j ∈ ℕ such that h^i(m) = h^j(n)?",
     "text": "Erdős Problem #414 studies the iteration h(n) = n + τ(n), where τ(n) counts divisors. Since h is strictly increasing, orbits march upward without cycles. The open question: do all orbits eventually merge? For any m, n ≥ 1, Erdős and Graham conjectured there exist i, j with h^i(m) = h^j(n). Computational evidence is strong (all orbits from 1 to 10^6 merge within ~20 steps), but the irregularity of τ along trajectories makes rigorous proof elusive.",
-    "proofStrategy": "The formalization defines h(n) = n + τ(n) using Lean's `Nat.divisors.card` and the orbit sequence hOrbit by recursion. Basic properties (strict monotonicity, upper bound h(n) ≤ 2n, behavior at primes) are axiomatized. The main conjecture and its equivalent single-orbit formulation are stated. Concrete orbit computations demonstrate the merge of orbits from 1 and 3 at value 7. Growth rate analysis includes Dirichlet's average order of τ, linear orbit lower bounds, and the weaker 'orbits get close' statement. No sorries remain — all deep statements are correctly axiomatized as open conjectures.",
+    "proofStrategy": "The formalization defines h(n) = n + τ(n) using Lean's `Nat.divisors.card` and the orbit sequence hOrbit by recursion. Basic properties are fully proved: strict monotonicity (h(n) > n for n ≥ 1), upper bounds (h(n) ≤ 2n and the tighter h(n) ≤ n + 2√n via a proved τ(n) ≤ 2√n bound), lower bounds (h(n) ≥ n + 2 for n ≥ 2), and behavior at primes (h(p) = p + 2). The main conjecture is the sole axiom. Two consequences (single_eventual_orbit and orbits_get_close) are proved FROM the conjecture. Orbit computations verify all merges for starting values 1–10 via native_decide.",
     "keyInsights": [
       "**Strict monotonicity eliminates cycles**: h(n) > n always, so orbits march strictly upward — no Collatz-like cycle-hunting needed",
       "**Two-speed dynamics**: primes advance by 2 (minimum), highly composite numbers jump by τ ≫ log n — this irregular spacing creates the orbit structure",
       "**Collision mechanism**: h(a) = h(b) when a + τ(a) = b + τ(b), i.e., b − a = τ(a) − τ(b). The divisor function's irregularity makes these collisions common but unpredictable",
       "**Heuristic for merging**: orbit spacing ∼ log V at value V, so collision probability ∼ 1/(log V)² per step. Since Σ 1/(log V)² diverges, infinitely many collisions are expected — but this heuristic is not rigorous",
       "**Even the weak form is open**: proving that orbits merely get arbitrarily close (without exact collision) is already unproven",
-      "**Proof structure**: The file uses 3 `axiom` declarations for genuinely open statements (erdos_414_conjecture, single_eventual_orbit, orbits_get_close). All other statements are either `theorem` (proved) or `def` (defined). The `average_divisor_count : True` theorem is a Dirichlet-average placeholder — it states only `True` and could be replaced by a real asymptotic statement using `Filter.Tendsto`. The basic properties `h_strictly_increasing`, `orbit_strictly_increasing`, `h_upper`, and `h_prime` are all proved in full Lean detail."
+      "**Proof structure**: The file has 1 `axiom` declaration (erdos_414_conjecture, the main open question). Two consequences (single_eventual_orbit and orbits_get_close) are proved as theorems from this axiom. The divisor bound τ(n) ≤ 2√n is proved in full Lean detail via a small/large divisor splitting argument. All 34 theorems are fully proved with no sorries."
     ],
     "prerequisites": [
       "Number theory: divisor functions and multiplicative functions",
@@ -177,7 +175,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This 178-line formalization captures the OPEN Erdős Problem #414: do all orbits of the iteration $h(n) = n + \\tau(n)$ eventually merge, where $\\tau(n)$ is the divisor count function? The formalization defines the orbit structure, proves basic properties (e.g., $h(n) > n$ so orbits are strictly increasing), axiomatizes the coalescence conjecture, and verifies small-case mergers computationally. The problem's difficulty is irreducibility: the divisor function $\\tau(n) = \\prod(e_i + 1)$ fluctuates wildly with the prime factorization of $n$, and proving two trajectories $h^i(m), h^j(n)$ eventually collide requires controlling cumulative irregularities across arbitrarily many steps. The heuristic that $\\tau(n)$ averages $\\ln n$ suggests orbits grow like $n + c \\cdot n\\ln n$ and should merge, but the gap between average behavior and pointwise control of specific trajectories remains unbridged.",
+    "summary": "This 302-line formalization captures the OPEN Erdős Problem #414: do all orbits of the iteration $h(n) = n + \\tau(n)$ eventually merge? The sole axiom is the conjecture itself; all 34 theorems are proved. The formalization proves basic properties ($h(n) > n$, $h(n) \\leq n + 2\\sqrt{n}$ via a fully proved $\\tau(n) \\leq 2\\sqrt{n}$ bound, $h(p) = p+2$ for primes), derives consequences of the conjecture (single eventual orbit, orbits get close), and verifies orbit merges for all starting values 1–10 computationally.",
     "implications": "A resolution would advance the theory of arithmetic dynamics — understanding when simple number-theoretic iterations have universal limiting behavior. The problem connects divisor function regularity (Dirichlet divisor problem), additive combinatorics (collision conditions), and discrete dynamical systems (orbit coalescence). Techniques developed for this problem could apply to the broader family of 'n + f(n)' iterations for multiplicative arithmetic functions f. The collision mechanism h(a) = h(b) when τ(a) - τ(b) = b - a connects to the distribution of values of τ, a classical topic in multiplicative number theory",
     "openQuestions": [
       "Does the merging conjecture hold? Can any pair of orbits be shown to collide?",
@@ -188,7 +186,7 @@
     ]
   },
   "leanFile": {
-    "lineCount": 301,
+    "lineCount": 302,
     "structureCount": 0,
     "axiomCount": 1,
     "theoremCount": 34,

@@ -21,14 +21,14 @@
   3. [PROVED]  formula_pe_ge_map_pe  — P_e^{MAP} ≤ P_e^{formula}
   4. [PROVED]  gibbs_inequality      — H(p) ≤ -∑ p·log q (KL divergence ≥ 0)
   5. [PROVED]  fano_per_element      — per-y Fano via Gibbs with bimodal reference
-  6. [SORRY]   fano_map_bound        — H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1)
+  6. [PROVED]  fano_map_bound        — H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(n-1)
   7. [PROVED]  fano_func_mono        — monotonicity of h(p) + p·log(c)
   7.5 [PROVED] cauchy_schwarz_sum    — (∑f)² ≤ n·∑f²
   7.6 [PROVED] per_slice_bound       — ∑f²/s ≥ s/n
-  8. Main:     fano_theorem (hpe_bound PROVED)
+  8. Main:     fano_theorem (ALL PROVED)
 
   Claude Shannon (1948) — Fano (1952)
-  Sorries: 1 (fano_map_bound)
+  Sorries: 0
 -/
 import Mathlib
 import Proofs.ShannonChannelCodingOQ04
@@ -319,10 +319,10 @@ lemma fano_per_element {α : Type*} [Fintype α] [DecidableEq α] [Nonempty α]
 -- Section 7: Conditional Entropy Fano Bound — MAP Version (SORRY)
 -- ============================================================
 
-/-- **[SORRY]**: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP} · log(|X| - 1)
+/-- **[PROVED]**: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP} · log(|X| - 1)
 
-    Proof sketch: Decompose H(X|Y) = ∑_y P(Y=y)·H(X|Y=y), apply
-    fano_per_element per slice, then Jensen for concave h. -/
+    Proof: Decompose H(X|Y) = ∑_y P(Y=y)·H(X|Y=y), apply fano_per_element
+    per slice, then Jensen (ConcaveOn.le_map_sum) for concave h. -/
 lemma fano_map_bound {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β] [Nonempty α]
     (hn : 1 < Fintype.card α)
@@ -330,7 +330,142 @@ lemma fano_map_bound {α β : Type*} [Fintype α] [Fintype β]
     conditionalEntropy pXY ≤
       h (mapErrorProb pXY) +
       mapErrorProb pXY * Real.log ((Fintype.card α : ℝ) - 1) := by
-  sorry
+  set n := (Fintype.card α : ℝ) with hn_def
+  have hn1 : (1 : ℝ) < n := by rw [hn_def]; exact_mod_cast hn
+  -- Per-y marginal P(Y=y)
+  set Py : β → ℝ := fun y => ∑ x : α, pXY (x, y) with hPy_def
+  have hPy_nn : ∀ y, 0 ≤ Py y := fun y => Finset.sum_nonneg (fun x _ => hp (x, y))
+  have hPy_sum : ∑ y : β, Py y = 1 := by
+    have h' := hsum; rw [Fintype.sum_prod_type] at h'; rwa [← Finset.sum_comm] at h'
+  -- Per-y error probability: pe(y) = 1 - max_x pXY(x,y) / P(Y=y)
+  set pe : β → ℝ := fun y =>
+    if Py y = 0 then 0 else 1 - maxProb (fun x => pXY (x, y)) / Py y with hpe_def
+  -- Helper: maxProb ≤ Py for each y
+  have hmaxle : ∀ y, maxProb (fun x => pXY (x, y)) ≤ Py y := fun y =>
+    Finset.sup'_le _ _ (fun x _ =>
+      Finset.single_le_sum (fun x _ => hp (x, y)) (Finset.mem_univ x))
+  -- pe ∈ [0, 1]
+  have hpe_nn : ∀ y, 0 ≤ pe y := by
+    intro y; simp only [hpe_def]; split_ifs with hsy
+    · exact le_refl 0
+    · have hsy_pos : 0 < Py y := (hPy_nn y).lt_of_ne' hsy
+      rw [sub_nonneg, div_le_one₀ hsy_pos]; exact hmaxle y
+  have hpe_le1 : ∀ y, pe y ≤ 1 := by
+    intro y; simp only [hpe_def]; split_ifs with hsy
+    · exact zero_le_one
+    · have hsy_pos : 0 < Py y := (hPy_nn y).lt_of_ne' hsy
+      have : 0 ≤ maxProb (fun x => pXY (x, y)) :=
+        le_trans (hp (Classical.arbitrary α, y))
+          (Finset.le_sup' (fun x => pXY (x, y)) (Finset.mem_univ _))
+      linarith [div_nonneg this (le_of_lt hsy_pos)]
+  -- Key: ∑ Py * pe = mapErrorProb
+  have hpe_sum : ∑ y : β, Py y * pe y = mapErrorProb pXY := by
+    unfold mapErrorProb
+    -- mapErrorProb = 1 - ∑ maxProb = ∑(Py - maxProb) = ∑ Py * pe
+    rw [show (1 : ℝ) - ∑ y : β, maxProb (fun x => pXY (x, y)) =
+        ∑ y : β, (Py y - maxProb (fun x => pXY (x, y))) from by
+      rw [Finset.sum_sub_distrib, hPy_sum]]
+    apply Finset.sum_congr rfl; intro y _
+    simp only [hpe_def]; split_ifs with hsy
+    · -- Py = 0 ⟹ maxProb = 0
+      have : maxProb (fun x => pXY (x, y)) = 0 :=
+        le_antisymm (hsy ▸ hmaxle y)
+          (le_trans (hp (Classical.arbitrary α, y))
+            (Finset.le_sup' (fun x => pXY (x, y)) (Finset.mem_univ _)))
+      rw [hsy, zero_mul]; linarith
+    · have hsy_pos : 0 < Py y := (hPy_nn y).lt_of_ne' hsy; field_simp
+  -- Step 1: Per-y Fano bound
+  -- For each y, -(∑_x term) ≤ Py * (h(pe) + pe * log(n-1))
+  have hper_y : ∀ y : β,
+      -(∑ x : α, if pXY (x, y) = 0 then 0
+        else pXY (x, y) * Real.log (pXY (x, y) / Py y)) ≤
+      Py y * (h (pe y) + pe y * Real.log (n - 1)) := by
+    intro y
+    by_cases hsy : Py y = 0
+    · have hall : ∀ x, pXY (x, y) = 0 := fun x =>
+        le_antisymm ((Finset.single_le_sum (fun x _ => hp (x, y))
+          (Finset.mem_univ x)).trans_eq hsy) (hp (x, y))
+      simp [hall, hsy, hpe_def]
+    · have hsy_pos : 0 < Py y := (hPy_nn y).lt_of_ne' hsy
+      set q := fun x => pXY (x, y) / Py y with hq_def
+      have hq_nn : ∀ x, 0 ≤ q x := fun x => div_nonneg (hp (x, y)) (le_of_lt hsy_pos)
+      have hq_sum : ∑ x, q x = 1 := by
+        simp only [hq_def, ← Finset.sum_div]; exact div_self (ne_of_gt hsy_pos)
+      -- Decompose: -(∑ pXY*log(pXY/Py)) = Py * shannonEntropy q
+      have hrel : -(∑ x : α, if pXY (x, y) = 0 then 0
+          else pXY (x, y) * Real.log (pXY (x, y) / Py y)) =
+          Py y * shannonEntropy q := by
+        unfold shannonEntropy
+        -- LHS = -(∑ term_x), RHS = Py * (-(∑ term'_x)) = -(Py * ∑ term'_x)
+        rw [mul_neg]; congr 1
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl; intro x _
+        by_cases hpx : pXY (x, y) = 0
+        · have hqx : q x = 0 := by show pXY (x, y) / Py y = 0; rw [hpx, zero_div]
+          simp [hpx, hqx]
+        · have hqx_ne : q x ≠ 0 := by
+            show pXY (x, y) / Py y ≠ 0; exact div_ne_zero hpx (ne_of_gt hsy_pos)
+          simp only [hpx, hqx_ne, ↓reduceIte]
+          show pXY (x, y) * Real.log (pXY (x, y) / Py y) =
+            Py y * (q x * Real.log (q x))
+          rw [show q x = pXY (x, y) / Py y from rfl]; field_simp
+      rw [hrel]
+      -- Apply fano_per_element
+      have hfano := fano_per_element hn hq_nn hq_sum
+      -- maxProb q = maxProb(pXY(·,y)) / Py
+      have hmax_q : maxProb q = maxProb (fun x => pXY (x, y)) / Py y := by
+        -- sup'(f/c) = sup'(f)/c for c > 0: technical lemma
+        unfold maxProb; apply le_antisymm
+        · exact Finset.sup'_le _ _ (fun x _ =>
+            div_le_div_of_nonneg_right
+              (Finset.le_sup' (fun x => pXY (x, y)) (Finset.mem_univ x))
+              (le_of_lt hsy_pos))
+        · rw [div_le_iff₀ hsy_pos]
+          exact Finset.sup'_le _ _ (fun x hx => by
+            have hle : pXY (x, y) / Py y ≤ Finset.sup' Finset.univ Finset.univ_nonempty
+                (fun x => pXY (x, y) / Py y) :=
+              Finset.le_sup' (fun x => pXY (x, y) / Py y) hx
+            have hmul := mul_le_mul_of_nonneg_left hle (le_of_lt hsy_pos)
+            have heq : Py y * (pXY (x, y) / Py y) = pXY (x, y) := by
+              field_simp [ne_of_gt hsy_pos]
+            linarith)
+      have hpe_eq : 1 - maxProb q = pe y := by
+        simp only [hpe_def, if_neg hsy, hmax_q]
+      rw [hpe_eq] at hfano
+      exact mul_le_mul_of_nonneg_left hfano (le_of_lt hsy_pos)
+  -- Step 2: Conditional entropy ≤ ∑ per-y bounds
+  have hCE_bound : conditionalEntropy pXY ≤
+      ∑ y : β, Py y * (h (pe y) + pe y * Real.log (n - 1)) := by
+    unfold conditionalEntropy
+    -- Swap ∑_x ∑_y to ∑_y ∑_x, negate, and apply per-y bounds
+    have hswap : -(∑ x : α, ∑ y : β, if pXY (x, y) = 0 then 0
+        else pXY (x, y) * Real.log (pXY (x, y) / (∑ x', pXY (x', y)))) =
+        ∑ y : β, -(∑ x : α, if pXY (x, y) = 0 then 0
+        else pXY (x, y) * Real.log (pXY (x, y) / Py y)) := by
+      rw [← Finset.sum_comm, ← Finset.sum_neg_distrib]
+    rw [hswap]
+    exact Finset.sum_le_sum (fun y _ => hper_y y)
+  -- Step 3: Split and apply Jensen
+  have hsplit : ∑ y : β, Py y * (h (pe y) + pe y * Real.log (n - 1)) =
+      ∑ y, Py y * h (pe y) + (∑ y, Py y * pe y) * Real.log (n - 1) := by
+    simp only [mul_add, Finset.sum_add_distrib]
+    congr 1
+    have : ∀ y ∈ (Finset.univ : Finset β),
+        Py y * (pe y * Real.log (n - 1)) = (Py y * pe y) * Real.log (n - 1) :=
+      fun y _ => by ring
+    rw [Finset.sum_congr rfl this, ← Finset.sum_mul]
+  rw [hsplit, hpe_sum] at hCE_bound
+  -- Jensen: ∑ Py * h(pe) ≤ h(∑ Py * pe) = h(mapErrorProb)
+  have hJensen : ∑ y : β, Py y * h (pe y) ≤ h (mapErrorProb pXY) := by
+    rw [← hpe_sum]
+    -- Apply Jensen: ConcaveOn.le_map_sum with h_concaveOn
+    -- Need to convert between • and * (in ℝ, smul = mul)
+    have hjm := h_concaveOn.le_map_sum
+      (fun y (_ : y ∈ Finset.univ) => hPy_nn y)
+      (by convert hPy_sum using 1)
+      (fun y _ => Set.mem_Icc.mpr ⟨hpe_nn y, hpe_le1 y⟩)
+    convert hjm using 1
+  linarith
 
 -- ============================================================
 -- Section 7.5: Cauchy-Schwarz for Sums (Helper)
