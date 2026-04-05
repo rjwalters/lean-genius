@@ -72,7 +72,7 @@
       "Pólya's theorem on prime factors of polynomials"
     ],
     "lineCount": 264,
-    "assumptions": "11 axiom(s) and 2 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
+    "assumptions": "3 axioms: smoothEnum (smooth number enumeration — axiomatized), finite_P_unbounded_gaps (finite prime set gives unbounded gaps), tijdeman_main_theorem (Tijdeman main theorem). 2 sorries."
   },
   "overview": {
     "historicalContext": "Aurel Wintner posed this question to Erdős: given an infinite set P of primes, must the gaps between consecutive P-smooth numbers (integers whose prime factors all lie in P) tend to infinity? The finite case was already understood through Pólya's 1918 theorem, which showed that the largest prime factor of an irreducible quadratic polynomial f(n) grows without bound. Since consecutive P-smooth numbers n, n+k yield n(n+k) as P-smooth, and Pólya guarantees this product eventually has prime factors outside any finite P, gaps must grow for finite P. Størmer had shown in 1897 that for finite P, only finitely many consecutive integers can both be P-smooth, connecting to Pell equations. Tijdeman resolved the full question in his landmark 1973 paper 'On integers with many small prime factors': for any ε > 0, one can construct an infinite set of primes P such that gaps between consecutive P-smooth numbers grow at least as fast as $a_i^{1-\\varepsilon}$. The key insight is that if the primes in P grow sufficiently rapidly, then P-smooth numbers become sparse enough to force large gaps, even though P is infinite. This result connects to the ABC conjecture, which would give even stronger gap bounds, and to the broader theory of smooth numbers central to modern cryptography and factorization algorithms.",

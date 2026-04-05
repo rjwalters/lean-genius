@@ -50,7 +50,7 @@
       "Flag algebra computations (for understanding best known bounds)"
     ],
     "lineCount": 216,
-    "assumptions": "14 axioms: edgeCount, oddGirth, bipartiteEdgeDeletion, and 11 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: edgeCount (edge count function — axiomatized), bipartiteEdgeDeletion (bipartite edge deletion number — axiomatized). 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1971, asking a fundamental question in extremal graph theory: how far can a triangle-free graph be from bipartite? Triangle-freeness is a local property (no $K_3$), while bipartiteness is global (no odd cycles at all). The blow-up of $C_5$ — replacing each vertex of the 5-cycle with $n$ independent vertices and connecting all vertices between adjacent parts — gives a triangle-free graph on $5n$ vertices requiring exactly $n^2$ edge deletions to become bipartite.\n\nErdős conjectured that $n^2$ always suffices, which would make the $C_5$ blow-up extremal. In 1992, he generalized: for graphs on $(2k+1)n$ vertices with odd girth $\\geq 2k+1$, the blow-up of $C_{2k+1}$ should be extremal with $n^2$ deletions.\n\nThe best known upper bound is $1.064n^2$ by Balogh, Clemen, and Lidický (2021) using flag algebra computations. Earlier results by Krivelevich (1995) and others gave weaker bounds. The problem is falsifiable — a finite counterexample would disprove it — but no such counterexample has been found.",
