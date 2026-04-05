@@ -16,6 +16,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
+import Mathlib.Analysis.PSeries
 import Mathlib.Tactic
 
 /-
@@ -61,10 +62,68 @@ than lim inf aₙ^{1/2ⁿ} > 1. -/
 ## Section V: Convergence
 -/
 
-/-- Under the growth condition, the series converges absolutely. -/
-axiom series_converges (a : ℕ → ℤ) (h_mono : StrictMono a)
-    (h_growth : GrowthCondition a) :
-    Summable (fun n => (1 : ℝ) / ((a n : ℝ) * (a (n + 1) : ℝ)))
+/-- Under strict monotonicity and positivity, the series converges absolutely.
+    Proof: StrictMono with positive integer values implies aₙ ≥ n+1, so
+    aₙ·aₙ₊₁ ≥ (n+1)(n+2), and Σ 1/((n+1)(n+2)) converges (dominated by p-series). -/
+theorem series_converges (a : ℕ → ℤ) (h_mono : StrictMono a)
+    (h_pos : ∀ n, 0 < a n) (_ : GrowthCondition a) :
+    Summable (fun n => (1 : ℝ) / ((a n : ℝ) * (a (n + 1) : ℝ))) := by
+  -- From StrictMono (integer-valued) and positivity: a n ≥ n + 1
+  have ha_ge : ∀ n : ℕ, (n : ℝ) + 1 ≤ (a n : ℝ) := by
+    intro n
+    induction n with
+    | zero =>
+      simp only [Nat.cast_zero, zero_add]
+      have h0 : (1 : ℤ) ≤ a 0 := by linarith [h_pos 0]
+      exact_mod_cast h0
+    | succ k ih =>
+      have hlt := h_mono (Nat.lt_succ_self k)
+      have hstep : (a (k + 1) : ℝ) ≥ (a k : ℝ) + 1 := by
+        have h1 : (a k : ℤ) + 1 ≤ a (k + 1) := by linarith [hlt]
+        exact_mod_cast h1
+      push_cast
+      linarith
+  -- Product lower bound: a n * a(n+1) ≥ (n+1)(n+2)
+  have hprod_ge : ∀ n, ((n : ℝ) + 1) * ((n : ℝ) + 2) ≤ (a n : ℝ) * (a (n + 1) : ℝ) := by
+    intro n
+    have h1 := ha_ge n
+    have h2 : (n : ℝ) + 2 ≤ (a (n + 1) : ℝ) := by
+      have := ha_ge (n + 1); push_cast at this; linarith
+    have h3 : (0 : ℝ) < (a n : ℝ) := Int.cast_pos.mpr (h_pos n)
+    nlinarith
+  -- Term bound: 1/(a n * a(n+1)) ≤ 1/((n+1)(n+2))
+  have hterm_le : ∀ n, (1 : ℝ) / ((a n : ℝ) * (a (n + 1) : ℝ)) ≤
+      1 / (((n : ℝ) + 1) * ((n : ℝ) + 2)) := by
+    intro n
+    apply one_div_le_one_div_of_le
+    · exact mul_pos (by positivity) (by positivity)
+    · exact hprod_ge n
+  -- Summable comparison: 1/((n+1)(n+2)) ≤ 1/(n+1)^2, and Σ 1/(n+1)^2 converges
+  have hcomp : Summable (fun n : ℕ => (1 : ℝ) / (((n : ℝ) + 1) * ((n : ℝ) + 2))) := by
+    apply Summable.of_nonneg_of_le (fun n => by positivity)
+    · intro n
+      apply one_div_le_one_div_of_le (by positivity)
+      nlinarith
+    · -- Summable (fun n => 1/(n+1)^2) via eventual comparison with p-series 1/n^2
+      apply Summable.of_norm_bounded_eventually (fun n : ℕ => 1 / (n : ℝ) ^ 2)
+      · -- p-series 1/n^2 is summable
+        have h := Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)
+        convert h using 1
+        ext n; simp [one_div, rpow_natCast]
+      · -- Eventually 1/(n+1)^2 ≤ 1/n^2 (for n ≥ 1)
+        filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+        rw [Real.norm_of_nonneg (by positivity)]
+        apply one_div_le_one_div_of_le
+        · have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+          positivity
+        · have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+          nlinarith
+  -- Apply comparison test: terms ≤ comparison, comparison summable
+  exact Summable.of_nonneg_of_le
+    (fun n => div_nonneg one_nonneg (mul_nonneg
+        (le_of_lt (Int.cast_pos.mpr (h_pos n)))
+        (le_of_lt (Int.cast_pos.mpr (h_pos (n + 1))))))
+    hterm_le hcomp
 
 /-- The series is positive when all aₙ > 0.
 
@@ -74,7 +133,7 @@ theorem series_positive (a : ℕ → ℤ) (h_mono : StrictMono a)
     (h_pos : ∀ n, a n > 0) (h_growth : GrowthCondition a) :
     erdosSeries a > 0 := by
   unfold erdosSeries
-  have h_summable := series_converges a h_mono h_growth
+  have h_summable := series_converges a h_mono h_pos h_growth
   apply tsum_pos h_summable
   · intro n
     apply le_of_lt

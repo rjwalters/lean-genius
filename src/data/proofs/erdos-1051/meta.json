@@ -20,9 +20,9 @@
     "erdosNumber": 1051,
     "erdosUrl": "https://erdosproblems.com/1051",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
-    "lineCount": 173,
-    "assumptions": "4 axioms: rapid_growth_irrational, series_converges, simple_series_question, sylvester_fibonacci_example. series_positive proved from series_converges via tsum_pos.",
+    "axiomCount": 0,
+    "lineCount": 232,
+    "assumptions": "0 axioms. series_converges is now a proved theorem: for strictly increasing positive integer sequences, summability follows by comparison with Σ 1/((n+1)(n+2)), bounded by the convergent p-series Σ 1/n².",
     "mathlib_version": "4.26.0",
     "theoremCount": 6
   },
@@ -90,8 +90,8 @@
       "title": "Convergence and Positivity",
       "startLine": 65,
       "endLine": 78,
-      "summary": "Two axioms: (1) the series converges absolutely (Summable) under the growth condition, and (2) the sum is strictly positive when all terms $a_n > 0$.",
-      "mathContext": "Two axioms: (1) the series converges absolutely (Summable) under the growth condition, and (2) the sum is strictly positive when all terms $a_n > 0$."
+      "summary": "Two proved theorems: (1) series_converges: for strictly increasing positive integer sequences, 1/(aₙ·aₙ₊₁) ≤ 1/((n+1)(n+2)) since aₙ ≥ n+1, and Σ 1/((n+1)(n+2)) converges by p-series comparison; (2) series_positive: the sum is strictly positive when all aₙ > 0.",
+      "mathContext": "Two proved theorems: (1) series_converges: for strictly increasing positive integer sequences, 1/(aₙ·aₙ₊₁) ≤ 1/((n+1)(n+2)) since aₙ ≥ n+1, and Σ 1/((n+1)(n+2)) converges by p-series comparison; (2) series_positive: the sum is strictly positive when all aₙ > 0."
     },
     {
       "id": "related-series",
@@ -209,13 +209,14 @@
       "Mathlib.Data.Real.Irrational",
       "Mathlib.Order.Filter.Basic",
       "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Analysis.PSeries",
       "Mathlib.Tactic"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 173,
-    "axiomCount": 1,
-    "theoremCount": 1,
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 9,
     "definitionCount": 4
   }
 }
