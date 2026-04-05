@@ -2227,9 +2227,9 @@
       "result": "clean"
     },
     "erdos-1059-oq-05": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:42:47Z",
       "result": "clean"
     },
     "erdos-106": {
@@ -2281,9 +2281,9 @@
       "result": "clean"
     },
     "erdos-1065-oq-05": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:42:19Z",
       "result": "clean"
     },
     "erdos-1066": {
@@ -2293,9 +2293,9 @@
       "result": "clean"
     },
     "erdos-1066-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:42:28Z",
       "result": "clean"
     },
     "erdos-1067": {
@@ -2551,9 +2551,9 @@
       "result": "clean"
     },
     "erdos-110-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:42:10Z",
       "result": "clean"
     },
     "erdos-1100": {
@@ -2677,9 +2677,9 @@
       "result": "clean"
     },
     "erdos-1118-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:42:02Z",
       "result": "clean"
     },
     "erdos-1119": {
@@ -2857,9 +2857,9 @@
       "result": "clean"
     },
     "erdos-114-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:41:53Z",
       "result": "clean"
     },
     "erdos-1140": {
@@ -3375,9 +3375,9 @@
       "result": "clean"
     },
     "erdos-152-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:41:44Z",
       "result": "clean"
     },
     "erdos-153": {
@@ -4448,9 +4448,9 @@
       "result": "clean"
     },
     "erdos-307-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:41:35Z",
       "result": "clean"
     },
     "erdos-308": {
@@ -5446,9 +5446,9 @@
       "result": "clean"
     },
     "erdos-453-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:41:19Z",
       "result": "clean"
     },
     "erdos-454": {
@@ -5955,9 +5955,9 @@
       "result": "issues-fixed"
     },
     "erdos-525-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T17:40:47Z",
       "result": "clean"
     },
     "erdos-526": {
@@ -6501,10 +6501,10 @@
       "result": "clean"
     },
     "erdos-606-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
-      "result": "clean"
+      "lastAudited": "2026-04-05T17:40:29Z",
+      "result": "issues-found"
     },
     "erdos-607": {
       "agentId": "auditor-cycle-20-batch",
@@ -7449,14 +7449,14 @@
       "result": "clean"
     },
     "erdos-746": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [
         "PR #6440: sorry count 3\u21924",
         "Issue #6441: 9 vacuous True stubs",
         "https://github.com/rjwalters/lean-genius/pull/8651"
       ],
-      "lastAudited": "2026-04-03T05:20:33Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-04-05T17:39:21Z",
+      "result": "clean"
     },
     "erdos-747": {
       "agentId": "auditor-cycle-20-batch",
@@ -11943,6 +11943,18 @@
     "leibniz-pi-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-04-05T13:49:13Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq-03-oq-02-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T17:38:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "shannon-channel-coding-oq-04-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T17:39:00Z",
       "result": "clean",
       "issues": []
     }
