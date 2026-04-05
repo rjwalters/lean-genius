@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lagrange (existence), Lenstra (computational survey), Cohen-Lenstra (heuristics)",
     "date": "2002",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PellEquationOQ01.lean",
     "tags": [
       "number-theory",
@@ -16,7 +16,7 @@
       "computational-complexity",
       "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-03-30",
@@ -31,7 +31,7 @@
       "DirichletClassNumberFormula: h(D)·R(D) = √D·L(1,χ_D)/2",
       "PellPolynomialTime: open question about polynomial-time solvability"
     ],
-    "assumptions": "No axioms. All properties proved or stated as Prop definitions for open conjectures."
+    "assumptions": "No explicit axioms, but the main open conjectures (PellRegulatorBound, AverageRegulatorConjecture, DirichletClassNumberFormula, PellPolynomialTime) are stated as unproved Prop definitions. The distribution of R(D) is an open problem."
   },
   "crossReferences": [
     {
