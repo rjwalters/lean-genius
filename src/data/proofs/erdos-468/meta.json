@@ -110,7 +110,15 @@
       "startLine": 44,
       "endLine": 56,
       "summary": "Axiomatizes $D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ for $n \\geq 2$ and conjectures $|D_n| \\to \\infty$.",
-      "mathContext": "Question 1: $\\forall n \\geq 2, D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ (each $D_n$ has a new element). Axiomatized as an open conjecture."
+      "mathContext": "Question 1: $\\forall n \\geq 2, D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ (each $D_n$ has a new element). Axiomatized as an open conjecture. The size $|D_n| = d(n) - 1$ where $d(n)$ is the number of divisors, so $|D_n| \\to \\infty$ along highly composite numbers."
+    },
+    {
+      "id": "question-2",
+      "title": "Question 2: First Appearance Function",
+      "startLine": 57,
+      "endLine": 100,
+      "summary": "Defines firstAppearance f(N) = sInf{n : N ∈ D_n}, states the main conjecture f(N) = o(N), the almost-all weakening, and concrete examples D_6 and D_12.",
+      "mathContext": "Main conjecture: $f(N) = o(N)$, i.e., $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: f(N)/N < \\varepsilon$. Boundary: $\\min(D_n) = \\text{minFac}(n)$, $\\max(D_n) = \\sigma(n) - 1$. Examples: $D_6 = \\{2, 5, 11\\}$ (divisors $> 1$: 2, 3, 6), $D_{12} = \\{2, 5, 9, 15, 27\\}$ (divisors $> 1$: 2, 3, 4, 6, 12)."
     }
   ],
   "conclusion": {
@@ -134,7 +142,54 @@
       "targetId": "erdos-444",
       "relationship": "related",
       "description": "Both formalize properties of the divisor function τ(n); #444 studies τ-iteration while #468 studies partial sums of ordered divisors"
+    },
+    {
+      "targetId": "erdos-955",
+      "relationship": "related",
+      "description": "Studies the same σ(n) divisor sum function but takes total sums (σ(n) − n) rather than partial sums; #468's boundary max(D_n) = σ(n) − 1 directly connects the two"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Divisor-related combinatorial number theory from the same section of the Erdős–Graham 1980 monograph"
     }
   ],
-  "leanFile": "Proofs/Erdos468Problem.lean"
+  "references": [
+    {
+      "authors": ["P. Erdős", "R. L. Graham"],
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monographie 28, Geneva",
+      "notes": "Original source of Problem #468 on partial divisor sums; appears in the context of the additive structure of divisor sets"
+    },
+    {
+      "authors": ["OEIS Foundation"],
+      "title": "A387502: First appearances of n as a partial sum of divisors",
+      "year": "2024",
+      "venue": "The On-Line Encyclopedia of Integer Sequences, oeis.org/A387502",
+      "notes": "Tabulates the first-appearance function f(N) for small N; related sequences A167485 and A387503 track other aspects of the partial divisor sum structure"
+    },
+    {
+      "authors": ["G. L. Cohen", "H. J. J. te Riele"],
+      "title": "Iterating the sum-of-divisors function",
+      "year": "1996",
+      "venue": "Experimental Mathematics 5(2):91–100",
+      "notes": "Studies iteration of σ(n) (the sum-of-all-divisors function), closely related to the partial-sum sets D_n; the boundary max(D_n) = σ(n) − 1 connects partial sums to the total"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos468",
+    "lineCount": 56,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "definitionCount": 5
+  }
 }

@@ -135,7 +135,8 @@
     "openQuestions": [
       "Can the connection be extended to circumscribed polygon approximations, giving a two-sided squeeze theorem that matches Archimedes' original double exhaustion?",
       "Does the convergence rate of inscribed n-gons (error ~ π²r²/n²) match what one gets from numerical integration error bounds on the FTC integral?",
-      "Can Steiner's formula — $\\frac{d}{dr}\\text{Vol}(B_r) = \\text{Area}(\\partial B_r)$ — be formalized in Lean for balls in ℝⁿ, unifying the circle result with sphere and hypersphere cases?"
+      "Can Steiner's formula — $\\frac{d}{dr}\\text{Vol}(B_r) = \\text{Area}(\\partial B_r)$ — be formalized in Lean for balls in ℝⁿ, unifying the circle result with sphere and hypersphere cases?",
+      "Can circumscribed polygon approximations be added to give a formal two-sided squeeze — inscribedArea(n,r) ≤ πr² ≤ circumscribedArea(n,r) — matching Archimedes' original double exhaustion argument in full generality?"
     ]
   },
   "crossReferences": [
@@ -153,6 +154,16 @@
       "id": "fundamental-theorem-calculus",
       "title": "Fundamental Theorem of Calculus",
       "relationship": "The FTC is the core tool in Part I; this proof is a concrete application of FTC to a geometric antiderivative"
+    },
+    {
+      "id": "area-of-circle-oq-01",
+      "title": "Circumference Formula via Area Differentiation",
+      "relationship": "Establishes A'(r) = C(r) — the derivative identity that enables the FTC proof used in Part I of this entry"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02-oq-01",
+      "title": "N-Dimensional Volume from Surface Area Integration",
+      "relationship": "Generalizes the A = ∫ C dρ pattern to n dimensions (Steiner's formula); the circle case proved here is the n=2 base case"
     }
   ]
 }

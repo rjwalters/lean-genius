@@ -154,5 +154,41 @@
     "significance": "key",
     "relatedConcepts": ["Hausdorff uniqueness of limits", "tendsto_nhds_unique", "T2Space", "limit uniqueness in ℝ"],
     "prerequisites": ["Filter.tendsto_nhds_unique", "T2Space (Hausdorff) in Mathlib", "exhaustion_equals_ftc"]
+  },
+  {
+    "id": "ann-ftc-exhaust-conjunction",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 162, "endLine": 167 },
+    "type": "theorem",
+    "title": "Conjunction: FTC Integral and Exhaustion Both Equal circleArea",
+    "content": "`ftc_equals_exhaustion_limit` bundles both core facts into a single conjunction: (1) the FTC integral equals `circleArea r`; (2) the Archimedes sequence converges to `circleArea r`. The proof is a pair `⟨circumference_integral_eq r, ...⟩` where the second component uses `simp [circleArea]` to unfold the definition before applying `tendsto_inscribed_to_pi_r_sq`. This conjunction theorem is useful as a single witness: any downstream result needing both facts can destructure `ftc_equals_exhaustion_limit r` rather than citing the two theorems separately. In Lean, conjunction proofs like `⟨h1, h2⟩` are anonymous constructors for `And`.",
+    "mathContext": "$\\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$ (FTC, Part I) $\\wedge$ $\\lim_{n\\to\\infty}\\text{inscribedArea}(n,r) = \\pi r^2$ (Archimedes, Part II). Together: the common limit value is `circleArea r = πr²`.",
+    "significance": "supporting",
+    "relatedConcepts": ["And introduction", "conjunction theorem", "circumference_integral_eq", "tendsto_inscribed_to_pi_r_sq"],
+    "prerequisites": ["Lean 4 And.intro notation", "circleArea definition", "circumference_integral_eq"]
+  },
+  {
+    "id": "ann-squeeze-from-below",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 184, "endLine": 187 },
+    "type": "theorem",
+    "title": "Archimedes' Squeeze from Below: Inscribed ≤ circleArea",
+    "content": "`archimedes_squeeze_from_below` reframes `inscribed_area_le_pi_r_sq` using the `circleArea` definition: for any n and r ≥ 0, `inscribedArea n r ≤ circleArea r`. The proof is one line: `simp [circleArea]; exact inscribed_area_le_pi_r_sq n r hr`. This phrasing matches Archimedes' geometric intuition: inscribed polygons are strictly inside the circle, so their area never exceeds the true circle area. Combined with convergence from below, this is the lower half of Archimedes' double exhaustion squeeze. In Archimedes' original proof, he used both inscribed (lower bound) and circumscribed (upper bound) polygons to trap the true area by a two-sided argument; this theorem formalizes the lower bound.",
+    "mathContext": "$\\forall n \\in \\mathbb{N},\\; r \\geq 0 \\implies \\text{inscribedArea}(n,r) \\leq \\pi r^2 = \\text{circleArea}(r)$. The sequence is monotone-eventually and bounded above by the limit — a sufficient condition for convergence in ℝ.",
+    "significance": "supporting",
+    "relatedConcepts": ["Archimedes double exhaustion", "monotone sequence bounded above", "inscribed polygon bounds", "squeeze theorem"],
+    "prerequisites": ["inscribed_area_le_pi_r_sq", "circleArea definition", "simp with definition unfolding"]
+  },
+  {
+    "id": "ann-exhaustion-consistent",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-03",
+    "range": { "startLine": 208, "endLine": 213 },
+    "type": "theorem",
+    "title": "Consistency Check: πr² Equals the FTC Integral",
+    "content": "`exhaustion_consistent` proves the equality `πr² = ∫₀ʳ 2πρ dρ` — the direction opposite to `circumference_integral_eq`. The proof uses `circumference_integral_eq` and then reverses with `.symm`. This seemingly trivial theorem serves as a sanity check and an explicitly named entry point for downstream proofs that need the equality in the form `Real.pi * r ^ 2 = ∫ ρ ...`. In Lean, equality is symmetric but not definitionally, so having both directions as named theorems avoids repeated `rw [← circumference_integral_eq]` patterns.",
+    "mathContext": "$\\pi r^2 = \\int_0^r 2\\pi\\rho\\,d\\rho$. This is the converse of the FTC direction `circumference_integral_eq`: the FTC gives $\\int = \\pi r^2$; this theorem gives $\\pi r^2 = \\int$.",
+    "significance": "technical",
+    "relatedConcepts": ["Eq.symm", "circumference_integral_eq", "symmetry in equalities", "named theorem for both directions"],
+    "prerequisites": ["circumference_integral_eq", "Eq.symm in Lean 4"]
   }
 ]
