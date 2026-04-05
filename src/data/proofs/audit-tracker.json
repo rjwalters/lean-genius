@@ -10114,9 +10114,9 @@
       "result": "clean"
     },
     "napoleons-theorem": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-03T05:20:33Z",
+      "lastAudited": "2026-04-05T07:51:38Z",
       "result": "clean"
     },
     "navier-stokes": {
@@ -11755,6 +11755,12 @@
         "missing Lean file EulerIdentityOQ01OQ01.lean created; closed #9687"
       ],
       "agentId": "lean-mechanic"
+    },
+    "divisibility-rules-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-04-05T07:50:45Z",
+      "result": "issues-fixed",
+      "issues": []
     }
   },
   "erdos-1097-oq-01": {
