@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-preamble",
+    "proofId": "bezout-identity-oq-03-oq-04-oq-01",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "context",
+    "title": "Module Setup and Motivating Question",
+    "content": "The file imports `Mathlib.RingTheory.Coprime.Basic` (providing `IsCoprime` and `IsCoprime.mul_dvd`) and the general tactic library. The module docstring poses the open question from the parent entry: can the integer-specific `crtDirect` be lifted to arbitrary commutative rings? The answer — yes, with `IsCoprime` as the sole hypothesis — sets the agenda for the file. The namespace `BezoutIdentityOQ03OQ04OQ01` scopes all definitions to avoid name collisions with the integer-specific versions in the parent file.",
+    "mathContext": "The import `Mathlib.RingTheory.Coprime.Basic` brings in the definition `IsCoprime (a b : R) := \\exists s t, s \\cdot a + t \\cdot b = 1` and the key lemma `IsCoprime.mul_dvd`: if $\\gcd(m,n) = 1$ and $m \\mid d$ and $n \\mid d$ then $mn \\mid d$. These are the only Mathlib ingredients the proof needs.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib imports", "namespace scoping in Lean 4", "IsCoprime definition"],
+    "prerequisites": ["Lean 4 module system", "Mathlib library structure"]
+  },
+  {
     "id": "ann-crt-ring-def",
     "proofId": "bezout-identity-oq-03-oq-04-oq-01",
     "range": { "startLine": 29, "endLine": 37 },
@@ -58,5 +70,17 @@
     "significance": "technical",
     "relatedConcepts": ["bezout-identity-oq-03-oq-04", "Int.gcdA", "Int.gcdB", "extended Euclidean algorithm", "specialization of ring theorems"],
     "prerequisites": ["integer arithmetic in Lean 4", "ring theory specialization"]
+  },
+  {
+    "id": "ann-summary-instances",
+    "proofId": "bezout-identity-oq-03-oq-04-oq-01",
+    "range": { "startLine": 99, "endLine": 129 },
+    "type": "context",
+    "title": "Concrete Ring Instances and Exported API",
+    "content": "The summary block catalogues the rings where `crtRing` applies: $\\mathbb{Z}$ (the original case), polynomial rings $k[X]$ over a field (where CRT gives Lagrange interpolation), Gaussian integers $\\mathbb{Z}[i]$ (a Euclidean domain, hence IsBezout), any field (trivially coprime non-zero elements), and any PID. The `#check` commands at the end serve as a documentation aid, printing the full type signatures of the five exported theorems — confirming that `crtRing`, `crtRing_mod_m`, `crtRing_mod_n`, `crtRing_unique`, and `crtRing_exists` all carry the polymorphic `{R : Type*} [CommRing R]` signature.",
+    "mathContext": "Key instance: for $k[X]$ with $\\gcd(p, q) = 1$, the CRT solution $b \\cdot s \\cdot p + a \\cdot t \\cdot q$ is exactly the Lagrange interpolation polynomial through prescribed remainders modulo $p$ and $q$. This connection makes `crtRing` a verified building block for polynomial interpolation algorithms.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lagrange interpolation", "Gaussian integers", "principal ideal domain", "polynomial ring", "Lean 4 #check command"],
+    "prerequisites": ["field theory", "polynomial arithmetic", "Euclidean domains"]
   }
 ]

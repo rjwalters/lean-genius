@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "None. All theorems are fully proved using Mathlib's sub_one_mul_padicValNat_factorial and supporting lemmas.",
     "dateAdded": "2026-04-05",
-    "lineCount": 185,
+    "lineCount": 222,
     "mathlibDependencies": [
       {
         "theorem": "sub_one_mul_padicValNat_factorial",
@@ -84,61 +84,62 @@
       "id": "header",
       "title": "Imports and Documentation",
       "startLine": 1,
-      "endLine": 55,
-      "description": "File header with mathematical background, Wilson connection, and Mathlib dependencies."
+      "endLine": 56,
+      "summary": "File header with mathematical background, the Wilson connection via digit sums, and a complete list of Mathlib dependencies. Documents the open question answered: 'What is the exact power of p dividing n!?'"
     },
     {
       "id": "legendre-main",
       "title": "Legendre's Formula — Main Theorems",
-      "startLine": 57,
-      "endLine": 80,
-      "description": "The two forms of Legendre's formula: digit-sum form and Finset sum form, both wrapping Mathlib theorems."
+      "startLine": 58,
+      "endLine": 76,
+      "summary": "The two forms of Legendre's formula: digit-sum form (p-1)·ν_p(n!) = n − S_p(n) and Finset sum form ν_p(n!) = Σ ⌊n/pⁱ⌋, both wrapping Mathlib theorems directly."
     },
     {
       "id": "digit-lemma",
       "title": "Digit Representation of (p-1)",
-      "startLine": 82,
-      "endLine": 95,
-      "description": "Proof that p.digits (p-1) = [p-1] for prime p: the number p-1 is a single digit in base p."
+      "startLine": 78,
+      "endLine": 91,
+      "summary": "Proves p.digits(p-1) = [p-1] for prime p via Nat.digits_def' and modular arithmetic. The companion digit_sum_pred_prime gives S_p(p-1) = p-1. This is the bridge to Wilson's theorem."
     },
     {
       "id": "wilson-connection",
       "title": "Wilson's Theorem via Legendre",
-      "startLine": 97,
-      "endLine": 120,
-      "description": "Key result: ν_p((p-1)!) = 0 proved algebraically via Legendre's formula. Also proves p ∤ (p-1)! directly."
+      "startLine": 93,
+      "endLine": 116,
+      "summary": "Key result: ν_p((p-1)!) = 0 proved algebraically by substituting n = p-1 into Legendre's formula. Also proves p ∤ (p-1)! via dvd_factorial as a standalone corollary."
     },
     {
       "id": "padic-p-factorial",
       "title": "ν_p(p!) = 1",
-      "startLine": 122,
-      "endLine": 145,
-      "description": "Proves the factorial p! is divisible by p exactly once, using p! = p·(p-1)! and multiplicativity."
+      "startLine": 118,
+      "endLine": 137,
+      "summary": "Proves p! is divisible by p exactly once using the factorization p! = p·(p-1)! and multiplicativity of padicValNat: ν_p(p) + ν_p((p-1)!) = 1 + 0 = 1."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound on ν_p(n!)",
-      "startLine": 147,
-      "endLine": 165,
-      "description": "Proves ν_p(n!) ≤ n/(p-1) from the digit-sum form of Legendre's formula."
+      "startLine": 138,
+      "endLine": 155,
+      "summary": "Proves ν_p(n!) ≤ n/(p-1) from the digit-sum form, since S_p(n) ≥ 0 implies (p-1)·ν_p(n!) ≤ n. Uses Nat.le_div_iff_mul_le for the division step."
     },
     {
       "id": "zero-characterization",
       "title": "Zero Characterization",
-      "startLine": 167,
+      "startLine": 157,
       "endLine": 185,
-      "description": "Proves ν_p(n!) = 0 ↔ n < p using dvd_factorial and padicValNat.le_of_dvd."
+      "summary": "Proves ν_p(n!) = 0 ↔ n < p via contraposition: n ≥ p implies p ∣ n! (by dvd_factorial), hence ν_p(n!) ≥ 1. Subsumes the Wilson connection as n = p-1 < p."
     },
     {
       "id": "examples",
       "title": "Concrete Computations",
-      "startLine": 187,
-      "endLine": 220,
-      "description": "Verified examples: ν₂(10!) = 8, ν₃(9!) = 4, ν₅(25!) = 6, ν₇(49!) = 8, and Wilson checks."
+      "startLine": 186,
+      "endLine": 222,
+      "summary": "Eight native_decide examples verifying the formula: ν₂(10!) = 8, ν₃(9!) = 4, ν₅(25!) = 6, ν₇(49!) = 8, plus Wilson checks for p = 5, 7, 11, 13."
     }
   ],
   "conclusion": {
     "summary": "Legendre's formula fully characterizes the p-adic valuation of factorials. The digit-sum form $(p-1)\\nu_p(n!) = n - S_p(n)$ gives an efficient recursive computation and yields Wilson's non-divisibility as a direct algebraic consequence.",
+    "implications": "This formalization demonstrates that Wilson's theorem can be proved purely through arithmetic counting (Legendre's formula) rather than group theory (pairing elements with their inverses mod $p$). The digit-sum approach generalizes: Kummer's theorem on $\\nu_p(\\binom{m+n}{m})$ as a carry count is an immediate corollary, and the upper bound $\\nu_p(n!) \\leq n/(p-1)$ gives explicit bounds on prime powers in factorial factorizations, relevant to algorithms for computing binomial coefficients mod $p^k$.",
     "openQuestions": [
       "Can Legendre's formula be generalized to multinomial coefficients $n!/(n_1! \\cdot n_2! \\cdots n_k!)$?",
       "Does Kummer's theorem (OQ: count carries when adding in base p) follow cleanly from Legendre in Lean?"
@@ -146,19 +147,24 @@
   },
   "crossReferences": [
     {
-      "proofId": "wilsons-theorem",
+      "targetId": "wilsons-theorem",
       "relationship": "parent",
-      "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) — Legendre's formula proves the non-divisibility direction"
+      "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) — Legendre's formula proves the non-divisibility direction algebraically"
     },
     {
-      "proofId": "wilsons-theorem-oq-01",
+      "targetId": "wilsons-theorem-oq-01",
       "relationship": "sibling",
       "description": "Wilson for non-prime moduli — shares the factorial arithmetic setting"
     },
     {
-      "proofId": "wilsons-theorem-oq-02",
+      "targetId": "wilsons-theorem-oq-02",
       "relationship": "sibling",
-      "description": "Gauss-Wilson theorem — product of units mod n"
+      "description": "Gauss-Wilson theorem — product of units mod n, a multiplicative generalization"
+    },
+    {
+      "targetId": "kummer-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Kummer's theorem on ν_p(C(m+n,m)) = number of base-p carries follows directly from Legendre's digit-sum formula applied to (m+n)!/(m!·n!)"
     }
   ]
 }
