@@ -57,7 +57,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 215,
-    "assumptions": "13 axioms: powersOfTwo_dissociated, powersOfBase_dissociated, lacunary_is_dissociated, and 10 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: finite_union_is_proportionately, nesetril_rodl_sales_theorem. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Dissociated Sets and Harmonic Analysis**\n\nThe study of dissociated sets originated in harmonic analysis. A set A ⊂ ℕ is dissociated if distinct finite subsets have different sums—equivalently, the characteristic functions of subsets are linearly independent under convolution.\n\n**Pisier's Breakthrough (1983)**\n\nGilles Pisier established a fundamental connection: a set is proportionately dissociated if and only if it is a Sidon set in the sense of harmonic analysis. This means for any function f supported on A, there exists θ such that ||f||₁ ≪ |∑f(n)e(nθ)|. This equivalence bridged additive combinatorics and Fourier analysis.\n\n**Alon-Erdős Contribution (1985)**\n\nNoga Alon and Paul Erdős introduced Problem #774 in their paper 'An application of graph theory to additive number theory.' They observed that Pisier's converse—every finite union of dissociated sets is proportionately dissociated—holds trivially. They asked if the implication reverses, expressing skepticism: 'it seems unlikely that [this] is also sufficient.'\n\n**The Sidon Analogue (2024)**\n\nNešetřil, Rödl, and Sales resolved the analogous question for Sidon sets (additive combinatorics sense) in the NEGATIVE. They constructed a proportionately Sidon set that cannot be written as a finite union of Sidon sets. This strongly suggests Erdős #774 also has a negative answer.",
