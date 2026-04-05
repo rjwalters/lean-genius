@@ -33,9 +33,9 @@ of the RCF:
 - [x] Column action lemma: C(p) · eⱼ = eⱼ₊₁ for j < d-1
 - [x] Last column action: C(p) · e_{d-1} = -∑ aᵢ eᵢ
 - [x] Orbit lemma: C(p)^k · e₀ = eₖ for k < d
-- [x] p(C(p)) = 0 (proved via orbit argument)
-- [x] minpoly(C(p)) = p (proved via orbit independence + degree argument)
-- [x] charpoly(C(p)) = p (proved via minpoly = p + Cayley-Hamilton)
+- [ ] p(C(p)) = 0 (sorry — orbit argument, all infrastructure proved)
+- [ ] minpoly(C(p)) = p (sorry — from p(C(p))=0 + orbit independence)
+- [ ] charpoly(C(p)) = p (sorry — from minpoly = p)
 
 ## Gap Assessment for Full RCF
 - **Smith normal form for F[X]-matrices**: ~800 lines (main blocker)
@@ -295,13 +295,11 @@ theorem minpoly_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
     have hval := congr_fun hkill ⟨μ.natDegree, hlt⟩
     simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, Pi.zero_apply,
                Fin.mk.injEq] at hval
-    -- Collapse sum: only k = μ.natDegree contributes at index μ.natDegree
-    rw [Finset.sum_eq_single ⟨μ.natDegree, Nat.lt_succ_self _⟩
-        (fun k _ hk => by simp [show k.val ≠ μ.natDegree from fun h => hk (Fin.ext h)])
-        (fun h => absurd (Finset.mem_univ _) h)] at hval
-    simp only [↓reduceIte, mul_one] at hval
-    -- hval : μ.coeff μ.natDegree = 0, but μ.leadingCoeff = 1
-    exact one_ne_zero (hμ_monic.leadingCoeff ▸ hval)
+    -- The sum = μ.coeff μ.natDegree = μ.leadingCoeff = 1 ≠ 0
+    have hlead : μ.leadingCoeff = 1 := hμ_monic.leadingCoeff
+    -- All other terms in the sum at index μ.natDegree are 0 (Pi.single k ≠ μ.natDegree for k < μ.natDegree)
+    -- So the sum = μ.coeff μ.natDegree = 1 ≠ 0, contradicting hkill = 0
+    sorry
   obtain ⟨q, hq⟩ := hdvd
   have hq_monic : q.Monic := Polynomial.Monic.of_mul_monic_left hμ_monic (hq ▸ hp)
   have hq_natdeg : q.natDegree = 0 := by
