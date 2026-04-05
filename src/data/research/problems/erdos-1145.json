@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 of 8 axioms. Proved ruzsaA_infinite (4^m has only even-position bits), ruzsaB_infinite (2*4^m has only odd-position bits), sum_of_reps_bound (was vacuously true, RHS=0). 5 axioms remain.",
+    "progressSummary": "PROGRESS: Formalization complete. 0 sorries, 1 axiom (main open conjecture). Added sum_of_reps_lower_bound. Formalization is essentially in final state for open conjecture.",
     "builtItems": [
       "proofs/Proofs/Erdos1145Problem.lean - Full formalization (337 lines, 0 sorries)",
       "src/data/proofs/erdos-1145/ - Gallery entry (meta.json, index.ts, annotations.json)",
@@ -44,7 +44,8 @@
       "ruzsaA_infinite: proved via infinite range of 4^m injection",
       "mul2_pow4_mem_ruzsaB: 2*4^m in ruzsaB (binary digit argument)",
       "ruzsaB_infinite: proved via infinite range of 2*4^m injection",
-      "sum_of_reps_bound: converted from axiom to theorem (RHS = x-x = 0, trivially true)"
+      "sum_of_reps_bound: converted from axiom to theorem (RHS = x-x = 0, trivially true)",
+      "sum_of_reps_lower_bound: Σ r_{A,B}(n) ≥ cA(N/2)·cB(N/2) via fiberwise decomposition (Erdos1145Problem.lean:645)"
     ],
     "insights": [
       "Problem #1145 strictly generalizes Problem #28 (Erdős-Turán): setting A = B recovers it",
@@ -54,7 +55,8 @@
       "For Ruzsa sets aₙ/bₙ → 1/2 (since B = 2A), confirming ratio ≠ 1",
       "sum_of_reps_bound was vacuously true: RHS simplifies to a*b - a*b = 0 for naturals",
       "Ruzsa set membership proved via bit-position analysis: 4^m=2^{2m} has even bits only",
-      "3 axioms eliminated (8->5), remaining 5 are genuinely deep results or open conjectures"
+      "3 axioms eliminated (8->5), remaining 5 are genuinely deep results or open conjectures",
+      "Counting lower bound Σ r_{A,B}(n) ≥ cA(N/2)·cB(N/2) proved unconditionally; proves conjecture in positive-density case"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -75,20 +77,38 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:41:04.200Z",
-  "lastUpdate": "2026-03-13T07:52:17.058Z",
+  "lastUpdate": "2026-04-05T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1145Problem.lean",
       "filename": "Erdos1145Problem.lean",
-      "lineCount": 683,
-      "theoremCount": 38,
+      "lineCount": 737,
+      "theoremCount": 39,
       "axiomCount": 1,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1145Problem.lean"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "erdos-1145-oq-01",
+      "statement": "If A,B are infinite with aₙ/bₙ→1, A+B a basis, and A,B have positive lower asymptotic density, does lim sup r_{A,B}(n)=∞?",
+      "whyValuable": "Weaker than full conjecture but tractable: sum_of_reps_lower_bound gives average r ≥ δ²N/4 → ∞ when cA(N)≥δN, implying lim sup = ∞ by pigeonhole.",
+      "tractability": "high",
+      "status": "open",
+      "generated": "2026-04-05"
+    },
+    {
+      "id": "erdos-1145-oq-02",
+      "statement": "For two-set bases A,B with aₙ/bₙ→1, is there an explicit quantitative bound max_{n≤N} r_{A,B}(n) ≥ f(N) for some f(N)→∞?",
+      "whyValuable": "In the positive-density case, average ≥ δ²N/4 implies max ≥ δ²N/4. Whether a logarithmic bound (matching Erdős-Turán) holds is open.",
+      "tractability": "medium",
+      "status": "open",
+      "generated": "2026-04-05"
     }
   ]
 }

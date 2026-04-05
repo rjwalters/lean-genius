@@ -632,6 +632,61 @@ theorem sum_of_reps_bound (A B : Set ℕ) (N : ℕ) :
       countingFn A N * countingFn B N - countingFn A N * countingFn B N := by
   simp [Nat.sub_self]
 
+/-- **Counting Lower Bound**: Σ_{n≤N} r_{A,B}(n) ≥ |A ∩ [1,⌊N/2⌋]| · |B ∩ [1,⌊N/2⌋]|.
+
+    Proof: Form P = (A ∩ [1,N/2]) × (B ∩ [1,N/2]). Every (a,b) ∈ P satisfies a+b ≤ N,
+    so the fiber map p ↦ p.1+p.2 sends P into range(N+1). By the fiberwise decomposition
+    |P| = Σ_n |Pₙ| and each restricted fiber Pₙ ⊆ r_{A,B}(n)'s counting set, giving
+    |P| ≤ Σ_n r_{A,B}(n).
+
+    This is the standard counting identity underlying Erdős–Turán-type arguments: when A,B
+    form a two-set basis with aₙ/bₙ → 1, both counting functions grow without bound,
+    making this a route toward showing Σ r_{A,B}(n) diverges. -/
+theorem sum_of_reps_lower_bound (A B : Set ℕ) (N : ℕ) :
+    countingFn A (N / 2) * countingFn B (N / 2) ≤
+    (Finset.range (N + 1)).sum (fun n => twoSetRepFunc A B n) := by
+  set sA := (Finset.Icc 1 (N / 2)).filter (· ∈ A) with hsA_def
+  set sB := (Finset.Icc 1 (N / 2)).filter (· ∈ B) with hsB_def
+  set P := sA ×ˢ sB with hP_def
+  -- |P| = cA(N/2) * cB(N/2)
+  have hP_card : P.card = countingFn A (N / 2) * countingFn B (N / 2) := by
+    show (sA ×ˢ sB).card = countingFn A (N / 2) * countingFn B (N / 2)
+    rw [Finset.card_product]; rfl
+  -- Each p ∈ P satisfies p.1 + p.2 ≤ N
+  have hP_sum : ∀ p ∈ P, p.1 + p.2 ≤ N := by
+    intro ⟨a, b⟩ hp
+    simp only [hP_def, Finset.mem_product, hsA_def, hsB_def,
+               Finset.mem_filter, Finset.mem_Icc] at hp
+    omega
+  -- Each restricted fiber is a sub-count of r_{A,B}(n)
+  have hfiber_le : ∀ n,
+      (P.filter (fun p => p.1 + p.2 = n)).card ≤ twoSetRepFunc A B n := by
+    intro n
+    unfold twoSetRepFunc
+    rw [← Set.ncard_coe_Finset]
+    apply Set.ncard_le_ncard
+    · intro ⟨a, b⟩ hpn
+      rw [Finset.mem_coe, Finset.mem_filter] at hpn
+      obtain ⟨hpP, hpn_eq⟩ := hpn
+      rw [Finset.mem_product] at hpP
+      obtain ⟨haA, hbB⟩ := hpP
+      rw [Finset.mem_filter] at haA hbB
+      simp only [Set.mem_setOf_eq]
+      exact ⟨haA.2, hbB.2, hpn_eq⟩
+    · exact twoSet_pairs_finite A B n
+  -- Fiberwise decomposition: |P| = Σ_{n≤N} |Pₙ|
+  have hdecomp : P.card =
+      (Finset.range (N + 1)).sum (fun n => (P.filter (fun p => p.1 + p.2 = n)).card) :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun p hp => Finset.mem_range.mpr (Nat.lt_succ_of_le (hP_sum p hp)))
+  -- Chain: cA(N/2)*cB(N/2) = |P| = Σ|Pₙ| ≤ Σ r_{A,B}(n)
+  calc countingFn A (N / 2) * countingFn B (N / 2)
+      = P.card := hP_card.symm
+    _ = (Finset.range (N + 1)).sum
+          (fun n => (P.filter (fun p => p.1 + p.2 = n)).card) := hdecomp
+    _ ≤ (Finset.range (N + 1)).sum (fun n => twoSetRepFunc A B n) :=
+        Finset.sum_le_sum (fun n _ => hfiber_le n)
+
 /-- If A + B is a basis and both sets have density ≫ √N, then the average
     representation grows without bound. -/
 /- ## Part IX: Partial Results -/
