@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-asoq01-main-identity",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01",
+    "range": { "startLine": 29, "endLine": 44 },
+    "type": "insight",
+    "title": "Main Identity: Ordered Selections from n Objects",
+    "content": "choose_descFactorial proves C(n,k)·k! = n.descFactorial(k) in one line: rw [← Nat.descFactorial_eq_factorial_mul_choose] followed by ring. This Mathlib lemma states the identity in the form descFactorial(n,k) = factorial(k) · choose(n,k), so rewriting backwards and applying ring closes the goal. The mathematical content is the fundamental counting principle: C(n,k) chooses k elements (unordered), then k! orders them.",
+    "mathContext": "$\\binom{n}{k} \\cdot k! = n^{\\underline{k}} = n(n-1)(n-2)\\cdots(n-k+1)$, the **falling factorial** or **Pochhammer symbol** $n^{\\underline{k}}$. Combinatorially, $\\binom{n}{k}$ counts unordered $k$-subsets of $\\{1,\\ldots,n\\}$, and multiplying by $k!$ counts ordered $k$-tuples of distinct elements — the number of injections $\\{1,\\ldots,k\\} \\to \\{1,\\ldots,n\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.descFactorial", "Nat.descFactorial_eq_factorial_mul_choose", "falling factorial", "k-permutations"],
+    "prerequisites": ["Nat.choose", "Nat.factorial", "Nat.descFactorial_eq_factorial_mul_choose"]
+  },
+  {
+    "id": "ann-asoq01-product-form",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01",
+    "range": { "startLine": 46, "endLine": 55 },
+    "type": "technique",
+    "title": "Explicit Product Form via Finset.range",
+    "content": "choose_product gives C(n,k)·k! = ∏ i ∈ range k, (n-i) by combining choose_descFactorial with Nat.descFactorial_eq_prod_range. The product expands as (n-0)·(n-1)·⋯·(n-(k-1)) = n·(n-1)·⋯·(n-k+1), matching the falling factorial definition. This form is useful for inductive arguments or when the product representation is more natural than the recursive definition.",
+    "mathContext": "$\\binom{n}{k} \\cdot k! = \\prod_{i=0}^{k-1}(n-i)$. This is the fully unfolded form of the falling factorial: $n^{\\underline{k}} = \\prod_{i=0}^{k-1}(n-i)$. For $n=5$, $k=2$: $\\prod_{i<2}(5-i) = 5 \\cdot 4 = 20 = \\binom{5}{2} \\cdot 2! = 10 \\cdot 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.descFactorial_eq_prod_range", "Finset.prod", "Finset.range"],
+    "prerequisites": ["choose_descFactorial", "Nat.descFactorial_eq_prod_range"]
+  },
+  {
+    "id": "ann-asoq01-structural",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01",
+    "range": { "startLine": 57, "endLine": 78 },
+    "type": "insight",
+    "title": "Structural Properties: Full Factorial and Divisibility",
+    "content": "Three structural theorems follow. choose_full_factorial: C(n,k)·k!·(n-k)! = n!, proved by rewriting to the descending factorial and applying Nat.factorial_mul_descFactorial. factorial_dvd_descFactorial: k! ∣ n.descFactorial(k), proved directly from the choose_descFactorial witness. descFactorial_self_eq_factorial: n.descFactorial(n) = n!, from Nat.descFactorial_self. The divisibility theorem is the algebraic statement that binomial coefficients are integers.",
+    "mathContext": "$\\binom{n}{k} \\cdot k! \\cdot (n-k)! = n!$ is the standard binomial identity relating choose to factorial. The divisibility $k! \\mid n^{\\underline{k}}$ is equivalent to the integrality of $\\binom{n}{k} = n^{\\underline{k}}/k! \\in \\mathbb{Z}$. The special case $n^{\\underline{n}} = n!$ holds because the falling factorial 'uses up' all $n$ values.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.factorial_mul_descFactorial", "Nat.descFactorial_self", "binomial integrality", "full factorial"],
+    "prerequisites": ["choose_descFactorial", "Nat.factorial_mul_descFactorial", "Nat.descFactorial_self"]
+  },
+  {
+    "id": "ann-asoq01-duality",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01",
+    "range": { "startLine": 80, "endLine": 96 },
+    "type": "insight",
+    "title": "Duality: Ascending vs Descending Factorial",
+    "content": "ascending_descending_duality proves in one conjunction that C(n+k,k)·k! equals both ascFactorial(n+1,k) (from the parent file's simplicial_factorial) and (n+k).descFactorial(k) (from choose_descFactorial). This theorem explicitly shows that the same binomial coefficient C(n+k,k) parametrizes both the ascending form (counting k-tuples starting above n) and the descending form (counting k-tuples ending at n+k-1).",
+    "mathContext": "$\\binom{n+k}{k} \\cdot k! = (n+1)(n+2)\\cdots(n+k) = (n+k)^{\\underline{k}}$. In rising factorial notation: $(n+1)^{\\overline{k}} = (n+1)(n+2)\\cdots(n+k)$ and in falling: $(n+k)^{\\underline{k}} = (n+k)(n+k-1)\\cdots(n+1)$. These are the same product in reverse order, explaining the duality.",
+    "significance": "key",
+    "relatedConcepts": ["simplicial_factorial", "Nat.ascFactorial", "rising factorial", "Pochhammer symbol"],
+    "prerequisites": ["simplicial_factorial from ArithmeticSeriesOQ02OQ04", "choose_descFactorial"]
+  },
+  {
+    "id": "ann-asoq01-specializations",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01",
+    "range": { "startLine": 98, "endLine": 132 },
+    "type": "context",
+    "title": "Low-Dimensional Cases and Concrete Checks",
+    "content": "The k=1,2,3 theorems specialize the identity: C(n,1)·1!=n (trivial), C(n,2)·2!=n(n-1) (pairs), C(n,3)·6=n(n-1)(n-2) (triples). The proofs use simp [Nat.descFactorial, Nat.descFactorial_succ, Nat.descFactorial_one] + ring to unfold the recursive definition. Three concrete examples (C(5,2)·2!=20, C(6,3)·6!=120, ∏ i in range 2, (5-i)=20) are verified by native_decide.",
+    "mathContext": "For $k=2$: $\\binom{n}{2} \\cdot 2! = \\frac{n(n-1)}{2} \\cdot 2 = n(n-1)$, the number of ordered pairs of distinct elements. For $k=3$: $\\binom{n}{3} \\cdot 6 = n(n-1)(n-2)$, the number of ordered triples. The check $\\binom{6}{3} \\cdot 3! = 20 \\cdot 6 = 120$ matches $6! / 3! = 720/6 = 120$.",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.descFactorial_succ", "Nat.descFactorial_one", "native_decide", "ordered pairs"],
+    "prerequisites": ["choose_descFactorial", "Nat.descFactorial recursion"]
+  }
+]

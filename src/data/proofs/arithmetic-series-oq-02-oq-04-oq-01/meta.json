@@ -34,15 +34,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The binomial coefficient C(n,k) counts unordered k-element subsets of an n-element set. Multiplying by k! gives the number of ordered selections (k-permutations): C(n,k)·k! = n·(n-1)·⋯·(n-k+1) = n.descFactorial(k). This identity appears throughout combinatorics, probability, and algebra.\n\nThe parent file (ArithmeticSeriesOQ02OQ04) proved the ascending (rising) factorial analogue: C(n+k,k)·k! = (n+1)·(n+2)·⋯·(n+k) = ascFactorial(n+1, k). This file proves the complementary descending case and establishes the duality between the two forms.",
+    "historicalContext": "The falling factorial $n^{\\underline{k}} = n(n-1)\\cdots(n-k+1)$ and its relation to binomial coefficients have been central in combinatorics since at least the 18th century. The identity $\\binom{n}{k} \\cdot k! = n^{\\underline{k}}$ appears in every combinatorics text as the formula for $k$-permutations (ordered selections without repetition). Umbral calculus (Blissard, 1861; Rota, 1964) uses falling factorials as a polynomial basis where many combinatorial identities take simpler form than in the standard monomial basis.\n\nThe rising factorial (Pochhammer symbol) $(a)_k = a(a+1)\\cdots(a+k-1)$ appears in the theory of hypergeometric functions and special functions; the falling factorial appears in combinatorics and discrete probability. Both are special cases of the generalized Pochhammer symbol. The duality $\\binom{n+k}{k}\\cdot k! = (n+1)^{\\overline{k}} = (n+k)^{\\underline{k}}$ connects the two.\n\nThe parent file (ArithmeticSeriesOQ02OQ04) proved the ascending analogue $\\binom{n+k}{k}\\cdot k! = (n+1)^{\\overline{k}}$. This file proves the descending case and unifies both.",
     "problemStatement": "Prove that C(n,k)·k! = n.descFactorial(k) = n·(n-1)·⋯·(n-k+1), the descending factorial identity for binomial coefficients.",
     "proofStrategy": "The main identity follows directly from Mathlib's `Nat.descFactorial_eq_factorial_mul_choose`. The product formula unfolds via `Nat.descFactorial_eq_prod_range`. Structural properties (full factorial identity, divisibility, self-case) follow from Mathlib lemmas. Low-dimensional cases are verified by `simp` + `ring`.",
     "keyInsights": [
-      "Descending: C(n,k)*k! = n*(n-1)*...*(n-k+1) counts ordered k-selections from {1,...,n}",
-      "Ascending: C(n+k,k)*k! = (n+1)*...*(n+k) counts ordered k-selections with offset n",
-      "These are dual: same count, different parameterization of the starting point",
-      "The Mathlib key: Nat.descFactorial_eq_factorial_mul_choose gives the main result directly",
-      "descFactorial(n, n) = n! recovers the full factorial as a special case"
+      "The identity $\\binom{n}{k} \\cdot k! = n^{\\underline{k}}$ is the fundamental formula for $k$-permutations: choose $k$ elements (unordered, $\\binom{n}{k}$ ways) then arrange them ($k!$ ways), giving $k$-tuples of distinct elements.",
+      "The ascending and descending forms are dual: $\\binom{n+k}{k}\\cdot k! = (n+1)^{\\overline{k}} = (n+k)^{\\underline{k}}$ — the same product of $k$ consecutive integers, read in opposite orders.",
+      "The Mathlib lemma Nat.descFactorial_eq_factorial_mul_choose states the identity in the form descFactorial = factorial · choose, so the proof is a single rewrite + ring, illustrating how good naming in Mathlib enables near-trivial formalizations.",
+      "The divisibility $k! \\mid n^{\\underline{k}}$ is equivalent to $\\binom{n}{k} \\in \\mathbb{N}$, a non-trivial combinatorial fact (that integer-valued polynomials of a certain form always take integer values) which requires no separate proof once choose_descFactorial is established.",
+      "The self-case $n^{\\underline{n}} = n!$ is the extremal instance: choosing all $n$ elements and ordering them gives all permutations of $n$ elements, counted by $n!$.",
+      "Falling factorials form a polynomial basis for $\\mathbb{Z}$-valued functions on $\\mathbb{Z}$: every such function is a unique $\\mathbb{Z}$-linear combination of $\\{n^{\\underline{0}}, n^{\\underline{1}}, n^{\\underline{2}}, \\ldots\\}$, which is why they appear naturally in discrete calculus and umbral calculus."
     ],
     "prerequisites": [
       "Nat.descFactorial: falling factorial in Mathlib",
@@ -83,9 +84,16 @@
     {
       "id": "specializations",
       "title": "Part V: Low-Dimensional Specializations",
-      "summary": "Explicit k=1, 2, 3 cases and concrete numerical checks.",
+      "summary": "choose_descFactorial_one (k=1: C(n,1)·1!=n), choose_descFactorial_two (k=2: C(n,2)·2!=n(n-1)), choose_descFactorial_three (k=3: C(n,3)·6=n(n-1)(n-2)) via simp + ring on the descFactorial recursion.",
       "startLine": 98,
-      "endLine": 132
+      "endLine": 119
+    },
+    {
+      "id": "concrete-checks",
+      "title": "Part VI: Concrete Verification",
+      "summary": "Three native_decide checks: C(5,2)·2!=20, C(6,3)·3!=120, ∏ i in range 2, (5-i)=20. Summary comment lists all 11 theorems.",
+      "startLine": 121,
+      "endLine": 169
     }
   ],
   "conclusion": {
