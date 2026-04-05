@@ -1,9 +1,11 @@
 [
   {
     "id": "covered-in-interval",
-    "line": 39,
+    "proofId": "erdos-1143",
+    "range": { "startLine": 39, "endLine": 43 },
     "type": "definition",
-    "content": "**coveredInInterval**: The set of integers in $[a, a+k)$ divisible by at least one prime in the given set. Defined by filtering `Finset.Ico a (a+k)` with the existential divisibility predicate. This is the fundamental counting object: its cardinality varies with the starting position $a$, and the covering function minimizes over all $a$.",
+    "title": "coveredInInterval: Integers in [a, a+k) Divisible by at Least One Prime",
+    "content": "`coveredInInterval`: The set of integers in $[a, a+k)$ divisible by at least one prime in the given set. Defined by filtering `Finset.Ico a (a+k)` with the existential divisibility predicate. This is the fundamental counting object: its cardinality varies with the starting position $a$, and the covering function minimizes over all $a$.",
     "mathContext": "For primes $\\{p_1, \\ldots, p_u\\}$ and interval $[a, a+k)$: $\\text{covered}(a,k) = \\{n \\in [a, a+k) : \\exists p_i \\mid n\\}$. By the Chinese Remainder Theorem, as $k \\to \\infty$, $|\\text{covered}(a,k)| / k \\to 1 - \\prod(1 - 1/p_i)$ for most $a$.",
     "significance": "key",
     "relatedConcepts": [
@@ -15,14 +17,15 @@
     "prerequisites": [
       "Finset.Ico half-open intervals",
       "existential quantification over Finset"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "covering-function",
-    "line": 44,
+    "proofId": "erdos-1143",
+    "range": { "startLine": 44, "endLine": 48 },
     "type": "definition",
-    "content": "**coveringFunction** $F_k$: The infimum over all starting positions $a$ of the cardinality of `coveredInInterval`. This captures the *worst-case* covering: the starting position that minimizes the number of covered integers. Defined as a `iInf` over $\\mathbb{N}$, making it noncomputable.",
+    "title": "coveringFunction F_k: Worst-Case (Infimum) Covering Count",
+    "content": "`coveringFunction` $F_k$: The infimum over all starting positions $a$ of the cardinality of `coveredInInterval`. This captures the *worst-case* covering: the starting position that minimizes the number of covered integers. Defined as a `iInf` over $\\mathbb{N}$, making it noncomputable.",
     "mathContext": "$F_k(p_1, \\ldots, p_u) = \\inf_{a \\in \\mathbb{N}} |\\{n \\in [a, a+k) : \\exists p_i \\mid n\\}|$. The infimum is achieved because the covering pattern repeats with period $\\text{lcm}(p_1, \\ldots, p_u)$, so only finitely many starting positions matter modulo the LCM.",
     "significance": "key",
     "relatedConcepts": [
@@ -34,14 +37,15 @@
     "prerequisites": [
       "Lattice infimum iInf",
       "coveredInInterval definition"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "expected-density",
-    "line": 49,
+    "proofId": "erdos-1143",
+    "range": { "startLine": 49, "endLine": 56 },
     "type": "definition",
-    "content": "**expectedDensity**: The proportion $1 - \\prod_{p \\in S}(1 - 1/p)$ of integers divisible by at least one prime in $S$. This is the inclusion-exclusion density, equivalent to the probability that a random integer is divisible by some $p_i$ when the primes are treated as independent sieves. The product form arises from Möbius inversion.",
+    "title": "expectedDensity: 1 − ∏(1 − 1/p) via Inclusion-Exclusion",
+    "content": "`expectedDensity`: The proportion $1 - \\prod_{p \\in S}(1 - 1/p)$ of integers divisible by at least one prime in $S$. This is the inclusion-exclusion density, equivalent to the probability that a random integer is divisible by some $p_i$ when the primes are treated as independent sieves. The product form arises from Möbius inversion.",
     "mathContext": "By inclusion-exclusion: $d(S) = \\sum_{\\emptyset \\neq T \\subseteq S} (-1)^{|T|+1} \\prod_{p \\in T} 1/p = 1 - \\prod_{p \\in S}(1 - 1/p)$. For $S = \\{2,3\\}$: $d = 1 - (1/2)(2/3) = 2/3$. For $S = \\{2,3,5\\}$: $d = 1 - (1/2)(2/3)(4/5) = 11/15$.",
     "significance": "key",
     "relatedConcepts": [
@@ -53,31 +57,34 @@
     "prerequisites": [
       "Finset.prod (big operators)",
       "real arithmetic"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "covering-le-k",
-    "line": 57,
-    "type": "technique",
-    "content": "**Trivial upper bound**: $F_k \\leq k$. At most $k$ integers in an interval of $k$ consecutive integers can be divisible by anything. This is the starting point for non-trivial estimates.",
+    "proofId": "erdos-1143",
+    "range": { "startLine": 57, "endLine": 68 },
+    "type": "theorem",
+    "title": "covering_le_k: Trivial Upper Bound F_k ≤ k",
+    "content": "`covering_le_k`: At most $k$ integers in an interval of $k$ consecutive integers can be divisible by anything. This is the starting point for non-trivial estimates. Proved via `Finset.card_filter_le` and `ciInf_le_of_le` with the constant 0 as the starting position.",
     "mathContext": "Since $\\text{covered}(a,k) \\subseteq [a, a+k)$ and $|[a,a+k)| = k$, we have $|\\text{covered}(a,k)| \\leq k$ for all $a$, hence $\\inf_a |\\text{covered}(a,k)| \\leq k$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset.card_le_card",
-      "Finset.filter_subset"
+      "Finset.filter_subset",
+      "ciInf_le_of_le"
     ],
     "prerequisites": [
       "coveredInInterval definition",
       "coveringFunction definition"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "single-prime-bounds",
-    "line": 64,
-    "type": "technique",
-    "content": "**Single prime sandwich**: For a single prime $p$, $\\lfloor k/p \\rfloor \\leq F_k(\\{p\\}) \\leq \\lfloor k/p \\rfloor + 1$. In any $k$ consecutive integers, there are either $\\lfloor k/p \\rfloor$ or $\\lfloor k/p \\rfloor + 1$ multiples of $p$, depending on the starting position modulo $p$.",
+    "proofId": "erdos-1143",
+    "range": { "startLine": 69, "endLine": 163 },
+    "type": "theorem",
+    "title": "single_prime_lower/upper: ⌊k/p⌋ ≤ F_k({p}) ≤ ⌊k/p⌋ + 1",
+    "content": "**Single prime sandwich**: For a single prime $p$, $\\lfloor k/p \\rfloor \\leq F_k(\\{p\\}) \\leq \\lfloor k/p \\rfloor + 1$. In any $k$ consecutive integers, there are either $\\lfloor k/p \\rfloor$ or $\\lfloor k/p \\rfloor + 1$ multiples of $p$, depending on the starting position modulo $p$.\n\nThe lower bound proof constructs an explicit injection from `Finset.range (k/p)` into the filtered interval using the map $i \\mapsto (\\lceil a/p \\rceil + i) \\cdot p$, verified to land in $[a, a+k)$ by ceiling arithmetic.",
     "mathContext": "Among $k$ consecutive integers starting at $a$, the multiples of $p$ are $\\{a + r, a + r + p, \\ldots\\}$ where $r = p - (a \\bmod p)$. The count is $\\lfloor(k - r)/p\\rfloor + 1$ if $r \\leq k$, else $\\lfloor k/p \\rfloor$. The minimum over $a$ is $\\lfloor k/p \\rfloor$.",
     "significance": "key",
     "relatedConcepts": [
@@ -90,14 +97,15 @@
       "Nat.Prime",
       "coveringFunction definition",
       "division with remainder"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "density-positivity",
-    "line": 77,
-    "type": "technique",
-    "content": "**Density is positive**: $0 < d(S) < 1$ for any nonempty set of primes. Each factor $(1 - 1/p) \\in (0,1)$ for primes $p \\geq 2$, so their product is in $(0,1)$, making $d = 1 - \\prod(1-1/p) \\in (0,1)$. This ensures the covering function grows linearly in $k$.",
+    "proofId": "erdos-1143",
+    "range": { "startLine": 165, "endLine": 194 },
+    "type": "theorem",
+    "title": "expectedDensity_pos/lt_one: Density is Strictly in (0, 1)",
+    "content": "**Density is positive**: $0 < d(S) < 1$ for any nonempty set of primes. Each factor $(1 - 1/p) \\in (0,1)$ for primes $p \\geq 2$, so their product is in $(0,1)$, making $d = 1 - \\prod(1-1/p) \\in (0,1)$. This ensures the covering function grows linearly in $k$.\n\nBoth `expectedDensity_pos` and `expectedDensity_lt_one` use the auxiliary `prod_one_sub_inv_pos` which bounds each factor via `Finset.prod_pos`.",
     "mathContext": "For primes $p \\geq 2$: $0 < 1 - 1/p \\leq 1/2 < 1$, so $0 < \\prod_{p \\in S}(1 - 1/p) < 1$ when $S \\neq \\emptyset$. Hence $0 < 1 - \\prod(1-1/p) < 1$. The density approaches 1 as more primes are included (by Mertens' theorem, $\\prod_{p \\leq x}(1-1/p) \\sim 2e^{-\\gamma}/\\ln x$).",
     "significance": "key",
     "relatedConcepts": [
@@ -108,14 +116,15 @@
     "prerequisites": [
       "Nat.Prime implies p >= 2",
       "Finset.prod over (0,1) factors"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "covering-asymptotic",
-    "line": 92,
-    "type": "technique",
-    "content": "**Asymptotic density axiom**: $|F_k - k \\cdot d(S)| \\leq C$ for a constant $C$ depending only on the prime set, not on $k$. This says the covering function is well-approximated by the density prediction, with bounded error. Axiomatized because the proof requires CRT-based equidistribution in residue classes.",
+    "proofId": "erdos-1143",
+    "range": { "startLine": 196, "endLine": 207 },
+    "type": "concept",
+    "title": "covering_asymptotic Axiom: |F_k − k·d(S)| ≤ C (CRT Equidistribution)",
+    "content": "**Asymptotic density axiom** (`axiom covering_asymptotic`): $|F_k - k \\cdot d(S)| \\leq C$ for a constant $C$ depending only on the prime set, not on $k$. This says the covering function is well-approximated by the density prediction, with bounded error. Axiomatized because the proof requires CRT-based equidistribution in residue classes.",
     "mathContext": "The covering count in $[a, a+k)$ decomposes by residue classes modulo $\\text{lcm}(p_1, \\ldots, p_u)$. The deviation from $k \\cdot d$ comes from incomplete periods at the interval boundaries, contributing at most $O(\\text{lcm})$ error. The constant $C$ can be taken as $\\prod p_i$.",
     "significance": "key",
     "relatedConcepts": [
@@ -128,14 +137,15 @@
       "expectedDensity definition",
       "coveringFunction definition",
       "CRT for coprime moduli"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "erdos-selfridge-exact",
-    "line": 102,
-    "type": "technique",
-    "content": "**Erdős-Selfridge axiom** ($2 < \\alpha < 3$): When $k = \\alpha p_u$ with $\\alpha \\in (2,3)$, an exact value of $F_k$ exists. This is one of the 'lost results' in combinatorial number theory — Erdős and Selfridge reportedly found the formula, but the paper has never been located. Axiomatized as a placeholder for a known but unavailable result.",
+    "proofId": "erdos-1143",
+    "range": { "startLine": 208, "endLine": 228 },
+    "type": "theorem",
+    "title": "erdos_selfridge_exact: Exact F_k for k = αp_u with α ∈ (2,3) (Lost Result)",
+    "content": "**Erdős-Selfridge exact formula** for $\\alpha \\in (2,3)$: When $k = \\alpha p_u$ with $\\alpha \\in (2,3)$, an exact value of $F_k$ exists. This is one of the 'lost results' in combinatorial number theory — Erdős and Selfridge reportedly found the formula, but the paper has never been located. Axiomatized as a placeholder for a known but unavailable result.",
     "mathContext": "When $\\alpha \\in (2,3)$, the interval $[a, a+k)$ contains exactly 2 or 3 multiples of $p_u$, creating a constrained optimization. The exact formula likely involves the precise residue class structure modulo $p_u$ combined with covering by smaller primes. The axiom states $\\exists v, F_k = v$ without specifying $v$.",
     "significance": "key",
     "relatedConcepts": [
@@ -148,14 +158,15 @@
       "coveringFunction definition",
       "Nat.floor",
       "Finset.max'"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "alpha-gt-3-open",
-    "line": 110,
-    "type": "technique",
-    "content": "**Open regime axiom** ($\\alpha > 3$): For $k = \\alpha p_u$ with $\\alpha > 3$, the covering function satisfies density-type bounds: $k(d-1) \\leq F_k \\leq kd + u$. This is essentially the density approximation plus/minus terms depending on the number of primes. Very little beyond these bounds is known.",
+    "proofId": "erdos-1143",
+    "range": { "startLine": 236, "endLine": 252 },
+    "type": "theorem",
+    "title": "alpha_gt_3_open: Density Bounds k(d−1) ≤ F_k ≤ kd + u for α > 3",
+    "content": "**Open regime bounds** ($\\alpha > 3$): For $k = \\alpha p_u$ with $\\alpha > 3$, the covering function satisfies density-type bounds: $k(d-1) \\leq F_k \\leq kd + u$. This is essentially the density approximation plus/minus terms depending on the number of primes. Very little beyond these bounds is known.",
     "mathContext": "The upper bound $F_k \\leq kd + u$ adds at most one extra covered integer per prime (boundary effects). The lower bound $F_k \\geq k(d-1)$ is a weak form; the interesting question is whether $F_k \\geq k(d - \\epsilon)$ for small $\\epsilon$. Progress here would constrain Jacobsthal's function from above.",
     "significance": "key",
     "relatedConcepts": [
@@ -168,15 +179,16 @@
       "coveringFunction definition",
       "expectedDensity definition",
       "Finset.card (number of primes)"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "density-two-three",
-    "line": 125,
-    "type": "technique",
+    "proofId": "erdos-1143",
+    "range": { "startLine": 253, "endLine": 258 },
+    "type": "theorem",
+    "title": "density_two_three: d({2,3}) = 2/3, the Simplest Non-Trivial Case",
     "content": "**Concrete example**: $d(\\{2,3\\}) = 1 - (1-1/2)(1-1/3) = 1 - 1/3 = 2/3$. In any 6 consecutive integers, exactly 4 are divisible by 2 or 3 (and the minimum over starting positions is also 4). This is the simplest non-trivial case of the covering problem.",
-    "mathContext": "The 6-element pattern modulo $\\text{lcm}(2,3) = 6$ is: positions $\\{0,2,3,4\\}$ are covered (0 by both, 2 by 2, 3 by 3, 4 by 2), positions $\\{1,5\\}$ are uncovered (both coprime to 6). So $F_6(\\{2,3\\}) = 4 = 6 \\cdot 2/3$.",
+    "mathContext": "The 6-element pattern modulo $\\text{lcm}(2,3) = 6$ is: positions $\\{0,2,3,4\\}$ are covered (0 by both, 2 by 2, 3 by 3, 4 by 2), positions $\\{1,5\\}$ are uncovered. So $F_6(\\{2,3\\}) = 4 = 6 \\cdot 2/3$. Proved by `norm_num` with `Finset.prod_pair`.",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset.prod computation",
@@ -186,13 +198,14 @@
     "prerequisites": [
       "expectedDensity definition",
       "rational arithmetic in Lean"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "density-two-three-five",
-    "line": 131,
-    "type": "technique",
+    "proofId": "erdos-1143",
+    "range": { "startLine": 259, "endLine": 265 },
+    "type": "theorem",
+    "title": "density_two_three_five: d({2,3,5}) = 11/15 via Euler's Totient",
     "content": "**Three-prime example**: $d(\\{2,3,5\\}) = 1 - (1/2)(2/3)(4/5) = 1 - 4/15 = 11/15 \\approx 0.733$. Among 30 consecutive integers (one full period of $\\text{lcm}(2,3,5) = 30$), exactly 22 are divisible by 2, 3, or 5. The 8 coprime elements are $\\{1,7,11,13,17,19,23,29\\}$ — the totatives of 30.",
     "mathContext": "Euler's totient: $\\phi(30) = 30 \\cdot (1-1/2)(1-1/3)(1-1/5) = 8$, so 22 out of 30 are covered. The density $11/15$ is exact by CRT periodicity. Adding more primes increases coverage: $d(\\{2,3,5,7\\}) = 1 - (1/2)(2/3)(4/5)(6/7) = 209/210$.",
     "significance": "supporting",
@@ -205,15 +218,16 @@
     "prerequisites": [
       "expectedDensity definition",
       "Finset.prod with three elements"
-    ],
-    "proofId": "erdos-1143"
+    ]
   },
   {
     "id": "jacobsthal-connection",
-    "line": 147,
-    "type": "concept",
+    "proofId": "erdos-1143",
+    "range": { "startLine": 253, "endLine": 265 },
+    "type": "insight",
+    "title": "Jacobsthal Duality: Covered vs. Coprime (Erdős #1143 ↔ #970)",
     "content": "**Jacobsthal duality**: Erdős #970 asks for Jacobsthal's function $h(k)$: the minimal interval length guaranteeing an element coprime to $p_1 \\cdots p_u$. The relationship: uncovered $= k - F_k$, so minimizing covered (this problem) and maximizing coprime-free intervals (Jacobsthal) are dual. If $h(u)$ is the Jacobsthal value, then $F_{h(u)-1} = h(u)-1$ (all covered). Iwaniec proved $h(k) = O(k^{0.735})$.",
-    "mathContext": "Jacobsthal's function: $h(n) = \\min\\{m : \\text{every } m \\text{ consecutive integers contain one coprime to } n\\}$. For $n = p_1 \\cdots p_u$: $h(n) - 1 = \\max_a |\\{x \\in [a,a+h(n)-1) : \\gcd(x,n) > 1\\}| = h(n)-1$, i.e., $F_{h(n)-1} = h(n)-1$. This means $F_k < k$ for $k \\geq h(n)$.",
+    "mathContext": "Jacobsthal's function: $h(n) = \\min\\{m : \\text{every } m \\text{ consecutive integers contain one coprime to } n\\}$. For $n = p_1 \\cdots p_u$: $F_{h(u)-1} = h(u) - 1$ — the interval of length $h(u)-1$ starting at the worst position has all elements covered. Iwaniec's bound: $h(p\\#) = O((\\log p\\#)^{0.735})$ where $p\\# = \\prod_{q \\leq p} q$.",
     "significance": "key",
     "relatedConcepts": [
       "Jacobsthal's function",
@@ -226,7 +240,6 @@
       "coveringFunction definition",
       "complement counting",
       "GCD and coprimality"
-    ],
-    "proofId": "erdos-1143"
+    ]
   }
 ]
