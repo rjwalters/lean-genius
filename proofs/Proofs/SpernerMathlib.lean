@@ -12,6 +12,9 @@ We prove Sperner's lemma for finite cell families equipped with
 adjacency satisfying local face-sharing axioms, using a
 door-counting parity argument.
 
+This formulation works purely with finite combinatorial data and
+avoids explicit simplicial complex or triangulation structures.
+
 The adjacency interface: each cell has `d+1` faces indexed by
 `Fin (d+1)`. For each face, `adj s k` returns either `some (s', k')`
 (the unique adjacent cell sharing that face) or `none` (boundary).
@@ -111,10 +114,10 @@ section DoorCountParity
 private lemma door_filter_empty_of_missing_color (d : ℕ)
     (f : Fin (d + 1) → Fin (d + 1))
     (j₀ : Fin d)
-    (hmiss : ¬∃ i : Fin (d + 1), f i = ⟨j₀.val, by omega⟩) :
+    (hmiss : ¬∃ i : Fin (d + 1), f i = ⟨j₀.val, Nat.lt_succ_of_lt j₀.isLt⟩) :
     (univ.filter (fun k : Fin (d + 1) =>
       ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
-        f i = ⟨j.val, by omega⟩)) = ∅ := by
+        f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩)) = ∅ := by
   rw [filter_eq_empty_iff]
   intro k _; push_neg
   exact ⟨j₀, fun i _ h => hmiss ⟨i, h⟩⟩
@@ -236,7 +239,7 @@ private lemma door_count_of_surj (d : ℕ)
     (hsurj : Function.Surjective f) :
     (univ.filter (fun k : Fin (d + 1) =>
       ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
-        f i = ⟨j.val, by omega⟩)).card = 1 := by
+        f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩)).card = 1 := by
   have hinj := Finite.injective_iff_surjective.mpr hsurj
   obtain ⟨k₀, hk₀⟩ := hsurj ⟨d, by omega⟩
   have huniq : ∀ k, f k = ⟨d, by omega⟩ → k = k₀ :=
@@ -268,7 +271,7 @@ private lemma door_count_even_of_not_surj (d : ℕ)
     (hnsurj : ¬Function.Surjective f) :
     Even (univ.filter (fun k : Fin (d + 1) =>
       ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
-        f i = ⟨j.val, by omega⟩)).card := by
+        f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩)).card := by
   by_cases hd_app : ∃ i, f i = ⟨d, by omega⟩
   · have ⟨j₀, hj₀⟩ : ∃ j : Fin d,
         ¬∃ i, f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩ := by
@@ -316,7 +319,7 @@ theorem door_count_parity (d : ℕ)
     (f : Fin (d + 1) → Fin (d + 1)) :
     (univ.filter (fun k : Fin (d + 1) =>
       ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
-        f i = ⟨j.val, by omega⟩)).card % 2 =
+        f i = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩)).card % 2 =
     if Function.Surjective f then 1 else 0 := by
   by_cases hsurj : Function.Surjective f
   · rw [if_pos hsurj, door_count_of_surj d f hsurj]
@@ -401,6 +404,17 @@ lemma isDoor_iff_of_adj
   ⟨isDoor_of_shared_face vertex (hadj_vertex s k s' k' hadj_eq),
    isDoor_of_shared_face vertex (hadj_vertex s k s' k' hadj_eq).symm⟩
 
+/-- Extract the adjacent cell when adjacency is known to be interior. -/
+private lemma adj_some_of_ne_none
+    {Cell : Type*} {d : ℕ}
+    (adj : Cell → Fin (d + 1) → Option (Cell × Fin (d + 1)))
+    (s : Cell) (k : Fin (d + 1))
+    (h : adj s k ≠ none) :
+    ∃ s' k', adj s k = some (s', k') := by
+  cases hadj : adj s k with
+  | none => exact absurd hadj h
+  | some sk => exact ⟨sk.1, sk.2, by simp_all⟩
+
 /-- Interior doors pair up via the adjacency involution,
 so their count is even. -/
 theorem even_card_interior_doors
@@ -424,37 +438,28 @@ theorem even_card_interior_doors
   · intro p hp
     simp only [S, mem_filter, mem_univ, true_and] at hp
     obtain ⟨_, hadj_ne'⟩ := hp
-    cases hadj_eq : adj p.1 p.2 with
-    | none => exact absurd hadj_eq hadj_ne'
-    | some sk =>
-      obtain ⟨s', k'⟩ := sk
-      have hadj_back := hadj_symm p.1 p.2 s' k' hadj_eq
-      show adjMap adj (adjMap adj p) = p
-      simp only [adjMap, hadj_eq, hadj_back]
+    obtain ⟨s', k', hadj_eq⟩ := adj_some_of_ne_none adj p.1 p.2 hadj_ne'
+    have hadj_back := hadj_symm p.1 p.2 s' k' hadj_eq
+    show adjMap adj (adjMap adj p) = p
+    simp only [adjMap, hadj_eq, hadj_back]
   · intro p hp
     simp only [S, mem_filter, mem_univ, true_and] at hp ⊢
     obtain ⟨hdoor, hadj_ne'⟩ := hp
-    cases hadj_eq : adj p.1 p.2 with
-    | none => exact absurd hadj_eq hadj_ne'
-    | some sk =>
-      obtain ⟨s', k'⟩ := sk
-      have hadj_back := hadj_symm p.1 p.2 s' k' hadj_eq
-      show IsDoor vertex c (adjMap adj p).1 (adjMap adj p).2 ∧
-        adj (adjMap adj p).1 (adjMap adj p).2 ≠ none
-      simp only [adjMap, hadj_eq]
-      exact ⟨(isDoor_iff_of_adj vertex adj hadj_vertex hadj_eq).mp hdoor,
-        by rw [hadj_back]; exact Option.noConfusion⟩
+    obtain ⟨s', k', hadj_eq⟩ := adj_some_of_ne_none adj p.1 p.2 hadj_ne'
+    have hadj_back := hadj_symm p.1 p.2 s' k' hadj_eq
+    show IsDoor vertex c (adjMap adj p).1 (adjMap adj p).2 ∧
+      adj (adjMap adj p).1 (adjMap adj p).2 ≠ none
+    simp only [adjMap, hadj_eq]
+    exact ⟨(isDoor_iff_of_adj vertex adj hadj_vertex hadj_eq).mp hdoor,
+      by rw [hadj_back]; exact Option.noConfusion⟩
   · intro p hp
     simp only [S, mem_filter, mem_univ, true_and] at hp
     obtain ⟨_, hadj_ne'⟩ := hp
-    cases hadj_eq : adj p.1 p.2 with
-    | none => exact absurd hadj_eq hadj_ne'
-    | some sk =>
-      obtain ⟨s', k'⟩ := sk
-      show adjMap adj p ≠ p
-      simp only [adjMap, hadj_eq]
-      intro heq
-      exact hadj_ne p.1 p.2 s' k' hadj_eq (congr_arg Prod.fst heq).symm
+    obtain ⟨s', k', hadj_eq⟩ := adj_some_of_ne_none adj p.1 p.2 hadj_ne'
+    show adjMap adj p ≠ p
+    simp only [adjMap, hadj_eq]
+    intro heq
+    exact hadj_ne p.1 p.2 s' k' hadj_eq (congr_arg Prod.fst heq).symm
 
 omit [DecidableEq V] [DecidableEq Cell] [Fintype Cell] in
 /-- Per-cell door parity: the door count of a single cell has the same
@@ -636,8 +641,12 @@ section BoundaryReduction
 variable {V : Type*} [DecidableEq V] {n : ℕ}
 variable {Cell : Type*} [DecidableEq Cell] [Fintype Cell]
 
-/-- A Sperner coloring: if vertex `v` is on face `k`, then `c v` is
-not `k`. -/
+/-- A Sperner coloring relative to a face predicate `onFace`:
+if vertex `v` is on face `k` (as determined by `onFace`), then
+`c v ≠ k`. The predicate `onFace` is abstract -- the geometric
+content is supplied by the `hBoundaryOnFace` hypothesis, which
+connects combinatorial boundary (`adj = none`) to the face
+structure. -/
 def IsSpernerColoring
     (c : V → Fin (n + 1))
     (onFace : V → Fin (n + 1) → Prop) : Prop :=
@@ -664,7 +673,7 @@ theorem boundary_doors_on_last_face
     (hDoor : IsDoor vertex c s k)
     (hAdj : adj s k = none) :
     ∀ j : Fin (n + 1), j ≠ k →
-      onFace (vertex s j) ⟨n, by omega⟩ := by
+      onFace (vertex s j) ⟨n, Nat.lt_succ_self n⟩ := by
   obtain ⟨faceIdx, hOnFace⟩ := hBoundaryOnFace s k hAdj
   by_cases hlt : faceIdx.val < n
   · exfalso
@@ -701,7 +710,7 @@ theorem boundary_doors_odd_of_last_face
         IsDoor vertex c p.1 p.2 ∧
         adj p.1 p.2 = none ∧
         (∀ j : Fin (n + 1), j ≠ p.2 →
-          onFace (vertex p.1 j) ⟨n, by omega⟩))).card) :
+          onFace (vertex p.1 j) ⟨n, Nat.lt_succ_self n⟩))).card) :
     Odd (univ.filter
       (fun p : Cell × Fin (n + 1) =>
         IsDoor vertex c p.1 p.2 ∧ adj p.1 p.2 = none)).card := by
