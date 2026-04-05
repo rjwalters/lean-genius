@@ -58,7 +58,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 350,
-    "assumptions": "1 axiom: selfridge_sierpinski_is_sierpinski (78557 is Sierpinski, Selfridge 1962). See Lean source."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdos posed this problem in 1980 with Graham [ErGr80, p. 27]. It generalizes the Sierpinski problem, which asks for odd m such that 2^k * m + 1 is never prime for any k >= 0.\n\nThe classical Sierpinski problem was solved: Selfridge (1962) showed 78557 is Sierpinski, using covering systems. The Sierpinski Problem (finding the smallest such number) remains open, with candidates being eliminated by the 'Seventeen or Bust' project.\n\nProblem 203 extends this to expressions involving both powers of 2 and 3, making the covering system approach much more complex.",

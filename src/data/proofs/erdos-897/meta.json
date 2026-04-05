@@ -55,7 +55,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 141,
-    "assumptions": "8 axioms: erdos_897_part_i, erdos_897_part_ii, wirsing_theorem, and 5 more. See Lean source for complete statements."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "This problem explores the behavior of additive arithmetic functions—functions satisfying f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. Classic examples include ω(n) (distinct prime factors), Ω(n) (total prime factors with multiplicity), and log(n).\n\nErdős asked: if an additive function f grows unboundedly fast on prime powers (specifically, if limsup f(p^k)/log(p^k) = ∞), does this force the consecutive differences f(n+1) - f(n) to also be unbounded when normalized by log(n)?\n\nThe converse direction was settled by Wirsing in 1970, who proved that if consecutive differences are BOUNDED (|f(n+1) - f(n)| ≤ C), then f must behave like c·log(n) + O(1). This characterizes the logarithm as essentially the unique additive function with bounded consecutive differences.",

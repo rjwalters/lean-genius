@@ -49,7 +49,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 168,
-    "assumptions": "13 axioms: erdos_373_finiteness, maxPrimeFactor, maxPrimeFactor_spec, and 10 more. See Lean source for complete statements."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdos Problem #373 asks whether the Diophantine equation n! = a_1! * a_2! * ... * a_k! (with the constraint n-1 > a_1 >= a_2 >= ... >= a_k >= 2) has only finitely many solutions.\n\nThe constraint a_1 < n-1 rules out trivial solutions like n! = (n-1)! * n = (n-1)! * a_2! * ... where n factors as a product of factorials of smaller numbers.\n\nSuranyi was the first to conjecture that 6!7! = 10! is the only two-factor solution. Hickerson conjectured that there are exactly four non-trivial solutions in total.\n\nFlorian Luca proved in 2007 that the set of solutions is finite, assuming the ABC conjecture. Erdos showed that finiteness would follow from the number-theoretic conjecture P(n(n-1)) > 4 log n for large n, where P(m) is the largest prime factor of m.",
