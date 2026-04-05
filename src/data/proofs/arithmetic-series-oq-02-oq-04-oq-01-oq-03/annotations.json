@@ -72,6 +72,18 @@
     "prerequisites": ["generating functions", "formal power series", "finite difference calculus"]
   },
   {
+    "id": "ann-theorem-statement",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "range": { "startLine": 48, "endLine": 62 },
+    "type": "definition",
+    "title": "Theorem Statement: Falling Factorial Vandermonde",
+    "content": "The theorem `vandermonde_descFactorial` formalizes $(m+n)^{\\underline{r}} = \\sum_{j=0}^{r} \\binom{r}{j} m^{\\underline{j}} n^{\\underline{r-j}}$ for all natural numbers $m, n, r$. The Lean statement uses `Nat.descFactorial` for the falling factorial and `Finset.range (r+1)` for the summation index $j \\in \\{0, \\ldots, r\\}$. Note the Lean sum is `∑ j ∈ Finset.range (r + 1)` rather than `∑ j ∈ Finset.range r` because `Finset.range n = {0, ..., n-1}`, so we need `r+1` to include $j = r$. The docstring (lines 52-58) documents the three-step proof strategy: convert via `descFactorial_eq_factorial_mul_choose`, apply `vandermonde_range`, verify terms via `term_eq`.",
+    "mathContext": "$(m+n)^{\\underline{r}} = \\sum_{j=0}^{r} \\binom{r}{j} \\cdot m^{\\underline{j}} \\cdot n^{\\underline{r-j}}$ for all $m, n, r \\in \\mathbb{N}$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.descFactorial", "Finset.range", "theorem statement", "falling factorial"],
+    "prerequisites": ["falling factorials", "Finset.sum", "Lean 4 theorem syntax"]
+  },
+  {
     "id": "ann-simp-rw-vs-rw",
     "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
     "range": { "startLine": 64, "endLine": 64 },
