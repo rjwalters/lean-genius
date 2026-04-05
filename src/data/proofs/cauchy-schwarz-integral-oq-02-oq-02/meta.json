@@ -176,15 +176,20 @@
       "targetId": "cauchy-schwarz-integral",
       "relationship": "foundational",
       "description": "The base Cauchy-Schwarz integral file. CS is the p=q=2 case of H\u00f6lder, which is step 2 in the chain proven here."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz for finite sums — the discrete analog of H\u00f6lder's p=q=2 case"
     }
   ],
   "conclusion": {
     "summary": "Answers YES to the open question: the full Lp Minkowski proof via the Hölder chain IS available in Lean 4 without the black-box NormedAddCommGroup instance. The chain Young → Hölder → Minkowski is made explicit, with the factoring trick (splitting |f+g|^p and applying Hölder twice) as the key step. 0 sorries, 0 axioms.",
     "implications": "Making the chain explicit serves both pedagogy and formalization quality. Students see exactly where each inequality is used. Formal verification confirms the logical dependencies are correct. The factoring trick pattern (H\u00f6lder \u2192 norm inequality) recurs throughout analysis: Sobolev embeddings, interpolation theorems, and more.",
     "openQuestions": [
-      "Can the remaining sorry (ENNReal rpow division step) be closed with tactic automation?",
-      "Can the chain be extended to include Sobolev embeddings as a fourth step?",
-      "What is the optimal way to handle the division step when \u2016f+g\u2016_p = 0 or \u221e?"
+      "Can the chain be extended to include Sobolev embeddings as a fourth step (Young → Hölder → Minkowski → W^{1,p} ↪ L^{p*})?",
+      "What is the optimal way to handle the division step when ‖f+g‖_p = 0 or ∞ in the ENNReal rpow arithmetic?",
+      "Can the Riesz-Thorin interpolation theorem be formalized in Lean 4, generalizing this chain to operator norms between Lp spaces?"
     ]
   },
   "references": [
