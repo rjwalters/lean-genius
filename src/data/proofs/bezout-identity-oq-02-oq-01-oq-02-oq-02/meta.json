@@ -102,6 +102,7 @@
   ],
   "conclusion": {
     "summary": "ℤ[i] is formalized as a Euclidean domain and UFD via Mathlib's instance chain. The backward direction of Gaussian prime classification is proved: elements with rational prime norms are prime (covers norm-2 and split cases), and rational primes p ≡ 3 (mod 4) are inert. The sum-of-squares obstruction mod 4 is mechanically verified by `decide` in ZMod 4. Concrete examples demonstrate all three ramification types.",
+    "implications": "This formalization demonstrates the power of Mathlib's instance chain for algebraic structures: EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid is automatic, requiring only `inferInstance`. The `decide`-based verification of the sum-of-squares obstruction (`∀ x y : ZMod 4, x^2 + y^2 ≠ 3`) is a clean application of finite decidable quantifiers. The pattern — norm-based primality via `prime_of_prime_natAbs_norm` — is reusable for other quadratic integer rings ℤ[√d].",
     "openQuestions": [
       "The forward direction of Gaussian prime classification: if z is prime in ℤ[i], then norm(z) is a rational prime power (either p or p²). Completing both directions gives the full equivalence. Does Mathlib have this forward direction, or does it need a short proof?",
       "Fermat's two-square theorem follows directly: p is a sum of two squares iff p = 2 or p ≡ 1 (mod 4). The Gaussian integer proof is: p = N(a+bi) for some Gaussian prime a+bi above p. Can this be formalized as a short corollary of the prime classification?"
