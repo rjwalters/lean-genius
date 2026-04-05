@@ -240,7 +240,9 @@
         "description": "Economic form: n-fold sum nearly convex",
         "leanType": "x in conv(n * S) -> exists f, excess <= finrank"
       }
-    ]
+    ],
+    "path": "Proofs/ShapleyFolkman.lean",
+    "sorries": 3
   },
   "mainTheorems": [
     {

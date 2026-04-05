@@ -1,10 +1,10 @@
 {
   "id": "erdos-628",
-  "title": "Erd\u0151s Problem #628: The Erd\u0151s-Lov\u00e1sz Tihany Conjecture",
+  "title": "Erdős Problem #628: The Erdős-Lovász Tihany Conjecture",
   "slug": "erdos-628",
-  "description": "If \u03c7(G) = k and G is K_k-free, must G be (a,b)-splittable for a,b \u2265 2 with a + b = k + 1? Special cases proven: a = b = 3 (Brown-Jung), quasi-line graphs, \u03b1 = 2 (Balogh et al.).",
+  "description": "If χ(G) = k and G is K_k-free, must G be (a,b)-splittable for a,b ≥ 2 with a + b = k + 1? Special cases proven: a = b = 3 (Brown-Jung), quasi-line graphs, α = 2 (Balogh et al.).",
   "meta": {
-    "author": "Erd\u0151s-Lov\u00e1sz (conjecture), Brown-Jung (a=b=3), Balogh-Kostochka-Prince-Stiebitz (special cases)",
+    "author": "Erdős-Lovász (conjecture), Brown-Jung (a=b=3), Balogh-Kostochka-Prince-Stiebitz (special cases)",
     "sourceUrl": "https://erdosproblems.com/628",
     "date": "1968",
     "status": "axiomatized",
@@ -55,14 +55,14 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Erd\u0151s\u2013Lov\u00e1sz Tihany Conjecture is one of the most prominent open problems in structural graph theory. It was formulated by Paul Erd\u0151s and L\u00e1szl\u00f3 Lov\u00e1sz at the 1968 Tihany conference on graph theory, held at Lake Balaton in Hungary \u2014 one of the most influential graph theory meetings of the era.\n\n**The question arose from a fundamental observation**: if a graph has $\\chi(G) = k$ but contains no $K_k$, then its high chromatic number must come from global structure rather than local density. The conjecture asserts this global structure is rich enough to be 'split' into two independently high-chromatic parts.\n\n**Timeline of results:**\n- **1968**: Erd\u0151s and Lov\u00e1sz formulate the conjecture at Tihany. Erd\u0151s initially asked about the $a = b = 3$ case.\n- **1969**: Jason I. Brown and Heinrich Jung independently proved the $a = b = 3$ case, showing that $K_5$-free 5-chromatic graphs contain two vertex-disjoint odd cycles. This was remarkably quick \u2014 only a year after the conjecture was posed.\n- **2006**: The Strong Perfect Graph Theorem (Chudnovsky et al.) shows Tihany is vacuous for perfect graphs, since perfect graphs always contain $K_{\\chi}$.\n- **2009**: Balogh, Kostochka, Prince, and Stiebitz proved two major special cases: (i) quasi-line graphs (where every vertex neighborhood is a union of two cliques), and (ii) graphs with independence number $\\alpha = 2$. These represented the first progress beyond Brown\u2013Jung in 40 years.\n- **2022**: Zi-Xia Song published a comprehensive survey of the conjecture's status and partial results.\n\n**Connection to Lov\u00e1sz**: L\u00e1szl\u00f3 Lov\u00e1sz, co-author of the conjecture, went on to win the Abel Prize (2021) partly for his foundational work in graph theory, including the Lov\u00e1sz theta function and the proof of Kneser's conjecture using topology. The Tihany Conjecture reflects his deep interest in graph structure.",
-    "problemStatement": "Let $G$ be a graph with $\\chi(G) = k$ that contains no $K_k$ (complete graph on $k$ vertices).\n\n**Definition:** $G$ is $(a,b)$-**splittable** if it contains vertex-disjoint induced subgraphs $G[S]$ and $G[T]$ with $\\chi(G[S]) \\ge a$ and $\\chi(G[T]) \\ge b$.\n\n**Conjecture (Erd\u0151s\u2013Lov\u00e1sz 1968):** For all $a, b \\ge 2$ with $a + b = k + 1$, $G$ is $(a,b)$-splittable.\n\n**Status:** OPEN in general\n\n**Proved cases:**\n- $a = b = 3$ (Brown\u2013Jung 1969): equivalent to two disjoint odd cycles\n- Quasi-line graphs (Balogh et al. 2009): neighborhoods are unions of two cliques\n- $\\alpha(G) = 2$ (Balogh et al. 2009): very small independence number",
-    "text": "If \u03c7(G) = k and G is K_k-free, must G be (a,b)-splittable for a,b \u2265 2 with a + b = k + 1? Special cases proven: a = b = 3 (Brown-Jung), quasi-line graphs, \u03b1 = 2 (Balogh et al.).",
-    "proofStrategy": "The Lean formalization captures the complete mathematical framework:\n\n1. **Graph parameters**: Sorry'd noncomputable definitions of $\\chi(G)$, $\\omega(G)$, `IsCliqueFree`, and vertex disjointness.\n2. **Splittability**: `IsSplittable G a b` via disjoint vertex sets with high-$\\chi$ induced subgraphs, plus an equivalent formulation `HasDisjointHighChromatic`.\n3. **Tihany Conjecture**: Both the full conjecture `TihanyConjecture` (quantifying over all $k \\ge 5$) and the per-pair version `TihanyForPair a b`.\n4. **Brown\u2013Jung**: Axiomatized `TihanyForPair 3 3`, with `tihany_3_3` proved from it, plus axiomatized odd-cycle formulation `brown_jung_odd_cycles`.\n5. **Quasi-line graphs**: `IsLineGraph` (sorry'd), `IsQuasiLine` (neighborhoods as two cliques), axiomatized `balogh_quasi_line`.\n6. **Independence number 2**: Sorry'd `independenceNumber`, axiomatized `balogh_alpha_2`.\n7. **Critical graphs**: `IsCritical G k` (vertex-critical), sorry'd `contains_critical` and `critical_min_degree` ($\\delta \\ge k-1$).\n8. **Perfect graphs**: `IsPerfect`, sorry'd vacuousness for Tihany (`perfect_tihany_vacuous`).\n9. **Partial results**: Sorry'd weak splittability and easy $a=2$ case, symmetric conjecture definition.\n10. **Odd cycles**: Sorry'd $\\chi(C_{2k+1}) = 3$ and disjoint-odd-cycles-imply-splittability.\n11. **Summary**: `erdos_628_status` combining all three proved special cases.",
+    "historicalContext": "The Erdős–Lovász Tihany Conjecture is one of the most prominent open problems in structural graph theory. It was formulated by Paul Erdős and László Lovász at the 1968 Tihany conference on graph theory, held at Lake Balaton in Hungary — one of the most influential graph theory meetings of the era.\n\n**The question arose from a fundamental observation**: if a graph has $\\chi(G) = k$ but contains no $K_k$, then its high chromatic number must come from global structure rather than local density. The conjecture asserts this global structure is rich enough to be 'split' into two independently high-chromatic parts.\n\n**Timeline of results:**\n- **1968**: Erdős and Lovász formulate the conjecture at Tihany. Erdős initially asked about the $a = b = 3$ case.\n- **1969**: Jason I. Brown and Heinrich Jung independently proved the $a = b = 3$ case, showing that $K_5$-free 5-chromatic graphs contain two vertex-disjoint odd cycles. This was remarkably quick — only a year after the conjecture was posed.\n- **2006**: The Strong Perfect Graph Theorem (Chudnovsky et al.) shows Tihany is vacuous for perfect graphs, since perfect graphs always contain $K_{\\chi}$.\n- **2009**: Balogh, Kostochka, Prince, and Stiebitz proved two major special cases: (i) quasi-line graphs (where every vertex neighborhood is a union of two cliques), and (ii) graphs with independence number $\\alpha = 2$. These represented the first progress beyond Brown–Jung in 40 years.\n- **2022**: Zi-Xia Song published a comprehensive survey of the conjecture's status and partial results.\n\n**Connection to Lovász**: László Lovász, co-author of the conjecture, went on to win the Abel Prize (2021) partly for his foundational work in graph theory, including the Lovász theta function and the proof of Kneser's conjecture using topology. The Tihany Conjecture reflects his deep interest in graph structure.",
+    "problemStatement": "Let $G$ be a graph with $\\chi(G) = k$ that contains no $K_k$ (complete graph on $k$ vertices).\n\n**Definition:** $G$ is $(a,b)$-**splittable** if it contains vertex-disjoint induced subgraphs $G[S]$ and $G[T]$ with $\\chi(G[S]) \\ge a$ and $\\chi(G[T]) \\ge b$.\n\n**Conjecture (Erdős–Lovász 1968):** For all $a, b \\ge 2$ with $a + b = k + 1$, $G$ is $(a,b)$-splittable.\n\n**Status:** OPEN in general\n\n**Proved cases:**\n- $a = b = 3$ (Brown–Jung 1969): equivalent to two disjoint odd cycles\n- Quasi-line graphs (Balogh et al. 2009): neighborhoods are unions of two cliques\n- $\\alpha(G) = 2$ (Balogh et al. 2009): very small independence number",
+    "text": "If χ(G) = k and G is K_k-free, must G be (a,b)-splittable for a,b ≥ 2 with a + b = k + 1? Special cases proven: a = b = 3 (Brown-Jung), quasi-line graphs, α = 2 (Balogh et al.).",
+    "proofStrategy": "The Lean formalization captures the complete mathematical framework:\n\n1. **Graph parameters**: Sorry'd noncomputable definitions of $\\chi(G)$, $\\omega(G)$, `IsCliqueFree`, and vertex disjointness.\n2. **Splittability**: `IsSplittable G a b` via disjoint vertex sets with high-$\\chi$ induced subgraphs, plus an equivalent formulation `HasDisjointHighChromatic`.\n3. **Tihany Conjecture**: Both the full conjecture `TihanyConjecture` (quantifying over all $k \\ge 5$) and the per-pair version `TihanyForPair a b`.\n4. **Brown–Jung**: Axiomatized `TihanyForPair 3 3`, with `tihany_3_3` proved from it, plus axiomatized odd-cycle formulation `brown_jung_odd_cycles`.\n5. **Quasi-line graphs**: `IsLineGraph` (sorry'd), `IsQuasiLine` (neighborhoods as two cliques), axiomatized `balogh_quasi_line`.\n6. **Independence number 2**: Sorry'd `independenceNumber`, axiomatized `balogh_alpha_2`.\n7. **Critical graphs**: `IsCritical G k` (vertex-critical), sorry'd `contains_critical` and `critical_min_degree` ($\\delta \\ge k-1$).\n8. **Perfect graphs**: `IsPerfect`, sorry'd vacuousness for Tihany (`perfect_tihany_vacuous`).\n9. **Partial results**: Sorry'd weak splittability and easy $a=2$ case, symmetric conjecture definition.\n10. **Odd cycles**: Sorry'd $\\chi(C_{2k+1}) = 3$ and disjoint-odd-cycles-imply-splittability.\n11. **Summary**: `erdos_628_status` combining all three proved special cases.",
     "keyInsights": [
-      "**$(a,b)$-splittability captures distributed chromatic structure:** If $\\chi(G) = k$ without a $K_k$, the high coloring requirement must come from the graph's global topology. Splittability says this requirement is spread enough to decompose into two independently demanding parts. The constraint $a + b = k + 1$ is tight \u2014 $a + b = k$ would follow trivially from any partition.",
-      "**$K_k$-free $k$-chromatic graphs are deeply imperfect:** Perfect graphs always have $\\omega = \\chi$, so they contain $K_\\chi$ and don't satisfy the Tihany hypothesis. The conjecture is about the most imperfect possible graphs \u2014 those where $\\chi$ exceeds $\\omega$ by the maximum possible amount relative to clique size.",
-      "**The $a = b = 3$ case reduces to odd cycle topology:** Brown\u2013Jung showed that $K_5$-free 5-chromatic graphs contain two disjoint odd cycles. Odd cycles are the minimal 3-chromatic graphs (by the bipartite characterization: $\\chi = 2 \\iff$ no odd cycle). This reduction connects chromatic structure to cycle structure, a theme in graph minor theory.",
+      "**$(a,b)$-splittability captures distributed chromatic structure:** If $\\chi(G) = k$ without a $K_k$, the high coloring requirement must come from the graph's global topology. Splittability says this requirement is spread enough to decompose into two independently demanding parts. The constraint $a + b = k + 1$ is tight — $a + b = k$ would follow trivially from any partition.",
+      "**$K_k$-free $k$-chromatic graphs are deeply imperfect:** Perfect graphs always have $\\omega = \\chi$, so they contain $K_\\chi$ and don't satisfy the Tihany hypothesis. The conjecture is about the most imperfect possible graphs — those where $\\chi$ exceeds $\\omega$ by the maximum possible amount relative to clique size.",
+      "**The $a = b = 3$ case reduces to odd cycle topology:** Brown–Jung showed that $K_5$-free 5-chromatic graphs contain two disjoint odd cycles. Odd cycles are the minimal 3-chromatic graphs (by the bipartite characterization: $\\chi = 2 \\iff$ no odd cycle). This reduction connects chromatic structure to cycle structure, a theme in graph minor theory.",
       "**Quasi-line structure constrains coloring:** In quasi-line graphs, every neighborhood is a union of two cliques. This means the local structure is well-controlled: each vertex 'sees' at most two cliques in its vicinity. Balogh et al. exploited this to prove Tihany by analyzing how chromatic number distributes across such structured neighborhoods.",
       "**The $\\alpha = 2$ case is Ramsey-constrained:** When $\\alpha(G) = 2$, the complement $\\bar{G}$ is triangle-free. By Ramsey theory, $|V(G)| \\le R(3, \\omega(\\bar{G})+1)$, bounding the graph's size. This constraint, combined with $K_k$-freeness and $\\chi = k$, severely limits the graph structure, enabling the proof."
     ],
@@ -86,7 +86,7 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Sorry'd noncomputable chromaticNumber and cliqueNumber, IsCliqueFree (\u03c9 < k) and AreDisjoint (vertex set disjointness) predicates",
+      "summary": "Sorry'd noncomputable chromaticNumber and cliqueNumber, IsCliqueFree (ω < k) and AreDisjoint (vertex set disjointness) predicates",
       "startLine": 31,
       "endLine": 48,
       "mathContext": "$\\\\chi(G)$ = chromatic number, $\\\\omega(G)$ = clique number. $K_k$-free: $\\\\omega(G) < k$. Since $\\\\chi \\\\geq \\\\omega$, these graphs have $\\\\chi > \\\\omega$."
@@ -94,7 +94,7 @@
     {
       "id": "splittability",
       "title": "The (a,b)-Splittability Property",
-      "summary": "IsSplittable definition (disjoint vertex sets with \u03c7 \u2265 a and \u03c7 \u2265 b on induced subgraphs), plus equivalent HasDisjointHighChromatic formulation using S \u2229 T = \u2205",
+      "summary": "IsSplittable definition (disjoint vertex sets with χ ≥ a and χ ≥ b on induced subgraphs), plus equivalent HasDisjointHighChromatic formulation using S ∩ T = ∅",
       "startLine": 49,
       "endLine": 65,
       "mathContext": "$(a,b)$-splittable: $V = A \\\\sqcup B$ with $\\\\chi(G[A]) \\\\geq a$ and $\\\\chi(G[B]) \\\\geq b$. The chromatic number splits across a vertex partition."
@@ -102,14 +102,14 @@
     {
       "id": "tihany-conjecture",
       "title": "The Tihany Conjecture",
-      "summary": "Full TihanyConjecture definition (universal over k \u2265 5 and valid (a,b) pairs) and TihanyForPair (per-pair version with k = a + b - 1)",
+      "summary": "Full TihanyConjecture definition (universal over k ≥ 5 and valid (a,b) pairs) and TihanyForPair (per-pair version with k = a + b - 1)",
       "startLine": 66,
       "endLine": 86,
       "mathContext": "Full conjecture: $\\\\forall k \\\\geq 5$, $\\\\forall a,b \\\\geq 2$ with $a+b=k+1$: $\\\\chi(G)=k$, $G$ is $K_k$-free $\\\\Rightarrow$ $G$ is $(a,b)$-splittable."
     },
     {
       "id": "brown-jung",
-      "title": "Brown\u2013Jung Theorem (a = b = 3)",
+      "title": "Brown–Jung Theorem (a = b = 3)",
       "summary": "Axiomatized brown_jung_theorem (TihanyForPair 3 3), proved tihany_3_3 instantiation, and axiomatized brown_jung_odd_cycles (two disjoint odd cycles formulation)",
       "startLine": 87,
       "endLine": 110,
@@ -126,7 +126,7 @@
     {
       "id": "alpha-2",
       "title": "Independence Number 2",
-      "summary": "Sorry'd independenceNumber definition and axiomatized balogh_alpha_2 (Tihany for all pairs when \u03b1 = 2)",
+      "summary": "Sorry'd independenceNumber definition and axiomatized balogh_alpha_2 (Tihany for all pairs when α = 2)",
       "startLine": 135,
       "endLine": 151,
       "mathContext": "Balogh et al.: proved for $\\\\alpha(G) = 2$ (independence number 2). When $G$ has no independent triple, the structure is constrained enough."
@@ -134,15 +134,15 @@
     {
       "id": "critical-graphs",
       "title": "Critical Graphs",
-      "summary": "IsCritical definition (\u03c7 = k, removing any vertex drops \u03c7), sorry'd contains_critical (k-critical subgraph existence), sorry'd critical_min_degree (\u03b4 \u2265 k-1)",
+      "summary": "IsCritical definition (χ = k, removing any vertex drops χ), sorry'd contains_critical (k-critical subgraph existence), sorry'd critical_min_degree (δ ≥ k-1)",
       "startLine": 152,
       "endLine": 169,
       "mathContext": "$G$ is $k$-critical if $\\\\chi(G) = k$ but $\\\\chi(G-v) < k$ for every $v$. Critical graphs are the hardest case: minimal counterexamples must be critical."
     },
     {
       "id": "perfect-graphs",
-      "title": "Perfect Graphs \u2014 Tihany Vacuous",
-      "summary": "IsPerfect definition, sorry'd perfect_clique_free (K_{\u03c7+1}-free), sorry'd perfect_tihany_vacuous (perfect graphs satisfy Tihany hypothesis vacuously)",
+      "title": "Perfect Graphs — Tihany Vacuous",
+      "summary": "IsPerfect definition, sorry'd perfect_clique_free (K_{χ+1}-free), sorry'd perfect_tihany_vacuous (perfect graphs satisfy Tihany hypothesis vacuously)",
       "startLine": 170,
       "endLine": 186,
       "mathContext": "Perfect: $\\\\chi(H) = \\\\omega(H)$ for every induced subgraph $H$. Perfect graphs are $K_{\\\\chi+1}$-free, so Tihany is trivially true for them."
@@ -150,7 +150,7 @@
     {
       "id": "partial-results",
       "title": "Bounds and Partial Results",
-      "summary": "Sorry'd weak_splittability (single high-\u03c7 part), sorry'd tihany_a_eq_2 (easy a=2 case), and TihanySymmetric definition (a = b case)",
+      "summary": "Sorry'd weak_splittability (single high-χ part), sorry'd tihany_a_eq_2 (easy a=2 case), and TihanySymmetric definition (a = b case)",
       "startLine": 187,
       "endLine": 203,
       "mathContext": "Weak splittability (one high-$\\\\chi$ part) is easier. The $(2,k-1)$ case is known. The general $(a,b)$ case remains open for most $k$."
@@ -158,7 +158,7 @@
     {
       "id": "odd-cycles",
       "title": "Odd Cycles and (3,3)-Splittability",
-      "summary": "Sorry'd odd_cycle_chi_3 (\u03c7(C_{2k+1}) = 3), sorry'd disjoint_odd_cycles_splittable with sorry'd cycle hypotheses connecting cycle theory to splittability",
+      "summary": "Sorry'd odd_cycle_chi_3 (χ(C_{2k+1}) = 3), sorry'd disjoint_odd_cycles_splittable with sorry'd cycle hypotheses connecting cycle theory to splittability",
       "startLine": 204,
       "endLine": 220,
       "mathContext": "$\\\\chi(C_{2k+1}) = 3$. Disjoint odd cycles can build graphs with $\\\\chi = k$ and specific clique structure."
@@ -166,15 +166,15 @@
     {
       "id": "main-status",
       "title": "Main Problem Status and Verification",
-      "summary": "erdos_628_status combining Brown\u2013Jung, quasi-line, and \u03b1=2 results (proved from three axioms), plus #check verifications of key declarations",
+      "summary": "erdos_628_status combining Brown–Jung, quasi-line, and α=2 results (proved from three axioms), plus #check verifications of key declarations",
       "startLine": 221,
       "endLine": 246,
       "mathContext": "Partial: Brown-Jung ($a=b=3$), quasi-line graphs, $\\\\alpha=2$ case. Full conjecture for general $k \\\\geq 5$ remains OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #628 \u2014 the Erd\u0151s\u2013Lov\u00e1sz Tihany Conjecture (1968) \u2014 is OPEN in general. The conjecture asserts that $K_k$-free $k$-chromatic graphs are $(a,b)$-splittable for all valid pairs. Three special cases are proved: $a = b = 3$ (Brown\u2013Jung 1969, via disjoint odd cycles), quasi-line graphs (Balogh et al. 2009, via neighborhood structure), and $\\alpha = 2$ (Balogh et al. 2009, via Ramsey-type constraints). The formalization captures the full framework: splittability definitions, the conjecture, all proved cases, critical graph theory, perfect graph vacuousness, and the odd-cycle connection.",
-    "implications": "This conjecture connects to several deep themes: (1) **Graph decomposition theory** \u2014 Tihany asks when chromatic complexity can be decomposed into independent parts, a question with algorithmic implications for divide-and-conquer coloring; (2) **Critical graph theory** \u2014 understanding $K_k$-free $k$-critical graphs is essential, as these are the 'atoms' of chromatic structure; (3) **Perfect graph theory** \u2014 the SPGT shows Tihany is vacuous for perfect graphs, so the conjecture probes the structure of imperfection; (4) **Topological graph theory** \u2014 the $a=b=3$ case reduces to disjoint odd cycles, connecting to the Erd\u0151s\u2013P\u00f3sa theorem on cycle packing; (5) **Ramsey theory** \u2014 the $\\alpha = 2$ case exploits Ramsey bounds on graph size.",
+    "summary": "Erdős Problem #628 — the Erdős–Lovász Tihany Conjecture (1968) — is OPEN in general. The conjecture asserts that $K_k$-free $k$-chromatic graphs are $(a,b)$-splittable for all valid pairs. Three special cases are proved: $a = b = 3$ (Brown–Jung 1969, via disjoint odd cycles), quasi-line graphs (Balogh et al. 2009, via neighborhood structure), and $\\alpha = 2$ (Balogh et al. 2009, via Ramsey-type constraints). The formalization captures the full framework: splittability definitions, the conjecture, all proved cases, critical graph theory, perfect graph vacuousness, and the odd-cycle connection.",
+    "implications": "This conjecture connects to several deep themes: (1) **Graph decomposition theory** — Tihany asks when chromatic complexity can be decomposed into independent parts, a question with algorithmic implications for divide-and-conquer coloring; (2) **Critical graph theory** — understanding $K_k$-free $k$-critical graphs is essential, as these are the 'atoms' of chromatic structure; (3) **Perfect graph theory** — the SPGT shows Tihany is vacuous for perfect graphs, so the conjecture probes the structure of imperfection; (4) **Topological graph theory** — the $a=b=3$ case reduces to disjoint odd cycles, connecting to the Erdős–Pósa theorem on cycle packing; (5) **Ramsey theory** — the $\\alpha = 2$ case exploits Ramsey bounds on graph size.",
     "openQuestions": [
       "Does the Tihany Conjecture hold for all $(a,b)$ pairs? The next open case is $a = 3, b = 4$ (i.e., $k = 6$).",
       "Can the quasi-line and $\\alpha = 2$ proofs be unified or generalized to a broader class?",
@@ -185,19 +185,19 @@
   },
   "crossReferences": [
     {
-      "relationship": "Problem #627 studies the maximum \u03c7/\u03c9 ratio over n-vertex graphs. Tihany concerns the structural consequences when this ratio is at its extreme (\u03c7 = k, \u03c9 < k).",
+      "relationship": "Problem #627 studies the maximum χ/ω ratio over n-vertex graphs. Tihany concerns the structural consequences when this ratio is at its extreme (χ = k, ω < k).",
       "targetId": "erdos-627"
     },
     {
-      "relationship": "Problem #626 explores the chromatic number\u2013girth trade-off, another facet of how high chromatic number arises without large cliques.",
+      "relationship": "Problem #626 explores the chromatic number–girth trade-off, another facet of how high chromatic number arises without large cliques.",
       "targetId": "erdos-626"
     },
     {
-      "relationship": "Ramsey theory underpins the \u03b1 = 2 case (bounding graph size via R(3,k)) and provides structural constraints on K_k-free graphs.",
+      "relationship": "Ramsey theory underpins the α = 2 case (bounding graph size via R(3,k)) and provides structural constraints on K_k-free graphs.",
       "targetId": "ramseys-theorem"
     },
     {
-      "relationship": "Erd\u0151s Problem #1 on Ramsey numbers relates through the fundamental question of how graph parameters (\u03c7, \u03c9, \u03b1) interact under extremal constraints.",
+      "relationship": "Erdős Problem #1 on Ramsey numbers relates through the fundamental question of how graph parameters (χ, ω, α) interact under extremal constraints.",
       "targetId": "erdos-1"
     }
   ],
@@ -215,6 +215,8 @@
     "lineCount": 246,
     "axiomCount": 4,
     "theoremCount": 10,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "path": "Proofs/Stubs/Erdos628Problem.lean",
+    "sorries": 12
   }
 }
