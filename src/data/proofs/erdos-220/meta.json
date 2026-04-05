@@ -82,7 +82,48 @@
       "Jacobsthal's function and prime gaps"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Reduced Residues and Setup",
+      "startLine": 41,
+      "endLine": 70,
+      "summary": "Defines reducedResidues(n) as {k ≤ n : gcd(k,n)=1} (the group of reduced residues), proves card_reducedResidues = φ(n) via Nat.card_units_zmod_lt_eq_totient, and sets up the squared gap problem.",
+      "mathContext": "Reduced residues mod $n$: $\\mathbb{Z}_n^\\times = \\{k : 1 \\leq k \\leq n, \\gcd(k,n)=1\\}$, with $|\\mathbb{Z}_n^\\times| = \\varphi(n)$ (Euler's totient). The problem studies gaps $g_{i+1}^2 - g_i^2$ between consecutive reduced residues $g_i < g_{i+1}$."
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős #220 Conjecture: Squared Gaps",
+      "startLine": 91,
+      "endLine": 130,
+      "summary": "Defines erdos_220_conjecture: ∑ᵢ (gᵢ₊₁² - gᵢ²) = O(n log n · φ(n)/n) = O(φ(n)log n), and the generalization erdos_220_general for γ-th power gaps.",
+      "mathContext": "Conjecture: $\\sum_i (g_{i+1}^\\gamma - g_i^\\gamma) = O(n^\\gamma / \\varphi(n))$ for $\\gamma \\geq 1$. For $\\gamma=2$: $\\sum (g_{i+1}^2 - g_i^2) = O(n^2/\\varphi(n))$. Since $\\varphi(n) \\sim n/\\log\\log n$ on average, this is $O(n \\log\\log n)$."
+    },
+    {
+      "id": "montgomery-vaughan",
+      "title": "Montgomery-Vaughan Bounds (Axioms)",
+      "startLine": 121,
+      "endLine": 160,
+      "summary": "Axiomatizes montgomery_vaughan_squared: the squared-gap sum is O(n log n), proved by Montgomery-Vaughan (1980). Axiomatizes the γ-power generalization.",
+      "mathContext": "Montgomery-Vaughan (1980): $\\sum_i (g_{i+1}^2 - g_i^2) = O(n \\log n)$. This is proved via sieve methods and the large sieve inequality. The conjecture O(n) remains open."
+    },
+    {
+      "id": "applications",
+      "title": "Arithmetic Consequences and Spacing Bounds",
+      "startLine": 160,
+      "endLine": 200,
+      "summary": "Derives consequences: the average squared gap is O(n log n / φ(n)), individual gaps satisfy gᵢ₊₁ - gᵢ = O(n^(1/2+ε)). Connects to questions about gaps between consecutive quadratic residues.",
+      "mathContext": "Average squared gap: $O(n \\log n / \\varphi(n))$. A key consequence: the maximal gap between consecutive reduced residues satisfies $\\max_i (g_{i+1} - g_i) = O(n^{1/2+\\varepsilon})$ (conditionally on GRH)."
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions and Current State",
+      "startLine": 200,
+      "endLine": 226,
+      "summary": "Summarizes the factor-of-log gap between O(n log n) and the conjectured O(n), and states related open problems about prime gaps and multiplicative character sums.",
+      "mathContext": "The gap between $O(n \\log n)$ (known) and $O(n)$ (conjectured) corresponds to improving the large sieve inequality for character sums. The problem is closely related to the distribution of reduced residues in short intervals."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #220 was solved by Montgomery and Vaughan in 1986. The sum of squared gaps between reduced residues is O(n²/φ(n)), and more generally ∑(gap)^γ ≪ n^γ/φ(n)^{γ-1} for all γ ≥ 1. This shows the distribution of gaps is well-controlled.",
     "implications": "The result shows that despite the existence of large gaps (related to Jacobsthal's function), they are rare enough that power sums remain bounded. This connects to sieve theory and the distribution of primes.",

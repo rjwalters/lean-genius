@@ -76,7 +76,48 @@
       "Perfect squares and number-theoretic constraints"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "triangle-representation",
+      "title": "Triangle Representation",
+      "startLine": 37,
+      "endLine": 67,
+      "summary": "Defines the Triangle type (three real-valued vertices), basic geometric operations, and the notion of similarity/congruence. Sets up the framework for dissecting triangles into triangular pieces.",
+      "mathContext": "A triangle dissection into $n$ pieces is a partition of the interior into $n$ non-overlapping triangles with the same total area. The Dehn-Sydler theorem (1965) characterizes dissectable polygons."
+    },
+    {
+      "id": "dissection-definitions",
+      "title": "Dissection Definitions",
+      "startLine": 67,
+      "endLine": 100,
+      "summary": "Defines CanDissectInto T n (T can be dissected into n triangles), DissectionCounts (the set of achievable n), IsSquare (n = k²), HasSquareOnlyProperty (only square ns work), and SquareOnlyTriangles.",
+      "mathContext": "Erdős #633 asks: for which triangles T is $\\{n : T$ can be dissected into $n$ similar triangles$\\} = \\{k^2 : k \\geq 1\\}$? Soifer conjectured all non-right triangles have only square dissection numbers."
+    },
+    {
+      "id": "universal-dissection",
+      "title": "Universal Dissection Theorems",
+      "startLine": 101,
+      "endLine": 130,
+      "summary": "Proves universal_square_dissection: every triangle can be dissected into k² similar copies for any k ≥ 1 (by subdivision). Proves squares_always_achievable. Discusses the open question about non-square achievable n.",
+      "mathContext": "Universal bound: $k^2$ is always achievable by $k \\times k$ subdivision. The question is whether other values of $n$ (non-square) are achievable, and for which triangles T."
+    },
+    {
+      "id": "soifer-example",
+      "title": "Soifer's Example and Counterexamples",
+      "startLine": 113,
+      "endLine": 180,
+      "summary": "Presents Soifer's (1995) construction of right triangles that can be dissected into non-square numbers of similar pieces, showing the 'square-only' property is non-universal. Axiomatizes the right-triangle exceptional cases.",
+      "mathContext": "Right triangles with legs in ratio $1 : \\sqrt{2}$ can be dissected into $2$ similar copies (the square root of 2 construction). More generally, right triangles often have non-square achievable dissection numbers."
+    },
+    {
+      "id": "open-conjecture",
+      "title": "Open Conjecture and Known Results",
+      "startLine": 180,
+      "endLine": 236,
+      "summary": "States the open conjecture (non-right triangles have square-only dissection numbers) and summarizes known results: Snover-Warath-Williams (1990) proved n=2 is never achievable for obtuse triangles, and the general classification remains open.",
+      "mathContext": "Known: $n=2$ is impossible for obtuse triangles (Snover et al. 1990). Conjectured: for non-right, non-equilateral triangles, only $n = k^2$ are achievable. The equilateral triangle case is open too (can it be dissected into 2 similar equilateral triangles?)."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #633 asks for a classification of triangles that can only be dissected into perfect square numbers of congruent triangles. Soifer showed the triangle (√2, √3, √4) has this property, connected to the concept of integrally independent angles. Counterexamples include equilateral (3 pieces) and right isosceles (2 pieces) triangles, whose angle dependence enables non-square dissections. The complete classification remains OPEN with a $25 prize.",
     "implications": "**Theoretical Significance**: This problem sits at the intersection of combinatorial geometry, tiling theory, and algebraic number theory.\n\nThe constraint that dissection counts must be perfect squares arises from algebraic relationships between triangle side lengths and angles, connecting to linear independence over the rationals. The contrast between the solved similar case (n ≠ 2,3,5) and the open congruent case highlights how congruence constraints add significant complexity to tiling problems.",
