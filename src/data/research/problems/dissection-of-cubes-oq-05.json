@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 3 lemmas (exists_smaller_cube, descent_chains_from_coverage, dissection_of_cubes_from_coverage). Reduced sorry structure: old 2 sorries replaced by 2 cleaner sorries. New direct proof path avoids chain construction.",
+    "progressSummary": "PROGRESS: Proved 3 lemmas in prior sessions. 2 sorries remain (smallest_above_is_smaller:390, global_min_not_reaching_top:469). Both require deep geometric formalization. global_min_not_reaching_top needs card≥2 guard (FALSE for 1-cube dissections).",
     "builtItems": [
       "Assessment: 2 actual sorries at lines 390, 422 of DissectionOfCubesOQ03.lean",
       "Architecture: proves all_different_implies_long_chains from coverage (replacing parent axiom)",
@@ -53,8 +53,10 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove global_min_not_reaching_top: for bottom-floor mins, use filling argument (side=1 only cube). For non-bottom mins, use coverage + interior-disjointness below c_min",
-      "Prove smallest_above_is_smaller: formalize confinement using interiorDisjoint with floor neighbors"
+      "FIX: Add 2 ≤ d.cubes.card to global_min_not_reaching_top (FALSE for 1-cube dissections where side=1, z=0, z+side=1)",
+      "Prove global_min_not_reaching_top (z=0 case): if side=1 then cube=[0,1]³, any other cube has interior in (0,1)³, contradicts pairwise_disjoint. If side<1 then z+side<1 directly.",
+      "Prove global_min_not_reaching_top (z>0 case): cubes below c_min have side > c_min.side (global min). If c_min.z + c_min.side = 1 and z > 0, then side = 1-z < 1. Cubes below at z' with side' > 1-z must have z'+side' > z (since z' ≤ z and side' > 1-z), overlapping c_min's interior, contradiction.",
+      "Prove smallest_above_is_smaller: the smallest cube c on floor z is surrounded by cubes with side > c.side. At height z+c.side, the open region above c's interior is bounded by taller neighbors. Coverage forces a cube c' there with side ≤ c.side, strict by allDifferentSizes."
     ]
   },
   "tags": [
