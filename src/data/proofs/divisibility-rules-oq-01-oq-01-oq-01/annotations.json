@@ -1,0 +1,171 @@
+[
+  {
+    "id": "ann-module-doc",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "title": "Module Documentation: Answering the Minimal Period Question",
+    "type": "context",
+    "content": "This module answers the open question from DivisibilityRulesOQ01OQ01: given that the digit-block rule holds at k = φ(d) (Euler's theorem gives existence), what is the *minimal* such k? The answer is orderOf(10 : ZMod d), the multiplicative order of 10 modulo d. The documentation summarizes the three-way equivalence at the heart of the proof: 10^k % d = 1, orderOf(10:ZMod d) ∣ k, and the digit-block rule holding at period k.",
+    "mathContext": "The three-way equivalence $10^k \\equiv 1 \\pmod{d} \\iff \\mathrm{ord}_d(10) \\mid k \\iff$ (digit-block rule holds at period $k$) is the fundamental theorem of multiplicative orders, viewed as an instance of Lagrange's theorem: $a^k = 1$ in a group iff $|\\langle a \\rangle|$ divides $k$. In $\\mathbb{Z}/d\\mathbb{Z}$, the element $10$ generates a cyclic subgroup of $(\\mathbb{Z}/d\\mathbb{Z})^*$ of order $\\mathrm{ord}_d(10)$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "multiplicative order",
+      "Lagrange's theorem",
+      "cyclic subgroup",
+      "digit-block rule"
+    ],
+    "prerequisites": [
+      "DivisibilityRulesOQ01OQ01 (Euler's theorem existence proof)",
+      "group theory basics"
+    ]
+  },
+  {
+    "id": "ann-zmod-bridge",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 33,
+      "endLine": 52
+    },
+    "title": "ZMod Bridge: ℕ Modular Arithmetic ↔ ZMod Group Theory",
+    "type": "technique",
+    "content": "The private lemma `pow_mod_one_iff_ZMod_pow_eq_one` is the critical bridge: `b^k % d = 1` (ℕ modular arithmetic) iff `(b : ZMod d)^k = 1` (ring/group theory in ZMod). This conversion unlocks Mathlib's entire group-theoretic apparatus for orderOf. The main theorem `period_iff_orderOf_dvd` is then a clean one-line composition: ZMod bridge ∘ `orderOf_dvd_iff_pow_eq_one`.",
+    "mathContext": "The bridge uses `ZMod.natCast_eq_natCast_iff`: $(a : \\mathbb{Z}/d\\mathbb{Z}) = b \\iff a \\equiv b \\pmod{d}$. The `push_cast` tactic handles the coercion from $b^k : \\mathbb{N}$ to $(b : \\mathbb{Z}/d\\mathbb{Z})^k$. The `NeZero d` instance (required by ZMod API) is synthesized from `hd : 1 < d` via `omega`. Once in ZMod, `orderOf_dvd_iff_pow_eq_one` gives $(b : \\mathbb{Z}/d\\mathbb{Z})^k = 1 \\iff \\mathrm{orderOf}(b : \\mathbb{Z}/d\\mathbb{Z}) \\mid k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod.natCast_eq_natCast_iff",
+      "orderOf_dvd_iff_pow_eq_one",
+      "push_cast",
+      "Nat.ModEq"
+    ],
+    "prerequisites": [
+      "ZMod ring structure",
+      "Nat.ModEq vs ZMod equality",
+      "orderOf in group theory"
+    ]
+  },
+  {
+    "id": "ann-euler-positivity",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 76
+    },
+    "title": "Euler's Theorem and Positivity of orderOf",
+    "type": "technique",
+    "content": "`pow_totient_eq_one` proves Euler's theorem via `ZMod.unitOfCoprime`: when gcd(d,b)=1, the element b in ZMod d corresponds to a unit, and `ZMod.pow_totient` gives unit^φ(d) = 1. This is coerced back to the ring element. `orderOf_pos_of_coprime` then derives positivity indirectly: orderOf(b:ZMod d) divides φ(d) (since b^φ(d) = 1 implies orderOf | φ(d)), and φ(d) > 0 for d > 1, so Nat.pos_of_dvd_of_pos gives orderOf > 0.",
+    "mathContext": "The positivity argument avoids `IsOfFinOrder` and `orderOf_pos_iff` by exploiting the divisibility chain: $\\mathrm{orderOf}(b) \\mid \\varphi(d)$ (from Euler's theorem) and $\\varphi(d) > 0$ (since $d > 1$) give $\\mathrm{orderOf}(b) > 0$ via `Nat.pos_of_dvd_of_pos`. This is more direct than proving the element is of finite order, which would require the `IsOfFinOrder` typeclass predicate. The `ZMod.unitOfCoprime` construction lifts $b$ to a unit when $\\gcd(d,b)=1$, which is where the group structure is accessed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's theorem",
+      "ZMod.unitOfCoprime",
+      "ZMod.pow_totient",
+      "Nat.totient_pos",
+      "Nat.pos_of_dvd_of_pos"
+    ],
+    "prerequisites": [
+      "Euler's totient function",
+      "units in ZMod d",
+      "divisibility and positivity"
+    ]
+  },
+  {
+    "id": "ann-digit-rule-application",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 82,
+      "endLine": 92
+    },
+    "title": "Applying the Period Condition to Digit-Block Divisibility",
+    "type": "insight",
+    "content": "`digit_block_rule_of_orderOf_dvd` connects the abstract algebraic condition (orderOf | k) to the concrete number-theoretic rule (d ∣ n ↔ d ∣ sum of k-digit blocks). The key Mathlib fact is `Nat.modEq_digits_sum`: if the base B ≡ 1 (mod d), then n ≡ (digit_sum of n in base B) mod d. With B = 10^k and the period condition giving 10^k ≡ 1 (mod d), divisibility by d reduces to divisibility of the block sum. `digit_block_rule_at_orderOf` specializes to the minimal period.",
+    "mathContext": "`Nat.modEq_digits_sum d B h n` states that $n \\equiv \\sum_{i} (\\text{Nat.digits } B \\ n)_i \\pmod{d}$ when $B \\equiv 1 \\pmod{d}$. Since $d \\mid n \\iff n \\equiv 0 \\pmod{d}$ and $n \\equiv \\text{digit\\_sum} \\pmod{d}$, we get $d \\mid n \\iff d \\mid \\text{digit\\_sum}$. The 'k-digit blocks' arise naturally because $B = 10^k$ means each 'digit' in base $B$ is a $k$-digit decimal number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.modEq_digits_sum",
+      "Nat.digits",
+      "digit-block rule",
+      "Nat.ModEq.dvd_iff"
+    ],
+    "prerequisites": [
+      "Nat.digits in Mathlib",
+      "modular arithmetic and divisibility",
+      "period_iff_orderOf_dvd"
+    ]
+  },
+  {
+    "id": "ann-minimality",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 98,
+      "endLine": 112
+    },
+    "title": "Minimality: orderOf ≤ Every Valid Period",
+    "type": "concept",
+    "content": "`orderOf_le_of_period` shows orderOf is at most any valid period: if 10^k ≡ 1 (mod d) and k > 0, then orderOf | k (via the ZMod bridge and `orderOf_dvd_of_pow_eq_one`), hence orderOf ≤ k (by `Nat.le_of_dvd`). `orderOf_is_minimal_period` bundles the complete characterization into a single theorem: (1) orderOf > 0, (2) 10^(orderOf) ≡ 1, and (3) orderOf ≤ any other valid positive period.",
+    "mathContext": "The minimality follows from the algebraic structure of the cyclic group $\\langle 10 \\rangle \\leq (\\mathbb{Z}/d\\mathbb{Z})^*$: the set of valid periods $\\{k > 0 : 10^k \\equiv 1\\}$ is exactly the set of positive multiples of $\\mathrm{ord}_d(10)$. Thus $\\mathrm{ord}_d(10)$ is the GCD of all valid periods, and in particular is $\\leq$ each of them. `Nat.le_of_dvd` makes this precise: $a \\mid b$ and $b > 0$ imply $a \\leq b$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orderOf_dvd_of_pow_eq_one",
+      "Nat.le_of_dvd",
+      "cyclic group",
+      "minimal period"
+    ],
+    "prerequisites": [
+      "period_iff_orderOf_dvd",
+      "orderOf_pos_of_coprime",
+      "divisibility and ordering"
+    ]
+  },
+  {
+    "id": "ann-base-b-generalization",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 140
+    },
+    "title": "Generalization to Arbitrary Base b",
+    "type": "technique",
+    "content": "The base-b versions replace 10 with b throughout. `period_iff_orderOf_dvd_base_b` is a direct one-line proof (same structure as the base-10 version). `digit_block_rule_base_b` and `orderOf_base_b_is_minimal_period` follow the same proof patterns. The condition gcd(d,b)=1 is needed for Euler's theorem (to ensure b is a unit in ZMod d), but the period characterization `period_iff_orderOf_dvd_base_b` holds without coprimality — orderOf is just 0 in degenerate cases.",
+    "mathContext": "For base $b = 8$ and $d = 7$: $8 \\equiv 1 \\pmod{7}$ so $\\mathrm{ord}_7(8) = 1$, giving the rule '$7 \\mid n \\iff 7 \\mid \\text{digit-sum in base 8}$'. This is the base-8 analog of divisibility-by-9 in base 10. The generalization makes clear that the familiar decimal rules are accidents of the base — in base $b$, divisibility by any $d$ with $\\gcd(d,b)=1$ admits a digit-block rule with period $\\mathrm{ord}_d(b)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "period_iff_orderOf_dvd_base_b",
+      "orderOf in arbitrary base",
+      "base-b digit representation",
+      "Nat.Coprime"
+    ],
+    "prerequisites": [
+      "period_iff_orderOf_dvd",
+      "Euler's theorem for general base",
+      "Nat.digits base-b"
+    ]
+  },
+  {
+    "id": "ann-concrete-examples",
+    "proofId": "divisibility-rules-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 150,
+      "endLine": 165
+    },
+    "title": "Concrete Periods: d = 3, 7, 11, 37 and Base-8 d = 7",
+    "type": "insight",
+    "content": "Five `native_decide` computations verify specific period claims: 10^1 % 3 = 1 (single-digit blocks suffice for divisibility by 3), 10^6 % 7 = 1 (6-digit blocks for d=7), 10^2 % 11 = 1 (2-digit blocks for d=11), 10^3 % 37 = 1 (3-digit blocks for d=37), and 8^1 % 7 = 1 (base-8 single-digit blocks for d=7). The example for d=3 constructs the complete digit-rule instance from `digit_block_rule_of_orderOf_dvd`.",
+    "mathContext": "These periods equal the lengths of repeating blocks in decimal expansions: $1/7 = 0.\\overline{142857}$ (period 6), $1/11 = 0.\\overline{09}$ (period 2), $1/37 = 0.\\overline{027}$ (period 3). The connection is exact: $\\mathrm{ord}_d(10)$ equals the reptend length of $1/d$ when $\\gcd(d,10)=1$. Since `orderOf` is noncomputable (defined as `Inf` of a set), `native_decide` cannot evaluate it directly — but it can verify the equivalent condition $10^k \\% d = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "reptend (repeating decimal)",
+      "native_decide",
+      "divisibility by 3",
+      "divisibility by 7",
+      "decimal period"
+    ],
+    "prerequisites": [
+      "period_iff_orderOf_dvd",
+      "digit_block_rule_of_orderOf_dvd",
+      "native_decide for decidable propositions"
+    ]
+  }
+]

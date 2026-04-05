@@ -64,7 +64,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The classic digit-sum rules (3 ∣ n iff 3 ∣ digit_sum, etc.) generalize to k-digit block sums: d ∣ n iff d ∣ (sum of k-digit blocks of n in base 10), when 10^k ≡ 1 (mod d). DivisibilityRulesOQ01OQ01 proved existence via Euler's theorem (k = φ(d) always works). This file answers the natural follow-up: what is the minimal such k?",
+    "historicalContext": "Digit divisibility rules have been known since antiquity: the rules '3 ∣ n iff 3 ∣ digit-sum' and '9 ∣ n iff 9 ∣ digit-sum' follow from $10 \\equiv 1 \\pmod{9}$. The rule for 11 uses alternating digits, reflecting $10 \\equiv -1 \\pmod{11}$. The general principle — that divisibility rules arise from $10^k \\equiv 1 \\pmod{d}$ — was implicit in these examples but rarely stated as a theorem before modern algebra.\n\nGauss connected the multiplicative order $\\mathrm{ord}_d(10)$ to the *reptend* (repeating block length) of the decimal expansion of $1/d$ in *Disquisitiones Arithmeticae* (1801), Section III. The same order governs both digit-block divisibility rules (formalized here) and repeating decimals: $1/7 = 0.\\overline{142857}$ has period 6 because $\\mathrm{ord}_7(10) = 6$.\n\nDivisibilityRulesOQ01OQ01 (the parent proof) established *existence* of a valid period via Euler's theorem ($k = \\varphi(d)$ always works). This file answers the natural follow-up open question: the *minimal* such $k$ is exactly $\\mathrm{ord}_d(10)$ = orderOf(10 : ZMod d).",
     "problemStatement": "**Open Question from DivisibilityRulesOQ01OQ01**:\n\nProve that the minimal k for which d ∣ n ↔ d ∣ sum_of_k_digit_blocks(n) equals ord_d(10) (the multiplicative order of 10 modulo d), and extend to arbitrary bases b.",
     "text": "The minimal positive period for the digit-block divisibility rule is exactly orderOf(10 : ZMod d), which equals the multiplicative order of 10 modulo d.",
     "proofStrategy": "**Key chain of equivalences**:\n$$10^k \\bmod d = 1 \\iff (10 : \\mathbb{Z}/d\\mathbb{Z})^k = 1 \\iff \\mathrm{ord}_d(10) \\mid k$$\n\n**ZMod bridge**: `pow_mod_one_iff_ZMod_pow_eq_one` connects ℕ arithmetic `b^k % d = 1` to ZMod: `(b : ZMod d)^k = 1`. Proof uses `ZMod.natCast_eq_natCast_iff` and `push_cast`.\n\n**OrderOf characterization**: `orderOf_dvd_iff_pow_eq_one` gives `orderOf a ∣ k ↔ a^k = 1`.\n\n**Positivity of orderOf**: From `orderOf_dvd_of_pow_eq_one` applied to Euler's theorem (`b^φ(d) = 1` via `ZMod.pow_totient`), we get `orderOf ∣ φ(d)`. Since `φ(d) > 0`, `Nat.pos_of_dvd_of_pos` gives `orderOf > 0`.\n\n**Minimality**: If `10^k % d = 1` for any `k > 0`, then `orderOf ∣ k`, hence `orderOf ≤ k`.",
@@ -72,7 +72,8 @@
       "The bridge `pow_mod_one_iff_ZMod_pow_eq_one` cleanly separates ℕ arithmetic from ZMod group theory.",
       "Positivity of orderOf is proved indirectly: orderOf ∣ φ(d) and φ(d) > 0 give orderOf > 0, avoiding `orderOf_pos_iff` and `IsOfFinOrder`.",
       "The generalization to base b is immediate: replace 10 with b throughout.",
-      "The concrete digit rule (via Nat.modEq_digits_sum) requires coprimality, but the orderOf characterization is purely algebraic."
+      "The concrete digit rule (via Nat.modEq_digits_sum) requires coprimality, but the orderOf characterization is purely algebraic.",
+      "The minimal period orderOf(10 : ZMod d) equals the reptend length of 1/d in decimal (when gcd(d,10)=1): the repeating block of 1/7 = 0.142857̄ has length 6 because ord_7(10) = 6. This connects the abstract group theory directly to elementary decimal arithmetic — digit-block rules and repeating decimals are two faces of the same multiplicative-order phenomenon."
     ],
     "prerequisites": [
       "DivisibilityRulesOQ01OQ01 (existence via Euler's theorem, base k = φ(d))",
@@ -115,12 +116,28 @@
       "mathContext": "Minimality follows from orderOf_dvd_of_pow_eq_one and Nat.le_of_dvd."
     },
     {
+      "id": "digit-rule-application",
+      "title": "Applying the Period to the Digit-Block Rule",
+      "startLine": 82,
+      "endLine": 92,
+      "summary": "digit_block_rule_of_orderOf_dvd: when orderOf ∣ k, the rule d ∣ n ↔ d ∣ block-sum holds via Nat.modEq_digits_sum. digit_block_rule_at_orderOf specializes to the minimal period k₀ = orderOf.",
+      "mathContext": "Nat.modEq_digits_sum gives n ≡ digit-block-sum (mod d) when the base 10^k ≡ 1 (mod d). The period condition converts to the mod condition via period_iff_orderOf_dvd."
+    },
+    {
       "id": "base-b-generalization",
       "title": "Generalization to Base b",
       "startLine": 118,
-      "endLine": 150,
+      "endLine": 140,
       "summary": "period_iff_orderOf_dvd_base_b and orderOf_base_b_is_minimal_period: same results for arbitrary base b with gcd(d,b)=1.",
-      "mathContext": "The 10-specific results are immediate specializations of the base-b versions."
+      "mathContext": "The 10-specific results are immediate specializations of the base-b versions. For base 8 and d=7: 8 ≡ 1 (mod 7), so the minimal period is 1 (digit-sum rule in base 8)."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Periods for d = 3, 7, 11, 37",
+      "startLine": 142,
+      "endLine": 167,
+      "summary": "native_decide verifications: ord_3(10)=1, ord_7(10)=6, ord_11(10)=2, ord_37(10)=3, and ord_7(8)=1 for base 8. One full digit-rule instance for d=3.",
+      "mathContext": "Since orderOf is noncomputable, native_decide cannot evaluate it directly. Instead, the period condition 10^k % d = 1 is verified, which implies orderOf ∣ k by period_iff_orderOf_dvd. The periods equal the decimal reptend lengths of 1/d."
     }
   ],
   "crossReferences": [
