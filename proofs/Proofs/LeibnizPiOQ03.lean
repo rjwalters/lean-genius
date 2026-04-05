@@ -16,7 +16,7 @@ Key identity: for t ∈ [0,1], Σ_{n≥0} (1/2)^{n+1}(1-t²)^n = 1/(1+t²).
 Integrating: Σ_{n≥0} (1/2)^{n+1} ∫₀¹(1-t²)^n dt = ∫₀¹ 1/(1+t²) dt = π/4.
 The Euler series converges geometrically (each term ≤ (1/2)^{n+1}).
 
-**Status**: Part I complete (0 sorries). Part II: 1 sorry (sum-integral exchange).
+**Status**: Part I complete (0 sorries). Part II complete (0 sorries).
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
@@ -217,12 +217,58 @@ theorem arctan_integral : ∫ t in (0 : ℝ)..1, 1 / (1 + t ^ 2) = π / 4 := by
   rw [integral_eq_sub_of_hasDerivAt hderiv hint]
   simp [arctan_one, arctan_zero]
 
-/-- **The Euler Transform Identity** (1 sorry): π/4 = Σ (1/2)^{n+1} ∫₀¹(1-t²)^n dt.
+/-- **The Euler Transform Identity**: π/4 = Σ (1/2)^{n+1} ∫₀¹(1-t²)^n dt.
 
     The exchange of Σ and ∫ is justified by dominated convergence:
     (1/2)^{n+1}(1-t²)^n ≤ (1/2)^{n+1} uniformly, with summable dominating function. -/
 theorem euler_transform_eq :
     ∑' n, ((1 / 2 : ℝ) ^ (n + 1) * ∫ t in (0 : ℝ)..1, (1 - t ^ 2) ^ n) = π / 4 := by
-  sorry -- Requires: MeasureTheory.integral_tsum + dominated convergence
+  -- Convert each term: c * ∫_[0,1] g = ∫_Ioc g via interval→Bochner + const factoring
+  have hstep : ∀ n : ℕ, (1/2:ℝ)^(n+1) * ∫ t in (0:ℝ)..1, (1-t^2)^n =
+      ∫ t in Set.Ioc (0:ℝ) 1, (1/2:ℝ)^(n+1) * (1-t^2)^n := by
+    intro n
+    rw [intervalIntegral.integral_of_le (by norm_num : (0:ℝ) ≤ 1)]
+    exact (MeasureTheory.integral_const_mul ((1/2:ℝ)^(n+1)) (fun t => (1-t^2)^n)).symm
+  simp_rw [hstep]
+  -- Set up the swap ∑' ↔ ∫ via integral_tsum
+  set f : ℕ → ℝ → ℝ := fun n t => (1/2:ℝ)^(n+1) * (1-t^2)^n
+  have hf_meas : ∀ n, AEStronglyMeasurable (f n) (volume.restrict (Set.Ioc (0:ℝ) 1)) :=
+    fun n => ((continuous_const.mul
+      ((continuous_const.sub (continuous_id.pow 2)).pow n)).aestronglyMeasurable).restrict
+  have hf_bound : ∑' n, ∫⁻ t in Set.Ioc (0:ℝ) 1, ‖f n t‖ₑ ≠ ⊤ := by
+    apply ne_of_lt
+    have hbound : ∀ n : ℕ, ∫⁻ t in Set.Ioc (0:ℝ) 1,
+        ‖f n t‖ₑ ≤ ENNReal.ofReal ((1/2:ℝ)^(n+1)) := by
+      intro n
+      calc ∫⁻ t in Set.Ioc (0:ℝ) 1, ‖f n t‖ₑ
+          ≤ ∫⁻ _ in Set.Ioc (0:ℝ) 1, ENNReal.ofReal ((1/2:ℝ)^(n+1)) := by
+            apply MeasureTheory.lintegral_mono_ae
+            filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioc] with t ht
+            show ‖(1/2:ℝ)^(n+1) * (1-t^2)^n‖ₑ ≤ ENNReal.ofReal ((1/2:ℝ)^(n+1))
+            rw [enorm_of_nonneg (mul_nonneg (pow_nonneg (by norm_num) _)
+                  (pow_nonneg (by nlinarith [ht.1.le, ht.2]) _))]
+            exact ENNReal.ofReal_le_ofReal
+              (mul_le_of_le_one_right (pow_nonneg (by norm_num) _)
+                (one_sub_sq_pow_le t ht.1.le ht.2 n))
+        _ = ENNReal.ofReal ((1/2:ℝ)^(n+1)) := by
+            rw [MeasureTheory.lintegral_const,
+                MeasureTheory.Measure.restrict_apply_univ, volume_Ioc]
+            simp
+    calc ∑' n, ∫⁻ t in Set.Ioc (0:ℝ) 1, ‖f n t‖ₑ
+        ≤ ∑' n, ENNReal.ofReal ((1/2:ℝ)^(n+1)) := ENNReal.tsum_le_tsum hbound
+      _ < ⊤ :=
+          lt_top_iff_ne_top.mpr (Summable.tsum_ofReal_ne_top
+            (((summable_geometric_of_lt_one (by norm_num : (0:ℝ) ≤ 1/2)
+                (by norm_num : (1/2:ℝ) < 1)).mul_left (1/2:ℝ)).congr
+              (fun n => by rw [pow_succ]; ring)))
+  -- Swap: ∑' n, ∫ f n = ∫ ∑' n, f n
+  rw [show ∑' n, ∫ t in Set.Ioc (0:ℝ) 1, f n t =
+      ∫ t in Set.Ioc (0:ℝ) 1, ∑' n, f n t from
+    (MeasureTheory.integral_tsum hf_meas hf_bound).symm]
+  -- Replace ∑' with 1/(1+t²) a.e. on Ioc 0 1, then use arctan_integral
+  rw [MeasureTheory.integral_congr_ae (by
+    filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioc] with t ht
+    exact (geometric_series_eq t ht.1.le ht.2).tsum_eq)]
+  rw [← arctan_integral, intervalIntegral.integral_of_le (by norm_num : (0:ℝ) ≤ 1)]
 
 end LeibnizPiOQ03
