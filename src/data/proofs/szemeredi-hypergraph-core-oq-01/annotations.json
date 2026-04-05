@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "szemeredi-hypergraph-core-oq-01",
+    "range": {"startLine": 1, "endLine": 30},
+    "type": "context",
+    "title": "Preamble: Imports and Local UHypergraph Definition",
+    "content": "The module docstring (lines 1-23) names the five structures to be defined: SimplicialComplex, kFaces, CompleteKLinks, relativeDensity, and IsGowersRegular — the complete infrastructure for Gowers (2007) relative hypergraph regularity. The single `import Mathlib` provides all of Mathlib. The namespace `Szemeredi.Hypergraph` scopes all definitions. A private local copy of `UHypergraph V k` (record with edges and uniformity proof) avoids importing the parent `SzemerediHypergraphCore.lean`, which has build errors from the naive regularity development. This pattern allows the file to be self-contained.",
+    "mathContext": "A $k$-uniform hypergraph on vertex set $V$ is a pair $(V, E)$ where $E \\subseteq \\binom{V}{k}$ — each edge is a $k$-element subset. The local definition `UHypergraph V k` captures this as `edges : Finset (Finset V)` with `uniform : ∀ e ∈ edges, e.card = k`. The `open Classical` allows noncomputable definitions (needed for `noncomputable def relativeDensity` since ℚ division requires classical reasoning about cardinalities).",
+    "significance": "supporting",
+    "relatedConcepts": ["UHypergraph", "Szemeredi.Hypergraph namespace", "open Classical", "private structure"],
+    "prerequisites": ["SzemerediHypergraphCore.lean (parent module with naive regularity)", "Mathlib.Data.Finset.Basic"]
+  },
+  {
+    "id": "ann-simplicial-complex",
+    "proofId": "szemeredi-hypergraph-core-oq-01",
+    "range": {"startLine": 41, "endLine": 88},
+    "type": "technique",
+    "title": "SimplicialComplex: Downward-Closed Face Family",
+    "content": "The `SimplicialComplex V` structure has three fields: `faces : Finset (Finset V)` (the face collection), `nonempty_faces` (all faces are nonempty), and `downward` (if σ is a face and τ ⊆ σ is nonempty, then τ is a face). Three constructors are provided: `complete` (all nonempty subsets of V), `fullSimplex S` (all nonempty subsets of S ⊆ V), and `IsSubcomplex` (containment of face families). The downward closure axiom is the algebraic content enabling the definition of CompleteKLinks: it ensures that for any k-set T 'supported by' the complex, all sub-links are also present.",
+    "mathContext": "A simplicial complex is a family $\\mathcal{F}$ of nonempty finite sets (faces) satisfying: if $\\sigma \\in \\mathcal{F}$ and $\\emptyset \\neq \\tau \\subseteq \\sigma$, then $\\tau \\in \\mathcal{F}$. The full simplex on $S$ is $2^S \\setminus \\{\\emptyset\\}$. In Gowers (2007), the relevant complex is a **$(k-1)$-complex**: the system of all $j$-uniform sub-hypergraphs for $j = 1, \\ldots, k-1$ with downward closure. The `kFaces C k = C.faces.filter (fun σ => σ.card = k)` extracts the $k$-dimensional faces (the $j$-graph at level $j = k$).",
+    "significance": "key",
+    "relatedConcepts": ["SimplicialComplex", "downward closure", "kFaces", "fullSimplex", "IsSubcomplex"],
+    "prerequisites": ["Finset.powerset (all subsets as a Finset)", "Finset.Nonempty predicate", "Finset.card for face dimensions"]
+  },
+  {
+    "id": "ann-complete-links",
+    "proofId": "szemeredi-hypergraph-core-oq-01",
+    "range": {"startLine": 93, "endLine": 148},
+    "type": "insight",
+    "title": "CompleteKLinks: The Generalised Transversal Notion",
+    "content": "A k-set T is a complete k-link of complex C if every nonempty proper subset τ ⊊ T with |τ| < k is a face of C. This generalises: for k=2, {u,v} is a 2-link iff {u} and {v} are faces (i.e., both vertices are in the 1-skeleton); for k=3, {u,v,w} is a 3-link iff all 6 nonempty proper subsets ({u},{v},{w},{u,v},{u,w},{v,w}) are faces. The key theorem `CompleteKLinks_fullSimplex` shows that when C is the full simplex on S, complete k-links = k-subsets of S (for k≥2), recovering the naive density count. The proof extracts the T ⊆ S direction from the singleton faces argument.",
+    "mathContext": "$$\\mathrm{CKL}(C, k) = \\{ T \\in \\binom{V}{k} : \\forall \\tau \\subseteq T,\\, \\tau \\neq \\emptyset,\\, |\\tau| < k \\Rightarrow \\tau \\in C.\\mathrm{faces} \\}$$\n\nFor the full simplex $\\Delta_S$: $\\mathrm{CKL}(\\Delta_S, k) = \\binom{S}{k}$ for $k \\geq 2$. Proof: $T \\in \\mathrm{CKL}(\\Delta_S, k)$ implies every singleton $\\{v\\} \\subseteq T$ is a face of $\\Delta_S$, hence $\\{v\\} \\subseteq S$, so $v \\in S$. This is the bridge between relative density and naive density: when the complex is 'complete' over $S$, the two notions agree.",
+    "significance": "key",
+    "relatedConcepts": ["CompleteKLinks", "CompleteKLinks_fullSimplex", "k-transversals", "naive kPartiteDensity"],
+    "prerequisites": ["SimplicialComplex.fullSimplex", "Finset.filter for powerset", "Finset.card_eq lemma"]
+  },
+  {
+    "id": "ann-relative-density",
+    "proofId": "szemeredi-hypergraph-core-oq-01",
+    "range": {"startLine": 154, "endLine": 211},
+    "type": "technique",
+    "title": "relativeDensity: The Central Gowers Quantity",
+    "content": "The `relativeDensity H C` of hypergraph H relative to complex C is defined as `|edges(H) ∩ CompleteKLinks(C,k)| / |CompleteKLinks(C,k)|`, with the convention that empty denominator gives 0. Four basic properties are proved: non-negativity (via positivity), ≤1 (via Finset.card_filter_le), =0 for the empty hypergraph (simp), =1 when all complete links are edges (filter collapses). All four proofs are short (≤10 lines) with standard Finset tactics. The if-split on `CompleteKLinks(C,k).card = 0` is essential: rational division by 0 would give 0 in Lean, but explicit case split makes intent clear.",
+    "mathContext": "$$d(H \\mid C) = \\frac{|E(H) \\cap \\mathrm{CKL}(C,k)|}{|\\mathrm{CKL}(C,k)|}$$\nwith $d(H \\mid C) = 0$ when $|\\mathrm{CKL}(C,k)| = 0$. Four lemmas:\\n1. $d(H \\mid C) \\geq 0$ (trivial from definition)\\n2. $d(H \\mid C) \\leq 1$ (numerator $\\leq$ denominator by filter inclusion)\\n3. $d(\\emptyset \\mid C) = 0$ (empty edge set)\\n4. $d(H \\mid C) = 1$ when $\\mathrm{CKL}(C,k) \\subseteq E(H)$ (filter = full set)\\n\nThis is the quantity Gowers proves stable under restriction to $\\delta$-dense sub-complexes in the regularity lemma.",
+    "significance": "key",
+    "relatedConcepts": ["relativeDensity", "Finset.card_filter_le", "kPartiteDensity comparison", "rational arithmetic in Lean"],
+    "prerequisites": ["CompleteKLinks (defined above)", "UHypergraph.edges", "Nat.pos_of_ne_zero for division safety"]
+  },
+  {
+    "id": "ann-gowers-regularity",
+    "proofId": "szemeredi-hypergraph-core-oq-01",
+    "range": {"startLine": 217, "endLine": 266},
+    "type": "insight",
+    "title": "IsGowersRegular: The Key Definition and the Honoured Sorry",
+    "content": "The `IsDenseAtLevel C C' j δ` predicate says C' is a δ-fraction sub-complex of C at the j-face level: C' ⊆ C and |kFaces(C',j)| ≥ δ·|kFaces(C,j)|. The `IsGowersRegular H C eps` then requires: for all δ>0 and all δ-dense sub-complexes C' at the (k-1)-level, |d(H|C) - d(H|C')| ≤ eps. The empty hypergraph is trivially ε-regular (density always 0). The `hypergraph_regularity_lemma` — existence of a Gowers-regular complex for any ε>0 — is stated with `sorry`, marking an honest boundary: the proof requires tower-type combinatorial arguments not yet formalized in Mathlib.",
+    "mathContext": "**Gowers ε-regularity**: $H$ is $\\varepsilon$-regular relative to $C$ if for all $\\delta > 0$ and all sub-complexes $C' \\subseteq C$ with $|\\text{kFaces}(C', k-1)| \\geq \\delta \\cdot |\\text{kFaces}(C, k-1)|$: $$|d(H \\mid C) - d(H \\mid C')| \\leq \\varepsilon$$\n\nCompare to graph ε-regularity (Szemerédi 1978): a bipartite pair $(A,B)$ is $\\varepsilon$-regular if for all $A' \\subseteq A$, $B' \\subseteq B$ with $|A'| \\geq \\varepsilon|A|$, $|B'| \\geq \\varepsilon|B|$: $|d(A',B') - d(A,B)| \\leq \\varepsilon$. The hypergraph version replaces vertex subsets with dense sub-complexes.\n\n**Regularity Lemma (sorry)**: $\\forall \\varepsilon > 0, k \\geq 2, \\exists T$ s.t. every $k$-uniform $H$ on $n$ vertices has an $\\varepsilon$-Gowers-regular complex $C$ with $|\\text{kFaces}(C, k-1)| \\leq T$. The bound $T$ is a wowzer-type function of $\\varepsilon$ (tower of height $k$).",
+    "significance": "key",
+    "relatedConcepts": ["IsGowersRegular", "IsDenseAtLevel", "hypergraph_regularity_lemma", "wowzer bound", "IsEpsilonRegular comparison"],
+    "prerequisites": ["relativeDensity (defined above)", "SimplicialComplex.IsSubcomplex", "Gowers (2007) Annals paper for mathematical content"]
+  }
+]
