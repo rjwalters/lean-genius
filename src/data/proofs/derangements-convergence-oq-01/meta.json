@@ -18,7 +18,7 @@
       "permutations",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
     "assumptions": "1 sorry: derangements_rate — |D(n)/n! - e⁻¹| ≤ 1/(n+1)!. This is the alternating series estimation theorem applied to the Taylor series for e⁻¹. The parent file DerangementsConvergence.lean proves this result but has pre-existing Mathlib API issues (∑ k in vs ∑ k ∈ syntax) preventing import. The convergence result kFixed_tendsto is fully proved without this sorry, using Mathlib's numDerangements_tendsto_inv_e directly.",
