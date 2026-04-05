@@ -76,7 +76,8 @@
       "Cardinal.mk_le_aleph0 converts the Countable typeclass to a cardinal inequality, enabling the contradiction with aleph0_lt_continuum.",
       "Function.Surjective.countable is the key lemma: a surjection ℕ → ℝ would make ℝ countable (codomain of surjection from countable domain is countable).",
       "The diagonal argument is realized abstractly as Cardinal.cantor κ : κ < 2^κ, instantiated at κ = ℵ₀ to give ℵ₀ < 𝔠 = #ℝ.",
-      "Set.countable_univ_iff bridges Set.Countable (set-level) and Countable (type-level) for the universal set."
+      "Set.countable_univ_iff bridges Set.Countable (set-level) and Countable (type-level) for the universal set.",
+      "The proof of transcendentals_uncountable uses Classical.em for the non-constructive step 'every real is either algebraic or transcendental'. This excluded-middle application is unavoidable: constructively, we cannot decide algebraicity for arbitrary reals, but classically it partitions ℝ into two complementary countable/uncountable classes."
     ],
     "prerequisites": [
       "AlgebraicNumbersCountable (Proofs/AlgebraicNumbersCountable.lean): algebraic reals are countable — used in transcendentals_uncountable",

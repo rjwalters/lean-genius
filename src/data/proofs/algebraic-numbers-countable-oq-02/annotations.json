@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-ac2-imports",
+    "proofId": "algebraic-numbers-countable-oq-02",
+    "range": { "startLine": 1, "endLine": 65 },
+    "type": "context",
+    "title": "Imports and Context: Three Layers of Cantor's Argument",
+    "content": "The file imports from three distinct layers. `Cardinal.Basic` and `Cardinal.Continuum` provide the abstract infrastructure: the continuum hypothesis `Cardinal.mk_real` (equating #ℝ with 𝔠 = 2^ℵ₀) and `Cardinal.aleph0_lt_continuum` (the gap ℵ₀ < 𝔠). `Proofs.CantorDiagonalization` provides the concrete diagonal: no surjection ℕ → (ℕ → Bool). `Proofs.AlgebraicNumbersCountable` provides the countability of algebraic reals, needed for the transcendentals corollary. Together, they implement Cantor's complete 1874 argument: algebraic numbers are countable, real numbers are uncountable, therefore transcendentals are uncountable.",
+    "mathContext": "The logical chain: $\\aleph_0 < \\mathfrak{c} = 2^{\\aleph_0} = \\#\\mathbb{R}$ (abstract diagonal); $\\nexists$ surjection $\\mathbb{N} \\to \\{0,1\\}^\\mathbb{N}$ (concrete diagonal); algebraic reals countable → transcendentals uncountable.",
+    "significance": "context",
+    "relatedConcepts": ["cardinal arithmetic", "continuum hypothesis", "Cantor's diagonal argument", "Mathlib Cardinal module"],
+    "prerequisites": ["cardinal numbers", "countable sets", "Lean 4 imports and namespaces"]
+  },
+  {
+    "id": "ann-ac2-cardinal-facts",
+    "proofId": "algebraic-numbers-countable-oq-02",
+    "range": { "startLine": 68, "endLine": 79 },
+    "type": "technique",
+    "title": "Cardinal Foundation: #ℝ = 𝔠 > ℵ₀",
+    "content": "Two thin wrappers around Mathlib facts establish the cardinal foundation. `card_real_eq_continuum` is literally `Cardinal.mk_real` — it equates the Lean cardinality `#ℝ` with the continuum constant `𝔠`. `aleph0_lt_card_real` chains this with `Cardinal.aleph0_lt_continuum` (which is Cantor's theorem ℵ₀ < 2^ℵ₀ instantiated at ℕ) to get ℵ₀ < #ℝ. These two facts are the only mathematical content needed: the rest of the proof is pure logic (contradiction, union, classical excluded middle). The `universe annotation` `Cardinal.{0}` pins the universe level to avoid universe polymorphism issues with `#ℝ`.",
+    "mathContext": "$\\#\\mathbb{R} = \\mathfrak{c} = 2^{\\aleph_0}$ and $\\aleph_0 < 2^{\\aleph_0}$ (Cantor's theorem: $\\kappa < 2^\\kappa$ for all cardinals $\\kappa$, applied to $\\kappa = \\aleph_0$).",
+    "significance": "key",
+    "relatedConcepts": ["continuum 𝔠", "ℵ₀ aleph-null", "Cardinal.mk_real", "Cardinal.cantor", "universe levels in Lean"],
+    "prerequisites": ["cardinal numbers in set theory", "Mathlib Cardinal module", "universe polymorphism in Lean 4"]
+  },
+  {
+    "id": "ann-ac2-main-theorem",
+    "proofId": "algebraic-numbers-countable-oq-02",
+    "range": { "startLine": 81, "endLine": 100 },
+    "type": "insight",
+    "title": "Main Theorem: ¬ Countable ℝ via Cardinal Contradiction",
+    "content": "The main result `reals_not_countable` is proved in 3 lines. The proof by contradiction assumes `h : Countable ℝ`, then uses `haveI := h` to make it an instance (making `Cardinal.mk_le_aleph0` applicable). The lemma `Cardinal.mk_le_aleph0` converts the `Countable` typeclass instance to the cardinal inequality `#ℝ ≤ ℵ₀`. This contradicts `aleph0_lt_card_real : ℵ₀ < #ℝ` via `not_le.mpr`. The `haveI :=` pattern is the standard Lean 4 idiom for converting between typeclass-based and propositional countability. `reals_uncountable` is a one-line alias for clarity.",
+    "mathContext": "Proof sketch: $[\\text{Countable}\\,\\mathbb{R}] \\Rightarrow \\#\\mathbb{R} \\leq \\aleph_0$ (by `mk_le_aleph0`) but $\\#\\mathbb{R} = \\mathfrak{c} > \\aleph_0$. Contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["Countable typeclass", "Cardinal.mk_le_aleph0", "haveI instance", "proof by contradiction"],
+    "prerequisites": ["Countable typeclass in Mathlib", "cardinal inequalities", "Lean 4 instance resolution"]
+  },
+  {
+    "id": "ann-ac2-no-surjection",
+    "proofId": "algebraic-numbers-countable-oq-02",
+    "range": { "startLine": 102, "endLine": 125 },
+    "type": "insight",
+    "title": "No Surjection ℕ → ℝ: The Combinatorial Content",
+    "content": "`no_surjection_nat_to_real` is the combinatorial statement of Cantor's diagonal theorem: no enumeration f : ℕ → ℝ hits every real number. The proof is one line: `hf.countable` applies `Function.Surjective.countable` — a surjection from a countable domain makes the codomain countable. This immediately contradicts `reals_not_countable`. The companion `exists_not_in_range` makes this existential: for any f : ℕ → ℝ, there exists a real not in range f. Its proof uses `push_neg` to turn the `by_contra h` negation into `∀ x, x ∈ Set.range f`, which is exactly surjectivity.",
+    "mathContext": "If $f : \\mathbb{N} \\to \\mathbb{R}$ is surjective then $\\mathbb{R} = f(\\mathbb{N})$ is the image of a countable set, hence countable — contradiction. Concretely: $\\exists x \\in \\mathbb{R},\\, x \\notin \\{f(0), f(1), f(2), \\ldots\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Function.Surjective.countable", "push_neg tactic", "Set.range", "diagonal argument as existence statement"],
+    "prerequisites": ["surjective functions", "countability under surjections", "Lean 4 tactic push_neg"]
+  },
+  {
+    "id": "ann-ac2-transcendentals",
+    "proofId": "algebraic-numbers-countable-oq-02",
+    "range": { "startLine": 127, "endLine": 156 },
+    "type": "insight",
+    "title": "Transcendentals Are Uncountable: The 1874 Corollary",
+    "content": "The key corollary of Cantor's 1874 paper: transcendental reals are uncountable. `transcendentalReals` is defined as `{x : ℝ | ¬ IsAlgebraic ℚ x}`. The proof of `transcendentals_uncountable` is a union argument: assume transcendentals are countable; algebraic reals are countable (from `AlgebraicNumbersCountable.algebraic_reals_countable`); `Set.Countable.union` makes their union countable; but the union is all of ℝ (by `Classical.em`); `Set.countable_univ_iff` converts to `Countable ℝ`, contradicting `reals_not_countable`. The step `h_cover : algebraic ∪ transcendental = Set.univ` uses `Classical.em` — the law of excluded middle for `IsAlgebraic ℚ x` — which is the non-constructive step.",
+    "mathContext": "$\\mathbb{R} = \\{\\text{algebraic}\\} \\cup \\{\\text{transcendental}\\}$. If both were countable, $\\mathbb{R}$ would be countable (countable union of countable sets). Since $|\\text{algebraic}| = \\aleph_0$ and $|\\mathbb{R}| = \\mathfrak{c}$, we get $|\\text{transcendental}| = \\mathfrak{c}$.",
+    "significance": "key",
+    "relatedConcepts": ["transcendental numbers", "IsAlgebraic", "Set.Countable.union", "Classical.em", "excluded middle"],
+    "prerequisites": ["algebraic vs transcendental numbers", "countable union of countable sets", "classical logic in Lean 4"]
+  },
+  {
+    "id": "ann-ac2-diagonal-connection",
+    "proofId": "algebraic-numbers-countable-oq-02",
+    "range": { "startLine": 158, "endLine": 192 },
+    "type": "context",
+    "title": "Three Equivalent Forms of Cantor's Diagonal Argument",
+    "content": "The final section makes explicit that three theorems are all expressions of the same diagonal argument: (1) `cantor_diagonal_binary`: no surjection ℕ → (ℕ → Bool) — the concrete diagonal, imported from `CantorDiagonalization.lean`; (2) `cantor_diagonal_gap`: ℵ₀ < 2^ℵ₀ — the abstract cardinal gap, proved by `Cardinal.cantor ℵ₀`; (3) `reals_not_countable`: ¬ Countable ℝ — the geometric consequence via #ℝ = 2^ℵ₀. The summary theorem `reals_uncountable_summary` packages all three results from Cantor's 1874 paper as a conjunction: ¬Countable ℝ, ¬Set.Countable transcendentalReals, and Set.Countable algebraics.",
+    "mathContext": "Three equivalent forms: (1) $\\nexists$ surjection $\\mathbb{N} \\to \\{0,1\\}^\\mathbb{N}$ (concrete diagonal); (2) $\\aleph_0 < 2^{\\aleph_0} = \\mathfrak{c}$ (abstract cardinal gap, Cantor's theorem); (3) $\\neg\\text{Countable}\\,\\mathbb{R}$ (via $\\#\\mathbb{R} = \\mathfrak{c}$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Cardinal.cantor", "BinarySeq = ℕ → Bool", "cardinality of continuum", "Cantor's 1874 paper"],
+    "prerequisites": ["Cantor's diagonal argument", "binary sequences", "cardinal numbers"]
+  }
+]
