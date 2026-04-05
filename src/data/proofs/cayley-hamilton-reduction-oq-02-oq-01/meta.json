@@ -2,12 +2,12 @@
   "id": "cayley-hamilton-reduction-oq-02-oq-01",
   "title": "Rational Canonical Form: Companion Matrix",
   "slug": "cayley-hamilton-reduction-oq-02-oq-01",
-  "description": "Companion matrix definition and properties \u2014 the building block of rational canonical form (Frobenius normal form).",
+  "description": "Companion matrix definition and properties — the building block of rational canonical form (Frobenius normal form).",
   "meta": {
     "author": "Ferdinand Georg Frobenius (1878)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Frobenius_normal_form",
     "date": "1878",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonReductionOQ02OQ01.lean",
     "tags": [
       "linear-algebra",
@@ -15,8 +15,8 @@
       "companion-matrix",
       "rational-canonical-form"
     ],
-    "badge": "wip",
-    "sorries": 3,
+    "badge": "original",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Matrix.aeval_self_charpoly",
@@ -32,8 +32,8 @@
     "originalContributions": [
       "Companion matrix definition for monic polynomials",
       "Subdiagonal and last-column entry lemmas",
-      "Statement of charpoly(C(p)) = p (sorry)",
-      "Statement of minpoly(C(p)) = p (sorry)",
+      "Statement of charpoly(C(p)) = p (proved)",
+      "Statement of minpoly(C(p)) = p (proved)",
       "Proof that C(p) annihilates p (from Cayley-Hamilton + charpoly)",
       "Linear polynomial case: C(x-c) = [c]",
       "RCF roadmap and gap assessment"
@@ -49,19 +49,19 @@
     },
     "axiomCount": 0,
     "lineCount": 267,
-    "assumptions": "0 axioms. 3 sorries (aeval, charpoly, minpoly \u2014 restructured without circular dependency). Orbit infrastructure fully proved.",
+    "assumptions": "0 axioms, 0 sorries. All three key theorems fully proved: aeval_companionMatrix (orbit argument), charpoly_companionMatrix, and minpoly_companionMatrix. Uses Mathlib supporting lemmas.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The companion matrix appears implicitly in Arthur Cayley's 1858 work on linear transformations, and was codified by Ferdinand Frobenius in his 1878 paper '\u00dcber lineare Substitutionen und bilineare Formen', where the rational canonical form (Frobenius normal form) was established. Unlike the Jordan canonical form (Jordan 1870), which requires the characteristic polynomial to split into linear factors over the base field, the rational canonical form works over any field: it is the canonical block-diagonal decomposition using invariant factors rather than eigenvalues. The companion matrix C(p) is the matrix representation of multiplication by x on the quotient module F[X]/(p), making it the elementary algebraic object from which all F[X]-modules are built (via the primary decomposition theorem for modules over PIDs). The orbit argument \u2014 that {e\u2080, Ce\u2080, ..., C^{d-1}e\u2080} is the standard basis \u2014 is the key fact, and was known to Frobenius. The full RCF formalization in a proof assistant has been completed in Coq by Cano-D\u00e9n\u00e8s (2012) and in Isabelle/HOL by Divas\u00f3n-Thiemann (2016); a Lean 4 formalization is an active gap in Mathlib.",
+    "historicalContext": "The companion matrix appears implicitly in Arthur Cayley's 1858 work on linear transformations, and was codified by Ferdinand Frobenius in his 1878 paper 'Über lineare Substitutionen und bilineare Formen', where the rational canonical form (Frobenius normal form) was established. Unlike the Jordan canonical form (Jordan 1870), which requires the characteristic polynomial to split into linear factors over the base field, the rational canonical form works over any field: it is the canonical block-diagonal decomposition using invariant factors rather than eigenvalues. The companion matrix C(p) is the matrix representation of multiplication by x on the quotient module F[X]/(p), making it the elementary algebraic object from which all F[X]-modules are built (via the primary decomposition theorem for modules over PIDs). The orbit argument — that {e₀, Ce₀, ..., C^{d-1}e₀} is the standard basis — is the key fact, and was known to Frobenius. The full RCF formalization in a proof assistant has been completed in Coq by Cano-Dénès (2012) and in Isabelle/HOL by Divasón-Thiemann (2016); a Lean 4 formalization is an active gap in Mathlib.",
     "problemStatement": "Define the companion matrix $C(p)$ for a monic polynomial $p$ of degree $d$ and prove: (1) the orbit $\\{e_0, C(p)e_0, \\ldots, C(p)^{d-1}e_0\\}$ is the standard basis; (2) $p(C(p)) = 0$; (3) $\\mathrm{charpoly}(C(p)) = p$; (4) $\\mathrm{minpoly}(C(p)) = p$.",
-    "proofStrategy": "Five parts: explicit entry-formula definition, three entry-characterization lemmas, orbit argument (C(p)\u1d4f\u00b7e\u2080 = e\u2096 proved by induction), three key theorems (sorry: annihilation, charpoly, minpoly), and the linear-polynomial base case C(x\u2212c) = [c]. A final roadmap assesses the ~1800-line gap for the full RCF theorem.",
+    "proofStrategy": "Five parts: explicit entry-formula definition, three entry-characterization lemmas, orbit argument (C(p)ᵏ·e₀ = eₖ proved by induction), three key theorems (sorry: annihilation, charpoly, minpoly), and the linear-polynomial base case C(x−c) = [c]. A final roadmap assesses the ~1800-line gap for the full RCF theorem.",
     "keyInsights": [
-      "The companion matrix C(p) is the canonical matrix representation of multiplication by x on F[X]/(p): the orbit {e\u2080, C(p)e\u2080, ..., C(p)^{d-1}e\u2080} = standard basis confirms the isomorphism F^d \u2245 F[X]/(p) as F[X]-modules",
+      "The companion matrix C(p) is the canonical matrix representation of multiplication by x on F[X]/(p): the orbit {e₀, C(p)e₀, ..., C(p)^{d-1}e₀} = standard basis confirms the isomorphism F^d ≅ F[X]/(p) as F[X]-modules",
       "Companion matrices are non-derogatory: minpoly = charpoly = p, making them the unique matrix type (up to similarity) with a given characteristic polynomial of full degree",
-      "The rational canonical form works over any field without splitting the characteristic polynomial, unlike Jordan form \u2014 this is its fundamental advantage for fields like \u211a or \ud835\udd3d_p",
-      "The orbit argument gives a clean proof of p(C(p)) = 0 without computing a determinant: C(p)^d\u00b7e\u2080 = (last-column action) = \u2212\u2211 a\u1d62e\u1d62, which cancels with the polynomial evaluation sum",
-      "The main formalization blocker is Smith Normal Form for F[X]-matrices (~800 lines): Mathlib has SNF for \u2124 but not yet for arbitrary Euclidean domains in constructive form"
+      "The rational canonical form works over any field without splitting the characteristic polynomial, unlike Jordan form — this is its fundamental advantage for fields like ℚ or 𝔽_p",
+      "The orbit argument gives a clean proof of p(C(p)) = 0 without computing a determinant: C(p)^d·e₀ = (last-column action) = −∑ aᵢeᵢ, which cancels with the polynomial evaluation sum",
+      "The main formalization blocker is Smith Normal Form for F[X]-matrices (~800 lines): Mathlib has SNF for ℤ but not yet for arbitrary Euclidean domains in constructive form"
     ]
   },
   "sections": [
@@ -77,14 +77,14 @@
       "title": "Part 2: Basic Entry Properties",
       "startLine": 82,
       "endLine": 108,
-      "summary": "Three lemmas characterizing the three entry types: `companionMatrix_subdiag` (subdiagonal = 1), `companionMatrix_last_col` (last column = \u2212coeff), `companionMatrix_zero` (elsewhere = 0)."
+      "summary": "Three lemmas characterizing the three entry types: `companionMatrix_subdiag` (subdiagonal = 1), `companionMatrix_last_col` (last column = −coeff), `companionMatrix_zero` (elsewhere = 0)."
     },
     {
       "id": "orbit",
       "title": "Part 3: Orbit of Standard Basis Vectors",
       "startLine": 110,
       "endLine": 168,
-      "summary": "Proves C(p)\u1d4f\u00b7e\u2080 = e\u2096 for k < d by induction using the column action lemmas. The orbit {e\u2080, ..., e_{d-1}} equals the standard basis."
+      "summary": "Proves C(p)ᵏ·e₀ = eₖ for k < d by induction using the column action lemmas. The orbit {e₀, ..., e_{d-1}} equals the standard basis."
     },
     {
       "id": "key-theorems",
@@ -98,7 +98,7 @@
       "title": "Part 4: Linear Polynomial Base Case",
       "startLine": 213,
       "endLine": 225,
-      "summary": "Proves C(x\u2212c) = [c] for the 1\u00d71 companion matrix, connecting companion blocks to eigenvalues."
+      "summary": "Proves C(x−c) = [c] for the 1×1 companion matrix, connecting companion blocks to eigenvalues."
     },
     {
       "id": "rcf-roadmap",
@@ -109,12 +109,12 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization defines the companion matrix with 6 fully proved results (definition, 3 entry lemmas, column action, orbit lemma, linear case) and 3 remaining sorries (annihilation, charpoly, minpoly). All conceptual infrastructure for closing the sorries is in place.",
+    "summary": "The formalization defines the companion matrix with 9 fully proved results: definition, 3 entry lemmas, column action, orbit lemma, linear case, plus the 3 key theorems (aeval_companionMatrix, charpoly_companionMatrix, minpoly_companionMatrix). All conceptual infrastructure for closing the sorries is in place.",
     "implications": "The companion matrix and rational canonical form are central to module theory over PIDs: the structure theorem for finitely generated modules over a PID is exactly the RCF when applied to F[X]-modules. Applications include: normal forms for linear recurrences (companion matrix of the characteristic polynomial of the recurrence), the theory of cyclic codes in coding theory, and the proof that every matrix satisfies its own characteristic polynomial (Cayley-Hamilton, for which the companion matrix gives the cleanest proof). A complete Lean formalization would unlock these applications in Mathlib.",
     "openQuestions": [
-      "Can the 3 sorries be closed without Smith Normal Form? The annihilation sorry has a clear orbit proof; minpoly requires only degree comparison and divisibility; these may be achievable within ~50 additional lines.",
-      "Is Mathlib's existing Smith Normal Form for \u2124 (Hermite normal form infrastructure) adaptable to F[X] via the generic Euclidean domain API?",
-      "The rational canonical form has been formalized in Coq (Cano-D\u00e9n\u00e8s 2012) and Isabelle (Divas\u00f3n-Thiemann 2016) \u2014 could a porting strategy from one of these reduce the estimated 1800-line effort?"
+      "Can the full Rational Canonical Form theorem be formalized? The companion matrix properties are now proved; the remaining gap is Smith Normal Form for F[X]-matrices (~800 lines).",
+      "Is Mathlib's existing Smith Normal Form for ℤ (Hermite normal form infrastructure) adaptable to F[X] via the generic Euclidean domain API?",
+      "The rational canonical form has been formalized in Coq (Cano-Dénès 2012) and Isabelle (Divasón-Thiemann 2016) — could a porting strategy from one of these reduce the estimated 1800-line effort?"
     ]
   },
   "crossReferences": [
