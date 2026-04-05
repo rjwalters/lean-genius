@@ -2,12 +2,12 @@
   "id": "erdos-1155-oq-01-oq-06",
   "title": "Erdős #1155 OQ-01-OQ-06: Terminal Graph Structure",
   "slug": "erdos-1155-oq-01-oq-06",
-  "description": "Formalizes the structural distance of the terminal graph from the Turán optimum in the triangle removal process. The key result: the Turán ratio f(n)/(n²/4) → 0, proving the terminal graph is NOT asymptotically Turán-like despite being triangle-free. Proves 11 theorems (0 sorries) from 0 new axioms, including the vanishing Turán density theorem, the terminal graph's strict sub-Turán character, and formal open questions about bipartiteness.",
+  "description": "Placeholder stub pending full formalization (researcher PR #9455). Planned result: the Turán ratio f(n)/(n²/4) → 0, showing the terminal graph of the triangle removal process is NOT asymptotically Turán-like. Full formalization will prove 11 theorems (0 sorries) from axioms inherited from the parent file.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1155",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos1155OQ01OQ06.lean",
     "dateAdded": "2026-04-04",
     "tags": [
@@ -21,9 +21,9 @@
       "extension",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
-    "axiomCount": 6,
+    "axiomCount": 0,
     "mathlibDependencies": [
       {
         "theorem": "Real.rpow_add",
@@ -118,7 +118,7 @@
     "openQuestion": "Whether the terminal graph is bipartite, approximately bipartite, or has some other specific structural property remains open. The vanishing Turán ratio is the principal structural fact currently known."
   },
   "conclusion": {
-    "summary": "294-line formalization proving 11 theorems (0 sorries) from 0 new axioms. The main result — Turán ratio f(n)/(n²/4) → 0 — is machine-verified using BFL bounds and real power arithmetic.",
+    "summary": "Placeholder stub file on main pending researcher PR #9455. Planned: 294-line formalization of 11 theorems showing Turán ratio f(n)/(n²/4) → 0, machine-verified using BFL bounds and real power arithmetic.",
     "openQuestions": [
       "Is the terminal graph of the triangle removal process bipartite (with high probability as n → ∞)?",
       "What is the chromatic number of the terminal graph?",
