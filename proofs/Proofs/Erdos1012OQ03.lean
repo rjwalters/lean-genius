@@ -86,10 +86,12 @@ instance (D : Digraph V) [DecidablePred fun p : V × V => D.arc p.1 p.2] :
 
 /-- The out-degree of vertex v: number of vertices u with arc v → u. -/
 noncomputable def Digraph.outDegree (D : Digraph V) (v : V) : ℕ :=
+  haveI : DecidablePred (D.arc v) := Classical.decPred _
   Fintype.card {u : V // D.arc v u}
 
 /-- The in-degree of vertex v: number of vertices u with arc u → v. -/
 noncomputable def Digraph.inDegree (D : Digraph V) (v : V) : ℕ :=
+  haveI : DecidablePred (fun u => D.arc u v) := Classical.decPred _
   Fintype.card {u : V // D.arc u v}
 
 /-- A digraph is a **tournament** if for every pair u ≠ v,
@@ -112,7 +114,7 @@ def Digraph.HasHamiltonianCycle (D : Digraph V) : Prop :=
   ∃ σ : V ≃ Fin (Fintype.card V),
     ∀ i : Fin (Fintype.card V),
       D.arc (σ.symm i) (σ.symm ⟨(i.val + 1) % Fintype.card V,
-        Nat.mod_lt _ (Fintype.card_pos)⟩)
+        Nat.mod_lt _ (by have := i.isLt; omega)⟩)
 
 /-- A **directed Hamiltonian path** visits every vertex exactly once (no return). -/
 def Digraph.HasHamiltonianPath (D : Digraph V) : Prop :=
@@ -155,7 +157,7 @@ beats u, the head still connects properly to the new first element. -/
 lemma tournament_path_insert (D : Digraph V) (hT : D.IsTournament)
     (l : List V) (hl : 0 < l.length) (hp : IsDirectedPathList D l)
     (u : V) (hu : u ∉ l) :
-    ∃ k, k ≤ l.length ∧ IsDirectedPathList D (l.insertNth k u) := by
+    ∃ k, k ≤ l.length ∧ IsDirectedPathList D (l.insertIdx k u) := by
   obtain ⟨hnd, harcs⟩ := hp
   induction l with
   | nil => omega
@@ -170,7 +172,7 @@ lemma tournament_path_insert (D : Digraph V) (hT : D.IsTournament)
         match i with
         | 0 => exact harc_ua
         | i + 1 =>
-          simp only [List.length_cons, List.insertNth_zero] at hi ⊢
+          simp only [List.length_cons, List.insertIdx_zero] at hi ⊢
           exact harcs i (by omega)
     · -- Case 2: u doesn't beat head → head beats u (tournament)
       have harc_au : D.arc a u :=
@@ -190,33 +192,33 @@ lemma tournament_path_insert (D : Digraph V) (hT : D.IsTournament)
           simpa [List.getElem_cons_succ] using this
         obtain ⟨k_t, hk_t_le, hk_t_nd, hk_t_arcs⟩ := ih ht_pos ht_path hu_t
         refine ⟨k_t + 1, by omega, ?_, ?_⟩
-        · -- Nodup of a :: (t.insertNth k_t u)
+        · -- Nodup of a :: (t.insertIdx k_t u)
           apply List.Nodup.cons
           · intro hmem
-            rw [List.mem_insertNth (by omega)] at hmem
+            rw [List.mem_insertIdx (by omega)] at hmem
             rcases hmem with rfl | hmem
             · exact ha_ne_u rfl
             · exact (List.nodup_cons.mp hnd).1 hmem
           · exact hk_t_nd
-        · -- Arcs in a :: (t.insertNth k_t u)
+        · -- Arcs in a :: (t.insertIdx k_t u)
           intro i hi
           match i with
           | 0 =>
-            -- Arc: a → first element of (t.insertNth k_t u)
+            -- Arc: a → first element of (t.insertIdx k_t u)
             by_cases hk0 : k_t = 0
             · -- Inserted at start of tail: first element is u
-              subst hk0; simp [List.insertNth_zero]; exact harc_au
+              subst hk0; simp [List.insertIdx_zero]; exact harc_au
             · -- k_t > 0: first element of tail unchanged (t[0])
               have hlt : 0 < k_t := Nat.pos_of_ne_zero hk0
               conv_lhs => simp only [List.getElem_cons_zero]
-              rw [show (a :: t.insertNth k_t u)[0 + 1]'(by omega) =
-                (t.insertNth k_t u)[0]'(by omega) from List.getElem_cons_succ ..]
-              rw [List.getElem_insertNth_of_lt (by omega)]
+              rw [show (a :: t.insertIdx k_t u)[0 + 1]'(by omega) =
+                (t.insertIdx k_t u)[0]'(by omega) from List.getElem_cons_succ ..]
+              rw [List.getElem_insertIdx_of_lt (by omega)]
               exact harcs 0 (by simp [List.length_cons]; omega)
           | i + 1 =>
-            -- Arc within t.insertNth k_t u (from IH)
-            show D.arc ((a :: t.insertNth k_t u)[i + 1]'(by omega))
-              ((a :: t.insertNth k_t u)[i + 2]'(by omega))
+            -- Arc within t.insertIdx k_t u (from IH)
+            show D.arc ((a :: t.insertIdx k_t u)[i + 1]'(by omega))
+              ((a :: t.insertIdx k_t u)[i + 2]'(by omega))
             simp only [List.getElem_cons_succ]
             exact hk_t_arcs i (by simp [List.length_cons] at hi; omega)
 
@@ -251,7 +253,7 @@ lemma tournament_full_path_list (D : Digraph V) (hT : D.IsTournament)
             _ = l.length := l.toFinset_card_of_nodup hp.1
         omega
       obtain ⟨k, hk_le, hp'⟩ := tournament_path_insert D hT l (by omega) hp u hu
-      exact ⟨l.insertNth k u, by rw [List.length_insertNth (by omega)]; omega, hp'⟩
+      exact ⟨l.insertIdx k u, by rw [List.length_insertIdx (by omega)]; omega, hp'⟩
 
 /-- Convert a list-based Hamiltonian path to the equivalence-based definition.
     A nodup list of length (card V) gives a bijection Fin (card V) → V
@@ -549,24 +551,24 @@ Given cycle C of length k < n, pick any u ∉ C.
     a→w₁→⋯→wₖ→b→a of length k+2, contradicting maximality.
     Otherwise all S⁺ beat all S⁻, trapping S⁻ → contradicts SC. -/
 -- Helper: getElem of insertNth decomposes as three cases
-private lemma insertNth_getElem_eq {α : Type*} (l : List α) (a : α) (i : ℕ)
-    (hi : i ≤ l.length) (j : ℕ) (hj : j < (l.insertNth i a).length) :
-    (l.insertNth i a)[j]'hj =
-      if hlt : j < i then l[j]'(by simp [List.length_insertNth hi] at hj; omega)
+private lemma insertIdx_getElem_eq {α : Type*} (l : List α) (a : α) (i : ℕ)
+    (hi : i ≤ l.length) (j : ℕ) (hj : j < (l.insertIdx i a).length) :
+    (l.insertIdx i a)[j]'hj =
+      if hlt : j < i then l[j]'(by simp [List.length_insertIdx hi] at hj; omega)
       else if heq : j = i then a
-      else l[j - 1]'(by simp [List.length_insertNth hi] at hj; omega) := by
+      else l[j - 1]'(by simp [List.length_insertIdx hi] at hj; omega) := by
   induction i generalizing l j with
   | zero =>
-    simp only [List.insertNth_zero, Nat.not_lt_zero, ↓reduceDite, Nat.zero_le, le_refl]
+    simp only [List.insertIdx_zero, Nat.not_lt_zero, ↓reduceDite, Nat.zero_le, le_refl]
     rcases j with _ | j <;> simp
   | succ i ih =>
     rcases l with _ | ⟨a', t⟩
     · simp [List.length_nil] at hi
-    · simp only [List.insertNth_succ_cons]
+    · simp only [List.insertIdx_succ_cons]
       rcases j with _ | j
       · simp
       · simp only [List.getElem_cons_succ]
-        rw [ih t (by simpa using hi) j (by simp [List.length_insertNth (by simpa using hi)] at hj ⊢; omega)]
+        rw [ih t (by simpa using hi) j (by simp [List.length_insertIdx (by simpa using hi)] at hj ⊢; omega)]
         by_cases hlt : j < i <;> by_cases heq : j = i <;> simp_all <;> omega
 
 private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
@@ -585,23 +587,23 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
   by_cases h_ins : ∃ (i : ℕ) (hi : i < k),
       D.arc (l[i]'hi) u ∧ D.arc u (l[(i+1)%k]'(Nat.mod_lt _ (by omega)))
   · obtain ⟨i, hi, harc_liu, harc_ul⟩ := h_ins
-    -- l.insertNth (i+1) u is a cycle of length k+1
-    use l.insertNth (i + 1) u
-    have hlen_ins : (l.insertNth (i + 1) u).length = k + 1 :=
-      List.length_insertNth (by omega)
+    -- l.insertIdx (i+1) u is a cycle of length k+1
+    use l.insertIdx (i + 1) u
+    have hlen_ins : (l.insertIdx (i + 1) u).length = k + 1 :=
+      List.length_insertIdx (by omega)
     refine ⟨?_, ?_, ?_⟩
-    · exact List.Nodup.insertNth hu hnd
+    · exact List.Nodup.insertIdx hu hnd
     · simp [hlen_ins]; omega
     · -- Arc condition: split by position relative to i+1
       intro j hj
       simp only [hlen_ins] at hj
       -- Get elements via the helper lemma
       have heli : ∀ m (hm : m < k + 1),
-          (l.insertNth (i + 1) u)[m]'hm =
+          (l.insertIdx (i + 1) u)[m]'hm =
             if m < i + 1 then l[m]'(by omega)
             else if m = i + 1 then u
             else l[m - 1]'(by omega) := by
-        intro m hm; exact insertNth_getElem_eq l u (i+1) (by omega) m (by rwa [hlen_ins])
+        intro m hm; exact insertIdx_getElem_eq l u (i+1) (by omega) m (by rwa [hlen_ins])
       rw [heli j hj]
       -- Determine (j+1) % (k+1) and the element there
       set jnext := (j + 1) % (k + 1) with hjnext_def
@@ -677,20 +679,20 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
     by_cases h_any_ins : ∃ (v : V) (hv : v ∉ l) (i : ℕ) (hi : i < k),
         D.arc (l[i]'hi) v ∧ D.arc v (l[(i + 1) % k]'(Nat.mod_lt _ (by omega)))
     · obtain ⟨v, hv_nl, i, hi, harc_lv, harc_vl⟩ := h_any_ins
-      use l.insertNth (i + 1) v
-      have hlen_ins : (l.insertNth (i + 1) v).length = k + 1 :=
-        List.length_insertNth (by omega)
+      use l.insertIdx (i + 1) v
+      have hlen_ins : (l.insertIdx (i + 1) v).length = k + 1 :=
+        List.length_insertIdx (by omega)
       refine ⟨?_, ?_, ?_⟩
-      · exact List.Nodup.insertNth hv_nl hnd
+      · exact List.Nodup.insertIdx hv_nl hnd
       · simp [hlen_ins]; omega
       · intro j hj
         simp only [hlen_ins] at hj
         have heli : ∀ m (hm : m < k + 1),
-            (l.insertNth (i + 1) v)[m]'hm =
+            (l.insertIdx (i + 1) v)[m]'hm =
               if m < i + 1 then l[m]'(by omega)
               else if m = i + 1 then v
               else l[m - 1]'(by omega) := fun m hm =>
-          insertNth_getElem_eq l v (i+1) (by omega) m (by rwa [hlen_ins])
+          insertIdx_getElem_eq l v (i+1) (by omega) m (by rwa [hlen_ins])
         rw [heli j hj]
         set jnext := (j + 1) % (k + 1)
         have hjnext_lt : jnext < k + 1 := Nat.mod_lt _ (by omega)
