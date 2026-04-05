@@ -58,7 +58,7 @@
       "Connection to Problem 839 (infinite version)"
     ],
     "axiomCount": 1,
-    "assumptions": "9 axiom declarations: upperHalf_density (upper half achieves N/2), upperHalf_sumFree (upper half is sum-free), adenwalla_dyadic_bound (dyadic interval bound), adenwalla_upper_bound (2/3 + o(1) upper bound), freud_construction (19/36 density construction), coppersmith_phillips_lower (13/24 lower bound), coppersmith_phillips_upper (2/3 - 1/512 upper bound), problem_839_connection (infinite version bound), erdos_867_conjecture_false (N/2 conjecture disproved)",
+    "assumptions": "1 axiom declaration: coppersmith_phillips_lower (Coppersmith-Phillips 1996: maximum sum-free density >= 13/24). Former axioms upperHalf_density, upperHalf_sumFree, adenwalla_dyadic_bound, adenwalla_upper_bound, freud_construction, coppersmith_phillips_upper, problem_839_connection, erdos_867_conjecture_false now proved as theorems or definitions.",
     "lineCount": 288
   },
   "overview": {

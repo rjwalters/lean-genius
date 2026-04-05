@@ -56,7 +56,7 @@
     "erdosUrl": "https://erdosproblems.com/294",
     "erdosProblemStatus": "solved",
     "axiomCount": 4,
-    "assumptions": "12 axiom declarations: egyptian_236 ({2,3,6} represents 1), t_func_exists (t(N) exists), t_func_characterization (t(N) minimality), t_2 (t(2)=2), t_6_lower (t(6)>2), harmonic_asymptotic (H_N ~ log N), erdos_graham_1980 (upper bound t(N) << N/log N), liu_sawhney_2024 (matching lower bound), almost_all_work (density interpretation), f_func_exists (f(n) exists for n>=6), t_f_relationship (t and f connection), greedy_terminates (greedy algorithm halts)",
+    "assumptions": "4 axiom declarations: t_func_exists (t(N) exists for all N), erdos_graham_1980 (upper bound t(N) << N/log N), liu_sawhney_2024 (matching lower bound pinning t(N) up to polylog factors), f_func_exists (f(n) exists for n>=6). Former axioms egyptian_236, t_func_characterization, t_2, t_6_lower, harmonic_asymptotic, almost_all_work, t_f_relationship, greedy_terminates now proved as theorems or definitions.",
     "lineCount": 306
   },
   "overview": {

@@ -63,7 +63,7 @@
       "wang_conditional axiom: conditional on Elliott-Halberstam"
     ],
     "axiomCount": 4,
-    "assumptions": "14 axiom declarations: lpf_divides (largest prime divides n), lpf_prime (largest prime factor is prime), lpf_of_prime (P(p)=p for primes), dickman_function (Dickman rho function), dickman_at_one (rho(1)=1), dickman_at_two (rho(2) value), dickman_positive (rho positive), dickman_decreasing (rho decreasing), dickman_theorem (Psi asymptotic), infinitely_many_exist (Schinzel existence), teravainen_log_density (log density result), wang_conditional (natural density under EH), elliott_halberstam_conjecture (EH statement), schinzel_product (product smoothness)",
+    "assumptions": "4 axiom declarations: dickman_function (Dickman rho function definition), infinitely_many_exist (Schinzel/Meza: infinitely many consecutive smooth pairs exist), teravainen_log_density (Teravaeinen 2018: logarithmic density equals rho(1/alpha)*rho(1/beta)), wang_conditional (Wang 2021: natural density under Elliott-Halberstam conjecture). Former axioms lpf_divides, lpf_prime, lpf_of_prime, dickman_at_one, dickman_at_two, dickman_positive, dickman_decreasing, dickman_theorem, elliott_halberstam_conjecture, schinzel_product now proved as theorems or definitions.",
     "lineCount": 259
   },
   "overview": {
