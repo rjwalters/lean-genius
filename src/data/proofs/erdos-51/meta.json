@@ -68,22 +68,8 @@
       "id": "totient-properties",
       "title": "Basic Totient Properties",
       "startLine": 66,
-      "endLine": 82,
+      "endLine": 69,
       "summary": "Theorem **totient_one** (φ(1) = 1, by simp). Axioms **totient_prime** (φ(p) = p−1), **totient_le** (φ(n) ≤ n), and **totient_even** (φ(n) even for n ≥ 3)."
-    },
-    {
-      "id": "preimage-structure",
-      "title": "Preimage Structure",
-      "startLine": 83,
-      "endLine": 100,
-      "summary": "Axioms: **even_totient_values** (even a ≥ 2 are totient values), **smallest_preimage_lower** (n_a ≥ a+1 for a ≥ 2), and **erdos_carmichael** (unique preimage ⇒ infinitely many unique preimages)."
-    },
-    {
-      "id": "growth-bounds",
-      "title": "Growth Bounds",
-      "startLine": 101,
-      "endLine": 122,
-      "summary": "Axioms: **prime_preimage_ratio** and **prime_minus_one_ratio_bounded** (prime-generated totient values have bounded ratios ≤ 2). Definition **inverseTotientCount**. Axiom **highly_totient_exist** (preimage sizes unbounded)."
     }
   ],
   "overview": {

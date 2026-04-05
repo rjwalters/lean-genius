@@ -100,56 +100,8 @@
       "title": "Upper Bound",
       "summary": "Erdős (1963): f(n) ≤ C·n²·2^n",
       "startLine": 139,
-      "endLine": 151,
+      "endLine": 146,
       "mathContext": "Erdos (1963): $f(n) \\\\leq C \\\\cdot n^2 \\\\cdot 2^n$. Probabilistic: a random tournament of this size is $n$-dominating with positive probability."
-    },
-    {
-      "id": "asymptotic",
-      "title": "Asymptotic Behavior",
-      "summary": "The gap between lower and upper bounds",
-      "startLine": 152,
-      "endLine": 171,
-      "mathContext": "Gap: $cn \\\\cdot 2^n \\\\leq f(n) \\\\leq Cn^2 \\\\cdot 2^n$. The $n$ vs $n^2$ factor remains open. Conjecture: $f(n) = \\\\Theta(n \\\\cdot 2^n)$."
-    },
-    {
-      "id": "paley",
-      "title": "Paley Tournament",
-      "summary": "Quadratic residue construction and domination bound",
-      "startLine": 167,
-      "endLine": 176,
-      "mathContext": "Paley tournament on prime $p \\\\equiv 3 \\\\pmod{4}$: $a \\\\to b$ iff $b-a$ is a quadratic residue mod $p$. Achieves $f(n) = O(n \\\\cdot 2^n)$ for some $n$."
-    },
-    {
-      "id": "quadratic-residues",
-      "title": "Quadratic Residues",
-      "summary": "Half of nonzero elements are residues",
-      "startLine": 177,
-      "endLine": 187,
-      "mathContext": "In $\\\\mathbb{F}_p^*$, exactly $(p-1)/2$ elements are quadratic residues. The Paley construction uses this 50-50 split for tournament directionality."
-    },
-    {
-      "id": "generalizations",
-      "title": "Generalizations",
-      "summary": "Domination number of a tournament",
-      "startLine": 188,
-      "endLine": 201,
-      "mathContext": "Domination number $\\\\gamma(T)$: minimum vertices to dominate all others. Related: $f(n) = \\\\min\\\\{|V(T)| : \\\\gamma^{(n)}(T) = 1\\\\}$ (1 vertex dominates every $n$-set)."
-    },
-    {
-      "id": "probabilistic",
-      "title": "Probabilistic Method",
-      "summary": "Random tournaments and existence proofs",
-      "startLine": 202,
-      "endLine": 216,
-      "mathContext": "Random tournament: each edge directed uniformly. $\\\\Pr[\\\\text{vertex } v \\\\text{ dominates } S] = 2^{-|S|}$. Union bound over $\\\\binom{f}{n}$ sets."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_902: combining Szekeres lower and Erdős upper bounds",
-      "startLine": 217,
-      "endLine": 237,
-      "mathContext": "Bounds: $c \\\\cdot n \\\\cdot 2^n \\\\leq f(n) \\\\leq C \\\\cdot n^2 \\\\cdot 2^n$. Known values: $f(1)=3, f(2)=7, f(3)=19$. Closing the $n$ vs $n^2$ gap: OPEN."
     }
   ],
   "conclusion": {

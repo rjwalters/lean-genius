@@ -139,32 +139,8 @@
       "title": "Connection to Prime Factorization",
       "summary": "additive_from_prime_powers, additiveFromPrimes, additive_from_primes_is_additive",
       "startLine": 174,
-      "endLine": 191,
+      "endLine": 182,
       "mathContext": "Additive f determined by values on prime powers."
-    },
-    {
-      "id": "rate-of-convergence",
-      "title": "Rate of Convergence",
-      "summary": "wirsing_explicit_bound, deviation_bounded_not_zero",
-      "startLine": 192,
-      "endLine": 209,
-      "mathContext": "Wirsing explicit: |f(n)-A log n|=O(1)."
-    },
-    {
-      "id": "related-problems",
-      "title": "Related Problems",
-      "summary": "erdos_897_connection, multiplicative_analog",
-      "startLine": 210,
-      "endLine": 226,
-      "mathContext": "Multiplicative analog: |g(n+1)-g(n)|->0 implies g=n^{it}."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_491_summary and erdos_491_answer",
-      "startLine": 227,
-      "endLine": 249,
-      "mathContext": "SOLVED. Bounded-diff additive = A log n."
     }
   ],
   "conclusion": {

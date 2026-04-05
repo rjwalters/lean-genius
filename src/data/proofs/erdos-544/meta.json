@@ -62,25 +62,9 @@
       "id": "asymptotic-bounds",
       "title": "Asymptotic Bounds",
       "startLine": 59,
-      "endLine": 70,
+      "endLine": 65,
       "summary": "Kim lower bound and Shearer/CGMS upper bound: R(3,k) = Θ(k²/log k).",
       "mathContext": "Kim (1995): $R(3,k) \\geq c_1 k^2/\\log k$. Shearer (1983): $R(3,k) \\leq c_2 k^2/\\log k$. Together: $R(3,k) = \\Theta(k^2/\\log k)$."
-    },
-    {
-      "id": "main-problems",
-      "title": "Main Problems",
-      "startLine": 71,
-      "endLine": 92,
-      "summary": "Divergence (Part 1) and sublinearity (Part 2) of consecutive Ramsey differences.",
-      "mathContext": "Part 1: $R(3,k+1) - R(3,k) \\to \\infty$. Part 2: $R(3,k+1) - R(3,k) = o(k)$. Both OPEN."
-    },
-    {
-      "id": "full-conjecture",
-      "title": "Full Conjecture",
-      "startLine": 93,
-      "endLine": 93,
-      "summary": "ErdosProblem544 combines divergence and sublinearity as a conjunction capturing the complete Erdős–Sós question.",
-      "mathContext": "Full conjecture: Parts 1 and 2 together: $R(3,k+1) - R(3,k) \\to \\infty$ AND $R(3,k+1) - R(3,k) = o(k)$."
     }
   ],
   "conclusion": {

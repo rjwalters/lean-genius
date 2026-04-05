@@ -104,17 +104,9 @@
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 88,
-      "endLine": 108,
+      "endLine": 93,
       "summary": "Specific polynomials witnessing the bounds: (x+1)(x-1)^m for infimum, x²-1 for supremum",
       "mathContext": "$(x+1)(x-1)^m$: as $m \\to \\infty$, $\\text{meas}(S_P) \\to 2\\sqrt{2}$. $x^2 - 1$: $S_P = \\{x : |x^2-1| \\leq 1\\} \\cap [-1,1] = [-1,1]$, so $\\text{meas} = 2$."
-    },
-    {
-      "id": "numerical",
-      "title": "Numerical Bounds",
-      "startLine": 109,
-      "endLine": 117,
-      "summary": "Approximate numerical values of the bounds",
-      "mathContext": "$2\\sqrt{2} \\approx 2.828$. The gap between the supremum ($2\\sqrt{2}$) and infimum ($\\geq 2^{4/3} - 1 \\approx 1.52$) shows the sublevel set measure varies significantly with root placement."
     }
   ],
   "conclusion": {

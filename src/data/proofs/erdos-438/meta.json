@@ -169,20 +169,6 @@
       "startLine": 100,
       "endLine": 109,
       "summary": "Axiomatizes `los_upper_bound`: $|A| \\le 0.475N + C$ (Lagarias-Odlyzko-Shearer 1983) and `kls_theorem`: $|A| \\le (11/32 + \\varepsilon)N$ for large $N$ (Khalfalah-Lodha-Szemerédi 2002)."
-    },
-    {
-      "id": "why-11-32",
-      "title": "Why $11/32$?",
-      "startLine": 114,
-      "endLine": 128,
-      "summary": "Defines `squares_mod_32` $= \\{0,1,4,9,16,17,25\\}$ with `native_decide`-proved $|\\cdot| = 7$. Axiomatizes `massias_avoids_squares` (all pairwise sums avoid squares) and `massias_is_maximal` (no $12$ residues can work)."
-    },
-    {
-      "id": "summary",
-      "title": "Summary Theorem",
-      "startLine": 138,
-      "endLine": 148,
-      "summary": "`erdos_438_summary` packages: (1) Massias construction is square-free, (2) KLS tight bound $(11/32 + \\varepsilon)N$, (3) $11$ is maximum. **Status: SOLVED.**"
     }
   ],
   "conclusion": {

@@ -154,24 +154,8 @@
       "title": "Examples: Paley Graphs and Random Graphs",
       "summary": "Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). Axiomatizes `random_regular_bound` (DKM holds with high probability for random regular graphs).",
       "startLine": 148,
-      "endLine": 172,
+      "endLine": 171,
       "mathContext": "Paley graph $P(q)$ for $q \\equiv 1 \\pmod{4}$: $V = \\mathbb{F}_q$, $u \\sim v \\iff u - v \\in (\\mathbb{F}_q^\\times)^2$. $(q-1)/2$-regular, self-complementary. Random $(n+1)$-regular model $\\mathcal{G}(2n, n+1)$ satisfies DKM bound with high probability."
-    },
-    {
-      "id": "hamiltonian",
-      "title": "Hamiltonian Cycles",
-      "summary": "Defines `IsHamiltonianCycle` ($V(C) = V$) and `hamiltonianCount`. Axiomatizes existence via **Dirac's theorem**: $\\delta(G) \\geq |V|/2 \\implies$ Hamiltonian.",
-      "startLine": 173,
-      "endLine": 188,
-      "mathContext": "Hamiltonian cycle: $V(C) = V$ (cycle visits all vertices). Dirac (1952): $\\delta(G) \\geq |V|/2 \\implies G$ Hamiltonian. For Erdős–Faudree: $\\delta = n+1 > n = |V|/2$, so Hamiltonian exists."
-    },
-    {
-      "id": "turan",
-      "title": "Edge Density and Turán Connection",
-      "summary": "Axiomatizes $|E| = n(n+1)$ (handshaking lemma) and $n(n+1) > n^2 = \\text{ex}(2n, K_3)$ (Turán's theorem), confirming Erdős–Faudree graphs exceed the triangle-free threshold.",
-      "startLine": 189,
-      "endLine": 238,
-      "mathContext": "Axiomatizes $|E| = n(n+1)$ (handshaking lemma) and $n(n+1) > $n^{2}$ = \\text{ex}(2n, K_3)$ (Turán's theorem), confirming Erdős–Faudree graphs exceed the triangle-free threshold."
     }
   ],
   "conclusion": {

@@ -78,57 +78,9 @@
       "id": "roth",
       "title": "Roth's Theorem ($k = 3$)",
       "startLine": 50,
-      "endLine": 56,
+      "endLine": 54,
       "summary": "Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley–Meka (2023).",
       "mathContext": "Axiomatized: Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley–Meka (2023)."
-    },
-    {
-      "id": "behrend",
-      "title": "Behrend's Lower Bound",
-      "startLine": 57,
-      "endLine": 64,
-      "summary": "Axiomatizes $r_3(N) \\ge C \\cdot N \\cdot \\exp(-C\\sqrt{\\log N})$, the 1946 lattice-sphere construction that remains the best lower bound (up to constants) after nearly 80 years.",
-      "mathContext": "Axiomatized: Axiomatizes $r_3(N) \\ge C \\cdot N \\cdot \\exp(-C\\sqrt{\\log N})$, the 1946 lattice-sphere construction that remains the best lower bound (up to constants) after nearly 80 years."
-    },
-    {
-      "id": "kelley-meka",
-      "title": "Kelley–Meka Upper Bound",
-      "startLine": 65,
-      "endLine": 72,
-      "summary": "Axiomatizes the 2023 breakthrough: $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$, the first sub-polynomial density decay for 3-AP-free sets.",
-      "mathContext": "Axiomatized: Axiomatizes the 2023 breakthrough: $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$, the first sub-polynomial density decay for 3-AP-free sets."
-    },
-    {
-      "id": "erdos-5000",
-      "title": "Erdős's $\\$5{,}000$ Question",
-      "startLine": 73,
-      "endLine": 81,
-      "summary": "Axiomatizes $r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. Known for $k \\le 4$; the $k \\ge 5$ case is the last barrier for Erdős's sub-prize.",
-      "mathContext": "Axiomatized: Axiomatizes $r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. Known for $k \\le 4$; the $k \\ge 5$ case is the last barrier for Erdős's sub-prize."
-    },
-    {
-      "id": "main-problem",
-      "title": "The $\\$10{,}000$ Open Problem",
-      "startLine": 82,
-      "endLine": 92,
-      "summary": "States the main problem: $\\exists f_k$ with $r_k(N)/f_k(N) \\to 1$. Even the order of magnitude of $r_3(N)$ is unknown, with the Behrend and Kelley–Meka bounds differing by an exponential factor in the exponent.",
-      "mathContext": "States the main problem: $\\exists f_k$ with $r_k(N)/f_k(N) \\to 1$. Even the order of magnitude of $r_3(N)$ is unknown, with the Behrend and Kelley–Meka bounds differing by an exponential factor in the exponent."
-    },
-    {
-      "id": "green-tao",
-      "title": "Green–Tao Bound for $k = 4$",
-      "startLine": 93,
-      "endLine": 100,
-      "summary": "Axiomatizes $r_4(N) \\le N/(\\log N)^{1+c}$ from Green–Tao (2017), using the $U^3$ inverse theorem and density increment.",
-      "mathContext": "Verified: Axiomatizes $r_4(N) \\le N/(\\log N)^{1+c}$ from Green–Tao (2017), using the $U^3$ inverse theorem and density increment."
-    },
-    {
-      "id": "trivial",
-      "title": "Trivial Positivity",
-      "startLine": 101,
-      "endLine": 102,
-      "summary": "Axiomatizes $r_k(N) \\ge 1$ for $N \\ge 1$, ensuring the asymptotic ratio is well-defined.",
-      "mathContext": "Axiomatized: Axiomatizes $r_k(N) \\ge 1$ for $N \\ge 1$, ensuring the asymptotic ratio is well-defined."
     }
   ],
   "conclusion": {

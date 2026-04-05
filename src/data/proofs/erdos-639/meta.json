@@ -138,24 +138,8 @@
       "title": "Pyber's Covering Result",
       "summary": "Axiomatizes Pyber's 1986 theorem: any 2-colored K_n can be covered by at most ⌊n²/4⌋ + 2 monochromatic cliques. Also states the Erdős-Rousseau-Schelp asymptotic result with an explicit ε-δ formulation using real arithmetic. Pyber's result was the key intermediate step: Alon observed that it implies the edge bound.",
       "startLine": 189,
-      "endLine": 209,
+      "endLine": 202,
       "mathContext": "Axiomatizes Pyber's 1986 theorem: any 2-colored K_n can be covered by at most ⌊n²/4⌋ + 2 monochromatic cliques. Also states the Erdős-Rousseau-Schelp asymptotic result with an explicit ε-δ formulation using real arithmetic."
-    },
-    {
-      "id": "history",
-      "title": "Earlier Partial Results",
-      "summary": "States the keevash_sudakov_complete axiom unifying all cases into a single statement: for any n and any symmetric coloring, countEdgesNotInMono ≤ exactBound n. This combines the small cases (n ≤ 5, n = 6) with the main theorem (n ≥ 7) into one clean axiom.",
-      "startLine": 210,
-      "endLine": 225,
-      "mathContext": "States the keevash_sudakov_complete axiom unifying all cases into a single statement: for any n and any symmetric coloring, countEdgesNotInMono ≤ exactBound n. This combines the small cases (n ≤ 5, n = 6) with the main theorem (n ≥ 7) into one clean axiom."
-    },
-    {
-      "id": "main-result",
-      "title": "Main Result",
-      "summary": "The final theorem erdos_639 directly invokes keevash_sudakov_complete, cleanly stating: for any n and any symmetric 2-coloring of K_n, the number of edges not in any monochromatic triangle is at most exactBound n. The #check commands verify that erdos_639, keevash_sudakov_main, and ramsey_3_3 all typecheck correctly.",
-      "startLine": 226,
-      "endLine": 235,
-      "mathContext": "The final theorem erdos_639 directly invokes keevash_sudakov_complete, cleanly stating: for any n and any symmetric 2-coloring of K_n, the number of edges not in any monochromatic triangle is at most exactBound n."
     }
   ],
   "conclusion": {

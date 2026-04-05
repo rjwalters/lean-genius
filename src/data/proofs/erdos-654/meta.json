@@ -101,7 +101,7 @@
       "id": "circle-bound",
       "title": "Circle Distance Multiplicity Bound",
       "startLine": 95,
-      "endLine": 135,
+      "endLine": 111,
       "summary": "PROVES `circle_distance_bound`: under `NoFourConcyclic`, at most 3 points share any distance $d > 0$ from $x_i$. The proof extracts 4 distinct elements from a hypothetical set of size $\\ge 4$ via iterated `Finset.erase`, then derives a contradiction with `NoFourConcyclic` since all 4 lie on the circle of radius $d$ centered at $P(i)$.",
       "mathContext": "Proved theorem: $|\\{j \\ne i : \\text{dist}(x_i, x_j) = d\\}| \\le 3$ when no four points are concyclic. Proof by contradiction: assume $|S| \\ge 4$, extract $j_1, j_2, j_3, j_4 \\in S$ via iterated `Finset.erase` with distinctness proofs, then all four lie on the circle $\\{x : \\text{dist}(x, P(i)) = d\\}$, contradicting `NoFourConcyclic`. Uses `dist_comm` to orient the distance equality. This is the structural foundation: the multiplicity bound $\\le 3$ feeds into the known $(n-1)/3$ lower bound via pigeonhole."
     }

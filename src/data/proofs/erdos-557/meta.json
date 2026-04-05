@@ -55,24 +55,8 @@
       "title": "Star Lower Bound: R(S_n; k) >= k(n-1) + 1",
       "summary": "starTree defines K_{1,n-1} with center vertex 0, star_ramsey_lower axiom via pigeonhole on vertex degrees showing conjecture is tight",
       "startLine": 74,
-      "endLine": 96,
+      "endLine": 76,
       "mathContext": "$R(K_{1,n-1}; k) \\geq k(n-1) + 1$ by pigeonhole: in $K_{k(n-1)}$, some color class has $\\leq n-2$ edges at the center"
-    },
-    {
-      "id": "known-cases",
-      "title": "Known Special Cases: k=2 and Monotonicity",
-      "summary": "two_color_tree_ramsey: R(T;2) ≤ 2n-2. path_two_color: Gerencsér-Gyárfás formula ⌊3(n-1)/2⌋+1. ramsey_tree_monotone_k: R(T;k) ≤ R(T;k+1)",
-      "startLine": 98,
-      "endLine": 112,
-      "mathContext": "$R(T; 2) \\leq 2n - 2$; $R(P_n; 2) = \\lfloor 3(n-1)/2 \\rfloor + 1$ (Gerencsér-Gyárfás); $R(T; k) \\leq R(T; k+1)$"
-    },
-    {
-      "id": "burr-erdos-connection",
-      "title": "Burr-Erdős Connection and Problem #548",
-      "summary": "burr_erdos_trees: Lee (2017) proved R(G;2) = O(n) for bounded degeneracy. problem_548_implies_557: multicolor Burr-Erdős for degeneracy d would resolve #557 for trees (d=1)",
-      "startLine": 114,
-      "endLine": 128,
-      "mathContext": "Burr-Erdős: $R(G; 2) = O(n)$ for degeneracy-$d$ graphs (Lee 2017). Trees have $d = 1$."
     }
   ],
   "overview": {

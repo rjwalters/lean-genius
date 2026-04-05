@@ -122,33 +122,9 @@
       "id": "asymptotics",
       "title": "Asymptotic Behavior",
       "startLine": 228,
-      "endLine": 241,
+      "endLine": 235,
       "summary": "Axiomatizes that the smallest prime divisor of C(n,k) is O(n/k) for large n, and intersection properties of prime factorizations of overlapping binomial coefficients.",
       "mathContext": "$\\min\\{p \\text{ prime}: p \\mid \\binom{n}{k}\\} = O(n/k)$ as $n \\to \\infty$"
-    },
-    {
-      "id": "related",
-      "title": "Related Problems and References",
-      "startLine": 242,
-      "endLine": 259,
-      "summary": "Connections to Erdős Problems #1094 (consecutive integers in C(n,k)), #1095, and Guy's B31/B33 sections.",
-      "mathContext": "Related: $\\binom{n}{k}$ contains a run of consecutive integers as factors when $k$ is small"
-    },
-    {
-      "id": "applications",
-      "title": "Applications to Catalan Numbers and Pascal Patterns",
-      "startLine": 260,
-      "endLine": 277,
-      "summary": "Applications: Catalan numbers C_n = C(2n,n)/(n+1), Pascal's triangle modular patterns (Lucas' theorem), combinatorial number theory.",
-      "mathContext": "$C_n = \\frac{1}{n+1}\\binom{2n}{n}$; Lucas: $\\binom{n}{k} \\equiv \\prod \\binom{n_i}{k_i} \\pmod{p}$ where $n = \\sum n_i p^i$"
-    },
-    {
-      "id": "summary",
-      "title": "Main Result and Problem Status",
-      "startLine": 278,
-      "endLine": 289,
-      "summary": "erdos_384_main proved from ecklund_1969 axiom: every C(n,k) with 1 < k < n−1 has a prime < n/2, except C(7,3). Status: SOLVED.",
-      "mathContext": "$\\text{erdos\\_384\\_main} = \\text{ecklund\\_1969}$: direct application of the axiomatized theorem"
     }
   ],
   "conclusion": {

@@ -84,33 +84,9 @@
       "id": "galvin-larson",
       "title": "Galvin-Larson Necessary Condition (1974)",
       "startLine": 60,
-      "endLine": 71,
+      "endLine": 65,
       "summary": "Defines `IsAdditivelyIndecomposable` ($\\beta = \\omega^\\gamma$) and axiomatizes the Galvin-Larson theorem: partition ordinals $\\beta \\geq 3$ must be additively indecomposable, reducing the classification to powers of $\\omega$.",
       "mathContext": "Defines `IsAdditivelyIndecomposable` ($\\beta = \\omega^\\gamma$) and axiomatizes the Galvin-Larson theorem: partition ordinals $\\beta \\geq 3$ must be additively indecomposable, reducing the classification to powers of $\\omega$."
-    },
-    {
-      "id": "schipperus-classification",
-      "title": "Schipperus Classification (2010)",
-      "startLine": 73,
-      "endLine": 89,
-      "summary": "Defines `cantorNFLength` and axiomatizes Schipperus's classification: CNF-length $\\leq 2$ implies partition property (positive), CNF-length $\\geq 4$ implies failure (negative).",
-      "mathContext": "Formal definition: Defines `cantorNFLength` and axiomatizes Schipperus's classification: CNF-length $\\leq 2$ implies partition property (positive), CNF-length $\\geq 4$ implies failure (negative)."
-    },
-    {
-      "id": "open-case",
-      "title": "The Open Case: CNF-Length 3",
-      "startLine": 91,
-      "endLine": 98,
-      "summary": "States the critical open case: does $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$ hold when $\\text{cantorNFLength}(\\gamma) = 3$? This is the \\$1,000 bounty problem.",
-      "mathContext": "States the critical open case: does $\\omega^{\\omega^\\$\\gamma$} \\to (\\omega^{\\omega^\\$\\gamma$}, 3)^2$ hold when $\\text{cantorNFLength}(\\$\\gamma$) = 3$? This is the \\$1,000 bounty problem."
-    },
-    {
-      "id": "classification-summary",
-      "title": "Classification Summary",
-      "startLine": 100,
-      "endLine": 114,
-      "summary": "Axiomatizes the complete classification table: $\\beta = 0, 1, 2$ positive, $3 \\leq n < \\omega$ negative, with the Schipperus boundary at CNF-length 2/4 and the open gap at CNF-length 3.",
-      "mathContext": "Axiomatizes the complete classification table: $\\$\\beta$ = 0, 1, 2$ positive, $3 \\leq n < \\omega$ negative, with the Schipperus boundary at CNF-length 2/4 and the open gap at CNF-length 3."
     }
   ],
   "overview": {

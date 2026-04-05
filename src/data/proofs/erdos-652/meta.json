@@ -154,24 +154,8 @@
       "title": "Computational Examples",
       "summary": "Concrete constructions: regular $n$-gon center achieves $R = 1$ (extreme minimizer), and the $\\sqrt{n} \\times \\sqrt{n}$ integer grid has $R \\leq 2\\sqrt{n}$ for most points (near-extremal for distinct distances).",
       "startLine": 168,
-      "endLine": 182,
+      "endLine": 177,
       "mathContext": "Regular $n$-gon center: $R = 1$. Integer $\\sqrt{n} \\times \\sqrt{n}$ grid: $R \\sim \\sqrt{n}$ for most points."
-    },
-    {
-      "id": "connections",
-      "title": "Related Problems",
-      "summary": "Connection to the Erdős distinct distances problem: total distinct distances $\\Omega(n/\\sqrt{\\log n})$ (Guth-Katz 2015), and the sum bound $\\sum R(x_i) \\leq n^2$. Polynomial partitioning links both results.",
-      "startLine": 183,
-      "endLine": 200,
-      "mathContext": "Guth-Katz: distinct distances $\\geq cn/\\sqrt{\\log n}$. Sum bound: $\\sum_i R(x_i) \\leq n(n-1)$ (each distance counted from both endpoints)."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Final theorem `erdos_652_summary : \\alpha_k \\to \\infty` — clean one-line resolution referencing `alpha_k_unbounded`. Documents key results, techniques (Elekes: algebraic curves; Mathialagan: polynomial partitioning), and closes the `Erdos652` namespace.",
-      "startLine": 201,
-      "endLine": 226,
-      "mathContext": "Final: `erdos_652_summary` $\\equiv \\alpha_k \\to \\infty$. SOLVED affirmatively (Mathialagan 2021)."
     }
   ],
   "conclusion": {

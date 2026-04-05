@@ -135,17 +135,9 @@
       "id": "pomerance",
       "title": "Pomerance's Lower Bound",
       "startLine": 130,
-      "endLine": 143,
+      "endLine": 132,
       "summary": "Axiomatizes Pomerance's construction: sets with $\\sum \\frac{1}{a} \\geq (\\log \\log N)^2$ avoiding unit fraction subsets exist for arbitrarily large $N$, showing the threshold is at least $(\\log \\log N)^2$.",
       "mathContext": "Axiomatizes Pomerance's construction: sets with $\\sum \\frac{1}{a} \\geq (\\log \\log N)^2$ avoiding unit fraction subsets exist for arbitrarily large $N$, showing the threshold is at least $(\\log \\log N)^2$."
-    },
-    {
-      "id": "summary",
-      "title": "Summary Theorem",
-      "startLine": 144,
-      "endLine": 154,
-      "summary": "$\\texttt{erdos\\_47\\_summary} : \\texttt{ErdosConjecture47} := \\texttt{bloom\\_theorem}$. Records that Problem #47 is solved and the conjecture equals Bloom's result.",
-      "mathContext": "Verified: $\\texttt{erdos\\_47\\_summary} : \\texttt{ErdosConjecture47} := \\texttt{bloom\\_theorem}$. Records that Problem #47 is solved and the conjecture equals Bloom's result."
     }
   ],
   "conclusion": {

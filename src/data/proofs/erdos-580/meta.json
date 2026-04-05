@@ -153,16 +153,8 @@
       "title": "Tightness of the LKS Condition",
       "summary": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ threshold is sharp.",
       "startLine": 223,
-      "endLine": 237,
+      "endLine": 236,
       "mathContext": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ threshold is sharp."
-    },
-    {
-      "id": "summary",
-      "title": "Summary Theorem",
-      "summary": "Restates the main result `erdos_580_summary` as a single self-documenting theorem with an extensive docstring summarizing the problem status, history, key techniques, and remaining open questions.",
-      "startLine": 238,
-      "endLine": 267,
-      "mathContext": "Verified: Restates the main result `erdos_580_summary` as a single self-documenting theorem with an extensive docstring summarizing the problem status, history, key techniques, and remaining open questions."
     }
   ],
   "conclusion": {

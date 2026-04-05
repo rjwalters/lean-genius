@@ -143,24 +143,8 @@
       "title": "Connection to Erdős #907",
       "summary": "Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity.",
       "startLine": 183,
-      "endLine": 198,
+      "endLine": 195,
       "mathContext": "Axiomatized: Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity."
-    },
-    {
-      "id": "de-bruijn",
-      "title": "The de Bruijn Perspective",
-      "summary": "Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation.",
-      "startLine": 199,
-      "endLine": 216,
-      "mathContext": "Formal definition: Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation."
-    },
-    {
-      "id": "summary",
-      "title": "Summary Theorems",
-      "summary": "`erdos_908_solved` and `de_bruijn_erdos_conjecture` state the main result (both reference `laczkovich_decomposition`). `erdos_908_summary` combines decomposition $\\wedge$ continuous verification $\\wedge$ additive verification.",
-      "startLine": 217,
-      "endLine": 258,
-      "mathContext": "`erdos_908_summary` combines decomposition $\\wedge$ continuous verification $\\wedge$ additive verification."
     }
   ],
   "conclusion": {

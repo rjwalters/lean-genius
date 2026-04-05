@@ -43,29 +43,8 @@
       "id": "probabilistic",
       "title": "Probabilistic Lower Bound",
       "startLine": 50,
-      "endLine": 62,
+      "endLine": 56,
       "summary": "Erdős 1947 probabilistic bound: R(k) ≥ C^k for some C > 1 (axiomatized). Asymptotic √2 bound axiomatized separately with ε-approximation."
-    },
-    {
-      "id": "constructive",
-      "title": "Constructive Results",
-      "startLine": 63,
-      "endLine": 85,
-      "summary": "IsExplicit predicate (axiomatized as True). Cohen (2015): 2^{(log log n)^C}. Li (2023): (log n)^C. Both axiomatized with Real.exp and Real.log formulations."
-    },
-    {
-      "id": "main-problem",
-      "title": "Main Open Problem",
-      "startLine": 86,
-      "endLine": 96,
-      "summary": "The $100 challenge: construct explicit n-vertex graphs with α(G), ω(G) < c·log n. Axiomatized as the existence of c > 0 with explicit graph family."
-    },
-    {
-      "id": "upper-bounds",
-      "title": "Upper Bounds",
-      "startLine": 97,
-      "endLine": 107,
-      "summary": "Erdős–Szekeres R(k) ≤ 4^k (1935) and CGMS R(k) ≤ (4-ε)^k (2023), both axiomatized."
     }
   ],
   "overview": {

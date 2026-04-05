@@ -151,40 +151,8 @@
       "title": "Generalizations",
       "summary": "Extensions to Jordan curves (general_contour_version), logarithmic potentials (potential_theory_connection), trigonometric polynomials (trigonometric_version) — all placeholder axioms",
       "startLine": 194,
-      "endLine": 211,
+      "endLine": 195,
       "mathContext": "The Erdős-Turán framework extends beyond the unit circle. For Jordan curves $\\Gamma$, the discrepancy is measured against arclength-proportional distribution. The potential-theoretic interpretation connects to the equilibrium measure of $\\Gamma$ and logarithmic capacity."
-    },
-    {
-      "id": "applications",
-      "title": "Applications",
-      "summary": "Interpolation via Fekete/Leja points (interpolation_application), random matrix eigenvalue distribution (random_matrix_application), distribution of $L$-function zeros (l_function_application) — all placeholders",
-      "startLine": 212,
-      "endLine": 229,
-      "mathContext": "Fekete points minimize the logarithmic energy $\\sum_{i \\neq j} \\log|z_i - z_j|^{-1}$ and are optimally equidistributed. For random matrices, the characteristic polynomial has roots (eigenvalues) whose angular distribution is governed by the circular ensemble and the Erdős-Turán bound."
-    },
-    {
-      "id": "lower",
-      "title": "Lower Bounds",
-      "summary": "lower_bound_construction ($D^* \\geq \\tfrac{1}{10}\\sqrt{d}$ for some polynomial), optimal_dependence ($\\sqrt{d}$ and $\\log M$ both necessary)",
-      "startLine": 230,
-      "endLine": 245,
-      "mathContext": "Random polynomials with i.i.d. coefficients on $S^1$ exhibit $\\Theta(\\sqrt{d})$ discrepancy by the CLT. Rudin-Shapiro polynomials provide explicit deterministic examples. The constant $1/10$ is not optimal but establishes the correct order."
-    },
-    {
-      "id": "one-sided",
-      "title": "One-Sided Improvements",
-      "summary": "erdelyi_one_sided: $N(I) - E(I) \\leq C\\sqrt{d \\log M}$ (excess bound without absolute value), totik_varju_corollary (potential-theoretic extension)",
-      "startLine": 246,
-      "endLine": 262,
-      "mathContext": "Erdélyi's one-sided bound controls root *excess* (clustering) in sectors. The Totik-Varjú corollary extends this to equilibrium measures on general compact sets in $\\mathbb{C}$, connecting to potential theory."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_turan_known (proved): $D^* \\leq C\\sqrt{d \\log M}$ for specific polynomial, erdos_990_summary (proved): universal $\\exists C > 0$ version — classical case with degree $d$",
-      "startLine": 263,
-      "endLine": 285,
-      "mathContext": "Both proved theorems forward to the axiomatized classical Erdős-Turán via `exact`. The formalization cleanly separates the proved classical result (degree $d$) from the open sparse conjecture (sparsity $n$)."
     }
   ],
   "conclusion": {

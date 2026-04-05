@@ -108,25 +108,9 @@
       "id": "chebyshev",
       "title": "Chebyshev Polynomial Asymptotics",
       "startLine": 63,
-      "endLine": 73,
+      "endLine": 64,
       "summary": "Axioms for Chebyshev polynomials: chebyshev_poly (constructor), chebyshev_connected (lemniscate is connected), chebyshev_deriv_asymptotic (max|p'| in [(1/2-ε)n², (1/2+ε)n²] for large n).",
       "mathContext": "Axiomatized: Axioms for Chebyshev polynomials: chebyshev_poly (constructor), chebyshev_connected (lemniscate is connected), chebyshev_deriv_asymptotic (max|p'| in [(1/2-ε)n², (1/2+ε)n²] for large n)."
-    },
-    {
-      "id": "eremenko-lempert",
-      "title": "Eremenko-Lempert Theorem",
-      "startLine": 74,
-      "endLine": 82,
-      "summary": "The main axiom ErdosProblem115_proved: ∀ ε > 0, ∃ N, ∀ n ≥ N, ∀ p with connected lemniscate: max|p'| ≤ (1/2 + ε)n². This resolves Erdős Problem #115.",
-      "mathContext": "The main axiom ErdosProblem115_proved: ∀ ε > 0, ∃ N, ∀ n $\\geq$ N, ∀ p with connected lemniscate: max|p'| $\\leq$ (1/2 + ε)n². This resolves Erdős Problem #115."
-    },
-    {
-      "id": "sharpness",
-      "title": "Sharpness Theorem",
-      "startLine": 83,
-      "endLine": 91,
-      "summary": "The only proved (non-axiom) result: ErdosProblem115_sharp constructs Chebyshev witnesses showing ∀ ε > 0, ∃ N, ∀ n ≥ N, ∃ p with connected lemniscate and max|p'| ≥ (1/2 - ε)n². Proof: obtain Chebyshev asymptotic, provide chebyshev_poly n as witness.",
-      "mathContext": "The only proved (non-axiom) result: ErdosProblem115_sharp constructs Chebyshev witnesses showing ∀ ε > 0, ∃ N, ∀ n ≥ N, ∃ p with connected lemniscate and max|p'| ≥ (1/2 - ε)n². Proof: obtain Chebyshev asymptotic, provide chebyshev_poly n as witness."
     }
   ],
   "conclusion": {

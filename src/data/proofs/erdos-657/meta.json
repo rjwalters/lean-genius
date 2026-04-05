@@ -158,41 +158,9 @@
       "id": "straus",
       "title": "Straus's High-Dimensional Construction",
       "startLine": 206,
-      "endLine": 233,
+      "endLine": 222,
       "summary": "In $\\mathbb{R}^k$ with $2^k \\ge n$, hypercube vertices give isosceles-free sets with $\\le n - 1$ distances ($\\|e_i - e_j\\|^2$ takes at most $k$ values). Shows the problem is nontrivial only in low dimensions.",
       "mathContext": "In $\\mathbb{R}^k$ with $2^k \\ge n$, hypercube vertices give isosceles-free sets with $\\le n - 1$ distances ($\\|e_i - e_j\\|^2$ takes at most $k$ values)."
-    },
-    {
-      "id": "examples",
-      "title": "Known Examples",
-      "startLine": 237,
-      "endLine": 256,
-      "summary": "Regular $n$-gons are NOT isosceles-free (for $n \\ge 4$); generic point configurations ARE (measure-zero exceptions); integer lattice points have many isosceles triangles.",
-      "mathContext": "Mathematical content: Regular $n$-gons are NOT isosceles-free (for $n \\ge 4$); generic point configurations ARE (measure-zero exceptions); integer lattice points have many isosceles triangles."
-    },
-    {
-      "id": "gap",
-      "title": "The Exponent Gap",
-      "startLine": 257,
-      "endLine": 276,
-      "summary": "Formalizes the current bounds $2^{c_1(\\log n)^{1/9}} \\le f(n) \\le 2^{c_2\\sqrt{\\log n}}$ and proves $1/9 < 1/2$ by $\\texttt{norm\\_num}$. Neither bound is believed tight.",
-      "mathContext": "Formalizes the current bounds $$$2^{{c_1(\\$\\log n$)^{1/9}$}$} \\le f(n) \\le $$2^{{c_2\\sqrt{\\$\\log n$}$}$}$ and proves $1/9 < 1/2$ by $\\texttt{norm\\_num}$. Neither bound is believed tight."
-    },
-    {
-      "id": "resolution",
-      "title": "Partial Answer",
-      "startLine": 277,
-      "endLine": 295,
-      "summary": "Axiomatizes $f(n) \\to \\infty$ (following from $(\\log n)^c \\to \\infty$). Defines the refined question: is $f(n) = 2^{(\\log n)^\\theta}$ for some $\\theta \\in (1/9, 1/2)$?",
-      "mathContext": "Axiomatizes $f(n) \\to \\infty$ (following from $(\\$\\log n$)^c \\to \\infty$). Defines the refined question: is $f(n) = $$2^{{(\\$\\log n$)^\\theta}$}$$ for some $\\theta \\in (1/9, 1/2)$?"
-    },
-    {
-      "id": "main-result",
-      "title": "Summary and Main Theorem",
-      "startLine": 296,
-      "endLine": 325,
-      "summary": "The main theorem $\\texttt{erdos\\_657} : \\texttt{ErdosQuestion657}$ answers YES via $\\texttt{f\\_tends\\_to\\_infinity}$. The exact growth rate of $f(n)$ remains open.",
-      "mathContext": "Verified: The main theorem $\\texttt{erdos\\_657} : \\texttt{ErdosQuestion657}$ answers YES via $\\texttt{f\\_tends\\_to\\_infinity}$. The exact growth rate of $f(n)$ remains open."
     }
   ],
   "conclusion": {

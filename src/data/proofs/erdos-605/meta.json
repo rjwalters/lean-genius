@@ -160,25 +160,9 @@
       "id": "constructions",
       "title": "Geometric Constructions",
       "startLine": 241,
-      "endLine": 255,
+      "endLine": 250,
       "summary": "Great circle and cube vertex constructions",
       "mathContext": "Great circle: $n$ equally spaced points on a great circle give $u_D \\\\geq n-1$. Cube vertices: $8$ points with $3$ distinct distances."
-    },
-    {
-      "id": "asymptotics",
-      "title": "Asymptotic Notation",
-      "startLine": 256,
-      "endLine": 281,
-      "summary": "Formal definitions of Ω, O, and asymptotic equivalence",
-      "mathContext": "$\\\\Omega(n\\\\sqrt{\\\\log n}) \\\\leq u_D(n) \\\\leq O(n^{4/3})$. The gap between $\\\\sqrt{\\\\log n}$ and $n^{1/3}$ growth factors remains open."
-    },
-    {
-      "id": "open-questions",
-      "title": "Open Questions",
-      "startLine": 282,
-      "endLine": 298,
-      "summary": "Remaining open problems and the gap between bounds",
-      "mathContext": "What is the true growth rate? Is $u_D(n) = \\\\Theta(n\\\\sqrt{\\\\log n})$ or closer to $n^{4/3}$? Can algebraic geometry improve upper bounds on $S^2$?"
     }
   ],
   "conclusion": {

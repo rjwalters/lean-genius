@@ -138,32 +138,8 @@
       "title": "The Sidon Analogue",
       "summary": "IsProportionatelySidon, SidonAnalogue, Nešetřil-Rödl-Sales theorem, NRS construction",
       "startLine": 186,
-      "endLine": 218,
+      "endLine": 215,
       "mathContext": "NRS (2024): $\\exists$ proportionately Sidon set that is NOT a finite union of Sidon sets. Strong evidence #774 also has answer NO."
-    },
-    {
-      "id": "connections",
-      "title": "Connections and Implications",
-      "summary": "Implications between Sidon and dissociated notions",
-      "startLine": 219,
-      "endLine": 231,
-      "mathContext": "Chain: Sidon (additive) $\\Rightarrow$ dissociated $\\Rightarrow$ prop. dissociated $\\Leftrightarrow$ Sidon (harmonic). Question: does the second arrow reverse under finite unions?"
-    },
-    {
-      "id": "bounds",
-      "title": "Bounds on Dissociated Subsets",
-      "summary": "maxDissociatedSize, Θ(log n) bound",
-      "startLine": 232,
-      "endLine": 246,
-      "mathContext": "Max dissociated subset of $\\{1,\\ldots,n\\}$ has size $\\Theta(\\log n)$: powers of 2 give $\\lfloor \\log_2 n \\rfloor + 1$ elements."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_774_summary theorem combining finite_union_is_proportionately and NRS",
-      "startLine": 247,
-      "endLine": 260,
-      "mathContext": "Main: finite union of dissociated $\\Rightarrow$ proportionately dissociated (proved), converse OPEN (conjectured false by Alon-Erdős). NRS resolving Sidon analogue negatively is strongest evidence."
     }
   ],
   "conclusion": {

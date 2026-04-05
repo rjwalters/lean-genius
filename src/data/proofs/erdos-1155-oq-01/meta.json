@@ -175,16 +175,8 @@
       "title": "Hierarchy of Bounds",
       "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant. `hierarchy_conjecture_implies_bfl` combines the two one-sided implications. `hierarchy_bfl_implies_grable` shows $n^{3/2+\\varepsilon} \\leq n^{7/4+\\varepsilon}$ via the substitution $\\varepsilon' = 1/4 + \\varepsilon$.",
       "startLine": 404,
-      "endLine": 433,
+      "endLine": 411,
       "mathContext": "Strict hierarchy: $\\Theta(n^{3/2}) \\Longrightarrow n^{3/2 \\pm o(1)} \\Longrightarrow n^{7/4+o(1)}$. Each step relaxes the multiplicative constant control."
-    },
-    {
-      "id": "tightness",
-      "title": "Tightness and Ratio Characterization",
-      "summary": "Two characterizations: `conjecture_tightness` shows $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually, measuring how close the conjecture's constants are to sharp. `conjecture_ratio_bounded` shows $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually, the cleanest compactness formulation. Together they characterize the conjecture as: the ratio sequence $\\{f(n)/n^{3/2}\\}$ has a compact accumulation set in $(0, \\infty)$ — a topological reformulation of the number-theoretic conjecture.",
-      "startLine": 434,
-      "endLine": 489,
-      "mathContext": "Conjecture $\\iff \\{f(n)/n^{3/2}\\}_{n \\geq N}$ is bounded in $(0, \\infty)$: a compactness condition on the ratio sequence."
     }
   ],
   "overview": {

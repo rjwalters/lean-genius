@@ -126,41 +126,9 @@
       "id": "special",
       "title": "Part 4: Special Graph Classes",
       "startLine": 124,
-      "endLine": 145,
+      "endLine": 144,
       "summary": "Mahdian's C₄-free bound O(Δ²/log Δ) and bipartite bound with constant < 5/4",
       "mathContext": "$C_4$-free: $\\chi'_s = O(\\Delta^2/\\log\\Delta)$. Bipartite: strict improvement over $5/4$."
-    },
-    {
-      "id": "clique",
-      "title": "Part 5: Clique Number of L(G)²",
-      "startLine": 146,
-      "endLine": 167,
-      "summary": "cliqueNumber_LineSquare axiom, clique_le_chromatic relationship, Śleszyńska-Nowak (3/2)Δ² and Faron-Postle (4/3)Δ² bounds",
-      "mathContext": "$\\omega(L(G)^2) \\leq \\chi'_s(G)$. Best: $\\omega(L(G)^2) \\leq \\frac{4}{3}\\Delta^2$ (Faron-Postle)."
-    },
-    {
-      "id": "pairs",
-      "title": "Part 6: Strongly Independent Edge Pairs",
-      "startLine": 168,
-      "endLine": 184,
-      "summary": "StronglyIndependentEdges definition and Chung-Gyárfás-Tuza-Trotter 1990 result on edge density threshold",
-      "mathContext": "Edges $e_1, e_2$ are strongly independent if no endpoint of $e_1$ is adjacent to any endpoint of $e_2$."
-    },
-    {
-      "id": "matchings",
-      "title": "Part 7: Induced Matchings",
-      "startLine": 185,
-      "endLine": 200,
-      "summary": "IsInducedMatching definition and strong_chromatic_eq_induced_matchings: χ'_s equals minimum induced matching partition number",
-      "mathContext": "$\\chi'_s(G) = \\min\\{k : E(G) = M_1 \\cup \\cdots \\cup M_k\\}$ where each $M_i$ is an induced matching."
-    },
-    {
-      "id": "summary",
-      "title": "Part 8: Summary Theorem",
-      "startLine": 201,
-      "endLine": 217,
-      "summary": "erdos_149_summary combines hurley_joannis_kang_2022 (1.772Δ²) and conjecture_is_tight ((5/4)Δ² achievable), proved by exact tuple",
-      "mathContext": "Summary: $\\frac{5}{4}\\Delta^2 \\leq \\chi'_s(G) \\leq 1.772\\Delta^2$. The conjecture is that the lower bound is tight."
     }
   ],
   "conclusion": {

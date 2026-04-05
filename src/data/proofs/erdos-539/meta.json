@@ -122,17 +122,9 @@
       "id": "structure",
       "title": "Matrix and Geometric Views",
       "startLine": 161,
-      "endLine": 214,
+      "endLine": 188,
       "summary": "GCD/quotient matrices, Granville-Roesler reformulation, extremal structure",
       "mathContext": "The GCD matrix $G_{ij} = \\gcd(a_i, a_j)$ and quotient matrix $Q_{ij} = a_i/\\gcd(a_i, a_j)$ encode the divisibility structure. Granville-Roesler reformulate via lattice points in dilated simplices."
-    },
-    {
-      "id": "open",
-      "title": "Open Questions and Summary",
-      "startLine": 215,
-      "endLine": 267,
-      "summary": "The main open question about the true exponent $\\alpha$ in $h(n) = \\Theta(n^\\alpha)$ and summary of all results",
-      "mathContext": "The central open question: is $h(n) = \\Theta(n^\\alpha)$ for some $\\alpha \\in [1/2, 2/3]$? If so, what is $\\alpha$?"
     }
   ],
   "conclusion": {

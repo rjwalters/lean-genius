@@ -161,17 +161,9 @@
       "id": "explicit-examples",
       "title": "Explicit Examples",
       "startLine": 175,
-      "endLine": 192,
+      "endLine": 182,
       "summary": "Concrete computations: $\\binom{10}{5} = 252 = 2^2 \\cdot 3^2 \\cdot 7$ (verified by `native_decide`) and $\\binom{12}{6} = 924$. The theorem `c_10_5_not_squarefree` is proved via `norm_num`.",
       "mathContext": "Concrete computations: $\\binom{10}{5} = 252 = $2^{2}$ \\cdot $3^{2}$ \\cdot 7$ (verified by `native_decide`) and $\\binom{12}{6} = 924$. The theorem `c_10_5_not_squarefree` is proved via `norm_num`."
-    },
-    {
-      "id": "main-statement",
-      "title": "Main Problem Statement and Summary",
-      "startLine": 193,
-      "endLine": 233,
-      "summary": "Assembles the complete result: squarefreeness failure for $n \\ge 5$, $f(n) \\to \\infty$, and the two-sided bound $C_1 (\\log n)^{1/4} \\le f(n) \\le C_2 \\log n$. Both theorems are proved by extracting constants from the axioms.",
-      "mathContext": "Assembles the complete result: squarefreeness failure for $n \\ge 5$, $f(n) \\to \\infty$, and the two-sided bound $C_1 (\\log n)^{1/4} \\le f(n) \\le C_2 \\log n$. Both theorems are proved by extracting constants from the axioms."
     }
   ],
   "conclusion": {

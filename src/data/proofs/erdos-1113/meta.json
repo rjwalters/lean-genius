@@ -156,16 +156,8 @@
       "title": "Connection to Fermat Primes",
       "summary": "Defines `FermatNumber` ($F_n = 2^{2^n} + 1$) and `IsFermatPrime`. Axiomatizes known Fermat primes $F_0$-$F_4$, $F_5$'s factorization ($641 \\times 6700417$), and the Erdos-Graham connection: universal covering $\\Rightarrow$ infinitely many Fermat primes.",
       "startLine": 156,
-      "endLine": 185,
+      "endLine": 172,
       "mathContext": "Defines `FermatNumber` ($F_n = 2^{2^n} + 1$) and `IsFermatPrime`. Axiomatizes known Fermat primes $F_0$-$F_4$, $F_5$'s factorization ($641 \\times 6700417$), and the Erdos-Graham connection: universal covering $\\Rightarrow$ infinitely many Fermat primes."
-    },
-    {
-      "id": "summary",
-      "title": "Summary Theorem",
-      "summary": "Proves `erdos_1113_summary` combining: (1) Izotov's candidate is Sierpinski, (2) it is a perfect power, (3) FFK conjecture is compatible. Verified from axioms and `norm_num` results. **Problem Status: OPEN.**",
-      "startLine": 186,
-      "endLine": 207,
-      "mathContext": "Proves `erdos_1113_summary` combining: (1) Izotov's candidate is Sierpinski, (2) it is a perfect power, (3) FFK conjecture is compatible. Verified from axioms and `norm_num` results. **Problem Status: OPEN.**"
     }
   ],
   "conclusion": {

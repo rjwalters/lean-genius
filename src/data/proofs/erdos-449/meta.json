@@ -125,17 +125,9 @@
       "id": "related-results",
       "title": "Ford's Derivation",
       "startLine": 144,
-      "endLine": 159,
+      "endLine": 154,
       "summary": "Axiomatizes `ford_derivation`: the two-step argument from Cauchy-Schwarz + Problem 448 to $r(n) \\geq K \\cdot \\tau(n)$ on positive density.  This is the core argument of the disproof, reducing Problem 449 to Problem 448.",
       "mathContext": "From Problem 448: $\\tau(n)/\\tau^+(n)$ can be arbitrarily large on a positive density set. By Cauchy-Schwarz, $r(n) \\ge \\tau(n)^2/\\tau^+(n) - \\tau(n) \\ge K \\cdot \\tau(n)$ for such $n$."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 160,
-      "endLine": 176,
-      "summary": "The theorem `erdos_449_summary` packages both results: $\\neg$ErdosConjecture449 and the quantitative bound.  Proved by `exact ⟨erdos_449_false, erdos_449_disproof⟩` — the only non-axiom result in the file, with 0 sorries.",
-      "mathContext": "$\\neg\\text{ErdosConjecture449} \\wedge \\forall K > 0,\\, \\exists \\delta > 0: \\{n : r(n) > K \\cdot \\tau(n)\\}$ has lower density $\\ge \\delta$."
     }
   ],
   "conclusion": {

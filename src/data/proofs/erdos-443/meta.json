@@ -128,40 +128,8 @@
       "title": "Arithmetic Progressions Connection",
       "summary": "Defines triangularNumber $m = m(m-1)/2$ and axiomatizes product_partition_interpretation: $k(m-k)$ equals a partial sum of $\\{1, \\ldots, m-1\\}$, connecting products to partitioning consecutive integers.",
       "startLine": 176,
-      "endLine": 187,
+      "endLine": 181,
       "mathContext": "Defines triangularNumber $m = m(m-1)/2$ and axiomatizes product_partition_interpretation: $k(m-k)$ equals a partial sum of $\\{1, \\ldots, m-1\\}$, connecting products to partitioning consecutive integers."
-    },
-    {
-      "id": "growth",
-      "title": "Growth Rate Analysis",
-      "summary": "Axiomatizes $1/\\log\\log m \\to 0$ (exponent_tends_to_zero) confirming subpolynomial growth, and the uniform bound $|A_m \\cap B_n| \\le m^\\varepsilon$ for large $m$ and $n \\le m$ (subpolynomial_growth).",
-      "startLine": 188,
-      "endLine": 201,
-      "mathContext": "Axiomatized: Axiomatizes $1/\\log\\log m \\to 0$ (exponent_tends_to_zero) confirming subpolynomial growth, and the uniform bound $|A_m \\cap B_n| \\le m^\\varepsilon$ for large $m$ and $n \\le m$ (subpolynomial_growth)."
-    },
-    {
-      "id": "technique",
-      "title": "Proof Technique",
-      "summary": "Axiomatizes the key divisibility constraint: $k(m-k) = l(n-l) \\Rightarrow k \\mid ln$ or $(n-l) \\mid (m-k)$. Hegyvári's sieve argument exploits these constraints to bound the Diophantine solution count.",
-      "startLine": 202,
-      "endLine": 210,
-      "mathContext": "Axiomatizes the key divisibility constraint: $k(m-k) = l(n-l) \\Rightarrow k \\mid ln$ or $(n-l) \\mid (m-k)$."
-    },
-    {
-      "id": "related",
-      "title": "Related Problems",
-      "summary": "Defines binomialSet for comparison with common values of $\\binom{n}{2}$. Axiomatizes that product-set intersections have different structure from binomial intersections, illustrating how the generating quadratic form affects behavior.",
-      "startLine": 211,
-      "endLine": 224,
-      "mathContext": "Defines binomialSet for comparison with common values of $\\binom{n}{2}$. Axiomatizes that product-set intersections have different structure from binomial intersections, illustrating how the generating quadratic form affects behavior."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Proves erdos_443_summary: (1) $\\forall s, \\exists m, n: s \\le |A_m \\cap B_n|$ and (2) $\\forall \\varepsilon > 0$, eventually $|A_m \\cap B_n| \\le (mn)^\\varepsilon$. Both components assembled from axioms via intersection_unbounded and subpolynomial_bound. The alias erdos_443 marks the resolution.",
-      "startLine": 225,
-      "endLine": 249,
-      "mathContext": "Proves erdos_443_summary: (1) $\\forall s, \\exists m, n: s \\le |A_m \\cap B_n|$ and (2) $\\forall \\varepsilon > 0$, eventually $|A_m \\cap B_n| \\le (mn)^\\varepsilon$. Both components assembled from axioms via intersection_unbounded and subpolynomial_bound."
     }
   ],
   "conclusion": {

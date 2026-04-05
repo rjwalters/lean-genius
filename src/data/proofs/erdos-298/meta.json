@@ -164,25 +164,9 @@
       "id": "formalization",
       "title": "Lean 3 Formalization",
       "startLine": 225,
-      "endLine": 239,
+      "endLine": 227,
       "summary": "Reference to Bloom-Mehta formalization.",
       "mathContext": "Bloom-Mehta: formal verification of the proof in Lean/Mathlib (partial). One of few Erdos problems with a machine-checked proof."
-    },
-    {
-      "id": "related",
-      "title": "Related Problems",
-      "startLine": 240,
-      "endLine": 257,
-      "summary": "Connection to Erdős #46 and #47.",
-      "mathContext": "Related to Erdos #46 (every $A$ with $\\\\sum 1/a = \\\\infty$ contains $S$ summing to 1) and #47 (coloring version)."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 258,
-      "endLine": 264,
-      "summary": "erdos_298_solved theorem and final summary.",
-      "mathContext": "SOLVED (Bloom 2021). Every $A \\\\subseteq \\\\mathbb{N}$ with $\\\\bar{d}(A) > 0$ contains finite $S$ with $\\\\sum_{n \\\\in S} 1/n = 1$."
     }
   ],
   "conclusion": {

@@ -53,25 +53,9 @@
       "id": "two-dimensional",
       "title": "Two-Dimensional Case",
       "startLine": 318,
-      "endLine": 337,
+      "endLine": 318,
       "summary": "Erdős's bound $f_2(n) < 3n - c\\sqrt{n}$, Harborth's exact formula $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (1974), triangular lattice optimality, and the trivial bound $f_2(n) < 3n$ from kissing number $\\tau(2) = 6$.",
       "mathContext": "$f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (Harborth 1974). Trivial: $f_2(n) \\leq \\tau(2) \\cdot n/2 = 3n$."
-    },
-    {
-      "id": "three-dimensional",
-      "title": "Three-Dimensional Case",
-      "startLine": 338,
-      "endLine": 356,
-      "summary": "Leading coefficient $f_3(n)/n \\to 6$ from $\\tau(3) = 12$, Bezdek–Reid upper bound $f_3(n) < 6n - 0.926 n^{2/3}$ (2013), and Erdős's conjecture $f_3(n) = 6n - \\Theta(n^{2/3})$ — the central open question.",
-      "mathContext": "Conjecture: $f_3(n) = 6n - \\Theta(n^{2/3})$. Known: $f_3(n) < 6n - 0.926n^{2/3}$ (Bezdek-Reid 2013)."
-    },
-    {
-      "id": "general-dimension",
-      "title": "General Dimension Bounds",
-      "startLine": 357,
-      "endLine": 368,
-      "summary": "Lower bound $f_d(n) \\ge (d - o(1))n$ from $\\mathbb{Z}^d$ lattice, upper bound $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky–Levenshtein (1978). Exponential gap in $d$ remains open.",
-      "mathContext": "$dn \\lesssim f_d(n) \\leq \\tau(d) \\cdot n/2 \\leq 2^{0.401d} \\cdot n$. Exponential gap in $d$."
     }
   ],
   "overview": {

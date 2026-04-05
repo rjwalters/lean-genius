@@ -104,30 +104,6 @@
       "startLine": 39,
       "endLine": 45,
       "mathContext": "$5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$. The answer is one of $\\{5, 6, 7\\}$."
-    },
-    {
-      "id": "lower-bounds",
-      "title": "Known Lower Bounds",
-      "summary": "Progressive axioms: chromatic_ge_3 (equilateral triangle K₃), chromatic_ge_4_moser (Moser spindle, 7 vertices), de_grey_2018 (1581 vertices, SAT verification)",
-      "startLine": 46,
-      "endLine": 59,
-      "mathContext": "$\\chi \\geq 3$: equilateral triangle $K_3$ embeds as a unit-distance graph. $\\chi \\geq 4$: Moser spindle (7 vertices, 11 edges). $\\chi \\geq 5$: de Grey's 1581-vertex graph (2018), reduced to 509 vertices by Polymath."
-    },
-    {
-      "id": "upper-bound",
-      "title": "Known Upper Bound",
-      "summary": "chromatic_le_7_isbell axiom: hexagonal tiling with diameter < 1 hexagons in 7-color periodic pattern",
-      "startLine": 60,
-      "endLine": 66,
-      "mathContext": "$\\chi \\leq 7$: tile $\\mathbb{R}^2$ with regular hexagons of diameter $< 1$; 7 colors suffice in a periodic pattern where no two same-colored hexagons are within unit distance."
-    },
-    {
-      "id": "related-results",
-      "title": "Related Results",
-      "summary": "fractional_chromatic_bounds (4 ≤ χ_f ≤ 4.36), higher_dimensions (6 ≤ χ(ℝ³) ≤ 15), erdos_de_bruijn compactness theorem (finite reduction)",
-      "startLine": 67,
-      "endLine": 87,
-      "mathContext": "Fractional: $4 \\leq \\chi_f(\\mathbb{R}^2) \\leq 4.36$. Higher dimensions: $6 \\leq \\chi(\\mathbb{R}^3) \\leq 15$; $\\chi(\\mathbb{R}^d)$ grows exponentially (Frankl-Wilson). Erdős-de Bruijn: $\\chi(\\mathbb{R}^2) = \\sup\\{\\chi(G) : G \\text{ finite unit-distance subgraph}\\}$."
     }
   ],
   "conclusion": {

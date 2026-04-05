@@ -174,16 +174,8 @@
       "title": "Part 10: Lower Bounds and Examples",
       "summary": "Axiomatizes tightness: `star_needs_few_paths` (stars are easy, showing the bound is not always tight) and `bipartite_tight` ($K_{n,n}$ requires $\\ge n/2$ paths, demonstrating the bound is tight up to constants for some graph families).",
       "startLine": 222,
-      "endLine": 240,
+      "endLine": 232,
       "mathContext": "Tightness: $K_{n,n}$ needs $\\geq n/2$ paths. Stars: $K_{1,n-1}$ uses $\\lceil (n-1)/2 \\rceil$ paths."
-    },
-    {
-      "id": "summary",
-      "title": "Part 11: Summary",
-      "summary": "Proves `erdos_583_summary` bundling: (1) the conjecture is equivalent to its unfolded form, (2) Lovasz's $\\lfloor n/2 \\rfloor$ paths+cycles, and (3) Fan's $\\lceil n/2 \\rceil$ covering paths. Proved by `exact \\langle \\text{fun } n \\Rightarrow \\text{Iff.rfl}, \\text{lovasz\\_theorem}, \\text{fan\\_theorem} \\rangle`.",
-      "startLine": 241,
-      "endLine": 260,
-      "mathContext": "Bundle: (1) conjecture $\\equiv$ unfolded, (2) Lovasz paths+cycles, (3) Fan covering paths"
     }
   ],
   "conclusion": {
