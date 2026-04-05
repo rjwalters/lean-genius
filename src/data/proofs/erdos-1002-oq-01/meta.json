@@ -47,28 +47,44 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Imports and Definitions",
-      "summary": "File header, Mathlib import, namespace setup, and four mirrored definitions from the parent formalization",
+      "id": "definitions",
+      "title": "Core Definitions Mirrored from Parent",
+      "summary": "File header, maxHeartbeats option, imports, and four definitions mirrored from Erdos1002Problem.lean: IsDistributionFunction (monotone + correct limits), cauchyDistribution ρ c = (1/π)arctan(ρc)+1/2, deviation x = 1/2-{x}, innerSum α n = Σ_{k=1}^n deviation(α·k).",
       "startLine": 1,
-      "endLine": 36,
-      "mathContext": "Defines $\\text{IsDistributionFunction}$, the Cauchy CDF $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$, deviation $d(x) = \\frac{1}{2} - \\{x\\}$, and inner sum $S(\\alpha, n) = \\sum_{k=1}^n d(\\alpha k)$."
+      "endLine": 35,
+      "mathContext": "The Cauchy distribution with scale parameter ρ > 0 has PDF f(x) = ρ/(π(ρ²+x²)) and CDF g(c) = (1/π)arctan(ρc)+1/2. The inner sum S(α,n) = Σ_{k=1}^n (1/2-{αk}) measures cumulative deviation of fractional parts from uniform distribution. For irrational α with bounded partial quotients, Kesten (1960) showed S(α,n)/log(n) converges in distribution to Cauchy(ρ) for an explicit ρ depending on α."
     },
     {
-      "id": "cauchy-distribution",
-      "title": "Cauchy Distribution is a Valid CDF",
-      "summary": "Proves monotonicity and correct limits at ±∞ for g(c) = (1/π)arctan(ρc) + 1/2",
+      "id": "cauchy-auxiliary",
+      "title": "Cauchy CDF: Monotonicity and Limit Lemmas",
+      "summary": "Four private helper lemmas: cauchy_monotone (monotone via arctan_strictMono + mul_le_mul_of_nonneg_left), tendsto_mul_atTop/atBot (the scaling map c↦ρc sends atTop/atBot to atTop/atBot), cauchy_tendsto_one (arctan(ρc)→π/2 → CDF→1), cauchy_tendsto_zero (arctan(ρc)→-π/2 → CDF→0).",
       "startLine": 37,
-      "endLine": 90,
-      "mathContext": "The Cauchy CDF $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$ is monotone (since arctan is strictly monotone and $\\rho > 0$), tends to 0 as $c \\to -\\infty$ (since $\\arctan \\to -\\pi/2$), and tends to 1 as $c \\to +\\infty$ (since $\\arctan \\to \\pi/2$)."
+      "endLine": 84,
+      "mathContext": "The limit proofs use filter composition: `tendsto_arctan_atTop.comp (tendsto_mul_atTop ρ hρ)` gives arctan(ρc) → π/2 as c → ∞. Then `tendsto_const_nhds.mul h_arc` scales by 1/π, and `.add tendsto_const_nhds` adds 1/2. The `convert ... using 1` + `field_simp` closes the arithmetic: (1/π)·(π/2)+1/2 = 1 and (1/π)·(-π/2)+1/2 = 0."
     },
     {
-      "id": "periodic-sum",
-      "title": "Periodicity of Inner Sum for Rational α",
-      "summary": "Proves S(p/q, n+q) = S(p/q, n) + S(p/q, q) via fractional part periodicity and the cyclic sum lemma",
+      "id": "cauchy-main",
+      "title": "cauchy_is_distribution: Assembling the CDF Proof",
+      "summary": "The main public theorem assembles the three pieces (monotone, limit at -∞, limit at +∞) into a single IsDistributionFunction triple. The proof is a one-line anonymous constructor ⟨cauchy_monotone ρ hρ, cauchy_tendsto_zero ρ hρ, cauchy_tendsto_one ρ hρ⟩.",
+      "startLine": 86,
+      "endLine": 90,
+      "mathContext": "IsDistributionFunction g = Monotone g ∧ Tendsto g atBot (nhds 0) ∧ Tendsto g atTop (nhds 1). This is the standard characterization of a CDF in measure theory. The Cauchy distribution is the unique symmetric stable distribution with stability index α=1: if X₁,...,Xₙ are i.i.d. Cauchy(ρ), then X₁+...+Xₙ ~ Cauchy(nρ), exhibiting Lévy stability under summation."
+    },
+    {
+      "id": "periodicity-auxiliary",
+      "title": "Inner Sum Periodicity: Fractional Part and Cyclic Sum Lemmas",
+      "summary": "Three private helper lemmas: deviation_add_int (deviation(x+n) = deviation(x) for integer n, proved via Int.fract_add_int); deviation_rational_periodic (deviation(p/q·(k+q+1)) = deviation(p/q·(k+1)), proved by writing (k+q+1) = (k+1)+q and applying deviation_add_int with integer p); cyclic_sum_periodic (Σ_{k<q} g(n+k) = Σ_{k<q} g(k) for q-periodic g, proved by induction using sum_range_succ + linarith).",
       "startLine": 92,
-      "endLine": 140,
-      "mathContext": "For rational $\\alpha = p/q$, the deviation function $d(k) = 1/2 - \\{(p/q)k\\}$ satisfies $d(k+q) = d(k)$ since $(p/q)(k+q) = (p/q)k + p$ and $\\{x + n\\} = \\{x\\}$ for integer $n$. The cyclic sum invariance $\\sum_{k=0}^{q-1} d(n+k) = \\sum_{k=0}^{q-1} d(k)$ follows by induction."
+      "endLine": 127,
+      "mathContext": "The key identity: Int.fract(x + n) = Int.fract(x) for n : ℤ, since ⌊x+n⌋ = ⌊x⌋+n. For α = p/q: α·(k+q) = α·k + p (integer!), so {α·(k+q)} = {α·k}, giving deviation_rational_periodic. The cyclic sum lemma uses the algebraic identity Σ_{k=0}^{q-1} g(m+1+k) = Σ_{k=0}^{q-1} g(m+k) when g(m+q)=g(m): Finset.sum_range_succ gives the forward shift, sum_range_succ' the back shift, and linarith closes via the periodicity equation."
+    },
+    {
+      "id": "periodicity-main",
+      "title": "innerSum_periodic_rational: Assembling the Periodicity Proof",
+      "summary": "Main public theorem: for rational α=p/q with q≥1, the inner sum satisfies S(p/q, n+q) = S(p/q, n) + S(p/q, q). Proof: unfold innerSum, apply Finset.sum_range_add (splitting Σ_{k<n+q} = Σ_{k<n} + Σ_{k<q} shifted by n), then cyclic_sum_periodic to show the shifted q-sum equals the unshifted q-sum.",
+      "startLine": 129,
+      "endLine": 138,
+      "mathContext": "`Finset.sum_range_add` gives: Σ_{k<n+q} f(k) = Σ_{k<n} f(k) + Σ_{k<q} f(n+k). The remaining goal is Σ_{k<q} f(n+k) = Σ_{k<q} f(k) where f(k) = deviation(p/q·(k+1)). `cyclic_sum_periodic` closes this using deviation_rational_periodic. Note: gcd(p,q)=1 is not actually used — the proof works for any integers p and naturals q≥1. The coprimality assumption is inherited from the parent axiom but is mathematically redundant here."
     }
   ],
   "conclusion": {

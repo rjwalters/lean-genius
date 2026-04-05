@@ -42,5 +42,15 @@
     "significance": "Enables stating the Erdős-Grünwald-Weiszfeld theorem in full generality. The ℕ∞ type is essential: using ℕ would force truncation of infinite degrees, losing information needed for the theorem's conditions.",
     "relatedConcepts": ["WithTop", "ℕ∞", "locally-finite-graph", "Set.toFinite", "DecidableEq"],
     "prerequisites": ["InfiniteGraph", "WithTop ℕ in Mathlib", "Set.toFinite API"]
+  },
+  {
+    "id": "egw-theorem-stubs",
+    "line": 58,
+    "type": "theorem",
+    "label": "HasInfiniteEulerPath / HasOneWayEulerPath (stubs) — Erdős-Grünwald-Weiszfeld",
+    "mathContext": "The **Erdős-Grünwald-Weiszfeld theorem** (1936): A connected countable graph $G$ has an Eulerian circuit iff every vertex has even degree AND every finite edge cut has even cardinality. For **locally finite** graphs (all degrees finite), condition 2 is automatically satisfied by degree-parity, recovering the classical finite result. For **non-locally-finite** graphs (some vertex $v$ has deg$(v) = \\infty$), condition 2 is a genuine topological constraint: it says that at infinity, edges don't accumulate in a one-sided way. Formally, `HasOneWayEulerPath G` (a one-way infinite path from $v_0$ through all edges) requires: connected + exactly one vertex with odd finite degree + the even-cut condition.",
+    "significance": "These stubs mark the open formalization frontier: to state the EGW theorem precisely in Lean requires defining 'infinite path' as a stream (corecursive sequence) `ℕ → V` visiting each edge exactly once. Mathlib's `Stream'` or `CoList` could support this, but the combinatorial bookkeeping (tracking which edges are 'used') requires a coinductive argument or a transfinite induction on ordinals. The EGW theorem is one of the deepest results in infinite combinatorics that admits a clean statement but requires substantial new Lean infrastructure to prove.",
+    "relatedConcepts": ["Stream'", "coinductive-definition", "Erdos-Grunwald-Weiszfeld", "locally-finite-graph", "edge-cut", "transfinite-induction"],
+    "prerequisites": ["InfiniteGraph", "infiniteDegree", "infinite path semantics in type theory"]
   }
 ]

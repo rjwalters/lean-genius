@@ -38,22 +38,41 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Module header describing the two generalizations: hypergraph Euler tours (NP-complete for r≥3) and infinite graph Euler paths (Erdős-Grünwald-Weiszfeld 1936). Imports Mathlib and the parent Konigsberg.lean."
+      "endLine": 18,
+      "summary": "Module header describing the two generalizations: hypergraph Euler tours (NP-complete for r≥3) and infinite graph Euler paths (Erdős-Grünwald-Weiszfeld 1936). Imports Mathlib and the parent Konigsberg.lean.",
+      "mathContext": "The parent file Konigsberg.lean proves: a connected finite graph has an Eulerian circuit iff every vertex has even degree (and an Eulerian path iff exactly 2 vertices have odd degree). This file asks: does this classical result extend to (1) hypergraphs where each edge connects r≥3 vertices, and (2) countably infinite graphs?"
     },
     {
-      "id": "part-i-hypergraphs",
-      "title": "Part I: Eulerian Paths in Hypergraphs",
-      "startLine": 23,
+      "id": "hypergraph-structures",
+      "title": "Hypergraph Definitions: Structure and Degree",
+      "startLine": 24,
+      "endLine": 33,
+      "summary": "Defines RUniformHypergraph V r (edges are r-element Finsets of vertices, with uniformity condition) and hyperDegree H v (count of edges containing v via Finset.univ.filter). The noncomputable attribute reflects the Set-based edge storage.",
+      "mathContext": "For r=2, RUniformHypergraph reduces to an ordinary undirected simple graph (edges are 2-element sets). The handshaking lemma generalizes: Σ_v hyperDegree(v) = r·|E|. For an Euler tour to exist, a necessary (but not sufficient for r≥3) condition is that (r-1) ∣ hyperDegree(v) for every vertex v."
+    },
+    {
+      "id": "euler-tour-stub",
+      "title": "HasEulerTour Stub and NP-Completeness for r≥3",
+      "startLine": 34,
       "endLine": 41,
-      "summary": "Defines RUniformHypergraph (edges are r-element Finsets), hyperDegree (count of edges containing a vertex), and HasEulerTour (stub = True for r=2 case). Notes NP-completeness for r≥3 in comments."
+      "summary": "HasEulerTour is defined as True (stub) for the r=2 case. The comment notes that for r≥3, Euler tour existence is NP-complete (Lonc-Naroski 2010) — no simple degree condition characterizes the problem.",
+      "mathContext": "For r=2 (ordinary graphs), HasEulerTour ↔ connected ∧ all degrees even (checkable in O(|V|+|E|) time). For r≥3: Lonc and Naroski (2010) show the decision problem is NP-complete via reduction from 3-SAT. The reduction exploits 'transition systems': at each vertex, one must choose how to pair incoming and outgoing edge-uses, and valid pairing structures encode boolean satisfiability."
     },
     {
-      "id": "part-ii-infinite-graphs",
-      "title": "Part II: Eulerian Paths in Infinite Graphs",
+      "id": "infinite-graph-structures",
+      "title": "Infinite Graph Definitions and Path Stubs",
       "startLine": 42,
-      "endLine": 74,
-      "summary": "Defines InfiniteGraph (adjacency relation, symmetric, loopless), infiniteDegree (valued in ℕ∞), HasInfiniteEulerPath (stub), HasOneWayEulerPath (stub). Documents Erdős-Grünwald-Weiszfeld theorem and locally finite case in comments."
+      "endLine": 65,
+      "summary": "Defines InfiniteGraph V (symmetric loopless adjacency relation), infiniteDegree G v (valued in ℕ∞), HasInfiniteEulerPath (stub = True), and HasOneWayEulerPath (stub = True). The EGW theorem comment states the characterization for countable connected graphs.",
+      "mathContext": "Erdős-Grünwald-Weiszfeld (1936): a connected countable graph has an Eulerian circuit iff (1) all vertex degrees are even and (2) every finite edge cut contains an even number of edges. Condition (2) is automatic for locally finite graphs (those where every vertex has finite degree) but is a genuine additional constraint for graphs with infinite-degree vertices."
+    },
+    {
+      "id": "locally-finite-postman",
+      "title": "Locally Finite Case and Chinese Postman Problem",
+      "startLine": 66,
+      "endLine": 73,
+      "summary": "Comment stating the locally finite criterion: connected + at most one odd-degree vertex implies an Euler path. Introduces the Chinese Postman Problem (minimum-weight closed walk through all edges): polynomial-time solvable for finite graphs, may have no solution for infinite graphs.",
+      "mathContext": "Locally finite infinite graphs (all vertex degrees finite) behave like finite graphs for Euler path questions: at most 2 odd-degree vertices iff Eulerian path exists, 0 odd-degree vertices iff Eulerian circuit exists. The Chinese Postman Problem: for finite graphs, solved by minimum-weight perfect matching on odd-degree vertices (Edmonds-Johnson 1973, O(n³)). For infinite graphs with uncountably many edges, no closed walk can cover all edges — the Chinese Postman has no feasible solution."
     }
   ],
   "conclusion": {

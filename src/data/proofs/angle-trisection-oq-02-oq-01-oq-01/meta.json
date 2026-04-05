@@ -64,28 +64,44 @@
   },
   "sections": [
     {
-      "id": "generalization",
-      "title": "The Generalized Theorem",
-      "summary": "References `natDegree_dvd_card_gal` from parent file: for irreducible $p$ over CharZero, $\\text{natDegree}(p) \\mid |\\text{Gal}(p)|$.",
+      "id": "parent-generalization",
+      "title": "Generalized Theorem from Parent File",
+      "summary": "Documents the key result natDegree_dvd_card_gal proved in AngleTrisectionOQ02OQ01.lean: for irreducible p over CharZero, p.natDegree ∣ Nat.card p.Gal. Contrasts with Mathlib's prime_degree_dvd_card which requires p.natDegree.Prime.",
       "startLine": 1,
-      "endLine": 40,
-      "mathContext": "The key insight: `Irreducible.natDegree_pos` replaces `Nat.Prime.ne_zero` to establish $\\deg(p) \\neq 0$."
+      "endLine": 43,
+      "mathContext": "The crucial substitution: replace `Nat.Prime.ne_zero` (used to get deg(p) ≠ 0 from the prime hypothesis) with `Irreducible.natDegree_pos.ne'` (which gives deg(p) > 0 directly from irreducibility). All other proof steps are identical to Mathlib's existing proof."
     },
     {
-      "id": "corollary",
-      "title": "Existing Theorem as Corollary",
-      "summary": "Proves `prime_degree_dvd_card_from_general`: the Mathlib theorem follows by ignoring the unused `Prime` hypothesis.",
-      "startLine": 41,
-      "endLine": 50,
-      "mathContext": "Verified: one-line proof showing `prime_degree_dvd_card` is a special case."
+      "id": "corollary-proof",
+      "title": "Mathlib Theorem as Trivial Corollary",
+      "summary": "Proves prime_degree_dvd_card_from_general: the existing Mathlib theorem prime_degree_dvd_card follows in two steps — rw [Fintype.card_eq_nat_card] bridges Fintype.card to Nat.card, then exact applies the generalized result, completely ignoring the p_deg : p.natDegree.Prime hypothesis.",
+      "startLine": 45,
+      "endLine": 55,
+      "mathContext": "The proof demonstrates the unused-hypothesis pattern: `p_deg : p.natDegree.Prime` appears in the signature but is never referenced in the body. `Fintype.card_eq_nat_card` (Mathlib.Data.Fintype.Card) gives Fintype.card G = Nat.card G for any Fintype G, bridging the two cardinality APIs."
     },
     {
-      "id": "contribution-plan",
-      "title": "Mathlib Contribution Plan",
-      "summary": "Detailed plan for contributing to Mathlib: exact code changes, deprecation strategy, API differences, PR checklist.",
-      "startLine": 51,
-      "endLine": 123,
-      "mathContext": "Documents the precise changes needed in `Mathlib/FieldTheory/PolynomialGaloisGroup.lean`, the deprecation of `prime_degree_dvd_card`, and key API differences between `Nat.card` and `Fintype.card`."
+      "id": "contribution-lean-code",
+      "title": "Contribution-Ready Lean Code for Mathlib",
+      "summary": "Provides the exact Lean code to add to Mathlib/FieldTheory/PolynomialGaloisGroup.lean: the generalized natDegree_dvd_card theorem. Proof chain: Gal.card_of_separable → pick root α → tower law via finrank_mul_finrank → minpoly degree equals p degree via dvd_symm between two irreducibles.",
+      "startLine": 57,
+      "endLine": 90,
+      "mathContext": "The tower law: [E:F] = [E:F(α)]·[F(α):F] gives |Gal(p)| = [E:F] = [E:F(α)]·deg(minpoly(F,α)). Since minpoly(F,α) ∣ p (by minimality) and p ∣ minpoly(F,α) (by Irreducible.dvd_symm applied to two irreducibles that mutually divide), they have equal natDegree. Hence deg(p) ∣ |Gal(p)|."
+    },
+    {
+      "id": "deprecation-checklist",
+      "title": "Deprecation Strategy and PR Checklist",
+      "summary": "Shows the @[deprecated natDegree_dvd_card] annotation to add to prime_degree_dvd_card, making it a one-line corollary. PR checklist: theorem proved (✓), Mathlib-only imports (✓), strictly generalizes (✓), existing result is corollary (✓); outstanding: compile against Mathlib master, documentation, downstream usage audit.",
+      "startLine": 92,
+      "endLine": 111,
+      "mathContext": "Mathlib deprecation strategy: keep prime_degree_dvd_card as a `@[deprecated]` wrapper to avoid breaking downstream callers. The deprecation `(since := \"YYYY-MM-DD\")` triggers a lint warning, guiding users to the more general natDegree_dvd_card. Zero breakage: any proof using prime_degree_dvd_card continues to compile (just with a warning)."
+    },
+    {
+      "id": "api-differences",
+      "title": "Gallery vs Mathlib API Differences",
+      "summary": "Three key API differences between the gallery prototype and contribution-ready code: (1) Nat.card vs Fintype.card for Galois group cardinality; (2) Module.finrank vs FiniteDimensional.finrank (same in modern Mathlib); (3) rootOfSplits argument order variation across Mathlib versions.",
+      "startLine": 113,
+      "endLine": 121,
+      "mathContext": "Nat.card is defined for any Type* (no Fintype instance required), while Fintype.card requires a Fintype instance. For p.Gal, Mathlib provides Fintype p.Gal (since the Galois group of a polynomial is finite), so both are available and equal. The gallery proof uses Nat.card for API uniformity; the contribution-ready version switches to Fintype.card to match existing Mathlib conventions in PolynomialGaloisGroup.lean."
     }
   ],
   "crossReferences": [
