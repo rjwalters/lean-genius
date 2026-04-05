@@ -252,15 +252,18 @@ theorem euler_transform_eq :
                 (one_sub_sq_pow_le t ht.1.le ht.2 n))
         _ = ENNReal.ofReal ((1/2:ℝ)^(n+1)) := by
             rw [MeasureTheory.lintegral_const,
-                MeasureTheory.Measure.restrict_apply_univ, volume_Ioc]
-            simp
+                MeasureTheory.Measure.restrict_apply_univ, Real.volume_Ioc]
+            simp [show (1 : ℝ) - 0 = 1 from by norm_num]
     calc ∑' n, ∫⁻ t in Set.Ioc (0:ℝ) 1, ‖f n t‖ₑ
         ≤ ∑' n, ENNReal.ofReal ((1/2:ℝ)^(n+1)) := ENNReal.tsum_le_tsum hbound
-      _ < ⊤ :=
-          lt_top_iff_ne_top.mpr (Summable.tsum_ofReal_ne_top
-            (((summable_geometric_of_lt_one (by norm_num : (0:ℝ) ≤ 1/2)
+      _ < ⊤ := by
+          have hnn : ∀ n, (0:ℝ) ≤ (1/2:ℝ)^(n+1) := fun n => pow_nonneg (by norm_num) _
+          have hsum : Summable (fun n => (1/2:ℝ)^(n+1)) :=
+            ((summable_geometric_of_lt_one (by norm_num : (0:ℝ) ≤ 1/2)
                 (by norm_num : (1/2:ℝ) < 1)).mul_left (1/2:ℝ)).congr
-              (fun n => by rw [pow_succ]; ring)))
+            (fun n => by rw [pow_succ]; ring)
+          rw [← ENNReal.ofReal_tsum_of_nonneg hnn hsum]
+          exact ENNReal.ofReal_lt_top
   -- Swap: ∑' n, ∫ f n = ∫ ∑' n, f n
   rw [show ∑' n, ∫ t in Set.Ioc (0:ℝ) 1, f n t =
       ∫ t in Set.Ioc (0:ℝ) 1, ∑' n, f n t from
