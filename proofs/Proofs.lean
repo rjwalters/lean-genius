@@ -60,6 +60,7 @@ import Proofs.AreaOfCircleOQ03OQ02
 import Proofs.AreaOfCircleOQ03OQ02OQ02
 import Proofs.AreaOfCircleOQ03OQ03
 import Proofs.AreaOfCircleOQ05
+import Proofs.AreaOfCircleOQ05OQ01
 import Proofs.ArithmeticSeries
 import Proofs.ArithmeticSeriesOQ02
 import Proofs.ArithmeticSeriesOQ02OQ01
@@ -350,6 +351,7 @@ import Proofs.DivisibilityBy3OQ03
 import Proofs.DivisibilityBy3OQ04
 import Proofs.DivisibilityBy3OQ04OQ02
 import Proofs.DivisibilityByThreeOQ01
+import Proofs.DivisibilityByThreeOQ01OQ02
 import Proofs.DivisibilityByThreeOQ02
 import Proofs.DivisibilityRules
 import Proofs.DivisibilityRulesOQ01
@@ -2079,6 +2081,7 @@ import Proofs.SzemerediHypergraphCore
 import Proofs.SzemerediRegularity
 import Proofs.SzemerediTheorem
 import Proofs.TaylorSinCosConvergence
+import Proofs.TaylorSinCosConvergenceOQ02
 import Proofs.TaylorSinCosConvergenceOQ03
 import Proofs.TaylorSinCosConvergenceOQ03Aristotle
 import Proofs.TaylorTheorem

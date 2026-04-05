@@ -1,0 +1,150 @@
+{
+  "id": "area-of-circle-oq-05-oq-01",
+  "title": "Polar-Coordinate Proof of the Gaussian Integral",
+  "slug": "area-of-circle-oq-05-oq-01",
+  "description": "Formalizes the classical polar-coordinate proof that (∫ e^{-x²} dx)² = π, making every step explicit: Fubini, polar change of variables, separation of radial and angular integrals, and the final computation (1/2) · (2π) = π.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_integral#Polar_coordinates",
+    "date": "Classical result, formalized 2026",
+    "status": "formalized",
+    "tags": [
+      "analysis",
+      "integration",
+      "polar-coordinates",
+      "gaussian-integral",
+      "open-question",
+      "measure-theory"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircleOQ05OQ01.lean",
+    "badge": "wip",
+    "sorries": 4,
+    "axiomCount": 0,
+    "assumptions": "4 sorries: (1) gaussian_sq_eq_double_integral — Fubini step converting (∫ f)² to ∫∫ f⊗f; (2) double_integral_eq_polar — polar change of variables via integral_comp_polarCoord_symm; (3) angular_integral — ∫_{-π}^{π} 1 dθ = 2π via measure of interval; (4) polar_integral_factorization — Fubini on product set Ioi(0) ×ˢ Ioo(-π,π).",
+    "originalContributions": [
+      "Named theorem for each step of the polar-coordinate proof: Fubini, change of variables, separation, radial, angular",
+      "polar_sum_sq lemma: (r·cos θ)² + (r·sin θ)² = r² (compiled, 0 sorry)",
+      "Imports radial_integral_eq from AreaOfCircleOQ05 (proved via FTC)",
+      "Main theorem gaussian_integral_sq_via_polar: (∫ e^{-x²})² = π (proved modulo sorries)",
+      "gaussian_integral_via_polar: ∫ e^{-x²} = √π (proved modulo sorries)",
+      "Connection to circle area: angular=2π (circumference) × radial=1/2 gives π (area)"
+    ],
+    "dateAdded": "2026-04-05",
+    "lineCount": 183,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Gaussian integral ∫_{-∞}^{∞} e^{-x²} dx = √π is a fundamental result in analysis with applications throughout probability (normal distribution), physics (quantum mechanics, statistical mechanics), and number theory (theta functions). The standard proof via polar coordinates, due to Poisson, converts the square of the integral to a double integral over ℝ², then changes to polar coordinates (r,θ), separates the resulting integral into radial and angular parts, and computes each. This formalization makes every step of that proof explicit as a named theorem in Lean 4.\n\nThe key identity is that (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} dx dy = ∫₀^∞ ∫_{-π}^π r·e^{-r²} dθ dr = (∫₀^∞ r·e^{-r²} dr)·(∫_{-π}^π dθ) = (1/2)·(2π) = π. The π appears because the angular integral equals 2π — the circumference of the unit circle. This explains the deep geometric connection between the Gaussian integral and circle geometry.",
+    "problemStatement": "**Open Question (OQ-01 from OQ-05)**: Can the connection between the Gaussian integral and circle area be made fully explicit by formalizing the polar-coordinate proof?\n\n**Answer**: YES. This file formalizes each step: (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} [Fubini] = ∫_polar r·e^{-r²} [change of variables via integral_comp_polarCoord_symm] = (1/2)·(2π) [separation] = π.",
+    "text": "A 183-line formalization making every step of the classical polar-coordinate proof explicit. The key Lean primitive is `integral_comp_polarCoord_symm` from Mathlib.Analysis.SpecialFunctions.PolarCoord. The Pythagorean lemma `polar_sum_sq` (proving (r·cos θ)² + (r·sin θ)² = r²) and radial integral (imported from AreaOfCircleOQ05) compile with 0 sorries. The main theorem `gaussian_integral_sq_via_polar` and corollary `gaussian_integral_via_polar` are proved modulo 4 intermediate sorries (Fubini steps and polar API details).",
+    "proofStrategy": "**Section I** (Fubini): Rewrite (∫ e^{-x²})² as ∫∫ e^{-(x²+y²)} via product measure. Strategy: integral_mul_right + integral_prod.\n\n**Section II** (Polar Change of Variables): Apply `integral_comp_polarCoord_symm` (which converts ∫_{polarCoord.target} r·f(polarCoord.symm(r,θ)) to ∫ f). After change of variables, (r·cos θ)² + (r·sin θ)² = r² by polar_sum_sq.\n\n**Section III** (Angular Integral = 2π): ∫_{-π}^{π} 1 dθ = volume(Ioo(-π,π)) = 2π via Real.volume_Ioo.\n\n**Section IV** (Radial Integral = 1/2): ∫₀^∞ r·e^{-r²} dr = 1/2, imported from AreaOfCircleOQ05 (proved via FTC with antiderivative -(1/2)·e^{-r²}).\n\n**Section V** (Factorization): Polar integral factors as radial × angular since integrand r·e^{-r²} is independent of θ.\n\n**Section VI** (Main Theorem): Chain: Fubini → polar → factorization → radial(1/2) × angular(2π) → π.",
+    "keyInsights": [
+      "**integral_comp_polarCoord_symm as the Key**: This Mathlib theorem provides the polar change of variables: ∫_{polarCoord.target} r • f(polarCoord.symm p) = ∫ f. The factor r is the Jacobian of the polar coordinate map.",
+      "**Geometric Meaning of π**: The factor π in the Gaussian integral arises as (radial = 1/2) × (angular = 2π). The angular integral 2π is the circumference of the unit circle — the Gaussian integral secretly computes an area element in polar form.",
+      "**polar_sum_sq as Supporting Lemma**: (r·cos θ)² + (r·sin θ)² = r² is the Pythagorean identity for polar coordinates, needed to simplify the exponent after the change of variables.",
+      "**Separation of Variables**: The integrand r·e^{-r²} factors as r·e^{-r²}·1, independent of θ, so the Fubini-Tonelli theorem gives the polar integral as a product of radial and angular integrals.",
+      "**Reuse from AreaOfCircleOQ05**: The radial integral result GaussianIntegralCircle.radial_integral is imported directly, demonstrating effective proof reuse."
+    ],
+    "prerequisites": [
+      "Gaussian integral and its square",
+      "Polar coordinates in ℝ²",
+      "Fubini's theorem for product measures",
+      "Mathlib polarCoord: PartialHomeomorph (ℝ×ℝ) (ℝ×ℝ)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-05",
+      "relationship": "extends",
+      "description": "Imports GaussianIntegralCircle.radial_integral (∫₀^∞ r·e^{-r²} dr = 1/2) proved in the parent formalization via FTC"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "Same polar-coordinate technique used to compute the area of a disk via integration"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Analysis.SpecialFunctions.PolarCoord",
+      "Mathlib.Tactic",
+      "Proofs.AreaOfCircleOQ05"
+    ],
+    "namespace": "AreaOfCircleOQ05OQ01",
+    "lineCount": 183,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ05OQ01.lean",
+    "sorries": 4
+  },
+  "sections": [
+    {
+      "id": "sec-fubini",
+      "title": "Section I: Fubini — Square of Gaussian as Double Integral",
+      "startLine": 35,
+      "endLine": 47,
+      "summary": "States gaussian_sq_eq_double_integral: (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)}. Proof strategy: integral_mul_right + integral_prod (Fubini-Tonelli). Currently sorry.",
+      "mathContext": "$(\\int e^{-x^2} dx)^2 = (\\int e^{-x^2} dx)(\\int e^{-y^2} dy) = \\int\\int e^{-(x^2+y^2)} dx\\, dy$ by Fubini."
+    },
+    {
+      "id": "sec-polar-cov",
+      "title": "Section II: Polar Change of Variables",
+      "startLine": 49,
+      "endLine": 82,
+      "summary": "Proves polar_sum_sq (compiled, no sorry) and states double_integral_eq_polar (sorry). Key: integral_comp_polarCoord_symm converts the 2D integral to polar form.",
+      "mathContext": "$\\int\\int e^{-(x^2+y^2)} = \\int_0^\\infty\\int_{-\\pi}^\\pi r e^{-r^2} d\\theta\\, dr$ via polar change of variables with Jacobian $r$."
+    },
+    {
+      "id": "sec-angular",
+      "title": "Section III: Angular Integral = 2π",
+      "startLine": 84,
+      "endLine": 98,
+      "summary": "States angular_integral: ∫_{-π}^π 1 dθ = 2π. Strategy: volume of interval = 2π via Real.volume_Ioo. Currently sorry.",
+      "mathContext": "$\\int_{-\\pi}^\\pi 1\\, d\\theta = \\text{vol}((-\\pi, \\pi)) = 2\\pi$. This is the circumference factor explaining why $\\pi$ appears."
+    },
+    {
+      "id": "sec-radial",
+      "title": "Section IV: Radial Integral = 1/2",
+      "startLine": 100,
+      "endLine": 108,
+      "summary": "Proves radial_integral_eq: ∫₀^∞ r·e^{-r²} dr = 1/2 by importing GaussianIntegralCircle.radial_integral from AreaOfCircleOQ05. Compiles with 0 sorry.",
+      "mathContext": "$\\int_0^\\infty r e^{-r^2} dr = \\left[-\\frac{1}{2}e^{-r^2}\\right]_0^\\infty = \\frac{1}{2}$ by FTC with antiderivative $-\\frac{1}{2}e^{-r^2}$."
+    },
+    {
+      "id": "sec-factorization",
+      "title": "Section V: Factorization of Polar Integral",
+      "startLine": 110,
+      "endLine": 125,
+      "summary": "States polar_integral_factorization: ∫_{polarCoord.target} r·e^{-r²} = (∫₀^∞ r·e^{-r²})(∫_{-π}^π 1). Strategy: Fubini on Ioi(0) ×ˢ Ioo(-π,π). Currently sorry.",
+      "mathContext": "$\\int_{r>0,\\theta\\in(-\\pi,\\pi)} r e^{-r^2} d\\theta\\, dr = \\left(\\int_0^\\infty r e^{-r^2} dr\\right)\\left(\\int_{-\\pi}^\\pi d\\theta\\right)$ since the integrand is independent of $\\theta$."
+    },
+    {
+      "id": "sec-main",
+      "title": "Section VI: Main Theorem",
+      "startLine": 127,
+      "endLine": 152,
+      "summary": "Proves gaussian_integral_sq_via_polar: (∫ e^{-x²})² = π by chaining the five sections. Also proves gaussian_integral_via_polar: ∫ e^{-x²} = √π. Both compile modulo the 4 sorry dependencies.",
+      "mathContext": "$(\\int e^{-x^2})^2 = \\frac{1}{2} \\cdot 2\\pi = \\pi$, hence $\\int_{-\\infty}^\\infty e^{-x^2} dx = \\sqrt{\\pi}$."
+    },
+    {
+      "id": "sec-connection",
+      "title": "Section VII: Connection to Circle Area",
+      "startLine": 154,
+      "endLine": 178,
+      "summary": "Explains the geometric meaning: angular factor 2π is the circumference, radial factor 1/2 comes from the exponential substitution, product (1/2)·(2π) = π = area of unit circle.",
+      "mathContext": "The Gaussian integral computes $\\iint_{\\mathbb{R}^2} e^{-r^2} r\\, dr\\, d\\theta = (\\int_0^\\infty r e^{-r^2} dr)(\\int_{-\\pi}^\\pi d\\theta) = \\pi$, which is the area of the unit disk."
+    }
+  ],
+  "conclusion": {
+    "summary": "Makes every step of the classical polar-coordinate proof of (∫ e^{-x²})² = π explicit as a named theorem. The Pythagorean polar_sum_sq and radial_integral_eq compile with 0 sorries. The main theorem and corollary are proved modulo 4 sorries for the Fubini and measure-theoretic API steps.",
+    "implications": "The 4 sorries target well-defined Mathlib API calls: Fubini for the product-integral identity, integral_comp_polarCoord_symm for the polar change of variables, Real.volume_Ioo chaining for the angular measure, and Fubini on a product set for the separation step. These are HARD sorries suitable for automated proof search (Aristotle). The proof architecture is complete and sound — only the API glue remains.",
+    "openQuestions": [
+      "Fill the 4 sorries using Aristotle automated proof search — all are HARD (standard API applications, no new mathematics required)",
+      "Generalize the separation lemma to polar integrals of arbitrary f(r)·g(θ) — a reusable Fubini instance on the polar domain"
+    ]
+  }
+}
