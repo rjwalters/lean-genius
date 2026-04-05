@@ -1,0 +1,156 @@
+{
+  "id": "laws-of-large-numbers-oq-04",
+  "title": "Glivenko-Cantelli Theorem (Uniform Law of Large Numbers)",
+  "slug": "laws-of-large-numbers-oq-04",
+  "description": "The Glivenko-Cantelli theorem is the uniform law of large numbers: for i.i.d. real-valued random variables X₁, X₂, ... with CDF F(x) = P(X₁ ≤ x), the empirical CDF Fₙ(x) = (1/n)|{i ≤ n : Xᵢ ≤ x}| converges uniformly to F almost surely. This strengthens the pointwise SLLN to simultaneous convergence over all thresholds x ∈ ℝ.",
+  "meta": {
+    "author": "Glivenko (1933), Cantelli (1933)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Glivenko%E2%80%93Cantelli_theorem",
+    "date": "1933",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ04.lean",
+    "tags": [
+      "probability",
+      "statistics",
+      "law-of-large-numbers",
+      "empirical-process",
+      "uniform-convergence",
+      "measure-theory",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "lineCount": 208,
+    "theoremCount": 11,
+    "defCount": 3,
+    "assumptions": "3 axioms: thresholdIndicator_integrable (bounded measurable function integrability), integral_thresholdIndicator_eq_cdf (E[1_{X≤x}] = F(x)), glivenko_cantelli_uniform (finite bracketing argument for uniform convergence — not in Mathlib 4.26). Pointwise convergence theorem is fully proved via SLLN.",
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.strong_law_ae_real",
+        "description": "Strong Law of Large Numbers for real-valued i.i.d. functions: pairwise-independent identically-distributed integrable functions have sample means converging a.s. to their expectation.",
+        "module": "Mathlib.Probability.StrongLaw"
+      },
+      {
+        "theorem": "ProbabilityTheory.iIndepFun.comp",
+        "description": "Composition of i.i.d. functions with a measurable function remains i.i.d.",
+        "module": "Mathlib.Probability.Independence.Basic"
+      },
+      {
+        "theorem": "ProbabilityTheory.IdentDistrib.comp",
+        "description": "Composition of identically-distributed functions with a measurable function remains identically distributed.",
+        "module": "Mathlib.Probability.IdentDistrib"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Glivenko-Cantelli theorem, proved independently by Valery Glivenko and Francesco Cantelli in 1933, establishes the fundamental statistical fact that the empirical distribution function is a uniformly consistent estimator of the true distribution function. This result is foundational for nonparametric statistics, as it guarantees that the empirical CDF—the most natural nonparametric estimator—converges to the true CDF not just at each individual point, but uniformly over all thresholds simultaneously. The theorem is often called the 'fundamental theorem of statistics'. It was later substantially generalized by Vapnik and Chervonenkis (1971) to classes of sets beyond half-lines, leading to VC theory and statistical learning theory.",
+    "problemStatement": "For i.i.d. real-valued random variables X₁, X₂, ... from distribution F, define the empirical CDF Fₙ(x) = (1/n)|{i ≤ n : Xᵢ ≤ x}|. Then sup_{x∈ℝ} |Fₙ(x) - F(x)| → 0 almost surely as n → ∞.",
+    "text": "The empirical CDF converges uniformly to the true CDF almost surely for any i.i.d. sequence.",
+    "proofStrategy": "The formalization proceeds in two stages. Stage 1 (proved): For each fixed threshold x, the indicators 1_{Xᵢ ≤ x} are i.i.d. Bernoulli(F(x)) random variables. Applying Mathlib's `strong_law_ae_real` gives Fₙ(x) → F(x) a.s. for each x. Stage 2 (axiomatized): For ε > 0, choose finitely many continuity points q₁,...,qₖ of F partitioning ℝ with F-mass < ε per interval. Pointwise convergence holds simultaneously on the finite grid a.s. (finite intersection). For any x between grid points, monotonicity gives |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε, establishing uniform convergence. The bracketing argument is axiomatized as `glivenko_cantelli_uniform` since the finite covering infrastructure is not available in Mathlib 4.26.",
+    "keyInsights": [
+      "The key insight is that uniform convergence follows from pointwise convergence plus monotonicity of both Fₙ and F, via a finite bracketing argument",
+      "Indicator functions 1_{Xᵢ ≤ x} transform the problem into SLLN for Bernoulli random variables, connecting to Mathlib's existing `strong_law_ae_real`",
+      "The `iIndepFun.comp` lemma is crucial: i.i.d. real random variables composed with the threshold indicator remain i.i.d.",
+      "The uniform convergence step requires continuity points of F (every CDF has uncountably many) and is the main gap with Mathlib 4.26",
+      "Glivenko-Cantelli is the simplest case of empirical process theory; the Vapnik-Chervonenkis generalization extends this to arbitrary VC classes"
+    ],
+    "prerequisites": [
+      "Probability theory (i.i.d. random variables, CDFs)",
+      "Measure theory (almost sure convergence, integration)",
+      "Real analysis (uniform convergence, monotone functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Empirical and True CDF Definitions",
+      "startLine": 44,
+      "endLine": 56,
+      "summary": "Defines empiricalCDF as the sample mean of threshold indicators, trueCDF as μ{ω | X₀(ω) ≤ x}.toReal, and thresholdIndicator as the composition of X_i with the Iic indicator function.",
+      "mathContext": "empiricalCDF X n x ω = (1/n) * Σᵢ 1_{Xᵢ(ω) ≤ x}; trueCDF X μ x = (μ{ω | X₀(ω) ≤ x}).toReal"
+    },
+    {
+      "id": "measurability",
+      "title": "Measurability of Indicator Functions",
+      "startLine": 70,
+      "endLine": 75,
+      "summary": "Proves measurability of x ↦ 1_{v ≤ x} as a real-valued Borel function, using measurable_const.indicator measurableSet_Iic.",
+      "mathContext": "The composition structure thresholdIndicator X x i = (1_{· ≤ x}) ∘ X i is key for applying iIndepFun.comp."
+    },
+    {
+      "id": "iid-structure",
+      "title": "I.I.D. Structure of Threshold Indicators",
+      "startLine": 77,
+      "endLine": 96,
+      "summary": "Proves identical distribution via IdentDistrib.comp, and pairwise independence via iIndepFun.comp + iIndepFun.indepFun. These are the two key hypotheses for SLLN.",
+      "mathContext": "If X_i ~ X₀ (IdentDistrib) and X_i are iIndepFun, then 1_{Xᵢ ≤ x} ~ 1_{X₀ ≤ x} and are pairwise independent."
+    },
+    {
+      "id": "pointwise-convergence",
+      "title": "Pointwise Convergence via SLLN",
+      "startLine": 113,
+      "endLine": 136,
+      "summary": "PROVED: For each fixed x, Fₙ(x) → F(x) a.s. Applies strong_law_ae_real to threshold indicators, then uses integral_thresholdIndicator_eq_cdf to identify the limit as trueCDF.",
+      "mathContext": "strong_law_ae_real gives (Σᵢ 1_{Xᵢ ≤ x})/n → E[1_{X₀ ≤ x}] = F(x) a.s. Requires pairwise independence and identical distribution."
+    },
+    {
+      "id": "uniform-convergence",
+      "title": "Uniform Convergence (Glivenko-Cantelli)",
+      "startLine": 138,
+      "endLine": 157,
+      "summary": "AXIOM: sup_x |Fₙ(x) - F(x)| → 0 a.s. The bracketing argument for uniform convergence is axiomatized as glivenko_cantelli_uniform since finite covering infrastructure is absent from Mathlib 4.26.",
+      "mathContext": "The bracketing uses: (1) continuity points of F are dense; (2) finite grid gives simultaneous a.s. convergence; (3) monotonicity of Fₙ and F control off-grid error."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the Glivenko-Cantelli theorem with 3 axioms. The pointwise convergence theorem is fully proved from Mathlib's SLLN via the i.i.d. structure of threshold indicators. The uniform convergence step is axiomatized, as the finite bracketing argument requires continuity-point infrastructure not yet in Mathlib 4.26.",
+    "implications": "**Statistical Significance**: Glivenko-Cantelli guarantees that the empirical CDF—the simplest nonparametric estimator—is uniformly consistent. This underpins the validity of the Kolmogorov-Smirnov test, empirical likelihood methods, and virtually all nonparametric statistics.\n\n**Mathematical Significance**: This is the simplest instance of empirical process theory. The Vapnik-Chervonenkis theorem (1971) generalizes Glivenko-Cantelli from indicator classes indexed by half-lines to arbitrary VC classes, which is the foundation of statistical learning theory and PAC learning.",
+    "openQuestions": [
+      "Can the bracketing argument for glivenko_cantelli_uniform be formalized in Lean 4 using Mathlib's existing topology and measure theory infrastructure?",
+      "Can the Donsker CLT (weak convergence of √n(Fₙ - F) to a Brownian bridge) be formalized, giving quantitative rates for Glivenko-Cantelli?",
+      "What is the minimal Mathlib infrastructure needed for VC-class Glivenko-Cantelli generalizations?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "laws-of-large-numbers is the parent problem; Glivenko-Cantelli is the uniform version of SLLN",
+      "targetId": "laws-of-large-numbers"
+    },
+    {
+      "relationship": "laws-of-large-numbers-oq-01 covers SLLN for heavy-tailed distributions; both rely on strong_law_ae_real",
+      "targetId": "laws-of-large-numbers-oq-01"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Glivenko, V."],
+      "title": "Sulla determinazione empirica delle leggi di probabilita",
+      "venue": "Giornale dell'Istituto Italiano degli Attuari",
+      "volume": 4,
+      "year": "1933",
+      "pages": "92-99",
+      "note": "Original proof of uniform convergence of empirical CDF"
+    },
+    {
+      "authors": ["Cantelli, F. P."],
+      "title": "Sulla determinazione empirica delle leggi di probabilita",
+      "venue": "Giornale dell'Istituto Italiano degli Attuari",
+      "volume": 4,
+      "year": "1933",
+      "pages": "421-424",
+      "note": "Independent proof of the uniform convergence result"
+    },
+    {
+      "authors": ["Vapnik, V. N.", "Chervonenkis, A. Ya."],
+      "title": "On the uniform convergence of relative frequencies of events to their probabilities",
+      "venue": "Theory of Probability and its Applications",
+      "volume": 16,
+      "year": "1971",
+      "pages": "264-280",
+      "note": "Generalization to VC classes; foundation of statistical learning theory"
+    }
+  ],
+  "leanFile": "Proofs/LawsOfLargeNumbersOQ04.lean"
+}
