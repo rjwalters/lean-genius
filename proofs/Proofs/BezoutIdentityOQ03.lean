@@ -273,12 +273,4 @@ The key algebraic insight is that bezout_int and IsCoprime are two faces of the
 same coin: IsCoprime m n ↔ ∃ u v, u*m + v*n = 1 (Bézout with gcd = 1).
 -/
 
-#check crt_exists_via_bezout
-#check crt_unique_via_bezout
-#check crt_via_bezout
-#check crt_iscop
-#check crtInt
-#check crtInt_mod_left
-#check crtInt_mod_right
-
 end BezoutIdentityOQ03
