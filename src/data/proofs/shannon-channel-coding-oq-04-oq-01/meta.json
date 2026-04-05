@@ -31,7 +31,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The binary entropy function h(p) = -p·log(p) - (1-p)·log(1-p) was introduced by Claude Shannon in 1948 as a measure of uncertainty for a Bernoulli random variable with parameter p. Strict concavity is a key analytical property used in proofs of channel capacity bounds, the data processing inequality, and optimality of symmetric binary codes.",
+    "historicalContext": "Claude Shannon introduced the binary entropy function h(p) = −p log p − (1−p) log(1−p) in his landmark 1948 paper 'A Mathematical Theory of Communication' as the entropy of a Bernoulli(p) source — the minimum average bits per symbol in optimal lossless coding. The maximum h(1/2) = log 2 corresponds to a fair coin, the maximum-uncertainty binary source. Strict concavity underpins several core information-theoretic results: it implies the capacity-achieving input distribution for the binary symmetric channel is unique (p = 1/2), since convex combinations of distinct input distributions strictly increase entropy. The data processing inequality and concavity of mutual information I(X;Y) as a function of input distribution also rely on it. Shannon noted concavity informally; rigorous treatments appear in Fano (1952) and Khinchin (1957). This Lean 4 formalization provides a machine-checked proof via the second-derivative criterion.",
     "problemStatement": "Prove that the binary entropy function h(p) = -p·log(p) - (1-p)·log(1-p) is strictly concave on (0,1).",
     "text": "The proof uses Mathlib's `strictConcaveOn_of_deriv2_neg` which reduces strict concavity to showing the second derivative is negative throughout the domain. The first derivative h'(p) = log(1-p) - log(p) is computed by differentiating each summand using the product rule and chain rule with `Real.hasDerivAt_log`. The second derivative h''(p) = -1/(1-p) - 1/p = -(1/(1-p) + 1/p) is negative since both 1/(1-p) and 1/p are positive on (0,1).",
     "proofStrategy": "Apply strictConcaveOn_of_deriv2_neg to reduce to: (1) ContinuousOn h on (0,1), (2) deriv^[2] h x < 0 for all x ∈ (0,1). For (2): use EventuallyEq.deriv_eq to rewrite deriv h as log(1-x)-log(x) locally, then apply HasDerivAt.deriv to get the explicit second derivative value.",
@@ -39,7 +39,8 @@
       "Mathlib's strictConcaveOn_of_deriv2_neg cleanly encapsulates the standard calculus criterion: a C² function with negative second derivative on an open interval is strictly concave.",
       "The EventuallyEq.deriv_eq approach avoids computing deriv^[2] h directly: instead, show deriv h equals a simpler function near x (via HasDerivAt.deriv), then differentiate that simpler function.",
       "h''(p) = -1/(1-p) - 1/p = -(1/(1-p) + 1/p) < 0 follows from positivity of both terms, which linarith handles after rewriting via ring.",
-      "The simpa [id, zero_sub] pattern handles the type mismatch between HasDerivAt.sub returning HasDerivAt ((fun _ => 1) - id) (0-1) p and the desired HasDerivAt (fun x => 1-x) (-1) p."
+      "The simpa [id, zero_sub] pattern handles the type mismatch between HasDerivAt.sub returning HasDerivAt ((fun _ => 1) - id) (0-1) p and the desired HasDerivAt (fun x => 1-x) (-1) p.",
+      "The EventuallyEq + HasDerivAt pattern for second derivatives — show deriv h =ᶠ[𝓝 x] g, then differentiate g — is a general Lean 4 technique for functions defined implicitly via HasDerivAt rather than as explicit lambdas."
     ],
     "prerequisites": [
       "Real.hasDerivAt_log: HasDerivAt Real.log x⁻¹ x (when x ≠ 0)",
