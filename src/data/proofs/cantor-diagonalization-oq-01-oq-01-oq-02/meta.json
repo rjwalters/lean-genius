@@ -96,6 +96,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports Mathlib's Cardinal, Ordinal, Cofinality, and SuccPred modules plus the local ContinuumHypothesis file. The docstring frames the open question: can K\u00f6nig's constraint (cf(2^\u2135\u2080) > \u2135\u2080) be proved directly from Mathlib's cofinality API? Introduces the K\u00f6nig-Easton framework for constraining the continuum.",
+      "mathContext": "K\u00f6nig's constraint: $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$. Combined with Easton's theorem (1970): the permitted values for $2^{\\aleph_0}$ are exactly the regular uncountable cardinals $\\geq \\aleph_1$."
+    },
+    {
       "id": "konig-constraint",
       "title": "K\u00f6nig's Cofinality Constraint",
       "startLine": 48,
