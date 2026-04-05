@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-bsd-rank2",
+    "proofId": "birch-swinnerton-dyer-oq-06",
+    "range": { "startLine": 36, "endLine": 42 },
+    "type": "theorem",
+    "title": "BSD Forces analyticRank = 2",
+    "content": "Under the weak BSD conjecture (algebraicRank = analyticRank), combined with curve389a_rank (algebraicRank = 2), we conclude analyticRank = 2. The proof is a simple rewriting: unfold BSD_Weak, rewrite curve389a_rank, take .symm.",
+    "mathContext": "BSD_Weak E: algebraicRank E = analyticRank E. For 389a: algebraicRank = 2, so BSD gives analyticRank = 2.",
+    "significance": "key",
+    "relatedConcepts": ["BSD conjecture", "analytic rank", "algebraic rank"],
+    "prerequisites": ["BSD_Weak", "curve389a_rank"]
+  },
+  {
+    "id": "ann-l-vanishes",
+    "proofId": "birch-swinnerton-dyer-oq-06",
+    "range": { "startLine": 46, "endLine": 57 },
+    "type": "theorem",
+    "title": "L(389a, 1) = 0 Unconditionally",
+    "content": "By Kolyvagin's theorem (BSD_rank_zero_axiom): if L(E,1) ≠ 0 then algebraicRank = 0. For curve 389a with algebraicRank = 2, this is a contradiction. Therefore L(389a, 1) = 0. Note: BSD is not needed — this is an unconditional result from Kolyvagin alone.",
+    "mathContext": "Kolyvagin (1990): L(E,1) ≠ 0 ⟹ algebraicRank(E) = 0. Since algebraicRank(389a) = 2, we get L(389a,1) = 0.",
+    "significance": "key",
+    "relatedConcepts": ["Kolyvagin theorem", "L-function vanishing", "Euler systems"],
+    "prerequisites": ["BSD_rank_zero_axiom", "curve389a_rank"]
+  },
+  {
+    "id": "ann-height-matrix-def",
+    "proofId": "birch-swinnerton-dyer-oq-06",
+    "range": { "startLine": 72, "endLine": 82 },
+    "type": "definition",
+    "title": "Height Pairing Matrix Positivity",
+    "content": "The 2×2 height pairing matrix H for generators P₁ = (0,0), P₂ = (-1,1) of curve 389a has entries h₁₁ = ĥ(P₁) ≈ 0.7622, h₁₂ = ⟨P₁,P₂⟩ ≈ -0.1323, h₂₂ = ĥ(P₂) ≈ 0.2720. Positive definiteness (det H > 0) is equivalent to ℤ-linear independence of P₁ and P₂ as generators of E(ℚ)/torsion ≅ ℤ².",
+    "mathContext": "R = det(H) = h₁₁·h₂₂ - h₁₂² > 0 captures that P₁, P₂ generate a rank-2 free abelian group.",
+    "significance": "supporting",
+    "relatedConcepts": ["Néron-Tate height pairing", "regulator", "linear independence"],
+    "prerequisites": ["HeightPairingMatrix2", "curve389a_heightMatrix"]
+  },
+  {
+    "id": "ann-cauchy-schwarz",
+    "proofId": "birch-swinnerton-dyer-oq-06",
+    "range": { "startLine": 85, "endLine": 113 },
+    "type": "theorem",
+    "title": "Cauchy-Schwarz Inequality for Regulators",
+    "content": "For any 2×2 height pairing matrix, R = det(H) ≤ h₁₁·h₂₂ with equality iff h₁₂ = 0. For curve 389a, h₁₂ = -1323/10000 ≠ 0, so the inequality is strict: R < ĥ(P₁)·ĥ(P₂). The proof that h₁₂² > 0 uses `have : curve389a_heightMatrix.h12 = -1323/10000 := rfl; rw [this]; norm_num`.",
+    "mathContext": "det(H) = h₁₁h₂₂ - h₁₂² < h₁₁h₂₂ when h₁₂ ≠ 0. For 389a: R ≈ 0.1524 < 0.7622 × 0.2720 ≈ 0.2073.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "regulator", "height pairing"],
+    "prerequisites": ["HeightPairingMatrix2.regulator_le_product", "curve389a_heightMatrix"]
+  },
+  {
+    "id": "ann-bsd-constant",
+    "proofId": "birch-swinnerton-dyer-oq-06",
+    "range": { "startLine": 117, "endLine": 150 },
+    "type": "theorem",
+    "title": "BSD Constant Numerical Bounds",
+    "content": "The BSD constant C = Ω·R·|Ш|·∏cₚ/|tors|² for curve 389a. With Ω = 4959/1000, R = 1524/10000, |Ш| = 1, ∏cₚ = 1, |tors| = 1: C = 4959 × 1524 / 10⁷ = 7557516/10000000 ≈ 0.7558. Verified bounds: 0.75 < C < 0.76 (by norm_num), and tighter: 7557/10000 < C < 7558/10000.",
+    "mathContext": "C = 0.7557516... is the predicted value of L''(389a,1)/2! under BSD.",
+    "significance": "key",
+    "relatedConcepts": ["BSD formula", "regulator", "real period", "Tamagawa numbers"],
+    "prerequisites": ["BSDData.constant", "curve389a_BSD"]
+  },
+  {
+    "id": "ann-bgz-consistency",
+    "proofId": "birch-swinnerton-dyer-oq-06",
+    "range": { "startLine": 185, "endLine": 207 },
+    "type": "theorem",
+    "title": "Buhler-Gross-Zagier Numerical Consistency",
+    "content": "The axiomatized BGZ computation gives 0.7557 < L''(389a,1)/2 < 0.7558. Combined with 7557/10000 < C < 7558/10000, we formally verify |L''(389a,1)/2 - C| < 1/1000. This captures the numerical agreement that Buhler, Gross, and Zagier found in 1985.",
+    "mathContext": "|L''(389a,1)/2 - C| < 10⁻³ is the formal statement of BSD numerical consistency.",
+    "significance": "key",
+    "relatedConcepts": ["L-function derivatives", "BSD formula", "numerical verification"],
+    "prerequisites": ["curve389a_BGZ_computation", "curve389a_BSD_constant_approx"]
+  }
+]

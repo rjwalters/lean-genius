@@ -1,0 +1,77 @@
+{
+  "id": "birch-swinnerton-dyer-oq-06",
+  "title": "BSD Verification for Rank-2 Curve 389a (Buhler-Gross-Zagier)",
+  "slug": "birch-swinnerton-dyer-oq-06",
+  "description": "Formalizes the Buhler-Gross-Zagier (1985) BSD verification for curve 389a: y² + y = x³ + x² - 2x, the smallest-conductor rank-2 elliptic curve (conductor N = 389, prime). Key results: (1) Under BSD, analyticRank(389a) = 2; (2) L(389a, 1) = 0 unconditionally (via Kolyvagin); (3) Height pairing matrix is positive definite (det > 0), encoding linear independence of generators P₁ = (0,0), P₂ = (-1,1); (4) Cauchy-Schwarz: R ≤ ĥ(P₁)·ĥ(P₂) with strict inequality; (5) BSD constant C ≈ 0.7558 with verified bounds 0.75 < C < 0.76; (6) Numerical consistency: |L''(389a,1)/2 - C| < 0.001 (Buhler-Gross-Zagier computation). 27 theorems, 3 axioms, 0 sorries.",
+  "meta": {
+    "author": "Buhler, Gross, Zagier (1985); formalization by Lean Genius",
+    "date": "1985",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BirchSwinnertonDyerOQ06.lean",
+    "tags": [
+      "number-theory",
+      "elliptic-curves",
+      "millennium-prize",
+      "bsd-conjecture",
+      "numerical-verification",
+      "height-pairing",
+      "rank-2"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-05",
+    "axiomCount": 3,
+    "assumptions": "3 axiom declarations: (1) BSD_rank2_Lderiv2: rank-2 BSD formula (L''(E,1)/2 = BSDConstant), encoding the strong BSD conjecture for rank-2 curves; (2) curve389a_second_L_derivative: the second L-derivative of 389a at s=1, whose existence is established by the Buhler-Gross-Zagier computation; (3) curve389a_BGZ_computation: bounds 0.7557 < L''(389a,1)/2 < 0.7558, from the numerical verification of Buhler-Gross-Zagier (1985). The main BSD axioms (analyticRank, L-function, regulator positivity) are inherited from the parent BirchSwinnertonDyer.lean.",
+    "lineCount": 273,
+    "theoremCount": 27,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Curve 389a1 (Cremona label) — the elliptic curve y² + y = x³ + x² - 2x — holds the distinction of being the smallest-conductor elliptic curve with algebraic rank 2 (conductor N = 389, a prime). Established by Cremona's systematic enumeration of elliptic curves by conductor. The Birch and Swinnerton-Dyer conjecture predicts a deep relationship between the arithmetic structure of the curve (Mordell-Weil group, regulator, Shafarevich-Tate group) and the analytic behavior of its L-function L(E, s) at s = 1. For a rank-2 curve, L(E, 1) = L'(E, 1) = 0, and BSD predicts: L''(E, 1)/2 = Ω · R · |Ш| · ∏cₚ / |tors|². Buhler, Gross, and Zagier (Math. Comp. 44, 1985) computed L''(389a, 1) to high precision and confirmed that L''(389a, 1)/2 ≈ 0.7558 matches the predicted value 4.959 × 0.1524 × 1 × 1 / 1 ≈ 0.7558, providing the first explicit numerical verification of BSD for a rank-2 curve.",
+    "problemStatement": "Formalize the BSD verification for curve 389a: prove that under BSD, analyticRank = 2, the height pairing matrix is positive definite, and the BSD constant ≈ 0.7558 is consistent with the Buhler-Gross-Zagier computation of L''(389a, 1)/2.",
+    "text": "The formalization proceeds in seven parts: (I) BSD rank consequences: under the weak BSD conjecture, analyticRank(389a) = 2 follows from algebraicRank(389a) = 2. L(389a, 1) = 0 follows unconditionally from Kolyvagin's theorem (BSD_rank_zero_axiom). (II) Height pairing matrix analysis: the 2×2 matrix H = [[ĥ(P₁), ⟨P₁,P₂⟩], [⟨P₂,P₁⟩, ĥ(P₂)]] with h₁₁ ≈ 0.7622, h₁₂ ≈ -0.1323, h₂₂ ≈ 0.2720 is positive definite (det H > 0), meaning generators P₁, P₂ are ℤ-linearly independent. The Cauchy-Schwarz inequality R = det(H) ≤ ĥ(P₁)·ĥ(P₂) holds strictly (since ⟨P₁,P₂⟩² > 0). (III) Numerical bounds: BSD constant C = 4.959 · 0.1524 / 1 = 0.7557516..., with provable bounds 0.75 < C < 0.76. (IV) BGZ consistency: the axiomatized BGZ computation gives 0.7557 < L''(389a,1)/2 < 0.7558, confirming |L''(389a,1)/2 - C| < 0.001.",
+    "proofStrategy": "Uses the existing BirchSwinnertonDyer.lean infrastructure: curve389a_rank (axiom rank = 2), curve389a_heightMatrix (concrete numerical data), curve389a_BSD (BSD data structure). Key proofs: (1) analyticRank = 2 by rewriting with BSD_Weak and curve389a_rank; (2) L(389a,1) = 0 by contraposition via BSD_rank_zero_axiom; (3) h₁₂² > 0 by unfolding the concrete value -1323/10000 and norm_num; (4) strict Cauchy-Schwarz by linarith from h₁₂² > 0; (5) BSD constant bounds by norm_num after unfolding BSDData.constant.",
+    "keyInsights": [
+      "Curve 389a has the smallest conductor among rank-2 elliptic curves, making it a natural test case for computational BSD verification. The prime conductor N = 389 means there is exactly one bad prime, with Tamagawa number c₃₈₉ = 1 (Kodaira type I₁).",
+      "The fact that generators P₁ = (0,0) and P₂ = (-1,1) satisfy ⟨P₁,P₂⟩ ≈ -0.1323 ≠ 0 means they are not orthogonal under the Néron-Tate height pairing. This is captured by the strict Cauchy-Schwarz inequality R < ĥ(P₁)·ĥ(P₂).",
+      "L(389a, 1) = 0 follows unconditionally from Kolyvagin's theorem: if L(E,1) ≠ 0 then rank = 0, but rank(389a) = 2 ≠ 0. No BSD hypothesis is needed.",
+      "The BSD constant C = 0.7557516 has an exact rational representation: 4959/1000 × 1524/10000 = 7557516/10000000. All numerical bounds in this file are verified by norm_num.",
+      "The Buhler-Gross-Zagier consistency check axiomatizes the hard part (computing L''(E,1) analytically) while formalizing the easy part (comparing it to the BSD formula numerically)."
+    ],
+    "prerequisites": [
+      "Birch and Swinnerton-Dyer conjecture (BirchSwinnertonDyer.lean)",
+      "Kolyvagin's Euler system theorem (BSD_rank_zero_axiom)",
+      "Néron-Tate height pairing and regulator",
+      "Cremona's enumeration of elliptic curves by conductor"
+    ]
+  },
+  "conclusion": {
+    "summary": "Formalizes the Buhler-Gross-Zagier BSD verification for curve 389a: 27 theorems, 3 axioms, 0 sorries. Proves L(389a,1) = 0 unconditionally, BSD constant ≈ 0.7558 with verified bounds, height matrix positive definiteness, and numerical consistency with the BGZ computation.",
+    "implications": "This formalization demonstrates the feasibility of numerical BSD verification within a formal proof assistant. While the strong BSD formula itself remains axiomatized (it is a Millennium Prize Problem), the surrounding infrastructure — height pairings, regulators, numerical bounds — can be verified formally. The file also illustrates how Kolyvagin's rank-0 theorem gives unconditional vanishing results even for higher-rank curves.",
+    "openQuestions": [
+      "Formalize the exact Cremona classification: prove 389a has the smallest conductor among rank-2 curves",
+      "Connect the height pairing matrix values to actual Néron-Tate heights computed from the Weierstrass model"
+    ]
+  },
+  "leanFile": {
+    "namespace": "BirchSwinnertonDyer.BSD389a",
+    "theoremCount": 27,
+    "axiomCount": 3,
+    "defCount": 2,
+    "sorryCount": 0,
+    "lineCount": 273,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerOQ06.lean"
+  },
+  "crossReferences": [
+    {
+      "id": "birch-swinnerton-dyer",
+      "relationship": "parent",
+      "description": "Parent formalization: the full BSD conjecture framework"
+    },
+    {
+      "id": "birch-swinnerton-dyer-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01: Sha finiteness via Kolyvagin for rank ≤ 1"
+    }
+  ]
+}
