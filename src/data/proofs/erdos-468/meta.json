@@ -156,21 +156,29 @@
   ],
   "references": [
     {
-      "authors": ["P. Erdős", "R. L. Graham"],
+      "authors": [
+        "P. Erdős",
+        "R. L. Graham"
+      ],
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
       "venue": "L'Enseignement Mathématique, Monographie 28, Geneva",
       "notes": "Original source of Problem #468 on partial divisor sums; appears in the context of the additive structure of divisor sets"
     },
     {
-      "authors": ["OEIS Foundation"],
+      "authors": [
+        "OEIS Foundation"
+      ],
       "title": "A387502: First appearances of n as a partial sum of divisors",
       "year": "2024",
       "venue": "The On-Line Encyclopedia of Integer Sequences, oeis.org/A387502",
       "notes": "Tabulates the first-appearance function f(N) for small N; related sequences A167485 and A387503 track other aspects of the partial divisor sum structure"
     },
     {
-      "authors": ["G. L. Cohen", "H. J. J. te Riele"],
+      "authors": [
+        "G. L. Cohen",
+        "H. J. J. te Riele"
+      ],
       "title": "Iterating the sum-of-divisors function",
       "year": "1996",
       "venue": "Experimental Mathematics 5(2):91–100",
@@ -190,6 +198,8 @@
     "lineCount": 56,
     "axiomCount": 0,
     "theoremCount": 0,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "path": "Proofs/Erdos468Problem.lean",
+    "sorries": 0
   }
 }
