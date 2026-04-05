@@ -1,10 +1,10 @@
 {
   "id": "erdos-1151",
-  "title": "Erd\u0151s Problem #1151: Limit Points of Lagrange Interpolation at Chebyshev Nodes",
+  "title": "Erdős Problem #1151: Limit Points of Lagrange Interpolation at Chebyshev Nodes",
   "slug": "erdos-1151",
   "description": "For Lagrange interpolation at Chebyshev nodes, prove that for any closed set A in [-1,1], there exists a continuous function f such that A is the set of limit points of the interpolation values.",
   "meta": {
-    "author": "Erd\u0151s (1941), V\u00e9rtesi (1999)",
+    "author": "Erdős (1941), Vértesi (1999)",
     "sourceUrl": "https://erdosproblems.com/1151",
     "date": "1941",
     "status": "axiomatized",
@@ -35,14 +35,14 @@
       }
     ],
     "originalContributions": [
-      "Formalization of Chebyshev nodes as cos((2k+1)\u03c0/(2n))",
+      "Formalization of Chebyshev nodes as cos((2k+1)π/(2n))",
       "Proof that Chebyshev nodes lie in [-1,1]",
       "Lagrange interpolation operator using basis polynomials",
       "Definition of limit point sets for sequences",
       "Formal statement of the full conjecture with special cases derived"
     ],
     "axiomCount": 2,
-    "assumptions": "2 axioms: erdos_1941_divergence (Erd\u0151s 1941 result on divergence at rational cosines), erdos_1151_conjecture (the open problem).",
+    "assumptions": "2 axioms: erdos_1941_divergence (Erdős 1941 result on divergence at rational cosines), erdos_1151_conjecture (the open problem).",
     "lineCount": 184,
     "prerequisites": [
       "Polynomial interpolation (Lagrange basis)",
@@ -52,7 +52,7 @@
   },
   "overview": {
     "historicalContext": "Lagrange interpolation has a troubled history: Runge (1901) famously showed that interpolation at equally-spaced nodes for f(x) = 1/(1+25x²) diverges as n → ∞, despite f being analytic. Chebyshev nodes were introduced precisely to avoid this: by placing nodes at the roots of the Chebyshev polynomials, the interpolation error for smooth functions is dramatically reduced. Chebyshev (1854) showed these nodes minimize the ∞-norm of the Lebesgue function among all choices of n nodes. However, Erdős (1941) proved something deeper and disturbing: even at Chebyshev nodes, Lagrange interpolation can diverge for continuous (not just analytic) functions. Specifically, for x = cos(πp/q) with odd p, q, there exists a continuous f whose interpolation values diverge to ∞. Erdős (1943) then claimed — without proof — that the limit-point behavior is completely flexible: any closed subset of [−1, 1] can arise as the set of limit points of 𝓛ⁿf(x) for some continuous f. This conjecture was listed as open by Vértesi in his 1999 problem compilation [Va99, Problem 2.41]. As of 2026, it remains unresolved.",
-    "problemStatement": "Prove that for any closed A \u2286 [-1,1] and suitable x, there exists continuous f such that A is the set of limit points of \ud835\udcdb\u207ff(x).",
+    "problemStatement": "Prove that for any closed A ⊆ [-1,1] and suitable x, there exists continuous f such that A is the set of limit points of 𝓛ⁿf(x).",
     "text": "We formalize the problem, defining Chebyshev nodes, Lagrange interpolation, and limit point sets.",
     "proofStrategy": "Define the mathematical objects and state the conjecture. Derive special cases from it.",
     "keyInsights": [
@@ -130,12 +130,12 @@
   "references": [
     {
       "key": "Er41",
-      "citation": "P. Erd\u0151s, On divergence properties of the Lagrange interpolation parabolas, Ann. of Math. 42 (1941), 309-315.",
+      "citation": "P. Erdős, On divergence properties of the Lagrange interpolation parabolas, Ann. of Math. 42 (1941), 309-315.",
       "url": ""
     },
     {
       "key": "Va99",
-      "citation": "P. V\u00e9rtesi, Problems on interpolation, Problem 2.41, 1999.",
+      "citation": "P. Vértesi, Problems on interpolation, Problem 2.41, 1999.",
       "url": ""
     }
   ],
@@ -155,6 +155,8 @@
     "lineCount": 184,
     "axiomCount": 2,
     "theoremCount": 3,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "path": "Proofs/Erdos1151Problem.lean",
+    "sorries": 0
   }
 }
