@@ -60,7 +60,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 308,
-    "assumptions": "7 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom: ramachandra_shorey_tijdeman. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #375: Grimm's Conjecture**\n\nThis conjecture was originally posed by C.A. Grimm in 1969 in the American Mathematical Monthly. It connects prime factorization with combinatorial matching theory.\n\n**The Core Question:**\nGiven any interval of k consecutive composite numbers (a 'prime gap'), can we always assign a distinct prime divisor to each composite?\n\n**Historical Progress:**\n- 1969: Grimm poses conjecture, proves k << log n / log log n\n- 1970s: Erdos-Selfridge extend to k <= (1+o(1)) log n\n- 1975: Ramachandra-Shorey-Tijdeman prove k << (log n / log log n)^3\n\n**Significance:**\nThis is listed as problem B32 in Guy's Unsolved Problems in Number Theory. It remains one of the most intriguing open problems connecting prime gaps to matching theory.",
