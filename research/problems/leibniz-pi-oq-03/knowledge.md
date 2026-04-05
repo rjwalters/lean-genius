@@ -13,6 +13,31 @@ This OQ formalizes two acceleration methods:
 
 ---
 
+## Session 2026-04-05 (Session 2) — Eliminate Last Sorry
+
+**Mode**: REVISIT
+**Outcome**: completed (0 sorries)
+
+### What I Did
+
+- Identified root cause of hidden sorry warning: `Summable.tsum_ofReal_ne_top` is not a Mathlib lemma
+- Replaced with `ENNReal.ofReal_tsum_of_nonneg hnn hsum` + `ENNReal.ofReal_lt_top`
+- Built `hf_bound` using `MeasureTheory.lintegral_const`, `Measure.restrict_apply_univ`, `Real.volume_Ioc`
+- Verified 0 sorry warnings via docker build
+- Committed and pushed to PR #9857
+
+### Key Findings
+
+- `Summable.tsum_ofReal_ne_top` does NOT exist in Mathlib v4.26 — it was the source of the hidden sorry
+- Correct approach: `rw [← ENNReal.ofReal_tsum_of_nonneg hnn hsum]; exact ENNReal.ofReal_lt_top`
+- `enorm_of_nonneg` + `ENNReal.ofReal_le_ofReal` + `mul_le_of_le_one_right` handles the per-term bound
+
+### Files Modified
+
+- `proofs/Proofs/LeibnizPiOQ03.lean` (275 lines, 0 sorries)
+
+---
+
 ## Session 2026-04-04 (Session 1) — Near-Complete Proof
 
 **Mode**: FRESH

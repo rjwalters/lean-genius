@@ -1,81 +1,52 @@
 # Knowledge Base: shannon-channel-coding-oq-03
 
-## Problem Summary
+**Problem**: Can Fano's inequality H(X|Y) ≤ h(P_e) + P_e·log(|X|−1) be fully formalized in Lean 4?
 
-**Fano's Inequality**: For a joint distribution P_{XY} on finite alphabets with |X| ≥ 2:
-
-$$H(X|Y) \leq h(P_e) + P_e \cdot \log(|X| - 1)$$
-
-where P_e = 1 - ∑_y ∑_x P(x,y)²/P(Y=y) (gallery formula) and h is binary entropy.
-
-**Target**: Replace the `fano_inequality` axiom in `ShannonChannelCoding.lean`.
+**Status**: PROGRESS — 4 of 7 components proved, 3 intentional sorries remain
+**Phase**: ACT
+**PR**: rjwalters/lean-genius#9857
 
 ---
 
-## Session 2026-04-04 (Session 1)
+## Session 2026-04-05 (Session 1) — Prove Infrastructure
 
 **Mode**: FRESH
-**Outcome**: progress — proof architecture complete, 5 sorries remain
+**Outcome**: progress
 
 ### What I Did
+1. Wrote full proof file `proofs/Proofs/ShannonChannelCodingOQ03.lean` (~380 lines)
+2. Proved 4 core lemmas fully (0 sorries)
+3. Scaffolded main theorem with 3 intentional sorries
+4. Fixed ~12 compilation errors through iterative docker builds
 
-- Created `proofs/Proofs/ShannonChannelCodingOQ03.lean` (self-contained, 255 lines)
-- Proved `sum_sq_le_max`: ∑q(x)² ≤ max q(x) for probability distributions
-- Proved `formula_pe_ge_map_pe`: MAP P_e ≤ gallery formula P_e
-- Established full proof architecture connecting all components to main theorem
-- Built passes (6 sorry warnings)
-- Created gallery data in `src/data/proofs/shannon-channel-coding-oq-03/`
-- Discovered ShannonEntropy.lean has pre-existing build issue (strong_subadditivity)
+### Proved Components
+
+| Component | Statement | Status |
+|-----------|-----------|--------|
+| `gibbs_inequality` | H(q) ≤ −∑ q·log Q for any prob. Q | ✓ proved |
+| `slice_sq_le_max` | ∑_x pXY²/P(Y=y) ≤ max_x pXY(x,y) | ✓ proved |
+| `formula_pe_ge_map_pe` | MAP Pe ≤ 1 − ∑_y ∑_x pXY²/P(Y=y) | ✓ proved |
+| `fano_per_element` | H(q) ≤ h(1−max q) + (1−max q)·log(n−1) | ✓ proved |
+| `fano_map_bound` | H(X|Y) ≤ h(Pe^MAP) + Pe^MAP·log(|X|−1) | sorry |
+| `fano_func_mono` | h(p)+p·log c monotone on [0,c/(1+c)] | sorry |
+| `fano_theorem` | Main Fano inequality | sorry (depends on above) |
 
 ### Key Findings
+- Gibbs inequality via `kl_term_bound`: p·log(p/q) ≥ p−q from log(x) ≤ x−1
+- Bimodal reference Q works: Q(x*)=max q, Q(x)=(1−max q)/(n−1) for x≠x*
+- `if_pos rfl` / `if_neg h` prove facts about let-bound `Q` directly
+- `hn_def.symm : Fintype.card α = n` also proves `Finset.univ.card = n` (definitionally equal)
+- `Finset.le_sup'` needs explicit `f` argument (not `_`) to avoid SemilatticeSup metavar
+- `div_le_iff` and `div_le_div_right` are not found in Mathlib v4.26; use `mul_le_mul_of_nonneg_right` + `mul_inv_cancel₀` instead
+- `rcases eq_or_ne x xstar with rfl` eliminates `xstar` (not `x`); use `by_cases + rw [hxeq]` instead
+- `unfold_let Q` fails for lambda-bound lets; use term-level `if_pos`/`if_neg` directly
+- `simp [Fintype.card_univ, ← hn_def]` triggers stuck typeclass issue; use direct `hn_def.symm`
 
-- **Two error probability definitions**: gallery uses formula P_e = 1 - ∑P²/P(Y), classical MAP = 1 - ∑max P. They differ but MAP ≤ formula (proved).
-- **Core algebraic key**: ∑q² ≤ max(q) follows immediately from q(x) ≤ max(q) and summing.
-- **Bimodal reference** for Gibbs in per-element Fano: Q(x*) = p* = max(q), Q(x) = (1-p*)/(n-1) elsewhere. Yields exactly h(p*) + (1-p*)·log(n-1).
-- **Jensen for h** (concave, proved in OQ04) aggregates per-slice bounds into joint bound.
-- **Monotonicity** of h(p) + p·log(c): derivative = log((1-p)c/p) ≥ 0 on [0, c/(1+c)].
-- **Workaround needed**: ShannonEntropy.lean fails at line 811 (strong_subadditivity linarith). Made OQ03 self-contained, importing only Mathlib + OQ04.
-
-### Files Created/Modified
-
-- `proofs/Proofs/ShannonChannelCodingOQ03.lean` (created, 255 lines)
-- `src/data/proofs/shannon-channel-coding-oq-03/meta.json` (created)
-- `src/data/proofs/shannon-channel-coding-oq-03/annotations.json` (created)
-- `src/data/proofs/shannon-channel-coding-oq-03/index.ts` (created)
-- `src/data/research/problems/shannon-channel-coding-oq-03.json` (updated with progress)
-- `proofs/Proofs/ShannonEntropy.lean` (partial fixes: lines 638, 735; line 811 still broken)
-
-### Remaining Sorries (in order of effort)
-
-1. **`gibbs_inequality`** (sorry): Follows from Real.log_le_sub_one_of_pos. Should be ~15 lines.
-2. **`slice_sq_le_max`** (sorry): Normalize to conditional q_y(x) = P(x,y)/P(Y=y), apply sum_sq_le_max. ~20 lines.
-3. **`fano_per_element`** (sorry): Gibbs + bimodal reference Q + h symmetry. ~30 lines.
-4. **`fano_map_bound`** (sorry): Decompose H(X|Y), apply per-element, Jensen for h. ~40 lines.
-5. **`fano_func_mono`** (sorry): Monotonicity of h(p)+p·log(c). Calculus, ~20 lines.
+### Files Modified
+- `proofs/Proofs/ShannonChannelCodingOQ03.lean` (new, 380 lines)
+- `proofs/Proofs.lean` (added import)
 
 ### Next Steps
-
-1. Attempt gibbs_inequality first — it's the foundation and is a known result
-2. Then slice_sq_le_max — straightforward algebra once gibbs is done
-3. Consider submitting fano_map_bound to Aristotle (Jensen step is formulaic)
-4. Investigate ShannonEntropy.lean line 811 separately (pre-existing, not blocking OQ03)
-
----
-
-## Insights
-
-- Gallery formula P_e and MAP P_e are distinct: formula is computed from ∑P²/P(Y), MAP from ∑max P
-- The ≤ direction (MAP ≤ formula) holds by Cauchy-Schwarz / ∑q² ≤ max(q)
-- h(p) symmetry h(p) = h(1-p) is key in per-element Fano for the mode case
-- Making OQ03 self-contained avoids the ShannonEntropy dependency chain issue
-
-## Dead Ends
-
-- Importing Proofs.ShannonEntropy: fails due to strong_subadditivity build error at line 811
-- Trying to fix ShannonEntropy line 811 during this session: deprioritized as unrelated to OQ03
-
-## Mathlib Gaps
-
-- Gibbs inequality not directly in Mathlib (must derive from log(x) ≤ x-1)
-- No per-element Fano bound in Mathlib
-- ConcaveOn.smul_le_sum exists but needs careful instantiation for Jensen step
+1. **fano_map_bound**: Decompose H(X|Y) = ∑_y P(Y=y)·H(X|Y=y), apply `fano_per_element` to each slice, then apply Jensen for `ConcaveOn ℝ (Set.Icc 0 1) h`
+2. **fano_func_mono**: Differentiate f(p)=h(p)+p·log c; derivative is log(c·(1−p)/p), zero at p=c/(1+c), positive before that
+3. **hpe_bound**: Use `formula_pe_ge_map_pe` to show MAP Pe ≤ arbitrary Pe
