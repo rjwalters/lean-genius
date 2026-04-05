@@ -88,31 +88,31 @@
     {
       "id": "monotonicity",
       "title": "§1: Monotonicity of the Prime Counting Function",
-      "startLine": 45,
-      "endLine": 53,
+      "startLine": 58,
+      "endLine": 80,
       "summary": "primeCount_mono: π(x) ≤ π(y) for x ≤ y, proved directly via Finset.card_le_card.",
       "mathContext": "$\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$. Monotone: $x \\leq y \\Rightarrow \\{p \\leq x\\} \\subseteq \\{p \\leq y\\}$, so $|\\text{filter}(x)| \\leq |\\text{filter}(y)|$."
     },
     {
       "id": "unboundedness",
       "title": "§2: Unboundedness of π",
-      "startLine": 55,
-      "endLine": 84,
+      "startLine": 85,
+      "endLine": 98,
       "summary": "primeCount_unbounded: ∀ n, ∃ x with π(x) ≥ n. Inductive proof using Nat.exists_infinite_primes.",
       "mathContext": "Induction: base $n=0$ trivial. Step: given $\\pi(x) \\geq k$, Nat.exists_infinite_primes gives prime $p \\geq x+1$. Filter for $p$ strictly contains filter for $x$ (since $p$ is in former but $p > x$ means not in latter). Finset.card_lt_card gives $\\pi(p) > \\pi(x) \\geq k$."
     },
     {
       "id": "density-implies-unbounded",
       "title": "§3: Density Conjecture Implies Unbounded Qualifying Primes",
-      "startLine": 89,
-      "endLine": 137,
+      "startLine": 113,
+      "endLine": 147,
       "summary": "density_implies_unbounded: for every N, some qualifying prime exceeds N. Contradiction: if bounded by N, then C is constant, so π is bounded — impossible.",
       "mathContext": "If all qualifying primes $\\leq N$, then $C(x) = C(N) = B$ for $x \\geq N$. density_one_conjecture ($k=1$) gives $X$ with $2C(x) \\geq \\pi(x)$ for $x \\geq X$. For $x \\geq \\max(X,N)$: $\\pi(x) \\leq 2B$. But primeCount_unbounded gives $y$ with $\\pi(y) \\geq 2B+1$. Taking $z = \\max(y, \\max(X,N))$: $\\pi(z) \\leq 2B$ and $\\pi(z) \\geq 2B+1$. Contradiction."
     },
     {
       "id": "density-implies-infinite",
       "title": "§4: Main Theorem — Infinite Qualifying Primes",
-      "startLine": 139,
+      "startLine": 113,
       "endLine": 147,
       "summary": "density_implies_infinite: density_one_conjecture → ErdosProblem1059. The set of qualifying primes is infinite.",
       "mathContext": "Set.infinite_iff_exists_gt: a set is infinite iff it has no upper bound. density_implies_unbounded provides elements exceeding every bound. The set $\\{p \\in \\mathbb{P} : \\mathrm{AFSC}(p)\\}$ is therefore infinite."
