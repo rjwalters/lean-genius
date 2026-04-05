@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-divrulesOQ01-alternating-sum-def",
+    "proofId": "divisibility-rules-oq-01",
+    "range": { "startLine": 22, "endLine": 84 },
+    "type": "definition",
+    "title": "Part I: Alternating Digit Sum Framework",
+    "content": "The file defines alternatingDigitSum as a recursive function on List ℕ: the empty list maps to 0, a singleton [d] maps to ↑d, and a pair-headed list (d₀ :: d₁ :: rest) maps to ↑d₀ - ↑d₁ + alternatingDigitSum rest. The key lemma alternatingDigitSum_cons establishes the recursion a :: rest ↦ ↑a - alternatingDigitSum rest. The main theorem ofDigits_modEq_alternatingDigitSum proves that when b ≡ -1 (mod d), Nat.ofDigits b l ≡ alternatingDigitSum l (mod d) by induction on the digit list.",
+    "mathContext": "When $b \\equiv -1 \\pmod{d}$, the powers $b^k \\equiv (-1)^k \\pmod{d}$ alternate in sign, so $n = \\sum_k d_k b^k \\equiv \\sum_k (-1)^k d_k \\pmod{d}$. For $b=10$, $d=11$: since $10 \\equiv -1 \\pmod{11}$, we get $n \\equiv d_0 - d_1 + d_2 - \\cdots \\pmod{11}$. This is the classical alternating digit sum rule for divisibility by 11.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.ofDigits", "Nat.digits", "Int.ModEq", "alternating series"],
+    "prerequisites": ["Nat.digits definition", "Int.ModEq.mul", "Int.ModEq.add"]
+  },
+  {
+    "id": "ann-divrulesOQ01-eleven",
+    "proofId": "divisibility-rules-oq-01",
+    "range": { "startLine": 86, "endLine": 107 },
+    "type": "insight",
+    "title": "Part II: Divisibility by 11 as an iff Form",
+    "content": "eleven_dvd_iff proves that 11 ∣ (n - altDigitSum 10 n) for all n : ℕ. This is stated as an integer divisibility (11 : ℤ) ∣ (↑n - altDigitSum 10 n), which is both cleaner (avoids subtraction underflow issues with natural numbers) and more general than the one-direction form. Three examples verify 11 ∣ 121, 11 ∣ 1001, and ¬(11 ∣ 123) by native_decide.",
+    "mathContext": "The alternating digit sum of 121 is $1 - 2 + 1 = 0$, confirming $11 \\mid 121$. For 1001: $1 - 0 + 0 - 1 = 0$. For 123: $1 - 2 + 3 = 2 \\neq 0$, confirming $11 \\nmid 123$. The statement $11 \\mid (n - \\mathrm{altDigitSum}_{10}(n))$ is equivalent to $n \\equiv \\mathrm{altDigitSum}_{10}(n) \\pmod{11}$.",
+    "significance": "key",
+    "relatedConcepts": ["alternating digit sum", "modEq_alternating_digits_sum", "Int.ModEq"],
+    "prerequisites": ["ofDigits_modEq_alternatingDigitSum", "Nat.digits_def"]
+  },
+  {
+    "id": "ann-divrulesOQ01-truncation",
+    "proofId": "divisibility-rules-oq-01",
+    "range": { "startLine": 108, "endLine": 164 },
+    "type": "technique",
+    "title": "Part III: Truncation Rules for 7 and 13",
+    "content": "Both seven_dvd_truncation and thirteen_dvd_truncation follow the same algebraic template: write n = 10q + r, construct the identity 10(q ± c·r) = n ± k·r where k is a multiple of the target divisor, then use IsCoprime.dvd_of_dvd_mul_left to cancel the factor of 10. For 7: c=2, k=21=3·7. For 13: c=4, k=39=3·13. The key equation is 10·(q ± c·r) = n ∓ k·r, proved by omega on the push_cast form.",
+    "mathContext": "The 7-truncation rule: $7 \\mid n \\iff 7 \\mid (\\lfloor n/10 \\rfloor - 2(n \\bmod 10))$. Proof: $10(\\lfloor n/10 \\rfloor - 2r) = n - 21r$. If $7 \\mid n$ then $7 \\mid (n - 21r)$ so $7 \\mid 10(\\ldots)$; since $\\gcd(7,10)=1$, we get $7 \\mid (\\lfloor n/10 \\rfloor - 2r)$. The 13-rule: $10(q + 4r) = n + 39r$, using $\\gcd(13,10)=1$.",
+    "significance": "key",
+    "relatedConcepts": ["IsCoprime.dvd_of_dvd_mul_left", "truncation method", "coprimality of 10"],
+    "prerequisites": ["Int.dvd_sub", "dvd_mul_of_dvd_right", "push_cast", "omega"]
+  },
+  {
+    "id": "ann-divrulesOQ01-digit-sum-bases",
+    "proofId": "divisibility-rules-oq-01",
+    "range": { "startLine": 166, "endLine": 245 },
+    "type": "insight",
+    "title": "Part IV: Digit Sum Rules via b ≡ 1 (mod d)",
+    "content": "The private helper dvd_iff_dvd_digits_sum packages Nat.modEq_digits_sum into a clean iff form: when b ≡ 1 (mod d), n is divisible by d iff the sum of its base-b digits is. This immediately gives 14 theorems: three_dvd_iff and nine_dvd_iff (base 10), thirtyseven_dvd_iff and twentyseven_dvd_iff and nineninenine_dvd_iff (base 1000), ninetynine_dvd_iff (base 100), onehundredone_dvd_iff (base 10000), seven_dvd_octal, and base-4, -5, -6, -9, -14 rules for 3, 4, 5, 8, and 13.",
+    "mathContext": "The unifying principle: $b \\equiv 1 \\pmod{d}$ implies $b^k \\equiv 1 \\pmod{d}$ for all $k$, so $n = \\sum_k d_k b^k \\equiv \\sum_k d_k \\pmod{d}$. Choosing $b = 10^j$ for appropriate $j$ turns this into a grouping rule: for 37, $10^3 = 1000 \\equiv 1 \\pmod{37}$ (since $999 = 27 \\cdot 37$), so sum three-digit blocks. Similarly $10^2 \\equiv 1 \\pmod{99}$, $10^4 \\equiv 1 \\pmod{101}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.modEq_digits_sum", "Nat.digits", "digit grouping", "powers of 10 mod d"],
+    "prerequisites": ["Nat.ModEq.dvd_iff", "dvd_refl", "native_decide for modular arithmetic"]
+  },
+  {
+    "id": "ann-divrulesOQ01-last-k-digit",
+    "proofId": "divisibility-rules-oq-01",
+    "range": { "startLine": 247, "endLine": 295 },
+    "type": "insight",
+    "title": "Part V: General Last-k-Digit Framework",
+    "content": "The theorem dvd_iff_dvd_mod proves the key abstraction: if d ∣ m, then d ∣ n ↔ d ∣ (n % m). The proof is elementary: obtain c with m = d·c, then n = (d·c)·(n/(d·c)) + n%(d·c), and d divides the first term, so divisibility of n reduces to divisibility of n%(d·c). This one theorem instantiates to: two_dvd_iff (m=10), five_dvd_iff (m=10), four_dvd_iff (m=100), twentyfive_dvd_iff (m=100), eight_dvd_iff (m=1000), sixteen_dvd_iff (m=10000), thirtytwo_dvd_iff (m=100000).",
+    "mathContext": "If $d \\mid m$, write $m = dc$. Then $n = m \\cdot \\lfloor n/m \\rfloor + (n \\bmod m)$ and $d \\mid m \\cdot \\lfloor n/m \\rfloor$, so $d \\mid n \\iff d \\mid (n \\bmod m)$. For $d=2$, $m=10$: $2 \\mid n \\iff 2 \\mid (n \\bmod 10)$, i.e., the last digit determines divisibility by 2. For $d=4$, $m=100$: the last two digits. This is the most general form, covering all powers of 2 and 5.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean division", "dvd_iff_dvd_mod", "last-digit rules", "Nat.mod"],
+    "prerequisites": ["Nat.div_add_mod", "omega for arithmetic identities"]
+  },
+  {
+    "id": "ann-divrulesOQ01-coprime-factorization",
+    "proofId": "divisibility-rules-oq-01",
+    "range": { "startLine": 297, "endLine": 333 },
+    "type": "technique",
+    "title": "Part VI: Coprime Factorization Rules",
+    "content": "The general coprime_mul_dvd_iff theorem proves d₁·d₂ ∣ n ↔ d₁ ∣ n ∧ d₂ ∣ n when Nat.Coprime d₁ d₂. This is Nat.Coprime.mul_dvd_of_dvd_of_dvd plus the reverse direction via dvd_trans. The instantiations six_dvd_iff (gcd(2,3)=1), twelve_dvd_iff (gcd(4,3)=1), fifteen_dvd_iff (gcd(3,5)=1) give the familiar combined rules. This is particularly useful for composite divisors whose prime factors are already covered by individual rules.",
+    "mathContext": "For coprime $d_1, d_2$: $d_1 d_2 \\mid n \\iff d_1 \\mid n \\text{ and } d_2 \\mid n$. This follows from the Chinese Remainder Theorem or equivalently from Bézout's identity. For $d_1 = 4, d_2 = 3$: $12 \\mid n \\iff 4 \\mid n$ and $3 \\mid n$, combining the last-two-digit rule with the digit sum rule.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.Coprime", "Chinese Remainder Theorem", "Nat.Coprime.mul_dvd_of_dvd_of_dvd"],
+    "prerequisites": ["dvd_trans", "dvd_mul_right", "dvd_mul_left"]
+  },
+  {
+    "id": "ann-divrulesOQ01-casting-nines",
+    "proofId": "divisibility-rules-oq-01",
+    "range": { "startLine": 335, "endLine": 388 },
+    "type": "insight",
+    "title": "Part VII: Casting Out Nines and Error Detection",
+    "content": "casting_out_nines_add and casting_out_nines_mul are one-line proofs via Nat.add_mod and Nat.mul_mod. The error detection theorem casting_nines_error_detect is also one line: if a·b ≡ c (mod 9) fails, then a·b ≠ c, proved by contradiction. Part VIII provides examples showing that 123·456 ≡ 56088 (mod 9) and 12·13 ≠ 155.",
+    "mathContext": "The ring homomorphism $\\mathbb{Z} \\to \\mathbb{Z}/9\\mathbb{Z}$ preserves addition and multiplication, so checking $a + b$ or $a \\times b$ modulo 9 requires only $a \\bmod 9$ and $b \\bmod 9$. The error detection rate is $8/9$: if a computation is wrong, the mod-9 check catches it with probability $8/9$ (the check is fooled only if the error happens to preserve the residue). This method was standard practice for arithmetic verification before calculators.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.add_mod", "Nat.mul_mod", "Nat.ModEq", "error detection", "ring homomorphism"],
+    "prerequisites": ["Nat.ModEq definition", "Nat.ModEq.refl"]
+  }
+]
