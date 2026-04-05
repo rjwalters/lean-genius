@@ -23,6 +23,23 @@
     "lineCount": 112,
     "theoremCount": 7,
     "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.sub_re / Complex.sub_im",
+        "description": "Re(a-b) = Re(a) - Re(b), Im(a-b) = Im(a) - Im(b): linearity of Re/Im under subtraction",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.mul_re / Complex.mul_im",
+        "description": "Re(a*b) = Re(a)*Re(b) - Im(a)*Im(b), Im(a*b) = Re(a)*Im(b) + Im(a)*Re(b)",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Complex.exp_zero",
+        "description": "exp(0) = 1 in ℂ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      }
+    ],
     "originalContributions": [
       "gaussianExponent_re: Re(ψ(t)) = −σ²t²/2 — the Gaussian damping term, proved via Complex.sub_re, Complex.mul_re, Complex.I_re/im, Complex.ofReal_re/im",
       "gaussianExponent_im: Im(ψ(t)) = μt — the drift/oscillation term, proved via Complex.sub_im, Complex.mul_im",
@@ -42,7 +59,8 @@
       "The key Complex arithmetic decomposition: (a·I − b).re = 0 − b.re = −b.re and (a·I − b).im = a·1 − b.im = a (for real a, b)",
       "Even real part implies |φ(t)| = |φ(−t)|: the modulus of the Gaussian characteristic function is symmetric",
       "Odd imaginary part corresponds to conjugate symmetry: φ(−t) = conj(φ(t)) for real-valued distributions",
-      "exp(ψ(0)) = 1 is the normalization condition: all characteristic functions equal 1 at the origin"
+      "exp(ψ(0)) = 1 is the normalization condition: all characteristic functions equal 1 at the origin",
+      "The proof pattern — simp only [Complex.sub_re, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im] then ring — is the idiomatic Lean 4 approach to computing Re/Im of Complex expressions, and generalizes to any polynomial combination of ofReal values and I."
     ],
     "prerequisites": [
       "Complex number arithmetic (Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.I_re)",
@@ -51,6 +69,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Imports Complex.Circle, Log.Basic, Complex.Basic, and Tactic from Mathlib. Imports CentralLimitTheoremOQ01OQ02 for the gaussianExponent definition. Opens Complex and CentralLimitTheoremOQ01OQ02 namespaces. Module docstring documents all 7 theorems and the proof strategy.",
+      "mathContext": "The Gaussian Lévy-Khintchine exponent is defined as $\\psi(\\mu, \\sigma^2, t) = \\text{ofReal}(\\mu t) \\cdot I - \\text{ofReal}(\\sigma^2 t^2/2) \\in \\mathbb{C}$, so that $\\varphi(t) = e^{\\psi(t)}$ is the characteristic function of $N(\\mu, \\sigma^2)$."
+    },
     {
       "id": "basic-properties",
       "title": "Real and Imaginary Parts of ψ",
@@ -94,7 +120,7 @@
       "summary": "exp(ψ(0)) = 1 — every characteristic function is normalized to 1 at the origin",
       "content": "gaussianCharFn_at_zero: rw [gaussianExponent_zero] reduces to exp(0) = 1, then Complex.exp_zero.",
       "startLine": 99,
-      "endLine": 107,
+      "endLine": 112,
       "theorems": [
         "gaussianCharFn_at_zero"
       ]
@@ -105,7 +131,8 @@
     "implications": "These results provide the foundation for proving the CLT via characteristic functions: the even/odd symmetry corresponds to conjugate symmetry of the characteristic function φ(t) = exp(ψ(t)), which is a hallmark of real-valued random variables.",
     "openQuestions": [
       "Prove that exp(ψ(t)) is the characteristic function of N(μ, σ²): ∫ e^{itx} (1/(σ√(2π))) exp(−(x−μ)²/(2σ²)) dx = exp(iμt − σ²t²/2)",
-      "Show that exp(ψ_n(t)) → exp(ψ(t)) pointwise implies X_n →^d N(μ, σ²) — the Lévy continuity theorem applied to the CLT"
+      "Show that exp(ψ_n(t)) → exp(ψ(t)) pointwise implies X_n →^d N(μ, σ²) — the Lévy continuity theorem applied to the CLT",
+      "Prove that |exp(ψ(t))| = exp(Re(ψ(t))) = exp(−σ²t²/2), showing the Gaussian characteristic function decays as a Gaussian in t — connecting Re(ψ) to the modulus decay rate"
     ]
   },
   "crossReferences": [
