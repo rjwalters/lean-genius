@@ -65,8 +65,8 @@
   "leanFile": {
     "lineCount": 147,
     "axiomCount": 0,
-    "sorryCount": 0,
-    "note": "axiomCount=0 reflects declarations in this file only; meta.axiomCount=1 counts the inherited axiom from Proofs.Erdos1059OQ01 (density_one_conjecture)"
+    "note": "axiomCount=0 reflects declarations in this file only; meta.axiomCount=1 counts the inherited axiom from Proofs.Erdos1059OQ01 (density_one_conjecture)",
+    "sorries": 0
   },
   "overview": {
     "historicalContext": "Erdős Problem #1059, posed around 1979–1980, asks whether infinitely many primes $p$ exist such that $p - k!$ is composite for every positive integer $k$ with $k! < p$. The condition is a strong *primorial-gap* requirement: no factorial subtraction from $p$ yields a prime. Erdős was interested in how often primes avoid specific arithmetic structures; this problem sits at the intersection of prime gaps and factorial divisibility.\n\nThe natural density approach (OQ-01) reformulates the question via $d = \\lim_{x\\to\\infty} C(x)/\\pi(x)$, where $C(x)$ counts qualifying primes up to $x$. If $d = 1$, almost all primes qualify — a statement far stronger than mere infinitude. Proving density 1 unconditionally would require the Prime Number Theorem ($\\pi(x) \\sim x/\\log x$) combined with the Brun-Titchmarsh inequality for primes in the progression $\\{p : p - k! \\text{ composite} \\forall k\\}$.\n\nThis file (OQ-04) bridges two formalizations: it proves that the density-1 conjecture of OQ-01 implies the infinitude result proved conditionally in OQ-02 (via Selberg sieve). The two conditional proofs are logically independent — their axioms (density-1 vs. Selberg sieve) neither imply each other without deep analytic number theory. Together they show that Erdős #1059 follows from either of two qualitatively different analytic hypotheses.",
