@@ -8,7 +8,13 @@
     "date": "2026-04-04",
     "status": "verified",
     "proofRepoPath": "Proofs/KummerTheoremOQ03.lean",
-    "tags": ["number-theory", "combinatorics", "kummer-theorem", "p-adic", "binomial-coefficient"],
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "kummer-theorem",
+      "p-adic",
+      "binomial-coefficient"
+    ],
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-04",
@@ -143,21 +149,27 @@
   ],
   "references": [
     {
-      "authors": ["Kummer, E.E."],
+      "authors": [
+        "Kummer, E.E."
+      ],
       "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
       "year": "1852",
       "venue": "Journal für die reine und angewandte Mathematik 44, pp. 93-146",
       "note": "Original proof that v_p(C(n,k)) equals the number of carries in base-p addition"
     },
     {
-      "authors": ["Lucas, E."],
+      "authors": [
+        "Lucas, E."
+      ],
       "title": "Théorie des fonctions numériques simplement périodiques",
       "year": "1878",
       "venue": "American Journal of Mathematics 1, pp. 197-240",
       "note": "C(n,k) ≡ ∏ C(nᵢ,kᵢ) (mod p) — the digit product formula, closely related to the carry-free criterion"
     },
     {
-      "authors": ["Granville, A."],
+      "authors": [
+        "Granville, A."
+      ],
       "title": "Binomial coefficients modulo prime powers",
       "year": "1997",
       "venue": "CMS Conf. Proc. 20, pp. 253-275",
@@ -165,12 +177,19 @@
     }
   ],
   "leanFile": {
-    "imports": ["Proofs.KummerTheorem"],
-    "opens": ["Finset", "Nat"],
+    "imports": [
+      "Proofs.KummerTheorem"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
     "namespace": "KummerTheoremOQ03",
     "lineCount": 116,
     "axiomCount": 0,
     "theoremCount": 5,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "path": "Proofs/KummerTheoremOQ03.lean",
+    "sorries": 0
   }
 }

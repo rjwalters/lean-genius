@@ -173,7 +173,9 @@
     "lineCount": 457,
     "axiomCount": 6,
     "theoremCount": 3,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "path": "Proofs/Hilbert4Geodesics.lean",
+    "sorries": 0
   },
   "references": [
     {
@@ -210,20 +212,6 @@
       "year": "2005",
       "venue": "Mathematische Notizen 278(13), 1582–1600",
       "note": "Modern characterization of projective Finsler metrics via symplectic geometry and the Crofton formula — referenced in the open questions"
-    }
-  ],
-  "mainTheorems": [
-    {
-      "name": "euclidean_triangle",
-      "type": "original",
-      "description": "Euclidean norm satisfies the triangle inequality (verified Minkowski example)",
-      "leanType": "(n : ℕ) → (x y : Fin n → ℝ) → euclideanNorm n (x + y) ≤ euclideanNorm n x + euclideanNorm n y"
-    },
-    {
-      "name": "taxicab_triangle",
-      "type": "original",
-      "description": "Taxicab norm satisfies the triangle inequality (non-Euclidean Minkowski example)",
-      "leanType": "(n : ℕ) → (x y : Fin n → ℝ) → taxicabNorm n (x + y) ≤ taxicabNorm n x + taxicabNorm n y"
     }
   ],
   "mainTheorems": [

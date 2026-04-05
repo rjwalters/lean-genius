@@ -356,7 +356,9 @@
         "description": "Under RH, the error |π(x) - Li(x)| = O(√x ln x)",
         "leanType": "RiemannHypothesis → |primePi x - logIntegral x| = O(√x · ln x)"
       }
-    ]
+    ],
+    "path": "Proofs/PrimeNumberTheorem.lean",
+    "sorries": 0
   },
   "mainTheorems": [
     {

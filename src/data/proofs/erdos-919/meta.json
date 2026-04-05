@@ -1,10 +1,10 @@
 {
   "id": "erdos-919",
-  "title": "Erd\u0151s Problem #919: Chromatic Numbers on Ordinal Products",
+  "title": "Erdős Problem #919: Chromatic Numbers on Ordinal Products",
   "slug": "erdos-919",
-  "description": "Is there a graph G on vertex set \u03c9\u2082\u00b2 with chromatic number \u2135\u2082 such that every subgraph of smaller order type has chromatic number at most \u2135\u2080?",
+  "description": "Is there a graph G on vertex set ω₂² with chromatic number ℵ₂ such that every subgraph of smaller order type has chromatic number at most ℵ₀?",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/919",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos919Problem.lean",
@@ -48,25 +48,25 @@
       "Formal definitions for graphs on ordinal products",
       "Chromatic number formalization for infinite graphs",
       "Order type conditions for subgraphs",
-      "Erd\u0151s-Hajnal construction on \u03c9\u2081\u00b2",
+      "Erdős-Hajnal construction on ω₁²",
       "Generalization framework for cardinal parameters"
     ],
     "axiomCount": 0,
     "lineCount": 690,
-    "assumptions": "None. All results are fully machine-checked. The Erd\u0151s-Hajnal graphs on \u03c9\u2081\u00b2 and \u03c9\u2082\u00b2 are proved to have chromatic numbers \u2135\u2081 and \u2135\u2082 respectively via double pigeonhole arguments. The open questions (Questions 1 and 2) are stated but not assumed.",
+    "assumptions": "None. All results are fully machine-checked. The Erdős-Hajnal graphs on ω₁² and ω₂² are proved to have chromatic numbers ℵ₁ and ℵ₂ respectively via double pigeonhole arguments. The open questions (Questions 1 and 2) are stated but not assumed.",
     "theoremCount": 42
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erd\u0151s in 1969 [Er69b] and sits at the intersection of graph theory, set theory, and infinite combinatorics. It was inspired by Babai's theorem about chromatic properties of graphs on well-ordered vertex sets.\n\nErd\u0151s and Hajnal made crucial progress by constructing a counterexample at the \u2135\u2081 level. They built a graph on \u03c9\u2081\u00b2 (the ordinal product of two copies of the first uncountable ordinal) with chromatic number \u2135\u2081, but where every strictly smaller subgraph (by order type) has countable chromatic number \u2264 \u2135\u2080. This showed that Babai's theorem does not generalize to higher cardinals.\n\nThe natural question then arises: can we do the same construction at the next level? This is Problem #919: does there exist a graph on \u03c9\u2082\u00b2 with chromatic number \u2135\u2082 where smaller subgraphs have chromatic number at most \u2135\u2080 (not just \u2135\u2081)?",
-    "problemStatement": "Two questions about graphs on ordinal products:\n\n1. Is there a graph $G$ on vertex set $\\omega_2^2$ with $\\chi(G) = \\aleph_2$ such that every subgraph whose vertices have lesser order type has $\\chi \\leq \\aleph_0$?\n\n2. What if we instead ask for $\\chi(G) = \\aleph_1$?\n\n**Known:** Erd\u0151s-Hajnal constructed $G$ on $\\omega_1^2$ with $\\chi(G) = \\aleph_1$ and smaller subgraphs having $\\chi \\leq \\aleph_0$.",
-    "text": "Is there a graph G on vertex set \u03c9\u2082\u00b2 with chromatic number \u2135\u2082 such that every subgraph of smaller order type has chromatic number at most \u2135\u2080?",
-    "proofStrategy": "The formalization defines graphs on ordinal products \u03c9\u2081\u00b2 and \u03c9\u2082\u00b2 and proves both Erd\u0151s-Hajnal constructions have chromatic numbers exactly \u2135\u2081 and \u2135\u2082 respectively. Each proof uses second-coordinate coloring for the upper bound and a double pigeonhole argument for the lower bound:\n1. For each row \u03b1, some color has a large fiber (pigeonhole on row)\n2. Some color is dominant for many rows (pigeonhole on colors)\n3. Two such rows yield a monochromatic adjacent pair via cofinality\n\nThe \u03c9\u2082\u00b2 proof lifts the \u03c9\u2081\u00b2 argument one cardinal level: \u2135\u2081 plays the role of \u2135\u2080 throughout, using that initial segments of \u03c9\u2082 have cardinality \u2264 \u2135\u2081 and that sets of size > \u2135\u2081 are cofinal in \u03c9\u2082.",
+    "historicalContext": "This problem was posed by Erdős in 1969 [Er69b] and sits at the intersection of graph theory, set theory, and infinite combinatorics. It was inspired by Babai's theorem about chromatic properties of graphs on well-ordered vertex sets.\n\nErdős and Hajnal made crucial progress by constructing a counterexample at the ℵ₁ level. They built a graph on ω₁² (the ordinal product of two copies of the first uncountable ordinal) with chromatic number ℵ₁, but where every strictly smaller subgraph (by order type) has countable chromatic number ≤ ℵ₀. This showed that Babai's theorem does not generalize to higher cardinals.\n\nThe natural question then arises: can we do the same construction at the next level? This is Problem #919: does there exist a graph on ω₂² with chromatic number ℵ₂ where smaller subgraphs have chromatic number at most ℵ₀ (not just ℵ₁)?",
+    "problemStatement": "Two questions about graphs on ordinal products:\n\n1. Is there a graph $G$ on vertex set $\\omega_2^2$ with $\\chi(G) = \\aleph_2$ such that every subgraph whose vertices have lesser order type has $\\chi \\leq \\aleph_0$?\n\n2. What if we instead ask for $\\chi(G) = \\aleph_1$?\n\n**Known:** Erdős-Hajnal constructed $G$ on $\\omega_1^2$ with $\\chi(G) = \\aleph_1$ and smaller subgraphs having $\\chi \\leq \\aleph_0$.",
+    "text": "Is there a graph G on vertex set ω₂² with chromatic number ℵ₂ such that every subgraph of smaller order type has chromatic number at most ℵ₀?",
+    "proofStrategy": "The formalization defines graphs on ordinal products ω₁² and ω₂² and proves both Erdős-Hajnal constructions have chromatic numbers exactly ℵ₁ and ℵ₂ respectively. Each proof uses second-coordinate coloring for the upper bound and a double pigeonhole argument for the lower bound:\n1. For each row α, some color has a large fiber (pigeonhole on row)\n2. Some color is dominant for many rows (pigeonhole on colors)\n3. Two such rows yield a monochromatic adjacent pair via cofinality\n\nThe ω₂² proof lifts the ω₁² argument one cardinal level: ℵ₁ plays the role of ℵ₀ throughout, using that initial segments of ω₂ have cardinality ≤ ℵ₁ and that sets of size > ℵ₁ are cofinal in ω₂.",
     "keyInsights": [
-      "**Ordinal Products**: \u03c9\u2081\u00b2 = \u03c9\u2081 \u00d7 \u03c9\u2081 has rich structure; vertices can be compared by lexicographic order, enabling order-type constraints",
-      "**Babai's Failure**: The Erd\u0151s-Hajnal graph shows that chromatic constraints don't propagate from smaller to larger subgraphs at uncountable cardinals",
-      "**The Gap**: A graph on \u03c9\u2082\u00b2 with \u03c7 = \u2135\u2082 and smaller subgraphs having \u03c7 \u2264 \u2135\u2081 exists, but achieving \u2264 \u2135\u2080 remains open",
-      "**Two Questions**: Both \u03c7 = \u2135\u2082 and \u03c7 = \u2135\u2081 variants on \u03c9\u2082\u00b2 are interesting; they may have different answers",
-      "**General Framework**: The problem generalizes to arbitrary cardinals \u03ba, \u03bb, \u03bc with the question of existence of such graphs"
+      "**Ordinal Products**: ω₁² = ω₁ × ω₁ has rich structure; vertices can be compared by lexicographic order, enabling order-type constraints",
+      "**Babai's Failure**: The Erdős-Hajnal graph shows that chromatic constraints don't propagate from smaller to larger subgraphs at uncountable cardinals",
+      "**The Gap**: A graph on ω₂² with χ = ℵ₂ and smaller subgraphs having χ ≤ ℵ₁ exists, but achieving ≤ ℵ₀ remains open",
+      "**Two Questions**: Both χ = ℵ₂ and χ = ℵ₁ variants on ω₂² are interesting; they may have different answers",
+      "**General Framework**: The problem generalizes to arbitrary cardinals κ, λ, μ with the question of existence of such graphs"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -79,8 +79,8 @@
       "title": "Basic Definitions",
       "startLine": 31,
       "endLine": 54,
-      "summary": "Defines ordinal products \u03c9\u2081\u00b2, \u03c9\u2082\u00b2 and graphs on vertex sets",
-      "mathContext": "Formal definition: Defines ordinal products \u03c9\u2081\u00b2, \u03c9\u2082\u00b2 and graphs on vertex sets",
+      "summary": "Defines ordinal products ω₁², ω₂² and graphs on vertex sets",
+      "mathContext": "Formal definition: Defines ordinal products ω₁², ω₂² and graphs on vertex sets",
       "id": "basic-definitions"
     },
     {
@@ -100,43 +100,43 @@
       "id": "order-type-and-subgraphs"
     },
     {
-      "title": "Erd\u0151s-Hajnal Construction",
+      "title": "Erdős-Hajnal Construction",
       "startLine": 90,
       "endLine": 108,
-      "summary": "The counterexample graph on \u03c9\u2081\u00b2 with \u03c7 = \u2135\u2081",
-      "mathContext": "Mathematical content: The counterexample graph on \u03c9\u2081\u00b2 with \u03c7 = \u2135\u2081",
-      "id": "erd\u0151s-hajnal-construction"
+      "summary": "The counterexample graph on ω₁² with χ = ℵ₁",
+      "mathContext": "Mathematical content: The counterexample graph on ω₁² with χ = ℵ₁",
+      "id": "erdős-hajnal-construction"
     },
     {
       "title": "Main Questions",
       "startLine": 109,
       "endLine": 130,
-      "summary": "Question1 (\u03c7 = \u2135\u2082) and Question2 (\u03c7 = \u2135\u2081) for \u03c9\u2082\u00b2",
-      "mathContext": "Mathematical content: Question1 (\u03c7 = \u2135\u2082) and Question2 (\u03c7 = \u2135\u2081) for \u03c9\u2082\u00b2",
+      "summary": "Question1 (χ = ℵ₂) and Question2 (χ = ℵ₁) for ω₂²",
+      "mathContext": "Mathematical content: Question1 (χ = ℵ₂) and Question2 (χ = ℵ₁) for ω₂²",
       "id": "main-questions"
     },
     {
       "title": "Partial Results",
       "startLine": 131,
       "endLine": 148,
-      "summary": "Construction with \u2135\u2081 bound (not \u2135\u2080)",
-      "mathContext": "Bound: Construction with \u2135\u2081 bound (not \u2135\u2080)",
+      "summary": "Construction with ℵ₁ bound (not ℵ₀)",
+      "mathContext": "Bound: Construction with ℵ₁ bound (not ℵ₀)",
       "id": "partial-results"
     },
     {
       "title": "Generalization",
       "startLine": 149,
       "endLine": 171,
-      "summary": "General question for cardinals \u03ba, \u03bb, \u03bc",
-      "mathContext": "Mathematical content: General question for cardinals \u03ba, \u03bb, \u03bc",
+      "summary": "General question for cardinals κ, λ, μ",
+      "mathContext": "Mathematical content: General question for cardinals κ, λ, μ",
       "id": "generalization"
     },
     {
       "title": "Babai Connection",
       "startLine": 172,
       "endLine": 193,
-      "summary": "Babai's theorem and why it fails at \u03c9\u2081",
-      "mathContext": "Verified: Babai's theorem and why it fails at \u03c9\u2081",
+      "summary": "Babai's theorem and why it fails at ω₁",
+      "mathContext": "Verified: Babai's theorem and why it fails at ω₁",
       "id": "babai-connection"
     },
     {
@@ -149,11 +149,11 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #919 on chromatic numbers of graphs on ordinal products. We define the framework for infinite graphs on \u03c9\u2081\u00b2 and \u03c9\u2082\u00b2, establish the Erd\u0151s-Hajnal construction as a key precedent, and pose both questions about \u03c9\u2082\u00b2.",
+    "summary": "This formalization captures Erdős Problem #919 on chromatic numbers of graphs on ordinal products. We define the framework for infinite graphs on ω₁² and ω₂², establish the Erdős-Hajnal construction as a key precedent, and pose both questions about ω₂².",
     "implications": "The problem illuminates deep connections between graph theory and set theory. A resolution would advance our understanding of how chromatic properties behave under set-theoretic constructions, potentially requiring sophisticated forcing or inner model techniques.",
     "openQuestions": [
-      "Does a graph on \u03c9\u2082\u00b2 with \u03c7 = \u2135\u2082 and smaller subgraphs having \u03c7 \u2264 \u2135\u2080 exist?",
-      "Does a graph on \u03c9\u2082\u00b2 with \u03c7 = \u2135\u2081 and smaller subgraphs having \u03c7 \u2264 \u2135\u2080 exist?",
+      "Does a graph on ω₂² with χ = ℵ₂ and smaller subgraphs having χ ≤ ℵ₀ exist?",
+      "Does a graph on ω₂² with χ = ℵ₁ and smaller subgraphs having χ ≤ ℵ₀ exist?",
       "Is the answer set-theoretically independent?",
       "What is the minimal cardinal gap achievable?",
       "How does the answer depend on large cardinal assumptions?"
@@ -177,23 +177,25 @@
     "lineCount": 690,
     "axiomCount": 0,
     "theoremCount": 42,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "path": "Proofs/Erdos919Problem.lean",
+    "sorries": 0
   },
   "crossReferences": [
     {
       "targetId": "erdos-111",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, graph-theory, infinite-combinatorics, set-theory"
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, infinite-combinatorics, set-theory"
     },
     {
       "targetId": "erdos-1067",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, graph-theory, set-theory"
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, set-theory"
     },
     {
       "targetId": "erdos-1068",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, graph-theory, set-theory"
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, set-theory"
     }
   ]
 }

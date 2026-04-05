@@ -105,12 +105,22 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["MeasureTheory", "intervalIntegral", "Set", "Filter", "Topology"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral",
+      "Set",
+      "Filter",
+      "Topology"
+    ],
     "namespace": "GreensTheoremOQ01OQ01",
     "lineCount": 149,
     "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+    "sorries": 0
   }
 }

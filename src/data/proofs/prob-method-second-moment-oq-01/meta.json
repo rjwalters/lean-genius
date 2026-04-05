@@ -8,7 +8,12 @@
     "date": "2026-04-04",
     "status": "verified",
     "proofRepoPath": "Proofs/ProbMethodSecondMomentOQ01.lean",
-    "tags": ["probability", "combinatorics", "second-moment-method", "paley-zygmund"],
+    "tags": [
+      "probability",
+      "combinatorics",
+      "second-moment-method",
+      "paley-zygmund"
+    ],
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-04",
@@ -115,14 +120,20 @@
   ],
   "references": [
     {
-      "authors": ["Paley, R.E.A.C.", "Zygmund, A."],
+      "authors": [
+        "Paley, R.E.A.C.",
+        "Zygmund, A."
+      ],
       "title": "On some series of functions",
       "year": "1932",
       "venue": "Proceedings of the Cambridge Philosophical Society 26, pp. 337-357",
       "note": "Original Paley-Zygmund inequality proved in the context of lacunary trigonometric series"
     },
     {
-      "authors": ["Alon, N.", "Spencer, J.H."],
+      "authors": [
+        "Alon, N.",
+        "Spencer, J.H."
+      ],
       "title": "The Probabilistic Method",
       "year": "2016",
       "venue": "Wiley, 4th edition",
@@ -130,12 +141,17 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.ProbMethodSecondMoment"],
+    "imports": [
+      "Mathlib",
+      "Proofs.ProbMethodSecondMoment"
+    ],
     "opens": [],
     "namespace": "ProbMethod.SecondMoment",
     "lineCount": 147,
     "axiomCount": 0,
     "theoremCount": 3,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "path": "Proofs/ProbMethodSecondMomentOQ01.lean",
+    "sorries": 0
   }
 }

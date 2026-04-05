@@ -2,7 +2,7 @@
   "id": "hilbert-15-oq-01",
   "title": "Chow Ring of Gr(2,4): Schubert Calculus with Explicit Multiplication",
   "slug": "hilbert-15-oq-01",
-  "description": "Formalizes the Chow ring (intersection ring) of the Grassmannian Gr(2,4) with an explicit Littlewood\u2013Richardson multiplication table on 6 Schubert basis classes. Proves \u03c3\u2081\u2074 = 2 (the four lines number) by direct computation with 0 axioms and 0 sorries. Verifies Poincar\u00e9 duality, Giambelli's formula, and several classical enumerative results.",
+  "description": "Formalizes the Chow ring (intersection ring) of the Grassmannian Gr(2,4) with an explicit Littlewood–Richardson multiplication table on 6 Schubert basis classes. Proves σ₁⁴ = 2 (the four lines number) by direct computation with 0 axioms and 0 sorries. Verifies Poincaré duality, Giambelli's formula, and several classical enumerative results.",
   "meta": {
     "author": "Schubert (1879), Hilbert (1900); Chow ring formalized 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Schubert_calculus",
@@ -30,11 +30,11 @@
       }
     ],
     "originalContributions": [
-      "ChowGr24: explicit Chow ring of Gr(2,4) as \u2124-linear combinations of 6 Schubert classes",
-      "basisMul: complete Littlewood\u2013Richardson multiplication table for Gr(2,4)",
-      "sigma1_fourth / four_lines_number: \u03c3\u2081\u2074 = 2 by computation (0 axioms)",
-      "Poincar\u00e9 duality: degree(\u03c3_\u03bb \u00b7 \u03c3_{\u03bb*}) = 1 for all dual pairs",
-      "giambelli_11: \u03c3\u2081\u2081 = \u03c3\u2081\u00b2 - \u03c3\u2082 (Giambelli's formula)",
+      "ChowGr24: explicit Chow ring of Gr(2,4) as ℤ-linear combinations of 6 Schubert classes",
+      "basisMul: complete Littlewood–Richardson multiplication table for Gr(2,4)",
+      "sigma1_fourth / four_lines_number: σ₁⁴ = 2 by computation (0 axioms)",
+      "Poincaré duality: degree(σ_λ · σ_{λ*}) = 1 for all dual pairs",
+      "giambelli_11: σ₁₁ = σ₁² - σ₂ (Giambelli's formula)",
       "sigma2_sigma11 = 0: nontrivial LR vanishing by lattice word condition",
       "mul_comm_basis: commutativity of basis multiplication verified by decide"
     ],
@@ -46,19 +46,19 @@
   },
   "overview": {
     "historicalContext": "**Schubert calculus** was developed by Hermann Schubert in his 1879 book *Kalkül der abzählenden Geometrie*, providing a powerful method for counting geometric configurations: lines meeting other lines, conics tangent to given conics, surfaces of given degree containing given curves. Schubert's symbolic calculus produced correct answers through formal manipulation of 'condition symbols', but lacked rigorous foundations.\n\n**Hilbert's 15th problem** (1900): *\"To establish rigorously and with an exact determination of the limits of their validity those geometrical numbers which Schubert especially has determined on the basis of the so-called principle of special position.\"* In particular, Hilbert asked for a proof that the four lines theorem (exactly 2 lines meet 4 general lines in P³) is correct.\n\nThe modern resolution uses **Chow rings** A*(X) = ⊕ Aⁱ(X), where algebraic cycles of codimension i modulo rational equivalence form Aⁱ(X). For Grassmannians, Schubert classes form a ℤ-basis with multiplication governed by the **Littlewood–Richardson rule** (established rigorously by Schützenberger in 1977). **Kleiman's transversality theorem** (1974) provided the geometric foundation: general translates of Schubert varieties intersect transversally, so intersection numbers count geometric configurations.\n\nThis file provides the first fully machine-checked proof of the four lines theorem with 0 axioms and 0 sorries, formalizing the complete Chow ring A*(Gr(2,4)) — the intersection ring of lines in P³ — and answering Hilbert's 15th problem computationally for this case.",
-    "problemStatement": "**Theorem (\u03c3\u2081\u2074 = 2)**: In the Chow ring of Gr(2,4), the fourth power of the Schubert class \u03c3\u2081 equals 2 times the point class \u03c3\u2082\u2082:\n$$\\sigma_1^4 = 2\\sigma_{22}$$\n\nGeometric meaning: given 4 general lines in projective 3-space, exactly 2 lines meet all four.",
-    "text": "Formalizes the Chow ring of Gr(2,4) with an explicit Littlewood\u2013Richardson multiplication table. Proves the four lines theorem \u03c3\u2081\u2074 = 2 by direct computation.",
-    "proofStrategy": "**Direct computation in an explicit ring**: Define A*(Gr(2,4)) as a \u2124-module with 6 basis elements (\u03c3_\u2205, \u03c3\u2081, \u03c3\u2082, \u03c3\u2081\u2081, \u03c3\u2082\u2081, \u03c3\u2082\u2082). The multiplication table encodes the Littlewood\u2013Richardson rule for all 36 basis pairs. Bilinear extension gives the full ring multiplication. The four lines computation chains:\n\n\u03c3\u2081\u00b2 = \u03c3\u2082 + \u03c3\u2081\u2081 \u2192 \u03c3\u2081\u00b3 = 2\u03c3\u2082\u2081 \u2192 \u03c3\u2081\u2074 = 2\u03c3\u2082\u2082\n\nAll verified by `native_decide` from the explicit table.",
+    "problemStatement": "**Theorem (σ₁⁴ = 2)**: In the Chow ring of Gr(2,4), the fourth power of the Schubert class σ₁ equals 2 times the point class σ₂₂:\n$$\\sigma_1^4 = 2\\sigma_{22}$$\n\nGeometric meaning: given 4 general lines in projective 3-space, exactly 2 lines meet all four.",
+    "text": "Formalizes the Chow ring of Gr(2,4) with an explicit Littlewood–Richardson multiplication table. Proves the four lines theorem σ₁⁴ = 2 by direct computation.",
+    "proofStrategy": "**Direct computation in an explicit ring**: Define A*(Gr(2,4)) as a ℤ-module with 6 basis elements (σ_∅, σ₁, σ₂, σ₁₁, σ₂₁, σ₂₂). The multiplication table encodes the Littlewood–Richardson rule for all 36 basis pairs. Bilinear extension gives the full ring multiplication. The four lines computation chains:\n\nσ₁² = σ₂ + σ₁₁ → σ₁³ = 2σ₂₁ → σ₁⁴ = 2σ₂₂\n\nAll verified by `native_decide` from the explicit table.",
     "keyInsights": [
-      "The Chow ring of Gr(2,4) has rank 6 over \u2124 with a fully explicit multiplication table",
-      "\u03c3\u2082 \u00b7 \u03c3\u2081\u2081 = 0 is a nontrivial vanishing: the LR lattice word condition fails",
-      "Poincar\u00e9 duality: \u03c3\u2082 and \u03c3\u2081\u2081 are each self-dual (\u03bb* = \u03bb in the 2\u00d72 box)",
-      "Giambelli's formula \u03c3\u2081\u2081 = \u03c3\u2081\u00b2 - \u03c3\u2082 is an immediate consequence of the table",
+      "The Chow ring of Gr(2,4) has rank 6 over ℤ with a fully explicit multiplication table",
+      "σ₂ · σ₁₁ = 0 is a nontrivial vanishing: the LR lattice word condition fails",
+      "Poincaré duality: σ₂ and σ₁₁ are each self-dual (λ* = λ in the 2×2 box)",
+      "Giambelli's formula σ₁₁ = σ₁² - σ₂ is an immediate consequence of the table",
       "native_decide gives machine-verified proofs of all intersection numbers — the 6-dimensional DecidableEq instance on ChowGr24 allows the Lean kernel to fully certify each multiplication result",
       "The proof strategy mirrors how Schubert worked: encode the ring explicitly, compute mechanically — but with full machine verification rather than informal symbolic manipulation"
     ],
     "prerequisites": [
-      "Abstract algebra (graded rings, \u2124-modules)",
+      "Abstract algebra (graded rings, ℤ-modules)",
       "Enumerative geometry (intersection numbers)",
       "Combinatorics (partitions, Young tableaux)"
     ]
@@ -77,7 +77,7 @@
       "title": "Part II: Schubert Basis Elements",
       "startLine": 92,
       "endLine": 115,
-      "summary": "The 6 Schubert basis classes \u03c3_\u2205, \u03c3\u2081, \u03c3\u2082, \u03c3\u2081\u2081, \u03c3\u2082\u2081, \u03c3\u2082\u2082 as ChowGr24 values.",
+      "summary": "The 6 Schubert basis classes σ_∅, σ₁, σ₂, σ₁₁, σ₂₁, σ₂₂ as ChowGr24 values.",
       "mathContext": "Schubert classes indexed by partitions fitting in a $2 \\times 2$ box: $\\emptyset, (1), (2), (1,1), (2,1), (2,2)$."
     },
     {
@@ -85,24 +85,24 @@
       "title": "Part III: Ring Multiplication",
       "startLine": 117,
       "endLine": 175,
-      "summary": "basisMul: complete 6\u00d76 multiplication table from Littlewood\u2013Richardson. Full ring multiplication by bilinear extension.",
-      "mathContext": "The Littlewood\u2013Richardson rule gives $\\sigma_\\mu \\cdot \\sigma_\\nu = \\sum_\\rho c^\\rho_{\\mu\\nu} \\sigma_\\rho$ where $c^\\rho_{\\mu\\nu}$ counts LR tableaux."
+      "summary": "basisMul: complete 6×6 multiplication table from Littlewood–Richardson. Full ring multiplication by bilinear extension.",
+      "mathContext": "The Littlewood–Richardson rule gives $\\sigma_\\mu \\cdot \\sigma_\\nu = \\sum_\\rho c^\\rho_{\\mu\\nu} \\sigma_\\rho$ where $c^\\rho_{\\mu\\nu}$ counts LR tableaux."
     },
     {
       "id": "part-iv-v",
-      "title": "Parts IV\u2013V: Multiplication Results and Four Lines",
+      "title": "Parts IV–V: Multiplication Results and Four Lines",
       "startLine": 177,
       "endLine": 225,
-      "summary": "Key products verified by native_decide. The four lines theorem: \u03c3\u2081\u2074 = 2\u03c3\u2082\u2082, giving the intersection number 2.",
+      "summary": "Key products verified by native_decide. The four lines theorem: σ₁⁴ = 2σ₂₂, giving the intersection number 2.",
       "mathContext": "$\\sigma_1^2 = \\sigma_2 + \\sigma_{11}$, $\\sigma_1^3 = 2\\sigma_{21}$, $\\sigma_1^4 = 2\\sigma_{22}$. Exactly 2 lines meet 4 general lines in $\\mathbb{P}^3$."
     },
     {
       "id": "part-vi-vii",
-      "title": "Parts VI\u2013VII: Poincar\u00e9 Duality and Giambelli",
+      "title": "Parts VI–VII: Poincaré Duality and Giambelli",
       "startLine": 227,
       "endLine": 275,
-      "summary": "Poincar\u00e9 duality: degree(\u03c3_\u03bb \u00b7 \u03c3_{\u03bb*}) = 1. Giambelli: \u03c3\u2081\u2081 = \u03c3\u2081\u00b2 \u2212 \u03c3\u2082.",
-      "mathContext": "Poincar\u00e9 duality pairs $\\sigma_\\lambda$ with $\\sigma_{\\lambda^*}$ where $\\lambda^* = (2-\\lambda_2, 2-\\lambda_1)$. Giambelli: $\\sigma_{11} = \\det\\begin{pmatrix} \\sigma_1 & \\sigma_2 \\\\ 1 & \\sigma_1 \\end{pmatrix} = \\sigma_1^2 - \\sigma_2$."
+      "summary": "Poincaré duality: degree(σ_λ · σ_{λ*}) = 1. Giambelli: σ₁₁ = σ₁² − σ₂.",
+      "mathContext": "Poincaré duality pairs $\\sigma_\\lambda$ with $\\sigma_{\\lambda^*}$ where $\\lambda^* = (2-\\lambda_2, 2-\\lambda_1)$. Giambelli: $\\sigma_{11} = \\det\\begin{pmatrix} \\sigma_1 & \\sigma_2 \\\\ 1 & \\sigma_1 \\end{pmatrix} = \\sigma_1^2 - \\sigma_2$."
     },
     {
       "id": "part-viii",
@@ -114,7 +114,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Chow ring of Gr(2,4) is fully formalized with 0 axioms, 0 sorries, 22 theorems. The four lines number \u03c3\u2081\u2074 = 2 is proved by direct computation from the explicit Littlewood\u2013Richardson multiplication table.",
+    "summary": "The Chow ring of Gr(2,4) is fully formalized with 0 axioms, 0 sorries, 22 theorems. The four lines number σ₁⁴ = 2 is proved by direct computation from the explicit Littlewood–Richardson multiplication table.",
     "implications": "**Mathematical Significance**:\n\n**1. Axiom-Free Schubert Calculus**: The four lines theorem is proved computationally with 0 axioms, eliminating the sigma1_fourth_power axiom from the parent file.\n\n**2. Complete Multiplication Table**: All 36 basis products in A*(Gr(2,4)) are formalized and verified.\n\n**3. Foundation for Generalization**: The ChowGr24 structure and basisMul approach can be extended to Gr(k,n) for any small k,n.\n\n**4. Hilbert's 15th Problem**: This provides a concrete, machine-verified instance of Schubert's enumerative calculus on rigorous foundations.",
     "openQuestions": [
       "Extend to Gr(2,5) and Gr(3,6) with larger multiplication tables",
@@ -133,7 +133,7 @@
   "references": [
     {
       "authors": "Schubert, H.",
-      "title": "Kalk\u00fcl der abz\u00e4hlenden Geometrie",
+      "title": "Kalkül der abzählenden Geometrie",
       "year": "1879",
       "venue": "Teubner, Leipzig",
       "note": "Original enumerative calculus that Hilbert's 15th problem asks to rigorize"
@@ -143,13 +143,13 @@
       "title": "Young Tableaux: With Applications to Representation Theory and Geometry",
       "year": "1997",
       "venue": "Cambridge University Press (London Mathematical Society Student Texts, 35)",
-      "note": "Clean treatment of Schubert calculus via Young tableaux and Littlewood\u2013Richardson rule"
+      "note": "Clean treatment of Schubert calculus via Young tableaux and Littlewood–Richardson rule"
     },
     {
       "authors": "Kleiman, S. L.",
       "title": "Problem 15: Rigorous foundation of Schubert's enumerative calculus",
       "year": "1976",
-      "venue": "Proc. Sympos. Pure Math. 28, AMS, pp. 445\u2013482",
+      "venue": "Proc. Sympos. Pure Math. 28, AMS, pp. 445–482",
       "note": "Survey of the resolution of Hilbert's 15th problem"
     }
   ],
@@ -162,6 +162,8 @@
     "lineCount": 351,
     "axiomCount": 0,
     "theoremCount": 22,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "path": "Proofs/Hilbert15OQ01.lean",
+    "sorries": 0
   }
 }
