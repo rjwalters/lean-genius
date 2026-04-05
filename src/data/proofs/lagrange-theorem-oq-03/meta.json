@@ -253,6 +253,11 @@
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Euler's totient function phi(n) counts units in Z/nZ, and Euler's theorem a^phi(n) = 1 (mod n) follows from Lagrange's theorem applied to (Z/nZ)*. Hall's coprimality condition gcd(|H|, [G:H]) = 1 generalizes the coprimality central to Euler's totient theory."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "Primitive root existence for primes follows from the cyclic structure of (Z/pZ)*, whose order p-1 is constrained by Lagrange; Hall's theorem generalizes this order theory to solvable groups"
     }
   ]
 }

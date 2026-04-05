@@ -121,6 +121,16 @@
       "targetId": "combinations-formula",
       "relationship": "related",
       "description": "Formula for C(n,k) — foundational identity underlying the descFactorial-choose conversion"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-04",
+      "relationship": "related",
+      "description": "Rising factorial identity S_k(n)·k! = (n+1)^{\\overline{k}} — the ascending factorial dual of descFactorial = k!·C(n,k)"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-02",
+      "relationship": "related",
+      "description": "2D hockey stick via Vandermonde convolution — applies the same Vandermonde summation to simplicial number products"
     }
   ],
   "sections": [
