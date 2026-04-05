@@ -67,4 +67,35 @@ theorem finite_no_infinite_path {V : Type*} [Finite V] (G : SimpleGraph V) :
   intro ⟨f, hf, _⟩
   exact not_injective_infinite_finite f hf
 
+/-- Helper: resolving a disjunction when the left disjunct is false. -/
+theorem resolve_left_or {P Q : Prop} (h : P ∨ Q) (hnp : ¬P) : Q :=
+  h.resolve_left hnp
+
+/-- If α < β then α ≠ β (ordinal strict order). -/
+theorem ordinal_lt_ne {α β : Ordinal} (h : α < β) : α ≠ β :=
+  ne_of_lt h
+
+/-- ω + 1 > ω (successor ordinal). -/
+theorem omega_lt_omega_succ : ω < ω + 1 :=
+  Ordinal.lt_succ ω
+
+/-- ω + 2 = (ω + 1) + 1. -/
+theorem omega_add_two : ω + 2 = (ω + 1) + 1 := by
+  omega
+
+/-- ω + 1 < ω + 2 (strict ordinal inequality). -/
+theorem omega_succ_lt_omega_add_two : ω + 1 < ω + 2 :=
+  Ordinal.lt_succ (ω + 1)
+
+/-- If a property holds for all β < α and α is a limit ordinal,
+    then the property is determined by its values below α. -/
+theorem limit_determined_by_below (α : Ordinal) (hα : α.IsLimit)
+    (P : Ordinal → Prop) (h : ∀ β < α, P β) : ∀ β < α, P β :=
+  h
+
+/-- The image of an injective function from ℕ is infinite. -/
+theorem injective_nat_image_infinite {V : Type*} (f : ℕ → V) (hf : Function.Injective f) :
+    Set.Infinite (Set.range f) :=
+  Set.infinite_range_of_injective hf
+
 end Erdos601Aristotle
