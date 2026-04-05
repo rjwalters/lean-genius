@@ -51,7 +51,7 @@
       "Machine-verified proof that τ(m) ≥ 2^ω(m) for all m ≥ 1, using Nat.card_divisors from Mathlib and Finset.prod_le_prod'"
     ],
     "axiomCount": 1,
-    "lineCount": 324,
+    "lineCount": 300,
     "assumptions": "1 axiom(s) and 0 sorry(s). The axiom `large_n_fail` encodes the open conjecture that no n > 24 satisfies the Erdős condition."
   },
   "overview": {
@@ -148,12 +148,12 @@
       "Finset"
     ],
     "namespace": "Erdos647",
-    "lineCount": 324,
+    "lineCount": 300,
     "axiomCount": 1,
-    "theoremCount": 26,
+    "theoremCount": 25,
     "definitionCount": 11,
     "path": "Proofs/Erdos647Problem.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "crossReferences": [
     {
