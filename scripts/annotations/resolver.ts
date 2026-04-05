@@ -307,6 +307,13 @@ export function validateLineAnnotations(
       ann.type === 'concept' ||
       ann.type === 'insight' ||
       ann.type === 'tactic' ||
+      ann.type === 'technique' ||
+      ann.type === 'context' ||
+      ann.type === 'corollary' ||
+      ann.type === 'application' ||
+      ann.type === 'proof-technique' ||
+      ann.type === 'main-result' ||
+      ann.type === 'key-step' ||
       ann.type === 'warning';
 
     if (!typeMatches && construct.type === 'declaration') {
