@@ -2,57 +2,97 @@
   {
     "id": "ann-legendre-digit-sum",
     "proofId": "wilsons-theorem-oq-03",
-    "range": { "startLine": 60, "endLine": 65 },
+    "range": { "startLine": 60, "endLine": 68 },
+    "type": "theorem",
     "title": "Legendre's Formula (Digit-Sum Form)",
-    "body": "The central theorem: (p-1) * ν_p(n!) = n - S_p(n), where S_p(n) is the sum of base-p digits. This is a direct re-export of Mathlib's `sub_one_mul_padicValNat_factorial`. The formula is 'lossless' — knowing n and S_p(n) determines ν_p(n!) exactly.",
-    "type": "theorem"
+    "content": "The central theorem: $(p-1) \\cdot \\nu_p(n!) = n - S_p(n)$, where $S_p(n)$ is the sum of base-$p$ digits. This is a direct re-export of Mathlib's `sub_one_mul_padicValNat_factorial`. The formula is 'lossless' — knowing $n$ and $S_p(n)$ determines $\\nu_p(n!)$ exactly. The proof is a single line: the Lean term `sub_one_mul_padicValNat_factorial n` provides everything.",
+    "mathContext": "$(p - 1) \\cdot \\nu_p(n!) = n - S_p(n)$ where $S_p(n) = \\sum_i d_i$ for $n = \\sum_i d_i p^i$. This arises from the telescoping identity $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor = \\sum_k d_k \\cdot \\frac{p^k - 1}{p - 1} = \\frac{n - S_p(n)}{p - 1}$.",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "digit sum", "Legendre's formula", "sub_one_mul_padicValNat_factorial"],
+    "prerequisites": ["p-adic valuations", "base-p digit representations", "factorials"]
   },
   {
     "id": "ann-legendre-sum",
     "proofId": "wilsons-theorem-oq-03",
-    "range": { "startLine": 67, "endLine": 74 },
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "theorem",
     "title": "Legendre's Formula (Finset Sum Form)",
-    "body": "The equivalent sum formula ν_p(n!) = Σ ⌊n/pⁱ⌋ over i = 1 to b-1, valid for any b > log_p(n). This is Mathlib's `padicValNat_factorial`. The sum is finite because ⌊n/pⁱ⌋ = 0 once pⁱ > n.",
-    "type": "theorem"
+    "content": "The equivalent sum formula $\\nu_p(n!) = \\sum_{i=1}^{b-1} \\lfloor n/p^i \\rfloor$, valid for any $b > \\log_p(n)$. This is Mathlib's `padicValNat_factorial`. The sum is finite because $\\lfloor n/p^i \\rfloor = 0$ once $p^i > n$. The bound parameter $b$ is computationally convenient: it lets the sum be a `Finset.Ico` rather than an infinite series.",
+    "mathContext": "$\\nu_p(n!) = \\sum_{i=1}^{\\infty} \\lfloor n/p^i \\rfloor = \\lfloor n/p \\rfloor + \\lfloor n/p^2 \\rfloor + \\cdots$. Each term $\\lfloor n/p^i \\rfloor$ counts multiples of $p^i$ in $\\{1, \\ldots, n\\}$, and each such multiple contributes one extra factor of $p$ to $n!$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.Ico", "padicValNat_factorial", "floor function", "geometric series"],
+    "prerequisites": ["summation over finite sets in Lean 4", "integer division"]
   },
   {
     "id": "ann-digits-pred",
     "proofId": "wilsons-theorem-oq-03",
-    "range": { "startLine": 79, "endLine": 87 },
+    "range": { "startLine": 80, "endLine": 91 },
+    "type": "technique",
     "title": "Key Lemma: p-1 is a One-Digit Number in Base p",
-    "body": "For prime p ≥ 2, we have 0 < p-1 < p, so p-1 is a single digit in base p: p.digits (p-1) = [p-1]. Proved via Nat.digits_def' and modular arithmetic: (p-1) % p = p-1 and (p-1) / p = 0. This lemma is the bridge to Wilson's theorem.",
-    "type": "lemma"
+    "content": "For prime $p \\geq 2$, we have $0 < p-1 < p$, so $p-1$ is a single digit in base $p$: `p.digits (p-1) = [p-1]`. Proved via `Nat.digits_def'` and modular arithmetic: $(p-1) \\bmod p = p-1$ and $(p-1) / p = 0$. The companion `digit_sum_pred_prime` immediately gives $S_p(p-1) = p-1$. This lemma is the bridge connecting Legendre's formula to Wilson's theorem.",
+    "mathContext": "In base $p$, any integer $d$ with $0 \\leq d < p$ has digit representation $[d]$. Since $p \\geq 2$ for any prime, $p - 1$ satisfies $0 < p - 1 < p$, giving $\\text{digits}_p(p-1) = [p-1]$ and $S_p(p-1) = p - 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.digits_def'", "base-p representation", "modular arithmetic", "Nat.mod_eq_of_lt"],
+    "prerequisites": ["natural number digit representation in Lean 4", "Euclidean division"]
   },
   {
     "id": "ann-legendre-wilson",
     "proofId": "wilsons-theorem-oq-03",
-    "range": { "startLine": 100, "endLine": 115 },
-    "title": "Wilson's Theorem via Legendre: ν_p((p-1)!) = 0",
-    "body": "The key connection: substituting n = p-1 in Legendre's formula gives (p-1) * ν_p((p-1)!) = (p-1) - (p-1) = 0. Since p-1 ≥ 1, we get ν_p((p-1)!) = 0. This is an algebraic proof of Wilson's non-divisibility, bypassing the group-theoretic pairing argument.",
-    "type": "theorem"
+    "range": { "startLine": 95, "endLine": 116 },
+    "type": "insight",
+    "title": "Wilson's Theorem via Legendre: Algebraic Proof of p ∤ (p-1)!",
+    "content": "The key connection: substituting $n = p-1$ in Legendre's formula gives $(p-1) \\cdot \\nu_p((p-1)!) = (p-1) - (p-1) = 0$. Since $p-1 \\geq 1$, we get $\\nu_p((p-1)!) = 0$. This is an algebraic proof of Wilson's non-divisibility, bypassing the group-theoretic pairing argument entirely. The `legendre_wilson` theorem proves $\\nu_p((p-1)!) = 0$ in about 5 lines by rewriting with `digit_sum_pred_prime` and resolving the zero-product. The companion `prime_not_dvd_factorial_pred` gives the logically equivalent $p \\nmid (p-1)!$ directly from `dvd_factorial`.",
+    "mathContext": "Legendre at $n = p-1$: $(p-1) \\cdot \\nu_p((p-1)!) = (p-1) - S_p(p-1) = (p-1) - (p-1) = 0$. Since $p - 1 \\neq 0$ (as $p \\geq 2$), we conclude $\\nu_p((p-1)!) = 0$, i.e., $p \\nmid (p-1)!$. Wilson's full theorem states $(p-1)! \\equiv -1 \\pmod{p}$; this proves the non-divisibility half.",
+    "significance": "key",
+    "relatedConcepts": ["Wilson's theorem", "zero-product property", "Nat.mul_eq_zero", "group-theoretic Wilson proof"],
+    "prerequisites": ["Wilson's theorem statement", "p-adic valuation semantics", "zero-product in ℕ"]
   },
   {
     "id": "ann-padic-p-factorial",
     "proofId": "wilsons-theorem-oq-03",
-    "range": { "startLine": 123, "endLine": 140 },
-    "title": "ν_p(p!) = 1",
-    "body": "The factorial p! is divisible by p exactly once. Proof: p! = p * (p-1)!, and padicValNat is multiplicative, so ν_p(p!) = ν_p(p) + ν_p((p-1)!) = 1 + 0 = 1. The Nat.factorial_succ identity and Nat.sub_add_cancel handle the natural number arithmetic carefully.",
-    "type": "theorem"
+    "range": { "startLine": 118, "endLine": 137 },
+    "type": "technique",
+    "title": "ν_p(p!) = 1 via Multiplicativity",
+    "content": "The factorial $p!$ is divisible by $p$ exactly once. The proof factors $p! = p \\cdot (p-1)!$ using `Nat.factorial_succ`, then applies `padicValNat.mul` (multiplicativity for nonzero arguments) to get $\\nu_p(p!) = \\nu_p(p) + \\nu_p((p-1)!) = 1 + 0 = 1$. The value $\\nu_p(p) = 1$ comes from `padicValNat.prime_pow` instantiated at exponent 1. This approach is more transparent than directly applying Legendre's sum.",
+    "mathContext": "$p! = p \\cdot (p-1)!$ and $\\nu_p$ is completely multiplicative on coprime factors: $\\nu_p(ab) = \\nu_p(a) + \\nu_p(b)$ for $a, b \\neq 0$. Therefore $\\nu_p(p!) = \\nu_p(p) + \\nu_p((p-1)!) = 1 + 0 = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["padicValNat.mul", "padicValNat.prime_pow", "Nat.factorial_succ", "multiplicativity of valuations"],
+    "prerequisites": ["multiplicative properties of p-adic valuations", "factorial recursion"]
   },
   {
     "id": "ann-upper-bound",
     "proofId": "wilsons-theorem-oq-03",
-    "range": { "startLine": 149, "endLine": 160 },
+    "range": { "startLine": 138, "endLine": 155 },
+    "type": "technique",
     "title": "Upper Bound: ν_p(n!) ≤ n/(p-1)",
-    "body": "Since S_p(n) ≥ 0, Legendre's formula gives (p-1) * ν_p(n!) ≤ n, hence ν_p(n!) ≤ n/(p-1). The bound is tight for n = p^k: S_p(p^k) = 1, giving ν_p((p^k)!) = (p^k - 1)/(p-1). This uses Nat.le_div_iff_mul_le to convert the multiplication bound to a division bound.",
-    "type": "observation"
+    "content": "Since $S_p(n) \\geq 0$, Legendre's formula gives $(p-1) \\cdot \\nu_p(n!) \\leq n$, hence $\\nu_p(n!) \\leq n/(p-1)$. The bound is tight for $n = p^k$: $S_p(p^k) = 1$, giving $\\nu_p((p^k)!) = (p^k - 1)/(p-1)$. The proof uses `Nat.le_div_iff_mul_le` to convert the multiplication bound to a division bound, and `mul_comm` to match Lean's argument order.",
+    "mathContext": "From $(p-1) \\cdot \\nu_p(n!) = n - S_p(n) \\leq n$ (since $S_p(n) \\geq 0$), dividing both sides by $p - 1 > 0$ gives $\\nu_p(n!) \\leq \\lfloor n/(p-1) \\rfloor$. Asymptotically, $\\nu_p(n!) \\sim n/(p-1)$ as $n \\to \\infty$, since $S_p(n) = O(\\log n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.le_div_iff_mul_le", "asymptotic analysis", "Stirling's approximation", "digit sum bounds"],
+    "prerequisites": ["natural number division in Lean 4", "inequalities"]
   },
   {
     "id": "ann-zero-iff",
     "proofId": "wilsons-theorem-oq-03",
-    "range": { "startLine": 162, "endLine": 183 },
+    "range": { "startLine": 157, "endLine": 185 },
+    "type": "theorem",
     "title": "Characterization: ν_p(n!) = 0 ↔ n < p",
-    "body": "The p-adic valuation of n! is zero iff none of {1,...,n} are divisible by p, iff n < p. Forward: if n ≥ p, then p ∣ n! (by dvd_factorial) so ν_p(n!) ≥ 1 (by padicValNat.le_of_dvd with k=1). Backward: if n < p then p ∤ n! (dvd_factorial again) so ν_p(n!) = 0 (eq_zero_of_not_dvd).",
-    "type": "theorem"
+    "content": "The $p$-adic valuation of $n!$ is zero iff none of $\\{1, \\ldots, n\\}$ are divisible by $p$, iff $n < p$. Forward direction: if $n \\geq p$, then $p \\mid n!$ (by `dvd_factorial`), so $\\nu_p(n!) \\geq 1$. This uses an explicit factorization $n! = p \\cdot k$ to deduce $\\nu_p(n!) \\geq \\nu_p(p) = 1$. Backward: if $n < p$ then $p \\nmid n!$, so $\\nu_p(n!) = 0$ by `eq_zero_of_not_dvd`. This characterization subsumes the Wilson connection as the special case $n = p - 1 < p$.",
+    "mathContext": "$\\nu_p(n!) = 0 \\iff n < p$. Equivalently, $p \\mid n! \\iff p \\leq n$ (since the smallest multiple of $p$ in $\\{1, \\ldots, n\\}$ is $p$ itself). This is `Nat.Prime.dvd_factorial` in Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.Prime.dvd_factorial", "padicValNat.eq_zero_of_not_dvd", "padicValNat.le_of_dvd", "contraposition"],
+    "prerequisites": ["prime divisibility of factorials", "by_contra in Lean 4"]
+  },
+  {
+    "id": "ann-concrete-computations",
+    "proofId": "wilsons-theorem-oq-03",
+    "range": { "startLine": 186, "endLine": 220 },
+    "type": "context",
+    "title": "Concrete Computations via native_decide",
+    "content": "Eight verified examples demonstrate the formula: $\\nu_2(10!) = 8$ (digit sum of $10 = 1010_2$ is 2, so $1 \\cdot 8 = 10 - 2$), $\\nu_3(9!) = 4$ ($9 = 100_3$, digit sum 1), $\\nu_5(25!) = 6$ ($25 = 100_5$, digit sum 1), and $\\nu_7(49!) = 8$ ($49 = 100_7$). Four Wilson checks confirm $\\nu_p((p-1)!) = 0$ for $p = 5, 7, 11, 13$. All proofs use `native_decide`, which compiles the computation to native code for efficiency — evaluating large factorials and their prime factorizations would be infeasible with kernel reduction alone.",
+    "mathContext": "Examples: $\\nu_2(10!) = (10 - 2)/1 = 8$; $\\nu_3(9!) = (9 - 1)/2 = 4$; $\\nu_5(25!) = (25 - 1)/4 = 6$; $\\nu_7(49!) = (49 - 1)/6 = 8$. Wilson checks: $\\nu_5(4!) = 0$, $\\nu_7(6!) = 0$, $\\nu_{11}(10!) = 0$, $\\nu_{13}(12!) = 0$.",
+    "significance": "context",
+    "relatedConcepts": ["native_decide", "kernel computation vs native code", "decidable propositions in Lean 4"],
+    "prerequisites": ["Lean 4 native_decide tactic", "base-p digit computation"]
   }
 ]
