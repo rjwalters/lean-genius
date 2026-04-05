@@ -72,7 +72,7 @@
       "Solvable groups and the derived series"
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 1601,
+    "lineCount": 1498,
     "relatedProblems": [
       {
         "id": "abel-ruffini-oq-04",
@@ -283,7 +283,7 @@
       "id": "realizability",
       "title": "Part IX: $S_5$ Realizability and Verification",
       "startLine": 1570,
-      "endLine": 1601,
+      "endLine": 1498,
       "summary": "`s5_realizable`: $S_5$ is realizable as a Galois group over $\\mathbb{Q}$, witnessed by the splitting field of $x^5 - 4x + 2$. Lines 1583-1591: `#check` verification of all 9 key theorems.",
       "mathContext": "$\\exists K/\\mathbb{Q}$ Galois: $\\text{Gal}(K/\\mathbb{Q}) \\cong S_5$. Witness: $K = $ splitting field of $x^5 - 4x + 2$."
     }
@@ -307,9 +307,9 @@
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 1601,
+    "lineCount": 1498,
     "axiomCount": 0,
-    "theoremCount": 88,
+    "theoremCount": 81,
     "definitionCount": 6,
     "mainTheorems": [
       {
