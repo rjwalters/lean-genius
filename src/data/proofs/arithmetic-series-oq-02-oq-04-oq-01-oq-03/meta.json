@@ -5,6 +5,7 @@
   "description": "Proves Vandermonde's identity in falling factorial form: descFactorial(m+n, r) = ∑_{j=0}^{r} C(r,j) · descFactorial(m,j) · descFactorial(n,r-j). Derived from the standard Vandermonde convolution by multiplying by r! and using C(n,k)·k! = descFactorial(n,k). 2 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
     "date": "2026-04-05",
     "status": "verified",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
@@ -51,7 +52,8 @@
     "implications": "The falling factorial form counts ordered arrangements: descFactorial(m+n,r) = (number of ordered r-tuples from m+n items). The decomposition by j items from the first m is C(r,j)*descFactorial(m,j)*descFactorial(n,r-j), giving a combinatorial proof template.",
     "openQuestions": [
       "Generalize to the polynomial identity (x+y)^{(r)} = ∑_j C(r,j)*x^{(j)}*y^{(r-j)} over any commutative ring",
-      "Prove the multiset Vandermonde: C^{ms}(m+n,r) = ∑_j C^{ms}(m,j)*C^{ms}(n,r-j) using ascending factorials"
+      "Prove the multiset Vandermonde: C^{ms}(m+n,r) = ∑_j C^{ms}(m,j)*C^{ms}(n,r-j) using ascending factorials",
+      "Prove the identity using exponential generating functions: EGF of descFactorial(n,r) is x^r/(1-x)^{n+1}, and the product formula for EGFs recovers the convolution directly"
     ]
   },
   "leanFile": {
