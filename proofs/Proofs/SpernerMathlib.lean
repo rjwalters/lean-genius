@@ -8,47 +8,46 @@ import Mathlib
 /-!
 # Sperner's Lemma via Door Counting
 
-We prove Sperner's lemma for finite pseudomanifold-like cell families
-using a door-counting parity argument, without introducing bespoke
-structures.
+We prove Sperner's lemma for finite cell families equipped with
+adjacency satisfying local face-sharing axioms, using a
+door-counting parity argument.
 
-Cells are represented as an abstract finite type equipped with a vertex
-map and an adjacency function satisfying three axioms (symmetry, shared
-face, distinctness). The proof proceeds by:
+The adjacency interface: each cell has `d+1` faces indexed by
+`Fin (d+1)`. For each face, `adj s k` returns either `some (s', k')`
+(the unique adjacent cell sharing that face) or `none` (boundary).
 
+The proof proceeds by:
 1. Showing interior doors pair via the adjacency involution (even count).
-2. A per-cell parity argument relating door positions to surjectivity.
-3. Summing over all cells to conclude that panchromatic cell count has
-   the same parity as the boundary door count.
+2. A per-cell parity argument: the number of door positions of a
+   coloring `f : Fin (d+1) → Fin (d+1)` is odd iff `f` is surjective.
+3. Summing to conclude: panchromatic cell count ≡ boundary door
+   count (mod 2).
 
 ## Main results
 
-* `Sperner.even_card_fpf_invol`: a fixed-point-free involution on a
-  finset yields even cardinality.
-* `Sperner.door_count_parity`: per-coloring door count parity equals
-  the surjectivity indicator.
-* `Sperner.even_card_interior_doors`: interior doors pair evenly.
-* `Sperner.sperner_parity`: panchromatic count is congruent to boundary
-  door count modulo 2.
+* `Sperner.even_card_fpf_invol`: fixed-point-free involution on a
+  finset yields even cardinality. Useful beyond Sperner (Tucker's
+  lemma, Borsuk-Ulam, etc.).
+* `Sperner.door_count_parity`: door count parity equals the
+  surjectivity indicator.
+* `Sperner.sperner_parity`: panchromatic count ≡ boundary door
+  count (mod 2).
 * `Sperner.exists_panchromatic`: if boundary doors are odd, a
   panchromatic cell exists.
-* `Sperner.boundary_doors_on_last_face`: with a Sperner coloring, every
-  boundary door lies on the last face.
+* `Sperner.boundary_doors_on_last_face`: with a Sperner coloring,
+  every boundary door lies on the last face.
 
 ## References
 
 * [M. De Longueville, *A Course in Topological Combinatorics*]
-
-## Tags
-
-Sperner, combinatorics, parity, triangulation, door-counting
 -/
 
 namespace Sperner
 
 open Finset
 
-/-! ### Fixed-point-free involution parity
+/-!
+## Fixed-point-free involution parity
 
 A fixed-point-free involution on a finset has even cardinality. -/
 
@@ -100,7 +99,8 @@ theorem even_card_fpf_invol {α : Type*} [DecidableEq α]
         hf_S'
         (fun a ha => hNe a (hS'_sub.subset ha))).add ⟨1, rfl⟩
 
-/-! ### Door count parity
+/-!
+## Door count parity
 
 The number of door positions of a coloring `f : Fin (d+1) → Fin (d+1)`
 has parity equal to the surjectivity indicator of `f`. -/
@@ -130,9 +130,9 @@ private lemma exists_of_sum_eq_one {ι : Type*} [DecidableEq ι]
     omega
   have hle : f a ≤ 1 :=
     hsum ▸ Finset.single_le_sum (fun _ _ => Nat.zero_le _) ha
-  have hfa_eq : f a = 1 := by omega
+  have hfa_eq : f a = 1 := le_antisymm hle hfa
   have hrest : ∑ x ∈ s.erase a, f x = 0 := by
-    have := Finset.add_sum_erase s f ha; omega
+    have := Finset.add_sum_erase s f ha; linarith
   exact ⟨a, ha, hfa_eq, fun b hb hne =>
     Nat.eq_zero_of_le_zero
       ((Finset.single_le_sum (fun _ _ => Nat.zero_le _)
@@ -277,7 +277,7 @@ private lemma door_count_even_of_not_surj (d : ℕ)
       · subst hyd; exact hd_app
       · exact hall ⟨y, by omega⟩
     rw [Finset.card_eq_zero.mpr (door_filter_empty_of_missing_color d f j₀ hj₀)]
-    exact ⟨0, by omega⟩
+    exact ⟨0, rfl⟩
   · push_neg at hd_app
     have hlt : ∀ i, (f i).val < d := by
       intro i; have := (f i).isLt
@@ -304,7 +304,7 @@ private lemma door_count_even_of_not_surj (d : ℕ)
       suffices h0 : (univ.filter (fun k : Fin (d + 1) =>
           ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧
             f i = ⟨j.val, by omega⟩)).card = 0 by
-        rw [h0]; exact ⟨0, by omega⟩
+        rw [h0]; exact ⟨0, rfl⟩
       rw [Finset.card_eq_zero, filter_eq_empty_iff]
       intro k _; push_neg
       exact ⟨j₀, fun i _ h =>
@@ -325,7 +325,8 @@ theorem door_count_parity (d : ℕ)
 
 end DoorCountParity
 
-/-! ### Door counting for abstract cell complexes
+/-!
+## Door counting for abstract cell complexes
 
 We work with an abstract cell type `Cell` equipped with a vertex map
 and adjacency, using hypotheses rather than a structure. -/
@@ -341,8 +342,9 @@ def IsPanchromatic (vertex : Cell → Fin (d + 1) → V)
     (c : V → Fin (d + 1)) (s : Cell) : Prop :=
   Function.Surjective (c ∘ vertex s)
 
-/-- A facet `(s, k)` is a *door*: removing vertex `k`, the remaining
-`d` vertices carry all colors `{0, ..., d-1}`. -/
+/-- A facet `(s, k)` is a *door* (standard terminology in Sperner
+arguments): removing vertex `k`, the remaining `d` vertices carry
+all lower colors `{0, ..., d-1}`. -/
 def IsDoor (vertex : Cell → Fin (d + 1) → V)
     (c : V → Fin (d + 1)) (s : Cell) (k : Fin (d + 1)) : Prop :=
   ∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧ c (vertex s i) = Fin.castSucc j
@@ -357,8 +359,9 @@ instance decidableIsDoor (vertex : Cell → Fin (d + 1) → V)
     Decidable (IsDoor vertex c s k) := by
   unfold IsDoor; exact inferInstance
 
-/-- The adjacency map: sends `(s, k)` to its adjacent cell-face pair,
-or to itself if on the boundary. -/
+/-- Extend adjacency to a total involution by fixing boundary faces:
+sends `(s, k)` to its adjacent cell-face pair if interior, or to
+itself if on the boundary. -/
 private def adjMap
     (adj : Cell → Fin (d + 1) → Option (Cell × Fin (d + 1)))
     (p : Cell × Fin (d + 1)) : Cell × Fin (d + 1) :=
@@ -589,7 +592,7 @@ theorem sperner_parity
     _ = (univ.filter
         (fun p : Cell × Fin (d + 1) =>
           IsDoor vertex c p.1 p.2 ∧ adj p.1 p.2 = none)).card % 2 := by
-      rw [hm, Nat.add_mod, show (m + m) % 2 = 0 from by omega,
+      rw [hm, Nat.add_mod, show (m + m) % 2 = 0 from by simp [← Nat.two_mul, Nat.mul_mod_right],
         Nat.zero_add, Nat.mod_mod_of_dvd]
       exact ⟨1, rfl⟩
 
@@ -615,14 +618,15 @@ theorem exists_panchromatic
       (fun s : Cell => IsPanchromatic vertex c s)).card := by
     rwa [Nat.odd_iff, hparity, ← Nat.odd_iff]
   have hpos : 0 < (univ.filter
-      (fun s => IsPanchromatic vertex c s)).card := by
-    obtain ⟨k, hk⟩ := hodd; omega
+      (fun s => IsPanchromatic vertex c s)).card :=
+    hodd.pos
   obtain ⟨s, hs⟩ := Finset.card_pos.mp hpos
   exact ⟨s, (mem_filter.mp hs).2⟩
 
 end DoorCounting
 
-/-! ### Boundary reduction
+/-!
+## Boundary reduction
 
 With a Sperner coloring, every boundary door lies on the last face.
 This eliminates the need to sum over all faces. -/
