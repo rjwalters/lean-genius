@@ -1,50 +1,62 @@
 [
   {
-    "id": "ann-overview",
-    "type": "explanation",
-    "title": "Strict Concavity via Negative Second Derivative",
-    "body": "The proof uses Mathlib's strictConcaveOn_of_deriv2_neg: if f is continuous on an open convex set and its second derivative is negative throughout the interior, then f is strictly concave. This reduces the problem to computing h''(p) = -1/(1-p) - 1/p and showing it is negative on (0,1).",
-    "lineStart": 1,
-    "lineEnd": 20
-  },
-  {
-    "id": "ann-product-rule",
+    "id": "ann-sce-strict-concavity-criterion",
+    "proofId": "shannon-channel-coding-oq-04-oq-01",
+    "range": { "startLine": 7, "endLine": 18 },
     "type": "technique",
-    "title": "Product Rule for x·log(x)",
-    "body": "The derivative of x·log(x) at p is 1·log(p) + p·(1/p) = log(p) + 1, computed via (hasDerivAt_id p).mul (Real.hasDerivAt_log (ne_of_gt hp0)). The term p·(1/p) = 1 is handled by mul_inv_cancel₀ (ne_of_gt hp0), giving the clean derivative log(p) + 1.",
-    "lineStart": 35,
-    "lineEnd": 42
+    "title": "strictConcaveOn_of_deriv2_neg: The Calculus Criterion in Lean 4",
+    "content": "The proof applies Mathlib's strictConcaveOn_of_deriv2_neg (from Mathlib.Analysis.Convex.Deriv): given a convex domain D, ContinuousOn f D, and deriv^[2] f x < 0 for all x ∈ interior D, conclude StrictConcaveOn ℝ D f. The signature uses deriv^[2] (the iterated Fréchet derivative as a function ℝ → ℝ) rather than HasDerivAt, which requires care: deriv^[2] f x is only equal to the second derivative when the function is indeed differentiable — which must be established separately via EventuallyEq.deriv_eq. The convex domain is convex_Ioo 0 1, and the interior equals itself since Ioo is already open: interior_Ioo is used to simplify. This is the standard way to prove strict concavity in Lean 4 for smooth functions on open intervals.",
+    "mathContext": "$h(p) = -p\\log p - (1-p)\\log(1-p)$. Criterion: if $h$ is $C^2$ and $h''(p) < 0$ on $(0,1)$, then $h$ is strictly concave. Standard calculus: $h'(p) = \\log(1-p) - \\log p$, $h''(p) = -\\frac{1}{1-p} - \\frac{1}{p} < 0$ for $p \\in (0,1)$.",
+    "significance": "key",
+    "relatedConcepts": ["strictConcaveOn_of_deriv2_neg", "StrictConcaveOn", "convex_Ioo", "interior_Ioo", "Mathlib.Analysis.Convex.Deriv"],
+    "prerequisites": ["Mathlib.Analysis.Convex.Deriv", "convex_Ioo 0 1", "interior_Ioo in Lean 4"]
   },
   {
-    "id": "ann-chain-rule",
+    "id": "ann-sce-product-chain-rule",
+    "proofId": "shannon-channel-coding-oq-04-oq-01",
+    "range": { "startLine": 30, "endLine": 52 },
     "type": "technique",
-    "title": "Chain Rule for (1-x)·log(1-x)",
-    "body": "The derivative of (1-x)·log(1-x) is computed by composing: (a) differentiating y·log(y) at 1-p to get log(1-p)+1, and (b) differentiating 1-x at p to get -1. The chain rule gives (log(1-p)+1)·(-1) = -log(1-p)-1. The simpa [id, zero_sub] pattern fixes the type mismatch between HasDerivAt ((fun _ => 1) - id) (0-1) p and the expected form.",
-    "lineStart": 43,
-    "lineEnd": 55
+    "title": "First Derivative: Product Rule + Chain Rule for -p·log(p) - (1-p)·log(1-p)",
+    "content": "The lemma h_hasDerivAt computes h'(p) = log(1-p) - log(p) in two sub-computations. For x·log(x): (hasDerivAt_id p).mul (Real.hasDerivAt_log (ne_of_gt hp0)) gives HasDerivAt (x·log(x)) (1·log(p) + p·(1/p)) p. The simplification 1·log(p) = log(p) uses simp only [id, one_mul], and p·(1/p) = 1 uses rwa [mul_inv_cancel₀ (ne_of_gt hp0)]. For (1-x)·log(1-x): compose the y·log(y) derivative with the derivative of 1-x (HasDerivAt (1-x) (-1) p, proved by simpa [id, zero_sub] from (hasDerivAt_const p 1).sub (hasDerivAt_id p)), then apply hd_at.comp p hd_sub and convert using ring. The final line `convert (hd_xlogx.add hd_1xlog1x).neg using 1; ring` adds the two sub-derivatives and negates, converting the type to match h.",
+    "mathContext": "$\\frac{d}{dp}[p\\log p] = \\log p + 1$, $\\frac{d}{dp}[(1-p)\\log(1-p)] = (-1)(\\log(1-p)+1) = -\\log(1-p)-1$. Sum: $\\frac{d}{dp}[p\\log p + (1-p)\\log(1-p)] = \\log p - \\log(1-p)$. Negating gives $h'(p) = \\log(1-p) - \\log p$.",
+    "significance": "key",
+    "relatedConcepts": ["hasDerivAt_id", "Real.hasDerivAt_log", "HasDerivAt.mul", "HasDerivAt.comp", "mul_inv_cancel₀", "simpa [id, zero_sub]"],
+    "prerequisites": ["HasDerivAt API in Mathlib", "Real.hasDerivAt_log (requires x ≠ 0)", "mul_inv_cancel₀ for ne_of_gt hypothesis"]
   },
   {
-    "id": "ann-second-deriv",
+    "id": "ann-sce-eventuallyeq-deriv",
+    "proofId": "shannon-channel-coding-oq-04-oq-01",
+    "range": { "startLine": 94, "endLine": 124 },
     "type": "insight",
-    "title": "Second Derivative via EventuallyEq",
-    "body": "Computing deriv^[2] h x directly is avoided by using EventuallyEq.deriv_eq: we show deriv h equals log(1-y)-log(y) in a neighborhood of x (since HasDerivAt implies deriv equality at each point in Ioo 0 1), then differentiate that simpler function. This avoids the difficulty of computing the derivative of a function defined only via its derivative.",
-    "lineStart": 58,
-    "lineEnd": 80
+    "title": "EventuallyEq.deriv_eq: Chaining HasDerivAt Lemmas for deriv^[2]",
+    "content": "The main theorem h_strictConcaveOn needs to show deriv^[2] h x < 0. The challenge: deriv^[2] = deriv (deriv h), and `deriv h` is defined as a limit which doesn't directly simplify. The solution uses EventuallyEq.deriv_eq: if f =ᶠ[𝓝 x] g (equal as functions in a neighborhood), then deriv f x = deriv g x. The proof constructs heq : deriv h =ᶠ[𝓝 x] (fun y => log(1-y) - log y) by applying Filter.eventually_of_mem with Ioo_mem_nhds hx0 hx1 (the neighborhood around x intersects Ioo 0 1) and using (h_hasDerivAt y hy.1 hy.2).deriv at each point. Then rw [EventuallyEq.deriv_eq heq] replaces deriv (deriv h) with deriv (log(1-y)-log(y)), and (h_hasDerivAt2 x hx0 hx1).deriv gives the explicit value. This two-step approach — HasDerivAt for explicit values, EventuallyEq for deriv equality — is idiomatic in Mathlib when the target function is defined only implicitly.",
+    "mathContext": "The key Lean 4 chain: $\\text{deriv}^{[2]} h(x) = \\text{deriv}(\\text{deriv} h)(x) \\overset{\\text{eq.}}{=} \\text{deriv}(\\log(1-\\cdot) - \\log)(x) \\overset{\\text{HasDeriv}}{=} -\\frac{1}{1-x} - \\frac{1}{x}$. The EventuallyEq bridges the implicit `deriv h` to the explicit formula.",
+    "significance": "key",
+    "relatedConcepts": ["EventuallyEq.deriv_eq", "Filter.eventually_of_mem", "Ioo_mem_nhds", "HasDerivAt.deriv", "Function.iterate_succ"],
+    "prerequisites": ["EventuallyEq API in Filter", "Ioo_mem_nhds for nhds in open intervals", "HasDerivAt.deriv: HasDerivAt f f' x → deriv f x = f'"]
   },
   {
-    "id": "ann-neg-proof",
+    "id": "ann-sce-negativity",
+    "proofId": "shannon-channel-coding-oq-04-oq-01",
+    "range": { "startLine": 81, "endLine": 88 },
     "type": "technique",
-    "title": "Negativity via Ring Rewriting",
-    "body": "The key insight for h''(p) < 0: rewrite -1/(1-p) - 1/p = -(1/(1-p) + 1/p) via ring, then use add_pos (div_pos one_pos h1p0) (div_pos one_pos hp0) to show 1/(1-p) + 1/p > 0, so its negation is negative. Direct linarith fails because it cannot link the atoms 1/(1-p) and -1/(1-p) without the ring rewriting step.",
-    "lineStart": 82,
-    "lineEnd": 91
+    "title": "h''(p) < 0: Ring Rewrite + add_pos + linarith",
+    "content": "The lemma h_deriv2_neg proves -1/(1-p) - 1/p < 0 for p ∈ (0,1) in four lines. The critical step is heq: rewrite -1/(1-p) - 1/p = -(1/(1-p) + 1/p) via ring. This is necessary because linarith cannot directly combine the atoms -1/(1-p), -1/p, and 0 — it needs them as negations of positive quantities. After the ring rewrite, h1 : 0 < 1/(1-p) and h2 : 0 < 1/p from div_pos one_pos, then linarith [add_pos h1 h2] concludes -(1/(1-p) + 1/p) < 0. This ring-first-then-linarith pattern is standard in Lean 4 analysis when arithmetic involves fractions that linarith cannot handle directly.",
+    "mathContext": "$-\\frac{1}{1-p} - \\frac{1}{p} = -\\left(\\frac{1}{1-p} + \\frac{1}{p}\\right) < 0$ since $\\frac{1}{1-p} > 0$ and $\\frac{1}{p} > 0$ for $p \\in (0,1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["div_pos", "add_pos", "linarith", "ring for fractions", "positivity tactic"],
+    "prerequisites": ["ring for CommRing ℝ", "div_pos for positive divisor and dividend", "linarith for linear arithmetic over ordered fields"]
   },
   {
-    "id": "ann-continuity",
+    "id": "ann-sce-continuity",
+    "proofId": "shannon-channel-coding-oq-04-oq-01",
+    "range": { "startLine": 102, "endLine": 109 },
     "type": "technique",
-    "title": "ContinuousOn via Composition",
-    "body": "Continuity of h on (0,1) follows by: (1) continuityOn_id.mul (continuousOn_id.log ...) for x·log(x), requiring x ≠ 0 on (0,1); (2) (continuousOn_const.sub continuousOn_id).mul (...).log ...) for (1-x)·log(1-x), requiring 1-x ≠ 0 which needs simp only [id_eq] to simplify the id in the nonvanishing condition before linarith.",
-    "lineStart": 100,
-    "lineEnd": 111
+    "title": "ContinuousOn h: Composition of Continuity Lemmas",
+    "content": "The continuity proof for h on (0,1) unfolds h and applies ContinuousOn.neg, ContinuousOn.add, and ContinuousOn.mul in sequence. For x·log(x): continuousOn_id.mul (continuousOn_id.log (fun x hx => ne_of_gt hx.1)) — the nonvanishing condition for log requires x ≠ 0, provided by hx.1 (x ∈ Ioo 0 1 means 0 < x). For (1-x)·log(1-x): (continuousOn_const.sub continuousOn_id).mul (...).log (fun x hx => ne_of_gt (by simp only [id_eq]; linarith [hx.2])) — the nonvanishing condition for log(1-x) requires 1-x ≠ 0, i.e., x ≠ 1, proved by simp only [id_eq] to simplify the id and then linarith from hx.2 (x < 1). The simp only [id_eq] is needed because the expression involves id applied to x, which doesn't automatically reduce.",
+    "mathContext": "$h(p) = -(p \\log p + (1-p)\\log(1-p))$ is continuous on $(0,1)$: each term is a product of continuous functions, and $\\log$ is continuous away from 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["ContinuousOn.mul", "ContinuousOn.log", "continuousOn_id", "ne_of_gt", "simp only [id_eq]"],
+    "prerequisites": ["ContinuousOn API in Mathlib", "Real.continuousOn_log: continuous on {x | x ≠ 0}", "ne_of_gt for positivity condition"]
   }
 ]
