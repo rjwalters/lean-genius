@@ -59,7 +59,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 181,
-    "assumptions": "9 axioms: f, f_defined, toft_1970, and 6 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: f, toft_1970, stiebitz_1987_disproof. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #917 concerns the maximum number of edges in k-critical graphs, where a graph is k-critical if its chromatic number is exactly k but removing any edge decreases the chromatic number. The central object is f_k(n), the maximum number of edges in a k-critical graph on n vertices. Erdős originally asked (1949) whether f_k(n) = o(n²), expecting that critical graphs could not be too dense.\n\nDirac (1952) surprised Erdős by constructing 6-critical graphs with approximately n²/4 edges, using two disjoint odd cycles with all cross edges. Erdős (1969) generalized this construction for k divisible by 3, and Toft (1970) settled the quadratic growth question completely: f_k(n) grows at least quadratically for all k ≥ 4. The natural next question was whether a precise asymptotic f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n² holds for all k ≥ 6.\n\nStiebitz (1987) disproved the asymptotic conjecture for k not divisible by 3, showing that the mod 3 structure of k fundamentally matters. He also improved the upper bound to f_k(n) < ex(n; K_{k-1}). Luo-Ma-Yang (2023) further tightened the upper bound. The problem remains partially open: the precise asymptotic for k divisible by 3 and the exact value for k = 6 are still unknown.",
