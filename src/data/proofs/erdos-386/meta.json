@@ -93,14 +93,6 @@
       "endLine": 139,
       "summary": "For k = 2, C(n,2) = n(n-1)/2 must be a primorial quotient. Known example: C(21,2) = 210.",
       "mathContext": "For $k=2$: $\\binom{n}{2} = n(n-1)/2 = \\text{cpp}(a,b)$. This asks when a triangular number $T_n = n(n-1)/2$ equals a primorial quotient. Known: $T_{21} = 210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$."
-    },
-    {
-      "id": "erdos-graham-connection",
-      "title": "Connection to Erdős–Graham (1980)",
-      "startLine": 142,
-      "endLine": 158,
-      "summary": "Context from the 1980 monograph, largest prime factor bound, and connections to Problems 384, 385, 387.",
-      "mathContext": "Axiom `choose_largest_prime_le`: $p \\mid \\binom{n}{k} \\Rightarrow p \\le n$ (from $\\binom{n}{k} = n!/(k!(n-k)!)$). Context: Problems 384 (largest prime $> n/2$ by Sylvester-Schur), 385 (smooth numbers in products of consecutive integers), 387 (divisors in $(cn, n]$). All from Erdős-Graham (1980), p. 74."
     }
   ],
   "conclusion": {

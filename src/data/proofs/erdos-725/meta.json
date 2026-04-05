@@ -176,14 +176,6 @@
       "startLine": 138,
       "endLine": 150,
       "mathContext": "Defines `GeneralAsymptotic`: existence of $f(k,n)$ with $L(k,n)/f(k,n) \\to 1$ for all $k \\leq n$. Defines `ExtendedConjecture`: the Erdős-Kaplansky formula holds when $k/n \\to c \\in (0,1)$. Both remain **OPEN** beyond $k = o(n^{6/7})$."
-    },
-    {
-      "id": "main-results",
-      "title": "Main Results Summary",
-      "summary": "Theorem `erdos_725_summary` combines $L(1,n) = n!$ and Godsil-McKay bounds into a single result, proved by exact term `⟨L_1_n, godsil_mckay_bounds⟩`. Demonstrates that the formalization captures both exact values and asymptotic bounds.",
-      "startLine": 156,
-      "endLine": 169,
-      "mathContext": "Theorem `erdos_725_summary` combines $L(1,n) = n!$ and Godsil-McKay bounds into a single result, proved by exact term `⟨L_1_n, godsil_mckay_bounds⟩`."
     }
   ],
   "crossReferences": [

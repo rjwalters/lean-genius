@@ -126,14 +126,6 @@
       "startLine": 65,
       "endLine": 78,
       "mathContext": "$\\exists S \\subseteq \\{\\text{primes}\\},\\; \\forall a,\\; \\text{IsLucas}(a) \\wedge \\gcd(a_0,a_1)=1 \\wedge \\text{Primefree}(a) \\Rightarrow \\forall k,\\, \\exists p \\in S,\\, p \\mid a_k$. The Lucas sequence is periodic mod $p$ with Pisano period $\\pi(p)$."
-    },
-    {
-      "id": "further-results",
-      "title": "Further Results and Open Questions",
-      "summary": "Comments on Vsemirnov's (2004) record-small starting values ($a_0 = 106276436867$) and the central open question: are covering congruences the only mechanism for primefree Lucas sequences?",
-      "startLine": 79,
-      "endLine": 87,
-      "mathContext": "Current record: $a_0 = 106276436867$, $a_1 = 35256392432$ (Vsemirnov 2004). Open: is every primefree coprime Lucas sequence explained by a covering system?"
     }
   ],
   "conclusion": {

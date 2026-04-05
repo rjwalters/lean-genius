@@ -118,14 +118,6 @@
       "startLine": 126,
       "endLine": 132,
       "mathContext": "Key counterexample: $d(\\overline{\\mathbb{D}}_{1/2}) = 1/2 = d([-1,1])$, but the disc always gives 1 component while $[-1,1]$ can give $\\lfloor n/2 \\rfloor$ components. This proves the answer depends on the geometry of $F$, not just $d(F)$."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_1042_summary theorem combining key results",
-      "startLine": 139,
-      "endLine": 151,
-      "mathContext": "`erdos_1042_summary` packages the two main GR results into a single proved conjunction: the $(1-c)n$ bound for $d < 1$ and the $n$-component result for $d = 1$. Proved by `exact ⟨ghosh_ramachandran_small_diameter, ghosh_ramachandran_diameter_one_examples⟩`."
     }
   ],
   "conclusion": {

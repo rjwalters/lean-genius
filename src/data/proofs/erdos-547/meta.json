@@ -111,46 +111,6 @@
       "startLine": 105,
       "endLine": 132,
       "mathContext": "IsPath (Δ $\\leq$ 2), IsStar (one center), IsCaterpillar (path after leaf removal); inclusion proofs and degree axioms."
-    },
-    {
-      "id": "specific-ramsey",
-      "title": "Exact Ramsey Numbers: Paths and Stars",
-      "summary": "R(P_n) = n (paths, minimum among trees) and R(S_n) = 2n - 2 (stars, maximum among trees).",
-      "startLine": 138,
-      "endLine": 138,
-      "mathContext": "Mathematical content: R(P_n) = n (paths, minimum among trees) and R(S_n) = 2n - 2 (stars, maximum among trees)."
-    },
-    {
-      "id": "chvatal",
-      "title": "Chvátal's Theorem (1977)",
-      "summary": "R(T) ≤ (Δ-1)(n-1) + 1; tight for paths (chvatal_tight_for_paths). Analysis: weak for high-degree trees.",
-      "startLine": 138,
-      "endLine": 138,
-      "mathContext": "R(T) $\\leq$ (Δ-1)(n-1) + 1; tight for paths (chvatal_tight_for_paths). Analysis: weak for high-degree trees."
-    },
-    {
-      "id": "main-conjecture",
-      "title": "Erdős-Burr Conjecture: R(T) ≤ 2n - 2",
-      "summary": "Universal bound tree_ramsey_bound; tightness via bound_achieved_by_stars; proved for large n by regularity method.",
-      "startLine": 138,
-      "endLine": 138,
-      "mathContext": "Bound: Universal bound tree_ramsey_bound; tightness via bound_achieved_by_stars; proved for large n by regularity method."
-    },
-    {
-      "id": "comparison",
-      "title": "Bound Comparison: Chvátal vs 2n-2",
-      "summary": "chvatal_vs_main: Chvátal beats 2n-2 iff Δ ∈ {1, 2}, so only for paths.",
-      "startLine": 138,
-      "endLine": 138,
-      "mathContext": "Mathematical content: chvatal_vs_main: Chvátal beats 2n-2 iff Δ ∈ {1, 2}, so only for paths."
-    },
-    {
-      "id": "main-results",
-      "title": "Main Results: erdos_547 and Ordering",
-      "summary": "erdos_547 theorem, tightness (erdos_547_tight), and tree_ramsey_ordering: n ≤ R(T) ≤ 2n - 2.",
-      "startLine": 138,
-      "endLine": 138,
-      "mathContext": "erdos_547 theorem, tightness (erdos_547_tight), and tree_ramsey_ordering: n $\\leq$ R(T) $\\leq$ 2n - 2."
     }
   ],
   "conclusion": {

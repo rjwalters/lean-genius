@@ -142,46 +142,6 @@
       "endLine": 144,
       "summary": "HasDensity, delta, density_sum_one, density_h_eq_1 axioms.",
       "mathContext": "Density of {n : h(n) = k} exists for each k, and sum delta_k = 1."
-    },
-    {
-      "id": "dekoninck-luca",
-      "title": "De Koninck-Luca Lower Bound (2004)",
-      "startLine": 150,
-      "endLine": 150,
-      "summary": "The (log n / log log n)^{1/3} lower bound infinitely often.",
-      "mathContext": "De Koninck-Luca: h(n) >= c(log n / log log n)^{1/3} infinitely often."
-    },
-    {
-      "id": "properties",
-      "title": "Properties of Powerful Numbers",
-      "startLine": 150,
-      "endLine": 150,
-      "summary": "Closure under multiplication, squares and cubes are powerful.",
-      "mathContext": "Powerful numbers closed under multiplication. Every square and cube is powerful."
-    },
-    {
-      "id": "interval",
-      "title": "The Square Interval",
-      "startLine": 150,
-      "endLine": 150,
-      "summary": "Properties of [n², (n+1)²): length 2n+1, endpoint membership.",
-      "mathContext": "Interval [n^2, (n+1)^2) has length 2n+1. Contains n^2 (always powerful)."
-    },
-    {
-      "id": "small-examples",
-      "title": "Small Examples",
-      "startLine": 150,
-      "endLine": 150,
-      "summary": "Computed values: h(1)=1, h(2)=2, h(3)=1.",
-      "mathContext": "h(1)=1, h(2)=2, h(3)=1."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 150,
-      "endLine": 150,
-      "summary": "Problem summary and erdos_942_status theorem.",
-      "mathContext": "OPEN. Known: h(n) unbounded, h(n) >= c(log n/log log n)^{1/3} i.o."
     }
   ],
   "conclusion": {

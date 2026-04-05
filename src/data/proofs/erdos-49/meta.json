@@ -98,14 +98,6 @@
       "endLine": 73,
       "summary": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\pi(N) \\sim N/\\ln N = o(N)$).",
       "mathContext": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\$\\pi$(N) \\sim N/\\ln N = o(N)$)."
-    },
-    {
-      "id": "totient-properties",
-      "title": "Basic Totient Properties",
-      "startLine": 80,
-      "endLine": 87,
-      "summary": "States $\\varphi(p) = p - 1$ for primes and $\\varphi(n) \\leq n$ for all $n$. These are fundamental properties used throughout the formalization.",
-      "mathContext": "Mathematical content: States $\\varphi(p) = p - 1$ for primes and $\\varphi(n) \\leq n$ for all $n$. These are fundamental properties used throughout the formalization."
     }
   ],
   "conclusion": {

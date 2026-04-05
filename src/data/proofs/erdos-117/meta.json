@@ -98,13 +98,6 @@
       "startLine": 53,
       "endLine": 62,
       "summary": "Axiomatizes two key results. `pyber_1987`: exponential bounds $c_1^n \\leq h(n) \\leq c_2^n$ for constants $c_2 > c_1 > 1$, using $\\leq$ rather than strict inequalities. `isaacs_lower`: the independent exponential lower bound $c^n \\leq h(n)$ for some $c > 1$, established before Pyber's comprehensive treatment."
-    },
-    {
-      "id": "observations",
-      "title": "Observations and Open Questions",
-      "startLine": 68,
-      "endLine": 79,
-      "summary": "Axiomatizes the trivial case $h(1) = 1$ (the 1-commuting property forces $G$ to be Abelian). Comments note the connection to Ramsey theory and the central open question: whether $h(n) = \\Theta(c^n)$ for a single constant $c$."
     }
   ],
   "conclusion": {
