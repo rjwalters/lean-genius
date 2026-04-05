@@ -56,7 +56,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 282,
-    "assumptions": "8 axioms: f_example_irreducible, erdos_1953_infinitely_many, hooley_1967_positive_density, and 5 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: hooley_1967_positive_density, browning_2011, n4_plus_2_cubefree. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #978: Power-Free Values of Polynomials**\n\nThis problem concerns the density of integers n for which f(n) avoids having high prime powers as divisors.\n\n**Key History:**\n- Erdős (1953): Infinitely many (d-1)-power-free values exist\n- Hooley (1967): Proved positive density for (d-1)-power-free with asymptotics\n- Heath-Brown (2006): Proved (d-2)-power-free result for d ≥ 10\n- Browning (2011): Extended to d ≥ 9 with asymptotic formula\n\n**Mathematical Setting:**\nA number n is k-power-free if no prime p satisfies p^k | n. Squarefree = 2-power-free, cubefree = 3-power-free. The question asks how often polynomial values are power-free.",
