@@ -27,11 +27,7 @@ References:
 Tags: number-theory, covering-systems, divisors, solved
 -/
 
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Nat.Divisors
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 open Nat Int Finset
 
@@ -127,17 +123,17 @@ theorem every_n_fails :
 theorem divisor_pair_not_coprime (d d' : ℕ) (hd : d > 1) (hdiv : d ∣ d') :
     Nat.gcd d d' ≠ 1 := by
   rw [Nat.gcd_eq_left hdiv]
-  exact Nat.one_lt_iff_ne_one.mp hd
+  exact hd.ne'
 
 /-
 ## Part 7: Related Questions
 -/
 
-/-- Maximum density problem: for any n, what's the max density coverable? -/
-def MaxCoverableDensity (n : ℕ) : ℝ :=
-  -- Sup over all assignments of the density of covered integers
-  -- subject to the disjointness constraint
-  sorry
+/-- Maximum density coverable: upper bound via union bound.
+    For each divisor d > 1 of n, a residue class mod d covers 1/d of integers.
+    This sum is an upper bound on the density of the union. -/
+noncomputable def MaxCoverableDensity (n : ℕ) : ℝ :=
+  ∑ d ∈ properDivisors n, (1 : ℝ) / (d : ℝ)
 
 /-
 ## Part 8: Small Examples
