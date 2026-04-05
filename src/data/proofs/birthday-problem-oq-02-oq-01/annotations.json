@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "ann-birthday-lb-core-ineq",
+    "proofId": "birthday-problem-oq-02-oq-01",
+    "range": { "startLine": 30, "endLine": 74 },
+    "type": "technique",
+    "title": "Core Inequality: 1 - x ≥ exp(-x - x²) for x ∈ [0, 1/2]",
+    "content": "The theorem exp_neg_sub_sq_le_one_sub proves that for 0 ≤ x ≤ 1/2, we have exp(-x-x²) ≤ 1-x. The proof sets y = x+x², then applies Real.sum_le_exp_of_nonneg (Taylor) to get exp(y) ≥ 1 + y + y²/2. The key algebraic step shows (1-x)(1+y+y²/2) ≥ 1 for x ≤ 1/2 via nlinarith with helper bounds x² ≤ x/2 and x³ ≤ x²/2. Finally, 1 ≤ (1-x)·exp(y) gives exp(-y) ≤ 1-x.",
+    "mathContext": "The inequality $\\ln(1-x) \\geq -x - x^2$ holds for $0 \\leq x \\leq 1/2$, which is the $x \\mapsto -x-x^2$ lower bound on $\\ln(1-x)$ from the Taylor series $\\ln(1-x) = -x - x^2/2 - x^3/3 - \\cdots$. The proof avoids logarithms entirely by working with the exponential: $1-x \\geq e^{-x-x^2}$ follows from $e^{x+x^2} \\geq 1 + (x+x^2) + (x+x^2)^2/2$ (Taylor with $n=3$) and $(1-x)(1 + y + y^2/2) \\geq 1$ for $y = x + x^2$, $x \\leq 1/2$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.sum_le_exp_of_nonneg", "Taylor remainder", "nlinarith", "ln lower bound"],
+    "prerequisites": ["Real.exp_le_exp", "Real.exp_neg", "Real.exp_pos", "mul_le_mul_of_nonneg_left"]
+  },
+  {
+    "id": "ann-birthday-lb-product-def",
+    "proofId": "birthday-problem-oq-02-oq-01",
+    "range": { "startLine": 76, "endLine": 100 },
+    "type": "definition",
+    "title": "Birthday Product: ∏(1 - i/d) and Its Basic Properties",
+    "content": "birthdayProduct k d is defined as the Finset product over i ∈ range k of (1 - i/d : ℝ). Two supporting lemmas establish that each factor is in [0,1]: birthdayProduct_factor_nonneg (needs k ≤ d+1 to ensure i ≤ d) and birthdayProduct_factor_le_one (trivial from 0 ≤ i/d). The nonnegativity of the full product follows by Finset.prod_nonneg.",
+    "mathContext": "The exact birthday collision-free probability is $P(k,d) = \\prod_{i=0}^{k-1}(1 - i/d)$ where $d$ is the number of equally likely outcomes (days) and $k$ is the number of people. For $k \\leq d$, every factor is in $[0,1]$, so the product lies in $[0,1]$ and represents a valid probability.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.prod", "Finset.prod_nonneg", "div_nonneg", "birthday collision probability"],
+    "prerequisites": ["Finset.range", "Finset.mem_range", "Nat.cast_nonneg", "div_le_one"]
+  },
+  {
+    "id": "ann-birthday-lb-sum-sq",
+    "proofId": "birthday-problem-oq-02-oq-01",
+    "range": { "startLine": 102, "endLine": 127 },
+    "type": "technique",
+    "title": "Sum of Squares: Formula and Quartic Bound",
+    "content": "sum_sq_formula proves the closed form ∑_{i<k} i² = k(k-1)(2k-1)/6 by induction on k, using push_cast + linarith in the inductive step. sum_sq_le_quartic then proves ∑i² ≤ k²(k-1)²/4 by rewriting via the formula and applying nlinarith with the witness sq_nonneg (k-2) for k ≥ 2 and simp for k=1. This bound is the key estimate bounding the error term in the lower bound.",
+    "mathContext": "The exact formula $\\sum_{i=0}^{k-1} i^2 = \\frac{k(k-1)(2k-1)}{6}$ gives the bound $\\frac{k(k-1)(2k-1)}{6} \\leq \\frac{k^2(k-1)^2}{4}$, i.e., $\\frac{4(2k-1)}{6} \\leq k(k-1)$, i.e., $\\frac{2(2k-1)}{3} \\leq k(k-1)$. This holds for $k \\geq 2$ and is the algebraic reason the error term in the birthday lower bound has the quartic form $k^2(k-1)^2/(4d^2)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_range_succ", "induction", "nlinarith", "sum of squares formula"],
+    "prerequisites": ["push_cast", "linarith", "sq_nonneg", "Nat.cast_nonneg"]
+  },
+  {
+    "id": "ann-birthday-lb-main-bound",
+    "proofId": "birthday-problem-oq-02-oq-01",
+    "range": { "startLine": 129, "endLine": 197 },
+    "type": "insight",
+    "title": "Main Lower Bound: Telescoping Through the Product",
+    "content": "birthdayProduct_lower_bound uses a calc chain with three steps. Step 1: exp(lb) ≤ exp(∑(-i/d - (i/d)²)) by showing the exponent of lb is ≤ the sum, which reduces to ∑i² ≤ k²(k-1)²/4 via sum_sq_le_quartic and Gauss's formula for ∑i. Step 2: factor the exp_sum. Step 3: each exp(-i/d - (i/d)²) ≤ 1-i/d by applying exp_neg_sub_sq_le_one_sub pointwise, using the constraint 2(k-1) ≤ d to verify i/d ≤ 1/2 for all i < k. The product inequality closes via Finset.prod_le_prod.",
+    "mathContext": "The key chain: $\\exp\\!\\left(-\\frac{k(k-1)}{2d} - \\frac{k^2(k-1)^2}{4d^2}\\right) \\leq \\exp\\!\\left(\\sum_{i<k}\\!-\\frac{i}{d} - \\frac{i^2}{d^2}\\right) = \\prod_{i<k} e^{-i/d - (i/d)^2} \\leq \\prod_{i<k}\\left(1 - \\frac{i}{d}\\right)$. The first inequality uses $\\sum i^2/d^2 \\leq k^2(k-1)^2/(4d^2)$; the last uses the core inequality $e^{-x-x^2} \\leq 1-x$ for $x = i/d \\leq 1/2$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_le_prod", "Real.exp_sum", "Real.exp_le_exp", "Finset.sum_range_id_eq_sum_range_succ_div_two"],
+    "prerequisites": ["exp_neg_sub_sq_le_one_sub", "sum_sq_le_quartic", "birthdayProduct definition", "Gauss sum formula"]
+  },
+  {
+    "id": "ann-birthday-lb-two-sided",
+    "proofId": "birthday-problem-oq-02-oq-01",
+    "range": { "startLine": 199, "endLine": 229 },
+    "type": "insight",
+    "title": "Two-Sided Bound: Sandwiching the Birthday Probability",
+    "content": "birthdayProduct_two_sided combines the lower bound from this file with an inline proof of the upper bound (from OQ-02's argument), giving: exp(-k(k-1)/(2d) - k²(k-1)²/(4d²)) ≤ P(k,d) ≤ exp(-k(k-1)/(2d)). The upper bound uses add_one_le_exp (i.e., 1-x ≤ exp(-x)) applied pointwise, then Real.exp_sum and the Gauss formula to collapse the sum. Both bounds hold under 2(k-1) ≤ d.",
+    "mathContext": "The two-sided bound gives a multiplicative approximation: $P(k,d) = e^{-k(k-1)/(2d)} \\cdot \\theta$ where $e^{-k^2(k-1)^2/(4d^2)} \\leq \\theta \\leq 1$. In the standard birthday regime $k \\approx \\sqrt{2d \\ln 2}$ (so $k(k-1)/(2d) \\approx \\ln 2$), the error term $k^2(k-1)^2/(4d^2) \\approx (\\ln 2)^2$ is a fixed constant, showing the leading exponential approximation is tight up to a constant multiplicative factor.",
+    "significance": "key",
+    "relatedConcepts": ["add_one_le_exp", "birthdayProduct_lower_bound", "Real.exp_sum", "birthday paradox regime"],
+    "prerequisites": ["birthdayProduct_lower_bound", "birthdayProduct_factor_nonneg", "Gauss sum formula"]
+  }
+]
