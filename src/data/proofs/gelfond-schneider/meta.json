@@ -3,7 +3,27 @@
   "title": "Gelfond-Schneider Theorem",
   "slug": "gelfond-schneider",
   "description": "If a and b are algebraic numbers with a not equal to 0, 1 and b irrational, then a^b is transcendental. Resolves Hilbert's 7th Problem.",
-  "leanFile": "Proofs/GelfondSchneider.lean",
+  "leanFile": {
+    "path": "Proofs/GelfondSchneider.lean",
+    "imports": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Data.Real.Pi.Bounds",
+      "Mathlib.Data.Complex.Exponential",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "scoped"
+    ],
+    "namespace": "GelfondSchneider",
+    "lineCount": 557,
+    "axiomCount": 6,
+    "sorries": 0
+  },
   "meta": {
     "author": "Gelfond & Schneider (1934)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gelfond%E2%80%93Schneider_theorem",
@@ -41,41 +61,41 @@
       },
       {
         "theorem": "Complex.cpow",
-        "description": "Complex exponentiation a^b = exp(b · log a)",
+        "description": "Complex exponentiation a^b = exp(b \u00b7 log a)",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
       },
       {
         "theorem": "irrational_sqrt_two",
-        "description": "√2 is irrational",
+        "description": "\u221a2 is irrational",
         "module": "Mathlib.Data.Real.Irrational"
       },
       {
         "theorem": "Real.pi",
-        "description": "The constant π",
+        "description": "The constant \u03c0",
         "module": "Mathlib.Data.Real.Pi.Bounds"
       }
     ],
     "originalContributions": [
       "gelfond_schneider: axiomatized complex Gelfond-Schneider theorem",
       "gelfond_schneider_real: proved real version from complex via type coercions",
-      "sqrt_two_algebraic: proved √2 algebraic (root of X² - 2)",
-      "two_pow_sqrt_two_transcendental: proved 2^√2 transcendental",
-      "e_pow_pi_transcendental: proved e^π transcendental via (-1)^(-i)",
-      "sqrt_two_pow_sqrt_two_transcendental: proved (√2)^(√2) transcendental",
-      "two_pow_cbrt_two_transcendental: proved 2^(∛2) transcendental",
-      "log_of_algebraic_transcendental: log of algebraic ≠ 1 is transcendental"
+      "sqrt_two_algebraic: proved \u221a2 algebraic (root of X\u00b2 - 2)",
+      "two_pow_sqrt_two_transcendental: proved 2^\u221a2 transcendental",
+      "e_pow_pi_transcendental: proved e^\u03c0 transcendental via (-1)^(-i)",
+      "sqrt_two_pow_sqrt_two_transcendental: proved (\u221a2)^(\u221a2) transcendental",
+      "two_pow_cbrt_two_transcendental: proved 2^(\u221b2) transcendental",
+      "log_of_algebraic_transcendental: log of algebraic \u2260 1 is transcendental"
     ],
     "axiomCount": 6,
     "lineCount": 557,
     "assumptions": "6 axioms: real_cpow_eq_rpow, neg_one_cpow_neg_I, cbrt_two_algebraic, cbrt_two_irrational, log_algebraic_transcendental, gelfond_schneider. See Lean source for complete statements."
   },
   "overview": {
-    "historicalContext": "**Gelfond-Schneider Theorem — Hilbert's 7th Problem, Wiedijk #60**\n\nIn 1900, David Hilbert posed his famous 23 problems at the International Congress of Mathematicians. Problem #7 asked: *Is $a^b$ always transcendental when $a$ is algebraic ($\\neq 0, 1$) and $b$ is irrational algebraic?*\n\n**Historical Development:**\n- **1900**: Hilbert posed the problem, citing $2^{\\sqrt{2}}$ as the motivating example\n- **1929**: Aleksandr Gelfond proved special cases (e.g., $e^\\pi$)\n- **1934**: Gelfond (*Sur le septième problème de Hilbert*) and Theodor Schneider (*Transzendenzuntersuchungen periodischer Funktionen*) independently proved the full theorem\n- **1966**: Alan Baker generalized to linear forms in logarithms, earning the Fields Medal (1970)\n\n**Famous corollaries**: $2^{\\sqrt{2}}$ (the Gelfond-Schneider constant) and $e^\\pi$ (Gelfond's constant) are both transcendental. The $e^\\pi$ result uses the clever observation $e^\\pi = (-1)^{-i}$ from Euler's identity.",
+    "historicalContext": "**Gelfond-Schneider Theorem \u2014 Hilbert's 7th Problem, Wiedijk #60**\n\nIn 1900, David Hilbert posed his famous 23 problems at the International Congress of Mathematicians. Problem #7 asked: *Is $a^b$ always transcendental when $a$ is algebraic ($\\neq 0, 1$) and $b$ is irrational algebraic?*\n\n**Historical Development:**\n- **1900**: Hilbert posed the problem, citing $2^{\\sqrt{2}}$ as the motivating example\n- **1929**: Aleksandr Gelfond proved special cases (e.g., $e^\\pi$)\n- **1934**: Gelfond (*Sur le septi\u00e8me probl\u00e8me de Hilbert*) and Theodor Schneider (*Transzendenzuntersuchungen periodischer Funktionen*) independently proved the full theorem\n- **1966**: Alan Baker generalized to linear forms in logarithms, earning the Fields Medal (1970)\n\n**Famous corollaries**: $2^{\\sqrt{2}}$ (the Gelfond-Schneider constant) and $e^\\pi$ (Gelfond's constant) are both transcendental. The $e^\\pi$ result uses the clever observation $e^\\pi = (-1)^{-i}$ from Euler's identity.",
     "problemStatement": "**Theorem (Gelfond-Schneider):** If $a, b \\in \\mathbb{C}$ are algebraic with $a \\neq 0, 1$ and $b \\notin \\mathbb{Q}$ (irrational), then $a^b$ is transcendental.\n\nHere $a^b = \\exp(b \\cdot \\log a)$ for a chosen branch of the logarithm.\n\n**Corollaries formalized:**\n1. $2^{\\sqrt{2}}$ is transcendental (Hilbert's original example)\n2. $e^\\pi = (-1)^{-i}$ is transcendental (Gelfond's constant)\n3. $(\\sqrt{2})^{\\sqrt{2}}$ is transcendental\n4. $2^{\\sqrt[3]{2}}$ is transcendental",
     "text": "If a and b are algebraic numbers with a not equal to 0, 1 and b irrational, then a^b is transcendental. Resolves Hilbert's 7th Problem.",
     "proofStrategy": "The complex version is axiomatized (the full proof requires Siegel's lemma, auxiliary function construction, and analytic function theory). The real version `gelfond_schneider_real` is **proved** from the complex version by:\n\n1. **Lifting**: Embed $\\mathbb{R} \\hookrightarrow \\mathbb{C}$, preserving algebraicity\n2. **Irrationality transfer**: Show $b \\notin \\mathbb{Q}$ in $\\mathbb{R}$ implies $b \\notin \\mathbb{Q}$ in $\\mathbb{C}$\n3. **Power compatibility**: Use `real_cpow_eq_rpow` to equate real and complex powers\n4. **Transcendence transfer**: Push transcendence back from $\\mathbb{C}$ to $\\mathbb{R}$\n\nCorollaries are proved by verifying the three hypotheses (algebraic base, algebraic irrational exponent).",
     "keyInsights": [
-      "**Transcendence from algebraic operations**: $a^b$ can be transcendental even when both $a$ and $b$ are algebraic — the algebraic numbers are NOT closed under irrational exponentiation.",
+      "**Transcendence from algebraic operations**: $a^b$ can be transcendental even when both $a$ and $b$ are algebraic \u2014 the algebraic numbers are NOT closed under irrational exponentiation.",
       "**Euler's identity trick for $e^\\pi$**: Since $e^{i\\pi} = -1$, we get $e^\\pi = (-1)^{-i}$. Now $a = -1$ is algebraic ($\\neq 0, 1$) and $b = -i$ is algebraic but irrational (it's not even real), so Gelfond-Schneider applies directly.",
       "**Real-to-complex lifting**: The proof strategy lifts from $\\mathbb{R}$ to $\\mathbb{C}$ and back. This requires careful handling of coercions in Lean: `Complex.ofReal` preserves algebraicity, and `Real.rpow` equals `Complex.cpow` for positive real bases.",
       "**Baker's generalization**: Baker (1966) proved that linear forms $\\beta_0 + \\beta_1 \\log \\alpha_1 + \\cdots + \\beta_n \\log \\alpha_n$ are transcendental (with effective bounds), subsuming both Hermite-Lindemann and Gelfond-Schneider.",
@@ -159,12 +179,12 @@
     {
       "targetId": "abel-ruffini",
       "relationship": "related",
-      "description": "Abel-Ruffini (1824) sits below Gelfond-Schneider (1934) in the expressibility hierarchy: Abel-Ruffini shows certain polynomial roots are not expressible by radicals (a field-theoretic barrier), while Gelfond-Schneider shows $\\alpha^\\beta$ escapes the algebraic numbers entirely for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$ — a strictly stronger transcendence barrier"
+      "description": "Abel-Ruffini (1824) sits below Gelfond-Schneider (1934) in the expressibility hierarchy: Abel-Ruffini shows certain polynomial roots are not expressible by radicals (a field-theoretic barrier), while Gelfond-Schneider shows $\\alpha^\\beta$ escapes the algebraic numbers entirely for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$ \u2014 a strictly stronger transcendence barrier"
     },
     {
       "targetId": "hermite-lindemann",
       "relationship": "foundational",
-      "description": "Hermite-Lindemann ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the precursor. Gelfond-Schneider handles $\\alpha^\\beta = e^{\\beta\\ln\\alpha}$ for algebraic irrational $\\beta$ — a different slice of the transcendence landscape"
+      "description": "Hermite-Lindemann ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is the precursor. Gelfond-Schneider handles $\\alpha^\\beta = e^{\\beta\\ln\\alpha}$ for algebraic irrational $\\beta$ \u2014 a different slice of the transcendence landscape"
     },
     {
       "targetId": "pi-transcendental",
@@ -195,17 +215,17 @@
   "references": [
     {
       "authors": "Gel'fond, Aleksandr O.",
-      "title": "Sur le septième problème de Hilbert",
+      "title": "Sur le septi\u00e8me probl\u00e8me de Hilbert",
       "year": "1934",
-      "venue": "Izvestiya Akademii Nauk SSSR, Seriya Matematicheskaya 7(4), 623–634",
-      "note": "Independent proof that a^b is transcendental when a is algebraic (≠0,1) and b is algebraic irrational"
+      "venue": "Izvestiya Akademii Nauk SSSR, Seriya Matematicheskaya 7(4), 623\u2013634",
+      "note": "Independent proof that a^b is transcendental when a is algebraic (\u22600,1) and b is algebraic irrational"
     },
     {
       "authors": "Schneider, Theodor",
       "title": "Transzendenzuntersuchungen periodischer Funktionen",
       "year": "1934",
-      "venue": "Journal für die reine und angewandte Mathematik 172, 65–69",
-      "note": "Independent proof via different methods, published the same year as Gel'fond's — both solved Hilbert's 7th problem"
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik 172, 65\u201369",
+      "note": "Independent proof via different methods, published the same year as Gel'fond's \u2014 both solved Hilbert's 7th problem"
     },
     {
       "authors": "Baker, Alan",

@@ -7,7 +7,21 @@
   "status": "verified",
   "badge": "mathlib",
   "difficulty": "intermediate",
-  "leanFile": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01.lean",
+  "leanFile": {
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01.lean",
+    "imports": [
+      "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol",
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "JacobiMultiplicativity",
+    "lineCount": 311,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "lineCount": 311,
   "theoremCount": 22,
   "axiomCount": 0,
@@ -18,7 +32,7 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Jacobi_symbol",
     "date": "1837",
     "status": "verified",
-    "note": "Tier B: All theorems are one-liner wrappers of Mathlib's jacobiSym API. No independent proofs — this is a systematic catalog and bridge.",
+    "note": "Tier B: All theorems are one-liner wrappers of Mathlib's jacobiSym API. No independent proofs \u2014 this is a systematic catalog and bridge.",
     "tags": [
       "number-theory",
       "quadratic-reciprocity",
@@ -53,7 +67,7 @@
       },
       {
         "theorem": "jacobiSym.quadratic_reciprocity_one_mod_four",
-        "description": "Simplified reciprocity when a ≡ 1 (mod 4)",
+        "description": "Simplified reciprocity when a \u2261 1 (mod 4)",
         "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
       }
     ],
@@ -61,7 +75,7 @@
       "Systematic catalog of Jacobi symbol multiplicativity: top, bottom, and power laws",
       "Full coprimality characterization: J(a,n) = 0 iff gcd(a,n) > 1",
       "Euclidean reduction steps for algorithmic computation of J(a,n)",
-      "Special reciprocity simplifications for a ≡ 1 (mod 4) and a,n ≡ 3 (mod 4)",
+      "Special reciprocity simplifications for a \u2261 1 (mod 4) and a,n \u2261 3 (mod 4)",
       "9 computational verifications demonstrating the multiplicative structure",
       "Proof that multiplicativity + periodicity + supplements yield O(log^2 n) computation"
     ],
@@ -75,13 +89,13 @@
     "historicalContext": "The Jacobi symbol's value for computational number theory rests on its multiplicative structure: the facts that J(a*b, n) = J(a,n)*J(b,n) and J(a, m*n) = J(a,m)*J(a,n) mean that computing J(a,n) reduces to computing J(p,q) for primes p, q. Combined with periodicity (J(a,n) depends only on a mod n) and the supplements (J(-1,n) = chi_4(n), J(2,n) = chi_8(n)), this gives a Euclidean-algorithm-style computation in O(log^2 n) time without needing to factor n. This efficiency is what makes the Jacobi symbol the computational backbone of the Solovay-Strassen primality test (1977) and related algorithms.",
     "problemStatement": "**Can the multiplicativity reduction fully determine the Jacobi symbol?**\n\nGiven the properties:\n1. $J(a_1 \\cdot a_2, n) = J(a_1, n) \\cdot J(a_2, n)$ (top multiplicativity)\n2. $J(a, m \\cdot n) = J(a, m) \\cdot J(a, n)$ (bottom multiplicativity)\n3. $J(a, n) = J(a \\bmod n, n)$ (periodicity)\n4. $J(a, n) \\cdot J(n, a) = (-1)^{(a-1)/2 \\cdot (n-1)/2}$ (QR)\n5. $J(-1, n) = \\chi_4(n)$, $J(2, n) = \\chi_8(n)$ (supplements)\n\nDoes this system reduce any $J(a,n)$ to base cases in finitely many steps?\n\n**Answer**: YES. Steps: reduce $a$ mod $n$, factor out 2s (using supplements), apply QR to swap and reduce, repeat. Terminates in $O(\\log^2 n)$ steps.",
     "text": "Formalizes the full multiplicative structure of the Jacobi symbol: top and bottom multiplicativity, periodicity, power laws, coprimality characterization, special reciprocity simplifications, and Euclidean reduction steps for efficient computation.",
-    "proofStrategy": "The formalization proceeds in nine parts:\n\n1. **Full Multiplicativity** (Part I): Prove J is completely multiplicative in the top argument and multiplicative in the bottom argument via Mathlib's `mul_left` and `mul_right`.\n\n2. **Periodicity** (Part II): Prove J(a,n) = J(a mod n, n) and establish base cases J(1,n) = 1, J(a,1) = 1, J(0,n) = 0.\n\n3. **Power Laws** (Part III): Derive J(a^k, n) = J(a,n)^k and J(a, n^k) = J(a,n)^k. Prove J(a^2, n) = 1 for coprime arguments.\n\n4. **Coprimality** (Part IV): Characterize when J(a,n) = 0 via gcd, establish the {-1, 0, 1} trichotomy.\n\n5. **Special Reciprocity** (Part V): Simplified forms when a ≡ 1 (mod 4) gives J(a,n) = J(n,a), and both ≡ 3 (mod 4) gives sign flip.\n\n6. **Supplements** (Part VI): Connect J(-1,n), J(2,n), J(-2,n) to Dirichlet characters chi_4, chi_8, chi_8'.\n\n7. **Euclidean Reduction** (Part VII): Formalize the three key algorithmic steps: mod reduction, factor extraction, and reciprocity flip.\n\n8. **Computational Verification** (Part VIII): 9 concrete examples via native_decide.\n\n9. **Character Summary** (Part IX): Prove J(·,n) is a completely multiplicative character from Z to {-1,0,1}.",
+    "proofStrategy": "The formalization proceeds in nine parts:\n\n1. **Full Multiplicativity** (Part I): Prove J is completely multiplicative in the top argument and multiplicative in the bottom argument via Mathlib's `mul_left` and `mul_right`.\n\n2. **Periodicity** (Part II): Prove J(a,n) = J(a mod n, n) and establish base cases J(1,n) = 1, J(a,1) = 1, J(0,n) = 0.\n\n3. **Power Laws** (Part III): Derive J(a^k, n) = J(a,n)^k and J(a, n^k) = J(a,n)^k. Prove J(a^2, n) = 1 for coprime arguments.\n\n4. **Coprimality** (Part IV): Characterize when J(a,n) = 0 via gcd, establish the {-1, 0, 1} trichotomy.\n\n5. **Special Reciprocity** (Part V): Simplified forms when a \u2261 1 (mod 4) gives J(a,n) = J(n,a), and both \u2261 3 (mod 4) gives sign flip.\n\n6. **Supplements** (Part VI): Connect J(-1,n), J(2,n), J(-2,n) to Dirichlet characters chi_4, chi_8, chi_8'.\n\n7. **Euclidean Reduction** (Part VII): Formalize the three key algorithmic steps: mod reduction, factor extraction, and reciprocity flip.\n\n8. **Computational Verification** (Part VIII): 9 concrete examples via native_decide.\n\n9. **Character Summary** (Part IX): Prove J(\u00b7,n) is a completely multiplicative character from Z to {-1,0,1}.",
     "keyInsights": [
-      "The Jacobi symbol is completely multiplicative in BOTH arguments — J(ab,n) = J(a,n)J(b,n) AND J(a,mn) = J(a,m)J(a,n). This bilateral multiplicativity is the core structural property enabling efficient computation.",
+      "The Jacobi symbol is completely multiplicative in BOTH arguments \u2014 J(ab,n) = J(a,n)J(b,n) AND J(a,mn) = J(a,m)J(a,n). This bilateral multiplicativity is the core structural property enabling efficient computation.",
       "Periodicity J(a,n) = J(a mod n, n) combined with QR reciprocity creates a Euclidean-like descent: reduce a mod n, flip via QR, repeat. Each step reduces the problem size, guaranteeing termination in O(log^2 n) steps.",
-      "The supplements J(-1,n) = chi_4(n) and J(2,n) = chi_8(n) are the base cases of the Euclidean computation — after repeated reduction and flipping, you reach J(1,n) = 1, J(-1,n), or J(2,n), all of which are determined by n mod 4 or n mod 8.",
+      "The supplements J(-1,n) = chi_4(n) and J(2,n) = chi_8(n) are the base cases of the Euclidean computation \u2014 after repeated reduction and flipping, you reach J(1,n) = 1, J(-1,n), or J(2,n), all of which are determined by n mod 4 or n mod 8.",
       "The coprimality characterization J(a,n) = 0 iff gcd(a,n) > 1 gives a clean trichotomy: the Jacobi symbol partitions Z x N into three sets based on coprimality and quadratic character.",
-      "When a ≡ 1 (mod 4), reciprocity simplifies to J(a,n) = J(n,a) with no sign factor. This special case accelerates computation for approximately half of all odd inputs."
+      "When a \u2261 1 (mod 4), reciprocity simplifies to J(a,n) = J(n,a) with no sign factor. This special case accelerates computation for approximately half of all odd inputs."
     ],
     "prerequisites": [
       "Number theory (Jacobi symbol, Legendre symbol, quadratic residues)",
@@ -127,7 +141,7 @@
       "title": "Part V: Special Reciprocity Simplifications",
       "startLine": 120,
       "endLine": 137,
-      "summary": "Proves simplified QR when a ≡ 1 (mod 4) gives J(a,n) = J(n,a) and when both ≡ 3 (mod 4) gives J(a,n) = -J(n,a).",
+      "summary": "Proves simplified QR when a \u2261 1 (mod 4) gives J(a,n) = J(n,a) and when both \u2261 3 (mod 4) gives J(a,n) = -J(n,a).",
       "mathContext": "When $a \\equiv 1 \\pmod{4}$, the factor $(-1)^{(a-1)/2 \\cdot (n-1)/2} = 1$ since $(a-1)/2$ is even."
     },
     {
@@ -159,7 +173,7 @@
       "title": "Part IX: The Complete Multiplicative Character",
       "startLine": 234,
       "endLine": 252,
-      "summary": "Summarizes J(·,n) as a completely multiplicative character Z -> {-1,0,1} with multiplicativity preserving 1 and products.",
+      "summary": "Summarizes J(\u00b7,n) as a completely multiplicative character Z -> {-1,0,1} with multiplicativity preserving 1 and products.",
       "mathContext": "The Jacobi symbol $J(\\cdot, n) : \\mathbb{Z} \\to \\{-1, 0, 1\\}$ is a completely multiplicative function factoring through $\\mathbb{Z}/n\\mathbb{Z}$."
     }
   ],

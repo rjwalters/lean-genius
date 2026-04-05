@@ -7,7 +7,23 @@
   "status": "verified",
   "badge": "mathlib",
   "difficulty": "intermediate",
-  "leanFile": "Proofs/SolutionOfCubicOQ03OQ03.lean",
+  "leanFile": {
+    "path": "Proofs/SolutionOfCubicOQ03OQ03.lean",
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Log",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "ResolventCubicCardano",
+    "lineCount": 262,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "lineCount": 262,
   "theoremCount": 8,
   "axiomCount": 0,
@@ -18,14 +34,34 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Quartic_equation#Ferrari's_solution",
     "date": "1540",
     "status": "verified",
-    "tags": ["algebra", "polynomials", "cubic-equations", "quartic-equations", "cardano-formula", "ferrari-method", "intermediate"],
+    "tags": [
+      "algebra",
+      "polynomials",
+      "cubic-equations",
+      "quartic-equations",
+      "cardano-formula",
+      "ferrari-method",
+      "intermediate"
+    ],
     "proofRepoPath": "Proofs/SolutionOfCubicOQ03OQ03.lean",
     "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "ring", "description": "Ring tactic for algebraic identity verification", "module": "Mathlib.Tactic"},
-      {"theorem": "mul_eq_zero", "description": "Product is zero iff a factor is zero", "module": "Mathlib.Algebra.GroupWithZero.Basic"},
-      {"theorem": "exp_two_pi_mul_I", "description": "e^(2piI) = 1", "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"}
+      {
+        "theorem": "ring",
+        "description": "Ring tactic for algebraic identity verification",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "mul_eq_zero",
+        "description": "Product is zero iff a factor is zero",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "exp_two_pi_mul_I",
+        "description": "e^(2piI) = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      }
     ],
     "originalContributions": [
       "Depression of resolvent cubic via m = t - 5p/6 substitution",
@@ -41,7 +77,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Lodovico Ferrari (1522-1565), a student of Gerolamo Cardano, discovered the method for solving quartic equations around 1540 by reducing them to a cubic resolvent. Cardano published both Ferrari's quartic solution and his own cubic formula in *Ars Magna* (1545). The chain of reductions — quartic → resolvent cubic → depressed cubic → radicals — represents one of the great algebraic achievements of the Renaissance. The key insight of this file: Ferrari's resolvent cubic is not in Cardano's depressed form by default, but the Tschirnhaus-style substitution m = t − 5p/6 transforms it exactly. The primitive cube roots of unity ω = exp(2πi/3), satisfying ω³=1 and 1+ω+ω²=0, are essential for expressing all three Cardano roots of the depressed resolvent, corresponding to the three solutions of the original quartic.",
+    "historicalContext": "Lodovico Ferrari (1522-1565), a student of Gerolamo Cardano, discovered the method for solving quartic equations around 1540 by reducing them to a cubic resolvent. Cardano published both Ferrari's quartic solution and his own cubic formula in *Ars Magna* (1545). The chain of reductions \u2014 quartic \u2192 resolvent cubic \u2192 depressed cubic \u2192 radicals \u2014 represents one of the great algebraic achievements of the Renaissance. The key insight of this file: Ferrari's resolvent cubic is not in Cardano's depressed form by default, but the Tschirnhaus-style substitution m = t \u2212 5p/6 transforms it exactly. The primitive cube roots of unity \u03c9 = exp(2\u03c0i/3), satisfying \u03c9\u00b3=1 and 1+\u03c9+\u03c9\u00b2=0, are essential for expressing all three Cardano roots of the depressed resolvent, corresponding to the three solutions of the original quartic.",
     "problemStatement": "**Does the resolvent cubic reduce to Cardano's depressed form?**\n\nThe resolvent cubic 8m^3 + 20pm^2 + (16p^2 - 8r)m + (4p^3 - 4pr - q^2) = 0 arises from Ferrari's method for the depressed quartic y^4 + py^2 + qy + r = 0.\n\n**Answer**: YES. The substitution m = t - 5p/6 transforms it into t^3 + At + B = 0 where A = -p^2/12 - r and B = -p^3/108 + pr/3 - q^2/8.",
     "text": "Proves that Ferrari's resolvent cubic for the quartic equation reduces to a depressed cubic solvable by Cardano's formula.",
     "proofStrategy": "The proof has three main parts: (1) Prove the ring identity that the resolvent at m = t - 5p/6 equals 8 times the depressed cubic, verified by ring. (2) Use mul_eq_zero to convert between the two forms (since 8 != 0). (3) Verify that Cardano roots of the depressed cubic give valid Ferrari parameters.",
@@ -52,30 +88,101 @@
       "Cardano's formula gives t = u + v where u^3 + v^3 = -B and uv = -A/3, and the Ferrari parameter is m = t - 5p/6.",
       "This completes the algebraic chain: every quartic is solvable in radicals via quartic -> Ferrari -> resolvent cubic -> Cardano."
     ],
-    "prerequisites": ["Algebra (cubic and quartic equations, Cardano's formula, Ferrari's method)", "Complex analysis (cube roots of unity)"]
+    "prerequisites": [
+      "Algebra (cubic and quartic equations, Cardano's formula, Ferrari's method)",
+      "Complex analysis (cube roots of unity)"
+    ]
   },
   "sections": [
-    {"id": "resolvent", "title": "The Resolvent Cubic", "startLine": 40, "endLine": 55, "summary": "Defines the resolvent cubic and its monic form.", "mathContext": "The resolvent cubic $8m^3 + 20pm^2 + (16p^2 - 8r)m + (4p^3 - 4pr - q^2) = 0$."},
-    {"id": "depression", "title": "Depressing the Resolvent", "startLine": 57, "endLine": 105, "summary": "Proves the ring identity and the depression theorem via m = t - 5p/6.", "mathContext": "Substitution $m = t - 5p/6$ gives $t^3 + At + B = 0$ where $A = -p^2/12 - r$, $B = -p^3/108 + pr/3 - q^2/8$."},
-    {"id": "cardano-connection", "title": "Connecting to Cardano", "startLine": 107, "endLine": 128, "summary": "Defines the Cardano coefficients and discriminant for the depressed resolvent.", "mathContext": "The depressed resolvent is exactly Cardano's form $t^3 + pt + q = 0$."},
-    {"id": "recovery", "title": "Recovery of Ferrari Parameter", "startLine": 130, "endLine": 145, "summary": "Shows how to recover the Ferrari parameter m from a Cardano root t.", "mathContext": "$m = t - 5p/6$ is a valid resolvent root."},
-    {"id": "verification", "title": "Root Correctness", "startLine": 173, "endLine": 193, "summary": "Verifies the first Cardano root satisfies the resolvent cubic.", "mathContext": "If $u^3 + v^3 = -B$ and $uv = -A/3$, then $m = u + v - 5p/6$ is a resolvent root."},
-    {"id": "chain", "title": "Complete Solution Chain", "startLine": 195, "endLine": 220, "summary": "Assembles the full quartic-to-Cardano chain in a single theorem.", "mathContext": "Quartic $\\to$ resolvent cubic $\\to$ depressed cubic $\\to$ Cardano $\\to$ radicals."}
+    {
+      "id": "resolvent",
+      "title": "The Resolvent Cubic",
+      "startLine": 40,
+      "endLine": 55,
+      "summary": "Defines the resolvent cubic and its monic form.",
+      "mathContext": "The resolvent cubic $8m^3 + 20pm^2 + (16p^2 - 8r)m + (4p^3 - 4pr - q^2) = 0$."
+    },
+    {
+      "id": "depression",
+      "title": "Depressing the Resolvent",
+      "startLine": 57,
+      "endLine": 105,
+      "summary": "Proves the ring identity and the depression theorem via m = t - 5p/6.",
+      "mathContext": "Substitution $m = t - 5p/6$ gives $t^3 + At + B = 0$ where $A = -p^2/12 - r$, $B = -p^3/108 + pr/3 - q^2/8$."
+    },
+    {
+      "id": "cardano-connection",
+      "title": "Connecting to Cardano",
+      "startLine": 107,
+      "endLine": 128,
+      "summary": "Defines the Cardano coefficients and discriminant for the depressed resolvent.",
+      "mathContext": "The depressed resolvent is exactly Cardano's form $t^3 + pt + q = 0$."
+    },
+    {
+      "id": "recovery",
+      "title": "Recovery of Ferrari Parameter",
+      "startLine": 130,
+      "endLine": 145,
+      "summary": "Shows how to recover the Ferrari parameter m from a Cardano root t.",
+      "mathContext": "$m = t - 5p/6$ is a valid resolvent root."
+    },
+    {
+      "id": "verification",
+      "title": "Root Correctness",
+      "startLine": 173,
+      "endLine": 193,
+      "summary": "Verifies the first Cardano root satisfies the resolvent cubic.",
+      "mathContext": "If $u^3 + v^3 = -B$ and $uv = -A/3$, then $m = u + v - 5p/6$ is a resolvent root."
+    },
+    {
+      "id": "chain",
+      "title": "Complete Solution Chain",
+      "startLine": 195,
+      "endLine": 220,
+      "summary": "Assembles the full quartic-to-Cardano chain in a single theorem.",
+      "mathContext": "Quartic $\\to$ resolvent cubic $\\to$ depressed cubic $\\to$ Cardano $\\to$ radicals."
+    }
   ],
   "crossReferences": [
-    {"targetId": "solution-of-cubic-oq-03", "relationship": "extends", "description": "Parent: Vieta's formulas for Cardano's roots. This file connects Cardano to Ferrari's quartic method."},
-    {"targetId": "general-quartic", "relationship": "related", "description": "Ferrari's quartic solution. This file proves the resolvent cubic from that file reduces to Cardano's form."},
-    {"targetId": "solution-of-cubic", "relationship": "foundational", "description": "Cardano's formula for the depressed cubic. The resolvent cubic reduces to this form."}
+    {
+      "targetId": "solution-of-cubic-oq-03",
+      "relationship": "extends",
+      "description": "Parent: Vieta's formulas for Cardano's roots. This file connects Cardano to Ferrari's quartic method."
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "related",
+      "description": "Ferrari's quartic solution. This file proves the resolvent cubic from that file reduces to Cardano's form."
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "foundational",
+      "description": "Cardano's formula for the depressed cubic. The resolvent cubic reduces to this form."
+    }
   ],
   "references": [
-    {"authors": "Cardano, Gerolamo", "title": "Ars Magna", "year": "1545", "venue": "Nuremberg", "note": "Original publication of Cardano's cubic formula and Ferrari's quartic method"}
+    {
+      "authors": "Cardano, Gerolamo",
+      "title": "Ars Magna",
+      "year": "1545",
+      "venue": "Nuremberg",
+      "note": "Original publication of Cardano's cubic formula and Ferrari's quartic method"
+    }
   ],
   "parentProof": "solution-of-cubic-oq-03",
   "openQuestion": "Prove the resolvent cubic reduces to Cardano's formula",
-  "tags": ["algebra", "polynomials", "cubic-equations", "quartic-equations"],
+  "tags": [
+    "algebra",
+    "polynomials",
+    "cubic-equations",
+    "quartic-equations"
+  ],
   "conclusion": {
     "summary": "Complete proof that Ferrari's resolvent cubic reduces to Cardano's depressed form via m = t - 5p/6. 9 theorems, 0 sorries, 0 axioms. Completes the quartic-cubic-Cardano solution chain.",
     "implications": "Every quartic equation over C is solvable in radicals: the full chain quartic -> depressed quartic -> resolvent cubic -> depressed cubic -> Cardano is now formally connected.",
-    "openQuestions": ["Can the Ferrari factorization axioms in GeneralQuartic.lean be proved?", "Can the explicit quartic roots be computed and verified?"]
+    "openQuestions": [
+      "Can the Ferrari factorization axioms in GeneralQuartic.lean be proved?",
+      "Can the explicit quartic roots be computed and verified?"
+    ]
   }
 }

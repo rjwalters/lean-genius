@@ -3,7 +3,28 @@
   "title": "Fourier Coefficient Decay Under H\u00f6lder Continuity",
   "slug": "fourier-series-oq-02",
   "description": "If f is \u03b1-H\u00f6lder continuous on the circle, its Fourier coefficients decay at rate O(1/|n|^\u03b1). This bound is optimal. Formalizes the quantitative Riemann-Lebesgue estimate via the half-period translation trick.",
-  "leanFile": "Proofs/FourierSeriesOQ02.lean",
+  "leanFile": {
+    "path": "Proofs/FourierSeriesOQ02.lean",
+    "imports": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.Fourier.FourierTransform",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.l2Space",
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.Analysis.Normed.Group.Quotient",
+      "Mathlib.MeasureTheory.Group.Integral",
+      "Mathlib.Topology.MetricSpace.Holder",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "scoped"
+    ],
+    "namespace": "FourierHolderDecay",
+    "lineCount": 491,
+    "axiomCount": 1,
+    "sorries": 1
+  },
   "meta": {
     "author": "Classical (Bernstein, Zygmund)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Rate_of_convergence",

@@ -1,10 +1,10 @@
 {
   "id": "erdos-50",
-  "title": "Erdős Problem #50: Singularity of the Totient Distribution Function",
+  "title": "Erd\u0151s Problem #50: Singularity of the Totient Distribution Function",
   "slug": "erdos-50",
-  "description": "Schoenberg proved the density f(c) = d({n : φ(n)/n < c}) exists for all c. Erdős showed f is purely singular. $250 prize: is it true that f'(x) > 0 for no x?",
+  "description": "Schoenberg proved the density f(c) = d({n : \u03c6(n)/n < c}) exists for all c. Erd\u0151s showed f is purely singular. $250 prize: is it true that f'(x) > 0 for no x?",
   "meta": {
-    "author": "Schoenberg (1928, density existence); Erdős (pure singularity, $250 prize question)",
+    "author": "Schoenberg (1928, density existence); Erd\u0151s (pure singularity, $250 prize question)",
     "sourceUrl": "https://erdosproblems.com/50",
     "date": "1930s",
     "status": "verified",
@@ -26,12 +26,12 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
-        "description": "Euler's totient function φ(n)",
+        "description": "Euler's totient function \u03c6(n)",
         "module": "Mathlib.Data.Nat.Totient"
       },
       {
         "theorem": "MeasureTheory.MeasureSpace.volume",
-        "description": "Lebesgue measure on ℝ",
+        "description": "Lebesgue measure on \u211d",
         "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
       },
       {
@@ -51,18 +51,18 @@
       }
     ],
     "originalContributions": [
-      "totientRatioBelow: sublevel set {n > 0 : φ(n)/n < c}",
+      "totientRatioBelow: sublevel set {n > 0 : \u03c6(n)/n < c}",
       "naturalDensity: asymptotic natural density via Filter.liminf",
       "schoenbergF: Schoenberg's distribution function f(c)",
-      "schoenberg_density_exists: density exists for all c ∈ [0,1] (axiomatized)",
+      "schoenberg_density_exists: density exists for all c \u2208 [0,1] (axiomatized)",
       "schoenbergF_mono: monotonicity of f (axiomatized)",
       "schoenbergF_boundary: f(0) = 0 and f(1) = 1 (axiomatized)",
       "schoenbergF_continuous: continuity of f (axiomatized)",
       "erdos_purely_singular: f'(x) = 0 a.e. (axiomatized)",
       "erdos_50_conjecture: f'(x) > 0 for no x (axiomatized)",
       "totient_ratio_product: Euler product formula (axiomatized)",
-      "totient_ratio_inf: liminf φ(n)/n = 0 (axiomatized)",
-      "totient_ratio_lt_one: φ(n)/n < 1 for n > 1 (axiomatized)"
+      "totient_ratio_inf: liminf \u03c6(n)/n = 0 (axiomatized)",
+      "totient_ratio_lt_one: \u03c6(n)/n < 1 for n > 1 (axiomatized)"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
@@ -70,16 +70,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Isaac Schoenberg proved in 1928 that for every $c \\in [0,1]$, the natural density $f(c) = d(\\{n : \\varphi(n)/n < c\\})$ exists, giving a well-defined continuous distribution function on $[0,1]$. Erdős studied this function intensively and proved a remarkable result: $f$ is purely singular—continuous and non-decreasing from 0 to 1, yet $f'(x) = 0$ for Lebesgue-almost every $x$. This makes $f$ analogous to the classical Cantor function (devil's staircase), which climbs from 0 to 1 on the Cantor set while having zero derivative almost everywhere. Erdős offered a $250 prize for the following strengthening: is it true that there is no $x$ at all where $f'(x)$ exists and is positive? This is the subtle distinction between 'zero derivative almost everywhere' (which allows a measure-zero exceptional set) and 'zero derivative everywhere it exists' (no exceptions). The problem connects Euler's totient function—one of the oldest objects in number theory, studied by Euler in the 1760s—to deep questions in real analysis about the differentiability of singular measures. The multiplicative structure $\\varphi(n)/n = \\prod_{p \\mid n}(1-1/p)$ ties the distribution to probabilistic number theory and Mertens' theorem on products over primes.",
-    "problemStatement": "**Problem Statement (OPEN, $250 prize)**\n\nLet $f(c) = d(\\{n : \\varphi(n)/n < c\\})$ be Schoenberg's distribution function. Erdős proved $f'(x) = 0$ for Lebesgue-almost every $x$.\n\n**Question:** Is it true that there is no $x$ such that $f'(x)$ exists and is positive?\n\nEquivalently: wherever $f$ is differentiable, is the derivative necessarily zero?",
-    "text": "Schoenberg proved the density f(c) = d({n : φ(n)/n < c}) exists for all c. Erdős showed f is purely singular. $250 prize: is it true that f'(x) > 0 for no x?",
-    "proofStrategy": "The formalization defines the totient ratio sublevel set, natural density via $\\texttt{Filter.liminf}$, and Schoenberg's distribution function $f$. It axiomatizes Schoenberg's density existence theorem, the properties of $f$ (monotonicity, boundary values, continuity), Erdős's pure singularity result ($f' = 0$ a.e.), and the $250 prize conjecture ($f'(x) > 0$ for no $x$). Properties of $\\varphi(n)/n$ including the Euler product formula are also axiomatized.",
+    "historicalContext": "Isaac Schoenberg proved in 1928 that for every $c \\in [0,1]$, the natural density $f(c) = d(\\{n : \\varphi(n)/n < c\\})$ exists, giving a well-defined continuous distribution function on $[0,1]$. Erd\u0151s studied this function intensively and proved a remarkable result: $f$ is purely singular\u2014continuous and non-decreasing from 0 to 1, yet $f'(x) = 0$ for Lebesgue-almost every $x$. This makes $f$ analogous to the classical Cantor function (devil's staircase), which climbs from 0 to 1 on the Cantor set while having zero derivative almost everywhere. Erd\u0151s offered a $250 prize for the following strengthening: is it true that there is no $x$ at all where $f'(x)$ exists and is positive? This is the subtle distinction between 'zero derivative almost everywhere' (which allows a measure-zero exceptional set) and 'zero derivative everywhere it exists' (no exceptions). The problem connects Euler's totient function\u2014one of the oldest objects in number theory, studied by Euler in the 1760s\u2014to deep questions in real analysis about the differentiability of singular measures. The multiplicative structure $\\varphi(n)/n = \\prod_{p \\mid n}(1-1/p)$ ties the distribution to probabilistic number theory and Mertens' theorem on products over primes.",
+    "problemStatement": "**Problem Statement (OPEN, $250 prize)**\n\nLet $f(c) = d(\\{n : \\varphi(n)/n < c\\})$ be Schoenberg's distribution function. Erd\u0151s proved $f'(x) = 0$ for Lebesgue-almost every $x$.\n\n**Question:** Is it true that there is no $x$ such that $f'(x)$ exists and is positive?\n\nEquivalently: wherever $f$ is differentiable, is the derivative necessarily zero?",
+    "text": "Schoenberg proved the density f(c) = d({n : \u03c6(n)/n < c}) exists for all c. Erd\u0151s showed f is purely singular. $250 prize: is it true that f'(x) > 0 for no x?",
+    "proofStrategy": "The formalization defines the totient ratio sublevel set, natural density via $\\texttt{Filter.liminf}$, and Schoenberg's distribution function $f$. It axiomatizes Schoenberg's density existence theorem, the properties of $f$ (monotonicity, boundary values, continuity), Erd\u0151s's pure singularity result ($f' = 0$ a.e.), and the $250 prize conjecture ($f'(x) > 0$ for no $x$). Properties of $\\varphi(n)/n$ including the Euler product formula are also axiomatized.",
     "keyInsights": [
-      "**Cantor function analogy:** Schoenberg's $f$ is a naturally occurring 'devil's staircase'—continuous and non-decreasing from 0 to 1 but with zero derivative almost everywhere, just like the classical Cantor function",
-      "**Measure-zero vs. empty:** Erdős's $250 question distinguishes between $f'(x) = 0$ for a.e. $x$ (proved) and $f'(x) > 0$ for no $x$ (open)—a subtle gap between measure theory and pointwise analysis",
+      "**Cantor function analogy:** Schoenberg's $f$ is a naturally occurring 'devil's staircase'\u2014continuous and non-decreasing from 0 to 1 but with zero derivative almost everywhere, just like the classical Cantor function",
+      "**Measure-zero vs. empty:** Erd\u0151s's $250 question distinguishes between $f'(x) = 0$ for a.e. $x$ (proved) and $f'(x) > 0$ for no $x$ (open)\u2014a subtle gap between measure theory and pointwise analysis",
       "**Multiplicative structure:** The Euler product $\\varphi(n)/n = \\prod_{p \\mid n}(1-1/p)$ makes the totient ratio depend only on the prime support, connecting to probabilistic independence of prime divisibility events",
       "**Mertens' theorem connection:** The vanishing of $\\varphi(n)/n$ along primorials follows from $\\prod_{p \\leq x}(1-1/p) \\sim 2e^{-\\gamma}/\\log x \\to 0$, connecting Schoenberg's function to prime distribution theory",
-      "**Singular measures in nature:** Unlike the Cantor function (which is constructed artificially), Schoenberg's $f$ arises naturally from number-theoretic data—a rare example of a 'natural' singular distribution"
+      "**Singular measures in nature:** Unlike the Cantor function (which is constructed artificially), Schoenberg's $f$ arises naturally from number-theoretic data\u2014a rare example of a 'natural' singular distribution"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -110,64 +110,78 @@
     },
     {
       "id": "singularity",
-      "title": "Erdős's Pure Singularity Result",
+      "title": "Erd\u0151s's Pure Singularity Result",
       "startLine": 69,
       "endLine": 78,
-      "summary": "Axiomatizes Erdős's theorem: $f'(x) = 0$ for Lebesgue-almost every $x \\in [0,1]$, making $f$ a purely singular distribution function analogous to the Cantor function."
+      "summary": "Axiomatizes Erd\u0151s's theorem: $f'(x) = 0$ for Lebesgue-almost every $x \\in [0,1]$, making $f$ a purely singular distribution function analogous to the Cantor function."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture ($250 Prize)",
       "startLine": 79,
       "endLine": 79,
-      "summary": "The $250 prize question: $\\neg \\exists x,\\; \\exists d > 0 : f'(x) = d$. Wherever $f$ is differentiable, the derivative must be zero—strengthening 'a.e.' to 'everywhere it exists.'"
+      "summary": "The $250 prize question: $\\neg \\exists x,\\; \\exists d > 0 : f'(x) = d$. Wherever $f$ is differentiable, the derivative must be zero\u2014strengthening 'a.e.' to 'everywhere it exists.'"
     }
   ],
   "crossReferences": [
     {
       "targetId": "euler-totient",
       "relationship": "uses",
-      "description": "Schoenberg's distribution function is built from the totient ratio φ(n)/n, directly using Euler's totient function"
+      "description": "Schoenberg's distribution function is built from the totient ratio \u03c6(n)/n, directly using Euler's totient function"
     },
     {
       "targetId": "erdos-409",
       "relationship": "related",
-      "description": "Both study iteration/distribution properties of Euler's totient function: #409 studies φ iteration dynamics, #50 studies the statistical distribution of φ(n)/n"
+      "description": "Both study iteration/distribution properties of Euler's totient function: #409 studies \u03c6 iteration dynamics, #50 studies the statistical distribution of \u03c6(n)/n"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #50 asks whether Schoenberg's distribution function f—the natural density of {n : φ(n)/n < c}—has the property that f'(x) > 0 for no x at all. Erdős proved f is purely singular (f' = 0 a.e.), but the pointwise strengthening remains open with a $250 prize. The formalization axiomatizes Schoenberg's density theorem, all properties of f, Erdős's singularity result, and the prize conjecture.",
-    "implications": "A positive answer would establish that Schoenberg's function is 'maximally singular'—differentiable nowhere with positive derivative. This would reveal deep structure in the distribution of φ(n)/n and connect to broader questions about singular measures arising from number-theoretic data.",
+    "summary": "Erd\u0151s Problem #50 asks whether Schoenberg's distribution function f\u2014the natural density of {n : \u03c6(n)/n < c}\u2014has the property that f'(x) > 0 for no x at all. Erd\u0151s proved f is purely singular (f' = 0 a.e.), but the pointwise strengthening remains open with a $250 prize. The formalization axiomatizes Schoenberg's density theorem, all properties of f, Erd\u0151s's singularity result, and the prize conjecture.",
+    "implications": "A positive answer would establish that Schoenberg's function is 'maximally singular'\u2014differentiable nowhere with positive derivative. This would reveal deep structure in the distribution of \u03c6(n)/n and connect to broader questions about singular measures arising from number-theoretic data.",
     "openQuestions": [
-      "Does f'(x) > 0 for any x at all? ($250 Erdős prize)",
+      "Does f'(x) > 0 for any x at all? ($250 Erd\u0151s prize)",
       "What is the Hausdorff dimension of the singular support of the measure df?",
-      "Can the singular measure df be expressed as a weak limit of discrete measures on the rationals {φ(n)/n}?",
-      "What is the modulus of continuity of f? Is f Hölder continuous, and if so, with what exponent?",
-      "Do analogous distribution functions for other multiplicative functions (e.g., σ(n)/n) exhibit similar singularity?"
+      "Can the singular measure df be expressed as a weak limit of discrete measures on the rationals {\u03c6(n)/n}?",
+      "What is the modulus of continuity of f? Is f H\u00f6lder continuous, and if so, with what exponent?",
+      "Do analogous distribution functions for other multiplicative functions (e.g., \u03c3(n)/n) exhibit similar singularity?"
     ]
   },
   "references": [
     {
       "authors": "Schoenberg, Isaac Jacob",
-      "title": "Über die asymptotische Verteilung reeller Zahlen mod 1",
+      "title": "\u00dcber die asymptotische Verteilung reeller Zahlen mod 1",
       "year": "1928",
-      "venue": "Mathematische Zeitschrift, vol. 28, pp. 171–199",
-      "note": "Introduced the distribution function f(c) = density of {n : φ(n)/n < c}, proving it is continuous and strictly increasing on [0,1]. This is the function whose singularity Problem #50 studies"
+      "venue": "Mathematische Zeitschrift, vol. 28, pp. 171\u2013199",
+      "note": "Introduced the distribution function f(c) = density of {n : \u03c6(n)/n < c}, proving it is continuous and strictly increasing on [0,1]. This is the function whose singularity Problem #50 studies"
     },
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "On the distribution function of additive functions",
       "year": "1946",
-      "venue": "Annals of Mathematics, vol. 47, no. 1, pp. 1–20",
+      "venue": "Annals of Mathematics, vol. 47, no. 1, pp. 1\u201320",
       "note": "Proved Schoenberg's distribution function is purely singular (f' = 0 a.e.), the key known result axiomatized in this formalization. The $250 prize question asks whether this extends to 'everywhere it exists'"
     },
     {
-      "authors": "Erdős Problems",
+      "authors": "Erd\u0151s Problems",
       "title": "Problem #50",
       "year": "2024",
       "venue": "https://erdosproblems.com/50",
       "note": "Online catalog entry with $250 prize, current status (open), and related problems"
     }
   ],
-  "leanFile": "Proofs/Erdos50Problem.lean"
+  "leanFile": {
+    "path": "Proofs/Erdos50Problem.lean",
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+    ],
+    "opens": [
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 79,
+    "axiomCount": 0,
+    "sorries": 0
+  }
 }

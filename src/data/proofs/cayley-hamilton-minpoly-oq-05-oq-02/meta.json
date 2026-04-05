@@ -7,7 +7,19 @@
   "status": "verified",
   "badge": "mathlib",
   "difficulty": "intermediate",
-  "leanFile": "Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean",
+  "leanFile": {
+    "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "MinpolyDegreeRelations",
+    "lineCount": 262,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "lineCount": 262,
   "theoremCount": 16,
   "axiomCount": 0,

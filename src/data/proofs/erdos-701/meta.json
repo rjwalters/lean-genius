@@ -1,10 +1,10 @@
 {
   "id": "erdos-701",
-  "title": "Chvátal's Conjecture on Intersecting Families",
+  "title": "Chv\u00e1tal's Conjecture on Intersecting Families",
   "slug": "erdos-701",
-  "description": "Let F be a hereditary family. There exists x such that every intersecting subfamily F' has |F'| ≤ |{A ∈ F : x ∈ A}|. Status: OPEN with partial results.",
+  "description": "Let F be a hereditary family. There exists x such that every intersecting subfamily F' has |F'| \u2264 |{A \u2208 F : x \u2208 A}|. Status: OPEN with partial results.",
   "meta": {
-    "author": "Chvátal",
+    "author": "Chv\u00e1tal",
     "sourceUrl": "https://erdosproblems.com/701",
     "date": "1974",
     "status": "verified",
@@ -33,10 +33,10 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Chvátal's conjecture (1974) generalizes the Erdős-Ko-Rado theorem to hereditary families. The conjecture asserts that the maximum intersecting subfamily is always a 'star' - all sets containing a fixed element. Despite nearly 50 years of research, the general case remains open. Partial results exist for injection-based orderings (Chvátal 1974), Sterboul conditions (1974), covering number 2 (Frankl-Kupavskii 2023), and weighted versions (Borg 2011). The Erdős-Ko-Rado theorem itself (1961) established that for uniform k-element families on an n-element set with n ≥ 2k, the maximum intersecting family has size C(n-1, k-1) and is achieved by a star; Chvátal's conjecture aims to extend this star-maximality to the much broader setting of hereditary families, where sets of varying sizes are allowed. The conjecture has been verified for several structured classes including families with covering number at most 2 and families arising from matroids.",
-    "problemStatement": "Let F be a family of sets closed under taking subsets (hereditary). There exists an element x such that for any intersecting subfamily F' ⊆ F: |F'| ≤ |{A ∈ F : x ∈ A}|.",
-    "text": "Let F be a hereditary family. There exists x such that every intersecting subfamily F' has |F'| ≤ |{A ∈ F : x ∈ A}|. Status: OPEN with partial results.",
-    "proofStrategy": "The formalization defines hereditary families, intersecting families, and stars. The main conjecture is axiomatized as open. Partial results (Sterboul conditions, covering number 2) are stated as separate axioms. The connection to Erdős-Ko-Rado is explored, showing how uniform families are NOT hereditary (explaining why EKR is not a direct special case).",
+    "historicalContext": "Chv\u00e1tal's conjecture (1974) generalizes the Erd\u0151s-Ko-Rado theorem to hereditary families. The conjecture asserts that the maximum intersecting subfamily is always a 'star' - all sets containing a fixed element. Despite nearly 50 years of research, the general case remains open. Partial results exist for injection-based orderings (Chv\u00e1tal 1974), Sterboul conditions (1974), covering number 2 (Frankl-Kupavskii 2023), and weighted versions (Borg 2011). The Erd\u0151s-Ko-Rado theorem itself (1961) established that for uniform k-element families on an n-element set with n \u2265 2k, the maximum intersecting family has size C(n-1, k-1) and is achieved by a star; Chv\u00e1tal's conjecture aims to extend this star-maximality to the much broader setting of hereditary families, where sets of varying sizes are allowed. The conjecture has been verified for several structured classes including families with covering number at most 2 and families arising from matroids.",
+    "problemStatement": "Let F be a family of sets closed under taking subsets (hereditary). There exists an element x such that for any intersecting subfamily F' \u2286 F: |F'| \u2264 |{A \u2208 F : x \u2208 A}|.",
+    "text": "Let F be a hereditary family. There exists x such that every intersecting subfamily F' has |F'| \u2264 |{A \u2208 F : x \u2208 A}|. Status: OPEN with partial results.",
+    "proofStrategy": "The formalization defines hereditary families, intersecting families, and stars. The main conjecture is axiomatized as open. Partial results (Sterboul conditions, covering number 2) are stated as separate axioms. The connection to Erd\u0151s-Ko-Rado is explored, showing how uniform families are NOT hereditary (explaining why EKR is not a direct special case).",
     "keyInsights": [
       "Hereditary = closed under subsets (also called downsets or ideals)",
       "Stars (sets containing x) are always intersecting subfamilies",
@@ -78,8 +78,8 @@
       "id": "conjecture",
       "startLine": 130,
       "endLine": 151,
-      "summary": "Statement of Chvátal's conjecture as a definition and axiom recording its open status.",
-      "title": "Statement of Chvátal's conjecture as a definition and axiom recording its open status."
+      "summary": "Statement of Chv\u00e1tal's conjecture as a definition and axiom recording its open status.",
+      "title": "Statement of Chv\u00e1tal's conjecture as a definition and axiom recording its open status."
     },
     {
       "id": "partial",
@@ -92,12 +92,12 @@
       "id": "ekr",
       "startLine": 221,
       "endLine": 284,
-      "summary": "Connection to Erdős-Ko-Rado; proof that uniform families are not hereditary.",
-      "title": "Connection to Erdős-Ko-Rado; proof that uniform families are not hereditary."
+      "summary": "Connection to Erd\u0151s-Ko-Rado; proof that uniform families are not hereditary.",
+      "title": "Connection to Erd\u0151s-Ko-Rado; proof that uniform families are not hereditary."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #701 (Chvátal's Conjecture) remains OPEN. The conjecture asserts that for hereditary families, the maximum intersecting subfamily is a star. Partial results exist for special cases but the general conjecture is unresolved.",
+    "summary": "Erd\u0151s Problem #701 (Chv\u00e1tal's Conjecture) remains OPEN. The conjecture asserts that for hereditary families, the maximum intersecting subfamily is a star. Partial results exist for special cases but the general conjecture is unresolved.",
     "implications": "A resolution would unify and extend classical results in extremal set theory. The conjecture connects hereditary families (independence systems, matroids) with intersection properties.",
     "openQuestions": [
       "Does the conjecture hold for all hereditary families?",
@@ -108,7 +108,7 @@
   },
   "references": [
     {
-      "authors": "Frankl, Péter; Tokushige, Norihide",
+      "authors": "Frankl, P\u00e9ter; Tokushige, Norihide",
       "title": "Extremal Problems for Finite Sets",
       "year": "2018",
       "venue": "AMS Student Mathematical Library",
@@ -127,5 +127,19 @@
       "description": "Both concern unavoidable substructure in combinatorial systems. Ramsey's theorem forces monochromatic cliques in edge-colored complete graphs; Problem #701 studies intersecting families where structural constraints (intersection conditions) force specific configurations"
     }
   ],
-  "leanFile": "Proofs/Erdos701Problem.lean"
+  "leanFile": {
+    "path": "Proofs/Erdos701Problem.lean",
+    "imports": [
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos701",
+    "lineCount": 284,
+    "axiomCount": 0,
+    "sorries": 0
+  }
 }

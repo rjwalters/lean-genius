@@ -1,8 +1,8 @@
 {
   "id": "erdos-208",
-  "title": "Erdős Problem #208: Gaps Between Squarefree Numbers",
+  "title": "Erd\u0151s Problem #208: Gaps Between Squarefree Numbers",
   "slug": "erdos-208",
-  "description": "Let s₁ < s₂ < ... be the squarefree numbers. Is it true that for any ε > 0, the gap s_{n+1} - sₙ ≪ sₙ^ε?",
+  "description": "Let s\u2081 < s\u2082 < ... be the squarefree numbers. Is it true that for any \u03b5 > 0, the gap s_{n+1} - s\u2099 \u226a s\u2099^\u03b5?",
   "meta": {
     "author": "Open problem; partial results by Filaseta-Trifonov (1992), Pandey (2024)",
     "sourceUrl": "https://erdosproblems.com/208",
@@ -46,9 +46,9 @@
       }
     ],
     "originalContributions": [
-      "Clean formalization of both Erdős questions about squarefree gaps",
+      "Clean formalization of both Erd\u0151s questions about squarefree gaps",
       "Axiomatization of Filaseta-Trifonov (1992) and Pandey (2024) bounds",
-      "Axiomatization of Erdős (1951) lower bound and Granville (1998) conditional result",
+      "Axiomatization of Erd\u0151s (1951) lower bound and Granville (1998) conditional result",
       "Connection to ABC conjecture",
       "Verified squarefree examples using native_decide"
     ],
@@ -57,16 +57,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "This problem concerns gaps between consecutive squarefree numbers (integers not divisible by any perfect square > 1). The sequence 1, 2, 3, 5, 6, 7, 10, 11, ... has density 6/π² ≈ 0.608 in the natural numbers, so 'typical' gaps are small.\n\nErdős posed two questions about how large gaps can be. The first asks whether gaps are always subpolynomial: s_{n+1} - sₙ ≪ sₙ^ε for any ε > 0. The second asks for a precise bound: s_{n+1} - sₙ ≤ (1 + o(1)) · (π²/6) · log(sₙ)/log(log(sₙ)).\n\nErdős himself (1951) proved this second bound would be optimal if true - infinitely many gaps achieve it as a lower bound. The best unconditional upper bound has improved from s_n^{1/5+o(1)} (Filaseta-Trifonov 1992) to s_n^{1/5-c} (Pandey 2024). Granville (1998) showed the first question follows from the ABC conjecture.",
+    "historicalContext": "This problem concerns gaps between consecutive squarefree numbers (integers not divisible by any perfect square > 1). The sequence 1, 2, 3, 5, 6, 7, 10, 11, ... has density 6/\u03c0\u00b2 \u2248 0.608 in the natural numbers, so 'typical' gaps are small.\n\nErd\u0151s posed two questions about how large gaps can be. The first asks whether gaps are always subpolynomial: s_{n+1} - s\u2099 \u226a s\u2099^\u03b5 for any \u03b5 > 0. The second asks for a precise bound: s_{n+1} - s\u2099 \u2264 (1 + o(1)) \u00b7 (\u03c0\u00b2/6) \u00b7 log(s\u2099)/log(log(s\u2099)).\n\nErd\u0151s himself (1951) proved this second bound would be optimal if true - infinitely many gaps achieve it as a lower bound. The best unconditional upper bound has improved from s_n^{1/5+o(1)} (Filaseta-Trifonov 1992) to s_n^{1/5-c} (Pandey 2024). Granville (1998) showed the first question follows from the ABC conjecture.",
     "problemStatement": "**Question 1**: Is it true that for any $\\epsilon > 0$ and sufficiently large $n$,\n$$s_{n+1} - s_n \\ll_\\epsilon s_n^\\epsilon$$\n\n**Question 2**: Is it true that\n$$s_{n+1} - s_n \\leq (1 + o(1)) \\cdot \\frac{\\pi^2}{6} \\cdot \\frac{\\log s_n}{\\log\\log s_n}$$\n\n**Status**: OPEN\n\n**Best known upper bound**: $s_{n+1} - s_n \\ll s_n^{1/5-c}$ for some $c > 0$ (Pandey 2024)\n\n**Conditional result**: Question 1 follows from the ABC conjecture (Granville 1998)",
-    "text": "Let s₁ < s₂ < ... be the squarefree numbers. Is it true that for any ε > 0, the gap s_{n+1} - sₙ ≪ sₙ^ε?",
-    "proofStrategy": "Since both questions are open, we formalize:\n\n1. **The squarefree sequence**: Using Mathlib's `Squarefree` and `Nat.nth`\n2. **The two main conjectures**: As definitions of Props using big-O notation\n3. **Known bounds**: Axiomatize Filaseta-Trifonov and Pandey results\n4. **Lower bound**: Axiomatize Erdős's 1951 result showing optimality of Q2's bound\n5. **Conditional result**: Axiomatize that ABC implies Q1\n6. **Density result**: Axiomatize that squarefree numbers have density 6/π²\n7. **Verified examples**: Small squarefree tests using native_decide",
+    "text": "Let s\u2081 < s\u2082 < ... be the squarefree numbers. Is it true that for any \u03b5 > 0, the gap s_{n+1} - s\u2099 \u226a s\u2099^\u03b5?",
+    "proofStrategy": "Since both questions are open, we formalize:\n\n1. **The squarefree sequence**: Using Mathlib's `Squarefree` and `Nat.nth`\n2. **The two main conjectures**: As definitions of Props using big-O notation\n3. **Known bounds**: Axiomatize Filaseta-Trifonov and Pandey results\n4. **Lower bound**: Axiomatize Erd\u0151s's 1951 result showing optimality of Q2's bound\n5. **Conditional result**: Axiomatize that ABC implies Q1\n6. **Density result**: Axiomatize that squarefree numbers have density 6/\u03c0\u00b2\n7. **Verified examples**: Small squarefree tests using native_decide",
     "keyInsights": [
       "**Squarefree numbers**: Numbers not divisible by any perfect square > 1. First few: 1, 2, 3, 5, 6, 7, 10, 11, 13, ...",
-      "**Density 6/π²**: The proportion of integers up to N that are squarefree converges to 6/π² ≈ 0.608.",
+      "**Density 6/\u03c0\u00b2**: The proportion of integers up to N that are squarefree converges to 6/\u03c0\u00b2 \u2248 0.608.",
       "**Gap bounds**: Current best is s_n^{1/5-c} (Pandey 2024), far from the conjectured subpolynomial bound.",
-      "**Optimal lower bound**: Erdős showed infinitely many gaps achieve (π²/6)·log(sₙ)/log(log(sₙ)), so this would be tight.",
-      "**ABC connection**: Granville showed the ε-bound follows from the ABC conjecture, connecting to deep number theory."
+      "**Optimal lower bound**: Erd\u0151s showed infinitely many gaps achieve (\u03c0\u00b2/6)\u00b7log(s\u2099)/log(log(s\u2099)), so this would be tight.",
+      "**ABC connection**: Granville showed the \u03b5-bound follows from the ABC conjecture, connecting to deep number theory."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -86,7 +86,7 @@
       "title": "The Main Conjectures",
       "startLine": 50,
       "endLine": 75,
-      "summary": "State Erdős's two questions using big-O notation."
+      "summary": "State Erd\u0151s's two questions using big-O notation."
     },
     {
       "id": "upper-bounds",
@@ -100,7 +100,7 @@
       "title": "The Optimal Lower Bound",
       "startLine": 95,
       "endLine": 107,
-      "summary": "Erdős (1951) result showing infinitely many large gaps."
+      "summary": "Erd\u0151s (1951) result showing infinitely many large gaps."
     },
     {
       "id": "conditional",
@@ -125,32 +125,44 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #208 about gaps between consecutive squarefree numbers. Both questions remain open: whether gaps are always subpolynomial (Question 1), and whether they satisfy a precise log/log-log bound (Question 2). We axiomatize the known partial results including the best unconditional bound (Pandey 2024) and the ABC-conditional result (Granville 1998).",
+    "summary": "We formalize Erd\u0151s Problem #208 about gaps between consecutive squarefree numbers. Both questions remain open: whether gaps are always subpolynomial (Question 1), and whether they satisfy a precise log/log-log bound (Question 2). We axiomatize the known partial results including the best unconditional bound (Pandey 2024) and the ABC-conditional result (Granville 1998).",
     "implications": "**Theoretical Significance**: This problem connects to fundamental questions about the distribution of squarefree numbers and the structure of integers.\n\nThe connection to ABC conjecture suggests deep arithmetic content. Progress on this problem would improve our understanding of how 'random' the distribution of squarefree numbers is at various scales.",
     "openQuestions": [
-      "Does s_{n+1} - sₙ ≪ sₙ^ε hold for all ε > 0?",
-      "Is the (π²/6)·log(sₙ)/log(log(sₙ)) bound achievable?",
-      "What is the optimal exponent in s_n^α bounds?",
-      "Can ABC-independent methods prove the ε-bound?",
+      "Does s_{n+1} - s\u2099 \u226a s\u2099^\u03b5 hold for all \u03b5 > 0?",
+      "Is the (\u03c0\u00b2/6)\u00b7log(s\u2099)/log(log(s\u2099)) bound achievable?",
+      "What is the optimal exponent in s_n^\u03b1 bounds?",
+      "Can ABC-independent methods prove the \u03b5-bound?",
       "What about gaps in other sequences (powerful numbers, k-free numbers)?"
     ]
   },
-  "leanFile": "Proofs/Erdos208Problem.lean",
+  "leanFile": {
+    "path": "Proofs/Erdos208Problem.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Erdos208",
+    "lineCount": 182,
+    "axiomCount": 0,
+    "sorries": 0
+  },
   "crossReferences": [
     {
       "targetId": "erdos-145",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+      "description": "Related Erd\u0151s problem sharing themes: gaps, number-theory, squarefree"
     },
     {
       "targetId": "erdos-489",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+      "description": "Related Erd\u0151s problem sharing themes: gaps, number-theory, squarefree"
     },
     {
       "targetId": "erdos-11",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: number-theory, squarefree"
+      "description": "Related Erd\u0151s problem sharing themes: number-theory, squarefree"
     }
   ],
   "references": [
