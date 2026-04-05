@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-euoq01-01-imports",
+    "proofId": "euler-identity-oq-01-oq-01",
+    "range": { "startLine": 27, "endLine": 38 },
+    "type": "concept",
+    "title": "Imports and Namespace: Analytic Infrastructure",
+    "content": "Seven focused imports bring in the specific Mathlib modules needed to prove the three former axioms. Unlike `import Mathlib` (global), these targeted imports document which analytic facts are actually used. The namespace `EulerIdentityOQ01OQ01` isolates these theorems from the parent proof.",
+    "mathContext": "The key new imports vs the parent file: `Trigonometric.Series` provides `Complex.cos_eq_tsum` and `Complex.sin_eq_tsum` (Taylor series characterizations). `InfiniteSum.NatInt` provides `tsum_even_add_odd`. `InfiniteSum.Ring` provides `tsum_mul_right`. Together these three Mathlib modules supply everything needed to eliminate the parent's 3 axioms.",
+    "significance": "context",
+    "relatedConcepts": ["Complex.cos_eq_tsum", "Complex.sin_eq_tsum", "tsum_even_add_odd", "Summable.comp_injective"],
+    "prerequisites": ["Lean 4 import system", "Mathlib analysis hierarchy"]
+  },
+  {
+    "id": "ann-euoq01-01-defs",
+    "proofId": "euler-identity-oq-01-oq-01",
+    "range": { "startLine": 43, "endLine": 52 },
+    "type": "definition",
+    "title": "Series Term Definitions: expTerm, evenTerm, oddTerm",
+    "content": "Three `noncomputable def` declarations define the building blocks of the Taylor series proof. `expTerm z n = z^n / n!` is the $n$-th term of $e^z$. `evenTerm x k = (-1)^k x^{2k}/(2k)!` is the cosine series term. `oddTerm x k = i(-1)^k x^{2k+1}/(2k+1)!` is the sine series term (with factor $i$).",
+    "mathContext": "The exponential series $e^z = \\sum_{n=0}^\\infty z^n/n!$ splits by index parity: even-indexed terms form $\\cos(x)$ and odd-indexed terms form $i\\sin(x)$. Specifically, $\\sum_k (ix)^{2k}/(2k)! = \\sum_k (-1)^k x^{2k}/(2k)! = \\cos(x)$ and $\\sum_k (ix)^{2k+1}/(2k+1)! = i\\sum_k (-1)^k x^{2k+1}/(2k+1)! = i\\sin(x)$. These definitions make the splitting precise in Lean.",
+    "significance": "key",
+    "relatedConcepts": ["expTerm", "evenTerm", "oddTerm", "Taylor-series", "Complex.I"],
+    "prerequisites": ["Complex.I", "Nat.factorial", "Lean 4 noncomputable defs"]
+  },
+  {
+    "id": "ann-euoq01-01-powers-i",
+    "proofId": "euler-identity-oq-01-oq-01",
+    "range": { "startLine": 55, "endLine": 63 },
+    "type": "technique",
+    "title": "Powers of i: Algebraic Bookkeeping",
+    "content": "Two `private theorem`s compute the key powers of $i = \\sqrt{-1}$ needed to connect `expTerm` to `evenTerm` and `oddTerm`: $i^{2k} = (-1)^k$ and $i^{2k+1} = i \\cdot (-1)^k$. These are proved by induction on $k$ using `I_sq : I^2 = -1`.",
+    "mathContext": "The periodicity $i^4 = 1$ gives the pattern: $i^0=1, i^1=i, i^2=-1, i^3=-i$. For the Taylor series splitting: $(ix)^{2k} = i^{2k} x^{2k} = (-1)^k x^{2k}$ and $(ix)^{2k+1} = i^{2k+1} x^{2k+1} = i(-1)^k x^{2k+1}$. The `private` modifier marks these as auxiliary lemmas not intended for external use — they exist only to support `expTerm_even` and `expTerm_odd`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Complex.I_sq", "pow_succ", "ring-tactic"],
+    "prerequisites": ["Complex.I_sq", "Lean 4 induction on ℕ"]
+  },
+  {
+    "id": "ann-euoq01-01-expterm",
+    "proofId": "euler-identity-oq-01-oq-01",
+    "range": { "startLine": 65, "endLine": 89 },
+    "type": "theorem",
+    "title": "expTerm_even, expTerm_odd, and expSeries_summable",
+    "content": "Three connecting lemmas: `expTerm_even` and `expTerm_odd` rewrite even/odd terms of the $e^{ix}$ series in terms of `evenTerm` and `oddTerm` using the power-of-$i$ lemmas. `expSeries_summable` proves the series converges everywhere using Mathlib's `NormedSpace.expSeries_summable`.",
+    "mathContext": "`expTerm_even` proves $\\text{expTerm}(ix, 2k) = \\text{evenTerm}(x, k)$ by rewriting via `I_pow_even`. `expTerm_odd` proves $\\text{expTerm}(ix, 2k+1) = \\text{oddTerm}(x, k)$ via `I_pow_odd`. `expSeries_summable` deduces summability of `expTerm z` from `NormedSpace.expSeries_summable` via `Summable.congr` (the terms agree up to a definitional rewrite). These three lemmas prepare the way for the axiom-elimination theorems.",
+    "significance": "supporting",
+    "relatedConcepts": ["NormedSpace.expSeries_summable", "Summable.congr", "expTerm_even", "expTerm_odd"],
+    "prerequisites": ["I_pow_even", "I_pow_odd", "NormedSpace.expSeries"]
+  },
+  {
+    "id": "ann-euoq01-01-tsum",
+    "proofId": "euler-identity-oq-01-oq-01",
+    "range": { "startLine": 91, "endLine": 102 },
+    "type": "theorem",
+    "title": "tsum_even_add_odd_of_summable: Former Axiom 1",
+    "content": "Proves that a summable series $\\sum_n a_n$ splits into even and odd parts: $\\sum_n a_n = \\sum_k a_{2k} + \\sum_k a_{2k+1}$. This was axiom 1 in the parent file. The proof uses `Summable.comp_injective` twice (for the injective maps $k \\mapsto 2k$ and $k \\mapsto 2k+1$), then applies Mathlib's `tsum_even_add_odd`.",
+    "mathContext": "`Summable.comp_injective`: if $f : \\mathbb{N} \\to X$ is summable and $g : \\mathbb{N} \\to \\mathbb{N}$ is injective, then $f \\circ g$ is summable. Both $k \\mapsto 2k$ and $k \\mapsto 2k+1$ are injective (proved by `omega`), giving summability of the even and odd subseries. Then Mathlib's `tsum_even_add_odd : \\sum_k f(2k) + \\sum_k f(2k+1) = \\sum_n f(n)` completes the proof via `.symm`.",
+    "significance": "key",
+    "relatedConcepts": ["Summable.comp_injective", "tsum_even_add_odd", "omega-tactic"],
+    "prerequisites": ["Summable", "tsum_even_add_odd (Mathlib)", "injective maps on ℕ"]
+  },
+  {
+    "id": "ann-euoq01-01-cos",
+    "proofId": "euler-identity-oq-01-oq-01",
+    "range": { "startLine": 104, "endLine": 113 },
+    "type": "theorem",
+    "title": "cos_eq_tsum_thm: Former Axiom 2",
+    "content": "Proves that real cosine equals its Taylor series: $\\cos(x) = \\sum_k (-1)^k x^{2k}/(2k)!$ (as a complex number). This was axiom 2 in the parent file. The proof lifts `Complex.cos_eq_tsum` from $\\mathbb{C}$ to $\\mathbb{R}$ using `ofReal_cos` and `tsum_congr`.",
+    "mathContext": "Mathlib's `Complex.cos_eq_tsum : Complex.cos z = \\sum_k (-1)^k z^{2k}/(2k)!` applies to complex $z$. For real $x$: first apply `ofReal_cos : (↑(cos x) : ℂ) = Complex.cos ↑x`, then apply `Complex.cos_eq_tsum`, then use `tsum_congr` to match terms. The fact that `evenTerm x k` matches the Mathlib series terms is verified by `simp`. This 5-line proof replaces a formerly unclosed axiom.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.cos_eq_tsum", "ofReal_cos", "tsum_congr"],
+    "prerequisites": ["Complex.cos_eq_tsum", "ofReal_cos", "Complex.cos"]
+  },
+  {
+    "id": "ann-euoq01-01-sin",
+    "proofId": "euler-identity-oq-01-oq-01",
+    "range": { "startLine": 115, "endLine": 128 },
+    "type": "theorem",
+    "title": "sin_eq_tsum_thm: Former Axiom 3",
+    "content": "Proves $\\sin(x) \\cdot i = \\sum_k \\text{oddTerm}(x,k)$ (real sine times $i$ equals the odd Taylor series terms). This was axiom 3 in the parent file. The proof uses `Complex.sin_eq_tsum`, `ofReal_sin`, and `tsum_mul_right` (factoring $i$ out of the sum).",
+    "mathContext": "Mathlib's `Complex.sin_eq_tsum : Complex.sin z = \\sum_k (-1)^k z^{2k+1}/(2k+1)!`. For real $x$: $\\text{sin}(x) \\cdot i = i \\cdot \\sum_k (-1)^k x^{2k+1}/(2k+1)! = \\sum_k i(-1)^k x^{2k+1}/(2k+1)! = \\sum_k \\text{oddTerm}(x,k)$. The key Mathlib fact is `tsum_mul_right : (∑' n, f n) * c = ∑' n, f n * c`, used in reverse to factor $i$ into the series. The final `ring` closes a straightforward algebraic manipulation.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.sin_eq_tsum", "ofReal_sin", "tsum_mul_right", "oddTerm"],
+    "prerequisites": ["Complex.sin_eq_tsum", "ofReal_sin", "tsum_mul_right"]
+  },
+  {
+    "id": "ann-euoq01-01-identity",
+    "proofId": "euler-identity-oq-01-oq-01",
+    "range": { "startLine": 130, "endLine": 142 },
+    "type": "theorem",
+    "title": "euler_formula and euler_identity: Axiom-Free Conclusions",
+    "content": "The culminating theorems. `euler_formula` proves $e^{ix} = \\cos(x) + i\\sin(x)$ by applying `Complex.exp_mul_I` directly (which avoids a subtlety in connecting `Complex.exp` to `NormedSpace.exp`). `euler_identity` proves $e^{i\\pi} + 1 = 0$ by substituting $x = \\pi$ and using `Real.cos_pi = -1` and `Real.sin_pi = 0`. Both proofs are now 0-axiom, 0-sorry.",
+    "mathContext": "**Subtlety**: Lean has two exponential functions — `NormedSpace.exp` (defined via the abstract exponential series in any Banach algebra) and `Complex.exp` (defined specifically for ℂ). Connecting these requires knowing they agree, which is not trivial. The parent proof and this file both use `Complex.exp_mul_I` as an oracle to bridge this gap. This is mathematically correct (Mathlib proves this), but it means the Taylor series argument is not quite the direct proof — it goes through the Mathlib identification rather than assembling from scratch.\n\n$e^{i\\pi} + 1 = 0$: with $\\cos(\\pi) = -1$ and $\\sin(\\pi) = 0$, the formula gives $e^{i\\pi} = -1 + 0 \\cdot i = -1$, so $e^{i\\pi} + 1 = 0$. `push_cast` handles the real-to-complex coercions.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.exp_mul_I", "Real.cos_pi", "Real.sin_pi", "push_cast"],
+    "prerequisites": ["euler_formula", "Complex.exp_mul_I", "Real.cos_pi", "Real.sin_pi"]
+  }
+]
