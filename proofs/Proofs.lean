@@ -2078,6 +2078,8 @@ import Proofs.SylowTheoremOQ01
 import Proofs.SylowTheoremOQ02
 import Proofs.SylowTheoremOQ04
 import Proofs.SzemerediCore
+import Proofs.SzemerediCoreOQ01
+import Proofs.SzemerediCoreOQ01Aristotle
 import Proofs.SzemerediCoreOQ03
 import Proofs.SzemerediCounting
 import Proofs.SzemerediHypergraphCore
