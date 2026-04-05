@@ -31,7 +31,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The binary entropy function h(p) = −p log p − (1−p) log(1−p) achieves its maximum value of log 2 nats (= 1 bit) at p = 1/2, corresponding to the fair coin — the maximum-uncertainty Bernoulli source. This uniqueness result has concrete coding-theoretic meaning: the binary symmetric channel BSC(p) has capacity C = 1 − h₂(p) (in bits), which reaches its minimum of 0 — the completely useless channel — uniquely at p = 1/2. The uniqueness follows from strict concavity of h (proved in OQ-01) combined with the symmetry h(1−p) = h(p): the midpoint decomposition 1/2 = (1/2)p + (1/2)(1−p) with p ≠ 1−p gives a strict inequality by strict concavity. Shannon noted this informally in 1948; this Lean 4 proof provides the first fully machine-verified version.",
+    "historicalContext": "The binary entropy function h(p) = −p log p − (1−p) log(1−p) achieves its maximum value of log 2 nats (= 1 bit) at p = 1/2, corresponding to the fair coin — the maximum-uncertainty Bernoulli source. Shannon stated this as obvious in his foundational 1948 paper 'A Mathematical Theory of Communication', but the rigorous proof requires strict concavity. The uniqueness has coding-theoretic significance: the binary symmetric channel BSC(p) has capacity C = 1 − h₂(p), reaching minimum 0 uniquely at p = 1/2 (the 'useless channel' that erases all information). Beyond channel coding, binary entropy appears throughout combinatorics: the Hamming bound uses h₂ to bound error-correcting code rates, and Stirling-type estimates give $\\binom{n}{pn} \\approx 2^{nh_2(p)}$ for the number of binary strings with Hamming weight pn. The maximum at p = 1/2 reflects that $\\binom{n}{n/2}$ is the largest binomial coefficient — the combinatorial counterpart of maximum uncertainty. The proof technique here — midpoint decomposition combined with symmetry to reduce strict concavity to a single-point argument — was used by Gallager (1968) in 'Information Theory and Reliable Communication' and formalized for the first time in Lean 4 by this project.",
     "problemStatement": "Prove that h(p) = log 2 if and only if p = 1/2, for p ∈ [0,1].",
     "text": "The proof proceeds by cases. For p ∈ (0,1) with p ≠ 1/2: write 1/2 = (1/2)·p + (1/2)·(1−p) as the midpoint of p and 1−p. Since h(1−p) = h(p) (symmetry) and p ≠ 1−p (because p ≠ 1/2), strict concavity (OQ-01) gives h(1/2) > (1/2)·h(p) + (1/2)·h(1−p) = h(p). Boundary cases h(0) = h(1) = 0 < log 2 are handled directly. The h_deriv_zero_iff lemma characterizes the unique critical point via log injectivity.",
     "proofStrategy": "Use h_strictConcaveOn (from OQ-01) with the midpoint x = 1/2 = (1/2)·p + (1/2)·(1−p). The strict concavity condition requires p ≠ 1−p, which holds iff p ≠ 1/2. Boundary cases use h_zero and h_one from the parent. For the critical point lemma, log(1−p) = log(p) iff 1−p = p by exp injectivity.",
@@ -39,7 +39,8 @@
       "Midpoint decomposition 1/2 = (1/2)p + (1/2)(1-p): writes the maximum point as a convex combination of any p ≠ 1/2 and its 'mirror' 1-p.",
       "h(1-p) = h(p) symmetry: both terms contribute equally, so (1/2)h(p) + (1/2)h(1-p) = h(p) — the strict inequality from concavity then gives h(1/2) > h(p).",
       "Log injectivity for critical point: log(1-p) = log(p) iff exp(log(1-p)) = exp(log(p)) iff 1-p = p iff p = 1/2, using Real.exp_log for positivity conditions.",
-      "Boundary handling via h_zero/h_one: the 0 and 1 cases don't need concavity — direct computation h(0) = h(1) = 0 < log 2 suffices."
+      "Boundary handling via h_zero/h_one: the 0 and 1 cases don't need concavity — direct computation h(0) = h(1) = 0 < log 2 suffices.",
+      "Three-module architecture: the proof chain OQ-04 → OQ-01 → OQ-01-OQ-01 separates definition, analysis, and optimization — each module has a single responsibility and a clean interface of exported lemmas."
     ],
     "prerequisites": [
       "h_strictConcaveOn: strict concavity of h on (0,1) (from OQ-01)",
@@ -82,47 +83,65 @@
     },
     {
       "id": "shannon-channel-coding-oq-04",
-      "title": "Binary Entropy",
+      "title": "Binary Entropy: Definition and Basic Properties",
       "relationship": "foundational"
     },
     {
       "id": "shannon-channel-coding",
       "title": "Shannon Channel Coding Theorem",
       "relationship": "foundational"
+    },
+    {
+      "id": "shannon-entropy",
+      "title": "Shannon Entropy",
+      "relationship": "related"
+    },
+    {
+      "id": "shannon-source-coding",
+      "title": "Shannon Source Coding Theorem",
+      "relationship": "related"
     }
   ],
   "sections": [
     {
       "id": "sec-header",
-      "title": "Module Header",
+      "title": "Module Header, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Documents the unique maximum strategy: midpoint decomposition 1/2 = (1/2)p + (1/2)(1-p) + symmetry + strict concavity.",
+      "endLine": 25,
+      "summary": "Docstring documenting the midpoint decomposition strategy, imports of parent modules OQ-04 (h definition, boundary values, symmetry) and OQ-01 (strict concavity), and namespace/open declarations.",
       "mathContext": "$h(p) = -p\\log p - (1-p)\\log(1-p)$ achieves maximum $\\log 2$ uniquely at $p = 1/2$. Key: $\\tfrac{1}{2} = \\tfrac{1}{2} p + \\tfrac{1}{2}(1-p)$ writes the maximum as a midpoint."
     },
     {
       "id": "sec-critical-point",
       "title": "Unique Critical Point",
-      "startLine": 30,
+      "startLine": 27,
       "endLine": 46,
-      "summary": "h_deriv_zero_iff: h'(p) = log(1-p) - log(p) = 0 iff p = 1/2. Proof: log(1-p) = log(p) → 1-p = p (exp_log round-trip) → p = 1/2 by linarith.",
+      "summary": "h_deriv_zero_iff: h'(p) = log(1-p) - log(p) = 0 iff p = 1/2. Forward: log(1-p) = log(p) → apply exp to both sides (exp_log round-trip) → 1-p = p → p = 1/2 by linarith. Backward: norm_num computes 1 - 1/2 = 1/2, then sub_self closes log(1/2) - log(1/2) = 0.",
       "mathContext": "$h'(p) = \\log(1-p) - \\log p = 0 \\iff \\log(1-p) = \\log p \\iff 1-p = p \\iff p = 1/2$. Uses Real.exp_log injectivity (valid for $p > 0$, $1-p > 0$)."
     },
     {
       "id": "sec-strict-max",
       "title": "Strict Maximum on (0,1)",
-      "startLine": 52,
+      "startLine": 47,
       "endLine": 68,
-      "summary": "h_lt_h_half: for p ∈ (0,1) with p ≠ 1/2, h(p) < log 2. Uses StrictConcaveOn.2 with midpoint x=p, y=1-p, a=b=1/2 and h_symm to collapse (1/2)h(p)+(1/2)h(1-p) = h(p).",
+      "summary": "h_lt_h_half: for p ∈ (0,1) with p ≠ 1/2, h(p) < log 2. Uses StrictConcaveOn.2 with midpoint x=p, y=1-p, a=b=1/2 and h_symm to collapse (1/2)h(p)+(1/2)h(1-p) = h(p). The condition p ≠ 1-p is proved by contradiction from p ≠ 1/2.",
       "mathContext": "StrictConcaveOn: $h(\\tfrac{1}{2}p + \\tfrac{1}{2}(1-p)) > \\tfrac{1}{2}h(p) + \\tfrac{1}{2}h(1-p) = h(p)$ when $p \\neq 1-p$. Since $h(1/2) = \\log 2$, we get $h(p) < \\log 2$."
     },
     {
       "id": "sec-unique-max",
       "title": "Unique Maximum Characterization",
-      "startLine": 78,
+      "startLine": 70,
+      "endLine": 92,
+      "summary": "h_eq_log_two_iff: h(p) = log 2 iff p = 1/2 on [0,1]. Four-way case split: p=0 (h_zero=0, ne_of_lt log_pos), p=1 (h_one=0, ne_of_lt log_pos), interior p≠1/2 (linarith from h_lt_h_half), and p=1/2 (immediate from h_half).",
+      "mathContext": "$h(p) = \\log 2 \\iff p = 1/2$ on $[0,1]$. Cases: $h(0) = 0 \\neq \\log 2$, $h(1) = 0 \\neq \\log 2$, $h(p) < \\log 2$ for $p \\in (0,1) \\setminus \\{1/2\\}$."
+    },
+    {
+      "id": "sec-bits-corollary",
+      "title": "Bits Formulation Corollary",
+      "startLine": 94,
       "endLine": 102,
-      "summary": "h_eq_log_two_iff: h(p) = log 2 iff p = 1/2 on [0,1]. Case split: p=0 (h_zero=0<log2), p=1 (h_one=0<log2), interior p≠1/2 (h_lt_h_half). hBits_eq_one_iff: h₂(p) = 1 iff p = 1/2 via div_eq_one_iff_eq.",
-      "mathContext": "$h(p) = \\log 2 \\iff p = 1/2$ on $[0,1]$. In bits: $h_2(p) = h(p)/\\log 2 = 1 \\iff h(p) = \\log 2 \\iff p = 1/2$. BSC capacity $C = 1 - h_2(p)$ achieves minimum 0 uniquely at $p = 1/2$."
+      "summary": "hBits_eq_one_iff: h₂(p) = h(p)/log 2 = 1 iff p = 1/2. Unfolds hBits, converts via div_eq_one_iff_eq (using log 2 ≠ 0 from Real.log_pos), and applies h_eq_log_two_iff. BSC capacity C = 1 - h₂(p) achieves minimum 0 uniquely at p = 1/2.",
+      "mathContext": "$h_2(p) = h(p)/\\log 2 = 1 \\iff h(p) = \\log 2 \\iff p = 1/2$. BSC capacity $C = 1 - h_2(p)$ achieves minimum 0 uniquely at $p = 1/2$."
     }
   ]
 }

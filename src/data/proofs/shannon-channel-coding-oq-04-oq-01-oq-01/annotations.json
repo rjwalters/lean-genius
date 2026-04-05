@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-beum-dependency-chain",
+    "proofId": "shannon-channel-coding-oq-04-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "context",
+    "title": "Three-Layer Dependency Chain: Definition → Concavity → Uniqueness",
+    "content": "This proof imports two parent modules: ShannonChannelCodingOQ04 (defining h(p) and proving boundary values h(0)=0, h(1)=0, h(1/2)=log 2, and symmetry h(1-p)=h(p)) and ShannonChannelCodingOQ04OQ01 (proving strict concavity h_strictConcaveOn on (0,1)). The three-layer architecture separates concerns: OQ-04 handles algebraic properties, OQ-01 handles analytic properties (differentiability, second derivative), and this file OQ-01-OQ-01 handles the optimization consequence. This separation mirrors the standard textbook development: define → analyze → optimize.",
+    "mathContext": "Imports: $h(p) = -p\\log p - (1-p)\\log(1-p)$ (OQ-04), strict concavity $h''(p) < 0$ on $(0,1)$ (OQ-01). This file proves: $\\arg\\max_{p \\in [0,1]} h(p) = \\{1/2\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["module imports", "h_strictConcaveOn", "h_symm", "h_half", "h_zero", "h_one"],
+    "prerequisites": ["ShannonChannelCodingOQ04: binary entropy definition and basic properties", "ShannonChannelCodingOQ04OQ01: strict concavity of h on (0,1)"]
+  },
+  {
     "id": "ann-beum-midpoint-concavity",
     "proofId": "shannon-channel-coding-oq-04-oq-01-oq-01",
     "range": { "startLine": 54, "endLine": 68 },
