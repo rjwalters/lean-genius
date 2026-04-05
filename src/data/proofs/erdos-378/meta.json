@@ -64,7 +64,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 325,
-    "assumptions": "10 axiom(s) and 4 sorries(s). See the Lean source for details."
+    "assumptions": "2 axioms: granville_ramare_density_exists (Granville-Ramaré density exists), complement_density (complement density for residue classes r). 4 sorries."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #378**\n\nThis problem concerns the distribution of squarefree binomial coefficients in Pascal's triangle.\n\n**The Question:**\nFor a given r >= 0, does the density of integers n such that C(n,k) is squarefree for at least r values of 1 <= k < n exist? Is this density positive?\n\n**Resolution:**\nGranville and Ramare (1996) proved that the density eta_m of n having exactly 2m+2 squarefree binomial coefficients exists for each m. Aggarwal and Cambie observed that this resolves Erdos's question: the desired density is 1 - sum of eta_m for small m, which is positive.",

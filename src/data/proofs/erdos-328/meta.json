@@ -71,7 +71,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 207,
-    "assumptions": "9 axioms: sidon_bounded_convolution, erdos_C3_counterexample, erdos_C4_counterexample, and 6 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: nesetril_rodl_theorem (Nešetřil-Rödl theorem — Ramsey property for graphs), erdos_newman_disproved (Erdős-Newman disproved: triangles do not suffice). 0 sorries."
   },
   "overview": {
     "historicalContext": "The representation function $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ is a central object in additive combinatorics, measuring how 'additively rich' a set is. Simon Sidon (1932) initiated the study of sets where all pairwise sums are distinct ($r_A \\leq 2$), now called Sidon or $B_2$ sets. Erdős and Turán (1941) proved the foundational upper bound $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets, launching a rich theory connecting additive number theory to combinatorics.\n\nProblem #328, posed by Erdős and Donald J. Newman (see [ErGr80, p.48]), asks whether bounded convolution ($r_A \\leq C$) can always be 'improved' by partitioning: can we split $A$ into $t(C)$ pieces each with $r_{A_i} < C$? Erdős (1980) [Er80e] first showed the answer is NO for $C=3,4$ and infinitely many other values. The complete resolution came from Jaroslav Nešetřil and Vojtěch Rödl (1985) [NeRo85], who proved the answer is NO for ALL $C \\geq 1$, using Ramsey-theoretic methods. Their result is even stronger: no partition works even when $t$ is allowed to depend on $A$ itself, not just on $C$. This reveals a fundamental rigidity in additive structure: the representation function cannot be reduced by any combinatorial decomposition.",
