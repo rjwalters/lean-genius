@@ -1,8 +1,8 @@
 {
   "id": "erdos-966",
-  "title": "Erdős Problem #966: Ramsey-Type Arithmetic Progressions",
+  "title": "Erd\u0151s Problem #966: Ramsey-Type Arithmetic Progressions",
   "slug": "erdos-966",
-  "description": "For k, r ≥ 2, does there exist a set A ⊆ ℕ with no (k+1)-term arithmetic progression, yet every r-coloring has a monochromatic k-term AP? YES, proved by Spencer (~1975).",
+  "description": "For k, r \u2265 2, does there exist a set A \u2286 \u2115 with no (k+1)-term arithmetic progression, yet every r-coloring has a monochromatic k-term AP? YES, proved by Spencer (~1975).",
   "meta": {
     "author": "Spencer (~1975)",
     "sourceUrl": "https://erdosproblems.com/966",
@@ -58,17 +58,17 @@
     ],
     "axiomCount": 6,
     "lineCount": 294,
-    "assumptions": "10 axioms: SpencerSet, spencer_AP_free, spencer_forces_mono_AP, and 7 more. See Lean source for complete statements."
+    "assumptions": "6 axioms: SpencerSet, spencer_AP_free, spencer_forces_mono_AP, spencer_theorem, upperDensity, spencer_zero_density. 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #966**\n\nThis problem combines arithmetic progressions with Ramsey-type coloring questions, bridging additive combinatorics and Ramsey theory.\n\n**Key History:**\n- Van der Waerden (1927): Proved any r-coloring of ℕ contains arbitrarily long monochromatic APs\n- Erdős [Er75b] (1975): Posed this refined question about (k+1)-AP-free sets\n- Spencer (~1975): Proved the affirmative answer, as reported by Erdős\n\n**Mathematical Setting:**\nThe problem asks whether we can find sets that are \"barely\" AP-free: they avoid (k+1)-term progressions but still force k-term monochromatic progressions in any coloring. This is a delicate balance between structure and randomness.",
-    "problemStatement": "**Problem Statement (Proved)**\n\nLet $k, r \\geq 2$. Does there exist a set $A \\subseteq \\mathbb{N}$ such that:\n1. $A$ contains no non-trivial arithmetic progression of length $k+1$\n2. In any $r$-coloring of $A$, there exists a monochromatic arithmetic progression of length $k$\n\n**Answer: YES**\n\nSpencer showed (~1975) that such sets exist for all $k, r \\geq 2$. This is an arithmetic analogue of Folkman's theorem (Erdős Problem #924) about cliques in graphs.",
-    "text": "For k, r ≥ 2, does there exist a set A ⊆ ℕ with no (k+1)-term arithmetic progression, yet every r-coloring has a monochromatic k-term AP? YES, proved by Spencer (~1975).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Progressions:** Define the set {a, a+d, ..., a+(k-1)d} as a Finset\n\n2. **AP-Free Sets:** A set is k-AP-free if it contains no arithmetic progression of length k with positive common difference\n\n3. **Colorings:** An r-coloring partitions elements into r color classes\n\n4. **Ramsey Property:** A set forces monochromatic k-APs if every r-coloring has some color class containing a k-AP\n\n5. **Main Axiom:** Spencer's theorem asserts existence of sets with both properties\n\n6. **Connections:** Van der Waerden's theorem, Roth's theorem, and Erdős #924",
+    "historicalContext": "**Erd\u0151s Problem #966**\n\nThis problem combines arithmetic progressions with Ramsey-type coloring questions, bridging additive combinatorics and Ramsey theory.\n\n**Key History:**\n- Van der Waerden (1927): Proved any r-coloring of \u2115 contains arbitrarily long monochromatic APs\n- Erd\u0151s [Er75b] (1975): Posed this refined question about (k+1)-AP-free sets\n- Spencer (~1975): Proved the affirmative answer, as reported by Erd\u0151s\n\n**Mathematical Setting:**\nThe problem asks whether we can find sets that are \"barely\" AP-free: they avoid (k+1)-term progressions but still force k-term monochromatic progressions in any coloring. This is a delicate balance between structure and randomness.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $k, r \\geq 2$. Does there exist a set $A \\subseteq \\mathbb{N}$ such that:\n1. $A$ contains no non-trivial arithmetic progression of length $k+1$\n2. In any $r$-coloring of $A$, there exists a monochromatic arithmetic progression of length $k$\n\n**Answer: YES**\n\nSpencer showed (~1975) that such sets exist for all $k, r \\geq 2$. This is an arithmetic analogue of Folkman's theorem (Erd\u0151s Problem #924) about cliques in graphs.",
+    "text": "For k, r \u2265 2, does there exist a set A \u2286 \u2115 with no (k+1)-term arithmetic progression, yet every r-coloring has a monochromatic k-term AP? YES, proved by Spencer (~1975).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Progressions:** Define the set {a, a+d, ..., a+(k-1)d} as a Finset\n\n2. **AP-Free Sets:** A set is k-AP-free if it contains no arithmetic progression of length k with positive common difference\n\n3. **Colorings:** An r-coloring partitions elements into r color classes\n\n4. **Ramsey Property:** A set forces monochromatic k-APs if every r-coloring has some color class containing a k-AP\n\n5. **Main Axiom:** Spencer's theorem asserts existence of sets with both properties\n\n6. **Connections:** Van der Waerden's theorem, Roth's theorem, and Erd\u0151s #924",
     "keyInsights": [
       "**Ramsey Theory:** The problem blends Ramsey-type coloring results with AP-avoidance constraints",
-      "**Van der Waerden Connection:** While VdW says all of ℕ has monochromatic APs, this asks about restricted subsets",
-      "**Folkman Analogue:** Erdős #924 asks the same question for cliques in graphs instead of APs in sets",
+      "**Van der Waerden Connection:** While VdW says all of \u2115 has monochromatic APs, this asks about restricted subsets",
+      "**Folkman Analogue:** Erd\u0151s #924 asks the same question for cliques in graphs instead of APs in sets",
       "**Density Consideration:** Spencer's sets must have zero upper density (by Roth's theorem)",
       "**Constructive Challenge:** While existence is proved, explicit constructions remain computationally difficult"
     ],
@@ -106,7 +106,7 @@
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "summary": "erdos_966: the answer is YES for all k, r ≥ 2",
+      "summary": "erdos_966: the answer is YES for all k, r \u2265 2",
       "startLine": 129,
       "endLine": 155,
       "mathContext": "erdos_966: the answer is YES for all k, r $\\geq$ 2"
@@ -121,7 +121,7 @@
     },
     {
       "id": "erdos-924",
-      "title": "Connection to Erdős #924",
+      "title": "Connection to Erd\u0151s #924",
       "summary": "Graph-theoretic analogue via Folkman's theorem",
       "startLine": 191,
       "endLine": 209,
@@ -161,12 +161,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #966 asked whether sets can avoid (k+1)-term arithmetic progressions while still forcing monochromatic k-term progressions in any r-coloring. Spencer proved YES (~1975). This elegant result lies at the intersection of Ramsey theory and additive combinatorics, demonstrating that AP-avoidance and Ramsey-type forcing can coexist.",
-    "implications": "**Theoretical Significance**: **Combinatorial Connections**\n\n1. **Ramsey Theory:** Demonstrates the robustness of Ramsey phenomena even in structured subsets\n\n2. **Additive Combinatorics:** Links AP-free sets to coloring problems\n\n**3. Van der Waerden Extension:** Shows VdW-type results hold for restricted domains\n\n4. **Folkman Analogy:** Erdős #924 (graph version) has the same affirmative answer\n\n5. **Density Bounds:** Spencer's sets must have zero density, connecting to Roth/Szemerédi.",
+    "summary": "Erd\u0151s Problem #966 asked whether sets can avoid (k+1)-term arithmetic progressions while still forcing monochromatic k-term progressions in any r-coloring. Spencer proved YES (~1975). This elegant result lies at the intersection of Ramsey theory and additive combinatorics, demonstrating that AP-avoidance and Ramsey-type forcing can coexist.",
+    "implications": "**Theoretical Significance**: **Combinatorial Connections**\n\n1. **Ramsey Theory:** Demonstrates the robustness of Ramsey phenomena even in structured subsets\n\n2. **Additive Combinatorics:** Links AP-free sets to coloring problems\n\n**3. Van der Waerden Extension:** Shows VdW-type results hold for restricted domains\n\n4. **Folkman Analogy:** Erd\u0151s #924 (graph version) has the same affirmative answer\n\n5. **Density Bounds:** Spencer's sets must have zero density, connecting to Roth/Szemer\u00e9di.",
     "openQuestions": [
       "Explicit constructions of Spencer's sets for small k, r",
       "Optimal size bounds for finite versions of the problem",
-      "Connections to Szemerédi's theorem for longer APs",
+      "Connections to Szemer\u00e9di's theorem for longer APs",
       "Computational complexity of finding such sets",
       "Generalizations to other patterns beyond APs"
     ]
@@ -194,17 +194,17 @@
     {
       "targetId": "erdos-645",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, solved, van-der-waerden"
+      "description": "Related Erd\u0151s problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, solved, van-der-waerden"
     },
     {
       "targetId": "erdos-138",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
+      "description": "Related Erd\u0151s problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
     },
     {
       "targetId": "erdos-176",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
+      "description": "Related Erd\u0151s problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
     }
   ]
 }

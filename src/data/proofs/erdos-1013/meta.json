@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 201,
-    "assumptions": "6 axioms: lower_bound, upper_bound, graver_yackel_bound (known results), threshold_three (h₃(3)=5, C₅), threshold_four (h₃(4)=11, Grötzsch), mycielski_construction (existence). threshold_mono, threshold_one, threshold_two now proved. Open conjectures stated as Prop defs.",
+    "assumptions": "1 axiom: mycielski_construction. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -39,7 +39,7 @@
       "**Extremal graphs reveal structure**: $h_3(3) = 5$ (unique: $C_5$), $h_3(4) = 11$ (unique: Grotzsch graph), $h_3(5) = 22$; the extremal graphs become less structured as $k$ grows"
     ],
     "prerequisites": [
-      "Combinatorics (Turán's theorem, density bounds)",
+      "Combinatorics (Tur\u00e1n's theorem, density bounds)",
       "Combinatorics (extremal graph theory, Ramsey theory)",
       "Extremal graph theory (triangle-free graphs, Ramsey)",
       "Graph theory (chromatic number, cliques, matchings)"
@@ -131,8 +131,8 @@
       "title": "Structural Properties",
       "startLine": 130,
       "endLine": 188,
-      "summary": "Proves `threshold_mono` ($j \\leq k \\Rightarrow h_3(j) \\leq h_3(k)$, via `csInf_le_csInf`), `threshold_one` ($h_3(1) = 1$, single vertex is $K_3$-free with $\\chi \\geq 1$), `threshold_two` ($h_3(2) = 2$, complete graph $K_2$ is $K_3$-free with $\\chi = 2$, proved by `le_antisymm` with case analysis on $n \\in \\{0, 1\\}$). Axiomatizes `threshold_three` ($h_3(3) = 5$, cycle $C_5$) and `threshold_four` ($h_3(4) = 11$, Grötzsch graph).",
-      "mathContext": "$h_3(1) = 1$ (single vertex), $h_3(2) = 2$ ($K_2$), $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grötzsch graph). The `threshold_two` proof is ~20 lines: shows $K_2 = (\\top : \\text{SimpleGraph}(\\text{Fin}\\ 2))$ is triangle-free and not 1-colorable, then shows any graph on $< 2$ vertices IS 1-colorable."
+      "summary": "Proves `threshold_mono` ($j \\leq k \\Rightarrow h_3(j) \\leq h_3(k)$, via `csInf_le_csInf`), `threshold_one` ($h_3(1) = 1$, single vertex is $K_3$-free with $\\chi \\geq 1$), `threshold_two` ($h_3(2) = 2$, complete graph $K_2$ is $K_3$-free with $\\chi = 2$, proved by `le_antisymm` with case analysis on $n \\in \\{0, 1\\}$). Axiomatizes `threshold_three` ($h_3(3) = 5$, cycle $C_5$) and `threshold_four` ($h_3(4) = 11$, Gr\u00f6tzsch graph).",
+      "mathContext": "$h_3(1) = 1$ (single vertex), $h_3(2) = 2$ ($K_2$), $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Gr\u00f6tzsch graph). The `threshold_two` proof is ~20 lines: shows $K_2 = (\\top : \\text{SimpleGraph}(\\text{Fin}\\ 2))$ is triangle-free and not 1-colorable, then shows any graph on $< 2$ vertices IS 1-colorable."
     },
     {
       "id": "proved-results",
@@ -150,23 +150,23 @@
       "What is the exact asymptotic constant $c$ in $h_3(k) \\sim c \\cdot k^2 \\log k$? Is $c = 1/2$ (matching the Ramsey lower bound)?",
       "Is $h_3(k+1)/h_3(k) \\to 1$? Can this be proved without determining the full asymptotic?",
       "What about the $K_r$-free generalization $h_r(k)$? (Related: Erdos Problem #920)",
-      "What is the structure of extremal triangle-free $k$-chromatic graphs for large $k$ — are they random-like or algebraically structured?"
+      "What is the structure of extremal triangle-free $k$-chromatic graphs for large $k$ \u2014 are they random-like or algebraically structured?"
     ]
   },
   "crossReferences": [
     {
       "relationship": "dual problem",
-      "note": "Erdős Problem #1104 asks for the maximum chromatic number $f(n)$ of a triangle-free graph on $n$ vertices — the inverse of $h_3(k)$. The two functions satisfy $h_3(f(n)) \\leq n < h_3(f(n)+1)$, so progress on one directly constrains the other. The known bound $f(n) = \\Theta(\\sqrt{n/\\log n})$ is equivalent to $h_3(k) = \\Theta(k^2 \\log k)$.",
+      "note": "Erd\u0151s Problem #1104 asks for the maximum chromatic number $f(n)$ of a triangle-free graph on $n$ vertices \u2014 the inverse of $h_3(k)$. The two functions satisfy $h_3(f(n)) \\leq n < h_3(f(n)+1)$, so progress on one directly constrains the other. The known bound $f(n) = \\Theta(\\sqrt{n/\\log n})$ is equivalent to $h_3(k) = \\Theta(k^2 \\log k)$.",
       "targetId": "erdos-1104"
     },
     {
       "relationship": "generalization",
-      "note": "Erdős Problem #920 concerns $h_r(k)$, the smallest $n$ such that a $K_r$-free graph on $n$ vertices can have chromatic number $k$. Problem #1013 is the $r = 3$ special case. The general problem requires understanding Ramsey numbers $R(r,k)$, making it considerably harder for $r \\geq 4$.",
+      "note": "Erd\u0151s Problem #920 concerns $h_r(k)$, the smallest $n$ such that a $K_r$-free graph on $n$ vertices can have chromatic number $k$. Problem #1013 is the $r = 3$ special case. The general problem requires understanding Ramsey numbers $R(r,k)$, making it considerably harder for $r \\geq 4$.",
       "targetId": "erdos-920"
     },
     {
       "relationship": "structural analogy",
-      "note": "Erdős Problem #1014 asks whether $R(k, l+1)/R(k, l) \\to 1$ as $l \\to \\infty$ for fixed $k$. The ratio convergence question here — whether $h_3(k+1)/h_3(k) \\to 1$ — is structurally identical and similarly open for $k = 3$. Both ask whether the relevant combinatorial threshold grows smoothly.",
+      "note": "Erd\u0151s Problem #1014 asks whether $R(k, l+1)/R(k, l) \\to 1$ as $l \\to \\infty$ for fixed $k$. The ratio convergence question here \u2014 whether $h_3(k+1)/h_3(k) \\to 1$ \u2014 is structurally identical and similarly open for $k = 3$. Both ask whether the relevant combinatorial threshold grows smoothly.",
       "targetId": "erdos-1014"
     },
     {
@@ -176,7 +176,7 @@
     },
     {
       "relationship": "proof technique",
-      "note": "The first-moment probabilistic method underlies the Graver–Yackel lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ (1968): a random graph on $n$ vertices with edge probability $p$ can be shown to have high chromatic number while containing few triangles, which are then deleted without destroying the chromatic number.",
+      "note": "The first-moment probabilistic method underlies the Graver\u2013Yackel lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ (1968): a random graph on $n$ vertices with edge probability $p$ can be shown to have high chromatic number while containing few triangles, which are then deleted without destroying the chromatic number.",
       "targetId": "prob-method-expectation"
     },
     {
@@ -194,7 +194,7 @@
       "venue": "Colloquium Mathematicum",
       "year": "1955",
       "volume": "3",
-      "pages": "161–162",
+      "pages": "161\u2013162",
       "note": "The foundational paper proving that triangle-free graphs of arbitrarily high chromatic number exist via the Mycielski inductive construction. Proves $h_3(k) < \\infty$ for all $k$."
     },
     {
@@ -206,7 +206,7 @@
       "year": "1983",
       "volume": "46",
       "issue": "1",
-      "pages": "83–87",
+      "pages": "83\u201387",
       "doi": "10.1016/0012-365X(83)90273-X",
       "note": "Proves $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ via an entropy argument, establishing the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$."
     },
@@ -220,7 +220,7 @@
       "year": "1968",
       "volume": "4",
       "issue": "2",
-      "pages": "125–175",
+      "pages": "125\u2013175",
       "doi": "10.1016/S0021-9800(68)80035-1",
       "note": "First quantitative lower bound on $h_3(k)$: proves $h_3(k) \\gg k^2 \\log k / \\log \\log k$ using probabilistic deletion, the predecessor to the sharper Ramsey-theoretic bound."
     },
@@ -237,14 +237,14 @@
     },
     {
       "authors": [
-        "Zdeněk Dvořák",
+        "Zden\u011bk Dvo\u0159\u00e1k",
         "Luke Postle"
       ],
       "title": "Correspondence coloring and its application to list-coloring planar graphs without cycles of lengths 4 to 8",
       "venue": "Journal of Combinatorial Theory, Series B",
       "year": "2018",
       "volume": "129",
-      "pages": "38–54",
+      "pages": "38\u201354",
       "doi": "10.1016/j.jctb.2017.09.001",
       "note": "Introduces correspondence (DP) coloring, a strengthening of list coloring that has become a key tool in studying chromatic thresholds for graph families defined by forbidden subgraphs, including triangle-free graphs."
     }
