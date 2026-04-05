@@ -1,39 +1,71 @@
 {
   "slug": "fourier-series-oq-02-incomplete-01",
   "title": "Fourier Coefficient Decay Under Hölder Continuity",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in analysis: Fourier Coefficient Decay Under Hölder Continuity.",
-    "whyMatters": []
+    "formal": "If f : C(AddCircle T, ℂ) has ‖fourierCoeff f n‖ ≤ C/|n|^β for n ≠ 0 with β > α+1, then ∃ C_holder, HolderWith C_holder α f",
+    "plain": "Prove the partial converse: if Fourier coefficients decay as O(1/|n|^β) with β > α+1, then f is α-Hölder continuous.",
+    "whyMatters": [
+      "Resolves the sorry at line 403 of FourierSeriesOQ02.lean",
+      "Completes the Hölder-Fourier regularity-decay correspondence",
+      "Key result in harmonic analysis connecting spectral decay to spatial regularity"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "rpow_interpolation: a ≤ A^{1-t} · B^t from a ≤ A and a ≤ B",
+      "fourier_sub_norm_le_two: trivial bound on Fourier mode differences",
+      "fourier_norm_eq_one, fourier_zero_eq_one, fourier_zero_sub"
+    ],
+    "open": [
+      "fourier_lipschitz_bound: explicit Lipschitz constant of fourier n",
+      "summable_norm_fourierCoeff_of_decay: ℤ p-series summability",
+      "holderWith_of_dist_bound: dist-to-edist HolderWith conversion",
+      "fourier_holder_bound: interpolated Hölder bound for Fourier modes",
+      "decay_implies_regularity': full assembly"
+    ],
+    "goal": "Prove all 5 sorries in FourierSeriesOQ02Incomplete01.lean"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-03T09:13:03.071Z",
+    "phase": "ACT",
+    "since": "2026-04-05T21:54:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Decomposed monolithic sorry into 5 independent sub-goals.",
+    "blockers": [
+      "fourier_lipschitz_bound needs explicit Lipschitz analysis of exp(2πinx/T) on AddCircle"
+    ],
+    "nextAction": "Prove fourier_lipschitz_bound using toCircle API.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Created FourierSeriesOQ02Incomplete01.lean (240 lines, 10 theorems, 5 proved, 5 sorry). Proved rpow_interpolation. Decomposed parent sorry into 5 independent sub-goals.",
+    "builtItems": [
+      "proofs/Proofs/FourierSeriesOQ02Incomplete01.lean (240 lines)",
+      "src/data/proofs/fourier-series-oq-02-incomplete-01/meta.json"
+    ],
+    "insights": [
+      "rpow_interpolation converts Lipschitz + trivial bounds into Hölder bounds",
+      "Fourier mode Lipschitz bound is the critical bottleneck blocking 3 of 5 sorries",
+      "fourier n x = exp(2πinx/T), Lipschitz constant 2π|n|/T needs |exp(ia)-exp(ib)| ≤ |a-b|",
+      "ℤ p-series summability reduces to Real.summable_nat_rpow_inv via pos/neg decomposition",
+      "Fourier inversion via hasSum_fourier_series_of_summable available in Mathlib"
+    ],
+    "mathlibGaps": [
+      "No LipschitzWith for fourier n on AddCircle T",
+      "No convenient ℤ summability decomposition found"
+    ],
+    "nextSteps": [
+      "Prove fourier_lipschitz_bound via toCircle API",
+      "Prove summable_norm_fourierCoeff_of_decay via ℤ decomposition",
+      "Search Mathlib for existing holderWith_of_dist_bound"
+    ]
   },
   "tags": [
     "analysis",
@@ -48,10 +80,26 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Topology.MetricSpace.Holder"
+    ]
   },
   "started": "2026-04-03T09:13:03.071Z",
-  "lastUpdate": "2026-04-03T09:13:03.071Z",
+  "lastUpdate": "2026-04-05T21:54:00.000Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FourierSeriesOQ02Incomplete01.lean",
+      "filename": "FourierSeriesOQ02Incomplete01.lean",
+      "lineCount": 240,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02Incomplete01.lean"
+    }
+  ]
 }
