@@ -7,7 +7,7 @@
     "title": "Concrete Power Sums and Elementary Symmetric Polynomials for Fin n → R",
     "content": "`powerSum k x = ∑ i : Fin n, x i ^ k` and `elemSymm k x = ∑ s ∈ powersetCard k univ, ∏ i ∈ s, x i` are the standard concrete forms of symmetric functions, working directly with tuples `x : Fin n → R`. Both are `noncomputable` (using Finset sums that may not compute definitionally) and defined for any commutative ring R. The `powersetCard k` function produces all k-element subsets of `univ : Finset (Fin n)`, so `elemSymm k x` sums the products over all k-element index subsets.",
     "mathContext": "powerSum k x = p_k(x₀,...,x_{n-1}) = Σᵢ xᵢᵏ; elemSymm k x = e_k(x₀,...,x_{n-1}) = Σ_{|S|=k} ∏_{i∈S} xᵢ. The variable n is implicit in both, bound from the `Fin n` type of x.",
-    "significance": "These concrete definitions are the interface between abstract MvPolynomial algebra and the specific tuples that arise in applications. They are what users compute with; the MvPolynomial versions are what the general theorems are proved about.",
+    "significance": "key",
     "relatedConcepts": ["MvPolynomial.psum", "MvPolynomial.esymm", "Finset.powersetCard", "Fin n"],
     "prerequisites": ["Finset.sum, Finset.prod", "Finset.powersetCard", "CommRing"]
   },
@@ -19,7 +19,7 @@
     "title": "The aeval Evaluation Bridge: Connecting Abstract and Concrete",
     "content": "The two bridge theorems prove that evaluating MvPolynomial's abstract power sum/esymm polynomials at `x : Fin n → R` via `MvPolynomial.aeval` recovers the concrete definitions. The proofs are one-liners using `simp` with `map_sum`, `map_prod`, `map_pow`, and `MvPolynomial.aeval_X`, reflecting that `aeval` is an algebra homomorphism (it distributes over all ring operations) and `aeval x (X i) = x i`. This pattern — prove at the MvPolynomial level, specialize via aeval — is the central technique of the file.",
     "mathContext": "aeval x (MvPolynomial.psum (Fin n) R k) = powerSum k x because: aeval distributes over Σ and ^, and aeval(X i) = x i. Similarly for esymm with products. The proofs are aeval_psum_eq and aeval_esymm_eq.",
-    "significance": "Without these bridges, Mathlib's abstract `mul_esymm_eq_sum` would require manual manipulation of MvPolynomial terms. The bridges make the general Newton identity a two-line proof via `calc` and `simp`.",
+    "significance": "key",
     "relatedConcepts": ["MvPolynomial.aeval", "AlgHom", "map_sum", "map_prod", "MvPolynomial.aeval_X"],
     "prerequisites": ["MvPolynomial algebra homomorphisms", "AlgHom.map_sum/prod/pow"]
   },
@@ -31,7 +31,7 @@
     "title": "General Newton's Identity: k·eₖ = (−1)^{k+1}·Σ (−1)^a·eₐ·p_b",
     "content": "`newton_identity` is the main result: for any commutative ring R, any n, any x : Fin n → R, and any k, the identity `k · eₖ(x) = (−1)^{k+1} · Σ_{a+b=k, a<k} (−1)^a · eₐ(x) · p_b(x)` holds. The proof applies `MvPolynomial.mul_esymm_eq_sum` (Mathlib's general version, using Zeilberger's 1984 combinatorial proof) and rewrites both sides using the aeval bridge theorems. The `calc` chain makes each step explicit: rewrite LHS as aeval of MvPolynomial expression, apply the Mathlib identity, then simplify via bridge lemmas.",
     "mathContext": "Full statement: (k : R) * elemSymm k x = (-1)^(k+1) * Σ_{(a,b) ∈ antidiagonal k, a < k} (-1)^a * elemSymm a x * powerSum b x. The antidiagonal condition a+b=k with a<k exactly describes the Newton recurrence range.",
-    "significance": "This single theorem, valid for arbitrary n, subsumes all the individual Newton identities for n=2, 3, 4, ..., proved separately (case by case with `ring`) in VietasFormulasOQ03.lean. It demonstrates that MvPolynomial evaluation can replace repeated ring arithmetic.",
+    "significance": "key",
     "relatedConcepts": ["MvPolynomial.mul_esymm_eq_sum", "Finset.antidiagonal", "Zeilberger 1984"],
     "prerequisites": ["aeval_esymm_eq", "aeval_psum_eq", "MvPolynomial.mul_esymm_eq_sum"]
   },
@@ -43,7 +43,7 @@
     "title": "Power Sum Form: pₖ = (−1)^{k+1}·k·eₖ − Σ correction terms",
     "content": "`newton_identity_psum` gives Newton's identity in the form that expresses the k-th power sum in terms of elementary symmetric polynomials and lower power sums. The hypothesis `hk : 0 < k` is needed because the formula is trivial at k=0. The Mathlib source is `MvPolynomial.psum_eq_mul_esymm_sub_sum`. The filter condition `a.1 ∈ Set.Ioo 0 k` (i.e., 0 < a < k) matches the Newton recurrence: p₁ = e₁, p₂ = e₁p₁ − 2e₂, p₃ = e₁p₂ − e₂p₁ + 3e₃, etc.",
     "mathContext": "powerSum k x = (-1)^(k+1) * k * elemSymm k x - Σ_{(a,b) ∈ antidiagonal k, 0 < a < k} (-1)^a * elemSymm a x * powerSum b x. This is Newton's identity solved for pₖ. Set.Ioo 0 k = {a : ℕ | 0 < a < k}.",
-    "significance": "The power sum form is how Newton's identities are used in practice: given the elementary symmetric polynomials (i.e., the coefficients of the characteristic polynomial), one can compute all power sums. Used in the Faddeev-LeVerrier algorithm for matrix trace powers.",
+    "significance": "key",
     "relatedConcepts": ["MvPolynomial.psum_eq_mul_esymm_sub_sum", "Set.Ioo", "Finset.antidiagonal"],
     "prerequisites": ["newton_identity", "aeval_psum_eq", "aeval_esymm_eq"]
   },
@@ -55,7 +55,7 @@
     "title": "Base Cases: e₀ = 1, e₁ = p₁ = Σxᵢ, and the First Newton Identity",
     "content": "Four base case lemmas anchor the Newton recurrence. `elemSymm_zero` (tagged `@[simp]`): e₀(x) = 1, since the empty product over the empty subset is 1. `elemSymm_one`: e₁(x) = Σᵢ xᵢ, since the only 1-element subsets are singletons. `powerSum_one`: p₁(x) = Σᵢ xᵢ (1st power = identity). `newton_first`: p₁ = e₁, the simplest Newton identity. All proofs use `simp` with definitional lemmas like `powersetCard_one`.",
     "mathContext": "elemSymm 0 x = ∏ i ∈ ∅, x i = 1 (empty product). elemSymm 1 x = Σ_{S : {i}} x i = Σᵢ x i. powerSum 1 x = Σᵢ (x i)¹ = Σᵢ x i. The @[simp] tag on elemSymm_zero allows simp to reduce e₀ automatically in subsequent proofs.",
-    "significance": "These base cases are needed both for the specialization examples (which verify consistency via ring) and as simp lemmas for any further development. The @[simp] tag on elemSymm_zero is a practical choice that reduces e₀ automatically in downstream simp calls.",
+    "significance": "supporting",
     "relatedConcepts": ["powersetCard_one", "Finset.prod_empty", "@[simp]"],
     "prerequisites": ["elemSymm definition", "powerSum definition"]
   },
@@ -67,7 +67,7 @@
     "title": "Specializations: Ring-Verified Newton Identities for n=2, 3, 4",
     "content": "Three specialization theorems (`newton_2_p2`, `newton_3_p3`, `newton_4_p4`) verify the classical concrete Newton identities by `ring`. These are the same identities proved case-by-case in VietasFormulasOQ03.lean, now available as a sanity check that the abstract general theorem is consistent with familiar ring identities. The ring tactic works because these are pure polynomial identities in a commutative ring, requiring no symmetric function infrastructure.",
     "mathContext": "n=2: x²+y² = (x+y)² − 2xy. n=3: x³+y³+z³ = (x+y+z)(x²+y²+z²) − (xy+xz+yz)(x+y+z) + 3xyz. n=4: 4-variable p₄ identity. These are the standard Newton-Girard relations in elementary symmetric polynomial theory.",
-    "significance": "The `ring` proofs confirm that the abstract machinery (MvPolynomial + aeval) produces correct results for the classical cases. They serve as a regression test: if the general framework had a subtle error, these ring-checked identities would be the consistency check.",
+    "significance": "supporting",
     "relatedConcepts": ["ring tactic", "Newton-Girard relations", "VietasFormulasOQ03"],
     "prerequisites": ["CommRing axioms", "ring tactic"]
   },
@@ -79,7 +79,7 @@
     "title": "Vieta Product Formulas: Coefficients as Signed Elementary Symmetric Polynomials",
     "content": "Three theorems (`vieta_product_two`, `vieta_product_three`, `vieta_product_four`) expand the product ∏ᵢ(t − xᵢ) for 2, 3, and 4 variables, showing the polynomial coefficients are exactly ±eₖ. All are proved by `ring`. Together with the Newton identities, they complete the classical picture: the Vieta formulas read off eₖ from polynomial coefficients, and Newton's identities then recover all pₖ from those eₖ. This is the bridge between roots and coefficients that underlies all symmetric function applications.",
     "mathContext": "(t−x)(t−y) = t² − e₁t + e₂. (t−x)(t−y)(t−z) = t³ − e₁t² + e₂t − e₃. Coefficient of t^{n−k} is (−1)^k · eₖ. Combined with Newton's identities: if you know the polynomial (its coefficients = the eₖ), you can compute any power sum pₖ via the Newton recurrence.",
-    "significance": "This section closes the circuit: roots → Vieta coefficients = eₖ → Newton's identities → power sums pₖ. The proof file thus contains both the Vieta and Newton halves of the classical symmetric function theory for arbitrary commutative rings.",
+    "significance": "key",
     "relatedConcepts": ["Polynomial.Vieta", "elementary symmetric polynomials", "roots of polynomials"],
     "prerequisites": ["ring tactic", "elemSymm definition"]
   }
