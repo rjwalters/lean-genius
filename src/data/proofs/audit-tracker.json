@@ -4315,12 +4315,14 @@
       "result": "clean"
     },
     "erdos-29-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [
-        "https://github.com/rjwalters/lean-genius/issues/8636"
+        "https://github.com/rjwalters/lean-genius/issues/8636",
+        "True stubs (counterexample_satisfies_correct_bound, why_original_was_wrong) converted to comments; closed #8636"
       ],
-      "lastAudited": "2026-04-03T05:20:33Z",
-      "result": "issues-found"
+      "lastAudited": "2026-04-04T00:00:00Z",
+      "result": "issues-fixed",
+      "agentId": "lean-mechanic"
     },
     "erdos-290": {
       "agentId": "auditor-cycle-20-batch",
@@ -9794,12 +9796,14 @@
       "result": "clean"
     },
     "intermediate-value-theorem-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [
-        "https://github.com/rjwalters/lean-genius/issues/8637"
+        "https://github.com/rjwalters/lean-genius/issues/8637",
+        "True stubs (ivt_from_brouwer_sketch, dimensional_summary) converted to comments; closed #8637"
       ],
-      "lastAudited": "2026-04-03T05:20:33Z",
-      "result": "issues-found"
+      "lastAudited": "2026-04-04T00:00:00Z",
+      "result": "issues-fixed",
+      "agentId": "lean-mechanic"
     },
     "inverse-galois": {
       "auditCount": 6,
@@ -9956,12 +9960,14 @@
       "result": "clean"
     },
     "law-of-cosines-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [
-        "https://github.com/rjwalters/lean-genius/issues/8640"
+        "https://github.com/rjwalters/lean-genius/issues/8640",
+        "True stub (angle_bisector_stewarts) converted to comment; closed #8640"
       ],
-      "lastAudited": "2026-04-03T05:20:33Z",
-      "result": "issues-found"
+      "lastAudited": "2026-04-04T00:00:00Z",
+      "result": "issues-fixed",
+      "agentId": "lean-mechanic"
     },
     "laws-of-large-numbers": {
       "agentId": "auditor-cycle-20-batch",
@@ -10216,10 +10222,13 @@
       "result": "clean"
     },
     "pell-equation-oq-01": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-04-05T05:48:03Z",
-      "result": "issues-found"
+      "auditCount": 4,
+      "issues": [
+        "status corrected from verified to axiomatized; closed #9693"
+      ],
+      "lastAudited": "2026-04-04T00:00:00Z",
+      "result": "issues-fixed",
+      "agentId": "lean-mechanic"
     },
     "perfect-numbers": {
       "agentId": "auditor-cycle-20-batch",
@@ -11703,16 +11712,22 @@
       "issues": []
     },
     "divisibility-rules-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T03:00:58Z",
-      "result": "issues-found",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-04-04T00:00:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "missing Lean file DivisibilityRulesOQ01OQ01.lean created; closed #9647"
+      ],
+      "agentId": "lean-mechanic"
     },
     "subset-count-multiset-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T03:01:47Z",
-      "result": "issues-found",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-04-04T00:00:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "missing Lean file SubsetCountMultisetOQ01.lean created; closed #9648"
+      ],
+      "agentId": "lean-mechanic"
     },
     "ptolemys-complex-proof-oq-01": {
       "auditCount": 1,
@@ -11728,21 +11743,18 @@
     },
     "divisibility-by-three-oq-02-oq-01": {
       "auditCount": 1,
-      "lastAudited": "2026-04-05T05:23:27Z",
+      "lastAudited": "2026-04-05T05:49:16Z",
       "result": "clean",
       "issues": []
     },
     "euler-identity-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T05:24:10Z",
-      "result": "issues-found",
-      "issues": []
-    },
-    "divisibility-by-three-oq-02-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-04-05T05:49:16Z",
-      "result": "clean",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-04-04T00:00:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "missing Lean file EulerIdentityOQ01OQ01.lean created; closed #9687"
+      ],
+      "agentId": "lean-mechanic"
     }
   },
   "erdos-1097-oq-01": {
