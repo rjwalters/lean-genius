@@ -72,7 +72,12 @@
     ],
     "markdown": "# Knowledge Base: shannon-channel-coding-oq-03\n\n## Problem\n\nFano's inequality: H(X|Y) ≤ h(P_e) + P_e·log(|X|-1). Replaces the axiom `fano_inequality` in ShannonChannelCoding.lean.\n\n## Session 2026-04-04 (Session 1)\n\n**Outcome**: Proof architecture established with 5 sorries. Two core theorems fully proved.\n\n### Proved\n- `sum_sq_le_max`: ∑q² ≤ max(q) for probability distributions\n- `formula_pe_ge_map_pe`: MAP P_e ≤ formula P_e\n\n### Remaining sorries\n1. `gibbs_inequality`: follows from log(x) ≤ x-1\n2. `slice_sq_le_max`: normalize to conditional distribution, apply sum_sq_le_max\n3. `fano_per_element`: Gibbs with bimodal reference Q\n4. `fano_map_bound`: per-slice + Jensen for concave h\n5. `fano_func_mono`: derivative f'(p) = log((1-p)c/p) ≥ 0\n\n### Key insight\nThe gallery formula P_e differs from MAP P_e but satisfies MAP ≤ formula. Monotonicity bridges the gap.\n\n### Blocker\nShannonEntropy.lean has a pre-existing linarith failure in strong_subadditivity (line 811). Worked around by making OQ03 self-contained (imports only Mathlib + OQ04).\n"
   },
-  "tags": ["information-theory", "entropy", "channel-coding", "fano"],
+  "tags": [
+    "information-theory",
+    "entropy",
+    "channel-coding",
+    "fano"
+  ],
   "relatedProofs": [
     "shannon-channel-coding",
     "shannon-channel-coding-oq-02",
@@ -90,7 +95,7 @@
       "path": "Proofs/ShannonChannelCodingOQ03.lean",
       "filename": "ShannonChannelCodingOQ03.lean",
       "lineCount": 255,
-      "theoremCount": 4,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 7,
@@ -123,7 +128,7 @@
       "path": "Proofs/ShannonChannelCodingOQ04.lean",
       "filename": "ShannonChannelCodingOQ04.lean",
       "lineCount": 225,
-      "theoremCount": 8,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
