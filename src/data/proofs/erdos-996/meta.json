@@ -80,7 +80,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 350,
-    "assumptions": "6 axiom(s). Known results (Raikov, KSZ, Erdős, Matsuyama, Parseval, Weyl) axiomatized. All provable theorems verified."
+    "assumptions": "1 axiom: matsuyama_1966. 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #996 sits at the intersection of harmonic analysis, probability theory, and ergodic theory. It concerns the strong law of large numbers for sequences evaluated along lacunary (exponentially growing) subsequences.\n\n**Origins in Weyl's Equidistribution (1916)**\n\nThe problem traces back to Weyl's theorem: for irrational α, the sequence {α}, {2α}, {3α}, ... is equidistributed mod 1. The natural question is what happens when we sample only at lacunary times n₁, n₂, ...\n\n**The Problem's Historical Progression**\n\nThe decay conditions required for the strong law were progressively weakened:\n- **Raikov**: Proved the strong law for geometric sequences nₖ = aᵏ unconditionally — no Fourier decay condition needed at all\n- **Kac-Salem-Zygmund (1948)**: First general result for lacunary sequences, requiring Fourier error ‖f - fₙ‖₂ = O(1/(log n)^c) for c > 1. The proof uses a Borel-Cantelli argument.\n- **Erdős (1949)**: Improved to O(1/(log log n)^c) for c > 1 — replacing log with log log, a dramatic weakening of the regularity assumption\n- **Matsuyama (1966)**: Further improved the exponent from c > 1 to c > 1/2 for log log decay. The exponent 1/2 is suggestive of the central limit theorem.\n\nThe open question asks whether we can push to log log log decay — adding yet another level of iterated logarithm to the hierarchy. The pattern of improvements suggests it might work, but current techniques cannot bridge the gap.",
