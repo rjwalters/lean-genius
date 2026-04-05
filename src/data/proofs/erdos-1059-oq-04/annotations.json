@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-file-header",
+    "proofId": "erdos-1059-oq-04",
+    "range": {"startLine": 1, "endLine": 27},
+    "type": "context",
+    "title": "File Header: Problem Statement and Proof Sketch",
+    "content": "The file header (lines 1-27) documents the complete argument before any Lean code appears. It identifies this as OQ-04 in the Erdős 1059 series, states the key argument informally (if qualifying primes were finite, the density conjecture forces primeCount to be bounded — contradicting Nat.exists_infinite_primes), and lists the four theorems proved. This transparency is characteristic of well-structured Lean files: the informal argument appears first so a reader can verify that the formal proof matches the intended strategy. The docstring uses `/-` (not `/-!`) so as not to trigger Lean's module-level documentation generation.",
+    "mathContext": "The argument sketch: $\\text{density\\_one\\_conjecture}$ with $k=1$ gives eventually $2C(x) \\geq \\pi(x)$. If qualifying primes are finite (bounded by $M$), then $C(x) \\leq M$, so $\\pi(x) \\leq 2M$ for all large $x$. But $\\pi \\to \\infty$ by Euclid. Contradiction. Therefore, qualifying primes are infinite.",
+    "significance": "context",
+    "relatedConcepts": ["Erdős 1059 OQ series", "density_one_conjecture", "AllFactorialSubtractionsComposite", "informal proof sketch"],
+    "prerequisites": ["Erdős Problem #1059 statement", "natural density concept", "prime counting function"]
+  },
+  {
     "id": "ann-preamble",
     "proofId": "erdos-1059-oq-04",
     "range": {"startLine": 29, "endLine": 51},
