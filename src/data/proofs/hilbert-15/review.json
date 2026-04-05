@@ -102,7 +102,8 @@
       "priority": "low",
       "target": "researcher",
       "description": "Remove duplicate theorem hilbert_15_statement (identical to four_lines_via_schubert). Consider whether either rfl theorem adds value beyond the constant definition.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Removed hilbert_15_statement (identical to four_lines_via_schubert: same statement schubertNumber_FourLines = 2, same proof := rfl). Updated #check reference in EXPORTS."
     },
     {
       "id": "ai-5",

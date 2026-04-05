@@ -452,8 +452,6 @@ This was achieved through intersection theory on Grassmannians, with:
 
 We verify the four lines number as a concrete example.
 -/
-theorem hilbert_15_statement : schubertNumber_FourLines = 2 := rfl
-
 end Hilbert15
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
@@ -469,4 +467,4 @@ EXPORTS
 #check Hilbert15.SchubertClass
 #check Hilbert15.schubert_basis_theorem
 #check Hilbert15.littlewood_richardson_rule
-#check Hilbert15.hilbert_15_statement
+#check Hilbert15.four_lines_via_schubert
