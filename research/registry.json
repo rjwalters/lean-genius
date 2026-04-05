@@ -14655,11 +14655,142 @@
       "status": "graduated",
       "lastUpdate": "2026-04-05T18:48:59.352Z",
       "completed": "2026-04-05T18:48:59.352Z"
+    },
+    {
+      "slug": "angle-trisection-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.519Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.519Z"
+    },
+    {
+      "slug": "abel-ruffini-oq-04-oq-02-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "algebraic-numbers-countable-oq-02-oq-01",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.697Z"
+    },
+    {
+      "slug": "algebraic-numbers-countable-oq-02-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "amgm-inequality-oq-03-oq-01-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "area-of-circle-oq-05-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "ballot-problem-oq-01-oq-03",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "cantors-theorem-oq-02-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "descartes-rule-of-signs-oq-02-oq-01-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "harmonic-divergence-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "inverse-galois-oq-06-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "schauder-fixed-point-oq-03-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.662Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.662Z"
+    },
+    {
+      "slug": "arithmetic-series-oq-02-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-04-05T19:47:48.667Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.667Z"
+    },
+    {
+      "slug": "divisibility-by-three-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-04-05T19:47:48.667Z",
+      "status": "active",
+      "lastUpdate": "2026-04-05T19:47:48.667Z"
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-02-oq-02-oq-01",
+      "title": "Rational Canonical Form Determines Similarity Class",
+      "status": "active",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 5,
+      "phase": "OBSERVE",
+      "created": "2026-04-05T00:00:00-07:00",
+      "tags": [
+        "linear-algebra",
+        "canonical-forms",
+        "module-theory",
+        "seeker-selected"
+      ],
+      "source": "gallery-gap",
+      "parentProof": "cayley-hamilton-minpoly"
     }
   ],
   "config": {
     "maxActiveProblemsPerAgent": 1,
     "oodaTimeoutMinutes": 60,
     "attemptsBeforePivot": 5
-  }
+  },
+  "lastUpdated": "2026-04-05T12:51:54.779144"
 }
