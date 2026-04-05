@@ -79,7 +79,7 @@
     "title": "Exact Values: r₃(2) = 1 and r₃(3) = 2",
     "content": "Computes the Roth number for the two smallest meaningful cases. For r₃(2)=1: the bounds give 1 ≤ r₃(2) < 2, so r₃(2)=1 by omega. For r₃(3)=2: the set {0,1} in ZMod 3 is AP-free (verified by fin_cases, exhaustively checking all elements and differences), giving 2 ≤ r₃(3). Combined with r₃(3) < 3, this pins down r₃(3)=2. The fin_cases + simp_all tactic combination handles the finite case analysis automatically.",
     "mathContext": "$r_3(2) = 1$: only singletons are AP-free in $\\mathbb{Z}/2\\mathbb{Z}$. $r_3(3) = 2$: $\\{0,1\\}$ is maximal AP-free in $\\mathbb{Z}/3\\mathbb{Z}$ (note $\\{0,1,2\\}$ contains the AP $0,1,2$).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["cap set problem", "finite field Roth", "density bounds"],
     "prerequisites": ["fin_cases tactic", "ZMod arithmetic", "omega tactic"]
   },

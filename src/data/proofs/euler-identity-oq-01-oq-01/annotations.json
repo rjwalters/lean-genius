@@ -84,6 +84,18 @@
     "prerequisites": ["Complex.sin_eq_tsum", "ofReal_sin", "tsum_mul_right"]
   },
   {
+    "id": "ann-euoq01-01-exp-gap",
+    "proofId": "euler-identity-oq-01-oq-01",
+    "range": { "startLine": 79, "endLine": 83 },
+    "type": "insight",
+    "title": "Two Exponentials: NormedSpace.exp vs Complex.exp",
+    "content": "Lean 4 and Mathlib have two distinct exponential functions for complex numbers. `NormedSpace.exp` (also written `exp` in the `NormedSpace` namespace) is defined via the abstract power series $\\sum_n z^n/n!$ in any Banach algebra using Mathlib's `FormalMultilinearSeries` infrastructure. `Complex.exp` is the concrete complex exponential defined directly for `ℂ`. These are definitionally distinct — Lean cannot automatically equate them without an explicit lemma.\n\nThe `expSeries_summable` theorem bridges the first gap: `NormedSpace.expSeries_summable` gives summability of the abstract series, and `Summable.congr` equates it with our `expTerm` definition. But the deeper gap — connecting `NormedSpace.exp z` to `Complex.exp z` — remains open in this file. The final `euler_formula` proof sidesteps this by calling `Complex.exp_mul_I` directly, which Mathlib has already proved. This means the Taylor series proof in this file does not literally assemble $e^{ix}$ from its power series terms and prove it equals $\\cos(x) + i\\sin(x)$; instead, it proves the three analytic lemmas and then delegates to Mathlib for the final assembly.",
+    "mathContext": "The abstract exponential: `NormedSpace.exp 𝕂 z = ∑' n, (1/n!) • z^n` in any Banach algebra over `𝕂`. The concrete: `Complex.exp z = ⟨Real.exp z.re * Real.cos z.im, Real.exp z.re * Real.sin z.im⟩`. Mathlib proves these agree via `Complex.exp_eq_NormedSpace_exp`, but this requires knowing both definitions and their equivalence. The gap appears at `expSeries_summable`: the proof calls `NormedSpace.expSeries_summable` but the main theorem uses `Complex.exp_mul_I`. A fully from-scratch Taylor proof would need `NormedSpace.exp (↑x * I) = ∑' n, expTerm (↑x * I) n` explicitly.",
+    "significance": "key",
+    "relatedConcepts": ["NormedSpace.exp", "Complex.exp", "Complex.exp_eq_NormedSpace_exp", "FormalMultilinearSeries", "expSeries_summable"],
+    "prerequisites": ["Banach algebra exponential in Mathlib", "Complex.exp definition", "NormedSpace.expSeries"]
+  },
+  {
     "id": "ann-euoq01-01-identity",
     "proofId": "euler-identity-oq-01-oq-01",
     "range": { "startLine": 130, "endLine": 142 },

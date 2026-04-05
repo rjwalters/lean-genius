@@ -7,7 +7,7 @@
     "title": "Freudenthal Triangulation Setup: Motivation and prefixSet Definition",
     "content": "The file header explains the Freudenthal triangulation of the n-cube: for each permutation l of {0,...,n-1} (represented as a nodup list), the k-th vertex of the corresponding simplex is (l.take k).toFinset — the first k elements of l as a Finset. The file opens Finset and List for concise notation and works in the FreudenthalAdjacency namespace. The core definition `prefixSet l k = (l.take k).toFinset` (line 43) converts the geometric representation of simplex vertices into Finset language, enabling the proof to proceed purely by Finset manipulation.",
     "mathContext": "The Freudenthal triangulation of $[0,1]^n$ has $n!$ simplices, one per permutation $l$ of $\\{0,\\ldots,n-1\\}$. The simplex for $l$ has vertices $v_0 = \\emptyset, v_1 = \\{l[0]\\}, v_2 = \\{l[0],l[1]\\}, \\ldots, v_n = \\{l[0],\\ldots,l[n-1]\\}$. In code: $v_k = \\text{prefixSet}(l,k) = (l.\\text{take}\\;k).\\text{toFinset}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Freudenthal triangulation", "simplex vertices as subsets", "List.take", "List.toFinset", "permutation representation"],
     "prerequisites": ["List API in Mathlib", "Finset.toFinset", "Permutations as lists"]
   },
