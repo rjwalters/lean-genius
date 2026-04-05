@@ -57,7 +57,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 193,
-    "assumptions": "13 axioms: one_multiplicity, two_multiplicity, singmaster_conjecture, and 10 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: two_multiplicity, multiplicity_120, multiplicity_3003. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős and Gordon** posed this question 'many years ago' (before 1996), though it is now commonly known as **Singmaster's Conjecture** (1971).\n\n**The Question**: Does every multiplicity t ≥ 1 occur? That is, for each t, is there an integer a appearing exactly t times in Pascal's triangle (with 1 ≤ k ≤ n/2)?\n\n**Known Cases**:\n- t = 1: a = 2 (appears only as C(2,1))\n- t = 2: a = 6 (appears as C(4,2) and C(6,1))\n- t = 3: a = 120 (appears at C(10,3), C(16,2), C(120,1))\n- t = 4: a = 3003 (appears at C(14,6), C(15,5), C(78,2), C(3003,1))\n- t ≥ 5: **NO KNOWN EXAMPLES**\n\n**Modern Progress**: Matomäki, Radziwill, Shao, Tao, and Teräväinen (2022) proved that in the 'interior' of Pascal's triangle (k large), there are at most 2 solutions for sufficiently large a.",
