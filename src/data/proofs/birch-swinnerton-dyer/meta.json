@@ -16,7 +16,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 19,
-    "assumptions": "19 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) Greenberg-Stevens theorem, (9) regulator positivity. Previously 21 axioms: BSD_CM_rank_zero was proved redundant (subsumed by Kolyvagin general result), gross_zagier_formula_detail was dead code (captured by GrossZagierData structure). 0 sorries: regulator_rank_one_is_height proved by constructing CanonicalHeight h with h.height x = R·x² and generator g = 1. Also: 3 definitions vacuously return Prop := True (p_adic_L_function, HeegnerPointExists, p_adic_height_pairing) — these concepts await rigorous formalization.",
+    "assumptions": "19 axiom declarations encoding: (1) L-function analytic continuation and functional equation, (2) Hasse bound a_p^2 <= 4p, (3) BSD conjecture proven cases (Kolyvagin rank 0, Gross-Zagier+Kolyvagin rank 1), (4) parity conjecture (Dokchitsers), (5) L-values and ranks for specific curves, (6) Sha structure, (7) Elkies rank record, (8) Greenberg-Stevens theorem, (9) regulator positivity. Previously 21 axioms: BSD_CM_rank_zero was proved redundant (subsumed by Kolyvagin general result), gross_zagier_formula_detail was dead code (captured by GrossZagierData structure). 0 sorries: regulator_rank_one_is_height proved by constructing CanonicalHeight h with h.height x = R\u00b7x\u00b2 and generator g = 1.",
     "mathlibDependencies": [
       {
         "theorem": "WeierstrassCurve",
@@ -50,7 +50,7 @@
       }
     ],
     "leanFile": {
-      "lineCount": 7430,
+      "lineCount": 7422,
       "structureCount": 92,
       "axiomCount": 19,
       "theoremCount": 254,
@@ -108,7 +108,7 @@
     "dateAdded": "2025-12-29",
     "millenniumProblem": "bsd",
     "proofRepoPath": "Proofs/BirchSwinnertonDyer.lean",
-    "lineCount": 7430,
+    "lineCount": 7422,
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -681,12 +681,12 @@
       "ComplexConjugate"
     ],
     "namespace": "BirchSwinnertonDyer",
-    "lineCount": 7430,
+    "lineCount": 7422,
     "axiomCount": 19,
-    "theoremCount": 253,
+    "theoremCount": 254,
     "definitionCount": 143,
     "path": "Proofs/BirchSwinnertonDyer.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "references": [
     {

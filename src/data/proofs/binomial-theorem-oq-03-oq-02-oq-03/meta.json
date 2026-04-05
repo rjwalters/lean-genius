@@ -17,7 +17,7 @@
       "logarithm",
       "research"
     ],
-    "badge": "original",
+    "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
@@ -28,7 +28,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Euler's number $e$ first appeared implicitly in John Napier's 1614 logarithm tables and explicitly in a 1618 appendix to Napier's 'Mirifici Logarithmorum Canonis Descriptio'. Jacob Bernoulli discovered the sequence $(1+1/n)^n$ in 1683 while studying compound interest: if principal 1 is compounded $n$ times per year at annual rate 100%, the amount after one year is $(1+1/n)^n$. As $n \\to \\infty$ (continuous compounding), this approaches $e \\approx 2.71828...$\n\nEuler introduced the notation $e$ in a 1736 letter to Goldbach and proved the continued fraction and series representations. The monotonicity of $(1+1/n)^n$ — essential for proving convergence via the bounded monotone sequence theorem — was known to analysts studying the limit but required careful justification. The standard analysis-course proof uses AM-GM or the Bernoulli inequality; this Lean 4 formalization takes the logarithm route: $\\log(1+1/n)^n = n \\cdot g(1/n)$ where $g(t) = \\log(1+t)/t$ is strictly decreasing (proved via the inequality $\\log(1+t) > t/(1+t)$).\n\nThe bounds $2 < (1+1/n)^n < 3$ make this a complete self-contained proof: monotone + bounded ⟹ converges (Bolzano-Weierstrass), no prior knowledge of $e$ needed.",
+    "historicalContext": "The strict monotonicity of the sequence (1+1/n)^n — together with its convergence to e — provides one of the most elegant proofs of the existence of Euler's number. Establishing that the sequence is bounded (< 3) and increasing immediately gives convergence without computing the limit explicitly. The key tool is the logarithm inequality log(1+t) > t/(1+t) for t > 0, which follows from the strict convexity of exp.",
     "problemStatement": "**Open Question (OQ-03-OQ-02-OQ-03):** Prove that (1+1/n)^n is strictly increasing: for 1 ≤ m < n, (1+1/m)^m < (1+1/n)^n.\n\n**Strategy**: The function g(t) = log(1+t)/t is strictly decreasing on (0,∞). Since (1+1/n)^n = exp(n·log(1+1/n)) = exp(g(1/n)) and 1/n is decreasing in n, we get g(1/n) is increasing in n.",
     "text": "Proves strict monotonicity of (1+1/n)^n via log analysis. Part I establishes log(1+t) > t/(1+t) for t > 0 via Real.add_one_lt_exp. Part II computes the derivative of g(t) = log(1+t)/t and shows it is negative. Part III uses strictAntiOn_of_deriv_neg to get StrictAntiOn for g. Part IV applies the monotonicity to conclude the sequence is strictly increasing.",
     "proofStrategy": "The proof proceeds in four parts:\n\n1. **Key inequality** (Part I): For t > 0, t/(1+t) < log(1+t). Apply `Real.add_one_lt_exp` to x = -t/(1+t) ≠ 0: 1/(1+t) < exp(-t/(1+t)). Take log: -log(1+t) < -t/(1+t).\n\n2. **Negative derivative** (Part II): g(t) = log(1+t)/t has derivative (t/(1+t) - log(1+t))/t² < 0 by Part I.\n\n3. **Strict anti-monotonicity** (Part III): Apply `strictAntiOn_of_deriv_neg` to g on (0,∞), using continuity of g and the negative derivative.\n\n4. **Main theorem** (Part IV): n·log(1+1/n) = g(1/n). Since g is strictly decreasing and 1/n > 1/(n+1), g(1/n) < g(1/(n+1)). Then (1+1/n)^n = exp(g(1/n)) < exp(g(1/(n+1))) = (1+1/(n+1))^(n+1) by strict monotonicity of exp.",
@@ -36,8 +36,7 @@
       "The central insight is that strict monotonicity of (1+1/n)^n reduces to strict anti-monotonicity of g(t) = log(1+t)/t, which is a smooth analysis problem.",
       "The key inequality log(1+t) > t/(1+t) follows immediately from Real.add_one_lt_exp (the strict form x ≠ 0 → 1+x < exp(x)) by substitution x = -t/(1+t).",
       "The upper bound (1+1/n)^n < 3 follows from (1+1/n)^n ≤ exp(1) (via the Bernoulli inequality (1+x/n)^n ≤ exp(x)) and Real.exp_one_lt_d9 (exp(1) < 2.72 < 3).",
-      "The lower bound (1+1/n)^n > 2 for n ≥ 2 follows from the base case (1+1/1)^1 = 2 and strict monotonicity.",
-      "The log analysis route (reduce to monotonicity of g(t) = log(1+t)/t) is cleaner in Lean 4 than the AM-GM route (compare via (1+1/n)^n vs (1+1/(n+1))^(n+1) directly) because Mathlib's HasDerivAt API for log and Real.add_one_lt_exp give a 3-line proof of the key inequality, whereas direct AM-GM comparison requires a more involved algebraic manipulation."
+      "The lower bound (1+1/n)^n > 2 for n ≥ 2 follows from the base case (1+1/1)^1 = 2 and strict monotonicity."
     ],
     "prerequisites": [
       "Real.add_one_lt_exp (strict form: x ≠ 0 → 1+x < exp(x))",
@@ -101,18 +100,11 @@
     }
   ],
   "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Real"
-    ],
     "namespace": "StrictlyIncreasingEuler",
-    "lineCount": 208,
+    "theoremCount": 11,
     "axiomCount": 0,
-    "sorries": 0,
-    "path": "Proofs/BinomialTheoremOQ03OQ02OQ03.lean",
-    "theoremCount": 12,
-    "definitionCount": 0
+    "defCount": 0,
+    "sorryCount": 0,
+    "lineCount": 208
   }
 }

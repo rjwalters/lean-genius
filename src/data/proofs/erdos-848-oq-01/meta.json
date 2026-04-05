@@ -1,0 +1,119 @@
+{
+  "id": "erdos-848-oq-01",
+  "title": "Erdős #848 OQ-01: Why Exactly {7, 18} mod 25?",
+  "slug": "erdos-848-oq-01",
+  "description": "Algebraic explanation for why {n ≡ 7 (mod 25)} and {n ≡ 18 (mod 25)} are the extremal sets: 7 and 18 are the unique solutions to x² ≡ -1 (mod 25). Proves the cross-residue incompatibility (5² ∤ ab+1 for a≡7, b≡18 mod 25), classifies all mod-25 residue classes, and gives an independent lower bound via the mod-18 witness.",
+  "meta": {
+    "author": "Erdős, Sárközy (1992); algebraic analysis",
+    "sourceUrl": "https://erdosproblems.com/848",
+    "date": "1992",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos848ProblemOQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "modular-arithmetic",
+      "quadratic-residues",
+      "extremal-combinatorics",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 160,
+    "theoremCount": 11,
+    "defCount": 1,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Sárközy (1992) posed the problem of finding the maximum set A ⊆ {1,...,N} with ab+1 non-squarefree for all a,b ∈ A. The answer involves the residues 7 and 18 modulo 25. This file gives the algebraic explanation: 7² = 49 ≡ -1 (mod 25) and 18² = 324 ≡ -1 (mod 25), making these the two square roots of -1 in ℤ/25ℤ. The connection is: for a ≡ b ≡ x (mod 25), ab+1 ≡ x²+1 (mod 25). This is 0 (mod 25) exactly when x² ≡ -1 (mod 25), i.e., when x ∈ {7, 18}. No other residue class mod 25 works. Furthermore, the two classes cannot be combined: for a ≡ 7 and b ≡ 18 (mod 25), ab+1 ≡ 127 ≡ 2 (mod 25), so 5 ∤ ab+1.",
+    "problemStatement": "Why are {n ≡ 7 (mod 25)} and {n ≡ 18 (mod 25)} the extremal sets for Erdős #848? Specifically: (1) what algebraic property do 7 and 18 satisfy mod 25? (2) are these the only mod-25 classes with this property? (3) can the two classes be combined?",
+    "text": "7 and 18 are the unique solutions to x² ≡ -1 (mod 25). This makes them the only mod-25 residue classes where a same-class pair (a,b) has 5² | ab+1 for all pairs. The two classes are incompatible: mixing them breaks the 5² condition on cross-pairs.",
+    "proofStrategy": "Part I uses decide for the ZMod 25 characterization. Part II uses ring algebra: for a = 25m+7 and b = 25n+18, ab+1 = 25*(25mn+18m+7n+5)+2, so 25 ∤ ab+1. Part III uses interval_cases to check all 25 residues. Part IV copies the mod-7 lower bound proof with offset 18 instead of 7.",
+    "keyInsights": [
+      "7² = 49 = 2·25 - 1 ≡ -1 (mod 25): the algebraic key connecting 7 to the property",
+      "18 = -7 in ℤ/25ℤ (since 7+18=25), so the two classes are ±√(-1) mod 25",
+      "Cross-class: ab+1 ≡ 7·18+1 = 127 ≡ 2 (mod 25) — no 5-factor, no 5²-factor",
+      "Classification is complete: interval_cases checks all 25 residues and only r=7,18 work",
+      "The lower bound proof for mod-18 is structurally identical to mod-7 (offset 18 vs 7)"
+    ],
+    "prerequisites": [
+      "ZMod 25 arithmetic and decide tactic for finite enumeration",
+      "Modular arithmetic: a ≡ b (mod 25) → a² ≡ b² (mod 25)",
+      "Quadratic residues: x² ≡ -1 (mod p) has solutions iff p ≡ 1 (mod 4)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "algebraic-explanation",
+      "title": "Part I: Algebraic Explanation via ZMod 25",
+      "startLine": 29,
+      "endLine": 55,
+      "summary": "Proves seven_sq_eq_neg_one_mod25, eighteen_sq_eq_neg_one_mod25, seven_eq_neg_eighteen_mod25, sq_neg_one_iff_seven_or_eighteen (uniqueness), and mod25_sq_succ_dvd_iff (elementary ℕ form).",
+      "mathContext": "7² ≡ -1 (mod 25) and 18² ≡ -1 (mod 25), and these are the only solutions. 18 = -7 in ℤ/25ℤ."
+    },
+    {
+      "id": "cross-residue",
+      "title": "Part II: Cross-Residue Incompatibility",
+      "startLine": 57,
+      "endLine": 96,
+      "summary": "Proves cross_residue_five_sq_fails (a≡7, b≡18 → 5²∤ab+1), its symmetric version, and mixed_set_needs_other_prime (a mixed set must rely on other primes for cross pairs).",
+      "mathContext": "For a = 25m+7, b = 25n+18: ab+1 = 25*(25mn+18m+7n+5)+2. The remainder 2 shows 25 ∤ ab+1."
+    },
+    {
+      "id": "classification",
+      "title": "Part III: Complete Classification of Mod-25 Classes",
+      "startLine": 98,
+      "endLine": 119,
+      "summary": "Proves non_extremal_class_five_sq_fails (all r ∉ {7,18} with r < 25 fail) and extremal_iff_five_sq_divides (complete biconditional characterization).",
+      "mathContext": "For r < 25: 5² | r·r+1 iff r = 7 or r = 18. Proved by interval_cases checking all 25 residues."
+    },
+    {
+      "id": "mod18-lower-bound",
+      "title": "Part IV: Independent Mod-18 Lower Bound",
+      "startLine": 121,
+      "endLine": 160,
+      "summary": "Constructs mod18Set, proves it has the non-squarefree product property and cardinality ≥ N/25. Concludes lower_bound_via_mod18: N/25 ≤ maxNonSqfreeSet N for N ≥ 25.",
+      "mathContext": "The injection k ↦ 25k+18 maps {0,...,N/25-1} into {n ≤ N : n ≡ 18 (mod 25)}, giving the lower bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "The algebraic explanation for Erdős #848's extremal structure is fully formalized: 7 and 18 are the unique square roots of -1 in ℤ/25ℤ (proved by decide), all other mod-25 residue classes fail (proved by interval_cases), the two classes are incompatible for cross-pairs (proved by ring+omega), and an independent lower bound N/25 ≤ maxNonSqfreeSet N is given via the mod-18 witness. 0 sorries, 0 axioms.",
+    "implications": "The connection between Erdős #848 and ZMod 25 square roots of -1 is now fully formalized. This algebraic perspective explains why the problem is governed by modular arithmetic: the extremal configuration is determined by the quadratic residue structure of ℤ/25ℤ, specifically the solutions to x² ≡ -1 (mod 25). The incompatibility result shows why the two classes are rigid: any set mixing both residue types must rely on other prime squares for cross-pairs, making it harder to maintain the non-squarefree product property globally.",
+    "openQuestions": [
+      "Can the cross-residue incompatibility be strengthened: for a≡7, b≡18 (mod 25), is ab+1 always squarefree? (For a=7, b=18: 7·18+1=127 is prime, so squarefree. But in general, ab+1 might have large prime square factors.)",
+      "Can Hensel's lemma be used to lift the mod-25 analysis to mod-625 (5⁴), giving a tighter bound than N/25?",
+      "The van Doorn upper bound (≤ 0.108N from the parent file) involves an infinite sum over primes p ≡ 1 (mod 4). Can this sum be formally evaluated in Lean 4?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-848",
+      "relationship": "extends",
+      "description": "Parent: the main formalization of Erdős #848 with lower bound, upper constraint, and axiomatized deep results"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The condition x² ≡ -1 (mod p) has solutions iff p ≡ 1 (mod 4), connecting this problem to quadratic reciprocity"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Erdős, P.", "Sárközy, A."],
+      "title": "On sets of integers with property P",
+      "venue": "Mathematica Pannonica",
+      "year": "1992",
+      "note": "Original problem formulation"
+    },
+    {
+      "authors": ["Sawhney, M."],
+      "title": "Solution to Erdős Problem 848",
+      "year": "2023",
+      "note": "Proves maxNonSqfreeSet N = N/25 for large N via additive combinatorics"
+    }
+  ],
+  "leanFile": "Proofs/Erdos848ProblemOQ01.lean"
+}

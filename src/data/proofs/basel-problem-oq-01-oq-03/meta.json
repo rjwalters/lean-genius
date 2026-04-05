@@ -7,7 +7,7 @@
     "author": "formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BaselProblemOQ01OQ03.lean",
     "tags": [
       "number-theory",
@@ -15,7 +15,7 @@
       "open-problem",
       "irrationality"
     ],
-    "badge": "original",
+    "badge": "formalized",
     "sorries": 0,
     "assumptions": "0 sorries, 0 axioms. All theorems are fully proved. The main results — apery_criterion, geometric_decay_tendsto, and all conditional theorems — contain no mathematical assumptions beyond the hypotheses stated.",
     "dateAdded": "2026-04-04",
@@ -39,42 +39,37 @@
     {
       "id": "criterion",
       "title": "Part I: The Apéry Irrationality Criterion",
-      "startLine": 42,
+      "startLine": 43,
       "endLine": 84,
-      "summary": "Proves apery_criterion: if integer sequences pₙ, qₙ satisfy qₙ·α - pₙ → 0 with qₙ·α - pₙ ≠ 0, then α is irrational. The proof uses the discrete lower bound |q·α - p| ≥ 1/d for rational α with denominator d, combined with Metric.tendsto_atTop to extract a contradiction.",
-      "mathContext": "If $\\alpha = a/b$, then $|q_n \\alpha - p_n| \\geq 1/b > 0$ — contradicting $q_n \\alpha - p_n \\to 0$"
+      "summary": "Proves apery_criterion: if integer sequences pₙ, qₙ satisfy qₙ·α - pₙ → 0 with qₙ·α - pₙ ≠ 0, then α is irrational. The proof uses the discrete lower bound |q·α - p| ≥ 1/d for rational α with denominator d."
     },
     {
       "id": "witness",
       "title": "Part II: Abstract Apéry Witness Structure",
       "startLine": 86,
       "endLine": 110,
-      "summary": "Defines AperyWitness α bundling the convergence and never_zero conditions. Proves apery_implies_irrational: any α with an AperyWitness is irrational. Separates the abstract criterion from its applications, making the method reusable for any real number.",
-      "mathContext": "An `AperyWitness α` is a certificate $\\{(p_n, q_n)\\}$ with $q_n \\alpha - p_n \\to 0$ and $q_n \\alpha - p_n \\neq 0$"
+      "summary": "Defines AperyWitness α bundling the convergence and never_zero conditions. Proves apery_implies_irrational: any α with an AperyWitness is irrational."
     },
     {
       "id": "conditional",
-      "title": "Part III: ζ(5) Definition and Conditional Theorem",
+      "title": "Part III: ζ(5) Conditional Theorem",
       "startLine": 112,
       "endLine": 127,
-      "summary": "Defines zetaFive := ∑' n : ℕ, 1/(n+1)^5 and proves zetaFive_irrational_if_apery_witness: the existence of an AperyWitness for ζ(5) implies ζ(5) is irrational. The conditional form is the precise formalization of the open problem.",
-      "mathContext": "$\\zeta(5) = \\sum_{n=1}^\\infty n^{-5} \\approx 1.0369...$; its irrationality would follow from any AperyWitness"
+      "summary": "Defines zetaFive as the infinite series ∑ 1/n^5 and proves zetaFive_irrational_if_apery_witness: the existence of an AperyWitness for ζ(5) implies ζ(5) is irrational."
     },
     {
       "id": "geometric",
-      "title": "Part IV: Geometric Decay and StrongApéryWitness",
+      "title": "Part IV: Geometric Decay",
       "startLine": 129,
-      "endLine": 182,
-      "summary": "Defines HasGeometricDecay (|fₙ| ≤ C·rⁿ, r < 1) and proves geometric_decay_tendsto via squeeze_zero_norm. Defines StrongAperyWitness adding an explicit geometric rate, with StrongAperyWitness.toAperyWitness coercion. Apéry's ζ(3) sequences achieve r = (√2-1)⁴ ≈ 0.029.",
-      "mathContext": "$|f(n)| \\leq C r^n$, $r < 1$ $\\Rightarrow$ $f(n) \\to 0$; Apéry's rate for $\\zeta(3)$: $r = (\\sqrt{2}-1)^4$"
+      "endLine": 187,
+      "summary": "Defines HasGeometricDecay structure (rate < 1, constant C, bound |fₙ| ≤ C·rⁿ). Proves geometric_decay_tendsto using squeeze_zero_norm and tendsto_pow_atTop_nhds_zero_of_lt_one. Defines StrongAperyWitness with a geometric rate and provides StrongAperyWitness.toAperyWitness conversion."
     },
     {
       "id": "template",
-      "title": "Part V: Apéry's ζ(3) Recurrence — Template and Open Problem",
-      "startLine": 184,
+      "title": "Part V: Apéry's ζ(3) Recurrence as Template",
+      "startLine": 189,
       "endLine": 213,
-      "summary": "Formalizes Apéry's 3-term recurrence (n+1)³uₙ₊₁ = (2n+1)(17n²+17n+5)uₙ - n³uₙ₋₁ for ζ(3). Defines IsAperyTypeRecurrence as the general polynomial recurrence form. Formalizes OpenProblem_ζ5_Apery as ∃ _ : StrongAperyWitness zetaFive, True — the existence question for an Apéry-type approach to ζ(5).",
-      "mathContext": "$(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5)u_n - n^3 u_{n-1}$; no analogous recurrence for $\\zeta(5)$ is known"
+      "summary": "States Apéry's explicit recurrence for ζ(3), defines IsAperyTypeRecurrence as the general form, and states OpenProblem_ζ5_Apery as the existence question for a StrongAperyWitness for ζ(5)."
     }
   ],
   "conclusion": {
@@ -88,19 +83,18 @@
   },
   "crossReferences": [
     {
-      "id": "basel-problem-oq-01",
-      "title": "ζ(5) Irrationality Investigation",
-      "relationship": "parent"
+      "targetId": "basel-problem-oq-01",
+      "relationship": "extends",
+      "description": "Directly addresses OQ-03 from the ζ(5) irrationality investigation."
     },
     {
-      "id": "basel-problem-oq-01-oq-01",
-      "title": "ζ(5) Computational Bounds",
-      "relationship": "sibling"
+      "targetId": "basel-problem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Complements the computational bounds file with the abstract irrationality criterion."
     },
     {
-      "id": "basel-problem",
-      "title": "Basel Problem",
-      "relationship": "foundational"
+      "targetId": "basel-problem",
+      "relationship": "related"
     }
   ],
   "leanFile": {
@@ -110,68 +104,11 @@
       "Mathlib.NumberTheory.Real.Irrational",
       "Mathlib.Tactic"
     ],
-    "opens": [
-      "Filter"
-    ],
     "namespace": "BaselProblemOQ01OQ03",
     "lineCount": 213,
     "axiomCount": 0,
-    "sorries": 0,
-    "path": "Proofs/BaselProblemOQ01OQ03.lean",
-    "theoremCount": 5,
-    "definitionCount": 5
+    "theoremCount": 6,
+    "definitionCount": 7
   },
-  "references": [
-    {
-      "authors": [
-        "Apéry, R."
-      ],
-      "title": "Irrationalité de ζ(2) et ζ(3)",
-      "venue": "Astérisque",
-      "year": "1979",
-      "pages": "61, 11–13",
-      "note": "Apéry's original paper; the proof that ζ(3) is irrational, using the 3-term recurrence and integer sequence argument"
-    },
-    {
-      "authors": [
-        "van der Poorten, A."
-      ],
-      "title": "A proof that Euler missed — Apéry's proof of the irrationality of ζ(3)",
-      "venue": "The Mathematical Intelligencer",
-      "year": "1979",
-      "pages": "vol. 1, 195–203",
-      "note": "Accessible reconstruction of Apéry's proof; explains the recurrence and why the integer sequences work"
-    },
-    {
-      "authors": [
-        "Ball, K.",
-        "Rivoal, T."
-      ],
-      "title": "Irrationalité d'une infinité de valeurs de la fonction zêta aux entiers impairs",
-      "venue": "Inventiones Mathematicae",
-      "year": "2001",
-      "pages": "146, 193–207",
-      "note": "Proves infinitely many odd zeta values are irrational; a different method from Apéry's"
-    },
-    {
-      "authors": [
-        "Zudilin, W."
-      ],
-      "title": "One of the numbers ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
-      "venue": "Russian Mathematical Surveys",
-      "year": "2001",
-      "pages": "56, 774–776",
-      "note": "Proves at least one specific odd zeta value (among ζ(5),ζ(7),ζ(9),ζ(11)) is irrational without identifying which"
-    },
-    {
-      "authors": [
-        "Beukers, F."
-      ],
-      "title": "A note on the irrationality of ζ(2) and ζ(3)",
-      "venue": "Bulletin of the London Mathematical Society",
-      "year": "1979",
-      "pages": "11, 268–272",
-      "note": "Elegant reformulation of Apéry's proof using Legendre polynomial integrals; clarifies the geometric decay rate r = (√2-1)⁴"
-    }
-  ]
+  "references": []
 }

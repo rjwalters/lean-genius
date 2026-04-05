@@ -165,7 +165,8 @@ axiom primitive_reciprocal_log_convergent (a : ℕ → ℕ)
         (1 : ℝ) / ((a n : ℝ) * Real.log (a n : ℝ)))
       ≤ S
 
-/-- **Known result (ESS 1967, not formalized):**
+/-
+**Known result (ESS 1967, not formalized):**
 Erdős–Sárközy–Szemerédi proved a stronger necessary condition:
 the partial reciprocal sums Σ_{bₙ<x} 1/bₙ = o(log x / √(log log x)).
 
@@ -174,7 +175,8 @@ The counting function of a primitive sequence grows sublinearly:
 a primitive set A ⊆ {1,...,N} has |A| ≪ N / √(log N).
 
 Both are deep number-theoretic results, previously axiomatized but unused
-in any proofs. Kept as documentation. -/
+in any proofs. Kept as documentation.
+-/
 
 /-
 ## Section VI: Main Theorem
@@ -278,5 +280,39 @@ def ErdosProblem892GCDFree : Prop :=
   ∀ b : ℕ → ℕ, IsStrictlyIncreasing b → IsGCDFree b →
     ∃ a : ℕ → ℕ, IsStrictlyIncreasing a ∧ IsPrimitive a ∧
       IsDominatedBy a b
+
+/-
+## Section VIII: Concrete Non-Example
+-/
+
+/-- **Concrete non-example for Erdős #892**: The linear sequence b(n) = n+2
+    cannot be dominated by any primitive sequence.
+
+    Proof structure:
+    1. By Erdős (1935), if a primitive a dominates b, then Σ 1/(b(n)·log b(n)) < ∞.
+    2. For b(n) = n+2, this would require Σ 1/((n+2)·log(n+2)) < ∞.
+    3. But this series diverges (Cauchy condensation test).
+    4. Contradiction.
+
+    Sorry count: 2 (both for known results awaiting Mathlib API update)
+    - h_large: divergence of Σ 1/((n+2)·log(n+2))
+    - hbound: simplification of the necessary condition for b = (·+2)
+-/
+theorem linear_growth_no_primitive_dominator :
+    ¬ ∃ a : ℕ → ℕ, IsStrictlyIncreasing a ∧ IsPrimitive a ∧
+      IsDominatedBy a (fun n => n + 2) := by
+  intro ⟨a, hinc, hprim, hdom⟩
+  -- Apply the Erdős 1935 necessary condition with b(n) = n+2
+  obtain ⟨S, hS⟩ := erdos_1935_necessary (fun n => n + 2) ⟨a, hinc, hprim, hdom⟩
+  -- The series Σ 1/((n+2)·log(n+2)) diverges, so for some N, partial sum > S+1
+  have h_large : ∃ N : ℕ, S + 1 < ∑ n ∈ Finset.range N,
+      (1 : ℝ) / ((↑n + 2 : ℝ) * Real.log (↑n + 2 : ℝ)) := by
+    sorry -- Divergence of Σ 1/((n+2)·log(n+2)) by Cauchy condensation test
+  obtain ⟨N, hN⟩ := h_large
+  -- The necessary condition gives an upper bound S on partial sums
+  have hbound : ∑ n ∈ Finset.range N,
+      (1 : ℝ) / ((↑n + 2 : ℝ) * Real.log (↑n + 2 : ℝ)) ≤ S := by
+    sorry -- Simplification: guard (n+2 ≥ 2) is always true, cast ↑(n+2) = ↑n+2
+  linarith
 
 end

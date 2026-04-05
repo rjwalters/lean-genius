@@ -1527,6 +1527,7 @@ import Proofs.Erdos845Problem
 import Proofs.Erdos846Problem
 import Proofs.Erdos847Problem
 import Proofs.Erdos848Problem
+import Proofs.Erdos848ProblemOQ01
 import Proofs.Erdos849Problem
 import Proofs.Erdos84Problem
 import Proofs.Erdos850Problem
@@ -1900,6 +1901,7 @@ import Proofs.LawsOfLargeNumbers
 import Proofs.LawsOfLargeNumbersOQ01
 import Proofs.LawsOfLargeNumbersOQ01Aristotle
 import Proofs.LawsOfLargeNumbersOQ02
+import Proofs.LawsOfLargeNumbersOQ04
 import Proofs.LebesgueMeasure
 import Proofs.LebesgueMeasureOQ01
 import Proofs.LebesgueMeasureOQ01OQ01
