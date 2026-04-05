@@ -55,7 +55,7 @@
       "ErdosSzemeredi_Bounds, ImprovedBounds: combined statements"
     ],
     "axiomCount": 0,
-    "assumptions": "12 axiom declarations: erdos_szemeredi_lower (h(n) >> n^{1/2}), erdos_szemeredi_upper (h(n) << n^{1-c}), freiman_lev_upper (h(n) << n^{2/3}), consecutive_quotient_set_large (consecutive set quotient >= n), ap_quotient_set (AP quotient size <= n^2), gp_quotient_size (GP quotient size O(n^2)), quotient_set_is_matrix_image (matrix formulation), geometric_reformulation (lattice point view), extremal_structure (extremal sets are structured), erdos_539 (combined Erdos-Szemeredi bounds), erdos_539_bounds (h bounds with Freiman-Lev), erdos_539_open (true exponent unknown)",
+    "assumptions": "0 axioms, 0 sorries. Definitions and basic properties proved; main bounds (Erdős-Szemerédi and Freiman-Lev) remain open conjectures stated as Prop definitions, not formalized as axioms or proved theorems.",
     "prerequisites": [
       "Greatest common divisor (GCD) and basic divisibility",
       "Finite set cardinality and Finset operations",
