@@ -1,9 +1,21 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "hilbert-22-oq-01",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Module Preamble: Mathematical Context and Framework",
+    "content": "The file opens with `import Mathlib` and a rich docblock articulating the four frameworks for higher-dimensional uniformization: (1) the Kodaira-Enriques classification for dim 2 algebraic surfaces, (2) Yau's theorem on Kähler-Einstein metrics (Calabi conjecture), (3) Kobayashi hyperbolicity as the higher-dimensional 'hyperbolic type', and (4) the Minimal Model Program (Mori theory) for birational classification. The single namespace `Hilbert22OQ01` groups all definitions. This file is unusual in using `decide` as the main theorem tactic — the mathematical content lives primarily in the definitions and docstrings rather than in proved theorems.",
+    "mathContext": "The uniformization analogy in higher dimensions: dimension 1 gives $\\{S^2, \\mathbb{C}, \\mathbb{D}\\}$ corresponding to $(\\kappa = -\\infty, \\kappa = 0, \\kappa = 1)$. Dimension 2: the Enriques-Kodaira classification gives exactly 8 surface classes. Dimension $\\ge 3$: no finite classification; instead one uses the Minimal Model Program to reduce to a minimal model (with the Mori cone and flip operations), and Kobayashi hyperbolicity as a geometric invariant.",
+    "significance": "context",
+    "relatedConcepts": ["Hilbert's 22nd problem", "Kodaira dimension", "Kähler-Einstein metrics", "Minimal Model Program"],
+    "prerequisites": ["Riemann surface uniformization theorem", "complex manifold basics", "canonical bundle and Chern classes"]
+  },
+  {
     "id": "ann-kodaira-dimension-type",
     "proofId": "hilbert-22-oq-01",
     "range": { "startLine": 39, "endLine": 52 },
-    "type": "definition",
+    "type": "concept",
     "title": "Kodaira Dimension as an Inductive Type",
     "content": "The `KodairaDimension` inductive type encodes the classification invariant introduced by Kunihiko Kodaira in the 1960s. The two constructors capture the two qualitatively different regimes: `negInfty` for rational/ruled manifolds (where the canonical bundle has negative self-intersection) and `finite k` for manifolds where the pluricanonical maps are non-trivial up to dimension k. The `riemann_surface_kodaira` function explicitly maps the classical trichotomy {S², ℂ, 𝔻} to Kodaira dimensions {-∞, 0, 1}, making the analogy between 1D uniformization and higher-dimensional classification machine-checkable.",
     "mathContext": "$\\kappa(X) = \\limsup_{m\\to\\infty} \\frac{\\log \\dim H^0(X, K_X^{\\otimes m})}{\\log m} \\in \\{-\\infty, 0, 1, \\ldots, \\dim X\\}$",
