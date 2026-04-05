@@ -2079,6 +2079,7 @@ import Proofs.SzemerediHypergraphCore
 import Proofs.SzemerediRegularity
 import Proofs.SzemerediTheorem
 import Proofs.TaylorSinCosConvergence
+import Proofs.TaylorSinCosConvergenceOQ02
 import Proofs.TaylorSinCosConvergenceOQ03
 import Proofs.TaylorSinCosConvergenceOQ03Aristotle
 import Proofs.TaylorTheorem

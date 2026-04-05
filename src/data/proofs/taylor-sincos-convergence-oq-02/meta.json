@@ -1,0 +1,145 @@
+{
+  "id": "taylor-sincos-convergence-oq-02",
+  "title": "Euler Formula from sin/cos Taylor Convergence",
+  "slug": "taylor-sincos-convergence-oq-02",
+  "description": "Proves Euler's formula e^{ix} = cos x + i sin x by combining the real sin/cos Taylor series convergence (proved via Lagrange remainder bounds) with the complex exponential series decomposition.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_formula",
+    "date": "Classical result, formalized 2026",
+    "status": "formalized",
+    "tags": [
+      "analysis",
+      "complex-analysis",
+      "series",
+      "convergence",
+      "open-question",
+      "euler-formula"
+    ],
+    "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ02.lean",
+    "badge": "wip",
+    "sorries": 2,
+    "axiomCount": 2,
+    "assumptions": "2 axioms inherited from TaylorSinCosConvergence: sin_taylor_remainder_bound and cos_taylor_remainder_bound (Lagrange remainder bounds used to prove summability). 2 sorries: cosPartialSum_eq_cosSeries_sum and sinPartialSum_eq_sinSeries_sum (bonus bridge lemmas; not on the critical path for the main theorem).",
+    "originalContributions": [
+      "Explicit real-to-complex summability transfer for sin/cos Taylor series",
+      "Complex tsum identification via I-cancellation (mul_right_cancel₀ Complex.I_ne_zero)",
+      "Real tsum identities via Complex.ofRealCLM.map_tsum",
+      "Full Euler formula proof decomposing exp series into even/odd subseries",
+      "Period-4 derivative lemmas for iteratedDeriv of sin and cos at 0"
+    ],
+    "dateAdded": "2026-04-05",
+    "lineCount": 229,
+    "theoremCount": 16,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Euler's formula e^{ix} = cos x + i sin x (1748) is one of the most celebrated results in mathematics. It connects the exponential function, the trigonometric functions, and the imaginary unit. The usual derivation substitutes ix into the Taylor series for exp and groups even and odd terms to obtain the Taylor series for cos and sin respectively.\n\nThis formalization makes the derivation rigorous by: (1) using the real sin/cos Taylor series summability proved in the parent taylor-sincos-convergence entry (via Lagrange remainder bounds and axiomatized derivative values), (2) lifting real summability to complex summability via norm bounds, (3) identifying complex tsums with Complex.cos and Complex.sin using the complex exp series decomposition from EulerIdentityOQ01OQ01, and (4) combining these to prove exp(ix) = ↑cos(x) + ↑sin(x)·I.\n\nThe distinction from the one-line proof via Complex.exp_mul_I is that this proof makes the Taylor series machinery explicit — showing that each piece of the standard derivation corresponds to a proved theorem.",
+    "problemStatement": "**Open Question (OQ-02)**: Can convergence of the sin/cos Taylor series (proved via Lagrange remainder bounds in OQ-01) be combined with the exp series convergence to give a formal proof of Euler's formula $e^{ix} = \\cos x + i \\sin x$?\n\n**Answer**: Yes. `euler_formula_from_taylor` proves this via a chain: real summability → complex summability → complex tsum identification → exp series decomposition.",
+    "text": "A 229-line formalization answering YES: the real sin/cos Taylor series summability (from Lagrange bounds in the parent entry) can be combined with the complex exp series decomposition to formally prove e^{ix} = cos x + i sin x. The main theorem `euler_formula_from_taylor` has 0 sorries; 2 bonus bridge lemmas (connecting Taylor partial sums to alternating series partial sums) remain as sorries.",
+    "proofStrategy": "**Section I** (Algebraic Bridges): Cast cosSeries(ℝ) to ℂ = evenTerm, and sinSeries(ℝ)·I = oddTerm. Both are trivial by simp + push_cast + ring.\n\n**Section II** (Summability Transfer): Real summability (from TaylorSinCosConvergence, proved via Lagrange bounds) implies complex summability, via `Summable.of_norm_bounded` with `Complex.norm_real`.\n\n**Section III** (Complex tsum Identities): ∑' cosSeries_ℂ = Complex.cos x via `cos_eq_tsum_thm` from EulerIdentityOQ01OQ01. For sin: use `sin_eq_tsum_thm` (which gives ↑sin·I = ∑ oddTerm), rewrite oddTerm = sinSeries_ℂ·I, cancel I via `mul_right_cancel₀ Complex.I_ne_zero`.\n\n**Section IV** (Real tsum Identities): Use `Complex.ofRealCLM.map_tsum` to push the ofReal cast through the tsum, then apply the complex identification.\n\n**Section V** (Main Theorem): Rewrite exp(ix) = ∑ expTerm(ix) via `hasSum.tsum_eq`, split into even + odd via `tsum_even_add_odd_of_summable`, identify each half with ↑cos x and ↑sin x·I respectively.",
+    "keyInsights": [
+      "**Complex.ofRealCLM.map_tsum as the Bridge**: The continuous linear map ofRealCLM : ℝ →L[ℝ] ℂ commutes with tsum (for summable series), giving ↑(∑' f) = ∑' ↑(f n). This is the key identity that connects real tsum values to complex ones.",
+      "**I-Cancellation via mul_right_cancel₀**: The sin tsum identity uses the fact that ↑sin·I = (∑' sinSeries_ℂ)·I (proved by rewriting) and then `mul_right_cancel₀ Complex.I_ne_zero` cancels I from both sides. This avoids needing a direct complex-to-real extraction lemma.",
+      "**Summability Transfer via Norm Bound**: `Summable.of_norm_bounded` with the bound `Complex.norm_real (f n) = |f n|` transfers real summability to complex summability. The bound `le_abs_self` handles the direction.",
+      "**Exp Series Parity Decomposition**: `tsum_even_add_odd_of_summable` splits the exp series into even-indexed (giving cos) and odd-indexed (giving sin·I) subseries. This is the algebraic heart of Euler's formula.",
+      "**Period-4 Induction for Derivatives**: The bonus Section VI uses period-4 induction (iteratedDeriv_cos_add_four, iteratedDeriv_sin_add_four) to compute all iteratedDeriv values at 0, enabling the Taylor partial sum bridge."
+    ],
+    "prerequisites": [
+      "Taylor series for sin/cos and exp",
+      "Complex exponential function",
+      "Summability and tsum in Lean/Mathlib",
+      "Complex numbers: cast from ℝ to ℂ, the imaginary unit I"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "taylor-sincos-convergence",
+      "relationship": "extends",
+      "description": "Uses summable_cosSeries and summable_sinSeries proved via Lagrange bounds in the parent formalization"
+    },
+    {
+      "targetId": "euler-identity-oq-01-oq-01",
+      "relationship": "builds-on",
+      "description": "Imports expTerm, evenTerm, oddTerm, tsum_even_add_odd_of_summable, cos_eq_tsum_thm, sin_eq_tsum_thm from this companion file"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Series",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Topology.Algebra.InfiniteSum.NatInt",
+      "Mathlib.Topology.Algebra.InfiniteSum.Ring",
+      "Proofs.TaylorSinCosConvergence",
+      "Proofs.EulerIdentityOQ01OQ01"
+    ],
+    "namespace": "TaylorSinCosConvergenceOQ02",
+    "lineCount": 229,
+    "axiomCount": 2,
+    "theoremCount": 16,
+    "definitionCount": 0,
+    "path": "Proofs/TaylorSinCosConvergenceOQ02.lean",
+    "sorries": 2
+  },
+  "sections": [
+    {
+      "id": "sec-algebraic-bridges",
+      "title": "Section I: Algebraic Bridges",
+      "startLine": 37,
+      "endLine": 49,
+      "summary": "Proves that cosSeries(ℝ) cast to ℂ equals evenTerm, and sinSeries(ℝ) cast to ℂ times I equals oddTerm. Both proofs are simp + push_cast + ring.",
+      "mathContext": "$\\uparrow(\\text{cosSeries}(x,k)) = (-1)^k x^{2k}/(2k)! = \\text{evenTerm}(x,k)$ and $\\uparrow(\\text{sinSeries}(x,k)) \\cdot i = i \\cdot (-1)^k x^{2k+1}/(2k+1)! = \\text{oddTerm}(x,k)$."
+    },
+    {
+      "id": "sec-summability",
+      "title": "Section II: Summability Transfer",
+      "startLine": 51,
+      "endLine": 62,
+      "summary": "Transfers real summability of cosSeries/sinSeries (from TaylorSinCosConvergence, proved via Lagrange bounds) to complex summability via Summable.of_norm_bounded.",
+      "mathContext": "$\\sum |\\uparrow(\\text{cosSeries}(x,n))| = \\sum |\\text{cosSeries}(x,n)| < \\infty$ by real summability; norm_real gives the bound."
+    },
+    {
+      "id": "sec-complex-tsum",
+      "title": "Section III: Complex tsum Identities",
+      "startLine": 64,
+      "endLine": 85,
+      "summary": "Proves ∑' cosSeries_ℂ = Complex.cos x (via cos_eq_tsum_thm) and ∑' sinSeries_ℂ = Complex.sin x (via sin_eq_tsum_thm and I-cancellation).",
+      "mathContext": "$\\sum_{k=0}^\\infty \\uparrow(\\cos\\text{Series}(x,k)) = \\cos x$ and $\\sum_{k=0}^\\infty \\uparrow(\\sin\\text{Series}(x,k)) = \\sin x$ in $\\mathbb{C}$."
+    },
+    {
+      "id": "sec-real-tsum",
+      "title": "Section IV: Real tsum Identities",
+      "startLine": 87,
+      "endLine": 107,
+      "summary": "Proves ∑' cosSeries x n = Real.cos x and ∑' sinSeries x n = Real.sin x by applying Complex.ofRealCLM.map_tsum to push the ℝ→ℂ cast through the tsum.",
+      "mathContext": "$\\sum_{k=0}^\\infty \\cos\\text{Series}(x,k) = \\cos x$ in $\\mathbb{R}$; proved via injectivity of $\\mathbb{R} \\hookrightarrow \\mathbb{C}$ and $\\text{ofRealCLM}$ commutativity with tsum."
+    },
+    {
+      "id": "sec-euler-main",
+      "title": "Section V: Euler Formula (Main Theorem)",
+      "startLine": 109,
+      "endLine": 135,
+      "summary": "Proves euler_formula_from_taylor: exp(ix) = ↑cos x + ↑sin x · I (0 sorries). Splits exp series into even + odd via tsum_even_add_odd_of_summable, identifies each half with cos and sin. Also proves euler_identity_from_taylor: exp(iπ) + 1 = 0.",
+      "mathContext": "$e^{ix} = \\sum_{n=0}^\\infty \\frac{(ix)^n}{n!} = \\sum_{k=0}^\\infty \\frac{(ix)^{2k}}{(2k)!} + \\sum_{k=0}^\\infty \\frac{(ix)^{2k+1}}{(2k+1)!} = \\cos x + i\\sin x$."
+    },
+    {
+      "id": "sec-bonus-bridge",
+      "title": "Section VI: Taylor Partial Sum Bridge (Bonus)",
+      "startLine": 137,
+      "endLine": 228,
+      "summary": "Proves period-4 iteratedDeriv lemmas for sin/cos at 0. States cosPartialSum (2n) x = ∑_{k≤n} cosSeries x k and sinPartialSum (2n+1) x = ∑_{k≤n} sinSeries x k (both sorry: routine Finset.sum reindexing).",
+      "mathContext": "$\\cos^{(2n)}(0) = (-1)^n$, $\\cos^{(2n+1)}(0) = 0$, $\\sin^{(2n)}(0) = 0$, $\\sin^{(2n+1)}(0) = (-1)^n$. Bridge: $\\text{cosPartialSum}(2n, x) = \\sum_{k=0}^n \\frac{(-1)^k x^{2k}}{(2k)!}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves Euler's formula e^{ix} = cos x + i sin x by combining real sin/cos Taylor series summability with complex exp series decomposition. The main theorem euler_formula_from_taylor has 0 sorries. Two bonus bridge lemmas (partial sum reindexing) remain as sorries. Two axioms inherited from the parent formalization (Lagrange remainder bounds).",
+    "implications": "This formalization demonstrates that the standard Taylor series derivation of Euler's formula is entirely formalizable in Lean 4 with Mathlib, given the real summability results. The key technique — using Complex.ofRealCLM.map_tsum to transfer real tsum identities to complex ones — is broadly applicable to any situation where one needs to connect real and complex power series. The proof architecture (five sections: bridge → summability → complex tsums → real tsums → main theorem) provides a template for similar real-to-complex lifting arguments.",
+    "openQuestions": [
+      "Fill the 2 bridge sorries (cosPartialSum_eq_cosSeries_sum, sinPartialSum_eq_sinSeries_sum) via Finset.sum reindexing using the period-4 derivative values proved in Section VI.",
+      "Generalize: can this approach prove the power series identity for cosh/sinh (replacing ix with x), giving cosh x = ∑ x^{2k}/(2k)! and sinh x = ∑ x^{2k+1}/(2k+1)!?"
+    ]
+  }
+}
