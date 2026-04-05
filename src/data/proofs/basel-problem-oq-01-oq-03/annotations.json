@@ -1,0 +1,117 @@
+[
+  {
+    "id": "apery-context",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 42 },
+    "title": "Apéry's Irrationality Technique and the ζ(5) Problem",
+    "content": "This file formalizes the **Apéry irrationality criterion** — the mechanism underlying Roger Apéry's 1978 proof that $\\zeta(3)$ is irrational — and applies it conditionally to $\\zeta(5)$. The proof is fully verified (0 sorries, 0 axioms): the abstract criterion is proved, and the conditional theorem shows that the moment integer approximation sequences for $\\zeta(5)$ are found, irrationality follows immediately. The file separates provable mathematical infrastructure from the open construction problem.",
+    "mathContext": "Apéry's 1978 proof: construct integer sequences $(a_n, b_n)$ satisfying a 3-term recurrence $(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5)u_n - n^3 u_{n-1}$, with $b_n \\zeta(3) - a_n \\to 0$ at rate $(\\sqrt{2}-1)^4 \\approx 0.029$. The irrationality argument: if $\\zeta(3) = r \\in \\mathbb{Q}$ with denominator $d$, then $|b_n \\zeta(3) - a_n| \\geq 1/d > 0$ for all $n$ — contradiction. For $\\zeta(5)$: Zudilin (2001) showed $\\geq 1$ of $\\{\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)\\}$ is irrational. Zagier's computer search up to order $10^3$ found no Apéry-type recurrence for $\\zeta(5)$, suggesting the obstruction is fundamental.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Apéry's theorem",
+      "ζ(3) irrationality",
+      "integer approximation sequences",
+      "irrationality criterion",
+      "ζ(5) open problem"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "rational number theory",
+      "infinite series",
+      "irrationality proofs"
+    ]
+  },
+  {
+    "id": "apery-criterion",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "type": "technique",
+    "range": { "startLine": 43, "endLine": 84 },
+    "title": "The Apéry Irrationality Criterion (Proved)",
+    "content": "**apery_criterion** proves: if $\\exists$ integer sequences $(p_n, q_n)$ with $q_n \\alpha - p_n \\to 0$ and $q_n \\alpha - p_n \\neq 0$ for all $n$, then $\\alpha$ is irrational. The proof proceeds by contradiction: if $\\alpha = r \\in \\mathbb{Q}$ with denominator $d$, then $q_n r - p_n = (q_n r.\\text{num} - p_n d)/d$. Since $q_n r - p_n \\neq 0$, the integer numerator is nonzero ($\\geq 1$ in absolute value), giving $|q_n r - p_n| \\geq 1/d$. But the tendency to 0 produces an $N$ with $|q_N r - p_N| < 1/d$ — contradiction via `linarith`.",
+    "mathContext": "`Metric.tendsto_atTop.mp happrox _ hpos` extracts $N$ with `dist (q N * r - p N) 0 < 1/d`. `Rat.cast_def` and `push_cast; field_simp` rewrite $q_n \\cdot r - p_n$ as a fraction. `Int.one_le_abs hnum_ne` gives $|\\text{numerator}| \\geq 1$ (the key discreteness argument). `mul_le_mul_of_nonneg_right hnum_abs (inv_nonneg.mpr hd_pos.le)` converts $1 \\leq |\\text{num}|$ to $1/d \\leq |\\text{num}|/d$. The hypothesis `rintro ⟨r, rfl⟩` destructs `¬ Irrational α` into `∃ r : ℚ, r = α`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Metric.tendsto_atTop",
+      "Int.one_le_abs",
+      "Rat.cast_def",
+      "irrationality contradiction",
+      "discrete lower bound"
+    ],
+    "prerequisites": [
+      "rational arithmetic",
+      "real analysis",
+      "filter convergence in Lean",
+      "integer absolute value"
+    ]
+  },
+  {
+    "id": "apery-witness-structure",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "type": "definition",
+    "range": { "startLine": 86, "endLine": 127 },
+    "title": "AperyWitness Structure and ζ(5) Conditional Theorem",
+    "content": "**AperyWitness α** is a structure bundling the two conditions of `apery_criterion`: (1) `tendsto_zero`: $q_n \\alpha - p_n \\to 0$; (2) `never_zero`: $q_n \\alpha - p_n \\neq 0$ for all $n$. **apery_implies_irrational** proves any $\\alpha$ with an `AperyWitness` is irrational (one-line application of `apery_criterion`). **zetaFive** $= \\sum_{n \\geq 1} 1/n^5$ (implemented as $\\sum n : \\mathbb{N}, 1/(n+1)^5$). **zetaFive_irrational_if_apery_witness** is the central conditional theorem: an `AperyWitness zetaFive` implies $\\zeta(5)$ is irrational.",
+    "mathContext": "`zetaFive : ℝ := ∑' n : ℕ, 1 / ((n + 1 : ℝ) ^ 5)` uses `tsum` (Lean 4 unconditional infinite sum) from `Mathlib.Topology.Algebra.InfiniteSum.Basic`. The shift $n \\mapsto n+1$ avoids the $n=0$ singularity. The `noncomputable` annotation is needed since `tsum` involves classical real analysis. The structure fields `p q : ℕ → ℤ` require integer sequences — this is the integrality condition that makes Apéry's method work (real approximations are not enough). The construction of such sequences for $\\zeta(5)$ is the open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "AperyWitness",
+      "tsum",
+      "Irrational",
+      "zetaFive definition",
+      "conditional theorem"
+    ],
+    "prerequisites": [
+      "topological filters",
+      "infinite sums",
+      "irrationality in Lean",
+      "structure definitions"
+    ]
+  },
+  {
+    "id": "apery-geometric-decay",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "type": "technique",
+    "range": { "startLine": 129, "endLine": 187 },
+    "title": "Geometric Decay: From Quantitative Bounds to Convergence",
+    "content": "**HasGeometricDecay f r** captures the quantitative form: $\\exists C > 0$ s.t. $|f(n)| \\leq C \\cdot r^n$ for all $n$ with $r < 1$. **geometric_decay_tendsto** proves this implies $f_n \\to 0$ via `squeeze_zero_norm`: bounded above by $C \\cdot r^n$ (which tends to 0 by `tendsto_pow_atTop_nhds_zero_of_lt_one`) and bounded below by 0. **StrongAperyWitness** adds a `rate : ℝ` and `error_decay : HasGeometricDecay ... rate` to the basic witness. **StrongAperyWitness.toAperyWitness** converts by supplying `tendsto_zero` via `geometric_decay_tendsto`.",
+    "mathContext": "`tendsto_pow_atTop_nhds_zero_of_lt_one : 0 ≤ r → r < 1 → Tendsto (fun n => r^n) atTop (nhds 0)` is the key Mathlib lemma. `.const_mul C` and `simp only [mul_zero]` give `C * r^n → 0`. `squeeze_zero_norm : (∀ n, ‖f n‖ ≤ g n) → Tendsto g atTop (nhds 0) → Tendsto f atTop (nhds 0)` is the squeeze theorem for filters. For Apéry's $\\zeta(3)$: rate $r = (\\sqrt{2}-1)^4 \\approx 0.029$ (from Apéry's evaluation of the Padé approximant), giving superpolynomial convergence. The `HasGeometricDecay.const_bound` is an existential, ensuring the structure is pure data (no real-number computation).",
+    "significance": "key",
+    "relatedConcepts": [
+      "squeeze_zero_norm",
+      "tendsto_pow_atTop_nhds_zero_of_lt_one",
+      "HasGeometricDecay",
+      "StrongAperyWitness",
+      "filter convergence"
+    ],
+    "prerequisites": [
+      "topological filters",
+      "geometric series",
+      "squeeze theorem",
+      "Lean norm API"
+    ]
+  },
+  {
+    "id": "apery-open-problem",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "type": "concept",
+    "range": { "startLine": 189, "endLine": 213 },
+    "title": "Apéry's ζ(3) Recurrence as Template and the ζ(5) Open Problem",
+    "content": "**SatisfiesApery_ζ3_Recurrence u** formalizes Apéry's exact recurrence: $(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5)u_n - n^3 u_{n-1}$. **IsAperyTypeRecurrence P Q R u** generalizes to polynomial-coefficient 3-term recurrences. **OpenProblem_ζ5_Apery** is the precise formal statement of the open question: $\\exists$ `StrongAperyWitness zetaFive`. The existence of a negative result (impossibility) would be groundbreaking.",
+    "mathContext": "`SatisfiesApery_ζ3_Recurrence u : ∀ n : ℕ, (n+1:ℤ)^3 * u(n+1) = ...` uses `ℤ → ℤ` for the recurrence domain, capturing the crucial integrality of Apéry's sequences. The recurrence coefficients $17n^2+17n+5$ are precisely those found by Beukers (1987) via modular forms, and by Zagier via computer search in the 1980s. `IsAperyTypeRecurrence P Q R u` captures the ansatz that future provers might try: finding polynomials $P, Q, R : \\mathbb{Z} \\to \\mathbb{Z}$ with a solution. The Ball-Rivoal theorem (2001) established that infinitely many odd zeta values are irrational, but not which specific ones. Zudilin (2001) showed $\\geq 1$ of $\\{\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)\\}$ is irrational, but the specific $\\zeta(5)$ case remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Apéry recurrence",
+      "IsAperyTypeRecurrence",
+      "OpenProblem_ζ5_Apery",
+      "Ball-Rivoal theorem",
+      "Zudilin 2001"
+    ],
+    "prerequisites": [
+      "multiple zeta values",
+      "Padé approximants",
+      "integer linear recurrences",
+      "irrationality of zeta values"
+    ]
+  }
+]
