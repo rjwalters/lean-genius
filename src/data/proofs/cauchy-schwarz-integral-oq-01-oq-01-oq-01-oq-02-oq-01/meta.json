@@ -1,0 +1,116 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+  "title": "Full Power Mean Monotonicity: M_r ≤ M_s for All r ≤ s",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+  "description": "Unifies the three-case power mean monotonicity theorem: M_r ≤ M_s for all r ≤ s (r, s ≠ 0). Three partial results from the gallery — positive case (r ≤ s, both > 0), negative case (r ≤ s, both < 0), and crossing-zero case (r < 0 < s) — are combined by case analysis on the signs of r and s. Corollaries include HM ≤ AM, HM ≤ QM, AM ≤ QM, and the full chain HM ≤ GM ≤ AM ≤ QM. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Power_mean",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PowerMeanMonotoneOQ.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "power-means",
+      "mean-inequalities",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 193,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "power_mean_monotone: unified M_r ≤ M_s for all r ≤ s (r,s ≠ 0) by three-case analysis",
+      "hm_le_am: harmonic mean ≤ arithmetic mean via unified theorem",
+      "hm_le_qm: harmonic mean ≤ quadratic mean via unified theorem",
+      "am_le_qm: arithmetic mean ≤ quadratic mean via unified theorem",
+      "power_mean_chain: transitivity M_r ≤ M_u ≤ M_t",
+      "hm_le_gm_le_am_le_qm: full chain HM ≤ GM ≤ AM ≤ QM"
+    ],
+    "prerequisites": [
+      "AmgmInequalityOQ03 (Proofs/AmgmInequalityOQ03.lean): power_mean_monotone_pos and power_mean_monotone_neg",
+      "PowerMeanCrossZeroOQ (Proofs/PowerMeanCrossZeroOQ.lean): power_mean_monotone_crossing_zero"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.rpow_arith_mean_le_arith_mean_rpow",
+        "description": "Jensen's inequality for rpow (used in AmgmInequalityOQ03)",
+        "module": "Mathlib.Analysis.MeanInequalitiesPow"
+      },
+      {
+        "theorem": "Real.geom_mean_le_arith_mean_weighted",
+        "description": "Weighted AM-GM inequality (used in PowerMeanCrossZeroOQ)",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The power mean M_r(x₁,...,xₙ) = (∑wᵢxᵢʳ)^(1/r) interpolates between the harmonic mean (r=-1), geometric mean (r→0), arithmetic mean (r=1), and quadratic mean (r=2). The monotonicity M_r ≤ M_s for r ≤ s was proved by Cauchy (1821) for integer exponents and extended to real exponents via Jensen's inequality. The gallery previously had three separate proofs for the three sign cases; this file unifies them.",
+    "problemStatement": "**Open Question (OQ-01):** Prove the full power mean chain inequality: for positive reals x₁,...,xₙ with positive weights summing to 1, M_{r}(x,w) ≤ M_{s}(x,w) for all r ≤ s (r,s ≠ 0).\n\nThis requires unifying the positive case (AmgmInequalityOQ03), negative case (AmgmInequalityOQ03), and crossing-zero case (PowerMeanCrossZeroOQ).",
+    "proofStrategy": "**Three-case analysis** on the signs of r and s (both nonzero):\n\n**Case 1: 0 < r ≤ s** → Apply `power_mean_monotone_pos` from AmgmInequalityOQ03.\n\n**Case 2: r ≤ s < 0** → Apply `power_mean_monotone_neg` from AmgmInequalityOQ03.\n\n**Case 3: r < 0 < s** → Apply `power_mean_monotone_crossing_zero` from PowerMeanCrossZeroOQ.\n\nThese three cases are exhaustive since r ≠ 0 and s ≠ 0.",
+    "keyInsights": [
+      "The three sign cases (pos/pos, neg/neg, neg/pos) are exhaustive when r ≠ 0 and s ≠ 0, so `rcases lt_trichotomy` on r (then t) gives a clean case split.",
+      "The crossing-zero case r < 0 < s is the novel case proved in PowerMeanCrossZeroOQ, going via GM = M_0 as an intermediate: M_r ≤ GM ≤ M_s.",
+      "Transitivity (`power_mean_chain`) follows immediately by applying the main theorem twice.",
+      "The full chain HM ≤ GM ≤ AM ≤ QM is a 3-step corollary combining crossing-zero and positive cases."
+    ],
+    "prerequisites": [
+      "AmgmInequalityOQ03 (Proofs/AmgmInequalityOQ03.lean): power_mean_monotone_pos and power_mean_monotone_neg",
+      "PowerMeanCrossZeroOQ (Proofs/PowerMeanCrossZeroOQ.lean): power_mean_monotone_crossing_zero, power_mean_le_geom_mean_neg, geom_mean_le_power_mean_pos"
+    ],
+    "furtherWork": [
+      "Include the r=0 case: M_r ≤ GM ≤ M_s where r < 0 < s, then M_r → GM as r → 0 (already proved in AmgmInequalityOQ03OQ02)",
+      "Prove equality conditions: M_r = M_s iff all zᵢ are equal",
+      "Extend to the continuous weight case (measure-theoretic power means)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-theorem",
+      "title": "§1: Unified Monotonicity Theorem",
+      "startLine": 51,
+      "endLine": 80,
+      "summary": "power_mean_monotone: M_r ≤ M_s for r ≤ s (both ≠ 0). Three-case analysis: r > 0 → pos case, r < 0 ∧ s < 0 → neg case, r < 0 ∧ s > 0 → crossing-zero case.",
+      "mathContext": "Case split via lt_trichotomy r 0 (then t 0). Each case delegates to the appropriate partial result from the gallery."
+    },
+    {
+      "id": "corollaries",
+      "title": "§2: Corollaries",
+      "startLine": 82,
+      "endLine": 160,
+      "summary": "hm_le_am, hm_le_qm, am_le_qm (classical mean comparisons), power_mean_neg2_le_neg1, power_mean_le_double_exp, power_mean_chain (transitivity). All are one-line applications of power_mean_monotone.",
+      "mathContext": "Specific instances: HM ≤ AM at r=-1, s=1; HM ≤ QM at r=-1, s=2; AM ≤ QM at r=1, s=2."
+    },
+    {
+      "id": "full-chain",
+      "title": "§3: Full Power Mean Chain",
+      "startLine": 162,
+      "endLine": 193,
+      "summary": "hm_le_gm_le_am_le_qm: HM ≤ GM ≤ AM ≤ QM. Uses power_mean_le_geom_mean_neg, geom_mean_le_power_mean_pos, and power_mean_monotone.",
+      "mathContext": "HM = M_{-1} ≤ GM = M_0 ≤ AM = M_1 ≤ QM = M_2. The GM-AM and GM-HM steps use PowerMeanCrossZeroOQ; the AM-QM step uses the unified theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file unifies the three-case power mean monotonicity theorem into a single `power_mean_monotone` theorem: M_r ≤ M_s for all r ≤ s (r,s ≠ 0), 193 lines, 0 sorries, 0 axioms. It completes the weighted power mean monotonicity story in the gallery.",
+    "implications": "The full power mean chain is now proved: any two power mean exponents r ≤ s satisfy M_r ≤ M_s. This is the most general form of the mean inequality chain, subsuming HM ≤ GM ≤ AM ≤ QM as special cases at r=-1, 0, 1, 2.",
+    "openQuestions": [
+      "Prove equality: M_r = M_s for r < s iff all elements are equal (sharpness of the inequality)",
+      "Characterize when M_r → min and M_r → max as r → ±∞ for specific distributions"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "parent",
+      "description": "Parent proof: power_mean_monotone_pos (0 < r ≤ s) and power_mean_monotone_neg (r ≤ s < 0)"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02-oq-01",
+      "relationship": "parent",
+      "description": "Crossing-zero case: M_r ≤ GM ≤ M_s for r < 0 < s (PowerMeanCrossZeroOQ)"
+    }
+  ]
+}
