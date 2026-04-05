@@ -47,7 +47,56 @@
       "Mediant and modular group ($|ad-bc|=1$)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and Namespace Setup",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports Rat, Finset, and Tactic; opens Finset and namespace Erdos1005. The preamble docstring (lines 6-32) states the problem, known bounds, and background on Farey sequences and the mediant property.",
+      "mathContext": "$F_n$ = all fractions $p/q$ with $0 \\leq p/q \\leq 1$, $1 \\leq q \\leq n$, $\\gcd(p,q)=1$, in increasing order. Adjacent Farey fractions $a/b, c/d$ satisfy $bc - ad = 1$ (the mediant property)."
+    },
+    {
+      "id": "farey-structure",
+      "title": "§ 1: Farey Fractions",
+      "startLine": 38,
+      "endLine": 59,
+      "summary": "Defines the FareyFraction structure (p, q with positivity, order bound, numerator bound, coprimality), the rational value toRat = p/q, and the consecutive-Farey predicate IsConsecutiveFarey (g.p * f.q - f.p * g.q = 1).",
+      "mathContext": "FareyFraction n: a record $(p, q)$ with $1 \\leq q \\leq n$, $p \\leq q$, $\\gcd(p,q) = 1$. The consecutive predicate is $g.p \\cdot f.q - f.p \\cdot g.q = 1$, i.e., $bc - ad = 1$ for $a/b < c/d$ adjacent in $F_n$."
+    },
+    {
+      "id": "longest-run",
+      "title": "§ 2: The Longest Similar Run",
+      "startLine": 60,
+      "endLine": 70,
+      "summary": "Axiomatizes longestSimilarRun (n : ℕ) : ℕ — the length of the longest pairwise similarly ordered consecutive run in F_n. The definition of 'similarly ordered' requires the full Farey sequence construction, so f(n) itself is axiomatized.",
+      "mathContext": "$f(n) = \\max\\{k : \\exists$ a run of $k$ consecutive Farey fractions of order $n$ that are pairwise similarly ordered$\\}$. 'Similarly ordered' means $(a_i - a_j)(b_i - b_j) \\geq 0$ for all pairs in the run — comparability in the product order on $\\mathbb{Z}^2$."
+    },
+    {
+      "id": "farey-gap",
+      "title": "§ 3: Consecutive Farey Gap Theorem",
+      "startLine": 71,
+      "endLine": 93,
+      "summary": "Proves consecutive_farey_gap: adjacent Farey fractions f < g satisfy g.toRat - f.toRat = 1/(f.q * g.q). Key proof steps: field_simp, push_cast with Nat.sub_eq_iff_eq_add, linarith.",
+      "mathContext": "If $a/b < c/d$ are consecutive in $F_n$ (with $bc - ad = 1$), then $c/d - a/b = 1/(bd)$. Proof: $c/d - a/b = (bc - ad)/(bd) = 1/(bd)$. This shows that the 'density' of Farey fractions near $x$ is approximately $1/(n^2 x(1-x))$."
+    },
+    {
+      "id": "mediant-coprime",
+      "title": "§ 6: Mediant Coprimality",
+      "startLine": 95,
+      "endLine": 112,
+      "summary": "Proves mediant_coprime: if bc = ad + 1 (Farey adjacency), then gcd(a+c, b+d) = 1. Key: any common divisor g of (a+c) and (b+d) must divide b(a+c) - a(b+d) = bc - ad = 1, so g = 1. Uses dvd_mul_of_dvd_right, Nat.dvd_sub', nlinarith.",
+      "mathContext": "The mediant $(a+c)/(b+d)$ of consecutive Farey fractions $a/b, c/d$ is in lowest terms: $\\gcd(a+c, b+d) = 1$. Proof: $b(a+c) - a(b+d) = bc - ad = 1$, so $\\gcd(a+c,b+d) \\mid 1$. This ensures the mediant can appear in $F_{b+d}$."
+    },
+    {
+      "id": "mediant-between",
+      "title": "§ 6: Mediant is Between",
+      "startLine": 114,
+      "endLine": 136,
+      "summary": "Proves mediant_between: for consecutive f < g, the mediant (f.p+g.p)/(f.q+g.q) lies strictly between f.toRat and g.toRat. Two-part: f < mediant via div_lt_div_iff + nlinarith; mediant < g symmetrically.",
+      "mathContext": "The mediant $m = (a+c)/(b+d)$ satisfies $a/b < m < c/d$: $a/b < m \\iff a(b+d) < (a+c)b \\iff ad < bc \\iff a/b < c/d$. This is the fundamental property of the Stern-Brocot tree: each mediant insertion preserves the tree's order property."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization captures the full state of Erdős Problem 1005: the Farey fraction framework, the similarly ordered relation (proved symmetric and reflexive, crucially non-transitive), the Mayer–Erdős function $f(n)$, historical results from Mayer (1942) through van Doorn (2025), the open conjecture on the asymptotic constant, the geometric interpretation via product order on $\\mathbb{Z}^2$, and the mediant/determinant structure underlying the bounds. The 3:1 gap between the lower bound $1/12$ and upper bound $1/4$ remains the key open challenge.",
     "implications": "**Theoretical Significance**: Resolution would reveal deep structure in how Farey fractions are organized beyond their classical ordering.\n\nThe product order characterization connects to Dilworth's theorem and Ramsey theory, while the $GL_2(\\mathbb{Z})$ determinant property ties to the modular group and hyperbolic geometry. Understanding the asymptotic constant $c$ would also illuminate the balance between local order (the mediant insertion mechanism that builds $F_{n+1}$ from $F_n$) and global disorder (the non-transitivity that eventually breaks long runs).",
