@@ -67,7 +67,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 337,
-    "assumptions": "9 axiom(s) and 4 sorry(s). See the Lean source for details."
+    "assumptions": "4 axioms: moser_bound, nppz_bound, regular_polygon_distances, stronger_conjecture_is_false. 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #982** is a fundamental question in discrete geometry about the structure of convex polygons.\n\n**Historical Development:**\n- **1946**: Erdos posed the original problem in \"On sets of distances of n points\"\n- **1952**: Moser proved the first lower bound f(n) >= ceil(n/3)\n- **1994**: Erdos and Fishburn improved this to f(n) >= floor(n/3 + 1)\n- **2006**: Dumitrescu pushed the bound to approximately 0.361n\n- **2013**: Nivasch, Pach, Pinchasi, and Zerbib achieved f(n) >= (13/36 + 1/22701)n - O(1)\n\n**Related Conjectures:**\nErdos originally conjectured something stronger: that every convex polygon has a vertex with no three equidistant vertices. This was disproved (see Problem #97). He also conjectured a continuous version for convex curves, which Barany and Roldan-Pensado showed is false as stated (acute triangle boundaries are counterexamples).",

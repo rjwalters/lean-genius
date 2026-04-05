@@ -69,7 +69,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 171,
-    "assumptions": "6 axioms: turan_triangle, edwards_1978, complete_bipartite_triangle_free, and 3 more. See Lean source for complete statements."
+    "assumptions": "1 axiom: edwards_1978. 0 sorries."
   },
   "overview": {
     "historicalContext": "Turán's theorem (1941) is the cornerstone of extremal graph theory: the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$, achieved uniquely by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Any graph exceeding this threshold must contain a triangle.\n\nBéla Bollobás and Paul Erdős asked a deeper question: can we find not just ANY triangle, but one whose vertices have high combined degree? Specifically, they conjectured that any graph with $n$ vertices and more than $n^2/4$ edges contains a triangle $\\{x, y, z\\}$ with $d(x) + d(y) + d(z) \\geq \\frac{3}{2}n$. C.S. Edwards (1978) [Ed78] proved this conjecture using degree counting arguments and careful vertex selection.\n\nThe constant $\\frac{3}{2}$ is optimal: for any $\\varepsilon > 0$ and large $n$, there exist dense graphs where some triangle has degree sum below $(\\frac{3}{2}+\\varepsilon)n$. The result is an early example of 'structured extremal' results—not just proving existence of a subgraph, but finding one with additional properties. It prefigures modern supersaturation and stability results in extremal combinatorics.",
