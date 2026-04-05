@@ -20,6 +20,7 @@ import Proofs.AmgmInequalityOQ02OQ03
 import Proofs.AmgmInequalityOQ02OQ03OQ03
 import Proofs.AmgmInequalityOQ03
 import Proofs.AmgmInequalityOQ03OQ03
+import Proofs.PowerMeanCrossZeroOQ
 import Proofs.AmgmInequalityOQ04
 import Proofs.AngleTrisection
 import Proofs.AngleTrisectionCos20Gal
