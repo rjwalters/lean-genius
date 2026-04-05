@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 647,
     "erdosUrl": "https://erdosproblems.com/647",
     "erdosProblemStatus": "open",
@@ -47,11 +47,12 @@
       "Verified n=24 satisfies the condition via interval_cases + native_decide",
       "Proved n=25 and n=26 fail via obstruction from mPlusTau(24)=32",
       "Definition of highly composite numbers and verification that 24 is highly composite",
-      "Connection to Problem #679 (stronger version with 2^ω(m))"
+      "Connection to Problem #679 (the 2^ω(m) condition is easier to satisfy — 647 implies 679 since τ(m) ≥ 2^ω(m))",
+      "Machine-verified proof that τ(m) ≥ 2^ω(m) for all m ≥ 1, using Nat.card_divisors from Mathlib and Finset.prod_le_prod'"
     ],
     "axiomCount": 1,
     "lineCount": 300,
-    "assumptions": "1 axiom(s) and 1 sorry(s)."
+    "assumptions": "1 axiom(s) and 0 sorry(s). The axiom `large_n_fail` encodes the open conjecture that no n > 24 satisfies the Erdős condition."
   },
   "overview": {
     "historicalContext": "The divisor function τ(n) is one of the most studied functions in number theory. Highly composite numbers—those with more divisors than any smaller number—play a key role in extremal problems.\n\nErdős posed this problem asking about a subtle gap property: when can ALL smaller numbers m have m + τ(m) bounded by n + 2? The constraint involves both the size of m and its divisor count.\n\nn = 24 is the largest known value satisfying this condition. The fact that 24 is highly composite (τ(24) = 8 is maximal for its size) makes it particularly special—it sits at a boundary where its own m + τ(m) = 32 doesn't obstruct itself, but does obstruct all larger n.\n\nErdős offered £25 for finding any n > 24, but expressed doubt that such an n exists.",

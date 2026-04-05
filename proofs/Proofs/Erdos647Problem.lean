@@ -274,17 +274,41 @@ theorem omega_twentyfour : omega 24 = 2 := by native_decide
 def Erdos679Condition (n : ℕ) : Prop :=
   ∀ m < n, m + 2^(omega m) ≤ n + 2
 
-/-- Problem #679 implies Problem #647 since τ(m) ≥ 2^ω(m)
+/-- For n ≥ 1, the divisor count τ(n) is at least 2^ω(n).
 
-This is because each prime factor p_i^{a_i} contributes (a_i + 1) to τ
-but only 1 to ω. So τ(m) = ∏(a_i + 1) ≥ 2^ω(m). -/
-theorem erdos679_implies_647 (n : ℕ) (h : Erdos679Condition n) :
-    ErdosCondition n := by
+This follows from the product formula τ(n) = ∏_{p | n} (v_p(n) + 1) (Nat.card_divisors)
+and each factor satisfying v_p(n) + 1 ≥ 2 since v_p(n) ≥ 1 for all p ∈ primeFactors. -/
+private lemma two_pow_omega_le_tau_pos {n : ℕ} (hn : n ≠ 0) : 2 ^ omega n ≤ tau n := by
+  simp only [tau, omega]
+  rw [Nat.card_divisors hn, ← Finset.prod_const]
+  apply Finset.prod_le_prod'
+  intro p hp
+  have hsupp : p ∈ n.factorization.support := by
+    rw [Nat.support_factorization]; exact hp
+  rw [Finsupp.mem_support_iff] at hsupp
+  omega
+
+/-- Problem #647 implies Problem #679: if n satisfies the τ-condition, it also satisfies
+the 2^ω-condition.
+
+This is because τ(m) ≥ 2^ω(m) for all m ≥ 1 (proved above), so
+m + 2^ω(m) ≤ m + τ(m) ≤ n + 2.
+
+**Direction note**: 679 uses the *smaller* quantity 2^ω(m) ≤ τ(m), so its condition is
+*easier* to satisfy — Erdos679Condition is the weaker condition with more solutions.
+Thus the correct direction is: ErdosCondition → Erdos679Condition (647 implies 679). -/
+theorem erdos647_implies_679 (n : ℕ) (h : ErdosCondition n) :
+    Erdos679Condition n := by
   intro m hm
-  have h679 := h m hm
-  unfold mPlusTau
-  -- τ(m) ≥ 2^ω(m) follows from multiplicativity
-  sorry
+  rcases Nat.eq_zero_or_pos m with rfl | hpos
+  · -- m = 0: 2^ω(0) = 2^0 = 1, need 0 + 1 ≤ n + 2 (trivially true for n : ℕ)
+    simp only [omega, Nat.primeFactors_zero, Finset.card_empty, pow_zero, zero_add]
+    omega
+  · -- m ≥ 1: use τ(m) ≥ 2^ω(m)
+    have h647 := h m hm
+    unfold mPlusTau at h647
+    have hkey : 2 ^ omega m ≤ tau m := two_pow_omega_le_tau_pos (by omega)
+    linarith
 
 /-
 ## Historical Context
