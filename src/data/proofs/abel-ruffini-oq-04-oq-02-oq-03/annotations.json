@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "context",
+    "title": "Preamble: Open Question OQ-03 and Import Architecture",
+    "content": "Addresses OQ-03: \"Can the general theorem 'finite group of order < 60 is solvable' be formalized?\" The answer is a partial yes — the core building blocks are proved using Mathlib's typeclass infrastructure. Five imports supply the machinery:\n- `GroupTheory.Solvable`: `IsSolvable`, derived series, `CommGroup → IsSolvable` instance\n- `GroupTheory.Nilpotent`: `IsNilpotent`, `IsNilpotent → IsSolvable` instance\n- `GroupTheory.PGroup`: `IsPGroup`, `IsPGroup.isNilpotent` (p-groups are nilpotent)\n- `GroupTheory.Perm.Fin`: `Equiv.Perm.fin_5_not_solvable` (S₅ not solvable)\n- `Mathlib.Tactic`: `native_decide`, `infer_instance`, `haveI`\n\nThe module docblock states the strategy: prove the p-group → nilpotent → solvable chain and document the path to the full theorem (which requires Burnside's theorem as the missing piece).",
+    "mathContext": "The solvability threshold at 60 has a clean explanation via composition factors: a finite group $G$ is solvable iff every composition factor (simple quotient in a composition series) is abelian (cyclic of prime order). Groups of order $< 60$ have no non-abelian simple composition factors because the smallest non-abelian simple group is $A_5$ of order 60. This makes the classification tractable: prove each order class has only abelian composition factors.\n\nThe import dependency chain is: `PGroup` provides `IsPGroup.isNilpotent`; `Nilpotent` provides the `IsNilpotent → IsSolvable` instance (via the lower central series); `Solvable` provides `IsSolvable` and the `CommGroup → IsSolvable` instance. `Perm.Fin` is required only for the threshold theorem `s5_not_solvable`. The `Tactic` import enables the final automation.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsSolvable", "IsNilpotent", "IsPGroup", "composition factors", "A₅ as smallest non-abelian simple group"],
+    "prerequisites": ["group theory: solvable groups and derived series", "group theory: p-groups and nilpotency", "Jordan-Hölder theorem: composition series"]
+  },
+  {
     "id": "ann-pgroup-solvable",
     "proofId": "abel-ruffini-oq-04-oq-02-oq-03",
     "range": { "startLine": 27, "endLine": 35 },
