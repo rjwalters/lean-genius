@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-vf-header",
+    "proofId": "vietas-formulas-oq-03-oq-05",
+    "range": { "startLine": 1, "endLine": 54 },
+    "type": "context",
+    "title": "Ferrari's 1545 Quartic Formula: Historical Setting",
+    "content": "This module formalizes the algebraic foundations of Ferrari's 1545 method for solving quartic equations. Lodovico Ferrari, a student of Gerolamo Cardano, discovered the solution while Cardano was developing his cubic formula (Cardano's Ars Magna, 1545). The key idea — reducing the quartic to a cubic 'resolvent' by a clever auxiliary parameter y — was a triumph of 16th-century algebra. The import of VietasFormulasOQ03 provides the cubic discriminant infrastructure; set_option maxHeartbeats 800000 reflects the computational intensity of the 16-term degree-12 discriminant identity (larger than default heartbeat budget).",
+    "mathContext": "Ferrari's reduction: $x^4 + px^2 + qx + r = (x^2 + y)^2 - (ax+b)^2$ requires $a^2 = 2y-p$, $2ab = q$, $b^2 = y^2-r$, forcing $8y^3 - 4py^2 - 8ry + (4pr-q^2) = 0$ (the resolvent cubic).",
+    "significance": "context",
+    "relatedConcepts": ["Ferrari's quartic formula", "Cardano's Ars Magna", "resolvent cubic", "Abel-Ruffini theorem"],
+    "prerequisites": ["VietasFormulasOQ03 (cubic discriminant)", "ring tactic", "elementary symmetric polynomials"]
+  },
+  {
+    "id": "ann-vf-vieta-quartic",
+    "proofId": "vietas-formulas-oq-03-oq-05",
+    "range": { "startLine": 62, "endLine": 76 },
+    "type": "definition",
+    "title": "vieta_quartic: Quartic Expansion via Vieta's Formulas",
+    "content": "Proves that the monic quartic (x−r₁)(x−r₂)(x−r₃)(x−r₄) expands to x⁴ − e₁x³ + e₂x² − e₃x + e₄, where e₁ = r₁+r₂+r₃+r₄ (sum), e₂ = ∑_{i<j} rᵢrⱼ (pairwise products, 6 terms), e₃ = ∑_{i<j<k} rᵢrⱼrₖ (triple products, 4 terms), e₄ = r₁r₂r₃r₄ (product). The proof is a single `ring` call — over any commutative ring R. The alternating signs (−e₁, +e₂, −e₃, +e₄) reflect the inclusion-exclusion structure of the symmetric group S₄ acting on monomials.",
+    "mathContext": "$(x-r_1)(x-r_2)(x-r_3)(x-r_4) = x^4 - e_1 x^3 + e_2 x^2 - e_3 x + e_4$ where $e_k = \\sum_{|S|=k} \\prod_{i \\in S} r_i$. Signs: $(-1)^k e_k$.",
+    "significance": "key",
+    "relatedConcepts": ["elementary symmetric polynomials", "Vieta's formulas", "symmetric group S₄", "Newton's identities"],
+    "prerequisites": ["ring tactic in Lean 4", "CommRing typeclass", "polynomial expansion"]
+  },
+  {
+    "id": "ann-vf-discriminant-quartic",
+    "proofId": "vietas-formulas-oq-03-oq-05",
+    "range": { "startLine": 89, "endLine": 120 },
+    "type": "insight",
+    "title": "The 16-Term Discriminant: A Degree-12 Ring Identity",
+    "content": "The quartic discriminant Δ = ∏_{i<j}(rᵢ−rⱼ)² is a degree-12 polynomial in the roots (6 squared differences). Expressing it in the elementary symmetric polynomials e₁–e₄ yields 16 terms, ranging from the leading 256e₄³ to the mixed term e₁²e₂²e₃². The proof uses Lean's `let` bindings to introduce e₁–e₄ within the theorem statement and closes with `simp only []; ring`. This is analogous to the 5-term cubic discriminant Δ = e₁²e₂² − 4e₂³ − 4e₁³e₃ + 18e₁e₂e₃ − 27e₃² but with dramatically more terms due to the extra root and higher degree.",
+    "mathContext": "$\\Delta_4 = 256e_4^3 - 192e_1e_3e_4^2 - 128e_2^2e_4^2 + 144e_2e_3^2e_4 - 27e_3^4 + \\cdots + e_1^2e_2^2e_3^2$ (16 terms total, degree 12 in roots $r_i$, degree 6 in $e_k$ where $\\deg e_k = k$).",
+    "significance": "key",
+    "relatedConcepts": ["quartic discriminant", "elementary symmetric polynomials", "resultant", "cubic discriminant (VietasFormulasOQ03)"],
+    "prerequisites": ["ring tactic for degree-12 identities", "let bindings in Lean theorems", "simp only []"]
+  },
+  {
+    "id": "ann-vf-depressed",
+    "proofId": "vietas-formulas-oq-03-oq-05",
+    "range": { "startLine": 133, "endLine": 166 },
+    "type": "technique",
+    "title": "Depressed Quartic: Specializing e₁=0 and the q→−q Symmetry",
+    "content": "The depressed quartic x⁴+px²+qx+r has no cubic term, meaning e₁ = r₁+r₂+r₃+r₄ = 0. Setting e₁=0 in the 16-term formula eliminates 10 terms (those containing e₁), leaving the 6-term depressed discriminant Δ₄(p,q,r) = 256r³ − 128p²r² + 144pq²r − 27q⁴ + 16p⁴r − 4p³q². The parametrization r₄ := −r₁−r₂−r₃ encodes the zero-sum condition directly. The `depressedDiscriminant_neg_q` theorem verifies that Δ₄ is symmetric in q→−q: x⁴+px²+qx+r and x⁴+px²−qx+r have the same discriminant (they are related by x↦−x).",
+    "mathContext": "$\\Delta_4(p,q,r) = 256r^3 - 128p^2r^2 + 144pq^2r - 27q^4 + 16p^4r - 4p^3q^2$. Symmetry: $\\Delta_4(p,-q,r) = \\Delta_4(p,q,r)$ because $q$ appears only squared.",
+    "significance": "supporting",
+    "relatedConcepts": ["depressed quartic", "Tschirnhaus transformation", "discriminant symmetry", "zero-sum roots"],
+    "prerequisites": ["discriminant_quartic", "ring tactic", "def unfold in Lean"]
+  },
+  {
+    "id": "ann-vf-ferrari-resolvent",
+    "proofId": "vietas-formulas-oq-03-oq-05",
+    "range": { "startLine": 178, "endLine": 215 },
+    "type": "insight",
+    "title": "Ferrari's Identity: Completing the Biquadratic Square",
+    "content": "Ferrari's key insight: for any y, write x⁴+px²+qx+r = (x²+y)² − ((2y−p)x²−qx+(y²−r)). The inner quadratic term (2y−p)x²−qx+(y²−r) is a perfect square (ax−b)² precisely when its discriminant q²−4(2y−p)(y²−r) = 0, i.e., when y satisfies 8y³−4py²−8ry+(4pr−q²) = 0 (the resolvent cubic). The resolvent_cubic_condition theorem proves this via a calc chain: q² = (2ab)² = 4a²b² = 4(2y−p)(y²−r), then linear_combination delivers the resolvent. The `resolventCubic` definition packages this as a function R → R.",
+    "mathContext": "Ferrari: $x^4+px^2+qx+r = (x^2+y)^2 - ((2y-p)x^2-qx+(y^2-r))$. Perfect square condition: $q^2 = 4(2y-p)(y^2-r)$, i.e., $8y^3 - 4py^2 - 8ry + (4pr-q^2) = 0$. This cubic in $y$ is Ferrari's resolvent.",
+    "significance": "key",
+    "relatedConcepts": ["completing the square", "resolvent cubic", "discriminant of quadratic", "linear_combination tactic"],
+    "prerequisites": ["comm_ring", "calc blocks in Lean", "linear_combination tactic", "quadratic discriminant formula"]
+  },
+  {
+    "id": "ann-vf-discriminant-connection",
+    "proofId": "vietas-formulas-oq-03-oq-05",
+    "range": { "startLine": 232, "endLine": 260 },
+    "type": "insight",
+    "title": "Δ_res = 64·Δ₄: The Central Discriminant Connection",
+    "content": "The most structurally important theorem: the discriminant of Ferrari's resolvent cubic 8y³−4py²−8ry+(4pr−q²) equals exactly 64 times the depressed quartic discriminant. This means the two discriminants vanish simultaneously, so the quartic has a repeated root iff its resolvent cubic does. The factor 64 = 8^{something} comes from the leading coefficient a=8 of the resolvent: the cubic discriminant formula 18abcd−4b³d+b²c²−4ac³−27a²d² evaluated at a=8, b=−4p, c=−8r, d=4pr−q² produces exactly 64·Δ₄. This is a machine-verified ring identity over any commutative ring.",
+    "mathContext": "$\\Delta_{\\text{res}}(p,q,r) = 18(8)(-4p)(-8r)(4pr-q^2) - 4(-4p)^3(4pr-q^2) + \\cdots = 64 \\cdot \\Delta_4(p,q,r)$. Corollary: $\\Delta_4 = 0 \\iff \\Delta_{\\text{res}} = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["cubic discriminant formula", "repeated roots", "resultant theory", "cubicDiscriminant def"],
+    "prerequisites": ["depressedDiscriminant def", "cubicDiscriminant def", "ring tactic for high-degree identities"]
+  }
+]
