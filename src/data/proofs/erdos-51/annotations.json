@@ -24,6 +24,18 @@
     ]
   },
   {
+    "id": "erdos-51-ann-opens",
+    "proofId": "erdos-51",
+    "range": { "startLine": 30, "endLine": 35 },
+    "type": "context",
+    "title": "Opens and Core Definitions Header",
+    "content": "`open Filter` (line 31) brings `atTop`, `Tendsto`, `liminf`, `limsup` into scope. `open scoped Nat Topology` (line 32) opens scoped notation: `Nat.totient` can be written as `n.totient` (dot notation) and topological filter notation becomes available. Line 34 is the `/-## Core Definitions -/` section header — a block comment (not a docstring) marking the start of the three core definitions.",
+    "mathContext": "`open Filter` enables writing `Tendsto f atTop (nhds L)` instead of `Filter.Tendsto f Filter.atTop (nhds L)`. `open scoped Nat` enables dot notation for totient: `n.totient = Nat.totient n`. The section header comment `/-## Core Definitions -/` uses Lean's block comment syntax, not docstring syntax — it has no attached declaration.",
+    "significance": "supporting",
+    "relatedConcepts": ["open Filter", "open scoped", "Nat.totient dot notation", "Filter.atTop"],
+    "prerequisites": ["Lean 4 open scoped syntax", "Mathlib Filter namespace"]
+  },
+  {
     "id": "erdos-51-ann-preimage",
     "proofId": "erdos-51",
     "range": {

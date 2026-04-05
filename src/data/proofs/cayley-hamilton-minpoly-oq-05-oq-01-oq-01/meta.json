@@ -44,28 +44,44 @@
   },
   "sections": [
     {
-      "id": "union-avoidance",
-      "title": "Finite Union Avoidance Lemma",
-      "summary": "Proves that a vector space over a finite field K cannot be covered by k proper subspaces when |K| > k. Uses induction with a counting argument replacing the infinite field argument.",
+      "id": "header-definitions",
+      "title": "File Header, Definitions, and Union Avoidance Statement",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "File header docblock (lines 1-21) explains the finite field weakening. Lines 22-43 set up: import Mathlib, noncomputable section, namespace NonderogatoryFinite, open Matrix Polynomial, Classical.propDecidable attribute, and variable declarations. Lines 38-43 define IsCyclicVector (no annihilating poly of degree < n exists) and IsNonderogatory (minpoly = charpoly). Lines 44-56 are the Section I separator and the docstring for not_union_proper_subspaces_fin.",
+      "mathContext": "IsCyclicVector: $v$ is cyclic for $M$ iff $\\forall p \\ne 0$ with $\\deg p < n$: $p(M)v \\ne 0$. Equivalently $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is a basis. IsNonderogatory: $\\mu_M = \\chi_M$. The [Fintype K] + [DecidableEq K] instances replace [Infinite K] from parent proof OQ-05-OQ-01. Classical.propDecidable enables classical reasoning throughout."
+    },
+    {
+      "id": "union-avoidance-induction",
+      "title": "Union Avoidance: Induction Setup and Affine Line Argument",
       "startLine": 57,
-      "endLine": 138,
-      "mathContext": "Union avoidance with finite field bound."
+      "endLine": 159,
+      "summary": "Lines 57-85 contain not_union_proper_subspaces_fin: Finset.induction_on proof structure. Base case (empty set): trivial. Inductive step: by_cases split on w ∉ S k. Lines 86-159: the affine line argument — for v ∉ Sₖ, each Sᵢ forbids at most one scalar t on the line v + tw (h_bad_subsingleton), so at most s'.card scalars are forbidden; since |K| > s'.card, a good t exists. The finite field counting replaces the infinite field argument.",
+      "mathContext": "Key: $v \\notin W_k$, $w \\in W_k$ \\Rightarrow v+tw \\notin W_k$ for all $t$. For $i \\in s'$: $v+t_1 w, v+t_2 w \\in W_i \\Rightarrow (t_1-t_2)w \\in W_i$; since $w \\notin W_i$, $t_1 = t_2$. Total bad scalars $\\le |s'| < |K|$, so a valid $t$ exists. Uses Finset.card_biUnion_le and Set.Finite.biUnion."
     },
     {
       "id": "helpers",
-      "title": "Helper Lemmas",
-      "summary": "Reuses helper lemmas from the infinite field version: aeval_ne_zero_of_ne_zero, gcd_aeval_mulVec_eq_zero, ker_mulVecLin_ne_top.",
-      "startLine": 140,
-      "endLine": 195,
-      "mathContext": "Polynomial evaluation and kernel theory."
+      "title": "Helper Lemmas and Main Theorem Docblock",
+      "startLine": 160,
+      "endLine": 222,
+      "summary": "Lines 160-164 are the Section II separator. Three helper lemmas (lines 165-208): aeval_ne_zero_of_ne_zero (deg p < deg μ ⟹ p(M) ≠ 0, by minimality), gcd_aeval_mulVec_eq_zero (p(M)v = 0 ⟹ gcd(p,μ)(M)v = 0, via Bézout identity + Cayley-Hamilton), ker_mulVecLin_ne_top (A ≠ 0 ⟹ ker(A·(·)) ≠ ⊤, by exhibiting a standard basis vector). Lines 209-222 are the Section III separator and main theorem docblock.",
+      "mathContext": "Bézout: $\\gcd(p,\\mu) = A\\cdot p + B\\cdot\\mu$ (EuclideanDomain.gcd_eq_gcd_ab). If $p(M)v=0$ and $\\mu(M)=0$ (Cayley-Hamilton): $\\gcd(p,\\mu)(M)v = A(M)(p(M)v) + B(M)(\\mu(M)v) = 0$. These three lemmas are identical to the infinite field version (OQ-05-OQ-01) — only the union avoidance lemma changes."
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem (Finite Field Version)",
-      "summary": "Proves nonderogatory_has_cyclic_vector_fin: over a field K with |K| > n, nonderogatory matrices have cyclic vectors. Uses the finite union avoidance lemma.",
-      "startLine": 197,
+      "id": "main-theorem-setup",
+      "title": "Main Theorem Phases 1–2: Factor Collection and Proper Subspaces",
+      "startLine": 223,
+      "endLine": 311,
+      "summary": "Phase 1 (lines 223-274): collect normalized irreducible factors of μ into Finset nf using normalizedFactors. Phase 1.5: prove |nf| ≤ n (each irreducible has degree ≥ 1, sum of degrees = n = deg μ). This connects |K| > n to the union avoidance requirement |K| > |nf|. Phase 2 (lines 275-311): define proper subspaces S(q) = ker((μ/q)(M)) for each q ∈ nf, and prove S(q) ≠ ⊤ using aeval_ne_zero_of_ne_zero (deg(μ/q) < n).",
+      "mathContext": "For nonderogatory $M$: $\\mu_M = \\chi_M$ has degree $n$. Factors $q_1,\\ldots,q_k$ satisfy $\\sum \\deg q_i = n$ and $\\deg q_i \\ge 1$, so $k \\le n < |K|$. Each $S(q_i) = \\ker((\\mu/q_i)(M))$ is a proper subspace since $\\deg(\\mu/q_i) = n - \\deg q_i < n$ and $\\mu/q_i \\ne 0$ by minimality."
+    },
+    {
+      "id": "main-theorem-proof",
+      "title": "Main Theorem Phases 3–4: Union Avoidance and Cyclic Vector",
+      "startLine": 312,
       "endLine": 362,
-      "mathContext": "Nonderogatory → cyclic vector over finite fields. Phase 1: collect normalized factors (lines 223-274). Phase 2: define proper subspaces $S(q) = \\ker((\\mu/q)(M))$ (lines 275-311). Phase 3: union avoidance (lines 312-314). Phase 4: show v is cyclic via GCD divisibility contradiction (lines 315-358)."
+      "summary": "Phase 3 (lines 312-314): apply not_union_proper_subspaces_fin with the proper subspaces S(q) to get v outside all of them. Phase 4 (lines 315-358): show v is cyclic by contradiction. If p(M)v = 0 with p ≠ 0, deg p < n, let d = gcd(p,μ); then d(M)v = 0 by gcd_aeval. Since d | μ = d·s, find q₀ | s (irreducible); then μ/q₀ = d·t, so (μ/q₀)(M)v = 0, placing v ∈ S(q₀) — contradicting v ∉ S(q₀). Lines 360-362 close the namespace and section.",
+      "mathContext": "Divisibility chain: $d \\mid \\mu$, $\\mu = d \\cdot s$; pick irreducible $q' \\mid s$ (via exists_mem_normalizedFactors_of_dvd); then $\\mu = q' \\cdot (d \\cdot t)$ so $\\mu/q' = d \\cdot t$; thus $(\\mu/q')(M)v = t(M) \\cdot d(M)v = 0$, placing $v \\in S(q')$, contradicting $v \\notin S(q')$ from Phase 3."
     }
   ],
   "conclusion": {
