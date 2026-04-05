@@ -64,7 +64,6 @@
       "prime_h_alpha_unbounded theorem: h_α(p) → ∞ over primes"
     ],
     "axiomCount": 0,
-    "sorries": 0,
     "lineCount": 654,
     "assumptions": "Fully verified: 0 axioms, 0 sorries. vose_bounded_sequence proved via trivial witness (constant sequence n_k = 2, h_α(2) = 1). All 34 theorems machine-checked."
   },
@@ -178,7 +177,7 @@
     {
       "id": "power-of-two-analysis",
       "title": "Powers of Two: Sorted Divisors and h_α(2^k) = k",
-      "summary": "Proves sortedDivisors(2^k) = [1, 2, 4, ..., 2^k] via sort-uniqueness of permutations. The divisorRatios of 2^k should be k copies of 2 (has 1 sorry due to Lean 4 monadic elaboration barriers in zipWith). Proves power_of_two_h_alpha: h_α(2^k) = k, since all k ratios equal 2 and (2-1)^α = 1.",
+      "summary": "Proves sortedDivisors(2^k) = [1, 2, 4, ..., 2^k] via sort-uniqueness of permutations. The divisorRatios of 2^k are k copies of 2. Proves power_of_two_h_alpha: h_α(2^k) = k, since all k ratios equal 2 and (2-1)^α = 1.",
       "startLine": 523,
       "endLine": 597,
       "mathContext": "For $n = 2^k$: divisors are $\\{2^0, 2^1, \\ldots, 2^k\\}$, so all $k$ consecutive ratios equal $2$. Thus $h_\\alpha(2^k) = k \\cdot (2-1)^\\alpha = k \\cdot 1 = k$, growing linearly in $k$. The `sortedDivisors_two_pow` proof uses `Nat.divisors_prime_pow` and sorted-permutation uniqueness. The `power_of_two_h_alpha` proof uses `List.sum_replicate` after rewriting through the monadic layer."

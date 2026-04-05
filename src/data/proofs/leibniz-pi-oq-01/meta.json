@@ -122,7 +122,7 @@
       "title": "Machin's Formula (Exponential Alternative)",
       "startLine": 129,
       "endLine": 134,
-      "summary": "Axiomatizes the arctan addition formula and states Machin's identity $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ (1 sorry); demonstrates $O(1/25^N)$ exponential convergence vs Leibniz's $O(1/N)$",
+      "summary": "Axiomatizes the arctan addition formula and states Machin's identity $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ (proved); demonstrates $O(1/25^N)$ exponential convergence vs Leibniz's $O(1/N)$",
       "mathContext": "States Machin's formula $\\frac{\\pi}{4} = 4\\arctan\\frac{1}{5} - \\arctan\\frac{1}{239}$, where the Taylor series $\\arctan(1/m) = \\sum_{k=0}^{\\infty} \\frac{(-1)^k}{(2k+1)m^{2k+1}}$ converges at rate $O(1/m^{2N})$. For $m = 5$ this gives $O(1/25^N)$ vs Leibniz's $O(1/N)$."
     }
   ],

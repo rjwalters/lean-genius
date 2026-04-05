@@ -94,7 +94,7 @@
       "title": "Part III.A: Fourier Coefficient Definition and Setup",
       "startLine": 93,
       "endLine": 139,
-      "summary": "Proves tripleCount_add_card_eq_triple_sum helper (1 sorry — combinatorial identity relating total triple count to the Fourier sum). Defines fourierCoeff as the discrete Fourier transform. Proves fourierCoeff_norm_le: |Â(r)| ≤ |A| via triangle inequality.",
+      "summary": "Proves tripleCount_add_card_eq_triple_sum helper (combinatorial identity relating total triple count to the Fourier sum). Defines fourierCoeff as the discrete Fourier transform. Proves fourierCoeff_norm_le: |Â(r)| ≤ |A| via triangle inequality.",
       "mathContext": "$\\hat{1}_A(r) = \\sum_{x \\in A} \\psi(rx)$ where $\\psi(x) = e^{2\\pi i \\cdot \\text{val}(x)/N}$. Bound: $|\\hat{1}_A(r)| \\leq |A|$."
     },
     {

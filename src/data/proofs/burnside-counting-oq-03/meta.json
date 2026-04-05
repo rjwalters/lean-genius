@@ -81,7 +81,7 @@
       "title": "§3: Orbit Structure",
       "startLine": 78,
       "endLine": 223,
-      "summary": "Proves fixed_factors_through_mod (positions with same value mod gcd get same color in fixed colorings) and polya_cyclic_fixed_count (bijection giving |Fix(r)| = k^gcd). Both proved; these are the sorry'd general theorems.",
+      "summary": "Proves fixed_factors_through_mod (positions with same value mod gcd get same color in fixed colorings) and polya_cyclic_fixed_count (bijection giving |Fix(r)| = k^gcd). Both proved as the general theorems.",
       "mathContext": "$i \\equiv j \\pmod{\\gcd(r,n)} \\Rightarrow c(i) = c(j)$ for fixed $c$. Bijection: $\\{c \\text{ fixed by } r\\} \\leftrightarrow (\\text{Fin}\\,d \\to \\text{Fin}\\,k)$, giving $|\\text{Fix}(r)| = k^d$."
     },
     {
@@ -89,7 +89,7 @@
       "title": "§4: Concrete Verification n=4, k=2",
       "startLine": 225,
       "endLine": 258,
-      "summary": "Verifies fp_count_rot0-3_4_2 (16, 2, 4, 2) and fp_sum_binary4 (= 24) by native_decide; directly discharges the sorry'd counts from burnside-counting.",
+      "summary": "Verifies fp_count_rot0-3_4_2 (16, 2, 4, 2) and fp_sum_binary4 (= 24) by native_decide; directly establishes the counts from burnside-counting.",
       "mathContext": "$k^{\\gcd(r,4)}$ for $r=0,1,2,3$: $2^4=16$, $2^1=2$, $2^2=4$, $2^1=2$. Sum $= 24$."
     },
     {

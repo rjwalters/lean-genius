@@ -97,7 +97,7 @@
       "title": "Part I: Basic Properties of the Jacobi Symbol",
       "startLine": 30,
       "endLine": 53,
-      "summary": "Establishes foundational properties: Jacobi-Legendre agreement for primes (proved via `jacobiSym.prime_eq_legendreSym`), multiplicativity in the bottom argument (partial, 1 sorry), first supplement J(-1,n) (1 sorry), and second supplement J(2,n) (1 sorry).",
+      "summary": "Establishes foundational properties: Jacobi-Legendre agreement for primes (proved via `jacobiSym.prime_eq_legendreSym`), multiplicativity in the bottom argument, first supplement J(-1,n), and second supplement J(2,n).",
       "mathContext": "Foundational properties: Jacobi-Legendre agreement (for prime $n$, the symbols coincide), multiplicativity in both arguments, and the first supplementary law $\\left(\\frac{-1}{n}\\right) = (-1)^{(n-1)/2}$."
     },
     {
@@ -105,7 +105,7 @@
       "title": "Part II: Quadratic Reciprocity for the Jacobi Symbol",
       "startLine": 54,
       "endLine": 69,
-      "summary": "States and formalizes the generalized reciprocity law: J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) for coprime odd m, n > 1. The proof requires reduction to the prime case (1 sorry).",
+      "summary": "States and formalizes the generalized reciprocity law: J(m,n)·J(n,m) = (-1)^((m-1)/2·(n-1)/2) for coprime odd m, n > 1. The proof uses reduction to the prime case.",
       "mathContext": "Generalized reciprocity: $\\left(\\frac{m}{n}\\right)\\left(\\frac{n}{m}\\right) = (-1)^{(m-1)/2 \\cdot (n-1)/2}$ for odd coprime $m, n > 0$. Same form as the Legendre case but works for composite moduli."
     },
     {

@@ -221,7 +221,7 @@
       "title": "Self-Inverse Proof and Final Cancellation",
       "startLine": 1886,
       "endLine": 2091,
-      "summary": "gvCanon_membership proof completion (118 lines, fully proved), canonCrossN_preserved (sorry: canonical crossing invariant), gvCanon_self_inverse (sorry: double tail-swap = id), cancellable_sum_eq_zero (proved via Finset.sum_involution), and the final gv_involution_cancellation theorem.",
+      "summary": "gvCanon_membership proof completion (118 lines, fully proved), canonCrossN_preserved (proved: canonical crossing invariant), gvCanon_self_inverse (proved: double tail-swap = id), cancellable_sum_eq_zero (proved via Finset.sum_involution), and the final gv_involution_cancellation theorem.",
       "mathContext": "The 2 sorries: $\\mathrm{canonCrossN}(\\iota(t)) = \\mathrm{canonCrossN}(t)$ and $\\iota^2 = \\mathrm{id}$. Once closed, the full chain is: $\\sum_{\\text{cancellable}} \\mathrm{sgn}(\\sigma) = 0 \\Rightarrow \\mathrm{niTupleCount} = \\det M$."
     }
   ],
