@@ -24,6 +24,7 @@ import Proofs.PowerMeanCrossZeroOQ
 import Proofs.AmgmInequalityOQ04
 import Proofs.AngleTrisection
 import Proofs.AngleTrisectionCos20Gal
+import Proofs.AngleTrisectionCos20GalOQ01
 import Proofs.AngleTrisectionEmbedding
 import Proofs.AngleTrisectionOQ01
 import Proofs.AngleTrisectionOQ02
