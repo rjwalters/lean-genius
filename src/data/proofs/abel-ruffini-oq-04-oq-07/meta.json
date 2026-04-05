@@ -72,7 +72,11 @@
       "endLine": 170,
       "summary": "Proves the forward (depressed_quintic_forward), backward (depressed_quintic_backward), and biconditional (depressed_quintic_iff) forms of the linear Tschirnhaus transform y = x + a₄/5 that eliminates the x⁴ term. All proved by linear_combination.",
       "mathContext": "The substitution $y = x + a_4/5$ gives $b_4 = -5(a_4/5) + a_4 = 0$, with explicit formulas for $b_3, b_2, b_1, b_0$. Proved by `linear_combination h`.",
-      "theorems": ["depressed_quintic_forward", "depressed_quintic_backward", "depressed_quintic_iff"]
+      "theorems": [
+        "depressed_quintic_forward",
+        "depressed_quintic_backward",
+        "depressed_quintic_iff"
+      ]
     },
     {
       "id": "bring-jerrard",
@@ -81,7 +85,10 @@
       "endLine": 222,
       "summary": "Axiomatizes the full Bring-Jerrard reduction (quadratic and cubic Tschirnhaus steps). Proves quintic_to_bringJerrard by chaining the linear transform with the axiom.",
       "mathContext": "The axiom $\\exists\\, p, q, \\varphi,\\ \\forall y.\\ y^5 + b_3 y^3 + \\cdots = 0 \\Rightarrow (\\varphi(y))^5 + p(\\varphi(y)) + q = 0$ requires polynomial resultant theory not in Mathlib.",
-      "theorems": ["bringJerrard_reduction", "quintic_to_bringJerrard"]
+      "theorems": [
+        "bringJerrard_reduction",
+        "quintic_to_bringJerrard"
+      ]
     },
     {
       "id": "strict-mono",
@@ -90,7 +97,10 @@
       "endLine": 294,
       "summary": "Proves bringRad_strictMono (x↦x⁵+x is strictly increasing) and bringRad_exists (x⁵+x+t=0 has a real root for every t) via IVT with bounds ±(|t|+1).",
       "mathContext": "$f(x) = x^5 + x$ is strictly monotone (Odd.strictMono_pow + linarith) and continuous, with $f(-(|t|+1)) < 0 < f(|t|+1)$ for all $t$.",
-      "theorems": ["bringRad_strictMono", "bringRad_exists"]
+      "theorems": [
+        "bringRad_strictMono",
+        "bringRad_exists"
+      ]
     },
     {
       "id": "bring-radical",
@@ -99,7 +109,14 @@
       "endLine": 377,
       "summary": "Defines bringRadical t = the unique real root of x⁵+x+t=0. Proves: bringRadical_spec (satisfies equation), bringRadical_unique, bringRadical_anti_mono, bringRadical_zero, bringRadical_neg (odd function). Axiomatizes bringRadical_not_in_radicals. Summary theorem packages the main results.",
       "mathContext": "BR$(t)$ satisfies BR$(t)^5 + \\mathrm{BR}(t) + t = 0$, is strictly anti-monotone, odd, and BR$(0) = 0$. Not expressible by nested radicals (axiom).",
-      "theorems": ["bringRadical_spec", "bringRadical_unique", "bringRadical_anti_mono", "bringRadical_zero", "bringRadical_neg", "bringJerrard_summary"]
+      "theorems": [
+        "bringRadical_spec",
+        "bringRadical_unique",
+        "bringRadical_anti_mono",
+        "bringRadical_zero",
+        "bringRadical_neg",
+        "bringJerrard_summary"
+      ]
     }
   ],
   "conclusion": {
@@ -130,12 +147,19 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib.Algebra.Polynomial.Basic", "Mathlib.Algebra.Order.Ring.Basic", "Mathlib.Topology.Order.IntermediateValue", "Mathlib.Tactic"],
-    "opens": ["Polynomial"],
+    "imports": [
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Order.Ring.Basic",
+      "Mathlib.Topology.Order.IntermediateValue",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
     "namespace": "BringJerrardReduction",
     "lineCount": 377,
     "axiomCount": 2,
-    "theoremCount": 13,
+    "theoremCount": 14,
     "definitionCount": 4,
     "path": "Proofs/AbelRuffiniOQ04OQ07.lean",
     "sorries": 0
