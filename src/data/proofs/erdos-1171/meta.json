@@ -75,17 +75,18 @@
       "erdos_1171_implies_k1",
       "erdos_1171_implies_k2",
       "ch_implies_multicolor",
+      "reduction_to_1169",
       "erdos_1171_under_ch"
     ],
     "axiomCount": 2,
-    "lineCount": 433,
+    "lineCount": 445,
     "assumptions": "2 axioms: hajnal_ch (Hajnal's theorem under CH), baumgartner_ma (Baumgartner's theorem under MA). MartinsAxiom now a concrete def (CCC/dense sets/generic filters). erdos_rado_partition removed (was unused)."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1171 belongs to the rich tradition of ordinal partition calculus, initiated by Erdős and Rado in the 1950s. The classical Ramsey theorem handles finite colorings of finite sets; its infinite generalization — the partition calculus — asks which ordinals α satisfy α → (β₀, β₁, …)²_r for given targets. The foundational Erdős-Rado theorem (1956) established (2^κ)⁺ → (κ⁺ + 1)²_κ, but partition relations for specific ordinals like ω₁² proved far more delicate.\n\nProblem #1171 generalizes Problem #1169 (ω₁² → (ω₁², 3)²) by allowing multiple colors. The tradeoff is that the primary color's target weakens from ω₁² to ω₁·ω, while non-primary colors need only produce a triangle (clique of size 3). This formulation was motivated by the observation that under CH, Hajnal's theorem trivially resolves the problem via a color-merging argument, but the ZFC status for all finite k remains unknown. Baumgartner [Ba89b] proved the k=1 case under Martin's Axiom (MA), which is strictly weaker than CH, using techniques specific to ω₁·ω that do not obviously extend to higher k.\n\nThe problem sits at the intersection of set-theoretic independence and combinatorics: the partition relation ω₁² → (ω₁², 3)² is known to be independent of ZFC (Todorčević showed it can fail under certain set-theoretic assumptions), but Problem #1171's weaker target ω₁·ω might allow a ZFC proof. The gap between what CH gives and what ZFC can prove remains one of the central open questions in infinite Ramsey theory, catalogued as [Va99, 7.84] in Vaughan's survey.",
     "problemStatement": "**Erdős Problem #1171**:\n\nFor all finite $k < \\omega$, does the partition relation\n$$\\omega_1^2 \\to (\\omega_1 \\cdot \\omega, \\underbrace{3, \\ldots, 3}_{k})^2_{k+1}$$\nhold?\n\nThat is, for any $(k+1)$-coloring of pairs from $\\omega_1^2$, must there exist either a monochromatic-0 subset of order type $\\omega_1 \\cdot \\omega$, or a monochromatic triangle in some color $i \\in \\{1, \\ldots, k\\}$?\n\n**Status**: Open in ZFC. Solved under CH (Hajnal + color merging). The k=1 case holds under MA (Baumgartner).",
     "text": "Is it true that, for all finite k < ω, ω₁² → (ω₁·ω, 3, ..., 3)²_{k+1}? That is, for any (k+1)-coloring of pairs from ω₁², must there exist either a monochromatic-0 subset of order type ω₁·ω, or a monochromatic triangle in some other color?",
-    "proofStrategy": "The formalization axiomatizes the partition relation predicates (both 2-color and multicolor) and develops the problem's structure in 289 lines of Lean 4 code. Key ordinals (ω₁, ω₁², ω₁·ω) are defined using Mathlib's Cardinal.ord, and their ordering is proved using cardinal comparison lemmas. The problem statement is a universal quantification over k. Four monotonicity axioms enable transferring known results to the problem setting. The main theorems prove the CH resolution (via Hajnal's theorem and an axiomatized color-merging argument) and the MA resolution of the k=1 case (via Baumgartner's result and source monotonicity). The Erdős-Rado theorem is stated as a contextual reference point.",
+    "proofStrategy": "The formalization defines ordinal partition relations concretely (both 2-color and multicolor) and develops the problem's structure in 445 lines of Lean 4 code with 22 proved theorems and only 2 axioms. Key ordinals (ω₁, ω₁², ω₁·ω) are defined using Mathlib's Cardinal.ord, and their ordering is proved using cardinal comparison lemmas. The central structural result (reduction_to_1169) proves that Problem #1171 reduces purely combinatorially to Problem #1169: if ω₁² → (ω₁², 3)² holds, then the full multicolor statement follows by inductive color merging. The CH resolution is then a one-line corollary via Hajnal's theorem. The MA resolution of the k=1 case uses Baumgartner's result and source monotonicity.",
     "keyInsights": [
       "**Target-color tradeoff**: Problem #1171 weakens the primary target from ω₁² (in #1169) to ω₁·ω, in exchange for allowing arbitrarily many colors. This tradeoff is critical — ω₁² → (ω₁², 3)² is independent of ZFC, but ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} might hold in ZFC due to the weaker target.",
       "**CH trivializes via color merging**: Under CH, merge all non-primary colors into one. Hajnal gives a 2-color result on ω₁². If color 0 wins, the order type ω₁² ⊃ ω₁·ω suffices. If the merged color wins with a triangle, pigeonhole recovers a monochromatic triangle in some original color.",
@@ -122,16 +123,16 @@
       "title": "Partition Relation Definitions",
       "startLine": 52,
       "endLine": 69,
-      "summary": "Axiomatizes the 2-color partition relation ordinalPartitionRel2(α, β, k) and the multicolor partition relation ordinalPartitionRelMulti(α, β, clique, numColors).",
-      "mathContext": "Axiomatized: Axiomatizes the 2-color partition relation ordinalPartitionRel2(α, β, k) and the multicolor partition relation ordinalPartitionRelMulti(α, β, clique, numColors)."
+      "summary": "Defines the 2-color partition relation ordinalPartitionRel2(α, β, k) and the multicolor partition relation ordinalPartitionRelMulti(α, β, clique, numColors) concretely using coloring functions and strict-mono embeddings.",
+      "mathContext": "Concrete definitions: ordinalPartitionRel2(α, β, k) and ordinalPartitionRelMulti(α, β, clique, numColors) defined via coloring functions c : Ordinal → Ordinal → ℕ, validity hypotheses, StrictMono embeddings for order-type witnesses, and Fin clique for triangle witnesses."
     },
     {
       "id": "ordinal-props",
       "title": "Basic Ordinal Properties",
       "startLine": 70,
       "endLine": 97,
-      "summary": "Proves ω < ω₁ (via Cardinal.aleph_lt_aleph), ω₁ > 0, and ω₁·ω < ω₁² (via left-cancellation). Axiomatizes that ω₁·ω and ω₁ are limit ordinals.",
-      "mathContext": "Verified: Proves ω < ω₁ (via Cardinal.aleph_lt_aleph), ω₁ > 0, and ω₁·ω < ω₁² (via left-cancellation). Axiomatizes that ω₁·ω and ω₁ are limit ordinals."
+      "summary": "Proves ω < ω₁ (via Cardinal.aleph_lt_aleph), ω₁ > 0, ω₁·ω < ω₁² (via left-cancellation), and that ω₁ and ω₁·ω are limit ordinals (via Cardinal.ord_isLimit and Ordinal.mul_isLimit).",
+      "mathContext": "Verified: All ordinal properties proved from Mathlib. omega_lt_omega1 via aleph comparison, omega1_isLimit via Cardinal.ord_isLimit, omega1TimesOmega_isLimit via Ordinal.mul_isLimit."
     },
     {
       "id": "problem-statement",
@@ -146,24 +147,24 @@
       "title": "Monotonicity Properties",
       "startLine": 111,
       "endLine": 135,
-      "summary": "Four axioms: monotonicity in number of colors, target ordinal, source ordinal, and equivalence between 2-color multicolor and standard 2-color relations.",
-      "mathContext": "Axiomatized: Four axioms: monotonicity in number of colors, target ordinal, source ordinal, and equivalence between 2-color multicolor and standard 2-color relations."
+      "summary": "Four proved theorems: monotonicity in number of colors (with 2≤clique guard), target ordinal, source ordinal, and equivalence between multicolor with 2 colors and standard 2-color relations.",
+      "mathContext": "Verified: partition_multi_mono_colors, partition_multi_mono_target, partition_multi_mono_source, multi_two_eq — all proved from the concrete partition relation definitions."
     },
     {
       "id": "ch-connection",
       "title": "CH Resolution via Hajnal",
       "startLine": 136,
       "endLine": 165,
-      "summary": "Defines CH, axiomatizes Hajnal's theorem (ω₁² → (ω₁², k)² under CH), and proves the k=1 case under CH by target monotonicity. Axiomatizes 2-color monotonicity properties.",
-      "mathContext": "Defines CH, axiomatizes Hajnal's theorem (ω₁² $\\to$ (ω₁², k)² under CH), and proves the k=1 case under CH by target monotonicity. Axiomatizes 2-color monotonicity properties."
+      "summary": "Defines CH, axiomatizes Hajnal's theorem (ω₁² → (ω₁², k)² under CH), proves 2-color monotonicity (target and source), and proves the k=1 case under CH by target monotonicity.",
+      "mathContext": "Defines CH as 2^ℵ₀ = ℵ₁. Hajnal's theorem (axiom): under CH, ω₁² → (ω₁², k)² for all k ≥ 2. partition2_mono_target and partition2_mono_source proved from concrete defs. erdos_1171_k1_under_ch proved by composing Hajnal with target monotonicity."
     },
     {
       "id": "baumgartner",
       "title": "Baumgartner's Result Under MA",
       "startLine": 166,
       "endLine": 186,
-      "summary": "Defines Martin's Axiom concretely (CCC/dense sets/generic filters), axiomatizes Baumgartner's theorem ω₁·ω → (ω₁·ω, 3)² under MA, and proves the k=1 case of #1171 under MA by source monotonicity.",
-      "mathContext": "Defines Martin's Axiom concretely (CCC partial orders, dense subsets, generic filters), axiomatizes Baumgartner's theorem ω₁·ω $\\to$ (ω₁·ω, 3)² under MA, and proves the k=1 case of #1171 under MA by source monotonicity."
+      "summary": "Defines Martin's Axiom concretely via CCC partial orders, dense subsets, and generic filters. Axiomatizes Baumgartner's theorem ω₁·ω → (ω₁·ω, 3)² under MA. Proves the k=1 case of #1171 under MA by source monotonicity (ω₁·ω < ω₁²).",
+      "mathContext": "MartinsAxiom: concrete Prop definition (∀ CCC preorder, ∀ family of < 2^ℵ₀ dense sets, ∃ generic filter). baumgartner_ma (axiom): under MA, ω₁·ω → (ω₁·ω, 3)². erdos_1171_k1_under_ma: proved by composing Baumgartner with source monotonicity."
     },
     {
       "id": "ordinal-arithmetic",
@@ -177,21 +178,21 @@
       "id": "multicolor-hierarchy",
       "title": "The Multicolor Hierarchy",
       "startLine": 208,
-      "endLine": 242,
-      "summary": "Axiomatizes the trivial 1-color case, proves the conjecture implies the k=1 and k=2 special cases, axiomatizes the CH color-merging argument for all k, and proves erdos_1171_under_ch.",
-      "mathContext": "Verified: Axiomatizes the trivial 1-color case, proves the conjecture implies the k=1 and k=2 special cases, axiomatizes the CH color-merging argument for all k, and proves erdos_1171_under_ch."
+      "endLine": 254,
+      "summary": "Proves the trivial 1-color case (partition_multi_trivial), the conjecture's k=1 and k=2 special cases, the reduction to Problem #1169, the CH color-merging argument, and erdos_1171_under_ch.",
+      "mathContext": "Verified: partition_multi_trivial proved (identity embedding). reduction_to_1169 shows the multicolor generalization is purely combinatorial — only needs ω₁² → (ω₁², 3)². ch_implies_multicolor and erdos_1171_under_ch follow as corollaries via Hajnal's theorem."
     },
     {
       "id": "summary",
       "title": "Summary of Formalization",
-      "startLine": 253,
-      "endLine": 288,
-      "summary": "Comment block summarizing: the problem, what is formalized (partition relations, ordinals, MA definition, monotonicity, CH/MA results), the status (open in ZFC, solved under CH, k=1 under MA), key insights, and axiom/theorem count (2 axioms, 21 theorems).",
-      "mathContext": "Comment block summarizing: the problem, what is formalized (partition relations, ordinals, Martin's Axiom definition, monotonicity, CH/MA results), the status (open in ZFC, solved under CH, k=1 under MA), key insights, and axiom/theorem count (2 axioms, 21 theorems)."
+      "startLine": 401,
+      "endLine": 443,
+      "summary": "Comment block summarizing: the problem, what is formalized, the status (open in ZFC, solved under CH, k=1 under MA), key insights including the reduction to #1169, and axiom/theorem count (2 axioms, 22 theorems).",
+      "mathContext": "Summary: 2 axioms (hajnal_ch, baumgartner_ma), 22 theorems. Key structural result: reduction_to_1169 proves #1171 follows purely combinatorially from #1169. The multicolor generalization adds no mathematical difficulty beyond the 2-color case."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1171 — the multicolor partition relation ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} — in 433 lines of Lean 4 code with 2 axioms and 21 theorems. Martin's Axiom is concretely defined via CCC partial orders and generic filters. The key mathematical content includes the ordinal hierarchy ω₁ < ω₁·ω < ω₁², the full CH resolution via Hajnal's theorem and inductive color merging, and Baumgartner's MA-conditional proof of the k=1 case.",
+    "summary": "This formalization captures Erdős Problem #1171 — the multicolor partition relation ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} — in 445 lines of Lean 4 code with 2 axioms and 22 theorems. The central structural result (reduction_to_1169) proves that #1171 reduces purely combinatorially to #1169: the multicolor generalization follows from the 2-color relation ω₁² → (ω₁², 3)² by inductive color merging. Under CH, Hajnal's theorem supplies the 2-color input. Martin's Axiom is concretely defined via CCC partial orders and generic filters, and Baumgartner's MA-conditional proof covers the k=1 case.",
     "implications": "**Theoretical Significance**: The formalization demonstrates how set-theoretic independence manifests in combinatorics: the same problem is trivially resolved under CH but remains open in ZFC.\n\nThe target-color tradeoff (weaker target ω₁·ω in exchange for more colors) represents a precise mathematical question about whether the weaker homogeneity requirement suffices to escape independence. Resolving #1171 in ZFC would advance our understanding of partition relations at ω₁² and potentially separate CH-dependent from ZFC-provable partition calculus.",
     "openQuestions": [
       "Does ω₁² → (ω₁·ω, 3, …, 3)²_{k+1} hold in ZFC for all finite k, or is it independent?",
@@ -215,7 +216,7 @@
     "namespace": "Erdos1171",
     "lineCount": 433,
     "axiomCount": 2,
-    "theoremCount": 21,
+    "theoremCount": 22,
     "definitionCount": 8,
     "path": "Proofs/Erdos1171Problem.lean",
     "sorries": 0
