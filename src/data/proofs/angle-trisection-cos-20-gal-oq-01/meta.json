@@ -77,35 +77,59 @@
   "sections": [
     {
       "id": "algebraic-identities",
-      "title": "§1: Algebraic Identities",
+      "title": "§1: Algebraic Identities for the Three Roots",
       "startLine": 26,
       "endLine": 65,
-      "summary": "root_image_gamma (over CommRing): 1−2α² is a root when α is. root_image_beta (over CharZero Field): 2α²−α−1/2 is a root when α is.",
-      "mathContext": "Factor identities: 8(1−2a²)³−... = (−8a³−4a²+4a+1)·(8a³−4a²−4a+1) and 8(2a²−a−1/2)³−... = (8a³−8a²−2a+1)·(8a³−4a²−4a+1)."
+      "summary": "root_image_gamma (over CommRing): γ = 1−2α² is a root when α is — proved by the ring identity p(1−2a²) = (−8a³−4a²+4a+1)·p(a). root_image_beta (over CharZero Field): β = 2α²−α−1/2 is a root when α is — proved via field_simp; ring, requiring char ≠ 2.",
+      "mathContext": "$p(1-2\\alpha^2) = (-8\\alpha^3-4\\alpha^2+4\\alpha+1) \\cdot p(\\alpha)$ and $p(2\\alpha^2-\\alpha-\\frac{1}{2}) = (8\\alpha^3-8\\alpha^2-2\\alpha+1) \\cdot p(\\alpha)$."
     },
     {
-      "id": "irreducibility",
-      "title": "§2: Irreducibility via Eisenstein at 7",
-      "startLine": 68,
-      "endLine": 218,
-      "summary": "r = Y³−7Y²+14Y−7 is Eisenstein at 7 (irreducible over ℤ and ℚ). The substitution Y=2X+2 maps r to pCos7 = 8X³−4X²−4X+1, proving irreducibility.",
-      "mathContext": "Eisenstein conditions: leading coeff 1 ∉ (7), coefficients −7, 14, −7 are all divisible by 7, constant −7 not divisible by 49."
+      "id": "polynomial-basics",
+      "title": "§2a: Polynomial pCos7 and Basic Properties",
+      "startLine": 58,
+      "endLine": 75,
+      "summary": "Defines pCos7 = 8X³−4X²−4X+1 as a noncomputable abbreviation in ℚ[X]. Establishes three helper lemmas: pCos7_ne_zero (eval at 0 gives 1), pCos7_natDegree = 3, pCos7_degree_ne_zero. These support the Eisenstein criterion and Galois cardinality lemmas.",
+      "mathContext": "$p_{\\cos 7}(X) = 8X^3-4X^2-4X+1 \\in \\mathbb{Q}[X]$; $\\deg = 3$; $p_{\\cos 7}(0) = 1 \\neq 0$."
     },
     {
-      "id": "splitting-field",
-      "title": "§3-4: Splitting Field Has Degree 3",
-      "startLine": 220,
-      "endLine": 410,
-      "summary": "factored_eval_eq shows 8a³−4a²−4a+1 = 8(a−α)(a−β)(a−γ) when α is a root (CharZero Field). rootSet_subset_adjoin: every root lies in ℚ(α). adjoin_root_eq_top: ℚ(α) = SplittingField.",
-      "mathContext": "The key algebraic identity: 8a³−4a²−4a+1 − 8(a−α)(a−β)(a−γ) = (4αa−4α²+1)(8α³−4α²−4α+1). When the second factor vanishes (α a root), the polynomial factors completely over ℚ(α)."
+      "id": "irreducibility-eisenstein",
+      "title": "§2b: Irreducibility via Eisenstein at p = 7",
+      "startLine": 84,
+      "endLine": 200,
+      "summary": "r = Y³−7Y²+14Y−7 over ℤ is proved Eisenstein at prime 7 by checking all three conditions on coefficients. Monic r is primitive, so Gauss's lemma lifts irreducibility to ℚ. The key identity r(2X+2) = pCos7 is verified by Polynomial.funext. Irreducibility of pCos7 follows by transferring through the invertible linear substitution ℓ = 2X+2 with inverse ℓ⁻¹ = X/2−1.",
+      "mathContext": "Eisenstein: $7 \\nmid 1$, $7 \\mid -7, 14, -7$, $49 \\nmid -7$. Gauss: primitive over $\\mathbb{Z}$ → irreducible over $\\mathbb{Q}$. Substitution: $r(2X+2) = p_{\\cos 7}$."
+    },
+    {
+      "id": "splitting-field-roots",
+      "title": "§3: Constructing Roots in the Splitting Field",
+      "startLine": 204,
+      "endLine": 244,
+      "summary": "Defines root_in_sf via rootOfSplits from the abstract SplittingField machinery. Derives root_eq_zero (8α³−4α²−4α+1 = 0 in the splitting field). Applies root_image_gamma and root_image_beta to confirm β and γ are also roots in the same splitting field.",
+      "mathContext": "$\\alpha = \\text{rootOfSplits}(p_{\\cos 7}) \\in \\text{SplittingField}(p_{\\cos 7})$. Then $p(\\alpha) = 0$, $p(\\beta) = 0$, $p(\\gamma) = 0$."
+    },
+    {
+      "id": "divisibility-bounds",
+      "title": "§4: Galois Group Order Divisibility Bounds",
+      "startLine": 245,
+      "endLine": 270,
+      "summary": "three_dvd_gal_card: 3 | |Gal| since pCos7 is irreducible of prime degree 3 (Polynomial.Gal.prime_degree_dvd_card). gal_card_dvd_six: |Gal| | 6 since Gal embeds into Sym(3 roots) = S₃ via galActionHom_injective. Together: |Gal| ∈ {3, 6}.",
+      "mathContext": "$p$ irreducible, $\\deg p = 3$ prime $\\Rightarrow 3 \\mid |\\text{Gal}|$; $\\text{Gal} \\hookrightarrow S_3 \\Rightarrow |\\text{Gal}| \\mid 6$. So $|\\text{Gal}| \\in \\{3, 6\\}$."
+    },
+    {
+      "id": "splitting-field-degree",
+      "title": "§5: Splitting Field = ℚ(α), Degree 3",
+      "startLine": 271,
+      "endLine": 394,
+      "summary": "root_integral and minpoly_natDegree = 3 establish [ℚ(α):ℚ] = 3 via IntermediateField.adjoin.finrank. beta_in_adjoin and gamma_in_adjoin show β, γ ∈ ℚ(α) by polynomial closure. factored_eval_eq splits pCos7 completely in ℚ(α). rootSet_subset_adjoin contains all roots. adjoin_root_eq_top: ℚ(α) = SplittingField. splitting_finrank: finrank ℚ SplittingField = 3.",
+      "mathContext": "$\\text{minpoly}(\\mathbb{Q}, \\alpha) = p_{\\cos 7}$ (irreducible, $\\alpha$ a root) $\\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 3$. All roots in $\\mathbb{Q}(\\alpha) \\Rightarrow \\text{SplittingField} = \\mathbb{Q}(\\alpha) \\Rightarrow [\\text{SF}:\\mathbb{Q}] = 3$."
     },
     {
       "id": "main-theorem",
-      "title": "§5: Main Theorem",
-      "startLine": 411,
+      "title": "§6: Main Theorem — |Gal| = 3",
+      "startLine": 396,
       "endLine": 416,
-      "summary": "cos_pi_7_gal_card: |Gal(8X³−4X²−4X+1/ℚ)| = 3. The Galois group of the minimal polynomial of cos(π/7) has order 3.",
-      "mathContext": "By Polynomial.Gal.card_of_separable: |Gal| = [SplittingField:ℚ] = 3."
+      "summary": "cos_pi_7_gal_card: |Gal(8X³−4X²−4X+1/ℚ)| = 3, proved in 3 lines via Polynomial.Gal.card_of_separable and splitting_finrank. cos_pi_7_poly_irreducible: public interface for the irreducibility result.",
+      "mathContext": "$|\\text{Gal}(p_{\\cos 7}/\\mathbb{Q})| = [\\text{SplittingField}:\\mathbb{Q}] = 3$. $\\text{Gal} \\cong \\mathbb{Z}/3\\mathbb{Z}$, the unique group of order 3."
     }
   ],
   "conclusion": {

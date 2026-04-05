@@ -108,6 +108,18 @@
     "prerequisites": ["Galois group action on roots", "prime degree divisibility", "Mathlib.FieldTheory.Galois.Basic"]
   },
   {
+    "id": "ann-degree-computation",
+    "proofId": "angle-trisection-cos-20-gal-oq-01",
+    "range": { "startLine": 277, "endLine": 298 },
+    "type": "technique",
+    "title": "Degree Chain: root_integral → minpoly_natDegree = 3 → adjoin_finrank = 3",
+    "content": "Three lemmas establish [ℚ(α):ℚ] = 3. First, root_integral proves α is integral over ℚ using `.of_finite ℚ root_in_sf` — a consequence of splitting fields being finite-dimensional. Second, minpoly_natDegree shows deg(minpoly(ℚ,α)) = 3: since minpoly(ℚ,α) divides pCos7 (because p(α) = 0) and both are irreducible, they associate — so their degrees agree. The `le_antisymm` argument pins degree exactly to 3 using `natDegree_le_of_dvd` in both directions. Third, adjoin_finrank applies `IntermediateField.adjoin.finrank` to conclude [ℚ(α):ℚ] = deg(minpoly(ℚ,α)) = 3.",
+    "mathContext": "$\\alpha$ integral over $\\mathbb{Q}$; $\\text{minpoly}(\\mathbb{Q},\\alpha) \\mid p_{\\cos 7}$ and both irreducible $\\Rightarrow$ they are associate $\\Rightarrow \\deg(\\text{minpoly}) = 3$; $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg(\\text{minpoly}) = 3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimal polynomial", "integral element", "degree of simple extension", "IntermediateField.adjoin.finrank"],
+    "prerequisites": ["integral elements over fields", "minpoly.dvd", "minpoly.irreducible", "natDegree_le_of_dvd"]
+  },
+  {
     "id": "ann-all-roots-in-adjoin",
     "proofId": "angle-trisection-cos-20-gal-oq-01",
     "range": { "startLine": 299, "endLine": 366 },
