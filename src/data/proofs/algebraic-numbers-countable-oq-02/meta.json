@@ -76,8 +76,7 @@
       "Cardinal.mk_le_aleph0 converts the Countable typeclass to a cardinal inequality, enabling the contradiction with aleph0_lt_continuum.",
       "Function.Surjective.countable is the key lemma: a surjection ℕ → ℝ would make ℝ countable (codomain of surjection from countable domain is countable).",
       "The diagonal argument is realized abstractly as Cardinal.cantor κ : κ < 2^κ, instantiated at κ = ℵ₀ to give ℵ₀ < 𝔠 = #ℝ.",
-      "Set.countable_univ_iff bridges Set.Countable (set-level) and Countable (type-level) for the universal set.",
-      "The identification #ℝ = 2^ℵ₀ = 𝔠 is the non-trivial step — it requires that ℝ and the set of all binary sequences (ℕ → Bool) have the same cardinality. One direction: every real in [0,1] has a binary expansion, giving an injection ℝ → {0,1}^ℕ. The other: Dedekind cuts give an injection {0,1}^ℕ → ℝ (a subset of ℝ specified by which rationals are 'below' it). Mathlib's Cardinal.mk_real packages this as a verified result. The uncountability of ℝ is then the composition of two facts: 𝔠 = #ℝ and ℵ₀ < 𝔠 = Cardinal.cantor(ℵ₀). Without the identification 𝔠 = #ℝ, one could only say ℝ has at least ℵ₀ elements."
+      "Set.countable_univ_iff bridges Set.Countable (set-level) and Countable (type-level) for the universal set."
     ],
     "prerequisites": [
       "AlgebraicNumbersCountable (Proofs/AlgebraicNumbersCountable.lean): algebraic reals are countable — used in transcendentals_uncountable",
@@ -97,7 +96,7 @@
       "startLine": 60,
       "endLine": 75,
       "summary": "card_real_eq_continuum: #ℝ = 𝔠. aleph0_lt_card_real: ℵ₀ < #ℝ. Uses Cardinal.mk_real and Cardinal.aleph0_lt_continuum.",
-      "mathContext": "$\\#\\mathbb{R} = \\mathfrak{c} = 2^{\\aleph_0}$ (\\texttt{Cardinal.mk\\_real}). $\\aleph_0 < \\mathfrak{c}$ from \\texttt{Cardinal.cantor}: $\\forall \\kappa,\\;\\kappa < 2^\\kappa$, at $\\kappa = \\aleph_0$ gives $\\aleph_0 < 2^{\\aleph_0} = \\#(\\mathbb{N} \\to \\text{Bool}) = \\mathfrak{c} = \\#\\mathbb{R}$."
+      "mathContext": "#ℝ = 𝔠 = 2^ℵ₀ > ℵ₀. The continuum 𝔠 is the cardinality of all binary sequences (ℕ → Bool), reflecting the diagonal argument."
     },
     {
       "id": "uncountability",
@@ -105,7 +104,7 @@
       "startLine": 77,
       "endLine": 100,
       "summary": "reals_not_countable: ¬ Countable ℝ. Proof by contradiction: Countable ℝ → #ℝ ≤ ℵ₀ (mk_le_aleph0), but ℵ₀ < #ℝ. Contradiction.",
-      "mathContext": "$\\text{Countable}\\,\\mathbb{R} \\Rightarrow \\#\\mathbb{R} \\le \\aleph_0$ (\\texttt{Cardinal.mk\\_le\\_aleph0}). Contradiction with $\\aleph_0 < \\#\\mathbb{R}$ (§1). In Lean: `haveI := h` installs `h : Countable ℝ` as instance; `mk_le_aleph0 : #ℝ ≤ ℵ₀` then follows by inference; `absurd` with `aleph0_lt_card_real` concludes."
+      "mathContext": "Cardinal.mk_le_aleph0 with [Countable α] typeclass gives #α ≤ ℵ₀. Contradict with aleph0_lt_card_real."
     },
     {
       "id": "no-surjection",
@@ -113,7 +112,7 @@
       "startLine": 102,
       "endLine": 122,
       "summary": "no_surjection_nat_to_real: ¬∃ f : ℕ → ℝ, Surjective f. exists_not_in_range: ∀ f : ℕ → ℝ, ∃ x ∉ range f. One-line proofs via reals_not_countable + Function.Surjective.countable.",
-      "mathContext": "$(\\exists f: \\mathbb{N} \\to \\mathbb{R}$ surjective$) \\Rightarrow \\text{Countable}\\,\\mathbb{R}$ (\\texttt{Function.Surjective.countable}: surjection from countable domain gives countable codomain). Contrapositive: $\\forall f: \\mathbb{N} \\to \\mathbb{R},\\;\\exists x \\notin \\text{range}(f)$. This is the diagonal lemma in functional form: no listing can be complete."
+      "mathContext": "Equivalence: ∃ surjection ℕ → ℝ ↔ Countable ℝ. Since ℕ is countable, surjection ℕ → ℝ → Countable ℝ (Function.Surjective.countable)."
     },
     {
       "id": "transcendentals",
@@ -121,7 +120,7 @@
       "startLine": 124,
       "endLine": 152,
       "summary": "transcendentalReals: def {x : ℝ | ¬ IsAlgebraic ℚ x}. transcendentals_uncountable: ¬ Set.Countable transcendentalReals. Union argument: algebraic ∪ transcendental = univ, both countable → ℝ countable → contradiction.",
-      "mathContext": "$\\text{algebraic} \\cup \\text{transcendental} = \\mathbb{R}$ by `Classical.em (IsAlgebraic ℚ x)`. If both countable: $\\text{Set.Countable.union} \\Rightarrow \\text{Set.Countable}\\,(\\text{algebraic} \\cup \\text{transcendental}) = \\text{Set.Countable}\\,\\text{univ} \\Rightarrow \\text{Countable}\\,\\mathbb{R}$ (\\texttt{Set.countable\\_univ\\_iff}). Contradicts $\\neg\\text{Countable}\\,\\mathbb{R}$."
+      "mathContext": "algebraic ∪ transcendental = Set.univ (Classical.em). Set.Countable.union + Set.countable_univ_iff.mp → Countable ℝ → contradiction."
     },
     {
       "id": "diagonal-connection",
@@ -129,7 +128,7 @@
       "startLine": 154,
       "endLine": 192,
       "summary": "cantor_diagonal_binary: no surjection ℕ → BinarySeq (from CantorDiagonalization.lean). cantor_diagonal_gap: ℵ₀ < 2^ℵ₀ (Cardinal.cantor). diagonal_gap_equals_card_real: 𝔠 = #ℝ. reals_uncountable_summary: conjunction of all results.",
-      "mathContext": "Three faces of Cantor's diagonal: (1) abstract: $\\aleph_0 < 2^{\\aleph_0}$ (\\texttt{Cardinal.cantor}); (2) concrete: $\\nexists\\,f:\\mathbb{N}\\to\\{0,1\\}^\\mathbb{N}$ surjective; (3) real-valued: $\\neg\\text{Countable}\\,\\mathbb{R}$. Chain: $\\aleph_0 < 2^{\\aleph_0} = \\#\\text{BinarySeq} = \\mathfrak{c} = \\#\\mathbb{R}$. The abstract and concrete are tautologically equivalent; the real-valued requires the non-trivial identification $\\#\\mathbb{R} = \\mathfrak{c}$."
+      "mathContext": "The abstract gap ℵ₀ < 2^ℵ₀ (Cardinal.cantor ℵ₀) = the concrete diagonal (no surjection ℕ → BinarySeq). Both express that #BinarySeq = 2^ℵ₀ = 𝔠 = #ℝ > ℵ₀."
     }
   ],
   "conclusion": {
@@ -151,27 +150,5 @@
       "relationship": "related",
       "description": "The concrete diagonal argument: no surjection ℕ → BinarySeq = (ℕ → Bool)"
     }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.SetTheory.Cardinal.Basic",
-      "Mathlib.SetTheory.Cardinal.Continuum",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Algebra.AlgebraicCard",
-      "Mathlib.Data.Set.Countable",
-      "Mathlib.Tactic",
-      "Proofs.CantorDiagonalization",
-      "Proofs.AlgebraicNumbersCountable"
-    ],
-    "opens": [
-      "Cardinal"
-    ],
-    "namespace": "AlgebraicNumbersCountableOQ02",
-    "lineCount": 193,
-    "axiomCount": 0,
-    "sorries": 0,
-    "path": "Proofs/AlgebraicNumbersCountableOQ02.lean",
-    "theoremCount": 11,
-    "definitionCount": 1
-  }
+  ]
 }

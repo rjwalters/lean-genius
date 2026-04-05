@@ -6,7 +6,7 @@
   "meta": {
     "author": "researcher-7",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/DerangementsConvergenceOQ01.lean",
     "tags": [
       "probability",
@@ -18,12 +18,12 @@
       "permutations",
       "research"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. derangements_rate is proved by importing derangements_convergence_rate from DerangementsConvergence.lean.",
+    "assumptions": "1 sorry: derangements_rate — |D(n)/n! - e⁻¹| ≤ 1/(n+1)!. This is the alternating series estimation theorem applied to the Taylor series for e⁻¹. The parent file DerangementsConvergence.lean proves this result but has pre-existing Mathlib API issues (∑ k in vs ∑ k ∈ syntax) preventing import. The convergence result kFixed_tendsto is fully proved without this sorry, using Mathlib's numDerangements_tendsto_inv_e directly.",
     "dateAdded": "2026-04-04",
-    "lineCount": 152,
+    "lineCount": 151,
     "theoremCount": 7,
     "definitionCount": 1,
     "originalContributions": [
@@ -31,7 +31,7 @@
       "probKFixed_eq (PROVED): P(X_n = k) = (1/k!)·D(n-k)/(n-k)! via Nat.choose_mul_factorial_mul_factorial",
       "probKFixed_succ_eq (PROVED): P(X_{n+k} = k) = (1/k!)·D(n)/n! (reparametrization)",
       "kFixed_tendsto (PROVED): P(X_{n+k} = k) → e⁻¹/k! using numDerangements_tendsto_inv_e",
-      "kFixed_convergence_rate (PROVED): |P(X_n = k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!)",
+      "kFixed_convergence_rate (PROVED modulo sorry): |P(X_n = k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!)",
       "kFixed_zero_tendsto (PROVED): k=0 case recovers derangement convergence P(X_n = 0) → e⁻¹",
       "kFixed_rate_tighter (PROVED): for k≥1, the k-fixed rate is tighter by factor k!"
     ]
@@ -65,26 +65,22 @@
   },
   "crossReferences": [
     {
-      "id": "derangements-convergence",
-      "title": "Derangements Convergence: D(n)/n! → e⁻¹",
+      "targetId": "derangements-convergence",
       "relationship": "extends",
       "description": "Parent proves the k=0 case D(n)/n! → e⁻¹; this file generalizes to all k"
     },
     {
-      "id": "derangements-oq-02",
-      "title": "k Fixed Points Counting",
+      "targetId": "derangements-oq-02",
       "relationship": "uses",
       "description": "Uses card_perms_with_kfixed: |{σ : Perm(Fin n) | |Fix(σ)| = k}| = C(n,k)·D(n-k)"
     },
     {
-      "id": "derangements-oq-03-oq-02",
-      "title": "Total Variation Convergence to Poisson(1)",
+      "targetId": "derangements-oq-03-oq-02",
       "relationship": "related",
       "description": "Sibling: proves total variation convergence TV(X_n, Pois(1)) → 0; this file proves pointwise convergence of marginals"
     },
     {
-      "id": "derangements",
-      "title": "Derangements: Basic Theory",
+      "targetId": "derangements",
       "relationship": "related",
       "description": "Root: basic derangement definitions and inclusion-exclusion formula"
     }
@@ -125,22 +121,5 @@
       "endLine": 151,
       "content": "kFixed_rate_tighter (PROVED): for k≥1, bound 1/(k!·(n-k+1)!) ≤ 1/(n-k+1)! — k! improvement."
     }
-  ],
-  "leanFile": {
-    "imports": [
-      "Proofs.DerangementsOQ02",
-      "Mathlib.Combinatorics.Derangements.Exponential",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Nat"
-    ],
-    "namespace": "KFixedConvergence",
-    "lineCount": 152,
-    "axiomCount": 0,
-    "sorries": 0,
-    "path": "Proofs/DerangementsConvergenceOQ01.lean",
-    "theoremCount": 7,
-    "definitionCount": 1
-  }
+  ]
 }

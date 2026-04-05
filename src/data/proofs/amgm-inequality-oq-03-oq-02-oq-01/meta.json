@@ -53,15 +53,14 @@
     ]
   },
   "overview": {
-    "historicalContext": "The inequality HM ≤ GM ≤ AM (harmonic mean ≤ geometric mean ≤ arithmetic mean) was known to the Pythagoreans (c. 500 BC) and to the Greek mathematical tradition, which recognized ten named 'proportions' (means). Pappus of Alexandria (c. 320 AD) gives the earliest systematic treatment. The extension to weighted means and the full power mean family $M_r(z,w) = (\\sum w_i z_i^r)^{1/r}$ was developed in the 19th–20th centuries: Cauchy (1821) proved AM-GM rigorously, and Hardy, Littlewood, and Pólya's *Inequalities* (1934, Chapter II) gave the definitive treatment of power mean monotonicity $M_r \\le M_s$ for $r \\le s$. The crossing-zero case $r < 0 < s$ is the hardest part of the proof: when the exponent crosses zero, raising both sides of an inequality to a negative power reverses the direction. The classical argument uses the geometric mean as an intermediate ($M_r \\le \\text{GM} \\le M_s$), with each half following from AM-GM applied with a sign change. The key algebraic identity $(\\prod z_i^{w_i})^r = \\prod (z_i^r)^{w_i}$, which connects the geometric mean to the AM-GM statement at substituted values $z_i^r$, makes the argument uniform across all $r \\in \\mathbb{R}$.",
+    "historicalContext": "The power mean inequality — that M_r(z,w) is monotone increasing in r — is a classical result in analysis, appearing in Hardy–Littlewood–Pólya (1934). The limiting case M_0 = GM requires L'Hôpital (proved in OQ-02). The monotonicity proof splits into three regions: r > 0 (via Jensen), r < 0 (via duality with inverse values), and the crossing-zero case r < 0 < s. This file closes the crossing-zero gap using a direct AM-GM argument.",
     "problemStatement": "**Open Question (OQ-03-OQ-02-OQ-01):** Prove that M_r ≤ M_s whenever r < 0 < s, where M_r(z,w) = (∑ wᵢ zᵢ^r)^(1/r) is the weighted power mean of order r.\n\nThis is the crossing-zero case of the full power mean monotonicity theorem.",
     "proofStrategy": "**Core inequality** (§2): For any r ∈ ℝ, GM(z,w)^r ≤ ∑ wᵢ zᵢ^r. Proof: Apply AM-GM (Real.geom_mean_le_arith_mean_weighted) to the values zᵢ^r with weights wᵢ. The LHS equals GM^r via the algebraic identity (∏ zᵢ^wᵢ)^r = ∏ (zᵢ^r)^wᵢ.\n\n**GM ≤ M_s for s > 0** (§3): From GM^s ≤ ∑ wᵢ zᵢ^s (the core inequality), raise both sides to 1/s > 0: GM = (GM^s)^(1/s) ≤ (∑ wᵢ zᵢ^s)^(1/s) = M_s.\n\n**M_r ≤ GM for r < 0** (§4): From GM^r ≤ ∑ wᵢ zᵢ^r, write M_r = (∑)^(1/r) = ((∑)^(-(1/r)))⁻¹. Since -(1/r) > 0, raise GM^r ≤ ∑ to the positive power -(1/r): (GM^r)^(-(1/r)) ≤ (∑)^(-(1/r)). Invert (reverses inequality): ((∑)^(-(1/r)))⁻¹ ≤ ((GM^r)^(-(1/r)))⁻¹ = GM.\n\n**Crossing-zero** (§5): M_r ≤ GM ≤ M_s by transitivity.",
     "keyInsights": [
       "The core inequality GM^r ≤ ∑ wᵢ zᵢ^r is a single AM-GM application that handles ALL values of r simultaneously — positive, negative, and zero.",
       "The crossing-zero case reduces to inverting a monotone inequality: A ≤ B → B⁻¹ ≤ A⁻¹ (for positive A, B). This is proved algebraically without invoking inv_le_inv_of_le directly.",
       "The algebraic identity (∏ zᵢ^wᵢ)^r = ∏ (zᵢ^r)^wᵢ (proved by Finset induction via mul_rpow) is the key structural bridge connecting GM^r to the AM-GM form.",
-      "Combined with power_mean_monotone_pos and power_mean_monotone_neg from AmgmInequalityOQ03, this completes the full monotonicity theorem: M_r ≤ M_s for all r ≤ s (excluding 0).",
-      "The inversion step (A ≤ B → B⁻¹ ≤ A⁻¹) is proved purely algebraically — starting from 1 = A·A⁻¹ ≤ B·A⁻¹ and multiplying by B⁻¹ — avoiding any specialized inv_le_inv lemma and demonstrating that elementary algebraic manipulation can substitute for inequality library lookups."
+      "Combined with power_mean_monotone_pos and power_mean_monotone_neg from AmgmInequalityOQ03, this completes the full monotonicity theorem: M_r ≤ M_s for all r ≤ s (excluding 0)."
     ],
     "prerequisites": [
       "AmgmInequalityOQ03 (Proofs/AmgmInequalityOQ03.lean): weightedPowerMean, weightedGeomMean definitions and same-sign monotonicity",
@@ -113,7 +112,7 @@
       "startLine": 196,
       "endLine": 210,
       "summary": "power_mean_monotone_crossing_zero: M_r ≤ M_s for r < 0 < s. Direct combination of §3 and §4.",
-      "mathContext": "$r < 0 < s$: $M_r \\le \\text{GM}$ (§4) and $\\text{GM} \\le M_s$ (§3), so $M_r \\le M_s$ by `le_trans`. Explicitly: $\\left(\\sum_i w_i z_i^r\\right)^{1/r} \\le \\prod_i z_i^{w_i} \\le \\left(\\sum_i w_i z_i^s\\right)^{1/s}$. The GM acts as a universal pivot: every negative-order mean lies below it, every positive-order mean above it."
+      "mathContext": "M_r ≤ GM (§4) and GM ≤ M_s (§3), so M_r ≤ M_s by transitivity (le_trans)."
     },
     {
       "id": "hm-gm-am",
@@ -121,24 +120,7 @@
       "startLine": 212,
       "endLine": 222,
       "summary": "hm_le_gm_le_am_via_power_means: M_{-1} ≤ GM ≤ M_1, i.e., HM ≤ GM ≤ AM. Special case r=-1, s=1.",
-      "mathContext": "$M_{-1} = \\text{HM} = \\left(\\sum_i w_i z_i^{-1}\\right)^{-1} \\le \\prod_i z_i^{w_i} = \\text{GM} \\le \\sum_i w_i z_i = \\text{AM} = M_1$. For uniform weights $w_i = 1/n$: $\\frac{n}{\\sum z_i^{-1}} \\le (\\prod z_i)^{1/n} \\le \\frac{\\sum z_i}{n}$. Pythagoras knew HM ≤ AM; Euclid Book V gives the geometric mean as the intermediate proportion."
-    }
-  ],
-  "crossReferences": [
-    {
-      "id": "amgm-inequality-oq-03",
-      "title": "Weighted Power Mean Monotonicity: Same-Sign Cases",
-      "relationship": "parent"
-    },
-    {
-      "id": "amgm-inequality-oq-03-oq-02",
-      "title": "Geometric Mean as Limit of Power Means (r → 0)",
-      "relationship": "sibling"
-    },
-    {
-      "id": "amgm-inequality",
-      "title": "AM-GM Inequality",
-      "relationship": "foundational"
+      "mathContext": "Direct application of §4 (r=-1) and §3 (s=1). The HM-GM-AM chain is a classical consequence."
     }
   ],
   "conclusion": {
@@ -149,22 +131,5 @@
       "Can we extend to the extended real line: M_{-∞} = min and M_{+∞} = max?",
       "Is there a more direct Lean 4 proof using StrictMono of rpow on the positive reals with negative exponent?"
     ]
-  },
-  "leanFile": {
-    "imports": [
-      "Proofs.AmgmInequalityOQ03",
-      "Mathlib.Tactic"
-    ],
-    "opens": [
-      "Real",
-      "Finset"
-    ],
-    "namespace": "PowerMeanCrossZero",
-    "lineCount": 225,
-    "axiomCount": 0,
-    "sorries": 0,
-    "path": "Proofs/PowerMeanCrossZeroOQ.lean",
-    "theoremCount": 4,
-    "definitionCount": 0
   }
 }
