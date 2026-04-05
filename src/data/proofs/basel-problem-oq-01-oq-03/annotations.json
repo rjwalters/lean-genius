@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-basel-imports",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "context",
+    "title": "Imports and Mathematical Setup",
+    "content": "The proof draws on three Mathlib libraries: `Analysis.PSeries` for the p-series $\\sum 1/n^p$, `Topology.Algebra.InfiniteSum.Basic` for topsums and `Tendsto`, and `NumberTheory.Real.Irrational` for the `Irrational` predicate and contradiction machinery. The `open` declarations bring `Filter` (for `atTop` and `Tendsto`), `BigOperators` (for $\\sum'$ notation), and `Real` (for `dist_eq` and `norm` lemmas) into scope. This setup is minimal and targeted — exactly the infrastructure needed for the irrationality-via-approximation argument.",
+    "mathContext": "$\\zeta(s) = \\sum_{n=1}^\\infty \\frac{1}{n^s}$ converges for $s > 1$; the irrationality of $\\zeta(s)$ for odd $s \\geq 5$ is unknown",
+    "significance": "context",
+    "relatedConcepts": ["p-series", "Irrational predicate", "Filter.atTop", "Tendsto"],
+    "prerequisites": ["Lean 4 import system", "real analysis", "Mathlib topology"]
+  },
+  {
+    "id": "ann-apery-criterion-stmt",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 46, "endLine": 56 },
+    "type": "concept",
+    "title": "The Apéry Irrationality Criterion — Statement",
+    "content": "The theorem `apery_criterion` is the abstract engine of Apéry's 1978 proof: given integer sequences $(p_n)$, $(q_n)$ such that $q_n \\alpha - p_n \\to 0$ but $q_n \\alpha - p_n \\neq 0$ for every $n$, the real number $\\alpha$ must be irrational. The hypotheses `happrox` and `hnonzero` correspond exactly to the two conditions Apéry verified for $\\zeta(3)$. The conclusion `Irrational α` is Mathlib's predicate stating $\\alpha \\notin \\mathbb{Q}$. This criterion is classical (it follows from a basic fact about denominators) but its formalization makes the abstract structure of Apéry-type proofs machine-checkable.",
+    "mathContext": "If $\\alpha \\in \\mathbb{Q}$ with denominator $d$, then $|q_n \\alpha - p_n| \\geq 1/d$ for all $n$ with $q_n \\alpha - p_n \\neq 0$ — contradicting $q_n \\alpha - p_n \\to 0$",
+    "significance": "key",
+    "relatedConcepts": ["irrationality criterion", "Dirichlet approximation", "Hurwitz theorem", "Liouville numbers"],
+    "prerequisites": ["rational numbers", "convergence in ℝ", "integer denominators argument"]
+  },
+  {
+    "id": "ann-apery-criterion-proof",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 56, "endLine": 84 },
+    "type": "technique",
+    "title": "Proof: Discrete Lower Bound via Rat.den",
+    "content": "The proof proceeds by contradiction via `rintro ⟨r, rfl⟩` — assuming $\\alpha = r \\in \\mathbb{Q}$. The key algebraic step rewrites $q_n \\cdot r - p_n = (q_n \\cdot \\text{num}(r) - p_n \\cdot \\text{den}(r)) / \\text{den}(r)$. The numerator is a nonzero integer (otherwise the approximation would be exactly 0, contradicting `hnonzero`). Since nonzero integers satisfy $|k| \\geq 1$, we get the lower bound $|q_n r - p_n| \\geq 1/\\text{den}(r)$. The Mathlib lemma `Metric.tendsto_atTop` extracts an $N$ with $|q_N r - p_N| < 1/\\text{den}(r)$, and `linarith` closes the contradiction. The tactics `exact_mod_cast` and `push_cast` handle the ℤ/ℝ coercions.",
+    "mathContext": "$|q_n r - p_n| = \\frac{|q_n a - p_n b|}{b} \\geq \\frac{1}{b}$ where $r = a/b$, $b = \\mathrm{den}(r) > 0$, and $q_n a - p_n b \\in \\mathbb{Z} \\setminus \\{0\\}$",
+    "significance": "key",
+    "relatedConcepts": ["Rat.den", "Int.one_le_abs", "Metric.tendsto_atTop", "cast coercions in Lean"],
+    "prerequisites": ["rational number representation", "integer absolute value", "metric space topology", "Lean 4 cast tactics"]
+  },
+  {
+    "id": "ann-apery-witness-struct",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 90, "endLine": 110 },
+    "type": "definition",
+    "title": "ApéryWitness — Abstract Packaging of the Method",
+    "content": "The `AperyWitness α` structure bundles exactly the data needed to apply `apery_criterion`: integer sequences `p`, `q`, a convergence proof `tendsto_zero`, and a non-exactness proof `never_zero`. This abstraction separates the criterion from its instantiation — the criterion is proved once, and the hard work of any concrete irrationality proof reduces to constructing an `AperyWitness`. The theorem `apery_implies_irrational` is then a one-liner delegation to `apery_criterion`. For $\\zeta(3)$, Apéry exhibited the explicit sequences; for $\\zeta(5)$, no such structure is known.",
+    "mathContext": "An `AperyWitness ζ(5)` is a certificate: $(p_n, q_n) \\in \\mathbb{Z}^\\mathbb{N}$ with $q_n \\zeta(5) - p_n \\to 0$ and $q_n \\zeta(5) - p_n \\neq 0$",
+    "significance": "key",
+    "relatedConcepts": ["dependent type theory structures", "proof by certification", "Lean 4 structures", "mathematical witness"],
+    "prerequisites": ["type theory", "function types ℕ → ℤ", "Filter.Tendsto"]
+  },
+  {
+    "id": "ann-zeta-five-def",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 116, "endLine": 127 },
+    "type": "definition",
+    "title": "ζ(5) Definition and Conditional Irrationality",
+    "content": "The definition `zetaFive` uses Lean's `∑'` (tsum) notation for the infinite series $\\sum_{n=0}^\\infty 1/(n+1)^5$. The shift from $n$ to $n+1$ avoids the $n=0$ term in `ℕ`-indexed sums. The definition is `noncomputable` since infinite series are not algorithmically computable in general. The theorem `zetaFive_irrational_if_apery_witness` is then immediate — it applies `apery_implies_irrational` to any provided witness. This theorem is the precise formalization of the research question: what would constitute a proof of $\\zeta(5) \\notin \\mathbb{Q}$ via Apéry's method?",
+    "mathContext": "$\\zeta(5) = \\sum_{n=1}^\\infty \\frac{1}{n^5} \\approx 1.036927755143369...$; converges by the $p$-test since $5 > 1$",
+    "significance": "key",
+    "relatedConcepts": ["tsum in Mathlib", "noncomputable definitions", "Riemann zeta function", "odd zeta values"],
+    "prerequisites": ["infinite series", "p-test convergence", "Lean 4 noncomputable", "tsum notation"]
+  },
+  {
+    "id": "ann-geometric-decay-struct",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 133, "endLine": 151 },
+    "type": "concept",
+    "title": "Geometric Decay and the Squeeze Theorem",
+    "content": "The `HasGeometricDecay f r` structure asserts that $|f(n)| \\leq C \\cdot r^n$ for some constant $C > 0$ and rate $r < 1$. The theorem `geometric_decay_tendsto` proves $f \\to 0$ via the squeeze theorem: since $C \\cdot r^n \\to 0$ (by `tendsto_pow_atTop_nhds_zero_of_lt_one` scaled by $C$), and $|f(n)| \\leq C \\cdot r^n$, the `squeeze_zero_norm` lemma closes the argument. For Apéry's $\\zeta(3)$ sequences, $r = (\\sqrt{2}-1)^4 \\approx 0.029$, giving very fast convergence. The quantitative rate is crucial — without explicit geometric decay, Liouville's theorem alone cannot rule out algebraic irrational values.",
+    "mathContext": "$|f(n)| \\leq C r^n$, $r < 1$ $\\Rightarrow$ $f(n) \\to 0$; Apéry's rate $r = (\\sqrt{2}-1)^4 \\approx 0.029$, corresponding to $\\log(1/r) \\approx 3.53$",
+    "significance": "supporting",
+    "relatedConcepts": ["squeeze theorem", "geometric series convergence", "tendsto_pow_atTop_nhds_zero", "Liouville numbers"],
+    "prerequisites": ["geometric sequences", "squeeze theorem for limits", "Lean 4 Filter lemmas"]
+  },
+  {
+    "id": "ann-strong-witness",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 153, "endLine": 176 },
+    "type": "definition",
+    "title": "StrongApéryWitness — Quantitative Certificate",
+    "content": "The `StrongAperyWitness` strengthens `AperyWitness` by requiring an explicit geometric decay rate `rate : ℝ` with `rate_nonneg` and `error_decay : HasGeometricDecay ... rate`. The coercion `StrongAperyWitness.toAperyWitness` converts a strong witness to a weak one by applying `geometric_decay_tendsto` to get `tendsto_zero`. This hierarchy mirrors the mathematical distinction: an `AperyWitness` is the necessary condition for Apéry's method to work, while a `StrongAperyWitness` gives the quantitative form actually exhibited by Apéry for $\\zeta(3)$. A strong witness for $\\zeta(5)$ would require both finding suitable sequences and proving their geometric decay rate.",
+    "mathContext": "Strong witness implies weak witness: $|q_n \\alpha - p_n| \\leq C r^n \\Rightarrow q_n \\alpha - p_n \\to 0$; the converse fails (convergence can be slower than geometric)",
+    "significance": "supporting",
+    "relatedConcepts": ["Lean 4 structure coercions", "hierarchy of mathematical structures", "quantitative irrationality measures"],
+    "prerequisites": ["Lean 4 structures", "coercion definitions", "geometric vs abstract convergence"]
+  },
+  {
+    "id": "ann-apery-recurrence",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 188, "endLine": 205 },
+    "type": "context",
+    "title": "Apéry's Recurrence for ζ(3) — The Template",
+    "content": "The definition `SatisfiesApery_ζ3_Recurrence` formalizes the 3-term polynomial recurrence $(n+1)^3 u_{n+1} = (2n+1)(17n^2+17n+5) u_n - n^3 u_{n-1}$ that Apéry used. The remarkable property of this recurrence is that the sequences it generates (with appropriate initial conditions) are integers — this is non-obvious and was the surprising part of Apéry's proof. The general form `IsAperyTypeRecurrence P Q R u` abstracts to any polynomial coefficients $P, Q, R$, parameterizing the search for a $\\zeta(5)$ analog. Zagier's computer search checked polynomial recurrences up to high degree without finding one for $\\zeta(5)$.",
+    "mathContext": "$(n+1)^3 u_{n+1} = (34n^2+51n+27)n \\cdot u_n / 2 - n^3 u_{n-1}$ — actually: coefficients $17n^2+17n+5$ arise from the Legendre polynomial generating function technique",
+    "significance": "supporting",
+    "relatedConcepts": ["linear recurrence relations", "Poincaré-Perron theorem", "integer sequences", "Padé approximants"],
+    "prerequisites": ["linear recurrences", "polynomial coefficients", "ℤ → ℤ function type in Lean"]
+  },
+  {
+    "id": "ann-open-problem-formal",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 207, "endLine": 211 },
+    "type": "insight",
+    "title": "OpenProblem_ζ5_Apery — A Formally Stated Research Question",
+    "content": "The definition `OpenProblem_ζ5_Apery : Prop := ∃ _ : StrongAperyWitness zetaFive, True` is a formal encoding of the open mathematical question. The `True` in the existential is a deliberate design choice: the proposition just asks for the existence of a `StrongAperyWitness`, not for any use of it — it captures exactly the claim that Apéry's method can be extended to $\\zeta(5)$. A Lean proof of this proposition would be a proof that $\\zeta(5)$ is irrational (by the strong conditional theorem). Formalizing a negative answer — showing no such witness exists — would constitute a proof that Apéry's method *cannot* work for $\\zeta(5)$, which would also be a major result.",
+    "mathContext": "`OpenProblem_ζ5_Apery` $\\Leftrightarrow$ ($\\exists$ StrongAperyWitness for $\\zeta(5)$) $\\Rightarrow$ $\\zeta(5) \\notin \\mathbb{Q}$",
+    "significance": "key",
+    "relatedConcepts": ["formal statement of open problems", "constructive mathematics", "existential witnesses in type theory"],
+    "prerequisites": ["Lean 4 propositions", "existential types", "mathematical open problems"]
+  },
+  {
+    "id": "ann-zudilin-context",
+    "proofId": "basel-problem-oq-01-oq-03",
+    "range": { "startLine": 29, "endLine": 35 },
+    "type": "context",
+    "title": "Current State of ζ(5) Irrationality",
+    "content": "The file header documents the current state of knowledge as of 2026: Zudilin (2001) proved at least one of $\\{\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)\\}$ is irrational, but without identifying which. Ball-Rivoal (2001) showed infinitely many odd zeta values are irrational. Apéry's specific method (3-term polynomial recurrence) has not been extended beyond $\\zeta(3)$. The situation is: we know $\\zeta(2k+1) \\notin \\mathbb{Q}$ for infinitely many $k$, but cannot say for any specific $k \\geq 2$ whether $\\zeta(2k+1)$ is rational or irrational. This is one of the deepest unsolved problems in number theory.",
+    "mathContext": "Known: $\\zeta(3) \\notin \\mathbb{Q}$ (Apéry 1978); $\\dim_{\\mathbb{Q}}\\{1, \\zeta(3), \\zeta(5), \\ldots, \\zeta(2n+1)\\} \\geq c \\log n$ for some $c > 0$ (Ball-Rivoal); unknown: is $\\zeta(5) \\in \\mathbb{Q}$?",
+    "significance": "context",
+    "relatedConcepts": ["Ball-Rivoal theorem", "Zudilin irrationality", "multiple zeta values", "odd zeta values"],
+    "prerequisites": ["Riemann zeta function", "irrationality vs rationality", "history of number theory"]
+  }
+]

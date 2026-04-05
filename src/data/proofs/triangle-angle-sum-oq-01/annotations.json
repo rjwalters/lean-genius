@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-trianlge-oq01-background",
+    "proofId": "triangle-angle-sum-oq-01",
+    "range": { "startLine": 1, "endLine": 63 },
+    "type": "context",
+    "title": "Historical Background: 2000 Years of the Parallel Postulate",
+    "content": "Euclid's fifth postulate (the parallel postulate) was suspected for millennia to be provable from the other four axioms. Saccheri (1733) attempted this by assuming it false and deriving contradictions — instead discovering what we now call neutral geometry. Legendre (1794) refined the angle-sum approach: proving the angle sum of any triangle is $\\leq \\pi$ in neutral geometry. When Bolyai and Lobachevsky (1830s) independently constructed consistent non-Euclidean geometries where angle sum $< \\pi$, it became clear the parallel postulate is truly independent. The equivalence 'angle sum $= \\pi$ for all triangles $\\Leftrightarrow$ parallel postulate' crystallized the distinction between Euclidean and hyperbolic geometry. This file imports `ParallelPostulateIndependence` to use the already-proved independence result in the hyperbolic consequence theorem.",
+    "mathContext": "Neutral (absolute) geometry: satisfies all Euclid's axioms except the parallel postulate; both Euclidean ($\\theta = \\pi$) and hyperbolic ($\\theta < \\pi$) are models",
+    "significance": "context",
+    "relatedConcepts": ["neutral geometry", "Saccheri-Legendre theorem", "parallel postulate independence", "hyperbolic geometry", "Euclid's fifth postulate"],
+    "prerequisites": ["Euclidean geometry", "history of mathematics", "axiomatic geometry"]
+  },
+  {
+    "id": "ann-geom-triangle-struct",
+    "proofId": "triangle-angle-sum-oq-01",
+    "range": { "startLine": 65, "endLine": 85 },
+    "type": "definition",
+    "title": "GeomTriangle and AngledNeutralGeometry",
+    "content": "The `GeomTriangle` structure is a minimal representation: three `GeomPoint` fields (from the `ParallelPostulateIndependence` framework), with non-degeneracy as a precondition on theorems rather than a structural requirement. The `AngledNeutralGeometry` extends `NeutralGeometry` (which itself extends `IncidenceGeometry`) with a `triangleAngleSum : GeomTriangle → ℝ` function. This design choice — axiomatizing the angle sum as an abstract real-valued function rather than defining it via `arccos` — separates the logical content (the equivalences and inequalities) from the metric computation, enabling cleaner proofs of the abstract theorems.",
+    "mathContext": "An angled neutral geometry is $\\mathcal{G} = (\\text{NeutralGeometry}, \\theta)$ where $\\theta: \\text{Triangle} \\to \\mathbb{R}$ satisfies neutral geometry constraints including $\\theta(T) \\leq \\pi$",
+    "significance": "supporting",
+    "relatedConcepts": ["structure extension in Lean 4", "abstract angle function", "incidence geometry", "NeutralGeometry typeclass"],
+    "prerequisites": ["Lean 4 structures", "structure inheritance", "ParallelPostulateIndependence framework"]
+  },
+  {
+    "id": "ann-saccheri-legendre-axiom",
+    "proofId": "triangle-angle-sum-oq-01",
+    "range": { "startLine": 95, "endLine": 108 },
+    "type": "concept",
+    "title": "Saccheri-Legendre Theorem (Axiomatized)",
+    "content": "The Saccheri-Legendre theorem — the angle sum of any triangle in neutral geometry is $\\leq \\pi$ — is one of the deepest results in absolute geometry. The classical proof uses the Archimedean axiom: given a triangle with angle sum $\\pi + \\varepsilon$, one constructs a triangle with the same angle sum but arbitrarily small angles (by repeated halving), eventually contradicting the fact that angles are positive. This requires 200-400 lines of betweenness and congruence axioms not yet in Mathlib 4. The axiom `saccheri_legendre : G.triangleAngleSum t ≤ Real.pi` is mathematically justified (it is a theorem) but states it without proof. The `angle_sum_le_pi` theorem is an immediate wrapper.",
+    "mathContext": "For any triangle $T$ in neutral geometry: $\\theta(T) \\leq \\pi$. Classical proof: if $\\theta(T) = \\pi + \\varepsilon$, halving produces $T'$ with $\\theta(T') \\geq \\pi + \\varepsilon/2$, contradicting Archimedean property",
+    "significance": "key",
+    "relatedConcepts": ["Saccheri-Legendre theorem", "Archimedean axiom", "neutral geometry", "angle defect"],
+    "prerequisites": ["neutral geometry axioms", "Archimedean property", "triangle bisection"]
+  },
+  {
+    "id": "ann-defect-transitivity-axiom",
+    "proofId": "triangle-angle-sum-oq-01",
+    "range": { "startLine": 110, "endLine": 122 },
+    "type": "concept",
+    "title": "Defect Transitivity: Zero Defect Propagates",
+    "content": "The angle defect of a triangle is $d(T) = \\pi - \\theta(T) \\geq 0$ (by Saccheri-Legendre). The defect is additive under triangle decomposition: if $T$ is split into $T_1$ and $T_2$, then $d(T) = d(T_1) + d(T_2)$. This additivity implies: if $d(T_0) = 0$ for some $T_0$, then any triangle can be expressed as a combination of sub-triangles including $T_0$, forcing all defects to zero. In differential geometry, the defect is related to Gaussian curvature via the Gauss-Bonnet theorem: $d(T) = \\iint_T K \\, dA$ where $K$ is the Gaussian curvature. In Euclidean geometry, $K = 0$; in hyperbolic geometry, $K < 0$.",
+    "mathContext": "Angle defect $d(T) = \\pi - \\theta(T)$; additivity: $d(T_1 \\cup T_2) = d(T_1) + d(T_2)$; Gauss-Bonnet: $d(T) = -\\iint_T K \\, dA$ for constant curvature $K$",
+    "significance": "key",
+    "relatedConcepts": ["angle defect", "Gauss-Bonnet theorem", "Gaussian curvature", "defect additivity", "triangle decomposition"],
+    "prerequisites": ["angle sum in neutral geometry", "triangle decomposition", "Gaussian curvature (advanced)"]
+  },
+  {
+    "id": "ann-playfair-axiom",
+    "proofId": "triangle-angle-sum-oq-01",
+    "range": { "startLine": 124, "endLine": 140 },
+    "type": "concept",
+    "title": "Angle Sum = π ↔ Playfair's Parallel Postulate",
+    "content": "The axiom `angle_sum_pi_implies_playfair` is the hardest direction: assuming all triangles have angle sum $\\pi$, derive Playfair's axiom (through any point not on a line, there is exactly one parallel line). The classical proof constructs a rectangle: four triangles each with angle sum $\\pi$ can be assembled into a quadrilateral with four right angles. From a rectangle, Playfair's axiom follows because any line through an interior point must cross both sides, making a unique parallel. This requires Saccheri quadrilateral theory (~500 lines of neutral geometry). The forward direction (`parallel_implies_angle_sum`) is the standard Euclidean proof: alternate interior angles are equal, giving $\\theta = \\alpha + \\beta + \\gamma = \\pi$.",
+    "mathContext": "Playfair's axiom: $\\forall$ line $\\ell$, point $P \\notin \\ell$, $\\exists!$ line through $P$ parallel to $\\ell$; equivalent to Euclid's 5th postulate",
+    "significance": "key",
+    "relatedConcepts": ["Playfair's axiom", "Saccheri quadrilateral", "rectangle in neutral geometry", "parallel postulate equivalents"],
+    "prerequisites": ["Playfair's axiom", "neutral geometry", "Saccheri quadrilateral theory"]
+  },
+  {
+    "id": "ann-main-converse-theorem",
+    "proofId": "triangle-angle-sum-oq-01",
+    "range": { "startLine": 157, "endLine": 200 },
+    "type": "technique",
+    "title": "Converse and Full Equivalence",
+    "content": "The main theorem `angle_sum_implies_parallel` is a one-line application of the axiom `angle_sum_pi_implies_playfair`. The full equivalence `angle_sum_iff_parallel` combines both directions using `⟨angle_sum_implies_parallel G, parallel_implies_angle_sum G⟩` — constructing an `Iff` from its two implications. The proof of the biconditional is notable for its simplicity at the Lean level: once the four axioms are in place, the logical structure is entirely transparent. The mathematical depth is encoded in the axioms, while the Lean proof focuses on combining them correctly.",
+    "mathContext": "$(\\forall T, \\theta(T) = \\pi) \\iff \\text{SatisfiesParallelPostulate}(\\mathcal{G})$; this is the fundamental dichotomy: Euclidean iff all triangles are 'flat'",
+    "significance": "key",
+    "relatedConcepts": ["Iff in Lean 4", "parallel postulate", "angle sum equivalence", "Euclidean vs non-Euclidean"],
+    "prerequisites": ["Lean 4 biconditional", "the four axioms stated above", "SatisfiesParallelPostulate"]
+  },
+  {
+    "id": "ann-hyperbolic-consequence",
+    "proofId": "triangle-angle-sum-oq-01",
+    "range": { "startLine": 206, "endLine": 231 },
+    "type": "insight",
+    "title": "Hyperbolic Angle Sum < π — The Contradiction Argument",
+    "content": "The `hyperbolic_angle_sum_lt_pi` theorem proves that any geometry satisfying the hyperbolic parallel property (through any point not on a line, there are at least two distinct parallels) must have angle sum $< \\pi$ for every triangle. The proof is a model contradiction argument: (1) Saccheri-Legendre gives $\\theta(t) \\leq \\pi$. (2) If $\\theta(t) = \\pi$ for any $t$, then defect transitivity gives $\\theta = \\pi$ for all triangles. (3) Then `angle_sum_implies_parallel` yields Playfair's axiom. (4) But `hyperbolic_contradicts_parallel_postulate` (from `ParallelPostulateIndependence`) says Playfair's axiom and the hyperbolic property are mutually exclusive. The proof uses `by_contra`, `push_neg`, and `le_antisymm` to establish the equality from the negation of strict inequality.",
+    "mathContext": "Hyperbolic parallel: $\\exists$ line $\\ell$, point $P$, at least 2 parallels to $\\ell$ through $P$. Then $\\theta(T) < \\pi$ for all $T$: curvature $K < 0$ throughout hyperbolic space",
+    "significance": "key",
+    "relatedConcepts": ["hyperbolic parallel property", "by_contra tactic", "le_antisymm", "hyperbolic_contradicts_parallel_postulate", "Poincaré disk model"],
+    "prerequisites": ["hyperbolic geometry", "Lean 4 contradiction proofs", "push_neg tactic", "ParallelPostulateIndependence"]
+  },
+  {
+    "id": "ann-axiom-architecture",
+    "proofId": "triangle-angle-sum-oq-01",
+    "range": { "startLine": 233, "endLine": 260 },
+    "type": "insight",
+    "title": "Three-File Gallery Arc: Euclidean, Independent, Equivalent",
+    "content": "The summary section explicitly articulates the three-file proof arc: `TriangleAngleSum.lean` proves angle sum $= \\pi$ in the concrete Euclidean model $\\mathbb{R}^n$ (a computation); `ParallelPostulateIndependence.lean` proves the parallel postulate is logically independent of the other Euclidean axioms (a model-theoretic construction); and this file proves the abstract equivalence angle sum $= \\pi \\Leftrightarrow$ Playfair's axiom (a logical synthesis). Together they give a complete formal account of one of geometry's central theorems. This three-part structure — concrete instance, independence, abstract equivalence — is a powerful pattern for formalizing foundational mathematics.",
+    "mathContext": "Formal hierarchy: $\\text{Euclidean model} \\models (\\theta = \\pi \\wedge \\text{Playfair})$; $\\text{Hyperbolic model} \\models (\\theta < \\pi \\wedge \\neg\\text{Playfair})$; Abstract: $\\theta = \\pi \\iff \\text{Playfair}$",
+    "significance": "supporting",
+    "relatedConcepts": ["formalization strategy", "model theory", "concrete vs abstract proofs", "gallery proof arcs"],
+    "prerequisites": ["foundations of geometry", "model theory concepts", "Lean 4 proof architecture"]
+  }
+]
