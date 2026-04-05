@@ -56,6 +56,55 @@
       "Automate the D(k) proofs via a general decidability argument: for fixed k, D(k) is computable, so the proof could be by native_decide with a suitably axiomatized minimality theorem"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-prime-gaps-header",
+      "title": "Header and Proof Strategy Documentation",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module header explaining D(4) = 8, the OEIS A008407 context, and the four-step proof strategy: same parity, even diameter, forced AP structure {a,a+2,a+4,a+6}, subset contradiction via not_admissible_ap_diff2."
+    },
+    {
+      "id": "sec-prime-gaps-not-admissible-ap4",
+      "title": "Part I: Even AP-4 is Not Admissible",
+      "startLine": 55,
+      "endLine": 70,
+      "summary": "Proves not_admissible_even_ap4: {a,a+2,a+4,a+6} is not admissible because it contains the non-admissible 3-AP {a,a+2,a+4} as a subset, and admissible_subset transfers the violation."
+    },
+    {
+      "id": "sec-prime-gaps-lower-bound",
+      "title": "Part II: Lower Bound — Every Admissible 4-Tuple has Diameter ≥ 8",
+      "startLine": 72,
+      "endLine": 126,
+      "summary": "Proves admissible_quad_diam_ge_8 by case split on parity: mixed parity violates p=2 admissibility condition; same parity with diameter ≤ 6 forces H = {a,a+2,a+4,a+6} via interval_cases and Finset.eq_of_subset_of_card_le, which then violates not_admissible_even_ap4."
+    },
+    {
+      "id": "sec-prime-gaps-main-result",
+      "title": "Part III: Main Result D(4) = 8",
+      "startLine": 127,
+      "endLine": 149,
+      "summary": "Proves minAdmissibleDiameter_4 = 8 via le_antisymm: upper bound from admissible witness {0,2,6,8} via csInf_le, lower bound from admissible_quad_diam_ge_8 via le_csInf."
+    },
+    {
+      "id": "sec-prime-gaps-consequences",
+      "title": "Part IV: Consequences and OEIS Chain",
+      "startLine": 150,
+      "endLine": 187,
+      "summary": "Proves D2_lt_D3_lt_D4 (strictly increasing chain 2 < 6 < 8), D4_achieved_by_0268, D4_minus_D3 = 2, and prime_quadruple_span_ge_8 (universal lower bound on admissible 4-tuple diameters)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "bounded-prime-gaps",
+      "relationship": "extends",
+      "description": "Parent proof containing admissible_quadruple_0_2_6_8 witness and admissible_subset lemma used in the D(4)=8 proof"
+    },
+    {
+      "slug": "bounded-prime-gaps-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Prior OQ file proving D(2)=2 and D(3)=6, providing not_admissible_ap_diff2 and minAdmissibleDiameter_2/3 used here"
+    }
+  ],
   "leanFile": {
     "namespace": "BoundedPrimeGapsOQ03OQ01OQ04",
     "lineCount": 187,
