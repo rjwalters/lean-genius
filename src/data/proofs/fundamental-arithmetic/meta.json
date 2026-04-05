@@ -186,6 +186,16 @@
       "targetId": "euler-totient",
       "relationship": "related",
       "description": "Euler's totient function phi(n) = n * prod(1-1/p) is computed from the unique prime factorization guaranteed by FTA."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "Classic application of unique factorization: sqrt(2) irrational follows from parity of prime exponents in a^2 = 2b^2"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Describes the asymptotic distribution of the primes that FTA decomposes numbers into: pi(x) ~ x/ln(x)"
     }
   ],
   "conclusion": {
