@@ -59,7 +59,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 135,
-    "assumptions": "10 axioms: maxAPFamily, simonovits_sos_upper, simonovits_sos_lower, and 7 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: maxAPFamily (maximum AP family function — axiomatized), simonovits_sos_upper (Simonovits-Sós 1981 — t = O(N²)), szabo_theorem (Szabó asymptotic theorem). 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős Problem #272 asks for the maximum number of subsets of {1,...,N} such that every pairwise intersection is a non-empty arithmetic progression. The problem was posed by Erdős and Graham, who conjectured that the optimal family consists of all arithmetic progressions passing through the middle element ⌊N/2⌋, giving approximately π²N²/24 sets.\n\nSimonovits and Sós (1981) made two key contributions: they proved the upper bound t = O(N²), establishing the quadratic growth rate, and they disproved the Erdős-Graham conjecture by showing that a simpler construction — all subsets of size ≤ 3 containing a fixed element — gives C(N-1,2) + 1 ≈ N²/2 sets, beating the π²N²/24 ≈ N²/2.4 from arithmetic progressions. The key insight is that any two sets of size ≤ 3 sharing a common element intersect in {k} (a singleton, which is trivially an AP).\n\nSzabó (1999) resolved the problem completely by determining the exact asymptotic: t = N²/2 + O(N^{5/3}(log N)³). He improved the lower bound to C(N,2) + ⌊(N-1)/4⌋ + 1 and conjectured that the exact answer is C(N,2) + O(N) and that every extremal family has a common element contained in all sets.",

@@ -62,7 +62,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 150,
-    "assumptions": "13 axioms: six_in_A, twelve_in_A, straus_multiplication_closure, and 10 more. See Lean source for complete statements."
+    "assumptions": "3 axioms: straus_multiplication_closure (Straus: set A is closed under multiplication), prime_powers_not_in_A (prime powers not in A), martin_main_theorem (Martin main theorem — A has natural density 1). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #292** concerns Egyptian fractions - sums of distinct unit fractions.\n\n**Historical Development:**\n- **Straus:** Observed that A is closed under multiplication\n- **Early observation:** A does not contain any prime power\n- **van Doorn:** If n ∈ A (n > 1) then 2n ∈ A\n- **Martin (2000):** Proved A has density 1 and characterized the complement B\n\n**Key Insight:** The complement B consists essentially of small multiples of prime powers, and |B ∩ [1,x]|/x ~ (log log x)/(log x), which tends to 0.",
