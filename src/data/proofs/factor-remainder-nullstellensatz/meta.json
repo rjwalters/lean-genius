@@ -48,14 +48,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Hilbert's Nullstellensatz (1893) is a cornerstone of algebraic geometry, connecting polynomial algebra to geometry. The univariate Factor Theorem — known since at least Descartes — is its simplest case: a polynomial vanishes at a point iff a linear factor divides it. The general Nullstellensatz extends this to systems of multivariate polynomial equations.",
+    "historicalContext": "Hilbert's Nullstellensatz (1893) is a cornerstone of algebraic geometry, connecting polynomial algebra to geometry. The univariate Factor Theorem — known since at least Descartes (1637, La Géométrie) — is its simplest case: a polynomial vanishes at a point iff a linear factor divides it. The general Nullstellensatz extends this to systems of multivariate polynomial equations over algebraically closed fields, forming the foundation of scheme theory and modern algebraic geometry. The strong Nullstellensatz (also Hilbert 1893) characterizes radical ideals via zero sets: I(V(J)) = √J.",
     "problemStatement": "**Factor Theorem to Nullstellensatz**: The Factor Theorem states $(x-a) \\mid f \\iff f(a) = 0$. The Nullstellensatz generalizes: a system $f_1 = \\cdots = f_m = 0$ has no common solution in $\\bar{k}^n$ iff $1 \\in (f_1, \\ldots, f_m)$. We formalize the univariate bridge between these results.",
     "text": "The Factor Theorem is the one-variable case of the weak Nullstellensatz. Over algebraically closed fields, nonconstant polynomials always have roots, giving linear factors.",
     "proofStrategy": "The key theorems use Mathlib's `IsAlgClosed.exists_root` (algebraically closed fields have roots for nonconstant polynomials) and `Polynomial.dvd_iff_isRoot` (the Factor Theorem). Combining these: every nonconstant polynomial over an algebraically closed field is divisible by a linear factor.",
     "keyInsights": [
       "The Factor Theorem is ideal membership: f(a) = 0 means f is in the principal ideal (X - a)",
       "The weak Nullstellensatz for one variable follows immediately from algebraic closure",
-      "The hierarchy from Factor Theorem → weak Nullstellensatz → strong Nullstellensatz → combinatorial Nullstellensatz represents increasing algebraic depth"
+      "The hierarchy from Factor Theorem → weak Nullstellensatz → strong Nullstellensatz → combinatorial Nullstellensatz represents increasing algebraic depth",
+      "The algebraically closed hypothesis is essential: over ℝ, x² + 1 has no roots but is not divisible by any linear factor with real coefficients — the Nullstellensatz fails without closure.",
+      "In Lean, the proof uses `Polynomial.dvd_iff_isRoot` from Mathlib, which encapsulates the Factor Theorem as a decidable rewrite rule, connecting ring-theoretic divisibility to evaluation."
     ],
     "prerequisites": [
       "Polynomial algebra",
