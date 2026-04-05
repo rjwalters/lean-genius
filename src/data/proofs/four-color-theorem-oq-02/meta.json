@@ -46,21 +46,24 @@
       "title": "Background and Historical Progression",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Documents the Four Color Theorem proof strategy (unavoidable + reducible), the historical reduction from 1936 to 1476 to 633 configurations (Appel-Haken 1977, RSST 1997), and the open question about the minimum set size."
+      "summary": "Documents the Four Color Theorem proof strategy (unavoidable + reducible), the historical reduction from 1936 to 1476 to 633 configurations (Appel-Haken 1977, RSST 1997), and the open question about the minimum set size.",
+      "mathContext": "Proof strategy: find unavoidable set $S$ (every planar graph contains a member) + reducible set (each member's ring coloring extends to interior). Counts: $|S| = 1936$ (Appel-Haken 1977) $\\to 1476 \\to 633$ (RSST 1997). Gonthier's Coq proof (2008): first formal verification."
     },
     {
       "id": "configuration-theory",
       "title": "Configuration Structure and Definitions",
       "startLine": 24,
       "endLine": 65,
-      "summary": "Defines Configuration structure (ringSize, interiorSize, ring_ge ≥ 2). IsReducible and IsUnavoidable are stubbed as True. Instantiates birkhoffDiamond (ringSize=6, interiorSize=4), the first historically discovered reducible configuration."
+      "summary": "Defines Configuration structure (ringSize, interiorSize, ring_ge ≥ 2). IsReducible and IsUnavoidable are stubbed as True. Instantiates birkhoffDiamond (ringSize=6, interiorSize=4), the first historically discovered reducible configuration.",
+      "mathContext": "A configuration $C = (G, \\gamma)$: ring $\\gamma$ of size $r \\ge 2$, interior vertices. `IsReducible C`: every proper 4-coloring of $\\gamma$ extends to $G$ (stub: True). Birkhoff diamond: $r = 6$, $\\text{interior} = 4$ — smallest known reducible configuration. Reducibility check: $\\le 3^r/r$ distinct ring colorings."
     },
     {
       "id": "bounds-and-tradeoffs",
       "title": "Known Bounds and Computational Obstacles",
       "startLine": 67,
       "endLine": 93,
-      "summary": "Documents the three obstacles to reducing below 633: exponential reducibility checking cost (ring size), discharging rule adjustment for unavoidability, and the size/ring-size trade-off. Heuristic lower bound ~200-400."
+      "summary": "Documents the three obstacles to reducing below 633: exponential reducibility checking cost (ring size), discharging rule adjustment for unavoidability, and the size/ring-size trade-off. Heuristic lower bound ~200-400.",
+      "mathContext": "Discharging: assign charge $6 - \\deg(v)$ to each vertex; by Euler's formula $\\sum_v (6-\\deg v) = 12 > 0$. Reducibility cost: $O(3^r)$ for ring size $r$. RSST uses rings up to size 11. Minimum $|S|$ unknown; heuristic estimates: $200 \\le |S_{\\min}| \\le 400$."
     }
   ],
   "conclusion": {

@@ -43,7 +43,7 @@
     "title": "Historical Reduction: 1936 → 1476 → 633 Configurations",
     "content": "The configuration count tracks the progress of computer-assisted proofs. Appel-Haken (1977) used 1936 configurations in their original proof — the first major computer-assisted proof, requiring months of CPU time. They reduced it to 1476 in the same year. Robertson-Sanders-Seymour-Thomas (1997) achieved 633 with a cleaner discharging proof and more efficient reducibility checking. Gonthier (2008) formally verified the RSST proof in Coq. The minimum unknown set size is the outstanding open question.",
     "mathContext": "The computational cost of checking reducibility scales as $O(\\text{(ring-colorings)} \\times \\text{(extension checks)}) \\sim O(3^r)$ for ring size $r$. Reducing configuration count often means accepting larger ring sizes, creating a trade-off. RSST achieved 633 with ring sizes up to 11.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["computer-assisted proofs", "proof verification", "Coq", "Gonthier's proof"],
     "prerequisites": ["Four Color Theorem", "graph theory", "proof assistants"]
   },
