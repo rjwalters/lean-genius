@@ -73,7 +73,7 @@
       "Basic set theory (finite sets, cardinality, supremum)"
     ],
     "lineCount": 348,
-    "assumptions": "8 axiom(s) and 0 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
+    "assumptions": "1 axiom: neumann_theorem (Neumann — Γ(G) has no infinite clique if and only if Z(G) has finite index in G). 0 sorries."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem at the 15th Summer Research Institute of the Australian Mathematical Society in 1975, asking about the structure of the non-commuting graph $\\Gamma(G)$ of a group $G$, where vertices are non-central elements and edges connect pairs $a, b$ with $ab \\neq ba$. B.H. Neumann solved it in 1976, proving the elegant equivalence: $\\Gamma(G)$ has no infinite complete subgraph if and only if the center $Z(G)$ has finite index in $G$. Moreover, the maximum clique size equals $[G : Z(G)]$.\n\nThis result connects two fundamental mathematical structures: the group-theoretic invariant $[G : Z(G)]$ (measuring 'how non-abelian' the group is) and the graph-theoretic clique number $\\omega(\\Gamma(G))$. The proof uses the pigeonhole principle on cosets of the center. The problem inaugurated the study of non-commuting graphs, now an active area connecting group theory, graph theory, and combinatorics.",

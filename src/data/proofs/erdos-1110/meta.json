@@ -60,7 +60,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 265,
-    "assumptions": "8 axioms: case_2_3_all_representable, even_representation, erdos_lewin_theorem, and 5 more. See Lean source for complete statements."
+    "assumptions": "2 axioms: case_2_3_all_representable (all positive integers are representable as subset sums when {p,q} = {2,3}), erdos_lewin_theorem (Erdős-Lewin — set of non-representable numbers is finite iff {p,q} = {2,3}). 0 sorries."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1110: Representability**\n\nThis problem concerns representing integers as sums of 'smooth' numbers (products of small primes) with a non-divisibility constraint.\n\n**Historical Development:**\n- **1992:** Erdős posed his 'silly conjecture' about {2,3}\n- **1996:** Erdős-Lewin proved the characterization theorem\n- **2022:** Yu-Chen established density results and coprime infinitude\n- **2025:** Yang-Zhao improved minimum summand bounds\n\n**The 'Silly Conjecture':**\nErdős called his {2,3} conjecture 'silly' after Jansen and others found a simple inductive proof. Yet the general problem remains deep and partially open.",
