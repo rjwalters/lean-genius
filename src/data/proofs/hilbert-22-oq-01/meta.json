@@ -41,18 +41,28 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Import, Docblock, and Namespace",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Imports all of Mathlib; docblock describing the four frameworks (Kodaira-Enriques, Yau's theorem, Kobayashi hyperbolicity, Minimal Model Program) for higher-dimensional uniformization; opens Hilbert22OQ01 namespace.",
+      "mathContext": "The docblock frames the research problem: the 1D uniformization trichotomy $\\{S^2, \\mathbb{C}, \\mathbb{D}\\}$ corresponds to $(\\kappa = -\\infty, \\kappa = 0, \\kappa = 1)$ by Kodaira dimension. Dimension 2: Enriques-Kodaira gives exactly 8 classes. Dimension $\\ge 3$: infinite classification via Mori theory and birational geometry. Yau's 1977 theorem (Calabi conjecture proof) provides Kähler-Einstein metrics for $c_1 \\le 0$, the higher-dimensional Poincaré metric analogue."
+    },
+    {
       "id": "kodaira",
       "title": "Kodaira Dimension",
       "startLine": 28,
       "endLine": 55,
-      "summary": "Defines `KodairaDimension` as {-∞, finite k} and maps the 1D uniformization trichotomy {S², ℂ, 𝔻} to Kodaira dimensions {-∞, 0, 1}."
+      "summary": "Defines `KodairaDimension` as {-∞, finite k} and maps the 1D uniformization trichotomy {S², ℂ, 𝔻} to Kodaira dimensions {-∞, 0, 1}.",
+      "mathContext": "\\texttt{KodairaDimension} has two constructors: \\texttt{negInfty} ($\\kappa = -\\infty$, rational/ruled) and \\texttt{finite k} ($\\kappa = k$, general). The function \\texttt{riemann\\_surface\\_kodaira : Fin 3 → KodairaDimension} maps: 0 $\\mapsto$ \\texttt{negInfty} ($S^2$), 1 $\\mapsto$ \\texttt{finite 0} ($\\mathbb{C}$), 2 $\\mapsto$ \\texttt{finite 1} ($\\mathbb{D}$). This encodes the heuristic: $\\kappa = -\\infty$ is 'positive curvature' (rational), $\\kappa = 0$ is 'flat' (Calabi-Yau/abelian), $\\kappa = \\dim$ is 'negative curvature' (general type/hyperbolic)."
     },
     {
       "id": "surfaces",
       "title": "Enriques-Kodaira Surface Classification",
       "startLine": 57,
       "endLine": 82,
-      "summary": "Encodes the 8-class Enriques-Kodaira classification of compact complex surfaces with `SurfaceClass` and assigns each class its Kodaira dimension via `surfaceKodaira`."
+      "summary": "Encodes the 8-class Enriques-Kodaira classification of compact complex surfaces with `SurfaceClass` and assigns each class its Kodaira dimension via `surfaceKodaira`.",
+      "mathContext": "The 8 surface classes: $\\kappa = -\\infty$: \\texttt{rational}, \\texttt{ruled}; $\\kappa = 0$: \\texttt{K3}, \\texttt{Enriques}, \\texttt{abelian}, \\texttt{hyperelliptic}; $\\kappa = 1$: \\texttt{elliptic}; $\\kappa = 2$: \\texttt{generalType}. The \\texttt{surfaceKodaira} function is a total match expression with 8 cases. This is the unique complete classification of compact complex manifolds in dimension $> 1$ — in dimension $\\ge 3$ no analogous finite list exists."
     },
     {
       "id": "yau-kobayashi",
@@ -81,7 +91,13 @@
   "crossReferences": [
     {
       "targetId": "hilbert-22",
-      "relationship": "parent-problem"
+      "relationship": "extends",
+      "description": "Parent problem: the Koebe-Poincaré uniformization theorem for Riemann surfaces (dim 1); this entry explores how that trichotomy generalizes to higher dimensions via Kodaira dimension"
+    },
+    {
+      "targetId": "hilbert-11",
+      "relationship": "related",
+      "description": "Hilbert's 11th problem on quadratic forms over algebraic number fields; like uniformization, it concerns classification of geometric objects — quadratic forms rather than complex manifolds — by invariants"
     }
   ],
   "leanFile": {
