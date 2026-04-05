@@ -1,5 +1,17 @@
 [
   {
+    "id": "trf-header",
+    "proofId": "triangular-reciprocals-oq-01",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "context",
+    "title": "Module Overview: Figurate Number Reciprocal Sums",
+    "content": "The file header establishes the mathematical context: this proof generalizes the telescoping sum $\\sum 1/T_n = 2$ from triangular numbers to all k-gonal figurate numbers. The three main parts are: (I) partial fraction decomposition for telescoping; (II) k-gonal definitions for $k = 3, 4, 5, 6$; (III) convergence via comparison with $1/n^2$. The import of `Mathlib` gives access to `Real.summable_nat_rpow` for the p-series test. `open Finset BigOperators` enables the `∑` notation and Finset API. The namespace `FigurateReciprocals` encapsulates all definitions and theorems.",
+    "mathContext": "The figurate numbers (polygonal numbers) form a classical family: the $n$-th $k$-gonal number is $P(k,n) = n((k-2)n-(k-4))/2$ for $k \\geq 3$. For $k=3$: triangular $T_n = n(n+1)/2$; $k=4$: square $n^2$; $k=5$: pentagonal $n(3n-1)/2$; $k=6$: hexagonal $n(2n-1)$. All satisfy $P(k,n) \\sim (k-2)n^2/2$, so $\\sum 1/P(k,n)$ converges by comparison with the Basel series $\\sum 1/n^2 = \\pi^2/6$.",
+    "significance": "context",
+    "relatedConcepts": ["figurate numbers", "polygonal numbers", "Basel problem", "p-series", "BigOperators"],
+    "prerequisites": ["Mathlib imports", "BigOperators notation", "namespace scoping"]
+  },
+  {
     "id": "trf-partial-fraction",
     "proofId": "triangular-reciprocals-oq-01",
     "range": { "startLine": 25, "endLine": 31 },
@@ -26,10 +38,10 @@
   {
     "id": "trf-hexagonal-triangular",
     "proofId": "triangular-reciprocals-oq-01",
-    "range": { "startLine": 90, "endLine": 95 },
+    "range": { "startLine": 90, "endLine": 98 },
     "type": "insight",
-    "title": "Every Hexagonal Number is Triangular",
-    "content": "The elegant identity $H_n = T_{2n-1}$: the $n$-th hexagonal number equals the $(2n-1)$-th triangular number. This means the hexagonal sequence $1, 6, 15, 28, 45, \\ldots$ is a subsequence of the triangular sequence $1, 3, 6, 10, 15, 21, 28, \\ldots$. The proof is a single `omega` call after unfolding the definitions, since both sides reduce to the same natural number arithmetic. The identity implies $\\sum 1/H_n$ converges (as the series is dominated by $\\sum 1/T_{2n-1}$).",
+    "title": "Every Hexagonal Number is Triangular; Denominator Positivity",
+    "content": "The elegant identity $H_n = T_{2n-1}$: the $n$-th hexagonal number equals the $(2n-1)$-th triangular number. This means the hexagonal sequence $1, 6, 15, 28, 45, \\ldots$ is a subsequence of the triangular sequence $1, 3, 6, 10, 15, 21, 28, \\ldots$. The proof is a single `omega` call after unfolding the definitions, since both sides reduce to the same natural number arithmetic. The identity implies $\\sum 1/H_n$ converges (as the series is dominated by $\\sum 1/T_{2n-1}$). Lines 97-98 provide `n_succ_mul_pos`: $n(n+1) > 0$ for $n \\geq 1$, a denominator positivity lemma used in convergence arguments.",
     "mathContext": "$H_n = n(2n-1) = \\frac{(2n-1)(2n-1+1)}{2} = T_{2n-1}$. Equivalently: every hexagonal number is an odd-indexed triangular number. The hexagonal numbers occupy positions $1, 3, 5, 7, \\ldots$ in the triangular sequence.",
     "significance": "key",
     "relatedConcepts": ["hexagonal numbers", "triangular numbers", "figurate number identities", "subsequence", "polygonal numbers"],
@@ -38,7 +50,7 @@
   {
     "id": "trf-triangular-growth",
     "proofId": "triangular-reciprocals-oq-01",
-    "range": { "startLine": 85, "endLine": 98 },
+    "range": { "startLine": 85, "endLine": 88 },
     "type": "insight",
     "title": "Quadratic Growth of Figurate Numbers",
     "content": "Triangular numbers satisfy $T_n \\geq n$ (proved by `omega`), and more precisely $T_n \\sim n^2/2$ as $n \\to \\infty$. This quadratic growth is the key to convergence: since $1/T_n \\leq 2/n^2$, convergence of $\\sum 1/T_n$ follows from convergence of $\\sum 1/n^2$. For general $k$-gonal numbers, $P(k,n) \\sim (k-2)n^2/2$, so all figurate reciprocal sums converge by the same comparison.",
@@ -63,7 +75,7 @@
     "id": "trf-triangular-pos",
     "proofId": "triangular-reciprocals-oq-01",
     "range": { "startLine": 33, "endLine": 38 },
-    "type": "definition",
+    "type": "technique",
     "title": "Positivity of Triangular Reciprocals",
     "content": "Each term $2/(n(n+1)) > 0$ for $n \\geq 1$, proved using `div_pos`, `mul_pos`, and `Nat.cast_pos`. This is a technical lemma supporting later convergence arguments — positivity ensures we are dealing with a series of positive terms, enabling comparison tests.",
     "mathContext": "$\\frac{2}{n(n+1)} > 0$ for all $n \\geq 1$, since $n > 0$ and $n+1 > 0$ imply $n(n+1) > 0$.",
