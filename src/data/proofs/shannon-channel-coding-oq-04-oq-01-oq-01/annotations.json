@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-beum-midpoint-concavity",
+    "proofId": "shannon-channel-coding-oq-04-oq-01-oq-01",
+    "range": { "startLine": 54, "endLine": 68 },
+    "type": "technique",
+    "title": "Midpoint Decomposition + Strict Concavity for Unique Maximum",
+    "content": "The key insight is writing the proposed maximum point 1/2 as a midpoint: 1/2 = (1/2)·p + (1/2)·(1−p). Since h(1−p) = h(p) by symmetry (h_symm), the strict concavity inequality h(1/2) > (1/2)·h(p) + (1/2)·h(1−p) = h(p) holds whenever p ≠ 1−p, i.e., p ≠ 1/2. In Lean 4, this uses StrictConcaveOn.2 (the definition of strict concavity as a strict inequality on nontrivial convex combinations), applied with x = p, y = 1−p, a = b = 1/2. The distinctness condition p ≠ 1−p is proved by intro heq followed by linarith (heq gives 2p = 1, contradicting p ≠ 1/2).",
+    "mathContext": "$h(1/2) = h(\\tfrac{1}{2}p + \\tfrac{1}{2}(1-p)) > \\tfrac{1}{2}h(p) + \\tfrac{1}{2}h(1-p) = \\tfrac{1}{2}h(p) + \\tfrac{1}{2}h(p) = h(p)$ for $p \\neq 1/2$. The key: $h(1-p)=h(p)$ by symmetry, so the RHS collapses to $h(p)$.",
+    "significance": "key",
+    "relatedConcepts": ["StrictConcaveOn", "StrictConcaveOn.2", "h_strictConcaveOn", "h_symm", "smul_eq_mul"],
+    "prerequisites": ["h_strictConcaveOn from OQ-01", "h_symm from parent", "StrictConcaveOn.2 signature in Mathlib"]
+  },
+  {
+    "id": "ann-beum-log-injectivity",
+    "proofId": "shannon-channel-coding-oq-04-oq-01-oq-01",
+    "range": { "startLine": 34, "endLine": 45 },
+    "type": "technique",
+    "title": "Log Injectivity for Critical Point: exp_log Round-Trip",
+    "content": "The proof that log(1-p) - log(p) = 0 iff p = 1/2 uses the injectivity of Real.exp to convert the equation log(1-p) = log(p) to 1-p = p. In Lean 4, this is done via congr_arg Real.exp heq which produces h : Real.exp (log(1-p)) = Real.exp (log p), then rwa [Real.exp_log h1p0, Real.exp_log hp0] at this converts both sides using the round-trip identity exp(log x) = x (valid for x > 0). The final linarith derives p = 1/2 from 1-p = p. The reverse direction uses norm_num to verify 1 - 1/2 = 1/2 and then sub_self to close log(1/2) - log(1/2) = 0.",
+    "mathContext": "$\\log(1-p) = \\log p \\iff e^{\\log(1-p)} = e^{\\log p} \\iff 1-p = p \\iff p = 1/2$. Uses injectivity of $\\exp$ and the identity $e^{\\log x} = x$ for $x > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.exp_log", "congr_arg", "Real.log_pos", "linarith", "sub_self"],
+    "prerequisites": ["Real.exp_log: exp(log x) = x for x > 0", "congr_arg: applying a function to both sides of an equality"]
+  },
+  {
+    "id": "ann-beum-boundary-cases",
+    "proofId": "shannon-channel-coding-oq-04-oq-01-oq-01",
+    "range": { "startLine": 80, "endLine": 92 },
+    "type": "insight",
+    "title": "Case Analysis: Boundary Points Need No Concavity",
+    "content": "The h_eq_log_two_iff proof splits into 4 cases: p = 0, p = 1, p ∈ (0,1) with p ≠ 1/2, and p = 1/2. For p = 0: h_zero gives h(0) = 0, and since log 2 > 0 (from Real.log_pos with 1 < 2), we have 0 ≠ log 2. For p = 1: similarly h_one gives h(1) = 0. For the interior case, h_lt_h_half gives h(p) < h(1/2) = log 2, so h(p) < log 2 ≠ h(p). Only the forward direction requires case analysis; the backward direction is immediate: p = 1/2 → h(1/2) = log 2 by h_half. The linarith at line 91 combines h_lt_h_half (h(p) < h(1/2)) with heq (h(p) = log 2) and h_half.symm (h(1/2) = log 2) to derive a contradiction.",
+    "mathContext": "Case split: if $p = 0$ then $h(0) = 0 \\neq \\log 2$; if $p = 1$ then $h(1) = 0 \\neq \\log 2$; if $p \\in (0,1)$ with $p \\neq 1/2$ then $h(p) < h(1/2) = \\log 2$. Only $p = 1/2$ satisfies $h(p) = \\log 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["h_zero", "h_one", "h_half", "h_lt_h_half", "Real.log_pos", "ne_of_lt"],
+    "prerequisites": ["h_zero, h_one, h_half from parent ShannonChannelCodingOQ04", "ne_of_lt: a < b → b ≠ a"]
+  },
+  {
+    "id": "ann-beum-bits-formulation",
+    "proofId": "shannon-channel-coding-oq-04-oq-01-oq-01",
+    "range": { "startLine": 96, "endLine": 101 },
+    "type": "technique",
+    "title": "Bits Formulation: div_eq_one_iff_eq for hBits",
+    "content": "The corollary hBits_eq_one_iff follows from h_eq_log_two_iff via the definition hBits p = h p / log 2. The goal hBits p = 1 unfolds to h p / log 2 = 1, which by div_eq_one_iff_eq (with log 2 ≠ 0, proved by ne_of_gt (Real.log_pos ...)) is equivalent to h p = log 2. This is exactly h_eq_log_two_iff. The ne_of_gt proof uses Real.log_pos applied to the explicit computation 1 < 2 (via norm_num). This is the standard Lean 4 pattern for div_eq_one equivalences.",
+    "mathContext": "$h_2(p) = h(p)/\\log 2 = 1 \\iff h(p) = \\log 2 \\iff p = 1/2$. The conversion uses the fact that $\\log 2 \\neq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["hBits", "div_eq_one_iff_eq", "Real.log_pos", "ne_of_gt"],
+    "prerequisites": ["hBits definition in ShannonChannelCodingOQ04", "div_eq_one_iff_eq: a/b = 1 ↔ a = b when b ≠ 0"]
+  }
+]

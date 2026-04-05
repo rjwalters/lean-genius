@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-lgvgen-det-fin-one",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01",
+    "range": { "startLine": 84, "endLine": 95 },
+    "type": "technique",
+    "title": "det_fin_one + pathMatrix simp + exact_mod_cast: r=1 Count Formula",
+    "content": "The proof of lgv_r1_niCount_eq_pathCount chains three steps: (1) have hdet := lgv_r1 m a₁ b₁ h applies the LGV lemma to get a ℤ equality (niTupleCount cfg : ℤ) = (pathMatrix cfg).det; (2) rw [Matrix.det_fin_one] at hdet reduces the 1×1 determinant to the single entry pathMatrix cfg 0 0; (3) simp only [pathMatrix, Matrix.of_apply, Matrix.cons_val_zero] at hdet unfolds pathMatrix as Matrix.of (fun i j => ...), applies it to (0,0), and simplifies ![a₁] 0 = a₁ and ![b₁] 0 = b₁ via Matrix.cons_val_zero; (4) exact_mod_cast hdet lifts the ℤ equality to ℕ. The entire sorry is eliminated by this 3-line chain.",
+    "mathContext": "$\\text{niTupleCount}_{r=1} = \\det[e(A_1,B_1)] = e(A_1,B_1) = \\binom{m+(b_1-a_1)}{m}$. Matrix.det_fin_one: for $M : \\text{Mat}(1\\times 1)$, $\\det M = M_{00}$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.det_fin_one", "Matrix.of_apply", "Matrix.cons_val_zero", "exact_mod_cast", "lgv_r1"],
+    "prerequisites": ["Matrix.det_fin_one: det of 1×1 matrix = single entry", "Matrix.cons_val_zero: ![x] 0 = x", "exact_mod_cast: ℤ equality → ℕ equality when both sides are non-negative"]
+  },
+  {
+    "id": "ann-lgvgen-wellformed",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01",
+    "range": { "startLine": 47, "endLine": 65 },
+    "type": "insight",
+    "title": "wellFormed Condition: Why r=1 Is Vacuously True",
+    "content": "The LGVConfig.wellFormed condition requires ∀ i < j : Fin r, sources i < sources j (strict monotonicity of sources). For r=1, there are no pairs (i,j) with i < j in Fin 1 (since Fin 1 has only one element 0), so wellFormed is vacuously true. In Lean 4, this is proved by: intro i j hij; exact absurd hij (by omega) — the hypothesis hij : i < j in Fin 1 is impossible since i, j : Fin 1 can only be 0, and 0 < 0 is false. The omega tactic closes Fin.val i < Fin.val j → False for the single-element type. This pattern (absurd hypothesis + omega) is the standard way to handle vacuously-true properties over Fin 1.",
+    "mathContext": "For $r=1$: the wellFormed condition $\\forall i < j$: Fin 1, sources $i <$ sources $j$ is vacuously true since there are no such pairs. Every single-path tuple is trivially non-intersecting.",
+    "significance": "supporting",
+    "relatedConcepts": ["LGVConfig.wellFormed", "Fin 1", "absurd", "omega", "IsNonIntersecting"],
+    "prerequisites": ["Fin.val_fin_lt", "omega for Fin arithmetic", "absurd: a → ¬a → b"]
+  },
+  {
+    "id": "ann-lgvgen-jacobi-trudi",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-01",
+    "range": { "startLine": 109, "endLine": 121 },
+    "type": "insight",
+    "title": "LGV → Jacobi-Trudi: The Bridge to Symmetric Functions",
+    "content": "The jacobi_trudi_interpretation theorem is mathematically trivial (it's just lgv_lemma_rxr restated) but conceptually significant: the LGV lemma is the bijective proof of the Jacobi-Trudi identity, which expresses Schur polynomials as determinants of complete homogeneous symmetric polynomial matrices. The bijection is via RSK correspondence: semistandard Young tableaux of shape λ biject with non-intersecting lattice path systems where the lattice point counts encode the tableau entries. The paths connect source points (determined by the partition's row lengths) to target points (determined by λ + ρ), and the path-count matrix e(Aᵢ, Bⱼ) = h_{λⱼ-j+i} (complete homogeneous symmetric polynomial). This theoretical note in the code makes the connection explicit for gallery readers.",
+    "mathContext": "The Jacobi-Trudi identity: $s_\\lambda = \\det[h_{\\lambda_i - i + j}]_{1 \\leq i,j \\leq r}$ where $h_k$ is the $k$-th complete homogeneous symmetric polynomial. The LGV lemma provides a bijective proof via the RSK correspondence.",
+    "significance": "supporting",
+    "relatedConcepts": ["Jacobi-Trudi identity", "Schur polynomials", "RSK correspondence", "semistandard Young tableaux", "complete homogeneous symmetric polynomials"],
+    "prerequisites": ["LGV lemma (this file)", "RSK correspondence (combinatorics background)", "Schur polynomials and Young tableaux (symmetric function theory)"]
+  }
+]
