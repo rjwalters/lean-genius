@@ -43,7 +43,8 @@
       "sinh_pos_of_pos follows from exp being strictly monotone: exp(x) > 1 and exp(-x) < 1 for x > 0",
       "The derivative HasDerivAt.tendsto_slope_zero converts the derivative of sin (resp. sinh) at 0 to the limit of the difference quotient",
       "The flat limit theorems provide the formal connection: as triangles shrink, all three Ceva conditions converge to the same Euclidean form",
-      "The structure GeneralizedCevianConfig separates the configuration from the geometry, enabling reuse of the algebraic proof"
+      "The structure GeneralizedCevianConfig separates the configuration from the geometry, enabling reuse of the algebraic proof",
+      "hasDerivAt_sinh is proved from scratch by composing HasDerivAt instances (exp, neg, sub, div_const), demonstrating Lean's derivative calculus API without needing a dedicated sinh-derivative lemma in Mathlib"
     ],
     "prerequisites": [
       "Euclidean Ceva's theorem and its algebraic proof",
@@ -63,7 +64,50 @@
       "Does the flat limit argument extend to a formal proof that the hyperbolic and spherical Ceva conditions converge to the Euclidean one for triangles on a manifold of shrinking curvature?"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "generalized-framework",
+      "title": "Part 1: Generalized Ceva Framework",
+      "summary": "GeneralizedCevianConfig structure (six positive reals), generalizedCevaProduct, and generalized_ceva (the algebraic core: product=1 ↔ ace=bdf). Uses div_mul_div_comm + div_eq_one_iff_eq.",
+      "startLine": 53,
+      "endLine": 90
+    },
+    {
+      "id": "trig-ceva",
+      "title": "Part 2: Trigonometric Ceva (Euclidean)",
+      "summary": "TrigCevianConfig (angle bounds in (0,π)), trigCevaProduct, TrigCevianConfig.toGeneralized using Real.sin_pos_of_pos_of_lt_pi, trigonometric_ceva reduces to generalized_ceva in one rw.",
+      "startLine": 91,
+      "endLine": 170
+    },
+    {
+      "id": "spherical-hyperbolic-ceva",
+      "title": "Parts 3–4: Spherical and Hyperbolic Ceva",
+      "summary": "SphericalCevianConfig and spherical_ceva (sin of arc lengths, arcs in (0,π)); HyperbolicCevianConfig and hyperbolic_ceva (sinh of distances, positive on (0,∞)); sinh_pos_of_pos proved from exp_strictMono.",
+      "startLine": 171,
+      "endLine": 347
+    },
+    {
+      "id": "unified-theory",
+      "title": "Part 5: Unified Theory — Parametric ρ",
+      "summary": "ceva_unified_principle for arbitrary ρ: ℝ → ℝ with positivity hypotheses; three specializations: Euclidean (ρ=id), spherical (ρ=sin), hyperbolic (ρ=sinh).",
+      "startLine": 349,
+      "endLine": 420
+    },
+    {
+      "id": "special-cases",
+      "title": "Part 6: Special Cases — Concurrent Medians",
+      "summary": "spherical_medians_concurrent and hyperbolic_medians_concurrent: equal arc lengths / distances give div_self = 1 product. One-line proofs via simp [div_self].",
+      "startLine": 421,
+      "endLine": 443
+    },
+    {
+      "id": "flat-limits",
+      "title": "Part 7: Flat Limits and Geometry Connections",
+      "summary": "spherical_flat_limit (sin(x)/x → 1 via hasDerivAt_sin + tendsto_slope_zero), hasDerivAt_sinh (built from exp/neg composition), hyperbolic_flat_limit (sinh(x)/x → 1), flat_limit_connects_geometries (conjunction of both).",
+      "startLine": 444,
+      "endLine": 527
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cevas-theorem",

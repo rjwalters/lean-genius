@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-ceva-ne-abstract-core",
+    "proofId": "cevas-theorem-non-euclidean",
+    "range": { "startLine": 53, "endLine": 90 },
+    "type": "insight",
+    "title": "Abstract Algebraic Core: GeneralizedCevianConfig and generalized_ceva",
+    "content": "GeneralizedCevianConfig is a structure with six positive reals bd, dc, ce, ea, af, fb (the 'measures' of the six sub-segments created by cevian feet) and their positivity proofs. generalizedCevaProduct computes (bd/dc)*(ce/ea)*(af/fb). generalized_ceva proves this equals 1 iff bd*ce*af = dc*ea*fb. The proof uses div_mul_div_comm twice to combine the three fractions into one, then div_eq_one_iff_eq (with the denominator nonzero by ne_of_gt) to reduce the fraction-equals-one condition to numerator-equals-denominator. This algebraic identity is the common heart of all three geometry versions.",
+    "mathContext": "The identity $\\frac{a}{b} \\cdot \\frac{c}{d} \\cdot \\frac{e}{f} = 1 \\iff ace = bdf$ is elementary division algebra, but its formalization requires careful non-zeroness bookkeeping. In Lean 4, `div_mul_div_comm` rewrites $\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ac}{bd}$, and `div_eq_one_iff_eq` rewrites $\\frac{x}{y} = 1 \\iff x = y$ (for $y \\neq 0$). The clean separation of the algebra (here) from the geometry (Parts 2–4) is the key design choice: each geometry contributes only a positivity proof, and the rest is purely algebraic.",
+    "significance": "key",
+    "relatedConcepts": ["div_mul_div_comm", "div_eq_one_iff_eq", "ne_of_gt", "generalizedCevaProduct"],
+    "prerequisites": ["div_mul_div_comm", "div_eq_one_iff_eq", "Real positivity lemmas"]
+  },
+  {
+    "id": "ann-ceva-ne-trig-spherical",
+    "proofId": "cevas-theorem-non-euclidean",
+    "range": { "startLine": 92, "endLine": 254 },
+    "type": "technique",
+    "title": "Trig and Spherical Ceva: toGeneralized Conversion Pattern",
+    "content": "Parts 2 and 3 follow an identical template. TrigCevianConfig and SphericalCevianConfig both store six positive angles/arc-lengths with both lower (> 0) and upper (< π) bounds. Their .toGeneralized functions map each angle θ to Real.sin θ in a GeneralizedCevianConfig, using Real.sin_pos_of_pos_of_lt_pi for positivity. The product theorem (trigCevaProduct_eq_generalized / sphericalCevaProduct_eq_generalized) is proved by rfl — the two product definitions unfold to the same expression. The main theorems (trigonometric_ceva and spherical_ceva) are one-line proofs: rw [*_eq_generalized]; exact generalized_ceva cfg.toGeneralized.",
+    "mathContext": "In spherical geometry, a geodesic triangle has sides that are arcs of great circles. The arc lengths (in radians) lie in $(0, \\pi)$ for a proper geodesic triangle on a hemisphere. The **spherical sine rule** and **spherical Ceva** both use $\\sin$ of arc lengths. Since $\\sin: (0,\\pi) \\to (0,1]$ is positive, the denominator nonzeroness required by `generalized_ceva` is automatically satisfied. The trigonometric form of Euclidean Ceva (with $\\sin$ of angle halves) was proved by Jakob Steiner (c. 1828) and is more natural for projective extensions than the ratio-of-lengths form.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.sin_pos_of_pos_of_lt_pi", "TrigCevianConfig.toGeneralized", "SphericalCevianConfig.toGeneralized", "generalized_ceva"],
+    "prerequisites": ["generalized_ceva", "Real.sin_pos_of_pos_of_lt_pi", "toGeneralized conversion"]
+  },
+  {
+    "id": "ann-ceva-ne-sinh-positivity",
+    "proofId": "cevas-theorem-non-euclidean",
+    "range": { "startLine": 286, "endLine": 347 },
+    "type": "technique",
+    "title": "Hyperbolic Ceva: sinh Positivity from Exponential Monotonicity",
+    "content": "sinh_pos_of_pos proves Real.sinh x > 0 for x > 0 by rewriting via Real.sinh_eq (which gives sinh x = (exp x - exp(-x)) / 2) and bounding: exp x > exp 0 = 1 by Real.exp_strictMono, and exp(-x) < exp 0 = 1 by exp_strictMono applied to -x < 0. The linarith step closes: (exp x - exp(-x)) > 0. The hyperbolic case differs from spherical: there is no upper bound needed on the arguments (sinh is positive on all of (0, ∞)), so HyperbolicCevianConfig requires only lower bounds. hyperbolic_ceva again reduces via toGeneralized and generalized_ceva.",
+    "mathContext": "The **hyperbolic sine** is $\\sinh(x) = \\frac{e^x - e^{-x}}{2}$. For $x > 0$: $e^x > 1 > e^{-x}$, so $\\sinh(x) > 0$. In hyperbolic geometry (Poincaré disk model), the hyperbolic distance $d(p, q)$ between two points satisfies $d > 0$ for $p \\neq q$, so $\\sinh(d) > 0$ for any sub-segment. The hyperbolic Ceva condition $\\sinh(BD)\\sinh(CE)\\sinh(AF) = \\sinh(DC)\\sinh(EA)\\sinh(FB)$ was noted by Lobachevsky. The function $\\sinh$ plays the same role in hyperbolic geometry as $\\sin$ does in spherical geometry.",
+    "significance": "key",
+    "relatedConcepts": ["Real.sinh_eq", "Real.exp_strictMono", "HyperbolicCevianConfig.toGeneralized", "linarith"],
+    "prerequisites": ["Real.sinh_eq", "Real.exp_strictMono", "neg_neg_of_pos", "generalized_ceva"]
+  },
+  {
+    "id": "ann-ceva-ne-unified-principle",
+    "proofId": "cevas-theorem-non-euclidean",
+    "range": { "startLine": 362, "endLine": 420 },
+    "type": "insight",
+    "title": "Unified Principle: Parametric Ratio Function ρ",
+    "content": "ceva_unified_principle states the result for any function ρ : ℝ → ℝ, given six positivity hypotheses hρbd, hρdc, etc. The proof is identical to generalized_ceva: div_mul_div_comm twice, then div_eq_one_iff_eq. The three specializations (ceva_euclidean_specialization with ρ = id, ceva_spherical_specialization with ρ = Real.sin, ceva_hyperbolic_specialization with ρ = Real.sinh) are one-line applications of ceva_unified_principle with the appropriate positivity proofs. This design separates geometry from algebra at the highest abstraction level: the theorem is valid for any positive-valued function.",
+    "mathContext": "The unified form $\\frac{\\rho(a)}{\\rho(b)} \\cdot \\frac{\\rho(c)}{\\rho(d)} \\cdot \\frac{\\rho(e)}{\\rho(f)} = 1 \\iff \\rho(a)\\rho(c)\\rho(e) = \\rho(b)\\rho(d)\\rho(f)$ captures all three geometries. For constant curvature $\\kappa$, the Jacobi sine function $\\mathrm{sn}_\\kappa(t)$ unifies $\\sin$, $t$ (identity, the $\\kappa \\to 0$ limit), and $\\sinh$ (with $\\kappa = -1$). The parametric form with $\\rho$ is more general still: it applies to any geometry where concurrency is encoded as a product of function values equaling 1.",
+    "significance": "key",
+    "relatedConcepts": ["ceva_unified_principle", "ceva_euclidean_specialization", "ceva_spherical_specialization", "ceva_hyperbolic_specialization"],
+    "prerequisites": ["generalized_ceva", "Real.sin_pos_of_pos_of_lt_pi", "sinh_pos_of_pos"]
+  },
+  {
+    "id": "ann-ceva-ne-medians",
+    "proofId": "cevas-theorem-non-euclidean",
+    "range": { "startLine": 425, "endLine": 443 },
+    "type": "context",
+    "title": "Concurrent Medians: Equal-Arc and Equal-Distance Special Cases",
+    "content": "spherical_medians_concurrent and hyperbolic_medians_concurrent handle the equal-measure case: when all six sub-segment measures are equal (BD=DC=CE=EA=AF=FB = a for spherical, = d for hyperbolic), the Ceva product sin(a)/sin(a) * ... = 1 by div_self (the denominator is nonzero by sin_pos/sinh_pos). These are the analogues of the Euclidean theorem that the three medians of a triangle are concurrent. The proofs use simp [div_self h] in a single line, delegating to Lean's simp lemmas for repeated division and multiplication.",
+    "mathContext": "In Euclidean geometry, the medians (cevians to the midpoints of sides) satisfy $BD/DC = 1$ for all three sides, so the Ceva product is $1 \\cdot 1 \\cdot 1 = 1$. In spherical geometry, if $D$ is the midpoint of arc $BC$, then $\\mathrm{arc}(BD) = \\mathrm{arc}(DC)$, giving $\\sin(BD)/\\sin(DC) = 1$. Similarly in hyperbolic geometry. These medians meet at the **centroid** of the triangle, which exists in all constant-curvature geometries.",
+    "significance": "technical",
+    "relatedConcepts": ["div_self", "spherical_flat_limit", "hyperbolic_medians_concurrent", "Real.sin_pos_of_pos_of_lt_pi", "sinh_pos_of_pos"],
+    "prerequisites": ["sin_pos_of_pos_of_lt_pi", "sinh_pos_of_pos", "div_self"]
+  },
+  {
+    "id": "ann-ceva-ne-flat-limits",
+    "proofId": "cevas-theorem-non-euclidean",
+    "range": { "startLine": 448, "endLine": 516 },
+    "type": "insight",
+    "title": "Flat Limits: sin(x)/x → 1 and sinh(x)/x → 1 via HasDerivAt",
+    "content": "spherical_flat_limit proves Filter.Tendsto (fun t => t⁻¹ * sin t) (nhdsWithin 0 {0}ᶜ) (nhds 1) from (Real.hasDerivAt_sin 0).tendsto_slope_zero, then simp to reduce: the slope difference quotient (sin(0+h) - sin(0))/h = sin(h)/h tends to sin'(0) = cos(0) = 1. For the hyperbolic case, hasDerivAt_sinh x is proved from scratch by composing HasDerivAt instances: h1 = hasDerivAt_exp x, h2' = (hasDerivAt_exp (-x)).comp x (hasDerivAt_neg x); then (h1.sub h2').div_const 2 with a convert ring step gives hasDerivAt sinh (cosh x) x. hyperbolic_flat_limit applies (hasDerivAt_sinh 0).tendsto_slope_zero with sinh(0) = 0 and cosh(0) = 1. flat_limit_connects_geometries packages both as a conjunction.",
+    "mathContext": "The derivative characterization $f'(0) = \\lim_{h \\to 0} (f(h) - f(0))/h$ is exactly $\\lim_{h \\to 0} f(h)/h$ when $f(0) = 0$. For $f = \\sin$: $\\sin'(0) = \\cos(0) = 1$, so $\\sin(h)/h \\to 1$. For $f = \\sinh$: $\\sinh'(0) = \\cosh(0) = 1$, so $\\sinh(h)/h \\to 1$. Physically, this means that on a sphere of radius $R$, a triangle with side lengths $\\ell$ much smaller than $R$ has spherical cevian ratios $\\sin(\\ell_i/R)/\\sin(\\ell_j/R) \\approx \\ell_i/\\ell_j$, recovering Euclidean Ceva. The `tendsto_slope_zero` API converts `HasDerivAt f f' 0` (with `f(0) = 0`) directly to the limit.",
+    "significance": "key",
+    "relatedConcepts": ["HasDerivAt.tendsto_slope_zero", "Real.hasDerivAt_sin", "hasDerivAt_sinh", "Real.sinh_eq", "Real.cosh_zero", "nhdsWithin"],
+    "prerequisites": ["HasDerivAt", "Real.hasDerivAt_exp", "HasDerivAt.comp", "HasDerivAt.div_const", "tendsto_slope_zero"]
+  },
+  {
+    "id": "ann-ceva-ne-hasderivat-sinh",
+    "proofId": "cevas-theorem-non-euclidean",
+    "range": { "startLine": 470, "endLine": 484 },
+    "type": "technique",
+    "title": "hasDerivAt_sinh: Derivative of sinh from First Principles",
+    "content": "hasDerivAt_sinh x proves HasDerivAt Real.sinh (Real.cosh x) x without calling a Mathlib sinh-derivative lemma. The proof: (1) rewrite sinh as fun y => (exp y - exp(-y))/2 via Real.sinh_eq; (2) compute d/dx exp(-x) = -exp(-x) via (hasDerivAt_exp (-x)).comp x (hasDerivAt_neg x); (3) form (h1.sub h2').div_const 2 for the derivative of (exp x - exp(-x))/2; (4) convert to cosh x using cosh_eq. The convert-ring step handles the algebraic identity (exp x - (-1 * exp(-x)))/2 = (exp x + exp(-x))/2 = cosh x.",
+    "mathContext": "$\\sinh'(x) = \\left(\\frac{e^x - e^{-x}}{2}\\right)' = \\frac{e^x - (-1)e^{-x}}{2} = \\frac{e^x + e^{-x}}{2} = \\cosh(x)$. The chain rule $\\frac{d}{dx} e^{-x} = -e^{-x}$ is a composition: $e^u$ with $u = -x$, $\\frac{du}{dx} = -1$. In Lean 4 Mathlib, `HasDerivAt.comp x h_outer h_inner` computes the chain rule: if $g$ has derivative $g'$ at $f(x)$ and $f$ has derivative $f'$ at $x$, then $g \\circ f$ has derivative $g'(f(x)) \\cdot f'$ at $x$. The `div_const 2` combinator then divides through.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.hasDerivAt_exp", "HasDerivAt.comp", "hasDerivAt_neg", "HasDerivAt.sub", "HasDerivAt.div_const", "Real.cosh_eq"],
+    "prerequisites": ["Real.hasDerivAt_exp", "HasDerivAt.comp", "HasDerivAt.sub", "HasDerivAt.div_const", "Real.sinh_eq", "Real.cosh_eq"]
+  }
+]
