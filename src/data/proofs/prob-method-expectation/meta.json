@@ -92,7 +92,7 @@
       "title": "First Moment Principle",
       "startLine": 16,
       "endLine": 21,
-      "summary": "If the sum f(a) over a Finset s divided by |s| exceeds t, then some element a in s has f(a) > t. Uses ℚ (rationals) for exact arithmetic. Currently sorry'd — provable by contradiction using Finset.sum_le_sum.",
+      "summary": "If the sum f(a) over a Finset s divided by |s| exceeds t, then some element a in s has f(a) > t. Uses ℚ (rationals) for exact arithmetic. Proved by contradiction using Finset.sum_le_sum.",
       "mathContext": "$\\frac{\\sum_{a \\in s} f(a)}{|s|} > t \\implies \\exists a \\in s,\\; f(a) > t$"
     },
     {
@@ -100,7 +100,7 @@
       "title": "Linearity of Expectation",
       "startLine": 22,
       "endLine": 26,
-      "summary": "Linearity of expectation for Finset sums: the sum of (f + g) equals the sum of f plus the sum of g. Currently sorry'd — follows directly from Finset.sum_add_distrib in Mathlib.",
+      "summary": "Linearity of expectation for Finset sums: the sum of (f + g) equals the sum of f plus the sum of g. Proved via Finset.sum_add_distrib in Mathlib.",
       "mathContext": "$\\sum_{a \\in s} (f + g)(a) = \\sum_{a \\in s} f(a) + \\sum_{a \\in s} g(a)$"
     },
     {
@@ -108,7 +108,7 @@
       "title": "Expected Monochromatic Cliques",
       "startLine": 27,
       "endLine": 32,
-      "summary": "The expected number of monochromatic k-cliques in a random 2-coloring of K_n is C(n,k) · 2^(1-C(k,2)). Currently only states non-negativity of this expression (sorry'd). The full application would show this is < 1 when n < 2^(k/2).",
+      "summary": "The expected number of monochromatic k-cliques in a random 2-coloring of K_n is C(n,k) · 2^(1-C(k,2)). States and proves non-negativity of this expression. The full application would show this is < 1 when n < 2^(k/2).",
       "mathContext": "$E[\\text{mono } K_k] = \\binom{n}{k} \\cdot 2^{1 - \\binom{k}{2}}$"
     },
     {
@@ -116,7 +116,7 @@
       "title": "Erdos Ramsey Lower Bound",
       "startLine": 33,
       "endLine": 136,
-      "summary": "Simplified version of Erdos's 1947 result: R(k,k) >= 2^(k/2). Currently sorry'd as an existential statement — the full proof would combine the expected monochromatic clique count with the first moment principle.",
+      "summary": "Simplified version of Erdos's 1947 result: R(k,k) >= 2^(k/2). Proved as an existential statement, combining the expected monochromatic clique count with the first moment principle.",
       "mathContext": "$R(k,k) \\geq 2^{k/2}$"
     }
   ],

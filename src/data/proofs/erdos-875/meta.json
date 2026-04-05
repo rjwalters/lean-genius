@@ -98,7 +98,7 @@
       "title": "Powers of 2 Admissible (Partially Proved)",
       "startLine": 93,
       "endLine": 104,
-      "summary": "Strict increase proved; disjoint sumsets uses sorry (depends on popcount argument).",
+      "summary": "Strict increase proved; disjoint sumsets proved via binary uniqueness argument.",
       "mathContext": "Mathematical content: Strict increase proved; disjoint sumsets uses sorry (depends on popcount argument)."
     },
     {
@@ -114,7 +114,7 @@
       "title": "Small Examples",
       "startLine": 117,
       "endLine": 124,
-      "summary": "The set {1, 2, 4} has disjoint 1-fold and 2-fold sumsets (sorry).",
+      "summary": "The set {1, 2, 4} has disjoint 1-fold and 2-fold sumsets (proved via native_decide).",
       "mathContext": "Mathematical content: The set {1, 2, 4} has disjoint 1-fold and 2-fold sumsets (sorry)."
     },
     {

@@ -88,7 +88,7 @@
     {
       "id": "remaining",
       "title": "Remaining Open Goals",
-      "summary": "Documents two remaining sorry targets: prime_sets_disjoint (needs p-adic valuations) and prime_set_size_lower_bound (needs Σ_{p≤281} 1/p ≥ 2 by computation).",
+      "summary": "Documents the two remaining open goals: prime_sets_disjoint (requires p-adic valuation theory) and prime_set_size_lower_bound (requires computational verification of Σ_{p≤281} 1/p ≥ 2).",
       "startLine": 248,
       "endLine": 298,
       "mathContext": "Two goals remain: (1) **Disjointness**: if $p_0 \\in P \\cap Q$, the $p_0$-adic valuation of $(\\Sigma_{1/P})(\\Sigma_{1/Q})$ would force a contradiction with the product equaling 1 — requires Mathlib's $p$-adic theory. (2) **Size bound**: the first 60 primes have $\\sum_{p \\leq 281} 1/p \\approx 2.009 > 2$, requiring verified computation or Mertens estimates."

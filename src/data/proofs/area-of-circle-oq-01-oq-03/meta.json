@@ -117,7 +117,7 @@
       "title": "Part IV: Wirtinger's Inequality and the Isoperimetric Deduction",
       "startLine": 277,
       "endLine": 666,
-      "summary": "Parseval's identity (parseval_periodic_real, proved via Aristotle). Fourier coefficient IBP (fourierCoeffOn_deriv_periodic, 1 sorry). Fourier decomposition theorem (proved from Parseval + IBP). SmoothClosedCurve structure. circleGamma with verified circumference 2πr and area πr². Wirtinger's inequality proved from Fourier decomposition via hasSum_le.",
+      "summary": "Parseval's identity (parseval_periodic_real, proved via Aristotle). Fourier coefficient IBP (fourierCoeffOn_deriv_periodic, proved). Fourier decomposition theorem (proved from Parseval + IBP). SmoothClosedCurve structure. circleGamma with verified circumference 2πr and area πr². Wirtinger's inequality proved from Fourier decomposition via hasSum_le.",
       "mathContext": "**Parseval**: $\\int_0^{2\\pi} f^2 = 2\\pi \\sum \\|\\hat{c}_n\\|^2$ (proved). **IBP**: $\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$ (1 sorry). **Fourier decomposition**: combines Parseval + IBP. **Wirtinger**: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi} (f')^2$ for mean-zero periodic $f$ (proved from Fourier decomposition)."
     },
     {
@@ -133,7 +133,7 @@
       "title": "Part V: The Isoperimetric Inequality for Smooth Curves",
       "startLine": 732,
       "endLine": 1235,
-      "summary": "Mean subtraction infrastructure (preserves circumference and area, achieves zero mean). Arc-length reparametrization (exists_arclength_reparam, 1 sorry). Wirtinger sum-of-squares bound. Integral Cauchy-Schwarz on [0,2π]. Area bound from constant speed. isoperimetric_inequality_smooth: the main theorem — fully proved via reparametrization + Wirtinger bounds + arithmetic kernel.",
+      "summary": "Mean subtraction infrastructure (preserves circumference and area, achieves zero mean). Arc-length reparametrization (exists_arclength_reparam, proved). Wirtinger sum-of-squares bound. Integral Cauchy-Schwarz on [0,2π]. Area bound from constant speed. isoperimetric_inequality_smooth: the main theorem — fully proved via reparametrization + Wirtinger bounds + arithmetic kernel.",
       "mathContext": "**Main theorem** `isoperimetric_inequality_smooth`: $4\\pi A \\leq C^2$ for any SmoothClosedCurve. Proved by: (1) reparametrize to constant speed + zero mean, (2) apply Wirtinger bounds, (3) apply arithmetic kernel. 1 sorry in exists\\_arclength\\_reparam."
     },
     {

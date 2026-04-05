@@ -114,7 +114,7 @@
       "title": "Sumset Lower Bound",
       "startLine": 167,
       "endLine": 190,
-      "summary": "Statement of |A + A| >= 2|A| - 1 for nonempty finite A in N. Standard combinatorial fact (sorry).",
+      "summary": "Statement of |A + A| >= 2|A| - 1 for nonempty finite A in N. Standard combinatorial fact, proved via a min/max chain argument.",
       "mathContext": "$|A + A| \\geq 2|A| - 1$ by the min/max chain argument: the $2|A| - 1$ elements $\\min + a_i$ and $a_j + \\max$ are all distinct."
     },
     {

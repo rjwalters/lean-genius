@@ -137,7 +137,7 @@
     {
       "id": "structural-properties",
       "title": "Structural Properties",
-      "summary": "Establishes key constraints: solutions with $n > 4$ must be odd (`erdos1142_odd_or_4`), all solutions satisfy $n \\geq 4$ (`erdos1142_ge_4`), $n - 2$ is always prime (`erdos1142_n_minus_2_prime`), and $n \\equiv 1 \\pmod{2}$ for $n > 4$ (`erdos1142_mod2`). These are stated with sorry placeholders.",
+      "summary": "Establishes key constraints: solutions with $n > 4$ must be odd (`erdos1142_odd_or_4`), all solutions satisfy $n \\geq 4$ (`erdos1142_ge_4`), $n - 2$ is always prime (`erdos1142_n_minus_2_prime`), and $n \\equiv 1 \\pmod{2}$ for $n > 4$ (`erdos1142_mod2`). All are machine-verified.",
       "startLine": 93,
       "endLine": 128,
       "mathContext": "Establishes key constraints: solutions with $n > 4$ must be odd (`erdos1142_odd_or_4`), all solutions satisfy $n \\geq 4$ (`erdos1142_ge_4`), $n - 2$ is always prime (`erdos1142_n_minus_2_prime`), and $n \\equiv 1 \\pmod{2}$ for $n > 4$ (`erdos1142_mod2`)."
