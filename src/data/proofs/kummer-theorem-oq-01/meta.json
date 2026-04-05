@@ -4,6 +4,9 @@
   "slug": "kummer-theorem-oq-01",
   "description": "Extends Kummer's theorem from binomial to multinomial coefficients via iterated binomial decomposition. The p-adic valuation of a multinomial coefficient equals the total carries when adding the parts in base p.",
   "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kummer%27s_theorem",
+    "date": "2026-03-30",
     "status": "verified",
     "tags": [
       "combinatorics",
@@ -20,7 +23,25 @@
     "theoremCount": 4,
     "definitionCount": 1,
     "mathlib_version": "4.26.0",
-    "dateAdded": "2026-03-30"
+    "dateAdded": "2026-03-30",
+    "originalContributions": [
+      "multinomial_eq_prod_choose: general telescoping product decomposition (proved via Aristotle companion)",
+      "multinomial_pair: multinomial [a,b] = C(a+b,a) via choose_mul_factorial_mul_factorial",
+      "multinomial_triple: multinomial [a,b,c] = C(a+b,a) * C(a+b+c,a+b) via factorial chain",
+      "kummer_multinomial_statement: p-adic carry-count theorem (statement placeholder)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_mul_factorial_mul_factorial",
+        "description": "C(n,k) * k! * (n-k)! = n!",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.descFactorial_eq_factorial_mul_choose",
+        "description": "descFactorial(n,k) = k! * C(n,k)",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ]
   },
   "crossReferences": [
     {
@@ -46,25 +67,41 @@
       "id": "setup",
       "title": "Module Header and Mathematical Overview",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Imports Mathlib and provides a detailed docstring explaining the open question (can Kummer's theorem extend to multinomials?), the iterated binomial decomposition identity, and the key results to be proved.",
-      "mathContext": "The open question: given prime $p$ and parts $k_1,\\ldots,k_m$ with $k_1+\\cdots+k_m = n$, is $v_p\\binom{n}{k_1,\\ldots,k_m}$ = total carries when adding $k_1,\\ldots,k_m$ in base $p$? Answer: yes, via the telescoping identity $\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m} \\binom{S_i}{k_i}$ where $S_i = k_1+\\cdots+k_i$, and Kummer's theorem applied to each factor."
+      "endLine": 31,
+      "summary": "Imports Mathlib and KummerTheoremOQ01Aristotle companion. Detailed docstring explains the open question (Kummer for multinomials), the iterated binomial decomposition, and the key results. Opens Nat namespace.",
+      "mathContext": "The open question: given prime $p$ and parts $k_1,\\ldots,k_m$ with $\\sum k_i = n$, is $v_p\\binom{n}{k_1,\\ldots,k_m}$ = total carries when adding $k_1,\\ldots,k_m$ in base $p$? Answer: yes, via $\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m} \\binom{S_i}{k_i}$ and Kummer's theorem on each factor."
     },
     {
       "id": "definition",
       "title": "Multinomial Coefficient Definition",
-      "startLine": 24,
-      "endLine": 33,
-      "summary": "Defines `multinomial (ks : List ℕ) : ℕ` as `(ks.sum).factorial / (ks.map Nat.factorial).prod` — i.e., n! / (k₁! · k₂! · ... · kₘ!). Marked `noncomputable` due to natural number division.",
-      "mathContext": "`multinomial ks = (ks.sum).factorial / (ks.map Nat.factorial).prod` — i.e., $\\binom{n}{k_1,\\ldots,k_m} = n!/\\prod k_i!$ where $n = \\sum k_i$. The `noncomputable` annotation is necessary because `Nat.div` for factorials is not decidably computable (classical division). The pair case `multinomial [a,b] = choose (a+b) a` is the key sanity check."
+      "startLine": 33,
+      "endLine": 36,
+      "summary": "Defines `multinomial (ks : List ℕ) : ℕ` as `(ks.sum).factorial / (ks.map Nat.factorial).prod`. Marked `noncomputable` due to natural number division.",
+      "mathContext": "$\\binom{n}{k_1,\\ldots,k_m} = n!/\\prod k_i!$ where $n = \\sum k_i$."
     },
     {
       "id": "decomposition",
-      "title": "Binomial Factorization and Pair/Triple Cases",
-      "startLine": 35,
+      "title": "Iterated Binomial Decomposition (General Case)",
+      "startLine": 38,
+      "endLine": 50,
+      "summary": "`multinomial_eq_prod_choose`: the multinomial factors as a product of binomials via scanl/zip/tail/prod. Delegates to the Aristotle companion file proof using backward list induction.",
+      "mathContext": "$\\binom{n}{k_1,\\ldots,k_m} = \\prod_{i=1}^{m} \\binom{S_i}{k_i}$ where $S_i = \\sum_{j \\le i} k_j$. Lean uses `List.scanl (\\cdot+\\cdot) 0` for running sums, `List.zip` for pairing."
+    },
+    {
+      "id": "pair-triple",
+      "title": "Pair and Triple Cases",
+      "startLine": 52,
+      "endLine": 99,
+      "summary": "`multinomial_pair`: proved via `Nat.choose_mul_factorial_mul_factorial` and `Nat.mul_div_cancel`. `multinomial_triple`: proved via two applications of the factorial identity in a calc block, chaining `C(a+b,a)*a!*b! = (a+b)!` and `C(a+b+c,a+b)*(a+b)!*c! = (a+b+c)!`.",
+      "mathContext": "Pair: $\\binom{a+b}{a,b} = \\binom{a+b}{a}$. Triple: $\\binom{a+b+c}{a,b,c} = \\binom{a+b}{a} \\cdot \\binom{a+b+c}{a+b}$. Both via the factorial identity $\\binom{n}{k} \\cdot k! \\cdot (n-k)! = n!$."
+    },
+    {
+      "id": "statement-stub",
+      "title": "p-adic Carry-Count Statement (Placeholder)",
+      "startLine": 101,
       "endLine": 108,
-      "summary": "Four theorems: `multinomial_eq_prod_choose` (general decomposition, proved via Aristotle companion), `multinomial_pair` (proved via `Nat.choose_mul_factorial_mul_factorial`), `multinomial_triple` (proved via two factorial chains), `kummer_multinomial_statement` (p-adic valuation, stub returning True).",
-      "mathContext": "`multinomial_eq_prod_choose`: $\\text{multinomial}(k_1,\\ldots,k_m) = \\prod_{i=1}^{m} \\binom{S_i}{k_i}$ where $S_i = \\sum_{j \\le i} k_j$. Lean uses `List.scanl (·+·) 0` for running sums, `List.zip` for pairing, `List.prod` for the product. `multinomial_pair`: $\\text{multinomial}([a,b]) = \\binom{a+b}{a}$ via `Nat.choose_mul_factorial_mul_factorial`. `multinomial_triple`: $\\text{multinomial}([a,b,c]) = \\binom{a+b}{a} \\cdot \\binom{a+b+c}{a+b}$ via two factorial chains."
+      "summary": "`kummer_multinomial_statement`: placeholder returning True. Documents the intended p-adic valuation theorem without formalizing base-p carry counting.",
+      "mathContext": "Intended: $v_p\\binom{n}{k_1,\\ldots,k_m} = \\sum_{i=1}^{m-1} c(k_i, S_{i-1}; p)$ where $c(a,b;p)$ counts base-$p$ carries."
     }
   ],
   "conclusion": {
