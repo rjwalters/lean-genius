@@ -47,7 +47,48 @@
       "Asymptotic analysis ($O(k^2)$ error terms)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions: Clique Partition and Turan Bound",
+      "startLine": 65,
+      "endLine": 140,
+      "summary": "Defines the clique partition number cp(G), usesOnlyEdgesAndTriangles, and the Turan bound floor(n²/4). Proves turanBound is monotone, has explicit small values (0,0,1,2,4 for n=0..4), and equals (n/2)·(n-n/2).",
+      "mathContext": "cp(G) = min\\{|P| : P is an edge-clique partition of G\\}. Turan bound: $\\lfloor n^2/4 \\rfloor = (n/2)(n - n/2)$. The EGP theorem states cp(G) ≤ ⌊n²/4⌋ for every n-vertex graph G."
+    },
+    {
+      "id": "egp-theorem",
+      "title": "Erdős-Goodman-Pósa Theorem and Tight Example",
+      "startLine": 142,
+      "endLine": 260,
+      "summary": "Axiomatizes egp_theorem (cp(G) ≤ ⌊n²/4⌋), proves cliquePartitionNum_le_turan as a corollary, constructs the extremal complete bipartite graph K_{k,k} (proved triangle-free with exactly k² edges), and proves egp_tight_example (cp(K_{k,k}) = k² = ⌊(2k)²/4⌋).",
+      "mathContext": "EGP (1966): $cp(G) \\leq \\lfloor n^2/4 \\rfloor$ for every graph. Extremal: $K_{k,k}$ achieves equality ($cp(K_{k,k}) = k^2 = \\lfloor(2k)^2/4\\rfloor$). The bipartite graph is triangle-free, so every clique has $\\leq 2$ vertices, forcing one clique per edge."
+    },
+    {
+      "id": "triangle-free",
+      "title": "Triangle-Free Graphs: cp(G) = |E|",
+      "startLine": 296,
+      "endLine": 460,
+      "summary": "Proves that triangle-free graphs satisfy cp(G) = |E|: every clique has ≤ 2 vertices, so each clique covers exactly one edge. Key proof: constructs an edge-by-edge partition (one 2-vertex clique per edge) showing cp ≤ |E|, and the lower bound cp ≥ |E| via clique counting.",
+      "mathContext": "For triangle-free G: cp(G) = |E(G)|. Upper bound: partition into singleton edges. Lower bound: each clique covers $\\leq 1$ edge (since any 2-vertex clique is just an edge, and 3-vertex cliques are triangles which are excluded). Turan's theorem: dense graphs (|E| > ⌊n²/4⌋) must contain a triangle."
+    },
+    {
+      "id": "k4-free-improvement",
+      "title": "K₄-Free Graphs and Gyori-Keszegh Improvement",
+      "startLine": 462,
+      "endLine": 600,
+      "summary": "States the open question erdos1017_question, proves savings formulas for larger cliques (K_r saves r(r-1)/2 - 1 over individual edges), and axiomatizes the Gyori-Keszegh theorem (2017): K₄-free graphs with ⌊n²/4⌋ + m edges have m edge-disjoint triangles, giving cp(G) = ⌊n²/4⌋ - m.",
+      "mathContext": "Savings: $K_r$ reduces the partition count by $\\binom{r}{2} - 1$ vs using $\\binom{r}{2}$ individual edges. $K_4$ saves 5, $K_5$ saves 9. Gyori-Keszegh (2017): $K_4$-free dense graphs satisfy $cp(G) = \\lfloor n^2/4\\rfloor - m$ where $m$ = edge surplus above $\\lfloor n^2/4\\rfloor$."
+    },
+    {
+      "id": "remaining-bounds",
+      "title": "Open Question Formalization and Trivial Bounds",
+      "startLine": 601,
+      "endLine": 696,
+      "summary": "Proves trivial bounds (lovasz_covering, supersaturation_triangles, cliquePartition_le_vertices) and formalizes the open question: is there c ∈ (0,1) such that cp(G) ≤ c·⌊n²/4⌋ for all sufficiently dense graphs? The 3 remaining axioms (egp_theorem, gyori_keszegh_triangles, k4free_partition_number) are listed.",
+      "mathContext": "The open question asks whether the EGP bound $\\lfloor n^2/4\\rfloor$ can be improved to $c\\lfloor n^2/4\\rfloor$ for $c < 1$ when the graph is sufficiently dense (contains large cliques). Gyori-Keszegh shows $c$ can be improved for $K_4$-free dense graphs; the general case is open."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #1017 on clique partitions of graphs in a ~250-line Lean file spanning 10 sections. The framework builds from Mathlib's `SimpleGraph` to define clique partitions, the partition number $f(n,k)$, and the EGP bound $f(n,k) \\le \\lfloor n^2/4 \\rfloor$. The extremal example $K_{n/2,n/2}$ shows tightness for sparse graphs, while the Győri-Keszegh theorem resolves the $K_4$-free case. The general question—whether dense graphs with $K_4$ allow improvement—remains open.",
     "implications": "**Theoretical Significance**: The clique partition problem has connections across several areas of mathematics and computer science:\n\n1. **Extremal graph theory**: The EGP bound $\\lfloor n^2/4 \\rfloor$ is exactly the Turán number $\\text{ex}(n, K_3)$, revealing a deep connection between clique partitions and Turán-type extremal problems. Understanding $f(n,k)$ for $k > n^2/4$ would extend this connection to supersaturation phenomena.\n\n2. **Graph decomposition**: Clique partitions are a special case of $H$-decompositions (partitioning edges into copies of a fixed graph $H$).\n\nThe Wilson-Baranyai theorem gives conditions for exact $K_r$-decompositions; the EGP problem asks about the approximate version.\n\n3. **Computational complexity**: The minimum clique partition problem is NP-hard in general (it generalizes graph coloring of the complement). The EGP bound provides a polynomial-time achievable upper bound, and the open question asks whether structure in dense graphs enables better polynomial-time partitions.\n\n4. **Intersection graphs**: Clique partitions of $G$ correspond to edge colorings of the complement $\\bar{G}$. The clique partition number equals the chromatic index $\\chi'(\\bar{G})$, connecting to Vizing's theorem and edge-coloring theory.",
