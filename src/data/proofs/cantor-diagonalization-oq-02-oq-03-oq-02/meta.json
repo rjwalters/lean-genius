@@ -43,7 +43,8 @@
       "The diagonal intersection diagonalizes κ clubs into one club: the membership condition 'α ∈ C_β for all β < α' is weaker than 'α ∈ C_β for all β < κ.ord', making the diagonal intersection a club even when the full intersection (of κ clubs) need not be",
       "The closed part of diagInter_isClub is elementary: if δ ∈ diagInter f and β < δ, then δ ∈ f(β); so a sequence in diagInter f cofinal in γ witnesses that f(β) is cofinal in γ for each β < γ; closedness of f(β) then gives γ ∈ f(β)",
       "The unbounded part requires regularity: to find elements of diagInter f arbitrarily high, we build an ω-sequence using the fact that ∩_{β ≤ α_n} C_β is a club (intersection of < κ many clubs), and take its sup — which is < κ.ord by regularity",
-      "Fodor's lemma is strictly stronger than the diagonal argument of the parent proof: the parent finds one diagonal ordinal; Fodor finds a stationary set of them (where the function is constant)"
+      "Fodor's lemma is strictly stronger than the diagonal argument of the parent proof: the parent finds one diagonal ordinal; Fodor finds a stationary set of them (where the function is constant)",
+      "The proof in Lean requires classical logic in an essential way: the club family (C_β)_{β < κ} is constructed via Classical.choose from the assumption that each fiber is non-stationary, and the dependent if-then-else (dif_pos) ensures the choice coherently depends on the ordinal β being in range"
     ],
     "prerequisites": [
       "Cardinal and ordinal arithmetic (SetTheory.Cardinal.Cofinality, SetTheory.Ordinal.Arithmetic)",
