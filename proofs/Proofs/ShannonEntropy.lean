@@ -634,15 +634,15 @@ theorem strong_subadditivity {α β γ : Type*}
   have hXY : ∀ x y, (if (∑ z : γ, pXYZ (x, y, z)) = 0 then (0 : ℝ)
       else (∑ z, pXYZ (x, y, z)) * Real.log (∑ z, pXYZ (x, y, z))) =
       ∑ z : γ, (if pXYZ (x, y, z) = 0 then 0
-        else pXYZ (x, y, z) * Real.log (∑ z' : γ, pXYZ (x, y, z'))) :=
-    fun x y => htele (fun z => pXYZ (x, y, z)) (fun z => hp (x, y, z))
+        else pXYZ (x, y, z) * Real.log (∑ z' : γ, pXYZ (x, y, z'))) := by
+    intro x y; exact htele (fun z => pXYZ (x, y, z)) (fun z => hp (x, y, z))
 
   -- YZ marginal telescoping
   have hYZ : ∀ y z, (if (∑ x : α, pXYZ (x, y, z)) = 0 then (0 : ℝ)
       else (∑ x, pXYZ (x, y, z)) * Real.log (∑ x, pXYZ (x, y, z))) =
       ∑ x : α, (if pXYZ (x, y, z) = 0 then 0
-        else pXYZ (x, y, z) * Real.log (∑ x' : α, pXYZ (x', y, z))) :=
-    fun y z => htele (fun x => pXYZ (x, y, z)) (fun x => hp (x, y, z))
+        else pXYZ (x, y, z) * Real.log (∑ x' : α, pXYZ (x', y, z))) := by
+    intro y z; exact htele (fun x => pXYZ (x, y, z)) (fun x => hp (x, y, z))
 
   -- Y marginal telescoping (product type → nested)
   have hY : ∀ y, (if (∑ x : α, ∑ z : γ, pXYZ (x, y, z)) = 0 then (0 : ℝ)
@@ -732,7 +732,8 @@ theorem strong_subadditivity {α β γ : Type*}
       rw [mul_div_cancel₀ _ hpy_ne]
   -- q sums to 1
   have hq_sum : ∑ x : α, ∑ y : β, ∑ z : γ, q x y z = 1 := by
-    conv_lhs => rw [Finset.sum_comm]; simp_rw [hq_sum_y]
+    conv_lhs => rw [Finset.sum_comm]
+    simp_rw [hq_sum_y]
     rw [Finset.sum_comm]; exact hsum_n
 
   -- Conditional MI ≥ 0

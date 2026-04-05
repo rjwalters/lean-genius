@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-fano-overview",
+    "proofId": "shannon-channel-coding-oq-03",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Fano's Inequality: The Converse Tool",
+    "content": "Fano's inequality H(X|Y) ≤ h(P_e) + P_e·log(|X|-1) bounds the conditional entropy of X given Y in terms of the error probability P_e of estimating X from Y. It is the primary tool for proving impossibility results in information theory: if reliable communication requires H(X|Y) ≈ 0, then P_e must be close to 0, but Fano shows that if H(X|Y) is large then P_e cannot be small. In Shannon's channel coding theorem, this rules out rates above capacity.",
+    "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}|-1)$, where $h(p) = -p\\log p - (1-p)\\log(1-p)$ is binary entropy and $P_e$ is the probability of error.",
+    "significance": "key",
+    "relatedConcepts": ["channel coding theorem", "converse direction", "error probability", "conditional entropy"],
+    "prerequisites": ["Shannon entropy", "binary entropy function", "conditional probability"]
+  },
+  {
+    "id": "ann-sum-sq-le-max",
+    "proofId": "shannon-channel-coding-oq-03",
+    "range": { "startLine": 80, "endLine": 102 },
+    "type": "technique",
+    "title": "Core Algebraic Inequality (Fully Proved)",
+    "content": "For any probability distribution q on a finite set, ∑_x q(x)² ≤ max_x q(x). The proof is elegant: since q(x) ≤ max(q) for all x, we have q(x)² = q(x)·q(x) ≤ max(q)·q(x). Summing over all x: ∑q² ≤ max(q)·∑q = max(q)·1 = max(q), using that q sums to 1. This inequality is the algebraic heart of Fano: it relates a quadratic form (which appears in the formula P_e) to the maximum (which appears in the MAP error).",
+    "mathContext": "$\\sum_x q(x)^2 \\leq \\max_x q(x)$. Proof: $q(x)^2 \\leq (\\max q) \\cdot q(x) \\Rightarrow \\sum q^2 \\leq (\\max q)\\sum q = \\max q$.",
+    "significance": "key",
+    "relatedConcepts": ["MAP estimator", "quadratic form bounds", "Cauchy-Schwarz inequality", "probability distributions"],
+    "prerequisites": ["Finset.le_sup' (every element ≤ its sup)", "Finset.sum_le_sum (summing inequalities)", "mul_le_mul_of_nonneg_right"]
+  },
+  {
+    "id": "ann-formula-pe-vs-map",
+    "proofId": "shannon-channel-coding-oq-03",
+    "range": { "startLine": 122, "endLine": 139 },
+    "type": "insight",
+    "title": "Two Error Probability Definitions (Proved)",
+    "content": "The gallery uses a 'formula P_e' = 1 - ∑_y ∑_x P(x,y)²/P(Y=y) rather than the classical MAP error probability P_e^{MAP} = 1 - ∑_y max_x P(x,y). These definitions differ in general, but the theorem formula_pe_ge_map_pe shows P_e^{MAP} ≤ P_e^{formula}. This is proved by applying the core algebraic inequality slice-by-slice: for each y, ∑_x P(x,y)²/P(Y=y) ≤ max_x P(x,y), then summing over y. The direction means the gallery's formula is a conservative (upper) bound on the true MAP error.",
+    "mathContext": "$P_e^{\\text{MAP}} \\leq P_e^{\\text{formula}}$, where $P_e^{\\text{formula}} = 1 - \\sum_y \\frac{\\sum_x P(x,y)^2}{P(Y=y)}$ and $P_e^{\\text{MAP}} = 1 - \\sum_y \\max_x P(x,y)$.",
+    "significance": "key",
+    "relatedConcepts": ["MAP decoder", "minimum error probability", "quadratic approximation", "Bayes error"],
+    "prerequisites": ["sum_sq_le_max", "slice_sq_le_max", "Finset.sum_le_sum"]
+  },
+  {
+    "id": "ann-gibbs-application",
+    "proofId": "shannon-channel-coding-oq-03",
+    "range": { "startLine": 140, "endLine": 166 },
+    "type": "technique",
+    "title": "Bimodal Reference Distribution in Gibbs Inequality",
+    "content": "The per-element Fano bound uses Gibbs' inequality (H(p) ≤ -∑ p_i log q_i for any distribution q) with a cleverly chosen bimodal reference distribution Q: concentration p* = max(q) on the mode element, and uniform distribution (1-p*)/(n-1) on the remaining n-1 elements. Computing -∑ p_i log Q_i yields exactly h(1-p*) + (1-p*)·log(n-1) = h(p*) + (1-p*)·log(n-1) (using symmetry h(p) = h(1-p)), recovering the Fano bound. This is the unique Q achieving equality in the Gibbs bound for this problem.",
+    "mathContext": "Reference distribution: $Q(x^*) = p^* = \\max q$, $Q(x) = (1-p^*)/(n-1)$ for $x \\neq x^*$. Gibbs: $H(q) \\leq -q(x^*)\\log p^* - (1-q(x^*))\\log((1-p^*)/(n-1)) = h(p^*) + (1-p^*)\\log(n-1)$.",
+    "significance": "key",
+    "relatedConcepts": ["Gibbs inequality", "KL divergence minimization", "bimodal distribution", "maximum entropy"],
+    "prerequisites": ["gibbs_inequality", "binary entropy symmetry h(p) = h(1-p)", "maxProb definition"]
+  },
+  {
+    "id": "ann-jensen-aggregation",
+    "proofId": "shannon-channel-coding-oq-03",
+    "range": { "startLine": 168, "endLine": 191 },
+    "type": "technique",
+    "title": "Jensen Aggregation Using Concavity of h",
+    "content": "After applying per-element Fano slice-by-slice (getting H(X|Y=y) ≤ h(P_e^y) + P_e^y·log(n-1) for each y), we aggregate using Jensen's inequality for the concave function h. The step ∑_y P(Y=y)·h(P_e^y) ≤ h(∑_y P(Y=y)·P_e^y) uses concavity of h, proved in OQ04 via Mathlib's convexOn_mul_log. The weighted average of P_e^y values gives exactly P_e^{MAP}.",
+    "mathContext": "Jensen: $\\sum_y P(Y=y) \\cdot h(P_e^y) \\leq h\\left(\\sum_y P(Y=y) \\cdot P_e^y\\right) = h(P_e^{\\text{MAP}})$, using $h$ concave and $\\sum P(Y=y) = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Jensen's inequality", "concavity of binary entropy", "conditional expectation", "weighted average"],
+    "prerequisites": ["h_concaveOn from ShannonChannelCodingOQ04", "ConcaveOn.smul_le_sum from Mathlib", "decomposition of H(X|Y)"]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "shannon-channel-coding-oq-03",
+    "range": { "startLine": 193, "endLine": 209 },
+    "type": "technique",
+    "title": "Monotonicity of Fano Bound Function",
+    "content": "The function f(p) = h(p) + p·log(c) for fixed c ≥ 1 is non-decreasing on [0, c/(1+c)]. This is needed to extend the Fano bound from MAP P_e to the formula P_e: since P_e^{MAP} ≤ P_e^{formula}, and both are in the region where f is monotone, we get f(P_e^{MAP}) ≤ f(P_e^{formula}). Proof by calculus: f'(p) = log((1-p)/p) + log(c) = log((1-p)c/p) ≥ 0 iff (1-p)c ≥ p iff p ≤ c/(1+c).",
+    "mathContext": "$f(p) = h(p) + p\\log c$, $f'(p) = \\log\\frac{(1-p)c}{p} \\geq 0 \\iff p \\leq \\frac{c}{1+c}$. For $c = n-1$: monotone on $[0, (n-1)/n]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone functions", "derivative test", "binary entropy derivative", "information geometry"],
+    "prerequisites": ["Real.log monotonicity", "derivative of h(p)", "calculus in Mathlib"]
+  },
+  {
+    "id": "ann-proof-structure",
+    "proofId": "shannon-channel-coding-oq-03",
+    "range": { "startLine": 211, "endLine": 255 },
+    "type": "concept",
+    "title": "Proof Architecture: MAP → Formula P_e",
+    "content": "The main theorem fano_theorem assembles three components into a clean chain: (1) fano_map_bound gives H(X|Y) ≤ f(P_e^{MAP}) where f(p) = h(p) + p·log(n-1); (2) formula_pe_ge_map_pe gives P_e^{MAP} ≤ P_e^{formula}; (3) fano_func_mono and the bound P_e^{formula} ≤ (n-1)/n extend the bound to f(P_e^{formula}). The final step is a linear arithmetic combination: H(X|Y) ≤ f(P_e^{MAP}) ≤ f(P_e^{formula}).",
+    "mathContext": "$H(X|Y) \\leq f(P_e^{\\text{MAP}}) \\leq f(P_e^{\\text{formula}})$, where $f(p) = h(p) + p\\log(|X|-1)$ and $P_e^{\\text{MAP}} \\leq P_e^{\\text{formula}} \\leq \\frac{|X|-1}{|X|}$.",
+    "significance": "key",
+    "relatedConcepts": ["proof by composition", "error probability chain", "Fano's inequality variants"],
+    "prerequisites": ["fano_map_bound", "formula_pe_ge_map_pe", "fano_func_mono"]
+  }
+]
